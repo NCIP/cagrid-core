@@ -1,0 +1,333 @@
+<ns1:ServiceDescription description="The Grid Trust Service (GTS) is a grid-wide mechanism for maintaining and provisioning a federated trust fabric consisting of trusted certificate authorities, such that grid services may make authentication decisions against the most up to date information." introduceVersion="1.3" xmlns:ns1="gme://gov.nih.nci.cagrid/1/Introduce">
+ <ns2:Namespaces xsi:type="ns2:NamespacesType" xmlns:ns2="gme://gov.nih.nci.cagrid.introduce/1/Namespace" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <ns2:Namespace location="./gts.xsd" namespace="http://cagrid.nci.nih.gov/8/gts" packageName="gov.nih.nci.cagrid.gts.bean" xsi:type="ns2:NamespaceType">
+   <ns2:SchemaElement type="AuthorityGTS" xsi:type="ns2:SchemaElementType"/>
+   <ns2:SchemaElement type="AuthorityPriorityUpdate" xsi:type="ns2:SchemaElementType"/>
+   <ns2:SchemaElement type="Permission" xsi:type="ns2:SchemaElementType"/>
+   <ns2:SchemaElement type="PermissionFilter" xsi:type="ns2:SchemaElementType"/>
+   <ns2:SchemaElement type="TrustedAuthority" xsi:type="ns2:SchemaElementType"/>
+   <ns2:SchemaElement type="TrustedAuthorityFilter" xsi:type="ns2:SchemaElementType"/>
+   <ns2:SchemaElement type="TrustLevel" xsi:type="ns2:SchemaElementType"/>
+   <ns2:SchemaElement type="X509Certificate" xsi:type="ns2:SchemaElementType"/>
+   <ns2:SchemaElement type="X509CRL" xsi:type="ns2:SchemaElementType"/>
+  </ns2:Namespace>
+  <ns2:Namespace namespace="http://www.w3.org/2001/XMLSchema" xsi:type="ns2:NamespaceType">
+   <ns2:SchemaElement type="boolean" xsi:type="ns2:SchemaElementType"/>
+   <ns2:SchemaElement type="integer" xsi:type="ns2:SchemaElementType"/>
+   <ns2:SchemaElement type="string" xsi:type="ns2:SchemaElementType"/>
+  </ns2:Namespace>
+  <ns2:Namespace generateStubs="false" location="./xsd/cagrid/types/security/security.xsd" namespace="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.security" packageName="gov.nih.nci.cagrid.metadata.security" xsi:type="ns2:NamespaceType">
+   <ns2:SchemaElement type="CommunicationMechanism" xsi:type="ns2:SchemaElementType"/>
+   <ns2:SchemaElement type="CommunicationStyle" xsi:type="ns2:SchemaElementType"/>
+   <ns2:SchemaElement type="Operation" xsi:type="ns2:SchemaElementType"/>
+   <ns2:SchemaElement type="ServiceSecurityMetadata" xsi:type="ns2:SchemaElementType"/>
+  </ns2:Namespace>
+  <ns2:Namespace generateStubs="false" location="./xsd/cagrid/types/caGridMetadata.xsd" namespace="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata" packageName="gov.nih.nci.cagrid.metadata" xsi:type="ns2:NamespaceType">
+   <ns2:SchemaElement type="ServiceMetadata" xsi:type="ns2:SchemaElementType"/>
+  </ns2:Namespace>
+  <ns2:Namespace location="./GTSTypes.xsd" namespace="http://cagrid.nci.nih.gov/GTS/types" packageName="gov.nih.nci.cagrid.gts.stubs.types" xsi:type="ns2:NamespaceType">
+   <ns2:SchemaElement type="CertificateValidationFault" xsi:type="ns2:SchemaElementType"/>
+   <ns2:SchemaElement type="GTSInternalFault" xsi:type="ns2:SchemaElementType"/>
+   <ns2:SchemaElement type="GTSReference" xsi:type="ns2:SchemaElementType"/>
+   <ns2:SchemaElement type="IllegalAuthorityFault" xsi:type="ns2:SchemaElementType"/>
+   <ns2:SchemaElement type="IllegalPermissionFault" xsi:type="ns2:SchemaElementType"/>
+   <ns2:SchemaElement type="IllegalTrustedAuthorityFault" xsi:type="ns2:SchemaElementType"/>
+   <ns2:SchemaElement type="IllegalTrustLevelFault" xsi:type="ns2:SchemaElementType"/>
+   <ns2:SchemaElement type="InvalidAuthorityFault" xsi:type="ns2:SchemaElementType"/>
+   <ns2:SchemaElement type="InvalidPermissionFault" xsi:type="ns2:SchemaElementType"/>
+   <ns2:SchemaElement type="InvalidTrustedAuthorityFault" xsi:type="ns2:SchemaElementType"/>
+   <ns2:SchemaElement type="InvalidTrustLevelFault" xsi:type="ns2:SchemaElementType"/>
+   <ns2:SchemaElement type="PermissionDeniedFault" xsi:type="ns2:SchemaElementType"/>
+  </ns2:Namespace>
+ </ns2:Namespaces>
+ <ns3:Services xsi:type="ns3:ServicesType" xmlns:ns3="gme://gov.nih.nci.cagrid.introduce/1/Services" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <ns3:Service name="GTS" namespace="http://cagrid.nci.nih.gov/GTS" packageName="gov.nih.nci.cagrid.gts" xsi:type="ns3:ServiceType">
+   <ns4:Methods xsi:type="ns4:MethodsType" xmlns:ns4="gme://gov.nih.nci.cagrid.introduce/1/Methods">
+    <ns4:Method description="Publish a Certificate Authority to the trust fabric." isImported="false" isProvided="false" name="addTrustedAuthority" xsi:type="ns4:MethodType">
+     <ns4:Inputs>
+      <ns4:Input qName="ns5:TrustedAuthority" isArray="false" name="ta" xmlns:ns5="http://cagrid.nci.nih.gov/8/gts"/>
+     </ns4:Inputs>
+     <ns4:Output qName="ns6:TrustedAuthority" isArray="false" xmlns:ns6="http://cagrid.nci.nih.gov/8/gts"/>
+     <ns4:Exceptions>
+      <ns4:Exception description="An unexpected internal GTS error." name="GTSInternalFault" qname="ns7:GTSInternalFault" xmlns:ns7="http://cagrid.nci.nih.gov/GTS/types"/>
+      <ns4:Exception description="Illegal certificate authority specified." name="IllegalTrustedAuthorityFault" qname="ns8:IllegalTrustedAuthorityFault" xmlns:ns8="http://cagrid.nci.nih.gov/GTS/types"/>
+      <ns4:Exception description="Client does not have permission to perform the operation." name="PermissionDeniedFault" qname="ns9:PermissionDeniedFault" xmlns:ns9="http://cagrid.nci.nih.gov/GTS/types"/>
+     </ns4:Exceptions>
+    </ns4:Method>
+    <ns4:Method description="Discover a list of trusted authorities that meets a specified trust criteria." isImported="false" isProvided="false" name="findTrustedAuthorities" xsi:type="ns4:MethodType">
+     <ns4:Inputs>
+      <ns4:Input qName="ns10:TrustedAuthorityFilter" isArray="false" name="filter" xmlns:ns10="http://cagrid.nci.nih.gov/8/gts"/>
+     </ns4:Inputs>
+     <ns4:Output qName="ns11:TrustedAuthority" isArray="true" xmlns:ns11="http://cagrid.nci.nih.gov/8/gts"/>
+     <ns4:Exceptions/>
+     <ns12:MethodSecurity xsi:type="ns12:MethodSecurity" xmlns:ns12="gme://gov.nih.nci.cagrid.introduce/1/Security">
+      <ns12:SecuritySetting xsi:type="ns12:SecuritySetting">Custom</ns12:SecuritySetting>
+      <ns12:TransportLevelSecurity xsi:type="ns12:TransportLevelSecurity">
+       <ns12:CommunicationMethod xsi:type="ns12:CommunicationMethod">Privacy</ns12:CommunicationMethod>
+      </ns12:TransportLevelSecurity>
+      <ns12:RunAsMode xsi:type="ns12:RunAsMode">System</ns12:RunAsMode>
+      <ns12:AnonymousClients xsi:type="ns12:AnonymousCommunication">Yes</ns12:AnonymousClients>
+     </ns12:MethodSecurity>
+    </ns4:Method>
+    <ns4:Method description="Remove a certficate authority from the trust fabric." isImported="false" isProvided="false" name="removeTrustedAuthority" xsi:type="ns4:MethodType">
+     <ns4:Inputs>
+      <ns4:Input qName="xsd:string" isArray="false" name="trustedAuthorityName" xmlns:xsd="http://www.w3.org/2001/XMLSchema"/>
+     </ns4:Inputs>
+     <ns4:Output qName="void" isArray="false"/>
+     <ns4:Exceptions>
+      <ns4:Exception description="An unexpected internal GTS error." name="GTSInternalFault" qname="ns13:GTSInternalFault" xmlns:ns13="http://cagrid.nci.nih.gov/GTS/types"/>
+      <ns4:Exception description="Invalid certificate authority specified." name="InvalidTrustedAuthorityFault" qname="ns14:InvalidTrustedAuthorityFault" xmlns:ns14="http://cagrid.nci.nih.gov/GTS/types"/>
+      <ns4:Exception description="Client does not have permission to perform the operation." name="PermissionDeniedFault" qname="ns15:PermissionDeniedFault" xmlns:ns15="http://cagrid.nci.nih.gov/GTS/types"/>
+     </ns4:Exceptions>
+    </ns4:Method>
+    <ns4:Method description="Grant a permission to a user or service." isImported="false" isProvided="false" name="addPermission" xsi:type="ns4:MethodType">
+     <ns4:Inputs>
+      <ns4:Input qName="ns16:Permission" isArray="false" name="permission" xmlns:ns16="http://cagrid.nci.nih.gov/8/gts"/>
+     </ns4:Inputs>
+     <ns4:Output qName="void" isArray="false"/>
+     <ns4:Exceptions>
+      <ns4:Exception description="An unexpected internal GTS error." name="GTSInternalFault" qname="ns17:GTSInternalFault" xmlns:ns17="http://cagrid.nci.nih.gov/GTS/types"/>
+      <ns4:Exception description="Illegal permission specified by the client." name="IllegalPermissionFault" qname="ns18:IllegalPermissionFault" xmlns:ns18="http://cagrid.nci.nih.gov/GTS/types"/>
+      <ns4:Exception description="Client does not have permission to perform the operation." name="PermissionDeniedFault" qname="ns19:PermissionDeniedFault" xmlns:ns19="http://cagrid.nci.nih.gov/GTS/types"/>
+     </ns4:Exceptions>
+    </ns4:Method>
+    <ns4:Method description="List the permissions granted on the GTS." isImported="false" isProvided="false" name="findPermissions" xsi:type="ns4:MethodType">
+     <ns4:Inputs>
+      <ns4:Input qName="ns20:PermissionFilter" isArray="false" name="filter" xmlns:ns20="http://cagrid.nci.nih.gov/8/gts"/>
+     </ns4:Inputs>
+     <ns4:Output qName="ns21:Permission" isArray="true" xmlns:ns21="http://cagrid.nci.nih.gov/8/gts"/>
+     <ns4:Exceptions>
+      <ns4:Exception description="An unexpected internal GTS error." name="GTSInternalFault" qname="ns22:GTSInternalFault" xmlns:ns22="http://cagrid.nci.nih.gov/GTS/types"/>
+      <ns4:Exception description="Client does not have permission to perform the operation." name="PermissionDeniedFault" qname="ns23:PermissionDeniedFault" xmlns:ns23="http://cagrid.nci.nih.gov/GTS/types"/>
+     </ns4:Exceptions>
+    </ns4:Method>
+    <ns4:Method description="Revoke a permission that was granted to a user or service." isImported="false" isProvided="false" name="revokePermission" xsi:type="ns4:MethodType">
+     <ns4:Inputs>
+      <ns4:Input qName="ns24:Permission" isArray="false" name="permission" xmlns:ns24="http://cagrid.nci.nih.gov/8/gts"/>
+     </ns4:Inputs>
+     <ns4:Output qName="void" isArray="false"/>
+     <ns4:Exceptions>
+      <ns4:Exception description="An unexpected internal GTS error." name="GTSInternalFault" qname="ns25:GTSInternalFault" xmlns:ns25="http://cagrid.nci.nih.gov/GTS/types"/>
+      <ns4:Exception description="Invalid permission specified by the client." name="InvalidPermissionFault" qname="ns26:InvalidPermissionFault" xmlns:ns26="http://cagrid.nci.nih.gov/GTS/types"/>
+      <ns4:Exception description="Client does not have permission to perform the operation." name="PermissionDeniedFault" qname="ns27:PermissionDeniedFault" xmlns:ns27="http://cagrid.nci.nih.gov/GTS/types"/>
+     </ns4:Exceptions>
+    </ns4:Method>
+    <ns4:Method description="Update a certificate authority's information." isImported="false" isProvided="false" name="updateTrustedAuthority" xsi:type="ns4:MethodType">
+     <ns4:Inputs>
+      <ns4:Input qName="ns28:TrustedAuthority" isArray="false" name="ta" xmlns:ns28="http://cagrid.nci.nih.gov/8/gts"/>
+     </ns4:Inputs>
+     <ns4:Output qName="void" isArray="false"/>
+     <ns4:Exceptions>
+      <ns4:Exception description="An unexpected internal GTS error." name="GTSInternalFault" qname="ns29:GTSInternalFault" xmlns:ns29="http://cagrid.nci.nih.gov/GTS/types"/>
+      <ns4:Exception description="Illegal certificate authority specified." name="IllegalTrustedAuthorityFault" qname="ns30:IllegalTrustedAuthorityFault" xmlns:ns30="http://cagrid.nci.nih.gov/GTS/types"/>
+      <ns4:Exception description="Invalid certificate authority specified." name="InvalidTrustedAuthorityFault" qname="ns31:InvalidTrustedAuthorityFault" xmlns:ns31="http://cagrid.nci.nih.gov/GTS/types"/>
+      <ns4:Exception description="Client does not have permission to perform the operation." name="PermissionDeniedFault" qname="ns32:PermissionDeniedFault" xmlns:ns32="http://cagrid.nci.nih.gov/GTS/types"/>
+     </ns4:Exceptions>
+    </ns4:Method>
+    <ns4:Method description="Create a trust level." isImported="false" isProvided="false" name="addTrustLevel" xsi:type="ns4:MethodType">
+     <ns4:Inputs>
+      <ns4:Input qName="ns33:TrustLevel" isArray="false" name="trustLevel" xmlns:ns33="http://cagrid.nci.nih.gov/8/gts"/>
+     </ns4:Inputs>
+     <ns4:Output qName="void" isArray="false"/>
+     <ns4:Exceptions>
+      <ns4:Exception description="An unexpected internal GTS error." name="GTSInternalFault" qname="ns34:GTSInternalFault" xmlns:ns34="http://cagrid.nci.nih.gov/GTS/types"/>
+      <ns4:Exception description="Illegal trust level specified." name="IllegalTrustLevelFault" qname="ns35:IllegalTrustLevelFault" xmlns:ns35="http://cagrid.nci.nih.gov/GTS/types"/>
+      <ns4:Exception description="Client does not have permission to perform the operation." name="PermissionDeniedFault" qname="ns36:PermissionDeniedFault" xmlns:ns36="http://cagrid.nci.nih.gov/GTS/types"/>
+     </ns4:Exceptions>
+    </ns4:Method>
+    <ns4:Method description="Update a trust level's information." isImported="false" isProvided="false" name="updateTrustLevel" xsi:type="ns4:MethodType">
+     <ns4:Inputs>
+      <ns4:Input qName="ns37:TrustLevel" isArray="false" name="trustLevel" xmlns:ns37="http://cagrid.nci.nih.gov/8/gts"/>
+     </ns4:Inputs>
+     <ns4:Output qName="void" isArray="false"/>
+     <ns4:Exceptions>
+      <ns4:Exception description="An unexpected internal GTS error." name="GTSInternalFault" qname="ns38:GTSInternalFault" xmlns:ns38="http://cagrid.nci.nih.gov/GTS/types"/>
+      <ns4:Exception description="Invalid trust level specified." name="InvalidTrustLevelFault" qname="ns39:InvalidTrustLevelFault" xmlns:ns39="http://cagrid.nci.nih.gov/GTS/types"/>
+      <ns4:Exception description="Illegal trust level specified." name="IllegalTrustLevelFault" qname="ns40:IllegalTrustLevelFault" xmlns:ns40="http://cagrid.nci.nih.gov/GTS/types"/>
+      <ns4:Exception description="Client does not have permission to perform the operation." name="PermissionDeniedFault" qname="ns41:PermissionDeniedFault" xmlns:ns41="http://cagrid.nci.nih.gov/GTS/types"/>
+     </ns4:Exceptions>
+    </ns4:Method>
+    <ns4:Method description="List the trust level define for the GTS." isImported="false" isProvided="false" name="getTrustLevels" xsi:type="ns4:MethodType">
+     <ns4:Inputs/>
+     <ns4:Output qName="ns42:TrustLevel" isArray="true" xmlns:ns42="http://cagrid.nci.nih.gov/8/gts"/>
+     <ns4:Exceptions>
+      <ns4:Exception description="An unexpected internal GTS error." name="GTSInternalFault" qname="ns43:GTSInternalFault" xmlns:ns43="http://cagrid.nci.nih.gov/GTS/types"/>
+     </ns4:Exceptions>
+     <ns44:MethodSecurity xsi:type="ns44:MethodSecurity" xmlns:ns44="gme://gov.nih.nci.cagrid.introduce/1/Security">
+      <ns44:SecuritySetting xsi:type="ns44:SecuritySetting">Custom</ns44:SecuritySetting>
+      <ns44:TransportLevelSecurity xsi:type="ns44:TransportLevelSecurity">
+       <ns44:CommunicationMethod xsi:type="ns44:CommunicationMethod">Privacy</ns44:CommunicationMethod>
+      </ns44:TransportLevelSecurity>
+      <ns44:RunAsMode xsi:type="ns44:RunAsMode">System</ns44:RunAsMode>
+      <ns44:AnonymousClients xsi:type="ns44:AnonymousCommunication">Yes</ns44:AnonymousClients>
+     </ns44:MethodSecurity>
+    </ns4:Method>
+    <ns4:Method description="Remove a trust level from a GTS." isImported="false" isProvided="false" name="removeTrustLevel" xsi:type="ns4:MethodType">
+     <ns4:Inputs>
+      <ns4:Input qName="xsd:string" isArray="false" name="trustLevelName" xmlns:xsd="http://www.w3.org/2001/XMLSchema"/>
+     </ns4:Inputs>
+     <ns4:Output qName="void" isArray="false"/>
+     <ns4:Exceptions>
+      <ns4:Exception description="An unexpected internal GTS error." name="GTSInternalFault" qname="ns45:GTSInternalFault" xmlns:ns45="http://cagrid.nci.nih.gov/GTS/types"/>
+      <ns4:Exception description="Invalid trust level specified." name="InvalidTrustLevelFault" qname="ns46:InvalidTrustLevelFault" xmlns:ns46="http://cagrid.nci.nih.gov/GTS/types"/>
+      <ns4:Exception description="Illegal trust level specified." name="IllegalTrustLevelFault" qname="ns47:IllegalTrustLevelFault" xmlns:ns47="http://cagrid.nci.nih.gov/GTS/types"/>
+      <ns4:Exception description="Client does not have permission to perform the operation." name="PermissionDeniedFault" qname="ns48:PermissionDeniedFault" xmlns:ns48="http://cagrid.nci.nih.gov/GTS/types"/>
+     </ns4:Exceptions>
+    </ns4:Method>
+    <ns4:Method description="Add an Authority GTS to a GTS." isImported="false" isProvided="false" name="addAuthority" xsi:type="ns4:MethodType">
+     <ns4:Inputs>
+      <ns4:Input qName="ns49:AuthorityGTS" isArray="false" name="authorityGTS" xmlns:ns49="http://cagrid.nci.nih.gov/8/gts"/>
+     </ns4:Inputs>
+     <ns4:Output qName="void" isArray="false"/>
+     <ns4:Exceptions>
+      <ns4:Exception description="An unexpected internal GTS error." name="GTSInternalFault" qname="ns50:GTSInternalFault" xmlns:ns50="http://cagrid.nci.nih.gov/GTS/types"/>
+      <ns4:Exception description="Illegal authority GTS specified." name="IllegalAuthorityFault" qname="ns51:IllegalAuthorityFault" xmlns:ns51="http://cagrid.nci.nih.gov/GTS/types"/>
+      <ns4:Exception description="Client does not have permission to perform the operation." name="PermissionDeniedFault" qname="ns52:PermissionDeniedFault" xmlns:ns52="http://cagrid.nci.nih.gov/GTS/types"/>
+     </ns4:Exceptions>
+    </ns4:Method>
+    <ns4:Method description="Update the information for an Authority GTS." isImported="false" isProvided="false" name="updateAuthority" xsi:type="ns4:MethodType">
+     <ns4:Inputs>
+      <ns4:Input qName="ns53:AuthorityGTS" isArray="false" name="authorityGTS" xmlns:ns53="http://cagrid.nci.nih.gov/8/gts"/>
+     </ns4:Inputs>
+     <ns4:Output qName="void" isArray="false"/>
+     <ns4:Exceptions>
+      <ns4:Exception description="An unexpected internal GTS error." name="GTSInternalFault" qname="ns54:GTSInternalFault" xmlns:ns54="http://cagrid.nci.nih.gov/GTS/types"/>
+      <ns4:Exception description="Illegal authority GTS specified." name="IllegalAuthorityFault" qname="ns55:IllegalAuthorityFault" xmlns:ns55="http://cagrid.nci.nih.gov/GTS/types"/>
+      <ns4:Exception description="Invalid authority GTS specified." name="InvalidAuthorityFault" qname="ns56:InvalidAuthorityFault" xmlns:ns56="http://cagrid.nci.nih.gov/GTS/types"/>
+      <ns4:Exception description="Client does not have permission to perform the operation." name="PermissionDeniedFault" qname="ns57:PermissionDeniedFault" xmlns:ns57="http://cagrid.nci.nih.gov/GTS/types"/>
+     </ns4:Exceptions>
+    </ns4:Method>
+    <ns4:Method description="Update the priorities of a GTS's authorities." isImported="false" isProvided="false" name="updateAuthorityPriorities" xsi:type="ns4:MethodType">
+     <ns4:Inputs>
+      <ns4:Input qName="ns58:AuthorityPriorityUpdate" isArray="false" name="authorityPriorityUpdate" xmlns:ns58="http://cagrid.nci.nih.gov/8/gts"/>
+     </ns4:Inputs>
+     <ns4:Output qName="void" isArray="false"/>
+     <ns4:Exceptions>
+      <ns4:Exception description="An unexpected internal GTS error." name="GTSInternalFault" qname="ns59:GTSInternalFault" xmlns:ns59="http://cagrid.nci.nih.gov/GTS/types"/>
+      <ns4:Exception description="Illegal authority GTS specified." name="IllegalAuthorityFault" qname="ns60:IllegalAuthorityFault" xmlns:ns60="http://cagrid.nci.nih.gov/GTS/types"/>
+      <ns4:Exception description="Client does not have permission to perform the operation." name="PermissionDeniedFault" qname="ns61:PermissionDeniedFault" xmlns:ns61="http://cagrid.nci.nih.gov/GTS/types"/>
+     </ns4:Exceptions>
+    </ns4:Method>
+    <ns4:Method description="List the GTS's authorities." isImported="false" isProvided="false" name="getAuthorities" xsi:type="ns4:MethodType">
+     <ns4:Inputs/>
+     <ns4:Output qName="ns62:AuthorityGTS" isArray="true" xmlns:ns62="http://cagrid.nci.nih.gov/8/gts"/>
+     <ns4:Exceptions>
+      <ns4:Exception description="An unexpected internal GTS error." name="GTSInternalFault" qname="ns63:GTSInternalFault" xmlns:ns63="http://cagrid.nci.nih.gov/GTS/types"/>
+     </ns4:Exceptions>
+     <ns64:MethodSecurity xsi:type="ns64:MethodSecurity" xmlns:ns64="gme://gov.nih.nci.cagrid.introduce/1/Security">
+      <ns64:SecuritySetting xsi:type="ns64:SecuritySetting">Custom</ns64:SecuritySetting>
+      <ns64:TransportLevelSecurity xsi:type="ns64:TransportLevelSecurity">
+       <ns64:CommunicationMethod xsi:type="ns64:CommunicationMethod">Privacy</ns64:CommunicationMethod>
+      </ns64:TransportLevelSecurity>
+      <ns64:RunAsMode xsi:type="ns64:RunAsMode">System</ns64:RunAsMode>
+      <ns64:AnonymousClients xsi:type="ns64:AnonymousCommunication">Yes</ns64:AnonymousClients>
+     </ns64:MethodSecurity>
+    </ns4:Method>
+    <ns4:Method description="Remove one of a GTS's authorities." isImported="false" isProvided="false" name="removeAuthority" xsi:type="ns4:MethodType">
+     <ns4:Inputs>
+      <ns4:Input qName="xsd:string" isArray="false" name="serviceURI" xmlns:xsd="http://www.w3.org/2001/XMLSchema"/>
+     </ns4:Inputs>
+     <ns4:Output qName="void" isArray="false"/>
+     <ns4:Exceptions>
+      <ns4:Exception description="An unexpected internal GTS error." name="GTSInternalFault" qname="ns65:GTSInternalFault" xmlns:ns65="http://cagrid.nci.nih.gov/GTS/types"/>
+      <ns4:Exception description="Invalid authority GTS specified." name="InvalidAuthorityFault" qname="ns66:InvalidAuthorityFault" xmlns:ns66="http://cagrid.nci.nih.gov/GTS/types"/>
+      <ns4:Exception description="Client does not have permission to perform the operation." name="PermissionDeniedFault" qname="ns67:PermissionDeniedFault" xmlns:ns67="http://cagrid.nci.nih.gov/GTS/types"/>
+     </ns4:Exceptions>
+    </ns4:Method>
+    <ns4:Method description="Publish an updated CRL for a certificate authority." isImported="false" isProvided="false" name="updateCRL" xsi:type="ns4:MethodType">
+     <ns4:Inputs>
+      <ns4:Input qName="xsd:string" isArray="false" name="trustedAuthorityName" xmlns:xsd="http://www.w3.org/2001/XMLSchema"/>
+      <ns4:Input qName="ns68:X509CRL" isArray="false" name="crl" xmlns:ns68="http://cagrid.nci.nih.gov/8/gts"/>
+     </ns4:Inputs>
+     <ns4:Output qName="void" isArray="false"/>
+     <ns4:Exceptions>
+      <ns4:Exception description="An unexpected internal GTS error." name="GTSInternalFault" qname="ns69:GTSInternalFault" xmlns:ns69="http://cagrid.nci.nih.gov/GTS/types"/>
+      <ns4:Exception description="Illegal Certificate Authority Specified." name="IllegalTrustedAuthorityFault" qname="ns70:IllegalTrustedAuthorityFault" xmlns:ns70="http://cagrid.nci.nih.gov/GTS/types"/>
+      <ns4:Exception description="Invalid Certificate Authority Specified." name="InvalidTrustedAuthorityFault" qname="ns71:InvalidTrustedAuthorityFault" xmlns:ns71="http://cagrid.nci.nih.gov/GTS/types"/>
+      <ns4:Exception description="Client does not have permission to perform the operation." name="PermissionDeniedFault" qname="ns72:PermissionDeniedFault" xmlns:ns72="http://cagrid.nci.nih.gov/GTS/types"/>
+     </ns4:Exceptions>
+    </ns4:Method>
+    <ns4:Method description="Validate a certificate against the trust fabric. " isImported="false" isProvided="false" name="validate" xsi:type="ns4:MethodType">
+     <ns4:Inputs>
+      <ns4:Input qName="ns73:X509Certificate" isArray="true" name="chain" xmlns:ns73="http://cagrid.nci.nih.gov/8/gts"/>
+      <ns4:Input qName="ns74:TrustedAuthorityFilter" isArray="false" name="filter" xmlns:ns74="http://cagrid.nci.nih.gov/8/gts"/>
+     </ns4:Inputs>
+     <ns4:Output qName="xsd:boolean" isArray="false" xmlns:xsd="http://www.w3.org/2001/XMLSchema"/>
+     <ns4:Exceptions>
+      <ns4:Exception description="An unexpected internal GTS error." name="GTSInternalFault" qname="ns75:GTSInternalFault" xmlns:ns75="http://cagrid.nci.nih.gov/GTS/types"/>
+      <ns4:Exception description="The certificate specified is invalid." name="CertificateValidationFault" qname="ns76:CertificateValidationFault" xmlns:ns76="http://cagrid.nci.nih.gov/GTS/types"/>
+     </ns4:Exceptions>
+     <ns77:MethodSecurity xsi:type="ns77:MethodSecurity" xmlns:ns77="gme://gov.nih.nci.cagrid.introduce/1/Security">
+      <ns77:SecuritySetting xsi:type="ns77:SecuritySetting">Custom</ns77:SecuritySetting>
+      <ns77:TransportLevelSecurity xsi:type="ns77:TransportLevelSecurity">
+       <ns77:CommunicationMethod xsi:type="ns77:CommunicationMethod">Privacy</ns77:CommunicationMethod>
+      </ns77:TransportLevelSecurity>
+      <ns77:RunAsMode xsi:type="ns77:RunAsMode">System</ns77:RunAsMode>
+      <ns77:AnonymousClients xsi:type="ns77:AnonymousCommunication">Yes</ns77:AnonymousClients>
+     </ns77:MethodSecurity>
+    </ns4:Method>
+    <ns4:Method isImported="true" isProvided="true" name="getServiceSecurityMetadata" xsi:type="ns4:MethodType">
+     <ns4:Output qName="ns78:ServiceSecurityMetadata" isArray="false" isClientHandle="false" xmlns:ns78="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.security"/>
+     <ns79:MethodSecurity xsi:type="ns79:MethodSecurity" xmlns:ns79="gme://gov.nih.nci.cagrid.introduce/1/Security">
+      <ns79:SecuritySetting xsi:type="ns79:SecuritySetting">None</ns79:SecuritySetting>
+      <ns79:MethodAuthorization xsi:type="ns79:MethodAuthorization">
+       <ns79:NoAuthorization xsi:type="ns79:NoAuthorization"/>
+      </ns79:MethodAuthorization>
+     </ns79:MethodSecurity>
+     <ns4:ImportInformation namespace="http://security.introduce.cagrid.nci.nih.gov/ServiceSecurity" packageName="gov.nih.nci.cagrid.introduce.security.stubs" portTypeName="ServiceSecurityPortType" wsdlFile="ServiceSecurity.wsdl"/>
+     <ns4:ProviderInformation providerClass="gov.nih.nci.cagrid.introduce.security.service.globus.ServiceSecurityProviderImpl"/>
+    </ns4:Method>
+    <ns4:Method isImported="true" isProvided="true" name="GetMultipleResourceProperties" xsi:type="ns4:MethodType">
+     <ns4:Output qName="void" isArray="false"/>
+     <ns80:MethodSecurity xsi:type="ns80:MethodSecurity" xmlns:ns80="gme://gov.nih.nci.cagrid.introduce/1/Security">
+      <ns80:SecuritySetting xsi:type="ns80:SecuritySetting">None</ns80:SecuritySetting>
+     </ns80:MethodSecurity>
+     <ns4:ImportInformation fromIntroduce="false" inputMessage="ns81:GetMultipleResourcePropertiesRequest" namespace="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ResourceProperties-1.2-draft-01.wsdl" outputMessage="ns81:GetMultipleResourcePropertiesResponse" packageName="org.oasis.wsrf.properties" portTypeName="GetMultipleResourceProperties" wsdlFile="../wsrf/properties/WS-ResourceProperties.wsdl" xmlns:ns81="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ResourceProperties-1.2-draft-01.wsdl"/>
+     <ns4:ProviderInformation providerClass="GetMRPProvider"/>
+    </ns4:Method>
+    <ns4:Method isImported="true" isProvided="true" name="GetResourceProperty" xsi:type="ns4:MethodType">
+     <ns4:Output qName="void" isArray="false"/>
+     <ns82:MethodSecurity xsi:type="ns82:MethodSecurity" xmlns:ns82="gme://gov.nih.nci.cagrid.introduce/1/Security">
+      <ns82:SecuritySetting xsi:type="ns82:SecuritySetting">None</ns82:SecuritySetting>
+     </ns82:MethodSecurity>
+     <ns4:ImportInformation fromIntroduce="false" inputMessage="ns83:GetResourcePropertyRequest" namespace="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ResourceProperties-1.2-draft-01.wsdl" outputMessage="ns83:GetResourcePropertyResponse" packageName="org.oasis.wsrf.properties" portTypeName="GetResourceProperty" wsdlFile="../wsrf/properties/WS-ResourceProperties.wsdl" xmlns:ns83="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ResourceProperties-1.2-draft-01.wsdl"/>
+     <ns4:ProviderInformation providerClass="GetRPProvider"/>
+    </ns4:Method>
+    <ns4:Method isImported="true" isProvided="true" name="QueryResourceProperties" xsi:type="ns4:MethodType">
+     <ns4:Output qName="void" isArray="false"/>
+     <ns84:MethodSecurity xsi:type="ns84:MethodSecurity" xmlns:ns84="gme://gov.nih.nci.cagrid.introduce/1/Security">
+      <ns84:SecuritySetting xsi:type="ns84:SecuritySetting">None</ns84:SecuritySetting>
+     </ns84:MethodSecurity>
+     <ns4:ImportInformation fromIntroduce="false" inputMessage="ns85:QueryResourcePropertiesRequest" namespace="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ResourceProperties-1.2-draft-01.wsdl" outputMessage="ns85:QueryResourcePropertiesResponse" packageName="org.oasis.wsrf.properties" portTypeName="QueryResourceProperties" wsdlFile="../wsrf/properties/WS-ResourceProperties.wsdl" xmlns:ns85="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ResourceProperties-1.2-draft-01.wsdl"/>
+     <ns4:ProviderInformation providerClass="QueryRPProvider"/>
+    </ns4:Method>
+   </ns4:Methods>
+   <ns86:ResourcePropertiesList xsi:type="ns86:ResourcePropertiesListType" xmlns:ns86="gme://gov.nih.nci.cagrid.introduce/1/Resources">
+    <ns86:ResourceProperty qName="ns87:ServiceMetadata" description="GTS service metadata" fileLocation="serviceMetadata.xml" populateFromFile="true" register="true" xsi:type="ns86:ResourcePropertyType" xmlns:ns87="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata"/>
+   </ns86:ResourcePropertiesList>
+   <ns88:ServiceSecurity xsi:type="ns88:ServiceSecurity" xmlns:ns88="gme://gov.nih.nci.cagrid.introduce/1/Security">
+    <ns88:SecuritySetting xsi:type="ns88:SecuritySetting">Custom</ns88:SecuritySetting>
+    <ns88:TransportLevelSecurity xsi:type="ns88:TransportLevelSecurity">
+     <ns88:CommunicationMethod xsi:type="ns88:CommunicationMethod">Privacy</ns88:CommunicationMethod>
+    </ns88:TransportLevelSecurity>
+    <ns88:RunAsMode xsi:type="ns88:RunAsMode">System</ns88:RunAsMode>
+    <ns88:AnonymousClients xsi:type="ns88:AnonymousCommunication">No</ns88:AnonymousClients>
+    <ns88:ServiceAuthorization xsi:type="ns88:ServiceAuthorization">
+     <ns88:NoAuthorization xsi:type="ns88:NoAuthorization"/>
+    </ns88:ServiceAuthorization>
+   </ns88:ServiceSecurity>
+   <ns3:description xsi:type="xsd:string" xmlns:xsd="http://www.w3.org/2001/XMLSchema">Grid Trust Service (GTS)</ns3:description>
+   <ns3:ResourceFrameworkOptions xsi:type="ns3:ResourceFrameworkOptions">
+    <ns3:Main xsi:type="ns3:Main"/>
+    <ns3:Singleton xsi:type="ns3:Singleton"/>
+    <ns3:Identifiable xsi:type="ns3:Identifiable"/>
+    <ns3:Secure xsi:type="ns3:Secure"/>
+    <ns3:ResourcePropertyManagement xsi:type="ns3:ResourcePropertyManagement"/>
+   </ns3:ResourceFrameworkOptions>
+  </ns3:Service>
+ </ns3:Services>
+ <ns89:Extensions xsi:type="ns89:ExtensionsType" xmlns:ns89="gme://gov.nih.nci.cagrid.introduce/1/Extension" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <ns89:Extension name="cagrid_metadata" version="1.3" xsi:type="ns89:ExtensionType"/>
+ </ns89:Extensions>
+ <ns90:ServiceProperties xmlns:ns90="gme://gov.nih.nci.cagrid.introduce/1/Property"/>
+</ns1:ServiceDescription>

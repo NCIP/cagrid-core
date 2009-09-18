@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
+
+<beans>
+    <bean id="subjectProvider" class="org.cagrid.gaards.authentication.test.ExampleSubjectProvider1"/>
+      
+    
+    <bean id="samlProvider" class="org.cagrid.gaards.authentication.service.DefaultSAMLProvider" 
+        init-method="loadCertificates">
+        <property name="certificateFileName" value="${gaards.authentication.saml.cert}"/>
+        <property name="privateKeyFileName" value="${gaards.authentication.saml.key}"/>
+        <property name="password" value="${gaards.authentication.saml.key.password}"/>
+    </bean>
+
+    <bean id="authenticationProvider" class="org.cagrid.gaards.authentication.service.DefaultAuthenticationProvider">
+        <property name="subjectProvider" ref="subjectProvider"/>
+        <property name="samlProvider" ref="samlProvider"/>
+    </bean>    
+    
+    
+</beans>

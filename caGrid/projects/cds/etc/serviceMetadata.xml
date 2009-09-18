@@ -1,0 +1,170 @@
+<ns1:ServiceMetadata xmlns:ns1="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata">
+ <ns1:serviceDescription>
+  <ns2:Service description="" name="CredentialDelegationService" version="1.3" xmlns:ns2="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.service">
+   <ns2:pointOfContactCollection>
+    <ns3:PointOfContact affiliation="Ohio State University" email="Stephen.Langella@osumc.edu" firstName="Stephen" lastName="Langella" role="Architect" xmlns:ns3="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common"/>
+   </ns2:pointOfContactCollection>
+   <ns2:serviceContextCollection>
+    <ns2:ServiceContext description="" name="CredentialDelegationService">
+     <ns2:operationCollection>
+      <ns2:Operation description="Allows a party to initate the delegation of their credential such that other parties may access their credential to act on their behalf." name="initiateDelegation">
+       <ns2:inputParameterCollection>
+        <ns2:InputParameter qName="ns4:DelegationRequest" dimensionality="1" index="0" isArray="false" isRequired="false" name="req" xmlns:ns4="http://gaards.cagrid.org/cds"/>
+       </ns2:inputParameterCollection>
+       <ns2:Output qName="ns5:DelegationSigningRequest" dimensionality="1" isArray="false" xmlns:ns5="http://gaards.cagrid.org/cds"/>
+       <ns2:faultCollection>
+        <ns2:Fault description="" name="CDSInternalFault"/>
+        <ns2:Fault description="" name="InvalidPolicyFault"/>
+        <ns2:Fault description="" name="DelegationFault"/>
+        <ns2:Fault description="" name="PermissionDeniedFault"/>
+       </ns2:faultCollection>
+      </ns2:Operation>
+      <ns2:Operation description="Allows the party whom initiated the delegation to approve the delegation." name="approveDelegation">
+       <ns2:inputParameterCollection>
+        <ns2:InputParameter qName="ns6:DelegationSigningResponse" dimensionality="1" index="0" isArray="false" isRequired="false" name="delegationSigningResponse" xmlns:ns6="http://gaards.cagrid.org/cds"/>
+       </ns2:inputParameterCollection>
+       <ns2:Output qName="ns7:DelegatedCredentialReference" dimensionality="1" isArray="false" xmlns:ns7="http://cds.gaards.cagrid.org/CredentialDelegationService/DelegatedCredential/types"/>
+       <ns2:faultCollection>
+        <ns2:Fault description="" name="CDSInternalFault"/>
+        <ns2:Fault description="" name="DelegationFault"/>
+        <ns2:Fault description="" name="PermissionDeniedFault"/>
+       </ns2:faultCollection>
+      </ns2:Operation>
+      <ns2:Operation description="This method allows an entity to find delegation records meeting a specified search criteria." name="findDelegatedCredentials">
+       <ns2:inputParameterCollection>
+        <ns2:InputParameter qName="ns8:DelegationRecordFilter" dimensionality="1" index="0" isArray="false" isRequired="false" name="filter" xmlns:ns8="http://gaards.cagrid.org/cds"/>
+       </ns2:inputParameterCollection>
+       <ns2:Output qName="ns9:DelegationRecord" dimensionality="1" isArray="true" xmlns:ns9="http://gaards.cagrid.org/cds"/>
+       <ns2:faultCollection>
+        <ns2:Fault description="" name="CDSInternalFault"/>
+        <ns2:Fault description="" name="PermissionDeniedFault"/>
+       </ns2:faultCollection>
+      </ns2:Operation>
+      <ns2:Operation description="This method allows one to update the status of a Delegated Credential." name="updateDelegatedCredentialStatus">
+       <ns2:inputParameterCollection>
+        <ns2:InputParameter qName="ns10:DelegationIdentifier" dimensionality="1" index="0" isArray="false" isRequired="false" name="id" xmlns:ns10="http://gaards.cagrid.org/cds"/>
+        <ns2:InputParameter qName="ns11:DelegationStatus" dimensionality="1" index="1" isArray="false" isRequired="false" name="status" xmlns:ns11="http://gaards.cagrid.org/cds"/>
+       </ns2:inputParameterCollection>
+       <ns2:faultCollection>
+        <ns2:Fault description="" name="CDSInternalFault"/>
+        <ns2:Fault description="" name="DelegationFault"/>
+        <ns2:Fault description="" name="PermissionDeniedFault"/>
+       </ns2:faultCollection>
+      </ns2:Operation>
+      <ns2:Operation description="This method will find the credentials that have been delegated to the client by other entities." name="findCredentialsDelegatedToClient">
+       <ns2:inputParameterCollection>
+        <ns2:InputParameter qName="ns12:ClientDelegationFilter" dimensionality="1" index="0" isArray="false" isRequired="false" name="filter" xmlns:ns12="http://gaards.cagrid.org/cds"/>
+       </ns2:inputParameterCollection>
+       <ns2:Output qName="ns13:DelegationDescriptor" dimensionality="1" isArray="true" xmlns:ns13="http://gaards.cagrid.org/cds"/>
+       <ns2:faultCollection>
+        <ns2:Fault description="" name="CDSInternalFault"/>
+        <ns2:Fault description="" name="PermissionDeniedFault"/>
+       </ns2:faultCollection>
+      </ns2:Operation>
+      <ns2:Operation description="This method allows a party to search the audit logs for delegated credentials." name="searchDelegatedCredentialAuditLog">
+       <ns2:inputParameterCollection>
+        <ns2:InputParameter qName="ns14:DelegatedCredentialAuditFilter" dimensionality="1" index="0" isArray="false" isRequired="false" name="f" xmlns:ns14="http://gaards.cagrid.org/cds"/>
+       </ns2:inputParameterCollection>
+       <ns2:Output qName="ns15:DelegatedCredentialAuditRecord" dimensionality="1" isArray="true" xmlns:ns15="http://gaards.cagrid.org/cds"/>
+       <ns2:faultCollection>
+        <ns2:Fault description="" name="CDSInternalFault"/>
+        <ns2:Fault description="" name="PermissionDeniedFault"/>
+        <ns2:Fault description="" name="DelegationFault"/>
+       </ns2:faultCollection>
+      </ns2:Operation>
+      <ns2:Operation description="This method allows and administrator to delete a delegated credential." name="deleteDelegatedCredential">
+       <ns2:inputParameterCollection>
+        <ns2:InputParameter qName="ns16:DelegationIdentifier" dimensionality="1" index="0" isArray="false" isRequired="false" name="id" xmlns:ns16="http://gaards.cagrid.org/cds"/>
+       </ns2:inputParameterCollection>
+       <ns2:faultCollection>
+        <ns2:Fault description="" name="CDSInternalFault"/>
+        <ns2:Fault description="" name="PermissionDeniedFault"/>
+       </ns2:faultCollection>
+      </ns2:Operation>
+      <ns2:Operation description="This method allows one to add and administrator." name="addAdmin">
+       <ns2:inputParameterCollection>
+        <ns2:InputParameter qName="xsd:string" dimensionality="1" index="0" isArray="false" isRequired="false" name="gridIdentity" xmlns:xsd="http://www.w3.org/2001/XMLSchema"/>
+       </ns2:inputParameterCollection>
+       <ns2:faultCollection>
+        <ns2:Fault description="" name="CDSInternalFault"/>
+        <ns2:Fault description="" name="PermissionDeniedFault"/>
+       </ns2:faultCollection>
+      </ns2:Operation>
+      <ns2:Operation description="This method allows one to remove an administrator." name="removeAdmin">
+       <ns2:inputParameterCollection>
+        <ns2:InputParameter qName="xsd:string" dimensionality="1" index="0" isArray="false" isRequired="false" name="gridIdentity" xmlns:xsd="http://www.w3.org/2001/XMLSchema"/>
+       </ns2:inputParameterCollection>
+       <ns2:faultCollection>
+        <ns2:Fault description="" name="CDSInternalFault"/>
+        <ns2:Fault description="" name="PermissionDeniedFault"/>
+       </ns2:faultCollection>
+      </ns2:Operation>
+      <ns2:Operation description="This method obtains the list of administrators for the CDS." name="getAdmins">
+       <ns2:inputParameterCollection/>
+       <ns2:Output qName="xsd:string" dimensionality="1" isArray="true" xmlns:xsd="http://www.w3.org/2001/XMLSchema"/>
+       <ns2:faultCollection>
+        <ns2:Fault description="" name="CDSInternalFault"/>
+        <ns2:Fault description="" name="PermissionDeniedFault"/>
+       </ns2:faultCollection>
+      </ns2:Operation>
+      <ns2:Operation description="" name="getServiceSecurityMetadata">
+       <ns2:inputParameterCollection/>
+       <ns2:Output qName="ns17:ServiceSecurityMetadata" dimensionality="1" isArray="false" xmlns:ns17="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.security"/>
+       <ns2:faultCollection/>
+      </ns2:Operation>
+      <ns2:Operation description="" name="GetMultipleResourceProperties">
+       <ns2:inputParameterCollection/>
+       <ns2:faultCollection/>
+      </ns2:Operation>
+      <ns2:Operation description="" name="GetResourceProperty">
+       <ns2:inputParameterCollection/>
+       <ns2:faultCollection/>
+      </ns2:Operation>
+      <ns2:Operation description="" name="QueryResourceProperties">
+       <ns2:inputParameterCollection/>
+       <ns2:faultCollection/>
+      </ns2:Operation>
+     </ns2:operationCollection>
+     <ns2:contextPropertyCollection>
+      <ns2:ContextProperty description="" name="{gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata}ServiceMetadata"/>
+     </ns2:contextPropertyCollection>
+    </ns2:ServiceContext>
+    <ns2:ServiceContext description="" name="DelegatedCredential">
+     <ns2:operationCollection>
+      <ns2:Operation description="This method allows an authorized user to get a delegated credential." name="getDelegatedCredential">
+       <ns2:inputParameterCollection>
+        <ns2:InputParameter qName="ns18:PublicKey" dimensionality="1" index="0" isArray="false" isRequired="false" name="publicKey" xmlns:ns18="http://gaards.cagrid.org/cds"/>
+       </ns2:inputParameterCollection>
+       <ns2:Output qName="ns19:CertificateChain" dimensionality="1" isArray="false" xmlns:ns19="http://gaards.cagrid.org/cds"/>
+       <ns2:faultCollection>
+        <ns2:Fault description="" name="CDSInternalFault"/>
+        <ns2:Fault description="" name="DelegationFault"/>
+        <ns2:Fault description="" name="PermissionDeniedFault"/>
+       </ns2:faultCollection>
+      </ns2:Operation>
+      <ns2:Operation description="" name="Destroy">
+       <ns2:inputParameterCollection/>
+       <ns2:faultCollection/>
+      </ns2:Operation>
+      <ns2:Operation description="" name="getServiceSecurityMetadata">
+       <ns2:inputParameterCollection/>
+       <ns2:Output qName="ns20:ServiceSecurityMetadata" dimensionality="1" isArray="false" xmlns:ns20="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.security"/>
+       <ns2:faultCollection/>
+      </ns2:Operation>
+     </ns2:operationCollection>
+     <ns2:contextPropertyCollection/>
+    </ns2:ServiceContext>
+   </ns2:serviceContextCollection>
+   <ns21:SemanticMetadata conceptCode="C63541" conceptDefinition="A service available on a system that coordinates resources that are not subject to central control, using open, general purpose protocols and interfaces to deliver nontrivial qualities of services." conceptName="Grid Service" order="0" xmlns:ns21="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common"/>
+   <ns22:SemanticMetadata conceptCode="C63543" conceptDefinition="A published API which receives data in the form of objects, performs computations based upon the input data, and returns information to a client via caGrid in the form of one or more objects." conceptName="Analytical Grid Service" order="1" xmlns:ns22="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common"/>
+  </ns2:Service>
+ </ns1:serviceDescription>
+ <ns1:hostingResearchCenter>
+  <ns23:ResearchCenter displayName="" shortName="" xmlns:ns23="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common">
+   <ns23:Address country="" locality="" postalCode="" stateProvince="" street1="" street2=""/>
+   <ns23:pointOfContactCollection>
+    <ns23:PointOfContact affiliation="" email="" firstName="" lastName="" phoneNumber="" role=""/>
+   </ns23:pointOfContactCollection>
+  </ns23:ResearchCenter>
+ </ns1:hostingResearchCenter>
+</ns1:ServiceMetadata>

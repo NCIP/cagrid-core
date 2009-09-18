@@ -1,0 +1,195 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns="gme://caArray.caBIG/2.0/gov.nih.nci.caarray.domain.sample"
+    xmlns:edu.wustl.catissuecore.domain="gme://caArray.caBIG/2.0/edu.wustl.catissuecore.domain"
+    xmlns:edu.georgetown.pir="gme://caArray.caBIG/2.0/edu.georgetown.pir"
+    xmlns:gov.nih.nci.caarray.domain="gme://caArray.caBIG/2.0/gov.nih.nci.caarray.domain"
+    xmlns:gov.nih.nci.caarray.domain.contact="gme://caArray.caBIG/2.0/gov.nih.nci.caarray.domain.contact"
+    xmlns:gov.nih.nci.caarray.domain.hybridization="gme://caArray.caBIG/2.0/gov.nih.nci.caarray.domain.hybridization"
+    xmlns:gov.nih.nci.caarray.domain.protocol="gme://caArray.caBIG/2.0/gov.nih.nci.caarray.domain.protocol"
+    xmlns:gov.nih.nci.caarray.domain.vocabulary="gme://caArray.caBIG/2.0/gov.nih.nci.caarray.domain.vocabulary"
+    targetNamespace="gme://caArray.caBIG/2.0/gov.nih.nci.caarray.domain.sample" elementFormDefault="qualified">
+
+    <xs:import namespace="gme://caArray.caBIG/2.0/gov.nih.nci.caarray.domain"
+        schemaLocation="gov.nih.nci.caarray.domain.xsd" />
+    <xs:import namespace="gme://caArray.caBIG/2.0/gov.nih.nci.caarray.domain.vocabulary"
+        schemaLocation="gov.nih.nci.caarray.domain.vocabulary.xsd" />
+    <xs:import namespace="gme://caArray.caBIG/2.0/gov.nih.nci.caarray.domain.protocol"
+        schemaLocation="gov.nih.nci.caarray.domain.protocol.xsd" />
+    <xs:import namespace="gme://caArray.caBIG/2.0/gov.nih.nci.caarray.domain.contact"
+        schemaLocation="gov.nih.nci.caarray.domain.contact.xsd" />
+    <xs:import namespace="gme://caArray.caBIG/2.0/gov.nih.nci.caarray.domain.hybridization"
+        schemaLocation="gov.nih.nci.caarray.domain.hybridization.xsd" />
+    <xs:import namespace="gme://caArray.caBIG/2.0/edu.wustl.catissuecore.domain"
+        schemaLocation="edu.wustl.catissuecore.domain.xsd" />
+    <xs:import namespace="gme://caArray.caBIG/2.0/edu.georgetown.pir"
+        schemaLocation="edu.georgetown.pir.xsd" />
+
+    <xs:element name="MeasurementCharacteristic" type="MeasurementCharacteristic" />
+    <xs:complexType name="MeasurementCharacteristic">
+        <xs:complexContent>
+            <xs:extension base="AbstractCharacteristic">
+                <xs:sequence>
+                    <xs:element name="unit" minOccurs="0" maxOccurs="1"
+                        type="gov.nih.nci.caarray.domain.vocabulary:Term" />
+                </xs:sequence>
+                <xs:attribute name="value" type="xs:float" />
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+    <xs:element name="AbstractBioMaterial" type="AbstractBioMaterial" />
+    <xs:complexType name="AbstractBioMaterial">
+        <xs:complexContent>
+            <xs:extension base="gov.nih.nci.caarray.domain:AbstractCaArrayEntity">
+                <xs:sequence>
+                    <xs:element name="protocolApplications" minOccurs="0">
+                        <xs:complexType>
+                            <xs:choice minOccurs="0" maxOccurs="unbounded">
+                                <xs:element ref="gov.nih.nci.caarray.domain.protocol:ProtocolApplication" />
+                            </xs:choice>
+                        </xs:complexType>
+                    </xs:element>
+                    <xs:element name="characteristics" minOccurs="0">
+                        <xs:complexType>
+                            <xs:choice minOccurs="0" maxOccurs="unbounded">
+                                <xs:element ref="AbstractCharacteristic" />
+                            </xs:choice>
+                        </xs:complexType>
+                    </xs:element>
+                    <xs:element name="materialType" minOccurs="0" maxOccurs="1"
+                        type="gov.nih.nci.caarray.domain.vocabulary:Term" />
+                    <xs:element name="tissueSite" minOccurs="0" maxOccurs="1"
+                        type="gov.nih.nci.caarray.domain.vocabulary:Term" />
+                    <xs:element name="cellType" minOccurs="0" maxOccurs="1"
+                        type="gov.nih.nci.caarray.domain.vocabulary:Term" />
+                    <xs:element name="diseaseState" minOccurs="0" maxOccurs="1"
+                        type="gov.nih.nci.caarray.domain.vocabulary:Term" />
+                    <xs:element name="organism" minOccurs="0" maxOccurs="1" type="edu.georgetown.pir:Organism" />
+                </xs:sequence>
+                <xs:attribute name="description" type="xs:string" />
+                <xs:attribute name="name" type="xs:string" />
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+    <xs:element name="LabeledExtract" type="LabeledExtract" />
+    <xs:complexType name="LabeledExtract">
+        <xs:complexContent>
+            <xs:extension base="AbstractBioMaterial">
+                <xs:sequence>
+                    <xs:element name="extracts" minOccurs="0">
+                        <xs:complexType>
+                            <xs:choice minOccurs="0" maxOccurs="unbounded">
+                                <xs:element ref="Extract" />
+                            </xs:choice>
+                        </xs:complexType>
+                    </xs:element>
+                    <xs:element name="hybridizations" minOccurs="0">
+                        <xs:complexType>
+                            <xs:choice minOccurs="0" maxOccurs="unbounded">
+                                <xs:element ref="gov.nih.nci.caarray.domain.hybridization:Hybridization" />
+                            </xs:choice>
+                        </xs:complexType>
+                    </xs:element>
+                    <xs:element name="label" minOccurs="0" maxOccurs="1"
+                        type="gov.nih.nci.caarray.domain.vocabulary:Term" />
+                </xs:sequence>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+    <xs:element name="AbstractCharacteristic" type="AbstractCharacteristic" />
+    <xs:complexType name="AbstractCharacteristic">
+        <xs:complexContent>
+            <xs:extension base="gov.nih.nci.caarray.domain:AbstractCaArrayEntity">
+                <xs:sequence>
+                    <xs:element name="category" minOccurs="0" maxOccurs="1"
+                        type="gov.nih.nci.caarray.domain.vocabulary:Category" />
+                    <xs:element name="bioMaterial" minOccurs="0" maxOccurs="1" type="AbstractBioMaterial" />
+                </xs:sequence>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+    <xs:element name="Source" type="Source" />
+    <xs:complexType name="Source">
+        <xs:complexContent>
+            <xs:extension base="AbstractBioMaterial">
+                <xs:sequence>
+                    <xs:element name="samples" minOccurs="0">
+                        <xs:complexType>
+                            <xs:choice minOccurs="0" maxOccurs="unbounded">
+                                <xs:element ref="Sample" />
+                            </xs:choice>
+                        </xs:complexType>
+                    </xs:element>
+                    <xs:element name="providers" minOccurs="0">
+                        <xs:complexType>
+                            <xs:choice minOccurs="0" maxOccurs="unbounded">
+                                <xs:element ref="gov.nih.nci.caarray.domain.contact:AbstractContact" />
+                            </xs:choice>
+                        </xs:complexType>
+                    </xs:element>
+                </xs:sequence>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+    <xs:element name="Sample" type="Sample" />
+    <xs:complexType name="Sample">
+        <xs:complexContent>
+            <xs:extension base="AbstractBioMaterial">
+                <xs:sequence>
+                    <xs:element name="extracts" minOccurs="0">
+                        <xs:complexType>
+                            <xs:choice minOccurs="0" maxOccurs="unbounded">
+                                <xs:element ref="Extract" />
+                            </xs:choice>
+                        </xs:complexType>
+                    </xs:element>
+                    <xs:element name="sources" minOccurs="0">
+                        <xs:complexType>
+                            <xs:choice minOccurs="0" maxOccurs="unbounded">
+                                <xs:element ref="Source" />
+                            </xs:choice>
+                        </xs:complexType>
+                    </xs:element>
+                    <xs:element name="specimen" minOccurs="0" maxOccurs="1"
+                        type="edu.wustl.catissuecore.domain:Specimen" />
+                </xs:sequence>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+    <xs:element name="TermBasedCharacteristic" type="TermBasedCharacteristic" />
+    <xs:complexType name="TermBasedCharacteristic">
+        <xs:complexContent>
+            <xs:extension base="AbstractCharacteristic">
+                <xs:sequence>
+                    <xs:element name="term" minOccurs="0" maxOccurs="1"
+                        type="gov.nih.nci.caarray.domain.vocabulary:Term" />
+                </xs:sequence>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+    <xs:element name="Extract" type="Extract" />
+    <xs:complexType name="Extract">
+        <xs:complexContent>
+            <xs:extension base="AbstractBioMaterial">
+                <xs:sequence>
+                    <xs:element name="samples" minOccurs="0">
+                        <xs:complexType>
+                            <xs:choice minOccurs="0" maxOccurs="unbounded">
+                                <xs:element ref="Sample" />
+                            </xs:choice>
+                        </xs:complexType>
+                    </xs:element>
+                    <xs:element name="labeledExtracts" minOccurs="0">
+                        <xs:complexType>
+                            <xs:choice minOccurs="0" maxOccurs="unbounded">
+                                <xs:element ref="LabeledExtract" />
+                            </xs:choice>
+                        </xs:complexType>
+                    </xs:element>
+                    <xs:element name="molecularSpecimen" minOccurs="0" maxOccurs="1"
+                        type="edu.wustl.catissuecore.domain:MolecularSpecimen" />
+                </xs:sequence>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+</xs:schema>
+

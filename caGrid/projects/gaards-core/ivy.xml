@@ -1,0 +1,32 @@
+<?xml version="1.0"?>
+
+<ivy-module version="2.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:noNamespaceSchemaLocation="http://incubator.apache.org/ivy/schemas/ivy.xsd">
+
+  <info organisation="caGrid" module="gaards-core" revision="${project.version}">
+    <license name="caGrid" url="http://cagrid.org/wiki/CaGrid:LICENSE-1.3"/>
+    <description>Provides low-level APIs for working with certificates.</description>
+  </info>
+
+  <configurations>
+    <conf name="impl-test" visibility="private"/>
+    <!-- Public Configurations-->
+    <conf name="default" visibility="public"/>
+    <conf name="test" visibility="public" extends="impl-test,default"/>
+    <conf name="endorsed" visibility="public" />
+  </configurations>
+
+
+  <publications>
+    <artifact name="caGrid-${ivy.module}" conf="default" type="jar"/>
+    <artifact name="caGrid-${ivy.module}-tests" conf="test" type="jar"/>
+  </publications>
+
+  <dependencies>
+    <dependency rev="latest.integration" org="caGrid" name="core" conf="default->serialization;impl-test->test"/>
+    <dependency rev="1.0" org="jdom" name="jdom" conf="default->default"/>
+    <dependency rev="jce-1.2" org="eracom" name="protecttoolkit-j" conf="default->default"/>
+    <dependency rev="latest.integration" org="caGrid" name="opensaml" conf="default->default;endorsed->endorsed"/>
+    <dependency rev="4.4" org="junit" name="junit" conf="impl-test->default"/>
+  </dependencies>
+</ivy-module>

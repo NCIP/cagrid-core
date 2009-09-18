@@ -1,0 +1,6 @@
+Tomcat container needs the following:
+	--	Edit the server.xml to change the shutdown port, then remember what the change was made to so the container can
+	be stopped.  Use PortFactory to get a new port for this.
+	--	May need a 'secure tomcat' zip which can be used for default security settings
+	
+JBoss container needs a zip, a container class implementation, and addition to ServiceContainerType.getTypeOfTheDay()

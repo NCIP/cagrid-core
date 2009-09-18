@@ -1,0 +1,20 @@
+<?xml version="1.0"?>
+
+<ivy-module version="2.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:noNamespaceSchemaLocation="http://incubator.apache.org/ivy/schemas/ivy.xsd">
+
+	<info organisation="apache" module="jakarta-taglibs" revision="1.1.2">
+		<license name="Apache" url="http://www.apache.org/licenses/LICENSE-2.0.txt"/>		
+		<description homepage="http://jakarta.apache.org/taglibs/"> This project is an open source
+			repository for JSP custom tag libraries. For a general description, please see the
+			official java.sun.com page on JSP(tm) Tag Libraries. Jakarta Taglibs also hosts the
+			development tree of the reference implementation (RI) for the JSTL specification - the
+			Jakarta Standard Taglib. Versions 1.0 and 1.1 of JSTL (JSP Standard Tag Library) are
+			implemented here, currently there are no plans for a 1.2 implementation and you are
+			advised to investigate the Glassfish implementation. </description>
+	</info>
+
+	<publications>
+		<artifact name="standard" type="jar"/>
+	</publications>
+</ivy-module>

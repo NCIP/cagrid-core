@@ -1,0 +1,384 @@
+<?xml version="1.0"?>
+<project name="Developer Modified Build File" basedir=".">
+	<!-- ============================================================== -->
+	<!-- This file is designed to allow the developer to extend the     -->
+	<!-- build process without having to edit the master build.xml      -->
+	<!-- file. DO NOT REMOVE ANY TARGETS                                -->
+	<!-- ============================================================== -->
+
+
+
+	<!-- ============================================================== -->
+	<!-- Place any other properties you will need here                  -->
+	<!-- ============================================================== -->
+
+	<property environment="env" />
+	<property file="${basedir}/project.properties" />
+	<property file="${basedir}/build.properties" />
+
+	<property name="jar.prefix" value="caGrid-dorian" />
+	<property name="jar.suffix" value="${project.version}.jar" />
+
+	<property name="common.jar.name" value="${jar.prefix}-common-${jar.suffix}" />
+	<property name="client.jar.name" value="${jar.prefix}-client-${jar.suffix}" />
+	<property name="service.jar.name" value="${jar.prefix}-service-${jar.suffix}" />
+	<property name="stubs.jar.name" value="${jar.prefix}-stubs-${jar.suffix}" />
+	<property name="test.jar.name" value="${jar.prefix}-tests-${jar.suffix}" />
+
+
+	<property name="ext.dir" location="${basedir}/ext" />
+	<property name="ext.dependencies.dir" location="${ext.dir}/dependencies" />
+	<property name="ext.targetgrid.dir" location="${ext.dir}/target_grid" />
+	<property name="ext.lib" location="${ext.dependencies.dir}/service/jars" />
+	<property name="ext.test.lib" value="${ext.dependencies.dir}/test/jars" />
+	<property name="ext.endorsed.dir" value="${ext.dependencies.dir}/endorsed/jars" />
+	<property name="ext.tools.lib.dir" location="${ext.dependencies.dir}/tools/jars" />
+
+	<!-- overide the introduce location of this which is suposed to be in tools/lib -->
+	<property name="ant.contrib.location" value="${ext.tools.lib.dir}/ant-contrib-1.0b3.jar" />
+
+	<!--need to preset these for the testing build-->
+	<property name="test.log.dir" value="test/logs" />
+	<property name="build.dir" location="build" />
+
+
+	<!--need to import the test build-->
+	<import file="test/test.xml" />
+
+	<!-- ============================================================== -->
+	<!-- Create any extended Classpaths here                            -->
+	<!-- ============================================================== -->
+	<target name="defineExtendedClasspaths">
+		<path id="base.extended.classpath">
+			<fileset dir="${ext.lib}">
+				<include name="*.jar" />
+			</fileset>
+		</path>
+		<path id="service.build.extended.classpath">
+		</path>
+		<path id="service.run.extended.classpath">
+		</path>
+		<path id="test.build.extended.classpath">
+			<fileset dir="${ext.test.lib}">
+				<include name="*.jar" />
+			</fileset>
+		</path>
+		<path id="test.run.extended.classpath">
+			<pathelement location="${test.dir}/resources" />
+		</path>
+		<path id="run.extended.classpath">
+		</path>
+		<path id="tasks.run.extended.classpath">
+			<fileset dir="${ext.lib}">
+				<include name="*.jar" />
+			</fileset>
+			<fileset dir="${ext.tools.lib.dir}">
+				<include name="*.jar" />
+			</fileset>
+		</path>
+	</target>
+
+
+
+	<!-- Create a JAR file with the implementation classes -->
+	<target name="jar" depends="compile">
+		<runtarget target="preJar" />
+		<jar jarfile="${build.lib.dir}/${client.jar.name}" basedir="${build.dest}">
+			<include name="**/client/**" />
+			<include name="**/dorian/tools/**" />
+		</jar>
+
+
+		<jar jarfile="${build.lib.dir}/${service.jar.name}" basedir="${build.dest}">
+			<include name="**/service/**" />
+			<include name="**/idp/**" />
+			<include name="**/federation/**" />
+			<include name="**/ca/**" />
+		</jar>
+		<jar jarfile="${build.lib.dir}/${common.jar.name}" basedir="${build.dest}">
+			<include name="**/*.xml" />
+			<include name="**/*.dtd" />
+			<include name="**/*.properties" />
+			<include name="**/*.xsd" />
+			<include name="**/*.wsdd" />
+			<!-- Post Introduce Edit-->
+			<include name="**/common/**" />
+			<exclude name="**/client/**" />
+			<exclude name="**/service/**" />
+			<exclude name="**/dorian/tools/**" />
+			<exclude name="**/idp/**" />
+			<exclude name="**/federation/**" />
+			<exclude name="**/ca/**" />
+		</jar>
+		<runtarget target="postJar" />
+	</target>
+
+
+	<target name="checkValidate" unless="perform.deployment.validation">
+		<property name="no.deployment.validation" value="true" />
+	</target>
+
+
+
+	<!-- ============================================================== -->
+	<!-- Pre Init Target                                                -->
+	<!-- ============================================================== -->
+	<target name="preInit" depends="checkValidate">
+		<runtarget target="configure" />
+	</target>
+
+	<!-- ============================================================== -->
+	<!-- Post Init Build Target                                         -->
+	<!-- ============================================================== -->
+	<target name="postInit">
+
+	</target>
+
+
+	<!-- ============================================================== -->
+	<!-- Pre Stubs Target                                               -->
+	<!-- ============================================================== -->
+	<target name="preStubs">
+
+	</target>
+
+	<!-- ============================================================== -->
+	<!-- Post Stubs Build Target                                        -->
+	<!-- ============================================================== -->
+	<target name="postStubs">
+
+	</target>
+
+	<!-- ============================================================== -->
+	<!-- Pre Compile Stubs Build Target                                 -->
+	<!-- ============================================================== -->
+	<target name="preCompileStubs">
+
+	</target>
+
+	<!-- ============================================================== -->
+	<!-- Post Compile Stubs Build Target                                -->
+	<!-- ============================================================== -->
+	<target name="postCompileStubs">
+
+	</target>
+
+	<!-- ============================================================== -->
+	<!-- Pre Jar Stubs Build Target                                     -->
+	<!-- ============================================================== -->
+	<target name="preJarStubs">
+
+	</target>
+
+	<!-- ============================================================== -->
+	<!-- Post Jar Stubs Build Target                                    -->
+	<!-- ============================================================== -->
+	<target name="postJarStubs">
+
+	</target>
+
+	<!-- ============================================================== -->
+	<!-- Pre Compile Build Target                                       -->
+	<!-- ============================================================== -->
+	<target name="preCompile">
+
+	</target>
+
+	<!-- ============================================================== -->
+	<!-- Post Compile Build Target                                       -->
+	<!-- ============================================================== -->
+	<target name="postCompile">
+
+	</target>
+
+	<!-- ============================================================== -->
+	<!-- Pre Jar Build Target                                       -->
+	<!-- ============================================================== -->
+	<target name="preJar">
+
+	</target>
+
+	<!-- ============================================================== -->
+	<!-- Post Jar Build Target                                          -->
+	<!-- ============================================================== -->
+	<target name="postJar">
+
+	</target>
+
+	<!-- ============================================================== -->
+	<!-- Pre Compile Tests Build Target                                 -->
+	<!-- ============================================================== -->
+	<target name="preCompileTests">
+
+	</target>
+
+	<!-- ============================================================== -->
+	<!-- Post Compile Tests Build Target                                -->
+	<!-- ============================================================== -->
+	<target name="postCompileTests">
+
+	</target>
+
+	<!-- ============================================================== -->
+	<!-- Pre Jar Tests Build Target                                     -->
+	<!-- ============================================================== -->
+	<target name="preJarTests">
+
+	</target>
+
+	<!-- ============================================================== -->
+	<!-- Post Jar Tests Build Target                                    -->
+	<!-- ============================================================== -->
+	<target name="postJarTests">
+
+	</target>
+
+	<!-- ============================================================== -->
+	<!-- Pre Clean Target                                               -->
+	<!-- ============================================================== -->
+	<target name="preClean">
+
+	</target>
+
+	<!-- ============================================================== -->
+	<!-- Post Clean Target                                              -->
+	<!-- ============================================================== -->
+	<target name="postClean">
+
+	</target>
+
+
+	<target name="configure" description="Configures the project based on settings.">
+		<!-- These are the template files we are copying from -->
+		<fileset id="templates.fileset" dir="${basedir}">
+			<include name="*.template" />
+		</fileset>
+
+		<copy todir="${basedir}" overwrite="true">
+			<fileset refid="templates.fileset" />
+			<mapper type="glob" from="*.template" to="*" />
+			<filterset filtersfile="${ext.targetgrid.dir}/service_urls.properties" />
+		</copy>
+
+	</target>
+
+	<target name="requestCredential" description="Create a Grid User Credential." depends="init">
+
+		<input message="Please enter the Authentication Service URL [${cagrid.master.dorian.service.url}]:" addproperty="auth.input" defaultvalue="${cagrid.master.dorian.service.url}" />
+		<input message="Please enter the Dorian Service URL [${cagrid.master.dorian.service.url}]:" addproperty="dorian.input" defaultvalue="${cagrid.master.dorian.service.url}" />
+
+		<input message="Please enter your username:" addproperty="username.input" />
+		<input message="Please enter your password:" addproperty="password.input" />
+		<input message="Please enter the number of hours the proxy should be valid for [12]:" addproperty="hours.input" defaultvalue="12" />
+		<java classname="org.cagrid.gaards.dorian.tools.GridProxyInit" fork="yes" newenvironment="true" failonerror="true">
+			<jvmarg value="-Djava.endorsed.dirs=ext/dependencies/endorsed/jars" />
+			<arg value="-a" />
+			<arg value="${auth.input}" />
+			<arg value="-d" />
+			<arg value="${dorian.input}" />
+			<arg value="-u" />
+			<arg value="${username.input}" />
+			<arg value="-p" />
+			<arg value="${password.input}" />
+			<arg value="-h" />
+			<arg value="${hours.input}" />
+			<classpath refid="service.run.classpath" />
+		</java>
+	</target>
+
+	<target name="importCA" description="Imports an external CA, for Dorian to use as its CA." depends="init">
+		<input message="Please enter the location to the CA's certificate (PEM Format):" addproperty="cacert.input" />
+		<input message="Please enter the location to the CA's private key (PEM Format):" addproperty="cakey.input" />
+		<input message="Please enter the password to the CA's private key (Enter if None):" addproperty="password.input" />
+		<java classname="org.cagrid.gaards.dorian.service.tools.ImportCA" fork="yes" newenvironment="true" failonerror="true">
+			<arg value="-conf" />
+			<arg value="etc/dorian-configuration.xml" />
+			<arg value="-properties" />
+			<arg value="etc/dorian.properties" />
+			<arg value="-cert" />
+			<arg value="${cacert.input}" />
+			<arg value="-key" />
+			<arg value="${cakey.input}" />
+			<arg value="-password" />
+			<arg value="${password.input}" />
+			<classpath refid="service.run.classpath" />
+		</java>
+	</target>
+
+
+	<target name="configureGlobusToTrustDorian" description="Configures Globus to trust the Dorian CA." depends="init">
+		<java classname="org.cagrid.gaards.dorian.service.tools.ConfigureGlobusToTrustDorian" fork="yes" newenvironment="true" failonerror="true">
+			<arg value="-conf" />
+			<arg value="etc/dorian-configuration.xml" />
+			<arg value="-properties" />
+			<arg value="etc/dorian.properties" />
+			<classpath refid="service.run.classpath" />
+		</java>
+	</target>
+
+	<target name="createDorianHostCredentials" description="Creates host credentials for the Dorian Service." depends="init">
+		<input message="Please enter the host:" addproperty="host.input" />
+		<input message="Please enter the directory to write out the host credentials:" addproperty="dir.input" />
+		<java classname="org.cagrid.gaards.dorian.service.tools.CreateHostCertificate" fork="yes" newenvironment="true" failonerror="true">
+			<arg value="-conf" />
+			<arg value="etc/dorian-configuration.xml" />
+			<arg value="-properties" />
+			<arg value="etc/dorian.properties" />
+			<arg value="-host" />
+			<arg value="${host.input}" />
+			<arg value="-directory" />
+			<arg value="${dir.input}" />
+			<classpath refid="service.run.classpath" />
+		</java>
+	</target>
+
+	<target name="upgrade" description="Upgrades old versions of the Dorian database to the latest version." depends="init">
+		<java classname="org.cagrid.gaards.dorian.service.upgrader.Upgrader" fork="yes" newenvironment="true" failonerror="true">
+			<jvmarg value="-Dlog4j.configuration=file:upgrader-log4j.properties" />
+			<arg value="-conf" />
+			<arg value="etc/dorian-configuration.xml" />
+			<arg value="-properties" />
+			<arg value="etc/dorian.properties" />
+			<arg value="-uconf" />
+			<arg value="etc/dorian-upgrader-configuration.xml" />
+			<classpath refid="service.run.classpath" />
+		</java>
+	</target>
+
+	<target name="testUpgrade" description="Tests upgrading old versions of the Dorian database to the latest version." depends="init">
+		<java classname="org.cagrid.gaards.dorian.service.upgrader.Upgrader" fork="yes" newenvironment="true" failonerror="true">
+			<jvmarg value="-Dlog4j.configuration=file:upgrader-log4j.properties" />
+			<arg value="-conf" />
+			<arg value="etc/dorian-configuration.xml" />
+			<arg value="-properties" />
+			<arg value="etc/dorian.properties" />
+			<arg value="-uconf" />
+			<arg value="etc/dorian-upgrader-configuration.xml" />
+			<arg value="-trial" />
+			<classpath refid="service.run.classpath" />
+		</java>
+	</target>
+
+	<target name="generateTrustReport" description="Generates a Grid Trust Report." depends="init">
+		<input message="Please enter a file location to write the report to [grid-trust-report.txt]:" addproperty="out.input" defaultvalue="grid-trust-report.txt" />
+		<java classname="org.cagrid.gaards.pki.tools.GenerateTrustReport" fork="true" newenvironment="true" failonerror="true">
+			<arg value="-o" />
+			<arg value="${out.input}" />
+			<classpath refid="run.classpath" />
+		</java>
+	</target>
+
+	<target name="adminEracomHSM" description="Brings up the Eracom Admin tool." depends="init">
+		<java classname="jprov.tools.admin.CtAdmin" fork="true" newenvironment="true" failonerror="true">
+			<classpath refid="service.run.classpath" />
+		</java>
+	</target>
+
+	<target name="manageEracomKeys" description="Brings up the Eracom Admin tool." depends="init">
+		<java classname="jprov.tools.kmu.KMU" fork="true" newenvironment="true" failonerror="true">
+			<classpath refid="service.run.classpath" />
+		</java>
+	</target>
+
+
+</project>

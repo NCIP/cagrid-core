@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<ivy-module version="2.0">
+    <info organisation="inspektr" module="inspektr" revision="0.7.0" status="release">
+        <license name="Apache" url="http://www.apache.org/licenses/LICENSE-2.0.txt"/>
+        <description homepage="http://acegisecurity.org/">The Inspektr project allows for non-intrusive auditing and 
+			logging by using annotations and aspects.It also includes a generic Grails-based web 
+			application to view statistics and audit logs stored in various data sources.
+		</description>
+    </info>
+	
+	<publications>
+        <artifact name="inspektr" type="jar"/>
+    </publications>
+	
+</ivy-module>

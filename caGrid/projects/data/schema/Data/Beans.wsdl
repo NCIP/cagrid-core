@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions name="DataServiceBeans" xmlns="http://schemas.xmlsoap.org/wsdl/" >
+	<import location="ClassToQname.xsd"/>
+	<import location="DataServiceAuditorConfiguration.xsd"/>
+	<import location="DataServiceExtensionData.xsd"/>
+	<import location="DataServiceStyle.xsd"/>
+</definitions>

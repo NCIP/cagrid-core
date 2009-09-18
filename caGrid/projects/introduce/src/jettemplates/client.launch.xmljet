@@ -1,0 +1,24 @@
+<%@ jet package="gov.nih.nci.cagrid.introduce.templates" class="ServiceClientLaunchTemplate" %>
+<% gov.nih.nci.cagrid.introduce.common.SpecificServiceInformation info = (gov.nih.nci.cagrid.introduce.common.SpecificServiceInformation) argument; 
+   String mainServiceName = info.getIntroduceServiceProperties().getProperty("introduce.skeleton.service.name");
+   String serviceName = info.getService().getName();
+   String namespaceDomain = info.getIntroduceServiceProperties().getProperty(gov.nih.nci.cagrid.introduce.IntroduceConstants.INTRODUCE_SKELETON_NAMESPACE_DOMAIN);
+   String mainModifiedServiceName = mainServiceName;
+   if(mainServiceName.endsWith("Service")){
+   	mainModifiedServiceName = mainServiceName.substring(0,mainServiceName.length()-7);
+   }
+   String modifiedServiceName = serviceName;
+   if(serviceName.endsWith("Service")){
+   	modifiedServiceName = serviceName.substring(0,serviceName.length()-7);
+   }
+%><?xml version="1.0" encoding="UTF-8"?>
+<launchConfiguration type="org.eclipse.jdt.launching.localJavaApplication">
+<stringAttribute key="org.eclipse.jdt.launching.MAIN_TYPE" value="<%=info.getService().getPackageName()%>.client.<%=info.getService().getName()%>Client"/>
+<stringAttribute key="org.eclipse.jdt.launching.PROGRAM_ARGUMENTS" value="-url ${string_prompt:the service url}"/>
+<stringAttribute key="org.eclipse.jdt.launching.PROJECT_ATTR" value="<%=info.getService().getName()%>"/>
+<listAttribute key="org.eclipse.debug.ui.favoriteGroups">
+<listEntry value="org.eclipse.debug.ui.launchGroup.run"/>
+<listEntry value="org.eclipse.debug.ui.launchGroup.debug"/>
+</listAttribute>
+<booleanAttribute key="org.eclipse.debug.core.appendEnvironmentVariables" value="true"/>
+</launchConfiguration>

@@ -1,0 +1,11 @@
+<?xml version="1.0"?>
+<?xml-stylesheet type="text/xsl" href="http://ivyrep.jayasoft.org/ivy-doc.xsl"?>
+<ivy-module version="1.0">
+	<info organisation="mcsl" module="gridftpauthz" revision="1.0" status="release">
+		<description
+			homepage="http://www.cagrid.org/mwiki/index.php?title=CaGrid:HowTos:GridFTP_Java_Auth_Install"
+			> Java Authorization is an extension of Globus' GridFTP server that allows a user to
+			configure and use Java authorization plug-ins. The extension provides one authorization
+			plug-in, a SQL Database plug-in. </description>
+	</info>
+</ivy-module>

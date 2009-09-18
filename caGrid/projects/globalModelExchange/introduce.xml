@@ -1,0 +1,193 @@
+<ns1:ServiceDescription introduceVersion="1.3" xmlns:ns1="gme://gov.nih.nci.cagrid/1/Introduce">
+ <ns2:Namespaces xsi:type="ns2:NamespacesType" xmlns:ns2="gme://gov.nih.nci.cagrid.introduce/1/Namespace" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <ns2:Namespace location="./org.cagrid.gme.domain.xsd" namespace="gme://gme.cagrid.org/2.0/GlobalModelExchange/domain" packageName="org.cagrid.gme.domain" xsi:type="ns2:NamespaceType">
+   <ns2:SchemaElement className="XMLSchema" deserializer="gov.nih.nci.cagrid.encoding.SDKDeserializerFactory" serializer="gov.nih.nci.cagrid.encoding.SDKSerializerFactory" type="XMLSchema" xsi:type="ns2:SchemaElementType"/>
+   <ns2:SchemaElement className="XMLSchemaBundle" deserializer="gov.nih.nci.cagrid.encoding.SDKDeserializerFactory" serializer="gov.nih.nci.cagrid.encoding.SDKSerializerFactory" type="XMLSchemaBundle" xsi:type="ns2:SchemaElementType"/>
+   <ns2:SchemaElement className="XMLSchemaDocument" deserializer="gov.nih.nci.cagrid.encoding.SDKDeserializerFactory" serializer="gov.nih.nci.cagrid.encoding.SDKSerializerFactory" type="XMLSchemaDocument" xsi:type="ns2:SchemaElementType"/>
+   <ns2:SchemaElement className="XMLSchemaImportInformation" deserializer="gov.nih.nci.cagrid.encoding.SDKDeserializerFactory" serializer="gov.nih.nci.cagrid.encoding.SDKSerializerFactory" type="XMLSchemaImportInformation" xsi:type="ns2:SchemaElementType"/>
+   <ns2:SchemaElement className="XMLSchemaNamespace" deserializer="gov.nih.nci.cagrid.encoding.SDKDeserializerFactory" serializer="gov.nih.nci.cagrid.encoding.SDKSerializerFactory" type="XMLSchemaNamespace" xsi:type="ns2:SchemaElementType"/>
+  </ns2:Namespace>
+  <ns2:Namespace generateStubs="false" location="./xsd/cagrid/types/caGridMetadata.xsd" namespace="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata" packageName="gov.nih.nci.cagrid.metadata" xsi:type="ns2:NamespaceType">
+   <ns2:SchemaElement type="ServiceMetadata" xsi:type="ns2:SchemaElementType"/>
+  </ns2:Namespace>
+  <ns2:Namespace location="" namespace="http://www.w3.org/2001/XMLSchema" packageName="" xsi:type="ns2:NamespaceType">
+   <ns2:SchemaElement type="anySimpleType" xsi:type="ns2:SchemaElementType"/>
+   <ns2:SchemaElement type="anyType" xsi:type="ns2:SchemaElementType"/>
+   <ns2:SchemaElement type="anyURI" xsi:type="ns2:SchemaElementType"/>
+   <ns2:SchemaElement type="base64Binary" xsi:type="ns2:SchemaElementType"/>
+   <ns2:SchemaElement type="boolean" xsi:type="ns2:SchemaElementType"/>
+   <ns2:SchemaElement type="byte" xsi:type="ns2:SchemaElementType"/>
+   <ns2:SchemaElement type="date" xsi:type="ns2:SchemaElementType"/>
+   <ns2:SchemaElement type="dateTime" xsi:type="ns2:SchemaElementType"/>
+   <ns2:SchemaElement type="decimal" xsi:type="ns2:SchemaElementType"/>
+   <ns2:SchemaElement type="double" xsi:type="ns2:SchemaElementType"/>
+   <ns2:SchemaElement type="duration" xsi:type="ns2:SchemaElementType"/>
+   <ns2:SchemaElement type="ENTITIES" xsi:type="ns2:SchemaElementType"/>
+   <ns2:SchemaElement type="ENTITY" xsi:type="ns2:SchemaElementType"/>
+   <ns2:SchemaElement type="float" xsi:type="ns2:SchemaElementType"/>
+   <ns2:SchemaElement type="gDay" xsi:type="ns2:SchemaElementType"/>
+   <ns2:SchemaElement type="gMonth" xsi:type="ns2:SchemaElementType"/>
+   <ns2:SchemaElement type="gMonthDay" xsi:type="ns2:SchemaElementType"/>
+   <ns2:SchemaElement type="gYear" xsi:type="ns2:SchemaElementType"/>
+   <ns2:SchemaElement type="gYearMonth" xsi:type="ns2:SchemaElementType"/>
+   <ns2:SchemaElement type="hexBinary" xsi:type="ns2:SchemaElementType"/>
+   <ns2:SchemaElement type="ID" xsi:type="ns2:SchemaElementType"/>
+   <ns2:SchemaElement type="IDREF" xsi:type="ns2:SchemaElementType"/>
+   <ns2:SchemaElement type="IDREFS" xsi:type="ns2:SchemaElementType"/>
+   <ns2:SchemaElement type="int" xsi:type="ns2:SchemaElementType"/>
+   <ns2:SchemaElement type="integer" xsi:type="ns2:SchemaElementType"/>
+   <ns2:SchemaElement type="language" xsi:type="ns2:SchemaElementType"/>
+   <ns2:SchemaElement type="long" xsi:type="ns2:SchemaElementType"/>
+   <ns2:SchemaElement type="Name" xsi:type="ns2:SchemaElementType"/>
+   <ns2:SchemaElement type="NCName" xsi:type="ns2:SchemaElementType"/>
+   <ns2:SchemaElement type="negativeInteger" xsi:type="ns2:SchemaElementType"/>
+   <ns2:SchemaElement type="NMTOKEN" xsi:type="ns2:SchemaElementType"/>
+   <ns2:SchemaElement type="NMTOKENS" xsi:type="ns2:SchemaElementType"/>
+   <ns2:SchemaElement type="nonNegativeInteger" xsi:type="ns2:SchemaElementType"/>
+   <ns2:SchemaElement type="nonPositiveInteger" xsi:type="ns2:SchemaElementType"/>
+   <ns2:SchemaElement type="normalizedString" xsi:type="ns2:SchemaElementType"/>
+   <ns2:SchemaElement type="NOTATION" xsi:type="ns2:SchemaElementType"/>
+   <ns2:SchemaElement type="positiveInteger" xsi:type="ns2:SchemaElementType"/>
+   <ns2:SchemaElement type="QName" xsi:type="ns2:SchemaElementType"/>
+   <ns2:SchemaElement type="short" xsi:type="ns2:SchemaElementType"/>
+   <ns2:SchemaElement type="string" xsi:type="ns2:SchemaElementType"/>
+   <ns2:SchemaElement type="time" xsi:type="ns2:SchemaElementType"/>
+   <ns2:SchemaElement type="token" xsi:type="ns2:SchemaElementType"/>
+   <ns2:SchemaElement type="unsignedByte" xsi:type="ns2:SchemaElementType"/>
+   <ns2:SchemaElement type="unsignedInt" xsi:type="ns2:SchemaElementType"/>
+   <ns2:SchemaElement type="unsignedLong" xsi:type="ns2:SchemaElementType"/>
+   <ns2:SchemaElement type="unsignedShort" xsi:type="ns2:SchemaElementType"/>
+  </ns2:Namespace>
+  <ns2:Namespace location="./GlobalModelExchangeTypes.xsd" namespace="http://gme.cagrid.org/GlobalModelExchange/types" packageName="org.cagrid.gme.stubs.types" xsi:type="ns2:NamespaceType">
+   <ns2:SchemaElement type="GlobalModelExchangeReference" xsi:type="ns2:SchemaElementType"/>
+   <ns2:SchemaElement type="InvalidSchemaSubmissionFault" xsi:type="ns2:SchemaElementType"/>
+   <ns2:SchemaElement type="NoSuchNamespaceExistsFault" xsi:type="ns2:SchemaElementType"/>
+   <ns2:SchemaElement type="UnableToDeleteSchemaFault" xsi:type="ns2:SchemaElementType"/>
+  </ns2:Namespace>
+  <ns2:Namespace generateStubs="false" location="./xsd/cagrid/types/security/security.xsd" namespace="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.security" packageName="gov.nih.nci.cagrid.metadata.security" xsi:type="ns2:NamespaceType">
+   <ns2:SchemaElement type="CommunicationMechanism" xsi:type="ns2:SchemaElementType"/>
+   <ns2:SchemaElement type="CommunicationStyle" xsi:type="ns2:SchemaElementType"/>
+   <ns2:SchemaElement type="GSISecureConversation" xsi:type="ns2:SchemaElementType"/>
+   <ns2:SchemaElement type="GSISecureMessage" xsi:type="ns2:SchemaElementType"/>
+   <ns2:SchemaElement type="GSITransport" xsi:type="ns2:SchemaElementType"/>
+   <ns2:SchemaElement type="None" xsi:type="ns2:SchemaElementType"/>
+   <ns2:SchemaElement type="Operation" xsi:type="ns2:SchemaElementType"/>
+   <ns2:SchemaElement type="ServiceSecurityMetadata" xsi:type="ns2:SchemaElementType"/>
+  </ns2:Namespace>
+ </ns2:Namespaces>
+ <ns3:Services xsi:type="ns3:ServicesType" xmlns:ns3="gme://gov.nih.nci.cagrid.introduce/1/Services" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <ns3:Service name="GlobalModelExchange" namespace="http://gme.cagrid.org/GlobalModelExchange" packageName="org.cagrid.gme" xsi:type="ns3:ServiceType">
+   <ns4:Methods xsi:type="ns4:MethodsType" xmlns:ns4="gme://gov.nih.nci.cagrid.introduce/1/Methods">
+    <ns4:Method isImported="true" isProvided="true" name="getServiceSecurityMetadata" xsi:type="ns4:MethodType">
+     <ns4:Output qName="ns5:ServiceSecurityMetadata" isArray="false" isClientHandle="false" xmlns:ns5="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.security"/>
+     <ns4:ImportInformation namespace="http://security.introduce.cagrid.nci.nih.gov/ServiceSecurity" packageName="gov.nih.nci.cagrid.introduce.security.stubs" portTypeName="ServiceSecurityPortType" wsdlFile="ServiceSecurity.wsdl"/>
+     <ns4:ProviderInformation providerClass="gov.nih.nci.cagrid.introduce.security.service.globus.ServiceSecurityProviderImpl"/>
+    </ns4:Method>
+    <ns4:Method description="Publishes the provided schemas, replacing existing versions as necessary." isImported="false" isProvided="false" name="publishXMLSchemas" xsi:type="ns4:MethodType">
+     <ns4:Inputs>
+      <ns4:Input qName="ns6:XMLSchema" description="The schemas to publish" isArray="true" name="schemas" xmlns:ns6="gme://gme.cagrid.org/2.0/GlobalModelExchange/domain"/>
+     </ns4:Inputs>
+     <ns4:Output qName="void" description="" isArray="false"/>
+     <ns4:Exceptions>
+      <ns4:Exception description="" name="InvalidSchemaSubmissionFault" qname="ns7:InvalidSchemaSubmissionFault" xmlns:ns7="http://gme.cagrid.org/GlobalModelExchange/types"/>
+     </ns4:Exceptions>
+    </ns4:Method>
+    <ns4:Method description="Returns a single XML Schema, not including any referenced (i.e. imported) XML Schemas" isImported="false" isProvided="false" name="getXMLSchema" xsi:type="ns4:MethodType">
+     <ns4:Inputs>
+      <ns4:Input qName="ns8:XMLSchemaNamespace" description="A namespace representing the targetNamespace of the desired XMLSchema" isArray="false" name="targetNamespace" xmlns:ns8="gme://gme.cagrid.org/2.0/GlobalModelExchange/domain"/>
+     </ns4:Inputs>
+     <ns4:Output qName="ns9:XMLSchema" description="The XMLSchema with a targetNamespace equal to the given XMLSchemaNamespace" isArray="false" xmlns:ns9="gme://gme.cagrid.org/2.0/GlobalModelExchange/domain"/>
+     <ns4:Exceptions>
+      <ns4:Exception description="" name="NoSuchNamespaceExistsFault" qname="ns10:NoSuchNamespaceExistsFault" xmlns:ns10="http://gme.cagrid.org/GlobalModelExchange/types"/>
+     </ns4:Exceptions>
+    </ns4:Method>
+    <ns4:Method description="Returns the targetNamespaces (represented by XMLSchemaNamespaces) of all published XMLSchemas" isImported="false" isProvided="false" name="getXMLSchemaNamespaces" xsi:type="ns4:MethodType">
+     <ns4:Inputs/>
+     <ns4:Output qName="ns11:XMLSchemaNamespace" description="the targetNamespaces (represented by XMLSchemaNamespaces) of all published XMLSchemas " isArray="true" xmlns:ns11="gme://gme.cagrid.org/2.0/GlobalModelExchange/domain"/>
+     <ns4:Exceptions/>
+    </ns4:Method>
+    <ns4:Method description="Returns an XMLSchemaBundle containing the transitive closure of the XMLSchema with the targetNamespace of the given XMLSchemaNamespace and every XMLSchema it imports (as well as each imported XMLSchema's imports)" isImported="false" isProvided="false" name="getXMLSchemaAndDependencies" xsi:type="ns4:MethodType">
+     <ns4:Inputs>
+      <ns4:Input qName="ns12:XMLSchemaNamespace" description="The targetNamespace of the XMLSchema of interest" isArray="false" name="targetNamespace" xmlns:ns12="gme://gme.cagrid.org/2.0/GlobalModelExchange/domain"/>
+     </ns4:Inputs>
+     <ns4:Output qName="ns13:XMLSchemaBundle" description="an XMLSchemaBundle containing the transitive closure of the XMLSchema with the targetNamespace of the given XMLSchemaNamespace and every XMLSchema it imports (as well as each imported XMLSchema's imports)" isArray="false" xmlns:ns13="gme://gme.cagrid.org/2.0/GlobalModelExchange/domain"/>
+     <ns4:Exceptions>
+      <ns4:Exception description="" name="NoSuchNamespaceExistsFault" qname="ns14:NoSuchNamespaceExistsFault" xmlns:ns14="http://gme.cagrid.org/GlobalModelExchange/types"/>
+     </ns4:Exceptions>
+    </ns4:Method>
+    <ns4:Method description="Deletes the XMLSchemas with targetNamespaces identified by the given XMLSchemaNamespace array.  This does NOT cascade, so you must delete any schemas which reference these schemas, or an error will be thrown." isImported="false" isProvided="false" name="deleteXMLSchemas" xsi:type="ns4:MethodType">
+     <ns4:Inputs>
+      <ns4:Input qName="ns15:XMLSchemaNamespace" description="The targetNamespaces of the XMLSchemas to delete" isArray="true" name="targetNamespaces" xmlns:ns15="gme://gme.cagrid.org/2.0/GlobalModelExchange/domain"/>
+     </ns4:Inputs>
+     <ns4:Output qName="void" description="" isArray="false"/>
+     <ns4:Exceptions>
+      <ns4:Exception description="Thrown if a provided namespace does not correspond to a published XMLSchema" name="NoSuchNamespaceExistsFault" qname="ns16:NoSuchNamespaceExistsFault" xmlns:ns16="http://gme.cagrid.org/GlobalModelExchange/types"/>
+      <ns4:Exception description="Thrown if a provided namespace corresponds to an XMLSchema which cannot be deleted for policy or integrity reasons (such as another schema references it)" name="UnableToDeleteSchemaFault" qname="ns17:UnableToDeleteSchemaFault" xmlns:ns17="http://gme.cagrid.org/GlobalModelExchange/types"/>
+     </ns4:Exceptions>
+    </ns4:Method>
+    <ns4:Method description="Returns the targetNamespaces of all the XMLSchemas which are imported by the given XMLSchema (identififed by its targetNamespace)" isImported="false" isProvided="false" name="getImportedXMLSchemaNamespaces" xsi:type="ns4:MethodType">
+     <ns4:Inputs>
+      <ns4:Input qName="ns18:XMLSchemaNamespace" description="The targetNamespace of the XMLSchema of interest" isArray="false" name="targetNamespace" xmlns:ns18="gme://gme.cagrid.org/2.0/GlobalModelExchange/domain"/>
+     </ns4:Inputs>
+     <ns4:Output qName="ns19:XMLSchemaNamespace" description="The imported XMLSchemas' targetNamespaces" isArray="true" xmlns:ns19="gme://gme.cagrid.org/2.0/GlobalModelExchange/domain"/>
+     <ns4:Exceptions>
+      <ns4:Exception description="" name="NoSuchNamespaceExistsFault" qname="ns20:NoSuchNamespaceExistsFault" xmlns:ns20="http://gme.cagrid.org/GlobalModelExchange/types"/>
+     </ns4:Exceptions>
+    </ns4:Method>
+    <ns4:Method description="Returns all the targetNamespaces of the XMLSchemas which import the given XMLSchema, identified its targetNamespace" isImported="false" isProvided="false" name="getImportingXMLSchemaNamespaces" xsi:type="ns4:MethodType">
+     <ns4:Inputs>
+      <ns4:Input qName="ns21:XMLSchemaNamespace" description="The targetNamespace of the XMLSchema of interest" isArray="false" name="targetNamespace" xmlns:ns21="gme://gme.cagrid.org/2.0/GlobalModelExchange/domain"/>
+     </ns4:Inputs>
+     <ns4:Output qName="ns22:XMLSchemaNamespace" description="all the targetNamespaces of the XMLSchemas which import the given XMLSchema, identified its targetNamespace" isArray="true" xmlns:ns22="gme://gme.cagrid.org/2.0/GlobalModelExchange/domain"/>
+     <ns4:Exceptions>
+      <ns4:Exception description="" name="NoSuchNamespaceExistsFault" qname="ns23:NoSuchNamespaceExistsFault" xmlns:ns23="http://gme.cagrid.org/GlobalModelExchange/types"/>
+     </ns4:Exceptions>
+    </ns4:Method>
+    <ns4:Method isImported="true" isProvided="true" name="GetMultipleResourceProperties" xsi:type="ns4:MethodType">
+     <ns4:Output qName="void" isArray="false"/>
+     <ns24:MethodSecurity xsi:type="ns24:MethodSecurity" xmlns:ns24="gme://gov.nih.nci.cagrid.introduce/1/Security">
+      <ns24:SecuritySetting xsi:type="ns24:SecuritySetting">None</ns24:SecuritySetting>
+     </ns24:MethodSecurity>
+     <ns4:ImportInformation fromIntroduce="false" inputMessage="ns25:GetMultipleResourcePropertiesRequest" namespace="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ResourceProperties-1.2-draft-01.wsdl" outputMessage="ns25:GetMultipleResourcePropertiesResponse" packageName="org.oasis.wsrf.properties" portTypeName="GetMultipleResourceProperties" wsdlFile="../wsrf/properties/WS-ResourceProperties.wsdl" xmlns:ns25="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ResourceProperties-1.2-draft-01.wsdl"/>
+     <ns4:ProviderInformation providerClass="GetMRPProvider"/>
+    </ns4:Method>
+    <ns4:Method isImported="true" isProvided="true" name="GetResourceProperty" xsi:type="ns4:MethodType">
+     <ns4:Output qName="void" isArray="false"/>
+     <ns26:MethodSecurity xsi:type="ns26:MethodSecurity" xmlns:ns26="gme://gov.nih.nci.cagrid.introduce/1/Security">
+      <ns26:SecuritySetting xsi:type="ns26:SecuritySetting">None</ns26:SecuritySetting>
+     </ns26:MethodSecurity>
+     <ns4:ImportInformation fromIntroduce="false" inputMessage="ns27:GetResourcePropertyRequest" namespace="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ResourceProperties-1.2-draft-01.wsdl" outputMessage="ns27:GetResourcePropertyResponse" packageName="org.oasis.wsrf.properties" portTypeName="GetResourceProperty" wsdlFile="../wsrf/properties/WS-ResourceProperties.wsdl" xmlns:ns27="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ResourceProperties-1.2-draft-01.wsdl"/>
+     <ns4:ProviderInformation providerClass="GetRPProvider"/>
+    </ns4:Method>
+    <ns4:Method isImported="true" isProvided="true" name="QueryResourceProperties" xsi:type="ns4:MethodType">
+     <ns4:Output qName="void" isArray="false"/>
+     <ns28:MethodSecurity xsi:type="ns28:MethodSecurity" xmlns:ns28="gme://gov.nih.nci.cagrid.introduce/1/Security">
+      <ns28:SecuritySetting xsi:type="ns28:SecuritySetting">None</ns28:SecuritySetting>
+     </ns28:MethodSecurity>
+     <ns4:ImportInformation fromIntroduce="false" inputMessage="ns29:QueryResourcePropertiesRequest" namespace="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ResourceProperties-1.2-draft-01.wsdl" outputMessage="ns29:QueryResourcePropertiesResponse" packageName="org.oasis.wsrf.properties" portTypeName="QueryResourceProperties" wsdlFile="../wsrf/properties/WS-ResourceProperties.wsdl" xmlns:ns29="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ResourceProperties-1.2-draft-01.wsdl"/>
+     <ns4:ProviderInformation providerClass="QueryRPProvider"/>
+    </ns4:Method>
+   </ns4:Methods>
+   <ns30:ResourcePropertiesList xsi:type="ns30:ResourcePropertiesListType" xmlns:ns30="gme://gov.nih.nci.cagrid.introduce/1/Resources">
+    <ns30:ResourceProperty qName="ns31:ServiceMetadata" description="caGrid standard Service Metadata" fileLocation="serviceMetadata.xml" populateFromFile="true" register="true" xsi:type="ns30:ResourcePropertyType" xmlns:ns31="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata"/>
+   </ns30:ResourcePropertiesList>
+   <ns3:description xsi:type="xsd:string" xmlns:xsd="http://www.w3.org/2001/XMLSchema">The Global Model Exchange (GME) acts as an authoritative source
+        for XML Schemas, providing a robust type management system for
+        use in Grids and other XML-based environments.</ns3:description>
+   <ns3:ResourceFrameworkOptions xsi:type="ns3:ResourceFrameworkOptions">
+    <ns3:Main xsi:type="ns3:Main"/>
+    <ns3:Singleton xsi:type="ns3:Singleton"/>
+    <ns3:Identifiable xsi:type="ns3:Identifiable"/>
+    <ns3:Secure xsi:type="ns3:Secure"/>
+    <ns3:ResourcePropertyManagement xsi:type="ns3:ResourcePropertyManagement"/>
+   </ns3:ResourceFrameworkOptions>
+  </ns3:Service>
+ </ns3:Services>
+ <ns32:Extensions xsi:type="ns32:ExtensionsType" xmlns:ns32="gme://gov.nih.nci.cagrid.introduce/1/Extension" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <ns32:Extension name="cagrid_metadata" version="1.3" xsi:type="ns32:ExtensionType"/>
+ </ns32:Extensions>
+ <ns33:ServiceProperties xmlns:ns33="gme://gov.nih.nci.cagrid.introduce/1/Property">
+  <ns33:Property description="The location (relative to the service's ETC location) of the XML configuration file" isFromETC="true" key="gmeConfigurationFile" value="applicationContext-gme.xml"/>
+  <ns33:Property description="The location (relative to the service's ETC location) of the properties file containing information about the database and other settings" isFromETC="true" key="gmePropertiesFile" value="gme.properties"/>
+ </ns33:ServiceProperties>
+</ns1:ServiceDescription>

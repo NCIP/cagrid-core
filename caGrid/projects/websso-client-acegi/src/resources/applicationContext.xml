@@ -1,0 +1,253 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
+
+<!--
+  - Application context containing authentication, channel
+  - security and web URI beans.
+  -
+  - Only used by "cas" artifact.
+  -
+  - $Id: applicationContext.xml,v 1.7 2009-01-15 05:16:43 garmillas Exp $
+  -->
+
+<beans>
+
+	<bean id="propertyPlaceholderConfigurer"
+		class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+		<property name="location" value="/WEB-INF/classes/cas-client.properties" />
+	</bean>
+	
+   <!-- ======================== FILTER CHAIN =======================
+   	   always casLogoutCallbackFilter must be precedent than channelProcessingFilter
+   -->
+  <bean id="filterChainProxy" class="org.acegisecurity.util.FilterChainProxy">
+    <property name="filterInvocationDefinitionSource">
+      <value>
+        CONVERT_URL_TO_LOWERCASE_BEFORE_COMPARISON
+        PATTERN_TYPE_APACHE_ANT
+        /**=casLogoutCallbackFilter,channelProcessingFilter,httpSessionContextIntegrationFilter,casLogoutFilter,casProcessingFilter,basicProcessingFilter,exceptionTranslationFilter,filterInvocationInterceptor
+  	 </value>
+    </property>
+  </bean>
+
+  <!-- ======================== AUTHENTICATION ======================= -->
+
+  <bean id="authenticationManager" class="org.acegisecurity.providers.ProviderManager">
+    <property name="providers">
+      <list>
+        <ref local="casAuthenticationProvider"/>
+      </list>
+    </property>
+  </bean>
+
+  <!-- An access decision voter that reads ROLE_* configuration settings -->
+  <bean id="roleVoter" class="org.acegisecurity.vote.RoleVoter"/>
+  
+  <bean id="basicProcessingFilter" class="org.acegisecurity.ui.basicauth.BasicProcessingFilter">
+    <property name="authenticationManager"><ref local="authenticationManager"/></property>
+    <property name="authenticationEntryPoint"><ref local="basicProcessingFilterEntryPoint"/></property>
+  </bean>
+
+  <bean id="basicProcessingFilterEntryPoint" class="org.acegisecurity.ui.basicauth.BasicProcessingFilterEntryPoint">
+    <property name="realmName"><value>Websso Client Realm</value></property>
+  </bean>
+
+  <bean id="httpSessionContextIntegrationFilter" class="org.acegisecurity.context.HttpSessionContextIntegrationFilter"/>
+
+  <bean id="casAuthenticationProvider" class="org.acegisecurity.providers.cas.CasAuthenticationProvider">
+		<property name="casAuthoritiesPopulator"><ref local="casAuthoritiesPopulator"/></property>
+		<property name="casProxyDecider"><ref local="casProxyDecider"/></property>
+		<property name="ticketValidator"><ref local="casProxyTicketValidator"/></property>
+		<property name="statelessTicketCache"><ref local="statelessTicketCache"/></property>
+		<property name="key"><value>key</value></property>
+  </bean>
+  <bean id="casProxyTicketValidator"
+		class="org.acegisecurity.providers.cas.ticketvalidator.CasProxyTicketValidator">
+		<property name="casValidate" value="${cas.server.url}/proxyValidate" />
+		<!--<property name="proxyCallbackUrl"
+			value="https://nci-garmillas-1:8443/contacts-cas/casProxy/receptor" /> -->
+		<property name="serviceProperties">
+			<ref local="serviceProperties" />
+		</property>
+		<!--<property name="trustStore">
+			<value>C:/Program Files/Java/jdk1.5.0_15/jre/lib/security/cacerts</value>
+		</property> -->
+   </bean>
+
+  <bean id="cacheManager" class="org.springframework.cache.ehcache.EhCacheManagerFactoryBean"/>
+
+  <bean id="ticketCacheBackend" class="org.springframework.cache.ehcache.EhCacheFactoryBean">
+    <property name="cacheManager"><ref local="cacheManager"/></property>
+    <property name="cacheName" value="ticketCache"/>
+  </bean>
+
+	<bean id="statelessTicketCache" class="org.acegisecurity.providers.cas.cache.EhCacheBasedTicketCache">
+      <property name="cache"><ref local="ticketCacheBackend"/></property>
+	</bean>
+
+	<!-- must be modified accordingly to the client User Detail Service -->
+	<bean id="defaultUserDetailsService" class="org.cagrid.websso.client.acegi.DefaultUserDetailsService" />
+	
+	<bean id="casAuthoritiesPopulator" class="org.cagrid.websso.client.acegi.WebSSOAuthoritiesPopulator">
+		<property name="userDetailsService" ref="defaultUserDetailsService"></property>
+		<property name="hostCertificate" value="${host.credential.certificate}"></property>
+		<property name="hostKey" value="${host.credential.key}"></property>
+	</bean>
+	
+	<bean id="casProxyDecider" class="org.acegisecurity.providers.cas.proxy.RejectProxyTickets"/>
+
+	<bean id="serviceProperties" class="org.acegisecurity.ui.cas.ServiceProperties">
+		<property name="service" value="${cas.client.service}/j_acegi_cas_security_check"/>
+		<property name="sendRenew" value="false"/>
+	</bean>
+
+	<!-- ===================== HTTP CHANNEL REQUIREMENTS ==================== -->
+
+	<!-- Enabled by default for CAS, as a CAS deployment uses HTTPS -->
+	<bean id="channelProcessingFilter" class="org.acegisecurity.securechannel.ChannelProcessingFilter">
+		<property name="channelDecisionManager"><ref local="channelDecisionManager"/></property>
+ 		<property name="filterInvocationDefinitionSource">
+			<value>
+			    CONVERT_URL_TO_LOWERCASE_BEFORE_COMPARISON
+				\A/j_acegi_cas_security_check.*\Z=REQUIRES_SECURE_CHANNEL
+				\A.*\Z=REQUIRES_INSECURE_CHANNEL
+				\A/protected/.*\Z=REQUIRES_SECURE_CHANNEL
+			</value>
+		</property>
+	</bean>
+
+	<bean id="channelDecisionManager" class="org.acegisecurity.securechannel.ChannelDecisionManagerImpl">
+	    <property name="channelProcessors">
+      		<list>
+ 	        	<ref local="secureChannelProcessor"/>
+        		<ref local="insecureChannelProcessor"/>
+     		</list>
+	    </property>
+	</bean>
+	<bean id="portResolverImpl" class="org.acegisecurity.util.PortResolverImpl">
+		<property name="portMapper" ref="portMapperImpl" />
+	</bean>
+	<bean id="portMapperImpl" class="org.acegisecurity.util.PortMapperImpl" singleton="true">
+		<property name="portMappings">
+			<map>
+				<entry key="80">
+					<value>443</value>
+				</entry>
+				<entry key="8080">
+					<value>8443</value>
+				</entry>
+				<entry key="${http.port.number}" value="${https.port.number}">
+				</entry>
+			</map>
+		</property>
+	</bean>
+	<bean id="retryWithHttpsEntryPoint" class="org.acegisecurity.securechannel.RetryWithHttpsEntryPoint">
+		<property name="portMapper" ref="portMapperImpl"></property>
+		<property name="portResolver" ref="portResolverImpl"></property>
+	</bean>
+	<bean id="secureChannelProcessor" class="org.acegisecurity.securechannel.SecureChannelProcessor">
+		<property name="entryPoint" ref="retryWithHttpsEntryPoint" />
+	</bean>
+	<bean id="insecureChannelProcessor" class="org.acegisecurity.securechannel.InsecureChannelProcessor"/>
+
+	<!-- ===================== HTTP REQUEST SECURITY ==================== -->
+	<bean id="exceptionTranslationFilter" class="org.acegisecurity.ui.ExceptionTranslationFilter">
+		<property name="authenticationEntryPoint">
+			<ref local="casProcessingFilterEntryPoint" />
+		</property>
+	</bean>
+
+	<bean id="casProcessingFilter" class="org.acegisecurity.ui.cas.CasProcessingFilter">
+		<property name="authenticationManager"><ref local="authenticationManager"/></property>
+		<property name="authenticationFailureUrl"><value>/accessDenied.jsp</value></property>
+		<property name="defaultTargetUrl"><value>/protected/</value></property>
+		<property name="filterProcessesUrl"><value>/j_acegi_cas_security_check</value></property>
+	</bean>
+
+	<bean id="casProcessingFilterEntryPoint" class="org.acegisecurity.ui.cas.CasProcessingFilterEntryPoint">
+		<property name="loginUrl" value="${cas.server.url}/login" />
+		<property name="serviceProperties"><ref local="serviceProperties"/></property>
+	</bean>
+
+	<bean id="httpRequestAccessDecisionManager" class="org.acegisecurity.vote.AffirmativeBased">
+   		<property name="allowIfAllAbstainDecisions"><value>false</value></property>
+		<property name="decisionVoters">
+		  <list>
+		    <ref bean="roleVoter"/>
+		  </list>
+		</property>
+	</bean>
+
+	<!-- Note the order that entries are placed against the objectDefinitionSource is critical.
+	     The FilterSecurityInterceptor will work from the top of the list down to the FIRST pattern that matches the request URL.
+	     Accordingly, you should place MOST SPECIFIC (ie a/b/c/d.*) expressions first, with LEAST SPECIFIC (ie a/.*) expressions last -->
+	<bean id="filterInvocationInterceptor" class="org.acegisecurity.intercept.web.FilterSecurityInterceptor">
+    	<property name="authenticationManager"><ref local="authenticationManager"/></property>
+    	<property name="accessDecisionManager"><ref local="httpRequestAccessDecisionManager"/></property>
+ 		<property name="objectDefinitionSource">
+			<value>
+			    CONVERT_URL_TO_LOWERCASE_BEFORE_COMPARISON
+				\A/protected/.*\Z=ROLE_DEFAULT
+			</value>
+		</property>
+	</bean>
+
+	<bean id="webssoLogoutHelper" class="org.cagrid.websso.client.acegi.logout.SingleSignoutHelper">
+		<constructor-arg index="0"
+			value="/WEB-INF/classes/cas-client.properties" />
+	</bean>
+	
+	<bean id="casLogoutFilter" class="org.cagrid.websso.client.acegi.logout.SingleSignoutFilter">
+		<property name="filterProcessesUrl" value="/logout"></property>
+		<property name="logoutHandlers">
+			<list>
+				<bean class="org.acegisecurity.ui.logout.SecurityContextLogoutHandler">
+					<property name="invalidateHttpSession">
+						<value>true</value>
+					</property>
+				</bean>
+			</list>
+		</property>
+		<property name="expiredTicketCache">
+			<ref local="expiredTicketCache" />
+		</property>
+		<property name="webssoLogoutHelper">
+			<ref local="webssoLogoutHelper" />
+		</property>
+	</bean>
+	
+	<bean id="casLogoutCallbackFilter" class="org.cagrid.websso.client.acegi.logout.SingleSignoutCallbackFilter">
+		<property name="filterProcessesUrl">
+			<value>/j_acegi_cas_security_check</value>
+		</property>
+		<property name="expiredTicketCache">
+			<ref local="expiredTicketCache" />
+		</property>
+	</bean>
+
+	<bean id="expiredTicketCache" class="org.cagrid.websso.client.acegi.logout.EhCacheBasedExpiredTicketCache">
+		<property name="cache">
+			<bean class="org.springframework.cache.ehcache.EhCacheFactoryBean">
+				<property name="cacheManager">
+					<ref bean="cacheManager" />
+				</property>
+				<property name="cacheName">
+					<value>expiredTicketCache</value>
+				</property>
+			</bean>
+		</property>
+	</bean>
+		
+	<bean
+		class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
+		<property name="targetClass"
+			value="sun.net.www.protocol.https.HttpsURLConnectionImpl" />
+		<property name="targetMethod" value="setDefaultHostnameVerifier" />
+		<property name="arguments">
+			<list>
+				<bean
+					class="org.cagrid.websso.common.WebSSOHostNameVerifier" />
+			</list>
+		</property>
+	</bean>	
+</beans>

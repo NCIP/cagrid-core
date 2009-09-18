@@ -1,0 +1,216 @@
+<project name="installer-scripts">
+
+	<property name="cagrid.home" value="../../../../" />
+	<property name="lib.dir" value="../../lib" />
+
+	<path id="xmltaskdef.cp">
+		<fileset dir="${lib.dir}">
+			<include name="xmltask-v1.14.jar" />
+		</fileset>
+	</path>
+
+	<taskdef name="xmltask"
+		classname="com.oopsconsultancy.xmltask.ant.XmlTask"
+		classpathref="xmltaskdef.cp" />
+
+	<taskdef resource="net/sf/antcontrib/antlib.xml">
+		<classpath>
+			<fileset dir="${cagrid.home}/antfiles/lib">
+				<include name="ant-contrib*.jar" />
+			</fileset>
+		</classpath>
+	</taskdef>
+	
+	<xmlcatalog id="installer.catalog">
+		<dtd 
+			publicId="-//Sun Microsystems, Inc.//DTD Web Application 2.3//EN"
+			location="./resources/web-app_2_3.dtd"/>
+		<dtd 
+			publicId="-//Sun Microsystems, Inc.//DTD JavaServer Faces Config 1.1//EN"
+			location="./resources/web-facesconfig_1_1.dtd"/>
+		<dtd 
+			publicId="-//SPRING//DTD BEAN//EN"
+			location="./resources/spring-beans.dtd"/>
+	</xmlcatalog>
+
+	
+	<target name="globus-deploy-tomcat">
+
+		<property name="target.name" value="deployTomcat" />
+
+		<property name="old.tomcat.build.file"
+			value="${globus.home}/share/globus_wsrf_common/tomcat/tomcat.xml" />
+		<property name="new.tomcat.build.file"
+			value="${globus.home}/share/globus_wsrf_common/tomcat/tomcat-fixed.xml" />
+
+		<xmltask source="${old.tomcat.build.file}"
+			dest="${new.tomcat.build.file}">
+			<attr
+				path="/project/target[@name='_baseTomcatDeploy']/copy[contains(@file, 'web.xml')]"
+				attr="file"
+				value="${globus.home}/share/globus_wsrf_common/tomcat/web.xml" />
+		</xmltask>
+
+		<ant antfile="${new.tomcat.build.file}" dir="." target="${target.name}">
+			<property name="tomcat.dir" value="${tomcat.home}" />
+		</ant>
+	</target>
+
+	<target name="globus-deploy-secure-tomcat">
+		<antcall target="globus-deploy-tomcat">
+			<param name="target.name" value="deploySecureTomcat" />
+		</antcall>
+	</target>
+
+	<target name="fix-secure-web-xml">
+		<antcall target="fix-web-xml">
+			<param name="scheme" value="https" />
+			<param name="port" value="${https.port}" />
+		</antcall>
+	</target>
+
+	<target name="fix-web-xml">
+		<property name="scheme" value="http" />
+		<property name="port" value="${http.port}" />
+		<property name="web.xml.file"
+			value="${tomcat.home}/webapps/wsrf/WEB-INF/web.xml" />
+		<xmltask source="${web.xml.file}" dest="${web.xml.file}">
+			
+			<xmlcatalog refid="installer.catalog"/>
+			
+			<remove
+				path="/web-app/servlet[servlet-name='WSRFServlet']/init-param[param-name='defaultProtocol']" />
+			<remove
+				path="/web-app/servlet[servlet-name='WSRFServlet']/init-param[param-name='defaultPort']" />
+			<insert
+				path="/web-app/servlet[servlet-name='WSRFServlet']/servlet-class"
+				position="after">
+				<![CDATA[
+				         <init-param>
+				<param-name>defaultProtocol</param-name>
+				<param-value>${scheme}</param-value>
+			</init-param>
+			<init-param>
+				<param-name>defaultPort</param-name>
+				<param-value>${port}</param-value>
+			</init-param>
+				]]>
+			</insert>
+		</xmltask>
+	</target>
+
+	<target name="insert-secure-connector">
+		<xmltask source="${tomcat.home}/conf/server.xml"
+			dest="${tomcat.home}/conf/server.xml">
+			<remove
+				path="/Server/Service[@name='Catalina' or @name='jboss.web']/Connector[@scheme='https']" />
+			<insert path="/Server/Service[@name='Catalina' or @name='jboss.web']">
+				<![CDATA[
+				<Connector
+				  className="org.globus.tomcat.coyote.net.HTTPSConnector"
+				  port="${https.port}" maxThreads="150" minSpareThreads="25" maxSpareThreads="75" 
+				  autoFlush="true"
+				  disableUploadTimeout="true" scheme="https"
+			      protocolHandlerClassName="org.apache.coyote.http11.Http11Protocol"
+				  socketFactory="org.globus.tomcat.catalina.net.BaseHTTPSServerSocketFactory"
+				  enableLookups="true" acceptCount="10" debug="0" 
+				   cert="${service.cert.path}"
+				   key="${service.key.path}"/>
+				]]>
+			</insert>
+		</xmltask>
+	</target>
+
+	<target name="insert-valve">
+
+		<xmltask source="${tomcat.home}/conf/server.xml"
+			dest="${tomcat.home}/conf/server.xml">
+			<remove
+				path="/Server/Service[@name='Catalina']/Engine[@name='Catalina' or @name='jboss.web']/Valve[@className='org.globus.tomcat.coyote.valves.HTTPSValve55']" />
+			<insert
+				path="/Server/Service[@name='Catalina']/Engine[@name='Catalina' or @name='jboss.web']">
+				<![CDATA[
+						<Valve className="org.globus.tomcat.coyote.valves.HTTPSValve55"/>
+						]]>
+			</insert>
+		</xmltask>
+	</target>
+
+	<target name="set-global-cert-and-key-paths">
+		<property name="secdesc.file"
+			value="${tomcat.home}/webapps/wsrf/WEB-INF/etc/globus_wsrf_core/global_security_descriptor.xml" />
+		<xmltask source="${secdesc.file}" dest="${secdesc.file}">
+			<remove
+				path="/*[local-name()='securityConfig']/*[local-name()='gridmap']" />
+			<attr
+				path="/*[local-name()='securityConfig']/*[local-name()='credential']/*[local-name()='key-file']"
+				attr="value" value="${service.key.path}" />
+			<attr
+				path="/*[local-name()='securityConfig']/*[local-name()='credential']/*[local-name()='cert-file']"
+				attr="value" value="${service.cert.path}" />
+		</xmltask>
+
+	</target>
+
+	<target name="configure-server-config">
+		<property name="secdesc.file"
+			value="${tomcat.home}/webapps/wsrf/WEB-INF/etc/globus_wsrf_core/server-config.wsdd" />
+		<xmltask source="${secdesc.file}" dest="${secdesc.file}">
+			<remove
+				path="/*[local-name()='deployment']/*[local-name()='globalConfiguration']/*[local-name()='parameter' and @name='logicalHost']" />
+			<remove
+				path="/*[local-name()='deployment']/*[local-name()='globalConfiguration']/*[local-name()='parameter' and @name='publishHostName']" />
+			<insert
+				path="/*[local-name()='deployment']/*[local-name()='globalConfiguration']">
+				<![CDATA[
+<parameter xmlns="http://xml.apache.org/axis/wsdd/" name="logicalHost" value="${service.hostname}"/>
+<parameter xmlns="http://xml.apache.org/axis/wsdd/" name="publishHostName" value="true"/>
+			]]>
+			</insert>
+		</xmltask>
+		<if>
+			<equals arg1="${use.secure.container}" arg2="true"
+				trim="true" />
+			<then>
+				<xmltask source="${secdesc.file}"
+					dest="${secdesc.file}">
+					<remove
+						path="/*[local-name()='deployment']/*[local-name()='globalConfiguration']/*[local-name()='parameter' and @name='containerSecDesc']" />
+					<insert
+						path="/*[local-name()='deployment']/*[local-name()='globalConfiguration']">
+						<![CDATA[
+<parameter xmlns="http://xml.apache.org/axis/wsdd/" name="containerSecDesc" value="${tomcat.home}/webapps/wsrf/WEB-INF/etc/globus_wsrf_core/global_security_descriptor.xml"/>
+			]]>
+					</insert>
+				</xmltask>
+			</then>
+		</if>
+
+	</target>
+
+
+	<target name="configure-tomcat-ports">
+
+		<xmltask source="${tomcat.home}/conf/server.xml"
+			dest="${tomcat.home}/conf/server.xml">
+
+			<attr path="/Server" attr="port"
+				value="${tomcat.shutdown.port}" />
+
+			<attr
+				path="/Server/Service[@name='Catalina' or @name='jboss.web']/Connector[@port='${old.http.port}' and @redirectPort='${old.https.port}']"
+				attr="port" value="${http.port}" />
+
+			<attr
+				path="/Server/Service[@name='Catalina' or @name='jboss.web']/Connector[@port='${http.port}' and @redirectPort='${old.https.port}']"
+				attr="redirectPort" value="${https.port}" />
+
+			<attr
+				path="/Server/Service[@name='Catalina' or @name='jboss.web']/Connector[@scheme='https']"
+				attr="port" value="${https.port}" />
+
+		</xmltask>
+
+	</target>
+
+</project>

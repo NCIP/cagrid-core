@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions name="SDKQuery4_beans" xmlns="http://schemas.xmlsoap.org/wsdl/" >
+	<import location="DomainTypesInformation.xsd"/>
+</definitions>

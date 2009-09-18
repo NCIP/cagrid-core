@@ -1,0 +1,26 @@
+<%@ jet package="gov.nih.nci.cagrid.introduce.templates" class="ProjectTemplate" %>
+<% gov.nih.nci.cagrid.introduce.common.ServiceInformation info = (gov.nih.nci.cagrid.introduce.common.ServiceInformation) argument; 
+   String serviceName = info.getIntroduceServiceProperties().getProperty("introduce.skeleton.service.name");
+   String namespaceDomain = info.getIntroduceServiceProperties().getProperty("introduce.skeleton.namespace.domain");
+   String modifiedServiceName = serviceName;
+   if(serviceName.endsWith("Service")){
+   	modifiedServiceName = serviceName.substring(0,serviceName.length()-7);
+   }
+%>
+<?xml version="1.0" encoding="UTF-8"?>
+<projectDescription>
+	<name><%=serviceName%></name>
+	<comment></comment>
+	<projects>
+	</projects>
+	<buildSpec>
+		<buildCommand>
+			<name>org.eclipse.jdt.core.javabuilder</name>
+			<arguments>
+			</arguments>
+		</buildCommand>
+	</buildSpec>
+	<natures>
+		<nature>org.eclipse.jdt.core.javanature</nature>
+	</natures>
+</projectDescription>

@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+
+<ivy-module version="2.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:noNamespaceSchemaLocation="http://incubator.apache.org/ivy/schemas/ivy.xsd">
+
+	<info organisation="wizard-framework" module="wizard-framework" revision="0.1.12">
+		<license name="LGPL" url="http://www.gnu.org/copyleft/lesser.html"/>
+		<description homepage="https://wizard-framework.dev.java.net/">A Swing wizard library for
+			Java based on a WizardModel and a number of WizardSteps. The library comes with three
+			models that can be extended, they are as follows. * StaticModel - The most basic model.
+			* DynamicModel - Similar to the static model, except that steps can be skiped
+			dynamically at runtime based on the users response. * MultiPathModel - The most complex
+			model, similar to the dynamic model, except that steps are grouped into paths, and paths
+			are linked together. </description>
+	</info>
+	<publications>
+		<artifact name="wizard"/>
+	</publications>
+</ivy-module>

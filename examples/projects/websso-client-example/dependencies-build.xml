@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+
+<project name="dependencies" basedir="." xmlns:ivy="antlib:org.apache.ivy.ant">
+	<property file="project.properties" />
+	
+	<property name="ivy.resolve.configurations" value="default" />
+	
+	<property name="ivy-shared-targets.file" location="${basedir}/../../../caGrid/antfiles/ivy/ivy-shared-targets.xml" />
+	<import file="${ivy-shared-targets.file}" />
+	<target name="do.resolve-dependencies" depends="pre.resolve-dependencies">
+		<ivy:retrieve conf="default" pattern="${ivy.resolved.artifacts.dir}/dependencies/[type]s/[originalname](.[ext])"  type="jar" />
+		<ivy:retrieve conf="default" pattern="${ivy.resolved.artifacts.dir}/dependencies-xml-resources/[type]s/[originalname](.[ext])"  type="xml" />
+		<ivy:retrieve conf="default" pattern="${ivy.resolved.artifacts.dir}/dependencies-properties/[type]/[originalname](.[ext])"  type="properties" />
+		<ivy:retrieve conf="default" pattern="${ivy.resolved.artifacts.dir}/dependencies-cert/[type]/[originalname](.[ext])"  type="cert" />	
+	</target>
+	
+</project>
+

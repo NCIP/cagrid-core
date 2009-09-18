@@ -1,0 +1,11 @@
+<ns1:DCQLQuery xmlns:ns1="http://caGrid.caBIG/1.0/gov.nih.nci.cagrid.dcql">
+ <ns1:TargetObject name="gov.nih.nci.cacoresdk.domain.onetoone.unidirectional.Address">
+  <ns1:ForeignAssociation targetServiceURL="DATA_SERVICE_2">
+   <ns1:JoinCondition foreignAttributeName="id" localAttributeName="id" predicate="EQUAL_TO"/>
+   <ns1:ForeignObject name="gov.nih.nci.cacoresdk.domain.onetoone.unidirectional.Person"/>
+  </ns1:ForeignAssociation>
+ </ns1:TargetObject>
+ <ns1:targetServiceURL>DATA_SERVICE_1</ns1:targetServiceURL>
+ <!-- will be replaced with a BAD (non-existant, known-failing, etc) data service URL, which will cause failure -->
+ <ns1:targetServiceURL>DATA_SERVICE_BAD</ns1:targetServiceURL>
+</ns1:DCQLQuery>

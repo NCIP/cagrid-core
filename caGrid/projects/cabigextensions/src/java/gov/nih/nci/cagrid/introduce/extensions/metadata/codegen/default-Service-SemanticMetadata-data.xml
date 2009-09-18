@@ -1,0 +1,14 @@
+<ns1:ServiceMetadata xsi:type="ns1:ServiceMetadata" xmlns:ns1="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+    <ns1:serviceDescription>
+        <serv:Service xmlns:serv="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.service"
+            xmlns:com="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common">
+            <com:SemanticMetadata conceptCode="C63541" conceptName="Grid Service"
+                conceptDefinition="A service available on a system that coordinates resources that are not subject to central control, using open, general purpose protocols and interfaces to deliver nontrivial qualities of services."
+                order="0"/>
+            <com:SemanticMetadata conceptCode="C63544" conceptName="Data Grid Service"
+                conceptDefinition="A web service which accepts as input a query targeted at a data resource addressable by the system and returns information to the client in the form of one or more data objects."
+                order="1"/>
+        </serv:Service>
+    </ns1:serviceDescription>
+</ns1:ServiceMetadata>

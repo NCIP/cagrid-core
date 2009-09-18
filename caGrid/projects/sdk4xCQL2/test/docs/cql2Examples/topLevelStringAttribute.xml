@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CQLQuery xmlns="http://CQL.caBIG/2/gov.nih.nci.cagrid.cql.Components" xmlns:assoc="http://CQL.caBIG/2/gov.nih.nci.cagrid.cql.AssociationPopulationSpec" xmlns:att="http://CQL.caBIG/2/gov.nih.nci.cagrid.cql.Attribute" xmlns:mods="http://CQL.caBIG/2/gov.nih.nci.cagrid.cql.Modifiers" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+	<CQLTargetObject className="gov.nih.nci.cacoresdk.domain.onetomany.bidirectional.Computer">
+		<att:BinaryCQLAttribute name="type">
+			<att:Predicate>EQUAL_TO</att:Predicate>
+			<att:AttributeValue>
+				<att:StringValue>Computer_Type1</att:StringValue>
+			</att:AttributeValue>
+		</att:BinaryCQLAttribute>
+	</CQLTargetObject>
+</CQLQuery>

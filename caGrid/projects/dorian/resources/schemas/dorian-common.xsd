@@ -1,0 +1,29 @@
+<xsd:schema targetNamespace="http://cagrid.nci.nih.gov/1/dorian-common"
+	attributeFormDefault="qualified"
+	elementFormDefault="qualified"
+	xmlns:xsd="http://www.w3.org/2001/XMLSchema" 
+	xmlns:dorian="http://cagrid.nci.nih.gov/1/dorian-common">
+
+		<xsd:element name="SAMLAssertion" type="dorian:SAMLAssertion"/>
+	     <xsd:complexType name="SAMLAssertion">
+			<xsd:sequence>
+				<xsd:element name="xml" minOccurs="1" maxOccurs="1" type="xsd:string"/>
+			</xsd:sequence>
+		</xsd:complexType>
+		
+		<xsd:element name="X509Certificate" type="dorian:X509Certificate"/>
+		<xsd:complexType name="X509Certificate">
+			<xsd:sequence>
+				<xsd:element name="certificateAsString" minOccurs="1" maxOccurs="1" type="xsd:string"/>
+			</xsd:sequence>
+		</xsd:complexType>
+		
+		<xsd:element name="Metadata" type="dorian:Metadata"/>
+	     <xsd:complexType name="Metadata">
+			<xsd:sequence>
+				<xsd:element name="name" type="xsd:string"/>
+				<xsd:element name="description" type="xsd:string"/>
+				<xsd:element name="value" type="xsd:string"/>
+			</xsd:sequence>
+	    </xsd:complexType>
+</xsd:schema>

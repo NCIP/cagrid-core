@@ -1,0 +1,395 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<application xmlns="http://www.cagrid.org/1/grape"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.cagrid.org/1/grape file:/C:/projects/cagrid-1-0/caGrid/projects/grape/schema/grape.xsd">
+	<name>GAARDS</name>
+	<icon>/caGrid-icon-22x22.gif</icon>
+	<ApplicationLogo>/caGrid.gif</ApplicationLogo>
+	<AboutHTML><![CDATA[<html><h3>Grid Authentication and Authorization with Reliably Distributed Services (GAARDS)</h3>GAARDS provides services (Dorian, GTS, Grid Grouper) and tools for the administration and enforcement<BR>of security policy in enterprise Grids.  GAARDS was developed on top of the Globus Toolkit and extends<BR>the Grid Security Infrastructure (GSI) to provide enterprise services and administrative tools for:<BR>1) grid user management, 2) identity federation, 3) trust management, 4) group/VO management 5) Access<BR>Control Policy management and enforcement, and 5) Integration between existing security domains<BR>and the grid security domain. GAARDS services can be used individually or grouped together to meet the<BR> authentication and authorization needs for Grids.  GAARDS was developed as part of the caGrid project<BR>to meet the needs of the caBIG community.  For more information on GAARDS or caGrid please visit us at:<BR> <A HREF="http://www.cagrid.org">http://www.cagrid.org</a></html>]]></AboutHTML>
+	<dimensions>
+		<width>1024</width>
+		<height>768</height>
+	</dimensions>
+	 <PostInitializerClass>org.cagrid.gaards.ui.common.GAARDSUIInitializer</PostInitializerClass>
+	 <configurationSynchronizerClass>org.cagrid.gaards.ui.common.GAARDSConfigurationSynchronizer</configurationSynchronizerClass>
+	<menus>
+		<menu>
+			<title>My Account</title>
+			<description>tools</description>
+			<showIcons>true</showIcons>
+			<components>
+				<component>
+					<title>Login</title>
+					<description>Obtain Grid Credentials!!!</description>
+					<classname>org.cagrid.gaards.ui.dorian.federation.LoginWindow</classname>
+					<icon>/login.png</icon>
+					<showOnToolBar>true</showOnToolBar>
+					<dimensions>
+						<width>550</width>
+						<height>350</height>
+					</dimensions>
+				</component>
+				<component>
+					<title>Credential Manager</title>
+					<description>Allows the management of grid proxy credentials.</description>
+					<classname>org.cagrid.gaards.ui.common.CredentialManagerComponent</classname>
+					<icon>/certificate.png</icon>
+					<showOnToolBar>true</showOnToolBar>
+					<dimensions>
+						<width>800</width>
+						<height>500</height>
+					</dimensions>
+				</component>
+				<component>
+					<title>My Groups</title>
+					<description>View the groups in which you are a member of.</description>
+					<classname>org.cagrid.gaards.ui.gridgrouper.mygroups.MyGroupsWindow</classname>
+					<icon>/grouper_logo_no_background_22x22.png</icon>
+					<showOnToolBar>true</showOnToolBar>
+					<dimensions>
+						<width>800</width>
+						<height>300</height>
+					</dimensions>
+				</component>
+				<component>
+					<title>Delegate Credential</title>
+					<description>Allows one to delegate their credential</description>
+					<classname>org.cagrid.gaards.ui.cds.DelegateProxyWindowStep1</classname>
+					<icon>/delegate-credential.png</icon>
+					<showOnToolBar>false</showOnToolBar>
+					<dimensions>
+						<width>625</width>
+						<height>350</height>
+					</dimensions>
+				</component>
+				<component>
+					<title>Get Delegated Credential</title>
+					<description>Allows one obtain a credential delegated to them.</description>
+					<classname>org.cagrid.gaards.ui.cds.GetDelegatedCredentialWindow</classname>
+					<icon>/delegated-credential.png</icon>
+					<showOnToolBar>false</showOnToolBar>
+					<dimensions>
+						<width>800</width>
+						<height>300</height>
+					</dimensions>
+				</component>
+				<component>
+					<title>My Delegated Credentials</title>
+					<description>Allows one to view the credentials they delegated.</description>
+					<classname>org.cagrid.gaards.ui.cds.FindMyDelegatedCredentialsWindow</classname>
+					<icon>/delegate-credentials.png</icon>
+					<showOnToolBar>false</showOnToolBar>
+					<dimensions>
+						<width>800</width>
+						<height>500</height>
+					</dimensions>
+				</component>
+				<component>
+					<title>Request Host Certificate</title>
+					<description>Allows a user to request a host ceritficate from Dorian.</description>
+					<classname>org.cagrid.gaards.ui.dorian.federation.RequestHostCertificateWindow</classname>
+					<icon>/computer.png</icon>
+					<showOnToolBar>false</showOnToolBar>
+					<dimensions>
+						<width>500</width>
+						<height>375</height>
+					</dimensions>
+				</component>
+				<component>
+					<title>My Host Certificates</title>
+					<description>Allows a user to obtain the host certificates in which they own.</description>
+					<classname>org.cagrid.gaards.ui.dorian.federation.MyHostCertificatesWindow</classname>
+					<icon>/computers.png</icon>
+					<showOnToolBar>false</showOnToolBar>
+				</component>
+				<component>
+					<title>Download CA Certificate(s)</title>
+					<description>Download the Dorian CA certificate.</description>
+					<classname>org.cagrid.gaards.ui.dorian.federation.ViewCACertificateWindow</classname>
+					<icon>/download.png</icon>
+					<showOnToolBar>false</showOnToolBar>
+					<dimensions>
+						<width>625</width>
+						<height>200</height>
+					</dimensions>
+				</component>
+			</components>
+		</menu>
+		<menu>
+			<title>Account Management</title>
+			<description>tools</description>
+			<showIcons>false</showIcons>
+			<submenus>
+				<menu>
+					<title>Grid Account Management</title>
+					<description>tools</description>
+					<showIcons>true</showIcons>
+					<components>
+						<component>
+							<title>Grid User Management</title>
+							<description>Manage Grid User Accounts</description>
+							<classname>org.cagrid.gaards.ui.dorian.federation.UserManagerWindow</classname>
+							<icon>/users.png</icon>
+							<showOnToolBar>false</showOnToolBar>
+							<dimensions>
+								<width>800</width>
+								<height>650</height>
+							</dimensions>
+						</component>
+						<component>
+							<title>Host Certificate Management</title>
+							<description>Manage Host Certificates</description>
+							<classname>org.cagrid.gaards.ui.dorian.federation.HostCertificatesWindow</classname>
+							<icon>/computers.png</icon>
+							<showOnToolBar>false</showOnToolBar>
+							<dimensions>
+								<width>800</width>
+								<height>650</height>
+							</dimensions>
+						</component>
+						<component>
+							<title>Trusted Identity Provider(s)</title>
+							<description>Trusted Identity Provider(s)</description>
+							<classname>org.cagrid.gaards.ui.dorian.federation.TrustedIdPsWindow</classname>
+							<icon>/trusted-idp.png</icon>
+							<showOnToolBar>false</showOnToolBar>
+								<dimensions>
+								<width>700</width>
+								<height>500</height>
+							</dimensions>
+						</component>
+							<component>
+							<title>Auditing</title>
+							<description>Perform Audit</description>
+							<classname>org.cagrid.gaards.ui.dorian.federation.FederationAuditSearchWindow</classname>
+							<icon>/auditing.png</icon>
+							<showOnToolBar>false</showOnToolBar>
+						</component>
+						<component>
+							<title>Access Control</title>
+							<description>Account Access Control</description>
+							<classname>org.cagrid.gaards.ui.dorian.federation.AdministratorsWindow</classname>
+							<icon>/preferences-desktop-theme.png</icon>
+							<showOnToolBar>false</showOnToolBar>
+							<dimensions>
+								<width>600</width>
+								<height>400</height>
+							</dimensions>
+						</component>
+					</components>
+				</menu>
+				<menu>
+					<title>Delegation Management</title>
+					<description>tools</description>
+					<showIcons>true</showIcons>
+					<components>
+						<component>
+							<title>Manage Delegated Credentials</title>
+							<description>Allows one to view delegated credentials.</description>
+							<classname>org.cagrid.gaards.ui.cds.FindDelegatedCredentialsWindow</classname>
+							<icon>/delegate-credentials.png</icon>
+							<showOnToolBar>false</showOnToolBar>
+							<dimensions>
+								<width>800</width>
+								<height>600</height>
+							</dimensions>
+						</component>
+						<component>
+							<title>Access Control</title>
+							<description>Delegation Access Control</description>
+							<classname>org.cagrid.gaards.ui.cds.AdministratorsWindow</classname>
+							<icon>/preferences-desktop-theme.png</icon>
+							<showOnToolBar>false</showOnToolBar>
+							<dimensions>
+								<width>600</width>
+								<height>400</height>
+							</dimensions>
+						</component>
+					</components>
+				</menu>
+				<menu>
+					<title>Local Accounts</title>
+					<description>Tools for registering and managing local Dorian accounts.</description>
+					<showIcons>true</showIcons>
+					<components>
+						<component>
+							<title>Registration</title>
+							<description>Register with a Dorian for a local account.</description>
+							<classname>org.cagrid.gaards.ui.dorian.idp.ApplicationWindow</classname>
+							<icon>/application.png</icon>
+							<showOnToolBar>false</showOnToolBar>
+							<dimensions>
+								<width>700</width>
+								<height>650</height>
+							</dimensions>
+						</component>
+						<component>
+							<title>Change Password</title>
+							<description>Allows a Dorian IdP user to change their password.</description>
+							<classname>org.cagrid.gaards.ui.dorian.idp.ChangePasswordWindow</classname>
+							<icon>/password.png</icon>
+							<showOnToolBar>false</showOnToolBar>
+							<dimensions>
+								<width>650</width>
+								<height>300</height>
+							</dimensions>
+						</component>
+						<component>
+							<title>Local Account Management</title>
+							<description>Local Account Management</description>
+							<classname>org.cagrid.gaards.ui.dorian.idp.UserManagerWindow</classname>
+							<icon>/users.png</icon>
+							<showOnToolBar>false</showOnToolBar>
+							<dimensions>
+								<width>800</width>
+								<height>650</height>
+							</dimensions>
+						</component>
+						<component>
+							<title>Auditing</title>
+							<description>Perform Audit</description>
+							<classname>org.cagrid.gaards.ui.dorian.idp.IdentityProviderAuditSearchWindow</classname>
+							<icon>/auditing.png</icon>
+							<showOnToolBar>false</showOnToolBar>
+						</component>
+					</components>
+				</menu>
+			</submenus>
+		</menu>
+		<menu>
+			<title>Trust Fabric</title>
+			<description>tools</description>
+			<showIcons>true</showIcons>
+			<components>
+				<component>
+					<title>Certificate Authorities</title>
+					<description>Administer the certificate authorities that are trusted in the trust fabric.</description>
+					<classname>org.cagrid.gaards.ui.gts.TrustedAuthoritiesWindow</classname>
+					<icon>/certificate-authority.png</icon>
+					<showOnToolBar>false</showOnToolBar>
+				</component>
+				<component>
+					<title>Levels of Assurance</title>
+					<description>Administer the levels of assurance for the trust fabric.</description>
+					<classname>org.cagrid.gaards.ui.gts.LevelOfAssuranceManagerWindow</classname>
+					<icon>/trust_level.png</icon>
+					<showOnToolBar>false</showOnToolBar>
+				</component>
+				<component>
+					<title>Trust Federation</title>
+					<description>Administer the GTS federation.</description>
+					<classname>org.cagrid.gaards.ui.gts.AuthorityManagerWindow</classname>
+					<icon>/trust-fabric.png</icon>
+					<showOnToolBar>false</showOnToolBar>
+				</component>
+				<component>
+					<title>Access Control</title>
+					<description>Grant and Revoke rights to users for administering the trust fabric.</description>
+					<classname>org.cagrid.gaards.ui.gts.PermissionManagerWindow</classname>
+					<icon>/preferences-desktop-theme.png</icon>
+					<showOnToolBar>false</showOnToolBar>
+				</component>
+			</components>
+		</menu>
+		<menu>
+			<title>Group Management</title>
+			<description>Browsing and Administration of groups.</description>
+			<showIcons>true</showIcons>
+			<components>
+				<component>
+					<title>Group Browser</title>
+					<description>Browsing and Administration of groups.</description>
+					<classname>org.cagrid.gaards.ui.gridgrouper.browser.GroupManagementBrowser</classname>
+					<icon>/grouper_logo_no_background_22x22.png</icon>
+					<showOnToolBar>false</showOnToolBar>
+					<dimensions>
+						<width>1000</width>
+						<height>675</height>
+					</dimensions>
+				</component>
+			</components>
+		</menu>
+	</menus>
+	<configuration>
+		<ConfigurationGroups>
+			<ConfigurationGroup>
+				<name>User Management</name>
+				<ConfigurationDescriptors>
+					<ConfigurationDescriptor>
+						<DisplayName>Dorian</DisplayName>
+						<SystemName>dorian</SystemName>
+						<ModelClassname>org.cagrid.grape.configuration.ServiceConfiguration</ModelClassname>
+						<qname>
+							<namespace>http://www.cagrid.org/1/grape-service-configuration</namespace>
+							<name>ServiceConfiguration</name>
+						</qname>
+						<ConfigurationPanel>org.cagrid.grape.ServiceConfigurationEditor</ConfigurationPanel>
+						<DefaultFile>ext/target_grid/dorian-services-configuration.xml</DefaultFile>
+					</ConfigurationDescriptor>
+					<ConfigurationDescriptor>
+						<DisplayName>Authentication Service(s)</DisplayName>
+						<SystemName>authentication-service</SystemName>
+						<ModelClassname>org.cagrid.grape.configuration.ServiceConfiguration</ModelClassname>
+						<qname>
+							<namespace>http://www.cagrid.org/1/grape-service-configuration</namespace>
+							<name>ServiceConfiguration</name>
+						</qname>
+						<ConfigurationPanel>org.cagrid.grape.ServiceConfigurationEditor</ConfigurationPanel>
+						<DefaultFile>ext/target_grid/authentication-services-configuration.xml</DefaultFile>
+					</ConfigurationDescriptor>
+				</ConfigurationDescriptors>
+			</ConfigurationGroup>
+			<ConfigurationGroup>
+				<name>Delegation</name>
+				<ConfigurationDescriptors>
+					<ConfigurationDescriptor>
+						<DisplayName>Delegation Service(s)</DisplayName>
+						<SystemName>cds</SystemName>
+			    		<ModelClassname>org.cagrid.grape.configuration.ServiceConfiguration</ModelClassname>
+			    		<qname>
+							<namespace>http://www.cagrid.org/1/grape-service-configuration</namespace>
+							<name>ServiceConfiguration</name>
+						</qname>
+						<ConfigurationPanel>org.cagrid.grape.ServiceConfigurationEditor</ConfigurationPanel>
+						<DefaultFile>ext/target_grid/cds-services-configuration.xml</DefaultFile>
+					</ConfigurationDescriptor>
+				</ConfigurationDescriptors>
+			</ConfigurationGroup>
+				<ConfigurationGroup>
+				<name>Trust Fabric</name>
+				<ConfigurationDescriptors>
+					<ConfigurationDescriptor>
+						<DisplayName>Grid Trust Service(s)</DisplayName>
+						<SystemName>gts</SystemName>
+			    		<ModelClassname>org.cagrid.grape.configuration.ServiceConfiguration</ModelClassname>
+			    		<qname>
+							<namespace>http://www.cagrid.org/1/grape-service-configuration</namespace>
+							<name>ServiceConfiguration</name>
+						</qname>
+						<ConfigurationPanel>org.cagrid.grape.ServiceConfigurationEditor</ConfigurationPanel>
+						<DefaultFile>ext/target_grid/gts-services-configuration.xml</DefaultFile>
+					</ConfigurationDescriptor>
+				</ConfigurationDescriptors>
+			</ConfigurationGroup>
+				<ConfigurationGroup>
+				<name>Group Management</name>
+				<ConfigurationDescriptors>
+					<ConfigurationDescriptor>
+						<DisplayName>Grid Grouper Service(s)</DisplayName>
+						<SystemName>gridgrouper</SystemName>
+			    		<ModelClassname>org.cagrid.grape.configuration.ServiceConfiguration</ModelClassname>
+			    		<qname>
+							<namespace>http://www.cagrid.org/1/grape-service-configuration</namespace>
+							<name>ServiceConfiguration</name>
+						</qname>
+						<ConfigurationPanel>org.cagrid.grape.ServiceConfigurationEditor</ConfigurationPanel>
+						<DefaultFile>ext/target_grid/gridgrouper-services-configuration.xml</DefaultFile>
+					</ConfigurationDescriptor>
+				</ConfigurationDescriptors>
+			</ConfigurationGroup>
+		</ConfigurationGroups>
+		<ConfigurationDescriptors>
+			
+		</ConfigurationDescriptors>
+	</configuration>
+</application>

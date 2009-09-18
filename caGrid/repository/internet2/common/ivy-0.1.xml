@@ -1,0 +1,38 @@
+<?xml version="1.0"?>
+
+<ivy-module version="2.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:noNamespaceSchemaLocation="http://incubator.apache.org/ivy/schemas/ivy.xsd">
+
+    <info organisation="internet2" module="common" revision="0.1">
+        <license name="Apache" url="http://www.apache.org/licenses/LICENSE-2.0.txt"/>
+        <description homepage="http://code.google.com/p/i2mi-common/">i2mi-common is container for
+            shared resources across Internet2 Middleware projects.</description>
+    </info>
+
+    <configurations>
+        <!-- Public Configurations-->
+        <conf name="default" visibility="public"/>
+        <conf name="bundled" visibility="public"/>
+    </configurations>
+
+
+    <publications>
+        <artifact name="i2mi-common-0.1.0" type="jar" conf="bundled"/>
+    </publications>
+
+    <dependencies>
+        <dependency rev="2.1_3" org="cglib" name="cglib" conf="default->full"/>
+        <dependency rev="1.7.0" org="apache" name="commons-beanutils" conf="default->core"/>
+        <!-- NOTE: could just use the beanutils with collections conf, but it is modeled for 3.1, and i2 needs 3.2 -->
+        <dependency rev="3.2" org="apache" name="commons-collections" conf="default->*"/>
+        <dependency rev="1.2.1" org="apache" name="commons-dbcp" conf="default->*"/>
+        <!-- NOTE: commented out because compatible versions come with globus (need to make a separate conf that includes these)
+            <dependency rev="1.7" org="apache" name="commons-digester" conf="default->*"/>
+            <dependency rev="1.1" org="apache" name="commons-logging" conf="default->*"/>
+            <dependency rev="4.1" org="junit" name="junit" conf="default->*"/>
+        -->
+        <dependency rev="1.3" org="apache" name="commons-pool" conf="default->*"/>
+        <dependency rev="1.6.1" org="dom4j" name="dom4j" conf="default->*"/>
+        <dependency rev="3.0" org="odmg" name="odmg" conf="default->*"/>
+    </dependencies>
+</ivy-module>

@@ -1,0 +1,186 @@
+<xsd:schema targetNamespace="http://cagrid.nci.nih.gov/1/dorian-ifs"
+	attributeFormDefault="qualified"
+	elementFormDefault="qualified"
+	xmlns:xsd="http://www.w3.org/2001/XMLSchema" 
+	xmlns:dorian="http://cagrid.nci.nih.gov/1/dorian-common"
+	xmlns:ifs="http://cagrid.nci.nih.gov/1/dorian-ifs"
+	xmlns:wsbf="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-BaseFaults-1.2-draft-01.xsd">
+	
+	<xsd:element name="TrustedIdP" type="ifs:TrustedIdP"/>
+	  
+	  <xsd:complexType name="TrustedIdP">
+			<xsd:sequence>
+			    <xsd:element name="id" type="xsd:long"/>
+			    <xsd:element name="name" type="xsd:string"/>
+			    <xsd:element name="status" type="ifs:TrustedIdPStatus"/>
+				<xsd:element name="UserPolicyClass" type="xsd:string"/>
+				<xsd:element name="IdPCertificate" type="xsd:string"/>
+				<xsd:element name="AuthenticationMethod" minOccurs="0" maxOccurs="unbounded" type="ifs:SAMLAuthenticationMethod"/>	
+			    <xsd:element name="UserIdAttributeDescriptor" type="ifs:SAMLAttributeDescriptor"/>
+			    <xsd:element name="FirstNameAttributeDescriptor" type="ifs:SAMLAttributeDescriptor"/>
+			    <xsd:element name="LastNameAttributeDescriptor" type="ifs:SAMLAttributeDescriptor"/>
+			    <xsd:element name="EmailAttributeDescriptor" type="ifs:SAMLAttributeDescriptor"/>
+			</xsd:sequence>
+	    </xsd:complexType>
+	    
+
+	    <xsd:complexType name="SAMLAttributeDescriptor">
+			<xsd:sequence>
+			    <xsd:element name="NamespaceURI" type="xsd:string"/>
+			    <xsd:element name="Name" type="xsd:string"/>
+			</xsd:sequence>
+	    </xsd:complexType>
+	    
+	    
+	    
+	    <xsd:element name="IFSUser" type="ifs:IFSUser"/>
+	    <xsd:complexType name="IFSUser">
+			<xsd:sequence>
+			    <xsd:element name="IdPId" type="xsd:long"/>
+			    <xsd:element name="UID" type="xsd:string"/>
+				<xsd:element name="gridId" type="xsd:string"/>
+				<xsd:element name="firstName" type="xsd:string"/>
+				<xsd:element name="lastName" type="xsd:string"/>
+				<xsd:element name="email" type="xsd:string"/>
+			    <xsd:element name="userStatus" type="ifs:IFSUserStatus"/>
+			    <xsd:element name="certificate" type="dorian:X509Certificate"/>	
+			</xsd:sequence>
+	    </xsd:complexType>
+	    
+	    <xsd:element name="IFSUserFilter" type="ifs:IFSUserFilter"/>
+	    <xsd:complexType name="IFSUserFilter">
+			<xsd:sequence>
+			    <xsd:element name="IdPId" type="xsd:long"/>
+			    <xsd:element name="UID" type="xsd:string"/>
+				<xsd:element name="gridId" type="xsd:string"/>
+				<xsd:element name="firstName" type="xsd:string"/>
+				<xsd:element name="lastName" type="xsd:string"/>
+				<xsd:element name="email" type="xsd:string"/>
+			    <xsd:element name="userStatus" type="ifs:IFSUserStatus"/>
+			    			</xsd:sequence>
+	    </xsd:complexType>
+	    
+	     <xsd:element name="ProxyLifetime" type="ifs:ProxyLifetime"/>
+	    <xsd:complexType name="ProxyLifetime">
+			<xsd:sequence>
+			    <xsd:element name="hours" type="xsd:int"/>
+			    <xsd:element name="minutes" type="xsd:int"/>
+			    <xsd:element name="seconds" type="xsd:int"/>
+			</xsd:sequence>
+	    </xsd:complexType>
+	    
+	     <xsd:element name="DelegationPathLength" type="ifs:DelegationPathLength"/>
+	    <xsd:complexType name="DelegationPathLength">
+			<xsd:sequence>
+			    <xsd:element name="length" type="xsd:int"/>
+			</xsd:sequence>
+	    </xsd:complexType>
+	    
+	     <xsd:simpleType name="IFSUserStatus">
+  			<xsd:restriction base="xsd:string">
+   				<xsd:enumeration value="Active"/>
+   				<xsd:enumeration value="Suspended"/>
+   				<xsd:enumeration value="Expired"/>
+   				<xsd:enumeration value="Pending"/>
+   				<xsd:enumeration value="Rejected"/>
+  			</xsd:restriction>
+ 		 </xsd:simpleType>
+ 		 
+ 		
+ 		 
+ 		  <xsd:simpleType name="TrustedIdPStatus">
+  			<xsd:restriction base="xsd:string">
+   				<xsd:enumeration value="Active"/>
+   				<xsd:enumeration value="Suspended"/>
+  			</xsd:restriction>
+ 		 </xsd:simpleType>
+ 		 
+	    
+
+	  <xsd:simpleType name="SAMLAuthenticationMethod">
+  			<xsd:restriction base="xsd:string">
+   				<xsd:enumeration value="urn:oasis:names:tc:SAML:1.0:am:password"/>
+   				<xsd:enumeration value="urn:ietf:rfc:1510"/>
+   				<xsd:enumeration value="urn:ietf:rfc:2945"/>
+   				<xsd:enumeration value="urn:oasis:names:tc:SAML:1.0:am:HardwareToken"/>
+   				<xsd:enumeration value="urn:ietf:rfc:2246"/>
+   				<xsd:enumeration value="urn:oasis:names:tc:SAML:1.0:am:X509-PKI"/>
+   				<xsd:enumeration value="urn:oasis:names:tc:SAML:1.0:am:PGP"/>
+   				<xsd:enumeration value="urn:oasis:names:tc:SAML:1.0:am:SPKI"/>			
+   				<xsd:enumeration value="urn:oasis:names:tc:SAML:1.0:am:XKMS"/>
+   				<xsd:enumeration value="urn:ietf:rfc:3075"/>
+   				<xsd:enumeration value="urn:oasis:names:tc:SAML:1.0:am:unspecified"/>				
+  			</xsd:restriction>
+ 	  </xsd:simpleType>
+ 	  
+ 	  <xsd:element name="PublicKey" type="ifs:PublicKey"/>
+ 	  	<xsd:complexType name="PublicKey">
+			<xsd:sequence>
+				<xsd:element name="keyAsString" minOccurs="1" maxOccurs="1" type="xsd:string"/>
+			</xsd:sequence>
+		</xsd:complexType>
+	
+	
+	<xsd:element name="IFSUserPolicy" type="ifs:IFSUserPolicy"/>
+		<xsd:complexType name="IFSUserPolicy">
+			<xsd:sequence>
+				<xsd:element name="name" minOccurs="1" maxOccurs="1" type="xsd:string"/>
+				<xsd:element name="className" minOccurs="1" maxOccurs="1" type="xsd:string"/>
+			</xsd:sequence>
+	</xsd:complexType>
+	 
+	 <xsd:element name="HostCertificateRequest" type="ifs:HostCertificateRequest"/>
+	    <xsd:complexType name="HostCertificateRequest">
+			<xsd:sequence>
+			    <xsd:element name="Hostname" type="xsd:string"/>
+			    <xsd:element name="PublicKey" type="ifs:PublicKey"/>
+			</xsd:sequence>
+	    </xsd:complexType>
+	    
+	    <xsd:element name="HostCertificateRecord" type="ifs:HostCertificateRecord"/>
+	    <xsd:complexType name="HostCertificateRecord">
+			<xsd:sequence>
+			    <xsd:element name="Id" type="xsd:int"/>
+			    <xsd:element name="SerialNumber" type="xsd:long"/>
+			    <xsd:element name="Host" type="xsd:string"/>
+			    <xsd:element name="Subject" type="xsd:string"/>
+			    <xsd:element name="Owner" type="xsd:string"/>
+			    <xsd:element name="Status" type="ifs:HostCertificateStatus"/>
+			    <xsd:element name="Certificate" type="dorian:X509Certificate"/>
+			    <xsd:element name="PublicKey" type="ifs:PublicKey"/>
+			</xsd:sequence>
+	    </xsd:complexType>
+	    
+	    <xsd:element name="HostCertificateFilter" type="ifs:HostCertificateFilter"/>
+	    <xsd:complexType name="HostCertificateFilter">
+			<xsd:sequence>
+			    <xsd:element name="Id" type="xsd:integer"/>
+			    <xsd:element name="SerialNumber" type="xsd:integer"/>
+			    <xsd:element name="Host" type="xsd:string"/>
+			    <xsd:element name="Subject" type="xsd:string"/>
+			    <xsd:element name="Owner" type="xsd:string"/>
+			    <xsd:element name="Status" type="ifs:HostCertificateStatus"/>
+<xsd:element name="IsExpired" minOccurs="0" maxOccurs="1" type="xsd:boolean"/>
+			</xsd:sequence>
+	    </xsd:complexType>
+	    
+	    <xsd:element name="HostCertificateUpdate" type="ifs:HostCertificateUpdate"/>
+	    <xsd:complexType name="HostCertificateUpdate">
+			<xsd:sequence>
+			    <xsd:element name="Id" type="xsd:long"/>
+			    <xsd:element name="Owner" type="xsd:string"/>
+			    <xsd:element name="Status" type="ifs:HostCertificateStatus"/>
+			</xsd:sequence>
+	    </xsd:complexType>
+	
+	  <xsd:simpleType name="HostCertificateStatus">
+  			<xsd:restriction base="xsd:string">
+   				<xsd:enumeration value="Active"/>
+   				<xsd:enumeration value="Suspended"/>
+   				<xsd:enumeration value="Pending"/>
+   				<xsd:enumeration value="Rejected"/>
+   				<xsd:enumeration value="Compromised"/>
+  			</xsd:restriction>
+ 	  </xsd:simpleType>
+ 	 	
+</xsd:schema>

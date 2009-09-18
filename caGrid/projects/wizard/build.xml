@@ -1,0 +1,90 @@
+<project name="caGrid-wizard" default="all" basedir=".">
+
+	<description>Wizard build file</description>
+
+	<!-- Environment -->
+	<property environment="env" />
+	<property file="${basedir}/project.properties" />
+	<property file="${basedir}/build.properties" />
+	<property name="globus.dir" location="${env.GLOBUS_LOCATION}" />
+
+	<!-- set global properties for this build -->
+	<property name="src" location="src" />
+	<property name="build" location="build" />
+	<property name="build.classes" location="${build}/classes" />
+	<property name="build.jars" location="${build}/jars" />
+	<!--
+	<property name="lib.dir" location="lib" />
+	<property name="ext.lib.dir" location="ext/lib" />
+	-->
+	<property name="javadoc.dir" value="docs/api" />
+
+	<property name="project.name" value="${ant.project.name}" />
+
+	<property name="project.jar.name" value="${project.name}-${project.version}.jar" />
+
+	<path id="build.classpath">
+		<!--
+		<fileset dir="${lib.dir}" includes="**/*.jar" />
+		<fileset dir="${ext.lib.dir}" includes="**/*.jar" />
+		-->
+	</path>
+	<path id="run.classpath">
+		<path refid="build.classpath" />
+		<pathelement location="${build.classes}" />
+	</path>
+
+	<target name="init" depends="clean">
+		<tstamp />
+		<mkdir dir="${build}" />
+		<mkdir dir="${build.classes}" />
+		<mkdir dir="${build.jars}" />
+	</target>
+
+	<target name="compile" depends="init" description="compile the source ">
+		<!-- Compile the java code from ${src} into ${build} -->
+		<javac destdir="${build.classes}" source="1.5">
+			<src path="${src}" />
+			<classpath refid="build.classpath" />
+		</javac>
+		<copy todir="${build.classes}">
+			<fileset dir="${src}">
+				<exclude name="**/*.java" />
+				<exclude name="**/*.html" />
+				<exclude name="**/*.psd" />
+			</fileset>
+		</copy>
+	</target>
+
+	<target name="clean" description="clean up">
+		<delete dir="${build}" />
+	</target>
+
+	<target name="jar" depends="clean,compile">
+		<jar destfile="${build.jars}/${project.jar.name}" basedir="${build.classes}" />
+	</target>
+
+
+	<target name="all" depends="clean,compile,jar">
+	</target>
+
+
+	<target name="javadoc">
+		<mkdir dir="${javadoc.dir}" />
+		<javadoc destdir="${javadoc.dir}" author="true" version="true" use="true" windowtitle="Wizard API" classpathref="run.classpath">
+
+			<fileset dir="src" defaultexcludes="yes">
+				<include name="**/*.java" />
+			</fileset>
+
+			<doctitle>
+				<![CDATA[<h1>Wizard API</h1>]]>
+			</doctitle>
+		<bottom>
+			<![CDATA[<i>Copyright &#169; 2000 NCICB. All Rights Reserved.</i>]]>
+			</bottom>
+</javadoc>
+</target>
+
+</project>
+

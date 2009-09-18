@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+
+<ivy-module version="2.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:noNamespaceSchemaLocation="http://incubator.apache.org/ivy/schemas/ivy.xsd">
+
+    <info organisation="jaxme" module="jaxmejs" revision="0.5.2-patched">
+        <license name="Apache" url="http://www.apache.org/licenses/LICENSE-2.0.txt"/>
+        <description homepage="http://ws.apache.org/jaxme/js/index.html">This is a framework for
+            generating Java sources. It is based on an abstraction of the Java sources. For
+            instance, there is an object called JavaSource. This object can have embedded instances
+            of JavaMethod or JavaField, it can have inner classes, constructors, and so on. NOTE:
+            This version is patched with the JAXME-77 patch. </description>
+    </info>
+
+    <publications>
+        <artifact name="jaxmejs-0.5.2"/>
+    </publications>
+    <dependencies>
+        <dependency org="antlr" name="antlr" rev="2.7.+"/>
+    </dependencies>
+</ivy-module>

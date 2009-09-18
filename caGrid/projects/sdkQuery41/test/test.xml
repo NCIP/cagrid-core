@@ -1,0 +1,59 @@
+<!-- ======================================================================= -->
+<!-- caGrid SDK Query 4.1 test file                                          -->
+<!-- ======================================================================= -->
+<project name="caGrid-sdkQuery41_tests_harness" basedir=".">
+	<property name="junit.results.dir" value="${test.logs.dir}/junit" />
+	<property name="introduce.dir" location="../introduce" />
+
+	<target name="prepareClasspaths">
+		<path id="Introduce.test.classpath">
+			<fileset dir="${introduce.dir}/lib">
+				<include name="*.jar" />
+			</fileset>
+			<fileset dir="${introduce.dir}/ext/dependencies/jars">
+				<include name="*.jar" />
+			</fileset>
+			<fileset dir="${introduce.dir}/build/jars">
+				<include name="*.jar" />
+			</fileset>
+			<fileset dir="${introduce.dir}/test/lib">
+				<include name="*.jar" />
+			</fileset>
+			<fileset dir="${introduce.dir}/ext/dependencies/test/jars">
+				<include name="*.jar" />
+			</fileset>
+			<fileset dir="${ant.library.dir}">
+				<include name="*.jar" />
+			</fileset>
+		</path>
+		<path id="all.test.classpath">
+			<path refid="test.classpath" />
+			<path refid="Introduce.test.classpath" />
+		</path>
+	</target>
+
+
+	<target name="test" depends="testCore" description="Runs the tests" />
+
+
+	<!-- call the test target for each project and aggregates the log resutls  -->
+	<target name="testCore" depends="compileTests" description="Runs the tests.">
+		<mkdir dir="${junit.results.dir}" />
+		<junit dir="${basedir}" printsummary="yes" errorproperty="test.failed" failureproperty="test.failed" showoutput="true" fork="yes" forkmode="once">
+			<!-- is this needed any more? -->
+			<sysproperty key="build.dirs" value="${test.classes.dir}" />
+			<jvmarg value="-Dbuild.dir=${test.classes.dir}" />
+			<classpath refid="test.classpath" />
+			<classpath>
+				<pathelement path="${test.classes.dir}" />
+			</classpath>
+			<formatter type="xml" />
+			<batchtest fork="yes" todir="${junit.results.dir}">
+				<fileset dir="${test.src.dir}">
+					<include name="**/*TestCase.java" />
+				</fileset>
+			</batchtest>
+		</junit>
+		<fail message="Tests failed! Check test reports." if="test.failed" />
+	</target>
+</project>

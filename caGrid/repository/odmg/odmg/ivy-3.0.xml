@@ -1,0 +1,10 @@
+<?xml version="1.0" ?>
+<ivy-module version="1.0">
+    <info organisation="odmg" module="odmg" revision="3.0" status="release"
+        publication="20030205184700">
+        <ivyauthor name="jayasoft" url="http://www.jayasoft.org/"/>
+        <description homepage="http://www.odmg.org/"> Standard for object-relational mapping
+            products as well as object DBMSs
+        </description>
+    </info>
+</ivy-module>

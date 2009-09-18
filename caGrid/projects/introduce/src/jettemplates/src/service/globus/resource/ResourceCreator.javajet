@@ -1,0 +1,83 @@
+<%@ jet package="gov.nih.nci.cagrid.introduce.templates.service.globus.resource" class="ResourceCreatorTemplate" imports="gov.nih.nci.cagrid.introduce.common.* gov.nih.nci.cagrid.introduce.codegen.utils.* gov.nih.nci.cagrid.introduce.codegen.* gov.nih.nci.cagrid.introduce.beans.service.* gov.nih.nci.cagrid.introduce.beans.namespace.* java.util.* gov.nih.nci.cagrid.introduce.beans.resource.*"%>
+<%  gov.nih.nci.cagrid.introduce.common.SpecificMethodInformation arguments = (gov.nih.nci.cagrid.introduce.common.SpecificMethodInformation) argument; 
+  	Properties properties = arguments.getIntroduceServiceProperties();
+	ResourcePropertiesListType metadataList = arguments.getService().getResourcePropertiesList();
+	String serviceName = arguments.getService().getName();
+	String modifiedServiceName = serviceName;
+	ServiceType resourceService = CommonTools.getService(arguments.getServices(), arguments.getMethod().getOutput().getResourceClientIntroduceServiceName());
+	if(serviceName.endsWith("Service")){
+		modifiedServiceName = serviceName.substring(0,serviceName.length()-"Service".length());
+	}
+	if(!resourceService.getName().equals(arguments.getService().getName())){
+%>
+		org.apache.axis.message.addressing.EndpointReferenceType epr = new org.apache.axis.message.addressing.EndpointReferenceType();
+		<%=resourceService.getPackageName()%>.service.globus.resource.<%=resourceService.getName()%>ResourceHome home = null;
+		org.globus.wsrf.ResourceKey resourceKey = null;
+		org.apache.axis.MessageContext ctx = org.apache.axis.MessageContext.getCurrentContext();
+		String servicePath = ctx.getTargetService();
+		String homeName = org.globus.wsrf.Constants.JNDI_SERVICES_BASE_NAME + servicePath + "/" + "<%=CommonTools.lowerCaseFirstCharacter(resourceService.getName()) %>Home";
+
+		try {
+			javax.naming.Context initialContext = new javax.naming.InitialContext();
+			home = (<%=resourceService.getPackageName()%>.service.globus.resource.<%=resourceService.getName()%>ResourceHome) initialContext.lookup(homeName);
+			resourceKey = home.createResource();
+			
+			//  Grab the newly created resource
+			<%=resourceService.getPackageName()%>.service.globus.resource.<%=resourceService.getName()%>Resource thisResource = (<%=resourceService.getPackageName()%>.service.globus.resource.<%=resourceService.getName()%>Resource)home.find(resourceKey);
+			
+			//  This is where the creator of this resource type can set whatever needs
+			//  to be set on the resource so that it can function appropriatly  for instance
+			//  if you want the resouce to only have the query string then there is where you would
+			//  give it the query string.
+			
+			
+			// sample of setting creator only security.  This will only allow the caller that created
+			// this resource to be able to use it.
+			//thisResource.setSecurityDescriptor(gov.nih.nci.cagrid.introduce.servicetools.security.SecurityUtils.createCreatorOnlyResourceSecurityDescriptor());
+			
+			
+
+
+			String transportURL = (String) ctx.getProperty(org.apache.axis.MessageContext.TRANS_URL);
+			transportURL = transportURL.substring(0,transportURL.lastIndexOf('/') +1 );
+			transportURL += "<%=resourceService.getName()%>";
+			epr = org.globus.wsrf.utils.AddressingUtils.createEndpointReference(transportURL,resourceKey);
+		} catch (Exception e) {
+			throw new RemoteException("Error looking up <%=resourceService.getName()%> home:" + e.getMessage(), e);
+		}
+
+		//return the typed EPR
+		<%=resourceService.getPackageName()%>.stubs.types.<%=resourceService.getName()%>Reference ref = new <%=resourceService.getPackageName()%>.stubs.types.<%=resourceService.getName()%>Reference();
+		ref.setEndpointReference(epr);
+
+		return ref;
+
+<%
+} else {
+%>
+		try {
+            <%=resourceService.getPackageName()%>.service.globus.resource.<%=resourceService.getName()%>ResourceHome home = getResourceHome(); 
+            org.globus.wsrf.ResourceKey key = home.createResource(); 
+            
+            //  Grab the newly created resource
+			<%=resourceService.getPackageName()%>.service.globus.resource.<%=resourceService.getName()%>Resource thisResource = (<%=resourceService.getPackageName()%>.service.globus.resource.<%=resourceService.getName()%>Resource)home.find(key);
+			
+			//  This is where the creator of this resource type can set whatever needs
+			//  to be set on the resource so that it can function appropriatly  for instance
+			//  if you want the resouce to only have the query string then there is where you would
+			//  give it the query string.
+			
+			
+			// sample of setting creator only security.  This will only allow the caller that created
+			// this resource to be able to use it.
+			//thisResource.setSecurityDescriptor(gov.nih.nci.cagrid.introduce.servicetools.security.SecurityUtils.createCreatorOnlyResourceSecurityDescriptor());
+
+            <%=resourceService.getPackageName()%>.stubs.types.<%=resourceService.getName()%>Reference reference = home.getResourceReference(key);
+            return reference; 
+        } catch (Exception e) {
+			throw new RemoteException("Error creating new resource <%=resourceService.getName()%>:" + e.getMessage(), e);
+		}
+
+<%
+}
+%>

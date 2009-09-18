@@ -1,0 +1,9 @@
+MembershipContentRule doesn't seem to be implemented.
+  line 76 of ServiceGroupRegistrationProvider:
+    // TODO: should we perform validity checking here against 
+    // membership content rule?  We may need to this further downstream in 
+    // the ServiceGroupRegistrationResource.
+  line 292 of AggregatorServiceGroupResource: 
+  	// TODO: implement membershipContentRule checks
+  	
+ Didn't see a way to configure it anyway

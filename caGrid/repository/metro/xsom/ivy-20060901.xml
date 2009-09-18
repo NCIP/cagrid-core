@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+
+<ivy-module version="2.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:noNamespaceSchemaLocation="http://incubator.apache.org/ivy/schemas/ivy.xsd">
+
+    <info organisation="metro" module="xsom" revision="20060901" status="release">
+        <license name="CDDL 1.0" url="http://www.opensource.org/licenses/cddl1.php"/>
+        <description homepage="https://xsom.dev.java.net/"> XML Schema Object Model (XSOM) is a Java
+            library that allows applications to easily parse XML Schema documents and inspect
+            information in them. It is expected to be useful for applications that need to take XML
+            Schema as an input. The library is a straight-forward implement of "schema components"
+            as defined in the XML Schema spec part 1.</description>
+    </info>
+
+    <publications>
+        <artifact name="xsom14"/>
+    </publications>
+    <dependencies>
+        <dependency org="relaxng" name="datatype-java" rev="1.0"/>
+    </dependencies>
+</ivy-module>

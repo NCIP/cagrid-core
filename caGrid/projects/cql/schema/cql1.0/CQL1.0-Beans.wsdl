@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions name="CQL_1.0_Beans" xmlns="http://schemas.xmlsoap.org/wsdl/" >
+	<import location="1_gov.nih.nci.cagrid.CQLQuery.xsd"/>
+	<import location="1_gov.nih.nci.cagrid.CQLResultSet.xsd"/>
+</definitions>

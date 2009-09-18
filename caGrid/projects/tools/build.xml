@@ -1,0 +1,294 @@
+<project name="caGrid-tools" default="all" basedir=".">
+	<!-- Environment -->
+	<property environment="env" />
+	<property file="${basedir}/project.properties" />
+	<property file="${basedir}/build.properties" />
+
+	<property name="project.name" value="${ant.project.name}" />
+
+	<!-- globus -->
+	<property name="globus.dir" location="${env.GLOBUS_LOCATION}" />
+	<property name="ant.build.stubs" location="${globus.dir}/share/globus_wsrf_tools/build-stubs.xml" />
+	<property name="mapping.src" value="${basedir}/NStoPKG.properties" />
+
+
+	<!-- src dirs -->
+	<property name="src.dir" location="${basedir}/src/java" />
+	<property name="validator.src.dir" location="${src.dir}/validator" />
+
+	<!-- testing dirs -->
+	<property name="test.src.dir" location="${basedir}/test/src/java" />
+	<property name="test.logs.dir" location="${basedir}/test/logs" />
+
+	<!-- output dirs -->
+	<property name="build.dir" location="${basedir}/build" />
+	<property name="build.lib.dir" location="${build.dir}/lib" />
+	<property name="classes.dir" location="${build.dir}/classes" />
+	<property name="validator.classes.dir" location="${classes.dir}/validator" />
+	<property name="build.stubs.src" location="${build.dir}/stubs/src" />
+	<property name="build.stubs.classes" location="${build.dir}/stubs/classes" />
+	<property name="test.classes.dir" location="${classes.dir}/test" />
+
+	<!-- jars -->
+	<property name="validator.jarfile" location="${build.lib.dir}/${project.name}-validator-${project.version}.jar" />
+	<property name="project.stubs.jarfile" location="${build.lib.dir}/${project.name}-stubs-${project.version}.jar" />
+	<property name="test.jarfile" location="${build.lib.dir}/${project.name}-test-${project.version}.jar" />
+
+	<!-- lib locations -->
+	<property name="ext.lib.dir" location="${basedir}/ext/dependencies/jars" />
+	<property name="ext.test.lib.dir" location="${basedir}/ext/dependencies/test/jars" />
+
+	<!-- java compiler options -->
+	<property name="java.debug" value="on" />
+	<property name="java.source" value="1.5" />
+
+	<!-- import the test buildfile -->
+	<import file="test/test.xml" />
+
+
+	<!-- =============================================================== -->
+	<!-- The Build Classpath                                             -->
+	<!-- =============================================================== -->
+	<path id="build.classpath">
+		<fileset dir="${ext.lib.dir}">
+			<include name="**/*.jar" />
+		</fileset>
+		<fileset dir="${ext.test.lib.dir}">
+			<include name="**/*.jar" />
+		</fileset>
+		<fileset dir="${globus.dir}/lib">
+			<include name="**/*.jar" />
+            <exclude name="junit.jar"/>
+		</fileset>
+	</path>
+
+
+	<!-- =============================================================== -->
+	<!-- The Build Classpath                                             -->
+	<!-- =============================================================== -->
+	<path id="test.build.classpath">
+		<fileset dir="${ext.lib.dir}">
+			<include name="**/*.jar" />
+		</fileset>
+		<fileset dir="${ext.test.lib.dir}">
+			<include name="**/*.jar" />
+		</fileset>
+		<path location="${validator.classes.dir}" />
+		<path location="${build.stubs.classes}" />
+		<fileset dir="${globus.dir}/lib">
+			<include name="**/*.jar" />
+            <exclude name="junit.jar"/>
+		</fileset>
+	</path>
+
+
+	<!-- =============================================================== -->
+	<!-- The Run Classpath                                               -->
+	<!-- =============================================================== -->
+	<path id="run.classpath">
+		<fileset dir="${ext.lib.dir}">
+			<include name="**/*.jar" />
+		</fileset>
+		<fileset dir="${globus.dir}/lib">
+			<include name="**/*.jar" />
+            <exclude name="junit.jar"/>
+		</fileset>
+	</path>
+
+
+	<!-- =============================================================== -->
+	<!-- The Testing Classpath                                           -->
+	<!-- =============================================================== -->
+	<path id="test.classpath">
+		<path refid="run.classpath" />
+		<pathelement location="${test.classes.dir}" />
+		<fileset dir="${ext.test.lib.dir}">
+			<include name="**/*.jar" />
+		</fileset>
+	</path>
+
+
+	<!-- =============================================================== -->
+	<!-- Prepares the build directory                                    -->
+	<!-- =============================================================== -->
+	<target name="prepare">
+		<tstamp />
+		<mkdir dir="${build.dir}" />
+	</target>
+
+
+	<!-- =================================================================== -->
+	<!-- sets up GT4 related variables                                       -->
+	<!-- =================================================================== -->
+	<target name="setGlobus" if="env.GLOBUS_LOCATION">
+		<!-- GT4 build files and directories-->
+		<property name="ext.globus.dir" value="${env.GLOBUS_LOCATION}" />
+		<property name="build.stubs" location="${ext.globus.dir}/share/globus_wsrf_tools/build-stubs.xml" />
+		<property name="schema.src" location="${ext.globus.dir}/share/schema" />
+		<property name="build.packages" location="${ext.globus.dir}/share/globus_wsrf_common/build-packages.xml" />
+		<!-- Copied from build.stubs file, as there is no way to "append" to the value in the remote file -->
+		<property name="GT4.ns.excludes" value="-x http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-BaseFaults-1.2-draft-01.xsd -x http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-BaseFaults-1.2-draft-01.wsdl -x http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ResourceLifetime-1.2-draft-01.xsd -x http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ResourceLifetime-1.2-draft-01.wsdl -x http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ResourceProperties-1.2-draft-01.xsd -x http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ResourceProperties-1.2-draft-01.wsdl -x http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ServiceGroup-1.2-draft-01.xsd -x http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ServiceGroup-1.2-draft-01.wsdl -x http://docs.oasis-open.org/wsn/2004/06/wsn-WS-BaseNotification-1.2-draft-01.xsd -x http://docs.oasis-open.org/wsn/2004/06/wsn-WS-BaseNotification-1.2-draft-01.wsdl -x http://schemas.xmlsoap.org/ws/2004/04/trust -x http://schemas.xmlsoap.org/ws/2002/12/policy -x http://schemas.xmlsoap.org/ws/2002/07/utility -x http://schemas.xmlsoap.org/ws/2004/04/sc -x http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-secext-1.0.xsd -x http://www.w3.org/2000/09/xmldsig# -x http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd -x http://schemas.xmlsoap.org/ws/2004/09/enumeration" />
+	</target>
+
+
+	<!-- merge namespace mappings with globus -->
+	<target name="mergeNsMappings" depends="prepare">
+		<ant antfile="${build.stubs}" target="mergePackageMapping">
+			<property name="mapping.src" location="NStoPKG.properties" />
+			<property name="mapping.dst" location="${build.dir}/NStoPKG.properties" />
+		</ant>
+	</target>
+
+
+	<!-- =================================================================== -->
+	<!-- Generates the stub source code                                      -->
+	<!-- =================================================================== -->
+	<target name="generateStubs" depends="prepare, setGlobus, mergeNsMappings" description="Generates Beans">
+		<mkdir dir="${build.stubs.src}" />
+		<property name="mapping.dst" value="${build.dir}/NStoPKG.properties" />
+		<ant antfile="${ant.build.stubs}" target="mergePackageMapping" />
+		<property name="mapping.file" value="${mapping.dst}" />
+		<!-- generate stubs in general for the data service -->
+		<ant antfile="${ant.build.stubs}" target="generateStubs">
+			<property name="source.stubs.dir" location="${basedir}/schema" />
+			<property name="wsdl.file" value="Beans.wsdl" />
+			<property name="target.stubs.dir" location="${build.stubs.src}" />
+		</ant>
+	</target>
+
+
+	<!-- =================================================================== -->
+	<!-- Compiles the stubs code                                             -->
+	<!-- =================================================================== -->
+	<target name="compileStubs" depends="generateStubs" description="Compiles stubs">
+		<mkdir dir="${build.stubs.classes}" />
+		<javac srcdir="${build.stubs.src}" destdir="${build.stubs.classes}" source="${java.source}" debug="${java.debug}">
+			<classpath refid="build.classpath" />
+		</javac>
+	</target>
+
+
+	<!-- =================================================================== -->
+	<!-- Compiles the source code                                            -->
+	<!-- =================================================================== -->
+	<target name="compile" depends="prepare, compileStubs" description="Compiles all the source files.">
+		<mkdir dir="${classes.dir}" />
+		<!-- validator -->
+		<mkdir dir="${validator.classes.dir}" />
+		<javac srcdir="${validator.src.dir}" destdir="${validator.classes.dir}" debug="${java.debug}" source="${java.source}">
+			<classpath refid="build.classpath" />
+			<classpath>
+				<pathelement location="${build.stubs.classes}" />
+			</classpath>
+		</javac>
+	</target>
+
+
+	<!-- =================================================================== -->
+	<!-- Compiles the test source code                                       -->
+	<!-- =================================================================== -->
+	<target name="compileTests" depends="compile" description="Compiles the test source files">
+		<mkdir dir="${classes.dir}" />
+		<mkdir dir="${test.classes.dir}" />
+		<javac srcdir="${test.src.dir}" destdir="${test.classes.dir}" debug="${java.debug}" source="${java.source}">
+			<classpath refid="test.build.classpath" />
+		</javac>
+	</target>
+
+
+	<!-- ============================================================== -->
+	<!-- Cleans up generated stuff                                      -->
+	<!-- ============================================================== -->
+	<target name="clean" depends="" description="Removes generated files.">
+		<delete dir="${build.dir}" />
+	</target>
+
+
+	<!-- ============================================================== -->
+	<!-- Creates the jar files                                          -->
+	<!-- ============================================================== -->
+	<target name="jar" depends="compile, compileTests" description="Builds the Jar Files">
+		<mkdir dir="${build.lib.dir}" />
+		<jar jarfile="${validator.jarfile}">
+			<manifest>
+				<attribute name="Built-By" value="${user.name}" />
+			</manifest>
+			<fileset dir="${validator.classes.dir}">
+				<include name="**/*" />
+			</fileset>
+			<fileset dir="${validator.src.dir}">
+				<include name="**/*.java" />
+			</fileset>
+		</jar>
+		<jar jarfile="${test.jarfile}">
+			<manifest>
+				<attribute name="Built-By" value="${user.name}" />
+				<attribute name="Main-Class" value="${main.class}" />
+			</manifest>
+			<fileset dir="${test.classes.dir}">
+				<include name="**/*/" />
+			</fileset>
+			<fileset dir="${test.src.dir}">
+				<include name="**/*.java" />
+			</fileset>
+		</jar>
+		<jar jarfile="${project.stubs.jarfile}">
+			<manifest>
+				<attribute name="Built-By" value="${user.name}" />
+				<attribute name="Main-Class" value="${main.class}" />
+			</manifest>
+			<fileset dir="${build.stubs.classes}">
+				<include name="**/*.class" />
+			</fileset>
+			<fileset dir="${build.stubs.src}">
+				<include name="**/*.java" />
+			</fileset>
+		</jar>
+	</target>
+
+
+	<!-- ============================================================== -->
+	<!-- Runs the deployment validation builder tool                    -->
+	<!-- ============================================================== -->
+	<target name="buildDeploymentValidation" description="Runs the deployment validation builder tool">
+		<java classname="gov.nih.nci.cagrid.validator.builder.DeploymentValidationBuilder" fork="true">
+			<classpath refid="build.classpath" />
+			<classpath refid="test.classpath" />
+			<classpath>
+				<fileset dir="${build.lib.dir}">
+					<include name="**/*.jar" />
+				</fileset>
+			</classpath>
+			<!-- required for searching through large numbers of classes for test steps -->
+			<jvmarg line="-XX:MaxPermSize=256m" />
+		</java>
+	</target>
+
+
+	<!-- ============================================================== -->
+	<!-- Runs a deployment validation builder tool                      -->
+	<!-- ============================================================== -->
+	<target name="runValidation" description="Runs a grid deployment validation package.  Use -Dvalidation.desc to specify the description file">
+		<java classname="gov.nih.nci.cagrid.validator.ValidationRunner" fork="true" failonerror="true">
+			<arg line="${validation.desc}" />
+			<classpath refid="build.classpath" />
+			<classpath refid="test.classpath" />
+			<classpath>
+				<fileset dir="${build.lib.dir}">
+					<include name="**/*.jar" />
+				</fileset>
+			</classpath>
+			<classpath>
+				<fileset dir="${build.lib.dir}">
+					<include name="**/*.jar" />
+				</fileset>
+			</classpath>
+		</java>
+	</target>
+
+
+	<!-- ============================================================== -->
+	<!-- Builds from scratch                                            -->
+	<!-- ============================================================== -->
+	<target name="all" description="Builds the entire application" depends="jar" />
+</project>

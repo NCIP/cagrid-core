@@ -1,0 +1,57 @@
+
+
+XSD/Bean Generation
+====================
+UML to XSD:
+http://www.xml.com/lpt/a/2001/08/22/uml.html
+http://www.xml.com/lpt/a/2001/09/19/uml.html
+http://www.xml.com/lpt/a/2001/10/10/uml.html
+In EA:
+http://www.sparxsystems.com.au/resources/xml_schema_generation.html
+
+
+To Use Enterprise Architect (preferred)
+-----------------------------
+1) Model metadata in Enterprise Architect
+2) For each package:
+  2.1) Set tagged values:
+	memberNames = unqualified
+	elementFormDefault = qualified
+	anonymousType = false    -- THIS IS SUPPOSED TO BE THE DEFAULT (but appears to be a bug in some versions of EA [at least 6.1])
+	targetNamespace = <according to caGrid rules>
+	targetNamespacePrefix = <something short and unique in the project>
+  2.2) Right-click, Code Engineering ... Generate XML Schema
+  2.3) Save as appropriate *.xsd
+3) Fix all XSDs by cleaning up xsd:imports
+4) Use XSDs as types in Globus build (generate beans from XSD)
+
+
+To Use hyperModel
+-----------------------------
+1) Model metadata in Enterprise Architect
+2) Export Logical Model Package to XMI 1.0
+3) Open as XMI in hyperModel(http://update.xmlmodeling.com/updates/index.html)
+4) For each package:
+  4.1) Right-click, Open With-> XML Schema
+  4.2) Save as *.xsd
+5) Fix all XSDs by adding proper targetnamespaces, and xsd:imports; convert java primatives to xsd primatives
+6) Use XSDs as types in Globus build (generate beans from XSD)
+
+
+
+BUGS:
+-----------------------------
+(fixed in 4.0.3?) The perfectly legal snippet below from the common.xsd generated XSD needs to be replaced with 
+the (functionaly equivalent) snippet below it, as there is a bug in Axis with the Beans it generates this type.
+
+----- REPLACE -----
+<xs:sequence>
+    <xs:element ref="uml:SemanticMetadata" minOccurs="0" maxOccurs="unbounded" />
+</xs:sequence>
+----- END REPLACE -----
+
+----- WITH -----
+<xs:choice minOccurs="0" maxOccurs="unbounded">
+	<xs:element ref="uml:SemanticMetadata" minOccurs="1" maxOccurs="unbounded"/>
+</xs:choice>
+----- END WITH -----

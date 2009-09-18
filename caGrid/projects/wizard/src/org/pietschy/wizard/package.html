@@ -1,0 +1,21 @@
+<body>
+This package provides the basic classes required from creating and using {@link org.pietschy.wizard.Wizard} instances.
+
+In the simplest case, you would subclass {@link org.pietschy.wizard.models.SimpleModel} and add a number
+of {@link WizardStep} instances.
+<pre>
+   SimpleModel model = new SimpleModel();
+   model.add(new MyFirestStep());
+   model.add(...);
+   ...
+
+   Wizard wizard = new Wizard(model);
+   wizard.showInFrame("My Wizard");
+</pre>
+
+@see org.pietschy.wizard.Wizard
+@see org.pietschy.wizard.WizardStep
+@see org.pietschy.wizard.WizardModel
+@see org.pietschy.wizard.models.SimpleModel
+@see org.pietschy.wizard.models.MultiPathModel
+</body>

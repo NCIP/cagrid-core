@@ -1,0 +1,21 @@
+heres an example...
+
+think of data services
+in this model, we would have 1 service... call it Data Service
+it may have 1 serviceContext, call it "Query"
+it may have 1 operation, call it performQuery
+that could be our service.... or
+
+we  might also add another serviceContext
+call it "Result Delievery"
+it might have a bunch of operations that handle many ways to deliever query results, bulk results, iterators, etc
+the "Query" serivcecontext, might return a pointer over into the "ResultDelivery" servicecontext as its output
+so to realize our "application/service" we are really using 2 services
+but its still "just a data service"
+the client wants to see that the "service" can do performQuery(), nextResult(), etc
+those operations are just defined under different contexts
+but still part of the same service
+the reason they are in different contexts... is the "Query" context operates over the "data resource" (you query the data resource to produce a query result), while the "ResultDelivery" serviceConext operates over a "query result resource" 
+in data services there will probably only be one data resource (your database, API, whatever, that is being exposed as a service)
+but at any given time, the service may be processing several "query result resources"
+each serviceContext works on one type of resource, and the serviceContexts are sort of meaningless without the "Service" to connect them

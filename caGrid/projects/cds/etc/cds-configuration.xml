@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
+<beans>
+	<bean id="database" class="org.cagrid.tools.database.Database">
+		<constructor-arg index="0" value="${gaards.cds.db.host}" />
+		<constructor-arg index="1" value="${gaards.cds.db.port}" />
+		<constructor-arg index="2" value="${gaards.cds.db.user}" />
+		<constructor-arg index="3" value="${gaards.cds.db.password}" />
+		<constructor-arg index="4" value="${gaards.cds.name}" />
+	</bean>
+
+	<!-- ADD POLICY HANDLER BEANS HERE -->
+
+	<bean id="identityPolicyHandler"
+		class="org.cagrid.gaards.cds.service.policy.IdentityPolicyHandler">
+		<constructor-arg index="0" ref="database" />
+	</bean>
+	
+	<bean id="groupPolicyHandler"
+		class="org.cagrid.gaards.cds.service.policy.GroupPolicyHandler">
+		<constructor-arg index="0" ref="database" />
+	</bean>
+
+
+	<!-- SPECIFY KEY MANAGER HERE -->
+
+	<bean id="keyManager"
+		class="org.cagrid.gaards.cds.service.DBKeyManager">
+		<constructor-arg index="0" ref="database" />
+		<property name="keyEncryptionPassword"
+			value="${gaards.cds.dbkeymanager.key.encyption.password}" />
+	</bean>
+
+	<!-- SPECIFY EVENT MANAGER HERE -->
+ 
+	<bean id="delegatedCredentialAuditor"
+		class="org.cagrid.tools.events.EventAuditor">
+		<constructor-arg index="0" value="delegatedCredentialAuditor" />
+		<constructor-arg index="1" ref="database" />
+		<constructor-arg index="2" value="DELEGATED_CREDENTIAL_AUDITOR" />
+	</bean>
+	
+	<bean id="eventManager"
+		class="org.cagrid.tools.events.EventManager">
+		<constructor-arg index="0">
+			<list>
+				<ref bean="delegatedCredentialAuditor" />
+			</list>
+		</constructor-arg>
+		<constructor-arg index="1">
+			<list>
+			 
+				<bean
+					class="org.cagrid.tools.events.EventToHandlerMapping">
+					<constructor-arg index="0" value="DelegationInitiated" />
+					<constructor-arg index="1" value="delegatedCredentialAuditor" />
+				</bean>
+				<bean
+					class="org.cagrid.tools.events.EventToHandlerMapping">
+					<constructor-arg index="0" value="DelegationApproved" />
+					<constructor-arg index="1" value="delegatedCredentialAuditor" />
+				</bean>
+				<bean
+					class="org.cagrid.tools.events.EventToHandlerMapping">
+					<constructor-arg index="0" value="DelegationStatusUpdated" />
+					<constructor-arg index="1" value="delegatedCredentialAuditor" />
+				</bean>
+				<bean
+					class="org.cagrid.tools.events.EventToHandlerMapping">
+					<constructor-arg index="0" value="DelegatedCredentialIssued" />
+					<constructor-arg index="1" value="delegatedCredentialAuditor" />
+				</bean>
+				<bean
+					class="org.cagrid.tools.events.EventToHandlerMapping">
+					<constructor-arg index="0" value="DelegatedCredentialAccessDenied" />
+					<constructor-arg index="1" value="delegatedCredentialAuditor" />
+				</bean>
+ 		</list>
+			
+		</constructor-arg>
+	</bean>
+
+	<bean id="propertyManager"
+		class="org.cagrid.gaards.cds.service.PropertyManager">
+		<constructor-arg index="0" ref="database" />
+	</bean>
+	
+	<bean id="groupManager"
+		class="org.cagrid.tools.groups.GroupManager">
+		<constructor-arg index="0" ref="database" />
+	</bean>
+
+	<bean id="proxyPolicy"
+		class="org.cagrid.gaards.cds.service.ProxyPolicy">
+		<property name="maxDelegationPathLength"
+			value="${gaards.cds.max.delegation.path.length}" />
+		<property name="supportedKeySizes">
+			<set>
+				<value>1024</value>
+				<value>2048</value>
+			</set>
+		</property>
+	</bean>
+
+
+
+	<bean id="delegatedCredentialManager"
+		class="org.cagrid.gaards.cds.service.DelegatedCredentialManager">
+		<constructor-arg index="0" ref="database" />
+		<constructor-arg index="1" ref="propertyManager" />
+		<constructor-arg index="2" ref="keyManager" />
+		<constructor-arg index="3">
+			<list>
+				<ref bean="identityPolicyHandler" />
+				<ref bean="groupPolicyHandler" />
+			</list>
+		</constructor-arg>
+		<constructor-arg index="4" ref="proxyPolicy" />
+		<constructor-arg index="5" ref="eventManager" />
+	</bean>
+
+	<bean id="delegationManager"
+		class="org.cagrid.gaards.cds.service.DelegationManager">
+		<constructor-arg index="0" ref="propertyManager" />
+		<constructor-arg index="1" ref="delegatedCredentialManager" />
+		<constructor-arg index="2" ref="groupManager" />
+	</bean>
+
+
+
+</beans>

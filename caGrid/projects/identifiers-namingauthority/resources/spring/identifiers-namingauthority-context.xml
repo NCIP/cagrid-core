@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:util="http://www.springframework.org/schema/util"
+       xsi:schemaLocation="
+                http://www.springframework.org/schema/beans
+                http://www.springframework.org/schema/beans/spring-beans.xsd
+                http://www.springframework.org/schema/util
+                http://www.springframework.org/schema/util/spring-util.xsd">
+                
+    <bean id="NamingAuthority" class="org.cagrid.identifiers.namingauthority.impl.NamingAuthorityImpl">
+    
+    	<property name="configuration">
+    		<bean class="org.cagrid.identifiers.namingauthority.impl.NamingAuthorityConfigImpl">
+    			<property name="prefix" value="http://na.cagrid.org:8090/osumc" />
+				<property name="gridSvcUrl" value="http://localhost:8081/wsrf/services/cagrid/IdentifiersNAService" />
+			</bean>
+    	</property>
+    	
+    	<property name="identifierGenerator">
+    		<bean class="org.cagrid.identifiers.namingauthority.impl.IdentifierGeneratorImpl"/>
+    	</property>
+    	
+    	<property name="database">
+    		<bean class="org.cagrid.identifiers.namingauthority.util.Database">
+				<property name="dbUrl" value="jdbc:mysql://localhost/identifiers" />
+				<property name="dbUser" value="root" />
+				<property name="dbPassword" value="cagrid" />
+			</bean>
+    	</property>
+    
+    </bean>
+</beans>

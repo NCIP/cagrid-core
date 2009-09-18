@@ -1,0 +1,769 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns="gme://caCORE.cabig/3.0/gov.nih.nci.cadsr.domain" xmlns:gov.nih.nci.common.provenance.domain="gme://caCORE.cabig/3.0/gov.nih.nci.common.provenance.domain" xmlns:gov.nih.nci.common.domain="gme://caCORE.cabig/3.0/gov.nih.nci.common.domain" xmlns:gov.nih.nci.cadsr.umlproject.domain="gme://caCORE.cabig/3.0/gov.nih.nci.cadsr.umlproject.domain" xmlns:gov.nih.nci.camod.domain="gme://caCORE.cabig/3.0/gov.nih.nci.camod.domain" xmlns:gov.nih.nci.cabio.domain="gme://caCORE.cabig/3.0/gov.nih.nci.cabio.domain" targetNamespace="gme://caCORE.cabig/3.0/gov.nih.nci.cadsr.domain" elementFormDefault="qualified">
+  <xs:import namespace="gme://caCORE.cabig/3.0/gov.nih.nci.cadsr.umlproject.domain" schemaLocation="gov.nih.nci.cadsr.umlproject.domain.xsd" />
+  <xs:import namespace="gme://caCORE.cabig/3.0/gov.nih.nci.cabio.domain" schemaLocation="gov.nih.nci.cabio.domain.xsd" />
+  <xs:import namespace="gme://caCORE.cabig/3.0/gov.nih.nci.common.domain" schemaLocation="gov.nih.nci.common.domain.xsd" />
+  <xs:import namespace="gme://caCORE.cabig/3.0/gov.nih.nci.camod.domain" schemaLocation="gov.nih.nci.camod.domain.xsd" />
+  <xs:import namespace="gme://caCORE.cabig/3.0/gov.nih.nci.common.provenance.domain" schemaLocation="gov.nih.nci.common.provenance.domain.xsd" />
+  <xs:element name="AdministeredComponent" type="AdministeredComponent" />
+  <xs:complexType name="AdministeredComponent">
+    <xs:sequence>
+      <xs:element name="context" type="Context" minOccurs="0" maxOccurs="1" />
+      <xs:element name="administeredComponentClassSchemeItemCollection" type="AdministeredComponentClassSchemeItem" minOccurs="0" maxOccurs="unbounded" />
+      <xs:element name="designationCollection" type="Designation" minOccurs="0" maxOccurs="unbounded" />
+      <xs:element name="referenceDocumentCollection" type="ReferenceDocument" minOccurs="0" maxOccurs="unbounded" />
+      <xs:element name="administeredComponentContactCollection" type="AdministeredComponentContact" minOccurs="0" maxOccurs="unbounded" />
+      <xs:element name="definitionCollection" type="Definition" minOccurs="0" maxOccurs="unbounded" />
+    </xs:sequence>
+    <xs:attribute name="id" type="xs:string" />
+    <xs:attribute name="preferredName" type="xs:string" />
+    <xs:attribute name="preferredDefinition" type="xs:string" />
+    <xs:attribute name="longName" type="xs:string" />
+    <xs:attribute name="version" type="xs:float" />
+    <xs:attribute name="workflowStatusName" type="xs:string" />
+    <xs:attribute name="workflowStatusDescription" type="xs:string" />
+    <xs:attribute name="latestVersionIndicator" type="xs:string" />
+    <xs:attribute name="beginDate" type="xs:dateTime" />
+    <xs:attribute name="endDate" type="xs:dateTime" />
+    <xs:attribute name="deletedIndicator" type="xs:string" />
+    <xs:attribute name="changeNote" type="xs:string" />
+    <xs:attribute name="unresolvedIssue" type="xs:string" />
+    <xs:attribute name="origin" type="xs:string" />
+    <xs:attribute name="dateCreated" type="xs:dateTime" />
+    <xs:attribute name="dateModified" type="xs:dateTime" />
+    <xs:attribute name="publicID" type="xs:long" />
+    <xs:attribute name="createdBy" type="xs:string" />
+    <xs:attribute name="modifiedBy" type="xs:string" />
+    <xs:attribute name="registrationStatus" type="xs:string" />
+  </xs:complexType>
+  <xs:element name="ConceptualDomain" type="ConceptualDomain" />
+  <xs:complexType name="ConceptualDomain">
+    <xs:complexContent>
+      <xs:extension base="AdministeredComponent">
+        <xs:sequence>
+          <xs:element name="valueMeaningCollection" type="ValueMeaning" minOccurs="0" maxOccurs="unbounded" />
+          <xs:element name="valueDomainCollection" type="ValueDomain" minOccurs="0" maxOccurs="unbounded" />
+          <xs:element name="dataElementConceptCollection" type="DataElementConcept" minOccurs="0" maxOccurs="unbounded" />
+          <xs:element name="conceptDerivationRule" type="ConceptDerivationRule" minOccurs="0" maxOccurs="1" />
+        </xs:sequence>
+        <xs:attribute name="dimensionality" type="xs:string" />
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="DataElementConcept" type="DataElementConcept" />
+  <xs:complexType name="DataElementConcept">
+    <xs:complexContent>
+      <xs:extension base="AdministeredComponent">
+        <xs:sequence>
+          <xs:element name="property" type="Property" minOccurs="0" maxOccurs="1" />
+          <xs:element name="conceptualDomain" type="ConceptualDomain" minOccurs="0" maxOccurs="1" />
+          <xs:element name="dataElementCollection" type="DataElement" minOccurs="0" maxOccurs="unbounded" />
+          <xs:element name="childDataElementConceptRelationshipCollection" type="DataElementConceptRelationship" minOccurs="0" maxOccurs="unbounded" />
+          <xs:element name="objectClass" type="ObjectClass" minOccurs="0" maxOccurs="1" />
+          <xs:element name="parentDataElementConceptRelationshipCollection" type="DataElementConceptRelationship" minOccurs="0" maxOccurs="unbounded" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="DataElement" type="DataElement" />
+  <xs:complexType name="DataElement">
+    <xs:complexContent>
+      <xs:extension base="AdministeredComponent">
+        <xs:sequence>
+          <xs:element name="questionCollection" type="Question" minOccurs="0" maxOccurs="unbounded" />
+          <xs:element name="valueDomain" type="ValueDomain" minOccurs="0" maxOccurs="1" />
+          <xs:element name="parentDataElementRelationshipsCollection" type="DataElementRelationship" minOccurs="0" maxOccurs="unbounded" />
+          <xs:element name="dataElementDerivationCollection" type="DataElementDerivation" minOccurs="0" maxOccurs="unbounded" />
+          <xs:element name="dataElementConcept" type="DataElementConcept" minOccurs="0" maxOccurs="1" />
+          <xs:element name="derivedDataElement" type="DerivedDataElement" minOccurs="0" maxOccurs="1" />
+          <xs:element name="childDataElementRelationshipsCollection" type="DataElementRelationship" minOccurs="0" maxOccurs="unbounded" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="ClassificationScheme" type="ClassificationScheme" />
+  <xs:complexType name="ClassificationScheme">
+    <xs:complexContent>
+      <xs:extension base="AdministeredComponent">
+        <xs:sequence>
+          <xs:element name="classSchemeClassSchemeItemCollection" type="ClassSchemeClassSchemeItem" minOccurs="0" maxOccurs="unbounded" />
+          <xs:element name="parentClassificationSchemeRelationshipCollection" type="ClassificationSchemeRelationship" minOccurs="0" maxOccurs="unbounded" />
+          <xs:element name="childClassificationSchemeRelationshipCollection" type="ClassificationSchemeRelationship" minOccurs="0" maxOccurs="unbounded" />
+          <xs:element name="conceptDerivationRule" type="ConceptDerivationRule" minOccurs="0" maxOccurs="1" />
+        </xs:sequence>
+        <xs:attribute name="type" type="xs:string" />
+        <xs:attribute name="labelTypeFlag" type="xs:string" />
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="ValueDomain" type="ValueDomain" />
+  <xs:complexType name="ValueDomain">
+    <xs:complexContent>
+      <xs:extension base="AdministeredComponent">
+        <xs:sequence>
+          <xs:element name="parentValueDomainRelationshipCollection" type="ValueDomainRelationship" minOccurs="0" maxOccurs="unbounded" />
+          <xs:element name="questionCollection" type="Question" minOccurs="0" maxOccurs="unbounded" />
+          <xs:element name="conceptualDomain" type="ConceptualDomain" minOccurs="0" maxOccurs="1" />
+          <xs:element name="dataElementCollection" type="DataElement" minOccurs="0" maxOccurs="unbounded" />
+          <xs:element name="childValueDomainRelationshipCollection" type="ValueDomainRelationship" minOccurs="0" maxOccurs="unbounded" />
+          <xs:element name="represention" type="Representation" minOccurs="0" maxOccurs="1" />
+          <xs:element name="conceptDerivationRule" type="ConceptDerivationRule" minOccurs="0" maxOccurs="1" />
+        </xs:sequence>
+        <xs:attribute name="datatypeName" type="xs:string" />
+        <xs:attribute name="UOMName" type="xs:string" />
+        <xs:attribute name="characterSetName" type="xs:string" />
+        <xs:attribute name="formatName" type="xs:string" />
+        <xs:attribute name="maximumLengthNumber" type="xs:integer" />
+        <xs:attribute name="minimumLengthNumber" type="xs:integer" />
+        <xs:attribute name="decimalPlace" type="xs:integer" />
+        <xs:attribute name="highValueNumber" type="xs:string" />
+        <xs:attribute name="lowValueNumber" type="xs:string" />
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="ClassificationSchemeItem" type="ClassificationSchemeItem" />
+  <xs:complexType name="ClassificationSchemeItem">
+    <xs:sequence>
+      <xs:element name="classSchemeClassSchemeItemCollection" type="ClassSchemeClassSchemeItem" minOccurs="0" maxOccurs="unbounded" />
+      <xs:element name="parentClassificationSchemeItemRelationshipCollection" type="ClassificationSchemeItemRelationship" minOccurs="0" maxOccurs="unbounded" />
+      <xs:element name="childClassificationSchemeItemRelationshipCollection" type="ClassificationSchemeItemRelationship" minOccurs="0" maxOccurs="unbounded" />
+      <xs:element name="referenceDocumentCollection" type="ReferenceDocument" minOccurs="0" maxOccurs="unbounded" />
+      <xs:element name="administeredComponentContact" type="AdministeredComponentContact" minOccurs="0" maxOccurs="unbounded" />
+      <xs:element name="conceptDerivationRule" type="ConceptDerivationRule" minOccurs="0" maxOccurs="1" />
+    </xs:sequence>
+    <xs:attribute name="id" type="xs:string" />
+    <xs:attribute name="type" type="xs:string" />
+    <xs:attribute name="name" type="xs:string" />
+    <xs:attribute name="description" type="xs:string" />
+    <xs:attribute name="comments" type="xs:string" />
+    <xs:attribute name="dateCreated" type="xs:dateTime" />
+    <xs:attribute name="dateModified" type="xs:dateTime" />
+    <xs:attribute name="createdBy" type="xs:string" />
+    <xs:attribute name="modifiedBy" type="xs:string" />
+  </xs:complexType>
+  <xs:element name="PermissibleValue" type="PermissibleValue" />
+  <xs:complexType name="PermissibleValue">
+    <xs:sequence>
+      <xs:element name="valueMeaning" type="ValueMeaning" minOccurs="0" maxOccurs="1" />
+      <xs:element name="valueDomainPermissibleValueCollection" type="ValueDomainPermissibleValue" minOccurs="0" maxOccurs="unbounded" />
+    </xs:sequence>
+    <xs:attribute name="id" type="xs:string" />
+    <xs:attribute name="value" type="xs:string" />
+    <xs:attribute name="highValueNumber" type="xs:long" />
+    <xs:attribute name="lowValueNumber" type="xs:long" />
+    <xs:attribute name="dateCreated" type="xs:dateTime" />
+    <xs:attribute name="dateModified" type="xs:dateTime" />
+    <xs:attribute name="createdBy" type="xs:string" />
+    <xs:attribute name="modifiedBy" type="xs:string" />
+  </xs:complexType>
+  <xs:element name="Context" type="Context" />
+  <xs:complexType name="Context">
+    <xs:sequence>
+      <xs:element name="administeredComponentCollection" type="AdministeredComponent" minOccurs="0" maxOccurs="unbounded" />
+      <xs:element name="designationCollection" type="Designation" minOccurs="0" maxOccurs="unbounded" />
+      <xs:element name="referenceDocumentCollection" type="ReferenceDocument" minOccurs="0" maxOccurs="unbounded" />
+      <xs:element name="definitionCollection" type="Definition" minOccurs="0" maxOccurs="unbounded" />
+    </xs:sequence>
+    <xs:attribute name="id" type="xs:string" />
+    <xs:attribute name="name" type="xs:string" />
+    <xs:attribute name="version" type="xs:float" />
+    <xs:attribute name="description" type="xs:string" />
+    <xs:attribute name="languageName" type="xs:string" />
+    <xs:attribute name="dateCreated" type="xs:dateTime" />
+    <xs:attribute name="dateModified" type="xs:dateTime" />
+    <xs:attribute name="createdBy" type="xs:string" />
+    <xs:attribute name="modifiedBy" type="xs:string" />
+  </xs:complexType>
+  <xs:element name="ReferenceDocument" type="ReferenceDocument" />
+  <xs:complexType name="ReferenceDocument">
+    <xs:sequence>
+      <xs:element name="context" type="Context" minOccurs="0" maxOccurs="1" />
+      <xs:element name="classSchemeClassSchemeItem" type="ClassSchemeClassSchemeItem" minOccurs="0" maxOccurs="1" />
+      <xs:element name="classificationSchemeItem" type="ClassificationSchemeItem" minOccurs="0" maxOccurs="1" />
+    </xs:sequence>
+    <xs:attribute name="id" type="xs:string" />
+    <xs:attribute name="name" type="xs:string" />
+    <xs:attribute name="type" type="xs:string" />
+    <xs:attribute name="doctext" type="xs:string" />
+    <xs:attribute name="URL" type="xs:string" />
+    <xs:attribute name="languageName" type="xs:string" />
+    <xs:attribute name="organizationId" type="xs:string" />
+    <xs:attribute name="rdtlName" type="xs:string" />
+    <xs:attribute name="displayOrder" type="xs:long" />
+    <xs:attribute name="dateCreated" type="xs:dateTime" />
+    <xs:attribute name="dateModified" type="xs:dateTime" />
+    <xs:attribute name="createdBy" type="xs:string" />
+    <xs:attribute name="modifiedBy" type="xs:string" />
+  </xs:complexType>
+  <xs:element name="ObjectClass" type="ObjectClass" />
+  <xs:complexType name="ObjectClass">
+    <xs:complexContent>
+      <xs:extension base="AdministeredComponent">
+        <xs:sequence>
+          <xs:element name="targetObjectClassRelationshipCollection" type="ObjectClassRelationship" minOccurs="0" maxOccurs="unbounded" />
+          <xs:element name="sourcObjectClassRelationshipCollection" type="ObjectClassRelationship" minOccurs="0" maxOccurs="unbounded" />
+          <xs:element name="dataElementConceptCollection" type="DataElementConcept" minOccurs="0" maxOccurs="unbounded" />
+          <xs:element name="conceptDerivationRule" type="ConceptDerivationRule" minOccurs="0" maxOccurs="1" />
+        </xs:sequence>
+        <xs:attribute name="definitionSource" type="xs:string" />
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="Property" type="Property" />
+  <xs:complexType name="Property">
+    <xs:complexContent>
+      <xs:extension base="AdministeredComponent">
+        <xs:sequence>
+          <xs:element name="dataElementConceptCollection" type="DataElementConcept" minOccurs="0" maxOccurs="unbounded" />
+          <xs:element name="conceptDerivationRule" type="ConceptDerivationRule" minOccurs="0" maxOccurs="1" />
+        </xs:sequence>
+        <xs:attribute name="definitionSource" type="xs:string" />
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="Form" type="Form" />
+  <xs:complexType name="Form">
+    <xs:complexContent>
+      <xs:extension base="FormElement">
+        <xs:sequence>
+          <xs:element name="protocolCollection" type="Protocol" minOccurs="0" maxOccurs="unbounded" />
+          <xs:element name="moduleCollection" type="Module" minOccurs="0" maxOccurs="unbounded" />
+        </xs:sequence>
+        <xs:attribute name="displayName" type="xs:string" />
+        <xs:attribute name="type" type="xs:string" />
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="Module" type="Module" />
+  <xs:complexType name="Module">
+    <xs:complexContent>
+      <xs:extension base="FormElement">
+        <xs:sequence>
+          <xs:element name="questionCollection" type="Question" minOccurs="0" maxOccurs="unbounded" />
+          <xs:element name="form" type="Form" minOccurs="0" maxOccurs="1" />
+        </xs:sequence>
+        <xs:attribute name="displayOrder" type="xs:integer" />
+        <xs:attribute name="maximumQuestionRepeat" type="xs:integer" />
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="Protocol" type="Protocol" />
+  <xs:complexType name="Protocol">
+    <xs:complexContent>
+      <xs:extension base="AdministeredComponent">
+        <xs:sequence>
+          <xs:element name="formCollection" type="Form" minOccurs="0" maxOccurs="unbounded" />
+        </xs:sequence>
+        <xs:attribute name="protocolID" type="xs:string" />
+        <xs:attribute name="type" type="xs:string" />
+        <xs:attribute name="phase" type="xs:string" />
+        <xs:attribute name="leadOrganizationName" type="xs:string" />
+        <xs:attribute name="changeType" type="xs:string" />
+        <xs:attribute name="changeNumber" type="xs:string" />
+        <xs:attribute name="reviewedDate" type="xs:dateTime" />
+        <xs:attribute name="reviewedBy" type="xs:string" />
+        <xs:attribute name="approvedDate" type="xs:dateTime" />
+        <xs:attribute name="approvedBy" type="xs:string" />
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="Question" type="Question" />
+  <xs:complexType name="Question">
+    <xs:complexContent>
+      <xs:extension base="FormElement">
+        <xs:sequence>
+          <xs:element name="dataElement" type="DataElement" minOccurs="0" maxOccurs="1" />
+          <xs:element name="valueDomain" type="ValueDomain" minOccurs="0" maxOccurs="1" />
+          <xs:element name="validValueCollection" type="ValidValue" minOccurs="0" maxOccurs="unbounded" />
+          <xs:element name="module" type="Module" minOccurs="0" maxOccurs="1" />
+          <xs:element name="questionRepetitionCollection" type="QuestionRepetition" minOccurs="0" maxOccurs="unbounded" />
+        </xs:sequence>
+        <xs:attribute name="displayOrder" type="xs:integer" />
+        <xs:attribute name="defaultValue" type="xs:string" />
+        <xs:attribute name="isEditable" type="xs:string" />
+        <xs:attribute name="defaultValidValueId" type="xs:string" />
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="Representation" type="Representation" />
+  <xs:complexType name="Representation">
+    <xs:complexContent>
+      <xs:extension base="AdministeredComponent">
+        <xs:sequence>
+          <xs:element name="valueDomainCollection" type="ValueDomain" minOccurs="0" maxOccurs="unbounded" />
+          <xs:element name="conceptDerivationRule" type="ConceptDerivationRule" minOccurs="0" maxOccurs="1" />
+        </xs:sequence>
+        <xs:attribute name="definitionSource" type="xs:string" />
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="ValidValue" type="ValidValue" />
+  <xs:complexType name="ValidValue">
+    <xs:complexContent>
+      <xs:extension base="FormElement">
+        <xs:sequence>
+          <xs:element name="question" type="Question" minOccurs="0" maxOccurs="1" />
+          <xs:element name="valueDomainPermissibleValue" type="ValueDomainPermissibleValue" minOccurs="0" maxOccurs="1" />
+        </xs:sequence>
+        <xs:attribute name="displayOrder" type="xs:integer" />
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="Designation" type="Designation" />
+  <xs:complexType name="Designation">
+    <xs:sequence>
+      <xs:element name="context" type="Context" minOccurs="0" maxOccurs="1" />
+      <xs:element name="designationClassSchemeItemCollection" type="DesignationClassSchemeItem" minOccurs="0" maxOccurs="unbounded" />
+    </xs:sequence>
+    <xs:attribute name="id" type="xs:string" />
+    <xs:attribute name="name" type="xs:string" />
+    <xs:attribute name="type" type="xs:string" />
+    <xs:attribute name="languageName" type="xs:string" />
+    <xs:attribute name="dateCreated" type="xs:dateTime" />
+    <xs:attribute name="dateModified" type="xs:dateTime" />
+    <xs:attribute name="createdBy" type="xs:string" />
+    <xs:attribute name="modifiedBy" type="xs:string" />
+  </xs:complexType>
+  <xs:element name="NonenumeratedValueDomain" type="NonenumeratedValueDomain" />
+  <xs:complexType name="NonenumeratedValueDomain">
+    <xs:complexContent>
+      <xs:extension base="ValueDomain">
+        <xs:sequence />
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="DataElementConceptRelationship" type="DataElementConceptRelationship" />
+  <xs:complexType name="DataElementConceptRelationship">
+    <xs:sequence>
+      <xs:element name="parentDataElementConcept" type="DataElementConcept" minOccurs="0" maxOccurs="1" />
+      <xs:element name="childDataElementConcept" type="DataElementConcept" minOccurs="0" maxOccurs="1" />
+    </xs:sequence>
+    <xs:attribute name="id" type="xs:string" />
+    <xs:attribute name="name" type="xs:string" />
+    <xs:attribute name="description" type="xs:string" />
+    <xs:attribute name="dateCreated" type="xs:dateTime" />
+    <xs:attribute name="dateModified" type="xs:dateTime" />
+    <xs:attribute name="createdBy" type="xs:string" />
+    <xs:attribute name="modifiedBy" type="xs:string" />
+  </xs:complexType>
+  <xs:element name="ValueMeaning" type="ValueMeaning" />
+  <xs:complexType name="ValueMeaning">
+    <xs:sequence>
+      <xs:element name="permissibleValueCollection" type="PermissibleValue" minOccurs="0" maxOccurs="unbounded" />
+      <xs:element name="conceptDerivationRule" type="ConceptDerivationRule" minOccurs="0" maxOccurs="1" />
+      <xs:element name="conceptualDomainCollection" type="ConceptualDomain" minOccurs="0" maxOccurs="unbounded" />
+    </xs:sequence>
+    <xs:attribute name="id" type="xs:string" />
+    <xs:attribute name="shortMeaning" type="xs:string" />
+    <xs:attribute name="description" type="xs:string" />
+    <xs:attribute name="comments" type="xs:string" />
+    <xs:attribute name="beginDate" type="xs:dateTime" />
+    <xs:attribute name="endDate" type="xs:dateTime" />
+    <xs:attribute name="dateCreated" type="xs:dateTime" />
+    <xs:attribute name="dateModified" type="xs:dateTime" />
+    <xs:attribute name="createdBy" type="xs:string" />
+    <xs:attribute name="modifiedBy" type="xs:string" />
+  </xs:complexType>
+  <xs:element name="ValueDomainPermissibleValue" type="ValueDomainPermissibleValue" />
+  <xs:complexType name="ValueDomainPermissibleValue">
+    <xs:sequence>
+      <xs:element name="concept" type="Concept" minOccurs="0" maxOccurs="1" />
+      <xs:element name="validValueCollection" type="ValidValue" minOccurs="0" maxOccurs="unbounded" />
+      <xs:element name="enumeratedValueDomain" type="EnumeratedValueDomain" minOccurs="0" maxOccurs="1" />
+      <xs:element name="permissibleValue" type="PermissibleValue" minOccurs="0" maxOccurs="1" />
+    </xs:sequence>
+    <xs:attribute name="id" type="xs:string" />
+    <xs:attribute name="dateCreated" type="xs:dateTime" />
+    <xs:attribute name="dateModified" type="xs:dateTime" />
+    <xs:attribute name="createdBy" type="xs:string" />
+    <xs:attribute name="modifiedBy" type="xs:string" />
+    <xs:attribute name="origin" type="xs:string" />
+    <xs:attribute name="beginDate" type="xs:dateTime" />
+    <xs:attribute name="endDate" type="xs:dateTime" />
+  </xs:complexType>
+  <xs:element name="ClassSchemeClassSchemeItem" type="ClassSchemeClassSchemeItem" />
+  <xs:complexType name="ClassSchemeClassSchemeItem">
+    <xs:sequence>
+      <xs:element name="AdministeredComponentContact" type="AdministeredComponentContact" minOccurs="0" maxOccurs="unbounded" />
+      <xs:element name="classificationScheme" type="ClassificationScheme" minOccurs="0" maxOccurs="1" />
+      <xs:element name="administeredComponentClassSchemeItemCollection" type="AdministeredComponentClassSchemeItem" minOccurs="0" maxOccurs="unbounded" />
+      <xs:element name="referenceDocumentCollection" type="ReferenceDocument" minOccurs="0" maxOccurs="unbounded" />
+      <xs:element name="parentClassSchemeClassSchemeItem" type="ClassSchemeClassSchemeItem" minOccurs="0" maxOccurs="1" />
+      <xs:element name="definitionClassSchemeItemCollection" type="DefinitionClassSchemeItem" minOccurs="0" maxOccurs="unbounded" />
+      <xs:element name="classificationSchemeItem" type="ClassificationSchemeItem" minOccurs="0" maxOccurs="1" />
+      <xs:element name="designationClassSchemeItemCollection" type="DesignationClassSchemeItem" minOccurs="0" maxOccurs="unbounded" />
+      <xs:element name="childClassSchemeClassSchemeItemCollection" type="ClassSchemeClassSchemeItem" minOccurs="0" maxOccurs="unbounded" />
+    </xs:sequence>
+    <xs:attribute name="id" type="xs:string" />
+    <xs:attribute name="displayOrder" type="xs:integer" />
+    <xs:attribute name="dateCreated" type="xs:dateTime" />
+    <xs:attribute name="dateModified" type="xs:dateTime" />
+    <xs:attribute name="createdBy" type="xs:string" />
+    <xs:attribute name="modifiedBy" type="xs:string" />
+  </xs:complexType>
+  <xs:element name="DataElementDerivation" type="DataElementDerivation" />
+  <xs:complexType name="DataElementDerivation">
+    <xs:sequence>
+      <xs:element name="dataElement" type="DataElement" minOccurs="0" maxOccurs="1" />
+      <xs:element name="leftOperand" type="Function" minOccurs="0" maxOccurs="1" />
+      <xs:element name="derivedDataElement" type="DerivedDataElement" minOccurs="0" maxOccurs="1" />
+    </xs:sequence>
+    <xs:attribute name="id" type="xs:string" />
+    <xs:attribute name="displayOrder" type="xs:integer" />
+    <xs:attribute name="dateCreated" type="xs:dateTime" />
+    <xs:attribute name="dateModified" type="xs:dateTime" />
+    <xs:attribute name="createdBy" type="xs:string" />
+    <xs:attribute name="modifiedBy" type="xs:string" />
+    <xs:attribute name="leadingCharacters" type="xs:string" />
+    <xs:attribute name="trailingCharacters" type="xs:string" />
+  </xs:complexType>
+  <xs:element name="DerivedDataElement" type="DerivedDataElement" />
+  <xs:complexType name="DerivedDataElement">
+    <xs:sequence>
+      <xs:element name="dataElement" type="DataElement" minOccurs="0" maxOccurs="1" />
+      <xs:element name="dataElementDerivationCollection" type="DataElementDerivation" minOccurs="0" maxOccurs="unbounded" />
+      <xs:element name="derivationType" type="DerivationType" minOccurs="0" maxOccurs="1" />
+    </xs:sequence>
+    <xs:attribute name="id" type="xs:string" />
+    <xs:attribute name="concatenationCharacter" type="xs:string" />
+    <xs:attribute name="methods" type="xs:string" />
+    <xs:attribute name="rule" type="xs:string" />
+    <xs:attribute name="createdBy" type="xs:string" />
+    <xs:attribute name="modifiedBy" type="xs:string" />
+    <xs:attribute name="dateCreated" type="xs:dateTime" />
+    <xs:attribute name="dateModified" type="xs:dateTime" />
+  </xs:complexType>
+  <xs:element name="DerivationType" type="DerivationType" />
+  <xs:complexType name="DerivationType">
+    <xs:sequence>
+      <xs:element name="derivedDataElementCollection" type="DerivedDataElement" minOccurs="0" maxOccurs="unbounded" />
+      <xs:element name="conceptDerivationRuleCollection" type="ConceptDerivationRule" minOccurs="0" maxOccurs="unbounded" />
+    </xs:sequence>
+    <xs:attribute name="id" type="xs:string" />
+    <xs:attribute name="name" type="xs:string" />
+    <xs:attribute name="dateCreated" type="xs:dateTime" />
+    <xs:attribute name="dateModified" type="xs:dateTime" />
+    <xs:attribute name="createdBy" type="xs:string" />
+    <xs:attribute name="modifiedBy" type="xs:string" />
+    <xs:attribute name="description" type="xs:string" />
+  </xs:complexType>
+  <xs:element name="AdministeredComponentClassSchemeItem" type="AdministeredComponentClassSchemeItem" />
+  <xs:complexType name="AdministeredComponentClassSchemeItem">
+    <xs:sequence>
+      <xs:element name="classSchemeClassSchemeItem" type="ClassSchemeClassSchemeItem" minOccurs="0" maxOccurs="1" />
+    </xs:sequence>
+    <xs:attribute name="id" type="xs:string" />
+    <xs:attribute name="dateCreated" type="xs:dateTime" />
+    <xs:attribute name="dateModified" type="xs:dateTime" />
+    <xs:attribute name="modifiedBy" type="xs:string" />
+    <xs:attribute name="createdBy" type="xs:string" />
+  </xs:complexType>
+  <xs:element name="Instruction" type="Instruction" />
+  <xs:complexType name="Instruction">
+    <xs:complexContent>
+      <xs:extension base="AdministeredComponent">
+        <xs:sequence>
+          <xs:element name="formElement" type="FormElement" minOccurs="0" maxOccurs="1" />
+        </xs:sequence>
+        <xs:attribute name="type" type="xs:string" />
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="DataElementRelationship" type="DataElementRelationship" />
+  <xs:complexType name="DataElementRelationship">
+    <xs:sequence>
+      <xs:element name="childDataElement" type="DataElement" minOccurs="0" maxOccurs="1" />
+      <xs:element name="parentDataElement" type="DataElement" minOccurs="0" maxOccurs="1" />
+    </xs:sequence>
+    <xs:attribute name="id" type="xs:string" />
+    <xs:attribute name="name" type="xs:string" />
+    <xs:attribute name="createdBy" type="xs:string" />
+    <xs:attribute name="dateCreated" type="xs:dateTime" />
+    <xs:attribute name="modifiedBy" type="xs:string" />
+    <xs:attribute name="dateModified" type="xs:dateTime" />
+  </xs:complexType>
+  <xs:element name="ValueDomainRelationship" type="ValueDomainRelationship" />
+  <xs:complexType name="ValueDomainRelationship">
+    <xs:sequence>
+      <xs:element name="parentValueDomain" type="ValueDomain" minOccurs="0" maxOccurs="1" />
+      <xs:element name="childValueDomain" type="ValueDomain" minOccurs="0" maxOccurs="1" />
+    </xs:sequence>
+    <xs:attribute name="id" type="xs:string" />
+    <xs:attribute name="name" type="xs:string" />
+    <xs:attribute name="createdBy" type="xs:string" />
+    <xs:attribute name="dateCreated" type="xs:dateTime" />
+    <xs:attribute name="modifiedBy" type="xs:string" />
+    <xs:attribute name="dateModified" type="xs:dateTime" />
+  </xs:complexType>
+  <xs:element name="ClassificationSchemeRelationship" type="ClassificationSchemeRelationship" />
+  <xs:complexType name="ClassificationSchemeRelationship">
+    <xs:sequence>
+      <xs:element name="childClassificationScheme" type="ClassificationScheme" minOccurs="0" maxOccurs="1" />
+      <xs:element name="parentClassificationScheme" type="ClassificationScheme" minOccurs="0" maxOccurs="1" />
+    </xs:sequence>
+    <xs:attribute name="id" type="xs:string" />
+    <xs:attribute name="name" type="xs:string" />
+    <xs:attribute name="displayOrder" type="xs:integer" />
+    <xs:attribute name="createdBy" type="xs:string" />
+    <xs:attribute name="dateCreated" type="xs:dateTime" />
+    <xs:attribute name="modifiedBy" type="xs:string" />
+    <xs:attribute name="dateModified" type="xs:dateTime" />
+  </xs:complexType>
+  <xs:element name="ClassificationSchemeItemRelationship" type="ClassificationSchemeItemRelationship" />
+  <xs:complexType name="ClassificationSchemeItemRelationship">
+    <xs:sequence>
+      <xs:element name="parentClassificationSchemeItem" type="ClassificationSchemeItem" minOccurs="0" maxOccurs="1" />
+      <xs:element name="childClassificationSchemeItem" type="ClassificationSchemeItem" minOccurs="0" maxOccurs="1" />
+    </xs:sequence>
+    <xs:attribute name="id" type="xs:string" />
+    <xs:attribute name="name" type="xs:string" />
+    <xs:attribute name="createdBy" type="xs:string" />
+    <xs:attribute name="dateCreated" type="xs:dateTime" />
+    <xs:attribute name="modifiedBy" type="xs:string" />
+    <xs:attribute name="dateModified" type="xs:dateTime" />
+  </xs:complexType>
+  <xs:element name="ObjectClassRelationship" type="ObjectClassRelationship" />
+  <xs:complexType name="ObjectClassRelationship">
+    <xs:complexContent>
+      <xs:extension base="AdministeredComponent">
+        <xs:sequence>
+          <xs:element name="targetObjectClass" type="ObjectClass" minOccurs="0" maxOccurs="1" />
+          <xs:element name="sourceObjectClass" type="ObjectClass" minOccurs="0" maxOccurs="1" />
+        </xs:sequence>
+        <xs:attribute name="name" type="xs:string" />
+        <xs:attribute name="sourceRole" type="xs:string" />
+        <xs:attribute name="targetRole" type="xs:string" />
+        <xs:attribute name="direction" type="xs:string" />
+        <xs:attribute name="sourceLowMultiplicity" type="xs:integer" />
+        <xs:attribute name="sourceHighMultiplicity" type="xs:integer" />
+        <xs:attribute name="targetLowMultiplicity" type="xs:integer" />
+        <xs:attribute name="targetHighMultiplicity" type="xs:integer" />
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="Concept" type="Concept" />
+  <xs:complexType name="Concept">
+    <xs:complexContent>
+      <xs:extension base="AdministeredComponent">
+        <xs:sequence>
+          <xs:element name="valueDomainPermissibleValueCollection" type="ValueDomainPermissibleValue" minOccurs="0" maxOccurs="unbounded" />
+          <xs:element name="componentConceptCollection" type="ComponentConcept" minOccurs="0" maxOccurs="unbounded" />
+        </xs:sequence>
+        <xs:attribute name="evsSource" type="xs:string" />
+        <xs:attribute name="definitionSource" type="xs:string" />
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="ComponentConcept" type="ComponentConcept" />
+  <xs:complexType name="ComponentConcept">
+    <xs:sequence>
+      <xs:element name="concept" type="Concept" minOccurs="0" maxOccurs="1" />
+      <xs:element name="componentlevel" type="ComponentLevel" minOccurs="0" maxOccurs="1" />
+      <xs:element name="derivationRule" type="ConceptDerivationRule" minOccurs="0" maxOccurs="1" />
+    </xs:sequence>
+    <xs:attribute name="id" type="xs:string" />
+    <xs:attribute name="displayOrder" type="xs:integer" />
+    <xs:attribute name="primaryFlag" type="xs:string" />
+  </xs:complexType>
+  <xs:element name="ConceptDerivationRule" type="ConceptDerivationRule" />
+  <xs:complexType name="ConceptDerivationRule">
+    <xs:sequence>
+      <xs:element name="classificationSchemeItemCollection" type="ClassificationSchemeItem" minOccurs="0" maxOccurs="unbounded" />
+      <xs:element name="valueMeaningCollection" type="ValueMeaning" minOccurs="0" maxOccurs="unbounded" />
+      <xs:element name="valueDomainCollection" type="ValueDomain" minOccurs="0" maxOccurs="unbounded" />
+      <xs:element name="derivationType" type="DerivationType" minOccurs="0" maxOccurs="1" />
+      <xs:element name="classificationSchemeCollection" type="ClassificationScheme" minOccurs="0" maxOccurs="unbounded" />
+      <xs:element name="propertyCollection" type="Property" minOccurs="0" maxOccurs="unbounded" />
+      <xs:element name="objectClassCollection" type="ObjectClass" minOccurs="0" maxOccurs="unbounded" />
+      <xs:element name="componentConceptCollection" type="ComponentConcept" minOccurs="0" maxOccurs="unbounded" />
+      <xs:element name="representationCollection" type="Representation" minOccurs="0" maxOccurs="unbounded" />
+      <xs:element name="conceptualDomainCollection" type="ConceptualDomain" minOccurs="0" maxOccurs="unbounded" />
+    </xs:sequence>
+    <xs:attribute name="id" type="xs:string" />
+    <xs:attribute name="name" type="xs:string" />
+    <xs:attribute name="dateCreated" type="xs:dateTime" />
+    <xs:attribute name="dateModified" type="xs:dateTime" />
+    <xs:attribute name="createdBy" type="xs:string" />
+    <xs:attribute name="modifiedBy" type="xs:string" />
+  </xs:complexType>
+  <xs:element name="Definition" type="Definition" />
+  <xs:complexType name="Definition">
+    <xs:sequence>
+      <xs:element name="context" type="Context" minOccurs="0" maxOccurs="1" />
+      <xs:element name="definitionClassSchemeItemCollection" type="DefinitionClassSchemeItem" minOccurs="0" maxOccurs="unbounded" />
+    </xs:sequence>
+    <xs:attribute name="id" type="xs:string" />
+    <xs:attribute name="text" type="xs:string" />
+    <xs:attribute name="type" type="xs:string" />
+    <xs:attribute name="languageName" type="xs:string" />
+    <xs:attribute name="dateCreated" type="xs:dateTime" />
+    <xs:attribute name="dateModified" type="xs:dateTime" />
+    <xs:attribute name="createdBy" type="xs:string" />
+    <xs:attribute name="modifiedBy" type="xs:string" />
+  </xs:complexType>
+  <xs:element name="DesignationClassSchemeItem" type="DesignationClassSchemeItem" />
+  <xs:complexType name="DesignationClassSchemeItem">
+    <xs:sequence>
+      <xs:element name="designation" type="Designation" minOccurs="0" maxOccurs="1" />
+      <xs:element name="classSchemeClassSchemeItem" type="ClassSchemeClassSchemeItem" minOccurs="0" maxOccurs="1" />
+    </xs:sequence>
+    <xs:attribute name="id" type="xs:string" />
+    <xs:attribute name="dateCreated" type="xs:dateTime" />
+    <xs:attribute name="dateModified" type="xs:dateTime" />
+    <xs:attribute name="createdBy" type="xs:string" />
+    <xs:attribute name="modifiedBy" type="xs:string" />
+  </xs:complexType>
+  <xs:element name="EnumeratedValueDomain" type="EnumeratedValueDomain" />
+  <xs:complexType name="EnumeratedValueDomain">
+    <xs:complexContent>
+      <xs:extension base="ValueDomain">
+        <xs:sequence>
+          <xs:element name="valueDomainPermissibleValueCollection" type="ValueDomainPermissibleValue" minOccurs="0" maxOccurs="unbounded" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="DefinitionClassSchemeItem" type="DefinitionClassSchemeItem" />
+  <xs:complexType name="DefinitionClassSchemeItem">
+    <xs:sequence>
+      <xs:element name="classSchemeClassSchemeItem" type="ClassSchemeClassSchemeItem" minOccurs="0" maxOccurs="1" />
+      <xs:element name="definition" type="Definition" minOccurs="0" maxOccurs="1" />
+    </xs:sequence>
+    <xs:attribute name="id" type="xs:string" />
+    <xs:attribute name="dateModified" type="xs:dateTime" />
+    <xs:attribute name="dateCreated" type="xs:dateTime" />
+    <xs:attribute name="createdBy" type="xs:string" />
+    <xs:attribute name="modifiedBy" type="xs:string" />
+  </xs:complexType>
+  <xs:element name="AdministeredComponentContact" type="AdministeredComponentContact" />
+  <xs:complexType name="AdministeredComponentContact">
+    <xs:sequence>
+      <xs:element name="classSchemeClassSchemeItem" type="ClassSchemeClassSchemeItem" minOccurs="0" maxOccurs="1" />
+      <xs:element name="classificationSchemeItem" type="ClassificationSchemeItem" minOccurs="0" maxOccurs="1" />
+      <xs:element name="person" type="Person" minOccurs="0" maxOccurs="1" />
+      <xs:element name="organization" type="Organization" minOccurs="0" maxOccurs="1" />
+    </xs:sequence>
+    <xs:attribute name="id" type="xs:string" />
+    <xs:attribute name="rank" type="xs:integer" />
+    <xs:attribute name="dateCreated" type="xs:dateTime" />
+    <xs:attribute name="createdBy" type="xs:string" />
+    <xs:attribute name="dateModified" type="xs:dateTime" />
+    <xs:attribute name="modifiedBy" type="xs:string" />
+    <xs:attribute name="contactRole" type="xs:string" />
+  </xs:complexType>
+  <xs:element name="Person" type="Person" />
+  <xs:complexType name="Person">
+    <xs:sequence>
+      <xs:element name="addressCollection" type="Address" minOccurs="0" maxOccurs="unbounded" />
+      <xs:element name="administeredComponentContact" type="AdministeredComponentContact" minOccurs="0" maxOccurs="unbounded" />
+      <xs:element name="organization" type="Organization" minOccurs="0" maxOccurs="1" />
+    </xs:sequence>
+    <xs:attribute name="id" type="xs:string" />
+    <xs:attribute name="lastName" type="xs:string" />
+    <xs:attribute name="firstName" type="xs:string" />
+    <xs:attribute name="middleInitial" type="xs:string" />
+    <xs:attribute name="rank" type="xs:integer" />
+    <xs:attribute name="position" type="xs:string" />
+    <xs:attribute name="dateCreated" type="xs:dateTime" />
+    <xs:attribute name="createdBy" type="xs:string" />
+    <xs:attribute name="dateModified" type="xs:dateTime" />
+    <xs:attribute name="modifiedBy" type="xs:string" />
+  </xs:complexType>
+  <xs:element name="Organization" type="Organization" />
+  <xs:complexType name="Organization">
+    <xs:sequence>
+      <xs:element name="addressCollection" type="Address" minOccurs="0" maxOccurs="unbounded" />
+      <xs:element name="person" type="Person" minOccurs="0" maxOccurs="unbounded" />
+      <xs:element name="administeredComponentContact" type="AdministeredComponentContact" minOccurs="0" maxOccurs="unbounded" />
+    </xs:sequence>
+    <xs:attribute name="id" type="xs:string" />
+    <xs:attribute name="name" type="xs:string" />
+    <xs:attribute name="createdBy" type="xs:string" />
+    <xs:attribute name="modifiedBy" type="xs:string" />
+    <xs:attribute name="dateCreated" type="xs:dateTime" />
+    <xs:attribute name="dateModified" type="xs:dateTime" />
+  </xs:complexType>
+  <xs:element name="Address" type="Address" />
+  <xs:complexType name="Address">
+    <xs:sequence>
+      <xs:element name="person" type="Person" minOccurs="0" maxOccurs="1" />
+      <xs:element name="organization" type="Organization" minOccurs="0" maxOccurs="1" />
+    </xs:sequence>
+    <xs:attribute name="id" type="xs:string" />
+    <xs:attribute name="type" type="xs:string" />
+    <xs:attribute name="addressLine1" type="xs:string" />
+    <xs:attribute name="addressLine2" type="xs:string" />
+    <xs:attribute name="city" type="xs:string" />
+    <xs:attribute name="state" type="xs:string" />
+    <xs:attribute name="postalCode" type="xs:string" />
+    <xs:attribute name="country" type="xs:string" />
+    <xs:attribute name="rank" type="xs:integer" />
+    <xs:attribute name="dateCreated" type="xs:dateTime" />
+    <xs:attribute name="createdBy" type="xs:string" />
+    <xs:attribute name="dateModified" type="xs:dateTime" />
+    <xs:attribute name="modifiedBy" type="xs:string" />
+  </xs:complexType>
+  <xs:element name="FormElement" type="FormElement" />
+  <xs:complexType name="FormElement">
+    <xs:complexContent>
+      <xs:extension base="AdministeredComponent">
+        <xs:sequence>
+          <xs:element name="instruction" type="Instruction" minOccurs="0" maxOccurs="unbounded" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="TriggerAction" type="TriggerAction" />
+  <xs:complexType name="TriggerAction">
+    <xs:sequence>
+      <xs:element name="protocolCollection" type="Protocol" minOccurs="0" maxOccurs="unbounded" />
+      <xs:element name="administeredComponentClassSchemeItemCollection" type="AdministeredComponentClassSchemeItem" minOccurs="0" maxOccurs="unbounded" />
+      <xs:element name="targetFormElement" type="FormElement" minOccurs="0" maxOccurs="1" />
+      <xs:element name="sourceFormElement" type="FormElement" minOccurs="0" maxOccurs="1" />
+    </xs:sequence>
+    <xs:attribute name="action" type="xs:string" />
+    <xs:attribute name="criterionValue" type="xs:string" />
+    <xs:attribute name="triggerRelationship" type="xs:string" />
+    <xs:attribute name="forcedValue" type="xs:string" />
+    <xs:attribute name="dateCreated" type="xs:dateTime" />
+    <xs:attribute name="createdBy" type="xs:string" />
+    <xs:attribute name="dateModified" type="xs:dateTime" />
+    <xs:attribute name="modifiedBy" type="xs:string" />
+    <xs:attribute name="instruction" type="xs:string" />
+    <xs:attribute name="id" type="xs:string" />
+  </xs:complexType>
+  <xs:element name="QuestionRepetition" type="QuestionRepetition" />
+  <xs:complexType name="QuestionRepetition">
+    <xs:complexContent>
+      <xs:extension base="FormElement">
+        <xs:sequence>
+          <xs:element name="defaultValidValue" type="ValidValue" minOccurs="0" maxOccurs="1" />
+        </xs:sequence>
+        <xs:attribute name="repeatSequenceNumber" type="xs:integer" />
+        <xs:attribute name="defaultValue" type="xs:string" />
+        <xs:attribute name="isEditable" type="xs:string" />
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="Function" type="Function" />
+  <xs:complexType name="Function">
+    <xs:sequence>
+      <xs:element name="conceptDerivationRule" type="ConceptDerivationRule" minOccurs="0" maxOccurs="1" />
+    </xs:sequence>
+    <xs:attribute name="symbol" type="xs:string" />
+    <xs:attribute name="name" type="xs:string" />
+    <xs:attribute name="dateCreated" type="xs:dateTime" />
+    <xs:attribute name="createdBy" type="xs:string" />
+    <xs:attribute name="dateModified" type="xs:dateTime" />
+    <xs:attribute name="modifiedBy" type="xs:string" />
+    <xs:attribute name="id" type="xs:string" />
+  </xs:complexType>
+  <xs:element name="ComponentLevel" type="ComponentLevel" />
+  <xs:complexType name="ComponentLevel">
+    <xs:sequence />
+    <xs:attribute name="level" type="xs:integer" />
+    <xs:attribute name="concatenationString" type="xs:string" />
+    <xs:attribute name="id" type="xs:string" />
+  </xs:complexType>
+</xs:schema>
+

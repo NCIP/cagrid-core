@@ -1,0 +1,377 @@
+<!-- ======================================================================= -->
+<!-- caGrid 1.2 Data Service Extensions / Styles build file                  -->
+<!-- ======================================================================= -->
+<project name="caGrid-dataExtensions" default="all" basedir=".">
+	<!-- Environment -->
+	<property environment="env" />
+	<property file="${basedir}/project.properties" />
+	<property file="${basedir}/build.properties" />
+	<property name="globus.dir" location="${env.GLOBUS_LOCATION}" />
+
+	<!-- build with debugging information -->
+	<property name="java.debug" value="on" />
+	<!-- enforce java 1.5 compliance at build time -->
+	<property name="java.source" value="1.5" />
+
+	<!-- Information -->
+	<property name="project.name" value="${ant.project.name}" />
+	<property name="project.jar.prefix" value="${project.name}-" />
+	<property name="project.jar.suffix" value="-${project.version}.jar" />
+
+	<!-- build output dirs -->
+	<property name="build.dir" location="build" />
+	<property name="build.core.dest" location="${build.dir}/core/classes" />
+	<property name="build.ui.dest" location="${build.dir}/ui/classes" />
+	<property name="build.upgrades.dest" location="${build.dir}/upgrades/classes" />
+	<property name="build.sdkstyle.dest" location="${build.dir}/sdkstyle/classes" />
+	<property name="build.jars.dir" location="${build.dir}/lib" />
+
+	<!-- jar names -->
+	<property name="core.jar.name" value="${project.jar.prefix}core${project.jar.suffix}" />
+	<property name="ui.jar.name" value="${project.jar.prefix}ui${project.jar.suffix}" />
+	<property name="upgrades.jar.name" value="${project.jar.prefix}upgrades${project.jar.suffix}" />
+	<property name="sdkstyle.jar.name" value="${project.jar.prefix}sdkstyle${project.jar.suffix}" />
+	<property name="tests.jar.name" value="${project.jar.prefix}tests${project.jar.suffix}" />
+
+	<!-- jar files -->
+	<property name="core.jar.file" value="${build.jars.dir}/${core.jar.name}" />
+	<property name="ui.jar.file" value="${build.jars.dir}/${ui.jar.name}" />
+	<property name="upgrades.jar.file" value="${build.jars.dir}/${upgrades.jar.name}" />
+	<property name="sdkstyle.jar.file" value="${build.jars.dir}/${sdkstyle.jar.name}" />
+	<property name="tests.jar.file" value="${build.jars.dir}/${tests.jar.name}" />
+
+	<!-- extension -->
+	<property name="extension.dir" location="${basedir}/extension" />
+	<property name="extension.description.file" value="${extension.dir}/extension.xml" />
+	<property name="introduce.extensions.dir" location="../introduce/extensions" />
+	<property name="ext.schema.dir" location="${basedir}/ext/dependencies/xsd" />
+
+	<!-- source directories -->
+	<property name="src.dir" location="${basedir}/src/java" />
+	<property name="templates.src.dir" location="${basedir}/src/jettemplates" />
+	<property name="core.src.dir" location="${src.dir}/core" />
+	<property name="ui.src.dir" location="${src.dir}/ui" />
+	<property name="upgrades.src.dir" location="${src.dir}/upgrades" />
+	<property name="sdkstyle.src.dir" location="${src.dir}/sdkstyle" />
+
+	<!-- libraries -->
+	<property name="lib.dir" location="${basedir}/lib" />
+	<property name="ext.dir" location="${basedir}/ext"/>
+	<property name="ext.dependencies.dir" location="${basedir}/ext/dependencies"/>
+	<property name="ext.lib.dir" location="${ext.dependencies.dir}/impl/jars" />
+	<property name="ext.test.lib.dir" location="${basedir}/ext/dependencies/test/jars" />
+
+	<!-- testing stuff -->
+	<property name="test.dir" location="${basedir}/test" />
+	<property name="test.src.dir" location="${test.dir}/src/java" />
+	<property name="test.core.src.dir" location="${test.src.dir}/core" />
+	<property name="test.resources.dir" location="${test.dir}/resources" />
+	<property name="test.core.classes.dir" location="${build.dir}/test/core/classes" />
+	<property name="test.logs.dir" location="${test.dir}/logs" />
+	<import file="test/test.xml" />
+
+	<!-- =============================================================== -->
+	<!-- Classpaths                                                      -->
+	<!-- =============================================================== -->
+	<path id="base.classpath">
+		<fileset dir="${ext.lib.dir}">
+			<include name="*.jar" />
+		</fileset>
+		<fileset dir="${globus.dir}/lib">
+			<include name="*.jar" />
+            <exclude name="junit.jar"/>
+		</fileset>
+	</path>
+
+	
+	<path id="test.classpath">
+		<path refid="base.classpath" />
+		<fileset dir="${ext.test.lib.dir}">
+			<include name="**/*.jar" />
+		</fileset>
+		<fileset dir="${build.jars.dir}">
+			<include name="**/*.jar" />
+		</fileset>
+		<fileset dir="${globus.dir}/lib">
+			<include name="**/*.jar" />
+            <exclude name="junit.jar"/>
+		</fileset>
+	</path>
+
+
+	<!-- creates output directories -->
+	<target name="init" depends="defineJetcTask, defineContribTasks, configure">
+		<mkdir dir="${build.dir}" />
+		<mkdir dir="${build.jars.dir}" />
+		<mkdir dir="${build.core.dest}" />
+		<mkdir dir="${build.ui.dest}" />
+		<mkdir dir="${build.upgrades.dest}" />
+		<mkdir dir="${build.sdkstyle.dest}" />
+		<mkdir dir="${test.core.classes.dir}" />
+	</target>
+
+	
+	<target name="defineJetcTask">
+		<!-- using jet for templates -->
+		<taskdef name="jetc" classname="ch.paranor.epla.structure.JETCTask">
+			<classpath>
+				<fileset dir="${ext.lib.dir}">
+					<include name="boot.jar" />
+					<include name="osgi.jar" />
+					<include name="resources.jar" />
+					<include name="runtime.jar" />
+					<include name="codegen.jar" />
+					<include name="jdtcore.jar" />
+					<include name="jetc-task.jar" />
+				</fileset>
+			</classpath>
+		</taskdef>
+	</target>
+
+
+	<target name="defineContribTasks">
+		<!-- using ant contrib for contidionals, looping, and runtarget -->
+		<taskdef resource="net/sf/antcontrib/antlib.xml">
+			<classpath>
+				<fileset dir="${lib.dir}">
+					<include name="ant-contrib*.jar" />
+				</fileset>
+			</classpath>
+		</taskdef>
+	</target>
+
+	
+	<!-- =================================================================== -->
+	<!--  Configures Service URLS                                            -->
+	<!-- =================================================================== -->
+	<target name="configure" description="Configures the project based on settings.">
+		<copy todir="${extension.dir}" overwrite="true">
+			<fileset dir="${extension.dir}">
+				<include name="*.template" />
+			</fileset>
+			<mapper type="glob" from="*.template" to="*" />
+			<filterset filtersfile="${basedir}/ext/target_grid/service_urls.properties" />
+		</copy>
+	</target>
+
+
+	<!-- =================================================================== -->
+	<!--  Generate JET template classes                                      -->
+	<!-- =================================================================== -->
+	<target name="generateJETClasses" depends="init">
+		<jetc destdir="${core.src.dir}" template="${templates.src.dir}/codegen/CQLResultTypes.xsd.xmljet" />
+		<jetc destdir="${core.src.dir}" template="${templates.src.dir}/codegen/EnumerationServiceClient.javajet" />
+		<jetc destdir="${core.src.dir}" template="${templates.src.dir}/codegen/StubCQLQueryProcessor.javajet" />
+	</target>
+
+
+	<!-- compiles the core classes for data service extensions -->
+	<target name="compileCore" depends="init, generateJETClasses">
+		<javac srcdir="${core.src.dir}" destdir="${build.core.dest}" debug="${java.debug}" source="${java.source}">
+			<classpath>
+				<path refid="base.classpath" />
+			</classpath>
+		</javac>
+	</target>
+
+
+	<!-- compiles the core UI classes for the data service extension -->
+	<target name="compileUi" depends="compileCore">
+		<javac srcdir="${ui.src.dir}" destdir="${build.ui.dest}" debug="${java.debug}" source="${java.source}">
+			<classpath>
+				<path refid="base.classpath" />
+				<pathelement path="${build.core.dest}" />
+			</classpath>
+		</javac>
+	</target>
+
+
+	<!-- compiles the upgrade classes for the data service extension -->
+	<target name="compileUpgrades" depends="compileCore">
+		<javac srcdir="${upgrades.src.dir}" destdir="${build.upgrades.dest}" debug="${java.debug}" source="${java.source}">
+			<classpath>
+				<path refid="base.classpath" />
+				<pathelement path="${build.core.dest}" />
+			</classpath>
+		</javac>
+	</target>
+
+
+	<!-- compiles sdk style common classes -->
+	<target name="compileSdkStyle" depends="compileCore, compileUi">
+		<javac srcdir="${sdkstyle.src.dir}" destdir="${build.sdkstyle.dest}" debug="${java.debug}" source="${java.source}">
+			<classpath>
+				<pathelement path="${build.core.dest}" />
+				<pathelement path="${build.ui.dest}" />
+				<path refid="base.classpath" />
+			</classpath>
+		</javac>
+	</target>
+
+
+	<!-- compiles the test code -->
+	<target name="compileCoreTests" depends="compileCore, compileUi">
+		<javac srcdir="${test.core.src.dir}" destdir="${test.core.classes.dir}" debug="${java.debug}" source="${java.source}">
+			<classpath refid="test.classpath" />
+		</javac>
+	</target>
+	
+
+	<!-- jars the common classes -->
+	<target name="jarCore" depends="compileCore" description="Builds and jars the core classes">
+		<jar destfile="${core.jar.file}">
+			<fileset dir="${build.core.dest}">
+				<include name="**/*.class" />
+			</fileset>
+			<fileset dir="${core.src.dir}">
+				<include name="**/*.java" />
+				<include name="**/*.xml" />
+			</fileset>
+			<fileset dir="${basedir}/src">
+				<include name="resources/**/*" />
+			</fileset>
+		</jar>
+	</target>
+
+
+	<!-- jars the core UI -->
+	<target name="jarUi" depends="compileUi" description="Jars the core UI">
+		<jar destfile="${ui.jar.file}">
+			<fileset dir="${build.ui.dest}">
+				<include name="**/*.class" />
+			</fileset>
+			<fileset dir="${ui.src.dir}">
+				<include name="**/*.java" />
+			</fileset>
+		</jar>
+	</target>
+
+
+	<!-- jars the upgrades -->
+	<target name="jarUpgrades" depends="compileUpgrades" description="Jars the upgrade code">
+		<jar destfile="${upgrades.jar.file}">
+			<fileset dir="${build.upgrades.dest}">
+				<include name="**/*.class" />
+			</fileset>
+			<fileset dir="${upgrades.src.dir}">
+				<include name="**/*.java" />
+			</fileset>
+		</jar>
+	</target>
+
+
+	<!-- jars the sdk style classes -->
+	<target name="jarSdkStyle" depends="compileSdkStyle" description="Jars the sdk style base classes">
+		<jar destfile="${sdkstyle.jar.file}">
+			<fileset dir="${build.sdkstyle.dest}">
+				<include name="**/*.class" />
+			</fileset>
+			<fileset dir="${sdkstyle.src.dir}">
+				<include name="**/*" />
+			</fileset>
+		</jar>
+	</target>
+
+
+	<!-- jars the tests -->
+	<target name="jarCoreTests" depends="compileCoreTests" description="Jars the testing code and resources">
+		<jar destfile="${tests.jar.file}">
+			<fileset dir="${test.core.classes.dir}">
+				<include name="**/*.class" />
+			</fileset>
+			<fileset dir="${test.resources.dir}">
+				<include name="**/*" />
+			</fileset>
+			<fileset dir="${test.core.src.dir}">
+				<include name="**/*.java" />
+				<include name="**/*.xml" />
+			</fileset>
+		</jar>
+	</target>
+
+
+	<!-- removes all build output -->
+	<target name="clean">
+		<delete dir="tmp" />
+		<delete dir="${build.dir}" />
+	</target>
+	
+	
+	<target name="xmiToDomainModel" description="Runs the XMI to Domain Model conversion GUI">
+		<java classname="gov.nih.nci.cagrid.data.ui.domain.DomainModelFromXmiDialog" fork="true">
+			<jvmarg value="-Xmx512m" />
+			<classpath refid="base.classpath" />
+			<classpath>
+				<fileset dir="${build.jars.dir}">
+					<include name="*.jar" />
+				</fileset>
+			</classpath>
+			<classpath>
+				<fileset dir="${ant.library.dir}">
+					<include name="*launcher*.jar" />
+				</fileset>
+			</classpath>
+		</java>
+	</target>
+	
+		
+    <!-- ============================================================== -->
+    <!-- Runs the domain model visualization GUI                        -->
+    <!-- ============================================================== -->
+	<target name="visualizeDomainModel" description="Graphicaly load and navigate a caGrid Domain Model.">
+		<java classname="gov.nih.nci.cagrid.data.ui.domain.DomainModelVisualizer" fork="true">
+			<classpath refid="base.classpath"/>
+			<classpath>
+				<fileset dir="${build.jars.dir}">
+					<include name="**/*.jar"/>
+				</fileset>
+			</classpath>
+		</java>
+	</target>
+	
+
+	<!-- Build and install extensions for introduce -->
+	<target name="installIntroduceExtensions" depends="defineContribTasks" description="Builds and installs the Data Services extensions into Introduce.">
+		<delete dir="${introduce.extensions.dir}/data"/>
+		<echo message="Deleted data extensions dir (${introduce.extensions.dir}/data)"/>
+		<mkdir dir="${introduce.extensions.dir}/data" />
+		<echo message="Created data extrensions dir (${introduce.extensions.dir}/data)"/>
+		<mkdir dir="${introduce.extensions.dir}/data/lib" />
+		<mkdir dir="${introduce.extensions.dir}/data/schema/Data" />
+		<mkdir dir="${introduce.extensions.dir}/data/styles" />
+		<!-- libraries -->
+		<copy todir="${introduce.extensions.dir}/lib">
+			<fileset dir="${ext.lib.dir}">
+				<include name="*.jar" />
+				<exclude name="*Introduce*.jar" />
+			</fileset>
+			<fileset dir="${build.jars.dir}">
+				<include name="**/*.jar" />
+			</fileset>
+		</copy>
+		<!-- data service schemas -->
+		<copy todir="${introduce.extensions.dir}/data/schema/Data">
+			<fileset dir="${ext.schema.dir}">
+				<include name="**/*.xsd" />
+				<include name="**/*.wsdl" />
+				<exclude name="cagrid/**" />
+			</fileset>
+		</copy>
+		<!-- other schemas -->
+		<copy todir="${introduce.extensions.dir}/data/schema/Data/xsd">
+			<fileset dir="${ext.schema.dir}">
+				<include name="cagrid/**" />
+			</fileset>
+		</copy>
+		<!-- the extension definition -->
+		<copy todir="${introduce.extensions.dir}/data">
+			<fileset dir="${extension.dir}">
+				<include name="extension.xml"/>
+			</fileset>
+		</copy>
+	</target>
+
+	
+	<!-- build and jar everything -->
+	<target name="all" depends="jarCore, jarUi, jarUpgrades, jarSdkStyle, jarCoreTests" description="Builds and jars all the classes in the project" />
+</project>

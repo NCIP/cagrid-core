@@ -1,0 +1,130 @@
+Index: build.xml
+===================================================================
+RCS file: /home/globdev/CVS/globus-packages/ws-mds/build.xml,v
+retrieving revision 1.13
+diff -u -r1.13 build.xml
+--- build.xml	29 Mar 2005 08:53:17 -0000	1.13
++++ build.xml	29 Jan 2009 18:48:18 -0000
+@@ -10,10 +10,7 @@
+   <!-- current dependency order -->  
+   <target name="all" depends="deployServiceGroup,
+                               deployUsefulrp,
+-                              deployAggregator,
+-                              deployIndex,
+-                              deployTrigger,
+-                              deployWebMds" />
++                              deployAggregator"/>
+     
+   <target name="deployServiceGroup">
+     <ant dir="./servicegroup/schema" target="deploy"/>  
+Index: usefulrp/source/src/org/globus/mds/usefulrp/ServiceMetaDataResourceProperty.java
+===================================================================
+RCS file: /home/globdev/CVS/globus-packages/ws-mds/usefulrp/source/src/org/globus/mds/usefulrp/ServiceMetaDataResourceProperty.java,v
+retrieving revision 1.6.2.9
+diff -u -r1.6.2.9 ServiceMetaDataResourceProperty.java
+--- usefulrp/source/src/org/globus/mds/usefulrp/ServiceMetaDataResourceProperty.java	14 Oct 2008 01:07:33 -0000	1.6.2.9
++++ usefulrp/source/src/org/globus/mds/usefulrp/ServiceMetaDataResourceProperty.java	29 Jan 2009 18:48:18 -0000
+@@ -30,7 +30,6 @@
+ import org.globus.wsrf.impl.ReflectionResourceProperty;
+ 
+ import org.globus.mds.usefulrp.types.ServiceMetaData;
+-import org.globus.wsrf.utils.Version;
+ 
+ /** 
+     An MDS ResourceProperty that will allow services to publish
+@@ -48,7 +47,7 @@
+     // for now we are just going to set a version number in this class 
+     // in order to cover the default uninitialized case.
+     // calling code or subclassess may override the version number at any point 
+-    public static final String CURRENT_VERSION = Version.getVersion();
++    public static final String CURRENT_VERSION = "4.0";
+ 
+     private ServiceMetaData metadata = new ServiceMetaData();
+ 
+Index: bigindex/source/deploy-jndi-config.xml
+===================================================================
+RCS file: /home/globdev/CVS/globus-packages/ws-mds/bigindex/source/deploy-jndi-config.xml,v
+retrieving revision 1.1.1.1.2.3
+diff -u -r1.1.1.1.2.3 deploy-jndi-config.xml
+--- bigindex/source/deploy-jndi-config.xml	26 Jan 2009 22:17:43 -0000	1.1.1.1.2.3
++++ bigindex/source/deploy-jndi-config.xml	29 Jan 2009 18:48:18 -0000
+@@ -1,7 +1,7 @@
+ <?xml version="1.0" encoding="UTF-8"?>
+ <jndiConfig xmlns="http://wsrf.globus.org/jndi/config">
+ 
+-    <service name="BigIndexService">
++    <service name="DefaultIndexService">
+         <resource 
+             name="home"
+             type="org.globus.mds.aggregator.impl.SingletonAggregatorHome">
+@@ -34,22 +34,26 @@
+                     org.globus.mds.aggregator.impl.SubscriptionAggregatorSource
+                     org.globus.mds.aggregator.impl.ExecutionAggregatorSource
+                 </value>
+-	     </parameter>                
++	     </parameter>
+              <parameter>
+ 	        <name>pollTimerThreadPoolSize</name>
+-	        <value>2</value>               
++	        <value>10</value>               
+ 	     </parameter>
+              <!--<parameter>
+ 	        <name>executableMappings</name>
+ 	        <value>aggr-test=aggregator-exec-test.sh, pingexec=example-ping-exec</value>
+-	     </parameter>-->             
++	     </parameter>-->    
++       <parameter>
++          <name>entrySweeperInterval</name>
++          <value>30000</value>
++       </parameter>             
+ 	  </resourceParams>
+        </resource>
+-       <resourceLink name="groupHome" target="java:comp/env/services/BigIndexService/home"/>
+-       <resourceLink name="entryHome" target="java:comp/env/services/BigIndexServiceEntry/home"/>
++       <resourceLink name="groupHome" target="java:comp/env/services/DefaultIndexService/home"/>
++       <resourceLink name="entryHome" target="java:comp/env/services/DefaultIndexServiceEntry/home"/>
+     </service>
+ 
+-    <service name="BigIndexServiceEntry">
++    <service name="DefaultIndexServiceEntry">
+        <resource name="home"
+             type="org.globus.mds.bigindex.impl.BigIndexEntryHome">
+             <resourceParams>
+@@ -63,9 +67,9 @@
+                 </parameter>                
+             </resourceParams>
+         </resource>
+-       <resourceLink name="groupHome" target="java:comp/env/services/BigIndexService/home"/>
+-       <resourceLink name="entryHome" target="java:comp/env/services/BigIndexServiceEntry/home"/>
+-       <resourceLink name="configuration" target="java:comp/env/services/BigIndexService/configuration"/>
++       <resourceLink name="groupHome" target="java:comp/env/services/DefaultIndexService/home"/>
++       <resourceLink name="entryHome" target="java:comp/env/services/DefaultIndexServiceEntry/home"/>
++       <resourceLink name="configuration" target="java:comp/env/services/DefaultIndexService/configuration"/>
+     </service>
+ 
+ </jndiConfig>
+Index: bigindex/source/deploy-server.wsdd
+===================================================================
+RCS file: /home/globdev/CVS/globus-packages/ws-mds/bigindex/source/deploy-server.wsdd,v
+retrieving revision 1.1.1.1.2.4
+diff -u -r1.1.1.1.2.4 deploy-server.wsdd
+--- bigindex/source/deploy-server.wsdd	10 Dec 2008 18:22:19 -0000	1.1.1.1.2.4
++++ bigindex/source/deploy-server.wsdd	29 Jan 2009 18:48:18 -0000
+@@ -4,7 +4,7 @@
+     xmlns:java="http://xml.apache.org/axis/wsdd/providers/java" 
+     xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+ 
+-    <service name="BigIndexService" provider="Handler" 
++    <service name="DefaultIndexService" provider="Handler" 
+         use="literal" style="document">
+         <parameter name="providers" 
+                    value="org.globus.wsrf.impl.servicegroup.ServiceGroupRegistrationProvider 
+@@ -26,7 +26,7 @@
+         <wsdlFile>share/schema/mds/bigindex/big_index_service.wsdl</wsdlFile>
+     </service>
+ 
+-    <service name="BigIndexServiceEntry" provider="Handler" 
++    <service name="DefaultIndexServiceEntry" provider="Handler" 
+         use="literal" style="document">
+         <parameter name="providers" 
+                    value="GetRPProvider

@@ -1,0 +1,25 @@
+<!-- ======================================================================= -->
+<!-- caGrid Utilities build file                                             -->
+<!-- ======================================================================= -->
+<project name="caGrid-MMS_tests_harness" basedir=".">
+
+	<!-- call the test target for each project and aggregates the log resutls  -->
+	<target name="test" description="Runs the tests." depends="defineClasspaths">
+		<mkdir dir="${junit.results.dir}" />
+		<junit dir="${basedir}" printsummary="yes" errorproperty="test.failed" failureproperty="test.failed" showoutput="true" fork="yes" forkmode="once">
+			<sysproperty key="build.dir" value="${build.dest}" />
+			<jvmarg value="-Dbuild.dir=${build.dest}" />
+			<classpath refid="test.run.classpath" />
+			<classpath>
+				<pathelement path="${test.build.dest}" />
+			</classpath>
+			<formatter type="xml" />
+			<batchtest fork="yes" todir="${junit.results.dir}">
+				<fileset dir="${test.src.dir}">
+					<include name="**/*TestCase.java" />
+				</fileset>
+			</batchtest>
+		</junit>
+		<fail message="Tests failed! Check test reports." if="test.failed" />
+	</target>
+</project>

@@ -1,0 +1,139 @@
+<?xml version="1.0"?>
+<project name="ivy-shared-targets" xmlns:ivy="antlib:org.apache.ivy.ant">
+
+	<dirname property="ivy-shared-targets.basedir" file="${ant.file.ivy-shared-targets}" />
+
+	<!-- Load in the Ivy Ant definitions, so we can use them-->
+	<import file="${ivy-shared-targets.basedir}/ivy-def.xml" />
+
+	<property name="ivy.xml.file" location="ivy.xml" />
+	<ivy:info file="${ivy.xml.file}" />
+
+	<!-- ================================================== -->
+	<!-- ===== NOTES TO PROJECTS LEVERAGING THIS FILE ===== -->
+	<!-- ================================================== -->
+	<!-- 
+	   NOTE 1)
+        These properties are those which you may wish to override, as they relate to assumptions
+        about your project.  For example, if you aren't using "ext" as the directory name for where
+        you want Ivy to place your resolved dependencies, you should specify a new value for the 
+        property: "ivy.resolved.artifacts.dir".
+        
+        To override these values, just set the properties in your build file before you import this file.
+       
+       NOTE 2)
+       You should set the property "configure.supported" if you project supports the "configure" call.
+       
+       NOTE 3)
+        Also note, you can "override" any of these targets in your build file, and they will be used instead.
+        See information on this here: http://ant.apache.org/manual/CoreTasks/import.html
+        For example, you can overload the "resolve-dependencies" call to do something different by 
+        defining that target in your build file. 
+    -->
+	<property name="ivy.resolved.artifacts.dir" location="${basedir}/ext" description="The directoy in which resolved dependencies should be placed" />
+	<property name="ivy.resolved.artifacts.pattern" value="${ivy.resolved.artifacts.dir}/dependencies/[conf]/[type]s/[originalname](.[ext])" description="The Ivy pattern used to determine how resolved dependencies should be copied into the project" />
+	<property name="ivy.generated.artifacts.dir" location="build" description="The directoy in which artifacts are created" />
+	<property name="ivy.generated.artifacts.pattern" value="${ivy.generated.artifacts.dir}/[type]s/[artifact]-[revision].[ext]" description="The ivy pattern used to locate generated artifacts" />
+
+	<property name="ivy.resolve.configurations" value="${ivy.public.configurations}" description="The Ivy configurations that should be resolved (defaults to public scope)" />
+	<property name="ivy.resolve.configure.configurations" value="target_grid" description="The Ivy configurations that should be resolved during a configure call (defaults to just the special 'target_grid' configuration)" />
+
+	<property name="main.build.file" value="build.xml" description="The project's main build file" />
+	<property name="main.build.all.target" value="all" description="The ant target in the project's main build file that should be called to do a complete build" />
+	<property name="main.build.clean.target" value="clean" description="The ant target in the project's main build file that should be called to clean a build" />
+	<property name="main.build.configure.target" value="configure" description="The ant target in the project's main build file that should be called to configure a build (not used unless configure.supported property is set" />
+	<!-- ================================================== -->
+
+
+	<!-- ================================================== -->
+	<!-- ===== PUBLISH ===== -->
+	<!-- ================================================== -->
+	<target name="publish" depends="pre.publish,do.publish,post.publish" description="This target is used to build and publish the project's artifacts to the repository" />
+	<target name="pre.publish" depends="build-project" />
+	<target name="do.publish" depends="pre.publish">
+		<echo message="Publishing for ${ivy.module}." />
+		<publish-artifacts>
+			<artifacts-list>
+				<artifacts pattern="${ivy.generated.artifacts.pattern}" />
+			</artifacts-list>
+		</publish-artifacts>
+	</target>
+	<target name="post.publish" depends="do.publish" />
+
+
+	<!-- ================================================== -->
+	<!-- ===== CLEAN-DEPENDENCIES ===== -->
+	<!-- ================================================== -->
+	<target name="clean-dependencies" depends="pre.clean-dependencies,do.clean-dependencies,post.clean-dependencies" description="This target is used to remove the project's dependencies, and local artifacts" />
+	<target name="pre.clean-dependencies" />
+	<target name="do.clean-dependencies" depends="pre.clean-dependencies">
+		<echo message="Cleaning dependencies for ${ivy.module}." />
+		<!-- Delete the directory which we retrieve to -->
+		<delete dir="${ivy.resolved.artifacts.dir}" />
+	</target>
+	<target name="post.clean-dependencies" depends="do.clean-dependencies">
+		<!-- Tell the project to clean itself -->
+		<ant antfile="${main.build.file}" target="${main.build.clean.target}" inheritall="false" inheritrefs="false"/>
+	</target>
+
+
+	<!-- ================================================== -->
+	<!-- ===== RESOLVE-CONFIGURE-DEPENDENCIES ===== -->
+	<!-- ================================================== -->
+	<target name="resolve-configure-dependencies" if="configure.supported" depends="pre.resolve-configure-dependencies,do.resolve-configure-dependencies,post.resolve-configure-dependencies" description="This target is used to resolve the project's configure-time dependencies, and copy them locally" />
+
+	<target name="pre.resolve-configure-dependencies" if="configure.supported">
+		<!-- Ask Ivy to figure out what we need and cache it -->
+		<ivy:resolve conf="${ivy.resolve.configure.configurations}" />
+	</target>
+	<target name="do.resolve-configure-dependencies" depends="pre.resolve-configure-dependencies" if="configure.supported">
+		<echo message="Resolving configure dependencies for ${ivy.module}." />
+		<!-- Ask Ivy to copy our artifacts into the project -->
+		<ivy:retrieve conf="${ivy.resolve.configure.configurations}" pattern="${ivy.resolved.artifacts.dir}/target_grid/[artifact].[ext]" sync="true" />
+	</target>
+	<target name="post.resolve-configure-dependencies" depends="do.resolve-configure-dependencies" if="configure.supported">
+		<!-- Tell the project to configure itself -->
+		<ant antfile="${main.build.file}" target="${main.build.configure.target}" inheritall="false" inheritrefs="false"/>
+	</target>
+
+
+	<!-- ================================================== -->
+	<!-- ===== RESOLVE-DEPENDENCIES ===== -->
+	<!-- ================================================== -->
+	<target name="resolve-dependencies" depends="pre.resolve-dependencies,do.resolve-dependencies,post.resolve-dependencies" description="This target is used to resolve the project's dependencies, and copy them locally" />
+	<target name="pre.resolve-dependencies" depends="resolve-configure-dependencies">
+		<!-- Ask Ivy to figure out what we need and cache it -->
+		<ivy:resolve />
+	</target>
+	<target name="do.resolve-dependencies" depends="pre.resolve-dependencies">
+		<echo message="Resolving dependencies for ${ivy.module}." />
+		<!-- Ask Ivy to copy our artifacts into the project -->
+		<ivy:retrieve conf="${ivy.resolve.configurations}" pattern="${ivy.resolved.artifacts.pattern}" sync="true" />
+	</target>
+	<target name="post.resolve-dependencies" depends="do.resolve-dependencies">
+		<!-- Ask Ivy to generate us a dependency report -->
+		<ivy:report todir="${ivy.resolved.artifacts.dir}" graph="false" />
+	</target>
+
+
+
+	<!--============================== Utility Functions ==============================-->
+
+	<target name="build-project" depends="resolve-dependencies">
+		<!-- Before we can publish, we have to make sure we have built the project -->
+		<ant antfile="${main.build.file}" target="${main.build.all.target}" inheritall="false" inheritrefs="false"/>
+	</target>
+
+	<macrodef name="publish-artifacts">
+		<element name="artifacts-list" description="Should contain nested ivy publish artifacts elements" />
+		<sequential>
+			<echo message="Publishing artifacts for ${ivy.module}." />
+			<delete file="${ivy.generated.artifacts.dir}/ivy.xml" />
+			<!-- delete last produced ivy file to be sure a new one will be generated -->
+			<ivy:publish overwrite="true" resolver="caGrid-ivy-resolver" pubrevision="${project.version}" status="integration">
+				<artifacts-list />
+			</ivy:publish>
+		</sequential>
+	</macrodef>
+
+</project>

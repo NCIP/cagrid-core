@@ -1,0 +1,56 @@
+<?xml version="1.0"?>
+<project name="developers-build-deploy file" basedir=".">
+	<!-- ============================================================== -->
+	<!-- This file is designed to allow the developer to extend the     -->
+	<!-- deploy process without having to edit the build-deploy.xml     -->
+	<!-- file. DO NOT REMOVE ANY TARGETS                                -->
+	<!-- ============================================================== -->
+
+
+	<!-- ============================================================== -->
+	<!-- Pre Deploy Tomcat                                              -->
+	<!-- ============================================================== -->
+	<target name="preDeployTomcat">
+		<!-- deploy the webapp-->
+		<ant antfile="build.xml" dir="webapp" target="deployTomcat" inheritall="false" />
+
+		<!--move the ext lib to the lib so it will be deployed -->
+		<copy todir="${build.lib.dir}">
+			<fileset dir="${ext.lib.dir}">
+				<include name="*.jar" />
+			</fileset>
+		</copy>
+	</target>
+
+
+	<!-- ============================================================== -->
+	<!-- Pre Deploy JBOSS                                               -->
+	<!-- ============================================================== -->
+	<target name="preDeployJBoss">
+		<!-- deploy the webapp-->
+		<ant antfile="build.xml" dir="webapp" target="deployJBoss" inheritall="false" />
+
+		<copy todir="${build.lib.dir}">
+			<fileset dir="${ext.lib.dir}">
+				<include name="*.jar" />
+			</fileset>
+		</copy>
+	</target>
+
+	<!-- ============================================================== -->
+	<!-- Post UnDDeploy Tomcat                                              -->
+	<!-- ============================================================== -->
+	<target name="postUndeployTomcat">
+
+	</target>
+
+	<!-- ============================================================== -->
+	<!-- Post UnDeploy JBOSS                                               -->
+	<!-- ============================================================== -->
+	<target name="postUndeployJBoss">
+
+	</target>
+
+
+
+</project>

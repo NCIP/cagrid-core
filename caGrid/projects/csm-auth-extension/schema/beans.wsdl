@@ -1,0 +1,12 @@
+<definitions name="beans" targetNamespace="gov.nih.nci.cagrid.beans"
+    xmlns:tns="gov.nih.nci.cagrid.beans/beans" xmlns="http://schemas.xmlsoap.org/wsdl/">
+    <types>
+        <schema targetNamespace="gov.nih.nci.cagrid.beans/beans"
+            xmlns:tns="gov.nih.nci.cagrid.beans/beans"
+            xmlns:gridgrouper="gme://org.cagrid.gridgrouper/1/CSMAuthorization"
+            xmlns="http://www.w3.org/2001/XMLSchema">
+            <import namespace="gme://org.cagrid.csm/1/CSMAuthorization"
+                schemaLocation="./CSMAuthorization.xsd"/>
+        </schema>
+    </types>
+</definitions>

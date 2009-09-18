@@ -1,0 +1,237 @@
+<ns1:ServiceDescription introduceVersion="1.3" xmlns:ns1="gme://gov.nih.nci.cagrid/1/Introduce">
+ <ns2:Namespaces xsi:type="ns2:NamespacesType" xmlns:ns2="gme://gov.nih.nci.cagrid.introduce/1/Namespace" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <ns2:Namespace location="./authentication-core-types.xsd" namespace="http://gaards.cagrid.org/authentication" packageName="org.cagrid.gaards.authentication" xsi:type="ns2:NamespaceType">
+   <ns2:SchemaElement type="AuthenticationProfiles" xsi:type="ns2:SchemaElementType"/>
+   <ns2:SchemaElement type="BasicAuthentication" xsi:type="ns2:SchemaElementType"/>
+   <ns2:SchemaElement type="Credential" xsi:type="ns2:SchemaElementType"/>
+   <ns2:SchemaElement type="OneTimePassword" xsi:type="ns2:SchemaElementType"/>
+  </ns2:Namespace>
+  <ns2:Namespace location="./authentication-faults.xsd" namespace="http://gaards.cagrid.org/authentication-faults" packageName="org.cagrid.gaards.authentication.faults" xsi:type="ns2:NamespaceType">
+   <ns2:SchemaElement type="AuthenticationProviderFault" xsi:type="ns2:SchemaElementType"/>
+   <ns2:SchemaElement type="CredentialNotSupportedFault" xsi:type="ns2:SchemaElementType"/>
+   <ns2:SchemaElement type="InsufficientAttributeFault" xsi:type="ns2:SchemaElementType"/>
+   <ns2:SchemaElement type="InvalidCredentialFault" xsi:type="ns2:SchemaElementType"/>
+  </ns2:Namespace>
+  <ns2:Namespace location="./AuthenticationServiceTypesDeprecated.xsd" namespace="http://cagrid.nci.nih.gov/AuthenticationService/types" packageName="gov.nih.nci.cagrid.authentication.stubs.types" xsi:type="ns2:NamespaceType">
+   <ns2:SchemaElement type="AuthenticationProviderFault" xsi:type="ns2:SchemaElementType"/>
+   <ns2:SchemaElement type="InsufficientAttributeFault" xsi:type="ns2:SchemaElementType"/>
+   <ns2:SchemaElement type="InvalidCredentialFault" xsi:type="ns2:SchemaElementType"/>
+  </ns2:Namespace>
+  <ns2:Namespace location="./authentication-service.xsd" namespace="http://cagrid.nci.nih.gov/1/authentication-service" packageName="gov.nih.nci.cagrid.authentication.bean" xsi:type="ns2:NamespaceType">
+   <ns2:SchemaElement type="Credential" xsi:type="ns2:SchemaElementType"/>
+   <ns2:SchemaElement type="SAMLAssertion" xsi:type="ns2:SchemaElementType"/>
+  </ns2:Namespace>
+  <ns2:Namespace generateStubs="false" location="./xmldsig-core-schema.xsd" namespace="http://www.w3.org/2000/09/xmldsig#" packageName="org.w3.www._2000._09.xmldsig" xsi:type="ns2:NamespaceType">
+   <ns2:SchemaElement type="CanonicalizationMethod" xsi:type="ns2:SchemaElementType"/>
+   <ns2:SchemaElement type="DigestMethod" xsi:type="ns2:SchemaElementType"/>
+   <ns2:SchemaElement type="DigestValue" xsi:type="ns2:SchemaElementType"/>
+   <ns2:SchemaElement type="DSAKeyValue" xsi:type="ns2:SchemaElementType"/>
+   <ns2:SchemaElement type="KeyInfo" xsi:type="ns2:SchemaElementType"/>
+   <ns2:SchemaElement type="KeyName" xsi:type="ns2:SchemaElementType"/>
+   <ns2:SchemaElement type="KeyValue" xsi:type="ns2:SchemaElementType"/>
+   <ns2:SchemaElement type="Manifest" xsi:type="ns2:SchemaElementType"/>
+   <ns2:SchemaElement type="MgmtData" xsi:type="ns2:SchemaElementType"/>
+   <ns2:SchemaElement type="Object" xsi:type="ns2:SchemaElementType"/>
+   <ns2:SchemaElement type="PGPData" xsi:type="ns2:SchemaElementType"/>
+   <ns2:SchemaElement type="Reference" xsi:type="ns2:SchemaElementType"/>
+   <ns2:SchemaElement type="RetrievalMethod" xsi:type="ns2:SchemaElementType"/>
+   <ns2:SchemaElement type="RSAKeyValue" xsi:type="ns2:SchemaElementType"/>
+   <ns2:SchemaElement type="Signature" xsi:type="ns2:SchemaElementType"/>
+   <ns2:SchemaElement type="SignatureMethod" xsi:type="ns2:SchemaElementType"/>
+   <ns2:SchemaElement type="SignatureProperties" xsi:type="ns2:SchemaElementType"/>
+   <ns2:SchemaElement type="SignatureProperty" xsi:type="ns2:SchemaElementType"/>
+   <ns2:SchemaElement type="SignatureValue" xsi:type="ns2:SchemaElementType"/>
+   <ns2:SchemaElement type="SignedInfo" xsi:type="ns2:SchemaElementType"/>
+   <ns2:SchemaElement type="SPKIData" xsi:type="ns2:SchemaElementType"/>
+   <ns2:SchemaElement type="Transform" xsi:type="ns2:SchemaElementType"/>
+   <ns2:SchemaElement type="Transforms" xsi:type="ns2:SchemaElementType"/>
+   <ns2:SchemaElement type="X509Data" xsi:type="ns2:SchemaElementType"/>
+  </ns2:Namespace>
+  <ns2:Namespace generateStubs="false" location="./cs-sstc-schema-assertion-1.1.xsd" namespace="urn:oasis:names:tc:SAML:1.0:assertion" packageName="gov.nih.nci.cagrid.opensaml" xsi:type="ns2:NamespaceType">
+   <ns2:SchemaElement type="Action" xsi:type="ns2:SchemaElementType"/>
+   <ns2:SchemaElement type="Advice" xsi:type="ns2:SchemaElementType"/>
+   <ns2:SchemaElement className="SAMLAssertion" deserializer="org.cagrid.gaards.saml.encoding.SAMLDeserializerFactory" serializer="org.cagrid.gaards.saml.encoding.SAMLSerializerFactory" type="Assertion" xsi:type="ns2:SchemaElementType"/>
+   <ns2:SchemaElement type="AssertionIDReference" xsi:type="ns2:SchemaElementType"/>
+   <ns2:SchemaElement type="Attribute" xsi:type="ns2:SchemaElementType"/>
+   <ns2:SchemaElement type="AttributeDesignator" xsi:type="ns2:SchemaElementType"/>
+   <ns2:SchemaElement type="AttributeStatement" xsi:type="ns2:SchemaElementType"/>
+   <ns2:SchemaElement type="AttributeValue" xsi:type="ns2:SchemaElementType"/>
+   <ns2:SchemaElement type="Audience" xsi:type="ns2:SchemaElementType"/>
+   <ns2:SchemaElement type="AudienceRestrictionCondition" xsi:type="ns2:SchemaElementType"/>
+   <ns2:SchemaElement type="AuthenticationStatement" xsi:type="ns2:SchemaElementType"/>
+   <ns2:SchemaElement type="AuthorityBinding" xsi:type="ns2:SchemaElementType"/>
+   <ns2:SchemaElement type="AuthorizationDecisionStatement" xsi:type="ns2:SchemaElementType"/>
+   <ns2:SchemaElement type="Condition" xsi:type="ns2:SchemaElementType"/>
+   <ns2:SchemaElement type="Conditions" xsi:type="ns2:SchemaElementType"/>
+   <ns2:SchemaElement type="ConfirmationMethod" xsi:type="ns2:SchemaElementType"/>
+   <ns2:SchemaElement type="DoNotCacheCondition" xsi:type="ns2:SchemaElementType"/>
+   <ns2:SchemaElement type="Evidence" xsi:type="ns2:SchemaElementType"/>
+   <ns2:SchemaElement type="NameIdentifier" xsi:type="ns2:SchemaElementType"/>
+   <ns2:SchemaElement type="Statement" xsi:type="ns2:SchemaElementType"/>
+   <ns2:SchemaElement type="Subject" xsi:type="ns2:SchemaElementType"/>
+   <ns2:SchemaElement type="SubjectConfirmation" xsi:type="ns2:SchemaElementType"/>
+   <ns2:SchemaElement type="SubjectConfirmationData" xsi:type="ns2:SchemaElementType"/>
+   <ns2:SchemaElement type="SubjectLocality" xsi:type="ns2:SchemaElementType"/>
+   <ns2:SchemaElement type="SubjectStatement" xsi:type="ns2:SchemaElementType"/>
+  </ns2:Namespace>
+  <ns2:Namespace namespace="http://www.w3.org/2001/XMLSchema" xsi:type="ns2:NamespaceType">
+   <ns2:SchemaElement type="anySimpleType" xsi:type="ns2:SchemaElementType"/>
+   <ns2:SchemaElement type="anyType" xsi:type="ns2:SchemaElementType"/>
+   <ns2:SchemaElement type="anyURI" xsi:type="ns2:SchemaElementType"/>
+   <ns2:SchemaElement type="base64Binary" xsi:type="ns2:SchemaElementType"/>
+   <ns2:SchemaElement type="boolean" xsi:type="ns2:SchemaElementType"/>
+   <ns2:SchemaElement type="byte" xsi:type="ns2:SchemaElementType"/>
+   <ns2:SchemaElement type="date" xsi:type="ns2:SchemaElementType"/>
+   <ns2:SchemaElement type="dateTime" xsi:type="ns2:SchemaElementType"/>
+   <ns2:SchemaElement type="decimal" xsi:type="ns2:SchemaElementType"/>
+   <ns2:SchemaElement type="double" xsi:type="ns2:SchemaElementType"/>
+   <ns2:SchemaElement type="duration" xsi:type="ns2:SchemaElementType"/>
+   <ns2:SchemaElement type="ENTITIES" xsi:type="ns2:SchemaElementType"/>
+   <ns2:SchemaElement type="ENTITY" xsi:type="ns2:SchemaElementType"/>
+   <ns2:SchemaElement type="float" xsi:type="ns2:SchemaElementType"/>
+   <ns2:SchemaElement type="gDay" xsi:type="ns2:SchemaElementType"/>
+   <ns2:SchemaElement type="gMonth" xsi:type="ns2:SchemaElementType"/>
+   <ns2:SchemaElement type="gMonthDay" xsi:type="ns2:SchemaElementType"/>
+   <ns2:SchemaElement type="gYear" xsi:type="ns2:SchemaElementType"/>
+   <ns2:SchemaElement type="gYearMonth" xsi:type="ns2:SchemaElementType"/>
+   <ns2:SchemaElement type="hexBinary" xsi:type="ns2:SchemaElementType"/>
+   <ns2:SchemaElement type="ID" xsi:type="ns2:SchemaElementType"/>
+   <ns2:SchemaElement type="IDREF" xsi:type="ns2:SchemaElementType"/>
+   <ns2:SchemaElement type="IDREFS" xsi:type="ns2:SchemaElementType"/>
+   <ns2:SchemaElement type="int" xsi:type="ns2:SchemaElementType"/>
+   <ns2:SchemaElement type="integer" xsi:type="ns2:SchemaElementType"/>
+   <ns2:SchemaElement type="language" xsi:type="ns2:SchemaElementType"/>
+   <ns2:SchemaElement type="long" xsi:type="ns2:SchemaElementType"/>
+   <ns2:SchemaElement type="Name" xsi:type="ns2:SchemaElementType"/>
+   <ns2:SchemaElement type="NCName" xsi:type="ns2:SchemaElementType"/>
+   <ns2:SchemaElement type="negativeInteger" xsi:type="ns2:SchemaElementType"/>
+   <ns2:SchemaElement type="NMTOKEN" xsi:type="ns2:SchemaElementType"/>
+   <ns2:SchemaElement type="NMTOKENS" xsi:type="ns2:SchemaElementType"/>
+   <ns2:SchemaElement type="nonNegativeInteger" xsi:type="ns2:SchemaElementType"/>
+   <ns2:SchemaElement type="nonPositiveInteger" xsi:type="ns2:SchemaElementType"/>
+   <ns2:SchemaElement type="normalizedString" xsi:type="ns2:SchemaElementType"/>
+   <ns2:SchemaElement type="NOTATION" xsi:type="ns2:SchemaElementType"/>
+   <ns2:SchemaElement type="positiveInteger" xsi:type="ns2:SchemaElementType"/>
+   <ns2:SchemaElement type="QName" xsi:type="ns2:SchemaElementType"/>
+   <ns2:SchemaElement type="short" xsi:type="ns2:SchemaElementType"/>
+   <ns2:SchemaElement type="string" xsi:type="ns2:SchemaElementType"/>
+   <ns2:SchemaElement type="time" xsi:type="ns2:SchemaElementType"/>
+   <ns2:SchemaElement type="token" xsi:type="ns2:SchemaElementType"/>
+   <ns2:SchemaElement type="unsignedByte" xsi:type="ns2:SchemaElementType"/>
+   <ns2:SchemaElement type="unsignedInt" xsi:type="ns2:SchemaElementType"/>
+   <ns2:SchemaElement type="unsignedLong" xsi:type="ns2:SchemaElementType"/>
+   <ns2:SchemaElement type="unsignedShort" xsi:type="ns2:SchemaElementType"/>
+  </ns2:Namespace>
+  <ns2:Namespace location="./AuthenticationServiceTypes.xsd" namespace="http://authentication.gaards.cagrid.org/AuthenticationService/types" packageName="org.cagrid.gaards.authentication.stubs.types" xsi:type="ns2:NamespaceType">
+   <ns2:SchemaElement type="AuthenticationServiceReference" xsi:type="ns2:SchemaElementType"/>
+  </ns2:Namespace>
+  <ns2:Namespace generateStubs="false" location="./xsd/cagrid/types/security/security.xsd" namespace="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.security" packageName="gov.nih.nci.cagrid.metadata.security" xsi:type="ns2:NamespaceType">
+   <ns2:SchemaElement type="CommunicationMechanism" xsi:type="ns2:SchemaElementType"/>
+   <ns2:SchemaElement type="CommunicationStyle" xsi:type="ns2:SchemaElementType"/>
+   <ns2:SchemaElement type="GSISecureConversation" xsi:type="ns2:SchemaElementType"/>
+   <ns2:SchemaElement type="GSISecureMessage" xsi:type="ns2:SchemaElementType"/>
+   <ns2:SchemaElement type="GSITransport" xsi:type="ns2:SchemaElementType"/>
+   <ns2:SchemaElement type="None" xsi:type="ns2:SchemaElementType"/>
+   <ns2:SchemaElement type="Operation" xsi:type="ns2:SchemaElementType"/>
+   <ns2:SchemaElement type="ServiceSecurityMetadata" xsi:type="ns2:SchemaElementType"/>
+  </ns2:Namespace>
+  <ns2:Namespace generateStubs="false" location="./xsd/cagrid/types/caGridMetadata.xsd" namespace="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata" packageName="gov.nih.nci.cagrid.metadata" xsi:type="ns2:NamespaceType">
+   <ns2:SchemaElement type="ServiceMetadata" xsi:type="ns2:SchemaElementType"/>
+  </ns2:Namespace>
+ </ns2:Namespaces>
+ <ns3:Services xsi:type="ns3:ServicesType" xmlns:ns3="gme://gov.nih.nci.cagrid.introduce/1/Services" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <ns3:Service name="AuthenticationService" namespace="http://authentication.gaards.cagrid.org/AuthenticationService" packageName="org.cagrid.gaards.authentication" xsi:type="ns3:ServiceType">
+   <ns4:Methods xsi:type="ns4:MethodsType" xmlns:ns4="gme://gov.nih.nci.cagrid.introduce/1/Methods">
+    <ns4:Method isImported="true" isProvided="true" name="getServiceSecurityMetadata" xsi:type="ns4:MethodType">
+     <ns4:Output qName="ns5:ServiceSecurityMetadata" isArray="false" isClientHandle="false" xmlns:ns5="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.security"/>
+     <ns6:MethodSecurity xsi:type="ns6:MethodSecurity" xmlns:ns6="gme://gov.nih.nci.cagrid.introduce/1/Security">
+      <ns6:SecuritySetting xsi:type="ns6:SecuritySetting">None</ns6:SecuritySetting>
+      <ns6:MethodAuthorization xsi:type="ns6:MethodAuthorization">
+       <ns6:NoAuthorization xsi:type="ns6:NoAuthorization"/>
+      </ns6:MethodAuthorization>
+     </ns6:MethodSecurity>
+     <ns4:ImportInformation namespace="http://security.introduce.cagrid.nci.nih.gov/ServiceSecurity" packageName="gov.nih.nci.cagrid.introduce.security.stubs" portTypeName="ServiceSecurityPortType" wsdlFile="ServiceSecurity.wsdl"/>
+     <ns4:ProviderInformation providerClass="gov.nih.nci.cagrid.introduce.security.service.globus.ServiceSecurityProviderImpl"/>
+    </ns4:Method>
+    <ns4:Method description="This method authenticates a user with a local identity provider and returns a signed SAML assertion proving that the user successfully authenticated." isImported="false" isProvided="false" name="authenticateUser" xsi:type="ns4:MethodType">
+     <ns4:Inputs>
+      <ns4:Input qName="ns7:Credential" description="" isArray="false" name="credential" xmlns:ns7="http://gaards.cagrid.org/authentication"/>
+     </ns4:Inputs>
+     <ns4:Output qName="ns8:Assertion" description="" isArray="false" xmlns:ns8="urn:oasis:names:tc:SAML:1.0:assertion"/>
+     <ns4:Exceptions>
+      <ns4:Exception description="" name="AuthenticationProviderFault" qname="ns9:AuthenticationProviderFault" xmlns:ns9="http://gaards.cagrid.org/authentication-faults"/>
+      <ns4:Exception description="" name="CredentialNotSupportedFault" qname="ns10:CredentialNotSupportedFault" xmlns:ns10="http://gaards.cagrid.org/authentication-faults"/>
+      <ns4:Exception description="" name="InsufficientAttributeFault" qname="ns11:InsufficientAttributeFault" xmlns:ns11="http://gaards.cagrid.org/authentication-faults"/>
+      <ns4:Exception description="" name="InvalidCredentialFault" qname="ns12:InvalidCredentialFault" xmlns:ns12="http://gaards.cagrid.org/authentication-faults"/>
+     </ns4:Exceptions>
+     <ns13:Extensions xsi:type="ns13:ExtensionsType" xmlns:ns13="gme://gov.nih.nci.cagrid.introduce/1/Extension"/>
+    </ns4:Method>
+    <ns4:Method description="" isImported="true" isProvided="false" name="authenticate" xsi:type="ns4:MethodType">
+     <ns4:Inputs>
+      <ns4:Input qName="ns14:Credential" isArray="false" name="credential" xmlns:ns14="http://cagrid.nci.nih.gov/1/authentication-service"/>
+     </ns4:Inputs>
+     <ns4:Output qName="ns15:SAMLAssertion" isArray="false" xmlns:ns15="http://cagrid.nci.nih.gov/1/authentication-service"/>
+     <ns4:Exceptions>
+      <ns4:Exception description="Returned if the supplied credentials are invalid." name="InvalidCredentialFault" qname="ns16:InvalidCredentialFault" xmlns:ns16="http://cagrid.nci.nih.gov/AuthenticationService/types"/>
+      <ns4:Exception description="Returned if the attributes returned by the underlying IdP are insufficient for identity federation." name="InsufficientAttributeFault" qname="ns17:InsufficientAttributeFault" xmlns:ns17="http://cagrid.nci.nih.gov/AuthenticationService/types"/>
+      <ns4:Exception description="Returned if an internal error occurs during this operation." name="AuthenticationProviderFault" qname="ns18:AuthenticationProviderFault" xmlns:ns18="http://cagrid.nci.nih.gov/AuthenticationService/types"/>
+     </ns4:Exceptions>
+     <ns4:ImportInformation inputMessage="ns19:AuthenticateRequest" namespace="http://cagrid.nci.nih.gov/AuthenticationService" outputMessage="ns19:AuthenticateResponse" packageName="gov.nih.nci.cagrid.authentication" portTypeName="AuthenticationServicePortType" wsdlFile="AuthenticationServiceDeprecated.wsdl" xmlns:ns19="http://cagrid.nci.nih.gov/AuthenticationService"/>
+    </ns4:Method>
+    <ns4:Method isImported="true" isProvided="true" name="GetMultipleResourceProperties" xsi:type="ns4:MethodType">
+     <ns4:Output qName="void" isArray="false"/>
+     <ns20:MethodSecurity xsi:type="ns20:MethodSecurity" xmlns:ns20="gme://gov.nih.nci.cagrid.introduce/1/Security">
+      <ns20:SecuritySetting xsi:type="ns20:SecuritySetting">None</ns20:SecuritySetting>
+     </ns20:MethodSecurity>
+     <ns4:ImportInformation fromIntroduce="false" inputMessage="ns21:GetMultipleResourcePropertiesRequest" namespace="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ResourceProperties-1.2-draft-01.wsdl" outputMessage="ns21:GetMultipleResourcePropertiesResponse" packageName="org.oasis.wsrf.properties" portTypeName="GetMultipleResourceProperties" wsdlFile="../wsrf/properties/WS-ResourceProperties.wsdl" xmlns:ns21="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ResourceProperties-1.2-draft-01.wsdl"/>
+     <ns4:ProviderInformation providerClass="GetMRPProvider"/>
+    </ns4:Method>
+    <ns4:Method isImported="true" isProvided="true" name="GetResourceProperty" xsi:type="ns4:MethodType">
+     <ns4:Output qName="void" isArray="false"/>
+     <ns22:MethodSecurity xsi:type="ns22:MethodSecurity" xmlns:ns22="gme://gov.nih.nci.cagrid.introduce/1/Security">
+      <ns22:SecuritySetting xsi:type="ns22:SecuritySetting">None</ns22:SecuritySetting>
+     </ns22:MethodSecurity>
+     <ns4:ImportInformation fromIntroduce="false" inputMessage="ns23:GetResourcePropertyRequest" namespace="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ResourceProperties-1.2-draft-01.wsdl" outputMessage="ns23:GetResourcePropertyResponse" packageName="org.oasis.wsrf.properties" portTypeName="GetResourceProperty" wsdlFile="../wsrf/properties/WS-ResourceProperties.wsdl" xmlns:ns23="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ResourceProperties-1.2-draft-01.wsdl"/>
+     <ns4:ProviderInformation providerClass="GetRPProvider"/>
+    </ns4:Method>
+    <ns4:Method isImported="true" isProvided="true" name="QueryResourceProperties" xsi:type="ns4:MethodType">
+     <ns4:Output qName="void" isArray="false"/>
+     <ns24:MethodSecurity xsi:type="ns24:MethodSecurity" xmlns:ns24="gme://gov.nih.nci.cagrid.introduce/1/Security">
+      <ns24:SecuritySetting xsi:type="ns24:SecuritySetting">None</ns24:SecuritySetting>
+     </ns24:MethodSecurity>
+     <ns4:ImportInformation fromIntroduce="false" inputMessage="ns25:QueryResourcePropertiesRequest" namespace="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ResourceProperties-1.2-draft-01.wsdl" outputMessage="ns25:QueryResourcePropertiesResponse" packageName="org.oasis.wsrf.properties" portTypeName="QueryResourceProperties" wsdlFile="../wsrf/properties/WS-ResourceProperties.wsdl" xmlns:ns25="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ResourceProperties-1.2-draft-01.wsdl"/>
+     <ns4:ProviderInformation providerClass="QueryRPProvider"/>
+    </ns4:Method>
+   </ns4:Methods>
+   <ns26:ResourcePropertiesList xsi:type="ns26:ResourcePropertiesListType" xmlns:ns26="gme://gov.nih.nci.cagrid.introduce/1/Resources">
+    <ns26:ResourceProperty qName="ns27:ServiceMetadata" description="" fileLocation="serviceMetadata.xml" populateFromFile="true" register="true" xsi:type="ns26:ResourcePropertyType" xmlns:ns27="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata"/>
+    <ns26:ResourceProperty qName="ns28:AuthenticationProfiles" description="" fileLocation="AuthenticationService_authenticationProfiles.xml" populateFromFile="false" register="true" xsi:type="ns26:ResourcePropertyType" xmlns:ns28="http://gaards.cagrid.org/authentication"/>
+   </ns26:ResourcePropertiesList>
+   <ns29:ServiceSecurity xsi:type="ns29:ServiceSecurity" xmlns:ns29="gme://gov.nih.nci.cagrid.introduce/1/Security">
+    <ns29:SecuritySetting xsi:type="ns29:SecuritySetting">Custom</ns29:SecuritySetting>
+    <ns29:TransportLevelSecurity xsi:type="ns29:TransportLevelSecurity">
+     <ns29:CommunicationMethod xsi:type="ns29:CommunicationMethod">Privacy</ns29:CommunicationMethod>
+    </ns29:TransportLevelSecurity>
+    <ns29:RunAsMode xsi:type="ns29:RunAsMode">System</ns29:RunAsMode>
+    <ns29:AnonymousClients xsi:type="ns29:AnonymousCommunication">Yes</ns29:AnonymousClients>
+    <ns29:ServiceAuthorization xsi:type="ns29:ServiceAuthorization">
+     <ns29:NoAuthorization xsi:type="ns29:NoAuthorization"/>
+    </ns29:ServiceAuthorization>
+   </ns29:ServiceSecurity>
+   <ns3:description xsi:type="xsd:string" xmlns:xsd="http://www.w3.org/2001/XMLSchema"></ns3:description>
+   <ns3:ResourceFrameworkOptions xsi:type="ns3:ResourceFrameworkOptions">
+    <ns3:Main xsi:type="ns3:Main"/>
+    <ns3:Singleton xsi:type="ns3:Singleton"/>
+    <ns3:Identifiable xsi:type="ns3:Identifiable"/>
+    <ns3:ResourcePropertyManagement xsi:type="ns3:ResourcePropertyManagement"/>
+   </ns3:ResourceFrameworkOptions>
+  </ns3:Service>
+ </ns3:Services>
+ <ns30:Extensions xsi:type="ns30:ExtensionsType" xmlns:ns30="gme://gov.nih.nci.cagrid.introduce/1/Extension" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <ns30:Extension name="cagrid_metadata" version="1.3" xsi:type="ns30:ExtensionType"/>
+ </ns30:Extensions>
+ <ns31:ServiceProperties xmlns:ns31="gme://gov.nih.nci.cagrid.introduce/1/Property">
+  <ns31:Property description="The Authentication Provider to use." isFromETC="true" key="authenticationConfiguration" value="authentication-config.xml"/>
+  <ns31:Property description="The authentication properties file." isFromETC="true" key="authenticationProperties" value="authentication.properties"/>
+ </ns31:ServiceProperties>
+</ns1:ServiceDescription>

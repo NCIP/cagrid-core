@@ -1,0 +1,48 @@
+<?xml version="1.0"?>
+
+<!-- ===================================================================
+
+Notes:
+   This is a build file for use with the Jakarta Ant build tool.
+
+Prerequisites:
+
+   jakarta-ant from http://jakarta.apache.org
+
+
+Build Instructions:
+
+   This file is automatically called at the end of the deployment
+   of the corresponding component's gar (see build-packages.xml).
+
+
+==================================================================== -->
+<project default="all" basedir=".">
+
+    <property environment="env"/>
+
+    <property file="build.properties"/> <!-- check if works! -->
+    <property file="${user.home}/build.properties"/>
+
+    <property name="env.GLOBUS_LOCATION" location="."/>
+    <property name="deploy.dir" location="${env.GLOBUS_LOCATION}"/>
+    <property name="deploy.bin" location="${deploy.dir}/bin"/>
+    <property name="package.name" value="taverna-client"/>
+
+    <property name="build.launcher"
+        location="${deploy.dir}/share/globus_wsrf_common/build-launcher.xml"/>
+
+    <target name="setup">
+
+        <mkdir dir="${deploy.bin}"/>
+
+        <ant antfile="${build.launcher}" dir="${deploy.bin}"
+             target="generateLauncher">
+
+            <property name="launcher-name" value="taverna-client"/>
+            <property name="class.name"
+                      value="gov.nih.nci.cagrid.workflow.factory.client.TavernaWorkflowServiceClientMain"/>
+        </ant>
+        </target>
+
+</project>

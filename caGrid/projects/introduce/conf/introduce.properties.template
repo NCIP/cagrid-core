@@ -1,0 +1,9 @@
+#General Introduce Properties
+introduce.version=1.3
+introduce.patch.version=0
+introduce.grape.configuration.file=conf/introduce-grape-conf.xml
+
+# Information on Dependent Services
+#Grid Grouper
+introduce.gridgrouper.load.on.startup=false
+introduce.gridgrouper.urls=@cagrid.master.gridgrouper.service.url@

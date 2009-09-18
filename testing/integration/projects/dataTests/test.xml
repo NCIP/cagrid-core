@@ -1,0 +1,288 @@
+<!-- ======================================================================= -->
+<!-- caGrid Data Services test build file                                    -->
+<!-- ======================================================================= -->
+<project name="caGrid-data_tests_harness" basedir=".">
+	
+	<!-- should all testing stop on the first error or failure encountered? -->
+	<property name="halt.on.error" value="false" />
+	<!-- message when tests fail -->
+	<property name="failed.message" value="Tests failed! Check test reports." />
+	<!-- tells the service container factories to assign ports in testing mode -->
+	<property name="testing.port.assignment.mode" value="true" />
+	<!-- tells data tests the base directory in which to create data services -->
+	<property name="temp.test.service.dir" value="${basedir}/test_services"/>
+	<!-- tells system tests where to find the service containers -->
+	<property name="testing.containers.dir" value="${basedir}/ext/dependencies/resources/containers"/>
+	<!-- directory of services for upgrade testing -->
+	<property name="testing.upgrade.services.dir" value="${basedir}/resources/services/upgrade"/>
+	<!-- external services and projects we depend on -->
+	<property name="cagrid.projects.dir" value="${basedir}/../../../caGrid/projects"/>
+	<property name="transfer.service.dir" value="${cagrid.projects.dir}/transfer"/>	
+	
+	<target name="prepareClasspaths">
+		<path id="all.test.classpath">
+			<pathelement path="${classes.dir}" />
+			<pathelement path="${stubs.dest}" />
+			<path refid="test.run.classpath" />
+			<fileset dir="${jar.dir}">
+				<include name="**/*.jar"/>
+			</fileset>
+		</path>
+	</target>
+
+
+	<!-- calls every test -->
+	<target name="test" depends="testCreations, testUpgrades, systemTest" description="Runs all system and non-system tests">
+		<delete dir="${basedir}/test_services"/>
+		<delete dir="${basedir}/tmp"/>
+	</target>
+	
+	
+	<target name="testCreations" depends="testBasicCreation, testEnumerationCreation, testBdtCreation, testTransferCreation" description="Runs all creation tests.">
+		<fail message="Data core ${failed.message}" if="core.test.failed" />
+		<fail message="Data basic creation ${failed.message}" if="basic.creation.test.failed" />
+		<fail message="Data enumeration creation ${failed.message}" if="enumeration.creation.test.failed" />
+		<fail message="Data transfer creation ${failed.message}" if="transfer.creation.test.failed "/>
+		<fail message="Data BDT creation ${failed.message}" if="bdt.creation.test.failed" />
+	</target>
+	
+	
+	<target name="testUpgrades" depends="testUpgradeFrom1pt1, testUpgradeFrom1pt2" description="Runs upgrade tests">
+		<fail message="Data upgrade from 1.1 ${failed.message}" if="upgrade.1.1.test.failed" />
+		<fail message="Data upgrade from 1.2 ${failed.message}" if="upgrade.1.2.test.failed" />
+	</target>
+	
+	
+	<target name="systemTest" depends="setGlobus, prepareClasspaths, testBasicSystem, testEnumerationSystem, testBdtSystem, testTransferSystem" description="Runs system tests (deploy, invoke, etc)">
+		<fail message="Tests failed! Check test reports." if="basic.system.test.failed" />
+		<fail message="Tests failed! Check test reports." if="enumeration.system.test.failed" />
+		<fail message="Tests failed! Check test reports." if="bdt.system.test.failed" />
+		<fail message="Tests failed! Check test reports." if="transfer.system.test.failed"/>
+	</target>
+
+
+	<!-- tests creation of a basic data service -->
+	<target name="testBasicCreation" depends="setGlobus, prepareClasspaths" description="Runs the service creation tests" unless="base.service.created">
+		<mkdir dir="${junit.results.dir}" />
+		<junit dir="${introduce.dir}" printsummary="yes" haltonerror="${halt.on.error}" haltonfailure="${halt.on.error}" errorproperty="basic.creation.test.failed" failureproperty="basic.creation.test.failed" showoutput="true" fork="yes" forkmode="once">
+			<sysproperty key="introduce.base.dir" value="${introduce.dir}" />
+			<sysproperty key="build.dir" value="${classes.dir}" />
+			<sysproperty key="cql.docs.dir" value="${basedir}/docs/cqlExamples" />
+			<sysproperty key="temp.test.service.dir" value="${temp.test.service.dir}"/>
+			<classpath refid="all.test.classpath" />
+			<formatter type="xml" />
+			<test if="testcase" name="${testcase}" fork="no" todir="${junit.results.dir}" />
+			<batchtest unless="testcase" fork="yes" todir="${junit.results.dir}">
+				<fileset dir="${src.dir}">
+					<include name="**/CreationTests.java" />
+				</fileset>
+			</batchtest>
+		</junit>
+		<property name="base.service.created" value="true" />
+	</target>
+
+
+	<!-- tests creation of an enumeration supporting data service -->
+	<target name="testEnumerationCreation" depends="setGlobus, prepareClasspaths" description="Runs the service creation tests for a data service supporting WS-Enumeration" unless="enumeration.service.created">
+		<mkdir dir="${junit.results.dir}" />
+		<junit dir="${introduce.dir}" printsummary="yes" haltonerror="${halt.on.error}" haltonfailure="${halt.on.error}" errorproperty="enumeration.creation.test.failed" failureproperty="enumeration.creation.test.failed" showoutput="true" fork="yes" forkmode="once">
+			<sysproperty key="introduce.base.dir" value="${introduce.dir}" />
+			<sysproperty key="build.dir" value="${classes.dir}" />
+			<sysproperty key="cql.docs.dir" value="${basedir}/docs/cqlExamples" />
+			<sysproperty key="temp.test.service.dir" value="${temp.test.service.dir}"/>
+			<classpath refid="all.test.classpath" />
+			<formatter type="xml" />
+			<test if="testcase" name="${testcase}" fork="no" todir="${junit.results.dir}" />
+			<batchtest unless="testcase" fork="yes" todir="${junit.results.dir}">
+				<fileset dir="${src.dir}">
+					<include name="**/CreateEnumerationTests.java" />
+				</fileset>
+			</batchtest>
+		</junit>
+		<property name="enumeration.service.created" value="true" />
+	</target>
+	
+	<!-- tests creation of a transfer supporting data service -->
+	<target name="testTransferCreation" depends="setGlobus, prepareClasspaths" description="Runs the service creation tests for a data service supporting caGrid Transfer" unless="transfer.service.created">
+		<mkdir dir="${junit.results.dir}" />
+		<junit dir="${introduce.dir}" printsummary="yes" haltonerror="${halt.on.error}" haltonfailure="${halt.on.error}" errorproperty="transfer.creation.test.failed" failureproperty="transfer.creation.test.failed" showoutput="true" fork="yes" forkmode="once">
+			<sysproperty key="introduce.base.dir" value="${introduce.dir}" />
+			<sysproperty key="build.dir" value="${classes.dir}" />
+			<sysproperty key="cql.docs.dir" value="${basedir}/docs/cqlExamples" />
+			<sysproperty key="temp.test.service.dir" value="${temp.test.service.dir}"/>
+			<classpath refid="all.test.classpath" />
+			<formatter type="xml" />
+			<test if="testcase" name="${testcase}" fork="no" todir="${junit.results.dir}" />
+			<batchtest unless="testcase" fork="yes" todir="${junit.results.dir}">
+				<fileset dir="${src.dir}">
+					<include name="**/CreateTransferTests.java" />
+				</fileset>
+			</batchtest>
+		</junit>
+		<property name="transfer.service.created" value="true" />
+	</target>	
+
+
+	<!-- tests creation of a BDT data service -->
+	<target name="testBdtCreation" depends="setGlobus, prepareClasspaths" description="Runs the service creation tests for a data service supporting WS-Enumeration" unless="bdt.service.created">
+		<mkdir dir="${junit.results.dir}" />
+		<junit dir="${introduce.dir}" printsummary="yes" haltonerror="${halt.on.error}" haltonfailure="${halt.on.error}" errorproperty="bdt.creation.test.failed" failureproperty="bdt.creation.test.failed" showoutput="true" fork="yes" forkmode="once">
+			<sysproperty key="introduce.base.dir" value="${introduce.dir}" />
+			<sysproperty key="build.dir" value="${classes.dir}" />
+			<sysproperty key="cql.docs.dir" value="${basedir}/docs/cqlExamples" />
+			<sysproperty key="temp.test.service.dir" value="${temp.test.service.dir}"/>
+			<classpath refid="all.test.classpath" />
+			<formatter type="xml" />
+			<test if="testcase" name="${testcase}" fork="no" todir="${junit.results.dir}" />
+			<batchtest unless="testcase" fork="yes" todir="${junit.results.dir}">
+				<fileset dir="${src.dir}">
+					<include name="**/BDTDataServiceCreationTests.java" />
+				</fileset>
+			</batchtest>
+		</junit>
+		<property name="bdt.service.created" value="true" />
+	</target>
+
+
+	<!-- system tests against the basic data service -->
+	<target name="testBasicSystem" depends="setGlobus, prepareClasspaths, testBasicCreation" description="Runs the service creation and then system tests">
+		<junit dir="${basedir}" printsummary="yes" haltonerror="${halt.on.error}" haltonfailure="${halt.on.error}" errorproperty="basic.system.test.failed" failureproperty="basic.system.test.failed" showoutput="true" fork="yes" forkmode="once">
+			<sysproperty key="use.testing.port.assignment" value="${testing.port.assignment.mode}" />
+			<sysproperty key="introduce.base.dir" value="${introduce.dir}" />
+			<sysproperty key="build.dir" value="${classes.dir}" />
+			<sysproperty key="cql.docs.dir" value="${basedir}/docs/cqlExamples" />
+			<sysproperty key="temp.test.service.dir" value="${temp.test.service.dir}"/>
+			<sysproperty key="testing.containers.dir" value="${testing.containers.dir}"/>
+			<classpath refid="all.test.classpath" />
+			<formatter type="xml" />
+			<test if="testcase" name="${testcase}" fork="no" todir="${junit.results.dir}" />
+			<batchtest unless="testcase" fork="yes" todir="${junit.results.dir}">
+				<fileset dir="${src.dir}">
+					<include name="**/SystemTests.java" />
+					<include name="**/PlainDataServiceSystemTests.java" />
+				</fileset>
+			</batchtest>
+		</junit>
+	</target>
+
+
+	<!-- system tests against the enumeration data service -->
+	<target name="testEnumerationSystem" depends="setGlobus, testEnumerationCreation" description="Tests the enumeration data service system">
+		<junit dir="${introduce.dir}" printsummary="yes" haltonerror="${halt.on.error}" haltonfailure="${halt.on.error}" errorproperty="enumeration.system.test.failed" failureproperty="enumeration.system.test.failed" showoutput="true" fork="yes" forkmode="once">
+			<sysproperty key="use.testing.port.assignment" value="${testing.port.assignment.mode}" />
+			<sysproperty key="introduce.base.dir" value="${introduce.dir}" />
+			<sysproperty key="build.dir" value="${classes.dir}" />
+			<sysproperty key="cql.docs.dir" value="${basedir}/docs/cqlExamples" />
+			<sysproperty key="temp.test.service.dir" value="${temp.test.service.dir}"/>
+			<sysproperty key="testing.containers.dir" value="${testing.containers.dir}"/>
+			<classpath refid="all.test.classpath" />
+			<formatter type="xml" />
+			<test if="testcase" name="${testcase}" fork="no" todir="${junit.results.dir}" />
+			<batchtest unless="testcase" fork="yes" todir="${junit.results.dir}">
+				<fileset dir="${src.dir}">
+					<include name="**/EnumerationSystemTests.java" />
+				</fileset>
+			</batchtest>
+		</junit>
+	</target>
+	
+	
+	<!-- system tests against the transfer data service -->
+	<target name="testTransferSystem" depends="setGlobus, testTransferCreation" description="Tests the transfer data service system">
+		<junit dir="${introduce.dir}" printsummary="yes" haltonerror="${halt.on.error}" haltonfailure="${halt.on.error}" errorproperty="transfer.system.test.failed" failureproperty="transfer.system.test.failed" showoutput="true" fork="yes" forkmode="once">
+			<sysproperty key="use.testing.port.assignment" value="${testing.port.assignment.mode}" />
+			<sysproperty key="introduce.base.dir" value="${introduce.dir}" />
+			<sysproperty key="build.dir" value="${classes.dir}" />
+			<sysproperty key="cql.docs.dir" value="${basedir}/docs/cqlExamples" />
+			<sysproperty key="temp.test.service.dir" value="${temp.test.service.dir}"/>
+			<sysproperty key="testing.containers.dir" value="${testing.containers.dir}"/>
+			<sysproperty key="transfer.service.dir" value="${transfer.service.dir}"/>
+			<classpath refid="all.test.classpath" />
+			<formatter type="xml" />
+			<test if="testcase" name="${testcase}" fork="no" todir="${junit.results.dir}" />
+			<batchtest unless="testcase" fork="yes" todir="${junit.results.dir}">
+				<fileset dir="${src.dir}">
+					<include name="**/TransferSystemTests.java" />
+				</fileset>
+			</batchtest>
+		</junit>
+	</target>
+
+
+
+	<!-- tests upgrading a 1.1 service to current -->
+	<target name="testUpgradeFrom1pt1" depends="setGlobus, prepareClasspaths" description="Tests the ability to upgrade a service from 1.1 to the current version" unless="upgrade.1pt1.completed">
+		<mkdir dir="${junit.results.dir}" />
+		<junit dir="${introduce.dir}" printsummary="yes" haltonerror="${halt.on.error}" haltonfailure="${halt.on.error}" errorproperty="upgrade.1.1.test.failed" failureproperty="upgrade.1.1.test.failed" showoutput="true" fork="yes">
+			<sysproperty key="introduce.base.dir" value="${introduce.dir}" />
+			<sysproperty key="build.dir" value="${classes.dir}" />
+			<sysproperty key="cql.docs.dir" value="${basedir}/docs/cqlExamples" />
+			<sysproperty key="temp.test.service.dir" value="${temp.test.service.dir}"/>
+			<sysproperty key="upgrade.services.zip.dir" value="${testing.upgrade.services.dir}"/>
+			<classpath refid="all.test.classpath" />
+			<!-- also needs the other extensions (such as metadata) to be upgraded, so need their upgraders on the classpath -->
+			<classpath>
+				<fileset dir="${introduce.dir}/extensions/lib">
+					<include name="*.jar" />
+				</fileset>
+			</classpath>
+			<formatter type="xml" />
+			<test if="testcase" name="${testcase}" fork="no" todir="${junit.results.dir}" />
+			<batchtest unless="testcase" fork="yes" todir="${junit.results.dir}">
+				<fileset dir="${src.dir}">
+					<include name="**/from1pt1/**/Upgrade*From1pt1Tests.java" />
+				</fileset>
+			</batchtest>
+		</junit>
+		<property name="upgrade.1pt1.completed" value="true" />
+	</target>
+
+	
+	<!-- tests upgrading a 1.1 service to current -->
+	<target name="testUpgradeFrom1pt2" depends="setGlobus, prepareClasspaths" description="Tests the ability to upgrade a service from 1.2 to the current version" unless="upgrade.1pt2.completed">
+		<mkdir dir="${junit.results.dir}" />
+		<junit dir="${introduce.dir}" printsummary="yes" haltonerror="${halt.on.error}" haltonfailure="${halt.on.error}" errorproperty="upgrade.1.2.test.failed" failureproperty="upgrade.1.2.test.failed" showoutput="true" fork="yes">
+			<sysproperty key="introduce.base.dir" value="${introduce.dir}" />
+			<sysproperty key="build.dir" value="${classes.dir}" />
+			<sysproperty key="cql.docs.dir" value="${basedir}/docs/cqlExamples" />
+			<sysproperty key="temp.test.service.dir" value="${temp.test.service.dir}"/>
+			<sysproperty key="upgrade.services.zip.dir" value="${testing.upgrade.services.dir}"/>
+			<classpath refid="all.test.classpath" />
+			<!-- also needs the other extensions (such as metadata) to be upgraded, so need their upgraders on the classpath -->
+			<classpath>
+				<fileset dir="${introduce.dir}/extensions/lib">
+					<include name="*.jar" />
+				</fileset>
+			</classpath>
+			<formatter type="xml" />
+			<test if="testcase" name="${testcase}" fork="no" todir="${junit.results.dir}" />
+			<batchtest unless="testcase" fork="yes" todir="${junit.results.dir}">
+				<fileset dir="${src.dir}">
+					<include name="**/from1pt2/**/Upgrade*From1pt2Tests.java" />
+				</fileset>
+			</batchtest>
+		</junit>
+		<property name="upgrade.1pt2.completed" value="true" />
+	</target>
+
+
+	<!-- system tests for the BDT data service -->
+	<target name="testBdtSystem" depends="setGlobus, testBdtCreation" description="Tests invocation of the BDT data service">
+		<junit dir="${basedir}" printsummary="yes" haltonerror="${halt.on.error}" haltonfailure="${halt.on.error}" errorproperty="bdt.system.test.failed" failureproperty="bdt.system.test.failed" showoutput="true" fork="yes" forkmode="once">
+			<sysproperty key="use.testing.port.assignment" value="${testing.port.assignment.mode}" />
+			<sysproperty key="introduce.base.dir" value="${introduce.dir}" />
+			<sysproperty key="build.dir" value="${classes.dir}" />
+			<sysproperty key="cql.docs.dir" value="${basedir}/docs/cqlExamples" />
+			<sysproperty key="temp.test.service.dir" value="${temp.test.service.dir}"/>
+			<sysproperty key="testing.containers.dir" value="${testing.containers.dir}"/>
+			<classpath refid="all.test.classpath" />
+			<formatter type="xml" />
+			<test if="testcase" name="${testcase}" fork="no" todir="${junit.results.dir}" />
+			<batchtest unless="testcase" fork="yes" todir="${junit.results.dir}">
+				<fileset dir="${src.dir}">
+					<include name="**/system/bdt/BDTDataServiceSystemTests.java" />
+				</fileset>
+			</batchtest>
+		</junit>
+	</target>
+</project>

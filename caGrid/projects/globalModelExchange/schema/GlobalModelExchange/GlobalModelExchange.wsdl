@@ -1,0 +1,277 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions xmlns="http://schemas.xmlsoap.org/wsdl/" xmlns:tns="http://gme.cagrid.org/GlobalModelExchange" xmlns:wsrp="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ResourceProperties-1.2-draft-01.xsd" xmlns:wsrlw="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ResourceLifetime-1.2-draft-01.wsdl" xmlns:wsdlpp="http://www.globus.org/namespaces/2004/10/WSDLPreprocessor" xmlns:gtwsdl1="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ServiceGroup-1.2-draft-01.wsdl" xmlns:wsa="http://schemas.xmlsoap.org/ws/2004/03/addressing" xmlns:wsntw="http://docs.oasis-open.org/wsn/2004/06/wsn-WS-BaseNotification-1.2-draft-01.wsdl" xmlns:wsrbfw="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-BaseFaults-1.2-draft-01.wsdl" xmlns:wsrpw="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ResourceProperties-1.2-draft-01.wsdl" xmlns:wns1="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ResourceProperties-1.2-draft-01.wsdl" xmlns:wns0="http://security.introduce.cagrid.nci.nih.gov/ServiceSecurity" xmlns:ns0="gme://gme.cagrid.org/2.0/GlobalModelExchange/domain" xmlns:ns2="http://gme.cagrid.org/GlobalModelExchange/types" xmlns:ns1="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata" xmlns:ns3="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.security" name="GlobalModelExchange" targetNamespace="http://gme.cagrid.org/GlobalModelExchange">
+  <import namespace="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ResourceProperties-1.2-draft-01.wsdl" location="../wsrf/properties/WS-ResourceProperties.wsdl" />
+  <import namespace="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-BaseFaults-1.2-draft-01.wsdl" location="../wsrf/faults/WS-BaseFaults.wsdl" />
+  <import namespace="http://docs.oasis-open.org/wsn/2004/06/wsn-WS-BaseNotification-1.2-draft-01.wsdl" location="../wsrf/notification/WS-BaseN.wsdl" />
+  <import namespace="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ResourceProperties-1.2-draft-01.wsdl" location="./../wsrf/properties/WS-ResourceProperties.wsdl" />
+  <import namespace="http://security.introduce.cagrid.nci.nih.gov/ServiceSecurity" location="./ServiceSecurity.wsdl" />
+  <!--============================================================
+
+                      T Y P E S
+                      
+  ============================================================-->
+  <types>
+    <schema xmlns="http://www.w3.org/2001/XMLSchema" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:wsrbf="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-BaseFaults-1.2-draft-01.xsd" targetNamespace="http://gme.cagrid.org/GlobalModelExchange" elementFormDefault="qualified" attributeFormDefault="unqualified">
+      <import namespace="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-BaseFaults-1.2-draft-01.xsd" schemaLocation="../wsrf/faults/WS-BaseFaults.xsd" />
+      <import namespace="gme://gme.cagrid.org/2.0/GlobalModelExchange/domain" schemaLocation="./org.cagrid.gme.domain.xsd" />
+      <import namespace="http://gme.cagrid.org/GlobalModelExchange/types" schemaLocation="./GlobalModelExchangeTypes.xsd" />
+      <import namespace="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata" schemaLocation="./xsd/cagrid/types/caGridMetadata.xsd" />
+      <import namespace="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.security" schemaLocation="./xsd/cagrid/types/security/security.xsd" />
+      <element name="PublishXMLSchemasRequest">
+        <complexType>
+          <sequence>
+            <element name="schemas">
+              <complexType>
+                <sequence>
+                  <element ref="ns0:XMLSchema" minOccurs="1" maxOccurs="unbounded" />
+                </sequence>
+              </complexType>
+            </element>
+          </sequence>
+        </complexType>
+      </element>
+      <element name="PublishXMLSchemasResponse">
+        <complexType>
+          <sequence />
+        </complexType>
+      </element>
+      <element name="GetXMLSchemaRequest">
+        <complexType>
+          <sequence>
+            <element name="targetNamespace">
+              <complexType>
+                <sequence>
+                  <element ref="ns0:XMLSchemaNamespace" minOccurs="1" maxOccurs="1" />
+                </sequence>
+              </complexType>
+            </element>
+          </sequence>
+        </complexType>
+      </element>
+      <element name="GetXMLSchemaResponse">
+        <complexType>
+          <sequence>
+            <element ref="ns0:XMLSchema" minOccurs="1" maxOccurs="1" />
+          </sequence>
+        </complexType>
+      </element>
+      <element name="GetXMLSchemaNamespacesRequest">
+        <complexType>
+          <sequence />
+        </complexType>
+      </element>
+      <element name="GetXMLSchemaNamespacesResponse">
+        <complexType>
+          <sequence>
+            <element ref="ns0:XMLSchemaNamespace" minOccurs="1" maxOccurs="unbounded" />
+          </sequence>
+        </complexType>
+      </element>
+      <element name="GetXMLSchemaAndDependenciesRequest">
+        <complexType>
+          <sequence>
+            <element name="targetNamespace">
+              <complexType>
+                <sequence>
+                  <element ref="ns0:XMLSchemaNamespace" minOccurs="1" maxOccurs="1" />
+                </sequence>
+              </complexType>
+            </element>
+          </sequence>
+        </complexType>
+      </element>
+      <element name="GetXMLSchemaAndDependenciesResponse">
+        <complexType>
+          <sequence>
+            <element ref="ns0:XMLSchemaBundle" minOccurs="1" maxOccurs="1" />
+          </sequence>
+        </complexType>
+      </element>
+      <element name="DeleteXMLSchemasRequest">
+        <complexType>
+          <sequence>
+            <element name="targetNamespaces">
+              <complexType>
+                <sequence>
+                  <element ref="ns0:XMLSchemaNamespace" minOccurs="1" maxOccurs="unbounded" />
+                </sequence>
+              </complexType>
+            </element>
+          </sequence>
+        </complexType>
+      </element>
+      <element name="DeleteXMLSchemasResponse">
+        <complexType>
+          <sequence />
+        </complexType>
+      </element>
+      <element name="GetImportedXMLSchemaNamespacesRequest">
+        <complexType>
+          <sequence>
+            <element name="targetNamespace">
+              <complexType>
+                <sequence>
+                  <element ref="ns0:XMLSchemaNamespace" minOccurs="1" maxOccurs="1" />
+                </sequence>
+              </complexType>
+            </element>
+          </sequence>
+        </complexType>
+      </element>
+      <element name="GetImportedXMLSchemaNamespacesResponse">
+        <complexType>
+          <sequence>
+            <element ref="ns0:XMLSchemaNamespace" minOccurs="1" maxOccurs="unbounded" />
+          </sequence>
+        </complexType>
+      </element>
+      <element name="GetImportingXMLSchemaNamespacesRequest">
+        <complexType>
+          <sequence>
+            <element name="targetNamespace">
+              <complexType>
+                <sequence>
+                  <element ref="ns0:XMLSchemaNamespace" minOccurs="1" maxOccurs="1" />
+                </sequence>
+              </complexType>
+            </element>
+          </sequence>
+        </complexType>
+      </element>
+      <element name="GetImportingXMLSchemaNamespacesResponse">
+        <complexType>
+          <sequence>
+            <element ref="ns0:XMLSchemaNamespace" minOccurs="1" maxOccurs="unbounded" />
+          </sequence>
+        </complexType>
+      </element>
+      <element name="GlobalModelExchangeResourceProperties">
+        <complexType>
+          <sequence>
+            <element ref="ns1:ServiceMetadata" />
+          </sequence>
+        </complexType>
+      </element>
+    </schema>
+  </types>
+  <!--  place service messages here -->
+  <message name="PublishXMLSchemasRequest">
+    <part name="parameters" element="tns:PublishXMLSchemasRequest" />
+  </message>
+  <message name="PublishXMLSchemasResponse">
+    <part name="parameters" element="tns:PublishXMLSchemasResponse" />
+  </message>
+  <message name="GetXMLSchemaRequest">
+    <part name="parameters" element="tns:GetXMLSchemaRequest" />
+  </message>
+  <message name="GetXMLSchemaResponse">
+    <part name="parameters" element="tns:GetXMLSchemaResponse" />
+  </message>
+  <message name="GetXMLSchemaNamespacesRequest">
+    <part name="parameters" element="tns:GetXMLSchemaNamespacesRequest" />
+  </message>
+  <message name="GetXMLSchemaNamespacesResponse">
+    <part name="parameters" element="tns:GetXMLSchemaNamespacesResponse" />
+  </message>
+  <message name="GetXMLSchemaAndDependenciesRequest">
+    <part name="parameters" element="tns:GetXMLSchemaAndDependenciesRequest" />
+  </message>
+  <message name="GetXMLSchemaAndDependenciesResponse">
+    <part name="parameters" element="tns:GetXMLSchemaAndDependenciesResponse" />
+  </message>
+  <message name="DeleteXMLSchemasRequest">
+    <part name="parameters" element="tns:DeleteXMLSchemasRequest" />
+  </message>
+  <message name="DeleteXMLSchemasResponse">
+    <part name="parameters" element="tns:DeleteXMLSchemasResponse" />
+  </message>
+  <message name="GetImportedXMLSchemaNamespacesRequest">
+    <part name="parameters" element="tns:GetImportedXMLSchemaNamespacesRequest" />
+  </message>
+  <message name="GetImportedXMLSchemaNamespacesResponse">
+    <part name="parameters" element="tns:GetImportedXMLSchemaNamespacesResponse" />
+  </message>
+  <message name="GetImportingXMLSchemaNamespacesRequest">
+    <part name="parameters" element="tns:GetImportingXMLSchemaNamespacesRequest" />
+  </message>
+  <message name="GetImportingXMLSchemaNamespacesResponse">
+    <part name="parameters" element="tns:GetImportingXMLSchemaNamespacesResponse" />
+  </message>
+  <message name="InvalidSchemaSubmissionFaultFaultMessage">
+    <part name="fault" element="ns2:InvalidSchemaSubmissionFault" />
+  </message>
+  <message name="NoSuchNamespaceExistsFaultFaultMessage">
+    <part name="fault" element="ns2:NoSuchNamespaceExistsFault" />
+  </message>
+  <message name="UnableToDeleteSchemaFaultFaultMessage">
+    <part name="fault" element="ns2:UnableToDeleteSchemaFault" />
+  </message>
+  <!--============================================================
+
+                       P O R T T Y P E
+                      
+  ============================================================-->
+  <portType name="GlobalModelExchangePortType" wsrp:ResourceProperties="tns:GlobalModelExchangeResourceProperties">
+    <operation name="publishXMLSchemas">
+      <input message="tns:PublishXMLSchemasRequest" wsa:Action="http://gme.cagrid.org/GlobalModelExchange/PublishXMLSchemasRequest" />
+      <output message="tns:PublishXMLSchemasResponse" wsa:Action="http://gme.cagrid.org/GlobalModelExchange/PublishXMLSchemasResponse" />
+      <fault name="InvalidSchemaSubmissionFault" message="tns:InvalidSchemaSubmissionFaultFaultMessage" wsa:Action="http://gme.cagrid.org/GlobalModelExchange/InvalidSchemaSubmissionFaultFaultMessage" />
+    </operation>
+    <operation name="getXMLSchema">
+      <input message="tns:GetXMLSchemaRequest" wsa:Action="http://gme.cagrid.org/GlobalModelExchange/GetXMLSchemaRequest" />
+      <output message="tns:GetXMLSchemaResponse" wsa:Action="http://gme.cagrid.org/GlobalModelExchange/GetXMLSchemaResponse" />
+      <fault name="NoSuchNamespaceExistsFault" message="tns:NoSuchNamespaceExistsFaultFaultMessage" wsa:Action="http://gme.cagrid.org/GlobalModelExchange/NoSuchNamespaceExistsFaultFaultMessage" />
+    </operation>
+    <operation name="getXMLSchemaNamespaces">
+      <input message="tns:GetXMLSchemaNamespacesRequest" wsa:Action="http://gme.cagrid.org/GlobalModelExchange/GetXMLSchemaNamespacesRequest" />
+      <output message="tns:GetXMLSchemaNamespacesResponse" wsa:Action="http://gme.cagrid.org/GlobalModelExchange/GetXMLSchemaNamespacesResponse" />
+    </operation>
+    <operation name="getXMLSchemaAndDependencies">
+      <input message="tns:GetXMLSchemaAndDependenciesRequest" wsa:Action="http://gme.cagrid.org/GlobalModelExchange/GetXMLSchemaAndDependenciesRequest" />
+      <output message="tns:GetXMLSchemaAndDependenciesResponse" wsa:Action="http://gme.cagrid.org/GlobalModelExchange/GetXMLSchemaAndDependenciesResponse" />
+      <fault name="NoSuchNamespaceExistsFault" message="tns:NoSuchNamespaceExistsFaultFaultMessage" wsa:Action="http://gme.cagrid.org/GlobalModelExchange/NoSuchNamespaceExistsFaultFaultMessage" />
+    </operation>
+    <operation name="deleteXMLSchemas">
+      <input message="tns:DeleteXMLSchemasRequest" wsa:Action="http://gme.cagrid.org/GlobalModelExchange/DeleteXMLSchemasRequest" />
+      <output message="tns:DeleteXMLSchemasResponse" wsa:Action="http://gme.cagrid.org/GlobalModelExchange/DeleteXMLSchemasResponse" />
+      <fault name="NoSuchNamespaceExistsFault" message="tns:NoSuchNamespaceExistsFaultFaultMessage" wsa:Action="http://gme.cagrid.org/GlobalModelExchange/NoSuchNamespaceExistsFaultFaultMessage" />
+      <fault name="UnableToDeleteSchemaFault" message="tns:UnableToDeleteSchemaFaultFaultMessage" wsa:Action="http://gme.cagrid.org/GlobalModelExchange/UnableToDeleteSchemaFaultFaultMessage" />
+    </operation>
+    <operation name="getImportedXMLSchemaNamespaces">
+      <input message="tns:GetImportedXMLSchemaNamespacesRequest" wsa:Action="http://gme.cagrid.org/GlobalModelExchange/GetImportedXMLSchemaNamespacesRequest" />
+      <output message="tns:GetImportedXMLSchemaNamespacesResponse" wsa:Action="http://gme.cagrid.org/GlobalModelExchange/GetImportedXMLSchemaNamespacesResponse" />
+      <fault name="NoSuchNamespaceExistsFault" message="tns:NoSuchNamespaceExistsFaultFaultMessage" wsa:Action="http://gme.cagrid.org/GlobalModelExchange/NoSuchNamespaceExistsFaultFaultMessage" />
+    </operation>
+    <operation name="getImportingXMLSchemaNamespaces">
+      <input message="tns:GetImportingXMLSchemaNamespacesRequest" wsa:Action="http://gme.cagrid.org/GlobalModelExchange/GetImportingXMLSchemaNamespacesRequest" />
+      <output message="tns:GetImportingXMLSchemaNamespacesResponse" wsa:Action="http://gme.cagrid.org/GlobalModelExchange/GetImportingXMLSchemaNamespacesResponse" />
+      <fault name="NoSuchNamespaceExistsFault" message="tns:NoSuchNamespaceExistsFaultFaultMessage" wsa:Action="http://gme.cagrid.org/GlobalModelExchange/NoSuchNamespaceExistsFaultFaultMessage" />
+    </operation>
+    <operation name="getServiceSecurityMetadata">
+      <input message="wns0:GetServiceSecurityMetadataRequest" wsa:Action="http://security.introduce.cagrid.nci.nih.gov/ServiceSecurity/GetServiceSecurityMetadataRequest" />
+      <output message="wns0:GetServiceSecurityMetadataResponse" wsa:Action="http://security.introduce.cagrid.nci.nih.gov/ServiceSecurity/GetServiceSecurityMetadataResponse" />
+    </operation>
+    <wsdl:operation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" name="GetMultipleResourceProperties">
+      <wsdl:input name="GetMultipleResourcePropertiesRequest" message="wsrpw:GetMultipleResourcePropertiesRequest" wsa:Action="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ResourceProperties/GetMultipleResourceProperties" />
+      <wsdl:output name="GetMultipleResourcePropertiesResponse" message="wsrpw:GetMultipleResourcePropertiesResponse" wsa:Action="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ResourceProperties/GetMultipleResourcePropertiesResponse" />
+      <wsdl:fault name="ResourceUnknownFault" message="wsrpw:ResourceUnknownFault" />
+      <wsdl:fault name="InvalidResourcePropertyQNameFault" message="wsrpw:InvalidResourcePropertyQNameFault" />
+    </wsdl:operation>
+    <wsdl:operation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" name="GetResourceProperty">
+      <wsdl:input name="GetResourcePropertyRequest" message="wsrpw:GetResourcePropertyRequest" wsa:Action="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ResourceProperties/GetResourceProperty" />
+      <wsdl:output name="GetResourcePropertyResponse" message="wsrpw:GetResourcePropertyResponse" wsa:Action="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ResourceProperties/GetResourcePropertyResponse" />
+      <wsdl:fault name="ResourceUnknownFault" message="wsrpw:ResourceUnknownFault" />
+      <wsdl:fault name="InvalidResourcePropertyQNameFault" message="wsrpw:InvalidResourcePropertyQNameFault" />
+    </wsdl:operation>
+    <wsdl:operation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" name="QueryResourceProperties">
+      <wsdl:input name="QueryResourcePropertiesRequest" message="wsrpw:QueryResourcePropertiesRequest" wsa:Action="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ResourceProperties/QueryResourceProperties" />
+      <wsdl:output name="QueryResourcePropertiesResponse" message="wsrpw:QueryResourcePropertiesResponse" wsa:Action="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ResourceProperties/QueryResourcePropertiesResponse" />
+      <wsdl:fault name="ResourceUnknownFault" message="wsrpw:ResourceUnknownFault" />
+      <wsdl:fault name="InvalidResourcePropertyQNameFault" message="wsrpw:InvalidResourcePropertyQNameFault" />
+      <wsdl:fault name="UnknownQueryExpressionDialectFault" message="wsrpw:UnknownQueryExpressionDialectFault" />
+      <wsdl:fault name="InvalidQueryExpressionFault" message="wsrpw:InvalidQueryExpressionFault" />
+      <wsdl:fault name="QueryEvaluationErrorFault" message="wsrpw:QueryEvaluationErrorFault" />
+    </wsdl:operation>
+  </portType>
+</definitions>
+

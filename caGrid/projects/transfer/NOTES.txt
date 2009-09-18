@@ -1,0 +1,9 @@
+Development Thoughts and Modifications
+-You have to make a JNDI resource link in the service that is going to use Transfer so that it cant find the TransferContextResourceHome
+-Added overwrite=true to the build-deploy.xml
+-Took the ant all and clean calls out of the build.xml and modified them and put them in the dev-build.xml
+
+To Do:
+- add system testing (will be tricky as it will require custom deployment)
+- use new version of transfer wsdl
+- need to add method in service helper that takes the ref and returns the resource so that the creator can set term time, destroy,  etc.

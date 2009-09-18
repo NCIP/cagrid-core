@@ -1,0 +1,8 @@
+<ns1:CQLQueryResults targetClassname="gov.nih.nci.cacoresdk.domain.onetoone.unidirectional.Address" xmlns:ns1="http://CQL.caBIG/1/gov.nih.nci.cagrid.CQLResultSet">
+ <ns1:ObjectResult>
+  <ns6:Address zip="Zip5" id="5" xmlns:ns6="gme://caCORE.caCORE/4.0/gov.nih.nci.cacoresdk.domain.onetoone.unidirectional"/>
+ </ns1:ObjectResult>
+ <ns1:ObjectResult>
+  <ns2:Address zip="Zip5" id="5" xmlns:ns2="gme://caCORE.caCORE/4.0/gov.nih.nci.cacoresdk.domain.onetoone.unidirectional"/>
+ </ns1:ObjectResult>
+</ns1:CQLQueryResults>

@@ -1,0 +1,108 @@
+diff -Naur orig-src/jdepend/framework/FileManager.java src/jdepend/framework/FileManager.java
+--- orig-src/jdepend/framework/FileManager.java	2004-04-10 10:40:20.000000000 -0400
++++ src/jdepend/framework/FileManager.java	2004-06-24 19:21:40.154878400 -0400
+@@ -17,6 +17,7 @@
+     private ArrayList directories;
+ 
+     private boolean acceptInnerClasses;
++    private boolean acceptTestClasses;
+ 
+     /**
+      * Constructs an empty <code>FileManager</code> instance.
+@@ -24,6 +25,7 @@
+     public FileManager() {
+         directories = new ArrayList();
+         acceptInnerClasses = true;
++        acceptTestClasses = true;
+     }
+ 
+     /**
+@@ -35,6 +37,17 @@
+     public void acceptInnerClasses(boolean b) {
+         acceptInnerClasses = b;
+     }
++    
++    /**
++     * Determines whether classes ending with or starting with "test" should be collected.
++     * 
++     * @param b <code>true</code> to collect test classes; <code>false</code>
++     *            otherwise.
++     */
++    public void acceptTestClasses(boolean b) {
++        acceptTestClasses = b;
++    }
++
+ 
+     /**
+      * Adds the specified directory to the collection of directories to be
+@@ -95,6 +108,12 @@
+                 return false;
+             }
+         }
++        
++        if(!acceptTestClasses){
++            if (name.toLowerCase().endsWith("test.class") || name.toLowerCase().startsWith("test")) {
++                return false;
++            }
++        }
+ 
+         if (!name.toLowerCase().endsWith(".class")) {
+             return false;
+diff -Naur orig-src/jdepend/framework/JDepend.java src/jdepend/framework/JDepend.java
+--- orig-src/jdepend/framework/JDepend.java	2004-04-10 10:41:46.000000000 -0400
++++ src/jdepend/framework/JDepend.java	2004-06-24 17:15:35.641916800 -0400
+@@ -129,6 +129,7 @@
+         PropertyConfigurator config = new PropertyConfigurator();
+         addPackages(config.getConfiguredPackages());
+         analyzeInnerClasses(config.getAnalyzeInnerClasses());
++        analyzeTestClasses(config.getAnalyzeTestClasses());
+     }
+ 
+     /**
+@@ -168,6 +169,16 @@
+     public void analyzeInnerClasses(boolean b) {
+         fileManager.acceptInnerClasses(b);
+     }
++    
++    /**
++     * Determines whether test classes are analyzed.
++     * 
++     * @param b <code>true</code> to analyze test classes; <code>false</code>
++     *            otherwise.
++     */
++    public void analyzeTestClasses(boolean b) {
++        fileManager.acceptTestClasses(b);
++    }
+ 
+     /**
+      * Returns the collection of analyzed packages.
+diff -Naur orig-src/jdepend/framework/PropertyConfigurator.java src/jdepend/framework/PropertyConfigurator.java
+--- orig-src/jdepend/framework/PropertyConfigurator.java	2004-04-10 10:42:44.000000000 -0400
++++ src/jdepend/framework/PropertyConfigurator.java	2004-06-24 17:15:18.116716800 -0400
+@@ -82,7 +82,7 @@
+         while (e.hasMoreElements()) {
+             String key = (String) e.nextElement();
+             if (!key.startsWith("ignore")
+-                    && (!key.equals("analyzeInnerClasses"))) {
++                    && (!key.equals("analyzeInnerClasses")  && (!key.equals("analyzeTestClasses")))) {
+                 String v = properties.getProperty(key);
+                 packages.add(new JavaPackage(key, new Integer(v).intValue()));
+             }
+@@ -101,6 +101,17 @@
+ 
+         return true;
+     }
++    
++    public boolean getAnalyzeTestClasses() {
++
++        String key = "analyzeTestClasses";
++        if (properties.containsKey(key)) {
++            String value = properties.getProperty(key);
++            return new Boolean(value).booleanValue();
++        }
++
++        return true;
++    }
+ 
+     public static File getDefaultPropertyFile() {
+         String home = System.getProperty("user.home");

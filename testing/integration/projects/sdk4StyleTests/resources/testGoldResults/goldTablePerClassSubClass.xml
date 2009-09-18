@@ -1,0 +1,8 @@
+<ns1:CQLQueryResults targetClassname="gov.nih.nci.cacoresdk.domain.inheritance.childwithassociation.Credit" xmlns:ns1="http://CQL.caBIG/1/gov.nih.nci.cagrid.CQLResultSet">
+ <ns1:ObjectResult>
+  <ns2:Credit amount="3" id="3" cardNumber="3" xmlns:ns2="gme://caCORE.caCORE/4.0/gov.nih.nci.cacoresdk.domain.inheritance.childwithassociation"/>
+ </ns1:ObjectResult>
+ <ns1:ObjectResult>
+  <ns3:Credit amount="4" id="4" cardNumber="4" xmlns:ns3="gme://caCORE.caCORE/4.0/gov.nih.nci.cacoresdk.domain.inheritance.childwithassociation"/>
+ </ns1:ObjectResult>
+</ns1:CQLQueryResults>

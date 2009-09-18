@@ -1,0 +1,367 @@
+<?xml version="1.0"?>
+<project name="Developer Modified Build File" basedir=".">
+	<!-- ============================================================== -->
+	<!-- This file is designed to allow the developer to extend the     -->
+	<!-- build process without having to edit the master build.xml      -->
+	<!-- file. DO NOT REMOVE ANY TARGETS                                -->
+	<!-- ============================================================== -->
+
+
+	<!-- ============================================================== -->
+	<!-- Place any other properties you will need here                  -->
+	<!-- ============================================================== -->
+	<property environment="env" />
+	<property file="${basedir}/project.properties" />
+	<property file="${basedir}/build.properties" />
+
+	<!-- Auxiliary directory where all the intermediate files will be placed -->
+	<property name="build.dir" location="build" />
+	<!-- Directory for compiled service classes -->
+	<property name="build.dest" location="${build.dir}/classes" />
+
+	<property name="jar.prefix" value="caGrid-gts" />
+	<property name="jar.suffix" value="${project.version}.jar" />
+
+	<property name="common.jar.name" value="${jar.prefix}-common-${jar.suffix}" />
+	<property name="client.jar.name" value="${jar.prefix}-client-${jar.suffix}" />
+	<property name="service.jar.name" value="${jar.prefix}-service-${jar.suffix}" />
+	<property name="stubs.jar.name" value="${jar.prefix}-stubs-${jar.suffix}" />
+	<property name="test.jar.name" value="${jar.prefix}-tests-${jar.suffix}" />
+
+	<property name="ext.dir" location="${basedir}/ext" />
+	<property name="ext.dependencies.dir" location="${ext.dir}/dependencies" />
+	<property name="ext.targetgrid.dir" location="${ext.dir}/target_grid" />
+	<property name="ext.lib.dir" location="${ext.dependencies.dir}/service/jars" />
+	<property name="ext.test.lib" value="${ext.dependencies.dir}/test/jars" />
+	<property name="ext.tools.lib.dir" location="${ext.dependencies.dir}/tools/jars" />
+
+	<!-- overide the introduce location of this which is suposed to be in tools/lib -->
+	<property name="ant.contrib.location" value="${ext.tools.lib.dir}/ant-contrib-1.0b3.jar" />
+
+	<!-- Important test directories and files -->
+	<property name="test.dir" value="test" />
+	<property name="test.src.dir" value="${test.dir}/src" />
+	<property name="test.lib.dir" value="${test.dir}/lib" />
+	<property name="test.log.dir" value="test/logs" />
+	<property name="junit.results.dir" value="${test.log.dir}/junit" />
+	<property name="force.config.replace" value="false" />
+
+
+
+	<!-- ============================================================== -->
+	<!-- Create any extended Classpaths here                            -->
+	<!-- ============================================================== -->
+	<target name="defineExtendedClasspaths">
+		<path id="base.extended.classpath">
+			<fileset dir="${ext.lib.dir}">
+				<include name="*.jar" />
+			</fileset>
+		</path>
+		<path id="service.build.extended.classpath">
+		</path>
+		<path id="service.run.extended.classpath">
+		</path>
+		<path id="test.build.extended.classpath">
+			<fileset dir="${ext.test.lib}">
+				<include name="*.jar" />
+			</fileset>
+		</path>
+		<path id="test.run.extended.classpath">
+			<pathelement location="${test.dir}/resources" />
+		</path>
+		<path id="run.extended.classpath">
+		</path>
+		<path id="tasks.run.extended.classpath">
+			<fileset dir="${ext.lib.dir}">
+				<include name="*.jar" />
+			</fileset>
+			<fileset dir="${ext.tools.lib.dir}">
+				<include name="*.jar" />
+			</fileset>
+		</path>
+	</target>
+
+	<!-- ============================================================== -->
+	<!-- Pre Init Target                                                -->
+	<!-- ============================================================== -->
+	<target name="preInit" depends="checkValidate">
+		<runtarget target="configure" />
+	</target>
+
+	<target name="checkValidate" unless="perform.deployment.validation">
+		<property name="no.deployment.validation" value="true" />
+	</target>
+
+	<!-- ============================================================== -->
+	<!-- Post Init Build Target                                         -->
+	<!-- ============================================================== -->
+	<target name="postInit">
+
+	</target>
+
+
+	<!-- ============================================================== -->
+	<!-- Pre Stubs Target                                               -->
+	<!-- ============================================================== -->
+	<target name="preStubs">
+
+	</target>
+
+	<!-- ============================================================== -->
+	<!-- Post Stubs Build Target                                        -->
+	<!-- ============================================================== -->
+	<target name="postStubs">
+
+	</target>
+
+	<!-- ============================================================== -->
+	<!-- Pre Compile Stubs Build Target                                 -->
+	<!-- ============================================================== -->
+	<target name="preCompileStubs">
+
+	</target>
+
+	<!-- ============================================================== -->
+	<!-- Post Compile Stubs Build Target                                -->
+	<!-- ============================================================== -->
+	<target name="postCompileStubs">
+
+	</target>
+
+	<!-- ============================================================== -->
+	<!-- Pre Jar Stubs Build Target                                     -->
+	<!-- ============================================================== -->
+	<target name="preJarStubs">
+
+	</target>
+
+	<!-- ============================================================== -->
+	<!-- Post Jar Stubs Build Target                                    -->
+	<!-- ============================================================== -->
+	<target name="postJarStubs">
+
+	</target>
+
+	<!-- ============================================================== -->
+	<!-- Pre Compile Build Target                                       -->
+	<!-- ============================================================== -->
+	<target name="preCompile">
+
+	</target>
+
+	<!-- ============================================================== -->
+	<!-- Post Compile Build Target                                       -->
+	<!-- ============================================================== -->
+	<target name="postCompile">
+
+	</target>
+
+	<!-- ============================================================== -->
+	<!-- Pre Jar Build Target                                       -->
+	<!-- ============================================================== -->
+	<target name="preJar">
+
+	</target>
+
+	<!-- Create a JAR file with the implementation classes -->
+	<target name="jar" depends="compile">
+		<jar jarfile="${build.lib.dir}/${client.jar.name}" basedir="${build.dest}">
+			<include name="**/client/**" />
+		</jar>
+		<jar jarfile="${build.lib.dir}/${service.jar.name}" basedir="${build.dest}">
+			<include name="**/service/**" />
+		</jar>
+		<jar jarfile="${build.lib.dir}/${common.jar.name}" basedir="${build.dest}">
+			<include name="**/*.xml" />
+			<include name="**/*.dtd" />
+			<include name="**/*.properties" />
+			<include name="**/*.xsd" />
+			<include name="**/common/**" />
+			<include name="**/*.wsdd" />
+			<exclude name="**/client/**" />
+			<exclude name="**/service/**" />
+			<exclude name="**/ui/**" />
+		</jar>
+		<runtarget target="postJar" />
+	</target>
+
+	<!-- ============================================================== -->
+	<!-- Post Jar Build Target                                          -->
+	<!-- ============================================================== -->
+	<target name="postJar">
+
+	</target>
+
+	<!-- ============================================================== -->
+	<!-- Pre Compile Tests Build Target                                 -->
+	<!-- ============================================================== -->
+	<target name="preCompileTests">
+
+	</target>
+
+	<!-- ============================================================== -->
+	<!-- Post Compile Tests Build Target                                -->
+	<!-- ============================================================== -->
+	<target name="postCompileTests">
+
+	</target>
+
+	<!-- ============================================================== -->
+	<!-- Pre Jar Tests Build Target                                     -->
+	<!-- ============================================================== -->
+	<target name="preJarTests">
+
+	</target>
+
+	<!-- ============================================================== -->
+	<!-- Post Jar Tests Build Target                                    -->
+	<!-- ============================================================== -->
+	<target name="postJarTests">
+
+	</target>
+
+	<!-- ============================================================== -->
+	<!-- Pre Clean Target                                               -->
+	<!-- ============================================================== -->
+	<target name="preClean">
+
+	</target>
+
+	<!-- ============================================================== -->
+	<!-- Post Clean Target                                              -->
+	<!-- ============================================================== -->
+	<target name="postClean">
+
+	</target>
+
+
+	<target name="configure" description="Configures the project based on settings.">
+		<!-- These are the template files we are copying from -->
+		<fileset id="templates.fileset" dir="${basedir}">
+			<include name="*.template" />
+		</fileset>
+
+		<copy todir="${basedir}" overwrite="true">
+			<fileset refid="templates.fileset" />
+			<mapper type="glob" from="*.template" to="*" />
+			<filterset filtersfile="${ext.targetgrid.dir}/service_urls.properties" />
+		</copy>
+
+	</target>
+
+
+
+	<!-- Post Introduce Edit-->
+	<target name="nuke" description="Nukes the GTS Test DB">
+		<java classname="gov.nih.nci.cagrid.gts.test.Nuker" fork="no">
+			<classpath>
+				<path refid="test.run.classpath" />
+				<pathelement location="${test.dir}/resources" />
+			</classpath>
+		</java>
+	</target>
+
+	<!-- call the test target for each project and aggregates the log resutls  -->
+	<target name="test" depends="checkGlobus,create_config_files,nuke">
+		<echo message="Test results dir: ${junit.results.dir}" />
+		<mkdir dir="${junit.results.dir}" />
+		<junit dir="${basedir}" printsummary="yes" errorproperty="test.failed" failureproperty="test.failed" showoutput="true" forkmode="once">
+			<sysproperty key="basedir" value="${basedir}" />
+			<jvmarg value="-Dbuild.dir=${build.dir}" />
+			<jvmarg value="-Djava.endorsed.dirs=${ext.endorsed.dir}" />
+			<classpath refid="test.run.classpath" />
+			<formatter type="xml" />
+			<batchtest fork="yes" todir="${junit.results.dir}">
+				<fileset dir="${test.src.dir}">
+					<include name="**/Test*.java" />
+					<include name="**/*TestCase.java" />
+				</fileset>
+			</batchtest>
+		</junit>
+		<fail message="Tests failed! Check test reports." if="test.failed" />
+	</target>
+
+	<!-- ============================================================== -->
+	<!-- Creates conf files from examples                               -->
+	<!-- ============================================================== -->
+	<target name="create_config_files" description="Creates conf files from examples.
+		Set property force.config.replace to true to force replacement.">
+		<copy todir="${test.dir}/resources" overwrite="${force.config.replace}">
+			<fileset dir="${test.dir}/resources">
+				<include name="**/*.example" />
+			</fileset>
+			<mapper type="glob" from="*.example" to="*" />
+		</copy>
+	</target>
+
+
+	<target name="generateCA" description="Generates a certificate authority." depends="init">
+		<input message="Please enter the DN for the new CA (ex. O=osu,OU=bmi,CN=Some CA):" addproperty="dn.input" />
+		<input message="Please enter the number of days the new CA will be valid for:" addproperty="days.input" />
+		<input message="Please enter a password for the new CA:" addproperty="password.input" />
+		<input message="Please enter a location to write the new CA's private key:" addproperty="key.input" />
+		<input message="Please enter a location to write the new CA's certificate:" addproperty="cert.input" />
+		<java classname="org.cagrid.gaards.pki.tools.CreateCertificateAuthority" fork="true" newenvironment="true" failonerror="true">
+			<arg value="-dn" />
+			<arg value="${dn.input}" />
+			<arg value="-lifetime" />
+			<arg value="${days.input}" />
+			<arg value="-password" />
+			<arg value="${password.input}" />
+			<arg value="-key" />
+			<arg value="${key.input}" />
+			<arg value="-cert" />
+			<arg value="${cert.input}" />
+			<classpath refid="run.classpath" />
+		</java>
+	</target>
+
+	<target name="createAndSignHostCertificate" description="Create and signs a host certificate." depends="init">
+		<input message="Please enter the location of the CA's private key:" addproperty="key.input" />
+		<input message="Please enter the CA's password:" addproperty="password.input" />
+		<input message="Please enter the location of the CA's certificate:" addproperty="ca.input" />
+		<input message="Please enter the Hostname [${env.HOST}]:" addproperty="hostname.input" defaultvalue="${env.HOST}" />
+		<input message="Please enter the number of days the host certificate will be valid for:" addproperty="days.input" />
+		<input message="Please enter a location to write the host key:" addproperty="hostkey.input" />
+
+		<input message="Please enter a location to write the host certificate:" addproperty="cert.input" />
+		<java classname="org.cagrid.gaards.pki.tools.CreateHostCertificate" fork="true" newenvironment="true" failonerror="true">
+			<arg value="-cakey" />
+			<arg value="${key.input}" />
+			<arg value="-password" />
+			<arg value="${password.input}" />
+			<arg value="-cacert" />
+			<arg value="${ca.input}" />
+			<arg value="-host" />
+			<arg value="${hostname.input}" />
+			<arg value="-lifetime" />
+			<arg value="${days.input}" />
+			<arg value="-key" />
+			<arg value="${hostkey.input}" />
+			<arg value="-cert" />
+			<arg value="${cert.input}" />
+			<classpath refid="run.classpath" />
+		</java>
+	</target>
+
+
+	<target name="generateTrustReport" description="Generates a Grid Trust Report." depends="init">
+		<input message="Please enter a file location to write the report to [grid-trust-report.txt]:" addproperty="out.input" defaultvalue="grid-trust-report.txt" />
+		<java classname="org.cagrid.gaards.pki.tools.GenerateTrustReport" fork="true" newenvironment="true" failonerror="true">
+			<arg value="-o" />
+			<arg value="${out.input}" />
+			<classpath refid="run.classpath" />
+		</java>
+	</target>
+
+	<target name="addAdmin" description="Add a administrator to the GTS" depends="checkGlobus">
+		<input message="Please enter the grid identity for the admin you wish to add:" addproperty="gridId.input" />
+		<java classname="gov.nih.nci.cagrid.gts.tools.service.AntPermissionBootstapper" fork="yes" failonerror="true">
+			<arg value="etc/gts-conf.xml" />
+			<arg value="${gridId.input}" />
+			<classpath refid="service.run.classpath" />
+		</java>
+	</target>
+
+
+</project>

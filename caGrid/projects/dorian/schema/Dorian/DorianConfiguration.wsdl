@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions name="DorianConfiguration" xmlns="http://schemas.xmlsoap.org/wsdl/" >
+	<import location="dorian-conf.xsd"/>
+	<import location="xsd/database-conf.xsd"/>
+</definitions>
+

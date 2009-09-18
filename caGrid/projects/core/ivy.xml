@@ -1,0 +1,36 @@
+<?xml version="1.0"?>
+
+<ivy-module version="2.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:noNamespaceSchemaLocation="http://incubator.apache.org/ivy/schemas/ivy.xsd">
+
+  <info organisation="caGrid" module="core" revision="${project.version}">
+    <license name="caGrid" url="http://cagrid.org/wiki/CaGrid:LICENSE-1.3"/>
+    <description>The core caGrid project</description>
+  </info>
+
+  <configurations>
+    <conf name="impl" visibility="private" extends="ui,serialization" />
+    <conf name="impl-test" visibility="private" />
+
+    <!-- Public Configurations-->
+    <conf name="default" visibility="public" description="A minimal configuration" />
+    <conf name="serialization" visibility="public" extends="default" description="Adds libraries needed to use Castor serialization" />
+    <conf name="ui" visibility="public" extends="default" />
+    <conf name="test" visibility="public" extends="default,impl-test" />
+  </configurations>
+
+
+  <publications>
+    <artifact name="caGrid-${ivy.module}" conf="default" type="jar" />
+    <artifact name="caGrid-${ivy.module}-resources" conf="ui" type="jar" />
+    <artifact name="caGrid-${ivy.module}-tests" conf="test" type="jar" />
+  </publications>
+
+  <dependencies>
+    <dependency rev="1.0.2" org="castor" name="castor" conf="serialization->default" />
+    <dependency rev="1.0" org="jdom" name="jdom" conf="default->*" />
+    <dependency rev="2.7" org="clarkware" name="jdepend" conf="impl-test->*" />
+    <dependency rev="2.0.0" org="jgoodies" name="validation" conf="ui->*" />
+    <dependency rev="4.4" org="junit" name="junit" conf="impl-test->default" />
+  </dependencies>
+</ivy-module>

@@ -1,0 +1,4 @@
+<ns1:XMLSchemaImportInformation xmlns:ns1="gme://gme.cagrid.org/2.0/GlobalModelExchange/domain">
+  <ns1:XMLSchemaNamespace uri="gme://caArray.caBIG/2.0/edu.wustl.catissuecore.domain" />
+  <ns1:imports />
+</ns1:XMLSchemaImportInformation>

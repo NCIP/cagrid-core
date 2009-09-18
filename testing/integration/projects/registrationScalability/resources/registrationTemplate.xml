@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<ServiceGroupRegistrationParameters xmlns:sgc="http://mds.globus.org/servicegroup/client"
+  xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xmlns:wsa="http://schemas.xmlsoap.org/ws/2004/03/addressing" xmlns:agg="http://mds.globus.org/aggregator/types"
+  xmlns="http://mds.globus.org/servicegroup/client">
+  <!-- The ServiceGroupEPR defines the servicegroup to which registrations will be made -->
+  <ServiceGroupEPR>
+    <wsa:Address>http://localhost:8080/wsrf/services/DefaultIndexService</wsa:Address>
+  </ServiceGroupEPR>
+  <RefreshIntervalSecs>600</RefreshIntervalSecs>
+  <Content xsi:type="agg:AggregatorContent" xmlns:agg="http://mds.globus.org/aggregator/types">
+    <agg:AggregatorConfig xsi:type="agg:AggregatorConfig">
+      <agg:GetMultipleResourcePropertiesPollType
+        xmlns:ns5="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+        <agg:PollIntervalMillis>120000</agg:PollIntervalMillis>
+        <agg:ResourcePropertyNames>ns5:ServiceMetadata</agg:ResourcePropertyNames>
+      </agg:GetMultipleResourcePropertiesPollType>
+    </agg:AggregatorConfig>
+    <agg:AggregatorData />
+  </Content>
+</ServiceGroupRegistrationParameters>

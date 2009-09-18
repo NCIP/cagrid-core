@@ -1,0 +1,80 @@
+<!-- ======================================================================= -->
+<!-- caGrid i2b2 Data Service Style test build file                          -->
+<!-- ======================================================================= -->
+<project name="caGrid-sdk4xCQL2_tests_harness" basedir=".">
+	<property name="junit.results.dir" location="${test.logs.dir}/junit" />
+	<property name="test.lib.dir" location="${test.dir}/lib"/>
+	
+	<path id="test.run.classpath">
+		<path refid="test.base.classpath"/>
+		<fileset dir="${build.jars.dir}">
+			<include name="**/*.jar"/>
+		</fileset>
+	</path>
+	
+
+	<!-- call the test target for each project and aggregates the log resutls  -->
+	<target name="test" description="Runs the tests." depends="testBase, testSDK40, testSDK411">
+		<fail message="Base Tests failed! Check test reports." if="test.base.failed" />
+		<fail message="SDK 4.0 Tests failed! Check test reports." if="test.sdk40.failed" />
+		<fail message="SDK 4.1.1 Tests failed! Check test reports." if="test.sdk411.failed" />
+	</target>
+	
+
+	<target name="testBase">
+		<mkdir dir="${junit.results.dir}"/>
+		<junit dir="${basedir}" printsummary="yes" errorproperty="test.base.failed" failureproperty="test.base.failed" showoutput="true" fork="yes" forkmode="once">
+			<!-- sysproperty needed for cycle test to know where to look for classes -->
+			<sysproperty key="build.dirs.list" value="${build.dirs.list}" />
+			<classpath refid="test.run.classpath" />
+			<formatter type="xml" />
+			<batchtest fork="yes" todir="${junit.results.dir}">
+				<fileset dir="${test.src.dir}">
+					<include name="**/*TestCase.java" />
+					<exclude name="**/Abstract*.java" />
+					<exclude name="**/sdk4*/*.java"/>
+				</fileset>
+			</batchtest>
+		</junit>
+	</target>
+	
+	
+	<target name="testSDK40">
+		<mkdir dir="${junit.results.dir}"/>
+		<junit dir="${basedir}" printsummary="yes" errorproperty="test.sdk40.failed" failureproperty="test.sdk40.failed" showoutput="true" fork="yes" forkmode="once">
+			<sysproperty key="sdk.application.url" value="http://sdkexamples.bmi.ohio-state.edu:8040/example40"/>
+			<classpath refid="test.run.classpath" />
+			<classpath>
+				<fileset dir="${test.lib.dir}/sdk4.0">
+					<include name="**/*.jar"/>
+				</fileset>
+			</classpath>
+			<formatter type="xml" />
+			<batchtest fork="yes" todir="${junit.results.dir}">
+				<fileset dir="${test.src.dir}">
+					<include name="**/sdk40/*TestCase.java"/>
+				</fileset>
+			</batchtest>
+		</junit>
+	</target>
+	
+	
+	<target name="testSDK411">
+		<mkdir dir="${junit.results.dir}"/>
+		<junit dir="${basedir}" printsummary="yes" errorproperty="test.sdk411.failed" failureproperty="test.sdk411.failed" showoutput="true" fork="yes" forkmode="once">
+			<sysproperty key="sdk.application.url" value="http://sdkexamples.bmi.ohio-state.edu:8041/example41"/>
+			<classpath refid="test.run.classpath" />
+			<classpath>
+				<fileset dir="${test.lib.dir}/sdk4.1.1">
+					<include name="**/*.jar"/>
+				</fileset>
+			</classpath>			
+			<formatter type="xml" />
+			<batchtest fork="yes" todir="${junit.results.dir}">
+				<fileset dir="${test.src.dir}">
+					<include name="**/sdk411/*TestCase.java"/>
+				</fileset>
+			</batchtest>
+		</junit>
+	</target>	
+</project>

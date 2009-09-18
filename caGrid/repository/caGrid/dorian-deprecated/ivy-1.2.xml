@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<ivy-module version="2.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://incubator.apache.org/ivy/schemas/ivy.xsd">
+
+  <info organisation="caGrid" module="dorian-deprecated" revision="1.2" status="release" publication="20080509114628">
+    <license name="caGrid" url="http://www.cagrid.org/wiki/CaGrid:LICENSE-1.2"/>
+    <description homepage="http://www.cagrid.org/mwiki/index.php?title=Dorian:Main">Dorian provides
+      a complete Grid-enabled solution, based on public key certificates and SAML, for managing and
+      federating user and host identities in a Grid environment.</description>
+  </info>
+
+  <configurations>
+    <!-- Public Configurations-->
+    <conf name="stubs" visibility="public"/>
+  </configurations>
+
+
+  <publications>
+    <artifact name="caGrid-dorian-stubs-1.2" conf="stubs" type="jar"/>
+  </publications>
+</ivy-module>

@@ -1,0 +1,13 @@
+<?xml version="1.0"?>
+<xs:schema targetNamespace="gme://b"
+  xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:a="gme://a"
+  xmlns:b="gme://b" elementFormDefault="qualified">
+  <xs:import namespace="gme://a" schemaLocation="A.xsd" />
+  <xs:element name="B">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="a:A" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+</xs:schema>

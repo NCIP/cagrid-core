@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xsi:schemaLocation="
+	http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd
+	http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-2.0.xsd">
+
+	<description>This document is loaded in the context of tests, and defines resources used for
+		testing submissions using xsd:include.</description>
+
+
+	<bean id="testDocumentIncluder" parent="testSchemaDocumentCreationTemplate" scope="prototype">
+		<constructor-arg>
+			<bean class="java.io.File">
+				<constructor-arg value="test/resources/schema/include/Includer.xsd"/>
+			</bean>
+		</constructor-arg>
+	</bean>
+
+	<bean id="testDocumentIncluded" parent="testSchemaDocumentCreationTemplate" scope="prototype">
+		<constructor-arg>
+			<bean class="java.io.File">
+				<constructor-arg value="test/resources/schema/include/Included.xsd"/>
+			</bean>
+		</constructor-arg>
+	</bean>
+
+	<bean id="testSchemaInclude" class="org.cagrid.gme.domain.XMLSchema" scope="prototype">
+		<property name="targetNamespace" value="gme://include"/>
+		<property name="rootDocument">
+			<ref bean="testDocumentIncluder"/>
+		</property>
+		<property name="additionalSchemaDocuments">
+			<set>
+				<ref bean="testDocumentIncluded"/>
+			</set>
+		</property>
+	</bean>
+
+
+	<bean id="testDocumentIncluderCycle" parent="testSchemaDocumentCreationTemplate"
+		scope="prototype">
+		<constructor-arg>
+			<bean class="java.io.File">
+				<constructor-arg value="test/resources/schema/include/Includer_cycle.xsd"/>
+			</bean>
+		</constructor-arg>
+	</bean>
+
+	<bean id="testDocumentIncludedCycle" parent="testSchemaDocumentCreationTemplate"
+		scope="prototype">
+		<constructor-arg>
+			<bean class="java.io.File">
+				<constructor-arg value="test/resources/schema/include/Included_cycle.xsd"/>
+			</bean>
+		</constructor-arg>
+	</bean>
+
+
+	<bean id="testSchemaIncludeCycle" class="org.cagrid.gme.domain.XMLSchema" scope="prototype">
+		<property name="targetNamespace" value="gme://includecycle"/>
+		<property name="rootDocument">
+			<ref bean="testDocumentIncluderCycle"/>
+		</property>
+		<property name="additionalSchemaDocuments">
+			<set>
+				<ref bean="testDocumentIncludedCycle"/>
+			</set>
+		</property>
+	</bean>
+
+
+	<bean id="testDocumentIncluderNoNamespace" parent="testSchemaDocumentCreationTemplate"
+		scope="prototype">
+		<constructor-arg>
+			<bean class="java.io.File">
+				<constructor-arg value="test/resources/schema/include/Includer_nons.xsd"/>
+			</bean>
+		</constructor-arg>
+	</bean>
+
+	<bean id="testDocumentIncludedNoNamespace" parent="testSchemaDocumentCreationTemplate"
+		scope="prototype">
+		<constructor-arg>
+			<bean class="java.io.File">
+				<constructor-arg value="test/resources/schema/include/Included_nons.xsd"/>
+			</bean>
+		</constructor-arg>
+	</bean>
+
+
+	<bean id="testSchemaIncludeNoNamespace" class="org.cagrid.gme.domain.XMLSchema"
+		scope="prototype">
+		<property name="targetNamespace" value="gme://includenons"/>
+		<property name="rootDocument">
+			<ref bean="testDocumentIncluderNoNamespace"/>
+		</property>
+		<property name="additionalSchemaDocuments">
+			<set>
+				<ref bean="testDocumentIncludedNoNamespace"/>
+			</set>
+		</property>
+	</bean>
+
+</beans>

@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- edited with XMLSpy v2005 rel. 3 U (http://www.altova.com) by David W. Ervin (The Ohio State University / Department of Biomedical Informatics) -->
+<xsd:schema xmlns:ext="http://CQL.caBIG/1/gov.nih.nci.cagrid.data.extension" xmlns:aud="http://gov.nih.nci.cagrid.data/Auditing" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:mms="gme://caGrid.caBIG/1.0/org.cagrid.mms.domain" targetNamespace="http://CQL.caBIG/1/gov.nih.nci.cagrid.data.extension" elementFormDefault="qualified" attributeFormDefault="unqualified">
+	<xsd:import namespace="http://gov.nih.nci.cagrid.data/Auditing" schemaLocation="DataServiceAuditorConfiguration.xsd"/>
+	<xsd:import namesapce="gme://caGrid.caBIG/1.0/org.cagrid.mms.domain" schemaLocation="org.cagrid.mms.xsd"/>
+	<xsd:element name="DataServiceExtensionData">
+		<xsd:annotation>
+			<xsd:documentation>Data the data service introduce extension needs to know about</xsd:documentation>
+		</xsd:annotation>
+	</xsd:element>
+	<xsd:complexType name="Data">
+		<xsd:sequence>
+			<xsd:element name="AdditionalLibraries" type="ext:AdditionalLibraries" nillable="false" minOccurs="0"/>
+			<xsd:element name="ServiceFeatures" type="ext:ServiceFeatures" nillable="false" minOccurs="0"/>
+			<xsd:element ref="aud:DataServiceAuditors" minOccurs="0"/>
+			<xsd:element name="ModelInformation" type="ext:ModelInformation"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="AdditionalLibraries">
+		<xsd:annotation>
+			<xsd:documentation>Lists out the names of jar files needed for the data service that aren't part of the regular service deployment</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="JarName" type="xsd:string" minOccurs="0" maxOccurs="unbounded"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="ServiceFeatures">
+		<xsd:annotation>
+			<xsd:documentation>Features of data services which can be enabled / disabled</xsd:documentation>
+		</xsd:annotation>
+		<xsd:attribute name="useWsEnumeration" type="xsd:boolean" use="required"/>
+		<xsd:attribute name="useGridIdentifiers" type="xsd:boolean" use="required"/>
+		<xsd:attribute name="useBdt" type="xsd:boolean" use="required"/>
+		<xsd:attribute name="useTransfer" type="xsd:boolean" use="required"/>
+		<xsd:attribute name="serviceStyle" type="xsd:string" use="optional"/>
+	</xsd:complexType>
+	<xsd:complexType name="ModelInformation">
+		<xsd:sequence>
+			<xsd:element ref="mms:UMLProjectIdentifer" minOccurs="0" maxOccurs="1"/>
+			<xsd:element name="ModelPackage" type="ext:ModelPackage" minOccurs="0" maxOccurs="unbounded"/>
+		</xsd:sequence>
+		<xsd:attribute name="source" type="ext:ModelSourceType" use="required"/>
+	</xsd:complexType>
+	<xsd:simpleType name="ModelSourceType">
+		<xsd:restriction base="xsd:string">
+			<xsd:enumeration value="mms"/>
+			<xsd:enumeration value="preBuilt"/>
+			<xsd:enumeration value="none"/>
+		</xsd:restriction>
+	</xsd:simpleType>
+	<xsd:complexType name="ModelPackage">
+		<xsd:sequence>
+			<xsd:element name="ModelClass" type="ext:ModelClass" minOccurs="0" maxOccurs="unbounded"/>
+		</xsd:sequence>
+		<xsd:attribute name="packageName" type="xsd:string" use="required"/>
+	</xsd:complexType>
+	<xsd:complexType name="ModelClass">
+		<xsd:attribute name="shortClassName" type="xsd:string" use="required"/>
+		<xsd:attribute name="targetable" type="xsd:boolean" use="required"/>
+		<xsd:attribute name="selected" type="xsd:boolean" use="required"/>
+	</xsd:complexType>
+</xsd:schema>

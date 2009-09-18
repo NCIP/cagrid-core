@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- edited with XMLSpy v2005 rel. 3 U (http://www.altova.com) by David W. Ervin (The Ohio State University / Department of Biomedical Informatics) -->
+<xsd:schema xmlns:tns="http://gov.nih.nci.cagrid.data/Auditing" xmlns:xsd="http://www.w3.org/2001/XMLSchema" targetNamespace="http://gov.nih.nci.cagrid.data/Auditing" elementFormDefault="qualified" attributeFormDefault="unqualified">
+	<xsd:complexType name="AuditorConfiguration">
+		<xsd:annotation>
+			<xsd:documentation>Configuration of a single auditor instance</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="MonitoredEvents" type="tns:MonitoredEvents"/>
+			<xsd:element name="ConfigurationProperties" minOccurs="0">
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element name="Property" type="tns:ConfigurationProperty" minOccurs="0" maxOccurs="unbounded"/>
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+		</xsd:sequence>
+		<xsd:attribute name="className" type="xsd:string" use="required"/>
+		<xsd:attribute name="instanceName" type="xsd:string" use="required"/>
+	</xsd:complexType>
+	<xsd:complexType name="ConfigurationProperty">
+		<xsd:attribute name="key" type="xsd:string" use="required"/>
+		<xsd:attribute name="value" type="xsd:string" use="required"/>
+	</xsd:complexType>
+	<xsd:complexType name="MonitoredEvents">
+		<xsd:attribute name="queryBegin" type="xsd:boolean" use="required"/>
+		<xsd:attribute name="validationFailure" type="xsd:boolean" use="required"/>
+		<xsd:attribute name="queryProcessingFailure" type="xsd:boolean" use="required"/>
+		<xsd:attribute name="queryResults" type="xsd:boolean" use="required"/>
+	</xsd:complexType>
+	<xsd:element name="AuditorConfiguration" type="tns:AuditorConfiguration"/>
+	<xsd:complexType name="DataServiceAuditors">
+		<xsd:annotation>
+			<xsd:documentation>Auditors used by the data service</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element ref="tns:AuditorConfiguration" minOccurs="0" maxOccurs="unbounded"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:element name="DataServiceAuditors" type="tns:DataServiceAuditors"/>
+</xsd:schema>

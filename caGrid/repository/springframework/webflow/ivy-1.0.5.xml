@@ -1,0 +1,22 @@
+<?xml version="1.0"?>
+
+<ivy-module version="2.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:noNamespaceSchemaLocation="http://incubator.apache.org/ivy/schemas/ivy.xsd">
+
+	<info organisation="springframework" module="webflow" revision="1.0.5">
+		<description homepage="http://www.springframework.org/webflow">Spring Web Flow is a next
+			generation Java web application controller framework that allows developers to model
+			user actions as high-level modules called flows that are runnable in any environment.
+			The framework delivers improved productivity and testability while providing a strong
+			solution to enforcing navigation rules and managing application state.</description>
+	</info>
+	<publications>
+		<artifact name="spring-webflow"/>
+	</publications>
+
+	<dependencies>
+		<dependency org="springframework" name="binding" rev="1.0.5"/>
+		<dependency org="ognl" name="ognl" rev="2.6.9"/>
+	</dependencies>
+
+</ivy-module>

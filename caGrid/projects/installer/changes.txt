@@ -1,0 +1,44 @@
+############################
+# Since caGrid_1-1_release #
+############################
+
+# To address bug 8632 #
+
+src/org/cagrid/installer/CaGridSourceComponentInstaller.java
+ - Modified the condition returned by getShouldInstallCondition so that it evaluates 
+   to true only if the user has explicitly indicated that caGrid should be installed.
+
+
+# To address bug 8751 #
+
+src/resources/web-app_2_3.dtd
+ - will be added to jar so that it can be resolved from classpath
+scripts/build.xml
+ - added xmlcatalog to fix-web-xml target so that web-app DTD resolved from classpath
+build.xml
+ - updated jar target to include contents of src/resources
+
+
+# To address corrupt file downloads #
+
+installer/cagrid.installer.properties
+ - added properties:
+   - ant.md5.checksum
+   - tomcat.md5.checksum
+   - cagrid.md5.checksum
+   - globus.md5.checksum
+   - activebpel.md5.checksum
+
+installer/src/org/cagrid/installer/AbstractDownloadedComponentInstaller.java
+ - added <componentId>.md5.checksum parameter to DownloadFileTask constructor
+
+installer/src/org/cagrid/installer/tasks/DownloadFileTask.java
+ - added checksumProp formal parameter
+ - added code to check checksum of downloaded file and re-attempt if corrupted
+
+installer/src/org/cagrid/installer/util/MD5Checksum.java
+ - newly added
+
+ Added new Portal installer (02/12/2008)
+
+ Removed browser installer (02/13/2008)

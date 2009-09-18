@@ -1,0 +1,11 @@
+<ns1:DCQLQuery xmlns:ns1="http://caGrid.caBIG/1.0/gov.nih.nci.cagrid.dcql">
+ <ns1:TargetObject name="model1.domain.Gene">
+   <ns1:Association name="model1.domain.Term" roleName="terms">
+     <ns1:Association name="model1.domain.Term" roleName="ancestors">
+       <ns1:Attribute name="value" predicate="EQUAL_TO" value="root"/>
+     </ns1:Association>
+   </ns1:Association>
+ </ns1:TargetObject>
+ <ns1:targetServiceURL>http://sbdev1000.semanticbits.com:13080/wsrf-model1/services/cagrid/Model1Svc</ns1:targetServiceURL>
+ <ns1:targetServiceURL>http://sbdev1000.semanticbits.com:13080/wsrf-model1-a/services/cagrid/Model1Svc</ns1:targetServiceURL>
+</ns1:DCQLQuery>

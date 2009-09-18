@@ -1,0 +1,444 @@
+<ns1:DomainTypesInformation xmlns:ns1="http://SDKQuery4.caBIG/1/gov.nih.nci.cagrid.sdkquery4.beans.domaininfo">
+ <ns1:DomainType javaClassName="gov.nih.nci.cacoresdk.domain.inheritance.childwithassociation.Credit">
+  <ns1:TypeAttribute attributeName="cardNumber" javaTypeName="java.lang.String"/>
+  <ns1:TypeAttribute attributeName="amount" javaTypeName="java.lang.Integer"/>
+  <ns1:TypeAttribute attributeName="id" javaTypeName="java.lang.Integer"/>
+  <ns1:SuperclassName>gov.nih.nci.cacoresdk.domain.inheritance.childwithassociation.Payment</ns1:SuperclassName>
+ </ns1:DomainType>
+ <ns1:DomainType javaClassName="gov.nih.nci.cacoresdk.domain.inheritance.childwithassociation.Payment">
+  <ns1:TypeAttribute attributeName="amount" javaTypeName="java.lang.Integer"/>
+  <ns1:TypeAttribute attributeName="id" javaTypeName="java.lang.Integer"/>
+  <ns1:SubclassName>gov.nih.nci.cacoresdk.domain.inheritance.childwithassociation.Credit</ns1:SubclassName>
+  <ns1:SubclassName>gov.nih.nci.cacoresdk.domain.inheritance.childwithassociation.Cash</ns1:SubclassName>
+ </ns1:DomainType>
+ <ns1:DomainType javaClassName="gov.nih.nci.cacoresdk.domain.inheritance.childwithassociation.Cash">
+  <ns1:TypeAttribute attributeName="amount" javaTypeName="java.lang.Integer"/>
+  <ns1:TypeAttribute attributeName="id" javaTypeName="java.lang.Integer"/>
+  <ns1:SuperclassName>gov.nih.nci.cacoresdk.domain.inheritance.childwithassociation.Payment</ns1:SuperclassName>
+ </ns1:DomainType>
+ <ns1:DomainType javaClassName="gov.nih.nci.cacoresdk.domain.inheritance.childwithassociation.Bank">
+  <ns1:TypeAttribute attributeName="id" javaTypeName="java.lang.Integer"/>
+  <ns1:TypeAttribute attributeName="name" javaTypeName="java.lang.String"/>
+ </ns1:DomainType>
+ <ns1:DomainType javaClassName="gov.nih.nci.cacoresdk.domain.inheritance.childwithassociation.sametable.Shoes">
+  <ns1:TypeAttribute attributeName="color" javaTypeName="java.lang.String"/>
+  <ns1:TypeAttribute attributeName="id" javaTypeName="java.lang.Integer"/>
+  <ns1:SubclassName>gov.nih.nci.cacoresdk.domain.inheritance.childwithassociation.sametable.SportsShoes</ns1:SubclassName>
+  <ns1:SubclassName>gov.nih.nci.cacoresdk.domain.inheritance.childwithassociation.sametable.DesignerShoes</ns1:SubclassName>
+ </ns1:DomainType>
+ <ns1:DomainType javaClassName="gov.nih.nci.cacoresdk.domain.inheritance.childwithassociation.sametable.Designer">
+  <ns1:TypeAttribute attributeName="id" javaTypeName="java.lang.Integer"/>
+  <ns1:TypeAttribute attributeName="name" javaTypeName="java.lang.String"/>
+ </ns1:DomainType>
+ <ns1:DomainType javaClassName="gov.nih.nci.cacoresdk.domain.inheritance.childwithassociation.sametable.DesignerShoes">
+  <ns1:TypeAttribute attributeName="color" javaTypeName="java.lang.String"/>
+  <ns1:TypeAttribute attributeName="id" javaTypeName="java.lang.Integer"/>
+  <ns1:SuperclassName>gov.nih.nci.cacoresdk.domain.inheritance.childwithassociation.sametable.Shoes</ns1:SuperclassName>
+ </ns1:DomainType>
+ <ns1:DomainType javaClassName="gov.nih.nci.cacoresdk.domain.inheritance.childwithassociation.sametable.SportsShoes">
+  <ns1:TypeAttribute attributeName="sportsType" javaTypeName="java.lang.String"/>
+  <ns1:TypeAttribute attributeName="color" javaTypeName="java.lang.String"/>
+  <ns1:TypeAttribute attributeName="id" javaTypeName="java.lang.Integer"/>
+  <ns1:SuperclassName>gov.nih.nci.cacoresdk.domain.inheritance.childwithassociation.sametable.Shoes</ns1:SuperclassName>
+ </ns1:DomainType>
+ <ns1:DomainType javaClassName="gov.nih.nci.cacoresdk.domain.inheritance.multiplechild.UndergraduateStudent">
+  <ns1:TypeAttribute attributeName="id" javaTypeName="java.lang.Integer"/>
+  <ns1:TypeAttribute attributeName="name" javaTypeName="java.lang.String"/>
+  <ns1:SuperclassName>gov.nih.nci.cacoresdk.domain.inheritance.multiplechild.Student</ns1:SuperclassName>
+ </ns1:DomainType>
+ <ns1:DomainType javaClassName="gov.nih.nci.cacoresdk.domain.inheritance.multiplechild.Student">
+  <ns1:TypeAttribute attributeName="id" javaTypeName="java.lang.Integer"/>
+  <ns1:TypeAttribute attributeName="name" javaTypeName="java.lang.String"/>
+  <ns1:SubclassName>gov.nih.nci.cacoresdk.domain.inheritance.multiplechild.UndergraduateStudent</ns1:SubclassName>
+  <ns1:SubclassName>gov.nih.nci.cacoresdk.domain.inheritance.multiplechild.GraduateStudent</ns1:SubclassName>
+ </ns1:DomainType>
+ <ns1:DomainType javaClassName="gov.nih.nci.cacoresdk.domain.inheritance.multiplechild.GraduateStudent">
+  <ns1:TypeAttribute attributeName="projectName" javaTypeName="java.lang.String"/>
+  <ns1:TypeAttribute attributeName="id" javaTypeName="java.lang.Integer"/>
+  <ns1:TypeAttribute attributeName="name" javaTypeName="java.lang.String"/>
+  <ns1:SuperclassName>gov.nih.nci.cacoresdk.domain.inheritance.multiplechild.Student</ns1:SuperclassName>
+ </ns1:DomainType>
+ <ns1:DomainType javaClassName="gov.nih.nci.cacoresdk.domain.inheritance.multiplechild.sametable.Organization">
+  <ns1:TypeAttribute attributeName="id" javaTypeName="java.lang.Integer"/>
+  <ns1:TypeAttribute attributeName="name" javaTypeName="java.lang.String"/>
+  <ns1:SubclassName>gov.nih.nci.cacoresdk.domain.inheritance.multiplechild.sametable.PvtOrganization</ns1:SubclassName>
+  <ns1:SubclassName>gov.nih.nci.cacoresdk.domain.inheritance.multiplechild.sametable.GovtOrganization</ns1:SubclassName>
+ </ns1:DomainType>
+ <ns1:DomainType javaClassName="gov.nih.nci.cacoresdk.domain.inheritance.multiplechild.sametable.PvtOrganization">
+  <ns1:TypeAttribute attributeName="ceo" javaTypeName="java.lang.String"/>
+  <ns1:TypeAttribute attributeName="id" javaTypeName="java.lang.Integer"/>
+  <ns1:TypeAttribute attributeName="name" javaTypeName="java.lang.String"/>
+  <ns1:SuperclassName>gov.nih.nci.cacoresdk.domain.inheritance.multiplechild.sametable.Organization</ns1:SuperclassName>
+ </ns1:DomainType>
+ <ns1:DomainType javaClassName="gov.nih.nci.cacoresdk.domain.inheritance.multiplechild.sametable.GovtOrganization">
+  <ns1:TypeAttribute attributeName="agencyBudget" javaTypeName="java.lang.Integer"/>
+  <ns1:TypeAttribute attributeName="id" javaTypeName="java.lang.Integer"/>
+  <ns1:TypeAttribute attributeName="name" javaTypeName="java.lang.String"/>
+  <ns1:SuperclassName>gov.nih.nci.cacoresdk.domain.inheritance.multiplechild.sametable.Organization</ns1:SuperclassName>
+ </ns1:DomainType>
+ <ns1:DomainType javaClassName="gov.nih.nci.cacoresdk.domain.inheritance.onechild.Human">
+  <ns1:TypeAttribute attributeName="diet" javaTypeName="java.lang.String"/>
+  <ns1:TypeAttribute attributeName="hairColor" javaTypeName="java.lang.String"/>
+  <ns1:TypeAttribute attributeName="id" javaTypeName="java.lang.Integer"/>
+  <ns1:SuperclassName>gov.nih.nci.cacoresdk.domain.inheritance.onechild.Mammal</ns1:SuperclassName>
+ </ns1:DomainType>
+ <ns1:DomainType javaClassName="gov.nih.nci.cacoresdk.domain.inheritance.onechild.Mammal">
+  <ns1:TypeAttribute attributeName="hairColor" javaTypeName="java.lang.String"/>
+  <ns1:TypeAttribute attributeName="id" javaTypeName="java.lang.Integer"/>
+  <ns1:SubclassName>gov.nih.nci.cacoresdk.domain.inheritance.onechild.Human</ns1:SubclassName>
+ </ns1:DomainType>
+ <ns1:DomainType javaClassName="gov.nih.nci.cacoresdk.domain.inheritance.onechild.sametable.Currency">
+  <ns1:TypeAttribute attributeName="country" javaTypeName="java.lang.String"/>
+  <ns1:TypeAttribute attributeName="id" javaTypeName="java.lang.Integer"/>
+  <ns1:SubclassName>gov.nih.nci.cacoresdk.domain.inheritance.onechild.sametable.Note</ns1:SubclassName>
+ </ns1:DomainType>
+ <ns1:DomainType javaClassName="gov.nih.nci.cacoresdk.domain.inheritance.onechild.sametable.Note">
+  <ns1:TypeAttribute attributeName="value" javaTypeName="java.lang.Integer"/>
+  <ns1:TypeAttribute attributeName="country" javaTypeName="java.lang.String"/>
+  <ns1:TypeAttribute attributeName="id" javaTypeName="java.lang.Integer"/>
+  <ns1:SuperclassName>gov.nih.nci.cacoresdk.domain.inheritance.onechild.sametable.Currency</ns1:SuperclassName>
+ </ns1:DomainType>
+ <ns1:DomainType javaClassName="gov.nih.nci.cacoresdk.domain.inheritance.parentwithassociation.Professor">
+  <ns1:TypeAttribute attributeName="id" javaTypeName="java.lang.Integer"/>
+  <ns1:TypeAttribute attributeName="name" javaTypeName="java.lang.String"/>
+  <ns1:SubclassName>gov.nih.nci.cacoresdk.domain.inheritance.parentwithassociation.TenuredProfessor</ns1:SubclassName>
+  <ns1:SubclassName>gov.nih.nci.cacoresdk.domain.inheritance.parentwithassociation.AssistantProfessor</ns1:SubclassName>
+  <ns1:SubclassName>gov.nih.nci.cacoresdk.domain.inheritance.parentwithassociation.AssociateProfessor</ns1:SubclassName>
+ </ns1:DomainType>
+ <ns1:DomainType javaClassName="gov.nih.nci.cacoresdk.domain.inheritance.parentwithassociation.AssociateProfessor">
+  <ns1:TypeAttribute attributeName="yearsServed" javaTypeName="java.lang.Integer"/>
+  <ns1:TypeAttribute attributeName="id" javaTypeName="java.lang.Integer"/>
+  <ns1:TypeAttribute attributeName="name" javaTypeName="java.lang.String"/>
+  <ns1:SuperclassName>gov.nih.nci.cacoresdk.domain.inheritance.parentwithassociation.Professor</ns1:SuperclassName>
+ </ns1:DomainType>
+ <ns1:DomainType javaClassName="gov.nih.nci.cacoresdk.domain.inheritance.parentwithassociation.Assistant">
+  <ns1:TypeAttribute attributeName="id" javaTypeName="java.lang.Integer"/>
+  <ns1:TypeAttribute attributeName="name" javaTypeName="java.lang.String"/>
+ </ns1:DomainType>
+ <ns1:DomainType javaClassName="gov.nih.nci.cacoresdk.domain.inheritance.parentwithassociation.TenuredProfessor">
+  <ns1:TypeAttribute attributeName="tenuredYear" javaTypeName="java.lang.Integer"/>
+  <ns1:TypeAttribute attributeName="id" javaTypeName="java.lang.Integer"/>
+  <ns1:TypeAttribute attributeName="name" javaTypeName="java.lang.String"/>
+  <ns1:SuperclassName>gov.nih.nci.cacoresdk.domain.inheritance.parentwithassociation.Professor</ns1:SuperclassName>
+ </ns1:DomainType>
+ <ns1:DomainType javaClassName="gov.nih.nci.cacoresdk.domain.inheritance.parentwithassociation.AssistantProfessor">
+  <ns1:TypeAttribute attributeName="joiningYear" javaTypeName="java.lang.Integer"/>
+  <ns1:TypeAttribute attributeName="id" javaTypeName="java.lang.Integer"/>
+  <ns1:TypeAttribute attributeName="name" javaTypeName="java.lang.String"/>
+  <ns1:SuperclassName>gov.nih.nci.cacoresdk.domain.inheritance.parentwithassociation.Professor</ns1:SuperclassName>
+ </ns1:DomainType>
+ <ns1:DomainType javaClassName="gov.nih.nci.cacoresdk.domain.inheritance.parentwithassociation.sametable.HardTop">
+  <ns1:TypeAttribute attributeName="keyCode" javaTypeName="java.lang.Integer"/>
+  <ns1:TypeAttribute attributeName="capacity" javaTypeName="java.lang.Integer"/>
+  <ns1:TypeAttribute attributeName="id" javaTypeName="java.lang.Integer"/>
+  <ns1:SuperclassName>gov.nih.nci.cacoresdk.domain.inheritance.parentwithassociation.sametable.Luggage</ns1:SuperclassName>
+ </ns1:DomainType>
+ <ns1:DomainType javaClassName="gov.nih.nci.cacoresdk.domain.inheritance.parentwithassociation.sametable.Luggage">
+  <ns1:TypeAttribute attributeName="capacity" javaTypeName="java.lang.Integer"/>
+  <ns1:TypeAttribute attributeName="id" javaTypeName="java.lang.Integer"/>
+  <ns1:SubclassName>gov.nih.nci.cacoresdk.domain.inheritance.parentwithassociation.sametable.HardTop</ns1:SubclassName>
+  <ns1:SubclassName>gov.nih.nci.cacoresdk.domain.inheritance.parentwithassociation.sametable.SoftTop</ns1:SubclassName>
+ </ns1:DomainType>
+ <ns1:DomainType javaClassName="gov.nih.nci.cacoresdk.domain.inheritance.parentwithassociation.sametable.Wheel">
+  <ns1:TypeAttribute attributeName="id" javaTypeName="java.lang.Integer"/>
+  <ns1:TypeAttribute attributeName="radius" javaTypeName="java.lang.Integer"/>
+ </ns1:DomainType>
+ <ns1:DomainType javaClassName="gov.nih.nci.cacoresdk.domain.inheritance.parentwithassociation.sametable.SoftTop">
+  <ns1:TypeAttribute attributeName="expandable" javaTypeName="java.lang.Boolean"/>
+  <ns1:TypeAttribute attributeName="capacity" javaTypeName="java.lang.Integer"/>
+  <ns1:TypeAttribute attributeName="id" javaTypeName="java.lang.Integer"/>
+  <ns1:SuperclassName>gov.nih.nci.cacoresdk.domain.inheritance.parentwithassociation.sametable.Luggage</ns1:SuperclassName>
+ </ns1:DomainType>
+ <ns1:DomainType javaClassName="gov.nih.nci.cacoresdk.domain.inheritance.twolevelinheritance.CRTMonitor">
+  <ns1:TypeAttribute attributeName="refreshRate" javaTypeName="java.lang.Integer"/>
+  <ns1:TypeAttribute attributeName="brand" javaTypeName="java.lang.String"/>
+  <ns1:TypeAttribute attributeName="height" javaTypeName="java.lang.Integer"/>
+  <ns1:TypeAttribute attributeName="id" javaTypeName="java.lang.Integer"/>
+  <ns1:TypeAttribute attributeName="width" javaTypeName="java.lang.Integer"/>
+  <ns1:SuperclassName>gov.nih.nci.cacoresdk.domain.inheritance.twolevelinheritance.Monitor</ns1:SuperclassName>
+ </ns1:DomainType>
+ <ns1:DomainType javaClassName="gov.nih.nci.cacoresdk.domain.inheritance.twolevelinheritance.LCDMonitor">
+  <ns1:TypeAttribute attributeName="dpiSupported" javaTypeName="java.lang.Integer"/>
+  <ns1:TypeAttribute attributeName="brand" javaTypeName="java.lang.String"/>
+  <ns1:TypeAttribute attributeName="height" javaTypeName="java.lang.Integer"/>
+  <ns1:TypeAttribute attributeName="id" javaTypeName="java.lang.Integer"/>
+  <ns1:TypeAttribute attributeName="width" javaTypeName="java.lang.Integer"/>
+  <ns1:SuperclassName>gov.nih.nci.cacoresdk.domain.inheritance.twolevelinheritance.Monitor</ns1:SuperclassName>
+ </ns1:DomainType>
+ <ns1:DomainType javaClassName="gov.nih.nci.cacoresdk.domain.inheritance.twolevelinheritance.Display">
+  <ns1:TypeAttribute attributeName="height" javaTypeName="java.lang.Integer"/>
+  <ns1:TypeAttribute attributeName="id" javaTypeName="java.lang.Integer"/>
+  <ns1:TypeAttribute attributeName="width" javaTypeName="java.lang.Integer"/>
+  <ns1:SubclassName>gov.nih.nci.cacoresdk.domain.inheritance.twolevelinheritance.Monitor</ns1:SubclassName>
+ </ns1:DomainType>
+ <ns1:DomainType javaClassName="gov.nih.nci.cacoresdk.domain.inheritance.twolevelinheritance.Monitor">
+  <ns1:TypeAttribute attributeName="brand" javaTypeName="java.lang.String"/>
+  <ns1:TypeAttribute attributeName="height" javaTypeName="java.lang.Integer"/>
+  <ns1:TypeAttribute attributeName="id" javaTypeName="java.lang.Integer"/>
+  <ns1:TypeAttribute attributeName="width" javaTypeName="java.lang.Integer"/>
+  <ns1:SubclassName>gov.nih.nci.cacoresdk.domain.inheritance.twolevelinheritance.CRTMonitor</ns1:SubclassName>
+  <ns1:SubclassName>gov.nih.nci.cacoresdk.domain.inheritance.twolevelinheritance.LCDMonitor</ns1:SubclassName>
+  <ns1:SuperclassName>gov.nih.nci.cacoresdk.domain.inheritance.twolevelinheritance.Display</ns1:SuperclassName>
+ </ns1:DomainType>
+ <ns1:DomainType javaClassName="gov.nih.nci.cacoresdk.domain.inheritance.twolevelinheritance.sametable.Goverment">
+  <ns1:TypeAttribute attributeName="country" javaTypeName="java.lang.String"/>
+  <ns1:TypeAttribute attributeName="id" javaTypeName="java.lang.Integer"/>
+  <ns1:SubclassName>gov.nih.nci.cacoresdk.domain.inheritance.twolevelinheritance.sametable.DemocraticGovt</ns1:SubclassName>
+  <ns1:SubclassName>gov.nih.nci.cacoresdk.domain.inheritance.twolevelinheritance.sametable.CommunistGovt</ns1:SubclassName>
+ </ns1:DomainType>
+ <ns1:DomainType javaClassName="gov.nih.nci.cacoresdk.domain.inheritance.twolevelinheritance.sametable.ParliamantaryGovt">
+  <ns1:TypeAttribute attributeName="primeMinister" javaTypeName="java.lang.String"/>
+  <ns1:TypeAttribute attributeName="country" javaTypeName="java.lang.String"/>
+  <ns1:TypeAttribute attributeName="id" javaTypeName="java.lang.Integer"/>
+  <ns1:TypeAttribute attributeName="country" javaTypeName="java.lang.String"/>
+  <ns1:TypeAttribute attributeName="id" javaTypeName="java.lang.Integer"/>
+  <ns1:SuperclassName>gov.nih.nci.cacoresdk.domain.inheritance.twolevelinheritance.sametable.DemocraticGovt</ns1:SuperclassName>
+ </ns1:DomainType>
+ <ns1:DomainType javaClassName="gov.nih.nci.cacoresdk.domain.inheritance.twolevelinheritance.sametable.DemocraticGovt">
+  <ns1:TypeAttribute attributeName="country" javaTypeName="java.lang.String"/>
+  <ns1:TypeAttribute attributeName="id" javaTypeName="java.lang.Integer"/>
+  <ns1:SubclassName>gov.nih.nci.cacoresdk.domain.inheritance.twolevelinheritance.sametable.ParliamantaryGovt</ns1:SubclassName>
+  <ns1:SubclassName>gov.nih.nci.cacoresdk.domain.inheritance.twolevelinheritance.sametable.PresidentialGovt</ns1:SubclassName>
+  <ns1:SuperclassName>gov.nih.nci.cacoresdk.domain.inheritance.twolevelinheritance.sametable.Goverment</ns1:SuperclassName>
+ </ns1:DomainType>
+ <ns1:DomainType javaClassName="gov.nih.nci.cacoresdk.domain.inheritance.twolevelinheritance.sametable.CommunistGovt">
+  <ns1:TypeAttribute attributeName="country" javaTypeName="java.lang.String"/>
+  <ns1:TypeAttribute attributeName="id" javaTypeName="java.lang.Integer"/>
+  <ns1:SuperclassName>gov.nih.nci.cacoresdk.domain.inheritance.twolevelinheritance.sametable.Goverment</ns1:SuperclassName>
+ </ns1:DomainType>
+ <ns1:DomainType javaClassName="gov.nih.nci.cacoresdk.domain.inheritance.twolevelinheritance.sametable.PresidentialGovt">
+  <ns1:TypeAttribute attributeName="president" javaTypeName="java.lang.String"/>
+  <ns1:TypeAttribute attributeName="country" javaTypeName="java.lang.String"/>
+  <ns1:TypeAttribute attributeName="id" javaTypeName="java.lang.Integer"/>
+  <ns1:TypeAttribute attributeName="country" javaTypeName="java.lang.String"/>
+  <ns1:TypeAttribute attributeName="id" javaTypeName="java.lang.Integer"/>
+  <ns1:SuperclassName>gov.nih.nci.cacoresdk.domain.inheritance.twolevelinheritance.sametable.DemocraticGovt</ns1:SuperclassName>
+ </ns1:DomainType>
+ <ns1:DomainType javaClassName="gov.nih.nci.cacoresdk.domain.inheritance.twolevelinheritance.sametablerootlevel.Calculator">
+  <ns1:TypeAttribute attributeName="brand" javaTypeName="java.lang.String"/>
+  <ns1:TypeAttribute attributeName="id" javaTypeName="java.lang.Integer"/>
+  <ns1:SubclassName>gov.nih.nci.cacoresdk.domain.inheritance.twolevelinheritance.sametablerootlevel.ScientificCalculator</ns1:SubclassName>
+  <ns1:SubclassName>gov.nih.nci.cacoresdk.domain.inheritance.twolevelinheritance.sametablerootlevel.FinancialCalculator</ns1:SubclassName>
+ </ns1:DomainType>
+ <ns1:DomainType javaClassName="gov.nih.nci.cacoresdk.domain.inheritance.twolevelinheritance.sametablerootlevel.FinancialCalculator">
+  <ns1:TypeAttribute attributeName="brand" javaTypeName="java.lang.String"/>
+  <ns1:TypeAttribute attributeName="id" javaTypeName="java.lang.Integer"/>
+  <ns1:SuperclassName>gov.nih.nci.cacoresdk.domain.inheritance.twolevelinheritance.sametablerootlevel.Calculator</ns1:SuperclassName>
+ </ns1:DomainType>
+ <ns1:DomainType javaClassName="gov.nih.nci.cacoresdk.domain.inheritance.twolevelinheritance.sametablerootlevel.GraphicCalculator">
+  <ns1:TypeAttribute attributeName="brand" javaTypeName="java.lang.String"/>
+  <ns1:TypeAttribute attributeName="id" javaTypeName="java.lang.Integer"/>
+  <ns1:SuperclassName>gov.nih.nci.cacoresdk.domain.inheritance.twolevelinheritance.sametablerootlevel.ScientificCalculator</ns1:SuperclassName>
+ </ns1:DomainType>
+ <ns1:DomainType javaClassName="gov.nih.nci.cacoresdk.domain.inheritance.twolevelinheritance.sametablerootlevel.ScientificCalculator">
+  <ns1:TypeAttribute attributeName="brand" javaTypeName="java.lang.String"/>
+  <ns1:TypeAttribute attributeName="id" javaTypeName="java.lang.Integer"/>
+  <ns1:SubclassName>gov.nih.nci.cacoresdk.domain.inheritance.twolevelinheritance.sametablerootlevel.GraphicCalculator</ns1:SubclassName>
+  <ns1:SuperclassName>gov.nih.nci.cacoresdk.domain.inheritance.twolevelinheritance.sametablerootlevel.Calculator</ns1:SuperclassName>
+ </ns1:DomainType>
+ <ns1:DomainType javaClassName="gov.nih.nci.cacoresdk.domain.manytomany.bidirectional.Project">
+  <ns1:TypeAttribute attributeName="id" javaTypeName="java.lang.Integer"/>
+  <ns1:TypeAttribute attributeName="name" javaTypeName="java.lang.String"/>
+ </ns1:DomainType>
+ <ns1:DomainType javaClassName="gov.nih.nci.cacoresdk.domain.manytomany.bidirectional.Employee">
+  <ns1:TypeAttribute attributeName="id" javaTypeName="java.lang.Integer"/>
+  <ns1:TypeAttribute attributeName="name" javaTypeName="java.lang.String"/>
+ </ns1:DomainType>
+ <ns1:DomainType javaClassName="gov.nih.nci.cacoresdk.domain.manytomany.unidirectional.Book">
+  <ns1:TypeAttribute attributeName="id" javaTypeName="java.lang.Integer"/>
+  <ns1:TypeAttribute attributeName="name" javaTypeName="java.lang.String"/>
+ </ns1:DomainType>
+ <ns1:DomainType javaClassName="gov.nih.nci.cacoresdk.domain.manytomany.unidirectional.Author">
+  <ns1:TypeAttribute attributeName="id" javaTypeName="java.lang.Integer"/>
+  <ns1:TypeAttribute attributeName="name" javaTypeName="java.lang.String"/>
+ </ns1:DomainType>
+ <ns1:DomainType javaClassName="gov.nih.nci.cacoresdk.domain.manytoone.unidirectional.Chef">
+  <ns1:TypeAttribute attributeName="id" javaTypeName="java.lang.Integer"/>
+  <ns1:TypeAttribute attributeName="name" javaTypeName="java.lang.String"/>
+ </ns1:DomainType>
+ <ns1:DomainType javaClassName="gov.nih.nci.cacoresdk.domain.manytoone.unidirectional.Restaurant">
+  <ns1:TypeAttribute attributeName="id" javaTypeName="java.lang.Integer"/>
+  <ns1:TypeAttribute attributeName="name" javaTypeName="java.lang.String"/>
+ </ns1:DomainType>
+ <ns1:DomainType javaClassName="gov.nih.nci.cacoresdk.domain.manytoone.unidirectional.withjoin.Album">
+  <ns1:TypeAttribute attributeName="id" javaTypeName="java.lang.Integer"/>
+  <ns1:TypeAttribute attributeName="title" javaTypeName="java.lang.String"/>
+ </ns1:DomainType>
+ <ns1:DomainType javaClassName="gov.nih.nci.cacoresdk.domain.manytoone.unidirectional.withjoin.Song">
+  <ns1:TypeAttribute attributeName="id" javaTypeName="java.lang.Integer"/>
+  <ns1:TypeAttribute attributeName="title" javaTypeName="java.lang.String"/>
+ </ns1:DomainType>
+ <ns1:DomainType javaClassName="gov.nih.nci.cacoresdk.domain.onetomany.bidirectional.HardDrive">
+  <ns1:TypeAttribute attributeName="id" javaTypeName="java.lang.Integer"/>
+  <ns1:TypeAttribute attributeName="size" javaTypeName="java.lang.Integer"/>
+ </ns1:DomainType>
+ <ns1:DomainType javaClassName="gov.nih.nci.cacoresdk.domain.onetomany.bidirectional.Computer">
+  <ns1:TypeAttribute attributeName="id" javaTypeName="java.lang.Integer"/>
+  <ns1:TypeAttribute attributeName="type" javaTypeName="java.lang.String"/>
+ </ns1:DomainType>
+ <ns1:DomainType javaClassName="gov.nih.nci.cacoresdk.domain.onetomany.bidirectional.withjoin.Passanger">
+  <ns1:TypeAttribute attributeName="id" javaTypeName="java.lang.Integer"/>
+  <ns1:TypeAttribute attributeName="name" javaTypeName="java.lang.String"/>
+ </ns1:DomainType>
+ <ns1:DomainType javaClassName="gov.nih.nci.cacoresdk.domain.onetomany.bidirectional.withjoin.Flight">
+  <ns1:TypeAttribute attributeName="destination" javaTypeName="java.lang.String"/>
+  <ns1:TypeAttribute attributeName="id" javaTypeName="java.lang.Integer"/>
+ </ns1:DomainType>
+ <ns1:DomainType javaClassName="gov.nih.nci.cacoresdk.domain.onetomany.selfassociation.Element">
+  <ns1:TypeAttribute attributeName="id" javaTypeName="java.lang.Integer"/>
+  <ns1:TypeAttribute attributeName="name" javaTypeName="java.lang.String"/>
+ </ns1:DomainType>
+ <ns1:DomainType javaClassName="gov.nih.nci.cacoresdk.domain.onetomany.unidirectional.Key">
+  <ns1:TypeAttribute attributeName="id" javaTypeName="java.lang.Integer"/>
+  <ns1:TypeAttribute attributeName="type" javaTypeName="java.lang.String"/>
+ </ns1:DomainType>
+ <ns1:DomainType javaClassName="gov.nih.nci.cacoresdk.domain.onetomany.unidirectional.KeyChain">
+  <ns1:TypeAttribute attributeName="id" javaTypeName="java.lang.Integer"/>
+  <ns1:TypeAttribute attributeName="name" javaTypeName="java.lang.String"/>
+ </ns1:DomainType>
+ <ns1:DomainType javaClassName="gov.nih.nci.cacoresdk.domain.onetomany.unidirectional.withjoin.Shirt">
+  <ns1:TypeAttribute attributeName="id" javaTypeName="java.lang.Integer"/>
+  <ns1:TypeAttribute attributeName="style" javaTypeName="java.lang.String"/>
+ </ns1:DomainType>
+ <ns1:DomainType javaClassName="gov.nih.nci.cacoresdk.domain.onetomany.unidirectional.withjoin.Button">
+  <ns1:TypeAttribute attributeName="holes" javaTypeName="java.lang.Integer"/>
+  <ns1:TypeAttribute attributeName="id" javaTypeName="java.lang.Integer"/>
+ </ns1:DomainType>
+ <ns1:DomainType javaClassName="gov.nih.nci.cacoresdk.domain.onetoone.bidirectional.OrderLine">
+  <ns1:TypeAttribute attributeName="id" javaTypeName="java.lang.Integer"/>
+  <ns1:TypeAttribute attributeName="name" javaTypeName="java.lang.String"/>
+ </ns1:DomainType>
+ <ns1:DomainType javaClassName="gov.nih.nci.cacoresdk.domain.onetoone.bidirectional.Product">
+  <ns1:TypeAttribute attributeName="id" javaTypeName="java.lang.Integer"/>
+  <ns1:TypeAttribute attributeName="name" javaTypeName="java.lang.String"/>
+ </ns1:DomainType>
+ <ns1:DomainType javaClassName="gov.nih.nci.cacoresdk.domain.onetoone.bidirectional.withjoin.Chain">
+  <ns1:TypeAttribute attributeName="id" javaTypeName="java.lang.Integer"/>
+  <ns1:TypeAttribute attributeName="metal" javaTypeName="java.lang.String"/>
+ </ns1:DomainType>
+ <ns1:DomainType javaClassName="gov.nih.nci.cacoresdk.domain.onetoone.bidirectional.withjoin.Pendant">
+  <ns1:TypeAttribute attributeName="id" javaTypeName="java.lang.Integer"/>
+  <ns1:TypeAttribute attributeName="shape" javaTypeName="java.lang.String"/>
+ </ns1:DomainType>
+ <ns1:DomainType javaClassName="gov.nih.nci.cacoresdk.domain.onetoone.multipleassociation.Parent">
+  <ns1:TypeAttribute attributeName="id" javaTypeName="java.lang.Integer"/>
+  <ns1:TypeAttribute attributeName="name" javaTypeName="java.lang.String"/>
+ </ns1:DomainType>
+ <ns1:DomainType javaClassName="gov.nih.nci.cacoresdk.domain.onetoone.multipleassociation.Child">
+  <ns1:TypeAttribute attributeName="id" javaTypeName="java.lang.Integer"/>
+  <ns1:TypeAttribute attributeName="name" javaTypeName="java.lang.String"/>
+ </ns1:DomainType>
+ <ns1:DomainType javaClassName="gov.nih.nci.cacoresdk.domain.onetoone.multipleassociation.withjoin.InLaw">
+  <ns1:TypeAttribute attributeName="id" javaTypeName="java.lang.Integer"/>
+  <ns1:TypeAttribute attributeName="name" javaTypeName="java.lang.String"/>
+ </ns1:DomainType>
+ <ns1:DomainType javaClassName="gov.nih.nci.cacoresdk.domain.onetoone.multipleassociation.withjoin.Bride">
+  <ns1:TypeAttribute attributeName="id" javaTypeName="java.lang.Integer"/>
+  <ns1:TypeAttribute attributeName="name" javaTypeName="java.lang.String"/>
+ </ns1:DomainType>
+ <ns1:DomainType javaClassName="gov.nih.nci.cacoresdk.domain.onetoone.unidirectional.Person">
+  <ns1:TypeAttribute attributeName="id" javaTypeName="java.lang.Integer"/>
+  <ns1:TypeAttribute attributeName="name" javaTypeName="java.lang.String"/>
+ </ns1:DomainType>
+ <ns1:DomainType javaClassName="gov.nih.nci.cacoresdk.domain.onetoone.unidirectional.Address">
+  <ns1:TypeAttribute attributeName="id" javaTypeName="java.lang.Integer"/>
+  <ns1:TypeAttribute attributeName="zip" javaTypeName="java.lang.String"/>
+ </ns1:DomainType>
+ <ns1:DomainType javaClassName="gov.nih.nci.cacoresdk.domain.onetoone.unidirectional.withjoin.Handle">
+  <ns1:TypeAttribute attributeName="color" javaTypeName="java.lang.String"/>
+  <ns1:TypeAttribute attributeName="id" javaTypeName="java.lang.Integer"/>
+ </ns1:DomainType>
+ <ns1:DomainType javaClassName="gov.nih.nci.cacoresdk.domain.onetoone.unidirectional.withjoin.Bag">
+  <ns1:TypeAttribute attributeName="id" javaTypeName="java.lang.Integer"/>
+  <ns1:TypeAttribute attributeName="style" javaTypeName="java.lang.String"/>
+ </ns1:DomainType>
+ <ns1:DomainType javaClassName="gov.nih.nci.cacoresdk.domain.other.datatype.AllDataType">
+  <ns1:TypeAttribute attributeName="booleanPrimitiveValue" javaTypeName="java.lang.Boolean"/>
+  <ns1:TypeAttribute attributeName="booleanValue" javaTypeName="java.lang.Boolean"/>
+  <ns1:TypeAttribute attributeName="characterPrimitiveValue" javaTypeName="java.lang.Character"/>
+  <ns1:TypeAttribute attributeName="characterValue" javaTypeName="java.lang.Character"/>
+  <ns1:TypeAttribute attributeName="clobValue" javaTypeName="java.lang.String"/>
+  <ns1:TypeAttribute attributeName="datePrimitiveValue" javaTypeName="java.util.Date"/>
+  <ns1:TypeAttribute attributeName="dateValue" javaTypeName="java.util.Date"/>
+  <ns1:TypeAttribute attributeName="doublePrimitiveValue" javaTypeName="java.lang.Double"/>
+  <ns1:TypeAttribute attributeName="doubleValue" javaTypeName="java.lang.Double"/>
+  <ns1:TypeAttribute attributeName="floatPrimitiveValue" javaTypeName="java.lang.Float"/>
+  <ns1:TypeAttribute attributeName="floatValue" javaTypeName="java.lang.Float"/>
+  <ns1:TypeAttribute attributeName="id" javaTypeName="java.lang.Integer"/>
+  <ns1:TypeAttribute attributeName="intPrimitiveValue" javaTypeName="java.lang.Integer"/>
+  <ns1:TypeAttribute attributeName="intValue" javaTypeName="java.lang.Integer"/>
+  <ns1:TypeAttribute attributeName="longPrimitiveValue" javaTypeName="java.lang.Long"/>
+  <ns1:TypeAttribute attributeName="longValue" javaTypeName="java.lang.Long"/>
+  <ns1:TypeAttribute attributeName="stringCollection" javaTypeName="java.util.Collection"/>
+  <ns1:TypeAttribute attributeName="stringPrimitiveValue" javaTypeName="java.lang.String"/>
+  <ns1:TypeAttribute attributeName="stringValue" javaTypeName="java.lang.String"/>
+ </ns1:DomainType>
+ <ns1:DomainType javaClassName="gov.nih.nci.cacoresdk.domain.other.levelassociation.Card">
+  <ns1:TypeAttribute attributeName="id" javaTypeName="java.lang.Integer"/>
+  <ns1:TypeAttribute attributeName="image" javaTypeName="java.lang.String"/>
+  <ns1:TypeAttribute attributeName="Name" javaTypeName="java.lang.String"/>
+ </ns1:DomainType>
+ <ns1:DomainType javaClassName="gov.nih.nci.cacoresdk.domain.other.levelassociation.Deck">
+  <ns1:TypeAttribute attributeName="id" javaTypeName="java.lang.Integer"/>
+  <ns1:TypeAttribute attributeName="name" javaTypeName="java.lang.String"/>
+ </ns1:DomainType>
+ <ns1:DomainType javaClassName="gov.nih.nci.cacoresdk.domain.other.levelassociation.Hand">
+  <ns1:TypeAttribute attributeName="id" javaTypeName="java.lang.Integer"/>
+ </ns1:DomainType>
+ <ns1:DomainType javaClassName="gov.nih.nci.cacoresdk.domain.other.levelassociation.Suit">
+  <ns1:TypeAttribute attributeName="id" javaTypeName="java.lang.Integer"/>
+  <ns1:TypeAttribute attributeName="name" javaTypeName="java.lang.String"/>
+ </ns1:DomainType>
+ <ns1:DomainType javaClassName="gov.nih.nci.cacoresdk.domain.other.primarykey.StringKey">
+  <ns1:TypeAttribute attributeName="id" javaTypeName="java.lang.String"/>
+  <ns1:TypeAttribute attributeName="name" javaTypeName="java.lang.String"/>
+ </ns1:DomainType>
+ <ns1:DomainType javaClassName="gov.nih.nci.cacoresdk.domain.other.primarykey.IntegerKey">
+  <ns1:TypeAttribute attributeName="id" javaTypeName="java.lang.Integer"/>
+  <ns1:TypeAttribute attributeName="name" javaTypeName="java.lang.String"/>
+ </ns1:DomainType>
+ <ns1:DomainType javaClassName="gov.nih.nci.cacoresdk.domain.other.primarykey.LongPrimitiveKey">
+  <ns1:TypeAttribute attributeName="id" javaTypeName="java.lang.Long"/>
+  <ns1:TypeAttribute attributeName="name" javaTypeName="java.lang.String"/>
+ </ns1:DomainType>
+ <ns1:DomainType javaClassName="gov.nih.nci.cacoresdk.domain.other.primarykey.StringPrimitiveKey">
+  <ns1:TypeAttribute attributeName="id" javaTypeName="java.lang.String"/>
+  <ns1:TypeAttribute attributeName="name" javaTypeName="java.lang.String"/>
+ </ns1:DomainType>
+ <ns1:DomainType javaClassName="gov.nih.nci.cacoresdk.domain.other.primarykey.FloatPrimitiveKey">
+  <ns1:TypeAttribute attributeName="id" javaTypeName="java.lang.Float"/>
+  <ns1:TypeAttribute attributeName="name" javaTypeName="java.lang.String"/>
+ </ns1:DomainType>
+ <ns1:DomainType javaClassName="gov.nih.nci.cacoresdk.domain.other.primarykey.CharacterKey">
+  <ns1:TypeAttribute attributeName="id" javaTypeName="java.lang.Character"/>
+  <ns1:TypeAttribute attributeName="name" javaTypeName="java.lang.String"/>
+ </ns1:DomainType>
+ <ns1:DomainType javaClassName="gov.nih.nci.cacoresdk.domain.other.primarykey.FloatKey">
+  <ns1:TypeAttribute attributeName="id" javaTypeName="java.lang.Float"/>
+  <ns1:TypeAttribute attributeName="name" javaTypeName="java.lang.String"/>
+ </ns1:DomainType>
+ <ns1:DomainType javaClassName="gov.nih.nci.cacoresdk.domain.other.primarykey.LongKey">
+  <ns1:TypeAttribute attributeName="id" javaTypeName="java.lang.Long"/>
+  <ns1:TypeAttribute attributeName="name" javaTypeName="java.lang.String"/>
+ </ns1:DomainType>
+ <ns1:DomainType javaClassName="gov.nih.nci.cacoresdk.domain.other.primarykey.CharacterPrimitiveKey">
+  <ns1:TypeAttribute attributeName="id" javaTypeName="java.lang.Character"/>
+  <ns1:TypeAttribute attributeName="name" javaTypeName="java.lang.String"/>
+ </ns1:DomainType>
+ <ns1:DomainType javaClassName="gov.nih.nci.cacoresdk.domain.other.primarykey.NoIdKey">
+  <ns1:TypeAttribute attributeName="mykey" javaTypeName="java.lang.Integer"/>
+  <ns1:TypeAttribute attributeName="name" javaTypeName="java.lang.String"/>
+ </ns1:DomainType>
+ <ns1:DomainType javaClassName="gov.nih.nci.cacoresdk.domain.other.primarykey.DoubleKey">
+  <ns1:TypeAttribute attributeName="id" javaTypeName="java.lang.Double"/>
+  <ns1:TypeAttribute attributeName="name" javaTypeName="java.lang.String"/>
+ </ns1:DomainType>
+ <ns1:DomainType javaClassName="gov.nih.nci.cacoresdk.domain.other.primarykey.IntegerPrimitiveKey">
+  <ns1:TypeAttribute attributeName="id" javaTypeName="java.lang.Integer"/>
+  <ns1:TypeAttribute attributeName="name" javaTypeName="java.lang.String"/>
+ </ns1:DomainType>
+ <ns1:DomainType javaClassName="gov.nih.nci.cacoresdk.domain.other.primarykey.DoublePrimitiveKey">
+  <ns1:TypeAttribute attributeName="id" javaTypeName="java.lang.Double"/>
+  <ns1:TypeAttribute attributeName="name" javaTypeName="java.lang.String"/>
+ </ns1:DomainType>
+</ns1:DomainTypesInformation>

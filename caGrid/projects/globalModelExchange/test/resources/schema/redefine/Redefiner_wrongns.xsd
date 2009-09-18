@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+<xs:schema targetNamespace="gme://redefinewrongns" xmlns:xs="http://www.w3.org/2001/XMLSchema"
+	xmlns:a="gme://redefinewrongns" elementFormDefault="qualified">
+
+	<xs:redefine schemaLocation="Redefined_wrongns.xsd">
+		<xs:complexType name="pname">
+			<xs:complexContent>
+				<xs:extension base="a:pname">
+					<xs:sequence>
+						<xs:element name="country"/>
+					</xs:sequence>
+				</xs:extension>
+			</xs:complexContent>
+		</xs:complexType>
+	</xs:redefine>
+
+	<xs:element name="author" type="a:pname"/>
+</xs:schema>

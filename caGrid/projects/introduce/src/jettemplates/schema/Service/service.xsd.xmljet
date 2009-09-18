@@ -1,0 +1,21 @@
+<%@ jet package="gov.nih.nci.cagrid.introduce.templates.schema.service" class="ServiceXSDTemplate"  imports="javax.xml.namespace.* gov.nih.nci.cagrid.introduce.common.* gov.nih.nci.cagrid.introduce.common.* gov.nih.nci.cagrid.introduce.codegen.utils.* gov.nih.nci.cagrid.introduce.* gov.nih.nci.cagrid.introduce.beans.namespace.* gov.nih.nci.cagrid.introduce.codegen.* java.util.* gov.nih.nci.cagrid.introduce.beans.resource.* gov.nih.nci.cagrid.introduce.beans.method.* gov.nih.nci.cagrid.introduce.beans.service.*" %>
+<%  SpecificServiceInformation info = (SpecificServiceInformation) argument; 
+    ServiceType service = info.getService();
+    String modifiedServiceName = service.getName();
+    if(service.getName().endsWith("Service")){
+    	modifiedServiceName = service.getName().substring(0,service.getName().length()-7);
+    }
+%><?xml version="1.0" encoding="UTF-8"?>
+<schema targetNamespace="<%=service.getNamespace()%>/types"
+            xmlns:wsa="http://schemas.xmlsoap.org/ws/2004/03/addressing" xmlns:tns="<%=service.getNamespace()%>/types" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns="http://www.w3.org/2001/XMLSchema" xmlns:wsrbf="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-BaseFaults-1.2-draft-01.xsd" elementFormDefault="qualified" attributeFormDefault="unqualified">
+  <import namespace="http://schemas.xmlsoap.org/ws/2004/03/addressing" schemaLocation="../ws/addressing/WS-Addressing.xsd"></import>
+  <import namespace="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-BaseFaults-1.2-draft-01.xsd" schemaLocation="../wsrf/faults/WS-BaseFaults.xsd"></import>
+  <element name="<%=service.getName()%>Reference">
+    <complexType>
+      <sequence >
+        <element ref="wsa:EndpointReference"></element>
+      </sequence>
+    </complexType>
+  </element>
+
+</schema>

@@ -1,0 +1,5 @@
+<ns1:CQLQueryResultCollection targetClassname="gov.nih.nci.cacoresdk.domain.manytomany.bidirectional.Project" xmlns:ns1="http://CQL.caBIG/1/gov.nih.nci.cagrid.CQLResultSet">
+ <ns1:ObjectResult>
+  <ns2:Project name="Project_Name1" id="1" xmlns:ns2="gme://caCORE.caCORE/4.0/gov.nih.nci.cacoresdk.domain.manytomany.bidirectional"/>
+ </ns1:ObjectResult>
+</ns1:CQLQueryResultCollection>

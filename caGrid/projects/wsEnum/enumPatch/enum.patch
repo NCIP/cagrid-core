@@ -1,0 +1,4374 @@
+Index: wsrf/java/core/source/deploy-server.wsdd
+diff -u wsrf/java/core/source/deploy-server.wsdd:1.49 wsrf/java/core/source/deploy-server.wsdd:1.49.38.1
+--- wsrf/java/core/source/deploy-server.wsdd:1.49	Thu Aug 25 16:07:40 2005
++++ wsrf/java/core/source/deploy-server.wsdd	Thu Jun  8 12:30:27 2006
+@@ -57,6 +57,11 @@
+         <parameter
+             name="NotificationConsumerProvider"
+             value="org.globus.wsrf.impl.notification.NotificationConsumerProvider"/>
++
++        <parameter
++            name="EnumerationProvider"
++            value="org.globus.ws.enumeration.EnumProvider"/>
++
+         <!-- WS Secure Conversation service -->
+         <parameter name="authenticationService" 
+             value="gsi/AuthenticationService"/>
+Index: wsrf/java/core/source/deploy-jndi-config.xml
+diff -u wsrf/java/core/source/deploy-jndi-config.xml:1.25 wsrf/java/core/source/deploy-jndi-config.xml:1.25.82.2
+--- wsrf/java/core/source/deploy-jndi-config.xml:1.25	Mon Jan 24 22:06:15 2005
++++ wsrf/java/core/source/deploy-jndi-config.xml	Wed Jun 21 17:29:36 2006
+@@ -115,6 +115,28 @@
+                 </parameter>
+             </resourceParams>
+         </resource>
++       <resource
++            name="enumeration/EnumerationHome"
++            type="org.globus.ws.enumeration.EnumResourceHome">
++            <resourceParams>
++                <parameter>
++                    <name>factory</name>
++                    <value>org.globus.wsrf.jndi.BeanFactory</value>
++                </parameter>
++                <parameter>
++                    <name>resourceClass</name>
++                    <value>org.globus.ws.enumeration.EnumResource</value>
++                </parameter>
++                <parameter>
++                    <name>resourceKeyName</name>
++                    <value>{http://www.globus.org/namespaces/2006/06/core}EnumerationKey</value>
++                </parameter>
++                <parameter>
++                    <name>resourceKeyType</name>
++                    <value>java.lang.String</value>
++                </parameter>
++            </resourceParams>
++        </resource>
+     </global>
+     <service name="NotificationConsumerService">
+         <resourceLink
+Index: wsrf/java/core/source/build.xml
+diff -u wsrf/java/core/source/build.xml:1.61 wsrf/java/core/source/build.xml:1.61.6.1
+--- wsrf/java/core/source/build.xml:1.61	Mon May 15 13:39:58 2006
++++ wsrf/java/core/source/build.xml	Fri Jun  2 23:09:49 2006
+@@ -125,7 +125,17 @@
+             <property name="wsdl.file" 
+                 value="WS-ServiceGroup_service.wsdl"/>
+             <property name="target.stubs.dir" location="${stubs.src}"/>
+-        </ant>
++       </ant>
++
++       <!-- WS-Enumeration -->
++       <ant antfile="${build.stubs}" target="generateStubs">
++            <property name="ns.excludes" value=""/>
++            <property name="source.stubs.dir" 
++                location="${schema.dest}/ws/enumeration"/>
++            <property name="wsdl.file" 
++                value="enumeration_service.wsdl"/>
++            <property name="target.stubs.dir" location="${stubs.src}"/>
++       </ant>
+ 
+         <!-- Security, WS Secure Conversation -->
+         <ant antfile="${build.stubs}" target="generateStubs">
+Index: wsrf/java/core/source/etc/post-deploy.xml
+diff -u wsrf/java/core/source/etc/post-deploy.xml:1.20 wsrf/java/core/source/etc/post-deploy.xml:1.20.18.1
+--- wsrf/java/core/source/etc/post-deploy.xml:1.20	Fri Jan 20 10:29:56 2006
++++ wsrf/java/core/source/etc/post-deploy.xml	Tue Jun 20 00:33:30 2006
+@@ -133,6 +133,26 @@
+             <property name="class.name" 
+                 value="org.globus.wsrf.client.EmbedAssertion"/>
+         </ant>
++
++        <!-- WS-Enumeration clients -->
++        <ant antfile="${build.launcher}" 
++             target="generateLauncher">
++            <property name="launcher-name" value="ws-enumerate-start"/>
++            <property name="class.name" 
++                value="org.globus.ws.enumeration.client.StartEnumerate"/>
++        </ant>
++        <ant antfile="${build.launcher}" 
++             target="generateLauncher">
++            <property name="launcher-name" value="ws-enumerate-end"/>
++            <property name="class.name" 
++                value="org.globus.ws.enumeration.client.EndEnumerate"/>
++        </ant>
++        <ant antfile="${build.launcher}" 
++             target="generateLauncher">
++            <property name="launcher-name" value="ws-enumerate"/>
++            <property name="class.name" 
++                value="org.globus.ws.enumeration.client.Enumerate"/>
++        </ant>
+     </target>
+ 
+     <target name="testPlatform">
+Index: wsrf/java/tools/source/share/build-stubs.xml
+diff -u wsrf/java/tools/source/share/build-stubs.xml:1.28 wsrf/java/tools/source/share/build-stubs.xml:1.28.6.1
+--- wsrf/java/tools/source/share/build-stubs.xml:1.28	Mon May 15 13:40:12 2006
++++ wsrf/java/tools/source/share/build-stubs.xml	Fri Jun  2 23:10:38 2006
+@@ -125,7 +125,7 @@
+     <property name="source.binding.dir" location="."/>
+     <property name="binding.protocol" value="http"/>
+     <property name="stubs.timeout" value="180"/>
+-    <property name="ns.excludes" value="-x http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-BaseFaults-1.2-draft-01.xsd -x http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-BaseFaults-1.2-draft-01.wsdl -x http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ResourceLifetime-1.2-draft-01.xsd -x http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ResourceLifetime-1.2-draft-01.wsdl -x http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ResourceProperties-1.2-draft-01.xsd -x http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ResourceProperties-1.2-draft-01.wsdl -x http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ServiceGroup-1.2-draft-01.xsd -x http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ServiceGroup-1.2-draft-01.wsdl -x http://docs.oasis-open.org/wsn/2004/06/wsn-WS-BaseNotification-1.2-draft-01.xsd -x http://docs.oasis-open.org/wsn/2004/06/wsn-WS-BaseNotification-1.2-draft-01.wsdl -x http://schemas.xmlsoap.org/ws/2004/04/trust -x http://schemas.xmlsoap.org/ws/2002/12/policy -x http://schemas.xmlsoap.org/ws/2002/07/utility -x http://schemas.xmlsoap.org/ws/2004/04/sc -x http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-secext-1.0.xsd -x http://www.w3.org/2000/09/xmldsig# -x http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd"/>
++    <property name="ns.excludes" value="-x http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-BaseFaults-1.2-draft-01.xsd -x http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-BaseFaults-1.2-draft-01.wsdl -x http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ResourceLifetime-1.2-draft-01.xsd -x http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ResourceLifetime-1.2-draft-01.wsdl -x http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ResourceProperties-1.2-draft-01.xsd -x http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ResourceProperties-1.2-draft-01.wsdl -x http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ServiceGroup-1.2-draft-01.xsd -x http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ServiceGroup-1.2-draft-01.wsdl -x http://docs.oasis-open.org/wsn/2004/06/wsn-WS-BaseNotification-1.2-draft-01.xsd -x http://docs.oasis-open.org/wsn/2004/06/wsn-WS-BaseNotification-1.2-draft-01.wsdl -x http://schemas.xmlsoap.org/ws/2004/04/trust -x http://schemas.xmlsoap.org/ws/2002/12/policy -x http://schemas.xmlsoap.org/ws/2002/07/utility -x http://schemas.xmlsoap.org/ws/2004/04/sc -x http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-secext-1.0.xsd -x http://www.w3.org/2000/09/xmldsig# -x http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd -x http://schemas.xmlsoap.org/ws/2004/09/enumeration"/>
+ 
+     <path id="classpath">
+         <pathelement location="."/>
+Index: wsrf/java/core/source/src/org/globus/wsrf/utils/FilePersistenceHelper.java
+diff -u wsrf/java/core/source/src/org/globus/wsrf/utils/FilePersistenceHelper.java:1.14 wsrf/java/core/source/src/org/globus/wsrf/utils/FilePersistenceHelper.java:1.14.18.1
+--- wsrf/java/core/source/src/org/globus/wsrf/utils/FilePersistenceHelper.java:1.14	Thu Jan 19 17:25:51 2006
++++ wsrf/java/core/source/src/org/globus/wsrf/utils/FilePersistenceHelper.java	Thu Jun 22 14:15:08 2006
+@@ -67,7 +67,17 @@
+             : value;
+     }
+ 
+-    public static String getDefaultStorageDir(Class beanClass) 
++    /**
++     * Gets a base directory location where the objects of the given
++     * type should be stored.
++     *
++     * @param beanClass the type of the objects that will be stored in 
++     *        the directory. The name of type will be used to construct
++     *        the base directory location.
++     * @return the base directory location
++     * @throws IOException if unable to get the base directory location
++     */
++    public static File getDefaultStorageDirectory(Class beanClass) 
+         throws IOException {
+         if (beanClass == null) {
+             return null;
+@@ -84,11 +94,41 @@
+ 
+         File baseDir = new File(FILE_PERSISTENCE_DIR);
+         File storageDir = new File(dir);
+-        if (!storageDir.getCanonicalPath().startsWith(baseDir.getCanonicalPath())) {
++        if (!storageDir.getCanonicalPath().startsWith(
++                                                 baseDir.getCanonicalPath())) {
+             throw new IOException(i18n.getMessage("invalidStorageDir", dir));
+         }
+ 
+-        return dir;
++        return storageDir;
++    }
++
++    public static String getDefaultStorageDir(Class beanClass) 
++        throws IOException {
++        File dir = getDefaultStorageDirectory(beanClass);
++        return (dir == null) ? null : dir.getAbsolutePath();
++    }
++    
++    /**
++     * Ensures the directory specified exists, is readable and writeable.
++     * If the directory does not exist it is created.
++     *
++     * @param dir the directory to create or check the permissions of
++     * @throws IOException if failed to create the directory or if the 
++     *         directory exists but has invalid permissions.
++     */
++    public static synchronized void createStorageDirectory(File dir) 
++        throws IOException {
++        if (!dir.exists()) {
++            if (!dir.mkdirs()) {
++                throw new IOException(i18n.getMessage("storDirFailed", 
++                                                      dir));
++            }
++        } else {
++            if (!dir.canWrite() || !dir.canRead()) {
++                throw new IOException(i18n.getMessage("storDirPerm", 
++                                                      dir));
++            }
++        }
+     }
+ 
+     /**
+@@ -98,7 +138,9 @@
+     public FilePersistenceHelper(Class beanClass,
+                                  String suffix)
+         throws IOException {
+-        this(beanClass, getDefaultStorageDir(beanClass), suffix);
++        this(beanClass, 
++             getDefaultStorageDirectory(beanClass),
++             suffix);
+     }
+ 
+     /**
+@@ -109,6 +151,19 @@
+                                  String storageDir,
+                                  String suffix)
+         throws IOException {
++        this(beanClass, 
++             (storageDir == null) ? null : new File(storageDir),
++             suffix);
++    }
++
++    /**
++     * Creates FilePersistenceHelper with specific storage directory and
++     * file suffix.
++     */
++    public FilePersistenceHelper(Class beanClass,
++                                 File storageDir,
++                                 String suffix)
++        throws IOException {
+         if (beanClass == null) {
+             throw new IllegalArgumentException(
+                     i18n.getMessage("nullArgument", "beanClass"));
+@@ -128,20 +183,12 @@
+ 
+     protected void setStorageDirectory(String strDir)
+         throws IOException {
+-        File dir = new File(strDir);
+-        synchronized (FilePersistenceHelper.class) {
+-            if (!dir.exists()) {
+-                if (!dir.mkdirs()) {
+-                    throw new IOException(i18n.getMessage("storDirFailed", 
+-                                                          dir));
+-                }
+-            } else {
+-                if (!dir.canWrite() || !dir.canRead()) {
+-                    throw new IOException(i18n.getMessage("storDirPerm", 
+-                                                          dir));
+-                }
+-            }
+-        }
++        setStorageDirectory(new File(strDir));
++    }
++
++    protected void setStorageDirectory(File dir)
++        throws IOException {
++        createStorageDirectory(dir);
+         this.storageDir = dir;
+     }
+ 
+Index: wsrf/java/core/source/src/org/globus/wsrf/utils/AdapterProxy.java
+diff -u /dev/null wsrf/java/core/source/src/org/globus/wsrf/utils/AdapterProxy.java:1.2
+--- /dev/null	Sat Jul 15 17:36:33 2006
++++ wsrf/java/core/source/src/org/globus/wsrf/utils/AdapterProxy.java	Wed Jul  5 13:45:25 2006
+@@ -0,0 +1,134 @@
++/*
++ * Copyright 1999-2006 University of Chicago
++ * 
++ * Licensed under the Apache License, Version 2.0 (the "License");
++ * you may not use this file except in compliance with the License.
++ * You may obtain a copy of the License at
++ * 
++ * http://www.apache.org/licenses/LICENSE-2.0
++ * 
++ * Unless required by applicable law or agreed to in writing, software
++ * distributed under the License is distributed on an "AS IS" BASIS,
++ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
++ * See the License for the specific language governing permissions and
++ * limitations under the License.
++ */
++package org.globus.wsrf.utils;
++
++import java.lang.reflect.Method;
++import java.lang.reflect.Proxy;
++import java.lang.reflect.InvocationHandler;
++import java.lang.reflect.InvocationTargetException;
++
++import java.util.HashMap;
++import java.util.Map;
++import java.util.Arrays;
++
++import org.globus.util.I18n;
++
++/*
++ * This class is used to create an adapter-like dynamic proxy that exposes
++ * a given object as a set of specified interfaces. The calls on the returned
++ * proxy are forwarded to the target object.
++ */
++public class AdapterProxy implements InvocationHandler {
++
++    private static I18n i18n = 
++        I18n.getI18n(Resources.class.getName());
++
++    private Map methodMap;
++    private Object target;
++    
++    private AdapterProxy(Object obj, Map methodMap) {
++        this.target = obj;
++        this.methodMap = methodMap;
++    }
++
++    public Object invoke(Object proxy,
++                         Method method,
++                         Object[] args)
++        throws Throwable {
++        Method m = (Method)this.methodMap.get(method);
++        if (m == null) {
++            // this should never happen
++            throw new NoSuchMethodException(
++                           "No such method on target object");
++        } else {
++            try {
++                return m.invoke(target, args);
++            } catch (InvocationTargetException e) {
++                if (e.getTargetException() != null) {
++                    throw e.getTargetException();
++                } else {
++                    throw e;
++                }
++            }
++        }
++    }
++
++    /**
++     * Creates an adapter-like dynamic proxy that exposes the target object
++     * as a set of specified interfaces. The calls on the returned proxy
++     * will be forwarded to the target object. The target object must have  
++     * the exact same methods as defined by the specified interfaces classes.
++     *
++     * @param target the target object to which the calls on the proxy
++     *        will be forwarded to.
++     * @param interfaces the list of interfaces that the adapter proxy should
++     *        implement. The target object must define the same exact methods
++     *        as defined by these classes.
++     * @return the proxy object
++     * @throws IllegalArgumentException if there is a mismatch between methods
++     *         of the target object and specified interfaces or some methods
++     *         are missing.
++     */
++    public static Object newInstance(Object target, Class[] interfaces) 
++        throws IllegalArgumentException {
++        
++        if (target == null) {
++            throw new IllegalArgumentException(
++                         i18n.getMessage("nullArgument", "target"));
++        }
++
++        HashMap methodMap = new HashMap();
++        Class targetClass = target.getClass();
++        
++        for (int i=0;i<interfaces.length;i++) {
++            Method[] methods = interfaces[i].getMethods();
++            for (int j=0;j<methods.length;j++) {
++                Method targetMethod = null;
++                
++                try {
++                    targetMethod = 
++                        targetClass.getMethod(methods[j].getName(),
++                                              methods[j].getParameterTypes());
++                } catch (NoSuchMethodException e) {
++                    throw new IllegalArgumentException(
++                                 i18n.getMessage("apMissingMethod", 
++                                                 methods[j].getName()));
++                }
++                
++                if (!methods[j].getReturnType().equals(
++                                   targetMethod.getReturnType())) {
++                    throw new IllegalArgumentException(
++                                 i18n.getMessage("apReturnMismatch",
++                                                 methods[j].getName()));
++                }
++                
++                if (!Arrays.equals(methods[j].getExceptionTypes(),
++                                   targetMethod.getExceptionTypes())){
++                    throw new IllegalArgumentException(
++                                 i18n.getMessage("apExceptionMismatch", 
++                                                 methods[j].getName()));
++                }
++                
++                methodMap.put(methods[j], targetMethod);
++            }
++        }
++        
++        return Proxy.newProxyInstance(target.getClass().getClassLoader(),
++                                      interfaces,
++                                      new AdapterProxy(target, methodMap));
++    }
++    
++}
+Index: wsrf/java/core/source/src/org/globus/wsrf/TerminationTimeRejectedException.java
+diff -u /dev/null wsrf/java/core/source/src/org/globus/wsrf/TerminationTimeRejectedException.java:1.2
+--- /dev/null	Sat Jul 15 17:36:33 2006
++++ wsrf/java/core/source/src/org/globus/wsrf/TerminationTimeRejectedException.java	Wed Jul  5 11:08:11 2006
+@@ -0,0 +1,62 @@
++/*
++ * Copyright 1999-2006 University of Chicago
++ * 
++ * Licensed under the Apache License, Version 2.0 (the "License");
++ * you may not use this file except in compliance with the License.
++ * You may obtain a copy of the License at
++ * 
++ * http://www.apache.org/licenses/LICENSE-2.0
++ * 
++ * Unless required by applicable law or agreed to in writing, software
++ * distributed under the License is distributed on an "AS IS" BASIS,
++ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
++ * See the License for the specific language governing permissions and
++ * limitations under the License.
++ */
++package org.globus.wsrf;
++
++/**
++ * This is an exception raised by the 
++ * {@link ResourceLifetime#setTerminationTime(java.util.Calendar) 
++ * ResourceLifetime.setTerminationTime()} operation in case the new
++ * termination time cannot be accepted by the service.
++ */
++public class TerminationTimeRejectedException extends RuntimeException {
++
++    /**
++     * Creates a TerminationTimeRejectedException without error message.
++     */
++    public TerminationTimeRejectedException() {
++    }
++    
++    /**
++     * Creates a TerminationTimeRejectedException with a given error message.
++     *
++     * @param message error message
++     */
++    public TerminationTimeRejectedException(String message) {
++        super(message);
++    }
++    
++    /**
++     * Creates a TerminationTimeRejectedException with a given error message
++     * and nested exception.
++     *
++     * @param message error message
++     * @param exception nested exception/
++     */
++    public TerminationTimeRejectedException(String message,
++                                            Throwable exception) {
++        super(message, exception);
++    }
++    
++    /**
++     * Creates a TerminationTimeRejectedException from a nested exception.
++     *
++     * @param exception nested exception
++     */
++    public TerminationTimeRejectedException(Throwable exception) {
++        super(exception);
++    }
++    
++}
+Index: wsrf/schema/ws/enumeration/enumeration.wsdl
+diff -u /dev/null wsrf/schema/ws/enumeration/enumeration.wsdl:1.1.2.3
+--- /dev/null	Sat Jul 15 17:36:33 2006
++++ wsrf/schema/ws/enumeration/enumeration.wsdl	Mon Jun 26 14:58:17 2006
+@@ -0,0 +1,130 @@
++<?xml version="1.0" encoding="UTF-8"?>
++<!-- 
++(c) 2004 BEA Systems Inc., Computer Associates, Microsoft Corporation, Inc., Sonic Software, and Systinet Corporation. All rights reserved.
++
++Permission to copy and display the WS-Enumeration (the "Specification", which includes WSDL and schema documents), in any medium without fee or royalty is hereby granted, provided that you include the following on ALL copies of the Specification that you make:
++
++1.	A link or URL to the Specification at one of the Co-Developers' websites.
++2.	The copyright notice as shown in the Specification.
++
++BEA Systems, Computer Associates, Microsoft, Sonic Software, and Systinet (collectively, the "Co-Developers") each agree to grant you a license, under royalty-free and otherwise reasonable, non-discriminatory terms and conditions, to their respective essential patent claims that they deem necessary to implement the Specification.
++
++THE SPECIFICATION IS PROVIDED "AS IS," AND THE CO-DEVELOPERS MAKE NO REPRESENTATIONS OR WARRANTIES, EXPRESS OR IMPLIED, INCLUDING, BUT NOT LIMITED TO, WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE, NON-INFRINGEMENT, OR TITLE; THAT THE CONTENTS OF THE SPECIFICATION ARE SUITABLE FOR ANY PURPOSE; NOR THAT THE IMPLEMENTATION OF SUCH CONTENTS WILL NOT INFRINGE ANY THIRD PARTY PATENTS, COPYRIGHTS, TRADEMARKS OR OTHER RIGHTS.
++
++THE CO-DEVELOPERS WILL NOT BE LIABLE FOR ANY DIRECT, INDIRECT, SPECIAL, INCIDENTAL OR CONSEQUENTIAL DAMAGES ARISING OUT OF OR RELATING TO ANY USE OR DISTRIBUTION OF THE SPECIFICATIONS.
++
++The name and trademarks of the Co-Developers may NOT be used in any manner, including advertising or publicity pertaining to the Specifications or their contents without specific, written prior permission. Title to copyright in the Specifications will at all times remain with the Co-Developers.
++No other rights are granted by implication, estoppel or otherwise.
++-->
++<wsdl:definitions
++    targetNamespace="http://schemas.xmlsoap.org/ws/2004/09/enumeration" 
++    xmlns:wsen="http://schemas.xmlsoap.org/ws/2004/09/enumeration"
++    xmlns:wsa="http://schemas.xmlsoap.org/ws/2004/03/addressing" 
++    xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" 
++    xmlns:xs="http://www.w3.org/2001/XMLSchema" >
++
++  <wsdl:types>
++    <xs:schema>
++      <xs:import
++        namespace="http://schemas.xmlsoap.org/ws/2004/09/enumeration"
++        schemaLocation="./enumeration.xsd" />
++    </xs:schema>
++  </wsdl:types>
++
++  <wsdl:message name="EnumerateMessage">
++    <wsdl:part name="Body" element="wsen:Enumerate" />
++  </wsdl:message>
++  <wsdl:message name="EnumerateResponseMessage">
++    <wsdl:part name="Body" element="wsen:EnumerateResponse" />
++  </wsdl:message>
++  <wsdl:message name="PullMessage">
++    <wsdl:part name="Body" element="wsen:Pull" />
++  </wsdl:message>
++  <wsdl:message name="PullResponseMessage">
++    <wsdl:part name="Body" element="wsen:PullResponse" />
++  </wsdl:message>
++  <wsdl:message name="RenewMessage" >
++    <wsdl:part name="Body" element="wsen:Renew" />
++  </wsdl:message>
++  <wsdl:message name="RenewResponseMessage" >
++    <wsdl:part name="Body" element="wsen:RenewResponse" />
++  </wsdl:message>
++  <wsdl:message name="GetStatusMessage" >
++    <wsdl:part name="Body" element="wsen:GetStatus" />
++  </wsdl:message>
++  <wsdl:message name="GetStatusResponseMessage" >
++    <wsdl:part name="Body" element="wsen:GetStatusResponse" />
++  </wsdl:message>
++  <wsdl:message name="ReleaseMessage">
++    <wsdl:part name="Body" element="wsen:Release" />
++  </wsdl:message>
++  <wsdl:message name="ReleaseResponseMessage" />
++  <wsdl:message name="EnumerationEndMessage" >
++    <wsdl:part name="Body" element="wsen:EnumerationEnd" />
++  </wsdl:message>
++
++  <wsdl:portType name="DataSourceStart">
++    <wsdl:operation name="EnumerateOp">
++      <wsdl:input 
++        message="wsen:EnumerateMessage" 
++        wsa:Action="http://schemas.xmlsoap.org/ws/2004/09/enumeration/Enumerate"
++        />
++      <wsdl:output 
++        message="wsen:EnumerateResponseMessage" 
++        wsa:Action="http://schemas.xmlsoap.org/ws/2004/09/enumeration/EnumerateResponse"
++        />
++    </wsdl:operation>
++  </wsdl:portType>
++
++  <wsdl:portType name="DataSource">
++    <wsdl:operation name="PullOp">
++      <wsdl:input 
++        message="wsen:PullMessage" 
++        wsa:Action="http://schemas.xmlsoap.org/ws/2004/09/enumeration/Pull"
++        />
++      <wsdl:output 
++        message="wsen:PullResponseMessage"
++        wsa:Action="http://schemas.xmlsoap.org/ws/2004/09/enumeration/PullResponse"
++        />
++    </wsdl:operation>
++    <wsdl:operation name="RenewOp" >
++      <wsdl:input 
++        message="wsen:RenewMessage"
++        wsa:Action="http://schemas.xmlsoap.org/ws/2004/09/enumeration/Renew"
++        />
++      <wsdl:output 
++        message="wsen:RenewResponseMessage"
++        wsa:Action="http://schemas.xmlsoap.org/ws/2004/09/enumeration/RenewResponse"
++        />
++    </wsdl:operation>
++    <wsdl:operation name="GetStatusOp" >
++      <wsdl:input 
++        message="wsen:GetStatusMessage"
++        wsa:Action="http://schemas.xmlsoap.org/ws/2004/09/enumeration/GetStatus"
++        />
++      <wsdl:output 
++        message="wsen:GetStatusResponseMessage" 
++        wsa:Action="http://schemas.xmlsoap.org/ws/2004/09/enumeration/GetStatusResponse"
++        />
++    </wsdl:operation>
++    <wsdl:operation name="ReleaseOp">
++      <wsdl:input 
++        message="wsen:ReleaseMessage" 
++        wsa:Action="http://schemas.xmlsoap.org/ws/2004/09/enumeration/Release"
++        />
++      <wsdl:output 
++        message="wsen:ReleaseResponseMessage" 
++        wsa:Action="http://schemas.xmlsoap.org/ws/2004/09/enumeration/ReleaseResponse"
++        />
++    </wsdl:operation>
++
++<!-- This violates WS-I Basic Profile R2303
++    <wsdl:operation name="EnumerationEndOp" >
++      <wsdl:output 
++        message="wsen:EnumerationEndMessage" 
++        wsa:Action="http://schemas.xmlsoap.org/ws/2004/09/enumeration/EnumerationEnd"
++        />
++    </wsdl:operation>
++-->
++  </wsdl:portType>
++</wsdl:definitions>
+Index: wsrf/schema/ws/enumeration/enumeration.xsd
+diff -u /dev/null wsrf/schema/ws/enumeration/enumeration.xsd:1.1.2.2
+--- /dev/null	Sat Jul 15 17:36:33 2006
++++ wsrf/schema/ws/enumeration/enumeration.xsd	Fri Jun  2 22:10:18 2006
+@@ -0,0 +1,220 @@
++<?xml version="1.0" encoding="UTF-8" ?>
++<!-- 
++(c) 2004 BEA Systems Inc., Computer Associates, Microsoft Corporation, Inc., Sonic Software, and Systinet Corporation. All rights reserved.
++
++Permission to copy and display the WS-Enumeration (the "Specification", which includes WSDL and schema documents), in any medium without fee or royalty is hereby granted, provided that you include the following on ALL copies of the Specification that you make:
++
++1.	A link or URL to the Specification at one of the Co-Developers' websites.
++2.	The copyright notice as shown in the Specification.
++
++BEA Systems, Computer Associates, Microsoft, Sonic Software, and Systinet (collectively, the "Co-Developers") each agree to grant you a license, under royalty-free and otherwise reasonable, non-discriminatory terms and conditions, to their respective essential patent claims that they deem necessary to implement the Specification.
++
++THE SPECIFICATION IS PROVIDED "AS IS," AND THE CO-DEVELOPERS MAKE NO REPRESENTATIONS OR WARRANTIES, EXPRESS OR IMPLIED, INCLUDING, BUT NOT LIMITED TO, WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE, NON-INFRINGEMENT, OR TITLE; THAT THE CONTENTS OF THE SPECIFICATION ARE SUITABLE FOR ANY PURPOSE; NOR THAT THE IMPLEMENTATION OF SUCH CONTENTS WILL NOT INFRINGE ANY THIRD PARTY PATENTS, COPYRIGHTS, TRADEMARKS OR OTHER RIGHTS.
++
++THE CO-DEVELOPERS WILL NOT BE LIABLE FOR ANY DIRECT, INDIRECT, SPECIAL, INCIDENTAL OR CONSEQUENTIAL DAMAGES ARISING OUT OF OR RELATING TO ANY USE OR DISTRIBUTION OF THE SPECIFICATIONS.
++
++The name and trademarks of the Co-Developers may NOT be used in any manner, including advertising or publicity pertaining to the Specifications or their contents without specific, written prior permission. Title to copyright in the Specifications will at all times remain with the Co-Developers.
++No other rights are granted by implication, estoppel or otherwise.
++-->
++<xs:schema
++	targetNamespace="http://schemas.xmlsoap.org/ws/2004/09/enumeration"
++	xmlns:tns="http://schemas.xmlsoap.org/ws/2004/09/enumeration"
++        xmlns:wsa="http://schemas.xmlsoap.org/ws/2004/03/addressing" 
++	xmlns:xs="http://www.w3.org/2001/XMLSchema" 
++	elementFormDefault="qualified" 
++	blockDefault="#all">
++
++	<xs:import namespace="http://www.w3.org/XML/1998/namespace" 
++                   schemaLocation="../xml.xsd"/>
++
++        <xs:import namespace="http://schemas.xmlsoap.org/ws/2004/03/addressing"
++                   schemaLocation="../addressing/WS-Addressing.xsd"/>
++
++	<!-- Types and global elements -->
++	<xs:complexType name="FilterType" mixed="true">
++		<xs:sequence>
++			<xs:any namespace="##other" processContents="lax" minOccurs="0" maxOccurs="unbounded" />
++		</xs:sequence>
++		<xs:attribute name="Dialect" type="xs:anyURI" />
++		<xs:anyAttribute namespace="##other" processContents="lax" />
++	</xs:complexType>
++	
++	<xs:simpleType name="PositiveDurationType">
++		<xs:restriction base="xs:duration">
++			<xs:minExclusive value="P0Y0M0DT0H0M0S" />
++		</xs:restriction>
++	</xs:simpleType>
++
++	<xs:simpleType name="NonNegativeDurationType">
++		<xs:restriction base="xs:duration">
++			<xs:minInclusive value="P0Y0M0DT0H0M0S" />
++		</xs:restriction>
++	</xs:simpleType>
++
++	<xs:simpleType name="ExpirationType">
++		<xs:union memberTypes="xs:dateTime tns:NonNegativeDurationType" />
++	</xs:simpleType>
++
++	<xs:complexType name="EnumerationContextType" mixed="true">
++				<xs:sequence>
++					<xs:any namespace="##other" processContents="lax" minOccurs="0" maxOccurs="unbounded" />
++				</xs:sequence>
++				<xs:anyAttribute namespace="##other" processContents="lax" />
++	</xs:complexType>
++	
++	<xs:complexType name="ItemListType">
++		<xs:sequence maxOccurs="unbounded">
++			<xs:any namespace="##other" processContents="lax" minOccurs="0" maxOccurs="unbounded" />
++		</xs:sequence>
++	</xs:complexType>
++
++	<xs:complexType name="LanguageSpecificStringType">
++		<xs:simpleContent>
++			<xs:extension base="xs:string">
++				<xs:attribute ref="xml:lang" />
++				<xs:anyAttribute namespace="##other" processContents="lax" />
++			</xs:extension>
++		</xs:simpleContent>
++	</xs:complexType>
++
++	<!-- Enumerate request -->
++	<xs:element name="Enumerate">
++		<xs:complexType>
++			<xs:sequence>
++				<xs:element name="EndTo" type="wsa:EndpointReferenceType" minOccurs="0" />
++				<xs:element name="Expires" type="tns:ExpirationType" minOccurs="0" />
++				<xs:element name="Filter" type="tns:FilterType" minOccurs="0" />
++				<xs:any namespace="##other" processContents="lax" minOccurs="0" maxOccurs="unbounded" />
++			</xs:sequence>
++			<xs:anyAttribute namespace="##other" processContents="lax" />
++		</xs:complexType>
++	</xs:element>
++	
++	<!-- Used for a fault response -->
++	<xs:element name="SupportedDialect" type="xs:anyURI" />
++	
++	<!-- Enumerate response -->
++	<xs:element name="EnumerateResponse">
++		<xs:complexType>
++			<xs:sequence>
++				<xs:element name="Expires" type="tns:ExpirationType" minOccurs="0" />
++				<xs:element name="EnumerationContext" type="tns:EnumerationContextType" />
++				<xs:any namespace="##other" processContents="lax" minOccurs="0" maxOccurs="unbounded" />
++			</xs:sequence>
++			<xs:anyAttribute namespace="##other" processContents="lax" />
++		</xs:complexType>
++	</xs:element>
++	
++	<!-- Pull request -->
++	<xs:element name="Pull">
++		<xs:complexType>
++			<xs:sequence>
++				<xs:element name="EnumerationContext" type="tns:EnumerationContextType" />
++				<xs:element name="MaxTime" type="tns:PositiveDurationType" minOccurs="0" />
++				<xs:element name="MaxElements" type="xs:positiveInteger" minOccurs="0" />
++				<xs:element name="MaxCharacters" type="xs:positiveInteger" minOccurs="0" />
++				<xs:any namespace="##other" processContents="lax" minOccurs="0" maxOccurs="unbounded" />
++			</xs:sequence>
++			<xs:anyAttribute namespace="##other" processContents="lax" />
++		</xs:complexType>
++	</xs:element>
++	
++	<!-- Pull response -->
++	<xs:element name="PullResponse">
++		<xs:complexType>
++			<xs:sequence>
++				<xs:element name="EnumerationContext" type="tns:EnumerationContextType" minOccurs="0" />
++				<xs:element name="Items" type="tns:ItemListType" minOccurs="0" />
++				<xs:element name="EndOfSequence" minOccurs="0" />
++			</xs:sequence>
++			<xs:anyAttribute namespace="##other" processContents="lax" />
++		</xs:complexType>
++	</xs:element>
++	
++	<!-- Renew request -->
++	<xs:element name="Renew">
++		<xs:complexType>
++			<xs:sequence>
++				<xs:element name="EnumerationContext" type="tns:EnumerationContextType" />
++				<xs:element name="Expires" type="tns:ExpirationType" minOccurs="0" />
++				<xs:any namespace="##other" processContents="lax" 
++					minOccurs="0" maxOccurs="unbounded" />
++			</xs:sequence>
++			<xs:anyAttribute namespace="##other" processContents="lax" />
++		</xs:complexType>
++	</xs:element>
++
++	<!-- Renew response -->
++	<xs:element name="RenewResponse">
++		<xs:complexType>
++			<xs:sequence>
++				<xs:element name="Expires" type="tns:ExpirationType" minOccurs="0" />
++				<xs:element name="EnumerationContext" type="tns:EnumerationContextType" minOccurs="0" />
++				<xs:any namespace="##other" processContents="lax" 
++					minOccurs="0" maxOccurs="unbounded" />
++			</xs:sequence>
++			<xs:anyAttribute namespace="##other" processContents="lax" />
++		</xs:complexType>
++	</xs:element>
++
++	<!-- GetStatus request -->
++	<xs:element name="GetStatus">
++		<xs:complexType>
++			<xs:sequence>
++				<xs:element name="EnumerationContext" type="tns:EnumerationContextType" />
++				<xs:any namespace="##other" processContents="lax" 
++					minOccurs="0" maxOccurs="unbounded" />
++			</xs:sequence>
++			<xs:anyAttribute namespace="##other" processContents="lax" />
++		</xs:complexType>
++	</xs:element>
++
++	<!-- GetStatus response -->
++	<xs:element name="GetStatusResponse">
++		<xs:complexType>
++			<xs:sequence>
++				<xs:element name="Expires" type="tns:ExpirationType" minOccurs="0" />
++				<xs:any namespace="##other" processContents="lax" 
++					minOccurs="0" maxOccurs="unbounded" />
++			</xs:sequence>
++			<xs:anyAttribute namespace="##other" processContents="lax" />
++		</xs:complexType>
++	</xs:element>
++
++	<!-- Release request -->
++	<xs:element name="Release">
++		<xs:complexType>
++			<xs:sequence>
++				<xs:element name="EnumerationContext" type="tns:EnumerationContextType" />
++			</xs:sequence>
++			<xs:anyAttribute namespace="##other" processContents="lax" />
++		</xs:complexType>
++	</xs:element>
++	
++	<!-- Release response has an empty body -->
++	
++	<!-- EnumerationEnd message -->
++	<xs:element name="EnumerationEnd">
++		<xs:complexType>
++		<xs:sequence>
++			<xs:element name="EnumerationContext" type="tns:EnumerationContextType" />
++			<xs:element name="Code" type="tns:OpenEnumerationEndCodeType" />
++			<xs:element name="Reason" type="tns:LanguageSpecificStringType" minOccurs="0" maxOccurs="unbounded" />
++			<xs:any namespace="##other" processContents="lax" 
++			minOccurs="0" maxOccurs="unbounded" />
++		</xs:sequence>
++		<xs:anyAttribute namespace="##other" processContents="lax" />
++		</xs:complexType>
++	</xs:element>
++
++	<xs:simpleType name="EnumerationEndCodeType">
++		<xs:restriction base="xs:anyURI">
++		<xs:enumeration value="http://schemas.xmlsoap.org/ws/2004/09/enumeration/SourceShuttingDown" />
++		<xs:enumeration value="http://schemas.xmlsoap.org/ws/2004/09/enumeration/SourceCancelling" />
++		</xs:restriction>
++	</xs:simpleType>
++
++	<xs:simpleType name="OpenEnumerationEndCodeType">
++		<xs:union memberTypes="tns:EnumerationEndCodeType xs:anyURI" />
++	</xs:simpleType>
++</xs:schema>
+Index: wsrf/schema/ws/enumeration/enumeration_bindings.wsdl
+diff -u /dev/null wsrf/schema/ws/enumeration/enumeration_bindings.wsdl:1.1.2.2
+--- /dev/null	Sat Jul 15 17:36:33 2006
++++ wsrf/schema/ws/enumeration/enumeration_bindings.wsdl	Mon Jun 26 14:58:17 2006
+@@ -0,0 +1,55 @@
++<?xml version="1.0" encoding="UTF-8"?>
++<wsdl:definitions name="enumeration" targetNamespace="http://schemas.xmlsoap.org/ws/2004/09/enumeration/bindings" xmlns:porttype="http://schemas.xmlsoap.org/ws/2004/09/enumeration" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
++  <wsdl:import namespace="http://schemas.xmlsoap.org/ws/2004/09/enumeration" location="enumeration.wsdl"/>
++  <wsdl:binding name="DataSourceStartSOAPBinding" type="porttype:DataSourceStart">
++    <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
++    <wsdl:operation name="EnumerateOp">
++      <soap:operation soapAction="http://schemas.xmlsoap.org/ws/2004/09/enumeration/Enumerate"/>
++      <wsdl:input>
++        <soap:body use="literal"/>
++      </wsdl:input>
++      <wsdl:output>
++        <soap:body use="literal"/>
++      </wsdl:output>
++    </wsdl:operation>
++  </wsdl:binding>
++  <wsdl:binding name="DataSourceSOAPBinding" type="porttype:DataSource">
++    <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
++    <wsdl:operation name="PullOp">
++      <soap:operation soapAction="http://schemas.xmlsoap.org/ws/2004/09/enumeration/Pull"/>
++      <wsdl:input>
++        <soap:body use="literal"/>
++      </wsdl:input>
++      <wsdl:output>
++        <soap:body use="literal"/>
++      </wsdl:output>
++    </wsdl:operation>
++    <wsdl:operation name="RenewOp">
++      <soap:operation soapAction="http://schemas.xmlsoap.org/ws/2004/09/enumeration/Renew"/>
++      <wsdl:input>
++        <soap:body use="literal"/>
++      </wsdl:input>
++      <wsdl:output>
++        <soap:body use="literal"/>
++      </wsdl:output>
++    </wsdl:operation>
++    <wsdl:operation name="GetStatusOp">
++      <soap:operation soapAction="http://schemas.xmlsoap.org/ws/2004/09/enumeration/GetStatus"/>
++      <wsdl:input>
++        <soap:body use="literal"/>
++      </wsdl:input>
++      <wsdl:output>
++        <soap:body use="literal"/>
++      </wsdl:output>
++    </wsdl:operation>
++    <wsdl:operation name="ReleaseOp">
++      <soap:operation soapAction="http://schemas.xmlsoap.org/ws/2004/09/enumeration/Release"/>
++      <wsdl:input>
++        <soap:body use="literal"/>
++      </wsdl:input>
++      <wsdl:output>
++        <soap:body use="literal"/>
++      </wsdl:output>
++    </wsdl:operation>
++  </wsdl:binding>
++</wsdl:definitions>
+Index: wsrf/schema/ws/enumeration/enumeration_service.wsdl
+diff -u /dev/null wsrf/schema/ws/enumeration/enumeration_service.wsdl:1.1.2.2
+--- /dev/null	Sat Jul 15 17:36:33 2006
++++ wsrf/schema/ws/enumeration/enumeration_service.wsdl	Mon Jun 26 14:58:17 2006
+@@ -0,0 +1,12 @@
++<?xml version="1.0" encoding="UTF-8"?>
++<wsdl:definitions name="enumeration" targetNamespace="http://schemas.xmlsoap.org/ws/2004/09/enumeration/service" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:binding="http://schemas.xmlsoap.org/ws/2004/09/enumeration/bindings" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
++  <wsdl:import namespace="http://schemas.xmlsoap.org/ws/2004/09/enumeration/bindings" location="enumeration_bindings.wsdl"/>
++  <wsdl:service name="enumerationService">
++    <wsdl:port name="DataSourcePort" binding="binding:DataSourceSOAPBinding">
++      <soap:address location="http://localhost:8080/wsrf/services/"/>
++    </wsdl:port>
++    <wsdl:port name="DataSourceStartPort" binding="binding:DataSourceStartSOAPBinding">
++      <soap:address location="http://localhost:8080/wsrf/services/"/>
++    </wsdl:port>
++  </wsdl:service>
++</wsdl:definitions>
+Index: wsrf/java/core/source/src/org/globus/ws/enumeration/ClientEnumIterator.java
+diff -u /dev/null wsrf/java/core/source/src/org/globus/ws/enumeration/ClientEnumIterator.java:1.1.2.11
+--- /dev/null	Sat Jul 15 17:36:33 2006
++++ wsrf/java/core/source/src/org/globus/ws/enumeration/ClientEnumIterator.java	Tue Jul 11 09:47:50 2006
+@@ -0,0 +1,281 @@
++/*
++ * Copyright 1999-2006 University of Chicago
++ * 
++ * Licensed under the Apache License, Version 2.0 (the "License");
++ * you may not use this file except in compliance with the License.
++ * You may obtain a copy of the License at
++ * 
++ * http://www.apache.org/licenses/LICENSE-2.0
++ * 
++ * Unless required by applicable law or agreed to in writing, software
++ * distributed under the License is distributed on an "AS IS" BASIS,
++ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
++ * See the License for the specific language governing permissions and
++ * limitations under the License.
++ */
++package org.globus.ws.enumeration;
++
++import org.xmlsoap.schemas.ws._2004._09.enumeration.DataSource;
++import org.xmlsoap.schemas.ws._2004._09.enumeration.EnumerationContextType;
++
++import java.util.Iterator;
++import java.util.NoSuchElementException;
++import java.rmi.RemoteException;
++
++import org.w3c.dom.Element;
++
++import org.globus.wsrf.encoding.ObjectDeserializer;
++import org.globus.util.I18n;
++
++import org.apache.axis.message.MessageElement;
++
++import javax.xml.soap.SOAPElement;
++import javax.xml.rpc.Stub;
++
++/**
++ * Provides simple-to-use, client-side API for enumerating over data using
++ * the WS-Enumeration operations. This class implements the {@link Iterator
++ * Iterator} interface but the implementation does not follow the 
++ * <tt>Iterator</tt> specification exactly because of the WS-Enumeration
++ * specification limitations. See {@link #hasNext() hasNext} 
++ * and {@link #next() next} operations for details.
++ */
++public class ClientEnumIterator implements Iterator {
++
++    private static I18n i18n =
++        I18n.getI18n("org.globus.ws.enumeration.error");
++
++    protected ClientEnumeration enumeration;
++
++    protected SOAPElement[] items;
++    protected int itemsIndex;
++    protected boolean endOfSequence;
++
++    protected Class itemType;
++    protected IterationConstraints constraints;
++
++    /**
++     * Creates <tt>ClientEnumIterator</tt> with a given data source port and
++     * an enumeration context. 
++     *
++     * @param port the data source port.
++     * @param context the enumeration context.
++     * @throws IllegalArgumentException if the port or context parameters are
++     *         null.
++     */
++    public ClientEnumIterator(DataSource port,
++                              EnumerationContextType context) {
++        this.enumeration = new ClientEnumeration(port, context);
++    }
++
++    /**
++     * Creates <tt>ClientEnumIterator</tt> with a given stub and
++     * an enumeration context. The stub instance must define all of the
++     * operations exposed by the {@link DataSource DataSource} interface.
++     *
++     * @param stub the data source stub.
++     * @param context the enumeration context.
++     * @throws IllegalArgumentException if stub or context parameters are null
++     *         or if the stub does not define all of the operations of the
++     *         {@link DataSource DataSource} interface.
++     * @see ClientEnumeration#getAsDataSource(Stub)
++     */    
++    public ClientEnumIterator(Stub stub, 
++                              EnumerationContextType context) {
++        this.enumeration = new ClientEnumeration(stub, context);
++    }
++
++    /**
++     * Gets the {@link ClientEnumeration ClientEnumeration} associated with
++     * this iterator.
++     *
++     * @return the {@link ClientEnumeration ClientEnumeration} associated with
++     *         this iterator.
++     */
++    public ClientEnumeration getClientEnumeration() {
++        return this.enumeration;
++    }
++
++    /**
++     * Sets iteration constraints for the iterator.
++     *
++     * @param constraints the iteration constraints. Can be null.
++     */
++    public void setIterationConstraints(IterationConstraints constraints) {
++        this.constraints = constraints;
++    }
++    
++    /**
++     * Gets iteration constraints for the iterator.
++     *
++     * @return the iteration constraints.
++     */
++    public IterationConstraints getIterationConstraints() {
++        return this.constraints;
++    }
++
++    /**
++     * Sets the type of the object returned by the {@link #next() next}
++     * operation. By default the objects returned by the {@link #next() next}
++     * operation will be of the {@link SOAPElement SOAPElement} type. If the
++     * item type is set the enumeration elements will be automatically
++     * deserialized into this type. This assumes the enumeration elements are
++     * all of the same type.
++     *
++     * @param itemType the type of object the enumeration items should be
++     *        deserialized into. Can be null (if null deserialization is 
++     *        performed).
++     */
++    public void setItemType(Class itemType) {
++        this.itemType = itemType;
++    }
++
++    /**
++     * Gets the type of the object that should be returned by the
++     * {@link #next() next} operation. 
++     *
++     * @return the type of the object that should be returned by the
++     *         {@link #next() next} operation. Can be null (if null
++     *         objects of the  {@link SOAPElement SOAPElement} type will
++     *         be returned by the {@link #next() next} operation.
++     */
++    public Class getItemType() {
++        return this.itemType;
++    }
++
++    /**
++     * Returns <tt>true</tt> if there <B>might</B> be more elements in the 
++     * enumeration.
++     * <BR><BR><B>Note: </B><I>
++     * This function in certain cases might return <B>true</B> even
++     * though there might not be any more elements in the enumeration.</I>
++     *
++     * @return <tt>false</tt> if there are no more elements in the enumeration.
++     *         <tt>True</tt> if there might be more elements in the 
++     *         enumeration.
++     */
++    public boolean hasNext() {
++        if (this.endOfSequence) {
++            return (this.items != null &&
++                    this.itemsIndex < this.items.length);
++        } else {
++            return true;
++        }
++    }
++    
++    /**
++     * Returns the next element in the iteration. 
++     * <BR><BR><B>Note: </B><I>
++     * This function might throw {@link NoSuchElementException 
++     * NoSuchElementException} exception even though the
++     * {@link #hasNext() hasNext()} function returned true. </I>
++     *
++     * @return the next element in the iteration. Can return null if there
++     *         are more elements in the enumeration but they cannot be returned
++     *         because of the current iteration constraints.
++     * @throws NoSuchElementException iteration has no more elements or
++     *         enumeration context has expired.
++     * @throws ConversionException if object conversion is performed and failed
++     *         to convert (the index of the iteration will not be advanced).
++     */
++    public Object next() {
++        if (!hasNext()) {
++            throw new NoSuchElementException();
++        }
++
++        if (this.items == null ||
++            this.itemsIndex >= this.items.length) {
++            getNext();
++
++            if (this.items == null) {
++                if (this.endOfSequence) {
++                    throw new NoSuchElementException();
++                } else {
++                    // this should not happen according to the spec
++                    // therefore force end of sequence
++                    this.endOfSequence = true;
++                    throw new NoSuchElementException();
++                }
++            }
++        }
++        
++        if (this.items != null) {
++            Object obj = convert(this.items[this.itemsIndex]);
++            this.itemsIndex++;
++            return obj;
++        } else {
++            return null;
++        }
++    }
++
++    /**
++     * Performs object conversion. Can be overwritten by subclasses to
++     * provide a custom way of deserializing the objects.
++     *
++     * @param elem the raw XML element
++     * @return the deserialized object.
++     * @throws ConversionException if conversion fails.
++     */
++    protected Object convert(SOAPElement elem) {
++        if (this.itemType == null) {
++            return elem;
++        }
++        try {
++            if (this.itemType.equals(Element.class)) {
++                return ((MessageElement)elem).getAsDOM();
++            } else {
++                return ObjectDeserializer.toObject(elem, this.itemType);
++            }
++        } catch (Exception e) {
++            throw new ConversionException(i18n.getMessage("cantConvert"), e);
++        }
++    }
++
++    /**
++     * Not implemented. Always throws {@link UnsupportedOperationException 
++     * UnsupportedOperationException} exception.
++     */
++    public void remove() {
++        throw new UnsupportedOperationException();
++    }
++
++    private void getNext() {
++        try {
++            IterationResult iterationResult = 
++                this.enumeration.pull(this.constraints);
++            this.items = iterationResult.getItems();
++            // enusure the array is not of size 0 
++            if (this.items != null && this.items.length == 0) {
++                this.items = null;
++            }
++            this.itemsIndex = 0;
++            this.endOfSequence = iterationResult.isEndOfSequence();
++        } catch (RemoteException e) {
++            // TODO: what should happen if the enumeration times out?
++            end();
++            throw new NoSuchElementException();
++        }
++    }
++
++    /**
++     * Releases the enumeration.
++     */
++    public void release() {
++        if (!this.endOfSequence) {
++            try {
++                this.enumeration.release();
++            } catch (RemoteException e) {
++                // ignore exception?
++            } finally {
++                end();
++            }
++        }
++    }
++
++    private void end() {
++        this.items = null;
++        this.itemsIndex = 0;
++        this.endOfSequence = true;
++    }
++    
++}
+Index: wsrf/java/core/source/src/org/globus/ws/enumeration/ClientEnumeration.java
+diff -u /dev/null wsrf/java/core/source/src/org/globus/ws/enumeration/ClientEnumeration.java:1.1.2.6
+--- /dev/null	Sat Jul 15 17:36:33 2006
++++ wsrf/java/core/source/src/org/globus/ws/enumeration/ClientEnumeration.java	Wed Jul 12 22:40:51 2006
+@@ -0,0 +1,238 @@
++/*
++ * Copyright 1999-2006 University of Chicago
++ * 
++ * Licensed under the Apache License, Version 2.0 (the "License");
++ * you may not use this file except in compliance with the License.
++ * You may obtain a copy of the License at
++ * 
++ * http://www.apache.org/licenses/LICENSE-2.0
++ * 
++ * Unless required by applicable law or agreed to in writing, software
++ * distributed under the License is distributed on an "AS IS" BASIS,
++ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
++ * See the License for the specific language governing permissions and
++ * limitations under the License.
++ */
++package org.globus.ws.enumeration;
++
++import java.rmi.RemoteException;
++
++import org.xmlsoap.schemas.ws._2004._09.enumeration.DataSource;
++import org.xmlsoap.schemas.ws._2004._09.enumeration.EnumerationContextType;
++import org.xmlsoap.schemas.ws._2004._09.enumeration.Release;
++import org.xmlsoap.schemas.ws._2004._09.enumeration.PullResponse;
++import org.xmlsoap.schemas.ws._2004._09.enumeration.Pull;
++import org.xmlsoap.schemas.ws._2004._09.enumeration.RenewResponse;
++import org.xmlsoap.schemas.ws._2004._09.enumeration.Renew;
++import org.xmlsoap.schemas.ws._2004._09.enumeration.ItemListType;
++import org.xmlsoap.schemas.ws._2004._09.enumeration.GetStatusResponse;
++import org.xmlsoap.schemas.ws._2004._09.enumeration.GetStatus;
++
++import org.globus.wsrf.utils.AdapterProxy;
++import org.globus.util.I18n;
++
++import javax.xml.soap.SOAPElement;
++import javax.xml.rpc.Stub;
++
++/**
++ * Provides basic client-side API for managing enumeration lifetime and
++ * retrieving enumeration data.
++ */
++public class ClientEnumeration {
++
++    private static I18n i18n =
++        I18n.getI18n("org.globus.ws.enumeration.error");
++
++    protected DataSource port;
++    protected EnumerationContextType context;
++
++    /**
++     * Creates <tt>ClientEnumeration</tt> with a given data source port and
++     * an enumeration context. 
++     *
++     * @param port the data source port.
++     * @param context the enumeration context.
++     * @throws IllegalArgumentException if the port or context parameters are
++     *         null.
++     */
++    public ClientEnumeration(DataSource port,
++                             EnumerationContextType context) {
++        if (port == null) {
++            throw new IllegalArgumentException(
++                    i18n.getMessage("nullArgument", "port"));
++        }
++        if (context == null) {
++            throw new IllegalArgumentException(
++                    i18n.getMessage("nullArgument", "context"));
++        }
++        this.port = port;
++        this.context = context;
++    }
++
++    /**
++     * Creates <tt>ClientEnumeration</tt> with a given stub and
++     * an enumeration context. The stub instance must define all of the
++     * operations exposed by the {@link DataSource DataSource} interface.
++     *
++     * @param stub the data source stub.
++     * @param context the enumeration context.
++     * @throws IllegalArgumentException if stub or context parameters are null
++     *         or if the stub does not define all of the operations of the
++     *         {@link DataSource DataSource} interface.
++     * @see #getAsDataSource(Stub)
++     */
++    public ClientEnumeration(Stub stub, 
++                             EnumerationContextType context) {
++        if (stub == null) {
++            throw new IllegalArgumentException(
++                    i18n.getMessage("nullArgument", "stub"));
++        }
++        if (context == null) {
++            throw new IllegalArgumentException(
++                    i18n.getMessage("nullArgument", "context"));
++        }
++        this.port = getAsDataSource(stub);
++        this.context = context;
++    }
++
++    /**
++     * Exposes the given stub as a data source interface.
++     *
++     * @param stub the stub to expose as a data source.
++     * @return the data source interface dynamic proxy for the stub.
++     * @throws IllegalArgumentException if the stub cannot be exposed
++     *         as a data source interface (the stub does not define
++     *         any or all of the data source methods).
++     */
++    public static DataSource getAsDataSource(Stub stub) {
++        return (DataSource)AdapterProxy.newInstance(
++                                     stub,
++                                     new Class[] {DataSource.class});
++    }
++
++    /**
++     * Gets the current enumeration context. The enumeration context can change
++     * after {@link #renew(EnumExpiration) renew} or 
++     * {@link #pull(IterationConstraints) pull} operations are called or 
++     * it can become null after the {@link #release release} operation is 
++     * called.
++     *
++     * @return the current enumeration context.
++     */
++    public EnumerationContextType getContext() {
++        return this.context;
++    }
++
++    /**
++     * Retrieves the next set of elements of the enumeration.
++     * 
++     * @return the iteration result (always non-null). It contains the next
++     *         set of elements of the enumeration that meet the default 
++     *         constraints (see 
++     *         {@link IterationConstraints#IterationConstraints()
++     *         IterationConstraints}).
++     */
++    public IterationResult pull() 
++        throws RemoteException {
++        return pull(null);
++    }
++
++    /**
++     * Retrieves the next set of elements of the enumeration.
++     * 
++     * @param constraints the enumeration constraints. Can be null. If null
++     *        the default constraints are assumed (see 
++     *        ({@link IterationConstraints#IterationConstraints()
++     *        IterationConstraints}).
++     * @return the iteration result (always non-null). It contains the next
++     *         set of elements of the enumeration that meet the specified 
++     *         constraints. 
++     */
++    public IterationResult pull(IterationConstraints constraints) 
++        throws RemoteException {
++        checkContext();
++
++        Pull pull = new Pull();
++        pull.setEnumerationContext(this.context);
++
++        if (constraints != null) {
++            EnumProvider.setPullConstraints(pull, constraints);
++        }
++        
++        PullResponse pullResponse = this.port.pullOp(pull);
++        
++        if (pullResponse.getEnumerationContext() != null) {
++            this.context = pullResponse.getEnumerationContext();
++        }
++        
++        ItemListType items = pullResponse.getItems();
++        SOAPElement[] elements = (items != null && items.get_any() != null) ?
++            items.get_any() : null;
++        boolean endOfSequence = (pullResponse.getEndOfSequence() != null);
++
++        return new IterationResult(elements, endOfSequence);
++    }
++    
++    /**
++     * Releases the enumeration.
++     */
++    public void release() 
++        throws RemoteException {
++        checkContext();
++
++        Release release = new Release();
++        release.setEnumerationContext(this.context);
++        this.port.releaseOp(release);
++        
++        this.context = null;
++    }
++    
++    /**
++     * Sets a new expiration time/duration of the enumeration.
++     *
++     * @param expiration the suggested expiration time/duration of the
++     *        enumeration. Can be null to configure the enumeration without
++     *        an expiration time/duration (the enumeration will not expire).
++     * @return the actual expiration time accepted by the service. Can be null
++     *         if the enumeration does not have the expiration time/duration.
++     */
++    public EnumExpiration renew(EnumExpiration expiration) 
++        throws RemoteException {
++        checkContext();
++
++        Renew request = new Renew();
++        request.setEnumerationContext(this.context);
++        request.setExpires(EnumProvider.toExpirationType(expiration));
++        
++        RenewResponse response = this.port.renewOp(request);
++        if (response.getEnumerationContext() != null) {
++            this.context = response.getEnumerationContext();
++        }
++        return EnumProvider.toEnumExpiration(response.getExpires());
++    }
++
++    /**
++     * Gets the expiration time/duration of the enumeration.
++     *
++     * @return the expiration status of the enumeration. Can be null
++     *         if the enumeration does not have expiration time/duration.
++     */
++    public EnumExpiration getStatus() 
++        throws RemoteException {
++        checkContext();
++
++        GetStatus request = new GetStatus();
++        request.setEnumerationContext(this.context);
++        
++        GetStatusResponse response = this.port.getStatusOp(request);
++        return EnumProvider.toEnumExpiration(response.getExpires());
++    }
++
++    private void checkContext() 
++        throws RemoteException {
++        if (this.context == null) {
++            throw new RemoteException(i18n.getMessage("contextReleased"));
++        }
++    }
++    
++}
+Index: wsrf/java/core/source/src/org/globus/ws/enumeration/ConversionException.java
+diff -u /dev/null wsrf/java/core/source/src/org/globus/ws/enumeration/ConversionException.java:1.1.2.1
+--- /dev/null	Sat Jul 15 17:36:33 2006
++++ wsrf/java/core/source/src/org/globus/ws/enumeration/ConversionException.java	Tue Jul 11 09:47:50 2006
+@@ -0,0 +1,62 @@
++/*
++ * Copyright 1999-2006 University of Chicago
++ * 
++ * Licensed under the Apache License, Version 2.0 (the "License");
++ * you may not use this file except in compliance with the License.
++ * You may obtain a copy of the License at
++ * 
++ * http://www.apache.org/licenses/LICENSE-2.0
++ * 
++ * Unless required by applicable law or agreed to in writing, software
++ * distributed under the License is distributed on an "AS IS" BASIS,
++ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
++ * See the License for the specific language governing permissions and
++ * limitations under the License.
++ */
++package org.globus.ws.enumeration;
++
++/**
++ * This is an exception raised by the 
++ * {@link ClientEnumIterator#convert(javax.xml.soap.SOAPElement)
++ * ClientEnumIterator.convert()} operation when the data conversion has
++ * failed.
++ */
++public class ConversionException extends RuntimeException {
++
++    /**
++     * Creates a ConversionException without error message.
++     */
++    public ConversionException() {
++    }
++    
++    /**
++     * Creates a ConversionException with a given error message.
++     *
++     * @param message error message
++     */
++    public ConversionException(String message) {
++        super(message);
++    }
++    
++    /**
++     * Creates a ConversionException with a given error message
++     * and nested exception.
++     *
++     * @param message error message
++     * @param exception nested exception/
++     */
++    public ConversionException(String message,
++                               Throwable exception) {
++        super(message, exception);
++    }
++    
++    /**
++     * Creates a ConversionException from a nested exception.
++     *
++     * @param exception nested exception
++     */
++    public ConversionException(Throwable exception) {
++        super(exception);
++    }
++    
++}
+Index: wsrf/java/core/source/src/org/globus/ws/enumeration/EnumExpiration.java
+diff -u /dev/null wsrf/java/core/source/src/org/globus/ws/enumeration/EnumExpiration.java:1.1.2.5
+--- /dev/null	Sat Jul 15 17:36:33 2006
++++ wsrf/java/core/source/src/org/globus/ws/enumeration/EnumExpiration.java	Tue Jul 11 10:07:41 2006
+@@ -0,0 +1,121 @@
++/*
++ * Copyright 1999-2006 University of Chicago
++ * 
++ * Licensed under the Apache License, Version 2.0 (the "License");
++ * you may not use this file except in compliance with the License.
++ * You may obtain a copy of the License at
++ * 
++ * http://www.apache.org/licenses/LICENSE-2.0
++ * 
++ * Unless required by applicable law or agreed to in writing, software
++ * distributed under the License is distributed on an "AS IS" BASIS,
++ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
++ * See the License for the specific language governing permissions and
++ * limitations under the License.
++ */
++package org.globus.ws.enumeration;
++
++import java.util.Calendar;
++
++import org.globus.util.I18n;
++
++import org.apache.axis.types.Duration;
++
++/**
++ * Represents the expiration time of an enumeration context. The expiration
++ * time of an enumeration context can be either expressed as a specific 
++ * time/date or as a duration.
++ */
++public class EnumExpiration {
++
++    private static I18n i18n =
++        I18n.getI18n("org.globus.ws.enumeration.error");
++
++    private Calendar calendar;
++    private Duration duration;
++    
++    /**
++     * Creates <tt>EnumExpiration</tt> with a given time/date.
++     *
++     * @param calendar the specific time/date on which the context will expire.
++     *        Cannot be null.
++     */
++    public EnumExpiration(Calendar calendar) {
++        if (calendar == null) {
++            throw new IllegalArgumentException(
++                    i18n.getMessage("nullArgument", "calendar"));
++        }
++        this.calendar = calendar;
++    }
++
++    /**
++     * Creates <tt>EnumExpiration</tt> with a given duration.
++     *
++     * @param duration the duration after which the context will expire. 
++     *        Cannot be null.
++     */
++    public EnumExpiration(Duration duration) {
++        if (duration == null) {
++            throw new IllegalArgumentException(
++                    i18n.getMessage("nullArgument", "duration"));
++        }
++        this.duration = duration;
++    }
++
++    /**
++     * Sets expiration with a given a time/date.
++     *
++     * @param calendar the specific time/date on which the context will expire.
++     *        Cannot be null.
++     */
++    public void setCalendar(Calendar calendar) {
++        if (calendar != null && this.duration != null) {
++            throw new IllegalArgumentException(
++                                  i18n.getMessage("durationAlreadySet"));
++        }
++        this.calendar = calendar;
++    }
++
++    /**
++     * Gets the time/date of the expiration.
++     *
++     * @return the time/date of the expiration
++     */
++    public Calendar getCalendar() {
++        return this.calendar;
++    }
++
++    /**
++     * Sets expiration with a given duration.
++     *
++     * @param duration the duration after which the context will expire. 
++     *        Cannot be null.
++     */
++    public void setDuration(Duration duration) {
++        if (duration != null && this.calendar != null) {
++            throw new IllegalArgumentException(
++                                  i18n.getMessage("timeAlreadySet"));
++        }
++        this.duration = duration;
++    }
++
++    /**
++     * Gets the duration of the expiration.
++     *
++     * @return the duration of the expiration
++     */
++    public Duration getDuration() {
++        return this.duration;
++    }
++
++    public String toString() {
++        if (this.calendar != null) {
++            return this.calendar.getTime().toString();
++        } else if (this.duration != null) {
++            return this.duration.toString();
++        } else {
++            return "";
++        }
++    }
++
++}
+Index: wsrf/java/core/source/src/org/globus/ws/enumeration/EnumIterator.java
+diff -u /dev/null wsrf/java/core/source/src/org/globus/ws/enumeration/EnumIterator.java:1.1.2.5
+--- /dev/null	Sat Jul 15 17:36:33 2006
++++ wsrf/java/core/source/src/org/globus/ws/enumeration/EnumIterator.java	Wed Jul 12 22:40:51 2006
+@@ -0,0 +1,55 @@
++/*
++ * Copyright 1999-2006 University of Chicago
++ * 
++ * Licensed under the Apache License, Version 2.0 (the "License");
++ * you may not use this file except in compliance with the License.
++ * You may obtain a copy of the License at
++ * 
++ * http://www.apache.org/licenses/LICENSE-2.0
++ * 
++ * Unless required by applicable law or agreed to in writing, software
++ * distributed under the License is distributed on an "AS IS" BASIS,
++ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
++ * See the License for the specific language governing permissions and
++ * limitations under the License.
++ */
++package org.globus.ws.enumeration;
++
++import java.util.NoSuchElementException;
++
++/**
++ * An iterator over a sequence of XML elements. 
++ * The implementations can assume a single thread access. Only one client
++ * is allowed to access a particular enumeration at a time. The implementations
++ * must keep track of the progress of the enumeration (for example, store the 
++ * index of the last item retrieved). 
++ * For persistent enumerations, the <tt>EnumIterator</tt> implementation must
++ * be fully serializable using the Java serialization framework.
++ */
++public interface EnumIterator {
++    
++    /**
++     * Retrieves the next set of items of the enumeration.
++     *
++     * @param constraints the constrains for this iteration. Can be null.
++     *        If null, default constraints must be assumed.
++     * @return the result of this iteration that fulfils the specified
++     *         constraints. It must always be non-null.
++     * @throws TimeoutException if <tt>maxTime</tt> constraint was specified
++     *         and the enumeration data was not collected within that time.
++     * @throws NoSuchElementException if iterator has no more elements
++     */
++    IterationResult next(IterationConstraints constraints)
++        throws TimeoutException, 
++               NoSuchElementException;
++    
++    /**
++     * Release any resources associated with this iterator. For example, 
++     * close database connections, delete files, etc.
++     * This method is called when the enumeration resource is explicitly
++     * released, expires, or the user finished enumerating through all 
++     * the data.
++     */
++    void release();
++    
++}
+Index: wsrf/java/core/source/src/org/globus/ws/enumeration/EnumProvider.java
+diff -u /dev/null wsrf/java/core/source/src/org/globus/ws/enumeration/EnumProvider.java:1.1.2.25
+--- /dev/null	Sat Jul 15 17:36:33 2006
++++ wsrf/java/core/source/src/org/globus/ws/enumeration/EnumProvider.java	Wed Jul 12 22:40:51 2006
+@@ -0,0 +1,437 @@
++/*
++ * Copyright 1999-2006 University of Chicago
++ * 
++ * Licensed under the Apache License, Version 2.0 (the "License");
++ * you may not use this file except in compliance with the License.
++ * You may obtain a copy of the License at
++ * 
++ * http://www.apache.org/licenses/LICENSE-2.0
++ * 
++ * Unless required by applicable law or agreed to in writing, software
++ * distributed under the License is distributed on an "AS IS" BASIS,
++ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
++ * See the License for the specific language governing permissions and
++ * limitations under the License.
++ */
++package org.globus.ws.enumeration;
++
++import org.xmlsoap.schemas.ws._2004._09.enumeration.EnumerateResponse;
++import org.xmlsoap.schemas.ws._2004._09.enumeration.EnumerationContextType;
++import org.xmlsoap.schemas.ws._2004._09.enumeration.PullResponse;
++import org.xmlsoap.schemas.ws._2004._09.enumeration.Pull;
++import org.xmlsoap.schemas.ws._2004._09.enumeration.RenewResponse;
++import org.xmlsoap.schemas.ws._2004._09.enumeration.Renew;
++import org.xmlsoap.schemas.ws._2004._09.enumeration.GetStatusResponse;
++import org.xmlsoap.schemas.ws._2004._09.enumeration.GetStatus;
++import org.xmlsoap.schemas.ws._2004._09.enumeration.Release;
++import org.xmlsoap.schemas.ws._2004._09.enumeration.ItemListType;
++import org.xmlsoap.schemas.ws._2004._09.enumeration.ExpirationType;
++
++import org.globus.axis.utils.DurationUtils;
++import org.globus.wsrf.utils.AnyHelper;
++import org.globus.wsrf.encoding.SerializationException;
++import org.globus.wsrf.ResourceKey;
++import org.globus.wsrf.ResourceException;
++import org.globus.wsrf.ResourceContext;
++import org.globus.wsrf.TerminationTimeRejectedException;
++import org.globus.wsrf.InvalidResourceKeyException;
++import org.globus.wsrf.ResourceContextException;
++import org.globus.wsrf.NoSuchResourceException;
++import org.globus.wsrf.impl.SimpleResourceKey;
++import org.globus.util.I18n;
++
++import java.util.Calendar;
++import java.util.NoSuchElementException;
++import java.rmi.RemoteException;
++
++import javax.naming.NamingException;
++import javax.xml.namespace.QName;
++import javax.xml.soap.SOAPElement;
++
++import org.apache.axis.AxisFault;
++import org.apache.axis.Constants;
++import org.apache.axis.types.PositiveInteger;
++import org.apache.axis.types.Duration;
++
++import org.apache.commons.logging.Log;
++import org.apache.commons.logging.LogFactory;
++
++/**
++ * WS-Enumeration operation provider. It implements four WS-Enumeration 
++ * operations such as 
++ * {@link #getStatusOp(GetStatus) getStatus()}, 
++ * {@link #pullOp(Pull) pull()},
++ * {@link #releaseOp(Release) release()}, and
++ * {@link #renewOp(Renew) renew()}. This provider works together with 
++ * {@link EnumResourceHome EnumResourceHome} and 
++ * {@link EnumResource EnumResource}.
++ */
++public class EnumProvider {
++
++    private static Log logger =
++        LogFactory.getLog(EnumProvider.class.getName());
++    
++    private static I18n i18n =
++        I18n.getI18n("org.globus.ws.enumeration.error");
++
++    private static QName CLIENT_FAULT = 
++        new QName(Constants.URI_SOAP11_ENV, "Client");
++    
++    private static QName SERVER_FAULT = 
++        new QName(Constants.URI_SOAP11_ENV, "Server");
++
++    protected EnumResourceHome enumHome;
++
++    /**
++     * Creates WS-Enumeration operation provider.
++     *
++     * @throws NamingException if unable to obtain the enumeration resource
++     *         home.
++     */
++    public EnumProvider() 
++        throws NamingException {
++        this.enumHome = EnumResourceHome.getEnumResourceHome();
++    }
++
++    private RemoteException getServerFault(String faultMessage) {
++        return new AxisFault(CLIENT_FAULT,
++                             faultMessage,
++                             null,
++                             null);
++    }
++
++    private RemoteException getClientFault(String faultMessage) {
++        return new AxisFault(SERVER_FAULT, 
++                             faultMessage,
++                             null,
++                             null);
++    }
++
++    private ResourceKey getEnumKey(EnumerationContextType context) 
++        throws RemoteException {
++        SOAPElement keyElement = 
++            AnyHelper.findFirstElement(context,
++                                       this.enumHome.getKeyTypeName());
++        if (keyElement == null) {
++            throw getServerFault(
++                         i18n.getMessage("invalidEnumerationContext01"));
++        }
++        
++        try {
++            return new SimpleResourceKey(keyElement,
++                                         this.enumHome.getKeyTypeClass());
++        } catch (InvalidResourceKeyException e) {
++            throw getServerFault(
++                         i18n.getMessage("invalidEnumerationContext01"));
++        }
++    }
++
++    private EnumResource getEnumResource(ResourceKey key) 
++        throws RemoteException {
++        EnumResource resource = null;
++
++        try {
++            resource = (EnumResource)this.enumHome.find(key);
++        } catch (InvalidResourceKeyException e) {
++            throw getServerFault(
++                         i18n.getMessage("invalidEnumerationContext01"));
++        } catch (ResourceException e) {
++            throw getServerFault(
++                         i18n.getMessage("invalidEnumerationContext00"));
++        }
++
++        try {
++            ResourceContext ctx = ResourceContext.getResourceContext();
++
++            VisibilityProperties props =
++                VisibilityProperties.createFromContext(ctx);
++        
++            if (!props.equals(resource.getVisibility())) {
++                logger.warn("Resource visibility error");
++                throw getServerFault(
++                             i18n.getMessage("invalidEnumerationContext00"));
++            }
++        } catch (ResourceContextException e) {
++            logger.debug("Resource visibility will not be enforced");
++        }
++        
++        return resource;
++    }
++    
++    // Utility functions - might need to be moved
++
++    /**
++     * Creates <tt>EnumerateResponse</tt> that represents a response
++     * object to the <tt>enumerate</tt> operation of WS-Enumeration.
++     *
++     * @param key the key of the enumeration resource. Cannot be null.
++     * @param resource the enumeration resource. Can be null. If null, 
++     *        the returned object will not contain the expiration time
++     *        information.
++     * @throws SerializationException if key serialization fails.
++     * @return the created <tt>EnumerateResponse</tt> object.
++     */
++    public static EnumerateResponse createEnumerateOpResponse(
++                                                   ResourceKey key,
++                                                   EnumResource resource) 
++        throws SerializationException {
++        EnumerateResponse response = new EnumerateResponse();
++        response.setEnumerationContext(createEnumerationContextType(key));
++        if (resource != null) {
++            response.setExpires(getExpirationType(resource));
++        }
++        return response;
++    }
++
++    /**
++     * Creates <tt>EnumerationContextType</tt> object that represents an 
++     * enumeration context. 
++     *
++     * @param key the key of the enumeration resource. Cannot be null.
++     * @throws SerializationException if key serialization fails.
++     * @return the created <tt>EnumerationContextType</tt> object.
++     */
++    public static EnumerationContextType createEnumerationContextType(
++                                                           ResourceKey key) 
++        throws SerializationException {
++        if (key == null) {
++            throw new IllegalArgumentException(
++                    i18n.getMessage("nullArgument", "key"));
++        }
++        EnumerationContextType context = new EnumerationContextType();
++        AnyHelper.setAny(context, key.toSOAPElement());
++        return context;
++    }
++
++    /**
++     * Creates <tt>ExpirationType</tt> object that represents an expiration 
++     * time of an enumeration context as defined by the WS-Enumeration
++     * specification.
++     *
++     * @param resource the enumeration resource. Cannot be null.
++     * @return the created <tt>ExpirationType</tt> object. Can be null if
++     *         the enumeration resource does not have expiration time set.
++     */
++    public static ExpirationType getExpirationType(EnumResource resource) {
++        if (resource == null) {
++            throw new IllegalArgumentException(
++                    i18n.getMessage("nullArgument", "resource"));
++        }
++        ExpirationType expires = null;
++        if (resource.getTerminationTime() != null) {
++            expires = new ExpirationType();
++            if (resource.isDuration()) {
++                Duration duration = 
++                    DurationUtils.computeDuration(Calendar.getInstance(),
++                                                  resource.getTerminationTime());
++                expires.setNonNegativeDurationTypeValue(duration);
++            } else {
++                expires.setDateTimeValue(resource.getTerminationTime());
++            }
++        }
++        return expires;
++    }
++
++    // WS-Enumeration operation implementations
++
++    public PullResponse pullOp(Pull body) 
++        throws RemoteException {
++
++        ResourceKey key = getEnumKey(body.getEnumerationContext());
++        EnumResource resource = getEnumResource(key);
++        EnumIterator iter = resource.getIterator();
++
++        PullResponse response = new PullResponse();
++        try {
++            IterationResult result = iter.next(getPullConstraints(body));
++            
++            if (result.getItems() != null) {
++                ItemListType items = new ItemListType();
++                AnyHelper.setAny(items, result.getItems());
++                response.setItems(items);
++            }
++            
++            if (result.isEndOfSequence()) {
++                response.setEndOfSequence(Boolean.TRUE);
++                // destroy enum resource
++                remove(key);
++            } else {
++                // store its new iteration state
++                store(resource);
++            }
++        } catch (TimeoutException e) {
++            // XXX: should update iterator state or not?
++            throw getServerFault(i18n.getMessage("timedOut"));
++        } catch (NoSuchElementException e) {
++            response.setEndOfSequence(Boolean.TRUE);
++            // destroy enum resource
++            remove(key);
++        }
++        
++        return response;
++    }
++
++    public RenewResponse renewOp(Renew body)
++        throws RemoteException {
++        
++        ResourceKey key = getEnumKey(body.getEnumerationContext());
++        EnumResource resource = getEnumResource(key);
++        
++        ExpirationType expires = body.getExpires();
++        if (expires == null) {
++            resource.setDuration(false);
++            resource.setTerminationTime(null);
++        } else {
++            Calendar termTime = null;
++            try {
++                termTime = expires.getDateTimeValue();
++
++                resource.setDuration(false);
++            } catch (Exception e) {
++                try {
++                    Duration duration = 
++                        expires.getNonNegativeDurationTypeValue();
++                    
++                    resource.setDuration(true);
++
++                    termTime = Calendar.getInstance();
++                    DurationUtils.updateCalendar(termTime, duration);
++                } catch (Exception ee) {
++                    throw getClientFault(
++                                i18n.getMessage("invalidExpirationTime00"));
++                }
++            }
++
++            try {
++                resource.setTerminationTime(termTime);
++            } catch (TerminationTimeRejectedException e) {
++                if (resource.isDuration()) {
++                    throw getClientFault(
++                                i18n.getMessage("invalidExpirationTime01"));
++                } else {
++                    throw getClientFault(
++                                i18n.getMessage("invalidExpirationTime02"));
++                }
++            }
++            
++        }
++        
++        // store its new termination time
++        store(resource);
++
++        RenewResponse response = new RenewResponse();
++        response.setExpires(getExpirationType(resource));
++        return response;
++    }
++
++    public GetStatusResponse getStatusOp(GetStatus body) 
++        throws RemoteException {
++        ResourceKey key = getEnumKey(body.getEnumerationContext());
++        EnumResource resource = getEnumResource(key);
++
++        GetStatusResponse response = new GetStatusResponse();
++        response.setExpires(getExpirationType(resource));
++        return response;
++    }
++    
++    public void releaseOp(Release body) 
++        throws RemoteException {
++        ResourceKey key = getEnumKey(body.getEnumerationContext());
++        EnumResource resource = getEnumResource(key);
++        remove(key);
++    }
++    
++    // helper functions
++
++    private void store(EnumResource resource)
++        throws RemoteException {
++        try {
++            resource.store(); 
++        } catch (ResourceException e) {
++            logger.error(i18n.getMessage("resourceStoreFailed"), e);
++            throw getServerFault(
++                         i18n.getMessage("resourceStoreFailed"));
++        }
++    }
++    
++    private void remove(ResourceKey key) 
++        throws RemoteException {
++        try {
++            this.enumHome.remove(key);
++        } catch (NoSuchResourceException e) {
++            // ignore 
++        } catch (ResourceException e) {
++            logger.error(i18n.getMessage("resourceRemoveFailed"), e);
++            throw getServerFault(
++                         i18n.getMessage("resourceRemoveFailed"));
++        }
++    }
++ 
++    static void setPullConstraints(Pull pull, 
++                                   IterationConstraints constraints) {
++        int maxElements = constraints.getMaxElements();
++        if (maxElements > 0) {
++            pull.setMaxElements(new PositiveInteger(
++                                         String.valueOf(maxElements)));
++        }
++        int maxCharacters = constraints.getMaxCharacters();
++        if (maxCharacters > 0) {
++            pull.setMaxCharacters(new PositiveInteger(
++                                         String.valueOf(maxCharacters)));
++        }
++        Duration maxTime = constraints.getMaxTime();
++        if (maxTime != null) {
++            pull.setMaxTime(maxTime);
++        }
++    }
++
++    static IterationConstraints getPullConstraints(Pull body) {
++        int maxElements = 1;
++        if (body.getMaxElements() != null) {
++            maxElements = body.getMaxElements().intValue();
++        }
++        
++        int maxCharacters = -1;
++        if (body.getMaxCharacters() != null) {
++            maxCharacters = body.getMaxCharacters().intValue();
++        }
++        
++        Duration maxTime = body.getMaxTime();
++        
++        return new IterationConstraints(maxElements, maxCharacters, maxTime);
++    }
++
++    static EnumExpiration toEnumExpiration(ExpirationType expires) {
++        if (expires == null) {
++            return null;
++        }
++        try {
++            Duration duration = 
++                expires.getNonNegativeDurationTypeValue();
++            return new EnumExpiration(duration);
++        } catch (Exception e) {
++            try {
++                Calendar cal = expires.getDateTimeValue();
++                return new EnumExpiration(cal);
++            } catch (Exception ee) {
++                throw new IllegalArgumentException(
++                                 i18n.getMessage("invalidExpirationTime00"));
++            }
++        }
++    }
++    
++    static ExpirationType toExpirationType(EnumExpiration expires) {
++        if (expires == null) {
++            return null;
++        }
++        ExpirationType ex = null;
++        if (expires.getCalendar() != null) {
++            ex = new ExpirationType();
++            ex.setDateTimeValue(expires.getCalendar());
++        } else if (expires.getDuration() != null) {
++            ex = new ExpirationType();
++            ex.setNonNegativeDurationTypeValue(expires.getDuration());
++        } 
++        return ex;
++    }
++}
+Index: wsrf/java/core/source/src/org/globus/ws/enumeration/EnumResource.java
+diff -u /dev/null wsrf/java/core/source/src/org/globus/ws/enumeration/EnumResource.java:1.1.2.13
+--- /dev/null	Sat Jul 15 17:36:33 2006
++++ wsrf/java/core/source/src/org/globus/ws/enumeration/EnumResource.java	Wed Jul 12 22:40:51 2006
+@@ -0,0 +1,244 @@
++/*
++ * Copyright 1999-2006 University of Chicago
++ * 
++ * Licensed under the Apache License, Version 2.0 (the "License");
++ * you may not use this file except in compliance with the License.
++ * You may obtain a copy of the License at
++ * 
++ * http://www.apache.org/licenses/LICENSE-2.0
++ * 
++ * Unless required by applicable law or agreed to in writing, software
++ * distributed under the License is distributed on an "AS IS" BASIS,
++ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
++ * See the License for the specific language governing permissions and
++ * limitations under the License.
++ */
++package org.globus.ws.enumeration;
++
++import java.util.Calendar;
++import java.io.File;
++import java.io.FileInputStream;
++import java.io.FileOutputStream;
++import java.io.ObjectInputStream;
++import java.io.ObjectOutputStream;
++
++import org.apache.axis.components.uuid.UUIDGen;
++import org.apache.axis.components.uuid.UUIDGenFactory;
++
++import org.globus.wsrf.Resource;
++import org.globus.wsrf.ResourceKey;
++import org.globus.wsrf.ResourceIdentifier;
++import org.globus.wsrf.ResourceLifetime;
++import org.globus.wsrf.PersistenceCallback;
++import org.globus.wsrf.RemoveCallback;
++import org.globus.wsrf.ResourceException;
++import org.globus.wsrf.InvalidResourceKeyException;
++import org.globus.wsrf.NoSuchResourceException;
++import org.globus.wsrf.TerminationTimeRejectedException;
++import org.globus.wsrf.utils.FilePersistenceHelper;
++import org.globus.util.I18n;
++
++/**
++ * Represents a persistent enumeration context. The enumeration resource has
++ * lifetime information and a reference to the
++ * {@link EnumIterator EnumIterator} object that provides access to the
++ * enumeration data. The enumeration resource also contains 
++ * {@link VisibilityProperties VisibilityProperties} 
++ * that control access to the enumeration resource and data.
++ */
++public class EnumResource
++    implements Resource,
++               ResourceLifetime,
++               ResourceIdentifier,
++               PersistenceCallback,
++               RemoveCallback {
++
++    private static I18n i18n =
++        I18n.getI18n("org.globus.ws.enumeration.error");
++
++    private static final UUIDGen uuidGen = 
++        UUIDGenFactory.getUUIDGen();
++
++    private static FilePersistenceHelper persistenceHelper =
++        getPersistenceHelper();
++
++    protected Object key;
++
++    protected boolean isDuration;
++    protected Calendar terminationTime;
++    protected EnumIterator iter;
++    protected VisibilityProperties visibility;
++
++    public EnumResource() {}
++    
++    /**
++     * Creates <tt>EnumResource</tt> with given iterator and visibility
++     * properties.
++     * 
++     * @param iter the data iterator. Cannot be null.
++     * @param visibility the visibility properties. Cannot be null.
++     */
++    public EnumResource(EnumIterator iter, VisibilityProperties visibility) {
++        if (iter == null) {
++            throw new IllegalArgumentException(
++                    i18n.getMessage("nullArgument", "iter"));
++        }
++        if (visibility == null) {
++            throw new IllegalArgumentException(
++                    i18n.getMessage("nullArgument", "visibility"));
++        }
++        this.iter = iter;
++        this.visibility = visibility;
++        this.key = uuidGen.nextUUID();
++    }
++
++    /**
++     * Gets the data iterator.
++     *
++     * @return the data iterator.
++     */
++    public EnumIterator getIterator() {
++        return this.iter;
++    }
++
++    /**
++     * Gets the visibility properties.
++     *
++     * @return the visibility properties.
++     */
++    public VisibilityProperties getVisibility() {
++        return this.visibility;
++    }
++
++    public Object getID() {
++        return this.key;
++    }
++
++    public void setTerminationTime(Calendar time) {
++        if (time != null && time.before(Calendar.getInstance())) {
++            throw new TerminationTimeRejectedException();
++        }
++        this.terminationTime = time;
++    }
++    
++    public Calendar getTerminationTime() {
++        return this.terminationTime;
++    }
++    
++    /**
++     * Sets whether this resource lifetime is expressed as a duration
++     * or a specific time/date.
++     *
++     * @param duration if true, the lifetime of this resource will be returned
++     *        as a duration. If false, the lifetime of this resource will
++     *        be returned as a specific time/date.
++     */
++    public void setDuration(boolean duration) {
++        this.isDuration = duration;
++    }
++    
++    /**
++     * Gets whether this resource lifetime is expressed as a duration
++     * or a specific time/date.
++     *
++     * @return if true, the lifetime of this resource will be returned
++     *         as a duration. If false, the lifetime of this resource will
++     *         be returned as a specific time/date.
++     */
++    public boolean isDuration() {
++        return this.isDuration;
++    }
++    
++    public Calendar getCurrentTime() {
++        return Calendar.getInstance();
++    }
++    
++    public void load(ResourceKey key) throws ResourceException {
++        File file = getKeyAsFile(key.getValue());
++        if (!file.exists()) {
++            throw new NoSuchResourceException();
++        }
++        
++        FileInputStream fis = null;
++        try {
++            fis = new FileInputStream(file);
++            ObjectInputStream ois = new ObjectInputStream(fis);
++            
++            this.isDuration = ois.readBoolean();
++            this.terminationTime = (Calendar)ois.readObject();
++            this.iter = (EnumIterator)ois.readObject();
++            this.visibility = (VisibilityProperties)ois.readObject();
++            this.key = key.getValue();
++            
++        } catch (Exception e) {
++            throw new ResourceException(
++                               i18n.getMessage("resourceLoadFailed"), e);
++        } finally {
++            if (fis != null) {
++                try { fis.close(); } catch (Exception ee) {}
++            }
++        }
++    }
++
++    public synchronized void store() throws ResourceException {
++        FileOutputStream fos = null;
++        File tmpFile = null;
++
++        try {
++            tmpFile = File.createTempFile(
++                "enum", ".tmp",
++                persistenceHelper.getStorageDirectory());
++            fos = new FileOutputStream(tmpFile);
++            ObjectOutputStream oos = new ObjectOutputStream(fos);
++
++            oos.writeBoolean(this.isDuration);
++            oos.writeObject(this.terminationTime);
++            oos.writeObject(this.iter);
++            oos.writeObject(this.visibility);
++
++        } catch (Exception e) {
++            if (tmpFile != null) {
++                tmpFile.delete();
++            }
++            throw new ResourceException(
++                               i18n.getMessage("resourceStoreFailed"), e);
++        } finally {
++            if (fos != null) {
++                try { fos.close();} catch (Exception ee) {}
++            }
++        }
++
++        File file = getKeyAsFile(this.key);
++        if (file.exists()) {
++            file.delete();
++        }
++        if (!tmpFile.renameTo(file)) {
++            tmpFile.delete();
++            throw new ResourceException(
++                               i18n.getMessage("resourceStoreFailed"));
++        }
++    }
++
++    public void remove() throws ResourceException {
++        this.iter.release();
++        persistenceHelper.remove(this.key);
++    }
++
++    private File getKeyAsFile(Object key)
++        throws InvalidResourceKeyException {
++        if (key instanceof String) {
++            return persistenceHelper.getKeyAsFile(key);
++        } else {
++            throw new InvalidResourceKeyException();
++        }
++    }
++
++    private static FilePersistenceHelper getPersistenceHelper() {
++        try {
++            return new FilePersistenceHelper(EnumResource.class, ".ser");
++        } catch (Exception e) {
++            throw new RuntimeException(e.getMessage());
++        }
++    }
++
++}
+Index: wsrf/java/core/source/src/org/globus/ws/enumeration/EnumResourceHome.java
+diff -u /dev/null wsrf/java/core/source/src/org/globus/ws/enumeration/EnumResourceHome.java:1.1.2.7
+--- /dev/null	Sat Jul 15 17:36:33 2006
++++ wsrf/java/core/source/src/org/globus/ws/enumeration/EnumResourceHome.java	Tue Jul 11 13:51:59 2006
+@@ -0,0 +1,117 @@
++/*
++ * Copyright 1999-2006 University of Chicago
++ * 
++ * Licensed under the Apache License, Version 2.0 (the "License");
++ * you may not use this file except in compliance with the License.
++ * You may obtain a copy of the License at
++ * 
++ * http://www.apache.org/licenses/LICENSE-2.0
++ * 
++ * Unless required by applicable law or agreed to in writing, software
++ * distributed under the License is distributed on an "AS IS" BASIS,
++ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
++ * See the License for the specific language governing permissions and
++ * limitations under the License.
++ */
++package org.globus.ws.enumeration;
++
++import org.globus.wsrf.ResourceKey;
++import org.globus.wsrf.ResourceException;
++import org.globus.wsrf.ResourceContextException;
++import org.globus.wsrf.jndi.JNDIUtils;
++import org.globus.wsrf.impl.ResourceHomeImpl;
++import org.globus.wsrf.impl.SimpleResourceKey;
++
++import javax.naming.Context;
++import javax.naming.NamingException;
++
++/**
++ * Resource home for enumerations.
++ */
++public class EnumResourceHome extends ResourceHomeImpl {
++
++    /**
++     * Create a transient or persistent enumeration resource with the given
++     * iterator and visibility properties created from the context.
++     *
++     * @param iterator iterator of the enumeration resource.
++     * @param persistent if true create a persistent enumeration, if false
++     *        create a transient enumeration.
++     * @return the enumeration resource created.
++     * @throws ResourceException if error storing persistent enumeration
++     *         resource.
++     * @throws ResourceContextException if failed to create visibility
++     *         properties from the context.
++     * @throws IllegalArgumentException if iterator or visibility parameter
++     *         is null.
++     */
++    public EnumResource createEnumeration(EnumIterator iterator,
++                                          boolean persistent) 
++        throws ResourceException, 
++               ResourceContextException  {
++        return createEnumeration(iterator,
++                                 VisibilityProperties.createFromContext(),
++                                 persistent);
++    }
++    
++    /**
++     * Create a transient or persistent enumeration resource with the given
++     * iterator and visibility properties.
++     *
++     * @param iterator iterator of the enumeration resource.
++     * @param visibility the visibility properties of the enumeration resource.
++     * @param persistent if true create a persistent enumeration, if false
++     *        create a transient enumeration.
++     * @return the enumeration resource created.
++     * @throws ResourceException if error storing persistent enumeration
++     *         resource.
++     * @throws IllegalArgumentException if iterator or visibility parameter
++     *         is null.
++     */
++    public EnumResource createEnumeration(EnumIterator iterator,
++                                          VisibilityProperties visibility,
++                                          boolean persistent) 
++        throws ResourceException {
++        EnumResource resource = null;
++        
++        if (persistent) {
++            resource = new EnumResource(iterator, visibility);
++        } else {
++            resource = new TransientEnumResource(iterator, visibility);
++        }
++        
++        // store the resource
++        resource.store(); 
++        
++        ResourceKey key = getKey(resource);
++        add(key, resource);
++
++        return resource;
++    }
++    
++    /**
++     * Gets a resource key for the given enumeration resource.
++     *
++     * @param resource the enumeration resource.
++     * @return the key for the enumeration resource.
++     */
++    public ResourceKey getKey(EnumResource resource) {
++        return new SimpleResourceKey(this.keyTypeName, resource.getID());
++    }
++
++    /**
++     * Gets the default enumeration resource home.
++     *
++     * @return the default enumeration resource home.
++     * @throws NamingException if failed to get the resource home.
++     */
++    public static EnumResourceHome getEnumResourceHome() 
++        throws NamingException {
++        Context initialContext = JNDIUtils.getInitialContext();
++        return (EnumResourceHome)JNDIUtils.lookup(
++                    initialContext,
++                    "java:comp/env/enumeration/EnumerationHome",
++                    EnumResourceHome.class);
++    }
++
++}
+Index: wsrf/java/core/source/src/org/globus/ws/enumeration/IndexedObjectFileEnumIterator.java
+diff -u /dev/null wsrf/java/core/source/src/org/globus/ws/enumeration/IndexedObjectFileEnumIterator.java:1.1.2.11
+--- /dev/null	Sat Jul 15 17:36:33 2006
++++ wsrf/java/core/source/src/org/globus/ws/enumeration/IndexedObjectFileEnumIterator.java	Wed Jul 12 22:40:51 2006
+@@ -0,0 +1,232 @@
++/*
++ * Copyright 1999-2006 University of Chicago
++ * 
++ * Licensed under the Apache License, Version 2.0 (the "License");
++ * you may not use this file except in compliance with the License.
++ * You may obtain a copy of the License at
++ * 
++ * http://www.apache.org/licenses/LICENSE-2.0
++ * 
++ * Unless required by applicable law or agreed to in writing, software
++ * distributed under the License is distributed on an "AS IS" BASIS,
++ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
++ * See the License for the specific language governing permissions and
++ * limitations under the License.
++ */
++package org.globus.ws.enumeration;
++
++import java.util.List;
++import java.util.ArrayList;
++import java.util.NoSuchElementException;
++import java.io.File;
++import java.io.Serializable;
++import java.io.IOException;
++import java.io.ObjectStreamException;
++
++import org.globus.wsrf.encoding.ObjectSerializer;
++import org.globus.wsrf.encoding.SerializationException;
++import org.globus.wsrf.utils.io.IndexedObjectFileReader;
++import org.globus.util.I18n;
++
++import javax.xml.namespace.QName;
++import javax.xml.soap.SOAPElement;
++
++import org.apache.commons.logging.Log;
++import org.apache.commons.logging.LogFactory;
++
++/**
++ * A memory efficient implementation of the {@link EnumIterator EnumIterator}
++ * interface that can enumerate over data stored in an indexed object file
++ * created by {@link org.globus.wsrf.utils.io.IndexedObjectFileWriter 
++ * IndexedObjectFileWriter}. 
++ * The <tt>IndexedObjectFileEnumIterator</tt> uses the
++ * {@link IndexedObjectFileReader IndexedObjectFileReader} to read the indexed
++ * object file and quickly locate and retrieve the next set of objects of the 
++ * enumeration.
++ * The <tt>IndexedObjectFileEnumIterator</tt> can be used with transient and
++ * persistent types of enumerations.
++ */
++public class IndexedObjectFileEnumIterator 
++    implements EnumIterator, 
++               Serializable {
++    
++    private static I18n i18n =
++        I18n.getI18n("org.globus.ws.enumeration.error");
++
++    private static Log logger =
++        LogFactory.getLog(IndexedObjectFileEnumIterator.class.getName());
++
++    private String dataFile;
++    private int index;
++    private QName itemName;
++    private boolean autoDelete = true;
++    
++    protected IndexedObjectFileEnumIterator() {}
++
++    /**
++     * Creates <tt>IndexedObjectFileEnumIterator</tt> with a given file
++     * and an item name.
++     * <BR><BR><B>Note: </B>
++     * <I>By default the file will be deleted on release or when an end of
++     * sequence is reached.</I>
++     *
++     * @param file the name of the indexed object file.
++     * @param itemName the enumeration items will be serialized into element of
++     *        this name. The <tt>itemName</tt> should be <tt>null</tt>
++     *        for items of type {@link SOAPElement SOAPElement} or 
++     *        {@link org.w3c.dom.Element Element}. It must not be <tt>null</tt>
++     *        for all other types.
++     * @throws IOException if the file does not exist or is corrupted.
++     */
++    public IndexedObjectFileEnumIterator(File file, QName itemName) 
++        throws IOException {
++        this((file == null) ? null : file.getAbsolutePath(),
++             itemName);
++    }
++    
++    /**
++     * Creates <tt>IndexedObjectFileEnumIterator</tt> with a given file
++     * and an item name.
++     * <BR><BR><B>Note: </B>
++     * <I>By default the file will be deleted on release or when an end of
++     * sequence is reached.</I>
++     *
++     * @param file the name of the indexed object file.
++     * @param itemName the enumeration items will be serialized into element of
++     *        this name. The <tt>itemName</tt> should be <tt>null</tt>
++     *        for items of type {@link SOAPElement SOAPElement} or 
++     *        {@link org.w3c.dom.Element Element}. It must not be <tt>null</tt>
++     *        for all other types.
++     * @throws IOException if the file does not exist or is corrupted.
++     */
++    public IndexedObjectFileEnumIterator(String file, QName itemName) 
++        throws IOException {
++        if (file == null) {
++            throw new IllegalArgumentException(
++                    i18n.getMessage("nullArgument", "file"));
++        }
++        this.dataFile = file;
++        this.itemName = itemName;
++        this.index = 0;
++
++        getSize();
++    }
++    
++    private int getSize() 
++        throws IOException {
++        IndexedObjectFileReader reader = null;
++        try {
++            reader = new IndexedObjectFileReader(this.dataFile);
++            return reader.getIndexSize();
++        } finally {
++            if (reader != null) {
++                try { reader.close(); } catch (IOException e) {}
++            }
++        }
++    }
++
++    /**
++     * Sets whether the file of this iterator should be deleted
++     * on release or when an end of a sequence is reached.
++     *
++     * @param delete If true, the file will be deleted. If false,
++     *        the file will not be deleted.
++     */
++    public void setEnableAutoDelete(boolean delete) {
++        this.autoDelete = delete;
++    }
++    
++    /**
++     * Gets whether the file will be deleted on release or when an end of
++     * a sequence is reached.
++     *
++     * @return true if the file will be deleted. False, otherwise.
++     */
++    public boolean isAutoDeleteEnabled() {
++        return this.autoDelete;
++    }
++    
++    public IterationResult next(IterationConstraints constraints) {
++        if (this.dataFile == null) {
++            throw new NoSuchElementException();
++        }
++
++        IndexedObjectFileReader reader = null;
++        boolean release = false;
++        try {
++            reader = new IndexedObjectFileReader(this.dataFile);
++            int size = reader.getIndexSize();
++            
++            if (this.index >= size) {
++                release = true;
++                throw new NoSuchElementException();
++            }
++
++            int maxElements = constraints.getMaxElements();
++            List dataList = 
++                new ArrayList((maxElements > 100) ? 100 : maxElements);
++        
++            reader.jumpTo(this.index);
++
++            for (int i=0; (i < maxElements) && (this.index < size); i++) {
++                Object obj = null;
++
++                while (true) {
++                    try {
++                        // if IOException is raised then probably all reads
++                        // will fail. Therefore, do not handle that exception
++                        // here
++                        obj = reader.readObject();
++                        this.index++;
++                        break;
++                    } catch (ClassNotFoundException e) {
++                        this.index++;
++                        reader.jumpTo(this.index);
++                    } catch (ObjectStreamException e) {
++                        this.index++;
++                        reader.jumpTo(this.index);
++                    }
++                }
++
++                try {
++                    SOAPElement elem =
++                        ObjectSerializer.toSOAPElement(obj, this.itemName);
++                    dataList.add(elem);
++                } catch (SerializationException e) {
++                    // let's skip this element
++                    logger.debug("Failed to serialize enumeration item", e);
++                    i--;
++                }
++            }
++
++            boolean endOfSequence = (this.index >= size);
++            release = endOfSequence;
++            return IterationResult.create(dataList, endOfSequence);
++        } catch (IOException e) {
++            release = true;
++            logger.error("Failed to open or read enumeration data file", e);
++            throw new NoSuchElementException();
++        } finally {
++            if (reader != null) {
++                try { reader.close(); } catch (IOException e) {}
++            }
++            if (release) {
++                release();
++            }
++        }
++    }
++    
++    public void release() {
++        if (this.dataFile == null) {
++            return;
++        }
++        
++        if (this.autoDelete) {
++            File f = new File(this.dataFile);
++            f.delete();
++        }
++        
++        this.dataFile = null;
++    }
++    
++}
+Index: wsrf/java/core/source/src/org/globus/ws/enumeration/IterationConstraints.java
+diff -u /dev/null wsrf/java/core/source/src/org/globus/ws/enumeration/IterationConstraints.java:1.1.2.6
+--- /dev/null	Sat Jul 15 17:36:33 2006
++++ wsrf/java/core/source/src/org/globus/ws/enumeration/IterationConstraints.java	Wed Jul 12 11:01:03 2006
+@@ -0,0 +1,115 @@
++/*
++ * Copyright 1999-2006 University of Chicago
++ * 
++ * Licensed under the Apache License, Version 2.0 (the "License");
++ * you may not use this file except in compliance with the License.
++ * You may obtain a copy of the License at
++ * 
++ * http://www.apache.org/licenses/LICENSE-2.0
++ * 
++ * Unless required by applicable law or agreed to in writing, software
++ * distributed under the License is distributed on an "AS IS" BASIS,
++ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
++ * See the License for the specific language governing permissions and
++ * limitations under the License.
++ */
++package org.globus.ws.enumeration;
++
++import org.globus.axis.utils.DurationUtils;
++import org.globus.util.I18n;
++
++import org.apache.axis.types.Duration;
++
++/**
++ * Represents the iteration constraints that can be specified on the pull
++ * operation of WS-Enumeration.
++ */
++public class IterationConstraints {
++    
++    private static I18n i18n =
++        I18n.getI18n("org.globus.ws.enumeration.error");
++
++    /**
++     * Default constraints (<tt>maxElements</tt> set to 1, no <tt>maxTime</tt>
++     * limit and no <tt>maxCharacters</tt> limit).
++     */
++    public static final IterationConstraints DEFAULT_CONSTRAINTS = 
++        new IterationConstraints(1, -1, null);
++    
++    private int maxElements;
++    private int maxCharacters;
++    private Duration maxTime;
++    
++    /**
++     * Creates <tt>IterationConstraints</tt> with the default settings 
++     * (<tt>maxElements</tt> set to 1, no <tt>maxTime</tt> limit and
++     * no <tt>maxCharacters</tt> limit).
++     */
++    public IterationConstraints() {
++        this(1, -1, null);
++    }
++
++    /**
++     * Creates <tt>IterationConstraints</tt> with the specified settings.
++     *
++     * @param maxElements the maxiumum number of elements that the consumer
++     *        can accept.
++     * @param maxCharacters the maximum number of characters (in Unicode) that
++     *        the consumer can accept.
++     * @param maxTime the maximum amount of time that the consumer is willing
++     *        to wait for a response.
++     * @throws IllegalArgumentException if any of the parameters values is
++     *        invalid
++     */
++    public IterationConstraints(int maxElements, 
++                                int maxCharacters,
++                                Duration maxTime) {
++        if (maxElements == 0) {
++            throw new IllegalArgumentException(
++                    i18n.getMessage("zeroArgument", "maxElements"));
++        }
++        if (maxCharacters == 0) {
++            throw new IllegalArgumentException(
++                    i18n.getMessage("zeroArgument", "maxCharacters"));
++        }
++        if (DurationUtils.isZero(maxTime)) {
++            throw new IllegalArgumentException(
++                    i18n.getMessage("zeroArgument", "maxTime"));
++        }
++        this.maxElements = maxElements;
++        this.maxCharacters = maxCharacters;
++        this.maxTime = maxTime;
++    }
++    
++    /**
++     * Returns the maximum number of elements that the consumer can accept.
++     *
++     * @return the maximum number of elements that the consumer can accept.
++     */
++    public int getMaxElements() {
++        return this.maxElements;
++    }
++    
++    /**
++     * Returns the maximum number of characters (in Unicode) that the consumer
++     * can accept.
++     *
++     * @return the maximum number of characters (in Unicode) that the consumer
++     *         can accept. Returns less then 0 if not set (no limit on size).
++     */
++    public int getMaxCharacters() {
++        return this.maxCharacters;
++    }
++    
++    /**
++     * Returns the maximum amount of time the consumer is willing to wait
++     * for a response.
++     *
++     * @return the maximum amount of time the consumer is willing to wait
++     *         for a response. Returns less then 0 if not set (no time limit).
++     */
++    public Duration getMaxTime() {
++        return this.maxTime;
++    }
++    
++}
+Index: wsrf/java/core/source/src/org/globus/ws/enumeration/IterationResult.java
+diff -u /dev/null wsrf/java/core/source/src/org/globus/ws/enumeration/IterationResult.java:1.1.2.4
+--- /dev/null	Sat Jul 15 17:36:33 2006
++++ wsrf/java/core/source/src/org/globus/ws/enumeration/IterationResult.java	Tue Jul 11 13:51:59 2006
+@@ -0,0 +1,97 @@
++/*
++ * Copyright 1999-2006 University of Chicago
++ * 
++ * Licensed under the Apache License, Version 2.0 (the "License");
++ * you may not use this file except in compliance with the License.
++ * You may obtain a copy of the License at
++ * 
++ * http://www.apache.org/licenses/LICENSE-2.0
++ * 
++ * Unless required by applicable law or agreed to in writing, software
++ * distributed under the License is distributed on an "AS IS" BASIS,
++ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
++ * See the License for the specific language governing permissions and
++ * limitations under the License.
++ */
++package org.globus.ws.enumeration;
++
++import java.util.List;
++
++import org.apache.axis.message.MessageElement;
++
++import org.globus.util.I18n;
++
++import javax.xml.soap.SOAPElement;
++
++/**
++ * Represents the iteration results returned by the <tt>pull</tt> operation
++ * of WS-Enumeration.
++ */
++public class IterationResult {
++    
++    private static I18n i18n =
++        I18n.getI18n("org.globus.ws.enumeration.error");
++
++    private boolean endOfSequence;
++    private SOAPElement[] items;
++    
++    /**
++     * Creates <tt>IterationResult</tt> instance with the specified
++     * items and a <tt>endOfSequence</tt> flag.
++     *
++     * @param items the array of items. Can be null.
++     * @param endOfSequence the end of sequence flag. 
++     * @throws IllegalArgumentException if <tt>items</tt> are null or empty and
++     *         the <tt>endOfSequence</tt> is false.
++     */
++    public IterationResult(SOAPElement [] items, 
++                           boolean endOfSequence) {
++        if ( (items == null || items.length == 0) &&
++             (!endOfSequence) ) {
++            throw new IllegalArgumentException(
++                         i18n.getMessage("invalidIterationResult"));
++        }
++        this.items = items;
++        this.endOfSequence = endOfSequence;
++    }
++    
++    /**
++     * Indicates if end of sequence was reached.
++     *
++     * @return true if end of sequence was reached. False, otherwise.
++     */
++    public boolean isEndOfSequence() {
++        return this.endOfSequence;
++    }
++    
++    /**
++     * Returns the items of the enumeration.
++     *
++     * @return the array of items of the enumeration. Can be null or empty.
++     */
++    public SOAPElement[] getItems() {
++        return this.items;
++    }
++
++    /**
++     * Creates <tt>IterationResult</tt> instance with the specified
++     * list of items and <tt>endOfSequence</tt> flag.
++     *
++     * @param items the list of items. The items must be of 
++     *        {@link MessageElement MessageElement} type. Can be null.
++     * @param endOfSequence the end of sequence flag. 
++     * @return the constructed <tt>IterationResult</tt> IterationResult
++     * @throws IllegalArgumentException if <tt>items</tt> are null or empty and
++     *         the <tt>endOfSequence</tt> is false.
++     */
++    public static IterationResult create(List items,
++                                         boolean endOfSequence) {
++        MessageElement [] itemsArray = null;
++        if (items != null && !items.isEmpty()) {
++            itemsArray = new MessageElement[items.size()];
++            items.toArray(itemsArray);
++        }
++        return new IterationResult(itemsArray, endOfSequence);
++    }
++    
++}
+Index: wsrf/java/core/source/src/org/globus/ws/enumeration/SimpleEnumIterator.java
+diff -u /dev/null wsrf/java/core/source/src/org/globus/ws/enumeration/SimpleEnumIterator.java:1.1.2.7
+--- /dev/null	Sat Jul 15 17:36:33 2006
++++ wsrf/java/core/source/src/org/globus/ws/enumeration/SimpleEnumIterator.java	Wed Jul 12 22:40:51 2006
+@@ -0,0 +1,114 @@
++/*
++ * Copyright 1999-2006 University of Chicago
++ * 
++ * Licensed under the Apache License, Version 2.0 (the "License");
++ * you may not use this file except in compliance with the License.
++ * You may obtain a copy of the License at
++ * 
++ * http://www.apache.org/licenses/LICENSE-2.0
++ * 
++ * Unless required by applicable law or agreed to in writing, software
++ * distributed under the License is distributed on an "AS IS" BASIS,
++ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
++ * See the License for the specific language governing permissions and
++ * limitations under the License.
++ */
++package org.globus.ws.enumeration;
++
++import java.util.Iterator;
++import java.util.List;
++import java.util.ArrayList;
++import java.util.Arrays;
++import java.util.NoSuchElementException;
++
++import org.globus.wsrf.encoding.ObjectSerializer;
++import org.globus.wsrf.encoding.SerializationException;
++
++import javax.xml.namespace.QName;
++import javax.xml.soap.SOAPElement;
++
++import org.apache.commons.logging.Log;
++import org.apache.commons.logging.LogFactory;
++
++/**
++ * A basic {@link EnumIterator EnumIterator} implementation that can enumerate
++ * over in-memory data passed either as an array of objects or a list
++ * ({@link List List}). The enumeration contents can be of 
++ * {@link SOAPElement SOAPElement} type, simple types such as
++ * {@link Integer Integer}, etc. or an Axis generated Java bean. 
++ * The <tt>SimpleEnumIterator</tt> can only be used with transient type of
++ * enumerations. 
++ **/
++public class SimpleEnumIterator implements EnumIterator {
++    
++    private static Log logger =
++        LogFactory.getLog(SimpleEnumIterator.class.getName());
++
++    protected Iterator iter;
++    protected QName itemName;
++    
++    /**
++     * Creates <tt>SimpleEnumIterator</tt> with a given items array 
++     * and an item name.
++     *
++     * @param items the array of the items of the enumeration. 
++     *        Can be null or empty. The items 
++     * @param itemName the enumeration items will be serialized into element of
++     *        this name. The <tt>itemName</tt> should be <tt>null</tt>
++     *        for items of type {@link SOAPElement SOAPElement} or 
++     *        {@link org.w3c.dom.Element Element}. It must not be <tt>null</tt>
++     *        for all other types.
++     */
++    public SimpleEnumIterator(Object[] items, QName itemName) {
++        this.iter = (items == null) ? null : Arrays.asList(items).iterator();
++        this.itemName = itemName;
++    }
++    
++    /**
++     * Creates <tt>SimpleEnumIterator</tt> with a given items list
++     * and an item name.
++     *
++     * @param items the list of the items of the enumeration. 
++     *        Can be null or empty.
++     * @param itemName the enumeration items will be serialized into element of
++     *        this name. The <tt>itemName</tt> should be <tt>null</tt>
++     *        for items of type {@link SOAPElement SOAPElement} or 
++     *        {@link org.w3c.dom.Element Element}. It must not be <tt>null</tt>
++     *        for all other types.
++     */
++    public SimpleEnumIterator(List items, QName itemName) {
++        this.iter = (items == null) ?  null : items.iterator();
++        this.itemName = itemName;
++    }
++
++    public IterationResult next(IterationConstraints constraints) {
++        if (this.iter == null || !this.iter.hasNext()) {
++            throw new NoSuchElementException();
++        }
++        
++        int maxElements = constraints.getMaxElements();
++        List dataList = 
++            new ArrayList((maxElements > 100) ? 100 : maxElements);
++        
++        for (int i=0; (i < maxElements) && (this.iter.hasNext()); i++) {
++            Object obj = this.iter.next();
++            try {
++                SOAPElement elem =
++                    ObjectSerializer.toSOAPElement(obj, this.itemName);
++                dataList.add(elem);
++            } catch (SerializationException e) {
++                // let's skip this element
++                logger.debug("Failed to serialize enumeration item", e);
++                i--;
++            }
++        }
++        
++        boolean endOfSequence = !this.iter.hasNext();
++        return IterationResult.create(dataList, endOfSequence);
++    }
++    
++    public void release() {
++        this.iter = null;
++    }
++    
++}
+Index: wsrf/java/core/source/src/org/globus/ws/enumeration/TimeoutException.java
+diff -u /dev/null wsrf/java/core/source/src/org/globus/ws/enumeration/TimeoutException.java:1.1.2.1
+--- /dev/null	Sat Jul 15 17:36:33 2006
++++ wsrf/java/core/source/src/org/globus/ws/enumeration/TimeoutException.java	Tue Jul 11 11:12:52 2006
+@@ -0,0 +1,62 @@
++/*
++ * Copyright 1999-2006 University of Chicago
++ * 
++ * Licensed under the Apache License, Version 2.0 (the "License");
++ * you may not use this file except in compliance with the License.
++ * You may obtain a copy of the License at
++ * 
++ * http://www.apache.org/licenses/LICENSE-2.0
++ * 
++ * Unless required by applicable law or agreed to in writing, software
++ * distributed under the License is distributed on an "AS IS" BASIS,
++ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
++ * See the License for the specific language governing permissions and
++ * limitations under the License.
++ */
++package org.globus.ws.enumeration;
++
++/**
++ * This is an exception raised by the 
++ * {@link EnumIterator#next(IterationConstraints) EnumIterator.next()} 
++ * operation when the enumeration data was not collected within the
++ * time specified.
++ */
++public class TimeoutException extends RuntimeException {
++
++    /**
++     * Creates a TimeoutException without error message.
++     */
++    public TimeoutException() {
++    }
++    
++    /**
++     * Creates a TimeoutException with a given error message.
++     *
++     * @param message error message
++     */
++    public TimeoutException(String message) {
++        super(message);
++    }
++    
++    /**
++     * Creates a TimeoutException with a given error message
++     * and nested exception.
++     *
++     * @param message error message
++     * @param exception nested exception/
++     */
++    public TimeoutException(String message,
++                               Throwable exception) {
++        super(message, exception);
++    }
++    
++    /**
++     * Creates a TimeoutException from a nested exception.
++     *
++     * @param exception nested exception
++     */
++    public TimeoutException(Throwable exception) {
++        super(exception);
++    }
++    
++}
+Index: wsrf/java/core/source/src/org/globus/ws/enumeration/TransientEnumResource.java
+diff -u /dev/null wsrf/java/core/source/src/org/globus/ws/enumeration/TransientEnumResource.java:1.1.2.5
+--- /dev/null	Sat Jul 15 17:36:33 2006
++++ wsrf/java/core/source/src/org/globus/ws/enumeration/TransientEnumResource.java	Tue Jul 11 14:02:24 2006
+@@ -0,0 +1,55 @@
++/*
++ * Copyright 1999-2006 University of Chicago
++ * 
++ * Licensed under the Apache License, Version 2.0 (the "License");
++ * you may not use this file except in compliance with the License.
++ * You may obtain a copy of the License at
++ * 
++ * http://www.apache.org/licenses/LICENSE-2.0
++ * 
++ * Unless required by applicable law or agreed to in writing, software
++ * distributed under the License is distributed on an "AS IS" BASIS,
++ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
++ * See the License for the specific language governing permissions and
++ * limitations under the License.
++ */
++package org.globus.ws.enumeration;
++
++import java.util.Hashtable;
++
++import org.globus.wsrf.ResourceKey;
++import org.globus.wsrf.ResourceException;
++
++/**
++ * Represents a transient enumeration context (a context that only exists while
++ * the container is running). 
++ * This implementation extends the persistent enumeration resource 
++ * implementation with disabled
++ * {@link #load(org.globus.wsrf.ResourceKey) load()} and
++ * {@link #store() store()} methods.
++ */
++public class TransientEnumResource extends EnumResource {
++    
++    // a hack to ensure that these resources never get GCed
++    private static Hashtable resources = new Hashtable();
++
++    public TransientEnumResource(EnumIterator iter, 
++                                 VisibilityProperties visibility) {
++        super(iter, visibility);
++        resources.put(this.key, this);
++    }
++
++    public void load(ResourceKey key) throws ResourceException {
++        // should never be called
++        throw new ResourceException();
++    }
++    
++    public void store() throws ResourceException {
++    }
++    
++    public void remove() throws ResourceException {
++        resources.remove(this.key);
++        this.iter.release();
++    }
++    
++}
+Index: wsrf/java/core/source/src/org/globus/ws/enumeration/VisibilityProperties.java
+diff -u /dev/null wsrf/java/core/source/src/org/globus/ws/enumeration/VisibilityProperties.java:1.1.2.6
+--- /dev/null	Sat Jul 15 17:36:33 2006
++++ wsrf/java/core/source/src/org/globus/ws/enumeration/VisibilityProperties.java	Wed Jul 12 16:48:02 2006
+@@ -0,0 +1,158 @@
++/*
++ * Copyright 1999-2006 University of Chicago
++ * 
++ * Licensed under the Apache License, Version 2.0 (the "License");
++ * you may not use this file except in compliance with the License.
++ * You may obtain a copy of the License at
++ * 
++ * http://www.apache.org/licenses/LICENSE-2.0
++ * 
++ * Unless required by applicable law or agreed to in writing, software
++ * distributed under the License is distributed on an "AS IS" BASIS,
++ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
++ * See the License for the specific language governing permissions and
++ * limitations under the License.
++ */
++package org.globus.ws.enumeration;
++
++import java.io.Serializable;
++
++import org.globus.wsrf.ResourceKey;
++import org.globus.wsrf.ResourceContext;
++import org.globus.wsrf.ResourceContextException;
++import org.globus.util.I18n;
++
++/**
++ * Represents visibility properties. Visibility properties are used to restrict
++ * what service and/or resource can access the particular enumeration context.
++ * In general, an enumeration context created by service S is only accessible
++ * through service S. Similarly, an enumeration context created by resource R
++ * is only accessible through resource R. 
++ */
++public class VisibilityProperties implements Serializable {
++    
++    private static I18n i18n =
++        I18n.getI18n("org.globus.ws.enumeration.error");
++
++    private String service;
++    private Object key;
++    
++    /**
++     * Creates <tt>VisibilityProperties</tt> with given service name
++     * and a resource key.
++     *
++     * @param service the service name. Cannot be null.
++     * @param key the resource key. Can be null.
++     */
++    public VisibilityProperties(String service, Object key) {
++        if (service == null) {
++            throw new IllegalArgumentException(
++                    i18n.getMessage("nullArgument", "service"));
++        }
++        this.service = service;
++        this.key = key;
++    }
++    
++    /**
++     * Gets the service name.
++     *
++     * @return the service name.
++     */
++    public String getService() {
++        return this.service;
++    }
++
++    /**
++     * Gets the resource key.
++     *
++     * @return the resource key.
++     */
++    public Object getKey() {
++        return this.key;
++    }
++
++    public int hashCode() {
++        int hashCode = this.service.hashCode();
++        if (this.key != null) {
++            hashCode += this.key.hashCode();
++        }
++        return hashCode;
++    }
++    
++    public boolean equals(Object obj) {
++        if (obj == this) {
++            return true;
++        }
++        if (!(obj instanceof VisibilityProperties)) {
++            return false;
++        }
++        VisibilityProperties other = (VisibilityProperties)obj;
++        
++        return (equals(this.service, other.service) &&
++                equals(this.key, other.key));
++    }
++    
++    private static boolean equals(Object obj1, Object obj2) {
++        if (obj1 == null) {
++            return (obj2 == null);
++        } else {
++            return obj1.equals(obj2);
++        }
++    }
++
++    public String toString() {
++        StringBuffer buf = new StringBuffer();
++        buf.append("service: ").append(this.service);
++        if (this.key != null) {
++            buf.append(" with key: ").append(this.key);
++        }
++        return buf.toString();
++    }
++    
++    // factory methods
++
++    /**
++     * Creates <tt>VisibilityProperties</tt> from the current context.
++     * A ResourceContext must be associated with the current thread.
++     *
++     * @throws IllegalArgumentException if there is no ResourceContext
++     *         associated with the current thread.
++     * @throws ResourceContextException if there any other problems with
++     *         obtaining the ResourceContext.
++     * @return the created <tt>VisibilityProperties</tt>.
++     */
++    public static VisibilityProperties createFromContext() 
++        throws ResourceContextException {
++        return createFromContext(ResourceContext.getResourceContext());
++    }
++
++    /**
++     * Creates <tt>VisibilityProperties</tt> from a given context.
++     *
++     * @param ctx the context to create <tt>VisibilityProperties</tt> from.
++     *        Cannot be null.
++     * @throws IllegalArgumentException if context is null.
++     * @return the created <tt>VisibilityProperties</tt>.
++     */
++    public static VisibilityProperties createFromContext(ResourceContext ctx) {
++        if (ctx == null) {
++            throw new IllegalArgumentException(
++                    i18n.getMessage("nullArgument", "ctx"));
++        }
++
++        String service = ctx.getService();
++
++        Object key = null;
++        try {
++            ResourceKey resourceKey = ctx.getResourceKey();
++            if (resourceKey != null) {
++                key = resourceKey.getValue();
++            }
++        } catch (ResourceContextException e) {
++            // assume it can't be obtained
++        }
++        
++        return new VisibilityProperties(service, key);
++    }
++    
++}
+Index: wsrf/java/core/source/src/org/globus/ws/enumeration/error.properties
+diff -u /dev/null wsrf/java/core/source/src/org/globus/ws/enumeration/error.properties:1.1.2.8
+--- /dev/null	Sat Jul 15 17:36:33 2006
++++ wsrf/java/core/source/src/org/globus/ws/enumeration/error.properties	Mon Jul 10 15:12:35 2006
+@@ -0,0 +1,27 @@
++invalidEnumerationContext00 = Invalid enumeration context
++
++invalidEnumerationContext01 = Invalid enumeration context (missing or invalid key)
++
++contextReleased = Enumeration context is released
++
++timedOut = timeout
++unableToRenew = Data source unable to renew
++filteringNotSupported = Filtering not supported
++
++invalidExpirationTime00 = Invalid expiration time (parsing error)
++invalidExpirationTime01 = Invalid expiration time (negative duration)
++invalidExpirationTime02 = Invalid expiration time (time in the past)
++
++nullArgument = Argument {0} is null
++zeroArgument = Argument {0} cannot be zero
++
++resourceStoreFailed = Failed to store the resource
++resourceLoadFailed = Failed to load the resource
++resourceRemoveFailed = Failed to remove the resource
++
++durationAlreadySet = Duration is already set
++timeAlreadySet = Time is already set
++
++cantConvert = Unable to convert
++
++invalidIterationResult = Results with false endOfSequence flag must have at least one item
+Index: wsrf/java/core/source/src/org/globus/ws/enumeration/client/EndEnumerate.java
+diff -u /dev/null wsrf/java/core/source/src/org/globus/ws/enumeration/client/EndEnumerate.java:1.1.2.4
+--- /dev/null	Sat Jul 15 17:36:33 2006
++++ wsrf/java/core/source/src/org/globus/ws/enumeration/client/EndEnumerate.java	Fri Jul 14 12:10:22 2006
+@@ -0,0 +1,98 @@
++/*
++ * Copyright 1999-2006 University of Chicago
++ * 
++ * Licensed under the Apache License, Version 2.0 (the "License");
++ * you may not use this file except in compliance with the License.
++ * You may obtain a copy of the License at
++ * 
++ * http://www.apache.org/licenses/LICENSE-2.0
++ * 
++ * Unless required by applicable law or agreed to in writing, software
++ * distributed under the License is distributed on an "AS IS" BASIS,
++ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
++ * See the License for the specific language governing permissions and
++ * limitations under the License.
++ */
++package org.globus.ws.enumeration.client;
++
++import java.util.List;
++import java.io.FileInputStream;
++
++import org.globus.ws.enumeration.ClientEnumeration;
++
++import org.xmlsoap.schemas.ws._2004._09.enumeration.service.EnumerationServiceAddressingLocator;
++import org.xmlsoap.schemas.ws._2004._09.enumeration.DataSource;
++import org.xmlsoap.schemas.ws._2004._09.enumeration.EnumerationContextType;
++
++import org.globus.wsrf.client.BaseClient;
++import org.globus.wsrf.utils.FaultHelper;
++import org.globus.wsrf.encoding.ObjectDeserializer;
++
++import org.apache.commons.cli.CommandLine;
++import org.apache.commons.cli.ParseException;
++
++import org.xml.sax.InputSource;
++
++import javax.xml.rpc.Stub;
++
++public class EndEnumerate extends BaseClient {
++
++    private static final String FOOTER =
++        "Where:\n" +
++        "  enumContextFile is a file containing the enumeration context\n";
++
++    public static void main(String[] args) {
++
++        EndEnumerate client = new EndEnumerate();
++        client.setCustomUsage("enumContextFile");
++        client.setHelpFooter(FOOTER);
++        
++        EnumerationContextType context = null;
++        try {
++            CommandLine line = client.parse(args);
++
++            List options = line.getArgList();
++            if (options == null || options.isEmpty()) {
++                throw new ParseException("Expected enumeration context file");
++            }
++            FileInputStream in = null;
++            try {
++                in = new FileInputStream((String)options.get(0));
++                context =
++                    (EnumerationContextType)ObjectDeserializer.deserialize(
++                                               new InputSource(in),
++                                               EnumerationContextType.class);
++            } finally {
++                if (in != null) {
++                    try { in.close(); } catch (Exception ee) {}
++                }
++            }
++        } catch (Exception e) {
++            System.err.println("Error: " + e.getMessage());
++            System.exit(COMMAND_LINE_ERROR);
++        }
++        
++        EnumerationServiceAddressingLocator locator = 
++            new EnumerationServiceAddressingLocator();
++        
++        try {
++            DataSource port = 
++                locator.getDataSourcePort(client.getEPR());
++            client.setOptions((Stub)port);
++
++            ClientEnumeration enumeration = 
++                new ClientEnumeration(port, context);
++            
++            enumeration.release();
++            
++            System.out.println("Enumeration was successfuly released");
++        } catch(Exception e) {
++            if (client.isDebugMode()) {
++                FaultHelper.printStackTrace(e);
++            } else {
++                System.err.println("Error: " + FaultHelper.getMessage(e));
++            }
++            System.exit(APPLICATION_ERROR);
++        }
++    }    
++}
+Index: wsrf/java/core/source/src/org/globus/ws/enumeration/client/Enumerate.java
+diff -u /dev/null wsrf/java/core/source/src/org/globus/ws/enumeration/client/Enumerate.java:1.1.2.6
+--- /dev/null	Sat Jul 15 17:36:33 2006
++++ wsrf/java/core/source/src/org/globus/ws/enumeration/client/Enumerate.java	Fri Jul 14 12:10:22 2006
+@@ -0,0 +1,202 @@
++/*
++ * Copyright 1999-2006 University of Chicago
++ * 
++ * Licensed under the Apache License, Version 2.0 (the "License");
++ * you may not use this file except in compliance with the License.
++ * You may obtain a copy of the License at
++ * 
++ * http://www.apache.org/licenses/LICENSE-2.0
++ * 
++ * Unless required by applicable law or agreed to in writing, software
++ * distributed under the License is distributed on an "AS IS" BASIS,
++ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
++ * See the License for the specific language governing permissions and
++ * limitations under the License.
++ */
++package org.globus.ws.enumeration.client;
++
++import java.util.List;
++import java.util.Properties;
++import java.io.FileInputStream;
++
++import org.globus.ws.enumeration.ClientEnumeration;
++import org.globus.ws.enumeration.IterationConstraints;
++import org.globus.ws.enumeration.IterationResult;
++
++import org.xmlsoap.schemas.ws._2004._09.enumeration.service.EnumerationServiceAddressingLocator;
++import org.xmlsoap.schemas.ws._2004._09.enumeration.DataSource;
++import org.xmlsoap.schemas.ws._2004._09.enumeration.EnumerationContextType;
++
++import org.apache.axis.types.Duration;
++
++import org.globus.wsrf.client.BaseClient;
++import org.globus.wsrf.encoding.ObjectDeserializer;
++import org.globus.wsrf.utils.FaultHelper;
++import org.globus.axis.utils.DurationUtils;
++
++import org.apache.commons.cli.ParseException;
++import org.apache.commons.cli.CommandLine;
++import org.apache.commons.cli.Option;
++import org.apache.commons.cli.OptionBuilder;
++
++import org.xml.sax.InputSource;
++
++import javax.xml.rpc.Stub;
++
++public class Enumerate extends BaseClient {
++
++    private static final Option FETCH = 
++        OptionBuilder.withArgName( "number" )
++        .hasArg()
++        .withDescription("Total number of items to fetch. Can be 'all' to retrieve all the enumeration data")
++        .withLongOpt("items")
++        .create("i");
++
++    private static final Option MAX_ELEMENTS = 
++        OptionBuilder.withArgName( "number" )
++        .hasArg()
++        .withDescription("Maximum number of items to fetch at a time")
++        .withLongOpt("maxElements")
++        .create("n");
++
++    private static final Option MAX_CHARACTERS = 
++        OptionBuilder.withArgName( "number" )
++        .hasArg()
++        .withDescription("Maximum number of characters (in Unicode) of enumeration data that can be accepted at a time (Default no limit)")
++        .withLongOpt("maxCharacters")
++        .create("r");
++
++    private static final Option MAX_TIME = 
++        OptionBuilder.withArgName( "number" )
++        .hasArg()
++        .withDescription("Maximum amount of time (in milliseconds) in which the enumeration data must be assembled (Default not limit)")
++        .withLongOpt("maxTime")
++        .create("o");
++    
++    private static final String FOOTER =
++        "Where:\n" +
++        "  enumContextFile is a file containing the enumeration context\n";
++
++    public Enumerate() {
++        options.addOption(MAX_ELEMENTS);
++        options.addOption(MAX_CHARACTERS);
++        options.addOption(MAX_TIME);
++        options.addOption(FETCH);
++    }
++
++    public static void main(String[] args) {
++
++        Properties defaultOptions = new Properties();
++        defaultOptions.put(MAX_ELEMENTS.getOpt(), "1");
++        defaultOptions.put(FETCH.getOpt(), "1");
++
++        Enumerate client = new Enumerate();
++        client.setCustomUsage("enumContextFile");
++        client.setHelpFooter(FOOTER);
++
++        EnumerationContextType context = null;
++        CommandLine line = null;
++        
++        try {
++            line = client.parse(args, defaultOptions);
++
++            List options = line.getArgList();
++            if (options == null || options.isEmpty()) {
++                throw new ParseException("Expected enumeration context file");
++            }
++            FileInputStream in = null;
++            try {
++                in = new FileInputStream((String)options.get(0));
++                context =
++                    (EnumerationContextType)ObjectDeserializer.deserialize(
++                                               new InputSource(in),
++                                               EnumerationContextType.class);
++            } finally {
++                if (in != null) {
++                    try { in.close(); } catch (Exception ee) {}
++                }
++            }
++        } catch (Exception e) {
++            System.err.println("Error: " + e.getMessage());
++            System.exit(COMMAND_LINE_ERROR);
++        }
++      
++        EnumerationServiceAddressingLocator locator = 
++            new EnumerationServiceAddressingLocator();
++
++        int maxElements = 1;
++        int maxCharacters = -1;
++        int fetchNum = 1;
++        Duration maxTime = null;
++
++        try {
++            DataSource port = 
++                locator.getDataSourcePort(client.getEPR());
++            client.setOptions((Stub)port);
++                        
++            if (line.hasOption(MAX_ELEMENTS.getOpt())) {
++                String value = line.getOptionValue(MAX_ELEMENTS.getOpt());
++                maxElements = Integer.parseInt(value);
++            }
++
++            if (line.hasOption(MAX_CHARACTERS.getOpt())) {
++                String value = line.getOptionValue(MAX_CHARACTERS.getOpt());
++                maxCharacters = Integer.parseInt(value);
++            }
++
++            if (line.hasOption(MAX_TIME.getOpt())) {
++                String value = line.getOptionValue(MAX_TIME.getOpt());
++                long timeout = Long.parseLong(value);
++                maxTime = DurationUtils.toDuration(timeout);
++            }
++            
++            if (line.hasOption(FETCH.getOpt())) {
++                String value = line.getOptionValue(FETCH.getOpt());
++                if ("all".equalsIgnoreCase(value)) {
++                    fetchNum = Integer.MAX_VALUE;
++                } else {
++                    fetchNum = Integer.parseInt(value);
++                }
++            }
++
++            int fetched = 0;
++            int retrieved = 0;
++
++            IterationConstraints constraints = 
++                new IterationConstraints(maxElements, maxCharacters, maxTime);
++
++            ClientEnumeration enumeration = 
++                new ClientEnumeration((Stub)port, context);
++            
++            IterationResult iterResult;
++            do {
++                iterResult = enumeration.pull(constraints);
++                Object [] items = iterResult.getItems();
++                if (items == null || items.length == 0) {
++                    // must not meet maxCharacters constraint, exit
++                    break;
++                } else {
++                    for (int i=0;
++                         i < items.length && fetched < fetchNum;
++                         i++, fetched++) {
++                        System.out.println(items[i]);
++                    }
++                    retrieved += items.length;
++                }
++            } while (!iterResult.isEndOfSequence() && fetched < fetchNum);
++
++            System.out.println();
++            System.out.println("Number of items displayed: " + fetched);
++            System.out.println("Total items retrieved: " + retrieved);
++            
++        } catch(Exception e) {
++            if (client.isDebugMode()) {
++                FaultHelper.printStackTrace(e);
++            } else {
++                System.err.println("Error: " + FaultHelper.getMessage(e));
++            }
++            System.exit(APPLICATION_ERROR);
++        }
++    }
++    
++}
+Index: wsrf/java/core/source/src/org/globus/ws/enumeration/client/StartEnumerate.java
+diff -u /dev/null wsrf/java/core/source/src/org/globus/ws/enumeration/client/StartEnumerate.java:1.1.2.3
+--- /dev/null	Sat Jul 15 17:36:33 2006
++++ wsrf/java/core/source/src/org/globus/ws/enumeration/client/StartEnumerate.java	Sat Jul 15 17:14:11 2006
+@@ -0,0 +1,74 @@
++/*
++ * Copyright 1999-2006 University of Chicago
++ * 
++ * Licensed under the Apache License, Version 2.0 (the "License");
++ * you may not use this file except in compliance with the License.
++ * You may obtain a copy of the License at
++ * 
++ * http://www.apache.org/licenses/LICENSE-2.0
++ * 
++ * Unless required by applicable law or agreed to in writing, software
++ * distributed under the License is distributed on an "AS IS" BASIS,
++ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
++ * See the License for the specific language governing permissions and
++ * limitations under the License.
++ */
++package org.globus.ws.enumeration.client;
++
++import org.xmlsoap.schemas.ws._2004._09.enumeration.service.EnumerationServiceAddressingLocator;
++import org.xmlsoap.schemas.ws._2004._09.enumeration.DataSourceStart;
++import org.xmlsoap.schemas.ws._2004._09.enumeration.EnumerateResponse;
++import org.xmlsoap.schemas.ws._2004._09.enumeration.Enumerate;
++import org.xmlsoap.schemas.ws._2004._09.enumeration.EnumerationContextType;
++
++import org.globus.wsrf.client.BaseClient;
++import org.globus.wsrf.utils.FaultHelper;
++import org.globus.wsrf.encoding.ObjectSerializer;
++
++import org.apache.commons.cli.CommandLine;
++
++import javax.xml.namespace.QName;
++
++import javax.xml.rpc.Stub;
++
++public class StartEnumerate extends BaseClient {
++
++    private static final QName NAME =
++        new QName("http://schemas.xmlsoap.org/ws/2004/09/enumeration", 
++                  "EnumerationContext");
++
++    public static void main(String[] args) {
++
++        StartEnumerate client = new StartEnumerate();
++        
++        try {
++            CommandLine line = client.parse(args);
++        } catch (Exception e) {
++            System.err.println("Error: " + e.getMessage());
++            System.exit(COMMAND_LINE_ERROR);
++        }
++        
++        EnumerationServiceAddressingLocator locator = 
++            new EnumerationServiceAddressingLocator();
++        
++        try {
++            DataSourceStart port = 
++                locator.getDataSourceStartPort(client.getEPR());
++            client.setOptions((Stub)port);
++            
++            Enumerate enumRequest = new Enumerate();
++            EnumerateResponse enumRespose = port.enumerateOp(enumRequest);
++            EnumerationContextType context = 
++                enumRespose.getEnumerationContext();
++            
++            System.out.println(ObjectSerializer.toString(context, NAME));
++        } catch(Exception e) {
++            if (client.isDebugMode()) {
++                FaultHelper.printStackTrace(e);
++            } else {
++                System.err.println("Error: " + FaultHelper.getMessage(e));
++            }
++            System.exit(APPLICATION_ERROR);
++        }
++    }    
++}
+Index: wsrf/java/core/source/src/org/globus/wsrf/utils/io/IndexedObjectFileReader.java
+diff -u /dev/null wsrf/java/core/source/src/org/globus/wsrf/utils/io/IndexedObjectFileReader.java:1.1.2.1
+--- /dev/null	Sat Jul 15 17:36:33 2006
++++ wsrf/java/core/source/src/org/globus/wsrf/utils/io/IndexedObjectFileReader.java	Mon Jun 19 14:20:09 2006
+@@ -0,0 +1,143 @@
++/*
++ * Copyright 1999-2006 University of Chicago
++ * 
++ * Licensed under the Apache License, Version 2.0 (the "License");
++ * you may not use this file except in compliance with the License.
++ * You may obtain a copy of the License at
++ * 
++ * http://www.apache.org/licenses/LICENSE-2.0
++ * 
++ * Unless required by applicable law or agreed to in writing, software
++ * distributed under the License is distributed on an "AS IS" BASIS,
++ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
++ * See the License for the specific language governing permissions and
++ * limitations under the License.
++ */
++package org.globus.wsrf.utils.io;
++
++import java.io.RandomAccessFile;
++import java.io.IOException;
++import java.io.EOFException;
++import java.io.FileNotFoundException;
++import java.io.ObjectInputStream;
++import java.io.ByteArrayInputStream;
++import java.util.List;
++
++/**
++ * Reads Java objects from an indexed file. The indexing allows for random
++ * access to any object in the file. 
++ * <BR><BR><B>Note: </B><I>This class is not thread-safe.</I>
++ * 
++ * @see ObjectInputStream
++ */
++public class IndexedObjectFileReader {
++
++    private RandomAccessFile raf;
++    private byte [] buffer;
++    private long indexPointer;
++    private List index;
++    
++    public IndexedObjectFileReader(String file) 
++        throws IOException, 
++               FileNotFoundException {
++        this.raf = new RandomAccessFile(file, "r");
++        this.buffer = new byte[1024];
++        try {
++            init();
++        } catch (Exception e) {
++            try { this.raf.close(); } catch (IOException ee) {}
++            throw new IOException("Error reading object index");
++        }
++    }
++    
++    private void init() 
++        throws IOException,
++               ClassNotFoundException {
++        int version = this.raf.readByte();
++        this.indexPointer = this.raf.readLong();
++        
++        long startPos = this.raf.getFilePointer();
++        
++        this.raf.seek(this.indexPointer);
++        this.index = (List)readObjectSub();
++        
++        this.raf.seek(startPos);
++    }
++
++    private Object readObjectSub() 
++        throws IOException,
++               ClassNotFoundException {
++        int length = this.raf.readInt();
++        
++        // ensure we have large enough buffer
++        if (this.buffer.length < length) {
++            this.buffer = new byte[length];
++        }
++        
++        // read the data
++        this.raf.readFully(this.buffer, 0, length);
++        
++        // deserialize the data
++        ByteArrayInputStream bis = 
++            new ByteArrayInputStream(this.buffer, 0, length);
++        ObjectInputStream in = new ObjectInputStream(bis);
++        
++        return in.readObject();
++    }
++    
++    /**
++     * Reads a Java object from the file.
++     *
++     * @throws IOException if any error occurs.
++     * @throws ClassNotFoundException if cannot find the class for the object
++     *         in the file.
++     * @throws EOFException if end of the file is reached.
++     * @return the object read from the file.
++     * @see ObjectInputStream#readObject()
++     */
++    public Object readObject()
++        throws IOException,
++               ClassNotFoundException {
++        if (this.raf.getFilePointer() >= this.indexPointer) {
++            throw new EOFException();
++        }
++        return readObjectSub();
++    }
++    
++    /**
++     * Gets the size of the index (the number of objects in the file).
++     *
++     * @return the size of the index.
++     */
++    public int getIndexSize() {
++        return this.index.size();
++    }
++
++    /**
++     * Jumps to the object at the specified position in the file.
++     *
++     * @param index the position to jump to.
++     * @throws IOException if the position specified is invalid or any other
++     *                     error occurs.
++     */
++    public void jumpTo(int index) 
++        throws IOException {
++        if (index >= this.index.size()) {
++            throw new IOException();
++        }
++        Long pos = (Long)this.index.get(index);
++        this.raf.seek(pos.longValue());
++    }
++    
++    /**
++     * Closes the file.
++     *
++     * @throws IOException if any error occurs.
++     */
++    public void close() 
++        throws IOException {
++        // close the file
++        this.raf.close();
++    }
++    
++}
+Index: wsrf/java/core/source/src/org/globus/wsrf/utils/io/IndexedObjectFileUtils.java
+diff -u /dev/null wsrf/java/core/source/src/org/globus/wsrf/utils/io/IndexedObjectFileUtils.java:1.1.2.3
+--- /dev/null	Sat Jul 15 17:36:33 2006
++++ wsrf/java/core/source/src/org/globus/wsrf/utils/io/IndexedObjectFileUtils.java	Fri Jun 23 11:53:54 2006
+@@ -0,0 +1,137 @@
++/*
++ * Copyright 1999-2006 University of Chicago
++ * 
++ * Licensed under the Apache License, Version 2.0 (the "License");
++ * you may not use this file except in compliance with the License.
++ * You may obtain a copy of the License at
++ * 
++ * http://www.apache.org/licenses/LICENSE-2.0
++ * 
++ * Unless required by applicable law or agreed to in writing, software
++ * distributed under the License is distributed on an "AS IS" BASIS,
++ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
++ * See the License for the specific language governing permissions and
++ * limitations under the License.
++ */
++package org.globus.wsrf.utils.io;
++
++import java.util.List;
++import java.util.Arrays;
++import java.io.File;
++import java.io.IOException;
++import java.io.FileNotFoundException;
++
++import org.globus.wsrf.utils.FilePersistenceHelper;
++import org.globus.wsrf.utils.Resources;
++import org.globus.util.I18n;
++
++/**
++ * Utility functions for indexed object files.
++ * 
++ * @see IndexedObjectFileReader
++ * @see IndexedObjectFileWriter
++ */
++public class IndexedObjectFileUtils {
++
++    private static I18n i18n =
++        I18n.getI18n(Resources.class.getName());
++
++    private static File persistenceDir = getPersistenceDir();
++    
++    private static File getPersistenceDir() {
++        try {
++            File dir = FilePersistenceHelper.getDefaultStorageDirectory(
++                                                IndexedObjectFileUtils.class);
++            FilePersistenceHelper.createStorageDirectory(dir);
++            return dir;
++        } catch (Exception e) {
++            throw new RuntimeException(e.getMessage());
++        }
++    }
++
++    /**
++     * Creates an indexed object file in the default storage directory
++     * with the specified data.
++     *
++     * @param items data to store in the file (can be null or empty)
++     * @return the created file 
++     * @throws IOException if any error occurs
++     */
++    public static File createIndexedObjectFile(Object[] items)
++        throws IOException {
++        File file = File.createTempFile("indexed", ".ser", persistenceDir);
++        try {
++            createIndexedObjectFile(file.getAbsolutePath(), items);
++        } catch (IOException e) {
++            file.delete();
++            throw e;
++        }
++        return file;
++    }
++
++    /**
++     * Creates an indexed object file in the default storage directory
++     * with the specified data.
++     *
++     * @param items data to store in the file (can be null or empty)
++     * @return the created file 
++     * @throws IOException if any error occurs
++     */
++    public static File createIndexedObjectFile(List items)
++        throws IOException {
++        File file = File.createTempFile("indexed", ".ser", persistenceDir);
++        try {
++            createIndexedObjectFile(file.getAbsolutePath(), items);
++        } catch (IOException e) {
++            file.delete();
++            throw e;
++        }
++        return file;
++    }
++
++    /**
++     * Create an indexed object file with the specified data.
++     * 
++     * @param file name of the file to create
++     * @param items data to store in the file (can be null or empty)
++     * @throws IOException if any error occurs
++     */
++    public static void createIndexedObjectFile(String file,
++                                               Object[] items) 
++        throws IOException, 
++               FileNotFoundException {
++        createIndexedObjectFile(file, 
++                                (items == null) ? null : Arrays.asList(items));
++    }
++
++    /**
++     * Create an indexed object file with the specified data.
++     * 
++     * @param file name of the file to create
++     * @param items data to store in the file (can be null or empty)
++     * @throws IOException if any error occurs
++     */
++    public static void createIndexedObjectFile(String file,
++                                               List items) 
++        throws IOException, 
++               FileNotFoundException {
++        if (file == null) {
++            throw new IllegalArgumentException(
++                    i18n.getMessage("nullArgument", "file"));
++        }
++        IndexedObjectFileWriter dataFile = null;
++        try {
++            dataFile = new IndexedObjectFileWriter(file);
++            
++            if (items != null) {
++                for (int i=0;i<items.size();i++) {
++                    dataFile.writeObject(items.get(i));
++                }
++            }
++        } finally {
++            if (dataFile != null) {
++                try { dataFile.close(); } catch (IOException e) {}
++            }
++        }
++    }
++}
+Index: wsrf/java/core/source/src/org/globus/wsrf/utils/io/IndexedObjectFileWriter.java
+diff -u /dev/null wsrf/java/core/source/src/org/globus/wsrf/utils/io/IndexedObjectFileWriter.java:1.1.2.1
+--- /dev/null	Sat Jul 15 17:36:33 2006
++++ wsrf/java/core/source/src/org/globus/wsrf/utils/io/IndexedObjectFileWriter.java	Mon Jun 19 14:20:09 2006
+@@ -0,0 +1,123 @@
++/*
++ * Copyright 1999-2006 University of Chicago
++ * 
++ * Licensed under the Apache License, Version 2.0 (the "License");
++ * you may not use this file except in compliance with the License.
++ * You may obtain a copy of the License at
++ * 
++ * http://www.apache.org/licenses/LICENSE-2.0
++ * 
++ * Unless required by applicable law or agreed to in writing, software
++ * distributed under the License is distributed on an "AS IS" BASIS,
++ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
++ * See the License for the specific language governing permissions and
++ * limitations under the License.
++ */
++package org.globus.wsrf.utils.io;
++
++import java.io.RandomAccessFile;
++import java.io.IOException;
++import java.io.ByteArrayOutputStream;
++import java.io.ObjectOutputStream;
++import java.io.FileNotFoundException;
++import java.util.List;
++import java.util.ArrayList;
++
++/**
++ * Writes Java objects to an indexed file. The indexing allows for random
++ * access to any object in the file. Only Java objects that implement
++ * the {@link java.io.Serializable Serializable} interface can be written
++ * to the file.
++ * <BR><BR><B>Note: </B><I>This class is not thread-safe.</I>
++ * 
++ * @see ObjectOutputStream
++ */
++public class IndexedObjectFileWriter {
++
++    private ByteArrayOutputStream bos;
++    private RandomAccessFile raf;
++    private long indexPointer;
++    private List index;
++    
++    public IndexedObjectFileWriter(String file) 
++        throws IOException, 
++               FileNotFoundException {
++        this.raf = new RandomAccessFile(file, "rw");
++        this.index = new ArrayList();
++        this.bos = new ByteArrayOutputStream();
++        try {
++            init();
++        } catch (IOException e) {
++            try { this.raf.close(); } catch (IOException ee) {}
++            throw new IOException("Error writting file header");
++        }
++    }
++    
++    private void init() 
++        throws IOException {
++        // write header info: version (byte), indexPosition (long)
++        this.raf.writeByte(0);
++        
++        this.indexPointer = raf.getFilePointer();
++        this.raf.writeLong(-1L);
++    }
++
++    private void writeObjectSub(Object obj)
++        throws IOException {
++        ObjectOutputStream out = new ObjectOutputStream(this.bos);
++        out.writeObject(obj);
++        out.close();
++        
++        byte [] data = this.bos.toByteArray();
++        this.raf.writeInt(data.length);
++        this.raf.write(data);
++        
++        this.bos.reset();
++    }
++    
++    /**
++     * Writes the Java object to the file.
++     *
++     * @param obj object to write.
++     * @throws IOException if any error occurs.
++     * @see ObjectOutputStream#writeObject(Object)
++     */
++    public void writeObject(Object obj)
++        throws IOException {
++        long pos = this.raf.getFilePointer();
++        writeObjectSub(obj);
++        this.index.add(new Long(pos));
++    }
++
++    /**
++     * Gets the current size of the index (the number of object written
++     * so far).
++     *
++     * @return the current size of the index.
++     */
++    public int getIndexSize() {
++        return this.index.size();
++    }
++    
++    /**
++     * Writes the object index and closes the file. This function must be
++     * called, otherwise an incomplete file might be created.
++     *
++     * @throws IOException if any error occurs.
++     */
++    public void close() 
++        throws IOException {
++        long endPos = raf.getFilePointer();
++
++        // write index
++        writeObjectSub(this.index);
++                
++        // update index pointer
++        this.raf.seek(this.indexPointer);
++        this.raf.writeLong(endPos);
++
++        // close the file
++        this.raf.close();
++    }
++    
++}
+Index: wsrf/java/core/source/src/org/globus/axis/utils/DurationUtils.java
+diff -u /dev/null wsrf/java/core/source/src/org/globus/axis/utils/DurationUtils.java:1.1.2.4
+--- /dev/null	Sat Jul 15 17:36:33 2006
++++ wsrf/java/core/source/src/org/globus/axis/utils/DurationUtils.java	Wed Jun 28 00:28:15 2006
+@@ -0,0 +1,183 @@
++/*
++ * Copyright 1999-2006 University of Chicago
++ * 
++ * Licensed under the Apache License, Version 2.0 (the "License");
++ * you may not use this file except in compliance with the License.
++ * You may obtain a copy of the License at
++ * 
++ * http://www.apache.org/licenses/LICENSE-2.0
++ * 
++ * Unless required by applicable law or agreed to in writing, software
++ * distributed under the License is distributed on an "AS IS" BASIS,
++ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
++ * See the License for the specific language governing permissions and
++ * limitations under the License.
++ */
++package org.globus.axis.utils;
++
++import java.util.Calendar;
++
++import org.apache.axis.types.Duration;
++
++/**
++ * Utility functions for converting Axis Duration type into milliseconds, milliseconds
++ * into Axis Duration, and other related methods.
++ * <BR><BR><B>Note:</B> <I>
++ * Most of the conversions are inaccurate because assumptions such as how 
++ * many days a month has based on the current clock. </I>
++ */
++public class DurationUtils {
++    
++    private static int [] FIELDS = {Calendar.MILLISECOND, 
++                                    Calendar.SECOND, 
++                                    Calendar.MINUTE,
++                                    Calendar.HOUR,
++                                    Calendar.DATE,
++                                    Calendar.MONTH,
++                                    Calendar.YEAR};
++
++    /**
++     * Updates calendar with a given duration.
++     *
++     * @param calendar the calendar to update
++     * @param duration the duration to update the calendar with
++     */
++    public static void updateCalendar(Calendar calendar, Duration duration) {
++        if (calendar == null || duration == null) {
++            throw new IllegalArgumentException();
++        }
++        int mul = (duration.isNegative()) ? -1 : 1;
++
++        if (duration.getYears() != 0) {
++            calendar.add(Calendar.YEAR, mul*duration.getYears());
++        }
++        if (duration.getMonths() != 0) {
++            calendar.add(Calendar.MONTH, mul*duration.getMonths());
++        }
++        if (duration.getDays() != 0) {
++            calendar.add(Calendar.DATE, mul*duration.getDays());
++        }
++        if (duration.getHours() != 0) {
++            calendar.add(Calendar.HOUR, mul*duration.getHours());
++        }
++        if (duration.getMinutes() != 0) {
++            calendar.add(Calendar.MINUTE, mul*duration.getMinutes());
++        }
++        if (duration.getSeconds() != 0) {
++            double seconds = duration.getSeconds();
++            calendar.add(Calendar.SECOND, 
++                         mul*(int)seconds);
++            calendar.add(Calendar.MILLISECOND,
++                         (int)(Math.round(seconds*1000) - (int)seconds*1000));
++        }
++    }
++    
++    /**
++     * Computes duration between two dates. 
++     * 
++     * @param startTime the start date
++     * @param endTime the end date
++     * @return the computed duration of the dates as Axis Duration type
++     */
++    public static Duration computeDuration(Calendar startTime,
++                                           Calendar endTime) {
++        if (startTime == null || endTime == null) {
++            throw new IllegalArgumentException();
++        }
++        if (!startTime.getTimeZone().equals(endTime.getTimeZone())) {
++            throw new IllegalArgumentException();
++        }
++
++        Calendar start = (Calendar)startTime.clone();
++        Calendar end = endTime;
++
++        boolean negative = false;
++        int step = 1;
++        
++        if (end.before(start)) {
++            negative = true;
++            step = -1;
++        }
++
++        int [] output = new int[FIELDS.length];
++        for (int i=0;i<FIELDS.length;i++) {
++            while (start.get(FIELDS[i]) != end.get(FIELDS[i])) {
++                start.add(FIELDS[i], step);
++                output[i]++;
++            }
++        }
++        
++        double seconds = (double)output[0]/1000 + output[1];
++
++        Duration dur = new Duration();
++        dur.setNegative(negative);
++        dur.setSeconds(seconds);
++        dur.setMinutes(output[2]);
++        dur.setHours(output[3]);
++        dur.setDays(output[4]);
++        dur.setMonths(output[5]);
++        dur.setYears(output[6]);
++
++        return dur;
++    }
++
++    /**
++     * Converts Axis Duration type into number of milliseconds.
++     * <BR><BR><B>Note:</B> <I>This is inexact conversion</I>.
++     *
++     * @param duration Axis Duration type
++     * @return the duration time in milliseconds
++     */
++    public static long toMilliseconds(Duration duration) {
++        if (duration == null) {
++            throw new IllegalArgumentException();
++        }
++        
++        Calendar now = Calendar.getInstance();
++
++        long start = now.getTime().getTime();
++
++        updateCalendar(now, duration);
++
++        long end = now.getTime().getTime();
++
++        return end - start;
++    }
++
++    /**
++     * Converts milliseconds into Axis Duration type.
++     * <BR><BR><B>Note:</B> <I>This is inexact conversion</I>.
++     *
++     * @param milliseconds number of milliseconds
++     * @return the Duration type for the given time
++     */
++    public static Duration toDuration(long milliseconds) {
++        Calendar now = Calendar.getInstance();
++        Calendar later = (Calendar)now.clone();
++      
++        int seconds = (int)(milliseconds / 1000);
++        later.add(Calendar.SECOND, seconds);
++        int mseconds = (int)(milliseconds % 1000);
++        later.add(Calendar.MILLISECOND, mseconds);
++        
++        return computeDuration(now, later);
++    }
++    
++    /**
++     * Returns true if the specified duration is a zero duration
++     * (all components of the duration are zero).
++     *
++     * @return true if the specified duration is a zero duration. False,
++     *         otherwise.
++     */
++    public static boolean isZero(Duration duration) {
++        return (duration != null &&
++                duration.getYears() == 0 &&
++                duration.getMonths() == 0 &&
++                duration.getDays() == 0 &&
++                duration.getHours() == 0 &&
++                duration.getMinutes() == 0 &&
++                (int)duration.getSeconds() == 0);
++    }
++    
++}

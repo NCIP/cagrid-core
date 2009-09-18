@@ -1,0 +1,25 @@
+<?xml version="1.0"?>
+
+<ivy-module version="2.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:noNamespaceSchemaLocation="http://incubator.apache.org/ivy/schemas/ivy.xsd">
+
+  <info organisation="caGrid" module="introduce-buildtools" revision="${project.version}">
+    <license name="caGrid" url="http://cagrid.org/wiki/CaGrid:LICENSE-1.3"/>
+    <description>Introduce Build Tools</description>
+  </info>
+
+  <configurations>
+    <conf name="impl" visibility="private" extends="default" />
+    <!-- Public Configurations-->
+    <conf name="default" visibility="public" />
+  </configurations>
+
+
+  <publications>
+    <artifact name="caGrid-Introduce-buildTools" conf="default" type="jar" />
+  </publications>
+
+  <dependencies>
+  	<dependency rev="latest.integration" org="caGrid" name="core" conf="default->default"/>
+  </dependencies>
+</ivy-module>

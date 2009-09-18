@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<deployment xmlns="http://xml.apache.org/axis/wsdd/" xmlns:aggr="http://mds.globus.org/aggregator/types" xmlns:java="http://xml.apache.org/axis/wsdd/providers/java" xmlns:xsd="http://www.w3.org/2001/XMLSchema" name="defaultServerConfig">
+  <service name="SERVICE-INSTANCE-PREFIX/GlobalModelExchange" provider="Handler" use="literal" style="document">
+    <parameter name="className" value="org.cagrid.gme.service.globus.GlobalModelExchangeProviderImpl" />
+    <wsdlFile>share/schema/GlobalModelExchange/GlobalModelExchange_service.wsdl</wsdlFile>
+    <parameter name="securityDescriptor" value="ETC-PATH/GlobalModelExchange-security-desc.xml" />
+    <parameter name="allowedMethods" value="*" />
+    <parameter name="handlerClass" value="org.globus.axis.providers.RPCProvider" />
+    <parameter name="scope" value="Application" />
+    <parameter name="providers" value="gov.nih.nci.cagrid.introduce.security.service.globus.ServiceSecurityProviderImpl GetMRPProvider GetRPProvider QueryRPProvider" />
+    <parameter name="loadOnStartup" value="true" />
+    <parameter name="securityMetadata" value="ETC-PATH/GlobalModelExchange-security-metadata.xml" />
+    <parameter name="castorMapping" value="/org/cagrid/gme/gme-xml-mapping.xml" />
+    <parameter name="globalmodelexchange-etcDirectoryPath" value="ETC-PATH" />
+    <parameter name="globalmodelexchange-serviceName" value="GlobalModelExchange" />
+  </service>
+  <typeMapping name="AggregatorContent" qname="aggr:AggregatorContent" type="java:org.globus.mds.aggregator.types.AggregatorContent" serializer="org.apache.axis.encoding.ser.BeanSerializerFactory" deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory" encodingStyle="" />
+  <!-- START INTRODUCE TYPEMAPPINGS -->
+<ns3:typeMapping encodingStyle="" serializer="gov.nih.nci.cagrid.encoding.SDKSerializerFactory" deserializer="gov.nih.nci.cagrid.encoding.SDKDeserializerFactory" type="ns1:org.cagrid.gme.domain.XMLSchema" qname="ns2:XMLSchema" xmlns:ns1="http://xml.apache.org/axis/wsdd/providers/java" xmlns:ns2="gme://gme.cagrid.org/2.0/GlobalModelExchange/domain" xmlns:ns3="http://xml.apache.org/axis/wsdd/"/>
+
+<ns3:typeMapping encodingStyle="" serializer="gov.nih.nci.cagrid.encoding.SDKSerializerFactory" deserializer="gov.nih.nci.cagrid.encoding.SDKDeserializerFactory" type="ns1:org.cagrid.gme.domain.XMLSchemaBundle" qname="ns2:XMLSchemaBundle" xmlns:ns1="http://xml.apache.org/axis/wsdd/providers/java" xmlns:ns2="gme://gme.cagrid.org/2.0/GlobalModelExchange/domain" xmlns:ns3="http://xml.apache.org/axis/wsdd/"/>
+
+<ns3:typeMapping encodingStyle="" serializer="gov.nih.nci.cagrid.encoding.SDKSerializerFactory" deserializer="gov.nih.nci.cagrid.encoding.SDKDeserializerFactory" type="ns1:org.cagrid.gme.domain.XMLSchemaDocument" qname="ns2:XMLSchemaDocument" xmlns:ns1="http://xml.apache.org/axis/wsdd/providers/java" xmlns:ns2="gme://gme.cagrid.org/2.0/GlobalModelExchange/domain" xmlns:ns3="http://xml.apache.org/axis/wsdd/"/>
+
+<ns3:typeMapping encodingStyle="" serializer="gov.nih.nci.cagrid.encoding.SDKSerializerFactory" deserializer="gov.nih.nci.cagrid.encoding.SDKDeserializerFactory" type="ns1:org.cagrid.gme.domain.XMLSchemaImportInformation" qname="ns2:XMLSchemaImportInformation" xmlns:ns1="http://xml.apache.org/axis/wsdd/providers/java" xmlns:ns2="gme://gme.cagrid.org/2.0/GlobalModelExchange/domain" xmlns:ns3="http://xml.apache.org/axis/wsdd/"/>
+
+<ns3:typeMapping encodingStyle="" serializer="gov.nih.nci.cagrid.encoding.SDKSerializerFactory" deserializer="gov.nih.nci.cagrid.encoding.SDKDeserializerFactory" type="ns1:org.cagrid.gme.domain.XMLSchemaNamespace" qname="ns2:XMLSchemaNamespace" xmlns:ns1="http://xml.apache.org/axis/wsdd/providers/java" xmlns:ns2="gme://gme.cagrid.org/2.0/GlobalModelExchange/domain" xmlns:ns3="http://xml.apache.org/axis/wsdd/"/>
+
+
+<!-- END INTRODUCE TYPEMAPPINGS -->
+</deployment>
+

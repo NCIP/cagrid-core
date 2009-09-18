@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns="gme://caCORE.cabig/3.0/gov.nih.nci.common.provenance.domain" xmlns:gov.nih.nci.common.domain="gme://caCORE.cabig/3.0/gov.nih.nci.common.domain" xmlns:gov.nih.nci.cadsr.domain="gme://caCORE.cabig/3.0/gov.nih.nci.cadsr.domain" xmlns:gov.nih.nci.cadsr.umlproject.domain="gme://caCORE.cabig/3.0/gov.nih.nci.cadsr.umlproject.domain" xmlns:gov.nih.nci.camod.domain="gme://caCORE.cabig/3.0/gov.nih.nci.camod.domain" xmlns:gov.nih.nci.cabio.domain="gme://caCORE.cabig/3.0/gov.nih.nci.cabio.domain" targetNamespace="gme://caCORE.cabig/3.0/gov.nih.nci.common.provenance.domain" elementFormDefault="qualified">
+  <xs:import namespace="gme://caCORE.cabig/3.0/gov.nih.nci.cadsr.domain" schemaLocation="gov.nih.nci.cadsr.domain.xsd" />
+  <xs:import namespace="gme://caCORE.cabig/3.0/gov.nih.nci.cabio.domain" schemaLocation="gov.nih.nci.cabio.domain.xsd" />
+  <xs:import namespace="gme://caCORE.cabig/3.0/gov.nih.nci.cadsr.umlproject.domain" schemaLocation="gov.nih.nci.cadsr.umlproject.domain.xsd" />
+  <xs:import namespace="gme://caCORE.cabig/3.0/gov.nih.nci.common.domain" schemaLocation="gov.nih.nci.common.domain.xsd" />
+  <xs:import namespace="gme://caCORE.cabig/3.0/gov.nih.nci.camod.domain" schemaLocation="gov.nih.nci.camod.domain.xsd" />
+  <xs:element name="Provenance" type="Provenance" />
+  <xs:complexType name="Provenance">
+    <xs:sequence>
+      <xs:element name="supplyingSource" type="Source" minOccurs="0" maxOccurs="1" />
+      <xs:element name="sourceReference" type="SourceReference" minOccurs="0" maxOccurs="1" />
+      <xs:element name="immediateSource" type="Source" minOccurs="0" maxOccurs="1" />
+      <xs:element name="originalSource" type="Source" minOccurs="0" maxOccurs="1" />
+    </xs:sequence>
+    <xs:attribute name="id" type="xs:long" />
+    <xs:attribute name="transformation" type="xs:string" />
+    <xs:attribute name="evidenceCode" type="xs:string" />
+    <xs:attribute name="objectIdentifier" type="xs:string" />
+    <xs:attribute name="fullyQualifiedClassName" type="xs:string" />
+    <xs:attribute name="supplyingSourceId" type="xs:long" />
+    <xs:attribute name="originalSourceId" type="xs:long" />
+    <xs:attribute name="immediateSourceId" type="xs:long" />
+  </xs:complexType>
+  <xs:element name="Source" type="Source" />
+  <xs:complexType name="Source">
+    <xs:sequence />
+    <xs:attribute name="id" type="xs:long" />
+    <xs:attribute name="name" type="xs:string" />
+  </xs:complexType>
+  <xs:element name="SourceReference" type="SourceReference" />
+  <xs:complexType name="SourceReference">
+    <xs:sequence>
+      <xs:element name="provenanceCollection" type="Provenance" minOccurs="0" maxOccurs="unbounded" />
+    </xs:sequence>
+    <xs:attribute name="id" type="xs:long" />
+    <xs:attribute name="sourceReferenceType" type="xs:string" />
+    <xs:attribute name="reference" type="xs:string" />
+  </xs:complexType>
+  <xs:element name="URLSourceReference" type="URLSourceReference" />
+  <xs:complexType name="URLSourceReference">
+    <xs:complexContent>
+      <xs:extension base="SourceReference">
+        <xs:sequence />
+        <xs:attribute name="sourceURL" type="xs:string" />
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="PublicationSource" type="PublicationSource" />
+  <xs:complexType name="PublicationSource">
+    <xs:complexContent>
+      <xs:extension base="Source">
+        <xs:sequence />
+        <xs:attribute name="authors" type="xs:string" />
+        <xs:attribute name="year" type="xs:integer" />
+        <xs:attribute name="volume" type="xs:integer" />
+        <xs:attribute name="title" type="xs:string" />
+        <xs:attribute name="startPage" type="xs:integer" />
+        <xs:attribute name="endPage" type="xs:integer" />
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="ResearchInstitutionSource" type="ResearchInstitutionSource" />
+  <xs:complexType name="ResearchInstitutionSource">
+    <xs:complexContent>
+      <xs:extension base="Source">
+        <xs:sequence />
+        <xs:attribute name="institutionName" type="xs:string" />
+        <xs:attribute name="institutionDepartment" type="xs:string" />
+        <xs:attribute name="institutionAddress" type="xs:string" />
+        <xs:attribute name="institutionPersons" type="xs:string" />
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="WebServicesSourceReference" type="WebServicesSourceReference" />
+  <xs:complexType name="WebServicesSourceReference">
+    <xs:complexContent>
+      <xs:extension base="SourceReference">
+        <xs:sequence />
+        <xs:attribute name="request" type="xs:string" />
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="InternetSource" type="InternetSource" />
+  <xs:complexType name="InternetSource">
+    <xs:complexContent>
+      <xs:extension base="Source">
+        <xs:sequence />
+        <xs:attribute name="ownerInstitution" type="xs:string" />
+        <xs:attribute name="ownerPersons" type="xs:string" />
+        <xs:attribute name="sourceURI" type="xs:string" />
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+</xs:schema>
+

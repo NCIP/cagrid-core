@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapping PUBLIC "-//EXOLAB/Castor Object Mapping DTD Version 1.0//EN" "http://www.castor.org/mapping.dtd">
+<mapping>
+  <class name="gov.nih.nci.cadsr.umlproject.domain.SemanticMetadata">
+    <map-to xml="SemanticMetadata"
+      ns-uri="gme://caCORE.caBIG/3.0/gov.nih.nci.cadsr.umlproject.domain"/>
+    <field name="id" type="string">
+      <bind-xml name="id" node="attribute"/>
+    </field>
+    <field name="conceptCode" type="string">
+      <bind-xml name="conceptCode" node="attribute"/>
+    </field>
+    <field name="conceptName" type="string">
+      <bind-xml name="conceptName" node="attribute"/>
+    </field>
+    <field name="conceptDefinition" type="string">
+      <bind-xml name="conceptDefinition" node="attribute"/>
+    </field>
+    <field name="isPrimaryConcept" type="boolean">
+      <bind-xml name="isPrimaryConcept" node="attribute"/>
+    </field>
+    <field name="order" type="integer">
+      <bind-xml name="order" node="attribute"/>
+    </field>
+    <field name="orderLevel" type="integer">
+      <bind-xml name="orderLevel" node="attribute"/>
+    </field>
+  </class>
+  <class name="gov.nih.nci.cadsr.domain.AdministeredComponent">
+    <map-to xml="AdministeredComponent" ns-uri="gme://caCORE.caBIG/3.0/gov.nih.nci.cadsr.domain"/>
+    <field name="id" type="string">
+      <bind-xml name="id" node="attribute"/>
+    </field>
+    <field name="preferredName" type="string">
+      <bind-xml name="preferredName" node="attribute"/>
+    </field>
+    <field name="preferredDefinition" type="string">
+      <bind-xml name="preferredDefinition" node="attribute"/>
+    </field>
+    <field name="longName" type="string">
+      <bind-xml name="longName" node="attribute"/>
+    </field>
+    <field name="version" type="float">
+      <bind-xml name="version" node="attribute"/>
+    </field>
+    <field name="workflowStatusName" type="string">
+      <bind-xml name="workflowStatusName" node="attribute"/>
+    </field>
+    <field name="workflowStatusDescription" type="string">
+      <bind-xml name="workflowStatusDescription" node="attribute"/>
+    </field>
+    <field name="latestVersionIndicator" type="string">
+      <bind-xml name="latestVersionIndicator" node="attribute"/>
+    </field>
+    <field name="beginDate" type="date">
+      <bind-xml name="beginDate" node="attribute"/>
+    </field>
+    <field name="endDate" type="date">
+      <bind-xml name="endDate" node="attribute"/>
+    </field>
+    <field name="deletedIndicator" type="string">
+      <bind-xml name="deletedIndicator" node="attribute"/>
+    </field>
+    <field name="changeNote" type="string">
+      <bind-xml name="changeNote" node="attribute"/>
+    </field>
+    <field name="unresolvedIssue" type="string">
+      <bind-xml name="unresolvedIssue" node="attribute"/>
+    </field>
+    <field name="origin" type="string">
+      <bind-xml name="origin" node="attribute"/>
+    </field>
+    <field name="dateCreated" type="date">
+      <bind-xml name="dateCreated" node="attribute"/>
+    </field>
+    <field name="dateModified" type="date">
+      <bind-xml name="dateModified" node="attribute"/>
+    </field>
+    <field name="publicID" type="long">
+      <bind-xml name="publicID" node="attribute"/>
+    </field>
+    <field name="createdBy" type="string">
+      <bind-xml name="createdBy" node="attribute"/>
+    </field>
+    <field name="modifiedBy" type="string">
+      <bind-xml name="modifiedBy" node="attribute"/>
+    </field>
+    <field name="registrationStatus" type="string">
+      <bind-xml name="registrationStatus" node="attribute"/>
+    </field>
+  </class>
+  <class name="gov.nih.nci.cadsr.domain.ValueDomain"
+    extends="gov.nih.nci.cadsr.domain.AdministeredComponent">
+    <map-to xml="ValueDomain" 
+     ns-uri="gme://caCORE.caBIG/3.0/gov.nih.nci.cadsr.domain"/>
+    <field name="datatypeName" type="string">
+      <bind-xml name="datatypeName" node="attribute"/>
+    </field>
+    <field name="UOMName" type="string">
+      <bind-xml name="UOMName" node="attribute"/>
+    </field>
+    <field name="characterSetName" type="string">
+      <bind-xml name="characterSetName" node="attribute"/>
+    </field>
+    <field name="formatName" type="string">
+      <bind-xml name="formatName" node="attribute"/>
+    </field>
+    <field name="maximumLengthNumber" type="integer">
+      <bind-xml name="maximumLengthNumber" node="attribute"/>
+    </field>
+    <field name="minimumLengthNumber" type="integer">
+      <bind-xml name="minimumLengthNumber" node="attribute"/>
+    </field>
+    <field name="decimalPlace" type="integer">
+      <bind-xml name="decimalPlace" node="attribute"/>
+    </field>
+    <field name="highValueNumber" type="string">
+      <bind-xml name="highValueNumber" node="attribute"/>
+    </field>
+    <field name="lowValueNumber" type="string">
+      <bind-xml name="lowValueNumber" node="attribute"/>
+    </field>
+  </class>
+  <class name="gov.nih.nci.cadsr.domain.NonenumeratedValueDomain"
+    extends="gov.nih.nci.cadsr.domain.ValueDomain">
+    <map-to xml="ValueDomain" ns-uri="gme://caCORE.caBIG/3.0/gov.nih.nci.cadsr.domain"/>
+  </class>
+  <class name="gov.nih.nci.cadsr.domain.EnumeratedValueDomain"
+    extends="gov.nih.nci.cadsr.domain.ValueDomain">
+    <map-to xml="ValueDomain" ns-uri="gme://caCORE.caBIG/3.0/gov.nih.nci.cadsr.domain"/>
+  </class>
+</mapping>

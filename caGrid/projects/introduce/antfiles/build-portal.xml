@@ -1,0 +1,211 @@
+<project name="cagrid_portal" basedir="." default="usage">
+	<target name="usage">
+		<echo message="Not to be called directly." />
+	</target>
+	<!-- put stuff in here needed for building introduce-->
+	<target name="preparePortal">
+		<path id="Portal.classpath">
+			<pathelement location="${introduce.classes.dir}" />
+			<fileset dir="${lib.dir}">
+				<include name="*.jar" />
+			</fileset>
+			<fileset dir="${build.lib.dir}">
+				<include name="*.jar" />
+			</fileset>
+			<fileset dir="${ext.lib.dir}">
+				<include name="*.jar" />
+			</fileset>
+			<fileset dir="${ext.globus.dir}/lib">
+				<include name="*.jar" />
+			</fileset>
+			<fileset dir="${ant.library.dir}">
+				<include name="*.jar" />
+			</fileset>
+			<pathelement location="${basedir}/resources/portal/introduce" />
+			<pathelement location="${basedir}/extensions" />
+			<pathelement location="${basedir}/doc/help" />
+		</path>
+		<path id="Portal.test.classpath">
+			<pathelement location="${introduce.classes.dir}" />
+			<pathelement location="${introduce.test.classes.dir}" />
+			<fileset dir="${lib.dir}">
+				<include name="*.jar" />
+			</fileset>
+			<fileset dir="${build.lib.dir}">
+				<include name="*.jar" />
+			</fileset>
+			<fileset dir="${test.lib.dir}">
+				<include name="*.jar" />
+			</fileset>
+			<fileset dir="${ext.test.lib.dir}">
+				<include name="*.jar" />
+			</fileset>
+			<fileset dir="${ext.lib.dir}">
+				<include name="*.jar" />
+			</fileset>
+			<fileset dir="${ext.globus.dir}/lib">
+				<include name="*.jar" />
+			</fileset>
+			<fileset dir="${ant.library.dir}">
+				<include name="*.jar" />
+			</fileset>
+			<pathelement location="${basedir}/resources/portal/introduce" />
+			<pathelement location="${basedir}/doc/help" />
+		</path>
+		<path id="Portal.run.test.classpath">
+			<fileset dir="${lib.dir}">
+				<include name="*.jar" />
+			</fileset>
+			<fileset dir="${build.lib.dir}">
+				<include name="*.jar" />
+			</fileset>
+			<fileset dir="${test.lib.dir}">
+				<include name="*.jar" />
+			</fileset>
+			<fileset dir="${ext.test.lib.dir}">
+				<include name="*.jar" />
+			</fileset>
+			<fileset dir="${ext.lib.dir}">
+				<include name="*.jar" />
+			</fileset>
+			<fileset dir="${ext.globus.dir}/lib">
+				<include name="addressing-1.0.jar" />
+				<include name="axis-url.jar" />
+				<include name="axis.jar" />
+				<include name="bootstrap.jar" />
+				<include name="cog-axis.jar" />
+				<include name="cog-jglobus.jar" />
+				<include name="cog-tomcat.jar" />
+				<include name="cog-url.jar" />
+				<include name="commonj.jar" />
+				<include name="commons-beanutils.jar" />
+				<include name="commons-cli-2.0.jar" />
+				<include name="commons-collections-3.0.jar" />
+				<include name="commons-digester.jar" />
+				<include name="commons-discovery.jar" />
+				<include name="commons-logging.jar" />
+				<include name="concurrent.jar" />
+				<include name="cryptix-asn1.jar" />
+				<include name="cryptix.jar" />
+				<include name="cryptix32.jar" />
+				<include name="globus_resolution_service.jar" />
+				<include name="globus_resolution_stubs_java.jar" />
+				<include name="globus_resolution_test.jar" />
+				<include name="globus_transfer_service.jar" />
+				<include name="globus_transfer_stubs_java.jar" />
+				<include name="globus_transfer_test.jar" />
+				<include name="globus_usage_core.jar" />
+				<include name="globus_usage_packets_common.jar" />
+				<include name="globus_wsrf_tools_test.jar" />
+				<include name="jaxrpc.jar" />
+				<include name="jce-jdk13-125.jar" />
+				<include name="jgss.jar" />
+				<include name="junit.jar" />
+				<include name="log4j-1.2.8.jar" />
+				<include name="naming-common.jar" />
+				<include name="naming-factory.jar" />
+				<include name="naming-java.jar" />
+				<include name="naming-resources.jar" />
+				<include name="opensaml.jar" />
+				<include name="puretls.jar" />
+				<include name="resolver.jar" />
+				<include name="saaj.jar" />
+				<include name="servlet.jar" />
+				<include name="wsdl4j.jar" />
+				<include name="wsrf_common.jar" />
+				<include name="wsrf_core.jar" />
+				<include name="wsrf_core_registry.jar" />
+				<include name="wsrf_core_registry_stubs.jar" />
+				<include name="wsrf_core_samples_authzService.jar" />
+				<include name="wsrf_core_samples_authzService_stubs.jar" />
+				<include name="wsrf_core_samples_counter.jar" />
+				<include name="wsrf_core_samples_counter_stubs.jar" />
+				<include name="wsrf_core_samples_mgmt.jar" />
+				<include name="wsrf_core_samples_mgmt_stubs.jar" />
+				<include name="wsrf_core_stubs.jar" />
+				<include name="wsrf_provider_jce.jar" />
+				<include name="wsrf_test.jar" />
+				<include name="wsrf_test_interop.jar" />
+				<include name="wsrf_test_interop_stubs.jar" />
+				<include name="wsrf_test_unit.jar" />
+				<include name="wsrf_test_unit_stubs.jar" />
+				<include name="wsrf_tools.jar" />
+				<include name="wss4j.jar" />
+				<include name="xalan.jar" />
+				<include name="xmlsec.jar" />
+				<exclude name="globus_wsrf_mds*.jar"/>
+				<exclude name="globus_wsrf_servicegroup*.jar"/>
+			</fileset>
+			<fileset dir="${ant.library.dir}">
+				<include name="*.jar" />
+			</fileset>
+			<fileset dir="${basedir}/extensions/lib">
+				<include name="*.jar" />
+				<exclude name="${jars.prefixname}*" />
+			</fileset>
+			<pathelement location="${basedir}/resources/portal/introduce" />
+			<pathelement location="${basedir}/extensions" />
+			<pathelement location="${basedir}/doc/help" />
+		</path>
+		<path id="Portal.run.classpath">
+			<fileset dir="${lib.dir}">
+				<include name="*.jar" />
+			</fileset>
+			<fileset dir="${build.lib.dir}">
+				<include name="*.jar" />
+			</fileset>
+			<fileset dir="${test.lib.dir}">
+				<include name="*.jar" />
+			</fileset>
+			<fileset dir="${ext.test.lib.dir}">
+				<include name="*.jar" />
+			</fileset>
+			<fileset dir="${ext.lib.dir}">
+				<include name="*.jar" />
+			</fileset>
+			<fileset dir="${extensions.lib.dir}">
+				<include name="*.jar" />
+				<exclude name="${jars.prefixname}*" />
+			</fileset>
+			<fileset dir="${ext.globus.dir}/lib">
+				<include name="addressing*.jar" />
+				<include name="axis-*.jar" />
+				<include name="axis.jar" />
+				<include name="bootstrap.jar" />
+				<include name="cog-*.jar" />
+				<include name="commonj.jar" />
+				<include name="commons-*.jar" />
+				<include name="concurrent.jar" />
+				<include name="cryptix*.jar" />
+				<include name="globus_*.jar" />
+				<include name="jaxrpc.jar" />
+				<include name="jce-*.jar" />
+				<include name="jgss.jar" />
+				<include name="junit*.jar" />
+				<include name="log4j*.jar" />
+				<include name="naming-common.jar" />
+				<include name="naming-factory.jar" />
+				<include name="naming-java.jar" />
+				<include name="naming-resources.jar" />
+				<include name="opensaml.jar" />
+				<include name="puretls.jar" />
+				<include name="resolver.jar" />
+				<include name="saaj.jar" />
+				<include name="servlet.jar" />
+				<include name="wsdl4j.jar" />
+				<include name="wsrf_*.jar" />
+				<include name="wss4j.jar" />
+				<include name="xalan.jar" />
+				<include name="xmlsec.jar" />
+				<exclude name="globus_wsrf_mds*.jar"/>
+				<exclude name="globus_wsrf_servicegroup*.jar"/>
+			</fileset>
+			<fileset dir="${ant.library.dir}">
+				<include name="*.jar" />
+			</fileset>
+			<pathelement location="${basedir}/resources/portal/introduce" />
+			<pathelement location="${basedir}/extensions" />
+			<pathelement location="${basedir}/doc/help" />
+		</path>
+	</target>
+</project>

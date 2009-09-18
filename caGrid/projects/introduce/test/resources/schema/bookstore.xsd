@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+  xmlns="gme://projectmobius.org/1/BookStore"
+  targetNamespace="gme://projectmobius.org/1/BookStore" elementFormDefault="qualified"
+  attributeFormDefault="unqualified">
+  <xsd:element name="Book" type="BookType"/>
+  <xsd:complexType name="BookType">
+    <xsd:sequence>
+      <xsd:element name="Title" type="xsd:string" minOccurs="1" maxOccurs="1"/>
+      <xsd:element name="Author" type="xsd:string" minOccurs="1" maxOccurs="1"/>
+      <xsd:element name="pDate" type="xsd:string" minOccurs="1" maxOccurs="1"/>
+      <xsd:element name="ISBN" type="xsd:string" minOccurs="1" maxOccurs="1"/>
+      <xsd:element name="Publisher" type="xsd:string" minOccurs="1" maxOccurs="1"/>
+    </xsd:sequence>
+    <xsd:attribute name="duey" type="xsd:string"/>
+    <xsd:attribute name="section" type="xsd:string"/>
+  </xsd:complexType>
+</xsd:schema>

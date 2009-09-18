@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<?xml-stylesheet type="text/xsl" href="http://ivyrep.jayasoft.org/ivy-doc.xsl"?>
+<ivy-module version="2.0">
+    <info organisation="rhino" module="js" revision="1.6R5" status="release">
+        <license name="Rhino" url="http://www.mozilla.org/rhino/download.html"/>
+
+        <description homepage="http://www.mozilla.org/rhino/">Rhino is an open-source implementation of JavaScript written entirely in Java. It is typically embedded into Java applications to provide scripting to end users. . 
+        </description>
+    </info>
+</ivy-module>
+

@@ -1,0 +1,12 @@
+<ns1:XMLSchemaImportInformation xmlns:ns1="gme://gme.cagrid.org/2.0/GlobalModelExchange/domain">
+  <ns1:XMLSchemaNamespace uri="gme://caArray.caBIG/2.0/gov.nih.nci.caarray.domain.sample" />
+  <ns1:imports>
+    <ns1:XMLSchemaNamespace uri="gme://caArray.caBIG/2.0/gov.nih.nci.caarray.domain" />
+    <ns1:XMLSchemaNamespace uri="gme://caArray.caBIG/2.0/gov.nih.nci.caarray.domain.vocabulary" />
+    <ns1:XMLSchemaNamespace uri="gme://caArray.caBIG/2.0/gov.nih.nci.caarray.domain.protocol" />
+    <ns1:XMLSchemaNamespace uri="gme://caArray.caBIG/2.0/gov.nih.nci.caarray.domain.contact" />
+    <ns1:XMLSchemaNamespace uri="gme://caArray.caBIG/2.0/gov.nih.nci.caarray.domain.hybridization" />
+    <ns1:XMLSchemaNamespace uri="gme://caArray.caBIG/2.0/edu.wustl.catissuecore.domain" />
+    <ns1:XMLSchemaNamespace uri="gme://caArray.caBIG/2.0/edu.georgetown.pir" />
+  </ns1:imports>
+</ns1:XMLSchemaImportInformation>

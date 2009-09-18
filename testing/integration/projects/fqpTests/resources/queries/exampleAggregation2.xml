@@ -1,0 +1,9 @@
+<ns1:DCQLQuery xmlns:ns1="http://caGrid.caBIG/1.0/gov.nih.nci.cagrid.dcql">
+ <!-- Retrieves all Address instances -->
+ <ns1:TargetObject name="gov.nih.nci.cacoresdk.domain.onetoone.unidirectional.Address">
+  <ns1:Attribute name="zip" predicate="LIKE" value="%5"/>
+ </ns1:TargetObject>
+ <!-- target service URLs supplied at test runtime -->
+ <ns1:targetServiceURL>http://localhost:8888/wsrf/services/cagrid/ExampleSdkService1</ns1:targetServiceURL>
+ <ns1:targetServiceURL>http://localhost:8888/wsrf/services/cagrid/ExampleSdkService2</ns1:targetServiceURL>
+</ns1:DCQLQuery>

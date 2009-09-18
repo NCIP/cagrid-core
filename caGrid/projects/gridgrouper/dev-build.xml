@@ -1,0 +1,424 @@
+<?xml version="1.0"?>
+<project name="Developer Modified Build File" basedir=".">
+	<!-- This file is designed to allow the developer to extend the     -->
+	<!-- build process without having to edit the master build.xml      -->
+	<!-- file. DO NOT REMOVE ANY TARGETS                                -->
+	<!-- ============================================================== -->
+
+
+	<!-- ============================================================== -->
+	<!-- Place any other properties you will need here                  -->
+	<!-- ============================================================== -->
+	<property environment="env" />
+	<property file="${basedir}/project.properties" />
+	<property file="${basedir}/build.properties" />
+
+	<property name="jar.prefix" value="caGrid-gridgrouper" />
+	<property name="jar.suffix" value="${project.version}.jar" />
+
+	<property name="common.jar.name" value="${jar.prefix}-common-${jar.suffix}" />
+	<property name="client.jar.name" value="${jar.prefix}-client-${jar.suffix}" />
+	<property name="service.jar.name" value="${jar.prefix}-service-${jar.suffix}" />
+	<property name="stubs.jar.name" value="${jar.prefix}-stubs-${jar.suffix}" />
+	<property name="resources.jar.name" value="${jar.prefix}-resources-${jar.suffix}" />
+	<property name="test.jar.name" value="${jar.prefix}-tests-${jar.suffix}" />
+
+	<property name="ext.dir" location="${basedir}/ext" />
+	<property name="ext.dependencies.dir" location="${ext.dir}/dependencies" />
+	<property name="ext.targetgrid.dir" location="${ext.dir}/target_grid" />
+	<property name="ext.lib" location="${ext.dependencies.dir}/service/jars" />
+	<property name="ext.test.lib" value="${ext.dependencies.dir}/test/jars" />
+	<property name="ext.tools.lib.dir" location="${ext.dependencies.dir}/tools/jars" />
+
+	<property name="build.dir" location="build" />
+	<property name="build.dest" location="${build.dir}/classes" />
+
+	<property name="test.dir" value="test" />
+	<property name="test.log.dir" value="test/logs" />
+	<property name="test.resources.dir" value="${test.dir}/resources" />
+	<property name="test.hibernate.props" value="${test.resources.dir}/grouper.hibernate.properties" />
+	<property name="junit.results.dir" value="${test.log.dir}/junit" />
+
+	<property name="conf.dir" value="resources/conf" />
+	<property name="hbm.dir" value="resources/hbm" />
+	<property name="hibernate.props" value="${conf.dir}/grouper.hibernate.properties" />
+	<property name="build.sql" location="${build.dir}/sql" />
+
+	<!-- overide the introduce location of this which is suposed to be in tools/lib -->
+	<property name="ant.contrib.location" value="${ext.tools.lib.dir}/ant-contrib-1.0b3.jar" />
+
+	<target name="defineClasspaths" depends="checkGlobus">
+		<path id="tasks.run.extended.classpath" />
+		<runtarget target="defineExtendedClasspaths" />
+		<path id="base.classpath">
+			<fileset dir="${lib.dir}">
+				<include name="*.jar" />
+			</fileset>
+			<fileset dir="${ext.globus.dir}/lib">
+				<include name="*.jar" />
+				<exclude name="${stubs.jar.name}" />
+				<exclude name="${common.jar.name}" />
+				<exclude name="${client.jar.name}" />
+				<exclude name="${service.jar.name}" />
+				<exclude name="commons-collections-3.0.jar" />
+			</fileset>
+			<path refid="base.extended.classpath" />
+		</path>
+		<path id="service.build.classpath">
+			<pathelement location="${stubs.dest}" />
+			<path refid="service.build.extended.classpath" />
+			<path refid="base.classpath" />
+		</path>
+		<path id="service.run.classpath">
+			<pathelement location="${build.dest}" />
+			<path refid="service.run.extended.classpath" />
+			<path refid="service.build.classpath" />
+		</path>
+		<path id="test.build.classpath">
+			<fileset dir="${test.lib.dir}">
+				<include name="*.jar" />
+			</fileset>
+			<pathelement location="${build.dest}" />
+			<path refid="test.build.extended.classpath" />
+			<path refid="service.build.classpath" />
+		</path>
+		<path id="test.run.classpath">
+			<pathelement location="${test.build.dest}" />
+			<path refid="test.run.extended.classpath" />
+			<path refid="test.build.classpath" />
+		</path>
+		<path id="run.classpath">
+			<pathelement location="${build.dest}" />
+			<path refid="run.extended.classpath" />
+			<path refid="service.build.classpath" />
+			<pathelement location="${ext.globus.dir}" />
+		</path>
+		<path id="tasks.run.classpath">
+			<path refid="tasks.run.extended.classpath" />
+			<fileset dir="${tools.lib.dir}">
+				<include name="*.jar" />
+			</fileset>
+			<fileset dir="${lib.dir}">
+				<include name="*.jar" />
+			</fileset>
+			<fileset dir="${ext.globus.dir}/lib">
+				<include name="*.jar" />
+			</fileset>
+		</path>
+	</target>
+
+
+	<!-- ============================================================== -->
+	<!-- Create any extended Classpaths here                            -->
+	<!-- ============================================================== -->
+	<target name="defineExtendedClasspaths">
+		<path id="base.extended.classpath">
+			<fileset dir="${ext.lib}">
+				<include name="*.jar" />
+			</fileset>
+		</path>
+		<path id="service.build.extended.classpath">
+		</path>
+		<path id="service.run.extended.classpath">
+			<pathelement location="resources/conf" />
+		</path>
+		<path id="test.build.extended.classpath">
+			<fileset dir="${ext.test.lib}">
+				<include name="*.jar" />
+			</fileset>
+		</path>
+		<path id="test.run.extended.classpath">
+			<pathelement location="${test.dir}/resources" />
+		</path>
+		<path id="run.extended.classpath">
+			<pathelement location="resources/conf" />
+		</path>
+		<path id="tasks.run.extended.classpath">
+			<fileset dir="${ext.lib}">
+				<include name="*.jar" />
+			</fileset>
+			<fileset dir="${ext.tools.lib.dir}">
+				<include name="*.jar" />
+			</fileset>
+
+		</path>
+	</target>
+
+
+	<!-- ============================================================== -->
+	<!-- Pre Init Target                                                -->
+	<!-- ============================================================== -->
+	<target name="preInit" depends="checkValidate">
+		<runtarget target="configure" />
+	</target>
+
+	<target name="checkValidate" unless="perform.deployment.validation">
+		<property name="no.deployment.validation" value="true" />
+	</target>
+
+	<!-- ============================================================== -->
+	<!-- Post Init Build Target                                         -->
+	<!-- ============================================================== -->
+	<target name="postInit">
+		<mkdir dir="${build.sql}" />
+	</target>
+
+
+	<!-- ============================================================== -->
+	<!-- Pre Stubs Target                                               -->
+	<!-- ============================================================== -->
+	<target name="preStubs">
+
+	</target>
+
+	<!-- ============================================================== -->
+	<!-- Post Stubs Build Target                                        -->
+	<!-- ============================================================== -->
+	<target name="postStubs">
+
+	</target>
+
+	<!-- ============================================================== -->
+	<!-- Pre Compile Stubs Build Target                                 -->
+	<!-- ============================================================== -->
+	<target name="preCompileStubs">
+
+	</target>
+
+	<!-- ============================================================== -->
+	<!-- Post Compile Stubs Build Target                                -->
+	<!-- ============================================================== -->
+	<target name="postCompileStubs">
+
+	</target>
+
+	<!-- ============================================================== -->
+	<!-- Pre Jar Stubs Build Target                                     -->
+	<!-- ============================================================== -->
+	<target name="preJarStubs">
+
+	</target>
+
+	<!-- ============================================================== -->
+	<!-- Post Jar Stubs Build Target                                    -->
+	<!-- ============================================================== -->
+	<target name="postJarStubs">
+
+	</target>
+
+	<!-- ============================================================== -->
+	<!-- Pre Compile Build Target                                       -->
+	<!-- ============================================================== -->
+	<target name="preCompile">
+
+	</target>
+
+	<!-- ============================================================== -->
+	<!-- Post Compile Build Target                                       -->
+	<!-- ============================================================== -->
+	<target name="postCompile">
+
+	</target>
+
+	<!-- ============================================================== -->
+	<!-- Pre Jar Build Target                                       -->
+	<!-- ============================================================== -->
+	<target name="preJar">
+
+	</target>
+
+
+	<!-- Create a JAR file with the implementation classes -->
+	<target name="jar" depends="compile">
+		<jar jarfile="${build.lib.dir}/${client.jar.name}" basedir="${build.dest}">
+			<include name="**/client/**" />
+		</jar>
+		<jar jarfile="${build.lib.dir}/${service.jar.name}" basedir="${build.dest}">
+			<include name="**/service/**" />
+		</jar>
+
+		<jar jarfile="${build.lib.dir}/${common.jar.name}" basedir="${build.dest}">
+			<include name="**/*" />
+			<exclude name="**/client/**" />
+			<exclude name="**/service/**" />
+			<exclude name="**/ui/**" />
+		</jar>
+
+		<jar jarfile="${build.lib.dir}/${resources.jar.name}" basedir="${conf.dir}">
+			<include name="**/*" />
+		</jar>
+	</target>
+
+
+
+
+	<!-- ============================================================== -->
+	<!-- Post Jar Build Target                                          -->
+	<!-- ============================================================== -->
+	<target name="postJar">
+
+	</target>
+
+	<!-- ============================================================== -->
+	<!-- Pre Compile Tests Build Target                                 -->
+	<!-- ============================================================== -->
+	<target name="preCompileTests">
+
+	</target>
+
+	<!-- ============================================================== -->
+	<!-- Post Compile Tests Build Target                                -->
+	<!-- ============================================================== -->
+	<target name="postCompileTests">
+
+	</target>
+
+	<!-- ============================================================== -->
+	<!-- Pre Jar Tests Build Target                                     -->
+	<!-- ============================================================== -->
+	<target name="preJarTests">
+
+	</target>
+
+	<!-- ============================================================== -->
+	<!-- Post Jar Tests Build Target                                    -->
+	<!-- ============================================================== -->
+	<target name="postJarTests">
+
+	</target>
+
+	<!-- ============================================================== -->
+	<!-- Pre Clean Target                                               -->
+	<!-- ============================================================== -->
+	<target name="preClean">
+
+	</target>
+
+	<!-- ============================================================== -->
+	<!-- Post Clean Target                                              -->
+	<!-- ============================================================== -->
+	<target name="postClean">
+
+	</target>
+
+	<target name="configure" description="Configures the project based on settings.">
+		<!-- These are the template files we are copying from -->
+		<fileset id="templates.fileset" dir="${basedir}">
+			<include name="*.template" />
+		</fileset>
+
+		<copy todir="${basedir}" overwrite="true">
+			<fileset refid="templates.fileset" />
+			<mapper type="glob" from="*.template" to="*" />
+			<filterset filtersfile="${ext.targetgrid.dir}/service_urls.properties" />
+		</copy>
+
+	</target>
+
+
+	<!-- call the test target for each project and aggregates the log resutls  -->
+	<!-- Post Introduce Edit-->
+	<target name="create_config_files" description="Creates conf files from examples.
+				Set property force.config.replace to true to force replacement.">
+		<copy todir="${test.dir}/resources" overwrite="${force.config.replace}">
+			<fileset dir="${test.dir}/resources">
+				<include name="**/*.example" />
+			</fileset>
+			<mapper type="glob" from="*.example" to="*" />
+		</copy>
+	</target>
+
+	<!-- Post Introduce Edit-->
+	<target name="test" depends="checkGlobus,create_config_files,testGrouperInit" description="Runs the service's tests.">
+		<echo message="Test results dir: ${junit.results.dir}" />
+		<mkdir dir="${junit.results.dir}" />
+		<junit dir="${basedir}" printsummary="yes" haltonfailure="true" haltonerror="true" showoutput="true" forkmode="once">
+			<classpath refid="test.run.classpath" />
+			<formatter type="xml" />
+			<batchtest fork="yes" haltonfailure="true" haltonerror="true" todir="${junit.results.dir}">
+				<fileset dir="${test.src.dir}">
+					<include name="**/Test*.java" />
+					<include name="**/*TestCase.java" />
+				</fileset>
+			</batchtest>
+		</junit>
+	</target>
+
+	<!-- Post Introduce Edit-->
+	<target name="createTestDatabase" description="" depends="jar">
+		<java classname="gov.nih.nci.cagrid.gridgrouper.testutils.MysqlDBUtil" fork="no" classpathref="test.run.classpath" />
+	</target>
+
+
+	<!-- Post Introduce Edit-->
+	<target name="dropTestGrouperSchema" depends="createTestDatabase">
+		<taskdef name="testschemadrop" classname="net.sf.hibernate.tool.hbm2ddl.SchemaExportTask" classpathref="test.run.classpath" />
+		<testschemadrop properties="${test.hibernate.props}" quiet="yes" text="no" drop="yes" delimiter=";" output="${build.sql}/test-schema-export.sql">
+			<fileset dir="${hbm.dir}">
+				<include name="**/*.hbm.xml" />
+			</fileset>
+		</testschemadrop>
+	</target>
+
+	<!-- Post Introduce Edit-->
+	<target name="createTestGrouperSchema" depends="dropTestGrouperSchema">
+		<taskdef name="testschemacreate" classname="net.sf.hibernate.tool.hbm2ddl.SchemaExportTask" classpathref="test.run.classpath" />
+		<testschemacreate properties="${test.hibernate.props}" quiet="yes" text="no" drop="no" delimiter=";" output="${build.sql}/test-schema-export.sql">
+			<fileset dir="${hbm.dir}">
+				<include name="**/*.hbm.xml" />
+			</fileset>
+		</testschemacreate>
+	</target>
+	<!-- Post Introduce Edit-->
+	<target name="testGrouperInit" depends="createTestGrouperSchema" description="initialize database">
+
+		<java fork="true" classpathref="test.run.classpath" classname="edu.internet2.middleware.grouper.RegistryInstall" failonerror="true" />
+	</target>
+
+	<!-- Post Introduce Edit-->
+	<target name="dropGrouperSchema" depends="jars">
+		<taskdef name="schemadrop" classname="net.sf.hibernate.tool.hbm2ddl.SchemaExportTask" classpathref="service.run.classpath" />
+		<schemadrop properties="${hibernate.props}" quiet="yes" text="no" drop="yes" delimiter=";" output="${build.sql}/schema-export.sql">
+			<fileset dir="${hbm.dir}">
+				<include name="**/*.hbm.xml" />
+			</fileset>
+		</schemadrop>
+	</target>
+
+	<!-- Post Introduce Edit-->
+	<target name="createGrouperSchema" depends="dropGrouperSchema">
+		<taskdef name="schemacreate" classname="net.sf.hibernate.tool.hbm2ddl.SchemaExportTask" classpathref="service.run.classpath" />
+		<schemacreate properties="${hibernate.props}" quiet="no" text="no" drop="no" delimiter=";" output="${build.sql}/schema-export.sql">
+			<fileset dir="${hbm.dir}">
+				<include name="**/*.hbm.xml" />
+			</fileset>
+		</schemacreate>
+	</target>
+
+	<!-- Post Introduce Edit-->
+	<target name="grouperInit" depends="createGrouperSchema" description="initialize database">
+		<java fork="true" classpathref="service.run.classpath" classname="edu.internet2.middleware.grouper.RegistryInstall" failonerror="true" />
+	</target>
+
+
+	<target name="addAdmin" description="Add administrator to grid grouper" depends="checkGlobus">
+		<input message="Please enter the grid identity:" addproperty="gridId.input" />
+		<java classname="gov.nih.nci.cagrid.gridgrouper.service.tools.GridGrouperBootstrapper" fork="yes" newenvironment="true" failonerror="true">
+			<arg value="-addAdmin" />
+			<arg value="-userId" />
+			<arg value="${gridId.input}" />
+			<classpath refid="run.classpath" />
+		</java>
+	</target>
+
+
+	<target name="generateTrustReport" description="Generates a Grid Trust Report." depends="init">
+		<input message="Please enter a file location to write the report to [grid-trust-report.txt]:" addproperty="out.input" defaultvalue="grid-trust-report.txt" />
+		<java classname="org.cagrid.gaards.pki.tools.GenerateTrustReport" fork="true" newenvironment="true" failonerror="true">
+			<arg value="-o" />
+			<arg value="${out.input}" />
+			<classpath refid="run.classpath" />
+		</java>
+	</target>
+
+</project>

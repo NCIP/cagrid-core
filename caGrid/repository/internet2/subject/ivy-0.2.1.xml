@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+
+<ivy-module version="2.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:noNamespaceSchemaLocation="http://incubator.apache.org/ivy/schemas/ivy.xsd">
+
+    <info organisation="internet2" module="subject" revision="0.2.1">
+        <license name="Apache" url="http://www.apache.org/licenses/LICENSE-2.0.txt"/>
+        <description homepage="https://wiki.internet2.edu/confluence/display/i2miCommon/Subject+API"
+            >The Subject API is a technology developed jointly by the Signet and Grouper Projects to
+            integrate a java application with a site's existing Identity Management operations. It
+            enables any type of object whose identity is being managed - person, group, application,
+            computer, etc - to be presented to that application without requiring the application to
+            be specifically designed for particular object types or with knowledge of how those
+            objects are stored and represented. Those details form the configuration of the Subject
+            API. </description>
+    </info>
+
+</ivy-module>

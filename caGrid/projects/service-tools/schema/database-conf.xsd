@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema targetNamespace="http://cagrid.org/tools/database"
+	attributeFormDefault="qualified" elementFormDefault="qualified"
+	xmlns:xs="http://www.w3.org/2001/XMLSchema"
+	xmlns:db="http://cagrid.org/tools/database">
+	<xs:element name="DatabaseConfiguration" type="db:DatabaseConfiguration" />
+	<xs:complexType name="DatabaseConfiguration">
+		<xs:sequence>
+			<xs:element name="host" type="xs:string" minOccurs="1"
+				maxOccurs="1" />
+			<xs:element name="port" type="xs:int" minOccurs="1"
+				maxOccurs="1" />
+			<xs:element name="username" type="xs:string" minOccurs="1"
+				maxOccurs="1" />
+			<xs:element name="password" type="xs:string" minOccurs="1"
+				maxOccurs="1" />
+		</xs:sequence>
+	</xs:complexType>
+</xs:schema>

@@ -1,0 +1,25 @@
+<?xml version="1.0"?>
+
+<ivy-module version="2.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:noNamespaceSchemaLocation="http://incubator.apache.org/ivy/schemas/ivy.xsd">
+
+	<info organisation="apache" module="commons-logging" revision="1.1">
+		<description homepage="http://commons.apache.org/logging/">When writing a library it is very
+			useful to log information. However there are many logging implementations out there, and
+			a library cannot impose the use of a particular one on the overall application that the
+			library is a part of. The Logging package is an ultra-thin bridge between different
+			logging implementations. A library that uses the commons-logging API can be used with
+			any logging implementation at runtime. Commons-logging comes with support for a number
+			of popular logging implementations, and writing adapters for others is a reasonably
+			simple task. Applications (rather than libraries) may also choose to use
+			commons-logging. While logging-implementation independence is not as important for
+			applications as it is for libraries, using commons-logging does allow the application to
+			change to a different logging implementation without recompiling code. Note that
+			commons-logging does not attempt to initialise or terminate the underlying logging
+			implementation that is used at runtime; that is the responsibility of the application.
+			However many popular logging implementations do automatically initialise themselves; in
+			this case an application may be able to avoid containing any code that is specific to
+			the logging implementation used.</description>
+	</info>
+
+</ivy-module>

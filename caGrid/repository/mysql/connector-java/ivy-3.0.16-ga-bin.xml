@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+
+<ivy-module version="2.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:noNamespaceSchemaLocation="http://incubator.apache.org/ivy/schemas/ivy.xsd">
+
+	<info organisation="mysql" module="connector-java" revision="3.0.16-ga-bin">
+		<description>MySQL Connector/J is the official JDBC driver for MySQL.</description>
+	</info>
+
+	<configurations>
+		<!-- Public Configurations-->
+		<conf name="default" visibility="public"/>
+	</configurations>
+
+
+	<publications>
+		<artifact name="mysql-connector-java" type="jar"/>
+	</publications>
+
+	<dependencies/>
+</ivy-module>

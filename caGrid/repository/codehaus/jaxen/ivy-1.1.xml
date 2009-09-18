@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+
+<ivy-module version="2.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:noNamespaceSchemaLocation="http://incubator.apache.org/ivy/schemas/ivy.xsd">
+
+    <info organisation="codehaus" module="jaxen" revision="1.1" status="release">
+        <license name="BSD-like" url="http://jaxen.org/license.html"/>
+        <description homepage="http://ws.apache.org/jaxme/js/index.html">The jaxen project is a Java
+            XPath Engine. jaxen is a universal object model walker, capable of evaluating XPath
+            expressions across multiple models. Currently supported are dom4j, JDOM, and
+        DOM.</description>
+    </info>
+
+    <dependencies>
+        <dependency org="metro" name="xsom" rev="20060901"/>
+    </dependencies>
+</ivy-module>

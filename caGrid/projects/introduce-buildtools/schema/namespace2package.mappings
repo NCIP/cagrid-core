@@ -1,0 +1,2 @@
+gme\://gov.nih.nci.cagrid.introduce/1/Deployment=gov.nih.nci.cagrid.introduce.servicetasks.beans.deployment
+gme\://gov.nih.nci.cagrid.introduce/1/DeploymentValidator=gov.nih.nci.cagrid.introduce.servicetasks.beans.deployment.validator

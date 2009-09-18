@@ -1,0 +1,4 @@
+Introduce creates the domain model specific type mappings in the common jar... the "generic" data service client can't be bound to a specific model.
+when we deploy a release (with a generic ds client), we can delete that file (it will fall back to globus behavior).
+
+we may want to provide tools to merge wsdd files for data clients (wrap axis admin client).

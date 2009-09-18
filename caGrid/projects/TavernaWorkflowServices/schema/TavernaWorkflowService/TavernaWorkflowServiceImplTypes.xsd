@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schema xmlns="http://www.w3.org/2001/XMLSchema" xmlns:wsa="http://schemas.xmlsoap.org/ws/2004/03/addressing" xmlns:tns="http://service.workflow.cagrid.nci.nih.gov/TavernaWorkflowService/ServiceImpl/types" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:wsrbf="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-BaseFaults-1.2-draft-01.xsd" targetNamespace="http://service.workflow.cagrid.nci.nih.gov/TavernaWorkflowService/ServiceImpl/types" elementFormDefault="qualified" attributeFormDefault="unqualified">
+  <import namespace="http://schemas.xmlsoap.org/ws/2004/03/addressing" schemaLocation="../ws/addressing/WS-Addressing.xsd" />
+  <import namespace="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-BaseFaults-1.2-draft-01.xsd" schemaLocation="../wsrf/faults/WS-BaseFaults.xsd" />
+  <element name="TavernaWorkflowServiceImplReference">
+    <complexType>
+      <sequence>
+        <element ref="wsa:EndpointReference" />
+      </sequence>
+    </complexType>
+  </element>
+  <element name="CannotCancelWorkflowFault" type="tns:CannotCancelWorkflowFault" />
+  <complexType name="CannotCancelWorkflowFault">
+    <complexContent>
+      <extension base="wsrbf:BaseFaultType" />
+    </complexContent>
+  </complexType>
+  <element name="WorkflowException" type="tns:WorkflowException" />
+  <complexType name="WorkflowException">
+    <complexContent>
+      <extension base="wsrbf:BaseFaultType" />
+    </complexContent>
+  </complexType>
+  <element name="CannotPauseWorkflowFault" type="tns:CannotPauseWorkflowFault" />
+  <complexType name="CannotPauseWorkflowFault">
+    <complexContent>
+      <extension base="wsrbf:BaseFaultType" />
+    </complexContent>
+  </complexType>
+  <element name="CannotResumeWorkflowFault" type="tns:CannotResumeWorkflowFault" />
+  <complexType name="CannotResumeWorkflowFault">
+    <complexContent>
+      <extension base="wsrbf:BaseFaultType" />
+    </complexContent>
+  </complexType>
+  <element name="CannotStartWorkflowFault" type="tns:CannotStartWorkflowFault" />
+  <complexType name="CannotStartWorkflowFault">
+    <complexContent>
+      <extension base="wsrbf:BaseFaultType" />
+    </complexContent>
+  </complexType>
+</schema>
+

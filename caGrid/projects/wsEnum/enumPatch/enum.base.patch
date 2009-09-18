@@ -1,0 +1,111 @@
+Index: java/core/source/src/org/globus/wsrf/jndi/JNDIUtils.java
+===================================================================
+RCS file: /home/globdev/CVS/globus-packages/wsrf/java/core/source/src/org/globus/wsrf/jndi/JNDIUtils.java,v
+retrieving revision 1.9.2.1
+diff -u -r1.9.2.1 JNDIUtils.java
+--- java/core/source/src/org/globus/wsrf/jndi/JNDIUtils.java	6 Apr 2006 21:57:07 -0000	1.9.2.1
++++ java/core/source/src/org/globus/wsrf/jndi/JNDIUtils.java	25 Jun 2006 05:19:15 -0000
+@@ -203,6 +203,16 @@
+         digester.clear();
+     }
+ 
++    /*
++     * Returns properly-initialized initial context.
++     *
++     * @return initial context
++     */
++    public static InitialContext getInitialContext() 
++        throws NamingException {
++        return new InitialContext();
++    }
++
+     /**
+      * Retrieves the named object on the specified context. The object returned
+      * must be of assignable from the type specified.
+Index: java/core/source/src/org/globus/wsrf/utils/AnyHelper.java
+===================================================================
+RCS file: /home/globdev/CVS/globus-packages/wsrf/java/core/source/src/org/globus/wsrf/utils/AnyHelper.java,v
+retrieving revision 1.22.2.1
+diff -u -r1.22.2.1 AnyHelper.java
+--- java/core/source/src/org/globus/wsrf/utils/AnyHelper.java	24 Nov 2005 03:04:52 -0000	1.22.2.1
++++ java/core/source/src/org/globus/wsrf/utils/AnyHelper.java	25 Jun 2006 05:19:15 -0000
+@@ -16,6 +16,7 @@
+ import java.util.List;
+ 
+ import javax.xml.soap.SOAPElement;
++import javax.xml.namespace.QName;
+ 
+ import org.apache.axis.MessageContext;
+ import org.apache.axis.message.MessageElement;
+@@ -343,4 +344,45 @@
+         return (values != null && values.length > 0) ? values[0] : null;
+     }
+ 
++    /**
++     * Finds first element with a given name in a list of SOAPElements.
++     *
++     * @param elements the array of SOAPElements
++     * @param name name of the element to find
++     * @return non-null if the element is found, null otherwise.
++     */
++    public static SOAPElement findFirstElement(MessageElement[] elements,
++                                               QName name) {
++        if (elements == null) {
++            return null;
++        }
++        if (name == null) {
++            throw new IllegalArgumentException();
++        }
++        for (int i=0; i<elements.length; i++) {
++            if (elements[i].getLocalName().equals(name.getLocalPart()) &&
++                elements[i].getNamespaceURI().equals(name.getNamespaceURI())) {
++                return elements[i];
++            }
++        }
++        return null;
++    }
++
++    /**
++     * Finds first element with a given name in a list of SOAPElements of
++     * AnyContentType object.
++     *
++     * @param any xsd:any object
++     * @param name name of the element to find
++     * @return non-null if the element is found, null otherwise.
++     */
++    public static SOAPElement findFirstElement(AnyContentType any,
++                                               QName name) {
++        if (any == null) {
++            return null;
++        }
++        return findFirstElement(any.get_any(), name);
++    }
++    
++
+ }
+Index: java/core/source/src/org/globus/wsrf/utils/Resources.java
+===================================================================
+RCS file: /home/globdev/CVS/globus-packages/wsrf/java/core/source/src/org/globus/wsrf/utils/Resources.java,v
+retrieving revision 1.46.2.5
+diff -u -r1.46.2.5 Resources.java
+--- java/core/source/src/org/globus/wsrf/utils/Resources.java	6 Apr 2006 21:57:07 -0000	1.46.2.5
++++ java/core/source/src/org/globus/wsrf/utils/Resources.java	13 Jul 2006 21:01:00 -0000
+@@ -508,6 +508,18 @@
+             {
+                 "soTimeoutFailed",
+                 "Failed to set socket timeout"
++            },
++            {
++                "apExceptionMismatch",
++                "Mismatch in exceptions of method ''{0}''"
++            },
++            {
++                "apReturnMismatch",
++                "Mismatch in return type of method ''{0}''"
++            },
++            {
++                "apMissingMethod",
++                "Target object is missing ''{0}'' method"
+             }
+         };
+ }

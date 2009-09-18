@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+
+<project name="dependencies" basedir="." xmlns:ivy="antlib:org.apache.ivy.ant">
+	<property file="project.properties" />
+
+	<!-- OVERLOADED-->
+	<property name="ivy.resolve.configurations" value="impl,test" />
+
+	<property name="ivy-shared-targets.file" location="${basedir}/../../antfiles/ivy/ivy-shared-targets.xml" />
+	<import file="${ivy-shared-targets.file}" />
+
+	<target name="do.resolve-dependencies" depends="pre.resolve-dependencies">
+		<ivy:retrieve conf="impl" pattern="${ivy.resolved.artifacts.dir}/dependencies/[type]s/[originalname](.[ext])" sync="true" type="jar" />
+		<ivy:retrieve conf="impl-test" pattern="${ivy.resolved.artifacts.dir}/dependencies/test/[type]s/[originalname](.[ext])" sync="true" type="*" />
+	</target>
+</project>
+

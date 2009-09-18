@@ -1,0 +1,70 @@
+
+
+NEXT STEPS:
+==========
+
+revist how annotations IVY is done... is there a better way to not have that dependency?
+
+
+How to deal with redefine?  May need to not support, as if A redefines B and B is already published, uploading A would basically replace B, thus making the redefine useless (as A and B need to have the same namespace)
+-- it is currently supported, but you can only redefine a SchemaDocument; it doesn't allow one to redefine an existing published namespace (which is arguably the only use case for redefine)
+
+tests for deletes with includes (make sure the docs are cleaned up)
+
+design how authorization/policy will work.  will i do all checking in authorization code or do i want a separate "policy interface"
+for example, when i add Life Cycle States, will the authorization code check that published schemas aren't being deleted, or will that be a policy thing?
+
+add support for lifecycle and test that "update" works
+
+replace GME's manual synchronization with spring's transaction management ( can specify read-only, etc):
+http://static.springframework.org/spring/docs/2.0.6/reference/transaction.html#transaction-declarative
+
+
+
+ADMIN
+(could just use grid grouper for all of these, with behind the scenes administration; 
+would at least like to separate into a separate service interface
+could have an authz interface that grid grouper support was hooked into)
+-----
+addServiceAdministrator(User)
+removeServiceAdministrator(User)
+User[] getServiceAdministrators()
+
+addAdministrativeRightsToSchema(Namespace, User)
+removeAdministrativeRightsToSchema(Namespace, User)
+User[] getAdministratorsForSchema(Namespace)
+
+
+
+TESTS TO WRITE:
+==========
+add deploy system test
+  add unsuccessful deploy system test that uses wrong database information and make sure service wont start
+
+add a test for "already defined" schema which cant be updated
+
+add a test for schema with unused schemadocument (need to disallow)
+
+add tests for multi-level include/import processing (e.g A includes B include C imports D includes E)
+
+add tests which check our use of ns as the basesystemid (i.e., does new URI(ns,systemID)
+  always work as the documentLocation?... our include checking requires it to currently)
+  --for example, im pretty sure absolute path file includes will fail, but I think we want those to fail anyway (might just want a better message)
+  --probably just need to make a constraint that includes/systemIDs need to be relative URIs 
+
+add a test which does import of no namespace schema (need to disallow)
+
+
+springize GME:
+  -[done] schemapersistence
+  -GMEXMLSchemaLoader
+    - look into using this: http://static.springframework.org/spring/docs/2.0.x/api/org/springframework/beans/factory/config/ServiceLocatorFactoryBean.html
+  -policy?
+  -something to get current identity (UserInformationProvider.getCurrentUserIdentity()?)
+    
+
+need to check use of these we need:
+http://xerces.apache.org/xerces2-j/features.html
+
+should be able to add a validateXMLDocument method that uses the schemaloader
+ to resolve the documents schema, and then validate it

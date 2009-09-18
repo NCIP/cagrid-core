@@ -1,0 +1,7 @@
+<ns1:Software 
+    xmlns:ns1="gme://gov.nih.nci.cagrid.introduce/1/Software">
+   <ns1:Introduce version="1.1" zipFileURL="http://software.cagrid.org/introduce_1-1.zip" >
+   	 <ns1:IntroduceRev patchVersion="1" zipFileURL="http://software.cagrid.org/patchTestzip.zip" />
+   </ns1:Introduce>
+   <ns1:Extension version="1.0" compatibleIntroduceVersions="1.0,1.1" displayName="Test Extensions" name="testExtensions" zipFileURL="http://software.cagrid.org/testExtension.zip"/>
+</ns1:Software>

@@ -1,0 +1,275 @@
+<!-- ======================================================================= -->
+<!-- Introduce build file                                                    -->
+<!-- ======================================================================= -->
+<project name="introduce" default="introduce" basedir=".">
+	<!-- Load util files -->
+	<property name="antfiles.dir" value="${basedir}/antfiles" />
+	<import file="${antfiles.dir}/introduce-properties.xml" />
+	<import file="${antfiles.dir}/build-introduce.xml" />
+	<import file="${antfiles.dir}/build-portal.xml" />
+	<import file="${antfiles.dir}/build-updater.xml" />
+	<import file="${antfiles.dir}/introduce-utils.xml" />
+	<import file="${antfiles.dir}/introduce-release.xml" />
+	<!-- Load test files -->
+	<import file="test/test.xml" />
+
+
+	<!-- =================================================================== -->
+	<!-- Cleans up generated stuff                                           -->
+	<!-- =================================================================== -->
+	<target name="clean">
+		<delete dir="${build.dir}" />
+		<delete dir="${log.dir}" />
+		<delete dir="${templates.created.src.dir}" />
+		<delete dir="${beans.created.src.dir}" />
+		<delete dir="${servicetasks.beans.created.src.dir}" />
+		<delete dir="${updates.dir}" />
+	</target>
+
+
+	<!-- =================================================================== -->
+	<!-- Prepares the build directory and classpaths                         -->
+	<!-- =================================================================== -->
+	<target name="prepare" depends="init, configure">
+		<tstamp />
+	</target>
+	<target name="init" depends="checkGlobus">
+		<mkdir dir="${build.dir}" />
+		<mkdir dir="${log.dir}" />
+		<mkdir dir="${classes.dir}" />
+		<mkdir dir="${introduce.classes.dir}" />
+		<mkdir dir="${portal.classes.dir}" />
+		<mkdir dir="${updater.classes.dir}" />
+		<mkdir dir="${test.classes.dir}" />
+		<mkdir dir="${introduce.test.classes.dir}" />
+		<mkdir dir="${portal.test.classes.dir}" />
+		<mkdir dir="${updater.test.classes.dir}" />
+		<mkdir dir="${jars.dir}" />
+		<mkdir dir="${junit.results.dir}" />
+		<mkdir dir="${javadoc.dir}" />
+		<mkdir dir="${test.log.dir}" />
+		<mkdir dir="${updates.dir}" />
+		<mkdir dir="${updates.lib.dir}" />
+
+		<taskdef name="jetc" classname="ch.paranor.epla.structure.JETCTask">
+			<classpath>
+				<pathelement location="${ext.lib.dir}/jetc-task.jar" />
+				<fileset dir="${ext.lib.dir}">
+					<include name="boot.jar" />
+					<include name="osgi.jar" />
+					<include name="resources.jar" />
+					<include name="runtime.jar" />
+					<include name="codegen.jar" />
+					<include name="jdtcore.jar" />
+					<include name="*.jar" />
+				</fileset>
+			</classpath>
+		</taskdef>
+	</target>
+
+	<target name="configure" description="Configures the project based on settings.">
+		<copy todir="${basedir}" overwrite="true">
+			<fileset dir="${basedir}">
+				<include name="conf/*.template" />
+				<include name="extensions/**/*.template" />
+			</fileset>
+			<mapper type="glob" from="*.template" to="*" />
+			<filterset filtersfile="${ext.grid.dir}/service_urls.properties" />
+			<filterset filtersfile="${ext.grid.dir}/introduce.properties" />
+		</copy>
+
+		<!-- check that we actually created the critical files we need at runtime-->
+		<available file="${conf.dir}/introduce.properties" property="introduce.properties.available" />
+		<fail message="Critical configuration file [${conf.dir}/introduce.properties] not found!" unless="introduce.properties.available" />
+	</target>
+
+
+	<!-- =================================================================== -->
+	<!-- Prints information about the build                                  -->
+	<!-- =================================================================== -->
+	<target name="help">
+		<echo message="To see the list of targets avaiable type 'ant -p'" />
+		<echo message="For an overview of the process, see docs/buildProcess.txt" />
+	</target>
+
+
+	<!-- =================================================================== -->
+	<!-- Builds Code Docuementation                                          -->
+	<!-- =================================================================== -->
+	<target name="javadoc" depends="compile" description="Creates the API documentation.">
+		<javadoc packagenames="*" destdir="${javadoc.dir}" author="true" version="true" use="true" windowtitle="${project.name}-${project.version} API">
+
+			<sourcepath>
+				<pathelement path="${src.dir}/Introduce" />
+				<pathelement path="${src.dir}/Portal" />
+			</sourcepath>
+
+			<classpath>
+				<path refid="Introduce.classpath" />
+				<path refid="Portal.classpath" />
+			</classpath>
+
+			<tag name="todo" scope="all" description="To do:" />
+			<tag name="created" scope="all" description="Created On:" />
+
+		</javadoc>
+	</target>
+
+
+	<!-- =================================================================== -->
+	<!--  Generate Java Beans from XSD                                       -->
+	<!-- =================================================================== -->
+	<target name="generateStubs" depends="prepare" description="Deletes the generated Java Beans and
+		recreates them.">
+		<ant antfile="${build.stubs}" target="generateStubs" inheritall="false">
+			<property name="mapping.file" location="${basedir}/schema/namespace2package.mappings" />
+			<property name="source.stubs.dir" location="${basedir}/schema" />
+			<property name="target.stubs.dir" location="${src.dir}/Introduce" />
+			<property name="wsdl.file" value="beans.wsdl" />
+			<property name="ns.excludes" value="-x http://www.cagrid.org/1/grape" />
+		</ant>
+	</target>
+
+
+	<!-- =================================================================== -->
+	<!--  Generate JET template classes                                      -->
+	<!-- =================================================================== -->
+	<target name="generateJETClasses" depends="init">
+		<jetc destdir="${src.dir}/Introduce" template="${templates.src.dir}/run-tools.xmljet" />
+		<jetc destdir="${src.dir}/Introduce" template="${templates.src.dir}/server-config.wsdd.xmljet" />
+		<jetc destdir="${src.dir}/Introduce" template="${templates.src.dir}/server-config-new-service.wsdd.xmljet" />
+		<jetc destdir="${src.dir}/Introduce" template="${templates.src.dir}/jndi-config.xmljet" />
+		<jetc destdir="${src.dir}/Introduce" template="${templates.src.dir}/jndi-config-new-service.xmljet" />
+		<jetc destdir="${src.dir}/Introduce" template="${templates.src.dir}/jndi-config-service-properties.xmljet" />
+		<jetc destdir="${src.dir}/Introduce" template="${templates.src.dir}/jndi-config-service-resource-properties.xmljet" />
+		<jetc destdir="${src.dir}/Introduce" template="${templates.src.dir}/deploy.properties.txtjet" />
+		<jetc destdir="${src.dir}/Introduce" template="${templates.src.dir}/namespace2package.mappings.txtjet" />
+		<jetc destdir="${src.dir}/Introduce" template="${templates.src.dir}/.classpath.txtjet" />
+		<jetc destdir="${src.dir}/Introduce" template="${templates.src.dir}/.project.xmljet" />
+		<jetc destdir="${src.dir}/Introduce" template="${templates.src.dir}/client.launch.xmljet" />
+		<jetc destdir="${src.dir}/Introduce" template="${templates.src.dir}/etc/registration.xmljet" />
+		<jetc destdir="${src.dir}/Introduce" template="${templates.src.dir}/etc/security-desc.xmljet" />
+		<jetc destdir="${src.dir}/Introduce" template="${templates.src.dir}/schema/Service/service.wsdl.xmljet" />
+		<jetc destdir="${src.dir}/Introduce" template="${templates.src.dir}/schema/Service/service.xsd.xmljet" />
+		<jetc destdir="${src.dir}/Introduce" template="${templates.src.dir}/src/client/ServiceClient.javajet" />
+		<jetc destdir="${src.dir}/Introduce" template="${templates.src.dir}/src/client/BaseServiceClient.javajet" />
+		<jetc destdir="${src.dir}/Introduce" template="${templates.src.dir}/src/client/client-config.wsdd.xmljet" />
+		<jetc destdir="${src.dir}/Introduce" template="${templates.src.dir}/src/common/ServiceI.javajet" />
+		<jetc destdir="${src.dir}/Introduce" template="${templates.src.dir}/src/common/ServiceConstants.javajet" />
+		<jetc destdir="${src.dir}/Introduce" template="${templates.src.dir}/src/common/ServiceConstantsBase.javajet" />
+		<jetc destdir="${src.dir}/Introduce" template="${templates.src.dir}/src/service/ServiceImplBase.javajet" />
+		<jetc destdir="${src.dir}/Introduce" template="${templates.src.dir}/src/service/ServiceImpl.javajet" />
+		<jetc destdir="${src.dir}/Introduce" template="${templates.src.dir}/src/service/ServiceConfiguration.javajet" />
+		<jetc destdir="${src.dir}/Introduce" template="${templates.src.dir}/src/service/globus/ServiceProviderImpl.javajet" />
+		<jetc destdir="${src.dir}/Introduce" template="${templates.src.dir}/src/service/globus/ServiceAuthorization.javajet" />
+		<jetc destdir="${src.dir}/Introduce" template="${templates.src.dir}/src/service/globus/resource/ResourceCreator.javajet" />
+		<jetc destdir="${src.dir}/Introduce" template="${templates.src.dir}/src/service/globus/resource/ResourceHome.javajet" />
+		<jetc destdir="${src.dir}/Introduce" template="${templates.src.dir}/src/service/globus/resource/SingletonResourceHome.javajet" />
+		<jetc destdir="${src.dir}/Introduce" template="${templates.src.dir}/src/service/globus/resource/ResourceBase.javajet" />
+		<jetc destdir="${src.dir}/Introduce" template="${templates.src.dir}/src/service/globus/resource/Resource.javajet" />
+		<jetc destdir="${src.dir}/Introduce" template="${templates.src.dir}/src/service/globus/resource/ResourceConfiguration.javajet" />
+	</target>
+
+
+	<!-- =================================================================== -->
+	<!-- Compiles the source code                                            -->
+	<!-- =================================================================== -->
+	<target name="compile" depends="prepare, generateJETClasses" description="Compiles all the
+		source files.">
+		<compileSubproject name="Introduce" />
+		<compileSubproject name="Portal" />
+		<compileSubproject name="UpdateManager" />
+	</target>
+	<target name="compile-tests" depends="compile" description="Compiles all the test source files.">
+		<compileSubprojectTests name="Introduce" />
+		<compileSubprojectTests name="Portal" />
+		<compileSubprojectTests name="UpdateManager" />
+	</target>
+	<macrodef name="compileSubproject">
+		<attribute name="name" />
+		<sequential>
+			<echo message="Compiling subproject @{name}" />
+			<parallel>
+				<javac srcdir="${src.dir}/@{name}" destdir="${classes.dir}/@{name}" debug="on" source="${java.source}" deprecation="off" optimize="off" memoryMaximumSize="512M" fork="yes">
+					<classpath refid="@{name}.classpath" />
+				</javac>
+				<copy todir="${classes.dir}/@{name}" overwrite="true">
+					<fileset dir="${src.dir}/@{name}">
+						<include name="**/*.xml" />
+					</fileset>
+				</copy>
+			</parallel>
+		</sequential>
+	</macrodef>
+	<macrodef name="compileSubprojectTests">
+		<attribute name="name" />
+		<sequential>
+			<echo message="Compiling subproject tests @{name}" />
+			<javac srcdir="${test.src.dir}/@{name}" destdir="${test.classes.dir}/@{name}" debug="on" source="${java.source}" deprecation="off" optimize="off" memoryMaximumSize="512M" fork="yes">
+				<classpath refid="@{name}.test.classpath" />
+			</javac>
+		</sequential>
+	</macrodef>
+
+
+	<!-- =================================================================== -->
+	<!-- Create Jars                                                         -->
+	<!-- =================================================================== -->
+	<target name="jar" depends="compile" description="Builds the Jar Files">
+		<jar jarfile="${jars.prefix}core${jars.suffix}" basedir="${introduce.classes.dir}" excludes="gov/nih/nci/cagrid/introduce/servicetasks/**/* gov/nih/nci/cagrid/introduce/servicetools/**/*" defaultExcludes="false" update="no">
+			<manifest>
+				<attribute name="Created-By" value="${user.name}" />
+			</manifest>
+		</jar>
+		<jar jarfile="${jars.prefix}portal${jars.suffix}" basedir="${portal.classes.dir}" defaultExcludes="false" update="no">
+			<manifest>
+				<attribute name="Created-By" value="${user.name}" />
+			</manifest>
+		</jar>
+		<copy todir="${updater.classes.dir}">
+			<fileset dir="${introduce.classes.dir}" includes="gov/nih/nci/cagrid/introduce/beans/software/*.class" />
+		</copy>
+		<jar jarfile="${jars.prefix}updater${jars.suffix}" basedir="${updater.classes.dir}" defaultExcludes="false" update="no">
+			<manifest>
+				<attribute name="Created-By" value="${user.name}" />
+			</manifest>
+		</jar>
+		<copy file="${jars.prefix}updater${jars.suffix}" todir="${updates.lib.dir}">
+		</copy>
+	</target>
+
+
+	<!-- =================================================================== -->
+	<!-- Create Test Jars                                                         -->
+	<!-- =================================================================== -->
+	<target name="jar-tests" depends="compile-tests" description="Builds the Test Jar Files">
+		<jar jarfile="${jars.prefix}core-tests${jars.suffix}" basedir="${test.classes.dir}/Introduce" defaultExcludes="false" update="no">
+			<manifest>
+				<attribute name="Created-By" value="${user.name}" />
+			</manifest>
+		</jar>
+		<jar jarfile="${jars.prefix}portal-tests${jars.suffix}" basedir="${test.classes.dir}/Portal" defaultExcludes="false" update="no">
+			<manifest>
+				<attribute name="Created-By" value="${user.name}" />
+			</manifest>
+		</jar>
+		<jar jarfile="${jars.prefix}updater-tests${jars.suffix}" basedir="${test.classes.dir}/UpdateManager" defaultExcludes="false" update="no">
+			<manifest>
+				<attribute name="Created-By" value="${user.name}" />
+			</manifest>
+		</jar>
+	</target>
+
+
+	<!-- =================================================================== -->
+	<!-- Builds the project                                                  -->
+	<!-- =================================================================== -->
+	<target name="build" description="Builds the entire application" depends="jar, jar-tests" />
+
+	<!-- =================================================================== -->
+	<!-- Builds the project from a clean start                               -->
+	<!-- =================================================================== -->
+	<target name="all" description="Cleans and build the entire application" depends="clean,
+		generateStubs, build" />
+
+</project>

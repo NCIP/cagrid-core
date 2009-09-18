@@ -1,0 +1,83 @@
+<!-- ======================================================================= -->
+<!-- caGrid Target Grids build file                                          -->
+<!-- ======================================================================= -->
+<project name="caGrid_target_grid" basedir="." default="" xmlns:ivy="antlib:org.apache.ivy.ant">
+
+	<property name="current.grid.property.file" value=".currentgrid.properties" />
+
+	<!-- The default target grid -->
+	<property file="${current.grid.property.file}" />
+	<property name="target.grid" value="training-1.3" />
+
+	<target name="configure-clean">
+		<delete file="${current.grid.property.file}" />
+	</target>
+
+
+	<!-- ====================================================================== -->
+	<!-- Configure each configurable project (only needed to target a new grid) -->
+	<!-- ====================================================================== -->
+	<target name="configure" depends="configure-clean,prepare" description="(Re-)Configures the projects to target a different grid.">
+		<!-- Give each configurable project the new configuration information, and tell them to configure -->
+		<subant target="resolve-configure-dependencies" buildpathref="ivy.projects.list">
+			<property name="target.grid" value="${target.grid}" />
+		</subant>
+
+		<!-- reinstall the intronduce extensions -->
+		<runtarget target="installIntroduceExtensions" />
+
+		<!-- delete the user's Introduce service preferences -->
+		<delete failonerror="false">
+			<fileset dir="${user.home}/.introduce_1_3/">
+				<include name="service_urls.properties" />
+			</fileset>
+		</delete>
+
+		<!-- delete the user's Grape preferences -->
+		<delete failonerror="false">
+			<fileset dir="${user.home}/.cagrid/grape">
+				<include name="*-conf.xml" />
+			</fileset>
+		</delete>
+
+		<!-- Get up to date with the trust fabric this grid uses -->
+		<runtarget target="syncWithTrustFabric" />
+
+
+		<propertyfile file="${current.grid.property.file}">
+			<entry key="target.grid" value="${target.grid}" />
+			<entry key="target.grid.configure.time" type="date" value="now" />
+		</propertyfile>
+
+		<runtarget target="configureHelp" />
+	</target>
+
+	<!-- ====================================================================== -->
+	<!-- Prints details and instructions on using the configure target          -->
+	<!-- ====================================================================== -->
+	<target name="configureHelp" depends="prepare" description="Displays help information on configuring the environment to target a specific grid.">
+		<property file="${current.grid.property.file}" />
+
+		<ivy:listmodules organisation="caGrid" module="target_grid" revision="*" property="target.grid.names.[revision]" value="found" />
+		<propertyselector property="target.grid.list" delimiter="," match="target\.grid\.names\.(.*)" select="\1" />
+		<sortlist property="sorted.target.grid.list" value="${target.grid.list}" delimiter="," />
+
+		<echo message="=====================================================================================" />
+		<echo message="|    CONFIGURED TO USE GRID: ${target.grid} AT: ${target.grid.configure.time}" />
+		<echo message="|" />
+		<echo message="|    THE VALID TARGET GRIDS ARE:" />
+		<for list="${sorted.target.grid.list}" param="grid.name">
+			<sequential>
+				<echo message="|      - @{grid.name}" />
+			</sequential>
+		</for>
+		<echo message="|" />
+		<echo message="-------------------------------------------------------------------------------------" />
+		<echo message="|    NOTE: To use a different target grid, set property 'target.grid'" />
+		<echo message="|    to the grid's name, and run the 'configure' target." />
+		<echo message="|" />
+		<echo message="|    For example, type:" />
+		<echo message="|        ant -Dtarget.grid=${target.grid} configure" />
+		<echo message="=====================================================================================" />
+	</target>
+</project>

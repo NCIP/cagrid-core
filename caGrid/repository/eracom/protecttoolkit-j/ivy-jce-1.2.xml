@@ -1,0 +1,27 @@
+<?xml version="1.0"?>
+
+<ivy-module version="2.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:noNamespaceSchemaLocation="http://incubator.apache.org/ivy/schemas/ivy.xsd">
+
+	<info organisation="eracom" module="protecttoolkit-j" revision="jce-1.2">
+		<description>ProtectToolKit J is a JCA/JCE Cryptographic Service Provider (CSP) supplying a
+			complete set of cryptographic operations to allow Java programs to perform strong
+			authentication, encryption and key management. (http://www.eracom-tech.com/50.0.html)
+			Version jce-1.2 works with Java Cryptographic Extensions version 1.2</description>
+	</info>
+
+	<configurations>
+		<!-- Public Configurations-->
+		<conf name="default" visibility="public"/>
+		<conf name="ui" visibility="public" extends="default"/>
+	</configurations>
+
+
+	<publications>
+		<artifact name="jprov" type="jar" conf="default"/>
+		<artifact name="gctadmin" type="jar" conf="ui"/>
+		<artifact name="kmu" type="jar" conf="ui"/>
+	</publications>
+
+	<dependencies/>
+</ivy-module>

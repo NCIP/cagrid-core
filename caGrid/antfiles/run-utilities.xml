@@ -1,0 +1,28 @@
+<!-- ======================================================================= -->
+<!-- caGrid Run Utilities build file                                             -->
+<!-- ======================================================================= -->
+<project name="caGrid_run_utilities" basedir="." default="usage">
+    <target name="usage">
+        <echo message="Not to be called directly.  This file contains utilities to be used in other
+            build files." />
+    </target>
+    <!-- =================================================================== -->
+    <!-- Generates all the system files based off templates for a particular platform     -->
+    <!-- =================================================================== -->
+
+    <target name="introduce" description="Run the Introduce Grid Service Authoring Toolkit">
+        <ant dir="${basedir}/projects/introduce" antfile="build.xml" target="introduce" inheritall="false" />
+    </target>
+
+    <target name="gaardsui" description="Run the Security Administrative GUI">
+        <ant dir="${basedir}/projects/gaards-ui" antfile="build.xml" target="ui" inheritall="false" />
+    </target>
+	
+	<target name="security" description="Run the Security Administrative GUI">
+	        <ant dir="${basedir}/projects/gaards-ui" antfile="build.xml" target="ui" inheritall="false" />
+	</target>
+
+    <target name="syncWithTrustFabric" description="Syncs With Trust Fabric">
+        <ant dir="${basedir}/projects/syncgts" antfile="build.xml" target="syncWithTrustFabric" inheritall="false" />
+    </target>
+</project>

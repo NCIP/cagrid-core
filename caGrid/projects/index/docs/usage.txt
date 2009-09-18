@@ -1,0 +1,27 @@
+design "official index service" that uses 3rd party secure registration
+  - no services should directly register to it
+  - 3rd party should manually/programmatically add "compliant services" to it
+  - could also publish public certificate of the service credentials
+    - client could perform client side authz matching service certificate with published certificate
+  - could use resource-centric IndexService to create multiple service groups (gold-compliant, etc, )
+
+================================================================================
+
+We are currently using the DefaultIndexService which doesn't use Resources.
+This essentially makes the service single purpose, grouping all services into a single service group.
+
+Alternatively we could use the IndexService which can manage multiple IndexResources.
+Each resource can act as a separate service group.  For example we could have one resource for all of caBIG and other resources
+for more sepecific uses (such as a consortium, project, or VO).  In this approach, the DefaultIndexService would only be used to 
+store "pointers" to the IndexResources.  More specifically, the pointer would contain the EPR of the IndexResource, and some 
+metadata used to identify it (such as a name and description).  This is advantageous as we could have a single location act as the 
+registry of registries, and the actual registries could actually be stored on remote hosts.  This has the advantage of scalability
+but added complexity.  Clients need to first discover the EPR of the registry they want to use, then query that resource as they would normally do.
+
+A small but important issue is how to create the initial "caBIG" resource in the index when it starts up.  We probably would need
+the IndexResources to be persistent.
+
+My current thinking is to just use the DefaultIndexService to directly store the "caBIG" service metadata, but provide
+the API/design for additionally storing these "pointers" in it as well.  This way, the baseline advertisement/discovery can
+be done the simple way (it needs to all be stored in a single resource anyway), but we gain the ability to register additional
+specialized registries in it.

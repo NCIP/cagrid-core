@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema targetNamespace="http://my.org/ns1"
+    xmlns:ns2="http://my.org/ns2"
+    xmlns:tns="http://my.org/ns1" 
+    xmlns:xs="http://www.w3.org/2001/XMLSchema" 
+    xmlns="http://www.w3.org/2001/XMLSchema" 
+    elementFormDefault="qualified" 
+    attributeFormDefault="unqualified">
+    
+    <import namespace="http://my.org/ns2" schemaLocation="./invalidImportSchema2.xsd"/>
+    
+    <xs:complexType name="ContainerType">
+    	<xs:sequence>
+    		<xs:element ref="ns2:SomeElementz"/>
+    	</xs:sequence>
+    </xs:complexType>
+            
+</xs:schema>

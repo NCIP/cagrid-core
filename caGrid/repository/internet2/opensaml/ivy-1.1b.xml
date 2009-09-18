@@ -1,0 +1,12 @@
+<?xml version="1.0"?>
+
+<ivy-module version="2.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:noNamespaceSchemaLocation="http://incubator.apache.org/ivy/schemas/ivy.xsd">
+
+    <info organisation="internet2" module="opensaml" revision="1.1b">
+        <license name="Apache" url="http://www.apache.org/licenses/LICENSE-2.0.txt"/>
+        <description homepage="http://www.opensaml.org/">OpenSAML 1.1 is an open source toolkit for
+            implementing solutions using the SAML 1.1 and 1.0 specifications. It is a production
+            quality release available for Java (1.4+) and C++ applications.</description>
+    </info>
+</ivy-module>

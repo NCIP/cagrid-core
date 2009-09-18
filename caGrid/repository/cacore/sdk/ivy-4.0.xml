@@ -1,0 +1,35 @@
+<?xml version="1.0"?>
+
+<ivy-module version="2.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:noNamespaceSchemaLocation="http://incubator.apache.org/ivy/schemas/ivy.xsd">
+
+  <info organisation="cacore" module="sdk" revision="4.0">
+    <description> The NCICB caCORE SDK</description>
+  </info>
+
+  <configurations>
+    <!-- Public Configurations-->
+    <conf name="zip" visibility="public" />
+    <conf name="default" visibility="public" extends="zip" />
+    <conf name="client" visibility="public" />
+  </configurations>
+
+  <publications>
+    <artifact name="caCORE_SDK_40" type="zip" conf="default" />
+    <artifact name="sdk-client-framework" type="jar" conf="client" />
+  </publications>
+
+  <dependencies>
+    <dependency rev="1.0.4" org="acegisecurity" name="acegisecurity" conf="client->default" />
+    <dependency rev="1.0.2" org="castor" name="castor" conf="client->default" />
+    <dependency rev="3.2.0.ga" org="hibernate" name="hibernate" conf="client->cglib" />
+    <dependency rev="2.0.3" org="springframework" name="spring" conf="client->full" />
+    <!--  From Globus -->
+    <!--
+      <dependency rev="?" org="apache" name="xercesImpl" conf="client->default"/> <dependency
+      rev="3.2" org="apache" name="commons-collection" conf="client->default"/> <dependency
+      rev="1.1" org="apache" name="commons-logging" conf="client->default"/> <dependency
+      rev="1.2.14" org="log4j" name="log4j" conf="client->default"/>
+    -->
+  </dependencies>
+</ivy-module>

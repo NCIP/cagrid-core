@@ -1,0 +1,9 @@
+# Database Configuration
+db.name=test_events
+db.host=localhost
+db.port=3306
+db.user=root
+db.password=
+
+
+

@@ -1,0 +1,12 @@
+<?xml version="1.0"?>
+<ivy-module version="2.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:noNamespaceSchemaLocation="http://incubator.apache.org/ivy/schemas/ivy.xsd">
+    
+    <info organisation="hibernate" module="hibernate-commons-annotations" revision="3.0.0.GA"
+        status="release">
+        
+        <license name="LGPL" url="http://www.gnu.org/copyleft/lesser.html"/>
+        <description homepage="http://hibernate.org/"> The Hibernate Annotations - common
+            code</description>
+    </info>
+</ivy-module>

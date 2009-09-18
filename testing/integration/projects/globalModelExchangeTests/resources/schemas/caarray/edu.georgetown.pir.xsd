@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns="gme://caArray.caBIG/2.0/edu.georgetown.pir"
+    xmlns:gov.nih.nci.caarray.domain.vocabulary="gme://caArray.caBIG/2.0/gov.nih.nci.caarray.domain.vocabulary"
+    targetNamespace="gme://caArray.caBIG/2.0/edu.georgetown.pir" elementFormDefault="qualified">
+    
+    <xs:import namespace="gme://caArray.caBIG/2.0/gov.nih.nci.caarray.domain.vocabulary"
+        schemaLocation="gov.nih.nci.caarray.domain.vocabulary.xsd" />
+
+    <xs:element name="Organism" type="Organism" />
+    <xs:complexType name="Organism">
+        <xs:sequence>
+            <xs:element name="additionalOrganismNameCollection" minOccurs="0">
+                <xs:complexType>
+                    <xs:choice minOccurs="0" maxOccurs="unbounded">
+                        <xs:element ref="AdditionalOrganismName" />
+                    </xs:choice>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="termSource" minOccurs="0" maxOccurs="1" type="gov.nih.nci.caarray.domain.vocabulary:TermSource" />
+        </xs:sequence>
+        <xs:attribute name="commonName" type="xs:string" />
+        <xs:attribute name="ethnicityStrain" type="xs:string" />
+        <xs:attribute name="id" type="xs:long" />
+        <xs:attribute name="ncbiTaxonomyId" type="xs:long" />
+        <xs:attribute name="scientificName" type="xs:string" />
+        <xs:attribute name="taxonomyRank" type="xs:string" />
+    </xs:complexType>
+    <xs:element name="AdditionalOrganismName" type="AdditionalOrganismName" />
+    <xs:complexType name="AdditionalOrganismName">
+        <xs:sequence>
+            <xs:element name="organismCollection" minOccurs="0">
+                <xs:complexType>
+                    <xs:choice minOccurs="0" maxOccurs="unbounded">
+                        <xs:element ref="Organism" />
+                    </xs:choice>
+                </xs:complexType>
+            </xs:element>
+        </xs:sequence>
+        <xs:attribute name="comment" type="xs:string" />
+        <xs:attribute name="id" type="xs:long" />
+        <xs:attribute name="source" type="xs:string" />
+        <xs:attribute name="value" type="xs:string" />
+    </xs:complexType>
+</xs:schema>
+

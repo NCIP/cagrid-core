@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<?xml-stylesheet type="text/xsl" href="http://www.jayasoft.fr/org/ivyrep/ivy-doc.xsl"?>
+<ivy-module version="1.0">
+    <info organisation="douglea" module="concurrent" revision="1.3.4" status="release"
+        publication="20040520000000">
+        <license name="Public Domain"/>
+        <ivyauthor name="jayasoft" url="http://www.jayasoft.org/"/>
+
+        <description
+            homepage="http://gee.cs.oswego.edu/dl/classes/EDU/oswego/cs/dl/util/concurrent/intro.html"
+            > This package provides standardized, efficient versions of utility classes commonly
+            encountered in concurrent Java programming J2SE5 package java.util.concurrent
+            includes improved, more efficient, standardized versions of the main components in this
+            package. </description>
+    </info>
+</ivy-module>

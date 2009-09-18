@@ -1,0 +1,5 @@
+http\://security.introduce.cagrid.nci.nih.gov/ServiceSecurity=gov.nih.nci.cagrid.introduce.security.stubs
+http\://security.introduce.cagrid.nci.nih.gov/ServiceSecurity/bindings=gov.nih.nci.cagrid.introduce.security.stubs.bindings
+http\://security.introduce.cagrid.nci.nih.gov/ServiceSecurity/service=gov.nih.nci.cagrid.introduce.security.stubs.service
+
+gme\://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.security=gov.nih.nci.cagrid.metadata.security

@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<ivy-module version="2.0">
+    <info organisation="jsr107cache" module="jsr107cache" revision="1.0" status="release">
+        <license name="Apache" url="http://www.apache.org/licenses/LICENSE-2.0.txt"/>
+        <description homepage="http://acegisecurity.org/">Specifies API and semantics for temporary, in memory 
+		caching of Java objects, including object creation, shared access, spooling, invalidation, and 
+		consistency across JVM's.
+		</description>
+    </info>
+	
+	<publications>
+        <artifact name="jsr107cache" type="jar"/>
+    </publications>
+	
+</ivy-module>

@@ -1,0 +1,196 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
+<beans>
+	<bean id="dorianProperties" class="org.cagrid.gaards.dorian.service.DorianProperties">
+		<constructor-arg index="0" ref="database" />
+		<constructor-arg index="1" ref="identityProviderProperties" />
+		<constructor-arg index="2" ref="identityFederationProperties" />
+		<constructor-arg index="3" ref="certificateAuthority" />
+		<constructor-arg index="4" ref="eventManager" />
+	</bean>
+	<bean id="identityFederationProperties"
+		class="org.cagrid.gaards.dorian.federation.IdentityFederationProperties">
+		<property name="identityAssignmentPolicy" value="${gaards.dorian.federation.identity.policy}" />
+		<property name="minIdPNameLength"
+			value="${gaards.dorian.federation.min.idp.name.length}" />
+		<property name="maxIdPNameLength"
+			value="${gaards.dorian.federation.max.idp.name.length}" />
+		<property name="issuedCertificateLifetime">
+			<bean class="org.cagrid.gaards.dorian.common.Lifetime">
+				<property name="years"
+					value="${gaards.dorian.federation.certificate.lifetime.years}" />
+				<property name="months"
+					value="${gaards.dorian.federation.certificate.lifetime.months}" />
+				<property name="days"
+					value="${gaards.dorian.federation.certificate.lifetime.days}" />
+				<property name="hours"
+					value="${gaards.dorian.federation.certificate.lifetime.hours}" />
+				<property name="minutes"
+					value="${gaards.dorian.federation.certificate.lifetime.minutes}" />
+				<property name="seconds"
+					value="${gaards.dorian.federation.certificate.lifetime.seconds}" />
+			</bean>
+		</property>
+		<property name="autoHostCertificateApproval"
+			value="${gaards.dorian.federation.auto.host.certificate.approval}" />
+		<property name="userCertificateLifetime">
+			<bean class="org.cagrid.gaards.dorian.common.Lifetime">
+				<property name="hours"
+					value="${gaards.dorian.federation.user.certificate.lifetime.hours}" />
+				<property name="minutes"
+					value="${gaards.dorian.federation.user.certificate.lifetime.minutes}" />
+				<property name="seconds"
+					value="${gaards.dorian.federation.user.certificate.lifetime.seconds}" />
+			</bean>
+		</property>
+		<property name="accountPolicies" ref="accountPolicyList" />
+		<property name="CRLPublishList" value="${gaards.dorian.federation.crl.publish}" />
+	</bean>
+	<bean id="accountPolicyList"
+		class="org.springframework.beans.factory.config.ListFactoryBean">
+		<property name="sourceList">
+			<list>
+				<bean class="org.cagrid.gaards.dorian.federation.ManualApprovalPolicy" />
+				<bean class="org.cagrid.gaards.dorian.federation.AutoApprovalPolicy" />
+			</list>
+		</property>
+	</bean>
+	<bean id="identityProvider" class="org.cagrid.gaards.dorian.idp.IdentityProvider">
+		<constructor-arg index="0" ref="identityProviderProperties" />
+		<constructor-arg index="1" ref="database" />
+		<constructor-arg index="2" ref="certificateAuthority" />
+		<constructor-arg index="3" ref="eventManager" />
+	</bean>
+	<bean id="idpUserManager" class="org.cagrid.gaards.dorian.idp.UserManager">
+		<constructor-arg index="0" ref="database" />
+		<constructor-arg index="1" ref="identityProviderProperties" />
+	</bean>
+	<bean id="assertionCredentialsManager"
+		class="org.cagrid.gaards.dorian.idp.AssertionCredentialsManager">
+		<constructor-arg index="0" ref="identityProviderProperties" />
+		<constructor-arg index="1" ref="certificateAuthority" />
+		<constructor-arg index="2" ref="database" />
+	</bean>
+	<bean id="identityProviderProperties" class="org.cagrid.gaards.dorian.idp.IdentityProviderProperties">
+		<property name="name" value="${gaards.dorian.idp.name}" />
+		<property name="autoRenewAssertingCredentials"
+			value="${gaards.dorian.idp.renew.asserting.credentials}" />
+		<property name="assertingCredentialsEncryptionPassword"
+			value="${gaards.dorian.idp.asserting.credentials.password}" />
+		<property name="minUserIdLength" value="${gaards.dorian.idp.min.uid}" />
+		<property name="maxUserIdLength" value="${gaards.dorian.idp.max.uid}" />
+		<property name="registrationPolicy" ref="registrationPolicy" />
+		<property name="passwordSecurityPolicy" ref="passwordSecurityPolicy" />
+	</bean>
+	<bean id="registrationPolicy" class="org.cagrid.gaards.dorian.idp.ManualRegistrationPolicy" />
+	<!--
+		<bean id="registrationPolicy"
+		class="org.cagrid.gaards.dorian.idp.AutomaticRegistrationPolicy"/>
+	-->
+	<bean id="passwordSecurityPolicy" class="org.cagrid.gaards.dorian.idp.PasswordSecurityPolicy">
+		<property name="lockout">
+			<bean class="org.cagrid.gaards.dorian.common.Lifetime">
+				<property name="hours" value="${gaards.dorian.idp.password.lock.hours}" />
+				<property name="minutes" value="${gaards.dorian.idp.password.lock.minutes}" />
+				<property name="seconds" value="${gaards.dorian.idp.password.lock.seconds}" />
+			</bean>
+		</property>
+		<property name="consecutiveInvalidLogins"
+			value="${gaards.dorian.idp.password.cons.invalid.login}" />
+		<property name="totalInvalidLogins"
+			value="${gaards.dorian.idp.password.max.invalid.login}" />
+		<property name="minPasswordLength" value="${gaards.dorian.idp.password.min.length}" />
+		<property name="maxPasswordLength" value="${gaards.dorian.idp.password.max.length}" />
+	</bean>
+	<bean id="certificateAuthority" class="org.cagrid.gaards.dorian.ca.DBCertificateAuthority">
+		<constructor-arg index="0" ref="database" />
+		<constructor-arg index="1" ref="caProperties" />
+	</bean>
+	<bean id="caProperties"
+		class="org.cagrid.gaards.dorian.ca.CertificateAuthorityProperties">
+		<constructor-arg index="0" value="${gaards.dorian.ca.password}" />
+		<constructor-arg index="1"
+			value="${gaards.dorian.ca.policy.oid}" />
+		<constructor-arg index="2"
+			value="${gaards.dorian.ca.issued.cert.key.size}" />
+		<constructor-arg index="3"
+			value="${gaards.dorian.ca.auto.create}" />
+		<constructor-arg index="4" ref="caCreationPolicy" />
+		<constructor-arg index="5"
+			value="${gaards.dorian.ca.auto.renew}" />
+		<constructor-arg index="6" ref="caRenewalLifetime" />
+	</bean>
+	<!--
+		<bean id="certificateAuthority"
+		class="org.cagrid.gaards.dorian.ca.EracomCertificateAuthority">
+		<constructor-arg index="0" ref="caProperties"/> </bean> <bean
+		id="caProperties"
+		class="org.cagrid.gaards.dorian.ca.EracomCertificateAuthorityProperties">
+		<constructor-arg index="0" value="${gaards.dorian.ca.password}" />
+		<constructor-arg index="1" value="${gaards.dorian.ca.policy.oid}" />
+		<constructor-arg index="2"
+		value="${gaards.dorian.ca.issued.cert.key.size}" /> <constructor-arg
+		index="3" value="${gaards.dorian.ca.auto.create}" /> <constructor-arg
+		index="4" ref="caCreationPolicy" /> <constructor-arg index="5"
+		value="${gaards.dorian.ca.auto.renew}" /> <constructor-arg index="6"
+		ref="caRenewalLifetime" /> <constructor-arg index="7"
+		value="${gaards.dorian.ca.eracom.slot}" /> </bean>
+	-->
+	<bean id="caCreationPolicy"
+		class="org.cagrid.gaards.dorian.ca.CertificateAuthorityCreationPolicy">
+		<constructor-arg index="0"
+			value="${gaards.dorian.ca.auto.create.subject}" />
+		<constructor-arg index="1"
+			value="${gaards.dorian.ca.auto.create.key.size}" />
+		<constructor-arg index="2">
+			<bean class="org.cagrid.gaards.dorian.common.Lifetime">
+				<property name="years"
+					value="${gaards.dorian.ca.auto.create.lifetime.years}" />
+				<property name="months"
+					value="${gaards.dorian.ca.auto.create.lifetime.months}" />
+				<property name="days"
+					value="${gaards.dorian.ca.auto.create.lifetime.days}" />
+				<property name="hours"
+					value="${gaards.dorian.ca.auto.create.lifetime.hours}" />
+				<property name="minutes"
+					value="${gaards.dorian.ca.auto.create.lifetime.minutes}" />
+				<property name="seconds"
+					value="${gaards.dorian.ca.auto.create.lifetime.seconds}" />
+			</bean>
+		</constructor-arg>
+	</bean>
+	<bean id="caRenewalLifetime" class="org.cagrid.gaards.dorian.common.Lifetime">
+		<property name="years"
+			value="${gaards.dorian.ca.auto.create.lifetime.years}" />
+		<property name="months"
+			value="${gaards.dorian.ca.auto.create.lifetime.months}" />
+		<property name="days"
+			value="${gaards.dorian.ca.auto.create.lifetime.days}" />
+		<property name="hours"
+			value="${gaards.dorian.ca.auto.create.lifetime.hours}" />
+		<property name="minutes"
+			value="${gaards.dorian.ca.auto.create.lifetime.minutes}" />
+		<property name="seconds"
+			value="${gaards.dorian.ca.auto.create.lifetime.seconds}" />
+	</bean>
+	<bean id="database" class="org.cagrid.tools.database.Database">
+		<constructor-arg index="0" value="${gaards.dorian.db.host}" />
+		<constructor-arg index="1" value="${gaards.dorian.db.port}" />
+		<constructor-arg index="2" value="${gaards.dorian.db.user}" />
+		<constructor-arg index="3" value="${gaards.dorian.db.password}" />
+		<constructor-arg index="4" value="${gaards.dorian.name}" />
+	</bean>
+	
+	<bean id="eventManager" class="org.cagrid.tools.events.EventManager">
+		<constructor-arg index="0">
+			<list>
+				
+			</list>
+		</constructor-arg>
+		<constructor-arg index="1">
+			<list>
+			
+			</list>
+		</constructor-arg>
+	</bean>
+</beans>

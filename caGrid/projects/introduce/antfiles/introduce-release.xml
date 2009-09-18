@@ -1,0 +1,37 @@
+<!-- ======================================================================= -->
+<!-- caGrid Analytical Utilities build file                                  -->
+<!-- ======================================================================= -->
+<project name="introduce_release" basedir="." default="usage">
+
+	<taskdef resource="net/sf/antcontrib/antlib.xml">
+		<classpath>
+			<pathelement location="${basedir}/lib/ant-contrib.jar" />
+		</classpath>
+	</taskdef>
+
+	<property name="introduce.extension.projects.list" value="bulkDataTransfer, cabigextensions, cadsr, csm-auth-extension, dataExtensions, enforceAuthExtension, sdkQuery, sdkQuery32, sdkQuery4, sdkQuery41, transfer, gaards-ui, globalModelExchange-ui, gridgrouper-auth-extension, service-webapp" />
+	<property name="introduce.extensions.dir" value="${basedir}/tmp/extensions" />
+
+
+	<!-- ============================================================== -->
+	<!-- Installs the Introduce Extensions                              -->
+	<!-- ============================================================== -->
+	<target name="releaseIntroduceExtensions" depends="prepare">
+		<mkdir dir="tmp" />
+		<mkdir dir="${introduce.extensions.dir}" />
+		<for list="${introduce.extension.projects.list}" parallel="true" param="project.name" trim="true">
+			<sequential>
+				<echo message="Installing Introduce Extensions from @{project.name}." />
+				<ant dir="${basedir}/../@{project.name}" inheritAll="false" antfile="build.xml" target="installIntroduceExtensions">
+					<property name="introduce.extensions.dir" value="${introduce.extensions.dir}/@{project.name}" />
+				</ant>
+			</sequential>
+		</for>
+	</target>
+
+	<!-- =================================================================== -->
+	<!-- Builds the project and the docs for a release                       -->
+	<!-- =================================================================== -->
+	<target name="release" description="Cleans and build the entire application and the docs etc" depends="clean,all,javadoc,releaseIntroduceExtensions" />
+
+</project>

@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns="http://org.cagrid.gridgrouper/1/GridGrouperAuthorization"
+	xmlns:xs="http://www.w3.org/2001/XMLSchema"
+	xmlns:gridgrouper="http://cagrid.nci.nih.gov/1/GridGrouper"
+	targetNamespace="http://org.cagrid.gridgrouper/1/GridGrouperAuthorization" elementFormDefault="qualified"
+	attributeFormDefault="unqualified">
+	<xs:import namespace="http://cagrid.nci.nih.gov/1/GridGrouper" schemaLocation="../ext/dependencies/xsd/gridgrouper/xsd/gridgrouper.xsd"></xs:import>
+	
+	<xs:complexType name="GridGrouperServiceAuthorization">
+		<xs:sequence>
+			<xs:element name="ServiceName" type="xs:string"></xs:element>
+			<xs:element ref="gridgrouper:MembershipExpression" minOccurs="0" maxOccurs="1"></xs:element>
+			<xs:element ref="GridGrouperMethodAuthorization" minOccurs="0" maxOccurs="unbounded"></xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	
+	<xs:element name="GridGrouperMethodAuthorization" type="GridGrouperMethodAuthorization"></xs:element>
+	<xs:complexType name="GridGrouperMethodAuthorization">
+		<xs:sequence>
+			<xs:element name="MethodName" type="xs:string"></xs:element>
+			<xs:element ref="gridgrouper:MembershipExpression"
+				minOccurs="1" maxOccurs="1">
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	
+</xs:schema>

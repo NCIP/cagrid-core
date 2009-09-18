@@ -1,0 +1,53 @@
+[NEXT STEPS]
+
+finish licenses
+
+fix other projects (non services) to use the resolve private conf approach
+
+
+
+[POST MERGE]
+data cql schemas have moved to cql project.. remove those artifacts and custom dependencies-build
+
+[RECIPE]
+Your organization should be caGrid, your module should be your project name (e.g projects/<projectname>)
+
+define all public confs, extending eachother as appropriate
+define publications against the public confs, leveraging the extends
+make private conf which extends all public confs
+define deps according to which public confs need them; and the rest to the private conf
+
+retrieve against the private conf
+
+can make additional finer-grain private confs as necessary (such as to seperate test libs)
+
+
+[NOTES]
+I've removed/commented out dependencies that come, or are compatible, with globus... should probably have specific confs (e.g. "gt4-deps" instead)
+
+* Look into Eclipse + IvyDE, and use of ability to generate .classpaths 
+http://ant.apache.org/ivy/ivyde/cp_container.html
+
+* Look at using ivy:install to build the "public" repository
+
+* Now that we are using beta 1, we can use ivy:makepom to generate maven2 poms
+  - needs to run against generated repo, so it uses resolved ivy files
+  - then need to be able to publish to maven2 like repo 
+
+* how should we deal with GLOBUS_LOCATION?
+currently leaving as is... we should take this as an opp to move away from relying on it
+
+* should just move to using "lib" dir for externals and get rid of "ext", and not have any project have local jars
+  - only reason not to, is we are putting more than just "libs" in the dir
+
+* how to deal with caGrid versions?
+currently having each project do it
+ 
+* we can do stuff like this for schemas (to not put versions on them):
+        <ivy:retrieve pattern="${resolved.artifacts.dir}/[conf]/[type]s/[artifact]-[revision].[ext]" type="jar"/>
+        <ivy:retrieve pattern="${resolved.artifacts.dir}/[conf]/[type]s/[artifact].[ext]" type="xsd"/>
+** how can we specify type=!xsd such that a pattern can be used for "everything except xsd"?
+  - its problematic listing all known types (such as jar), as those are determined by the artifacts, not the configurations (and so could change)
+  
+* should i be configuring it to not use a cache (as everything is on the local filesystem)?
+

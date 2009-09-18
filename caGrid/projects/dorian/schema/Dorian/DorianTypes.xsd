@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schema xmlns="http://www.w3.org/2001/XMLSchema" xmlns:wsa="http://schemas.xmlsoap.org/ws/2004/03/addressing" xmlns:tns="http://cagrid.nci.nih.gov/Dorian/types" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:wsrbf="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-BaseFaults-1.2-draft-01.xsd" targetNamespace="http://cagrid.nci.nih.gov/Dorian/types" elementFormDefault="qualified" attributeFormDefault="unqualified">
+  <element name="DorianReference">
+    <complexType>
+      <sequence>
+        <element ref="wsa:EndpointReference" />
+      </sequence>
+    </complexType>
+  </element>
+  <element name="DorianInternalFault">
+    <complexType>
+      <complexContent>
+        <extension base="wsrbf:BaseFaultType" />
+      </complexContent>
+    </complexType>
+  </element>
+  <element name="InvalidUserPropertyFault">
+    <complexType>
+      <complexContent>
+        <extension base="wsrbf:BaseFaultType" />
+      </complexContent>
+    </complexType>
+  </element>
+  <element name="PermissionDeniedFault">
+    <complexType>
+      <complexContent>
+        <extension base="wsrbf:BaseFaultType" />
+      </complexContent>
+    </complexType>
+  </element>
+  <element name="NoSuchUserFault">
+    <complexType>
+      <complexContent>
+        <extension base="wsrbf:BaseFaultType" />
+      </complexContent>
+    </complexType>
+  </element>
+  <element name="InvalidAssertionFault">
+    <complexType>
+      <complexContent>
+        <extension base="wsrbf:BaseFaultType" />
+      </complexContent>
+    </complexType>
+  </element>
+  <element name="InvalidProxyFault">
+    <complexType>
+      <complexContent>
+        <extension base="wsrbf:BaseFaultType" />
+      </complexContent>
+    </complexType>
+  </element>
+  <element name="UserPolicyFault">
+    <complexType>
+      <complexContent>
+        <extension base="wsrbf:BaseFaultType" />
+      </complexContent>
+    </complexType>
+  </element>
+  <element name="InvalidTrustedIdPFault">
+    <complexType>
+      <complexContent>
+        <extension base="wsrbf:BaseFaultType" />
+      </complexContent>
+    </complexType>
+  </element>
+  <element name="InvalidUserFault">
+    <complexType>
+      <complexContent>
+        <extension base="wsrbf:BaseFaultType" />
+      </complexContent>
+    </complexType>
+  </element>
+  <element name="AdminAlreadyExists" type="tns:AdminAlreadyExists" />
+  <complexType name="AdminAlreadyExists">
+    <complexContent>
+      <extension base="wsrbf:BaseFaultType" />
+    </complexContent>
+  </complexType>
+  <element name="InvalidHostCertificateRequestFault" type="tns:InvalidHostCertificateRequestFault" />
+  <complexType name="InvalidHostCertificateRequestFault">
+    <complexContent>
+      <extension base="wsrbf:BaseFaultType" />
+    </complexContent>
+  </complexType>
+  <element name="InvalidHostCertificateFault" type="tns:InvalidHostCertificateFault" />
+  <complexType name="InvalidHostCertificateFault">
+    <complexContent>
+      <extension base="wsrbf:BaseFaultType" />
+    </complexContent>
+  </complexType>
+  <element name="InvalidUserCertificateFault" type="tns:InvalidUserCertificateFault" />
+  <complexType name="InvalidUserCertificateFault">
+    <complexContent>
+      <extension base="wsrbf:BaseFaultType" />
+    </complexContent>
+  </complexType>
+</schema>
+

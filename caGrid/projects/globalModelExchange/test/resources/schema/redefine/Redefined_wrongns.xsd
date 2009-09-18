@@ -1,0 +1,12 @@
+<?xml version="1.0"?>
+<xs:schema targetNamespace="gme://wrongnamespace" xmlns:a="gme://wrongnamespace" xmlns:xs="http://www.w3.org/2001/XMLSchema"
+    elementFormDefault="qualified">
+    <xs:complexType name="pname">
+        <xs:sequence>
+            <xs:element name="firstname"/>
+            <xs:element name="lastname"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:element name="customer" type="a:pname"/>
+</xs:schema>

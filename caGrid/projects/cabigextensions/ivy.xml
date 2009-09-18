@@ -1,0 +1,54 @@
+<?xml version="1.0"?>
+<ivy-module version="2.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:noNamespaceSchemaLocation="http://incubator.apache.org/ivy/schemas/ivy.xsd">
+  <info organisation="caGrid" module="cabigextensions" revision="${project.version}">
+    <license name="caGrid" url="http://cagrid.org/wiki/CaGrid:LICENSE-1.3"/>
+    <description>Common caBIG Introduce Extensions</description>
+  </info>
+  <configurations>
+    <conf name="target_grid" visibility="private" />
+
+    <!-- Private Configurations-->
+    <conf name="impl" visibility="private" extends="core" />
+    <conf name="sdk" visibility="private" />
+    <conf name="impl-test" visibility="private" />
+
+    <!-- Public Configurations-->
+    <conf name="stubs" visibility="public" />
+    <conf name="core" visibility="public" extends="stubs" />
+    <conf name="test" visibility="public" extends="core,impl-test" />
+
+  </configurations>
+  <publications>
+    <artifact name="caGrid-${ivy.module}-stubs" conf="stubs" type="jar" />
+    <artifact name="caGrid-${ivy.module}-core" conf="core" type="jar" />
+    <artifact name="caGrid-${ivy.module}-tests" conf="test" type="jar" />
+
+  </publications>
+  <dependencies>
+    <dependency rev="${target.grid}" org="caGrid" name="target_grid" conf="target_grid->urls" />
+
+    <!-- NOTE: we just need some constants from data, so don't pull everything in -->
+    <dependency transitive="false" rev="latest.integration" org="caGrid" name="data"
+      conf="core->common" />
+    <dependency rev="latest.integration" org="caGrid" name="core"
+      conf="core->default;impl-test->test" />
+    <dependency rev="latest.integration" org="caGrid" name="mms" conf="core->client" />
+    <dependency rev="latest.integration" org="caGrid" name="metadata" conf="core->schemas,jars" />
+    <dependency rev="latest.integration" org="caGrid" name="metadata-validator" conf="core->default" />
+    <dependency rev="latest.integration" org="caGrid" name="wsEnum" conf="core->default,schemas" />
+    <dependency rev="latest.integration" org="caGrid" name="introduce" conf="core->extension,buildTools" />
+    <dependency rev="latest.integration" org="caGrid" name="metadatautils" conf="core->default" />
+    <dependency rev="latest.integration" org="caGrid" name="graph" conf="core->default" />
+    <dependency rev="latest.integration" org="caGrid" name="grape" conf="core->default" />
+
+    <!-- External Dependencies -->
+    <dependency rev="2.0.0" org="jgoodies" name="validation" conf="core->default" />
+    <dependency rev="1.3.2" org="apache" name="commons-io" conf="core->default" />
+    <dependency rev="4.1" org="cacore" name="sdk" conf="sdk->sdk-src" />
+    <dependency rev="4.4" org="junit" name="junit" conf="impl-test->default" />
+    <!--  for SDK validation -->
+    <dependency rev="2.0.8" org="apache" name="jakarta-oro" conf="core->default" />
+
+  </dependencies>
+</ivy-module>

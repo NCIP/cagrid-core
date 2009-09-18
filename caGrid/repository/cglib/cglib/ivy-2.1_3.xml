@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<?xml-stylesheet type="text/xsl" href="http://ivyrep.jayasoft.org/ivy-doc.xsl"?>
+<ivy-module version="2.0">
+    <info organisation="cglib" module="cglib" revision="2.1_3" status="release">
+        <license name="Apache" url="http://www.apache.org/licenses/LICENSE-2.0.txt"/>
+        <ivyauthor name="jayasoft" url="http://www.jayasoft.org/"/>
+        <description homepage="http://cglib.sourceforge.net/"> cglib is a powerful, high performance
+            and quality Code Generation Library cglib distribution is particular in the sense
+            that it provides a jar with cglib only and one with its dependencies (asm). Using
+            ivy, using one or the other is close: in the two cases you will have the right classes,
+            in several jars (cglib + asm ones) in the first case, and in one jar (cglib-full) in the
+            second. </description>
+    </info>
+    <configurations>
+        <conf name="default" description="cglib itself, with its dependencies as dependencies"/>
+        <conf name="full" description="cglib with dependencies in one jar"/>
+
+    </configurations>
+    <publications>
+        <artifact name="cglib" type="jar" conf="default"/>
+        <artifact name="cglib-nodep" type="jar" conf="full"/>
+    </publications>
+    <dependencies>
+        <dependency org="objectweb" name="asm" rev="1.3.4" conf="default->default"/>
+    </dependencies>
+</ivy-module>

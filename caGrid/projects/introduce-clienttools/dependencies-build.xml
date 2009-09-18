@@ -1,0 +1,29 @@
+<?xml version="1.0"?>
+
+<project name="dependencies" basedir="." xmlns:ivy="antlib:org.apache.ivy.ant">
+	<property file="project.properties" />
+
+	<!-- OVERLOADED-->
+	<property name="ivy.resolve.configurations" value="default" />
+	<property name="ivy.generated.artifacts.pattern" value="${ivy.generated.artifacts.dir}/lib/[artifact]-[revision].[ext]" />
+
+	<property name="ivy-shared-targets.file" location="${basedir}/../../antfiles/ivy/ivy-shared-targets.xml" />
+	<import file="${ivy-shared-targets.file}" />
+
+	<!-- 
+	   Overloaded to look for generated artifacts in multiple locations: 
+	-->
+	<target name="do.publish" depends="pre.publish">
+		<publish-artifacts>
+			<artifacts-list>
+				<artifacts pattern="${ivy.generated.artifacts.pattern}" />
+			</artifacts-list>
+		</publish-artifacts>
+	</target>
+
+	<target name="do.resolve-dependencies" depends="pre.resolve-dependencies">
+		<ivy:retrieve conf="default" pattern="${ivy.resolved.artifacts.dir}/dependencies/[type]s/[originalname](.[ext])" sync="true" type="jar" />
+	</target>
+
+</project>
+

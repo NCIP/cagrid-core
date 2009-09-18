@@ -1,0 +1,169 @@
+<project name="caGrid-installer" default="all" basedir=".">
+
+	<description>caGrid Installer build file</description>
+
+	<property environment="env" />
+	<property file="${basedir}/project.properties" />
+	<property file="${basedir}/build.properties" />
+	<property name="globus.dir" location="${env.GLOBUS_LOCATION}" />
+
+	<property name="project.name" value="${ant.project.name}" />
+	<property name="project.artificat.name" value="${project.name}-${project.version}" />
+	<property name="project.jar.name" value="${project.artificat.name}.jar" />
+	<property name="project.zip.name" value="${project.artificat.name}.zip" />
+
+	<property name="src" location="src" />
+	<property name="build" location="build" />
+	<property name="build.classes" location="${build}/classes" />
+	<property name="build.jars" location="${build}/jars" />
+	<property name="ext.lib.dir" location="ext/dependencies/default/jars" />
+
+	<property name="runtime.mainclass" value="org.cagrid.installer.Installer" />
+
+	<pathconvert property="download.properties.path" dirsep="/">
+		<path location="${build}/cagrid.installer.properties" />
+	</pathconvert>
+	<!-- NOTE: these are expected to be changed/overridden when releases are created -->
+	<property name="cagrid.version" value="${project.version}" />
+	<property name="download.properties.url" value="file://${download.properties.path}" />
+	<property name="cagrid.download.url" value="http://localhost:8080/downloads/caGrid-${project.version}.zip" />
+
+	<fileset id="globus.jars" dir="${globus.dir}/lib">
+		<include name="commons-logging*.jar" />
+		<include name="log4j*.jar" />
+		<include name="tools.jar" />
+		<include name="cog-jglobus.jar" />
+		<include name="jce-jdk13-125.jar" />
+	</fileset>
+
+	<path id="build.classpath">
+		<fileset dir="${ext.lib.dir}" includes="*.jar" />
+		<fileset refid="globus.jars" />
+	</path>
+	<path id="run.classpath">
+		<path refid="build.classpath" />
+		<pathelement location="${build.classes}" />
+	</path>
+
+	<target name="init" depends="clean">
+		<tstamp />
+		<mkdir dir="${build}" />
+		<mkdir dir="${build.classes}" />
+		<mkdir dir="${build.jars}" />
+	</target>
+
+	<target name="compile" depends="init" description="compile the source ">
+
+		<javac destdir="${build.classes}" source="1.5" debug="true">
+			<src path="${src}" />
+			<classpath refid="build.classpath" />
+		</javac>
+
+		<copy todir="${build.classes}">
+			<fileset dir="${src}">
+				<exclude name="**/*.java" />
+				<exclude name="**/*.html" />
+				<exclude name="**/*.psd" />
+			</fileset>
+		</copy>
+	</target>
+
+	<target name="clean" description="clean up">
+		<delete dir="${build}" />
+	</target>
+
+	<target name="jar" depends="compile">
+
+		<copy file="src/download.properties" todir="build/classes" overwrite="true">
+			<filterset>
+				<filter token="DOWNLOAD_PROPERTIES_URL" value="${download.properties.url}" />
+			</filterset>
+		</copy>
+
+		<copy todir="build/classes" overwrite="true">
+			<fileset dir="src">
+				<include name="images/**" />
+				<!--
+				<include name="resources/**"/>
+				-->
+				<include name="*.properties" />
+				<include name="*.txt" />
+				<exclude name="download.properties" />
+			</fileset>
+		</copy>
+
+		<pathconvert property="manifest.classpath" pathsep=" ">
+			<path refid="run.classpath" />
+			<mapper>
+				<chainedmapper>
+					<flattenmapper />
+					<globmapper from="*.jar" to="lib/*.jar" />
+				</chainedmapper>
+			</mapper>
+		</pathconvert>
+
+		<jar destfile="${build.jars}/${project.jar.name}" basedir="${build.classes}" includes="org/cagrid/**/*.class **/*.properties **/*.txt images/**">
+			<manifest>
+				<attribute name="Built-By" value="${user.name}" />
+				<attribute name="Specification-Version" value="${project.version}" />
+				<attribute name="Implementation-Version" value="${project.version}" />
+				<attribute name="Main-Class" value="${runtime.mainclass}" />
+				<attribute name="Class-Path" value="${manifest.classpath}" />
+			</manifest>
+		</jar>
+	</target>
+
+	<target name="all" depends="clean,compile,jar">
+	</target>
+
+
+	<target name="dist-installer" depends="jar" description="Generates an installer release.">
+
+		<mkdir dir="build/installer/lib" />
+		<mkdir dir="build/installer/scripts/resources" />
+
+		<copy todir="build/installer" file="${build.jars}/${project.jar.name}" overwrite="true" />
+
+		<copy todir="build/installer/lib">
+			<fileset refid="globus.jars" />
+
+			<fileset dir="${java.home}/lib">
+				<include name="tools.jar" />
+			</fileset>
+
+			<fileset dir="${ext.lib.dir}">
+				<include name="*.jar" />
+			</fileset>
+		</copy>
+
+		
+		<copy todir="build/installer/scripts">
+			<fileset dir="scripts">
+				<include name="**" />
+			</fileset>
+		</copy>
+		
+		<copy todir="build/installer/scripts/resources">
+			<fileset dir="src/resources">
+				<include name="**" />
+			</fileset>
+		</copy>
+
+		<zip destfile="build/${project.zip.name}" basedir="build/installer" />
+
+		<copy file="cagrid.installer.properties" todir="build" overwrite="true">
+			<filterset>
+				<filter token="CAGRID_VERSION" value="${cagrid.version}" />
+				<filter token="CAGRID_DOWNLOAD_URL" value="${cagrid.download.url}" />
+			</filterset>
+		</copy>
+	</target>
+
+	<target name="run-installer" depends="dist-installer">
+		<mkdir dir="${build}/temp" />
+		<unzip src="build/${project.zip.name}" dest="${build}/temp" />
+		<java jar="${build}/temp/${project.jar.name}" fork="true" dir="${build}/temp" failonerror="true" />
+	</target>
+
+</project>
+

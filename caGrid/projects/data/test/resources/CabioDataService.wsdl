@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions xmlns="http://schemas.xmlsoap.org/wsdl/" xmlns:tns="http://cabiods.cagrid.nci.nih.gov/CabioDataService/service" xmlns:ns4="http://cabiods.cagrid.nci.nih.gov/CabioDataService/CQLResultTypes" xmlns:ns8="gme://caCORE.cabig/3.0/gov.nih.nci.cabio.domain" name="CabioDataService" targetNamespace="http://cabiods.cagrid.nci.nih.gov/CabioDataService/service">
+  <!--============================================================
+
+                      T Y P E S
+                      
+  ============================================================-->
+  <types>
+    <schema xmlns="http://www.w3.org/2001/XMLSchema" xmlns:xs="http://www.w3.org/2001/XMLSchema" targetNamespace="http://cabiods.cagrid.nci.nih.gov/CabioDataService" elementFormDefault="qualified" attributeFormDefault="unqualified">
+      <import namespace="http://cabiods.cagrid.nci.nih.gov/CabioDataService/CQLResultTypes" schemaLocation="./CabioDataService_CQLResultTypes.xsd" />
+      <import namespace="gme://caCORE.cabig/3.0/gov.nih.nci.cabio.domain" schemaLocation="./caCORE.cabig-3.0_gov.nih.nci.cabio.domain.xsd" />
+      <import namespace="http://CQL.caBIG/1/gov.nih.nci.cagrid.CQLResultSet" schemaLocation="./1_gov.nih.nci.cagrid.CQLResultSet.xsd" />
+      <element name="CabioDataServiceResourceProperties">
+        <complexType>
+          <sequence>
+            <element ref="ns5:DomainModel" />
+          </sequence>
+        </complexType>
+      </element>
+    </schema>
+  </types>
+</definitions>
+

@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+
+<ivy-module version="2.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:noNamespaceSchemaLocation="http://incubator.apache.org/ivy/schemas/ivy.xsd">
+
+	<info organisation="wannheden" module="jetc-task" revision="1.0">
+		<license name="Public Domain"/>
+		<description homepage="http://www.eclipse.org/articles/Article-JET2/jet_tutorial2.html"
+			>Simple Ant task to invoke JET. Author: Knut Wannheden (knut.wannheden at paranor.ch)
+		</description>
+	</info>
+
+	<dependencies>
+		<dependency org="eclipse" name="emf" conf="*->codegen" rev="2.0.+"/>
+		<dependency org="eclipse" name="core" conf="*->runtime,resources" rev="3.0.+"/>
+		<dependency org="eclipse" name="jdt" conf="*->core" rev="3.0.+"/>
+		<dependency org="eclipse" name="osgi" rev="3.0.+"/>
+	</dependencies>
+</ivy-module>

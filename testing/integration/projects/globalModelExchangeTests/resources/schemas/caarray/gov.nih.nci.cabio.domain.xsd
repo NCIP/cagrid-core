@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns="gme://caArray.caBIG/2.0/gov.nih.nci.cabio.domain"
+    targetNamespace="gme://caArray.caBIG/2.0/gov.nih.nci.cabio.domain" elementFormDefault="qualified">
+
+    <xs:element name="TranscriptArrayReporter" type="TranscriptArrayReporter" />
+    <xs:complexType name="TranscriptArrayReporter">
+        <xs:complexContent>
+            <xs:extension base="ArrayReporter">
+                <xs:sequence />
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+    <xs:element name="Microarray" type="Microarray" />
+    <xs:complexType name="Microarray">
+        <xs:sequence>
+            <xs:element name="reporterCollection" minOccurs="0">
+                <xs:complexType>
+                    <xs:choice minOccurs="0" maxOccurs="unbounded">
+                        <xs:element ref="ArrayReporter" />
+                    </xs:choice>
+                </xs:complexType>
+            </xs:element>
+        </xs:sequence>
+        <xs:attribute name="annotationDate" type="xs:dateTime" />
+        <xs:attribute name="bigid" type="xs:string" />
+        <xs:attribute name="dbSNPVersion" type="xs:string" />
+        <xs:attribute name="genomeVersion" type="xs:string" />
+        <xs:attribute name="id" type="xs:long" />
+        <xs:attribute name="name" type="xs:string" />
+        <xs:attribute name="platform" type="xs:string" />
+        <xs:attribute name="type" type="xs:string" />
+    </xs:complexType>
+    <xs:element name="SNPArrayReporter" type="SNPArrayReporter" />
+    <xs:complexType name="SNPArrayReporter">
+        <xs:complexContent>
+            <xs:extension base="ArrayReporter">
+                <xs:sequence />
+                <xs:attribute name="phastConservation" type="xs:string" />
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+    <xs:element name="ExonArrayReporter" type="ExonArrayReporter" />
+    <xs:complexType name="ExonArrayReporter">
+        <xs:complexContent>
+            <xs:extension base="TranscriptArrayReporter">
+                <xs:sequence />
+                <xs:attribute name="probeCount" type="xs:long" />
+                <xs:attribute name="probeSelectionRegionId" type="xs:long" />
+                <xs:attribute name="strand" type="xs:string" />
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+    <xs:element name="ExpressionArrayReporter" type="ExpressionArrayReporter" />
+    <xs:complexType name="ExpressionArrayReporter">
+        <xs:complexContent>
+            <xs:extension base="TranscriptArrayReporter">
+                <xs:sequence />
+                <xs:attribute name="sequenceSource" type="xs:string" />
+                <xs:attribute name="sequenceType" type="xs:string" />
+                <xs:attribute name="targetDescription" type="xs:string" />
+                <xs:attribute name="targetId" type="xs:string" />
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+    <xs:element name="ArrayReporter" type="ArrayReporter" />
+    <xs:complexType name="ArrayReporter">
+        <xs:sequence>
+            <xs:element name="microarray" minOccurs="0" maxOccurs="1" type="Microarray" />
+        </xs:sequence>
+        <xs:attribute name="bigid" type="xs:string" />
+        <xs:attribute name="id" type="xs:long" />
+        <xs:attribute name="name" type="xs:string" />
+    </xs:complexType>
+</xs:schema>
+

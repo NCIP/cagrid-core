@@ -1,0 +1,58 @@
+<?xml version="1.0"?>
+
+<ivy-module version="2.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:noNamespaceSchemaLocation="http://incubator.apache.org/ivy/schemas/ivy.xsd">
+
+	<info organisation="mobius" module="mobius" revision="1.1">
+		<license name="Mobius Software" url="http://projectmobius.org/download.php"/>
+		<description homepage="http://projectmobius.org/">The Mobius project. NOTE: these
+			dependencies are modeled 100% correctly to be used stand alone.</description>
+
+	</info>
+
+	<configurations>
+		<!-- Private Configurations-->
+		<conf name="base" visibility="private"/>
+		<conf name="server-base" visibility="private" extends="base"/>
+
+		<!-- Public Configurations-->
+		<conf name="common" visibility="public" extends="common-server,common-client"/>
+		<conf name="common-server" visibility="public" extends="server-base"/>
+		<conf name="common-client" visibility="public" extends="base"/>
+
+		<conf name="gme-server" visibility="public" extends="common-server"/>
+		<conf name="gme-client" visibility="public" extends="common-client"/>
+		<conf name="gme-grid-connector" visibility="public"/>
+
+		<conf name="factory-base" visibility="public"/>
+
+		<conf name="tools" visibility="public"/>
+
+	</configurations>
+
+
+	<publications>
+		<artifact name="mobius-castor-0.9.4.3-xml" type="jar" conf="server-base"/>
+
+		<artifact name="mobius_factories" type="jar" conf="factory-base"/>
+
+		<artifact name="mobius_common_client" type="jar" conf="common-client"/>
+		<artifact name="mobius_common_server" type="jar" conf="common-server"/>
+
+		<artifact name="mobius_gme_client" type="jar" conf="gme-client"/>
+		<artifact name="mobius_gme_server" type="jar" conf="gme-server"/>
+		<artifact name="GlobalModelExchange" type="jar" conf="gme-grid-connector"/>
+
+		<artifact name="mobius_tools" type="jar" conf="tools"/>
+
+	</publications>
+
+	<dependencies>
+		<dependency rev="1.0" org="jdom" name="jdom" conf="base->*"/>
+		<dependency rev="1.3.4" org="douglea" name="concurrent" conf="base->*"/>
+		<dependency rev="3.0.+" org="mysql" name="connector-java" conf="server-base->*"/>
+		<!-- 
+			removed dep on xerces (its in globus)
+		-->
+	</dependencies>
+</ivy-module>

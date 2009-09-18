@@ -1,0 +1,12 @@
+<ns1:CQLQueryResults targetClassname="gov.nih.nci.cabio.domain.Gene" xmlns:ns1="http://CQL.caBIG/1/gov.nih.nci.cagrid.CQLResultSet" 
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+ <ns1:ObjectResult>
+  <ns2:Gene id="1738" fullName="Breast cancer 2, early onset" clusterId="34012" symbol="BRCA2" xsi:type="ns2:Gene" xmlns:ns2="gme://caCORE.cabig/3.0/gov.nih.nci.cabio.domain"/>
+ </ns1:ObjectResult>
+ <ns1:ObjectResult>
+  <ns3:Gene id="9453" fullName="Breast cancer 1, early onset" clusterId="194143" symbol="BRCA1" xsi:type="ns3:Gene" xmlns:ns3="gme://caCORE.cabig/3.0/gov.nih.nci.cabio.domain"/>
+ </ns1:ObjectResult>
+ <ns1:ObjectResult>
+  <ns4:Gene id="34123" fullName="BRCA1/BRCA2-containing complex, subunit 3" clusterId="558537" symbol="BRCC3" xsi:type="ns4:Gene" xmlns:ns4="gme://caCORE.cabig/3.0/gov.nih.nci.cabio.domain"/>
+ </ns1:ObjectResult>
+</ns1:CQLQueryResults>

@@ -1,0 +1,32 @@
+Index: java/core/test/unit/build.xml
+===================================================================
+RCS file: /home/globdev/CVS/globus-packages/wsrf/java/core/test/unit/build.xml,v
+retrieving revision 1.35.4.1
+diff -u -r1.35.4.1 build.xml
+--- java/core/test/unit/build.xml	25 Aug 2005 22:34:08 -0000	1.35.4.1
++++ java/core/test/unit/build.xml	13 Jul 2006 20:45:28 -0000
+@@ -82,6 +82,7 @@
+                 <include name="core/tests/notification/**"/>
+                 <include name="core/tests/security/**"/>
+                 <include name="core/tests/invalidate/**"/>
++                <include name="core/tests/enumeration/**"/>
+                 <include name="wsrf/**"/>
+                 <include name="ws/**"/>
+             </fileset>
+@@ -120,7 +121,15 @@
+             <property name="target.stubs.dir" location="${stubs.src}"/>
+             <property name="wsdl.file" 
+                 value="security_test_service.wsdl"/>
+-        </ant>        
++        </ant>      
++        <!-- Enumeration test service -->
++        <ant antfile="${build.stubs}" target="generateStubs">
++            <property name="source.stubs.dir"
++                location="${schema.dest}/core/tests/enumeration"/>
++            <property name="target.stubs.dir" location="${stubs.src}"/>
++            <property name="wsdl.file"
++                value="enumeration_service.wsdl"/>
++        </ant>  
+     </target>
+     
+     <target name="compileStubs" depends="stubs">

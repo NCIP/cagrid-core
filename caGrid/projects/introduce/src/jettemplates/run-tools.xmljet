@@ -1,0 +1,16 @@
+<%@ jet package="gov.nih.nci.cagrid.introduce.templates" class="RunToolsTemplate" imports="gov.nih.nci.cagrid.introduce.common.* gov.nih.nci.cagrid.introduce.* gov.nih.nci.cagrid.introduce.beans.method.* gov.nih.nci.cagrid.introduce.beans.service.* gov.nih.nci.cagrid.introduce.common.* gov.nih.nci.cagrid.introduce.codegen.utils.* gov.nih.nci.cagrid.introduce.codegen.* gov.nih.nci.cagrid.introduce.beans.namespace.* java.util.* gov.nih.nci.cagrid.introduce.beans.resource.* gov.nih.nci.cagrid.introduce.beans.property.*"%>
+<% gov.nih.nci.cagrid.introduce.common.SpecificServiceInformation info = (gov.nih.nci.cagrid.introduce.common.SpecificServiceInformation) argument; 
+   String namespaceDomain = info.getIntroduceServiceProperties().getProperty("introduce.skeleton.namespace.domain");
+	ServiceType service = info.getService();;
+	String serviceName = service.getName();
+%><project name="run-tools file" basedir="." default="runClient">
+     <target name="runClient" depends="checkGlobus, defineClasspaths" description="Run the sample Client">
+        <property name="service.url" value="http://localhost:8080/wsrf/services/cagrid/<%=service.getName() %>" />
+        <echo message="Connecting to service: ${service.url}" />
+        <java failonerror="true" classname="<%=service.getPackageName() + ".client." + service.getName() + "Client" %>" classpathref="run.classpath" fork="yes">
+            <jvmarg value="-DGLOBUS_LOCATION=${ext.globus.dir}" />
+            <arg value="-url" />
+            <arg value="${service.url}" />
+        </java>
+    </target>
+</project>

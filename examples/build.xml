@@ -1,0 +1,70 @@
+<?xml version="1.0"?>
+<!-- ================================================================= -->
+<!-- caGrid Applications build file                                           -->
+<!-- ================================================================= -->
+
+<project name="caGrid-applications" default="all" basedir="." xmlns:ivy="antlib:org.apache.ivy.ant">
+	<dirname property="caGrid-applications.basedir" file="${ant.file.caGrid-applications}" />
+
+	<!-- Give user the chance to override properties -->
+	<property environment="env" />
+	<property file="applications.properties" />
+
+	<!-- Layout info -->
+	<property name="applications.projects.dir" location="${caGrid-applications.basedir}/projects" />
+	
+	<!-- IMPORT THE UTILITIES TARGETS -->
+	<import file="${cagrid.dir}/build.xml" />
+
+	<target name="prepare" depends="caGrid-Master.prepare,build-projects-list" />
+
+	<target name="build-projects-list">
+		<ivy:buildlist reference="ivy.projects.list">
+			<fileset dir="${applications.projects.dir}">
+				<include name="*/dependencies-build.xml" />
+			</fileset>
+		</ivy:buildlist>
+	</target>
+
+	<!-- ============================================================== -->
+	<!-- Cleans up generated stuff                                      -->
+	<!-- ============================================================== -->
+	<target name="clean" depends="prepare" description="Cleans all projects.">
+		<for parallel="true" param="project.buildfile" trim="true" threadcount="10">
+			<path refid="ivy.projects.list" />
+			<sequential>
+				<dirname file="@{project.buildfile}" property="@{project.buildfile}.dir" />
+				<ant inheritAll="false" dir="${@{project.buildfile}.dir}" antfile="@{project.buildfile}" target="clean-dependencies" />
+			</sequential>
+		</for>
+	</target>
+
+
+	<!-- ============================================================== -->
+	<!-- Builds from scratch                                            -->
+	<!-- ============================================================== -->
+	<target name="all" depends="clean" description="Builds the entire application">
+		<for parallel="false" param="project.buildfile" trim="true">
+			<path refid="ivy.projects.list" />
+			<sequential>
+				<dirname file="@{project.buildfile}" property="@{project.buildfile}.dir" />
+				<ant inheritAll="false" inheritrefs="false" dir="${@{project.buildfile}.dir}" antfile="@{project.buildfile}" target="publish">
+					<property name="target.grid" value="${target.grid}" />
+				</ant>
+			</sequential>
+		</for>
+	</target>
+	
+	<target name="allwithcagridprojects" depends="caGrid-Master.all,all" description="Builds the entire application">
+		<for parallel="false" param="project.buildfile" trim="true">
+			<path refid="ivy.projects.list" />
+			<sequential>
+				<dirname file="@{project.buildfile}" property="@{project.buildfile}.dir" />
+				<ant inheritAll="false" inheritrefs="false" dir="${@{project.buildfile}.dir}" antfile="@{project.buildfile}" target="publish">
+					<property name="target.grid" value="${target.grid}" />
+				</ant>
+			</sequential>
+		</for>
+	</target>
+
+</project>

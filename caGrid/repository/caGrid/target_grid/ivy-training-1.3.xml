@@ -1,0 +1,61 @@
+<?xml version="1.0"?>
+
+<ivy-module version="2.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:noNamespaceSchemaLocation="http://incubator.apache.org/ivy/schemas/ivy.xsd">
+
+  <info organisation="caGrid" module="target_grid" revision="training-1.3">
+    <description>Training Grid for caGrid 1.3</description>
+  </info>
+
+  <configurations>
+    <!-- Public Configurations-->
+    <conf name="default" visibility="public"/>
+
+    <!--  trust related-->
+    <conf name="trust" visibility="public" extends="certs,syncdesc"/>
+    <conf name="certs" visibility="public" extends="default"/>
+    <conf name="syncdesc" visibility="public" extends="default"/>
+
+    <!--  properties-->
+    <conf name="introduce" visibility="public" extends="default"/>
+    <conf name="urls" visibility="public" extends="default"/>
+
+    <!--  grape UI configurations-->
+    <conf name="ui" visibility="public" extends="authentication-services,dorian-services,gridgrouper-services,gts-services,cds-services,workflow-ui"/>
+    <conf name="cds-services" visibility="public" extends="default"/>
+    <conf name="authentication-services" visibility="public" extends="default"/>
+    <conf name="dorian-services" visibility="public" extends="default"/>
+    <conf name="gridgrouper-services" visibility="public" extends="default"/>
+    <conf name="gts-services" visibility="public" extends="default"/>
+    <conf name="workflow-ui" visibility="public" extends="default"/>
+	
+	<!--  websso configurations-->
+	<conf name="websso" visibility="public" extends="default"/>
+  </configurations>
+
+
+  <publications>
+    <!--  certificates -->
+    <artifact name="certificates/68907d53" type="certificate" ext="0" conf="certs"/>
+    <artifact name="certificates/68907d53" type="certificate" ext="signing_policy" conf="certs"/>
+
+    <!--  grape UI configurations-->
+    <artifact name="authentication-services-configuration" type="xml" conf="authentication-services"/>
+    <artifact name="dorian-services-configuration" type="xml" conf="dorian-services"/>
+    <artifact name="gridgrouper-services-configuration" type="xml" conf="gridgrouper-services"/>
+    <artifact name="gts-services-configuration" type="xml" conf="gts-services"/>
+    <artifact name="workflow-ui-configuration" type="xml" conf="workflow-ui"/>
+    <artifact name="cds-services-configuration" type="xml" conf="cds-services"/>
+    
+    <!--  properties-->
+    <artifact name="introduce" type="properties" conf="introduce"/>
+    <artifact name="service_urls" type="properties" conf="urls"/>
+
+    <!--  syncgts configurations-->
+    <artifact name="sync-description" type="xml" conf="syncdesc"/>
+	
+	<!-- websso configurations -->
+	<artifact name="websso-properties" type="xml" conf="websso"/>
+  </publications>
+
+</ivy-module>

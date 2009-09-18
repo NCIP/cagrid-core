@@ -1,0 +1,47 @@
+<!-- ======================================================================= -->
+<!-- caGrid Testing project test file                                        -->
+<!-- ======================================================================= -->
+<project name="caGrid-testing_tests_harness" basedir=".">
+	<property name="test.logs.dir" value="test/logs"/>
+    <property name="junit.results.dir" value="${test.logs.dir}/junit" />
+	
+	<path id="test.classpath">
+		<fileset dir="${globus.dir}/lib">
+			<include name="*.jar"/>
+		</fileset>
+		<fileset dir="${lib.dir}">
+			<include name="**/*.jar"/>
+		</fileset>
+		<fileset dir="${ext.lib.dir}">
+			<include name="**/*.jar"/>
+		</fileset>		
+		<fileset dir="${jar.dir}">
+			<include name="*.jar"/>
+		</fileset>
+	</path>
+
+	
+	<target name="test">
+		<echo message="Test results dir: ${junit.results.dir}" />
+		<mkdir dir="${junit.results.dir}" />
+		<junit dir="${basedir}" printsummary="yes" errorproperty="test.failed" failureproperty="test.failed" showoutput="true" fork="yes" forkmode="once">
+			<sysproperty key="build.dir" value="${build.dir}"/>
+			<sysproperty key="testing.containers.dir" value="${basedir}/containers" />
+			<jvmarg value="-Dbuild.dir=${build.dir}" />
+			<classpath refid="test.classpath"/>
+			<classpath>
+				<pathelement location="${test.dir}/resources" />
+			</classpath>
+			<formatter type="xml" />
+			<!--
+			<test if="testcase" name="${testcase}" fork="yes" todir="${junit.results.dir}" />
+			-->
+			<batchtest fork="yes" todir="${junit.results.dir}" errorproperty="test.failed" failureproperty="test.failed">
+				<fileset dir="${test.src.dir}">
+					<include name="**/*StoryBook.java" />
+				</fileset>
+			</batchtest>
+		</junit>
+		<fail message="Tests failed! Check test reports." if="test.failed" />
+	</target>	
+</project>

@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schema targetNamespace="http://types.identifers-na.cagrid.org/IdentifiersNAService"
+	xmlns:tns="http://types.identifers-na.cagrid.org/IdentifiersNAService"
+	xmlns="http://www.w3.org/2001/XMLSchema">
+
+	<complexType name="Values">
+		<sequence>
+			<element name="Value" type="string" minOccurs="1" maxOccurs="unbounded" />
+		</sequence>
+	</complexType>
+
+   <element name="Values" type="tns:Values" />
+
+	<complexType name="TypeValues">
+        <sequence>
+          <element name="type" type="string" />
+          <element ref="tns:Values" />
+        </sequence>
+   </complexType>
+
+	<element name="TypeValues" type="tns:TypeValues" />
+
+	<complexType name="TypeValuesMap">
+  		<sequence>
+    		<element ref="tns:TypeValues" minOccurs="0" maxOccurs="unbounded" />
+  		</sequence>
+	</complexType>
+
+	<element name="TypeValuesMap" type="tns:TypeValuesMap" />
+
+   <complexType name="Identifier">
+      <sequence>
+         <element type="string" name="Name"/>
+         <element ref="tns:TypeValuesMap"/>
+      </sequence>
+   </complexType>
+        
+   <element name="Identifier" type="tns:Identifier"/>
+</schema>

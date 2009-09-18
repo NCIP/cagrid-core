@@ -1,0 +1,16 @@
+<?xml version="1.0"?>
+<ivy-module version="2.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:noNamespaceSchemaLocation="http://incubator.apache.org/ivy/schemas/ivy.xsd">
+
+    <info organisation="hibernate" module="hibernate-validator" revision="3.0.0.GA" status="release">
+
+        <license name="LGPL" url="http://www.gnu.org/copyleft/lesser.html"/>
+        <description homepage="http://validator.hibernate.org/"> The Hibernate
+        Validator</description>
+    </info>
+    <dependencies>
+        <dependency org="hibernate" name="hibernate-commons-annotations" rev="3.0.0.GA"
+            conf="default"/>
+        <dependency org="sun" name="persistence-api" rev="1.0.1.GA" conf="default"/>
+    </dependencies>
+</ivy-module>

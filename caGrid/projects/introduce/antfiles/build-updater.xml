@@ -1,0 +1,45 @@
+<project name="cagrid_updater" basedir="." default="usage">
+	<target name="usage">
+		<echo message="Not to be called directly." />
+	</target>
+	<target name="prepareUpdateManager">
+		<path id="UpdateManager.classpath">
+			<pathelement location="${updater.classes.dir}" />
+			<pathelement location="${introduce.classes.dir}" />
+			<fileset dir="${ext.globus.dir}/lib">
+				<include name="*.jar" />
+			</fileset>
+		</path>
+		<path id="UpdateManager.test.classpath">
+			<pathelement location="${updater.classes.dir}" />
+			<pathelement location="${introduce.classes.dir}" />
+			<fileset dir="${ext.globus.dir}/lib">
+				<include name="*.jar" />
+				<exclude name="junit.jar"/>
+			</fileset>
+			<fileset dir="${lib.dir}">
+				<include name="*.jar" />
+			</fileset>
+			<fileset dir="${ext.lib.dir}">
+				<include name="*.jar" />
+			</fileset>
+			<fileset dir="${build.lib.dir}">
+				<include name="*.jar" />
+			</fileset>
+			<fileset dir="${test.lib.dir}">
+				<include name="*.jar" />
+			</fileset>
+		        <fileset dir="${ext.test.lib.dir}">
+				<include name="*.jar" />
+			</fileset>
+		</path>
+		<path id="UpdateManager.run.classpath">
+			<fileset dir="${updates.lib.dir}">
+				<include name="*.jar" />
+			</fileset>
+			<fileset dir="${ext.globus.dir}/lib">
+				<include name="*.jar" />
+			</fileset>
+		</path>
+	</target>
+</project>

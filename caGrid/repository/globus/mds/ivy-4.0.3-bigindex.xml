@@ -1,0 +1,43 @@
+<?xml version="1.0"?>
+
+<ivy-module version="2.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:noNamespaceSchemaLocation="http://incubator.apache.org/ivy/schemas/ivy.xsd">
+
+  <info organisation="globus" module="mds" revision="4.0.3-bigindex">
+    <description>The Globus MDS project. Really this should be a number of Globus modules, but
+      we
+      currently have no reason to break it out, and its a fairly ellaborate dependency
+      tree to
+      mirror. This version represents the changes made to make the index service supported by a
+      back-end database (currently xindice), while remaining mostly backwards compatible.
+    </description>
+  </info>
+
+  <configurations>
+    <!-- Public Configurations-->
+    <conf name="jars" visibility="public" />
+    <conf name="gars" visibility="public" />
+  </configurations>
+
+
+  <publications>
+    <artifact name="globus_wsrf_mds_aggregator" type="jar" conf="jars" />
+    <artifact name="globus_wsrf_mds_aggregator" type="gar" conf="gars" />
+    <artifact name="globus_wsrf_mds_aggregator_stubs" type="jar" conf="jars" />
+    <artifact name="globus_wsrf_aggregator_schema" type="gar" conf="gars" />
+
+    <artifact name="globus_wsrf_servicegroup" type="jar" conf="jars" />
+    <artifact name="globus_wsrf_servicegroup" type="gar" conf="gars" />
+    <artifact name="globus_wsrf_servicegroup_stubs" type="jar" conf="jars" />
+    <artifact name="globus_wsrf_servicegroup_schema" type="gar" conf="gars" />
+
+    <artifact name="globus_wsrf_mds_usefulrp" type="gar" conf="gars" />
+    <artifact name="globus_wsrf_mds_usefulrp_schema" type="gar" conf="gars" />
+
+    <artifact name="globus_wsrf_mds_bigindex" type="gar" conf="gars" />
+    <artifact name="globus_wsrf_mds_bigindex_schema" type="gar" conf="gars" />
+
+  </publications>
+
+  <dependencies />
+</ivy-module>

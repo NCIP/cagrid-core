@@ -1,0 +1,46 @@
+<?xml version="1.0"?>
+
+<ivy-module version="2.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:noNamespaceSchemaLocation="http://incubator.apache.org/ivy/schemas/ivy.xsd">
+
+  <info organisation="caGrid" module="sdkQuery4" revision="${project.version}">
+    <license name="caGrid" url="http://cagrid.org/wiki/CaGrid:LICENSE-1.3"/>
+    <description>The caCORE SDK 4 Query Processor</description>
+  </info>
+
+  <configurations>
+    <conf name="impl-test" visibility="private"/>
+
+    <!-- Public Configurations-->
+    <conf name="stubs" visibility="public"/>
+    <conf name="processor" visibility="public" extends="stubs"/>
+    <conf name="style" visibility="public" extends="processor"/>
+    <conf name="test" visibility="public" extends="style,impl-test"/>
+  </configurations>
+
+
+  <publications>
+    <artifact name="caGrid-${ivy.module}-beans" conf="stubs" type="jar"/>
+    <artifact name="caGrid-${ivy.module}-processor" conf="processor" type="jar"/>
+    <artifact name="caGrid-${ivy.module}-style" conf="style" type="jar"/>
+    <artifact name="caGrid-${ivy.module}-tests" conf="test" type="jar"/>
+  </publications>
+  
+
+  <dependencies>
+    <dependency rev="latest.integration" org="caGrid" name="core"
+      conf="processor->default;impl-test->test"/>
+    <dependency rev="latest.integration" org="caGrid" name="data"
+      conf="processor->service;impl-test->cql-examples,test"/>
+
+    <dependency rev="latest.integration" org="caGrid" name="testing" conf="impl-test->system"/>
+    <dependency rev="latest.integration" org="caGrid" name="dataExtensions" conf="style->styleRequirements"/>
+    <dependency rev="latest.integration" org="caGrid" name="introduce" conf="style->core"/>
+    <dependency rev="latest.integration" org="caGrid" name="globalModelExchange-ui" conf="style->default"/>
+    <dependency rev="latest.integration" org="caGrid" name="sdk4xCQL2" conf="processor->processor"/>
+
+	<!-- external dependencies -->
+    <dependency rev="4.4" org="junit" name="junit" conf="impl-test->default"/>
+    <dependency rev="2.0.0" org="jgoodies" name="validation" conf="style->default"/>
+  </dependencies>
+</ivy-module>

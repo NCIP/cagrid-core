@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xsd:schema 
+	xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+	xmlns:com="http://CQL.caBIG/2/gov.nih.nci.cagrid.cql.Components" 
+	xmlns:att="http://CQL.caBIG/2/gov.nih.nci.cagrid.cql.Attribute" 
+	xmlns:mods="http://CQL.caBIG/2/gov.nih.nci.cagrid.cql.Modifiers" 
+	xmlns:assoc="http://CQL.caBIG/2/gov.nih.nci.cagrid.cql.AssociationPopulationSpec" 
+	xmlns:pred="http://CQL.caBIG/2/gov.nih.nci.cagrid.cql.Predicates" 
+	xmlns:dcql="http://DCQL.caBIG/2/org.cagrid.data.dcql" 
+	targetNamespace="http://DCQL.caBIG/2/org.cagrid.data.dcql"
+	elementFormDefault="qualified" attributeFormDefault="unqualified">
+	<xsd:import namespace="http://CQL.caBIG/2/gov.nih.nci.cagrid.cql.Attribute" schemaLocation="CQLAttribute.xsd"/>
+	<xsd:import namespace="http://CQL.caBIG/2/gov.nih.nci.cagrid.cql.Modifiers" schemaLocation="CQLQueryModifier.xsd"/>
+	<xsd:import namespace="http://CQL.caBIG/2/gov.nih.nci.cagrid.cql.AssociationPopulationSpec" schemaLocation="AssociationPopulationSpec.xsd"/>
+	<xsd:import namespace="http://CQL.caBIG/2/gov.nih.nci.cagrid.cql.Components" schemaLocation="CQLQueryComponents.xsd"/>
+	<xsd:import namespace="http://CQL.caBIG/2/gov.nih.nci.cagrid.cql.Predicates" schemaLocation="Predicates.xsd"/>
+
+	<xsd:element name="DCQLQuery">
+		<xsd:annotation>
+			<xsd:documentation>caGrid Distributed CQL Query, the desired result objects are described by the TargetObject, and the CQL query resulting from the processing is sent to each data service identified by the targetServiceURLs</xsd:documentation>
+		</xsd:annotation>
+		<xsd:complexType>
+			<xsd:sequence>
+				<xsd:element name="DCQLTargetObject" type="dcql:DCQLObject" minOccurs="1" maxOccurs="1"/>
+				<xsd:element name="TargetServiceURL" type="xsd:string" minOccurs="1" maxOccurs="unbounded">
+					<xsd:annotation>
+						<xsd:documentation>The URL of a data service which should be sent the resulting CQL query.</xsd:documentation>
+					</xsd:annotation>
+				</xsd:element>
+			</xsd:sequence>
+		</xsd:complexType>
+	</xsd:element>
+	
+	<xsd:complexType name="DCQLObject">
+		<!-- does not extend CQLObject because we need to make associations, foreign associations, and groups go to the DCQL types -->
+		<xsd:annotation>
+			<xsd:documentation>Describes a query for a perticular data type</xsd:documentation>
+		</xsd:annotation>
+		<xsd:choice>
+			<xsd:element name="BinaryCQLAttribute" type="att:BinaryCQLAttribute" minOccurs="0" maxOccurs="1"/>
+			<xsd:element name="UnaryCQLAttribute" type="att:UnaryCQLAttribute" minOccurs="0" maxOccurs="1"/>
+			<xsd:element name="DCQLAssociatedObject" type="dcql:DCQLAssociatedObject" minOccurs="0" maxOccurs="1"/>
+			<xsd:element name="ForeignAssociatedObject" type="dcql:ForeignAssociatedObject" minOccurs="0" maxOccurs="1"/>
+			<xsd:element name="DCQLGroup" type="dcql:DCQLGroup" minOccurs="0" maxOccurs="1"/>
+		</xsd:choice>
+		<xsd:attribute name="name" type="xsd:string" use="required"/>
+	</xsd:complexType>
+	
+	<xsd:complexType name="DCQLAssociatedObject">
+		<xsd:annotation>
+			<xsd:documentation>Describes named relationship from this Object to another.</xsd:documentation>
+		</xsd:annotation>
+		<xsd:complexContent>
+			<xsd:extension base="dcql:DCQLObject">
+				<xsd:attribute name="roleName" type="xsd:string" use="required"/>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+	
+	<xsd:complexType name="DCQLGroup">
+		<xsd:annotation>
+			<xsd:documentation>A collection of two or more sub-constraints, grouped together by the logicalRelation.</xsd:documentation>
+		</xsd:annotation>
+		<xsd:choice minOccurs="2" maxOccurs="unbounded">
+			<xsd:element name="DCQLAssociatedObject" type="dcql:DCQLAssociatedObject" maxOccurs="unbounded"/>
+			<xsd:element name="BinaryCQLAttribute" type="att:BinaryCQLAttribute" minOccurs="0" maxOccurs="1"/>
+			<xsd:element name="UnaryCQLAttribute" type="att:UnaryCQLAttribute" minOccurs="0" maxOccurs="1"/>
+			<xsd:element name="ForeignAssociatedObject" type="dcql:ForeignAssociatedObject" maxOccurs="unbounded"/>
+			<xsd:element name="DCQLGroup" type="dcql:DCQLGroup" maxOccurs="unbounded"/>
+		</xsd:choice>
+		<xsd:attribute name="logicalOperation" type="com:GroupLogicalOperator" use="required"/>
+	</xsd:complexType>
+	
+	<xsd:complexType name="ForeignAssociatedObject">
+		<xsd:annotation>
+			<xsd:documentation>An association or relationship defined between this Object and an Object defined by the ForeignObject, located on the data service located at the targetServiceURL.</xsd:documentation>
+		</xsd:annotation>
+		<xsd:complexContent>
+			<xsd:extension base="dcql:DCQLAssociatedObject">
+				<xsd:sequence>
+					<xsd:element name="JoinCondition" type="dcql:JoinCondition" minOccurs="1" maxOccurs="1"/>
+					<xsd:element name="DataTransformation" type="dcql:DataTransformation" minOccurs="0" maxOccurs="1"/>
+				</xsd:sequence>
+				<xsd:attribute name="targetServiceURL" type="xsd:string" use="required"/>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+	
+	<xsd:complexType name="JoinCondition">
+		<xsd:annotation>
+			<xsd:documentation>Specifies a relationship, defined by the predicate, between a local attribute and a remote attribute.</xsd:documentation>
+		</xsd:annotation>
+		<xsd:attribute name="predicate" type="pred:BinaryPredicate" use="required"/>
+		<xsd:attribute name="localAttributeName" type="xsd:string" use="required"/>
+		<xsd:attribute name="foreignAttributeName" type="xsd:string" use="required"/>
+	</xsd:complexType>
+	
+	<xsd:complexType name="DataTransformation">
+		<xsd:annotation>
+			<xsd:documentation>Specifies a transformation to apply to attribute data values</xsd:documentation>
+		</xsd:annotation>
+		<xsd:attribute name="operation" type="dcql:DataTransformationOperation" use="required"/>
+		<xsd:attribute name="value" type="xsd:anySimpleType" use="required"/>
+		<xsd:attribute name="operationDirection" type="dcql:DataTransformationDirection" use="required"/>
+	</xsd:complexType>
+	
+	<xsd:simpleType name="DataTransformationOperation">
+		<xsd:annotation>
+			<xsd:documentation>Operations used for data transformations</xsd:documentation>
+		</xsd:annotation>
+		<xsd:restriction base="xsd:string">
+			<xsd:enumeration value="ADD" id="add"/>
+			<xsd:enumeration value="SUBTRACT" id="subtract"/>
+		</xsd:restriction>
+	</xsd:simpleType>
+	
+	<xsd:simpleType name="DataTransformationDirection">
+		<xsd:annotation>
+			<xsd:documentation>Direction (or side) of the comparison that the data transformation operation is applied to</xsd:documentation>
+		</xsd:annotation>
+		<xsd:restriction base="xsd:string">
+			<xsd:enumeration value="LOCAL" id="local"/>
+			<xsd:enumeration value="FOREIGN" id="foreign"/>
+		</xsd:restriction>
+	</xsd:simpleType>	
+</xsd:schema>

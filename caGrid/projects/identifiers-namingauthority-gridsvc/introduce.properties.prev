@@ -1,0 +1,11 @@
+#Introduce Properties
+#Wed Jul 29 10:18:42 EDT 2009
+introduce.skeleton.services.list=IdentifiersNAService
+introduce.skeleton.extensions=
+introduce.skeleton.timestamp=1245774771558
+introduce.skeleton.service.name=IdentifiersNAService
+introduce.skeleton.resource.options=main,singleton,identifiable,resourcePropertyManagement
+introduce.skeleton.destination.dir=/Users/cmelean/code/eclipse/workspace/identifiers-BUILD/grid-incubation/incubator/projects/identifiers/projects/framework-namingauthority-gridsvc
+introduce.skeleton.namespace.domain=http\://identifiers.cagrid.nci.nih.gov/IdentifiersNAService
+introduce.ns.excludes=\ -x gme\://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.security
+introduce.soap.binding.excludes=\ 

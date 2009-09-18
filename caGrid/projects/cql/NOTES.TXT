@@ -1,0 +1,1 @@
+http://cagrid.org/display/dataservices/CQL+2 contains information on CQL 2, use cases, and the tech preview release.

@@ -1,0 +1,203 @@
+<?xml version="1.0"?>
+<!--
+Adopted and modified from GSBT
+GSBT - Globus Service Build Tools
+-->
+<project default="all" name="Service Webapp Extension" basedir=".">
+	<!-- Define the environment variable -->
+
+	<property environment="env" />
+	<property file="${basedir}/project.properties" />
+	<property file="${basedir}/build.properties" />
+	<property name="globus.location" location="${env.GLOBUS_LOCATION}" />
+
+	<property name="jar.name" value="caGrid-service-webapp-extension-${project.version}.jar" />
+
+	<!-- Important directories and files -->
+	<property name="src.dir" value="src" />
+	<property name="templates.src.dir" value="templates" />
+	<property name="tools.lib.dir" location="${basedir}/tools/lib" />
+	
+	<property name="ext.dir" location="${basedir}/ext" />
+	<property name="ext.grid.dir" location="${ext.dir}/target_grid" />
+	<property name="endorsed.lib.dir" location="${ext.dir}/dependencies/endorsed/jars" />
+	<property name="ext.lib.dir" location="${ext.dir}/dependencies/impl/jars" />
+
+	<property name="etc.dir" value="etc" />
+
+	<!-- Auxiliary directory where all the intermediate files will be placed -->
+	<property name="build.dir" location="build" />
+	<!-- Directory for compiled service classes -->
+	<property name="build.dest" location="${build.dir}/classes" />
+	<!-- Directory for compiled JAR files (additional library files required by
+	     the service will also be placed here) -->
+	<property name="build.lib.dir" location="${build.dir}/jars" />
+	<!-- Directory where stub source and class files are placed -->
+
+
+	<!-- Miscellaneous properties -->
+
+	<!-- This property is defined simply so we can write ${sep} instead of
+	     ${file.separator}, which makes some expressions too long -->
+	<property name="sep" value="${file.separator}" />
+	<!-- We want detailed error messages -->
+	<property name="java.debug" value="on" />
+
+
+	<!-- using ant contrib for contidionals, looping , and runtarget -->
+	<taskdef resource="net/sf/antcontrib/antlib.xml">
+		<classpath>
+			<pathelement location="${tools.lib.dir}/ant-contrib.jar" />
+		</classpath>
+	</taskdef>
+
+
+	<!-- Sets up the build directory structure -->
+	<target name="init" depends="checkGlobus">
+		<mkdir dir="${build.dir}" />
+		<mkdir dir="${build.dest}" />
+		<mkdir dir="${build.lib.dir}" />
+	</target>
+
+	<target name="defineClasspaths">
+		<path id="base.classpath">
+			<fileset dir="${ext.lib.dir}">
+				<include name="*.jar" />
+			</fileset>
+			<fileset dir="${globus.location}/lib">
+				<include name="*.jar" />
+				<exclude name="junit.jar" />
+			</fileset>
+		</path>
+		<path id="run.classpath">
+			<pathelement location="${build.dest}" />
+			<path refid="base.classpath" />
+		</path>
+	</target>
+
+	<!-- ============================================================== -->
+	<!-- Globus properties                                              -->
+	<!-- ============================================================== -->
+	<target name="checkGlobus" depends="setGlobus">
+		<condition property="globus.not.found">
+			<or>
+				<not>
+					<isset property="ext.globus.dir" />
+				</not>
+				<equals arg1="${ext.globus.dir}" arg2="" />
+			</or>
+		</condition>
+		<fail message="Globus installation is not set in either GLOBUS_LOCATION or ext.globus.dir" if="globus.not.found" />
+		<echo message="Globus: ${ext.globus.dir}" />
+	</target>
+	<target name="setGlobus" if="env.GLOBUS_LOCATION">
+		<property name="ext.globus.dir" value="${env.GLOBUS_LOCATION}" />
+		<property name="build.stubs" location="${ext.globus.dir}/share/globus_wsrf_tools/build-stubs.xml" />
+		<property name="schema.src" location="${ext.globus.dir}/share/schema" />
+	</target>
+
+	<!-- =================================================================== -->
+	<!--  Generate Java Beans from XSD                                       -->
+	<!-- =================================================================== -->
+	<target name="generateStubs" depends="init" description="Deletes the generated Java Beans and
+		recreates them.">
+		<ant antfile="${build.stubs}" target="generateStubs" inheritall="false">
+			<property name="mapping.file" location="${basedir}/schema/namespace2package.mappings" />
+			<property name="source.stubs.dir" location="${basedir}/schema" />
+			<property name="target.stubs.dir" location="${src.dir}" />
+			<property name="wsdl.file" value="beans.wsdl" />
+			<property name="ns.excludes" value="" />
+		</ant>
+	</target>
+
+
+	<!-- =================================================================== -->
+	<!--  Generate JET template classes                                      -->
+	<!-- =================================================================== -->
+	<target name="generateJETClasses" depends="init">
+	</target>
+
+	<!-- Compile the implementation classes (service, resource, etc.) -->
+	<target name="compile" depends="init,defineClasspaths,generateJETClasses">
+		<javac srcdir="${src.dir}" classpathref="base.classpath" destdir="${build.dest}" debug="${java.debug}" deprecation="${deprecation}">
+
+		</javac>
+	</target>
+
+
+	<target name="jar" depends="compile">
+		<jar jarfile="${build.lib.dir}/${jar.name}">
+			<fileset dir="${build.dest}">
+				<include name="**/**" />
+			</fileset>
+		</jar>
+
+	</target>
+
+	<!-- Clean up all the intermediate files -->
+	<target name="clean">
+		<delete dir="tmp" />
+		<delete dir="${build.dir}" />
+		<delete dir="${generated.beans.dir}" />
+	</target>
+
+
+	<!-- Default target "all" generates the GAR file -->
+	<target name="all" depends="jar" />
+
+
+	<target name="installIntroduceExtensions">
+
+		<delete dir="${introduce.extensions.dir}/service_webapp" />
+		<mkdir dir="${introduce.extensions.dir}/service_webapp" />
+		<mkdir dir="${introduce.extensions.dir}/service_webapp/lib" />
+
+		<!-- extension description file -->
+		<copy overwrite="true" todir="${introduce.extensions.dir}/service_webapp" file="extension/extension.xml" />
+
+		<!-- libraries -->
+		<copy overwrite="true" todir="${introduce.extensions.dir}/lib">
+			<fileset dir="build/jars">
+				<include name="*.jar" />
+			</fileset>
+			<fileset dir="ext/dependencies/impl/jars">
+				<include name="*.jar" />
+			</fileset>
+		</copy>
+	</target>
+
+	<target name="deployHelper">
+		<copy overwrite="true" toDir="${webapp.deploy.dir}/WEB-INF">
+			<fileset dir="conf">
+				<include name="web.xml" />
+			</fileset>
+		</copy>
+
+		<copy overwrite="true" toDir="${webapp.deploy.lib.dir}">
+			<fileset dir="build/jars">
+				<include name="*.jar" />
+			</fileset>
+			<fileset dir="ext/dependencies/impl/jars">
+				<include name="*.jar" />
+			</fileset>
+		</copy>
+	</target>
+
+	<target name="deployTomcat">
+		<property name="tomcat.dir" value="${env.CATALINA_HOME}" />
+		<property name="globus.webapp" value="wsrf" />
+		<property name="webapp.deploy.dir" value="${tomcat.dir}/webapps/${globus.webapp}" />
+		<property name="webapp.deploy.lib.dir" value="${webapp.deploy.dir}/WEB-INF/lib" />
+		<runtarget target="deployHelper" />
+	</target>
+
+	<target name="deployJBoss">
+		<property name="jboss.dir" value="${env.JBOSS_HOME}" />
+		<property name="globus.webapp" value="wsrf" />
+		<property name="webapp.deploy.dir" value="${jboss.dir}/server/default/deploy/${globus.webapp}.war" />
+		<property name="webapp.deploy.lib.dir" value="${webapp.deploy.dir}/WEB-INF/lib" />
+		<runtarget target="deployHelper" />
+	</target>
+
+
+</project>

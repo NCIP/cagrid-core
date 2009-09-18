@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+<xs:schema targetNamespace="http://CQL.caBIG/1/gov.nih.nci.cagrid.CQLResultSet" xmlns:xs="http://www.w3.org/2001/XMLSchema"
+    xmlns:cqlr="http://CQL.caBIG/1/gov.nih.nci.cagrid.CQLResultSet" elementFormDefault="qualified">
+    <xs:import namespace="@SERVICE_RESTRICTIONS_XSD_NAMESPACE@" schemaLocation="@SERVICE_RESTRICTIONS_XSD_LOCATION@"/>
+    <xs:redefine schemaLocation="@CQL_RESULT_XSD_LOCATION@">
+        <xs:annotation>
+            <xs:documentation>The CQLObjectResult is redefined to restrict the xs:any to be only those from the PermissibleObjects group</xs:documentation>
+        </xs:annotation>
+        <xs:complexType name="CQLObjectResult">
+            <xs:complexContent>
+                <xs:restriction base="cqlr:CQLObjectResult">
+                    <xs:group ref="serv:PermissibleCQLObjectResults" xmlns:serv="@SERVICE_RESTRICTIONS_XSD_NAMESPACE@"/>
+                </xs:restriction>
+            </xs:complexContent>
+        </xs:complexType>
+    </xs:redefine>
+</xs:schema>

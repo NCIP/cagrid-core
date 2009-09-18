@@ -1,0 +1,163 @@
+<?xml version="1.0"?>
+<project name="deploy-utilities file" basedir="." default="deployTomcat">
+	<property environment="env" />
+
+	<property name="globus.webapp" value="wsrf" />
+
+
+	<property name="webapp.deploy.dir" value="${jboss.dir}/server/default/deploy/${globus.webapp}.war" />
+	<property name="webapp.deploy.lib.dir" value="${webapp.deploy.dir}/WEB-INF/lib" />
+	<property name="webapp.deploy.schema.dir" value="${webapp.deploy.dir}/share/schema" />
+	<property name="webapp.deploy.etc.dir" value="${webapp.deploy.dir}/WEB-INF/etc" />
+
+	<!-- JBoss Properties -->
+	<property name="jboss.dir" value="${env.JBOSS_HOME}" />
+
+	<property name="jboss.deploy.dir" value="${jboss.dir}/server/default/deploy/${globus.webapp}.war" />
+	<property name="jboss.deploy.lib.dir" value="${jboss.deploy.dir}/WEB-INF/lib" />
+	<property name="jboss.deploy.etc.dir" value="${jboss.deploy.dir}/WEB-INF/etc" />
+
+	<property name="jboss.wsrf.schema.dir" value="${jboss.deploy.dir}/share/schema" />
+
+	<!-- Tomcat Properties -->
+	<property name="tomcat.dir" value="${env.CATALINA_HOME}" />
+
+	<property name="tomcat.deploy.dir" value="${tomcat.dir}/webapps/wsrf/WEB-INF" />
+	<property name="tomcat.deploy.lib.dir" value="${tomcat.deploy.dir}/lib" />
+	<property name="tomcat.deploy.etc.dir" value="${tomcat.deploy.dir}/etc" />
+
+	<property name="tomcat.wsrf.schema.dir" value="${tomcat.dir}/webapps/${globus.webapp}/share/schema" />
+
+	<!-- ============================================================== -->
+	<!-- Globus properties                                              -->
+	<!-- ============================================================== -->
+	<target name="checkGlobus" depends="setGlobus">
+		<condition property="globus.not.found">
+			<or>
+				<not>
+					<isset property="ext.globus.dir" />
+				</not>
+				<equals arg1="${ext.globus.dir}" arg2="" />
+			</or>
+		</condition>
+		<fail message="Globus installation is not set in either GLOBUS_LOCATION or ext.globus.dir" if="globus.not.found" />
+		<echo message="Globus: ${ext.globus.dir}" />
+	</target>
+	<target name="setGlobus" if="env.GLOBUS_LOCATION">
+		<!-- GT4 build files and directories-->
+		<property name="ext.globus.dir" value="${env.GLOBUS_LOCATION}" />
+		<property name="build.stubs" location="${ext.globus.dir}/share/globus_wsrf_tools/build-stubs.xml" />
+		<property name="schema.src" location="${ext.globus.dir}/share/schema" />
+		<property name="build.packages" location="${ext.globus.dir}/share/globus_wsrf_common/build-packages.xml" />
+		<!-- Copied from build.stubs file, as there is no way to "append" to the value in the remote file -->
+		<property name="GT4.ns.excludes" value="-x http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-BaseFaults-1.2-draft-01.xsd -x http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-BaseFaults-1.2-draft-01.wsdl -x http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ResourceLifetime-1.2-draft-01.xsd -x http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ResourceLifetime-1.2-draft-01.wsdl -x http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ResourceProperties-1.2-draft-01.xsd -x http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ResourceProperties-1.2-draft-01.wsdl -x http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ServiceGroup-1.2-draft-01.xsd -x http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ServiceGroup-1.2-draft-01.wsdl -x http://docs.oasis-open.org/wsn/2004/06/wsn-WS-BaseNotification-1.2-draft-01.xsd -x http://docs.oasis-open.org/wsn/2004/06/wsn-WS-BaseNotification-1.2-draft-01.wsdl -x http://schemas.xmlsoap.org/ws/2004/04/trust -x http://schemas.xmlsoap.org/ws/2002/12/policy -x http://schemas.xmlsoap.org/ws/2002/07/utility -x http://schemas.xmlsoap.org/ws/2004/04/sc -x http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-secext-1.0.xsd -x http://www.w3.org/2000/09/xmldsig# -x http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd" />
+	</target>
+
+	<target name="deployGlobus" depends="checkGlobus" description="Deploys to GLOBUS_LOCATION">
+		<echo message="Deploying service under Globus at ${ext.globus.dir}" />
+		<java classname="org.globus.bootstrap.AntBootstrap" fork="yes" failonerror="true">
+			<jvmarg value="-DGLOBUS_LOCATION=${ext.globus.dir}" />
+			<jvmarg value="-Djava.endorsed.dirs=${ext.globus.dir}/endorsed" />
+			<sysproperty key="GLOBUS_LOCATION" value="${ext.globus.dir}" />
+			<sysproperty key="ANT_HOME" value="${ant.home}" />
+			<arg value="org.globus.tools.gar.DeployGar" />
+			<arg value="${gar.name}" />
+			<classpath>
+				<fileset dir="${ext.globus.dir}/lib">
+					<include name="*.jar" />
+				</fileset>
+				<fileset dir="${ant.library.dir}">
+					<include name="*.jar" />
+				</fileset>
+			</classpath>
+		</java>
+	</target>
+
+	<!-- deploy  a gar to tomcat -->
+	<target name="deployTomcat" description="Deploys to CATALINA_HOME">
+		<echo message="Deploying service under Tomcat at ${tomcat.dir}" />
+
+		<delete dir="tmp" failonerror="false" />
+		<mkdir dir="tmp" />
+
+		<unjar src="${gar.name}.gar" dest="tmp" />
+		<!-- fix up the secret names for tomcat -->
+		<move failonerror="false" file="tmp/server-deploy.wsdd" tofile="tmp/server-config.wsdd" />
+		<move failonerror="false" file="tmp/client-deploy.wsdd" tofile="tmp/client-config.wsdd" />
+		<move failonerror="false" file="tmp/jndi-config-deploy.xml" tofile="tmp/jndi-config.xml" />
+
+		<mkdir dir="${tomcat.deploy.etc.dir}/${gar.name}" />
+		<!-- Copy config files to tomcat -->
+		<copy failonerror="false" includeemptydirs="false" overwrite="true" toDir="${tomcat.deploy.etc.dir}/${gar.name}">
+			<fileset dir="tmp">
+				<include name="*" />
+			</fileset>
+		</copy>
+		<!-- Copy skeleton files to Tomcat and rename -->
+		<copy failonerror="false" overwrite="true" toDir="${tomcat.deploy.etc.dir}/${gar.name}">
+			<fileset dir="tmp/etc">
+				<include name="*" />
+			</fileset>
+		</copy>
+
+		<!--copy over the jars to the lib -->
+		<copy failonerror="false" overwrite="true" toDir="${tomcat.deploy.lib.dir}">
+			<fileset dir="tmp/lib">
+				<include name="*" />
+			</fileset>
+		</copy>
+
+		<!--copy over the schema service files-->
+		<copy failonerror="false" overwrite="true" toDir="${tomcat.wsrf.schema.dir}">
+			<fileset dir="tmp/schema">
+				<include name="**/*" />
+			</fileset>
+		</copy>
+
+		<delete dir="tmp" />
+	</target>
+
+	<!-- deploy  a gar to tomcat -->
+	<target name="deployJBoss" description="Deploys to JBOSS_HOME">
+		<echo message="Deploying service under Tomcat at ${tomcat.dir}" />
+
+		<delete dir="tmp" failonerror="false" />
+		<mkdir dir="tmp" />
+
+		<unjar src="${gar.name}.gar" dest="tmp" />
+		<!-- fix up the secret names for tomcat -->
+		<move failonerror="false" file="tmp/server-deploy.wsdd" tofile="tmp/server-config.wsdd" />
+		<move failonerror="false" file="tmp/client-deploy.wsdd" tofile="tmp/client-config.wsdd" />
+		<move failonerror="false" file="tmp/jndi-config-deploy.xml" tofile="tmp/jndi-config.xml" />
+
+		<mkdir dir="${jboss.deploy.etc.dir}/${gar.name}" />
+		<!-- Copy config files to tomcat -->
+		<copy failonerror="false" includeemptydirs="false" overwrite="true" toDir="${jboss.deploy.etc.dir}/${gar.name}">
+			<fileset dir="tmp">
+				<include name="*" />
+			</fileset>
+		</copy>
+		<!-- Copy skeleton files to jboss and rename -->
+		<copy failonerror="false" overwrite="true" toDir="${jboss.deploy.etc.dir}/${gar.name}">
+			<fileset dir="tmp/etc">
+				<include name="*" />
+			</fileset>
+		</copy>
+
+		<!--copy over the jars to the lib -->
+		<copy failonerror="false" overwrite="true" toDir="${jboss.deploy.lib.dir}">
+			<fileset dir="tmp/lib">
+				<include name="*" />
+			</fileset>
+		</copy>
+
+		<!--copy over the schema service files-->
+		<copy failonerror="false" overwrite="true" toDir="${jboss.wsrf.schema.dir}">
+			<fileset dir="tmp/schema">
+				<include name="**/*" />
+			</fileset>
+		</copy>
+
+		<delete dir="tmp" />
+	</target>
+</project>

@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<ivy-module version="2.0">
+    <info organisation="aspectj" module="aspectjrt" revision="1.5.3" status="release">
+        <license name="Apache" url="http://www.apache.org/licenses/LICENSE-2.0.txt"/>
+        <description homepage="http://acegisecurity.org/">AspectJ is an aspect-oriented extension of the Java language 
+		that enables a modular implementation of crosscutting concerns.</description>
+    </info>
+	
+    <publications>
+        <artifact name="aspectjrt" type="jar"/>
+    </publications>
+</ivy-module>

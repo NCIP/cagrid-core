@@ -1,0 +1,8 @@
+<ns1:hostingResearchCenter xmlns:ns1="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata">
+  <ns2:ResearchCenter shortName="caGrid" displayName="caGrid System Testing" xmlns:ns2="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common">
+  <ns2:Address country="United States of America" locality="Columbus" postalCode="43210" stateProvince="OH" street1="Room 336" street2="460 W. 12th Ave."/>
+    <ns2:pointOfContactCollection>
+      <ns2:PointOfContact email="cagrid-1-0-developers@gforge.nci.nih.gov" affiliation="caGrid Developers Mailing List" firstName="caGrid" lastName="Developers" role="developer"/>
+    </ns2:pointOfContactCollection>
+  </ns2:ResearchCenter>
+</ns1:hostingResearchCenter>

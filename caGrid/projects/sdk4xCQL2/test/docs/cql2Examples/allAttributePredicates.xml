@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<com:CQLQuery xmlns:agg="http://CQL.caBIG/2/gov.nih.nci.cagrid.cql.Aggregations" xmlns:pred="http://CQL.caBIG/2/gov.nih.nci.cagrid.cql.Predicates" xmlns:com="http://CQL.caBIG/2/gov.nih.nci.cagrid.cql.Components" xmlns:assoc="http://CQL.caBIG/2/gov.nih.nci.cagrid.cql.AssociationPopulationSpec" xmlns:att="http://CQL.caBIG/2/gov.nih.nci.cagrid.cql.Attribute" xmlns:mods="http://CQL.caBIG/2/gov.nih.nci.cagrid.cql.Modifiers">
+	<com:CQLTargetObject className="gov.nih.nci.cacoresdk.domain.onetomany.bidirectional.Computer">
+		<com:CQLGroup logicalOperation="OR">
+			<att:BinaryCQLAttribute name="type">
+				<att:Predicate>EQUAL_TO</att:Predicate>
+				<att:AttributeValue>
+					<att:StringValue>Computer_Type1</att:StringValue>
+				</att:AttributeValue>
+			</att:BinaryCQLAttribute>
+			<att:BinaryCQLAttribute name="type">
+				<att:Predicate>NOT_EQUAL_TO</att:Predicate>
+				<att:AttributeValue>
+					<att:StringValue>Computer_Type1</att:StringValue>
+				</att:AttributeValue>
+			</att:BinaryCQLAttribute>
+			<att:BinaryCQLAttribute name="type">
+				<att:Predicate>LIKE</att:Predicate>
+				<att:AttributeValue>
+					<att:StringValue>Computer_Type1</att:StringValue>
+				</att:AttributeValue>
+			</att:BinaryCQLAttribute>
+			<att:BinaryCQLAttribute name="type">
+				<att:Predicate>LESS_THAN</att:Predicate>
+				<att:AttributeValue>
+					<att:StringValue>Computer_Type1</att:StringValue>
+				</att:AttributeValue>
+			</att:BinaryCQLAttribute>
+			<att:BinaryCQLAttribute name="type">
+				<att:Predicate>LESS_THAN_EQUAL_TO</att:Predicate>
+				<att:AttributeValue>
+					<att:StringValue>Computer_Type1</att:StringValue>
+				</att:AttributeValue>
+			</att:BinaryCQLAttribute>
+			<att:BinaryCQLAttribute name="type">
+				<att:Predicate>GREATER_THAN</att:Predicate>
+				<att:AttributeValue>
+					<att:StringValue>Computer_Type1</att:StringValue>
+				</att:AttributeValue>
+			</att:BinaryCQLAttribute>
+			<att:BinaryCQLAttribute name="type">
+				<att:Predicate>GREATER_THAN_EQUAL_TO</att:Predicate>
+				<att:AttributeValue>
+					<att:StringValue>Computer_Type1</att:StringValue>
+				</att:AttributeValue>
+			</att:BinaryCQLAttribute>
+			<att:UnaryCQLAttribute name="type">
+				<att:Predicate>IS_NULL</att:Predicate>
+			</att:UnaryCQLAttribute>
+			<att:UnaryCQLAttribute name="type">
+				<att:Predicate>IS_NOT_NULL</att:Predicate>
+			</att:UnaryCQLAttribute>
+		</com:CQLGroup>
+	</com:CQLTargetObject>
+</com:CQLQuery>

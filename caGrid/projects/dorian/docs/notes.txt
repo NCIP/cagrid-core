@@ -1,0 +1,8 @@
+#
+
+X509_CERT_DIR is used to specify the path to the trusted certificates directory. This directory contains information about which CAs are trusted (including the CA certificates themselves) and, in some cases, configuration information used by grid-cert-request to formulate certificate requests. The location of the trusted certificates directory is determined as follows:
+
+   1. If the X509_CERT_DIR environment variable is set, the trusted certificates directory is the value of that environment variable.
+   2. Otherwise, if $HOME/.globus/certificates exists, that directory is the trusted certificates directory.
+   3. Otherwise, if /etc/grid-security/certificates exists, that directory is the trusted certificates directory.
+   4. Finally, if $GLOBUS_LOCATION/share/certificates exists, then it is the trusted certificates directory.

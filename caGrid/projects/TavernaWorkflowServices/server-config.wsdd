@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<deployment xmlns="http://xml.apache.org/axis/wsdd/" xmlns:aggr="http://mds.globus.org/aggregator/types" xmlns:java="http://xml.apache.org/axis/wsdd/providers/java" xmlns:xsd="http://www.w3.org/2001/XMLSchema" name="defaultServerConfig">
+  <service name="SERVICE-INSTANCE-PREFIX/TavernaWorkflowServiceImpl" provider="Handler" use="literal" style="document">
+    <parameter name="className" value="gov.nih.nci.cagrid.workflow.service.impl.service.globus.TavernaWorkflowServiceImplProviderImpl" />
+    <wsdlFile>share/schema/TavernaWorkflowService/TavernaWorkflowServiceImpl_service.wsdl</wsdlFile>
+    <parameter name="securityDescriptor" value="ETC-PATH/TavernaWorkflowServiceImpl-security-desc.xml" />
+    <parameter name="allowedMethods" value="*" />
+    <parameter name="handlerClass" value="org.globus.axis.providers.RPCProvider" />
+    <parameter name="scope" value="Application" />
+    <parameter name="providers" value=" gov.nih.nci.cagrid.introduce.security.service.globus.ServiceSecurityProviderImpl DestroyProvider SetTerminationTimeProvider GetMRPProvider GetRPProvider QueryRPProvider SubscribeProvider" />
+    <parameter name="loadOnStartup" value="true" />
+    <parameter name="securityMetadata" value="ETC-PATH/TavernaWorkflowServiceImpl-security-metadata.xml" />
+    <parameter name="tavernaworkflowserviceimpl-etcDirectoryPath" value="ETC-PATH" />
+    <parameter name="tavernaworkflowserviceimpl-serviceName" value="TavernaWorkflowServiceImpl" />
+  </service>
+  <service name="SERVICE-INSTANCE-PREFIX/TavernaWorkflowService" provider="Handler" use="literal" style="document">
+    <parameter name="className" value="gov.nih.nci.cagrid.workflow.factory.service.globus.TavernaWorkflowServiceProviderImpl" />
+    <wsdlFile>share/schema/TavernaWorkflowService/TavernaWorkflowService_service.wsdl</wsdlFile>
+    <parameter name="securityDescriptor" value="ETC-PATH/TavernaWorkflowService-security-desc.xml" />
+    <parameter name="allowedMethods" value="*" />
+    <parameter name="handlerClass" value="org.globus.axis.providers.RPCProvider" />
+    <parameter name="scope" value="Application" />
+    <parameter name="providers" value=" GetMRPProvider GetRPProvider QueryRPProvider gov.nih.nci.cagrid.introduce.security.service.globus.ServiceSecurityProviderImpl" />
+    <parameter name="loadOnStartup" value="true" />
+    <parameter name="securityMetadata" value="ETC-PATH/TavernaWorkflowService-security-metadata.xml" />
+    <parameter name="tavernaworkflowservice-etcDirectoryPath" value="ETC-PATH" />
+    <parameter name="tavernaworkflowservice-serviceName" value="TavernaWorkflowService" />
+  </service>
+  <typeMapping name="AggregatorContent" qname="aggr:AggregatorContent" type="java:org.globus.mds.aggregator.types.AggregatorContent" serializer="org.apache.axis.encoding.ser.BeanSerializerFactory" deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory" encodingStyle="" />
+</deployment>
+

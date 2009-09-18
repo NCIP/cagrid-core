@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<?xml-stylesheet type="text/xsl" href="http://ivyrep.jayasoft.org/ivy-doc.xsl"?>
+<ivy-module version="1.0">
+	<info organisation="apache" module="commons-configuration" revision="1.2" status="release"
+		publication="20040821215500">
+		<license name="Apache" url="http://www.apache.org/licenses/LICENSE-2.0.txt"/>
+		<ivyauthor name="jayasoft" url="http://www.jayasoft.org/"/>
+
+		<description homepage="http://commons.apache.org/configuration/"> Commons Configuration
+			provides a generic configuration interface which enables a Java application to read
+			configuration data from a variety of sources. Commons Configuration provides typed
+			access to single, and multi-valued configuration parameters </description>
+	</info>
+	<dependencies>
+		<dependency rev="2.1" org="apache" name="commons-lang" conf="*->*"/>
+	</dependencies>
+</ivy-module>

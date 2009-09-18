@@ -1,0 +1,408 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<securityConfig xmlns="http://www.globus.org">
+  <method name="getServiceSecurityMetadata">
+    <auth-method>
+      <none />
+    </auth-method>
+  </method>
+  <auth-method>
+    <GSITransport>
+      <protection-level>
+        <privacy />
+      </protection-level>
+    </GSITransport>
+  </auth-method>
+  <run-as>
+    <system-identity />
+  </run-as>
+  <authz value="none" />
+  <method name="getStem">
+    <auth-method>
+      <GSITransport>
+        <protection-level>
+          <privacy />
+        </protection-level>
+      </GSITransport>
+    </auth-method>
+    <run-as>
+      <system-identity />
+    </run-as>
+  </method>
+  <method name="getChildStems">
+    <auth-method>
+      <GSITransport>
+        <protection-level>
+          <privacy />
+        </protection-level>
+      </GSITransport>
+    </auth-method>
+    <run-as>
+      <system-identity />
+    </run-as>
+  </method>
+  <method name="getParentStem">
+    <auth-method>
+      <GSITransport>
+        <protection-level>
+          <privacy />
+        </protection-level>
+      </GSITransport>
+    </auth-method>
+    <run-as>
+      <system-identity />
+    </run-as>
+  </method>
+  <method name="updateStem">
+    <auth-method>
+      <GSITransport>
+        <protection-level>
+          <privacy />
+        </protection-level>
+      </GSITransport>
+    </auth-method>
+    <run-as>
+      <system-identity />
+    </run-as>
+  </method>
+  <method name="getSubjectsWithStemPrivilege">
+    <auth-method>
+      <GSITransport>
+        <protection-level>
+          <privacy />
+        </protection-level>
+      </GSITransport>
+    </auth-method>
+    <run-as>
+      <system-identity />
+    </run-as>
+  </method>
+  <method name="getStemPrivileges">
+    <auth-method>
+      <GSITransport>
+        <protection-level>
+          <privacy />
+        </protection-level>
+      </GSITransport>
+    </auth-method>
+    <run-as>
+      <system-identity />
+    </run-as>
+  </method>
+  <method name="hasStemPrivilege">
+    <auth-method>
+      <GSITransport>
+        <protection-level>
+          <privacy />
+        </protection-level>
+      </GSITransport>
+    </auth-method>
+    <run-as>
+      <system-identity />
+    </run-as>
+  </method>
+  <method name="grantStemPrivilege">
+    <auth-method>
+      <GSITransport>
+        <protection-level>
+          <privacy />
+        </protection-level>
+      </GSITransport>
+    </auth-method>
+    <run-as>
+      <system-identity />
+    </run-as>
+  </method>
+  <method name="revokeStemPrivilege">
+    <auth-method>
+      <GSITransport>
+        <protection-level>
+          <privacy />
+        </protection-level>
+      </GSITransport>
+    </auth-method>
+    <run-as>
+      <system-identity />
+    </run-as>
+  </method>
+  <method name="addChildStem">
+    <auth-method>
+      <GSITransport>
+        <protection-level>
+          <privacy />
+        </protection-level>
+      </GSITransport>
+    </auth-method>
+    <run-as>
+      <system-identity />
+    </run-as>
+  </method>
+  <method name="deleteStem">
+    <auth-method>
+      <GSITransport>
+        <protection-level>
+          <privacy />
+        </protection-level>
+      </GSITransport>
+    </auth-method>
+    <run-as>
+      <system-identity />
+    </run-as>
+  </method>
+  <method name="getGroup">
+    <auth-method>
+      <GSITransport>
+        <protection-level>
+          <privacy />
+        </protection-level>
+      </GSITransport>
+    </auth-method>
+    <run-as>
+      <system-identity />
+    </run-as>
+  </method>
+  <method name="getChildGroups">
+    <auth-method>
+      <GSITransport>
+        <protection-level>
+          <privacy />
+        </protection-level>
+      </GSITransport>
+    </auth-method>
+    <run-as>
+      <system-identity />
+    </run-as>
+  </method>
+  <method name="addChildGroup">
+    <auth-method>
+      <GSITransport>
+        <protection-level>
+          <privacy />
+        </protection-level>
+      </GSITransport>
+    </auth-method>
+    <run-as>
+      <system-identity />
+    </run-as>
+  </method>
+  <method name="deleteGroup">
+    <auth-method>
+      <GSITransport>
+        <protection-level>
+          <privacy />
+        </protection-level>
+      </GSITransport>
+    </auth-method>
+    <run-as>
+      <system-identity />
+    </run-as>
+  </method>
+  <method name="updateGroup">
+    <auth-method>
+      <GSITransport>
+        <protection-level>
+          <privacy />
+        </protection-level>
+      </GSITransport>
+    </auth-method>
+    <run-as>
+      <system-identity />
+    </run-as>
+  </method>
+  <method name="addMember">
+    <auth-method>
+      <GSITransport>
+        <protection-level>
+          <privacy />
+        </protection-level>
+      </GSITransport>
+    </auth-method>
+    <run-as>
+      <system-identity />
+    </run-as>
+  </method>
+  <method name="getMembers">
+    <auth-method>
+      <GSITransport>
+        <protection-level>
+          <privacy />
+        </protection-level>
+      </GSITransport>
+    </auth-method>
+    <run-as>
+      <system-identity />
+    </run-as>
+  </method>
+  <method name="isMemberOf">
+    <auth-method>
+      <GSITransport>
+        <protection-level>
+          <privacy />
+        </protection-level>
+      </GSITransport>
+    </auth-method>
+    <run-as>
+      <system-identity />
+    </run-as>
+  </method>
+  <method name="getMemberships">
+    <auth-method>
+      <GSITransport>
+        <protection-level>
+          <privacy />
+        </protection-level>
+      </GSITransport>
+    </auth-method>
+    <run-as>
+      <system-identity />
+    </run-as>
+  </method>
+  <method name="deleteMember">
+    <auth-method>
+      <GSITransport>
+        <protection-level>
+          <privacy />
+        </protection-level>
+      </GSITransport>
+    </auth-method>
+    <run-as>
+      <system-identity />
+    </run-as>
+  </method>
+  <method name="addCompositeMember">
+    <auth-method>
+      <GSITransport>
+        <protection-level>
+          <privacy />
+        </protection-level>
+      </GSITransport>
+    </auth-method>
+    <run-as>
+      <system-identity />
+    </run-as>
+  </method>
+  <method name="deleteCompositeMember">
+    <auth-method>
+      <GSITransport>
+        <protection-level>
+          <privacy />
+        </protection-level>
+      </GSITransport>
+    </auth-method>
+    <run-as>
+      <system-identity />
+    </run-as>
+  </method>
+  <method name="grantGroupPrivilege">
+    <auth-method>
+      <GSITransport>
+        <protection-level>
+          <privacy />
+        </protection-level>
+      </GSITransport>
+    </auth-method>
+    <run-as>
+      <system-identity />
+    </run-as>
+  </method>
+  <method name="revokeGroupPrivilege">
+    <auth-method>
+      <GSITransport>
+        <protection-level>
+          <privacy />
+        </protection-level>
+      </GSITransport>
+    </auth-method>
+    <run-as>
+      <system-identity />
+    </run-as>
+  </method>
+  <method name="getSubjectsWithGroupPrivilege">
+    <auth-method>
+      <GSITransport>
+        <protection-level>
+          <privacy />
+        </protection-level>
+      </GSITransport>
+    </auth-method>
+    <run-as>
+      <system-identity />
+    </run-as>
+  </method>
+  <method name="getGroupPrivileges">
+    <auth-method>
+      <GSITransport>
+        <protection-level>
+          <privacy />
+        </protection-level>
+      </GSITransport>
+    </auth-method>
+    <run-as>
+      <system-identity />
+    </run-as>
+  </method>
+  <method name="hasGroupPrivilege">
+    <auth-method>
+      <GSITransport>
+        <protection-level>
+          <privacy />
+        </protection-level>
+      </GSITransport>
+    </auth-method>
+    <run-as>
+      <system-identity />
+    </run-as>
+  </method>
+  <method name="isMember">
+    <auth-method>
+      <GSITransport>
+        <protection-level>
+          <privacy />
+        </protection-level>
+      </GSITransport>
+    </auth-method>
+    <run-as>
+      <system-identity />
+    </run-as>
+  </method>
+  <method name="getMember">
+    <auth-method>
+      <GSITransport>
+        <protection-level>
+          <privacy />
+        </protection-level>
+      </GSITransport>
+    </auth-method>
+    <run-as>
+      <system-identity />
+    </run-as>
+  </method>
+  <method name="getMembersGroups">
+    <auth-method>
+      <GSITransport>
+        <protection-level>
+          <privacy />
+        </protection-level>
+      </GSITransport>
+    </auth-method>
+    <run-as>
+      <system-identity />
+    </run-as>
+  </method>
+  <method name="getMultipleResourceProperties">
+    <auth-method>
+      <none />
+    </auth-method>
+  </method>
+  <method name="getResourceProperty">
+    <auth-method>
+      <none />
+    </auth-method>
+  </method>
+  <method name="queryResourceProperties">
+    <auth-method>
+      <none />
+    </auth-method>
+  </method>
+</securityConfig>
+
+

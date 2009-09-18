@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schema xmlns="http://www.w3.org/2001/XMLSchema" xmlns:wsa="http://schemas.xmlsoap.org/ws/2004/03/addressing" xmlns:tns="http://cagrid.nci.nih.gov/GTS/types" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:wsrbf="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-BaseFaults-1.2-draft-01.xsd" targetNamespace="http://cagrid.nci.nih.gov/GTS/types" elementFormDefault="qualified" attributeFormDefault="unqualified">
+  <import namespace="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-BaseFaults-1.2-draft-01.xsd" schemaLocation="../wsrf/faults/WS-BaseFaults.xsd" />
+  <import namespace="http://schemas.xmlsoap.org/ws/2004/03/addressing" schemaLocation="../ws/addressing/WS-Addressing.xsd" />
+  <element name="GTSReference">
+    <complexType>
+      <sequence>
+        <element ref="wsa:EndpointReference" />
+      </sequence>
+    </complexType>
+  </element>
+  <element name="GTSInternalFault">
+    <complexType>
+      <complexContent>
+        <extension base="wsrbf:BaseFaultType" />
+      </complexContent>
+    </complexType>
+  </element>
+  <element name="IllegalTrustedAuthorityFault">
+    <complexType>
+      <complexContent>
+        <extension base="wsrbf:BaseFaultType" />
+      </complexContent>
+    </complexType>
+  </element>
+  <element name="PermissionDeniedFault">
+    <complexType>
+      <complexContent>
+        <extension base="wsrbf:BaseFaultType" />
+      </complexContent>
+    </complexType>
+  </element>
+  <element name="InvalidTrustedAuthorityFault">
+    <complexType>
+      <complexContent>
+        <extension base="wsrbf:BaseFaultType" />
+      </complexContent>
+    </complexType>
+  </element>
+  <element name="IllegalPermissionFault">
+    <complexType>
+      <complexContent>
+        <extension base="wsrbf:BaseFaultType" />
+      </complexContent>
+    </complexType>
+  </element>
+  <element name="InvalidPermissionFault">
+    <complexType>
+      <complexContent>
+        <extension base="wsrbf:BaseFaultType" />
+      </complexContent>
+    </complexType>
+  </element>
+  <element name="IllegalTrustLevelFault">
+    <complexType>
+      <complexContent>
+        <extension base="wsrbf:BaseFaultType" />
+      </complexContent>
+    </complexType>
+  </element>
+  <element name="InvalidTrustLevelFault">
+    <complexType>
+      <complexContent>
+        <extension base="wsrbf:BaseFaultType" />
+      </complexContent>
+    </complexType>
+  </element>
+  <element name="IllegalAuthorityFault">
+    <complexType>
+      <complexContent>
+        <extension base="wsrbf:BaseFaultType" />
+      </complexContent>
+    </complexType>
+  </element>
+  <element name="InvalidAuthorityFault">
+    <complexType>
+      <complexContent>
+        <extension base="wsrbf:BaseFaultType" />
+      </complexContent>
+    </complexType>
+  </element>
+  <element name="CertificateValidationFault">
+    <complexType>
+      <complexContent>
+        <extension base="wsrbf:BaseFaultType" />
+      </complexContent>
+    </complexType>
+  </element>
+</schema>
+

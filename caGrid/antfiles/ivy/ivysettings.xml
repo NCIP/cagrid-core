@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ivysettings>
+  <settings defaultResolver="caGrid-ivy-resolver" circularDependencyStrategy="error"/>
+  <!--
+    TODO: I had to set checkUpToDate="false" so target grids would resolve properly...
+    The cache was correct, but it was not copying artifacts to projects if the previous date was newer than the new date
+    It should retrieve the necessary version regardless of the date... not sure why it does that.   
+  -->
+  <caches checkUpToDate="false" defaultCacheDir="${user.dir}/.cache" useOrigin="true"/>
+
+  <macrodef name="cagrid-fs-resolver">
+    <attribute name="repo.dir"/>
+    <filesystem name="fs" local="true">
+      <ivy pattern="@{repo.dir}/[organisation]/[module]/ivy-[revision].xml"/>
+      <artifact pattern="@{repo.dir}/[organisation]/[module]/[revision]/[artifact]-[revision].[ext]"/>
+      <artifact pattern="@{repo.dir}/[organisation]/[module]/[revision]/[artifact].[ext]"/>
+    </filesystem>
+  </macrodef>
+  <resolvers>
+    <chain name="caGrid-ivy-resolver" returnFirst="true">
+      <!-- First, try developer's local integration repository-->
+      <cagrid-fs-resolver repo.dir="${integration.repository.dir}" name="caGrid-local"/>
+      <!-- Then, use the external repository -->
+      <cagrid-fs-resolver repo.dir="${repository.dir}" name="caGrid-external"/>
+    </chain>
+  </resolvers>
+</ivysettings>

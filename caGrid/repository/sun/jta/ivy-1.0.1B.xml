@@ -1,0 +1,13 @@
+<?xml version="1.0" ?>
+<ivy-module version="2.0">
+    <info organisation="sun" module="jta" revision="1.0.1B" status="release"
+        publication="20040521000000">
+        <license name="Sun Microsystems, Inc. Binary License Code Agreement"/>
+
+        <description homepage="http://java.sun.com/products/jta"> JTA (Java Transaction API)
+            specifies standard Java interfaces between a transaction manager and the parties
+            involved in a distributed transaction system: the resource manager, the application
+            server, and the transactional applications.
+        </description>
+    </info>
+</ivy-module>

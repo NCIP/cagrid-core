@@ -1,0 +1,280 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns="gme://caArray.caBIG/2.0/gov.nih.nci.caarray.domain.array"
+    xmlns:edu.georgetown.pir="gme://caArray.caBIG/2.0/edu.georgetown.pir"
+    xmlns:gov.nih.nci.caarray.domain="gme://caArray.caBIG/2.0/gov.nih.nci.caarray.domain"
+    xmlns:gov.nih.nci.caarray.domain.contact="gme://caArray.caBIG/2.0/gov.nih.nci.caarray.domain.contact"
+    xmlns:gov.nih.nci.caarray.domain.file="gme://caArray.caBIG/2.0/gov.nih.nci.caarray.domain.file"
+    xmlns:gov.nih.nci.caarray.domain.protocol="gme://caArray.caBIG/2.0/gov.nih.nci.caarray.domain.protocol"
+    xmlns:gov.nih.nci.caarray.domain.vocabulary="gme://caArray.caBIG/2.0/gov.nih.nci.caarray.domain.vocabulary"
+    xmlns:gov.nih.nci.cabio.domain="gme://caArray.caBIG/2.0/gov.nih.nci.cabio.domain"
+    targetNamespace="gme://caArray.caBIG/2.0/gov.nih.nci.caarray.domain.array" elementFormDefault="qualified">
+    <xs:import namespace="gme://caArray.caBIG/2.0/gov.nih.nci.caarray.domain.vocabulary"
+        schemaLocation="gov.nih.nci.caarray.domain.vocabulary.xsd" />
+    <xs:import namespace="gme://caArray.caBIG/2.0/gov.nih.nci.caarray.domain"
+        schemaLocation="gov.nih.nci.caarray.domain.xsd" />
+    <xs:import namespace="gme://caArray.caBIG/2.0/gov.nih.nci.caarray.domain.file"
+        schemaLocation="gov.nih.nci.caarray.domain.file.xsd" />
+    <xs:import namespace="gme://caArray.caBIG/2.0/gov.nih.nci.caarray.domain.contact"
+        schemaLocation="gov.nih.nci.caarray.domain.contact.xsd" />
+    <xs:import namespace="gme://caArray.caBIG/2.0/gov.nih.nci.cabio.domain"
+        schemaLocation="gov.nih.nci.cabio.domain.xsd" />
+    <xs:import namespace="gme://caArray.caBIG/2.0/gov.nih.nci.caarray.domain.protocol"
+        schemaLocation="gov.nih.nci.caarray.domain.protocol.xsd" />
+    <xs:import namespace="gme://caArray.caBIG/2.0/edu.georgetown.pir" schemaLocation="edu.georgetown.pir.xsd" />
+    <xs:element name="ArrayGroup" type="ArrayGroup" />
+    <xs:complexType name="ArrayGroup">
+        <xs:complexContent>
+            <xs:extension base="gov.nih.nci.caarray.domain:AbstractCaArrayObject">
+                <xs:sequence>
+                    <xs:element name="arrays" minOccurs="0">
+                        <xs:complexType>
+                            <xs:choice minOccurs="0" maxOccurs="unbounded">
+                                <xs:element ref="Array" />
+                            </xs:choice>
+                        </xs:complexType>
+                    </xs:element>
+                </xs:sequence>
+                <xs:attribute name="name" type="xs:string" />
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+    <xs:element name="ArrayDesignDetails" type="ArrayDesignDetails" />
+    <xs:complexType name="ArrayDesignDetails">
+        <xs:complexContent>
+            <xs:extension base="gov.nih.nci.caarray.domain:AbstractCaArrayObject">
+                <xs:sequence>
+                    <xs:element name="logicalProbes" minOccurs="0">
+                        <xs:complexType>
+                            <xs:choice minOccurs="0" maxOccurs="unbounded">
+                                <xs:element ref="LogicalProbe" />
+                            </xs:choice>
+                        </xs:complexType>
+                    </xs:element>
+                    <xs:element name="probes" minOccurs="0">
+                        <xs:complexType>
+                            <xs:choice minOccurs="0" maxOccurs="unbounded">
+                                <xs:element ref="PhysicalProbe" />
+                            </xs:choice>
+                        </xs:complexType>
+                    </xs:element>
+                    <xs:element name="features" minOccurs="0">
+                        <xs:complexType>
+                            <xs:choice minOccurs="0" maxOccurs="unbounded">
+                                <xs:element ref="Feature" />
+                            </xs:choice>
+                        </xs:complexType>
+                    </xs:element>
+                    <xs:element name="probeGroups" minOccurs="0">
+                        <xs:complexType>
+                            <xs:choice minOccurs="0" maxOccurs="unbounded">
+                                <xs:element ref="ProbeGroup" />
+                            </xs:choice>
+                        </xs:complexType>
+                    </xs:element>
+                </xs:sequence>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+    <xs:element name="ArrayDesign" type="ArrayDesign" />
+    <xs:complexType name="ArrayDesign">
+        <xs:complexContent>
+            <xs:extension base="gov.nih.nci.caarray.domain:AbstractCaArrayEntity">
+                <xs:sequence>
+                    <xs:element name="technologyType" minOccurs="0" maxOccurs="1"
+                        type="gov.nih.nci.caarray.domain.vocabulary:Term" />
+                    <xs:element name="organism" minOccurs="0" maxOccurs="1" type="edu.georgetown.pir:Organism" />
+                    <xs:element name="designDetails" minOccurs="0" maxOccurs="1" type="ArrayDesignDetails" />
+                    <xs:element name="microarray" minOccurs="0" maxOccurs="1"
+                        type="gov.nih.nci.cabio.domain:Microarray" />
+                    <xs:element name="provider" minOccurs="0" maxOccurs="1"
+                        type="gov.nih.nci.caarray.domain.contact:Organization" />
+                    <xs:element name="polymerType" minOccurs="0" maxOccurs="1"
+                        type="gov.nih.nci.caarray.domain.vocabulary:Term" />
+                    <xs:element name="printing" minOccurs="0" maxOccurs="1"
+                        type="gov.nih.nci.caarray.domain.protocol:ProtocolApplication" />
+                    <xs:element name="substrateType" minOccurs="0" maxOccurs="1"
+                        type="gov.nih.nci.caarray.domain.vocabulary:Term" />
+                    <xs:element name="surfaceType" minOccurs="0" maxOccurs="1"
+                        type="gov.nih.nci.caarray.domain.vocabulary:Term" />
+                    <xs:element name="designFile" minOccurs="0" maxOccurs="1"
+                        type="gov.nih.nci.caarray.domain.file:CaArrayFile" />
+                </xs:sequence>
+                <xs:attribute name="name" type="xs:string" />
+                <xs:attribute name="assayType" type="xs:string" />
+                <xs:attribute name="version" type="xs:string" />
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+    <xs:element name="AbstractDesignElement" type="AbstractDesignElement" />
+    <xs:complexType name="AbstractDesignElement">
+        <xs:complexContent>
+            <xs:extension base="gov.nih.nci.caarray.domain:AbstractCaArrayObject">
+                <xs:sequence />
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+    <xs:element name="Feature" type="Feature" />
+    <xs:complexType name="Feature">
+        <xs:complexContent>
+            <xs:extension base="AbstractDesignElement">
+                <xs:sequence>
+                    <xs:element name="arrayDesignDetails" minOccurs="0" maxOccurs="1" type="ArrayDesignDetails" />
+                </xs:sequence>
+                <xs:attribute name="blockColumn" type="xs:short" />
+                <xs:attribute name="blockRow" type="xs:short" />
+                <xs:attribute name="column" type="xs:short" />
+                <xs:attribute name="row" type="xs:short" />
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+    <xs:element name="AbstractProbe" type="AbstractProbe" />
+    <xs:complexType name="AbstractProbe">
+        <xs:complexContent>
+            <xs:extension base="AbstractDesignElement">
+                <xs:sequence>
+                    <xs:element name="annotation" minOccurs="0" maxOccurs="1" type="AbstractProbeAnnotation" />
+                </xs:sequence>
+                <xs:attribute name="name" type="xs:string" />
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+    <xs:element name="AbstractProbeAnnotation" type="AbstractProbeAnnotation" />
+    <xs:complexType name="AbstractProbeAnnotation">
+        <xs:complexContent>
+            <xs:extension base="gov.nih.nci.caarray.domain:AbstractCaArrayEntity">
+                <xs:sequence />
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+    <xs:element name="Array" type="Array" />
+    <xs:complexType name="Array">
+        <xs:complexContent>
+            <xs:extension base="gov.nih.nci.caarray.domain:AbstractCaArrayEntity">
+                <xs:sequence>
+                    <xs:element name="design" minOccurs="0" maxOccurs="1" type="ArrayDesign" />
+                    <xs:element name="arrayGroup" minOccurs="0" maxOccurs="1" type="ArrayGroup" />
+                    <xs:element name="production" minOccurs="0" maxOccurs="1"
+                        type="gov.nih.nci.caarray.domain.protocol:ProtocolApplication" />
+                </xs:sequence>
+                <xs:attribute name="batch" type="xs:string" />
+                <xs:attribute name="serialNumber" type="xs:string" />
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+    <xs:element name="SNPProbeAnnotation" type="SNPProbeAnnotation" />
+    <xs:complexType name="SNPProbeAnnotation">
+        <xs:complexContent>
+            <xs:extension base="AbstractProbeAnnotation">
+                <xs:sequence>
+                    <xs:element name="snpArrayReporter" minOccurs="0" maxOccurs="1"
+                        type="gov.nih.nci.cabio.domain:SNPArrayReporter" />
+                </xs:sequence>
+                <xs:attribute name="alleleA" type="xs:string" />
+                <xs:attribute name="alleleB" type="xs:string" />
+                <xs:attribute name="chromosome" type="xs:integer" />
+                <xs:attribute name="dbSNPId" type="xs:string" />
+                <xs:attribute name="dbSNPVersion" type="xs:int" />
+                <xs:attribute name="flank" type="xs:string" />
+                <xs:attribute name="physicalPosition" type="xs:long" />
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+    <xs:element name="LogicalProbe" type="LogicalProbe" />
+    <xs:complexType name="LogicalProbe">
+        <xs:complexContent>
+            <xs:extension base="AbstractProbe">
+                <xs:sequence>
+                    <xs:element name="arrayDesignDetails" minOccurs="0" maxOccurs="1" type="ArrayDesignDetails" />
+                    <xs:element name="probes" minOccurs="0">
+                        <xs:complexType>
+                            <xs:choice minOccurs="0" maxOccurs="unbounded">
+                                <xs:element ref="PhysicalProbe" />
+                            </xs:choice>
+                        </xs:complexType>
+                    </xs:element>
+                </xs:sequence>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+    <xs:element name="ExpressionProbeAnnotation" type="ExpressionProbeAnnotation" />
+    <xs:complexType name="ExpressionProbeAnnotation">
+        <xs:complexContent>
+            <xs:extension base="AbstractProbeAnnotation">
+                <xs:sequence>
+                    <xs:element name="expressionArrayReporter" minOccurs="0" maxOccurs="1"
+                        type="gov.nih.nci.cabio.domain:ExpressionArrayReporter" />
+                    <xs:element name="gene" minOccurs="0" maxOccurs="1" type="Gene" />
+                </xs:sequence>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+    <xs:element name="ProbeGroup" type="ProbeGroup" />
+    <xs:complexType name="ProbeGroup">
+        <xs:complexContent>
+            <xs:extension base="gov.nih.nci.caarray.domain:AbstractCaArrayEntity">
+                <xs:sequence>
+                    <xs:element name="arrayDesignDetails" minOccurs="0" maxOccurs="1" type="ArrayDesignDetails" />
+                    <xs:element name="probes" minOccurs="0">
+                        <xs:complexType>
+                            <xs:choice minOccurs="0" maxOccurs="unbounded">
+                                <xs:element ref="PhysicalProbe" />
+                            </xs:choice>
+                        </xs:complexType>
+                    </xs:element>
+                </xs:sequence>
+                <xs:attribute name="name" type="xs:string" />
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+    <xs:element name="PhysicalProbe" type="PhysicalProbe" />
+    <xs:complexType name="PhysicalProbe">
+        <xs:complexContent>
+            <xs:extension base="AbstractProbe">
+                <xs:sequence>
+                    <xs:element name="arrayDesignDetails" minOccurs="0" maxOccurs="1" type="ArrayDesignDetails" />
+                    <xs:element name="controlType" minOccurs="0" maxOccurs="1"
+                        type="gov.nih.nci.caarray.domain.vocabulary:Term" />
+                    <xs:element name="probeGroup" minOccurs="0" maxOccurs="1" type="ProbeGroup" />
+                    <xs:element name="features" minOccurs="0">
+                        <xs:complexType>
+                            <xs:choice minOccurs="0" maxOccurs="unbounded">
+                                <xs:element ref="Feature" />
+                            </xs:choice>
+                        </xs:complexType>
+                    </xs:element>
+                </xs:sequence>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+    <xs:element name="ExonProbeAnnotation" type="ExonProbeAnnotation" />
+    <xs:complexType name="ExonProbeAnnotation">
+        <xs:complexContent>
+            <xs:extension base="AbstractProbeAnnotation">
+                <xs:sequence>
+                    <xs:element name="exonArrayReporter" minOccurs="0" maxOccurs="1"
+                        type="gov.nih.nci.cabio.domain:ExonArrayReporter" />
+                    <xs:element name="gene" minOccurs="0" maxOccurs="1" type="Gene" />
+                </xs:sequence>
+                <xs:attribute name="start" type="xs:long" />
+                <xs:attribute name="stop" type="xs:long" />
+                <xs:attribute name="strand" type="xs:string" />
+                <xs:attribute name="uniprotId" type="xs:string" />
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+    <xs:element name="Gene" type="Gene" />
+    <xs:complexType name="Gene">
+        <xs:complexContent>
+            <xs:extension base="gov.nih.nci.caarray.domain:AbstractCaArrayEntity">
+                <xs:attribute name="fullName" type="xs:string" />
+                <xs:attribute name="symbol" type="xs:string" />
+                <xs:attribute name="genbankAccession" type="xs:string" />
+                <xs:attribute name="genbankAccessionVersion" type="xs:string" />
+                <xs:attribute name="ensemblgeneID" type="xs:string" />
+                <xs:attribute name="unigeneclusterID" type="xs:string" />
+                <xs:attribute name="entrezgeneID" type="xs:string" />
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+</xs:schema>
+

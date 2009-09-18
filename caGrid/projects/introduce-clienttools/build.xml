@@ -1,0 +1,119 @@
+<?xml version="1.0"?>
+<project default="all" name="caGrid-Introduce-ClientTools" basedir=".">
+	<!-- Define the environment variables -->
+	<property environment="env" />
+	<property file="${basedir}/project.properties" />
+	<property file="${basedir}/build.properties" />
+	<property name="globus.location" location="${env.GLOBUS_LOCATION}" />
+
+	<property name="project.name" value="${ant.project.name}" />
+	
+	<!-- This property is defined simply so we can write ${sep} instead of
+	     ${file.separator}, which makes some expressions too long -->
+	<property name="sep" value="${file.separator}" />
+
+	<!-- Important directories and files -->
+	<property name="src.dir" value="src" />
+	<property name="notification.src.dir" value="${src.dir}/notification"/>
+	<property name="etc.dir" value="etc" />
+	<property name="ext.lib.dir" location="${basedir}/ext/dependencies/jars"/>
+
+	<!-- Build directories -->
+	<property name="build.dir" location="${basedir}/build" />
+	<!-- Directories for compiled service classes -->
+	<property name="build.classes.dest" location="${build.dir}/classes"/>
+	<property name="build.notification.dest" location="${build.classes.dest}/notification" />
+	<!-- Directory for compiled JAR files (additional library files required by
+	     the service will also be placed here) -->
+	<property name="build.lib.dir" location="${build.dir}/lib" />
+	
+	<!-- jar file locations -->
+	<property name="notification.jar.file" location="${build.lib.dir}/${project.name}-Notification-${project.version}.jar" />
+	
+	<!-- Java build settings -->
+	<property name="java.debug" value="on" />
+	<property name="java.source" value="1.5" />
+
+	<!-- Sets up the build directory structure -->
+	<target name="init" depends="checkGlobus">
+		<mkdir dir="${build.dir}" />
+		<mkdir dir="${build.classes.dest}"/>
+		<mkdir dir="${build.notification.dest}" />
+		<mkdir dir="${build.lib.dir}" />
+	</target>
+
+	<target name="defineClasspaths">
+		<path id="build.classpath">
+			<!-- uncomment if the project ever depends on external build artifacts 
+			<fileset dir="${ext.lib.dir}">
+				<include name="**/*.jar" />
+			</fileset>
+			-->
+			<fileset dir="${globus.location}/lib">
+				<include name="**/*.jar" />
+		        <exclude name="junit.jar"/>
+			</fileset>
+		</path>
+		<path id="run.classpath">
+			<fileset dir="${build.lib.dir}">
+				<include name="**/*.jar"/>
+			</fileset>
+			<path refid="build.classpath" />
+		</path>
+	</target>
+
+	<!-- ============================================================== -->
+	<!-- Globus properties                                              -->
+	<!-- ============================================================== -->
+	<target name="checkGlobus" depends="setGlobus">
+		<condition property="globus.not.found">
+			<or>
+				<not>
+					<isset property="ext.globus.dir" />
+				</not>
+				<equals arg1="${ext.globus.dir}" arg2="" />
+			</or>
+		</condition>
+		<fail message="Globus installation is not set in either GLOBUS_LOCATION or ext.globus.dir" if="globus.not.found" />
+		<echo message="Globus: ${ext.globus.dir}" />
+	</target>
+	
+	<target name="setGlobus" if="env.GLOBUS_LOCATION">
+		<property name="ext.globus.dir" value="${env.GLOBUS_LOCATION}" />
+		<property name="build.stubs" location="${ext.globus.dir}/share/globus_wsrf_tools/build-stubs.xml" />
+		<property name="schema.src" location="${ext.globus.dir}/share/schema" />
+	</target>
+
+
+	<target name="compileNotification" depends="defineClasspaths, init">
+		<javac srcdir="${notification.src.dir}" destdir="${build.notification.dest}" debug="${java.debug}" source="${java.source}">
+			<classpath refid="build.classpath" />
+		</javac>	
+	</target>
+	
+
+	<target name="jar" depends="compileNotification">
+		<jar jarfile="${notification.jar.file}">
+			<fileset dir="${notification.src.dir}">
+				<include name="**/**"/>
+			</fileset>
+			<fileset dir="${build.notification.dest}">
+				<include name="**/*.class"/>
+			</fileset>
+			<manifest>
+				<attribute name="Built-By" value="${user.name}" />
+			</manifest>
+		</jar>
+	</target>
+	
+
+	<!-- Clean up all the intermediate files -->
+	<target name="clean">
+		<delete dir="${build.dir}" />
+	</target>
+
+	
+	<!-- Default target "all" generates the GAR file -->
+	<target name="all" depends="jar" />
+
+</project>

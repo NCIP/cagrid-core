@@ -1,0 +1,32 @@
+<?xml version="1.0"?>
+
+<ivy-module version="2.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:noNamespaceSchemaLocation="http://incubator.apache.org/ivy/schemas/ivy.xsd">
+
+  <info organisation="caGrid" module="testing" revision="${project.version}">
+    <license name="caGrid" url="http://cagrid.org/wiki/CaGrid:LICENSE-1.3"/>
+    <description>caGrid testing utilities</description>
+  </info>
+
+  <configurations>
+    <conf name="impl-test" visibility="private"/>
+    <!-- Public Configurations-->
+    <conf name="core" visibility="public"/>
+    <conf name="system" visibility="public" extends="core"/>
+
+    <conf name="test" visibility="public" extends="impl-test,system"/>
+  </configurations>
+
+
+  <publications>
+    <artifact name="caGrid-${ivy.module}-core" conf="core" type="jar"/>
+    <artifact name="caGrid-${ivy.module}-system" conf="system" type="jar"/>
+  </publications>
+
+  <dependencies>
+    <dependency org="caGrid" name="core" rev="latest.integration" conf="core->default;impl-test->test"/>
+
+    <dependency rev="1.0" org="jdom" name="jdom" conf="core->*"/>
+    <dependency rev="4.4" org="junit" name="junit" conf="impl-test->default"/>
+  </dependencies>
+</ivy-module>

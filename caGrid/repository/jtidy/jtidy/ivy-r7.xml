@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<?xml-stylesheet type="text/xsl" href="http://ivyrep.jayasoft.org/ivy-doc.xsl"?>
+<ivy-module version="2.0">
+    <info organisation="jtidy" module="jtidy" revision="r7" status="release">
+        <license name="Jtidy" url="http://sourceforge.net/project/showfiles.php?group_id=13153"/>
+
+        <description homepage="http://www.hsqldb.org">JTidy is a Java port of HTML Tidy, a HTML syntax checker and pretty printer. 
+        </description>
+    </info>
+</ivy-module>
+

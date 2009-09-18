@@ -1,0 +1,12 @@
+<?xml version="1.0"?>
+
+<ivy-module version="2.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:noNamespaceSchemaLocation="http://incubator.apache.org/ivy/schemas/ivy.xsd">
+
+	<info organisation="jasciidammit" module="jasciidammit" revision="1.1">
+		<license name="LGPL" url="http://www.gnu.org/licenses/lgpl.html"/>
+		<description homepage="http://sourceforge.net/projects/jasciidammit">Java library to turn MS
+			chars (like smart quotes) and ISO-Latin chars into ASCII. The name is derived from the
+			python script with the same function named AsciiDammit.</description>
+	</info>
+</ivy-module>

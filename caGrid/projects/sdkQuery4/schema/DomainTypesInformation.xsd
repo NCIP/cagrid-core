@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- edited with XMLSpy v2005 rel. 3 U (http://www.altova.com) by David W. Ervin (The Ohio State University / Department of Biomedical Informatics) -->
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:dti="http://SDKQuery4.caBIG/1/gov.nih.nci.cagrid.sdkquery4.beans.domaininfo" targetNamespace="http://SDKQuery4.caBIG/1/gov.nih.nci.cagrid.sdkquery4.beans.domaininfo" elementFormDefault="qualified" attributeFormDefault="unqualified">
+	<xsd:element name="DomainTypesInformation" type="dti:DomainTypesInformation"/>
+	<xsd:complexType name="DomainTypesInformation">
+		<xsd:sequence>
+			<xsd:element ref="dti:DomainType" maxOccurs="unbounded"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:element name="DomainType" type="dti:DomainType"/>
+	<xsd:complexType name="DomainType">
+		<xsd:sequence>
+			<xsd:element ref="dti:TypeAttribute" minOccurs="0" maxOccurs="unbounded"/>
+			<xsd:element name="SubclassName" type="xsd:string" minOccurs="0" maxOccurs="unbounded"/>
+			<xsd:element name="SuperclassName" type="xsd:string" minOccurs="0"/>
+		</xsd:sequence>
+		<xsd:attribute name="javaClassName" type="xsd:string" use="required"/>
+	</xsd:complexType>
+	<xsd:element name="TypeAttribute" type="dti:TypeAttribute"/>
+	<xsd:complexType name="TypeAttribute">
+		<xsd:attribute name="attributeName" type="xsd:string" use="required"/>
+		<xsd:attribute name="javaTypeName" type="xsd:string" use="required"/>
+	</xsd:complexType>
+</xsd:schema>

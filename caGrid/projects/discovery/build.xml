@@ -1,0 +1,219 @@
+<?xml version="1.0"?>
+<!-- ================================================================= -->
+<!-- caGrid 1.0 discovery build file                                        -->
+<!-- ================================================================= -->
+
+<project name="caGrid-discovery" default="compile" basedir=".">
+	<!-- Environment -->
+	<property environment="env" />
+	<property file="${basedir}/build.properties" />
+	<property file="${basedir}/project.properties" />
+
+	<property name="globus.dir" location="${env.GLOBUS_LOCATION}" />
+
+	<!-- Information -->
+	<property name="project.name" value="${ant.project.name}" />
+
+	<property name="src.dir" value="${basedir}/src/java" />
+	<property name="build.dir" value="${basedir}/build" />
+	<property name="javadoc.dir" value="${build.dir}/javadoc" />
+	<property name="classes.dir" value="${build.dir}/classes" />
+	<property name="jar.dir" value="${build.dir}/jars" />
+	<property name="project.jarfile" value="${jar.dir}/${project.name}-${project.version}.jar" />
+
+	<property name="ext.dir" location="${basedir}/ext" />
+	<property name="ext.grid.dir" location="${ext.dir}/target_grid" />
+	<property name="ext.dependencies.dir" location="${ext.dir}/dependencies" />
+	<property name="ext.lib.dir" value="${ext.dependencies.dir}/jars" />
+	<property name="ext.test.lib.dir" location="${ext.dependencies.dir}/test/jars" />
+
+	<!-- testing stuff -->
+	<property name="test.dir" location="${basedir}/test" />
+	<property name="test.src.dir" location="${test.dir}/src/java" />
+	<property name="test.classes.dir" location="${build.dir}/test_classes" />
+	<property name="test.lib.dir" location="${test.dir}/lib" />
+	<property name="test.logs.dir" location="${test.dir}/logs" />
+	<property name="test.project.jar" location="${jar.dir}/${project.name}-tests-${project.version}.jar" />
+
+	<import file="test/test.xml" />
+
+
+	<!-- ============================================================== -->
+	<!-- Globus properties                                              -->
+	<!-- ============================================================== -->
+	<target name="checkGlobus" depends="setGlobus">
+		<condition property="globus.not.found">
+			<or>
+				<not>
+					<isset property="ext.globus.dir" />
+				</not>
+				<equals arg1="${ext.globus.dir}" arg2="" />
+			</or>
+		</condition>
+		<fail message="Globus installation is not set in either GLOBUS_LOCATION or ext.globus.dir" if="globus.not.found" />
+		<echo message="Globus: ${ext.globus.dir}" />
+	</target>
+	<target name="setGlobus" if="env.GLOBUS_LOCATION">
+		<property name="ext.globus.dir" value="${env.GLOBUS_LOCATION}" />
+	</target>
+
+
+	<!-- =============================================================== -->
+	<!-- Define the Classpaths                                           -->
+	<!-- =============================================================== -->
+	<target name="defineClasspaths" depends="checkGlobus">
+		<path id="build.classpath">
+			<fileset dir="${ext.lib.dir}">
+				<include name="**/*.jar" />
+			</fileset>
+			<fileset dir="${globus.dir}/lib">
+				<include name="**/*.jar" />
+                <exclude name="junit.jar"/>
+			</fileset>
+		</path>
+
+		<path id="run.classpath">
+			<pathelement location="${classes.dir}" />
+			<path refid="build.classpath" />
+			<pathelement location="${ext.globus.dir}" />
+		</path>
+
+		<path id="test.classpath">
+			<pathelement path="${classes.dir}" />
+			<path refid="build.classpath" />
+			<pathelement path="${test.dir}/resources" />
+			<fileset dir="${test.lib.dir}">
+				<include name="**/*.jar" />
+			</fileset>
+			<fileset dir="${ext.test.lib.dir}">
+				<include name="**/*.jar" />
+			</fileset>
+			<pathelement location="${ext.globus.dir}" />
+		</path>
+	</target>
+
+
+	<!-- =============================================================== -->
+	<!-- Prepares the build directory                                    -->
+	<!-- =============================================================== -->
+	<target name="prepare" depends="defineClasspaths, configure">
+		<tstamp />
+		<mkdir dir="${build.dir}" />
+	</target>
+
+
+	<target name="configure" description="Configures the project based on settings.">
+		<copy todir="${src.dir}" overwrite="true">
+			<fileset dir="${src.dir}">
+				<include name="**/*.template" />
+			</fileset>
+			<mapper type="glob" from="*.template" to="*" />
+			<filterset filtersfile="${ext.grid.dir}/service_urls.properties" />
+		</copy>
+	</target>
+
+
+
+	<!-- =============================================================== -->
+	<!-- Compiles the source code                                        -->
+	<!-- =============================================================== -->
+	<target name="compile" depends="prepare" description="compiles.">
+		<mkdir dir="${classes.dir}" />
+		<javac srcdir="${src.dir}" destdir="${classes.dir}" debug="on" deprecation="off" optimize="off">
+			<classpath refid="build.classpath" />
+		</javac>
+		<copy toDir="${classes.dir}">
+			<fileset dir="${src.dir}">
+				<include name="**/*" />
+				<exclude name="**/*.template" />
+			</fileset>
+		</copy>
+	</target>
+
+	<!-- =============================================================== -->
+	<!-- Compiles the test source code                                        -->
+	<!-- =============================================================== -->
+	<target name="compile-tests" depends="prepare" description="compiles.">
+		<mkdir dir="${test.classes.dir}" />
+		<javac srcdir="${test.src.dir}" destdir="${test.classes.dir}" debug="on" deprecation="off" optimize="off">
+			<classpath refid="test.classpath" />
+		</javac>
+	</target>
+
+
+	<!-- ============================================================== -->
+	<!-- Cleans up generated stuff                                      -->
+	<!-- ============================================================== -->
+	<target name="clean" depends="" description="Removes generated files.">
+		<delete dir="${build.dir}" />
+	</target>
+
+
+	<!-- ============================================================== -->
+	<!-- Creates the test jar files                                          -->
+	<!-- ============================================================== -->
+	<target name="jar" depends="compile" description="Builds the Jar Files">
+		<mkdir dir="${jar.dir}" />
+		<jar jarfile="${project.jarfile}" basedir="${classes.dir}">
+			<manifest>
+				<attribute name="Built-By" value="${user.name}" />
+				<attribute name="Main-Class" value="${main.class}" />
+			</manifest>
+		</jar>
+
+		<!-- This needs to be here, or there are runtime failures -->
+		<available resource="gov/nih/nci/cagrid/discovery/client/discovery.properties" property="discovery.properties.present" classpathref="run.classpath" />
+		<fail message="Unable to successfully create discovery properties file!" unless="discovery.properties.present" />
+	</target>
+
+	<!-- ============================================================== -->
+	<!-- Creates the jar files                                          -->
+	<!-- ============================================================== -->
+	<target name="jar-tests" depends="compile-tests" description="Builds the Jar Files">
+		<mkdir dir="${jar.dir}" />
+		<jar jarfile="${test.project.jar}" basedir="${test.classes.dir}">
+			<manifest>
+				<attribute name="Built-By" value="${user.name}" />
+			</manifest>
+		</jar>
+	</target>
+
+	<!-- ============================================================== -->
+	<!-- Runs the Discovery Client                                      -->
+	<!-- ============================================================== -->
+	<target name="runClient" depends="defineClasspaths" description="Run the sample Discovery Client">
+		<property file="${basedir}/ext/target_grid/service_urls.properties" />
+		<property name="service.url" value="${cagrid.master.index.service.url}" />
+		<echo message="Discovering from Index Service: ${service.url}" />
+		<java classname="gov.nih.nci.cagrid.discovery.client.DiscoveryClient" classpathref="run.classpath" fork="yes">
+			<jvmarg value="-DGLOBUS_LOCATION=${ext.globus.dir}" />
+
+			<arg value="${service.url}" />
+		</java>
+	</target>
+
+
+	<!-- =================================================================== -->
+	<!-- Builds Code Docuementation                                          -->
+	<!-- =================================================================== -->
+	<target name="javadoc" depends="compile" description="Creates the API documentation.">
+		<javadoc packagenames="*" destdir="${javadoc.dir}" author="true" version="true" use="true" windowtitle="${project.name} API">
+			<sourcepath>
+				<pathelement path="${src.dir}" />
+			</sourcepath>
+
+			<classpath>
+				<path refid="build.classpath" />
+			</classpath>
+
+			<tag name="todo" scope="all" description="To do:" />
+			<tag name="created" scope="all" description="Created On:" />
+		</javadoc>
+	</target>
+
+	<!-- ============================================================== -->
+	<!-- Builds from scratch                                                -->
+	<!-- ============================================================== -->
+	<target name="all" description="Builds the entire application" depends="jar,jar-tests" />
+</project>
+

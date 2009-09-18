@@ -1,0 +1,140 @@
+<?xml version="1.0"?>
+<project name="caGrid-TavernaWorkflowServicesTests" default="all" basedir=".">
+	<property environment="env" />
+	<property file="build.properties" />
+	<property file="project.properties" />
+	<property name="globus.dir" location="${env.GLOBUS_LOCATION}" />
+
+	<!-- locations within the testing project -->
+	<property name="project.name" value="${ant.project.name}" />
+	<property name="src.dir" value="${basedir}/src" />
+	<property name="build.dir" value="${basedir}/build" />
+	<property name="classes.dir" value="${build.dir}/classes" />
+	<property name="jar.dir" value="${build.dir}/lib" />
+	<property name="project.jarfile" value="${jar.dir}/${project.name}-${project.version}.jar" />
+	<property name="ext.lib.dir" value="${basedir}/ext/dependencies/jars" />
+
+	<!-- should all testing stop on the first error or failure encountered? -->
+	<property name="halt.on.error" value="false" />
+	<!-- message when tests fail -->
+	<property name="failed.message" value="Tests failed! Check test reports." />
+	<!-- tells the service container factories to assign ports in testing mode -->
+	<property name="testing.port.assignment.mode" value="true" />
+	<!-- tells the test containers where to find their zip files -->
+	<property name="testing.containers.dir" value="${basedir}/../testUtils/containers" />
+
+	<!-- output directory for JUnit logs -->
+	<property name="junit.results.dir" value="log/junit" />
+
+	<!-- build with debugging information -->
+	<property name="java.debug" value="on" />
+
+	<!-- enforce java 1.5 compliance at build time -->
+	<property name="java.source" value="1.5" />
+
+
+	<!-- =============================================================== -->
+	<!-- Prepares the classpaths                                         -->
+	<!-- =============================================================== -->
+	<target name="defineClasspaths">
+		<path id="build.classpath">
+			<!-- this is kinda funny to make sure the testUtils jars get in ahead of the old testing stuff -->
+			<fileset dir="${ext.lib.dir}">
+				<include name="**/*.jar" />
+				<exclude name="**/*testing-system*.jar" />
+			</fileset>
+			<fileset dir="${ext.lib.dir}">
+				<include name="**/*testing-system*.jar" />
+			</fileset>
+			<fileset dir="${globus.dir}/lib">
+				<include name="**/*.jar" />
+				<exclude name="junit.jar"/>
+			</fileset>
+			<pathelement location="${globus.dir}" />
+		</path>
+
+		<path id="test.run.classpath">
+			<path refid="build.classpath" />
+			<fileset dir="${jar.dir}">
+				<include name="**/*.jar" />
+			</fileset>
+		</path>
+	</target>
+
+
+	<!-- =============================================================== -->
+	<!-- Prepares the build directory                                    -->
+	<!-- =============================================================== -->
+	<target name="prepare" depends="defineClasspaths">
+		<tstamp />
+		<mkdir dir="${build.dir}" />
+		<mkdir dir="${classes.dir}" />
+		<mkdir dir="${jar.dir}" />
+	</target>
+
+
+	<!-- =============================================================== -->
+	<!-- Compiles the source code                                        -->
+	<!-- =============================================================== -->
+	<target name="compile" depends="prepare" description="compiles.">
+		<!-- test source -->
+		<javac srcdir="${src.dir}" destdir="${classes.dir}" source="${java.source}" target="${java.source}" debug="${java.debug}" deprecation="off" optimize="off">
+			<classpath refid="build.classpath" />
+		</javac>
+	</target>
+
+
+	<!-- ============================================================== -->
+	<!-- Cleans up generated stuff                                      -->
+	<!-- ============================================================== -->
+	<target name="clean" depends="" description="Removes generated files.">
+		<delete dir="${build.dir}" />
+	</target>
+
+
+	<!-- ============================================================== -->
+	<!-- Creates the jar files                                          -->
+	<!-- ============================================================== -->
+	<target name="jar" depends="compile" description="Builds the Jar Files">
+		<mkdir dir="${jar.dir}" />
+		<!-- project jarfile (classes and source -->
+		<jar destfile="${project.jarfile}">
+			<fileset dir="${classes.dir}">
+				<include name="**/*.class" />
+			</fileset>
+			<fileset dir="${src.dir}">
+				<include name="**/*.java" />
+			</fileset>
+			<manifest>
+				<attribute name="Built-By" value="${user.name}" />
+			</manifest>
+		</jar>
+	</target>
+
+
+	<target name="test" description="Runs tests">
+		<mkdir dir="${junit.results.dir}" />
+		<junit dir="${basedir}" printsummary="yes" haltonerror="${halt.on.error}" haltonfailure="${halt.on.error}" errorproperty="test.failed" failureproperty="test.failed" showoutput="true" fork="yes" forkmode="once">
+			<sysproperty key="build.dir" value="${test.core.classes.dir}" />
+			<sysproperty key="testing.port.assignment.mode" value="${testing.port.assignment.mode}" />
+			<sysproperty key="testing.containers.dir" value="${testing.containers.dir}" />
+			<classpath refid="test.run.classpath" />
+			<formatter type="xml" />
+			<test if="testcase" name="${testcase}" fork="no" todir="${junit.results.dir}" />
+			<batchtest unless="testcase" fork="yes" todir="${junit.results.dir}">
+				<fileset dir="${src.dir}">
+					<include name="**/*Story.java" />
+				</fileset>
+			</batchtest>
+		</junit>
+		<delete dir="${basedir}/tmp" />
+		<fail if="${test.failed}" message="Tests failed!  Check logs for details." />
+	</target>
+
+
+	<!-- ============================================================== -->
+	<!-- Builds everything                                              -->
+	<!-- ============================================================== -->
+	<target name="all" description="Builds the entire application" depends="clean, compile, jar" />
+</project>
+

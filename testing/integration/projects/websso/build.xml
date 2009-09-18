@@ -1,0 +1,151 @@
+<?xml version="1.0"?>
+
+<!-- ================================================================= -->
+<!-- Generic build file                                                    -->
+<!-- ================================================================= -->
+
+<project name="WebSSOSystemTests" default="compile" basedir=".">
+	<property file="build.properties" />
+	<property file="project.properties" />
+	<property environment="env" />
+
+	<property name="src.dir" value="${basedir}/src" />
+	<property name="build.dir" value="${basedir}/build" />
+	<property name="classes.dir" value="${build.dir}/classes" />
+	<property name="jar.dir" value="${build.dir}/jars" />
+	<property name="project.jarfile" value="${jar.dir}/${project.name}-${project.version}.jar" />
+	<property name="ext.lib.dir" value="${basedir}/ext/dependencies/jars" />
+	<property name="ext.endorsed.dir" location="${basedir}/ext/dependencies/endorsed/jars" />
+	
+	<property name="junit.results.dir" value="log/junit" />
+
+	<!-- build with debugging information -->
+	<property name="java.debug" value="on" />
+	<!-- enforce java 1.5 compliance at build time -->
+	<property name="java.source" value="1.5" />
+
+
+	<!-- ============================================================== -->
+	<!-- Globus properties                                              -->
+	<!-- ============================================================== -->
+	<target name="checkGlobus" depends="setGlobus">
+		<condition property="globus.not.found">
+			<or>
+				<not>
+					<isset property="ext.globus.dir" />
+				</not>
+				<equals arg1="${ext.globus.dir}" arg2="" />
+			</or>
+		</condition>
+		<fail message="Globus installation is not set in either GLOBUS_LOCATION or ext.globus.dir" if="globus.not.found" />
+		<echo message="Globus: ${ext.globus.dir}" />
+	</target>
+	<target name="setGlobus" if="env.GLOBUS_LOCATION">
+		<!-- GT4 build files and directories-->
+		<property name="ext.globus.dir" value="${env.GLOBUS_LOCATION}" />
+		<property name="schema.src" location="${ext.globus.dir}/share/schema" />
+		<property name="build.packages" location="${ext.globus.dir}/share/globus_wsrf_common/build-packages.xml" />
+		<!-- Copied from build.stubs file, as there is no way to "append" to the value in the remote file -->
+		<property name="GT4.ns.excludes" value="-x http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-BaseFaults-1.2-draft-01.xsd -x http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-BaseFaults-1.2-draft-01.wsdl -x http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ResourceLifetime-1.2-draft-01.xsd -x http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ResourceLifetime-1.2-draft-01.wsdl -x http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ResourceProperties-1.2-draft-01.xsd -x http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ResourceProperties-1.2-draft-01.wsdl -x http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ServiceGroup-1.2-draft-01.xsd -x http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ServiceGroup-1.2-draft-01.wsdl -x http://docs.oasis-open.org/wsn/2004/06/wsn-WS-BaseNotification-1.2-draft-01.xsd -x http://docs.oasis-open.org/wsn/2004/06/wsn-WS-BaseNotification-1.2-draft-01.wsdl -x http://schemas.xmlsoap.org/ws/2004/04/trust -x http://schemas.xmlsoap.org/ws/2002/12/policy -x http://schemas.xmlsoap.org/ws/2002/07/utility -x http://schemas.xmlsoap.org/ws/2004/04/sc -x http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-secext-1.0.xsd -x http://www.w3.org/2000/09/xmldsig# -x http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd -x http://schemas.xmlsoap.org/ws/2004/09/enumeration" />
+	</target>
+
+
+	<!-- =============================================================== -->
+	<!-- Prepares the classpaths                                     -->
+	<!-- =============================================================== -->
+	<target name="defineClasspaths" depends="checkGlobus">
+		<path id="build.classpath">
+			<fileset dir="${ext.lib.dir}">
+				<include name="**/*.jar" />
+			</fileset>
+			<fileset dir="${ext.globus.dir}/lib">
+				<include name="**/*.jar" />
+                <exclude name="junit.jar"/>
+			</fileset>
+			<pathelement location="${ext.globus.dir}" />
+		</path>
+	</target>
+
+
+	<!-- =============================================================== -->
+	<!-- Prepares the build directory                                    -->
+	<!-- =============================================================== -->
+	<target name="prepare" depends="defineClasspaths">
+		<tstamp />
+		<mkdir dir="${build.dir}" />
+	</target>
+
+
+	<!-- =============================================================== -->
+	<!-- Compiles the source code                                        -->
+	<!-- =============================================================== -->
+	<target name="compile" depends="prepare" description="compiles.">
+		<mkdir dir="${classes.dir}" />
+		<javac srcdir="${src.dir}" destdir="${classes.dir}" source="${java.source}" target="${java.source}" debug="${java.debug}" deprecation="off" optimize="off">
+			<classpath refid="build.classpath" />
+		</javac>
+	</target>
+
+
+	<!-- ============================================================== -->
+	<!-- Cleans up generated stuff                                      -->
+	<!-- ============================================================== -->
+	<target name="clean" depends="" description="Removes generated files.">
+		<delete dir="${build.dir}" />
+	</target>
+
+
+	<!-- ============================================================== -->
+	<!-- Creates the jar files                                          -->
+	<!-- ============================================================== -->
+	<target name="jar" depends="compile" description="Builds the Jar Files">
+		<mkdir dir="${jar.dir}" />
+		<jar jarfile="${project.jarfile}" basedir="${classes.dir}">
+			<manifest>
+				<attribute name="Built-By" value="${user.name}" />
+				<attribute name="Main-Class" value="${main.class}" />
+			</manifest>
+		</jar>
+	</target>
+
+
+	<!-- ============================================================== -->
+	<!-- Builds from scratch                                                -->
+	<!-- ============================================================== -->
+	<target name="all" description="Builds the entire application" depends="clean,compile,jar" />
+
+
+	<target name="configure">
+		
+	</target>
+	
+	
+	<!-- ============================================================== -->
+	<!-- Call any tests.                                                -->
+	<!-- ============================================================== -->
+	<target name="test" depends="setGlobus,defineClasspaths" description="Runs the service's tests.">
+		<echo message="Test results dir: ${junit.results.dir}" />
+		<mkdir dir="${junit.results.dir}" />
+		<junit dir="${basedir}" printsummary="yes" showoutput="true">
+			<sysproperty key="testing.containers.dir" value="${basedir}/ext/dependencies/resources/containers" />
+			<jvmarg value="-Djava.endorsed.dirs=${ext.endorsed.dir}" />
+			<classpath refid="build.classpath" />
+			<classpath>
+				<pathelement path="build/classes/" />
+			</classpath>
+			<classpath>
+			    <pathelement location="${basedir}/resources" />
+			</classpath>
+			<classpath>
+			    <pathelement location="${src.dir}/resources" />
+			</classpath>
+			<formatter type="xml" />
+			<batchtest fork="yes" todir="${junit.results.dir}">
+				<fileset dir="${src.dir}">
+					<include name="**/*SystemTest.java" />
+				</fileset>
+			</batchtest>
+		</junit>
+	</target>
+</project>
+

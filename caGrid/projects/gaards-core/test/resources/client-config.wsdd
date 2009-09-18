@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<deployment xmlns="http://xml.apache.org/axis/wsdd/" xmlns:java="http://xml.apache.org/axis/wsdd/providers/java">
+ <globalConfiguration>
+  <parameter name="castorMapping" value="/org/cagrid/gaards/core/gaards-core-xml-mapping.xml" />
+ </globalConfiguration>
+ 
+<ns3:typeMapping encodingStyle="" serializer="org.cagrid.gaards.saml.encoding.SAMLSerializerFactory" deserializer="org.cagrid.gaards.saml.encoding.SAMLDeserializerFactory" type="ns1:gov.nih.nci.cagrid.opensaml.SAMLAssertion" qname="ns2:Assertion" xmlns:ns1="http://xml.apache.org/axis/wsdd/providers/java" xmlns:ns2="urn:oasis:names:tc:SAML:1.0:assertion" xmlns:ns3="http://xml.apache.org/axis/wsdd/"/>
+<ns3:typeMapping encodingStyle="" serializer="gov.nih.nci.cagrid.encoding.SDKSerializerFactory" deserializer="gov.nih.nci.cagrid.encoding.SDKDeserializerFactory" type="ns1:org.cagrid.gaards.core.EncodedX509Certificate" qname="ns2:EncodedX509Certificate" xmlns:ns1="http://xml.apache.org/axis/wsdd/providers/java" xmlns:ns2="http://gaards.cagrid.org/core-types" xmlns:ns3="http://xml.apache.org/axis/wsdd/"/>
+</deployment>

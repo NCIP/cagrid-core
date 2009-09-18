@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<?xml-stylesheet type="text/xsl" href="http://ivyrep.jayasoft.org/ivy-doc.xsl"?>
+<ivy-module version="1.0">
+	<info organisation="ant-contrib" module="ant-contrib" revision="1.0b3" status="release"
+		publication="20061028120000">
+		<license name="Apache" url="http://ant-contrib.sourceforge.net/LICENSE.txt"/>
+
+		<description homepage="http://ant-contrib.sourceforge.net">The Ant-Contrib project is a collection of tasks (and at one point maybe types and other tools) for Apache Ant.</description>
+	</info>
+
+	<configurations>
+		<!-- Public Configurations-->
+		<conf name="default" visibility="public"/>
+	</configurations>
+
+
+	<publications>
+		<artifact name="ant-contrib-1.0b3" type="jar"/>
+	</publications>
+
+	<dependencies/>
+</ivy-module>

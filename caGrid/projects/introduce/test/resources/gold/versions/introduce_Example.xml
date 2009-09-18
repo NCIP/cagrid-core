@@ -1,0 +1,30 @@
+<ns1:ServiceDescription xmlns:ns1="gme://gov.nih.nci.cagrid/1/Introduce">
+	<ns8:Services xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="ns8:ServicesType"
+		xmlns:ns8="gme://gov.nih.nci.cagrid.introduce/1/Services">
+		<ns8:Service name="foo">
+			<ns2:Methods xsi:type="ns2:MethodsType"
+				xmlns:ns2="gme://gov.nih.nci.cagrid.introduce/1/Methods"
+				xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+				<ns2:Method name="newMethod" xsi:type="ns2:MethodType">
+					<ns2:Inputs/>
+					<ns2:Output className="void"/>
+					<ns2:Exceptions/>
+				</ns2:Method>
+			</ns2:Methods>
+			<ns3:ResourcePropertiesList xsi:type="ns3:ResourcePropertyListType"
+				xmlns:ns3="gme://gov.nih.nci.cagrid.introduce/1/Resources"
+				xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+				<ns3:ResourceProperty xmlns:a="http://ns1" className="AType" namespace="http://ns1"
+					type="A" location="." populateFromFile="true" register="true" QName="a:A"/>
+				<ns3:ResourceProperty xmlns:a="http://ns2" className="AType" namespace="http://ns2"
+					type="A" location="." populateFromFile="true" register="true" QName="a:A"/>
+				<ns3:ResourceProperty xmlns:b="http://ns1" className="BType" namespace="http://ns1"
+					type="B" location="." populateFromFile="true" register="true" QName="b:B"/>
+				<ns3:ResourceProperty xmlns:b="http://ns2" className="BType" namespace="http://ns2"
+					type="B" location="." populateFromFile="false" register="false" QName="b:BBBBB"/>
+				<ns3:ResourceProperty xmlns:b="http://ns3" className="BType" namespace="http://ns3"
+					type="B" location="." populateFromFile="false" register="true" QName="b:BBBBB"/>
+			</ns3:ResourcePropertiesList>
+		</ns8:Service>
+	</ns8:Services>
+</ns1:ServiceDescription>

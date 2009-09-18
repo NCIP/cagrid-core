@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapping PUBLIC "-//EXOLAB/Castor Object Mapping DTD Version 1.0//EN" "http://www.castor.org/mapping.dtd">
+<mapping>
+  <class name="gov.nih.nci.cadsr.umlproject.domain.SemanticMetadata">
+    <map-to xml="SemanticMetadata"
+      ns-uri="gme://caCORE.caBIG/3.0/gov.nih.nci.cadsr.umlproject.domain"/>
+    <field name="id" type="string">
+      <bind-xml name="id" node="attribute"/>
+    </field>
+    <field name="conceptCode" type="string">
+      <bind-xml name="conceptCode" node="attribute"/>
+    </field>
+    <field name="conceptName" type="string">
+      <bind-xml name="conceptName" node="attribute"/>
+    </field>
+    <field name="conceptDefinition" type="string">
+      <bind-xml name="conceptDefinition" node="attribute"/>
+    </field>
+    <field name="isPrimaryConcept" type="boolean">
+      <bind-xml name="isPrimaryConcept" node="attribute"/>
+    </field>
+    <field name="order" type="integer">
+      <bind-xml name="order" node="attribute"/>
+    </field>
+    <field name="orderLevel" type="integer">
+      <bind-xml name="orderLevel" node="attribute"/>
+    </field>
+  </class>
+</mapping>

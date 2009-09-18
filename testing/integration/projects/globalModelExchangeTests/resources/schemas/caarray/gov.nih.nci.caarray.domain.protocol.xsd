@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+    xmlns="gme://caArray.caBIG/2.0/gov.nih.nci.caarray.domain.protocol"
+    xmlns:gov.nih.nci.caarray.domain="gme://caArray.caBIG/2.0/gov.nih.nci.caarray.domain"
+    xmlns:gov.nih.nci.caarray.domain.file="gme://caArray.caBIG/2.0/gov.nih.nci.caarray.domain.file"
+    xmlns:gov.nih.nci.caarray.domain.vocabulary="gme://caArray.caBIG/2.0/gov.nih.nci.caarray.domain.vocabulary"
+    targetNamespace="gme://caArray.caBIG/2.0/gov.nih.nci.caarray.domain.protocol" elementFormDefault="qualified">
+
+    <xs:import namespace="gme://caArray.caBIG/2.0/gov.nih.nci.caarray.domain.file"
+        schemaLocation="gov.nih.nci.caarray.domain.file.xsd" />
+    <xs:import namespace="gme://caArray.caBIG/2.0/gov.nih.nci.caarray.domain"
+        schemaLocation="gov.nih.nci.caarray.domain.xsd" />
+    <xs:import namespace="gme://caArray.caBIG/2.0/gov.nih.nci.caarray.domain.vocabulary"
+        schemaLocation="gov.nih.nci.caarray.domain.vocabulary.xsd" />
+
+    <xs:element name="Parameter" type="Parameter" />
+    <xs:complexType name="Parameter">
+        <xs:complexContent>
+            <xs:extension base="gov.nih.nci.caarray.domain:AbstractCaArrayEntity">
+                <xs:sequence>
+                    <xs:element name="defaultValue" minOccurs="0" maxOccurs="1" type="ParameterValue" />
+                </xs:sequence>
+                <xs:attribute name="name" type="xs:string" />
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+    <xs:element name="Protocol" type="Protocol" />
+    <xs:complexType name="Protocol">
+        <xs:complexContent>
+            <xs:extension base="gov.nih.nci.caarray.domain:AbstractCaArrayEntity">
+                <xs:sequence>
+                    <xs:element name="files" minOccurs="0" maxOccurs="1"
+                        type="gov.nih.nci.caarray.domain.file:CaArrayFile" />
+                    <xs:element name="parameters" minOccurs="0">
+                        <xs:complexType>
+                            <xs:choice minOccurs="0" maxOccurs="unbounded">
+                                <xs:element ref="Parameter" />
+                            </xs:choice>
+                        </xs:complexType>
+                    </xs:element>
+                    <xs:element name="type" minOccurs="0" maxOccurs="1"
+                        type="gov.nih.nci.caarray.domain.vocabulary:Term" />
+                    <xs:element name="source" minOccurs="0" maxOccurs="1"
+                        type="gov.nih.nci.caarray.domain.vocabulary:TermSource" />
+                </xs:sequence>
+                <xs:attribute name="contact" type="xs:string" />
+                <xs:attribute name="description" type="xs:string" />
+                <xs:attribute name="hardware" type="xs:string" />
+                <xs:attribute name="name" type="xs:string" />
+                <xs:attribute name="software" type="xs:string" />
+                <xs:attribute name="url" type="xs:string" />
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+    <xs:element name="ProtocolApplication" type="ProtocolApplication" />
+    <xs:complexType name="ProtocolApplication">
+        <xs:complexContent>
+            <xs:extension base="gov.nih.nci.caarray.domain:AbstractCaArrayEntity">
+                <xs:sequence>
+                    <xs:element name="values" minOccurs="0">
+                        <xs:complexType>
+                            <xs:choice minOccurs="0" maxOccurs="unbounded">
+                                <xs:element ref="ParameterValue" />
+                            </xs:choice>
+                        </xs:complexType>
+                    </xs:element>
+                    <xs:element name="protocol" minOccurs="0" maxOccurs="1" type="Protocol" />
+                </xs:sequence>
+                <xs:attribute name="notes" type="xs:string" />
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+    <xs:element name="ParameterValue" type="ParameterValue" />
+    <xs:complexType name="ParameterValue">
+        <xs:complexContent>
+            <xs:extension base="gov.nih.nci.caarray.domain:AbstractCaArrayEntity">
+                <xs:sequence>
+                    <xs:element name="parameter" minOccurs="0" maxOccurs="1" type="Parameter" />
+                </xs:sequence>
+                <xs:attribute name="value" type="xs:string" />
+                <xs:attribute name="unit" type="xs:string" />
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+</xs:schema>
+

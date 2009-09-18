@@ -1,0 +1,6 @@
+<ns1:XMLSchemaImportInformation xmlns:ns1="gme://gme.cagrid.org/2.0/GlobalModelExchange/domain">
+  <ns1:XMLSchemaNamespace uri="gme://caArray.caBIG/2.0/edu.georgetown.pir" />
+  <ns1:imports>
+    <ns1:XMLSchemaNamespace uri="gme://caArray.caBIG/2.0/gov.nih.nci.caarray.domain.vocabulary" />
+  </ns1:imports>
+</ns1:XMLSchemaImportInformation>

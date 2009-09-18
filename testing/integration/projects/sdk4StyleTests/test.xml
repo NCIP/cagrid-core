@@ -1,0 +1,91 @@
+<!-- ======================================================================= -->
+<!-- caGrid Data Services test build file                                    -->
+<!-- ======================================================================= -->
+<project name="caGrid-data_tests_harness" basedir=".">
+	
+	<!-- should all testing stop on the first error or failure encountered? -->
+	<property name="halt.on.error" value="false" />
+	<!-- message when tests fail -->
+	<property name="failed.message" value="Tests failed! Check test reports." />
+	<!-- tells the service container factories to assign ports in testing mode -->
+	<property name="testing.port.assignment.mode" value="true" />
+	<!-- tells data tests the base directory in which to create data services -->
+	<property name="temp.test.service.dir" value="${basedir}/test_services"/>
+	<!-- tells the creation tests where libraries and resources live -->
+	<property name="sdk4.tests.base.dir" value="${basedir}"/>
+	<!-- tells the test containers where to find their zip files -->
+	<property name="testing.containers.dir" value="${basedir}/../testUtils/containers"/>
+
+	<!-- properties for caCORE SDK application's location -->
+	<!-- TODO: These will point to the SDK example VM -->
+	<property name="remote.sdk.host.name" value="http://sdkexamples.bmi.ohio-state.edu" />
+	<property name="remote.sdk.host.port" value="8040" />
+
+	
+	<target name="prepareClasspaths">
+		<path id="all.test.classpath">
+			<pathelement path="${classes.dir}" />
+			<pathelement path="${stubs.dest}" />
+			<path refid="test.run.classpath" />
+			<fileset dir="${jar.dir}">
+				<include name="**/*.jar"/>
+			</fileset>
+			<fileset dir="${ext.remote-client.lib.dir}">
+				<include name="**/*.jar"/>
+			</fileset>
+		</path>
+	</target>
+	
+
+	<target name="test" depends="testCreation, testInvocation" description="Runs tests"/>
+	
+	
+	<target name="testCreation" depends="jar, prepareClasspaths" description="Runs the creation tests.">
+		<mkdir dir="${junit.results.dir}" />
+		<junit dir="${introduce.dir}" printsummary="yes" errorproperty="test.failed" failureproperty="test.failed" showoutput="true" fork="yes" forkmode="once">
+			<!-- is this needed any more? -->
+			<sysproperty key="build.dirs" value="${test.classes.dir}" />
+			<sysproperty key="build.dir" value="${test.classes.dir}" />
+			<sysproperty key="introduce.base.dir" value="${introduce.dir}" />
+			<sysproperty key="remote.sdk.host.name" value="${remote.sdk.host.name}" />
+			<sysproperty key="remote.sdk.host.port" value="${remote.sdk.host.port}" />
+			<sysproperty key="sdk4.tests.base.dir" value="${sdk4.tests.base.dir}"/>
+			<classpath refid="all.test.classpath" />
+			<classpath>
+				<pathelement path="${classes.dir}" />
+			</classpath>
+			<formatter type="xml" />
+			<batchtest fork="yes" todir="${junit.results.dir}">
+				<fileset dir="${src.dir}">
+					<include name="**/*CreationTest.java" />
+				</fileset>
+			</batchtest>
+		</junit>
+		<fail message="Tests failed! Check test reports." if="test.failed" />
+	</target>
+
+	
+	<target name="testInvocation" depends="jar, prepareClasspaths" description="Runs the system tests.">
+		<mkdir dir="${junit.results.dir}" />
+		<junit dir="${introduce.dir}" printsummary="yes" errorproperty="test.failed" failureproperty="test.failed" showoutput="true" fork="yes" forkmode="once">
+			<sysproperty key="build.dirs" value="${classes.dir}" />
+			<sysproperty key="build.dir" value="${classes.dir}" />
+			<sysproperty key="introduce.base.dir" value="${introduce.dir}" />
+			<sysproperty key="remote.sdk.host.name" value="${remote.sdk.host.name}" />
+			<sysproperty key="remote.sdk.host.port" value="${remote.sdk.host.port}" />
+			<sysproperty key="sdk4.tests.base.dir" value="${sdk4.tests.base.dir}"/>
+			<sysproperty key="testing.containers.dir" value="${testing.containers.dir}"/>
+			<classpath refid="all.test.classpath" />
+			<classpath>
+				<pathelement path="${classes.dir}" />
+			</classpath>
+			<formatter type="xml" />
+			<batchtest fork="yes" todir="${junit.results.dir}">
+				<fileset dir="${src.dir}">
+					<include name="**/*InvocationTest.java" />
+				</fileset>
+			</batchtest>
+		</junit>
+		<fail message="Tests failed! Check test reports." if="test.failed" />
+	</target>
+</project>

@@ -1,0 +1,26 @@
+<?xml version="1.0"?>
+<?xml-stylesheet type="text/xsl" href="http://ivyrep.jayasoft.org/ivy-doc.xsl"?>
+<ivy-module version="1.0">
+	<info organisation="oopsconsultancy" module="xmltask" revision="1.14" status="release">
+		<description homepage="http://www.oopsconsultancy.com/software/xmltask/"> xmltask provides
+			the facility for automatically editing XML files as part of an Ant build. Unlike the
+			standard filter task provided with Ant, it is XML-sensitive, but doesn't require you to
+			define XSLTs. Uses include: * modifying configuration files for applications during
+			builds * inserting/removing information for J2EE deployment descriptors * dynamically
+			building Ant build.xml files during builds * building and maintaining websites built
+			with XHTML * driving Ant via a meta build.xml to abstract out build processes
+		</description>
+	</info>
+
+	<configurations>
+		<!-- Public Configurations-->
+		<conf name="default" visibility="public"/>
+	</configurations>
+
+
+	<publications>
+		<artifact name="xmltask-v1.14" type="jar"/>
+	</publications>
+
+	<dependencies/>
+</ivy-module>

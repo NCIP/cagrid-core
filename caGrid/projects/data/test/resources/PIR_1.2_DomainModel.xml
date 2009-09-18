@@ -1,0 +1,1949 @@
+<ns1:DomainModel projectDescription="Grid-enablement of Protein Information Resource (PIR) project will provide a data source containing accurate, consistent, rich sequence and functional annotation on proteins using UniProt Knowledgebase (UniProtKB).  This model is used to create a Grid Reference Implementation." projectLongName="Grid-enablement of Protein Information Resource (PIR) 1.2" projectShortName="PIR 1.2" projectVersion="1.2" xmlns:ns1="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.dataservice">
+ <ns1:exposedUMLAssociationCollection>
+  <ns1:UMLAssociation bidirectional="true">
+   <ns1:targetUMLAssociationEdge>
+    <ns1:UMLAssociationEdge maxCardinality="-1" minCardinality="0" roleName="proteinCollection">
+     <ns1:UMLClassReference refid="46E95F75-734E-7473-E044-0003BA3F9857"/>
+    </ns1:UMLAssociationEdge>
+   </ns1:targetUMLAssociationEdge>
+   <ns1:sourceUMLAssociationEdge>
+    <ns1:UMLAssociationEdge maxCardinality="-1" minCardinality="0" roleName="componentNameCollection">
+     <ns1:UMLClassReference refid="46E95F75-733F-7473-E044-0003BA3F9857"/>
+    </ns1:UMLAssociationEdge>
+   </ns1:sourceUMLAssociationEdge>
+  </ns1:UMLAssociation>
+  <ns1:UMLAssociation bidirectional="true">
+   <ns1:targetUMLAssociationEdge>
+    <ns1:UMLAssociationEdge maxCardinality="-1" minCardinality="0" roleName="proteinCollection">
+     <ns1:UMLClassReference refid="46E95F75-734E-7473-E044-0003BA3F9857"/>
+    </ns1:UMLAssociationEdge>
+   </ns1:targetUMLAssociationEdge>
+   <ns1:sourceUMLAssociationEdge>
+    <ns1:UMLAssociationEdge maxCardinality="-1" minCardinality="0" roleName="organelleCollection">
+     <ns1:UMLClassReference refid="46E95F75-732B-7473-E044-0003BA3F9857"/>
+    </ns1:UMLAssociationEdge>
+   </ns1:sourceUMLAssociationEdge>
+  </ns1:UMLAssociation>
+  <ns1:UMLAssociation bidirectional="true">
+   <ns1:targetUMLAssociationEdge>
+    <ns1:UMLAssociationEdge maxCardinality="-1" minCardinality="0" roleName="uniprotkbAccessionCollection">
+     <ns1:UMLClassReference refid="46E95F75-734C-7473-E044-0003BA3F9857"/>
+    </ns1:UMLAssociationEdge>
+   </ns1:targetUMLAssociationEdge>
+   <ns1:sourceUMLAssociationEdge>
+    <ns1:UMLAssociationEdge maxCardinality="-1" minCardinality="0" roleName="proteinCollection">
+     <ns1:UMLClassReference refid="46E95F75-734E-7473-E044-0003BA3F9857"/>
+    </ns1:UMLAssociationEdge>
+   </ns1:sourceUMLAssociationEdge>
+  </ns1:UMLAssociation>
+  <ns1:UMLAssociation bidirectional="true">
+   <ns1:targetUMLAssociationEdge>
+    <ns1:UMLAssociationEdge maxCardinality="-1" minCardinality="1" roleName="lineageCollection">
+     <ns1:UMLClassReference refid="46E95F75-7336-7473-E044-0003BA3F9857"/>
+    </ns1:UMLAssociationEdge>
+   </ns1:targetUMLAssociationEdge>
+   <ns1:sourceUMLAssociationEdge>
+    <ns1:UMLAssociationEdge maxCardinality="-1" minCardinality="1" roleName="taxonCollection">
+     <ns1:UMLClassReference refid="46E95F75-7325-7473-E044-0003BA3F9857"/>
+    </ns1:UMLAssociationEdge>
+   </ns1:sourceUMLAssociationEdge>
+  </ns1:UMLAssociation>
+  <ns1:UMLAssociation bidirectional="true">
+   <ns1:targetUMLAssociationEdge>
+    <ns1:UMLAssociationEdge maxCardinality="-1" minCardinality="1" roleName="organismCollection">
+     <ns1:UMLClassReference refid="46E95F75-731C-7473-E044-0003BA3F9857"/>
+    </ns1:UMLAssociationEdge>
+   </ns1:targetUMLAssociationEdge>
+   <ns1:sourceUMLAssociationEdge>
+    <ns1:UMLAssociationEdge maxCardinality="-1" minCardinality="0" roleName="organismNameCollection">
+     <ns1:UMLClassReference refid="46E95F75-732A-7473-E044-0003BA3F9857"/>
+    </ns1:UMLAssociationEdge>
+   </ns1:sourceUMLAssociationEdge>
+  </ns1:UMLAssociation>
+  <ns1:UMLAssociation bidirectional="true">
+   <ns1:targetUMLAssociationEdge>
+    <ns1:UMLAssociationEdge maxCardinality="-1" minCardinality="1" roleName="proteinCollection">
+     <ns1:UMLClassReference refid="46E95F75-734E-7473-E044-0003BA3F9857"/>
+    </ns1:UMLAssociationEdge>
+   </ns1:targetUMLAssociationEdge>
+   <ns1:sourceUMLAssociationEdge>
+    <ns1:UMLAssociationEdge maxCardinality="-1" minCardinality="0" roleName="geneCollection">
+     <ns1:UMLClassReference refid="46E95F75-732C-7473-E044-0003BA3F9857"/>
+    </ns1:UMLAssociationEdge>
+   </ns1:sourceUMLAssociationEdge>
+  </ns1:UMLAssociation>
+  <ns1:UMLAssociation bidirectional="true">
+   <ns1:targetUMLAssociationEdge>
+    <ns1:UMLAssociationEdge maxCardinality="-1" minCardinality="0" roleName="proteinCollection">
+     <ns1:UMLClassReference refid="46E95F75-734E-7473-E044-0003BA3F9857"/>
+    </ns1:UMLAssociationEdge>
+   </ns1:targetUMLAssociationEdge>
+   <ns1:sourceUMLAssociationEdge>
+    <ns1:UMLAssociationEdge maxCardinality="-1" minCardinality="0" roleName="databaseCrossReferenceCollection">
+     <ns1:UMLClassReference refid="46E95F75-7346-7473-E044-0003BA3F9857"/>
+    </ns1:UMLAssociationEdge>
+   </ns1:sourceUMLAssociationEdge>
+  </ns1:UMLAssociation>
+  <ns1:UMLAssociation bidirectional="true">
+   <ns1:targetUMLAssociationEdge>
+    <ns1:UMLAssociationEdge maxCardinality="-1" minCardinality="0" roleName="proteinCollection">
+     <ns1:UMLClassReference refid="46E95F75-734E-7473-E044-0003BA3F9857"/>
+    </ns1:UMLAssociationEdge>
+   </ns1:targetUMLAssociationEdge>
+   <ns1:sourceUMLAssociationEdge>
+    <ns1:UMLAssociationEdge maxCardinality="-1" minCardinality="0" roleName="keywordCollection">
+     <ns1:UMLClassReference refid="46E95F75-733A-7473-E044-0003BA3F9857"/>
+    </ns1:UMLAssociationEdge>
+   </ns1:sourceUMLAssociationEdge>
+  </ns1:UMLAssociation>
+  <ns1:UMLAssociation bidirectional="true">
+   <ns1:targetUMLAssociationEdge>
+    <ns1:UMLAssociationEdge maxCardinality="-1" minCardinality="1" roleName="proteinCollection">
+     <ns1:UMLClassReference refid="46E95F75-734E-7473-E044-0003BA3F9857"/>
+    </ns1:UMLAssociationEdge>
+   </ns1:targetUMLAssociationEdge>
+   <ns1:sourceUMLAssociationEdge>
+    <ns1:UMLAssociationEdge maxCardinality="-1" minCardinality="0" roleName="organismCollection">
+     <ns1:UMLClassReference refid="46E95F75-731C-7473-E044-0003BA3F9857"/>
+    </ns1:UMLAssociationEdge>
+   </ns1:sourceUMLAssociationEdge>
+  </ns1:UMLAssociation>
+  <ns1:UMLAssociation bidirectional="true">
+   <ns1:targetUMLAssociationEdge>
+    <ns1:UMLAssociationEdge maxCardinality="1" minCardinality="0" roleName="protein">
+     <ns1:UMLClassReference refid="46E95F75-734E-7473-E044-0003BA3F9857"/>
+    </ns1:UMLAssociationEdge>
+   </ns1:targetUMLAssociationEdge>
+   <ns1:sourceUMLAssociationEdge>
+    <ns1:UMLAssociationEdge maxCardinality="1" minCardinality="0" roleName="proteinSequence">
+     <ns1:UMLClassReference refid="46E95F75-7342-7473-E044-0003BA3F9857"/>
+    </ns1:UMLAssociationEdge>
+   </ns1:sourceUMLAssociationEdge>
+  </ns1:UMLAssociation>
+  <ns1:UMLAssociation bidirectional="true">
+   <ns1:targetUMLAssociationEdge>
+    <ns1:UMLAssociationEdge maxCardinality="-1" minCardinality="0" roleName="proteinCollection">
+     <ns1:UMLClassReference refid="46E95F75-734E-7473-E044-0003BA3F9857"/>
+    </ns1:UMLAssociationEdge>
+   </ns1:targetUMLAssociationEdge>
+   <ns1:sourceUMLAssociationEdge>
+    <ns1:UMLAssociationEdge maxCardinality="-1" minCardinality="0" roleName="domainNameCollection">
+     <ns1:UMLClassReference refid="46E95F75-733E-7473-E044-0003BA3F9857"/>
+    </ns1:UMLAssociationEdge>
+   </ns1:sourceUMLAssociationEdge>
+  </ns1:UMLAssociation>
+  <ns1:UMLAssociation bidirectional="true">
+   <ns1:targetUMLAssociationEdge>
+    <ns1:UMLAssociationEdge maxCardinality="-1" minCardinality="1" roleName="proteinCollection">
+     <ns1:UMLClassReference refid="46E95F75-734E-7473-E044-0003BA3F9857"/>
+    </ns1:UMLAssociationEdge>
+   </ns1:targetUMLAssociationEdge>
+   <ns1:sourceUMLAssociationEdge>
+    <ns1:UMLAssociationEdge maxCardinality="-1" minCardinality="1" roleName="proteinNameCollection">
+     <ns1:UMLClassReference refid="46E95F75-733D-7473-E044-0003BA3F9857"/>
+    </ns1:UMLAssociationEdge>
+   </ns1:sourceUMLAssociationEdge>
+  </ns1:UMLAssociation>
+  <ns1:UMLAssociation bidirectional="true">
+   <ns1:targetUMLAssociationEdge>
+    <ns1:UMLAssociationEdge maxCardinality="1" minCardinality="1" roleName="organism">
+     <ns1:UMLClassReference refid="46E95F75-731C-7473-E044-0003BA3F9857"/>
+    </ns1:UMLAssociationEdge>
+   </ns1:targetUMLAssociationEdge>
+   <ns1:sourceUMLAssociationEdge>
+    <ns1:UMLAssociationEdge maxCardinality="1" minCardinality="0" roleName="lineage">
+     <ns1:UMLClassReference refid="46E95F75-7336-7473-E044-0003BA3F9857"/>
+    </ns1:UMLAssociationEdge>
+   </ns1:sourceUMLAssociationEdge>
+  </ns1:UMLAssociation>
+  <ns1:UMLAssociation bidirectional="true">
+   <ns1:targetUMLAssociationEdge>
+    <ns1:UMLAssociationEdge maxCardinality="-1" minCardinality="0" roleName="proteinCollection">
+     <ns1:UMLClassReference refid="46E95F75-734E-7473-E044-0003BA3F9857"/>
+    </ns1:UMLAssociationEdge>
+   </ns1:targetUMLAssociationEdge>
+   <ns1:sourceUMLAssociationEdge>
+    <ns1:UMLAssociationEdge maxCardinality="-1" minCardinality="0" roleName="proteinFeatureCollection">
+     <ns1:UMLClassReference refid="46E95F75-7337-7473-E044-0003BA3F9857"/>
+    </ns1:UMLAssociationEdge>
+   </ns1:sourceUMLAssociationEdge>
+  </ns1:UMLAssociation>
+ </ns1:exposedUMLAssociationCollection>
+ <ns1:exposedUMLClassCollection>
+  <ns1:UMLClass allowableAsTarget="true" className="InitiatorMethionine" description="Initiator methionine." id="46E95F75-731B-7473-E044-0003BA3F9857" packageName="edu.georgetown.pir.domain" projectName="PIR 1.2" projectVersion="1.2">
+   <ns2:umlAttributeCollection xmlns:ns2="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common">
+    <ns2:UMLAttribute dataTypeName="java.lang.Integer" description="Initiator methionine. Beginning position of a segment on the protein where feature applies." name="begin" publicID="2342530" version="1.0">
+     <ns2:SemanticMetadata conceptCode="C25431" conceptDefinition="Have a beginning, in a temporal, spatial, or evaluative sense." conceptName="Begin" order="0"/>
+     <ns2:ValueDomain longName="java.lang.Integer">
+      <ns2:enumerationCollection/>
+     </ns2:ValueDomain>
+    </ns2:UMLAttribute>
+    <ns2:UMLAttribute dataTypeName="java.lang.String" description="Initiator methionine. Description of the feature." name="description" publicID="2342532" version="1.0">
+     <ns2:SemanticMetadata conceptCode="C25365" conceptDefinition="Description; a statement that represents something in words." conceptName="Description " order="0"/>
+     <ns2:ValueDomain longName="java.lang.String">
+      <ns2:enumerationCollection/>
+     </ns2:ValueDomain>
+    </ns2:UMLAttribute>
+    <ns2:UMLAttribute dataTypeName="java.lang.Integer" description="Initiator methionine. End position of a segment on the protein where feature applies." name="end" publicID="2342531" version="1.0">
+     <ns2:SemanticMetadata conceptCode="C25496" conceptDefinition="The point or place at which something terminates in time, space, or extent." conceptName="End" order="0"/>
+     <ns2:ValueDomain longName="java.lang.Integer">
+      <ns2:enumerationCollection/>
+     </ns2:ValueDomain>
+    </ns2:UMLAttribute>
+    <ns2:UMLAttribute dataTypeName="java.lang.Long" description="Initiator methionine. Internal object identifier." name="id" publicID="2342529" version="1.0">
+     <ns2:SemanticMetadata conceptCode="C25364" conceptDefinition="One or more characters used to identify, name, or characterize the nature, properties, or contents of a thing." conceptName="Identifier" order="0"/>
+     <ns2:ValueDomain longName="java.lang.Long">
+      <ns2:enumerationCollection/>
+     </ns2:ValueDomain>
+    </ns2:UMLAttribute>
+   </ns2:umlAttributeCollection>
+   <ns3:SemanticMetadata conceptCode="C29600" conceptDefinition="One of nine essential amino acids in humans (provided by food), Methionine is required for growth and tissue repair. A sulphur-containing amino acid, methionine improves the tone and pliability of skin, hair, and strengthens nails. Involved in many detoxifying processes, sulphur provided by methionine protects cells from pollutants, slows cell aging, and is essential for absorption and bio-availability of selenium and zinc. Methionine chelates heavy metals, such as lead and mercury, aiding their excretion. It also acts as a lipotropic agent and prevents excess fat buildup in the liver." conceptName="Methionine" order="0" xmlns:ns3="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common"/>
+   <ns4:SemanticMetadata conceptCode="C30023" conceptDefinition="Translation Initiation consists of cellular and enzymatic reactions that instigate the process by which polypeptides are synthesized on ribosomes from information in mRNA transcripts to specify the sequence of amino acids in the polypeptide chain." conceptName="Translation Initiation" order="1" xmlns:ns4="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common"/>
+  </ns1:UMLClass>
+  <ns1:UMLClass allowableAsTarget="true" className="Organism" description="Organism that the protein was isolated from." id="46E95F75-731C-7473-E044-0003BA3F9857" packageName="edu.georgetown.pir.domain" projectName="PIR 1.2" projectVersion="1.2">
+   <ns5:umlAttributeCollection xmlns:ns5="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common">
+    <ns5:UMLAttribute dataTypeName="java.lang.String" description="Scientific name of the organism." name="scientificName" publicID="2223784" version="3.0">
+     <ns5:SemanticMetadata conceptCode="C43459" conceptDefinition="The name applied to a plant, animal, or other organism, according to the Codes of Nomenclature, consisting of a Genus and species." conceptName="Scientific_Name" order="0"/>
+     <ns5:ValueDomain longName="java.lang.String">
+      <ns5:enumerationCollection/>
+     </ns5:ValueDomain>
+    </ns5:UMLAttribute>
+    <ns5:UMLAttribute dataTypeName="java.lang.Long" description="NCBI taxonomy identifier." name="ncbiTaxonomyID" publicID="2342465" version="1.0">
+     <ns5:SemanticMetadata conceptCode="C17469" conceptDefinition="The theories and techniques of naming, describing, and classifying organisms, and the study of the relationships of taxa. (from On-line Medical Dictionary)" conceptName="Taxonomy" order="1"/>
+     <ns5:SemanticMetadata conceptCode="C25364" conceptDefinition="One or more characters used to identify, name, or characterize the nature, properties, or contents of a thing." conceptName="Identifier" order="0"/>
+     <ns5:SemanticMetadata conceptCode="C45799" conceptDefinition="Established in 1988 as a national resource for molecular biology information, NCBI creates public databases, conducts research in computational biology, develops software tools for analyzing genome data, and disseminates biomedical information - all for the better understanding of molecular processes affecting human health and disease. (http://www.ncbi.nlm.nih.gov/)" conceptName="National Center for Biotechnology Information" order="2"/>
+     <ns5:ValueDomain longName="java.lang.Long">
+      <ns5:enumerationCollection/>
+     </ns5:ValueDomain>
+    </ns5:UMLAttribute>
+    <ns5:UMLAttribute dataTypeName="java.lang.Long" description="Internal object identifier." name="id" publicID="2223783" version="3.0">
+     <ns5:SemanticMetadata conceptCode="C25364" conceptDefinition="One or more characters used to identify, name, or characterize the nature, properties, or contents of a thing." conceptName="Identifier" order="0"/>
+     <ns5:ValueDomain longName="java.lang.Long">
+      <ns5:enumerationCollection/>
+     </ns5:ValueDomain>
+    </ns5:UMLAttribute>
+    <ns5:UMLAttribute dataTypeName="java.lang.String" description="Common name for the organism." name="commonName" publicID="2223787" version="3.0">
+     <ns5:SemanticMetadata conceptCode="C42614" conceptDefinition="The words or language units by which a thing is known." conceptName="Name" order="0"/>
+     <ns5:SemanticMetadata conceptCode="C43461" conceptDefinition="Widely known or encountered." conceptName="Common" order="1"/>
+     <ns5:ValueDomain longName="java.lang.String">
+      <ns5:enumerationCollection/>
+     </ns5:ValueDomain>
+    </ns5:UMLAttribute>
+   </ns5:umlAttributeCollection>
+   <ns6:SemanticMetadata conceptCode="C14250" conceptDefinition="A living thing, such as an animal, a plant, a bacterium, or a fungus." conceptName="Organism" order="0" xmlns:ns6="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common"/>
+  </ns1:UMLClass>
+  <ns1:UMLClass allowableAsTarget="true" className="TopologicalDomain" description="Topological domain. e.g. Cytoplasmic or  mitochondrial matrix. Describes the topology of regions for transmembrane proteins that span membrane compartments." id="46E95F75-731D-7473-E044-0003BA3F9857" packageName="edu.georgetown.pir.domain" projectName="PIR 1.2" projectVersion="1.2">
+   <ns7:umlAttributeCollection xmlns:ns7="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common">
+    <ns7:UMLAttribute dataTypeName="java.lang.Long" description="Topological domain. e.g. Cytoplasmic or  mitochondrial matrix. Describes the topology of regions for transmembrane proteins that span membrane compartments. Internal object identifier." name="id" publicID="2716633" version="1.0">
+     <ns7:SemanticMetadata conceptCode="C25364" conceptDefinition="One or more characters used to identify, name, or characterize the nature, properties, or contents of a thing." conceptName="Identifier" order="0"/>
+     <ns7:ValueDomain longName="java.lang.Long">
+      <ns7:enumerationCollection/>
+     </ns7:ValueDomain>
+    </ns7:UMLAttribute>
+    <ns7:UMLAttribute dataTypeName="java.lang.Integer" description="Topological domain. e.g. Cytoplasmic or  mitochondrial matrix. Describes the topology of regions for transmembrane proteins that span membrane compartments. End position of a segment on the protein where feature applies." name="end" publicID="2716635" version="1.0">
+     <ns7:SemanticMetadata conceptCode="C25496" conceptDefinition="The point or place at which something terminates in time, space, or extent." conceptName="End" order="0"/>
+     <ns7:ValueDomain longName="java.lang.Integer">
+      <ns7:enumerationCollection/>
+     </ns7:ValueDomain>
+    </ns7:UMLAttribute>
+    <ns7:UMLAttribute dataTypeName="java.lang.String" description="Topological domain. e.g. Cytoplasmic or  mitochondrial matrix. Describes the topology of regions for transmembrane proteins that span membrane compartments. Description of the feature." name="description" publicID="2716636" version="1.0">
+     <ns7:SemanticMetadata conceptCode="C25365" conceptDefinition="Description; a statement that represents something in words." conceptName="Description " order="0"/>
+     <ns7:ValueDomain longName="java.lang.String">
+      <ns7:enumerationCollection/>
+     </ns7:ValueDomain>
+    </ns7:UMLAttribute>
+    <ns7:UMLAttribute dataTypeName="java.lang.Integer" description="Topological domain. e.g. Cytoplasmic or  mitochondrial matrix. Describes the topology of regions for transmembrane proteins that span membrane compartments. Beginning position of a segment on the protein where feature applies." name="begin" publicID="2716634" version="1.0">
+     <ns7:SemanticMetadata conceptCode="C25431" conceptDefinition="Have a beginning, in a temporal, spatial, or evaluative sense." conceptName="Begin" order="0"/>
+     <ns7:ValueDomain longName="java.lang.Integer">
+      <ns7:enumerationCollection/>
+     </ns7:ValueDomain>
+    </ns7:UMLAttribute>
+   </ns7:umlAttributeCollection>
+   <ns8:SemanticMetadata conceptCode="C16747" conceptDefinition="A protein that is an integral membrane protein with a transmembrane region." conceptName="Transmembrane Protein" order="1" xmlns:ns8="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common"/>
+   <ns9:SemanticMetadata conceptCode="C71457" conceptDefinition="Any part of a transmembrane protein that is not embedded within the membrane." conceptName="Extramembrane Domain" order="0" xmlns:ns9="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common"/>
+  </ns1:UMLClass>
+  <ns1:UMLClass allowableAsTarget="true" className="NonConsecutiveResidues" description="Non-consecutive residues. Indicates that two residues in a sequence are not consecutive and that there are a number of unsequenced residues between them.
+" id="46E95F75-731E-7473-E044-0003BA3F9857" packageName="edu.georgetown.pir.domain" projectName="PIR 1.2" projectVersion="1.2">
+   <ns10:umlAttributeCollection xmlns:ns10="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common">
+    <ns10:UMLAttribute dataTypeName="java.lang.Long" description="Non-consecutive residues. Indicates that two residues in a sequence are not consecutive and that there are a number of unsequenced residues between them.
+ Internal object identifier." name="id" publicID="2342549" version="1.0">
+     <ns10:SemanticMetadata conceptCode="C25364" conceptDefinition="One or more characters used to identify, name, or characterize the nature, properties, or contents of a thing." conceptName="Identifier" order="0"/>
+     <ns10:ValueDomain longName="java.lang.Long">
+      <ns10:enumerationCollection/>
+     </ns10:ValueDomain>
+    </ns10:UMLAttribute>
+    <ns10:UMLAttribute dataTypeName="java.lang.Integer" description="Non-consecutive residues. Indicates that two residues in a sequence are not consecutive and that there are a number of unsequenced residues between them.
+ End position of a segment on the protein where feature applies." name="end" publicID="2342551" version="1.0">
+     <ns10:SemanticMetadata conceptCode="C25496" conceptDefinition="The point or place at which something terminates in time, space, or extent." conceptName="End" order="0"/>
+     <ns10:ValueDomain longName="java.lang.Integer">
+      <ns10:enumerationCollection/>
+     </ns10:ValueDomain>
+    </ns10:UMLAttribute>
+    <ns10:UMLAttribute dataTypeName="java.lang.String" description="Non-consecutive residues. Indicates that two residues in a sequence are not consecutive and that there are a number of unsequenced residues between them.
+ Description of the feature." name="description" publicID="2342552" version="1.0">
+     <ns10:SemanticMetadata conceptCode="C25365" conceptDefinition="Description; a statement that represents something in words." conceptName="Description " order="0"/>
+     <ns10:ValueDomain longName="java.lang.String">
+      <ns10:enumerationCollection/>
+     </ns10:ValueDomain>
+    </ns10:UMLAttribute>
+    <ns10:UMLAttribute dataTypeName="java.lang.Integer" description="Non-consecutive residues. Indicates that two residues in a sequence are not consecutive and that there are a number of unsequenced residues between them.
+ Beginning position of a segment on the protein where feature applies." name="begin" publicID="2342550" version="1.0">
+     <ns10:SemanticMetadata conceptCode="C25431" conceptDefinition="Have a beginning, in a temporal, spatial, or evaluative sense." conceptName="Begin" order="0"/>
+     <ns10:ValueDomain longName="java.lang.Integer">
+      <ns10:enumerationCollection/>
+     </ns10:ValueDomain>
+    </ns10:UMLAttribute>
+   </ns10:umlAttributeCollection>
+   <ns11:SemanticMetadata conceptCode="C47939" conceptDefinition="In regular succession without gaps." conceptName="Consecutive" order="1" xmlns:ns11="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common"/>
+   <ns12:SemanticMetadata conceptCode="C231" conceptDefinition="Organic compounds containing amino (-NH2) and carboxyl (-COOH) groups.  In biochemistry, used to refer to the twenty-plus L-alpha-amino acids found in proteins." conceptName="Amino Acid" order="0" xmlns:ns12="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common"/>
+   <ns13:SemanticMetadata conceptCode="C25594" conceptDefinition="An operation in which a term denies or inverts the meaning of another term or construction." conceptName="Not" order="2" xmlns:ns13="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common"/>
+  </ns1:UMLClass>
+  <ns1:UMLClass allowableAsTarget="true" className="Turn" description="Secondary structure type turn (H-bonded turn (3-turn, 4-turn or 5-turn))." id="46E95F75-731F-7473-E044-0003BA3F9857" packageName="edu.georgetown.pir.domain" projectName="PIR 1.2" projectVersion="1.2">
+   <ns14:umlAttributeCollection xmlns:ns14="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common">
+    <ns14:UMLAttribute dataTypeName="java.lang.Integer" description="Secondary structure type turn (H-bonded turn (3-turn, 4-turn or 5-turn)). End position of a segment on the protein where feature applies." name="end" publicID="2342611" version="1.0">
+     <ns14:SemanticMetadata conceptCode="C25496" conceptDefinition="The point or place at which something terminates in time, space, or extent." conceptName="End" order="0"/>
+     <ns14:ValueDomain longName="java.lang.Integer">
+      <ns14:enumerationCollection/>
+     </ns14:ValueDomain>
+    </ns14:UMLAttribute>
+    <ns14:UMLAttribute dataTypeName="java.lang.Integer" description="Secondary structure type turn (H-bonded turn (3-turn, 4-turn or 5-turn)). Beginning position of a segment on the protein where feature applies." name="begin" publicID="2342610" version="1.0">
+     <ns14:SemanticMetadata conceptCode="C25431" conceptDefinition="Have a beginning, in a temporal, spatial, or evaluative sense." conceptName="Begin" order="0"/>
+     <ns14:ValueDomain longName="java.lang.Integer">
+      <ns14:enumerationCollection/>
+     </ns14:ValueDomain>
+    </ns14:UMLAttribute>
+    <ns14:UMLAttribute dataTypeName="java.lang.String" description="Secondary structure type turn (H-bonded turn (3-turn, 4-turn or 5-turn)). Description of the feature." name="description" publicID="2342612" version="1.0">
+     <ns14:SemanticMetadata conceptCode="C25365" conceptDefinition="Description; a statement that represents something in words." conceptName="Description " order="0"/>
+     <ns14:ValueDomain longName="java.lang.String">
+      <ns14:enumerationCollection/>
+     </ns14:ValueDomain>
+    </ns14:UMLAttribute>
+    <ns14:UMLAttribute dataTypeName="java.lang.Long" description="Secondary structure type turn (H-bonded turn (3-turn, 4-turn or 5-turn)). Internal object identifier." name="id" publicID="2342609" version="1.0">
+     <ns14:SemanticMetadata conceptCode="C25364" conceptDefinition="One or more characters used to identify, name, or characterize the nature, properties, or contents of a thing." conceptName="Identifier" order="0"/>
+     <ns14:ValueDomain longName="java.lang.Long">
+      <ns14:enumerationCollection/>
+     </ns14:ValueDomain>
+    </ns14:UMLAttribute>
+   </ns14:umlAttributeCollection>
+   <ns15:SemanticMetadata conceptCode="C47946" conceptDefinition="A protein secondary structure in which the polypeptide bends back on itself and is stabilized by hydrogen bonds." conceptName="Protein Turn" order="0" xmlns:ns15="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common"/>
+  </ns1:UMLClass>
+  <ns1:UMLClass allowableAsTarget="true" className="MetalIonBindingSite" description="Binding site for a metal ion." id="46E95F75-7320-7473-E044-0003BA3F9857" packageName="edu.georgetown.pir.domain" projectName="PIR 1.2" projectVersion="1.2">
+   <ns16:umlAttributeCollection xmlns:ns16="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common">
+    <ns16:UMLAttribute dataTypeName="java.lang.Integer" description="Binding site for a metal ion. End position of a segment on the protein where feature applies." name="end" publicID="2342539" version="1.0">
+     <ns16:SemanticMetadata conceptCode="C25496" conceptDefinition="The point or place at which something terminates in time, space, or extent." conceptName="End" order="0"/>
+     <ns16:ValueDomain longName="java.lang.Integer">
+      <ns16:enumerationCollection/>
+     </ns16:ValueDomain>
+    </ns16:UMLAttribute>
+    <ns16:UMLAttribute dataTypeName="java.lang.Long" description="Binding site for a metal ion. Internal object identifier." name="id" publicID="2342537" version="1.0">
+     <ns16:SemanticMetadata conceptCode="C25364" conceptDefinition="One or more characters used to identify, name, or characterize the nature, properties, or contents of a thing." conceptName="Identifier" order="0"/>
+     <ns16:ValueDomain longName="java.lang.Long">
+      <ns16:enumerationCollection/>
+     </ns16:ValueDomain>
+    </ns16:UMLAttribute>
+    <ns16:UMLAttribute dataTypeName="java.lang.Integer" description="Binding site for a metal ion. Beginning position of a segment on the protein where feature applies." name="begin" publicID="2342538" version="1.0">
+     <ns16:SemanticMetadata conceptCode="C25431" conceptDefinition="Have a beginning, in a temporal, spatial, or evaluative sense." conceptName="Begin" order="0"/>
+     <ns16:ValueDomain longName="java.lang.Integer">
+      <ns16:enumerationCollection/>
+     </ns16:ValueDomain>
+    </ns16:UMLAttribute>
+    <ns16:UMLAttribute dataTypeName="java.lang.String" description="Binding site for a metal ion. Description of the feature." name="description" publicID="2342540" version="1.0">
+     <ns16:SemanticMetadata conceptCode="C25365" conceptDefinition="Description; a statement that represents something in words." conceptName="Description " order="0"/>
+     <ns16:ValueDomain longName="java.lang.String">
+      <ns16:enumerationCollection/>
+     </ns16:ValueDomain>
+    </ns16:UMLAttribute>
+   </ns16:umlAttributeCollection>
+   <ns17:SemanticMetadata conceptCode="C13453" conceptDefinition="The specific parts of a protein molecule that directly participate in its interactions with a metal ion." conceptName="Metal Binding Site" order="0" xmlns:ns17="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common"/>
+  </ns1:UMLClass>
+  <ns1:UMLClass allowableAsTarget="true" className="BindingSite" description="Binding site for any chemical group (co-enzyme, prosthetic group, etc.)." id="46E95F75-7321-7473-E044-0003BA3F9857" packageName="edu.georgetown.pir.domain" projectName="PIR 1.2" projectVersion="1.2">
+   <ns18:umlAttributeCollection xmlns:ns18="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common">
+    <ns18:UMLAttribute dataTypeName="java.lang.String" description="Binding site for any chemical group (co-enzyme, prosthetic group, etc.). Description of the feature." name="description" publicID="2342496" version="1.0">
+     <ns18:SemanticMetadata conceptCode="C25365" conceptDefinition="Description; a statement that represents something in words." conceptName="Description " order="0"/>
+     <ns18:ValueDomain longName="java.lang.String">
+      <ns18:enumerationCollection/>
+     </ns18:ValueDomain>
+    </ns18:UMLAttribute>
+    <ns18:UMLAttribute dataTypeName="java.lang.Integer" description="Binding site for any chemical group (co-enzyme, prosthetic group, etc.). Beginning position of a segment on the protein where feature applies." name="begin" publicID="2342494" version="1.0">
+     <ns18:SemanticMetadata conceptCode="C25431" conceptDefinition="Have a beginning, in a temporal, spatial, or evaluative sense." conceptName="Begin" order="0"/>
+     <ns18:ValueDomain longName="java.lang.Integer">
+      <ns18:enumerationCollection/>
+     </ns18:ValueDomain>
+    </ns18:UMLAttribute>
+    <ns18:UMLAttribute dataTypeName="java.lang.Long" description="Binding site for any chemical group (co-enzyme, prosthetic group, etc.). Internal object identifier." name="id" publicID="2342493" version="1.0">
+     <ns18:SemanticMetadata conceptCode="C25364" conceptDefinition="One or more characters used to identify, name, or characterize the nature, properties, or contents of a thing." conceptName="Identifier" order="0"/>
+     <ns18:ValueDomain longName="java.lang.Long">
+      <ns18:enumerationCollection/>
+     </ns18:ValueDomain>
+    </ns18:UMLAttribute>
+    <ns18:UMLAttribute dataTypeName="java.lang.Integer" description="Binding site for any chemical group (co-enzyme, prosthetic group, etc.). End position of a segment on the protein where feature applies." name="end" publicID="2342495" version="1.0">
+     <ns18:SemanticMetadata conceptCode="C25496" conceptDefinition="The point or place at which something terminates in time, space, or extent." conceptName="End" order="0"/>
+     <ns18:ValueDomain longName="java.lang.Integer">
+      <ns18:enumerationCollection/>
+     </ns18:ValueDomain>
+    </ns18:UMLAttribute>
+   </ns18:umlAttributeCollection>
+   <ns19:SemanticMetadata conceptCode="C13671" conceptDefinition="A Binding Site Domain is a region of protein that physically interacts stereospecifically, and usually at high affinity, with a specific ligand, substrate, or a specific domain of some complex target biomolecule, such as a protein, lipid, carbohydrate, or nucleic acid. Typically, but not necessarily, the interaction results in protein conformational alteration and functional modification." conceptName="Ligand Binding Domain" order="0" xmlns:ns19="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common"/>
+  </ns1:UMLClass>
+  <ns1:UMLClass allowableAsTarget="true" className="SignalPeptide" description="Extent of a signal sequence (prepeptide)." id="46E95F75-7322-7473-E044-0003BA3F9857" packageName="edu.georgetown.pir.domain" projectName="PIR 1.2" projectVersion="1.2">
+   <ns20:umlAttributeCollection xmlns:ns20="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common">
+    <ns20:UMLAttribute dataTypeName="java.lang.String" description="Extent of a signal sequence (prepeptide). Description of the feature." name="description" publicID="2342588" version="1.0">
+     <ns20:SemanticMetadata conceptCode="C25365" conceptDefinition="Description; a statement that represents something in words." conceptName="Description " order="0"/>
+     <ns20:ValueDomain longName="java.lang.String">
+      <ns20:enumerationCollection/>
+     </ns20:ValueDomain>
+    </ns20:UMLAttribute>
+    <ns20:UMLAttribute dataTypeName="java.lang.Integer" description="Extent of a signal sequence (prepeptide). Beginning position of a segment on the protein where feature applies." name="begin" publicID="2342586" version="1.0">
+     <ns20:SemanticMetadata conceptCode="C25431" conceptDefinition="Have a beginning, in a temporal, spatial, or evaluative sense." conceptName="Begin" order="0"/>
+     <ns20:ValueDomain longName="java.lang.Integer">
+      <ns20:enumerationCollection/>
+     </ns20:ValueDomain>
+    </ns20:UMLAttribute>
+    <ns20:UMLAttribute dataTypeName="java.lang.Long" description="Extent of a signal sequence (prepeptide). Internal object identifier." name="id" publicID="2342585" version="1.0">
+     <ns20:SemanticMetadata conceptCode="C25364" conceptDefinition="One or more characters used to identify, name, or characterize the nature, properties, or contents of a thing." conceptName="Identifier" order="0"/>
+     <ns20:ValueDomain longName="java.lang.Long">
+      <ns20:enumerationCollection/>
+     </ns20:ValueDomain>
+    </ns20:UMLAttribute>
+    <ns20:UMLAttribute dataTypeName="java.lang.Integer" description="Extent of a signal sequence (prepeptide). End position of a segment on the protein where feature applies." name="end" publicID="2342587" version="1.0">
+     <ns20:SemanticMetadata conceptCode="C25496" conceptDefinition="The point or place at which something terminates in time, space, or extent." conceptName="End" order="0"/>
+     <ns20:ValueDomain longName="java.lang.Integer">
+      <ns20:enumerationCollection/>
+     </ns20:ValueDomain>
+    </ns20:UMLAttribute>
+   </ns20:umlAttributeCollection>
+   <ns21:SemanticMetadata conceptCode="C14090" conceptDefinition="The N-terminal sequence of a secreted protein that interacts with a signal recognition particle and is required for transport through the cell membrane." conceptName="Signal Peptide" order="0" xmlns:ns21="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common"/>
+  </ns1:UMLClass>
+  <ns1:UMLClass allowableAsTarget="true" className="SpliceVariant" description="Sequence variants produced by alternative splicing." id="46E95F75-7323-7473-E044-0003BA3F9857" packageName="edu.georgetown.pir.domain" projectName="PIR 1.2" projectVersion="1.2">
+   <ns22:umlAttributeCollection xmlns:ns22="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common">
+    <ns22:UMLAttribute dataTypeName="java.lang.Integer" description="Sequence variants produced by alternative splicing. Beginning position of a segment on the protein where feature applies." name="begin" publicID="2342594" version="1.0">
+     <ns22:SemanticMetadata conceptCode="C25431" conceptDefinition="Have a beginning, in a temporal, spatial, or evaluative sense." conceptName="Begin" order="0"/>
+     <ns22:ValueDomain longName="java.lang.Integer">
+      <ns22:enumerationCollection/>
+     </ns22:ValueDomain>
+    </ns22:UMLAttribute>
+    <ns22:UMLAttribute dataTypeName="java.lang.String" description="Sequence variants produced by alternative splicing. Description of the feature." name="description" publicID="2342596" version="1.0">
+     <ns22:SemanticMetadata conceptCode="C25365" conceptDefinition="Description; a statement that represents something in words." conceptName="Description " order="0"/>
+     <ns22:ValueDomain longName="java.lang.String">
+      <ns22:enumerationCollection/>
+     </ns22:ValueDomain>
+    </ns22:UMLAttribute>
+    <ns22:UMLAttribute dataTypeName="java.lang.String" description="Original sequence segment." name="originalSequence" publicID="2342450" version="1.0">
+     <ns22:SemanticMetadata conceptCode="C25604" conceptDefinition="Preceding all others in time or being as first made or performed." conceptName="Original" order="1"/>
+     <ns22:SemanticMetadata conceptCode="C13187" conceptDefinition="The arrangement of amino acids in a protein.  Proteins can be made from 20 different kinds of amino acids, and the structure and function of each type of protein are determined by the kinds of amino acids used to make it and how they are arranged." conceptName="Protein Sequence" order="0"/>
+     <ns22:ValueDomain longName="java.lang.String">
+      <ns22:enumerationCollection/>
+     </ns22:ValueDomain>
+    </ns22:UMLAttribute>
+    <ns22:UMLAttribute dataTypeName="java.lang.Long" description="Sequence variants produced by alternative splicing. Internal object identifier." name="id" publicID="2342593" version="1.0">
+     <ns22:SemanticMetadata conceptCode="C25364" conceptDefinition="One or more characters used to identify, name, or characterize the nature, properties, or contents of a thing." conceptName="Identifier" order="0"/>
+     <ns22:ValueDomain longName="java.lang.Long">
+      <ns22:enumerationCollection/>
+     </ns22:ValueDomain>
+    </ns22:UMLAttribute>
+    <ns22:UMLAttribute dataTypeName="java.lang.String" description="Variant sequence segment." name="variantSequence" publicID="2342451" version="1.0">
+     <ns22:SemanticMetadata conceptCode="C25713" conceptDefinition="Variation; something that deviates from a norm or standard; an instance of change." conceptName="Variation" order="1"/>
+     <ns22:SemanticMetadata conceptCode="C13187" conceptDefinition="The arrangement of amino acids in a protein.  Proteins can be made from 20 different kinds of amino acids, and the structure and function of each type of protein are determined by the kinds of amino acids used to make it and how they are arranged." conceptName="Protein Sequence" order="0"/>
+     <ns22:ValueDomain longName="java.lang.String">
+      <ns22:enumerationCollection/>
+     </ns22:ValueDomain>
+    </ns22:UMLAttribute>
+    <ns22:UMLAttribute dataTypeName="java.lang.Integer" description="Sequence variants produced by alternative splicing. End position of a segment on the protein where feature applies." name="end" publicID="2342595" version="1.0">
+     <ns22:SemanticMetadata conceptCode="C25496" conceptDefinition="The point or place at which something terminates in time, space, or extent." conceptName="End" order="0"/>
+     <ns22:ValueDomain longName="java.lang.Integer">
+      <ns22:enumerationCollection/>
+     </ns22:ValueDomain>
+    </ns22:UMLAttribute>
+   </ns22:umlAttributeCollection>
+   <ns23:SemanticMetadata conceptCode="C16280" conceptDefinition="Alternate Splicing is a process in which multiple protein isoforms or products are generated from a single gene as a result of splicing together different nonconsecutive exons during the processing of initially identical nascent transcripts of a gene into mature mRNA transcripts. An exon may be connected to any one of several alternative exons to form the mRNA and generate related proteins, often in a tissue or developmental stage specific manner." conceptName="Alternate Splicing" order="1" xmlns:ns23="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common"/>
+   <ns24:SemanticMetadata conceptCode="C25713" conceptDefinition="Variation; something that deviates from a norm or standard; an instance of change." conceptName="Variation" order="0" xmlns:ns24="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common"/>
+  </ns1:UMLClass>
+  <ns1:UMLClass allowableAsTarget="true" className="Chain" description="Extent of a polypeptide chain in the mature protein." id="46E95F75-7324-7473-E044-0003BA3F9857" packageName="edu.georgetown.pir.domain" projectName="PIR 1.2" projectVersion="1.2">
+   <ns25:umlAttributeCollection xmlns:ns25="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common">
+    <ns25:UMLAttribute dataTypeName="java.lang.Long" description="Extent of a polypeptide chain in the mature protein. Internal object identifier." name="id" publicID="2342501" version="1.0">
+     <ns25:SemanticMetadata conceptCode="C25364" conceptDefinition="One or more characters used to identify, name, or characterize the nature, properties, or contents of a thing." conceptName="Identifier" order="0"/>
+     <ns25:ValueDomain longName="java.lang.Long">
+      <ns25:enumerationCollection/>
+     </ns25:ValueDomain>
+    </ns25:UMLAttribute>
+    <ns25:UMLAttribute dataTypeName="java.lang.Integer" description="Extent of a polypeptide chain in the mature protein. End position of a segment on the protein where feature applies." name="end" publicID="2342503" version="1.0">
+     <ns25:SemanticMetadata conceptCode="C25496" conceptDefinition="The point or place at which something terminates in time, space, or extent." conceptName="End" order="0"/>
+     <ns25:ValueDomain longName="java.lang.Integer">
+      <ns25:enumerationCollection/>
+     </ns25:ValueDomain>
+    </ns25:UMLAttribute>
+    <ns25:UMLAttribute dataTypeName="java.lang.String" description="Extent of a polypeptide chain in the mature protein. Description of the feature." name="description" publicID="2342504" version="1.0">
+     <ns25:SemanticMetadata conceptCode="C25365" conceptDefinition="Description; a statement that represents something in words." conceptName="Description " order="0"/>
+     <ns25:ValueDomain longName="java.lang.String">
+      <ns25:enumerationCollection/>
+     </ns25:ValueDomain>
+    </ns25:UMLAttribute>
+    <ns25:UMLAttribute dataTypeName="java.lang.Integer" description="Extent of a polypeptide chain in the mature protein. Beginning position of a segment on the protein where feature applies." name="begin" publicID="2342502" version="1.0">
+     <ns25:SemanticMetadata conceptCode="C25431" conceptDefinition="Have a beginning, in a temporal, spatial, or evaluative sense." conceptName="Begin" order="0"/>
+     <ns25:ValueDomain longName="java.lang.Integer">
+      <ns25:enumerationCollection/>
+     </ns25:ValueDomain>
+    </ns25:UMLAttribute>
+   </ns25:umlAttributeCollection>
+   <ns26:SemanticMetadata conceptCode="C735" conceptDefinition="Organic compound composed of amino acids linked together chemically by peptide bonds. The peptide bond always involves a single covalent link between the alpha-carboxyl (oxygen-bearing carbon) of one amino acid and the amino nitrogen of a second amino acid." conceptName="Peptide" order="1" xmlns:ns26="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common"/>
+   <ns27:SemanticMetadata conceptCode="C41207" conceptDefinition="A series of objects linked, connected, or associated together in linear fashion, e.g. the assemblage of atoms, radicals and chemical groups in a chemical compound, or an assemblage of individual microorganisms. Also, a group of enterprises or institutions of the same kind similar function, usually under a single ownership, management, or control." conceptName="Chain" order="0" xmlns:ns27="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common"/>
+  </ns1:UMLClass>
+  <ns1:UMLClass allowableAsTarget="true" className="Taxon" description="Single taxon in the organism lineage." id="46E95F75-7325-7473-E044-0003BA3F9857" packageName="edu.georgetown.pir.domain" projectName="PIR 1.2" projectVersion="1.2">
+   <ns28:umlAttributeCollection xmlns:ns28="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common">
+    <ns28:UMLAttribute dataTypeName="java.lang.Integer" description="Order of the taxon in taxonomic lineage." name="order" publicID="2342482" version="1.0">
+     <ns28:SemanticMetadata conceptCode="C42680" conceptDefinition="A logical or comprehensible arrangement of separate elements." conceptName="Order" order="0"/>
+     <ns28:ValueDomain longName="java.lang.Integer">
+      <ns28:enumerationCollection/>
+     </ns28:ValueDomain>
+    </ns28:UMLAttribute>
+    <ns28:UMLAttribute dataTypeName="CHARACTER" description="Name of the taxon." name="name" publicID="2716624" version="1.0">
+     <ns28:SemanticMetadata conceptCode="C42614" conceptDefinition="The words or language units by which a thing is known." conceptName="Name" order="0"/>
+     <ns28:ValueDomain longName="Taxon Rank Name">
+      <ns28:enumerationCollection>
+       <ns28:Enumeration permissibleValue="Class" valueMeaning="Class">
+        <ns28:SemanticMetadata conceptCode="C45280" conceptDefinition="A collection of taxonomic subdivisions directly under Phylum. It is a major group of organisms, e.g. Mammalia, Reptilia, Gastropoda, Insecta, etc that contains a large number of different sublineages, but have shared characteristics in common (e.g. warm-blooded, fur, six legs etc)." conceptName="Class" order="0"/>
+       </ns28:Enumeration>
+       <ns28:Enumeration permissibleValue="Genus" valueMeaning="Genus">
+        <ns28:SemanticMetadata conceptCode="C45292" conceptDefinition="A taxonomic category ranking below a family (or Subfamily) and above a species and generally consisting of a group of species exhibiting similar characteristics." conceptName="Genus" order="0"/>
+       </ns28:Enumeration>
+       <ns28:Enumeration permissibleValue="Infraclass" valueMeaning="Infraclass">
+        <ns28:SemanticMetadata conceptCode="C45286" conceptDefinition="A taxonomic category of related organisms ranking below a subclass and above an order. " conceptName="Infraclass" order="0"/>
+       </ns28:Enumeration>
+       <ns28:Enumeration permissibleValue="Infraorder" valueMeaning="Infraorder">
+        <ns28:SemanticMetadata conceptCode="C45289" conceptDefinition="A taxonomic category of related organisms ranking below a suborder and above a family. " conceptName="Infraorder" order="0"/>
+       </ns28:Enumeration>
+       <ns28:Enumeration permissibleValue="Kingdom" valueMeaning="Kingdom">
+        <ns28:SemanticMetadata conceptCode="C45276" conceptDefinition="The highest taxonomic rank, immediately above phylum or division. There are five biological kingdoms (Monera, Protista, Plantae, Fungi, Animalia) into which organisms are grouped, based on common characteristics. " conceptName="Kingdom" order="0"/>
+       </ns28:Enumeration>
+       <ns28:Enumeration permissibleValue="Order" valueMeaning="Order: C45287">
+        <ns28:SemanticMetadata conceptCode="C45287" conceptDefinition="A taxonomic category between Class and Family. It is group of organisms that although differing quite a bit among themselves still have a large degree of characteristics in common." conceptName="Order" order="0"/>
+       </ns28:Enumeration>
+       <ns28:Enumeration permissibleValue="Phylum" valueMeaning="Phylum">
+        <ns28:SemanticMetadata conceptCode="C45277" conceptDefinition="A major division of a biological kingdom, consisting of closely-related classes; represents a basic fundamental pattern of organization and, presumably, a common descent." conceptName="Phylum" order="0"/>
+       </ns28:Enumeration>
+       <ns28:Enumeration permissibleValue="Species" valueMeaning="Species">
+        <ns28:SemanticMetadata conceptCode="C45293" conceptDefinition="A group of organisms that differ from all other groups of organisms and that are capable of breeding and producing fertile offspring." conceptName="Species" order="0"/>
+       </ns28:Enumeration>
+       <ns28:Enumeration permissibleValue="Subclass" valueMeaning="Subclass">
+        <ns28:SemanticMetadata conceptCode="C45285" conceptDefinition="A taxonomic subdivisions more specific than class but more general than order." conceptName="Subclass" order="0"/>
+       </ns28:Enumeration>
+       <ns28:Enumeration permissibleValue="Subfamily" valueMeaning="Subfamily">
+        <ns28:SemanticMetadata conceptCode="C45291" conceptDefinition="A taxonomic category below a family." conceptName="Subfamily" order="0"/>
+       </ns28:Enumeration>
+       <ns28:Enumeration permissibleValue="Suborder" valueMeaning="Suborder">
+        <ns28:SemanticMetadata conceptCode="C45288" conceptDefinition="A taxonomic group that is a subdivision of an order." conceptName="Suborder" order="0"/>
+       </ns28:Enumeration>
+       <ns28:Enumeration permissibleValue="Subphylum" valueMeaning="Subphylum">
+        <ns28:SemanticMetadata conceptCode="C45278" conceptDefinition="A taxonomic group ranking between a phylum and a class." conceptName="Subphylum" order="0"/>
+       </ns28:Enumeration>
+       <ns28:Enumeration permissibleValue="No Rank" valueMeaning="No Rank">
+        <ns28:SemanticMetadata conceptCode="C62686" conceptDefinition="Used to specify that the taxonomy rank is unknown." conceptName="No Rank" order="0"/>
+       </ns28:Enumeration>
+       <ns28:Enumeration permissibleValue="Forma" valueMeaning="Forma">
+        <ns28:SemanticMetadata conceptCode="C62688" conceptDefinition="In botanical nomenclature, a rank below that of variety." conceptName="Forma" order="0"/>
+       </ns28:Enumeration>
+       <ns28:Enumeration permissibleValue="Parvorder" valueMeaning="Parvorder">
+        <ns28:SemanticMetadata conceptCode="C62689" conceptDefinition="A taxonomic category above superfamily and below infraorder." conceptName="Parvorder" order="0"/>
+       </ns28:Enumeration>
+       <ns28:Enumeration permissibleValue="Species Group" valueMeaning="Species Group">
+        <ns28:SemanticMetadata conceptCode="C62690" conceptDefinition="The taxonomic ranking including both species and subspecies." conceptName="Species Group" order="0"/>
+       </ns28:Enumeration>
+       <ns28:Enumeration permissibleValue="Species Subgroup" valueMeaning="Species Subgroup">
+        <ns28:SemanticMetadata conceptCode="C62691" conceptDefinition="A taxonomic category below species group." conceptName="Species Subgroup" order="0"/>
+       </ns28:Enumeration>
+       <ns28:Enumeration permissibleValue="Subgenus" valueMeaning="Subgenus">
+        <ns28:SemanticMetadata conceptCode="C62692" conceptDefinition="A taxonomic category directly below genus and above species." conceptName="Subgenus" order="0"/>
+       </ns28:Enumeration>
+       <ns28:Enumeration permissibleValue="Subspecies" valueMeaning="Subspecies">
+        <ns28:SemanticMetadata conceptCode="C62700" conceptDefinition="A taxonomic category below that of species." conceptName="Subspecies" order="0"/>
+       </ns28:Enumeration>
+       <ns28:Enumeration permissibleValue="Subkingdom" valueMeaning="Subkingdom">
+        <ns28:SemanticMetadata conceptCode="C62701" conceptDefinition="A taxonomic category below kingdom and above superphylum." conceptName="Subkingdom" order="0"/>
+       </ns28:Enumeration>
+       <ns28:Enumeration permissibleValue="Tribe" valueMeaning="Tribe">
+        <ns28:SemanticMetadata conceptCode="C62702" conceptDefinition="A taxonomic category below subfamily and above genus." conceptName="Tribe" order="0"/>
+       </ns28:Enumeration>
+       <ns28:Enumeration permissibleValue="Subtribe" valueMeaning="Subtribe">
+        <ns28:SemanticMetadata conceptCode="C62703" conceptDefinition="A taxonomic category below tribe and above genus." conceptName="Subtribe" order="0"/>
+       </ns28:Enumeration>
+       <ns28:Enumeration permissibleValue="Superclass" valueMeaning="Superclass">
+        <ns28:SemanticMetadata conceptCode="C62704" conceptDefinition="A taxonomic rank below subphylum and above class." conceptName="Superclass" order="0"/>
+       </ns28:Enumeration>
+       <ns28:Enumeration permissibleValue="Superfamily" valueMeaning="Superfamily">
+        <ns28:SemanticMetadata conceptCode="C62705" conceptDefinition="A taxonomic category above family and below order." conceptName="Superfamily" order="0"/>
+       </ns28:Enumeration>
+       <ns28:Enumeration permissibleValue="Superkingdom" valueMeaning="Superkingdom">
+        <ns28:SemanticMetadata conceptCode="C62706" conceptDefinition="A taxonomic category above that of Kingdom." conceptName="Superkingdom" order="0"/>
+       </ns28:Enumeration>
+       <ns28:Enumeration permissibleValue="Superorder" valueMeaning="Superorder">
+        <ns28:SemanticMetadata conceptCode="C62707" conceptDefinition="A taxonomic category above order and below class." conceptName="Superorder" order="0"/>
+       </ns28:Enumeration>
+       <ns28:Enumeration permissibleValue="Superphylum" valueMeaning="Superphylum">
+        <ns28:SemanticMetadata conceptCode="C62708" conceptDefinition="A taxonomic category above phylum and below subkingdom." conceptName="Superphylum" order="0"/>
+       </ns28:Enumeration>
+       <ns28:Enumeration permissibleValue="Variety" valueMeaning="Variety">
+        <ns28:SemanticMetadata conceptCode="C62709" conceptDefinition="In botanical nomenclature, a rank below subspecies but above forma." conceptName="Variety" order="0"/>
+       </ns28:Enumeration>
+       <ns28:Enumeration permissibleValue="Family" valueMeaning="Family: C45290">
+        <ns28:SemanticMetadata conceptCode="C45290" conceptDefinition="A taxonomic category between Order and Genus. It consists of a group of organisms among which the differences are quite minor, e.g. Equiidae - horses and their relatives." conceptName="Family" order="0"/>
+       </ns28:Enumeration>
+      </ns28:enumerationCollection>
+     </ns28:ValueDomain>
+    </ns28:UMLAttribute>
+    <ns28:UMLAttribute dataTypeName="java.lang.Long" description="Internal object identifier." name="id" publicID="2342480" version="1.0">
+     <ns28:SemanticMetadata conceptCode="C25364" conceptDefinition="One or more characters used to identify, name, or characterize the nature, properties, or contents of a thing." conceptName="Identifier" order="0"/>
+     <ns28:ValueDomain longName="java.lang.Long">
+      <ns28:enumerationCollection/>
+     </ns28:ValueDomain>
+    </ns28:UMLAttribute>
+   </ns28:umlAttributeCollection>
+   <ns29:SemanticMetadata conceptCode="C40098" conceptDefinition="A group or category, at any level, in a system for classifying plants or animals. (On-line Medical Dictionary)" conceptName="Taxon" order="0" xmlns:ns29="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common"/>
+  </ns1:UMLClass>
+  <ns1:UMLClass allowableAsTarget="true" className="ZincFingerRegion" description="Extent of a zinc finger region." id="46E95F75-7326-7473-E044-0003BA3F9857" packageName="edu.georgetown.pir.domain" projectName="PIR 1.2" projectVersion="1.2">
+   <ns30:umlAttributeCollection xmlns:ns30="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common">
+    <ns30:UMLAttribute dataTypeName="java.lang.Integer" description="Extent of a zinc finger region. Beginning position of a segment on the protein where feature applies." name="begin" publicID="2342618" version="1.0">
+     <ns30:SemanticMetadata conceptCode="C25431" conceptDefinition="Have a beginning, in a temporal, spatial, or evaluative sense." conceptName="Begin" order="0"/>
+     <ns30:ValueDomain longName="java.lang.Integer">
+      <ns30:enumerationCollection/>
+     </ns30:ValueDomain>
+    </ns30:UMLAttribute>
+    <ns30:UMLAttribute dataTypeName="java.lang.String" description="Extent of a zinc finger region. Description of the feature." name="description" publicID="2342620" version="1.0">
+     <ns30:SemanticMetadata conceptCode="C25365" conceptDefinition="Description; a statement that represents something in words." conceptName="Description " order="0"/>
+     <ns30:ValueDomain longName="java.lang.String">
+      <ns30:enumerationCollection/>
+     </ns30:ValueDomain>
+    </ns30:UMLAttribute>
+    <ns30:UMLAttribute dataTypeName="java.lang.Long" description="Extent of a zinc finger region. Internal object identifier." name="id" publicID="2342617" version="1.0">
+     <ns30:SemanticMetadata conceptCode="C25364" conceptDefinition="One or more characters used to identify, name, or characterize the nature, properties, or contents of a thing." conceptName="Identifier" order="0"/>
+     <ns30:ValueDomain longName="java.lang.Long">
+      <ns30:enumerationCollection/>
+     </ns30:ValueDomain>
+    </ns30:UMLAttribute>
+    <ns30:UMLAttribute dataTypeName="java.lang.Integer" description="Extent of a zinc finger region. End position of a segment on the protein where feature applies." name="end" publicID="2342619" version="1.0">
+     <ns30:SemanticMetadata conceptCode="C25496" conceptDefinition="The point or place at which something terminates in time, space, or extent." conceptName="End" order="0"/>
+     <ns30:ValueDomain longName="java.lang.Integer">
+      <ns30:enumerationCollection/>
+     </ns30:ValueDomain>
+    </ns30:UMLAttribute>
+   </ns30:umlAttributeCollection>
+   <ns31:SemanticMetadata conceptCode="C14096" conceptDefinition="The Zinc Finger Domain is found in many proteins that bind nucleic acids, typically DNA binding transcription factors. There are several classes of Zn finger proteins. Some bind Zn with only Cys residues (e.g., nuclear receptor superfamily) while others coordinate Zn with Cys and His residues. In the 25-amino acid C2H2 type motif, Zn2+ is held between a pair of anti-parallel beta strands and a single alpha helix by a pair of invariant Cys and His residues. The Cys/His type proteins generally contain repeated units and bind DNA as a monomer, while Cys/Cys proteins contain two units that bind inverted DNA repeats as homo- or heterodimers. In some Cys/Cys types the Zn ion folds the involved region into a globular structure that binds DNA." conceptName="Zinc Finger Domain" order="0" xmlns:ns31="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common"/>
+  </ns1:UMLClass>
+  <ns1:UMLClass allowableAsTarget="true" className="Selenocysteine" description="Selenocysteine." id="46E95F75-7327-7473-E044-0003BA3F9857" packageName="edu.georgetown.pir.domain" projectName="PIR 1.2" projectVersion="1.2">
+   <ns32:umlAttributeCollection xmlns:ns32="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common">
+    <ns32:UMLAttribute dataTypeName="java.lang.Long" description="Selenocysteine. Internal object identifier." name="id" publicID="2342573" version="1.0">
+     <ns32:SemanticMetadata conceptCode="C25364" conceptDefinition="One or more characters used to identify, name, or characterize the nature, properties, or contents of a thing." conceptName="Identifier" order="0"/>
+     <ns32:ValueDomain longName="java.lang.Long">
+      <ns32:enumerationCollection/>
+     </ns32:ValueDomain>
+    </ns32:UMLAttribute>
+    <ns32:UMLAttribute dataTypeName="java.lang.Integer" description="Selenocysteine. End position of a segment on the protein where feature applies." name="end" publicID="2342575" version="1.0">
+     <ns32:SemanticMetadata conceptCode="C25496" conceptDefinition="The point or place at which something terminates in time, space, or extent." conceptName="End" order="0"/>
+     <ns32:ValueDomain longName="java.lang.Integer">
+      <ns32:enumerationCollection/>
+     </ns32:ValueDomain>
+    </ns32:UMLAttribute>
+    <ns32:UMLAttribute dataTypeName="java.lang.String" description="Selenocysteine. Description of the feature." name="description" publicID="2342576" version="1.0">
+     <ns32:SemanticMetadata conceptCode="C25365" conceptDefinition="Description; a statement that represents something in words." conceptName="Description " order="0"/>
+     <ns32:ValueDomain longName="java.lang.String">
+      <ns32:enumerationCollection/>
+     </ns32:ValueDomain>
+    </ns32:UMLAttribute>
+    <ns32:UMLAttribute dataTypeName="java.lang.Integer" description="Selenocysteine. Beginning position of a segment on the protein where feature applies." name="begin" publicID="2342574" version="1.0">
+     <ns32:SemanticMetadata conceptCode="C25431" conceptDefinition="Have a beginning, in a temporal, spatial, or evaluative sense." conceptName="Begin" order="0"/>
+     <ns32:ValueDomain longName="java.lang.Integer">
+      <ns32:enumerationCollection/>
+     </ns32:ValueDomain>
+    </ns32:UMLAttribute>
+   </ns32:umlAttributeCollection>
+   <ns33:SemanticMetadata conceptCode="C1223" conceptDefinition="An unusual amino acid of proteins, the selenium analogue of cysteine, in which a selenium atom replaces sulphur. Involved in the catalytic mechanism of seleno enzymes such as formate dehydrogenase of E. Coli and mammalian glutathione peroxidase. (from On-line Medical Dictionary)" conceptName="Selenocysteine" order="0" xmlns:ns33="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common"/>
+  </ns1:UMLClass>
+  <ns1:UMLClass allowableAsTarget="true" className="Strand" description="Secondary structure type beta strand." id="46E95F75-7328-7473-E044-0003BA3F9857" packageName="edu.georgetown.pir.domain" projectName="PIR 1.2" projectVersion="1.2">
+   <ns34:umlAttributeCollection xmlns:ns34="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common">
+    <ns34:UMLAttribute dataTypeName="java.lang.String" description="Secondary structure type beta strand. Description of the feature." name="description" publicID="2342600" version="1.0">
+     <ns34:SemanticMetadata conceptCode="C25365" conceptDefinition="Description; a statement that represents something in words." conceptName="Description " order="0"/>
+     <ns34:ValueDomain longName="java.lang.String">
+      <ns34:enumerationCollection/>
+     </ns34:ValueDomain>
+    </ns34:UMLAttribute>
+    <ns34:UMLAttribute dataTypeName="java.lang.Integer" description="Secondary structure type beta strand. Beginning position of a segment on the protein where feature applies." name="begin" publicID="2342598" version="1.0">
+     <ns34:SemanticMetadata conceptCode="C25431" conceptDefinition="Have a beginning, in a temporal, spatial, or evaluative sense." conceptName="Begin" order="0"/>
+     <ns34:ValueDomain longName="java.lang.Integer">
+      <ns34:enumerationCollection/>
+     </ns34:ValueDomain>
+    </ns34:UMLAttribute>
+    <ns34:UMLAttribute dataTypeName="java.lang.Long" description="Secondary structure type beta strand. Internal object identifier." name="id" publicID="2342597" version="1.0">
+     <ns34:SemanticMetadata conceptCode="C25364" conceptDefinition="One or more characters used to identify, name, or characterize the nature, properties, or contents of a thing." conceptName="Identifier" order="0"/>
+     <ns34:ValueDomain longName="java.lang.Long">
+      <ns34:enumerationCollection/>
+     </ns34:ValueDomain>
+    </ns34:UMLAttribute>
+    <ns34:UMLAttribute dataTypeName="java.lang.Integer" description="Secondary structure type beta strand. End position of a segment on the protein where feature applies." name="end" publicID="2342599" version="1.0">
+     <ns34:SemanticMetadata conceptCode="C25496" conceptDefinition="The point or place at which something terminates in time, space, or extent." conceptName="End" order="0"/>
+     <ns34:ValueDomain longName="java.lang.Integer">
+      <ns34:enumerationCollection/>
+     </ns34:ValueDomain>
+    </ns34:UMLAttribute>
+   </ns34:umlAttributeCollection>
+   <ns35:SemanticMetadata conceptCode="C47945" conceptDefinition="A beta strand is an extended polypeptide chain with the sidechains pointing away from the backbone and oriented on opposite sides of the backbone from one residue to another." conceptName="Beta Strand" order="0" xmlns:ns35="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common"/>
+  </ns1:UMLClass>
+  <ns1:UMLClass allowableAsTarget="true" className="CompositionallyBiasedRegion" description="Extent of a compositionally biased region e.g. .Glu-rich (acidic)." id="46E95F75-7329-7473-E044-0003BA3F9857" packageName="edu.georgetown.pir.domain" projectName="PIR 1.2" projectVersion="1.2">
+   <ns36:umlAttributeCollection xmlns:ns36="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common">
+    <ns36:UMLAttribute dataTypeName="java.lang.Integer" description="Extent of a compositionally biased region e.g. .Glu-rich (acidic). End position of a segment on the protein where feature applies." name="end" publicID="2716643" version="1.0">
+     <ns36:SemanticMetadata conceptCode="C25496" conceptDefinition="The point or place at which something terminates in time, space, or extent." conceptName="End" order="0"/>
+     <ns36:ValueDomain longName="java.lang.Integer">
+      <ns36:enumerationCollection/>
+     </ns36:ValueDomain>
+    </ns36:UMLAttribute>
+    <ns36:UMLAttribute dataTypeName="java.lang.Long" description="Extent of a compositionally biased region e.g. .Glu-rich (acidic). Internal object identifier." name="id" publicID="2716637" version="1.0">
+     <ns36:SemanticMetadata conceptCode="C25364" conceptDefinition="One or more characters used to identify, name, or characterize the nature, properties, or contents of a thing." conceptName="Identifier" order="0"/>
+     <ns36:ValueDomain longName="java.lang.Long">
+      <ns36:enumerationCollection/>
+     </ns36:ValueDomain>
+    </ns36:UMLAttribute>
+    <ns36:UMLAttribute dataTypeName="java.lang.String" description="Extent of a compositionally biased region e.g. .Glu-rich (acidic). Description of the feature." name="description" publicID="2716644" version="1.0">
+     <ns36:SemanticMetadata conceptCode="C25365" conceptDefinition="Description; a statement that represents something in words." conceptName="Description " order="0"/>
+     <ns36:ValueDomain longName="java.lang.String">
+      <ns36:enumerationCollection/>
+     </ns36:ValueDomain>
+    </ns36:UMLAttribute>
+    <ns36:UMLAttribute dataTypeName="java.lang.Integer" description="Extent of a compositionally biased region e.g. .Glu-rich (acidic). Beginning position of a segment on the protein where feature applies." name="begin" publicID="2716642" version="1.0">
+     <ns36:SemanticMetadata conceptCode="C25431" conceptDefinition="Have a beginning, in a temporal, spatial, or evaluative sense." conceptName="Begin" order="0"/>
+     <ns36:ValueDomain longName="java.lang.Integer">
+      <ns36:enumerationCollection/>
+     </ns36:ValueDomain>
+    </ns36:UMLAttribute>
+   </ns36:umlAttributeCollection>
+   <ns37:SemanticMetadata conceptCode="C28232" conceptDefinition="Any deviation of results or inferences from the truth, or processes leading to such deviation." conceptName="Bias" order="1" xmlns:ns37="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common"/>
+   <ns38:SemanticMetadata conceptCode="C53414" conceptDefinition="The way in which something is made, especially in terms of its different parts; its constituents." conceptName="Composition" order="2" xmlns:ns38="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common"/>
+   <ns39:SemanticMetadata conceptCode="C13379" conceptDefinition="A protein domain is a structurally and functionally defined protein region. (from http://www.ddmag.com)" conceptName="Protein Domain" order="0" xmlns:ns39="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common"/>
+  </ns1:UMLClass>
+  <ns1:UMLClass allowableAsTarget="true" className="OrganismName" description="Alternative organism name." id="46E95F75-732A-7473-E044-0003BA3F9857" packageName="edu.georgetown.pir.domain" projectName="PIR 1.2" projectVersion="1.2">
+   <ns40:umlAttributeCollection xmlns:ns40="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common">
+    <ns40:UMLAttribute dataTypeName="java.lang.Long" description="Internal object identifier." name="id" publicID="2342487" version="1.0">
+     <ns40:SemanticMetadata conceptCode="C25364" conceptDefinition="One or more characters used to identify, name, or characterize the nature, properties, or contents of a thing." conceptName="Identifier" order="0"/>
+     <ns40:ValueDomain longName="java.lang.Long">
+      <ns40:enumerationCollection/>
+     </ns40:ValueDomain>
+    </ns40:UMLAttribute>
+    <ns40:UMLAttribute dataTypeName="java.lang.String" description="Alternative organism name." name="value" publicID="2342488" version="1.0">
+     <ns40:SemanticMetadata conceptCode="C42614" conceptDefinition="The words or language units by which a thing is known." conceptName="Name" order="0"/>
+     <ns40:ValueDomain longName="java.lang.String">
+      <ns40:enumerationCollection/>
+     </ns40:ValueDomain>
+    </ns40:UMLAttribute>
+   </ns40:umlAttributeCollection>
+   <ns41:SemanticMetadata conceptCode="C42614" conceptDefinition="The words or language units by which a thing is known." conceptName="Name" order="0" xmlns:ns41="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common"/>
+   <ns42:SemanticMetadata conceptCode="C14250" conceptDefinition="A living thing, such as an animal, a plant, a bacterium, or a fungus." conceptName="Organism" order="1" xmlns:ns42="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common"/>
+  </ns1:UMLClass>
+  <ns1:UMLClass allowableAsTarget="true" className="Organelle" description="Location of the gene coding for the protein." id="46E95F75-732B-7473-E044-0003BA3F9857" packageName="edu.georgetown.pir.domain" projectName="PIR 1.2" projectVersion="1.2">
+   <ns43:umlAttributeCollection xmlns:ns43="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common">
+    <ns43:UMLAttribute dataTypeName="java.lang.String" description="Location of the gene: organelle, mitochondria, chloroplast, cyanelle, nucleomorph or a plasmid." name="type" publicID="2342460" version="1.0">
+     <ns43:SemanticMetadata conceptCode="C25284" conceptDefinition="Type; a subdivision of a particular kind of thing." conceptName="Type" order="0"/>
+     <ns43:ValueDomain longName="java.lang.String">
+      <ns43:enumerationCollection/>
+     </ns43:ValueDomain>
+    </ns43:UMLAttribute>
+    <ns43:UMLAttribute dataTypeName="java.lang.String" description="Name of the plasmid." name="name" publicID="2342461" version="1.0">
+     <ns43:SemanticMetadata conceptCode="C754" conceptDefinition="A small cellular inclusion consisting of a ring of DNA that is not in a chromosome but is capable of autonomous replication." conceptName="Plasmid" order="1"/>
+     <ns43:SemanticMetadata conceptCode="C42614" conceptDefinition="The words or language units by which a thing is known." conceptName="Name" order="0"/>
+     <ns43:ValueDomain longName="java.lang.String">
+      <ns43:enumerationCollection/>
+     </ns43:ValueDomain>
+    </ns43:UMLAttribute>
+    <ns43:UMLAttribute dataTypeName="java.lang.Long" description="Internal object identifier." name="id" publicID="2342459" version="1.0">
+     <ns43:SemanticMetadata conceptCode="C25364" conceptDefinition="One or more characters used to identify, name, or characterize the nature, properties, or contents of a thing." conceptName="Identifier" order="0"/>
+     <ns43:ValueDomain longName="java.lang.Long">
+      <ns43:enumerationCollection/>
+     </ns43:ValueDomain>
+    </ns43:UMLAttribute>
+   </ns43:umlAttributeCollection>
+   <ns44:SemanticMetadata conceptCode="C13269" conceptDefinition="Cell part which consists of macromolecules aggregated into discrete structures in the protoplasm. (Digital Anatomist Foundational Model)" conceptName="Cytoplasmic Organelle" order="0" xmlns:ns44="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common"/>
+  </ns1:UMLClass>
+  <ns1:UMLClass allowableAsTarget="true" className="Gene" description="The gene coding for the protein." id="46E95F75-732C-7473-E044-0003BA3F9857" packageName="edu.georgetown.pir.domain" projectName="PIR 1.2" projectVersion="1.2">
+   <ns45:umlAttributeCollection xmlns:ns45="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common">
+    <ns45:UMLAttribute dataTypeName="java.lang.String" description="The name for the gene." name="name" publicID="2223841" version="3.0">
+     <ns45:SemanticMetadata conceptCode="C43568" conceptDefinition="A unique gene name approved by an organism specific nomenclature committee." conceptName="Gene Symbol" order="0"/>
+     <ns45:ValueDomain longName="java.lang.String">
+      <ns45:enumerationCollection/>
+     </ns45:ValueDomain>
+    </ns45:UMLAttribute>
+    <ns45:UMLAttribute dataTypeName="java.lang.Long" description="Internal object identifier." name="id" publicID="2223838" version="3.0">
+     <ns45:SemanticMetadata conceptCode="C25364" conceptDefinition="One or more characters used to identify, name, or characterize the nature, properties, or contents of a thing." conceptName="Identifier" order="0"/>
+     <ns45:ValueDomain longName="java.lang.Long">
+      <ns45:enumerationCollection/>
+     </ns45:ValueDomain>
+    </ns45:UMLAttribute>
+    <ns45:UMLAttribute dataTypeName="NUMBER" description="The unique identifier assigned to a gene by the National Center for Biotechnology Information (NCBI)." name="entrezGeneId" publicID="2322246" version="1.0">
+     <ns45:SemanticMetadata conceptCode="C45765" conceptDefinition="Entrez Gene is NCBI's database for gene-specific information. It focuses on the genomes that have been completely sequenced, that have an active research community to contribute gene-specific information, or that are scheduled for intense sequence analysi" conceptName="Entrez Gene" order="1"/>
+     <ns45:SemanticMetadata conceptCode="C45766" conceptDefinition="One or more characters and/or numbers that are used to identify, name, or characterize the nature, properties, or contents of genomic sequences, mRNA transcripts, protein products, or other class of entities that occurs throughout the genome." conceptName="Genomic Identifier" order="0"/>
+     <ns45:ValueDomain longName="Gene Entrez Gene Genomic Identifier">
+      <ns45:enumerationCollection/>
+     </ns45:ValueDomain>
+    </ns45:UMLAttribute>
+   </ns45:umlAttributeCollection>
+   <ns46:SemanticMetadata conceptCode="C16612" conceptDefinition="A functional unit of heredity which occupies a specific position (locus) on a particular chromosome, is capable of reproducing itself exactly at each cell division, and directs the formation of an enzyme or other protein. The gene as a functional unit consists of a discrete segment of a giant DNA molecule containing the purine (adenine and guanine) and pyrimidine (cytosine and thymine) bases in the ordered and correct sequence that encodes a specific functional product (i.e., a protein or RNA molecule)." conceptName="Gene" order="0" xmlns:ns46="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common"/>
+  </ns1:UMLClass>
+  <ns1:UMLClass allowableAsTarget="true" className="Peptide" description="Extent of a released active peptide." id="46E95F75-732D-7473-E044-0003BA3F9857" packageName="edu.georgetown.pir.domain" projectName="PIR 1.2" projectVersion="1.2">
+   <ns47:umlAttributeCollection xmlns:ns47="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common">
+    <ns47:UMLAttribute dataTypeName="java.lang.String" description="Extent of a released active peptide. Description of the feature." name="description" publicID="2342564" version="1.0">
+     <ns47:SemanticMetadata conceptCode="C25365" conceptDefinition="Description; a statement that represents something in words." conceptName="Description " order="0"/>
+     <ns47:ValueDomain longName="java.lang.String">
+      <ns47:enumerationCollection/>
+     </ns47:ValueDomain>
+    </ns47:UMLAttribute>
+    <ns47:UMLAttribute dataTypeName="java.lang.Integer" description="Extent of a released active peptide. Beginning position of a segment on the protein where feature applies." name="begin" publicID="2342562" version="1.0">
+     <ns47:SemanticMetadata conceptCode="C25431" conceptDefinition="Have a beginning, in a temporal, spatial, or evaluative sense." conceptName="Begin" order="0"/>
+     <ns47:ValueDomain longName="java.lang.Integer">
+      <ns47:enumerationCollection/>
+     </ns47:ValueDomain>
+    </ns47:UMLAttribute>
+    <ns47:UMLAttribute dataTypeName="java.lang.Long" description="Extent of a released active peptide. Internal object identifier." name="id" publicID="2342561" version="1.0">
+     <ns47:SemanticMetadata conceptCode="C25364" conceptDefinition="One or more characters used to identify, name, or characterize the nature, properties, or contents of a thing." conceptName="Identifier" order="0"/>
+     <ns47:ValueDomain longName="java.lang.Long">
+      <ns47:enumerationCollection/>
+     </ns47:ValueDomain>
+    </ns47:UMLAttribute>
+    <ns47:UMLAttribute dataTypeName="java.lang.Integer" description="Extent of a released active peptide. End position of a segment on the protein where feature applies." name="end" publicID="2342563" version="1.0">
+     <ns47:SemanticMetadata conceptCode="C25496" conceptDefinition="The point or place at which something terminates in time, space, or extent." conceptName="End" order="0"/>
+     <ns47:ValueDomain longName="java.lang.Integer">
+      <ns47:enumerationCollection/>
+     </ns47:ValueDomain>
+    </ns47:UMLAttribute>
+   </ns47:umlAttributeCollection>
+   <ns48:SemanticMetadata conceptCode="C45329" conceptDefinition="Taking part in an activity." conceptName="Active" order="1" xmlns:ns48="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common"/>
+   <ns49:SemanticMetadata conceptCode="C735" conceptDefinition="Organic compound composed of amino acids linked together chemically by peptide bonds. The peptide bond always involves a single covalent link between the alpha-carboxyl (oxygen-bearing carbon) of one amino acid and the amino nitrogen of a second amino acid." conceptName="Peptide" order="0" xmlns:ns49="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common"/>
+   <ns50:SemanticMetadata conceptCode="C42882" conceptDefinition="Having been made available." conceptName="Released" order="2" xmlns:ns50="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common"/>
+  </ns1:UMLClass>
+  <ns1:UMLClass allowableAsTarget="true" className="CoiledCoilRegion" description="Extent of a coiled-coil region.Coiled coil is a super-helical structure formed by the interlocking of two or more alpha-helices." id="46E95F75-732E-7473-E044-0003BA3F9857" packageName="edu.georgetown.pir.domain" projectName="PIR 1.2" projectVersion="1.2">
+   <ns51:umlAttributeCollection xmlns:ns51="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common">
+    <ns51:UMLAttribute dataTypeName="java.lang.Integer" description="Extent of a coiled-coil region.Coiled coil is a super-helical structure formed by the interlocking of two or more alpha-helices. End position of a segment on the protein where feature applies." name="end" publicID="2716626" version="1.0">
+     <ns51:SemanticMetadata conceptCode="C25496" conceptDefinition="The point or place at which something terminates in time, space, or extent." conceptName="End" order="0"/>
+     <ns51:ValueDomain longName="java.lang.Integer">
+      <ns51:enumerationCollection/>
+     </ns51:ValueDomain>
+    </ns51:UMLAttribute>
+    <ns51:UMLAttribute dataTypeName="java.lang.Integer" description="Extent of a coiled-coil region.Coiled coil is a super-helical structure formed by the interlocking of two or more alpha-helices. Beginning position of a segment on the protein where feature applies." name="begin" publicID="2716625" version="1.0">
+     <ns51:SemanticMetadata conceptCode="C25431" conceptDefinition="Have a beginning, in a temporal, spatial, or evaluative sense." conceptName="Begin" order="0"/>
+     <ns51:ValueDomain longName="java.lang.Integer">
+      <ns51:enumerationCollection/>
+     </ns51:ValueDomain>
+    </ns51:UMLAttribute>
+    <ns51:UMLAttribute dataTypeName="java.lang.Long" description="Extent of a coiled-coil region.Coiled coil is a super-helical structure formed by the interlocking of two or more alpha-helices. Internal object identifier." name="id" publicID="2452289" version="1.0">
+     <ns51:SemanticMetadata conceptCode="C25364" conceptDefinition="One or more characters used to identify, name, or characterize the nature, properties, or contents of a thing." conceptName="Identifier" order="0"/>
+     <ns51:ValueDomain longName="java.lang.Long">
+      <ns51:enumerationCollection/>
+     </ns51:ValueDomain>
+    </ns51:UMLAttribute>
+    <ns51:UMLAttribute dataTypeName="java.lang.String" description="Extent of a coiled-coil region.Coiled coil is a super-helical structure formed by the interlocking of two or more alpha-helices. Description of the feature." name="description" publicID="2716627" version="1.0">
+     <ns51:SemanticMetadata conceptCode="C25365" conceptDefinition="Description; a statement that represents something in words." conceptName="Description " order="0"/>
+     <ns51:ValueDomain longName="java.lang.String">
+      <ns51:enumerationCollection/>
+     </ns51:ValueDomain>
+    </ns51:UMLAttribute>
+   </ns51:umlAttributeCollection>
+   <ns52:SemanticMetadata conceptCode="C13967" conceptDefinition="The coiled-coil domain stabilizes alpha helices in proteins, through a very efficient burial of hydrophobic side chains so that polar water molecules do not access them. As a result, the helices are quite stable. In fact, many structural proteins (keratins, tropomyosin, laminin) that have to bear considerable stress have a coiled-coil domain. Two basic essential features are common: (1) the overall secondary structure is alpha helical, (2) the hydrophobic residues are arranged on one side of the helices. The typical positioning of the hydrophobic residues in the coiled-coil domain can be often recognized from primary structure of the protein. The helices can be parallel or antiparallel. The former is common when the helices belong to different polypeptides and the latter prevails in coiled coils made up from a single polypeptide chain. The number of helices in the coil varies usually between 2 and 4. (From http://www.cryst.bbk.ac.uk)" conceptName="Coiled-Coil Domain" order="0" xmlns:ns52="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common"/>
+  </ns1:UMLClass>
+  <ns1:UMLClass allowableAsTarget="true" className="ActiveSite" description="Amino acid(s) involved in the activity of an enzyme.
+" id="46E95F75-732F-7473-E044-0003BA3F9857" packageName="edu.georgetown.pir.domain" projectName="PIR 1.2" projectVersion="1.2">
+   <ns53:umlAttributeCollection xmlns:ns53="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common">
+    <ns53:UMLAttribute dataTypeName="java.lang.String" description="Amino acid(s) involved in the activity of an enzyme.
+ Description of the feature." name="description" publicID="2342492" version="1.0">
+     <ns53:SemanticMetadata conceptCode="C25365" conceptDefinition="Description; a statement that represents something in words." conceptName="Description " order="0"/>
+     <ns53:ValueDomain longName="java.lang.String">
+      <ns53:enumerationCollection/>
+     </ns53:ValueDomain>
+    </ns53:UMLAttribute>
+    <ns53:UMLAttribute dataTypeName="java.lang.Integer" description="Amino acid(s) involved in the activity of an enzyme.
+ Beginning position of a segment on the protein where feature applies." name="begin" publicID="2342490" version="1.0">
+     <ns53:SemanticMetadata conceptCode="C25431" conceptDefinition="Have a beginning, in a temporal, spatial, or evaluative sense." conceptName="Begin" order="0"/>
+     <ns53:ValueDomain longName="java.lang.Integer">
+      <ns53:enumerationCollection/>
+     </ns53:ValueDomain>
+    </ns53:UMLAttribute>
+    <ns53:UMLAttribute dataTypeName="java.lang.Integer" description="Amino acid(s) involved in the activity of an enzyme.
+ End position of a segment on the protein where feature applies." name="end" publicID="2342491" version="1.0">
+     <ns53:SemanticMetadata conceptCode="C25496" conceptDefinition="The point or place at which something terminates in time, space, or extent." conceptName="End" order="0"/>
+     <ns53:ValueDomain longName="java.lang.Integer">
+      <ns53:enumerationCollection/>
+     </ns53:ValueDomain>
+    </ns53:UMLAttribute>
+    <ns53:UMLAttribute dataTypeName="java.lang.Long" description="Amino acid(s) involved in the activity of an enzyme.
+ Internal object identifier." name="id" publicID="2342489" version="1.0">
+     <ns53:SemanticMetadata conceptCode="C25364" conceptDefinition="One or more characters used to identify, name, or characterize the nature, properties, or contents of a thing." conceptName="Identifier" order="0"/>
+     <ns53:ValueDomain longName="java.lang.Long">
+      <ns53:enumerationCollection/>
+     </ns53:ValueDomain>
+    </ns53:UMLAttribute>
+   </ns53:umlAttributeCollection>
+   <ns54:SemanticMetadata conceptCode="C47935" conceptDefinition="The catalytic site of an enzyme, the part of an enzyme where the actual enzymatic function is performed." conceptName="Active Site" order="0" xmlns:ns54="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common"/>
+  </ns1:UMLClass>
+  <ns1:UMLClass allowableAsTarget="true" className="CalciumBindingRegion" description="Extent of a calcium-binding region." id="46E95F75-7330-7473-E044-0003BA3F9857" packageName="edu.georgetown.pir.domain" projectName="PIR 1.2" projectVersion="1.2">
+   <ns55:umlAttributeCollection xmlns:ns55="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common">
+    <ns55:UMLAttribute dataTypeName="java.lang.Integer" description="Extent of a calcium-binding region. End position of a segment on the protein where feature applies." name="end" publicID="2342499" version="1.0">
+     <ns55:SemanticMetadata conceptCode="C25496" conceptDefinition="The point or place at which something terminates in time, space, or extent." conceptName="End" order="0"/>
+     <ns55:ValueDomain longName="java.lang.Integer">
+      <ns55:enumerationCollection/>
+     </ns55:ValueDomain>
+    </ns55:UMLAttribute>
+    <ns55:UMLAttribute dataTypeName="java.lang.Long" description="Extent of a calcium-binding region. Internal object identifier." name="id" publicID="2342497" version="1.0">
+     <ns55:SemanticMetadata conceptCode="C25364" conceptDefinition="One or more characters used to identify, name, or characterize the nature, properties, or contents of a thing." conceptName="Identifier" order="0"/>
+     <ns55:ValueDomain longName="java.lang.Long">
+      <ns55:enumerationCollection/>
+     </ns55:ValueDomain>
+    </ns55:UMLAttribute>
+    <ns55:UMLAttribute dataTypeName="java.lang.String" description="Extent of a calcium-binding region. Description of the feature." name="description" publicID="2342500" version="1.0">
+     <ns55:SemanticMetadata conceptCode="C25365" conceptDefinition="Description; a statement that represents something in words." conceptName="Description " order="0"/>
+     <ns55:ValueDomain longName="java.lang.String">
+      <ns55:enumerationCollection/>
+     </ns55:ValueDomain>
+    </ns55:UMLAttribute>
+    <ns55:UMLAttribute dataTypeName="java.lang.Integer" description="Extent of a calcium-binding region. Beginning position of a segment on the protein where feature applies." name="begin" publicID="2342498" version="1.0">
+     <ns55:SemanticMetadata conceptCode="C25431" conceptDefinition="Have a beginning, in a temporal, spatial, or evaluative sense." conceptName="Begin" order="0"/>
+     <ns55:ValueDomain longName="java.lang.Integer">
+      <ns55:enumerationCollection/>
+     </ns55:ValueDomain>
+    </ns55:UMLAttribute>
+   </ns55:umlAttributeCollection>
+   <ns56:SemanticMetadata conceptCode="C14114" conceptDefinition="Many calcium-binding proteins belong to the same evolutionary family and share a type of calcium-binding domain known as the EF-hand. This type of domain consists of a twelve residue loop flanked on both side by a twelve residue alpha-helical domain. In an EF-hand loop the calcium ion is coordinated in a pentagonal bipyramidal configuration. The six residues involved in the binding are in positions 1, 3, 5, 7, 9 and 12; these residues are denoted by X, Y, Z, -Y, -X and -Z. The invariant Glu or Asp at position 12 provides two oxygens for liganding Ca (bidentate ligand). (From InterPro IPR002048)" conceptName="Calcium-Binding Domain" order="0" xmlns:ns56="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common"/>
+  </ns1:UMLClass>
+  <ns1:UMLClass allowableAsTarget="true" className="DisulfideBond" description="Disulfide bond." id="46E95F75-7331-7473-E044-0003BA3F9857" packageName="edu.georgetown.pir.domain" projectName="PIR 1.2" projectVersion="1.2">
+   <ns57:umlAttributeCollection xmlns:ns57="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common">
+    <ns57:UMLAttribute dataTypeName="java.lang.Long" description="Disulfide bond. Internal object identifier." name="id" publicID="2342509" version="1.0">
+     <ns57:SemanticMetadata conceptCode="C25364" conceptDefinition="One or more characters used to identify, name, or characterize the nature, properties, or contents of a thing." conceptName="Identifier" order="0"/>
+     <ns57:ValueDomain longName="java.lang.Long">
+      <ns57:enumerationCollection/>
+     </ns57:ValueDomain>
+    </ns57:UMLAttribute>
+    <ns57:UMLAttribute dataTypeName="java.lang.Integer" description="Disulfide bond. End position of a segment on the protein where feature applies." name="end" publicID="2342511" version="1.0">
+     <ns57:SemanticMetadata conceptCode="C25496" conceptDefinition="The point or place at which something terminates in time, space, or extent." conceptName="End" order="0"/>
+     <ns57:ValueDomain longName="java.lang.Integer">
+      <ns57:enumerationCollection/>
+     </ns57:ValueDomain>
+    </ns57:UMLAttribute>
+    <ns57:UMLAttribute dataTypeName="java.lang.String" description="Disulfide bond. Description of the feature." name="description" publicID="2342512" version="1.0">
+     <ns57:SemanticMetadata conceptCode="C25365" conceptDefinition="Description; a statement that represents something in words." conceptName="Description " order="0"/>
+     <ns57:ValueDomain longName="java.lang.String">
+      <ns57:enumerationCollection/>
+     </ns57:ValueDomain>
+    </ns57:UMLAttribute>
+    <ns57:UMLAttribute dataTypeName="java.lang.Integer" description="Disulfide bond. Beginning position of a segment on the protein where feature applies." name="begin" publicID="2342510" version="1.0">
+     <ns57:SemanticMetadata conceptCode="C25431" conceptDefinition="Have a beginning, in a temporal, spatial, or evaluative sense." conceptName="Begin" order="0"/>
+     <ns57:ValueDomain longName="java.lang.Integer">
+      <ns57:enumerationCollection/>
+     </ns57:ValueDomain>
+    </ns57:UMLAttribute>
+   </ns57:umlAttributeCollection>
+   <ns58:SemanticMetadata conceptCode="C14062" conceptDefinition="A disulfide linkage is a covalent bond between 2 sulfide atoms from the thiol group of 2 cysteine residues (S-S). They occur both interstrand and intrastrand." conceptName="Disulfide Linkage" order="0" xmlns:ns58="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common"/>
+  </ns1:UMLClass>
+  <ns1:UMLClass allowableAsTarget="true" className="Helix" description="Secondary structure type helix (Alpha-helix,  3(10) helix,  Pi-helix)." id="46E95F75-7332-7473-E044-0003BA3F9857" packageName="edu.georgetown.pir.domain" projectName="PIR 1.2" projectVersion="1.2">
+   <ns59:umlAttributeCollection xmlns:ns59="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common">
+    <ns59:UMLAttribute dataTypeName="java.lang.String" description="Secondary structure type helix (Alpha-helix,  3(10) helix,  Pi-helix). Description of the feature." name="description" publicID="2342528" version="1.0">
+     <ns59:SemanticMetadata conceptCode="C25365" conceptDefinition="Description; a statement that represents something in words." conceptName="Description " order="0"/>
+     <ns59:ValueDomain longName="java.lang.String">
+      <ns59:enumerationCollection/>
+     </ns59:ValueDomain>
+    </ns59:UMLAttribute>
+    <ns59:UMLAttribute dataTypeName="java.lang.Integer" description="Secondary structure type helix (Alpha-helix,  3(10) helix,  Pi-helix). Beginning position of a segment on the protein where feature applies." name="begin" publicID="2342526" version="1.0">
+     <ns59:SemanticMetadata conceptCode="C25431" conceptDefinition="Have a beginning, in a temporal, spatial, or evaluative sense." conceptName="Begin" order="0"/>
+     <ns59:ValueDomain longName="java.lang.Integer">
+      <ns59:enumerationCollection/>
+     </ns59:ValueDomain>
+    </ns59:UMLAttribute>
+    <ns59:UMLAttribute dataTypeName="java.lang.Long" description="Secondary structure type helix (Alpha-helix,  3(10) helix,  Pi-helix). Internal object identifier." name="id" publicID="2342525" version="1.0">
+     <ns59:SemanticMetadata conceptCode="C25364" conceptDefinition="One or more characters used to identify, name, or characterize the nature, properties, or contents of a thing." conceptName="Identifier" order="0"/>
+     <ns59:ValueDomain longName="java.lang.Long">
+      <ns59:enumerationCollection/>
+     </ns59:ValueDomain>
+    </ns59:UMLAttribute>
+    <ns59:UMLAttribute dataTypeName="java.lang.Integer" description="Secondary structure type helix (Alpha-helix,  3(10) helix,  Pi-helix). End position of a segment on the protein where feature applies." name="end" publicID="2342527" version="1.0">
+     <ns59:SemanticMetadata conceptCode="C25496" conceptDefinition="The point or place at which something terminates in time, space, or extent." conceptName="End" order="0"/>
+     <ns59:ValueDomain longName="java.lang.Integer">
+      <ns59:enumerationCollection/>
+     </ns59:ValueDomain>
+    </ns59:UMLAttribute>
+   </ns59:umlAttributeCollection>
+   <ns60:SemanticMetadata conceptCode="C48043" conceptDefinition="A protein secondary structure motif. Amino acids are arranged in a right-handed rod like structure stabilized by hydrogen bonds between the C=O and the N-H groups of the main chain. Types include:alpha-helix, 3.10 helix and pi-helix." conceptName="Protein Helix" order="0" xmlns:ns60="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common"/>
+  </ns1:UMLClass>
+  <ns1:UMLClass allowableAsTarget="true" className="Propeptide" description="Extent of a propeptide." id="46E95F75-7333-7473-E044-0003BA3F9857" packageName="edu.georgetown.pir.domain" projectName="PIR 1.2" projectVersion="1.2">
+   <ns61:umlAttributeCollection xmlns:ns61="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common">
+    <ns61:UMLAttribute dataTypeName="java.lang.String" description="Extent of a propeptide. Description of the feature." name="description" publicID="2342568" version="1.0">
+     <ns61:SemanticMetadata conceptCode="C25365" conceptDefinition="Description; a statement that represents something in words." conceptName="Description " order="0"/>
+     <ns61:ValueDomain longName="java.lang.String">
+      <ns61:enumerationCollection/>
+     </ns61:ValueDomain>
+    </ns61:UMLAttribute>
+    <ns61:UMLAttribute dataTypeName="java.lang.Integer" description="Extent of a propeptide. Beginning position of a segment on the protein where feature applies." name="begin" publicID="2342566" version="1.0">
+     <ns61:SemanticMetadata conceptCode="C25431" conceptDefinition="Have a beginning, in a temporal, spatial, or evaluative sense." conceptName="Begin" order="0"/>
+     <ns61:ValueDomain longName="java.lang.Integer">
+      <ns61:enumerationCollection/>
+     </ns61:ValueDomain>
+    </ns61:UMLAttribute>
+    <ns61:UMLAttribute dataTypeName="java.lang.Long" description="Extent of a propeptide. Internal object identifier." name="id" publicID="2342565" version="1.0">
+     <ns61:SemanticMetadata conceptCode="C25364" conceptDefinition="One or more characters used to identify, name, or characterize the nature, properties, or contents of a thing." conceptName="Identifier" order="0"/>
+     <ns61:ValueDomain longName="java.lang.Long">
+      <ns61:enumerationCollection/>
+     </ns61:ValueDomain>
+    </ns61:UMLAttribute>
+    <ns61:UMLAttribute dataTypeName="java.lang.Integer" description="Extent of a propeptide. End position of a segment on the protein where feature applies." name="end" publicID="2342567" version="1.0">
+     <ns61:SemanticMetadata conceptCode="C25496" conceptDefinition="The point or place at which something terminates in time, space, or extent." conceptName="End" order="0"/>
+     <ns61:ValueDomain longName="java.lang.Integer">
+      <ns61:enumerationCollection/>
+     </ns61:ValueDomain>
+    </ns61:UMLAttribute>
+   </ns61:umlAttributeCollection>
+   <ns62:SemanticMetadata conceptCode="C47941" conceptDefinition="An inactive protein precursor that is made active by cleavage or glycosylation." conceptName="Proprotein" order="0" xmlns:ns62="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common"/>
+  </ns1:UMLClass>
+  <ns1:UMLClass allowableAsTarget="true" className="ShortSequenceMotif" description="Short (up to 20 amino acids) sequence motif of biological interest.
+" id="46E95F75-7334-7473-E044-0003BA3F9857" packageName="edu.georgetown.pir.domain" projectName="PIR 1.2" projectVersion="1.2">
+   <ns63:umlAttributeCollection xmlns:ns63="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common">
+    <ns63:UMLAttribute dataTypeName="java.lang.Long" description="Short (up to 20 amino acids) sequence motif of biological interest.
+ Internal object identifier." name="id" publicID="2716628" version="1.0">
+     <ns63:SemanticMetadata conceptCode="C25364" conceptDefinition="One or more characters used to identify, name, or characterize the nature, properties, or contents of a thing." conceptName="Identifier" order="0"/>
+     <ns63:ValueDomain longName="java.lang.Long">
+      <ns63:enumerationCollection/>
+     </ns63:ValueDomain>
+    </ns63:UMLAttribute>
+    <ns63:UMLAttribute dataTypeName="java.lang.String" description="Short (up to 20 amino acids) sequence motif of biological interest.
+ Description of the feature." name="description" publicID="2716632" version="1.0">
+     <ns63:SemanticMetadata conceptCode="C25365" conceptDefinition="Description; a statement that represents something in words." conceptName="Description " order="0"/>
+     <ns63:ValueDomain longName="java.lang.String">
+      <ns63:enumerationCollection/>
+     </ns63:ValueDomain>
+    </ns63:UMLAttribute>
+    <ns63:UMLAttribute dataTypeName="java.lang.Integer" description="Short (up to 20 amino acids) sequence motif of biological interest.
+ End position of a segment on the protein where feature applies." name="end" publicID="2716630" version="1.0">
+     <ns63:SemanticMetadata conceptCode="C25496" conceptDefinition="The point or place at which something terminates in time, space, or extent." conceptName="End" order="0"/>
+     <ns63:ValueDomain longName="java.lang.Integer">
+      <ns63:enumerationCollection/>
+     </ns63:ValueDomain>
+    </ns63:UMLAttribute>
+    <ns63:UMLAttribute dataTypeName="java.lang.Integer" description="Short (up to 20 amino acids) sequence motif of biological interest.
+ Beginning position of a segment on the protein where feature applies." name="begin" publicID="2716629" version="1.0">
+     <ns63:SemanticMetadata conceptCode="C25431" conceptDefinition="Have a beginning, in a temporal, spatial, or evaluative sense." conceptName="Begin" order="0"/>
+     <ns63:ValueDomain longName="java.lang.Integer">
+      <ns63:enumerationCollection/>
+     </ns63:ValueDomain>
+    </ns63:UMLAttribute>
+   </ns63:umlAttributeCollection>
+   <ns64:SemanticMetadata conceptCode="C13379" conceptDefinition="A protein domain is a structurally and functionally defined protein region. (from http://www.ddmag.com)" conceptName="Protein Domain" order="0" xmlns:ns64="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common"/>
+   <ns65:SemanticMetadata conceptCode="C13187" conceptDefinition="The arrangement of amino acids in a protein.  Proteins can be made from 20 different kinds of amino acids, and the structure and function of each type of protein are determined by the kinds of amino acids used to make it and how they are arranged." conceptName="Protein Sequence" order="1" xmlns:ns65="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common"/>
+   <ns66:SemanticMetadata conceptCode="C25249" conceptDefinition="Having little (physical) length or seeming to be limited in (temporal) duration." conceptName="Short" order="2" xmlns:ns66="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common"/>
+  </ns1:UMLClass>
+  <ns1:UMLClass allowableAsTarget="true" className="SequenceVariant" description="Reported sequence variants." id="46E95F75-7335-7473-E044-0003BA3F9857" packageName="edu.georgetown.pir.domain" projectName="PIR 1.2" projectVersion="1.2">
+   <ns67:umlAttributeCollection xmlns:ns67="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common">
+    <ns67:UMLAttribute dataTypeName="java.lang.Long" description="Reported sequence variants. Internal object identifier." name="id" publicID="2342581" version="1.0">
+     <ns67:SemanticMetadata conceptCode="C25364" conceptDefinition="One or more characters used to identify, name, or characterize the nature, properties, or contents of a thing." conceptName="Identifier" order="0"/>
+     <ns67:ValueDomain longName="java.lang.Long">
+      <ns67:enumerationCollection/>
+     </ns67:ValueDomain>
+    </ns67:UMLAttribute>
+    <ns67:UMLAttribute dataTypeName="java.lang.Integer" description="Reported sequence variants. End position of a segment on the protein where feature applies." name="end" publicID="2342583" version="1.0">
+     <ns67:SemanticMetadata conceptCode="C25496" conceptDefinition="The point or place at which something terminates in time, space, or extent." conceptName="End" order="0"/>
+     <ns67:ValueDomain longName="java.lang.Integer">
+      <ns67:enumerationCollection/>
+     </ns67:ValueDomain>
+    </ns67:UMLAttribute>
+    <ns67:UMLAttribute dataTypeName="java.lang.String" description="Variant sequence segment." name="variantSequence" publicID="2342449" version="1.0">
+     <ns67:SemanticMetadata conceptCode="C25713" conceptDefinition="Variation; something that deviates from a norm or standard; an instance of change." conceptName="Variation" order="1"/>
+     <ns67:SemanticMetadata conceptCode="C13187" conceptDefinition="The arrangement of amino acids in a protein.  Proteins can be made from 20 different kinds of amino acids, and the structure and function of each type of protein are determined by the kinds of amino acids used to make it and how they are arranged." conceptName="Protein Sequence" order="0"/>
+     <ns67:ValueDomain longName="java.lang.String">
+      <ns67:enumerationCollection/>
+     </ns67:ValueDomain>
+    </ns67:UMLAttribute>
+    <ns67:UMLAttribute dataTypeName="java.lang.String" description="Reported sequence variants. Description of the feature." name="description" publicID="2342584" version="1.0">
+     <ns67:SemanticMetadata conceptCode="C25365" conceptDefinition="Description; a statement that represents something in words." conceptName="Description " order="0"/>
+     <ns67:ValueDomain longName="java.lang.String">
+      <ns67:enumerationCollection/>
+     </ns67:ValueDomain>
+    </ns67:UMLAttribute>
+    <ns67:UMLAttribute dataTypeName="java.lang.String" description="Original sequence segment." name="originalSequence" publicID="2342448" version="1.0">
+     <ns67:SemanticMetadata conceptCode="C25604" conceptDefinition="Preceding all others in time or being as first made or performed." conceptName="Original" order="1"/>
+     <ns67:SemanticMetadata conceptCode="C13187" conceptDefinition="The arrangement of amino acids in a protein.  Proteins can be made from 20 different kinds of amino acids, and the structure and function of each type of protein are determined by the kinds of amino acids used to make it and how they are arranged." conceptName="Protein Sequence" order="0"/>
+     <ns67:ValueDomain longName="java.lang.String">
+      <ns67:enumerationCollection/>
+     </ns67:ValueDomain>
+    </ns67:UMLAttribute>
+    <ns67:UMLAttribute dataTypeName="java.lang.Integer" description="Reported sequence variants. Beginning position of a segment on the protein where feature applies." name="begin" publicID="2342582" version="1.0">
+     <ns67:SemanticMetadata conceptCode="C25431" conceptDefinition="Have a beginning, in a temporal, spatial, or evaluative sense." conceptName="Begin" order="0"/>
+     <ns67:ValueDomain longName="java.lang.Integer">
+      <ns67:enumerationCollection/>
+     </ns67:ValueDomain>
+    </ns67:UMLAttribute>
+   </ns67:umlAttributeCollection>
+   <ns68:SemanticMetadata conceptCode="C13187" conceptDefinition="The arrangement of amino acids in a protein.  Proteins can be made from 20 different kinds of amino acids, and the structure and function of each type of protein are determined by the kinds of amino acids used to make it and how they are arranged." conceptName="Protein Sequence" order="1" xmlns:ns68="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common"/>
+   <ns69:SemanticMetadata conceptCode="C25713" conceptDefinition="Variation; something that deviates from a norm or standard; an instance of change." conceptName="Variation" order="0" xmlns:ns69="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common"/>
+  </ns1:UMLClass>
+  <ns1:UMLClass allowableAsTarget="true" className="Lineage" description="Lineage of the organism taxonomy." id="46E95F75-7336-7473-E044-0003BA3F9857" packageName="edu.georgetown.pir.domain" projectName="PIR 1.2" projectVersion="1.2">
+   <ns70:umlAttributeCollection xmlns:ns70="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common">
+    <ns70:UMLAttribute dataTypeName="java.lang.Long" description="Internal object identifier." name="id" publicID="2496590" version="1.0">
+     <ns70:SemanticMetadata conceptCode="C25364" conceptDefinition="One or more characters used to identify, name, or characterize the nature, properties, or contents of a thing." conceptName="Identifier" order="0"/>
+     <ns70:ValueDomain longName="java.lang.Long">
+      <ns70:enumerationCollection/>
+     </ns70:ValueDomain>
+    </ns70:UMLAttribute>
+   </ns70:umlAttributeCollection>
+   <ns71:SemanticMetadata conceptCode="C60792" conceptDefinition="Descent in a line from a common progenitor or source." conceptName="Lineage" order="0" xmlns:ns71="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common"/>
+  </ns1:UMLClass>
+  <ns1:UMLClass allowableAsTarget="true" className="ProteinFeature" description="Segments or residues of interest in the protein sequence ,for example posttranslational modifications, binding sites and enzyme active sites." id="46E95F75-7337-7473-E044-0003BA3F9857" packageName="edu.georgetown.pir.domain" projectName="PIR 1.2" projectVersion="1.2">
+   <ns72:umlAttributeCollection xmlns:ns72="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common">
+    <ns72:UMLAttribute dataTypeName="java.lang.Long" description="Internal object identifier." name="id" publicID="2342455" version="1.0">
+     <ns72:SemanticMetadata conceptCode="C25364" conceptDefinition="One or more characters used to identify, name, or characterize the nature, properties, or contents of a thing." conceptName="Identifier" order="0"/>
+     <ns72:ValueDomain longName="java.lang.Long">
+      <ns72:enumerationCollection/>
+     </ns72:ValueDomain>
+    </ns72:UMLAttribute>
+    <ns72:UMLAttribute dataTypeName="java.lang.String" description="Description of the feature." name="description" publicID="2342458" version="1.0">
+     <ns72:SemanticMetadata conceptCode="C25365" conceptDefinition="Description; a statement that represents something in words." conceptName="Description " order="0"/>
+     <ns72:ValueDomain longName="java.lang.String">
+      <ns72:enumerationCollection/>
+     </ns72:ValueDomain>
+    </ns72:UMLAttribute>
+    <ns72:UMLAttribute dataTypeName="java.lang.Integer" description="Beginning position of a segment on the protein where feature applies." name="begin" publicID="2342456" version="1.0">
+     <ns72:SemanticMetadata conceptCode="C25431" conceptDefinition="Have a beginning, in a temporal, spatial, or evaluative sense." conceptName="Begin" order="0"/>
+     <ns72:ValueDomain longName="java.lang.Integer">
+      <ns72:enumerationCollection/>
+     </ns72:ValueDomain>
+    </ns72:UMLAttribute>
+    <ns72:UMLAttribute dataTypeName="java.lang.Integer" description="End position of a segment on the protein where feature applies." name="end" publicID="2342457" version="1.0">
+     <ns72:SemanticMetadata conceptCode="C25496" conceptDefinition="The point or place at which something terminates in time, space, or extent." conceptName="End" order="0"/>
+     <ns72:ValueDomain longName="java.lang.Integer">
+      <ns72:enumerationCollection/>
+     </ns72:ValueDomain>
+    </ns72:UMLAttribute>
+   </ns72:umlAttributeCollection>
+   <ns73:SemanticMetadata conceptCode="C47853" conceptDefinition="A sequence feature is an identifiable region or site of interest in a sequence." conceptName="Sequence Feature" order="0" xmlns:ns73="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common"/>
+   <ns74:SemanticMetadata conceptCode="C17021" conceptDefinition="Any of a group of complex organic macromolecules that contain carbon, hydrogen, oxygen, nitrogen, and usually sulfur and are composed of one or more chains of amino acids. Proteins are fundamental components of all living cells and include many substances, such as enzymes, hormones, and antibodies, that are necessary for the proper functioning of an organism." conceptName="Protein" order="1" xmlns:ns74="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common"/>
+  </ns1:UMLClass>
+  <ns1:UMLClass allowableAsTarget="true" className="GlycosylationSite" description="Glycosylation site." id="46E95F75-7338-7473-E044-0003BA3F9857" packageName="edu.georgetown.pir.domain" projectName="PIR 1.2" projectVersion="1.2">
+   <ns75:umlAttributeCollection xmlns:ns75="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common">
+    <ns75:UMLAttribute dataTypeName="java.lang.Integer" description="Glycosylation site. Beginning position of a segment on the protein where feature applies." name="begin" publicID="2342522" version="1.0">
+     <ns75:SemanticMetadata conceptCode="C25431" conceptDefinition="Have a beginning, in a temporal, spatial, or evaluative sense." conceptName="Begin" order="0"/>
+     <ns75:ValueDomain longName="java.lang.Integer">
+      <ns75:enumerationCollection/>
+     </ns75:ValueDomain>
+    </ns75:UMLAttribute>
+    <ns75:UMLAttribute dataTypeName="java.lang.String" description="Glycosylation site. Description of the feature." name="description" publicID="2342524" version="1.0">
+     <ns75:SemanticMetadata conceptCode="C25365" conceptDefinition="Description; a statement that represents something in words." conceptName="Description " order="0"/>
+     <ns75:ValueDomain longName="java.lang.String">
+      <ns75:enumerationCollection/>
+     </ns75:ValueDomain>
+    </ns75:UMLAttribute>
+    <ns75:UMLAttribute dataTypeName="java.lang.Integer" description="Glycosylation site. End position of a segment on the protein where feature applies." name="end" publicID="2342523" version="1.0">
+     <ns75:SemanticMetadata conceptCode="C25496" conceptDefinition="The point or place at which something terminates in time, space, or extent." conceptName="End" order="0"/>
+     <ns75:ValueDomain longName="java.lang.Integer">
+      <ns75:enumerationCollection/>
+     </ns75:ValueDomain>
+    </ns75:UMLAttribute>
+    <ns75:UMLAttribute dataTypeName="java.lang.Long" description="Glycosylation site. Internal object identifier." name="id" publicID="2342521" version="1.0">
+     <ns75:SemanticMetadata conceptCode="C25364" conceptDefinition="One or more characters used to identify, name, or characterize the nature, properties, or contents of a thing." conceptName="Identifier" order="0"/>
+     <ns75:ValueDomain longName="java.lang.Long">
+      <ns75:enumerationCollection/>
+     </ns75:ValueDomain>
+    </ns75:UMLAttribute>
+   </ns75:umlAttributeCollection>
+   <ns76:SemanticMetadata conceptCode="C14051" conceptDefinition="A glycosylation site is an amino acid residue within a peptide that accepts oligosaccharide via amide linkage, specifically through amide nitrogen of asparagine via N-acetylglucosamine, as one of the post-translational modifications." conceptName="N-Glycosylation Site" order="0" xmlns:ns76="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common"/>
+  </ns1:UMLClass>
+  <ns1:UMLClass allowableAsTarget="true" className="UnsureResidue" description="Uncertainties in the sequence." id="46E95F75-7339-7473-E044-0003BA3F9857" packageName="edu.georgetown.pir.domain" projectName="PIR 1.2" projectVersion="1.2">
+   <ns77:umlAttributeCollection xmlns:ns77="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common">
+    <ns77:UMLAttribute dataTypeName="java.lang.Integer" description="Uncertainties in the sequence. End position of a segment on the protein where feature applies." name="end" publicID="2342615" version="1.0">
+     <ns77:SemanticMetadata conceptCode="C25496" conceptDefinition="The point or place at which something terminates in time, space, or extent." conceptName="End" order="0"/>
+     <ns77:ValueDomain longName="java.lang.Integer">
+      <ns77:enumerationCollection/>
+     </ns77:ValueDomain>
+    </ns77:UMLAttribute>
+    <ns77:UMLAttribute dataTypeName="java.lang.Long" description="Uncertainties in the sequence. Internal object identifier." name="id" publicID="2342613" version="1.0">
+     <ns77:SemanticMetadata conceptCode="C25364" conceptDefinition="One or more characters used to identify, name, or characterize the nature, properties, or contents of a thing." conceptName="Identifier" order="0"/>
+     <ns77:ValueDomain longName="java.lang.Long">
+      <ns77:enumerationCollection/>
+     </ns77:ValueDomain>
+    </ns77:UMLAttribute>
+    <ns77:UMLAttribute dataTypeName="java.lang.String" description="Uncertainties in the sequence. Description of the feature." name="description" publicID="2342616" version="1.0">
+     <ns77:SemanticMetadata conceptCode="C25365" conceptDefinition="Description; a statement that represents something in words." conceptName="Description " order="0"/>
+     <ns77:ValueDomain longName="java.lang.String">
+      <ns77:enumerationCollection/>
+     </ns77:ValueDomain>
+    </ns77:UMLAttribute>
+    <ns77:UMLAttribute dataTypeName="java.lang.Integer" description="Uncertainties in the sequence. Beginning position of a segment on the protein where feature applies." name="begin" publicID="2342614" version="1.0">
+     <ns77:SemanticMetadata conceptCode="C25431" conceptDefinition="Have a beginning, in a temporal, spatial, or evaluative sense." conceptName="Begin" order="0"/>
+     <ns77:ValueDomain longName="java.lang.Integer">
+      <ns77:enumerationCollection/>
+     </ns77:ValueDomain>
+    </ns77:UMLAttribute>
+   </ns77:umlAttributeCollection>
+   <ns78:SemanticMetadata conceptCode="C47944" conceptDefinition="Not established beyond doubt; still undecided or unknown." conceptName="Uncertain" order="1" xmlns:ns78="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common"/>
+   <ns79:SemanticMetadata conceptCode="C231" conceptDefinition="Organic compounds containing amino (-NH2) and carboxyl (-COOH) groups.  In biochemistry, used to refer to the twenty-plus L-alpha-amino acids found in proteins." conceptName="Amino Acid" order="0" xmlns:ns79="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common"/>
+  </ns1:UMLClass>
+  <ns1:UMLClass allowableAsTarget="true" className="Keyword" description="UniProt keywords relevant to the protein." id="46E95F75-733A-7473-E044-0003BA3F9857" packageName="edu.georgetown.pir.domain" projectName="PIR 1.2" projectVersion="1.2">
+   <ns80:umlAttributeCollection xmlns:ns80="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common">
+    <ns80:UMLAttribute dataTypeName="java.lang.String" description="UniProt keyword identifier (or the keyword itself) e.g. Acetylation." name="uniprotKeyword" publicID="2342464" version="1.0">
+     <ns80:SemanticMetadata conceptCode="C25364" conceptDefinition="One or more characters used to identify, name, or characterize the nature, properties, or contents of a thing." conceptName="Identifier" order="1"/>
+     <ns80:SemanticMetadata conceptCode="C43513" conceptDefinition="A small set of words designed to convey the subject of a technical article." conceptName="Keyword" order="0"/>
+     <ns80:SemanticMetadata conceptCode="C43579" conceptDefinition="UniProt (Universal Protein Resource) is the world's most comprehensive catalog of information on proteins. It is a central repository of protein sequence and function created by joining the information contained in Swiss-Prot, TrEMBL, and PIR.  The UniProt Knowledgebase (UniProt) is the central access point for extensive curated protein information, including function, classification, and cross-reference.  (http://www.pir.uniprot.org/)" conceptName="Universal Protein Resource" order="2"/>
+     <ns80:ValueDomain longName="java.lang.String">
+      <ns80:enumerationCollection/>
+     </ns80:ValueDomain>
+    </ns80:UMLAttribute>
+    <ns80:UMLAttribute dataTypeName="java.lang.String" description="Internal object identifier." name="id" publicID="2342462" version="1.0">
+     <ns80:SemanticMetadata conceptCode="C25364" conceptDefinition="One or more characters used to identify, name, or characterize the nature, properties, or contents of a thing." conceptName="Identifier" order="0"/>
+     <ns80:ValueDomain longName="java.lang.String">
+      <ns80:enumerationCollection/>
+     </ns80:ValueDomain>
+    </ns80:UMLAttribute>
+    <ns80:UMLAttribute dataTypeName="java.lang.String" description="UniProt keyword accession." name="uniprotKeywordAccession" publicID="2342463" version="1.0">
+     <ns80:SemanticMetadata conceptCode="C43579" conceptDefinition="UniProt (Universal Protein Resource) is the world's most comprehensive catalog of information on proteins. It is a central repository of protein sequence and function created by joining the information contained in Swiss-Prot, TrEMBL, and PIR.  The UniProt Knowledgebase (UniProt) is the central access point for extensive curated protein information, including function, classification, and cross-reference.  (http://www.pir.uniprot.org/)" conceptName="Universal Protein Resource" order="1"/>
+     <ns80:SemanticMetadata conceptCode="C15402" conceptDefinition="A control number unique to an object, used to identify it among the other objects in a collection." conceptName="Accession Number" order="0"/>
+     <ns80:ValueDomain longName="java.lang.String">
+      <ns80:enumerationCollection/>
+     </ns80:ValueDomain>
+    </ns80:UMLAttribute>
+   </ns80:umlAttributeCollection>
+   <ns81:SemanticMetadata conceptCode="C43513" conceptDefinition="A small set of words designed to convey the subject of a technical article." conceptName="Keyword" order="0" xmlns:ns81="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common"/>
+  </ns1:UMLClass>
+  <ns1:UMLClass allowableAsTarget="true" className="TransmembraneRegion" description="Extent of a transmembrane region." id="46E95F75-733B-7473-E044-0003BA3F9857" packageName="edu.georgetown.pir.domain" projectName="PIR 1.2" projectVersion="1.2">
+   <ns82:umlAttributeCollection xmlns:ns82="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common">
+    <ns82:UMLAttribute dataTypeName="java.lang.Integer" description="Extent of a transmembrane region. End position of a segment on the protein where feature applies." name="end" publicID="2342607" version="1.0">
+     <ns82:SemanticMetadata conceptCode="C25496" conceptDefinition="The point or place at which something terminates in time, space, or extent." conceptName="End" order="0"/>
+     <ns82:ValueDomain longName="java.lang.Integer">
+      <ns82:enumerationCollection/>
+     </ns82:ValueDomain>
+    </ns82:UMLAttribute>
+    <ns82:UMLAttribute dataTypeName="java.lang.Long" description="Extent of a transmembrane region. Internal object identifier." name="id" publicID="2342605" version="1.0">
+     <ns82:SemanticMetadata conceptCode="C25364" conceptDefinition="One or more characters used to identify, name, or characterize the nature, properties, or contents of a thing." conceptName="Identifier" order="0"/>
+     <ns82:ValueDomain longName="java.lang.Long">
+      <ns82:enumerationCollection/>
+     </ns82:ValueDomain>
+    </ns82:UMLAttribute>
+    <ns82:UMLAttribute dataTypeName="java.lang.String" description="Extent of a transmembrane region. Description of the feature." name="description" publicID="2342608" version="1.0">
+     <ns82:SemanticMetadata conceptCode="C25365" conceptDefinition="Description; a statement that represents something in words." conceptName="Description " order="0"/>
+     <ns82:ValueDomain longName="java.lang.String">
+      <ns82:enumerationCollection/>
+     </ns82:ValueDomain>
+    </ns82:UMLAttribute>
+    <ns82:UMLAttribute dataTypeName="java.lang.Integer" description="Extent of a transmembrane region. Beginning position of a segment on the protein where feature applies." name="begin" publicID="2342606" version="1.0">
+     <ns82:SemanticMetadata conceptCode="C25431" conceptDefinition="Have a beginning, in a temporal, spatial, or evaluative sense." conceptName="Begin" order="0"/>
+     <ns82:ValueDomain longName="java.lang.Integer">
+      <ns82:enumerationCollection/>
+     </ns82:ValueDomain>
+    </ns82:UMLAttribute>
+   </ns82:umlAttributeCollection>
+   <ns83:SemanticMetadata conceptCode="C13410" conceptDefinition="The portion of an integral membrane protein crossing through the plasma lemma (cell membrane) or that of an internal vesicle. This region is highly hydrophobic, approximately 20 amino acids long, and bordered by charged amino acids." conceptName="Transmembrane Domain" order="0" xmlns:ns83="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common"/>
+  </ns1:UMLClass>
+  <ns1:UMLClass allowableAsTarget="true" className="NonTerminalResidue" description="The residue at an extremity of the sequence is not the terminal residue." id="46E95F75-733C-7473-E044-0003BA3F9857" packageName="edu.georgetown.pir.domain" projectName="PIR 1.2" projectVersion="1.2">
+   <ns84:umlAttributeCollection xmlns:ns84="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common">
+    <ns84:UMLAttribute dataTypeName="java.lang.Integer" description="The residue at an extremity of the sequence is not the terminal residue. Beginning position of a segment on the protein where feature applies." name="begin" publicID="2342554" version="1.0">
+     <ns84:SemanticMetadata conceptCode="C25431" conceptDefinition="Have a beginning, in a temporal, spatial, or evaluative sense." conceptName="Begin" order="0"/>
+     <ns84:ValueDomain longName="java.lang.Integer">
+      <ns84:enumerationCollection/>
+     </ns84:ValueDomain>
+    </ns84:UMLAttribute>
+    <ns84:UMLAttribute dataTypeName="java.lang.String" description="The residue at an extremity of the sequence is not the terminal residue. Description of the feature." name="description" publicID="2342556" version="1.0">
+     <ns84:SemanticMetadata conceptCode="C25365" conceptDefinition="Description; a statement that represents something in words." conceptName="Description " order="0"/>
+     <ns84:ValueDomain longName="java.lang.String">
+      <ns84:enumerationCollection/>
+     </ns84:ValueDomain>
+    </ns84:UMLAttribute>
+    <ns84:UMLAttribute dataTypeName="java.lang.Integer" description="The residue at an extremity of the sequence is not the terminal residue. End position of a segment on the protein where feature applies." name="end" publicID="2342555" version="1.0">
+     <ns84:SemanticMetadata conceptCode="C25496" conceptDefinition="The point or place at which something terminates in time, space, or extent." conceptName="End" order="0"/>
+     <ns84:ValueDomain longName="java.lang.Integer">
+      <ns84:enumerationCollection/>
+     </ns84:ValueDomain>
+    </ns84:UMLAttribute>
+    <ns84:UMLAttribute dataTypeName="java.lang.Long" description="The residue at an extremity of the sequence is not the terminal residue. Internal object identifier." name="id" publicID="2342553" version="1.0">
+     <ns84:SemanticMetadata conceptCode="C25364" conceptDefinition="One or more characters used to identify, name, or characterize the nature, properties, or contents of a thing." conceptName="Identifier" order="0"/>
+     <ns84:ValueDomain longName="java.lang.Long">
+      <ns84:enumerationCollection/>
+     </ns84:ValueDomain>
+    </ns84:UMLAttribute>
+   </ns84:umlAttributeCollection>
+   <ns85:SemanticMetadata conceptCode="C47940" conceptDefinition="Being or situated at an end; occurring at or forming an end." conceptName="Terminal" order="1" xmlns:ns85="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common"/>
+   <ns86:SemanticMetadata conceptCode="C231" conceptDefinition="Organic compounds containing amino (-NH2) and carboxyl (-COOH) groups.  In biochemistry, used to refer to the twenty-plus L-alpha-amino acids found in proteins." conceptName="Amino Acid" order="0" xmlns:ns86="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common"/>
+   <ns87:SemanticMetadata conceptCode="C25594" conceptDefinition="An operation in which a term denies or inverts the meaning of another term or construction." conceptName="Not" order="2" xmlns:ns87="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common"/>
+  </ns1:UMLClass>
+  <ns1:UMLClass allowableAsTarget="true" className="ProteinName" description="Name of the protein." id="46E95F75-733D-7473-E044-0003BA3F9857" packageName="edu.georgetown.pir.domain" projectName="PIR 1.2" projectVersion="1.2">
+   <ns88:umlAttributeCollection xmlns:ns88="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common">
+    <ns88:UMLAttribute dataTypeName="java.lang.Long" description="Internal object identifier." name="id" publicID="2223888" version="3.0">
+     <ns88:SemanticMetadata conceptCode="C25364" conceptDefinition="One or more characters used to identify, name, or characterize the nature, properties, or contents of a thing." conceptName="Identifier" order="0"/>
+     <ns88:ValueDomain longName="java.lang.Long">
+      <ns88:enumerationCollection/>
+     </ns88:ValueDomain>
+    </ns88:UMLAttribute>
+    <ns88:UMLAttribute dataTypeName="java.lang.String" description="Name of the protein." name="value" publicID="2223889" version="3.0">
+     <ns88:SemanticMetadata conceptCode="C42614" conceptDefinition="The words or language units by which a thing is known." conceptName="Name" order="0"/>
+     <ns88:ValueDomain longName="java.lang.String">
+      <ns88:enumerationCollection/>
+     </ns88:ValueDomain>
+    </ns88:UMLAttribute>
+   </ns88:umlAttributeCollection>
+   <ns89:SemanticMetadata conceptCode="C42614" conceptDefinition="The words or language units by which a thing is known." conceptName="Name" order="0" xmlns:ns89="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common"/>
+   <ns90:SemanticMetadata conceptCode="C25415" conceptDefinition="Available in place of something else." conceptName="Alternative" order="1" xmlns:ns90="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common"/>
+   <ns91:SemanticMetadata conceptCode="C17021" conceptDefinition="Any of a group of complex organic macromolecules that contain carbon, hydrogen, oxygen, nitrogen, and usually sulfur and are composed of one or more chains of amino acids. Proteins are fundamental components of all living cells and include many substances, such as enzymes, hormones, and antibodies, that are necessary for the proper functioning of an organism." conceptName="Protein" order="2" xmlns:ns91="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common"/>
+  </ns1:UMLClass>
+  <ns1:UMLClass allowableAsTarget="true" className="DomainName" description="Name of the functional domain found in protein." id="46E95F75-733E-7473-E044-0003BA3F9857" packageName="edu.georgetown.pir.domain" projectName="PIR 1.2" projectVersion="1.2">
+   <ns92:umlAttributeCollection xmlns:ns92="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common">
+    <ns92:UMLAttribute dataTypeName="java.lang.String" description="Name of the functional domain found in protein." name="value" publicID="2342479" version="1.0">
+     <ns92:SemanticMetadata conceptCode="C42614" conceptDefinition="The words or language units by which a thing is known." conceptName="Name" order="0"/>
+     <ns92:ValueDomain longName="java.lang.String">
+      <ns92:enumerationCollection/>
+     </ns92:ValueDomain>
+    </ns92:UMLAttribute>
+    <ns92:UMLAttribute dataTypeName="java.lang.Long" description="Internal object identifier." name="id" publicID="2342478" version="1.0">
+     <ns92:SemanticMetadata conceptCode="C25364" conceptDefinition="One or more characters used to identify, name, or characterize the nature, properties, or contents of a thing." conceptName="Identifier" order="0"/>
+     <ns92:ValueDomain longName="java.lang.Long">
+      <ns92:enumerationCollection/>
+     </ns92:ValueDomain>
+    </ns92:UMLAttribute>
+   </ns92:umlAttributeCollection>
+   <ns93:SemanticMetadata conceptCode="C13379" conceptDefinition="A protein domain is a structurally and functionally defined protein region. (from http://www.ddmag.com)" conceptName="Protein Domain" order="1" xmlns:ns93="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common"/>
+   <ns94:SemanticMetadata conceptCode="C42614" conceptDefinition="The words or language units by which a thing is known." conceptName="Name" order="0" xmlns:ns94="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common"/>
+  </ns1:UMLClass>
+  <ns1:UMLClass allowableAsTarget="true" className="ComponentName" description="Name of the functional component found in protein." id="46E95F75-733F-7473-E044-0003BA3F9857" packageName="edu.georgetown.pir.domain" projectName="PIR 1.2" projectVersion="1.2">
+   <ns95:umlAttributeCollection xmlns:ns95="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common">
+    <ns95:UMLAttribute dataTypeName="java.lang.String" description="Name of the functional component found in protein." name="value" publicID="2342477" version="1.0">
+     <ns95:SemanticMetadata conceptCode="C42614" conceptDefinition="The words or language units by which a thing is known." conceptName="Name" order="0"/>
+     <ns95:ValueDomain longName="java.lang.String">
+      <ns95:enumerationCollection/>
+     </ns95:ValueDomain>
+    </ns95:UMLAttribute>
+    <ns95:UMLAttribute dataTypeName="java.lang.Long" description="Internal object identifier." name="id" publicID="2342476" version="1.0">
+     <ns95:SemanticMetadata conceptCode="C25364" conceptDefinition="One or more characters used to identify, name, or characterize the nature, properties, or contents of a thing." conceptName="Identifier" order="0"/>
+     <ns95:ValueDomain longName="java.lang.Long">
+      <ns95:enumerationCollection/>
+     </ns95:ValueDomain>
+    </ns95:UMLAttribute>
+   </ns95:umlAttributeCollection>
+   <ns96:SemanticMetadata conceptCode="C45994" conceptDefinition="A protein cleavage product with a demonstrated function." conceptName="Protein Component" order="1" xmlns:ns96="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common"/>
+   <ns97:SemanticMetadata conceptCode="C42614" conceptDefinition="The words or language units by which a thing is known." conceptName="Name" order="0" xmlns:ns97="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common"/>
+  </ns1:UMLClass>
+  <ns1:UMLClass allowableAsTarget="true" className="DNABindingRegion" description="Extent of a DNA-binding region." id="46E95F75-7340-7473-E044-0003BA3F9857" packageName="edu.georgetown.pir.domain" projectName="PIR 1.2" projectVersion="1.2">
+   <ns98:umlAttributeCollection xmlns:ns98="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common">
+    <ns98:UMLAttribute dataTypeName="java.lang.Integer" description="Extent of a DNA-binding region. Beginning position of a segment on the protein where feature applies." name="begin" publicID="2342514" version="1.0">
+     <ns98:SemanticMetadata conceptCode="C25431" conceptDefinition="Have a beginning, in a temporal, spatial, or evaluative sense." conceptName="Begin" order="0"/>
+     <ns98:ValueDomain longName="java.lang.Integer">
+      <ns98:enumerationCollection/>
+     </ns98:ValueDomain>
+    </ns98:UMLAttribute>
+    <ns98:UMLAttribute dataTypeName="java.lang.String" description="Extent of a DNA-binding region. Description of the feature." name="description" publicID="2342516" version="1.0">
+     <ns98:SemanticMetadata conceptCode="C25365" conceptDefinition="Description; a statement that represents something in words." conceptName="Description " order="0"/>
+     <ns98:ValueDomain longName="java.lang.String">
+      <ns98:enumerationCollection/>
+     </ns98:ValueDomain>
+    </ns98:UMLAttribute>
+    <ns98:UMLAttribute dataTypeName="java.lang.Integer" description="Extent of a DNA-binding region. End position of a segment on the protein where feature applies." name="end" publicID="2342515" version="1.0">
+     <ns98:SemanticMetadata conceptCode="C25496" conceptDefinition="The point or place at which something terminates in time, space, or extent." conceptName="End" order="0"/>
+     <ns98:ValueDomain longName="java.lang.Integer">
+      <ns98:enumerationCollection/>
+     </ns98:ValueDomain>
+    </ns98:UMLAttribute>
+    <ns98:UMLAttribute dataTypeName="java.lang.Long" description="Extent of a DNA-binding region. Internal object identifier." name="id" publicID="2342513" version="1.0">
+     <ns98:SemanticMetadata conceptCode="C25364" conceptDefinition="One or more characters used to identify, name, or characterize the nature, properties, or contents of a thing." conceptName="Identifier" order="0"/>
+     <ns98:ValueDomain longName="java.lang.Long">
+      <ns98:enumerationCollection/>
+     </ns98:ValueDomain>
+    </ns98:UMLAttribute>
+   </ns98:umlAttributeCollection>
+   <ns99:SemanticMetadata conceptCode="C13425" conceptDefinition="A region of a protein that interacts with DNA. Among the various recognized structural motifs present in DNA binding domains are the helix-loop-helix and the zinc-finger." conceptName="DNA Binding Domain" order="0" xmlns:ns99="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common"/>
+  </ns1:UMLClass>
+  <ns1:UMLClass allowableAsTarget="true" className="Site" description="Any interesting single amino-acid site on the sequence, that doesn't fall into any other feature category." id="46E95F75-7341-7473-E044-0003BA3F9857" packageName="edu.georgetown.pir.domain" projectName="PIR 1.2" projectVersion="1.2">
+   <ns100:umlAttributeCollection xmlns:ns100="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common">
+    <ns100:UMLAttribute dataTypeName="java.lang.Integer" description="Any interesting single amino-acid site on the sequence, that doesn't fall into any other feature category. Beginning position of a segment on the protein where feature applies." name="begin" publicID="2342590" version="1.0">
+     <ns100:SemanticMetadata conceptCode="C25431" conceptDefinition="Have a beginning, in a temporal, spatial, or evaluative sense." conceptName="Begin" order="0"/>
+     <ns100:ValueDomain longName="java.lang.Integer">
+      <ns100:enumerationCollection/>
+     </ns100:ValueDomain>
+    </ns100:UMLAttribute>
+    <ns100:UMLAttribute dataTypeName="java.lang.Long" description="Any interesting single amino-acid site on the sequence, that doesn't fall into any other feature category. Internal object identifier." name="id" publicID="2342589" version="1.0">
+     <ns100:SemanticMetadata conceptCode="C25364" conceptDefinition="One or more characters used to identify, name, or characterize the nature, properties, or contents of a thing." conceptName="Identifier" order="0"/>
+     <ns100:ValueDomain longName="java.lang.Long">
+      <ns100:enumerationCollection/>
+     </ns100:ValueDomain>
+    </ns100:UMLAttribute>
+    <ns100:UMLAttribute dataTypeName="java.lang.Integer" description="Any interesting single amino-acid site on the sequence, that doesn't fall into any other feature category. End position of a segment on the protein where feature applies." name="end" publicID="2342591" version="1.0">
+     <ns100:SemanticMetadata conceptCode="C25496" conceptDefinition="The point or place at which something terminates in time, space, or extent." conceptName="End" order="0"/>
+     <ns100:ValueDomain longName="java.lang.Integer">
+      <ns100:enumerationCollection/>
+     </ns100:ValueDomain>
+    </ns100:UMLAttribute>
+    <ns100:UMLAttribute dataTypeName="java.lang.String" description="Any interesting single amino-acid site on the sequence, that doesn't fall into any other feature category. Description of the feature." name="description" publicID="2342592" version="1.0">
+     <ns100:SemanticMetadata conceptCode="C25365" conceptDefinition="Description; a statement that represents something in words." conceptName="Description " order="0"/>
+     <ns100:ValueDomain longName="java.lang.String">
+      <ns100:enumerationCollection/>
+     </ns100:ValueDomain>
+    </ns100:UMLAttribute>
+   </ns100:umlAttributeCollection>
+   <ns101:SemanticMetadata conceptCode="C231" conceptDefinition="Organic compounds containing amino (-NH2) and carboxyl (-COOH) groups.  In biochemistry, used to refer to the twenty-plus L-alpha-amino acids found in proteins." conceptName="Amino Acid" order="1" xmlns:ns101="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common"/>
+   <ns102:SemanticMetadata conceptCode="C37901" conceptDefinition="Position in relation to the surroundings." conceptName="Site" order="0" xmlns:ns102="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common"/>
+  </ns1:UMLClass>
+  <ns1:UMLClass allowableAsTarget="true" className="ProteinSequence" description="Information on the sequence for the protein." id="46E95F75-7342-7473-E044-0003BA3F9857" packageName="edu.georgetown.pir.domain" projectName="PIR 1.2" projectVersion="1.2">
+   <ns103:umlAttributeCollection xmlns:ns103="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common">
+    <ns103:UMLAttribute dataTypeName="java.lang.String" description="Internal object identifier." name="id" publicID="2342470" version="1.0">
+     <ns103:SemanticMetadata conceptCode="C25364" conceptDefinition="One or more characters used to identify, name, or characterize the nature, properties, or contents of a thing." conceptName="Identifier" order="0"/>
+     <ns103:ValueDomain longName="java.lang.String">
+      <ns103:enumerationCollection/>
+     </ns103:ValueDomain>
+    </ns103:UMLAttribute>
+    <ns103:UMLAttribute dataTypeName="java.lang.Integer" description="Length of the protein sequence." name="length" publicID="2342472" version="1.0">
+     <ns103:SemanticMetadata conceptCode="C25334" conceptDefinition="Length; the linear extent in space from one end to the other." conceptName="Length" order="0"/>
+     <ns103:ValueDomain longName="java.lang.Integer">
+      <ns103:enumerationCollection/>
+     </ns103:ValueDomain>
+    </ns103:UMLAttribute>
+    <ns103:UMLAttribute dataTypeName="java.lang.Integer" description="Molecular weight of the protein." name="molecularWeightInDaltons" publicID="2342473" version="1.0">
+     <ns103:SemanticMetadata conceptCode="C43521" conceptDefinition="The molecular mass of a substance is the sum of the relative atomic masses of the constituent atoms of a molecule." conceptName="Molecular_Weight" order="0"/>
+     <ns103:SemanticMetadata conceptCode="C41127" conceptDefinition="A non-SI unit of mass equivalent of the weight of a hydrogen atom or one-sixteenth of mass of oxygen atom, or 1.657 x 10(e-24) grams." conceptName="Dalton" order="1"/>
+     <ns103:ValueDomain longName="java.lang.Integer">
+      <ns103:enumerationCollection/>
+     </ns103:ValueDomain>
+    </ns103:UMLAttribute>
+    <ns103:UMLAttribute dataTypeName="java.lang.String" description="64-bit CRC (Cyclic Redundancy Check) value for the protein sequence." name="checksum" publicID="2223885" version="3.0">
+     <ns103:SemanticMetadata conceptCode="C43522" conceptDefinition="A computed value which depends on the contents of a block of data and which is transmitted or stored along with the data in order to detect corruption of the data. The receiving system recomputes the checksum based upon the received data and compares this value with the one sent with the data. If the two values are the same, the receiver has some confidence that the data was received correctly. (http://foldoc.doc.ic.ac.uk/foldoc/foldoc.cgi?checksum)" conceptName="Checksum" order="0"/>
+     <ns103:ValueDomain longName="java.lang.String">
+      <ns103:enumerationCollection/>
+     </ns103:ValueDomain>
+    </ns103:UMLAttribute>
+    <ns103:UMLAttribute dataTypeName="java.lang.String" description="Sequence of single-letter amino acid code for the protein." name="value" publicID="2223886" version="3.0">
+     <ns103:SemanticMetadata conceptCode="C25712" conceptDefinition="A numerical quantity measured or assigned or computed." conceptName="Value" order="0"/>
+     <ns103:ValueDomain longName="java.lang.String">
+      <ns103:enumerationCollection/>
+     </ns103:ValueDomain>
+    </ns103:UMLAttribute>
+    <ns103:UMLAttribute dataTypeName="java.lang.String" description="Sequence of single-letter amino acid code for the protein in FASTA format." name="sequenceInFastaFormat" publicID="2342474" version="1.0">
+     <ns103:SemanticMetadata conceptCode="C47845" conceptDefinition="A sequence in FASTA format consists of a single-line description, followed by lines of sequence data. The first character of the description line is a greater-than (&quot;&gt;&quot;) symbol in the first column.  Sequences are represented in the standard IUB/IUPAC single letter amino acid and nucleic acid codes, with a single hyphen or dash being used to represent a gap of indeterminate length; in amino acid sequences asterix (&quot;*&quot;) can represent a translation stop." conceptName="FASTA Format" order="1"/>
+     <ns103:SemanticMetadata conceptCode="C13187" conceptDefinition="The arrangement of amino acids in a protein.  Proteins can be made from 20 different kinds of amino acids, and the structure and function of each type of protein are determined by the kinds of amino acids used to make it and how they are arranged." conceptName="Protein Sequence" order="0"/>
+     <ns103:ValueDomain longName="java.lang.String">
+      <ns103:enumerationCollection/>
+     </ns103:ValueDomain>
+    </ns103:UMLAttribute>
+   </ns103:umlAttributeCollection>
+   <ns104:SemanticMetadata conceptCode="C13187" conceptDefinition="The arrangement of amino acids in a protein.  Proteins can be made from 20 different kinds of amino acids, and the structure and function of each type of protein are determined by the kinds of amino acids used to make it and how they are arranged." conceptName="Protein Sequence" order="0" xmlns:ns104="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common"/>
+  </ns1:UMLClass>
+  <ns1:UMLClass allowableAsTarget="true" className="CrossLink" description="Posttranslationally formed amino acid bonds." id="46E95F75-7343-7473-E044-0003BA3F9857" packageName="edu.georgetown.pir.domain" projectName="PIR 1.2" projectVersion="1.2">
+   <ns105:umlAttributeCollection xmlns:ns105="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common">
+    <ns105:UMLAttribute dataTypeName="java.lang.Integer" description="Posttranslationally formed amino acid bonds. End position of a segment on the protein where feature applies." name="end" publicID="2342507" version="1.0">
+     <ns105:SemanticMetadata conceptCode="C25496" conceptDefinition="The point or place at which something terminates in time, space, or extent." conceptName="End" order="0"/>
+     <ns105:ValueDomain longName="java.lang.Integer">
+      <ns105:enumerationCollection/>
+     </ns105:ValueDomain>
+    </ns105:UMLAttribute>
+    <ns105:UMLAttribute dataTypeName="java.lang.Long" description="Posttranslationally formed amino acid bonds. Internal object identifier." name="id" publicID="2342505" version="1.0">
+     <ns105:SemanticMetadata conceptCode="C25364" conceptDefinition="One or more characters used to identify, name, or characterize the nature, properties, or contents of a thing." conceptName="Identifier" order="0"/>
+     <ns105:ValueDomain longName="java.lang.Long">
+      <ns105:enumerationCollection/>
+     </ns105:ValueDomain>
+    </ns105:UMLAttribute>
+    <ns105:UMLAttribute dataTypeName="java.lang.String" description="Posttranslationally formed amino acid bonds. Description of the feature." name="description" publicID="2342508" version="1.0">
+     <ns105:SemanticMetadata conceptCode="C25365" conceptDefinition="Description; a statement that represents something in words." conceptName="Description " order="0"/>
+     <ns105:ValueDomain longName="java.lang.String">
+      <ns105:enumerationCollection/>
+     </ns105:ValueDomain>
+    </ns105:UMLAttribute>
+    <ns105:UMLAttribute dataTypeName="java.lang.Integer" description="Posttranslationally formed amino acid bonds. Beginning position of a segment on the protein where feature applies." name="begin" publicID="2342506" version="1.0">
+     <ns105:SemanticMetadata conceptCode="C25431" conceptDefinition="Have a beginning, in a temporal, spatial, or evaluative sense." conceptName="Begin" order="0"/>
+     <ns105:ValueDomain longName="java.lang.Integer">
+      <ns105:enumerationCollection/>
+     </ns105:ValueDomain>
+    </ns105:UMLAttribute>
+   </ns105:umlAttributeCollection>
+   <ns106:SemanticMetadata conceptCode="C231" conceptDefinition="Organic compounds containing amino (-NH2) and carboxyl (-COOH) groups.  In biochemistry, used to refer to the twenty-plus L-alpha-amino acids found in proteins." conceptName="Amino Acid" order="1" xmlns:ns106="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common"/>
+   <ns107:SemanticMetadata conceptCode="C47936" conceptDefinition="Any covalent linkage between two polymers or between two different regions of the same polymer." conceptName="Cross Link" order="0" xmlns:ns107="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common"/>
+  </ns1:UMLClass>
+  <ns1:UMLClass allowableAsTarget="true" className="TransitPeptide" description="Extent of a transit peptide (mitochondrion, chloroplast, thylakoid, cyanelle or microbody).
+" id="46E95F75-7344-7473-E044-0003BA3F9857" packageName="edu.georgetown.pir.domain" projectName="PIR 1.2" projectVersion="1.2">
+   <ns108:umlAttributeCollection xmlns:ns108="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common">
+    <ns108:UMLAttribute dataTypeName="java.lang.Long" description="Extent of a transit peptide (mitochondrion, chloroplast, thylakoid, cyanelle or microbody).
+ Internal object identifier." name="id" publicID="2342601" version="1.0">
+     <ns108:SemanticMetadata conceptCode="C25364" conceptDefinition="One or more characters used to identify, name, or characterize the nature, properties, or contents of a thing." conceptName="Identifier" order="0"/>
+     <ns108:ValueDomain longName="java.lang.Long">
+      <ns108:enumerationCollection/>
+     </ns108:ValueDomain>
+    </ns108:UMLAttribute>
+    <ns108:UMLAttribute dataTypeName="java.lang.Integer" description="Extent of a transit peptide (mitochondrion, chloroplast, thylakoid, cyanelle or microbody).
+ End position of a segment on the protein where feature applies." name="end" publicID="2342603" version="1.0">
+     <ns108:SemanticMetadata conceptCode="C25496" conceptDefinition="The point or place at which something terminates in time, space, or extent." conceptName="End" order="0"/>
+     <ns108:ValueDomain longName="java.lang.Integer">
+      <ns108:enumerationCollection/>
+     </ns108:ValueDomain>
+    </ns108:UMLAttribute>
+    <ns108:UMLAttribute dataTypeName="java.lang.Integer" description="Extent of a transit peptide (mitochondrion, chloroplast, thylakoid, cyanelle or microbody).
+ Beginning position of a segment on the protein where feature applies." name="begin" publicID="2342602" version="1.0">
+     <ns108:SemanticMetadata conceptCode="C25431" conceptDefinition="Have a beginning, in a temporal, spatial, or evaluative sense." conceptName="Begin" order="0"/>
+     <ns108:ValueDomain longName="java.lang.Integer">
+      <ns108:enumerationCollection/>
+     </ns108:ValueDomain>
+    </ns108:UMLAttribute>
+    <ns108:UMLAttribute dataTypeName="java.lang.String" description="Extent of a transit peptide (mitochondrion, chloroplast, thylakoid, cyanelle or microbody).
+ Description of the feature." name="description" publicID="2342604" version="1.0">
+     <ns108:SemanticMetadata conceptCode="C25365" conceptDefinition="Description; a statement that represents something in words." conceptName="Description " order="0"/>
+     <ns108:ValueDomain longName="java.lang.String">
+      <ns108:enumerationCollection/>
+     </ns108:ValueDomain>
+    </ns108:UMLAttribute>
+   </ns108:umlAttributeCollection>
+   <ns109:SemanticMetadata conceptCode="C47943" conceptDefinition="The N-terminal sequence of a protein that is required to direct the localization of a cytoplasmic protein to a subcellular membrane-bound organelle." conceptName="Transit Peptide" order="0" xmlns:ns109="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common"/>
+  </ns1:UMLClass>
+  <ns1:UMLClass allowableAsTarget="true" className="SequenceConflict" description="Different sequences reported in different sources for the same protein." id="46E95F75-7345-7473-E044-0003BA3F9857" packageName="edu.georgetown.pir.domain" projectName="PIR 1.2" projectVersion="1.2">
+   <ns110:umlAttributeCollection xmlns:ns110="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common">
+    <ns110:UMLAttribute dataTypeName="java.lang.Integer" description="Different sequences reported in different sources for the same protein. End position of a segment on the protein where feature applies." name="end" publicID="2342579" version="1.0">
+     <ns110:SemanticMetadata conceptCode="C25496" conceptDefinition="The point or place at which something terminates in time, space, or extent." conceptName="End" order="0"/>
+     <ns110:ValueDomain longName="java.lang.Integer">
+      <ns110:enumerationCollection/>
+     </ns110:ValueDomain>
+    </ns110:UMLAttribute>
+    <ns110:UMLAttribute dataTypeName="java.lang.String" description="Variant sequence segment." name="variantSequence" publicID="2342447" version="1.0">
+     <ns110:SemanticMetadata conceptCode="C25713" conceptDefinition="Variation; something that deviates from a norm or standard; an instance of change." conceptName="Variation" order="1"/>
+     <ns110:SemanticMetadata conceptCode="C13187" conceptDefinition="The arrangement of amino acids in a protein.  Proteins can be made from 20 different kinds of amino acids, and the structure and function of each type of protein are determined by the kinds of amino acids used to make it and how they are arranged." conceptName="Protein Sequence" order="0"/>
+     <ns110:ValueDomain longName="java.lang.String">
+      <ns110:enumerationCollection/>
+     </ns110:ValueDomain>
+    </ns110:UMLAttribute>
+    <ns110:UMLAttribute dataTypeName="java.lang.String" description="Different sequences reported in different sources for the same protein. Description of the feature." name="description" publicID="2342580" version="1.0">
+     <ns110:SemanticMetadata conceptCode="C25365" conceptDefinition="Description; a statement that represents something in words." conceptName="Description " order="0"/>
+     <ns110:ValueDomain longName="java.lang.String">
+      <ns110:enumerationCollection/>
+     </ns110:ValueDomain>
+    </ns110:UMLAttribute>
+    <ns110:UMLAttribute dataTypeName="java.lang.Integer" description="Different sequences reported in different sources for the same protein. Beginning position of a segment on the protein where feature applies." name="begin" publicID="2342578" version="1.0">
+     <ns110:SemanticMetadata conceptCode="C25431" conceptDefinition="Have a beginning, in a temporal, spatial, or evaluative sense." conceptName="Begin" order="0"/>
+     <ns110:ValueDomain longName="java.lang.Integer">
+      <ns110:enumerationCollection/>
+     </ns110:ValueDomain>
+    </ns110:UMLAttribute>
+    <ns110:UMLAttribute dataTypeName="java.lang.String" description="Original sequence segment." name="originalSequence" publicID="2342446" version="1.0">
+     <ns110:SemanticMetadata conceptCode="C25604" conceptDefinition="Preceding all others in time or being as first made or performed." conceptName="Original" order="1"/>
+     <ns110:SemanticMetadata conceptCode="C13187" conceptDefinition="The arrangement of amino acids in a protein.  Proteins can be made from 20 different kinds of amino acids, and the structure and function of each type of protein are determined by the kinds of amino acids used to make it and how they are arranged." conceptName="Protein Sequence" order="0"/>
+     <ns110:ValueDomain longName="java.lang.String">
+      <ns110:enumerationCollection/>
+     </ns110:ValueDomain>
+    </ns110:UMLAttribute>
+    <ns110:UMLAttribute dataTypeName="java.lang.Long" description="Different sequences reported in different sources for the same protein. Internal object identifier." name="id" publicID="2342577" version="1.0">
+     <ns110:SemanticMetadata conceptCode="C25364" conceptDefinition="One or more characters used to identify, name, or characterize the nature, properties, or contents of a thing." conceptName="Identifier" order="0"/>
+     <ns110:ValueDomain longName="java.lang.Long">
+      <ns110:enumerationCollection/>
+     </ns110:ValueDomain>
+    </ns110:UMLAttribute>
+   </ns110:umlAttributeCollection>
+   <ns111:SemanticMetadata conceptCode="C46003" conceptDefinition="The quality of being unlike or dissimilar." conceptName="Difference" order="0" xmlns:ns111="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common"/>
+   <ns112:SemanticMetadata conceptCode="C13187" conceptDefinition="The arrangement of amino acids in a protein.  Proteins can be made from 20 different kinds of amino acids, and the structure and function of each type of protein are determined by the kinds of amino acids used to make it and how they are arranged." conceptName="Protein Sequence" order="1" xmlns:ns112="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common"/>
+  </ns1:UMLClass>
+  <ns1:UMLClass allowableAsTarget="true" className="DatabaseCrossReference" description="External database cross-reference information for the protein." id="46E95F75-7346-7473-E044-0003BA3F9857" packageName="edu.georgetown.pir.domain" projectName="PIR 1.2" projectVersion="1.2">
+   <ns113:umlAttributeCollection xmlns:ns113="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common">
+    <ns113:UMLAttribute dataTypeName="java.lang.String" description="Source database name for the identifier." name="dataSourceName" publicID="2228352" version="3.0">
+     <ns113:SemanticMetadata conceptCode="C25683" conceptDefinition="Source; where something is available." conceptName="Source" order="1"/>
+     <ns113:SemanticMetadata conceptCode="C42614" conceptDefinition="The words or language units by which a thing is known." conceptName="Name" order="0"/>
+     <ns113:ValueDomain longName="java.lang.String">
+      <ns113:enumerationCollection/>
+     </ns113:ValueDomain>
+    </ns113:UMLAttribute>
+    <ns113:UMLAttribute dataTypeName="java.lang.Long" description="Internal object identifier." name="id" publicID="2228350" version="3.0">
+     <ns113:SemanticMetadata conceptCode="C25364" conceptDefinition="One or more characters used to identify, name, or characterize the nature, properties, or contents of a thing." conceptName="Identifier" order="0"/>
+     <ns113:ValueDomain longName="java.lang.Long">
+      <ns113:enumerationCollection/>
+     </ns113:ValueDomain>
+    </ns113:UMLAttribute>
+    <ns113:UMLAttribute dataTypeName="java.lang.String" description="Actual identifier from the source database." name="crossReferenceId" publicID="2228351" version="3.0">
+     <ns113:SemanticMetadata conceptCode="C25364" conceptDefinition="One or more characters used to identify, name, or characterize the nature, properties, or contents of a thing." conceptName="Identifier" order="0"/>
+     <ns113:SemanticMetadata conceptCode="C25683" conceptDefinition="Source; where something is available." conceptName="Source" order="1"/>
+     <ns113:ValueDomain longName="java.lang.String">
+      <ns113:enumerationCollection/>
+     </ns113:ValueDomain>
+    </ns113:UMLAttribute>
+   </ns113:umlAttributeCollection>
+   <ns114:SemanticMetadata conceptCode="C15426" conceptDefinition="A database is an information set with a regular structure.  Although it can be applied to any set of information the term was invented to refer to computerised data, and is used almost exclusively in computing. (from Wikipedia)" conceptName="Database" order="1" xmlns:ns114="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common"/>
+   <ns115:SemanticMetadata conceptCode="C43621" conceptDefinition="A notation or direction at one place (as in a book or filing system) to pertinent information at another place." conceptName="Cross-Reference" order="0" xmlns:ns115="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common"/>
+  </ns1:UMLClass>
+  <ns1:UMLClass allowableAsTarget="true" className="LipidMoietyBindingRegion" description="Covalent binding of a lipid moiety." id="46E95F75-7347-7473-E044-0003BA3F9857" packageName="edu.georgetown.pir.domain" projectName="PIR 1.2" projectVersion="1.2">
+   <ns116:umlAttributeCollection xmlns:ns116="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common">
+    <ns116:UMLAttribute dataTypeName="java.lang.String" description="Covalent binding of a lipid moiety. Description of the feature." name="description" publicID="2342536" version="1.0">
+     <ns116:SemanticMetadata conceptCode="C25365" conceptDefinition="Description; a statement that represents something in words." conceptName="Description " order="0"/>
+     <ns116:ValueDomain longName="java.lang.String">
+      <ns116:enumerationCollection/>
+     </ns116:ValueDomain>
+    </ns116:UMLAttribute>
+    <ns116:UMLAttribute dataTypeName="java.lang.Integer" description="Covalent binding of a lipid moiety. Beginning position of a segment on the protein where feature applies." name="begin" publicID="2342534" version="1.0">
+     <ns116:SemanticMetadata conceptCode="C25431" conceptDefinition="Have a beginning, in a temporal, spatial, or evaluative sense." conceptName="Begin" order="0"/>
+     <ns116:ValueDomain longName="java.lang.Integer">
+      <ns116:enumerationCollection/>
+     </ns116:ValueDomain>
+    </ns116:UMLAttribute>
+    <ns116:UMLAttribute dataTypeName="java.lang.Long" description="Covalent binding of a lipid moiety. Internal object identifier." name="id" publicID="2342533" version="1.0">
+     <ns116:SemanticMetadata conceptCode="C25364" conceptDefinition="One or more characters used to identify, name, or characterize the nature, properties, or contents of a thing." conceptName="Identifier" order="0"/>
+     <ns116:ValueDomain longName="java.lang.Long">
+      <ns116:enumerationCollection/>
+     </ns116:ValueDomain>
+    </ns116:UMLAttribute>
+    <ns116:UMLAttribute dataTypeName="java.lang.Integer" description="Covalent binding of a lipid moiety. End position of a segment on the protein where feature applies." name="end" publicID="2342535" version="1.0">
+     <ns116:SemanticMetadata conceptCode="C25496" conceptDefinition="The point or place at which something terminates in time, space, or extent." conceptName="End" order="0"/>
+     <ns116:ValueDomain longName="java.lang.Integer">
+      <ns116:enumerationCollection/>
+     </ns116:ValueDomain>
+    </ns116:UMLAttribute>
+   </ns116:umlAttributeCollection>
+   <ns117:SemanticMetadata conceptCode="C13671" conceptDefinition="A Binding Site Domain is a region of protein that physically interacts stereospecifically, and usually at high affinity, with a specific ligand, substrate, or a specific domain of some complex target biomolecule, such as a protein, lipid, carbohydrate, or nucleic acid. Typically, but not necessarily, the interaction results in protein conformational alteration and functional modification." conceptName="Ligand Binding Domain" order="0" xmlns:ns117="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common"/>
+   <ns118:SemanticMetadata conceptCode="C616" conceptDefinition="Lipids are fatty acid esters, an oily organic compound insoluble in water but soluble in organic solvents." conceptName="Lipid" order="1" xmlns:ns118="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common"/>
+  </ns1:UMLClass>
+  <ns1:UMLClass allowableAsTarget="true" className="NucleotideBindingRegion" description="Extent of a nucleotide phosphate-binding region." id="46E95F75-7348-7473-E044-0003BA3F9857" packageName="edu.georgetown.pir.domain" projectName="PIR 1.2" projectVersion="1.2">
+   <ns119:umlAttributeCollection xmlns:ns119="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common">
+    <ns119:UMLAttribute dataTypeName="java.lang.Integer" description="Extent of a nucleotide phosphate-binding region. Beginning position of a segment on the protein where feature applies." name="begin" publicID="2342558" version="1.0">
+     <ns119:SemanticMetadata conceptCode="C25431" conceptDefinition="Have a beginning, in a temporal, spatial, or evaluative sense." conceptName="Begin" order="0"/>
+     <ns119:ValueDomain longName="java.lang.Integer">
+      <ns119:enumerationCollection/>
+     </ns119:ValueDomain>
+    </ns119:UMLAttribute>
+    <ns119:UMLAttribute dataTypeName="java.lang.Long" description="Extent of a nucleotide phosphate-binding region. Internal object identifier." name="id" publicID="2342557" version="1.0">
+     <ns119:SemanticMetadata conceptCode="C25364" conceptDefinition="One or more characters used to identify, name, or characterize the nature, properties, or contents of a thing." conceptName="Identifier" order="0"/>
+     <ns119:ValueDomain longName="java.lang.Long">
+      <ns119:enumerationCollection/>
+     </ns119:ValueDomain>
+    </ns119:UMLAttribute>
+    <ns119:UMLAttribute dataTypeName="java.lang.Integer" description="Extent of a nucleotide phosphate-binding region. End position of a segment on the protein where feature applies." name="end" publicID="2342559" version="1.0">
+     <ns119:SemanticMetadata conceptCode="C25496" conceptDefinition="The point or place at which something terminates in time, space, or extent." conceptName="End" order="0"/>
+     <ns119:ValueDomain longName="java.lang.Integer">
+      <ns119:enumerationCollection/>
+     </ns119:ValueDomain>
+    </ns119:UMLAttribute>
+    <ns119:UMLAttribute dataTypeName="java.lang.String" description="Extent of a nucleotide phosphate-binding region. Description of the feature." name="description" publicID="2342560" version="1.0">
+     <ns119:SemanticMetadata conceptCode="C25365" conceptDefinition="Description; a statement that represents something in words." conceptName="Description " order="0"/>
+     <ns119:ValueDomain longName="java.lang.String">
+      <ns119:enumerationCollection/>
+     </ns119:ValueDomain>
+    </ns119:UMLAttribute>
+   </ns119:umlAttributeCollection>
+   <ns120:SemanticMetadata conceptCode="C13671" conceptDefinition="A Binding Site Domain is a region of protein that physically interacts stereospecifically, and usually at high affinity, with a specific ligand, substrate, or a specific domain of some complex target biomolecule, such as a protein, lipid, carbohydrate, or nucleic acid. Typically, but not necessarily, the interaction results in protein conformational alteration and functional modification." conceptName="Ligand Binding Domain" order="0" xmlns:ns120="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common"/>
+   <ns121:SemanticMetadata conceptCode="C709" conceptDefinition="The monomeric units from which DNA or RNA polymers are constructed. They consist of a purine or pyrimidine base, a pentose sugar, and a phosphate group. (From King &amp; Stansfield, A Dictionary of Genetics, 4th ed)" conceptName="Nucleotides" order="1" xmlns:ns121="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common"/>
+  </ns1:UMLClass>
+  <ns1:UMLClass allowableAsTarget="true" className="Domain" description="Extent of a domain, which is defined as a specific combination of secondary structures organized into a characteristic three-dimensional structure or fold." id="46E95F75-7349-7473-E044-0003BA3F9857" packageName="edu.georgetown.pir.domain" projectName="PIR 1.2" projectVersion="1.2">
+   <ns122:umlAttributeCollection xmlns:ns122="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common">
+    <ns122:UMLAttribute dataTypeName="java.lang.Long" description="Extent of a domain, which is defined as a specific combination of secondary structures organized into a characteristic three-dimensional structure or fold. Internal object identifier." name="id" publicID="2342517" version="1.0">
+     <ns122:SemanticMetadata conceptCode="C25364" conceptDefinition="One or more characters used to identify, name, or characterize the nature, properties, or contents of a thing." conceptName="Identifier" order="0"/>
+     <ns122:ValueDomain longName="java.lang.Long">
+      <ns122:enumerationCollection/>
+     </ns122:ValueDomain>
+    </ns122:UMLAttribute>
+    <ns122:UMLAttribute dataTypeName="java.lang.Integer" description="Extent of a domain, which is defined as a specific combination of secondary structures organized into a characteristic three-dimensional structure or fold. End position of a segment on the protein where feature applies." name="end" publicID="2342519" version="1.0">
+     <ns122:SemanticMetadata conceptCode="C25496" conceptDefinition="The point or place at which something terminates in time, space, or extent." conceptName="End" order="0"/>
+     <ns122:ValueDomain longName="java.lang.Integer">
+      <ns122:enumerationCollection/>
+     </ns122:ValueDomain>
+    </ns122:UMLAttribute>
+    <ns122:UMLAttribute dataTypeName="java.lang.String" description="Extent of a domain, which is defined as a specific combination of secondary structures organized into a characteristic three-dimensional structure or fold. Description of the feature." name="description" publicID="2342520" version="1.0">
+     <ns122:SemanticMetadata conceptCode="C25365" conceptDefinition="Description; a statement that represents something in words." conceptName="Description " order="0"/>
+     <ns122:ValueDomain longName="java.lang.String">
+      <ns122:enumerationCollection/>
+     </ns122:ValueDomain>
+    </ns122:UMLAttribute>
+    <ns122:UMLAttribute dataTypeName="java.lang.Integer" description="Extent of a domain, which is defined as a specific combination of secondary structures organized into a characteristic three-dimensional structure or fold. Beginning position of a segment on the protein where feature applies." name="begin" publicID="2342518" version="1.0">
+     <ns122:SemanticMetadata conceptCode="C25431" conceptDefinition="Have a beginning, in a temporal, spatial, or evaluative sense." conceptName="Begin" order="0"/>
+     <ns122:ValueDomain longName="java.lang.Integer">
+      <ns122:enumerationCollection/>
+     </ns122:ValueDomain>
+    </ns122:UMLAttribute>
+   </ns122:umlAttributeCollection>
+   <ns123:SemanticMetadata conceptCode="C13303" conceptDefinition="The amino acids and their 3-D arrangement in constituting a protein." conceptName="Protein Structure" order="0" xmlns:ns123="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common"/>
+  </ns1:UMLClass>
+  <ns1:UMLClass allowableAsTarget="true" className="ModifiedResidue" description="Posttranslational modification of a residue." id="46E95F75-734A-7473-E044-0003BA3F9857" packageName="edu.georgetown.pir.domain" projectName="PIR 1.2" projectVersion="1.2">
+   <ns124:umlAttributeCollection xmlns:ns124="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common">
+    <ns124:UMLAttribute dataTypeName="java.lang.Long" description="Posttranslational modification of a residue. Internal object identifier." name="id" publicID="2342541" version="1.0">
+     <ns124:SemanticMetadata conceptCode="C25364" conceptDefinition="One or more characters used to identify, name, or characterize the nature, properties, or contents of a thing." conceptName="Identifier" order="0"/>
+     <ns124:ValueDomain longName="java.lang.Long">
+      <ns124:enumerationCollection/>
+     </ns124:ValueDomain>
+    </ns124:UMLAttribute>
+    <ns124:UMLAttribute dataTypeName="java.lang.Integer" description="Posttranslational modification of a residue. End position of a segment on the protein where feature applies." name="end" publicID="2342543" version="1.0">
+     <ns124:SemanticMetadata conceptCode="C25496" conceptDefinition="The point or place at which something terminates in time, space, or extent." conceptName="End" order="0"/>
+     <ns124:ValueDomain longName="java.lang.Integer">
+      <ns124:enumerationCollection/>
+     </ns124:ValueDomain>
+    </ns124:UMLAttribute>
+    <ns124:UMLAttribute dataTypeName="java.lang.String" description="Posttranslational modification of a residue. Description of the feature." name="description" publicID="2342544" version="1.0">
+     <ns124:SemanticMetadata conceptCode="C25365" conceptDefinition="Description; a statement that represents something in words." conceptName="Description " order="0"/>
+     <ns124:ValueDomain longName="java.lang.String">
+      <ns124:enumerationCollection/>
+     </ns124:ValueDomain>
+    </ns124:UMLAttribute>
+    <ns124:UMLAttribute dataTypeName="java.lang.Integer" description="Posttranslational modification of a residue. Beginning position of a segment on the protein where feature applies." name="begin" publicID="2342542" version="1.0">
+     <ns124:SemanticMetadata conceptCode="C25431" conceptDefinition="Have a beginning, in a temporal, spatial, or evaluative sense." conceptName="Begin" order="0"/>
+     <ns124:ValueDomain longName="java.lang.Integer">
+      <ns124:enumerationCollection/>
+     </ns124:ValueDomain>
+    </ns124:UMLAttribute>
+   </ns124:umlAttributeCollection>
+   <ns125:SemanticMetadata conceptCode="C14050" conceptDefinition="A post-translational modification site refers to amino acid residues within a peptide that act as acceptors for any modifications that do not happen concurrent with translation." conceptName="Post-Translational Modification Site" order="0" xmlns:ns125="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common"/>
+  </ns1:UMLClass>
+  <ns1:UMLClass allowableAsTarget="true" className="MutagenesisSite" description="Site on the sequence which has been experimentally altered." id="46E95F75-734B-7473-E044-0003BA3F9857" packageName="edu.georgetown.pir.domain" projectName="PIR 1.2" projectVersion="1.2">
+   <ns126:umlAttributeCollection xmlns:ns126="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common">
+    <ns126:UMLAttribute dataTypeName="java.lang.Integer" description="Site on the sequence which has been experimentally altered. End position of a segment on the protein where feature applies." name="end" publicID="2342547" version="1.0">
+     <ns126:SemanticMetadata conceptCode="C25496" conceptDefinition="The point or place at which something terminates in time, space, or extent." conceptName="End" order="0"/>
+     <ns126:ValueDomain longName="java.lang.Integer">
+      <ns126:enumerationCollection/>
+     </ns126:ValueDomain>
+    </ns126:UMLAttribute>
+    <ns126:UMLAttribute dataTypeName="java.lang.String" description="Variant sequence segment." name="variantSequence" publicID="2342445" version="1.0">
+     <ns126:SemanticMetadata conceptCode="C25713" conceptDefinition="Variation; something that deviates from a norm or standard; an instance of change." conceptName="Variation" order="1"/>
+     <ns126:SemanticMetadata conceptCode="C13187" conceptDefinition="The arrangement of amino acids in a protein.  Proteins can be made from 20 different kinds of amino acids, and the structure and function of each type of protein are determined by the kinds of amino acids used to make it and how they are arranged." conceptName="Protein Sequence" order="0"/>
+     <ns126:ValueDomain longName="java.lang.String">
+      <ns126:enumerationCollection/>
+     </ns126:ValueDomain>
+    </ns126:UMLAttribute>
+    <ns126:UMLAttribute dataTypeName="java.lang.Long" description="Site on the sequence which has been experimentally altered. Internal object identifier." name="id" publicID="2342545" version="1.0">
+     <ns126:SemanticMetadata conceptCode="C25364" conceptDefinition="One or more characters used to identify, name, or characterize the nature, properties, or contents of a thing." conceptName="Identifier" order="0"/>
+     <ns126:ValueDomain longName="java.lang.Long">
+      <ns126:enumerationCollection/>
+     </ns126:ValueDomain>
+    </ns126:UMLAttribute>
+    <ns126:UMLAttribute dataTypeName="java.lang.Integer" description="Site on the sequence which has been experimentally altered. Beginning position of a segment on the protein where feature applies." name="begin" publicID="2342546" version="1.0">
+     <ns126:SemanticMetadata conceptCode="C25431" conceptDefinition="Have a beginning, in a temporal, spatial, or evaluative sense." conceptName="Begin" order="0"/>
+     <ns126:ValueDomain longName="java.lang.Integer">
+      <ns126:enumerationCollection/>
+     </ns126:ValueDomain>
+    </ns126:UMLAttribute>
+    <ns126:UMLAttribute dataTypeName="java.lang.String" description="Site on the sequence which has been experimentally altered. Description of the feature." name="description" publicID="2342548" version="1.0">
+     <ns126:SemanticMetadata conceptCode="C25365" conceptDefinition="Description; a statement that represents something in words." conceptName="Description " order="0"/>
+     <ns126:ValueDomain longName="java.lang.String">
+      <ns126:enumerationCollection/>
+     </ns126:ValueDomain>
+    </ns126:UMLAttribute>
+    <ns126:UMLAttribute dataTypeName="java.lang.String" description="Original sequence segment." name="originalSequence" publicID="2342444" version="1.0">
+     <ns126:SemanticMetadata conceptCode="C25604" conceptDefinition="Preceding all others in time or being as first made or performed." conceptName="Original" order="1"/>
+     <ns126:SemanticMetadata conceptCode="C13187" conceptDefinition="The arrangement of amino acids in a protein.  Proteins can be made from 20 different kinds of amino acids, and the structure and function of each type of protein are determined by the kinds of amino acids used to make it and how they are arranged." conceptName="Protein Sequence" order="0"/>
+     <ns126:ValueDomain longName="java.lang.String">
+      <ns126:enumerationCollection/>
+     </ns126:ValueDomain>
+    </ns126:UMLAttribute>
+   </ns126:umlAttributeCollection>
+   <ns127:SemanticMetadata conceptCode="C40987" conceptDefinition="A mutation triggered by outside influences (e.g., radiation, chemicals or other means) as opposed to those created by the inherent infidelity of DNA polymerase." conceptName="Induced Mutation" order="1" xmlns:ns127="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common"/>
+   <ns128:SemanticMetadata conceptCode="C37901" conceptDefinition="Position in relation to the surroundings." conceptName="Site" order="0" xmlns:ns128="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common"/>
+  </ns1:UMLClass>
+  <ns1:UMLClass allowableAsTarget="true" className="UniprotkbAccession" description="UniProtKB accession number for the protein entry." id="46E95F75-734C-7473-E044-0003BA3F9857" packageName="edu.georgetown.pir.domain" projectName="PIR 1.2" projectVersion="1.2">
+   <ns129:umlAttributeCollection xmlns:ns129="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common">
+    <ns129:UMLAttribute dataTypeName="java.lang.String" description="UniProtKB accession number." name="value" publicID="2342486" version="1.0">
+     <ns129:SemanticMetadata conceptCode="C25712" conceptDefinition="A numerical quantity measured or assigned or computed." conceptName="Value" order="0"/>
+     <ns129:ValueDomain longName="java.lang.String">
+      <ns129:enumerationCollection/>
+     </ns129:ValueDomain>
+    </ns129:UMLAttribute>
+    <ns129:UMLAttribute dataTypeName="java.lang.String" description="Internal object identifier." name="id" publicID="2342485" version="1.0">
+     <ns129:SemanticMetadata conceptCode="C25364" conceptDefinition="One or more characters used to identify, name, or characterize the nature, properties, or contents of a thing." conceptName="Identifier" order="0"/>
+     <ns129:ValueDomain longName="java.lang.String">
+      <ns129:enumerationCollection/>
+     </ns129:ValueDomain>
+    </ns129:UMLAttribute>
+   </ns129:umlAttributeCollection>
+   <ns130:SemanticMetadata conceptCode="C47851" conceptDefinition="The UniProt Knowledgebase (UniProtKB), a product of the UniProt consortium, provides a central database of protein sequences with accurate, consistent, rich sequence and functional annotation.  The UniProt Knowledgebase consists of two sections: Swiss-Prot - a section containing manually-annotated records with information extracted from literature and curator-evaluated computational analysis, and TrEMBL - a section with computationally analyzed records that await full manual annotation." conceptName="UniProtKB" order="1" xmlns:ns130="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common"/>
+   <ns131:SemanticMetadata conceptCode="C15402" conceptDefinition="A control number unique to an object, used to identify it among the other objects in a collection." conceptName="Accession Number" order="0" xmlns:ns131="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common"/>
+  </ns1:UMLClass>
+  <ns1:UMLClass allowableAsTarget="true" className="Repeat" description="Extent of an internal sequence repetition." id="46E95F75-734D-7473-E044-0003BA3F9857" packageName="edu.georgetown.pir.domain" projectName="PIR 1.2" projectVersion="1.2">
+   <ns132:umlAttributeCollection xmlns:ns132="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common">
+    <ns132:UMLAttribute dataTypeName="java.lang.Long" description="Extent of an internal sequence repetition. Internal object identifier." name="id" publicID="2342569" version="1.0">
+     <ns132:SemanticMetadata conceptCode="C25364" conceptDefinition="One or more characters used to identify, name, or characterize the nature, properties, or contents of a thing." conceptName="Identifier" order="0"/>
+     <ns132:ValueDomain longName="java.lang.Long">
+      <ns132:enumerationCollection/>
+     </ns132:ValueDomain>
+    </ns132:UMLAttribute>
+    <ns132:UMLAttribute dataTypeName="java.lang.Integer" description="Extent of an internal sequence repetition. End position of a segment on the protein where feature applies." name="end" publicID="2342571" version="1.0">
+     <ns132:SemanticMetadata conceptCode="C25496" conceptDefinition="The point or place at which something terminates in time, space, or extent." conceptName="End" order="0"/>
+     <ns132:ValueDomain longName="java.lang.Integer">
+      <ns132:enumerationCollection/>
+     </ns132:ValueDomain>
+    </ns132:UMLAttribute>
+    <ns132:UMLAttribute dataTypeName="java.lang.String" description="Extent of an internal sequence repetition. Description of the feature." name="description" publicID="2342572" version="1.0">
+     <ns132:SemanticMetadata conceptCode="C25365" conceptDefinition="Description; a statement that represents something in words." conceptName="Description " order="0"/>
+     <ns132:ValueDomain longName="java.lang.String">
+      <ns132:enumerationCollection/>
+     </ns132:ValueDomain>
+    </ns132:UMLAttribute>
+    <ns132:UMLAttribute dataTypeName="java.lang.Integer" description="Extent of an internal sequence repetition. Beginning position of a segment on the protein where feature applies." name="begin" publicID="2342570" version="1.0">
+     <ns132:SemanticMetadata conceptCode="C25431" conceptDefinition="Have a beginning, in a temporal, spatial, or evaluative sense." conceptName="Begin" order="0"/>
+     <ns132:ValueDomain longName="java.lang.Integer">
+      <ns132:enumerationCollection/>
+     </ns132:ValueDomain>
+    </ns132:UMLAttribute>
+   </ns132:umlAttributeCollection>
+   <ns133:SemanticMetadata conceptCode="C47942" conceptDefinition="Two or more adjacent copies of an identical pattern." conceptName="Repeat" order="0" xmlns:ns133="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common"/>
+   <ns134:SemanticMetadata conceptCode="C13187" conceptDefinition="The arrangement of amino acids in a protein.  Proteins can be made from 20 different kinds of amino acids, and the structure and function of each type of protein are determined by the kinds of amino acids used to make it and how they are arranged." conceptName="Protein Sequence" order="1" xmlns:ns134="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common"/>
+  </ns1:UMLClass>
+  <ns1:UMLClass allowableAsTarget="true" className="Protein" description="The protein of interest." id="46E95F75-734E-7473-E044-0003BA3F9857" packageName="edu.georgetown.pir.domain" projectName="PIR 1.2" projectVersion="1.2">
+   <ns135:umlAttributeCollection xmlns:ns135="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common">
+    <ns135:UMLAttribute dataTypeName="CHARACTER" description="UniProtKB primary accession number." name="uniprotkbPrimaryAccession" publicID="2322254" version="1.0">
+     <ns135:SemanticMetadata conceptCode="C25402" conceptDefinition="A control number unique to an object, used to identify it among the other objects in a collection." conceptName="Accession Number" order="1"/>
+     <ns135:SemanticMetadata conceptCode="C47851" conceptDefinition="The UniProt Knowledgebase (UniProtKB), a product of the UniProt consortium, provides a central database of protein sequences with accurate, consistent, rich sequence and functional annotation.  The UniProt Knowledgebase consists of two sections: Swiss-Prot - a section containing manually-annotated records with information extracted from literature and curator-evaluated computational analysis, and TrEMBL - a section with computationally analyzed records that await full manual annotation." conceptName="UniProtKB" order="3"/>
+     <ns135:SemanticMetadata conceptCode="C25251" conceptDefinition="Occurring first in time or sequence; original. (American Heritage Dictionary)" conceptName="Primary" order="2"/>
+     <ns135:SemanticMetadata conceptCode="C45766" conceptDefinition="One or more characters and/or numbers that are used to identify, name, or characterize the nature, properties, or contents of genomic sequences, mRNA transcripts, protein products, or other class of entities that occurs throughout the genome." conceptName="Genomic Identifier" order="0"/>
+     <ns135:ValueDomain longName="Protein UniProtKB Primary Accession Number Genomic Identifier">
+      <ns135:enumerationCollection/>
+     </ns135:ValueDomain>
+    </ns135:UMLAttribute>
+    <ns135:UMLAttribute dataTypeName="java.lang.String" description="Type indicating if the protein is composed of a single or multiple fragments." name="proteinType" publicID="2342469" version="1.0">
+     <ns135:SemanticMetadata conceptCode="C17021" conceptDefinition="Any of a group of complex organic macromolecules that contain carbon, hydrogen, oxygen, nitrogen, and usually sulfur and are composed of one or more chains of amino acids. Proteins are fundamental components of all living cells and include many substances, such as enzymes, hormones, and antibodies, that are necessary for the proper functioning of an organism." conceptName="Protein" order="1"/>
+     <ns135:SemanticMetadata conceptCode="C25284" conceptDefinition="Type; a subdivision of a particular kind of thing." conceptName="Type" order="0"/>
+     <ns135:ValueDomain longName="java.lang.String">
+      <ns135:enumerationCollection/>
+     </ns135:ValueDomain>
+    </ns135:UMLAttribute>
+    <ns135:UMLAttribute dataTypeName="java.lang.String" description="UniProtKB entry name (id)." name="uniprotkbEntryName" publicID="2342468" version="1.0">
+     <ns135:SemanticMetadata conceptCode="C47851" conceptDefinition="The UniProt Knowledgebase (UniProtKB), a product of the UniProt consortium, provides a central database of protein sequences with accurate, consistent, rich sequence and functional annotation.  The UniProt Knowledgebase consists of two sections: Swiss-Prot - a section containing manually-annotated records with information extracted from literature and curator-evaluated computational analysis, and TrEMBL - a section with computationally analyzed records that await full manual annotation." conceptName="UniProtKB" order="1"/>
+     <ns135:SemanticMetadata conceptCode="C43381" conceptDefinition="An item inserted in a written or electronic record." conceptName="Entry" order="2"/>
+     <ns135:SemanticMetadata conceptCode="C42614" conceptDefinition="The words or language units by which a thing is known." conceptName="Name" order="0"/>
+     <ns135:ValueDomain longName="java.lang.String">
+      <ns135:enumerationCollection/>
+     </ns135:ValueDomain>
+    </ns135:UMLAttribute>
+    <ns135:UMLAttribute dataTypeName="java.lang.String" description="Internal object identifier." name="id" publicID="2342466" version="1.0">
+     <ns135:SemanticMetadata conceptCode="C25364" conceptDefinition="One or more characters used to identify, name, or characterize the nature, properties, or contents of a thing." conceptName="Identifier" order="0"/>
+     <ns135:ValueDomain longName="java.lang.String">
+      <ns135:enumerationCollection/>
+     </ns135:ValueDomain>
+    </ns135:UMLAttribute>
+   </ns135:umlAttributeCollection>
+   <ns136:SemanticMetadata conceptCode="C17021" conceptDefinition="Any of a group of complex organic macromolecules that contain carbon, hydrogen, oxygen, nitrogen, and usually sulfur and are composed of one or more chains of amino acids. Proteins are fundamental components of all living cells and include many substances, such as enzymes, hormones, and antibodies, that are necessary for the proper functioning of an organism." conceptName="Protein" order="0" xmlns:ns136="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common"/>
+  </ns1:UMLClass>
+ </ns1:exposedUMLClassCollection>
+ <ns1:umlGeneralizationCollection>
+  <ns1:UMLGeneralization>
+   <ns1:subClassReference refid="46E95F75-7335-7473-E044-0003BA3F9857"/>
+   <ns1:superClassReference refid="46E95F75-7337-7473-E044-0003BA3F9857"/>
+  </ns1:UMLGeneralization>
+  <ns1:UMLGeneralization>
+   <ns1:subClassReference refid="46E95F75-7322-7473-E044-0003BA3F9857"/>
+   <ns1:superClassReference refid="46E95F75-7337-7473-E044-0003BA3F9857"/>
+  </ns1:UMLGeneralization>
+  <ns1:UMLGeneralization>
+   <ns1:subClassReference refid="46E95F75-7341-7473-E044-0003BA3F9857"/>
+   <ns1:superClassReference refid="46E95F75-7337-7473-E044-0003BA3F9857"/>
+  </ns1:UMLGeneralization>
+  <ns1:UMLGeneralization>
+   <ns1:subClassReference refid="46E95F75-7323-7473-E044-0003BA3F9857"/>
+   <ns1:superClassReference refid="46E95F75-7337-7473-E044-0003BA3F9857"/>
+  </ns1:UMLGeneralization>
+  <ns1:UMLGeneralization>
+   <ns1:subClassReference refid="46E95F75-7328-7473-E044-0003BA3F9857"/>
+   <ns1:superClassReference refid="46E95F75-7337-7473-E044-0003BA3F9857"/>
+  </ns1:UMLGeneralization>
+  <ns1:UMLGeneralization>
+   <ns1:subClassReference refid="46E95F75-7344-7473-E044-0003BA3F9857"/>
+   <ns1:superClassReference refid="46E95F75-7337-7473-E044-0003BA3F9857"/>
+  </ns1:UMLGeneralization>
+  <ns1:UMLGeneralization>
+   <ns1:subClassReference refid="46E95F75-733B-7473-E044-0003BA3F9857"/>
+   <ns1:superClassReference refid="46E95F75-7337-7473-E044-0003BA3F9857"/>
+  </ns1:UMLGeneralization>
+  <ns1:UMLGeneralization>
+   <ns1:subClassReference refid="46E95F75-731F-7473-E044-0003BA3F9857"/>
+   <ns1:superClassReference refid="46E95F75-7337-7473-E044-0003BA3F9857"/>
+  </ns1:UMLGeneralization>
+  <ns1:UMLGeneralization>
+   <ns1:subClassReference refid="46E95F75-7339-7473-E044-0003BA3F9857"/>
+   <ns1:superClassReference refid="46E95F75-7337-7473-E044-0003BA3F9857"/>
+  </ns1:UMLGeneralization>
+  <ns1:UMLGeneralization>
+   <ns1:subClassReference refid="46E95F75-7326-7473-E044-0003BA3F9857"/>
+   <ns1:superClassReference refid="46E95F75-7337-7473-E044-0003BA3F9857"/>
+  </ns1:UMLGeneralization>
+  <ns1:UMLGeneralization>
+   <ns1:subClassReference refid="46E95F75-7338-7473-E044-0003BA3F9857"/>
+   <ns1:superClassReference refid="46E95F75-7337-7473-E044-0003BA3F9857"/>
+  </ns1:UMLGeneralization>
+  <ns1:UMLGeneralization>
+   <ns1:subClassReference refid="46E95F75-7332-7473-E044-0003BA3F9857"/>
+   <ns1:superClassReference refid="46E95F75-7337-7473-E044-0003BA3F9857"/>
+  </ns1:UMLGeneralization>
+  <ns1:UMLGeneralization>
+   <ns1:subClassReference refid="46E95F75-731B-7473-E044-0003BA3F9857"/>
+   <ns1:superClassReference refid="46E95F75-7337-7473-E044-0003BA3F9857"/>
+  </ns1:UMLGeneralization>
+  <ns1:UMLGeneralization>
+   <ns1:subClassReference refid="46E95F75-7347-7473-E044-0003BA3F9857"/>
+   <ns1:superClassReference refid="46E95F75-7337-7473-E044-0003BA3F9857"/>
+  </ns1:UMLGeneralization>
+  <ns1:UMLGeneralization>
+   <ns1:subClassReference refid="46E95F75-7320-7473-E044-0003BA3F9857"/>
+   <ns1:superClassReference refid="46E95F75-7337-7473-E044-0003BA3F9857"/>
+  </ns1:UMLGeneralization>
+  <ns1:UMLGeneralization>
+   <ns1:subClassReference refid="46E95F75-734A-7473-E044-0003BA3F9857"/>
+   <ns1:superClassReference refid="46E95F75-7337-7473-E044-0003BA3F9857"/>
+  </ns1:UMLGeneralization>
+  <ns1:UMLGeneralization>
+   <ns1:subClassReference refid="46E95F75-734B-7473-E044-0003BA3F9857"/>
+   <ns1:superClassReference refid="46E95F75-7337-7473-E044-0003BA3F9857"/>
+  </ns1:UMLGeneralization>
+  <ns1:UMLGeneralization>
+   <ns1:subClassReference refid="46E95F75-731E-7473-E044-0003BA3F9857"/>
+   <ns1:superClassReference refid="46E95F75-7337-7473-E044-0003BA3F9857"/>
+  </ns1:UMLGeneralization>
+  <ns1:UMLGeneralization>
+   <ns1:subClassReference refid="46E95F75-733C-7473-E044-0003BA3F9857"/>
+   <ns1:superClassReference refid="46E95F75-7337-7473-E044-0003BA3F9857"/>
+  </ns1:UMLGeneralization>
+  <ns1:UMLGeneralization>
+   <ns1:subClassReference refid="46E95F75-7348-7473-E044-0003BA3F9857"/>
+   <ns1:superClassReference refid="46E95F75-7337-7473-E044-0003BA3F9857"/>
+  </ns1:UMLGeneralization>
+  <ns1:UMLGeneralization>
+   <ns1:subClassReference refid="46E95F75-732D-7473-E044-0003BA3F9857"/>
+   <ns1:superClassReference refid="46E95F75-7337-7473-E044-0003BA3F9857"/>
+  </ns1:UMLGeneralization>
+  <ns1:UMLGeneralization>
+   <ns1:subClassReference refid="46E95F75-7333-7473-E044-0003BA3F9857"/>
+   <ns1:superClassReference refid="46E95F75-7337-7473-E044-0003BA3F9857"/>
+  </ns1:UMLGeneralization>
+  <ns1:UMLGeneralization>
+   <ns1:subClassReference refid="46E95F75-734D-7473-E044-0003BA3F9857"/>
+   <ns1:superClassReference refid="46E95F75-7337-7473-E044-0003BA3F9857"/>
+  </ns1:UMLGeneralization>
+  <ns1:UMLGeneralization>
+   <ns1:subClassReference refid="46E95F75-7327-7473-E044-0003BA3F9857"/>
+   <ns1:superClassReference refid="46E95F75-7337-7473-E044-0003BA3F9857"/>
+  </ns1:UMLGeneralization>
+  <ns1:UMLGeneralization>
+   <ns1:subClassReference refid="46E95F75-7345-7473-E044-0003BA3F9857"/>
+   <ns1:superClassReference refid="46E95F75-7337-7473-E044-0003BA3F9857"/>
+  </ns1:UMLGeneralization>
+  <ns1:UMLGeneralization>
+   <ns1:subClassReference refid="46E95F75-732F-7473-E044-0003BA3F9857"/>
+   <ns1:superClassReference refid="46E95F75-7337-7473-E044-0003BA3F9857"/>
+  </ns1:UMLGeneralization>
+  <ns1:UMLGeneralization>
+   <ns1:subClassReference refid="46E95F75-7321-7473-E044-0003BA3F9857"/>
+   <ns1:superClassReference refid="46E95F75-7337-7473-E044-0003BA3F9857"/>
+  </ns1:UMLGeneralization>
+  <ns1:UMLGeneralization>
+   <ns1:subClassReference refid="46E95F75-7330-7473-E044-0003BA3F9857"/>
+   <ns1:superClassReference refid="46E95F75-7337-7473-E044-0003BA3F9857"/>
+  </ns1:UMLGeneralization>
+  <ns1:UMLGeneralization>
+   <ns1:subClassReference refid="46E95F75-7324-7473-E044-0003BA3F9857"/>
+   <ns1:superClassReference refid="46E95F75-7337-7473-E044-0003BA3F9857"/>
+  </ns1:UMLGeneralization>
+  <ns1:UMLGeneralization>
+   <ns1:subClassReference refid="46E95F75-7343-7473-E044-0003BA3F9857"/>
+   <ns1:superClassReference refid="46E95F75-7337-7473-E044-0003BA3F9857"/>
+  </ns1:UMLGeneralization>
+  <ns1:UMLGeneralization>
+   <ns1:subClassReference refid="46E95F75-7331-7473-E044-0003BA3F9857"/>
+   <ns1:superClassReference refid="46E95F75-7337-7473-E044-0003BA3F9857"/>
+  </ns1:UMLGeneralization>
+  <ns1:UMLGeneralization>
+   <ns1:subClassReference refid="46E95F75-7340-7473-E044-0003BA3F9857"/>
+   <ns1:superClassReference refid="46E95F75-7337-7473-E044-0003BA3F9857"/>
+  </ns1:UMLGeneralization>
+  <ns1:UMLGeneralization>
+   <ns1:subClassReference refid="46E95F75-7349-7473-E044-0003BA3F9857"/>
+   <ns1:superClassReference refid="46E95F75-7337-7473-E044-0003BA3F9857"/>
+  </ns1:UMLGeneralization>
+  <ns1:UMLGeneralization>
+   <ns1:subClassReference refid="46E95F75-7334-7473-E044-0003BA3F9857"/>
+   <ns1:superClassReference refid="46E95F75-7337-7473-E044-0003BA3F9857"/>
+  </ns1:UMLGeneralization>
+  <ns1:UMLGeneralization>
+   <ns1:subClassReference refid="46E95F75-731D-7473-E044-0003BA3F9857"/>
+   <ns1:superClassReference refid="46E95F75-7337-7473-E044-0003BA3F9857"/>
+  </ns1:UMLGeneralization>
+  <ns1:UMLGeneralization>
+   <ns1:subClassReference refid="46E95F75-7329-7473-E044-0003BA3F9857"/>
+   <ns1:superClassReference refid="46E95F75-7337-7473-E044-0003BA3F9857"/>
+  </ns1:UMLGeneralization>
+  <ns1:UMLGeneralization>
+   <ns1:subClassReference refid="46E95F75-732E-7473-E044-0003BA3F9857"/>
+   <ns1:superClassReference refid="46E95F75-7337-7473-E044-0003BA3F9857"/>
+  </ns1:UMLGeneralization>
+ </ns1:umlGeneralizationCollection>
+</ns1:DomainModel>

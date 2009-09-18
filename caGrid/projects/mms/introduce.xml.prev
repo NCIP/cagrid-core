@@ -1,0 +1,217 @@
+<ns1:ServiceDescription introduceVersion="1.3" xmlns:ns1="gme://gov.nih.nci.cagrid/1/Introduce">
+ <ns2:Namespaces xsi:type="ns2:NamespacesType" xmlns:ns2="gme://gov.nih.nci.cagrid.introduce/1/Namespace" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <ns2:Namespace location="./org.cagrid.mms.xsd" namespace="gme://caGrid.caBIG/1.0/org.cagrid.mms.domain" packageName="org.cagrid.mms.domain" xsi:type="ns2:NamespaceType">
+   <ns2:SchemaElement type="ModelSourceMetadata" xsi:type="ns2:SchemaElementType"/>
+   <ns2:SchemaElement type="NamespaceToProjectMapping" xsi:type="ns2:SchemaElementType"/>
+   <ns2:SchemaElement type="PropertyDescriptor" xsi:type="ns2:SchemaElementType"/>
+   <ns2:SchemaElement type="UMLAssociationExclude" xsi:type="ns2:SchemaElementType"/>
+   <ns2:SchemaElement type="UMLProjectIdentifer" xsi:type="ns2:SchemaElementType"/>
+  </ns2:Namespace>
+  <ns2:Namespace generateStubs="false" location="./xsd/cagrid/types/data/data.xsd" namespace="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.dataservice" packageName="gov.nih.nci.cagrid.metadata.dataservice" xsi:type="ns2:NamespaceType">
+   <ns2:SchemaElement type="DomainModel" xsi:type="ns2:SchemaElementType"/>
+   <ns2:SchemaElement type="UMLAssociation" xsi:type="ns2:SchemaElementType"/>
+   <ns2:SchemaElement type="UMLAssociationEdge" xsi:type="ns2:SchemaElementType"/>
+   <ns2:SchemaElement type="UMLClass" xsi:type="ns2:SchemaElementType"/>
+   <ns2:SchemaElement type="UMLClassReference" xsi:type="ns2:SchemaElementType"/>
+   <ns2:SchemaElement type="UMLGeneralization" xsi:type="ns2:SchemaElementType"/>
+  </ns2:Namespace>
+  <ns2:Namespace generateStubs="false" location="./xsd/cagrid/types/common/common.xsd" namespace="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common" packageName="gov.nih.nci.cagrid.metadata.common" xsi:type="ns2:NamespaceType">
+   <ns2:SchemaElement type="Address" xsi:type="ns2:SchemaElementType"/>
+   <ns2:SchemaElement type="Enumeration" xsi:type="ns2:SchemaElementType"/>
+   <ns2:SchemaElement type="PointOfContact" xsi:type="ns2:SchemaElementType"/>
+   <ns2:SchemaElement type="ResearchCenter" xsi:type="ns2:SchemaElementType"/>
+   <ns2:SchemaElement type="ResearchCenterDescription" xsi:type="ns2:SchemaElementType"/>
+   <ns2:SchemaElement type="SemanticMetadata" xsi:type="ns2:SchemaElementType"/>
+   <ns2:SchemaElement type="UMLAttribute" xsi:type="ns2:SchemaElementType"/>
+   <ns2:SchemaElement type="UMLClass" xsi:type="ns2:SchemaElementType"/>
+   <ns2:SchemaElement type="ValueDomain" xsi:type="ns2:SchemaElementType"/>
+  </ns2:Namespace>
+  <ns2:Namespace generateStubs="false" location="" namespace="http://www.w3.org/2001/XMLSchema" packageName="" xsi:type="ns2:NamespaceType">
+   <ns2:SchemaElement type="anySimpleType" xsi:type="ns2:SchemaElementType"/>
+   <ns2:SchemaElement type="anyType" xsi:type="ns2:SchemaElementType"/>
+   <ns2:SchemaElement type="anyURI" xsi:type="ns2:SchemaElementType"/>
+   <ns2:SchemaElement type="base64Binary" xsi:type="ns2:SchemaElementType"/>
+   <ns2:SchemaElement type="boolean" xsi:type="ns2:SchemaElementType"/>
+   <ns2:SchemaElement type="byte" xsi:type="ns2:SchemaElementType"/>
+   <ns2:SchemaElement type="date" xsi:type="ns2:SchemaElementType"/>
+   <ns2:SchemaElement type="dateTime" xsi:type="ns2:SchemaElementType"/>
+   <ns2:SchemaElement type="decimal" xsi:type="ns2:SchemaElementType"/>
+   <ns2:SchemaElement type="double" xsi:type="ns2:SchemaElementType"/>
+   <ns2:SchemaElement type="duration" xsi:type="ns2:SchemaElementType"/>
+   <ns2:SchemaElement type="ENTITIES" xsi:type="ns2:SchemaElementType"/>
+   <ns2:SchemaElement type="ENTITY" xsi:type="ns2:SchemaElementType"/>
+   <ns2:SchemaElement type="float" xsi:type="ns2:SchemaElementType"/>
+   <ns2:SchemaElement type="gDay" xsi:type="ns2:SchemaElementType"/>
+   <ns2:SchemaElement type="gMonth" xsi:type="ns2:SchemaElementType"/>
+   <ns2:SchemaElement type="gMonthDay" xsi:type="ns2:SchemaElementType"/>
+   <ns2:SchemaElement type="gYear" xsi:type="ns2:SchemaElementType"/>
+   <ns2:SchemaElement type="gYearMonth" xsi:type="ns2:SchemaElementType"/>
+   <ns2:SchemaElement type="hexBinary" xsi:type="ns2:SchemaElementType"/>
+   <ns2:SchemaElement type="ID" xsi:type="ns2:SchemaElementType"/>
+   <ns2:SchemaElement type="IDREF" xsi:type="ns2:SchemaElementType"/>
+   <ns2:SchemaElement type="IDREFS" xsi:type="ns2:SchemaElementType"/>
+   <ns2:SchemaElement type="int" xsi:type="ns2:SchemaElementType"/>
+   <ns2:SchemaElement type="integer" xsi:type="ns2:SchemaElementType"/>
+   <ns2:SchemaElement type="language" xsi:type="ns2:SchemaElementType"/>
+   <ns2:SchemaElement type="long" xsi:type="ns2:SchemaElementType"/>
+   <ns2:SchemaElement type="Name" xsi:type="ns2:SchemaElementType"/>
+   <ns2:SchemaElement type="NCName" xsi:type="ns2:SchemaElementType"/>
+   <ns2:SchemaElement type="negativeInteger" xsi:type="ns2:SchemaElementType"/>
+   <ns2:SchemaElement type="NMTOKEN" xsi:type="ns2:SchemaElementType"/>
+   <ns2:SchemaElement type="NMTOKENS" xsi:type="ns2:SchemaElementType"/>
+   <ns2:SchemaElement type="nonNegativeInteger" xsi:type="ns2:SchemaElementType"/>
+   <ns2:SchemaElement type="nonPositiveInteger" xsi:type="ns2:SchemaElementType"/>
+   <ns2:SchemaElement type="normalizedString" xsi:type="ns2:SchemaElementType"/>
+   <ns2:SchemaElement type="NOTATION" xsi:type="ns2:SchemaElementType"/>
+   <ns2:SchemaElement type="positiveInteger" xsi:type="ns2:SchemaElementType"/>
+   <ns2:SchemaElement type="QName" xsi:type="ns2:SchemaElementType"/>
+   <ns2:SchemaElement type="short" xsi:type="ns2:SchemaElementType"/>
+   <ns2:SchemaElement type="string" xsi:type="ns2:SchemaElementType"/>
+   <ns2:SchemaElement type="time" xsi:type="ns2:SchemaElementType"/>
+   <ns2:SchemaElement type="token" xsi:type="ns2:SchemaElementType"/>
+   <ns2:SchemaElement type="unsignedByte" xsi:type="ns2:SchemaElementType"/>
+   <ns2:SchemaElement type="unsignedInt" xsi:type="ns2:SchemaElementType"/>
+   <ns2:SchemaElement type="unsignedLong" xsi:type="ns2:SchemaElementType"/>
+   <ns2:SchemaElement type="unsignedShort" xsi:type="ns2:SchemaElementType"/>
+  </ns2:Namespace>
+  <ns2:Namespace location="./MetadataModelServiceTypes.xsd" namespace="http://mms.cagrid.org/MetadataModelService/types" packageName="org.cagrid.mms.stubs.types" xsi:type="ns2:NamespaceType">
+   <ns2:SchemaElement type="InvalidUMLProjectIndentifier" xsi:type="ns2:SchemaElementType"/>
+   <ns2:SchemaElement type="MetadataModelServiceReference" xsi:type="ns2:SchemaElementType"/>
+  </ns2:Namespace>
+  <ns2:Namespace generateStubs="false" location="./xsd/cagrid/types/security/security.xsd" namespace="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.security" packageName="gov.nih.nci.cagrid.metadata.security" xsi:type="ns2:NamespaceType">
+   <ns2:SchemaElement type="CommunicationMechanism" xsi:type="ns2:SchemaElementType"/>
+   <ns2:SchemaElement type="CommunicationStyle" xsi:type="ns2:SchemaElementType"/>
+   <ns2:SchemaElement type="GSISecureConversation" xsi:type="ns2:SchemaElementType"/>
+   <ns2:SchemaElement type="GSISecureMessage" xsi:type="ns2:SchemaElementType"/>
+   <ns2:SchemaElement type="GSITransport" xsi:type="ns2:SchemaElementType"/>
+   <ns2:SchemaElement type="None" xsi:type="ns2:SchemaElementType"/>
+   <ns2:SchemaElement type="Operation" xsi:type="ns2:SchemaElementType"/>
+   <ns2:SchemaElement type="ServiceSecurityMetadata" xsi:type="ns2:SchemaElementType"/>
+  </ns2:Namespace>
+  <ns2:Namespace generateStubs="false" location="./xsd/cagrid/types/caGridMetadata.xsd" namespace="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata" packageName="gov.nih.nci.cagrid.metadata" xsi:type="ns2:NamespaceType">
+   <ns2:SchemaElement type="ServiceMetadata" xsi:type="ns2:SchemaElementType"/>
+  </ns2:Namespace>
+  <ns2:Namespace generateStubs="false" location="./xsd/cagrid/types/service/servicemodel.xsd" namespace="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.service" packageName="gov.nih.nci.cagrid.metadata.service" xsi:type="ns2:NamespaceType">
+   <ns2:SchemaElement type="CaDSRRegistration" xsi:type="ns2:SchemaElementType"/>
+   <ns2:SchemaElement type="ContextProperty" xsi:type="ns2:SchemaElementType"/>
+   <ns2:SchemaElement type="Fault" xsi:type="ns2:SchemaElementType"/>
+   <ns2:SchemaElement type="InputParameter" xsi:type="ns2:SchemaElementType"/>
+   <ns2:SchemaElement type="Operation" xsi:type="ns2:SchemaElementType"/>
+   <ns2:SchemaElement type="Output" xsi:type="ns2:SchemaElementType"/>
+   <ns2:SchemaElement type="Service" xsi:type="ns2:SchemaElementType"/>
+   <ns2:SchemaElement type="ServiceContext" xsi:type="ns2:SchemaElementType"/>
+  </ns2:Namespace>
+ </ns2:Namespaces>
+ <ns3:Services xsi:type="ns3:ServicesType" xmlns:ns3="gme://gov.nih.nci.cagrid.introduce/1/Services" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <ns3:Service name="MetadataModelService" namespace="http://mms.cagrid.org/MetadataModelService" packageName="org.cagrid.mms" xsi:type="ns3:ServiceType">
+   <ns4:Methods xsi:type="ns4:MethodsType" xmlns:ns4="gme://gov.nih.nci.cagrid.introduce/1/Methods">
+    <ns4:Method isImported="true" isProvided="true" name="GetMultipleResourceProperties" xsi:type="ns4:MethodType">
+     <ns4:Output qName="void" isArray="false"/>
+     <ns5:MethodSecurity xsi:type="ns5:MethodSecurity" xmlns:ns5="gme://gov.nih.nci.cagrid.introduce/1/Security">
+      <ns5:SecuritySetting xsi:type="ns5:SecuritySetting">None</ns5:SecuritySetting>
+     </ns5:MethodSecurity>
+     <ns4:ImportInformation fromIntroduce="false" inputMessage="ns6:GetMultipleResourcePropertiesRequest" namespace="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ResourceProperties-1.2-draft-01.wsdl" outputMessage="ns6:GetMultipleResourcePropertiesResponse" packageName="org.oasis.wsrf.properties" portTypeName="GetMultipleResourceProperties" wsdlFile="../wsrf/properties/WS-ResourceProperties.wsdl" xmlns:ns6="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ResourceProperties-1.2-draft-01.wsdl"/>
+     <ns4:ProviderInformation providerClass="GetMRPProvider"/>
+    </ns4:Method>
+    <ns4:Method isImported="true" isProvided="true" name="GetResourceProperty" xsi:type="ns4:MethodType">
+     <ns4:Output qName="void" isArray="false"/>
+     <ns7:MethodSecurity xsi:type="ns7:MethodSecurity" xmlns:ns7="gme://gov.nih.nci.cagrid.introduce/1/Security">
+      <ns7:SecuritySetting xsi:type="ns7:SecuritySetting">None</ns7:SecuritySetting>
+     </ns7:MethodSecurity>
+     <ns4:ImportInformation fromIntroduce="false" inputMessage="ns8:GetResourcePropertyRequest" namespace="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ResourceProperties-1.2-draft-01.wsdl" outputMessage="ns8:GetResourcePropertyResponse" packageName="org.oasis.wsrf.properties" portTypeName="GetResourceProperty" wsdlFile="../wsrf/properties/WS-ResourceProperties.wsdl" xmlns:ns8="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ResourceProperties-1.2-draft-01.wsdl"/>
+     <ns4:ProviderInformation providerClass="GetRPProvider"/>
+    </ns4:Method>
+    <ns4:Method isImported="true" isProvided="true" name="QueryResourceProperties" xsi:type="ns4:MethodType">
+     <ns4:Output qName="void" isArray="false"/>
+     <ns9:MethodSecurity xsi:type="ns9:MethodSecurity" xmlns:ns9="gme://gov.nih.nci.cagrid.introduce/1/Security">
+      <ns9:SecuritySetting xsi:type="ns9:SecuritySetting">None</ns9:SecuritySetting>
+     </ns9:MethodSecurity>
+     <ns4:ImportInformation fromIntroduce="false" inputMessage="ns10:QueryResourcePropertiesRequest" namespace="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ResourceProperties-1.2-draft-01.wsdl" outputMessage="ns10:QueryResourcePropertiesResponse" packageName="org.oasis.wsrf.properties" portTypeName="QueryResourceProperties" wsdlFile="../wsrf/properties/WS-ResourceProperties.wsdl" xmlns:ns10="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ResourceProperties-1.2-draft-01.wsdl"/>
+     <ns4:ProviderInformation providerClass="QueryRPProvider"/>
+    </ns4:Method>
+    <ns4:Method isImported="true" isProvided="true" name="getServiceSecurityMetadata" xsi:type="ns4:MethodType">
+     <ns4:Output qName="ns11:ServiceSecurityMetadata" isArray="false" isClientHandle="false" xmlns:ns11="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.security"/>
+     <ns12:MethodSecurity xsi:type="ns12:MethodSecurity" xmlns:ns12="gme://gov.nih.nci.cagrid.introduce/1/Security">
+      <ns12:SecuritySetting xsi:type="ns12:SecuritySetting">None</ns12:SecuritySetting>
+      <ns12:MethodAuthorization xsi:type="ns12:MethodAuthorization">
+       <ns12:NoAuthorization xsi:type="ns12:NoAuthorization"/>
+      </ns12:MethodAuthorization>
+     </ns12:MethodSecurity>
+     <ns4:ImportInformation namespace="http://security.introduce.cagrid.nci.nih.gov/ServiceSecurity" packageName="gov.nih.nci.cagrid.introduce.security.stubs" portTypeName="ServiceSecurityPortType" wsdlFile="ServiceSecurity.wsdl"/>
+     <ns4:ProviderInformation providerClass="gov.nih.nci.cagrid.introduce.security.service.globus.ServiceSecurityProviderImpl"/>
+    </ns4:Method>
+    <ns4:Method description="Generates a complete DomainModel for the specified Project" isImported="false" isProvided="false" name="generateDomainModelForProject" xsi:type="ns4:MethodType">
+     <ns4:Inputs>
+      <ns4:Input qName="ns13:UMLProjectIdentifer" description="The project to generate a DomainModel for." isArray="false" name="umlProjectIdentifer" xmlns:ns13="gme://caGrid.caBIG/1.0/org.cagrid.mms.domain"/>
+     </ns4:Inputs>
+     <ns4:Output qName="ns14:DomainModel" description="" isArray="false" xmlns:ns14="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.dataservice"/>
+     <ns4:Exceptions>
+      <ns4:Exception description="" name="InvalidUMLProjectIndentifier" qname="ns15:InvalidUMLProjectIndentifier" xmlns:ns15="http://mms.cagrid.org/MetadataModelService/types"/>
+     </ns4:Exceptions>
+    </ns4:Method>
+    <ns4:Method description="Generates a DomainModel for the specified Project, including only the specified packages" isImported="false" isProvided="false" name="generateDomainModelForPackages" xsi:type="ns4:MethodType">
+     <ns4:Inputs>
+      <ns4:Input qName="ns16:UMLProjectIdentifer" description="The project to generate a DomainModel for" isArray="false" name="umlProjectIdentifer" xmlns:ns16="gme://caGrid.caBIG/1.0/org.cagrid.mms.domain"/>
+      <ns4:Input qName="xsd:string" description="The package names to include" isArray="true" name="packageNames" xmlns:xsd="http://www.w3.org/2001/XMLSchema"/>
+     </ns4:Inputs>
+     <ns4:Output qName="ns17:DomainModel" description="" isArray="false" xmlns:ns17="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.dataservice"/>
+     <ns4:Exceptions>
+      <ns4:Exception description="" name="InvalidUMLProjectIndentifier" qname="ns18:InvalidUMLProjectIndentifier" xmlns:ns18="http://mms.cagrid.org/MetadataModelService/types"/>
+     </ns4:Exceptions>
+    </ns4:Method>
+    <ns4:Method description="Generates a complete DomainModel for the specified Project, including only the identified Classes" isImported="false" isProvided="false" name="generateDomainModelForClasses" xsi:type="ns4:MethodType">
+     <ns4:Inputs>
+      <ns4:Input qName="ns19:UMLProjectIdentifer" description="The project to generate a DomainModel for" isArray="false" name="umlProjectIdentifer" xmlns:ns19="gme://caGrid.caBIG/1.0/org.cagrid.mms.domain"/>
+      <ns4:Input qName="xsd:string" description="The fully qualified classnames to include in the model" isArray="true" name="fullyQualifiedClassNames" xmlns:xsd="http://www.w3.org/2001/XMLSchema"/>
+     </ns4:Inputs>
+     <ns4:Output qName="ns20:DomainModel" description="" isArray="false" xmlns:ns20="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.dataservice"/>
+     <ns4:Exceptions>
+      <ns4:Exception description="" name="InvalidUMLProjectIndentifier" qname="ns21:InvalidUMLProjectIndentifier" xmlns:ns21="http://mms.cagrid.org/MetadataModelService/types"/>
+     </ns4:Exceptions>
+    </ns4:Method>
+    <ns4:Method description="Generates a  DomainModel for the specified Project, including only the specified Classes, but excluding the specified Associations" isImported="false" isProvided="false" name="generateDomainModelForClassesWithExcludes" xsi:type="ns4:MethodType">
+     <ns4:Inputs>
+      <ns4:Input qName="ns22:UMLProjectIdentifer" description="The project to generate a DomainModel for" isArray="false" name="umlProjectIdentifer" xmlns:ns22="gme://caGrid.caBIG/1.0/org.cagrid.mms.domain"/>
+      <ns4:Input qName="xsd:string" description="The fully qualified Class names to include in the model" isArray="true" name="fullyQualifiedClassNames" xmlns:xsd="http://www.w3.org/2001/XMLSchema"/>
+      <ns4:Input qName="ns23:UMLAssociationExclude" description="A collection of UML Associations to exclude from the model" isArray="true" name="umlAssociationExclude" xmlns:ns23="gme://caGrid.caBIG/1.0/org.cagrid.mms.domain"/>
+     </ns4:Inputs>
+     <ns4:Output qName="ns24:DomainModel" description="" isArray="false" xmlns:ns24="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.dataservice"/>
+     <ns4:Exceptions>
+      <ns4:Exception description="" name="InvalidUMLProjectIndentifier" qname="ns25:InvalidUMLProjectIndentifier" xmlns:ns25="http://mms.cagrid.org/MetadataModelService/types"/>
+     </ns4:Exceptions>
+    </ns4:Method>
+    <ns4:Method description="Annotates the specified ServiceMetadata model with semantic information from the specified model, by mapping QNames to UMLClasses" isImported="false" isProvided="false" name="annotateServiceMetadata" xsi:type="ns4:MethodType">
+     <ns4:Inputs>
+      <ns4:Input qName="ns26:ServiceMetadata" description="The unannotated ServiceMetadata model" isArray="false" name="serviceMetadata" xmlns:ns26="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata"/>
+      <ns4:Input qName="ns27:NamespaceToProjectMapping" description="An optional collection of mappings from URI Namespace to UMLProjects" isArray="true" name="namespaceToProjectMappings" xmlns:ns27="gme://caGrid.caBIG/1.0/org.cagrid.mms.domain"/>
+     </ns4:Inputs>
+     <ns4:Output qName="ns28:ServiceMetadata" description="" isArray="false" xmlns:ns28="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata"/>
+     <ns4:Exceptions>
+      <ns4:Exception description="Thrown if the identifier is null or contains invalid properties." name="InvalidUMLProjectIndentifier" qname="ns29:InvalidUMLProjectIndentifier" xmlns:ns29="http://mms.cagrid.org/MetadataModelService/types"/>
+     </ns4:Exceptions>
+    </ns4:Method>
+    <ns4:Method description="Returns the metadata detailing the supported Model sources and their characteristics" isImported="false" isProvided="false" name="getModelSourceMetadata" xsi:type="ns4:MethodType">
+     <ns4:Inputs/>
+     <ns4:Output qName="ns30:ModelSourceMetadata" description="" isArray="false" xmlns:ns30="gme://caGrid.caBIG/1.0/org.cagrid.mms.domain"/>
+     <ns4:Exceptions/>
+    </ns4:Method>
+   </ns4:Methods>
+   <ns31:ResourcePropertiesList xsi:type="ns31:ResourcePropertiesListType" xmlns:ns31="gme://gov.nih.nci.cagrid.introduce/1/Resources">
+    <ns31:ResourceProperty qName="ns32:ServiceMetadata" description="Standard caGrid Metadata" fileLocation="serviceMetadata.xml" populateFromFile="true" register="true" xsi:type="ns31:ResourcePropertyType" xmlns:ns32="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata"/>
+    <ns31:ResourceProperty qName="ns33:ModelSourceMetadata" description="Metadata Model Service Metadata detailing the supported Model Sources" fileLocation="MetadataModelService_modelSourceMetadata.xml" populateFromFile="false" register="true" xsi:type="ns31:ResourcePropertyType" xmlns:ns33="gme://caGrid.caBIG/1.0/org.cagrid.mms.domain"/>
+   </ns31:ResourcePropertiesList>
+   <ns3:ResourceFrameworkOptions xsi:type="ns3:ResourceFrameworkOptions">
+    <ns3:Main xsi:type="ns3:Main"/>
+    <ns3:Singleton xsi:type="ns3:Singleton"/>
+    <ns3:Identifiable xsi:type="ns3:Identifiable"/>
+    <ns3:ResourcePropertyManagement xsi:type="ns3:ResourcePropertyManagement"/>
+   </ns3:ResourceFrameworkOptions>
+  </ns3:Service>
+ </ns3:Services>
+ <ns34:Extensions xsi:type="ns34:ExtensionsType" xmlns:ns34="gme://gov.nih.nci.cagrid.introduce/1/Extension" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <ns34:Extension name="cagrid_metadata" version="1.3" xsi:type="ns34:ExtensionType"/>
+ </ns34:Extensions>
+ <ns35:ServiceProperties xmlns:ns35="gme://gov.nih.nci.cagrid.introduce/1/Property">
+  <ns35:Property description="The Spring-based MMS configuration file" isFromETC="true" key="mmsConfigurationFile" value="applicationContext-mms.xml"/>
+ </ns35:ServiceProperties>
+</ns1:ServiceDescription>

@@ -1,0 +1,55 @@
+<?xml version="1.0"?>
+
+<ivy-module version="2.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:noNamespaceSchemaLocation="http://incubator.apache.org/ivy/schemas/ivy.xsd">
+
+  <info organisation="caGrid" module="wsEnum" revision="${project.version}">
+    <license name="caGrid" url="http://cagrid.org/wiki/CaGrid:LICENSE-1.3"/>
+    <description>WS-Enumeration client and service utilities</description>
+  </info>
+
+  <configurations>
+    <conf name="impl" visibility="private" extends="default"/>
+    <conf name="impl-test" visibility="private"/>
+
+    <!-- Public Configurations-->
+    <conf name="stubs" visibility="public"/>
+    <conf name="default" extends="stubs" visibility="public"/>
+    <conf name="test" visibility="public" extends="default,impl-test"/>
+
+    <conf name="enum-schemas" visibility="public"/>
+    <conf name="schemas" visibility="public" extends="enum-schemas"/>
+  </configurations>
+
+
+
+  <publications>
+    <artifact name="caGrid-${ivy.module}-stubs" conf="stubs" type="jar"/>
+    <artifact name="caGrid-${ivy.module}" conf="default" type="jar"/>
+    <artifact name="caGrid-${ivy.module}-tests" conf="test" type="jar"/>
+    <artifact name="caGrid-${ivy.module}-test-stubs" conf="test" type="jar"/>
+
+    <artifact name="CaGridEnumeration" conf="schemas" type="wsdl"/>
+    <artifact name="CaGridEnumerationTypes" conf="schemas" type="xsd"/>
+    <artifact name="ServiceSecurity" conf="schemas" type="wsdl"/>    
+    <artifact name="EnumerationResponseContainer" conf="schemas" type="xsd"/>
+    
+    <artifact name="addressing" conf="enum-schemas" type="xsd"/>
+    <artifact name="enumeration" conf="enum-schemas" type="wsdl"/>
+    <artifact name="enumeration" conf="enum-schemas" type="xsd"/>
+  </publications>
+
+  <dependencies>
+    <dependency rev="latest.integration" org="caGrid" name="core"
+      conf="default->default;impl-test->test"/>
+    <dependency rev="latest.integration" org="caGrid" name="service-security-provider"
+      conf="default->client"/>
+    <dependency rev="latest.integration" org="caGrid" name="metadata"
+      conf="default->security.schemas,security.jars;schemas->security.schemas"/>
+
+    <!-- Extenernal Dependencies -->
+    <dependency rev="1.0" org="jdom" name="jdom" conf="default->*"/>
+    <dependency rev="4.4" org="junit" name="junit" conf="impl-test->default"/>
+
+  </dependencies>
+</ivy-module>

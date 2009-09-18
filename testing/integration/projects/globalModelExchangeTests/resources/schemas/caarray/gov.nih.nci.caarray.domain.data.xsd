@@ -1,0 +1,304 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns="gme://caArray.caBIG/2.0/gov.nih.nci.caarray.domain.data"
+    xmlns:gov.nih.nci.caarray.domain="gme://caArray.caBIG/2.0/gov.nih.nci.caarray.domain"
+    xmlns:gov.nih.nci.caarray.domain.array="gme://caArray.caBIG/2.0/gov.nih.nci.caarray.domain.array"
+    xmlns:gov.nih.nci.caarray.domain.file="gme://caArray.caBIG/2.0/gov.nih.nci.caarray.domain.file"
+    xmlns:gov.nih.nci.caarray.domain.hybridization="gme://caArray.caBIG/2.0/gov.nih.nci.caarray.domain.hybridization"
+    xmlns:gov.nih.nci.caarray.domain.protocol="gme://caArray.caBIG/2.0/gov.nih.nci.caarray.domain.protocol"
+    xmlns:gov.nih.nci.caarray.domain.sample="gme://caArray.caBIG/2.0/gov.nih.nci.caarray.domain.sample"
+    targetNamespace="gme://caArray.caBIG/2.0/gov.nih.nci.caarray.domain.data" elementFormDefault="qualified">
+
+    <xs:import namespace="gme://caArray.caBIG/2.0/gov.nih.nci.caarray.domain.hybridization"
+        schemaLocation="gov.nih.nci.caarray.domain.hybridization.xsd" />
+    <xs:import namespace="gme://caArray.caBIG/2.0/gov.nih.nci.caarray.domain.array"
+        schemaLocation="gov.nih.nci.caarray.domain.array.xsd" />
+    <xs:import namespace="gme://caArray.caBIG/2.0/gov.nih.nci.caarray.domain.protocol"
+        schemaLocation="gov.nih.nci.caarray.domain.protocol.xsd" />
+    <xs:import namespace="gme://caArray.caBIG/2.0/gov.nih.nci.caarray.domain.file"
+        schemaLocation="gov.nih.nci.caarray.domain.file.xsd" />
+    <xs:import namespace="gme://caArray.caBIG/2.0/gov.nih.nci.caarray.domain"
+        schemaLocation="gov.nih.nci.caarray.domain.xsd" />
+    <xs:import namespace="gme://caArray.caBIG/2.0/gov.nih.nci.caarray.domain.sample"
+        schemaLocation="gov.nih.nci.caarray.domain.sample.xsd" />
+
+    <xs:element name="ArrayDataType" type="ArrayDataType" />
+    <xs:complexType name="ArrayDataType">
+        <xs:complexContent>
+            <xs:extension base="gov.nih.nci.caarray.domain:AbstractCaArrayObject">
+                <xs:sequence>
+                    <xs:element name="quantitationTypes" minOccurs="0">
+                        <xs:complexType>
+                            <xs:choice minOccurs="0" maxOccurs="unbounded">
+                                <xs:element ref="QuantitationType" />
+                            </xs:choice>
+                        </xs:complexType>
+                    </xs:element>
+                </xs:sequence>
+                <xs:attribute name="name" type="xs:string" />
+                <xs:attribute name="version" type="xs:string" />
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+    <xs:element name="Image" type="Image" />
+    <xs:complexType name="Image">
+        <xs:complexContent>
+            <xs:extension base="gov.nih.nci.caarray.domain:AbstractCaArrayEntity">
+                <xs:sequence>
+                    <xs:element name="protocolApplications" minOccurs="0">
+                        <xs:complexType>
+                            <xs:choice minOccurs="0" maxOccurs="unbounded">
+                                <xs:element ref="gov.nih.nci.caarray.domain.protocol:ProtocolApplication" />
+                            </xs:choice>
+                        </xs:complexType>
+                    </xs:element>
+                    <xs:element name="imageFile" minOccurs="0" maxOccurs="1"
+                        type="gov.nih.nci.caarray.domain.file:CaArrayFile" />
+                </xs:sequence>
+                <xs:attribute name="name" type="xs:string" />
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+    <xs:element name="HybridizationData" type="HybridizationData" />
+    <xs:complexType name="HybridizationData">
+        <xs:complexContent>
+            <xs:extension base="gov.nih.nci.caarray.domain:AbstractCaArrayObject">
+                <xs:sequence>
+                    <xs:element name="columns" minOccurs="0">
+                        <xs:complexType>
+                            <xs:choice minOccurs="0" maxOccurs="unbounded">
+                                <xs:element ref="AbstractDataColumn" />
+                            </xs:choice>
+                        </xs:complexType>
+                    </xs:element>
+                    <xs:element name="hybridization" minOccurs="0" maxOccurs="1"
+                        type="gov.nih.nci.caarray.domain.hybridization:Hybridization" />
+                    <xs:element name="labeledExtract" minOccurs="0" maxOccurs="1"
+                        type="gov.nih.nci.caarray.domain.sample:LabeledExtract" />
+                    <xs:element name="dataSet" minOccurs="0" maxOccurs="1" type="DataSet" />
+                </xs:sequence>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+    <xs:element name="ShortColumn" type="ShortColumn" />
+    <xs:complexType name="ShortColumn">
+        <xs:complexContent>
+            <xs:extension base="AbstractDataColumn">
+                <xs:sequence>
+                    <xs:element name="values" minOccurs="0" maxOccurs="unbounded" type="xs:short" />
+                </xs:sequence>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+    <xs:element name="LongColumn" type="LongColumn" />
+    <xs:complexType name="LongColumn">
+        <xs:complexContent>
+            <xs:extension base="AbstractDataColumn">
+                <xs:sequence>
+                    <xs:element name="values" minOccurs="0" maxOccurs="unbounded" type="xs:long" />
+                </xs:sequence>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+    <xs:element name="DataSet" type="DataSet" />
+    <xs:complexType name="DataSet">
+        <xs:complexContent>
+            <xs:extension base="gov.nih.nci.caarray.domain:AbstractCaArrayObject">
+                <xs:sequence>
+                    <xs:element name="hybridizationDataList" minOccurs="0">
+                        <xs:complexType>
+                            <xs:choice minOccurs="0" maxOccurs="unbounded">
+                                <xs:element ref="HybridizationData" />
+                            </xs:choice>
+                        </xs:complexType>
+                    </xs:element>
+                    <xs:element name="quantitationTypes" minOccurs="0">
+                        <xs:complexType>
+                            <xs:choice minOccurs="0" maxOccurs="unbounded">
+                                <xs:element ref="QuantitationType" />
+                            </xs:choice>
+                        </xs:complexType>
+                    </xs:element>
+                    <xs:element name="designElementList" minOccurs="0" maxOccurs="1" type="DesignElementList" />
+                </xs:sequence>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+    <xs:element name="DesignElementList" type="DesignElementList" />
+    <xs:complexType name="DesignElementList">
+        <xs:complexContent>
+            <xs:extension base="gov.nih.nci.caarray.domain:AbstractCaArrayEntity">
+                <xs:sequence>
+                    <xs:element name="designElements" minOccurs="0">
+                        <xs:complexType>
+                            <xs:choice minOccurs="0" maxOccurs="unbounded">
+                                <xs:element ref="gov.nih.nci.caarray.domain.array:AbstractDesignElement" />
+                            </xs:choice>
+                        </xs:complexType>
+                    </xs:element>
+                </xs:sequence>
+                <xs:attribute name="designElementType" type="xs:string" />
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+    <xs:element name="AbstractArrayData" type="AbstractArrayData" />
+    <xs:complexType name="AbstractArrayData">
+        <xs:complexContent>
+            <xs:extension base="gov.nih.nci.caarray.domain:AbstractCaArrayEntity">
+                <xs:sequence>
+                    <xs:element name="protocolApplications" minOccurs="0">
+                        <xs:complexType>
+                            <xs:choice minOccurs="0" maxOccurs="unbounded">
+                                <xs:element ref="gov.nih.nci.caarray.domain.protocol:ProtocolApplication" />
+                            </xs:choice>
+                        </xs:complexType>
+                    </xs:element>
+                    <xs:element name="dataFile" minOccurs="0" maxOccurs="1"
+                        type="gov.nih.nci.caarray.domain.file:CaArrayFile" />
+                    <xs:element name="dataSet" minOccurs="0" maxOccurs="1" type="DataSet" />
+                    <xs:element name="type" minOccurs="0" maxOccurs="1" type="ArrayDataType" />
+                </xs:sequence>
+                <xs:attribute name="name" type="xs:string" />
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+    <xs:element name="BooleanColumn" type="BooleanColumn" />
+    <xs:complexType name="BooleanColumn">
+        <xs:complexContent>
+            <xs:extension base="AbstractDataColumn">
+                <xs:sequence>
+                    <xs:element name="values" minOccurs="0" maxOccurs="unbounded" type="xs:boolean" />
+                </xs:sequence>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+    <xs:element name="FloatColumn" type="FloatColumn" />
+    <xs:complexType name="FloatColumn">
+        <xs:complexContent>
+            <xs:extension base="AbstractDataColumn">
+                <xs:sequence>
+                    <xs:element name="values" minOccurs="0" maxOccurs="unbounded" type="xs:float" />
+                </xs:sequence>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+    <xs:element name="AbstractDataColumn" type="AbstractDataColumn" />
+    <xs:complexType name="AbstractDataColumn">
+        <xs:complexContent>
+            <xs:extension base="gov.nih.nci.caarray.domain:AbstractCaArrayObject">
+                <xs:sequence>
+                    <xs:element name="quantitationType" minOccurs="0" maxOccurs="1" type="QuantitationType" />
+                    <xs:element name="hybridizationData" minOccurs="0" maxOccurs="1" type="HybridizationData" />
+                </xs:sequence>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+    <xs:element name="DerivedArrayData" type="DerivedArrayData" />
+    <xs:complexType name="DerivedArrayData">
+        <xs:complexContent>
+            <xs:extension base="AbstractArrayData">
+                <xs:sequence>
+                    <xs:element name="hybridizations" minOccurs="0">
+                        <xs:complexType>
+                            <xs:choice minOccurs="0" maxOccurs="unbounded">
+                                <xs:element ref="gov.nih.nci.caarray.domain.hybridization:Hybridization" />
+                            </xs:choice>
+                        </xs:complexType>
+                    </xs:element>
+                    <xs:element name="derivedFromArrayDataCollection" minOccurs="0">
+                        <xs:complexType>
+                            <xs:choice minOccurs="0" maxOccurs="unbounded">
+                                <xs:element ref="AbstractArrayData" />
+                            </xs:choice>
+                        </xs:complexType>
+                    </xs:element>
+                </xs:sequence>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+    <xs:element name="RawArrayData" type="RawArrayData" />
+    <xs:complexType name="RawArrayData">
+        <xs:complexContent>
+            <xs:extension base="AbstractArrayData">
+                <xs:sequence>
+                    <xs:element name="sourceImages" minOccurs="0">
+                        <xs:complexType>
+                            <xs:choice minOccurs="0" maxOccurs="unbounded">
+                                <xs:element ref="Image" />
+                            </xs:choice>
+                        </xs:complexType>
+                    </xs:element>
+                    <xs:element name="hybridization" minOccurs="0" maxOccurs="1"
+                        type="gov.nih.nci.caarray.domain.hybridization:Hybridization" />
+                </xs:sequence>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+    <xs:element name="StringColumn" type="StringColumn" />
+    <xs:complexType name="StringColumn">
+        <xs:complexContent>
+            <xs:extension base="AbstractDataColumn">
+                <xs:sequence>
+                    <xs:element name="values" minOccurs="0" maxOccurs="unbounded" type="xs:string" />
+                </xs:sequence>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+    <xs:element name="QuantitationType" type="QuantitationType" />
+    <xs:complexType name="QuantitationType">
+        <xs:complexContent>
+            <xs:extension base="gov.nih.nci.caarray.domain:AbstractCaArrayObject">
+                <xs:sequence />
+                <xs:attribute name="name" type="xs:string" />
+                <xs:attribute name="type" type="xs:string" />
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+    <xs:element name="DoubleColumn" type="DoubleColumn" />
+    <xs:complexType name="DoubleColumn">
+        <xs:complexContent>
+            <xs:extension base="AbstractDataColumn">
+                <xs:sequence>
+                    <xs:element name="values" minOccurs="0" maxOccurs="unbounded" type="xs:double" />
+                </xs:sequence>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+    <xs:element name="IntegerColumn" type="IntegerColumn" />
+    <xs:complexType name="IntegerColumn">
+        <xs:complexContent>
+            <xs:extension base="AbstractDataColumn">
+                <xs:sequence>
+                    <xs:element name="values" minOccurs="0" maxOccurs="unbounded" type="xs:int" />
+                </xs:sequence>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+    <xs:element name="DataRetrievalRequest" type="DataRetrievalRequest" />
+    <xs:complexType name="DataRetrievalRequest">
+        <xs:sequence>
+            <xs:element name="designElements" minOccurs="0">
+                <xs:complexType>
+                    <xs:choice minOccurs="0" maxOccurs="unbounded">
+                        <xs:element ref="gov.nih.nci.caarray.domain.array:AbstractDesignElement" />
+                    </xs:choice>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="hybridizations" minOccurs="0">
+                <xs:complexType>
+                    <xs:choice minOccurs="0" maxOccurs="unbounded">
+                        <xs:element ref="gov.nih.nci.caarray.domain.hybridization:Hybridization" />
+                    </xs:choice>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="quantitationTypes" minOccurs="0">
+                <xs:complexType>
+                    <xs:choice minOccurs="0" maxOccurs="unbounded">
+                        <xs:element ref="QuantitationType" />
+                    </xs:choice>
+                </xs:complexType>
+            </xs:element>
+        </xs:sequence>
+        <xs:attribute name="id" type="xs:long" />
+    </xs:complexType>
+</xs:schema>
+

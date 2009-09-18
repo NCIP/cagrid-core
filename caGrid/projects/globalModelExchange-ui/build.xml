@@ -1,0 +1,226 @@
+<?xml version="1.0"?>
+<!-- ================================================================= -->
+<!-- caGrid 1.0 GME UIbuild file                                        -->
+<!-- ================================================================= -->
+
+<project name="caGrid-globalModelExchange-ui" default="compile" basedir=".">
+	<!-- Environment -->
+	<property environment="env" />
+	<property file="${basedir}/project.properties" />
+	<property file="${basedir}/build.properties" />
+	<property name="globus.dir" location="${env.GLOBUS_LOCATION}" />
+
+	<!-- Information -->
+	<property name="project.name" value="${ant.project.name}" />
+	<property name="java.source" value="1.5" />
+
+
+	<property name="src.dir" value="${basedir}/src/java" />
+	<property name="build.dir" value="${basedir}/build" />
+	<property name="javadoc.dir" value="${build.dir}/javadoc" />
+	<property name="classes.dir" value="${build.dir}/classes" />
+	<property name="jar.dir" value="${build.dir}/jars" />
+	<property name="project.jarfile" value="${jar.dir}/${project.name}-${project.version}.jar" />
+
+	<property name="tools.dir" value="tools" />
+	<property name="tools.lib.dir" value="tools/lib" />
+
+	<property name="ext.dir" location="${basedir}/ext" />
+	<property name="ext.dependencies.dir" location="${ext.dir}/dependencies" />
+	<property name="ext.targetgrid.dir" location="${ext.dir}/target_grid" />
+	<property name="ext.lib.dir" location="${ext.dependencies.dir}/jars" />
+	<property name="ext.test.lib.dir" value="${ext.dependencies.dir}/test/jars" />
+
+	<property name="resources.dir" value="${basedir}/resources" />
+	<property name="project.resources.jarfile" value="${jar.dir}/${project.name}-resources-${project.version}.jar" />
+
+	<property name="extension.dir" location="${basedir}/extension" />
+	<property name="extension.name" value="gme-discovery" />
+
+	<property name="extension.description.file" value="${extension.dir}/extension.xml" />
+	<property name="introduce.extensions.dir" location="../introduce/extensions" />
+
+
+	<!-- testing stuff -->
+	<property name="test.dir" location="${basedir}/test" />
+	<property name="test.src.dir" location="${test.dir}/src/java" />
+	<property name="test.classes.dir" location="${build.dir}/test/classes" />
+	<property name="test.lib.dir" location="${test.dir}/lib" />
+	<property name="test.logs.dir" location="${test.dir}/logs" />
+	<property name="test.project.jar" location="${jar.dir}/${project.name}-tests-${project.version}.jar" />
+
+
+	<!-- using ant contrib for contidionals, looping , and runtarget -->
+	<taskdef resource="net/sf/antcontrib/antlib.xml">
+		<classpath>
+			<pathelement location="${tools.lib.dir}/ant-contrib.jar" />
+		</classpath>
+	</taskdef>
+
+
+	<import file="test/test.xml" />
+
+
+
+
+	<!-- =============================================================== -->
+	<!-- The Build Classpath                                             -->
+	<!-- =============================================================== -->
+	<path id="build.classpath">
+		<fileset dir="${ext.lib.dir}">
+			<include name="**/*.jar" />
+		</fileset>
+		<fileset dir="${globus.dir}/lib">
+			<include name="**/*.jar" />
+			<exclude name="junit.jar" />
+		</fileset>
+	</path>
+
+
+	<!-- =============================================================== -->
+	<!-- The Run Classpath                                                   -->
+	<!-- =============================================================== -->
+	<path id="run.classpath">
+		<path refid="build.classpath" />
+	</path>
+
+	<!-- =============================================================== -->
+	<!-- The Test Classpath                                                   -->
+	<!-- =============================================================== -->
+	<path id="test.classpath">
+		<pathelement path="${classes.dir}" />
+		<path refid="build.classpath" />
+		<fileset dir="${ext.test.lib.dir}">
+			<include name="**/*.jar" />
+		</fileset>
+	</path>
+
+
+	<!-- =============================================================== -->
+	<!-- Prepares the build directory                                    -->
+	<!-- =============================================================== -->
+	<target name="prepare" depends="configure">
+		<tstamp />
+		<mkdir dir="${build.dir}" />
+	</target>
+
+
+	<!-- =============================================================== -->
+	<!-- Compiles the source code                                        -->
+	<!-- =============================================================== -->
+	<target name="compile" depends="prepare" description="compiles.">
+		<mkdir dir="${classes.dir}" />
+		<javac srcdir="${src.dir}" destdir="${classes.dir}" source="${java.source}" debug="on" deprecation="off" optimize="off">
+			<classpath refid="build.classpath" />
+		</javac>
+		<!-- Copy the source code, wsdd, properties, etc to the build dir for include in the jar -->
+		<copy toDir="${classes.dir}">
+			<fileset dir="${src.dir}">
+				<include name="**/*" />
+			</fileset>
+		</copy>
+	</target>
+
+	<!-- =============================================================== -->
+	<!-- Compiles the test source code                                        -->
+	<!-- =============================================================== -->
+	<target name="compile-tests" depends="prepare" description="compiles.">
+		<mkdir dir="${test.classes.dir}" />
+		<javac srcdir="${test.src.dir}" destdir="${test.classes.dir}" source="${java.source}" debug="on" deprecation="off" optimize="off">
+			<classpath refid="test.classpath" />
+		</javac>
+	</target>
+
+
+	<!-- ============================================================== -->
+	<!-- Cleans up generated stuff                                      -->
+	<!-- ============================================================== -->
+	<target name="clean" depends="" description="Removes generated files.">
+		<delete dir="${build.dir}" />
+	</target>
+
+
+	<!-- ============================================================== -->
+	<!-- Creates the jar files                                          -->
+	<!-- ============================================================== -->
+	<target name="jar" depends="compile" description="Builds the main Jar Files">
+		<mkdir dir="${jar.dir}" />
+		<jar jarfile="${project.jarfile}" basedir="${classes.dir}">
+			<manifest>
+				<attribute name="Built-By" value="${user.name}" />
+				<attribute name="Specification-Version" value="${project.version}" />
+				<attribute name="Implementation-Version" value="${project.version}" />
+			</manifest>
+		</jar>
+	</target>
+
+	<!-- ============================================================== -->
+	<!-- Creates the test jar files                                          -->
+	<!-- ============================================================== -->
+	<target name="jar-tests" depends="compile-tests" description="Builds the test Jar Files">
+		<mkdir dir="${jar.dir}" />
+		<jar jarfile="${test.project.jar}" basedir="${test.classes.dir}">
+			<manifest>
+				<attribute name="Built-By" value="${user.name}" />
+				<attribute name="Specification-Version" value="${project.version}" />
+				<attribute name="Implementation-Version" value="${project.version}" />
+			</manifest>
+		</jar>
+	</target>
+
+	<!-- =================================================================== -->
+	<!-- Builds Code Docuementation                                          -->
+	<!-- =================================================================== -->
+	<target name="javadoc" depends="compile" description="Creates the API documentation.">
+		<javadoc packagenames="*" destdir="${javadoc.dir}" author="true" version="true" use="true" windowtitle="${project.name} API">
+			<sourcepath>
+				<pathelement path="${src.dir}" />
+			</sourcepath>
+
+			<classpath>
+				<path refid="build.classpath" />
+			</classpath>
+
+			<tag name="todo" scope="all" description="To do:" />
+			<tag name="created" scope="all" description="Created On:" />
+		</javadoc>
+	</target>
+
+
+	<target name="configure" description="Configures the project based on settings.">
+		<!-- These are the template files we are copying from -->
+		<fileset id="templates.fileset" dir="${basedir}">
+			<include name="*.template" />
+		</fileset>
+
+		<copy todir="${basedir}" overwrite="true">
+			<fileset refid="templates.fileset" />
+			<mapper type="glob" from="*.template" to="*" />
+			<filterset filtersfile="${ext.targetgrid.dir}/service_urls.properties" />
+		</copy>
+
+	</target>
+
+
+
+	<target name="installIntroduceExtensions" description="Installs the GME extensions into Introduce (you must build first).">
+		<delete dir="${introduce.extensions.dir}/${extension.name}" />
+		<mkdir dir="${introduce.extensions.dir}/${extension.name}" />
+		<copy todir="${introduce.extensions.dir}/${extension.name}" file="extension.xml" />
+		<copy todir="${introduce.extensions.dir}/lib">
+			<fileset dir="${ext.lib.dir}">
+				<include name="*.jar" />
+				<exclude name="${cagrid.master.jar.prefix}*Introduce*.jar" />
+			</fileset>
+			<fileset dir="${jar.dir}">
+				<include name="*.jar" />
+			</fileset>
+		</copy>
+	</target>
+
+	<!-- ============================================================== -->
+	<!-- Builds from scratch                                                -->
+	<!-- ============================================================== -->
+	<target name="all" description="Builds the entire application" depends="jar,jar-tests" />
+</project>
+

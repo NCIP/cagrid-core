@@ -1,0 +1,22 @@
+<?xml version="1.0"?>
+
+<ivy-module version="2.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:noNamespaceSchemaLocation="http://incubator.apache.org/ivy/schemas/ivy.xsd">
+
+	<info organisation="SampleApplications" module="webssoclientexample" revision="${project.version}">
+		<license name="caGrid" url="http://www.cagrid.org/wiki/CaGrid:LICENSE-1.2" />
+		<description>WebSSO Client Example</description>
+	</info>
+
+	<configurations>
+		<conf name="default" visibility="public" />
+	</configurations>
+
+	<publications>
+	</publications>
+
+	<dependencies>
+		<dependency rev="latest.integration" org="caGrid" name="websso-client" conf="default->default;default->resources" />
+		<dependency rev="latest.integration" org="caGrid" name="websso-client-acegi" conf="default->default;default->resources" />		
+	</dependencies>
+</ivy-module>

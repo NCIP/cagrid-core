@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:util="http://www.springframework.org/schema/util"
+       xsi:schemaLocation="
+                http://www.springframework.org/schema/beans
+                http://www.springframework.org/schema/beans/spring-beans.xsd
+                http://www.springframework.org/schema/util
+                http://www.springframework.org/schema/util/spring-util.xsd">
+                
+    <!-- CQLRetriever Retriever Profile -->
+    <bean id="CQLRetriever" class="org.cagrid.identifiers.retriever.impl.CQLRetriever">
+    	<property name="requiredTypes">
+		   <util:list>
+		    	<value>CQL</value>
+		    	<value>EPR</value>
+		   </util:list>
+        </property>
+    </bean>
+    <!-- End of Profiles -->
+    
+	<bean id="RetrieverFactory" class="org.cagrid.identifiers.retriever.impl.DefaultRetrieverFactory">
+		<constructor-arg>
+            <util:map>
+                <entry key="CQLRetriever">
+                    <ref local="CQLRetriever"/>
+                </entry>
+            </util:map>
+        </constructor-arg>
+	</bean>
+</beans>

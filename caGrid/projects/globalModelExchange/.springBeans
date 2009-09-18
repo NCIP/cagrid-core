@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beansProjectDescription>
+	<version>1</version>
+	<pluginVersion><![CDATA[2.0.4.v200803111444]]></pluginVersion>
+	<configSuffixes>
+		<configSuffix><![CDATA[xml]]></configSuffix>
+	</configSuffixes>
+	<enableImports><![CDATA[true]]></enableImports>
+	<configs>
+		<config>etc/applicationContext-gme.xml</config>
+		<config>test/resources/spring/test-applicationContext-cycles.xml</config>
+		<config>test/resources/spring/test-applicationContext-errors.xml</config>
+		<config>test/resources/spring/test-applicationContext-gme.xml</config>
+	</configs>
+	<configSets>
+	</configSets>
+</beansProjectDescription>

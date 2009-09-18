@@ -1,0 +1,66 @@
+<!-- ======================================================================= -->
+<!-- caGrid Data Services Extensions test build file                         -->
+<!-- ======================================================================= -->
+<project name="caGrid-dataExtensions_tests_harness" basedir=".">
+	<property name="junit.results.dir" value="${test.logs.dir}/junit" />
+
+	<property name="introduce.dir" location="../introduce" />
+	<property name="halt.on.error" value="false" />
+	<property name="failed.message" value="Tests failed! Check test reports." />
+
+	<target name="prepareClasspaths">
+		<path id="Introduce.test.classpath">
+			<fileset dir="${introduce.dir}/lib">
+				<include name="*.jar" />
+			</fileset>
+			<fileset dir="${introduce.dir}/ext/dependencies/jars">
+				<include name="*.jar" />
+			</fileset>
+			<fileset dir="${introduce.dir}/build/jars">
+				<include name="*.jar" />
+			</fileset>
+			<fileset dir="${introduce.dir}/test/lib">
+				<include name="*.jar" />
+			</fileset>
+			<fileset dir="${introduce.dir}/ext/dependencies/test/jars">
+				<include name="*.jar" />
+			</fileset>
+			<fileset dir="${ant.library.dir}">
+				<include name="*.jar" />
+			</fileset>
+			<fileset dir="${globus.dir}/lib">
+				<include name="*.jar" />
+			</fileset>
+		</path>
+		<path id="all.test.classpath">
+			<path refid="test.classpath" />
+			<path refid="Introduce.test.classpath" />
+		</path>
+	</target>
+
+
+
+	<target name="test" depends="init, testCore" description="Tests the data extension">
+		<fail message="Data Extensions Core ${failed.message}" if="core.test.failed" />
+	</target>
+
+
+	<target name="testCore" depends="prepareClasspaths" description="tests the extension core">
+		<mkdir dir="${junit.results.dir}" />
+		<junit dir="${basedir}" printsummary="yes" haltonerror="${halt.on.error}" haltonfailure="${halt.on.error}" errorproperty="core.test.failed" failureproperty="core.test.failed" showoutput="true" fork="yes" forkmode="once">
+			<jvmarg value="-Dintroduce.base.dir=../introduce" />
+			<jvmarg value="-Dbuild.dir=${test.core.classes.dir}" />
+			<classpath refid="all.test.classpath" />
+			<classpath>
+				<pathelement path="${test.core.classes.dir}" />
+			</classpath>
+			<formatter type="xml" />
+			<test if="testcase" name="${testcase}" fork="no" todir="${junit.results.dir}" />
+			<batchtest unless="testcase" fork="yes" todir="${junit.results.dir}">
+				<fileset dir="${test.core.src.dir}">
+					<include name="**/*TestCase.java" />
+				</fileset>
+			</batchtest>
+		</junit>
+	</target>
+</project>

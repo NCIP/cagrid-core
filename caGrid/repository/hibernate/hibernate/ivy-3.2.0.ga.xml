@@ -1,0 +1,63 @@
+<?xml version="1.0"?>
+
+<ivy-module version="2.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:noNamespaceSchemaLocation="http://incubator.apache.org/ivy/schemas/ivy.xsd">
+
+	<info organisation="hibernate" module="hibernate" revision="3.2.0.ga">
+		<license name="LGPL" url="http://www.gnu.org/copyleft/lesser.html"/>
+		<description>Hibernate is a powerful, high performance object/relational persistence and
+			query service. Hibernate lets you develop persistent classes following object-oriented
+			idiom - including association, inheritance, polymorphism, composition, and collections.
+			Hibernate allows you to express queries in its own portable SQL extension (HQL), as well
+			as in native SQL, or with an object-oriented Criteria and Example API.
+			(http://www.hibernate.org/)</description>
+	</info>
+	<configurations>
+		<!-- Public Configurations-->
+
+		<conf name="core"
+			description="minimal configuration with no option. Note: you ABSOLUTELY need to choose a cache and bytecode provider when using this configuration"/>
+		<conf name="default" description="for basic use, with cglib and ehcache" extends="core"/>
+
+		<conf name="cglib" extends="core" description="use cglib as bytecode provider"/>
+		<!-- <conf name="javassist" extends="core" description="use javassist as bytecode provider"/> -->
+
+		<!-- Connection pool -->
+		<conf name="c3p0" extends="core" description="to use optional c3p0 connection pool"/>
+		<!--
+		<conf name="proxool" extends="core" description="to use optional proxool connection pool"/>
+		-->
+
+		<!-- Caches -->
+		<conf name="ehcache" extends="core" description="to use optional ehcache"/>
+		<!--
+		<conf name="oscache" extends="core" description="to use optional oscache"/>
+		<conf name="swarmcache" extends="core" description="to use optional swarmcache"/>
+		-->
+	</configurations>
+
+
+	<publications>
+		<artifact name="hibernate3" conf="core" type="jar"/>
+	</publications>
+
+	<dependencies>
+		<dependency rev="1.5.3" org="objectweb" name="asm" conf="core->default"/>
+        <dependency rev="1.6.1" org="dom4j" name="dom4j" conf="core->default"/>
+		<dependency rev="1.0.1B" org="sun" name="jta" conf="core->default"/>
+		<dependency rev="2.7.6rc1" org="antlr" name="antlr" conf="core->default"/>
+		<dependency rev="2.1_3" org="cglib" name="cglib" conf="default,cglib->default"/>
+		<!--
+		<dependency org="javassist" name="javassist" rev="3.4" conf="javassist->default"/>
+		-->
+		<dependency org="c3p0" name="c3p0" rev="0.9.1+" conf="c3p0->default"/> 
+		<!--
+		<dependency org="proxool" name="proxool" rev="0.8.3" conf="proxool->default"/>
+		-->
+		<dependency rev="1.2.3" org="ehcache" name="ehcache" conf="default,ehcache->default"/>
+		<!--			
+		<dependency org="opensymphony" name="oscache" rev="2.1" conf="oscache->default"/>
+		<dependency org="swarmcache" name="swarmcache" rev="1.0rc2" conf="swarmcache->default"/>
+		-->
+	</dependencies>
+</ivy-module>

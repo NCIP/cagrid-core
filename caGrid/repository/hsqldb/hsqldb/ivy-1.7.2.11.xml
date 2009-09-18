@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<?xml-stylesheet type="text/xsl" href="http://ivyrep.jayasoft.org/ivy-doc.xsl"?>
+<ivy-module version="2.0">
+    <info organisation="hsqldb" module="hsqldb" revision="1.7.2.11" status="release">
+        <license name="HSQL" url="http://hsqldb.org/web/hsqlLicense.html"/>
+
+        <description homepage="http://www.hsqldb.org"> HSQLDB is the leading SQL relational database
+            engine written in Java. It has a JDBC driver and supports a rich subset of ANSI-92 SQL
+            (BNF tree format) plus SQL 99 and 2003 enhancements. It offers a small (less than 100k
+            in one version for applets), fast database engine which offers both in-memory and
+            disk-based tables and supports embedded and server modes. 
+        </description>
+    </info>
+</ivy-module>

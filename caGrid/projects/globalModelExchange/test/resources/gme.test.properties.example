@@ -1,0 +1,6 @@
+cagrid.gme.db.dialect=org.hibernate.dialect.MySQLInnoDBDialect
+cagrid.gme.db.driver=com.mysql.jdbc.Driver
+cagrid.gme.db.name=gmetest
+cagrid.gme.db.url=jdbc:mysql://localhost:3306/${cagrid.gme.db.name}
+cagrid.gme.db.username=root
+cagrid.gme.db.password=

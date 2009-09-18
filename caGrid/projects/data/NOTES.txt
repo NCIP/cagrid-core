@@ -1,0 +1,121 @@
+TODO:
+1 [D]: On create, data services need to have the data jars placed in their lib directory.
+2 [D]: On create, data services need the castor jars in their lib directory
+3 [D]: Automagical [client|server]-config.wsdd type mappings
+4 [E]: CQL implemetation that works against caCORE generated data sources (sdkQuery project)
+5 [D]: Need a way to make sure only the full caGrid-1.0-data.jar gets deployed with data services.  Deploying the more granular jars (service, stubs, etc) causes invocation target errors because classes overlap.
+6 [D]: Drop-in user's chosen implementation of CQL Query processing in service query method
+	-- Choose query processor jar and it's dependencies at modification
+	-- If on build a NoClassDef error is encountered, be sure to add the appropriate jars and or classes to the build classpath, and try building again
+7 [D]: Build metadata for data service on codegen
+8 [D]: extension.xml needs a property for CADSR_URL
+9 [D]: Type Serialization table needs a column to show/edit classname for type (must NOT be set when using DefaultSerialization, MUST be set when using custom or SDK serialization)
+10[D]: Adding metadata needs to add the metadata jars and their dependencies (caCORE, etc) 
+11[D]: Using add jar should do the "copy" right away in the GUI and the extension data should store the local path
+12[D]: .classpath should add in jars that "add jar" copy in, as well those it copies in on creation (metadata stuff, etc)
+  [D]:  -- should have mutiple select enabled so you can select multiple jars
+13[D]: Need a simplified "SDK Backed" data service option (should set serializers, cql processor, add jars, etc automatically)
+	-- Prompt for client.jar from the SDK data source, extract and rename the castor xml mapping file appropriatly.
+14[D]: Type serialization table need to enable multi-select for setting serialization option
+15[D]: Data GUI needs a way to select a whole project, multiple packages, and classes from them
+16[D/E]: Query Results Iterator / WS-Enumeration support (wsEnum project)
+17[E]: Identifier Resolution Support (Possibly through an operation provider)
+18[D]: Pull GME url from introduce properties
+19[D]: Block caDSR refresh on modification viewer open should only happen when a data model has already been selected. (e.g. when creating a new data service, the call to cadsr should be threaded and not prevent the modification viewer from opening) 
+20[D]: Addition to CQL of queries to return attributes and addition to CQLResult to handle them
+21[W]: Change associations in domain model creation to be EXCLUDED associations
+	-- No longer relevant
+22[D]: Feature / usability request: On service sync, if NO CQL Query Processor impl is specified, create a stub impl in the service's dir.
+23[D]: Remove package button on DS extension GUI
+24[D]: Add Project (all packages in said project) button on DS extension GUI
+25[D]: Don't assume in codegen pre processor that user has configured their CQL Query Processor impl, and the element for this data exists in the extension data.
+	-- Could probably be checked in the GUI
+26[D]: Some comments on the base CQLQueryProcessor:
+    * processQuery should be the only abstract method; in this base class you should default initialize to do nothing and getRequiredParameters to return an empty map.
+    * Are the javadocs still accurate for getRequiredParamters now that you have changed the way the properties are stored? ( e.g. does it still have to start with lower case)
+    * Need to describe what, if any, constraints there are on the Map’s key value (is it required to contain String->String?)
+    * Need to describe the relationship between the Map returned by getRequiredParameters, and that passed in to initialize
+27[D]: Have DS extension add type mappings for SemanticMetadata / DomainModel stuff to the server-config.wsdd and client-config.wsdd of created services
+28[D]: Provide configuration to turn on / off validation for both CQL syntax and domain model conformance.
+29[D]: Add available types to wsdl under some well defined name as an xsd:choice of available types
+30[D]: Determine if data services should expose additional metadata describing (for example) CQL version, support for ws-enum / bdt / identifier resolution, backend data source info, etc.
+31[D]: caCORE creation wizard (actually all of DS extension) should use introduce preferences bucket
+32[D]: create CQLResult schema validator tool (using templated RestrictedCQLResultSet.xsd to poll allowable types from service)
+33[D]: allow data service tab to configure "allowable as target" option for exposed classes (domain model needs to edited with it, and result type xsd generation needs to use it)  
+34[D]: Add utility features for class name to QName mapping.  Generated at service build time with introduce extension.
+35[D]: Make cql query processor jar file selector not allow you to select a directory as a jar file
+	-- This actually used the ResourceManager from Introduce, which did the wrong thing.  So it's fixed in Introduce, and anyone using that call will get the fix too
+36[D]: Add unit tests for CQL Results validation
+37[D]: Make CQL Object Results iterator perform better by avoiding repeated object creation
+38[D]: Break appart DataServiceModificationPanel... it's 1700 lines long, and unweildy
+39[E]: BDT Data Service's Grid FTP impl should give an option of a single large chunk or individual results per URL
+	-- Dependent on having 'a way' to create Grid FTP urls / resources
+40[D]: Upgrade tests for an SDK-backed data service
+41[D]: Upgrade tests for an Enumeration data service
+42[ ]: Refactor utilities, common, tools
+
+I = In Progress
+D = Done
+W = Won't implement
+E = External to data core
+
+BUGS:
+Schema resolution dialog doesn't look at what tab you are on (seems to always use cadsr)
+	-- Totally different issue, actually, but fixed 2006-10-12
+	
+When I create a new data service it says "Error loading query processor" in an error dialog
+	-- Fixed 2006-10-12
+	
+I create a new data service (also with metadata extension), loading metadata extract from file.  I choose cadsr supplied domain model.  I choose rproteomics->statml.  I add just that model and select the schema provided.  I click save.  It says error: "Error initializing caDSR client: cannot initialize URI with empty parameters".
+	-- Fixed 2006-10-12
+	
+Select Project caCore(Version: 3), Select Package gov.nih.nci.evs.domain, Add Package,
+	Select all, Save, Refresh From caDSR, Save, Null Pointer
+	-- Can't reproduce by these steps 2006-10-03	
+	
+Select Project caCore(Version: 3), Select Package gov.nih.nci.evs.domain, Add Package,
+	Save, close the modify service window, click modify service, open same service,
+	add same package as above, try and delete both packages
+	-- Fixed by preventing duplicate packages 2006-10-03
+	
+Select Project caCore(Version: 3), Select Package gov.nih.nci.evs.domain,
+ 	Add Package, Add Full Project, you can only remove one of the gov.nih.nci.evs.domain
+	-- Fixed by preventing duplicate packages 2006-10-03	
+	
+When the GUI removes a type it does not remove its schema from the project.  If the schema has the same type as a newly added one (e.g. a user picked the wrong version of his schema) it will give axis bean generation all kinds of problems.
+	-- Fixed 2006-10-03
+	
+I added a package and it said that it could not find a schema, so I hit cancel.  No model was added to the models list (correctly).  Next I selected a different package, and it popped up the Package incompatibility dialog.  This should not pop up because there are no models added yet.
+	-- Fixed 2006-08-01
+	
+Eclipse classpath is incorrect (duplicate entries for cagrid core)
+	-- Fixed 2006-06-07
+	
+Type Serialization Table sizing is screwed up
+	-- Fixed 2006-06-07
+	
+Need a "None" option for query processor... theres no way to not select an impl found in a jar
+	-- Not a bug, you can edit the query processor class selection manually, including blanking it out
+	-- This is no longer the case... if you can't select the query processor from the drop down, 
+	that means it's not a query processor anyway, so what's the point?
+	
+CAVEATS:
+When upgrading, the caDSR service URL stored in the extension data is not upgraded.  This should be a non-issue
+for most users when upgrading 1.0 to 1.1 since we're using the same service URL.  If a custom URL was used,
+this might cause problems if the service no longer exists / has changed.  This will *PROBABLY* be a problem
+with upgrades to 2.0, since the service URL is likley to be different.  We'll see when we get there.
+
+CQL cannot query for nor return 'attributes' of a type that are complexTypes in XML.
+
+Multiple DataServices using the SDK query processor cannot be run in the same container due to a bug in the caCORE API
+	-- See http://gforge.nci.nih.gov/tracker/index.php?func=detail&aid=2784&group_id=38&atid=279 for more information.
+	
+Returning subclass instances of a target class with a CQL query is not supported.  Reasoning:
+	-- Possible class of the returned results depends on the results of the query itself, not knowable at compile time, or query time.
+	-- Serializing and Deserializing would require:
+		-- a) Download XSD for all possible subclasses of intended query target.
+		-- b) compile beans from XSD / see if they're present in jars you already have
+		-- c) configure deserializers for each type
+		-- d) Re-deploy service with new beans and configuration
+	-- caDSR allows subclasses to redefine value domains and semantic meaning of inherited attributes.
+		-- Queries which are valid for a target class may not be valid for any give subclass as well.

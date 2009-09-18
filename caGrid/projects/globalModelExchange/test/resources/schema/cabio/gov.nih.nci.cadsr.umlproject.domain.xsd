@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns="gme://caCORE.cabig/3.0/gov.nih.nci.cadsr.umlproject.domain" xmlns:gov.nih.nci.common.provenance.domain="gme://caCORE.cabig/3.0/gov.nih.nci.common.provenance.domain" xmlns:gov.nih.nci.common.domain="gme://caCORE.cabig/3.0/gov.nih.nci.common.domain" xmlns:gov.nih.nci.cadsr.domain="gme://caCORE.cabig/3.0/gov.nih.nci.cadsr.domain" xmlns:gov.nih.nci.camod.domain="gme://caCORE.cabig/3.0/gov.nih.nci.camod.domain" xmlns:gov.nih.nci.cabio.domain="gme://caCORE.cabig/3.0/gov.nih.nci.cabio.domain" targetNamespace="gme://caCORE.cabig/3.0/gov.nih.nci.cadsr.umlproject.domain" elementFormDefault="qualified">
+  <xs:import namespace="gme://caCORE.cabig/3.0/gov.nih.nci.common.domain" schemaLocation="gov.nih.nci.common.domain.xsd" />
+  <xs:import namespace="gme://caCORE.cabig/3.0/gov.nih.nci.cabio.domain" schemaLocation="gov.nih.nci.cabio.domain.xsd" />
+  <xs:import namespace="gme://caCORE.cabig/3.0/gov.nih.nci.cadsr.domain" schemaLocation="gov.nih.nci.cadsr.domain.xsd" />
+  <xs:import namespace="gme://caCORE.cabig/3.0/gov.nih.nci.camod.domain" schemaLocation="gov.nih.nci.camod.domain.xsd" />
+  <xs:import namespace="gme://caCORE.cabig/3.0/gov.nih.nci.common.provenance.domain" schemaLocation="gov.nih.nci.common.provenance.domain.xsd" />
+  <xs:element name="Project" type="Project" />
+  <xs:complexType name="Project">
+    <xs:sequence>
+      <xs:element name="subProjectCollection" type="SubProject" minOccurs="0" maxOccurs="unbounded" />
+      <xs:element name="UMLPackageMetadataCollection" type="UMLPackageMetadata" minOccurs="0" maxOccurs="unbounded" />
+      <xs:element name="classificationScheme" type="gov.nih.nci.cadsr.domain:ClassificationScheme" minOccurs="0" maxOccurs="1" />
+      <xs:element name="UMLClassMetadataCollection" type="UMLClassMetadata" minOccurs="0" maxOccurs="unbounded" />
+      <xs:element name="UMLAttributeMetadataCollection" type="UMLAttributeMetadata" minOccurs="0" maxOccurs="unbounded" />
+      <xs:element name="UMLAssociationMetadataCollection" type="UMLAssociationMetadata" minOccurs="0" maxOccurs="unbounded" />
+    </xs:sequence>
+    <xs:attribute name="id" type="xs:string" />
+    <xs:attribute name="shortName" type="xs:string" />
+    <xs:attribute name="longName" type="xs:string" />
+    <xs:attribute name="description" type="xs:string" />
+    <xs:attribute name="version" type="xs:string" />
+  </xs:complexType>
+  <xs:element name="SubProject" type="SubProject" />
+  <xs:complexType name="SubProject">
+    <xs:sequence>
+      <xs:element name="UMLPackageMetadataCollection" type="UMLPackageMetadata" minOccurs="0" maxOccurs="unbounded" />
+      <xs:element name="project" type="Project" minOccurs="0" maxOccurs="1" />
+      <xs:element name="classSchemeClassSchemeItem" type="gov.nih.nci.cadsr.domain:ClassSchemeClassSchemeItem" minOccurs="0" maxOccurs="1" />
+    </xs:sequence>
+    <xs:attribute name="id" type="xs:string" />
+    <xs:attribute name="name" type="xs:string" />
+    <xs:attribute name="description" type="xs:string" />
+  </xs:complexType>
+  <xs:element name="UMLPackageMetadata" type="UMLPackageMetadata" />
+  <xs:complexType name="UMLPackageMetadata">
+    <xs:sequence>
+      <xs:element name="UMLClassMetadataCollection" type="UMLClassMetadata" minOccurs="0" maxOccurs="unbounded" />
+      <xs:element name="project" type="Project" minOccurs="0" maxOccurs="1" />
+      <xs:element name="classSchemeClassSchemeItem" type="gov.nih.nci.cadsr.domain:ClassSchemeClassSchemeItem" minOccurs="0" maxOccurs="1" />
+      <xs:element name="subProject" type="SubProject" minOccurs="0" maxOccurs="1" />
+    </xs:sequence>
+    <xs:attribute name="id" type="xs:string" />
+    <xs:attribute name="name" type="xs:string" />
+    <xs:attribute name="description" type="xs:string" />
+  </xs:complexType>
+  <xs:element name="UMLClassMetadata" type="UMLClassMetadata" />
+  <xs:complexType name="UMLClassMetadata">
+    <xs:sequence>
+      <xs:element name="project" type="Project" minOccurs="0" maxOccurs="1" />
+      <xs:element name="UMLPackageMetadata" type="UMLPackageMetadata" minOccurs="0" maxOccurs="1" />
+      <xs:element name="UMLGeneralizationMetadata" type="UMLGeneralizationMetadata" minOccurs="0" maxOccurs="1" />
+      <xs:element name="UMLAttributeMetadataCollection" type="UMLAttributeMetadata" minOccurs="0" maxOccurs="unbounded" />
+      <xs:element name="objectClass" type="gov.nih.nci.cadsr.domain:ObjectClass" minOccurs="0" maxOccurs="1" />
+      <xs:element name="UMLAssociationMetadataCollection" type="UMLAssociationMetadata" minOccurs="0" maxOccurs="unbounded" />
+      <xs:element name="semanticMetadataCollection" type="SemanticMetadata" minOccurs="0" maxOccurs="unbounded" />
+    </xs:sequence>
+    <xs:attribute name="id" type="xs:string" />
+    <xs:attribute name="name" type="xs:string" />
+    <xs:attribute name="description" type="xs:string" />
+    <xs:attribute name="fullyQualifiedName" type="xs:string" />
+  </xs:complexType>
+  <xs:element name="UMLAttributeMetadata" type="UMLAttributeMetadata" />
+  <xs:complexType name="UMLAttributeMetadata">
+    <xs:sequence>
+      <xs:element name="UMLClassMetadata" type="UMLClassMetadata" minOccurs="0" maxOccurs="1" />
+      <xs:element name="dataElement" type="gov.nih.nci.cadsr.domain:DataElement" minOccurs="0" maxOccurs="1" />
+      <xs:element name="project" type="Project" minOccurs="0" maxOccurs="1" />
+      <xs:element name="attributeTypeMetadata" type="AttributeTypeMetadata" minOccurs="0" maxOccurs="1" />
+      <xs:element name="semanticMetadataCollection" type="SemanticMetadata" minOccurs="0" maxOccurs="unbounded" />
+    </xs:sequence>
+    <xs:attribute name="id" type="xs:string" />
+    <xs:attribute name="name" type="xs:string" />
+    <xs:attribute name="description" type="xs:string" />
+    <xs:attribute name="fullyQualifiedName" type="xs:string" />
+  </xs:complexType>
+  <xs:element name="SemanticMetadata" type="SemanticMetadata" />
+  <xs:complexType name="SemanticMetadata">
+    <xs:sequence>
+      <xs:element name="concept" type="gov.nih.nci.cadsr.domain:Concept" minOccurs="0" maxOccurs="1" />
+    </xs:sequence>
+    <xs:attribute name="id" type="xs:string" />
+    <xs:attribute name="conceptCode" type="xs:string" />
+    <xs:attribute name="conceptName" type="xs:string" />
+    <xs:attribute name="conceptDefinition" type="xs:string" />
+    <xs:attribute name="isPrimaryConcept" type="xs:boolean" />
+    <xs:attribute name="order" type="xs:integer" />
+    <xs:attribute name="orderLevel" type="xs:integer" />
+  </xs:complexType>
+  <xs:element name="UMLAssociationMetadata" type="UMLAssociationMetadata" />
+  <xs:complexType name="UMLAssociationMetadata">
+    <xs:sequence>
+      <xs:element name="targetUMLClassMetadata" type="UMLClassMetadata" minOccurs="0" maxOccurs="1" />
+      <xs:element name="project" type="Project" minOccurs="0" maxOccurs="1" />
+      <xs:element name="objectClassRelationship" type="gov.nih.nci.cadsr.domain:ObjectClassRelationship" minOccurs="0" maxOccurs="1" />
+      <xs:element name="semanticMetadataCollection" type="SemanticMetadata" minOccurs="0" maxOccurs="unbounded" />
+      <xs:element name="sourceUMLClassMetadata" type="UMLClassMetadata" minOccurs="0" maxOccurs="1" />
+    </xs:sequence>
+    <xs:attribute name="id" type="xs:string" />
+    <xs:attribute name="sourceLowCardinality" type="xs:integer" />
+    <xs:attribute name="sourceHighCardinality" type="xs:integer" />
+    <xs:attribute name="targetLowCardinality" type="xs:integer" />
+    <xs:attribute name="targetHighCardinality" type="xs:integer" />
+    <xs:attribute name="sourceRoleName" type="xs:string" />
+    <xs:attribute name="targetRoleName" type="xs:string" />
+    <xs:attribute name="isBidirectional" type="xs:boolean" />
+  </xs:complexType>
+  <xs:element name="UMLGeneralizationMetadata" type="UMLGeneralizationMetadata" />
+  <xs:complexType name="UMLGeneralizationMetadata">
+    <xs:sequence>
+      <xs:element name="objectClassRelationship" type="gov.nih.nci.cadsr.domain:ObjectClassRelationship" minOccurs="0" maxOccurs="1" />
+      <xs:element name="superUMLClassMetadata" type="UMLClassMetadata" minOccurs="0" maxOccurs="1" />
+    </xs:sequence>
+    <xs:attribute name="id" type="xs:string" />
+  </xs:complexType>
+  <xs:element name="AttributeTypeMetadata" type="AttributeTypeMetadata" />
+  <xs:complexType name="AttributeTypeMetadata">
+    <xs:sequence>
+      <xs:element name="valueDomain" type="gov.nih.nci.cadsr.domain:ValueDomain" minOccurs="0" maxOccurs="1" />
+      <xs:element name="typeEnumerationCollection" type="TypeEnumerationMetadata" minOccurs="0" maxOccurs="unbounded" />
+      <xs:element name="semanticMetadataCollection" type="SemanticMetadata" minOccurs="0" maxOccurs="unbounded" />
+    </xs:sequence>
+    <xs:attribute name="valueDomainDataType" type="xs:string" />
+    <xs:attribute name="valueDomainLongName" type="xs:string" />
+    <xs:attribute name="id" type="xs:string" />
+  </xs:complexType>
+  <xs:element name="TypeEnumerationMetadata" type="TypeEnumerationMetadata" />
+  <xs:complexType name="TypeEnumerationMetadata">
+    <xs:sequence>
+      <xs:element name="semanticMetadataCollection" type="SemanticMetadata" minOccurs="0" maxOccurs="unbounded" />
+    </xs:sequence>
+    <xs:attribute name="valueMeaning" type="xs:string" />
+    <xs:attribute name="permissibleValue" type="xs:string" />
+    <xs:attribute name="id" type="xs:string" />
+  </xs:complexType>
+</xs:schema>
+

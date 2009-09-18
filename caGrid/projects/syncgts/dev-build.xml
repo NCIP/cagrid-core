@@ -1,0 +1,351 @@
+<?xml version="1.0"?>
+<project name="Developer Modified Build File" basedir=".">
+	<!-- ============================================================== -->
+	<!-- This file is designed to allow the developer to extend the     -->
+	<!-- build process without having to edit the master build.xml      -->
+	<!-- file. DO NOT REMOVE ANY TARGETS                                -->
+	<!-- ============================================================== -->
+
+
+	<!-- ============================================================== -->
+	<!-- Place any other properties you will need here                  -->
+	<!-- ============================================================== -->
+	<property environment="env" />
+	<property file="${basedir}/project.properties" />
+	<property file="${basedir}/build.properties" />
+
+	<property name="jar.prefix" value="caGrid-syncgts" />
+	<property name="jar.suffix" value="${project.version}.jar" />
+
+	<property name="common.jar.name" value="${jar.prefix}-common-${jar.suffix}" />
+	<property name="client.jar.name" value="${jar.prefix}-client-${jar.suffix}" />
+	<property name="service.jar.name" value="${jar.prefix}-service-${jar.suffix}" />
+	<property name="stubs.jar.name" value="${jar.prefix}-stubs-${jar.suffix}" />
+	<property name="test.jar.name" value="${jar.prefix}-tests-${jar.suffix}" />
+
+	<property name="ext.dir" location="${basedir}/ext" />
+	<property name="ext.dependencies.dir" location="${ext.dir}/dependencies" />
+	<property name="ext.targetgrid.dir" location="${ext.dir}/target_grid" />
+	<property name="ext.lib.dir" location="${ext.dependencies.dir}/service/jars" />
+	<property name="ext.test.lib" value="${ext.dependencies.dir}/test/jars" />
+	<property name="ext.tools.lib.dir" location="${ext.dependencies.dir}/tools/jars" />
+	<property name="ext.patched.jars.dir" location="${ext.dependencies.dir}/globus-patches/jars" />
+
+	<property name="sync.description.file" value="${ext.targetgrid.dir}/sync-description.xml" />
+
+	<property name="globus.user.home.dir" value="${user.home}/.globus/" />
+	<property name="globus.trusted.ca.dir" value="${globus.user.home.dir}/certificates/" />
+
+	<!-- overide the introduce location of this which is suposed to be in tools/lib -->
+	<property name="ant.contrib.location" value="${ext.tools.lib.dir}/ant-contrib-1.0b3.jar" />
+
+	<target name="defineClasspaths" depends="checkGlobus">
+		<path id="tasks.run.extended.classpath" />
+		<runtarget target="defineExtendedClasspaths" />
+		<path id="base.classpath">
+			<fileset dir="${lib.dir}">
+				<include name="*.jar" />
+			</fileset>
+			<fileset dir="${ext.patched.jars.dir}">
+				<include name="*.jar" />
+			</fileset>
+			<fileset dir="${ext.globus.dir}/lib">
+				<include name="*.jar" />
+				<exclude name="cog-jglobus.jar" />
+				<exclude name="${stubs.jar.name}" />
+				<exclude name="${common.jar.name}" />
+				<exclude name="${client.jar.name}" />
+				<exclude name="${service.jar.name}" />
+			</fileset>
+			<path refid="base.extended.classpath" />
+		</path>
+		<path id="service.build.classpath">
+			<pathelement location="${stubs.dest}" />
+			<path refid="service.build.extended.classpath" />
+			<path refid="base.classpath" />
+		</path>
+		<path id="service.run.classpath">
+			<pathelement location="${build.dest}" />
+			<path refid="service.run.extended.classpath" />
+			<path refid="service.build.classpath" />
+		</path>
+		<path id="test.build.classpath">
+			<fileset dir="${test.lib.dir}">
+				<include name="*.jar" />
+			</fileset>
+			<pathelement location="${build.dest}" />
+			<path refid="test.build.extended.classpath" />
+			<path refid="service.build.classpath" />
+		</path>
+		<path id="test.run.classpath">
+			<pathelement location="${test.build.dest}" />
+			<path refid="test.run.extended.classpath" />
+			<path refid="test.build.classpath" />
+		</path>
+		<path id="run.classpath">
+			<pathelement location="${build.dest}" />
+			<path refid="run.extended.classpath" />
+			<path refid="service.build.classpath" />
+			<pathelement location="${ext.globus.dir}" />
+		</path>
+		<path id="tasks.run.classpath">
+			<path refid="tasks.run.extended.classpath" />
+			<fileset dir="${tools.lib.dir}">
+				<include name="*.jar" />
+			</fileset>
+			<fileset dir="${lib.dir}">
+				<include name="*.jar" />
+			</fileset>
+			<fileset dir="${ext.globus.dir}/lib">
+				<include name="*.jar" />
+			</fileset>
+		</path>
+	</target>
+
+
+	<!-- ============================================================== -->
+	<!-- Create any extended Classpaths here                            -->
+	<!-- ============================================================== -->
+	<target name="defineExtendedClasspaths">
+		<path id="base.extended.classpath">
+			<fileset dir="${ext.lib.dir}">
+				<include name="*.jar" />
+			</fileset>
+		</path>
+		<path id="service.build.extended.classpath">
+		</path>
+		<path id="service.run.extended.classpath">
+		</path>
+		<path id="test.build.extended.classpath">
+			<fileset dir="${ext.test.lib}">
+				<include name="*.jar" />
+			</fileset>
+		</path>
+		<path id="test.run.extended.classpath">
+		</path>
+		<path id="run.extended.classpath">
+		</path>
+		<path id="tasks.run.extended.classpath">
+			<fileset dir="${ext.lib.dir}">
+				<include name="*.jar" />
+			</fileset>
+			<fileset dir="${ext.tools.lib.dir}">
+				<include name="*.jar" />
+			</fileset>
+
+		</path>
+	</target>
+
+
+	<!-- ============================================================== -->
+	<!-- Pre Init Target                                                -->
+	<!-- ============================================================== -->
+	<target name="preInit">
+		<runtarget target="configure" />
+	</target>
+
+	<!-- ============================================================== -->
+	<!-- Post Init Build Target                                         -->
+	<!-- ============================================================== -->
+	<target name="postInit">
+
+	</target>
+
+
+	<!-- ============================================================== -->
+	<!-- Pre Stubs Target                                               -->
+	<!-- ============================================================== -->
+	<target name="preStubs">
+
+	</target>
+
+	<!-- ============================================================== -->
+	<!-- Post Stubs Build Target                                        -->
+	<!-- ============================================================== -->
+	<target name="postStubs">
+
+	</target>
+
+	<!-- ============================================================== -->
+	<!-- Pre Compile Stubs Build Target                                 -->
+	<!-- ============================================================== -->
+	<target name="preCompileStubs">
+
+	</target>
+
+	<!-- ============================================================== -->
+	<!-- Post Compile Stubs Build Target                                -->
+	<!-- ============================================================== -->
+	<target name="postCompileStubs">
+
+	</target>
+
+	<!-- ============================================================== -->
+	<!-- Pre Jar Stubs Build Target                                     -->
+	<!-- ============================================================== -->
+	<target name="preJarStubs">
+
+	</target>
+
+	<!-- ============================================================== -->
+	<!-- Post Jar Stubs Build Target                                    -->
+	<!-- ============================================================== -->
+	<target name="postJarStubs">
+
+	</target>
+
+	<!-- ============================================================== -->
+	<!-- Pre Compile Build Target                                       -->
+	<!-- ============================================================== -->
+	<target name="preCompile">
+
+	</target>
+
+	<!-- ============================================================== -->
+	<!-- Post Compile Build Target                                       -->
+	<!-- ============================================================== -->
+	<target name="postCompile">
+		<copy toDir="${build.dest}">
+			<fileset dir="${basedir}">
+				<include name="sync-gts-log4j.properties" />
+			</fileset>
+		</copy>
+	</target>
+
+	<!-- ============================================================== -->
+	<!-- Pre Jar Build Target                                       -->
+	<!-- ============================================================== -->
+	<target name="preJar">
+
+	</target>
+
+
+	<target name="jar" depends="compile">
+		<runtarget target="preJar" />
+		<jar jarfile="${build.lib.dir}/${client.jar.name}" basedir="${build.dest}">
+			<include name="**/client/**" />
+			<include name="**/tools/**" />
+		</jar>
+		<jar jarfile="${build.lib.dir}/${service.jar.name}" basedir="${build.dest}">
+			<include name="**/service/**" />
+		</jar>
+		<jar jarfile="${build.lib.dir}/${common.jar.name}" basedir="${build.dest}">
+			<include name="**/*" />
+			<exclude name="**/client/**" />
+			<exclude name="**/service/**" />
+			<exclude name="**/tools/**" />
+		</jar>
+		<runtarget target="postJar" />
+	</target>
+
+	<!-- ============================================================== -->
+	<!-- Post Jar Build Target                                          -->
+	<!-- ============================================================== -->
+	<target name="postJar">
+
+	</target>
+
+	<!-- ============================================================== -->
+	<!-- Pre Compile Tests Build Target                                 -->
+	<!-- ============================================================== -->
+	<target name="preCompileTests">
+
+	</target>
+
+	<!-- ============================================================== -->
+	<!-- Post Compile Tests Build Target                                -->
+	<!-- ============================================================== -->
+	<target name="postCompileTests">
+
+	</target>
+
+	<!-- ============================================================== -->
+	<!-- Pre Jar Tests Build Target                                     -->
+	<!-- ============================================================== -->
+	<target name="preJarTests">
+
+	</target>
+
+	<!-- ============================================================== -->
+	<!-- Post Jar Tests Build Target                                    -->
+	<!-- ============================================================== -->
+	<target name="postJarTests">
+
+	</target>
+
+	<!-- ============================================================== -->
+	<!-- Pre Clean Target                                               -->
+	<!-- ============================================================== -->
+	<target name="preClean">
+
+	</target>
+
+	<!-- ============================================================== -->
+	<!-- Post Clean Target                                              -->
+	<!-- ============================================================== -->
+	<target name="postClean">
+
+	</target>
+
+	<target name="configure" description="Configures the project based on settings.">
+		<!-- These are the template files we are copying from -->
+		<fileset id="templates.fileset" dir="${basedir}">
+			<include name="*.template" />
+		</fileset>
+
+		<copy todir="${basedir}" overwrite="true">
+			<fileset refid="templates.fileset" />
+			<mapper type="glob" from="*.template" to="*" />
+			<filterset filtersfile="${ext.targetgrid.dir}/service_urls.properties" />
+		</copy>
+
+	</target>
+
+
+	<!-- ============================================================== -->
+	<!-- Call any tests.                                                -->
+	<!-- ============================================================== -->
+	<target name="test" depends="checkGlobus" description="Runs the service's tests.">
+		<echo message="Test results dir: ${junit.results.dir}" />
+		<mkdir dir="${junit.results.dir}" />
+		<junit dir="${basedir}" printsummary="yes" showoutput="true">
+			<classpath refid="test.run.classpath" />
+			<formatter type="xml" />
+			<batchtest fork="yes" todir="${junit.results.dir}">
+				<fileset dir="${test.src.dir}">
+					<include name="**/Test*.java" />
+					<include name="**/*TestCase.java" />
+				</fileset>
+			</batchtest>
+		</junit>
+	</target>
+
+
+	<target name="deployTrustedCerts" depends="checkGlobus,defineClasspaths">
+		<java classpathref="service.run.classpath" classname="gov.nih.nci.cagrid.syncgts.tools.DeployGTSTrustRoots" fork="yes" failonerror="true">
+			<arg value="${ext.targetgrid.dir}/certificates" />
+		</java>
+	</target>
+
+	<target name="syncWithTrustFabric" description="Sync with the GTS Once" depends="checkGlobus,deployTrustedCerts,defineClasspaths">
+		<java classpathref="service.run.classpath" classname="gov.nih.nci.cagrid.syncgts.tools.SyncGTSCommand" fork="yes" failonerror="true">
+			<jvmarg value="-Dlog4j.configuration=sync-gts-log4j.properties" />
+			<jvmarg value="-Dlog4j.debug" />
+			<arg value="-d" />
+			<arg value="${sync.description.file}" />
+			<arg value="-o" />
+		</java>
+	</target>
+
+
+	<target name="generateTrustReport" description="Generates a Grid Trust Report." depends="init">
+		<input message="Please enter a file location to write the report to [grid-trust-report.txt]:" addproperty="out.input" defaultvalue="grid-trust-report.txt" />
+		<java classname="org.cagrid.gaards.pki.tools.GenerateTrustReport" fork="true" newenvironment="true" failonerror="true">
+			<arg value="-o" />
+			<arg value="${out.input}" />
+			<classpath refid="run.classpath" />
+		</java>
+	</target>
+
+
+</project>

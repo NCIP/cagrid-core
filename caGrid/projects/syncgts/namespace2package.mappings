@@ -1,0 +1,16 @@
+http\://cagrid.nci.nih.gov/SyncGTS=gov.nih.nci.cagrid.syncgts.stubs
+http\://cagrid.nci.nih.gov/SyncGTS/bindings=gov.nih.nci.cagrid.syncgts.stubs.bindings
+http\://cagrid.nci.nih.gov/SyncGTS/service=gov.nih.nci.cagrid.syncgts.stubs.service
+http\://security.introduce.cagrid.nci.nih.gov/ServiceSecurity=gov.nih.nci.cagrid.introduce.security.stubs
+http\://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ResourceProperties-1.2-draft-01.wsdl=org.oasis.wsrf.properties
+http\://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ResourceProperties-1.2-draft-01.wsdl=org.oasis.wsrf.properties
+http\://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ResourceProperties-1.2-draft-01.wsdl=org.oasis.wsrf.properties
+
+http\://cagrid.nci.nih.gov/SyncGTS/types=gov.nih.nci.cagrid.syncgts.stubs.types
+gme\://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata=gov.nih.nci.cagrid.metadata
+http\://cagrid.nci.nih.gov/12/SyncGTS=gov.nih.nci.cagrid.syncgts.bean
+http\://cagrid.nci.nih.gov/8/gts=gov.nih.nci.cagrid.gts.bean
+gme\://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.security=gov.nih.nci.cagrid.metadata.security
+gme\://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.service=gov.nih.nci.cagrid.metadata.service
+
+gme\://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common=gov.nih.nci.cagrid.metadata.common

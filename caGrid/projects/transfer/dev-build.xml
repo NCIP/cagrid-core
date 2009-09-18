@@ -1,0 +1,299 @@
+<?xml version="1.0"?>
+<project name="Developer Modified Build File" basedir=".">
+	<!-- ============================================================== -->
+	<!-- This file is designed to allow the developer to extend the     -->
+	<!-- build process without having to edit the master build.xml      -->
+	<!-- file. DO NOT REMOVE ANY TARGETS                                -->
+	<!-- ============================================================== -->
+
+
+	<!-- ============================================================== -->
+	<!-- Place any other properties you will need here                  -->
+	<!-- ============================================================== -->
+	<property environment="env" />
+	<property file="${basedir}/project.properties" />
+	<property file="${basedir}/build.properties" />
+
+	<property name="jar.prefix" value="caGrid-Transfer" />
+	<property name="jar.suffix" value="${project.version}.jar" />
+
+	<property name="common.jar.name" value="${jar.prefix}-common-${jar.suffix}" />
+	<property name="client.jar.name" value="${jar.prefix}-client-${jar.suffix}" />
+	<property name="service.jar.name" value="${jar.prefix}-service-${jar.suffix}" />
+	<property name="stubs.jar.name" value="${jar.prefix}-stubs-${jar.suffix}" />
+	<property name="test.jar.name" value="${jar.prefix}-tests-${jar.suffix}" />
+
+	<property name="ext.dir" location="${basedir}/ext" />
+	<property name="ext.dependencies.dir" location="${ext.dir}/dependencies" />
+	<property name="ext.targetgrid.dir" location="${ext.dir}/target_grid" />
+	<property name="ext.lib.dir" location="${ext.dependencies.dir}/service/jars" />
+	<property name="ext.tools.lib.dir" location="${ext.dependencies.dir}/tools/jars" />
+	<property name="ext.test.lib.dir" value="${ext.dependencies.dir}/test/jars" />
+
+	<property name="introduce.dir" location="../introduce" />
+
+	<!-- overide the introduce location of this which is suposed to be in tools/lib -->
+	<property name="ant.contrib.location" value="${ext.tools.lib.dir}/ant-contrib-1.0b3.jar" />
+
+	<import file="test/test.xml" />
+
+
+
+	<!-- ============================================================== -->
+	<!-- Create any extended Classpaths here                            -->
+	<!-- ============================================================== -->
+	<target name="defineExtendedClasspaths">
+		<path id="base.extended.classpath">
+			<fileset dir="${ext.lib.dir}">
+				<include name="**/*" />
+			</fileset>
+		</path>
+		<path id="service.build.extended.classpath">
+		</path>
+		<path id="service.run.extended.classpath">
+		</path>
+		<path id="test.build.extended.classpath">
+			<fileset dir="${ext.test.lib.dir}">
+				<include name="**/*" />
+			</fileset>
+		</path>
+		<path id="test.run.extended.classpath">
+			<fileset dir="${introduce.dir}/lib">
+				<include name="*.jar" />
+			</fileset>
+			<fileset dir="${introduce.dir}/ext/dependencies/jars">
+				<include name="*.jar" />
+			</fileset>
+			<fileset dir="${introduce.dir}/build/jars">
+				<include name="*.jar" />
+			</fileset>
+			<fileset dir="${introduce.dir}/test/lib">
+				<include name="*.jar" />
+			</fileset>
+			<fileset dir="${introduce.dir}/ext/dependencies/test/jars">
+				<include name="*.jar" />
+			</fileset>
+			<fileset dir="${ant.library.dir}">
+				<include name="*.jar" />
+			</fileset>
+		</path>
+		<path id="run.extended.classpath">
+		</path>
+		<path id="tasks.run.extended.classpath">
+			<fileset dir="${ext.lib.dir}">
+				<include name="**/*.jar" />
+			</fileset>
+			<fileset dir="${ext.tools.lib.dir}">
+				<include name="*.jar" />
+			</fileset>
+		</path>
+
+	</target>
+
+
+	<!-- ============================================================== -->
+	<!-- Pre Init Target                                                -->
+	<!-- ============================================================== -->
+	<target name="preInit">
+		<runtarget target="configure" />
+	</target>
+
+	<!-- ============================================================== -->
+	<!-- Post Init Build Target                                         -->
+	<!-- ============================================================== -->
+	<target name="postInit">
+
+	</target>
+
+
+	<!-- ============================================================== -->
+	<!-- Pre Stubs Target                                               -->
+	<!-- ============================================================== -->
+	<target name="preStubs">
+
+	</target>
+
+	<!-- ============================================================== -->
+	<!-- Post Stubs Build Target                                        -->
+	<!-- ============================================================== -->
+	<target name="postStubs">
+
+	</target>
+
+	<!-- ============================================================== -->
+	<!-- Pre Compile Stubs Build Target                                 -->
+	<!-- ============================================================== -->
+	<target name="preCompileStubs">
+
+	</target>
+
+	<!-- ============================================================== -->
+	<!-- Post Compile Stubs Build Target                                -->
+	<!-- ============================================================== -->
+	<target name="postCompileStubs">
+
+	</target>
+
+	<!-- ============================================================== -->
+	<!-- Pre Jar Stubs Build Target                                     -->
+	<!-- ============================================================== -->
+	<target name="preJarStubs">
+
+	</target>
+
+	<!-- ============================================================== -->
+	<!-- Post Jar Stubs Build Target                                    -->
+	<!-- ============================================================== -->
+	<target name="postJarStubs">
+
+	</target>
+
+	<!-- ============================================================== -->
+	<!-- Pre Compile Build Target                                       -->
+	<!-- ============================================================== -->
+	<target name="preCompile">
+
+	</target>
+
+	<!-- ============================================================== -->
+	<!-- Post Compile Build Target                                       -->
+	<!-- ============================================================== -->
+	<target name="postCompile">
+
+	</target>
+
+	<!-- ============================================================== -->
+	<!-- Pre Jar Build Target                                       -->
+	<!-- ============================================================== -->
+	<target name="preJar">
+
+	</target>
+
+	<!-- ============================================================== -->
+	<!-- Post Jar Build Target                                          -->
+	<!-- ============================================================== -->
+	<target name="postJar">
+
+	</target>
+
+	<!-- ============================================================== -->
+	<!-- Pre Compile Tests Build Target                                 -->
+	<!-- ============================================================== -->
+	<target name="preCompileTests">
+
+	</target>
+
+	<!-- ============================================================== -->
+	<!-- Post Compile Tests Build Target                                -->
+	<!-- ============================================================== -->
+	<target name="postCompileTests">
+
+	</target>
+
+	<!-- ============================================================== -->
+	<!-- Pre Jar Tests Build Target                                     -->
+	<!-- ============================================================== -->
+	<target name="preJarTests">
+
+	</target>
+
+	<!-- ============================================================== -->
+	<!-- Post Jar Tests Build Target                                    -->
+	<!-- ============================================================== -->
+	<target name="postJarTests">
+
+	</target>
+
+	<!-- ============================================================== -->
+	<!-- Pre Clean Target                                               -->
+	<!-- ============================================================== -->
+	<target name="preClean">
+
+	</target>
+
+	<!-- ============================================================== -->
+	<!-- Post Clean Target                                              -->
+	<!-- ============================================================== -->
+	<target name="postClean">
+
+	</target>
+
+
+	<target name="installIntroduceExtensions">
+
+		<delete dir="${introduce.extensions.dir}/caGrid_Transfer" />
+		<mkdir dir="${introduce.extensions.dir}/caGrid_Transfer" />
+		<mkdir dir="${introduce.extensions.dir}/caGrid_Transfer/schema" />
+		<mkdir dir="${introduce.extensions.dir}/caGrid_Transfer/lib" />
+		<!-- extension description file -->
+		<copy overwrite="true" todir="${introduce.extensions.dir}/caGrid_Transfer" file="extension/extension.xml" />
+		<!-- libraries -->
+		<copy overwrite="true" todir="${introduce.extensions.dir}/lib">
+			<fileset dir="extension/lib">
+				<include name="*.jar" />
+			</fileset>
+			<fileset dir="extension/build/lib">
+				<include name="*.jar" />
+			</fileset>
+		</copy>
+		<!-- libraries for the service -->
+		<copy overwrite="true" todir="${introduce.extensions.dir}/caGrid_Transfer/lib">
+			<fileset dir="${lib.dir}">
+				<include name="*.jar" />
+			</fileset>
+			<fileset dir="${ext.lib.dir}">
+				<include name="*.jar" />
+			</fileset>
+			<fileset dir="${build.lib.dir}">
+				<include name="*.jar" />
+			</fileset>
+		</copy>
+		<!-- tranfer specific schemas and wsdl -->
+		<copy overwrite="true" todir="${introduce.extensions.dir}/caGrid_Transfer/schema">
+			<fileset dir="${basedir}/schema/TransferService/">
+				<include name="caGrid_Transfer.xsd" />
+				<include name="TransferServiceContextTypes.xsd" />
+			</fileset>
+		</copy>
+
+	</target>
+
+
+	<!-- Default target "all" builds and jars everything, including test....does not make a GAR-->
+	<target name="all" depends="jars" description="Builds the entire service.">
+		<ant inheritall="false" antfile="build.xml" target="all" dir="extension">
+		</ant>
+		<ant inheritall="false" antfile="build.xml" target="all" dir="webapp">
+		</ant>
+	</target>
+
+	<!-- Clean up all the intermediate files -->
+	<target name="clean" description="Removes all generated build artifacts.">
+		<runtarget target="preClean" />
+		<delete dir="tmp" />
+		<delete dir="${build.dir}" />
+		<delete file="${gar.name}" />
+		<ant inheritall="false" antfile="build.xml" target="clean" dir="extension">
+		</ant>
+		<ant inheritall="false" antfile="build.xml" target="clean" dir="webapp">
+		</ant>
+		<runtarget target="postClean" />
+	</target>
+
+
+
+	<target name="configure" description="Configures the project based on settings.">
+		<!-- These are the template files we are copying from -->
+		<fileset id="templates.fileset" dir="${basedir}">
+			<include name="*.template" />
+		</fileset>
+
+		<copy todir="${basedir}" overwrite="true">
+			<fileset refid="templates.fileset" />
+			<mapper type="glob" from="*.template" to="*" />
+			<filterset filtersfile="${ext.targetgrid.dir}/service_urls.properties" />
+		</copy>
+
+	</target>
+
+</project>

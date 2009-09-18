@@ -1,0 +1,210 @@
+<ns1:ServiceMetadata xsi:type="ns1:ServiceMetadata"
+ xmlns:ns1="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata"
+ xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+ <ns1:serviceDescription>
+  <ns2:Service description="This service provides access to information in caDSR as well as
+   capabilities to generate metadata extracts." name="CaDSRService" version="1.0"
+   xsi:type="ns2:Service" xmlns:ns2="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.service">
+   <ns2:pointOfContactCollection>
+    <com:PointOfContact affiliation="OSU" email="oster@bmi.osu.edu" firstName="Scott"
+     lastName="Oster" role="Maintainer" xmlns:com="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common"/>
+   </ns2:pointOfContactCollection>
+   <ns2:serviceContextCollection>
+    <ns2:ServiceContext description="" name="CaDSRService" xsi:type="ns2:ServiceContext">
+     <ns2:operationCollection>
+      <ns2:Operation description="" name="getServiceSecurityMetadata" xsi:type="ns2:Operation">
+       <ns2:inputParameterCollection/>
+       <ns2:Output qName="ns3:ServiceSecurityMetadata" dimensionality="1" isArray="false"
+        xsi:type="ns2:Output"
+        xmlns:ns3="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.security"/>
+       <ns2:faultCollection/>
+      </ns2:Operation>
+      <ns2:Operation description="" name="findAllProjects" xsi:type="ns2:Operation">
+       <ns2:inputParameterCollection/>
+       <ns2:Output qName="ns4:Project" dimensionality="1" isArray="true" xsi:type="ns2:Output"
+        xmlns:ns4="gme://caCORE.caBIG/3.0/gov.nih.nci.cadsr.umlproject.domain"/>
+       <ns2:faultCollection/>
+      </ns2:Operation>
+      <ns2:Operation description="" name="findProjects" xsi:type="ns2:Operation">
+       <ns2:inputParameterCollection>
+        <ns2:InputParameter qName="xsd:string" dimensionality="1" index="0" isArray="false"
+         isRequired="false" name="context" xsi:type="ns2:InputParameter"
+         xmlns:xsd="http://www.w3.org/2001/XMLSchema"/>
+       </ns2:inputParameterCollection>
+       <ns2:Output qName="ns5:Project" dimensionality="1" isArray="true" xsi:type="ns2:Output"
+        xmlns:ns5="gme://caCORE.caBIG/3.0/gov.nih.nci.cadsr.umlproject.domain"/>
+       <ns2:faultCollection/>
+      </ns2:Operation>
+      <ns2:Operation description="" name="findPackagesInProject" xsi:type="ns2:Operation">
+       <ns2:inputParameterCollection>
+        <ns2:InputParameter qName="ns6:Project" dimensionality="1" index="0" isArray="false"
+         isRequired="false" name="project" xsi:type="ns2:InputParameter"
+         xmlns:ns6="gme://caCORE.caBIG/3.0/gov.nih.nci.cadsr.umlproject.domain"/>
+       </ns2:inputParameterCollection>
+       <ns2:Output qName="ns7:UMLPackageMetadata" dimensionality="1" isArray="true"
+        xsi:type="ns2:Output" xmlns:ns7="gme://caCORE.caBIG/3.0/gov.nih.nci.cadsr.umlproject.domain"/>
+       <ns2:faultCollection/>
+      </ns2:Operation>
+      <ns2:Operation description="" name="findClassesInProject" xsi:type="ns2:Operation">
+       <ns2:inputParameterCollection>
+        <ns2:InputParameter qName="ns8:Project" dimensionality="1" index="0" isArray="false"
+         isRequired="false" name="project" xsi:type="ns2:InputParameter"
+         xmlns:ns8="gme://caCORE.caBIG/3.0/gov.nih.nci.cadsr.umlproject.domain"/>
+       </ns2:inputParameterCollection>
+       <ns2:Output qName="ns9:UMLClassMetadata" dimensionality="1" isArray="true"
+        xsi:type="ns2:Output" xmlns:ns9="gme://caCORE.caBIG/3.0/gov.nih.nci.cadsr.umlproject.domain"/>
+       <ns2:faultCollection/>
+      </ns2:Operation>
+      <ns2:Operation description="" name="findClassesInPackage" xsi:type="ns2:Operation">
+       <ns2:inputParameterCollection>
+        <ns2:InputParameter qName="ns10:Project" dimensionality="1" index="0" isArray="false"
+         isRequired="false" name="project" xsi:type="ns2:InputParameter"
+         xmlns:ns10="gme://caCORE.caBIG/3.0/gov.nih.nci.cadsr.umlproject.domain"/>
+        <ns2:InputParameter qName="xsd:string" dimensionality="1" index="1" isArray="false"
+         isRequired="false" name="packageName" xsi:type="ns2:InputParameter"
+         xmlns:xsd="http://www.w3.org/2001/XMLSchema"/>
+       </ns2:inputParameterCollection>
+       <ns2:Output qName="ns11:UMLClassMetadata" dimensionality="1" isArray="true"
+        xsi:type="ns2:Output"
+        xmlns:ns11="gme://caCORE.caBIG/3.0/gov.nih.nci.cadsr.umlproject.domain"/>
+       <ns2:faultCollection/>
+      </ns2:Operation>
+      <ns2:Operation description="" name="generateDomainModelForProject" xsi:type="ns2:Operation">
+       <ns2:inputParameterCollection>
+        <ns2:InputParameter qName="ns12:Project" dimensionality="1" index="0" isArray="false"
+         isRequired="false" name="project" xsi:type="ns2:InputParameter"
+         xmlns:ns12="gme://caCORE.caBIG/3.0/gov.nih.nci.cadsr.umlproject.domain"/>
+       </ns2:inputParameterCollection>
+       <ns2:Output qName="ns13:DomainModel" dimensionality="1" isArray="false" xsi:type="ns2:Output"
+        xmlns:ns13="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.dataservice"/>
+       <ns2:faultCollection/>
+      </ns2:Operation>
+      <ns2:Operation description="" name="generateDomainModelForPackages" xsi:type="ns2:Operation">
+       <ns2:inputParameterCollection>
+        <ns2:InputParameter qName="ns14:Project" dimensionality="1" index="0" isArray="false"
+         isRequired="false" name="project" xsi:type="ns2:InputParameter"
+         xmlns:ns14="gme://caCORE.caBIG/3.0/gov.nih.nci.cadsr.umlproject.domain"/>
+        <ns2:InputParameter qName="xsd:string" dimensionality="1" index="1" isArray="true"
+         isRequired="false" name="packageNames" xsi:type="ns2:InputParameter"
+         xmlns:xsd="http://www.w3.org/2001/XMLSchema"/>
+       </ns2:inputParameterCollection>
+       <ns2:Output qName="ns15:DomainModel" dimensionality="1" isArray="false" xsi:type="ns2:Output"
+        xmlns:ns15="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.dataservice"/>
+       <ns2:faultCollection/>
+      </ns2:Operation>
+      <ns2:Operation description="" name="generateDomainModelForClasses" xsi:type="ns2:Operation">
+       <ns2:inputParameterCollection>
+        <ns2:InputParameter qName="ns16:Project" dimensionality="1" index="0" isArray="false"
+         isRequired="false" name="project" xsi:type="ns2:InputParameter"
+         xmlns:ns16="gme://caCORE.caBIG/3.0/gov.nih.nci.cadsr.umlproject.domain"/>
+        <ns2:InputParameter qName="ns17:UMLClassMetadata" dimensionality="1" index="1"
+         isArray="true" isRequired="false" name="classes" xsi:type="ns2:InputParameter"
+         xmlns:ns17="gme://caCORE.caBIG/3.0/gov.nih.nci.cadsr.umlproject.domain"/>
+        <ns2:InputParameter qName="ns18:UMLAssociation" dimensionality="1" index="2" isArray="true"
+         isRequired="false" name="associations" xsi:type="ns2:InputParameter"
+         xmlns:ns18="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.cadsrservice"/>
+       </ns2:inputParameterCollection>
+       <ns2:Output qName="ns19:DomainModel" dimensionality="1" isArray="false" xsi:type="ns2:Output"
+        xmlns:ns19="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.dataservice"/>
+       <ns2:faultCollection/>
+      </ns2:Operation>
+      <ns2:Operation description="" name="findAttributesInClass" xsi:type="ns2:Operation">
+       <ns2:inputParameterCollection>
+        <ns2:InputParameter qName="ns20:Project" dimensionality="1" index="0" isArray="false"
+         isRequired="false" name="project" xsi:type="ns2:InputParameter"
+         xmlns:ns20="gme://caCORE.caBIG/3.0/gov.nih.nci.cadsr.umlproject.domain"/>
+        <ns2:InputParameter qName="ns21:UMLClassMetadata" dimensionality="1" index="1"
+         isArray="false" isRequired="false" name="clazz" xsi:type="ns2:InputParameter"
+         xmlns:ns21="gme://caCORE.caBIG/3.0/gov.nih.nci.cadsr.umlproject.domain"/>
+       </ns2:inputParameterCollection>
+       <ns2:Output qName="ns22:UMLAttributeMetadata" dimensionality="1" isArray="true"
+        xsi:type="ns2:Output"
+        xmlns:ns22="gme://caCORE.caBIG/3.0/gov.nih.nci.cadsr.umlproject.domain"/>
+       <ns2:faultCollection/>
+      </ns2:Operation>
+      <ns2:Operation description="" name="findSemanticMetadataForClass" xsi:type="ns2:Operation">
+       <ns2:inputParameterCollection>
+        <ns2:InputParameter qName="ns23:Project" dimensionality="1" index="0" isArray="false"
+         isRequired="false" name="project" xsi:type="ns2:InputParameter"
+         xmlns:ns23="gme://caCORE.caBIG/3.0/gov.nih.nci.cadsr.umlproject.domain"/>
+        <ns2:InputParameter qName="ns24:UMLClassMetadata" dimensionality="1" index="1"
+         isArray="false" isRequired="false" name="clazz" xsi:type="ns2:InputParameter"
+         xmlns:ns24="gme://caCORE.caBIG/3.0/gov.nih.nci.cadsr.umlproject.domain"/>
+       </ns2:inputParameterCollection>
+       <ns2:Output qName="ns25:SemanticMetadata" dimensionality="1" isArray="true"
+        xsi:type="ns2:Output"
+        xmlns:ns25="gme://caCORE.caBIG/3.0/gov.nih.nci.cadsr.umlproject.domain"/>
+       <ns2:faultCollection/>
+      </ns2:Operation>
+      <ns2:Operation description="" name="findValueDomainForAttribute" xsi:type="ns2:Operation">
+       <ns2:inputParameterCollection>
+        <ns2:InputParameter qName="ns26:Project" dimensionality="1" index="0" isArray="false"
+         isRequired="false" name="project" xsi:type="ns2:InputParameter"
+         xmlns:ns26="gme://caCORE.caBIG/3.0/gov.nih.nci.cadsr.umlproject.domain"/>
+        <ns2:InputParameter qName="ns27:UMLAttributeMetadata" dimensionality="1" index="1"
+         isArray="false" isRequired="false" name="attribute" xsi:type="ns2:InputParameter"
+         xmlns:ns27="gme://caCORE.caBIG/3.0/gov.nih.nci.cadsr.umlproject.domain"/>
+       </ns2:inputParameterCollection>
+       <ns2:Output qName="ns28:ValueDomain" dimensionality="1" isArray="false" xsi:type="ns2:Output"
+        xmlns:ns28="gme://caCORE.caBIG/3.0/gov.nih.nci.cadsr.domain"/>
+       <ns2:faultCollection/>
+      </ns2:Operation>
+      <ns2:Operation description="" name="findAssociationsForClass" xsi:type="ns2:Operation">
+       <ns2:inputParameterCollection>
+        <ns2:InputParameter qName="ns29:Project" dimensionality="1" index="0" isArray="false"
+         isRequired="false" name="project" xsi:type="ns2:InputParameter"
+         xmlns:ns29="gme://caCORE.caBIG/3.0/gov.nih.nci.cadsr.umlproject.domain"/>
+        <ns2:InputParameter qName="ns30:UMLClassMetadata" dimensionality="1" index="1"
+         isArray="false" isRequired="false" name="clazz" xsi:type="ns2:InputParameter"
+         xmlns:ns30="gme://caCORE.caBIG/3.0/gov.nih.nci.cadsr.umlproject.domain"/>
+       </ns2:inputParameterCollection>
+       <ns2:Output qName="ns31:UMLAssociation" dimensionality="1" isArray="true"
+        xsi:type="ns2:Output" xmlns:ns31="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.cadsrservice"/>
+       <ns2:faultCollection/>
+      </ns2:Operation>
+      <ns2:Operation description="" name="findAssociationsInPackage" xsi:type="ns2:Operation">
+       <ns2:inputParameterCollection>
+        <ns2:InputParameter qName="ns32:Project" dimensionality="1" index="0" isArray="false"
+         isRequired="false" name="project" xsi:type="ns2:InputParameter"
+         xmlns:ns32="gme://caCORE.caBIG/3.0/gov.nih.nci.cadsr.umlproject.domain"/>
+        <ns2:InputParameter qName="xsd:string" dimensionality="1" index="1" isArray="false"
+         isRequired="false" name="packageName" xsi:type="ns2:InputParameter"
+         xmlns:xsd="http://www.w3.org/2001/XMLSchema"/>
+       </ns2:inputParameterCollection>
+       <ns2:Output qName="ns33:UMLAssociation" dimensionality="1" isArray="true"
+        xsi:type="ns2:Output" xmlns:ns33="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.cadsrservice"/>
+       <ns2:faultCollection/>
+      </ns2:Operation>
+      <ns2:Operation description="" name="findAssociationsInProject" xsi:type="ns2:Operation">
+       <ns2:inputParameterCollection>
+        <ns2:InputParameter qName="ns34:Project" dimensionality="1" index="0" isArray="false"
+         isRequired="false" name="project" xsi:type="ns2:InputParameter"
+         xmlns:ns34="gme://caCORE.caBIG/3.0/gov.nih.nci.cadsr.umlproject.domain"/>
+       </ns2:inputParameterCollection>
+       <ns2:Output qName="ns35:UMLAssociation" dimensionality="1" isArray="true"
+        xsi:type="ns2:Output" xmlns:ns35="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.cadsrservice"/>
+       <ns2:faultCollection/>
+      </ns2:Operation>
+     </ns2:operationCollection>
+     <ns2:contextPropertyCollection>
+      <ns2:ContextProperty description=""
+       name="{gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata}ServiceMetadata"
+       xsi:type="ns2:ContextProperty"/>
+     </ns2:contextPropertyCollection>
+    </ns2:ServiceContext>
+   </ns2:serviceContextCollection>
+  </ns2:Service>
+ </ns1:serviceDescription>
+ <ns1:hostingResearchCenter>
+  <ns36:ResearchCenter displayName="Ohio State University" shortName="OSU"
+   xsi:type="ns36:ResearchCenter"
+   xmlns:ns36="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common">
+   <ns36:Address country="US" postalCode="43210" stateProvence="OH" street1="333 W. 10th     Ave."
+    xsi:type="ns36:Address"/>
+   <ns36:pointOfContactCollection>
+    <ns36:PointOfContact affiliation="OSU" email="oster@bmi.osu.edu" firstName="Scott"
+     lastName="Oster" role="Maintainer" xsi:type="ns36:PointOfContact"/>
+   </ns36:pointOfContactCollection>
+  </ns36:ResearchCenter>
+ </ns1:hostingResearchCenter>
+</ns1:ServiceMetadata>

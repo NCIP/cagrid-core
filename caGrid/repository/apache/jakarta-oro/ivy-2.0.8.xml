@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<?xml-stylesheet type="text/xsl" href="http://ivyrep.jayasoft.org/ivy-doc.xsl"?>
+<ivy-module version="1.0">
+	<info organisation="apache" module="jakarta-oro" revision="2.0.8" status="release"
+		publication="20040821215500">
+		<license name="Apache" url="http://www.apache.org/licenses/LICENSE-2.0.txt"/>
+
+		<description homepage="http://jakarta.apache.org/oro/">The Jakarta-ORO Java classes are a
+			set of text-processing Java classes that provide Perl5 compatible regular expressions,
+			AWK-like regular expressions, glob expressions, and utility classes for performing
+			substitutions, splits, filtering filenames, etc. This library is the successor to the
+			OROMatcher, AwkTools, PerlTools, and TextTools libraries originally from ORO, Inc.
+			Despite little activity in the form of new development initiatives, issue reports,
+			questions, and suggestions are responded to quickly.</description>
+	</info>
+</ivy-module>

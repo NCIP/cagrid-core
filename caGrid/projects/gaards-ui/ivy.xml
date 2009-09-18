@@ -1,0 +1,46 @@
+<?xml version="1.0"?>
+
+<ivy-module version="2.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:noNamespaceSchemaLocation="http://incubator.apache.org/ivy/schemas/ivy.xsd">
+
+  <info organisation="caGrid" module="gaards-ui" revision="${project.version}">
+    <license name="caGrid" url="http://cagrid.org/wiki/CaGrid:LICENSE-1.3"/>
+    <description>Graphical User Interface for GAARDS</description>
+  </info>
+
+  <configurations>
+    <conf name="target_grid" visibility="private"/>
+    <conf name="impl" visibility="private" extends="full"/>
+
+    <!-- Public Configurations-->
+    <conf name="base" visibility="public"/>
+
+    <conf name="gridgrouper" visibility="public" extends="base"/>
+    <conf name="dorian" visibility="public" extends="base"/>
+    <conf name="gts" visibility="public" extends="base"/>
+    <conf name="cds" visibility="public" extends="base"/>
+    
+    <conf name="endorsed" visibility="public"/>
+
+    <conf name="full" visibility="public" extends="gridgrouper,dorian,gts,cds"/>
+  </configurations>
+
+
+  <publications>
+    <artifact name="caGrid-${ivy.module}" conf="base" type="jar"/>
+  </publications>
+
+  <dependencies>
+    <dependency rev="${target.grid}" org="caGrid" name="target_grid"
+      conf="target_grid->authentication-services,dorian-services,gridgrouper-services,gts-services,cds-services"/>
+
+    <dependency rev="latest.integration" org="caGrid" name="core" conf="base->default"/>
+    <dependency rev="latest.integration" org="caGrid" name="grape" conf="base->default"/>
+    <dependency rev="latest.integration" org="caGrid" name="gridgrouper" conf="gridgrouper->client"/>
+    <dependency rev="latest.integration" org="caGrid" name="gts" conf="gts->client"/>
+    <dependency rev="latest.integration" org="caGrid" name="cds" conf="cds->client"/>
+    <dependency rev="latest.integration" org="caGrid" name="dorian" conf="dorian->client;endorsed->endorsed"/>
+
+    <dependency rev="0.1" org="jcalendar" name="jcalendar" conf="base->*"/>
+  </dependencies>
+</ivy-module>

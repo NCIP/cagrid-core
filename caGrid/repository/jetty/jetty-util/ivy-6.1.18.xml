@@ -1,0 +1,10 @@
+<?xml version="1.0" ?>
+<ivy-module version="2.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:noNamespaceSchemaLocation="http://incubator.apache.org/ivy/schemas/ivy.xsd">
+    <info organisation="jetty" module="jetty-util" revision="6.1.18" status="release">
+        <license name="MPL 1.0" url="http://www.mozilla.org/MPL/MPL-1.0.html"/>
+
+        <description homepage="http://www.mortbay.org/jetty/"> "Jetty provides an HTTP server, HTTP client, and javax.servlet container. These components are open source and available for commercial use and distribution."
+        </description>
+    </info>
+</ivy-module>

@@ -1,0 +1,29 @@
+<%@ jet package="gov.nih.nci.cagrid.introduce.templates.service" class="ServiceImplTemplate" imports="gov.nih.nci.cagrid.introduce.* gov.nih.nci.cagrid.introduce.common.* gov.nih.nci.cagrid.introduce.beans.service.*" %>
+<% gov.nih.nci.cagrid.introduce.common.SpecificServiceInformation info = (gov.nih.nci.cagrid.introduce.common.SpecificServiceInformation) argument; 
+   String serviceName = info.getService().getName();
+   ServiceType baseService = info.getServices().getService(0);
+   String namespaceDomain = info.getIntroduceServiceProperties().getProperty(gov.nih.nci.cagrid.introduce.IntroduceConstants.INTRODUCE_SKELETON_NAMESPACE_DOMAIN);
+   String modifiedServiceName = serviceName;
+   if(serviceName.endsWith("Service")){
+   	modifiedServiceName = serviceName.substring(0,serviceName.length()-7);
+   }
+%>
+package <%=info.getService().getPackageName()%>.service;
+
+import java.rmi.RemoteException;
+
+/** 
+ * TODO:I am the service side implementation class.  IMPLEMENT AND DOCUMENT ME
+ * 
+ * @created by Introduce Toolkit version <%=IntroducePropertiesManager.getIntroduceVersion()%>
+ * 
+ */
+public class <%=info.getService().getName()%>Impl extends <%=info.getService().getName()%>ImplBase {
+
+	
+	public <%=info.getService().getName()%>Impl() throws RemoteException {
+		super();
+	}
+	
+}
+

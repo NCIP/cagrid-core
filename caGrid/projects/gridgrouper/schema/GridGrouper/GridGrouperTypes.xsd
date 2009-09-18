@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schema xmlns="http://www.w3.org/2001/XMLSchema" xmlns:wsa="http://schemas.xmlsoap.org/ws/2004/03/addressing" xmlns:tns="http://cagrid.nci.nih.gov/GridGrouper/types" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:wsrbf="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-BaseFaults-1.2-draft-01.xsd" targetNamespace="http://cagrid.nci.nih.gov/GridGrouper/types" elementFormDefault="qualified" attributeFormDefault="unqualified">
+  <import namespace="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-BaseFaults-1.2-draft-01.xsd" schemaLocation="../wsrf/faults/WS-BaseFaults.xsd" />
+  <import namespace="http://schemas.xmlsoap.org/ws/2004/03/addressing" schemaLocation="../ws/addressing/WS-Addressing.xsd" />
+  <element name="GridGrouperReference">
+    <complexType>
+      <sequence>
+        <element ref="wsa:EndpointReference" />
+      </sequence>
+    </complexType>
+  </element>
+  <element name="GridGrouperRuntimeFault">
+    <complexType>
+      <complexContent>
+        <extension base="wsrbf:BaseFaultType" />
+      </complexContent>
+    </complexType>
+  </element>
+  <element name="StemNotFoundFault">
+    <complexType>
+      <complexContent>
+        <extension base="wsrbf:BaseFaultType" />
+      </complexContent>
+    </complexType>
+  </element>
+  <element name="InsufficientPrivilegeFault">
+    <complexType>
+      <complexContent>
+        <extension base="wsrbf:BaseFaultType" />
+      </complexContent>
+    </complexType>
+  </element>
+  <element name="StemModifyFault">
+    <complexType>
+      <complexContent>
+        <extension base="wsrbf:BaseFaultType" />
+      </complexContent>
+    </complexType>
+  </element>
+  <element name="GrantPrivilegeFault">
+    <complexType>
+      <complexContent>
+        <extension base="wsrbf:BaseFaultType" />
+      </complexContent>
+    </complexType>
+  </element>
+  <element name="SchemaFault">
+    <complexType>
+      <complexContent>
+        <extension base="wsrbf:BaseFaultType" />
+      </complexContent>
+    </complexType>
+  </element>
+  <element name="RevokePrivilegeFault">
+    <complexType>
+      <complexContent>
+        <extension base="wsrbf:BaseFaultType" />
+      </complexContent>
+    </complexType>
+  </element>
+  <element name="StemAddFault">
+    <complexType>
+      <complexContent>
+        <extension base="wsrbf:BaseFaultType" />
+      </complexContent>
+    </complexType>
+  </element>
+  <element name="StemDeleteFault">
+    <complexType>
+      <complexContent>
+        <extension base="wsrbf:BaseFaultType" />
+      </complexContent>
+    </complexType>
+  </element>
+  <element name="GroupNotFoundFault">
+    <complexType>
+      <complexContent>
+        <extension base="wsrbf:BaseFaultType" />
+      </complexContent>
+    </complexType>
+  </element>
+  <element name="GroupAddFault">
+    <complexType>
+      <complexContent>
+        <extension base="wsrbf:BaseFaultType" />
+      </complexContent>
+    </complexType>
+  </element>
+  <element name="GroupDeleteFault">
+    <complexType>
+      <complexContent>
+        <extension base="wsrbf:BaseFaultType" />
+      </complexContent>
+    </complexType>
+  </element>
+  <element name="GroupModifyFault">
+    <complexType>
+      <complexContent>
+        <extension base="wsrbf:BaseFaultType" />
+      </complexContent>
+    </complexType>
+  </element>
+  <element name="MemberAddFault">
+    <complexType>
+      <complexContent>
+        <extension base="wsrbf:BaseFaultType" />
+      </complexContent>
+    </complexType>
+  </element>
+  <element name="MemberDeleteFault">
+    <complexType>
+      <complexContent>
+        <extension base="wsrbf:BaseFaultType" />
+      </complexContent>
+    </complexType>
+  </element>
+</schema>
+

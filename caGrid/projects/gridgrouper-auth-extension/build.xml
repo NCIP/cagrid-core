@@ -1,0 +1,217 @@
+<?xml version="1.0"?>
+<!--
+Adopted and modified from GSBT
+GSBT - Globus Service Build Tools
+-->
+<project default="all" name="caGrid GridGrouper Authorization Extension" basedir=".">
+	<!-- Define the environment variable -->
+
+	<property environment="env" />
+	<property file="${basedir}/project.properties" />
+	<property file="${basedir}/build.properties" />
+	<property name="globus.location" location="${env.GLOBUS_LOCATION}" />
+
+	<property name="jar.name" value="caGrid-gridgrouper-auth-extension-${project.version}.jar" />
+	<property name="service.jar.name" value="caGrid-gridgrouper-auth-extension-Service-${project.version}.jar" />
+
+	<!-- Important directories and files -->
+	<property name="src.dir" value="src" />
+	<property name="templates.src.dir" value="templates" />
+	<property name="images.dir" value="resources/images" />
+	<property name="common.images" value="${images.dir}/common" />
+	<property name="gridgrouper.images" value="${images.dir}/gridgrouper" />
+
+	<property name="ext.dir" location="${basedir}/ext" />
+	<property name="ext.grid.dir" location="${ext.dir}/target_grid" />
+	<property name="endorsed.lib.dir" location="${ext.dir}/dependencies/endorsed/jars" />
+	<property name="ext.lib.dir" location="${ext.dir}/dependencies/impl/jars" />
+	<property name="generated.beans.dir" value="${src.dir}/org/cagrid/gridgrouper/authorization/extension/beans">
+	</property>
+
+	<property name="etc.dir" value="etc" />
+
+
+
+	<!-- Build directories -->
+
+	<!-- Auxiliary directory where all the intermediate files will be placed -->
+	<property name="build.dir" location="build" />
+	<!-- Directory for compiled service classes -->
+	<property name="build.dest" location="${build.dir}/classes" />
+	<!-- Directory for compiled JAR files (additional library files required by
+	     the service will also be placed here) -->
+	<property name="build.lib.dir" location="${build.dir}/jars" />
+	<!-- Directory where stub source and class files are placed -->
+
+
+	<!-- Miscellaneous properties -->
+
+	<!-- This property is defined simply so we can write ${sep} instead of
+	     ${file.separator}, which makes some expressions too long -->
+	<property name="sep" value="${file.separator}" />
+	<!-- We want detailed error messages -->
+	<property name="java.debug" value="on" />
+
+	<!-- Sets up the build directory structure -->
+	<target name="init" depends="checkGlobus">
+		<mkdir dir="${build.dir}" />
+		<mkdir dir="${build.dest}" />
+		<mkdir dir="${build.lib.dir}" />
+	</target>
+
+	<target name="configure" description="Configures the project based on settings.">
+		<copy todir="${basedir}" overwrite="true">
+			<fileset dir="${basedir}">
+				<include name="conf/*.template" />
+				<include name="extension/**/*.template" />
+			</fileset>
+			<mapper type="glob" from="*.template" to="*" />
+			<filterset filtersfile="${ext.grid.dir}/service_urls.properties" />
+		</copy>
+	</target>
+
+
+	<target name="defineClasspaths">
+		<path id="base.classpath">
+			<fileset dir="${ext.lib.dir}">
+				<include name="*.jar" />
+			</fileset>
+			<fileset dir="${globus.location}/lib">
+				<include name="*.jar" />
+                <exclude name="junit.jar"/>
+				<!-- Exclude UI and client jars -->
+				<exclude name="caGrid-*-GridGrouper-*stubs.jar" />
+				<exclude name="caGrid-*-GridGrouper-*common.jar" />
+				<exclude name="caGrid-*-GridGrouper-*client.jar" />
+				<exclude name="caGrid-*-GridGrouper-*ui.jar" />
+				<exclude name="xml-apis.jar" />
+				<exclude name="xercesImpl.jar" />
+			</fileset>
+		</path>
+		<path id="run.classpath">
+			<pathelement location="${build.dest}" />
+			<path refid="base.classpath" />
+		</path>
+	</target>
+
+	<!-- ============================================================== -->
+	<!-- Globus properties                                              -->
+	<!-- ============================================================== -->
+	<target name="checkGlobus" depends="setGlobus">
+		<condition property="globus.not.found">
+			<or>
+				<not>
+					<isset property="ext.globus.dir" />
+				</not>
+				<equals arg1="${ext.globus.dir}" arg2="" />
+			</or>
+		</condition>
+		<fail message="Globus installation is not set in either GLOBUS_LOCATION or ext.globus.dir" if="globus.not.found" />
+		<echo message="Globus: ${ext.globus.dir}" />
+	</target>
+	<target name="setGlobus" if="env.GLOBUS_LOCATION">
+		<property name="ext.globus.dir" value="${env.GLOBUS_LOCATION}" />
+		<property name="build.stubs" location="${ext.globus.dir}/share/globus_wsrf_tools/build-stubs.xml" />
+		<property name="schema.src" location="${ext.globus.dir}/share/schema" />
+	</target>
+
+	<!-- =================================================================== -->
+	<!--  Generate Java Beans from XSD                                       -->
+	<!-- =================================================================== -->
+	<target name="generateStubs" depends="init" description="Deletes the generated Java Beans and
+		recreates them.">
+		<ant antfile="${build.stubs}" target="generateStubs" inheritall="false">
+			<property name="mapping.file" location="${basedir}/schema/namespace2package.mappings" />
+			<property name="source.stubs.dir" location="${basedir}/schema" />
+			<property name="target.stubs.dir" location="${src.dir}" />
+			<property name="wsdl.file" value="beans.wsdl" />
+			<property name="ns.excludes" value="-x http://cagrid.nci.nih.gov/1/GridGrouper" />
+		</ant>
+	</target>
+
+
+	<!-- =================================================================== -->
+	<!--  Generate JET template classes                                      -->
+	<!-- =================================================================== -->
+	<target name="generateJETClasses" depends="init">
+	</target>
+
+	<!-- Compile the implementation classes (service, resource, etc.) -->
+	<target name="compile" depends="init,defineClasspaths,generateStubs,generateJETClasses">
+		<javac srcdir="${src.dir}" classpathref="base.classpath" destdir="${build.dest}" debug="${java.debug}" deprecation="${deprecation}">
+
+		</javac>
+	</target>
+
+
+	<target name="jar" depends="compile">
+		<jar jarfile="${build.lib.dir}/${jar.name}">
+			<fileset dir="${build.dest}">
+				<include name="**/**" />
+			</fileset>
+		</jar>
+
+		<jar jarfile="${build.lib.dir}/${service.jar.name}">
+			<fileset dir="${build.dest}">
+				<include name="**/beans/**" />
+				<include name="**/common/**" />
+				<include name="**/service/**" />
+			</fileset>
+		</jar>
+
+	</target>
+
+
+
+
+	<!-- Clean up all the intermediate files -->
+	<target name="clean">
+		<delete dir="tmp" />
+		<delete dir="${build.dir}" />
+		<delete dir="${generated.beans.dir}" />
+	</target>
+
+
+	<!-- Default target "all" generates the GAR file -->
+	<target name="all" depends="jar" />
+
+
+	<target name="installIntroduceExtensions">
+
+		<delete dir="${introduce.extensions.dir}/gridgrouper_auth" />
+		<mkdir dir="${introduce.extensions.dir}/gridgrouper_auth" />
+		<mkdir dir="${introduce.extensions.dir}/gridgrouper_auth/lib" />
+
+		<copy overwrite="true" todir="${introduce.extensions.dir}/gridgrouper_auth/lib">
+			<fileset dir="build/jars">
+				<include name="${service.jar.name}" />
+			</fileset>
+		</copy>
+
+		<copy overwrite="true" todir="${introduce.extensions.dir}/gridgrouper_auth/lib">
+			<fileset dir="ext/dependencies/impl/jars">
+				<include name="*.jar" />
+				<exclude name="*caGrid-Introduce*.jar"/>
+				<exclude name="*caGrid-ServiceSecurity*.jar"/>
+				<exclude name="*caGrid-grape-*.jar"/>
+				<exclude name="*caGrid-gaards-*.jar"/>
+				<exclude name="*caGrid-core-*.jar"/>
+			</fileset>
+		</copy>
+
+		<!-- extension description file -->
+		<copy overwrite="true" todir="${introduce.extensions.dir}/gridgrouper_auth" file="extension/extension.xml" />
+		
+		<!-- libraries -->
+		<copy overwrite="true" todir="${introduce.extensions.dir}/lib">
+			<fileset dir="build/jars">
+				<include name="*.jar" />
+			</fileset>
+			<fileset dir="ext/dependencies/impl/jars">
+				<include name="*.jar" />
+			</fileset>
+		</copy>
+	</target>
+
+
+</project>

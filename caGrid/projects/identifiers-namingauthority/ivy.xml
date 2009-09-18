@@ -1,0 +1,43 @@
+<?xml version="1.0"?>
+
+<ivy-module version="2.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:noNamespaceSchemaLocation="http://incubator.apache.org/ivy/schemas/ivy.xsd">
+
+	<info organisation="caGrid" module="identifiers-namingauthority" revision="${project.version}">
+		<license name="caGrid" url="http://cagrid.org/wiki/CaGrid:LICENSE-1.3" />
+		<description>Identifiers Naming Authority</description>
+	</info>
+
+	<configurations>
+		<conf name="impl" visibility="private" />
+		<conf name="impl-test" visibility="private" />
+		<conf name="test" visibility="public" extends="impl-test,impl" />
+		<conf name="default" visibility="public" extends="impl" />
+	</configurations>
+
+	<publications>
+		<artifact name="caGrid-identifiers-namingauthority" conf="default" type="jar" />
+		<artifact name="caGrid-identifiers-namingauthority-tests" conf="test" type="jar" />
+	</publications>
+
+	<dependencies>
+
+		<dependency org="caGrid" name="testing" rev="latest.integration"
+         conf="impl-test->system" />
+
+		<dependency rev="4.4" org="junit" name="junit" conf="impl-test->default" />
+		<dependency rev="1.1" org="apache" name="commons-logging" conf="impl-test->default" />
+
+		<!-- External Dependencies -->
+    	<dependency rev="3.2.+" org="hibernate" name="hibernate" conf="impl->default" />
+    	<dependency rev="3.2" org="apache" name="commons-collections" conf="impl->default" />
+    	<dependency rev="2.2" org="apache" name="tomcat-servlet" conf="impl->default" />
+    	<dependency rev="6.1.18" org="jetty" name="jetty" conf="impl->default" />
+    	<dependency rev="6.1.18" org="jetty" name="jetty-util" conf="impl->default" />
+    	<dependency rev="3.0.16-ga-bin" org="mysql" name="connector-java" conf="impl->default" />
+		<dependency rev="2.5.5" org="springframework" name="spring" conf="impl->full" transitive="true" />
+
+	</dependencies>
+
+</ivy-module>

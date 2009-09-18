@@ -1,0 +1,246 @@
+<!-- ======================================================================= -->
+<!-- caGrid CQL project build file                                           -->
+<!-- ======================================================================= -->
+<project name="caGrid-CQL" default="all" basedir=".">
+	<!-- Environment -->
+	<property environment="env" />
+	<property file="${basedir}/build.properties" />
+	<property file="${basedir}/project.properties" />
+	<property file="${basedir}/cql_namespace_excludes.properties"/>
+
+	<property name="globus.dir" location="${env.GLOBUS_LOCATION}" />
+
+	<!-- build with debugging information -->
+	<property name="java.debug" value="on" />
+	<!-- enforce java 1.5 compliance at build time -->
+	<property name="java.source" value="1.5" />
+
+	<!-- Information -->
+	<property name="project.name" value="${ant.project.name}" />
+	<property name="project.jar.prefix" value="${project.name}-" />
+	<property name="project.jar.suffix" value="-${project.version}.jar" />
+
+	<!-- directory locations -->
+	<property name="ext.dir" location="${basedir}/ext" />
+	<property name="ext.test.lib.dir" location="${ext.dir}/dependencies/test/jars" />
+
+	<!-- source dirs -->
+	<property name="test.src.dir" location="${basedir}/test/src/java" />
+
+	<!-- build output dirs -->
+	<property name="build.dir" location="build" />
+	<property name="build.cql.1.0.stubs.dest" location="${build.dir}/stubs/cql1.0/classes" />
+	<property name="build.cql.2.0.stubs.dest" location="${build.dir}/stubs/cql2.0/classes" />
+	<property name="build.dcql.2.0.stubs.dest" location="${build.dir}/stibs/dcql2.0/classes"/>
+	<property name="build.test.dest" location="${build.dir}/test/classes" />
+	<property name="build.jars.dir" location="build/lib" />
+
+	<!-- jar names -->
+	<property name="cql.1.0.jar.name" value="${project.jar.prefix}cql.1.0${project.jar.suffix}" />
+	<property name="cql.2.0.jar.name" value="${project.jar.prefix}cql.2.0${project.jar.suffix}" />
+	<property name="dcql.2.0.jar.name" value="${project.jar.prefix}dcql.2.0${project.jar.suffix}" />
+	<property name="test.jar.name" value="${project.jar.prefix}tests${project.jar.suffix}" />
+
+	<!-- jar files -->
+	<property name="cql.1.0.jar.file" value="${build.jars.dir}/${cql.1.0.jar.name}" />
+	<property name="cql.2.0.jar.file" value="${build.jars.dir}/${cql.2.0.jar.name}" />
+	<property name="dcql.2.0.jar.file" value="${build.jars.dir}/${dcql.2.0.jar.name}" />
+	<property name="test.jar.file" value="${build.jars.dir}/${test.jar.name}" />
+
+	<!-- build file for stub generation -->
+	<property name="ant.build.stubs" location="${globus.dir}/share/globus_wsrf_tools/build-stubs.xml" />
+
+	<!-- schemas and namespace mappings -->
+	<property name="globus.schema.src" location="${globus.dir}/share/schema" />
+	<property name="cql.1.0.schema.dest" location="${build.dir}/schema/cql1.0" />
+	<property name="cql.2.0.schema.dest" location="${build.dir}/schema/cql2.0" />
+	<property name="dcql.2.0.schema.dest" location="${build.dir}/schema/dcql2.0" />
+	<property name="cql.1.0.stubs.src" location="${build.dir}/stubs/cql1.0/source" />
+	<property name="cql.2.0.stubs.src" location="${build.dir}/stubs/cql2.0/source" />
+	<property name="dcql.2.0.stubs.src" location="${build.dir}/stubs/dcql2.0/source" />
+	<property name="mapping.src" value="${basedir}/NStoPkg.properties" />
+
+	<import file="test/test.xml" />
+
+
+	<!-- sets up GT4 related variables -->
+	<target name="setGlobus" if="env.GLOBUS_LOCATION">
+		<!-- GT4 build files and directories-->
+		<property name="ext.globus.dir" value="${env.GLOBUS_LOCATION}" />
+		<property name="build.stubs" location="${ext.globus.dir}/share/globus_wsrf_tools/build-stubs.xml" />
+		<property name="globus.schema.src" location="${ext.globus.dir}/share/schema" />
+		<property name="build.packages" location="${ext.globus.dir}/share/globus_wsrf_common/build-packages.xml" />
+		<!-- Copied from build.stubs file, as there is no way to "append" to the value in the remote file -->
+		<property name="GT4.ns.excludes" value="-x http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-BaseFaults-1.2-draft-01.xsd -x http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-BaseFaults-1.2-draft-01.wsdl -x http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ResourceLifetime-1.2-draft-01.xsd -x http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ResourceLifetime-1.2-draft-01.wsdl -x http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ResourceProperties-1.2-draft-01.xsd -x http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ResourceProperties-1.2-draft-01.wsdl -x http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ServiceGroup-1.2-draft-01.xsd -x http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ServiceGroup-1.2-draft-01.wsdl -x http://docs.oasis-open.org/wsn/2004/06/wsn-WS-BaseNotification-1.2-draft-01.xsd -x http://docs.oasis-open.org/wsn/2004/06/wsn-WS-BaseNotification-1.2-draft-01.wsdl -x http://schemas.xmlsoap.org/ws/2004/04/trust -x http://schemas.xmlsoap.org/ws/2002/12/policy -x http://schemas.xmlsoap.org/ws/2002/07/utility -x http://schemas.xmlsoap.org/ws/2004/04/sc -x http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-secext-1.0.xsd -x http://www.w3.org/2000/09/xmldsig# -x http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd -x http://schemas.xmlsoap.org/ws/2004/09/enumeration" />
+	</target>
+
+
+	<!-- creates output directories -->
+	<target name="init">
+		<mkdir dir="${build.dir}" />
+		<mkdir dir="${build.jars.dir}" />
+		<mkdir dir="${build.cql.1.0.stubs.dest}" />
+		<mkdir dir="${build.cql.2.0.stubs.dest}" />
+		<mkdir dir="${build.dcql.2.0.stubs.dest}" />
+		<mkdir dir="${build.test.dest}" />
+		<!-- copy schemas to the output directory -->
+		<copy toDir="${cql.1.0.schema.dest}">
+			<fileset dir="schema/cql1.0" casesensitive="yes">
+				<include name="**/*.xsd" />
+				<include name="**/*.wsdl" />
+			</fileset>
+		</copy>
+		<copy toDir="${cql.2.0.schema.dest}">
+			<fileset dir="schema/cql2.0" casesensitive="yes">
+				<include name="**/*.xsd" />
+				<include name="**/*.wsdl" />
+			</fileset>
+		</copy>
+		<copy toDir="${dcql.2.0.schema.dest}">
+			<fileset dir="schema/dcql2.0" casesensitive="yes">
+				<include name="**/*.xsd" />
+				<include name="**/*.wsdl" />
+			</fileset>
+			<!-- DCQL depends on CQL, so copy those schemas in too -->
+			<fileset dir="schema/cql2.0" casesensitive="yes">
+				<include name="**/*.xsd"/>
+			</fileset>
+		</copy>
+	</target>
+
+
+	<!-- merge namespace mappings with globus -->
+	<target name="mergeNsMappings" depends="init">
+		<ant antfile="${build.stubs}" target="mergePackageMapping">
+			<property name="mapping.src" location="NStoPkg.properties" />
+			<property name="mapping.dst" location="${build.dir}/NStoPkg.properties" />
+		</ant>
+	</target>
+
+
+	<!-- generates source stubs for the schema defined types -->
+	<target name="stubs" depends="init, setGlobus, mergeNsMappings">
+		<property name="mapping.dst" value="${build.dir}/NStoPkg.properties" />
+		<ant antfile="${ant.build.stubs}" target="mergePackageMapping" />
+		<property name="mapping.file" value="${mapping.dst}" />
+		<!-- generate beans for CQL 1.0 -->
+		<ant antfile="${ant.build.stubs}" target="generateStubs">
+			<property name="source.stubs.dir" location="${cql.1.0.schema.dest}" />
+			<property name="wsdl.file" value="CQL1.0-Beans.wsdl" />
+			<property name="target.stubs.dir" location="${cql.1.0.stubs.src}" />
+		</ant>
+		<!-- generate beans for CQL 2.0 -->
+		<ant antfile="${ant.build.stubs}" target="generateStubs">
+			<property name="source.stubs.dir" location="${cql.2.0.schema.dest}" />
+			<property name="wsdl.file" value="CQL2.0-Beans.wsdl" />
+			<property name="target.stubs.dir" location="${cql.2.0.stubs.src}" />
+		</ant>
+		<!-- generate beans for DCQL 2.0 -->
+		<ant antfile="${ant.build.stubs}" target="generateStubs">
+			<property name="source.stubs.dir" location="${dcql.2.0.schema.dest}" />
+			<property name="wsdl.file" value="DCQL2.0-Beans.wsdl" />
+			<property name="target.stubs.dir" location="${dcql.2.0.stubs.src}" />
+			<property name="ns.excludes" value="${cql.2.0.namespace.excludes}" />
+		</ant>	
+	</target>
+
+
+	<!-- compiles the source stubs for the schema defined types -->
+	<target name="compileStubs" depends="stubs">
+		<javac srcdir="${cql.1.0.stubs.src}" destdir="${build.cql.1.0.stubs.dest}" debug="${java.debug}" source="${java.source}">
+			<include name="**/*.java" />
+			<classpath>
+				<fileset dir="${globus.dir}/lib">
+					<include name="*.jar" />
+                    <exclude name="junit.jar"/>
+				</fileset>
+			</classpath>
+		</javac>
+		<javac srcdir="${cql.2.0.stubs.src}" destdir="${build.cql.2.0.stubs.dest}" debug="${java.debug}" source="${java.source}">
+			<include name="**/*.java" />
+			<classpath>
+				<fileset dir="${globus.dir}/lib">
+					<include name="*.jar" />
+                    <exclude name="junit.jar"/>
+				</fileset>
+			</classpath>
+		</javac>
+		<javac srcdir="${dcql.2.0.stubs.src}" destdir="${build.dcql.2.0.stubs.dest}" debug="${java.debug}" source="${java.source}">
+			<include name="**/*.java" />
+			<classpath>
+				<fileset dir="${globus.dir}/lib">
+					<include name="*.jar" />
+	                <exclude name="junit.jar"/>
+				</fileset>
+				<pathelement location="${build.cql.2.0.stubs.dest}"/>
+			</classpath>
+		</javac>	
+	</target>
+
+
+	<!-- compiles the test classes -->
+	<target name="compileTests" depends="compileStubs">
+		<javac srcdir="${test.src.dir}" destdir="${build.test.dest}" debug="${java.debug}" source="${java.source}">
+			<include name="**/*.java" />
+			<classpath>
+				<fileset dir="${globus.dir}/lib">
+					<include name="**/*.jar" />
+                    <exclude name="junit.jar"/>
+				</fileset>
+				<fileset dir="${ext.test.lib.dir}">
+					<include name="**/*.jar" />
+				</fileset>
+				<pathelement location="${build.cql.1.0.stubs.dest}" />
+				<pathelement location="${build.cql.2.0.stubs.dest}" />
+				<pathelement location="${build.dcql.2.0.stubs.dest}" />
+			</classpath>
+		</javac>
+	</target>
+
+
+	<!-- jars the common classes -->
+	<target name="jar" depends="compileStubs, compileTests" description="Builds and jars">
+		<jar destfile="${cql.1.0.jar.file}">
+			<fileset dir="${build.cql.1.0.stubs.dest}">
+				<include name="**/*.class" />
+			</fileset>
+			<fileset dir="${cql.1.0.stubs.src}">
+				<include name="**/*.java" />
+			</fileset>
+		</jar>
+		<jar destfile="${cql.2.0.jar.file}">
+			<fileset dir="${build.cql.2.0.stubs.dest}">
+				<include name="**/*.class" />
+			</fileset>
+			<fileset dir="${cql.2.0.stubs.src}">
+				<include name="**/*.java" />
+			</fileset>
+		</jar>
+		<jar destfile="${dcql.2.0.jar.file}">
+			<fileset dir="${build.dcql.2.0.stubs.dest}">
+				<include name="**/*.class" />
+			</fileset>
+			<fileset dir="${dcql.2.0.stubs.src}">
+				<include name="**/*.java" />
+			</fileset>
+		</jar>
+		<jar destfile="${test.jar.file}">
+			<fileset dir="${build.test.dest}">
+				<include name="**/*.class" />
+			</fileset>
+			<fileset dir="${test.src.dir}">
+				<include name="**/*.java" />
+			</fileset>
+		</jar>
+	</target>
+
+
+	<!-- removes all build output -->
+	<target name="clean">
+		<delete dir="${build.dir}" />
+	</target>
+
+
+	<!-- build and jar everything -->
+	<target name="all" depends="jar" description="Builds and jars all the classes in the project" />
+</project>

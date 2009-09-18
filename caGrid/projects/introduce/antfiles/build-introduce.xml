@@ -1,0 +1,49 @@
+<project name="cagrid_introduce" basedir="." default="usage">
+	<target name="usage">
+		<echo message="Not to be called directly."/>
+	</target>
+	<!-- put stuff in here needed for building introduce-->
+	<target name="prepareIntroduce">
+		<path id="Introduce.classpath">
+			<fileset dir="${lib.dir}">
+				<include name="*.jar"/>
+			</fileset>
+			<fileset dir="${ext.lib.dir}">
+				<include name="*.jar"/>
+			</fileset>
+			<fileset dir="${ant.library.dir}">
+				<include name="*.jar"/>
+			</fileset>
+			<fileset dir="${build.lib.dir}">
+				<include name="*.jar"/>
+			</fileset>
+			<fileset dir="${ext.globus.dir}/lib">
+				<include name="*.jar"/>
+			</fileset>
+		</path>
+		<path id="Introduce.test.classpath">
+			<fileset dir="${lib.dir}">
+				<include name="*.jar"/>
+			</fileset>
+			<fileset dir="${ext.lib.dir}">
+				<include name="*.jar"/>
+			</fileset>
+			<fileset dir="${build.lib.dir}">
+				<include name="*.jar"/>
+			</fileset>
+			<fileset dir="${test.lib.dir}">
+				<include name="*.jar"/>
+			</fileset>
+			<fileset dir="${ext.test.lib.dir}">
+				<include name="*.jar"/>
+			</fileset>
+			<fileset dir="${ant.library.dir}">
+				<include name="*.jar"/>
+			</fileset>
+			<fileset dir="${ext.globus.dir}/lib">
+				<include name="*.jar"/>
+			</fileset>
+			<pathelement path="test/resources"/>
+		</path>
+	</target>
+</project>

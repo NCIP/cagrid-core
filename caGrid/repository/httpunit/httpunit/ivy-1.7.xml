@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<?xml-stylesheet type="text/xsl" href="http://ivyrep.jayasoft.org/ivy-doc.xsl"?>
+<ivy-module version="2.0">
+    <info organisation="httpunit" module="httpunit" revision="1.7" status="release">
+        <license name="httpunit" url="http://httpunit.sourceforge.net/"/>
+
+        <description homepage="http://httpunit.sourceforge.net/">Automates website testing, including form submission, JavaScript, 
+		basic http authentication, cookies and automatic page redirection, and allows Java test. 
+        </description>
+    </info>
+</ivy-module>

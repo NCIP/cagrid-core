@@ -1,0 +1,26 @@
+<?xml version="1.0"?>
+
+<ivy-module version="2.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:noNamespaceSchemaLocation="http://incubator.apache.org/ivy/schemas/ivy.xsd">
+
+	<info organisation="cacore" module="api" revision="3.1">
+		<description> The NCICB caCORE API provides programmatic interfaces to EVS, caDSR and caBIO
+			repositories.</description>
+	</info>
+
+	<configurations>
+		<!-- Public Configurations-->
+		<conf name="default" visibility="public"/>
+	</configurations>
+
+
+	<publications>
+		<artifact name="client" type="jar"/>
+	</publications>
+
+	<dependencies>
+		<dependency rev="3.0.2" org="hibernate" name="hibernate"/>
+		<dependency rev="1.2" org="springframework" name="spring" conf="*->full"/>
+		<dependency rev="2.1_3" org="cglib" name="cglib" conf="*->full"/>
+	</dependencies>
+</ivy-module>

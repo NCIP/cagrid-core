@@ -1,0 +1,268 @@
+<?xml version="1.0"?>
+<project default="all" name="caGrid-gaards-core" basedir=".">
+	<property environment="env" />
+	<property file="${basedir}/project.properties" />
+
+	<property name="project.name" value="${ant.project.name}" />
+
+	<!-- Directory where GT4 is installed -->
+	<!-- Note that the buildfile requires an environment variable GLOBUS_LOCATION
+	     pointing to that directory -->
+	<property name="globus.location" location="${env.GLOBUS_LOCATION}" />
+
+	<!-- Important directories and files -->
+	<property name="src.dir" value="src" />
+	<property name="ext.lib.dir" value="${basedir}/ext/dependencies/default/jars" />
+	<property name="test.dir" value="test" />
+	<property name="test.src.dir" value="test/src" />
+	<property name="test.lib.dir" value="test/lib" />
+	<property name="test.log.dir" value="test/logs" />
+	<property name="ext.test.lib.dir" value="${basedir}/ext/dependencies/test/jars" />
+	<property name="ext.endorsed.dir" value="${basedir}/ext/dependencies/endorsed/jars" />
+	<property name="etc.dir" value="etc" />
+
+
+	<!-- Name of the JAR files to be generated -->
+	<property name="jar.name" value="${project.name}-${project.version}.jar" />
+	<property name="test.jar.name" value="${project.name}-tests-${project.version}.jar" />
+
+
+	<!-- Auxiliary directory where all the intermediate files will be placed -->
+	<property name="build.dir" location="build" />
+	<!-- Directory for compiled service classes -->
+	<property name="build.dest" location="${build.dir}/classes" />
+	<property name="test.build.dest" location="${build.dir}/test/classes" />
+	<!-- Directory for compiled JAR files (additional library files required by
+	     the service will also be placed here) -->
+	<property name="build.lib.dir" location="${build.dir}/jars" />
+	<!-- Directory where stub source and class files are placed -->
+
+	<!-- We want detailed error messages -->
+	<property name="java.debug" value="on" />
+
+	<!-- Load test files -->
+	<import file="test/test.xml" />
+
+	<!-- Sets up the build directory structure -->
+	<target name="init">
+		<mkdir dir="${build.dir}" />
+		<mkdir dir="${build.dest}" />
+		<mkdir dir="${test.build.dest}" />
+		<mkdir dir="${build.lib.dir}" />
+		<mkdir dir="${test.log.dir}" />
+
+		<path id="base.classpath">
+			<fileset dir="${ext.lib.dir}">
+				<include name="*.jar" />
+			</fileset>
+
+			<fileset dir="${globus.location}/lib">
+				<include name="*.jar" />
+                <exclude name="junit.jar"/>
+				<exclude name="${jar.name}" />
+				<exclude name="xml-apis.jar" />
+				<exclude name="xercesImpl.jar" />
+			</fileset>
+		</path>
+
+		<path id="run.classpath">
+			<pathelement location="${build.dest}" />
+			<path refid="base.classpath" />
+		</path>
+
+		<path id="test.classpath">
+			<fileset dir="${test.lib.dir}">
+				<include name="*.jar" />
+			</fileset>
+			<fileset dir="${ext.test.lib.dir}">
+				<include name="*.jar" />
+			</fileset>
+			<path refid="base.classpath" />
+			<pathelement location="${build.dest}" />
+		</path>
+
+		<path id="test.run.classpath">
+			<pathelement location="${test.dir}/resources" />
+			<pathelement location="${test.build.dest}" />
+			<path refid="test.classpath" />
+		</path>
+	</target>
+
+
+	<!-- Compile the implementation classes (service, resource, etc.) -->
+	<target name="compile" depends="init">
+		<javac srcdir="${src.dir}" destdir="${build.dest}" debug="${java.debug}" deprecation="${deprecation}" classpathref="base.classpath" />
+		<copy toDir="${build.dest}">
+			<fileset dir="${src.dir}">
+				<include name="**/*" />
+			</fileset>
+		</copy>
+	</target>
+
+	<!-- Compile the implementation classes (service, resource, etc.) -->
+	<target name="compileTests" depends="compile">
+		<javac srcdir="${test.src.dir}" destdir="${test.build.dest}" debug="${java.debug}" deprecation="${deprecation}" classpathref="test.classpath" />
+	</target>
+
+
+	<!-- Create a JAR file with the implementation classes -->
+	<target name="jar" depends="compile">
+		<jar jarfile="${build.lib.dir}/${jar.name}" basedir="${build.dest}">
+			<include name="**/gaards/**" />
+		</jar>
+	</target>
+
+	<target name="jarTests" depends="compileTests">
+		<jar jarfile="${build.lib.dir}/${test.jar.name}" basedir="${test.build.dest}">
+			<include name="**/gaards/**" />
+		</jar>
+	</target>
+
+
+
+	<!-- Clean up all the intermediate files -->
+	<target name="clean">
+		<delete dir="tmp" />
+		<delete dir="${build.dir}" />
+	</target>
+
+
+	<!-- Default target "all" generates the GAR file -->
+	<target name="all" depends="jar,jarTests" />
+
+	<target name="generateCA" description="Generates a certificate authority." depends="init">
+		<input message="Please enter the DN for the new CA (ex. O=osu,OU=bmi,CN=Some CA):" addproperty="dn.input" />
+		<input message="Please enter the number of days the new CA will be valid for:" addproperty="days.input" />
+		<input message="Please enter a password for the new CA:" addproperty="password.input" />
+		<input message="Please enter a location to write the new CA's private key:" addproperty="key.input" />
+		<input message="Please enter a location to write the new CA's certificate:" addproperty="cert.input" />
+		<java classname="org.cagrid.gaards.pki.tools.CreateCertificateAuthority" fork="true" newenvironment="true" failonerror="true">
+			<arg value="-dn" />
+			<arg value="${dn.input}" />
+			<arg value="-lifetime" />
+			<arg value="${days.input}" />
+			<arg value="-password" />
+			<arg value="${password.input}" />
+			<arg value="-key" />
+			<arg value="${key.input}" />
+			<arg value="-cert" />
+			<arg value="${cert.input}" />
+			<classpath refid="run.classpath" />
+		</java>
+	</target>
+
+
+	<target name="generateEracomCA" description="Generates a certificate authority." depends="init">
+		<input message="Please enter an alias for the new CA (ex. gtsca):" addproperty="alias.input" />
+		<input message="Please enter the DN for the new CA (ex. O=osu,OU=bmi,CN=Some CA):" addproperty="dn.input" />
+		<input message="Please enter the number of days the new CA will be valid for:" addproperty="days.input" />
+		<input message="Please enter a slot number on the HSM to store the CA:" addproperty="slot.input" />
+		<input message="Please enter the password for the HSM:" addproperty="password.input" />
+		<input message="Please enter a directory to write the CA certificate to:" addproperty="dir.input" />
+		<java classname="org.cagrid.gaards.pki.tools.AntGenerateEracomCA" fork="true" newenvironment="true" failonerror="true">
+			<arg value="${alias.input}" />
+			<arg value="${dn.input}" />
+			<arg value="${days.input}" />
+			<arg value="${slot.input}" />
+			<arg value="${password.input}" />
+			<arg value="${dir.input}" />
+			<classpath refid="run.classpath" />
+		</java>
+	</target>
+
+	<target name="createAndSignEracomHostCertificate" description="Create and signs a host certificate." depends="init">
+		<input message="Please enter an alias for the new CA (ex. gtsca):" addproperty="alias.input" />
+		<input message="Please enter a slot number on the HSM where the CA is stored:" addproperty="slot.input" />
+		<input message="Please enter the password for the HSM:" addproperty="password.input" />
+		<input message="Please enter the Hostname [${env.HOST}]:" addproperty="hostname.input" defaultvalue="${env.HOST}" />
+		<input message="Please enter the number of days the host certificate will be valid for:" addproperty="days.input" />
+		<input message="Please enter a location to write the host key:" addproperty="hostkey.input" />
+
+		<input message="Please enter a location to write the host certificate:" addproperty="cert.input" />
+		<java classname="org.cagrid.gaards.pki.tools.AntCreateHostCertificateWithEracomCA" fork="true" newenvironment="true" failonerror="true">
+			<arg value="${alias.input}" />
+			<arg value="${slot.input}" />
+			<arg value="${password.input}" />
+			<arg value="${hostname.input}" />
+			<arg value="${days.input}" />
+			<arg value="${hostkey.input}" />
+			<arg value="${cert.input}" />
+			<classpath refid="run.classpath" />
+		</java>
+	</target>
+
+	<target name="createAndSignHostCertificate" description="Create and signs a host certificate." depends="init">
+		<input message="Please enter the location of the CA's private key:" addproperty="key.input" />
+		<input message="Please enter the CA's password:" addproperty="password.input" />
+		<input message="Please enter the location of the CA's certificate:" addproperty="ca.input" />
+		<input message="Please enter the Hostname [${env.HOST}]:" addproperty="hostname.input" defaultvalue="${env.HOST}" />
+		<input message="Please enter the number of days the host certificate will be valid for:" addproperty="days.input" />
+		<input message="Please enter a location to write the host key:" addproperty="hostkey.input" />
+
+		<input message="Please enter a location to write the host certificate:" addproperty="cert.input" />
+		<java classname="org.cagrid.gaards.pki.tools.CreateHostCertificate" fork="true" newenvironment="true" failonerror="true">
+			<arg value="-cakey" />
+			<arg value="${key.input}" />
+			<arg value="-password" />
+			<arg value="${password.input}" />
+			<arg value="-cacert" />
+			<arg value="${ca.input}" />
+			<arg value="-host" />
+			<arg value="${hostname.input}" />
+			<arg value="-lifetime" />
+			<arg value="${days.input}" />
+			<arg value="-key" />
+			<arg value="${hostkey.input}" />
+			<arg value="-cert" />
+			<arg value="${cert.input}" />
+			<classpath refid="run.classpath" />
+		</java>
+	</target>
+	
+	<target name="signCertificateRequest" description="Signs a certificate request." depends="init">
+		<input message="Please enter the location of the CA's private key:" addproperty="key.input" />
+		<input message="Please enter the CA's password:" addproperty="password.input" />
+		<input message="Please enter the location of the CA's certificate:" addproperty="ca.input" />
+		<input message="Please enter the number of days the certificate will be valid for:" addproperty="days.input" />
+		<input message="Please enter a location of the certificate request file:" addproperty="certrequest.input" />
+		<input message="Please enter a location to write the certificate:" addproperty="cert.input" />
+		<java classname="org.cagrid.gaards.pki.tools.SignCertificateRequest" fork="true" newenvironment="true" failonerror="true">
+			<arg value="-cakey" />
+			<arg value="${key.input}" />
+			<arg value="-password" />
+			<arg value="${password.input}" />
+			<arg value="-cacert" />
+			<arg value="${ca.input}" />
+			<arg value="-lifetime" />
+			<arg value="${days.input}" />
+			<arg value="-request" />
+			<arg value="${certrequest.input}" />
+			<arg value="-cert" />
+			<arg value="${cert.input}" />
+			<classpath refid="run.classpath" />
+		</java>
+	</target>
+
+
+
+	<target name="generateTrustReport" description="Generates a Grid Trust Report." depends="init">
+		<input message="Please enter a file location to write the report to [grid-trust-report.txt]:" addproperty="out.input" defaultvalue="grid-trust-report.txt" />
+		<java classname="org.cagrid.gaards.pki.tools.GenerateTrustReport" fork="true" newenvironment="true" failonerror="true">
+			<arg value="-o" />
+			<arg value="${out.input}" />
+			<classpath refid="run.classpath" />
+		</java>
+	</target>
+
+	<target name="createTomcatKeystore" description="Create a keystore." depends="init">
+		<java classname="org.cagrid.gaards.pki.tools.TomcatKeystoreCreator" fork="false" newenvironment="true" failonerror="true">
+				<classpath refid="run.classpath" />
+		</java>
+	</target>
+	
+	<target name="createTruststore" description="Create a truststore." depends="init">
+			<java classname="org.cagrid.gaards.pki.tools.TruststoreCreator" fork="false" newenvironment="true" failonerror="true">
+					<classpath refid="run.classpath" />
+			</java>
+		</target>
+</project>

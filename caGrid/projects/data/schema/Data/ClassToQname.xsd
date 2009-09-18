@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- edited with XMLSpy v2005 rel. 3 U (http://www.altova.com) by David W. Ervin (The Ohio State University / Department of Biomedical Informatics) -->
+<xsd:schema xmlns:map="http://gov.nih.nci.cagrid.data/ClassMappings" xmlns:xsd="http://www.w3.org/2001/XMLSchema" targetNamespace="http://gov.nih.nci.cagrid.data/ClassMappings" elementFormDefault="qualified" attributeFormDefault="unqualified">
+	<xsd:element name="mappings">
+		<xsd:annotation>
+			<xsd:documentation>mapping from (UML) class name to QName</xsd:documentation>
+		</xsd:annotation>
+		<xsd:complexType>
+			<xsd:sequence>
+				<xsd:element name="mapping" type="map:classToQname" minOccurs="0" maxOccurs="unbounded"/>
+			</xsd:sequence>
+		</xsd:complexType>
+	</xsd:element>
+	<xsd:complexType name="classToQname">
+		<xsd:annotation>
+			<xsd:documentation>class name and QName for it</xsd:documentation>
+		</xsd:annotation>
+		<xsd:attribute name="className" type="xsd:string" use="required"/>
+		<xsd:attribute name="qname" type="xsd:string" use="required"/>
+	</xsd:complexType>
+</xsd:schema>

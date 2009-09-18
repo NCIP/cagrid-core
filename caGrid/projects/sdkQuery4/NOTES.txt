@@ -1,0 +1,6 @@
+1) SDK 4 provides a way to hook in to the association population routines
+for returned beans, which are otherwise POJOs.  It would be nice to figure
+out how this works, then devise a way to implement the callout with CQL based
+data services and populate the association accordingly.
+
+2) (DONE) CQL2ParameterizedHQL needs to handle Date attribute values

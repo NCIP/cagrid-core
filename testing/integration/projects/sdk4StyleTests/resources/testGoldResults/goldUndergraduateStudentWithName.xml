@@ -1,0 +1,17 @@
+<ns1:CQLQueryResultCollection targetClassname="gov.nih.nci.cacoresdk.domain.inheritance.multiplechild.UndergraduateStudent" xmlns:ns1="http://CQL.caBIG/1/gov.nih.nci.cagrid.CQLResultSet">
+ <ns1:ObjectResult>
+  <ns2:UndergraduateStudent name="Student_Name1" id="1" xmlns:ns2="gme://caCORE.caCORE/4.0/gov.nih.nci.cacoresdk.domain.inheritance.multiplechild"/>
+ </ns1:ObjectResult>
+ <ns1:ObjectResult>
+  <ns3:UndergraduateStudent name="Student_Name2" id="2" xmlns:ns3="gme://caCORE.caCORE/4.0/gov.nih.nci.cacoresdk.domain.inheritance.multiplechild"/>
+ </ns1:ObjectResult>
+ <ns1:ObjectResult>
+  <ns4:UndergraduateStudent name="Student_Name3" id="3" xmlns:ns4="gme://caCORE.caCORE/4.0/gov.nih.nci.cacoresdk.domain.inheritance.multiplechild"/>
+ </ns1:ObjectResult>
+ <ns1:ObjectResult>
+  <ns5:UndergraduateStudent name="Student_Name4" id="4" xmlns:ns5="gme://caCORE.caCORE/4.0/gov.nih.nci.cacoresdk.domain.inheritance.multiplechild"/>
+ </ns1:ObjectResult>
+ <ns1:ObjectResult>
+  <ns6:UndergraduateStudent name="Student_Name5" id="5" xmlns:ns6="gme://caCORE.caCORE/4.0/gov.nih.nci.cacoresdk.domain.inheritance.multiplechild"/>
+ </ns1:ObjectResult>
+</ns1:CQLQueryResultCollection>

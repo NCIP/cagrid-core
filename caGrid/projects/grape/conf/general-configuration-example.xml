@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<GeneralConfiguration xmlns="http://www.cagrid.org/1/grape-general-configuration"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+    <name>Discovery</name>
+    <description>Configuration properties for discovering grid services.</description>
+    <properties>
+        <property>
+            <name>Index Service</name>
+            <description>The URL of the Index Service(s) used for discovering grid services.</description>
+            <values>
+                <value>http://cagrid-index.nci.nih.gov:8080/wsrf/services/DefaultIndexService</value>
+                <value>http://cagrid01.bmi.ohio-state.edu:8080/wsrf/services/DefaultIndexService</value>
+            </values>
+        </property>
+        <property>
+            <name>Special Services</name>
+            <description>The URL all the special services.</description>
+            <values>
+                <value>http://cagrid-index.nci.nih.gov:8080/wsrf/services/SpecialService</value>
+                <value>http://cagrid01.bmi.ohio-state.edu:8080/wsrf/services/SpecialService</value>
+            </values>
+        </property>
+    </properties>
+</GeneralConfiguration>

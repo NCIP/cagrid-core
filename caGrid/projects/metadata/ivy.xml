@@ -1,0 +1,44 @@
+<?xml version="1.0"?>
+
+<ivy-module version="2.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:noNamespaceSchemaLocation="http://incubator.apache.org/ivy/schemas/ivy.xsd">
+
+  <info organisation="caGrid" module="metadata" revision="${project.version}">
+    <license name="caGrid" url="http://cagrid.org/wiki/CaGrid:LICENSE-1.3"/>
+    <description>The standard caGrid metadata</description>
+  </info>
+
+  <configurations>
+    <!-- Public Configurations-->
+    <!-- Jars -->
+    <conf name="jars" visibility="public" description="All metadata jars"
+      extends="common.jars,data.jars,security.jars"/>
+    <conf name="common.jars" visibility="public" description="Only the common metadata jars"/>
+    <conf name="data.jars" visibility="public" description="Only the data metadata jars"
+      extends="common.jars"/>
+    <conf name="security.jars" visibility="public" description="Only the security metadata jars"/>
+
+    <!-- Schemas-->
+    <conf name="schemas" visibility="public" description="All metadata schemas"
+      extends="security.schemas"/>
+    <conf name="security.schemas" visibility="public"
+      description="Only the security metadata schemas"/>
+  </configurations>
+
+
+  <publications>
+    <artifact name="caGrid-metadata-common" conf="common.jars" type="jar"/>
+    <artifact name="caGrid-metadata-data" conf="data.jars" type="jar"/>
+    <artifact name="caGrid-metadata-security" conf="security.jars" type="jar"/>
+
+    <artifact name="cagrid/types/caGridMetadata" conf="schemas" type="xsd"/>
+    <artifact name="cagrid/types/common/common" conf="schemas" type="xsd"/>
+    <artifact name="cagrid/types/data/data" conf="schemas" type="xsd"/>
+    <artifact name="cagrid/types/service/servicemodel" conf="schemas" type="xsd"/>
+    <artifact name="cagrid/types/security/security" conf="security.schemas" type="xsd"/>
+
+  </publications>
+
+  <dependencies>
+  </dependencies>
+</ivy-module>

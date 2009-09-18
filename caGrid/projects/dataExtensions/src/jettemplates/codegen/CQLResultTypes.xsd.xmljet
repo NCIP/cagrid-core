@@ -1,0 +1,65 @@
+<%@ jet package="gov.nih.nci.cagrid.data.codegen.templates" class="CQLResultTypesTemplate" 
+imports="gov.nih.nci.cagrid.data.extension.ModelClass gov.nih.nci.cagrid.data.extension.ModelInformation gov.nih.nci.cagrid.data.extension.ModelPackage gov.nih.nci.cagrid.introduce.beans.namespace.NamespaceType gov.nih.nci.cagrid.introduce.beans.namespace.SchemaElementType gov.nih.nci.cagrid.introduce.beans.service.ServiceType gov.nih.nci.cagrid.introduce.common.ServiceInformation java.util.HashSet java.util.Set" %>
+<% 
+	gov.nih.nci.cagrid.data.codegen.ResultTypeGeneratorInformation info = (gov.nih.nci.cagrid.data.codegen.ResultTypeGeneratorInformation) argument;
+  	ServiceInformation serviceInfo = info.getServiceInfo();
+	ServiceType service = serviceInfo.getServices().getService(0);
+	ModelInformation modelInfo = info.getModelInformation();
+	
+%><?xml version="1.0" encoding="UTF-8"?>
+<xs:schema targetNamespace="<%=service.getNamespace()%>/CQLResultTypes" xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified">
+    
+    <!-- Exposed Objects' schemas are imported here -->
+
+<%
+		if (modelInfo != null && modelInfo.getModelPackage() != null) {
+            // get all packages in the model
+            Set<String> modelPackageNames = new HashSet<String>();
+            for (ModelPackage pack : modelInfo.getModelPackage()) {
+                modelPackageNames.add(pack.getPackageName());
+            }
+            // locate the namespace mapped to each package
+            for (NamespaceType nsType : serviceInfo.getNamespaces().getNamespace()) {
+                if (modelPackageNames.contains(nsType.getPackageName())) {
+                    // the namespace maps to a package
+                    stringBuffer.append("\t<xs:import namespace=\"" + nsType.getNamespace() 
+                        + "\" schemaLocation=\"" + nsType.getLocation() + "\"/>\n");
+                }
+			}
+		}
+	%>
+
+
+    <xs:group name="PermissibleCQLObjectResults">
+        <xs:choice>        
+        <!-- element references to exposed objects -->
+
+<%
+		if (modelInfo != null && modelInfo.getModelPackage() != null) {
+            for (ModelPackage pack : modelInfo.getModelPackage()) {
+                // locate the namespace mapped to this package
+                for (NamespaceType nsType : serviceInfo.getNamespaces().getNamespace()) {
+                    if (pack.getPackageName().equals(nsType.getPackageName())) {
+                        for (ModelClass clazz : pack.getModelClass()) {
+                            if (clazz.isTargetable()) {
+                                // find the schema element mapped to this class
+                                for (SchemaElementType element : nsType.getSchemaElement()) {
+                                    if (clazz.getShortClassName().equals(element.getClassName())) {
+                                        // match found
+                                        stringBuffer.append("\t\t<xs:element ref=\"ns0:");
+                                        stringBuffer.append(element.getType());
+                                        stringBuffer.append("\" xmlns:ns0=\"");
+                                        stringBuffer.append(nsType.getNamespace());
+                                        stringBuffer.append("\"/>\n");
+                                        break;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+		}%> 
+        </xs:choice>
+    </xs:group>
+</xs:schema>

@@ -1,0 +1,72 @@
+<ns1:CQLQueryResultCollection targetClassname="org.projectmobius.bookstore.Book" xmlns:ns1="http://CQL.caBIG/1/gov.nih.nci.cagrid.CQLResultSet">
+ <ns1:ObjectResult>
+  <ns1:Book duey="1.1" section="Section1" xmlns:ns1="gme://projectmobius.org/1/BookStore">
+   <ns1:Title>Title1</ns1:Title>
+
+   <ns1:Author xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:nil="true"/>
+
+   <ns1:pDate>1/1/1</ns1:pDate>
+
+   <ns1:ISBN>ISBN-1</ns1:ISBN>
+
+   <ns1:Publisher>Publisher1</ns1:Publisher>
+
+</ns1:Book>
+ </ns1:ObjectResult>
+ <ns1:ObjectResult>
+  <ns1:Book duey="2.2" section="Section2" xmlns:ns1="gme://projectmobius.org/1/BookStore">
+   <ns1:Title>Title2</ns1:Title>
+
+   <ns1:Author xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:nil="true"/>
+
+   <ns1:pDate>2/2/2</ns1:pDate>
+
+   <ns1:ISBN>ISBN-2</ns1:ISBN>
+
+   <ns1:Publisher>Publisher2</ns1:Publisher>
+
+</ns1:Book>
+ </ns1:ObjectResult>
+ <ns1:ObjectResult>
+  <ns1:Book duey="3.3" section="Section3" xmlns:ns1="gme://projectmobius.org/1/BookStore">
+   <ns1:Title>Title3</ns1:Title>
+
+   <ns1:Author xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:nil="true"/>
+
+   <ns1:pDate>3/3/3</ns1:pDate>
+
+   <ns1:ISBN>ISBN-3</ns1:ISBN>
+
+   <ns1:Publisher>Publisher3</ns1:Publisher>
+
+</ns1:Book>
+ </ns1:ObjectResult>
+ <ns1:ObjectResult>
+  <ns1:Book duey="4.4" section="Section4" xmlns:ns1="gme://projectmobius.org/1/BookStore">
+   <ns1:Title>Title4</ns1:Title>
+
+   <ns1:Author xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:nil="true"/>
+
+   <ns1:pDate>4/4/4</ns1:pDate>
+
+   <ns1:ISBN>ISBN-4</ns1:ISBN>
+
+   <ns1:Publisher>Publisher4</ns1:Publisher>
+
+</ns1:Book>
+ </ns1:ObjectResult>
+ <ns1:ObjectResult>
+  <ns1:Book duey="5.5" section="Section5" xmlns:ns1="gme://projectmobius.org/1/BookStore">
+   <ns1:Title>Title5</ns1:Title>
+
+   <ns1:Author xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:nil="true"/>
+
+   <ns1:pDate>5/5/5</ns1:pDate>
+
+   <ns1:ISBN>ISBN-5</ns1:ISBN>
+
+   <ns1:Publisher>Publisher5</ns1:Publisher>
+
+</ns1:Book>
+ </ns1:ObjectResult>
+</ns1:CQLQueryResultCollection>

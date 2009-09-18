@@ -1,0 +1,71 @@
+CAVEATS:
+==============================
+DCQL Foriegn Predicate values must be a subset of CQL Predicate values, as the former is used to contruct the later in the engine.
+
+
+ISSUES:
+==============================
+
+
+FUTURE WORK:
+==============================
+add properties to main service to track number of active resources?
+
+should we add query return modifiers to DCQL? (not trivial, as they have to work "in code" against aggregate results... can't be pushed to backend)
+	-- CQL 2 will support new query modifiers, so DCQL 2 can as well.  CQL 2 currently in tech preview, dcql 2 to follow
+
+add DCQL XSD validation?
+
+
+IN PROGRESS WORK:
+==============================
+(85%) add unit and system tests
+	-- would be 100% if they all passed!
+
+COMPLETED WORK:
+==============================
+(DONE) service properties to limit max retries, timeouts, target services, etc.  prevent malicious client from overwhelming the service
+	-- properties exist, hit by system testing
+	-- what are sane defaults for these values?  I picked some that I think make sense, but they probably should be reviewed
+
+(DONE) query w/ caGrid transfer of results
+	-- server side needs refinement for efficiency
+
+(DONE) query w/ ws-enumeration of results
+	-- server side needs refinement for efficiency
+
+(DONE) security with delegation!
+
+(DONE) add topic notification to query completion status
+
+(DONE) change build to create client-usable engine (outside of service)
+
+(DONE) unify FQEngine code that uses processor to reuse better
+
+(DONE) clean up result service code (errors, etc)
+
+(DONE) allow client setting of termination time of result resource (currently configured by the service, and destroyable by the client... no way to renew lease)
+
+(DONE) need resource lifetime on query results
+
+(DONE) build service to support synchronous query execution (with status RPs, etc)
+
+(DONE) should use thread pool for sending out CQL queries?
+
+(FIXED) processing of DCQL Group is broken... if it contains both nested groups and foreign assoications, the later will replace the former in the generated query
+
+(FIXED) need to aggregate results when targeting multiple services... currently only return uses last result
+  - (DONE) probably want to make a new DCQL result that contains a CQL results collection for each target service 
+
+(DONE) change inner CQL queries to use return modifiers to only return distinct join att values
+
+(FIXED) impl only works with EQUAL_TO as the join condition
+
+(DONE) impl doesn't properly handle empty foriegn association results
+  - replaces with an IS_NULL predicate
+  - needs to make an impossible predicate (IS_NULL AND IS_NOT_NULL)
+  
+(DONE - second approach for now) impl doesn't handle foreign associations with only 1 result
+  - makes a group with one element (groups require 2 or more)
+  - return either single attribute (preferred) or make redundant copy (simple but ugly/inefficient)
+ 

@@ -1,0 +1,1360 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mapping>
+  <class name="gov.nih.nci.cadsr.domain.Designation" identity="id">
+    <map-to xml="Designation" ns-uri="gme://caDSR.caDSR/4.0/gov.nih.nci.cadsr.domain" />
+    <field name="createdBy" type="string">
+      <bind-xml name="createdBy" node="attribute" />
+    </field>
+    <field name="dateCreated" type="java.util.Date">
+      <bind-xml name="dateCreated" node="attribute" />
+    </field>
+    <field name="dateModified" type="java.util.Date">
+      <bind-xml name="dateModified" node="attribute" />
+    </field>
+    <field name="id" type="string">
+      <bind-xml name="id" node="attribute" />
+    </field>
+    <field name="languageName" type="string">
+      <bind-xml name="languageName" node="attribute" />
+    </field>
+    <field name="modifiedBy" type="string">
+      <bind-xml name="modifiedBy" node="attribute" />
+    </field>
+    <field name="name" type="string">
+      <bind-xml name="name" node="attribute" />
+    </field>
+    <field name="type" type="string">
+      <bind-xml name="type" node="attribute" />
+    </field>
+  </class>
+  <class name="gov.nih.nci.cadsr.domain.ReferenceDocumentAttachment" identity="id">
+    <map-to xml="ReferenceDocumentAttachment" ns-uri="gme://caDSR.caDSR/4.0/gov.nih.nci.cadsr.domain" />
+    <field name="createdBy" type="string">
+      <bind-xml name="createdBy" node="attribute" />
+    </field>
+    <field name="dateCreated" type="java.util.Date">
+      <bind-xml name="dateCreated" node="attribute" />
+    </field>
+    <field name="dateModified" type="string">
+      <bind-xml name="dateModified" node="attribute" />
+    </field>
+    <field name="id" type="string">
+      <bind-xml name="id" node="attribute" />
+    </field>
+    <field name="mimeType" type="string">
+      <bind-xml name="mimeType" node="attribute" />
+    </field>
+    <field name="modifiedBy" type="string">
+      <bind-xml name="modifiedBy" node="attribute" />
+    </field>
+    <field name="name" type="string">
+      <bind-xml name="name" node="attribute" />
+    </field>
+    <field name="size" type="integer">
+      <bind-xml name="size" node="attribute" />
+    </field>
+  </class>
+  <class name="gov.nih.nci.cadsr.domain.DataElementConceptRelationship" identity="id">
+    <map-to xml="DataElementConceptRelationship" ns-uri="gme://caDSR.caDSR/4.0/gov.nih.nci.cadsr.domain" />
+    <field name="createdBy" type="string">
+      <bind-xml name="createdBy" node="attribute" />
+    </field>
+    <field name="dateCreated" type="java.util.Date">
+      <bind-xml name="dateCreated" node="attribute" />
+    </field>
+    <field name="dateModified" type="java.util.Date">
+      <bind-xml name="dateModified" node="attribute" />
+    </field>
+    <field name="description" type="string">
+      <bind-xml name="description" node="attribute" />
+    </field>
+    <field name="id" type="string">
+      <bind-xml name="id" node="attribute" />
+    </field>
+    <field name="modifiedBy" type="string">
+      <bind-xml name="modifiedBy" node="attribute" />
+    </field>
+    <field name="name" type="string">
+      <bind-xml name="name" node="attribute" />
+    </field>
+  </class>
+  <class name="gov.nih.nci.cadsr.domain.ConceptDerivationRule" identity="id">
+    <map-to xml="ConceptDerivationRule" ns-uri="gme://caDSR.caDSR/4.0/gov.nih.nci.cadsr.domain" />
+    <field name="createdBy" type="string">
+      <bind-xml name="createdBy" node="attribute" />
+    </field>
+    <field name="dateCreated" type="java.util.Date">
+      <bind-xml name="dateCreated" node="attribute" />
+    </field>
+    <field name="dateModified" type="java.util.Date">
+      <bind-xml name="dateModified" node="attribute" />
+    </field>
+    <field name="id" type="string">
+      <bind-xml name="id" node="attribute" />
+    </field>
+    <field name="modifiedBy" type="string">
+      <bind-xml name="modifiedBy" node="attribute" />
+    </field>
+    <field name="name" type="string">
+      <bind-xml name="name" node="attribute" />
+    </field>
+  </class>
+  <class name="gov.nih.nci.cadsr.domain.DesignationClassSchemeItem" identity="id">
+    <map-to xml="DesignationClassSchemeItem" ns-uri="gme://caDSR.caDSR/4.0/gov.nih.nci.cadsr.domain" />
+    <field name="createdBy" type="string">
+      <bind-xml name="createdBy" node="attribute" />
+    </field>
+    <field name="dateCreated" type="java.util.Date">
+      <bind-xml name="dateCreated" node="attribute" />
+    </field>
+    <field name="dateModified" type="java.util.Date">
+      <bind-xml name="dateModified" node="attribute" />
+    </field>
+    <field name="id" type="string">
+      <bind-xml name="id" node="attribute" />
+    </field>
+    <field name="modifiedBy" type="string">
+      <bind-xml name="modifiedBy" node="attribute" />
+    </field>
+  </class>
+  <class name="gov.nih.nci.cadsr.domain.DefinitionClassSchemeItem" identity="id">
+    <map-to xml="DefinitionClassSchemeItem" ns-uri="gme://caDSR.caDSR/4.0/gov.nih.nci.cadsr.domain" />
+    <field name="createdBy" type="string">
+      <bind-xml name="createdBy" node="attribute" />
+    </field>
+    <field name="dateCreated" type="java.util.Date">
+      <bind-xml name="dateCreated" node="attribute" />
+    </field>
+    <field name="dateModified" type="java.util.Date">
+      <bind-xml name="dateModified" node="attribute" />
+    </field>
+    <field name="id" type="string">
+      <bind-xml name="id" node="attribute" />
+    </field>
+    <field name="modifiedBy" type="string">
+      <bind-xml name="modifiedBy" node="attribute" />
+    </field>
+  </class>
+  <class name="gov.nih.nci.cadsr.umlproject.domain.UMLAssociationMetadata" identity="id">
+    <map-to xml="UMLAssociationMetadata" ns-uri="gme://caDSR.caDSR/4.0/gov.nih.nci.cadsr.umlproject.domain" />
+    <field name="gmeSourceXMLLocReference" type="string">
+      <bind-xml name="gmeSourceXMLLocReference" node="attribute" />
+    </field>
+    <field name="gmeTargetXMLLocReference" type="string">
+      <bind-xml name="gmeTargetXMLLocReference" node="attribute" />
+    </field>
+    <field name="id" type="string">
+      <bind-xml name="id" node="attribute" />
+    </field>
+    <field name="isBidirectional" type="boolean">
+      <bind-xml name="isBidirectional" node="attribute" />
+    </field>
+    <field name="publicID" type="long">
+      <bind-xml name="publicID" node="attribute" />
+    </field>
+    <field name="sourceHighCardinality" type="integer">
+      <bind-xml name="sourceHighCardinality" node="attribute" />
+    </field>
+    <field name="sourceLowCardinality" type="integer">
+      <bind-xml name="sourceLowCardinality" node="attribute" />
+    </field>
+    <field name="sourceRoleName" type="string">
+      <bind-xml name="sourceRoleName" node="attribute" />
+    </field>
+    <field name="targetHighCardinality" type="integer">
+      <bind-xml name="targetHighCardinality" node="attribute" />
+    </field>
+    <field name="targetLowCardinality" type="integer">
+      <bind-xml name="targetLowCardinality" node="attribute" />
+    </field>
+    <field name="targetRoleName" type="string">
+      <bind-xml name="targetRoleName" node="attribute" />
+    </field>
+    <field name="version" type="float">
+      <bind-xml name="version" node="attribute" />
+    </field>
+  </class>
+  <class name="gov.nih.nci.cadsr.domain.AdministeredComponent" identity="id">
+    <map-to xml="AdministeredComponent" ns-uri="gme://caDSR.caDSR/4.0/gov.nih.nci.cadsr.domain" />
+    <field name="beginDate" type="java.util.Date">
+      <bind-xml name="beginDate" node="attribute" />
+    </field>
+    <field name="changeNote" type="string">
+      <bind-xml name="changeNote" node="attribute" />
+    </field>
+    <field name="createdBy" type="string">
+      <bind-xml name="createdBy" node="attribute" />
+    </field>
+    <field name="dateCreated" type="java.util.Date">
+      <bind-xml name="dateCreated" node="attribute" />
+    </field>
+    <field name="dateModified" type="java.util.Date">
+      <bind-xml name="dateModified" node="attribute" />
+    </field>
+    <field name="deletedIndicator" type="string">
+      <bind-xml name="deletedIndicator" node="attribute" />
+    </field>
+    <field name="endDate" type="java.util.Date">
+      <bind-xml name="endDate" node="attribute" />
+    </field>
+    <field name="id" type="string">
+      <bind-xml name="id" node="attribute" />
+    </field>
+    <field name="latestVersionIndicator" type="string">
+      <bind-xml name="latestVersionIndicator" node="attribute" />
+    </field>
+    <field name="longName" type="string">
+      <bind-xml name="longName" node="attribute" />
+    </field>
+    <field name="modifiedBy" type="string">
+      <bind-xml name="modifiedBy" node="attribute" />
+    </field>
+    <field name="origin" type="string">
+      <bind-xml name="origin" node="attribute" />
+    </field>
+    <field name="preferredDefinition" type="string">
+      <bind-xml name="preferredDefinition" node="attribute" />
+    </field>
+    <field name="preferredName" type="string">
+      <bind-xml name="preferredName" node="attribute" />
+    </field>
+    <field name="publicID" type="long">
+      <bind-xml name="publicID" node="attribute" />
+    </field>
+    <field name="registrationStatus" type="string">
+      <bind-xml name="registrationStatus" node="attribute" />
+    </field>
+    <field name="unresolvedIssue" type="string">
+      <bind-xml name="unresolvedIssue" node="attribute" />
+    </field>
+    <field name="version" type="float">
+      <bind-xml name="version" node="attribute" />
+    </field>
+    <field name="workflowStatusDescription" type="string">
+      <bind-xml name="workflowStatusDescription" node="attribute" />
+    </field>
+    <field name="workflowStatusName" type="string">
+      <bind-xml name="workflowStatusName" node="attribute" />
+    </field>
+  </class>
+  <class name="gov.nih.nci.cadsr.domain.ConditionMessage" identity="id">
+    <map-to xml="ConditionMessage" ns-uri="gme://caDSR.caDSR/4.0/gov.nih.nci.cadsr.domain" />
+    <field name="id" type="string">
+      <bind-xml name="id" node="attribute" />
+    </field>
+    <field name="message" type="string">
+      <bind-xml name="message" node="attribute" />
+    </field>
+    <field name="messageType" type="string">
+      <bind-xml name="messageType" node="attribute" />
+    </field>
+  </class>
+  <class name="gov.nih.nci.cadsr.domain.DerivationType" identity="id">
+    <map-to xml="DerivationType" ns-uri="gme://caDSR.caDSR/4.0/gov.nih.nci.cadsr.domain" />
+    <field name="createdBy" type="string">
+      <bind-xml name="createdBy" node="attribute" />
+    </field>
+    <field name="dateCreated" type="java.util.Date">
+      <bind-xml name="dateCreated" node="attribute" />
+    </field>
+    <field name="dateModified" type="java.util.Date">
+      <bind-xml name="dateModified" node="attribute" />
+    </field>
+    <field name="description" type="string">
+      <bind-xml name="description" node="attribute" />
+    </field>
+    <field name="id" type="string">
+      <bind-xml name="id" node="attribute" />
+    </field>
+    <field name="modifiedBy" type="string">
+      <bind-xml name="modifiedBy" node="attribute" />
+    </field>
+    <field name="name" type="string">
+      <bind-xml name="name" node="attribute" />
+    </field>
+  </class>
+  <class name="gov.nih.nci.cadsr.domain.DataElementRelationship" identity="id">
+    <map-to xml="DataElementRelationship" ns-uri="gme://caDSR.caDSR/4.0/gov.nih.nci.cadsr.domain" />
+    <field name="createdBy" type="string">
+      <bind-xml name="createdBy" node="attribute" />
+    </field>
+    <field name="dateCreated" type="java.util.Date">
+      <bind-xml name="dateCreated" node="attribute" />
+    </field>
+    <field name="dateModified" type="java.util.Date">
+      <bind-xml name="dateModified" node="attribute" />
+    </field>
+    <field name="id" type="string">
+      <bind-xml name="id" node="attribute" />
+    </field>
+    <field name="modifiedBy" type="string">
+      <bind-xml name="modifiedBy" node="attribute" />
+    </field>
+    <field name="name" type="string">
+      <bind-xml name="name" node="attribute" />
+    </field>
+  </class>
+  <class name="gov.nih.nci.cadsr.domain.AdministeredComponentClassSchemeItem" identity="id">
+    <map-to xml="AdministeredComponentClassSchemeItem" ns-uri="gme://caDSR.caDSR/4.0/gov.nih.nci.cadsr.domain" />
+    <field name="createdBy" type="string">
+      <bind-xml name="createdBy" node="attribute" />
+    </field>
+    <field name="dateCreated" type="java.util.Date">
+      <bind-xml name="dateCreated" node="attribute" />
+    </field>
+    <field name="dateModified" type="java.util.Date">
+      <bind-xml name="dateModified" node="attribute" />
+    </field>
+    <field name="id" type="string">
+      <bind-xml name="id" node="attribute" />
+    </field>
+    <field name="modifiedBy" type="string">
+      <bind-xml name="modifiedBy" node="attribute" />
+    </field>
+  </class>
+  <class name="gov.nih.nci.cadsr.domain.Organization" identity="id">
+    <map-to xml="Organization" ns-uri="gme://caDSR.caDSR/4.0/gov.nih.nci.cadsr.domain" />
+    <field name="createdBy" type="string">
+      <bind-xml name="createdBy" node="attribute" />
+    </field>
+    <field name="dateCreated" type="java.util.Date">
+      <bind-xml name="dateCreated" node="attribute" />
+    </field>
+    <field name="dateModified" type="java.util.Date">
+      <bind-xml name="dateModified" node="attribute" />
+    </field>
+    <field name="id" type="string">
+      <bind-xml name="id" node="attribute" />
+    </field>
+    <field name="modifiedBy" type="string">
+      <bind-xml name="modifiedBy" node="attribute" />
+    </field>
+    <field name="name" type="string">
+      <bind-xml name="name" node="attribute" />
+    </field>
+    <field name="rai" type="string">
+      <bind-xml name="rai" node="attribute" />
+    </field>
+  </class>
+  <class name="gov.nih.nci.cadsr.domain.ValueDomainRelationship" identity="id">
+    <map-to xml="ValueDomainRelationship" ns-uri="gme://caDSR.caDSR/4.0/gov.nih.nci.cadsr.domain" />
+    <field name="createdBy" type="string">
+      <bind-xml name="createdBy" node="attribute" />
+    </field>
+    <field name="dateCreated" type="java.util.Date">
+      <bind-xml name="dateCreated" node="attribute" />
+    </field>
+    <field name="dateModified" type="java.util.Date">
+      <bind-xml name="dateModified" node="attribute" />
+    </field>
+    <field name="id" type="string">
+      <bind-xml name="id" node="attribute" />
+    </field>
+    <field name="modifiedBy" type="string">
+      <bind-xml name="modifiedBy" node="attribute" />
+    </field>
+    <field name="name" type="string">
+      <bind-xml name="name" node="attribute" />
+    </field>
+  </class>
+  <class name="gov.nih.nci.cadsr.domain.TriggerAction" identity="id">
+    <map-to xml="TriggerAction" ns-uri="gme://caDSR.caDSR/4.0/gov.nih.nci.cadsr.domain" />
+    <field name="action" type="string">
+      <bind-xml name="action" node="attribute" />
+    </field>
+    <field name="createdBy" type="string">
+      <bind-xml name="createdBy" node="attribute" />
+    </field>
+    <field name="criterionValue" type="string">
+      <bind-xml name="criterionValue" node="attribute" />
+    </field>
+    <field name="dateCreated" type="java.util.Date">
+      <bind-xml name="dateCreated" node="attribute" />
+    </field>
+    <field name="dateModified" type="java.util.Date">
+      <bind-xml name="dateModified" node="attribute" />
+    </field>
+    <field name="forcedValue" type="string">
+      <bind-xml name="forcedValue" node="attribute" />
+    </field>
+    <field name="id" type="string">
+      <bind-xml name="id" node="attribute" />
+    </field>
+    <field name="instruction" type="string">
+      <bind-xml name="instruction" node="attribute" />
+    </field>
+    <field name="modifiedBy" type="string">
+      <bind-xml name="modifiedBy" node="attribute" />
+    </field>
+    <field name="triggerRelationship" type="string">
+      <bind-xml name="triggerRelationship" node="attribute" />
+    </field>
+  </class>
+  <class name="gov.nih.nci.cadsr.domain.Address" identity="id">
+    <map-to xml="Address" ns-uri="gme://caDSR.caDSR/4.0/gov.nih.nci.cadsr.domain" />
+    <field name="addressLine1" type="string">
+      <bind-xml name="addressLine1" node="attribute" />
+    </field>
+    <field name="addressLine2" type="string">
+      <bind-xml name="addressLine2" node="attribute" />
+    </field>
+    <field name="city" type="string">
+      <bind-xml name="city" node="attribute" />
+    </field>
+    <field name="country" type="string">
+      <bind-xml name="country" node="attribute" />
+    </field>
+    <field name="createdBy" type="string">
+      <bind-xml name="createdBy" node="attribute" />
+    </field>
+    <field name="dateCreated" type="java.util.Date">
+      <bind-xml name="dateCreated" node="attribute" />
+    </field>
+    <field name="dateModified" type="java.util.Date">
+      <bind-xml name="dateModified" node="attribute" />
+    </field>
+    <field name="id" type="string">
+      <bind-xml name="id" node="attribute" />
+    </field>
+    <field name="modifiedBy" type="string">
+      <bind-xml name="modifiedBy" node="attribute" />
+    </field>
+    <field name="postalCode" type="string">
+      <bind-xml name="postalCode" node="attribute" />
+    </field>
+    <field name="rank" type="integer">
+      <bind-xml name="rank" node="attribute" />
+    </field>
+    <field name="state" type="string">
+      <bind-xml name="state" node="attribute" />
+    </field>
+    <field name="type" type="string">
+      <bind-xml name="type" node="attribute" />
+    </field>
+  </class>
+  <class name="gov.nih.nci.cadsr.domain.ClassificationSchemeItemRelationship" identity="id">
+    <map-to xml="ClassificationSchemeItemRelationship" ns-uri="gme://caDSR.caDSR/4.0/gov.nih.nci.cadsr.domain" />
+    <field name="createdBy" type="string">
+      <bind-xml name="createdBy" node="attribute" />
+    </field>
+    <field name="dateCreated" type="java.util.Date">
+      <bind-xml name="dateCreated" node="attribute" />
+    </field>
+    <field name="dateModified" type="java.util.Date">
+      <bind-xml name="dateModified" node="attribute" />
+    </field>
+    <field name="id" type="string">
+      <bind-xml name="id" node="attribute" />
+    </field>
+    <field name="modifiedBy" type="string">
+      <bind-xml name="modifiedBy" node="attribute" />
+    </field>
+    <field name="name" type="string">
+      <bind-xml name="name" node="attribute" />
+    </field>
+  </class>
+  <class name="gov.nih.nci.cadsr.domain.Registration" identity="id">
+    <map-to xml="Registration" ns-uri="gme://caDSR.caDSR/4.0/gov.nih.nci.cadsr.domain" />
+    <field name="beginDate" type="java.util.Date">
+      <bind-xml name="beginDate" node="attribute" />
+    </field>
+    <field name="createdBy" type="string">
+      <bind-xml name="createdBy" node="attribute" />
+    </field>
+    <field name="dataIdentifier" type="string">
+      <bind-xml name="dataIdentifier" node="attribute" />
+    </field>
+    <field name="dateCreated" type="java.util.Date">
+      <bind-xml name="dateCreated" node="attribute" />
+    </field>
+    <field name="dateModified" type="java.util.Date">
+      <bind-xml name="dateModified" node="attribute" />
+    </field>
+    <field name="endDate" type="java.util.Date">
+      <bind-xml name="endDate" node="attribute" />
+    </field>
+    <field name="id" type="string">
+      <bind-xml name="id" node="attribute" />
+    </field>
+    <field name="IRDI" type="string">
+      <bind-xml name="IRDI" node="attribute" />
+    </field>
+    <field name="lastChange" type="string">
+      <bind-xml name="lastChange" node="attribute" />
+    </field>
+    <field name="modifiedBy" type="string">
+      <bind-xml name="modifiedBy" node="attribute" />
+    </field>
+    <field name="origin" type="string">
+      <bind-xml name="origin" node="attribute" />
+    </field>
+    <field name="registrationStatus" type="string">
+      <bind-xml name="registrationStatus" node="attribute" />
+    </field>
+    <field name="unresolvedIssue" type="string">
+      <bind-xml name="unresolvedIssue" node="attribute" />
+    </field>
+    <field name="versionIdentifier" type="string">
+      <bind-xml name="versionIdentifier" node="attribute" />
+    </field>
+  </class>
+  <class name="gov.nih.nci.cadsr.domain.ClassSchemeClassSchemeItem" identity="id">
+    <map-to xml="ClassSchemeClassSchemeItem" ns-uri="gme://caDSR.caDSR/4.0/gov.nih.nci.cadsr.domain" />
+    <field name="createdBy" type="string">
+      <bind-xml name="createdBy" node="attribute" />
+    </field>
+    <field name="dateCreated" type="java.util.Date">
+      <bind-xml name="dateCreated" node="attribute" />
+    </field>
+    <field name="dateModified" type="java.util.Date">
+      <bind-xml name="dateModified" node="attribute" />
+    </field>
+    <field name="displayOrder" type="integer">
+      <bind-xml name="displayOrder" node="attribute" />
+    </field>
+    <field name="id" type="string">
+      <bind-xml name="id" node="attribute" />
+    </field>
+    <field name="modifiedBy" type="string">
+      <bind-xml name="modifiedBy" node="attribute" />
+    </field>
+  </class>
+  <class name="gov.nih.nci.cadsr.domain.Function" identity="id">
+    <map-to xml="Function" ns-uri="gme://caDSR.caDSR/4.0/gov.nih.nci.cadsr.domain" />
+    <field name="createdBy" type="string">
+      <bind-xml name="createdBy" node="attribute" />
+    </field>
+    <field name="dateCreated" type="java.util.Date">
+      <bind-xml name="dateCreated" node="attribute" />
+    </field>
+    <field name="dateModified" type="java.util.Date">
+      <bind-xml name="dateModified" node="attribute" />
+    </field>
+    <field name="id" type="string">
+      <bind-xml name="id" node="attribute" />
+    </field>
+    <field name="modifiedBy" type="string">
+      <bind-xml name="modifiedBy" node="attribute" />
+    </field>
+    <field name="name" type="string">
+      <bind-xml name="name" node="attribute" />
+    </field>
+    <field name="symbol" type="string">
+      <bind-xml name="symbol" node="attribute" />
+    </field>
+  </class>
+  <class name="gov.nih.nci.cadsr.domain.ReferenceDocument" identity="id">
+    <map-to xml="ReferenceDocument" ns-uri="gme://caDSR.caDSR/4.0/gov.nih.nci.cadsr.domain" />
+    <field name="createdBy" type="string">
+      <bind-xml name="createdBy" node="attribute" />
+    </field>
+    <field name="dateCreated" type="java.util.Date">
+      <bind-xml name="dateCreated" node="attribute" />
+    </field>
+    <field name="dateModified" type="java.util.Date">
+      <bind-xml name="dateModified" node="attribute" />
+    </field>
+    <field name="displayOrder" type="long">
+      <bind-xml name="displayOrder" node="attribute" />
+    </field>
+    <field name="doctext" type="string">
+      <bind-xml name="doctext" node="attribute" />
+    </field>
+    <field name="id" type="string">
+      <bind-xml name="id" node="attribute" />
+    </field>
+    <field name="languageName" type="string">
+      <bind-xml name="languageName" node="attribute" />
+    </field>
+    <field name="modifiedBy" type="string">
+      <bind-xml name="modifiedBy" node="attribute" />
+    </field>
+    <field name="name" type="string">
+      <bind-xml name="name" node="attribute" />
+    </field>
+    <field name="organizationId" type="string">
+      <bind-xml name="organizationId" node="attribute" />
+    </field>
+    <field name="rdtlName" type="string">
+      <bind-xml name="rdtlName" node="attribute" />
+    </field>
+    <field name="type" type="string">
+      <bind-xml name="type" node="attribute" />
+    </field>
+    <field name="URL" type="string">
+      <bind-xml name="URL" node="attribute" />
+    </field>
+  </class>
+  <class name="gov.nih.nci.cadsr.umlproject.domain.UMLAttributeMetadata" identity="id">
+    <map-to xml="UMLAttributeMetadata" ns-uri="gme://caDSR.caDSR/4.0/gov.nih.nci.cadsr.umlproject.domain" />
+    <field name="description" type="string">
+      <bind-xml name="description" node="attribute" />
+    </field>
+    <field name="fullyQualifiedName" type="string">
+      <bind-xml name="fullyQualifiedName" node="attribute" />
+    </field>
+    <field name="gmeXMLLocReference" type="string">
+      <bind-xml name="gmeXMLLocReference" node="attribute" />
+    </field>
+    <field name="id" type="string">
+      <bind-xml name="id" node="attribute" />
+    </field>
+    <field name="name" type="string">
+      <bind-xml name="name" node="attribute" />
+    </field>
+    <field name="publicID" type="long">
+      <bind-xml name="publicID" node="attribute" />
+    </field>
+    <field name="version" type="float">
+      <bind-xml name="version" node="attribute" />
+    </field>
+  </class>
+  <class name="gov.nih.nci.cadsr.domain.Context" identity="id">
+    <map-to xml="Context" ns-uri="gme://caDSR.caDSR/4.0/gov.nih.nci.cadsr.domain" />
+    <field name="createdBy" type="string">
+      <bind-xml name="createdBy" node="attribute" />
+    </field>
+    <field name="dateCreated" type="java.util.Date">
+      <bind-xml name="dateCreated" node="attribute" />
+    </field>
+    <field name="dateModified" type="java.util.Date">
+      <bind-xml name="dateModified" node="attribute" />
+    </field>
+    <field name="description" type="string">
+      <bind-xml name="description" node="attribute" />
+    </field>
+    <field name="id" type="string">
+      <bind-xml name="id" node="attribute" />
+    </field>
+    <field name="languageName" type="string">
+      <bind-xml name="languageName" node="attribute" />
+    </field>
+    <field name="modifiedBy" type="string">
+      <bind-xml name="modifiedBy" node="attribute" />
+    </field>
+    <field name="name" type="string">
+      <bind-xml name="name" node="attribute" />
+    </field>
+    <field name="version" type="float">
+      <bind-xml name="version" node="attribute" />
+    </field>
+  </class>
+  <class name="gov.nih.nci.cadsr.domain.ComponentLevel" identity="id">
+    <map-to xml="ComponentLevel" ns-uri="gme://caDSR.caDSR/4.0/gov.nih.nci.cadsr.domain" />
+    <field name="concatenationString" type="string">
+      <bind-xml name="concatenationString" node="attribute" />
+    </field>
+    <field name="id" type="string">
+      <bind-xml name="id" node="attribute" />
+    </field>
+    <field name="level" type="integer">
+      <bind-xml name="level" node="attribute" />
+    </field>
+  </class>
+  <class name="gov.nih.nci.cadsr.umlproject.domain.SubProject" identity="id">
+    <map-to xml="SubProject" ns-uri="gme://caDSR.caDSR/4.0/gov.nih.nci.cadsr.umlproject.domain" />
+    <field name="description" type="string">
+      <bind-xml name="description" node="attribute" />
+    </field>
+    <field name="id" type="string">
+      <bind-xml name="id" node="attribute" />
+    </field>
+    <field name="name" type="string">
+      <bind-xml name="name" node="attribute" />
+    </field>
+    <field name="publicID" type="long">
+      <bind-xml name="publicID" node="attribute" />
+    </field>
+    <field name="version" type="float">
+      <bind-xml name="version" node="attribute" />
+    </field>
+  </class>
+  <class name="gov.nih.nci.cadsr.domain.ContactCommunication" identity="id">
+    <map-to xml="ContactCommunication" ns-uri="gme://caDSR.caDSR/4.0/gov.nih.nci.cadsr.domain" />
+    <field name="createdBy" type="string">
+      <bind-xml name="createdBy" node="attribute" />
+    </field>
+    <field name="dateCreated" type="java.util.Date">
+      <bind-xml name="dateCreated" node="attribute" />
+    </field>
+    <field name="dateModified" type="java.util.Date">
+      <bind-xml name="dateModified" node="attribute" />
+    </field>
+    <field name="id" type="string">
+      <bind-xml name="id" node="attribute" />
+    </field>
+    <field name="modifiedBy" type="string">
+      <bind-xml name="modifiedBy" node="attribute" />
+    </field>
+    <field name="rank" type="integer">
+      <bind-xml name="rank" node="attribute" />
+    </field>
+    <field name="type" type="string">
+      <bind-xml name="type" node="attribute" />
+    </field>
+    <field name="value" type="string">
+      <bind-xml name="value" node="attribute" />
+    </field>
+  </class>
+  <class name="gov.nih.nci.cadsr.domain.Definition" identity="id">
+    <map-to xml="Definition" ns-uri="gme://caDSR.caDSR/4.0/gov.nih.nci.cadsr.domain" />
+    <field name="createdBy" type="string">
+      <bind-xml name="createdBy" node="attribute" />
+    </field>
+    <field name="dateCreated" type="java.util.Date">
+      <bind-xml name="dateCreated" node="attribute" />
+    </field>
+    <field name="dateModified" type="java.util.Date">
+      <bind-xml name="dateModified" node="attribute" />
+    </field>
+    <field name="id" type="string">
+      <bind-xml name="id" node="attribute" />
+    </field>
+    <field name="languageName" type="string">
+      <bind-xml name="languageName" node="attribute" />
+    </field>
+    <field name="modifiedBy" type="string">
+      <bind-xml name="modifiedBy" node="attribute" />
+    </field>
+    <field name="text" type="string">
+      <bind-xml name="text" node="attribute" />
+    </field>
+    <field name="type" type="string">
+      <bind-xml name="type" node="attribute" />
+    </field>
+  </class>
+  <class name="gov.nih.nci.cadsr.umlproject.domain.UMLGeneralizationMetadata" identity="id">
+    <map-to xml="UMLGeneralizationMetadata" ns-uri="gme://caDSR.caDSR/4.0/gov.nih.nci.cadsr.umlproject.domain" />
+    <field name="id" type="string">
+      <bind-xml name="id" node="attribute" />
+    </field>
+    <field name="publicID" type="long">
+      <bind-xml name="publicID" node="attribute" />
+    </field>
+    <field name="version" type="long">
+      <bind-xml name="version" node="attribute" />
+    </field>
+  </class>
+  <class name="gov.nih.nci.cadsr.domain.ComponentConcept" identity="id">
+    <map-to xml="ComponentConcept" ns-uri="gme://caDSR.caDSR/4.0/gov.nih.nci.cadsr.domain" />
+    <field name="displayOrder" type="integer">
+      <bind-xml name="displayOrder" node="attribute" />
+    </field>
+    <field name="id" type="string">
+      <bind-xml name="id" node="attribute" />
+    </field>
+    <field name="primaryFlag" type="string">
+      <bind-xml name="primaryFlag" node="attribute" />
+    </field>
+    <field name="value" type="string">
+      <bind-xml name="value" node="attribute" />
+    </field>
+  </class>
+  <class name="gov.nih.nci.cadsr.domain.QuestionCondition" identity="id">
+    <map-to xml="QuestionCondition" ns-uri="gme://caDSR.caDSR/4.0/gov.nih.nci.cadsr.domain" />
+    <field name="id" type="string">
+      <bind-xml name="id" node="attribute" />
+    </field>
+  </class>
+  <class name="gov.nih.nci.cadsr.domain.ValueDomainPermissibleValue" identity="id">
+    <map-to xml="ValueDomainPermissibleValue" ns-uri="gme://caDSR.caDSR/4.0/gov.nih.nci.cadsr.domain" />
+    <field name="beginDate" type="java.util.Date">
+      <bind-xml name="beginDate" node="attribute" />
+    </field>
+    <field name="createdBy" type="string">
+      <bind-xml name="createdBy" node="attribute" />
+    </field>
+    <field name="dateCreated" type="java.util.Date">
+      <bind-xml name="dateCreated" node="attribute" />
+    </field>
+    <field name="dateModified" type="java.util.Date">
+      <bind-xml name="dateModified" node="attribute" />
+    </field>
+    <field name="endDate" type="java.util.Date">
+      <bind-xml name="endDate" node="attribute" />
+    </field>
+    <field name="id" type="string">
+      <bind-xml name="id" node="attribute" />
+    </field>
+    <field name="modifiedBy" type="string">
+      <bind-xml name="modifiedBy" node="attribute" />
+    </field>
+    <field name="origin" type="string">
+      <bind-xml name="origin" node="attribute" />
+    </field>
+  </class>
+  <class name="gov.nih.nci.cadsr.umlproject.domain.UMLClassMetadata" identity="id">
+    <map-to xml="UMLClassMetadata" ns-uri="gme://caDSR.caDSR/4.0/gov.nih.nci.cadsr.umlproject.domain" />
+    <field name="description" type="string">
+      <bind-xml name="description" node="attribute" />
+    </field>
+    <field name="fullyQualifiedName" type="string">
+      <bind-xml name="fullyQualifiedName" node="attribute" />
+    </field>
+    <field name="gmeNamespace" type="string">
+      <bind-xml name="gmeNamespace" node="attribute" />
+    </field>
+    <field name="gmeXMLElement" type="string">
+      <bind-xml name="gmeXMLElement" node="attribute" />
+    </field>
+    <field name="id" type="string">
+      <bind-xml name="id" node="attribute" />
+    </field>
+    <field name="name" type="string">
+      <bind-xml name="name" node="attribute" />
+    </field>
+    <field name="publicID" type="long">
+      <bind-xml name="publicID" node="attribute" />
+    </field>
+    <field name="version" type="float">
+      <bind-xml name="version" node="attribute" />
+    </field>
+  </class>
+  <class name="gov.nih.nci.cadsr.umlproject.domain.SemanticMetadata" identity="id">
+    <map-to xml="SemanticMetadata" ns-uri="gme://caDSR.caDSR/4.0/gov.nih.nci.cadsr.umlproject.domain" />
+    <field name="conceptCode" type="string">
+      <bind-xml name="conceptCode" node="attribute" />
+    </field>
+    <field name="conceptDefinition" type="string">
+      <bind-xml name="conceptDefinition" node="attribute" />
+    </field>
+    <field name="conceptName" type="string">
+      <bind-xml name="conceptName" node="attribute" />
+    </field>
+    <field name="id" type="string">
+      <bind-xml name="id" node="attribute" />
+    </field>
+    <field name="isPrimaryConcept" type="boolean">
+      <bind-xml name="isPrimaryConcept" node="attribute" />
+    </field>
+    <field name="order" type="integer">
+      <bind-xml name="order" node="attribute" />
+    </field>
+    <field name="orderLevel" type="integer">
+      <bind-xml name="orderLevel" node="attribute" />
+    </field>
+    <field name="publicID" type="long">
+      <bind-xml name="publicID" node="attribute" />
+    </field>
+    <field name="version" type="float">
+      <bind-xml name="version" node="attribute" />
+    </field>
+  </class>
+  <class name="gov.nih.nci.cadsr.domain.Person" identity="id">
+    <map-to xml="Person" ns-uri="gme://caDSR.caDSR/4.0/gov.nih.nci.cadsr.domain" />
+    <field name="createdBy" type="string">
+      <bind-xml name="createdBy" node="attribute" />
+    </field>
+    <field name="dateCreated" type="java.util.Date">
+      <bind-xml name="dateCreated" node="attribute" />
+    </field>
+    <field name="dateModified" type="java.util.Date">
+      <bind-xml name="dateModified" node="attribute" />
+    </field>
+    <field name="firstName" type="string">
+      <bind-xml name="firstName" node="attribute" />
+    </field>
+    <field name="id" type="string">
+      <bind-xml name="id" node="attribute" />
+    </field>
+    <field name="lastName" type="string">
+      <bind-xml name="lastName" node="attribute" />
+    </field>
+    <field name="middleInitial" type="string">
+      <bind-xml name="middleInitial" node="attribute" />
+    </field>
+    <field name="modifiedBy" type="string">
+      <bind-xml name="modifiedBy" node="attribute" />
+    </field>
+    <field name="position" type="string">
+      <bind-xml name="position" node="attribute" />
+    </field>
+    <field name="rank" type="integer">
+      <bind-xml name="rank" node="attribute" />
+    </field>
+  </class>
+  <class name="gov.nih.nci.cadsr.domain.PermissibleValue" identity="id">
+    <map-to xml="PermissibleValue" ns-uri="gme://caDSR.caDSR/4.0/gov.nih.nci.cadsr.domain" />
+    <field name="createdBy" type="string">
+      <bind-xml name="createdBy" node="attribute" />
+    </field>
+    <field name="dateCreated" type="java.util.Date">
+      <bind-xml name="dateCreated" node="attribute" />
+    </field>
+    <field name="dateModified" type="java.util.Date">
+      <bind-xml name="dateModified" node="attribute" />
+    </field>
+    <field name="highValueNumber" type="long">
+      <bind-xml name="highValueNumber" node="attribute" />
+    </field>
+    <field name="id" type="string">
+      <bind-xml name="id" node="attribute" />
+    </field>
+    <field name="lowValueNumber" type="long">
+      <bind-xml name="lowValueNumber" node="attribute" />
+    </field>
+    <field name="modifiedBy" type="string">
+      <bind-xml name="modifiedBy" node="attribute" />
+    </field>
+    <field name="value" type="string">
+      <bind-xml name="value" node="attribute" />
+    </field>
+  </class>
+  <class name="gov.nih.nci.cadsr.umlproject.domain.UMLPackageMetadata" identity="id">
+    <map-to xml="UMLPackageMetadata" ns-uri="gme://caDSR.caDSR/4.0/gov.nih.nci.cadsr.umlproject.domain" />
+    <field name="description" type="string">
+      <bind-xml name="description" node="attribute" />
+    </field>
+    <field name="gmeNamespace" type="string">
+      <bind-xml name="gmeNamespace" node="attribute" />
+    </field>
+    <field name="id" type="string">
+      <bind-xml name="id" node="attribute" />
+    </field>
+    <field name="name" type="string">
+      <bind-xml name="name" node="attribute" />
+    </field>
+    <field name="packageType" type="string">
+      <bind-xml name="packageType" node="attribute" />
+    </field>
+    <field name="publicID" type="long">
+      <bind-xml name="publicID" node="attribute" />
+    </field>
+    <field name="version" type="float">
+      <bind-xml name="version" node="attribute" />
+    </field>
+  </class>
+  <class name="gov.nih.nci.cadsr.domain.DerivedDataElement" identity="id">
+    <map-to xml="DerivedDataElement" ns-uri="gme://caDSR.caDSR/4.0/gov.nih.nci.cadsr.domain" />
+    <field name="concatenationCharacter" type="string">
+      <bind-xml name="concatenationCharacter" node="attribute" />
+    </field>
+    <field name="createdBy" type="string">
+      <bind-xml name="createdBy" node="attribute" />
+    </field>
+    <field name="dateCreated" type="java.util.Date">
+      <bind-xml name="dateCreated" node="attribute" />
+    </field>
+    <field name="dateModified" type="java.util.Date">
+      <bind-xml name="dateModified" node="attribute" />
+    </field>
+    <field name="id" type="string">
+      <bind-xml name="id" node="attribute" />
+    </field>
+    <field name="methods" type="string">
+      <bind-xml name="methods" node="attribute" />
+    </field>
+    <field name="modifiedBy" type="string">
+      <bind-xml name="modifiedBy" node="attribute" />
+    </field>
+    <field name="rule" type="string">
+      <bind-xml name="rule" node="attribute" />
+    </field>
+  </class>
+  <class name="gov.nih.nci.cadsr.domain.DataElementDerivation" identity="id">
+    <map-to xml="DataElementDerivation" ns-uri="gme://caDSR.caDSR/4.0/gov.nih.nci.cadsr.domain" />
+    <field name="createdBy" type="string">
+      <bind-xml name="createdBy" node="attribute" />
+    </field>
+    <field name="dateCreated" type="java.util.Date">
+      <bind-xml name="dateCreated" node="attribute" />
+    </field>
+    <field name="dateModified" type="java.util.Date">
+      <bind-xml name="dateModified" node="attribute" />
+    </field>
+    <field name="displayOrder" type="integer">
+      <bind-xml name="displayOrder" node="attribute" />
+    </field>
+    <field name="id" type="string">
+      <bind-xml name="id" node="attribute" />
+    </field>
+    <field name="leadingCharacters" type="string">
+      <bind-xml name="leadingCharacters" node="attribute" />
+    </field>
+    <field name="modifiedBy" type="string">
+      <bind-xml name="modifiedBy" node="attribute" />
+    </field>
+    <field name="trailingCharacters" type="string">
+      <bind-xml name="trailingCharacters" node="attribute" />
+    </field>
+  </class>
+  <class name="gov.nih.nci.cadsr.domain.AdministeredComponentContact" identity="id">
+    <map-to xml="AdministeredComponentContact" ns-uri="gme://caDSR.caDSR/4.0/gov.nih.nci.cadsr.domain" />
+    <field name="contactRole" type="string">
+      <bind-xml name="contactRole" node="attribute" />
+    </field>
+    <field name="createdBy" type="string">
+      <bind-xml name="createdBy" node="attribute" />
+    </field>
+    <field name="dateCreated" type="java.util.Date">
+      <bind-xml name="dateCreated" node="attribute" />
+    </field>
+    <field name="dateModified" type="java.util.Date">
+      <bind-xml name="dateModified" node="attribute" />
+    </field>
+    <field name="id" type="string">
+      <bind-xml name="id" node="attribute" />
+    </field>
+    <field name="modifiedBy" type="string">
+      <bind-xml name="modifiedBy" node="attribute" />
+    </field>
+    <field name="rank" type="integer">
+      <bind-xml name="rank" node="attribute" />
+    </field>
+  </class>
+  <class name="gov.nih.nci.cadsr.umlproject.domain.Project" identity="id">
+    <map-to xml="Project" ns-uri="gme://caDSR.caDSR/4.0/gov.nih.nci.cadsr.umlproject.domain" />
+    <field name="description" type="string">
+      <bind-xml name="description" node="attribute" />
+    </field>
+    <field name="gmeNamespace" type="string">
+      <bind-xml name="gmeNamespace" node="attribute" />
+    </field>
+    <field name="id" type="string">
+      <bind-xml name="id" node="attribute" />
+    </field>
+    <field name="longName" type="string">
+      <bind-xml name="longName" node="attribute" />
+    </field>
+    <field name="publicID" type="long">
+      <bind-xml name="publicID" node="attribute" />
+    </field>
+    <field name="shortName" type="string">
+      <bind-xml name="shortName" node="attribute" />
+    </field>
+    <field name="version" type="string">
+      <bind-xml name="version" node="attribute" />
+    </field>
+  </class>
+  <class name="gov.nih.nci.cadsr.domain.QuestionConditionComponents" identity="id">
+    <map-to xml="QuestionConditionComponents" ns-uri="gme://caDSR.caDSR/4.0/gov.nih.nci.cadsr.domain" />
+    <field name="constantValue" type="string">
+      <bind-xml name="constantValue" node="attribute" />
+    </field>
+    <field name="displayOrder" type="integer">
+      <bind-xml name="displayOrder" node="attribute" />
+    </field>
+    <field name="id" type="string">
+      <bind-xml name="id" node="attribute" />
+    </field>
+    <field name="logicalOperand" type="string">
+      <bind-xml name="logicalOperand" node="attribute" />
+    </field>
+    <field name="operand" type="string">
+      <bind-xml name="operand" node="attribute" />
+    </field>
+  </class>
+  <class name="gov.nih.nci.cadsr.umlproject.domain.TypeEnumerationMetadata" identity="id">
+    <map-to xml="TypeEnumerationMetadata" ns-uri="gme://caDSR.caDSR/4.0/gov.nih.nci.cadsr.umlproject.domain" />
+    <field name="id" type="string">
+      <bind-xml name="id" node="attribute" />
+    </field>
+    <field name="permissibleValue" type="string">
+      <bind-xml name="permissibleValue" node="attribute" />
+    </field>
+    <field name="publicID" type="long">
+      <bind-xml name="publicID" node="attribute" />
+    </field>
+    <field name="valueMeaning" type="string">
+      <bind-xml name="valueMeaning" node="attribute" />
+    </field>
+    <field name="version" type="float">
+      <bind-xml name="version" node="attribute" />
+    </field>
+  </class>
+  <class name="gov.nih.nci.cadsr.domain.ClassificationSchemeRelationship" identity="id">
+    <map-to xml="ClassificationSchemeRelationship" ns-uri="gme://caDSR.caDSR/4.0/gov.nih.nci.cadsr.domain" />
+    <field name="createdBy" type="string">
+      <bind-xml name="createdBy" node="attribute" />
+    </field>
+    <field name="dateCreated" type="java.util.Date">
+      <bind-xml name="dateCreated" node="attribute" />
+    </field>
+    <field name="dateModified" type="java.util.Date">
+      <bind-xml name="dateModified" node="attribute" />
+    </field>
+    <field name="displayOrder" type="integer">
+      <bind-xml name="displayOrder" node="attribute" />
+    </field>
+    <field name="id" type="string">
+      <bind-xml name="id" node="attribute" />
+    </field>
+    <field name="modifiedBy" type="string">
+      <bind-xml name="modifiedBy" node="attribute" />
+    </field>
+    <field name="name" type="string">
+      <bind-xml name="name" node="attribute" />
+    </field>
+  </class>
+  <class name="gov.nih.nci.cadsr.umlproject.domain.AttributeTypeMetadata" identity="id">
+    <map-to xml="AttributeTypeMetadata" ns-uri="gme://caDSR.caDSR/4.0/gov.nih.nci.cadsr.umlproject.domain" />
+    <field name="id" type="string">
+      <bind-xml name="id" node="attribute" />
+    </field>
+    <field name="publicID" type="long">
+      <bind-xml name="publicID" node="attribute" />
+    </field>
+    <field name="valueDomainDataType" type="string">
+      <bind-xml name="valueDomainDataType" node="attribute" />
+    </field>
+    <field name="valueDomainLongName" type="string">
+      <bind-xml name="valueDomainLongName" node="attribute" />
+    </field>
+    <field name="version" type="float">
+      <bind-xml name="version" node="attribute" />
+    </field>
+  </class>
+  <class name="gov.nih.nci.cadsr.domain.Concept" identity="id" extends="gov.nih.nci.cadsr.domain.AdministeredComponent">
+    <map-to xml="Concept" ns-uri="gme://caDSR.caDSR/4.0/gov.nih.nci.cadsr.domain" />
+    <field name="definitionSource" type="string">
+      <bind-xml name="definitionSource" node="attribute" />
+    </field>
+    <field name="evsSource" type="string">
+      <bind-xml name="evsSource" node="attribute" />
+    </field>
+  </class>
+  <class name="gov.nih.nci.cadsr.domain.ClassificationScheme" identity="id" extends="gov.nih.nci.cadsr.domain.AdministeredComponent">
+    <map-to xml="ClassificationScheme" ns-uri="gme://caDSR.caDSR/4.0/gov.nih.nci.cadsr.domain" />
+    <field name="labelTypeFlag" type="string">
+      <bind-xml name="labelTypeFlag" node="attribute" />
+    </field>
+    <field name="type" type="string">
+      <bind-xml name="type" node="attribute" />
+    </field>
+  </class>
+  <class name="gov.nih.nci.cadsr.domain.ClassificationSchemeItem" identity="id" extends="gov.nih.nci.cadsr.domain.AdministeredComponent">
+    <map-to xml="ClassificationSchemeItem" ns-uri="gme://caDSR.caDSR/4.0/gov.nih.nci.cadsr.domain" />
+    <field name="type" type="string">
+      <bind-xml name="type" node="attribute" />
+    </field>
+  </class>
+  <class name="gov.nih.nci.cadsr.domain.ObjectClassRelationship" identity="id" extends="gov.nih.nci.cadsr.domain.AdministeredComponent">
+    <map-to xml="ObjectClassRelationship" ns-uri="gme://caDSR.caDSR/4.0/gov.nih.nci.cadsr.domain" />
+    <field name="dimensionality" type="integer">
+      <bind-xml name="dimensionality" node="attribute" />
+    </field>
+    <field name="direction" type="string">
+      <bind-xml name="direction" node="attribute" />
+    </field>
+    <field name="displayOrder" type="integer">
+      <bind-xml name="displayOrder" node="attribute" />
+    </field>
+    <field name="isArray" type="string">
+      <bind-xml name="isArray" node="attribute" />
+    </field>
+    <field name="name" type="string">
+      <bind-xml name="name" node="attribute" />
+    </field>
+    <field name="sourceHighMultiplicity" type="integer">
+      <bind-xml name="sourceHighMultiplicity" node="attribute" />
+    </field>
+    <field name="sourceLowMultiplicity" type="integer">
+      <bind-xml name="sourceLowMultiplicity" node="attribute" />
+    </field>
+    <field name="sourceRole" type="string">
+      <bind-xml name="sourceRole" node="attribute" />
+    </field>
+    <field name="targetHighMultiplicity" type="integer">
+      <bind-xml name="targetHighMultiplicity" node="attribute" />
+    </field>
+    <field name="targetLowMultiplicity" type="integer">
+      <bind-xml name="targetLowMultiplicity" node="attribute" />
+    </field>
+    <field name="targetRole" type="string">
+      <bind-xml name="targetRole" node="attribute" />
+    </field>
+  </class>
+  <class name="gov.nih.nci.cadsr.domain.Representation" identity="id" extends="gov.nih.nci.cadsr.domain.AdministeredComponent">
+    <map-to xml="Representation" ns-uri="gme://caDSR.caDSR/4.0/gov.nih.nci.cadsr.domain" />
+    <field name="definitionSource" type="string">
+      <bind-xml name="definitionSource" node="attribute" />
+    </field>
+  </class>
+  <class name="gov.nih.nci.cadsr.domain.FormElement" identity="id" extends="gov.nih.nci.cadsr.domain.AdministeredComponent">
+    <map-to xml="FormElement" ns-uri="gme://caDSR.caDSR/4.0/gov.nih.nci.cadsr.domain" />
+  </class>
+  <class name="gov.nih.nci.cadsr.domain.ObjectClass" identity="id" extends="gov.nih.nci.cadsr.domain.AdministeredComponent">
+    <map-to xml="ObjectClass" ns-uri="gme://caDSR.caDSR/4.0/gov.nih.nci.cadsr.domain" />
+    <field name="definitionSource" type="string">
+      <bind-xml name="definitionSource" node="attribute" />
+    </field>
+  </class>
+  <class name="gov.nih.nci.cadsr.domain.ValueMeaning" identity="id" extends="gov.nih.nci.cadsr.domain.AdministeredComponent">
+    <map-to xml="ValueMeaning" ns-uri="gme://caDSR.caDSR/4.0/gov.nih.nci.cadsr.domain" />
+    <field name="comments" type="string">
+      <bind-xml name="comments" node="attribute" />
+    </field>
+    <field name="description" type="string">
+      <bind-xml name="description" node="attribute" />
+    </field>
+    <field name="shortMeaning" type="string">
+      <bind-xml name="shortMeaning" node="attribute" />
+    </field>
+  </class>
+  <class name="gov.nih.nci.cadsr.domain.Instruction" identity="id" extends="gov.nih.nci.cadsr.domain.AdministeredComponent">
+    <map-to xml="Instruction" ns-uri="gme://caDSR.caDSR/4.0/gov.nih.nci.cadsr.domain" />
+    <field name="type" type="string">
+      <bind-xml name="type" node="attribute" />
+    </field>
+  </class>
+  <class name="gov.nih.nci.cadsr.domain.ValueDomain" identity="id" extends="gov.nih.nci.cadsr.domain.AdministeredComponent">
+    <map-to xml="ValueDomain" ns-uri="gme://caDSR.caDSR/4.0/gov.nih.nci.cadsr.domain" />
+    <field name="characterSetName" type="string">
+      <bind-xml name="characterSetName" node="attribute" />
+    </field>
+    <field name="datatypeAnnotation" type="string">
+      <bind-xml name="datatypeAnnotation" node="attribute" />
+    </field>
+    <field name="datatypeDescription" type="string">
+      <bind-xml name="datatypeDescription" node="attribute" />
+    </field>
+    <field name="datatypeIsCodegenCompatible" type="string">
+      <bind-xml name="datatypeIsCodegenCompatible" node="attribute" />
+    </field>
+    <field name="datatypeName" type="string">
+      <bind-xml name="datatypeName" node="attribute" />
+    </field>
+    <field name="datatypeSchemeReference" type="string">
+      <bind-xml name="datatypeSchemeReference" node="attribute" />
+    </field>
+    <field name="decimalPlace" type="integer">
+      <bind-xml name="decimalPlace" node="attribute" />
+    </field>
+    <field name="formatName" type="string">
+      <bind-xml name="formatName" node="attribute" />
+    </field>
+    <field name="highValueNumber" type="string">
+      <bind-xml name="highValueNumber" node="attribute" />
+    </field>
+    <field name="lowValueNumber" type="string">
+      <bind-xml name="lowValueNumber" node="attribute" />
+    </field>
+    <field name="maximumLengthNumber" type="integer">
+      <bind-xml name="maximumLengthNumber" node="attribute" />
+    </field>
+    <field name="minimumLengthNumber" type="integer">
+      <bind-xml name="minimumLengthNumber" node="attribute" />
+    </field>
+    <field name="UOMName" type="string">
+      <bind-xml name="UOMName" node="attribute" />
+    </field>
+  </class>
+  <class name="gov.nih.nci.cadsr.domain.Property" identity="id" extends="gov.nih.nci.cadsr.domain.AdministeredComponent">
+    <map-to xml="Property" ns-uri="gme://caDSR.caDSR/4.0/gov.nih.nci.cadsr.domain" />
+    <field name="definitionSource" type="string">
+      <bind-xml name="definitionSource" node="attribute" />
+    </field>
+  </class>
+  <class name="gov.nih.nci.cadsr.domain.Protocol" identity="id" extends="gov.nih.nci.cadsr.domain.AdministeredComponent">
+    <map-to xml="Protocol" ns-uri="gme://caDSR.caDSR/4.0/gov.nih.nci.cadsr.domain" />
+    <field name="approvedBy" type="string">
+      <bind-xml name="approvedBy" node="attribute" />
+    </field>
+    <field name="approvedDate" type="java.util.Date">
+      <bind-xml name="approvedDate" node="attribute" />
+    </field>
+    <field name="changeNumber" type="string">
+      <bind-xml name="changeNumber" node="attribute" />
+    </field>
+    <field name="changeType" type="string">
+      <bind-xml name="changeType" node="attribute" />
+    </field>
+    <field name="leadOrganizationName" type="string">
+      <bind-xml name="leadOrganizationName" node="attribute" />
+    </field>
+    <field name="phase" type="string">
+      <bind-xml name="phase" node="attribute" />
+    </field>
+    <field name="protocolID" type="string">
+      <bind-xml name="protocolID" node="attribute" />
+    </field>
+    <field name="reviewedBy" type="string">
+      <bind-xml name="reviewedBy" node="attribute" />
+    </field>
+    <field name="reviewedDate" type="java.util.Date">
+      <bind-xml name="reviewedDate" node="attribute" />
+    </field>
+    <field name="type" type="string">
+      <bind-xml name="type" node="attribute" />
+    </field>
+  </class>
+  <class name="gov.nih.nci.cadsr.domain.ConceptualDomain" identity="id" extends="gov.nih.nci.cadsr.domain.AdministeredComponent">
+    <map-to xml="ConceptualDomain" ns-uri="gme://caDSR.caDSR/4.0/gov.nih.nci.cadsr.domain" />
+    <field name="dimensionality" type="string">
+      <bind-xml name="dimensionality" node="attribute" />
+    </field>
+  </class>
+  <class name="gov.nih.nci.cadsr.domain.DataElementConcept" identity="id" extends="gov.nih.nci.cadsr.domain.AdministeredComponent">
+    <map-to xml="DataElementConcept" ns-uri="gme://caDSR.caDSR/4.0/gov.nih.nci.cadsr.domain" />
+  </class>
+  <class name="gov.nih.nci.cadsr.domain.DataElement" identity="id" extends="gov.nih.nci.cadsr.domain.AdministeredComponent">
+    <map-to xml="DataElement" ns-uri="gme://caDSR.caDSR/4.0/gov.nih.nci.cadsr.domain" />
+  </class>
+  <class name="gov.nih.nci.cadsr.domain.QuestionRepetition" identity="id" extends="gov.nih.nci.cadsr.domain.FormElement">
+    <map-to xml="QuestionRepetition" ns-uri="gme://caDSR.caDSR/4.0/gov.nih.nci.cadsr.domain" />
+    <field name="defaultValue" type="string">
+      <bind-xml name="defaultValue" node="attribute" />
+    </field>
+    <field name="isEditable" type="string">
+      <bind-xml name="isEditable" node="attribute" />
+    </field>
+    <field name="repeatSequenceNumber" type="integer">
+      <bind-xml name="repeatSequenceNumber" node="attribute" />
+    </field>
+  </class>
+  <class name="gov.nih.nci.cadsr.domain.EnumeratedValueDomain" identity="id" extends="gov.nih.nci.cadsr.domain.ValueDomain">
+    <map-to xml="EnumeratedValueDomain" ns-uri="gme://caDSR.caDSR/4.0/gov.nih.nci.cadsr.domain" />
+  </class>
+  <class name="gov.nih.nci.cadsr.domain.ValidValue" identity="id" extends="gov.nih.nci.cadsr.domain.FormElement">
+    <map-to xml="ValidValue" ns-uri="gme://caDSR.caDSR/4.0/gov.nih.nci.cadsr.domain" />
+    <field name="description" type="string">
+      <bind-xml name="description" node="attribute" />
+    </field>
+    <field name="displayOrder" type="integer">
+      <bind-xml name="displayOrder" node="attribute" />
+    </field>
+    <field name="meaningText" type="string">
+      <bind-xml name="meaningText" node="attribute" />
+    </field>
+  </class>
+  <class name="gov.nih.nci.cadsr.domain.Question" identity="id" extends="gov.nih.nci.cadsr.domain.FormElement">
+    <map-to xml="Question" ns-uri="gme://caDSR.caDSR/4.0/gov.nih.nci.cadsr.domain" />
+    <field name="defaultValidValueId" type="string">
+      <bind-xml name="defaultValidValueId" node="attribute" />
+    </field>
+    <field name="defaultValue" type="string">
+      <bind-xml name="defaultValue" node="attribute" />
+    </field>
+    <field name="displayOrder" type="integer">
+      <bind-xml name="displayOrder" node="attribute" />
+    </field>
+    <field name="isEditable" type="string">
+      <bind-xml name="isEditable" node="attribute" />
+    </field>
+    <field name="isMandatory" type="string">
+      <bind-xml name="isMandatory" node="attribute" />
+    </field>
+  </class>
+  <class name="gov.nih.nci.cadsr.domain.Form" identity="id" extends="gov.nih.nci.cadsr.domain.FormElement">
+    <map-to xml="Form" ns-uri="gme://caDSR.caDSR/4.0/gov.nih.nci.cadsr.domain" />
+    <field name="displayName" type="string">
+      <bind-xml name="displayName" node="attribute" />
+    </field>
+    <field name="type" type="string">
+      <bind-xml name="type" node="attribute" />
+    </field>
+  </class>
+  <class name="gov.nih.nci.cadsr.domain.Module" identity="id" extends="gov.nih.nci.cadsr.domain.FormElement">
+    <map-to xml="Module" ns-uri="gme://caDSR.caDSR/4.0/gov.nih.nci.cadsr.domain" />
+    <field name="displayOrder" type="integer">
+      <bind-xml name="displayOrder" node="attribute" />
+    </field>
+    <field name="maximumQuestionRepeat" type="integer">
+      <bind-xml name="maximumQuestionRepeat" node="attribute" />
+    </field>
+  </class>
+  <class name="gov.nih.nci.cadsr.domain.NonenumeratedValueDomain" identity="id" extends="gov.nih.nci.cadsr.domain.ValueDomain">
+    <map-to xml="NonenumeratedValueDomain" ns-uri="gme://caDSR.caDSR/4.0/gov.nih.nci.cadsr.domain" />
+  </class>
+</mapping>
+

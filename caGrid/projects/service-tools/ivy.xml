@@ -1,0 +1,44 @@
+<?xml version="1.0"?>
+
+<ivy-module version="2.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:noNamespaceSchemaLocation="http://incubator.apache.org/ivy/schemas/ivy.xsd">
+
+  <info organisation="caGrid" module="service-tools" revision="${project.version}">
+    <license name="caGrid" url="http://cagrid.org/wiki/CaGrid:LICENSE-1.3"/>
+    <description>Provides utility APIs for working with events, groups, and databases.</description>
+  </info>
+
+  <configurations>
+    <conf name="impl" visibility="private" extends="default"/>
+    <conf name="impl-test" visibility="private"/>
+    
+    <!-- Public Configurations-->
+    <conf name="db" visibility="public"/>
+    <conf name="groups" visibility="public" extends="db"/>
+    <conf name="events" visibility="public" extends="db"/>    
+    <conf name="default" visibility="public" extends="groups,events"/>
+    
+    <conf name="test" visibility="public" extends="default"/>
+    <conf name="database-schemas" visibility="public" extends="default"/>
+
+  </configurations>
+
+
+  <publications>
+    <artifact name="caGrid-${ivy.module}-db" conf="db" type="jar"/>
+    <artifact name="caGrid-${ivy.module}-events" conf="events" type="jar"/>
+    <artifact name="caGrid-${ivy.module}-groups" conf="groups" type="jar"/>
+    <artifact name="caGrid-${ivy.module}-tests" conf="test" type="jar"/>
+    <artifact name="database-conf" conf="database-schemas" type="xsd"/>
+  </publications>
+
+  <dependencies>
+    <dependency rev="latest.integration" org="caGrid" name="core" conf="db->default;impl-test->test"/>
+
+    <dependency org="apache" name="commons-pool" rev="1.2" conf="db->*"/>
+    <dependency org="apache" name="commons-dbcp" rev="1.2.2" conf="db->*"/>
+    <dependency org="mysql" name="connector-java" rev="3.0.+" conf="db->*"/>
+    <dependency rev="1.2.8" org="springframework" name="spring" conf="events->beans"/>
+    <dependency rev="4.4" org="junit" name="junit" conf="impl-test->default"/>
+  </dependencies>
+</ivy-module>

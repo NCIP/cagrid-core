@@ -1,0 +1,92 @@
+<!-- ======================================================================= -->
+<!-- GlobalModelExchange Test build file                                     -->
+<!-- ======================================================================= -->
+<project name="gme_tests_harness" basedir=".">
+	<property name="junit.results.dir" value="${test.logs.dir}/junit" />
+	<!-- Setting this to true causes the tests to stop as soon as something fails -->
+	<property name="test.failfast" value="false" />
+	<property name="create.test.report" value="true" />
+	<property name="force.config.replace" value="false" />
+
+
+	<!-- call the test target for each project and aggregates the log resutls  -->
+	<target name="test" description="Runs the tests." depends="create_config_files, createTestDatabase">
+		<mkdir dir="${junit.results.dir}" />
+		<junit dir="${basedir}" printsummary="yes" errorproperty="test.failed" failureproperty="test.failed" showoutput="true" fork="yes" forkmode="once">
+			<!-- Turn on Java assertions -->
+			<assertions>
+				<enable />
+			</assertions>
+			<jvmarg value="-Dbuild.dir=${build.dest}" />
+			<sysproperty key="build.dir" value="${build.dest}" />
+			<classpath refid="test.run.classpath" />
+			<classpath>
+				<pathelement path="${test.classes.dir}" />
+			</classpath>
+			<formatter type="xml" />
+			<batchtest fork="yes" todir="${junit.results.dir}">
+				<fileset dir="${test.src.dir}">
+					<include name="**/*TestCase.java" />
+				</fileset>
+			</batchtest>
+		</junit>
+
+		<if>
+			<equals arg1="${create.test.report}" arg2="true" />
+			<then>
+				<trycatch property="test.report.failed.message">
+					<try>
+						<mkdir dir="${junit.results.dir}/report" />
+						<junitreport todir="${junit.results.dir}">
+							<fileset dir="${junit.results.dir}">
+								<include name="TEST-*.xml" />
+							</fileset>
+							<report format="frames" todir="${junit.results.dir}/report" />
+						</junitreport>
+						<echo message="Created test report in ${junit.results.dir}/report" />
+					</try>
+					<catch>
+						<echo message="Test Report creation failed (${test.report.failed.message})!" />
+					</catch>
+				</trycatch>
+			</then>
+			<else>
+				<echo message="Skipping test report creation." />
+			</else>
+		</if>
+
+
+		<fail message="Tests failed! Check test reports." if="test.failed" />
+
+	</target>
+
+	<!-- ============================================================== -->
+	<!-- Creates conf files from examples                               -->
+	<!-- ============================================================== -->
+	<target name="create_config_files" description="Creates conf files from examples.   Set property
+        force.config.replace to true to force replacement.">
+
+		<echo message="${test.dir}/resources" />
+
+		<copy todir="${test.dir}/resources" overwrite="${force.config.replace}">
+			<fileset dir="${test.dir}/resources">
+				<include name="**/*.example" />
+			</fileset>
+			<mapper type="glob" from="*.example" to="*" />
+		</copy>
+	</target>
+
+
+	<target name="createTestDatabase" depends="init,create_config_files" description="Creates the testing database.">
+		<property file="${test.dir}/resources/gme.test.properties" />
+		<property name="root.db.username" value="${cagrid.gme.db.username}" />
+		<property name="root.db.password" value="${cagrid.gme.db.password}" />
+		<property name="root.db.url" value="jdbc:mysql://localhost:3306/?autoReconnect=true" />
+		<sql driver="${cagrid.gme.db.driver}" url="${root.db.url}" userid="${root.db.username}" password="${root.db.password}">
+			<classpath refid="test.run.classpath" />
+			DROP DATABASE IF EXISTS ${cagrid.gme.db.name};
+			CREATE DATABASE ${cagrid.gme.db.name};
+		</sql>
+	</target>
+
+</project>

@@ -1,0 +1,219 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+    xmlns="gme://caArray.caBIG/2.0/gov.nih.nci.caarray.domain.project"
+    xmlns:edu.georgetown.pir="gme://caArray.caBIG/2.0/edu.georgetown.pir"
+    xmlns:gov.nih.nci.caarray.domain="gme://caArray.caBIG/2.0/gov.nih.nci.caarray.domain"
+    xmlns:gov.nih.nci.caarray.domain.array="gme://caArray.caBIG/2.0/gov.nih.nci.caarray.domain.array"
+    xmlns:gov.nih.nci.caarray.domain.contact="gme://caArray.caBIG/2.0/gov.nih.nci.caarray.domain.contact"
+    xmlns:gov.nih.nci.caarray.domain.file="gme://caArray.caBIG/2.0/gov.nih.nci.caarray.domain.file"
+    xmlns:gov.nih.nci.caarray.domain.hybridization="gme://caArray.caBIG/2.0/gov.nih.nci.caarray.domain.hybridization"
+    xmlns:gov.nih.nci.caarray.domain.publication="gme://caArray.caBIG/2.0/gov.nih.nci.caarray.domain.publication"
+    xmlns:gov.nih.nci.caarray.domain.sample="gme://caArray.caBIG/2.0/gov.nih.nci.caarray.domain.sample"
+    xmlns:gov.nih.nci.caarray.domain.vocabulary="gme://caArray.caBIG/2.0/gov.nih.nci.caarray.domain.vocabulary"
+    targetNamespace="gme://caArray.caBIG/2.0/gov.nih.nci.caarray.domain.project" elementFormDefault="qualified">
+
+    <xs:import namespace="gme://caArray.caBIG/2.0/edu.georgetown.pir"
+        schemaLocation="edu.georgetown.pir.xsd" />
+    <xs:import namespace="gme://caArray.caBIG/2.0/gov.nih.nci.caarray.domain.file"
+        schemaLocation="gov.nih.nci.caarray.domain.file.xsd" />
+    <xs:import namespace="gme://caArray.caBIG/2.0/gov.nih.nci.caarray.domain.sample"
+        schemaLocation="gov.nih.nci.caarray.domain.sample.xsd" />
+    <xs:import namespace="gme://caArray.caBIG/2.0/gov.nih.nci.caarray.domain"
+        schemaLocation="gov.nih.nci.caarray.domain.xsd" />
+    <xs:import namespace="gme://caArray.caBIG/2.0/gov.nih.nci.caarray.domain.hybridization"
+        schemaLocation="gov.nih.nci.caarray.domain.hybridization.xsd" />
+    <xs:import namespace="gme://caArray.caBIG/2.0/gov.nih.nci.caarray.domain.publication"
+        schemaLocation="gov.nih.nci.caarray.domain.publication.xsd" />
+    <xs:import namespace="gme://caArray.caBIG/2.0/gov.nih.nci.caarray.domain.vocabulary"
+        schemaLocation="gov.nih.nci.caarray.domain.vocabulary.xsd" />
+    <xs:import namespace="gme://caArray.caBIG/2.0/gov.nih.nci.caarray.domain.array"
+        schemaLocation="gov.nih.nci.caarray.domain.array.xsd" />
+    <xs:import namespace="gme://caArray.caBIG/2.0/gov.nih.nci.caarray.domain.contact"
+        schemaLocation="gov.nih.nci.caarray.domain.contact.xsd" />
+
+    <xs:element name="Factor" type="Factor" />
+    <xs:complexType name="Factor">
+        <xs:complexContent>
+            <xs:extension base="gov.nih.nci.caarray.domain:AbstractCaArrayEntity">
+                <xs:sequence>
+                    <xs:element name="factorValues" minOccurs="0">
+                        <xs:complexType>
+                            <xs:choice minOccurs="0" maxOccurs="unbounded">
+                                <xs:element ref="FactorValue" />
+                            </xs:choice>
+                        </xs:complexType>
+                    </xs:element>
+                    <xs:element name="type" minOccurs="0" maxOccurs="1"
+                        type="gov.nih.nci.caarray.domain.vocabulary:Term" />
+                </xs:sequence>
+                <xs:attribute name="name" type="xs:string" />
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+    <xs:element name="Experiment" type="Experiment" />
+    <xs:complexType name="Experiment">
+        <xs:complexContent>
+            <xs:extension base="gov.nih.nci.caarray.domain:AbstractCaArrayEntity">
+                <xs:sequence>
+                    <xs:element name="samples" minOccurs="0">
+                        <xs:complexType>
+                            <xs:choice minOccurs="0" maxOccurs="unbounded">
+                                <xs:element ref="gov.nih.nci.caarray.domain.sample:Sample" />
+                            </xs:choice>
+                        </xs:complexType>
+                    </xs:element>
+                    <xs:element name="extracts" minOccurs="0">
+                        <xs:complexType>
+                            <xs:choice minOccurs="0" maxOccurs="unbounded">
+                                <xs:element ref="gov.nih.nci.caarray.domain.sample:Extract" />
+                            </xs:choice>
+                        </xs:complexType>
+                    </xs:element>
+                    <xs:element name="factors" minOccurs="0">
+                        <xs:complexType>
+                            <xs:choice minOccurs="0" maxOccurs="unbounded">
+                                <xs:element ref="Factor" />
+                            </xs:choice>
+                        </xs:complexType>
+                    </xs:element>
+                    <xs:element name="hybridizations" minOccurs="0">
+                        <xs:complexType>
+                            <xs:choice minOccurs="0" maxOccurs="unbounded">
+                                <xs:element ref="gov.nih.nci.caarray.domain.hybridization:Hybridization" />
+                            </xs:choice>
+                        </xs:complexType>
+                    </xs:element>
+                    <xs:element name="labeledExtracts" minOccurs="0">
+                        <xs:complexType>
+                            <xs:choice minOccurs="0" maxOccurs="unbounded">
+                                <xs:element ref="gov.nih.nci.caarray.domain.sample:LabeledExtract" />
+                            </xs:choice>
+                        </xs:complexType>
+                    </xs:element>
+                    <xs:element name="experimentDesignTypes" minOccurs="0">
+                        <xs:complexType>
+                            <xs:choice minOccurs="0" maxOccurs="unbounded">
+                                <xs:element ref="gov.nih.nci.caarray.domain.vocabulary:Term" />
+                            </xs:choice>
+                        </xs:complexType>
+                    </xs:element>
+                    <xs:element name="qualityControlTypes" minOccurs="0">
+                        <xs:complexType>
+                            <xs:choice minOccurs="0" maxOccurs="unbounded">
+                                <xs:element ref="gov.nih.nci.caarray.domain.vocabulary:Term" />
+                            </xs:choice>
+                        </xs:complexType>
+                    </xs:element>
+                    <xs:element name="normalizationTypes" minOccurs="0">
+                        <xs:complexType>
+                            <xs:choice minOccurs="0" maxOccurs="unbounded">
+                                <xs:element ref="gov.nih.nci.caarray.domain.vocabulary:Term" />
+                            </xs:choice>
+                        </xs:complexType>
+                    </xs:element>
+                    <xs:element name="sources" minOccurs="0">
+                        <xs:complexType>
+                            <xs:choice minOccurs="0" maxOccurs="unbounded">
+                                <xs:element ref="gov.nih.nci.caarray.domain.sample:Source" />
+                            </xs:choice>
+                        </xs:complexType>
+                    </xs:element>
+                    <xs:element name="replicateTypes" minOccurs="0">
+                        <xs:complexType>
+                            <xs:choice minOccurs="0" maxOccurs="unbounded">
+                                <xs:element ref="gov.nih.nci.caarray.domain.vocabulary:Term" />
+                            </xs:choice>
+                        </xs:complexType>
+                    </xs:element>
+                    <xs:element name="experimentContacts" minOccurs="0">
+                        <xs:complexType>
+                            <xs:choice minOccurs="0" maxOccurs="unbounded">
+                                <xs:element ref="ExperimentContact" />
+                            </xs:choice>
+                        </xs:complexType>
+                    </xs:element>
+                    <xs:element name="arrays" minOccurs="0">
+                        <xs:complexType>
+                            <xs:choice minOccurs="0" maxOccurs="unbounded">
+                                <xs:element ref="gov.nih.nci.caarray.domain.array:Array" />
+                            </xs:choice>
+                        </xs:complexType>
+                    </xs:element>
+                    <xs:element name="publications" minOccurs="0">
+                        <xs:complexType>
+                            <xs:choice minOccurs="0" maxOccurs="unbounded">
+                                <xs:element ref="gov.nih.nci.caarray.domain.publication:Publication" />
+                            </xs:choice>
+                        </xs:complexType>
+                    </xs:element>
+                    <xs:element name="arrayDesigns" minOccurs="0">
+                        <xs:complexType>
+                            <xs:choice minOccurs="0" maxOccurs="unbounded">
+                                <xs:element ref="gov.nih.nci.caarray.domain.array:ArrayDesign" />
+                            </xs:choice>
+                        </xs:complexType>
+                    </xs:element>
+                    <xs:element name="organism" minOccurs="0" maxOccurs="1" type="edu.georgetown.pir:Organism" />
+                </xs:sequence>
+                <xs:attribute name="dateOfExperiment" type="xs:dateTime" />
+                <xs:attribute name="assayType" type="xs:string" />
+                <xs:attribute name="experimentDesignDescription" type="xs:string" />
+                <xs:attribute name="qualityControlDescription" type="xs:string" />
+                <xs:attribute name="replicateDescription" type="xs:string" />
+                <xs:attribute name="publicIdentifier" type="xs:string" />
+                <xs:attribute name="description" type="xs:string" />
+                <xs:attribute name="publicReleaseDate" type="xs:dateTime" />
+                <xs:attribute name="title" type="xs:string" />
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+    <xs:element name="Project" type="Project" />
+    <xs:complexType name="Project">
+        <xs:complexContent>
+            <xs:extension base="gov.nih.nci.caarray.domain:AbstractCaArrayEntity">
+                <xs:sequence>
+                    <xs:element name="experiment" minOccurs="0" maxOccurs="1" type="Experiment" />
+                    <xs:element name="files" minOccurs="0">
+                        <xs:complexType>
+                            <xs:choice minOccurs="0" maxOccurs="unbounded">
+                                <xs:element ref="gov.nih.nci.caarray.domain.file:CaArrayFile" />
+                            </xs:choice>
+                        </xs:complexType>
+                    </xs:element>
+                </xs:sequence>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+    <xs:element name="FactorValue" type="FactorValue" />
+    <xs:complexType name="FactorValue">
+        <xs:complexContent>
+            <xs:extension base="gov.nih.nci.caarray.domain:AbstractCaArrayEntity">
+                <xs:sequence>
+                    <xs:element name="unit" minOccurs="0" maxOccurs="1"
+                        type="gov.nih.nci.caarray.domain.vocabulary:Term" />
+                    <xs:element name="factor" minOccurs="0" maxOccurs="1" type="Factor" />
+                </xs:sequence>
+                <xs:attribute name="value" type="xs:string" />
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+    <xs:element name="ExperimentContact" type="ExperimentContact" />
+    <xs:complexType name="ExperimentContact">
+        <xs:complexContent>
+            <xs:extension base="gov.nih.nci.caarray.domain:AbstractCaArrayEntity">
+                <xs:sequence>
+                    <xs:element name="roles" minOccurs="0">
+                        <xs:complexType>
+                            <xs:choice minOccurs="0" maxOccurs="unbounded">
+                                <xs:element ref="gov.nih.nci.caarray.domain.vocabulary:Term" />
+                            </xs:choice>
+                        </xs:complexType>
+                    </xs:element>
+                    <xs:element name="contact" minOccurs="0" maxOccurs="1"
+                        type="gov.nih.nci.caarray.domain.contact:AbstractContact" />
+                </xs:sequence>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+</xs:schema>
+

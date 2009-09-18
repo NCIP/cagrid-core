@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<application xmlns="http://www.cagrid.org/1/grape"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.cagrid.org/1/grape file:/C:/projects/cagrid-1-0/caGrid/projects/grape/schema/grape.xsd">
+    <name>Grape Sample Application</name>
+    <icon>/caGrid-icon-22x22.gif</icon>
+    <ApplicationLogo>/caGrid.gif</ApplicationLogo>
+    <AboutHTML><![CDATA[<html><h2>Grid Application Environment (GRAPE)</h2>GRAPE was developed as part of the caGrid project to provide a framework for<BR> rapidly developing grid applications.  For more information on GRAPE or caGrid<BR> please visit us at <A HREF="http://www.cagrid.org">http://www.cagrid.org</a></html>]]></AboutHTML>
+    <dimensions>
+        <width>850</width>
+        <height>700</height>
+    </dimensions>
+    <menus>
+        <menu>
+            <title>Security</title>
+            <description>tools</description>
+            <showIcons>false</showIcons>
+            <submenus>
+            <menu>
+                <title>Grid User Administration</title>
+                <description></description>
+                <showIcons>true</showIcons>
+                <components>
+                    <component>
+                        <title>Manage Users</title>
+                        <description>Manage Users</description>
+                        <classname>org.cagrid.grape.samples.SampleWindow</classname>
+                        <icon>/caGrid-icon-22x22.gif</icon>
+                        <showOnToolBar>false</showOnToolBar>
+                    </component>
+                    <component>
+                        <title>Manage Identity Providers</title>
+                        <description>Manage Identity Providers</description>
+                        <classname>org.cagrid.grape.samples.SampleWindow</classname>
+                        <icon>/caGrid-icon-22x22.gif</icon>
+                        <showOnToolBar>false</showOnToolBar>
+                    </component>
+                </components>
+            </menu>
+                <menu>
+                    <title>Grid Trust Fabric Administration</title>
+                    <description></description>
+                    <showIcons>true</showIcons>
+                    <components>
+                        <component>
+                            <title>Certificate Authorities</title>
+                            <description>Certificate Authorities</description>
+                            <classname>org.cagrid.grape.samples.SampleWindow</classname>
+                            <icon>/caGrid-icon-22x22.gif</icon>
+                            <showOnToolBar>false</showOnToolBar>
+                        </component>
+                        <component>
+                            <title>Levels of Assurance</title>
+                            <description>Levels of Assurance</description>
+                            <classname>org.cagrid.grape.samples.SampleWindow</classname>
+                            <icon>/caGrid-icon-22x22.gif</icon>
+                            <showOnToolBar>false</showOnToolBar>
+                        </component>
+                    </components>
+                </menu>              
+            </submenus>
+            <components>
+                <component>
+                    <title>Login</title>
+                    <description>Login</description>
+                    <classname>org.cagrid.grape.samples.SampleWindow</classname>
+                    <icon>/caGrid-icon-22x22.gif</icon>
+                    <showOnToolBar>true</showOnToolBar>
+                </component>
+            </components>
+        </menu>
+        <menu>
+            <title>Discovery</title>
+            <description></description>
+            <showIcons>true</showIcons>
+            <components>
+                <component>
+                    <title>Discover Grid Services</title>
+                    <description>Discover Grid Services</description>
+                    <classname>org.cagrid.grape.samples.SampleWindow</classname>
+                    <icon>/caGrid-icon-22x22.gif</icon>
+                    <showOnToolBar>true</showOnToolBar>
+                </component>
+            </components>
+        </menu>      
+    </menus>
+    <configuration>
+        
+        <ConfigurationGroups>
+        <ConfigurationGroup>
+            <name>Security</name>
+            <ConfigurationDescriptors>
+                <ConfigurationDescriptor>
+                    <DisplayName>Dorian</DisplayName>
+                    <SystemName>dorian</SystemName>
+                    <ModelClassname>org.cagrid.grape.configuration.GeneralConfiguration</ModelClassname>
+                    <qname>
+                        <namespace>http://www.cagrid.org/1/grape-general-configuration</namespace>
+                        <name>GeneralConfiguration</name>
+                    </qname>
+                    <ConfigurationPanel>org.cagrid.grape.GeneralConfigurationPanel</ConfigurationPanel>
+                    <DefaultFile>conf/general-configuration-example.xml</DefaultFile>
+                </ConfigurationDescriptor>
+                <ConfigurationDescriptor>
+                    <DisplayName>Grid Grouper</DisplayName>
+                    <SystemName>gridgrouper</SystemName>
+                    <ModelClassname>org.cagrid.grape.configuration.GeneralConfiguration</ModelClassname>
+                    <qname>
+                        <namespace>http://www.cagrid.org/1/grape-general-configuration</namespace>
+                        <name>GeneralConfiguration</name>
+                    </qname>
+                    <ConfigurationPanel>org.cagrid.grape.GeneralConfigurationPanel</ConfigurationPanel>                    
+                    <DefaultFile>conf/general-configuration-example.xml</DefaultFile>
+                </ConfigurationDescriptor>
+                <ConfigurationDescriptor>
+                    <DisplayName>Grid Trust Service (GTS)</DisplayName>
+                    <SystemName>gts</SystemName>
+                    <ModelClassname>org.cagrid.grape.configuration.GeneralConfiguration</ModelClassname>
+                    <qname>
+                        <namespace>http://www.cagrid.org/1/grape-general-configuration</namespace>
+                        <name>GeneralConfiguration</name>
+                    </qname>
+                    <ConfigurationPanel>org.cagrid.grape.GeneralConfigurationPanel</ConfigurationPanel>
+                    <DefaultFile>conf/general-configuration-example.xml</DefaultFile>
+                </ConfigurationDescriptor>
+                <ConfigurationDescriptor>
+                    <DisplayName>SyncGTS</DisplayName>
+                    <SystemName>syncgts</SystemName>
+                    <ModelClassname>org.cagrid.grape.configuration.GeneralConfiguration</ModelClassname>
+                    <qname>
+                        <namespace>http://www.cagrid.org/1/grape-general-configuration</namespace>
+                        <name>GeneralConfiguration</name>
+                    </qname>
+                    <DefaultFile>conf/general-configuration-example.xml</DefaultFile>
+                </ConfigurationDescriptor>
+            </ConfigurationDescriptors>
+        </ConfigurationGroup>
+        </ConfigurationGroups>
+        
+        <ConfigurationDescriptors>
+        <ConfigurationDescriptor>
+            <DisplayName>Services</DisplayName>
+            <SystemName>services</SystemName>
+            <ModelClassname>org.cagrid.grape.configuration.ServiceConfiguration</ModelClassname>
+            <qname>
+                <namespace>http://www.cagrid.org/1/grape-service-configuration</namespace>
+                <name>ServiceConfiguration</name>
+            </qname>
+            <ConfigurationPanel>org.cagrid.grape.ServiceConfigurationEditor</ConfigurationPanel>
+            <DefaultFile>conf/service-configuration-example.xml</DefaultFile>
+        </ConfigurationDescriptor>
+        </ConfigurationDescriptors>
+    </configuration>
+</application>

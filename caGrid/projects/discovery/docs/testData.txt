@@ -1,0 +1,17 @@
+noServices.xml
+--------------------
+Index Service with no registered services
+
+RegisteredServices.xml
+--------------------
+4 registered services
+ -http://service1.com/wsrf/services/Service1
+   - contains standard metadata (cadsr)
+ -http://service2.com/wsrf/services/Service2
+   - contains no metadata
+ -http://service3.com/wsrf/services/Service3
+   - contains standard metadata (dorian)
+ -http://service4.com/wsrf/services/Service4
+   - contains standard metadata (data)
+   - contains data metadata (cabio)
+   

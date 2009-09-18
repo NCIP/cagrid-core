@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  | deployerConfigContext.xml centralizes into one file some of the declarative configuration that
+  | all CAS deployers will need to modify.
+  |
+  | This file declares some of the Spring-managed JavaBeans that make up a CAS deployment.  
+  | The beans declared in this file are instantiated at context initialization time by the Spring 
+  | ContextLoaderListener declared in web.xml.  It finds this file because this
+  | file is among those declared in the context parameter "contextConfigLocation".
+  |
+  +-->
+<beans xmlns="http://www.springframework.org/schema/beans"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xmlns:p="http://www.springframework.org/schema/p"
+  xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd">
+
+  <bean id="authenticationManager"
+    class="org.cagrid.gaards.websso.authentication.CaGridAuthenticationManager">
+  </bean>
+</beans>

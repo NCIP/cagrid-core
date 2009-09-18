@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+	<!--
+		edited with XMLSpy v2005 rel. 3 U (http://www.altova.com) by Kunal
+		Modi (DHHS/NIH/NCI)
+	-->
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+	elementFormDefault="qualified">
+	<xs:element name="application-name" type="xs:string" />
+	<xs:element name="dorian-service-descriptor">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="display-name" />
+				<xs:element ref="service-url"/>
+				<xs:element ref="service-identity"/>
+				<xs:element ref="proxy-lifetime-hours" />
+				<xs:element ref="proxy-lifetime-minutes"/>
+				<xs:element ref="proxy-lifetime-seconds"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="dorian-services-information">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="dorian-service-descriptor" maxOccurs="unbounded" />
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="delegated-application">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="application-name" />
+				<xs:element ref="host-identity" />
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="delegated-application-list">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="delegated-application" maxOccurs="unbounded" />
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="delegated-applications-group">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="group-name" />
+				<xs:element ref="delegated-application-list" />
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="service-descriptor">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="display-name" />
+				<xs:element ref="service-url" />
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="credential-delegation-service-information">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="service-url" />
+				<xs:element ref="service-identity" />
+				<xs:element ref="delegation-lifetime-hours" />
+				<xs:element ref="delegation-lifetime-minutes" />
+				<xs:element ref="delegation-lifetime-seconds" />
+				<xs:element ref="issued-credential-path-length" />
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="websso-server-information">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="start-auto-syncgts" />
+				<xs:element ref="host-credential-certificate-file-path" />
+				<xs:element ref="host-credential-key-file-path" />
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="start-auto-syncgts" type="xs:string" />
+	<xs:element name="host-credential-certificate-file-path"
+		type="xs:string" />
+	<xs:element name="host-credential-key-file-path" type="xs:string" />
+	<xs:element name="group-name" type="xs:string" />
+	<xs:element name="host-identity" type="xs:string" />
+	<xs:element name="service-name" type="xs:string" />
+	<xs:element name="service-group-description" type="xs:string" />
+	<xs:element name="display-name" type="xs:string" />
+	<xs:element name="service-url" type="xs:anyURI" />
+	<xs:element name="service-identity" type="xs:anyURI" />
+	<xs:element name="trust-store-path" type="xs:string" />
+	<xs:element name="proxy-lifetime-hours" type="xs:integer" />
+	<xs:element name="proxy-lifetime-minutes" type="xs:integer" />
+	<xs:element name="proxy-lifetime-seconds" type="xs:integer" />
+	<xs:element name="proxy-delegation-path-length" type="xs:integer" />
+	<xs:element name="delegation-lifetime-hours" type="xs:integer" />
+	<xs:element name="delegation-lifetime-minutes" type="xs:integer" />
+	<xs:element name="delegation-lifetime-seconds" type="xs:integer" />
+	<xs:element name="issued-credential-path-length" type="xs:integer" />
+	<xs:element name="websso-properties">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="websso-server-information" />
+				<xs:element ref="credential-delegation-service-information" />
+				<xs:element ref="dorian-services-information" />
+				<xs:element ref="delegated-applications-group" maxOccurs="unbounded" />
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+</xs:schema>

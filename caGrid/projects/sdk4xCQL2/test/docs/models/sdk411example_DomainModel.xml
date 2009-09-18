@@ -1,0 +1,1186 @@
+<ns1:DomainModel projectShortName="example" projectVersion="4.1.1" xmlns:ns1="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.dataservice">
+ <ns1:exposedUMLAssociationCollection>
+  <ns1:UMLAssociation bidirectional="false">
+   <ns1:targetUMLAssociationEdge>
+    <ns1:UMLAssociationEdge maxCardinality="-1" minCardinality="0" roleName="pupilCollection">
+     <ns1:UMLClassReference refid="EAID_25C922D6_7AE9_4b07_9E7D_1FDEC6CAF278"/>
+    </ns1:UMLAssociationEdge>
+   </ns1:targetUMLAssociationEdge>
+   <ns1:sourceUMLAssociationEdge>
+    <ns1:UMLAssociationEdge maxCardinality="1" minCardinality="1" roleName="teacher">
+     <ns1:UMLClassReference refid="EAID_EE02A000_21A2_4056_9A0F_0A9FD052E526"/>
+    </ns1:UMLAssociationEdge>
+   </ns1:sourceUMLAssociationEdge>
+  </ns1:UMLAssociation>
+  <ns1:UMLAssociation bidirectional="false">
+   <ns1:targetUMLAssociationEdge>
+    <ns1:UMLAssociationEdge maxCardinality="1" minCardinality="1" roleName="issuingBank">
+     <ns1:UMLClassReference refid="EAID_99A644B0_2028_4462_8301_4D34931B9995"/>
+    </ns1:UMLAssociationEdge>
+   </ns1:targetUMLAssociationEdge>
+   <ns1:sourceUMLAssociationEdge>
+    <ns1:UMLAssociationEdge maxCardinality="-1" minCardinality="0">
+     <ns1:UMLClassReference refid="EAID_0F0E92DD_E304_40aa_9ADE_4BEB771EAF2D"/>
+    </ns1:UMLAssociationEdge>
+   </ns1:sourceUMLAssociationEdge>
+  </ns1:UMLAssociation>
+  <ns1:UMLAssociation bidirectional="false">
+   <ns1:targetUMLAssociationEdge>
+    <ns1:UMLAssociationEdge maxCardinality="1" minCardinality="0" roleName="designer">
+     <ns1:UMLClassReference refid="EAID_DB8B1781_754E_4e83_B780_F316B364C451"/>
+    </ns1:UMLAssociationEdge>
+   </ns1:targetUMLAssociationEdge>
+   <ns1:sourceUMLAssociationEdge>
+    <ns1:UMLAssociationEdge maxCardinality="-1" minCardinality="-1">
+     <ns1:UMLClassReference refid="EAID_DF13C79C_9FDF_4de7_BD1E_0240185CFFB3"/>
+    </ns1:UMLAssociationEdge>
+   </ns1:sourceUMLAssociationEdge>
+  </ns1:UMLAssociation>
+  <ns1:UMLAssociation bidirectional="false">
+   <ns1:targetUMLAssociationEdge>
+    <ns1:UMLAssociationEdge maxCardinality="-1" minCardinality="0" roleName="tankCollection">
+     <ns1:UMLClassReference refid="EAID_3368D1E5_BDDF_4b9b_9AB3_76F263AEEFCB"/>
+    </ns1:UMLAssociationEdge>
+   </ns1:targetUMLAssociationEdge>
+   <ns1:sourceUMLAssociationEdge>
+    <ns1:UMLAssociationEdge maxCardinality="-1" minCardinality="0" roleName="tankAccessoryCollection">
+     <ns1:UMLClassReference refid="EAID_8636A398_D1B8_4675_9B5E_E892791208B6"/>
+    </ns1:UMLAssociationEdge>
+   </ns1:sourceUMLAssociationEdge>
+  </ns1:UMLAssociation>
+  <ns1:UMLAssociation bidirectional="false">
+   <ns1:targetUMLAssociationEdge>
+    <ns1:UMLAssociationEdge maxCardinality="1" minCardinality="1" roleName="tank">
+     <ns1:UMLClassReference refid="EAID_3368D1E5_BDDF_4b9b_9AB3_76F263AEEFCB"/>
+    </ns1:UMLAssociationEdge>
+   </ns1:targetUMLAssociationEdge>
+   <ns1:sourceUMLAssociationEdge>
+    <ns1:UMLAssociationEdge maxCardinality="-1" minCardinality="0" roleName="fishCollection">
+     <ns1:UMLClassReference refid="EAID_D20806E4_DC1A_41e8_A8A3_78548AF4AAD5"/>
+    </ns1:UMLAssociationEdge>
+   </ns1:sourceUMLAssociationEdge>
+  </ns1:UMLAssociation>
+  <ns1:UMLAssociation bidirectional="false">
+   <ns1:targetUMLAssociationEdge>
+    <ns1:UMLAssociationEdge maxCardinality="-1" minCardinality="0" roleName="substrateCollection">
+     <ns1:UMLClassReference refid="EAID_33CF06A3_F17D_40f0_823A_07C5757AE74C"/>
+    </ns1:UMLAssociationEdge>
+   </ns1:targetUMLAssociationEdge>
+   <ns1:sourceUMLAssociationEdge>
+    <ns1:UMLAssociationEdge maxCardinality="1" minCardinality="1" roleName="saltwaterFishTank">
+     <ns1:UMLClassReference refid="EAID_A760311D_8E99_471f_9809_4A498AF3D06C"/>
+    </ns1:UMLAssociationEdge>
+   </ns1:sourceUMLAssociationEdge>
+  </ns1:UMLAssociation>
+  <ns1:UMLAssociation bidirectional="false">
+   <ns1:targetUMLAssociationEdge>
+    <ns1:UMLAssociationEdge maxCardinality="-1" minCardinality="0" roleName="assistantCollection">
+     <ns1:UMLClassReference refid="EAID_5CA73A59_BD41_4920_B53C_AC571E123E64"/>
+    </ns1:UMLAssociationEdge>
+   </ns1:targetUMLAssociationEdge>
+   <ns1:sourceUMLAssociationEdge>
+    <ns1:UMLAssociationEdge maxCardinality="1" minCardinality="1">
+     <ns1:UMLClassReference refid="EAID_00F8EA6B_E027_4bad_B011_41830FF87842"/>
+    </ns1:UMLAssociationEdge>
+   </ns1:sourceUMLAssociationEdge>
+  </ns1:UMLAssociation>
+  <ns1:UMLAssociation bidirectional="true">
+   <ns1:targetUMLAssociationEdge>
+    <ns1:UMLAssociationEdge maxCardinality="1" minCardinality="1" roleName="wheel">
+     <ns1:UMLClassReference refid="EAID_A2EE906F_6DC7_4bbb_9261_98FCE0777DBA"/>
+    </ns1:UMLAssociationEdge>
+   </ns1:targetUMLAssociationEdge>
+   <ns1:sourceUMLAssociationEdge>
+    <ns1:UMLAssociationEdge maxCardinality="-1" minCardinality="0" roleName="luggage">
+     <ns1:UMLClassReference refid="EAID_6135B872_E71A_44c8_9DC1_269DE3815F79"/>
+    </ns1:UMLAssociationEdge>
+   </ns1:sourceUMLAssociationEdge>
+  </ns1:UMLAssociation>
+  <ns1:UMLAssociation bidirectional="true">
+   <ns1:targetUMLAssociationEdge>
+    <ns1:UMLAssociationEdge maxCardinality="-1" minCardinality="0" roleName="projectCollection">
+     <ns1:UMLClassReference refid="EAID_8598F1F2_EE47_41a6_B3A0_A61E801D02BE"/>
+    </ns1:UMLAssociationEdge>
+   </ns1:targetUMLAssociationEdge>
+   <ns1:sourceUMLAssociationEdge>
+    <ns1:UMLAssociationEdge maxCardinality="-1" minCardinality="0" roleName="employeeCollection">
+     <ns1:UMLClassReference refid="EAID_C266F257_44CD_4b19_9E33_23F63573B38F"/>
+    </ns1:UMLAssociationEdge>
+   </ns1:sourceUMLAssociationEdge>
+  </ns1:UMLAssociation>
+  <ns1:UMLAssociation bidirectional="false">
+   <ns1:targetUMLAssociationEdge>
+    <ns1:UMLAssociationEdge maxCardinality="-1" minCardinality="0" roleName="authorCollection">
+     <ns1:UMLClassReference refid="EAID_775B56C3_D694_417a_A41E_2926FD5F3160"/>
+    </ns1:UMLAssociationEdge>
+   </ns1:targetUMLAssociationEdge>
+   <ns1:sourceUMLAssociationEdge>
+    <ns1:UMLAssociationEdge maxCardinality="-1" minCardinality="0">
+     <ns1:UMLClassReference refid="EAID_178351E2_A663_474e_AE08_943831F4CF2B"/>
+    </ns1:UMLAssociationEdge>
+   </ns1:sourceUMLAssociationEdge>
+  </ns1:UMLAssociation>
+  <ns1:UMLAssociation bidirectional="false">
+   <ns1:targetUMLAssociationEdge>
+    <ns1:UMLAssociationEdge maxCardinality="1" minCardinality="1" roleName="restaurant">
+     <ns1:UMLClassReference refid="EAID_97A1477D_77DA_499c_B516_8FEAEDA36D04"/>
+    </ns1:UMLAssociationEdge>
+   </ns1:targetUMLAssociationEdge>
+   <ns1:sourceUMLAssociationEdge>
+    <ns1:UMLAssociationEdge maxCardinality="-1" minCardinality="1">
+     <ns1:UMLClassReference refid="EAID_29924AF0_3BB6_4c6f_8F06_17F1530B416E"/>
+    </ns1:UMLAssociationEdge>
+   </ns1:sourceUMLAssociationEdge>
+  </ns1:UMLAssociation>
+  <ns1:UMLAssociation bidirectional="false">
+   <ns1:targetUMLAssociationEdge>
+    <ns1:UMLAssociationEdge maxCardinality="1" minCardinality="0" roleName="album">
+     <ns1:UMLClassReference refid="EAID_0C0D26AA_6F2C_48c2_BE76_D4E5A4B50C96"/>
+    </ns1:UMLAssociationEdge>
+   </ns1:targetUMLAssociationEdge>
+   <ns1:sourceUMLAssociationEdge>
+    <ns1:UMLAssociationEdge maxCardinality="-1" minCardinality="-1">
+     <ns1:UMLClassReference refid="EAID_E28B033A_B5A6_4ec5_A5F9_0AF41625877D"/>
+    </ns1:UMLAssociationEdge>
+   </ns1:sourceUMLAssociationEdge>
+  </ns1:UMLAssociation>
+  <ns1:UMLAssociation bidirectional="true">
+   <ns1:targetUMLAssociationEdge>
+    <ns1:UMLAssociationEdge maxCardinality="-1" minCardinality="1" roleName="hardDriveCollection">
+     <ns1:UMLClassReference refid="EAID_7233AB7C_C607_4c28_825F_F2872AB280ED"/>
+    </ns1:UMLAssociationEdge>
+   </ns1:targetUMLAssociationEdge>
+   <ns1:sourceUMLAssociationEdge>
+    <ns1:UMLAssociationEdge maxCardinality="1" minCardinality="1" roleName="computer">
+     <ns1:UMLClassReference refid="EAID_8EC973CE_B07C_41b5_9B73_9CC6C5B663B6"/>
+    </ns1:UMLAssociationEdge>
+   </ns1:sourceUMLAssociationEdge>
+  </ns1:UMLAssociation>
+  <ns1:UMLAssociation bidirectional="true">
+   <ns1:targetUMLAssociationEdge>
+    <ns1:UMLAssociationEdge maxCardinality="-1" minCardinality="1" roleName="passangerCollection">
+     <ns1:UMLClassReference refid="EAID_C09EA099_C221_424b_996E_50CB230E9822"/>
+    </ns1:UMLAssociationEdge>
+   </ns1:targetUMLAssociationEdge>
+   <ns1:sourceUMLAssociationEdge>
+    <ns1:UMLAssociationEdge maxCardinality="1" minCardinality="1" roleName="flight">
+     <ns1:UMLClassReference refid="EAID_F117109E_DB4A_4cc5_935F_902E68FA958B"/>
+    </ns1:UMLAssociationEdge>
+   </ns1:sourceUMLAssociationEdge>
+  </ns1:UMLAssociation>
+  <ns1:UMLAssociation bidirectional="false">
+   <ns1:targetUMLAssociationEdge>
+    <ns1:UMLAssociationEdge maxCardinality="-1" minCardinality="0" roleName="childCollection">
+     <ns1:UMLClassReference refid="EAID_D676F2CC_2D5F_4013_9ED6_2BE3A9D72BA7"/>
+    </ns1:UMLAssociationEdge>
+   </ns1:targetUMLAssociationEdge>
+   <ns1:sourceUMLAssociationEdge>
+    <ns1:UMLAssociationEdge maxCardinality="1" minCardinality="1" roleName="parent">
+     <ns1:UMLClassReference refid="EAID_D676F2CC_2D5F_4013_9ED6_2BE3A9D72BA7"/>
+    </ns1:UMLAssociationEdge>
+   </ns1:sourceUMLAssociationEdge>
+  </ns1:UMLAssociation>
+  <ns1:UMLAssociation bidirectional="false">
+   <ns1:targetUMLAssociationEdge>
+    <ns1:UMLAssociationEdge maxCardinality="-1" minCardinality="0" roleName="keyCollection">
+     <ns1:UMLClassReference refid="EAID_024059C8_1B42_42ec_AB1D_FCA70ECC0E0B"/>
+    </ns1:UMLAssociationEdge>
+   </ns1:targetUMLAssociationEdge>
+   <ns1:sourceUMLAssociationEdge>
+    <ns1:UMLAssociationEdge maxCardinality="1" minCardinality="1">
+     <ns1:UMLClassReference refid="EAID_5C5D8562_D2C0_4b88_B6F7_534CF2D13B55"/>
+    </ns1:UMLAssociationEdge>
+   </ns1:sourceUMLAssociationEdge>
+  </ns1:UMLAssociation>
+  <ns1:UMLAssociation bidirectional="false">
+   <ns1:targetUMLAssociationEdge>
+    <ns1:UMLAssociationEdge maxCardinality="-1" minCardinality="-1" roleName="buttonCollection">
+     <ns1:UMLClassReference refid="EAID_7ED8208F_0BDC_496e_901A_343AB0932A2E"/>
+    </ns1:UMLAssociationEdge>
+   </ns1:targetUMLAssociationEdge>
+   <ns1:sourceUMLAssociationEdge>
+    <ns1:UMLAssociationEdge maxCardinality="0" minCardinality="0">
+     <ns1:UMLClassReference refid="EAID_43F17C30_FE26_4f70_A7E0_081019697EF8"/>
+    </ns1:UMLAssociationEdge>
+   </ns1:sourceUMLAssociationEdge>
+  </ns1:UMLAssociation>
+  <ns1:UMLAssociation bidirectional="true">
+   <ns1:targetUMLAssociationEdge>
+    <ns1:UMLAssociationEdge maxCardinality="1" minCardinality="0" roleName="product">
+     <ns1:UMLClassReference refid="EAID_A693FCC2_3A49_46d5_B053_4B7AC895C2F3"/>
+    </ns1:UMLAssociationEdge>
+   </ns1:targetUMLAssociationEdge>
+   <ns1:sourceUMLAssociationEdge>
+    <ns1:UMLAssociationEdge maxCardinality="1" minCardinality="0" roleName="line">
+     <ns1:UMLClassReference refid="EAID_2029ED90_8EE0_43bf_B569_3298D506D53D"/>
+    </ns1:UMLAssociationEdge>
+   </ns1:sourceUMLAssociationEdge>
+  </ns1:UMLAssociation>
+  <ns1:UMLAssociation bidirectional="true">
+   <ns1:targetUMLAssociationEdge>
+    <ns1:UMLAssociationEdge maxCardinality="1" minCardinality="1" roleName="pendant">
+     <ns1:UMLClassReference refid="EAID_BCA4DDF7_7AFB_4a59_A63A_3AC1F3FE4E6A"/>
+    </ns1:UMLAssociationEdge>
+   </ns1:targetUMLAssociationEdge>
+   <ns1:sourceUMLAssociationEdge>
+    <ns1:UMLAssociationEdge maxCardinality="1" minCardinality="1" roleName="chain">
+     <ns1:UMLClassReference refid="EAID_7A1D9ED9_4BF4_4958_A62D_68F9EEF29182"/>
+    </ns1:UMLAssociationEdge>
+   </ns1:sourceUMLAssociationEdge>
+  </ns1:UMLAssociation>
+  <ns1:UMLAssociation bidirectional="false">
+   <ns1:targetUMLAssociationEdge>
+    <ns1:UMLAssociationEdge maxCardinality="1" minCardinality="0" roleName="mother">
+     <ns1:UMLClassReference refid="EAID_AD703EC5_9168_4615_8D3E_9DC3D586D9A8"/>
+    </ns1:UMLAssociationEdge>
+   </ns1:targetUMLAssociationEdge>
+   <ns1:sourceUMLAssociationEdge>
+    <ns1:UMLAssociationEdge maxCardinality="1" minCardinality="1">
+     <ns1:UMLClassReference refid="EAID_F1BCE88D_CB0D_4552_8958_81854FCFABF9"/>
+    </ns1:UMLAssociationEdge>
+   </ns1:sourceUMLAssociationEdge>
+  </ns1:UMLAssociation>
+  <ns1:UMLAssociation bidirectional="false">
+   <ns1:targetUMLAssociationEdge>
+    <ns1:UMLAssociationEdge maxCardinality="1" minCardinality="0" roleName="father">
+     <ns1:UMLClassReference refid="EAID_AD703EC5_9168_4615_8D3E_9DC3D586D9A8"/>
+    </ns1:UMLAssociationEdge>
+   </ns1:targetUMLAssociationEdge>
+   <ns1:sourceUMLAssociationEdge>
+    <ns1:UMLAssociationEdge maxCardinality="1" minCardinality="1">
+     <ns1:UMLClassReference refid="EAID_F1BCE88D_CB0D_4552_8958_81854FCFABF9"/>
+    </ns1:UMLAssociationEdge>
+   </ns1:sourceUMLAssociationEdge>
+  </ns1:UMLAssociation>
+  <ns1:UMLAssociation bidirectional="false">
+   <ns1:targetUMLAssociationEdge>
+    <ns1:UMLAssociationEdge maxCardinality="1" minCardinality="0" roleName="father">
+     <ns1:UMLClassReference refid="EAID_4AE4D452_0643_423c_9D55_226DE635EDCB"/>
+    </ns1:UMLAssociationEdge>
+   </ns1:targetUMLAssociationEdge>
+   <ns1:sourceUMLAssociationEdge>
+    <ns1:UMLAssociationEdge maxCardinality="1" minCardinality="1">
+     <ns1:UMLClassReference refid="EAID_978ACAFD_E5BF_4d08_949E_980278DB7ADD"/>
+    </ns1:UMLAssociationEdge>
+   </ns1:sourceUMLAssociationEdge>
+  </ns1:UMLAssociation>
+  <ns1:UMLAssociation bidirectional="false">
+   <ns1:targetUMLAssociationEdge>
+    <ns1:UMLAssociationEdge maxCardinality="1" minCardinality="0" roleName="mother">
+     <ns1:UMLClassReference refid="EAID_4AE4D452_0643_423c_9D55_226DE635EDCB"/>
+    </ns1:UMLAssociationEdge>
+   </ns1:targetUMLAssociationEdge>
+   <ns1:sourceUMLAssociationEdge>
+    <ns1:UMLAssociationEdge maxCardinality="1" minCardinality="1">
+     <ns1:UMLClassReference refid="EAID_978ACAFD_E5BF_4d08_949E_980278DB7ADD"/>
+    </ns1:UMLAssociationEdge>
+   </ns1:sourceUMLAssociationEdge>
+  </ns1:UMLAssociation>
+  <ns1:UMLAssociation bidirectional="false">
+   <ns1:targetUMLAssociationEdge>
+    <ns1:UMLAssociationEdge maxCardinality="1" minCardinality="0" roleName="livesAt">
+     <ns1:UMLClassReference refid="EAID_AB8D6FAC_AB89_4d65_98C2_6AD93982C3E0"/>
+    </ns1:UMLAssociationEdge>
+   </ns1:targetUMLAssociationEdge>
+   <ns1:sourceUMLAssociationEdge>
+    <ns1:UMLAssociationEdge maxCardinality="1" minCardinality="1">
+     <ns1:UMLClassReference refid="EAID_2DA26850_8BCA_4c42_9186_B151F9ADB196"/>
+    </ns1:UMLAssociationEdge>
+   </ns1:sourceUMLAssociationEdge>
+  </ns1:UMLAssociation>
+  <ns1:UMLAssociation bidirectional="false">
+   <ns1:targetUMLAssociationEdge>
+    <ns1:UMLAssociationEdge maxCardinality="1" minCardinality="1" roleName="handle">
+     <ns1:UMLClassReference refid="EAID_D6630603_D640_4865_B78B_FD2D5878ACD0"/>
+    </ns1:UMLAssociationEdge>
+   </ns1:targetUMLAssociationEdge>
+   <ns1:sourceUMLAssociationEdge>
+    <ns1:UMLAssociationEdge maxCardinality="1" minCardinality="0">
+     <ns1:UMLClassReference refid="EAID_E29943AF_01E3_4933_8D13_9C1DBD97B3FB"/>
+    </ns1:UMLAssociationEdge>
+   </ns1:sourceUMLAssociationEdge>
+  </ns1:UMLAssociation>
+  <ns1:UMLAssociation bidirectional="true">
+   <ns1:targetUMLAssociationEdge>
+    <ns1:UMLAssociationEdge maxCardinality="-1" minCardinality="0" roleName="utensilCollection">
+     <ns1:UMLClassReference refid="EAID_899CA401_1F3E_4dd8_8BD7_EB829DBA8BC6"/>
+    </ns1:UMLAssociationEdge>
+   </ns1:targetUMLAssociationEdge>
+   <ns1:sourceUMLAssociationEdge>
+    <ns1:UMLAssociationEdge maxCardinality="-1" minCardinality="0" roleName="dessertCollection">
+     <ns1:UMLClassReference refid="EAID_FD6CE3D5_7F2F_4b6b_9BEC_76AD345F575D"/>
+    </ns1:UMLAssociationEdge>
+   </ns1:sourceUMLAssociationEdge>
+  </ns1:UMLAssociation>
+  <ns1:UMLAssociation bidirectional="true">
+   <ns1:targetUMLAssociationEdge>
+    <ns1:UMLAssociationEdge maxCardinality="1" minCardinality="1" roleName="suit">
+     <ns1:UMLClassReference refid="EAID_E3BC9F7F_E85C_4f73_917A_E33725FD6DE7"/>
+    </ns1:UMLAssociationEdge>
+   </ns1:targetUMLAssociationEdge>
+   <ns1:sourceUMLAssociationEdge>
+    <ns1:UMLAssociationEdge maxCardinality="-1" minCardinality="1" roleName="cardCollection">
+     <ns1:UMLClassReference refid="EAID_1D4C03D8_03CC_4f4e_A948_19A3B5DD3537"/>
+    </ns1:UMLAssociationEdge>
+   </ns1:sourceUMLAssociationEdge>
+  </ns1:UMLAssociation>
+  <ns1:UMLAssociation bidirectional="false">
+   <ns1:targetUMLAssociationEdge>
+    <ns1:UMLAssociationEdge maxCardinality="-1" minCardinality="1" roleName="cardCollection">
+     <ns1:UMLClassReference refid="EAID_1D4C03D8_03CC_4f4e_A948_19A3B5DD3537"/>
+    </ns1:UMLAssociationEdge>
+   </ns1:targetUMLAssociationEdge>
+   <ns1:sourceUMLAssociationEdge>
+    <ns1:UMLAssociationEdge maxCardinality="-1" minCardinality="0" roleName="handCollection">
+     <ns1:UMLClassReference refid="EAID_DF711CE5_51FF_4575_821B_772EA4A3513D"/>
+    </ns1:UMLAssociationEdge>
+   </ns1:sourceUMLAssociationEdge>
+  </ns1:UMLAssociation>
+  <ns1:UMLAssociation bidirectional="true">
+   <ns1:targetUMLAssociationEdge>
+    <ns1:UMLAssociationEdge maxCardinality="1" minCardinality="1" roleName="deck">
+     <ns1:UMLClassReference refid="EAID_613B45B4_C464_42c1_BDEC_A7D2018B7412"/>
+    </ns1:UMLAssociationEdge>
+   </ns1:targetUMLAssociationEdge>
+   <ns1:sourceUMLAssociationEdge>
+    <ns1:UMLAssociationEdge maxCardinality="-1" minCardinality="1" roleName="suitCollection">
+     <ns1:UMLClassReference refid="EAID_E3BC9F7F_E85C_4f73_917A_E33725FD6DE7"/>
+    </ns1:UMLAssociationEdge>
+   </ns1:sourceUMLAssociationEdge>
+  </ns1:UMLAssociation>
+ </ns1:exposedUMLAssociationCollection>
+ <ns1:exposedUMLClassCollection>
+  <ns1:UMLClass allowableAsTarget="true" className="PrivateTeacher" id="EAID_0743B8AB_7C2F_4179_BDD7_B633ABAA4420" packageName="gov.nih.nci.cacoresdk.domain.inheritance.abstrakt" projectName="example" projectVersion="4.1.1">
+   <ns2:umlAttributeCollection xmlns:ns2="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common">
+    <ns2:UMLAttribute dataTypeName="java.lang.Integer" name="yearsExperience" publicID="-9223372036073464249" version="1.0"/>
+    <ns2:UMLAttribute dataTypeName="java.lang.Integer" name="id" publicID="-9223372035141466518" version="1.0"/>
+    <ns2:UMLAttribute dataTypeName="java.lang.String" name="name" publicID="-9223372036697330122" version="1.0"/>
+   </ns2:umlAttributeCollection>
+  </ns1:UMLClass>
+  <ns1:UMLClass allowableAsTarget="true" className="Pupil" id="EAID_25C922D6_7AE9_4b07_9E7D_1FDEC6CAF278" packageName="gov.nih.nci.cacoresdk.domain.inheritance.abstrakt" projectName="example" projectVersion="4.1.1">
+   <ns3:umlAttributeCollection xmlns:ns3="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common">
+    <ns3:UMLAttribute dataTypeName="java.lang.Integer" name="id" publicID="-9223372035916810938" version="1.0"/>
+    <ns3:UMLAttribute dataTypeName="java.lang.String" name="name" publicID="-9223372034994342561" version="1.0"/>
+   </ns3:umlAttributeCollection>
+  </ns1:UMLClass>
+  <ns1:UMLClass allowableAsTarget="true" className="Teacher" id="EAID_EE02A000_21A2_4056_9A0F_0A9FD052E526" packageName="gov.nih.nci.cacoresdk.domain.inheritance.abstrakt" projectName="example" projectVersion="4.1.1">
+   <ns4:umlAttributeCollection xmlns:ns4="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common">
+    <ns4:UMLAttribute dataTypeName="java.lang.Integer" name="id" publicID="-9223372035141466518" version="1.0"/>
+    <ns4:UMLAttribute dataTypeName="java.lang.String" name="name" publicID="-9223372036697330122" version="1.0"/>
+   </ns4:umlAttributeCollection>
+  </ns1:UMLClass>
+  <ns1:UMLClass allowableAsTarget="true" className="Credit" id="EAID_0F0E92DD_E304_40aa_9ADE_4BEB771EAF2D" packageName="gov.nih.nci.cacoresdk.domain.inheritance.childwithassociation" projectName="example" projectVersion="4.1.1">
+   <ns5:umlAttributeCollection xmlns:ns5="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common">
+    <ns5:UMLAttribute dataTypeName="java.lang.String" name="cardNumber" publicID="-9223372035652789443" version="1.0"/>
+    <ns5:UMLAttribute dataTypeName="java.lang.Integer" name="amount" publicID="-9223372035614278602" version="1.0"/>
+    <ns5:UMLAttribute dataTypeName="java.lang.Integer" name="id" publicID="-9223372036809531205" version="1.0"/>
+   </ns5:umlAttributeCollection>
+  </ns1:UMLClass>
+  <ns1:UMLClass allowableAsTarget="true" className="Payment" id="EAID_3B32C53B_66AF_4865_ACE8_5EF7FBEEE7C8" packageName="gov.nih.nci.cacoresdk.domain.inheritance.childwithassociation" projectName="example" projectVersion="4.1.1">
+   <ns6:umlAttributeCollection xmlns:ns6="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common">
+    <ns6:UMLAttribute dataTypeName="java.lang.Integer" name="amount" publicID="-9223372035614278602" version="1.0"/>
+    <ns6:UMLAttribute dataTypeName="java.lang.Integer" name="id" publicID="-9223372036809531205" version="1.0"/>
+   </ns6:umlAttributeCollection>
+  </ns1:UMLClass>
+  <ns1:UMLClass allowableAsTarget="true" className="Cash" id="EAID_848B618E_4867_4115_B819_F79DA3272CC3" packageName="gov.nih.nci.cacoresdk.domain.inheritance.childwithassociation" projectName="example" projectVersion="4.1.1">
+   <ns7:umlAttributeCollection xmlns:ns7="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common">
+    <ns7:UMLAttribute dataTypeName="java.lang.Integer" name="amount" publicID="-9223372035614278602" version="1.0"/>
+    <ns7:UMLAttribute dataTypeName="java.lang.Integer" name="id" publicID="-9223372036809531205" version="1.0"/>
+   </ns7:umlAttributeCollection>
+  </ns1:UMLClass>
+  <ns1:UMLClass allowableAsTarget="true" className="Bank" id="EAID_99A644B0_2028_4462_8301_4D34931B9995" packageName="gov.nih.nci.cacoresdk.domain.inheritance.childwithassociation" projectName="example" projectVersion="4.1.1">
+   <ns8:umlAttributeCollection xmlns:ns8="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common">
+    <ns8:UMLAttribute dataTypeName="java.lang.Integer" name="id" publicID="-9223372036816868386" version="1.0"/>
+    <ns8:UMLAttribute dataTypeName="java.lang.String" name="name" publicID="-9223372036290583888" version="1.0"/>
+   </ns8:umlAttributeCollection>
+  </ns1:UMLClass>
+  <ns1:UMLClass allowableAsTarget="true" className="Shoes" id="EAID_70624BD2_6DBD_4d52_ACD4_B3C8E777AFBE" packageName="gov.nih.nci.cacoresdk.domain.inheritance.childwithassociation.sametable" projectName="example" projectVersion="4.1.1">
+   <ns9:umlAttributeCollection xmlns:ns9="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common">
+    <ns9:UMLAttribute dataTypeName="java.lang.String" name="color" publicID="-9223372034714482668" version="1.0"/>
+    <ns9:UMLAttribute dataTypeName="java.lang.Integer" name="id" publicID="-9223372035154615513" version="1.0"/>
+   </ns9:umlAttributeCollection>
+  </ns1:UMLClass>
+  <ns1:UMLClass allowableAsTarget="true" className="Designer" id="EAID_DB8B1781_754E_4e83_B780_F316B364C451" packageName="gov.nih.nci.cacoresdk.domain.inheritance.childwithassociation.sametable" projectName="example" projectVersion="4.1.1">
+   <ns10:umlAttributeCollection xmlns:ns10="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common">
+    <ns10:UMLAttribute dataTypeName="java.lang.Integer" name="id" publicID="-9223372035001567918" version="1.0"/>
+    <ns10:UMLAttribute dataTypeName="java.lang.String" name="name" publicID="-9223372036647901031" version="1.0"/>
+   </ns10:umlAttributeCollection>
+  </ns1:UMLClass>
+  <ns1:UMLClass allowableAsTarget="true" className="DesignerShoes" id="EAID_DF13C79C_9FDF_4de7_BD1E_0240185CFFB3" packageName="gov.nih.nci.cacoresdk.domain.inheritance.childwithassociation.sametable" projectName="example" projectVersion="4.1.1">
+   <ns11:umlAttributeCollection xmlns:ns11="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common">
+    <ns11:UMLAttribute dataTypeName="java.lang.String" name="color" publicID="-9223372034714482668" version="1.0"/>
+    <ns11:UMLAttribute dataTypeName="java.lang.Integer" name="id" publicID="-9223372035154615513" version="1.0"/>
+   </ns11:umlAttributeCollection>
+  </ns1:UMLClass>
+  <ns1:UMLClass allowableAsTarget="true" className="SportsShoes" id="EAID_F2EE6B07_9DD2_4fd3_8254_7E2FCF4A57AE" packageName="gov.nih.nci.cacoresdk.domain.inheritance.childwithassociation.sametable" projectName="example" projectVersion="4.1.1">
+   <ns12:umlAttributeCollection xmlns:ns12="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common">
+    <ns12:UMLAttribute dataTypeName="java.lang.String" name="sportsType" publicID="-9223372036613241609" version="1.0"/>
+    <ns12:UMLAttribute dataTypeName="java.lang.String" name="color" publicID="-9223372034714482668" version="1.0"/>
+    <ns12:UMLAttribute dataTypeName="java.lang.Integer" name="id" publicID="-9223372035154615513" version="1.0"/>
+   </ns12:umlAttributeCollection>
+  </ns1:UMLClass>
+  <ns1:UMLClass allowableAsTarget="true" className="DiscusFish" id="EAID_13864FDF_CF11_44bb_B6D0_322DE45A8B78" packageName="gov.nih.nci.cacoresdk.domain.inheritance.implicit" projectName="example" projectVersion="4.1.1">
+   <ns13:umlAttributeCollection xmlns:ns13="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common">
+    <ns13:UMLAttribute dataTypeName="java.lang.String" name="primaryColor" publicID="-9223372036283146803" version="1.0"/>
+    <ns13:UMLAttribute dataTypeName="java.lang.String" name="genera" publicID="-9223372036305951647" version="1.0"/>
+    <ns13:UMLAttribute dataTypeName="java.lang.Integer" name="id" publicID="-9223372034734899537" version="1.0"/>
+   </ns13:umlAttributeCollection>
+  </ns1:UMLClass>
+  <ns1:UMLClass allowableAsTarget="true" className="AngelFish" id="EAID_159CB07B_C8FF_4079_A335_FF7E9378C5B7" packageName="gov.nih.nci.cacoresdk.domain.inheritance.implicit" projectName="example" projectVersion="4.1.1">
+   <ns14:umlAttributeCollection xmlns:ns14="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common">
+    <ns14:UMLAttribute dataTypeName="java.lang.Integer" name="finSize" publicID="-9223372036246778520" version="1.0"/>
+    <ns14:UMLAttribute dataTypeName="java.lang.String" name="genera" publicID="-9223372036305951647" version="1.0"/>
+    <ns14:UMLAttribute dataTypeName="java.lang.Integer" name="id" publicID="-9223372034734899537" version="1.0"/>
+   </ns14:umlAttributeCollection>
+  </ns1:UMLClass>
+  <ns1:UMLClass allowableAsTarget="true" className="Tank" id="EAID_3368D1E5_BDDF_4b9b_9AB3_76F263AEEFCB" packageName="gov.nih.nci.cacoresdk.domain.inheritance.implicit" projectName="example" projectVersion="4.1.1">
+   <ns15:umlAttributeCollection xmlns:ns15="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common"/>
+  </ns1:UMLClass>
+  <ns1:UMLClass allowableAsTarget="true" className="Substrate" id="EAID_33CF06A3_F17D_40f0_823A_07C5757AE74C" packageName="gov.nih.nci.cacoresdk.domain.inheritance.implicit" projectName="example" projectVersion="4.1.1">
+   <ns16:umlAttributeCollection xmlns:ns16="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common">
+    <ns16:UMLAttribute dataTypeName="java.lang.Integer" name="id" publicID="-9223372036779335203" version="1.0"/>
+    <ns16:UMLAttribute dataTypeName="java.lang.String" name="name" publicID="-9223372034797370422" version="1.0"/>
+   </ns16:umlAttributeCollection>
+  </ns1:UMLClass>
+  <ns1:UMLClass allowableAsTarget="true" className="TankAccessory" id="EAID_8636A398_D1B8_4675_9B5E_E892791208B6" packageName="gov.nih.nci.cacoresdk.domain.inheritance.implicit" projectName="example" projectVersion="4.1.1">
+   <ns17:umlAttributeCollection xmlns:ns17="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common">
+    <ns17:UMLAttribute dataTypeName="java.lang.Integer" name="id" publicID="-9223372036329356806" version="1.0"/>
+    <ns17:UMLAttribute dataTypeName="java.lang.String" name="name" publicID="-9223372035146353549" version="1.0"/>
+   </ns17:umlAttributeCollection>
+  </ns1:UMLClass>
+  <ns1:UMLClass allowableAsTarget="true" className="SaltwaterFishTank" id="EAID_A760311D_8E99_471f_9809_4A498AF3D06C" packageName="gov.nih.nci.cacoresdk.domain.inheritance.implicit" projectName="example" projectVersion="4.1.1">
+   <ns18:umlAttributeCollection xmlns:ns18="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common">
+    <ns18:UMLAttribute dataTypeName="java.lang.String" name="proteinSkimmerModel" publicID="-9223372036743140395" version="1.0"/>
+    <ns18:UMLAttribute dataTypeName="java.lang.Integer" name="id" publicID="-9223372036088832635" version="1.0"/>
+    <ns18:UMLAttribute dataTypeName="java.lang.Integer" name="numGallons" publicID="-9223372035999902868" version="1.0"/>
+    <ns18:UMLAttribute dataTypeName="java.lang.String" name="shape" publicID="-9223372034927467381" version="1.0"/>
+   </ns18:umlAttributeCollection>
+  </ns1:UMLClass>
+  <ns1:UMLClass allowableAsTarget="true" className="FishTank" id="EAID_B309F156_5EFF_4cd9_9CEC_0FB43CFC0C71" packageName="gov.nih.nci.cacoresdk.domain.inheritance.implicit" projectName="example" projectVersion="4.1.1">
+   <ns19:umlAttributeCollection xmlns:ns19="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common">
+    <ns19:UMLAttribute dataTypeName="java.lang.Integer" name="id" publicID="-9223372036088832635" version="1.0"/>
+    <ns19:UMLAttribute dataTypeName="java.lang.Integer" name="numGallons" publicID="-9223372035999902868" version="1.0"/>
+    <ns19:UMLAttribute dataTypeName="java.lang.String" name="shape" publicID="-9223372034927467381" version="1.0"/>
+   </ns19:umlAttributeCollection>
+  </ns1:UMLClass>
+  <ns1:UMLClass allowableAsTarget="true" className="Fish" id="EAID_D20806E4_DC1A_41e8_A8A3_78548AF4AAD5" packageName="gov.nih.nci.cacoresdk.domain.inheritance.implicit" projectName="example" projectVersion="4.1.1">
+   <ns20:umlAttributeCollection xmlns:ns20="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common">
+    <ns20:UMLAttribute dataTypeName="java.lang.String" name="genera" publicID="-9223372036305951647" version="1.0"/>
+    <ns20:UMLAttribute dataTypeName="java.lang.Integer" name="id" publicID="-9223372034734899537" version="1.0"/>
+   </ns20:umlAttributeCollection>
+  </ns1:UMLClass>
+  <ns1:UMLClass allowableAsTarget="true" className="FreshwaterFishTank" id="EAID_D6CEDC4C_CFC5_440a_97BD_E18FE6C75993" packageName="gov.nih.nci.cacoresdk.domain.inheritance.implicit" projectName="example" projectVersion="4.1.1">
+   <ns21:umlAttributeCollection xmlns:ns21="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common">
+    <ns21:UMLAttribute dataTypeName="java.lang.String" name="filterModel" publicID="-9223372035352987452" version="1.0"/>
+    <ns21:UMLAttribute dataTypeName="java.lang.Integer" name="id" publicID="-9223372036088832635" version="1.0"/>
+    <ns21:UMLAttribute dataTypeName="java.lang.Integer" name="numGallons" publicID="-9223372035999902868" version="1.0"/>
+    <ns21:UMLAttribute dataTypeName="java.lang.String" name="shape" publicID="-9223372034927467381" version="1.0"/>
+   </ns21:umlAttributeCollection>
+  </ns1:UMLClass>
+  <ns1:UMLClass allowableAsTarget="true" className="UndergraduateStudent" id="EAID_371DF6AC_4101_463a_BE9C_2459CC2BB997" packageName="gov.nih.nci.cacoresdk.domain.inheritance.multiplechild" projectName="example" projectVersion="4.1.1">
+   <ns22:umlAttributeCollection xmlns:ns22="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common">
+    <ns22:UMLAttribute dataTypeName="java.lang.Integer" name="id" publicID="-9223372035524534185" version="1.0"/>
+    <ns22:UMLAttribute dataTypeName="java.lang.String" name="name" publicID="-9223372035230084032" version="1.0"/>
+   </ns22:umlAttributeCollection>
+  </ns1:UMLClass>
+  <ns1:UMLClass allowableAsTarget="true" className="Student" id="EAID_C5F04054_3FE0_4797_85F3_73247FAB88C1" packageName="gov.nih.nci.cacoresdk.domain.inheritance.multiplechild" projectName="example" projectVersion="4.1.1">
+   <ns23:umlAttributeCollection xmlns:ns23="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common">
+    <ns23:UMLAttribute dataTypeName="java.lang.Integer" name="id" publicID="-9223372035524534185" version="1.0"/>
+    <ns23:UMLAttribute dataTypeName="java.lang.String" name="name" publicID="-9223372035230084032" version="1.0"/>
+   </ns23:umlAttributeCollection>
+  </ns1:UMLClass>
+  <ns1:UMLClass allowableAsTarget="true" className="GraduateStudent" id="EAID_D774A82C_8C16_47df_A2AB_F5B84B8ADABB" packageName="gov.nih.nci.cacoresdk.domain.inheritance.multiplechild" projectName="example" projectVersion="4.1.1">
+   <ns24:umlAttributeCollection xmlns:ns24="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common">
+    <ns24:UMLAttribute dataTypeName="java.lang.String" name="projectName" publicID="-9223372035119621092" version="1.0"/>
+    <ns24:UMLAttribute dataTypeName="java.lang.Integer" name="id" publicID="-9223372035524534185" version="1.0"/>
+    <ns24:UMLAttribute dataTypeName="java.lang.String" name="name" publicID="-9223372035230084032" version="1.0"/>
+   </ns24:umlAttributeCollection>
+  </ns1:UMLClass>
+  <ns1:UMLClass allowableAsTarget="true" className="Organization" id="EAID_4A20D422_CEC2_42e4_9D39_6D1308509D1E" packageName="gov.nih.nci.cacoresdk.domain.inheritance.multiplechild.sametable" projectName="example" projectVersion="4.1.1">
+   <ns25:umlAttributeCollection xmlns:ns25="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common">
+    <ns25:UMLAttribute dataTypeName="java.lang.Integer" name="id" publicID="-9223372035206856108" version="1.0"/>
+    <ns25:UMLAttribute dataTypeName="java.lang.String" name="name" publicID="-9223372036240079285" version="1.0"/>
+   </ns25:umlAttributeCollection>
+  </ns1:UMLClass>
+  <ns1:UMLClass allowableAsTarget="true" className="PvtOrganization" id="EAID_6A7CD66F_4BA8_4cac_9DEA_51F39924764E" packageName="gov.nih.nci.cacoresdk.domain.inheritance.multiplechild.sametable" projectName="example" projectVersion="4.1.1">
+   <ns26:umlAttributeCollection xmlns:ns26="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common">
+    <ns26:UMLAttribute dataTypeName="java.lang.String" name="ceo" publicID="-9223372035063345017" version="1.0"/>
+    <ns26:UMLAttribute dataTypeName="java.lang.Integer" name="id" publicID="-9223372035206856108" version="1.0"/>
+    <ns26:UMLAttribute dataTypeName="java.lang.String" name="name" publicID="-9223372036240079285" version="1.0"/>
+   </ns26:umlAttributeCollection>
+  </ns1:UMLClass>
+  <ns1:UMLClass allowableAsTarget="true" className="GovtOrganization" id="EAID_7EADD5AF_D7A5_41ba_AD19_7ECA56B41EF6" packageName="gov.nih.nci.cacoresdk.domain.inheritance.multiplechild.sametable" projectName="example" projectVersion="4.1.1">
+   <ns27:umlAttributeCollection xmlns:ns27="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common">
+    <ns27:UMLAttribute dataTypeName="java.lang.Integer" name="agencyBudget" publicID="-9223372036745074702" version="1.0"/>
+    <ns27:UMLAttribute dataTypeName="java.lang.Integer" name="id" publicID="-9223372035206856108" version="1.0"/>
+    <ns27:UMLAttribute dataTypeName="java.lang.String" name="name" publicID="-9223372036240079285" version="1.0"/>
+   </ns27:umlAttributeCollection>
+  </ns1:UMLClass>
+  <ns1:UMLClass allowableAsTarget="true" className="Human" id="EAID_3F0B75DF_5CE4_4d8a_8B10_118473CF2879" packageName="gov.nih.nci.cacoresdk.domain.inheritance.onechild" projectName="example" projectVersion="4.1.1">
+   <ns28:umlAttributeCollection xmlns:ns28="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common">
+    <ns28:UMLAttribute dataTypeName="java.lang.String" name="diet" publicID="-9223372035267533676" version="1.0"/>
+    <ns28:UMLAttribute dataTypeName="java.lang.String" name="hairColor" publicID="-9223372035541774980" version="1.0"/>
+    <ns28:UMLAttribute dataTypeName="java.lang.Integer" name="id" publicID="-9223372036272895408" version="1.0"/>
+   </ns28:umlAttributeCollection>
+  </ns1:UMLClass>
+  <ns1:UMLClass allowableAsTarget="true" className="Mammal" id="EAID_BF0A63FE_981F_4d5f_8FAC_8868DAA30AF1" packageName="gov.nih.nci.cacoresdk.domain.inheritance.onechild" projectName="example" projectVersion="4.1.1">
+   <ns29:umlAttributeCollection xmlns:ns29="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common">
+    <ns29:UMLAttribute dataTypeName="java.lang.String" name="hairColor" publicID="-9223372035541774980" version="1.0"/>
+    <ns29:UMLAttribute dataTypeName="java.lang.Integer" name="id" publicID="-9223372036272895408" version="1.0"/>
+   </ns29:umlAttributeCollection>
+  </ns1:UMLClass>
+  <ns1:UMLClass allowableAsTarget="true" className="Currency" id="EAID_B4A95172_95CA_4f8d_9A9F_CA5B3416A1A9" packageName="gov.nih.nci.cacoresdk.domain.inheritance.onechild.sametable" projectName="example" projectVersion="4.1.1">
+   <ns30:umlAttributeCollection xmlns:ns30="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common">
+    <ns30:UMLAttribute dataTypeName="java.lang.String" name="country" publicID="-9223372036448419648" version="1.0"/>
+    <ns30:UMLAttribute dataTypeName="java.lang.Integer" name="id" publicID="-9223372035533578341" version="1.0"/>
+   </ns30:umlAttributeCollection>
+  </ns1:UMLClass>
+  <ns1:UMLClass allowableAsTarget="true" className="Note" id="EAID_DDDFE683_3B11_401e_AC75_4753AB357564" packageName="gov.nih.nci.cacoresdk.domain.inheritance.onechild.sametable" projectName="example" projectVersion="4.1.1">
+   <ns31:umlAttributeCollection xmlns:ns31="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common">
+    <ns31:UMLAttribute dataTypeName="java.lang.Integer" name="value" publicID="-9223372034774209469" version="1.0"/>
+    <ns31:UMLAttribute dataTypeName="java.lang.String" name="country" publicID="-9223372036448419648" version="1.0"/>
+    <ns31:UMLAttribute dataTypeName="java.lang.Integer" name="id" publicID="-9223372035533578341" version="1.0"/>
+   </ns31:umlAttributeCollection>
+  </ns1:UMLClass>
+  <ns1:UMLClass allowableAsTarget="true" className="Professor" id="EAID_00F8EA6B_E027_4bad_B011_41830FF87842" packageName="gov.nih.nci.cacoresdk.domain.inheritance.parentwithassociation" projectName="example" projectVersion="4.1.1">
+   <ns32:umlAttributeCollection xmlns:ns32="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common">
+    <ns32:UMLAttribute dataTypeName="java.lang.Integer" name="id" publicID="-9223372036717590245" version="1.0"/>
+    <ns32:UMLAttribute dataTypeName="java.lang.String" name="name" publicID="-9223372036550467035" version="1.0"/>
+   </ns32:umlAttributeCollection>
+  </ns1:UMLClass>
+  <ns1:UMLClass allowableAsTarget="true" className="AssociateProfessor" id="EAID_12DBFC9B_D995_4251_96D0_6FB3EB85C0FB" packageName="gov.nih.nci.cacoresdk.domain.inheritance.parentwithassociation" projectName="example" projectVersion="4.1.1">
+   <ns33:umlAttributeCollection xmlns:ns33="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common">
+    <ns33:UMLAttribute dataTypeName="java.lang.Integer" name="yearsServed" publicID="-9223372035405196777" version="1.0"/>
+    <ns33:UMLAttribute dataTypeName="java.lang.Integer" name="id" publicID="-9223372036717590245" version="1.0"/>
+    <ns33:UMLAttribute dataTypeName="java.lang.String" name="name" publicID="-9223372036550467035" version="1.0"/>
+   </ns33:umlAttributeCollection>
+  </ns1:UMLClass>
+  <ns1:UMLClass allowableAsTarget="true" className="Assistant" id="EAID_5CA73A59_BD41_4920_B53C_AC571E123E64" packageName="gov.nih.nci.cacoresdk.domain.inheritance.parentwithassociation" projectName="example" projectVersion="4.1.1">
+   <ns34:umlAttributeCollection xmlns:ns34="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common">
+    <ns34:UMLAttribute dataTypeName="java.lang.Integer" name="id" publicID="-9223372034734857709" version="1.0"/>
+    <ns34:UMLAttribute dataTypeName="java.lang.String" name="name" publicID="-9223372035480859072" version="1.0"/>
+   </ns34:umlAttributeCollection>
+  </ns1:UMLClass>
+  <ns1:UMLClass allowableAsTarget="true" className="TenuredProfessor" id="EAID_60FEB210_B86D_4a29_B1FA_A96C64096F73" packageName="gov.nih.nci.cacoresdk.domain.inheritance.parentwithassociation" projectName="example" projectVersion="4.1.1">
+   <ns35:umlAttributeCollection xmlns:ns35="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common">
+    <ns35:UMLAttribute dataTypeName="java.lang.Integer" name="tenuredYear" publicID="-9223372034973945435" version="1.0"/>
+    <ns35:UMLAttribute dataTypeName="java.lang.Integer" name="id" publicID="-9223372036717590245" version="1.0"/>
+    <ns35:UMLAttribute dataTypeName="java.lang.String" name="name" publicID="-9223372036550467035" version="1.0"/>
+   </ns35:umlAttributeCollection>
+  </ns1:UMLClass>
+  <ns1:UMLClass allowableAsTarget="true" className="AssistantProfessor" id="EAID_F1DCD13C_9301_4325_9B7F_3311941C133B" packageName="gov.nih.nci.cacoresdk.domain.inheritance.parentwithassociation" projectName="example" projectVersion="4.1.1">
+   <ns36:umlAttributeCollection xmlns:ns36="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common">
+    <ns36:UMLAttribute dataTypeName="java.lang.Integer" name="joiningYear" publicID="-9223372036477885390" version="1.0"/>
+    <ns36:UMLAttribute dataTypeName="java.lang.Integer" name="id" publicID="-9223372036717590245" version="1.0"/>
+    <ns36:UMLAttribute dataTypeName="java.lang.String" name="name" publicID="-9223372036550467035" version="1.0"/>
+   </ns36:umlAttributeCollection>
+  </ns1:UMLClass>
+  <ns1:UMLClass allowableAsTarget="true" className="HardTop" id="EAID_175D3CFB_211C_459a_A3C9_6953D471F910" packageName="gov.nih.nci.cacoresdk.domain.inheritance.parentwithassociation.sametable" projectName="example" projectVersion="4.1.1">
+   <ns37:umlAttributeCollection xmlns:ns37="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common">
+    <ns37:UMLAttribute dataTypeName="java.lang.Integer" name="keyCode" publicID="-9223372035047364828" version="1.0"/>
+    <ns37:UMLAttribute dataTypeName="java.lang.Integer" name="capacity" publicID="-9223372035997106197" version="1.0"/>
+    <ns37:UMLAttribute dataTypeName="java.lang.Integer" name="id" publicID="-9223372035498367777" version="1.0"/>
+   </ns37:umlAttributeCollection>
+  </ns1:UMLClass>
+  <ns1:UMLClass allowableAsTarget="true" className="Luggage" id="EAID_6135B872_E71A_44c8_9DC1_269DE3815F79" packageName="gov.nih.nci.cacoresdk.domain.inheritance.parentwithassociation.sametable" projectName="example" projectVersion="4.1.1">
+   <ns38:umlAttributeCollection xmlns:ns38="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common">
+    <ns38:UMLAttribute dataTypeName="java.lang.Integer" name="capacity" publicID="-9223372035997106197" version="1.0"/>
+    <ns38:UMLAttribute dataTypeName="java.lang.Integer" name="id" publicID="-9223372035498367777" version="1.0"/>
+   </ns38:umlAttributeCollection>
+  </ns1:UMLClass>
+  <ns1:UMLClass allowableAsTarget="true" className="HardTopType" id="EAID_81294799_6821_422e_BE36_580BDEB8616C" packageName="gov.nih.nci.cacoresdk.domain.inheritance.parentwithassociation.sametable" projectName="example" projectVersion="4.1.1">
+   <ns39:umlAttributeCollection xmlns:ns39="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common">
+    <ns39:UMLAttribute dataTypeName="java.lang.Integer" name="keyCode" publicID="-9223372035047364828" version="1.0"/>
+    <ns39:UMLAttribute dataTypeName="java.lang.Integer" name="capacity" publicID="-9223372035997106197" version="1.0"/>
+    <ns39:UMLAttribute dataTypeName="java.lang.Integer" name="id" publicID="-9223372035498367777" version="1.0"/>
+   </ns39:umlAttributeCollection>
+  </ns1:UMLClass>
+  <ns1:UMLClass allowableAsTarget="true" className="Wheel" id="EAID_A2EE906F_6DC7_4bbb_9261_98FCE0777DBA" packageName="gov.nih.nci.cacoresdk.domain.inheritance.parentwithassociation.sametable" projectName="example" projectVersion="4.1.1">
+   <ns40:umlAttributeCollection xmlns:ns40="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common">
+    <ns40:UMLAttribute dataTypeName="java.lang.Integer" name="id" publicID="-9223372036310262686" version="1.0"/>
+    <ns40:UMLAttribute dataTypeName="java.lang.Integer" name="radius" publicID="-9223372036721446471" version="1.0"/>
+   </ns40:umlAttributeCollection>
+  </ns1:UMLClass>
+  <ns1:UMLClass allowableAsTarget="true" className="SoftTop" id="EAID_F0526971_7156_49e1_AF64_7A6535698C54" packageName="gov.nih.nci.cacoresdk.domain.inheritance.parentwithassociation.sametable" projectName="example" projectVersion="4.1.1">
+   <ns41:umlAttributeCollection xmlns:ns41="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common">
+    <ns41:UMLAttribute dataTypeName="java.lang.Boolean" name="expandable" publicID="-9223372036556188039" version="1.0"/>
+    <ns41:UMLAttribute dataTypeName="java.lang.Integer" name="capacity" publicID="-9223372035997106197" version="1.0"/>
+    <ns41:UMLAttribute dataTypeName="java.lang.Integer" name="id" publicID="-9223372035498367777" version="1.0"/>
+   </ns41:umlAttributeCollection>
+  </ns1:UMLClass>
+  <ns1:UMLClass allowableAsTarget="true" className="CRTMonitor" id="EAID_782AA84A_21F0_4a1d_AA92_64F753204759" packageName="gov.nih.nci.cacoresdk.domain.inheritance.twolevelinheritance" projectName="example" projectVersion="4.1.1">
+   <ns42:umlAttributeCollection xmlns:ns42="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common">
+    <ns42:UMLAttribute dataTypeName="java.lang.Integer" name="refreshRate" publicID="-9223372035657971434" version="1.0"/>
+    <ns42:UMLAttribute dataTypeName="java.lang.String" name="brand" publicID="-9223372036393240584" version="1.0"/>
+    <ns42:UMLAttribute dataTypeName="java.lang.Integer" name="height" publicID="-9223372035993124689" version="1.0"/>
+    <ns42:UMLAttribute dataTypeName="java.lang.Integer" name="id" publicID="-9223372035369835543" version="1.0"/>
+    <ns42:UMLAttribute dataTypeName="java.lang.Integer" name="width" publicID="-9223372035953078409" version="1.0"/>
+   </ns42:umlAttributeCollection>
+  </ns1:UMLClass>
+  <ns1:UMLClass allowableAsTarget="true" className="LCDMonitor" id="EAID_9E6AD14D_C710_4a67_AAD8_6EFEEDFFC18A" packageName="gov.nih.nci.cacoresdk.domain.inheritance.twolevelinheritance" projectName="example" projectVersion="4.1.1">
+   <ns43:umlAttributeCollection xmlns:ns43="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common">
+    <ns43:UMLAttribute dataTypeName="java.lang.Integer" name="dpiSupported" publicID="-9223372036397485223" version="1.0"/>
+    <ns43:UMLAttribute dataTypeName="java.lang.String" name="brand" publicID="-9223372036393240584" version="1.0"/>
+    <ns43:UMLAttribute dataTypeName="java.lang.Integer" name="height" publicID="-9223372035993124689" version="1.0"/>
+    <ns43:UMLAttribute dataTypeName="java.lang.Integer" name="id" publicID="-9223372035369835543" version="1.0"/>
+    <ns43:UMLAttribute dataTypeName="java.lang.Integer" name="width" publicID="-9223372035953078409" version="1.0"/>
+   </ns43:umlAttributeCollection>
+  </ns1:UMLClass>
+  <ns1:UMLClass allowableAsTarget="true" className="Display" id="EAID_BD83C679_098A_46a0_B994_50A9478E9896" packageName="gov.nih.nci.cacoresdk.domain.inheritance.twolevelinheritance" projectName="example" projectVersion="4.1.1">
+   <ns44:umlAttributeCollection xmlns:ns44="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common">
+    <ns44:UMLAttribute dataTypeName="java.lang.Integer" name="height" publicID="-9223372035993124689" version="1.0"/>
+    <ns44:UMLAttribute dataTypeName="java.lang.Integer" name="id" publicID="-9223372035369835543" version="1.0"/>
+    <ns44:UMLAttribute dataTypeName="java.lang.Integer" name="width" publicID="-9223372035953078409" version="1.0"/>
+   </ns44:umlAttributeCollection>
+  </ns1:UMLClass>
+  <ns1:UMLClass allowableAsTarget="true" className="Monitor" id="EAID_C7759A44_3482_4c56_97E7_0A7778155F35" packageName="gov.nih.nci.cacoresdk.domain.inheritance.twolevelinheritance" projectName="example" projectVersion="4.1.1">
+   <ns45:umlAttributeCollection xmlns:ns45="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common">
+    <ns45:UMLAttribute dataTypeName="java.lang.String" name="brand" publicID="-9223372036393240584" version="1.0"/>
+    <ns45:UMLAttribute dataTypeName="java.lang.Integer" name="height" publicID="-9223372035993124689" version="1.0"/>
+    <ns45:UMLAttribute dataTypeName="java.lang.Integer" name="id" publicID="-9223372035369835543" version="1.0"/>
+    <ns45:UMLAttribute dataTypeName="java.lang.Integer" name="width" publicID="-9223372035953078409" version="1.0"/>
+   </ns45:umlAttributeCollection>
+  </ns1:UMLClass>
+  <ns1:UMLClass allowableAsTarget="true" className="Goverment" id="EAID_0E249559_1FE4_4c11_81C1_8E5E2B50EAD1" packageName="gov.nih.nci.cacoresdk.domain.inheritance.twolevelinheritance.sametable" projectName="example" projectVersion="4.1.1">
+   <ns46:umlAttributeCollection xmlns:ns46="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common">
+    <ns46:UMLAttribute dataTypeName="java.lang.String" name="country" publicID="-9223372036275177691" version="1.0"/>
+    <ns46:UMLAttribute dataTypeName="java.lang.Integer" name="id" publicID="-9223372035029366421" version="1.0"/>
+   </ns46:umlAttributeCollection>
+  </ns1:UMLClass>
+  <ns1:UMLClass allowableAsTarget="true" className="ParliamantaryGovt" id="EAID_1852F1E9_F317_4c7c_AC18_D5FEB12D9FB0" packageName="gov.nih.nci.cacoresdk.domain.inheritance.twolevelinheritance.sametable" projectName="example" projectVersion="4.1.1">
+   <ns47:umlAttributeCollection xmlns:ns47="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common">
+    <ns47:UMLAttribute dataTypeName="java.lang.String" name="primeMinister" publicID="-9223372036718676083" version="1.0"/>
+    <ns47:UMLAttribute dataTypeName="java.lang.String" name="country" publicID="-9223372036275177691" version="1.0"/>
+    <ns47:UMLAttribute dataTypeName="java.lang.Integer" name="id" publicID="-9223372035029366421" version="1.0"/>
+   </ns47:umlAttributeCollection>
+  </ns1:UMLClass>
+  <ns1:UMLClass allowableAsTarget="true" className="DemocraticGovt" id="EAID_5BADA45A_1766_4847_B60A_55E867A29D2F" packageName="gov.nih.nci.cacoresdk.domain.inheritance.twolevelinheritance.sametable" projectName="example" projectVersion="4.1.1">
+   <ns48:umlAttributeCollection xmlns:ns48="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common">
+    <ns48:UMLAttribute dataTypeName="java.lang.String" name="country" publicID="-9223372036275177691" version="1.0"/>
+    <ns48:UMLAttribute dataTypeName="java.lang.Integer" name="id" publicID="-9223372035029366421" version="1.0"/>
+   </ns48:umlAttributeCollection>
+  </ns1:UMLClass>
+  <ns1:UMLClass allowableAsTarget="true" className="CommunistGovt" id="EAID_9974BB75_A1C7_45fb_905B_5F6E387FF461" packageName="gov.nih.nci.cacoresdk.domain.inheritance.twolevelinheritance.sametable" projectName="example" projectVersion="4.1.1">
+   <ns49:umlAttributeCollection xmlns:ns49="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common">
+    <ns49:UMLAttribute dataTypeName="java.lang.String" name="country" publicID="-9223372036275177691" version="1.0"/>
+    <ns49:UMLAttribute dataTypeName="java.lang.Integer" name="id" publicID="-9223372035029366421" version="1.0"/>
+   </ns49:umlAttributeCollection>
+  </ns1:UMLClass>
+  <ns1:UMLClass allowableAsTarget="true" className="PresidentialGovt" id="EAID_C47FB911_44C9_406b_91EB_6A61BABBC9EA" packageName="gov.nih.nci.cacoresdk.domain.inheritance.twolevelinheritance.sametable" projectName="example" projectVersion="4.1.1">
+   <ns50:umlAttributeCollection xmlns:ns50="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common">
+    <ns50:UMLAttribute dataTypeName="java.lang.String" name="president" publicID="-9223372036685309633" version="1.0"/>
+    <ns50:UMLAttribute dataTypeName="java.lang.String" name="country" publicID="-9223372036275177691" version="1.0"/>
+    <ns50:UMLAttribute dataTypeName="java.lang.Integer" name="id" publicID="-9223372035029366421" version="1.0"/>
+   </ns50:umlAttributeCollection>
+  </ns1:UMLClass>
+  <ns1:UMLClass allowableAsTarget="true" className="Calculator" id="EAID_47763202_9509_42ae_BA5D_7F05FBA1C014" packageName="gov.nih.nci.cacoresdk.domain.inheritance.twolevelinheritance.sametablerootlevel" projectName="example" projectVersion="4.1.1">
+   <ns51:umlAttributeCollection xmlns:ns51="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common">
+    <ns51:UMLAttribute dataTypeName="java.lang.String" name="brand" publicID="-9223372036285437308" version="1.0"/>
+    <ns51:UMLAttribute dataTypeName="java.lang.Integer" name="id" publicID="-9223372036852136707" version="1.0"/>
+   </ns51:umlAttributeCollection>
+  </ns1:UMLClass>
+  <ns1:UMLClass allowableAsTarget="true" className="FinancialCalculator" id="EAID_4DC883C2_1380_46a9_B8DA_DD9BF0F5B7DE" packageName="gov.nih.nci.cacoresdk.domain.inheritance.twolevelinheritance.sametablerootlevel" projectName="example" projectVersion="4.1.1">
+   <ns52:umlAttributeCollection xmlns:ns52="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common">
+    <ns52:UMLAttribute dataTypeName="java.lang.String" name="brand" publicID="-9223372036285437308" version="1.0"/>
+    <ns52:UMLAttribute dataTypeName="java.lang.Integer" name="id" publicID="-9223372036852136707" version="1.0"/>
+   </ns52:umlAttributeCollection>
+  </ns1:UMLClass>
+  <ns1:UMLClass allowableAsTarget="true" className="GraphicCalculator" id="EAID_8C521550_2832_4fa4_A000_42738EFC3AAB" packageName="gov.nih.nci.cacoresdk.domain.inheritance.twolevelinheritance.sametablerootlevel" projectName="example" projectVersion="4.1.1">
+   <ns53:umlAttributeCollection xmlns:ns53="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common">
+    <ns53:UMLAttribute dataTypeName="java.lang.String" name="brand" publicID="-9223372036285437308" version="1.0"/>
+    <ns53:UMLAttribute dataTypeName="java.lang.Integer" name="id" publicID="-9223372036852136707" version="1.0"/>
+   </ns53:umlAttributeCollection>
+  </ns1:UMLClass>
+  <ns1:UMLClass allowableAsTarget="true" className="ScientificCalculator" id="EAID_EA92F07A_21F0_4e5d_AF19_78393AE49A36" packageName="gov.nih.nci.cacoresdk.domain.inheritance.twolevelinheritance.sametablerootlevel" projectName="example" projectVersion="4.1.1">
+   <ns54:umlAttributeCollection xmlns:ns54="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common">
+    <ns54:UMLAttribute dataTypeName="java.lang.String" name="brand" publicID="-9223372036285437308" version="1.0"/>
+    <ns54:UMLAttribute dataTypeName="java.lang.Integer" name="id" publicID="-9223372036852136707" version="1.0"/>
+   </ns54:umlAttributeCollection>
+  </ns1:UMLClass>
+  <ns1:UMLClass allowableAsTarget="true" className="Dog" id="EAID_D7D3323E_F54E_4100_B15E_BE7216D7C7FE" packageName="gov.nih.nci.cacoresdk.domain.interfaze" projectName="example" projectVersion="4.1.1">
+   <ns55:umlAttributeCollection xmlns:ns55="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common">
+    <ns55:UMLAttribute dataTypeName="java.lang.String" name="breed" publicID="-9223372036653379122" version="1.0"/>
+    <ns55:UMLAttribute dataTypeName="java.lang.String" name="gender" publicID="-9223372035553869739" version="1.0"/>
+    <ns55:UMLAttribute dataTypeName="java.lang.Integer" name="id" publicID="-9223372035890697671" version="1.0"/>
+   </ns55:umlAttributeCollection>
+  </ns1:UMLClass>
+  <ns1:UMLClass allowableAsTarget="true" className="Project" id="EAID_8598F1F2_EE47_41a6_B3A0_A61E801D02BE" packageName="gov.nih.nci.cacoresdk.domain.manytomany.bidirectional" projectName="example" projectVersion="4.1.1">
+   <ns56:umlAttributeCollection xmlns:ns56="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common">
+    <ns56:UMLAttribute dataTypeName="java.lang.Integer" name="id" publicID="-9223372035826663480" version="1.0"/>
+    <ns56:UMLAttribute dataTypeName="java.lang.String" name="name" publicID="-9223372036388690339" version="1.0"/>
+   </ns56:umlAttributeCollection>
+  </ns1:UMLClass>
+  <ns1:UMLClass allowableAsTarget="true" className="Employee" id="EAID_C266F257_44CD_4b19_9E33_23F63573B38F" packageName="gov.nih.nci.cacoresdk.domain.manytomany.bidirectional" projectName="example" projectVersion="4.1.1">
+   <ns57:umlAttributeCollection xmlns:ns57="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common">
+    <ns57:UMLAttribute dataTypeName="java.lang.Integer" name="id" publicID="-9223372034998154762" version="1.0"/>
+    <ns57:UMLAttribute dataTypeName="java.lang.String" name="name" publicID="-9223372034945429648" version="1.0"/>
+   </ns57:umlAttributeCollection>
+  </ns1:UMLClass>
+  <ns1:UMLClass allowableAsTarget="true" className="Book" id="EAID_178351E2_A663_474e_AE08_943831F4CF2B" packageName="gov.nih.nci.cacoresdk.domain.manytomany.unidirectional" projectName="example" projectVersion="4.1.1">
+   <ns58:umlAttributeCollection xmlns:ns58="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common">
+    <ns58:UMLAttribute dataTypeName="java.lang.Integer" name="id" publicID="-9223372035193296485" version="1.0"/>
+    <ns58:UMLAttribute dataTypeName="java.lang.String" name="name" publicID="-9223372035607977406" version="1.0"/>
+   </ns58:umlAttributeCollection>
+  </ns1:UMLClass>
+  <ns1:UMLClass allowableAsTarget="true" className="Author" id="EAID_775B56C3_D694_417a_A41E_2926FD5F3160" packageName="gov.nih.nci.cacoresdk.domain.manytomany.unidirectional" projectName="example" projectVersion="4.1.1">
+   <ns59:umlAttributeCollection xmlns:ns59="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common">
+    <ns59:UMLAttribute dataTypeName="java.lang.Integer" name="id" publicID="-9223372036781386924" version="1.0"/>
+    <ns59:UMLAttribute dataTypeName="java.lang.String" name="name" publicID="-9223372035727774244" version="1.0"/>
+   </ns59:umlAttributeCollection>
+  </ns1:UMLClass>
+  <ns1:UMLClass allowableAsTarget="true" className="Chef" id="EAID_29924AF0_3BB6_4c6f_8F06_17F1530B416E" packageName="gov.nih.nci.cacoresdk.domain.manytoone.unidirectional" projectName="example" projectVersion="4.1.1">
+   <ns60:umlAttributeCollection xmlns:ns60="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common">
+    <ns60:UMLAttribute dataTypeName="java.lang.Integer" name="id" publicID="-9223372035039680286" version="1.0"/>
+    <ns60:UMLAttribute dataTypeName="java.lang.String" name="name" publicID="-9223372035484020957" version="1.0"/>
+   </ns60:umlAttributeCollection>
+  </ns1:UMLClass>
+  <ns1:UMLClass allowableAsTarget="true" className="Restaurant" id="EAID_97A1477D_77DA_499c_B516_8FEAEDA36D04" packageName="gov.nih.nci.cacoresdk.domain.manytoone.unidirectional" projectName="example" projectVersion="4.1.1">
+   <ns61:umlAttributeCollection xmlns:ns61="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common">
+    <ns61:UMLAttribute dataTypeName="java.lang.Integer" name="id" publicID="-9223372036645707555" version="1.0"/>
+    <ns61:UMLAttribute dataTypeName="java.lang.String" name="name" publicID="-9223372036033198998" version="1.0"/>
+   </ns61:umlAttributeCollection>
+  </ns1:UMLClass>
+  <ns1:UMLClass allowableAsTarget="true" className="Album" id="EAID_0C0D26AA_6F2C_48c2_BE76_D4E5A4B50C96" packageName="gov.nih.nci.cacoresdk.domain.manytoone.unidirectional.withjoin" projectName="example" projectVersion="4.1.1">
+   <ns62:umlAttributeCollection xmlns:ns62="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common">
+    <ns62:UMLAttribute dataTypeName="java.lang.Integer" name="id" publicID="-9223372036767894661" version="1.0"/>
+    <ns62:UMLAttribute dataTypeName="java.lang.String" name="title" publicID="-9223372034774205173" version="1.0"/>
+   </ns62:umlAttributeCollection>
+  </ns1:UMLClass>
+  <ns1:UMLClass allowableAsTarget="true" className="Song" id="EAID_E28B033A_B5A6_4ec5_A5F9_0AF41625877D" packageName="gov.nih.nci.cacoresdk.domain.manytoone.unidirectional.withjoin" projectName="example" projectVersion="4.1.1">
+   <ns63:umlAttributeCollection xmlns:ns63="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common">
+    <ns63:UMLAttribute dataTypeName="java.lang.Integer" name="id" publicID="-9223372036412034974" version="1.0"/>
+    <ns63:UMLAttribute dataTypeName="java.lang.String" name="title" publicID="-9223372035689083343" version="1.0"/>
+   </ns63:umlAttributeCollection>
+  </ns1:UMLClass>
+  <ns1:UMLClass allowableAsTarget="true" className="HardDrive" id="EAID_7233AB7C_C607_4c28_825F_F2872AB280ED" packageName="gov.nih.nci.cacoresdk.domain.onetomany.bidirectional" projectName="example" projectVersion="4.1.1">
+   <ns64:umlAttributeCollection xmlns:ns64="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common">
+    <ns64:UMLAttribute dataTypeName="java.lang.Integer" name="id" publicID="-9223372036121483617" version="1.0"/>
+    <ns64:UMLAttribute dataTypeName="java.lang.Integer" name="size" publicID="-9223372036448208373" version="1.0"/>
+   </ns64:umlAttributeCollection>
+  </ns1:UMLClass>
+  <ns1:UMLClass allowableAsTarget="true" className="Computer" id="EAID_8EC973CE_B07C_41b5_9B73_9CC6C5B663B6" packageName="gov.nih.nci.cacoresdk.domain.onetomany.bidirectional" projectName="example" projectVersion="4.1.1">
+   <ns65:umlAttributeCollection xmlns:ns65="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common">
+    <ns65:UMLAttribute dataTypeName="java.lang.Integer" name="id" publicID="-9223372035474199819" version="1.0"/>
+    <ns65:UMLAttribute dataTypeName="java.lang.String" name="type" publicID="-9223372034721957619" version="1.0"/>
+   </ns65:umlAttributeCollection>
+  </ns1:UMLClass>
+  <ns1:UMLClass allowableAsTarget="true" className="Passanger" id="EAID_C09EA099_C221_424b_996E_50CB230E9822" packageName="gov.nih.nci.cacoresdk.domain.onetomany.bidirectional.withjoin" projectName="example" projectVersion="4.1.1">
+   <ns66:umlAttributeCollection xmlns:ns66="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common">
+    <ns66:UMLAttribute dataTypeName="java.lang.Integer" name="id" publicID="-9223372036052415390" version="1.0"/>
+    <ns66:UMLAttribute dataTypeName="java.lang.String" name="name" publicID="-9223372036658946098" version="1.0"/>
+   </ns66:umlAttributeCollection>
+  </ns1:UMLClass>
+  <ns1:UMLClass allowableAsTarget="true" className="Flight" id="EAID_F117109E_DB4A_4cc5_935F_902E68FA958B" packageName="gov.nih.nci.cacoresdk.domain.onetomany.bidirectional.withjoin" projectName="example" projectVersion="4.1.1">
+   <ns67:umlAttributeCollection xmlns:ns67="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common">
+    <ns67:UMLAttribute dataTypeName="java.lang.String" name="destination" publicID="-9223372036737242534" version="1.0"/>
+    <ns67:UMLAttribute dataTypeName="java.lang.Integer" name="id" publicID="-9223372035438775843" version="1.0"/>
+   </ns67:umlAttributeCollection>
+  </ns1:UMLClass>
+  <ns1:UMLClass allowableAsTarget="true" className="Element" id="EAID_D676F2CC_2D5F_4013_9ED6_2BE3A9D72BA7" packageName="gov.nih.nci.cacoresdk.domain.onetomany.selfassociation" projectName="example" projectVersion="4.1.1">
+   <ns68:umlAttributeCollection xmlns:ns68="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common">
+    <ns68:UMLAttribute dataTypeName="java.lang.Integer" name="id" publicID="-9223372035178638438" version="1.0"/>
+    <ns68:UMLAttribute dataTypeName="java.lang.String" name="name" publicID="-9223372036358261723" version="1.0"/>
+   </ns68:umlAttributeCollection>
+  </ns1:UMLClass>
+  <ns1:UMLClass allowableAsTarget="true" className="LatchKey" id="EAID_024059C8_1B42_42ec_AB1D_FCA70ECC0E0B" packageName="gov.nih.nci.cacoresdk.domain.onetomany.unidirectional" projectName="example" projectVersion="4.1.1">
+   <ns69:umlAttributeCollection xmlns:ns69="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common">
+    <ns69:UMLAttribute dataTypeName="java.lang.Integer" name="id" publicID="-9223372035779766881" version="1.0"/>
+    <ns69:UMLAttribute dataTypeName="java.lang.String" name="type" publicID="-9223372035773097829" version="1.0"/>
+   </ns69:umlAttributeCollection>
+  </ns1:UMLClass>
+  <ns1:UMLClass allowableAsTarget="true" className="KeyChain" id="EAID_5C5D8562_D2C0_4b88_B6F7_534CF2D13B55" packageName="gov.nih.nci.cacoresdk.domain.onetomany.unidirectional" projectName="example" projectVersion="4.1.1">
+   <ns70:umlAttributeCollection xmlns:ns70="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common">
+    <ns70:UMLAttribute dataTypeName="java.lang.Integer" name="id" publicID="-9223372035406278955" version="1.0"/>
+    <ns70:UMLAttribute dataTypeName="java.lang.String" name="name" publicID="-9223372035263784952" version="1.0"/>
+   </ns70:umlAttributeCollection>
+  </ns1:UMLClass>
+  <ns1:UMLClass allowableAsTarget="true" className="Shirt" id="EAID_43F17C30_FE26_4f70_A7E0_081019697EF8" packageName="gov.nih.nci.cacoresdk.domain.onetomany.unidirectional.withjoin" projectName="example" projectVersion="4.1.1">
+   <ns71:umlAttributeCollection xmlns:ns71="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common">
+    <ns71:UMLAttribute dataTypeName="java.lang.Integer" name="id" publicID="-9223372036487342124" version="1.0"/>
+    <ns71:UMLAttribute dataTypeName="java.lang.String" name="style" publicID="-9223372035481631741" version="1.0"/>
+   </ns71:umlAttributeCollection>
+  </ns1:UMLClass>
+  <ns1:UMLClass allowableAsTarget="true" className="Button" id="EAID_7ED8208F_0BDC_496e_901A_343AB0932A2E" packageName="gov.nih.nci.cacoresdk.domain.onetomany.unidirectional.withjoin" projectName="example" projectVersion="4.1.1">
+   <ns72:umlAttributeCollection xmlns:ns72="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common">
+    <ns72:UMLAttribute dataTypeName="java.lang.Integer" name="holes" publicID="-9223372035018931765" version="1.0"/>
+    <ns72:UMLAttribute dataTypeName="java.lang.Integer" name="id" publicID="-9223372035294761646" version="1.0"/>
+   </ns72:umlAttributeCollection>
+  </ns1:UMLClass>
+  <ns1:UMLClass allowableAsTarget="true" className="OrderLine" id="EAID_2029ED90_8EE0_43bf_B569_3298D506D53D" packageName="gov.nih.nci.cacoresdk.domain.onetoone.bidirectional" projectName="example" projectVersion="4.1.1">
+   <ns73:umlAttributeCollection xmlns:ns73="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common">
+    <ns73:UMLAttribute dataTypeName="java.lang.Integer" name="id" publicID="-9223372036089197527" version="1.0"/>
+    <ns73:UMLAttribute dataTypeName="java.lang.String" name="name" publicID="-9223372036853574520" version="1.0"/>
+   </ns73:umlAttributeCollection>
+  </ns1:UMLClass>
+  <ns1:UMLClass allowableAsTarget="true" className="Product" id="EAID_A693FCC2_3A49_46d5_B053_4B7AC895C2F3" packageName="gov.nih.nci.cacoresdk.domain.onetoone.bidirectional" projectName="example" projectVersion="4.1.1">
+   <ns74:umlAttributeCollection xmlns:ns74="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common">
+    <ns74:UMLAttribute dataTypeName="java.lang.Integer" name="id" publicID="-9223372035535830596" version="1.0"/>
+    <ns74:UMLAttribute dataTypeName="java.lang.String" name="name" publicID="-9223372036626527746" version="1.0"/>
+   </ns74:umlAttributeCollection>
+  </ns1:UMLClass>
+  <ns1:UMLClass allowableAsTarget="true" className="Chain" id="EAID_7A1D9ED9_4BF4_4958_A62D_68F9EEF29182" packageName="gov.nih.nci.cacoresdk.domain.onetoone.bidirectional.withjoin" projectName="example" projectVersion="4.1.1">
+   <ns75:umlAttributeCollection xmlns:ns75="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common">
+    <ns75:UMLAttribute dataTypeName="java.lang.Integer" name="id" publicID="-9223372036355374626" version="1.0"/>
+    <ns75:UMLAttribute dataTypeName="java.lang.String" name="metal" publicID="-9223372036398714348" version="1.0"/>
+   </ns75:umlAttributeCollection>
+  </ns1:UMLClass>
+  <ns1:UMLClass allowableAsTarget="true" className="Pendant" id="EAID_BCA4DDF7_7AFB_4a59_A63A_3AC1F3FE4E6A" packageName="gov.nih.nci.cacoresdk.domain.onetoone.bidirectional.withjoin" projectName="example" projectVersion="4.1.1">
+   <ns76:umlAttributeCollection xmlns:ns76="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common">
+    <ns76:UMLAttribute dataTypeName="java.lang.Integer" name="id" publicID="-9223372034827803469" version="1.0"/>
+    <ns76:UMLAttribute dataTypeName="java.lang.String" name="shape" publicID="-9223372036039024628" version="1.0"/>
+   </ns76:umlAttributeCollection>
+  </ns1:UMLClass>
+  <ns1:UMLClass allowableAsTarget="true" className="Parent" id="EAID_AD703EC5_9168_4615_8D3E_9DC3D586D9A8" packageName="gov.nih.nci.cacoresdk.domain.onetoone.multipleassociation" projectName="example" projectVersion="4.1.1">
+   <ns77:umlAttributeCollection xmlns:ns77="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common">
+    <ns77:UMLAttribute dataTypeName="java.lang.Integer" name="id" publicID="-9223372035369109042" version="1.0"/>
+    <ns77:UMLAttribute dataTypeName="java.lang.String" name="name" publicID="-9223372035402536484" version="1.0"/>
+   </ns77:umlAttributeCollection>
+  </ns1:UMLClass>
+  <ns1:UMLClass allowableAsTarget="true" className="Child" id="EAID_F1BCE88D_CB0D_4552_8958_81854FCFABF9" packageName="gov.nih.nci.cacoresdk.domain.onetoone.multipleassociation" projectName="example" projectVersion="4.1.1">
+   <ns78:umlAttributeCollection xmlns:ns78="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common">
+    <ns78:UMLAttribute dataTypeName="java.lang.Integer" name="id" publicID="-9223372035745427506" version="1.0"/>
+    <ns78:UMLAttribute dataTypeName="java.lang.String" name="name" publicID="-9223372035144801528" version="1.0"/>
+   </ns78:umlAttributeCollection>
+  </ns1:UMLClass>
+  <ns1:UMLClass allowableAsTarget="true" className="InLaw" id="EAID_4AE4D452_0643_423c_9D55_226DE635EDCB" packageName="gov.nih.nci.cacoresdk.domain.onetoone.multipleassociation.withjoin" projectName="example" projectVersion="4.1.1">
+   <ns79:umlAttributeCollection xmlns:ns79="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common">
+    <ns79:UMLAttribute dataTypeName="java.lang.Integer" name="id" publicID="-9223372035304648719" version="1.0"/>
+    <ns79:UMLAttribute dataTypeName="java.lang.String" name="name" publicID="-9223372035841300152" version="1.0"/>
+   </ns79:umlAttributeCollection>
+  </ns1:UMLClass>
+  <ns1:UMLClass allowableAsTarget="true" className="Bride" id="EAID_978ACAFD_E5BF_4d08_949E_980278DB7ADD" packageName="gov.nih.nci.cacoresdk.domain.onetoone.multipleassociation.withjoin" projectName="example" projectVersion="4.1.1">
+   <ns80:umlAttributeCollection xmlns:ns80="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common">
+    <ns80:UMLAttribute dataTypeName="java.lang.Integer" name="id" publicID="-9223372036302025707" version="1.0"/>
+    <ns80:UMLAttribute dataTypeName="java.lang.String" name="name" publicID="-9223372036636273947" version="1.0"/>
+   </ns80:umlAttributeCollection>
+  </ns1:UMLClass>
+  <ns1:UMLClass allowableAsTarget="true" className="Person" id="EAID_2DA26850_8BCA_4c42_9186_B151F9ADB196" packageName="gov.nih.nci.cacoresdk.domain.onetoone.unidirectional" projectName="example" projectVersion="4.1.1">
+   <ns81:umlAttributeCollection xmlns:ns81="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common">
+    <ns81:UMLAttribute dataTypeName="java.lang.Integer" name="id" publicID="-9223372035502678153" version="1.0"/>
+    <ns81:UMLAttribute dataTypeName="java.lang.String" name="name" publicID="-9223372035435977880" version="1.0"/>
+   </ns81:umlAttributeCollection>
+  </ns1:UMLClass>
+  <ns1:UMLClass allowableAsTarget="true" className="Address" id="EAID_AB8D6FAC_AB89_4d65_98C2_6AD93982C3E0" packageName="gov.nih.nci.cacoresdk.domain.onetoone.unidirectional" projectName="example" projectVersion="4.1.1">
+   <ns82:umlAttributeCollection xmlns:ns82="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common">
+    <ns82:UMLAttribute dataTypeName="java.lang.Integer" name="id" publicID="-9223372034802255942" version="1.0"/>
+    <ns82:UMLAttribute dataTypeName="java.lang.String" name="zip" publicID="-9223372036286284491" version="1.0"/>
+   </ns82:umlAttributeCollection>
+  </ns1:UMLClass>
+  <ns1:UMLClass allowableAsTarget="true" className="Handle" id="EAID_D6630603_D640_4865_B78B_FD2D5878ACD0" packageName="gov.nih.nci.cacoresdk.domain.onetoone.unidirectional.withjoin" projectName="example" projectVersion="4.1.1">
+   <ns83:umlAttributeCollection xmlns:ns83="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common">
+    <ns83:UMLAttribute dataTypeName="java.lang.String" name="color" publicID="-9223372036802499619" version="1.0"/>
+    <ns83:UMLAttribute dataTypeName="java.lang.Integer" name="id" publicID="-9223372036127643797" version="1.0"/>
+   </ns83:umlAttributeCollection>
+  </ns1:UMLClass>
+  <ns1:UMLClass allowableAsTarget="true" className="Bag" id="EAID_E29943AF_01E3_4933_8D13_9C1DBD97B3FB" packageName="gov.nih.nci.cacoresdk.domain.onetoone.unidirectional.withjoin" projectName="example" projectVersion="4.1.1">
+   <ns84:umlAttributeCollection xmlns:ns84="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common">
+    <ns84:UMLAttribute dataTypeName="java.lang.Integer" name="id" publicID="-9223372036143069267" version="1.0"/>
+    <ns84:UMLAttribute dataTypeName="java.lang.String" name="style" publicID="-9223372035100477999" version="1.0"/>
+   </ns84:umlAttributeCollection>
+  </ns1:UMLClass>
+  <ns1:UMLClass allowableAsTarget="true" className="AllDataType" id="EAID_4AF03E59_978D_4fa5_BE90_B671B9C4DF99" packageName="gov.nih.nci.cacoresdk.domain.other.datatype" projectName="example" projectVersion="4.1.1">
+   <ns85:umlAttributeCollection xmlns:ns85="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common">
+    <ns85:UMLAttribute name="booleanPrimitiveValue" publicID="-9223372034875415329" version="1.0"/>
+    <ns85:UMLAttribute dataTypeName="java.lang.Boolean" name="booleanValue" publicID="-9223372035387488916" version="1.0"/>
+    <ns85:UMLAttribute name="characterPrimitiveValue" publicID="-9223372035198724961" version="1.0"/>
+    <ns85:UMLAttribute dataTypeName="java.lang.Character" name="characterValue" publicID="-9223372035275351352" version="1.0"/>
+    <ns85:UMLAttribute dataTypeName="java.lang.String" name="clobValue" publicID="-9223372034718726262" version="1.0"/>
+    <ns85:UMLAttribute name="datePrimitiveValue" publicID="-9223372035319149559" version="1.0"/>
+    <ns85:UMLAttribute dataTypeName="java.util.Date" name="dateValue" publicID="-9223372034982490248" version="1.0"/>
+    <ns85:UMLAttribute name="doublePrimitiveValue" publicID="-9223372036337372062" version="1.0"/>
+    <ns85:UMLAttribute dataTypeName="java.lang.Double" name="doubleValue" publicID="-9223372035713147862" version="1.0"/>
+    <ns85:UMLAttribute name="floatPrimitiveValue" publicID="-9223372035947269308" version="1.0"/>
+    <ns85:UMLAttribute dataTypeName="java.lang.Float" name="floatValue" publicID="-9223372036634816241" version="1.0"/>
+    <ns85:UMLAttribute dataTypeName="java.lang.Integer" name="id" publicID="-9223372036292392204" version="1.0"/>
+    <ns85:UMLAttribute name="intPrimitiveValue" publicID="-9223372035562510407" version="1.0"/>
+    <ns85:UMLAttribute dataTypeName="java.lang.Integer" name="intValue" publicID="-9223372035135202996" version="1.0"/>
+    <ns85:UMLAttribute name="longPrimitiveValue" publicID="-9223372035920371545" version="1.0"/>
+    <ns85:UMLAttribute dataTypeName="java.lang.Long" name="longValue" publicID="-9223372035229090381" version="1.0"/>
+    <ns85:UMLAttribute name="stringCollection" publicID="-9223372034893266703" version="1.0"/>
+    <ns85:UMLAttribute name="stringPrimitiveValue" publicID="-9223372035258405154" version="1.0"/>
+    <ns85:UMLAttribute dataTypeName="java.lang.String" name="stringValue" publicID="-9223372035021460770" version="1.0"/>
+   </ns85:umlAttributeCollection>
+  </ns1:UMLClass>
+  <ns1:UMLClass allowableAsTarget="true" className="Dessert" id="EAID_FD6CE3D5_7F2F_4b6b_9BEC_76AD345F575D" packageName="gov.nih.nci.cacoresdk.domain.other.differentpackage" projectName="example" projectVersion="4.1.1">
+   <ns86:umlAttributeCollection xmlns:ns86="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common">
+    <ns86:UMLAttribute dataTypeName="java.lang.Integer" name="id" publicID="-9223372035773725346" version="1.0"/>
+   </ns86:umlAttributeCollection>
+  </ns1:UMLClass>
+  <ns1:UMLClass allowableAsTarget="true" className="Utensil" id="EAID_899CA401_1F3E_4dd8_8BD7_EB829DBA8BC6" packageName="gov.nih.nci.cacoresdk.domain.other.differentpackage.associations" projectName="example" projectVersion="4.1.1">
+   <ns87:umlAttributeCollection xmlns:ns87="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common">
+    <ns87:UMLAttribute dataTypeName="java.lang.Integer" name="id" publicID="-9223372035202093219" version="1.0"/>
+    <ns87:UMLAttribute dataTypeName="java.lang.String" name="name" publicID="-9223372036463184041" version="1.0"/>
+   </ns87:umlAttributeCollection>
+  </ns1:UMLClass>
+  <ns1:UMLClass allowableAsTarget="true" className="Pie" id="EAID_9C0FF2F5_3874_4c57_9874_9CF182D92F40" packageName="gov.nih.nci.cacoresdk.domain.other.differentpackage.associations" projectName="example" projectVersion="4.1.1">
+   <ns88:umlAttributeCollection xmlns:ns88="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common">
+    <ns88:UMLAttribute dataTypeName="java.lang.String" name="filling" publicID="-9223372035168317421" version="1.0"/>
+    <ns88:UMLAttribute dataTypeName="java.lang.Integer" name="id" publicID="-9223372035773725346" version="1.0"/>
+   </ns88:umlAttributeCollection>
+  </ns1:UMLClass>
+  <ns1:UMLClass allowableAsTarget="true" className="IceCream" id="EAID_C2BE5245_4D22_40bb_8D81_06040A3910F3" packageName="gov.nih.nci.cacoresdk.domain.other.differentpackage.associations" projectName="example" projectVersion="4.1.1">
+   <ns89:umlAttributeCollection xmlns:ns89="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common">
+    <ns89:UMLAttribute dataTypeName="java.lang.String" name="topping" publicID="-9223372035403870652" version="1.0"/>
+    <ns89:UMLAttribute dataTypeName="java.lang.Integer" name="id" publicID="-9223372035773725346" version="1.0"/>
+   </ns89:umlAttributeCollection>
+  </ns1:UMLClass>
+  <ns1:UMLClass allowableAsTarget="true" className="Card" id="EAID_1D4C03D8_03CC_4f4e_A948_19A3B5DD3537" packageName="gov.nih.nci.cacoresdk.domain.other.levelassociation" projectName="example" projectVersion="4.1.1">
+   <ns90:umlAttributeCollection xmlns:ns90="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common">
+    <ns90:UMLAttribute dataTypeName="java.lang.Integer" name="id" publicID="-9223372034906330308" version="1.0"/>
+    <ns90:UMLAttribute dataTypeName="java.lang.String" name="image" publicID="-9223372035399324772" version="1.0"/>
+    <ns90:UMLAttribute dataTypeName="java.lang.String" name="Name" publicID="-9223372036399923712" version="1.0"/>
+   </ns90:umlAttributeCollection>
+  </ns1:UMLClass>
+  <ns1:UMLClass allowableAsTarget="true" className="Deck" id="EAID_613B45B4_C464_42c1_BDEC_A7D2018B7412" packageName="gov.nih.nci.cacoresdk.domain.other.levelassociation" projectName="example" projectVersion="4.1.1">
+   <ns91:umlAttributeCollection xmlns:ns91="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common">
+    <ns91:UMLAttribute dataTypeName="java.lang.Integer" name="id" publicID="-9223372035771953695" version="1.0"/>
+    <ns91:UMLAttribute dataTypeName="java.lang.String" name="name" publicID="-9223372035237755220" version="1.0"/>
+   </ns91:umlAttributeCollection>
+  </ns1:UMLClass>
+  <ns1:UMLClass allowableAsTarget="true" className="Hand" id="EAID_DF711CE5_51FF_4575_821B_772EA4A3513D" packageName="gov.nih.nci.cacoresdk.domain.other.levelassociation" projectName="example" projectVersion="4.1.1">
+   <ns92:umlAttributeCollection xmlns:ns92="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common">
+    <ns92:UMLAttribute dataTypeName="java.lang.Integer" name="id" publicID="-9223372036486888921" version="1.0"/>
+   </ns92:umlAttributeCollection>
+  </ns1:UMLClass>
+  <ns1:UMLClass allowableAsTarget="true" className="Suit" id="EAID_E3BC9F7F_E85C_4f73_917A_E33725FD6DE7" packageName="gov.nih.nci.cacoresdk.domain.other.levelassociation" projectName="example" projectVersion="4.1.1">
+   <ns93:umlAttributeCollection xmlns:ns93="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common">
+    <ns93:UMLAttribute dataTypeName="java.lang.Integer" name="id" publicID="-9223372035994291261" version="1.0"/>
+    <ns93:UMLAttribute dataTypeName="java.lang.String" name="name" publicID="-9223372036793445786" version="1.0"/>
+   </ns93:umlAttributeCollection>
+  </ns1:UMLClass>
+  <ns1:UMLClass allowableAsTarget="true" className="StringKey" id="EAID_03B3EFF8_BF62_4846_8CB3_A23180474BD5" packageName="gov.nih.nci.cacoresdk.domain.other.primarykey" projectName="example" projectVersion="4.1.1">
+   <ns94:umlAttributeCollection xmlns:ns94="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common">
+    <ns94:UMLAttribute dataTypeName="java.lang.String" name="id" publicID="-9223372035751749923" version="1.0"/>
+    <ns94:UMLAttribute dataTypeName="java.lang.String" name="name" publicID="-9223372035902564221" version="1.0"/>
+   </ns94:umlAttributeCollection>
+  </ns1:UMLClass>
+  <ns1:UMLClass allowableAsTarget="true" className="IntegerKey" id="EAID_16714B4D_4F48_4dd9_8E31_D5D96279DC67" packageName="gov.nih.nci.cacoresdk.domain.other.primarykey" projectName="example" projectVersion="4.1.1">
+   <ns95:umlAttributeCollection xmlns:ns95="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common">
+    <ns95:UMLAttribute dataTypeName="java.lang.Integer" name="id" publicID="-9223372034861294093" version="1.0"/>
+    <ns95:UMLAttribute dataTypeName="java.lang.String" name="name" publicID="-9223372035630911433" version="1.0"/>
+   </ns95:umlAttributeCollection>
+  </ns1:UMLClass>
+  <ns1:UMLClass allowableAsTarget="true" className="LongPrimitiveKey" id="EAID_18130CBA_0368_4357_BB18_A93E3BDD1322" packageName="gov.nih.nci.cacoresdk.domain.other.primarykey" projectName="example" projectVersion="4.1.1">
+   <ns96:umlAttributeCollection xmlns:ns96="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common">
+    <ns96:UMLAttribute name="id" publicID="-9223372035888565271" version="1.0"/>
+    <ns96:UMLAttribute dataTypeName="java.lang.String" name="name" publicID="-9223372036313944185" version="1.0"/>
+   </ns96:umlAttributeCollection>
+  </ns1:UMLClass>
+  <ns1:UMLClass allowableAsTarget="true" className="StringPrimitiveKey" id="EAID_1ED97BF5_1446_43f2_9A7C_8BF1A6426212" packageName="gov.nih.nci.cacoresdk.domain.other.primarykey" projectName="example" projectVersion="4.1.1">
+   <ns97:umlAttributeCollection xmlns:ns97="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common">
+    <ns97:UMLAttribute name="id" publicID="-9223372036670047884" version="1.0"/>
+    <ns97:UMLAttribute dataTypeName="java.lang.String" name="name" publicID="-9223372035879167103" version="1.0"/>
+   </ns97:umlAttributeCollection>
+  </ns1:UMLClass>
+  <ns1:UMLClass allowableAsTarget="true" className="FloatPrimitiveKey" id="EAID_29E4E043_11E2_4660_B6CC_6DABC7995E28" packageName="gov.nih.nci.cacoresdk.domain.other.primarykey" projectName="example" projectVersion="4.1.1">
+   <ns98:umlAttributeCollection xmlns:ns98="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common">
+    <ns98:UMLAttribute name="id" publicID="-9223372035545881045" version="1.0"/>
+    <ns98:UMLAttribute dataTypeName="java.lang.String" name="name" publicID="-9223372035638464242" version="1.0"/>
+   </ns98:umlAttributeCollection>
+  </ns1:UMLClass>
+  <ns1:UMLClass allowableAsTarget="true" className="CharacterKey" id="EAID_4E293C52_92B8_4f42_B484_75874004B287" packageName="gov.nih.nci.cacoresdk.domain.other.primarykey" projectName="example" projectVersion="4.1.1">
+   <ns99:umlAttributeCollection xmlns:ns99="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common">
+    <ns99:UMLAttribute dataTypeName="java.lang.Character" name="id" publicID="-9223372035141492836" version="1.0"/>
+    <ns99:UMLAttribute dataTypeName="java.lang.String" name="name" publicID="-9223372035649924750" version="1.0"/>
+   </ns99:umlAttributeCollection>
+  </ns1:UMLClass>
+  <ns1:UMLClass allowableAsTarget="true" className="FloatKey" id="EAID_612F190B_1AFA_476c_8535_E79DB990853E" packageName="gov.nih.nci.cacoresdk.domain.other.primarykey" projectName="example" projectVersion="4.1.1">
+   <ns100:umlAttributeCollection xmlns:ns100="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common">
+    <ns100:UMLAttribute dataTypeName="java.lang.Float" name="id" publicID="-9223372036248246546" version="1.0"/>
+    <ns100:UMLAttribute dataTypeName="java.lang.String" name="name" publicID="-9223372035360674402" version="1.0"/>
+   </ns100:umlAttributeCollection>
+  </ns1:UMLClass>
+  <ns1:UMLClass allowableAsTarget="true" className="LongKey" id="EAID_6C8A74F4_9506_42d0_8D3A_FC2D017C3C25" packageName="gov.nih.nci.cacoresdk.domain.other.primarykey" projectName="example" projectVersion="4.1.1">
+   <ns101:umlAttributeCollection xmlns:ns101="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common">
+    <ns101:UMLAttribute dataTypeName="java.lang.Long" name="id" publicID="-9223372036084090018" version="1.0"/>
+    <ns101:UMLAttribute dataTypeName="java.lang.String" name="name" publicID="-9223372035004356133" version="1.0"/>
+   </ns101:umlAttributeCollection>
+  </ns1:UMLClass>
+  <ns1:UMLClass allowableAsTarget="true" className="CharacterPrimitiveKey" id="EAID_B2D5CA6A_6D5B_4672_9073_84E93E2A8F7F" packageName="gov.nih.nci.cacoresdk.domain.other.primarykey" projectName="example" projectVersion="4.1.1">
+   <ns102:umlAttributeCollection xmlns:ns102="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common">
+    <ns102:UMLAttribute name="id" publicID="-9223372035290056800" version="1.0"/>
+    <ns102:UMLAttribute dataTypeName="java.lang.String" name="name" publicID="-9223372035983205051" version="1.0"/>
+   </ns102:umlAttributeCollection>
+  </ns1:UMLClass>
+  <ns1:UMLClass allowableAsTarget="true" className="NoIdKey" id="EAID_BFD02772_366D_4c7c_AD94_E8F0806AB27F" packageName="gov.nih.nci.cacoresdk.domain.other.primarykey" projectName="example" projectVersion="4.1.1">
+   <ns103:umlAttributeCollection xmlns:ns103="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common">
+    <ns103:UMLAttribute dataTypeName="java.lang.Integer" name="mykey" publicID="-9223372035527683974" version="1.0"/>
+    <ns103:UMLAttribute dataTypeName="java.lang.String" name="name" publicID="-9223372036035465658" version="1.0"/>
+   </ns103:umlAttributeCollection>
+  </ns1:UMLClass>
+  <ns1:UMLClass allowableAsTarget="true" className="DoubleKey" id="EAID_D07AC28E_7720_433a_AF3B_73884455AFF1" packageName="gov.nih.nci.cacoresdk.domain.other.primarykey" projectName="example" projectVersion="4.1.1">
+   <ns104:umlAttributeCollection xmlns:ns104="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common">
+    <ns104:UMLAttribute dataTypeName="java.lang.Double" name="id" publicID="-9223372035232719318" version="1.0"/>
+    <ns104:UMLAttribute dataTypeName="java.lang.String" name="name" publicID="-9223372035927210733" version="1.0"/>
+   </ns104:umlAttributeCollection>
+  </ns1:UMLClass>
+  <ns1:UMLClass allowableAsTarget="true" className="IntegerPrimitiveKey" id="EAID_DE2DEDBE_A3B7_43d2_A94B_D810F6E59DB1" packageName="gov.nih.nci.cacoresdk.domain.other.primarykey" projectName="example" projectVersion="4.1.1">
+   <ns105:umlAttributeCollection xmlns:ns105="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common">
+    <ns105:UMLAttribute name="id" publicID="-9223372034776695827" version="1.0"/>
+    <ns105:UMLAttribute dataTypeName="java.lang.String" name="name" publicID="-9223372034905094974" version="1.0"/>
+   </ns105:umlAttributeCollection>
+  </ns1:UMLClass>
+  <ns1:UMLClass allowableAsTarget="true" className="DoublePrimitiveKey" id="EAID_F9E8CE6A_7A02_4b0b_8AA2_3890603E1696" packageName="gov.nih.nci.cacoresdk.domain.other.primarykey" projectName="example" projectVersion="4.1.1">
+   <ns106:umlAttributeCollection xmlns:ns106="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common">
+    <ns106:UMLAttribute name="id" publicID="-9223372034749837425" version="1.0"/>
+    <ns106:UMLAttribute dataTypeName="java.lang.String" name="name" publicID="-9223372035547815723" version="1.0"/>
+   </ns106:umlAttributeCollection>
+  </ns1:UMLClass>
+  <ns1:UMLClass allowableAsTarget="true" className="AllValidationType" description="Test Class for Hibernate Validation" id="EAID_854CDD85_9FDB_4d13_BA15_17621CD57F0B" packageName="gov.nih.nci.cacoresdk.domain.other.validationtype" projectName="example" projectVersion="4.1.1">
+   <ns107:umlAttributeCollection xmlns:ns107="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common">
+    <ns107:UMLAttribute dataTypeName="java.lang.String" description="Test attribute for email Hibernate Validation" name="email" publicID="-9223372036129052044" version="1.0"/>
+    <ns107:UMLAttribute dataTypeName="java.util.Date" description="Test attribute for future date Hibernate Validation" name="future" publicID="-9223372035774464118" version="1.0"/>
+    <ns107:UMLAttribute dataTypeName="java.lang.Integer" description="Id attribute for Hibernate Validation test class" name="id" publicID="-9223372035500295162" version="1.0"/>
+    <ns107:UMLAttribute dataTypeName="java.lang.String" description="Test attribute for length Hibernate Validation" name="length" publicID="-9223372036146754670" version="1.0"/>
+    <ns107:UMLAttribute dataTypeName="java.lang.Integer" description="Test attribute for max (numeric) Hibernate Validation" name="maxNumeric" publicID="-9223372034962501712" version="1.0"/>
+    <ns107:UMLAttribute dataTypeName="java.lang.String" description="Test attribute for max (string) Hibernate Validation" name="maxString" publicID="-9223372035652412112" version="1.0"/>
+    <ns107:UMLAttribute dataTypeName="java.lang.Integer" description="Test attribute for min (numeric) Hibernate Validation" name="minNumeric" publicID="-9223372036591789658" version="1.0"/>
+    <ns107:UMLAttribute dataTypeName="java.lang.String" description="Test attribute for min (string) Hibernate Validation" name="minString" publicID="-9223372035148564702" version="1.0"/>
+    <ns107:UMLAttribute dataTypeName="java.lang.String" description="Test attribute for notEmpty  Hibernate Validation" name="notEmpty" publicID="-9223372034826519113" version="1.0"/>
+    <ns107:UMLAttribute dataTypeName="java.lang.String" description="Test attribute for notNull Hibernate Validation" name="notNull" publicID="-9223372036108990821" version="1.0"/>
+    <ns107:UMLAttribute dataTypeName="java.util.Date" description="Test attribute for past date Hibernate Validation" name="past" publicID="-9223372036531813015" version="1.0"/>
+    <ns107:UMLAttribute dataTypeName="java.lang.String" description="Test attribute for pattern Hibernate Validation.  This is currently the only Hibernate Validator annotation type we are interested in using within the SDK.  It should contain a list of enumerated permissible values." name="pattern" publicID="-9223372034821237494" version="1.0"/>
+    <ns107:UMLAttribute dataTypeName="java.lang.Integer" description="Test attribute for range (numeric) Hibernate Validation" name="rangeNumeric" publicID="-9223372035389923413" version="1.0"/>
+    <ns107:UMLAttribute dataTypeName="java.lang.String" description="Test attribute for range (string) Hibernate Validation" name="rangeString" publicID="-9223372035064238013" version="1.0"/>
+   </ns107:umlAttributeCollection>
+  </ns1:UMLClass>
+ </ns1:exposedUMLClassCollection>
+ <ns1:umlGeneralizationCollection>
+  <ns1:UMLGeneralization>
+   <ns1:subClassReference refid="EAID_0743B8AB_7C2F_4179_BDD7_B633ABAA4420"/>
+   <ns1:superClassReference refid="EAID_EE02A000_21A2_4056_9A0F_0A9FD052E526"/>
+  </ns1:UMLGeneralization>
+  <ns1:UMLGeneralization>
+   <ns1:subClassReference refid="EAID_0F0E92DD_E304_40aa_9ADE_4BEB771EAF2D"/>
+   <ns1:superClassReference refid="EAID_3B32C53B_66AF_4865_ACE8_5EF7FBEEE7C8"/>
+  </ns1:UMLGeneralization>
+  <ns1:UMLGeneralization>
+   <ns1:subClassReference refid="EAID_848B618E_4867_4115_B819_F79DA3272CC3"/>
+   <ns1:superClassReference refid="EAID_3B32C53B_66AF_4865_ACE8_5EF7FBEEE7C8"/>
+  </ns1:UMLGeneralization>
+  <ns1:UMLGeneralization>
+   <ns1:subClassReference refid="EAID_F2EE6B07_9DD2_4fd3_8254_7E2FCF4A57AE"/>
+   <ns1:superClassReference refid="EAID_70624BD2_6DBD_4d52_ACD4_B3C8E777AFBE"/>
+  </ns1:UMLGeneralization>
+  <ns1:UMLGeneralization>
+   <ns1:subClassReference refid="EAID_DF13C79C_9FDF_4de7_BD1E_0240185CFFB3"/>
+   <ns1:superClassReference refid="EAID_70624BD2_6DBD_4d52_ACD4_B3C8E777AFBE"/>
+  </ns1:UMLGeneralization>
+  <ns1:UMLGeneralization>
+   <ns1:subClassReference refid="EAID_13864FDF_CF11_44bb_B6D0_322DE45A8B78"/>
+   <ns1:superClassReference refid="EAID_D20806E4_DC1A_41e8_A8A3_78548AF4AAD5"/>
+  </ns1:UMLGeneralization>
+  <ns1:UMLGeneralization>
+   <ns1:subClassReference refid="EAID_159CB07B_C8FF_4079_A335_FF7E9378C5B7"/>
+   <ns1:superClassReference refid="EAID_D20806E4_DC1A_41e8_A8A3_78548AF4AAD5"/>
+  </ns1:UMLGeneralization>
+  <ns1:UMLGeneralization>
+   <ns1:subClassReference refid="EAID_B309F156_5EFF_4cd9_9CEC_0FB43CFC0C71"/>
+   <ns1:superClassReference refid="EAID_3368D1E5_BDDF_4b9b_9AB3_76F263AEEFCB"/>
+  </ns1:UMLGeneralization>
+  <ns1:UMLGeneralization>
+   <ns1:subClassReference refid="EAID_A760311D_8E99_471f_9809_4A498AF3D06C"/>
+   <ns1:superClassReference refid="EAID_B309F156_5EFF_4cd9_9CEC_0FB43CFC0C71"/>
+  </ns1:UMLGeneralization>
+  <ns1:UMLGeneralization>
+   <ns1:subClassReference refid="EAID_D6CEDC4C_CFC5_440a_97BD_E18FE6C75993"/>
+   <ns1:superClassReference refid="EAID_B309F156_5EFF_4cd9_9CEC_0FB43CFC0C71"/>
+  </ns1:UMLGeneralization>
+  <ns1:UMLGeneralization>
+   <ns1:subClassReference refid="EAID_371DF6AC_4101_463a_BE9C_2459CC2BB997"/>
+   <ns1:superClassReference refid="EAID_C5F04054_3FE0_4797_85F3_73247FAB88C1"/>
+  </ns1:UMLGeneralization>
+  <ns1:UMLGeneralization>
+   <ns1:subClassReference refid="EAID_D774A82C_8C16_47df_A2AB_F5B84B8ADABB"/>
+   <ns1:superClassReference refid="EAID_C5F04054_3FE0_4797_85F3_73247FAB88C1"/>
+  </ns1:UMLGeneralization>
+  <ns1:UMLGeneralization>
+   <ns1:subClassReference refid="EAID_6A7CD66F_4BA8_4cac_9DEA_51F39924764E"/>
+   <ns1:superClassReference refid="EAID_4A20D422_CEC2_42e4_9D39_6D1308509D1E"/>
+  </ns1:UMLGeneralization>
+  <ns1:UMLGeneralization>
+   <ns1:subClassReference refid="EAID_7EADD5AF_D7A5_41ba_AD19_7ECA56B41EF6"/>
+   <ns1:superClassReference refid="EAID_4A20D422_CEC2_42e4_9D39_6D1308509D1E"/>
+  </ns1:UMLGeneralization>
+  <ns1:UMLGeneralization>
+   <ns1:subClassReference refid="EAID_3F0B75DF_5CE4_4d8a_8B10_118473CF2879"/>
+   <ns1:superClassReference refid="EAID_BF0A63FE_981F_4d5f_8FAC_8868DAA30AF1"/>
+  </ns1:UMLGeneralization>
+  <ns1:UMLGeneralization>
+   <ns1:subClassReference refid="EAID_DDDFE683_3B11_401e_AC75_4753AB357564"/>
+   <ns1:superClassReference refid="EAID_B4A95172_95CA_4f8d_9A9F_CA5B3416A1A9"/>
+  </ns1:UMLGeneralization>
+  <ns1:UMLGeneralization>
+   <ns1:subClassReference refid="EAID_60FEB210_B86D_4a29_B1FA_A96C64096F73"/>
+   <ns1:superClassReference refid="EAID_00F8EA6B_E027_4bad_B011_41830FF87842"/>
+  </ns1:UMLGeneralization>
+  <ns1:UMLGeneralization>
+   <ns1:subClassReference refid="EAID_F1DCD13C_9301_4325_9B7F_3311941C133B"/>
+   <ns1:superClassReference refid="EAID_00F8EA6B_E027_4bad_B011_41830FF87842"/>
+  </ns1:UMLGeneralization>
+  <ns1:UMLGeneralization>
+   <ns1:subClassReference refid="EAID_12DBFC9B_D995_4251_96D0_6FB3EB85C0FB"/>
+   <ns1:superClassReference refid="EAID_00F8EA6B_E027_4bad_B011_41830FF87842"/>
+  </ns1:UMLGeneralization>
+  <ns1:UMLGeneralization>
+   <ns1:subClassReference refid="EAID_175D3CFB_211C_459a_A3C9_6953D471F910"/>
+   <ns1:superClassReference refid="EAID_6135B872_E71A_44c8_9DC1_269DE3815F79"/>
+  </ns1:UMLGeneralization>
+  <ns1:UMLGeneralization>
+   <ns1:subClassReference refid="EAID_81294799_6821_422e_BE36_580BDEB8616C"/>
+   <ns1:superClassReference refid="EAID_175D3CFB_211C_459a_A3C9_6953D471F910"/>
+  </ns1:UMLGeneralization>
+  <ns1:UMLGeneralization>
+   <ns1:subClassReference refid="EAID_F0526971_7156_49e1_AF64_7A6535698C54"/>
+   <ns1:superClassReference refid="EAID_6135B872_E71A_44c8_9DC1_269DE3815F79"/>
+  </ns1:UMLGeneralization>
+  <ns1:UMLGeneralization>
+   <ns1:subClassReference refid="EAID_782AA84A_21F0_4a1d_AA92_64F753204759"/>
+   <ns1:superClassReference refid="EAID_C7759A44_3482_4c56_97E7_0A7778155F35"/>
+  </ns1:UMLGeneralization>
+  <ns1:UMLGeneralization>
+   <ns1:subClassReference refid="EAID_9E6AD14D_C710_4a67_AAD8_6EFEEDFFC18A"/>
+   <ns1:superClassReference refid="EAID_C7759A44_3482_4c56_97E7_0A7778155F35"/>
+  </ns1:UMLGeneralization>
+  <ns1:UMLGeneralization>
+   <ns1:subClassReference refid="EAID_C7759A44_3482_4c56_97E7_0A7778155F35"/>
+   <ns1:superClassReference refid="EAID_BD83C679_098A_46a0_B994_50A9478E9896"/>
+  </ns1:UMLGeneralization>
+  <ns1:UMLGeneralization>
+   <ns1:subClassReference refid="EAID_5BADA45A_1766_4847_B60A_55E867A29D2F"/>
+   <ns1:superClassReference refid="EAID_0E249559_1FE4_4c11_81C1_8E5E2B50EAD1"/>
+  </ns1:UMLGeneralization>
+  <ns1:UMLGeneralization>
+   <ns1:subClassReference refid="EAID_9974BB75_A1C7_45fb_905B_5F6E387FF461"/>
+   <ns1:superClassReference refid="EAID_0E249559_1FE4_4c11_81C1_8E5E2B50EAD1"/>
+  </ns1:UMLGeneralization>
+  <ns1:UMLGeneralization>
+   <ns1:subClassReference refid="EAID_1852F1E9_F317_4c7c_AC18_D5FEB12D9FB0"/>
+   <ns1:superClassReference refid="EAID_5BADA45A_1766_4847_B60A_55E867A29D2F"/>
+  </ns1:UMLGeneralization>
+  <ns1:UMLGeneralization>
+   <ns1:subClassReference refid="EAID_C47FB911_44C9_406b_91EB_6A61BABBC9EA"/>
+   <ns1:superClassReference refid="EAID_5BADA45A_1766_4847_B60A_55E867A29D2F"/>
+  </ns1:UMLGeneralization>
+  <ns1:UMLGeneralization>
+   <ns1:subClassReference refid="EAID_EA92F07A_21F0_4e5d_AF19_78393AE49A36"/>
+   <ns1:superClassReference refid="EAID_47763202_9509_42ae_BA5D_7F05FBA1C014"/>
+  </ns1:UMLGeneralization>
+  <ns1:UMLGeneralization>
+   <ns1:subClassReference refid="EAID_4DC883C2_1380_46a9_B8DA_DD9BF0F5B7DE"/>
+   <ns1:superClassReference refid="EAID_47763202_9509_42ae_BA5D_7F05FBA1C014"/>
+  </ns1:UMLGeneralization>
+  <ns1:UMLGeneralization>
+   <ns1:subClassReference refid="EAID_8C521550_2832_4fa4_A000_42738EFC3AAB"/>
+   <ns1:superClassReference refid="EAID_EA92F07A_21F0_4e5d_AF19_78393AE49A36"/>
+  </ns1:UMLGeneralization>
+  <ns1:UMLGeneralization>
+   <ns1:subClassReference refid="EAID_9C0FF2F5_3874_4c57_9874_9CF182D92F40"/>
+   <ns1:superClassReference refid="EAID_FD6CE3D5_7F2F_4b6b_9BEC_76AD345F575D"/>
+  </ns1:UMLGeneralization>
+  <ns1:UMLGeneralization>
+   <ns1:subClassReference refid="EAID_C2BE5245_4D22_40bb_8D81_06040A3910F3"/>
+   <ns1:superClassReference refid="EAID_FD6CE3D5_7F2F_4b6b_9BEC_76AD345F575D"/>
+  </ns1:UMLGeneralization>
+ </ns1:umlGeneralizationCollection>
+</ns1:DomainModel>

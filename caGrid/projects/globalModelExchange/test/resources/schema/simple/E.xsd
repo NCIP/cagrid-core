@@ -1,0 +1,5 @@
+<?xml version="1.0"?>
+<xs:schema targetNamespace="gme://e" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:e="gme://e" elementFormDefault="qualified">
+	<xs:element name="E">
+	</xs:element>
+</xs:schema>

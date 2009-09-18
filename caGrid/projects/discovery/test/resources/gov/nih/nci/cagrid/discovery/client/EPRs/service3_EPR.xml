@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<MemberServiceEPR xmlns:wsa="http://schemas.xmlsoap.org/ws/2004/03/addressing"
+    xmlns="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ServiceGroup-1.2-draft-01.xsd">
+    <wsa:Address>http://service3.com/wsrf/services/Service3</wsa:Address>
+    <wsa:ReferenceProperties xmlns="http://schemas.xmlsoap.org/ws/2004/03/addressing"/>
+    <wsa:ReferenceParameters xmlns="http://schemas.xmlsoap.org/ws/2004/03/addressing"/>
+</MemberServiceEPR>

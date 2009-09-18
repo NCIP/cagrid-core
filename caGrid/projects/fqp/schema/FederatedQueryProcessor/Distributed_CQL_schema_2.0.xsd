@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xsd:schema targetNamespace="http://caGrid.caBIG/1.0/gov.nih.nci.cagrid.dcql" xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+	xmlns:dcql="http://caGrid.caBIG/1.0/gov.nih.nci.cagrid.dcql" xmlns:cql="http://CQL.caBIG/1/gov.nih.nci.cagrid.CQLQuery" elementFormDefault="qualified"
+	attributeFormDefault="unqualified">
+	<xsd:import namespace="http://CQL.caBIG/1/gov.nih.nci.cagrid.CQLQuery" schemaLocation="./xsd/1_gov.nih.nci.cagrid.CQLQuery.xsd"/>
+	<xsd:element name="DCQLQuery">
+		<xsd:annotation>
+			<xsd:documentation>caGrid Distributed CQL Query, the desired result objects are described by the TargetObject, and the CQL query resulting from the processing is sent to each data service identified by the targetServiceURLs</xsd:documentation>
+		</xsd:annotation>
+		<xsd:complexType>
+			<xsd:sequence>
+				<xsd:element name="TargetObject" type="dcql:Object"/>
+				<xsd:element name="targetServiceURL" type="xsd:string" maxOccurs="unbounded">
+					<xsd:annotation>
+						<xsd:documentation>The URL of a data service which should be sent the resulting CQL query.</xsd:documentation>
+					</xsd:annotation>
+				</xsd:element>
+			</xsd:sequence>
+		</xsd:complexType>
+	</xsd:element>
+	<xsd:complexType name="Object">
+		<xsd:annotation>
+			<xsd:documentation>Description of an Object instance</xsd:documentation>
+		</xsd:annotation>
+		<xsd:choice>
+			<xsd:element name="Attribute" type="cql:Attribute" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>The description of the object being targeted by the query; the return type.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="Association" type="dcql:Association" minOccurs="0"/>
+			<xsd:element name="ForeignAssociation" type="dcql:ForeignAssociation" minOccurs="0"/>
+			<xsd:element name="Group" type="dcql:Group" minOccurs="0"/>
+		</xsd:choice>
+		<xsd:attribute name="name" type="xsd:string" use="required"/>
+	</xsd:complexType>
+	<xsd:complexType name="Association">
+		<xsd:annotation>
+			<xsd:documentation>Describes an optionally (role-)named relationship from this Object to another.</xsd:documentation>
+		</xsd:annotation>
+		<xsd:complexContent>
+			<xsd:extension base="dcql:Object">
+				<xsd:attribute name="roleName" type="xsd:string" use="optional"/>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+	<xsd:complexType name="Group">
+		<xsd:annotation>
+			<xsd:documentation>A collection of two or more sub-constraints, grouped together by the logicalRelation.</xsd:documentation>
+		</xsd:annotation>
+		<xsd:choice minOccurs="2" maxOccurs="unbounded">
+			<xsd:element name="Association" type="dcql:Association" maxOccurs="unbounded"/>
+			<xsd:element name="Attribute" type="cql:Attribute" maxOccurs="unbounded"/>
+			<xsd:element name="ForeignAssociation" type="dcql:ForeignAssociation" maxOccurs="unbounded"/>
+			<xsd:element name="Group" type="dcql:Group" maxOccurs="unbounded"/>
+		</xsd:choice>
+		<xsd:attribute name="logicRelation" type="cql:LogicalOperator" use="required"/>
+	</xsd:complexType>
+	<xsd:complexType name="ForeignAssociation">
+		<xsd:annotation>
+			<xsd:documentation>An association or relationship defined between this Object and an Object defined by the ForeignObject, located on the data service located at the targetServiceURL.</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="JoinCondition" type="dcql:JoinCondition"/>
+			<xsd:element name="ForeignObject" type="dcql:Object"/>
+		</xsd:sequence>
+		<xsd:attribute name="targetServiceURL" type="xsd:string" use="required"/>
+	</xsd:complexType>
+	<xsd:complexType name="JoinCondition">
+		<xsd:annotation>
+			<xsd:documentation>Specifies a relationship, defined by the predicate, between a local attribute and a remote attribute.</xsd:documentation>
+		</xsd:annotation>
+		<xsd:attribute name="predicate" type="dcql:ForeignPredicate" use="optional" default="EQUAL_TO"/>
+		<xsd:attribute name="localAttributeName" type="xsd:string" use="required"/>
+		<xsd:attribute name="foreignAttributeName" type="xsd:string" use="required"/>
+	</xsd:complexType>
+	<xsd:simpleType name="ForeignPredicate">
+		<xsd:annotation>
+			<xsd:documentation>Predicate types used for attribute comparisons</xsd:documentation>
+		</xsd:annotation>
+		<xsd:restriction base="xsd:string">
+			<xsd:enumeration value="EQUAL_TO" id="equal_to">
+				<xsd:annotation>
+					<xsd:documentation>Two values are equivalent.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="NOT_EQUAL_TO" id="not_equal_to">
+				<xsd:annotation>
+					<xsd:documentation>Two values are not equivalent.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="LESS_THAN" id="less_than">
+				<xsd:annotation>
+					<xsd:documentation>The first value is less than the second.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="LESS_THAN_EQUAL_TO" id="less_than_equal_to">
+				<xsd:annotation>
+					<xsd:documentation>The first value is less than, or equivalent to, the second.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="GREATER_THAN" id="greater_than">
+				<xsd:annotation>
+					<xsd:documentation>The first value is greater than the second.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="GREATER_THAN_EQUAL_TO" id="greater_than_equal_to">
+				<xsd:annotation>
+					<xsd:documentation>The first value is greater than, or equivalent to, the second.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+		</xsd:restriction>
+	</xsd:simpleType>
+</xsd:schema>

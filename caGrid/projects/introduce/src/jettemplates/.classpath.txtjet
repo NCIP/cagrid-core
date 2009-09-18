@@ -1,0 +1,94 @@
+<%@ jet package="gov.nih.nci.cagrid.introduce.templates" class="ClasspathTemplate" %>
+<% gov.nih.nci.cagrid.introduce.common.ServiceInformation info = (gov.nih.nci.cagrid.introduce.common.ServiceInformation) argument; 
+   String serviceName = info.getIntroduceServiceProperties().getProperty("introduce.skeleton.service.name");
+   String namespaceDomain = info.getIntroduceServiceProperties().getProperty("introduce.skeleton.namespace.domain");
+   String globusLocation = info.getIntroduceServiceProperties().getProperty("ext.globus.dir");
+   String modifiedServiceName = serviceName;
+   if(serviceName.endsWith("Service")){
+   	modifiedServiceName = serviceName.substring(0,serviceName.length()-7);
+   }
+   StringBuffer serviceLibs = new StringBuffer();
+   String libDirName = info.getIntroduceServiceProperties().getProperty("introduce.skeleton.destination.dir") + java.io.File.separator + "lib";
+   java.io.File libDir = new java.io.File(libDirName);
+   if (libDir.exists()) {
+   	System.out.println("Searching for classpath libraries: " + libDirName);
+	String[] libs = libDir.list();
+   	for (int i = 0; i < libs.length; i++) {
+   		if (libs[i].endsWith(".jar")) {
+   			serviceLibs.append("\t<classpathentry kind=\"lib\" path=\"lib/").append(libs[i]).append("\"/>").append("\n");
+   		}
+   	}
+   } else {
+   	System.out.println("No classpath directory found: " + libDirName);
+   	serviceLibs.append("");
+   }
+   String serviceLibsString = serviceLibs.toString();
+%>
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry kind="src" path="src"/>
+	<classpathentry kind="src" path="test/src"/>
+	<classpathentry kind="src" path="build/stubs-<%=serviceName%>/src"/>
+	<classpathentry kind="lib" path="<%=globusLocation%>/lib/addressing-1.0.jar"/>
+	<classpathentry kind="lib" path="<%=globusLocation%>/lib/axis.jar"/>
+	<classpathentry kind="lib" path="<%=globusLocation%>/lib/axis-url.jar"/>
+	<classpathentry kind="lib" path="<%=globusLocation%>/lib/bootstrap.jar"/>
+	<classpathentry kind="lib" path="<%=globusLocation%>/lib/cog-axis.jar"/>
+	<classpathentry kind="lib" path="<%=globusLocation%>/lib/cog-jglobus.jar"/>
+	<classpathentry kind="lib" path="<%=globusLocation%>/lib/cog-tomcat.jar"/>
+	<classpathentry kind="lib" path="<%=globusLocation%>/lib/cog-url.jar"/>
+	<classpathentry kind="lib" path="<%=globusLocation%>/lib/commonj.jar"/>
+	<classpathentry kind="lib" path="<%=globusLocation%>/lib/commons-beanutils.jar"/>
+	<classpathentry kind="lib" path="<%=globusLocation%>/lib/commons-cli-2.0.jar"/>
+	<classpathentry kind="lib" path="<%=globusLocation%>/lib/commons-collections-3.0.jar"/>
+	<classpathentry kind="lib" path="<%=globusLocation%>/lib/commons-digester.jar"/>
+	<classpathentry kind="lib" path="<%=globusLocation%>/lib/commons-discovery.jar"/>
+	<classpathentry kind="lib" path="<%=globusLocation%>/lib/commons-logging.jar"/>
+	<classpathentry kind="lib" path="<%=globusLocation%>/lib/concurrent.jar"/>
+	<classpathentry kind="lib" path="<%=globusLocation%>/lib/cryptix.jar"/>
+	<classpathentry kind="lib" path="<%=globusLocation%>/lib/cryptix32.jar"/>
+	<classpathentry kind="lib" path="<%=globusLocation%>/lib/cryptix-asn1.jar"/>
+	<classpathentry kind="lib" path="<%=globusLocation%>/lib/globus_usage_core.jar"/>
+	<classpathentry kind="lib" path="<%=globusLocation%>/lib/globus_usage_packets_common.jar"/>
+	<classpathentry kind="lib" path="<%=globusLocation%>/lib/globus_wsrf_tools_test.jar"/>
+	<classpathentry kind="lib" path="<%=globusLocation%>/lib/jaxrpc.jar"/>
+	<classpathentry kind="lib" path="<%=globusLocation%>/lib/jce-jdk13-125.jar"/>
+	<classpathentry kind="lib" path="<%=globusLocation%>/lib/jgss.jar"/>
+	<classpathentry kind="lib" path="<%=globusLocation%>/lib/junit.jar"/>
+	<classpathentry kind="lib" path="<%=globusLocation%>/lib/log4j-1.2.8.jar"/>
+	<classpathentry kind="lib" path="<%=globusLocation%>/lib/naming-common.jar"/>
+	<classpathentry kind="lib" path="<%=globusLocation%>/lib/naming-factory.jar"/>
+	<classpathentry kind="lib" path="<%=globusLocation%>/lib/naming-java.jar"/>
+	<classpathentry kind="lib" path="<%=globusLocation%>/lib/naming-resources.jar"/>
+	<classpathentry kind="lib" path="<%=globusLocation%>/lib/opensaml.jar"/>
+	<classpathentry kind="lib" path="<%=globusLocation%>/lib/puretls.jar"/>
+	<classpathentry kind="lib" path="<%=globusLocation%>/lib/resolver.jar"/>
+	<classpathentry kind="lib" path="<%=globusLocation%>/lib/saaj.jar"/>
+	<classpathentry kind="lib" path="<%=globusLocation%>/lib/wsdl4j.jar"/>
+	<classpathentry kind="lib" path="<%=globusLocation%>/lib/wsrf_common.jar"/>
+	<classpathentry kind="lib" path="<%=globusLocation%>/lib/wsrf_core_registry_stubs.jar"/>
+	<classpathentry kind="lib" path="<%=globusLocation%>/lib/wsrf_core_registry.jar"/>
+	<classpathentry kind="lib" path="<%=globusLocation%>/lib/wsrf_core_samples_authzService_stubs.jar"/>
+	<classpathentry kind="lib" path="<%=globusLocation%>/lib/wsrf_core_samples_authzService.jar"/>
+	<classpathentry kind="lib" path="<%=globusLocation%>/lib/wsrf_core_samples_counter_stubs.jar"/>
+	<classpathentry kind="lib" path="<%=globusLocation%>/lib/wsrf_core_samples_counter.jar"/>
+	<classpathentry kind="lib" path="<%=globusLocation%>/lib/wsrf_core_samples_mgmt_stubs.jar"/>
+	<classpathentry kind="lib" path="<%=globusLocation%>/lib/wsrf_core_samples_mgmt.jar"/>
+	<classpathentry kind="lib" path="<%=globusLocation%>/lib/wsrf_core_stubs.jar"/>
+	<classpathentry kind="lib" path="<%=globusLocation%>/lib/wsrf_core.jar"/>
+	<classpathentry kind="lib" path="<%=globusLocation%>/lib/wsrf_provider_jce.jar"/>
+	<classpathentry kind="lib" path="<%=globusLocation%>/lib/wsrf_test_interop_stubs.jar"/>
+	<classpathentry kind="lib" path="<%=globusLocation%>/lib/wsrf_test_interop.jar"/>
+	<classpathentry kind="lib" path="<%=globusLocation%>/lib/wsrf_test_unit_stubs.jar"/>
+	<classpathentry kind="lib" path="<%=globusLocation%>/lib/wsrf_test_unit.jar"/>
+	<classpathentry kind="lib" path="<%=globusLocation%>/lib/wsrf_test.jar"/>
+	<classpathentry kind="lib" path="<%=globusLocation%>/lib/wsrf_tools.jar"/>
+	<classpathentry kind="lib" path="<%=globusLocation%>/lib/wss4j.jar"/>
+	<classpathentry kind="lib" path="<%=globusLocation%>/lib/xalan.jar"/>
+	<classpathentry kind="lib" path="<%=globusLocation%>/lib/xercesImpl.jar"/>
+	<classpathentry kind="lib" path="<%=globusLocation%>/lib/xml-apis.jar"/>
+	<classpathentry kind="lib" path="<%=globusLocation%>/lib/xmlsec.jar"/>
+<%=serviceLibsString%>
+	<classpathentry kind="output" path="bin"/>
+</classpath>

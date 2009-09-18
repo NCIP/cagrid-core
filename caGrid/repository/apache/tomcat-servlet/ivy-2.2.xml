@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+
+<ivy-module version="2.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:noNamespaceSchemaLocation="http://incubator.apache.org/ivy/schemas/ivy.xsd">
+
+	<info organisation="apache" module="tomcat-servlet" revision="2.2">
+		<description>Apache Tomcat Servlet API</description>
+	</info>
+
+	<configurations>
+		<!-- Public Configurations-->
+		<conf name="default" visibility="public"/>
+	</configurations>
+
+
+	<publications>
+		<artifact name="servlet" type="jar"/>
+	</publications>
+
+	<dependencies/>
+</ivy-module>

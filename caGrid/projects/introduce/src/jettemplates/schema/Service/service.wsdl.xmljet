@@ -1,0 +1,287 @@
+<%@ jet package="gov.nih.nci.cagrid.introduce.templates.schema.service" class="ServiceWSDLTemplate"  imports="javax.xml.namespace.* gov.nih.nci.cagrid.introduce.common.* gov.nih.nci.cagrid.introduce.common.* gov.nih.nci.cagrid.introduce.codegen.utils.* gov.nih.nci.cagrid.introduce.* gov.nih.nci.cagrid.introduce.beans.namespace.* gov.nih.nci.cagrid.introduce.codegen.* java.util.* gov.nih.nci.cagrid.introduce.beans.resource.* gov.nih.nci.cagrid.introduce.beans.method.* gov.nih.nci.cagrid.introduce.beans.service.*" %>
+<%  SpecificServiceInformation info = (SpecificServiceInformation) argument; 
+    ServiceType service = info.getService();
+    String modifiedServiceName = service.getName();
+    if(service.getName().endsWith("Service")){
+    	modifiedServiceName = service.getName().substring(0,service.getName().length()-7);
+    }
+    List faults = new ArrayList();
+%><?xml version="1.0" encoding="UTF-8"?>
+<definitions name="<%=service.getName()%>" targetNamespace="<%=service.getNamespace()%>"
+    xmlns:tns="<%=service.getNamespace()%>"
+    xmlns:wsrp="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ResourceProperties-1.2-draft-01.xsd"
+    xmlns:wsrlw="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ResourceLifetime-1.2-draft-01.wsdl"
+    xmlns:wsdlpp="http://www.globus.org/namespaces/2004/10/WSDLPreprocessor"
+    xmlns:gtwsdl1="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ServiceGroup-1.2-draft-01.wsdl"
+    xmlns:wsa="http://schemas.xmlsoap.org/ws/2004/03/addressing"
+    xmlns:wsntw="http://docs.oasis-open.org/wsn/2004/06/wsn-WS-BaseNotification-1.2-draft-01.wsdl"
+    xmlns:wsrbfw="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-BaseFaults-1.2-draft-01.wsdl"
+    xmlns:wsrpw="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ResourceProperties-1.2-draft-01.wsdl"
+<%
+	Map imprefixmap=SyncUtils.buildWSDLImportMap(info.getService());
+	Iterator imiterator = imprefixmap.keySet().iterator();
+		while(imiterator.hasNext()){
+			String namespace = (String)imiterator.next();
+			ImportInformation importInformation=(ImportInformation)imprefixmap.get(namespace);
+%>    xmlns:<%=importInformation.getPrefix()%>="<%=importInformation.getInformation().getNamespace()%>"
+<%  		
+		}
+			Map prefixmap=SyncUtils.buildMasterNamespaceInformationMap(info.getServiceDescriptor());
+	Iterator iterator = prefixmap.keySet().iterator();
+		while(iterator.hasNext()){
+			String namespace = (String)iterator.next();
+			if(!namespace.equals(IntroduceConstants.W3CNAMESPACE)){
+				NamespaceInformation namespaceInformation=(NamespaceInformation)prefixmap.get(namespace);%>
+			xmlns:<%=namespaceInformation.getPrefix()%>="<%=namespaceInformation.getNamespace().getNamespace()%>"
+			<%  		
+			}
+		}
+%>    xmlns="http://schemas.xmlsoap.org/wsdl/">
+ 
+    <import
+        namespace="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ResourceProperties-1.2-draft-01.wsdl"
+        location="../wsrf/properties/WS-ResourceProperties.wsdl"/>
+    <import namespace="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-BaseFaults-1.2-draft-01.wsdl"
+        location="../wsrf/faults/WS-BaseFaults.wsdl"/>
+    <import namespace="http://docs.oasis-open.org/wsn/2004/06/wsn-WS-BaseNotification-1.2-draft-01.wsdl"
+        location="../wsrf/notification/WS-BaseN.wsdl"/>
+<%
+	imiterator = imprefixmap.keySet().iterator();
+		while(imiterator.hasNext()){
+			String namespace = (String)imiterator.next();
+			ImportInformation importInformation=(ImportInformation)imprefixmap.get(namespace);
+%>    <import namespace="<%=importInformation.getInformation().getNamespace()%>"
+        location="./<%=importInformation.getInformation().getWsdlFile()%>"/>
+<%  		
+		}
+		
+%>
+    <!--============================================================
+
+                      T Y P E S
+                      
+  ============================================================-->
+    <types>
+        <schema targetNamespace="<%=service.getNamespace()%>"
+            xmlns:tns="<%=service.getNamespace()%>"
+             <%
+%>
+            xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns="http://www.w3.org/2001/XMLSchema" xmlns:wsrbf="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-BaseFaults-1.2-draft-01.xsd" elementFormDefault="qualified" attributeFormDefault="unqualified">
+			<import namespace="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-BaseFaults-1.2-draft-01.xsd" schemaLocation="../wsrf/faults/WS-BaseFaults.xsd"/>
+<%
+		prefixmap=SyncUtils.buildMasterNamespaceInformationMap(info.getServiceDescriptor());
+  		iterator = prefixmap.keySet().iterator();
+		while(iterator.hasNext()){
+			String namespace = (String)iterator.next();
+			if(!namespace.equals(IntroduceConstants.W3CNAMESPACE)){
+			NamespaceInformation namespaceInformation=(NamespaceInformation)prefixmap.get(namespace);%>
+			<import namespace="<%=namespaceInformation.getNamespace().getNamespace()%>" schemaLocation="<%=namespaceInformation.getNamespace().getLocation()%>"/>
+			<%
+      		}
+      	}%>
+      	
+      	<%  //walk through each method and create the types for input messages output messages
+      		// and fault messages
+			MethodsType methods = service.getMethods();
+			ResourcePropertiesListType metadataList = service.getResourcePropertiesList();	
+			if(methods!=null && methods.getMethod()!=null){
+	      		for (int methodsI = 0; methodsI < methods.getMethod().length ; methodsI++) {
+	      			MethodType method = methods.getMethod(methodsI);
+	      			if(!method.isIsImported()){
+	      			%>
+				<element name="<%=CommonTools.upperCaseFirstCharacter(method.getName())%>Request">
+					<complexType>
+						<sequence>
+          		  			<% 
+          		  
+          		  if(method.getInputs()!=null && method.getInputs().getInput()!=null){
+	      				for(int inputsI = 0; inputsI < method.getInputs().getInput().length; inputsI++){
+	      					MethodTypeInputsInput inputParam = method.getInputs().getInput(inputsI);
+	      					SchemaInformation schemaInformation = CommonTools.getSchemaInformation(info.getNamespaces(), inputParam.getQName());
+	      					
+	      					if(inputParam.isIsArray()){
+									if(schemaInformation.getNamespace().getNamespace().equals(IntroduceConstants.W3CNAMESPACE)){
+							%><element name="<%=inputParam.getName() %>" type="<%=((NamespaceInformation)prefixmap.get(schemaInformation.getNamespace().getNamespace())).getPrefix()%>:<%=schemaInformation.getType().getType() %>" minOccurs="1" maxOccurs="unbounded" />
+                  			<%
+									} else {
+							%><element name="<%=inputParam.getName() %>">
+	      		  				<complexType>
+									<sequence>
+										<element ref="<%=((NamespaceInformation)prefixmap.get(schemaInformation.getNamespace().getNamespace())).getPrefix()%>:<%=schemaInformation.getType().getType() %>" minOccurs="1" maxOccurs="unbounded" />
+                  				 	</sequence>
+	      			        	</complexType>
+	      			        </element>
+	      			        <%
+									}
+                            } else {
+									if(schemaInformation.getNamespace().getNamespace().equals(IntroduceConstants.W3CNAMESPACE)){
+							%><element name="<%=inputParam.getName() %>" type="<%=((NamespaceInformation)prefixmap.get(schemaInformation.getNamespace().getNamespace())).getPrefix()%>:<%=schemaInformation.getType().getType() %>" minOccurs="1" maxOccurs="1" /><%
+									} else {
+							%><element name="<%=inputParam.getName() %>">
+	      		  				<complexType>
+									<sequence>
+										<element ref="<%=((NamespaceInformation)prefixmap.get(schemaInformation.getNamespace().getNamespace())).getPrefix()%>:<%=schemaInformation.getType().getType() %>" minOccurs="1" maxOccurs="1" />
+                  				 	</sequence>
+	      			        	</complexType>
+	      			        </element>
+	      			        <%
+                  				 	}
+  		       				}
+	      				}
+	      			}
+	      		      %></sequence>
+	      			</complexType>
+	      		</element>
+  		       
+				<element name="<%=CommonTools.upperCaseFirstCharacter(method.getName())%>Response">
+					<complexType>
+						<sequence>
+          		  <%
+	      			if(method.getOutput()!=null){
+						MethodTypeOutput outputParam = method.getOutput();
+						SchemaInformation schemaInformation = CommonTools.getSchemaInformation(info.getNamespaces(),outputParam.getQName());
+	      				if(schemaInformation !=null) {
+	      					if(schemaInformation.getType().getClassName()==null || (schemaInformation.getType().getClassName()!=null)){
+								if(outputParam.isIsArray()){
+				      		 		if(schemaInformation.getNamespace().getNamespace().equals(IntroduceConstants.W3CNAMESPACE)){
+									%>
+							<element name="response" type="<%=((NamespaceInformation)prefixmap.get(schemaInformation.getNamespace().getNamespace())).getPrefix()%>:<%=schemaInformation.getType().getType() %>" minOccurs="1" maxOccurs="unbounded" />
+			                  		<%
+									} else {
+									%>
+							<element ref="<%=((NamespaceInformation)prefixmap.get(schemaInformation.getNamespace().getNamespace())).getPrefix()%>:<%=schemaInformation.getType().getType() %>" minOccurs="1" maxOccurs="unbounded" />
+			                  		<%
+                  				 	}
+				     
+			            		} else {
+			            			if(schemaInformation.getNamespace().getNamespace().equals(IntroduceConstants.W3CNAMESPACE)){
+									%>
+							<element name="response" type="<%=((NamespaceInformation)prefixmap.get(schemaInformation.getNamespace().getNamespace())).getPrefix()%>:<%=schemaInformation.getType().getType() %>" minOccurs="1" maxOccurs="1" />
+			                  		<%
+									} else {
+									%>
+							<element ref="<%=((NamespaceInformation)prefixmap.get(schemaInformation.getNamespace().getNamespace())).getPrefix()%>:<%=schemaInformation.getType().getType() %>" minOccurs="1" maxOccurs="1" />
+			                  		<%
+			                  		}
+
+			  		    		}
+							}
+						}
+					}
+          		  %>
+						</sequence>
+					</complexType>
+				</element>
+				<%
+			}
+		}
+		
+		if(methods!=null && methods.getMethod()!=null){
+      		for (int methodsI = 0; methodsI < methods.getMethod().length ; methodsI++) {
+      			MethodType method = methods.getMethod(methodsI);
+      			if(!method.isIsImported()){
+      			if(method.getExceptions()!=null && method.getExceptions().getException()!=null){
+      				for(int exceptionI = 0; exceptionI < method.getExceptions().getException().length; exceptionI++){
+      					MethodTypeExceptionsException exception = method.getExceptions().getException(exceptionI);
+      					if(!faults.contains(exception.getQname())){
+      					  faults.add(exception.getQname());
+      					}
+      				}
+      				}
+				}
+    		}
+  		}
+      	%>
+      		
+            <element name="<%=service.getName()%>ResourceProperties">
+                <complexType>
+                    <sequence>
+                        <%
+        if(metadataList!=null && metadataList.getResourceProperty()!=null){
+       	  prefixmap=SyncUtils.buildMasterNamespaceInformationMap(info.getServiceDescriptor());
+          for (int i = 0; i < metadataList.getResourceProperty().length; i++) {
+            ResourcePropertyType metadata = metadataList.getResourceProperty(i);
+			SchemaInformation schemaInformation = CommonTools.getSchemaInformation(info.getNamespaces(),metadata.getQName());
+						%><element ref="<%=((NamespaceInformation)prefixmap.get(schemaInformation.getNamespace().getNamespace())).getPrefix()%>:<%=schemaInformation.getType().getType()%>"/><%
+		  }
+		}
+
+                    %></sequence>
+                </complexType>
+            </element>
+<%
+		}
+%>
+          </schema>
+    </types>
+    
+    
+<!--  place service messages here -->
+<%  		//walk through each method and create the types for input messages output messages
+      		// and fault messages
+			methods = service.getMethods();
+if(methods!=null && methods.getMethod()!=null){
+	for (int methodsI = 0; methodsI < methods.getMethod().length ; methodsI++) {
+		MethodType method = methods.getMethod(methodsI);
+		if(!method.isIsImported()){
+%>
+	<message name="<%=CommonTools.upperCaseFirstCharacter(method.getName()) %>Request">
+		<part name="parameters" element="tns:<%=CommonTools.upperCaseFirstCharacter(method.getName()) %>Request"/>
+	</message>
+	
+	<message name="<%=CommonTools.upperCaseFirstCharacter(method.getName()) %>Response">
+		<part name="parameters" element="tns:<%=CommonTools.upperCaseFirstCharacter(method.getName()) %>Response"/>
+	</message>
+<%
+	}
+	}
+}
+
+for(int i=0; i < faults.size(); i++){
+NamespaceInformation namespaceInformation=(NamespaceInformation)prefixmap.get(((QName)faults.get(i)).getNamespaceURI());
+%>
+	<message name="<%=((QName)faults.get(i)).getLocalPart() %>FaultMessage">
+		<part name="fault" element="<%=namespaceInformation.getPrefix() %>:<%=((QName)faults.get(i)).getLocalPart() %>"/>
+	</message>
+<%
+}
+			
+			
+%>
+    
+<!--============================================================
+
+                       P O R T T Y P E
+                      
+  ============================================================-->
+<portType name="<%=service.getName()%>PortType" wsrp:ResourceProperties="tns:<%=service.getName()%>ResourceProperties">
+<%
+//walk through methods and create the operations
+methods = service.getMethods();
+if(methods!=null && methods.getMethod()!=null){
+	for (int methodsI = 0; methodsI < methods.getMethod().length ; methodsI++) {
+		MethodType method = methods.getMethod(methodsI);
+		//if the method is imported dont add it, we will use JDOM to do so
+		if(!method.isIsImported()){
+%>
+		<operation name="<%=method.getName() %>">
+            <input message="tns:<%=CommonTools.upperCaseFirstCharacter(method.getName()) %>Request" wsa:Action="<%=service.getNamespace()%>/<%=CommonTools.upperCaseFirstCharacter(method.getName()) %>Request"/>
+            <output message="tns:<%=CommonTools.upperCaseFirstCharacter(method.getName()) %>Response" wsa:Action="<%=service.getNamespace()%>/<%=CommonTools.upperCaseFirstCharacter(method.getName()) %>Response"/>
+            <%
+       		if(method.getExceptions()!=null && method.getExceptions().getException()!=null){
+       			for(int faultI = 0; faultI < method.getExceptions().getException().length; faultI++){
+       				MethodTypeExceptionsException exception = (MethodTypeExceptionsException)method.getExceptions().getException(faultI);
+       				%>
+       		 <fault name="<%=exception.getQname().getLocalPart() %>" message="tns:<%=exception.getQname().getLocalPart() %>FaultMessage" wsa:Action="<%=service.getNamespace()%>/<%=exception.getQname().getLocalPart() %>FaultMessage"/>
+       				<%
+       			}
+       		}
+            %>
+        </operation>
+<%
+	}
+  }
+}
+%>
+    </portType>
+</definitions>

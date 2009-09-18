@@ -1,0 +1,22 @@
+<ns1:CQLQueryResultCollection targetClassname="org.projectmobius.bookstore.Book" xmlns:ns1="http://CQL.caBIG/1/gov.nih.nci.cagrid.CQLResultSet">
+ <ns1:AttributeResult>
+  <ns1:Attribute name="title" value="title1"/>
+  <ns1:Attribute name="section" value="section1"/>
+ </ns1:AttributeResult>
+ <ns1:AttributeResult>
+  <ns1:Attribute name="title" value="title2"/>
+  <ns1:Attribute name="section" value="section2"/>
+ </ns1:AttributeResult>
+ <ns1:AttributeResult>
+  <ns1:Attribute name="title" value="title3"/>
+  <ns1:Attribute name="section" value="section3"/>
+ </ns1:AttributeResult>
+ <ns1:AttributeResult>
+  <ns1:Attribute name="title" value="title4"/>
+  <ns1:Attribute name="section" value="section4"/>
+ </ns1:AttributeResult>
+ <ns1:AttributeResult>
+  <ns1:Attribute name="title" value="title5"/>
+  <ns1:Attribute name="section" value="section5"/>
+ </ns1:AttributeResult>
+</ns1:CQLQueryResultCollection>

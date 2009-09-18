@@ -1,0 +1,24 @@
+<%@ jet package="gov.nih.nci.cagrid.introduce.templates.common" class="ServiceConstantsTemplate" imports="gov.nih.nci.cagrid.introduce.common.* gov.nih.nci.cagrid.introduce.codegen.utils.* gov.nih.nci.cagrid.introduce.codegen.* gov.nih.nci.cagrid.introduce.common.* java.util.* gov.nih.nci.cagrid.introduce.beans.resource.*" %>
+<%  gov.nih.nci.cagrid.introduce.common.SpecificServiceInformation arguments = (gov.nih.nci.cagrid.introduce.common.SpecificServiceInformation) argument; 
+  	Properties properties = arguments.getIntroduceServiceProperties();
+	ResourcePropertiesListType metadataList = arguments.getService().getResourcePropertiesList();
+    String serviceName = arguments.getService().getName();
+    String namespaceDomain = arguments.getService().getNamespace();
+    String modifiedServiceName = serviceName;
+    if(serviceName.endsWith("Service")){
+   		modifiedServiceName = serviceName.substring(0,serviceName.length()-7);
+	}
+%>
+package <%=arguments.getService().getPackageName()%>.common;
+
+import javax.xml.namespace.QName;
+
+
+/**
+ * Constants class that extends the introduce managed constants.  Developers can add constants to this file.
+ *
+ * @created by Introduce Toolkit version <%=IntroducePropertiesManager.getIntroduceVersion()%>
+ */
+public interface <%=arguments.getService().getName()%>Constants extends <%=arguments.getService().getName()%>ConstantsBase {
+	
+}

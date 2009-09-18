@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xsd:schema targetNamespace="http://www.cagrid.org/1/grape-service-configuration"
+    attributeFormDefault="qualified"
+    elementFormDefault="qualified"
+    xmlns:xsd="http://www.w3.org/2001/XMLSchema" 
+    xmlns:grape="http://www.cagrid.org/1/grape-service-configuration">
+    
+     <xsd:element name="ServiceConfiguration" type="grape:ServiceConfiguration"/>
+    
+    <xsd:complexType name="ServiceConfiguration">
+        <xsd:sequence>
+            <xsd:element name="ServiceGroupDescription" type="xsd:string" minOccurs="1" maxOccurs="1"/>
+            <xsd:element name="Services" type="grape:Services" minOccurs="1" maxOccurs="1"/>
+        </xsd:sequence>
+    </xsd:complexType>
+    
+    <xsd:element name="Services" type="grape:Services"/>
+    
+    <xsd:complexType name="Services">
+        <xsd:sequence>
+            <xsd:element name="ServiceDescriptor" type="grape:ServiceDescriptor" minOccurs="0" maxOccurs="unbounded"/>
+        </xsd:sequence>
+    </xsd:complexType>
+    
+     <xsd:element name="ServiceDescriptor" type="grape:ServiceDescriptor"/>
+    
+    <xsd:complexType name="ServiceDescriptor">
+        <xsd:sequence>
+            <xsd:element name="DisplayName" type="xsd:string" minOccurs="1" maxOccurs="1"/>
+            <xsd:element name="ServiceURL" type="xsd:string" minOccurs="1" maxOccurs="1"/>
+            <xsd:element name="ServiceIdentity" type="xsd:string" minOccurs="0" maxOccurs="1"/>
+        </xsd:sequence>
+    </xsd:complexType>
+</xsd:schema>

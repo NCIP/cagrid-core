@@ -1,0 +1,31 @@
+<?xml version="1.0"?>
+
+<ivy-module version="2.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:noNamespaceSchemaLocation="http://incubator.apache.org/ivy/schemas/ivy.xsd">
+
+  <info organisation="caGrid" module="installer" revision="${project.version}">
+    <license name="caGrid" url="http://cagrid.org/wiki/CaGrid:LICENSE-1.3"/>
+    <description>caGrid Graphical Installer</description>
+  </info>
+
+  <configurations>
+    <!-- Public Configurations-->
+    <conf name="impl" visibility="private"/>
+    <conf name="default" visibility="public"/>
+  </configurations>
+
+
+  <publications>
+    <artifact name="caGrid-${ivy.module}" conf="default" type="jar"/>
+  </publications>
+
+  <dependencies>
+    <dependency rev="latest.integration" org="caGrid" name="wizard"/>
+
+    <!-- External Dependencies -->
+    <dependency rev="1.14" org="oopsconsultancy" name="xmltask"/>
+    <dependency rev="2.0.0" org="jgoodies" name="validation" conf="impl->default"/>
+    <dependency rev="1.0b3" org="ant-contrib" name="ant-contrib" />
+
+  </dependencies>
+</ivy-module>

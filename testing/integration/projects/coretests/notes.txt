@@ -1,0 +1,6 @@
+Put TODO here:
+
+
+Problems:
+- User's .globus directory is used... should override with cog properties
+ 

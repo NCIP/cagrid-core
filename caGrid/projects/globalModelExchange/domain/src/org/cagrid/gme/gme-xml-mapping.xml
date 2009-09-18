@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapping PUBLIC "-//EXOLAB/Castor Object Mapping DTD Version 1.0//EN" "http://www.castor.org/mapping.dtd">
+<mapping xmlns:gme="gme://gme.cagrid.org/2.0/GlobalModelExchange/domain">
+	<class name="org.cagrid.gme.domain.XMLSchemaDocument">
+		<map-to xml="XMLSchemaDocument"
+			ns-uri="gme://gme.cagrid.org/2.0/GlobalModelExchange/domain"
+			ns-prefix="gme" />
+		<field name="systemID" type="string">
+			<bind-xml name="systemID" node="attribute" />
+		</field>
+		<field name="schemaText" type="string">
+			<bind-xml name="gme:schemaText" node="element" />
+		</field>
+	</class>
+	<class name="org.cagrid.gme.domain.XMLSchema">
+		<map-to xml="XMLSchema"
+			ns-uri="gme://gme.cagrid.org/2.0/GlobalModelExchange/domain"
+			ns-prefix="gme" />
+		<field name="targetNamespace" type="java.net.URI"
+			handler="org.cagrid.gme.serialization.URIFieldHandler">
+			<bind-xml name="targetNamespace" node="attribute" />
+		</field>
+		<field name="rootDocument" type="org.cagrid.gme.domain.XMLSchemaDocument">
+			<bind-xml name="gme:XMLSchemaDocument" location="rootDocument" />
+		</field>
+		<field get-method="getAdditionalSchemaDocuments" set-method="setAdditionalSchemaDocuments"
+			name="additionalDocuments" type="org.cagrid.gme.domain.XMLSchemaDocument"
+			collection="set">
+			<bind-xml name="gme:XMLSchemaDocument" location="additionalDocuments" />
+		</field>
+	</class>
+	<class name="org.cagrid.gme.domain.XMLSchemaBundle">
+		<map-to xml="XMLSchemaBundle"
+			ns-uri="gme://gme.cagrid.org/2.0/GlobalModelExchange/domain"
+			ns-prefix="gme" />
+		<field get-method="getXMLSchemas" set-method="setXMLSchemas"
+			name="xmlSchemaCollection" type="org.cagrid.gme.domain.XMLSchema"
+			collection="set">
+			<bind-xml name="gme:XMLSchema" location="xmlSchemaCollection" />
+		</field>
+		<field get-method="getImportInformation" set-method="setImportInformation"
+			name="importInformation" collection="set"
+			type="org.cagrid.gme.domain.XMLSchemaImportInformation">
+			<bind-xml name="gme:XMLSchemaImportInformation" location="importInformationCollection" />
+		</field>
+	</class>
+	<class name="org.cagrid.gme.domain.XMLSchemaImportInformation">
+		<map-to xml="XMLSchemaImportInformation"
+			ns-uri="gme://gme.cagrid.org/2.0/GlobalModelExchange/domain"
+			ns-prefix="gme" />
+		<field name="targetNamespace" type="org.cagrid.gme.domain.XMLSchemaNamespace"
+			get-method="getTargetNamespace" set-method="setTargetNamespace">
+			<bind-xml name="gme:XMLSchemaNamespace" />
+		</field>
+		<field name="imports" collection="set"
+			type="org.cagrid.gme.domain.XMLSchemaNamespace" get-method="getImports"
+			set-method="setImports">
+			<bind-xml name="gme:XMLSchemaNamespace" location="imports" />
+		</field>
+	</class>
+	<class name="org.cagrid.gme.domain.XMLSchemaNamespace">
+		<map-to xml="XMLSchemaNamespace"
+			ns-uri="gme://gme.cagrid.org/2.0/GlobalModelExchange/domain"
+			ns-prefix="gme" />
+		<field name="uri" type="java.net.URI" get-method="getURI"
+			set-method="setURI" handler="org.cagrid.gme.serialization.URIFieldHandler">
+			<bind-xml name="uri" node="attribute" />
+		</field>
+	</class>
+</mapping>

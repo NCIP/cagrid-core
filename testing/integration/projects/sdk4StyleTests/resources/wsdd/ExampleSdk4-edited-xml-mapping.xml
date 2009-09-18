@@ -1,0 +1,739 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mapping>
+  <class name="gov.nih.nci.cacoresdk.domain.other.primarykey.DoublePrimitiveKey" identity="id">
+    <map-to xml="DoublePrimitiveKey" ns-uri="gme://caCORE.caCORE/4.0/gov.nih.nci.cacoresdk.domain.other.primarykey" />
+    <field name="id" type="double">
+      <bind-xml name="id" node="attribute" />
+    </field>
+    <field name="name" type="string">
+      <bind-xml name="name" node="attribute" />
+    </field>
+  </class>
+  <class name="gov.nih.nci.cacoresdk.domain.other.primarykey.CharacterPrimitiveKey" identity="id">
+    <map-to xml="CharacterPrimitiveKey" ns-uri="gme://caCORE.caCORE/4.0/gov.nih.nci.cacoresdk.domain.other.primarykey" />
+    <field name="id" type="char">
+      <bind-xml name="id" node="attribute" />
+    </field>
+    <field name="name" type="string">
+      <bind-xml name="name" node="attribute" />
+    </field>
+  </class>
+  <class name="gov.nih.nci.cacoresdk.domain.inheritance.onechild.sametable.Currency" identity="id">
+    <map-to xml="Currency" ns-uri="gme://caCORE.caCORE/4.0/gov.nih.nci.cacoresdk.domain.inheritance.onechild.sametable" />
+    <field name="country" type="string">
+      <bind-xml name="country" node="attribute" />
+    </field>
+    <field name="id" type="integer">
+      <bind-xml name="id" node="attribute" />
+    </field>
+  </class>
+  <class name="gov.nih.nci.cacoresdk.domain.manytoone.unidirectional.Chef" identity="id">
+    <map-to xml="Chef" ns-uri="gme://caCORE.caCORE/4.0/gov.nih.nci.cacoresdk.domain.manytoone.unidirectional" />
+    <field name="id" type="integer">
+      <bind-xml name="id" node="attribute" />
+    </field>
+    <field name="name" type="string">
+      <bind-xml name="name" node="attribute" />
+    </field>
+  </class>
+  <class name="gov.nih.nci.cacoresdk.domain.onetoone.unidirectional.withjoin.Handle" identity="id">
+    <map-to xml="Handle" ns-uri="gme://caCORE.caCORE/4.0/gov.nih.nci.cacoresdk.domain.onetoone.unidirectional.withjoin" />
+    <field name="color" type="string">
+      <bind-xml name="color" node="attribute" />
+    </field>
+    <field name="id" type="integer">
+      <bind-xml name="id" node="attribute" />
+    </field>
+  </class>
+  <class name="gov.nih.nci.cacoresdk.domain.onetoone.bidirectional.OrderLine" identity="id">
+    <map-to xml="OrderLine" ns-uri="gme://caCORE.caCORE/4.0/gov.nih.nci.cacoresdk.domain.onetoone.bidirectional" />
+    <field name="id" type="integer">
+      <bind-xml name="id" node="attribute" />
+    </field>
+    <field name="name" type="string">
+      <bind-xml name="name" node="attribute" />
+    </field>
+  </class>
+  <class name="gov.nih.nci.cacoresdk.domain.inheritance.twolevelinheritance.Display" identity="id">
+    <map-to xml="Display" ns-uri="gme://caCORE.caCORE/4.0/gov.nih.nci.cacoresdk.domain.inheritance.twolevelinheritance" />
+    <field name="height" type="integer">
+      <bind-xml name="height" node="attribute" />
+    </field>
+    <field name="id" type="integer">
+      <bind-xml name="id" node="attribute" />
+    </field>
+    <field name="width" type="integer">
+      <bind-xml name="width" node="attribute" />
+    </field>
+  </class>
+  <class name="gov.nih.nci.cacoresdk.domain.inheritance.twolevelinheritance.sametablerootlevel.Calculator" identity="id">
+    <map-to xml="Calculator" ns-uri="gme://caCORE.caCORE/4.0/gov.nih.nci.cacoresdk.domain.inheritance.twolevelinheritance.sametablerootlevel" />
+    <field name="brand" type="string">
+      <bind-xml name="brand" node="attribute" />
+    </field>
+    <field name="id" type="integer">
+      <bind-xml name="id" node="attribute" />
+    </field>
+  </class>
+  <class name="gov.nih.nci.cacoresdk.domain.other.levelassociation.Suit" identity="id">
+    <map-to xml="Suit" ns-uri="gme://caCORE.caCORE/4.0/gov.nih.nci.cacoresdk.domain.other.levelassociation" />
+    <field name="id" type="integer">
+      <bind-xml name="id" node="attribute" />
+    </field>
+    <field name="name" type="string">
+      <bind-xml name="name" node="attribute" />
+    </field>
+  </class>
+  <class name="gov.nih.nci.cacoresdk.domain.onetoone.unidirectional.Address" identity="id">
+    <map-to xml="Address" ns-uri="gme://caCORE.caCORE/4.0/gov.nih.nci.cacoresdk.domain.onetoone.unidirectional" />
+    <field name="id" type="integer">
+      <bind-xml name="id" node="attribute" />
+    </field>
+    <field name="zip" type="string">
+      <bind-xml name="zip" node="attribute" />
+    </field>
+  </class>
+  <class name="gov.nih.nci.cacoresdk.domain.manytomany.bidirectional.Project" identity="id">
+    <map-to xml="Project" ns-uri="gme://caCORE.caCORE/4.0/gov.nih.nci.cacoresdk.domain.manytomany.bidirectional" />
+    <field name="id" type="integer">
+      <bind-xml name="id" node="attribute" />
+    </field>
+    <field name="name" type="string">
+      <bind-xml name="name" node="attribute" />
+    </field>
+  </class>
+  <class name="gov.nih.nci.cacoresdk.domain.other.datatype.AllDataType" identity="id">
+    <map-to xml="AllDataType" ns-uri="gme://caCORE.caCORE/4.0/gov.nih.nci.cacoresdk.domain.other.datatype" />
+    <field name="booleanPrimitiveValue" type="boolean">
+      <bind-xml name="booleanPrimitiveValue" node="attribute" />
+    </field>
+    <field name="booleanValue" type="boolean">
+      <bind-xml name="booleanValue" node="attribute" />
+    </field>
+    <field name="characterPrimitiveValue" type="char">
+      <bind-xml name="characterPrimitiveValue" node="attribute" />
+    </field>
+    <field name="characterValue" type="char">
+      <bind-xml name="characterValue" node="attribute" />
+    </field>
+    <field name="clobValue" type="string">
+      <bind-xml name="clobValue" node="attribute" />
+    </field>
+    <field name="datePrimitiveValue" type="java.util.Date">
+      <bind-xml name="datePrimitiveValue" node="attribute" />
+    </field>
+    <field name="dateValue" type="java.util.Date">
+      <bind-xml name="dateValue" node="attribute" />
+    </field>
+    <field name="doublePrimitiveValue" type="double">
+      <bind-xml name="doublePrimitiveValue" node="attribute" />
+    </field>
+    <field name="doubleValue" type="double">
+      <bind-xml name="doubleValue" node="attribute" />
+    </field>
+    <field name="floatPrimitiveValue" type="float">
+      <bind-xml name="floatPrimitiveValue" node="attribute" />
+    </field>
+    <field name="floatValue" type="float">
+      <bind-xml name="floatValue" node="attribute" />
+    </field>
+    <field name="id" type="integer">
+      <bind-xml name="id" node="attribute" />
+    </field>
+    <field name="intPrimitiveValue" type="integer">
+      <bind-xml name="intPrimitiveValue" node="attribute" />
+    </field>
+    <field name="intValue" type="integer">
+      <bind-xml name="intValue" node="attribute" />
+    </field>
+    <field name="longPrimitiveValue" type="long">
+      <bind-xml name="longPrimitiveValue" node="attribute" />
+    </field>
+    <field name="longValue" type="long">
+      <bind-xml name="longValue" node="attribute" />
+    </field>
+    <field name="stringPrimitiveValue" type="string">
+      <bind-xml name="stringPrimitiveValue" node="attribute" />
+    </field>
+    <field name="stringValue" type="string">
+      <bind-xml name="stringValue" node="attribute" />
+    </field>
+  </class>
+  <class name="gov.nih.nci.cacoresdk.domain.onetoone.multipleassociation.withjoin.Bride" identity="id">
+    <map-to xml="Bride" ns-uri="gme://caCORE.caCORE/4.0/gov.nih.nci.cacoresdk.domain.onetoone.multipleassociation.withjoin" />
+    <field name="id" type="integer">
+      <bind-xml name="id" node="attribute" />
+    </field>
+    <field name="name" type="string">
+      <bind-xml name="name" node="attribute" />
+    </field>
+  </class>
+  <class name="gov.nih.nci.cacoresdk.domain.inheritance.twolevelinheritance.sametable.Goverment" identity="id">
+    <map-to xml="Goverment" ns-uri="gme://caCORE.caCORE/4.0/gov.nih.nci.cacoresdk.domain.inheritance.twolevelinheritance.sametable" />
+    <field name="country" type="string">
+      <bind-xml name="country" node="attribute" />
+    </field>
+    <field name="id" type="integer">
+      <bind-xml name="id" node="attribute" />
+    </field>
+  </class>
+  <class name="gov.nih.nci.cacoresdk.domain.inheritance.onechild.Mammal" identity="id">
+    <map-to xml="Mammal" ns-uri="gme://caCORE.caCORE/4.0/gov.nih.nci.cacoresdk.domain.inheritance.onechild" />
+    <field name="hairColor" type="string">
+      <bind-xml name="hairColor" node="attribute" />
+    </field>
+    <field name="id" type="integer">
+      <bind-xml name="id" node="attribute" />
+    </field>
+  </class>
+  <class name="gov.nih.nci.cacoresdk.domain.other.primarykey.LongKey" identity="id">
+    <map-to xml="LongKey" ns-uri="gme://caCORE.caCORE/4.0/gov.nih.nci.cacoresdk.domain.other.primarykey" />
+    <field name="id" type="long">
+      <bind-xml name="id" node="attribute" />
+    </field>
+    <field name="name" type="string">
+      <bind-xml name="name" node="attribute" />
+    </field>
+  </class>
+  <class name="gov.nih.nci.cacoresdk.domain.onetoone.unidirectional.withjoin.Bag" identity="id">
+    <map-to xml="Bag" ns-uri="gme://caCORE.caCORE/4.0/gov.nih.nci.cacoresdk.domain.onetoone.unidirectional.withjoin" />
+    <field name="id" type="integer">
+      <bind-xml name="id" node="attribute" />
+    </field>
+    <field name="style" type="string">
+      <bind-xml name="style" node="attribute" />
+    </field>
+  </class>
+  <class name="gov.nih.nci.cacoresdk.domain.inheritance.parentwithassociation.Assistant" identity="id">
+    <map-to xml="Assistant" ns-uri="gme://caCORE.caCORE/4.0/gov.nih.nci.cacoresdk.domain.inheritance.parentwithassociation" />
+    <field name="id" type="integer">
+      <bind-xml name="id" node="attribute" />
+    </field>
+    <field name="name" type="string">
+      <bind-xml name="name" node="attribute" />
+    </field>
+  </class>
+  <class name="gov.nih.nci.cacoresdk.domain.other.levelassociation.Hand" identity="id">
+    <map-to xml="Hand" ns-uri="gme://caCORE.caCORE/4.0/gov.nih.nci.cacoresdk.domain.other.levelassociation" />
+    <field name="id" type="integer">
+      <bind-xml name="id" node="attribute" />
+    </field>
+  </class>
+  <class name="gov.nih.nci.cacoresdk.domain.other.primarykey.FloatKey" identity="id">
+    <map-to xml="FloatKey" ns-uri="gme://caCORE.caCORE/4.0/gov.nih.nci.cacoresdk.domain.other.primarykey" />
+    <field name="id" type="float">
+      <bind-xml name="id" node="attribute" />
+    </field>
+    <field name="name" type="string">
+      <bind-xml name="name" node="attribute" />
+    </field>
+  </class>
+  <class name="gov.nih.nci.cacoresdk.domain.other.levelassociation.Card" identity="id">
+    <map-to xml="Card" ns-uri="gme://caCORE.caCORE/4.0/gov.nih.nci.cacoresdk.domain.other.levelassociation" />
+    <field name="id" type="integer">
+      <bind-xml name="id" node="attribute" />
+    </field>
+    <field name="image" type="string">
+      <bind-xml name="image" node="attribute" />
+    </field>
+    <field name="Name" type="string">
+      <bind-xml name="Name" node="attribute" />
+    </field>
+  </class>
+  <class name="gov.nih.nci.cacoresdk.domain.other.primarykey.LongPrimitiveKey" identity="id">
+    <map-to xml="LongPrimitiveKey" ns-uri="gme://caCORE.caCORE/4.0/gov.nih.nci.cacoresdk.domain.other.primarykey" />
+    <field name="id" type="long">
+      <bind-xml name="id" node="attribute" />
+    </field>
+    <field name="name" type="string">
+      <bind-xml name="name" node="attribute" />
+    </field>
+  </class>
+  <class name="gov.nih.nci.cacoresdk.domain.other.primarykey.DoubleKey" identity="id">
+    <map-to xml="DoubleKey" ns-uri="gme://caCORE.caCORE/4.0/gov.nih.nci.cacoresdk.domain.other.primarykey" />
+    <field name="id" type="double">
+      <bind-xml name="id" node="attribute" />
+    </field>
+    <field name="name" type="string">
+      <bind-xml name="name" node="attribute" />
+    </field>
+  </class>
+  <class name="gov.nih.nci.cacoresdk.domain.manytomany.bidirectional.Employee" identity="id">
+    <map-to xml="Employee" ns-uri="gme://caCORE.caCORE/4.0/gov.nih.nci.cacoresdk.domain.manytomany.bidirectional" />
+    <field name="id" type="integer">
+      <bind-xml name="id" node="attribute" />
+    </field>
+    <field name="name" type="string">
+      <bind-xml name="name" node="attribute" />
+    </field>
+  </class>
+  <class name="gov.nih.nci.cacoresdk.domain.onetoone.bidirectional.withjoin.Pendant" identity="id">
+    <map-to xml="Pendant" ns-uri="gme://caCORE.caCORE/4.0/gov.nih.nci.cacoresdk.domain.onetoone.bidirectional.withjoin" />
+    <field name="id" type="integer">
+      <bind-xml name="id" node="attribute" />
+    </field>
+    <field name="shape" type="string">
+      <bind-xml name="shape" node="attribute" />
+    </field>
+  </class>
+  <class name="gov.nih.nci.cacoresdk.domain.inheritance.multiplechild.Student" identity="id">
+    <map-to xml="Student" ns-uri="gme://caCORE.caCORE/4.0/gov.nih.nci.cacoresdk.domain.inheritance.multiplechild" />
+    <field name="id" type="integer">
+      <bind-xml name="id" node="attribute" />
+    </field>
+    <field name="name" type="string">
+      <bind-xml name="name" node="attribute" />
+    </field>
+  </class>
+  <class name="gov.nih.nci.cacoresdk.domain.manytoone.unidirectional.Restaurant" identity="id">
+    <map-to xml="Restaurant" ns-uri="gme://caCORE.caCORE/4.0/gov.nih.nci.cacoresdk.domain.manytoone.unidirectional" />
+    <field name="id" type="integer">
+      <bind-xml name="id" node="attribute" />
+    </field>
+    <field name="name" type="string">
+      <bind-xml name="name" node="attribute" />
+    </field>
+  </class>
+  <class name="gov.nih.nci.cacoresdk.domain.onetoone.bidirectional.withjoin.Chain" identity="id">
+    <map-to xml="Chain" ns-uri="gme://caCORE.caCORE/4.0/gov.nih.nci.cacoresdk.domain.onetoone.bidirectional.withjoin" />
+    <field name="id" type="integer">
+      <bind-xml name="id" node="attribute" />
+    </field>
+    <field name="metal" type="string">
+      <bind-xml name="metal" node="attribute" />
+    </field>
+  </class>
+  <class name="gov.nih.nci.cacoresdk.domain.onetomany.unidirectional.withjoin.Shirt" identity="id">
+    <map-to xml="Shirt" ns-uri="gme://caCORE.caCORE/4.0/gov.nih.nci.cacoresdk.domain.onetomany.unidirectional.withjoin" />
+    <field name="id" type="integer">
+      <bind-xml name="id" node="attribute" />
+    </field>
+    <field name="style" type="string">
+      <bind-xml name="style" node="attribute" />
+    </field>
+  </class>
+  <class name="gov.nih.nci.cacoresdk.domain.manytomany.unidirectional.Book" identity="id">
+    <map-to xml="Book" ns-uri="gme://caCORE.caCORE/4.0/gov.nih.nci.cacoresdk.domain.manytomany.unidirectional" />
+    <field name="id" type="integer">
+      <bind-xml name="id" node="attribute" />
+    </field>
+    <field name="name" type="string">
+      <bind-xml name="name" node="attribute" />
+    </field>
+  </class>
+  <class name="gov.nih.nci.cacoresdk.domain.onetoone.unidirectional.Person" identity="id">
+    <map-to xml="Person" ns-uri="gme://caCORE.caCORE/4.0/gov.nih.nci.cacoresdk.domain.onetoone.unidirectional" />
+    <field name="id" type="integer">
+      <bind-xml name="id" node="attribute" />
+    </field>
+    <field name="name" type="string">
+      <bind-xml name="name" node="attribute" />
+    </field>
+  </class>
+  <class name="gov.nih.nci.cacoresdk.domain.other.primarykey.IntegerPrimitiveKey" identity="id">
+    <map-to xml="IntegerPrimitiveKey" ns-uri="gme://caCORE.caCORE/4.0/gov.nih.nci.cacoresdk.domain.other.primarykey" />
+    <field name="id" type="integer">
+      <bind-xml name="id" node="attribute" />
+    </field>
+    <field name="name" type="string">
+      <bind-xml name="name" node="attribute" />
+    </field>
+  </class>
+  <class name="gov.nih.nci.cacoresdk.domain.manytoone.unidirectional.withjoin.Album" identity="id">
+    <map-to xml="Album" ns-uri="gme://caCORE.caCORE/4.0/gov.nih.nci.cacoresdk.domain.manytoone.unidirectional.withjoin" />
+    <field name="id" type="integer">
+      <bind-xml name="id" node="attribute" />
+    </field>
+    <field name="title" type="string">
+      <bind-xml name="title" node="attribute" />
+    </field>
+  </class>
+  <class name="gov.nih.nci.cacoresdk.domain.manytoone.unidirectional.withjoin.Song" identity="id">
+    <map-to xml="Song" ns-uri="gme://caCORE.caCORE/4.0/gov.nih.nci.cacoresdk.domain.manytoone.unidirectional.withjoin" />
+    <field name="id" type="integer">
+      <bind-xml name="id" node="attribute" />
+    </field>
+    <field name="title" type="string">
+      <bind-xml name="title" node="attribute" />
+    </field>
+  </class>
+  <class name="gov.nih.nci.cacoresdk.domain.other.primarykey.StringPrimitiveKey" identity="id">
+    <map-to xml="StringPrimitiveKey" ns-uri="gme://caCORE.caCORE/4.0/gov.nih.nci.cacoresdk.domain.other.primarykey" />
+    <field name="id" type="string">
+      <bind-xml name="id" node="attribute" />
+    </field>
+    <field name="name" type="string">
+      <bind-xml name="name" node="attribute" />
+    </field>
+  </class>
+  <class name="gov.nih.nci.cacoresdk.domain.other.primarykey.StringKey" identity="id">
+    <map-to xml="StringKey" ns-uri="gme://caCORE.caCORE/4.0/gov.nih.nci.cacoresdk.domain.other.primarykey" />
+    <field name="id" type="string">
+      <bind-xml name="id" node="attribute" />
+    </field>
+    <field name="name" type="string">
+      <bind-xml name="name" node="attribute" />
+    </field>
+  </class>
+  <class name="gov.nih.nci.cacoresdk.domain.onetomany.bidirectional.HardDrive" identity="id">
+    <map-to xml="HardDrive" ns-uri="gme://caCORE.caCORE/4.0/gov.nih.nci.cacoresdk.domain.onetomany.bidirectional" />
+    <field name="id" type="integer">
+      <bind-xml name="id" node="attribute" />
+    </field>
+    <field name="size" type="integer">
+      <bind-xml name="size" node="attribute" />
+    </field>
+  </class>
+  <class name="gov.nih.nci.cacoresdk.domain.onetomany.unidirectional.KeyChain" identity="id">
+    <map-to xml="KeyChain" ns-uri="gme://caCORE.caCORE/4.0/gov.nih.nci.cacoresdk.domain.onetomany.unidirectional" />
+    <field name="id" type="integer">
+      <bind-xml name="id" node="attribute" />
+    </field>
+    <field name="name" type="string">
+      <bind-xml name="name" node="attribute" />
+    </field>
+  </class>
+  <class name="gov.nih.nci.cacoresdk.domain.onetomany.bidirectional.withjoin.Passanger" identity="id">
+    <map-to xml="Passanger" ns-uri="gme://caCORE.caCORE/4.0/gov.nih.nci.cacoresdk.domain.onetomany.bidirectional.withjoin" />
+    <field name="id" type="integer">
+      <bind-xml name="id" node="attribute" />
+    </field>
+    <field name="name" type="string">
+      <bind-xml name="name" node="attribute" />
+    </field>
+  </class>
+  <class name="gov.nih.nci.cacoresdk.domain.inheritance.parentwithassociation.Professor" identity="id">
+    <map-to xml="Professor" ns-uri="gme://caCORE.caCORE/4.0/gov.nih.nci.cacoresdk.domain.inheritance.parentwithassociation" />
+    <field name="id" type="integer">
+      <bind-xml name="id" node="attribute" />
+    </field>
+    <field name="name" type="string">
+      <bind-xml name="name" node="attribute" />
+    </field>
+  </class>
+  <class name="gov.nih.nci.cacoresdk.domain.onetomany.bidirectional.Computer" identity="id">
+    <map-to xml="Computer" ns-uri="gme://caCORE.caCORE/4.0/gov.nih.nci.cacoresdk.domain.onetomany.bidirectional" />
+    <field name="id" type="integer">
+      <bind-xml name="id" node="attribute" />
+    </field>
+    <field name="type" type="string">
+      <bind-xml name="type" node="attribute" />
+    </field>
+  </class>
+  <class name="gov.nih.nci.cacoresdk.domain.inheritance.parentwithassociation.sametable.Luggage" identity="id">
+    <map-to xml="Luggage" ns-uri="gme://caCORE.caCORE/4.0/gov.nih.nci.cacoresdk.domain.inheritance.parentwithassociation.sametable" />
+    <field name="capacity" type="integer">
+      <bind-xml name="capacity" node="attribute" />
+    </field>
+    <field name="id" type="integer">
+      <bind-xml name="id" node="attribute" />
+    </field>
+  </class>
+  <class name="gov.nih.nci.cacoresdk.domain.onetomany.unidirectional.withjoin.Button" identity="id">
+    <map-to xml="Button" ns-uri="gme://caCORE.caCORE/4.0/gov.nih.nci.cacoresdk.domain.onetomany.unidirectional.withjoin" />
+    <field name="holes" type="integer">
+      <bind-xml name="holes" node="attribute" />
+    </field>
+    <field name="id" type="integer">
+      <bind-xml name="id" node="attribute" />
+    </field>
+  </class>
+  <class name="gov.nih.nci.cacoresdk.domain.inheritance.childwithassociation.sametable.Designer" identity="id">
+    <map-to xml="Designer" ns-uri="gme://caCORE.caCORE/4.0/gov.nih.nci.cacoresdk.domain.inheritance.childwithassociation.sametable" />
+    <field name="id" type="integer">
+      <bind-xml name="id" node="attribute" />
+    </field>
+    <field name="name" type="string">
+      <bind-xml name="name" node="attribute" />
+    </field>
+  </class>
+  <class name="gov.nih.nci.cacoresdk.domain.inheritance.multiplechild.sametable.Organization" identity="id">
+    <map-to xml="Organization" ns-uri="gme://caCORE.caCORE/4.0/gov.nih.nci.cacoresdk.domain.inheritance.multiplechild.sametable" />
+    <field name="id" type="integer">
+      <bind-xml name="id" node="attribute" />
+    </field>
+    <field name="name" type="string">
+      <bind-xml name="name" node="attribute" />
+    </field>
+  </class>
+  <class name="gov.nih.nci.cacoresdk.domain.onetoone.multipleassociation.Child" identity="id">
+    <map-to xml="Child" ns-uri="gme://caCORE.caCORE/4.0/gov.nih.nci.cacoresdk.domain.onetoone.multipleassociation" />
+    <field name="id" type="integer">
+      <bind-xml name="id" node="attribute" />
+    </field>
+    <field name="name" type="string">
+      <bind-xml name="name" node="attribute" />
+    </field>
+  </class>
+  <class name="gov.nih.nci.cacoresdk.domain.onetoone.multipleassociation.withjoin.InLaw" identity="id">
+    <map-to xml="InLaw" ns-uri="gme://caCORE.caCORE/4.0/gov.nih.nci.cacoresdk.domain.onetoone.multipleassociation.withjoin" />
+    <field name="id" type="integer">
+      <bind-xml name="id" node="attribute" />
+    </field>
+    <field name="name" type="string">
+      <bind-xml name="name" node="attribute" />
+    </field>
+  </class>
+  <class name="gov.nih.nci.cacoresdk.domain.manytomany.unidirectional.Author" identity="id">
+    <map-to xml="Author" ns-uri="gme://caCORE.caCORE/4.0/gov.nih.nci.cacoresdk.domain.manytomany.unidirectional" />
+    <field name="id" type="integer">
+      <bind-xml name="id" node="attribute" />
+    </field>
+    <field name="name" type="string">
+      <bind-xml name="name" node="attribute" />
+    </field>
+  </class>
+  <class name="gov.nih.nci.cacoresdk.domain.other.primarykey.NoIdKey" identity="mykey">
+    <map-to xml="NoIdKey" ns-uri="gme://caCORE.caCORE/4.0/gov.nih.nci.cacoresdk.domain.other.primarykey" />
+    <field name="mykey" type="integer">
+      <bind-xml name="mykey" node="attribute" />
+    </field>
+    <field name="name" type="string">
+      <bind-xml name="name" node="attribute" />
+    </field>
+  </class>
+  <class name="gov.nih.nci.cacoresdk.domain.onetoone.bidirectional.Product" identity="id">
+    <map-to xml="Product" ns-uri="gme://caCORE.caCORE/4.0/gov.nih.nci.cacoresdk.domain.onetoone.bidirectional" />
+    <field name="id" type="integer">
+      <bind-xml name="id" node="attribute" />
+    </field>
+    <field name="name" type="string">
+      <bind-xml name="name" node="attribute" />
+    </field>
+  </class>
+  <class name="gov.nih.nci.cacoresdk.domain.other.primarykey.CharacterKey" identity="id">
+    <map-to xml="CharacterKey" ns-uri="gme://caCORE.caCORE/4.0/gov.nih.nci.cacoresdk.domain.other.primarykey" />
+    <field name="id" type="char">
+      <bind-xml name="id" node="attribute" />
+    </field>
+    <field name="name" type="string">
+      <bind-xml name="name" node="attribute" />
+    </field>
+  </class>
+  <class name="gov.nih.nci.cacoresdk.domain.onetoone.multipleassociation.Parent" identity="id">
+    <map-to xml="Parent" ns-uri="gme://caCORE.caCORE/4.0/gov.nih.nci.cacoresdk.domain.onetoone.multipleassociation" />
+    <field name="id" type="integer">
+      <bind-xml name="id" node="attribute" />
+    </field>
+    <field name="name" type="string">
+      <bind-xml name="name" node="attribute" />
+    </field>
+  </class>
+  <class name="gov.nih.nci.cacoresdk.domain.inheritance.childwithassociation.Bank" identity="id">
+    <map-to xml="Bank" ns-uri="gme://caCORE.caCORE/4.0/gov.nih.nci.cacoresdk.domain.inheritance.childwithassociation" />
+    <field name="id" type="integer">
+      <bind-xml name="id" node="attribute" />
+    </field>
+    <field name="name" type="string">
+      <bind-xml name="name" node="attribute" />
+    </field>
+  </class>
+  <class name="gov.nih.nci.cacoresdk.domain.inheritance.parentwithassociation.sametable.Wheel" identity="id">
+    <map-to xml="Wheel" ns-uri="gme://caCORE.caCORE/4.0/gov.nih.nci.cacoresdk.domain.inheritance.parentwithassociation.sametable" />
+    <field name="id" type="integer">
+      <bind-xml name="id" node="attribute" />
+    </field>
+    <field name="radius" type="integer">
+      <bind-xml name="radius" node="attribute" />
+    </field>
+  </class>
+  <class name="gov.nih.nci.cacoresdk.domain.other.primarykey.FloatPrimitiveKey" identity="id">
+    <map-to xml="FloatPrimitiveKey" ns-uri="gme://caCORE.caCORE/4.0/gov.nih.nci.cacoresdk.domain.other.primarykey" />
+    <field name="id" type="float">
+      <bind-xml name="id" node="attribute" />
+    </field>
+    <field name="name" type="string">
+      <bind-xml name="name" node="attribute" />
+    </field>
+  </class>
+  <class name="gov.nih.nci.cacoresdk.domain.inheritance.childwithassociation.sametable.Shoes" identity="id">
+    <map-to xml="Shoes" ns-uri="gme://caCORE.caCORE/4.0/gov.nih.nci.cacoresdk.domain.inheritance.childwithassociation.sametable" />
+    <field name="color" type="string">
+      <bind-xml name="color" node="attribute" />
+    </field>
+    <field name="id" type="integer">
+      <bind-xml name="id" node="attribute" />
+    </field>
+  </class>
+  <class name="gov.nih.nci.cacoresdk.domain.onetomany.selfassociation.Element" identity="id">
+    <map-to xml="Element" ns-uri="gme://caCORE.caCORE/4.0/gov.nih.nci.cacoresdk.domain.onetomany.selfassociation" />
+    <field name="id" type="integer">
+      <bind-xml name="id" node="attribute" />
+    </field>
+    <field name="name" type="string">
+      <bind-xml name="name" node="attribute" />
+    </field>
+  </class>
+  <class name="gov.nih.nci.cacoresdk.domain.other.primarykey.IntegerKey" identity="id">
+    <map-to xml="IntegerKey" ns-uri="gme://caCORE.caCORE/4.0/gov.nih.nci.cacoresdk.domain.other.primarykey" />
+    <field name="id" type="integer">
+      <bind-xml name="id" node="attribute" />
+    </field>
+    <field name="name" type="string">
+      <bind-xml name="name" node="attribute" />
+    </field>
+  </class>
+  <class name="gov.nih.nci.cacoresdk.domain.onetomany.bidirectional.withjoin.Flight" identity="id">
+    <map-to xml="Flight" ns-uri="gme://caCORE.caCORE/4.0/gov.nih.nci.cacoresdk.domain.onetomany.bidirectional.withjoin" />
+    <field name="destination" type="string">
+      <bind-xml name="destination" node="attribute" />
+    </field>
+    <field name="id" type="integer">
+      <bind-xml name="id" node="attribute" />
+    </field>
+  </class>
+  <class name="gov.nih.nci.cacoresdk.domain.onetomany.unidirectional.Key" identity="id">
+    <map-to xml="Key" ns-uri="gme://caCORE.caCORE/4.0/gov.nih.nci.cacoresdk.domain.onetomany.unidirectional" />
+    <field name="id" type="integer">
+      <bind-xml name="id" node="attribute" />
+    </field>
+    <field name="type" type="string">
+      <bind-xml name="type" node="attribute" />
+    </field>
+  </class>
+  <class name="gov.nih.nci.cacoresdk.domain.other.levelassociation.Deck" identity="id">
+    <map-to xml="Deck" ns-uri="gme://caCORE.caCORE/4.0/gov.nih.nci.cacoresdk.domain.other.levelassociation" />
+    <field name="id" type="integer">
+      <bind-xml name="id" node="attribute" />
+    </field>
+    <field name="name" type="string">
+      <bind-xml name="name" node="attribute" />
+    </field>
+  </class>
+  <class name="gov.nih.nci.cacoresdk.domain.inheritance.childwithassociation.Payment" identity="id">
+    <map-to xml="Payment" ns-uri="gme://caCORE.caCORE/4.0/gov.nih.nci.cacoresdk.domain.inheritance.childwithassociation" />
+    <field name="amount" type="integer">
+      <bind-xml name="amount" node="attribute" />
+    </field>
+    <field name="id" type="integer">
+      <bind-xml name="id" node="attribute" />
+    </field>
+  </class>
+  <class name="gov.nih.nci.cacoresdk.domain.inheritance.twolevelinheritance.sametablerootlevel.FinancialCalculator" identity="id" extends="gov.nih.nci.cacoresdk.domain.inheritance.twolevelinheritance.sametablerootlevel.Calculator">
+    <map-to xml="FinancialCalculator" ns-uri="gme://caCORE.caCORE/4.0/gov.nih.nci.cacoresdk.domain.inheritance.twolevelinheritance.sametablerootlevel" />
+  </class>
+  <class name="gov.nih.nci.cacoresdk.domain.inheritance.parentwithassociation.sametable.SoftTop" identity="id" extends="gov.nih.nci.cacoresdk.domain.inheritance.parentwithassociation.sametable.Luggage">
+    <map-to xml="SoftTop" ns-uri="gme://caCORE.caCORE/4.0/gov.nih.nci.cacoresdk.domain.inheritance.parentwithassociation.sametable" />
+    <field name="expandable" type="boolean">
+      <bind-xml name="expandable" node="attribute" />
+    </field>
+  </class>
+  <class name="gov.nih.nci.cacoresdk.domain.inheritance.multiplechild.sametable.GovtOrganization" identity="id" extends="gov.nih.nci.cacoresdk.domain.inheritance.multiplechild.sametable.Organization">
+    <map-to xml="GovtOrganization" ns-uri="gme://caCORE.caCORE/4.0/gov.nih.nci.cacoresdk.domain.inheritance.multiplechild.sametable" />
+    <field name="agencyBudget" type="integer">
+      <bind-xml name="agencyBudget" node="attribute" />
+    </field>
+  </class>
+  <class name="gov.nih.nci.cacoresdk.domain.inheritance.twolevelinheritance.Monitor" identity="id" extends="gov.nih.nci.cacoresdk.domain.inheritance.twolevelinheritance.Display">
+    <map-to xml="Monitor" ns-uri="gme://caCORE.caCORE/4.0/gov.nih.nci.cacoresdk.domain.inheritance.twolevelinheritance" />
+    <field name="brand" type="string">
+      <bind-xml name="brand" node="attribute" />
+    </field>
+  </class>
+  <class name="gov.nih.nci.cacoresdk.domain.inheritance.childwithassociation.sametable.SportsShoes" identity="id" extends="gov.nih.nci.cacoresdk.domain.inheritance.childwithassociation.sametable.Shoes">
+    <map-to xml="SportsShoes" ns-uri="gme://caCORE.caCORE/4.0/gov.nih.nci.cacoresdk.domain.inheritance.childwithassociation.sametable" />
+    <field name="sportsType" type="string">
+      <bind-xml name="sportsType" node="attribute" />
+    </field>
+  </class>
+  <class name="gov.nih.nci.cacoresdk.domain.inheritance.multiplechild.UndergraduateStudent" identity="id" extends="gov.nih.nci.cacoresdk.domain.inheritance.multiplechild.Student">
+    <map-to xml="UndergraduateStudent" ns-uri="gme://caCORE.caCORE/4.0/gov.nih.nci.cacoresdk.domain.inheritance.multiplechild" />
+  </class>
+  <class name="gov.nih.nci.cacoresdk.domain.inheritance.twolevelinheritance.sametable.DemocraticGovt" identity="id" extends="gov.nih.nci.cacoresdk.domain.inheritance.twolevelinheritance.sametable.Goverment">
+    <map-to xml="DemocraticGovt" ns-uri="gme://caCORE.caCORE/4.0/gov.nih.nci.cacoresdk.domain.inheritance.twolevelinheritance.sametable" />
+  </class>
+  <class name="gov.nih.nci.cacoresdk.domain.inheritance.childwithassociation.sametable.DesignerShoes" identity="id" extends="gov.nih.nci.cacoresdk.domain.inheritance.childwithassociation.sametable.Shoes">
+    <map-to xml="DesignerShoes" ns-uri="gme://caCORE.caCORE/4.0/gov.nih.nci.cacoresdk.domain.inheritance.childwithassociation.sametable" />
+  </class>
+  <class name="gov.nih.nci.cacoresdk.domain.inheritance.multiplechild.sametable.PvtOrganization" identity="id" extends="gov.nih.nci.cacoresdk.domain.inheritance.multiplechild.sametable.Organization">
+    <map-to xml="PvtOrganization" ns-uri="gme://caCORE.caCORE/4.0/gov.nih.nci.cacoresdk.domain.inheritance.multiplechild.sametable" />
+    <field name="ceo" type="string">
+      <bind-xml name="ceo" node="attribute" />
+    </field>
+  </class>
+  <class name="gov.nih.nci.cacoresdk.domain.inheritance.parentwithassociation.sametable.HardTop" identity="id" extends="gov.nih.nci.cacoresdk.domain.inheritance.parentwithassociation.sametable.Luggage">
+    <map-to xml="HardTop" ns-uri="gme://caCORE.caCORE/4.0/gov.nih.nci.cacoresdk.domain.inheritance.parentwithassociation.sametable" />
+    <field name="keyCode" type="integer">
+      <bind-xml name="keyCode" node="attribute" />
+    </field>
+  </class>
+  <class name="gov.nih.nci.cacoresdk.domain.inheritance.parentwithassociation.AssociateProfessor" identity="id" extends="gov.nih.nci.cacoresdk.domain.inheritance.parentwithassociation.Professor">
+    <map-to xml="AssociateProfessor" ns-uri="gme://caCORE.caCORE/4.0/gov.nih.nci.cacoresdk.domain.inheritance.parentwithassociation" />
+    <field name="yearsServed" type="integer">
+      <bind-xml name="yearsServed" node="attribute" />
+    </field>
+  </class>
+  <class name="gov.nih.nci.cacoresdk.domain.inheritance.onechild.sametable.Note" identity="id" extends="gov.nih.nci.cacoresdk.domain.inheritance.onechild.sametable.Currency">
+    <map-to xml="Note" ns-uri="gme://caCORE.caCORE/4.0/gov.nih.nci.cacoresdk.domain.inheritance.onechild.sametable" />
+    <field name="value" type="integer">
+      <bind-xml name="value" node="attribute" />
+    </field>
+  </class>
+  <class name="gov.nih.nci.cacoresdk.domain.inheritance.multiplechild.GraduateStudent" identity="id" extends="gov.nih.nci.cacoresdk.domain.inheritance.multiplechild.Student">
+    <map-to xml="GraduateStudent" ns-uri="gme://caCORE.caCORE/4.0/gov.nih.nci.cacoresdk.domain.inheritance.multiplechild" />
+    <field name="projectName" type="string">
+      <bind-xml name="projectName" node="attribute" />
+    </field>
+  </class>
+  <class name="gov.nih.nci.cacoresdk.domain.inheritance.childwithassociation.Credit" identity="id" extends="gov.nih.nci.cacoresdk.domain.inheritance.childwithassociation.Payment">
+    <map-to xml="Credit" ns-uri="gme://caCORE.caCORE/4.0/gov.nih.nci.cacoresdk.domain.inheritance.childwithassociation" />
+    <field name="cardNumber" type="string">
+      <bind-xml name="cardNumber" node="attribute" />
+    </field>
+  </class>
+  <class name="gov.nih.nci.cacoresdk.domain.inheritance.twolevelinheritance.sametable.CommunistGovt" identity="id" extends="gov.nih.nci.cacoresdk.domain.inheritance.twolevelinheritance.sametable.Goverment">
+    <map-to xml="CommunistGovt" ns-uri="gme://caCORE.caCORE/4.0/gov.nih.nci.cacoresdk.domain.inheritance.twolevelinheritance.sametable" />
+  </class>
+  <class name="gov.nih.nci.cacoresdk.domain.inheritance.onechild.Human" identity="id" extends="gov.nih.nci.cacoresdk.domain.inheritance.onechild.Mammal">
+    <map-to xml="Human" ns-uri="gme://caCORE.caCORE/4.0/gov.nih.nci.cacoresdk.domain.inheritance.onechild" />
+    <field name="diet" type="string">
+      <bind-xml name="diet" node="attribute" />
+    </field>
+  </class>
+  <class name="gov.nih.nci.cacoresdk.domain.inheritance.childwithassociation.Cash" identity="id" extends="gov.nih.nci.cacoresdk.domain.inheritance.childwithassociation.Payment">
+    <map-to xml="Cash" ns-uri="gme://caCORE.caCORE/4.0/gov.nih.nci.cacoresdk.domain.inheritance.childwithassociation" />
+  </class>
+  <class name="gov.nih.nci.cacoresdk.domain.inheritance.twolevelinheritance.sametablerootlevel.ScientificCalculator" identity="id" extends="gov.nih.nci.cacoresdk.domain.inheritance.twolevelinheritance.sametablerootlevel.Calculator">
+    <map-to xml="ScientificCalculator" ns-uri="gme://caCORE.caCORE/4.0/gov.nih.nci.cacoresdk.domain.inheritance.twolevelinheritance.sametablerootlevel" />
+  </class>
+  <class name="gov.nih.nci.cacoresdk.domain.inheritance.parentwithassociation.AssistantProfessor" identity="id" extends="gov.nih.nci.cacoresdk.domain.inheritance.parentwithassociation.Professor">
+    <map-to xml="AssistantProfessor" ns-uri="gme://caCORE.caCORE/4.0/gov.nih.nci.cacoresdk.domain.inheritance.parentwithassociation" />
+    <field name="joiningYear" type="integer">
+      <bind-xml name="joiningYear" node="attribute" />
+    </field>
+  </class>
+  <class name="gov.nih.nci.cacoresdk.domain.inheritance.parentwithassociation.TenuredProfessor" identity="id" extends="gov.nih.nci.cacoresdk.domain.inheritance.parentwithassociation.Professor">
+    <map-to xml="TenuredProfessor" ns-uri="gme://caCORE.caCORE/4.0/gov.nih.nci.cacoresdk.domain.inheritance.parentwithassociation" />
+    <field name="tenuredYear" type="integer">
+      <bind-xml name="tenuredYear" node="attribute" />
+    </field>
+  </class>
+  <class name="gov.nih.nci.cacoresdk.domain.inheritance.twolevelinheritance.sametablerootlevel.GraphicCalculator" identity="id" extends="gov.nih.nci.cacoresdk.domain.inheritance.twolevelinheritance.sametablerootlevel.ScientificCalculator">
+    <map-to xml="GraphicCalculator" ns-uri="gme://caCORE.caCORE/4.0/gov.nih.nci.cacoresdk.domain.inheritance.twolevelinheritance.sametablerootlevel" />
+  </class>
+  <class name="gov.nih.nci.cacoresdk.domain.inheritance.twolevelinheritance.CRTMonitor" identity="id" extends="gov.nih.nci.cacoresdk.domain.inheritance.twolevelinheritance.Monitor">
+    <map-to xml="CRTMonitor" ns-uri="gme://caCORE.caCORE/4.0/gov.nih.nci.cacoresdk.domain.inheritance.twolevelinheritance" />
+    <field name="refreshRate" type="integer">
+      <bind-xml name="refreshRate" node="attribute" />
+    </field>
+  </class>
+  <class name="gov.nih.nci.cacoresdk.domain.inheritance.twolevelinheritance.sametable.ParliamantaryGovt" identity="id" extends="gov.nih.nci.cacoresdk.domain.inheritance.twolevelinheritance.sametable.DemocraticGovt">
+    <map-to xml="ParliamantaryGovt" ns-uri="gme://caCORE.caCORE/4.0/gov.nih.nci.cacoresdk.domain.inheritance.twolevelinheritance.sametable" />
+    <field name="primeMinister" type="string">
+      <bind-xml name="primeMinister" node="attribute" />
+    </field>
+  </class>
+  <class name="gov.nih.nci.cacoresdk.domain.inheritance.twolevelinheritance.LCDMonitor" identity="id" extends="gov.nih.nci.cacoresdk.domain.inheritance.twolevelinheritance.Monitor">
+    <map-to xml="LCDMonitor" ns-uri="gme://caCORE.caCORE/4.0/gov.nih.nci.cacoresdk.domain.inheritance.twolevelinheritance" />
+    <field name="dpiSupported" type="integer">
+      <bind-xml name="dpiSupported" node="attribute" />
+    </field>
+  </class>
+  <class name="gov.nih.nci.cacoresdk.domain.inheritance.twolevelinheritance.sametable.PresidentialGovt" identity="id" extends="gov.nih.nci.cacoresdk.domain.inheritance.twolevelinheritance.sametable.DemocraticGovt">
+    <map-to xml="PresidentialGovt" ns-uri="gme://caCORE.caCORE/4.0/gov.nih.nci.cacoresdk.domain.inheritance.twolevelinheritance.sametable" />
+    <field name="president" type="string">
+      <bind-xml name="president" node="attribute" />
+    </field>
+  </class>
+</mapping>
+

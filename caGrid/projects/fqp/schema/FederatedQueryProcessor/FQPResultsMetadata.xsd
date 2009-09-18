@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- edited with XMLSpy v2005 rel. 3 U (http://www.altova.com) by David W. Ervin (The Ohio State University / Department of Biomedical Informatics) -->
+<xsd:schema xmlns:fqrm="http://fqp.cagrid.nci.nih.gov/FederatedQueryResultsMetadata" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:wsrbf="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-BaseFaults-1.2-draft-01.xsd" targetNamespace="http://fqp.cagrid.nci.nih.gov/FederatedQueryResultsMetadata" elementFormDefault="qualified" attributeFormDefault="unqualified">
+	<xsd:import namespace="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-BaseFaults-1.2-draft-01.xsd" schemaLocation="../wsrf/faults/WS-BaseFaults.xsd"/>
+	<xsd:simpleType name="ProcessingStatus">
+		<xsd:restriction base="xsd:string">
+			<xsd:enumeration value="Waiting_To_Begin" id="WAITING"/>
+			<xsd:enumeration value="Processing" id="PROCESSING"/>
+			<xsd:enumeration value="Complete" id="COMPLETE"/>
+			<xsd:enumeration value="Complete_With_Error" id="COMPLETE_WITH_ERROR"/>
+		</xsd:restriction>
+	</xsd:simpleType>
+	<xsd:simpleType name="ServiceConnectionStatus">
+		<xsd:restriction base="xsd:string">
+			<xsd:enumeration value="OK" id="OK"/>
+			<xsd:enumeration value="Could_Not_Connect" id="COULD_NOT_CONNECT"/>
+			<xsd:enumeration value="Exception" id="EXCEPTION"/>
+		</xsd:restriction>
+	</xsd:simpleType>
+	<xsd:complexType name="ResultsRange">
+		<xsd:attribute name="startElementIndex" type="xsd:int" use="required"/>
+		<xsd:attribute name="endElementIndex" type="xsd:int" use="required"/>
+	</xsd:complexType>
+	<xsd:complexType name="TargetServiceStatus">
+		<xsd:sequence>
+			<xsd:element ref="wsrbf:BaseFault" minOccurs="0" maxOccurs="1"/>
+			<xsd:element name="ResultsRange" type="fqrm:ResultsRange" minOccurs="1" maxOccurs="1"/>
+		</xsd:sequence>
+		<xsd:attribute name="serviceURL" type="xsd:anyURI" use="required"/>
+		<xsd:attribute name="connectionStatus" type="fqrm:ServiceConnectionStatus" use="required"/>
+	</xsd:complexType>
+	<xsd:complexType name="FederatedQueryExecutionStatus">
+		<xsd:sequence>
+			<xsd:element name="TargetServiceStatus" type="fqrm:TargetServiceStatus" maxOccurs="unbounded"/>
+			<xsd:element name="ExecutionDetails" type="xsd:string" minOccurs="0" maxOccurs="1"/>
+		</xsd:sequence>
+		<xsd:attribute name="currentStatus" type="fqrm:ProcessingStatus" use="required"/>
+	</xsd:complexType>
+	<xsd:element name="FederatedQueryExecutionStatus" type="fqrm:FederatedQueryExecutionStatus"/>
+</xsd:schema>

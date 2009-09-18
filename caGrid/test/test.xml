@@ -1,0 +1,123 @@
+<!-- ======================================================================= -->
+<!-- caGrid Utilities build file                                             -->
+<!-- ======================================================================= -->
+<project name="caGrid_tests_harness" basedir=".">
+
+	<!-- ======================================================================= -->
+	<!--   TESTING OPTIONS:                                                      -->
+	<!-- ======================================================================= -->
+	<!--    run.unit.tests                                                       -->
+	<!--        - A true value for this property causes unit tests to be run     -->
+	<!--          during test target.                                            -->
+	<!--    create.test.report                                                   -->
+	<!--        - A true value for this property causes an html test report to   -->
+	<!--          be created.                                                    -->
+	<!--    test.failfast                                                        -->
+	<!--        - The presence of this property causes the build to fail as      -->
+	<!--          soon as test fails.                                            -->
+	<!-- ======================================================================= -->
+	<property name="test.logs.dir" value="${test.dir}/logs" />
+	<property name="junit.results.dir" value="${test.logs.dir}/junit" />
+	<property name="run.tests.in.parallel" value="true" />
+
+	<target name="set-test-defaults">
+		<property name="run.unit.tests" value="true" />
+		<property name="create.test.report" value="true" />
+	</target>
+
+	<target name="set-smoke-test-defaults">
+		<property name="run.unit.tests" value="true" />
+		<property name="create.test.report" value="false" />
+		<property name="test.failfast" value="true" />
+	</target>
+	<target name="set-unit-test-defaults">
+		<property name="run.unit.tests" value="true" />
+		<property name="create.test.report" value="true" />
+	</target>
+
+	<target name="smokeTest" depends="set-smoke-test-defaults,test" description="Unit tests all the projects, failing at first failure." />
+	<target name="unitTest" depends="set-unit-test-defaults,test" description="Unit tests all the projects completely, generating a report." />
+
+	<!-- ============================================================================ -->
+	<!-- Calls unit test for each project and aggregates the log resutls   -->
+	<!-- ============================================================================ -->
+	<target name="test" depends="prepare,set-test-defaults" description="Completely tests all the projects' unit tests, generating a report.">
+		<!-- Clean out old logs first -->
+		<delete failonerror="false">
+			<fileset dir="${junit.results.dir}">
+				<include name="*" />
+			</fileset>
+		</delete>
+
+		<!-- Call Unit Tests -->
+		<if>
+			<equals arg1="${run.unit.tests}" arg2="true" />
+			<then>
+				<trycatch property="test.failed.message">
+					<try>
+						<runtarget target="unit-test" />
+					</try>
+					<catch>
+						<property name="test.failed" value="true" />
+					</catch>
+				</trycatch>
+			</then>
+			<else>
+				<echo message="Skipping unit tests." />
+			</else>
+		</if>
+
+		<!-- Try to create a report -->
+		<if>
+			<equals arg1="${create.test.report}" arg2="true" />
+			<then>
+				<trycatch property="test.report.failed.message">
+					<try>
+						<mkdir dir="${junit.results.dir}/report" />
+						<junitreport todir="${junit.results.dir}">
+							<fileset dir="${junit.results.dir}">
+								<include name="TEST-*.xml" />
+							</fileset>
+							<report format="frames" todir="${junit.results.dir}/report" />
+						</junitreport>
+						<echo message="Created test report in ${junit.results.dir}/report" />
+					</try>
+					<catch>
+						<echo message="Test Report creation failed (${test.report.failed.message})!" />
+					</catch>
+				</trycatch>
+			</then>
+			<else>
+				<echo message="Skipping test report creation." />
+			</else>
+		</if>
+
+		<fail message="Tests failed! ${test.failed.message} Consult the logs for details." if="test.failed" />
+	</target>
+
+	<!-- not to be called directly -->
+	<target name="unit-test">
+		<for list="${unit.testable.projects.list}" parallel="${run.tests.in.parallel}" param="project.name" trim="true">
+			<sequential>
+				<stopwatch name="@{project.name}" />
+				<echo message="Unit testing project @{project.name}." />
+				<trycatch property="@{project.name}.unit.test.failed.message">
+					<try>
+						<ant inheritall="false" dir="projects/@{project.name}" antfile="build.xml" target="test">
+							<property name="junit.results.dir" value="${junit.results.dir}" />
+						</ant>
+					</try>
+					<catch>
+						<fail message="@{project.name} Unit tests failed (${@{project.name}.unit.test.failed.message})" if="test.failfast" />
+						<echo message="@{project.name} Unit tests failed (${@{project.name}.unit.test.failed.message}), proceeding with other tests, but build will fail at completion." />
+						<property name="unit.test.failed" value="true" />
+					</catch>
+				</trycatch>
+				<stopwatch name="@{project.name}" action="total" />
+			</sequential>
+		</for>
+
+		<fail message="Unit Tests failed! Consult the logs for details." if="unit.test.failed" />
+	</target>
+
+</project>

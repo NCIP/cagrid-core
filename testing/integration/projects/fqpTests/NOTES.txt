@@ -1,0 +1,8 @@
+Tests still needed:
+
+1) Query w/ Delegated Credential
+	-- stand up a CDS, delegate a credential, use it
+	** Negative testing:
+		-- delegate a credential to NON-fqp, try to use it, expect failure
+		-- delegate a credential, authenticate as anonymous, try to use it, expect failure
+	

@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xsi:schemaLocation="
+	http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd
+	http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-2.0.xsd">
+
+	<description>This document is loaded in the context of tests, and defines resources used for
+		testing invalid submissions.</description>
+
+
+
+	<bean id="testSchemaDuplicates" parent="testSchemaCreationTemplate" scope="prototype">
+		<constructor-arg type="java.net.URI" value="gme://duplcateelements"/>
+		<constructor-arg>
+			<list>
+				<bean class="java.io.File">
+					<constructor-arg value="test/resources/schema/invalid/duplicateelements.xsd"/>
+				</bean>
+			</list>
+		</constructor-arg>
+	</bean>
+
+	<bean id="testSchemaMissingInclude" parent="testSchemaCreationTemplate" scope="prototype">
+		<constructor-arg type="java.net.URI" value="gme://missinginclude"/>
+		<constructor-arg>
+			<list>
+				<bean class="java.io.File">
+					<constructor-arg value="test/resources/schema/invalid/missinginclude.xsd"/>
+				</bean>
+			</list>
+		</constructor-arg>
+	</bean>
+
+	<bean id="testSchemaMissingType" parent="testSchemaCreationTemplate" scope="prototype">
+		<constructor-arg type="java.net.URI" value="gme://missingtype"/>
+		<constructor-arg>
+			<list>
+				<bean class="java.io.File">
+					<constructor-arg value="test/resources/schema/invalid/missingtype.xsd"/>
+				</bean>
+			</list>
+		</constructor-arg>
+	</bean>
+
+	<bean id="testSchemaNoNamespace" parent="testSchemaCreationTemplate" scope="prototype">
+		<constructor-arg type="java.net.URI" value=""/>
+		<constructor-arg>
+			<list>
+				<bean class="java.io.File">
+					<constructor-arg value="test/resources/schema/invalid/nonamespace.xsd"/>
+				</bean>
+			</list>
+		</constructor-arg>
+	</bean>
+
+	<bean id="testSchemaWrongNamespace" parent="testSchemaCreationTemplate" scope="prototype">
+		<constructor-arg type="java.net.URI" value="gme://wrongnamespace"/>
+		<constructor-arg>
+			<list>
+				<bean class="java.io.File">
+					<constructor-arg value="test/resources/schema/simple/C.xsd"/>
+				</bean>
+			</list>
+		</constructor-arg>
+	</bean>
+
+	<bean id="testSchemaNoImports" parent="testSchemaCreationTemplate" scope="prototype">
+		<constructor-arg type="java.net.URI" value="gme://a"/>
+		<constructor-arg>
+			<list>
+				<bean class="java.io.File">
+					<constructor-arg value="test/resources/schema/simple/A.xsd"/>
+				</bean>
+			</list>
+		</constructor-arg>
+	</bean>
+	
+
+</beans>

@@ -1,0 +1,64 @@
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+		xmlns:p="http://www.springframework.org/schema/p" xmlns:aop="http://www.springframework.org/schema/aop"
+		xmlns:context="http://www.springframework.org/schema/context" xmlns:jee="http://www.springframework.org/schema/jee"
+		xmlns:tx="http://www.springframework.org/schema/tx"
+		xsi:schemaLocation="
+			http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-2.5.xsd
+			http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+			http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-2.5.xsd
+			http://www.springframework.org/schema/jee http://www.springframework.org/schema/jee/spring-jee-2.5.xsd
+			http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-2.5.xsd">
+
+	<context:component-scan base-package="org.cagrid"/>
+	
+	<context:annotation-config/>
+	
+	<bean name="fileHelper" class="org.cagrid.gaards.websso.utils.FileHelper" />
+	
+	<bean name="webSSOProperties" class="org.cagrid.gaards.websso.utils.WebSSOProperties">
+		<constructor-arg ref="fileHelper"></constructor-arg>
+		<constructor-arg value="websso-properties.xml"></constructor-arg>
+		<constructor-arg value="websso-properties.xsd"></constructor-arg>
+	</bean>
+	
+	<bean name="authenticationServiceHelper"
+		class="org.cagrid.gaards.websso.authentication.helper.impl.AuthenticationServiceHelperImpl" />
+
+	<bean name="dorianHelper"
+		class="org.cagrid.gaards.websso.authentication.helper.impl.DorianHelperImpl" />
+	
+	<bean name="proxyValidator"
+		class="org.cagrid.gaards.websso.authentication.helper.impl.ProxyValidatorImpl" />
+	 
+	<bean name="credentialDelegationServiceInformation" factory-bean="webSSOProperties"
+		factory-method="getCredentialDelegationServiceInformation" />
+	
+	<bean name="gridCredentialDelegator"
+		class="org.cagrid.gaards.websso.authentication.helper.impl.GridCredentialDelegatorImpl">
+		<constructor-arg ref="credentialDelegationServiceInformation"></constructor-arg>
+	</bean>
+	
+	<bean name="samlToAttributeMapper"
+		class="org.cagrid.gaards.websso.authentication.helper.impl.SAMLToAttributeMapperImpl" />
+
+	<bean id="serviceManager" class="org.cagrid.gaards.websso.authentication.AuthenticationProfileServiceManager"
+		factory-method="getInstance" scope="singleton">
+		<property name="webSSOProperties" ref="webSSOProperties" />
+	</bean>
+
+	<!--
+		If you want provide specific trust store and CRL paths use the entry
+		below
+	-->
+	<!--
+	<bean name="trust-store-path" factory-bean="WebSSOProperties"
+		factory-method="getTrustStorePath"/>
+	<bean name="certificate-revocation-list-path" factory-bean="WebSSOProperties"
+		factory-method="getCertificateRevocationListPath"/>
+	<bean name="ProxyValidator"
+		class="org.cagrid.gaards.websso.authentication.helper.impl.ProxyValidatorImpl">
+		<constructor-arg ref="trust-store-path"></constructor-arg>
+		<constructor-arg ref="certificate-revocation-list-path"></constructor-arg>
+	</bean>
+	 -->	
+</beans>

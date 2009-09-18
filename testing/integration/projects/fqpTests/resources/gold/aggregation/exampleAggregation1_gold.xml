@@ -1,0 +1,32 @@
+<ns1:CQLQueryResults targetClassname="gov.nih.nci.cacoresdk.domain.onetoone.unidirectional.Address" xmlns:ns1="http://CQL.caBIG/1/gov.nih.nci.cagrid.CQLResultSet">
+ <ns1:ObjectResult>
+  <ns2:Address zip="Zip1" id="1" xmlns:ns2="gme://caCORE.caCORE/4.0/gov.nih.nci.cacoresdk.domain.onetoone.unidirectional"/>
+ </ns1:ObjectResult>
+ <ns1:ObjectResult>
+  <ns3:Address zip="Zip2" id="2" xmlns:ns3="gme://caCORE.caCORE/4.0/gov.nih.nci.cacoresdk.domain.onetoone.unidirectional"/>
+ </ns1:ObjectResult>
+ <ns1:ObjectResult>
+  <ns4:Address zip="Zip3" id="3" xmlns:ns4="gme://caCORE.caCORE/4.0/gov.nih.nci.cacoresdk.domain.onetoone.unidirectional"/>
+ </ns1:ObjectResult>
+ <ns1:ObjectResult>
+  <ns5:Address zip="Zip4" id="4" xmlns:ns5="gme://caCORE.caCORE/4.0/gov.nih.nci.cacoresdk.domain.onetoone.unidirectional"/>
+ </ns1:ObjectResult>
+ <ns1:ObjectResult>
+  <ns6:Address zip="Zip5" id="5" xmlns:ns6="gme://caCORE.caCORE/4.0/gov.nih.nci.cacoresdk.domain.onetoone.unidirectional"/>
+ </ns1:ObjectResult>
+ <ns1:ObjectResult>
+  <ns2:Address zip="Zip5" id="5" xmlns:ns2="gme://caCORE.caCORE/4.0/gov.nih.nci.cacoresdk.domain.onetoone.unidirectional"/>
+ </ns1:ObjectResult>
+ <ns1:ObjectResult>
+  <ns3:Address zip="Zip6" id="6" xmlns:ns3="gme://caCORE.caCORE/4.0/gov.nih.nci.cacoresdk.domain.onetoone.unidirectional"/>
+ </ns1:ObjectResult>
+ <ns1:ObjectResult>
+  <ns4:Address zip="Zip7" id="7" xmlns:ns4="gme://caCORE.caCORE/4.0/gov.nih.nci.cacoresdk.domain.onetoone.unidirectional"/>
+ </ns1:ObjectResult>
+ <ns1:ObjectResult>
+  <ns5:Address zip="Zip8" id="8" xmlns:ns5="gme://caCORE.caCORE/4.0/gov.nih.nci.cacoresdk.domain.onetoone.unidirectional"/>
+ </ns1:ObjectResult>
+ <ns1:ObjectResult>
+  <ns6:Address zip="Zip9" id="9" xmlns:ns6="gme://caCORE.caCORE/4.0/gov.nih.nci.cacoresdk.domain.onetoone.unidirectional"/>
+ </ns1:ObjectResult>
+</ns1:CQLQueryResults>

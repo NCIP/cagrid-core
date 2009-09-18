@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
+<beans>
+	<bean id="database" class="org.cagrid.tools.database.Database">
+		<constructor-arg index="0" value="${db.host}" />
+		<constructor-arg index="1" value="${db.port}" />
+		<constructor-arg index="2" value="${db.user}" />
+		<constructor-arg index="3" value="${db.password}" />
+		<constructor-arg index="4" value="${db.name}" />
+	</bean>
+
+	<bean id="eventAuditor"
+		class="org.cagrid.tools.events.EventAuditor">
+		<constructor-arg index="0" value="Event Auditor" />
+		<constructor-arg index="1" ref="database" />
+		<constructor-arg index="2" value="EVENT_AUDITOR" />
+	</bean>
+
+
+
+	<bean id="eventManager"
+		class="org.cagrid.tools.events.EventManager">
+		<constructor-arg index="0">
+			<list>
+				<bean
+					class="org.cagrid.tools.events.SimpleEventHandler">
+					<constructor-arg index="0" value="Handler 1" />
+				</bean>
+
+				<bean
+					class="org.cagrid.tools.events.SimpleEventHandler">
+					<constructor-arg index="0" value="Handler 2" />
+				</bean>
+			</list>
+		</constructor-arg>
+		<constructor-arg index="1">
+			<list>
+				<bean
+					class="org.cagrid.tools.events.EventToHandlerMapping">
+					<constructor-arg index="0" value="Event 1" />
+					<constructor-arg index="1" value="Handler 1" />
+				</bean>
+				<bean
+					class="org.cagrid.tools.events.EventToHandlerMapping">
+					<constructor-arg index="0" value="Event 3" />
+					<constructor-arg index="1" value="Handler 1" />
+				</bean>
+				<bean
+					class="org.cagrid.tools.events.EventToHandlerMapping">
+					<constructor-arg index="0" value="Event 2" />
+					<constructor-arg index="1" value="Handler 2" />
+				</bean>
+				<bean
+					class="org.cagrid.tools.events.EventToHandlerMapping">
+					<constructor-arg index="0" value="Event 3" />
+					<constructor-arg index="1" value="Handler 2" />
+				</bean>
+
+			</list>
+		</constructor-arg>
+	</bean>
+</beans>

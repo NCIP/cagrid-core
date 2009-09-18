@@ -1,0 +1,636 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions xmlns="http://schemas.xmlsoap.org/wsdl/" xmlns:tns="http://cagrid.nci.nih.gov/GTS" xmlns:wsrp="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ResourceProperties-1.2-draft-01.xsd" xmlns:wsrlw="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ResourceLifetime-1.2-draft-01.wsdl" xmlns:wsdlpp="http://www.globus.org/namespaces/2004/10/WSDLPreprocessor" xmlns:gtwsdl1="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ServiceGroup-1.2-draft-01.wsdl" xmlns:wsa="http://schemas.xmlsoap.org/ws/2004/03/addressing" xmlns:wsntw="http://docs.oasis-open.org/wsn/2004/06/wsn-WS-BaseNotification-1.2-draft-01.wsdl" xmlns:wsrbfw="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-BaseFaults-1.2-draft-01.wsdl" xmlns:wsrpw="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ResourceProperties-1.2-draft-01.wsdl" xmlns:wns1="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ResourceProperties-1.2-draft-01.wsdl" xmlns:wns0="http://security.introduce.cagrid.nci.nih.gov/ServiceSecurity" xmlns:ns2="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata" xmlns:ns3="http://cagrid.nci.nih.gov/GTS/types" xmlns:ns0="http://cagrid.nci.nih.gov/8/gts" xmlns:ns1="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.security" name="GTS" targetNamespace="http://cagrid.nci.nih.gov/GTS">
+  <import namespace="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ResourceProperties-1.2-draft-01.wsdl" location="../wsrf/properties/WS-ResourceProperties.wsdl" />
+  <import namespace="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-BaseFaults-1.2-draft-01.wsdl" location="../wsrf/faults/WS-BaseFaults.wsdl" />
+  <import namespace="http://docs.oasis-open.org/wsn/2004/06/wsn-WS-BaseNotification-1.2-draft-01.wsdl" location="../wsrf/notification/WS-BaseN.wsdl" />
+  <import namespace="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ResourceProperties-1.2-draft-01.wsdl" location="./../wsrf/properties/WS-ResourceProperties.wsdl" />
+  <import namespace="http://security.introduce.cagrid.nci.nih.gov/ServiceSecurity" location="./ServiceSecurity.wsdl" />
+  <!--============================================================
+
+                      T Y P E S
+                      
+  ============================================================-->
+  <types>
+    <schema xmlns="http://www.w3.org/2001/XMLSchema" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:wsrbf="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-BaseFaults-1.2-draft-01.xsd" targetNamespace="http://cagrid.nci.nih.gov/GTS" elementFormDefault="qualified" attributeFormDefault="unqualified">
+      <import namespace="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-BaseFaults-1.2-draft-01.xsd" schemaLocation="../wsrf/faults/WS-BaseFaults.xsd" />
+      <import namespace="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata" schemaLocation="./xsd/cagrid/types/caGridMetadata.xsd" />
+      <import namespace="http://cagrid.nci.nih.gov/GTS/types" schemaLocation="./GTSTypes.xsd" />
+      <import namespace="http://cagrid.nci.nih.gov/8/gts" schemaLocation="./gts.xsd" />
+      <import namespace="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.security" schemaLocation="./xsd/cagrid/types/security/security.xsd" />
+      <element name="AddTrustedAuthorityRequest">
+        <complexType>
+          <sequence>
+            <element name="ta">
+              <complexType>
+                <sequence>
+                  <element ref="ns0:TrustedAuthority" minOccurs="1" maxOccurs="1" />
+                </sequence>
+              </complexType>
+            </element>
+          </sequence>
+        </complexType>
+      </element>
+      <element name="AddTrustedAuthorityResponse">
+        <complexType>
+          <sequence>
+            <element ref="ns0:TrustedAuthority" minOccurs="1" maxOccurs="1" />
+          </sequence>
+        </complexType>
+      </element>
+      <element name="FindTrustedAuthoritiesRequest">
+        <complexType>
+          <sequence>
+            <element name="filter">
+              <complexType>
+                <sequence>
+                  <element ref="ns0:TrustedAuthorityFilter" minOccurs="1" maxOccurs="1" />
+                </sequence>
+              </complexType>
+            </element>
+          </sequence>
+        </complexType>
+      </element>
+      <element name="FindTrustedAuthoritiesResponse">
+        <complexType>
+          <sequence>
+            <element ref="ns0:TrustedAuthority" minOccurs="1" maxOccurs="unbounded" />
+          </sequence>
+        </complexType>
+      </element>
+      <element name="RemoveTrustedAuthorityRequest">
+        <complexType>
+          <sequence>
+            <element name="trustedAuthorityName" type="xs:string" minOccurs="1" maxOccurs="1" />
+          </sequence>
+        </complexType>
+      </element>
+      <element name="RemoveTrustedAuthorityResponse">
+        <complexType>
+          <sequence />
+        </complexType>
+      </element>
+      <element name="AddPermissionRequest">
+        <complexType>
+          <sequence>
+            <element name="permission">
+              <complexType>
+                <sequence>
+                  <element ref="ns0:Permission" minOccurs="1" maxOccurs="1" />
+                </sequence>
+              </complexType>
+            </element>
+          </sequence>
+        </complexType>
+      </element>
+      <element name="AddPermissionResponse">
+        <complexType>
+          <sequence />
+        </complexType>
+      </element>
+      <element name="FindPermissionsRequest">
+        <complexType>
+          <sequence>
+            <element name="filter">
+              <complexType>
+                <sequence>
+                  <element ref="ns0:PermissionFilter" minOccurs="1" maxOccurs="1" />
+                </sequence>
+              </complexType>
+            </element>
+          </sequence>
+        </complexType>
+      </element>
+      <element name="FindPermissionsResponse">
+        <complexType>
+          <sequence>
+            <element ref="ns0:Permission" minOccurs="1" maxOccurs="unbounded" />
+          </sequence>
+        </complexType>
+      </element>
+      <element name="RevokePermissionRequest">
+        <complexType>
+          <sequence>
+            <element name="permission">
+              <complexType>
+                <sequence>
+                  <element ref="ns0:Permission" minOccurs="1" maxOccurs="1" />
+                </sequence>
+              </complexType>
+            </element>
+          </sequence>
+        </complexType>
+      </element>
+      <element name="RevokePermissionResponse">
+        <complexType>
+          <sequence />
+        </complexType>
+      </element>
+      <element name="UpdateTrustedAuthorityRequest">
+        <complexType>
+          <sequence>
+            <element name="ta">
+              <complexType>
+                <sequence>
+                  <element ref="ns0:TrustedAuthority" minOccurs="1" maxOccurs="1" />
+                </sequence>
+              </complexType>
+            </element>
+          </sequence>
+        </complexType>
+      </element>
+      <element name="UpdateTrustedAuthorityResponse">
+        <complexType>
+          <sequence />
+        </complexType>
+      </element>
+      <element name="AddTrustLevelRequest">
+        <complexType>
+          <sequence>
+            <element name="trustLevel">
+              <complexType>
+                <sequence>
+                  <element ref="ns0:TrustLevel" minOccurs="1" maxOccurs="1" />
+                </sequence>
+              </complexType>
+            </element>
+          </sequence>
+        </complexType>
+      </element>
+      <element name="AddTrustLevelResponse">
+        <complexType>
+          <sequence />
+        </complexType>
+      </element>
+      <element name="UpdateTrustLevelRequest">
+        <complexType>
+          <sequence>
+            <element name="trustLevel">
+              <complexType>
+                <sequence>
+                  <element ref="ns0:TrustLevel" minOccurs="1" maxOccurs="1" />
+                </sequence>
+              </complexType>
+            </element>
+          </sequence>
+        </complexType>
+      </element>
+      <element name="UpdateTrustLevelResponse">
+        <complexType>
+          <sequence />
+        </complexType>
+      </element>
+      <element name="GetTrustLevelsRequest">
+        <complexType>
+          <sequence />
+        </complexType>
+      </element>
+      <element name="GetTrustLevelsResponse">
+        <complexType>
+          <sequence>
+            <element ref="ns0:TrustLevel" minOccurs="1" maxOccurs="unbounded" />
+          </sequence>
+        </complexType>
+      </element>
+      <element name="RemoveTrustLevelRequest">
+        <complexType>
+          <sequence>
+            <element name="trustLevelName" type="xs:string" minOccurs="1" maxOccurs="1" />
+          </sequence>
+        </complexType>
+      </element>
+      <element name="RemoveTrustLevelResponse">
+        <complexType>
+          <sequence />
+        </complexType>
+      </element>
+      <element name="AddAuthorityRequest">
+        <complexType>
+          <sequence>
+            <element name="authorityGTS">
+              <complexType>
+                <sequence>
+                  <element ref="ns0:AuthorityGTS" minOccurs="1" maxOccurs="1" />
+                </sequence>
+              </complexType>
+            </element>
+          </sequence>
+        </complexType>
+      </element>
+      <element name="AddAuthorityResponse">
+        <complexType>
+          <sequence />
+        </complexType>
+      </element>
+      <element name="UpdateAuthorityRequest">
+        <complexType>
+          <sequence>
+            <element name="authorityGTS">
+              <complexType>
+                <sequence>
+                  <element ref="ns0:AuthorityGTS" minOccurs="1" maxOccurs="1" />
+                </sequence>
+              </complexType>
+            </element>
+          </sequence>
+        </complexType>
+      </element>
+      <element name="UpdateAuthorityResponse">
+        <complexType>
+          <sequence />
+        </complexType>
+      </element>
+      <element name="UpdateAuthorityPrioritiesRequest">
+        <complexType>
+          <sequence>
+            <element name="authorityPriorityUpdate">
+              <complexType>
+                <sequence>
+                  <element ref="ns0:AuthorityPriorityUpdate" minOccurs="1" maxOccurs="1" />
+                </sequence>
+              </complexType>
+            </element>
+          </sequence>
+        </complexType>
+      </element>
+      <element name="UpdateAuthorityPrioritiesResponse">
+        <complexType>
+          <sequence />
+        </complexType>
+      </element>
+      <element name="GetAuthoritiesRequest">
+        <complexType>
+          <sequence />
+        </complexType>
+      </element>
+      <element name="GetAuthoritiesResponse">
+        <complexType>
+          <sequence>
+            <element ref="ns0:AuthorityGTS" minOccurs="1" maxOccurs="unbounded" />
+          </sequence>
+        </complexType>
+      </element>
+      <element name="RemoveAuthorityRequest">
+        <complexType>
+          <sequence>
+            <element name="serviceURI" type="xs:string" minOccurs="1" maxOccurs="1" />
+          </sequence>
+        </complexType>
+      </element>
+      <element name="RemoveAuthorityResponse">
+        <complexType>
+          <sequence />
+        </complexType>
+      </element>
+      <element name="UpdateCRLRequest">
+        <complexType>
+          <sequence>
+            <element name="trustedAuthorityName" type="xs:string" minOccurs="1" maxOccurs="1" />
+            <element name="crl">
+              <complexType>
+                <sequence>
+                  <element ref="ns0:X509CRL" minOccurs="1" maxOccurs="1" />
+                </sequence>
+              </complexType>
+            </element>
+          </sequence>
+        </complexType>
+      </element>
+      <element name="UpdateCRLResponse">
+        <complexType>
+          <sequence />
+        </complexType>
+      </element>
+      <element name="ValidateRequest">
+        <complexType>
+          <sequence>
+            <element name="chain">
+              <complexType>
+                <sequence>
+                  <element ref="ns0:X509Certificate" minOccurs="1" maxOccurs="unbounded" />
+                </sequence>
+              </complexType>
+            </element>
+            <element name="filter">
+              <complexType>
+                <sequence>
+                  <element ref="ns0:TrustedAuthorityFilter" minOccurs="1" maxOccurs="1" />
+                </sequence>
+              </complexType>
+            </element>
+          </sequence>
+        </complexType>
+      </element>
+      <element name="ValidateResponse">
+        <complexType>
+          <sequence>
+            <element name="response" type="xs:boolean" minOccurs="1" maxOccurs="1" />
+          </sequence>
+        </complexType>
+      </element>
+      <element name="GTSResourceProperties">
+        <complexType>
+          <sequence>
+            <element ref="ns2:ServiceMetadata" />
+          </sequence>
+        </complexType>
+      </element>
+    </schema>
+  </types>
+  <!--  place service messages here -->
+  <message name="AddTrustedAuthorityRequest">
+    <part name="parameters" element="tns:AddTrustedAuthorityRequest" />
+  </message>
+  <message name="AddTrustedAuthorityResponse">
+    <part name="parameters" element="tns:AddTrustedAuthorityResponse" />
+  </message>
+  <message name="FindTrustedAuthoritiesRequest">
+    <part name="parameters" element="tns:FindTrustedAuthoritiesRequest" />
+  </message>
+  <message name="FindTrustedAuthoritiesResponse">
+    <part name="parameters" element="tns:FindTrustedAuthoritiesResponse" />
+  </message>
+  <message name="RemoveTrustedAuthorityRequest">
+    <part name="parameters" element="tns:RemoveTrustedAuthorityRequest" />
+  </message>
+  <message name="RemoveTrustedAuthorityResponse">
+    <part name="parameters" element="tns:RemoveTrustedAuthorityResponse" />
+  </message>
+  <message name="AddPermissionRequest">
+    <part name="parameters" element="tns:AddPermissionRequest" />
+  </message>
+  <message name="AddPermissionResponse">
+    <part name="parameters" element="tns:AddPermissionResponse" />
+  </message>
+  <message name="FindPermissionsRequest">
+    <part name="parameters" element="tns:FindPermissionsRequest" />
+  </message>
+  <message name="FindPermissionsResponse">
+    <part name="parameters" element="tns:FindPermissionsResponse" />
+  </message>
+  <message name="RevokePermissionRequest">
+    <part name="parameters" element="tns:RevokePermissionRequest" />
+  </message>
+  <message name="RevokePermissionResponse">
+    <part name="parameters" element="tns:RevokePermissionResponse" />
+  </message>
+  <message name="UpdateTrustedAuthorityRequest">
+    <part name="parameters" element="tns:UpdateTrustedAuthorityRequest" />
+  </message>
+  <message name="UpdateTrustedAuthorityResponse">
+    <part name="parameters" element="tns:UpdateTrustedAuthorityResponse" />
+  </message>
+  <message name="AddTrustLevelRequest">
+    <part name="parameters" element="tns:AddTrustLevelRequest" />
+  </message>
+  <message name="AddTrustLevelResponse">
+    <part name="parameters" element="tns:AddTrustLevelResponse" />
+  </message>
+  <message name="UpdateTrustLevelRequest">
+    <part name="parameters" element="tns:UpdateTrustLevelRequest" />
+  </message>
+  <message name="UpdateTrustLevelResponse">
+    <part name="parameters" element="tns:UpdateTrustLevelResponse" />
+  </message>
+  <message name="GetTrustLevelsRequest">
+    <part name="parameters" element="tns:GetTrustLevelsRequest" />
+  </message>
+  <message name="GetTrustLevelsResponse">
+    <part name="parameters" element="tns:GetTrustLevelsResponse" />
+  </message>
+  <message name="RemoveTrustLevelRequest">
+    <part name="parameters" element="tns:RemoveTrustLevelRequest" />
+  </message>
+  <message name="RemoveTrustLevelResponse">
+    <part name="parameters" element="tns:RemoveTrustLevelResponse" />
+  </message>
+  <message name="AddAuthorityRequest">
+    <part name="parameters" element="tns:AddAuthorityRequest" />
+  </message>
+  <message name="AddAuthorityResponse">
+    <part name="parameters" element="tns:AddAuthorityResponse" />
+  </message>
+  <message name="UpdateAuthorityRequest">
+    <part name="parameters" element="tns:UpdateAuthorityRequest" />
+  </message>
+  <message name="UpdateAuthorityResponse">
+    <part name="parameters" element="tns:UpdateAuthorityResponse" />
+  </message>
+  <message name="UpdateAuthorityPrioritiesRequest">
+    <part name="parameters" element="tns:UpdateAuthorityPrioritiesRequest" />
+  </message>
+  <message name="UpdateAuthorityPrioritiesResponse">
+    <part name="parameters" element="tns:UpdateAuthorityPrioritiesResponse" />
+  </message>
+  <message name="GetAuthoritiesRequest">
+    <part name="parameters" element="tns:GetAuthoritiesRequest" />
+  </message>
+  <message name="GetAuthoritiesResponse">
+    <part name="parameters" element="tns:GetAuthoritiesResponse" />
+  </message>
+  <message name="RemoveAuthorityRequest">
+    <part name="parameters" element="tns:RemoveAuthorityRequest" />
+  </message>
+  <message name="RemoveAuthorityResponse">
+    <part name="parameters" element="tns:RemoveAuthorityResponse" />
+  </message>
+  <message name="UpdateCRLRequest">
+    <part name="parameters" element="tns:UpdateCRLRequest" />
+  </message>
+  <message name="UpdateCRLResponse">
+    <part name="parameters" element="tns:UpdateCRLResponse" />
+  </message>
+  <message name="ValidateRequest">
+    <part name="parameters" element="tns:ValidateRequest" />
+  </message>
+  <message name="ValidateResponse">
+    <part name="parameters" element="tns:ValidateResponse" />
+  </message>
+  <message name="GTSInternalFaultFaultMessage">
+    <part name="fault" element="ns3:GTSInternalFault" />
+  </message>
+  <message name="IllegalTrustedAuthorityFaultFaultMessage">
+    <part name="fault" element="ns3:IllegalTrustedAuthorityFault" />
+  </message>
+  <message name="PermissionDeniedFaultFaultMessage">
+    <part name="fault" element="ns3:PermissionDeniedFault" />
+  </message>
+  <message name="InvalidTrustedAuthorityFaultFaultMessage">
+    <part name="fault" element="ns3:InvalidTrustedAuthorityFault" />
+  </message>
+  <message name="IllegalPermissionFaultFaultMessage">
+    <part name="fault" element="ns3:IllegalPermissionFault" />
+  </message>
+  <message name="InvalidPermissionFaultFaultMessage">
+    <part name="fault" element="ns3:InvalidPermissionFault" />
+  </message>
+  <message name="IllegalTrustLevelFaultFaultMessage">
+    <part name="fault" element="ns3:IllegalTrustLevelFault" />
+  </message>
+  <message name="InvalidTrustLevelFaultFaultMessage">
+    <part name="fault" element="ns3:InvalidTrustLevelFault" />
+  </message>
+  <message name="IllegalAuthorityFaultFaultMessage">
+    <part name="fault" element="ns3:IllegalAuthorityFault" />
+  </message>
+  <message name="InvalidAuthorityFaultFaultMessage">
+    <part name="fault" element="ns3:InvalidAuthorityFault" />
+  </message>
+  <message name="CertificateValidationFaultFaultMessage">
+    <part name="fault" element="ns3:CertificateValidationFault" />
+  </message>
+  <!--============================================================
+
+                       P O R T T Y P E
+                      
+  ============================================================-->
+  <portType name="GTSPortType" wsrp:ResourceProperties="tns:GTSResourceProperties">
+    <operation name="addTrustedAuthority">
+      <input message="tns:AddTrustedAuthorityRequest" wsa:Action="http://cagrid.nci.nih.gov/GTS/AddTrustedAuthorityRequest" />
+      <output message="tns:AddTrustedAuthorityResponse" wsa:Action="http://cagrid.nci.nih.gov/GTS/AddTrustedAuthorityResponse" />
+      <fault name="GTSInternalFault" message="tns:GTSInternalFaultFaultMessage" wsa:Action="http://cagrid.nci.nih.gov/GTS/GTSInternalFaultFaultMessage" />
+      <fault name="IllegalTrustedAuthorityFault" message="tns:IllegalTrustedAuthorityFaultFaultMessage" wsa:Action="http://cagrid.nci.nih.gov/GTS/IllegalTrustedAuthorityFaultFaultMessage" />
+      <fault name="PermissionDeniedFault" message="tns:PermissionDeniedFaultFaultMessage" wsa:Action="http://cagrid.nci.nih.gov/GTS/PermissionDeniedFaultFaultMessage" />
+    </operation>
+    <operation name="findTrustedAuthorities">
+      <input message="tns:FindTrustedAuthoritiesRequest" wsa:Action="http://cagrid.nci.nih.gov/GTS/FindTrustedAuthoritiesRequest" />
+      <output message="tns:FindTrustedAuthoritiesResponse" wsa:Action="http://cagrid.nci.nih.gov/GTS/FindTrustedAuthoritiesResponse" />
+    </operation>
+    <operation name="removeTrustedAuthority">
+      <input message="tns:RemoveTrustedAuthorityRequest" wsa:Action="http://cagrid.nci.nih.gov/GTS/RemoveTrustedAuthorityRequest" />
+      <output message="tns:RemoveTrustedAuthorityResponse" wsa:Action="http://cagrid.nci.nih.gov/GTS/RemoveTrustedAuthorityResponse" />
+      <fault name="GTSInternalFault" message="tns:GTSInternalFaultFaultMessage" wsa:Action="http://cagrid.nci.nih.gov/GTS/GTSInternalFaultFaultMessage" />
+      <fault name="InvalidTrustedAuthorityFault" message="tns:InvalidTrustedAuthorityFaultFaultMessage" wsa:Action="http://cagrid.nci.nih.gov/GTS/InvalidTrustedAuthorityFaultFaultMessage" />
+      <fault name="PermissionDeniedFault" message="tns:PermissionDeniedFaultFaultMessage" wsa:Action="http://cagrid.nci.nih.gov/GTS/PermissionDeniedFaultFaultMessage" />
+    </operation>
+    <operation name="addPermission">
+      <input message="tns:AddPermissionRequest" wsa:Action="http://cagrid.nci.nih.gov/GTS/AddPermissionRequest" />
+      <output message="tns:AddPermissionResponse" wsa:Action="http://cagrid.nci.nih.gov/GTS/AddPermissionResponse" />
+      <fault name="GTSInternalFault" message="tns:GTSInternalFaultFaultMessage" wsa:Action="http://cagrid.nci.nih.gov/GTS/GTSInternalFaultFaultMessage" />
+      <fault name="IllegalPermissionFault" message="tns:IllegalPermissionFaultFaultMessage" wsa:Action="http://cagrid.nci.nih.gov/GTS/IllegalPermissionFaultFaultMessage" />
+      <fault name="PermissionDeniedFault" message="tns:PermissionDeniedFaultFaultMessage" wsa:Action="http://cagrid.nci.nih.gov/GTS/PermissionDeniedFaultFaultMessage" />
+    </operation>
+    <operation name="findPermissions">
+      <input message="tns:FindPermissionsRequest" wsa:Action="http://cagrid.nci.nih.gov/GTS/FindPermissionsRequest" />
+      <output message="tns:FindPermissionsResponse" wsa:Action="http://cagrid.nci.nih.gov/GTS/FindPermissionsResponse" />
+      <fault name="GTSInternalFault" message="tns:GTSInternalFaultFaultMessage" wsa:Action="http://cagrid.nci.nih.gov/GTS/GTSInternalFaultFaultMessage" />
+      <fault name="PermissionDeniedFault" message="tns:PermissionDeniedFaultFaultMessage" wsa:Action="http://cagrid.nci.nih.gov/GTS/PermissionDeniedFaultFaultMessage" />
+    </operation>
+    <operation name="revokePermission">
+      <input message="tns:RevokePermissionRequest" wsa:Action="http://cagrid.nci.nih.gov/GTS/RevokePermissionRequest" />
+      <output message="tns:RevokePermissionResponse" wsa:Action="http://cagrid.nci.nih.gov/GTS/RevokePermissionResponse" />
+      <fault name="GTSInternalFault" message="tns:GTSInternalFaultFaultMessage" wsa:Action="http://cagrid.nci.nih.gov/GTS/GTSInternalFaultFaultMessage" />
+      <fault name="InvalidPermissionFault" message="tns:InvalidPermissionFaultFaultMessage" wsa:Action="http://cagrid.nci.nih.gov/GTS/InvalidPermissionFaultFaultMessage" />
+      <fault name="PermissionDeniedFault" message="tns:PermissionDeniedFaultFaultMessage" wsa:Action="http://cagrid.nci.nih.gov/GTS/PermissionDeniedFaultFaultMessage" />
+    </operation>
+    <operation name="updateTrustedAuthority">
+      <input message="tns:UpdateTrustedAuthorityRequest" wsa:Action="http://cagrid.nci.nih.gov/GTS/UpdateTrustedAuthorityRequest" />
+      <output message="tns:UpdateTrustedAuthorityResponse" wsa:Action="http://cagrid.nci.nih.gov/GTS/UpdateTrustedAuthorityResponse" />
+      <fault name="GTSInternalFault" message="tns:GTSInternalFaultFaultMessage" wsa:Action="http://cagrid.nci.nih.gov/GTS/GTSInternalFaultFaultMessage" />
+      <fault name="IllegalTrustedAuthorityFault" message="tns:IllegalTrustedAuthorityFaultFaultMessage" wsa:Action="http://cagrid.nci.nih.gov/GTS/IllegalTrustedAuthorityFaultFaultMessage" />
+      <fault name="InvalidTrustedAuthorityFault" message="tns:InvalidTrustedAuthorityFaultFaultMessage" wsa:Action="http://cagrid.nci.nih.gov/GTS/InvalidTrustedAuthorityFaultFaultMessage" />
+      <fault name="PermissionDeniedFault" message="tns:PermissionDeniedFaultFaultMessage" wsa:Action="http://cagrid.nci.nih.gov/GTS/PermissionDeniedFaultFaultMessage" />
+    </operation>
+    <operation name="addTrustLevel">
+      <input message="tns:AddTrustLevelRequest" wsa:Action="http://cagrid.nci.nih.gov/GTS/AddTrustLevelRequest" />
+      <output message="tns:AddTrustLevelResponse" wsa:Action="http://cagrid.nci.nih.gov/GTS/AddTrustLevelResponse" />
+      <fault name="GTSInternalFault" message="tns:GTSInternalFaultFaultMessage" wsa:Action="http://cagrid.nci.nih.gov/GTS/GTSInternalFaultFaultMessage" />
+      <fault name="IllegalTrustLevelFault" message="tns:IllegalTrustLevelFaultFaultMessage" wsa:Action="http://cagrid.nci.nih.gov/GTS/IllegalTrustLevelFaultFaultMessage" />
+      <fault name="PermissionDeniedFault" message="tns:PermissionDeniedFaultFaultMessage" wsa:Action="http://cagrid.nci.nih.gov/GTS/PermissionDeniedFaultFaultMessage" />
+    </operation>
+    <operation name="updateTrustLevel">
+      <input message="tns:UpdateTrustLevelRequest" wsa:Action="http://cagrid.nci.nih.gov/GTS/UpdateTrustLevelRequest" />
+      <output message="tns:UpdateTrustLevelResponse" wsa:Action="http://cagrid.nci.nih.gov/GTS/UpdateTrustLevelResponse" />
+      <fault name="GTSInternalFault" message="tns:GTSInternalFaultFaultMessage" wsa:Action="http://cagrid.nci.nih.gov/GTS/GTSInternalFaultFaultMessage" />
+      <fault name="InvalidTrustLevelFault" message="tns:InvalidTrustLevelFaultFaultMessage" wsa:Action="http://cagrid.nci.nih.gov/GTS/InvalidTrustLevelFaultFaultMessage" />
+      <fault name="IllegalTrustLevelFault" message="tns:IllegalTrustLevelFaultFaultMessage" wsa:Action="http://cagrid.nci.nih.gov/GTS/IllegalTrustLevelFaultFaultMessage" />
+      <fault name="PermissionDeniedFault" message="tns:PermissionDeniedFaultFaultMessage" wsa:Action="http://cagrid.nci.nih.gov/GTS/PermissionDeniedFaultFaultMessage" />
+    </operation>
+    <operation name="getTrustLevels">
+      <input message="tns:GetTrustLevelsRequest" wsa:Action="http://cagrid.nci.nih.gov/GTS/GetTrustLevelsRequest" />
+      <output message="tns:GetTrustLevelsResponse" wsa:Action="http://cagrid.nci.nih.gov/GTS/GetTrustLevelsResponse" />
+      <fault name="GTSInternalFault" message="tns:GTSInternalFaultFaultMessage" wsa:Action="http://cagrid.nci.nih.gov/GTS/GTSInternalFaultFaultMessage" />
+    </operation>
+    <operation name="removeTrustLevel">
+      <input message="tns:RemoveTrustLevelRequest" wsa:Action="http://cagrid.nci.nih.gov/GTS/RemoveTrustLevelRequest" />
+      <output message="tns:RemoveTrustLevelResponse" wsa:Action="http://cagrid.nci.nih.gov/GTS/RemoveTrustLevelResponse" />
+      <fault name="GTSInternalFault" message="tns:GTSInternalFaultFaultMessage" wsa:Action="http://cagrid.nci.nih.gov/GTS/GTSInternalFaultFaultMessage" />
+      <fault name="InvalidTrustLevelFault" message="tns:InvalidTrustLevelFaultFaultMessage" wsa:Action="http://cagrid.nci.nih.gov/GTS/InvalidTrustLevelFaultFaultMessage" />
+      <fault name="IllegalTrustLevelFault" message="tns:IllegalTrustLevelFaultFaultMessage" wsa:Action="http://cagrid.nci.nih.gov/GTS/IllegalTrustLevelFaultFaultMessage" />
+      <fault name="PermissionDeniedFault" message="tns:PermissionDeniedFaultFaultMessage" wsa:Action="http://cagrid.nci.nih.gov/GTS/PermissionDeniedFaultFaultMessage" />
+    </operation>
+    <operation name="addAuthority">
+      <input message="tns:AddAuthorityRequest" wsa:Action="http://cagrid.nci.nih.gov/GTS/AddAuthorityRequest" />
+      <output message="tns:AddAuthorityResponse" wsa:Action="http://cagrid.nci.nih.gov/GTS/AddAuthorityResponse" />
+      <fault name="GTSInternalFault" message="tns:GTSInternalFaultFaultMessage" wsa:Action="http://cagrid.nci.nih.gov/GTS/GTSInternalFaultFaultMessage" />
+      <fault name="IllegalAuthorityFault" message="tns:IllegalAuthorityFaultFaultMessage" wsa:Action="http://cagrid.nci.nih.gov/GTS/IllegalAuthorityFaultFaultMessage" />
+      <fault name="PermissionDeniedFault" message="tns:PermissionDeniedFaultFaultMessage" wsa:Action="http://cagrid.nci.nih.gov/GTS/PermissionDeniedFaultFaultMessage" />
+    </operation>
+    <operation name="updateAuthority">
+      <input message="tns:UpdateAuthorityRequest" wsa:Action="http://cagrid.nci.nih.gov/GTS/UpdateAuthorityRequest" />
+      <output message="tns:UpdateAuthorityResponse" wsa:Action="http://cagrid.nci.nih.gov/GTS/UpdateAuthorityResponse" />
+      <fault name="GTSInternalFault" message="tns:GTSInternalFaultFaultMessage" wsa:Action="http://cagrid.nci.nih.gov/GTS/GTSInternalFaultFaultMessage" />
+      <fault name="IllegalAuthorityFault" message="tns:IllegalAuthorityFaultFaultMessage" wsa:Action="http://cagrid.nci.nih.gov/GTS/IllegalAuthorityFaultFaultMessage" />
+      <fault name="InvalidAuthorityFault" message="tns:InvalidAuthorityFaultFaultMessage" wsa:Action="http://cagrid.nci.nih.gov/GTS/InvalidAuthorityFaultFaultMessage" />
+      <fault name="PermissionDeniedFault" message="tns:PermissionDeniedFaultFaultMessage" wsa:Action="http://cagrid.nci.nih.gov/GTS/PermissionDeniedFaultFaultMessage" />
+    </operation>
+    <operation name="updateAuthorityPriorities">
+      <input message="tns:UpdateAuthorityPrioritiesRequest" wsa:Action="http://cagrid.nci.nih.gov/GTS/UpdateAuthorityPrioritiesRequest" />
+      <output message="tns:UpdateAuthorityPrioritiesResponse" wsa:Action="http://cagrid.nci.nih.gov/GTS/UpdateAuthorityPrioritiesResponse" />
+      <fault name="GTSInternalFault" message="tns:GTSInternalFaultFaultMessage" wsa:Action="http://cagrid.nci.nih.gov/GTS/GTSInternalFaultFaultMessage" />
+      <fault name="IllegalAuthorityFault" message="tns:IllegalAuthorityFaultFaultMessage" wsa:Action="http://cagrid.nci.nih.gov/GTS/IllegalAuthorityFaultFaultMessage" />
+      <fault name="PermissionDeniedFault" message="tns:PermissionDeniedFaultFaultMessage" wsa:Action="http://cagrid.nci.nih.gov/GTS/PermissionDeniedFaultFaultMessage" />
+    </operation>
+    <operation name="getAuthorities">
+      <input message="tns:GetAuthoritiesRequest" wsa:Action="http://cagrid.nci.nih.gov/GTS/GetAuthoritiesRequest" />
+      <output message="tns:GetAuthoritiesResponse" wsa:Action="http://cagrid.nci.nih.gov/GTS/GetAuthoritiesResponse" />
+      <fault name="GTSInternalFault" message="tns:GTSInternalFaultFaultMessage" wsa:Action="http://cagrid.nci.nih.gov/GTS/GTSInternalFaultFaultMessage" />
+    </operation>
+    <operation name="removeAuthority">
+      <input message="tns:RemoveAuthorityRequest" wsa:Action="http://cagrid.nci.nih.gov/GTS/RemoveAuthorityRequest" />
+      <output message="tns:RemoveAuthorityResponse" wsa:Action="http://cagrid.nci.nih.gov/GTS/RemoveAuthorityResponse" />
+      <fault name="GTSInternalFault" message="tns:GTSInternalFaultFaultMessage" wsa:Action="http://cagrid.nci.nih.gov/GTS/GTSInternalFaultFaultMessage" />
+      <fault name="InvalidAuthorityFault" message="tns:InvalidAuthorityFaultFaultMessage" wsa:Action="http://cagrid.nci.nih.gov/GTS/InvalidAuthorityFaultFaultMessage" />
+      <fault name="PermissionDeniedFault" message="tns:PermissionDeniedFaultFaultMessage" wsa:Action="http://cagrid.nci.nih.gov/GTS/PermissionDeniedFaultFaultMessage" />
+    </operation>
+    <operation name="updateCRL">
+      <input message="tns:UpdateCRLRequest" wsa:Action="http://cagrid.nci.nih.gov/GTS/UpdateCRLRequest" />
+      <output message="tns:UpdateCRLResponse" wsa:Action="http://cagrid.nci.nih.gov/GTS/UpdateCRLResponse" />
+      <fault name="GTSInternalFault" message="tns:GTSInternalFaultFaultMessage" wsa:Action="http://cagrid.nci.nih.gov/GTS/GTSInternalFaultFaultMessage" />
+      <fault name="IllegalTrustedAuthorityFault" message="tns:IllegalTrustedAuthorityFaultFaultMessage" wsa:Action="http://cagrid.nci.nih.gov/GTS/IllegalTrustedAuthorityFaultFaultMessage" />
+      <fault name="InvalidTrustedAuthorityFault" message="tns:InvalidTrustedAuthorityFaultFaultMessage" wsa:Action="http://cagrid.nci.nih.gov/GTS/InvalidTrustedAuthorityFaultFaultMessage" />
+      <fault name="PermissionDeniedFault" message="tns:PermissionDeniedFaultFaultMessage" wsa:Action="http://cagrid.nci.nih.gov/GTS/PermissionDeniedFaultFaultMessage" />
+    </operation>
+    <operation name="validate">
+      <input message="tns:ValidateRequest" wsa:Action="http://cagrid.nci.nih.gov/GTS/ValidateRequest" />
+      <output message="tns:ValidateResponse" wsa:Action="http://cagrid.nci.nih.gov/GTS/ValidateResponse" />
+      <fault name="GTSInternalFault" message="tns:GTSInternalFaultFaultMessage" wsa:Action="http://cagrid.nci.nih.gov/GTS/GTSInternalFaultFaultMessage" />
+      <fault name="CertificateValidationFault" message="tns:CertificateValidationFaultFaultMessage" wsa:Action="http://cagrid.nci.nih.gov/GTS/CertificateValidationFaultFaultMessage" />
+    </operation>
+    <operation name="getServiceSecurityMetadata">
+      <input message="wns0:GetServiceSecurityMetadataRequest" wsa:Action="http://security.introduce.cagrid.nci.nih.gov/ServiceSecurity/GetServiceSecurityMetadataRequest" />
+      <output message="wns0:GetServiceSecurityMetadataResponse" wsa:Action="http://security.introduce.cagrid.nci.nih.gov/ServiceSecurity/GetServiceSecurityMetadataResponse" />
+    </operation>
+    <wsdl:operation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" name="GetMultipleResourceProperties">
+      <wsdl:input name="GetMultipleResourcePropertiesRequest" message="wsrpw:GetMultipleResourcePropertiesRequest" wsa:Action="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ResourceProperties/GetMultipleResourceProperties" />
+      <wsdl:output name="GetMultipleResourcePropertiesResponse" message="wsrpw:GetMultipleResourcePropertiesResponse" wsa:Action="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ResourceProperties/GetMultipleResourcePropertiesResponse" />
+      <wsdl:fault name="ResourceUnknownFault" message="wsrpw:ResourceUnknownFault" />
+      <wsdl:fault name="InvalidResourcePropertyQNameFault" message="wsrpw:InvalidResourcePropertyQNameFault" />
+    </wsdl:operation>
+    <wsdl:operation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" name="GetResourceProperty">
+      <wsdl:input name="GetResourcePropertyRequest" message="wsrpw:GetResourcePropertyRequest" wsa:Action="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ResourceProperties/GetResourceProperty" />
+      <wsdl:output name="GetResourcePropertyResponse" message="wsrpw:GetResourcePropertyResponse" wsa:Action="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ResourceProperties/GetResourcePropertyResponse" />
+      <wsdl:fault name="ResourceUnknownFault" message="wsrpw:ResourceUnknownFault" />
+      <wsdl:fault name="InvalidResourcePropertyQNameFault" message="wsrpw:InvalidResourcePropertyQNameFault" />
+    </wsdl:operation>
+    <wsdl:operation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" name="QueryResourceProperties">
+      <wsdl:input name="QueryResourcePropertiesRequest" message="wsrpw:QueryResourcePropertiesRequest" wsa:Action="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ResourceProperties/QueryResourceProperties" />
+      <wsdl:output name="QueryResourcePropertiesResponse" message="wsrpw:QueryResourcePropertiesResponse" wsa:Action="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ResourceProperties/QueryResourcePropertiesResponse" />
+      <wsdl:fault name="ResourceUnknownFault" message="wsrpw:ResourceUnknownFault" />
+      <wsdl:fault name="InvalidResourcePropertyQNameFault" message="wsrpw:InvalidResourcePropertyQNameFault" />
+      <wsdl:fault name="UnknownQueryExpressionDialectFault" message="wsrpw:UnknownQueryExpressionDialectFault" />
+      <wsdl:fault name="InvalidQueryExpressionFault" message="wsrpw:InvalidQueryExpressionFault" />
+      <wsdl:fault name="QueryEvaluationErrorFault" message="wsrpw:QueryEvaluationErrorFault" />
+    </wsdl:operation>
+  </portType>
+</definitions>
+

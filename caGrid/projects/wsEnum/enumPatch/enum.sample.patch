@@ -1,0 +1,475 @@
+Index: wsrf/schema/core/samples/enumeration/enumeration_bindings.wsdl
+diff -u /dev/null wsrf/schema/core/samples/enumeration/enumeration_bindings.wsdl:1.1.2.2
+--- /dev/null	Sat Jul 15 17:36:33 2006
++++ wsrf/schema/core/samples/enumeration/enumeration_bindings.wsdl	Mon Jun 26 14:59:24 2006
+@@ -0,0 +1,52 @@
++<?xml version="1.0" encoding="UTF-8"?>
++<wsdl:definitions name="Enumeration" targetNamespace="http://enumeration.com/bindings" xmlns:porttype="http://enumeration.com" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
++  <wsdl:import namespace="http://enumeration.com" location="enumeration_flattened.wsdl"/>
++  <wsdl:binding name="EnumerationPortTypeSOAPBinding" type="porttype:EnumerationPortType">
++    <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
++    <wsdl:operation name="PullOp">
++      <soap:operation soapAction="http://schemas.xmlsoap.org/ws/2004/09/enumeration/Pull"/>
++      <wsdl:input>
++        <soap:body use="literal"/>
++      </wsdl:input>
++      <wsdl:output>
++        <soap:body use="literal"/>
++      </wsdl:output>
++    </wsdl:operation>
++    <wsdl:operation name="RenewOp">
++      <soap:operation soapAction="http://schemas.xmlsoap.org/ws/2004/09/enumeration/Renew"/>
++      <wsdl:input>
++        <soap:body use="literal"/>
++      </wsdl:input>
++      <wsdl:output>
++        <soap:body use="literal"/>
++      </wsdl:output>
++    </wsdl:operation>
++    <wsdl:operation name="GetStatusOp">
++      <soap:operation soapAction="http://schemas.xmlsoap.org/ws/2004/09/enumeration/GetStatus"/>
++      <wsdl:input>
++        <soap:body use="literal"/>
++      </wsdl:input>
++      <wsdl:output>
++        <soap:body use="literal"/>
++      </wsdl:output>
++    </wsdl:operation>
++    <wsdl:operation name="ReleaseOp">
++      <soap:operation soapAction="http://schemas.xmlsoap.org/ws/2004/09/enumeration/Release"/>
++      <wsdl:input>
++        <soap:body use="literal"/>
++      </wsdl:input>
++      <wsdl:output>
++        <soap:body use="literal"/>
++      </wsdl:output>
++    </wsdl:operation>
++    <wsdl:operation name="EnumerateOp">
++      <soap:operation soapAction="http://schemas.xmlsoap.org/ws/2004/09/enumeration/Enumerate"/>
++      <wsdl:input>
++        <soap:body use="literal"/>
++      </wsdl:input>
++      <wsdl:output>
++        <soap:body use="literal"/>
++      </wsdl:output>
++    </wsdl:operation>
++  </wsdl:binding>
++</wsdl:definitions>
+Index: wsrf/schema/core/samples/enumeration/enumeration_flattened.wsdl
+diff -u /dev/null wsrf/schema/core/samples/enumeration/enumeration_flattened.wsdl:1.1.2.2
+--- /dev/null	Sat Jul 15 17:36:33 2006
++++ wsrf/schema/core/samples/enumeration/enumeration_flattened.wsdl	Mon Jun 26 14:59:24 2006
+@@ -0,0 +1,46 @@
++<?xml version="1.0" encoding="UTF-8"?>
++<wsdl:definitions name="Enumeration" targetNamespace="http://enumeration.com" xmlns:wsrp="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ResourceProperties-1.2-draft-01.xsd" xmlns:tns="http://enumeration.com" xmlns:wsrpw="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ResourceProperties-1.2-draft-01.wsdl" xmlns:wsrlw="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ResourceLifetime-1.2-draft-01.wsdl" xmlns:wsdlpp="http://www.globus.org/namespaces/2004/10/WSDLPreprocessor" xmlns:wsa="http://schemas.xmlsoap.org/ws/2004/03/addressing" xmlns:wsen="http://schemas.xmlsoap.org/ws/2004/09/enumeration" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:wsntw="http://docs.oasis-open.org/wsn/2004/06/wsn-WS-BaseNotification-1.2-draft-01.wsdl" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns="http://schemas.xmlsoap.org/wsdl/">
++  <wsdl:import namespace="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ResourceLifetime-1.2-draft-01.wsdl" location="../../../wsrf/lifetime/WS-ResourceLifetime.wsdl"/>
++  <wsdl:import namespace="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ResourceProperties-1.2-draft-01.wsdl" location="../../../wsrf/properties/WS-ResourceProperties.wsdl"/>
++  <wsdl:import namespace="http://schemas.xmlsoap.org/ws/2004/09/enumeration" location="../../../ws/enumeration/enumeration.wsdl"/>
++  <wsdl:import namespace="http://docs.oasis-open.org/wsn/2004/06/wsn-WS-BaseNotification-1.2-draft-01.wsdl" location="../../../wsrf/notification/WS-BaseN.wsdl"/>
++  <wsdl:types>
++    <xsd:schema elementFormDefault="qualified" targetNamespace="http://enumeration.com" xmlns:tns="http://enumeration.com" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
++
++            <xsd:import namespace="http://schemas.xmlsoap.org/ws/2004/03/addressing" schemaLocation="../../../ws/addressing/WS-Addressing.xsd"/>
++            
++            <xsd:element name="Value" type="xsd:int"/>
++            
++            <xsd:element name="EnumerationRP">
++                <xsd:complexType>
++                    <xsd:sequence>
++                        <xsd:element maxOccurs="1" minOccurs="1" ref="tns:Value"/>
++                    </xsd:sequence>
++                </xsd:complexType>
++            </xsd:element>
++            
++        </xsd:schema>
++  </wsdl:types>
++  <wsdl:portType name="EnumerationPortType" wsrp:ResourceProperties="tns:EnumerationRP">
++    <wsdl:operation name="PullOp">
++      <wsdl:input message="wsen:PullMessage" wsa:Action="http://schemas.xmlsoap.org/ws/2004/09/enumeration/Pull"/>
++      <wsdl:output message="wsen:PullResponseMessage" wsa:Action="http://schemas.xmlsoap.org/ws/2004/09/enumeration/PullResponse"/>
++    </wsdl:operation>
++    <wsdl:operation name="RenewOp">
++      <wsdl:input message="wsen:RenewMessage" wsa:Action="http://schemas.xmlsoap.org/ws/2004/09/enumeration/Renew"/>
++      <wsdl:output message="wsen:RenewResponseMessage" wsa:Action="http://schemas.xmlsoap.org/ws/2004/09/enumeration/RenewResponse"/>
++    </wsdl:operation>
++    <wsdl:operation name="GetStatusOp">
++      <wsdl:input message="wsen:GetStatusMessage" wsa:Action="http://schemas.xmlsoap.org/ws/2004/09/enumeration/GetStatus"/>
++      <wsdl:output message="wsen:GetStatusResponseMessage" wsa:Action="http://schemas.xmlsoap.org/ws/2004/09/enumeration/GetStatusResponse"/>
++    </wsdl:operation>
++    <wsdl:operation name="ReleaseOp">
++      <wsdl:input message="wsen:ReleaseMessage" wsa:Action="http://schemas.xmlsoap.org/ws/2004/09/enumeration/Release"/>
++      <wsdl:output message="wsen:ReleaseResponseMessage" wsa:Action="http://schemas.xmlsoap.org/ws/2004/09/enumeration/ReleaseResponse"/>
++    </wsdl:operation>
++    <wsdl:operation name="EnumerateOp">
++      <wsdl:input message="wsen:EnumerateMessage" wsa:Action="http://schemas.xmlsoap.org/ws/2004/09/enumeration/Enumerate"/>
++      <wsdl:output message="wsen:EnumerateResponseMessage" wsa:Action="http://schemas.xmlsoap.org/ws/2004/09/enumeration/EnumerateResponse"/>
++    </wsdl:operation>
++  </wsdl:portType>
++</wsdl:definitions>
+Index: wsrf/schema/core/samples/enumeration/enumeration_service.wsdl
+diff -u /dev/null wsrf/schema/core/samples/enumeration/enumeration_service.wsdl:1.1.2.1
+--- /dev/null	Sat Jul 15 17:36:33 2006
++++ wsrf/schema/core/samples/enumeration/enumeration_service.wsdl	Fri Jun  2 22:12:05 2006
+@@ -0,0 +1,9 @@
++<?xml version="1.0" encoding="UTF-8"?>
++<wsdl:definitions name="Enumeration" targetNamespace="http://enumeration.com/service" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:binding="http://enumeration.com/bindings" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
++  <wsdl:import namespace="http://enumeration.com/bindings" location="enumeration_bindings.wsdl"/>
++  <wsdl:service name="EnumerationService">
++    <wsdl:port name="EnumerationPortTypePort" binding="binding:EnumerationPortTypeSOAPBinding">
++      <soap:address location="http://localhost:8080/wsrf/services/"/>
++    </wsdl:port>
++  </wsdl:service>
++</wsdl:definitions>
+Index: wsrf/java/core/samples/enumeration/build.xml
+diff -u /dev/null wsrf/java/core/samples/enumeration/build.xml:1.1.2.2
+--- /dev/null	Sat Jul 15 17:36:33 2006
++++ wsrf/java/core/samples/enumeration/build.xml	Mon Jun 19 22:32:53 2006
+@@ -0,0 +1,148 @@
++<?xml version="1.0"?>
++
++<project default="all" name="globus_wsrf_core_samples" basedir=".">
++    <description>
++        WSRF Core Enumeration Sample
++    </description>
++
++    <!-- 
++    Give user a chance to override without editing this file
++    (and without typing -D each time it compiles it) 
++    -->
++    
++    <property environment="env"/>
++ 
++    <property file="build.properties"/>
++    <property file="${user.home}/build.properties"/>
++    
++    <property name="env.GLOBUS_LOCATION" value="../../../../install"/>
++    <property name="deploy.dir" location="${env.GLOBUS_LOCATION}"/>
++    <property name="base.name" value="wsrf_core_samples_enumeration"/>
++    <property name="package.name" value="globus_${base.name}"/>
++    <property name="gar.name" value="${package.name}.gar"/>
++    <property name="jar.name" value="${base.name}.jar"/>
++    <property name="stubs.jar.name" value="${base.name}_stubs.jar"/>
++    <property name="build.dir"  location="build"/>
++    <property name="build.dest" location="build/classes"/>
++    <property name="build.lib.dir" location="build/lib"/>
++    <property name="stubs.dir" location="build/stubs"/>
++    <property name="stubs.src" location="build/stubs/src"/>
++    <property name="stubs.dest" location="build/stubs/classes"/>
++    <property name="build.packages" location=
++        "${deploy.dir}/share/globus_wsrf_common/build-packages.xml"/>
++    <property name="build.stubs" location=
++        "${deploy.dir}/share/globus_wsrf_tools/build-stubs.xml"/>
++    <property name="java.debug" value="on"/>
++
++    <property name="schema.src" location="${deploy.dir}/share/schema"/>
++    <property name="schema.local"   location="schema"/>
++    <property name="schema.dest"  location="${build.dir}/schema"/>
++
++    <property name="garjars.id" value="garjars"/>
++    <fileset dir="${build.lib.dir}" id="garjars"/>
++
++    <property name="garetc.id" value="garetc"/>
++    <fileset dir="etc" id="garetc"/>
++
++    <target name="init">
++        <mkdir dir="${build.dir}"/>
++        <mkdir dir="${build.dest}"/>
++        <mkdir dir="${build.lib.dir}"/>
++
++        <mkdir dir="${stubs.dir}"/>
++        <mkdir dir="${stubs.src}"/>
++        <mkdir dir="${stubs.dest}"/>
++
++        <mkdir dir="${schema.dest}"/>
++        <copy toDir="${schema.dest}">
++            <fileset dir="${schema.src}" casesensitive="yes">
++                <include name="wsrf/**/*"/>
++                <include name="ws/**/*"/>
++                <include name="core/samples/enumeration/*"/>
++            </fileset>
++        </copy>
++
++        <available property="stubs.present" type="dir" 
++                   file="${stubs.src}/com/enumeration" />
++    </target>
++
++    <target name="stubs" unless="stubs.present" depends="init">
++        <ant antfile="${build.stubs}" target="generateStubs">
++            <property name="source.stubs.dir" 
++                location="${schema.dest}/core/samples/enumeration"/>
++            <property name="target.stubs.dir" location="${stubs.src}"/>
++            <property name="wsdl.file" 
++                value="enumeration_service.wsdl"/>
++        </ant>
++    </target>
++  
++    <target name="compileStubs" depends="stubs">
++       <javac srcdir="${stubs.src}" destdir="${stubs.dest}" 
++            debug="${java.debug}">
++            <include name="**/*.java"/>
++            <classpath>
++                <fileset dir="${deploy.dir}/lib">
++                    <include name="common/*.jar"/>
++                    <include name="*.jar"/>
++                    <exclude name="${stubs.jar.name}"/>
++                    <exclude name="${jar.name}"/>
++                </fileset>
++            </classpath>
++        </javac>
++	<copy todir="${build.dest}" >
++	      <fileset dir="src" includes="**/*.properties" />
++	      <fileset dir="src" includes="**/*.xml" />
++	</copy>
++    </target>
++
++    <target name="compile" depends="compileStubs">
++        <javac srcdir="src" destdir="${build.dest}"
++            debug="${java.debug}">
++            <include name="**/*.java"/>
++            <classpath>
++                <pathelement location="${stubs.dest}"/>
++                <fileset dir="${deploy.dir}/lib">
++                    <include name="common/*.jar"/>
++                    <include name="*.jar"/>
++                    <exclude name="${stubs.jar.name}"/>
++                    <exclude name="${jar.name}"/>
++                </fileset>
++            </classpath>
++        </javac>
++    </target>
++
++    <target name="jarStubs" depends="compileStubs">
++        <jar destfile="${build.lib.dir}/${stubs.jar.name}" 
++             basedir="${stubs.dest}"/>
++    </target>
++
++    <target name="jar" depends="compile">
++        <jar destfile="${build.lib.dir}/${jar.name}" basedir="${build.dest}"/>
++    </target>
++
++    <target name="dist" depends="jarStubs, jar">
++        <ant antfile="${build.packages}" target="makeGar">
++            <reference refid="${garjars.id}"/>  
++            <reference refid="${garetc.id}"/>  
++        </ant>            
++    </target>
++
++    <target name="clean">
++        <delete dir="tmp"/>
++        <delete dir="${build.dir}"/>
++        <delete file="${gar.name}"/>
++    </target>
++
++    <target name="deploy" depends="dist">
++        <ant antfile="${build.packages}" target="deployGar"/>
++    </target>  
++
++    <target name="undeploy">
++        <ant antfile="${build.packages}" target="undeployGar">
++            <property name="gar.id" value="${package.name}"/>
++        </ant>
++    </target>
++
++    <target name="all" depends="deploy"/>
++
++</project>
+Index: wsrf/java/core/samples/enumeration/deploy-server.wsdd
+diff -u /dev/null wsrf/java/core/samples/enumeration/deploy-server.wsdd:1.1.2.3
+--- /dev/null	Sat Jul 15 17:36:33 2006
++++ wsrf/java/core/samples/enumeration/deploy-server.wsdd	Thu Jun  8 12:32:31 2006
+@@ -0,0 +1,21 @@
++<?xml version="1.0" encoding="UTF-8"?>
++<deployment name="defaultServerConfig" 
++    xmlns="http://xml.apache.org/axis/wsdd/" 
++    xmlns:java="http://xml.apache.org/axis/wsdd/providers/java" 
++    xmlns:xsd="http://www.w3.org/2001/XMLSchema">
++
++    <service name="EnumerationService" provider="Handler" 
++        use="literal" style="document">
++        <parameter name="allowedMethodsClass" 
++            value="com.enumeration.EnumerationPortType"/>
++        <parameter name="handlerClass" 
++            value="org.globus.axis.providers.RPCProvider"/>
++        <parameter name="className" 
++             value="org.globus.wsrf.samples.enumeration.EnumService"/>
++        <parameter name="providers" 
++            value="EnumerationProvider"/>
++        <wsdlFile>share/schema/core/samples/enumeration/enumeration_service.wsdl</wsdlFile>
++        <parameter name="scope" value="Application"/>
++    </service>
++
++</deployment>
+Index: wsrf/java/core/samples/enumeration/etc/post-deploy.xml
+diff -u /dev/null wsrf/java/core/samples/enumeration/etc/post-deploy.xml:1.1.2.2
+--- /dev/null	Sat Jul 15 17:36:33 2006
++++ wsrf/java/core/samples/enumeration/etc/post-deploy.xml	Tue Jun 20 13:46:15 2006
+@@ -0,0 +1,35 @@
++<?xml version="1.0"?>
++
++<!-- ===================================================================
++
++Notes:
++   This is a build file for use with the Jakarta Ant build tool.
++
++Prerequisites:
++
++   jakarta-ant from http://jakarta.apache.org
++
++
++Build Instructions:
++
++   This file is automatically called at the end of the deployment
++   of the corresponding component's gar (see build-packages.xml).
++
++==================================================================== -->
++<project default="all" basedir=".">
++
++    <property environment="env"/>
++    
++    <property file="build.properties"/>
++    <property file="${user.home}/build.properties"/>
++    
++    <property name="env.GLOBUS_LOCATION" value="."/>
++    <property name="deploy.dir" location="${env.GLOBUS_LOCATION}"/>
++    <property name="abs.deploy.dir" location="${deploy.dir}"/>
++    <property name="build.launcher" 
++        location="${abs.deploy.dir}/share/globus_wsrf_common/build-launcher.xml"/>
++
++    <target name="setup">
++    </target>
++
++</project>
+Index: wsrf/java/core/samples/enumeration/pkgdata/filelist
+diff -u /dev/null wsrf/java/core/samples/enumeration/pkgdata/filelist:1.1.2.1
+--- /dev/null	Sat Jul 15 17:36:33 2006
++++ wsrf/java/core/samples/enumeration/pkgdata/filelist	Mon Jun 19 22:32:53 2006
+@@ -0,0 +1,4 @@
++lib/wsrf_core_samples_enumeration.jar
++lib/wsrf_core_samples_enumeration_stubs.jar
++etc/globus_packages/globus_wsrf_core_samples_enumeration/undeploy.xml
++etc/globus_wsrf_core_samples_enumeration/server-config.wsdd
+Index: wsrf/java/core/samples/enumeration/pkgdata/pkg_data_src.gpt
+diff -u /dev/null wsrf/java/core/samples/enumeration/pkgdata/pkg_data_src.gpt:1.1.2.1
+--- /dev/null	Sat Jul 15 17:36:33 2006
++++ wsrf/java/core/samples/enumeration/pkgdata/pkg_data_src.gpt	Mon Jun 19 22:32:53 2006
+@@ -0,0 +1,40 @@
++<?xml version="1.0" encoding="UTF-8"?>
++<!DOCTYPE gpt_package_metadata SYSTEM "package.dtd">
++
++<gpt_package_metadata Format_Version="0.01" Name="globus_java_ws_core_enumeration_sample">
++
++    <Aging_Version Age="0" Major="0" Minor="1"/>
++    <Description>
++        The Java WS Core enumeration sample package
++    </Description>
++    <Functional_Group>Core</Functional_Group>
++    <Version_Stability Release="alpha" />
++
++    <src_pkg >
++
++        <Source_Dependencies Type="compile" >
++            <Dependency Name="globus_java_ws_core" Package="pgm">
++                <Version>
++                    <Simple_Version Major="0"/>
++                </Version>
++            </Dependency>
++        </Source_Dependencies>
++
++        <Build_Environment >
++            <cflags ></cflags>
++            <external_includes ></external_includes>
++            <pkg_libs ></pkg_libs>
++            <external_libs ></external_libs>
++        </Build_Environment>
++
++        <With_Flavors build="no" />
++
++        <Version_Label>0.1</Version_Label>
++
++        <Build_Instructions>
++            <Build_Step> ant deploy -Ddeploy.dir=INSTALLDIR_GPTMACRO </Build_Step>
++        </Build_Instructions>
++
++    </src_pkg >
++
++</gpt_package_metadata>
+Index: wsrf/java/core/samples/enumeration/src/org/globus/wsrf/samples/enumeration/EnumService.java
+diff -u /dev/null wsrf/java/core/samples/enumeration/src/org/globus/wsrf/samples/enumeration/EnumService.java:1.1.2.6
+--- /dev/null	Sat Jul 15 17:36:33 2006
++++ wsrf/java/core/samples/enumeration/src/org/globus/wsrf/samples/enumeration/EnumService.java	Fri Jun 23 11:39:07 2006
+@@ -0,0 +1,75 @@
++/*
++ * Copyright 1999-2006 University of Chicago
++ * 
++ * Licensed under the Apache License, Version 2.0 (the "License");
++ * you may not use this file except in compliance with the License.
++ * You may obtain a copy of the License at
++ * 
++ * http://www.apache.org/licenses/LICENSE-2.0
++ * 
++ * Unless required by applicable law or agreed to in writing, software
++ * distributed under the License is distributed on an "AS IS" BASIS,
++ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
++ * See the License for the specific language governing permissions and
++ * limitations under the License.
++ */
++package org.globus.wsrf.samples.enumeration;
++
++import org.globus.ws.enumeration.EnumResourceHome;
++import org.globus.ws.enumeration.EnumIterator;
++import org.globus.ws.enumeration.EnumResource;
++import org.globus.ws.enumeration.SimpleEnumIterator;
++import org.globus.ws.enumeration.IndexedObjectFileEnumIterator;
++import org.globus.ws.enumeration.EnumProvider;
++
++import org.xmlsoap.schemas.ws._2004._09.enumeration.EnumerateResponse;
++import org.xmlsoap.schemas.ws._2004._09.enumeration.Enumerate;
++
++import org.globus.wsrf.ResourceKey;
++import org.globus.wsrf.utils.io.IndexedObjectFileWriter;
++import org.globus.wsrf.utils.io.IndexedObjectFileUtils;
++
++import java.io.File;
++import java.util.ArrayList;
++import java.rmi.RemoteException;
++
++import javax.xml.namespace.QName;
++
++public class EnumService {
++
++    private static final QName ITEM_NAME = 
++        new QName("http://www.globus.org/core/enumeration", "ItemName");
++
++    public EnumerateResponse enumerateOp(Enumerate body) 
++        throws RemoteException {
++        EnumResourceHome enumHome = null;
++        
++        try {
++            enumHome = EnumResourceHome.getEnumResourceHome();
++        } catch (Exception e) {
++            throw new RemoteException("", e);
++        }
++
++        // generate dummy data
++        ArrayList list = new ArrayList();
++        for (int i=0;i<100;i++) {
++            list.add("foo" + i);
++        }
++
++        try {
++            File dataFile = 
++                IndexedObjectFileUtils.createIndexedObjectFile(list);
++            
++            EnumIterator iter = 
++                new IndexedObjectFileEnumIterator(dataFile, ITEM_NAME);
++            
++            EnumResource resource = enumHome.createEnumeration(iter, true);
++            ResourceKey key = enumHome.getKey(resource);
++            
++            return EnumProvider.createEnumerateOpResponse(key, resource);
++        } catch (Exception e) {
++            throw new RemoteException("", e);
++        }
++    }
++    
++}

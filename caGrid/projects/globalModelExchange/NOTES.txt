@@ -1,0 +1,137 @@
+
+=================================================================================
+Overview:
+=================================================================================
+GME Client (uses domain)
+
+GME Service (uses domain)
+GME (uses some of domain)
+-----transactional boundary-----
+  -schema loader (Sax Parser; uses SP layer to extract published information)
+  --SchemaPersistence Layer (interface)
+     (hibernate implementation), (in memory implementation), 
+
+
+=================================================================================
+Features/Issues:
+=================================================================================
+[DONE]if we add more deploy configurable things (policy, security, persistence, etc), we may want
+to just use spring to initialize some GME configuration file, and make the spring conf the only
+deploy configuration (the serviceimpl would use spring to init the GME) 
+
+could/should make authorization enforcement a deploytime interface
+could make default be grouper-based and be managed by a sibling service
+  -could make as a service context of GME, but I'd like to keep them decoupled
+  -basically would write permissions to local DB, which GME authz impl would lookup
+
+I'd like to keep as much "policy" out of the GME implementation as possible,
+but provide a policy interface to allow the enforcement of local policy.
+  - For example:
+		-Whether or not to allow deletion of a published schema should
+    	 be a policy decision.
+    	-Should be able to reject a specific schema submission for policy reasons
+    	 (e.g. doesn't meet some namespace constraints or other "quality" check)
+  - The GME itself should really only enforce "global soundness"
+  - Other policy should be optionally plugged in (at deploytime) 
+  - Should support policy chaining
+
+Should we capture and make available (non-fatal) "schema warnings"?
+  - for example, importing a non-existent schema and not using it is not a fatal error, only a warning
+  - this information should be passed to policy interface 
+
+make a utility for validating an XML document against the GME:
+- will need an entity resolver that talks to GME to get XSDs
+- could run as client util, or make a validate(xml) service operation
+
+how do we want to treat XML schema namespace?
+  - GME should have it in the DB and support retrieval of it
+  - which namespace do we use (just the latest)?
+  - do we prevent modification/deletion/etc of it (even for super users)?
+  - i think we should go ahead and upload the last few that are commonly used.
+
+do we need to do anything for xsi stuff.. like xsi:schemaLocation?
+  - this may link to a file location or http:// etc, we probably don't want
+    XSDs coming out of the GME with that stuff in it
+  - not sure if XSOM processes it, but other processors will and may cause 
+    unexpected behaviors (like pulling an XSD from some non-GME location)
+  - we should not enable schemaLocation to be used because it is not ever 
+  	guaranteed to work, even if a document comes from a web location.
+
+need to be sure to require use of targetNamespace, even though XSOM may not
+
+[DONE]we *could* support schema "includes" now
+  - this is fairly common in existing large schemas
+  - i don't see any real problems with this but we may want to support multiple schema
+    texts with this and this will require some more thought on the database
+
+Do we want to do anything special with xsd:redefine?
+  - seems potentially dangerous in a environment buying into GME, but its impact
+    is localized to those using the XSD that does the redefine
+  - really no technical reason to not allow it; just policy 
+  - it enables the creation of a complete mess, i am not convinced it is useful but 
+    maybe we should not prevent it in case we are not aware of some special 
+    use cases.
+    
+probably should allow even published/deprecated schemas to be removed
+  - should have a "forceDelete" option in protocol to indicate to try this
+  - should require "superuser" privileges
+  - only reason for not doing so now is policy (no technical reason not to as 
+    long as we make sure it doesn't leave dangling references)
+      - in the distributed version, there was no way to check this
+  - because we are not making this distributed we can support this, we can even
+    be sure to only do it if there is no one referencing it and warn if there is
+
+[DONE]need to work out algorithm for submission (depends on how we impl the db layer):
+-see GME_submission.doc in docs dir
+   
+could support a GME "Context" as a basic container for everything
+  - all namespaces/XSD/etc would be associated with a Context
+  - things would only need to be unique within a context
+  - basically each context would act like its own GME
+  - would let us run things like a "development/testing/staging" context in the same GME
+    instead of requiring a completely separate service to be stood up
+  - CONS: complicates protocol/API, queries probably less effcient 
+  - i am not for this becuase i don't want to promote overlaping namespace domains
+  - it will enable people to avoid namespace collisions by creating a new context
+  - i think it would be used for the wrong reasons
+
+what query styles to we want to support?  may effect what XSOM information we store
+- regex on the namespace
+- free text on the schema
+- look into supporting xpointer for pointing inside schemas:
+    - e.g. #xpointer(xs:schema/xs:element[@name="person"]) 
+    - this is probably more appropriate http://www.w3.org/TR/xmlschema-ref/
+
+consistent with the schema specification, the GME server ignores schemaLocation "hints" and
+resolves schema references via its rules.  To address potential issues with using the 
+schemas outside of the context of the GME, the client API has utilities for rewritting schemaLocation
+"hints" to be consistent with the file system 
+
+=================================================================================
+GME RESTRICTIONS FROM SCHEMA SPECIFICATION:
+=================================================================================
+* Use of "no namespace" is not allowed
+* Namespaces are universally unique; they can only be reused as targetnamespaces across documents that are included together
+
+
+=================================================================================
+XSD APIs:
+=================================================================================
+http://www.w3.org/Submission/2004/SUBM-xmlschema-api-20040309/xml-schema-api.html
+
+# http://ws.apache.org/commons/XmlSchema/
+  - doesn't seem to validate anything
+  - handles imports/includes nicely
+  - API is clunky
+  - exception handling is poor (have to use runtimeexceptions)
+# https://xsom.dev.java.net/
+  - seems to validate well
+  - API is nice
+  - nice error handling
+  - doesn't seem to give access to imports/includes in result (UPDATE: i think i could have gotten these from xsdcomponent.getSourceDocument)
+# http://xerces.apache.org/xerces-j/schema.html (currently using)
+  - claims to have 100% support... seems to be what all "validators" use
+  - http://xerces.apache.org/xerces2-j/faq-grammars.html
+  - example:
+     - org.globus.wsrf.tools.wsdl.WSDLPreprocessor
+     - (great stuff here) http://fisheye6.cenqua.com/browse/ode/trunk/utils/src/main/java/org/apache/ode/utils/xsd

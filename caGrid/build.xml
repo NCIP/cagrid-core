@@ -1,0 +1,208 @@
+<?xml version="1.0"?>
+<!-- ================================================================= -->
+<!-- caGrid Master build file                                          -->
+<!-- ================================================================= -->
+<project name="caGrid-Master" basedir="." default="all" xmlns:ivy="antlib:org.apache.ivy.ant">
+	<dirname property="caGrid-Master.basedir" file="${ant.file.caGrid-Master}" />
+
+	<!-- Give user the chance to override properties -->
+	<property environment="env" />
+	<property file="build.properties" />
+	<!-- Load in project listings -->
+	<property file="${caGrid-Master.basedir}/project.properties" />
+
+	<import file="antfiles/ivy/ivy-def.xml" />
+
+	<!-- Layout info -->
+	<property name="projects.dir" location="${caGrid-Master.basedir}/projects" />
+	<property name="test.dir" location="${caGrid-Master.basedir}/test" />
+	<property name="build.dir" location="${caGrid-Master.basedir}/build" />
+	<property name="antfiles.dir" location="${caGrid-Master.basedir}/antfiles" />
+
+	<property name="antfiles.lib.dir" location="${antfiles.dir}/lib" />
+	<property name="test.lib.dir" location="${test.dir}/lib" />
+
+	<property name="introduce.extensions.dir" value="${projects.dir}/introduce/extensions" />
+
+	<condition property="isJDK1.5" value="true">
+		<or>
+			<equals arg1="${ant.java.version}" arg2="1.5" />
+			<equals arg1="${ant.java.version}" arg2="1.6" />
+		</or>
+	</condition>
+	<!-- Require Java 1.5 for now -->
+	<fail message="JDK 1.5 is currently required to build this project!" unless="isJDK1.5" />
+
+	<!-- IMPORT THE UTILITIES TARGETS -->
+	<import file="${antfiles.dir}/target-grid.xml" />
+	<import file="${antfiles.dir}/run-utilities.xml" />
+
+	<!-- IMPORT THE TEST TARGET -->
+	<import file="${test.dir}/test.xml" />
+
+
+	<!-- =============================================================== -->
+	<!-- Bootstrap the build by setting up the structure                 -->
+	<!-- =============================================================== -->
+	<target name="prepare" depends="define-ant-tasks,build-projects-list">
+		<tstamp />
+	</target>
+
+
+	<target name="define-ant-tasks" depends="init-ivy" unless="defined.anttasks">
+		<taskdef resource="net/sf/antcontrib/antlib.xml" loaderref="antcontrib">
+			<classpath>
+				<fileset dir="${ant.library.dir}">
+					<include name="ant.jar" />
+				</fileset>
+				<fileset dir="${antfiles.lib.dir}">
+					<include name="ant-contrib*.jar" />
+				</fileset>
+			</classpath>
+		</taskdef>
+		<property name="defined.anttasks" value="true" />
+	</target>
+
+	<target name="build-projects-list">
+		<ivy:buildlist reference="ivy.projects.list" ivyfilepath="ivy.xml" onMissingDescriptor="skip">
+			<fileset dir="${projects.dir}">
+				<include name="*/dependencies-build.xml" />
+				<!-- can put additional patterns for others like workflow -->
+				<include name="workflow/*/dependencies-build.xml" />
+			</fileset>
+		</ivy:buildlist>
+	</target>
+
+	<target name="input-project-name">
+		<input addproperty="single.project.name" message="Please enter the project name:" />
+	</target>
+	<target name="check-project-name">
+		<fail unless="single.project.name" message="The expected property, 'single.project.name' was not defined!" />
+		<condition property="single.project.name.invalid">
+			<or>
+				<equals arg1="${single.project.name}" arg2="" trim="true" />
+				<and>
+					<not>
+						<available file="${projects.dir}/${single.project.name}" type="dir" />
+					</not>
+					<not>
+						<!-- special case -->
+						<available file="${projects.dir}/workflow/${single.project.name}" type="dir" />
+					</not>
+
+				</and>
+			</or>
+		</condition>
+		<fail if="single.project.name.invalid" message="The expected property, 'single.project.name' was not defined as a valid project name!  The value was: [${single.project.name}]" />
+	</target>
+
+
+	<target name="build-project" depends="prepare,input-project-name,check-project-name">
+		<echo message="Building ${single.project.name}, and all its dependencies (as necessary)." />
+
+		<ivy:buildlist reference="single.ivy.project.list" root="${single.project.name}" onMissingDescriptor="skip" ivyfilepath="ivy.xml">
+			<fileset dir="${projects.dir}">
+				<include name="*/dependencies-build.xml" />
+				<!-- can put additional patterns for others like workflow -->
+				<include name="workflow/*/dependencies-build.xml" />
+			</fileset>
+		</ivy:buildlist>
+
+		<echo message="Computed build order is: ${ivy.sorted.modules}" />
+
+
+		<subant target="publish" buildpathref="single.ivy.project.list">
+			<property name="target.grid" value="${target.grid}" />
+		</subant>
+
+	</target>
+
+	<target name="build-depending-on-project" depends="prepare,input-project-name,check-project-name">
+		<echo message="Building all projects depending on ${single.project.name}.  Note, the depending projects' dependencies are not built, this should just be used to propagate changes to the given project for integration." />
+
+		<ivy:buildlist reference="depending.on.single.ivy.project.list" leaf="${single.project.name}" onMissingDescriptor="skip" ivyfilepath="ivy.xml">
+			<fileset dir="${projects.dir}">
+				<include name="*/dependencies-build.xml" />
+				<!-- can put additional patterns for others like workflow -->
+				<include name="workflow/*/dependencies-build.xml" />
+			</fileset>
+		</ivy:buildlist>
+
+
+		<echo message="Computed build order is: ${ivy.sorted.modules}" />
+
+
+		<subant target="publish" buildpathref="depending.on.single.ivy.project.list">
+			<property name="target.grid" value="${target.grid}" />
+		</subant>
+
+	</target>
+
+	<target name="set-project-versions" depends="prepare">
+		<fail unless="project.version" message="You must provide a a value for the property [project.version]!" />
+		<echo message="Setting all project versions to version ${project.version}" />
+
+		<ivy:buildlist reference="ivy.project.properties.list" onMissingDescriptor="skip" ivyfilepath="ivy.xml">
+			<fileset dir="${projects.dir}">
+				<include name="*/project.properties" />
+				<!-- can put additional patterns for others like workflow -->
+				<include name="workflow/*/project.properties" />
+			</fileset>
+		</ivy:buildlist>
+
+		<for parallel="true" param="project.properties.file" trim="true">
+			<path refid="ivy.project.properties.list" />
+			<sequential>
+				<propertyfile file="@{project.properties.file}">
+					<entry key="project.version" value="${project.version}" />
+				</propertyfile>
+			</sequential>
+		</for>
+	</target>
+
+
+	<target name="all" depends="prepare,clean" description="compile, jar and publish all projects in the right order">
+		<for parallel="false" param="project.buildfile" trim="true">
+			<path refid="ivy.projects.list" />
+			<sequential>
+				<dirname file="@{project.buildfile}" property="@{project.buildfile}.dir" />
+				<ant inheritAll="false" dir="${@{project.buildfile}.dir}" antfile="@{project.buildfile}" target="publish">
+					<property name="target.grid" value="${target.grid}" />
+				</ant>
+			</sequential>
+		</for>
+		<runtarget target="installIntroduceExtensions" />
+	</target>
+
+
+	<target name="clean" depends="prepare" description="Delete repository, ivy cache, and clean all projects's generated and resolved artificats.">
+		<delete dir="${integration.repository.dir}" />
+		<ivy:cleancache />
+
+		<for parallel="true" param="project.buildfile" trim="true" threadcount="10">
+			<path refid="ivy.projects.list" />
+			<sequential>
+				<dirname file="@{project.buildfile}" property="@{project.buildfile}.dir" />
+				<ant inheritAll="false" dir="${@{project.buildfile}.dir}" antfile="@{project.buildfile}" target="clean-dependencies" />
+			</sequential>
+		</for>
+	</target>
+
+
+	<!-- ============================================================== -->
+	<!-- Installs the Introduce Extensions                              -->
+	<!-- ============================================================== -->
+	<target name="installIntroduceExtensions" depends="prepare">
+		<delete>
+			<fileset dir="${introduce.extensions.dir}/lib" includes="**" />
+		</delete>
+		<for list="${introduce.extension.projects.list}" parallel="false" param="project.name" trim="true">
+			<sequential>
+				<echo message="Installing Introduce Extensions from @{project.name}." />
+				<ant dir="${projects.dir}/@{project.name}" inheritAll="false" antfile="build.xml" target="installIntroduceExtensions">
+					<property name="introduce.extensions.dir" value="${introduce.extensions.dir}" />
+				</ant>
+			</sequential>
+		</for>
+	</target>
+</project>

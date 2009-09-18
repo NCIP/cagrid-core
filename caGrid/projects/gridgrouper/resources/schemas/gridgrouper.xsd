@@ -1,0 +1,214 @@
+<xsd:schema targetNamespace="http://cagrid.nci.nih.gov/1/GridGrouper"
+	attributeFormDefault="qualified" elementFormDefault="qualified"
+	xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+	xmlns:grouper="http://cagrid.nci.nih.gov/1/GridGrouper">
+	
+	<xsd:element name="MembershipQuery" type="grouper:MembershipQuery"/>
+	<xsd:element name="MembershipExpression" type="grouper:MembershipExpression"/>
+	<xsd:complexType name="MembershipQuery">
+	    <xsd:sequence>
+			<xsd:element name="GroupIdentifier" type="grouper:GroupIdentifier" />
+		</xsd:sequence>
+		<xsd:attribute name="MembershipStatus" type="grouper:MembershipStatus" use="optional"/>
+	</xsd:complexType>
+	<xsd:complexType name="MembershipExpression">
+		<xsd:annotation>
+			<xsd:documentation>Binary joint</xsd:documentation>
+		</xsd:annotation>
+		<xsd:choice minOccurs="1" maxOccurs="unbounded">
+			<xsd:element ref="grouper:MembershipQuery" minOccurs="0" maxOccurs="unbounded"/>
+			<xsd:element ref="grouper:MembershipExpression" minOccurs="0" maxOccurs="unbounded"/>
+		</xsd:choice>
+		<xsd:attribute name="logicRelation" type="grouper:LogicalOperator" use="required"/>
+	</xsd:complexType>
+	<xsd:simpleType name="MembershipStatus">
+		<xsd:restriction base="xsd:string">
+			<xsd:enumeration value="MEMBER_OF" id="member_of"/>
+			<xsd:enumeration value="NOT_MEMBER_OF" id="not_member_of"/>
+		</xsd:restriction>
+	</xsd:simpleType>
+	<xsd:simpleType name="LogicalOperator">
+		<xsd:annotation>
+			<xsd:documentation>Logical operators</xsd:documentation>
+		</xsd:annotation>
+		<xsd:restriction base="xsd:string">
+			<xsd:enumeration value="AND"/>
+			<xsd:enumeration value="OR"/>
+		</xsd:restriction>
+	</xsd:simpleType>
+	
+	
+	<xsd:element name="MembershipDescriptor" type="grouper:MembershipDescriptor" />
+	<xsd:complexType name="MembershipDescriptor">
+		<xsd:sequence>
+		    <xsd:element name="Member" minOccurs="1" maxOccurs="1" type="grouper:MemberDescriptor" />
+			<xsd:element name="Group" minOccurs="1" maxOccurs="1" type="grouper:GroupDescriptor" />
+			<xsd:element name="ViaGroup" minOccurs="0" maxOccurs="1" type="grouper:GroupDescriptor" />
+			<xsd:element name="Depth" minOccurs="1" maxOccurs="1" type="xsd:int"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	
+	<xsd:element name="MemberDescriptor" type="grouper:MemberDescriptor" />
+	<xsd:complexType name="MemberDescriptor">
+		<xsd:sequence>
+			<xsd:element name="UUID" minOccurs="1" maxOccurs="1" type="xsd:string" />
+			<xsd:element name="SubjectId" minOccurs="1" maxOccurs="1" type="xsd:string" />
+			<xsd:element name="SubjectName" minOccurs="1" maxOccurs="1" type="xsd:string" />
+			<xsd:element name="MemberType" minOccurs="1" maxOccurs="1" type="grouper:MemberType"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	
+	
+	<xsd:element name="GroupIdentifier" type="grouper:GroupIdentifier" />
+	<xsd:complexType name="GroupIdentifier">
+		<xsd:sequence>
+			<xsd:element name="gridGrouperURL" minOccurs="1" maxOccurs="1" type="xsd:string"/>
+			<xsd:element name="GroupName" minOccurs="1" maxOccurs="1" type="xsd:string" />
+		</xsd:sequence>
+	</xsd:complexType>
+	
+	<xsd:element name="GroupDescriptor" type="grouper:GroupDescriptor" />
+		<xsd:complexType name="GroupDescriptor">
+		<xsd:sequence>
+			<xsd:element name="UUID" minOccurs="1" maxOccurs="1" type="xsd:string" />
+			<xsd:element name="Name" minOccurs="1" maxOccurs="1" type="xsd:string" />
+			<xsd:element name="DisplayName" minOccurs="1" maxOccurs="1" type="xsd:string" />
+			<xsd:element name="Extension" minOccurs="1" maxOccurs="1" type="xsd:string" />
+			<xsd:element name="DisplayExtension" minOccurs="1" maxOccurs="1" type="xsd:string" />
+			<xsd:element name="Description" minOccurs="1" maxOccurs="1" type="xsd:string" />
+			<xsd:element name="ParentStem" minOccurs="1" maxOccurs="1" type="xsd:string" />
+			<xsd:element name="CreateSource" minOccurs="1" maxOccurs="1" type="xsd:string" />
+			<xsd:element name="CreateSubject" minOccurs="1" maxOccurs="1" type="xsd:string" />
+			<xsd:element name="CreateTime" minOccurs="1" maxOccurs="1" type="xsd:long" />
+			<xsd:element name="ModifySource" minOccurs="1" maxOccurs="1" type="xsd:string" />
+			<xsd:element name="ModifySubject" minOccurs="1" maxOccurs="1" type="xsd:string" />
+			<xsd:element name="ModifyTime" minOccurs="1" maxOccurs="1" type="xsd:long" />
+			<xsd:element name="HasComposite" minOccurs="1" maxOccurs="1" type="xsd:boolean" />
+			<xsd:element name="IsComposite" minOccurs="1" maxOccurs="1" type="xsd:boolean" />
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:element name="StemDescriptor" type="grouper:StemDescriptor" />
+	<xsd:complexType name="StemDescriptor">
+		<xsd:sequence>
+			<xsd:element name="UUID" minOccurs="1" maxOccurs="1" type="xsd:string" />
+			<xsd:element name="Name" minOccurs="1" maxOccurs="1" type="xsd:string" />
+			<xsd:element name="DisplayName" minOccurs="1" maxOccurs="1" type="xsd:string" />
+			<xsd:element name="Extension" minOccurs="1" maxOccurs="1" type="xsd:string" />
+			<xsd:element name="DisplayExtension" minOccurs="1" maxOccurs="1" type="xsd:string" />
+			<xsd:element name="Description" minOccurs="1" maxOccurs="1" type="xsd:string" />
+			<xsd:element name="CreateSource" minOccurs="1" maxOccurs="1" type="xsd:string" />
+			<xsd:element name="CreateSubject" minOccurs="1" maxOccurs="1" type="xsd:string" />
+			<xsd:element name="CreateTime" minOccurs="1" maxOccurs="1" type="xsd:long" />
+			<xsd:element name="ModifySource" minOccurs="1" maxOccurs="1" type="xsd:string" />
+			<xsd:element name="ModifySubject" minOccurs="1" maxOccurs="1" type="xsd:string" />
+			<xsd:element name="ModifyTime" minOccurs="1" maxOccurs="1" type="xsd:long" />
+		</xsd:sequence>
+	</xsd:complexType>
+	
+	<xsd:element name="SubjectIdentifier" type="xsd:string" />
+
+	<xsd:element name="StemIdentifier" type="grouper:StemIdentifier" />
+	<xsd:complexType name="StemIdentifier">
+		<xsd:sequence>
+			<xsd:element name="gridGrouperURL" minOccurs="1" maxOccurs="1" type="xsd:string" />
+			<xsd:element name="stemName" minOccurs="1" maxOccurs="1" type="xsd:string" />
+		</xsd:sequence>
+	</xsd:complexType>
+	
+	<xsd:element name="GroupPrivilege" type="grouper:GroupPrivilege"/>
+	<xsd:complexType name="GroupPrivilege">
+		<xsd:sequence>
+			<xsd:element name="GroupName" minOccurs="1" maxOccurs="1" type="xsd:string" />
+			<xsd:element name="PrivilegeType" minOccurs="1" maxOccurs="1" type="grouper:GroupPrivilegeType" />
+			<xsd:element name="Subject" minOccurs="1" maxOccurs="1" type="xsd:string" />
+			<xsd:element name="ImplementationClass" minOccurs="1" maxOccurs="1" type="xsd:string" />
+			<xsd:element name="IsRevokable" minOccurs="1" maxOccurs="1" type="xsd:boolean" />
+			<xsd:element name="Owner" minOccurs="1" maxOccurs="1" type="xsd:string" />
+		</xsd:sequence>
+	</xsd:complexType>
+	
+	<xsd:element name="StemPrivilege" type="grouper:StemPrivilege"/>
+	<xsd:complexType name="StemPrivilege">
+		<xsd:sequence>
+			<xsd:element name="StemName" minOccurs="1" maxOccurs="1" type="xsd:string" />
+			<xsd:element name="PrivilegeType" minOccurs="1" maxOccurs="1" type="grouper:StemPrivilegeType" />
+			<xsd:element name="Subject" minOccurs="1" maxOccurs="1" type="xsd:string" />
+			<xsd:element name="ImplementationClass" minOccurs="1" maxOccurs="1" type="xsd:string" />
+			<xsd:element name="IsRevokable" minOccurs="1" maxOccurs="1" type="xsd:boolean" />
+			<xsd:element name="Owner" minOccurs="1" maxOccurs="1" type="xsd:string" />
+		</xsd:sequence>
+	</xsd:complexType>
+	
+	<xsd:element name="StemUpdate" type="grouper:StemUpdate"/>
+	<xsd:complexType name="StemUpdate">
+		<xsd:sequence>
+			<xsd:element name="DisplayExtension" minOccurs="0" maxOccurs="1" type="xsd:string" />
+			<xsd:element name="Description" minOccurs="0" maxOccurs="1" type="xsd:string" />
+		</xsd:sequence>
+	</xsd:complexType>
+	
+	<xsd:element name="GroupUpdate" type="grouper:GroupUpdate"/>
+	<xsd:complexType name="GroupUpdate">
+		<xsd:sequence>
+		    <xsd:element name="Extension" minOccurs="0" maxOccurs="1" type="xsd:string" />
+			<xsd:element name="DisplayExtension" minOccurs="0" maxOccurs="1" type="xsd:string" />
+			<xsd:element name="Description" minOccurs="0" maxOccurs="1" type="xsd:string" />
+		</xsd:sequence>
+	</xsd:complexType>
+
+	<xsd:element name="StemPrivilegeType" type="grouper:StemPrivilegeType"/>
+	  <xsd:simpleType name="StemPrivilegeType">
+  			<xsd:restriction base="xsd:string">
+   				<xsd:enumeration value="create"/>
+   				<xsd:enumeration value="stem"/>	
+  			</xsd:restriction>
+ 	  </xsd:simpleType>
+ 	  
+ 	  <xsd:element name="GroupPrivilegeType" type="grouper:GroupPrivilegeType"/>
+	  <xsd:simpleType name="GroupPrivilegeType">
+  			<xsd:restriction base="xsd:string">
+   				<xsd:enumeration value="admin"/>
+   				<xsd:enumeration value="optin"/>
+   				<xsd:enumeration value="optout"/>
+   				<xsd:enumeration value="read"/>	
+   				<xsd:enumeration value="update"/>	
+   				<xsd:enumeration value="view"/>	
+  			</xsd:restriction>
+ 	  </xsd:simpleType>
+ 	  
+	  <xsd:simpleType name="MemberType">
+  			<xsd:restriction base="xsd:string">
+   				<xsd:enumeration value="GrouperGroup"/>
+   				<xsd:enumeration value="Grid"/>	
+   				<xsd:enumeration value="Other"/>	
+  			</xsd:restriction>
+ 	 </xsd:simpleType>
+ 	 
+ 	 <xsd:element name="MemberFilter" type="grouper:MemberFilter"/>
+ 	   <xsd:simpleType name="MemberFilter">
+  			<xsd:restriction base="xsd:string">
+   				<xsd:enumeration value="All"/>
+   				<xsd:enumeration value="ImmediateMembers"/>	
+   				<xsd:enumeration value="EffectiveMembers"/>
+   				<xsd:enumeration value="CompositeMembers"/>	
+  			</xsd:restriction>
+ 	 </xsd:simpleType>
+ 	 
+ 	  <xsd:element name="MembershipType" type="grouper:MembershipType"/>
+ 	   <xsd:simpleType name="MembershipType">
+  			<xsd:restriction base="xsd:string">
+   				<xsd:enumeration value="Any"/>
+   				<xsd:enumeration value="ImmediateMembers"/>	
+   				<xsd:enumeration value="EffectiveMembers"/>
+  			</xsd:restriction>
+ 	 </xsd:simpleType>
+ 	 
+ 	  <xsd:element name="GroupCompositeType" type="grouper:GroupCompositeType"/>
+ 	   <xsd:simpleType name="GroupCompositeType">
+  			<xsd:restriction base="xsd:string">
+   				<xsd:enumeration value="Union"/>
+   				<xsd:enumeration value="Intersection"/>	
+   				<xsd:enumeration value="Complement"/>
+  			</xsd:restriction>
+ 	 </xsd:simpleType>
+</xsd:schema>

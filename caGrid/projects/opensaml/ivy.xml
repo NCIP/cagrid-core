@@ -1,0 +1,36 @@
+<?xml version="1.0"?>
+
+<ivy-module version="2.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:noNamespaceSchemaLocation="http://incubator.apache.org/ivy/schemas/ivy.xsd">
+
+  <info organisation="caGrid" module="opensaml" revision="${project.version}">
+    <license name="caGrid" url="http://cagrid.org/wiki/CaGrid:LICENSE-1.3"/>
+    <description>caGrid-packaged version of OpenSAML 1.1 to prevent version collisions with Globus
+      and other tools, while incorporating bug fixes.</description>
+  </info>
+
+  <configurations>
+    <!-- Private Configurations-->
+    <conf name="compile" visibility="private"/>
+
+    <!-- Public Configurations-->
+    <conf name="default" visibility="public"/>
+    <conf name="endorsed" visibility="public"/>
+    <!-- Variations -->
+    <conf name="http" visibility="public" extends="default"/>
+
+  </configurations>
+
+
+  <publications>
+    <artifact name="caGrid-${ivy.module}" conf="default" type="jar"/>
+  </publications>
+
+  <dependencies>
+    <dependency rev="1.3" org="apache" name="commons-codec" conf="compile,default->*"/>
+    <dependency rev="3.0" org="apache" name="jarkarta-commons-httpclient" conf="compile,http->*"/>
+    <dependency rev="2.2" org="apache" name="tomcat-servlet" conf="compile,http->*"/>
+
+    <dependency rev="2.7.1" org="apache" name="xerces2-j" conf="endorsed->*"/>
+  </dependencies>
+</ivy-module>

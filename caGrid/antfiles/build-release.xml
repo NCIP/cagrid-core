@@ -1,0 +1,27 @@
+<?xml version="1.0"?>
+<!-- ================================================================= -->
+<!-- caGrid build release file - used by caGrid team to assist in the  -->
+<!--  creation of caGrid release artifacts                             -->
+<!-- ================================================================= -->
+<project name="caGrid-Release" basedir="./.." default="checksum" xmlns:ivy="antlib:org.apache.ivy.ant">
+	
+	<target name="releaseName">
+ 		<input addproperty="release.zip.name" message="Please enter the name of the release zip:" />
+ 	</target>
+
+	<target name="releaseZip" depends="releaseName">
+		<zip destfile="${release.zip.name}" >
+			<zipfileset dir="." prefix="caGrid">
+				<include name="**/*" />
+				<exclude name="**/.svn/*" />
+				<exclude name="**/CVS/*" />
+				<exclude name="**/.cvsignore" />
+			</zipfileset>
+		</zip>
+	</target>
+	
+	<target name="checksum" depends="releaseName, releaseZip" >
+		<checksum file="${release.zip.name}" forceOverwrite="yes" />
+	</target>
+	
+</project>

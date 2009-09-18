@@ -1,0 +1,78 @@
+<project name="caGrid-websso-client" default="all">
+	<!-- Environment -->
+	<property environment="env" />
+	<property file="${basedir}/project.properties" />
+	<property file="${basedir}/build.properties" />
+
+	<property name="ext.dir" location="ext" />
+
+	<property name="lib.dir" location="lib" />
+	<property name="ext.lib.dir" location="${ext.dir}/dependencies/default/jars" />
+
+	<property name="jar.name" value="${ant.project.name}-${project.version}.jar" />
+
+	<property name="src.java.dir" location="src/java" />
+	<property name="src.resources.dir" location="src/resources" />
+	<property name="test.src.dir" location="test/src/java" />
+
+	<property name="build.dir" location="build" />
+	<property name="build.classes.dir" location="build/classes" />
+	<property name="test.build.dir" location="build/classes" />
+
+	<path id="build.classpath">
+		<fileset dir="${ext.lib.dir}">
+			<include name="*.jar" />
+		</fileset>
+		<fileset dir="${env.GLOBUS_LOCATION}/lib">
+			<include name="**/*.jar" />
+            <exclude name="junit.jar"/>
+		</fileset>
+	</path>
+
+	<path id="test.build.classpath">
+		<pathelement location="${build.classes.dir}" />
+		<path refid="build.classpath" />
+	</path>
+
+	<target name="build-jar">
+		<jar jarfile="${build.dir}/${jar.name}" basedir="${build.classes.dir}"/>
+		<delete dir="${build.classes.dir}" />
+	</target>
+
+	<target name="compile">
+		<mkdir dir="${build.dir}" />
+		<mkdir dir="${build.classes.dir}" />
+		<javac srcdir="${src.java.dir}" destdir="${build.classes.dir}" classpathref="build.classpath" debug="true" />
+	</target>
+
+	<!-- Compile the test implementation classes -->
+	<target name="compileTests" depends="compile">
+		<javac srcdir="${test.src.dir}" classpathref="test.build.classpath" destdir="${test.build.dir}" debug="${java.debug}" deprecation="${deprecation}" />
+	</target>
+
+	<target name="jar" depends="compile,build-jar">
+	</target>
+
+	<target name="copy-configuration-files">
+		<copy file="${src.resources.dir}/applicationContext.xml" tofile="${build.dir}/applicationContext-jasig-${project.version}.xml" />
+		<copy file="${src.resources.dir}/web-template.xml" tofile="${build.dir}/web-template-jasig-${project.version}.xml" />
+		<copy file="${src.resources.dir}/cas-client-template.properties" tofile="${build.dir}/cas-client-template-jasig-${project.version}.properties" />		
+	</target>
+
+	<target name="clean">
+		<delete dir="${build.dir}" />
+	</target>
+
+	<target name="installcert" depends="compile">
+		<java classname="org.cagrid.websso.common.InstallCert" classpathref="build.classpath">
+			<arg value="${websso.server}" />
+		</java>
+	</target>
+
+	<target name="all">
+		<antcall target="clean" />
+		<antcall target="jar" />
+		<antcall target="copy-configuration-files" />
+	</target>
+
+</project>

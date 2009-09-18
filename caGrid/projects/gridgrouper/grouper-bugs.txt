@@ -1,0 +1,6 @@
+1) Readers/Viewer in Groups and anybody in terms of Stems should be able to get a list of subjects that have a given privilege.
+2) When updating a group without proper privileges, grouper should throw an insufficient privilege exception rather than a group modify exception
+3) Wheel Group Caching Bug
+4) Should I be able to remove default privileges?
+5) Should privileges be listed twice if I add a privilege to a user that has it by default?
+

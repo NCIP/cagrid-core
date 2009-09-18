@@ -1,0 +1,197 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema targetNamespace="http://cagrid.nci.nih.gov/dorian/conf"
+	attributeFormDefault="qualified" elementFormDefault="qualified"
+	xmlns:xs="http://www.w3.org/2001/XMLSchema"
+	xmlns:dorian="http://cagrid.nci.nih.gov/dorian/conf"
+	xmlns:db="http://cagrid.org/tools/database">
+	<xs:element name="DorianConfiguration"
+		type="dorian:DorianConfiguration" />
+	<xs:complexType name="DorianConfiguration">
+		<xs:sequence>
+			<xs:element name="DorianInternalId" type="xs:string"
+				minOccurs="1" maxOccurs="1" />
+			<xs:element name="DatabaseConfiguration" type="db:DatabaseConfiguration"
+				minOccurs="1" maxOccurs="1" />
+			<xs:element name="IdentityProviderConfiguration"
+				type="dorian:IdentityProviderConfiguration" minOccurs="1"
+				maxOccurs="1" />
+			<xs:element name="IdentityFederationConfiguration"
+				type="dorian:IdentityFederationConfiguration" minOccurs="1"
+				maxOccurs="1" />
+			<xs:element name="DorianCAConfiguration"
+				type="dorian:DorianCAConfiguration" minOccurs="1" maxOccurs="1" />
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="IdentityFederationConfiguration">
+		<xs:sequence>
+			<xs:element name="IdentityProviderNameLength"
+				type="dorian:length" minOccurs="1" maxOccurs="1" />
+			<xs:element name="IdentityAssignmentPolicy"
+				type="dorian:IdentityAssignmentPolicy" minOccurs="1" maxOccurs="1" />
+			<xs:element name="CredentialPolicy"
+				type="dorian:CredentialPolicy" minOccurs="1" maxOccurs="1" />
+			<xs:element name="ProxyPolicy" type="dorian:ProxyPolicy"
+				minOccurs="1" maxOccurs="1" />
+			<xs:element name="AccountPolicies"
+				type="dorian:AccountPolicies" minOccurs="1" maxOccurs="1" />
+			<xs:element name="CRLPublish" type="dorian:CRLPublish"
+				minOccurs="0" maxOccurs="1" />
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="IdentityProviderConfiguration">
+		<xs:sequence>
+			<xs:element name="IdentityProviderName" type="xs:string"
+				minOccurs="1" maxOccurs="1" />
+			<xs:element name="UIDLength" type="dorian:length"
+				minOccurs="1" maxOccurs="1" />
+			<xs:element name="PasswordLength" type="dorian:length"
+				minOccurs="1" maxOccurs="1" />
+				<xs:element name="PasswordSecurityPolicy" type="dorian:PasswordSecurityPolicy"
+				minOccurs="1" maxOccurs="1" />
+			<xs:element name="RegistrationPolicy" type="xs:string"
+				minOccurs="1" maxOccurs="1" />
+			<xs:element name="AssertingCredentials"
+				type="dorian:AssertingCredentials" minOccurs="1" maxOccurs="1" />
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="AssertingCredentials">
+		<xs:sequence>
+			<xs:element name="AutoRenew" type="xs:boolean" minOccurs="1"
+				maxOccurs="1" />
+			<xs:element name="KeyPassword" type="xs:string"
+				minOccurs="1" maxOccurs="1" />
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="CredentialPolicy">
+		<xs:sequence>
+			<xs:element name="CredentialLifetime"
+				type="dorian:CredentialLifetime" minOccurs="1" maxOccurs="1" />
+			<xs:element name="HostCertificateAutoApproval"
+				type="xs:boolean" minOccurs="1" maxOccurs="1" />
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:complexType name="PasswordSecurityPolicy">
+		<xs:sequence>
+			<xs:element name="LockoutTime" type="dorian:LockoutTime"
+				minOccurs="1" maxOccurs="1" />
+			<xs:element name="MaxConsecutiveInvalidLogins" type="xs:int"
+				minOccurs="1" maxOccurs="1" />
+				<xs:element name="MaxTotalInvalidLogins" type="xs:int"
+				minOccurs="1" maxOccurs="1" />
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="LockoutTime">
+		<xs:attribute name="hours" type="xs:int" use="required" />
+		<xs:attribute name="minutes" type="xs:int" use="required" />
+		<xs:attribute name="seconds" type="xs:int" use="required" />
+	</xs:complexType>
+	<xs:complexType name="ProxyPolicy">
+		<xs:sequence>
+			<xs:element name="ProxyLifetime" type="dorian:ProxyLifetime"
+				minOccurs="1" maxOccurs="1" />
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="CredentialLifetime">
+		<xs:attribute name="years" type="xs:int" use="required" />
+		<xs:attribute name="months" type="xs:int" use="required" />
+		<xs:attribute name="days" type="xs:int" use="required" />
+		<xs:attribute name="hours" type="xs:int" use="required" />
+		<xs:attribute name="minutes" type="xs:int" use="required" />
+		<xs:attribute name="seconds" type="xs:int" use="required" />
+	</xs:complexType>
+	<xs:complexType name="ProxyLifetime">
+		<xs:attribute name="hours" type="xs:int" use="required" />
+		<xs:attribute name="minutes" type="xs:int" use="required" />
+		<xs:attribute name="seconds" type="xs:int" use="required" />
+	</xs:complexType>
+	<xs:complexType name="length">
+		<xs:attribute name="min" type="xs:int" use="required" />
+		<xs:attribute name="max" type="xs:int" use="required" />
+	</xs:complexType>
+
+
+
+	<xs:complexType name="AccountPolicies">
+		<xs:sequence>
+			<xs:element name="AccountPolicy" type="dorian:AccountPolicy"
+				minOccurs="1" maxOccurs="unbounded" />
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="CRLPublish">
+		<xs:sequence>
+			<xs:element name="gts" type="xs:string" minOccurs="1"
+				maxOccurs="unbounded" />
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="AccountPolicy">
+		<xs:sequence>
+			<xs:element name="name" type="xs:string" minOccurs="1"
+				maxOccurs="1" />
+			<xs:element name="classname" type="xs:string" minOccurs="1"
+				maxOccurs="1" />
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:complexType name="DorianCAConfiguration">
+		<xs:sequence>
+			<xs:element name="CertificateAuthorityType"
+				type="dorian:CertificateAuthorityType" minOccurs="1" maxOccurs="1" />
+			<xs:element name="CertificateAuthorityPassword"
+				type="xs:string" minOccurs="1" maxOccurs="1" />
+			<xs:element name="CertificatePolicyOID" type="xs:string"
+				minOccurs="0" maxOccurs="1" />
+			<xs:element name="UserKeySize" type="dorian:KeySize"
+				minOccurs="1" maxOccurs="1" />
+			<xs:element name="AutoCreate" type="dorian:AutoCreate"
+				minOccurs="0" maxOccurs="1" />
+			<xs:element name="AutoRenewal"
+				type="dorian:CredentialLifetime" minOccurs="0" maxOccurs="1" />
+			<xs:element name="Properties" type="dorian:Properties"
+				minOccurs="0" maxOccurs="1" />
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:complexType name="Properties">
+		<xs:sequence>
+			<xs:element name="Property" type="dorian:Property"
+				minOccurs="1" maxOccurs="unbounded" />
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:complexType name="Property">
+		<xs:attribute name="name" type="xs:string" use="required" />
+		<xs:attribute name="value" type="xs:string" use="required" />
+	</xs:complexType>
+
+	<xs:complexType name="AutoCreate">
+		<xs:sequence>
+			<xs:element name="CASubject" type="xs:string" minOccurs="1"
+				maxOccurs="1" />
+			<xs:element name="CAKeySize" type="dorian:KeySize"
+				minOccurs="1" maxOccurs="1" />
+			<xs:element name="lifetime" type="dorian:CredentialLifetime"
+				minOccurs="1" maxOccurs="1" />
+		</xs:sequence>
+	</xs:complexType>
+	<xs:simpleType name="IdentityAssignmentPolicy">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="id" />
+			<xs:enumeration value="name" />
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="KeySize">
+		<xs:restriction base="xs:int">
+			<xs:enumeration value="512" />
+			<xs:enumeration value="1024" />
+			<xs:enumeration value="2048" />
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="CertificateAuthorityType">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="DBCA" />
+			<xs:enumeration value="Eracom" />
+			<xs:enumeration value="EracomHybrid" />
+		</xs:restriction>
+	</xs:simpleType>
+</xs:schema>

@@ -1,0 +1,89 @@
+<!-- ======================================================================= -->
+<!-- caGrid Analytical Utilities build file                                  -->
+<!-- ======================================================================= -->
+<project name="introduce_utilities" basedir="." default="usage">
+
+	<!-- ============================================================== -->
+	<!-- Globus properties                                              -->
+	<!-- ============================================================== -->
+	<target name="checkGlobus" depends="setGlobus">
+		<condition property="globus.not.found">
+			<or>
+				<not>
+					<isset property="ext.globus.dir" />
+				</not>
+				<equals arg1="${ext.globus.dir}" arg2="" />
+			</or>
+		</condition>
+		<fail message="Globus installation is not set in either GLOBUS_LOCATION or ext.globus.dir" if="globus.not.found" />
+		<echo message="Globus: ${ext.globus.dir}" />
+	</target>
+	<target name="setGlobus" if="env.GLOBUS_LOCATION">
+		<property name="ext.globus.dir" value="${env.GLOBUS_LOCATION}" />
+		<property name="build.stubs" location="${ext.globus.dir}/share/globus_wsrf_tools/build-stubs.xml" />
+		<property name="schema.src" location="${ext.globus.dir}/share/schema" />
+	</target>
+	
+	<target name="introduce" depends="checkGlobus" description="Execute the Introduce GDE">
+		<runPortal/>
+		<runUpdater/>
+		<antcall target="reRunIntroduce" />
+	</target>
+
+	<target name="reRunIntroduce" if="introduce.restart">
+		<ant antfile="./build.xml" target="introduce" inheritAll="false" />
+	</target>
+	
+	<macrodef name="runPortal">
+		<sequential>
+			<echo message="Running portal"/>
+			<java classname="gov.nih.nci.cagrid.introduce.portal.Introduce" fork="true">
+				<jvmarg value="-Djava.endorsed.dirs=extensions/endorsed" />
+				<sysproperty key="GLOBUS_LOCATION" value="${ext.globus.dir}"/>
+				<classpath refid="Portal.run.classpath"/>
+				
+			</java>
+		</sequential>
+	</macrodef>
+	
+	<target name="update" depends="checkGlobus">
+		<runUpdater/>
+	</target>
+	<macrodef name="runUpdater">
+		<sequential>
+			<echo message="Running Software Updater"/>
+			<java classname="gov.nih.nci.cagrid.introduce.updater.UpdateManager" resultproperty="updater.ran" fork="true">
+				<classpath refid="UpdateManager.run.classpath"/>
+			</java>
+			<condition property="introduce.restart">
+				<equals arg1="${updater.ran}" arg2="1" />
+			</condition>
+		</sequential>
+	</macrodef>
+	
+	
+	<!-- =================================================================== -->
+	<!-- Create new service                                                  -->
+	<!-- =================================================================== -->
+	<target name="createService" description="Create new service">
+		<ant dir="${basedir}" antfile="antfiles/introduce-creator.xml" target="createService" inheritall="true" />
+	</target>
+	
+	
+	<!-- =================================================================== -->
+	<!-- Create new service                                                  -->
+	<!-- =================================================================== -->
+	<target name="postCreateService" description="Post Creation of new service">
+		<ant dir="${basedir}" antfile="antfiles/introduce-creator.xml" target="postCreateService" inheritall="true" />
+		<ant dir="${basedir}" antfile="antfiles/introduce-resync.xml" target="resyncService" inheritall="true" />
+	</target>
+	
+	
+	<!-- =================================================================== -->
+	<!-- Sync service                                                  -->
+	<!-- =================================================================== -->
+	<target name="resyncService" description="Uses the introduceMethods.xml to add and remove
+		methods to this service skeleton">
+		<ant dir="${basedir}" antfile="antfiles/introduce-resync.xml" target="resyncService" inheritall="true" />
+	</target>
+</project>

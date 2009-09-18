@@ -1,0 +1,21 @@
+Provided libraries:
+lib/wsrf_core_enum.jar -- Implementation of WS-Enumeration provided by Globus Ws Core 4.0.2 after patch has been applied.
+lib/wsrf_core_stubs_enum.jar -- Stubs needed for WS-Enumeration provided by Globus Ws Core 4.0.2 after patch has been applied.
+build/lib/caGrid-1.0-wsEnum.jar -- Utilities and constants for WS-Enumeration project
+
+Tasks:
+1 [D]: Utilities to simplify creating an enumeration resource context and response from a List of objects.
+2 [D]: Simple EnumIterator implementaion which can create / read an indexed file for persisting caCORE sdk and Globus generated objects.
+	-- This implementation will respect the maxElements iteration constraint, but not necessairly maxCharacters or maxTime.
+3 [D]: More complicated EnumIterator implementaion which can create / read an indexed file for presisting caCORE sdk and Globus generated objects.
+	-- This implementation will respect all of the IterationConstraints supplied.
+4 [ ]: On Deploy of a WS-Enumeration service, the wsrf_core (and wsrf_core_stubs???) jars must be removed / overwritten with the wsrf_core[_stubs]_enum jars.
+5 [D]: [Simple]PersistantSDKObjectIterator needs to have a unique wsdd config for each instance.
+6 [ ]: WS-Enumeration installer.  Apply patch to globus, rebuild, deploy to tomcat.
+7 [D]: A Persistant Object Iterator EnumIterator implementation using the Java 5 concurrent stuff would be awsome.
+8 [D]: Remove dependency on caCORE for beans.  Use bookstore or something for tests.
+
+Points:
+	-- The [Simple]PersistantSDKObjectIterator classes write the list of objects given as serialized XML on the file system.  By default, the XML is written to <user's home dir>/.cagrid/SDKEnumIterator/.  For security reasons, access to this directory should be strictly controlled.  If the serialization file is specified, please take security of the file system into concideration.
+
+	

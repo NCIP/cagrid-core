@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ns0:IndexRP xmlns:ns0="http://mds.globus.org/index" xmlns:ns1="http://mds.globus.org/aggregator" xmlns:ns2="http://mds.globus.org/metrics/2004/09" xmlns:ns3="http://mds.globus.org/metadata/2005/02" xmlns:ns4="http://docs.oasis-open.org/wsn/2004/06/wsn-WS-BaseNotification-1.2-draft-01.xsd" xmlns:ns5="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ServiceGroup-1.2-draft-01.xsd" xmlns:ns6="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ResourceLifetime-1.2-draft-01.xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ns7="http://mds.globus.org/metrics/2004/09">
+    <ns1:RegistrationCount>
+        <ns2:startTime xmlns:ns2="http://mds.globus.org/metrics/2004/09">2006-05-25T17:06:32.234Z</ns2:startTime>
+        <ns3:lastChange xmlns:ns3="http://mds.globus.org/metrics/2004/09">2006-05-25T17:06:32.234Z</ns3:lastChange>
+        <ns4:total xmlns:ns4="http://mds.globus.org/metrics/2004/09">0</ns4:total>
+        <ns5:expRate xmlns:ns5="http://mds.globus.org/metrics/2004/09">
+            <ns5:rate>0.0</ns5:rate>
+            <ns5:decay>0</ns5:decay>
+        </ns5:expRate>
+        <ns6:expRate xmlns:ns6="http://mds.globus.org/metrics/2004/09">
+            <ns6:rate>0.0</ns6:rate>
+            <ns6:decay>0</ns6:decay>
+        </ns6:expRate>
+        <ns7:expRate>
+            <ns7:rate>0.0</ns7:rate>
+            <ns7:decay>0</ns7:decay>
+        </ns7:expRate>
+    </ns1:RegistrationCount>
+    <ns1:ServiceMetaDataInfo xmlns:ns1="http://mds.globus.org/metadata/2005/02">
+        <ns1:startTime>2006-05-25T17:06:32.250Z</ns1:startTime>
+        <ns1:version>4.0.2</ns1:version>
+        <ns1:serviceTypeName>DefaultIndexService</ns1:serviceTypeName>
+    </ns1:ServiceMetaDataInfo>
+    <ns1:FixedTopicSet xmlns:ns1="http://docs.oasis-open.org/wsn/2004/06/wsn-WS-BaseNotification-1.2-draft-01.xsd">false</ns1:FixedTopicSet>
+    <ns2:Topic ns2:Dialect="http://docs.oasis-open.org/wsn/2004/06/TopicExpression/Simple" xmlns:ns1="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ServiceGroup-1.2-draft-01.xsd" xmlns:ns2="http://docs.oasis-open.org/wsn/2004/06/wsn-WS-BaseNotification-1.2-draft-01.xsd">ns1:Entry</ns2:Topic>
+    <ns1:TopicExpressionDialects xmlns:ns1="http://docs.oasis-open.org/wsn/2004/06/wsn-WS-BaseNotification-1.2-draft-01.xsd">http://docs.oasis-open.org/wsn/2004/06/TopicExpression/Simple</ns1:TopicExpressionDialects>
+    <ns1:TerminationTime xsi:nil="true" xmlns:ns1="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ResourceLifetime-1.2-draft-01.xsd"/>
+    <ns1:CurrentTime xmlns:ns1="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ResourceLifetime-1.2-draft-01.xsd">2006-05-25T17:06:32.343Z</ns1:CurrentTime>
+</ns0:IndexRP>

@@ -1,0 +1,84 @@
+<%@ jet package="gov.nih.nci.cagrid.introduce.templates" class="NamespaceMappingsTemplate" imports="gov.nih.nci.cagrid.introduce.common.* gov.nih.nci.cagrid.introduce.codegen.utils.* gov.nih.nci.cagrid.introduce.common.* gov.nih.nci.cagrid.introduce.* gov.nih.nci.cagrid.introduce.codegen.* java.io.* java.util.* gov.nih.nci.cagrid.introduce.beans.method.* gov.nih.nci.cagrid.introduce.beans.service.*"%>
+<% gov.nih.nci.cagrid.introduce.common.ServiceInformation info = (gov.nih.nci.cagrid.introduce.common.ServiceInformation) argument;
+   String serviceName = info.getIntroduceServiceProperties().getProperty("introduce.skeleton.service.name");
+   if (info.getServices() != null && info.getServices().getService() != null) {
+	for (int serviceI = 0; serviceI < info.getServices().getService().length; serviceI++) {
+		ServiceType service = info.getServices().getService(serviceI);
+   		String newNamespace = service.getNamespace().replaceAll(":", "\\\\:");
+        newNamespace = newNamespace.replaceAll("\\Q\\\\\\\\:\\E", "\\\\:");
+%><%=newNamespace%>=<%=service.getPackageName()%>.stubs
+<%=newNamespace%>/bindings=<%=service.getPackageName()%>.stubs.bindings
+<%=newNamespace%>/service=<%=service.getPackageName()%>.stubs.service
+
+<%
+			if (service.getMethods() != null && service.getMethods().getMethod() != null) {
+				for (int methodIndex = 0; methodIndex < service.getMethods().getMethod().length; methodIndex++) {
+					MethodType mel = service.getMethods().getMethod(methodIndex);
+					if(mel.isIsImported() && mel.getImportInformation()!=null){
+					String newNamespace2 = mel.getImportInformation().getNamespace().replaceAll(":", "\\\\:");
+        			newNamespace2 = newNamespace2.replaceAll("\\Q\\\\\\\\:\\E", "\\\\:");
+						%><%=newNamespace2%>=<%=mel.getImportInformation().getPackageName()%>
+
+<%
+					}	
+				}
+			}
+		}
+	}
+
+		Map prefixmap = SyncUtils.buildMasterNamespaceInformationMap(info.getServiceDescriptor());
+		Set importNamespaces = new HashSet();
+		Set writtenNamespaces = new HashSet();
+  		Iterator iterator = prefixmap.keySet().iterator();
+  
+		while(iterator.hasNext()){
+			String namespaceS = (String)iterator.next();
+			if(!IntroduceConstants.W3CNAMESPACE.equals(namespaceS) && !IntroduceConstants.GLOBUS_NAMESPACES.contains(namespaceS)){
+				NamespaceInformation namespaceInformation=(NamespaceInformation)prefixmap.get(namespaceS);
+				try{ 
+					String newLine = "";
+					String currNS=namespaceInformation.getNamespace().getNamespace();
+					writtenNamespaces.add(currNS);
+					if (namespaceInformation.getNamespace().getPackageName() != null && !namespaceInformation.getNamespace().getPackageName().equals("")) {
+						newLine = currNS + "=" + namespaceInformation.getNamespace().getPackageName();
+					}
+						
+					// turns http: into http\:
+					String newnewLine = newLine.replaceAll(":", "\\\\:");
+					newnewLine = newnewLine.replaceAll("\\Q\\\\\\\\:\\E", "\\\\:");	
+			
+					//get all the imports if there are any for this schema and write there namespace to package maps down		
+					SyncUtils.walkSchemasGetNamespaces(info.getBaseDirectory().getAbsolutePath() + File.separator + "schema" + File.separator + serviceName + 
+						File.separator + namespaceInformation.getNamespace().getLocation(), importNamespaces , new HashSet(IntroduceConstants.GLOBUS_NAMESPACES), new HashSet());
+	
+%>
+<%=newnewLine %><%		
+
+				} catch (Exception e){
+					e.printStackTrace();
+				}
+			}
+		}
+
+		Iterator it = importNamespaces.iterator();
+		while(it.hasNext()){
+			String newLine = "";
+			String newnewLine = "";
+			try {
+				String thisnamespace = (String)it.next();
+				if(!writtenNamespaces.contains(thisnamespace)){
+					String thispackageName = CommonTools.getPackageName(thisnamespace,info.getNamespaces());
+					newLine = thisnamespace + "=" + thispackageName;
+					// turns http: into http\:
+					newnewLine = newLine.replaceAll(":", "\\\\:");
+					newnewLine = newnewLine.replaceAll("\\Q\\\\\\\\:\\E", "\\\\:");
+				}
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			%>
+<%=newnewLine %><%	
+		}
+
+%>

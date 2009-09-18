@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Stupidly joins with the same service (verifies same results as single service query) -->
+<DCQLQuery xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://caGrid.caBIG/1.0/gov.nih.nci.cagrid.dcql ../../schema/FederatedQueryProcessor/Distributed_CQL_schema_2.0.xsd"
+    xmlns:cql="http://CQL.caBIG/1/gov.nih.nci.cagrid.CQLQuery" xmlns="http://caGrid.caBIG/1.0/gov.nih.nci.cagrid.dcql">
+    <TargetObject name="gov.nih.nci.cabio.domain.Gene">
+        <Group logicRelation="AND">
+            <ForeignAssociation targetServiceURL="http://localhost:8080/wsrf/services/cagrid/CaBIO">
+                <JoinCondition localAttributeName="fullName" foreignAttributeName="fullName"/>
+                <ForeignObject name="gov.nih.nci.cabio.domain.Gene">
+                    <Attribute name="fullName" value="BRCA%" predicate="LIKE"/>
+                </ForeignObject>
+            </ForeignAssociation>
+            <Attribute name="fullName" value="BRCA%" predicate="LIKE"/>
+        </Group>
+    </TargetObject>
+    <targetServiceURL>http://localhost:8080/wsrf/services/cagrid/CaBIO</targetServiceURL>
+</DCQLQuery>

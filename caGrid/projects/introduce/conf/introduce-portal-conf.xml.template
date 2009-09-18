@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<IntroducePortalConfiguration xmlns="gme://gov.nih.nci.cagrid.introduce/1/Configuration"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+    <NamespaceReplacementPolicy>ERROR</NamespaceReplacementPolicy>
+    <UpdateSiteURL>@introduce.update.site@</UpdateSiteURL>
+    <CheckForUpdatesOnStartup>false</CheckForUpdatesOnStartup>
+</IntroducePortalConfiguration>

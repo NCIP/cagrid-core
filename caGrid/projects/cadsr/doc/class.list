@@ -1,0 +1,1106 @@
+140
+gov.nih.nci.cadsr.domain.DataElementConcept has 22 attributes.
+	latestVersionIndicator
+	longName
+	changeNote
+	beginDate
+	workflowStatusName
+	id
+	workflowStatusDescription
+	endDate
+	dateCreated
+	modifiedBy
+	workflowStatusDescription
+	version
+	createdBy
+	preferredDefinition
+	registrationStatus
+	workflowStatusName
+	preferredName
+	unresolvedIssue
+	dateModified
+	origin
+	publicID
+	deletedIndicator
+gov.nih.nci.camod.domain.InvivoResult has 3 attributes.
+	evaluationDay
+	toxicitySurvivors
+	toxicityEvalDay
+gov.nih.nci.cadsr.domain.DerivationType has 4 attributes.
+	modifiedBy
+	description
+	name
+	createdBy
+gov.nih.nci.evs.domain.Source has 2 attributes.
+	name
+	id
+gov.nih.nci.camod.domain.MicroArrayData has 2 attributes.
+	experimentName
+	experimentId
+gov.nih.nci.cadsr.domain.Definition has 5 attributes.
+	text
+	type
+	languageName
+	modifiedBy
+	createdBy
+edu.georgetown.pir.domain.ProteinFeature has 4 attributes.
+	id
+	begin
+	description
+	end
+gov.nih.nci.camod.domain.Person has 5 attributes.
+	lastName
+	partyId
+	firstName
+	id
+	id
+gov.nih.nci.cadsr.domain.Concept has 24 attributes.
+	origin
+	workflowStatusDescription
+	deletedIndicator
+	beginDate
+	version
+	endDate
+	dateCreated
+	dateModified
+	workflowStatusName
+	id
+	changeNote
+	definitionSource
+	createdBy
+	preferredName
+	publicID
+	workflowStatusDescription
+	evsSource
+	unresolvedIssue
+	longName
+	modifiedBy
+	registrationStatus
+	workflowStatusName
+	preferredDefinition
+	latestVersionIndicator
+gov.nih.nci.camod.domain.GeneticAlteration has 2 attributes.
+	methodOfObservation
+	observation
+gov.nih.nci.cabio.domain.Anomaly has 1 attributes.
+	description
+edu.georgetown.pir.domain.Keyword has 3 attributes.
+	id
+	uniprotKeyword
+	uniprotKeywordAccession
+gov.nih.nci.common.provenance.domain.InternetSource has 4 attributes.
+	name
+	id
+	name
+	id
+gov.nih.nci.camod.domain.RepositoryInfo has 3 attributes.
+	suggestSubmission
+	inTheRepository
+	sentEmailContent
+gov.nih.nci.camod.domain.EndpointCode has 2 attributes.
+	description
+	code
+gov.nih.nci.cabio.domain.Chromosome has 1 attributes.
+	number
+gov.nih.nci.camod.domain.GenotypeSummary has 2 attributes.
+	genotype
+	summary
+gov.nih.nci.camod.domain.GenomicSegment has 3 attributes.
+	locationOfIntegration
+	segmentSize
+	cloneDesignator
+gov.nih.nci.cadsr.domain.PermissibleValue has 5 attributes.
+	value
+	highValueNumber
+	modifiedBy
+	lowValueNumber
+	createdBy
+gov.nih.nci.cadsr.domain.ValueDomainPermissibleValue has 5 attributes.
+	endDate
+	beginDate
+	createdBy
+	origin
+	modifiedBy
+gov.nih.nci.cabio.domain.DiseaseOntology has 1 attributes.
+	name
+gov.nih.nci.cadsr.domain.ValueDomainRelationship has 3 attributes.
+	name
+	modifiedBy
+	createdBy
+gov.nih.nci.cabio.domain.Protocol has 3 attributes.
+	description
+	name
+	type
+gov.nih.nci.cabio.domain.Taxon has 4 attributes.
+	ethnicityStrain
+	abbreviation
+	scientificName
+	commonName
+gov.nih.nci.cadsr.domain.ValidValue has 23 attributes.
+	publicID
+	longName
+	changeNote
+	unresolvedIssue
+	dateModified
+	registrationStatus
+	version
+	preferredName
+	id
+	endDate
+	workflowStatusName
+	modifiedBy
+	preferredDefinition
+	displayOrder
+	workflowStatusName
+	dateCreated
+	origin
+	createdBy
+	beginDate
+	workflowStatusDescription
+	deletedIndicator
+	workflowStatusDescription
+	latestVersionIndicator
+gov.nih.nci.cadsr.domain.Representation has 23 attributes.
+	unresolvedIssue
+	version
+	workflowStatusDescription
+	modifiedBy
+	registrationStatus
+	preferredDefinition
+	longName
+	dateModified
+	latestVersionIndicator
+	changeNote
+	publicID
+	definitionSource
+	origin
+	id
+	beginDate
+	dateCreated
+	createdBy
+	endDate
+	preferredName
+	workflowStatusDescription
+	deletedIndicator
+	workflowStatusName
+	workflowStatusName
+gov.nih.nci.cabio.domain.Agent has 6 attributes.
+	isCMAPAgent
+	name
+	NSCNumber
+	EVSId
+	source
+	comment
+gov.nih.nci.camod.domain.Nomenclature has 1 attributes.
+	name
+gov.nih.nci.cadsr.domain.Instruction has 23 attributes.
+	changeNote
+	workflowStatusName
+	deletedIndicator
+	latestVersionIndicator
+	type
+	modifiedBy
+	dateModified
+	beginDate
+	createdBy
+	preferredDefinition
+	endDate
+	longName
+	preferredName
+	workflowStatusDescription
+	unresolvedIssue
+	registrationStatus
+	id
+	version
+	workflowStatusName
+	workflowStatusDescription
+	origin
+	publicID
+	dateCreated
+edu.georgetown.pir.domain.DatabaseCrossReference has 3 attributes.
+	crossReferenceId
+	dataSourceName
+	id
+gov.nih.nci.camod.domain.Organization has 3 attributes.
+	id
+	name
+	partyId
+gov.nih.nci.camod.domain.Xenograft has 8 attributes.
+	parentalCellLineName
+	geneticManipulation
+	name
+	administrativeSite
+	experimentDesign
+	modelDescriptor
+	type
+	modificationDescription
+gov.nih.nci.security.authorization.domainobjects.UserProtectionElement has 7 attributes.
+	protectionElementName
+	attribute
+	userProtectionElementId
+	updateDate
+	protectionElementId
+	protectionElementDescription
+	objectId
+gov.nih.nci.common.provenance.domain.URLSourceReference has 3 attributes.
+	reference
+	sourceReferenceType
+	sourceURL
+gov.nih.nci.cadsr.domain.Question has 23 attributes.
+	preferredDefinition
+	workflowStatusName
+	origin
+	endDate
+	dateCreated
+	publicID
+	workflowStatusName
+	id
+	beginDate
+	workflowStatusDescription
+	displayOrder
+	preferredName
+	dateModified
+	registrationStatus
+	deletedIndicator
+	createdBy
+	longName
+	modifiedBy
+	changeNote
+	latestVersionIndicator
+	unresolvedIssue
+	workflowStatusDescription
+	version
+gov.nih.nci.cabio.domain.NucleicAcidSequence has 3 attributes.
+	type
+	accessionNumber
+	accessionNumberVersion
+gov.nih.nci.cadsr.domain.AdministeredComponent has 20 attributes.
+	preferredDefinition
+	dateCreated
+	registrationStatus
+	unresolvedIssue
+	dateModified
+	workflowStatusDescription
+	createdBy
+	beginDate
+	latestVersionIndicator
+	origin
+	publicID
+	preferredName
+	longName
+	changeNote
+	version
+	id
+	endDate
+	workflowStatusDescription
+	deletedIndicator
+	modifiedBy
+gov.nih.nci.cadsr.domain.DataElementDerivation has 3 attributes.
+	createdBy
+	displayOrder
+	modifiedBy
+gov.nih.nci.camod.domain.EngineeredGene has 2 attributes.
+	cabioId
+	name
+gov.nih.nci.camod.domain.YeastModel has 2 attributes.
+	experimentDesign
+	modelDescriptor
+gov.nih.nci.camod.domain.ModificationType has 1 attributes.
+	name
+gov.nih.nci.common.provenance.domain.Source has 2 attributes.
+	name
+	id
+edu.georgetown.pir.domain.SequenceConflict has 2 attributes.
+	originalSequence
+	variantSequence
+gov.nih.nci.cabio.domain.Tissue has 10 attributes.
+	cellLine
+	cellType
+	supplier
+	type
+	developmentalStage
+	sex
+	organ
+	histology
+	name
+	description
+gov.nih.nci.camod.domain.ContactInfo has 9 attributes.
+	street
+	phoneNumber
+	institute
+	state
+	labName
+	faxNumber
+	zipCode
+	email
+	city
+gov.nih.nci.cadsr.domain.ClassSchemeClassSchemeItem has 3 attributes.
+	modifiedBy
+	displayOrder
+	createdBy
+gov.nih.nci.common.provenance.domain.SourceReference has 2 attributes.
+	sourceReferenceType
+	reference
+gov.nih.nci.security.authorization.domainobjects.Role has 5 attributes.
+	updateDate
+	active_flag
+	desc
+	id
+	name
+gov.nih.nci.cadsr.domain.ClassificationSchemeItemRelationship has 4 attributes.
+	dateModified
+	name
+	createdBy
+	modifiedBy
+gov.nih.nci.cadsr.domain.DataElementRelationship has 3 attributes.
+	name
+	modifiedBy
+	createdBy
+gov.nih.nci.cabio.domain.Histopathology has 7 attributes.
+	survivalInfo
+	comments
+	grossDescription
+	relationalOperation
+	microscopicDescription
+	ageOfOnset
+	tumorIncidenceRate
+edu.georgetown.pir.domain.ProteinSequence has 4 attributes.
+	molecularWeightInDaltons
+	id
+	value
+	length
+gov.nih.nci.cadsr.domain.DesignationClassSchemeItem has 2 attributes.
+	createdBy
+	modifiedBy
+gov.nih.nci.camod.domain.RegulatoryElementType has 1 attributes.
+	name
+gov.nih.nci.cabio.domain.OrganOntology has 1 attributes.
+	name
+gov.nih.nci.camod.domain.Image has 3 attributes.
+	staining
+	description
+	title
+gov.nih.nci.camod.domain.ScreeningResult has 4 attributes.
+	aveinh
+	diffinh
+	stage
+	inhibitionRate
+gov.nih.nci.camod.domain.Phenotype has 2 attributes.
+	breedingNotes
+	description
+gov.nih.nci.security.authorization.domainobjects.User has 13 attributes.
+	title
+	updateDate
+	userId
+	endDate
+	lastName
+	startDate
+	password
+	phoneNumber
+	emailId
+	firstName
+	loginName
+	organization
+	department
+gov.nih.nci.cadsr.domain.CaseReportForm has 23 attributes.
+	createdBy
+	modifiedBy
+	unresolvedIssue
+	changeNote
+	workflowStatusName
+	workflowStatusDescription
+	displayName
+	latestVersionIndicator
+	dateModified
+	origin
+	publicID
+	version
+	dateCreated
+	deletedIndicator
+	beginDate
+	longName
+	preferredName
+	id
+	endDate
+	workflowStatusName
+	workflowStatusDescription
+	preferredDefinition
+	registrationStatus
+gov.nih.nci.cadsr.domain.ObjectClassRelationship has 34 attributes.
+	dateCreated
+	preferredName
+	origin
+	beginDate
+	deletedIndicator
+	sourceHighMultiplicity
+	sourceRole
+	registrationStatus
+	sourceLowMultiplicity
+	name
+	direction
+	unresolvedIssue
+	workflowStatusName
+	dateModified
+	workflowStatusName
+	endDate
+	targetHighMultiplicity
+	latestVersionIndicator
+	workflowStatusDescription
+	sourceHighMultiplicity
+	workflowStatusDescription
+	targetHighMultiplicity
+	sourceLowMultiplicity
+	targetRole
+	version
+	changeNote
+	publicID
+	modifiedBy
+	createdBy
+	id
+	preferredDefinition
+	longName
+	targetLowMultiplicity
+	targetLowMultiplicity
+gov.nih.nci.cadsr.domain.Module has 23 attributes.
+	deletedIndicator
+	publicID
+	preferredName
+	beginDate
+	changeNote
+	id
+	longName
+	modifiedBy
+	workflowStatusName
+	workflowStatusName
+	origin
+	endDate
+	version
+	dateModified
+	createdBy
+	displayOrder
+	latestVersionIndicator
+	workflowStatusDescription
+	dateCreated
+	registrationStatus
+	workflowStatusDescription
+	preferredDefinition
+	unresolvedIssue
+gov.nih.nci.camod.domain.Therapy has 3 attributes.
+	experiment
+	comments
+	results
+gov.nih.nci.cadsr.domain.ClassificationSchemeRelationship has 4 attributes.
+	name
+	modifiedBy
+	createdBy
+	displayOrder
+gov.nih.nci.common.provenance.domain.ResearchInstitutionSource has 16 attributes.
+	institutionName
+	institutionAddress
+	name
+	id
+	institutionPersons
+	name
+	institutionDepartment
+	institutionPersons
+	institutionName
+	institutionName
+	name
+	institutionDepartment
+	institutionName
+	institutionAddress
+	name
+	id
+gov.nih.nci.camod.domain.IntegrationType has 1 attributes.
+	name
+gov.nih.nci.cadsr.domain.ClassificationScheme has 24 attributes.
+	beginDate
+	changeNote
+	version
+	dateModified
+	workflowStatusName
+	preferredDefinition
+	deletedIndicator
+	preferredName
+	createdBy
+	registrationStatus
+	workflowStatusName
+	origin
+	modifiedBy
+	type
+	unresolvedIssue
+	latestVersionIndicator
+	workflowStatusDescription
+	endDate
+	labelTypeFlag
+	publicID
+	workflowStatusDescription
+	longName
+	id
+	dateCreated
+gov.nih.nci.cadsr.domain.ObjectClass has 23 attributes.
+	definitionSource
+	createdBy
+	workflowStatusDescription
+	preferredName
+	modifiedBy
+	version
+	dateModified
+	origin
+	workflowStatusName
+	endDate
+	workflowStatusDescription
+	deletedIndicator
+	beginDate
+	latestVersionIndicator
+	registrationStatus
+	id
+	dateCreated
+	changeNote
+	workflowStatusName
+	longName
+	publicID
+	unresolvedIssue
+	preferredDefinition
+gov.nih.nci.camod.domain.SegmentType has 1 attributes.
+	name
+gov.nih.nci.security.authorization.domainobjects.UserRoleContext has 13 attributes.
+	department
+	password
+	emailId
+	endDate
+	title
+	startDate
+	loginName
+	lastName
+	userId
+	updateDate
+	phoneNumber
+	firstName
+	organization
+edu.georgetown.pir.domain.Organelle has 3 attributes.
+	id
+	name
+	type
+edu.upenn.med.MessengerRNA has 3 attributes.
+	genbankAccession
+	ensembltranscriptID
+	refseqID
+gov.nih.nci.cabio.domain.Vocabulary has 2 attributes.
+	coreTerm
+	generalTerm
+gov.nih.nci.cabio.domain.GeneAlias has 2 attributes.
+	type
+	name
+gov.nih.nci.cadsr.domain.ReferenceDocument has 10 attributes.
+	name
+	type
+	organizationId
+	createdBy
+	languageName
+	URL
+	doctext
+	displayOrder
+	modifiedBy
+	rdtlName
+gov.nih.nci.cadsr.domain.AdministeredComponentClassSchemeItem has 2 attributes.
+	modifiedBy
+	createdBy
+gov.nih.nci.camod.domain.GeneDelivery has 1 attributes.
+	viralVector
+gov.nih.nci.camod.domain.Conditionality has 2 attributes.
+	description
+	conditionedBy
+gov.nih.nci.cabio.domain.Target has 2 attributes.
+	type
+	name
+edu.georgetown.pir.domain.MutagenesisSite has 2 attributes.
+	originalSequence
+	variantSequence
+gov.nih.nci.cadsr.domain.DataElement has 22 attributes.
+	version
+	changeNote
+	modifiedBy
+	longName
+	workflowStatusName
+	registrationStatus
+	publicID
+	preferredDefinition
+	endDate
+	deletedIndicator
+	workflowStatusName
+	preferredName
+	createdBy
+	workflowStatusDescription
+	dateModified
+	workflowStatusDescription
+	dateCreated
+	latestVersionIndicator
+	unresolvedIssue
+	id
+	origin
+	beginDate
+gov.nih.nci.cadsr.domain.DefinitionClassSchemeItem has 2 attributes.
+	createdBy
+	modifiedBy
+gov.nih.nci.security.authorization.domainobjects.ProtectionElement has 7 attributes.
+	updateDate
+	protectionElementDescription
+	objectId
+	protectionElementName
+	protectionElementId
+	attribute
+	userProtectionElementId
+gov.nih.nci.evs.domain.Definition has 5 attributes.
+	text
+	createdBy
+	languageName
+	type
+	modifiedBy
+gov.nih.nci.camod.domain.Availability has 4 attributes.
+	enteredDate
+	releaseDate
+	visibleTo
+	modifiedDate
+gov.nih.nci.cabio.domain.Pathway has 4 attributes.
+	name
+	displayValue
+	diagram
+	description
+gov.nih.nci.cabio.domain.OrganOntologyRelationship has 1 attributes.
+	type
+gov.nih.nci.camod.domain.CellLine has 4 attributes.
+	name
+	comments
+	results
+	experiment
+gov.nih.nci.cadsr.domain.EnumeratedValueDomain has 31 attributes.
+	longName
+	endDate
+	maximumLengthNumber
+	beginDate
+	UOMName
+	characterSetName
+	dateModified
+	decimalPlace
+	origin
+	workflowStatusDescription
+	minimumLengthNumber
+	datatypeName
+	changeNote
+	workflowStatusName
+	lowValueNumber
+	workflowStatusDescription
+	dateCreated
+	publicID
+	preferredDefinition
+	registrationStatus
+	deletedIndicator
+	unresolvedIssue
+	workflowStatusName
+	preferredName
+	modifiedBy
+	latestVersionIndicator
+	id
+	formatName
+	createdBy
+	version
+	highValueNumber
+gov.nih.nci.camod.domain.JaxInfo has 1 attributes.
+	jaxStockNo
+gov.nih.nci.common.provenance.domain.PublicationSource has 16 attributes.
+	startPage
+	authors
+	id
+	year
+	startPage
+	id
+	volume
+	authors
+	title
+	year
+	volume
+	name
+	endPage
+	name
+	endPage
+	title
+gov.nih.nci.cadsr.domain.Property has 23 attributes.
+	longName
+	createdBy
+	changeNote
+	workflowStatusDescription
+	registrationStatus
+	definitionSource
+	workflowStatusName
+	endDate
+	origin
+	dateModified
+	latestVersionIndicator
+	beginDate
+	deletedIndicator
+	unresolvedIssue
+	publicID
+	modifiedBy
+	preferredDefinition
+	workflowStatusDescription
+	workflowStatusName
+	version
+	preferredName
+	dateCreated
+	id
+gov.nih.nci.camod.domain.SexDistribution has 1 attributes.
+	type
+gov.nih.nci.cadsr.domain.ProtocolFormsSet has 32 attributes.
+	type
+	reviewedDate
+	modifiedBy
+	workflowStatusDescription
+	dateCreated
+	id
+	beginDate
+	unresolvedIssue
+	leadOrganizationName
+	longName
+	reviewedBy
+	createdBy
+	workflowStatusDescription
+	phase
+	dateModified
+	publicID
+	workflowStatusName
+	preferredName
+	preferredDefinition
+	deletedIndicator
+	latestVersionIndicator
+	approvedBy
+	origin
+	changeNumber
+	approvedDate
+	workflowStatusName
+	protocolId
+	registrationStatus
+	endDate
+	version
+	changeNote
+	changeType
+gov.nih.nci.camod.domain.AbstractCancerModel has 2 attributes.
+	experimentDesign
+	modelDescriptor
+gov.nih.nci.cadsr.domain.DerivedDataElement has 3 attributes.
+	rule
+	methods
+	concatenationCharacter
+gov.nih.nci.security.authorization.domainobjects.Group has 4 attributes.
+	groupName
+	groupDesc
+	updateDate
+	groupId
+gov.nih.nci.security.authorization.domainobjects.User has 13 attributes.
+	endDate
+	loginName
+	lastName
+	updateDate
+	title
+	phoneNumber
+	firstName
+	userId
+	startDate
+	password
+	emailId
+	organization
+	department
+edu.upenn.med.Gene has 4 attributes.
+	ensemblgeneID
+	entrezgeneID
+	genbankAccession
+	unigeneclusterID
+gov.nih.nci.cadsr.domain.DataElementConceptRelationship has 4 attributes.
+	name
+	modifiedBy
+	description
+	createdBy
+gov.nih.nci.cabio.domain.GeneOntology has 1 attributes.
+	name
+gov.nih.nci.cadsr.domain.ValueDomain has 31 attributes.
+	highValueNumber
+	minimumLengthNumber
+	version
+	registrationStatus
+	UOMName
+	dateCreated
+	workflowStatusName
+	origin
+	latestVersionIndicator
+	longName
+	unresolvedIssue
+	changeNote
+	preferredDefinition
+	lowValueNumber
+	maximumLengthNumber
+	workflowStatusName
+	decimalPlace
+	createdBy
+	beginDate
+	modifiedBy
+	characterSetName
+	publicID
+	formatName
+	endDate
+	id
+	deletedIndicator
+	workflowStatusDescription
+	dateModified
+	workflowStatusDescription
+	datatypeName
+	preferredName
+gov.nih.nci.camod.domain.PublicationStatus has 1 attributes.
+	name
+gov.nih.nci.camod.domain.Transgene has 6 attributes.
+	engineeredGeneId
+	cabioId
+	id
+	id
+	name
+	locationOfIntegration
+gov.nih.nci.security.authorization.domainobjects.ApplicationContext has 12 attributes.
+	activeFlag
+	authenticationPolicyConfigName
+	name
+	createdBy
+	applicationName
+	languageName
+	modifiedBy
+	declarativeFlag
+	version
+	description
+	applicationId
+	dataSourceName
+gov.nih.nci.cadsr.domain.ComponentConcept has 1 attributes.
+	displayOrder
+gov.nih.nci.security.authorization.domainobjects.UserRoleContext has 13 attributes.
+	loginName
+	password
+	firstName
+	organization
+	updateDate
+	department
+	lastName
+	endDate
+	emailId
+	phoneNumber
+	title
+	userId
+	startDate
+gov.nih.nci.camod.domain.TumorCode has 2 attributes.
+	description
+	code
+edu.georgetown.pir.domain.SequenceVariant has 2 attributes.
+	originalSequence
+	variantSequence
+gov.nih.nci.common.provenance.domain.WebServicesSourceReference has 3 attributes.
+	reference
+	sourceReferenceType
+	request
+gov.nih.nci.cabio.domain.Library has 14 attributes.
+	rsite1
+	creationDate
+	uniGeneId
+	cloneProducer
+	clonesToDate
+	rsite2
+	cloneVector
+	sequencesToDate
+	name
+	labHost
+	keyword
+	cloneVectorType
+	description
+	type
+gov.nih.nci.cadsr.domain.Designation has 5 attributes.
+	modifiedBy
+	createdBy
+	name
+	type
+	languageName
+gov.nih.nci.camod.domain.RegulatoryElement has 1 attributes.
+	name
+gov.nih.nci.security.authorization.domainobjects.Privilege has 3 attributes.
+	desc
+	name
+	id
+gov.nih.nci.camod.domain.TreatmentSchedule has 2 attributes.
+	dosage
+	regimen
+gov.nih.nci.cadsr.domain.ConceptDerivationRule has 3 attributes.
+	createdBy
+	modifiedBy
+	dateModified
+gov.nih.nci.camod.domain.AnimalModel has 3 attributes.
+	modelDescriptor
+	url
+	experimentDesign
+gov.nih.nci.cadsr.domain.Qualifier has 5 attributes.
+	name
+	modifiedBy
+	description
+	comments
+	createdBy
+gov.nih.nci.camod.domain.GeneFunction has 1 attributes.
+	function
+gov.nih.nci.camod.domain.Role has 1 attributes.
+	name
+edu.upenn.med.Protein has 3 attributes.
+	refseqID
+	ensemblpeptideID
+	uniprotkbPrimaryAccession
+gov.nih.nci.camod.domain.Publication has 8 attributes.
+	year
+	endPage
+	title
+	authors
+	pmid
+	startPage
+	journal
+	volume
+edu.georgetown.pir.domain.Organism has 4 attributes.
+	ncbiTaxonomyID
+	id
+	commonName
+	scientificName
+gov.nih.nci.cabio.domain.DiseaseOntologyRelationship has 1 attributes.
+	type
+gov.nih.nci.cabio.domain.ClinicalTrialProtocol has 12 attributes.
+	PDQIdentifier
+	documentNumber
+	NIHAdminCode
+	leadOrganizationId
+	phase
+	treatmentFlag
+	participationType
+	PIName
+	leadOrganizationName
+	currentStatus
+	title
+	currentStatusDate
+gov.nih.nci.cabio.domain.Gene has 2 attributes.
+	clusterId
+	fullName
+gov.nih.nci.cadsr.domain.Context has 12 attributes.
+	name
+	description
+	languageName
+	applicationId
+	activeFlag
+	authenticationPolicyConfigName
+	version
+	dataSourceName
+	declarativeFlag
+	modifiedBy
+	applicationName
+	createdBy
+gov.nih.nci.common.provenance.domain.Provenance has 3 attributes.
+	id
+	evidenceCode
+	transformation
+gov.nih.nci.cadsr.domain.ValueMeaning has 7 attributes.
+	beginDate
+	comments
+	endDate
+	description
+	shortMeaning
+	createdBy
+	modifiedBy
+gov.nih.nci.camod.domain.TargetedModification has 2 attributes.
+	blastocystName
+	esCellLineName
+edu.georgetown.pir.domain.Protein has 3 attributes.
+	proteinType
+	uniprotkbEntryName
+	id
+gov.nih.nci.cadsr.domain.ClassificationSchemeItem has 6 attributes.
+	comments
+	type
+	description
+	name
+	createdBy
+	modifiedBy
+gov.nih.nci.cadsr.domain.NonenumeratedValueDomain has 31 attributes.
+	decimalPlace
+	deletedIndicator
+	dateCreated
+	origin
+	minimumLengthNumber
+	maximumLengthNumber
+	formatName
+	createdBy
+	modifiedBy
+	dateModified
+	beginDate
+	registrationStatus
+	datatypeName
+	longName
+	characterSetName
+	id
+	workflowStatusDescription
+	highValueNumber
+	unresolvedIssue
+	UOMName
+	preferredDefinition
+	workflowStatusName
+	latestVersionIndicator
+	lowValueNumber
+	endDate
+	preferredName
+	changeNote
+	publicID
+	version
+	workflowStatusName
+	workflowStatusDescription
+gov.nih.nci.camod.domain.EnvironmentalFactor has 2 attributes.
+	type
+	name
+gov.nih.nci.cabio.domain.GeneOntologyRelationship has 1 attributes.
+	relationshipType
+gov.nih.nci.cadsr.domain.ProtocolFormsTemplate has 23 attributes.
+	changeNote
+	beginDate
+	createdBy
+	unresolvedIssue
+	workflowStatusDescription
+	version
+	longName
+	endDate
+	registrationStatus
+	workflowStatusName
+	id
+	workflowStatusDescription
+	publicID
+	deletedIndicator
+	origin
+	preferredName
+	displayName
+	latestVersionIndicator
+	workflowStatusName
+	dateCreated
+	preferredDefinition
+	dateModified
+	modifiedBy
+edu.georgetown.pir.domain.SpliceVariant has 2 attributes.
+	originalSequence
+	variantSequence
+gov.nih.nci.security.authorization.domainobjects.ProtectionGroup has 5 attributes.
+	updateDate
+	protectionGroupId
+	protectionGroupName
+	protectionGroupDescription
+	largeElementCountFlag
+gov.nih.nci.cabio.domain.ProtocolAssociation has 4 attributes.
+	diseaseCategory
+	CTEPNAME
+	IMTCODE
+	diseaseSubCategory
+gov.nih.nci.cabio.domain.Clone has 2 attributes.
+	insertSize
+	name
+Took 4.0 seconds.

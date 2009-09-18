@@ -1,0 +1,5 @@
+<%@ jet package="gov.nih.nci.cagrid.introduce.templates.etc" class="SecurityDescTemplate" %>
+<% 
+   gov.nih.nci.cagrid.introduce.common.SpecificServiceInformation info = (gov.nih.nci.cagrid.introduce.common.SpecificServiceInformation) argument; 
+%>
+<%=gov.nih.nci.cagrid.introduce.codegen.services.security.tools.SecurityDescriptorGenerator.getSecurityDescriptor(info)%>

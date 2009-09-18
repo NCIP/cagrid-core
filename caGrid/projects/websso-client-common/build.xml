@@ -1,0 +1,157 @@
+<project name="caGrid-websso-client-common" default="all">
+	<!-- Environment -->
+	<property environment="env" />
+	<property file="${basedir}/project.properties" />
+	<property file="${basedir}/build.properties" />
+
+	<property name="ext.dir" location="ext" />
+	<property name="build.dir" location="build" />
+	<property name="build.classes.dir" location="build/classes" />
+
+	<property name="tools.dir" value="tools" />
+	<property name="tools.lib.dir" value="tools/lib" />
+	<property name="ext.lib.dir" location="${ext.dir}/dependencies/default/jars" />
+	<property name="ext.targetgrid.dir" location="${ext.dir}/target_grid" />
+	<property name="src.java.dir" location="src/java" />
+	<property name="src.resources.dir" location="src/resources" />
+
+	<property name="sync.description.file" value="${ext.targetgrid.dir}/sync-description.xml" />
+	<property name="jar.name" value="${ant.project.name}-${project.version}.jar" />
+
+	<taskdef resource="net/sf/antcontrib/antlib.xml">
+		<classpath>
+			<pathelement location="${tools.lib.dir}/ant-contrib.jar" />
+		</classpath>
+	</taskdef>
+
+	<!-- ============================================================== -->
+	<!-- Globus properties                                              -->
+	<!-- ============================================================== -->
+
+	<target name="checkGlobus" depends="setGlobus">
+		<condition property="globus.not.found">
+			<or>
+				<not>
+					<isset property="ext.globus.dir" />
+				</not>
+				<equals arg1="${ext.globus.dir}" arg2="" />
+			</or>
+		</condition>
+		<fail message="Globus installation is not set in either GLOBUS_LOCATION or ext.globus.dir" if="globus.not.found" />
+		<echo message="Globus: ${ext.globus.dir}" />
+	</target>
+	<target name="setGlobus" if="env.GLOBUS_LOCATION">
+		<!-- GT4 build files and directories-->
+		<property name="ext.globus.dir" value="${env.GLOBUS_LOCATION}" />
+		<property name="build.stubs" location="${ext.globus.dir}/share/globus_wsrf_tools/build-stubs.xml" />
+		<property name="schema.src" location="${ext.globus.dir}/share/schema" />
+		<property name="build.packages" location="${ext.globus.dir}/share/globus_wsrf_common/build-packages.xml" />
+		<!-- Copied from build.stubs file, as there is no way to "append" to the value in the remote file -->
+		<property name="GT4.ns.excludes" value="-x http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-BaseFaults-1.2-draft-01.xsd -x http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-BaseFaults-1.2-draft-01.wsdl -x http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ResourceLifetime-1.2-draft-01.xsd -x http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ResourceLifetime-1.2-draft-01.wsdl -x http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ResourceProperties-1.2-draft-01.xsd -x http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ResourceProperties-1.2-draft-01.wsdl -x http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ServiceGroup-1.2-draft-01.xsd -x http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ServiceGroup-1.2-draft-01.wsdl -x http://docs.oasis-open.org/wsn/2004/06/wsn-WS-BaseNotification-1.2-draft-01.xsd -x http://docs.oasis-open.org/wsn/2004/06/wsn-WS-BaseNotification-1.2-draft-01.wsdl -x http://schemas.xmlsoap.org/ws/2004/04/trust -x http://schemas.xmlsoap.org/ws/2002/12/policy -x http://schemas.xmlsoap.org/ws/2002/07/utility -x http://schemas.xmlsoap.org/ws/2004/04/sc -x http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-secext-1.0.xsd -x http://www.w3.org/2000/09/xmldsig# -x http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd -x http://schemas.xmlsoap.org/ws/2004/09/enumeration" />
+	</target>
+	<target name="defineClasspaths" depends="checkGlobus">
+		<path id="ext.run.classpath">
+			<fileset dir="${ext.lib.dir}">
+				<include name="*.jar" />
+				<exclude name="junit.jar" />
+			</fileset>
+			<fileset dir="${ext.globus.dir}/lib">
+				<include name="*.jar" />
+				<exclude name="cog-jglobus.jar" />
+				<exclude name="${stubs.jar.name}" />
+				<exclude name="${common.jar.name}" />
+				<exclude name="${client.jar.name}" />
+				<exclude name="${service.jar.name}" />
+			</fileset>
+		</path>
+	</target>
+
+	<target name="dist">
+		<copy todir="${build.dir}" flatten="true" overwrite="true">
+			<fileset dir="${ext.lib.dir}">
+				<include name="*.jar" />
+			</fileset>
+			<fileset dir="${env.GLOBUS_LOCATION}/lib">
+				<include name="axis.jar" />
+				<include name="wsrf_core_stubs.jar" />
+				<include name="jaxrpc.jar" />
+				<include name="addressing-1.0.jar" />
+				<include name="cog-axis.jar" />
+				<include name="saaj.jar" />
+				<include name="commons-discovery.jar" />
+				<include name="wsdl4j.jar" />
+				<include name="wsrf_core.jar" />
+				<include name="puretls.jar" />
+				<include name="cryptix.jar" />
+				<include name="cryptix32.jar" />
+				<include name="cryptix-asn1.jar" />
+				<include name="wss4j.jar" />
+				<include name="xalan.jar" />
+				<include name="xmlsec.jar" />
+				<include name="jce-jdk13-125.jar" />
+			</fileset>
+		</copy>
+	</target>
+
+	<target name="build-jar">
+		<jar jarfile="${build.dir}/${jar.name}" basedir="${build.classes.dir}" />
+		<delete dir="${build.classes.dir}" />
+	</target>
+
+	<target name="compile" depends="defineClasspaths">
+		<mkdir dir="${build.dir}" />
+		<mkdir dir="${build.classes.dir}" />
+		<javac srcdir="${src.java.dir}" destdir="${build.classes.dir}" classpathref="ext.run.classpath" debug="true" />
+		<!--<copy file="${src.java.dir}/client-config.wsdd" todir="${build.classes.dir}/" />-->
+	</target>
+
+	<target name="jar" depends="defineClasspaths,compile,build-jar,dist">
+	</target>
+
+	<target name="websso-client-config-jar">
+		<jar destfile="${build.dir}/${ant.project.name}-conf-${project.version}.jar">
+			<fileset dir="${ext.targetgrid.dir}">
+				<include name="sync-description.xml" />
+			</fileset>
+			<fileset dir="${src.resources.dir}">
+				<include name="client-config.wsdd" />
+			</fileset>
+		</jar>
+	</target>
+
+	<target name="copy-configuration-files">
+		<copy file="${src.resources.dir}/cacerts.cert" tofile="${build.dir}/cacerts-${project.version}.cert" />
+	</target>
+
+
+	<target name="deployTrustedCerts" depends="checkGlobus,defineClasspaths">
+		<java classpathref="ext.run.classpath" classname="gov.nih.nci.cagrid.syncgts.tools.DeployGTSTrustRoots" fork="yes" failonerror="true">
+			<arg value="${ext.targetgrid.dir}/certificates" />
+		</java>
+	</target>
+
+	<target name="configure" description="Configures the project based on settings.">
+		<!-- These are the template files we are copying from -->
+		<fileset id="templates.fileset" dir="${basedir}">
+			<include name="*.template" />
+		</fileset>
+
+		<copy todir="${basedir}" overwrite="true">
+			<fileset refid="templates.fileset" />
+			<mapper type="glob" from="*.template" to="*" />
+			<filterset filtersfile="${ext.targetgrid.dir}/service_urls.properties" />
+		</copy>
+
+	</target>
+
+	<target name="clean">
+		<delete dir="${build.dir}" />
+	</target>
+
+	<target name="all">
+		<antcall target="clean" />
+		<antcall target="jar" />
+		<antcall target="websso-client-config-jar" />
+		<antcall target="copy-configuration-files" />
+	</target>
+</project>

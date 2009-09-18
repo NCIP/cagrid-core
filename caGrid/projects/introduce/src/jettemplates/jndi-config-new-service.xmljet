@@ -1,0 +1,82 @@
+<%@ jet package="gov.nih.nci.cagrid.introduce.templates" class="NewServiceJNDIConfigTemplate" 
+imports="gov.nih.nci.cagrid.introduce.* gov.nih.nci.cagrid.introduce.beans.service.* gov.nih.nci.cagrid.introduce.common.* gov.nih.nci.cagrid.introduce.common.* gov.nih.nci.cagrid.introduce.codegen.utils.* gov.nih.nci.cagrid.introduce.codegen.* gov.nih.nci.cagrid.introduce.beans.namespace.* java.util.* gov.nih.nci.cagrid.introduce.beans.resource.* gov.nih.nci.cagrid.introduce.beans.property.*" %>
+<% gov.nih.nci.cagrid.introduce.common.SpecificServiceInformation info = (gov.nih.nci.cagrid.introduce.common.SpecificServiceInformation) argument;
+   ServiceProperties properties = info.getServiceProperties();
+   ServiceType baseService = info.getServices().getService(0);
+   String namespaceDomain = info.getIntroduceServiceProperties().getProperty("introduce.skeleton.namespace.domain");
+ 	ServiceType service = info.getService();
+	String serviceName = service.getName();
+	String modifiedServiceName = serviceName;
+   	if(serviceName.endsWith("Service")){
+   		modifiedServiceName = serviceName.substring(0,serviceName.length()-7);
+   	} 
+%><service xmlns="http://wsrf.globus.org/jndi/config" name="SERVICE-INSTANCE-PREFIX/<%=serviceName%>">
+		<%
+		if(service.getResourceFrameworkOptions().getCustom()!=null){
+		%>
+		<!-- THIS SERVICE HAS BEEN SET TO HAVE A CUSTOM RESOURCE
+		     PLEASE BE SURE TO ADD IN THE RESOURCE FOR THE SERVICE
+		     HOME  -->
+		<%
+		}  else {
+		%>
+		<resource name="home" type="<%=service.getPackageName()%>.service.globus.resource.<%=serviceName%>ResourceHome">
+		  <resourceParams>
+        	<parameter>
+         		 <name>factory</name>
+         		 <value>org.globus.wsrf.jndi.BeanFactory</value>
+        	</parameter>
+        	<%
+        	if(service.getResourceFrameworkOptions().getSingleton()==null){
+        	%>
+        	<parameter>
+          		 <name>resourceClass</name>
+         		 <value><%=service.getPackageName()%>.service.globus.resource.<%=service.getName()%>Resource</value>
+        	</parameter>
+        	<parameter>
+         		 <name>resourceKeyName</name>
+         		 <value>{<%=service.getNamespace()%>}<%=service.getName()%>ResultsKey</value>
+        	</parameter>
+       		 <parameter>
+        		  <name>resourceKeyType</name>
+        		  <value>java.lang.String</value>
+        	</parameter>
+        	<%
+        	}
+        	%>
+      	  </resourceParams>		
+		</resource>
+		<%
+		}
+		%>
+		<resource name="configuration" type="<%=service.getPackageName()%>.service.globus.resource.<%=serviceName%>ResourceConfiguration">
+			<resourceParams>
+				<parameter>
+					<name>factory</name>
+					<value>org.globus.wsrf.jndi.BeanFactory</value>
+				</parameter>
+				<parameter>
+					<name>performRegistration</name>
+					<!-- Set this to false to skip ServiceGroup registration -->
+					<value>PERFORM_REGISTRATION</value>
+				</parameter>
+				<parameter>
+					<name>registrationTemplateFile</name>
+					<!-- Set this to the relative path (from the container root, e.g GLOBUS_LOCATION for globus container) of the registration parameters template file (ignored if performRegistration is false) -->
+					<value>ETC-PATH/<%=service.getName()%>_registration.xml</value>
+				</parameter>		
+			</resourceParams>
+		</resource>
+		
+		<resourceLink name="serviceconfiguration" target="java:comp/env/services/SERVICE-INSTANCE-PREFIX/<%=baseService.getName()%>/serviceconfiguration" />
+		<%
+		for(int i = 0; i < info.getServices().getService().length; i++){
+			ServiceType oservice = info.getServices().getService(i);
+			if(!oservice.getName().equals(service.getName())){
+			%>
+		<resourceLink name="<%=CommonTools.lowerCaseFirstCharacter(oservice.getName())%>Home" target="java:comp/env/services/SERVICE-INSTANCE-PREFIX/<%=oservice.getName()%>/home" />
+			<%
+			}
+		}
+		%>
+  </service>

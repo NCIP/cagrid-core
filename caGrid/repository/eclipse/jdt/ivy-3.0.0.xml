@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+
+<ivy-module version="2.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:noNamespaceSchemaLocation="http://incubator.apache.org/ivy/schemas/ivy.xsd">
+
+	<info organisation="eclipse" module="jdt" revision="3.0.0">
+		<license name="Eclipse Public License"
+			url="http://www.eclipse.org/org/documents/epl-v10.php"/>
+		<description>Eclipse JDT Core</description>
+	</info>
+	<configurations>
+		<conf name="core"/>
+	</configurations>
+	<publications>
+		<artifact name="jdtcore" conf="core"/>
+	</publications>
+</ivy-module>

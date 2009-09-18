@@ -1,0 +1,105 @@
+<ns1:ServiceDescription introduceVersion="1.0b" xmlns:ns1="gme://gov.nih.nci.cagrid/1/Introduce">
+ <ns2:Namespaces xsi:type="ns2:NamespacesType" xmlns:ns2="gme://gov.nih.nci.cagrid.introduce/1/Namespace" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <ns2:Namespace namespace="http://www.w3.org/2001/XMLSchema" xsi:type="ns2:NamespaceType">
+   <ns2:SchemaElement type="string" xsi:type="ns2:SchemaElementType"/>
+   <ns2:SchemaElement type="integer" xsi:type="ns2:SchemaElementType"/>
+   <ns2:SchemaElement type="boolean" xsi:type="ns2:SchemaElementType"/>
+  </ns2:Namespace>
+  <ns2:Namespace location="./3.0_gov.nih.nci.cadsr.domain.xsd" namespace="gme://caCORE.caBIG/3.0/gov.nih.nci.cadsr.domain" packageName="gov.nih.nci.cadsr.domain" xsi:type="ns2:NamespaceType">
+   <ns2:SchemaElement type="AdministeredComponent" xsi:type="ns2:SchemaElementType"/>
+   <ns2:SchemaElement type="ConceptualDomain" xsi:type="ns2:SchemaElementType"/>
+   <ns2:SchemaElement type="DataElementConcept" xsi:type="ns2:SchemaElementType"/>
+   <ns2:SchemaElement type="DataElement" xsi:type="ns2:SchemaElementType"/>
+   <ns2:SchemaElement type="ClassificationScheme" xsi:type="ns2:SchemaElementType"/>
+   <ns2:SchemaElement type="ValueDomain" xsi:type="ns2:SchemaElementType"/>
+   <ns2:SchemaElement type="ClassificationSchemeItem" xsi:type="ns2:SchemaElementType"/>
+   <ns2:SchemaElement type="PermissibleValue" xsi:type="ns2:SchemaElementType"/>
+   <ns2:SchemaElement type="Context" xsi:type="ns2:SchemaElementType"/>
+   <ns2:SchemaElement type="ReferenceDocument" xsi:type="ns2:SchemaElementType"/>
+   <ns2:SchemaElement type="ObjectClass" xsi:type="ns2:SchemaElementType"/>
+   <ns2:SchemaElement type="Property" xsi:type="ns2:SchemaElementType"/>
+   <ns2:SchemaElement type="Form" xsi:type="ns2:SchemaElementType"/>
+   <ns2:SchemaElement type="Module" xsi:type="ns2:SchemaElementType"/>
+   <ns2:SchemaElement type="Protocol" xsi:type="ns2:SchemaElementType"/>
+   <ns2:SchemaElement type="Question" xsi:type="ns2:SchemaElementType"/>
+   <ns2:SchemaElement type="Representation" xsi:type="ns2:SchemaElementType"/>
+   <ns2:SchemaElement type="ValidValue" xsi:type="ns2:SchemaElementType"/>
+   <ns2:SchemaElement type="Designation" xsi:type="ns2:SchemaElementType"/>
+   <ns2:SchemaElement type="NonenumeratedValueDomain" xsi:type="ns2:SchemaElementType"/>
+   <ns2:SchemaElement type="DataElementConceptRelationship" xsi:type="ns2:SchemaElementType"/>
+   <ns2:SchemaElement type="ValueMeaning" xsi:type="ns2:SchemaElementType"/>
+   <ns2:SchemaElement type="ValueDomainPermissibleValue" xsi:type="ns2:SchemaElementType"/>
+   <ns2:SchemaElement type="ClassSchemeClassSchemeItem" xsi:type="ns2:SchemaElementType"/>
+   <ns2:SchemaElement type="DataElementDerivation" xsi:type="ns2:SchemaElementType"/>
+   <ns2:SchemaElement type="DerivedDataElement" xsi:type="ns2:SchemaElementType"/>
+   <ns2:SchemaElement type="DerivationType" xsi:type="ns2:SchemaElementType"/>
+   <ns2:SchemaElement type="AdministeredComponentClassSchemeItem" xsi:type="ns2:SchemaElementType"/>
+   <ns2:SchemaElement type="Instruction" xsi:type="ns2:SchemaElementType"/>
+   <ns2:SchemaElement type="DataElementRelationship" xsi:type="ns2:SchemaElementType"/>
+   <ns2:SchemaElement type="ValueDomainRelationship" xsi:type="ns2:SchemaElementType"/>
+   <ns2:SchemaElement type="ClassificationSchemeRelationship" xsi:type="ns2:SchemaElementType"/>
+   <ns2:SchemaElement type="ClassificationSchemeItemRelationship" xsi:type="ns2:SchemaElementType"/>
+   <ns2:SchemaElement type="ObjectClassRelationship" xsi:type="ns2:SchemaElementType"/>
+   <ns2:SchemaElement type="Concept" xsi:type="ns2:SchemaElementType"/>
+   <ns2:SchemaElement type="ComponentConcept" xsi:type="ns2:SchemaElementType"/>
+   <ns2:SchemaElement type="ConceptDerivationRule" xsi:type="ns2:SchemaElementType"/>
+   <ns2:SchemaElement type="Definition" xsi:type="ns2:SchemaElementType"/>
+   <ns2:SchemaElement type="DesignationClassSchemeItem" xsi:type="ns2:SchemaElementType"/>
+   <ns2:SchemaElement type="EnumeratedValueDomain" xsi:type="ns2:SchemaElementType"/>
+   <ns2:SchemaElement type="DefinitionClassSchemeItem" xsi:type="ns2:SchemaElementType"/>
+   <ns2:SchemaElement type="AdministeredComponentContact" xsi:type="ns2:SchemaElementType"/>
+   <ns2:SchemaElement type="Person" xsi:type="ns2:SchemaElementType"/>
+   <ns2:SchemaElement type="Organization" xsi:type="ns2:SchemaElementType"/>
+   <ns2:SchemaElement type="Address" xsi:type="ns2:SchemaElementType"/>
+   <ns2:SchemaElement type="FormElement" xsi:type="ns2:SchemaElementType"/>
+   <ns2:SchemaElement type="TriggerAction" xsi:type="ns2:SchemaElementType"/>
+   <ns2:SchemaElement type="QuestionRepetition" xsi:type="ns2:SchemaElementType"/>
+   <ns2:SchemaElement type="Function" xsi:type="ns2:SchemaElementType"/>
+   <ns2:SchemaElement type="ComponentLevel" xsi:type="ns2:SchemaElementType"/>
+  </ns2:Namespace>
+  <ns2:Namespace location="./1.0_gov.nih.nci.cagrid.metadata.common.xsd" namespace="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common" packageName="gov.nih.nci.cagrid.metadata.common" xsi:type="ns2:NamespaceType">
+   <ns2:SchemaElement type="PointOfContact" xsi:type="ns2:SchemaElementType"/>
+   <ns2:SchemaElement type="UMLClass" xsi:type="ns2:SchemaElementType"/>
+   <ns2:SchemaElement type="UMLAttribute" xsi:type="ns2:SchemaElementType"/>
+   <ns2:SchemaElement type="ResearchCenter" xsi:type="ns2:SchemaElementType"/>
+   <ns2:SchemaElement type="Address" xsi:type="ns2:SchemaElementType"/>
+   <ns2:SchemaElement type="ResearchCenterDescription" xsi:type="ns2:SchemaElementType"/>
+  </ns2:Namespace>
+ </ns2:Namespaces>
+ <ns3:Services xsi:type="ns3:ServicesType" xmlns:ns3="gme://gov.nih.nci.cagrid.introduce/1/Services" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <ns3:Service name="HelloWorld" namespace="http://cagrid.nci.nih.gov/HelloWorld" packageName="gov.nih.nci.cagrid" resourceFrameworkType="main" xsi:type="ns3:ServiceType">
+   <ns4:Methods xsi:type="ns4:MethodsType" xmlns:ns4="gme://gov.nih.nci.cagrid.introduce/1/Methods">
+    <ns4:Method isImported="false" isProvided="false" name="newMethod" xsi:type="ns4:MethodType">
+     <ns4:Inputs>
+      <ns4:Input qName="ns5:ClassificationScheme" isArray="false" name="classificationScheme" xmlns:ns5="gme://caCORE.caBIG/3.0/gov.nih.nci.cadsr.domain"/>
+      <ns4:Input qName="ns6:Designation" isArray="false" name="designation" xmlns:ns6="gme://caCORE.caBIG/3.0/gov.nih.nci.cadsr.domain"/>
+      <ns4:Input qName="ns7:ResearchCenter" isArray="false" name="researchCenter" xmlns:ns7="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common"/>
+      <ns4:Input qName="xsd:string" isArray="false" name="string" xmlns:xsd="http://www.w3.org/2001/XMLSchema"/>
+      <ns4:Input qName="xsd:integer" isArray="false" name="integer" xmlns:xsd="http://www.w3.org/2001/XMLSchema"/>
+      <ns4:Input qName="xsd:boolean" isArray="false" name="_boolean" xmlns:xsd="http://www.w3.org/2001/XMLSchema"/>
+     </ns4:Inputs>
+     <ns4:Output qName="ns8:ClassificationScheme" isArray="false" xmlns:ns8="gme://caCORE.caBIG/3.0/gov.nih.nci.cadsr.domain"/>
+     <ns4:Exceptions/>
+    </ns4:Method>
+   </ns4:Methods>
+   <ns9:ResourcePropertiesList xsi:type="ns9:ResourcePropertiesListType" xmlns:ns9="gme://gov.nih.nci.cagrid.introduce/1/Resources"/>
+  </ns3:Service>
+  <ns3:Service name="NewService" namespace="test.org/NewService" packageName="org.test" resourceFrameworkType="base" xsi:type="ns3:ServiceType">
+   <ns10:Methods xsi:type="ns10:MethodsType" xmlns:ns10="gme://gov.nih.nci.cagrid.introduce/1/Methods">
+    <ns10:Method isImported="false" isProvided="false" name="newServiceNewMethod" xsi:type="ns10:MethodType">
+     <ns10:Inputs>
+      <ns10:Input qName="ns11:ReferenceDocument" isArray="false" name="referenceDocument" xmlns:ns11="gme://caCORE.caBIG/3.0/gov.nih.nci.cadsr.domain"/>
+      <ns10:Input qName="ns12:DataElement" isArray="false" name="dataElement" xmlns:ns12="gme://caCORE.caBIG/3.0/gov.nih.nci.cadsr.domain"/>
+      <ns10:Input qName="xsd:integer" isArray="false" name="integer" xmlns:xsd="http://www.w3.org/2001/XMLSchema"/>
+      <ns10:Input qName="ns13:Representation" isArray="false" name="representation" xmlns:ns13="gme://caCORE.caBIG/3.0/gov.nih.nci.cadsr.domain"/>
+     </ns10:Inputs>
+     <ns10:Output qName="ns14:Context" isArray="false" xmlns:ns14="gme://caCORE.caBIG/3.0/gov.nih.nci.cadsr.domain"/>
+     <ns10:Exceptions/>
+    </ns10:Method>
+   </ns10:Methods>
+   <ns15:ResourcePropertiesList xsi:type="ns15:ResourcePropertiesListType" xmlns:ns15="gme://gov.nih.nci.cagrid.introduce/1/Resources"/>
+  </ns3:Service>
+ </ns3:Services>
+ <ns16:Extensions xsi:type="ns16:ExtensionsType" xmlns:ns16="gme://gov.nih.nci.cagrid.introduce/1/Extension" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"/>
+ <ns17:ServiceProperties xmlns:ns17="gme://gov.nih.nci.cagrid.introduce/1/Property"/>
+</ns1:ServiceDescription>

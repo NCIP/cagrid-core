@@ -1,0 +1,68 @@
+Conceptual Differences:
+--------------------
+0.5 Analytical Serivce model will be replaced with the base "service model", and all caGrid community provided services will expose it (including data).
+-a caGrid service is (in addition to other requirements) expected to define methods that take registered objects as input, and produce them as output.
+-we will register the CQLQuery and CQLResult classes, and data services will define a method perfomQuery that uses those classes.
+
+==============================
+The basis of the 0.5 service metadata was basically the domain-object as the type description for input and output.
+The following are the changes from domain-object and its current equivalent UMLClass:
+
+Additions:
+--------------------
+-attribute "projectName"
+  -REASON:so class can be uniquely ided
+-attribute "projectVersion"
+  -REASON:so class can be uniquely ided
+   
+Removals:
+--------------------
+-attribute "long-name"
+  -REASON: should we keep it?
+-attribute "short-name"
+  -REASON: should we keep it?
+-attribute "id"
+  -REASON: should we keep it?
+-attribute "version"
+  -REASON: should we keep it? (can you version classes independently of the project/model?... if so, is it needed for discovery?)
+
+Changes:
+--------------------
+-"full-name" was element consisting of "package-name" and "class-name",
+  this has been condensed to two attributes, respecitively named "classname" and "package"
+  -REASON: structural simplification
+-used to have a "concept-codes-list" element which had a element with the following
+ attributes ("concept-code", "concept-preferred-name", "concept-definition", "order").
+ Now has association to collection of gov.nih.nci.cadsr.umlproject.domain.SemanticMetadata
+ (with attributes conceptCode, conceptName, conceptDefinition, isPrimaryConcept, order, orderLevel)
+  -REASON: reuse available class
+-used to have a "attributes-list" element which had a list of "attribute" element, now has association to collection of UMLAttribute
+  -REASON: see below
+  
+
+"attribute" element became "UMLAttribute"
+Additions:
+--------------------  
+-attribute "isRequired"
+  -REASON: From George K.; allows service developers to specify that a given attribute isn't required to be non-null
+    do we need it?
+
+Removals:
+--------------------
+-attribute "long-name"
+  -REASON: should we keep it?
+-attribute "short-name"
+  -REASON: should we keep it?
+-attribute "id"
+  -REASON: should we keep it?
+-attribute "version"
+  -REASON: should we keep it? (can you version attributes independently of the project/model?... if so, is it needed for discovery?)
+-element "value-domain"
+  -REASON: doesn't seem like a heavily used discovery use case, and adds quite a bit of complexity, and data size, to the metdata.
+   Can be queried from caDSR grid service now.
+   Should only be in the extract if its a critical discovery scenario (find services using a class with an attribute that has some criteria in its value domain)
+
+Changes:
+--------------------
+-used to have a "concept-codes-list" element, replaced with association to SemanticMetadata (see above UMLCLass)
+  -REASON: see above (resuse)

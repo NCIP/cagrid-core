@@ -1,0 +1,126 @@
+<?xml version="1.0"?>
+<!--
+Adopted and modified from GSBT
+GSBT - Globus Service Build Tools
+-->
+<project default="all" name="Introduce Build Tools" basedir=".">
+	<!-- Define the environment variable -->
+
+	<property environment="env" />
+	<property file="${basedir}/project.properties" />
+	<property file="${basedir}/build.properties" />
+	<property name="globus.location" location="${env.GLOBUS_LOCATION}" />
+
+	<property name="jar.name" value="caGrid-Introduce-buildTools-${project.version}.jar" />
+
+	<!-- Important directories and files -->
+	<property name="src.dir" value="src" />
+	<property name="beans.src.dir" value="${src}/gov/nih/nci/cagrid/introduce/servicetasks/beans" />
+	<property name="etc.dir" value="etc" />
+	<property name="schema.dir" value="schema" />
+	<property name="ext.lib.dir" value="ext/dependencies/impl/jars" />
+
+	<!-- Build directories -->
+
+	<!-- Auxiliary directory where all the intermediate files will be placed -->
+	<property name="build.dir" location="build" />
+	<!-- Directory for compiled service classes -->
+	<property name="build.dest" location="${build.dir}/classes" />
+	<!-- Directory for compiled JAR files (additional library files required by
+	     the service will also be placed here) -->
+	<property name="build.lib.dir" location="${build.dir}/jars" />
+	<!-- Directory where stub source and class files are placed -->
+
+
+	<!-- Miscellaneous properties -->
+
+	<!-- This property is defined simply so we can write ${sep} instead of
+	     ${file.separator}, which makes some expressions too long -->
+	<property name="sep" value="${file.separator}" />
+	<!-- We want detailed error messages -->
+	<property name="java.debug" value="on" />
+
+	<!-- Sets up the build directory structure -->
+	<target name="init" depends="checkGlobus">
+		<mkdir dir="${build.dir}" />
+		<mkdir dir="${build.dest}" />
+		<mkdir dir="${build.lib.dir}" />
+	</target>
+
+	<target name="defineClasspaths">
+		<path id="base.classpath">
+			<fileset dir="${globus.location}/lib">
+				<include name="*.jar" />
+			</fileset>
+			<fileset dir="${ext.lib.dir}">
+				<include name="*.jar" />
+			</fileset>
+		</path>
+		<path id="run.classpath">
+			<pathelement location="${build.dest}" />
+			<path refid="base.classpath" />
+		</path>
+	</target>
+
+	<!-- ============================================================== -->
+	<!-- Globus properties                                              -->
+	<!-- ============================================================== -->
+	<target name="checkGlobus" depends="setGlobus">
+		<condition property="globus.not.found">
+			<or>
+				<not>
+					<isset property="ext.globus.dir" />
+				</not>
+				<equals arg1="${ext.globus.dir}" arg2="" />
+			</or>
+		</condition>
+		<fail message="Globus installation is not set in either GLOBUS_LOCATION or ext.globus.dir" if="globus.not.found" />
+		<echo message="Globus: ${ext.globus.dir}" />
+	</target>
+	<target name="setGlobus" if="env.GLOBUS_LOCATION">
+		<property name="ext.globus.dir" value="${env.GLOBUS_LOCATION}" />
+		<property name="build.stubs" location="${ext.globus.dir}/share/globus_wsrf_tools/build-stubs.xml" />
+		<property name="schema.src" location="${ext.globus.dir}/share/schema" />
+	</target>
+
+	<!-- =================================================================== -->
+	<!--  Generate Java Beans from XSD                                       -->
+	<!-- =================================================================== -->
+	<target name="generateStubs" depends="init" description="Deletes the generated Java Beans and
+		recreates them.">
+		<ant antfile="${build.stubs}" target="generateStubs" inheritall="false">
+			<property name="mapping.file" location="${basedir}/schema/namespace2package.mappings" />
+			<property name="source.stubs.dir" location="${basedir}/schema" />
+			<property name="target.stubs.dir" location="${src.dir}" />
+			<property name="wsdl.file" value="servicetoolBeans.wsdl" />
+			<property name="ns.excludes" value="" />
+		</ant>
+	</target>
+
+	<!-- Compile the implementation classes (service, resource, etc.) -->
+	<target name="compile" depends="init,defineClasspaths,generateStubs">
+		<javac srcdir="${src.dir}" classpathref="base.classpath" destdir="${build.dest}" debug="${java.debug}" deprecation="${deprecation}">
+
+		</javac>
+	</target>
+
+	<target name="jar" depends="compile">
+		<jar jarfile="${build.lib.dir}/${jar.name}">
+			<fileset dir="${build.dest}">
+				<include name="**/**" />
+			</fileset>
+		</jar>
+
+	</target>
+
+	<!-- Clean up all the intermediate files -->
+	<target name="clean">
+		<delete dir="tmp" />
+		<delete dir="${build.dir}" />
+		<delete dir="${beans.src.dir}" />
+	</target>
+
+	<!-- Default target "all" generates the GAR file -->
+	<target name="all" depends="jar" />
+
+</project>

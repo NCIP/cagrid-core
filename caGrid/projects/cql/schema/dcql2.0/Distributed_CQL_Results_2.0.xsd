@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xsd:schema 
+	xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+	xmlns:cqlr="http://CQL.caBIG/1/gov.nih.nci.cagrid.CQLResultSet"
+	xmlns:dcqlr="http://DCQL.caBIG/2/org.cagrid.data.dcql"
+	targetNamespace="http://DCQL.caBIG/2/org.cagrid.data.dcql"
+	elementFormDefault="qualified" attributeFormDefault="unqualified">
+	<xsd:import namespace="http://CQL.caBIG/1/gov.nih.nci.cagrid.CQLResultSet"
+		schemaLocation=".1_gov.nih.nci.cagrid.CQLResultSet.xsd"/>
+	
+	<xsd:element name="DCQLQueryResultsCollection" type="dcqlr:DCQLQueryResultsCollection"/>
+	<xsd:complexType name="DCQLQueryResultsCollection">
+		<xsd:annotation>
+			<xsd:documentation>Represents a collection of DCQLResults</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="DCQLResult" type="dcqlr:DCQLResult" minOccurs="0" maxOccurs="unbounded"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	
+	<xsd:complexType name="DCQLResult">
+		<xsd:sequence>
+			<xsd:element ref="cqlr:CQLQueryResultCollection"/>
+		</xsd:sequence>
+		<xsd:attribute name="targetServiceURL" use="required" type="xsd:string"/>
+	</xsd:complexType>
+</xsd:schema>

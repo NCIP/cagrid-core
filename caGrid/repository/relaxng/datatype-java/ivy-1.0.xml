@@ -1,0 +1,16 @@
+<?xml version="1.0"?>
+
+<ivy-module version="2.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:noNamespaceSchemaLocation="http://incubator.apache.org/ivy/schemas/ivy.xsd">
+
+    <info organisation="relaxng" module="datatype-java" revision="1.0" status="release">
+        <license name="BSD-like" />
+        <description homepage="https://sourceforge.net/projects/relaxng"> RELAX NG is a public space
+            for test cases and other ancillary software related to the construction of the RELAX NG
+            language and its implementations.</description>
+    </info>
+
+    <publications>
+        <artifact name="relaxngDatatype"/>
+    </publications>
+</ivy-module>

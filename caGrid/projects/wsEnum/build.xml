@@ -1,0 +1,305 @@
+<!-- ======================================================================= -->
+<!-- caGrid 1.0 WS-Enumeration build file                                    -->
+<!-- ======================================================================= -->
+<project name="caGrid-wsEnum" default="all" basedir=".">
+	<!-- Environment -->
+	<property environment="env" />
+	<property file="${basedir}/project.properties" />
+	<property file="${basedir}/build.properties" />
+
+	<property name="globus.dir" location="${env.GLOBUS_LOCATION}" />
+	<property name="introduce.ns.excludes" value="-x http://schemas.xmlsoap.org/ws/2004/09/enumeration -x gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.security" />
+
+	<!-- build with debugging information -->
+	<property name="java.debug" value="on" />
+	<!-- enforce java 1.5 compliance at build time -->
+	<property name="java.source" value="1.5" />
+
+	<!-- Information -->
+	<property name="project.name" value="${ant.project.name}" />
+	<property name="service.name" value="CaGridEnumeration" />
+
+	<!-- build output dirs -->
+	<property name="build.dir" location="build" />
+	<property name="build.classes.dir" location="${build.dir}/classes" />
+	<property name="build.jars.dir" location="${build.dir}/lib" />
+
+	<!-- jar names -->
+	<property name="project.jar.name" value="${project.name}-${project.version}.jar" />
+	<property name="stubs.jar.name" value="${project.name}-stubs-${project.version}.jar" />
+	<property name="test.jar.name" value="${project.name}-tests-${project.version}.jar" />
+	<property name="test.stubs.jar.name" value="${project.name}-test-stubs-${project.version}.jar" />
+
+	<!-- jar files -->
+	<property name="project.jar.file" value="${build.jars.dir}/${project.jar.name}" />
+	<property name="stubs.jar.file" value="${build.jars.dir}/${stubs.jar.name}" />
+	<property name="test.jar.file" value="${build.jars.dir}/${test.jar.name}" />
+	<property name="test.stubs.jar.file" value="${build.jars.dir}/${test.stubs.jar.name}" />
+
+	<!-- stubs -->
+	<property name="stubs.dir" location="${build.dir}/stubs" />
+	<property name="stubs.src" location="${stubs.dir}/src" />
+	<property name="stubs.dest" location="${stubs.dir}/classes" />
+	<property name="stubs.jar.name" value="${project.name}${cagrid.master.jar.separator}stubs.jar" />
+	<property name="stubs.jar.file" value="${build.jars.dir}/${stubs.jar.name}" />
+	<property name="ant.build.stubs" location="${globus.dir}/share/globus_wsrf_tools/build-stubs.xml" />
+
+	<!-- schemas and namespace mappings -->
+	<property name="schema.src" location="${globus.dir}/share/schema" />
+	<property name="schema.dest" location="${build.dir}/schema" />
+	<property name="mapping.src" value="${basedir}/NStoPKG.properties" />
+
+	<!-- source directories -->
+	<property name="src.dir" location="${basedir}/src/java" />
+	<property name="enum.schemas.dir" location="${basedir}/schema" />
+
+	<!-- libraries -->
+	<property name="ext.lib.dir" location="${basedir}/ext/dependencies/jars" />
+	<property name="ext.test.lib.dir" location="${basedir}/ext/dependencies/test/jars" />
+	<property name="ext.schema.dir" location="${basedir}/ext/dependencies/xsd" />
+
+	<!-- testing stuff -->
+	<property name="test.dir" location="${basedir}/test" />
+	<property name="test.src.dir" location="${test.dir}/src/java" />
+	<property name="test.stubs.src" location="${stubs.dir}/test/src" />
+	<property name="test.stubs.dir" location="${stubs.dir}/test/classes" />
+	<property name="test.classes.dir" location="${build.dir}/test/classes" />
+	<property name="test.resources.dir" location="${basedir}/test/resources" />
+	<property name="test.lib.dir" location="${test.dir}/lib" />
+	<property name="test.logs.dir" location="${test.dir}/logs" />
+
+	<import file="test/test.xml" />
+
+	<!-- =============================================================== -->
+	<!-- The Test Classpath                                              -->
+	<!-- =============================================================== -->
+	<path id="test.classpath">
+		<fileset dir="${test.lib.dir}">
+			<include name="**/*.jar" />
+		</fileset>
+		<fileset dir="${ext.test.lib.dir}">
+			<include name="**/*.jar" />
+		</fileset>
+		<fileset dir="${ext.lib.dir}">
+			<include name="**/*.jar" />
+		</fileset>
+		<fileset dir="${build.jars.dir}">
+			<include name="**/*.jar" />
+		</fileset>
+		<fileset dir="${globus.dir}/lib">
+			<include name="**/*.jar" />
+            <exclude name="junit.jar"/>
+		</fileset>
+	</path>
+
+
+	<!-- sets up GT4 related variables -->
+	<target name="setGlobus" if="env.GLOBUS_LOCATION">
+		<!-- GT4 build files and directories-->
+		<property name="ext.globus.dir" value="${env.GLOBUS_LOCATION}" />
+		<property name="build.stubs" location="${ext.globus.dir}/share/globus_wsrf_tools/build-stubs.xml" />
+		<property name="schema.src" location="${ext.globus.dir}/share/schema" />
+		<property name="build.packages" location="${ext.globus.dir}/share/globus_wsrf_common/build-packages.xml" />
+		<!-- Copied from build.stubs file, as there is no way to "append" to the value in the remote file -->
+		<property name="GT4.ns.excludes" value="-x http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-BaseFaults-1.2-draft-01.xsd -x http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-BaseFaults-1.2-draft-01.wsdl -x http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ResourceLifetime-1.2-draft-01.xsd -x http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ResourceLifetime-1.2-draft-01.wsdl -x http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ResourceProperties-1.2-draft-01.xsd -x http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ResourceProperties-1.2-draft-01.wsdl -x http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ServiceGroup-1.2-draft-01.xsd -x http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ServiceGroup-1.2-draft-01.wsdl -x http://docs.oasis-open.org/wsn/2004/06/wsn-WS-BaseNotification-1.2-draft-01.xsd -x http://docs.oasis-open.org/wsn/2004/06/wsn-WS-BaseNotification-1.2-draft-01.wsdl -x http://schemas.xmlsoap.org/ws/2004/04/trust -x http://schemas.xmlsoap.org/ws/2002/12/policy -x http://schemas.xmlsoap.org/ws/2002/07/utility -x http://schemas.xmlsoap.org/ws/2004/04/sc -x http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-secext-1.0.xsd -x http://www.w3.org/2000/09/xmldsig# -x http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd" />
+	</target>
+
+
+	<!-- creates output directories -->
+	<target name="init">
+		<!-- make build and output directories -->
+		<mkdir dir="${build.dir}" />
+		<mkdir dir="${build.classes.dir}" />
+		<mkdir dir="${build.jars.dir}" />
+		<mkdir dir="${test.classes.dir}" />
+		<mkdir dir="${stubs.dir}" />
+		<mkdir dir="${stubs.src}" />
+		<mkdir dir="${stubs.dest}" />
+		<mkdir dir="${test.stubs.src}" />
+		<mkdir dir="${test.stubs.dir}" />
+		<mkdir dir="${schema.dest}" />
+		<mkdir dir="${schema.dest}/CaGridEnumeration" />
+		<!-- copy schemas to the output directory -->
+		<copy toDir="${schema.dest}/CaGridEnumeration">
+			<!-- schemas for this service -->
+			<fileset dir="schema" casesensitive="yes">
+				<include name="*.xsd" />
+				<include name="*.wsdl" />
+			</fileset>
+			<fileset dir="schema/CaGridEnumeration" casesensitive="yes">
+				<include name="*.xsd" />
+				<include name="*.wsdl" />
+			</fileset>
+		</copy>
+		<copy toDir="${schema.dest}/CaGridEnumeration/xsd">
+			<fileset dir="${ext.schema.dir}" casesensitive="yes">
+				<include name="**/*.xsd" />
+				<include name="**/*.wsdl" />
+			</fileset>
+		</copy>
+		<copy todir="${schema.dest}">
+			<!-- globus schemas -->
+			<fileset dir="${schema.src}" casesensitive="yes">
+				<include name="wsrf/**/*" />
+				<include name="ws/**/*" />
+			</fileset>
+		</copy>
+		<available property="stubs.present" type="dir" file="${stubs.dest}/gov/nih/nci/cagrid" />
+	</target>
+
+	<target name="merge" depends="init">
+		<!-- Merge our namespace mappings file with the GT4 mappins file -->
+		<ant antfile="${build.stubs}" target="mergePackageMapping" inheritall="false">
+			<property name="mapping.src" location="${mapping.src}" />
+			<property name="mapping.dst" location="${build.dir}/namespace2package.mappings" />
+		</ant>
+	</target>
+
+
+	<!-- Generate bindings for our WSDL file -->
+	<!-- This is done with a GT4 tool -->
+	<target name="serviceGenerateBindings" depends="setGlobus,init">
+		<ant antfile="${build.stubs}" target="generateBinding" inheritall="false">
+			<property name="source.binding.dir" value="${schema.dest}/CaGridEnumeration" />
+			<property name="target.binding.dir" value="${schema.dest}/CaGridEnumeration" />
+			<property name="porttype.wsdl" value="CaGridEnumeration.wsdl" />
+			<property name="binding.root" value="CaGridEnumeration" />
+		</ant>
+	</target>
+
+	<!-- Generate the stub source files -->
+	<!-- This is done with a GT4 tool -->
+	<target name="serviceStubs" depends="setGlobus,serviceGenerateBindings, merge">
+		<!-- Invoke the stub generator -->
+		<ant antfile="${build.stubs}" target="generateStubs" inheritall="false">
+			<property name="mapping.file" location="${build.dir}/namespace2package.mappings" />
+			<property name="source.stubs.dir" location="${schema.dest}/CaGridEnumeration" />
+			<property name="target.stubs.dir" location="${stubs.src}" />
+			<property name="wsdl.file" value="CaGridEnumeration_service.wsdl" />
+			<property name="ns.excludes" value="${GT4.ns.excludes} ${introduce.ns.excludes}" />
+		</ant>
+	</target>
+
+
+	<!-- generate stubs for Bookstore classes used in testing -->
+	<target name="createBookstoreBeans" depends="setGlobus, merge">
+		<ant antfile="${ant.build.stubs}" target="generateStubs">
+			<property name="mapping.file" location="${build.dir}/namespace2package.mappings" />
+			<property name="source.stubs.dir" location="${test.resources.dir}" />
+			<property name="wsdl.file" value="bookstore.wsdl" />
+			<property name="target.stubs.dir" location="${test.stubs.src}" />
+		</ant>
+	</target>
+
+
+	<!-- Compile the stubs generated in the previous step -->
+	<target name="compileStubs" depends="serviceStubs, createBookstoreBeans">
+		<javac srcdir="${stubs.src}" destdir="${stubs.dest}" debug="${java.debug}" source="${java.source}">
+			<classpath>
+				<fileset dir="${ext.lib.dir}">
+					<include name="*.jar" />
+				</fileset>
+				<fileset dir="${globus.dir}/lib">
+					<include name="*.jar" />
+                    <exclude name="junit.jar"/>
+				</fileset>
+			</classpath>
+			<include name="**/*.java" />
+		</javac>
+		<javac srcdir="${test.stubs.src}" destdir="${test.stubs.dir}" debug="${java.debug}" source="${java.source}">
+			<classpath>
+				<fileset dir="${ext.lib.dir}">
+					<include name="*.jar" />
+				</fileset>
+				<fileset dir="${globus.dir}/lib">
+					<include name="*.jar" />
+                    <exclude name="junit.jar"/>
+				</fileset>
+			</classpath>
+		</javac>
+	</target>
+
+	<!-- compiles the common classes for data services -->
+	<target name="compile" depends="init, compileStubs">
+		<javac srcdir="${src.dir}" destdir="${build.classes.dir}" debug="${java.debug}" source="${java.source}">
+			<classpath>
+				<pathelement location="${stubs.dest}" />
+				<fileset dir="${ext.lib.dir}">
+					<include name="*.jar" />
+				</fileset>
+				<fileset dir="${globus.dir}/lib">
+					<include name="*.jar" />
+                    <exclude name="junit.jar"/>
+				</fileset>
+			</classpath>
+		</javac>
+	</target>
+
+
+	<!-- compiles the test code -->
+	<target name="compileTests" depends="init, compile">
+		<javac srcdir="${test.src.dir}" destdir="${test.classes.dir}" debug="${java.debug}" source="${java.source}">
+			<classpath refid="test.classpath" />
+			<classpath>
+				<pathelement location="${test.stubs.dir}" />
+			</classpath>
+		</javac>
+	</target>
+
+
+	<!-- jars the common classes -->
+	<target name="jar" depends="compile" description="Builds and jars the classes">
+		<jar destfile="${project.jar.file}">
+			<fileset dir="${build.classes.dir}">
+				<include name="**/*.class" />
+			</fileset>
+			<fileset dir="${src.dir}/client">
+				<include name="**/*.java" />
+				<include name="**/*.xml" />
+			</fileset>
+			<fileset dir="${src.dir}/common">
+				<include name="**/*.java" />
+				<include name="**/*.xml" />
+			</fileset>
+			<fileset dir="${src.dir}/utils">
+				<include name="**/*.java" />
+				<include name="**/*.xml" />
+			</fileset>
+		</jar>
+		<jar destfile="${stubs.jar.file}">
+			<fileset dir="${stubs.dest}">
+				<include name="**/*.class" />
+			</fileset>
+			<fileset dir="${stubs.src}">
+				<include name="**/*.java" />
+			</fileset>
+		</jar>
+	</target>
+	<target name="jarTests" depends="compileTests" description="Builds and jars the test classes">
+		<jar destfile="${test.jar.file}">
+			<fileset dir="${test.classes.dir}">
+				<include name="**/*.class" />
+			</fileset>
+			<fileset dir="${test.src.dir}">
+				<include name="**/*.java" />
+			</fileset>
+		</jar>
+		<jar destfile="${test.stubs.jar.file}">
+			<fileset dir="${test.stubs.dir}">
+				<include name="**/*.class" />
+			</fileset>
+			<fileset dir="${test.stubs.src}">
+				<include name="**/*.java" />
+			</fileset>
+		</jar>
+	</target>
+
+	<!-- removes all build output -->
+	<target name="clean">
+		<delete dir="tmp" />
+		<delete dir="${build.dir}" />
+	</target>
+
+	<!-- build and jar everything -->
+	<target name="all" depends="jar,jarTests" description="Builds and jars all the classes in the project" />
+</project>

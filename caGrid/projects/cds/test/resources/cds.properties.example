@@ -1,0 +1,18 @@
+#General Configuration
+
+gaards.cds.name=test_cds
+gaards.cds.max.delegation.path.length=0
+
+# Database Configuration
+
+gaards.cds.db.host=localhost
+gaards.cds.db.port=3306
+gaards.cds.db.user=root
+gaards.cds.db.password=
+
+
+#Key Manager Configuration
+
+gaards.cds.dbkeymanager.key.encyption.password=password
+
+

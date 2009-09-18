@@ -1,0 +1,8 @@
+<ns1:CQLQueryResults targetClassname="gov.nih.nci.cabio.domain.Chromosome" xsi:type="ns1:CQLQueryResults" xmlns:ns1="http://CQL.caBIG/1/gov.nih.nci.cagrid.CQLResultSet" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+ <ns1:ObjectResult xsi:type="ns1:CQLObjectResult">
+  <ns3:Chromosome id="21" number="10" xsi:type="ns3:Chromosome" xmlns:ns3="gme://caCORE.cabig/3.0/gov.nih.nci.cabio.domain"/>
+ </ns1:ObjectResult>
+ <ns1:ObjectResult xsi:type="ns1:CQLObjectResult">
+  <ns5:Chromosome id="29" number="10" xsi:type="ns5:Chromosome" xmlns:ns5="gme://caCORE.cabig/3.0/gov.nih.nci.cabio.domain"/>
+ </ns1:ObjectResult>
+</ns1:CQLQueryResults>

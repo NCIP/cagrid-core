@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema targetNamespace="http://cabiods.cagrid.nci.nih.gov/CabioDataService/CQLResultTypes" xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified">
+    
+    <!-- Exposed Objects' schemas are imported here -->
+	<xs:import namespace="gme://caCORE.cabig/3.0/gov.nih.nci.cabio.domain" schemaLocation="./caCORE.cabig-3.0_gov.nih.nci.cabio.domain.xsd"/>
+
+
+
+    <xs:group name="PermissibleCQLObjectResults">
+        <xs:choice>        
+        <!-- element references to exposed objects -->
+		<xs:element ref="ns0:Taxon" xmlns:ns0="gme://caCORE.cabig/3.0/gov.nih.nci.cabio.domain"/>
+		<xs:element ref="ns0:Gene" xmlns:ns0="gme://caCORE.cabig/3.0/gov.nih.nci.cabio.domain"/>
+ 
+        </xs:choice>
+    </xs:group>
+</xs:schema>

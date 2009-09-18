@@ -1,0 +1,19 @@
+<gts>
+	<resource name="GTSConfiguration"
+		class="gov.nih.nci.cagrid.gts.service.Configuration">
+		<gts-config>
+			<gts-internal-id>GTS</gts-internal-id>
+			<sync-authorities hours="0" minutes="2" seconds="0"/>
+			<database>
+				<name/>
+				<driver>com.mysql.jdbc.Driver</driver>
+				<urlPrefix>jdbc:mysql:</urlPrefix>
+				<host>localhost</host>
+				<port>3306</port>
+				<username>root</username>
+				<password></password>
+				<pool>1</pool>
+			</database>
+		</gts-config>
+	</resource>
+</gts>

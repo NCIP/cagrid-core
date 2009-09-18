@@ -1,0 +1,11 @@
+<?xml version="1.0"?>
+
+<ivy-module version="2.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:noNamespaceSchemaLocation="http://incubator.apache.org/ivy/schemas/ivy.xsd">
+
+	<info organisation="jgoodies" module="validation" revision="2.0.0">
+		<license name="BSD" url="http://www.opensource.org/osi3.0/licenses/bsd-license.php"/>
+		<description>The JGoodies validation API</description>
+	</info>
+</ivy-module>

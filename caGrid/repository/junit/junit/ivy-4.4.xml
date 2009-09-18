@@ -1,0 +1,22 @@
+<?xml version="1.0"?>
+
+<ivy-module version="2.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:noNamespaceSchemaLocation="http://incubator.apache.org/ivy/schemas/ivy.xsd">
+
+	<info organisation="junit" module="junit" revision="4.4">
+		<license name="Common Public License - v 1.0" url="http://junit.sourceforge.net/cpl-v10.html"/>
+		<description homepage="http://junit.sourceforge.net/">JUnit</description>
+
+	</info>
+
+	<configurations>
+                <conf name="default" visibility="public"/>
+	</configurations>
+
+
+	<publications>
+		<artifact name="junit" type="jar" conf="default"/>
+	</publications>
+
+	<dependencies/>
+</ivy-module>

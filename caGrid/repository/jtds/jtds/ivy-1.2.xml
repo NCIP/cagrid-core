@@ -1,0 +1,23 @@
+<?xml version="1.0"?>
+
+<ivy-module version="2.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:noNamespaceSchemaLocation="http://incubator.apache.org/ivy/schemas/ivy.xsd">
+
+	<info organisation="jtds" module="jtds" revision="1.2">
+		<license name="LGPL" url="http://www.gnu.org/licenses/lgpl.html"/>
+		<description homepage="http://jtds.sourceforge.net/"> jTDS is an open source 100% pure Java
+			(type 4) JDBC 3.0 driver for Microsoft SQL Server (6.5, 7, 2000 and 2005) and Sybase
+			(10, 11, 12, 15). jTDS is based on FreeTDS and is currently the fastest production-ready
+			JDBC driver for SQL Server and Sybase. jTDS is 100% JDBC 3.0 compatible, supporting
+			forward-only and scrollable/updateable ResultSets, concurrent (completely independent)
+			Statements and implementing all the DatabaseMetaData and ResultSetMetaData methods.
+			Check out the feature matrix for more details. Quite a few of the commercial JDBC
+			drivers out there are based on jTDS (or FreeTDS), even if they no longer acknowledge
+			this. jTDS has been tested with virtually all JDBC-based database management tools and
+			is the driver of choice for most of these (recommended for DbVisualizer and SQuirreL
+			SQL, distributed with Aqua Data Studio and DataDino). jTDS is also becoming a common
+			choice for enterprise-level applications: it passes both the J2EE 1.3 certification and
+			Hibernate test suites, and is recommended for JBoss, Hibernate, Atlassian JIRA and
+			Confluence and Compiere.</description>
+	</info>
+</ivy-module>

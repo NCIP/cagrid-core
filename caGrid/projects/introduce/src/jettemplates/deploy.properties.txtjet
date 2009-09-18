@@ -1,0 +1,14 @@
+<%@ jet package="gov.nih.nci.cagrid.introduce.templates" class="DeployPropertiesTemplate" %>
+<% gov.nih.nci.cagrid.introduce.common.ServiceInformation info = (gov.nih.nci.cagrid.introduce.common.ServiceInformation) argument;
+  String serviceName = info.getIntroduceServiceProperties().getProperty("introduce.skeleton.service.name");
+   String namespaceDomain = info.getIntroduceServiceProperties().getProperty("introduce.skeleton.namespace.domain");
+   String modifiedServiceName = serviceName;
+   if(serviceName.endsWith("Service")){
+   	modifiedServiceName = serviceName.substring(0,serviceName.length()-7);
+   }
+%>
+service.deployment.prefix=<%=gov.nih.nci.cagrid.introduce.common.ConfigurationUtil.getIntroduceServiceDefaults().getDeploymentPrefix()%>
+perform.index.service.registration=true
+index.service.url=<%=gov.nih.nci.cagrid.introduce.common.ConfigurationUtil.getIntroduceServiceDefaults().getIndexServiceRegistrationURL()%>
+index.service.registration.refresh_seconds=300
+index.service.index.refresh_milliseconds=3600000

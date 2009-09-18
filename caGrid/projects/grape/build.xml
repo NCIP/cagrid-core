@@ -1,0 +1,142 @@
+<!-- ======================================================================= -->
+<!-- caGrid 1.0 GRAPE build file                                   -->
+<!-- ======================================================================= -->
+<project name="caGrid-grape" default="all" basedir=".">
+	<!-- Environment -->
+	<property environment="env" />
+	<property file="${basedir}/project.properties" />
+	<property file="${basedir}/build.properties" />
+	<property name="globus.location" location="${env.GLOBUS_LOCATION}" />
+
+	<!-- Information -->
+	<property name="project.name" value="${ant.project.name}" />
+
+	<property name="build.dir" location="build" />
+	<property name="build.dest" location="build/classes" />
+	<property name="build.jars.dir" location="build/jars" />
+
+	<property name="stubs.dir" location="build/stubs" />
+	<property name="stubs.src" location="build/stubs/src" />
+	<property name="stubs.dest" location="build/stubs/classes" />
+	<property name="grape.jar.name" value="${project.name}-${project.version}.jar" />
+	<property name="resources.jar.name" value="${project.name}-resources-${project.version}.jar" />
+	<property name="ant.build.stubs" location="${globus.location}/share/globus_wsrf_tools/build-stubs.xml" />
+	<property name="java.debug" value="on" />
+	<property name="schema.src" location="${globus.location}/share/schema" />
+	<property name="schema.dest" location="${build.dir}/schema" />
+	<property name="mapping.src" value="${basedir}/NStoPkg.properties" />
+	<property name="src.dir" value="src" />
+	<property name="ext.lib.dir" value="${basedir}/ext/dependencies/default/jars" />
+	<!-- Copied from build.stubs file, as there is no way to "append" to the value in the remote file -->
+	<property name="GT4.ns.excludes" value="-x http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-BaseFaults-1.2-draft-01.xsd -x http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-BaseFaults-1.2-draft-01.wsdl -x http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ResourceLifetime-1.2-draft-01.xsd -x http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ResourceLifetime-1.2-draft-01.wsdl -x http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ResourceProperties-1.2-draft-01.xsd -x http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ResourceProperties-1.2-draft-01.wsdl -x http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ServiceGroup-1.2-draft-01.xsd -x http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ServiceGroup-1.2-draft-01.wsdl -x http://docs.oasis-open.org/wsn/2004/06/wsn-WS-BaseNotification-1.2-draft-01.xsd -x http://docs.oasis-open.org/wsn/2004/06/wsn-WS-BaseNotification-1.2-draft-01.wsdl -x http://schemas.xmlsoap.org/ws/2004/04/trust -x http://schemas.xmlsoap.org/ws/2002/12/policy -x http://schemas.xmlsoap.org/ws/2002/07/utility -x http://schemas.xmlsoap.org/ws/2004/04/sc -x http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-secext-1.0.xsd -x http://www.w3.org/2000/09/xmldsig# -x http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd" />
+
+	<target name="init">
+		<mkdir dir="${build.dir}" />
+		<mkdir dir="${build.dest}" />
+		<mkdir dir="${build.jars.dir}" />
+		<mkdir dir="${stubs.dir}" />
+		<mkdir dir="${stubs.src}" />
+		<mkdir dir="${stubs.dest}" />
+		<mkdir dir="${schema.dest}" />
+		<copy toDir="${schema.dest}">
+			<fileset dir="schema" casesensitive="yes">
+				<include name="**" />
+			</fileset>
+		</copy>
+	</target>
+
+
+	<target name="defineClasspaths">
+		<path id="base.classpath">
+			<fileset dir="${ext.lib.dir}">
+				<include name="*.jar" />
+			</fileset>
+			<fileset dir="${globus.location}/lib">
+				<include name="*.jar" />
+                <exclude name="junit.jar"/>
+				<!-- Exclude UI and client jars -->
+				<exclude name="caGrid-.jar" />
+			</fileset>
+		</path>
+		<path id="compile.classpath">
+			<path refid="base.classpath" />
+			<pathelement location="${stubs.dest}" />
+		</path>
+		<path id="run.classpath">
+			<pathelement location="${build.dest}" />
+			<path refid="compile.classpath" />
+		</path>
+	</target>
+
+
+	<target name="stubs" depends="init">
+		<property name="mapping.dst" value="${build.dir}/NStoPkg.properties" />
+		<ant antfile="${ant.build.stubs}" target="mergePackageMapping" />
+		<property name="mapping.file" value="${mapping.dst}" />
+		<!-- GRAPE SCHEMA -->
+		<ant antfile="${ant.build.stubs}" target="generateStubs">
+			<property name="source.stubs.dir" location="${schema.dest}" />
+			<property name="wsdl.file" value="Grape.wsdl" />
+			<property name="target.stubs.dir" location="${stubs.src}" />
+			<property name="ns.excludes" value="${GT4.ns.excludes}" />
+		</ant>
+
+		<!-- GRAPE GENERAL CONFIGURATION SCHEMA -->
+		<ant antfile="${ant.build.stubs}" target="generateStubs">
+			<property name="source.stubs.dir" location="${schema.dest}" />
+			<property name="wsdl.file" value="GrapeGeneralConfiguration.wsdl" />
+			<property name="target.stubs.dir" location="${stubs.src}" />
+			<property name="ns.excludes" value="${GT4.ns.excludes}" />
+		</ant>
+
+		<!-- GRAPE SERVICE CONFIGURATION SCHEMA -->
+		<ant antfile="${ant.build.stubs}" target="generateStubs">
+			<property name="source.stubs.dir" location="${schema.dest}" />
+			<property name="wsdl.file" value="GrapeServiceConfiguration.wsdl" />
+			<property name="target.stubs.dir" location="${stubs.src}" />
+			<property name="ns.excludes" value="${GT4.ns.excludes}" />
+		</ant>
+	</target>
+
+
+	<target name="compileStubs" depends="defineClasspaths,stubs">
+		<delete dir="${stubs.src}/org/apache" />
+		<javac srcdir="${stubs.src}" destdir="${stubs.dest}" classpathref="base.classpath" debug="${java.debug}">
+			<include name="**/*.java" />
+		</javac>
+	</target>
+
+	<target name="compile" depends="compileStubs">
+		<javac srcdir="${src.dir}" classpathref="compile.classpath" destdir="${build.dest}" debug="${java.debug}" deprecation="${deprecation}">
+
+		</javac>
+	</target>
+
+
+	<target name="jar" depends="compile">
+		<jar destfile="${build.jars.dir}/${grape.jar.name}">
+			<fileset dir="${stubs.dest}">
+				<include name="**" />
+			</fileset>
+			<fileset dir="${build.dest}">
+				<include name="**" />
+			</fileset>
+			<fileset dir="${src.dir}">
+				<include name="**" />
+			</fileset>
+			<fileset dir="${stubs.src}">
+				<include name="**" />
+			</fileset>
+		</jar>
+		<jar jarfile="${build.jars.dir}/${resources.jar.name}">
+			<fileset dir="resources/ui/common" />
+		</jar>
+	</target>
+
+	<target name="clean">
+		<delete dir="tmp" />
+		<delete dir="${build.dir}" />
+	</target>
+
+	<target name="all" depends="jar" />
+</project>

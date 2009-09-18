@@ -1,0 +1,41 @@
+<xs:schema targetNamespace="http://gaards.cagrid.org/core-types"
+	attributeFormDefault="qualified" elementFormDefault="qualified"
+	xmlns:xs="http://www.w3.org/2001/XMLSchema"
+	xmlns:gaards="http://gaards.cagrid.org/core-types">
+	
+	<xs:element name="Credential" type="gaards:Credential" />
+
+	<xs:complexType name="Credential" abstract="true" />
+
+	<xs:element name="BasicAuthentication" type="gaards:BasicAuthentication" />
+
+	<xs:complexType name="BasicAuthentication">
+		<xs:complexContent>
+			<xs:extension base="gaards:Credential">
+				<xs:attribute name="userId" use="required" type="xs:string" />
+		        <xs:attribute name="password" use="required" type="xs:string" />
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	
+	<xs:element name="BasicAuthenticationWithOneTimePassword"
+		type="gaards:BasicAuthenticationWithOneTimePassword" />
+
+	<xs:complexType name="BasicAuthenticationWithOneTimePassword">
+		<xs:complexContent>
+			<xs:extension base="gaards:BasicAuthentication">
+		        <xs:attribute name="oneTimePassword" use="required" type="xs:string" />
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	
+	<xs:element name="EncodedX509Certificate" type="gaards:EncodedX509Certificate"/>
+		<xs:complexType name="EncodedX509Certificate">
+			<xs:sequence>
+				<xs:element name="encodedCertificate" minOccurs="1" maxOccurs="1" type="xs:string"/>
+			</xs:sequence>
+		</xs:complexType>
+	
+	
+		
+</xs:schema>

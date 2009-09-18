@@ -1,0 +1,13 @@
+<?xml version="1.0"?>
+
+<ivy-module version="2.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:noNamespaceSchemaLocation="http://incubator.apache.org/ivy/schemas/ivy.xsd">
+
+	<info organisation="aopalliance" module="aopalliance" revision="1.0">
+		<license name="Public Domain"/>
+		<description homepage="http://aopalliance.sourceforge.net/">The AOP Alliance project is a
+			joint open-source project between several software engineering people who are interested
+			in AOP and Java.</description>
+	</info>
+
+</ivy-module>

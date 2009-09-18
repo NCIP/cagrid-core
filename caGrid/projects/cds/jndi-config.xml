@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jndiConfig xmlns="http://wsrf.globus.org/jndi/config">
+  <service name="SERVICE-INSTANCE-PREFIX/DelegatedCredential">
+    <resource name="configuration" type="org.cagrid.gaards.cds.delegated.service.globus.resource.DelegatedCredentialResourceConfiguration">
+      <resourceParams>
+        <parameter>
+          <name>factory</name>
+          <value>org.globus.wsrf.jndi.BeanFactory</value>
+        </parameter>
+        <parameter>
+          <name>performRegistration</name>
+          <!-- Set this to false to skip ServiceGroup registration -->
+          <value>PERFORM_REGISTRATION</value>
+        </parameter>
+        <parameter>
+          <name>registrationTemplateFile</name>
+          <!-- Set this to the relative path (from the container root, e.g GLOBUS_LOCATION for globus container) of the registration parameters template file (ignored if performRegistration is false) -->
+          <value>ETC-PATH/DelegatedCredential_registration.xml</value>
+        </parameter>
+      </resourceParams>
+    </resource>
+    <resource name="home" type="org.cagrid.gaards.cds.delegated.service.DelegatedCredentialResourceHome">
+      <resourceParams>
+        <parameter>
+          <name>factory</name>
+          <value>org.globus.wsrf.jndi.BeanFactory</value>
+        </parameter>
+      </resourceParams>
+    </resource>
+    <resourceLink name="serviceconfiguration" target="java:comp/env/services/SERVICE-INSTANCE-PREFIX/CredentialDelegationService/serviceconfiguration" />
+    <resourceLink name="credentialDelegationServiceHome" target="java:comp/env/services/SERVICE-INSTANCE-PREFIX/CredentialDelegationService/home" />
+  </service>
+  <service name="SERVICE-INSTANCE-PREFIX/CredentialDelegationService">
+    <resource name="configuration" type="org.cagrid.gaards.cds.service.globus.resource.CredentialDelegationServiceResourceConfiguration">
+      <resourceParams>
+        <parameter>
+          <name>factory</name>
+          <value>org.globus.wsrf.jndi.BeanFactory</value>
+        </parameter>
+        <parameter>
+          <name>performRegistration</name>
+          <!-- Set this to false to skip ServiceGroup registration -->
+          <value>PERFORM_REGISTRATION</value>
+        </parameter>
+        <parameter>
+          <name>registrationTemplateFile</name>
+          <!-- Set this to the relative path (from the container root, e.g GLOBUS_LOCATION for globus container) of the registration parameters template file (ignored if performRegistration is false) -->
+          <value>ETC-PATH/CredentialDelegationService_registration.xml</value>
+        </parameter>
+        <parameter>
+          <name>serviceMetadataFile</name>
+          <!-- Set this to the relative path (from the container root, e.g GLOBUS_LOCATION for globus container) of the serviceMetadata extract -->
+          <value>ETC-PATH/serviceMetadata.xml</value>
+        </parameter>
+      </resourceParams>
+    </resource>
+    <resource name="serviceconfiguration" type="org.cagrid.gaards.cds.service.CredentialDelegationServiceConfiguration">
+      <resourceParams>
+        <parameter>
+          <name>factory</name>
+          <value>org.globus.wsrf.jndi.BeanFactory</value>
+        </parameter>
+        <parameter>
+          <name>etcDirectoryPath</name>
+          <value>ETC-PATH</value>
+        </parameter>
+        <parameter>
+          <name>cdsConfiguration</name>
+          <value>ETC-PATH/@cdsConfiguration@</value>
+        </parameter>
+        <parameter>
+          <name>cdsProperties</name>
+          <value>ETC-PATH/@cdsProperties@</value>
+        </parameter>
+      </resourceParams>
+    </resource>
+    <resource name="home" type="org.cagrid.gaards.cds.service.globus.resource.CredentialDelegationServiceResourceHome">
+      <resourceParams>
+        <parameter>
+          <name>factory</name>
+          <value>org.globus.wsrf.jndi.BeanFactory</value>
+        </parameter>
+      </resourceParams>
+    </resource>
+    <resourceLink name="delegatedCredentialHome" target="java:comp/env/services/SERVICE-INSTANCE-PREFIX/DelegatedCredential/home" />
+  </service>
+</jndiConfig>
+

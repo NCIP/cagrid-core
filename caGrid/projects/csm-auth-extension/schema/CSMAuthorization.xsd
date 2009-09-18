@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns="http://org.cagrid.csm/1/CSMAuthorization"
+	xmlns:xs="http://www.w3.org/2001/XMLSchema"
+	targetNamespace="http://org.cagrid.csm/1/CSMAuthorization" elementFormDefault="qualified"
+	attributeFormDefault="unqualified">
+	
+	<xs:complexType name="CSMServiceAuthorization">
+		<xs:sequence>
+			<xs:element name="ServiceName" type="xs:string"></xs:element>
+			<xs:element ref="CSMAuthorizationDescription" minOccurs="0" maxOccurs="1"></xs:element>
+			<xs:element ref="CSMMethodAuthorization" minOccurs="0" maxOccurs="unbounded"></xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	
+	<xs:element name="CSMMethodAuthorization" type="CSMMethodAuthorization"></xs:element>
+	<xs:complexType name="CSMMethodAuthorization">
+		<xs:sequence>
+			<xs:element name="MethodName" type="xs:string"></xs:element>
+			<xs:element ref="CSMAuthorizationDescription"
+				minOccurs="1" maxOccurs="1">
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	
+	<xs:element name="CSMAuthorizationDescription" type="CSMAuthorizationDescription"></xs:element>
+	<xs:complexType name="CSMAuthorizationDescription">
+		<xs:sequence>
+		    <xs:element name="ApplicationContext" minOccurs="1" maxOccurs="1" type="xs:string"/>
+			<xs:element name="ProtectionMethod" minOccurs="1" maxOccurs="1" type="ProtectionMethod"/>
+			<xs:element name="CustomProtectionMethod" minOccurs="0" maxOccurs="1" type="xs:string"/>
+			<xs:element name="Privilege" minOccurs="1" maxOccurs="1" type="xs:string"/>
+		</xs:sequence>
+	</xs:complexType>
+		
+
+	<xs:simpleType name="ProtectionMethod">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="ServiceURI"/>
+			<xs:enumeration value="ServiceType"/>
+			<xs:enumeration value="Custom"/>
+		</xs:restriction>
+	</xs:simpleType>
+	
+	
+</xs:schema>

@@ -1,0 +1,24 @@
+<?xml version="1.0"?>
+
+<ivy-module version="2.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:noNamespaceSchemaLocation="http://incubator.apache.org/ivy/schemas/ivy.xsd">
+
+  <info organisation="cacore" module="sdk" revision="4.1">
+    <description> The NCICB caCORE SDK</description>
+  </info>
+
+  <configurations>
+    <!-- Public Configurations-->
+    <conf name="sdk-src" visibility="public" />
+    <conf name="example-trimmed" visibility="public"/>
+  </configurations>
+
+  <publications>
+    <artifact name="caCORE_SDK_411-src" type="zip" conf="sdk-src"/>
+    <artifact name="sdk411-trimmed" type="zip" conf="example-trimmed" />
+  </publications>
+
+  <dependencies>
+    <!-- no external dependencies for the trimmed SDK 4.1.1 example zip -->
+  </dependencies>
+</ivy-module>

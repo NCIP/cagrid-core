@@ -1,0 +1,63 @@
+<!-- ======================================================================= -->
+<!-- caGrid Analytical Utilities build file                                  -->
+<!-- ======================================================================= -->
+<project name="introduce_creator" basedir="." default="usage">
+	<!-- Define the environment variable -->
+	<property environment="env"/>
+	<property name="ext.globus.location" location="${env.GLOBUS_LOCATION}"/>
+	<property name="introduce.skeleton.destination.dir.default" value="HelloWorld"/>
+	<target name="usage">
+		<echo message="Not to be called directly.  This file contains utilities to be used in other
+			build files."/>
+	</target>
+	
+	<target name="resyncService" depends="checkResyncInputProps, prepareResyncSkeleton" description="Uses the introduceMethods.xml to add and remove methods to this service skeleton">
+		<java classname="gov.nih.nci.cagrid.introduce.codegen.SyncTools" fork="yes" failonerror="true">
+			<sysproperty key="GLOBUS_LOCATION" value="${ext.globus.location}"/>
+			<arg value="-d" />
+			<arg value="${introduce.skeleton.destination.dir}" />
+			<!--
+			<jvmarg value="-Xdebug"/>
+			<jvmarg value="-Xnoagent"/>
+			<jvmarg value="-Djava.compiler=NONE"/>
+			<jvmarg value="-Xrunjdwp:transport=dt_socket,server=y,address=8000"/>	
+		    -->
+			<classpath>
+				<fileset dir="${build.lib.dir}">
+					<include name="*.jar" />
+				</fileset>
+				<fileset dir="${lib.dir}">
+					<include name="*.jar" />
+				</fileset>
+				<fileset dir="${ext.lib.dir}">
+					<include name="*.jar" />
+				</fileset>
+				<fileset dir="${extensions.lib.dir}">
+					<include name="*.jar" />
+					<exclude name="${jars.prefixname}*.jar"/>
+				</fileset>
+				<fileset dir="${ant.library.dir}">
+					<include name="*.jar" />
+				</fileset>
+				<fileset dir="${ext.globus.location}/lib">
+					<include name="*.jar" />
+                    <exclude name="junit.jar"/>
+				</fileset>
+			</classpath>
+		</java>
+	</target>
+	
+	<target name="checkResyncInputProps">
+		<condition property="noInputNeeded">
+			<isset property="introduce.skeleton.destination.dir"/>		
+		</condition>
+	</target>
+	<target name="prepareResyncSkeleton" unless="noInputNeeded">
+		<input message="Please enter the location of your service
+			[${introduce.service.location.dir.default}]:"
+			addproperty="introduce.skeleton.destination.dir"
+			defaultvalue="${introduce.skeleton.destination.dir.default}"/>
+	</target>
+	
+	
+</project>

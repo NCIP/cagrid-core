@@ -1,0 +1,2490 @@
+Index: wsrf/java/core/test/unit/src/org/globus/ws/enumeration/ClientEnumIteratorTests.java
+diff -u /dev/null wsrf/java/core/test/unit/src/org/globus/ws/enumeration/ClientEnumIteratorTests.java:1.1.2.2
+--- /dev/null	Sat Jul 15 17:36:33 2006
++++ wsrf/java/core/test/unit/src/org/globus/ws/enumeration/ClientEnumIteratorTests.java	Tue Jul 11 18:00:11 2006
+@@ -0,0 +1,289 @@
++/*
++ * Copyright 1999-2006 University of Chicago
++ * 
++ * Licensed under the Apache License, Version 2.0 (the "License");
++ * you may not use this file except in compliance with the License.
++ * You may obtain a copy of the License at
++ * 
++ * http://www.apache.org/licenses/LICENSE-2.0
++ * 
++ * Unless required by applicable law or agreed to in writing, software
++ * distributed under the License is distributed on an "AS IS" BASIS,
++ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
++ * See the License for the specific language governing permissions and
++ * limitations under the License.
++ */
++package org.globus.ws.enumeration;
++
++import java.util.NoSuchElementException;
++
++import javax.xml.soap.SOAPElement;
++
++import org.xmlsoap.schemas.ws._2004._09.enumeration.DataSource;
++import org.xmlsoap.schemas.ws._2004._09.enumeration.EnumerationContextType;
++
++import org.apache.axis.AxisFault;
++
++public class ClientEnumIteratorTests extends EnumerationTestCase {
++
++    public ClientEnumIteratorTests(String name) {
++        super(name);
++    }
++
++    public void testLocalRelease() throws Exception {
++        EnumerationContextType e1 = createEnumeration();
++
++        DataSource port = 
++            locator.getDataSourcePort(getServiceAddress());
++
++        ClientEnumIterator client = new ClientEnumIterator(port, e1);
++        
++        assertTrue(client.hasNext());
++        assertTrue(client.next() != null);
++
++        client.release();
++        client.release();
++        
++        assertFalse(client.hasNext());
++
++        try {
++            client.next();
++            fail("Did not throw exception");
++        } catch (NoSuchElementException e) {
++        }
++        
++        try {
++            client.remove();
++            fail("Did not throw exception");
++        } catch (UnsupportedOperationException e) {
++        }
++    }
++
++    public void testRemoteRelease() throws Exception {
++        EnumerationContextType e1 = createEnumeration();
++
++        DataSource port = 
++            locator.getDataSourcePort(getServiceAddress());
++
++        ClientEnumIterator client = new ClientEnumIterator(port, e1);
++        
++        assertTrue(client.hasNext());
++        assertTrue(client.next() != null);
++
++        client.release();
++        
++        // re-create the client with released enumeration context
++        client = new ClientEnumIterator(port, e1);
++        
++        /***
++         *** The following is a violation of the Iterator specification.
++         *** This is a limitation of the WS-Enum specification.
++         ***/
++        
++        // hasNext() returns true but next() returns errors out
++        assertTrue(client.hasNext());
++        
++        try {
++            client.next();
++            fail("Did not throw exception");
++        } catch (NoSuchElementException e) {
++        }
++
++        try {
++            client.remove();
++            fail("Did not throw exception");
++        } catch (UnsupportedOperationException e) {
++        }
++    }
++
++    public void testPull() throws Exception {
++        doIteration(1);
++        doIteration(2);
++        doIteration(3);
++        doIteration(5);
++        doIteration(7);
++        doIteration(TOTAL_ENUM_ELEMENTS);
++        doIteration(Integer.MAX_VALUE);
++    }
++    
++    public void testPullMixedSize() throws Exception {
++        EnumerationContextType e1 = createEnumeration();
++
++        DataSource port = 
++            locator.getDataSourcePort(getServiceAddress());
++
++        ClientEnumIterator client = new ClientEnumIterator(port, e1);
++
++        int index = 0;
++        int n = 2;
++        for (int i=0;i<5;i++) {
++            client.setIterationConstraints(
++                              new IterationConstraints(n, -1, null));
++            checkIterationResult(client, index, n);
++            index+=n;
++            n+=2;
++        }
++
++        for (int i=0;i<5;i++) {
++            client.setIterationConstraints(
++                              new IterationConstraints(n, -1, null));
++            checkIterationResult(client, index, n);
++            index+=n;
++            n-=2;
++        }
++
++        int rest = TOTAL_ENUM_ELEMENTS - index;
++
++        client.setIterationConstraints(
++                              new IterationConstraints(rest, -1, null));
++        checkIterationResult(client, index, rest);
++
++        try {
++            client.getClientEnumeration().getStatus();
++            fail("Did not throw exception");
++        } catch (AxisFault e) {
++            if (e.getFaultString().indexOf(INVALID_CONTEXT_MSG) == -1) {
++                e.printStackTrace();
++                fail("invalid exception");
++            } 
++        }
++    }
++
++    private void doIteration(int reqElement) throws Exception {
++        EnumerationContextType e1 = createEnumeration();
++        
++        DataSource port = 
++            locator.getDataSourcePort(getServiceAddress());
++        
++        ClientEnumIterator client = new ClientEnumIterator(port, e1);
++
++        client.setIterationConstraints(
++                     new IterationConstraints(reqElement, -1, null));
++
++        checkIterationResult(client, 0, TOTAL_ENUM_ELEMENTS);
++
++        assertFalse(client.hasNext());
++
++        try {
++            client.getClientEnumeration().getStatus();
++            fail("Did not throw exception");
++        } catch (AxisFault e) {
++            if (e.getFaultString().indexOf(INVALID_CONTEXT_MSG) == -1) {
++                e.printStackTrace();
++                fail("invalid exception");
++            } 
++        }
++    }
++
++    private void checkIterationResult(ClientEnumIterator client, 
++                                      int index,
++                                      int expectedItems) 
++        throws Exception {
++        for (int i=0;i<expectedItems;i++) {
++            assertTrue(client.hasNext());
++            SOAPElement elem = (SOAPElement)client.next();
++            assertEquals(ENUM_ELEMENT + (index+i), toString(elem));
++        }
++    }
++             
++    public void testDeserialization() throws Exception {
++        EnumerationContextType e1 = createEnumeration();
++        
++        DataSource port = 
++            locator.getDataSourcePort(getServiceAddress());
++        
++        ClientEnumIterator client = new ClientEnumIterator(port, e1);
++
++        Object obj;
++
++        assertTrue(client.getItemType() == null);
++        assertTrue(client.hasNext());
++        obj = client.next();
++        assertTrue(obj != null);
++        assertTrue(obj instanceof SOAPElement);
++        assertEquals(ENUM_ELEMENT + 0, toString((SOAPElement)obj));
++        
++        // set to String
++        client.setItemType(String.class);
++
++        assertTrue(client.getItemType() == String.class);
++        assertTrue(client.hasNext());
++        obj = client.next();
++        assertTrue(obj != null);
++        assertTrue(obj instanceof String);
++        assertEquals(ENUM_ELEMENT + 1, obj);
++
++        // set to Integer
++        client.setItemType(Integer.class);
++
++        assertTrue(client.getItemType() == Integer.class);
++        assertTrue(client.hasNext());
++        try {
++            obj = client.next();
++        } catch (RuntimeException e) {
++            if (e.getMessage().indexOf("convert") == -1) {
++                e.printStackTrace();
++                fail("Unexpected exception");
++            }
++        }
++
++        client.setItemType(null);
++
++        assertTrue(client.getItemType() == null);
++        assertTrue(client.hasNext());
++        obj = client.next();
++        assertTrue(obj != null);
++        assertTrue(obj instanceof SOAPElement);
++        assertEquals(ENUM_ELEMENT + 2, toString((SOAPElement)obj));
++        
++        client.release();
++    }
++
++    public void testBasic() throws Exception {
++        EnumerationContextType e1 = createEnumeration();
++        
++        DataSource port = 
++            locator.getDataSourcePort(getServiceAddress());
++        
++        ClientEnumIterator client = new ClientEnumIterator(port, e1);
++
++        for (int i=0;i<TOTAL_ENUM_ELEMENTS*2;i++) {
++            assertTrue(client.hasNext());
++        }
++        
++        int i = 0;
++        while(client.hasNext()) {
++            SOAPElement elem = (SOAPElement)client.next();
++            assertEquals(ENUM_ELEMENT + i, toString(elem));
++            i++;
++        }
++        
++        assertEquals(i, TOTAL_ENUM_ELEMENTS);
++        assertFalse(client.hasNext());
++    }
++
++    public void testCaching() throws Exception {
++        EnumerationContextType e1 = createEnumeration();
++        
++        DataSource port = 
++            locator.getDataSourcePort(getServiceAddress());
++        
++        ClientEnumIterator client = new ClientEnumIterator(port, e1);
++
++        client.setIterationConstraints(
++                      new IterationConstraints(5, -1, null));
++
++        SOAPElement elem;
++
++        assertTrue(client.hasNext());
++        elem = (SOAPElement)client.next();
++        assertEquals(ENUM_ELEMENT + 0, toString(elem));
++
++        // create a new iterator
++        client = new ClientEnumIterator(port, e1);
++        assertTrue(client.hasNext());
++        elem = (SOAPElement)client.next();
++        assertEquals(ENUM_ELEMENT + 5, toString(elem));
++    }
++        
++}
+Index: wsrf/java/core/test/unit/src/org/globus/ws/enumeration/ClientEnumerationTests.java
+diff -u /dev/null wsrf/java/core/test/unit/src/org/globus/ws/enumeration/ClientEnumerationTests.java:1.1.2.10
+--- /dev/null	Sat Jul 15 17:36:33 2006
++++ wsrf/java/core/test/unit/src/org/globus/ws/enumeration/ClientEnumerationTests.java	Wed Jul 12 22:44:18 2006
+@@ -0,0 +1,709 @@
++/*
++ * Copyright 1999-2006 University of Chicago
++ * 
++ * Licensed under the Apache License, Version 2.0 (the "License");
++ * you may not use this file except in compliance with the License.
++ * You may obtain a copy of the License at
++ * 
++ * http://www.apache.org/licenses/LICENSE-2.0
++ * 
++ * Unless required by applicable law or agreed to in writing, software
++ * distributed under the License is distributed on an "AS IS" BASIS,
++ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
++ * See the License for the specific language governing permissions and
++ * limitations under the License.
++ */
++package org.globus.ws.enumeration;
++
++import java.util.Calendar;
++import java.rmi.RemoteException;
++
++import javax.xml.namespace.QName;
++import javax.xml.rpc.Stub;
++
++import org.xmlsoap.schemas.ws._2004._09.enumeration.DataSource;
++import org.xmlsoap.schemas.ws._2004._09.enumeration.EnumerationContextType;
++
++import com.enumeration.EnumerationPortType;
++
++import org.globus.wsrf.ResourceKey;
++import org.globus.axis.utils.DurationUtils;
++import org.globus.wsrf.utils.AnyHelper;
++import org.globus.wsrf.encoding.ObjectSerializer;
++
++import org.apache.axis.AxisFault;
++import org.apache.axis.types.Duration;
++
++import org.globus.wsrf.test.GridTestSuite;
++
++public class ClientEnumerationTests extends EnumerationTestCase {
++
++    public ClientEnumerationTests(String name) {
++        super(name);
++    }
++
++    public void testStub() throws Exception {
++        EnumerationContextType context = startEnumeration(1, false);
++        
++        EnumerationPortType port = 
++            testLocator.getEnumerationPortTypePort(getServiceAddress());
++        
++        ClientEnumeration client = new ClientEnumeration((Stub)port, context);
++        
++        IterationResult result;
++        for (int i=0;i<3;i++) {
++            result = client.pull(IterationConstraints.DEFAULT_CONSTRAINTS);
++            checkIterationResult(result, i, 1, false);
++        }
++        
++        client.release();
++    }
++
++    public void testInvalidEnumerationContext() throws Exception {
++        DataSource port = 
++            locator.getDataSourcePort(getServiceAddress());
++
++        ClientEnumeration client = null;
++        EnumerationContextType context = null;
++
++        context = new EnumerationContextType();
++        client = new ClientEnumeration(port, context);
++        
++        checkInvalidContext(client);
++
++        // create enumeration context with some wrong element key
++        AnyHelper.setAny(context, ObjectSerializer.toSOAPElement(
++                                    "foobar", 
++                                     new QName("http://foo.bar", "id")));
++
++        client = new ClientEnumeration(port, context);
++     
++        checkInvalidContext(client);
++    }
++
++    private void checkInvalidContext(ClientEnumeration client)
++        throws Exception {
++        try {
++            client.getStatus();
++            fail("Did not throw exception");
++        } catch (RemoteException e) {
++            if (e.getMessage().indexOf(INVALID_CONTEXT_MSG) == -1) {
++                e.printStackTrace();
++                fail("invalid exception");
++            }
++        }
++    }
++
++    public void testVisibility() throws Exception {
++        EnumerationContextType e0 = createEnumeration();
++        
++        ResourceKey k1 = TestEnumHome.getKey(1);
++        EnumerationContextType e1 = createEnumeration(k1);
++        
++        ResourceKey k2 = TestEnumHome.getKey(2);
++        EnumerationContextType e2 = createEnumeration(k2);
++        
++        DataSource port;
++        ClientEnumeration client;
++        
++        // access context e1 without resource key
++        port = locator.getDataSourcePort(getServiceAddress());
++        client = new ClientEnumeration(port, e1);
++        checkInvalidContext(client);
++
++        // access context e2 without resource key
++        port = locator.getDataSourcePort(getServiceAddress());
++        client = new ClientEnumeration(port, e2);
++        checkInvalidContext(client);
++        
++        // access context e1 with resource key 2
++        port = locator.getDataSourcePort(getServiceAddress(k2));
++        client = new ClientEnumeration(port, e1);
++        checkInvalidContext(client);
++        
++        // access context e2 with resource key 1
++        port = locator.getDataSourcePort(getServiceAddress(k1));
++        client = new ClientEnumeration(port, e2);
++        checkInvalidContext(client);
++
++        // access context e0 with resource key 1
++        port = locator.getDataSourcePort(getServiceAddress(k1));
++        client = new ClientEnumeration(port, e0);
++        checkInvalidContext(client);
++
++        // access context e0 with resource key 2
++        port = locator.getDataSourcePort(getServiceAddress(k2));
++        client = new ClientEnumeration(port, e0);
++        checkInvalidContext(client);
++
++        // release contexts
++        port = locator.getDataSourcePort(getServiceAddress());
++        client = new ClientEnumeration(port, e0);
++        client.release();
++
++        port = locator.getDataSourcePort(getServiceAddress(k1));
++        client = new ClientEnumeration(port, e1);
++        client.release();
++
++        port = locator.getDataSourcePort(getServiceAddress(k2));
++        client = new ClientEnumeration(port, e2);
++        client.release();
++    }
++
++    public void testExpirationDate() throws Exception {
++        EnumerationContextType e1 = createEnumeration();
++
++        DataSource port = 
++            locator.getDataSourcePort(getServiceAddress());
++
++        ClientEnumeration client = new ClientEnumeration(port, e1);
++
++        // when created it should not have expiration set
++        EnumExpiration expiration = client.getStatus();
++        assertTrue(expiration == null);
++
++        EnumExpiration newExpiration;
++        Calendar cal;
++
++        // set ok expiration
++        cal = Calendar.getInstance();
++        cal.add(Calendar.HOUR, 1);
++        newExpiration = new EnumExpiration(cal);
++        
++        expiration = client.renew(newExpiration);
++        checkCalendar(expiration, newExpiration);
++        expiration = client.getStatus();
++        checkCalendar(expiration, newExpiration);
++
++        // set expiration in the past
++        cal = Calendar.getInstance();
++        cal.add(Calendar.HOUR, -1);
++        try {
++            client.renew(new EnumExpiration(cal));
++            fail("Did now throw exception");
++        } catch (AxisFault e) {
++            if (e.getFaultString().indexOf(INVALID_EXPIRATION_MSG) == -1) {
++                e.printStackTrace();
++                fail("invalid exception");
++            } 
++        }
++
++        expiration = client.getStatus();
++        checkCalendar(expiration, newExpiration);
++
++        // check if can switch to duration now
++        Duration duration = new Duration();
++        duration.setHours(1);
++        newExpiration = new EnumExpiration(duration);
++        expiration = client.renew(newExpiration);
++        checkDuration(expiration, newExpiration);
++        expiration = client.getStatus();
++        checkDuration(expiration, newExpiration);
++
++        // reset expiration time
++        expiration = client.renew(null);
++        assertTrue(expiration == null);
++        expiration = client.getStatus();
++        assertTrue(expiration == null);
++
++        // release enumeration
++        client.release();
++    }
++
++    public void testExpirationDateLifetime() throws Exception {
++        EnumerationContextType e1 = createEnumeration();
++        
++        DataSource port = 
++            locator.getDataSourcePort(getServiceAddress());
++        
++        ClientEnumeration client = new ClientEnumeration(port, e1);
++
++        EnumExpiration expiration, newExpiration;
++        Calendar cal;
++
++        // set short expiration
++        cal = Calendar.getInstance();
++        cal.add(Calendar.SECOND, 30);
++        newExpiration = new EnumExpiration(cal);
++        
++        expiration = client.renew(newExpiration);
++        checkCalendar(expiration, newExpiration);
++        expiration = client.getStatus();
++        checkCalendar(expiration, newExpiration);
++
++        checkContext(client);
++    }
++
++    public void testExpirationDuration() throws Exception {
++        EnumerationContextType e1 = createEnumeration();
++
++        DataSource port = 
++            locator.getDataSourcePort(getServiceAddress());
++
++        ClientEnumeration client = new ClientEnumeration(port, e1);
++
++        // when created it should not have expiration set
++        EnumExpiration expiration = client.getStatus();
++        assertTrue(expiration == null);
++
++        EnumExpiration newExpiration;
++        Duration duration;
++        
++        // set ok expiration
++        duration = new Duration();
++        duration.setHours(1);
++        newExpiration = new EnumExpiration(duration);
++        expiration = client.renew(newExpiration);
++        checkDuration(expiration, newExpiration);
++        expiration = client.getStatus();
++        checkDuration(expiration, newExpiration);
++
++        // set expiration in the past
++        duration = new Duration();
++        duration.setNegative(true);
++        duration.setHours(1);
++        try {
++            expiration = client.renew(new EnumExpiration(duration));
++            fail("Did now throw exception");
++        } catch (AxisFault e) {
++            if (e.getFaultString().indexOf(INVALID_EXPIRATION_MSG) == -1) {
++                e.printStackTrace();
++                fail("invalid exception");
++            } 
++        }
++
++        expiration = client.getStatus();
++        checkDuration(expiration, newExpiration);
++        
++        // check if can switch to date now
++        Calendar cal = Calendar.getInstance();
++        cal.add(Calendar.HOUR, 1);
++        newExpiration = new EnumExpiration(cal);
++        expiration = client.renew(newExpiration);
++        checkCalendar(expiration, newExpiration);
++        expiration = client.getStatus();
++        checkCalendar(expiration, newExpiration);
++        
++        // reset expiration time
++        expiration = client.renew(null);
++        assertTrue(expiration == null);
++        expiration = client.getStatus();
++        assertTrue(expiration == null);
++
++        // release enumeration
++        client.release();
++    }
++
++    public void testExpirationDurationLifetime() throws Exception {
++        EnumerationContextType e1 = createEnumeration();
++        
++        DataSource port = 
++            locator.getDataSourcePort(getServiceAddress());
++        
++        ClientEnumeration client = new ClientEnumeration(port, e1);
++
++        EnumExpiration expiration, newExpiration;
++        Duration duration;
++        
++        // set short expiration
++        duration = new Duration();
++        duration.setSeconds(30D);
++        newExpiration = new EnumExpiration(duration);
++        expiration = client.renew(newExpiration);
++        checkDuration(expiration, newExpiration);
++        expiration = client.getStatus();
++        checkDuration(expiration, newExpiration);
++        
++        checkContext(client);
++    }
++
++    private void checkCalendar(EnumExpiration expiration,
++                               EnumExpiration newExpiration) {
++        assertTrue(expiration != null);
++        assertTrue(expiration.getCalendar() != null);
++        assertTrue(expiration.getDuration() == null);
++        assertEquals(newExpiration.getCalendar().getTime(),
++                     expiration.getCalendar().getTime());
++    }
++
++    private void checkDuration(EnumExpiration expiration,
++                               EnumExpiration newExpiration) {
++        assertTrue(expiration != null);
++        assertTrue(expiration.getCalendar() == null);
++        assertTrue(expiration.getDuration() != null);
++        long expected = 
++            DurationUtils.toMilliseconds(newExpiration.getDuration());
++        long actual = 
++            DurationUtils.toMilliseconds(expiration.getDuration());
++        assertTrue( actual + 1000*60*2 > expected );
++    }
++
++    private void checkContext(ClientEnumeration client) {
++        try {
++            int wait = 0;
++            while(wait < GridTestSuite.timeout) {
++                assertTrue( client.getStatus() != null );
++                wait += 1000 * 45;
++                Thread.sleep(1000 * 45);
++            }
++            fail("Did not throw exception");
++        } catch (AxisFault e) {
++            if (e.getMessage().indexOf(INVALID_CONTEXT_MSG) == -1) {
++                e.printStackTrace();
++                fail("invalid exception");
++            }
++        } catch (Exception e) {
++            e.printStackTrace();
++            fail("Did not throw appropriate exception");
++        }
++    }
++
++    public void testLocalRelease() throws Exception {
++        EnumerationContextType e1 = createEnumeration();
++
++        DataSource port = 
++            locator.getDataSourcePort(getServiceAddress());
++
++        ClientEnumeration client = new ClientEnumeration(port, e1);
++        
++        client.release();
++        
++        assertTrue(client.getContext() == null);
++        
++        try {
++            client.release();
++            fail("Did not throw exception");
++        } catch (RemoteException e) {
++            if (e.getMessage().indexOf(CONTEXT_RELEASED_MSG) == -1) {
++                e.printStackTrace();
++                fail("invalid exception");
++            }
++        }
++        
++        try {
++            client.getStatus();
++            fail("Did not throw exception");
++        } catch (RemoteException e) {
++            if (e.getMessage().indexOf(CONTEXT_RELEASED_MSG) == -1) {
++                e.printStackTrace();
++                fail("invalid exception");
++            }
++        }
++        
++        try {
++            client.pull();
++            fail("Did not throw exception");
++        } catch (RemoteException e) {
++            if (e.getMessage().indexOf(CONTEXT_RELEASED_MSG) == -1) {
++                e.printStackTrace();
++                fail("invalid exception");
++            }
++        }
++        
++        try {
++            client.renew(null);
++            fail("Did not throw exception");
++        } catch (RemoteException e) {
++            if (e.getMessage().indexOf(CONTEXT_RELEASED_MSG) == -1) {
++                e.printStackTrace();
++                fail("invalid exception");
++            }
++        }
++        
++        try {
++            client.getStatus();
++            fail("Did not throw exception");
++        } catch (RemoteException e) {
++            if (e.getMessage().indexOf(CONTEXT_RELEASED_MSG) == -1) {
++                e.printStackTrace();
++                fail("invalid exception");
++            }
++        }
++    }
++
++    public void testRemoteRelease() throws Exception {
++        EnumerationContextType e1 = createEnumeration();
++
++        DataSource port = 
++            locator.getDataSourcePort(getServiceAddress());
++
++        ClientEnumeration client = new ClientEnumeration(port, e1);
++        
++        client.release();
++        
++        // re-create the client with released enumeration context
++        client = new ClientEnumeration(port, e1);
++        
++        try {
++            client.release();
++            fail("Did not throw exception");
++        } catch (AxisFault e) {
++            if (e.getFaultString().indexOf(INVALID_CONTEXT_MSG) == -1) {
++                e.printStackTrace();
++                fail("invalid exception");
++            } 
++        }
++
++        try {
++            client.getStatus();
++            fail("Did not throw exception");
++        } catch (AxisFault e) {
++            if (e.getFaultString().indexOf(INVALID_CONTEXT_MSG) == -1) {
++                e.printStackTrace();
++                fail("invalid exception");
++            } 
++        }
++        
++        try {
++            client.pull();
++            fail("Did not throw exception");
++        } catch (AxisFault e) {
++            if (e.getFaultString().indexOf(INVALID_CONTEXT_MSG) == -1) {
++                e.printStackTrace();
++                fail("invalid exception");
++            } 
++        }
++        
++        try {
++            client.renew(null);
++            fail("Did not throw exception");
++        } catch (AxisFault e) {
++            if (e.getFaultString().indexOf(INVALID_CONTEXT_MSG) == -1) {
++                e.printStackTrace();
++                fail("invalid exception");
++            } 
++        }
++        
++        try {
++            client.getStatus();
++            fail("Did not throw exception");
++        } catch (AxisFault e) {
++            if (e.getFaultString().indexOf(INVALID_CONTEXT_MSG) == -1) {
++                e.printStackTrace();
++                fail("invalid exception");
++            } 
++        }
++    }
++    
++    public void testPullMixedSize() throws Exception {
++        EnumerationContextType e1 = createEnumeration();
++        
++        DataSource port = 
++            locator.getDataSourcePort(getServiceAddress());
++        
++        ClientEnumeration client = new ClientEnumeration(port, e1);
++
++        IterationResult result;
++
++        int index = 0;
++        result = client.pull();
++        checkIterationResult(result, index, 1, false);
++        index++;
++
++        int n = 2;
++        for (int i=0;i<5;i++) {
++            result = 
++                client.pull(new IterationConstraints(n, -1, null));
++            checkIterationResult(result, index, n, false);
++            index+=n;
++            n+=2;
++        }
++
++        for (int i=0;i<5;i++) {
++            result = 
++                client.pull(new IterationConstraints(n, -1, null));
++            checkIterationResult(result, index, n, false);
++            index+=n;
++            n-=2;
++        }
++
++        int rest = TOTAL_ENUM_ELEMENTS - index;
++
++        result = 
++            client.pull(new IterationConstraints(rest, -1, null));
++        checkIterationResult(result, index, rest, true);
++
++        checkInvalidContext(client);
++    }
++
++    public void testPullMultiple() throws Exception {
++
++        ClientEnumeration [] clients = new ClientEnumeration[3];
++        int indexes [] = new int[clients.length];
++
++        for (int i=0;i<clients.length;i++) {
++            EnumerationContextType e1 = createEnumeration();
++            
++            DataSource port = 
++                locator.getDataSourcePort(getServiceAddress());
++            
++            clients[i] = new ClientEnumeration(port, e1);
++        }
++
++        int n = TOTAL_ENUM_ELEMENTS;
++
++        IterationResult result;
++
++        
++        for(int i=0;i<clients.length;i++) {
++            int req = (i+1)*3;
++            result = 
++                clients[i].pull(new IterationConstraints(req, -1, null));
++            
++            if (indexes[i] + req < n) {
++                checkIterationResult(result, indexes[i], req, false);
++            } else {
++                checkIterationResult(result, indexes[i], req, true);
++            }
++            
++            indexes[i]+=req;
++        }
++
++        System.out.println("Starting indexes:");
++        for(int i=0;i<clients.length;i++) {
++            System.out.println(" " + indexes[i]);
++        }
++        
++        for (int j=0;j<5;j++) {
++            for(int i=0;i<clients.length;i++) {
++                result = 
++                    clients[i].pull(new IterationConstraints(5, -1, null));
++
++                if (indexes[i] + 5 < n) {
++                    checkIterationResult(result, indexes[i], 5, false);
++                } else {
++                    checkIterationResult(result, indexes[i], 5, true);
++                }
++                
++                indexes[i]+=5;
++            }
++        }
++        
++        System.out.println("Ending indexes:");
++        for(int i=0;i<clients.length;i++) {
++            System.out.println(" " + indexes[i]);
++        }
++
++        for(int i=0;i<clients.length;i++) {
++            clients[i].release();
++        }
++    }
++
++    public void testPullWithConstraints() throws Exception {
++        EnumerationContextType e1 = createEnumeration();
++        
++        DataSource port = 
++            locator.getDataSourcePort(getServiceAddress());
++        
++        ClientEnumeration client = new ClientEnumeration(port, e1);
++
++        IterationResult result;
++        int index = 0;
++
++        // the maxTime and maxCharacters are not enforced
++        // so this will just test serialization and deserialization
++        
++        result = client.pull(new IterationConstraints(1, 5000, null));
++        checkIterationResult(result, index, 1, false);
++        index++;
++        
++        Duration dur = new Duration();
++        dur.setYears(1);
++
++        result = client.pull(new IterationConstraints(1, -1, dur));
++        checkIterationResult(result, index, 1, false);
++        index++;
++
++        result = client.pull(new IterationConstraints(1, 5000, dur));
++        checkIterationResult(result, index, 1, false);
++        index++;
++
++        client.release();
++    }
++
++
++    public void testPullMemoryTransient() throws Exception {
++        doIterations(1, false);
++    }
++
++    public void testPullFileTransient() throws Exception {
++        doIterations(2, false);
++    }
++    
++    public void testPullFilePersistent() throws Exception {
++        doIterations(2, true);
++    }
++
++    private void doIterations(int iteratorType, boolean persistent) 
++        throws Exception {
++        doIteration(1, startEnumeration(iteratorType, persistent));
++        doIteration(2, startEnumeration(iteratorType, persistent));
++        doIteration(3, startEnumeration(iteratorType, persistent));
++        doIteration(5, startEnumeration(iteratorType, persistent));
++        doIteration(7, startEnumeration(iteratorType, persistent));
++        doIteration(TOTAL_ENUM_ELEMENTS,
++                    startEnumeration(iteratorType, persistent));
++        doIteration(Integer.MAX_VALUE,
++                    startEnumeration(iteratorType, persistent));
++    }
++
++    private void doIteration(int reqElement,
++                             EnumerationContextType context)
++        throws Exception {
++        DataSource port = 
++            locator.getDataSourcePort(getServiceAddress());
++        
++        ClientEnumeration client = new ClientEnumeration(port, context);
++
++        IterationResult result;
++
++        int n = TOTAL_ENUM_ELEMENTS;
++
++        for (int i=0;i<n;i+=reqElement) {
++            result = 
++                client.pull(new IterationConstraints(reqElement, -1, null));
++
++            if (i+reqElement < n) {
++                checkIterationResult(result, i, reqElement, false);
++            } else if (i+reqElement == n) {
++                checkIterationResult(result, i, reqElement, true);
++            } else {
++                int maxElements = n - i;
++                checkIterationResult(result, i, maxElements, true);
++            }
++        }
++
++        checkInvalidContext(client);
++    }
++
++    public void testTimeout() throws Exception {
++        EnumerationContextType e1 = startEnumeration(3, false);
++        
++        DataSource port = 
++            locator.getDataSourcePort(getServiceAddress());
++        
++        ClientEnumeration client = new ClientEnumeration(port, e1);
++
++        IterationResult result;
++        
++        result = client.pull(IterationConstraints.DEFAULT_CONSTRAINTS);
++        checkIterationResult(result, 0, 1, false);
++        
++        Duration dur = new Duration();
++        dur.setYears(5);
++
++        try {
++            result = client.pull(new IterationConstraints(1, -1, dur));
++            fail("Did not throw exception");
++        } catch (RemoteException e) {
++            if (e.getMessage().indexOf(TIMEOUT_MSG) == -1) {
++                e.printStackTrace();
++                fail("invalid exception");
++            }
++        }
++
++        result = client.pull(IterationConstraints.DEFAULT_CONSTRAINTS);
++        checkIterationResult(result, 1, 1, false);
++    }
++    
++}
+Index: wsrf/java/core/test/unit/src/org/globus/ws/enumeration/EnumerationTestCase.java
+diff -u /dev/null wsrf/java/core/test/unit/src/org/globus/ws/enumeration/EnumerationTestCase.java:1.1.2.7
+--- /dev/null	Sat Jul 15 17:36:33 2006
++++ wsrf/java/core/test/unit/src/org/globus/ws/enumeration/EnumerationTestCase.java	Sat Jul 15 17:15:57 2006
+@@ -0,0 +1,227 @@
++/*
++ * Copyright 1999-2006 University of Chicago
++ * 
++ * Licensed under the Apache License, Version 2.0 (the "License");
++ * you may not use this file except in compliance with the License.
++ * You may obtain a copy of the License at
++ * 
++ * http://www.apache.org/licenses/LICENSE-2.0
++ * 
++ * Unless required by applicable law or agreed to in writing, software
++ * distributed under the License is distributed on an "AS IS" BASIS,
++ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
++ * See the License for the specific language governing permissions and
++ * limitations under the License.
++ */
++package org.globus.ws.enumeration;
++
++import org.xmlsoap.schemas.ws._2004._09.enumeration.service.EnumerationServiceAddressingLocator;
++import org.xmlsoap.schemas.ws._2004._09.enumeration.DataSourceStart;
++import org.xmlsoap.schemas.ws._2004._09.enumeration.EnumerateResponse;
++import org.xmlsoap.schemas.ws._2004._09.enumeration.Enumerate;
++import org.xmlsoap.schemas.ws._2004._09.enumeration.EnumerationContextType;
++
++import com.enumeration.EnumerationPortType;
++import com.enumeration.StartEnumerationResponse;
++import com.enumeration.StartEnumeration;
++
++import org.globus.wsrf.ResourceKey;
++import org.globus.wsrf.encoding.ObjectDeserializer;
++import org.globus.wsrf.encoding.ObjectSerializer;
++
++import java.util.List;
++import java.util.ArrayList;
++
++import javax.xml.soap.SOAPElement;
++import javax.xml.namespace.QName;
++
++import org.apache.axis.message.addressing.EndpointReferenceType;
++import org.apache.axis.message.addressing.ReferencePropertiesType;
++import org.apache.axis.types.URI;
++
++import org.globus.wsrf.types.profiling.Timestamp;
++import org.globus.wsrf.types.profiling.TimestampType;
++
++import org.globus.wsrf.test.GridTestCase;
++
++public class EnumerationTestCase extends GridTestCase {
++
++    public static final String INVALID_CONTEXT_MSG = 
++        "Invalid enumeration context";
++
++    public static final String CONTEXT_RELEASED_MSG =
++        "Enumeration context is released";
++    
++    public static final String INVALID_EXPIRATION_MSG =
++        "Invalid expiration time";
++
++    public static final String TIMEOUT_MSG =
++        "timeout";
++
++    public static final int TOTAL_ENUM_ELEMENTS = 100;
++
++    public static final String ENUM_ELEMENT = "foo";
++
++    public static final QName ITEM_NAME = 
++        new QName("http://www.globus.org", "Item");
++
++    protected EnumerationServiceAddressingLocator locator = 
++        new EnumerationServiceAddressingLocator();
++
++    protected com.enumeration.service.EnumerationServiceAddressingLocator testLocator = new com.enumeration.service.EnumerationServiceAddressingLocator();
++    
++    public EnumerationTestCase(String name) {
++        super(name);
++    }
++
++    protected EndpointReferenceType createEPR()
++        throws Exception {
++        return createEPR(null);
++    }
++    
++    protected EndpointReferenceType createEPR(ResourceKey key)
++        throws Exception {
++        String address = 
++            TEST_CONTAINER.getBaseURL() + "TestEnumService";
++        EndpointReferenceType epr = 
++            new EndpointReferenceType(new URI(address));
++
++        if (key != null) {
++            ReferencePropertiesType props = new ReferencePropertiesType();
++            props.add(key.toSOAPElement());
++            epr.setProperties(props);
++        }
++        
++        return epr;
++    }
++
++    protected EndpointReferenceType getServiceAddress(ResourceKey key) 
++        throws Exception {
++        return createEPR(key);
++    }
++
++    protected EndpointReferenceType getServiceAddress() 
++        throws Exception {
++        return getServiceAddress(null);
++    }
++
++    protected EnumerationContextType createEnumeration() 
++        throws Exception {
++        return createEnumeration(null);
++    }
++    
++    protected EnumerationContextType createEnumeration(ResourceKey key) 
++        throws Exception {
++        DataSourceStart port = 
++            locator.getDataSourceStartPort(getServiceAddress(key));
++        Enumerate enumRequest = new Enumerate();
++        EnumerateResponse enumRespose = port.enumerateOp(enumRequest);
++        EnumerationContextType context = 
++            enumRespose.getEnumerationContext();
++        return context;
++    }
++
++    protected EnumerationContextType startEnumeration(int iteratorType,
++                                                      boolean persistent) 
++        throws Exception {
++        EnumerationPortType port = 
++            testLocator.getEnumerationPortTypePort(getServiceAddress());
++        
++        StartEnumeration req = new StartEnumeration();
++        req.setPersistent(persistent);
++        req.setIteratorType(iteratorType);
++        StartEnumerationResponse respose = port.startEnumeration(req);
++        
++        EnumerationContextType context = 
++            respose.getEnumerationContext();
++        return context;
++    }
++
++    /*
++    protected static String toString(SOAPElement element) {
++        return element.getFirstChild().toString();
++    }
++    */
++
++    protected static String toString(SOAPElement element) 
++        throws Exception {
++        return (String)ObjectDeserializer.toObject(element, String.class);
++    }
++
++    protected static void checkIterationResult(IterationResult result,
++                                               int index,
++                                               int expectedItems,
++                                               boolean expectedEndOfSequence) 
++        throws Exception {
++        assertTrue(result.getItems() != null);
++        assertEquals(expectedItems, result.getItems().length);
++        
++        for (int i=0;i<expectedItems;i++) {
++            SOAPElement elem = result.getItems()[i];
++            assertEquals(ENUM_ELEMENT + (index + i), toString(elem));
++        }
++        
++        assertEquals(expectedEndOfSequence, result.isEndOfSequence());
++    }    
++
++    protected static List getData(int n) {
++        List list = new ArrayList();
++        for (int i=0;i<n;i++) {
++            list.add(ENUM_ELEMENT + i);
++        }
++        return list;
++    }
++
++    protected static List[] getSOAPElementData() 
++        throws Exception {
++        List list = new ArrayList();
++        List actual = new ArrayList();
++        List qnames = new ArrayList();
++
++        QName itemName0 = 
++            new QName("http://www.globus.org", "DiffItem1");
++
++        String v1 = "foo1";
++        actual.add(v1);
++        qnames.add(itemName0);
++
++        list.add(ObjectSerializer.toSOAPElement(v1, itemName0));
++
++        QName itemName1 = 
++            new QName("http://www.globus.org", "DiffItem1");
++        
++        Integer v2 = new Integer(12345);
++        actual.add(v2);
++        qnames.add(itemName1);
++
++        list.add(ObjectSerializer.toSOAPElement(v2, itemName1));
++
++        QName itemName2 = 
++            new QName("http://www.globus.org", "DiffItem2");
++        
++        String v3 = "6785z";
++        actual.add(v3);
++        qnames.add(itemName2);
++
++        list.add(ObjectSerializer.toSOAPElement(v3, itemName2));
++
++        TimestampType timestampType = new TimestampType();
++        Timestamp timestamp = new Timestamp();
++        timestampType.setTimestamp(timestamp);
++        timestamp.setThreadID("foo");
++        timestamp.setMessageContextHash("bar");
++        timestamp.setServiceURL("http://mismis");
++        timestamp.setOperation("createCounter");
++
++        QName itemName3 = 
++            new QName("http://www.mcs.anl.gov", "DiffItem3");
++
++        actual.add(timestampType);
++        qnames.add(itemName3);
++
++        list.add(ObjectSerializer.toSOAPElement(timestampType, itemName3));
++
++        return new List[]{actual, qnames, list};
++    }
++
++}
+Index: wsrf/java/core/test/unit/src/org/globus/ws/enumeration/IndexedObjectFileEnumIteratorTests.java
+diff -u /dev/null wsrf/java/core/test/unit/src/org/globus/ws/enumeration/IndexedObjectFileEnumIteratorTests.java:1.1.2.5
+--- /dev/null	Sat Jul 15 17:36:33 2006
++++ wsrf/java/core/test/unit/src/org/globus/ws/enumeration/IndexedObjectFileEnumIteratorTests.java	Wed Jul 12 22:44:18 2006
+@@ -0,0 +1,350 @@
++/*
++ * Copyright 1999-2006 University of Chicago
++ * 
++ * Licensed under the Apache License, Version 2.0 (the "License");
++ * you may not use this file except in compliance with the License.
++ * You may obtain a copy of the License at
++ * 
++ * http://www.apache.org/licenses/LICENSE-2.0
++ * 
++ * Unless required by applicable law or agreed to in writing, software
++ * distributed under the License is distributed on an "AS IS" BASIS,
++ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
++ * See the License for the specific language governing permissions and
++ * limitations under the License.
++ */
++package org.globus.ws.enumeration;
++
++import java.io.File;
++import java.util.List;
++import java.util.ArrayList;
++import java.util.NoSuchElementException;
++
++import javax.xml.namespace.QName;
++
++import org.apache.axis.message.MessageElement;
++
++import org.globus.wsrf.encoding.ObjectDeserializer;
++import org.globus.wsrf.encoding.ObjectSerializer;
++
++import org.globus.wsrf.utils.io.IndexedObjectFileUtils;
++
++import junit.framework.TestCase;
++
++public class IndexedObjectFileEnumIteratorTests extends TestCase {
++
++    public void testEmpty()
++        throws Exception {
++        File file = null;
++
++        Object [] array = null;
++        
++        file = IndexedObjectFileUtils.createIndexedObjectFile(array);
++        testEmpty(new IndexedObjectFileEnumIterator(file, null));
++        array = new Object[]{};
++        file = IndexedObjectFileUtils.createIndexedObjectFile(array);
++        testEmpty(new IndexedObjectFileEnumIterator(file, null));
++        
++        List list = null;
++        file = IndexedObjectFileUtils.createIndexedObjectFile(list);
++        testEmpty(new IndexedObjectFileEnumIterator(file, null));
++        list = new ArrayList();
++        file = IndexedObjectFileUtils.createIndexedObjectFile(list);
++        testEmpty(new IndexedObjectFileEnumIterator(file, null));
++    }
++
++    private void testEmpty(EnumIterator iter) 
++        throws Exception {
++        try {
++            iter.next(IterationConstraints.DEFAULT_CONSTRAINTS);
++            fail("Did not throw expected exception");
++        } catch (NoSuchElementException e) {
++            // that's what we want
++        }
++    }
++
++    public void testIterate()
++        throws Exception {
++        List list = EnumerationTestCase.getData(100);
++
++        testIterate(list, 1);
++        testIterate(list, 2);
++        testIterate(list, 3);
++        testIterate(list, 5);
++        testIterate(list, 7);
++    }
++
++    private void testIterate(List list, int maxElements)
++        throws Exception {
++        int n = list.size();
++
++        File file = IndexedObjectFileUtils.createIndexedObjectFile(list);
++
++        IndexedObjectFileEnumIterator iter = 
++            new IndexedObjectFileEnumIterator(file, 
++                                              EnumerationTestCase.ITEM_NAME);
++
++        IterationResult result = null;
++        IterationConstraints con = 
++            new IterationConstraints(maxElements, -1, null);
++        int items = 0;
++        int calls = 0;
++        do {
++            result = iter.next(con);
++
++            calls++;
++
++            assertTrue(result != null);
++            assertTrue(result.getItems() != null);
++
++            if (items + maxElements < n) {
++                EnumerationTestCase.checkIterationResult(result,
++                                                         items,
++                                                         maxElements,
++                                                         false);
++            } else if (items + maxElements == n) {
++                EnumerationTestCase.checkIterationResult(result,
++                                                         items,
++                                                         maxElements,
++                                                         true);
++            } else {
++                int elementsLeft = n - items;
++                EnumerationTestCase.checkIterationResult(result,
++                                                         items,
++                                                         elementsLeft,
++                                                         true);
++            }
++
++            items += result.getItems().length;
++        } while (!result.isEndOfSequence());
++
++        if (n % maxElements == 0) {
++            assertEquals(n / maxElements, calls);
++        } else {
++            assertEquals(1 + (n / maxElements), calls);
++        }
++
++        testEmpty(iter);
++
++        assertFalse(file.getAbsolutePath(), file.exists());
++    }
++
++    public void testRelease()
++        throws Exception {
++        File file = null;
++        List list = EnumerationTestCase.getData(10);
++
++        IndexedObjectFileEnumIterator iter = null;
++        IterationConstraints con = IterationConstraints.DEFAULT_CONSTRAINTS;
++
++        // case 1: release it right away
++        file = IndexedObjectFileUtils.createIndexedObjectFile(list);
++        iter = 
++            new IndexedObjectFileEnumIterator(file, 
++                                              EnumerationTestCase.ITEM_NAME);
++        iter.release();
++
++        testEmpty(iter);
++
++        assertFalse(file.exists());
++
++        // case 2: release it after a few iterations
++        file = IndexedObjectFileUtils.createIndexedObjectFile(list);
++        iter = 
++            new IndexedObjectFileEnumIterator(file, 
++                                              EnumerationTestCase.ITEM_NAME);
++        for (int i=0;i<list.size() / 2;i++) {
++            EnumerationTestCase.checkIterationResult(iter.next(con),
++                                                     i, 1, false);
++        }
++        iter.release();
++
++        testEmpty(iter);
++
++        assertFalse(file.exists());
++
++        // case 3: once got all data
++        file = IndexedObjectFileUtils.createIndexedObjectFile(list);
++        iter = 
++            new IndexedObjectFileEnumIterator(file, 
++                                              EnumerationTestCase.ITEM_NAME);
++        for (int i=0;i<list.size();i++) {
++            EnumerationTestCase.checkIterationResult(iter.next(con),
++                                                     i,
++                                                     1,
++                                                     (i+1 == list.size()));
++        }
++        
++        testEmpty(iter);
++        
++        assertFalse(file.exists());
++    }
++
++    public void testDisabledAutoDelete()
++        throws Exception {
++        File file = null;
++        List list = EnumerationTestCase.getData(10);
++
++        IndexedObjectFileEnumIterator iter = null;
++        IterationConstraints con = new IterationConstraints();
++        
++        // case 1: release it right away
++        file = IndexedObjectFileUtils.createIndexedObjectFile(list);
++        iter = 
++            new IndexedObjectFileEnumIterator(file, 
++                                              EnumerationTestCase.ITEM_NAME);
++        iter.setEnableAutoDelete(false);
++        iter.release();
++
++        testEmpty(iter);
++
++        assertTrue(file.exists());
++        file.delete();
++
++        // case 2: release it after a few iterations
++        file = IndexedObjectFileUtils.createIndexedObjectFile(list);
++        iter = 
++            new IndexedObjectFileEnumIterator(file, 
++                                              EnumerationTestCase.ITEM_NAME);
++        iter.setEnableAutoDelete(false);
++        for (int i=0;i<list.size() / 2;i++) {
++            EnumerationTestCase.checkIterationResult(iter.next(con),
++                                                     i, 1, false);
++        }
++        iter.release();
++
++        testEmpty(iter);
++
++        assertTrue(file.exists());
++        file.delete();
++
++        // case 3: check after got all data
++        file = IndexedObjectFileUtils.createIndexedObjectFile(list);
++        iter = 
++            new IndexedObjectFileEnumIterator(file, 
++                                              EnumerationTestCase.ITEM_NAME);
++        iter.setEnableAutoDelete(false);
++        for (int i=0;i<list.size();i++) {
++            EnumerationTestCase.checkIterationResult(iter.next(con),
++                                                     i,
++                                                     1,
++                                                     (i+1 == list.size()));
++        }
++
++        testEmpty(iter);
++        
++        assertTrue(file.exists());
++        file.delete();
++    }
++    
++    public void testSkips() 
++        throws Exception {
++        List list = new ArrayList();
++        int j = 0;
++        for (int i=0;i<3;i++) {
++            list.add(EnumerationTestCase.ENUM_ELEMENT + j);
++            j++;
++        }
++
++        QName itemName = 
++            new QName("http://www.globus.org", "DiffItem");
++        
++        list.add(ObjectSerializer.toSOAPElement("foo", itemName));
++        j++;
++
++        IndexedObjectFileEnumIterator iter = null;
++        IterationConstraints con = null;
++        IterationResult result = null;
++        File file = null;
++
++        file = IndexedObjectFileUtils.createIndexedObjectFile(list);
++        iter = 
++            new IndexedObjectFileEnumIterator(file, 
++                                              EnumerationTestCase.ITEM_NAME);
++        con = new IterationConstraints();
++        for (int i=0;i<3;i++) {
++            EnumerationTestCase.checkIterationResult(iter.next(con),
++                                                     i, 1, false);
++        }
++
++        result = iter.next(con);
++        assertTrue(result.isEndOfSequence());
++        assertTrue(result.getItems() == null);
++        assertFalse(file.exists());
++
++        // add a few more entires
++
++        list.add(ObjectSerializer.toSOAPElement("foo2", itemName));
++        j++;
++        for (int i=0;i<3;i++) {
++            list.add(EnumerationTestCase.ENUM_ELEMENT + j);
++            j++;
++        }
++
++        file = IndexedObjectFileUtils.createIndexedObjectFile(list);
++        iter = 
++            new IndexedObjectFileEnumIterator(file, 
++                                              EnumerationTestCase.ITEM_NAME);
++        con = new IterationConstraints(2, -1, null);
++
++        EnumerationTestCase.checkIterationResult(iter.next(con),
++                                                 0, 2, false);
++        
++        result = iter.next(con);
++        assertFalse(result.isEndOfSequence());
++        assertTrue(result.getItems() != null);
++        assertEquals(2, result.getItems().length);
++        assertEquals(EnumerationTestCase.ENUM_ELEMENT + 2, 
++                     EnumerationTestCase.toString(result.getItems()[0]));
++        assertEquals(EnumerationTestCase.ENUM_ELEMENT + 5,
++                     EnumerationTestCase.toString(result.getItems()[1]));
++
++        result = iter.next(con);
++        assertTrue(result.isEndOfSequence());
++        assertTrue(result.getItems() != null);
++        assertEquals(2, result.getItems().length);
++        assertEquals(EnumerationTestCase.ENUM_ELEMENT + 6, 
++                     EnumerationTestCase.toString(result.getItems()[0]));
++        assertEquals(EnumerationTestCase.ENUM_ELEMENT + 7,
++                     EnumerationTestCase.toString(result.getItems()[1]));
++        
++        assertFalse(file.exists());
++    }
++    
++    public void testSOAPElementData()
++        throws Exception {
++        List [] lists = EnumerationTestCase.getSOAPElementData();
++        
++        IndexedObjectFileEnumIterator iter = null;
++        IterationConstraints con = null;
++        IterationResult result = null;
++
++        File file = IndexedObjectFileUtils.createIndexedObjectFile(lists[2]);
++        iter = new IndexedObjectFileEnumIterator(file, null);
++        con = new IterationConstraints();
++        
++        for (int i=0;i<lists[0].size();i++) {
++            result = iter.next(con);
++            
++            if (i < lists[0].size() - 1) {
++                assertFalse(result.isEndOfSequence());
++            } else {
++                assertTrue(result.isEndOfSequence());
++            }
++            
++            assertTrue(result.getItems() != null);
++            
++            QName actualQName = (QName)lists[1].get(i);
++            QName valueQName = ((MessageElement)result.getItems()[0]).getQName();
++
++            assertEquals(actualQName, valueQName);
++
++            Object actual = lists[0].get(i);
++            Object value = ObjectDeserializer.toObject(result.getItems()[0],
++                                                       actual.getClass());
++
++            assertEquals(actual, value);
++        }
++    }
++
++}
+Index: wsrf/java/core/test/unit/src/org/globus/ws/enumeration/PackageTests.java
+diff -u /dev/null wsrf/java/core/test/unit/src/org/globus/ws/enumeration/PackageTests.java:1.1.2.3
+--- /dev/null	Sat Jul 15 17:36:33 2006
++++ wsrf/java/core/test/unit/src/org/globus/ws/enumeration/PackageTests.java	Tue Jul 11 18:00:11 2006
+@@ -0,0 +1,37 @@
++/*
++ * Copyright 1999-2006 University of Chicago
++ * 
++ * Licensed under the Apache License, Version 2.0 (the "License");
++ * you may not use this file except in compliance with the License.
++ * You may obtain a copy of the License at
++ * 
++ * http://www.apache.org/licenses/LICENSE-2.0
++ * 
++ * Unless required by applicable law or agreed to in writing, software
++ * distributed under the License is distributed on an "AS IS" BASIS,
++ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
++ * See the License for the specific language governing permissions and
++ * limitations under the License.
++ */
++package org.globus.ws.enumeration;
++
++import org.globus.wsrf.test.GridTestSuite;
++
++import junit.framework.Test;
++import junit.framework.TestSuite;
++
++public class PackageTests extends GridTestSuite {
++
++    public PackageTests(String name) {
++        super(name);
++    }
++
++    public static Test suite() throws Exception {
++        TestSuite suite = new PackageTests("WSEnumTests");
++        suite.addTestSuite(SimpleEnumIteratorTests.class);
++        suite.addTestSuite(IndexedObjectFileEnumIteratorTests.class);
++        suite.addTestSuite(ClientEnumerationTests.class);
++        suite.addTestSuite(ClientEnumIteratorTests.class);
++        return suite;
++    }
++}
+Index: wsrf/java/core/test/unit/src/org/globus/ws/enumeration/SimpleEnumIteratorTests.java
+diff -u /dev/null wsrf/java/core/test/unit/src/org/globus/ws/enumeration/SimpleEnumIteratorTests.java:1.1.2.4
+--- /dev/null	Sat Jul 15 17:36:33 2006
++++ wsrf/java/core/test/unit/src/org/globus/ws/enumeration/SimpleEnumIteratorTests.java	Wed Jul 12 22:44:18 2006
+@@ -0,0 +1,241 @@
++/*
++ * Copyright 1999-2006 University of Chicago
++ * 
++ * Licensed under the Apache License, Version 2.0 (the "License");
++ * you may not use this file except in compliance with the License.
++ * You may obtain a copy of the License at
++ * 
++ * http://www.apache.org/licenses/LICENSE-2.0
++ * 
++ * Unless required by applicable law or agreed to in writing, software
++ * distributed under the License is distributed on an "AS IS" BASIS,
++ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
++ * See the License for the specific language governing permissions and
++ * limitations under the License.
++ */
++package org.globus.ws.enumeration;
++
++import java.util.List;
++import java.util.ArrayList;
++import java.util.NoSuchElementException;
++
++import javax.xml.namespace.QName;
++
++import org.apache.axis.message.MessageElement;
++
++import org.globus.wsrf.encoding.ObjectDeserializer;
++import org.globus.wsrf.encoding.ObjectSerializer;
++
++import junit.framework.TestCase;
++
++public class SimpleEnumIteratorTests extends TestCase {
++
++    public void testEmpty()
++        throws Exception {
++        Object [] array = null;
++        testEmpty(new SimpleEnumIterator(array, null));
++        array = new Object[]{};
++        testEmpty(new SimpleEnumIterator(array, null));
++        
++        List list = null;
++        testEmpty(new SimpleEnumIterator(list, null));
++        list = new ArrayList();
++        testEmpty(new SimpleEnumIterator(list, null));
++    }
++
++    private void testEmpty(SimpleEnumIterator iter) 
++        throws Exception {
++        try {
++            iter.next(IterationConstraints.DEFAULT_CONSTRAINTS);
++            fail("Did not throw expected exception");
++        } catch (NoSuchElementException e) {
++            // that's what we want
++        }
++    }
++
++    public void testIterate()
++        throws Exception {
++        List list = EnumerationTestCase.getData(100);
++
++        testIterate(list, 1);
++        testIterate(list, 2);
++        testIterate(list, 3);
++        testIterate(list, 5);
++        testIterate(list, 7);
++    }
++
++    private void testIterate(List list, int maxElements)
++        throws Exception {
++        int n = list.size();
++
++        SimpleEnumIterator iter = 
++            new SimpleEnumIterator(list, EnumerationTestCase.ITEM_NAME);
++
++        IterationResult result = null;
++        IterationConstraints con = 
++            new IterationConstraints(maxElements, -1, null);
++        int items = 0;
++        int calls = 0;
++        do {
++            result = iter.next(con);
++
++            calls++;
++
++            assertTrue(result != null);
++            assertTrue(result.getItems() != null);
++
++            if (items + maxElements < n) {
++                EnumerationTestCase.checkIterationResult(result,
++                                                         items, 
++                                                         maxElements,
++                                                         false);
++            } else if (items + maxElements == n) {
++                EnumerationTestCase.checkIterationResult(result, 
++                                                         items,
++                                                         maxElements,
++                                                         true);
++            } else {
++                int elementsLeft = n - items;
++                EnumerationTestCase.checkIterationResult(result,
++                                                         items,
++                                                         elementsLeft, 
++                                                         true);
++            }
++
++            items += result.getItems().length;
++        } while (!result.isEndOfSequence());
++
++        if (n % maxElements == 0) {
++            assertEquals(n / maxElements, calls);
++        } else {
++            assertEquals(1 + (n / maxElements), calls);
++        }
++
++        testEmpty(iter);
++    }
++
++    public void testRelease()
++        throws Exception {
++        List list = EnumerationTestCase.getData(10);
++
++        SimpleEnumIterator iter = null;
++
++        // case 1: release it right away
++        iter = new SimpleEnumIterator(list, EnumerationTestCase.ITEM_NAME);
++        iter.release();
++        
++        testEmpty(iter);
++
++        // case 2: release it after a few iterations
++        iter = new SimpleEnumIterator(list, EnumerationTestCase.ITEM_NAME);
++        IterationConstraints con = IterationConstraints.DEFAULT_CONSTRAINTS;
++        for (int i=0;i<list.size() / 2;i++) {
++            EnumerationTestCase.checkIterationResult(iter.next(con), 
++                                                     i, 1, false);
++        }
++        iter.release();
++        
++        testEmpty(iter);
++    }
++
++    public void testSkips() 
++        throws Exception {
++        List list = new ArrayList();
++        int j = 0;
++        for (int i=0;i<3;i++) {
++            list.add(EnumerationTestCase.ENUM_ELEMENT + j);
++            j++;
++        }
++
++        QName itemName = 
++            new QName("http://www.globus.org", "DiffItem");
++        
++        list.add(ObjectSerializer.toSOAPElement("foo", itemName));
++        j++;
++
++        SimpleEnumIterator iter = null;
++        IterationConstraints con = null;
++        IterationResult result = null;
++
++        iter = new SimpleEnumIterator(list, EnumerationTestCase.ITEM_NAME);
++        con = new IterationConstraints();
++        for (int i=0;i<3;i++) {
++            EnumerationTestCase.checkIterationResult(iter.next(con), 
++                                                     i, 1, false);
++        }
++
++        result = iter.next(con);
++        assertTrue(result.isEndOfSequence());
++        assertTrue(result.getItems() == null);
++
++        // add a few more entires
++
++        list.add(ObjectSerializer.toSOAPElement("foo2", itemName));
++        j++;
++        for (int i=0;i<3;i++) {
++            list.add(EnumerationTestCase.ENUM_ELEMENT + j);
++            j++;
++        }
++
++        iter = new SimpleEnumIterator(list, EnumerationTestCase.ITEM_NAME);
++        con = new IterationConstraints(2, -1, null);
++
++        EnumerationTestCase.checkIterationResult(iter.next(con),
++                                                 0, 2, false);
++        
++        result = iter.next(con);
++        assertFalse(result.isEndOfSequence());
++        assertTrue(result.getItems() != null);
++        assertEquals(2, result.getItems().length);
++        assertEquals(EnumerationTestCase.ENUM_ELEMENT + 2, 
++                     EnumerationTestCase.toString(result.getItems()[0]));
++        assertEquals(EnumerationTestCase.ENUM_ELEMENT + 5,
++                     EnumerationTestCase.toString(result.getItems()[1]));
++
++        result = iter.next(con);
++        assertTrue(result.isEndOfSequence());
++        assertTrue(result.getItems() != null);
++        assertEquals(2, result.getItems().length);
++        assertEquals(EnumerationTestCase.ENUM_ELEMENT + 6, 
++                     EnumerationTestCase.toString(result.getItems()[0]));
++        assertEquals(EnumerationTestCase.ENUM_ELEMENT + 7,
++                     EnumerationTestCase.toString(result.getItems()[1]));
++    }
++
++    public void testSOAPElementData()
++        throws Exception {
++        List [] lists = EnumerationTestCase.getSOAPElementData();
++
++        SimpleEnumIterator iter = null;
++        IterationConstraints con = null;
++        IterationResult result = null;
++
++        iter = new SimpleEnumIterator(lists[2], null);
++        con = new IterationConstraints();
++
++        for (int i=0;i<lists[0].size();i++) {
++            result = iter.next(con);
++            
++            if (i < lists[0].size() - 1) {
++                assertFalse(result.isEndOfSequence());
++            } else {
++                assertTrue(result.isEndOfSequence());
++            }
++            
++            assertTrue(result.getItems() != null);
++            
++            QName actualQName = (QName)lists[1].get(i);
++            QName valueQName = ((MessageElement)result.getItems()[0]).getQName();
++            
++            assertEquals(actualQName, valueQName);
++
++            Object actual = lists[0].get(i);
++            Object value = ObjectDeserializer.toObject(result.getItems()[0],
++                                                       actual.getClass());
++
++            assertEquals(actual, value);
++        }
++    }
++
++
++}
+Index: wsrf/java/core/test/unit/src/org/globus/ws/enumeration/TestEnumHome.java
+diff -u /dev/null wsrf/java/core/test/unit/src/org/globus/ws/enumeration/TestEnumHome.java:1.1.2.2
+--- /dev/null	Sat Jul 15 17:36:33 2006
++++ wsrf/java/core/test/unit/src/org/globus/ws/enumeration/TestEnumHome.java	Wed Jul 12 22:44:18 2006
+@@ -0,0 +1,52 @@
++/*
++ * Copyright 1999-2006 University of Chicago
++ * 
++ * Licensed under the Apache License, Version 2.0 (the "License");
++ * you may not use this file except in compliance with the License.
++ * You may obtain a copy of the License at
++ * 
++ * http://www.apache.org/licenses/LICENSE-2.0
++ * 
++ * Unless required by applicable law or agreed to in writing, software
++ * distributed under the License is distributed on an "AS IS" BASIS,
++ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
++ * See the License for the specific language governing permissions and
++ * limitations under the License.
++ */
++package org.globus.ws.enumeration;
++
++import javax.xml.namespace.QName;
++
++import org.globus.wsrf.impl.ResourceHomeImpl;
++import org.globus.wsrf.impl.SimpleResourceKey;
++import org.globus.wsrf.impl.TestResource;
++
++import org.globus.wsrf.ResourceKey;
++
++public class TestEnumHome extends ResourceHomeImpl {
++
++    public static QName KEY_TYPE_NAME =
++        new QName(TestResource.TEST_NS, "TestKey");
++
++    public TestEnumHome() {
++        this.keyTypeName = KEY_TYPE_NAME;
++    }
++
++    public void initialize() throws Exception {
++        super.initialize();
++        
++        TestResource obj;
++        
++        obj = new TestResource();
++        add(getKey(1), obj);
++        
++        obj = new TestResource();
++        add(getKey(2), obj);
++    }
++    
++    public static ResourceKey getKey(int o) {
++        return new SimpleResourceKey(KEY_TYPE_NAME,
++                                     String.valueOf(o));
++    }
++    
++}
+Index: wsrf/java/core/test/unit/src/org/globus/ws/enumeration/TestEnumService.java
+diff -u /dev/null wsrf/java/core/test/unit/src/org/globus/ws/enumeration/TestEnumService.java:1.1.2.3
+--- /dev/null	Sat Jul 15 17:36:34 2006
++++ wsrf/java/core/test/unit/src/org/globus/ws/enumeration/TestEnumService.java	Wed Jul 12 22:44:18 2006
+@@ -0,0 +1,138 @@
++/*
++ * Copyright 1999-2006 University of Chicago
++ * 
++ * Licensed under the Apache License, Version 2.0 (the "License");
++ * you may not use this file except in compliance with the License.
++ * You may obtain a copy of the License at
++ * 
++ * http://www.apache.org/licenses/LICENSE-2.0
++ * 
++ * Unless required by applicable law or agreed to in writing, software
++ * distributed under the License is distributed on an "AS IS" BASIS,
++ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
++ * See the License for the specific language governing permissions and
++ * limitations under the License.
++ */
++package org.globus.ws.enumeration;
++
++import com.enumeration.StartEnumerationResponse;
++import com.enumeration.StartEnumeration;
++
++import org.xmlsoap.schemas.ws._2004._09.enumeration.EnumerateResponse;
++import org.xmlsoap.schemas.ws._2004._09.enumeration.Enumerate;
++
++import org.globus.wsrf.ResourceKey;
++import org.globus.wsrf.utils.io.IndexedObjectFileUtils;
++
++import java.io.File;
++import java.util.List;
++import java.rmi.RemoteException;
++
++import javax.xml.namespace.QName;
++
++public class TestEnumService {
++
++    private static final QName ITEM_NAME = 
++        new QName("http://www.globus.org/core/enumeration", "ItemName");
++
++    public StartEnumerationResponse startEnumeration(StartEnumeration request)
++        throws RemoteException {
++        EnumResourceHome enumHome = null;
++        
++        try {
++            enumHome = EnumResourceHome.getEnumResourceHome();
++        } catch (Exception e) {
++            throw new RemoteException("", e);
++        }
++
++        List list = EnumerationTestCase.getData(100);
++
++        EnumIterator iter = null;
++        switch (request.getIteratorType()) {
++
++        case 1:
++            // data in memory
++            iter = new SimpleEnumIterator(list, ITEM_NAME);
++            break;
++
++        case 2:
++            // data in file
++            try {
++                File dataFile = 
++                    IndexedObjectFileUtils.createIndexedObjectFile(list);
++                iter = new IndexedObjectFileEnumIterator(dataFile, ITEM_NAME);
++            } catch (Exception e) {
++                throw new RemoteException("failed to create iterator", e);
++            }
++            break;
++            
++        case 3:
++            // for testing timeout 
++            iter = new TestEnumIterator(list, ITEM_NAME);
++            break;
++
++        default:
++            throw new RemoteException("test case not supported");
++        }
++
++        StartEnumerationResponse response = new StartEnumerationResponse();
++
++        try {
++            EnumResource resource = 
++                enumHome.createEnumeration(iter, request.isPersistent());
++            ResourceKey key = enumHome.getKey(resource);
++        
++            response.setEnumerationContext(
++                            EnumProvider.createEnumerationContextType(key));
++        } catch (Exception e) {
++            throw new RemoteException("failed to create enum resource", e);
++        }
++
++        return response;
++    }
++
++    public EnumerateResponse enumerateOp(Enumerate body) 
++        throws RemoteException {
++        EnumResourceHome enumHome = null;
++        
++        try {
++            enumHome = EnumResourceHome.getEnumResourceHome();
++        } catch (Exception e) {
++            throw new RemoteException("", e);
++        }
++
++        List list = EnumerationTestCase.getData(100);
++
++        try {
++            File dataFile = 
++                IndexedObjectFileUtils.createIndexedObjectFile(list);
++            
++            EnumIterator iter = 
++                new IndexedObjectFileEnumIterator(dataFile, ITEM_NAME);
++            
++            EnumResource resource = enumHome.createEnumeration(iter, true);
++            ResourceKey key = enumHome.getKey(resource);
++            
++            return EnumProvider.createEnumerateOpResponse(key, resource);
++        } catch (Exception e) {
++            throw new RemoteException("", e);
++        }
++    }
++    
++    private static class TestEnumIterator extends SimpleEnumIterator {
++        
++        public TestEnumIterator(List items, QName itemName) {
++            super(items, itemName);
++        }
++        
++        public IterationResult next(IterationConstraints constraints) {
++            if (constraints.getMaxTime() != null &&
++                constraints.getMaxTime().getYears() == 5) {
++                throw new TimeoutException();
++            } else {
++                return super.next(constraints);
++            }
++        }
++    }
++    
++}
+Index: wsrf/java/core/test/unit/src/org/globus/axis/utils/DurationUtilsTest.java
+diff -u /dev/null wsrf/java/core/test/unit/src/org/globus/axis/utils/DurationUtilsTest.java:1.1.2.3
+--- /dev/null	Sat Jul 15 17:36:34 2006
++++ wsrf/java/core/test/unit/src/org/globus/axis/utils/DurationUtilsTest.java	Wed Jun 28 00:27:43 2006
+@@ -0,0 +1,150 @@
++/*
++ * Copyright 1999-2006 University of Chicago
++ * 
++ * Licensed under the Apache License, Version 2.0 (the "License");
++ * you may not use this file except in compliance with the License.
++ * You may obtain a copy of the License at
++ * 
++ * http://www.apache.org/licenses/LICENSE-2.0
++ * 
++ * Unless required by applicable law or agreed to in writing, software
++ * distributed under the License is distributed on an "AS IS" BASIS,
++ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
++ * See the License for the specific language governing permissions and
++ * limitations under the License.
++ */
++package org.globus.axis.utils;
++
++import java.util.Calendar;
++import java.util.TimeZone;
++
++import org.apache.axis.types.Duration;
++
++import junit.framework.TestCase;
++
++public class DurationUtilsTest extends TestCase {
++
++    public void testConversionToMillis() throws Exception {
++        testDurationConversion(1.45D, 0, 0, 0, 1450);
++        testDurationConversion(1.55D, 0, 0, 0, 1550);
++        testDurationConversion(1.95D, 0, 0, 0, 1950);
++        testDurationConversion(5.99D, 0, 0, 0, 5990);
++        testDurationConversion(700.99D, 0, 0, 0, 700 * 1000 + 990);
++
++        testDurationConversion(1.45D, 5, 0, 0, 5L*60*1000 + 1450);
++        testDurationConversion(1.55D, 0, 5, 0, 5L*3600*1000 + 1550);
++        testDurationConversion(1.95D, 0, 0, 5, 3600L*24*5*1000 + 1950);
++
++        testDurationConversion(1.95D, 2, 4, 8, 
++                               2L*60*1000 +
++                               4L*3600*1000 +
++                               8L*3600*24*1000 +
++                               1950);
++    }
++
++    private void testDurationConversion(double seconds, 
++                                        int minutes,
++                                        int hours,
++                                        int days,
++                                        long expected) 
++        throws Exception {
++        Duration dur = new Duration();
++        dur.setSeconds(seconds);
++        dur.setMinutes(minutes);
++        dur.setHours(hours);
++        dur.setDays(days);
++        
++        long actual = DurationUtils.toMilliseconds(dur);
++
++        assertEquals(expected, actual);
++    }
++
++    public void testConversionToDuration() throws Exception {
++        testMillisecondConversion(1450, 1.45D, 0, 0, 0);
++        testMillisecondConversion(1550, 1.55D, 0, 0, 0);
++        testMillisecondConversion(1950, 1.95D, 0, 0, 0);
++        testMillisecondConversion(5990, 5.99D, 0, 0, 0);
++
++        testMillisecondConversion(5L*60*1000 + 1450,
++                                  1.45D, 5, 0, 0);
++        testMillisecondConversion(5L*3600*1000 + 1550,
++                                  1.55D, 0, 5, 0);
++        testMillisecondConversion(3600L*24*5*1000 + 1950,
++                                  1.95D, 0, 0, 5);
++
++        testMillisecondConversion(2L*60*1000 +
++                                  4L*3600*1000 +
++                                  8L*3600*24*1000 +
++                                  1950,
++                                  1.95D, 2, 4, 8);
++
++        testMillisecondConversion(700 * 1000 + 990,
++                                  40.99D, 11, 0, 0);
++    }
++
++    private void testMillisecondConversion(long value,
++                                           double expectedSeconds,
++                                           int expectedMinutes,
++                                           int expectedHours,
++                                           int expectedDays)
++        throws Exception {
++        Duration dur = DurationUtils.toDuration(value);
++
++        System.out.println(dur);
++
++        assertEquals("days", expectedDays, dur.getDays());
++        assertEquals("hours", expectedHours, dur.getHours());
++        assertEquals("minutes", expectedMinutes, dur.getMinutes());
++        assertEquals("seconds", 
++                     (int)(expectedSeconds * 100), 
++                     (int)(dur.getSeconds() * 100));
++    }
++
++
++    public void testZeroDuration() throws Exception {
++        assertEquals(true, 
++                     DurationUtils.isZero(new Duration()));
++        assertEquals(false,
++                     DurationUtils.isZero(null));
++        assertEquals(true,
++                     DurationUtils.isZero(new Duration(false, 0, 0, 0, 0, 0, 0)));
++        assertEquals(true, 
++                     DurationUtils.isZero(new Duration(true, 0, 0, 0, 0, 0, 0)));
++        assertEquals(false, 
++                     DurationUtils.isZero(new Duration(true, 1, 0, 0, 0, 0, 0)));
++        assertEquals(false, 
++                     DurationUtils.isZero(new Duration(true, 0, 1, 0, 0, 0, 0)));
++        assertEquals(false, 
++                     DurationUtils.isZero(new Duration(true, 0, 0, 1, 0, 0, 0)));
++        assertEquals(false, 
++                     DurationUtils.isZero(new Duration(true, 0, 0, 0, 1, 0, 0)));
++        assertEquals(false, 
++                     DurationUtils.isZero(new Duration(true, 0, 0, 0, 0, 1, 0)));
++        assertEquals(false, 
++                     DurationUtils.isZero(new Duration(true, 1, 0, 0, 0, 0, 1)));
++    }
++
++    public void testComputeDuration() throws Exception {
++        Calendar cal1, cal2;
++        Duration duration;
++
++        cal1 = Calendar.getInstance(TimeZone.getTimeZone("UTC"));
++        cal2 = (Calendar)cal1.clone();
++        
++        duration = DurationUtils.computeDuration(cal1, cal2);
++        assertTrue(DurationUtils.isZero(duration));
++        
++        
++        cal1 = Calendar.getInstance(TimeZone.getTimeZone("EST"));
++        cal2 = Calendar.getInstance(TimeZone.getTimeZone("UTC"));
++
++        try {
++            DurationUtils.computeDuration(cal1, cal2);
++            fail("Did not throw exception");
++        } catch (IllegalArgumentException e) {
++            // should be ok
++        }
++    }
++
++
++}
+Index: wsrf/java/core/test/unit/src/org/globus/axis/utils/PackageTests.java
+diff -u /dev/null wsrf/java/core/test/unit/src/org/globus/axis/utils/PackageTests.java:1.1.2.1
+--- /dev/null	Sat Jul 15 17:36:34 2006
++++ wsrf/java/core/test/unit/src/org/globus/axis/utils/PackageTests.java	Mon Jun 26 13:49:11 2006
+@@ -0,0 +1,32 @@
++/*
++ * Copyright 1999-2006 University of Chicago
++ * 
++ * Licensed under the Apache License, Version 2.0 (the "License");
++ * you may not use this file except in compliance with the License.
++ * You may obtain a copy of the License at
++ * 
++ * http://www.apache.org/licenses/LICENSE-2.0
++ * 
++ * Unless required by applicable law or agreed to in writing, software
++ * distributed under the License is distributed on an "AS IS" BASIS,
++ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
++ * See the License for the specific language governing permissions and
++ * limitations under the License.
++ */
++package org.globus.axis.utils;
++
++import junit.framework.Test;
++import junit.framework.TestSuite;
++
++public class PackageTests extends TestSuite {
++
++    public PackageTests(String name) {
++        super(name);
++    }
++
++    public static Test suite() throws Exception {
++        TestSuite suite = new PackageTests("AxisUtilsTests");
++        suite.addTestSuite(DurationUtilsTest.class);
++        return suite;
++    }
++}
+Index: wsrf/schema/core/tests/enumeration/enumeration_bindings.wsdl
+diff -u /dev/null wsrf/schema/core/tests/enumeration/enumeration_bindings.wsdl:1.1.2.1
+--- /dev/null	Sat Jul 15 17:36:34 2006
++++ wsrf/schema/core/tests/enumeration/enumeration_bindings.wsdl	Wed Jul 12 17:03:49 2006
+@@ -0,0 +1,61 @@
++<?xml version="1.0" encoding="UTF-8"?>
++<wsdl:definitions name="Enumeration" targetNamespace="http://enumeration.com/bindings" xmlns:porttype="http://enumeration.com" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
++  <wsdl:import namespace="http://enumeration.com" location="enumeration_flattened.wsdl"/>
++  <wsdl:binding name="EnumerationPortTypeSOAPBinding" type="porttype:EnumerationPortType">
++    <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
++    <wsdl:operation name="startEnumeration">
++      <soap:operation soapAction="http://enumeration.com/EnumerationPortType/startEnumerationRequest"/>
++      <wsdl:input>
++        <soap:body use="literal"/>
++      </wsdl:input>
++      <wsdl:output>
++        <soap:body use="literal"/>
++      </wsdl:output>
++    </wsdl:operation>
++    <wsdl:operation name="PullOp">
++      <soap:operation soapAction="http://schemas.xmlsoap.org/ws/2004/09/enumeration/Pull"/>
++      <wsdl:input>
++        <soap:body use="literal"/>
++      </wsdl:input>
++      <wsdl:output>
++        <soap:body use="literal"/>
++      </wsdl:output>
++    </wsdl:operation>
++    <wsdl:operation name="RenewOp">
++      <soap:operation soapAction="http://schemas.xmlsoap.org/ws/2004/09/enumeration/Renew"/>
++      <wsdl:input>
++        <soap:body use="literal"/>
++      </wsdl:input>
++      <wsdl:output>
++        <soap:body use="literal"/>
++      </wsdl:output>
++    </wsdl:operation>
++    <wsdl:operation name="GetStatusOp">
++      <soap:operation soapAction="http://schemas.xmlsoap.org/ws/2004/09/enumeration/GetStatus"/>
++      <wsdl:input>
++        <soap:body use="literal"/>
++      </wsdl:input>
++      <wsdl:output>
++        <soap:body use="literal"/>
++      </wsdl:output>
++    </wsdl:operation>
++    <wsdl:operation name="ReleaseOp">
++      <soap:operation soapAction="http://schemas.xmlsoap.org/ws/2004/09/enumeration/Release"/>
++      <wsdl:input>
++        <soap:body use="literal"/>
++      </wsdl:input>
++      <wsdl:output>
++        <soap:body use="literal"/>
++      </wsdl:output>
++    </wsdl:operation>
++    <wsdl:operation name="EnumerateOp">
++      <soap:operation soapAction="http://schemas.xmlsoap.org/ws/2004/09/enumeration/Enumerate"/>
++      <wsdl:input>
++        <soap:body use="literal"/>
++      </wsdl:input>
++      <wsdl:output>
++        <soap:body use="literal"/>
++      </wsdl:output>
++    </wsdl:operation>
++  </wsdl:binding>
++</wsdl:definitions>
+Index: wsrf/schema/core/tests/enumeration/enumeration_flattened.wsdl
+diff -u /dev/null wsrf/schema/core/tests/enumeration/enumeration_flattened.wsdl:1.1.2.1
+--- /dev/null	Sat Jul 15 17:36:34 2006
++++ wsrf/schema/core/tests/enumeration/enumeration_flattened.wsdl	Wed Jul 12 17:03:49 2006
+@@ -0,0 +1,75 @@
++<?xml version="1.0" encoding="UTF-8"?>
++<wsdl:definitions name="Enumeration" targetNamespace="http://enumeration.com" xmlns:wsrp="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ResourceProperties-1.2-draft-01.xsd" xmlns:tns="http://enumeration.com" xmlns:wsrpw="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ResourceProperties-1.2-draft-01.wsdl" xmlns:wsrlw="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ResourceLifetime-1.2-draft-01.wsdl" xmlns:wsdlpp="http://www.globus.org/namespaces/2004/10/WSDLPreprocessor" xmlns:wsa="http://schemas.xmlsoap.org/ws/2004/03/addressing" xmlns:wsen="http://schemas.xmlsoap.org/ws/2004/09/enumeration" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:wsntw="http://docs.oasis-open.org/wsn/2004/06/wsn-WS-BaseNotification-1.2-draft-01.wsdl" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns="http://schemas.xmlsoap.org/wsdl/">
++  <wsdl:import namespace="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ResourceLifetime-1.2-draft-01.wsdl" location="../../../wsrf/lifetime/WS-ResourceLifetime.wsdl"/>
++  <wsdl:import namespace="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ResourceProperties-1.2-draft-01.wsdl" location="../../../wsrf/properties/WS-ResourceProperties.wsdl"/>
++  <wsdl:import namespace="http://schemas.xmlsoap.org/ws/2004/09/enumeration" location="../../../ws/enumeration/enumeration.wsdl"/>
++  <wsdl:import namespace="http://docs.oasis-open.org/wsn/2004/06/wsn-WS-BaseNotification-1.2-draft-01.wsdl" location="../../../wsrf/notification/WS-BaseN.wsdl"/>
++  <wsdl:types>
++    <xsd:schema elementFormDefault="qualified" targetNamespace="http://enumeration.com" xmlns:tns="http://enumeration.com" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
++
++            <xsd:import namespace="http://schemas.xmlsoap.org/ws/2004/03/addressing" schemaLocation="../../../ws/addressing/WS-Addressing.xsd"/>
++
++            <xsd:import namespace="http://schemas.xmlsoap.org/ws/2004/09/enumeration" schemaLocation="../../../ws/enumeration/enumeration.xsd"/>
++            
++            <xsd:element name="Value" type="xsd:int"/>
++            
++            <xsd:element name="EnumerationRP">
++                <xsd:complexType>
++                    <xsd:sequence>
++                        <xsd:element maxOccurs="1" minOccurs="1" ref="tns:Value"/>
++                    </xsd:sequence>
++                </xsd:complexType>
++            </xsd:element>
++
++            <xsd:element name="startEnumeration">
++              <xsd:complexType>
++                 <xsd:sequence> 
++                   <xsd:element name="iteratorType" type="xsd:int"/>
++                   <xsd:element name="persistent" type="xsd:boolean"/>
++                 </xsd:sequence>
++              </xsd:complexType>
++            </xsd:element>
++
++            <xsd:element name="startEnumerationResponse">
++               <xsd:complexType>
++                 <xsd:sequence> 
++                   <xsd:element name="EnumerationContext" type="wsen:EnumerationContextType"/>
++                 </xsd:sequence>
++              </xsd:complexType>
++            </xsd:element>
++            
++        </xsd:schema>
++  </wsdl:types>
++  <wsdl:message name="StartEnumerationResponse">
++    <wsdl:part name="response" element="tns:startEnumerationResponse"/>
++  </wsdl:message>
++  <wsdl:message name="StartEnumerationRequest">
++    <wsdl:part name="request" element="tns:startEnumeration"/>
++  </wsdl:message>
++  <wsdl:portType name="EnumerationPortType" wsrp:ResourceProperties="tns:EnumerationRP">
++    <wsdl:operation name="startEnumeration">
++      <wsdl:input message="tns:StartEnumerationRequest"/>
++      <wsdl:output message="tns:StartEnumerationResponse"/>
++    </wsdl:operation>
++    <wsdl:operation name="PullOp">
++      <wsdl:input message="wsen:PullMessage" wsa:Action="http://schemas.xmlsoap.org/ws/2004/09/enumeration/Pull"/>
++      <wsdl:output message="wsen:PullResponseMessage" wsa:Action="http://schemas.xmlsoap.org/ws/2004/09/enumeration/PullResponse"/>
++    </wsdl:operation>
++    <wsdl:operation name="RenewOp">
++      <wsdl:input message="wsen:RenewMessage" wsa:Action="http://schemas.xmlsoap.org/ws/2004/09/enumeration/Renew"/>
++      <wsdl:output message="wsen:RenewResponseMessage" wsa:Action="http://schemas.xmlsoap.org/ws/2004/09/enumeration/RenewResponse"/>
++    </wsdl:operation>
++    <wsdl:operation name="GetStatusOp">
++      <wsdl:input message="wsen:GetStatusMessage" wsa:Action="http://schemas.xmlsoap.org/ws/2004/09/enumeration/GetStatus"/>
++      <wsdl:output message="wsen:GetStatusResponseMessage" wsa:Action="http://schemas.xmlsoap.org/ws/2004/09/enumeration/GetStatusResponse"/>
++    </wsdl:operation>
++    <wsdl:operation name="ReleaseOp">
++      <wsdl:input message="wsen:ReleaseMessage" wsa:Action="http://schemas.xmlsoap.org/ws/2004/09/enumeration/Release"/>
++      <wsdl:output message="wsen:ReleaseResponseMessage" wsa:Action="http://schemas.xmlsoap.org/ws/2004/09/enumeration/ReleaseResponse"/>
++    </wsdl:operation>
++    <wsdl:operation name="EnumerateOp">
++      <wsdl:input message="wsen:EnumerateMessage" wsa:Action="http://schemas.xmlsoap.org/ws/2004/09/enumeration/Enumerate"/>
++      <wsdl:output message="wsen:EnumerateResponseMessage" wsa:Action="http://schemas.xmlsoap.org/ws/2004/09/enumeration/EnumerateResponse"/>
++    </wsdl:operation>
++  </wsdl:portType>
++</wsdl:definitions>
+Index: wsrf/schema/core/tests/enumeration/enumeration_service.wsdl
+diff -u /dev/null wsrf/schema/core/tests/enumeration/enumeration_service.wsdl:1.1.2.1
+--- /dev/null	Sat Jul 15 17:36:34 2006
++++ wsrf/schema/core/tests/enumeration/enumeration_service.wsdl	Wed Jul 12 17:03:49 2006
+@@ -0,0 +1,9 @@
++<?xml version="1.0" encoding="UTF-8"?>
++<wsdl:definitions name="Enumeration" targetNamespace="http://enumeration.com/service" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:binding="http://enumeration.com/bindings" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
++  <wsdl:import namespace="http://enumeration.com/bindings" location="enumeration_bindings.wsdl"/>
++  <wsdl:service name="EnumerationService">
++    <wsdl:port name="EnumerationPortTypePort" binding="binding:EnumerationPortTypeSOAPBinding">
++      <soap:address location="http://localhost:8080/wsrf/services/"/>
++    </wsdl:port>
++  </wsdl:service>
++</wsdl:definitions>
+Index: wsrf/java/core/test/unit/deploy-server.wsdd
+diff -u wsrf/java/core/test/unit/deploy-server.wsdd:1.28 wsrf/java/core/test/unit/deploy-server.wsdd:1.28.8.2
+--- wsrf/java/core/test/unit/deploy-server.wsdd:1.28	Fri Apr 28 20:26:34 2006
++++ wsrf/java/core/test/unit/deploy-server.wsdd	Wed Jul 12 16:49:05 2006
+@@ -183,6 +183,20 @@
+         <wsdlFile>share/schema/core/tests/basic/TestRPCService.wsdl</wsdlFile>
+     </service>
+ 
++    <service name="TestEnumService" provider="Handler" 
++        use="literal" style="document">
++        <parameter name="allowedMethods" 
++            value="*"/>
++        <parameter name="handlerClass" 
++            value="org.globus.axis.providers.RPCProvider"/>
++        <parameter name="className" 
++             value="org.globus.ws.enumeration.TestEnumService"/>
++        <parameter name="providers" 
++            value="EnumerationProvider"/>
++        <wsdlFile>share/schema/core/tests/enumeration/enumeration_service.wsdl</wsdlFile>
++        <parameter name="scope" value="Application"/>
++    </service>
++
+  <typeMapping 
+         encodingStyle="" 
+         deserializer="org.apache.axis.encoding.ser.SimpleDeserializerFactory"
+Index: wsrf/java/core/test/unit/deploy-jndi-config.xml
+diff -u wsrf/java/core/test/unit/deploy-jndi-config.xml:1.21 wsrf/java/core/test/unit/deploy-jndi-config.xml:1.21.8.1
+--- wsrf/java/core/test/unit/deploy-jndi-config.xml:1.21	Fri Apr 28 20:26:34 2006
++++ wsrf/java/core/test/unit/deploy-jndi-config.xml	Wed Jul 12 16:49:05 2006
+@@ -211,4 +211,24 @@
+             </resourceParams>
+         </resource>
+     </service>
++    <service name="TestEnumService">
++        <resource
++            name="home"
++            type="org.globus.ws.enumeration.TestEnumHome">
++            <resourceParams>
++                <parameter>
++                    <name>factory</name>
++                    <value>org.globus.wsrf.jndi.BeanFactory</value>
++                </parameter>
++                <parameter>
++                    <name>resourceClass</name>
++                    <value>org.globus.wsrf.impl.TestResource</value>
++                </parameter>
++                <parameter>
++                    <name>resourceKeyType</name>
++                    <value>java.lang.Integer</value>
++                </parameter>
++            </resourceParams>
++        </resource>
++    </service>
+ </jndiConfig>
+\ No newline at end of file

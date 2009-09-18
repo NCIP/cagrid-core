@@ -1,0 +1,6 @@
+A imports B
+B imports C
+C has no imports
+D imports B, E
+E has no imports
+F has no imports

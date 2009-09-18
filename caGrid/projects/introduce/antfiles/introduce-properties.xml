@@ -1,0 +1,67 @@
+<!-- ======================================================================= -->
+<!-- caGrid Analytical Utilities build file                                  -->
+<!-- ======================================================================= -->
+<project name="introduce_properties" basedir=".">
+
+	<!-- Environment -->
+	<property environment="env" />
+	<property file="${basedir}/project.properties" />
+	<property file="${basedir}/build.properties" />
+
+	<!-- Information -->
+	<property name="project.name" value="caGrid-Introduce" />
+
+
+	<!-- Source, Config, and Libraries -->
+	<property name="ext.dir" location="${basedir}/ext" />
+	<property name="ext.grid.dir" location="${ext.dir}/target_grid" />
+	<property name="src.dir" location="${basedir}/src/java" />
+	<property name="templates.src.dir" location="${basedir}/src/jettemplates" />
+	<property name="templates.created.src.dir" location="${basedir}/src/java/Introduce/gov/nih/nci/cagrid/introduce/templates" />
+	<property name="beans.created.src.dir" location="${basedir}/src/java/Introduce/gov/nih/nci/cagrid/introduce/beans" />
+	<property name="lib.dir" location="${basedir}/lib" />
+	<property name="ext.lib.dir" location="${ext.dir}/dependencies/jars" />
+	<property name="schema.dir" location="${basedir}/schema" />
+	<property name="ext.schema.dir" location="${ext.dir}/schema" />
+	<property name="ext.resources.dir" location="${ext.dir}/resources" />
+	<property name="resources.dir" location="${basedir}/resources" />
+	<property name="updates.dir" location="${basedir}/updates" />
+	<property name="updates.lib.dir" location="${basedir}/updates/lib" />
+	<property name="conf.dir" location="conf" />
+	<property name="log.dir" location="log" />
+
+	<!-- Generated stuff -->
+	<property name="build.dir" location="${basedir}/build" />
+	<property name="build.lib.dir" location="${build.dir}/jars" />
+	<property name="classes.dir" location="${build.dir}/classes" />
+	<property name="introduce.classes.dir" location="${classes.dir}/Introduce" />
+	<property name="portal.classes.dir" location="${classes.dir}/Portal" />
+	<property name="updater.classes.dir" location="${classes.dir}/UpdateManager" />
+	<property name="jars.dir" location="${build.dir}/jars" />
+	<property name="jars.prefixname" value="${project.name}-" />
+	<property name="jars.prefix" value="${jars.dir}/${jars.prefixname}" />
+	<property name="jars.suffix" value="-${project.version}.jar" />
+	<property name="junit.results.dir" value="${build.dir}/junit" />
+	<property name="javadoc.dir" value="${build.dir}/javadoc" />
+	<property name="skeleton.dir" value="${basedir}/skeleton" />
+	<property name="skeleton.lib.dir" value="${skeleton.dir}/lib" />
+	<property name="skeleton.tools.lib.dir" value="${skeleton.dir}/tools/lib" />
+
+	<property name="java.source" value="1.5" />
+
+	<!-- testing stuff -->
+	<property name="test.dir" location="${basedir}/test" />
+	<property name="test.src.dir" location="${test.dir}/src/java" />
+	<property name="test.classes.dir" location="${build.dir}/test_classes" />
+	<property name="introduce.test.classes.dir" location="${test.classes.dir}/Introduce" />
+	<property name="portal.test.classes.dir" location="${test.classes.dir}/Portal" />
+	<property name="updater.test.classes.dir" location="${test.classes.dir}/UpdateManager" />
+	<property name="test.lib.dir" location="${test.dir}/lib" />
+	<property name="ext.test.lib.dir" location="${ext.dir}/dependencies/test/jars" />
+	<property name="test.log.dir" location="${test.dir}/logs" />
+
+	<!-- extensions stuff -->
+	<property name="extensions.dir" location="${basedir}/extensions" />
+	<property name="extensions.lib.dir" location="${extensions.dir}/lib" />
+
+</project>

@@ -1,0 +1,139 @@
+<?xml version="1.0"?>
+
+<ivy-module version="2.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:noNamespaceSchemaLocation="http://incubator.apache.org/ivy/schemas/ivy.xsd">
+
+  <info organisation="caGrid" module="data" revision="${project.version}">
+    <license name="caGrid" url="http://cagrid.org/wiki/CaGrid:LICENSE-1.3"/>
+    <description>Common data service infrastructure </description>
+  </info>
+
+  <configurations>
+    <!-- Private Configurations-->
+    <conf name="impl" visibility="private" extends="full"/>
+    <conf name="impl-test" visibility="private"/>
+
+    <!-- Public Configurations-->
+    <conf name="stubs" visibility="public"/>
+    <conf name="common" extends="stubs" visibility="public"/>
+
+    <conf name="processors" extends="common" visibility="public"/>
+    <conf name="utils" extends="common" visibility="public"/>
+
+    <conf name="validation" extends="utils" visibility="public"/>
+
+    <conf name="service" visibility="public" extends="validation,utils,processors"/>
+    <conf name="tools" visibility="public" extends="validation,utils,processors"/>
+    
+    <conf name="full" visibility="public" extends="service,tools"/>
+
+    <conf name="test" visibility="public" extends="full"/>
+
+    <conf name="cql-examples" visibility="public"/>
+
+    <conf name="bdt-schemas" visibility="public"/>
+    <conf name="enum-schemas" visibility="public"/>
+    <conf name="transfer-schemas" visibility="public"/>
+    <conf name="service-schemas" visibility="public" extends="bdt-schemas,enum-schemas,transfer-schemas"/>
+    
+    <conf name="extension-schemas" visibility="public"/>
+  </configurations>
+
+
+  <publications>
+    <artifact name="caGrid-${ivy.module}-stubs" conf="stubs" type="jar"/>
+    <artifact name="caGrid-${ivy.module}-common" conf="common" type="jar"/>
+
+    <artifact name="caGrid-${ivy.module}-service" conf="service" type="jar"/>
+    <artifact name="caGrid-${ivy.module}-tests" conf="test" type="jar"/>
+
+    <artifact name="caGrid-${ivy.module}-cql" conf="processors" type="jar"/>
+    <artifact name="caGrid-${ivy.module}-tools" conf="tools" type="jar"/>
+    <artifact name="caGrid-${ivy.module}-utils" conf="utils" type="jar"/>
+    <artifact name="caGrid-${ivy.module}-validation" conf="validation" type="jar"/>
+    
+    <artifact name="BDTDataService" conf="bdt-schemas" type="wsdl"/>
+    <artifact name="BDTDataServiceBulkDataHandler" conf="bdt-schemas" type="wsdl"/>
+    <artifact name="BDTDataServiceBulkDataHandlerTypes" conf="bdt-schemas" type="xsd"/>
+    <artifact name="BDTDataServiceTypes" conf="bdt-schemas" type="xsd"/>
+    <!-- TODO: some of these should be coming from a bdt dependency -->    
+    <artifact name="BulkDataHandler" conf="bdt-schemas" type="wsdl"/>
+    <artifact name="BulkDataHandlerReference" conf="bdt-schemas" type="xsd"/>
+    <artifact name="BulkDataTransferServiceMetadata" conf="bdt-schemas" type="xsd"/>
+    
+    <artifact name="DataService" conf="service-schemas" type="wsdl"/>
+    <artifact name="DataServiceExceptions" conf="service-schemas" type="xsd"/>
+    <artifact name="DataServiceTypes" conf="service-schemas" type="xsd"/>
+    <!-- TODO: these should be coming from a service-security-provider dependency -->
+    <artifact name="ServiceSecurity" conf="service-schemas" type="wsdl"/>
+    
+    <artifact name="EnumerationDataService" conf="enum-schemas" type="wsdl"/>
+    <artifact name="EnumerationDataServiceTypes" conf="enum-schemas" type="xsd"/>
+    
+    <artifact name="TransferDataService" conf="transfer-schemas" type="wsdl"/>
+    <artifact name="TransferDataServiceTypes" conf="transfer-schemas" type="xsd"/>
+    
+    <artifact name="ClassToQname" conf="extension-schemas" type="xsd"/>
+    <artifact name="DataServiceAuditorConfiguration" conf="extension-schemas" type="xsd"/>
+    <artifact name="DataServiceExtensionData" conf="extension-schemas" type="xsd"/>
+    <artifact name="DataServiceStyle" conf="extension-schemas" type="xsd"/>
+
+    <artifact name="domain/groupWithValidAttributes" conf="cql-examples" type="xml"/>
+    <artifact name="domain/objectWithAssociation" conf="cql-examples" type="xml"/>
+    <artifact name="domain/objectWithAssociationNoRoleName" conf="cql-examples" type="xml"/>
+    <artifact name="domain/objectWithAttribute" conf="cql-examples" type="xml"/>
+    <artifact name="invalid/domain/groupWithInvalidAttributeName" conf="cql-examples" type="xml"/>
+    <artifact name="invalid/domain/invalidAttributeDataType" conf="cql-examples" type="xml"/>
+    <artifact name="invalid/domain/invalidTarget" conf="cql-examples" type="xml"/>
+    <artifact name="invalid/domain/objectWithInvalidAssociationClass" conf="cql-examples" type="xml"/>
+    <artifact name="invalid/domain/objectWithInvalidAssociationRoleName" 
+      conf="cql-examples" type="xml"/>
+    <artifact name="invalid/associationWithoutName" conf="cql-examples" type="xml"/>
+    <artifact name="invalid/associationWithTooManyChildren" conf="cql-examples" type="xml"/>
+    <artifact name="invalid/attributeWithoutValue" conf="cql-examples" type="xml"/>
+    <artifact name="invalid/groupWithoutLogic" conf="cql-examples" type="xml"/>
+    <artifact name="invalid/modifierMissingCount" conf="cql-examples" type="xml"/>
+    <artifact name="invalid/modifierWithBothAttributeTypes" conf="cql-examples" type="xml"/>
+    <artifact name="invalid/noGroupChildren" conf="cql-examples" type="xml"/>
+    <artifact name="invalid/oneGroupChild" conf="cql-examples" type="xml"/>
+    <artifact name="invalid/targetWithoutName" conf="cql-examples" type="xml"/>
+    <artifact name="invalid/tooManyTargetChildren" conf="cql-examples" type="xml"/>
+    <artifact name="attributePredicates" conf="cql-examples" type="xml"/>
+    <artifact name="countAllOfType" conf="cql-examples" type="xml"/>
+    <artifact name="countDistinctAttributes" conf="cql-examples" type="xml"/>
+    <artifact name="objectWithAssociation" conf="cql-examples" type="xml"/>
+    <artifact name="objectWithAssociationNoRoleName" conf="cql-examples" type="xml"/>
+    <artifact name="objectWithAttribute" conf="cql-examples" type="xml"/>
+    <artifact name="objectWithGroup" conf="cql-examples" type="xml"/>
+    <artifact name="objectWithNestedGroup" conf="cql-examples" type="xml"/>
+    <artifact name="returnAllOfType" conf="cql-examples" type="xml"/>
+    <artifact name="returnNamedAttributes" conf="cql-examples" type="xml"/>
+  </publications>
+
+  <dependencies>
+    <dependency rev="latest.integration" org="caGrid" name="core"
+      conf="service,tools->default;impl-test->test"/>
+    <dependency rev="latest.integration" org="caGrid" name="metadata"
+      conf="impl,service-schemas->schemas;utils->data.jars,security.jars"/>
+    <dependency rev="latest.integration" org="caGrid" name="service-security-provider"
+      conf="utils->client;service->service"/>
+
+    <dependency rev="latest.integration" org="caGrid" name="wsEnum" conf="service->default;impl->schemas"/>
+    <dependency rev="latest.integration" org="caGrid" name="introduce"
+    conf="tools->extension;impl-test->extension-test"/>
+    <dependency rev="latest.integration" org="caGrid" name="metadatautils"
+      conf="validation->default"/>
+    <dependency rev="latest.integration" org="caGrid" name="graph" conf="tools->default"/>
+    <dependency rev="latest.integration" org="caGrid" name="grape" conf="tools->default"/>
+    <dependency rev="latest.integration" org="caGrid" name="bulkDataTransfer" conf="utils->client"/>
+    <dependency rev="latest.integration" org="caGrid" name="mms" conf="impl->schemas,stubs" />
+    <dependency rev="latest.integration" org="caGrid" name="cql" conf="common->cql;service->cql,cql-schemas;service-schemas->cql-schemas;extension-schemas->cql-schemas;utils->cql2,cql2-schemas"/>
+    <dependency rev="latest.integration" org="caGrid" name="transfer" conf="service->stubs,common,service,client"/>
+    
+    <!-- Extenernal Dependencies -->
+    <dependency rev="1.0" org="jdom" name="jdom" conf="service->*"/>
+    <!--  This is only needed for an example model for testing -->
+    <dependency rev="3.1" org="cacore" name="api" conf="impl-test->*" transitive="false"/>
+    <dependency rev="4.4" org="junit" name="junit" conf="impl-test->default"/>
+  </dependencies>
+</ivy-module>

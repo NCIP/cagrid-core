@@ -1,0 +1,14 @@
+<ns1:CQLQueryResultCollection targetClassname="gov.nih.nci.cacoresdk.domain.inheritance.onechild.Human" xmlns:ns1="http://CQL.caBIG/1/gov.nih.nci.cagrid.CQLResultSet">
+ <ns1:ObjectResult>
+  <ns2:Human hairColor="Hair_Color1" id="1" diet="DIET1" xmlns:ns2="gme://caCORE.caCORE/4.0/gov.nih.nci.cacoresdk.domain.inheritance.onechild"/>
+ </ns1:ObjectResult>
+ <ns1:ObjectResult>
+  <ns3:Human hairColor="Hair_Color2" id="2" diet="DIET2" xmlns:ns3="gme://caCORE.caCORE/4.0/gov.nih.nci.cacoresdk.domain.inheritance.onechild"/>
+ </ns1:ObjectResult>
+ <ns1:ObjectResult>
+  <ns4:Human hairColor="Hair_Color3" id="3" diet="DIET3" xmlns:ns4="gme://caCORE.caCORE/4.0/gov.nih.nci.cacoresdk.domain.inheritance.onechild"/>
+ </ns1:ObjectResult>
+ <ns1:ObjectResult>
+  <ns5:Human hairColor="Hair_Color4" id="4" diet="DIET4" xmlns:ns5="gme://caCORE.caCORE/4.0/gov.nih.nci.cacoresdk.domain.inheritance.onechild"/>
+ </ns1:ObjectResult>
+</ns1:CQLQueryResultCollection>

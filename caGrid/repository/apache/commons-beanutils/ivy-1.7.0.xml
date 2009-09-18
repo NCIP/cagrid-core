@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<?xml-stylesheet type="text/xsl" href="http://ivyrep.jayasoft.org/ivy-doc.xsl"?>
+<ivy-module version="2.0">
+	<info organisation="apache" module="commons-beanutils" revision="1.7.0" status="release"
+		publication="20040821215500">
+		<license name="Apache" url="http://www.apache.org/licenses/LICENSE-2.0.txt"/>
+		<ivyauthor name="jayasoft" url="http://www.jayasoft.org/"/>
+
+		<description homepage="http://jakarta.apache.org/commons/beanutils/"> The BeanUtils
+			component provides easy-to-use wrappers around java bean getter / setter
+			capabilities.
+		</description>
+	</info>
+	<configurations>
+		<conf name="default" description="for default use, including collections"/>
+		<conf name="core" description="without collections"/>
+		<conf name="collections" description="collections facility"/>
+	</configurations>
+
+	<publications>
+		<artifact name="commons-beanutils" type="jar" conf="default"/>
+		<artifact name="commons-beanutils-core" type="jar" conf="core"/>
+		<artifact name="commons-beanutils-bean-collections" type="jar" conf="collections"/>
+	</publications>
+	<dependencies>
+		<dependency name="commons-collections" rev="3.1" conf="default, collections->default"/>
+		<!-- This is in GT4 -->
+		<!-- <dependency rev="1.0.3" org="apache" name="commons-logging" conf="*->*"/> -->
+	</dependencies>
+
+</ivy-module>

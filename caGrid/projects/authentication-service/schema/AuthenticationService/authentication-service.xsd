@@ -1,0 +1,32 @@
+<xsd:schema targetNamespace="http://cagrid.nci.nih.gov/1/authentication-service"
+	attributeFormDefault="qualified"
+	elementFormDefault="qualified"
+	xmlns:xsd="http://www.w3.org/2001/XMLSchema" 
+	xmlns:auth="http://cagrid.nci.nih.gov/1/authentication-service">
+
+		<xsd:element name="SAMLAssertion" type="auth:SAMLAssertion"/>
+	     <xsd:complexType name="SAMLAssertion">
+			<xsd:sequence>
+				<xsd:element name="xml" minOccurs="1" maxOccurs="1" type="xsd:string"/>
+			</xsd:sequence>
+		</xsd:complexType>
+		
+		
+		<xsd:element name="Credential" type="auth:Credential"/>
+	     <xsd:complexType name="Credential">
+			<xsd:choice>
+				<xsd:element name="BasicAuthenticationCredential" minOccurs="1" maxOccurs="1" type="auth:BasicAuthenticationCredential"/>
+				<xsd:element name="CredentialExtension" minOccurs="1" maxOccurs="1" type="xsd:anyType"/>
+			</xsd:choice>
+		</xsd:complexType>
+		 
+ 		 
+ 		 <xsd:complexType name="BasicAuthenticationCredential">
+			<xsd:sequence>
+				<xsd:element name="userId" minOccurs="1" maxOccurs="1" type="xsd:string"/>
+				<xsd:element name="password" minOccurs="1" maxOccurs="1" type="xsd:string"/>
+			</xsd:sequence>
+		</xsd:complexType>
+		
+		
+</xsd:schema>

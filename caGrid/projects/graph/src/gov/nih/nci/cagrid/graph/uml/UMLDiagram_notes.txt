@@ -1,0 +1,164 @@
+Notes on using the 'UMLDiagram' class
+===============================================================
+
+-Overview------------------------------------------------------
+
+The UMLDiagram class is a SWING UI component that is capable 
+of displaying UML class diagrams. Technically, it is a JPanel 
+so it can be embedded in top-level containers (such as JFrame) 
+or even other JPanels. 
+
+The component is capable of displaying 3 types of objects:
+
+   +------------+
+   |   Class1   | <<composition>>
+   +------------+ 1..*
+   | + attribs  |<----.
+   +------------+      \
+   |  methods() |       \ 
+   +------------+        \ 
+                          \  0..* 
+                           \ <<aggregation>>
+                            \+------------+
+                             |   Class2   |
+                             +------------+
+                             | + attribs  | 
+                             +------------+
+                             |  methods() |
+                             +------------+
+
+                  (Figure 1)
+
+1) Classes that are represented by boxes
+
+2) Lines connecting the boxes to represent 
+   associations between classes (optional 
+   arrowheads can be added at the end of 
+   the lines)
+
+3) Labels near the junctions of lines and boxes.
+   (as shown in the above diagram).  Labels can 
+   be of 2 types - one representing cardinality
+   (1..* , 0..* , etc) and another is just a 
+   generic string label.  These generic labels 
+   are the <<composition>> and <<aggregation>>
+   tags shown in the above diagram.
+
+-The UMLDiagram Class--------------------------------------------
+
+So those are the 3 types of objects that the UMLDiagram 
+object is capable of displaying.  This section talks 
+about populating a UMLDiagram object with classes and
+associations.
+
+In order to add a class to the UMLDiagram component, one 
+first has to create a UMLClass object and add it to the
+UMLDiagram component using the addClass() method. This
+method returns true if the class was successfully added
+to the diagram and false if there were errors (i.e. same
+class added twice)
+
+Once UMLClass objects are added to the diagram, associations
+can be added between them by using the addAssociation() 
+method.  Again, returns true upon success, false otherwise.
+
+The signatures of the addClass() and addAssociation() methods
+are as follows (again, these methods are part of the UMLDiagram
+class):
+	
+        public boolean addClass(UMLClass c);
+
+        public boolean addAssociation(UMLClass sourceClass, 
+                                      UMLClass destinationClass,
+                                      String   srcCardinality, 
+                                      String   destCardinality,
+                                      String   srcGenericLabel,
+                                      String   destGenericLabel,
+                                      boolean  showSrcArrowHead, 
+                                      boolean  showDestArrowHead);
+
+The addAssociation method takes in alot of parameters. What happens
+in the method is that a UMLClassAssociation object is created and added
+to the diagram.  This class is of no significance now, but might be 
+for event handling (described later)
+
+-The UMLClass Class-----------------------------------------------
+
+Since one has to first create a UMLClass object before adding 
+them to a UMLDiagram object, this section talks about how to 
+work with UMLClass objects... its simple:
+
+1) instantiate a UMLClass object
+2) add attributes to that object
+3) add methods to that object (which I belive won't be necessary
+                               for caGrid)
+
+The signatures of the methods for the above operations are as
+follows:
+
+       public UMLClass(String name); // constructor
+       public void addAttribute(String type, String name);
+       public void addMethod(...) // not implemented
+
+
+
+-Putting Classes and Association in the Diagram-------------------
+
+Below is a code snippet that will populate a UMLDiagram object 
+with the objects as shown in (Figure 1).
+
+    +----------------------------------------------------------------------+
+    |                                                                      |
+    |  UMLDiagram diagram = new UMLDiagram();                              |   
+    |  UMLClass class1 = new UMLClass("Class1");                           |
+    |  UMLClass class2 = new UMLClass("Class2");                           |
+    |  diagram.addClass(class1);                                           |  
+    |  diagram.addClass(class2);                                           |
+    |  diagram.addAssociation(class1, class2, "1..*", "0..*",              |
+    |                         "<<composition>>", "<<aggregation>>",        |
+    |                         true, false);                                |
+    |                                                                      |
+    |  // last but not least, you have to performLayout() and refresh()    |
+    |  // the diagram to run the poor layout algorithm and refresh changes |
+    |  diagram.performLayout();                                            |
+    |  diagram.refresh();                                                  |
+    +----------------------------------------------------------------------+
+
+After layouting and refreshing, the diagram object can be added to whatever 
+SWING component necessary.
+
+-Adding an Event Listener to the UMLDiagram class---------------------
+
+The UMLDiagram class is capable of responding to user events such as a
+mouse-click on a specific class, or a double-click on a specific 
+association.  In order to catch these events, a UMLDiagramListner object
+has to be added to the UMLDiagram object of  interest.  Actually ,a UMLDiagram 
+object has only one listener so the proper term would be'set' the listener and not 
+'add' a listener, and this is done using the setDiagramListener() method:
+ 
+     public void setDiagramListener(UMLDiagramListener listener);
+
+The UMLDiagramListener interface has the following methods:
+
+     public UMLDiagramListener(UMLDiagram d);
+     public void classClicked(UMLClass c, MouseEvent e);
+     public void associationClicked(UMLClassAssociation a, MouseEvent e);
+     public void backgroundClicked(MouseEvent e);
+     public void classKeyPressed(KeyEvent e);
+     public void associationKeyPressed(
+
+Notice that the UMLDiagram object of interest must be passed as a parameter
+to the constructor of the listener.  This allows for the diagram to be accessed
+from inside the other listener methods by using [listener.diagram].
+
+The MouseEvent is added to the event handling methods so that one can check 
+to see if the objects were clicked, doublecliked, rightclicked , etc.
+
+-Open Issues----------------------------------------------------------
+
+1) The layout algorithm for the boxes and lines sucks right now.
+   -Come up with algorithm that minimizes edge crossings and maximizes
+    angles between edges
+
+2) clicking an object highlights that object and fades the rest, but
+   one must double-click to get everything back to normal..

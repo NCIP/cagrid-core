@@ -1,0 +1,124 @@
+1.2 - 1.3
+-- Fixed circular schema bug in filesystem data type discovery tool
+-- Fixed bug in updater that was looking in the wrong place for introduce.extension.properties and template when trying to set the patch version
+-- Added new build-deploy.xml to fix problems with undeploy (upgrader needs to handle the copy in)
+-- New heuristic for schema imports
+	-- if introduce imports the schema it will only set namespace excludes or type maps for that schema
+	-- if it is desired to do this for the schemas that schema imports than those schemas must be added and handled
+	   appropriately individually.  This is different than in prior versions.
+	-- Prior versions of introduce would simple namespace exclude any namespace that were imported from a schema
+	   that was set to generate stubs false.  However this is not always the desired behavior
+-- Added button to enable user to control whether or not stubs will be generated for imported schema.
+-- Added to introduce model so that services and methods can have extension data added to them
+-- Added an introduce log viewer component to the GUI.
+-- Added new extension type called INTRODUCE_GDE which enables adding grape components to the UI through extensions
+-- Added another subscribe method to base clients that takes in a NotificationCallback so that clients do have to 
+   overload the deliver method if they want to implement a notification callback on there own or use another.
+-- Complete refactor of authorization within introduce.  Introduce now has a Authorization Extension that enables 
+   authorization plugins to the Introduce Generated PDP.  This is much cleaner and removes the hard coded gridgrouper
+   and csm support and now opens the doors to other authorization plugins to be generated rapidly.
+-- Added ability for introduce generated clients to have a setAnonymousPrefered.  This will enable controlling whether
+   or not the client will attempt to connect anonymously or not.  The default is set to true and can now be changed
+   programmaticaly. 
+-- Added to introduce service extension so that service extension providers can plug a deployment validator into
+   the service that will be executed before the service is deployed.  This will enable service extension providers
+   to validate the service is properly configured prior to deployment.
+
+1.1 - 1.2
+-- Removed ServiceTasks JDOM dependency to the services lib directory and moved it to the tools directory.
+-- Added ability for services to be undeployed
+-- Added ability to have resources be persisted
+	-- using XMLPersistanceHelper customized from globus
+-- Renamed some service files so that they all now start with the service name
+	-- BaseResourceBase
+	-- BaseResourceHome
+	-- ResourceConfiguration
+	-- ServiceConfiguration
+-- Moved constants file to common so that client and service can both use them
+-- Now using jaxmejs 0.5.2 with JAXME-77 patch applied
+-- Added ws-notification support as a resource framework option
+-- Added support for configuring resource framework options from a list of options
+-- Fixed problems with finding first letter upper cased methods for addition and removal
+-- Fixed problems when having introduce imported methods that have no package for the return type (void)
+-- Refactored the Resource framework to be one set of templates instead of three
+	- caused changes to the services.xsd to support the new way of describing the resource framework options as a list instead of one string
+	
+
+1.0 - 1.1
+-- Added a new target in the service build file which enables fixing the soap bindings to work with custom serialization.
+-- Added property "perform.index.service.registration" to the deploy.properties to enable or disable index service registration.
+-- Added two new properties in the deploy.properties enabling the metadata pub/sub timing to be controlled.
+	--index.service.registration.refresh_seconds=600
+	--index.service.index.refresh_milliseconds=30000
+-- Added "dev" build.xml and build-deploy.xml which the user can freely edit without expecting changes by updates
+-- Moved ant-contrib.jar to ext/lib in the service instead of lib because the service itself does not need that jar as it is only used for building
+-- Created a soap binding fix that will enable us to use custom serialization of "some" types of a schema and added it to the services build process.
+-- Descriptions on the service, methods, inputs, outputs, faults, are now used to create javadoc on the "common" service interface.
+-- Moved to PDP based authorization
+	--made the authorization file a PDP
+	--configured the service security descriptor to use the PDP
+	--add a gui panel to enable entering a custom PDP chain if desired
+-- Added support for resource factory/creation code to automatically be generated and placed into any method
+   which is creating and returning a handle to a new service/resource instance.
+-- Added upgrader framework to enable migration of services from 1.0 - 1.1
+-- Added updater framework enabling Introduce to find and install extensions and newer versions directly from the software.
+-- Refactored service resource framework in order to enable registration of resource
+   properties as well as enable the resource class itself to be user modified and 
+   extended to there liking.  In doing this the BaseResource class was also renamed to
+   <serviceName>Resource to make more sense to the developer.
+   This also caused the renaming of the etc/registration.xml to etc/<serviceName>_registration.xml
+   in order to support registration for the all the resource framework types.
+
+	
+
+1.0B --1.0
+A new field to the ResourcePropertiesType was added called fileLocation.  This field
+is used to tell introduce what file to use for reading in a populateFromFile resource
+property.  If you do not metadata files already filed out then you should not see a problem.
+If you do be sure that you go into this introduce.xml file and set that location to be relative
+to the etc directory and pointing to the file which represents that particular resource
+property instance document.
+
+For example:
+
+  <ns6:ResourcePropertiesList xsi:type="ns6:ResourcePropertiesListType" xmlns:ns6="gme://gov.nih.nci.cagrid.introduce/1/Resources">
+    <ns6:ResourceProperty qName="ns7:ServiceMetadata" fileLocation="HelloWorld_serviceMetadata.xml" populateFromFile="true" register="true" xsi:type="ns6:ResourcePropertyType" xmlns:ns7="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata"/>
+   </ns6:ResourcePropertiesList>
+   
+   
+Removed synconizedResourceFramework from the ResourcePropertiesType bean.
+
+<resourceLink> have been added for every sub resources home to all other sub resource homes
+
+a baseImpl has been added to the server to hide some of the provided methods from the users implementation
+
+wsdl files where not importing xsd's correctly so changed the wsdl to define the namespaces of all types in the top of hte wsdl
+and import the xsd's in the schema part of the wsdl
+
+jar file names of all introduce jars has been changed to the new caGrid approved style "caGrid-1.0-Introduce-*"
+
+added a way to set your resource type to CUSTOM which tells the engine not to add any resource implementation for you service and tells you in the JNDI what to add.
+
+added support for importing methods from WSDL which use messages that use types and not elements
+ 
+added a schema for the service called "<ServiceName>Types.xsd" which gets a reference (typed EPR) added to it so that others can chose to use it as well
+this schema is used by the GUI to define new faults that can be used in your or others services.
+
+The client handle return functionality has been changed to use the strongly typed EPR's from above instead of the regular EPRs
+
+
+
+ImportInformation now has a required attribute called FromIntroduce.  This designates the import method to come from an
+introduce generated service or not.  This is important because introduce will only "unbox" from introduce generated
+methods and for anything else will use document literal bindings.
+
+
+
+Index service URL was made to be a deployment time decision  
+This caused a change in the registration.xml so that the url was not
+hard coded (replace the URL in you existing file with INDEX_SERVICE_URL or just update introduce and save your service). 
+The build-deploy.xml file was also updated to support pushing this variable value (look at the differences or do a merge)
+index.service.url was added as a deploy.properties.
+
+changed the introduce.sh file to better work in general....
+

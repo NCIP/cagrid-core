@@ -1,0 +1,13 @@
+<?xml version="1.0" ?>
+<ivy-module version="2.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:noNamespaceSchemaLocation="http://incubator.apache.org/ivy/schemas/ivy.xsd">
+    <info organisation="safehaus" module="jug" revision="1.1.1" status="release"
+        publication="20040521000000">
+        <license name="LGPL 2.1" url="http://www.gnu.org/licenses/old-licenses/lgpl-2.1.html"/>
+
+        <description homepage="http://java.sun.com/products/jta"> "JUG is a pure java UUID
+            generator, that can be used either as a component in a bigger application, or as a
+            standalone command line tool (a la 'uuidgen')."
+        </description>
+    </info>
+</ivy-module>

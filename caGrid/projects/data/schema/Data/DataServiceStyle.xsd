@@ -1,0 +1,70 @@
+<!-- edited with XMLSpy v2005 rel. 3 U (http://www.altova.com) by David W. Ervin (The Ohio State University / Department of Biomedical Informatics) -->
+<xsd:schema xmlns:tns="http://gov.nih.nci.cagrid.data/Style" xmlns:xsd="http://www.w3.org/2001/XMLSchema" targetNamespace="http://gov.nih.nci.cagrid.data/Style" elementFormDefault="qualified" attributeFormDefault="unqualified">
+	<xsd:element name="DataServiceStyle" type="tns:DataServiceStyle"/>
+	<xsd:complexType name="DataServiceStyle">
+		<xsd:sequence>
+			<xsd:element ref="tns:CompatibleCaGridVersions"/>
+			<xsd:element name="StyleDescription" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="CreationWizardPanels" minOccurs="0">
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element ref="tns:CreationWizardPanel" maxOccurs="unbounded"/>
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+			<xsd:element ref="tns:ModificationUiPanel" minOccurs="0"/>
+			<xsd:element ref="tns:CodegenHelpers" minOccurs="0"/>
+			<xsd:element ref="tns:CreationHelper" minOccurs="0"/>
+			<xsd:element ref="tns:VersionUpgrade" minOccurs="0" maxOccurs="unbounded"/>
+		</xsd:sequence>
+		<xsd:attribute name="name" type="xsd:string" use="required"/>
+		<xsd:attribute name="version" type="xsd:string" use="required"/>
+	</xsd:complexType>
+	<xsd:element name="CompatibleCaGridVersions" type="tns:CompatibleCaGridVersions"/>
+	<xsd:complexType name="CompatibleCaGridVersions">
+		<xsd:sequence>
+			<xsd:element name="Version" maxOccurs="unbounded">
+				<xsd:complexType>
+					<xsd:simpleContent>
+						<xsd:extension base="xsd:string"/>
+					</xsd:simpleContent>
+				</xsd:complexType>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:element name="CreationWizardPanel" type="tns:CreationWizardPanel"/>
+	<xsd:complexType name="CreationWizardPanel">
+		<xsd:annotation>
+			<xsd:documentation>Must extend from gov.nih.nci.cagrid.data.ui.wizard.AbstractWizardPanel</xsd:documentation>
+		</xsd:annotation>
+		<xsd:attribute name="classname" type="xsd:string" use="required"/>
+	</xsd:complexType>
+	<xsd:element name="ModificationUiPanel" type="tns:ModificationUiPanel"/>
+	<xsd:complexType name="ModificationUiPanel">
+		<xsd:annotation>
+			<xsd:documentation>Must extend from gov.nih.nci.cagrid.data.ui.DataServiceModificationSubPanel</xsd:documentation>
+		</xsd:annotation>
+		<xsd:attribute name="classname" type="xsd:string" use="required"/>
+	</xsd:complexType>
+	<xsd:element name="VersionUpgrade" type="tns:VersionUpgrade"/>
+	<xsd:complexType name="VersionUpgrade">
+		<xsd:attribute name="fromVersion" type="xsd:string" use="required"/>
+		<xsd:attribute name="toVersion" type="xsd:string" use="required"/>
+		<xsd:attribute name="classname" type="xsd:string" use="required"/>
+	</xsd:complexType>
+	<xsd:element name="CodegenHelpers" type="tns:CodegenHelpers"/>
+	<xsd:complexType name="CodegenHelpers">
+		<xsd:annotation>
+			<xsd:documentation>Pre codegen must implement Must implement interface gov.nih.nci.cagrid.data.style.StyleCodegenPreProcessor, post codegen must implement Must implement interface gov.nih.nci.cagrid.data.style.StyleCodegenPostProcessor</xsd:documentation>
+		</xsd:annotation>
+		<xsd:attribute name="preCodegenClassname" type="xsd:string" use="optional"/>
+		<xsd:attribute name="postCodegenClassname" type="xsd:string" use="optional"/>
+	</xsd:complexType>
+	<xsd:element name="CreationHelper" type="tns:CreationHelper"/>
+	<xsd:complexType name="CreationHelper">
+		<xsd:annotation>
+			<xsd:documentation>Must implement interface gov.nih.nci.cagrid.data.style.StyleCreationPostProcessor</xsd:documentation>
+		</xsd:annotation>
+		<xsd:attribute name="postCreationClassname" type="xsd:string" use="required"/>
+	</xsd:complexType>
+</xsd:schema>

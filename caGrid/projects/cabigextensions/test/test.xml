@@ -1,0 +1,28 @@
+<!-- ======================================================================= -->
+<!-- caGrid caBIG Extensions project build file                              -->
+<!-- ======================================================================= -->
+<project name="caGrid-cabigextensions_tests_harness" basedir=".">
+	<property name="junit.results.dir" value="${test.logs.dir}/junit" />
+	<property name="introduce.dir" value="../introduce" />
+
+
+	<!-- call the test target for each project and aggregates the log resutls  -->
+	<target name="test" depends="defineClasspaths">
+		<mkdir dir="${junit.results.dir}" />
+		<junit dir="${basedir}" printsummary="yes" errorproperty="test.failed" failureproperty="test.failed" showoutput="true" fork="true" forkmode="once">
+			<sysproperty key="build.dir" value="${classes.dir}" />
+			<jvmarg value="-Dbuild.dir=${classes.dir}" />
+			<classpath refid="test.classpath" />
+			<classpath>
+				<pathelement path="${test.classes.dir}" />
+			</classpath>
+			<formatter type="xml" />
+			<batchtest fork="yes" todir="${junit.results.dir}">
+				<fileset dir="${test.src.dir}">
+					<include name="**/*TestCase.java" />
+				</fileset>
+			</batchtest>
+		</junit>
+		<fail message="Tests failed! Check test reports." if="test.failed" />
+	</target>
+</project>

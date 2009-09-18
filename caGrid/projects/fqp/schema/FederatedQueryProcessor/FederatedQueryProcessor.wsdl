@@ -1,0 +1,221 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions xmlns="http://schemas.xmlsoap.org/wsdl/" xmlns:tns="http://fqp.cagrid.nci.nih.gov/FederatedQueryProcessor" xmlns:wsrp="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ResourceProperties-1.2-draft-01.xsd" xmlns:wsrlw="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ResourceLifetime-1.2-draft-01.wsdl" xmlns:wsdlpp="http://www.globus.org/namespaces/2004/10/WSDLPreprocessor" xmlns:gtwsdl1="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ServiceGroup-1.2-draft-01.wsdl" xmlns:wsa="http://schemas.xmlsoap.org/ws/2004/03/addressing" xmlns:wsntw="http://docs.oasis-open.org/wsn/2004/06/wsn-WS-BaseNotification-1.2-draft-01.wsdl" xmlns:wsrbfw="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-BaseFaults-1.2-draft-01.wsdl" xmlns:wsrpw="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ResourceProperties-1.2-draft-01.wsdl" xmlns:wns1="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ResourceProperties-1.2-draft-01.wsdl" xmlns:wns0="http://security.introduce.cagrid.nci.nih.gov/ServiceSecurity" xmlns:ns2="http://CQL.caBIG/1/gov.nih.nci.cagrid.CQLQuery" xmlns:ns16="http://fqp.cagrid.nci.nih.gov/FederatedResults/types" xmlns:ns13="http://schemas.xmlsoap.org/ws/2004/08/addressing" xmlns:ns9="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata" xmlns:ns11="http://transfer.cagrid.org/Transfer" xmlns:ns14="http://gov.nih.nci.cagrid.enumeration/EnumerationResponseContainer" xmlns:ns7="http://fqp.cagrid.nci.nih.gov/FederatedQueryProcessor/types" xmlns:ns3="http://caGrid.caBIG/1.0/gov.nih.nci.cagrid.dcql" xmlns:ns6="http://cds.gaards.cagrid.org/CredentialDelegationService/DelegatedCredential/types" xmlns:ns12="http://schemas.xmlsoap.org/ws/2004/09/enumeration" xmlns:ns8="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.security" xmlns:ns5="http://caGrid.caBIG/1.0/gov.nih.nci.cagrid.dcqlresult" xmlns:ns10="http://transfer.cagrid.org/TransferService/Context/types" xmlns:ns4="http://CQL.caBIG/1/gov.nih.nci.cagrid.CQLResultSet" xmlns:ns15="http://gov.nih.nci.cagrid.enumeration/CaGridEnumeration/types" xmlns:ns0="http://fqp.cagrid.nci.nih.gov/FederatedQueryResultsMetadata" xmlns:ns17="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ResourceLifetime-1.2-draft-01.xsd" xmlns:ns1="http://fqp.cagrid.nci.nih.gov/QueryExecutionParameters" name="FederatedQueryProcessor" targetNamespace="http://fqp.cagrid.nci.nih.gov/FederatedQueryProcessor">
+  <import namespace="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ResourceProperties-1.2-draft-01.wsdl" location="../wsrf/properties/WS-ResourceProperties.wsdl" />
+  <import namespace="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-BaseFaults-1.2-draft-01.wsdl" location="../wsrf/faults/WS-BaseFaults.wsdl" />
+  <import namespace="http://docs.oasis-open.org/wsn/2004/06/wsn-WS-BaseNotification-1.2-draft-01.wsdl" location="../wsrf/notification/WS-BaseN.wsdl" />
+  <import namespace="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ResourceProperties-1.2-draft-01.wsdl" location="./../wsrf/properties/WS-ResourceProperties.wsdl" />
+  <import namespace="http://security.introduce.cagrid.nci.nih.gov/ServiceSecurity" location="./ServiceSecurity.wsdl" />
+  <!--============================================================
+
+                      T Y P E S
+                      
+  ============================================================-->
+  <types>
+    <schema xmlns="http://www.w3.org/2001/XMLSchema" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:wsrbf="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-BaseFaults-1.2-draft-01.xsd" targetNamespace="http://fqp.cagrid.nci.nih.gov/FederatedQueryProcessor" elementFormDefault="qualified" attributeFormDefault="unqualified">
+      <import namespace="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-BaseFaults-1.2-draft-01.xsd" schemaLocation="../wsrf/faults/WS-BaseFaults.xsd" />
+      <import namespace="http://CQL.caBIG/1/gov.nih.nci.cagrid.CQLQuery" schemaLocation="./xsd/1_gov.nih.nci.cagrid.CQLQuery.xsd" />
+      <import namespace="http://fqp.cagrid.nci.nih.gov/FederatedResults/types" schemaLocation="./FederatedQueryResultsTypes.xsd" />
+      <import namespace="http://schemas.xmlsoap.org/ws/2004/08/addressing" schemaLocation="./addressing.xsd" />
+      <import namespace="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata" schemaLocation="./xsd/cagrid/types/caGridMetadata.xsd" />
+      <import namespace="http://transfer.cagrid.org/Transfer" schemaLocation="./caGrid_Transfer.xsd" />
+      <import namespace="http://gov.nih.nci.cagrid.enumeration/EnumerationResponseContainer" schemaLocation="./EnumerationResponseContainer.xsd" />
+      <import namespace="http://fqp.cagrid.nci.nih.gov/FederatedQueryProcessor/types" schemaLocation="./FederatedQueryProcessorTypes.xsd" />
+      <import namespace="http://caGrid.caBIG/1.0/gov.nih.nci.cagrid.dcql" schemaLocation="./Distributed_CQL_schema_2.0.xsd" />
+      <import namespace="http://cds.gaards.cagrid.org/CredentialDelegationService/DelegatedCredential/types" schemaLocation="./DelegatedCredentialTypes.xsd" />
+      <import namespace="http://schemas.xmlsoap.org/ws/2004/09/enumeration" schemaLocation="./enumeration.xsd" />
+      <import namespace="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.security" schemaLocation="./xsd/cagrid/types/security/security.xsd" />
+      <import namespace="http://caGrid.caBIG/1.0/gov.nih.nci.cagrid.dcqlresult" schemaLocation="./Distributed_CQL_Results_schema_2.0.xsd" />
+      <import namespace="http://transfer.cagrid.org/TransferService/Context/types" schemaLocation="./TransferServiceContextTypes.xsd" />
+      <import namespace="http://CQL.caBIG/1/gov.nih.nci.cagrid.CQLResultSet" schemaLocation="./xsd/1_gov.nih.nci.cagrid.CQLResultSet.xsd" />
+      <import namespace="http://gov.nih.nci.cagrid.enumeration/CaGridEnumeration/types" schemaLocation="./CaGridEnumerationTypes.xsd" />
+      <import namespace="http://fqp.cagrid.nci.nih.gov/FederatedQueryResultsMetadata" schemaLocation="./FQPResultsMetadata.xsd" />
+      <import namespace="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ResourceLifetime-1.2-draft-01.xsd" schemaLocation="../wsrf/lifetime/WS-ResourceLifetime.xsd" />
+      <import namespace="http://fqp.cagrid.nci.nih.gov/QueryExecutionParameters" schemaLocation="./QueryExecutionParameters.xsd" />
+      <element name="ExecuteRequest">
+        <complexType>
+          <sequence>
+            <element name="query">
+              <complexType>
+                <sequence>
+                  <element ref="ns3:DCQLQuery" minOccurs="1" maxOccurs="1" />
+                </sequence>
+              </complexType>
+            </element>
+          </sequence>
+        </complexType>
+      </element>
+      <element name="ExecuteResponse">
+        <complexType>
+          <sequence>
+            <element ref="ns5:DCQLQueryResultsCollection" minOccurs="1" maxOccurs="1" />
+          </sequence>
+        </complexType>
+      </element>
+      <element name="ExecuteAndAggregateResultsRequest">
+        <complexType>
+          <sequence>
+            <element name="query">
+              <complexType>
+                <sequence>
+                  <element ref="ns3:DCQLQuery" minOccurs="1" maxOccurs="1" />
+                </sequence>
+              </complexType>
+            </element>
+          </sequence>
+        </complexType>
+      </element>
+      <element name="ExecuteAndAggregateResultsResponse">
+        <complexType>
+          <sequence>
+            <element ref="ns4:CQLQueryResultCollection" minOccurs="1" maxOccurs="1" />
+          </sequence>
+        </complexType>
+      </element>
+      <element name="ExecuteAsynchronouslyRequest">
+        <complexType>
+          <sequence>
+            <element name="query">
+              <complexType>
+                <sequence>
+                  <element ref="ns3:DCQLQuery" minOccurs="1" maxOccurs="1" />
+                </sequence>
+              </complexType>
+            </element>
+          </sequence>
+        </complexType>
+      </element>
+      <element name="ExecuteAsynchronouslyResponse">
+        <complexType>
+          <sequence>
+            <element ref="ns16:FederatedQueryResultsReference" minOccurs="1" maxOccurs="1" />
+          </sequence>
+        </complexType>
+      </element>
+      <element name="QueryRequest">
+        <complexType>
+          <sequence>
+            <element name="query">
+              <complexType>
+                <sequence>
+                  <element ref="ns3:DCQLQuery" minOccurs="1" maxOccurs="1" />
+                </sequence>
+              </complexType>
+            </element>
+            <element name="delegatedCredentialReference">
+              <complexType>
+                <sequence>
+                  <element ref="ns6:DelegatedCredentialReference" minOccurs="1" maxOccurs="1" />
+                </sequence>
+              </complexType>
+            </element>
+            <element name="queryExecutionParameters">
+              <complexType>
+                <sequence>
+                  <element ref="ns1:QueryExecutionParameters" minOccurs="1" maxOccurs="1" />
+                </sequence>
+              </complexType>
+            </element>
+          </sequence>
+        </complexType>
+      </element>
+      <element name="QueryResponse">
+        <complexType>
+          <sequence>
+            <element ref="ns16:FederatedQueryResultsReference" minOccurs="1" maxOccurs="1" />
+          </sequence>
+        </complexType>
+      </element>
+      <element name="FederatedQueryProcessorResourceProperties">
+        <complexType>
+          <sequence>
+            <element ref="ns9:ServiceMetadata" />
+          </sequence>
+        </complexType>
+      </element>
+    </schema>
+  </types>
+  <!--  place service messages here -->
+  <message name="ExecuteRequest">
+    <part name="parameters" element="tns:ExecuteRequest" />
+  </message>
+  <message name="ExecuteResponse">
+    <part name="parameters" element="tns:ExecuteResponse" />
+  </message>
+  <message name="ExecuteAndAggregateResultsRequest">
+    <part name="parameters" element="tns:ExecuteAndAggregateResultsRequest" />
+  </message>
+  <message name="ExecuteAndAggregateResultsResponse">
+    <part name="parameters" element="tns:ExecuteAndAggregateResultsResponse" />
+  </message>
+  <message name="ExecuteAsynchronouslyRequest">
+    <part name="parameters" element="tns:ExecuteAsynchronouslyRequest" />
+  </message>
+  <message name="ExecuteAsynchronouslyResponse">
+    <part name="parameters" element="tns:ExecuteAsynchronouslyResponse" />
+  </message>
+  <message name="QueryRequest">
+    <part name="parameters" element="tns:QueryRequest" />
+  </message>
+  <message name="QueryResponse">
+    <part name="parameters" element="tns:QueryResponse" />
+  </message>
+  <message name="FederatedQueryProcessingFaultFaultMessage">
+    <part name="fault" element="ns7:FederatedQueryProcessingFault" />
+  </message>
+  <message name="InternalErrorFaultFaultMessage">
+    <part name="fault" element="ns16:InternalErrorFault" />
+  </message>
+  <!--============================================================
+
+                       P O R T T Y P E
+                      
+  ============================================================-->
+  <portType name="FederatedQueryProcessorPortType" wsrp:ResourceProperties="tns:FederatedQueryProcessorResourceProperties">
+    <operation name="execute">
+      <input message="tns:ExecuteRequest" wsa:Action="http://fqp.cagrid.nci.nih.gov/FederatedQueryProcessor/ExecuteRequest" />
+      <output message="tns:ExecuteResponse" wsa:Action="http://fqp.cagrid.nci.nih.gov/FederatedQueryProcessor/ExecuteResponse" />
+      <fault name="FederatedQueryProcessingFault" message="tns:FederatedQueryProcessingFaultFaultMessage" wsa:Action="http://fqp.cagrid.nci.nih.gov/FederatedQueryProcessor/FederatedQueryProcessingFaultFaultMessage" />
+    </operation>
+    <operation name="executeAndAggregateResults">
+      <input message="tns:ExecuteAndAggregateResultsRequest" wsa:Action="http://fqp.cagrid.nci.nih.gov/FederatedQueryProcessor/ExecuteAndAggregateResultsRequest" />
+      <output message="tns:ExecuteAndAggregateResultsResponse" wsa:Action="http://fqp.cagrid.nci.nih.gov/FederatedQueryProcessor/ExecuteAndAggregateResultsResponse" />
+      <fault name="FederatedQueryProcessingFault" message="tns:FederatedQueryProcessingFaultFaultMessage" wsa:Action="http://fqp.cagrid.nci.nih.gov/FederatedQueryProcessor/FederatedQueryProcessingFaultFaultMessage" />
+    </operation>
+    <operation name="executeAsynchronously">
+      <input message="tns:ExecuteAsynchronouslyRequest" wsa:Action="http://fqp.cagrid.nci.nih.gov/FederatedQueryProcessor/ExecuteAsynchronouslyRequest" />
+      <output message="tns:ExecuteAsynchronouslyResponse" wsa:Action="http://fqp.cagrid.nci.nih.gov/FederatedQueryProcessor/ExecuteAsynchronouslyResponse" />
+    </operation>
+    <operation name="query">
+      <input message="tns:QueryRequest" wsa:Action="http://fqp.cagrid.nci.nih.gov/FederatedQueryProcessor/QueryRequest" />
+      <output message="tns:QueryResponse" wsa:Action="http://fqp.cagrid.nci.nih.gov/FederatedQueryProcessor/QueryResponse" />
+      <fault name="FederatedQueryProcessingFault" message="tns:FederatedQueryProcessingFaultFaultMessage" wsa:Action="http://fqp.cagrid.nci.nih.gov/FederatedQueryProcessor/FederatedQueryProcessingFaultFaultMessage" />
+      <fault name="InternalErrorFault" message="tns:InternalErrorFaultFaultMessage" wsa:Action="http://fqp.cagrid.nci.nih.gov/FederatedQueryProcessor/InternalErrorFaultFaultMessage" />
+    </operation>
+    <operation name="getServiceSecurityMetadata">
+      <input message="wns0:GetServiceSecurityMetadataRequest" wsa:Action="http://security.introduce.cagrid.nci.nih.gov/ServiceSecurity/GetServiceSecurityMetadataRequest" />
+      <output message="wns0:GetServiceSecurityMetadataResponse" wsa:Action="http://security.introduce.cagrid.nci.nih.gov/ServiceSecurity/GetServiceSecurityMetadataResponse" />
+    </operation>
+    <wsdl:operation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" name="GetMultipleResourceProperties">
+      <wsdl:input name="GetMultipleResourcePropertiesRequest" message="wsrpw:GetMultipleResourcePropertiesRequest" wsa:Action="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ResourceProperties/GetMultipleResourceProperties" />
+      <wsdl:output name="GetMultipleResourcePropertiesResponse" message="wsrpw:GetMultipleResourcePropertiesResponse" wsa:Action="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ResourceProperties/GetMultipleResourcePropertiesResponse" />
+      <wsdl:fault name="ResourceUnknownFault" message="wsrpw:ResourceUnknownFault" />
+      <wsdl:fault name="InvalidResourcePropertyQNameFault" message="wsrpw:InvalidResourcePropertyQNameFault" />
+    </wsdl:operation>
+    <wsdl:operation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" name="GetResourceProperty">
+      <wsdl:input name="GetResourcePropertyRequest" message="wsrpw:GetResourcePropertyRequest" wsa:Action="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ResourceProperties/GetResourceProperty" />
+      <wsdl:output name="GetResourcePropertyResponse" message="wsrpw:GetResourcePropertyResponse" wsa:Action="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ResourceProperties/GetResourcePropertyResponse" />
+      <wsdl:fault name="ResourceUnknownFault" message="wsrpw:ResourceUnknownFault" />
+      <wsdl:fault name="InvalidResourcePropertyQNameFault" message="wsrpw:InvalidResourcePropertyQNameFault" />
+    </wsdl:operation>
+    <wsdl:operation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" name="QueryResourceProperties">
+      <wsdl:input name="QueryResourcePropertiesRequest" message="wsrpw:QueryResourcePropertiesRequest" wsa:Action="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ResourceProperties/QueryResourceProperties" />
+      <wsdl:output name="QueryResourcePropertiesResponse" message="wsrpw:QueryResourcePropertiesResponse" wsa:Action="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ResourceProperties/QueryResourcePropertiesResponse" />
+      <wsdl:fault name="ResourceUnknownFault" message="wsrpw:ResourceUnknownFault" />
+      <wsdl:fault name="InvalidResourcePropertyQNameFault" message="wsrpw:InvalidResourcePropertyQNameFault" />
+      <wsdl:fault name="UnknownQueryExpressionDialectFault" message="wsrpw:UnknownQueryExpressionDialectFault" />
+      <wsdl:fault name="InvalidQueryExpressionFault" message="wsrpw:InvalidQueryExpressionFault" />
+      <wsdl:fault name="QueryEvaluationErrorFault" message="wsrpw:QueryEvaluationErrorFault" />
+    </wsdl:operation>
+  </portType>
+</definitions>
+

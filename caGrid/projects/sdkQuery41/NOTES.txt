@@ -1,0 +1,12 @@
+1)
+Unfortunatly, I'm somewhat stuck until the SDK team gets this fixed:
+	https://gforge.nci.nih.gov/tracker/index.php?func=detail&aid=17856&group_id=148&atid=730
+	SDK team is working on this; apparently patched the bug and is preparing to QA test it.
+2)
+SDK's internal CQL query handling returns instances of subclasses of the data type you queried for.  This obviously breaks CQL spec, but some clients may want this behavior.
+	https://gforge.nci.nih.gov/tracker/?func=detail&aid=17940&group_id=148&atid=730
+(Items 1 and 2 will probably be addressed by the SDK team via a point release, date TBD)
+3)
+Use information already provided by the SDK to assign schema element name / Java classname mappings
+	The castor mapping file at least has this.
+	Better approach than making the assumption that Classname == Element Name

@@ -1,0 +1,1839 @@
+<ns1:DomainModel projectDescription="caCORE Description" projectLongName="caCORE" projectShortName="caCORE" projectVersion="3" xmlns:ns1="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.dataservice">
+ <ns1:exposedUMLAssociationCollection>
+  <ns1:UMLAssociation bidirectional="true">
+   <ns1:targetUMLAssociationEdge>
+    <ns1:UMLAssociationEdge maxCardinality="1" minCardinality="0" roleName="taxon">
+     <ns1:UMLClassReference refid="173832FC-A4CC-6E57-E044-0003BA3F9857"/>
+    </ns1:UMLAssociationEdge>
+   </ns1:targetUMLAssociationEdge>
+   <ns1:sourceUMLAssociationEdge>
+    <ns1:UMLAssociationEdge maxCardinality="-1" minCardinality="0" roleName="geneCollection">
+     <ns1:UMLClassReference refid="173832FC-A4D6-6E57-E044-0003BA3F9857"/>
+    </ns1:UMLAssociationEdge>
+   </ns1:sourceUMLAssociationEdge>
+  </ns1:UMLAssociation>
+  <ns1:UMLAssociation bidirectional="true">
+   <ns1:targetUMLAssociationEdge>
+    <ns1:UMLAssociationEdge maxCardinality="1" minCardinality="0" roleName="homologousGene">
+     <ns1:UMLClassReference refid="173832FC-A4D6-6E57-E044-0003BA3F9857"/>
+    </ns1:UMLAssociationEdge>
+   </ns1:targetUMLAssociationEdge>
+   <ns1:sourceUMLAssociationEdge>
+    <ns1:UMLAssociationEdge maxCardinality="-1" minCardinality="0" roleName="homologousAssociationCollection">
+     <ns1:UMLClassReference refid="173832FC-A71C-6E57-E044-0003BA3F9857"/>
+    </ns1:UMLAssociationEdge>
+   </ns1:sourceUMLAssociationEdge>
+  </ns1:UMLAssociation>
+  <ns1:UMLAssociation bidirectional="true">
+   <ns1:targetUMLAssociationEdge>
+    <ns1:UMLAssociationEdge maxCardinality="-1" minCardinality="0" roleName="childDiseaseOntologyRelationshipCollection">
+     <ns1:UMLClassReference refid="173832FC-A4D9-6E57-E044-0003BA3F9857"/>
+    </ns1:UMLAssociationEdge>
+   </ns1:targetUMLAssociationEdge>
+   <ns1:sourceUMLAssociationEdge>
+    <ns1:UMLAssociationEdge maxCardinality="1" minCardinality="0" roleName="parentDiseaseOntology">
+     <ns1:UMLClassReference refid="173832FC-A71F-6E57-E044-0003BA3F9857"/>
+    </ns1:UMLAssociationEdge>
+   </ns1:sourceUMLAssociationEdge>
+  </ns1:UMLAssociation>
+  <ns1:UMLAssociation bidirectional="true">
+   <ns1:targetUMLAssociationEdge>
+    <ns1:UMLAssociationEdge maxCardinality="-1" minCardinality="0" roleName="organOntologyCollection">
+     <ns1:UMLClassReference refid="173832FC-A4D3-6E57-E044-0003BA3F9857"/>
+    </ns1:UMLAssociationEdge>
+   </ns1:targetUMLAssociationEdge>
+   <ns1:sourceUMLAssociationEdge>
+    <ns1:UMLAssociationEdge maxCardinality="-1" minCardinality="0" roleName="anomalyCollection">
+     <ns1:UMLClassReference refid="173832FC-A4DB-6E57-E044-0003BA3F9857"/>
+    </ns1:UMLAssociationEdge>
+   </ns1:sourceUMLAssociationEdge>
+  </ns1:UMLAssociation>
+  <ns1:UMLAssociation bidirectional="true">
+   <ns1:targetUMLAssociationEdge>
+    <ns1:UMLAssociationEdge maxCardinality="-1" minCardinality="0" roleName="geneCollection">
+     <ns1:UMLClassReference refid="173832FC-A4D6-6E57-E044-0003BA3F9857"/>
+    </ns1:UMLAssociationEdge>
+   </ns1:targetUMLAssociationEdge>
+   <ns1:sourceUMLAssociationEdge>
+    <ns1:UMLAssociationEdge maxCardinality="-1" minCardinality="0" roleName="geneOntologyCollection">
+     <ns1:UMLClassReference refid="173832FC-A4D8-6E57-E044-0003BA3F9857"/>
+    </ns1:UMLAssociationEdge>
+   </ns1:sourceUMLAssociationEdge>
+  </ns1:UMLAssociation>
+  <ns1:UMLAssociation bidirectional="true">
+   <ns1:targetUMLAssociationEdge>
+    <ns1:UMLAssociationEdge maxCardinality="-1" minCardinality="0" roleName="cloneCollection">
+     <ns1:UMLClassReference refid="173832FC-A4CB-6E57-E044-0003BA3F9857"/>
+    </ns1:UMLAssociationEdge>
+   </ns1:targetUMLAssociationEdge>
+   <ns1:sourceUMLAssociationEdge>
+    <ns1:UMLAssociationEdge maxCardinality="-1" minCardinality="0" roleName="taxonCollection">
+     <ns1:UMLClassReference refid="173832FC-A4CC-6E57-E044-0003BA3F9857"/>
+    </ns1:UMLAssociationEdge>
+   </ns1:sourceUMLAssociationEdge>
+  </ns1:UMLAssociation>
+  <ns1:UMLAssociation bidirectional="true">
+   <ns1:targetUMLAssociationEdge>
+    <ns1:UMLAssociationEdge maxCardinality="1" minCardinality="0" roleName="cloneRelativeLocation">
+     <ns1:UMLClassReference refid="173832FC-A717-6E57-E044-0003BA3F9857"/>
+    </ns1:UMLAssociationEdge>
+   </ns1:targetUMLAssociationEdge>
+   <ns1:sourceUMLAssociationEdge>
+    <ns1:UMLAssociationEdge maxCardinality="1" minCardinality="0" roleName="nucleicAcidSequence">
+     <ns1:UMLClassReference refid="173832FC-A4CE-6E57-E044-0003BA3F9857"/>
+    </ns1:UMLAssociationEdge>
+   </ns1:sourceUMLAssociationEdge>
+  </ns1:UMLAssociation>
+  <ns1:UMLAssociation bidirectional="true">
+   <ns1:targetUMLAssociationEdge>
+    <ns1:UMLAssociationEdge maxCardinality="1" minCardinality="0" roleName="tissueProtocol">
+     <ns1:UMLClassReference refid="173832FC-A4D0-6E57-E044-0003BA3F9857"/>
+    </ns1:UMLAssociationEdge>
+   </ns1:targetUMLAssociationEdge>
+   <ns1:sourceUMLAssociationEdge>
+    <ns1:UMLAssociationEdge maxCardinality="-1" minCardinality="0" roleName="tissueLibraryCollection">
+     <ns1:UMLClassReference refid="173832FC-A4D4-6E57-E044-0003BA3F9857"/>
+    </ns1:UMLAssociationEdge>
+   </ns1:sourceUMLAssociationEdge>
+  </ns1:UMLAssociation>
+  <ns1:UMLAssociation bidirectional="true">
+   <ns1:targetUMLAssociationEdge>
+    <ns1:UMLAssociationEdge maxCardinality="-1" minCardinality="0" roleName="parentOrganOntologyRelationshipCollection">
+     <ns1:UMLClassReference refid="173832FC-A4D2-6E57-E044-0003BA3F9857"/>
+    </ns1:UMLAssociationEdge>
+   </ns1:targetUMLAssociationEdge>
+   <ns1:sourceUMLAssociationEdge>
+    <ns1:UMLAssociationEdge maxCardinality="1" minCardinality="0" roleName="childOrganOntology">
+     <ns1:UMLClassReference refid="173832FC-A4D3-6E57-E044-0003BA3F9857"/>
+    </ns1:UMLAssociationEdge>
+   </ns1:sourceUMLAssociationEdge>
+  </ns1:UMLAssociation>
+  <ns1:UMLAssociation bidirectional="false">
+   <ns1:targetUMLAssociationEdge>
+    <ns1:UMLAssociationEdge maxCardinality="-1" minCardinality="0" roleName="anomalyCollection">
+     <ns1:UMLClassReference refid="173832FC-A4DB-6E57-E044-0003BA3F9857"/>
+    </ns1:UMLAssociationEdge>
+   </ns1:targetUMLAssociationEdge>
+   <ns1:sourceUMLAssociationEdge>
+    <ns1:UMLAssociationEdge maxCardinality="1" minCardinality="0" roleName="target">
+     <ns1:UMLClassReference refid="173832FC-A4CD-6E57-E044-0003BA3F9857"/>
+    </ns1:UMLAssociationEdge>
+   </ns1:sourceUMLAssociationEdge>
+  </ns1:UMLAssociation>
+  <ns1:UMLAssociation bidirectional="true">
+   <ns1:targetUMLAssociationEdge>
+    <ns1:UMLAssociationEdge maxCardinality="-1" minCardinality="0" roleName="organOntologyCollection">
+     <ns1:UMLClassReference refid="173832FC-A4D3-6E57-E044-0003BA3F9857"/>
+    </ns1:UMLAssociationEdge>
+   </ns1:targetUMLAssociationEdge>
+   <ns1:sourceUMLAssociationEdge>
+    <ns1:UMLAssociationEdge maxCardinality="-1" minCardinality="0" roleName="geneCollection">
+     <ns1:UMLClassReference refid="173832FC-A4D6-6E57-E044-0003BA3F9857"/>
+    </ns1:UMLAssociationEdge>
+   </ns1:sourceUMLAssociationEdge>
+  </ns1:UMLAssociation>
+  <ns1:UMLAssociation bidirectional="true">
+   <ns1:targetUMLAssociationEdge>
+    <ns1:UMLAssociationEdge maxCardinality="-1" minCardinality="0" roleName="targetCollection">
+     <ns1:UMLClassReference refid="173832FC-A4CD-6E57-E044-0003BA3F9857"/>
+    </ns1:UMLAssociationEdge>
+   </ns1:targetUMLAssociationEdge>
+   <ns1:sourceUMLAssociationEdge>
+    <ns1:UMLAssociationEdge maxCardinality="-1" minCardinality="0" roleName="agentCollection">
+     <ns1:UMLClassReference refid="173832FC-A4DC-6E57-E044-0003BA3F9857"/>
+    </ns1:UMLAssociationEdge>
+   </ns1:sourceUMLAssociationEdge>
+  </ns1:UMLAssociation>
+  <ns1:UMLAssociation bidirectional="false">
+   <ns1:targetUMLAssociationEdge>
+    <ns1:UMLAssociationEdge maxCardinality="-1" minCardinality="0" roleName="nucleicAcidSequenceCollection">
+     <ns1:UMLClassReference refid="173832FC-A4CE-6E57-E044-0003BA3F9857"/>
+    </ns1:UMLAssociationEdge>
+   </ns1:targetUMLAssociationEdge>
+   <ns1:sourceUMLAssociationEdge>
+    <ns1:UMLAssociationEdge maxCardinality="1" minCardinality="0" roleName="clone">
+     <ns1:UMLClassReference refid="173832FC-A4CB-6E57-E044-0003BA3F9857"/>
+    </ns1:UMLAssociationEdge>
+   </ns1:sourceUMLAssociationEdge>
+  </ns1:UMLAssociation>
+  <ns1:UMLAssociation bidirectional="true">
+   <ns1:targetUMLAssociationEdge>
+    <ns1:UMLAssociationEdge maxCardinality="1" minCardinality="0" roleName="gene">
+     <ns1:UMLClassReference refid="173832FC-A4D6-6E57-E044-0003BA3F9857"/>
+    </ns1:UMLAssociationEdge>
+   </ns1:targetUMLAssociationEdge>
+   <ns1:sourceUMLAssociationEdge>
+    <ns1:UMLAssociationEdge maxCardinality="-1" minCardinality="0" roleName="locationCollection">
+     <ns1:UMLClassReference refid="173832FC-A71A-6E57-E044-0003BA3F9857"/>
+    </ns1:UMLAssociationEdge>
+   </ns1:sourceUMLAssociationEdge>
+  </ns1:UMLAssociation>
+  <ns1:UMLAssociation bidirectional="false">
+   <ns1:targetUMLAssociationEdge>
+    <ns1:UMLAssociationEdge maxCardinality="1" minCardinality="0" roleName="startCytoband">
+     <ns1:UMLClassReference refid="173832FC-A71B-6E57-E044-0003BA3F9857"/>
+    </ns1:UMLAssociationEdge>
+   </ns1:targetUMLAssociationEdge>
+   <ns1:sourceUMLAssociationEdge>
+    <ns1:UMLAssociationEdge maxCardinality="-1" minCardinality="0" roleName="">
+     <ns1:UMLClassReference refid="173832FC-A718-6E57-E044-0003BA3F9857"/>
+    </ns1:UMLAssociationEdge>
+   </ns1:sourceUMLAssociationEdge>
+  </ns1:UMLAssociation>
+  <ns1:UMLAssociation bidirectional="true">
+   <ns1:targetUMLAssociationEdge>
+    <ns1:UMLAssociationEdge maxCardinality="-1" minCardinality="0" roleName="vocabularyCollection">
+     <ns1:UMLClassReference refid="173832FC-A720-6E57-E044-0003BA3F9857"/>
+    </ns1:UMLAssociationEdge>
+   </ns1:targetUMLAssociationEdge>
+   <ns1:sourceUMLAssociationEdge>
+    <ns1:UMLAssociationEdge maxCardinality="-1" minCardinality="0" roleName="anomalyCollection">
+     <ns1:UMLClassReference refid="173832FC-A4DB-6E57-E044-0003BA3F9857"/>
+    </ns1:UMLAssociationEdge>
+   </ns1:sourceUMLAssociationEdge>
+  </ns1:UMLAssociation>
+  <ns1:UMLAssociation bidirectional="true">
+   <ns1:targetUMLAssociationEdge>
+    <ns1:UMLAssociationEdge maxCardinality="-1" minCardinality="0" roleName="cloneCollection">
+     <ns1:UMLClassReference refid="173832FC-A4CB-6E57-E044-0003BA3F9857"/>
+    </ns1:UMLAssociationEdge>
+   </ns1:targetUMLAssociationEdge>
+   <ns1:sourceUMLAssociationEdge>
+    <ns1:UMLAssociationEdge maxCardinality="1" minCardinality="0" roleName="library">
+     <ns1:UMLClassReference refid="173832FC-A4D4-6E57-E044-0003BA3F9857"/>
+    </ns1:UMLAssociationEdge>
+   </ns1:sourceUMLAssociationEdge>
+  </ns1:UMLAssociation>
+  <ns1:UMLAssociation bidirectional="false">
+   <ns1:targetUMLAssociationEdge>
+    <ns1:UMLAssociationEdge maxCardinality="-1" minCardinality="0" roleName="metastasisCollection">
+     <ns1:UMLClassReference refid="173832FC-A4D5-6E57-E044-0003BA3F9857"/>
+    </ns1:UMLAssociationEdge>
+   </ns1:targetUMLAssociationEdge>
+   <ns1:sourceUMLAssociationEdge>
+    <ns1:UMLAssociationEdge maxCardinality="1" minCardinality="0" roleName="metastasisOf">
+     <ns1:UMLClassReference refid="173832FC-A4D5-6E57-E044-0003BA3F9857"/>
+    </ns1:UMLAssociationEdge>
+   </ns1:sourceUMLAssociationEdge>
+  </ns1:UMLAssociation>
+  <ns1:UMLAssociation bidirectional="true">
+   <ns1:targetUMLAssociationEdge>
+    <ns1:UMLAssociationEdge maxCardinality="-1" minCardinality="0" roleName="libraryCollection">
+     <ns1:UMLClassReference refid="173832FC-A4D4-6E57-E044-0003BA3F9857"/>
+    </ns1:UMLAssociationEdge>
+   </ns1:targetUMLAssociationEdge>
+   <ns1:sourceUMLAssociationEdge>
+    <ns1:UMLAssociationEdge maxCardinality="-1" minCardinality="0" roleName="histopathologyCollection">
+     <ns1:UMLClassReference refid="173832FC-A4D5-6E57-E044-0003BA3F9857"/>
+    </ns1:UMLAssociationEdge>
+   </ns1:sourceUMLAssociationEdge>
+  </ns1:UMLAssociation>
+  <ns1:UMLAssociation bidirectional="true">
+   <ns1:targetUMLAssociationEdge>
+    <ns1:UMLAssociationEdge maxCardinality="1" minCardinality="0" roleName="physicalLocation">
+     <ns1:UMLClassReference refid="173832FC-A719-6E57-E044-0003BA3F9857"/>
+    </ns1:UMLAssociationEdge>
+   </ns1:targetUMLAssociationEdge>
+   <ns1:sourceUMLAssociationEdge>
+    <ns1:UMLAssociationEdge maxCardinality="-1" minCardinality="1" roleName="cytobandCollection">
+     <ns1:UMLClassReference refid="173832FC-A71B-6E57-E044-0003BA3F9857"/>
+    </ns1:UMLAssociationEdge>
+   </ns1:sourceUMLAssociationEdge>
+  </ns1:UMLAssociation>
+  <ns1:UMLAssociation bidirectional="true">
+   <ns1:targetUMLAssociationEdge>
+    <ns1:UMLAssociationEdge maxCardinality="-1" minCardinality="0" roleName="cloneRelativeLocationCollection">
+     <ns1:UMLClassReference refid="173832FC-A717-6E57-E044-0003BA3F9857"/>
+    </ns1:UMLAssociationEdge>
+   </ns1:targetUMLAssociationEdge>
+   <ns1:sourceUMLAssociationEdge>
+    <ns1:UMLAssociationEdge maxCardinality="1" minCardinality="0" roleName="clone">
+     <ns1:UMLClassReference refid="173832FC-A4CB-6E57-E044-0003BA3F9857"/>
+    </ns1:UMLAssociationEdge>
+   </ns1:sourceUMLAssociationEdge>
+  </ns1:UMLAssociation>
+  <ns1:UMLAssociation bidirectional="true">
+   <ns1:targetUMLAssociationEdge>
+    <ns1:UMLAssociationEdge maxCardinality="1" minCardinality="0" roleName="tissue">
+     <ns1:UMLClassReference refid="173832FC-A4C7-6E57-E044-0003BA3F9857"/>
+    </ns1:UMLAssociationEdge>
+   </ns1:targetUMLAssociationEdge>
+   <ns1:sourceUMLAssociationEdge>
+    <ns1:UMLAssociationEdge maxCardinality="-1" minCardinality="0" roleName="libraryCollection">
+     <ns1:UMLClassReference refid="173832FC-A4D4-6E57-E044-0003BA3F9857"/>
+    </ns1:UMLAssociationEdge>
+   </ns1:sourceUMLAssociationEdge>
+  </ns1:UMLAssociation>
+  <ns1:UMLAssociation bidirectional="true">
+   <ns1:targetUMLAssociationEdge>
+    <ns1:UMLAssociationEdge maxCardinality="1" minCardinality="0" roleName="SNP">
+     <ns1:UMLClassReference refid="173832FC-A4C8-6E57-E044-0003BA3F9857"/>
+    </ns1:UMLAssociationEdge>
+   </ns1:targetUMLAssociationEdge>
+   <ns1:sourceUMLAssociationEdge>
+    <ns1:UMLAssociationEdge maxCardinality="-1" minCardinality="1" roleName="locationCollection">
+     <ns1:UMLClassReference refid="173832FC-A71A-6E57-E044-0003BA3F9857"/>
+    </ns1:UMLAssociationEdge>
+   </ns1:sourceUMLAssociationEdge>
+  </ns1:UMLAssociation>
+  <ns1:UMLAssociation bidirectional="true">
+   <ns1:targetUMLAssociationEdge>
+    <ns1:UMLAssociationEdge maxCardinality="1" minCardinality="0" roleName="libraryProtocol">
+     <ns1:UMLClassReference refid="173832FC-A4D0-6E57-E044-0003BA3F9857"/>
+    </ns1:UMLAssociationEdge>
+   </ns1:targetUMLAssociationEdge>
+   <ns1:sourceUMLAssociationEdge>
+    <ns1:UMLAssociationEdge maxCardinality="-1" minCardinality="0" roleName="protocolLibraryCollection">
+     <ns1:UMLClassReference refid="173832FC-A4D4-6E57-E044-0003BA3F9857"/>
+    </ns1:UMLAssociationEdge>
+   </ns1:sourceUMLAssociationEdge>
+  </ns1:UMLAssociation>
+  <ns1:UMLAssociation bidirectional="true">
+   <ns1:targetUMLAssociationEdge>
+    <ns1:UMLAssociationEdge maxCardinality="-1" minCardinality="0" roleName="tissueCollection">
+     <ns1:UMLClassReference refid="173832FC-A4C7-6E57-E044-0003BA3F9857"/>
+    </ns1:UMLAssociationEdge>
+   </ns1:targetUMLAssociationEdge>
+   <ns1:sourceUMLAssociationEdge>
+    <ns1:UMLAssociationEdge maxCardinality="1" minCardinality="0" roleName="taxon">
+     <ns1:UMLClassReference refid="173832FC-A4CC-6E57-E044-0003BA3F9857"/>
+    </ns1:UMLAssociationEdge>
+   </ns1:sourceUMLAssociationEdge>
+  </ns1:UMLAssociation>
+  <ns1:UMLAssociation bidirectional="true">
+   <ns1:targetUMLAssociationEdge>
+    <ns1:UMLAssociationEdge maxCardinality="-1" minCardinality="0" roleName="libraryCollection">
+     <ns1:UMLClassReference refid="173832FC-A4D4-6E57-E044-0003BA3F9857"/>
+    </ns1:UMLAssociationEdge>
+   </ns1:targetUMLAssociationEdge>
+   <ns1:sourceUMLAssociationEdge>
+    <ns1:UMLAssociationEdge maxCardinality="-1" minCardinality="0" roleName="geneCollection">
+     <ns1:UMLClassReference refid="173832FC-A4D6-6E57-E044-0003BA3F9857"/>
+    </ns1:UMLAssociationEdge>
+   </ns1:sourceUMLAssociationEdge>
+  </ns1:UMLAssociation>
+  <ns1:UMLAssociation bidirectional="true">
+   <ns1:targetUMLAssociationEdge>
+    <ns1:UMLAssociationEdge maxCardinality="1" minCardinality="0" roleName="taxon">
+     <ns1:UMLClassReference refid="173832FC-A4CC-6E57-E044-0003BA3F9857"/>
+    </ns1:UMLAssociationEdge>
+   </ns1:targetUMLAssociationEdge>
+   <ns1:sourceUMLAssociationEdge>
+    <ns1:UMLAssociationEdge maxCardinality="-1" minCardinality="0" roleName="pathwayCollection">
+     <ns1:UMLClassReference refid="173832FC-A4D1-6E57-E044-0003BA3F9857"/>
+    </ns1:UMLAssociationEdge>
+   </ns1:sourceUMLAssociationEdge>
+  </ns1:UMLAssociation>
+  <ns1:UMLAssociation bidirectional="true">
+   <ns1:targetUMLAssociationEdge>
+    <ns1:UMLAssociationEdge maxCardinality="-1" minCardinality="0" roleName="histopathologyCollection">
+     <ns1:UMLClassReference refid="173832FC-A4D5-6E57-E044-0003BA3F9857"/>
+    </ns1:UMLAssociationEdge>
+   </ns1:targetUMLAssociationEdge>
+   <ns1:sourceUMLAssociationEdge>
+    <ns1:UMLAssociationEdge maxCardinality="1" minCardinality="0" roleName="diseaseOntology">
+     <ns1:UMLClassReference refid="173832FC-A71F-6E57-E044-0003BA3F9857"/>
+    </ns1:UMLAssociationEdge>
+   </ns1:sourceUMLAssociationEdge>
+  </ns1:UMLAssociation>
+  <ns1:UMLAssociation bidirectional="false">
+   <ns1:targetUMLAssociationEdge>
+    <ns1:UMLAssociationEdge maxCardinality="1" minCardinality="0" roleName="diseaseOntology">
+     <ns1:UMLClassReference refid="173832FC-A71F-6E57-E044-0003BA3F9857"/>
+    </ns1:UMLAssociationEdge>
+   </ns1:targetUMLAssociationEdge>
+   <ns1:sourceUMLAssociationEdge>
+    <ns1:UMLAssociationEdge maxCardinality="-1" minCardinality="0" roleName="protocolAssociationCollection">
+     <ns1:UMLClassReference refid="173832FC-A4CF-6E57-E044-0003BA3F9857"/>
+    </ns1:UMLAssociationEdge>
+   </ns1:sourceUMLAssociationEdge>
+  </ns1:UMLAssociation>
+  <ns1:UMLAssociation bidirectional="true">
+   <ns1:targetUMLAssociationEdge>
+    <ns1:UMLAssociationEdge maxCardinality="-1" minCardinality="0" roleName="chromosomeCollection">
+     <ns1:UMLClassReference refid="173832FC-A4CA-6E57-E044-0003BA3F9857"/>
+    </ns1:UMLAssociationEdge>
+   </ns1:targetUMLAssociationEdge>
+   <ns1:sourceUMLAssociationEdge>
+    <ns1:UMLAssociationEdge maxCardinality="1" minCardinality="0" roleName="taxon">
+     <ns1:UMLClassReference refid="173832FC-A4CC-6E57-E044-0003BA3F9857"/>
+    </ns1:UMLAssociationEdge>
+   </ns1:sourceUMLAssociationEdge>
+  </ns1:UMLAssociation>
+  <ns1:UMLAssociation bidirectional="true">
+   <ns1:targetUMLAssociationEdge>
+    <ns1:UMLAssociationEdge maxCardinality="-1" minCardinality="0" roleName="pathwayCollection">
+     <ns1:UMLClassReference refid="173832FC-A4D1-6E57-E044-0003BA3F9857"/>
+    </ns1:UMLAssociationEdge>
+   </ns1:targetUMLAssociationEdge>
+   <ns1:sourceUMLAssociationEdge>
+    <ns1:UMLAssociationEdge maxCardinality="-1" minCardinality="0" roleName="geneCollection">
+     <ns1:UMLClassReference refid="173832FC-A4D6-6E57-E044-0003BA3F9857"/>
+    </ns1:UMLAssociationEdge>
+   </ns1:sourceUMLAssociationEdge>
+  </ns1:UMLAssociation>
+  <ns1:UMLAssociation bidirectional="false">
+   <ns1:targetUMLAssociationEdge>
+    <ns1:UMLAssociationEdge maxCardinality="-1" minCardinality="1" roleName="geneRelativeLocationCollection">
+     <ns1:UMLClassReference refid="173832FC-A716-6E57-E044-0003BA3F9857"/>
+    </ns1:UMLAssociationEdge>
+   </ns1:targetUMLAssociationEdge>
+   <ns1:sourceUMLAssociationEdge>
+    <ns1:UMLAssociationEdge maxCardinality="1" minCardinality="0" roleName="SNP">
+     <ns1:UMLClassReference refid="173832FC-A4C8-6E57-E044-0003BA3F9857"/>
+    </ns1:UMLAssociationEdge>
+   </ns1:sourceUMLAssociationEdge>
+  </ns1:UMLAssociation>
+  <ns1:UMLAssociation bidirectional="false">
+   <ns1:targetUMLAssociationEdge>
+    <ns1:UMLAssociationEdge maxCardinality="1" minCardinality="0" roleName="endCytoband">
+     <ns1:UMLClassReference refid="173832FC-A71B-6E57-E044-0003BA3F9857"/>
+    </ns1:UMLAssociationEdge>
+   </ns1:targetUMLAssociationEdge>
+   <ns1:sourceUMLAssociationEdge>
+    <ns1:UMLAssociationEdge maxCardinality="-1" minCardinality="0" roleName="">
+     <ns1:UMLClassReference refid="173832FC-A718-6E57-E044-0003BA3F9857"/>
+    </ns1:UMLAssociationEdge>
+   </ns1:sourceUMLAssociationEdge>
+  </ns1:UMLAssociation>
+  <ns1:UMLAssociation bidirectional="true">
+   <ns1:targetUMLAssociationEdge>
+    <ns1:UMLAssociationEdge maxCardinality="-1" minCardinality="0" roleName="targetCollection">
+     <ns1:UMLClassReference refid="173832FC-A4CD-6E57-E044-0003BA3F9857"/>
+    </ns1:UMLAssociationEdge>
+   </ns1:targetUMLAssociationEdge>
+   <ns1:sourceUMLAssociationEdge>
+    <ns1:UMLAssociationEdge maxCardinality="-1" minCardinality="0" roleName="geneCollection">
+     <ns1:UMLClassReference refid="173832FC-A4D6-6E57-E044-0003BA3F9857"/>
+    </ns1:UMLAssociationEdge>
+   </ns1:sourceUMLAssociationEdge>
+  </ns1:UMLAssociation>
+  <ns1:UMLAssociation bidirectional="true">
+   <ns1:targetUMLAssociationEdge>
+    <ns1:UMLAssociationEdge maxCardinality="-1" minCardinality="0" roleName="tissueCollection">
+     <ns1:UMLClassReference refid="173832FC-A4C7-6E57-E044-0003BA3F9857"/>
+    </ns1:UMLAssociationEdge>
+   </ns1:targetUMLAssociationEdge>
+   <ns1:sourceUMLAssociationEdge>
+    <ns1:UMLAssociationEdge maxCardinality="1" minCardinality="0" roleName="protocol">
+     <ns1:UMLClassReference refid="173832FC-A4D0-6E57-E044-0003BA3F9857"/>
+    </ns1:UMLAssociationEdge>
+   </ns1:sourceUMLAssociationEdge>
+  </ns1:UMLAssociation>
+  <ns1:UMLAssociation bidirectional="true">
+   <ns1:targetUMLAssociationEdge>
+    <ns1:UMLAssociationEdge maxCardinality="-1" minCardinality="0" roleName="populationFrequencyCollection">
+     <ns1:UMLClassReference refid="173832FC-A71E-6E57-E044-0003BA3F9857"/>
+    </ns1:UMLAssociationEdge>
+   </ns1:targetUMLAssociationEdge>
+   <ns1:sourceUMLAssociationEdge>
+    <ns1:UMLAssociationEdge maxCardinality="1" minCardinality="0" roleName="SNP">
+     <ns1:UMLClassReference refid="173832FC-A4C8-6E57-E044-0003BA3F9857"/>
+    </ns1:UMLAssociationEdge>
+   </ns1:sourceUMLAssociationEdge>
+  </ns1:UMLAssociation>
+  <ns1:UMLAssociation bidirectional="false">
+   <ns1:targetUMLAssociationEdge>
+    <ns1:UMLAssociationEdge maxCardinality="-1" minCardinality="1" roleName="geneRelativeLocationCollection">
+     <ns1:UMLClassReference refid="173832FC-A716-6E57-E044-0003BA3F9857"/>
+    </ns1:UMLAssociationEdge>
+   </ns1:targetUMLAssociationEdge>
+   <ns1:sourceUMLAssociationEdge>
+    <ns1:UMLAssociationEdge maxCardinality="1" minCardinality="0" roleName="gene">
+     <ns1:UMLClassReference refid="173832FC-A4D6-6E57-E044-0003BA3F9857"/>
+    </ns1:UMLAssociationEdge>
+   </ns1:sourceUMLAssociationEdge>
+  </ns1:UMLAssociation>
+  <ns1:UMLAssociation bidirectional="true">
+   <ns1:targetUMLAssociationEdge>
+    <ns1:UMLAssociationEdge maxCardinality="-1" minCardinality="0" roleName="childOrganOntologyRelationshipCollection">
+     <ns1:UMLClassReference refid="173832FC-A4D2-6E57-E044-0003BA3F9857"/>
+    </ns1:UMLAssociationEdge>
+   </ns1:targetUMLAssociationEdge>
+   <ns1:sourceUMLAssociationEdge>
+    <ns1:UMLAssociationEdge maxCardinality="1" minCardinality="0" roleName="parentOrganOntology">
+     <ns1:UMLClassReference refid="173832FC-A4D3-6E57-E044-0003BA3F9857"/>
+    </ns1:UMLAssociationEdge>
+   </ns1:sourceUMLAssociationEdge>
+  </ns1:UMLAssociation>
+  <ns1:UMLAssociation bidirectional="true">
+   <ns1:targetUMLAssociationEdge>
+    <ns1:UMLAssociationEdge maxCardinality="1" minCardinality="0" roleName="chromosome">
+     <ns1:UMLClassReference refid="173832FC-A4CA-6E57-E044-0003BA3F9857"/>
+    </ns1:UMLAssociationEdge>
+   </ns1:targetUMLAssociationEdge>
+   <ns1:sourceUMLAssociationEdge>
+    <ns1:UMLAssociationEdge maxCardinality="-1" minCardinality="0" roleName="geneCollection">
+     <ns1:UMLClassReference refid="173832FC-A4D6-6E57-E044-0003BA3F9857"/>
+    </ns1:UMLAssociationEdge>
+   </ns1:sourceUMLAssociationEdge>
+  </ns1:UMLAssociation>
+  <ns1:UMLAssociation bidirectional="true">
+   <ns1:targetUMLAssociationEdge>
+    <ns1:UMLAssociationEdge maxCardinality="-1" minCardinality="0" roleName="clinicalTrialProtocolCollection">
+     <ns1:UMLClassReference refid="173832FC-A4DA-6E57-E044-0003BA3F9857"/>
+    </ns1:UMLAssociationEdge>
+   </ns1:targetUMLAssociationEdge>
+   <ns1:sourceUMLAssociationEdge>
+    <ns1:UMLAssociationEdge maxCardinality="-1" minCardinality="0" roleName="agentCollection">
+     <ns1:UMLClassReference refid="173832FC-A4DC-6E57-E044-0003BA3F9857"/>
+    </ns1:UMLAssociationEdge>
+   </ns1:sourceUMLAssociationEdge>
+  </ns1:UMLAssociation>
+  <ns1:UMLAssociation bidirectional="false">
+   <ns1:targetUMLAssociationEdge>
+    <ns1:UMLAssociationEdge maxCardinality="-1" minCardinality="0" roleName="histopathologyCollection">
+     <ns1:UMLClassReference refid="173832FC-A4D5-6E57-E044-0003BA3F9857"/>
+    </ns1:UMLAssociationEdge>
+   </ns1:targetUMLAssociationEdge>
+   <ns1:sourceUMLAssociationEdge>
+    <ns1:UMLAssociationEdge maxCardinality="-1" minCardinality="0" roleName="pathwayCollection">
+     <ns1:UMLClassReference refid="173832FC-A4D1-6E57-E044-0003BA3F9857"/>
+    </ns1:UMLAssociationEdge>
+   </ns1:sourceUMLAssociationEdge>
+  </ns1:UMLAssociation>
+  <ns1:UMLAssociation bidirectional="true">
+   <ns1:targetUMLAssociationEdge>
+    <ns1:UMLAssociationEdge maxCardinality="1" minCardinality="0" roleName="nucleicAcidSequence">
+     <ns1:UMLClassReference refid="173832FC-A4CE-6E57-E044-0003BA3F9857"/>
+    </ns1:UMLAssociationEdge>
+   </ns1:targetUMLAssociationEdge>
+   <ns1:sourceUMLAssociationEdge>
+    <ns1:UMLAssociationEdge maxCardinality="1" minCardinality="0" roleName="location">
+     <ns1:UMLClassReference refid="173832FC-A71A-6E57-E044-0003BA3F9857"/>
+    </ns1:UMLAssociationEdge>
+   </ns1:sourceUMLAssociationEdge>
+  </ns1:UMLAssociation>
+  <ns1:UMLAssociation bidirectional="true">
+   <ns1:targetUMLAssociationEdge>
+    <ns1:UMLAssociationEdge maxCardinality="-1" minCardinality="0" roleName="diseaseOntologyCollection">
+     <ns1:UMLClassReference refid="173832FC-A71F-6E57-E044-0003BA3F9857"/>
+    </ns1:UMLAssociationEdge>
+   </ns1:targetUMLAssociationEdge>
+   <ns1:sourceUMLAssociationEdge>
+    <ns1:UMLAssociationEdge maxCardinality="-1" minCardinality="0" roleName="clinicalTrialProtocolCollection">
+     <ns1:UMLClassReference refid="173832FC-A4DA-6E57-E044-0003BA3F9857"/>
+    </ns1:UMLAssociationEdge>
+   </ns1:sourceUMLAssociationEdge>
+  </ns1:UMLAssociation>
+  <ns1:UMLAssociation bidirectional="true">
+   <ns1:targetUMLAssociationEdge>
+    <ns1:UMLAssociationEdge maxCardinality="-1" minCardinality="0" roleName="geneAliasCollection">
+     <ns1:UMLClassReference refid="173832FC-A4C9-6E57-E044-0003BA3F9857"/>
+    </ns1:UMLAssociationEdge>
+   </ns1:targetUMLAssociationEdge>
+   <ns1:sourceUMLAssociationEdge>
+    <ns1:UMLAssociationEdge maxCardinality="-1" minCardinality="0" roleName="geneCollection">
+     <ns1:UMLClassReference refid="173832FC-A4D6-6E57-E044-0003BA3F9857"/>
+    </ns1:UMLAssociationEdge>
+   </ns1:sourceUMLAssociationEdge>
+  </ns1:UMLAssociation>
+  <ns1:UMLAssociation bidirectional="true">
+   <ns1:targetUMLAssociationEdge>
+    <ns1:UMLAssociationEdge maxCardinality="1" minCardinality="0" roleName="organOntology">
+     <ns1:UMLClassReference refid="173832FC-A4D3-6E57-E044-0003BA3F9857"/>
+    </ns1:UMLAssociationEdge>
+   </ns1:targetUMLAssociationEdge>
+   <ns1:sourceUMLAssociationEdge>
+    <ns1:UMLAssociationEdge maxCardinality="-1" minCardinality="0" roleName="histopathologyCollection">
+     <ns1:UMLClassReference refid="173832FC-A4D5-6E57-E044-0003BA3F9857"/>
+    </ns1:UMLAssociationEdge>
+   </ns1:sourceUMLAssociationEdge>
+  </ns1:UMLAssociation>
+  <ns1:UMLAssociation bidirectional="true">
+   <ns1:targetUMLAssociationEdge>
+    <ns1:UMLAssociationEdge maxCardinality="-1" minCardinality="0" roleName="nucleicAcidSequenceCollection">
+     <ns1:UMLClassReference refid="173832FC-A4CE-6E57-E044-0003BA3F9857"/>
+    </ns1:UMLAssociationEdge>
+   </ns1:targetUMLAssociationEdge>
+   <ns1:sourceUMLAssociationEdge>
+    <ns1:UMLAssociationEdge maxCardinality="-1" minCardinality="0" roleName="geneCollection">
+     <ns1:UMLClassReference refid="173832FC-A4D6-6E57-E044-0003BA3F9857"/>
+    </ns1:UMLAssociationEdge>
+   </ns1:sourceUMLAssociationEdge>
+  </ns1:UMLAssociation>
+  <ns1:UMLAssociation bidirectional="true">
+   <ns1:targetUMLAssociationEdge>
+    <ns1:UMLAssociationEdge maxCardinality="-1" minCardinality="0" roleName="parentDiseaseOntologyRelationshipCollection">
+     <ns1:UMLClassReference refid="173832FC-A4D9-6E57-E044-0003BA3F9857"/>
+    </ns1:UMLAssociationEdge>
+   </ns1:targetUMLAssociationEdge>
+   <ns1:sourceUMLAssociationEdge>
+    <ns1:UMLAssociationEdge maxCardinality="1" minCardinality="0" roleName="childDiseaseOntology">
+     <ns1:UMLClassReference refid="173832FC-A71F-6E57-E044-0003BA3F9857"/>
+    </ns1:UMLAssociationEdge>
+   </ns1:sourceUMLAssociationEdge>
+  </ns1:UMLAssociation>
+  <ns1:UMLAssociation bidirectional="true">
+   <ns1:targetUMLAssociationEdge>
+    <ns1:UMLAssociationEdge maxCardinality="-1" minCardinality="0" roleName="histopathologyCollection">
+     <ns1:UMLClassReference refid="173832FC-A4D5-6E57-E044-0003BA3F9857"/>
+    </ns1:UMLAssociationEdge>
+   </ns1:targetUMLAssociationEdge>
+   <ns1:sourceUMLAssociationEdge>
+    <ns1:UMLAssociationEdge maxCardinality="-1" minCardinality="0" roleName="clinicalTrialProtocolCollection">
+     <ns1:UMLClassReference refid="173832FC-A4DA-6E57-E044-0003BA3F9857"/>
+    </ns1:UMLAssociationEdge>
+   </ns1:sourceUMLAssociationEdge>
+  </ns1:UMLAssociation>
+  <ns1:UMLAssociation bidirectional="true">
+   <ns1:targetUMLAssociationEdge>
+    <ns1:UMLAssociationEdge maxCardinality="1" minCardinality="0" roleName="chromosome">
+     <ns1:UMLClassReference refid="173832FC-A4CA-6E57-E044-0003BA3F9857"/>
+    </ns1:UMLAssociationEdge>
+   </ns1:targetUMLAssociationEdge>
+   <ns1:sourceUMLAssociationEdge>
+    <ns1:UMLAssociationEdge maxCardinality="-1" minCardinality="1" roleName="locationCollection">
+     <ns1:UMLClassReference refid="173832FC-A71A-6E57-E044-0003BA3F9857"/>
+    </ns1:UMLAssociationEdge>
+   </ns1:sourceUMLAssociationEdge>
+  </ns1:UMLAssociation>
+  <ns1:UMLAssociation bidirectional="true">
+   <ns1:targetUMLAssociationEdge>
+    <ns1:UMLAssociationEdge maxCardinality="1" minCardinality="0" roleName="histopathology">
+     <ns1:UMLClassReference refid="173832FC-A4D5-6E57-E044-0003BA3F9857"/>
+    </ns1:UMLAssociationEdge>
+   </ns1:targetUMLAssociationEdge>
+   <ns1:sourceUMLAssociationEdge>
+    <ns1:UMLAssociationEdge maxCardinality="-1" minCardinality="0" roleName="anomalyCollection">
+     <ns1:UMLClassReference refid="173832FC-A4DB-6E57-E044-0003BA3F9857"/>
+    </ns1:UMLAssociationEdge>
+   </ns1:sourceUMLAssociationEdge>
+  </ns1:UMLAssociation>
+  <ns1:UMLAssociation bidirectional="false">
+   <ns1:targetUMLAssociationEdge>
+    <ns1:UMLAssociationEdge maxCardinality="-1" minCardinality="0" roleName="genericReporterCollection">
+     <ns1:UMLClassReference refid="173832FC-A715-6E57-E044-0003BA3F9857"/>
+    </ns1:UMLAssociationEdge>
+   </ns1:targetUMLAssociationEdge>
+   <ns1:sourceUMLAssociationEdge>
+    <ns1:UMLAssociationEdge maxCardinality="1" minCardinality="0" roleName="gene">
+     <ns1:UMLClassReference refid="173832FC-A4D6-6E57-E044-0003BA3F9857"/>
+    </ns1:UMLAssociationEdge>
+   </ns1:sourceUMLAssociationEdge>
+  </ns1:UMLAssociation>
+  <ns1:UMLAssociation bidirectional="true">
+   <ns1:targetUMLAssociationEdge>
+    <ns1:UMLAssociationEdge maxCardinality="-1" minCardinality="0" roleName="protocolAssociationCollection">
+     <ns1:UMLClassReference refid="173832FC-A4CF-6E57-E044-0003BA3F9857"/>
+    </ns1:UMLAssociationEdge>
+   </ns1:targetUMLAssociationEdge>
+   <ns1:sourceUMLAssociationEdge>
+    <ns1:UMLAssociationEdge maxCardinality="1" minCardinality="0" roleName="clinicalTrialProtocol">
+     <ns1:UMLClassReference refid="173832FC-A4DA-6E57-E044-0003BA3F9857"/>
+    </ns1:UMLAssociationEdge>
+   </ns1:sourceUMLAssociationEdge>
+  </ns1:UMLAssociation>
+  <ns1:UMLAssociation bidirectional="true">
+   <ns1:targetUMLAssociationEdge>
+    <ns1:UMLAssociationEdge maxCardinality="-1" minCardinality="0" roleName="parentGeneOntologyRelationshipCollection">
+     <ns1:UMLClassReference refid="173832FC-A4D7-6E57-E044-0003BA3F9857"/>
+    </ns1:UMLAssociationEdge>
+   </ns1:targetUMLAssociationEdge>
+   <ns1:sourceUMLAssociationEdge>
+    <ns1:UMLAssociationEdge maxCardinality="1" minCardinality="0" roleName="childGeneOntology">
+     <ns1:UMLClassReference refid="173832FC-A4D8-6E57-E044-0003BA3F9857"/>
+    </ns1:UMLAssociationEdge>
+   </ns1:sourceUMLAssociationEdge>
+  </ns1:UMLAssociation>
+  <ns1:UMLAssociation bidirectional="true">
+   <ns1:targetUMLAssociationEdge>
+    <ns1:UMLAssociationEdge maxCardinality="-1" minCardinality="0" roleName="histopathologyCollection">
+     <ns1:UMLClassReference refid="173832FC-A4D5-6E57-E044-0003BA3F9857"/>
+    </ns1:UMLAssociationEdge>
+   </ns1:targetUMLAssociationEdge>
+   <ns1:sourceUMLAssociationEdge>
+    <ns1:UMLAssociationEdge maxCardinality="-1" minCardinality="0" roleName="geneCollection">
+     <ns1:UMLClassReference refid="173832FC-A4D6-6E57-E044-0003BA3F9857"/>
+    </ns1:UMLAssociationEdge>
+   </ns1:sourceUMLAssociationEdge>
+  </ns1:UMLAssociation>
+  <ns1:UMLAssociation bidirectional="true">
+   <ns1:targetUMLAssociationEdge>
+    <ns1:UMLAssociationEdge maxCardinality="-1" minCardinality="0" roleName="childGeneOntologyRelationshipCollection">
+     <ns1:UMLClassReference refid="173832FC-A4D7-6E57-E044-0003BA3F9857"/>
+    </ns1:UMLAssociationEdge>
+   </ns1:targetUMLAssociationEdge>
+   <ns1:sourceUMLAssociationEdge>
+    <ns1:UMLAssociationEdge maxCardinality="1" minCardinality="0" roleName="parentGeneOntology">
+     <ns1:UMLClassReference refid="173832FC-A4D8-6E57-E044-0003BA3F9857"/>
+    </ns1:UMLAssociationEdge>
+   </ns1:sourceUMLAssociationEdge>
+  </ns1:UMLAssociation>
+ </ns1:exposedUMLAssociationCollection>
+ <ns1:exposedUMLClassCollection>
+  <ns1:UMLClass allowableAsTarget="false" className="Vocabulary" description="" id="173832FC-A720-6E57-E044-0003BA3F9857" packageName="gov.nih.nci.cabio.domain" projectName="caCORE" projectVersion="3">
+   <ns2:umlAttributeCollection xmlns:ns2="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common">
+    <ns2:UMLAttribute dataTypeName="java.lang.Long" description="" name="id" publicID="2223755" version="3.0">
+     <ns2:SemanticMetadata conceptCode="C25364" conceptDefinition="One or more characters used to identify, name, or characterize the nature, properties, or contents of a thing." conceptName="Identifier" order="0"/>
+     <ns2:ValueDomain longName="java.lang.Long">
+      <ns2:enumerationCollection/>
+     </ns2:ValueDomain>
+    </ns2:UMLAttribute>
+    <ns2:UMLAttribute dataTypeName="java.lang.String" description="The vocabulary general term." name="generalTerm" publicID="2223757" version="3.0">
+     <ns2:SemanticMetadata conceptCode="C43713" conceptDefinition="Synonyms are ways of referring to a concept that are valid alternatives to the preferred name that NCI uses to refer to the concept." conceptName="Synonym" order="0"/>
+     <ns2:ValueDomain longName="java.lang.String">
+      <ns2:enumerationCollection/>
+     </ns2:ValueDomain>
+    </ns2:UMLAttribute>
+    <ns2:UMLAttribute dataTypeName="java.lang.String" description="The vocabulary core term." name="coreTerm" publicID="2223756" version="3.0">
+     <ns2:SemanticMetadata conceptCode="C42698" conceptDefinition="Terminology entities represent the elements that form and define an ontology." conceptName="Terminology Entity" order="0"/>
+     <ns2:ValueDomain longName="java.lang.String">
+      <ns2:enumerationCollection/>
+     </ns2:ValueDomain>
+    </ns2:UMLAttribute>
+   </ns2:umlAttributeCollection>
+   <ns3:SemanticMetadata conceptCode="C43528" conceptDefinition="The object describes the vocabulary." conceptName="Vocabulary Object" order="0" xmlns:ns3="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common"/>
+  </ns1:UMLClass>
+  <ns1:UMLClass allowableAsTarget="false" className="Tissue" description="A group of similar cells united to perform a specific function." id="173832FC-A4C7-6E57-E044-0003BA3F9857" packageName="gov.nih.nci.cabio.domain" projectName="caCORE" projectVersion="3">
+   <ns4:umlAttributeCollection xmlns:ns4="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common">
+    <ns4:UMLAttribute dataTypeName="java.lang.String" description="The type of the tissue." name="type" publicID="2223762" version="3.0">
+     <ns4:SemanticMetadata conceptCode="C25284" conceptDefinition="Type; a subdivision of a particular kind of thing." conceptName="Type" order="0"/>
+     <ns4:ValueDomain longName="java.lang.String">
+      <ns4:enumerationCollection/>
+     </ns4:ValueDomain>
+    </ns4:UMLAttribute>
+    <ns4:UMLAttribute dataTypeName="java.lang.String" description="The description for the tissue object." name="description" publicID="2223766" version="3.0">
+     <ns4:SemanticMetadata conceptCode="C25365" conceptDefinition="Description; a statement that represents something in words." conceptName="Description " order="0"/>
+     <ns4:ValueDomain longName="java.lang.String">
+      <ns4:enumerationCollection/>
+     </ns4:ValueDomain>
+    </ns4:UMLAttribute>
+    <ns4:UMLAttribute dataTypeName="java.lang.String" description="The cell type of the tissue." name="cellType" publicID="2223764" version="3.0">
+     <ns4:SemanticMetadata conceptCode="C25284" conceptDefinition="Type; a subdivision of a particular kind of thing." conceptName="Type" order="0"/>
+     <ns4:SemanticMetadata conceptCode="C12508" conceptDefinition="The smallest units of living structure capable of independent existence, composed of a membrane-enclosed mass of protoplasm and containing a nucleus or nucleoid. Cells are highly variable and specialized in both structure and function, though all must at some stage replicate proteins and nucleic acids, utilize energy, and reproduce themselves." conceptName="Cell" order="1"/>
+     <ns4:ValueDomain longName="java.lang.String">
+      <ns4:enumerationCollection/>
+     </ns4:ValueDomain>
+    </ns4:UMLAttribute>
+    <ns4:UMLAttribute dataTypeName="java.lang.Long" description="" name="id" publicID="2223758" version="3.0">
+     <ns4:SemanticMetadata conceptCode="C25364" conceptDefinition="One or more characters used to identify, name, or characterize the nature, properties, or contents of a thing." conceptName="Identifier" order="0"/>
+     <ns4:ValueDomain longName="java.lang.Long">
+      <ns4:enumerationCollection/>
+     </ns4:ValueDomain>
+    </ns4:UMLAttribute>
+    <ns4:UMLAttribute dataTypeName="java.lang.String" description="The organ associated with the tissue." name="organ" publicID="2223767" version="3.0">
+     <ns4:SemanticMetadata conceptCode="C13018" conceptDefinition="A part of the body that performs a specific function.  For example, the heart is an organ." conceptName="Organ" order="0"/>
+     <ns4:ValueDomain longName="java.lang.String">
+      <ns4:enumerationCollection/>
+     </ns4:ValueDomain>
+    </ns4:UMLAttribute>
+    <ns4:UMLAttribute dataTypeName="java.lang.String" description="The supplier of the tissue." name="supplier" publicID="2223761" version="3.0">
+     <ns4:SemanticMetadata conceptCode="C43530" conceptDefinition="Someone whose business is to supply a particular service or commodity." conceptName="Supplier" order="0"/>
+     <ns4:ValueDomain longName="java.lang.String">
+      <ns4:enumerationCollection/>
+     </ns4:ValueDomain>
+    </ns4:UMLAttribute>
+    <ns4:UMLAttribute dataTypeName="java.lang.String" description="Th ehistology associated with the tissue." name="histology" publicID="2223763" version="3.0">
+     <ns4:SemanticMetadata conceptCode="C16681" conceptDefinition="The study of the structure of the cells and their arrangement to constitute tissues and, finally, the association among these to form organs.  In pathology, the microscopic process of identifying normal and abnormal morphologic characteristics in tissues, by employing various cytochemical and immunocytochemical stains." conceptName="Histology" order="0"/>
+     <ns4:ValueDomain longName="java.lang.String">
+      <ns4:enumerationCollection/>
+     </ns4:ValueDomain>
+    </ns4:UMLAttribute>
+    <ns4:UMLAttribute dataTypeName="java.lang.String" description="The name of the tissue." name="name" publicID="2223768" version="3.0">
+     <ns4:SemanticMetadata conceptCode="C42614" conceptDefinition="The words or language units by which a thing is known." conceptName="Name" order="0"/>
+     <ns4:ValueDomain longName="java.lang.String">
+      <ns4:enumerationCollection/>
+     </ns4:ValueDomain>
+    </ns4:UMLAttribute>
+    <ns4:UMLAttribute dataTypeName="java.lang.String" description="The developmental stag of the tissue." name="developmentalStage" publicID="2223765" version="3.0">
+     <ns4:SemanticMetadata conceptCode="C43531" conceptDefinition="A general term that usually refers to named landmark events during development of an organism." conceptName="Developmental Stage" order="0"/>
+     <ns4:ValueDomain longName="java.lang.String">
+      <ns4:enumerationCollection/>
+     </ns4:ValueDomain>
+    </ns4:UMLAttribute>
+    <ns4:UMLAttribute dataTypeName="CHARACTER" description="The sex of the tissue from." name="sex" publicID="2223759" version="3.0">
+     <ns4:SemanticMetadata conceptCode="C28421" conceptDefinition="The assemblage of physical properties or qualities by which male is distinguished from female; the physical difference between male and female; the distinguishing peculiarity of male or female. (from On-line Medical Dictionary)" conceptName="Sex" order="0"/>
+     <ns4:ValueDomain longName="Sample/Specimen Phenotype Sex Text Type">
+      <ns4:enumerationCollection>
+       <ns4:Enumeration permissibleValue="Female" valueMeaning="Female">
+        <ns4:SemanticMetadata conceptCode="C16576" conceptDefinition="In zoology, denoting the sex that bears the young or the ovum." conceptName="Female" order="1"/>
+       </ns4:Enumeration>
+       <ns4:Enumeration permissibleValue="Female-to-male transsexual" valueMeaning="Female-to-male transsexual">
+        <ns4:SemanticMetadata conceptCode="CL316146" conceptDefinition="No value exists." conceptName="Female-to-male transsexual" order="0"/>
+       </ns4:Enumeration>
+       <ns4:Enumeration permissibleValue="Intersexed" valueMeaning="person (or individual of any unisexual species) who is born with genitalia and/or secondary sexual characteristics of indeterminate sex, or which combine features of both sexes"/>
+       <ns4:Enumeration permissibleValue="Male" valueMeaning="Male">
+        <ns4:SemanticMetadata conceptCode="C20197" conceptDefinition="In zoology, denoting the sex to which those belong that produce spermatozoa; an individual of that sex." conceptName="Male" order="1"/>
+       </ns4:Enumeration>
+       <ns4:Enumeration permissibleValue="Male-to-female transsexual" valueMeaning="Male-to-female transsexual">
+        <ns4:SemanticMetadata conceptCode="CL316145" conceptDefinition="No value exists." conceptName="Male-to-female transsexual" order="0"/>
+       </ns4:Enumeration>
+       <ns4:Enumeration permissibleValue="Not Specified" valueMeaning="NOT SPECIFIED"/>
+       <ns4:Enumeration permissibleValue="Pooled" valueMeaning="A grouping of specimens for research purposes"/>
+       <ns4:Enumeration permissibleValue="Unknown" valueMeaning="UNKNOWN">
+        <ns4:SemanticMetadata conceptCode="C17998" conceptDefinition="Not observed, not recorded, or refused." conceptName="Unknown" order="0"/>
+       </ns4:Enumeration>
+       <ns4:Enumeration permissibleValue="46, XX true hermaphrodite" valueMeaning="46, XX true hermaphrodite">
+        <ns4:SemanticMetadata conceptCode="C0432481" conceptDefinition="No value exists." conceptName="46, XX true hermaphrodite" order="0"/>
+       </ns4:Enumeration>
+      </ns4:enumerationCollection>
+     </ns4:ValueDomain>
+    </ns4:UMLAttribute>
+    <ns4:UMLAttribute dataTypeName="java.lang.String" description="The cell line of the tissue." name="cellLine" publicID="2223760" version="3.0">
+     <ns4:SemanticMetadata conceptCode="C16403" conceptDefinition="Cells of a single type that have been grown in the laboratory for several generations (cell divisions)." conceptName="Cell Line" order="0"/>
+     <ns4:ValueDomain longName="java.lang.String">
+      <ns4:enumerationCollection/>
+     </ns4:ValueDomain>
+    </ns4:UMLAttribute>
+   </ns4:umlAttributeCollection>
+   <ns5:SemanticMetadata conceptCode="C12801" conceptDefinition="is an organ part that consists of similarly specialized cells and intercellular matrix, aggregated according to specific spatial relationships; together with other tissues, it constitutes an organ component. Example(s): epithelium, muscle(tissue), connective tissue, neural tissue, lymphoid tissue." conceptName="Tissue" order="0" xmlns:ns5="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common"/>
+  </ns1:UMLClass>
+  <ns1:UMLClass allowableAsTarget="false" className="GeneAlias" description="This object describes the gene alias." id="173832FC-A4C9-6E57-E044-0003BA3F9857" packageName="gov.nih.nci.cabio.domain" projectName="caCORE" projectVersion="3">
+   <ns6:umlAttributeCollection xmlns:ns6="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common">
+    <ns6:UMLAttribute dataTypeName="java.lang.String" description="The gene alias name." name="name" publicID="2223776" version="3.0">
+     <ns6:SemanticMetadata conceptCode="C42614" conceptDefinition="The words or language units by which a thing is known." conceptName="Name" order="0"/>
+     <ns6:ValueDomain longName="java.lang.String">
+      <ns6:enumerationCollection/>
+     </ns6:ValueDomain>
+    </ns6:UMLAttribute>
+    <ns6:UMLAttribute dataTypeName="CHARACTER" description="The gene alias type." name="type" publicID="2223775" version="3.0">
+     <ns6:SemanticMetadata conceptCode="C25284" conceptDefinition="Type; a subdivision of a particular kind of thing." conceptName="Type" order="0"/>
+     <ns6:ValueDomain longName="Gene Alias Type">
+      <ns6:enumerationCollection>
+       <ns6:Enumeration permissibleValue="CGAP" valueMeaning="Cancer Gene Anatomy Project"/>
+       <ns6:Enumeration permissibleValue="BioCarta" valueMeaning="BioCarta"/>
+      </ns6:enumerationCollection>
+     </ns6:ValueDomain>
+    </ns6:UMLAttribute>
+    <ns6:UMLAttribute dataTypeName="java.lang.Long" description="" name="id" publicID="2223774" version="3.0">
+     <ns6:SemanticMetadata conceptCode="C25364" conceptDefinition="One or more characters used to identify, name, or characterize the nature, properties, or contents of a thing." conceptName="Identifier" order="0"/>
+     <ns6:ValueDomain longName="java.lang.Long">
+      <ns6:enumerationCollection/>
+     </ns6:ValueDomain>
+    </ns6:UMLAttribute>
+   </ns6:umlAttributeCollection>
+   <ns7:SemanticMetadata conceptCode="C41095" conceptDefinition="This object describes the gene alias. (NCICB)" conceptName="Gene Alias" order="0" xmlns:ns7="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common"/>
+  </ns1:UMLClass>
+  <ns1:UMLClass allowableAsTarget="false" className="Chromosome" description="An object representing a specific chromosome for a specific taxon; provides access to all known genes contained in the chromosome and to the taxon." id="173832FC-A4CA-6E57-E044-0003BA3F9857" packageName="gov.nih.nci.cabio.domain" projectName="caCORE" projectVersion="3">
+   <ns8:umlAttributeCollection xmlns:ns8="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common">
+    <ns8:UMLAttribute dataTypeName="java.lang.String" description="The name of the chromosome object." name="number" publicID="2223778" version="3.0">
+     <ns8:SemanticMetadata conceptCode="C42614" conceptDefinition="The words or language units by which a thing is known." conceptName="Name" order="0"/>
+     <ns8:ValueDomain longName="java.lang.String">
+      <ns8:enumerationCollection/>
+     </ns8:ValueDomain>
+    </ns8:UMLAttribute>
+   </ns8:umlAttributeCollection>
+   <ns9:SemanticMetadata conceptCode="C13202" conceptDefinition="One of the bodies (normally 46 in humans) in the cell nucleus that is the bearer of genes, has the form of a delicate chromatin filament during interphase, contracts to form a compact cylinder segmented into two arms by the centromere during metaphase and anaphase stages of cell division, and is capable of reproducing its physical and chemical structure through successive cell divisions. In microbes, the chromosome is prokaryotic, not being enclosed within a nuclear membrane and not being subject to a mitotic mechanism." conceptName="Chromosome" order="0" xmlns:ns9="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common"/>
+  </ns1:UMLClass>
+  <ns1:UMLClass allowableAsTarget="false" className="Clone" description="An object used to hold information pertaining to I.M.A.G.E. clones; provides access to sequence information, associated trace files, and the clone's library." id="173832FC-A4CB-6E57-E044-0003BA3F9857" packageName="gov.nih.nci.cabio.domain" projectName="caCORE" projectVersion="3">
+   <ns10:umlAttributeCollection xmlns:ns10="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common">
+    <ns10:UMLAttribute dataTypeName="java.lang.Long" description="" name="id" publicID="2223779" version="3.0">
+     <ns10:SemanticMetadata conceptCode="C25364" conceptDefinition="One or more characters used to identify, name, or characterize the nature, properties, or contents of a thing." conceptName="Identifier" order="0"/>
+     <ns10:ValueDomain longName="java.lang.Long">
+      <ns10:enumerationCollection/>
+     </ns10:ValueDomain>
+    </ns10:UMLAttribute>
+    <ns10:UMLAttribute dataTypeName="java.lang.String" description="" name="type" publicID="2223781" version="3.0">
+     <ns10:SemanticMetadata conceptCode="C25284" conceptDefinition="Type; a subdivision of a particular kind of thing." conceptName="Type" order="0"/>
+     <ns10:ValueDomain longName="java.lang.String">
+      <ns10:enumerationCollection/>
+     </ns10:ValueDomain>
+    </ns10:UMLAttribute>
+    <ns10:UMLAttribute dataTypeName="java.lang.Long" description="The insert size of the clone." name="insertSize" publicID="2223780" version="3.0">
+     <ns10:SemanticMetadata conceptCode="C25334" conceptDefinition="Length; the linear extent in space from one end to the other." conceptName="Length" order="0"/>
+     <ns10:SemanticMetadata conceptCode="C324" conceptDefinition="Single-stranded complementary DNA synthesized from an RNA template by the action of RNA-dependent DNA polymerase. cDNA (i.e., complementary DNA, not circular DNA, not C-DNA) is used in a variety of molecular cloning experiments as well as serving as a specific hybridization probe." conceptName="cDNA" order="1"/>
+     <ns10:ValueDomain longName="java.lang.Long">
+      <ns10:enumerationCollection/>
+     </ns10:ValueDomain>
+    </ns10:UMLAttribute>
+    <ns10:UMLAttribute dataTypeName="java.lang.String" description="The name of the clone." name="name" publicID="2223782" version="3.0">
+     <ns10:SemanticMetadata conceptCode="C42614" conceptDefinition="The words or language units by which a thing is known." conceptName="Name" order="0"/>
+     <ns10:ValueDomain longName="java.lang.String">
+      <ns10:enumerationCollection/>
+     </ns10:ValueDomain>
+    </ns10:UMLAttribute>
+   </ns10:umlAttributeCollection>
+   <ns11:SemanticMetadata conceptCode="C41163" conceptDefinition="I.M.A.G.E. clone object; provides access to sequence, associated trace files and the clone's source library" conceptName="IMAGE Clone Object" order="0" xmlns:ns11="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common"/>
+  </ns1:UMLClass>
+  <ns1:UMLClass allowableAsTarget="false" className="Taxon" description="An object representing the various names (scientific, common, abbreviated, etc.) for a species associated with a specific instance of a Gene, Chromosome, Pathway, Protein, or Tissue." id="173832FC-A4CC-6E57-E044-0003BA3F9857" packageName="gov.nih.nci.cabio.domain" projectName="caCORE" projectVersion="3">
+   <ns12:umlAttributeCollection xmlns:ns12="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common">
+    <ns12:UMLAttribute dataTypeName="java.lang.String" description="The scientific name of the taxon." name="scientificName" publicID="2223784" version="3.0">
+     <ns12:SemanticMetadata conceptCode="C43459" conceptDefinition="The name applied to a plant, animal, or other organism, according to the Codes of Nomenclature, consisting of a Genus and species." conceptName="Scientific_Name" order="0"/>
+     <ns12:ValueDomain longName="java.lang.String">
+      <ns12:enumerationCollection/>
+     </ns12:ValueDomain>
+    </ns12:UMLAttribute>
+    <ns12:UMLAttribute dataTypeName="java.lang.String" description="The common name of the taxon." name="commonName" publicID="2223787" version="3.0">
+     <ns12:SemanticMetadata conceptCode="C43461" conceptDefinition="Widely known or encountered." conceptName="Common" order="1"/>
+     <ns12:SemanticMetadata conceptCode="C42614" conceptDefinition="The words or language units by which a thing is known." conceptName="Name" order="0"/>
+     <ns12:ValueDomain longName="java.lang.String">
+      <ns12:enumerationCollection/>
+     </ns12:ValueDomain>
+    </ns12:UMLAttribute>
+    <ns12:UMLAttribute dataTypeName="java.lang.String" description="The ethinicity strain of the taxon." name="ethnicityStrain" publicID="2223785" version="3.0">
+     <ns12:SemanticMetadata conceptCode="C25692" conceptDefinition="A subdivision that has common differentiating characteristics within a larger category." conceptName="Subcategory" order="0"/>
+     <ns12:ValueDomain longName="java.lang.String">
+      <ns12:enumerationCollection/>
+     </ns12:ValueDomain>
+    </ns12:UMLAttribute>
+    <ns12:UMLAttribute dataTypeName="CHARACTER" description="The abbreviation of the taxon." name="abbreviation" publicID="2223786" version="3.0">
+     <ns12:SemanticMetadata conceptCode="C42610" conceptDefinition="A shortened form of a word or phrase." conceptName="Abbreviation" order="0"/>
+     <ns12:ValueDomain longName="National Center for Biotechnology Information Taxon Abbreviation">
+      <ns12:enumerationCollection>
+       <ns12:Enumeration permissibleValue="Hs" valueMeaning="Homo sapiens"/>
+       <ns12:Enumeration permissibleValue="Rn" valueMeaning="Rattus norvegicus"/>
+       <ns12:Enumeration permissibleValue="Dm" valueMeaning="Drosophila melanogaster"/>
+       <ns12:Enumeration permissibleValue="Sc" valueMeaning="Saccharomyces cerevisiae"/>
+       <ns12:Enumeration permissibleValue="Ec" valueMeaning="Escherichia coli">
+        <ns12:SemanticMetadata conceptCode="C14206" conceptDefinition="A species of gram-negative, facultatively anaerobic, rod-shaped bacteria commonly found in the lower part of the intestine of warm-blooded animals. It is usually nonpathogenic, but some strains are known to produce diarrhea and pyogenic infections." conceptName="Escherichia coli" order="1"/>
+       </ns12:Enumeration>
+       <ns12:Enumeration permissibleValue="At" valueMeaning="Arabadopsis thaliana"/>
+       <ns12:Enumeration permissibleValue="Ce" valueMeaning="Caenorhabditis elegans"/>
+       <ns12:Enumeration permissibleValue="Dr" valueMeaning="Danio rerio"/>
+       <ns12:Enumeration permissibleValue="Mm" valueMeaning="Mus musculus"/>
+      </ns12:enumerationCollection>
+     </ns12:ValueDomain>
+    </ns12:UMLAttribute>
+   </ns12:umlAttributeCollection>
+   <ns13:SemanticMetadata conceptCode="C14250" conceptDefinition="A living thing, such as an animal, a plant, a bacterium, or a fungus." conceptName="Organism" order="0" xmlns:ns13="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common"/>
+  </ns1:UMLClass>
+  <ns1:UMLClass allowableAsTarget="false" className="Target" description="A gene thought to be at the root of a disease etiology, and which is targeted for therapeutic intervention in a clinical trial." id="173832FC-A4CD-6E57-E044-0003BA3F9857" packageName="gov.nih.nci.cabio.domain" projectName="caCORE" projectVersion="3">
+   <ns14:umlAttributeCollection xmlns:ns14="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common">
+    <ns14:UMLAttribute dataTypeName="java.lang.String" description="The type of the target." name="type" publicID="2223789" version="3.0">
+     <ns14:SemanticMetadata conceptCode="C25284" conceptDefinition="Type; a subdivision of a particular kind of thing." conceptName="Type" order="0"/>
+     <ns14:ValueDomain longName="java.lang.String">
+      <ns14:enumerationCollection/>
+     </ns14:ValueDomain>
+    </ns14:UMLAttribute>
+    <ns14:UMLAttribute dataTypeName="java.lang.String" description="The name of the target." name="name" publicID="2223790" version="3.0">
+     <ns14:SemanticMetadata conceptCode="C42614" conceptDefinition="The words or language units by which a thing is known." conceptName="Name" order="0"/>
+     <ns14:ValueDomain longName="java.lang.String">
+      <ns14:enumerationCollection/>
+     </ns14:ValueDomain>
+    </ns14:UMLAttribute>
+    <ns14:UMLAttribute dataTypeName="java.lang.Long" description="" name="id" publicID="2223788" version="3.0">
+     <ns14:SemanticMetadata conceptCode="C25364" conceptDefinition="One or more characters used to identify, name, or characterize the nature, properties, or contents of a thing." conceptName="Identifier" order="0"/>
+     <ns14:ValueDomain longName="java.lang.Long">
+      <ns14:enumerationCollection/>
+     </ns14:ValueDomain>
+    </ns14:UMLAttribute>
+   </ns14:umlAttributeCollection>
+   <ns15:SemanticMetadata conceptCode="C19389" conceptDefinition="A gene proposed to have a primary role in a disease, based upon its known function in other organisms or model systems or based upon its physical proximity to markers linked to a genetic disease." conceptName="Candidate Disease Gene" order="0" xmlns:ns15="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common"/>
+  </ns1:UMLClass>
+  <ns1:UMLClass allowableAsTarget="false" className="NucleicAcidSequence" description="An object representation of a gene sequence; provides access to the clones from which it was derived, the ASCII representation of the residues it contains, and the sequence ID." id="173832FC-A4CE-6E57-E044-0003BA3F9857" packageName="gov.nih.nci.cabio.domain" projectName="caCORE" projectVersion="3">
+   <ns16:umlAttributeCollection xmlns:ns16="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common">
+    <ns16:UMLAttribute dataTypeName="java.lang.String" description="The numeric code for this Sequence's type: 1= EST, 2 = MRNA." name="type" publicID="2223794" version="3.0">
+     <ns16:SemanticMetadata conceptCode="C25284" conceptDefinition="Type; a subdivision of a particular kind of thing." conceptName="Type" order="0"/>
+     <ns16:ValueDomain longName="java.lang.String">
+      <ns16:enumerationCollection/>
+     </ns16:ValueDomain>
+    </ns16:UMLAttribute>
+    <ns16:UMLAttribute dataTypeName="java.lang.Long" description="" name="length" publicID="2223796" version="3.0">
+     <ns16:SemanticMetadata conceptCode="C25334" conceptDefinition="Length; the linear extent in space from one end to the other." conceptName="Length" order="0"/>
+     <ns16:ValueDomain longName="java.lang.Long">
+      <ns16:enumerationCollection/>
+     </ns16:ValueDomain>
+    </ns16:UMLAttribute>
+    <ns16:UMLAttribute dataTypeName="java.lang.String" description="The version of the sequence's accession number." name="accessionNumberVersion" publicID="2223793" version="3.0">
+     <ns16:SemanticMetadata conceptCode="C25402" conceptDefinition="A control number unique to an object, used to identify it among the other objects in a collection." conceptName="Accession Number" order="1"/>
+     <ns16:SemanticMetadata conceptCode="C25714" conceptDefinition="Version; something a little different from others of the same type; one of a sequence of copies of a program, each incorporating new modifications." conceptName="Version" order="0"/>
+     <ns16:ValueDomain longName="java.lang.String">
+      <ns16:enumerationCollection/>
+     </ns16:ValueDomain>
+    </ns16:UMLAttribute>
+    <ns16:UMLAttribute dataTypeName="java.lang.String" description="" name="value" publicID="2223795" version="3.0">
+     <ns16:SemanticMetadata conceptCode="C25712" conceptDefinition="A numerical quantity measured or assigned or computed." conceptName="Value" order="0"/>
+     <ns16:ValueDomain longName="java.lang.String">
+      <ns16:enumerationCollection/>
+     </ns16:ValueDomain>
+    </ns16:UMLAttribute>
+    <ns16:UMLAttribute dataTypeName="java.lang.Long" description="" name="id" publicID="2223791" version="3.0">
+     <ns16:SemanticMetadata conceptCode="C25364" conceptDefinition="One or more characters used to identify, name, or characterize the nature, properties, or contents of a thing." conceptName="Identifier" order="0"/>
+     <ns16:ValueDomain longName="java.lang.Long">
+      <ns16:enumerationCollection/>
+     </ns16:ValueDomain>
+    </ns16:UMLAttribute>
+    <ns16:UMLAttribute dataTypeName="java.lang.String" description="The accession number of the sequence." name="accessionNumber" publicID="2223792" version="3.0">
+     <ns16:SemanticMetadata conceptCode="C25402" conceptDefinition="A control number unique to an object, used to identify it among the other objects in a collection." conceptName="Accession Number" order="0"/>
+     <ns16:ValueDomain longName="java.lang.String">
+      <ns16:enumerationCollection/>
+     </ns16:ValueDomain>
+    </ns16:UMLAttribute>
+   </ns16:umlAttributeCollection>
+   <ns17:SemanticMetadata conceptCode="C45374" conceptDefinition="The sequence of nucleotide residues along an RNA or DNA chain." conceptName="Nucleotide Sequence" order="0" xmlns:ns17="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common"/>
+  </ns1:UMLClass>
+  <ns1:UMLClass allowableAsTarget="false" className="ProtocolAssociation" description="An association class relating between Clinical Trial Protocols to Diseases." id="173832FC-A4CF-6E57-E044-0003BA3F9857" packageName="gov.nih.nci.cabio.domain" projectName="caCORE" projectVersion="3">
+   <ns18:umlAttributeCollection xmlns:ns18="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common">
+    <ns18:UMLAttribute dataTypeName="java.lang.String" description="Describes the sub-category of the disease." name="diseaseSubCategory" publicID="2223798" version="3.0">
+     <ns18:SemanticMetadata conceptCode="C25692" conceptDefinition="A subdivision that has common differentiating characteristics within a larger category." conceptName="Subcategory" order="0"/>
+     <ns18:SemanticMetadata conceptCode="C2991" conceptDefinition="A definite pathologic process with a characteristic set of signs and symptoms. It may affect the whole body or any of its parts, and its etiology, pathology, and prognosis may be known or unknown." conceptName="Diseases and Disorders" order="1"/>
+     <ns18:ValueDomain longName="java.lang.String">
+      <ns18:enumerationCollection/>
+     </ns18:ValueDomain>
+    </ns18:UMLAttribute>
+    <ns18:UMLAttribute dataTypeName="java.lang.String" description="Describes the CTEP name of the protocol object." name="CTEPNAME" publicID="2223799" version="3.0">
+     <ns18:SemanticMetadata conceptCode="C42614" conceptDefinition="The words or language units by which a thing is known." conceptName="Name" order="0"/>
+     <ns18:SemanticMetadata conceptCode="C15794" conceptDefinition="The Cancer Therapy Evaluation Program (CTEP) is the program within the Division of Cancer Treatment and Diagnosis (DCTD) of the NCI which plans, assesses, and coordinates all aspects of clinical trials including extramural clinical research programs, internal resources, treatment methods and effectiveness, and compilation and exchange of data as it pertains to the development and evaluation of anticancer agents." conceptName="Cancer Therapy Evaluation Program" order="1"/>
+     <ns18:ValueDomain longName="java.lang.String">
+      <ns18:enumerationCollection/>
+     </ns18:ValueDomain>
+    </ns18:UMLAttribute>
+    <ns18:UMLAttribute dataTypeName="java.lang.Long" description="Descibes the IMT code of the protocol object." name="IMTCODE" publicID="2223800" version="3.0">
+     <ns18:SemanticMetadata conceptCode="C25162" conceptDefinition="A system of numbered categories for representation of data." conceptName="Code" order="0"/>
+     <ns18:SemanticMetadata conceptCode="C43557" conceptDefinition="The International Medical Terminology is a clinically validated standard terminology for the reporting of regulatory activities, originally based upon the Medical Dictionary for Drug Regulatory Affairs (MEDRRA), developed under the auspices of the International Conference on Harmonization of Technical Requirements for Registration of Pharmaceuticals for Human Use (ICH)." conceptName="International Medical Terminology" order="1"/>
+     <ns18:ValueDomain longName="java.lang.Long">
+      <ns18:enumerationCollection/>
+     </ns18:ValueDomain>
+    </ns18:UMLAttribute>
+    <ns18:UMLAttribute dataTypeName="java.lang.String" description="Describes the category of the disease." name="diseaseCategory" publicID="2223801" version="3.0">
+     <ns18:SemanticMetadata conceptCode="C2991" conceptDefinition="A definite pathologic process with a characteristic set of signs and symptoms. It may affect the whole body or any of its parts, and its etiology, pathology, and prognosis may be known or unknown." conceptName="Diseases and Disorders" order="1"/>
+     <ns18:SemanticMetadata conceptCode="C25372" conceptDefinition="Category; used informally to mean a class of things." conceptName="Category" order="0"/>
+     <ns18:ValueDomain longName="java.lang.String">
+      <ns18:enumerationCollection/>
+     </ns18:ValueDomain>
+    </ns18:UMLAttribute>
+    <ns18:UMLAttribute dataTypeName="java.lang.Long" description="" name="id" publicID="2223797" version="3.0">
+     <ns18:SemanticMetadata conceptCode="C25364" conceptDefinition="One or more characters used to identify, name, or characterize the nature, properties, or contents of a thing." conceptName="Identifier" order="0"/>
+     <ns18:ValueDomain longName="java.lang.Long">
+      <ns18:enumerationCollection/>
+     </ns18:ValueDomain>
+    </ns18:UMLAttribute>
+   </ns18:umlAttributeCollection>
+   <ns19:SemanticMetadata conceptCode="C41112" conceptDefinition="An association class relating between Clinical Trial Protocols to Diseases (NCICB)" conceptName="Protocol Association" order="0" xmlns:ns19="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common"/>
+  </ns1:UMLClass>
+  <ns1:UMLClass allowableAsTarget="false" className="Protocol" description="An object representation of the protocol used in assembling a clone library." id="173832FC-A4D0-6E57-E044-0003BA3F9857" packageName="gov.nih.nci.cabio.domain" projectName="caCORE" projectVersion="3">
+   <ns20:umlAttributeCollection xmlns:ns20="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common">
+    <ns20:UMLAttribute dataTypeName="java.lang.String" description="The description for the protocol." name="description" publicID="2223804" version="3.0">
+     <ns20:SemanticMetadata conceptCode="C25365" conceptDefinition="Description; a statement that represents something in words." conceptName="Description " order="0"/>
+     <ns20:ValueDomain longName="java.lang.String">
+      <ns20:enumerationCollection/>
+     </ns20:ValueDomain>
+    </ns20:UMLAttribute>
+    <ns20:UMLAttribute dataTypeName="java.lang.Long" description="" name="id" publicID="2223802" version="3.0">
+     <ns20:SemanticMetadata conceptCode="C25364" conceptDefinition="One or more characters used to identify, name, or characterize the nature, properties, or contents of a thing." conceptName="Identifier" order="0"/>
+     <ns20:ValueDomain longName="java.lang.Long">
+      <ns20:enumerationCollection/>
+     </ns20:ValueDomain>
+    </ns20:UMLAttribute>
+    <ns20:UMLAttribute dataTypeName="java.lang.String" description="The name of the protocol." name="name" publicID="2223805" version="3.0">
+     <ns20:SemanticMetadata conceptCode="C42614" conceptDefinition="The words or language units by which a thing is known." conceptName="Name" order="0"/>
+     <ns20:ValueDomain longName="java.lang.String">
+      <ns20:enumerationCollection/>
+     </ns20:ValueDomain>
+    </ns20:UMLAttribute>
+    <ns20:UMLAttribute dataTypeName="java.lang.String" description="The type of the protocol." name="type" publicID="2223803" version="3.0">
+     <ns20:SemanticMetadata conceptCode="C25284" conceptDefinition="Type; a subdivision of a particular kind of thing." conceptName="Type" order="0"/>
+     <ns20:ValueDomain longName="java.lang.String">
+      <ns20:enumerationCollection/>
+     </ns20:ValueDomain>
+    </ns20:UMLAttribute>
+   </ns20:umlAttributeCollection>
+   <ns21:SemanticMetadata conceptCode="C41111" conceptDefinition="Laboratory protocol used to prepare a Library." conceptName="Library Protocol" order="0" xmlns:ns21="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common"/>
+  </ns1:UMLClass>
+  <ns1:UMLClass allowableAsTarget="false" className="Pathway" description="An object representation of a molecular/cellular pathway compiled by BioCarta. Pathways are associated with specific Taxon objects, and contain multiple Gene objects, which may be Targets for treatment." id="173832FC-A4D1-6E57-E044-0003BA3F9857" packageName="gov.nih.nci.cabio.domain" projectName="caCORE" projectVersion="3">
+   <ns22:umlAttributeCollection xmlns:ns22="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common">
+    <ns22:UMLAttribute dataTypeName="java.lang.String" description="The pathway's name for the pathway object." name="name" publicID="2223809" version="3.0">
+     <ns22:SemanticMetadata conceptCode="C42614" conceptDefinition="The words or language units by which a thing is known." conceptName="Name" order="0"/>
+     <ns22:ValueDomain longName="java.lang.String">
+      <ns22:enumerationCollection/>
+     </ns22:ValueDomain>
+    </ns22:UMLAttribute>
+    <ns22:UMLAttribute dataTypeName="java.lang.String" description="The pathway diagram for the pathway object." name="diagram" publicID="2223807" version="3.0">
+     <ns22:SemanticMetadata conceptCode="C43559" conceptDefinition="A drawing intended to explain how something works; a drawing showing the relation between the parts." conceptName="Diagram" order="0"/>
+     <ns22:ValueDomain longName="java.lang.String">
+      <ns22:enumerationCollection/>
+     </ns22:ValueDomain>
+    </ns22:UMLAttribute>
+    <ns22:UMLAttribute dataTypeName="java.lang.String" description="The description of this pathway." name="description" publicID="2223808" version="3.0">
+     <ns22:SemanticMetadata conceptCode="C25365" conceptDefinition="Description; a statement that represents something in words." conceptName="Description " order="0"/>
+     <ns22:ValueDomain longName="java.lang.String">
+      <ns22:enumerationCollection/>
+     </ns22:ValueDomain>
+    </ns22:UMLAttribute>
+    <ns22:UMLAttribute dataTypeName="java.lang.String" description="The display value for the pathway object." name="displayValue" publicID="2223810" version="3.0">
+     <ns22:SemanticMetadata conceptCode="C25712" conceptDefinition="A numerical quantity measured or assigned or computed." conceptName="Value" order="0"/>
+     <ns22:SemanticMetadata conceptCode="C25485" conceptDefinition="Display; exhibiting openly in public view; a visual representation of something." conceptName="Display" order="1"/>
+     <ns22:ValueDomain longName="java.lang.String">
+      <ns22:enumerationCollection/>
+     </ns22:ValueDomain>
+    </ns22:UMLAttribute>
+    <ns22:UMLAttribute dataTypeName="java.lang.Long" description="" name="id" publicID="2223806" version="3.0">
+     <ns22:SemanticMetadata conceptCode="C25364" conceptDefinition="One or more characters used to identify, name, or characterize the nature, properties, or contents of a thing." conceptName="Identifier" order="0"/>
+     <ns22:ValueDomain longName="java.lang.Long">
+      <ns22:enumerationCollection/>
+     </ns22:ValueDomain>
+    </ns22:UMLAttribute>
+   </ns22:umlAttributeCollection>
+   <ns23:SemanticMetadata conceptCode="C20633" conceptDefinition="An elaboration of the sequence of chemical reactions leading from one compound to another taking place in living tissue." conceptName="Biochemical Pathway" order="0" xmlns:ns23="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common"/>
+  </ns1:UMLClass>
+  <ns1:UMLClass allowableAsTarget="false" className="OrganOntologyRelationship" description="Organ relationship object describes relationships among organs." id="173832FC-A4D2-6E57-E044-0003BA3F9857" packageName="gov.nih.nci.cabio.domain" projectName="caCORE" projectVersion="3">
+   <ns24:umlAttributeCollection xmlns:ns24="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common">
+    <ns24:UMLAttribute dataTypeName="java.lang.Long" description="" name="id" publicID="2223811" version="3.0">
+     <ns24:SemanticMetadata conceptCode="C25364" conceptDefinition="One or more characters used to identify, name, or characterize the nature, properties, or contents of a thing." conceptName="Identifier" order="0"/>
+     <ns24:ValueDomain longName="java.lang.Long">
+      <ns24:enumerationCollection/>
+     </ns24:ValueDomain>
+    </ns24:UMLAttribute>
+    <ns24:UMLAttribute dataTypeName="java.lang.String" description="The organ relationship type." name="type" publicID="2223812" version="3.0">
+     <ns24:SemanticMetadata conceptCode="C25284" conceptDefinition="Type; a subdivision of a particular kind of thing." conceptName="Type" order="0"/>
+     <ns24:ValueDomain longName="java.lang.String">
+      <ns24:enumerationCollection/>
+     </ns24:ValueDomain>
+    </ns24:UMLAttribute>
+   </ns24:umlAttributeCollection>
+   <ns25:SemanticMetadata conceptCode="C13018" conceptDefinition="A part of the body that performs a specific function.  For example, the heart is an organ." conceptName="Organ" order="2" xmlns:ns25="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common"/>
+   <ns26:SemanticMetadata conceptCode="C42727" conceptDefinition="The hierarchical relationship between concepts. This may be expressed as Parent, Child, Broader, Narrower, isa, inverse-isa, Super Concept, etc." conceptName="Concept Relationship" order="0" xmlns:ns26="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common"/>
+   <ns27:SemanticMetadata conceptCode="C21270" conceptDefinition="The word ontology has a long history in philosophy, in which it refers to the study of being as such. In information science, an ontology is an explicit formal specification of how to represent the objects, concepts and other entities that are assumed to exist in some area of interest and the relationships among them." conceptName="Ontology" order="1" xmlns:ns27="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common"/>
+  </ns1:UMLClass>
+  <ns1:UMLClass allowableAsTarget="false" className="OrganOntology" description="A representation of an organ whose name occurs in a controlled vocabulary; provides access to any Histopathology objects for the organ, and, because it is &quot;ontolog-able,&quot; provides access to its ancestral and descendant terms in the vocabulary." id="173832FC-A4D3-6E57-E044-0003BA3F9857" packageName="gov.nih.nci.cabio.domain" projectName="caCORE" projectVersion="3">
+   <ns28:umlAttributeCollection xmlns:ns28="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common">
+    <ns28:UMLAttribute dataTypeName="java.lang.Long" description="" name="id" publicID="2223813" version="3.0">
+     <ns28:SemanticMetadata conceptCode="C25364" conceptDefinition="One or more characters used to identify, name, or characterize the nature, properties, or contents of a thing." conceptName="Identifier" order="0"/>
+     <ns28:ValueDomain longName="java.lang.Long">
+      <ns28:enumerationCollection/>
+     </ns28:ValueDomain>
+    </ns28:UMLAttribute>
+    <ns28:UMLAttribute dataTypeName="java.lang.String" description="The name of the organ for the organ object." name="name" publicID="2223814" version="3.0">
+     <ns28:SemanticMetadata conceptCode="C42614" conceptDefinition="The words or language units by which a thing is known." conceptName="Name" order="0"/>
+     <ns28:ValueDomain longName="java.lang.String">
+      <ns28:enumerationCollection/>
+     </ns28:ValueDomain>
+    </ns28:UMLAttribute>
+   </ns28:umlAttributeCollection>
+   <ns29:SemanticMetadata conceptCode="C13018" conceptDefinition="A part of the body that performs a specific function.  For example, the heart is an organ." conceptName="Organ" order="1" xmlns:ns29="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common"/>
+   <ns30:SemanticMetadata conceptCode="C21270" conceptDefinition="The word ontology has a long history in philosophy, in which it refers to the study of being as such. In information science, an ontology is an explicit formal specification of how to represent the objects, concepts and other entities that are assumed to exist in some area of interest and the relationships among them." conceptName="Ontology" order="0" xmlns:ns30="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common"/>
+  </ns1:UMLClass>
+  <ns1:UMLClass allowableAsTarget="false" className="Library" description="An object representing a CGAP library; provides access to information about: the tissue sample and its method of preparation, the library protocol that was used, the clones contained in the library, and the sequence information derived from the library." id="173832FC-A4D4-6E57-E044-0003BA3F9857" packageName="gov.nih.nci.cabio.domain" projectName="caCORE" projectVersion="3">
+   <ns31:umlAttributeCollection xmlns:ns31="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common">
+    <ns31:UMLAttribute dataTypeName="java.lang.String" description="The type for the library object." name="type" publicID="2223816" version="3.0">
+     <ns31:SemanticMetadata conceptCode="C25284" conceptDefinition="Type; a subdivision of a particular kind of thing." conceptName="Type" order="0"/>
+     <ns31:ValueDomain longName="java.lang.String">
+      <ns31:enumerationCollection/>
+     </ns31:ValueDomain>
+    </ns31:UMLAttribute>
+    <ns31:UMLAttribute dataTypeName="java.lang.String" description="The producer of the clone." name="cloneProducer" publicID="2223826" version="3.0">
+     <ns31:SemanticMetadata conceptCode="C324" conceptDefinition="Single-stranded complementary DNA synthesized from an RNA template by the action of RNA-dependent DNA polymerase. cDNA (i.e., complementary DNA, not circular DNA, not C-DNA) is used in a variety of molecular cloning experiments as well as serving as a specific hybridization probe." conceptName="cDNA" order="1"/>
+     <ns31:SemanticMetadata conceptCode="C45336" conceptDefinition="A person or group that creates or manufactures something." conceptName="Producer" order="0"/>
+     <ns31:ValueDomain longName="java.lang.String">
+      <ns31:enumerationCollection/>
+     </ns31:ValueDomain>
+    </ns31:UMLAttribute>
+    <ns31:UMLAttribute dataTypeName="java.lang.String" description="The lab host for the library." name="labHost" publicID="2223819" version="3.0">
+     <ns31:SemanticMetadata conceptCode="C14187" conceptDefinition="Unicellular, prokaryotic organisms that reproduce by cell division and usually have cell walls; can be shaped like spheres, rods or spirals and can be found in virtually any enviroment. (BioTech Life Science Dictionary)" conceptName="Bacteria" order="0"/>
+     <ns31:ValueDomain longName="java.lang.String">
+      <ns31:enumerationCollection/>
+     </ns31:ValueDomain>
+    </ns31:UMLAttribute>
+    <ns31:UMLAttribute dataTypeName="java.lang.String" description="The description for the library." name="description" publicID="2223825" version="3.0">
+     <ns31:SemanticMetadata conceptCode="C25365" conceptDefinition="Description; a statement that represents something in words." conceptName="Description " order="0"/>
+     <ns31:ValueDomain longName="java.lang.String">
+      <ns31:enumerationCollection/>
+     </ns31:ValueDomain>
+    </ns31:UMLAttribute>
+    <ns31:UMLAttribute dataTypeName="java.lang.String" description="The clone vector for the library." name="cloneVector" publicID="2223820" version="3.0">
+     <ns31:SemanticMetadata conceptCode="C1329" conceptDefinition="Any DNA molecule capable of autonomous replication within a host cell and into which other DNA sequences can be inserted and thus amplified. They are or are derived from plasmids, bacteriophages, or viruses and are used for transporting foreign genes into recipient cells. Genetic vectors possess a functional replicator site and contain genetic markers to facilitate their selective recognition." conceptName="Cloning Vector" order="0"/>
+     <ns31:ValueDomain longName="java.lang.String">
+      <ns31:enumerationCollection/>
+     </ns31:ValueDomain>
+    </ns31:UMLAttribute>
+    <ns31:UMLAttribute dataTypeName="java.lang.String" description="The keyword for the library." name="keyword" publicID="2223824" version="3.0">
+     <ns31:SemanticMetadata conceptCode="C43513" conceptDefinition="A small set of words designed to convey the subject of a technical article." conceptName="Keyword" order="0"/>
+     <ns31:ValueDomain longName="java.lang.String">
+      <ns31:enumerationCollection/>
+     </ns31:ValueDomain>
+    </ns31:UMLAttribute>
+    <ns31:UMLAttribute dataTypeName="java.lang.String" description="The R Site 2 for the library." name="rsite2" publicID="2223829" version="3.0">
+     <ns31:SemanticMetadata conceptCode="C16515" conceptDefinition="Enzymes that are part of the restriction-modification systems. They catalyze the endonucleolytic cleavage of DNA sequences which lack the species-specific methylation pattern in the host cell's DNA. Cleavage yields random or specific double-stranded fragments with terminal 5'-phosphates. The function of restriction enzymes is to destroy any foreign DNA that invades the host cell. Most have been studied in bacterial systems, but a few have been found in eukaryotic organisms. They are also used as tools for the systematic dissection and mapping of chromosomes, in the determination of base sequences of DNAs, and have made it possible to splice and recombine genes from one organism into the genome of another. EC 3.21.1." conceptName="Restriction Endonuclease" order="0"/>
+     <ns31:SemanticMetadata conceptCode="C25666" conceptDefinition="coming next after the first in position in space or time or degree or magnitude." conceptName="Second" order="1"/>
+     <ns31:ValueDomain longName="java.lang.String">
+      <ns31:enumerationCollection/>
+     </ns31:ValueDomain>
+    </ns31:UMLAttribute>
+    <ns31:UMLAttribute dataTypeName="java.lang.String" description="The library name for the library object." name="name" publicID="2223828" version="3.0">
+     <ns31:SemanticMetadata conceptCode="C42614" conceptDefinition="The words or language units by which a thing is known." conceptName="Name" order="0"/>
+     <ns31:ValueDomain longName="java.lang.String">
+      <ns31:enumerationCollection/>
+     </ns31:ValueDomain>
+    </ns31:UMLAttribute>
+    <ns31:UMLAttribute dataTypeName="java.lang.Long" description="The Unigene identification for the library." name="uniGeneId" publicID="2223821" version="3.0">
+     <ns31:SemanticMetadata conceptCode="C43563" conceptDefinition="UniGene is an experimental system for automatically partitioning GenBank sequences into a non-redundant set of gene-oriented clusters. Each UniGene cluster contains sequences that represent a unique gene, as well as related information such as the tissue types in which the gene has been expressed and map location.  It is provided as a web application from the National Center for Biotechnology Information (NCBI)." conceptName="UniGene" order="1"/>
+     <ns31:SemanticMetadata conceptCode="C25364" conceptDefinition="One or more characters used to identify, name, or characterize the nature, properties, or contents of a thing." conceptName="Identifier" order="0"/>
+     <ns31:ValueDomain longName="java.lang.Long">
+      <ns31:enumerationCollection/>
+     </ns31:ValueDomain>
+    </ns31:UMLAttribute>
+    <ns31:UMLAttribute dataTypeName="java.lang.Long" description="" name="id" publicID="2223815" version="3.0">
+     <ns31:SemanticMetadata conceptCode="C25364" conceptDefinition="One or more characters used to identify, name, or characterize the nature, properties, or contents of a thing." conceptName="Identifier" order="0"/>
+     <ns31:ValueDomain longName="java.lang.Long">
+      <ns31:enumerationCollection/>
+     </ns31:ValueDomain>
+    </ns31:UMLAttribute>
+    <ns31:UMLAttribute dataTypeName="java.lang.String" description="The R Site 1 for the library." name="rsite1" publicID="2223817" version="3.0">
+     <ns31:SemanticMetadata conceptCode="C25509" conceptDefinition="Preceding all others in time or space or degree." conceptName="First" order="1"/>
+     <ns31:SemanticMetadata conceptCode="C16515" conceptDefinition="Enzymes that are part of the restriction-modification systems. They catalyze the endonucleolytic cleavage of DNA sequences which lack the species-specific methylation pattern in the host cell's DNA. Cleavage yields random or specific double-stranded fragments with terminal 5'-phosphates. The function of restriction enzymes is to destroy any foreign DNA that invades the host cell. Most have been studied in bacterial systems, but a few have been found in eukaryotic organisms. They are also used as tools for the systematic dissection and mapping of chromosomes, in the determination of base sequences of DNAs, and have made it possible to splice and recombine genes from one organism into the genome of another. EC 3.21.1." conceptName="Restriction Endonuclease" order="0"/>
+     <ns31:ValueDomain longName="java.lang.String">
+      <ns31:enumerationCollection/>
+     </ns31:ValueDomain>
+    </ns31:UMLAttribute>
+    <ns31:UMLAttribute dataTypeName="java.lang.String" description="The type of the clone vector for the library." name="cloneVectorType" publicID="2223827" version="3.0">
+     <ns31:SemanticMetadata conceptCode="C1329" conceptDefinition="Any DNA molecule capable of autonomous replication within a host cell and into which other DNA sequences can be inserted and thus amplified. They are or are derived from plasmids, bacteriophages, or viruses and are used for transporting foreign genes into recipient cells. Genetic vectors possess a functional replicator site and contain genetic markers to facilitate their selective recognition." conceptName="Cloning Vector" order="1"/>
+     <ns31:SemanticMetadata conceptCode="C25284" conceptDefinition="Type; a subdivision of a particular kind of thing." conceptName="Type" order="0"/>
+     <ns31:ValueDomain longName="java.lang.String">
+      <ns31:enumerationCollection/>
+     </ns31:ValueDomain>
+    </ns31:UMLAttribute>
+    <ns31:UMLAttribute dataTypeName="java.lang.Long" description="The number of clones for the library object." name="clonesToDate" publicID="2223822" version="3.0">
+     <ns31:SemanticMetadata conceptCode="C324" conceptDefinition="Single-stranded complementary DNA synthesized from an RNA template by the action of RNA-dependent DNA polymerase. cDNA (i.e., complementary DNA, not circular DNA, not C-DNA) is used in a variety of molecular cloning experiments as well as serving as a specific hybridization probe." conceptName="cDNA" order="1"/>
+     <ns31:SemanticMetadata conceptCode="C25463" conceptDefinition="To determine the number or amount of something; the result of this activity." conceptName="Count" order="0"/>
+     <ns31:ValueDomain longName="java.lang.Long">
+      <ns31:enumerationCollection/>
+     </ns31:ValueDomain>
+    </ns31:UMLAttribute>
+    <ns31:UMLAttribute dataTypeName="Alpha DVG" description="The creation date for the library." name="creationDate" publicID="2223818" version="3.0">
+     <ns31:SemanticMetadata conceptCode="C25164" conceptDefinition="a particular day specified as the time something has, or will, happen." conceptName="Date" order="0"/>
+     <ns31:SemanticMetadata conceptCode="C42620" conceptDefinition="Brought into existence." conceptName="Created" order="1"/>
+     <ns31:ValueDomain longName="Date">
+      <ns31:enumerationCollection/>
+     </ns31:ValueDomain>
+    </ns31:UMLAttribute>
+    <ns31:UMLAttribute dataTypeName="java.lang.Long" description="The number of the sequences associated with the library." name="sequencesToDate" publicID="2223823" version="3.0">
+     <ns31:SemanticMetadata conceptCode="C18155" conceptDefinition="Expressed Sequence Tags (ESTs) are essentially Sequence Tagged Sites (EST) that are represented in mRNA. They are derived as 300-500 bp single-pass mRNA sequence reads from many of the genes expressed in a given tissue and/or at a given developmental stage. They represent a snapshot of gene expression in a given place or time." conceptName="Expressed Sequence Tag" order="1"/>
+     <ns31:SemanticMetadata conceptCode="C25463" conceptDefinition="To determine the number or amount of something; the result of this activity." conceptName="Count" order="0"/>
+     <ns31:ValueDomain longName="java.lang.Long">
+      <ns31:enumerationCollection/>
+     </ns31:ValueDomain>
+    </ns31:UMLAttribute>
+   </ns31:umlAttributeCollection>
+   <ns32:SemanticMetadata conceptCode="C16223" conceptDefinition="A collection of DNA molecules that have been cloned in vectors." conceptName="Library" order="0" xmlns:ns32="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common"/>
+  </ns1:UMLClass>
+  <ns1:UMLClass allowableAsTarget="false" className="Histopathology" description="An object representing anatomical changes in a diseased tissue sample associated with an expression experiment; captures the relationship between organ and disease." id="173832FC-A4D5-6E57-E044-0003BA3F9857" packageName="gov.nih.nci.cabio.domain" projectName="caCORE" projectVersion="3">
+   <ns33:umlAttributeCollection xmlns:ns33="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common">
+    <ns33:UMLAttribute dataTypeName="java.lang.Float" description="Tumor incidence rate in the animal model (percentage diseased animals to healthy animals)." name="tumorIncidenceRate" publicID="2223834" version="3.0">
+     <ns33:SemanticMetadata conceptCode="C16726" conceptDefinition="The number of new cases of a disease diagnosed each year." conceptName="Incidence" order="1"/>
+     <ns33:SemanticMetadata conceptCode="C25636" conceptDefinition="A measurement of degree, speed, or frequency relative to time. (NCI)" conceptName="Rate" order="0"/>
+     <ns33:ValueDomain longName="java.lang.Float">
+      <ns33:enumerationCollection/>
+     </ns33:ValueDomain>
+    </ns33:UMLAttribute>
+    <ns33:UMLAttribute dataTypeName="java.lang.String" description="Age of animal at onset of neoplastic lesion." name="ageOfOnset" publicID="2223836" version="3.0">
+     <ns33:SemanticMetadata conceptCode="C25279" conceptDefinition="The start, beginning, or early stages. (NCI)" conceptName="Onset" order="1"/>
+     <ns33:SemanticMetadata conceptCode="C25150" conceptDefinition="A period or stage in life, usually stated in years since birth." conceptName="Age" order="0"/>
+     <ns33:ValueDomain longName="java.lang.String">
+      <ns33:enumerationCollection/>
+     </ns33:ValueDomain>
+    </ns33:UMLAttribute>
+    <ns33:UMLAttribute dataTypeName="java.lang.Long" description="" name="id" publicID="2223830" version="3.0">
+     <ns33:SemanticMetadata conceptCode="C25364" conceptDefinition="One or more characters used to identify, name, or characterize the nature, properties, or contents of a thing." conceptName="Identifier" order="0"/>
+     <ns33:ValueDomain longName="java.lang.Long">
+      <ns33:enumerationCollection/>
+     </ns33:ValueDomain>
+    </ns33:UMLAttribute>
+    <ns33:UMLAttribute dataTypeName="java.lang.String" description="Description of the pathology found by microscopic examination." name="microscopicDescription" publicID="2223837" version="3.0">
+     <ns33:SemanticMetadata conceptCode="C25365" conceptDefinition="Description; a statement that represents something in words." conceptName="Description " order="0"/>
+     <ns33:SemanticMetadata conceptCode="C25252" conceptDefinition="Microscopic; too small to be seen except under a microscope." conceptName="Microscopic" order="1"/>
+     <ns33:ValueDomain longName="java.lang.String">
+      <ns33:enumerationCollection/>
+     </ns33:ValueDomain>
+    </ns33:UMLAttribute>
+    <ns33:UMLAttribute dataTypeName="java.lang.String" description="Description of the gross pathology." name="grossDescription" publicID="2223832" version="3.0">
+     <ns33:SemanticMetadata conceptCode="C25365" conceptDefinition="Description; a statement that represents something in words." conceptName="Description " order="0"/>
+     <ns33:SemanticMetadata conceptCode="C43566" conceptDefinition="Visible to the naked eye." conceptName="Gross" order="1"/>
+     <ns33:ValueDomain longName="java.lang.String">
+      <ns33:enumerationCollection/>
+     </ns33:ValueDomain>
+    </ns33:UMLAttribute>
+    <ns33:UMLAttribute dataTypeName="java.lang.String" description="Comments for the histopathology object." name="comments" publicID="2223831" version="3.0">
+     <ns33:SemanticMetadata conceptCode="C25393" conceptDefinition="Comments; a written explanation or criticism or illustration that is added to a book or other textual material." conceptName="Comments" order="0"/>
+     <ns33:ValueDomain longName="java.lang.String">
+      <ns33:enumerationCollection/>
+     </ns33:ValueDomain>
+    </ns33:UMLAttribute>
+    <ns33:UMLAttribute dataTypeName="java.lang.String" description="Age when animal succumbs to disease or needs to be sacrificed because of tumor burden." name="survivalInfo" publicID="2223835" version="3.0">
+     <ns33:SemanticMetadata conceptCode="C28192" conceptDefinition="The proportion of survivors in a group, e.g., of patients, studied and followed over a period, or the proportion of persons in a specified group alive at the beginning of a time interval who survive to the end of the interval. It is often studied using life table methods." conceptName="Survival Rate" order="0"/>
+     <ns33:ValueDomain longName="java.lang.String">
+      <ns33:enumerationCollection/>
+     </ns33:ValueDomain>
+    </ns33:UMLAttribute>
+    <ns33:UMLAttribute dataTypeName="java.lang.String" description="Relational operation used to describe tumor incidence rate." name="relationalOperation" publicID="2223833" version="3.0">
+     <ns33:SemanticMetadata conceptCode="C42727" conceptDefinition="The hierarchical relationship between concepts. This may be expressed as Parent, Child, Broader, Narrower, isa, inverse-isa, Super Concept, etc." conceptName="Concept Relationship" order="0"/>
+     <ns33:ValueDomain longName="java.lang.String">
+      <ns33:enumerationCollection/>
+     </ns33:ValueDomain>
+    </ns33:UMLAttribute>
+   </ns33:umlAttributeCollection>
+   <ns34:SemanticMetadata conceptCode="C18190" conceptDefinition="The microscopic study of characteristic tissue abnormalities by employing various cytochemical and immunocytochemical stains.  -- 2004" conceptName="Histopathology" order="0" xmlns:ns34="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common"/>
+  </ns1:UMLClass>
+  <ns1:UMLClass allowableAsTarget="true" className="Gene" description="Gene objects are the effective portal to most of the genomic information provided by the caBIO data services; organs, diseases, chromosomes, pathways, sequence data, and expression experiments are among the many objects accessible via a gene." id="173832FC-A4D6-6E57-E044-0003BA3F9857" packageName="gov.nih.nci.cabio.domain" projectName="caCORE" projectVersion="3">
+   <ns35:umlAttributeCollection xmlns:ns35="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common">
+    <ns35:UMLAttribute dataTypeName="java.lang.String" description="The title of the gene." name="fullName" publicID="2223839" version="3.0">
+     <ns35:SemanticMetadata conceptCode="C42614" conceptDefinition="The words or language units by which a thing is known." conceptName="Name" order="0"/>
+     <ns35:ValueDomain longName="java.lang.String">
+      <ns35:enumerationCollection/>
+     </ns35:ValueDomain>
+    </ns35:UMLAttribute>
+    <ns35:UMLAttribute dataTypeName="java.lang.Long" description="HThe cluster identification for the gene." name="clusterId" publicID="2223840" version="3.0">
+     <ns35:SemanticMetadata conceptCode="C43418" conceptDefinition="A grouping of a number of similar things." conceptName="Cluster" order="1"/>
+     <ns35:SemanticMetadata conceptCode="C25364" conceptDefinition="One or more characters used to identify, name, or characterize the nature, properties, or contents of a thing." conceptName="Identifier" order="0"/>
+     <ns35:ValueDomain longName="java.lang.Long">
+      <ns35:enumerationCollection/>
+     </ns35:ValueDomain>
+    </ns35:UMLAttribute>
+   </ns35:umlAttributeCollection>
+   <ns36:SemanticMetadata conceptCode="C16612" conceptDefinition="A functional unit of heredity which occupies a specific position (locus) on a particular chromosome, is capable of reproducing itself exactly at each cell division, and directs the formation of an enzyme or other protein. The gene as a functional unit consists of a discrete segment of a giant DNA molecule containing the purine (adenine and guanine) and pyrimidine (cytosine and thymine) bases in the ordered and correct sequence that encodes a specific functional product (i.e., a protein or RNA molecule). Protein synthesis is mediated by molecules of messenger-RNA formed on the chromosome with the gene acting as template. The RNA then passes into the cytoplasm and becomes oriented on the ribosomes where it in turn acts as template to organize a chain of amino acids to form a peptide. Genes normally occur in pairs in all cells except gametes, as a consequence of the fact that all chromosomes are paired except the sex chromosomes (X and Y) of the male." conceptName="Gene" order="0" xmlns:ns36="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common"/>
+  </ns1:UMLClass>
+  <ns1:UMLClass allowableAsTarget="false" className="GeneOntologyRelationship" description="This object specifies GoOntologyrRelationship." id="173832FC-A4D7-6E57-E044-0003BA3F9857" packageName="gov.nih.nci.cabio.domain" projectName="caCORE" projectVersion="3">
+   <ns37:umlAttributeCollection xmlns:ns37="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common">
+    <ns37:UMLAttribute dataTypeName="java.lang.String" description="The Gene Ontology relationship type." name="relationshipType" publicID="2223843" version="3.0">
+     <ns37:SemanticMetadata conceptCode="C25284" conceptDefinition="Type; a subdivision of a particular kind of thing." conceptName="Type" order="0"/>
+     <ns37:ValueDomain longName="java.lang.String">
+      <ns37:enumerationCollection/>
+     </ns37:ValueDomain>
+    </ns37:UMLAttribute>
+    <ns37:UMLAttribute dataTypeName="java.lang.Long" description="" name="id" publicID="2223842" version="3.0">
+     <ns37:SemanticMetadata conceptCode="C25364" conceptDefinition="One or more characters used to identify, name, or characterize the nature, properties, or contents of a thing." conceptName="Identifier" order="0"/>
+     <ns37:ValueDomain longName="java.lang.Long">
+      <ns37:enumerationCollection/>
+     </ns37:ValueDomain>
+    </ns37:UMLAttribute>
+   </ns37:umlAttributeCollection>
+   <ns38:SemanticMetadata conceptCode="C42727" conceptDefinition="The hierarchical relationship between concepts. This may be expressed as Parent, Child, Broader, Narrower, isa, inverse-isa, Super Concept, etc." conceptName="Concept Relationship" order="0" xmlns:ns38="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common"/>
+   <ns39:SemanticMetadata conceptCode="C41169" conceptDefinition="An object providing entry to a Gene object's position in the Gene Ontology Consortium's controlled vocabularies. (NCICB)" conceptName="GO Ontology Object" order="1" xmlns:ns39="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common"/>
+  </ns1:UMLClass>
+  <ns1:UMLClass allowableAsTarget="false" className="GeneOntology" description="An object providing entry to a Gene object's position in the Gene Ontology Consortium's controlled vocabularies, as recorded by LocusLink; provides access to gene objects corresponding to the ontological term, as well as to ancestor and descendant terms i" id="173832FC-A4D8-6E57-E044-0003BA3F9857" packageName="gov.nih.nci.cabio.domain" projectName="caCORE" projectVersion="3">
+   <ns40:umlAttributeCollection xmlns:ns40="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common">
+    <ns40:UMLAttribute dataTypeName="java.lang.String" description="The name for the Gene Ontology object." name="name" publicID="2223845" version="3.0">
+     <ns40:SemanticMetadata conceptCode="C42614" conceptDefinition="The words or language units by which a thing is known." conceptName="Name" order="0"/>
+     <ns40:ValueDomain longName="java.lang.String">
+      <ns40:enumerationCollection/>
+     </ns40:ValueDomain>
+    </ns40:UMLAttribute>
+    <ns40:UMLAttribute dataTypeName="java.lang.Long" description="" name="id" publicID="2223844" version="3.0">
+     <ns40:SemanticMetadata conceptCode="C25364" conceptDefinition="One or more characters used to identify, name, or characterize the nature, properties, or contents of a thing." conceptName="Identifier" order="0"/>
+     <ns40:ValueDomain longName="java.lang.Long">
+      <ns40:enumerationCollection/>
+     </ns40:ValueDomain>
+    </ns40:UMLAttribute>
+   </ns40:umlAttributeCollection>
+   <ns41:SemanticMetadata conceptCode="C41169" conceptDefinition="An object providing entry to a Gene object's position in the Gene Ontology Consortium's controlled vocabularies. (NCICB)" conceptName="GO Ontology Object" order="0" xmlns:ns41="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common"/>
+  </ns1:UMLClass>
+  <ns1:UMLClass allowableAsTarget="false" className="DiseaseOntologyRelationship" description="The diseaser relationship specifies the relationship among diseases." id="173832FC-A4D9-6E57-E044-0003BA3F9857" packageName="gov.nih.nci.cabio.domain" projectName="caCORE" projectVersion="3">
+   <ns42:umlAttributeCollection xmlns:ns42="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common">
+    <ns42:UMLAttribute dataTypeName="java.lang.String" description="The disease relationship type." name="type" publicID="2223847" version="3.0">
+     <ns42:SemanticMetadata conceptCode="C25284" conceptDefinition="Type; a subdivision of a particular kind of thing." conceptName="Type" order="0"/>
+     <ns42:ValueDomain longName="java.lang.String">
+      <ns42:enumerationCollection/>
+     </ns42:ValueDomain>
+    </ns42:UMLAttribute>
+    <ns42:UMLAttribute dataTypeName="java.lang.Long" description="" name="id" publicID="2223846" version="3.0">
+     <ns42:SemanticMetadata conceptCode="C25364" conceptDefinition="One or more characters used to identify, name, or characterize the nature, properties, or contents of a thing." conceptName="Identifier" order="0"/>
+     <ns42:ValueDomain longName="java.lang.Long">
+      <ns42:enumerationCollection/>
+     </ns42:ValueDomain>
+    </ns42:UMLAttribute>
+   </ns42:umlAttributeCollection>
+   <ns43:SemanticMetadata conceptCode="C45371" conceptDefinition="The disease relationship specifies the relationship among diseases." conceptName="DiseaseOntologyRelationship" order="0" xmlns:ns43="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common"/>
+  </ns1:UMLClass>
+  <ns1:UMLClass allowableAsTarget="false" className="DiseaseOntology" description="" id="173832FC-A71F-6E57-E044-0003BA3F9857" packageName="gov.nih.nci.cabio.domain" projectName="caCORE" projectVersion="3">
+   <ns44:umlAttributeCollection xmlns:ns44="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common">
+    <ns44:UMLAttribute dataTypeName="java.lang.Long" description="" name="id" publicID="2223848" version="3.0">
+     <ns44:SemanticMetadata conceptCode="C25364" conceptDefinition="One or more characters used to identify, name, or characterize the nature, properties, or contents of a thing." conceptName="Identifier" order="0"/>
+     <ns44:ValueDomain longName="java.lang.Long">
+      <ns44:enumerationCollection/>
+     </ns44:ValueDomain>
+    </ns44:UMLAttribute>
+    <ns44:UMLAttribute dataTypeName="java.lang.String" description="The name of the disease object." name="name" publicID="2223849" version="3.0">
+     <ns44:SemanticMetadata conceptCode="C42614" conceptDefinition="The words or language units by which a thing is known." conceptName="Name" order="0"/>
+     <ns44:ValueDomain longName="java.lang.String">
+      <ns44:enumerationCollection/>
+     </ns44:ValueDomain>
+    </ns44:UMLAttribute>
+   </ns44:umlAttributeCollection>
+   <ns45:SemanticMetadata conceptCode="C45370" conceptDefinition="Disease objects specify a disease name and ID; disease objects also provide access to: ontological relations to other diseases; clinical trial protocols treating the disease; and specific histologies associated with instances of the disease." conceptName="Disease Ontology Object" order="0" xmlns:ns45="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common"/>
+  </ns1:UMLClass>
+  <ns1:UMLClass allowableAsTarget="false" className="ClinicalTrialProtocol" description="The protocol associated with a clinical trial; organizes administrative information about the trial such as Organization ID, participants, phase, etc., and provides access to the administered Agents." id="173832FC-A4DA-6E57-E044-0003BA3F9857" packageName="gov.nih.nci.cabio.domain" projectName="caCORE" projectVersion="3">
+   <ns46:umlAttributeCollection xmlns:ns46="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common">
+    <ns46:UMLAttribute dataTypeName="CHARACTER" description="The nih administration code for the clinical trial." name="NIHAdminCode" publicID="2223858" version="3.0">
+     <ns46:SemanticMetadata conceptCode="C25409" conceptDefinition="The act of administration." conceptName="Administration" order="1"/>
+     <ns46:SemanticMetadata conceptCode="C25162" conceptDefinition="A system of numbered categories for representation of data." conceptName="Code" order="0"/>
+     <ns46:ValueDomain longName="National Institutes of Health Administration Code">
+      <ns46:enumerationCollection>
+       <ns46:Enumeration permissibleValue="CIP" valueMeaning="Cancer Imaging Program">
+        <ns46:SemanticMetadata conceptCode="C49047" conceptDefinition="The mission of the Cancer Imaging Program, National Cancer Institute, is to promote and support Cancer-related basic, translational and clinical research in imaging sciences and technology, and integration and application of these imaging discoveries and developments to the understanding of cancer biology and to the clinical management of cancer and cancer risk." conceptName="Cancer Imaging Program" order="0"/>
+       </ns46:Enumeration>
+       <ns46:Enumeration permissibleValue="CTEP" valueMeaning="Cancer Therapeutics Evaluation Program"/>
+       <ns46:Enumeration permissibleValue="DCP" valueMeaning="Division of Cancer Prevention">
+        <ns46:SemanticMetadata conceptCode="C18750" conceptDefinition="Reorganized on October 1, 1997 to the extramural Division of Cancer Prevention and the extramural Division of Cancer Control and Population Science." conceptName="Division of Cancer Prevention" order="0"/>
+       </ns46:Enumeration>
+       <ns46:Enumeration permissibleValue="NHLBI" valueMeaning="National Heart, Lung and Blood Institute"/>
+       <ns46:Enumeration permissibleValue="RRP" valueMeaning="Radiation Research Program"/>
+      </ns46:enumerationCollection>
+     </ns46:ValueDomain>
+    </ns46:UMLAttribute>
+    <ns46:UMLAttribute dataTypeName="java.lang.String" description="The title of the clinical trial." name="title" publicID="2223855" version="3.0">
+     <ns46:SemanticMetadata conceptCode="C42774" conceptDefinition="The name of a work of art or literary composition etc." conceptName="Title" order="0"/>
+     <ns46:ValueDomain longName="java.lang.String">
+      <ns46:enumerationCollection/>
+     </ns46:ValueDomain>
+    </ns46:UMLAttribute>
+    <ns46:UMLAttribute dataTypeName="Alpha DVG" description="The date of the clinical trial protocol object having the current status." name="currentStatusDate" publicID="2223862" version="3.0">
+     <ns46:SemanticMetadata conceptCode="C25688" conceptDefinition="A condition or state at a particular time." conceptName="Status" order="1"/>
+     <ns46:SemanticMetadata conceptCode="C25164" conceptDefinition="a particular day specified as the time something has, or will, happen." conceptName="Date" order="0"/>
+     <ns46:ValueDomain longName="Date">
+      <ns46:enumerationCollection/>
+     </ns46:ValueDomain>
+    </ns46:UMLAttribute>
+    <ns46:UMLAttribute dataTypeName="CHARACTER" description="The current status of the clinical trial protocol object." name="currentStatus" publicID="2223851" version="3.0">
+     <ns46:SemanticMetadata conceptCode="C25471" conceptDefinition="Occurring in or belonging to the present time." conceptName="Current" order="1"/>
+     <ns46:SemanticMetadata conceptCode="C25688" conceptDefinition="A condition or state at a particular time." conceptName="Status" order="0"/>
+     <ns46:ValueDomain longName="Protocol Status">
+      <ns46:enumerationCollection>
+       <ns46:Enumeration permissibleValue="AC" valueMeaning="Active - Trial is open to accrual"/>
+       <ns46:Enumeration permissibleValue="AP" valueMeaning="Approved - Trial has official CTEP approval"/>
+       <ns46:Enumeration permissibleValue="TB" valueMeaning="Temporarily Closed to Accrual &amp; Treatment - Trial is temporarily not accruing and patients are not receiving therapy"/>
+       <ns46:Enumeration permissibleValue="CL" valueMeaning="Closed to Accrual - The protocol has been closed to patient accrual.  Patients are still receiving therapy"/>
+       <ns46:Enumeration permissibleValue="TC" valueMeaning="Temporarily Closed to Accrual - Trial is temporarily not accruing"/>
+       <ns46:Enumeration permissibleValue="CB" valueMeaning="Closed to Accrual &amp; Treatment - The protocol has been closed to patient accrual.  All patients have completed therapy, but patients are still being followed according to the primary objectives of the study"/>
+       <ns46:Enumeration permissibleValue="CP" valueMeaning="Complete - The protocol has been closed to accrual, all patients have completed therapy and the study has met its primary objectives"/>
+       <ns46:Enumeration permissibleValue="AD" valueMeaning="Administratively Complete - The protocol has been completed prematurely (e.g. due to poor accrual, insufficient drug supply, IND closure)"/>
+      </ns46:enumerationCollection>
+     </ns46:ValueDomain>
+    </ns46:UMLAttribute>
+    <ns46:UMLAttribute dataTypeName="java.lang.String" description="The NCI's internal document code for the clinical trial protocil object." name="documentNumber" publicID="2223857" version="3.0">
+     <ns46:SemanticMetadata conceptCode="C25364" conceptDefinition="One or more characters used to identify, name, or characterize the nature, properties, or contents of a thing." conceptName="Identifier" order="0"/>
+     <ns46:SemanticMetadata conceptCode="C19498" conceptDefinition="A writing that contains information." conceptName="Document Type" order="1"/>
+     <ns46:ValueDomain longName="java.lang.String">
+      <ns46:enumerationCollection/>
+     </ns46:ValueDomain>
+    </ns46:UMLAttribute>
+    <ns46:UMLAttribute dataTypeName="CHARACTER" description="The treatment flag is &quot;Yes&quot; or &quot;No&quot; for the clinical trial." name="treatmentFlag" publicID="2223852" version="3.0">
+     <ns46:SemanticMetadata conceptCode="C15368" conceptDefinition="An action or administration of therapeutic agents to produce an effect that is intended to alter the course of a pathologic process." conceptName="Therapy" order="1"/>
+     <ns46:SemanticMetadata conceptCode="C43578" conceptDefinition="An indicator that can be set or unset in order to signal whether a particular condition is true. The indicator usually takes the form of a single binary digit, or bit (either 0 or 1). (from Dictionary of Computers)" conceptName="Flag" order="0"/>
+     <ns46:ValueDomain longName="Yes No Indicator">
+      <ns46:enumerationCollection>
+       <ns46:Enumeration permissibleValue="YES" valueMeaning="YES">
+        <ns46:SemanticMetadata conceptCode="CL307586" conceptDefinition="No value exists." conceptName="Yes" order="0"/>
+       </ns46:Enumeration>
+       <ns46:Enumeration permissibleValue="NO" valueMeaning="NO">
+        <ns46:SemanticMetadata conceptCode="CL307587" conceptDefinition="No value exists." conceptName="No" order="0"/>
+       </ns46:Enumeration>
+      </ns46:enumerationCollection>
+     </ns46:ValueDomain>
+    </ns46:UMLAttribute>
+    <ns46:UMLAttribute dataTypeName="java.lang.String" description="The NCI PDQ identification code for the clinical trial." name="PDQIdentifier" publicID="2223861" version="3.0">
+     <ns46:SemanticMetadata conceptCode="C25364" conceptDefinition="One or more characters used to identify, name, or characterize the nature, properties, or contents of a thing." conceptName="Identifier" order="0"/>
+     <ns46:SemanticMetadata conceptCode="C15439" conceptDefinition="PDQ is an online database developed and maintained by the National Cancer Institute.  Designed to make the most current, credible, and accurate cancer information available to health professionals and the public, PDQ contains peer-reviewed summaries on cancer treatment, screening, prevention, genetics, and supportive care; a registry of cancer clinical trials from around the world; and directories of physicians, professionals who provide genetics services, and organizations that provide cancer care. Most of this information is available on the Cancer.gov Web site.  More specific information about PDQ can be found at http://cancer.gov/cancer_information/pdq/." conceptName="PDQ Information System" order="1"/>
+     <ns46:ValueDomain longName="java.lang.String">
+      <ns46:enumerationCollection/>
+     </ns46:ValueDomain>
+    </ns46:UMLAttribute>
+    <ns46:UMLAttribute dataTypeName="java.lang.String" description="The principal investigator's name for the clinical trial." name="PIName" publicID="2223856" version="3.0">
+     <ns46:SemanticMetadata conceptCode="C19924" conceptDefinition="The person who is responsible for a specific research project or environment." conceptName="Principal Investigator" order="1"/>
+     <ns46:SemanticMetadata conceptCode="C42614" conceptDefinition="The words or language units by which a thing is known." conceptName="Name" order="0"/>
+     <ns46:ValueDomain longName="java.lang.String">
+      <ns46:enumerationCollection/>
+     </ns46:ValueDomain>
+    </ns46:UMLAttribute>
+    <ns46:UMLAttribute dataTypeName="CHARACTER" description="The phase code for the clinical trial." name="phase" publicID="2223860" version="3.0">
+     <ns46:SemanticMetadata conceptCode="C25257" conceptDefinition="Phase; any distinct time period in a sequence of events" conceptName="Phase" order="0"/>
+     <ns46:ValueDomain longName="Protocol Phase Code">
+      <ns46:enumerationCollection>
+       <ns46:Enumeration permissibleValue="I" valueMeaning="Phase I Trial">
+        <ns46:SemanticMetadata conceptCode="C15600" conceptDefinition="The first step in testing a new treatment in humans. These studies test the best way to give a new treatment (for example, by mouth, intravenous infusion, or injection) and the best dose. The dose is usually increased a little at a time in order to find the highest dose that does not cause harmful side effects. Because little is known about the possible risks and benefits of the treatments being tested, phase I trials usually include only a small number of patients who have not been helped by other treatments." conceptName="Phase I Trial" order="0"/>
+       </ns46:Enumeration>
+       <ns46:Enumeration permissibleValue="I/II" valueMeaning="Phase I/II Trial">
+        <ns46:SemanticMetadata conceptCode="C15693" conceptDefinition="A trial to study the safety, dosage levels, and response to a new treatment." conceptName="Phase I/II Trial" order="0"/>
+       </ns46:Enumeration>
+       <ns46:Enumeration permissibleValue="II" valueMeaning="Phase II Trial">
+        <ns46:SemanticMetadata conceptCode="C15601" conceptDefinition="A study to test whether a new treatment has an anticancer effect (for example, whether it shrinks a tumor or improves blood test results) and whether it works against a certain type of cancer." conceptName="Phase II Trial" order="0"/>
+       </ns46:Enumeration>
+       <ns46:Enumeration permissibleValue="III" valueMeaning="Phase III Trial">
+        <ns46:SemanticMetadata conceptCode="C15602" conceptDefinition="A study to compare the results of people taking a new treatment with the results of people taking the standard treatment (for example, which group has better survival rates or fewer side effects). In most cases, studies move into phase III only after a treatment seems to work in phases I and II. Phase III trials may include hundreds of people." conceptName="Phase III Trial" order="0"/>
+       </ns46:Enumeration>
+       <ns46:Enumeration permissibleValue="IV" valueMeaning="Phase IV Trial">
+        <ns46:SemanticMetadata conceptCode="C15603" conceptDefinition="Generally, a Phase IV trial is a randomized, controlled trial that is designed to evaluate the long-term safety and efficacy of a drug for a given indication. Often they are designed to study side effects that may have become apparent after the phase III study was completed." conceptName="Phase IV Trial" order="0"/>
+       </ns46:Enumeration>
+       <ns46:Enumeration permissibleValue="O" valueMeaning="Phase O Trial"/>
+      </ns46:enumerationCollection>
+     </ns46:ValueDomain>
+    </ns46:UMLAttribute>
+    <ns46:UMLAttribute dataTypeName="CHARACTER" description="The participation type of the clinical trial." name="participationType" publicID="2223853" version="3.0">
+     <ns46:SemanticMetadata conceptCode="C25284" conceptDefinition="Type; a subdivision of a particular kind of thing." conceptName="Type" order="0"/>
+     <ns46:SemanticMetadata conceptCode="C25608" conceptDefinition="Taking part in an activity." conceptName="Participating" order="1"/>
+     <ns46:ValueDomain longName="Organization Participation Type">
+      <ns46:enumerationCollection>
+       <ns46:Enumeration permissibleValue="Cancer Center" valueMeaning="Usually a university-based facility specializing in the treatment of cancer with NCI P30 funding"/>
+       <ns46:Enumeration permissibleValue="Single Institution" valueMeaning="A single site where the protocol is conducted"/>
+       <ns46:Enumeration permissibleValue="Clinical Center" valueMeaning="The NIH Clinical Center at 9000 Rockville Pike, Bethesda, MD"/>
+       <ns46:Enumeration permissibleValue="Multi-Center" valueMeaning="Similar to a single site in that all the investigators participating in the clinical trial must be listed on the protocol document cover. They may, however, be employed at different institutions."/>
+       <ns46:Enumeration permissibleValue="Consortium" valueMeaning="A U01-funded or contract-funded multi-institution study group with a coordinating center and a roster of investigators that can be tracked by CTEP."/>
+       <ns46:Enumeration permissibleValue="Intergroup" valueMeaning="Studies sponsored or coordinated by one Cooperative Group with two or more cooperative groups participating."/>
+       <ns46:Enumeration permissibleValue="Group" valueMeaning="Studies sponsored by, coordinated, or conducted by one of the NCI cooperative groups. Investigators affiliated with the cooperative group or with one of the CCOP with the cooperative group as a research base may participate in the study."/>
+       <ns46:Enumeration permissibleValue="Network" valueMeaning="Multi institution group that is not U01 or U-10. There is a single coordinating center for the protocol."/>
+      </ns46:enumerationCollection>
+     </ns46:ValueDomain>
+    </ns46:UMLAttribute>
+    <ns46:UMLAttribute dataTypeName="java.lang.String" description="The identification code for the organization who lead the clinical trial." name="leadOrganizationId" publicID="2223854" version="3.0">
+     <ns46:SemanticMetadata conceptCode="C25364" conceptDefinition="One or more characters used to identify, name, or characterize the nature, properties, or contents of a thing." conceptName="Identifier" order="0"/>
+     <ns46:SemanticMetadata conceptCode="C41167" conceptDefinition="Organizational unit like a laboratory, institute or consortium." conceptName="Organizational Unit" order="1"/>
+     <ns46:ValueDomain longName="java.lang.String">
+      <ns46:enumerationCollection/>
+     </ns46:ValueDomain>
+    </ns46:UMLAttribute>
+    <ns46:UMLAttribute dataTypeName="java.lang.String" description="The name of the organization who lead the clinical trial." name="leadOrganizationName" publicID="2223859" version="3.0">
+     <ns46:SemanticMetadata conceptCode="C41167" conceptDefinition="Organizational unit like a laboratory, institute or consortium." conceptName="Organizational Unit" order="0"/>
+     <ns46:SemanticMetadata conceptCode="C25552" conceptDefinition="Be in charge of." conceptName="Lead" order="1"/>
+     <ns46:ValueDomain longName="java.lang.String">
+      <ns46:enumerationCollection/>
+     </ns46:ValueDomain>
+    </ns46:UMLAttribute>
+    <ns46:UMLAttribute dataTypeName="java.lang.Long" description="" name="id" publicID="2223850" version="3.0">
+     <ns46:SemanticMetadata conceptCode="C25364" conceptDefinition="One or more characters used to identify, name, or characterize the nature, properties, or contents of a thing." conceptName="Identifier" order="0"/>
+     <ns46:ValueDomain longName="java.lang.Long">
+      <ns46:enumerationCollection/>
+     </ns46:ValueDomain>
+    </ns46:UMLAttribute>
+   </ns46:umlAttributeCollection>
+   <ns47:SemanticMetadata conceptCode="C25320" conceptDefinition="An action plan for a clinical trial.  The plan states what the study will do, how, and why.  It explains how many people will be in it, who is eligible to participate, what study agents or other interventions they will be given, what tests they will receive and how often, and what information will be gathered." conceptName="Protocol" order="0" xmlns:ns47="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common"/>
+  </ns1:UMLClass>
+  <ns1:UMLClass allowableAsTarget="false" className="Anomaly" description="An irregularity in either the expression of a gene or its structure (i.e., a mutation)." id="173832FC-A4DB-6E57-E044-0003BA3F9857" packageName="gov.nih.nci.cabio.domain" projectName="caCORE" projectVersion="3">
+   <ns48:umlAttributeCollection xmlns:ns48="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common">
+    <ns48:UMLAttribute dataTypeName="java.lang.String" description="The description for the anomaly object." name="description" publicID="2223864" version="3.0">
+     <ns48:SemanticMetadata conceptCode="C25365" conceptDefinition="Description; a statement that represents something in words." conceptName="Description " order="0"/>
+     <ns48:ValueDomain longName="java.lang.String">
+      <ns48:enumerationCollection/>
+     </ns48:ValueDomain>
+    </ns48:UMLAttribute>
+   </ns48:umlAttributeCollection>
+   <ns49:SemanticMetadata conceptCode="C36391" conceptDefinition="Irregularity in either the expression or sequence of a Gene in diseased versus normal tissue sources. (NCICB)" conceptName="Molecular Genetic Abnormality" order="0" xmlns:ns49="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common"/>
+  </ns1:UMLClass>
+  <ns1:UMLClass allowableAsTarget="false" className="Agent" description="A therapeutic agent (drug, intervention therapy) used in a clinical trail protocol." id="173832FC-A4DC-6E57-E044-0003BA3F9857" packageName="gov.nih.nci.cabio.domain" projectName="caCORE" projectVersion="3">
+   <ns50:umlAttributeCollection xmlns:ns50="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common">
+    <ns50:UMLAttribute dataTypeName="CHARACTER" description="If the object is CMAP agent." name="isCMAPAgent" publicID="2223867" version="3.0">
+     <ns50:SemanticMetadata conceptCode="C41082" conceptDefinition="An object providing entry to the CMAP gene ontology (NCICB)" conceptName="CMAP Ontology ID" order="0"/>
+     <ns50:ValueDomain longName="Boolean Value Code">
+      <ns50:enumerationCollection>
+       <ns50:Enumeration permissibleValue="0" valueMeaning="False"/>
+       <ns50:Enumeration permissibleValue="1" valueMeaning="True"/>
+      </ns50:enumerationCollection>
+     </ns50:ValueDomain>
+    </ns50:UMLAttribute>
+    <ns50:UMLAttribute dataTypeName="java.lang.Long" description="" name="id" publicID="2223865" version="3.0">
+     <ns50:SemanticMetadata conceptCode="C25364" conceptDefinition="One or more characters used to identify, name, or characterize the nature, properties, or contents of a thing." conceptName="Identifier" order="0"/>
+     <ns50:ValueDomain longName="java.lang.Long">
+      <ns50:enumerationCollection/>
+     </ns50:ValueDomain>
+    </ns50:UMLAttribute>
+    <ns50:UMLAttribute dataTypeName="java.lang.String" description="The comment for the agent object." name="comment" publicID="2223869" version="3.0">
+     <ns50:SemanticMetadata conceptCode="C25393" conceptDefinition="Comments; a written explanation or criticism or illustration that is added to a book or other textual material." conceptName="Comments" order="0"/>
+     <ns50:ValueDomain longName="java.lang.String">
+      <ns50:enumerationCollection/>
+     </ns50:ValueDomain>
+    </ns50:UMLAttribute>
+    <ns50:UMLAttribute dataTypeName="java.lang.String" description="The name of the agent object." name="name" publicID="2223871" version="3.0">
+     <ns50:SemanticMetadata conceptCode="C42614" conceptDefinition="The words or language units by which a thing is known." conceptName="Name" order="0"/>
+     <ns50:ValueDomain longName="java.lang.String">
+      <ns50:enumerationCollection/>
+     </ns50:ValueDomain>
+    </ns50:UMLAttribute>
+    <ns50:UMLAttribute dataTypeName="java.lang.String" description="The NCI's Enterprise Vocabulary Services (EVS) identification number." name="EVSId" publicID="2223868" version="3.0">
+     <ns50:SemanticMetadata conceptCode="C43516" conceptDefinition="A concept unique identifier within the NCI Enterprise Vocabulary Service's NCI Thesaurus." conceptName="NCI Concept Code" order="0"/>
+     <ns50:ValueDomain longName="java.lang.String">
+      <ns50:enumerationCollection/>
+     </ns50:ValueDomain>
+    </ns50:UMLAttribute>
+    <ns50:UMLAttribute dataTypeName="java.lang.Long" description="The NCI's internal identification number for the object." name="NSCNumber" publicID="2223866" version="3.0">
+     <ns50:SemanticMetadata conceptCode="C41243" conceptDefinition="A unique drug identifier issued by the Nomenclature Standards Committee of the U.S. Food and Drug Administration." conceptName="NSC Code" order="0"/>
+     <ns50:ValueDomain longName="java.lang.Long">
+      <ns50:enumerationCollection/>
+     </ns50:ValueDomain>
+    </ns50:UMLAttribute>
+    <ns50:UMLAttribute dataTypeName="java.lang.String" description="The source for the agent." name="source" publicID="2223870" version="3.0">
+     <ns50:SemanticMetadata conceptCode="C25683" conceptDefinition="Source; where something is available." conceptName="Source" order="0"/>
+     <ns50:ValueDomain longName="java.lang.String">
+      <ns50:enumerationCollection/>
+     </ns50:ValueDomain>
+    </ns50:UMLAttribute>
+   </ns50:umlAttributeCollection>
+   <ns51:SemanticMetadata conceptCode="C1708" conceptDefinition="An active power or cause (as principle, substance, physical or biological factor, etc.) that produces a specific effect. (NCI)" conceptName="Agent" order="0" xmlns:ns51="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common"/>
+  </ns1:UMLClass>
+  <ns1:UMLClass allowableAsTarget="false" className="CytogeneticLocation" description="" id="173832FC-A718-6E57-E044-0003BA3F9857" packageName="gov.nih.nci.cabio.domain" projectName="caCORE" projectVersion="3">
+   <ns52:umlAttributeCollection xmlns:ns52="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common">
+    <ns52:UMLAttribute dataTypeName="java.lang.Long" description="" name="id" publicID="2223910" version="3.0">
+     <ns52:SemanticMetadata conceptCode="C25364" conceptDefinition="One or more characters used to identify, name, or characterize the nature, properties, or contents of a thing." conceptName="Identifier" order="0"/>
+     <ns52:ValueDomain longName="java.lang.Long">
+      <ns52:enumerationCollection/>
+     </ns52:ValueDomain>
+    </ns52:UMLAttribute>
+   </ns52:umlAttributeCollection>
+   <ns53:SemanticMetadata conceptCode="C25341" conceptDefinition="A position, site, or point in space where something can be found." conceptName="Location" order="0" xmlns:ns53="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common"/>
+   <ns54:SemanticMetadata conceptCode="C13432" conceptDefinition="Chromosomal bands observed after staining with specific dyes. The band pattern is the result of differential interactions between the dye and nonadjacent chromosomal regions." conceptName="Chromosome Band" order="1" xmlns:ns54="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common"/>
+  </ns1:UMLClass>
+  <ns1:UMLClass allowableAsTarget="false" className="PhysicalLocation" description="" id="173832FC-A719-6E57-E044-0003BA3F9857" packageName="gov.nih.nci.cabio.domain" projectName="caCORE" projectVersion="3">
+   <ns55:umlAttributeCollection xmlns:ns55="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common">
+    <ns55:UMLAttribute dataTypeName="java.lang.Long" description="" name="id" publicID="2223909" version="3.0">
+     <ns55:SemanticMetadata conceptCode="C25364" conceptDefinition="One or more characters used to identify, name, or characterize the nature, properties, or contents of a thing." conceptName="Identifier" order="0"/>
+     <ns55:ValueDomain longName="java.lang.Long">
+      <ns55:enumerationCollection/>
+     </ns55:ValueDomain>
+    </ns55:UMLAttribute>
+    <ns55:UMLAttribute dataTypeName="java.lang.Long" description="" name="chromosomalEndPosition" publicID="2223897" version="3.0">
+     <ns55:SemanticMetadata conceptCode="C25496" conceptDefinition="The point or place at which something terminates in time, space, or extent." conceptName="End" order="1"/>
+     <ns55:SemanticMetadata conceptCode="C709" conceptDefinition="The monomeric units from which DNA or RNA polymers are constructed. They consist of a purine or pyrimidine base, a pentose sugar, and a phosphate group. (From King &amp; Stansfield, A Dictionary of Genetics, 4th ed)" conceptName="Nucleotides" order="0"/>
+     <ns55:ValueDomain longName="java.lang.Long">
+      <ns55:enumerationCollection/>
+     </ns55:ValueDomain>
+    </ns55:UMLAttribute>
+    <ns55:UMLAttribute dataTypeName="java.lang.Long" description="" name="chromosomalStartPosition" publicID="2223896" version="3.0">
+     <ns55:SemanticMetadata conceptCode="C709" conceptDefinition="The monomeric units from which DNA or RNA polymers are constructed. They consist of a purine or pyrimidine base, a pentose sugar, and a phosphate group. (From King &amp; Stansfield, A Dictionary of Genetics, 4th ed)" conceptName="Nucleotides" order="0"/>
+     <ns55:SemanticMetadata conceptCode="C25431" conceptDefinition="Have a beginning, in a temporal, spatial, or evaluative sense." conceptName="Begin" order="1"/>
+     <ns55:ValueDomain longName="java.lang.Long">
+      <ns55:enumerationCollection/>
+     </ns55:ValueDomain>
+    </ns55:UMLAttribute>
+   </ns55:umlAttributeCollection>
+   <ns56:SemanticMetadata conceptCode="C25341" conceptDefinition="A position, site, or point in space where something can be found." conceptName="Location" order="0" xmlns:ns56="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common"/>
+   <ns57:SemanticMetadata conceptCode="C16438" conceptDefinition="Any method used for determining the location of and relative distances between genes on a chromosome." conceptName="Gene Mapping" order="1" xmlns:ns57="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common"/>
+  </ns1:UMLClass>
+  <ns1:UMLClass allowableAsTarget="false" className="GenericReporter" description="" id="173832FC-A715-6E57-E044-0003BA3F9857" packageName="gov.nih.nci.cabio.domain" projectName="caCORE" projectVersion="3">
+   <ns58:umlAttributeCollection xmlns:ns58="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common">
+    <ns58:UMLAttribute dataTypeName="java.lang.String" description="" name="type" publicID="2223904" version="3.0">
+     <ns58:SemanticMetadata conceptCode="C25284" conceptDefinition="Type; a subdivision of a particular kind of thing." conceptName="Type" order="0"/>
+     <ns58:ValueDomain longName="java.lang.String">
+      <ns58:enumerationCollection/>
+     </ns58:ValueDomain>
+    </ns58:UMLAttribute>
+    <ns58:UMLAttribute dataTypeName="java.lang.Long" description="" name="id" publicID="2223902" version="3.0">
+     <ns58:SemanticMetadata conceptCode="C25364" conceptDefinition="One or more characters used to identify, name, or characterize the nature, properties, or contents of a thing." conceptName="Identifier" order="0"/>
+     <ns58:ValueDomain longName="java.lang.Long">
+      <ns58:enumerationCollection/>
+     </ns58:ValueDomain>
+    </ns58:UMLAttribute>
+    <ns58:UMLAttribute dataTypeName="java.lang.String" description="" name="name" publicID="2223903" version="3.0">
+     <ns58:SemanticMetadata conceptCode="C42614" conceptDefinition="The words or language units by which a thing is known." conceptName="Name" order="0"/>
+     <ns58:ValueDomain longName="java.lang.String">
+      <ns58:enumerationCollection/>
+     </ns58:ValueDomain>
+    </ns58:UMLAttribute>
+   </ns58:umlAttributeCollection>
+   <ns59:SemanticMetadata conceptCode="C17661" conceptDefinition="Genes whose expression is easily detectable and therefore used to study promoter activity at many positions in a target genome. In recombinant DNA technology, these genes may be attached to a promoter region of interest." conceptName="Reporter Gene" order="0" xmlns:ns59="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common"/>
+  </ns1:UMLClass>
+  <ns1:UMLClass allowableAsTarget="false" className="GeneRelativeLocation" description="" id="173832FC-A716-6E57-E044-0003BA3F9857" packageName="gov.nih.nci.cabio.domain" projectName="caCORE" projectVersion="3">
+   <ns60:umlAttributeCollection xmlns:ns60="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common">
+    <ns60:UMLAttribute dataTypeName="java.lang.Long" description="" name="id" publicID="2223900" version="3.0">
+     <ns60:SemanticMetadata conceptCode="C25364" conceptDefinition="One or more characters used to identify, name, or characterize the nature, properties, or contents of a thing." conceptName="Identifier" order="0"/>
+     <ns60:ValueDomain longName="java.lang.Long">
+      <ns60:enumerationCollection/>
+     </ns60:ValueDomain>
+    </ns60:UMLAttribute>
+    <ns60:UMLAttribute dataTypeName="java.lang.String" description="" name="type" publicID="2223901" version="3.0">
+     <ns60:SemanticMetadata conceptCode="C25284" conceptDefinition="Type; a subdivision of a particular kind of thing." conceptName="Type" order="0"/>
+     <ns60:ValueDomain longName="java.lang.String">
+      <ns60:enumerationCollection/>
+     </ns60:ValueDomain>
+    </ns60:UMLAttribute>
+   </ns60:umlAttributeCollection>
+   <ns61:SemanticMetadata conceptCode="C45377" conceptDefinition="The location of a feature (for example a SNP, repeat, etc.) relative to the coding sequence of a gene. Valid values would be upstream, 5' untranslated region, exon, intron, 3' untranslated region, downstream." conceptName="Gene Relative Location Object" order="0" xmlns:ns61="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common"/>
+  </ns1:UMLClass>
+  <ns1:UMLClass allowableAsTarget="false" className="CloneRelativeLocation" description="" id="173832FC-A717-6E57-E044-0003BA3F9857" packageName="gov.nih.nci.cabio.domain" projectName="caCORE" projectVersion="3">
+   <ns62:umlAttributeCollection xmlns:ns62="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common">
+    <ns62:UMLAttribute dataTypeName="java.lang.Long" description="" name="id" publicID="2223898" version="3.0">
+     <ns62:SemanticMetadata conceptCode="C25364" conceptDefinition="One or more characters used to identify, name, or characterize the nature, properties, or contents of a thing." conceptName="Identifier" order="0"/>
+     <ns62:ValueDomain longName="java.lang.Long">
+      <ns62:enumerationCollection/>
+     </ns62:ValueDomain>
+    </ns62:UMLAttribute>
+    <ns62:UMLAttribute dataTypeName="CHARACTER" description="" name="type" publicID="2223899" version="3.0">
+     <ns62:SemanticMetadata conceptCode="C25284" conceptDefinition="Type; a subdivision of a particular kind of thing." conceptName="Type" order="0"/>
+     <ns62:ValueDomain longName="Gene Relative Location Type">
+      <ns62:enumerationCollection>
+       <ns62:Enumeration permissibleValue="3UTR" valueMeaning="3 Untranslated Region"/>
+       <ns62:Enumeration permissibleValue="5UTR" valueMeaning="5 Untranslated Region"/>
+       <ns62:Enumeration permissibleValue="CDS" valueMeaning="Coding Sequence"/>
+       <ns62:Enumeration permissibleValue="downstream" valueMeaning="past the 3 UTR"/>
+       <ns62:Enumeration permissibleValue="upstream" valueMeaning="before the 5 UTR"/>
+       <ns62:Enumeration permissibleValue="intron" valueMeaning="contained in an intron"/>
+      </ns62:enumerationCollection>
+     </ns62:ValueDomain>
+    </ns62:UMLAttribute>
+   </ns62:umlAttributeCollection>
+   <ns63:SemanticMetadata conceptCode="C45377" conceptDefinition="The location of a feature (for example a SNP, repeat, etc.) relative to the coding sequence of a gene. Valid values would be upstream, 5' untranslated region, exon, intron, 3' untranslated region, downstream." conceptName="Gene Relative Location Object" order="0" xmlns:ns63="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common"/>
+   <ns64:SemanticMetadata conceptCode="C37925" conceptDefinition="Clone; a group of genetically identical cells, organisms, or DNA molecules." conceptName="Clone" order="1" xmlns:ns64="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common"/>
+  </ns1:UMLClass>
+  <ns1:UMLClass allowableAsTarget="false" className="Location" description="" id="173832FC-A71A-6E57-E044-0003BA3F9857" packageName="gov.nih.nci.cabio.domain" projectName="caCORE" projectVersion="3">
+   <ns65:umlAttributeCollection xmlns:ns65="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common">
+    <ns65:UMLAttribute dataTypeName="java.lang.Long" description="" name="id" publicID="2223895" version="3.0">
+     <ns65:SemanticMetadata conceptCode="C25364" conceptDefinition="One or more characters used to identify, name, or characterize the nature, properties, or contents of a thing." conceptName="Identifier" order="0"/>
+     <ns65:ValueDomain longName="java.lang.Long">
+      <ns65:enumerationCollection/>
+     </ns65:ValueDomain>
+    </ns65:UMLAttribute>
+   </ns65:umlAttributeCollection>
+   <ns66:SemanticMetadata conceptCode="C25341" conceptDefinition="A position, site, or point in space where something can be found." conceptName="Location" order="0" xmlns:ns66="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common"/>
+  </ns1:UMLClass>
+  <ns1:UMLClass allowableAsTarget="false" className="Cytoband" description="" id="173832FC-A71B-6E57-E044-0003BA3F9857" packageName="gov.nih.nci.cabio.domain" projectName="caCORE" projectVersion="3">
+   <ns67:umlAttributeCollection xmlns:ns67="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common">
+    <ns67:UMLAttribute dataTypeName="java.lang.String" description="" name="name" publicID="2223894" version="3.0">
+     <ns67:SemanticMetadata conceptCode="C42614" conceptDefinition="The words or language units by which a thing is known." conceptName="Name" order="0"/>
+     <ns67:ValueDomain longName="java.lang.String">
+      <ns67:enumerationCollection/>
+     </ns67:ValueDomain>
+    </ns67:UMLAttribute>
+    <ns67:UMLAttribute dataTypeName="java.lang.Long" description="" name="id" publicID="2223893" version="3.0">
+     <ns67:SemanticMetadata conceptCode="C25364" conceptDefinition="One or more characters used to identify, name, or characterize the nature, properties, or contents of a thing." conceptName="Identifier" order="0"/>
+     <ns67:ValueDomain longName="java.lang.Long">
+      <ns67:enumerationCollection/>
+     </ns67:ValueDomain>
+    </ns67:UMLAttribute>
+   </ns67:umlAttributeCollection>
+   <ns68:SemanticMetadata conceptCode="C13432" conceptDefinition="Chromosomal bands observed after staining with specific dyes. The band pattern is the result of differential interactions between the dye and nonadjacent chromosomal regions." conceptName="Chromosome Band" order="0" xmlns:ns68="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common"/>
+  </ns1:UMLClass>
+  <ns1:UMLClass allowableAsTarget="false" className="HomologousAssociation" description="" id="173832FC-A71C-6E57-E044-0003BA3F9857" packageName="gov.nih.nci.cabio.domain" projectName="caCORE" projectVersion="3">
+   <ns69:umlAttributeCollection xmlns:ns69="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common">
+    <ns69:UMLAttribute dataTypeName="java.lang.Long" description="" name="homologousId" publicID="2223892" version="3.0">
+     <ns69:SemanticMetadata conceptCode="C25364" conceptDefinition="One or more characters used to identify, name, or characterize the nature, properties, or contents of a thing." conceptName="Identifier" order="0"/>
+     <ns69:SemanticMetadata conceptCode="C16612" conceptDefinition="A functional unit of heredity which occupies a specific position (locus) on a particular chromosome, is capable of reproducing itself exactly at each cell division, and directs the formation of an enzyme or other protein. The gene as a functional unit consists of a discrete segment of a giant DNA molecule containing the purine (adenine and guanine) and pyrimidine (cytosine and thymine) bases in the ordered and correct sequence that encodes a specific functional product (i.e., a protein or RNA molecule). Protein synthesis is mediated by molecules of messenger-RNA formed on the chromosome with the gene acting as template. The RNA then passes into the cytoplasm and becomes oriented on the ribosomes where it in turn acts as template to organize a chain of amino acids to form a peptide. Genes normally occur in pairs in all cells except gametes, as a consequence of the fact that all chromosomes are paired except the sex chromosomes (X and Y) of the male." conceptName="Gene" order="1"/>
+     <ns69:ValueDomain longName="java.lang.Long">
+      <ns69:enumerationCollection/>
+     </ns69:ValueDomain>
+    </ns69:UMLAttribute>
+    <ns69:UMLAttribute dataTypeName="java.lang.Long" description="" name="id" publicID="2223890" version="3.0">
+     <ns69:SemanticMetadata conceptCode="C25364" conceptDefinition="One or more characters used to identify, name, or characterize the nature, properties, or contents of a thing." conceptName="Identifier" order="0"/>
+     <ns69:ValueDomain longName="java.lang.Long">
+      <ns69:enumerationCollection/>
+     </ns69:ValueDomain>
+    </ns69:UMLAttribute>
+    <ns69:UMLAttribute dataTypeName="java.lang.Float" description="" name="similarityPercentage" publicID="2223891" version="3.0">
+     <ns69:SemanticMetadata conceptCode="C45333" conceptDefinition="The degree of similarity between the primary sequence of two biological macromolecules." conceptName="Sequence Similarity" order="0"/>
+     <ns69:ValueDomain longName="java.lang.Float">
+      <ns69:enumerationCollection/>
+     </ns69:ValueDomain>
+    </ns69:UMLAttribute>
+   </ns69:umlAttributeCollection>
+   <ns70:SemanticMetadata conceptCode="C28709" conceptDefinition="A gene from one species which corresponds to a gene in another species and that is related via a common ancestral species.  These genes retain a similar sequence and function. (from http://biotech.icmb.utexas.edu)" conceptName="Homologous Gene" order="0" xmlns:ns70="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common"/>
+  </ns1:UMLClass>
+  <ns1:UMLClass allowableAsTarget="false" className="ProteinAlias" description="" id="173832FC-A71D-6E57-E044-0003BA3F9857" packageName="gov.nih.nci.cabio.domain" projectName="caCORE" projectVersion="3">
+   <ns71:umlAttributeCollection xmlns:ns71="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common">
+    <ns71:UMLAttribute dataTypeName="java.lang.Long" description="" name="id" publicID="2223888" version="3.0">
+     <ns71:SemanticMetadata conceptCode="C25364" conceptDefinition="One or more characters used to identify, name, or characterize the nature, properties, or contents of a thing." conceptName="Identifier" order="0"/>
+     <ns71:ValueDomain longName="java.lang.Long">
+      <ns71:enumerationCollection/>
+     </ns71:ValueDomain>
+    </ns71:UMLAttribute>
+    <ns71:UMLAttribute dataTypeName="java.lang.String" description="" name="name" publicID="2223889" version="3.0">
+     <ns71:SemanticMetadata conceptCode="C42614" conceptDefinition="The words or language units by which a thing is known." conceptName="Name" order="0"/>
+     <ns71:ValueDomain longName="java.lang.String">
+      <ns71:enumerationCollection/>
+     </ns71:ValueDomain>
+    </ns71:UMLAttribute>
+   </ns71:umlAttributeCollection>
+   <ns72:SemanticMetadata conceptCode="C17021" conceptDefinition="Any of a group of complex organic macromolecules that contain carbon, hydrogen, oxygen, nitrogen, and usually sulfur and are composed of one or more chains of amino acids. Proteins are fundamental components of all living cells and include many substances, such as enzymes, hormones, and antibodies, that are necessary for the proper functioning of an organism." conceptName="Protein" order="2" xmlns:ns72="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common"/>
+   <ns73:SemanticMetadata conceptCode="C25415" conceptDefinition="Available in place of something else." conceptName="Alternative" order="1" xmlns:ns73="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common"/>
+   <ns74:SemanticMetadata conceptCode="C42614" conceptDefinition="The words or language units by which a thing is known." conceptName="Name" order="0" xmlns:ns74="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common"/>
+  </ns1:UMLClass>
+  <ns1:UMLClass allowableAsTarget="false" className="PopulationFrequency" description="" id="173832FC-A71E-6E57-E044-0003BA3F9857" packageName="gov.nih.nci.cabio.domain" projectName="caCORE" projectVersion="3">
+   <ns75:umlAttributeCollection xmlns:ns75="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common">
+    <ns75:UMLAttribute dataTypeName="NUMBER" description="" name="minorAllele" publicID="2223877" version="3.0">
+     <ns75:SemanticMetadata conceptCode="C45367" conceptDefinition="Lesser or smaller in amount, extent, or size." conceptName="Minor" order="1"/>
+     <ns75:SemanticMetadata conceptCode="C16277" conceptDefinition="one of a series of possible alternative forms of a given gene, differing in DNA sequence, and affecting the functioning of a single product." conceptName="Allele" order="0"/>
+     <ns75:ValueDomain longName="Population Frequency Value">
+      <ns75:enumerationCollection/>
+     </ns75:ValueDomain>
+    </ns75:UMLAttribute>
+    <ns75:UMLAttribute dataTypeName="java.lang.Double" description="" name="majorFrequency" publicID="2223875" version="3.0">
+     <ns75:SemanticMetadata conceptCode="C16277" conceptDefinition="one of a series of possible alternative forms of a given gene, differing in DNA sequence, and affecting the functioning of a single product." conceptName="Allele" order="1"/>
+     <ns75:SemanticMetadata conceptCode="C25712" conceptDefinition="A numerical quantity measured or assigned or computed." conceptName="Value" order="0"/>
+     <ns75:ValueDomain longName="java.lang.Double">
+      <ns75:enumerationCollection/>
+     </ns75:ValueDomain>
+    </ns75:UMLAttribute>
+    <ns75:UMLAttribute dataTypeName="java.lang.String" description="" name="type" publicID="2223873" version="3.0">
+     <ns75:SemanticMetadata conceptCode="C25284" conceptDefinition="Type; a subdivision of a particular kind of thing." conceptName="Type" order="0"/>
+     <ns75:ValueDomain longName="java.lang.String">
+      <ns75:enumerationCollection/>
+     </ns75:ValueDomain>
+    </ns75:UMLAttribute>
+    <ns75:UMLAttribute dataTypeName="java.lang.Long" description="" name="id" publicID="2223872" version="3.0">
+     <ns75:SemanticMetadata conceptCode="C25364" conceptDefinition="One or more characters used to identify, name, or characterize the nature, properties, or contents of a thing." conceptName="Identifier" order="0"/>
+     <ns75:ValueDomain longName="java.lang.Long">
+      <ns75:enumerationCollection/>
+     </ns75:ValueDomain>
+    </ns75:UMLAttribute>
+    <ns75:UMLAttribute dataTypeName="NUMBER" description="" name="majorAllele" publicID="2223876" version="3.0">
+     <ns75:SemanticMetadata conceptCode="C16277" conceptDefinition="one of a series of possible alternative forms of a given gene, differing in DNA sequence, and affecting the functioning of a single product." conceptName="Allele" order="0"/>
+     <ns75:SemanticMetadata conceptCode="C25628" conceptDefinition="First or foremost in importance." conceptName="Principal" order="1"/>
+     <ns75:ValueDomain longName="Population Frequency Value">
+      <ns75:enumerationCollection/>
+     </ns75:ValueDomain>
+    </ns75:UMLAttribute>
+    <ns75:UMLAttribute dataTypeName="java.lang.String" description="" name="ethnicity" publicID="2223874" version="3.0">
+     <ns75:SemanticMetadata conceptCode="C29933" conceptDefinition="Ethnicity is the cultural characteristics based on social and cultural backgrounds that connect a particular group or groups of people to each other." conceptName="Ethnicity" order="0"/>
+     <ns75:ValueDomain longName="java.lang.String">
+      <ns75:enumerationCollection/>
+     </ns75:ValueDomain>
+    </ns75:UMLAttribute>
+   </ns75:umlAttributeCollection>
+   <ns76:SemanticMetadata conceptCode="C45373" conceptDefinition="A description of the relative rate of occurrence of specific alleles, traits, or other factors within a population of organisms." conceptName="Population Frequency" order="0" xmlns:ns76="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common"/>
+  </ns1:UMLClass>
+  <ns1:UMLClass allowableAsTarget="false" className="SNP" description="An object representing a Single Nucleotide Polymorphism; provides access to the clones and the trace files from which it was identified, the two most common substitutions at that position, the offset of the SNP in the parent sequence, and a confidence sco" id="173832FC-A4C8-6E57-E044-0003BA3F9857" packageName="gov.nih.nci.cabio.domain" projectName="caCORE" projectVersion="3">
+   <ns77:umlAttributeCollection xmlns:ns77="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common">
+    <ns77:UMLAttribute dataTypeName="java.lang.String" description="" name="DBSNPID" publicID="2223770" version="3.0">
+     <ns77:SemanticMetadata conceptCode="C45369" conceptDefinition="The Single Nucleotide Polymorphism database (dbSNP) is a database repository and internet resource for a broad collection of simple genetic polymorphisms.  It is hosted by the National Center for Biotechnology Information." conceptName="Single Nucleotide Polymorphism Database" order="1"/>
+     <ns77:SemanticMetadata conceptCode="C25364" conceptDefinition="One or more characters used to identify, name, or characterize the nature, properties, or contents of a thing." conceptName="Identifier" order="0"/>
+     <ns77:ValueDomain longName="java.lang.String">
+      <ns77:enumerationCollection/>
+     </ns77:ValueDomain>
+    </ns77:UMLAttribute>
+    <ns77:UMLAttribute dataTypeName="CHARACTER" description="" name="alleleB" publicID="2223773" version="3.0">
+     <ns77:SemanticMetadata conceptCode="C45367" conceptDefinition="Lesser or smaller in amount, extent, or size." conceptName="Minor" order="1"/>
+     <ns77:SemanticMetadata conceptCode="C16277" conceptDefinition="one of a series of possible alternative forms of a given gene, differing in DNA sequence, and affecting the functioning of a single product." conceptName="Allele" order="0"/>
+     <ns77:ValueDomain longName="Nucleotide Code">
+      <ns77:enumerationCollection>
+       <ns77:Enumeration permissibleValue="A" valueMeaning="Adenosine">
+        <ns77:SemanticMetadata conceptCode="C207" conceptDefinition="A nucleoside that is composed of adenine and d-ribose. Adenosine or adenosine derivatives play many important biological roles in addition to being components of DNA and RNA. Adenosine itself is a neurotransmitter. (MeSH)" conceptName="Adenosine" order="0"/>
+       </ns77:Enumeration>
+       <ns77:Enumeration permissibleValue="T" valueMeaning="Thymidine"/>
+       <ns77:Enumeration permissibleValue="G" valueMeaning="Guanidine"/>
+       <ns77:Enumeration permissibleValue="C" valueMeaning="Cytidine"/>
+      </ns77:enumerationCollection>
+     </ns77:ValueDomain>
+    </ns77:UMLAttribute>
+    <ns77:UMLAttribute dataTypeName="CHARACTER" description="" name="alleleA" publicID="2223772" version="3.0">
+     <ns77:SemanticMetadata conceptCode="C25628" conceptDefinition="First or foremost in importance." conceptName="Principal" order="1"/>
+     <ns77:SemanticMetadata conceptCode="C16277" conceptDefinition="one of a series of possible alternative forms of a given gene, differing in DNA sequence, and affecting the functioning of a single product." conceptName="Allele" order="0"/>
+     <ns77:ValueDomain longName="Nucleotide Code">
+      <ns77:enumerationCollection>
+       <ns77:Enumeration permissibleValue="A" valueMeaning="Adenosine">
+        <ns77:SemanticMetadata conceptCode="C207" conceptDefinition="A nucleoside that is composed of adenine and d-ribose. Adenosine or adenosine derivatives play many important biological roles in addition to being components of DNA and RNA. Adenosine itself is a neurotransmitter. (MeSH)" conceptName="Adenosine" order="0"/>
+       </ns77:Enumeration>
+       <ns77:Enumeration permissibleValue="T" valueMeaning="Thymidine"/>
+       <ns77:Enumeration permissibleValue="G" valueMeaning="Guanidine"/>
+       <ns77:Enumeration permissibleValue="C" valueMeaning="Cytidine"/>
+      </ns77:enumerationCollection>
+     </ns77:ValueDomain>
+    </ns77:UMLAttribute>
+    <ns77:UMLAttribute dataTypeName="java.lang.Long" description="" name="id" publicID="2223769" version="3.0">
+     <ns77:SemanticMetadata conceptCode="C25364" conceptDefinition="One or more characters used to identify, name, or characterize the nature, properties, or contents of a thing." conceptName="Identifier" order="0"/>
+     <ns77:ValueDomain longName="java.lang.Long">
+      <ns77:enumerationCollection/>
+     </ns77:ValueDomain>
+    </ns77:UMLAttribute>
+    <ns77:UMLAttribute dataTypeName="CHARACTER" description="" name="validationStatus" publicID="2223771" version="3.0">
+     <ns77:SemanticMetadata conceptCode="C16237" conceptDefinition="Validation; the act of validating; finding or testing the truth of something." conceptName="Validation" order="1"/>
+     <ns77:SemanticMetadata conceptCode="C25688" conceptDefinition="A condition or state at a particular time." conceptName="Status" order="0"/>
+     <ns77:ValueDomain longName="Yes No Indicator">
+      <ns77:enumerationCollection>
+       <ns77:Enumeration permissibleValue="YES" valueMeaning="YES">
+        <ns77:SemanticMetadata conceptCode="CL307586" conceptDefinition="No value exists." conceptName="Yes" order="0"/>
+       </ns77:Enumeration>
+       <ns77:Enumeration permissibleValue="NO" valueMeaning="NO">
+        <ns77:SemanticMetadata conceptCode="CL307587" conceptDefinition="No value exists." conceptName="No" order="0"/>
+       </ns77:Enumeration>
+      </ns77:enumerationCollection>
+     </ns77:ValueDomain>
+    </ns77:UMLAttribute>
+   </ns77:umlAttributeCollection>
+   <ns78:SemanticMetadata conceptCode="C41173" conceptDefinition="Single Nucleotide Polymorphism; provides access to the clones and the trace files from which it was identified, the two most common substitutions at that position, the offset of the SNP in the parent sequence, and a confidence score (NCICB)" conceptName="SNP Info" order="0" xmlns:ns78="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common"/>
+  </ns1:UMLClass>
+ </ns1:exposedUMLClassCollection>
+ <ns1:umlGeneralizationCollection>
+  <ns1:UMLGeneralization>
+   <ns1:subClassReference refid="173832FC-A719-6E57-E044-0003BA3F9857"/>
+   <ns1:superClassReference refid="173832FC-A71A-6E57-E044-0003BA3F9857"/>
+  </ns1:UMLGeneralization>
+  <ns1:UMLGeneralization>
+   <ns1:subClassReference refid="173832FC-A718-6E57-E044-0003BA3F9857"/>
+   <ns1:superClassReference refid="173832FC-A71A-6E57-E044-0003BA3F9857"/>
+  </ns1:UMLGeneralization>
+ </ns1:umlGeneralizationCollection>
+</ns1:DomainModel>

@@ -1,0 +1,1 @@
+This directory contains CQL 2 example queries against the caCORE SDK 4.x example domain model which ships with the SDK.

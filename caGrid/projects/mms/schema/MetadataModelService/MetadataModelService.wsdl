@@ -1,0 +1,264 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions xmlns="http://schemas.xmlsoap.org/wsdl/" xmlns:tns="http://mms.cagrid.org/MetadataModelService" xmlns:wsrp="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ResourceProperties-1.2-draft-01.xsd" xmlns:wsrlw="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ResourceLifetime-1.2-draft-01.wsdl" xmlns:wsdlpp="http://www.globus.org/namespaces/2004/10/WSDLPreprocessor" xmlns:gtwsdl1="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ServiceGroup-1.2-draft-01.wsdl" xmlns:wsa="http://schemas.xmlsoap.org/ws/2004/03/addressing" xmlns:wsntw="http://docs.oasis-open.org/wsn/2004/06/wsn-WS-BaseNotification-1.2-draft-01.wsdl" xmlns:wsrbfw="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-BaseFaults-1.2-draft-01.wsdl" xmlns:wsrpw="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ResourceProperties-1.2-draft-01.wsdl" xmlns:wns0="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ResourceProperties-1.2-draft-01.wsdl" xmlns:wns1="http://security.introduce.cagrid.nci.nih.gov/ServiceSecurity" xmlns:ns6="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.service" xmlns:ns5="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata" xmlns:ns1="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.dataservice" xmlns:ns3="http://mms.cagrid.org/MetadataModelService/types" xmlns:ns4="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.security" xmlns:ns0="gme://caGrid.caBIG/1.0/org.cagrid.mms.domain" xmlns:ns2="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common" name="MetadataModelService" targetNamespace="http://mms.cagrid.org/MetadataModelService">
+  <import namespace="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ResourceProperties-1.2-draft-01.wsdl" location="../wsrf/properties/WS-ResourceProperties.wsdl" />
+  <import namespace="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-BaseFaults-1.2-draft-01.wsdl" location="../wsrf/faults/WS-BaseFaults.wsdl" />
+  <import namespace="http://docs.oasis-open.org/wsn/2004/06/wsn-WS-BaseNotification-1.2-draft-01.wsdl" location="../wsrf/notification/WS-BaseN.wsdl" />
+  <import namespace="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ResourceProperties-1.2-draft-01.wsdl" location="./../wsrf/properties/WS-ResourceProperties.wsdl" />
+  <import namespace="http://security.introduce.cagrid.nci.nih.gov/ServiceSecurity" location="./ServiceSecurity.wsdl" />
+  <!--============================================================
+
+                      T Y P E S
+                      
+  ============================================================-->
+  <types>
+    <schema xmlns="http://www.w3.org/2001/XMLSchema" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:wsrbf="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-BaseFaults-1.2-draft-01.xsd" targetNamespace="http://mms.cagrid.org/MetadataModelService" elementFormDefault="qualified" attributeFormDefault="unqualified">
+      <import namespace="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-BaseFaults-1.2-draft-01.xsd" schemaLocation="../wsrf/faults/WS-BaseFaults.xsd" />
+      <import namespace="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.service" schemaLocation="./xsd/cagrid/types/service/servicemodel.xsd" />
+      <import namespace="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata" schemaLocation="./xsd/cagrid/types/caGridMetadata.xsd" />
+      <import namespace="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.dataservice" schemaLocation="./xsd/cagrid/types/data/data.xsd" />
+      <import namespace="http://mms.cagrid.org/MetadataModelService/types" schemaLocation="./MetadataModelServiceTypes.xsd" />
+      <import namespace="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.security" schemaLocation="./xsd/cagrid/types/security/security.xsd" />
+      <import namespace="gme://caGrid.caBIG/1.0/org.cagrid.mms.domain" schemaLocation="./org.cagrid.mms.xsd" />
+      <import namespace="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common" schemaLocation="./xsd/cagrid/types/common/common.xsd" />
+      <element name="GenerateDomainModelForProjectRequest">
+        <complexType>
+          <sequence>
+            <element name="umlProjectIdentifer">
+              <complexType>
+                <sequence>
+                  <element ref="ns0:UMLProjectIdentifer" minOccurs="1" maxOccurs="1" />
+                </sequence>
+              </complexType>
+            </element>
+          </sequence>
+        </complexType>
+      </element>
+      <element name="GenerateDomainModelForProjectResponse">
+        <complexType>
+          <sequence>
+            <element ref="ns1:DomainModel" minOccurs="1" maxOccurs="1" />
+          </sequence>
+        </complexType>
+      </element>
+      <element name="GenerateDomainModelForPackagesRequest">
+        <complexType>
+          <sequence>
+            <element name="umlProjectIdentifer">
+              <complexType>
+                <sequence>
+                  <element ref="ns0:UMLProjectIdentifer" minOccurs="1" maxOccurs="1" />
+                </sequence>
+              </complexType>
+            </element>
+            <element name="packageNames" type="xs:string" minOccurs="1" maxOccurs="unbounded" />
+          </sequence>
+        </complexType>
+      </element>
+      <element name="GenerateDomainModelForPackagesResponse">
+        <complexType>
+          <sequence>
+            <element ref="ns1:DomainModel" minOccurs="1" maxOccurs="1" />
+          </sequence>
+        </complexType>
+      </element>
+      <element name="GenerateDomainModelForClassesRequest">
+        <complexType>
+          <sequence>
+            <element name="umlProjectIdentifer">
+              <complexType>
+                <sequence>
+                  <element ref="ns0:UMLProjectIdentifer" minOccurs="1" maxOccurs="1" />
+                </sequence>
+              </complexType>
+            </element>
+            <element name="fullyQualifiedClassNames" type="xs:string" minOccurs="1" maxOccurs="unbounded" />
+          </sequence>
+        </complexType>
+      </element>
+      <element name="GenerateDomainModelForClassesResponse">
+        <complexType>
+          <sequence>
+            <element ref="ns1:DomainModel" minOccurs="1" maxOccurs="1" />
+          </sequence>
+        </complexType>
+      </element>
+      <element name="GenerateDomainModelForClassesWithExcludesRequest">
+        <complexType>
+          <sequence>
+            <element name="umlProjectIdentifer">
+              <complexType>
+                <sequence>
+                  <element ref="ns0:UMLProjectIdentifer" minOccurs="1" maxOccurs="1" />
+                </sequence>
+              </complexType>
+            </element>
+            <element name="fullyQualifiedClassNames" type="xs:string" minOccurs="1" maxOccurs="unbounded" />
+            <element name="umlAssociationExclude">
+              <complexType>
+                <sequence>
+                  <element ref="ns0:UMLAssociationExclude" minOccurs="1" maxOccurs="unbounded" />
+                </sequence>
+              </complexType>
+            </element>
+          </sequence>
+        </complexType>
+      </element>
+      <element name="GenerateDomainModelForClassesWithExcludesResponse">
+        <complexType>
+          <sequence>
+            <element ref="ns1:DomainModel" minOccurs="1" maxOccurs="1" />
+          </sequence>
+        </complexType>
+      </element>
+      <element name="AnnotateServiceMetadataRequest">
+        <complexType>
+          <sequence>
+            <element name="serviceMetadata">
+              <complexType>
+                <sequence>
+                  <element ref="ns5:ServiceMetadata" minOccurs="1" maxOccurs="1" />
+                </sequence>
+              </complexType>
+            </element>
+            <element name="namespaceToProjectMappings">
+              <complexType>
+                <sequence>
+                  <element ref="ns0:NamespaceToProjectMapping" minOccurs="1" maxOccurs="unbounded" />
+                </sequence>
+              </complexType>
+            </element>
+          </sequence>
+        </complexType>
+      </element>
+      <element name="AnnotateServiceMetadataResponse">
+        <complexType>
+          <sequence>
+            <element ref="ns5:ServiceMetadata" minOccurs="1" maxOccurs="1" />
+          </sequence>
+        </complexType>
+      </element>
+      <element name="GetModelSourceMetadataRequest">
+        <complexType>
+          <sequence />
+        </complexType>
+      </element>
+      <element name="GetModelSourceMetadataResponse">
+        <complexType>
+          <sequence>
+            <element ref="ns0:ModelSourceMetadata" minOccurs="1" maxOccurs="1" />
+          </sequence>
+        </complexType>
+      </element>
+      <element name="MetadataModelServiceResourceProperties">
+        <complexType>
+          <sequence>
+            <element ref="ns5:ServiceMetadata" />
+            <element ref="ns0:ModelSourceMetadata" />
+          </sequence>
+        </complexType>
+      </element>
+    </schema>
+  </types>
+  <!--  place service messages here -->
+  <message name="GenerateDomainModelForProjectRequest">
+    <part name="parameters" element="tns:GenerateDomainModelForProjectRequest" />
+  </message>
+  <message name="GenerateDomainModelForProjectResponse">
+    <part name="parameters" element="tns:GenerateDomainModelForProjectResponse" />
+  </message>
+  <message name="GenerateDomainModelForPackagesRequest">
+    <part name="parameters" element="tns:GenerateDomainModelForPackagesRequest" />
+  </message>
+  <message name="GenerateDomainModelForPackagesResponse">
+    <part name="parameters" element="tns:GenerateDomainModelForPackagesResponse" />
+  </message>
+  <message name="GenerateDomainModelForClassesRequest">
+    <part name="parameters" element="tns:GenerateDomainModelForClassesRequest" />
+  </message>
+  <message name="GenerateDomainModelForClassesResponse">
+    <part name="parameters" element="tns:GenerateDomainModelForClassesResponse" />
+  </message>
+  <message name="GenerateDomainModelForClassesWithExcludesRequest">
+    <part name="parameters" element="tns:GenerateDomainModelForClassesWithExcludesRequest" />
+  </message>
+  <message name="GenerateDomainModelForClassesWithExcludesResponse">
+    <part name="parameters" element="tns:GenerateDomainModelForClassesWithExcludesResponse" />
+  </message>
+  <message name="AnnotateServiceMetadataRequest">
+    <part name="parameters" element="tns:AnnotateServiceMetadataRequest" />
+  </message>
+  <message name="AnnotateServiceMetadataResponse">
+    <part name="parameters" element="tns:AnnotateServiceMetadataResponse" />
+  </message>
+  <message name="GetModelSourceMetadataRequest">
+    <part name="parameters" element="tns:GetModelSourceMetadataRequest" />
+  </message>
+  <message name="GetModelSourceMetadataResponse">
+    <part name="parameters" element="tns:GetModelSourceMetadataResponse" />
+  </message>
+  <message name="InvalidUMLProjectIndentifierFaultMessage">
+    <part name="fault" element="ns3:InvalidUMLProjectIndentifier" />
+  </message>
+  <!--============================================================
+
+                       P O R T T Y P E
+                      
+  ============================================================-->
+  <portType name="MetadataModelServicePortType" wsrp:ResourceProperties="tns:MetadataModelServiceResourceProperties">
+    <operation name="generateDomainModelForProject">
+      <input message="tns:GenerateDomainModelForProjectRequest" wsa:Action="http://mms.cagrid.org/MetadataModelService/GenerateDomainModelForProjectRequest" />
+      <output message="tns:GenerateDomainModelForProjectResponse" wsa:Action="http://mms.cagrid.org/MetadataModelService/GenerateDomainModelForProjectResponse" />
+      <fault name="InvalidUMLProjectIndentifier" message="tns:InvalidUMLProjectIndentifierFaultMessage" wsa:Action="http://mms.cagrid.org/MetadataModelService/InvalidUMLProjectIndentifierFaultMessage" />
+    </operation>
+    <operation name="generateDomainModelForPackages">
+      <input message="tns:GenerateDomainModelForPackagesRequest" wsa:Action="http://mms.cagrid.org/MetadataModelService/GenerateDomainModelForPackagesRequest" />
+      <output message="tns:GenerateDomainModelForPackagesResponse" wsa:Action="http://mms.cagrid.org/MetadataModelService/GenerateDomainModelForPackagesResponse" />
+      <fault name="InvalidUMLProjectIndentifier" message="tns:InvalidUMLProjectIndentifierFaultMessage" wsa:Action="http://mms.cagrid.org/MetadataModelService/InvalidUMLProjectIndentifierFaultMessage" />
+    </operation>
+    <operation name="generateDomainModelForClasses">
+      <input message="tns:GenerateDomainModelForClassesRequest" wsa:Action="http://mms.cagrid.org/MetadataModelService/GenerateDomainModelForClassesRequest" />
+      <output message="tns:GenerateDomainModelForClassesResponse" wsa:Action="http://mms.cagrid.org/MetadataModelService/GenerateDomainModelForClassesResponse" />
+      <fault name="InvalidUMLProjectIndentifier" message="tns:InvalidUMLProjectIndentifierFaultMessage" wsa:Action="http://mms.cagrid.org/MetadataModelService/InvalidUMLProjectIndentifierFaultMessage" />
+    </operation>
+    <operation name="generateDomainModelForClassesWithExcludes">
+      <input message="tns:GenerateDomainModelForClassesWithExcludesRequest" wsa:Action="http://mms.cagrid.org/MetadataModelService/GenerateDomainModelForClassesWithExcludesRequest" />
+      <output message="tns:GenerateDomainModelForClassesWithExcludesResponse" wsa:Action="http://mms.cagrid.org/MetadataModelService/GenerateDomainModelForClassesWithExcludesResponse" />
+      <fault name="InvalidUMLProjectIndentifier" message="tns:InvalidUMLProjectIndentifierFaultMessage" wsa:Action="http://mms.cagrid.org/MetadataModelService/InvalidUMLProjectIndentifierFaultMessage" />
+    </operation>
+    <operation name="annotateServiceMetadata">
+      <input message="tns:AnnotateServiceMetadataRequest" wsa:Action="http://mms.cagrid.org/MetadataModelService/AnnotateServiceMetadataRequest" />
+      <output message="tns:AnnotateServiceMetadataResponse" wsa:Action="http://mms.cagrid.org/MetadataModelService/AnnotateServiceMetadataResponse" />
+      <fault name="InvalidUMLProjectIndentifier" message="tns:InvalidUMLProjectIndentifierFaultMessage" wsa:Action="http://mms.cagrid.org/MetadataModelService/InvalidUMLProjectIndentifierFaultMessage" />
+    </operation>
+    <operation name="getModelSourceMetadata">
+      <input message="tns:GetModelSourceMetadataRequest" wsa:Action="http://mms.cagrid.org/MetadataModelService/GetModelSourceMetadataRequest" />
+      <output message="tns:GetModelSourceMetadataResponse" wsa:Action="http://mms.cagrid.org/MetadataModelService/GetModelSourceMetadataResponse" />
+    </operation>
+    <wsdl:operation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" name="GetMultipleResourceProperties">
+      <wsdl:input name="GetMultipleResourcePropertiesRequest" message="wsrpw:GetMultipleResourcePropertiesRequest" wsa:Action="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ResourceProperties/GetMultipleResourceProperties" />
+      <wsdl:output name="GetMultipleResourcePropertiesResponse" message="wsrpw:GetMultipleResourcePropertiesResponse" wsa:Action="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ResourceProperties/GetMultipleResourcePropertiesResponse" />
+      <wsdl:fault name="ResourceUnknownFault" message="wsrpw:ResourceUnknownFault" />
+      <wsdl:fault name="InvalidResourcePropertyQNameFault" message="wsrpw:InvalidResourcePropertyQNameFault" />
+    </wsdl:operation>
+    <wsdl:operation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" name="GetResourceProperty">
+      <wsdl:input name="GetResourcePropertyRequest" message="wsrpw:GetResourcePropertyRequest" wsa:Action="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ResourceProperties/GetResourceProperty" />
+      <wsdl:output name="GetResourcePropertyResponse" message="wsrpw:GetResourcePropertyResponse" wsa:Action="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ResourceProperties/GetResourcePropertyResponse" />
+      <wsdl:fault name="ResourceUnknownFault" message="wsrpw:ResourceUnknownFault" />
+      <wsdl:fault name="InvalidResourcePropertyQNameFault" message="wsrpw:InvalidResourcePropertyQNameFault" />
+    </wsdl:operation>
+    <wsdl:operation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" name="QueryResourceProperties">
+      <wsdl:input name="QueryResourcePropertiesRequest" message="wsrpw:QueryResourcePropertiesRequest" wsa:Action="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ResourceProperties/QueryResourceProperties" />
+      <wsdl:output name="QueryResourcePropertiesResponse" message="wsrpw:QueryResourcePropertiesResponse" wsa:Action="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ResourceProperties/QueryResourcePropertiesResponse" />
+      <wsdl:fault name="ResourceUnknownFault" message="wsrpw:ResourceUnknownFault" />
+      <wsdl:fault name="InvalidResourcePropertyQNameFault" message="wsrpw:InvalidResourcePropertyQNameFault" />
+      <wsdl:fault name="UnknownQueryExpressionDialectFault" message="wsrpw:UnknownQueryExpressionDialectFault" />
+      <wsdl:fault name="InvalidQueryExpressionFault" message="wsrpw:InvalidQueryExpressionFault" />
+      <wsdl:fault name="QueryEvaluationErrorFault" message="wsrpw:QueryEvaluationErrorFault" />
+    </wsdl:operation>
+    <operation name="getServiceSecurityMetadata">
+      <input message="wns1:GetServiceSecurityMetadataRequest" wsa:Action="http://security.introduce.cagrid.nci.nih.gov/ServiceSecurity/GetServiceSecurityMetadataRequest" />
+      <output message="wns1:GetServiceSecurityMetadataResponse" wsa:Action="http://security.introduce.cagrid.nci.nih.gov/ServiceSecurity/GetServiceSecurityMetadataResponse" />
+    </operation>
+  </portType>
+</definitions>
+

@@ -1,0 +1,56 @@
+<%@ jet package="gov.nih.nci.cagrid.introduce.templates.etc" class="RegistrationTemplate"
+imports="gov.nih.nci.cagrid.introduce.common.* gov.nih.nci.cagrid.introduce.codegen.utils.* gov.nih.nci.cagrid.introduce.codegen.* java.util.* gov.nih.nci.cagrid.introduce.beans.resource.*" %>
+<% gov.nih.nci.cagrid.introduce.common.SpecificServiceInformation info = (gov.nih.nci.cagrid.introduce.common.SpecificServiceInformation) argument; 
+	ResourcePropertiesListType metadataList = null;	
+		metadataList = info.getService().getResourcePropertiesList();	
+	String serviceName = info.getIntroduceServiceProperties().getProperty("introduce.skeleton.service.name");
+	String namespaceDomain = info.getIntroduceServiceProperties().getProperty("introduce.skeleton.namespace.domain");
+	String modifiedServiceName = serviceName;
+	if(serviceName.endsWith("Service")){
+   		modifiedServiceName = serviceName.substring(0,serviceName.length()-7);
+   	}
+%><?xml version="1.0" encoding="UTF-8" ?>
+<ServiceGroupRegistrationParameters xmlns:sgc="http://mds.globus.org/servicegroup/client"
+  xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xmlns:wsa="http://schemas.xmlsoap.org/ws/2004/03/addressing"
+  xmlns:agg="http://mds.globus.org/aggregator/types"
+  xmlns="http://mds.globus.org/servicegroup/client">
+  <!-- The ServiceGroupEPR defines the servicegroup to which registrations will be made -->
+  <ServiceGroupEPR>
+    <wsa:Address>INDEX_SERVICE_URL</wsa:Address>
+  </ServiceGroupEPR>
+  <!-- Specifies that the registration will be renewed every 10 minutes -->
+  <RefreshIntervalSecs>REGISTRATION_REFRESH</RefreshIntervalSecs>
+  <Content xsi:type="agg:AggregatorContent" xmlns:agg="http://mds.globus.org/aggregator/types">
+    <agg:AggregatorConfig xsi:type="agg:AggregatorConfig">
+      <agg:GetMultipleResourcePropertiesPollType
+      <%
+      	if(metadataList!=null){
+      		Map prefixmap=SyncUtils.buildMasterNamespaceInformationMap(info.getServiceDescriptor());
+      		Iterator iterator = prefixmap.keySet().iterator();
+			while(iterator.hasNext()){
+				String namespace=(String)iterator.next();%>
+			xmlns:<%=((NamespaceInformation)prefixmap.get(namespace)).getPrefix()%>="<%=namespace%>"<%}
+      	}%>>
+        <!-- Specifies that the index should refresh information
+            every 300000 milliseconds (once every 5 minutes) -->
+        <agg:PollIntervalMillis>INDEX_REFRESH</agg:PollIntervalMillis>
+        <!-- specifies all Resource Properties that should be retrieved from the service -->
+        <%	if(metadataList!=null && metadataList.getResourceProperty()!=null){
+        Map prefixmap=SyncUtils.buildMasterNamespaceInformationMap(info.getServiceDescriptor());
+		for (int i = 0; i < metadataList.getResourceProperty().length; i++) {
+			ResourcePropertyType metadata = metadataList.getResourceProperty(i);
+			if(metadata.isRegister()){
+				String qnameName=metadata.getQName().getLocalPart();
+				String qnameNamespace=metadata.getQName().getNamespaceURI();
+		%>
+		<agg:ResourcePropertyNames><%=((NamespaceInformation)prefixmap.get(qnameNamespace)).getPrefix()%>:<%=qnameName%></agg:ResourcePropertyNames>
+	<%		}
+		}
+		}
+	%>
+      </agg:GetMultipleResourcePropertiesPollType>
+    </agg:AggregatorConfig>
+    <agg:AggregatorData/>
+  </Content>
+</ServiceGroupRegistrationParameters>

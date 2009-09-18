@@ -1,0 +1,51 @@
+<?xml version="1.0"?>
+
+<project name="dependencies" basedir="." xmlns:ivy="antlib:org.apache.ivy.ant">
+	<property file="project.properties" />
+
+	<!-- OVERLOADED-->
+	<property name="ivy.resolve.configurations" value="impl,impl-test" />
+	<property name="ivy.generated.artifacts.pattern" value="${ivy.generated.artifacts.dir}/jars/[artifact]-[revision].[ext]" />
+
+	<property name="ivy-shared-targets.file" location="${basedir}/../../antfiles/ivy/ivy-shared-targets.xml" />
+	<import file="${ivy-shared-targets.file}" />
+
+	<!-- 
+	   Overloaded to look for generated artifacts in multiple locations: 
+	-->
+	<target name="do.publish" depends="pre.publish">
+		<publish-artifacts>
+			<artifacts-list>
+				<artifacts pattern="${ivy.generated.artifacts.pattern}" />
+				<artifacts pattern="${basedir}/skeleton/lib/[artifact]-[revision].[ext]" />
+				<artifacts pattern="${basedir}/skeleton/tools/lib/[artifact]-[revision].[ext]" />
+				<artifacts pattern="${basedir}/updates/lib/[artifact]-[revision].[ext]" />
+			</artifacts-list>
+		</publish-artifacts>
+	</target>
+
+	<target name="do.resolve-dependencies" depends="pre.resolve-dependencies">
+		<ivy:retrieve conf="${ivy.resolve.configurations}" pattern="${ivy.resolved.artifacts.pattern}" sync="true" />
+		<ivy:retrieve conf="impl" pattern="${ivy.resolved.artifacts.dir}/dependencies/[type]s/[originalname](.[ext])" sync="true" type="jar" />
+		<ivy:retrieve conf="impl" pattern="${ivy.resolved.artifacts.dir}/dependencies/[type]/[artifact](.[ext])" type="wsdl,xsd" />
+		<ivy:retrieve conf="impl-test" pattern="${ivy.resolved.artifacts.dir}/dependencies/test/[type]s/[originalname](.[ext])" sync="true" type="*"/>
+
+		<!-- I'd like to set sync=true on the skeleton.. but that blows away the cvsignore, so I'll manually clean first -->
+		<delete>
+			<fileset dir="${basedir}/skeleton/lib">
+				<include name="*.jar" />
+			</fileset>
+		</delete>
+		<ivy:retrieve conf="skeleton" pattern="${basedir}/skeleton/lib/[originalname](.[ext])" type="jar" />
+		<delete>
+			<fileset dir="${basedir}/skeleton/tools/lib">
+				<include name="*.jar" />
+			</fileset>
+		</delete>
+		<ivy:retrieve conf="skeletonTools" pattern="${basedir}/skeleton/tools/lib/[originalname](.[ext])" type="jar" />
+		<ivy:retrieve conf="schema.grape" pattern="${ivy.resolved.artifacts.dir}/dependencies/xsd/grape/[type]/[artifact](.[ext])" sync="true" type="xsd" />
+		
+	</target>
+
+</project>
+

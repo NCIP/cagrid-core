@@ -1,0 +1,1313 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions xmlns="http://schemas.xmlsoap.org/wsdl/" xmlns:tns="http://cagrid.nci.nih.gov/GridGrouper" xmlns:wsrp="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ResourceProperties-1.2-draft-01.xsd" xmlns:wsrlw="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ResourceLifetime-1.2-draft-01.wsdl" xmlns:wsdlpp="http://www.globus.org/namespaces/2004/10/WSDLPreprocessor" xmlns:gtwsdl1="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ServiceGroup-1.2-draft-01.wsdl" xmlns:wsa="http://schemas.xmlsoap.org/ws/2004/03/addressing" xmlns:wsntw="http://docs.oasis-open.org/wsn/2004/06/wsn-WS-BaseNotification-1.2-draft-01.wsdl" xmlns:wsrbfw="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-BaseFaults-1.2-draft-01.wsdl" xmlns:wsrpw="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ResourceProperties-1.2-draft-01.wsdl" xmlns:wns1="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ResourceProperties-1.2-draft-01.wsdl" xmlns:wns0="http://security.introduce.cagrid.nci.nih.gov/ServiceSecurity" xmlns:ns0="http://cagrid.nci.nih.gov/1/GridGrouper" xmlns:ns1="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata" xmlns:ns2="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.security" xmlns:ns3="http://cagrid.nci.nih.gov/GridGrouper/types" name="GridGrouper" targetNamespace="http://cagrid.nci.nih.gov/GridGrouper">
+  <import namespace="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ResourceProperties-1.2-draft-01.wsdl" location="../wsrf/properties/WS-ResourceProperties.wsdl" />
+  <import namespace="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-BaseFaults-1.2-draft-01.wsdl" location="../wsrf/faults/WS-BaseFaults.wsdl" />
+  <import namespace="http://docs.oasis-open.org/wsn/2004/06/wsn-WS-BaseNotification-1.2-draft-01.wsdl" location="../wsrf/notification/WS-BaseN.wsdl" />
+  <import namespace="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ResourceProperties-1.2-draft-01.wsdl" location="./../wsrf/properties/WS-ResourceProperties.wsdl" />
+  <import namespace="http://security.introduce.cagrid.nci.nih.gov/ServiceSecurity" location="./ServiceSecurity.wsdl" />
+  <!--============================================================
+
+                      T Y P E S
+                      
+  ============================================================-->
+  <types>
+    <schema xmlns="http://www.w3.org/2001/XMLSchema" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:wsrbf="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-BaseFaults-1.2-draft-01.xsd" targetNamespace="http://cagrid.nci.nih.gov/GridGrouper" elementFormDefault="qualified" attributeFormDefault="unqualified">
+      <import namespace="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-BaseFaults-1.2-draft-01.xsd" schemaLocation="../wsrf/faults/WS-BaseFaults.xsd" />
+      <import namespace="http://cagrid.nci.nih.gov/1/GridGrouper" schemaLocation="./gridgrouper.xsd" />
+      <import namespace="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata" schemaLocation="./xsd/cagrid/types/caGridMetadata.xsd" />
+      <import namespace="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.security" schemaLocation="./xsd/cagrid/types/security/security.xsd" />
+      <import namespace="http://cagrid.nci.nih.gov/GridGrouper/types" schemaLocation="./GridGrouperTypes.xsd" />
+      <element name="GetStemRequest">
+        <complexType>
+          <sequence>
+            <element name="stem">
+              <complexType>
+                <sequence>
+                  <element ref="ns0:StemIdentifier" minOccurs="1" maxOccurs="1" />
+                </sequence>
+              </complexType>
+            </element>
+          </sequence>
+        </complexType>
+      </element>
+      <element name="GetStemResponse">
+        <complexType>
+          <sequence>
+            <element ref="ns0:StemDescriptor" minOccurs="1" maxOccurs="1" />
+          </sequence>
+        </complexType>
+      </element>
+      <element name="GetChildStemsRequest">
+        <complexType>
+          <sequence>
+            <element name="parentStem">
+              <complexType>
+                <sequence>
+                  <element ref="ns0:StemIdentifier" minOccurs="1" maxOccurs="1" />
+                </sequence>
+              </complexType>
+            </element>
+          </sequence>
+        </complexType>
+      </element>
+      <element name="GetChildStemsResponse">
+        <complexType>
+          <sequence>
+            <element ref="ns0:StemDescriptor" minOccurs="1" maxOccurs="unbounded" />
+          </sequence>
+        </complexType>
+      </element>
+      <element name="GetParentStemRequest">
+        <complexType>
+          <sequence>
+            <element name="childStem">
+              <complexType>
+                <sequence>
+                  <element ref="ns0:StemIdentifier" minOccurs="1" maxOccurs="1" />
+                </sequence>
+              </complexType>
+            </element>
+          </sequence>
+        </complexType>
+      </element>
+      <element name="GetParentStemResponse">
+        <complexType>
+          <sequence>
+            <element ref="ns0:StemDescriptor" minOccurs="1" maxOccurs="1" />
+          </sequence>
+        </complexType>
+      </element>
+      <element name="UpdateStemRequest">
+        <complexType>
+          <sequence>
+            <element name="stem">
+              <complexType>
+                <sequence>
+                  <element ref="ns0:StemIdentifier" minOccurs="1" maxOccurs="1" />
+                </sequence>
+              </complexType>
+            </element>
+            <element name="update">
+              <complexType>
+                <sequence>
+                  <element ref="ns0:StemUpdate" minOccurs="1" maxOccurs="1" />
+                </sequence>
+              </complexType>
+            </element>
+          </sequence>
+        </complexType>
+      </element>
+      <element name="UpdateStemResponse">
+        <complexType>
+          <sequence>
+            <element ref="ns0:StemDescriptor" minOccurs="1" maxOccurs="1" />
+          </sequence>
+        </complexType>
+      </element>
+      <element name="GetSubjectsWithStemPrivilegeRequest">
+        <complexType>
+          <sequence>
+            <element name="stem">
+              <complexType>
+                <sequence>
+                  <element ref="ns0:StemIdentifier" minOccurs="1" maxOccurs="1" />
+                </sequence>
+              </complexType>
+            </element>
+            <element name="privilege">
+              <complexType>
+                <sequence>
+                  <element ref="ns0:StemPrivilegeType" minOccurs="1" maxOccurs="1" />
+                </sequence>
+              </complexType>
+            </element>
+          </sequence>
+        </complexType>
+      </element>
+      <element name="GetSubjectsWithStemPrivilegeResponse">
+        <complexType>
+          <sequence>
+            <element ref="ns0:SubjectIdentifier" minOccurs="1" maxOccurs="unbounded" />
+          </sequence>
+        </complexType>
+      </element>
+      <element name="GetStemPrivilegesRequest">
+        <complexType>
+          <sequence>
+            <element name="stem">
+              <complexType>
+                <sequence>
+                  <element ref="ns0:StemIdentifier" minOccurs="1" maxOccurs="1" />
+                </sequence>
+              </complexType>
+            </element>
+            <element name="subject">
+              <complexType>
+                <sequence>
+                  <element ref="ns0:SubjectIdentifier" minOccurs="1" maxOccurs="1" />
+                </sequence>
+              </complexType>
+            </element>
+          </sequence>
+        </complexType>
+      </element>
+      <element name="GetStemPrivilegesResponse">
+        <complexType>
+          <sequence>
+            <element ref="ns0:StemPrivilege" minOccurs="1" maxOccurs="unbounded" />
+          </sequence>
+        </complexType>
+      </element>
+      <element name="HasStemPrivilegeRequest">
+        <complexType>
+          <sequence>
+            <element name="stem">
+              <complexType>
+                <sequence>
+                  <element ref="ns0:StemIdentifier" minOccurs="1" maxOccurs="1" />
+                </sequence>
+              </complexType>
+            </element>
+            <element name="subject">
+              <complexType>
+                <sequence>
+                  <element ref="ns0:SubjectIdentifier" minOccurs="1" maxOccurs="1" />
+                </sequence>
+              </complexType>
+            </element>
+            <element name="privilege">
+              <complexType>
+                <sequence>
+                  <element ref="ns0:StemPrivilegeType" minOccurs="1" maxOccurs="1" />
+                </sequence>
+              </complexType>
+            </element>
+          </sequence>
+        </complexType>
+      </element>
+      <element name="HasStemPrivilegeResponse">
+        <complexType>
+          <sequence>
+            <element name="response" type="xs:boolean" minOccurs="1" maxOccurs="1" />
+          </sequence>
+        </complexType>
+      </element>
+      <element name="GrantStemPrivilegeRequest">
+        <complexType>
+          <sequence>
+            <element name="stem">
+              <complexType>
+                <sequence>
+                  <element ref="ns0:StemIdentifier" minOccurs="1" maxOccurs="1" />
+                </sequence>
+              </complexType>
+            </element>
+            <element name="subject">
+              <complexType>
+                <sequence>
+                  <element ref="ns0:SubjectIdentifier" minOccurs="1" maxOccurs="1" />
+                </sequence>
+              </complexType>
+            </element>
+            <element name="privilege">
+              <complexType>
+                <sequence>
+                  <element ref="ns0:StemPrivilegeType" minOccurs="1" maxOccurs="1" />
+                </sequence>
+              </complexType>
+            </element>
+          </sequence>
+        </complexType>
+      </element>
+      <element name="GrantStemPrivilegeResponse">
+        <complexType>
+          <sequence />
+        </complexType>
+      </element>
+      <element name="RevokeStemPrivilegeRequest">
+        <complexType>
+          <sequence>
+            <element name="stem">
+              <complexType>
+                <sequence>
+                  <element ref="ns0:StemIdentifier" minOccurs="1" maxOccurs="1" />
+                </sequence>
+              </complexType>
+            </element>
+            <element name="subject">
+              <complexType>
+                <sequence>
+                  <element ref="ns0:SubjectIdentifier" minOccurs="1" maxOccurs="1" />
+                </sequence>
+              </complexType>
+            </element>
+            <element name="privilege">
+              <complexType>
+                <sequence>
+                  <element ref="ns0:StemPrivilegeType" minOccurs="1" maxOccurs="1" />
+                </sequence>
+              </complexType>
+            </element>
+          </sequence>
+        </complexType>
+      </element>
+      <element name="RevokeStemPrivilegeResponse">
+        <complexType>
+          <sequence />
+        </complexType>
+      </element>
+      <element name="AddChildStemRequest">
+        <complexType>
+          <sequence>
+            <element name="stem">
+              <complexType>
+                <sequence>
+                  <element ref="ns0:StemIdentifier" minOccurs="1" maxOccurs="1" />
+                </sequence>
+              </complexType>
+            </element>
+            <element name="extension" type="xs:string" minOccurs="1" maxOccurs="1" />
+            <element name="displayExtension" type="xs:string" minOccurs="1" maxOccurs="1" />
+          </sequence>
+        </complexType>
+      </element>
+      <element name="AddChildStemResponse">
+        <complexType>
+          <sequence>
+            <element ref="ns0:StemDescriptor" minOccurs="1" maxOccurs="1" />
+          </sequence>
+        </complexType>
+      </element>
+      <element name="DeleteStemRequest">
+        <complexType>
+          <sequence>
+            <element name="stem">
+              <complexType>
+                <sequence>
+                  <element ref="ns0:StemIdentifier" minOccurs="1" maxOccurs="1" />
+                </sequence>
+              </complexType>
+            </element>
+          </sequence>
+        </complexType>
+      </element>
+      <element name="DeleteStemResponse">
+        <complexType>
+          <sequence />
+        </complexType>
+      </element>
+      <element name="GetGroupRequest">
+        <complexType>
+          <sequence>
+            <element name="group">
+              <complexType>
+                <sequence>
+                  <element ref="ns0:GroupIdentifier" minOccurs="1" maxOccurs="1" />
+                </sequence>
+              </complexType>
+            </element>
+          </sequence>
+        </complexType>
+      </element>
+      <element name="GetGroupResponse">
+        <complexType>
+          <sequence>
+            <element ref="ns0:GroupDescriptor" minOccurs="1" maxOccurs="1" />
+          </sequence>
+        </complexType>
+      </element>
+      <element name="GetChildGroupsRequest">
+        <complexType>
+          <sequence>
+            <element name="stem">
+              <complexType>
+                <sequence>
+                  <element ref="ns0:StemIdentifier" minOccurs="1" maxOccurs="1" />
+                </sequence>
+              </complexType>
+            </element>
+          </sequence>
+        </complexType>
+      </element>
+      <element name="GetChildGroupsResponse">
+        <complexType>
+          <sequence>
+            <element ref="ns0:GroupDescriptor" minOccurs="1" maxOccurs="unbounded" />
+          </sequence>
+        </complexType>
+      </element>
+      <element name="AddChildGroupRequest">
+        <complexType>
+          <sequence>
+            <element name="stem">
+              <complexType>
+                <sequence>
+                  <element ref="ns0:StemIdentifier" minOccurs="1" maxOccurs="1" />
+                </sequence>
+              </complexType>
+            </element>
+            <element name="extension" type="xs:string" minOccurs="1" maxOccurs="1" />
+            <element name="displayExtension" type="xs:string" minOccurs="1" maxOccurs="1" />
+          </sequence>
+        </complexType>
+      </element>
+      <element name="AddChildGroupResponse">
+        <complexType>
+          <sequence>
+            <element ref="ns0:GroupDescriptor" minOccurs="1" maxOccurs="1" />
+          </sequence>
+        </complexType>
+      </element>
+      <element name="DeleteGroupRequest">
+        <complexType>
+          <sequence>
+            <element name="group">
+              <complexType>
+                <sequence>
+                  <element ref="ns0:GroupIdentifier" minOccurs="1" maxOccurs="1" />
+                </sequence>
+              </complexType>
+            </element>
+          </sequence>
+        </complexType>
+      </element>
+      <element name="DeleteGroupResponse">
+        <complexType>
+          <sequence />
+        </complexType>
+      </element>
+      <element name="UpdateGroupRequest">
+        <complexType>
+          <sequence>
+            <element name="group">
+              <complexType>
+                <sequence>
+                  <element ref="ns0:GroupIdentifier" minOccurs="1" maxOccurs="1" />
+                </sequence>
+              </complexType>
+            </element>
+            <element name="update">
+              <complexType>
+                <sequence>
+                  <element ref="ns0:GroupUpdate" minOccurs="1" maxOccurs="1" />
+                </sequence>
+              </complexType>
+            </element>
+          </sequence>
+        </complexType>
+      </element>
+      <element name="UpdateGroupResponse">
+        <complexType>
+          <sequence>
+            <element ref="ns0:GroupDescriptor" minOccurs="1" maxOccurs="1" />
+          </sequence>
+        </complexType>
+      </element>
+      <element name="AddMemberRequest">
+        <complexType>
+          <sequence>
+            <element name="group">
+              <complexType>
+                <sequence>
+                  <element ref="ns0:GroupIdentifier" minOccurs="1" maxOccurs="1" />
+                </sequence>
+              </complexType>
+            </element>
+            <element name="subject">
+              <complexType>
+                <sequence>
+                  <element ref="ns0:SubjectIdentifier" minOccurs="1" maxOccurs="1" />
+                </sequence>
+              </complexType>
+            </element>
+          </sequence>
+        </complexType>
+      </element>
+      <element name="AddMemberResponse">
+        <complexType>
+          <sequence />
+        </complexType>
+      </element>
+      <element name="GetMembersRequest">
+        <complexType>
+          <sequence>
+            <element name="group">
+              <complexType>
+                <sequence>
+                  <element ref="ns0:GroupIdentifier" minOccurs="1" maxOccurs="1" />
+                </sequence>
+              </complexType>
+            </element>
+            <element name="filter">
+              <complexType>
+                <sequence>
+                  <element ref="ns0:MemberFilter" minOccurs="1" maxOccurs="1" />
+                </sequence>
+              </complexType>
+            </element>
+          </sequence>
+        </complexType>
+      </element>
+      <element name="GetMembersResponse">
+        <complexType>
+          <sequence>
+            <element ref="ns0:MemberDescriptor" minOccurs="1" maxOccurs="unbounded" />
+          </sequence>
+        </complexType>
+      </element>
+      <element name="IsMemberOfRequest">
+        <complexType>
+          <sequence>
+            <element name="group">
+              <complexType>
+                <sequence>
+                  <element ref="ns0:GroupIdentifier" minOccurs="1" maxOccurs="1" />
+                </sequence>
+              </complexType>
+            </element>
+            <element name="member">
+              <complexType>
+                <sequence>
+                  <element ref="ns0:SubjectIdentifier" minOccurs="1" maxOccurs="1" />
+                </sequence>
+              </complexType>
+            </element>
+            <element name="filter">
+              <complexType>
+                <sequence>
+                  <element ref="ns0:MemberFilter" minOccurs="1" maxOccurs="1" />
+                </sequence>
+              </complexType>
+            </element>
+          </sequence>
+        </complexType>
+      </element>
+      <element name="IsMemberOfResponse">
+        <complexType>
+          <sequence>
+            <element name="response" type="xs:boolean" minOccurs="1" maxOccurs="1" />
+          </sequence>
+        </complexType>
+      </element>
+      <element name="GetMembershipsRequest">
+        <complexType>
+          <sequence>
+            <element name="group">
+              <complexType>
+                <sequence>
+                  <element ref="ns0:GroupIdentifier" minOccurs="1" maxOccurs="1" />
+                </sequence>
+              </complexType>
+            </element>
+            <element name="filter">
+              <complexType>
+                <sequence>
+                  <element ref="ns0:MemberFilter" minOccurs="1" maxOccurs="1" />
+                </sequence>
+              </complexType>
+            </element>
+          </sequence>
+        </complexType>
+      </element>
+      <element name="GetMembershipsResponse">
+        <complexType>
+          <sequence>
+            <element ref="ns0:MembershipDescriptor" minOccurs="1" maxOccurs="unbounded" />
+          </sequence>
+        </complexType>
+      </element>
+      <element name="DeleteMemberRequest">
+        <complexType>
+          <sequence>
+            <element name="group">
+              <complexType>
+                <sequence>
+                  <element ref="ns0:GroupIdentifier" minOccurs="1" maxOccurs="1" />
+                </sequence>
+              </complexType>
+            </element>
+            <element name="member">
+              <complexType>
+                <sequence>
+                  <element ref="ns0:SubjectIdentifier" minOccurs="1" maxOccurs="1" />
+                </sequence>
+              </complexType>
+            </element>
+          </sequence>
+        </complexType>
+      </element>
+      <element name="DeleteMemberResponse">
+        <complexType>
+          <sequence />
+        </complexType>
+      </element>
+      <element name="AddCompositeMemberRequest">
+        <complexType>
+          <sequence>
+            <element name="type">
+              <complexType>
+                <sequence>
+                  <element ref="ns0:GroupCompositeType" minOccurs="1" maxOccurs="1" />
+                </sequence>
+              </complexType>
+            </element>
+            <element name="composite">
+              <complexType>
+                <sequence>
+                  <element ref="ns0:GroupIdentifier" minOccurs="1" maxOccurs="1" />
+                </sequence>
+              </complexType>
+            </element>
+            <element name="left">
+              <complexType>
+                <sequence>
+                  <element ref="ns0:GroupIdentifier" minOccurs="1" maxOccurs="1" />
+                </sequence>
+              </complexType>
+            </element>
+            <element name="right">
+              <complexType>
+                <sequence>
+                  <element ref="ns0:GroupIdentifier" minOccurs="1" maxOccurs="1" />
+                </sequence>
+              </complexType>
+            </element>
+          </sequence>
+        </complexType>
+      </element>
+      <element name="AddCompositeMemberResponse">
+        <complexType>
+          <sequence>
+            <element ref="ns0:GroupDescriptor" minOccurs="1" maxOccurs="1" />
+          </sequence>
+        </complexType>
+      </element>
+      <element name="DeleteCompositeMemberRequest">
+        <complexType>
+          <sequence>
+            <element name="group">
+              <complexType>
+                <sequence>
+                  <element ref="ns0:GroupIdentifier" minOccurs="1" maxOccurs="1" />
+                </sequence>
+              </complexType>
+            </element>
+          </sequence>
+        </complexType>
+      </element>
+      <element name="DeleteCompositeMemberResponse">
+        <complexType>
+          <sequence>
+            <element ref="ns0:GroupDescriptor" minOccurs="1" maxOccurs="1" />
+          </sequence>
+        </complexType>
+      </element>
+      <element name="GrantGroupPrivilegeRequest">
+        <complexType>
+          <sequence>
+            <element name="group">
+              <complexType>
+                <sequence>
+                  <element ref="ns0:GroupIdentifier" minOccurs="1" maxOccurs="1" />
+                </sequence>
+              </complexType>
+            </element>
+            <element name="subject">
+              <complexType>
+                <sequence>
+                  <element ref="ns0:SubjectIdentifier" minOccurs="1" maxOccurs="1" />
+                </sequence>
+              </complexType>
+            </element>
+            <element name="privilege">
+              <complexType>
+                <sequence>
+                  <element ref="ns0:GroupPrivilegeType" minOccurs="1" maxOccurs="1" />
+                </sequence>
+              </complexType>
+            </element>
+          </sequence>
+        </complexType>
+      </element>
+      <element name="GrantGroupPrivilegeResponse">
+        <complexType>
+          <sequence />
+        </complexType>
+      </element>
+      <element name="RevokeGroupPrivilegeRequest">
+        <complexType>
+          <sequence>
+            <element name="group">
+              <complexType>
+                <sequence>
+                  <element ref="ns0:GroupIdentifier" minOccurs="1" maxOccurs="1" />
+                </sequence>
+              </complexType>
+            </element>
+            <element name="subject">
+              <complexType>
+                <sequence>
+                  <element ref="ns0:SubjectIdentifier" minOccurs="1" maxOccurs="1" />
+                </sequence>
+              </complexType>
+            </element>
+            <element name="privilege">
+              <complexType>
+                <sequence>
+                  <element ref="ns0:GroupPrivilegeType" minOccurs="1" maxOccurs="1" />
+                </sequence>
+              </complexType>
+            </element>
+          </sequence>
+        </complexType>
+      </element>
+      <element name="RevokeGroupPrivilegeResponse">
+        <complexType>
+          <sequence />
+        </complexType>
+      </element>
+      <element name="GetSubjectsWithGroupPrivilegeRequest">
+        <complexType>
+          <sequence>
+            <element name="group">
+              <complexType>
+                <sequence>
+                  <element ref="ns0:GroupIdentifier" minOccurs="1" maxOccurs="1" />
+                </sequence>
+              </complexType>
+            </element>
+            <element name="privilege">
+              <complexType>
+                <sequence>
+                  <element ref="ns0:GroupPrivilegeType" minOccurs="1" maxOccurs="1" />
+                </sequence>
+              </complexType>
+            </element>
+          </sequence>
+        </complexType>
+      </element>
+      <element name="GetSubjectsWithGroupPrivilegeResponse">
+        <complexType>
+          <sequence>
+            <element ref="ns0:SubjectIdentifier" minOccurs="1" maxOccurs="unbounded" />
+          </sequence>
+        </complexType>
+      </element>
+      <element name="GetGroupPrivilegesRequest">
+        <complexType>
+          <sequence>
+            <element name="group">
+              <complexType>
+                <sequence>
+                  <element ref="ns0:GroupIdentifier" minOccurs="1" maxOccurs="1" />
+                </sequence>
+              </complexType>
+            </element>
+            <element name="subject">
+              <complexType>
+                <sequence>
+                  <element ref="ns0:SubjectIdentifier" minOccurs="1" maxOccurs="1" />
+                </sequence>
+              </complexType>
+            </element>
+          </sequence>
+        </complexType>
+      </element>
+      <element name="GetGroupPrivilegesResponse">
+        <complexType>
+          <sequence>
+            <element ref="ns0:GroupPrivilege" minOccurs="1" maxOccurs="unbounded" />
+          </sequence>
+        </complexType>
+      </element>
+      <element name="HasGroupPrivilegeRequest">
+        <complexType>
+          <sequence>
+            <element name="group">
+              <complexType>
+                <sequence>
+                  <element ref="ns0:GroupIdentifier" minOccurs="1" maxOccurs="1" />
+                </sequence>
+              </complexType>
+            </element>
+            <element name="subject">
+              <complexType>
+                <sequence>
+                  <element ref="ns0:SubjectIdentifier" minOccurs="1" maxOccurs="1" />
+                </sequence>
+              </complexType>
+            </element>
+            <element name="privilege">
+              <complexType>
+                <sequence>
+                  <element ref="ns0:GroupPrivilegeType" minOccurs="1" maxOccurs="1" />
+                </sequence>
+              </complexType>
+            </element>
+          </sequence>
+        </complexType>
+      </element>
+      <element name="HasGroupPrivilegeResponse">
+        <complexType>
+          <sequence>
+            <element name="response" type="xs:boolean" minOccurs="1" maxOccurs="1" />
+          </sequence>
+        </complexType>
+      </element>
+      <element name="IsMemberRequest">
+        <complexType>
+          <sequence>
+            <element name="member" type="xs:string" minOccurs="1" maxOccurs="1" />
+            <element name="expression">
+              <complexType>
+                <sequence>
+                  <element ref="ns0:MembershipExpression" minOccurs="1" maxOccurs="1" />
+                </sequence>
+              </complexType>
+            </element>
+          </sequence>
+        </complexType>
+      </element>
+      <element name="IsMemberResponse">
+        <complexType>
+          <sequence>
+            <element name="response" type="xs:boolean" minOccurs="1" maxOccurs="1" />
+          </sequence>
+        </complexType>
+      </element>
+      <element name="GetMemberRequest">
+        <complexType>
+          <sequence>
+            <element name="member">
+              <complexType>
+                <sequence>
+                  <element ref="ns0:SubjectIdentifier" minOccurs="1" maxOccurs="1" />
+                </sequence>
+              </complexType>
+            </element>
+          </sequence>
+        </complexType>
+      </element>
+      <element name="GetMemberResponse">
+        <complexType>
+          <sequence>
+            <element ref="ns0:MemberDescriptor" minOccurs="1" maxOccurs="1" />
+          </sequence>
+        </complexType>
+      </element>
+      <element name="GetMembersGroupsRequest">
+        <complexType>
+          <sequence>
+            <element name="member">
+              <complexType>
+                <sequence>
+                  <element ref="ns0:SubjectIdentifier" minOccurs="1" maxOccurs="1" />
+                </sequence>
+              </complexType>
+            </element>
+            <element name="type">
+              <complexType>
+                <sequence>
+                  <element ref="ns0:MembershipType" minOccurs="1" maxOccurs="1" />
+                </sequence>
+              </complexType>
+            </element>
+          </sequence>
+        </complexType>
+      </element>
+      <element name="GetMembersGroupsResponse">
+        <complexType>
+          <sequence>
+            <element ref="ns0:GroupDescriptor" minOccurs="1" maxOccurs="unbounded" />
+          </sequence>
+        </complexType>
+      </element>
+      <element name="GridGrouperResourceProperties">
+        <complexType>
+          <sequence>
+            <element ref="ns1:ServiceMetadata" />
+          </sequence>
+        </complexType>
+      </element>
+    </schema>
+  </types>
+  <!--  place service messages here -->
+  <message name="GetStemRequest">
+    <part name="parameters" element="tns:GetStemRequest" />
+  </message>
+  <message name="GetStemResponse">
+    <part name="parameters" element="tns:GetStemResponse" />
+  </message>
+  <message name="GetChildStemsRequest">
+    <part name="parameters" element="tns:GetChildStemsRequest" />
+  </message>
+  <message name="GetChildStemsResponse">
+    <part name="parameters" element="tns:GetChildStemsResponse" />
+  </message>
+  <message name="GetParentStemRequest">
+    <part name="parameters" element="tns:GetParentStemRequest" />
+  </message>
+  <message name="GetParentStemResponse">
+    <part name="parameters" element="tns:GetParentStemResponse" />
+  </message>
+  <message name="UpdateStemRequest">
+    <part name="parameters" element="tns:UpdateStemRequest" />
+  </message>
+  <message name="UpdateStemResponse">
+    <part name="parameters" element="tns:UpdateStemResponse" />
+  </message>
+  <message name="GetSubjectsWithStemPrivilegeRequest">
+    <part name="parameters" element="tns:GetSubjectsWithStemPrivilegeRequest" />
+  </message>
+  <message name="GetSubjectsWithStemPrivilegeResponse">
+    <part name="parameters" element="tns:GetSubjectsWithStemPrivilegeResponse" />
+  </message>
+  <message name="GetStemPrivilegesRequest">
+    <part name="parameters" element="tns:GetStemPrivilegesRequest" />
+  </message>
+  <message name="GetStemPrivilegesResponse">
+    <part name="parameters" element="tns:GetStemPrivilegesResponse" />
+  </message>
+  <message name="HasStemPrivilegeRequest">
+    <part name="parameters" element="tns:HasStemPrivilegeRequest" />
+  </message>
+  <message name="HasStemPrivilegeResponse">
+    <part name="parameters" element="tns:HasStemPrivilegeResponse" />
+  </message>
+  <message name="GrantStemPrivilegeRequest">
+    <part name="parameters" element="tns:GrantStemPrivilegeRequest" />
+  </message>
+  <message name="GrantStemPrivilegeResponse">
+    <part name="parameters" element="tns:GrantStemPrivilegeResponse" />
+  </message>
+  <message name="RevokeStemPrivilegeRequest">
+    <part name="parameters" element="tns:RevokeStemPrivilegeRequest" />
+  </message>
+  <message name="RevokeStemPrivilegeResponse">
+    <part name="parameters" element="tns:RevokeStemPrivilegeResponse" />
+  </message>
+  <message name="AddChildStemRequest">
+    <part name="parameters" element="tns:AddChildStemRequest" />
+  </message>
+  <message name="AddChildStemResponse">
+    <part name="parameters" element="tns:AddChildStemResponse" />
+  </message>
+  <message name="DeleteStemRequest">
+    <part name="parameters" element="tns:DeleteStemRequest" />
+  </message>
+  <message name="DeleteStemResponse">
+    <part name="parameters" element="tns:DeleteStemResponse" />
+  </message>
+  <message name="GetGroupRequest">
+    <part name="parameters" element="tns:GetGroupRequest" />
+  </message>
+  <message name="GetGroupResponse">
+    <part name="parameters" element="tns:GetGroupResponse" />
+  </message>
+  <message name="GetChildGroupsRequest">
+    <part name="parameters" element="tns:GetChildGroupsRequest" />
+  </message>
+  <message name="GetChildGroupsResponse">
+    <part name="parameters" element="tns:GetChildGroupsResponse" />
+  </message>
+  <message name="AddChildGroupRequest">
+    <part name="parameters" element="tns:AddChildGroupRequest" />
+  </message>
+  <message name="AddChildGroupResponse">
+    <part name="parameters" element="tns:AddChildGroupResponse" />
+  </message>
+  <message name="DeleteGroupRequest">
+    <part name="parameters" element="tns:DeleteGroupRequest" />
+  </message>
+  <message name="DeleteGroupResponse">
+    <part name="parameters" element="tns:DeleteGroupResponse" />
+  </message>
+  <message name="UpdateGroupRequest">
+    <part name="parameters" element="tns:UpdateGroupRequest" />
+  </message>
+  <message name="UpdateGroupResponse">
+    <part name="parameters" element="tns:UpdateGroupResponse" />
+  </message>
+  <message name="AddMemberRequest">
+    <part name="parameters" element="tns:AddMemberRequest" />
+  </message>
+  <message name="AddMemberResponse">
+    <part name="parameters" element="tns:AddMemberResponse" />
+  </message>
+  <message name="GetMembersRequest">
+    <part name="parameters" element="tns:GetMembersRequest" />
+  </message>
+  <message name="GetMembersResponse">
+    <part name="parameters" element="tns:GetMembersResponse" />
+  </message>
+  <message name="IsMemberOfRequest">
+    <part name="parameters" element="tns:IsMemberOfRequest" />
+  </message>
+  <message name="IsMemberOfResponse">
+    <part name="parameters" element="tns:IsMemberOfResponse" />
+  </message>
+  <message name="GetMembershipsRequest">
+    <part name="parameters" element="tns:GetMembershipsRequest" />
+  </message>
+  <message name="GetMembershipsResponse">
+    <part name="parameters" element="tns:GetMembershipsResponse" />
+  </message>
+  <message name="DeleteMemberRequest">
+    <part name="parameters" element="tns:DeleteMemberRequest" />
+  </message>
+  <message name="DeleteMemberResponse">
+    <part name="parameters" element="tns:DeleteMemberResponse" />
+  </message>
+  <message name="AddCompositeMemberRequest">
+    <part name="parameters" element="tns:AddCompositeMemberRequest" />
+  </message>
+  <message name="AddCompositeMemberResponse">
+    <part name="parameters" element="tns:AddCompositeMemberResponse" />
+  </message>
+  <message name="DeleteCompositeMemberRequest">
+    <part name="parameters" element="tns:DeleteCompositeMemberRequest" />
+  </message>
+  <message name="DeleteCompositeMemberResponse">
+    <part name="parameters" element="tns:DeleteCompositeMemberResponse" />
+  </message>
+  <message name="GrantGroupPrivilegeRequest">
+    <part name="parameters" element="tns:GrantGroupPrivilegeRequest" />
+  </message>
+  <message name="GrantGroupPrivilegeResponse">
+    <part name="parameters" element="tns:GrantGroupPrivilegeResponse" />
+  </message>
+  <message name="RevokeGroupPrivilegeRequest">
+    <part name="parameters" element="tns:RevokeGroupPrivilegeRequest" />
+  </message>
+  <message name="RevokeGroupPrivilegeResponse">
+    <part name="parameters" element="tns:RevokeGroupPrivilegeResponse" />
+  </message>
+  <message name="GetSubjectsWithGroupPrivilegeRequest">
+    <part name="parameters" element="tns:GetSubjectsWithGroupPrivilegeRequest" />
+  </message>
+  <message name="GetSubjectsWithGroupPrivilegeResponse">
+    <part name="parameters" element="tns:GetSubjectsWithGroupPrivilegeResponse" />
+  </message>
+  <message name="GetGroupPrivilegesRequest">
+    <part name="parameters" element="tns:GetGroupPrivilegesRequest" />
+  </message>
+  <message name="GetGroupPrivilegesResponse">
+    <part name="parameters" element="tns:GetGroupPrivilegesResponse" />
+  </message>
+  <message name="HasGroupPrivilegeRequest">
+    <part name="parameters" element="tns:HasGroupPrivilegeRequest" />
+  </message>
+  <message name="HasGroupPrivilegeResponse">
+    <part name="parameters" element="tns:HasGroupPrivilegeResponse" />
+  </message>
+  <message name="IsMemberRequest">
+    <part name="parameters" element="tns:IsMemberRequest" />
+  </message>
+  <message name="IsMemberResponse">
+    <part name="parameters" element="tns:IsMemberResponse" />
+  </message>
+  <message name="GetMemberRequest">
+    <part name="parameters" element="tns:GetMemberRequest" />
+  </message>
+  <message name="GetMemberResponse">
+    <part name="parameters" element="tns:GetMemberResponse" />
+  </message>
+  <message name="GetMembersGroupsRequest">
+    <part name="parameters" element="tns:GetMembersGroupsRequest" />
+  </message>
+  <message name="GetMembersGroupsResponse">
+    <part name="parameters" element="tns:GetMembersGroupsResponse" />
+  </message>
+  <message name="GridGrouperRuntimeFaultFaultMessage">
+    <part name="fault" element="ns3:GridGrouperRuntimeFault" />
+  </message>
+  <message name="StemNotFoundFaultFaultMessage">
+    <part name="fault" element="ns3:StemNotFoundFault" />
+  </message>
+  <message name="InsufficientPrivilegeFaultFaultMessage">
+    <part name="fault" element="ns3:InsufficientPrivilegeFault" />
+  </message>
+  <message name="StemModifyFaultFaultMessage">
+    <part name="fault" element="ns3:StemModifyFault" />
+  </message>
+  <message name="GrantPrivilegeFaultFaultMessage">
+    <part name="fault" element="ns3:GrantPrivilegeFault" />
+  </message>
+  <message name="SchemaFaultFaultMessage">
+    <part name="fault" element="ns3:SchemaFault" />
+  </message>
+  <message name="RevokePrivilegeFaultFaultMessage">
+    <part name="fault" element="ns3:RevokePrivilegeFault" />
+  </message>
+  <message name="StemAddFaultFaultMessage">
+    <part name="fault" element="ns3:StemAddFault" />
+  </message>
+  <message name="StemDeleteFaultFaultMessage">
+    <part name="fault" element="ns3:StemDeleteFault" />
+  </message>
+  <message name="GroupNotFoundFaultFaultMessage">
+    <part name="fault" element="ns3:GroupNotFoundFault" />
+  </message>
+  <message name="GroupAddFaultFaultMessage">
+    <part name="fault" element="ns3:GroupAddFault" />
+  </message>
+  <message name="GroupDeleteFaultFaultMessage">
+    <part name="fault" element="ns3:GroupDeleteFault" />
+  </message>
+  <message name="GroupModifyFaultFaultMessage">
+    <part name="fault" element="ns3:GroupModifyFault" />
+  </message>
+  <message name="MemberAddFaultFaultMessage">
+    <part name="fault" element="ns3:MemberAddFault" />
+  </message>
+  <message name="MemberDeleteFaultFaultMessage">
+    <part name="fault" element="ns3:MemberDeleteFault" />
+  </message>
+  <!--============================================================
+
+                       P O R T T Y P E
+                      
+  ============================================================-->
+  <portType name="GridGrouperPortType" wsrp:ResourceProperties="tns:GridGrouperResourceProperties">
+    <operation name="getStem">
+      <input message="tns:GetStemRequest" wsa:Action="http://cagrid.nci.nih.gov/GridGrouper/GetStemRequest" />
+      <output message="tns:GetStemResponse" wsa:Action="http://cagrid.nci.nih.gov/GridGrouper/GetStemResponse" />
+      <fault name="GridGrouperRuntimeFault" message="tns:GridGrouperRuntimeFaultFaultMessage" wsa:Action="http://cagrid.nci.nih.gov/GridGrouper/GridGrouperRuntimeFaultFaultMessage" />
+      <fault name="StemNotFoundFault" message="tns:StemNotFoundFaultFaultMessage" wsa:Action="http://cagrid.nci.nih.gov/GridGrouper/StemNotFoundFaultFaultMessage" />
+    </operation>
+    <operation name="getChildStems">
+      <input message="tns:GetChildStemsRequest" wsa:Action="http://cagrid.nci.nih.gov/GridGrouper/GetChildStemsRequest" />
+      <output message="tns:GetChildStemsResponse" wsa:Action="http://cagrid.nci.nih.gov/GridGrouper/GetChildStemsResponse" />
+      <fault name="GridGrouperRuntimeFault" message="tns:GridGrouperRuntimeFaultFaultMessage" wsa:Action="http://cagrid.nci.nih.gov/GridGrouper/GridGrouperRuntimeFaultFaultMessage" />
+      <fault name="StemNotFoundFault" message="tns:StemNotFoundFaultFaultMessage" wsa:Action="http://cagrid.nci.nih.gov/GridGrouper/StemNotFoundFaultFaultMessage" />
+    </operation>
+    <operation name="getParentStem">
+      <input message="tns:GetParentStemRequest" wsa:Action="http://cagrid.nci.nih.gov/GridGrouper/GetParentStemRequest" />
+      <output message="tns:GetParentStemResponse" wsa:Action="http://cagrid.nci.nih.gov/GridGrouper/GetParentStemResponse" />
+      <fault name="GridGrouperRuntimeFault" message="tns:GridGrouperRuntimeFaultFaultMessage" wsa:Action="http://cagrid.nci.nih.gov/GridGrouper/GridGrouperRuntimeFaultFaultMessage" />
+      <fault name="StemNotFoundFault" message="tns:StemNotFoundFaultFaultMessage" wsa:Action="http://cagrid.nci.nih.gov/GridGrouper/StemNotFoundFaultFaultMessage" />
+    </operation>
+    <operation name="updateStem">
+      <input message="tns:UpdateStemRequest" wsa:Action="http://cagrid.nci.nih.gov/GridGrouper/UpdateStemRequest" />
+      <output message="tns:UpdateStemResponse" wsa:Action="http://cagrid.nci.nih.gov/GridGrouper/UpdateStemResponse" />
+      <fault name="GridGrouperRuntimeFault" message="tns:GridGrouperRuntimeFaultFaultMessage" wsa:Action="http://cagrid.nci.nih.gov/GridGrouper/GridGrouperRuntimeFaultFaultMessage" />
+      <fault name="InsufficientPrivilegeFault" message="tns:InsufficientPrivilegeFaultFaultMessage" wsa:Action="http://cagrid.nci.nih.gov/GridGrouper/InsufficientPrivilegeFaultFaultMessage" />
+      <fault name="StemModifyFault" message="tns:StemModifyFaultFaultMessage" wsa:Action="http://cagrid.nci.nih.gov/GridGrouper/StemModifyFaultFaultMessage" />
+    </operation>
+    <operation name="getSubjectsWithStemPrivilege">
+      <input message="tns:GetSubjectsWithStemPrivilegeRequest" wsa:Action="http://cagrid.nci.nih.gov/GridGrouper/GetSubjectsWithStemPrivilegeRequest" />
+      <output message="tns:GetSubjectsWithStemPrivilegeResponse" wsa:Action="http://cagrid.nci.nih.gov/GridGrouper/GetSubjectsWithStemPrivilegeResponse" />
+      <fault name="GridGrouperRuntimeFault" message="tns:GridGrouperRuntimeFaultFaultMessage" wsa:Action="http://cagrid.nci.nih.gov/GridGrouper/GridGrouperRuntimeFaultFaultMessage" />
+      <fault name="StemNotFoundFault" message="tns:StemNotFoundFaultFaultMessage" wsa:Action="http://cagrid.nci.nih.gov/GridGrouper/StemNotFoundFaultFaultMessage" />
+    </operation>
+    <operation name="getStemPrivileges">
+      <input message="tns:GetStemPrivilegesRequest" wsa:Action="http://cagrid.nci.nih.gov/GridGrouper/GetStemPrivilegesRequest" />
+      <output message="tns:GetStemPrivilegesResponse" wsa:Action="http://cagrid.nci.nih.gov/GridGrouper/GetStemPrivilegesResponse" />
+      <fault name="GridGrouperRuntimeFault" message="tns:GridGrouperRuntimeFaultFaultMessage" wsa:Action="http://cagrid.nci.nih.gov/GridGrouper/GridGrouperRuntimeFaultFaultMessage" />
+      <fault name="StemNotFoundFault" message="tns:StemNotFoundFaultFaultMessage" wsa:Action="http://cagrid.nci.nih.gov/GridGrouper/StemNotFoundFaultFaultMessage" />
+    </operation>
+    <operation name="hasStemPrivilege">
+      <input message="tns:HasStemPrivilegeRequest" wsa:Action="http://cagrid.nci.nih.gov/GridGrouper/HasStemPrivilegeRequest" />
+      <output message="tns:HasStemPrivilegeResponse" wsa:Action="http://cagrid.nci.nih.gov/GridGrouper/HasStemPrivilegeResponse" />
+      <fault name="GridGrouperRuntimeFault" message="tns:GridGrouperRuntimeFaultFaultMessage" wsa:Action="http://cagrid.nci.nih.gov/GridGrouper/GridGrouperRuntimeFaultFaultMessage" />
+      <fault name="StemNotFoundFault" message="tns:StemNotFoundFaultFaultMessage" wsa:Action="http://cagrid.nci.nih.gov/GridGrouper/StemNotFoundFaultFaultMessage" />
+    </operation>
+    <operation name="grantStemPrivilege">
+      <input message="tns:GrantStemPrivilegeRequest" wsa:Action="http://cagrid.nci.nih.gov/GridGrouper/GrantStemPrivilegeRequest" />
+      <output message="tns:GrantStemPrivilegeResponse" wsa:Action="http://cagrid.nci.nih.gov/GridGrouper/GrantStemPrivilegeResponse" />
+      <fault name="GridGrouperRuntimeFault" message="tns:GridGrouperRuntimeFaultFaultMessage" wsa:Action="http://cagrid.nci.nih.gov/GridGrouper/GridGrouperRuntimeFaultFaultMessage" />
+      <fault name="StemNotFoundFault" message="tns:StemNotFoundFaultFaultMessage" wsa:Action="http://cagrid.nci.nih.gov/GridGrouper/StemNotFoundFaultFaultMessage" />
+      <fault name="GrantPrivilegeFault" message="tns:GrantPrivilegeFaultFaultMessage" wsa:Action="http://cagrid.nci.nih.gov/GridGrouper/GrantPrivilegeFaultFaultMessage" />
+      <fault name="InsufficientPrivilegeFault" message="tns:InsufficientPrivilegeFaultFaultMessage" wsa:Action="http://cagrid.nci.nih.gov/GridGrouper/InsufficientPrivilegeFaultFaultMessage" />
+      <fault name="SchemaFault" message="tns:SchemaFaultFaultMessage" wsa:Action="http://cagrid.nci.nih.gov/GridGrouper/SchemaFaultFaultMessage" />
+    </operation>
+    <operation name="revokeStemPrivilege">
+      <input message="tns:RevokeStemPrivilegeRequest" wsa:Action="http://cagrid.nci.nih.gov/GridGrouper/RevokeStemPrivilegeRequest" />
+      <output message="tns:RevokeStemPrivilegeResponse" wsa:Action="http://cagrid.nci.nih.gov/GridGrouper/RevokeStemPrivilegeResponse" />
+      <fault name="StemNotFoundFault" message="tns:StemNotFoundFaultFaultMessage" wsa:Action="http://cagrid.nci.nih.gov/GridGrouper/StemNotFoundFaultFaultMessage" />
+      <fault name="InsufficientPrivilegeFault" message="tns:InsufficientPrivilegeFaultFaultMessage" wsa:Action="http://cagrid.nci.nih.gov/GridGrouper/InsufficientPrivilegeFaultFaultMessage" />
+      <fault name="RevokePrivilegeFault" message="tns:RevokePrivilegeFaultFaultMessage" wsa:Action="http://cagrid.nci.nih.gov/GridGrouper/RevokePrivilegeFaultFaultMessage" />
+      <fault name="SchemaFault" message="tns:SchemaFaultFaultMessage" wsa:Action="http://cagrid.nci.nih.gov/GridGrouper/SchemaFaultFaultMessage" />
+      <fault name="GridGrouperRuntimeFault" message="tns:GridGrouperRuntimeFaultFaultMessage" wsa:Action="http://cagrid.nci.nih.gov/GridGrouper/GridGrouperRuntimeFaultFaultMessage" />
+    </operation>
+    <operation name="addChildStem">
+      <input message="tns:AddChildStemRequest" wsa:Action="http://cagrid.nci.nih.gov/GridGrouper/AddChildStemRequest" />
+      <output message="tns:AddChildStemResponse" wsa:Action="http://cagrid.nci.nih.gov/GridGrouper/AddChildStemResponse" />
+      <fault name="GridGrouperRuntimeFault" message="tns:GridGrouperRuntimeFaultFaultMessage" wsa:Action="http://cagrid.nci.nih.gov/GridGrouper/GridGrouperRuntimeFaultFaultMessage" />
+      <fault name="InsufficientPrivilegeFault" message="tns:InsufficientPrivilegeFaultFaultMessage" wsa:Action="http://cagrid.nci.nih.gov/GridGrouper/InsufficientPrivilegeFaultFaultMessage" />
+      <fault name="StemAddFault" message="tns:StemAddFaultFaultMessage" wsa:Action="http://cagrid.nci.nih.gov/GridGrouper/StemAddFaultFaultMessage" />
+      <fault name="StemNotFoundFault" message="tns:StemNotFoundFaultFaultMessage" wsa:Action="http://cagrid.nci.nih.gov/GridGrouper/StemNotFoundFaultFaultMessage" />
+    </operation>
+    <operation name="deleteStem">
+      <input message="tns:DeleteStemRequest" wsa:Action="http://cagrid.nci.nih.gov/GridGrouper/DeleteStemRequest" />
+      <output message="tns:DeleteStemResponse" wsa:Action="http://cagrid.nci.nih.gov/GridGrouper/DeleteStemResponse" />
+      <fault name="GridGrouperRuntimeFault" message="tns:GridGrouperRuntimeFaultFaultMessage" wsa:Action="http://cagrid.nci.nih.gov/GridGrouper/GridGrouperRuntimeFaultFaultMessage" />
+      <fault name="InsufficientPrivilegeFault" message="tns:InsufficientPrivilegeFaultFaultMessage" wsa:Action="http://cagrid.nci.nih.gov/GridGrouper/InsufficientPrivilegeFaultFaultMessage" />
+      <fault name="StemDeleteFault" message="tns:StemDeleteFaultFaultMessage" wsa:Action="http://cagrid.nci.nih.gov/GridGrouper/StemDeleteFaultFaultMessage" />
+      <fault name="StemNotFoundFault" message="tns:StemNotFoundFaultFaultMessage" wsa:Action="http://cagrid.nci.nih.gov/GridGrouper/StemNotFoundFaultFaultMessage" />
+    </operation>
+    <operation name="getGroup">
+      <input message="tns:GetGroupRequest" wsa:Action="http://cagrid.nci.nih.gov/GridGrouper/GetGroupRequest" />
+      <output message="tns:GetGroupResponse" wsa:Action="http://cagrid.nci.nih.gov/GridGrouper/GetGroupResponse" />
+      <fault name="GridGrouperRuntimeFault" message="tns:GridGrouperRuntimeFaultFaultMessage" wsa:Action="http://cagrid.nci.nih.gov/GridGrouper/GridGrouperRuntimeFaultFaultMessage" />
+      <fault name="GroupNotFoundFault" message="tns:GroupNotFoundFaultFaultMessage" wsa:Action="http://cagrid.nci.nih.gov/GridGrouper/GroupNotFoundFaultFaultMessage" />
+    </operation>
+    <operation name="getChildGroups">
+      <input message="tns:GetChildGroupsRequest" wsa:Action="http://cagrid.nci.nih.gov/GridGrouper/GetChildGroupsRequest" />
+      <output message="tns:GetChildGroupsResponse" wsa:Action="http://cagrid.nci.nih.gov/GridGrouper/GetChildGroupsResponse" />
+      <fault name="GridGrouperRuntimeFault" message="tns:GridGrouperRuntimeFaultFaultMessage" wsa:Action="http://cagrid.nci.nih.gov/GridGrouper/GridGrouperRuntimeFaultFaultMessage" />
+      <fault name="StemNotFoundFault" message="tns:StemNotFoundFaultFaultMessage" wsa:Action="http://cagrid.nci.nih.gov/GridGrouper/StemNotFoundFaultFaultMessage" />
+    </operation>
+    <operation name="addChildGroup">
+      <input message="tns:AddChildGroupRequest" wsa:Action="http://cagrid.nci.nih.gov/GridGrouper/AddChildGroupRequest" />
+      <output message="tns:AddChildGroupResponse" wsa:Action="http://cagrid.nci.nih.gov/GridGrouper/AddChildGroupResponse" />
+      <fault name="GridGrouperRuntimeFault" message="tns:GridGrouperRuntimeFaultFaultMessage" wsa:Action="http://cagrid.nci.nih.gov/GridGrouper/GridGrouperRuntimeFaultFaultMessage" />
+      <fault name="GroupAddFault" message="tns:GroupAddFaultFaultMessage" wsa:Action="http://cagrid.nci.nih.gov/GridGrouper/GroupAddFaultFaultMessage" />
+      <fault name="InsufficientPrivilegeFault" message="tns:InsufficientPrivilegeFaultFaultMessage" wsa:Action="http://cagrid.nci.nih.gov/GridGrouper/InsufficientPrivilegeFaultFaultMessage" />
+    </operation>
+    <operation name="deleteGroup">
+      <input message="tns:DeleteGroupRequest" wsa:Action="http://cagrid.nci.nih.gov/GridGrouper/DeleteGroupRequest" />
+      <output message="tns:DeleteGroupResponse" wsa:Action="http://cagrid.nci.nih.gov/GridGrouper/DeleteGroupResponse" />
+      <fault name="GridGrouperRuntimeFault" message="tns:GridGrouperRuntimeFaultFaultMessage" wsa:Action="http://cagrid.nci.nih.gov/GridGrouper/GridGrouperRuntimeFaultFaultMessage" />
+      <fault name="GroupNotFoundFault" message="tns:GroupNotFoundFaultFaultMessage" wsa:Action="http://cagrid.nci.nih.gov/GridGrouper/GroupNotFoundFaultFaultMessage" />
+      <fault name="GroupDeleteFault" message="tns:GroupDeleteFaultFaultMessage" wsa:Action="http://cagrid.nci.nih.gov/GridGrouper/GroupDeleteFaultFaultMessage" />
+      <fault name="InsufficientPrivilegeFault" message="tns:InsufficientPrivilegeFaultFaultMessage" wsa:Action="http://cagrid.nci.nih.gov/GridGrouper/InsufficientPrivilegeFaultFaultMessage" />
+    </operation>
+    <operation name="updateGroup">
+      <input message="tns:UpdateGroupRequest" wsa:Action="http://cagrid.nci.nih.gov/GridGrouper/UpdateGroupRequest" />
+      <output message="tns:UpdateGroupResponse" wsa:Action="http://cagrid.nci.nih.gov/GridGrouper/UpdateGroupResponse" />
+      <fault name="GridGrouperRuntimeFault" message="tns:GridGrouperRuntimeFaultFaultMessage" wsa:Action="http://cagrid.nci.nih.gov/GridGrouper/GridGrouperRuntimeFaultFaultMessage" />
+      <fault name="GroupNotFoundFault" message="tns:GroupNotFoundFaultFaultMessage" wsa:Action="http://cagrid.nci.nih.gov/GridGrouper/GroupNotFoundFaultFaultMessage" />
+      <fault name="GroupModifyFault" message="tns:GroupModifyFaultFaultMessage" wsa:Action="http://cagrid.nci.nih.gov/GridGrouper/GroupModifyFaultFaultMessage" />
+      <fault name="InsufficientPrivilegeFault" message="tns:InsufficientPrivilegeFaultFaultMessage" wsa:Action="http://cagrid.nci.nih.gov/GridGrouper/InsufficientPrivilegeFaultFaultMessage" />
+    </operation>
+    <operation name="addMember">
+      <input message="tns:AddMemberRequest" wsa:Action="http://cagrid.nci.nih.gov/GridGrouper/AddMemberRequest" />
+      <output message="tns:AddMemberResponse" wsa:Action="http://cagrid.nci.nih.gov/GridGrouper/AddMemberResponse" />
+      <fault name="GridGrouperRuntimeFault" message="tns:GridGrouperRuntimeFaultFaultMessage" wsa:Action="http://cagrid.nci.nih.gov/GridGrouper/GridGrouperRuntimeFaultFaultMessage" />
+      <fault name="GroupNotFoundFault" message="tns:GroupNotFoundFaultFaultMessage" wsa:Action="http://cagrid.nci.nih.gov/GridGrouper/GroupNotFoundFaultFaultMessage" />
+      <fault name="InsufficientPrivilegeFault" message="tns:InsufficientPrivilegeFaultFaultMessage" wsa:Action="http://cagrid.nci.nih.gov/GridGrouper/InsufficientPrivilegeFaultFaultMessage" />
+      <fault name="MemberAddFault" message="tns:MemberAddFaultFaultMessage" wsa:Action="http://cagrid.nci.nih.gov/GridGrouper/MemberAddFaultFaultMessage" />
+    </operation>
+    <operation name="getMembers">
+      <input message="tns:GetMembersRequest" wsa:Action="http://cagrid.nci.nih.gov/GridGrouper/GetMembersRequest" />
+      <output message="tns:GetMembersResponse" wsa:Action="http://cagrid.nci.nih.gov/GridGrouper/GetMembersResponse" />
+      <fault name="GridGrouperRuntimeFault" message="tns:GridGrouperRuntimeFaultFaultMessage" wsa:Action="http://cagrid.nci.nih.gov/GridGrouper/GridGrouperRuntimeFaultFaultMessage" />
+      <fault name="GroupNotFoundFault" message="tns:GroupNotFoundFaultFaultMessage" wsa:Action="http://cagrid.nci.nih.gov/GridGrouper/GroupNotFoundFaultFaultMessage" />
+    </operation>
+    <operation name="isMemberOf">
+      <input message="tns:IsMemberOfRequest" wsa:Action="http://cagrid.nci.nih.gov/GridGrouper/IsMemberOfRequest" />
+      <output message="tns:IsMemberOfResponse" wsa:Action="http://cagrid.nci.nih.gov/GridGrouper/IsMemberOfResponse" />
+      <fault name="GridGrouperRuntimeFault" message="tns:GridGrouperRuntimeFaultFaultMessage" wsa:Action="http://cagrid.nci.nih.gov/GridGrouper/GridGrouperRuntimeFaultFaultMessage" />
+      <fault name="GroupNotFoundFault" message="tns:GroupNotFoundFaultFaultMessage" wsa:Action="http://cagrid.nci.nih.gov/GridGrouper/GroupNotFoundFaultFaultMessage" />
+    </operation>
+    <operation name="getMemberships">
+      <input message="tns:GetMembershipsRequest" wsa:Action="http://cagrid.nci.nih.gov/GridGrouper/GetMembershipsRequest" />
+      <output message="tns:GetMembershipsResponse" wsa:Action="http://cagrid.nci.nih.gov/GridGrouper/GetMembershipsResponse" />
+      <fault name="GridGrouperRuntimeFault" message="tns:GridGrouperRuntimeFaultFaultMessage" wsa:Action="http://cagrid.nci.nih.gov/GridGrouper/GridGrouperRuntimeFaultFaultMessage" />
+      <fault name="GroupNotFoundFault" message="tns:GroupNotFoundFaultFaultMessage" wsa:Action="http://cagrid.nci.nih.gov/GridGrouper/GroupNotFoundFaultFaultMessage" />
+    </operation>
+    <operation name="deleteMember">
+      <input message="tns:DeleteMemberRequest" wsa:Action="http://cagrid.nci.nih.gov/GridGrouper/DeleteMemberRequest" />
+      <output message="tns:DeleteMemberResponse" wsa:Action="http://cagrid.nci.nih.gov/GridGrouper/DeleteMemberResponse" />
+      <fault name="GridGrouperRuntimeFault" message="tns:GridGrouperRuntimeFaultFaultMessage" wsa:Action="http://cagrid.nci.nih.gov/GridGrouper/GridGrouperRuntimeFaultFaultMessage" />
+      <fault name="InsufficientPrivilegeFault" message="tns:InsufficientPrivilegeFaultFaultMessage" wsa:Action="http://cagrid.nci.nih.gov/GridGrouper/InsufficientPrivilegeFaultFaultMessage" />
+      <fault name="GroupNotFoundFault" message="tns:GroupNotFoundFaultFaultMessage" wsa:Action="http://cagrid.nci.nih.gov/GridGrouper/GroupNotFoundFaultFaultMessage" />
+      <fault name="MemberDeleteFault" message="tns:MemberDeleteFaultFaultMessage" wsa:Action="http://cagrid.nci.nih.gov/GridGrouper/MemberDeleteFaultFaultMessage" />
+    </operation>
+    <operation name="addCompositeMember">
+      <input message="tns:AddCompositeMemberRequest" wsa:Action="http://cagrid.nci.nih.gov/GridGrouper/AddCompositeMemberRequest" />
+      <output message="tns:AddCompositeMemberResponse" wsa:Action="http://cagrid.nci.nih.gov/GridGrouper/AddCompositeMemberResponse" />
+      <fault name="GridGrouperRuntimeFault" message="tns:GridGrouperRuntimeFaultFaultMessage" wsa:Action="http://cagrid.nci.nih.gov/GridGrouper/GridGrouperRuntimeFaultFaultMessage" />
+      <fault name="GroupNotFoundFault" message="tns:GroupNotFoundFaultFaultMessage" wsa:Action="http://cagrid.nci.nih.gov/GridGrouper/GroupNotFoundFaultFaultMessage" />
+      <fault name="MemberAddFault" message="tns:MemberAddFaultFaultMessage" wsa:Action="http://cagrid.nci.nih.gov/GridGrouper/MemberAddFaultFaultMessage" />
+      <fault name="InsufficientPrivilegeFault" message="tns:InsufficientPrivilegeFaultFaultMessage" wsa:Action="http://cagrid.nci.nih.gov/GridGrouper/InsufficientPrivilegeFaultFaultMessage" />
+    </operation>
+    <operation name="deleteCompositeMember">
+      <input message="tns:DeleteCompositeMemberRequest" wsa:Action="http://cagrid.nci.nih.gov/GridGrouper/DeleteCompositeMemberRequest" />
+      <output message="tns:DeleteCompositeMemberResponse" wsa:Action="http://cagrid.nci.nih.gov/GridGrouper/DeleteCompositeMemberResponse" />
+      <fault name="GridGrouperRuntimeFault" message="tns:GridGrouperRuntimeFaultFaultMessage" wsa:Action="http://cagrid.nci.nih.gov/GridGrouper/GridGrouperRuntimeFaultFaultMessage" />
+      <fault name="GroupNotFoundFault" message="tns:GroupNotFoundFaultFaultMessage" wsa:Action="http://cagrid.nci.nih.gov/GridGrouper/GroupNotFoundFaultFaultMessage" />
+      <fault name="InsufficientPrivilegeFault" message="tns:InsufficientPrivilegeFaultFaultMessage" wsa:Action="http://cagrid.nci.nih.gov/GridGrouper/InsufficientPrivilegeFaultFaultMessage" />
+      <fault name="MemberDeleteFault" message="tns:MemberDeleteFaultFaultMessage" wsa:Action="http://cagrid.nci.nih.gov/GridGrouper/MemberDeleteFaultFaultMessage" />
+    </operation>
+    <operation name="grantGroupPrivilege">
+      <input message="tns:GrantGroupPrivilegeRequest" wsa:Action="http://cagrid.nci.nih.gov/GridGrouper/GrantGroupPrivilegeRequest" />
+      <output message="tns:GrantGroupPrivilegeResponse" wsa:Action="http://cagrid.nci.nih.gov/GridGrouper/GrantGroupPrivilegeResponse" />
+      <fault name="GridGrouperRuntimeFault" message="tns:GridGrouperRuntimeFaultFaultMessage" wsa:Action="http://cagrid.nci.nih.gov/GridGrouper/GridGrouperRuntimeFaultFaultMessage" />
+      <fault name="GroupNotFoundFault" message="tns:GroupNotFoundFaultFaultMessage" wsa:Action="http://cagrid.nci.nih.gov/GridGrouper/GroupNotFoundFaultFaultMessage" />
+      <fault name="GrantPrivilegeFault" message="tns:GrantPrivilegeFaultFaultMessage" wsa:Action="http://cagrid.nci.nih.gov/GridGrouper/GrantPrivilegeFaultFaultMessage" />
+      <fault name="InsufficientPrivilegeFault" message="tns:InsufficientPrivilegeFaultFaultMessage" wsa:Action="http://cagrid.nci.nih.gov/GridGrouper/InsufficientPrivilegeFaultFaultMessage" />
+    </operation>
+    <operation name="revokeGroupPrivilege">
+      <input message="tns:RevokeGroupPrivilegeRequest" wsa:Action="http://cagrid.nci.nih.gov/GridGrouper/RevokeGroupPrivilegeRequest" />
+      <output message="tns:RevokeGroupPrivilegeResponse" wsa:Action="http://cagrid.nci.nih.gov/GridGrouper/RevokeGroupPrivilegeResponse" />
+      <fault name="GridGrouperRuntimeFault" message="tns:GridGrouperRuntimeFaultFaultMessage" wsa:Action="http://cagrid.nci.nih.gov/GridGrouper/GridGrouperRuntimeFaultFaultMessage" />
+      <fault name="GroupNotFoundFault" message="tns:GroupNotFoundFaultFaultMessage" wsa:Action="http://cagrid.nci.nih.gov/GridGrouper/GroupNotFoundFaultFaultMessage" />
+      <fault name="RevokePrivilegeFault" message="tns:RevokePrivilegeFaultFaultMessage" wsa:Action="http://cagrid.nci.nih.gov/GridGrouper/RevokePrivilegeFaultFaultMessage" />
+      <fault name="InsufficientPrivilegeFault" message="tns:InsufficientPrivilegeFaultFaultMessage" wsa:Action="http://cagrid.nci.nih.gov/GridGrouper/InsufficientPrivilegeFaultFaultMessage" />
+      <fault name="SchemaFault" message="tns:SchemaFaultFaultMessage" wsa:Action="http://cagrid.nci.nih.gov/GridGrouper/SchemaFaultFaultMessage" />
+    </operation>
+    <operation name="getSubjectsWithGroupPrivilege">
+      <input message="tns:GetSubjectsWithGroupPrivilegeRequest" wsa:Action="http://cagrid.nci.nih.gov/GridGrouper/GetSubjectsWithGroupPrivilegeRequest" />
+      <output message="tns:GetSubjectsWithGroupPrivilegeResponse" wsa:Action="http://cagrid.nci.nih.gov/GridGrouper/GetSubjectsWithGroupPrivilegeResponse" />
+      <fault name="GridGrouperRuntimeFault" message="tns:GridGrouperRuntimeFaultFaultMessage" wsa:Action="http://cagrid.nci.nih.gov/GridGrouper/GridGrouperRuntimeFaultFaultMessage" />
+      <fault name="GroupNotFoundFault" message="tns:GroupNotFoundFaultFaultMessage" wsa:Action="http://cagrid.nci.nih.gov/GridGrouper/GroupNotFoundFaultFaultMessage" />
+    </operation>
+    <operation name="getGroupPrivileges">
+      <input message="tns:GetGroupPrivilegesRequest" wsa:Action="http://cagrid.nci.nih.gov/GridGrouper/GetGroupPrivilegesRequest" />
+      <output message="tns:GetGroupPrivilegesResponse" wsa:Action="http://cagrid.nci.nih.gov/GridGrouper/GetGroupPrivilegesResponse" />
+      <fault name="GridGrouperRuntimeFault" message="tns:GridGrouperRuntimeFaultFaultMessage" wsa:Action="http://cagrid.nci.nih.gov/GridGrouper/GridGrouperRuntimeFaultFaultMessage" />
+      <fault name="GroupNotFoundFault" message="tns:GroupNotFoundFaultFaultMessage" wsa:Action="http://cagrid.nci.nih.gov/GridGrouper/GroupNotFoundFaultFaultMessage" />
+    </operation>
+    <operation name="hasGroupPrivilege">
+      <input message="tns:HasGroupPrivilegeRequest" wsa:Action="http://cagrid.nci.nih.gov/GridGrouper/HasGroupPrivilegeRequest" />
+      <output message="tns:HasGroupPrivilegeResponse" wsa:Action="http://cagrid.nci.nih.gov/GridGrouper/HasGroupPrivilegeResponse" />
+      <fault name="GridGrouperRuntimeFault" message="tns:GridGrouperRuntimeFaultFaultMessage" wsa:Action="http://cagrid.nci.nih.gov/GridGrouper/GridGrouperRuntimeFaultFaultMessage" />
+      <fault name="GroupNotFoundFault" message="tns:GroupNotFoundFaultFaultMessage" wsa:Action="http://cagrid.nci.nih.gov/GridGrouper/GroupNotFoundFaultFaultMessage" />
+    </operation>
+    <operation name="isMember">
+      <input message="tns:IsMemberRequest" wsa:Action="http://cagrid.nci.nih.gov/GridGrouper/IsMemberRequest" />
+      <output message="tns:IsMemberResponse" wsa:Action="http://cagrid.nci.nih.gov/GridGrouper/IsMemberResponse" />
+      <fault name="GridGrouperRuntimeFault" message="tns:GridGrouperRuntimeFaultFaultMessage" wsa:Action="http://cagrid.nci.nih.gov/GridGrouper/GridGrouperRuntimeFaultFaultMessage" />
+    </operation>
+    <operation name="getMember">
+      <input message="tns:GetMemberRequest" wsa:Action="http://cagrid.nci.nih.gov/GridGrouper/GetMemberRequest" />
+      <output message="tns:GetMemberResponse" wsa:Action="http://cagrid.nci.nih.gov/GridGrouper/GetMemberResponse" />
+      <fault name="GridGrouperRuntimeFault" message="tns:GridGrouperRuntimeFaultFaultMessage" wsa:Action="http://cagrid.nci.nih.gov/GridGrouper/GridGrouperRuntimeFaultFaultMessage" />
+      <fault name="InsufficientPrivilegeFault" message="tns:InsufficientPrivilegeFaultFaultMessage" wsa:Action="http://cagrid.nci.nih.gov/GridGrouper/InsufficientPrivilegeFaultFaultMessage" />
+    </operation>
+    <operation name="getMembersGroups">
+      <input message="tns:GetMembersGroupsRequest" wsa:Action="http://cagrid.nci.nih.gov/GridGrouper/GetMembersGroupsRequest" />
+      <output message="tns:GetMembersGroupsResponse" wsa:Action="http://cagrid.nci.nih.gov/GridGrouper/GetMembersGroupsResponse" />
+      <fault name="GridGrouperRuntimeFault" message="tns:GridGrouperRuntimeFaultFaultMessage" wsa:Action="http://cagrid.nci.nih.gov/GridGrouper/GridGrouperRuntimeFaultFaultMessage" />
+      <fault name="InsufficientPrivilegeFault" message="tns:InsufficientPrivilegeFaultFaultMessage" wsa:Action="http://cagrid.nci.nih.gov/GridGrouper/InsufficientPrivilegeFaultFaultMessage" />
+    </operation>
+    <operation name="getServiceSecurityMetadata">
+      <input message="wns0:GetServiceSecurityMetadataRequest" wsa:Action="http://security.introduce.cagrid.nci.nih.gov/ServiceSecurity/GetServiceSecurityMetadataRequest" />
+      <output message="wns0:GetServiceSecurityMetadataResponse" wsa:Action="http://security.introduce.cagrid.nci.nih.gov/ServiceSecurity/GetServiceSecurityMetadataResponse" />
+    </operation>
+    <wsdl:operation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" name="GetMultipleResourceProperties">
+      <wsdl:input name="GetMultipleResourcePropertiesRequest" message="wsrpw:GetMultipleResourcePropertiesRequest" wsa:Action="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ResourceProperties/GetMultipleResourceProperties" />
+      <wsdl:output name="GetMultipleResourcePropertiesResponse" message="wsrpw:GetMultipleResourcePropertiesResponse" wsa:Action="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ResourceProperties/GetMultipleResourcePropertiesResponse" />
+      <wsdl:fault name="ResourceUnknownFault" message="wsrpw:ResourceUnknownFault" />
+      <wsdl:fault name="InvalidResourcePropertyQNameFault" message="wsrpw:InvalidResourcePropertyQNameFault" />
+    </wsdl:operation>
+    <wsdl:operation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" name="GetResourceProperty">
+      <wsdl:input name="GetResourcePropertyRequest" message="wsrpw:GetResourcePropertyRequest" wsa:Action="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ResourceProperties/GetResourceProperty" />
+      <wsdl:output name="GetResourcePropertyResponse" message="wsrpw:GetResourcePropertyResponse" wsa:Action="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ResourceProperties/GetResourcePropertyResponse" />
+      <wsdl:fault name="ResourceUnknownFault" message="wsrpw:ResourceUnknownFault" />
+      <wsdl:fault name="InvalidResourcePropertyQNameFault" message="wsrpw:InvalidResourcePropertyQNameFault" />
+    </wsdl:operation>
+    <wsdl:operation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" name="QueryResourceProperties">
+      <wsdl:input name="QueryResourcePropertiesRequest" message="wsrpw:QueryResourcePropertiesRequest" wsa:Action="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ResourceProperties/QueryResourceProperties" />
+      <wsdl:output name="QueryResourcePropertiesResponse" message="wsrpw:QueryResourcePropertiesResponse" wsa:Action="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ResourceProperties/QueryResourcePropertiesResponse" />
+      <wsdl:fault name="ResourceUnknownFault" message="wsrpw:ResourceUnknownFault" />
+      <wsdl:fault name="InvalidResourcePropertyQNameFault" message="wsrpw:InvalidResourcePropertyQNameFault" />
+      <wsdl:fault name="UnknownQueryExpressionDialectFault" message="wsrpw:UnknownQueryExpressionDialectFault" />
+      <wsdl:fault name="InvalidQueryExpressionFault" message="wsrpw:InvalidQueryExpressionFault" />
+      <wsdl:fault name="QueryEvaluationErrorFault" message="wsrpw:QueryEvaluationErrorFault" />
+    </wsdl:operation>
+  </portType>
+</definitions>
+

@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<?xml-stylesheet type="text/xsl" href="http://ivyrep.jayasoft.org/ivy-doc.xsl"?>
+<ivy-module version="1.0">
+    <info organisation="jcalendar" module="jcalendar" revision="0.1" status="release">
+        <license name="Apache" url="http://www.apache.org/licenses/LICENSE-2.0.txt"/>
+
+        <description homepage="https://jcalendar.dev.java.net/"> JCalendar is a Swing component for
+            selecting a date. </description>
+    </info>
+</ivy-module>

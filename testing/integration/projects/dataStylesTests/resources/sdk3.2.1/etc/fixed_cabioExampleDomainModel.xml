@@ -1,0 +1,176 @@
+<ns1:DomainModel projectShortName="cabio" projectVersion="3.2.1" xmlns:ns1="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.dataservice">
+ <ns1:exposedUMLAssociationCollection>
+  <ns1:UMLAssociation bidirectional="true">
+   <ns1:targetUMLAssociationEdge>
+    <ns1:UMLAssociationEdge maxCardinality="-1" minCardinality="0" roleName="libraryCollection">
+     <ns1:UMLClassReference refid="EAID_EF3067A6_EBCF_4294_B730_5A2E38632DBA"/>
+    </ns1:UMLAssociationEdge>
+   </ns1:targetUMLAssociationEdge>
+   <ns1:sourceUMLAssociationEdge>
+    <ns1:UMLAssociationEdge maxCardinality="-1" minCardinality="0" roleName="geneCollection">
+     <ns1:UMLClassReference refid="EAID_108EADA7_2DB6_4f20_B78F_98B9622502F9"/>
+    </ns1:UMLAssociationEdge>
+   </ns1:sourceUMLAssociationEdge>
+  </ns1:UMLAssociation>
+  <ns1:UMLAssociation bidirectional="true">
+   <ns1:targetUMLAssociationEdge>
+    <ns1:UMLAssociationEdge maxCardinality="-1" minCardinality="0" roleName="sequenceCollection">
+     <ns1:UMLClassReference refid="EAID_B743805D_29BB_490c_9ED7_BA74F8C1FB0B"/>
+    </ns1:UMLAssociationEdge>
+   </ns1:targetUMLAssociationEdge>
+   <ns1:sourceUMLAssociationEdge>
+    <ns1:UMLAssociationEdge maxCardinality="-1" minCardinality="0" roleName="geneCollection">
+     <ns1:UMLClassReference refid="EAID_108EADA7_2DB6_4f20_B78F_98B9622502F9"/>
+    </ns1:UMLAssociationEdge>
+   </ns1:sourceUMLAssociationEdge>
+  </ns1:UMLAssociation>
+  <ns1:UMLAssociation bidirectional="true">
+   <ns1:targetUMLAssociationEdge>
+    <ns1:UMLAssociationEdge maxCardinality="-1" minCardinality="0" roleName="targetCollection">
+     <ns1:UMLClassReference refid="EAID_E368F58E_6B0C_41e0_9F09_ABC065975476"/>
+    </ns1:UMLAssociationEdge>
+   </ns1:targetUMLAssociationEdge>
+   <ns1:sourceUMLAssociationEdge>
+    <ns1:UMLAssociationEdge maxCardinality="-1" minCardinality="0" roleName="geneCollection">
+     <ns1:UMLClassReference refid="EAID_108EADA7_2DB6_4f20_B78F_98B9622502F9"/>
+    </ns1:UMLAssociationEdge>
+   </ns1:sourceUMLAssociationEdge>
+  </ns1:UMLAssociation>
+  <ns1:UMLAssociation bidirectional="true">
+   <ns1:targetUMLAssociationEdge>
+    <ns1:UMLAssociationEdge maxCardinality="-1" minCardinality="0" roleName="geneCollection">
+     <ns1:UMLClassReference refid="EAID_108EADA7_2DB6_4f20_B78F_98B9622502F9"/>
+    </ns1:UMLAssociationEdge>
+   </ns1:targetUMLAssociationEdge>
+   <ns1:sourceUMLAssociationEdge>
+    <ns1:UMLAssociationEdge maxCardinality="1" minCardinality="0" roleName="taxon">
+     <ns1:UMLClassReference refid="EAID_2B14ED6A_6DC5_48a3_AFA1_FDFCC30363AD"/>
+    </ns1:UMLAssociationEdge>
+   </ns1:sourceUMLAssociationEdge>
+  </ns1:UMLAssociation>
+  <ns1:UMLAssociation bidirectional="true">
+   <ns1:targetUMLAssociationEdge>
+    <ns1:UMLAssociationEdge maxCardinality="1" minCardinality="1" roleName="geneCollection">
+     <ns1:UMLClassReference refid="EAID_108EADA7_2DB6_4f20_B78F_98B9622502F9"/>
+    </ns1:UMLAssociationEdge>
+   </ns1:targetUMLAssociationEdge>
+   <ns1:sourceUMLAssociationEdge>
+    <ns1:UMLAssociationEdge maxCardinality="1" minCardinality="0" roleName="chromosome">
+     <ns1:UMLClassReference refid="EAID_B383BA02_A63C_4199_9596_E9442A190AA2"/>
+    </ns1:UMLAssociationEdge>
+   </ns1:sourceUMLAssociationEdge>
+  </ns1:UMLAssociation>
+  <ns1:UMLAssociation bidirectional="true">
+   <ns1:targetUMLAssociationEdge>
+    <ns1:UMLAssociationEdge maxCardinality="1" minCardinality="1" roleName="chromosomeCollection">
+     <ns1:UMLClassReference refid="EAID_B383BA02_A63C_4199_9596_E9442A190AA2"/>
+    </ns1:UMLAssociationEdge>
+   </ns1:targetUMLAssociationEdge>
+   <ns1:sourceUMLAssociationEdge>
+    <ns1:UMLAssociationEdge maxCardinality="1" minCardinality="0" roleName="taxon">
+     <ns1:UMLClassReference refid="EAID_2B14ED6A_6DC5_48a3_AFA1_FDFCC30363AD"/>
+    </ns1:UMLAssociationEdge>
+   </ns1:sourceUMLAssociationEdge>
+  </ns1:UMLAssociation>
+  <ns1:UMLAssociation bidirectional="true">
+   <ns1:targetUMLAssociationEdge>
+    <ns1:UMLAssociationEdge maxCardinality="1" minCardinality="1" roleName="library">
+     <ns1:UMLClassReference refid="EAID_EF3067A6_EBCF_4294_B730_5A2E38632DBA"/>
+    </ns1:UMLAssociationEdge>
+   </ns1:targetUMLAssociationEdge>
+   <ns1:sourceUMLAssociationEdge>
+    <ns1:UMLAssociationEdge maxCardinality="-1" minCardinality="0" roleName="cloneCollection">
+     <ns1:UMLClassReference refid="EAID_34026E67_CD0A_4f15_B6AB_AD3A11509603"/>
+    </ns1:UMLAssociationEdge>
+   </ns1:sourceUMLAssociationEdge>
+  </ns1:UMLAssociation>
+  <ns1:UMLAssociation bidirectional="true">
+   <ns1:targetUMLAssociationEdge>
+    <ns1:UMLAssociationEdge maxCardinality="1" minCardinality="1" roleName="sequenceCollection">
+     <ns1:UMLClassReference refid="EAID_B743805D_29BB_490c_9ED7_BA74F8C1FB0B"/>
+    </ns1:UMLAssociationEdge>
+   </ns1:targetUMLAssociationEdge>
+   <ns1:sourceUMLAssociationEdge>
+    <ns1:UMLAssociationEdge maxCardinality="1" minCardinality="0" roleName="clone">
+     <ns1:UMLClassReference refid="EAID_34026E67_CD0A_4f15_B6AB_AD3A11509603"/>
+    </ns1:UMLAssociationEdge>
+   </ns1:sourceUMLAssociationEdge>
+  </ns1:UMLAssociation>
+ </ns1:exposedUMLAssociationCollection>
+ <ns1:exposedUMLClassCollection>
+  <ns1:UMLClass allowableAsTarget="true" className="Gene" id="EAID_108EADA7_2DB6_4f20_B78F_98B9622502F9" packageName="gov.nih.nci.cabio.domain" projectName="cabio" projectVersion="3.2.1">
+   <ns2:umlAttributeCollection xmlns:ns2="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common">
+    <ns2:UMLAttribute dataTypeName="java.lang.Long" name="id" publicID="-1403465331" version="1.0"/>
+    <ns2:UMLAttribute dataTypeName="java.lang.String" name="title" publicID="-1403465330" version="1.0"/>
+    <ns2:UMLAttribute dataTypeName="java.lang.String" name="symbol" publicID="-1403465329" version="1.0"/>
+    <ns2:UMLAttribute dataTypeName="java.lang.String" name="locusLinkSummary" publicID="-1403465328" version="1.0"/>
+    <ns2:UMLAttribute dataTypeName="java.lang.String" name="OMIMID" publicID="-1403465327" version="1.0"/>
+    <ns2:UMLAttribute dataTypeName="java.lang.String" name="locusLinkId" publicID="-1403465326" version="1.0"/>
+    <ns2:UMLAttribute dataTypeName="java.lang.Long" name="clusterId" publicID="-1403465325" version="1.0"/>
+   </ns2:umlAttributeCollection>
+  </ns1:UMLClass>
+  <ns1:UMLClass allowableAsTarget="true" className="Chromosome" id="EAID_B383BA02_A63C_4199_9596_E9442A190AA2" packageName="gov.nih.nci.cabio.domain" projectName="cabio" projectVersion="3.2.1">
+   <ns3:umlAttributeCollection xmlns:ns3="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common">
+    <ns3:UMLAttribute dataTypeName="java.lang.Long" name="id" publicID="-21267056" version="1.0"/>
+    <ns3:UMLAttribute dataTypeName="java.lang.String" name="name" publicID="-21267055" version="1.0"/>
+   </ns3:umlAttributeCollection>
+  </ns1:UMLClass>
+  <ns1:UMLClass allowableAsTarget="true" className="Taxon" id="EAID_2B14ED6A_6DC5_48a3_AFA1_FDFCC30363AD" packageName="gov.nih.nci.cabio.domain" projectName="cabio" projectVersion="3.2.1">
+   <ns4:umlAttributeCollection xmlns:ns4="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common">
+    <ns4:UMLAttribute dataTypeName="java.lang.Long" name="id" publicID="-15981981" version="1.0"/>
+    <ns4:UMLAttribute dataTypeName="java.lang.String" name="scientificName" publicID="-15981980" version="1.0"/>
+    <ns4:UMLAttribute dataTypeName="java.lang.String" name="ethnicityOrStrain" publicID="-15981979" version="1.0"/>
+    <ns4:UMLAttribute dataTypeName="java.lang.String" name="abbreviation" publicID="-15981978" version="1.0"/>
+    <ns4:UMLAttribute dataTypeName="java.lang.String" name="commonName" publicID="-15981977" version="1.0"/>
+    <ns4:UMLAttribute dataTypeName="java.lang.Boolean" name="isPreferred" publicID="-15981976" version="1.0"/>
+   </ns4:umlAttributeCollection>
+  </ns1:UMLClass>
+  <ns1:UMLClass allowableAsTarget="true" className="Library" id="EAID_EF3067A6_EBCF_4294_B730_5A2E38632DBA" packageName="gov.nih.nci.cabio.domain" projectName="cabio" projectVersion="3.2.1">
+   <ns5:umlAttributeCollection xmlns:ns5="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common">
+    <ns5:UMLAttribute dataTypeName="java.lang.Long" name="id" publicID="-2034549468" version="1.0"/>
+    <ns5:UMLAttribute dataTypeName="java.lang.String" name="type" publicID="-2034549467" version="1.0"/>
+    <ns5:UMLAttribute dataTypeName="java.lang.String" name="name" publicID="-2034549466" version="1.0"/>
+    <ns5:UMLAttribute dataTypeName="java.lang.String" name="keyword" publicID="-2034549465" version="1.0"/>
+    <ns5:UMLAttribute dataTypeName="java.lang.String" name="description" publicID="-2034549464" version="1.0"/>
+    <ns5:UMLAttribute dataTypeName="java.lang.String" name="RSite1" publicID="-2034549463" version="1.0"/>
+    <ns5:UMLAttribute dataTypeName="java.lang.String" name="RSite2" publicID="-2034549462" version="1.0"/>
+    <ns5:UMLAttribute dataTypeName="java.lang.Long" name="unigeneId" publicID="-2034549461" version="1.0"/>
+    <ns5:UMLAttribute dataTypeName="java.util.Date" name="creationDate" publicID="-2034549460" version="1.0"/>
+    <ns5:UMLAttribute dataTypeName="java.lang.String" name="labHost" publicID="-2034549459" version="1.0"/>
+    <ns5:UMLAttribute dataTypeName="java.lang.Long" name="clonesToDate" publicID="1353476011" version="1.0"/>
+    <ns5:UMLAttribute dataTypeName="java.lang.Long" name="sequencesToDate" publicID="1353476012" version="1.0"/>
+   </ns5:umlAttributeCollection>
+  </ns1:UMLClass>
+  <ns1:UMLClass allowableAsTarget="true" className="Clone" id="EAID_34026E67_CD0A_4f15_B6AB_AD3A11509603" packageName="gov.nih.nci.cabio.domain" projectName="cabio" projectVersion="3.2.1">
+   <ns6:umlAttributeCollection xmlns:ns6="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common">
+    <ns6:UMLAttribute dataTypeName="java.lang.Long" name="id" publicID="1597272677" version="1.0"/>
+    <ns6:UMLAttribute dataTypeName="java.lang.Boolean" name="verified" publicID="1597272678" version="1.0"/>
+    <ns6:UMLAttribute dataTypeName="java.lang.Long" name="insertSize" publicID="1597272679" version="1.0"/>
+    <ns6:UMLAttribute dataTypeName="java.lang.String" name="accessionNumber" publicID="1597272680" version="1.0"/>
+    <ns6:UMLAttribute dataTypeName="java.lang.String" name="name" publicID="1597272681" version="1.0"/>
+    <ns6:UMLAttribute dataTypeName="java.lang.String" name="version" publicID="1597272682" version="1.0"/>
+    <ns6:UMLAttribute dataTypeName="java.lang.String" name="strain" publicID="1597272683" version="1.0"/>
+   </ns6:umlAttributeCollection>
+  </ns1:UMLClass>
+  <ns1:UMLClass allowableAsTarget="true" className="Sequence" id="EAID_B743805D_29BB_490c_9ED7_BA74F8C1FB0B" packageName="gov.nih.nci.cabio.domain" projectName="cabio" projectVersion="3.2.1">
+   <ns7:umlAttributeCollection xmlns:ns7="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common">
+    <ns7:UMLAttribute dataTypeName="java.lang.Long" name="id" publicID="152964270" version="1.0"/>
+    <ns7:UMLAttribute dataTypeName="java.lang.Long" name="length" publicID="152964271" version="1.0"/>
+    <ns7:UMLAttribute dataTypeName="java.lang.Boolean" name="isReferenceSequence" publicID="152964272" version="1.0"/>
+    <ns7:UMLAttribute dataTypeName="java.lang.String" name="description" publicID="152964273" version="1.0"/>
+    <ns7:UMLAttribute dataTypeName="java.lang.String" name="asciiString" publicID="152964274" version="1.0"/>
+    <ns7:UMLAttribute dataTypeName="java.lang.String" name="accessionNumber" publicID="152964275" version="1.0"/>
+    <ns7:UMLAttribute dataTypeName="java.lang.String" name="accessionNumberVersion" publicID="152964276" version="1.0"/>
+    <ns7:UMLAttribute dataTypeName="java.lang.Long" name="type" publicID="152964277" version="1.0"/>
+   </ns7:umlAttributeCollection>
+  </ns1:UMLClass>
+  <ns1:UMLClass allowableAsTarget="true" className="Target" id="EAID_E368F58E_6B0C_41e0_9F09_ABC065975476" packageName="gov.nih.nci.cabio.domain" projectName="cabio" projectVersion="3.2.1">
+   <ns8:umlAttributeCollection xmlns:ns8="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common">
+    <ns8:UMLAttribute dataTypeName="java.lang.Long" name="id" publicID="730985567" version="1.0"/>
+    <ns8:UMLAttribute dataTypeName="java.lang.String" name="type" publicID="730985568" version="1.0"/>
+    <ns8:UMLAttribute dataTypeName="java.lang.String" name="name" publicID="730985569" version="1.0"/>
+   </ns8:umlAttributeCollection>
+  </ns1:UMLClass>
+ </ns1:exposedUMLClassCollection>
+ <ns1:umlGeneralizationCollection/>
+</ns1:DomainModel>

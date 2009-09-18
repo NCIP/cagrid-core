@@ -1,0 +1,25 @@
+<?xml version="1.0"?>
+<ivy-module version="2.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:noNamespaceSchemaLocation="http://incubator.apache.org/ivy/schemas/ivy.xsd">
+
+    <info organisation="hibernate" module="hibernate-annotations" revision="3.3.1.GA"
+        status="release">
+
+        <license name="LGPL" url="http://www.gnu.org/copyleft/lesser.html"/>
+        <description homepage="http://hibernate.org/"> The Hibernate Annotations - common code</description>
+    </info>
+
+    <configurations>
+        <conf name="core"
+            description="mirrors core hibernate, you will need to add a dependency on hibernate with at least a configured cache (ehcache, swarmcache, jboss-cache, ...) and a configured bytecode provider (c3p0, javassist)"/>
+        <conf name="default" description="for default use with default hibernate configuration"/>
+        <conf name="minimal" description="for use with simple annotations (no hibernate)"/>
+    </configurations>
+    <dependencies>
+        <dependency org="hibernate" name="hibernate" rev="3.2.+" conf="core->core;default->default"/>
+        <dependency org="hibernate" name="hibernate-commons-annotations" rev="3.0.0.GA"
+            conf="core,default,minimal->default"/>
+
+        <dependency org="sun" name="persistence-api" rev="1.0.1.GA" conf="core,default,minimal->default"/>
+    </dependencies>
+</ivy-module>

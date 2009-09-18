@@ -1,0 +1,39 @@
+<!-- edited with XMLSpy v2005 rel. 3 U (http://www.altova.com) by David W. Ervin (The Ohio State University / Department of Biomedical Informatics) -->
+<xsd:schema xmlns:val="http://gov.nih.nci.cagrid.tests.core.validation/ValidationDescription" xmlns:sched="http://gov.nih.nci.cagrid.tests.core.validation/Schedule" xmlns:xsd="http://www.w3.org/2001/XMLSchema" targetNamespace="http://gov.nih.nci.cagrid.tests.core.validation/ValidationDescription" elementFormDefault="qualified" attributeFormDefault="unqualified">
+	<xsd:import namespace="http://gov.nih.nci.cagrid.tests.core.validation/Schedule" schemaLocation="Schedule.xsd"/>
+	<xsd:complexType name="ServiceDescription">
+		<xsd:attribute name="serviceName" type="xsd:string" use="required"/>
+		<xsd:attribute name="serviceUrl" type="xsd:anyURI" use="required"/>
+		<xsd:attribute name="serviceType" type="xsd:string" use="required"/>
+	</xsd:complexType>
+	<xsd:complexType name="ValidationDescription">
+		<xsd:sequence>
+			<xsd:element name="ServiceDescription" type="val:ServiceDescription" maxOccurs="unbounded"/>
+			<xsd:element ref="sched:Schedule" minOccurs="0" maxOccurs="1"/>
+			<xsd:element name="ServiceType" type="val:ServiceType" maxOccurs="unbounded"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="ServiceType">
+		<xsd:sequence>
+			<xsd:annotation>
+				<xsd:documentation>Specify steps in the order they should be executed</xsd:documentation>
+			</xsd:annotation>
+			<xsd:element name="TestStep" type="val:ServiceTestStep" maxOccurs="unbounded"/>
+		</xsd:sequence>
+		<xsd:attribute name="typeName" type="xsd:string" use="required"/>
+	</xsd:complexType>
+	<xsd:complexType name="ServiceTestStep">
+		<xsd:annotation>
+			<xsd:documentation>MUST extend from gov.nci.nih.cagrid.validator.steps.AbstractBaseServiceTestStep</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="ConfigurationProperty" minOccurs="0" maxOccurs="unbounded">
+				<xsd:complexType>
+					<xsd:attribute name="key" type="xsd:string" use="required"/>
+					<xsd:attribute name="value" type="xsd:string" use="optional"/>
+				</xsd:complexType>
+			</xsd:element>
+		</xsd:sequence>
+		<xsd:attribute name="classname" type="xsd:string" use="required"/>
+	</xsd:complexType>
+</xsd:schema>

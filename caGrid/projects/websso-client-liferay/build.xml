@@ -1,0 +1,88 @@
+<project name="caGrid-websso-client-liferay" default="all">
+	<!-- Environment -->
+	<property environment="env" />
+	<property file="${basedir}/project.properties" />
+	<property file="${basedir}/build.properties" />
+
+	<property name="ext.dir" location="ext" />
+
+	<property name="lib.dir" location="lib" />
+	<property name="ext.lib.dir" location="${ext.dir}/dependencies/default/jars" />
+
+	<property name="jar.name" value="${ant.project.name}-${project.version}.jar" />
+
+	<property name="src.java.dir" location="src/java" />
+	<property name="src.resources.dir" location="src/resources" />
+	<property name="test.src.dir" location="test/src/java" />
+
+	<property name="build.dir" location="build" />
+	<property name="build.classes.dir" location="build/classes" />
+
+	<path id="build.classpath">
+		<fileset dir="${ext.lib.dir}">
+			<include name="*.jar" />
+		</fileset>
+		<fileset dir="${lib.dir}">
+			<include name="*.jar" />
+		</fileset>
+		<fileset dir="${env.GLOBUS_LOCATION}/lib">
+			<include name="**/*.jar" />
+		</fileset>
+	</path>
+
+	<target name="dist">
+		<copy todir="${build.dir}" flatten="true" overwrite="true">
+			<fileset dir="${ext.lib.dir}">
+				<include name="*.jar" />
+			</fileset>
+			<fileset dir="${env.GLOBUS_LOCATION}/lib">
+				<include name="axis.jar" />
+				<include name="wsrf_core_stubs.jar" />
+				<include name="jaxrpc.jar" />
+				<include name="addressing-1.0.jar" />
+				<include name="cog-axis.jar" />
+				<include name="saaj.jar" />
+				<include name="commons-discovery.jar" />
+				<include name="wsdl4j.jar" />
+				<include name="wsrf_core.jar" />
+				<include name="puretls.jar" />
+				<include name="cryptix.jar" />
+				<include name="cryptix32.jar" />
+				<include name="cryptix-asn1.jar" />
+				<include name="wss4j.jar" />
+				<include name="xalan.jar" />
+				<include name="xmlsec.jar" />
+				<include name="jce-jdk13-125.jar" />
+			</fileset>
+		</copy>
+		<copy file="${src.resources.dir}/web.xml" tofile="${build.dir}/web-${project.version}.xml" />
+		<copy file="${src.resources.dir}/cas-client.properties" tofile="${build.dir}/cas-client-${project.version}.properties" />
+	</target>
+
+	<target name="build-jar">
+		<jar jarfile="${build.dir}/${jar.name}" basedir="${build.classes.dir}">
+			<fileset dir="${src.resources.dir}">
+				<include name="*.*" />
+			</fileset>
+		</jar>
+		<delete dir="${build.classes.dir}" />
+	</target>
+
+	<target name="compile">
+		<mkdir dir="${build.dir}" />
+		<mkdir dir="${build.classes.dir}" />
+		<javac srcdir="${src.java.dir}" destdir="${build.classes.dir}" classpathref="build.classpath" debug="true" />
+	</target>
+
+	<target name="jar" depends="compile,build-jar,dist">
+	</target>
+
+	<target name="clean">
+		<delete dir="${build.dir}" />
+	</target>
+
+	<target name="all">
+		<antcall target="clean" />
+		<antcall target="jar" />
+	</target>
+</project>

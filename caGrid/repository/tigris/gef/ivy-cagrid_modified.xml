@@ -1,0 +1,25 @@
+<?xml version="1.0"?>
+
+<ivy-module version="2.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:noNamespaceSchemaLocation="http://incubator.apache.org/ivy/schemas/ivy.xsd">
+
+	<info organisation="tigris" module="gef" revision="cagrid_modified">
+		<description>The goal of the GEF project is to build a graph editing library that can be
+			used to construct many, high-quality graph editing applications.
+			(http://gef.tigris.org/). This version is, unfortunately, a modified copy of an unknown
+			release version. It appears 0.12.3 is compatible with this version, other than the
+			modifications.</description>
+	</info>
+
+	<configurations>
+		<!-- Public Configurations-->
+		<conf name="default" visibility="public"/>
+	</configurations>
+
+
+	<publications>
+		<artifact name="gef_modified" type="jar"/>
+	</publications>
+
+	<dependencies/>
+</ivy-module>

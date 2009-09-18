@@ -1,0 +1,12 @@
+<?xml version="1.0"?>
+
+<ivy-module version="2.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:noNamespaceSchemaLocation="http://incubator.apache.org/ivy/schemas/ivy.xsd">
+
+	<info organisation="sun" module="xmldsig" revision="1.0">
+		<description homepage="http://www.jcp.org/en/jsr/detail?id=105"> This defines and
+			incorporates a standard set of high-level implementation-independent APIs for XML
+			digital signatures services. The XML Digital Signature specification is defined by the
+			W3C.</description>
+	</info>
+</ivy-module>

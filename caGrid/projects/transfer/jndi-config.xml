@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jndiConfig xmlns="http://wsrf.globus.org/jndi/config">
+  <service name="SERVICE-INSTANCE-PREFIX/TransferServiceContext">
+    <resource name="configuration" type="org.cagrid.transfer.context.service.globus.resource.TransferServiceContextResourceConfiguration">
+      <resourceParams>
+        <parameter>
+          <name>factory</name>
+          <value>org.globus.wsrf.jndi.BeanFactory</value>
+        </parameter>
+        <parameter>
+          <name>performRegistration</name>
+          <!-- Set this to false to skip ServiceGroup registration -->
+          <value>PERFORM_REGISTRATION</value>
+        </parameter>
+        <parameter>
+          <name>registrationTemplateFile</name>
+          <!-- Set this to the relative path (from the container root, e.g GLOBUS_LOCATION for globus container) of the registration parameters template file (ignored if performRegistration is false) -->
+          <value>ETC-PATH/TransferServiceContext_registration.xml</value>
+        </parameter>
+      </resourceParams>
+    </resource>
+    <resource name="home" type="org.cagrid.transfer.context.service.globus.resource.TransferServiceContextResourceHome">
+      <resourceParams>
+        <parameter>
+          <name>factory</name>
+          <value>org.globus.wsrf.jndi.BeanFactory</value>
+        </parameter>
+        <parameter>
+          <name>resourceClass</name>
+          <value>org.cagrid.transfer.context.service.globus.resource.TransferServiceContextResource</value>
+        </parameter>
+        <parameter>
+          <name>resourceKeyName</name>
+          <value>{http://transfer.cagrid.org/TransferService/Context}TransferServiceContextResultsKey</value>
+        </parameter>
+        <parameter>
+          <name>resourceKeyType</name>
+          <value>java.lang.String</value>
+        </parameter>
+      </resourceParams>
+    </resource>
+    <resourceLink name="serviceconfiguration" target="java:comp/env/services/SERVICE-INSTANCE-PREFIX/TransferService/serviceconfiguration" />
+    <resourceLink name="transferServiceHome" target="java:comp/env/services/SERVICE-INSTANCE-PREFIX/TransferService/home" />
+  </service>
+  <service name="SERVICE-INSTANCE-PREFIX/TransferService">
+    <resource name="configuration" type="org.cagrid.transfer.service.globus.resource.TransferServiceResourceConfiguration">
+      <resourceParams>
+        <parameter>
+          <name>factory</name>
+          <value>org.globus.wsrf.jndi.BeanFactory</value>
+        </parameter>
+        <parameter>
+          <name>performRegistration</name>
+          <!-- Set this to false to skip ServiceGroup registration -->
+          <value>PERFORM_REGISTRATION</value>
+        </parameter>
+        <parameter>
+          <name>registrationTemplateFile</name>
+          <!-- Set this to the relative path (from the container root, e.g GLOBUS_LOCATION for globus container) of the registration parameters template file (ignored if performRegistration is false) -->
+          <value>ETC-PATH/TransferService_registration.xml</value>
+        </parameter>
+        <parameter>
+          <name>serviceMetadataFile</name>
+          <!-- Set this to the relative path (from the container root, e.g GLOBUS_LOCATION for globus container) of the serviceMetadata extract -->
+          <value>ETC-PATH/serviceMetadata.xml</value>
+        </parameter>
+      </resourceParams>
+    </resource>
+    <resource name="serviceconfiguration" type="org.cagrid.transfer.service.TransferServiceConfiguration">
+      <resourceParams>
+        <parameter>
+          <name>factory</name>
+          <value>org.globus.wsrf.jndi.BeanFactory</value>
+        </parameter>
+        <parameter>
+          <name>etcDirectoryPath</name>
+          <value>ETC-PATH</value>
+        </parameter>
+        <parameter>
+          <name>transferServletPathName</name>
+          <value>@transferServletPathName@</value>
+        </parameter>
+        <parameter>
+          <name>storageDirectory</name>
+          <value>ETC-PATH/@storageDirectory@</value>
+        </parameter>
+        <parameter>
+          <name>defaultTransferServiceContextTerminationTimeInMinutes</name>
+          <value>@defaultTransferServiceContextTerminationTimeInMinutes@</value>
+        </parameter>
+      </resourceParams>
+    </resource>
+    <resource name="home" type="org.cagrid.transfer.service.globus.resource.TransferServiceResourceHome">
+      <resourceParams>
+        <parameter>
+          <name>factory</name>
+          <value>org.globus.wsrf.jndi.BeanFactory</value>
+        </parameter>
+      </resourceParams>
+    </resource>
+    <resourceLink name="transferServiceContextHome" target="java:comp/env/services/SERVICE-INSTANCE-PREFIX/TransferServiceContext/home" />
+  </service>
+</jndiConfig>
+

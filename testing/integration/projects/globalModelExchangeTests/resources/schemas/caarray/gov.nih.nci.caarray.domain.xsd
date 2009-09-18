@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns="gme://caArray.caBIG/2.0/gov.nih.nci.caarray.domain"
+    targetNamespace="gme://caArray.caBIG/2.0/gov.nih.nci.caarray.domain" elementFormDefault="qualified">
+
+    <xs:element name="AbstractCaArrayObject" type="AbstractCaArrayObject" />
+    <xs:complexType name="AbstractCaArrayObject">
+        <xs:sequence />
+        <xs:attribute name="bigid" type="xs:string" />
+        <xs:attribute name="id" type="xs:long" />
+    </xs:complexType>
+
+    <xs:element name="AbstractCaArrayEntity" type="AbstractCaArrayEntity" />
+    <xs:complexType name="AbstractCaArrayEntity">
+        <xs:complexContent>
+            <xs:extension base="AbstractCaArrayObject">
+                <xs:sequence />
+                <xs:attribute name="lsidAuthority" type="xs:string" />
+                <xs:attribute name="lsidNamespace" type="xs:string" />
+                <xs:attribute name="lsidObjectId" type="xs:string" />
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+</xs:schema>
+

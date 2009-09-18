@@ -1,0 +1,14 @@
+<?xml version="1.0"?>
+
+<ivy-module version="2.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:noNamespaceSchemaLocation="http://incubator.apache.org/ivy/schemas/ivy.xsd">
+
+    <info organisation="sun" module="jhall" revision="2.0_02" status="release">
+        <license name="Sun Microsystems, Inc. Binary License Code Agreement"/>
+        <description homepage="http://java.sun.com/products/javahelp/">JavaHelp is an open source
+            software, a full-featured, platform-independent, extensible help system that enables you
+            to incorporate online help in applets, components, applications, operating systems, and
+            devices. Authors can also use the JavaHelp software to deliver online documentation for
+            the Web and corporate intranet. </description>
+    </info>
+</ivy-module>

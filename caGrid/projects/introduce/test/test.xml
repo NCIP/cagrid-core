@@ -1,0 +1,40 @@
+<!-- ======================================================================= -->
+<!-- caGrid Utilities build file                                             -->
+<!-- ======================================================================= -->
+<project name="caGrid-introduce_tests_harness" basedir=".">
+	<property name="junit.results.dir" value="${test.log.dir}/junit" />
+
+	<property name="haltonerror" value="false" />
+
+
+
+	<!-- call the test target for each project and aggregates the log resutls  -->
+	<target name="test" depends="checkGlobus">
+		<echo message="Test results dir: ${junit.results.dir}" />
+		<mkdir dir="${junit.results.dir}" />
+		<junit dir="${basedir}" printsummary="yes" haltonerror="${haltonerror}" errorproperty="test.failed" failureproperty="test.failed" showoutput="true" fork="yes" forkmode="once">
+			<sysproperty key="basedir" value="${basedir}" />
+			<sysproperty key="build.dir" value="${classes.dir}" />
+			<sysproperty key="GLOBUS_LOCATION" value="${ext.globus.location}" />
+			<jvmarg value="-Dbuild.dir=${classes.dir}" />
+			<jvmarg value="-DGLOBUS_LOCATION=${ext.globus.dir}" />
+			<classpath refid="Introduce.test.classpath" />
+			<classpath refid="UpdateManager.test.classpath" />
+			<formatter type="xml" />
+			<test if="testcase" name="${testcase}" fork="no" todir="${junit.results.dir}" />
+			<batchtest unless="testcase" fork="yes" todir="${junit.results.dir}">
+				<fileset dir="${test.src.dir}/Introduce">
+					<include name="**/test/unit/**/*Test.java" />
+					<include name="**/test/unit/**/*TestCase.java" />
+				</fileset>
+				<fileset dir="${test.src.dir}/UpdateManager">
+					<include name="**/test/unit/**/*Test.java" />
+					<include name="**/test/unit/**/*TestCase.java" />
+				</fileset>
+			</batchtest>
+		</junit>
+		<fail message="Tests failed! Check test reports." if="test.failed" />
+	</target>
+
+
+</project>

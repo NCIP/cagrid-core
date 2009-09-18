@@ -1,0 +1,54 @@
+<%@ jet package="gov.nih.nci.cagrid.introduce.templates" class="JNDIConfigTemplate" 
+imports="gov.nih.nci.cagrid.introduce.* gov.nih.nci.cagrid.introduce.beans.service.* gov.nih.nci.cagrid.introduce.common.* gov.nih.nci.cagrid.introduce.common.* gov.nih.nci.cagrid.introduce.codegen.utils.* gov.nih.nci.cagrid.introduce.codegen.* gov.nih.nci.cagrid.introduce.beans.namespace.* java.util.* gov.nih.nci.cagrid.introduce.beans.resource.* gov.nih.nci.cagrid.introduce.beans.property.*" %>
+<% gov.nih.nci.cagrid.introduce.common.SpecificServiceInformation info = (gov.nih.nci.cagrid.introduce.common.SpecificServiceInformation) argument;
+   ServiceProperties properties = info.getServiceProperties();
+   String namespaceDomain = info.getIntroduceServiceProperties().getProperty("introduce.skeleton.namespace.domain");
+  	ServiceType service = info.getService();
+	String serviceName = service.getName();
+	String modifiedServiceName = serviceName;
+   	if(serviceName.endsWith("Service")){
+   		modifiedServiceName = serviceName.substring(0,serviceName.length()-7);
+   	}
+%><?xml version="1.0" encoding="UTF-8"?>
+<jndiConfig xmlns="http://wsrf.globus.org/jndi/config">
+	<service name="SERVICE-INSTANCE-PREFIX/<%=serviceName%>">
+		<resource name="home" type="<%=service.getPackageName()%>.service.globus.resource.<%=serviceName%>ResourceHome">
+			<resourceParams>
+				<parameter>
+					<name>factory</name>
+					<value>org.globus.wsrf.jndi.BeanFactory</value>
+				</parameter>
+			</resourceParams>
+		</resource>
+		<resource name="configuration" type="<%=service.getPackageName()%>.service.globus.resource.<%=serviceName%>ResourceConfiguration">
+			<resourceParams>
+				<parameter>
+					<name>factory</name>
+					<value>org.globus.wsrf.jndi.BeanFactory</value>
+				</parameter>
+				<parameter>
+					<name>performRegistration</name>
+					<!-- Set this to false to skip ServiceGroup registration -->
+					<value>PERFORM_REGISTRATION</value>
+				</parameter>
+				<parameter>
+					<name>registrationTemplateFile</name>
+					<!-- Set this to the relative path (from the container root, e.g GLOBUS_LOCATION for globus container) of the registration parameters template file (ignored if performRegistration is false) -->
+					<value>ETC-PATH/<%=service.getName()%>_registration.xml</value>
+				</parameter>		
+			</resourceParams>
+		</resource>
+		<resource name="serviceconfiguration" type="<%=service.getPackageName()%>.service.<%=serviceName%>Configuration">
+			<resourceParams>
+				<parameter>
+					<name>factory</name>
+					<value>org.globus.wsrf.jndi.BeanFactory</value>
+				</parameter>
+				<parameter>
+					<name>etcDirectoryPath</name>
+					<value>ETC-PATH</value>
+				</parameter>
+			</resourceParams>
+		</resource>
+	</service>
+</jndiConfig>
