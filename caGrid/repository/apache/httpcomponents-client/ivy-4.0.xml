@@ -1,0 +1,23 @@
+<?xml version="1.0"?>
+
+<ivy-module version="2.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:noNamespaceSchemaLocation="http://incubator.apache.org/ivy/schemas/ivy.xsd">
+
+	<info organisation="apache" module="httpcomponents-client" revision="4.0">
+		<description homepage="http://hc.apache.org/httpcomponents-client/index.html">Apache
+			HTTP/1.1 compliant HTTP agent implementation.</description>
+	</info>
+
+	<configurations>
+		<!-- Public Configurations-->
+		<conf name="default" visibility="public"/>
+	</configurations>
+
+
+	<publications>
+		<artifact name="httpclient" type="jar"/>
+		<artifact name="jcip-annotations" type="jar"/>
+	</publications>
+
+	<dependencies/>
+</ivy-module>
