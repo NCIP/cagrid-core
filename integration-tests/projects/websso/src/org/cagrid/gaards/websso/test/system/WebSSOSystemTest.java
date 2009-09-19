@@ -229,7 +229,7 @@ public class WebSSOSystemTest extends Story {
 		}
 		try {
 			this.tempwebssoJasigClientService= new File("tmp/websso-client-example");
-			File asLocation = new File("../../../SampleApplications/projects/websso-client-example");
+			File asLocation = new File("../../../examples/projects/websso-client-example");
 			CopyServiceStep copyService = new CopyServiceStep(asLocation,
 					tempwebssoJasigClientService);
 			copyService.runStep();
@@ -241,7 +241,7 @@ public class WebSSOSystemTest extends Story {
 		}
 		try {
 			this.tempwebssoAcegiClientService= new File("tmp/websso-client-example");
-			File asLocation = new File("../../../SampleApplications/projects/websso-client-example");
+			File asLocation = new File("../../../examples/projects/websso-client-example");
 			CopyServiceStep copyService = new CopyServiceStep(asLocation,
 					tempwebssoAcegiClientService);
 			copyService.runStep();
