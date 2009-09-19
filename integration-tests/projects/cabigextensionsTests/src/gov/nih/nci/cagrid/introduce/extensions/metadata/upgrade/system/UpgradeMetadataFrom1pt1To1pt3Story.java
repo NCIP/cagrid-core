@@ -24,7 +24,7 @@ import java.util.Vector;
 public class UpgradeMetadataFrom1pt1To1pt3Story extends Story {
 
     protected static final File PROJECT_DIR = new File(".." + File.separator + ".." + File.separator + ".."
-        + File.separator + "tests" + File.separator + "projects" + File.separator + "cabigextensionsTests");
+        + File.separator + "integration-tests" + File.separator + "projects" + File.separator + "cabigextensionsTests");
     protected static final File TEST_DIR = new File(PROJECT_DIR, "test" + File.separator + "MetadataUpgradeService11");
     protected static final File TEST_SERVICE_ZIP = new File(PROJECT_DIR, "test" + File.separator + "resources"
         + File.separator + "Introduce_1.1_ServiceWithMetadata.zip");
