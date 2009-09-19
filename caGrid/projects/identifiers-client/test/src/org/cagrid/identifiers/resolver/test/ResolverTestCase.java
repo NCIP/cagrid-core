@@ -10,7 +10,6 @@ import org.apache.axis.message.addressing.AttributedURI;
 import org.apache.axis.message.addressing.EndpointReference;
 import org.apache.axis.message.addressing.EndpointReferenceType;
 import org.apache.axis.message.addressing.ServiceNameType;
-import org.apache.commons.httpclient.HttpException;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.cagrid.identifiers.namingauthority.impl.IdentifierValuesImpl;
@@ -26,7 +25,8 @@ public class ResolverTestCase extends TestCase {
 
 	private static Log log = LogFactory.getLog(ResolverTestCase.class);
 	
-	private String identifier = "http://na.cagrid.org:8090/osumc/c9fa9853-1558-4576-b365-6ee6a6f57a31";
+	private String identifier = "http://140.254.126.79:8080/osumc/70ef4ac1-a39a-4652-a46b-a2c6b0194728";
+	//private String identifier = "https://140.254.126.79:8443/osumc/ssl/70ef4ac1-a39a-4652-a46b-a2c6b0194728";
 
 	public void testGridResolution() {
 		try {

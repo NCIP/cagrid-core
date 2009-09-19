@@ -33,8 +33,11 @@
 		<dependency rev="latest.integration" org="caGrid" name="identifiers-namingauthority-gridsvc"
          conf="impl->stubs,client" transitive="true" />
 
-		<dependency rev="3.0" org="apache" name="jarkarta-commons-httpclient" 
-			conf="impl->default" transitive="true" />
+		<dependency rev="4.0.1" org="apache" name="httpcomponents-core"
+                        conf="impl->default" transitive="true" />
+		<dependency rev="4.0" org="apache" name="httpcomponents-client"
+                        conf="impl->default" transitive="true" />
+
 		<dependency rev="1.3" org="apache" name="commons-codec"
 			conf="impl->default" transitive="true" />
 		<dependency rev="2.5.5" org="springframework" name="spring"

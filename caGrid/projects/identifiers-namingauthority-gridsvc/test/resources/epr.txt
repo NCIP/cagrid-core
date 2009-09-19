@@ -1,0 +1,7 @@
+<ns1:SDKTestModel xsi:type="ns2:EndpointReferenceType" xmlns:ns1="http://sdktestmodel.cagrid.org/SDKTestModel" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ns2="http://schemas.xmlsoap.org/ws/2004/03/addressing">
+ <ns2:Address xsi:type="ns2:AttributedURI">http://localhost:8082/wsrf/services/cagrid/SDKTestModel</ns2:Address>
+ <ns2:ReferenceProperties xsi:type="ns2:ReferencePropertiesType"/>
+ <ns2:ReferenceParameters xsi:type="ns2:ReferenceParametersType"/>
+ <ns2:PortType xsi:type="ns2:AttributedQName" xmlns:ns3="http://sdktestmodel.cagrid.org/SDKTestModel/service">ns3:SDKTestModelPortTypePort</ns2:PortType>
+ <ns2:ServiceName xsi:type="ns2:ServiceNameType" xmlns:ns4="http://sdktestmodel.cagrid.org/SDKTestModel/service">ns4:SDKTestModelService</ns2:ServiceName>
+</ns1:SDKTestModel>

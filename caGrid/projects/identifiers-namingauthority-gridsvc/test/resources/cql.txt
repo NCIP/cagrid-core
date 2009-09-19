@@ -1,0 +1,5 @@
+<CQLQuery xmlns="http://CQL.caBIG/1/gov.nih.nci.cagrid.CQLQuery">
+	<Target name="gov.nih.nci.cacoresdk.domain.onetoone.unidirectional.Person">
+		<Attribute name="id" value="9711919" predicate="EQUAL_TO"/>   
+	</Target>
+</CQLQuery>

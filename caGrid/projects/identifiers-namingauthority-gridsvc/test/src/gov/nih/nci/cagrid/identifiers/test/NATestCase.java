@@ -18,7 +18,7 @@ public class NATestCase extends TestCase {
 	private static Log log = LogFactory.getLog(NATestCase.class);
 
 	private static final TypeValues[] typeValues;
-	private static final String gridSvcUrl = "http://localhost:8081/wsrf/services/cagrid/IdentifiersNAService";
+	private static final String gridSvcUrl = "http://140.254.126.81:8080/wsrf/services/cagrid/IdentifiersNAService";
 
 	static {
 		typeValues = new TypeValues[2];
@@ -42,7 +42,7 @@ public class NATestCase extends TestCase {
 		tvm1.setTypeValues(typeValues);
 
 		String identifier = client.createIdentifier(tvm1);
-		log.info("Identifier: " + identifier);
+		System.out.println("Identifier: " + identifier);
 
 		TypeValuesMap tvm2 = client.getTypeValues(identifier);
 		if (!compare(tvm1, tvm2)) {
