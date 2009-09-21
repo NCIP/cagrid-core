@@ -91,9 +91,9 @@
 	<classpathentry kind="lib" path="ext/dependencies/jars/caGrid-testing-core-1.4-dev.jar"/>
 	<classpathentry kind="lib" path="ext/dependencies/jars/caGrid-testing-system-1.4-dev.jar"/>
 	<classpathentry kind="lib" path="ext/dependencies/jars/caGrid-testUtils-1.4-dev.jar"/>
-	<classpathentry kind="lib" path="ext/dependencies/jars/caGrid-TavernaWorkflowService-client-1.3.jar"/>
-	<classpathentry kind="lib" path="ext/dependencies/jars/caGrid-TavernaWorkflowService-common-1.3.jar"/>
-	<classpathentry kind="lib" path="ext/dependencies/jars/caGrid-TavernaWorkflowService-service-1.3.jar"/>
-	<classpathentry kind="lib" path="ext/dependencies/jars/caGrid-TavernaWorkflowService-stubs-1.3.jar"/>
+	<classpathentry kind="lib" path="ext/dependencies/jars/caGrid-TavernaWorkflowService-client-1.4-dev.jar"/>
+	<classpathentry kind="lib" path="ext/dependencies/jars/caGrid-TavernaWorkflowService-common-1.4-dev.jar"/>
+	<classpathentry kind="lib" path="ext/dependencies/jars/caGrid-TavernaWorkflowService-service-1.4-dev.jar"/>
+	<classpathentry kind="lib" path="ext/dependencies/jars/caGrid-TavernaWorkflowService-stubs-1.4-dev.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
