@@ -3,7 +3,6 @@
 	<classpathentry kind="src" path="src/cacore31"/>
 	<classpathentry kind="src" path="src/cacore32"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
-	<classpathentry kind="lib" path="ext/dependencies/jars/antlr-2.7.6rc1.jar"/>
 	<classpathentry kind="lib" path="ext/dependencies/jars/asm.jar"/>
 	<classpathentry kind="lib" path="ext/dependencies/jars/c3p0-0.8.5.2.jar"/>
 	<classpathentry kind="lib" path="ext/dependencies/jars/caGrid-authz-common-1.3-dev.jar"/>

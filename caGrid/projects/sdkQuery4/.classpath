@@ -77,7 +77,6 @@
 	<classpathentry kind="lib" path="build/remote-client/lib/sdk-client-framework.jar"/>
 	<classpathentry kind="lib" path="build/remote-client/lib/spring.jar"/>
 	<classpathentry kind="lib" path="build/remote-client/lib/castor-1.0.2.jar"/>
-	<classpathentry kind="lib" path="ext/dependencies/jars/antlr-2.7.6rc1.jar"/>
 	<classpathentry kind="lib" path="ext/dependencies/jars/caGrid-BulkDataHandler-client-1.3-dev.jar"/>
 	<classpathentry kind="lib" path="ext/dependencies/jars/caGrid-BulkDataHandler-common-1.3-dev.jar"/>
 	<classpathentry kind="lib" path="ext/dependencies/jars/caGrid-BulkDataHandler-stubs-1.3-dev.jar"/>
