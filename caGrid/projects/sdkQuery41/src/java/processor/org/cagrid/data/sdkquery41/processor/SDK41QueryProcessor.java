@@ -54,6 +54,8 @@ public class SDK41QueryProcessor extends CQLQueryProcessor {
     public static final String DEFAULT_USE_LOGIN = String.valueOf(false);
     public static final String DEFAULT_USE_GRID_IDENTITY_LOGIN = String.valueOf(false);
     
+    public static final String EMPTY_PASSWORD = "EMPTYPASSWORD";
+    
     public SDK41QueryProcessor() {
         super();
     }
@@ -163,7 +165,7 @@ public class SDK41QueryProcessor extends CQLQueryProcessor {
                 } else {
                     SecurityManager securityManager = SecurityManager.getManager();
                     username = securityManager.getCaller();
-                    // TODO: password?
+                    passwd = EMPTY_PASSWORD;
                 }
             }
             
