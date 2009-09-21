@@ -39,6 +39,12 @@
 			<property name="projects.dir" value="${tests.projects.dir}" />
 		</ant>
 	</target>
+	
+	<target name="set-project-versions" depends="prepare">
+		<ant inheritAll="false" inheritrefs="false" target="caGrid-Master.set-project-versions">
+			<property name="projects.dir" value="${tests.projects.dir}" />
+		</ant>
+	</target>
 
 
 	<!-- ============================================================== -->

@@ -30,8 +30,8 @@
 			<equals arg1="${ant.java.version}" arg2="1.6" />
 		</or>
 	</condition>
-	<!-- Require Java 1.5 for now -->
-	<fail message="JDK 1.5 is currently required to build this project!" unless="isJDK1.5" />
+	<!-- Require Java 1.5 or 1.6-->
+	<fail message="JDK 1.5 (or 1.6) is currently required to build this project!" unless="isJDK1.5" />
 
 	<!-- IMPORT THE UTILITIES TARGETS -->
 	<import file="${antfiles.dir}/target-grid.xml" />
