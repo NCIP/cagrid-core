@@ -16,5 +16,13 @@
 		<ivy:retrieve conf="default" pattern="${ivy.resolved.artifacts.dir}/dependencies/resources/containers/[artifact](.[ext])" sync="true" type="zip" />
 
 	</target>
+	
+	<target name="post.resolve-dependencies" depends="ivy-shared-targets.post.resolve-dependencies">
+		<!-- generate a list of properties detailing what is needed for the default conf -->
+		<ivy:artifactproperty conf="default" name="dataTests.needs.[module].version" value="[revision]" />
+		<!-- just write out the ones that specifically come from the data module -->
+		<echoproperties prefix="dataTests.needs.data." destfile="${ivy.resolved.artifacts.dir}/dependencies/resources/data-version.properties" />
+
+	</target>
 </project>
 

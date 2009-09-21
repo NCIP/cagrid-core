@@ -34,13 +34,13 @@ public class UpgradeSDKFrom1pt2Tests extends Story {
 	private DataTestCaseInfo testServiceInfo = null;
     
 	public String getDescription() {
-		return "Tests upgrade of a data service backed by the SDK 4.0 from version 1.2 to " + UpgradeTestConstants.DATA_CURRENT_VERSION;
+		return "Tests upgrade of a data service backed by the SDK 4.0 from version 1.2 to " + UpgradeTestConstants.getCurrentDataVersion();
 	}
     
     
     public String getName() {
         return "Data Service backed by the SDK 4_0 from 1_2 to " 
-            + UpgradeTestConstants.DATA_CURRENT_VERSION.replace(".", "_") 
+            + UpgradeTestConstants.getCurrentDataVersion().replace(".", "_") 
             + " Upgrade Tests";
     }
     

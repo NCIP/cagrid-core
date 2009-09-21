@@ -34,13 +34,13 @@ public class UpgradeEnumerationFrom1pt2Tests extends Story {
     private DataTestCaseInfo testServiceInfo = null;
 	
 	public String getDescription() {
-		return "Tests upgrade of an enumeration data service from version 1.2 to " + UpgradeTestConstants.DATA_CURRENT_VERSION;
+		return "Tests upgrade of an enumeration data service from version 1.2 to " + UpgradeTestConstants.getCurrentDataVersion();
 	}
     
     
     public String getName() {
         return "Data Service With Enumeration 1_2 to " 
-            + UpgradeTestConstants.DATA_CURRENT_VERSION.replace(".", "_") 
+            + UpgradeTestConstants.getCurrentDataVersion().replace(".", "_") 
             + " Upgrade Tests";
     }
     

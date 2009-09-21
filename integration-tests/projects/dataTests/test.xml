@@ -27,6 +27,7 @@
 			<fileset dir="${jar.dir}">
 				<include name="**/*.jar"/>
 			</fileset>
+			<pathelement path="${basedir}/ext/dependencies/resources/"/>
 		</path>
 	</target>
 
