@@ -124,7 +124,6 @@
 	<classpathentry kind="lib" path="ext/dependencies/jars/caGrid-ServiceSecurityProvider-common-1.4-dev.jar"/>
 	<classpathentry kind="lib" path="ext/dependencies/jars/caGrid-ServiceSecurityProvider-service-1.4-dev.jar"/>
 	<classpathentry kind="lib" path="ext/dependencies/jars/caGrid-ServiceSecurityProvider-stubs-1.4-dev.jar"/>
-	<classpathentry kind="lib" path="ext/dependencies/jars/caGrid-tests-cqlprocessors-1.2-dev.jar"/>
 	<classpathentry kind="lib" path="ext/dependencies/test/jars/caGrid-advertisement-1.4-dev.jar"/>
 	<classpathentry kind="lib" path="ext/dependencies/test/jars/caGrid-cds-client-1.4-dev.jar"/>
 	<classpathentry kind="lib" path="ext/dependencies/test/jars/caGrid-cds-common-1.4-dev.jar"/>
@@ -147,5 +146,7 @@
 	<classpathentry kind="lib" path="ext/dependencies/test/jars/mobius_common_client-1.1.jar"/>
 	<classpathentry kind="lib" path="ext/dependencies/test/jars/junit-4.4.jar"/>
 	<classpathentry kind="lib" path="ext/dependencies/jars/castor-1.0.2.jar"/>
+	<classpathentry kind="lib" path="ext/dependencies/jars/antlr-2.7.6.jar"/>
+	<classpathentry kind="lib" path="ext/dependencies/jars/caGrid-tests-cqlprocessors-1.4-dev.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
