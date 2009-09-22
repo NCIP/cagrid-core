@@ -1,7 +1,7 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <launchConfiguration type="org.eclipse.jdt.launching.localJavaApplication">
 <listAttribute key="org.eclipse.debug.core.MAPPED_RESOURCE_PATHS">
-<listEntry value="/TavernaWorkflowService/src/gov/nih/nci/cagrid/workflow/factory/client/TavernaWorkflowServiceClient.java"/>
+<listEntry value="/caGrid-TavernaWorkflowService/src/gov/nih/nci/cagrid/workflow/factory/client/TavernaWorkflowServiceClient.java"/>
 </listAttribute>
 <listAttribute key="org.eclipse.debug.core.MAPPED_RESOURCE_TYPES">
 <listEntry value="1"/>
@@ -13,5 +13,5 @@
 </listAttribute>
 <stringAttribute key="org.eclipse.jdt.launching.MAIN_TYPE" value="gov.nih.nci.cagrid.workflow.factory.client.TavernaWorkflowServiceClient"/>
 <stringAttribute key="org.eclipse.jdt.launching.PROGRAM_ARGUMENTS" value="-url ${string_prompt:the service url}"/>
-<stringAttribute key="org.eclipse.jdt.launching.PROJECT_ATTR" value="TavernaWorkflowService"/>
+<stringAttribute key="org.eclipse.jdt.launching.PROJECT_ATTR" value="caGrid-TavernaWorkflowService"/>
 </launchConfiguration>
