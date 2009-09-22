@@ -9,6 +9,9 @@ import gov.nih.nci.cagrid.common.FaultUtil;
 import junit.framework.TestCase;
 
 public class TestCSM extends TestCase {
+	
+	private static String SUPER_ADMIN = "/C=US/O=abc/OU=xyz/OU=caGrid/CN=superadmin";
+	
 	public void testCSMInitialization() {
 
 		try {

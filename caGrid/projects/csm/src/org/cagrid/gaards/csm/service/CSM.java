@@ -7,6 +7,7 @@ import java.util.List;
 
 import org.cagrid.gaards.csm.bean.Application;
 import org.cagrid.gaards.csm.bean.ApplicationSearchCriteria;
+import org.cagrid.gaards.csm.stubs.types.CSMInternalFault;
 
 public class CSM {
 
@@ -18,6 +19,10 @@ public class CSM {
 		this.auth = CSMInitializer.getAuthorizationManager(this.conf
 				.getDatabaseProperties());
 	}
+	
+	public void addWebServiceAdmin(String gridIdentity) throws CSMInternalFault{
+		CSMInitializer.addWebServiceAdmin(auth, gridIdentity);
+	}
 
 	public List<Application> getApplications(
 			ApplicationSearchCriteria applicationSearchCriteria)
@@ -27,5 +32,6 @@ public class CSM {
 				.getObjects(CSMUtils.convert(applicationSearchCriteria));
 		return CSMUtils.convert(apps);
 	}
+	
 
 }

@@ -9,12 +9,14 @@ import gov.nih.nci.security.authorization.domainobjects.Privilege;
 import gov.nih.nci.security.authorization.domainobjects.ProtectionElement;
 import gov.nih.nci.security.authorization.domainobjects.ProtectionGroup;
 import gov.nih.nci.security.authorization.domainobjects.Role;
+import gov.nih.nci.security.authorization.domainobjects.User;
 import gov.nih.nci.security.dao.ApplicationSearchCriteria;
 import gov.nih.nci.security.dao.GroupSearchCriteria;
 import gov.nih.nci.security.dao.PrivilegeSearchCriteria;
 import gov.nih.nci.security.dao.ProtectionElementSearchCriteria;
 import gov.nih.nci.security.dao.ProtectionGroupSearchCriteria;
 import gov.nih.nci.security.dao.RoleSearchCriteria;
+import gov.nih.nci.security.dao.UserSearchCriteria;
 import gov.nih.nci.security.exceptions.CSException;
 import gov.nih.nci.security.exceptions.CSObjectNotFoundException;
 import gov.nih.nci.security.exceptions.CSTransactionException;
@@ -344,6 +346,48 @@ public class CSMInitializer {
 				}
 			}
 
+		}
+	}
+
+	public static void addWebServiceAdmin(AuthorizationManager auth,
+			String adminIdentity) throws CSMInternalFault {
+		Group grp = getWebServiceAdminGroup(auth);
+		User u = getUserCreateIfNeeded(auth, adminIdentity);
+		String[] users = new String[1];
+		users[0] = String.valueOf(u.getUserId());
+		try {
+			auth.addUsersToGroup(String.valueOf(grp.getGroupId()), users);
+		} catch (Exception e) {
+			logError(e.getMessage(), e);
+			CSMInternalFault fault = new CSMInternalFault();
+			fault
+					.setFaultString("An unexpected error occurred in addin the user, "
+							+ adminIdentity
+							+ " to the CSM Web Service administrators group.");
+			throw fault;
+		}
+	}
+
+	public static User getUserCreateIfNeeded(AuthorizationManager auth,
+			String userIdentity) throws CSMInternalFault {
+		User u = new User();
+		u.setLoginName(userIdentity);
+		List<User> users = auth.getObjects(new UserSearchCriteria(u));
+		if (users.size() == 0) {
+			try {
+				auth.createUser(u);
+			} catch (Exception e) {
+				logError(e.getMessage(), e);
+				CSMInternalFault fault = new CSMInternalFault();
+				fault
+						.setFaultString("An unexpected error registering the user, "
+								+ userIdentity + ".");
+				throw fault;
+			}
+			users = auth.getObjects(new UserSearchCriteria(u));
+			return users.get(0);
+		} else {
+			return users.get(0);
 		}
 	}
 
