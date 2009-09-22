@@ -8,4 +8,6 @@ public class Constants {
 	public static final String ADMIN_ROLE = "Administrator";
 	public static final String ADMIN_ROLE_DESCRIPTION = "This role permits a user to administrate a particular resource or system.";
 	public static final String ADMIN_GROUP_SUFFIX = "Administrators";
+	
+	public static final String CSM_PROPERTIES = "csmProperties";
 }

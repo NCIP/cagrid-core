@@ -32,7 +32,6 @@
 		<deploymentValidatorTask />
 	</target>
 	
-	
 	<target name="setDeploymentProperties">
 		<property file="deploy.properties" />
 		<property name="globus.webapp" value="wsrf" />

@@ -11,26 +11,39 @@
 	<!-- Pre Deploy Tomcat                                              -->
 	<!-- ============================================================== -->
 	<target name="preDeployTomcat">
-
+		<copy todir="${build.lib.dir}">
+			<fileset dir="${ext.lib.dir}">
+				<include name="*.jar" />
+			</fileset>
+		</copy>
 	</target>
-	
+
 
 	<!-- ============================================================== -->
 	<!-- Pre Deploy Globus                                              -->
 	<!-- ============================================================== -->
 	<target name="preDeployGlobus">
+		<copy todir="${build.lib.dir}">
+			<fileset dir="${ext.lib.dir}">
+				<include name="*.jar" />
+			</fileset>
+		</copy>
 
 	</target>
-	
-	
+
+
 	<!-- ============================================================== -->
 	<!-- Pre Deploy JBOSS                                               -->
 	<!-- ============================================================== -->
 	<target name="preDeployJBoss">
-
+		<copy todir="${build.lib.dir}" overwrite="true">
+			<fileset dir="${ext.lib.dir}">
+				<include name="*.jar" />
+			</fileset>
+		</copy>
 	</target>
-	
-	
+
+
 	<!-- ============================================================== -->
 	<!-- Post UnDeploy Tomcat                                              -->
 	<!-- ============================================================== -->
@@ -45,8 +58,8 @@
 	<target name="postUndeployGlobus">
 
 	</target>
-	
-	
+
+
 	<!-- ============================================================== -->
 	<!-- Post UnDeploy JBOSS                                               -->
 	<!-- ============================================================== -->

@@ -1,0 +1,9 @@
+#######################################################
+#***             CSM  Configuration             ***#
+#######################################################
+
+gaards.csm.db.connection.url=jdbc:mysql://localhost:3306/csm_test
+gaards.csm.db.user.id=root
+gaards.csm.db.password=
+gaards.csm.db.driver=org.gjt.mm.mysql.Driver
+gaards.csm.db.hibernate.dialect=org.gjt.mm.mysql.Driver

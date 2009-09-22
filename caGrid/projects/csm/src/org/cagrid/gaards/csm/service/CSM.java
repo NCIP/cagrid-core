@@ -1,21 +1,15 @@
 package org.cagrid.gaards.csm.service;
 
 import gov.nih.nci.security.AuthorizationManager;
-import gov.nih.nci.security.SecurityServiceProvider;
-import gov.nih.nci.security.authorization.domainobjects.Application;
-import gov.nih.nci.security.authorization.domainobjects.Privilege;
-import gov.nih.nci.security.dao.ApplicationSearchCriteria;
-import gov.nih.nci.security.dao.PrivilegeSearchCriteria;
-import gov.nih.nci.security.system.ApplicationSessionFactory;
 
 import java.util.HashMap;
-import java.util.List;
-
-import org.hibernate.SessionFactory;
 
 public class CSM {
+	
+	private CSMProperties conf;
 
 	public CSM() {
+		//this.conf = conf;
 		HashMap<String, String> connectionProperties = new HashMap<String, String>();
 		connectionProperties.put("hibernate.connection.url",
 				"jdbc:mysql://localhost:3306/csmupt");
@@ -35,7 +29,8 @@ public class CSM {
 	 */
 	public static void main(String[] args) {
 		try {
-
+			
+			CSM csm = new CSM();
 			AuthorizationManager am = CSMInitializer.getAuthorizationManager();
 
 		} catch (Exception e) {

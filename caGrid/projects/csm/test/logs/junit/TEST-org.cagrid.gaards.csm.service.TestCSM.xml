@@ -1,0 +1,173 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<testsuite errors="0" failures="0" hostname="llanowar" name="org.cagrid.gaards.csm.service.TestCSM" tests="1" time="0.19" timestamp="2009-09-21T20:10:59">
+  <properties>
+    <property name="file.encoding.pkg" value="sun.io" />
+    <property name="java.home" value="/System/Library/Frameworks/JavaVM.framework/Versions/1.6.0/Home" />
+    <property name="test.src.dir" value="test/src" />
+    <property name="env.DISPLAY" value="/tmp/launch-yAguUU/:0" />
+    <property name="env.JAVA_MAIN_CLASS_6587" value="org.apache.tools.ant.launch.Launcher" />
+    <property name="java.endorsed.dirs" value="${ext.endorsed.dir}" />
+    <property name="env.LOGNAME" value="langella" />
+    <property name="src.dir" value="src" />
+    <property name="ext.globus.dir" value="/Users/langella/ext/ws-core-4.0.3" />
+    <property name="sun.os.patch.level" value="unknown" />
+    <property name="java.vendor.url" value="http://www.apple.com/" />
+    <property name="env.TERM_PROGRAM_VERSION" value="272" />
+    <property name="java.version" value="1.6.0_15" />
+    <property name="ant.file.Developer Modified Build File" value="/Users/langella/projects/caGrid-1.x/caGrid/projects/csm/dev-build.xml" />
+    <property name="ant.contrib.location" value="/Users/langella/projects/caGrid-1.x/caGrid/projects/csm/ext/dependencies/tools/jars/ant-contrib-1.0b3.jar" />
+    <property name="jikes.class.path" value=":/System/Library/Frameworks/JavaVM.framework/Versions/1.6.0/Home/../Classes/alt-rt.jar:/System/Library/Frameworks/JavaVM.framework/Versions/1.6.0/Home/../Classes/charsets.jar:/System/Library/Frameworks/JavaVM.framework/Versions/1.6.0/Home/../Classes/classes.jar:/System/Library/Frameworks/JavaVM.framework/Versions/1.6.0/Home/../Classes/dt.jar:/System/Library/Frameworks/JavaVM.framework/Versions/1.6.0/Home/../Classes/jce.jar:/System/Library/Frameworks/JavaVM.framework/Versions/1.6.0/Home/../Classes/jconsole.jar:/System/Library/Frameworks/JavaVM.framework/Versions/1.6.0/Home/../Classes/jsse.jar:/System/Library/Frameworks/JavaVM.framework/Versions/1.6.0/Home/../Classes/laf.jar:/System/Library/Frameworks/JavaVM.framework/Versions/1.6.0/Home/../Classes/management-agent.jar:/System/Library/Frameworks/JavaVM.framework/Versions/1.6.0/Home/../Classes/ui.jar" />
+    <property name="env.HOSTTYPE" value="intel-mac" />
+    <property name="java.vendor.url.bug" value="http://bugreport.apple.com/" />
+    <property name="javadoc.dir" value="/Users/langella/projects/caGrid-1.x/caGrid/projects/csm/build/javadoc" />
+    <property name="introduce.skeleton.namespace.domain" value="http://csm.gaards.cagrid.org/CSM" />
+    <property name="test.lib.dir" value="test/lib" />
+    <property name="introduce.ns.excludes" value=" -x gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.service -x gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.security -x gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common -x gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata" />
+    <property name="user.name" value="langella" />
+    <property name="env.LANG" value="en_US.UTF-8" />
+    <property name="env.CVS_RSH" value="ssh" />
+    <property name="ext.dir" value="/Users/langella/projects/caGrid-1.x/caGrid/projects/csm/ext" />
+    <property name="sun.io.unicode.encoding" value="UnicodeLittle" />
+    <property name="sun.jnu.encoding" value="MacRoman" />
+    <property name="java.runtime.name" value="Java(TM) SE Runtime Environment" />
+    <property name="schema.dest" value="/Users/langella/projects/caGrid-1.x/caGrid/projects/csm/build/schema" />
+    <property name="lib.dir" value="lib" />
+    <property name="tools.lib.dir" value="tools/lib" />
+    <property name="project.version" value="1.3-dev" />
+    <property name="java.specification.name" value="Java Platform API Specification" />
+    <property name="force.config.replace" value="false" />
+    <property name="ftp.nonProxyHosts" value="local|*.local|169.254/16|*.169.254/16" />
+    <property name="test.jar.name" value="caGrid-csm-tests-1.3-dev.jar" />
+    <property name="user.timezone" value="" />
+    <property name="env.MACHTYPE" value="x86_64" />
+    <property name="path.separator" value=":" />
+    <property name="client.jar.name" value="caGrid-csm-client-1.3-dev.jar" />
+    <property name="file.encoding" value="MacRoman" />
+    <property name="jar.prefix" value="caGrid-csm" />
+    <property name="junit.results.dir" value="test/logs/junit" />
+    <property name="env.HOME" value="/Users/langella" />
+    <property name="introduce.soap.binding.excludes" value=" " />
+    <property name="socksNonProxyHosts" value="local|*.local|169.254/16|*.169.254/16" />
+    <property name="ant.file" value="/Users/langella/projects/caGrid-1.x/caGrid/projects/csm/build.xml" />
+    <property name="test.log.dir" value="test/logs" />
+    <property name="java.io.tmpdir" value="/var/folders/lX/lXqy1-74Fqm9xq7DHSd-+k+++TI/-Tmp-/" />
+    <property name="user.language" value="en" />
+    <property name="line.separator" value="
+" />
+    <property name="garjars.id" value="garjars" />
+    <property name="java.debug" value="on" />
+    <property name="ant.file.build-deploy file" value="/Users/langella/projects/caGrid-1.x/caGrid/projects/csm/build-deploy.xml" />
+    <property name="introduce.skeleton.service.name" value="CSM" />
+    <property name="tools.dir" value="tools" />
+    <property name="schema.src" value="/Users/langella/ext/ws-core-4.0.3/share/schema" />
+    <property name="java.vm.info" value="mixed mode" />
+    <property name="java.vm.specification.name" value="Java Virtual Machine Specification" />
+    <property name="ant.file.run-tools file" value="/Users/langella/projects/caGrid-1.x/caGrid/projects/csm/run-tools.xml" />
+    <property name="common.jar.name" value="caGrid-csm-common-1.3-dev.jar" />
+    <property name="env.__CF_USER_TEXT_ENCODING" value="0x1F5:0:0" />
+    <property name="ant.file.Introduce Master Build File" value="/Users/langella/projects/caGrid-1.x/caGrid/projects/csm/build.xml" />
+    <property name="jar.suffix" value="1.3-dev.jar" />
+    <property name="ant.file.caGrid-dorian_tests_harness" value="/Users/langella/projects/caGrid-1.x/caGrid/projects/csm/test/test.xml" />
+    <property name="build.stubs" value="/Users/langella/projects/caGrid-1.x/caGrid/projects/csm/build-stubs.xml" />
+    <property name="http.nonProxyHosts" value="local|*.local|169.254/16|*.169.254/16" />
+    <property name="introduce.skeleton.timestamp" value="1253503372700" />
+    <property name="stubs.src" value="/Users/langella/projects/caGrid-1.x/caGrid/projects/csm/build/stubs-CSM/src" />
+    <property name="java.awt.printerjob" value="apple.awt.CPrinterJob" />
+    <property name="build.dest" value="/Users/langella/projects/caGrid-1.x/caGrid/projects/csm/build/classes" />
+    <property name="test.build.dest" value="/Users/langella/projects/caGrid-1.x/caGrid/projects/csm/build/test/classes" />
+    <property name="ext.dependencies.dir" value="/Users/langella/projects/caGrid-1.x/caGrid/projects/csm/ext/dependencies" />
+    <property name="ant.version" value="Apache Ant version 1.7.0 compiled on December 13 2006" />
+    <property name="env.OSTYPE" value="darwin" />
+    <property name="gopherProxySet" value="false" />
+    <property name="os.name" value="Mac OS X" />
+    <property name="java.specification.vendor" value="Sun Microsystems Inc." />
+    <property name="stubs.dest" value="/Users/langella/projects/caGrid-1.x/caGrid/projects/csm/build/stubs-CSM/classes" />
+    <property name="configure.supported" value="true" />
+    <property name="env.TERM" value="xterm-color" />
+    <property name="java.vm.name" value="Java HotSpot(TM) 64-Bit Server VM" />
+    <property name="mrj.version" value="1060.1.6.0_15-219" />
+    <property name="java.library.path" value=".:/Library/Java/Extensions:/System/Library/Java/Extensions:/usr/lib/java" />
+    <property name="env.PATH" value=".:/Users/langella/ext/apache-ant-1.7.0/bin:/Users/langella/ext/apache-maven-2.1.0/bin:/usr/local/mysql/bin:/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/bin:/usr/X11/bin" />
+    <property name="ant.file.developers-build-deploy file" value="/Users/langella/projects/caGrid-1.x/caGrid/projects/csm/dev-build-deploy.xml" />
+    <property name="ant.java.version" value="1.6" />
+    <property name="basedir" value="/Users/langella/projects/caGrid-1.x/caGrid/projects/csm" />
+    <property name="java.class.version" value="50.0" />
+    <property name="env.SHLVL" value="1" />
+    <property name="ext.lib.dir" value="/Users/langella/projects/caGrid-1.x/caGrid/projects/csm/ext/dependencies/service/jars" />
+    <property name="ant.home" value="/Users/langella/ext/apache-ant-1.7.0" />
+    <property name="introduce.skeleton.services.list" value="CSM" />
+    <property name="env.JBOSS_HOME" value="/Users/langella/ext/csm-jboss-4.0.0" />
+    <property name="build.packages" value="/Users/langella/ext/ws-core-4.0.3/share/globus_wsrf_common/build-packages.xml" />
+    <property name="sun.boot.library.path" value="/System/Library/Frameworks/JavaVM.framework/Versions/1.6.0/Libraries" />
+    <property name="build.dir" value="/Users/langella/projects/caGrid-1.x/caGrid/projects/csm/build" />
+    <property name="sun.management.compiler" value="HotSpot 64-Bit Server Compiler" />
+    <property name="java.awt.graphicsenv" value="apple.awt.CGraphicsEnvironment" />
+    <property name="stubs.jar.name" value="caGrid-csm-stubs-1.3-dev.jar" />
+    <property name="ext.targetgrid.dir" value="/Users/langella/projects/caGrid-1.x/caGrid/projects/csm/ext/target_grid" />
+    <property name="ext.test.lib" value="/Users/langella/projects/caGrid-1.x/caGrid/projects/csm/ext/dependencies/test/jars" />
+    <property name="env.USER" value="langella" />
+    <property name="env.GROUP" value="staff" />
+    <property name="env.CXF_HOME" value="/Users/langella/ext/apache-cxf-2.2.3" />
+    <property name="env.TERM_PROGRAM" value="Apple_Terminal" />
+    <property name="env.VENDOR" value="apple" />
+    <property name="env.COMMAND_MODE" value="unix2003" />
+    <property name="ant.project.name" value="Introduce Master Build File" />
+    <property name="schema.dir" value="schema" />
+    <property name="GT4.ns.excludes" value="-x http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-BaseFaults-1.2-draft-01.xsd -x http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-BaseFaults-1.2-draft-01.wsdl -x http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ResourceLifetime-1.2-draft-01.xsd -x http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ResourceLifetime-1.2-draft-01.wsdl -x http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ResourceProperties-1.2-draft-01.xsd -x http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ResourceProperties-1.2-draft-01.wsdl -x http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ServiceGroup-1.2-draft-01.xsd -x http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ServiceGroup-1.2-draft-01.wsdl -x http://docs.oasis-open.org/wsn/2004/06/wsn-WS-BaseNotification-1.2-draft-01.xsd -x http://docs.oasis-open.org/wsn/2004/06/wsn-WS-BaseNotification-1.2-draft-01.wsdl -x http://schemas.xmlsoap.org/ws/2004/04/trust -x http://schemas.xmlsoap.org/ws/2002/12/policy -x http://schemas.xmlsoap.org/ws/2002/07/utility -x http://schemas.xmlsoap.org/ws/2004/04/sc -x http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-secext-1.0.xsd -x http://www.w3.org/2000/09/xmldsig# -x http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd -x http://schemas.xmlsoap.org/ws/2004/09/enumeration" />
+    <property name="introduce.skeleton.destination.dir" value="/Users/langella/projects/caGrid-1.x/caGrid/projects/csm" />
+    <property name="java.vm.specification.version" value="1.0" />
+    <property name="env.GLOBUS_LOCATION" value="/Users/langella/ext/ws-core-4.0.3" />
+    <property name="awt.toolkit" value="apple.awt.CToolkit" />
+    <property name="introduce.skeleton.extensions" value="cagrid_metadata" />
+    <property name="build.lib.dir" value="/Users/langella/projects/caGrid-1.x/caGrid/projects/csm/build/lib" />
+    <property name="sun.cpu.isalist" value="" />
+    <property name="java.ext.dirs" value="/Library/Java/Extensions:/System/Library/Java/Extensions:/System/Library/Frameworks/JavaVM.framework/Versions/1.6.0/Home/lib/ext" />
+    <property name="garschema.id" value="garschema" />
+    <property name="os.version" value="10.6.1" />
+    <property name="env.HOST" value="llanowar" />
+    <property name="user.home" value="/Users/langella" />
+    <property name="java.vm.vendor" value="Apple Inc." />
+    <property name="mappings.file" value="/Users/langella/projects/caGrid-1.x/caGrid/projects/csm/namespace2package.mappings" />
+    <property name="ext.tools.lib.dir" value="/Users/langella/projects/caGrid-1.x/caGrid/projects/csm/ext/dependencies/tools/jars" />
+    <property name="garetc.id" value="garetc" />
+    <property name="env.JAVA_HOME" value="/System/Library/Frameworks/JavaVM.framework/Versions/1.6.0/Home" />
+    <property name="stubs.dir" value="/Users/langella/projects/caGrid-1.x/caGrid/projects/csm/build/stubs-CSM" />
+    <property name="user.dir" value="/Users/langella/projects/caGrid-1.x/caGrid/projects/csm" />
+    <property name="schema.path" value="CSM" />
+    <property name="env.PWD" value="/Users/langella/projects/caGrid-1.x/caGrid/projects/csm" />
+    <property name="test.dir" value="test" />
+    <property name="tomcat.dir" value="/Users/langella/ext/apache-tomcat-5.5.27" />
+    <property name="sun.cpu.endian" value="little" />
+    <property name="env.MVN_HOME" value="/Users/langella/ext/apache-maven-2.1.0" />
+    <property name="env.TMPDIR" value="/var/folders/lX/lXqy1-74Fqm9xq7DHSd-+k+++TI/-Tmp-/" />
+    <property name="java.vm.version" value="14.1-b02-90" />
+    <property name="java.class.path" value="/Users/langella/projects/caGrid-1.x/caGrid/projects/csm/build/test/classes:/Users/langella/projects/caGrid-1.x/caGrid/projects/csm/test/resources:/Users/langella/projects/caGrid-1.x/caGrid/projects/csm/build/classes:/Users/langella/projects/caGrid-1.x/caGrid/projects/csm/ext/dependencies/test/jars/caGrid-core-1.3-dev.jar:/Users/langella/projects/caGrid-1.x/caGrid/projects/csm/ext/dependencies/test/jars/caGrid-core-tests-1.3-dev.jar:/Users/langella/projects/caGrid-1.x/caGrid/projects/csm/ext/dependencies/test/jars/caGrid-gaards-core-1.3-dev.jar:/Users/langella/projects/caGrid-1.x/caGrid/projects/csm/ext/dependencies/test/jars/caGrid-gaards-core-tests-1.3-dev.jar:/Users/langella/projects/caGrid-1.x/caGrid/projects/csm/ext/dependencies/test/jars/caGrid-opensaml-1.3-dev.jar:/Users/langella/projects/caGrid-1.x/caGrid/projects/csm/ext/dependencies/test/jars/castor-1.0.2.jar:/Users/langella/projects/caGrid-1.x/caGrid/projects/csm/ext/dependencies/test/jars/commons-codec-1.3.jar:/Users/langella/projects/caGrid-1.x/caGrid/projects/csm/ext/dependencies/test/jars/jdepend-2.7.jar:/Users/langella/projects/caGrid-1.x/caGrid/projects/csm/ext/dependencies/test/jars/jdom-1.0.jar:/Users/langella/projects/caGrid-1.x/caGrid/projects/csm/ext/dependencies/test/jars/jprov.jar:/Users/langella/projects/caGrid-1.x/caGrid/projects/csm/ext/dependencies/test/jars/junit-4.4.jar:/Users/langella/projects/caGrid-1.x/caGrid/projects/csm/build/stubs-CSM/classes:/Users/langella/ext/ws-core-4.0.3/lib/addressing-1.0.jar:/Users/langella/ext/ws-core-4.0.3/lib/axis-url.jar:/Users/langella/ext/ws-core-4.0.3/lib/axis.jar:/Users/langella/ext/ws-core-4.0.3/lib/bootstrap.jar:/Users/langella/ext/ws-core-4.0.3/lib/cog-axis.jar:/Users/langella/ext/ws-core-4.0.3/lib/cog-jglobus.jar:/Users/langella/ext/ws-core-4.0.3/lib/cog-tomcat.jar:/Users/langella/ext/ws-core-4.0.3/lib/cog-url.jar:/Users/langella/ext/ws-core-4.0.3/lib/commonj.jar:/Users/langella/ext/ws-core-4.0.3/lib/commons-beanutils.jar:/Users/langella/ext/ws-core-4.0.3/lib/commons-cli-2.0.jar:/Users/langella/ext/ws-core-4.0.3/lib/commons-collections-3.0.jar:/Users/langella/ext/ws-core-4.0.3/lib/commons-digester.jar:/Users/langella/ext/ws-core-4.0.3/lib/commons-discovery.jar:/Users/langella/ext/ws-core-4.0.3/lib/commons-logging.jar:/Users/langella/ext/ws-core-4.0.3/lib/concurrent.jar:/Users/langella/ext/ws-core-4.0.3/lib/cryptix-asn1.jar:/Users/langella/ext/ws-core-4.0.3/lib/cryptix.jar:/Users/langella/ext/ws-core-4.0.3/lib/cryptix32.jar:/Users/langella/ext/ws-core-4.0.3/lib/globus_resolution_service.jar:/Users/langella/ext/ws-core-4.0.3/lib/globus_resolution_stubs_java.jar:/Users/langella/ext/ws-core-4.0.3/lib/globus_resolution_test.jar:/Users/langella/ext/ws-core-4.0.3/lib/globus_transfer_service.jar:/Users/langella/ext/ws-core-4.0.3/lib/globus_transfer_stubs_java.jar:/Users/langella/ext/ws-core-4.0.3/lib/globus_transfer_test.jar:/Users/langella/ext/ws-core-4.0.3/lib/globus_usage_core.jar:/Users/langella/ext/ws-core-4.0.3/lib/globus_usage_packets_common.jar:/Users/langella/ext/ws-core-4.0.3/lib/globus_wsrf_tools_test.jar:/Users/langella/ext/ws-core-4.0.3/lib/jaxrpc.jar:/Users/langella/ext/ws-core-4.0.3/lib/jce-jdk13-125.jar:/Users/langella/ext/ws-core-4.0.3/lib/jgss.jar:/Users/langella/ext/ws-core-4.0.3/lib/junit.jar:/Users/langella/ext/ws-core-4.0.3/lib/log4j-1.2.8.jar:/Users/langella/ext/ws-core-4.0.3/lib/naming-common.jar:/Users/langella/ext/ws-core-4.0.3/lib/naming-factory.jar:/Users/langella/ext/ws-core-4.0.3/lib/naming-java.jar:/Users/langella/ext/ws-core-4.0.3/lib/naming-resources.jar:/Users/langella/ext/ws-core-4.0.3/lib/opensaml.jar:/Users/langella/ext/ws-core-4.0.3/lib/puretls.jar:/Users/langella/ext/ws-core-4.0.3/lib/resolver.jar:/Users/langella/ext/ws-core-4.0.3/lib/saaj.jar:/Users/langella/ext/ws-core-4.0.3/lib/servlet.jar:/Users/langella/ext/ws-core-4.0.3/lib/wsdl4j.jar:/Users/langella/ext/ws-core-4.0.3/lib/wsrf_common.jar:/Users/langella/ext/ws-core-4.0.3/lib/wsrf_core.jar:/Users/langella/ext/ws-core-4.0.3/lib/wsrf_core_registry.jar:/Users/langella/ext/ws-core-4.0.3/lib/wsrf_core_registry_stubs.jar:/Users/langella/ext/ws-core-4.0.3/lib/wsrf_core_samples_authzService.jar:/Users/langella/ext/ws-core-4.0.3/lib/wsrf_core_samples_authzService_stubs.jar:/Users/langella/ext/ws-core-4.0.3/lib/wsrf_core_samples_counter.jar:/Users/langella/ext/ws-core-4.0.3/lib/wsrf_core_samples_counter_stubs.jar:/Users/langella/ext/ws-core-4.0.3/lib/wsrf_core_samples_mgmt.jar:/Users/langella/ext/ws-core-4.0.3/lib/wsrf_core_samples_mgmt_stubs.jar:/Users/langella/ext/ws-core-4.0.3/lib/wsrf_core_stubs.jar:/Users/langella/ext/ws-core-4.0.3/lib/wsrf_provider_jce.jar:/Users/langella/ext/ws-core-4.0.3/lib/wsrf_test.jar:/Users/langella/ext/ws-core-4.0.3/lib/wsrf_test_interop.jar:/Users/langella/ext/ws-core-4.0.3/lib/wsrf_test_interop_stubs.jar:/Users/langella/ext/ws-core-4.0.3/lib/wsrf_test_unit.jar:/Users/langella/ext/ws-core-4.0.3/lib/wsrf_test_unit_stubs.jar:/Users/langella/ext/ws-core-4.0.3/lib/wsrf_tools.jar:/Users/langella/ext/ws-core-4.0.3/lib/wss4j.jar:/Users/langella/ext/ws-core-4.0.3/lib/xalan.jar:/Users/langella/ext/ws-core-4.0.3/lib/xercesImpl.jar:/Users/langella/ext/ws-core-4.0.3/lib/xml-apis.jar:/Users/langella/ext/ws-core-4.0.3/lib/xmlsec.jar:/Users/langella/projects/caGrid-1.x/caGrid/projects/csm/ext/dependencies/service/jars/antlr-2.7.6.jar:/Users/langella/projects/caGrid-1.x/caGrid/projects/csm/ext/dependencies/service/jars/asm.jar:/Users/langella/projects/caGrid-1.x/caGrid/projects/csm/ext/dependencies/service/jars/c3p0-0.9.1.jar:/Users/langella/projects/caGrid-1.x/caGrid/projects/csm/ext/dependencies/service/jars/caGrid-Introduce-serviceTools-1.3-dev.jar:/Users/langella/projects/caGrid-1.x/caGrid/projects/csm/ext/dependencies/service/jars/caGrid-ServiceSecurityProvider-client-1.3-dev.jar:/Users/langella/projects/caGrid-1.x/caGrid/projects/csm/ext/dependencies/service/jars/caGrid-ServiceSecurityProvider-common-1.3-dev.jar:/Users/langella/projects/caGrid-1.x/caGrid/projects/csm/ext/dependencies/service/jars/caGrid-ServiceSecurityProvider-service-1.3-dev.jar:/Users/langella/projects/caGrid-1.x/caGrid/projects/csm/ext/dependencies/service/jars/caGrid-ServiceSecurityProvider-stubs-1.3-dev.jar:/Users/langella/projects/caGrid-1.x/caGrid/projects/csm/ext/dependencies/service/jars/caGrid-advertisement-1.3-dev.jar:/Users/langella/projects/caGrid-1.x/caGrid/projects/csm/ext/dependencies/service/jars/caGrid-core-1.3-dev.jar:/Users/langella/projects/caGrid-1.x/caGrid/projects/csm/ext/dependencies/service/jars/caGrid-gaards-core-1.3-dev.jar:/Users/langella/projects/caGrid-1.x/caGrid/projects/csm/ext/dependencies/service/jars/caGrid-metadata-common-1.3-dev.jar:/Users/langella/projects/caGrid-1.x/caGrid/projects/csm/ext/dependencies/service/jars/caGrid-metadata-security-1.3-dev.jar:/Users/langella/projects/caGrid-1.x/caGrid/projects/csm/ext/dependencies/service/jars/caGrid-opensaml-1.3-dev.jar:/Users/langella/projects/caGrid-1.x/caGrid/projects/csm/ext/dependencies/service/jars/castor-1.0.2.jar:/Users/langella/projects/caGrid-1.x/caGrid/projects/csm/ext/dependencies/service/jars/cglib-2.1_3.jar:/Users/langella/projects/caGrid-1.x/caGrid/projects/csm/ext/dependencies/service/jars/clm-4.1.jar:/Users/langella/projects/caGrid-1.x/caGrid/projects/csm/ext/dependencies/service/jars/commons-codec-1.3.jar:/Users/langella/projects/caGrid-1.x/caGrid/projects/csm/ext/dependencies/service/jars/commons-dbcp-1.2.1.jar:/Users/langella/projects/caGrid-1.x/caGrid/projects/csm/ext/dependencies/service/jars/commons-lang-1.0.1.jar:/Users/langella/projects/caGrid-1.x/caGrid/projects/csm/ext/dependencies/service/jars/commons-pool-1.2.jar:/Users/langella/projects/caGrid-1.x/caGrid/projects/csm/ext/dependencies/service/jars/csmapi-4.1.jar:/Users/langella/projects/caGrid-1.x/caGrid/projects/csm/ext/dependencies/service/jars/dom4j-1.6.1.jar:/Users/langella/projects/caGrid-1.x/caGrid/projects/csm/ext/dependencies/service/jars/ehcache-1.2.4.jar:/Users/langella/projects/caGrid-1.x/caGrid/projects/csm/ext/dependencies/service/jars/globus_wsrf_mds_aggregator.jar:/Users/langella/projects/caGrid-1.x/caGrid/projects/csm/ext/dependencies/service/jars/globus_wsrf_mds_aggregator_stubs.jar:/Users/langella/projects/caGrid-1.x/caGrid/projects/csm/ext/dependencies/service/jars/globus_wsrf_servicegroup.jar:/Users/langella/projects/caGrid-1.x/caGrid/projects/csm/ext/dependencies/service/jars/globus_wsrf_servicegroup_stubs.jar:/Users/langella/projects/caGrid-1.x/caGrid/projects/csm/ext/dependencies/service/jars/hibernate3.jar:/Users/langella/projects/caGrid-1.x/caGrid/projects/csm/ext/dependencies/service/jars/jdom-1.0.jar:/Users/langella/projects/caGrid-1.x/caGrid/projects/csm/ext/dependencies/service/jars/jprov.jar:/Users/langella/projects/caGrid-1.x/caGrid/projects/csm/ext/dependencies/service/jars/jta-1.0.1B.jar:/Users/langella/projects/caGrid-1.x/caGrid/projects/csm/ext/dependencies/service/jars/jtds-1.2.jar:/Users/langella/projects/caGrid-1.x/caGrid/projects/csm/ext/dependencies/service/jars/mysql-connector-java-3.0.16-ga-bin.jar:/Users/langella/projects/caGrid-1.x/caGrid/projects/csm/ext/dependencies/service/jars/spring-beans.jar:/Users/langella/projects/caGrid-1.x/caGrid/projects/csm/ext/dependencies/service/jars/spring-core.jar:/Users/langella/ext/apache-ant-1.7.0/lib/ant-launcher.jar:/Users/langella/ext/apache-ant-1.7.0/lib/ant.jar:/Users/langella/ext/apache-ant-1.7.0/lib/ant-junit.jar" />
+    <property name="ant.library.dir" value="/Users/langella/ext/apache-ant-1.7.0/lib" />
+    <property name="os.arch" value="x86_64" />
+    <property name="env.Apple_PubSub_Socket_Render" value="/tmp/launch-JQWaQa/Render" />
+    <property name="sun.java.launcher" value="SUN_STANDARD" />
+    <property name="ant.core.lib" value="/Users/langella/ext/apache-ant-1.7.0/lib/ant.jar" />
+    <property name="java.vm.specification.vendor" value="Sun Microsystems Inc." />
+    <property name="file.separator" value="/" />
+    <property name="introduce.skeleton.resource.options" value="main,singleton,identifiable,resourcePropertyManagement" />
+    <property name="java.runtime.version" value="1.6.0_15-b03-219" />
+    <property name="sun.boot.class.path" value="/System/Library/Frameworks/JavaVM.framework/Versions/1.6.0/Classes/jsfd.jar:/System/Library/Frameworks/JavaVM.framework/Versions/1.6.0/Classes/classes.jar:/System/Library/Frameworks/JavaVM.framework/Frameworks/JavaRuntimeSupport.framework/Resources/Java/JavaRuntimeSupport.jar:/System/Library/Frameworks/JavaVM.framework/Versions/1.6.0/Classes/ui.jar:/System/Library/Frameworks/JavaVM.framework/Versions/1.6.0/Classes/laf.jar:/System/Library/Frameworks/JavaVM.framework/Versions/1.6.0/Classes/sunrsasign.jar:/System/Library/Frameworks/JavaVM.framework/Versions/1.6.0/Classes/jsse.jar:/System/Library/Frameworks/JavaVM.framework/Versions/1.6.0/Classes/jce.jar:/System/Library/Frameworks/JavaVM.framework/Versions/1.6.0/Classes/charsets.jar" />
+    <property name="env.SSH_AUTH_SOCK" value="/tmp/launch-mSN6OS/Listeners" />
+    <property name="user.country" value="US" />
+    <property name="env.ANT_HOME" value="/Users/langella/ext/apache-ant-1.7.0" />
+    <property name="etc.dir" value="etc" />
+    <property name="env.SHELL" value="/bin/tcsh" />
+    <property name="service.jar.name" value="caGrid-csm-service-1.3-dev.jar" />
+    <property name="env.REMOTEHOST" value="" />
+    <property name="service.name" value="CSM" />
+    <property name="java.vendor" value="Apple Inc." />
+    <property name="awt.nativeDoubleBuffering" value="true" />
+    <property name="env.CATALINA_HOME" value="/Users/langella/ext/apache-tomcat-5.5.27" />
+    <property name="java.specification.version" value="1.6" />
+    <property name="jboss.dir" value="/Users/langella/ext/csm-jboss-4.0.0" />
+    <property name="sun.arch.data.model" value="64" />
+  </properties>
+  <testcase classname="org.cagrid.gaards.csm.service.TestCSM" name="testCSMInitialization" time="0.0020" />
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

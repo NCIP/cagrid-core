@@ -27,7 +27,7 @@
 	<property name="ext.lib.dir" location="${ext.dependencies.dir}/service/jars" />
 	<property name="ext.test.lib" value="${ext.dependencies.dir}/test/jars" />
 	<property name="ext.tools.lib.dir" location="${ext.dependencies.dir}/tools/jars" />
-
+	
 	<!--need to preset these-->
 	<property name="build.dir" location="build" />
 	<property name="build.lib.dir" location="${build.dir}/lib" />
@@ -38,6 +38,8 @@
 	<property name="test.dir" value="test" />
 	<property name="test.src.dir" value="${test.dir}/src" />
 
+	<!--need to import the test build-->
+	<import file="test/test.xml" />
 
 	<!-- overide the introduce location of this which is suposed to be in tools/lib -->
 	<property name="ant.contrib.location" value="${ext.tools.lib.dir}/ant-contrib-1.0b3.jar" />
@@ -223,25 +225,6 @@
 
 	</target>
 
-
-	<!-- ============================================================== -->
-	<!-- Call any tests.                                                -->
-	<!-- ============================================================== -->
-	<target name="test" depends="checkGlobus" description="Runs the service's tests.">
-		<echo message="Test results dir: ${junit.results.dir}" />
-		<mkdir dir="${junit.results.dir}" />
-		<junit dir="${basedir}" printsummary="yes" showoutput="true">
-			<jvmarg value="-Djava.endorsed.dirs=${ext.endorsed.dir}" />
-			<classpath refid="test.run.classpath" />
-			<formatter type="xml" />
-			<batchtest fork="yes" todir="${junit.results.dir}">
-				<fileset dir="${test.src.dir}">
-					<include name="**/Test*.java" />
-					<include name="**/*TestCase.java" />
-				</fileset>
-			</batchtest>
-		</junit>
-	</target>
 
 
 </project>

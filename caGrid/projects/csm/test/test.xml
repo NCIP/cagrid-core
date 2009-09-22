@@ -1,0 +1,47 @@
+<!-- ======================================================================= -->
+<!-- caGrid Utilities build file                                             -->
+<!-- ======================================================================= -->
+<project name="caGrid-dorian_tests_harness" basedir=".">
+	<property name="junit.results.dir" value="${test.log.dir}/junit" />
+	<property name="force.config.replace" value="false" />
+
+
+	<!-- call the test target for each project and aggregates the log resutls  -->
+	<target name="test" depends="checkGlobus, create_config_files">
+		<echo message="Test results dir: ${junit.results.dir}" />
+		<mkdir dir="${junit.results.dir}" />
+		<junit dir="${basedir}" printsummary="yes" errorproperty="test.failed" failureproperty="test.failed" showoutput="true" forkmode="once">
+			<sysproperty key="basedir" value="${basedir}" />
+			<jvmarg value="-Xmx512M" />
+			<jvmarg value="-Dbuild.dir=${build.dir}" />
+			<jvmarg value="-Djava.endorsed.dirs=${ext.endorsed.dir}" />
+			<classpath>
+				<path refid="test.run.classpath" />
+				<pathelement location="${test.dir}/resources" />
+			</classpath>
+			<formatter type="xml" />
+			<test if="testcase" name="${testcase}" fork="yes" todir="${junit.results.dir}" />
+			<batchtest unless="testcase" fork="yes" todir="${junit.results.dir}">
+				<fileset dir="${test.src.dir}">
+					<include name="**/Test*.java" />
+					<include name="**/*TestCase.java" />
+				</fileset>
+			</batchtest>
+		</junit>
+		<fail message="Tests failed! Check test reports." if="test.failed" />
+	</target>
+
+
+	<!-- ============================================================== -->
+	<!-- Creates conf files from examples                               -->
+	<!-- ============================================================== -->
+	<target name="create_config_files" description="Creates conf files from examples.   Set property
+		force.config.replace to true to force replacement.">
+		<copy todir="${test.dir}/resources" overwrite="${force.config.replace}">
+			<fileset dir="${test.dir}/resources">
+				<include name="**/*.example" />
+			</fileset>
+			<mapper type="glob" from="*.example" to="*" />
+		</copy>
+	</target>
+</project>

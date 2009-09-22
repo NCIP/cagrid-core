@@ -25,7 +25,9 @@
       </element>
       <element name="GetApplicationsResponse">
         <complexType>
-          <sequence />
+          <sequence>
+            <element name="response" type="xs:string" minOccurs="1" maxOccurs="1" />
+          </sequence>
         </complexType>
       </element>
       <element name="CSMResourceProperties">

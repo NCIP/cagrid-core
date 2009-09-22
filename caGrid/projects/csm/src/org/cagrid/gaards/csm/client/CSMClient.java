@@ -57,32 +57,15 @@ public class CSMClient extends CSMClientBase implements CSMI {
 	public static void main(String [] args){
 	    System.out.println("Running the Grid Service Client");
 		try{
-		if(!(args.length < 2)){
-			if(args[0].equals("-url")){
-			  CSMClient client = new CSMClient(args[1]);
-			  // place client calls here if you want to use this main as a
-			  // test....
-			} else {
-				usage();
-				System.exit(1);
-			}
-		} else {
-			usage();
-			System.exit(1);
-		}
+	
+			  CSMClient client = new CSMClient("https://localhost:8443/wsrf/services/cagrid/CSM");
+			  System.out.println(client.getApplications());
+		
 		} catch (Exception e) {
 			e.printStackTrace();
 			System.exit(1);
 		}
 	}
-
-  public void getApplications() throws RemoteException, org.cagrid.gaards.csm.stubs.types.CSMInternalFault {
-    synchronized(portTypeMutex){
-      configureStubSecurity((Stub)portType,"getApplications");
-    org.cagrid.gaards.csm.stubs.GetApplicationsRequest params = new org.cagrid.gaards.csm.stubs.GetApplicationsRequest();
-    org.cagrid.gaards.csm.stubs.GetApplicationsResponse boxedResult = portType.getApplications(params);
-    }
-  }
 
   public org.oasis.wsrf.properties.GetMultipleResourcePropertiesResponse getMultipleResourceProperties(org.oasis.wsrf.properties.GetMultipleResourceProperties_Element params) throws RemoteException {
     synchronized(portTypeMutex){
@@ -102,6 +85,15 @@ public class CSMClient extends CSMClientBase implements CSMI {
     synchronized(portTypeMutex){
       configureStubSecurity((Stub)portType,"queryResourceProperties");
     return portType.queryResourceProperties(params);
+    }
+  }
+
+  public java.lang.String getApplications() throws RemoteException, org.cagrid.gaards.csm.stubs.types.CSMInternalFault {
+    synchronized(portTypeMutex){
+      configureStubSecurity((Stub)portType,"getApplications");
+    org.cagrid.gaards.csm.stubs.GetApplicationsRequest params = new org.cagrid.gaards.csm.stubs.GetApplicationsRequest();
+    org.cagrid.gaards.csm.stubs.GetApplicationsResponse boxedResult = portType.getApplications(params);
+    return boxedResult.getResponse();
     }
   }
 

@@ -49,8 +49,8 @@
    <ns2:SchemaElement type="unsignedShort" xsi:type="ns2:SchemaElementType"/>
   </ns2:Namespace>
   <ns2:Namespace location="./CSMTypes.xsd" namespace="http://csm.gaards.cagrid.org/CSM/types" packageName="org.cagrid.gaards.csm.stubs.types" xsi:type="ns2:NamespaceType">
-   <ns2:SchemaElement type="CSMReference" xsi:type="ns2:SchemaElementType"/>
    <ns2:SchemaElement type="CSMInternalFault" xsi:type="ns2:SchemaElementType"/>
+   <ns2:SchemaElement type="CSMReference" xsi:type="ns2:SchemaElementType"/>
   </ns2:Namespace>
   <ns2:Namespace generateStubs="false" location="./xsd/cagrid/types/security/security.xsd" namespace="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.security" packageName="gov.nih.nci.cagrid.metadata.security" xsi:type="ns2:NamespaceType">
    <ns2:SchemaElement type="CommunicationMechanism" xsi:type="ns2:SchemaElementType"/>
@@ -127,7 +127,7 @@
     </ns4:Method>
     <ns4:Method description="" isImported="false" isProvided="false" name="getApplications" xsi:type="ns4:MethodType">
      <ns4:Inputs/>
-     <ns4:Output qName="void" description="" isArray="false"/>
+     <ns4:Output qName="xsd:string" description="" isArray="false" xmlns:xsd="http://www.w3.org/2001/XMLSchema"/>
      <ns4:Exceptions>
       <ns4:Exception description="" name="CSMInternalFault" qname="ns13:CSMInternalFault" xmlns:ns13="http://csm.gaards.cagrid.org/CSM/types"/>
      </ns4:Exceptions>
