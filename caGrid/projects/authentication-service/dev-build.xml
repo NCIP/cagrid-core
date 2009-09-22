@@ -22,7 +22,7 @@
 	<property name="service.jar.name" value="${jar.prefix}-service-${jar.suffix}" />
 	<property name="stubs.jar.name" value="${jar.prefix}-stubs-${jar.suffix}" />
 	<property name="test.jar.name" value="${jar.prefix}-tests-${jar.suffix}" />
-
+	
 	<property name="ext.dir" location="${basedir}/ext" />
 	<property name="ext.dependencies.dir" location="${ext.dir}/dependencies" />
 	<property name="ext.targetgrid.dir" location="${ext.dir}/target_grid" />
