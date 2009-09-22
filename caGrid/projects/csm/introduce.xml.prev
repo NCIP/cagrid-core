@@ -1,5 +1,9 @@
 <ns1:ServiceDescription introduceVersion="1.3" xmlns:ns1="gme://gov.nih.nci.cagrid/1/Introduce">
  <ns2:Namespaces xsi:type="ns2:NamespacesType" xmlns:ns2="gme://gov.nih.nci.cagrid.introduce/1/Namespace" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <ns2:Namespace location="./csm.xsd" namespace="http://gaards.cagrid.org/csm" packageName="org.cagrid.gaards.csm.bean" xsi:type="ns2:NamespaceType">
+   <ns2:SchemaElement type="Application" xsi:type="ns2:SchemaElementType"/>
+   <ns2:SchemaElement type="ApplicationSearchCriteria" xsi:type="ns2:SchemaElementType"/>
+  </ns2:Namespace>
   <ns2:Namespace generateStubs="false" namespace="http://www.w3.org/2001/XMLSchema" xsi:type="ns2:NamespaceType">
    <ns2:SchemaElement type="anySimpleType" xsi:type="ns2:SchemaElementType"/>
    <ns2:SchemaElement type="anyType" xsi:type="ns2:SchemaElementType"/>
@@ -126,16 +130,18 @@
      <ns4:ProviderInformation providerClass="gov.nih.nci.cagrid.introduce.security.service.globus.ServiceSecurityProviderImpl"/>
     </ns4:Method>
     <ns4:Method description="" isImported="false" isProvided="false" name="getApplications" xsi:type="ns4:MethodType">
-     <ns4:Inputs/>
-     <ns4:Output qName="xsd:string" description="" isArray="false" xmlns:xsd="http://www.w3.org/2001/XMLSchema"/>
+     <ns4:Inputs>
+      <ns4:Input qName="ns13:ApplicationSearchCriteria" description="" isArray="false" name="applicationSearchCriteria" xmlns:ns13="http://gaards.cagrid.org/csm"/>
+     </ns4:Inputs>
+     <ns4:Output qName="ns14:Application" description="" isArray="true" xmlns:ns14="http://gaards.cagrid.org/csm"/>
      <ns4:Exceptions>
-      <ns4:Exception description="" name="CSMInternalFault" qname="ns13:CSMInternalFault" xmlns:ns13="http://csm.gaards.cagrid.org/CSM/types"/>
+      <ns4:Exception description="" name="CSMInternalFault" qname="ns15:CSMInternalFault" xmlns:ns15="http://csm.gaards.cagrid.org/CSM/types"/>
      </ns4:Exceptions>
     </ns4:Method>
    </ns4:Methods>
-   <ns14:ResourcePropertiesList xsi:type="ns14:ResourcePropertiesListType" xmlns:ns14="gme://gov.nih.nci.cagrid.introduce/1/Resources">
-    <ns14:ResourceProperty qName="ns15:ServiceMetadata" fileLocation="serviceMetadata.xml" populateFromFile="true" register="true" xsi:type="ns14:ResourcePropertyType" xmlns:ns15="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata"/>
-   </ns14:ResourcePropertiesList>
+   <ns16:ResourcePropertiesList xsi:type="ns16:ResourcePropertiesListType" xmlns:ns16="gme://gov.nih.nci.cagrid.introduce/1/Resources">
+    <ns16:ResourceProperty qName="ns17:ServiceMetadata" fileLocation="serviceMetadata.xml" populateFromFile="true" register="true" xsi:type="ns16:ResourcePropertyType" xmlns:ns17="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata"/>
+   </ns16:ResourcePropertiesList>
    <ns3:ResourceFrameworkOptions xsi:type="ns3:ResourceFrameworkOptions">
     <ns3:Main xsi:type="ns3:Main"/>
     <ns3:Singleton xsi:type="ns3:Singleton"/>
@@ -144,7 +150,7 @@
    </ns3:ResourceFrameworkOptions>
   </ns3:Service>
  </ns3:Services>
- <ns16:Extensions xsi:type="ns16:ExtensionsType" xmlns:ns16="gme://gov.nih.nci.cagrid.introduce/1/Extension" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
-  <ns16:Extension name="cagrid_metadata" version="1.3" xsi:type="ns16:ExtensionType"/>
- </ns16:Extensions>
+ <ns18:Extensions xsi:type="ns18:ExtensionsType" xmlns:ns18="gme://gov.nih.nci.cagrid.introduce/1/Extension" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <ns18:Extension name="cagrid_metadata" version="1.3" xsi:type="ns18:ExtensionType"/>
+ </ns18:Extensions>
 </ns1:ServiceDescription>

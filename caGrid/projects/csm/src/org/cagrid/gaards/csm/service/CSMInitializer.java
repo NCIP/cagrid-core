@@ -43,17 +43,18 @@ public class CSMInitializer {
 
 	private static Log log = LogFactory.getLog(CSMInitializer.class.getName());
 
-	public static AuthorizationManager getAuthorizationManager()
-			throws CSMInternalFault {
+	public static AuthorizationManager getAuthorizationManager(
+			DatabaseProperties db) throws CSMInternalFault {
 		HashMap<String, String> connectionProperties = new HashMap<String, String>();
-		connectionProperties.put("hibernate.connection.url",
-				"jdbc:mysql://localhost:3306/csmupt");
-		connectionProperties.put("hibernate.connection.username", "root");
-		connectionProperties.put("hibernate.connection.password", "");
-		connectionProperties.put("hibernate.dialect",
-				"org.hibernate.dialect.MySQLDialect");
-		connectionProperties.put("hibernate.connection.driver_class",
-				"org.gjt.mm.mysql.Driver");
+		connectionProperties.put("hibernate.connection.url", db
+				.getConnectionURL());
+		connectionProperties.put("hibernate.connection.username", db
+				.getUserId());
+		connectionProperties.put("hibernate.connection.password", db
+				.getPassword());
+		connectionProperties.put("hibernate.dialect", db.getHibernateDialect());
+		connectionProperties.put("hibernate.connection.driver_class", db
+				.getDriver());
 		try {
 			SessionFactory sf = ApplicationSessionFactory.getSessionFactory(
 					Constants.CSM_WEB_SERVICE_CONTEXT, connectionProperties);

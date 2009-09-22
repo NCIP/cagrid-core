@@ -59,7 +59,7 @@ public class CSMClient extends CSMClientBase implements CSMI {
 		try{
 	
 			  CSMClient client = new CSMClient("https://localhost:8443/wsrf/services/cagrid/CSM");
-			  System.out.println(client.getApplications());
+			 // System.out.println(client.getApplications());
 		
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -88,12 +88,15 @@ public class CSMClient extends CSMClientBase implements CSMI {
     }
   }
 
-  public java.lang.String getApplications() throws RemoteException, org.cagrid.gaards.csm.stubs.types.CSMInternalFault {
+  public org.cagrid.gaards.csm.bean.Application[] getApplications(org.cagrid.gaards.csm.bean.ApplicationSearchCriteria applicationSearchCriteria) throws RemoteException, org.cagrid.gaards.csm.stubs.types.CSMInternalFault {
     synchronized(portTypeMutex){
       configureStubSecurity((Stub)portType,"getApplications");
     org.cagrid.gaards.csm.stubs.GetApplicationsRequest params = new org.cagrid.gaards.csm.stubs.GetApplicationsRequest();
+    org.cagrid.gaards.csm.stubs.GetApplicationsRequestApplicationSearchCriteria applicationSearchCriteriaContainer = new org.cagrid.gaards.csm.stubs.GetApplicationsRequestApplicationSearchCriteria();
+    applicationSearchCriteriaContainer.setApplicationSearchCriteria(applicationSearchCriteria);
+    params.setApplicationSearchCriteria(applicationSearchCriteriaContainer);
     org.cagrid.gaards.csm.stubs.GetApplicationsResponse boxedResult = portType.getApplications(params);
-    return boxedResult.getResponse();
+    return boxedResult.getApplication();
     }
   }
 

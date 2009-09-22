@@ -14,9 +14,8 @@ public class CSMImpl extends CSMImplBase {
 		super();
 	}
 
-	public java.lang.String getApplications() throws RemoteException,
-			org.cagrid.gaards.csm.stubs.types.CSMInternalFault {
-		return "Hello";
+  public org.cagrid.gaards.csm.bean.Application[] getApplications(org.cagrid.gaards.csm.bean.ApplicationSearchCriteria applicationSearchCriteria) throws RemoteException, org.cagrid.gaards.csm.stubs.types.CSMInternalFault {
+		return null;
 	}
 
 }

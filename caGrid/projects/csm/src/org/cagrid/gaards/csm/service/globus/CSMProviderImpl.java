@@ -28,7 +28,7 @@ public class CSMProviderImpl{
 
     public org.cagrid.gaards.csm.stubs.GetApplicationsResponse getApplications(org.cagrid.gaards.csm.stubs.GetApplicationsRequest params) throws RemoteException, org.cagrid.gaards.csm.stubs.types.CSMInternalFault {
     org.cagrid.gaards.csm.stubs.GetApplicationsResponse boxedResult = new org.cagrid.gaards.csm.stubs.GetApplicationsResponse();
-    boxedResult.setResponse(impl.getApplications());
+    boxedResult.setApplication(impl.getApplications(params.getApplicationSearchCriteria().getApplicationSearchCriteria()));
     return boxedResult;
   }
 

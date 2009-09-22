@@ -18,7 +18,7 @@ public interface CSMI {
 
   public org.oasis.wsrf.properties.QueryResourcePropertiesResponse queryResourceProperties(org.oasis.wsrf.properties.QueryResourceProperties_Element params) throws RemoteException ;
 
-  public java.lang.String getApplications() throws RemoteException, org.cagrid.gaards.csm.stubs.types.CSMInternalFault ;
+  public org.cagrid.gaards.csm.bean.Application[] getApplications(org.cagrid.gaards.csm.bean.ApplicationSearchCriteria applicationSearchCriteria) throws RemoteException, org.cagrid.gaards.csm.stubs.types.CSMInternalFault ;
 
 }
 
