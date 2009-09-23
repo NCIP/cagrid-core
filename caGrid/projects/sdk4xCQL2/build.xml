@@ -59,9 +59,6 @@
 			<!-- castor is supplied from the remote-client -->
 			<exclude name="castor-0.9.9.jar" />
 		</fileset>
-		<fileset dir="${ext.test.lib.dir}">
-			<include name="**/*.jar" />
-		</fileset>
 		<fileset dir="${globus.dir}/lib">
 			<include name="**/*.jar" />
 			<exclude name="junit.jar" />
@@ -76,11 +73,15 @@
 	<!-- =============================================================== -->
 	<path id="test.base.classpath">
 		<path refid="build.classpath" />
+		<fileset dir="${ext.test.lib.dir}">
+			<include name="**/*.jar"/>
+		</fileset>
 		<pathelement location="${build.processor.dest}" />
 	</path>
 
 
 	<path id="test.build.classpath">
+		<path refid="test.base.classpath" />
 		<fileset dir="${test.dir}/lib/sdk4.0">
 			<include name="**/*.jar" />
 			<!--
@@ -88,7 +89,6 @@
 			<include name="sdk-client-framework.jar"/>
 			-->
 		</fileset>
-		<path refid="test.base.classpath" />
 	</path>
 
 

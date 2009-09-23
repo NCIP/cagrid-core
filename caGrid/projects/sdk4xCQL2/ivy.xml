@@ -26,7 +26,7 @@
     <dependency rev="latest.integration" org="caGrid" name="core"
       conf="processor->default;impl-test->test"/>
     <dependency rev="latest.integration" org="caGrid" name="data"
-      conf="processor->service;impl-test->test"/>
+      conf="processor->processors,utils;impl-test->test"/>
     <dependency rev="latest.integration" org="caGrid" name="cql"
       conf="processor->cql2,cql2-schemas"/>
 
