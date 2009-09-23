@@ -54,6 +54,7 @@
 	<property name="ext.local-client.dir" location="${sdk.output.package.dir}/local-client" />
 	<property name="ext.remote-client.lib.dir" location="${ext.remote-client.dir}/lib" />
 	<property name="ext.local-client.lib.dir" location="${ext.local-client.dir}/lib" />
+	<property name="required.sdk.libs" value="sdk-client-framework.jar, hibernate3.jar, example41-beans.jar"/>
 
 	<!-- testing stuff -->
 	<property name="test.dir" location="${basedir}/test" />
@@ -79,31 +80,29 @@
 	<!-- TODO: evaluate if these are still the same as for SDK 4.1 -->
 	<property name="style.sdk.remote.lib.names" value="asm.jar, castor-1.0.2.jar, hibernate3.jar, spring.jar, cglib-2.1.3.jar, sdk-client-framework.jar, antlr-2.7.6.jar, acegi-security-1.0.4.jar" />
 	<property name="style.sdk.local.lib.names" value="c3p0-0.9.0.jar, csmapi.jar, dom4j-1.4.jar, ehcache-1.2.2.jar, jta.jar, mysql-connector-java-3.1.13-bin.jar, sdk-core.jar" />
+	
+	<!-- base classpath -->
+	<path id="base.classpath">
+		<fileset dir="${lib.dir}">
+			<include name="**/*.jar" />
+		</fileset>
+		<fileset dir="${ext.remote-client.lib.dir}" includes="${required.sdk.libs}"/>
+		<fileset dir="${globus.dir}/lib">
+			<include name="**/*.jar" />
+			<exclude name="junit.jar" />
+		</fileset>
+	</path>
 
 	<!-- =============================================================== -->
 	<!-- The Build Classpath                                             -->
 	<!-- =============================================================== -->
 	<path id="build.classpath">
-		<fileset dir="${lib.dir}">
-			<include name="**/*.jar" />
-		</fileset>
-		<fileset dir="${ext.remote-client.lib.dir}">
-			<include name="*.jar" />
-			<!-- TODO: include more stuff? -->
-		</fileset>
+		<path refid="base.classpath"/>
 		<fileset dir="${ext.lib.dir}">
 			<include name="**/*.jar" />
 			<!-- castor is supplied from the remote-client -->
 			<exclude name="castor-0.9.9.jar" />
 		</fileset>
-		<fileset dir="${ext.test.lib.dir}">
-			<include name="**/*.jar" />
-		</fileset>
-		<fileset dir="${globus.dir}/lib">
-			<include name="**/*.jar" />
-			<exclude name="junit.jar" />
-		</fileset>
-
 		<pathelement location="${build.beans.dest}" />
 	</path>
 
@@ -112,23 +111,9 @@
 	<!-- The Test Classpath                                              -->
 	<!-- =============================================================== -->
 	<path id="test.classpath">
-		<fileset dir="${lib.dir}">
+		<path refid="base.classpath"/>
+		<fileset dir="${ext.test.lib.dir}" excludes="${build.classpath}">
 			<include name="**/*.jar" />
-		</fileset>
-
-		<fileset dir="${ext.lib.dir}">
-			<include name="**/*.jar" />
-		</fileset>
-		<fileset dir="${ext.remote-client.lib.dir}">
-			<include name="*.jar" />
-			<!-- TODO: include more stuff? -->
-		</fileset>
-		<fileset dir="${ext.test.lib.dir}">
-			<include name="**/*.jar" />
-		</fileset>
-		<fileset dir="${globus.dir}/lib">
-			<include name="**/*.jar" />
-			<exclude name="junit.jar" />
 		</fileset>
 		<pathelement location="${test.resources.jar}" />
 		<pathelement location="${build.beans.dest}" />
@@ -212,13 +197,8 @@
 	<!-- compiles the beans -->
 	<target name="compileBeans" depends="stubs">
 		<javac fork="true" memorymaximumsize="128m" srcdir="${beans.src.dir}" destdir="${build.beans.dest}" debug="${java.debug}" source="${java.source}">
+			<classpath refid="build.classpath"/>
 			<include name="**/*.java" />
-			<classpath>
-				<fileset dir="${globus.dir}/lib">
-					<include name="*.jar" />
-					<exclude name="junit.jar" />
-				</fileset>
-			</classpath>
 		</javac>
 	</target>
 
@@ -246,28 +226,8 @@
 
 	<!-- compiles the testing source code -->
 	<target name="compileTests" depends="compileBeans, compileProcessor, compileStyle">
-		<javac fork="true" memorymaximumsize="128m" srcdir="${test.src.dir}" destdir="${test.classes.dir}" debug="${java.debug}" source="${java.source}">
-			<classpath>
-				<pathelement location="${build.processor.dest}" />
-				<pathelement location="${build.style.dest}" />
-				<pathelement location="${build.beans.dest}" />
-				<fileset dir="${lib.dir}">
-					<include name="*.jar" />
-				</fileset>
-				<fileset dir="${ext.lib.dir}">
-					<include name="*.jar" />
-				</fileset>
-				<fileset dir="${ext.remote-client.lib.dir}">
-					<include name="**/*.jar" />
-				</fileset>
-				<fileset dir="${ext.test.lib.dir}">
-					<include name="*.jar" />
-				</fileset>
-				<fileset dir="${globus.dir}/lib">
-					<include name="*.jar" />
-					<exclude name="junit.jar" />
-				</fileset>
-			</classpath>
+		<javac verbose="true" fork="true" memorymaximumsize="128m" srcdir="${test.src.dir}" destdir="${test.classes.dir}" debug="${java.debug}" source="${java.source}">
+			<classpath refid="test.classpath"/>
 			<include name="**/*.java" />
 		</javac>
 	</target>
@@ -318,6 +278,9 @@
 		<jar destfile="${test.project.jar}">
 			<fileset dir="${test.classes.dir}">
 				<include name="**/*.class" />
+			</fileset>
+			<fileset dir="${test.src.dir}">
+				<include name="**/*"/>
 			</fileset>
 		</jar>
 	</target>

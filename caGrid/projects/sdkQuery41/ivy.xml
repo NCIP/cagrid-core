@@ -42,7 +42,7 @@
       conf="processor->service;impl-test->cql-examples,test"/>
       
     <!-- Introduce for extension related stuff -->
-    <dependency rev="latest.integration" org="caGrid" name="introduce" conf="style->core" />
+    <dependency rev="latest.integration" org="caGrid" name="introduce" conf="style->extension" />
 	<dependency rev="latest.integration" org="caGrid" name="cadsr" conf="style->default" />
     
 
