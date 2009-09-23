@@ -349,7 +349,7 @@
 	<target name="jars" depends="jarStubs, jar, jarTests" />
 
 	<!-- Clean up all the intermediate files -->
-	<target name="clean" description="Removes all generated build artifacts.">
+		<target name="clean" description="Removes all generated build artifacts." depends="checkContribTasksDefined, defineContribTasks"> 
 		<delete dir="tmp" />
 		<delete dir="${build.dir}" />
 		<delete file="${gar.name}" />
