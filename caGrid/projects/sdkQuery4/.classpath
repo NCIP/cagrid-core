@@ -77,9 +77,6 @@
 	<classpathentry kind="lib" path="build/remote-client/lib/sdk-client-framework.jar"/>
 	<classpathentry kind="lib" path="build/remote-client/lib/spring.jar"/>
 	<classpathentry kind="lib" path="build/remote-client/lib/castor-1.0.2.jar"/>
-	<classpathentry kind="lib" path="ext/dependencies/jars/caGrid-BulkDataHandler-client-1.4-dev.jar"/>
-	<classpathentry kind="lib" path="ext/dependencies/jars/caGrid-BulkDataHandler-common-1.4-dev.jar"/>
-	<classpathentry kind="lib" path="ext/dependencies/jars/caGrid-BulkDataHandler-stubs-1.4-dev.jar"/>
 	<classpathentry kind="lib" path="ext/dependencies/jars/caGrid-core-1.4-dev.jar"/>
 	<classpathentry kind="lib" path="ext/dependencies/jars/caGrid-CQL-cql.1.0-1.4-dev.jar"/>
 	<classpathentry kind="lib" path="ext/dependencies/jars/caGrid-data-common-1.4-dev.jar"/>
@@ -87,25 +84,18 @@
 	<classpathentry kind="lib" path="ext/dependencies/jars/caGrid-dataExtensions-core-1.4-dev.jar"/>
 	<classpathentry kind="lib" path="ext/dependencies/jars/caGrid-dataExtensions-sdkstyle-1.4-dev.jar"/>
 	<classpathentry kind="lib" path="ext/dependencies/jars/caGrid-dataExtensions-ui-1.4-dev.jar"/>
-	<classpathentry kind="lib" path="ext/dependencies/jars/caGrid-data-service-1.4-dev.jar"/>
 	<classpathentry kind="lib" path="ext/dependencies/jars/caGrid-data-stubs-1.4-dev.jar"/>
-	<classpathentry kind="lib" path="ext/dependencies/jars/caGrid-data-utils-1.4-dev.jar"/>
-	<classpathentry kind="lib" path="ext/dependencies/jars/caGrid-data-validation-1.4-dev.jar"/>
 	<classpathentry kind="lib" path="ext/dependencies/jars/caGrid-grape-1.4-dev.jar"/>
 	<classpathentry kind="lib" path="ext/dependencies/jars/caGrid-grape-resources-1.4-dev.jar"/>
 	<classpathentry kind="lib" path="ext/dependencies/jars/caGrid-Introduce-core-1.4-dev.jar"/>
 	<classpathentry kind="lib" path="ext/dependencies/jars/caGrid-Introduce-portal-1.4-dev.jar"/>
 	<classpathentry kind="lib" path="ext/dependencies/jars/caGrid-Introduce-updater-1.4-dev.jar"/>
 	<classpathentry kind="lib" path="ext/dependencies/jars/caGrid-metadata-common-1.4-dev.jar"/>
-	<classpathentry kind="lib" path="ext/dependencies/jars/caGrid-metadata-data-1.4-dev.jar"/>
 	<classpathentry kind="lib" path="ext/dependencies/jars/caGrid-metadata-security-1.4-dev.jar"/>
-	<classpathentry kind="lib" path="ext/dependencies/jars/caGrid-metadatautils-1.4-dev.jar"/>
 	<classpathentry kind="lib" path="ext/dependencies/jars/caGrid-ServiceSecurityProvider-client-1.4-dev.jar"/>
 	<classpathentry kind="lib" path="ext/dependencies/jars/caGrid-ServiceSecurityProvider-common-1.4-dev.jar"/>
 	<classpathentry kind="lib" path="ext/dependencies/jars/caGrid-ServiceSecurityProvider-service-1.4-dev.jar"/>
 	<classpathentry kind="lib" path="ext/dependencies/jars/caGrid-ServiceSecurityProvider-stubs-1.4-dev.jar"/>
-	<classpathentry kind="lib" path="ext/dependencies/jars/caGrid-wsEnum-1.4-dev.jar"/>
-	<classpathentry kind="lib" path="ext/dependencies/jars/caGrid-wsEnum-stubs-1.4-dev.jar"/>
 	<classpathentry kind="lib" path="ext/dependencies/jars/validation-2.0.0.jar"/>
 	<classpathentry kind="lib" path="ext/dependencies/test/jars/caGrid-core-tests-1.4-dev.jar"/>
 	<classpathentry kind="lib" path="ext/dependencies/test/jars/caGrid-data-tests-1.4-dev.jar"/>
@@ -127,5 +117,8 @@
 	<classpathentry kind="lib" path="build/remote-client/lib/log4j-1.2.14.jar"/>
 	<classpathentry kind="lib" path="build/remote-client/lib/xercesImpl.jar"/>
 	<classpathentry kind="lib" path="build/local-client/lib/example40-orm.jar"/>
+	<classpathentry kind="lib" path="ext/dependencies/jars/caGrid-data-utils-1.4-dev.jar"/>
+	<classpathentry kind="lib" path="ext/dependencies/jars/caGrid-data-service-1.4-dev.jar"/>
+	<classpathentry kind="lib" path="ext/dependencies/jars/caGrid-metadatautils-1.4-dev.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
