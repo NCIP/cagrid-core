@@ -20,5 +20,44 @@ public interface CSMI {
 
   public org.cagrid.gaards.csm.bean.Application[] getApplications(org.cagrid.gaards.csm.bean.ApplicationSearchCriteria applicationSearchCriteria) throws RemoteException, org.cagrid.gaards.csm.stubs.types.CSMInternalFault ;
 
+  /**
+   * This method allows a CSM Web Service administrator to create an application context for managing security policy.
+   *
+   * @param application
+   * @throws CSMInternalFault
+   *	
+   * @throws AccessDeniedFault
+   *	
+   * @throws CSMTransactionFault
+   *	
+   */
+  public org.cagrid.gaards.csm.bean.Application createApplication(org.cagrid.gaards.csm.bean.Application application) throws RemoteException, org.cagrid.gaards.csm.stubs.types.CSMInternalFault, org.cagrid.gaards.csm.stubs.types.AccessDeniedFault, org.cagrid.gaards.csm.stubs.types.CSMTransactionFault ;
+
+  /**
+   * This method allows a CSM Web Service administrator to modify an application context.
+   *
+   * @param application
+   * @throws CSMInternalFault
+   *	
+   * @throws AccessDeniedFault
+   *	
+   * @throws CSMTransactionFault
+   *	
+   */
+  public void modifyApplication(org.cagrid.gaards.csm.bean.Application application) throws RemoteException, org.cagrid.gaards.csm.stubs.types.CSMInternalFault, org.cagrid.gaards.csm.stubs.types.AccessDeniedFault, org.cagrid.gaards.csm.stubs.types.CSMTransactionFault ;
+
+  /**
+   * This method allows a CSM Web Service administrator to remove an application context.
+   *
+   * @param applicationId
+   * @throws CSMInternalFault
+   *	
+   * @throws AccessDeniedFault
+   *	
+   * @throws CSMTransactionFault
+   *	
+   */
+  public void removeApplication(long applicationId) throws RemoteException, org.cagrid.gaards.csm.stubs.types.CSMInternalFault, org.cagrid.gaards.csm.stubs.types.AccessDeniedFault, org.cagrid.gaards.csm.stubs.types.CSMTransactionFault ;
+
 }
 

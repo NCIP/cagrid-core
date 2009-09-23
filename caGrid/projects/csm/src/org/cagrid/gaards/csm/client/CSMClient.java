@@ -100,4 +100,36 @@ public class CSMClient extends CSMClientBase implements CSMI {
     }
   }
 
+  public org.cagrid.gaards.csm.bean.Application createApplication(org.cagrid.gaards.csm.bean.Application application) throws RemoteException, org.cagrid.gaards.csm.stubs.types.CSMInternalFault, org.cagrid.gaards.csm.stubs.types.AccessDeniedFault, org.cagrid.gaards.csm.stubs.types.CSMTransactionFault {
+    synchronized(portTypeMutex){
+      configureStubSecurity((Stub)portType,"createApplication");
+    org.cagrid.gaards.csm.stubs.CreateApplicationRequest params = new org.cagrid.gaards.csm.stubs.CreateApplicationRequest();
+    org.cagrid.gaards.csm.stubs.CreateApplicationRequestApplication applicationContainer = new org.cagrid.gaards.csm.stubs.CreateApplicationRequestApplication();
+    applicationContainer.setApplication(application);
+    params.setApplication(applicationContainer);
+    org.cagrid.gaards.csm.stubs.CreateApplicationResponse boxedResult = portType.createApplication(params);
+    return boxedResult.getApplication();
+    }
+  }
+
+  public void modifyApplication(org.cagrid.gaards.csm.bean.Application application) throws RemoteException, org.cagrid.gaards.csm.stubs.types.CSMInternalFault, org.cagrid.gaards.csm.stubs.types.AccessDeniedFault, org.cagrid.gaards.csm.stubs.types.CSMTransactionFault {
+    synchronized(portTypeMutex){
+      configureStubSecurity((Stub)portType,"modifyApplication");
+    org.cagrid.gaards.csm.stubs.ModifyApplicationRequest params = new org.cagrid.gaards.csm.stubs.ModifyApplicationRequest();
+    org.cagrid.gaards.csm.stubs.ModifyApplicationRequestApplication applicationContainer = new org.cagrid.gaards.csm.stubs.ModifyApplicationRequestApplication();
+    applicationContainer.setApplication(application);
+    params.setApplication(applicationContainer);
+    org.cagrid.gaards.csm.stubs.ModifyApplicationResponse boxedResult = portType.modifyApplication(params);
+    }
+  }
+
+  public void removeApplication(long applicationId) throws RemoteException, org.cagrid.gaards.csm.stubs.types.CSMInternalFault, org.cagrid.gaards.csm.stubs.types.AccessDeniedFault, org.cagrid.gaards.csm.stubs.types.CSMTransactionFault {
+    synchronized(portTypeMutex){
+      configureStubSecurity((Stub)portType,"removeApplication");
+    org.cagrid.gaards.csm.stubs.RemoveApplicationRequest params = new org.cagrid.gaards.csm.stubs.RemoveApplicationRequest();
+    params.setApplicationId(applicationId);
+    org.cagrid.gaards.csm.stubs.RemoveApplicationResponse boxedResult = portType.removeApplication(params);
+    }
+  }
+
 }

@@ -39,6 +39,56 @@
           </sequence>
         </complexType>
       </element>
+      <element name="CreateApplicationRequest">
+        <complexType>
+          <sequence>
+            <element name="application">
+              <complexType>
+                <sequence>
+                  <element ref="ns0:Application" minOccurs="1" maxOccurs="1" />
+                </sequence>
+              </complexType>
+            </element>
+          </sequence>
+        </complexType>
+      </element>
+      <element name="CreateApplicationResponse">
+        <complexType>
+          <sequence>
+            <element ref="ns0:Application" minOccurs="1" maxOccurs="1" />
+          </sequence>
+        </complexType>
+      </element>
+      <element name="ModifyApplicationRequest">
+        <complexType>
+          <sequence>
+            <element name="application">
+              <complexType>
+                <sequence>
+                  <element ref="ns0:Application" minOccurs="1" maxOccurs="1" />
+                </sequence>
+              </complexType>
+            </element>
+          </sequence>
+        </complexType>
+      </element>
+      <element name="ModifyApplicationResponse">
+        <complexType>
+          <sequence />
+        </complexType>
+      </element>
+      <element name="RemoveApplicationRequest">
+        <complexType>
+          <sequence>
+            <element name="applicationId" type="xs:long" minOccurs="1" maxOccurs="1" />
+          </sequence>
+        </complexType>
+      </element>
+      <element name="RemoveApplicationResponse">
+        <complexType>
+          <sequence />
+        </complexType>
+      </element>
       <element name="CSMResourceProperties">
         <complexType>
           <sequence>
@@ -55,8 +105,32 @@
   <message name="GetApplicationsResponse">
     <part name="parameters" element="tns:GetApplicationsResponse" />
   </message>
+  <message name="CreateApplicationRequest">
+    <part name="parameters" element="tns:CreateApplicationRequest" />
+  </message>
+  <message name="CreateApplicationResponse">
+    <part name="parameters" element="tns:CreateApplicationResponse" />
+  </message>
+  <message name="ModifyApplicationRequest">
+    <part name="parameters" element="tns:ModifyApplicationRequest" />
+  </message>
+  <message name="ModifyApplicationResponse">
+    <part name="parameters" element="tns:ModifyApplicationResponse" />
+  </message>
+  <message name="RemoveApplicationRequest">
+    <part name="parameters" element="tns:RemoveApplicationRequest" />
+  </message>
+  <message name="RemoveApplicationResponse">
+    <part name="parameters" element="tns:RemoveApplicationResponse" />
+  </message>
   <message name="CSMInternalFaultFaultMessage">
     <part name="fault" element="ns1:CSMInternalFault" />
+  </message>
+  <message name="AccessDeniedFaultFaultMessage">
+    <part name="fault" element="ns1:AccessDeniedFault" />
+  </message>
+  <message name="CSMTransactionFaultFaultMessage">
+    <part name="fault" element="ns1:CSMTransactionFault" />
   </message>
   <!--============================================================
 
@@ -68,6 +142,27 @@
       <input message="tns:GetApplicationsRequest" wsa:Action="http://csm.gaards.cagrid.org/CSM/GetApplicationsRequest" />
       <output message="tns:GetApplicationsResponse" wsa:Action="http://csm.gaards.cagrid.org/CSM/GetApplicationsResponse" />
       <fault name="CSMInternalFault" message="tns:CSMInternalFaultFaultMessage" wsa:Action="http://csm.gaards.cagrid.org/CSM/CSMInternalFaultFaultMessage" />
+    </operation>
+    <operation name="createApplication">
+      <input message="tns:CreateApplicationRequest" wsa:Action="http://csm.gaards.cagrid.org/CSM/CreateApplicationRequest" />
+      <output message="tns:CreateApplicationResponse" wsa:Action="http://csm.gaards.cagrid.org/CSM/CreateApplicationResponse" />
+      <fault name="CSMInternalFault" message="tns:CSMInternalFaultFaultMessage" wsa:Action="http://csm.gaards.cagrid.org/CSM/CSMInternalFaultFaultMessage" />
+      <fault name="AccessDeniedFault" message="tns:AccessDeniedFaultFaultMessage" wsa:Action="http://csm.gaards.cagrid.org/CSM/AccessDeniedFaultFaultMessage" />
+      <fault name="CSMTransactionFault" message="tns:CSMTransactionFaultFaultMessage" wsa:Action="http://csm.gaards.cagrid.org/CSM/CSMTransactionFaultFaultMessage" />
+    </operation>
+    <operation name="modifyApplication">
+      <input message="tns:ModifyApplicationRequest" wsa:Action="http://csm.gaards.cagrid.org/CSM/ModifyApplicationRequest" />
+      <output message="tns:ModifyApplicationResponse" wsa:Action="http://csm.gaards.cagrid.org/CSM/ModifyApplicationResponse" />
+      <fault name="CSMInternalFault" message="tns:CSMInternalFaultFaultMessage" wsa:Action="http://csm.gaards.cagrid.org/CSM/CSMInternalFaultFaultMessage" />
+      <fault name="AccessDeniedFault" message="tns:AccessDeniedFaultFaultMessage" wsa:Action="http://csm.gaards.cagrid.org/CSM/AccessDeniedFaultFaultMessage" />
+      <fault name="CSMTransactionFault" message="tns:CSMTransactionFaultFaultMessage" wsa:Action="http://csm.gaards.cagrid.org/CSM/CSMTransactionFaultFaultMessage" />
+    </operation>
+    <operation name="removeApplication">
+      <input message="tns:RemoveApplicationRequest" wsa:Action="http://csm.gaards.cagrid.org/CSM/RemoveApplicationRequest" />
+      <output message="tns:RemoveApplicationResponse" wsa:Action="http://csm.gaards.cagrid.org/CSM/RemoveApplicationResponse" />
+      <fault name="CSMInternalFault" message="tns:CSMInternalFaultFaultMessage" wsa:Action="http://csm.gaards.cagrid.org/CSM/CSMInternalFaultFaultMessage" />
+      <fault name="AccessDeniedFault" message="tns:AccessDeniedFaultFaultMessage" wsa:Action="http://csm.gaards.cagrid.org/CSM/AccessDeniedFaultFaultMessage" />
+      <fault name="CSMTransactionFault" message="tns:CSMTransactionFaultFaultMessage" wsa:Action="http://csm.gaards.cagrid.org/CSM/CSMTransactionFaultFaultMessage" />
     </operation>
     <wsdl:operation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" name="GetMultipleResourceProperties">
       <wsdl:input name="GetMultipleResourcePropertiesRequest" message="wsrpw:GetMultipleResourcePropertiesRequest" wsa:Action="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ResourceProperties/GetMultipleResourceProperties" />

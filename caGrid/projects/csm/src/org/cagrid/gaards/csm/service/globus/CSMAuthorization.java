@@ -74,6 +74,18 @@ public class CSMAuthorization implements PDP {
 	public void authorizeGetApplications(Subject peerSubject, MessageContext context, QName operation) throws AuthorizationException {
 		
 	}
+	   				
+	public void authorizeCreateApplication(Subject peerSubject, MessageContext context, QName operation) throws AuthorizationException {
+		
+	}
+	   				
+	public void authorizeModifyApplication(Subject peerSubject, MessageContext context, QName operation) throws AuthorizationException {
+		
+	}
+	   				
+	public void authorizeRemoveApplication(Subject peerSubject, MessageContext context, QName operation) throws AuthorizationException {
+		
+	}
 	   
 	
 	public boolean isPermitted(Subject peerSubject, MessageContext context, QName operation)
@@ -96,6 +108,15 @@ public class CSMAuthorization implements PDP {
 			return true;
 		} else if(operation.getLocalPart().equals("getApplications")){
 			authorizeGetApplications(peerSubject, context, operation);
+			return true;
+		} else if(operation.getLocalPart().equals("createApplication")){
+			authorizeCreateApplication(peerSubject, context, operation);
+			return true;
+		} else if(operation.getLocalPart().equals("modifyApplication")){
+			authorizeModifyApplication(peerSubject, context, operation);
+			return true;
+		} else if(operation.getLocalPart().equals("removeApplication")){
+			authorizeRemoveApplication(peerSubject, context, operation);
 			return true;
 		} 		
 		return false;

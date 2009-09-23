@@ -15,5 +15,17 @@
       <extension base="wsrbf:BaseFaultType" />
     </complexContent>
   </complexType>
+  <element name="AccessDeniedFault" type="tns:AccessDeniedFault" />
+  <complexType name="AccessDeniedFault">
+    <complexContent>
+      <extension base="wsrbf:BaseFaultType" />
+    </complexContent>
+  </complexType>
+  <element name="CSMTransactionFault" type="tns:CSMTransactionFault" />
+  <complexType name="CSMTransactionFault">
+    <complexContent>
+      <extension base="wsrbf:BaseFaultType" />
+    </complexContent>
+  </complexType>
 </schema>
 

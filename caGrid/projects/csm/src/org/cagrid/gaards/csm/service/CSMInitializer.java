@@ -201,6 +201,7 @@ public class CSMInitializer {
 		ProtectionElementSearchCriteria pesc = new ProtectionElementSearchCriteria(
 				app);
 		List<ProtectionElement> pes = auth.getObjects(pesc);
+		boolean linkPEToPG = false;
 		if (pes.size() == 0) {
 			logInfo("No protection element found for application "
 					+ a.getApplicationName() + ".");
@@ -209,6 +210,7 @@ public class CSMInitializer {
 							+ a.getApplicationName() + ".");
 			try {
 				auth.createProtectionElement(app);
+				linkPEToPG = true;
 			} catch (Exception e) {
 				logError(e.getMessage(), e);
 				CSMInternalFault fault = new CSMInternalFault();
@@ -235,6 +237,7 @@ public class CSMInitializer {
 							+ a.getApplicationName() + ".");
 			try {
 				auth.createProtectionGroup(pg);
+				linkPEToPG = true;
 			} catch (Exception e) {
 				logError(e.getMessage(), e);
 				CSMInternalFault fault = new CSMInternalFault();
@@ -247,6 +250,33 @@ public class CSMInitializer {
 			logInfo("Successfully created a protection group for application "
 					+ a.getApplicationName() + ".");
 		}
+
+		if (linkPEToPG) {
+			List<ProtectionElement> peList = auth.getObjects(pesc);
+			List<ProtectionGroup> pgList = auth
+					.getObjects(new ProtectionGroupSearchCriteria(pg));
+			ProtectionElement pElement = peList.get(0);
+			ProtectionGroup pGroup = pgList.get(0);
+			String[] elements = new String[1];
+			elements[0] = String.valueOf(pElement.getProtectionElementId());
+			try {
+				auth.addProtectionElements(String.valueOf(pGroup
+						.getProtectionGroupId()), elements);
+				logInfo("Successfully added the protection element "
+						+ pElement.getProtectionElementName()
+						+ " to the protection group "
+						+ pGroup.getProtectionGroupName() + ".");
+			} catch (Exception e) {
+				logError(e.getMessage(), e);
+				CSMInternalFault fault = new CSMInternalFault();
+				fault
+						.setFaultString("Error initializing the application, "
+								+ a.getApplicationName()
+								+ " could add the protection element to the protection group.");
+				throw fault;
+			}
+		}
+
 		Group grp = new Group();
 		grp.setApplication(webService);
 		grp.setGroupName(a.getApplicationName() + " "
@@ -323,7 +353,7 @@ public class CSMInitializer {
 
 			if (!a.getApplicationName().equals(
 					Constants.CSM_WEB_SERVICE_CONTEXT)) {
-				Group wheel = getWebServiceAdminGroup(auth);
+				Group wheel = CSMUtils.getWebServiceAdminGroup(auth);
 				try {
 
 					auth.assignGroupRoleToProtectionGroup(String
@@ -351,7 +381,7 @@ public class CSMInitializer {
 
 	public static void addWebServiceAdmin(AuthorizationManager auth,
 			String adminIdentity) throws CSMInternalFault {
-		Group grp = getWebServiceAdminGroup(auth);
+		Group grp = CSMUtils.getWebServiceAdminGroup(auth);
 		User u = getUserCreateIfNeeded(auth, adminIdentity);
 		String[] users = new String[1];
 		users[0] = String.valueOf(u.getUserId());
@@ -388,27 +418,6 @@ public class CSMInitializer {
 			return users.get(0);
 		} else {
 			return users.get(0);
-		}
-	}
-
-	public static Group getWebServiceAdminGroup(AuthorizationManager auth)
-			throws CSMInternalFault {
-		try {
-			Application webService = auth
-					.getApplication(Constants.CSM_WEB_SERVICE_CONTEXT);
-			Group group = new Group();
-			group.setApplication(webService);
-			group.setGroupName(webService.getApplicationName() + " "
-					+ Constants.ADMIN_GROUP_SUFFIX);
-			List<Group> groups = auth
-					.getObjects(new GroupSearchCriteria(group));
-			return groups.get(0);
-		} catch (Exception e) {
-			logError(e.getMessage(), e);
-			CSMInternalFault fault = new CSMInternalFault();
-			fault
-					.setFaultString("An unexpected error occurred loading the CSM Web Service Admin Group.");
-			throw fault;
 		}
 	}
 
