@@ -2,6 +2,12 @@ package org.cagrid.gaards.csm.service;
 
 import gov.nih.nci.cagrid.common.FaultHelper;
 import gov.nih.nci.security.AuthorizationManager;
+import gov.nih.nci.security.authorization.domainobjects.Group;
+import gov.nih.nci.security.authorization.domainobjects.ProtectionElement;
+import gov.nih.nci.security.authorization.domainobjects.ProtectionGroup;
+import gov.nih.nci.security.dao.GroupSearchCriteria;
+import gov.nih.nci.security.dao.ProtectionElementSearchCriteria;
+import gov.nih.nci.security.dao.ProtectionGroupSearchCriteria;
 import gov.nih.nci.security.exceptions.CSException;
 
 import java.rmi.RemoteException;
@@ -19,6 +25,7 @@ public class CSM {
 
 	private CSMProperties conf;
 	private AuthorizationManager auth;
+	private gov.nih.nci.security.authorization.domainobjects.Application webService;
 	private Log log;
 
 	public CSM(CSMProperties conf) throws Exception {
@@ -26,6 +33,8 @@ public class CSM {
 		this.log = LogFactory.getLog(getClass().getName());
 		this.auth = CSMInitializer.getAuthorizationManager(this.conf
 				.getDatabaseProperties());
+		this.webService = auth
+				.getApplication(Constants.CSM_WEB_SERVICE_CONTEXT);
 	}
 
 	public void addWebServiceAdmin(String gridIdentity) throws CSMInternalFault {
@@ -77,7 +86,43 @@ public class CSM {
 			throws CSMInternalFault, AccessDeniedFault, CSMTransactionFault {
 		checkWebServiceAdmin(callerIdentity);
 		try {
+			gov.nih.nci.security.authorization.domainobjects.Application app = auth
+					.getApplicationById(String.valueOf(applicationId));
+
 			auth.removeApplication(String.valueOf(applicationId));
+
+			// Remove protection element
+			ProtectionElement pe = new ProtectionElement();
+			pe.setApplication(webService);
+			pe.setProtectionElementName(app.getApplicationName());
+			List<ProtectionElement> pes = auth
+					.getObjects(new ProtectionElementSearchCriteria(pe));
+			if (pes.size() > 0) {
+				auth.removeProtectionElement(String.valueOf(pes.get(0)
+						.getProtectionElementId()));
+			}
+			// Remove protection group
+			ProtectionGroup pg = new ProtectionGroup();
+			pg.setApplication(webService);
+			pg.setProtectionGroupName(app.getApplicationName());
+			List<ProtectionGroup> pgs = auth
+					.getObjects(new ProtectionGroupSearchCriteria(pg));
+			if (pgs.size() > 0) {
+				auth.removeProtectionGroup(String.valueOf(pgs.get(0)
+						.getProtectionGroupId()));
+			}
+
+			// Remove Group
+
+			Group grp = new Group();
+			grp.setApplication(webService);
+			grp.setGroupName(app.getApplicationName() + " "
+					+ Constants.ADMIN_GROUP_SUFFIX);
+			List<Group> grps = auth.getObjects(new GroupSearchCriteria(grp));
+			if (grps.size() > 0) {
+				auth.removeGroup(String.valueOf(grps.get(0).getGroupId()));
+			}
+
 		} catch (Exception e) {
 			String error = "Error removing the application " + applicationId
 					+ ":\n" + e.getMessage();
