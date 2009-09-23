@@ -49,18 +49,7 @@
 	<property name="test.logs.dir" location="${test.dir}/logs" />
 	<property name="test.project.jar" location="${jar.dir}/${project.name}-tests-${project.version}.jar" />
 
-
-	<!-- using ant contrib for contidionals, looping , and runtarget -->
-	<taskdef resource="net/sf/antcontrib/antlib.xml">
-		<classpath>
-			<pathelement location="${tools.lib.dir}/ant-contrib.jar" />
-		</classpath>
-	</taskdef>
-
-
 	<import file="test/test.xml" />
-
-
 
 
 	<!-- =============================================================== -->

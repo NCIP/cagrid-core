@@ -71,7 +71,7 @@
 	<property name="style.document" location="${basedir}/style/style.xml" />
 	<property name="style.dest.dir" location="${introduce.extensions.dir}/data/styles/cacore4" />
 	<property name="style.sdk.remote.lib.names" value="asm.jar, castor-1.0.2.jar, hibernate3.jar, spring.jar, cglib-2.1.3.jar, sdk-client-framework.jar, antlr-2.7.6.jar, acegi-security-1.0.4.jar" />
-	<property name="style.sdk.local.lib.names" value="c3p0-0.9.0.jar, csmapi.jar, dom4j-1.4.jar, ehcache-1.2.2.jar, jta.jar, mysql-connector-java-3.1.13-bin.jar, sdk-core.jar"/>
+	<property name="style.sdk.local.lib.names" value="c3p0-0.9.0.jar, csmapi.jar, dom4j-1.4.jar, ehcache-1.2.2.jar, jta.jar, mysql-connector-java-3.1.13-bin.jar, sdk-core.jar" />
 
 	<!-- =============================================================== -->
 	<!-- The Build Classpath                                             -->
@@ -97,7 +97,7 @@
 		</fileset>
 		<fileset dir="${globus.dir}/lib">
 			<include name="**/*.jar" />
-            <exclude name="junit.jar"/>
+			<exclude name="junit.jar" />
 		</fileset>
 
 		<pathelement location="${build.beans.dest}" />
@@ -119,7 +119,7 @@
 			<!-- TODO: include more stuff? -->
 		</fileset>
 		<fileset dir="${ext.local-client.lib.dir}">
-			<include name="*orm.jar"/>
+			<include name="*orm.jar" />
 		</fileset>
 		<fileset dir="${test.lib.dir}">
 			<include name="**/*.jar" />
@@ -129,7 +129,7 @@
 		</fileset>
 		<fileset dir="${globus.dir}/lib">
 			<include name="**/*.jar" />
-            <exclude name="junit.jar"/>
+			<exclude name="junit.jar" />
 		</fileset>
 		<pathelement location="${test.resources.jar}" />
 		<pathelement location="${build.beans.dest}" />
@@ -157,7 +157,7 @@
 	</target>
 
 	<!-- creates output directories -->
-	<target name="init" depends="defineContribTasks, unpackSdkClients">
+	<target name="init" depends="checkContribTasksDefined, defineContribTasks, unpackSdkClients">
 		<mkdir dir="${build.dir}" />
 		<mkdir dir="${build.jars.dir}" />
 		<mkdir dir="${build.style.dest}" />
@@ -168,7 +168,14 @@
 	</target>
 
 
-	<target name="defineContribTasks">
+	<target name="checkContribTasksDefined">
+		<condition property="contrib.tasks.defined">
+			<typefound name="for" />
+		</condition>
+	</target>
+
+	
+	<target name="defineContribTasks" unless="contrib.tasks.defined">
 		<!-- using ant contrib for contidionals, looping, and runtarget -->
 		<taskdef resource="net/sf/antcontrib/antlib.xml">
 			<classpath>
@@ -179,7 +186,7 @@
 		</taskdef>
 	</target>
 
-
+	
 	<!-- merge namespace mappings with globus -->
 	<target name="mergeNsMappings" depends="init">
 		<ant antfile="${build.stubs}" target="mergePackageMapping">
@@ -205,12 +212,12 @@
 
 	<!-- compiles the beans -->
 	<target name="compileBeans" depends="stubs">
-		<javac srcdir="${beans.src.dir}" destdir="${build.beans.dest}" debug="${java.debug}" source="${java.source}">
+		<javac fork="true" memorymaximumsize="128m" srcdir="${beans.src.dir}" destdir="${build.beans.dest}" debug="${java.debug}" source="${java.source}">
 			<include name="**/*.java" />
 			<classpath>
 				<fileset dir="${globus.dir}/lib">
 					<include name="*.jar" />
-                    <exclude name="junit.jar"/>
+					<exclude name="junit.jar" />
 				</fileset>
 			</classpath>
 		</javac>
@@ -219,7 +226,7 @@
 
 	<!-- compiles the style source code -->
 	<target name="compileStyle" depends="init, compileBeans, compileProcessor">
-		<javac srcdir="${style.src.dir}" destdir="${build.style.dest}" debug="${java.debug}" source="${java.source}">
+		<javac fork="true" memorymaximumsize="128m" srcdir="${style.src.dir}" destdir="${build.style.dest}" debug="${java.debug}" source="${java.source}">
 			<classpath refid="build.classpath" />
 			<classpath>
 				<pathelement location="${build.processor.dest}" />
@@ -231,7 +238,7 @@
 
 	<!-- compiles the query processor source code -->
 	<target name="compileProcessor" depends="init, compileBeans">
-		<javac srcdir="${processor.src.dir}" destdir="${build.processor.dest}" debug="${java.debug}" source="${java.source}">
+		<javac fork="true" memorymaximumsize="128m" srcdir="${processor.src.dir}" destdir="${build.processor.dest}" debug="${java.debug}" source="${java.source}">
 			<classpath refid="build.classpath" />
 			<include name="**/*.java" />
 		</javac>
@@ -240,7 +247,7 @@
 
 	<!-- compiles the testing source code -->
 	<target name="compileTests" depends="compileBeans, compileProcessor, compileStyle">
-		<javac srcdir="${test.src.dir}" destdir="${test.classes.dir}" debug="${java.debug}" source="${java.source}">
+		<javac fork="true" memorymaximumsize="128m" srcdir="${test.src.dir}" destdir="${test.classes.dir}" debug="${java.debug}" source="${java.source}">
 			<classpath>
 				<pathelement location="${build.processor.dest}" />
 				<pathelement location="${build.style.dest}" />
@@ -259,7 +266,7 @@
 				</fileset>
 				<fileset dir="${globus.dir}/lib">
 					<include name="*.jar" />
-                    <exclude name="junit.jar"/>
+					<exclude name="junit.jar" />
 				</fileset>
 			</classpath>
 			<include name="**/*.java" />
@@ -358,7 +365,7 @@
 				<echo message="copying required jar from caCORE SDK 4: @{sdk.lib.name}" />
 				<copy todir="${style.dest.dir}/lib">
 					<fileset dir="${ext.local-client.lib.dir}">
-						<include name="@{sdk.lib.name}"/>
+						<include name="@{sdk.lib.name}" />
 					</fileset>
 				</copy>
 			</sequential>

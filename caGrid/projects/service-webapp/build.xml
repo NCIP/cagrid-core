@@ -17,7 +17,7 @@ GSBT - Globus Service Build Tools
 	<property name="src.dir" value="src" />
 	<property name="templates.src.dir" value="templates" />
 	<property name="tools.lib.dir" location="${basedir}/tools/lib" />
-	
+
 	<property name="ext.dir" location="${basedir}/ext" />
 	<property name="ext.grid.dir" location="${ext.dir}/target_grid" />
 	<property name="endorsed.lib.dir" location="${ext.dir}/dependencies/endorsed/jars" />
@@ -44,16 +44,27 @@ GSBT - Globus Service Build Tools
 	<property name="java.debug" value="on" />
 
 
-	<!-- using ant contrib for contidionals, looping , and runtarget -->
-	<taskdef resource="net/sf/antcontrib/antlib.xml">
-		<classpath>
-			<pathelement location="${tools.lib.dir}/ant-contrib.jar" />
-		</classpath>
-	</taskdef>
+	<target name="checkContribTasksDefined">
+		<condition property="contrib.tasks.defined">
+			<typefound name="for" />
+		</condition>
+	</target>
+
+
+	<target name="defineContribTasks" unless="contrib.tasks.defined">
+		<!-- using ant contrib for contidionals, looping, and runtarget -->
+		<taskdef resource="net/sf/antcontrib/antlib.xml">
+			<classpath>
+				<fileset dir="${tools.lib.dir}">
+					<include name="ant-contrib*.jar" />
+				</fileset>
+			</classpath>
+		</taskdef>
+	</target>
 
 
 	<!-- Sets up the build directory structure -->
-	<target name="init" depends="checkGlobus">
+	<target name="init" depends="checkContribTasksDefined, defineContribTasks, checkGlobus">
 		<mkdir dir="${build.dir}" />
 		<mkdir dir="${build.dest}" />
 		<mkdir dir="${build.lib.dir}" />

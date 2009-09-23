@@ -75,13 +75,22 @@
 	<!--import developers deploy targets and properties -->
 	<import file="dev-build-deploy.xml" />
 
+	<target name="checkContribTasksDefined">
+		<condition property="contrib.tasks.defined">
+			<typefound name="for" />
+		</condition>
+	</target>
 
-	<!-- using ant contrib for contidionals, looping , and runtarget -->
-	<taskdef resource="net/sf/antcontrib/antlib.xml">
-		<classpath>
-			<pathelement location="${tools.lib.dir}/ant-contrib.jar" />
-		</classpath>
-	</taskdef>
+
+	<target name="defineContribTasks" unless="contrib.tasks.defined">
+		<property name="ant.contrib.location" value="${tools.lib.dir}/ant-contrib-1.0b3.jar" />
+		<!-- using ant contrib for contidionals, looping , and runtarget -->
+		<taskdef resource="net/sf/antcontrib/antlib.xml">
+			<classpath>
+				<pathelement location="${ant.contrib.location}" />
+			</classpath>
+		</taskdef>
+	</target>
 
 
 	<!-- ============================================================== -->
@@ -111,7 +120,7 @@
 
 
 	<!-- Sets up the build directory structure -->
-	<target name="init" depends="checkGlobus, defineClasspaths">
+	<target name="init" depends="checkContribTasksDefined, defineContribTasks, checkGlobus, defineClasspaths">
 		<runtarget target="preInit" />
 		<mkdir dir="${build.dir}" />
 		<mkdir dir="${build.dest}" />

@@ -76,13 +76,22 @@
 	<import file="dev-build-deploy.xml" />
 
 
-	<property name="ant.contrib.location" value="${tools.lib.dir}/ant-contrib-1.0b3.jar" />
-	<!-- using ant contrib for contidionals, looping , and runtarget -->
-	<taskdef resource="net/sf/antcontrib/antlib.xml">
-		<classpath>
-			<pathelement location="${ant.contrib.location}" />
-		</classpath>
-	</taskdef>
+	<target name="checkContribTasksDefined">
+		<condition property="contrib.tasks.defined">
+			<typefound name="for" />
+		</condition>
+	</target>
+
+
+	<target name="defineContribTasks" unless="contrib.tasks.defined">
+		<property name="ant.contrib.location" value="${tools.lib.dir}/ant-contrib-1.0b3.jar" />
+		<!-- using ant contrib for contidionals, looping , and runtarget -->
+		<taskdef resource="net/sf/antcontrib/antlib.xml">
+			<classpath>
+				<pathelement location="${ant.contrib.location}" />
+			</classpath>
+		</taskdef>
+	</target>
 
 
 	<!-- ============================================================== -->
@@ -112,7 +121,7 @@
 
 
 	<!-- Sets up the build directory structure -->
-	<target name="init" depends="checkGlobus, defineClasspaths">
+	<target name="init" depends="checkContribTasksDefined, defineContribTasks, checkGlobus, defineClasspaths">
 		<runtarget target="preInit" />
 		<mkdir dir="${build.dir}" />
 		<mkdir dir="${build.dest}" />
@@ -141,7 +150,7 @@
 	</target>
 
 	<target name="defineClasspaths" depends="checkGlobus">
-		<path id="tasks.run.extended.classpath" />
+		<path id="tasks.run.extended.classpath"/>
 		<runtarget target="defineExtendedClasspaths" />
 		<path id="base.classpath">
 			<fileset dir="${lib.dir}">
@@ -354,8 +363,6 @@
 
 		</javadoc>
 	</target>
-
-
 	<!-- Default target "all" builds and jars everything, including test....does not make a GAR-->
 	<target name="all" depends="jars" description="Builds the entire service." />
 

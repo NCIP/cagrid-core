@@ -85,7 +85,7 @@
 
 	<!-- compiles the query processor source code -->
 	<target name="compile" depends="init">
-		<javac srcdir="${src.dir}" destdir="${build.dest}" debug="${java.debug}" source="${java.source}">
+		<javac fork="true" memorymaximumsize="128m" srcdir="${src.dir}" destdir="${build.dest}" debug="${java.debug}" source="${java.source}">
 			<classpath>
 				<fileset dir="${lib.dir}">
 					<include name="**/*.jar" />
@@ -107,7 +107,7 @@
 
 	<!-- compiles the testing source code -->
 	<target name="compileTests" depends="compile">
-		<javac srcdir="${test.src.dir}" destdir="${test.classes.dir}" debug="${java.debug}" source="${java.source}">
+		<javac fork="true" memorymaximumsize="128m" srcdir="${test.src.dir}" destdir="${test.classes.dir}" debug="${java.debug}" source="${java.source}">
 			<classpath>
 				<pathelement path="${build.dest}" />
 				<fileset dir="${lib.dir}">

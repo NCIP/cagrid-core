@@ -62,11 +62,21 @@
 		<include name="CaGridEnumeration/**/*.wsdl" />
 	</fileset>
 
-	<taskdef resource="net/sf/antcontrib/antlib.xml">
-		<classpath>
-			<pathelement location="${lib.dir}/ant-contrib-1.0b3.jar" />
-		</classpath>
-	</taskdef>
+
+
+	<target name="checkContribTasksDefined">
+		<condition property="contrib.tasks.defined">
+			<typefound name="for" />
+		</condition>
+	</target>
+
+	<target name="defineContribTasks" unless="contrib.tasks.defined">
+		<taskdef resource="net/sf/antcontrib/antlib.xml">
+			<classpath>
+				<pathelement location="${lib.dir}/ant-contrib-1.0b3.jar" />
+			</classpath>
+		</taskdef>
+	</target>
 
 
 	<!-- ============================================================== -->
@@ -152,7 +162,7 @@
 	<!-- =============================================================== -->
 	<!-- Prepares the build directory                                    -->
 	<!-- =============================================================== -->
-	<target name="prepare" depends="checkGlobus, configure">
+	<target name="prepare" depends="checkContribTasksDefined, defineContribTasks, checkGlobus, configure">
 		<tstamp />
 		<mkdir dir="${build.dir}" />
 	</target>

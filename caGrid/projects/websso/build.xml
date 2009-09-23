@@ -98,7 +98,7 @@
 
 	<target name="compile">
 		<mkdir dir="${build.classes.dir}" />
-		<javac srcdir="${src.java.dir}" destdir="${build.classes.dir}" classpathref="build.classpath" debug="true" />
+		<javac fork="true" memorymaximumsize="128m" srcdir="${src.java.dir}" destdir="${build.classes.dir}" classpathref="build.classpath" debug="true" />
 		<mkdir dir="${build.war.dir}/WEB-INF/lib" />
 		<jar destfile="${build.dir}/${ant.project.name}-core.jar" basedir="${build.classes.dir}" />
 		<copy tofile="${build.war.dir}/WEB-INF/lib/${ant.project.name}-core-${project.version}.jar" file="${build.dir}/${ant.project.name}-core.jar" />

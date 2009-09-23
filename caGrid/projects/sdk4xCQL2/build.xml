@@ -22,16 +22,16 @@
 	<property name="build.dir" location="build" />
 	<property name="build.processor.dest" location="${build.dir}/processor" />
 	<property name="build.jars.dir" location="build/lib" />
-	
+
 	<!-- jar names -->
 	<property name="processor.jar.name" value="${project.jar.prefix}processor${project.jar.suffix}" />
-	
+
 	<!-- jar files -->
 	<property name="processor.jar.file" value="${build.jars.dir}/${processor.jar.name}" />
-	
+
 	<!-- source directories -->
 	<property name="processor.src.dir" location="${basedir}/src/java/processor" />
-	
+
 	<!-- libraries -->
 	<property name="lib.dir" location="${basedir}/lib" />
 	<property name="ext.lib.dir" location="${basedir}/ext/dependencies/jars" />
@@ -44,7 +44,7 @@
 	<property name="test.logs.dir" location="${test.dir}/logs" />
 	<property name="test.project.jar" location="${build.jars.dir}/${project.jar.prefix}tests${project.jar.suffix}" />
 	<!-- for testing - comma separated class directories -->
-	<property name="build.dirs.list" value="${build.processor.dest}"/>
+	<property name="build.dirs.list" value="${build.processor.dest}" />
 	<import file="test\test.xml" />
 
 	<!-- =============================================================== -->
@@ -64,7 +64,7 @@
 		</fileset>
 		<fileset dir="${globus.dir}/lib">
 			<include name="**/*.jar" />
-            <exclude name="junit.jar"/>
+			<exclude name="junit.jar" />
 		</fileset>
 
 		<pathelement location="${build.beans.dest}" />
@@ -75,25 +75,25 @@
 	<!-- The Test Classpaths                                             -->
 	<!-- =============================================================== -->
 	<path id="test.base.classpath">
-		<path refid="build.classpath"/>
+		<path refid="build.classpath" />
 		<pathelement location="${build.processor.dest}" />
 	</path>
 
-	
+
 	<path id="test.build.classpath">
 		<fileset dir="${test.dir}/lib/sdk4.0">
-			<include name="**/*.jar"/>
+			<include name="**/*.jar" />
 			<!--
 			<include name="hibernate3.jar"/>
 			<include name="sdk-client-framework.jar"/>
 			-->
 		</fileset>
-		<path refid="test.base.classpath"/>
+		<path refid="test.base.classpath" />
 	</path>
-	
-	
+
+
 	<!-- creates output directories -->
-	<target name="init" depends="defineContribTasks">
+	<target name="init" depends="checkContribTasksDefined, defineContribTasks">
 		<mkdir dir="${build.dir}" />
 		<mkdir dir="${build.jars.dir}" />
 		<mkdir dir="${build.processor.dest}" />
@@ -101,7 +101,14 @@
 	</target>
 
 
-	<target name="defineContribTasks">
+	<target name="checkContribTasksDefined">
+		<condition property="contrib.tasks.defined">
+			<typefound name="for" />
+		</condition>
+	</target>
+
+
+	<target name="defineContribTasks" unless="contrib.tasks.defined">
 		<!-- using ant contrib for contidionals, looping, and runtarget -->
 		<taskdef resource="net/sf/antcontrib/antlib.xml">
 			<classpath>
@@ -115,7 +122,7 @@
 
 	<!-- compiles the query processor source code -->
 	<target name="compileProcessor" depends="init">
-		<javac srcdir="${processor.src.dir}" destdir="${build.processor.dest}" debug="${java.debug}" source="${java.source}">
+		<javac fork="true" memorymaximumsize="128m" srcdir="${processor.src.dir}" destdir="${build.processor.dest}" debug="${java.debug}" source="${java.source}">
 			<classpath refid="build.classpath" />
 			<include name="**/*.java" />
 		</javac>
@@ -124,14 +131,14 @@
 
 	<!-- compiles the testing source code -->
 	<target name="compileTests" depends="compileProcessor">
-		<javac srcdir="${test.src.dir}" destdir="${test.classes.dir}" debug="${java.debug}" source="${java.source}">
-			<classpath refid="test.build.classpath"/>
+		<javac fork="true" memorymaximumsize="128m" srcdir="${test.src.dir}" destdir="${test.classes.dir}" debug="${java.debug}" source="${java.source}">
+			<classpath refid="test.build.classpath" />
 			<include name="**/*.java" />
-			<exclude name="HQLRunner.java"/>
+			<exclude name="HQLRunner.java" />
 		</javac>
 	</target>
 
-	
+
 	<!-- jars the processor -->
 	<target name="jarProcessor" depends="compileProcessor" description="Builds the processor jar file">
 		<jar destfile="${processor.jar.file}">
@@ -154,7 +161,7 @@
 		</jar>
 	</target>
 
-	
+
 	<!-- removes all build output -->
 	<target name="clean">
 		<delete dir="${build.dir}" />

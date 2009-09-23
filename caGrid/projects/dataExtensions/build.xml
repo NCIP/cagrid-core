@@ -56,8 +56,8 @@
 
 	<!-- libraries -->
 	<property name="lib.dir" location="${basedir}/lib" />
-	<property name="ext.dir" location="${basedir}/ext"/>
-	<property name="ext.dependencies.dir" location="${basedir}/ext/dependencies"/>
+	<property name="ext.dir" location="${basedir}/ext" />
+	<property name="ext.dependencies.dir" location="${basedir}/ext/dependencies" />
 	<property name="ext.lib.dir" location="${ext.dependencies.dir}/impl/jars" />
 	<property name="ext.test.lib.dir" location="${basedir}/ext/dependencies/test/jars" />
 
@@ -79,11 +79,11 @@
 		</fileset>
 		<fileset dir="${globus.dir}/lib">
 			<include name="*.jar" />
-            <exclude name="junit.jar"/>
+			<exclude name="junit.jar" />
 		</fileset>
 	</path>
 
-	
+
 	<path id="test.classpath">
 		<path refid="base.classpath" />
 		<fileset dir="${ext.test.lib.dir}">
@@ -94,13 +94,13 @@
 		</fileset>
 		<fileset dir="${globus.dir}/lib">
 			<include name="**/*.jar" />
-            <exclude name="junit.jar"/>
+			<exclude name="junit.jar" />
 		</fileset>
 	</path>
 
 
 	<!-- creates output directories -->
-	<target name="init" depends="defineJetcTask, defineContribTasks, configure">
+	<target name="init" depends="defineJetcTask, checkContribTasksDefined, defineContribTasks, configure">
 		<mkdir dir="${build.dir}" />
 		<mkdir dir="${build.jars.dir}" />
 		<mkdir dir="${build.core.dest}" />
@@ -110,7 +110,7 @@
 		<mkdir dir="${test.core.classes.dir}" />
 	</target>
 
-	
+
 	<target name="defineJetcTask">
 		<!-- using jet for templates -->
 		<taskdef name="jetc" classname="ch.paranor.epla.structure.JETCTask">
@@ -128,8 +128,13 @@
 		</taskdef>
 	</target>
 
+	<target name="checkContribTasksDefined">
+		<condition property="contrib.tasks.defined">
+			<typefound name="for" />
+		</condition>
+	</target>
 
-	<target name="defineContribTasks">
+	<target name="defineContribTasks" unless="contrib.tasks.defined">
 		<!-- using ant contrib for contidionals, looping, and runtarget -->
 		<taskdef resource="net/sf/antcontrib/antlib.xml">
 			<classpath>
@@ -140,7 +145,7 @@
 		</taskdef>
 	</target>
 
-	
+
 	<!-- =================================================================== -->
 	<!--  Configures Service URLS                                            -->
 	<!-- =================================================================== -->
@@ -215,7 +220,7 @@
 			<classpath refid="test.classpath" />
 		</javac>
 	</target>
-	
+
 
 	<!-- jars the common classes -->
 	<target name="jarCore" depends="compileCore" description="Builds and jars the core classes">
@@ -295,8 +300,8 @@
 		<delete dir="tmp" />
 		<delete dir="${build.dir}" />
 	</target>
-	
-	
+
+
 	<target name="xmiToDomainModel" description="Runs the XMI to Domain Model conversion GUI">
 		<java classname="gov.nih.nci.cagrid.data.ui.domain.DomainModelFromXmiDialog" fork="true">
 			<jvmarg value="-Xmx512m" />
@@ -313,29 +318,29 @@
 			</classpath>
 		</java>
 	</target>
-	
-		
-    <!-- ============================================================== -->
-    <!-- Runs the domain model visualization GUI                        -->
-    <!-- ============================================================== -->
+
+
+	<!-- ============================================================== -->
+	<!-- Runs the domain model visualization GUI                        -->
+	<!-- ============================================================== -->
 	<target name="visualizeDomainModel" description="Graphicaly load and navigate a caGrid Domain Model.">
 		<java classname="gov.nih.nci.cagrid.data.ui.domain.DomainModelVisualizer" fork="true">
-			<classpath refid="base.classpath"/>
+			<classpath refid="base.classpath" />
 			<classpath>
 				<fileset dir="${build.jars.dir}">
-					<include name="**/*.jar"/>
+					<include name="**/*.jar" />
 				</fileset>
 			</classpath>
 		</java>
 	</target>
-	
+
 
 	<!-- Build and install extensions for introduce -->
 	<target name="installIntroduceExtensions" depends="defineContribTasks" description="Builds and installs the Data Services extensions into Introduce.">
-		<delete dir="${introduce.extensions.dir}/data"/>
-		<echo message="Deleted data extensions dir (${introduce.extensions.dir}/data)"/>
+		<delete dir="${introduce.extensions.dir}/data" />
+		<echo message="Deleted data extensions dir (${introduce.extensions.dir}/data)" />
 		<mkdir dir="${introduce.extensions.dir}/data" />
-		<echo message="Created data extrensions dir (${introduce.extensions.dir}/data)"/>
+		<echo message="Created data extrensions dir (${introduce.extensions.dir}/data)" />
 		<mkdir dir="${introduce.extensions.dir}/data/lib" />
 		<mkdir dir="${introduce.extensions.dir}/data/schema/Data" />
 		<mkdir dir="${introduce.extensions.dir}/data/styles" />
@@ -366,12 +371,12 @@
 		<!-- the extension definition -->
 		<copy todir="${introduce.extensions.dir}/data">
 			<fileset dir="${extension.dir}">
-				<include name="extension.xml"/>
+				<include name="extension.xml" />
 			</fileset>
 		</copy>
 	</target>
 
-	
+
 	<!-- build and jar everything -->
 	<target name="all" depends="jarCore, jarUi, jarUpgrades, jarSdkStyle, jarCoreTests" description="Builds and jars all the classes in the project" />
 </project>

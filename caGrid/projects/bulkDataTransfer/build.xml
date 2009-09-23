@@ -74,12 +74,24 @@
 	<property name="java.debug" value="on" />
 
 	<import file="test/test.xml" />
+	
 
-	<taskdef resource="net/sf/antcontrib/antlib.xml">
-		<classpath>
-			<pathelement location="${lib.dir}/ant-contrib.jar" />
-		</classpath>
-	</taskdef>
+	<target name="checkContribTasksDefined">
+		<condition property="contrib.tasks.defined">
+			<typefound name="for" />
+		</condition>
+	</target>
+
+
+	<target name="defineContribTasks" unless="contrib.tasks.defined">
+		<!-- using ant contrib for contidionals, looping , and runtarget -->
+		<taskdef resource="net/sf/antcontrib/antlib.xml">
+			<classpath>
+				<pathelement location="${lib.dir}/ant-contrib.jar" />
+			</classpath>
+		</taskdef>
+	</target>
+
 
 
 	<!-- ============================================================== -->
@@ -110,7 +122,7 @@
 
 
 	<!-- Sets up the build directory structure -->
-	<target name="init" depends="checkGlobus, defineClasspaths">
+	<target name="init" depends="checkContribTasksDefined, defineContribTasks, checkGlobus, defineClasspaths">
 		<mkdir dir="${build.dir}" />
 		<mkdir dir="${build.dest}" />
 		<mkdir dir="${test.build.dest}" />
