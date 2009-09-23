@@ -29,17 +29,17 @@ public class Sdk4XmiToDomainModelStory extends Story {
     public static final String PROJECT_VERSION = "4.0";
 
     public Sdk4XmiToDomainModelStory() {
-        setName("SDK 4.0 XMI to Domain Model Story");
+        setName("SDK 4.x XMI to Domain Model Story");
     }
 
 
     public String getDescription() {
-        return "Tests converting SDK 4_0 XMI models to a domain model";
+        return "Tests converting SDK 4_x XMI models to a domain model";
     }
     
     
     public String getName() {
-        return "SDK 4_0 XMI to Domain Model Story";
+        return "SDK 4_x XMI to Domain Model Story";
     }
 
 
@@ -49,12 +49,15 @@ public class Sdk4XmiToDomainModelStory extends Story {
         steps.add(new UnzipModelsStep(XMI_ZIP_FILE, XMI_UNPACK_DIR));
         String eaModel = XMI_UNPACK_DIR + File.separator + "EAexample.xmi";
         String argoModel = XMI_UNPACK_DIR + File.separator + "ArgoUMLexample.uml";
+        String sdk42eaModel = XMI_UNPACK_DIR + File.separator + "sdk42EAexample.xmi";
         // unpack Gold models
         steps.add(new UnzipModelsStep(GOLD_MODELS_ZIP_FILE, GOLD_MODELS_UNPACK_DIR));
         String goldEaDomain = GOLD_MODELS_UNPACK_DIR + File.separator + "eaDomainModel.xml";
         String goldArgoDomain = GOLD_MODELS_UNPACK_DIR + File.separator + "argoDomainModel.xml";
+        String goldSdk42EaDomain = GOLD_MODELS_UNPACK_DIR + File.separator + "sdk42eaDomainModel.xml";
         String generatedEaDomain = GOLD_MODELS_UNPACK_DIR + File.separator + "generatedEaDomainModel.xml";
         String generatedArgoDomain = GOLD_MODELS_UNPACK_DIR + File.separator + "generatedArgoDomainModel.xml";
+        String generatedSdk42EaDomain = GOLD_MODELS_UNPACK_DIR + File.separator + "generatedSdk42EaDomainModel.xml";
         // convert the EA model
         steps.add(new GenericXmiToModelStep(
             eaModel, generatedEaDomain, XmiFileType.SDK_40_EA,
@@ -63,10 +66,16 @@ public class Sdk4XmiToDomainModelStory extends Story {
         steps.add(new GenericXmiToModelStep(
             argoModel, generatedArgoDomain, XmiFileType.SDK_40_ARGO,
             PROJECT_SHORT_NAME, PROJECT_VERSION));
+        // convert the SDK 4.2 EA model
+        steps.add(new GenericXmiToModelStep(
+            sdk42eaModel, generatedSdk42EaDomain, XmiFileType.SDK_40_EA,
+            PROJECT_SHORT_NAME, PROJECT_VERSION));
         // compare the EA model
         steps.add(new GenericDomainModelComparisonStep(goldEaDomain, generatedEaDomain));
         // compare the Argo model
         steps.add(new GenericDomainModelComparisonStep(goldArgoDomain, generatedArgoDomain));
+        // compare the EA model
+        steps.add(new GenericDomainModelComparisonStep(goldSdk42EaDomain, generatedSdk42EaDomain));
         // clean up dirs
         steps.add(new DeleteModelTempStep(XMI_UNPACK_DIR));
         steps.add(new DeleteModelTempStep(GOLD_MODELS_UNPACK_DIR));
