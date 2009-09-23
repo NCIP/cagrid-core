@@ -38,6 +38,7 @@ class Sdk4EaXMIHandler extends BaseXMIHandler {
     private boolean targetNavigable = false;
     private String pkg = "";
     private boolean handlingAttribute = false;
+    private boolean handlingClass = false;
     private UMLAttribute currentAttribute = null;
 
     public Sdk4EaXMIHandler(XMIParser parser) {
@@ -61,6 +62,7 @@ class Sdk4EaXMIHandler extends BaseXMIHandler {
             cl.setUmlAttributeCollection(
                 new UMLClassUmlAttributeCollection(getAttributes()));
             clearAttributeList();
+            handlingClass = false;
         } else if (qName.equals(XMIConstants.XMI_UML_ASSOCIATION)) {
             // close up the association, figure out bidirectionality
             UMLAssociation assoc = getLastAssociation();
@@ -205,6 +207,7 @@ class Sdk4EaXMIHandler extends BaseXMIHandler {
     
     
     private void handleClass(Attributes atts) {
+        handlingClass = true;
         UMLClass cl = new UMLClass();
         cl.setClassName(atts.getValue(XMIConstants.XMI_NAME_ATTRIBUTE));
         cl.setId(atts.getValue(XMIConstants.XMI_ID_ATTRIBUTE));
@@ -296,7 +299,7 @@ class Sdk4EaXMIHandler extends BaseXMIHandler {
         
         if (handlingAttribute) {
             handleAttributeTag(tag, value);
-        } else {
+        } else if (handlingClass) {
             handleClassTag(tag, value, modelElement);
         }
     }
