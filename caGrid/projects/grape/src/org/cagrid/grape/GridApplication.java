@@ -98,7 +98,7 @@ public class GridApplication extends JFrame {
     }
 
 
-    public static GridApplication getInstance(Application app) throws Exception {
+    public  static synchronized GridApplication getInstance(Application app) throws Exception {
         if (application == null) {
             application = new GridApplication(app);
             application.startPostInitializer();

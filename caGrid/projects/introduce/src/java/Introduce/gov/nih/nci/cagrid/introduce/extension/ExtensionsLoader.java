@@ -10,13 +10,15 @@ import gov.nih.nci.cagrid.introduce.beans.extension.Properties;
 import gov.nih.nci.cagrid.introduce.beans.extension.PropertiesProperty;
 import gov.nih.nci.cagrid.introduce.beans.extension.ResourcePropertyEditorExtensionDescriptionType;
 import gov.nih.nci.cagrid.introduce.beans.extension.ServiceExtensionDescriptionType;
-import gov.nih.nci.cagrid.introduce.common.ConfigurationUtil;
+import gov.nih.nci.cagrid.introduce.common.IntroducePropertiesManager;
 
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.log4j.Logger;
+import org.cagrid.grape.ConfigurationManager;
+import org.cagrid.grape.model.Application;
 
 
 public class ExtensionsLoader {
@@ -81,8 +83,19 @@ public class ExtensionsLoader {
 
 
     private synchronized void load() throws Exception {
-
         if (extensionsDir.isDirectory()) {
+            // XXX: This should be using ConfigurationUtil but, long story
+            // short, this is called from the preinitialization process, but the
+            // configurationmanager is not initialized until after the
+            // preinitializers are run, and so using the ConfigurationUtil
+            // causes it to cache a configurationmanager that is not used by the
+            // rest of Introduce.
+
+            Application app = null;
+            app = (Application) Utils.deserializeDocument(IntroducePropertiesManager.getIntroduceConfigurationFile(),
+                Application.class);
+            ConfigurationManager configurationManager = new ConfigurationManager(app.getConfiguration(), null);
+
             final File[] dirs = extensionsDir.listFiles();
             for (int i = 0; i < dirs.length; i++) {
                 final int count = i;
@@ -99,34 +112,36 @@ public class ExtensionsLoader {
                                 + File.separator + "extension.xml").getAbsolutePath(), ExtensionDescription.class);
 
                             // proces the extension properties and add the ones
-                            // that
-                            // are desired to be made global if they do not
+                            // that are desired to be made global if they do not
                             // exist yet
 
                             extensions.add(extDesc);
 
                             if (extDesc.getExtensionType().equals(DISCOVERY_EXTENSION)) {
                                 discoveryExtensionDescriptors.add(extDesc.getDiscoveryExtensionDescription());
-                                processExtensionProperties(extDesc.getDiscoveryExtensionDescription().getProperties());
+                                processExtensionProperties(extDesc.getDiscoveryExtensionDescription().getProperties(),
+                                    configurationManager);
                             } else if (extDesc.getExtensionType().equals(SERVICE_EXTENSION)) {
                                 serviceExtensionDescriptors.add(extDesc.getServiceExtensionDescription());
-                                processExtensionProperties(extDesc.getServiceExtensionDescription().getProperties());
+                                processExtensionProperties(extDesc.getServiceExtensionDescription().getProperties(),
+                                    configurationManager);
                             } else if (extDesc.getExtensionType().equals(RESOURCE_PROPERTY_EDITOR_EXTENSION)) {
                                 resourcePropertyEditorExtensionDescriptors.add(extDesc
                                     .getResourcePropertyEditorExtensionDescription());
                                 processExtensionProperties(extDesc.getResourcePropertyEditorExtensionDescription()
-                                    .getProperties());
+                                    .getProperties(), configurationManager);
                             } else if (extDesc.getExtensionType().equals(AUTHORIZATION_EXTENSION)) {
                                 authorizationExtensionDescriptors.add(extDesc.getAuthorizationExtensionDescription());
                                 processExtensionProperties(extDesc.getAuthorizationExtensionDescription()
-                                    .getProperties());
+                                    .getProperties(), configurationManager);
                             } else if (extDesc.getExtensionType().equals(DEPLOYMENT_EXTENSION)) {
                                 deploymentExtensionDescriptors.add(extDesc.getDeploymentExtensionDescription());
-                                processExtensionProperties(extDesc.getDeploymentExtensionDescription().getProperties());
+                                processExtensionProperties(extDesc.getDeploymentExtensionDescription().getProperties(),
+                                    configurationManager);
                             } else if (extDesc.getExtensionType().equals(INTRODUCE_GDE_EXTENSION)) {
                                 introduceGDEExtensionDescriptors.add(extDesc.getIntroduceGDEExtensionDescriptionType());
                                 processExtensionProperties(extDesc.getIntroduceGDEExtensionDescriptionType()
-                                    .getProperties());
+                                    .getProperties(), configurationManager);
                             } else {
                                 logger.warn("Unsupported Extension Type: " + extDesc.getExtensionType());
                             }// TODO Auto-generated method stub
@@ -143,16 +158,17 @@ public class ExtensionsLoader {
     }
 
 
-    private void processExtensionProperties(Properties properties) throws Exception {
+    private void processExtensionProperties(Properties properties, ConfigurationManager configurationManager)
+        throws Exception {
 
         if (properties != null && properties.getProperty() != null) {
+
             for (int i = 0; i < properties.getProperty().length; i++) {
                 PropertiesProperty prop = properties.getProperty(i);
                 try {
                     if (prop != null && prop.getMakeGlobal() != null && prop.getMakeGlobal().booleanValue()) {
-
-                        Properties globalExtensionProperties = ConfigurationUtil.getGlobalExtensionProperties();
-
+                        Properties globalExtensionProperties = (Properties) configurationManager
+                            .getConfigurationObject("introduceGlobalExtensionProperties");
                         if (globalExtensionProperties != null && globalExtensionProperties.getProperty() != null) {
                             boolean found = false;
                             for (int propi = 0; propi < globalExtensionProperties.getProperty().length; propi++) {
@@ -174,7 +190,7 @@ public class ExtensionsLoader {
                             props[0] = prop;
                             globalExtensionProperties.setProperty(props);
                         }
-                        ConfigurationUtil.saveConfiguration();
+                        configurationManager.saveAll();
 
                     }
                 } catch (Exception e) {
