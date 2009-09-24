@@ -42,6 +42,8 @@ gaards.dorian.federation.auto.host.certificate.approval=false
 gaards.dorian.federation.user.certificate.lifetime.hours=12
 gaards.dorian.federation.user.certificate.lifetime.minutes=0
 gaards.dorian.federation.user.certificate.lifetime.seconds=0
+gaards.dorian.federation.user.search.policy=public
+gaards.dorian.federation.host.search.policy=public
 gaards.dorian.federation.crl.publish=
 
 #######################################################

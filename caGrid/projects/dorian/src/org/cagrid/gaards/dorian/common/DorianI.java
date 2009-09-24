@@ -18,6 +18,28 @@ public interface DorianI {
     public gov.nih.nci.cagrid.metadata.security.ServiceSecurityMetadata getServiceSecurityMetadata() throws RemoteException ;
 
   /**
+   * Depending on the configuration of the service, this method allows the public, authenticated users, or admins to search for users.
+   *
+   * @param gridUserSearchCriteria
+   * @throws DorianInternalFault
+   *	
+   * @throws PermissionDeniedFault
+   *	
+   */
+  public org.cagrid.gaards.dorian.federation.GridUserRecord[] userSearch(org.cagrid.gaards.dorian.federation.GridUserSearchCriteria gridUserSearchCriteria) throws RemoteException, org.cagrid.gaards.dorian.stubs.types.DorianInternalFault, org.cagrid.gaards.dorian.stubs.types.PermissionDeniedFault ;
+
+  /**
+   * Depending on the configuration of the service, this method allows the public, authenticated users, or admins to search for hosts that have credentials issued by Dorian.
+   *
+   * @param hostSearchCriteria
+   * @throws DorianInternalFault
+   *	
+   * @throws PermissionDeniedFault
+   *	
+   */
+  public org.cagrid.gaards.dorian.federation.HostRecord[] hostSearch(org.cagrid.gaards.dorian.federation.HostSearchCriteria hostSearchCriteria) throws RemoteException, org.cagrid.gaards.dorian.stubs.types.DorianInternalFault, org.cagrid.gaards.dorian.stubs.types.PermissionDeniedFault ;
+
+  /**
    * Submits an application for an account with a the Dorian Identity Provider.  (This method is DEPRECATED, please use registerLocalUser)
    *
    * @param application

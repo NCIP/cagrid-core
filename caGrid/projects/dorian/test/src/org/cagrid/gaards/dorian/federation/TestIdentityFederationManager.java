@@ -29,6 +29,7 @@ import org.apache.xml.security.signature.XMLSignature;
 import org.cagrid.gaards.dorian.ca.CertificateAuthority;
 import org.cagrid.gaards.dorian.common.AuditConstants;
 import org.cagrid.gaards.dorian.common.Lifetime;
+import org.cagrid.gaards.dorian.service.DorianConstants;
 import org.cagrid.gaards.dorian.service.PropertyManager;
 import org.cagrid.gaards.dorian.stubs.types.DorianInternalFault;
 import org.cagrid.gaards.dorian.stubs.types.InvalidAssertionFault;
@@ -74,6 +75,150 @@ public class TestIdentityFederationManager extends TestCase {
     private PropertyManager props;
 
     private EventManager eventManager;
+
+
+    public void testUserSearchAdmin() {
+        IdentityFederationManager ifs = null;
+        try {
+            IdPContainer idp = this.getTrustedIdpAutoApprove("My IdP");
+            IdentityFederationProperties conf = getConf(false);
+            conf.setUserSearchPolicy(IdentityFederationProperties.ADMIN_SEARCH_POLICY);
+            FederationDefaults defaults = getDefaults();
+            defaults.setDefaultIdP(idp.getIdp());
+            ifs = new IdentityFederationManager(conf, db, props, ca, eventManager, defaults);
+            String adminSubject = UserManager.getUserSubject(conf.getIdentityAssignmentPolicy(), ca.getCACertificate()
+                .getSubjectDN().getName(), idp.getIdp(), INITIAL_ADMIN);
+            String adminGridId = UserManager.subjectToIdentity(adminSubject);
+            GridUser usr = createUser(ifs, adminGridId, idp, "user");
+            GridUserRecord userRecord = toUserRecord(usr);
+            GridUserSearchCriteria criteria = new GridUserSearchCriteria();
+            criteria.setIdentity(usr.getGridId());
+            try {
+                ifs.userSearch(DorianConstants.ANONYMOUS_CALLER, criteria);
+                fail("Should have failed.");
+            } catch (PermissionDeniedFault f) {
+
+            }
+            performAndValidateSingleAudit(ifs, adminGridId, DorianConstants.ANONYMOUS_CALLER, AuditConstants.SYSTEM_ID,
+                FederationAudit.AccessDenied);
+
+            try {
+                ifs.userSearch(usr.getGridId(), criteria);
+                fail("Should have failed.");
+            } catch (PermissionDeniedFault f) {
+
+            }
+            performAndValidateSingleAudit(ifs, adminGridId, usr.getGridId(), AuditConstants.SYSTEM_ID,
+                FederationAudit.AccessDenied);
+
+            List<GridUserRecord> users = ifs.userSearch(adminGridId, criteria);
+            assertEquals(1, users.size());
+            assertEquals(userRecord, users.get(0));
+        } catch (Exception e) {
+            FaultUtil.printFault(e);
+            fail("Exception occured:" + e.getMessage());
+        } finally {
+            try {
+                ifs.clearDatabase();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    }
+    
+    public void testUserSearchAuthenticationRequired() {
+        IdentityFederationManager ifs = null;
+        try {
+            IdPContainer idp = this.getTrustedIdpAutoApprove("My IdP");
+            IdentityFederationProperties conf = getConf(false);
+            conf.setUserSearchPolicy(IdentityFederationProperties.AUTHENTICATED_SEARCH_POLICY);
+            FederationDefaults defaults = getDefaults();
+            defaults.setDefaultIdP(idp.getIdp());
+            ifs = new IdentityFederationManager(conf, db, props, ca, eventManager, defaults);
+            String adminSubject = UserManager.getUserSubject(conf.getIdentityAssignmentPolicy(), ca.getCACertificate()
+                .getSubjectDN().getName(), idp.getIdp(), INITIAL_ADMIN);
+            String adminGridId = UserManager.subjectToIdentity(adminSubject);
+            GridUser usr = createUser(ifs, adminGridId, idp, "user");
+            GridUserRecord userRecord = toUserRecord(usr);
+            GridUserSearchCriteria criteria = new GridUserSearchCriteria();
+            criteria.setIdentity(usr.getGridId());
+            try {
+                ifs.userSearch(DorianConstants.ANONYMOUS_CALLER, criteria);
+                fail("Should have failed.");
+            } catch (PermissionDeniedFault f) {
+
+            }
+            performAndValidateSingleAudit(ifs, adminGridId, DorianConstants.ANONYMOUS_CALLER, AuditConstants.SYSTEM_ID,
+                FederationAudit.AccessDenied);
+
+            List<GridUserRecord> users = ifs.userSearch(usr.getGridId(), criteria);
+            assertEquals(1, users.size());
+            assertEquals(userRecord, users.get(0));
+         
+            users = ifs.userSearch(adminGridId, criteria);
+            assertEquals(1, users.size());
+            assertEquals(userRecord, users.get(0));
+        } catch (Exception e) {
+            FaultUtil.printFault(e);
+            fail("Exception occured:" + e.getMessage());
+        } finally {
+            try {
+                ifs.clearDatabase();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    }
+    
+    public void testUserSearchPublic() {
+        IdentityFederationManager ifs = null;
+        try {
+            IdPContainer idp = this.getTrustedIdpAutoApprove("My IdP");
+            IdentityFederationProperties conf = getConf(false);
+            conf.setUserSearchPolicy(IdentityFederationProperties.AUTHENTICATED_SEARCH_POLICY);
+            FederationDefaults defaults = getDefaults();
+            defaults.setDefaultIdP(idp.getIdp());
+            ifs = new IdentityFederationManager(conf, db, props, ca, eventManager, defaults);
+            String adminSubject = UserManager.getUserSubject(conf.getIdentityAssignmentPolicy(), ca.getCACertificate()
+                .getSubjectDN().getName(), idp.getIdp(), INITIAL_ADMIN);
+            String adminGridId = UserManager.subjectToIdentity(adminSubject);
+            GridUser usr = createUser(ifs, adminGridId, idp, "user");
+            GridUserRecord userRecord = toUserRecord(usr);
+            GridUserSearchCriteria criteria = new GridUserSearchCriteria();
+            criteria.setIdentity(usr.getGridId());
+          
+            List<GridUserRecord> users = ifs.userSearch(IdentityFederationProperties.PUBLIC_SEARCH_POLICY, criteria);
+            assertEquals(1, users.size());
+            assertEquals(userRecord, users.get(0));
+
+            users = ifs.userSearch(usr.getGridId(), criteria);
+            assertEquals(1, users.size());
+            assertEquals(userRecord, users.get(0));
+         
+            users = ifs.userSearch(adminGridId, criteria);
+            assertEquals(1, users.size());
+            assertEquals(userRecord, users.get(0));
+        } catch (Exception e) {
+            FaultUtil.printFault(e);
+            fail("Exception occured:" + e.getMessage());
+        } finally {
+            try {
+                ifs.clearDatabase();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+
+    private GridUserRecord toUserRecord(GridUser usr) {
+        GridUserRecord r = new GridUserRecord();
+        r.setIdentity(usr.getGridId());
+        r.setFirstName(usr.getFirstName());
+        r.setLastName(usr.getLastName());
+        r.setEmail(usr.getEmail());
+        return r;
+    }
 
 
     public void testRequestHostCertificateManualApproval() {
@@ -1661,6 +1806,8 @@ public class TestIdentityFederationManager extends TestCase {
         policies.add(new ManualApprovalPolicy());
         policies.add(new AutoApprovalPolicy());
         conf.setAccountPolicies(policies);
+        conf.setUserSearchPolicy(IdentityFederationProperties.PUBLIC_SEARCH_POLICY);
+        conf.setHostSearchPolicy(IdentityFederationProperties.PUBLIC_SEARCH_POLICY);
         return conf;
     }
 

@@ -76,6 +76,30 @@ public class DorianClient extends DorianClientBase implements DorianI {
 		}
 	}
 
+  public org.cagrid.gaards.dorian.federation.GridUserRecord[] userSearch(org.cagrid.gaards.dorian.federation.GridUserSearchCriteria gridUserSearchCriteria) throws RemoteException, org.cagrid.gaards.dorian.stubs.types.DorianInternalFault, org.cagrid.gaards.dorian.stubs.types.PermissionDeniedFault {
+    synchronized(portTypeMutex){
+      configureStubSecurity((Stub)portType,"userSearch");
+    org.cagrid.gaards.dorian.stubs.UserSearchRequest params = new org.cagrid.gaards.dorian.stubs.UserSearchRequest();
+    org.cagrid.gaards.dorian.stubs.UserSearchRequestGridUserSearchCriteria gridUserSearchCriteriaContainer = new org.cagrid.gaards.dorian.stubs.UserSearchRequestGridUserSearchCriteria();
+    gridUserSearchCriteriaContainer.setGridUserSearchCriteria(gridUserSearchCriteria);
+    params.setGridUserSearchCriteria(gridUserSearchCriteriaContainer);
+    org.cagrid.gaards.dorian.stubs.UserSearchResponse boxedResult = portType.userSearch(params);
+    return boxedResult.getGridUserRecord();
+    }
+  }
+
+  public org.cagrid.gaards.dorian.federation.HostRecord[] hostSearch(org.cagrid.gaards.dorian.federation.HostSearchCriteria hostSearchCriteria) throws RemoteException, org.cagrid.gaards.dorian.stubs.types.DorianInternalFault, org.cagrid.gaards.dorian.stubs.types.PermissionDeniedFault {
+    synchronized(portTypeMutex){
+      configureStubSecurity((Stub)portType,"hostSearch");
+    org.cagrid.gaards.dorian.stubs.HostSearchRequest params = new org.cagrid.gaards.dorian.stubs.HostSearchRequest();
+    org.cagrid.gaards.dorian.stubs.HostSearchRequestHostSearchCriteria hostSearchCriteriaContainer = new org.cagrid.gaards.dorian.stubs.HostSearchRequestHostSearchCriteria();
+    hostSearchCriteriaContainer.setHostSearchCriteria(hostSearchCriteria);
+    params.setHostSearchCriteria(hostSearchCriteriaContainer);
+    org.cagrid.gaards.dorian.stubs.HostSearchResponse boxedResult = portType.hostSearch(params);
+    return boxedResult.getHostRecord();
+    }
+  }
+
   public gov.nih.nci.cagrid.metadata.security.ServiceSecurityMetadata getServiceSecurityMetadata() throws RemoteException {
     synchronized(portTypeMutex){
       configureStubSecurity((Stub)portType,"getServiceSecurityMetadata");

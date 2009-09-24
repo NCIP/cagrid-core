@@ -29,61 +29,61 @@ public class BeanUtils {
 
 
     public DorianProperties getDorianProperties() throws Exception {
-        DorianProperties props = (DorianProperties) factory.getBean(ConfigurationConstants.DORIAN_PROPERTIES_BEAN);
+        DorianProperties props = (DorianProperties) factory.getBean(DorianConstants.DORIAN_PROPERTIES_BEAN);
         return props;
     }
 
 
     public IdentityFederationProperties getIdentityFederationProperties() throws Exception {
         IdentityFederationProperties props = (IdentityFederationProperties) factory
-            .getBean(ConfigurationConstants.IDENTITY_FEDERATION_PROPERTIES_BEAN);
+            .getBean(DorianConstants.IDENTITY_FEDERATION_PROPERTIES_BEAN);
         return props;
     }
 
 
     public IdentityProvider getIdentityProvider() throws Exception {
-        return (IdentityProvider) factory.getBean(ConfigurationConstants.IDP_BEAN);
+        return (IdentityProvider) factory.getBean(DorianConstants.IDP_BEAN);
     }
 
 
     public EventManager getEventManager() throws Exception {
-        return (EventManager) factory.getBean(ConfigurationConstants.EVENT_MANAGER_BEAN);
+        return (EventManager) factory.getBean(DorianConstants.EVENT_MANAGER_BEAN);
     }
 
 
     public TrustedIdPManager getTrustedIdPManager() throws Exception {
-        return (TrustedIdPManager) factory.getBean(ConfigurationConstants.TRUSTED_IDP_MANAGER_BEAN);
+        return (TrustedIdPManager) factory.getBean(DorianConstants.TRUSTED_IDP_MANAGER_BEAN);
     }
 
 
     public IdentityProviderProperties getIdentityProviderProperties() throws Exception {
-        return (IdentityProviderProperties) factory.getBean(ConfigurationConstants.IDP_PROPERTIES_BEAN);
+        return (IdentityProviderProperties) factory.getBean(DorianConstants.IDP_PROPERTIES_BEAN);
     }
 
 
     public AssertionCredentialsManager getAssertionCredentialsManager() throws Exception {
-        return (AssertionCredentialsManager) factory.getBean(ConfigurationConstants.IDP_ASSERTION_MANAGER_BEAN);
+        return (AssertionCredentialsManager) factory.getBean(DorianConstants.IDP_ASSERTION_MANAGER_BEAN);
     }
 
 
     public org.cagrid.gaards.dorian.idp.UserManager getIdPUserManager() throws Exception {
-        return (org.cagrid.gaards.dorian.idp.UserManager) factory.getBean(ConfigurationConstants.IDP_USER_MANAGER_BEAN);
+        return (org.cagrid.gaards.dorian.idp.UserManager) factory.getBean(DorianConstants.IDP_USER_MANAGER_BEAN);
     }
 
 
     public Database getDatabase() throws Exception {
-        return (Database) factory.getBean(ConfigurationConstants.DATABASE_BEAN);
+        return (Database) factory.getBean(DorianConstants.DATABASE_BEAN);
     }
 
 
     public CertificateAuthorityProperties getCertificateAuthorityProperties() throws Exception {
-        return (CertificateAuthorityProperties) factory.getBean(ConfigurationConstants.CA_PROPERTIES_BEAN);
+        return (CertificateAuthorityProperties) factory.getBean(DorianConstants.CA_PROPERTIES_BEAN);
 
     }
 
 
     public CertificateAuthority getCertificateAuthority() throws Exception {
-        return (CertificateAuthority) factory.getBean(ConfigurationConstants.CA_BEAN);
+        return (CertificateAuthority) factory.getBean(DorianConstants.CA_BEAN);
     }
 
 }

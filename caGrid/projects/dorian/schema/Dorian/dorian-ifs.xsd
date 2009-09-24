@@ -74,6 +74,48 @@
 			<xsd:element name="userStatus" type="federation:GridUserStatus" />
 		</xsd:sequence>
 	</xsd:complexType>
+
+	<xsd:element name="GridUserSearchCriteria" type="federation:GridUserSearchCriteria" />
+	<xsd:complexType name="GridUserSearchCriteria">
+		<xsd:sequence>
+			<xsd:element name="identity" type="xsd:string" />
+			<xsd:element name="firstName" type="xsd:string" />
+			<xsd:element name="lastName" type="xsd:string" />
+			<xsd:element name="email" type="xsd:string" />
+		</xsd:sequence>
+	</xsd:complexType>
+
+	<xsd:element name="GridUserRecord" type="federation:GridUserRecord" />
+	<xsd:complexType name="GridUserRecord">
+		<xsd:sequence>
+			<xsd:element name="identity" type="xsd:string" />
+			<xsd:element name="firstName" type="xsd:string" />
+			<xsd:element name="lastName" type="xsd:string" />
+			<xsd:element name="email" type="xsd:string" />
+		</xsd:sequence>
+	</xsd:complexType>
+	
+	<xsd:element name="HostSearchCriteria" type="federation:HostSearchCriteria" />
+	<xsd:complexType name="HostSearchCriteria">
+		<xsd:sequence>
+			<xsd:element name="identity" type="xsd:string" />
+			<xsd:element name="hostname" type="xsd:string" />
+			<xsd:element name="owner" type="xsd:string" />
+		</xsd:sequence>
+	</xsd:complexType>
+	
+	<xsd:element name="HostRecord" type="federation:HostRecord" />
+	<xsd:complexType name="HostRecord">
+		<xsd:sequence>
+			<xsd:element name="identity" type="xsd:string" />
+			<xsd:element name="hostname" type="xsd:string" />
+			<xsd:element name="owner" type="xsd:string" />
+			<xsd:element name="ownerFirstName" type="xsd:string" />
+			<xsd:element name="ownerLastName" type="xsd:string" />
+			<xsd:element name="ownerEmail" type="xsd:string" />
+		</xsd:sequence>
+	</xsd:complexType>
+
 	<xsd:element name="ProxyLifetime" type="federation:ProxyLifetime" />
 	<xsd:complexType name="ProxyLifetime">
 		<xsd:sequence>

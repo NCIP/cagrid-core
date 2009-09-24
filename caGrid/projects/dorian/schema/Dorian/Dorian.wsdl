@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<definitions xmlns="http://schemas.xmlsoap.org/wsdl/" xmlns:tns="http://cagrid.nci.nih.gov/Dorian" xmlns:wsrp="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ResourceProperties-1.2-draft-01.xsd" xmlns:wsrlw="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ResourceLifetime-1.2-draft-01.wsdl" xmlns:wsdlpp="http://www.globus.org/namespaces/2004/10/WSDLPreprocessor" xmlns:gtwsdl1="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ServiceGroup-1.2-draft-01.wsdl" xmlns:wsa="http://schemas.xmlsoap.org/ws/2004/03/addressing" xmlns:wsntw="http://docs.oasis-open.org/wsn/2004/06/wsn-WS-BaseNotification-1.2-draft-01.wsdl" xmlns:wsrbfw="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-BaseFaults-1.2-draft-01.wsdl" xmlns:wsrpw="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ResourceProperties-1.2-draft-01.wsdl" xmlns:wns1="http://cagrid.nci.nih.gov/AuthenticationService" xmlns:wns2="http://authentication.gaards.cagrid.org/AuthenticationService" xmlns:wns3="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ResourceProperties-1.2-draft-01.wsdl" xmlns:wns0="http://security.introduce.cagrid.nci.nih.gov/ServiceSecurity" xmlns:ns8="http://gaards.cagrid.org/authentication-faults" xmlns:ns10="http://cagrid.nci.nih.gov/Dorian/types" xmlns:ns6="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata" xmlns:ns2="http://cagrid.nci.nih.gov/1/dorian-ifs" xmlns:ns3="http://gaards.cagrid.org/authentication" xmlns:ns5="http://cagrid.nci.nih.gov/1/authentication-service" xmlns:ns7="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.security" xmlns:ns1="http://cagrid.nci.nih.gov/1/dorian-common" xmlns:ns4="http://cagrid.nci.nih.gov/AuthenticationService/types" xmlns:ns12="urn:oasis:names:tc:SAML:1.0:assertion" xmlns:ns11="http://www.w3.org/2000/09/xmldsig#" xmlns:ns9="http://authentication.gaards.cagrid.org/AuthenticationService/types" xmlns:ns0="http://cagrid.nci.nih.gov/1/dorian-idp" name="Dorian" targetNamespace="http://cagrid.nci.nih.gov/Dorian">
+<definitions xmlns="http://schemas.xmlsoap.org/wsdl/" xmlns:tns="http://cagrid.nci.nih.gov/Dorian" xmlns:wsrp="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ResourceProperties-1.2-draft-01.xsd" xmlns:wsrlw="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ResourceLifetime-1.2-draft-01.wsdl" xmlns:wsdlpp="http://www.globus.org/namespaces/2004/10/WSDLPreprocessor" xmlns:gtwsdl1="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ServiceGroup-1.2-draft-01.wsdl" xmlns:wsa="http://schemas.xmlsoap.org/ws/2004/03/addressing" xmlns:wsntw="http://docs.oasis-open.org/wsn/2004/06/wsn-WS-BaseNotification-1.2-draft-01.wsdl" xmlns:wsrbfw="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-BaseFaults-1.2-draft-01.wsdl" xmlns:wsrpw="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ResourceProperties-1.2-draft-01.wsdl" xmlns:wns2="http://authentication.gaards.cagrid.org/AuthenticationService" xmlns:wns1="http://cagrid.nci.nih.gov/AuthenticationService" xmlns:wns0="http://security.introduce.cagrid.nci.nih.gov/ServiceSecurity" xmlns:wns3="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ResourceProperties-1.2-draft-01.wsdl" xmlns:ns2="http://cagrid.nci.nih.gov/1/dorian-idp" xmlns:ns8="http://gaards.cagrid.org/authentication-faults" xmlns:ns7="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.security" xmlns:ns9="http://authentication.gaards.cagrid.org/AuthenticationService/types" xmlns:ns11="http://www.w3.org/2000/09/xmldsig#" xmlns:ns10="http://cagrid.nci.nih.gov/Dorian/types" xmlns:ns6="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata" xmlns:ns12="urn:oasis:names:tc:SAML:1.0:assertion" xmlns:ns4="http://cagrid.nci.nih.gov/AuthenticationService/types" xmlns:ns0="http://cagrid.nci.nih.gov/1/dorian-ifs" xmlns:ns1="http://cagrid.nci.nih.gov/1/dorian-common" xmlns:ns3="http://gaards.cagrid.org/authentication" xmlns:ns5="http://cagrid.nci.nih.gov/1/authentication-service" name="Dorian" targetNamespace="http://cagrid.nci.nih.gov/Dorian">
   <import namespace="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ResourceProperties-1.2-draft-01.wsdl" location="../wsrf/properties/WS-ResourceProperties.wsdl" />
   <import namespace="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-BaseFaults-1.2-draft-01.wsdl" location="../wsrf/faults/WS-BaseFaults.wsdl" />
   <import namespace="http://docs.oasis-open.org/wsn/2004/06/wsn-WS-BaseNotification-1.2-draft-01.wsdl" location="../wsrf/notification/WS-BaseN.wsdl" />
-  <import namespace="http://cagrid.nci.nih.gov/AuthenticationService" location="././AuthenticationServiceDeprecated.wsdl" />
   <import namespace="http://authentication.gaards.cagrid.org/AuthenticationService" location="././AuthenticationService.wsdl" />
-  <import namespace="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ResourceProperties-1.2-draft-01.wsdl" location="./../wsrf/properties/WS-ResourceProperties.wsdl" />
+  <import namespace="http://cagrid.nci.nih.gov/AuthenticationService" location="././AuthenticationServiceDeprecated.wsdl" />
   <import namespace="http://security.introduce.cagrid.nci.nih.gov/ServiceSecurity" location="./ServiceSecurity.wsdl" />
+  <import namespace="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ResourceProperties-1.2-draft-01.wsdl" location="./../wsrf/properties/WS-ResourceProperties.wsdl" />
   <!--============================================================
 
                       T Y P E S
@@ -15,26 +15,26 @@
   <types>
     <schema xmlns="http://www.w3.org/2001/XMLSchema" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:wsrbf="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-BaseFaults-1.2-draft-01.xsd" targetNamespace="http://cagrid.nci.nih.gov/Dorian" elementFormDefault="qualified" attributeFormDefault="unqualified">
       <import namespace="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-BaseFaults-1.2-draft-01.xsd" schemaLocation="../wsrf/faults/WS-BaseFaults.xsd" />
+      <import namespace="http://cagrid.nci.nih.gov/1/dorian-idp" schemaLocation="./dorian-idp.xsd" />
       <import namespace="http://gaards.cagrid.org/authentication-faults" schemaLocation="./authentication-faults.xsd" />
+      <import namespace="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.security" schemaLocation="./xsd/cagrid/types/security/security.xsd" />
+      <import namespace="http://authentication.gaards.cagrid.org/AuthenticationService/types" schemaLocation="./AuthenticationServiceTypes.xsd" />
+      <import namespace="http://www.w3.org/2000/09/xmldsig#" schemaLocation="./xmldsig-core-schema.xsd" />
       <import namespace="http://cagrid.nci.nih.gov/Dorian/types" schemaLocation="./DorianTypes.xsd" />
       <import namespace="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata" schemaLocation="./xsd/cagrid/types/caGridMetadata.xsd" />
+      <import namespace="urn:oasis:names:tc:SAML:1.0:assertion" schemaLocation="./cs-sstc-schema-assertion-1.1.xsd" />
+      <import namespace="http://cagrid.nci.nih.gov/AuthenticationService/types" schemaLocation="./AuthenticationServiceTypesDeprecated.xsd" />
       <import namespace="http://cagrid.nci.nih.gov/1/dorian-ifs" schemaLocation="./dorian-ifs.xsd" />
+      <import namespace="http://cagrid.nci.nih.gov/1/dorian-common" schemaLocation="./dorian-common.xsd" />
       <import namespace="http://gaards.cagrid.org/authentication" schemaLocation="./authentication-core-types.xsd" />
       <import namespace="http://cagrid.nci.nih.gov/1/authentication-service" schemaLocation="./authentication-service.xsd" />
-      <import namespace="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.security" schemaLocation="./xsd/cagrid/types/security/security.xsd" />
-      <import namespace="http://cagrid.nci.nih.gov/1/dorian-common" schemaLocation="./dorian-common.xsd" />
-      <import namespace="http://cagrid.nci.nih.gov/AuthenticationService/types" schemaLocation="./AuthenticationServiceTypesDeprecated.xsd" />
-      <import namespace="urn:oasis:names:tc:SAML:1.0:assertion" schemaLocation="./cs-sstc-schema-assertion-1.1.xsd" />
-      <import namespace="http://www.w3.org/2000/09/xmldsig#" schemaLocation="./xmldsig-core-schema.xsd" />
-      <import namespace="http://authentication.gaards.cagrid.org/AuthenticationService/types" schemaLocation="./AuthenticationServiceTypes.xsd" />
-      <import namespace="http://cagrid.nci.nih.gov/1/dorian-idp" schemaLocation="./dorian-idp.xsd" />
       <element name="RegisterWithIdPRequest">
         <complexType>
           <sequence>
             <element name="application">
               <complexType>
                 <sequence>
-                  <element ref="ns0:Application" minOccurs="1" maxOccurs="1" />
+                  <element ref="ns2:Application" minOccurs="1" maxOccurs="1" />
                 </sequence>
               </complexType>
             </element>
@@ -54,7 +54,7 @@
             <element name="f">
               <complexType>
                 <sequence>
-                  <element ref="ns0:LocalUserFilter" minOccurs="1" maxOccurs="1" />
+                  <element ref="ns2:LocalUserFilter" minOccurs="1" maxOccurs="1" />
                 </sequence>
               </complexType>
             </element>
@@ -64,7 +64,7 @@
       <element name="FindLocalUsersResponse">
         <complexType>
           <sequence>
-            <element ref="ns0:LocalUser" minOccurs="1" maxOccurs="unbounded" />
+            <element ref="ns2:LocalUser" minOccurs="1" maxOccurs="unbounded" />
           </sequence>
         </complexType>
       </element>
@@ -74,7 +74,7 @@
             <element name="user">
               <complexType>
                 <sequence>
-                  <element ref="ns0:LocalUser" minOccurs="1" maxOccurs="1" />
+                  <element ref="ns2:LocalUser" minOccurs="1" maxOccurs="1" />
                 </sequence>
               </complexType>
             </element>
@@ -111,21 +111,21 @@
             <element name="publicKey">
               <complexType>
                 <sequence>
-                  <element ref="ns2:PublicKey" minOccurs="1" maxOccurs="1" />
+                  <element ref="ns0:PublicKey" minOccurs="1" maxOccurs="1" />
                 </sequence>
               </complexType>
             </element>
             <element name="lifetime">
               <complexType>
                 <sequence>
-                  <element ref="ns2:ProxyLifetime" minOccurs="1" maxOccurs="1" />
+                  <element ref="ns0:ProxyLifetime" minOccurs="1" maxOccurs="1" />
                 </sequence>
               </complexType>
             </element>
             <element name="delegation">
               <complexType>
                 <sequence>
-                  <element ref="ns2:DelegationPathLength" minOccurs="1" maxOccurs="1" />
+                  <element ref="ns0:DelegationPathLength" minOccurs="1" maxOccurs="1" />
                 </sequence>
               </complexType>
             </element>
@@ -159,7 +159,7 @@
       <element name="GetTrustedIdPsResponse">
         <complexType>
           <sequence>
-            <element ref="ns2:TrustedIdP" minOccurs="1" maxOccurs="unbounded" />
+            <element ref="ns0:TrustedIdP" minOccurs="1" maxOccurs="unbounded" />
           </sequence>
         </complexType>
       </element>
@@ -169,7 +169,7 @@
             <element name="idp">
               <complexType>
                 <sequence>
-                  <element ref="ns2:TrustedIdP" minOccurs="1" maxOccurs="1" />
+                  <element ref="ns0:TrustedIdP" minOccurs="1" maxOccurs="1" />
                 </sequence>
               </complexType>
             </element>
@@ -179,7 +179,7 @@
       <element name="AddTrustedIdPResponse">
         <complexType>
           <sequence>
-            <element ref="ns2:TrustedIdP" minOccurs="1" maxOccurs="1" />
+            <element ref="ns0:TrustedIdP" minOccurs="1" maxOccurs="1" />
           </sequence>
         </complexType>
       </element>
@@ -189,7 +189,7 @@
             <element name="trustedIdP">
               <complexType>
                 <sequence>
-                  <element ref="ns2:TrustedIdP" minOccurs="1" maxOccurs="1" />
+                  <element ref="ns0:TrustedIdP" minOccurs="1" maxOccurs="1" />
                 </sequence>
               </complexType>
             </element>
@@ -207,7 +207,7 @@
             <element name="trustedIdP">
               <complexType>
                 <sequence>
-                  <element ref="ns2:TrustedIdP" minOccurs="1" maxOccurs="1" />
+                  <element ref="ns0:TrustedIdP" minOccurs="1" maxOccurs="1" />
                 </sequence>
               </complexType>
             </element>
@@ -225,7 +225,7 @@
             <element name="filter">
               <complexType>
                 <sequence>
-                  <element ref="ns2:GridUserFilter" minOccurs="1" maxOccurs="1" />
+                  <element ref="ns0:GridUserFilter" minOccurs="1" maxOccurs="1" />
                 </sequence>
               </complexType>
             </element>
@@ -235,7 +235,7 @@
       <element name="FindGridUsersResponse">
         <complexType>
           <sequence>
-            <element ref="ns2:GridUser" minOccurs="1" maxOccurs="unbounded" />
+            <element ref="ns0:GridUser" minOccurs="1" maxOccurs="unbounded" />
           </sequence>
         </complexType>
       </element>
@@ -245,7 +245,7 @@
             <element name="user">
               <complexType>
                 <sequence>
-                  <element ref="ns2:GridUser" minOccurs="1" maxOccurs="1" />
+                  <element ref="ns0:GridUser" minOccurs="1" maxOccurs="1" />
                 </sequence>
               </complexType>
             </element>
@@ -263,7 +263,7 @@
             <element name="user">
               <complexType>
                 <sequence>
-                  <element ref="ns2:GridUser" minOccurs="1" maxOccurs="1" />
+                  <element ref="ns0:GridUser" minOccurs="1" maxOccurs="1" />
                 </sequence>
               </complexType>
             </element>
@@ -283,7 +283,7 @@
       <element name="GetGridUserPoliciesResponse">
         <complexType>
           <sequence>
-            <element ref="ns2:GridUserPolicy" minOccurs="1" maxOccurs="unbounded" />
+            <element ref="ns0:GridUserPolicy" minOccurs="1" maxOccurs="unbounded" />
           </sequence>
         </complexType>
       </element>
@@ -329,7 +329,7 @@
             <element name="req">
               <complexType>
                 <sequence>
-                  <element ref="ns2:HostCertificateRequest" minOccurs="1" maxOccurs="1" />
+                  <element ref="ns0:HostCertificateRequest" minOccurs="1" maxOccurs="1" />
                 </sequence>
               </complexType>
             </element>
@@ -339,7 +339,7 @@
       <element name="RequestHostCertificateResponse">
         <complexType>
           <sequence>
-            <element ref="ns2:HostCertificateRecord" minOccurs="1" maxOccurs="1" />
+            <element ref="ns0:HostCertificateRecord" minOccurs="1" maxOccurs="1" />
           </sequence>
         </complexType>
       </element>
@@ -351,7 +351,7 @@
       <element name="GetOwnedHostCertificatesResponse">
         <complexType>
           <sequence>
-            <element ref="ns2:HostCertificateRecord" minOccurs="1" maxOccurs="unbounded" />
+            <element ref="ns0:HostCertificateRecord" minOccurs="1" maxOccurs="unbounded" />
           </sequence>
         </complexType>
       </element>
@@ -365,7 +365,7 @@
       <element name="ApproveHostCertificateResponse">
         <complexType>
           <sequence>
-            <element ref="ns2:HostCertificateRecord" minOccurs="1" maxOccurs="1" />
+            <element ref="ns0:HostCertificateRecord" minOccurs="1" maxOccurs="1" />
           </sequence>
         </complexType>
       </element>
@@ -375,7 +375,7 @@
             <element name="hostCertificateFilter">
               <complexType>
                 <sequence>
-                  <element ref="ns2:HostCertificateFilter" minOccurs="1" maxOccurs="1" />
+                  <element ref="ns0:HostCertificateFilter" minOccurs="1" maxOccurs="1" />
                 </sequence>
               </complexType>
             </element>
@@ -385,7 +385,7 @@
       <element name="FindHostCertificatesResponse">
         <complexType>
           <sequence>
-            <element ref="ns2:HostCertificateRecord" minOccurs="1" maxOccurs="unbounded" />
+            <element ref="ns0:HostCertificateRecord" minOccurs="1" maxOccurs="unbounded" />
           </sequence>
         </complexType>
       </element>
@@ -395,7 +395,7 @@
             <element name="hostCertificateUpdate">
               <complexType>
                 <sequence>
-                  <element ref="ns2:HostCertificateUpdate" minOccurs="1" maxOccurs="1" />
+                  <element ref="ns0:HostCertificateUpdate" minOccurs="1" maxOccurs="1" />
                 </sequence>
               </complexType>
             </element>
@@ -417,7 +417,7 @@
       <element name="RenewHostCertificateResponse">
         <complexType>
           <sequence>
-            <element ref="ns2:HostCertificateRecord" minOccurs="1" maxOccurs="1" />
+            <element ref="ns0:HostCertificateRecord" minOccurs="1" maxOccurs="1" />
           </sequence>
         </complexType>
       </element>
@@ -427,7 +427,7 @@
             <element name="credential">
               <complexType>
                 <sequence>
-                  <element ref="ns0:BasicAuthCredential" minOccurs="1" maxOccurs="1" />
+                  <element ref="ns2:BasicAuthCredential" minOccurs="1" maxOccurs="1" />
                 </sequence>
               </complexType>
             </element>
@@ -479,7 +479,7 @@
             <element name="update">
               <complexType>
                 <sequence>
-                  <element ref="ns2:UserCertificateUpdate" minOccurs="1" maxOccurs="1" />
+                  <element ref="ns0:UserCertificateUpdate" minOccurs="1" maxOccurs="1" />
                 </sequence>
               </complexType>
             </element>
@@ -504,14 +504,14 @@
             <element name="key">
               <complexType>
                 <sequence>
-                  <element ref="ns2:PublicKey" minOccurs="1" maxOccurs="1" />
+                  <element ref="ns0:PublicKey" minOccurs="1" maxOccurs="1" />
                 </sequence>
               </complexType>
             </element>
             <element name="lifetime">
               <complexType>
                 <sequence>
-                  <element ref="ns2:CertificateLifetime" minOccurs="1" maxOccurs="1" />
+                  <element ref="ns0:CertificateLifetime" minOccurs="1" maxOccurs="1" />
                 </sequence>
               </complexType>
             </element>
@@ -531,7 +531,7 @@
             <element name="userCertificateFilter">
               <complexType>
                 <sequence>
-                  <element ref="ns2:UserCertificateFilter" minOccurs="1" maxOccurs="1" />
+                  <element ref="ns0:UserCertificateFilter" minOccurs="1" maxOccurs="1" />
                 </sequence>
               </complexType>
             </element>
@@ -541,7 +541,7 @@
       <element name="FindUserCertificatesResponse">
         <complexType>
           <sequence>
-            <element ref="ns2:UserCertificateRecord" minOccurs="1" maxOccurs="unbounded" />
+            <element ref="ns0:UserCertificateRecord" minOccurs="1" maxOccurs="unbounded" />
           </sequence>
         </complexType>
       </element>
@@ -563,7 +563,7 @@
             <element name="f">
               <complexType>
                 <sequence>
-                  <element ref="ns2:FederationAuditFilter" minOccurs="1" maxOccurs="1" />
+                  <element ref="ns0:FederationAuditFilter" minOccurs="1" maxOccurs="1" />
                 </sequence>
               </complexType>
             </element>
@@ -573,7 +573,7 @@
       <element name="PerformFederationAuditResponse">
         <complexType>
           <sequence>
-            <element ref="ns2:FederationAuditRecord" minOccurs="1" maxOccurs="unbounded" />
+            <element ref="ns0:FederationAuditRecord" minOccurs="1" maxOccurs="unbounded" />
           </sequence>
         </complexType>
       </element>
@@ -583,7 +583,7 @@
             <element name="f">
               <complexType>
                 <sequence>
-                  <element ref="ns0:IdentityProviderAuditFilter" minOccurs="1" maxOccurs="1" />
+                  <element ref="ns2:IdentityProviderAuditFilter" minOccurs="1" maxOccurs="1" />
                 </sequence>
               </complexType>
             </element>
@@ -593,7 +593,7 @@
       <element name="PerformIdentityProviderAuditResponse">
         <complexType>
           <sequence>
-            <element ref="ns0:IdentityProviderAuditRecord" minOccurs="1" maxOccurs="unbounded" />
+            <element ref="ns2:IdentityProviderAuditRecord" minOccurs="1" maxOccurs="unbounded" />
           </sequence>
         </complexType>
       </element>
@@ -603,7 +603,7 @@
             <element name="a">
               <complexType>
                 <sequence>
-                  <element ref="ns0:Application" minOccurs="1" maxOccurs="1" />
+                  <element ref="ns2:Application" minOccurs="1" maxOccurs="1" />
                 </sequence>
               </complexType>
             </element>
@@ -617,12 +617,52 @@
           </sequence>
         </complexType>
       </element>
+      <element name="UserSearchRequest">
+        <complexType>
+          <sequence>
+            <element name="gridUserSearchCriteria">
+              <complexType>
+                <sequence>
+                  <element ref="ns0:GridUserSearchCriteria" minOccurs="1" maxOccurs="1" />
+                </sequence>
+              </complexType>
+            </element>
+          </sequence>
+        </complexType>
+      </element>
+      <element name="UserSearchResponse">
+        <complexType>
+          <sequence>
+            <element ref="ns0:GridUserRecord" minOccurs="1" maxOccurs="unbounded" />
+          </sequence>
+        </complexType>
+      </element>
+      <element name="HostSearchRequest">
+        <complexType>
+          <sequence>
+            <element name="hostSearchCriteria">
+              <complexType>
+                <sequence>
+                  <element ref="ns0:HostSearchCriteria" minOccurs="1" maxOccurs="1" />
+                </sequence>
+              </complexType>
+            </element>
+          </sequence>
+        </complexType>
+      </element>
+      <element name="HostSearchResponse">
+        <complexType>
+          <sequence>
+            <element ref="ns0:HostRecord" minOccurs="1" maxOccurs="unbounded" />
+          </sequence>
+        </complexType>
+      </element>
       <element name="DorianResourceProperties">
         <complexType>
           <sequence>
             <element ref="ns6:ServiceMetadata" />
             <element ref="ns3:AuthenticationProfiles" />
-            <element ref="ns2:TrustedIdentityProviders" />
+            <element ref="ns0:TrustedIdentityProviders" />
           </sequence>
         </complexType>
       </element>
@@ -826,6 +866,18 @@
   </message>
   <message name="RegisterLocalUserResponse">
     <part name="parameters" element="tns:RegisterLocalUserResponse" />
+  </message>
+  <message name="UserSearchRequest">
+    <part name="parameters" element="tns:UserSearchRequest" />
+  </message>
+  <message name="UserSearchResponse">
+    <part name="parameters" element="tns:UserSearchResponse" />
+  </message>
+  <message name="HostSearchRequest">
+    <part name="parameters" element="tns:HostSearchRequest" />
+  </message>
+  <message name="HostSearchResponse">
+    <part name="parameters" element="tns:HostSearchResponse" />
   </message>
   <message name="DorianInternalFaultFaultMessage">
     <part name="fault" element="ns10:DorianInternalFault" />
@@ -1085,6 +1137,18 @@
       <output message="tns:RegisterLocalUserResponse" wsa:Action="http://cagrid.nci.nih.gov/Dorian/RegisterLocalUserResponse" />
       <fault name="DorianInternalFault" message="tns:DorianInternalFaultFaultMessage" wsa:Action="http://cagrid.nci.nih.gov/Dorian/DorianInternalFaultFaultMessage" />
       <fault name="InvalidUserPropertyFault" message="tns:InvalidUserPropertyFaultFaultMessage" wsa:Action="http://cagrid.nci.nih.gov/Dorian/InvalidUserPropertyFaultFaultMessage" />
+    </operation>
+    <operation name="userSearch">
+      <input message="tns:UserSearchRequest" wsa:Action="http://cagrid.nci.nih.gov/Dorian/UserSearchRequest" />
+      <output message="tns:UserSearchResponse" wsa:Action="http://cagrid.nci.nih.gov/Dorian/UserSearchResponse" />
+      <fault name="DorianInternalFault" message="tns:DorianInternalFaultFaultMessage" wsa:Action="http://cagrid.nci.nih.gov/Dorian/DorianInternalFaultFaultMessage" />
+      <fault name="PermissionDeniedFault" message="tns:PermissionDeniedFaultFaultMessage" wsa:Action="http://cagrid.nci.nih.gov/Dorian/PermissionDeniedFaultFaultMessage" />
+    </operation>
+    <operation name="hostSearch">
+      <input message="tns:HostSearchRequest" wsa:Action="http://cagrid.nci.nih.gov/Dorian/HostSearchRequest" />
+      <output message="tns:HostSearchResponse" wsa:Action="http://cagrid.nci.nih.gov/Dorian/HostSearchResponse" />
+      <fault name="DorianInternalFault" message="tns:DorianInternalFaultFaultMessage" wsa:Action="http://cagrid.nci.nih.gov/Dorian/DorianInternalFaultFaultMessage" />
+      <fault name="PermissionDeniedFault" message="tns:PermissionDeniedFaultFaultMessage" wsa:Action="http://cagrid.nci.nih.gov/Dorian/PermissionDeniedFaultFaultMessage" />
     </operation>
     <operation name="getServiceSecurityMetadata">
       <input message="wns0:GetServiceSecurityMetadataRequest" wsa:Action="http://security.introduce.cagrid.nci.nih.gov/ServiceSecurity/GetServiceSecurityMetadataRequest" />

@@ -17,6 +17,18 @@ public class DorianProviderImpl {
         impl = new DorianImpl();
     }
 
+    public org.cagrid.gaards.dorian.stubs.UserSearchResponse userSearch(org.cagrid.gaards.dorian.stubs.UserSearchRequest params) throws RemoteException, org.cagrid.gaards.dorian.stubs.types.DorianInternalFault, org.cagrid.gaards.dorian.stubs.types.PermissionDeniedFault {
+    org.cagrid.gaards.dorian.stubs.UserSearchResponse boxedResult = new org.cagrid.gaards.dorian.stubs.UserSearchResponse();
+    boxedResult.setGridUserRecord(impl.userSearch(params.getGridUserSearchCriteria().getGridUserSearchCriteria()));
+    return boxedResult;
+  }
+
+    public org.cagrid.gaards.dorian.stubs.HostSearchResponse hostSearch(org.cagrid.gaards.dorian.stubs.HostSearchRequest params) throws RemoteException, org.cagrid.gaards.dorian.stubs.types.DorianInternalFault, org.cagrid.gaards.dorian.stubs.types.PermissionDeniedFault {
+    org.cagrid.gaards.dorian.stubs.HostSearchResponse boxedResult = new org.cagrid.gaards.dorian.stubs.HostSearchResponse();
+    boxedResult.setHostRecord(impl.hostSearch(params.getHostSearchCriteria().getHostSearchCriteria()));
+    return boxedResult;
+  }
+
     public org.cagrid.gaards.dorian.stubs.RegisterWithIdPResponse registerWithIdP(org.cagrid.gaards.dorian.stubs.RegisterWithIdPRequest params) throws RemoteException, org.cagrid.gaards.dorian.stubs.types.DorianInternalFault, org.cagrid.gaards.dorian.stubs.types.InvalidUserPropertyFault {
     org.cagrid.gaards.dorian.stubs.RegisterWithIdPResponse boxedResult = new org.cagrid.gaards.dorian.stubs.RegisterWithIdPResponse();
     boxedResult.setResponse(impl.registerWithIdP(params.getApplication().getApplication()));

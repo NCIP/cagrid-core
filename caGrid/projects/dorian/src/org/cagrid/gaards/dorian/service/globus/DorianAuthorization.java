@@ -210,6 +210,14 @@ public class DorianAuthorization implements PDP {
 	public void authorizeQueryResourceProperties(Subject peerSubject, MessageContext context, QName operation) throws AuthorizationException {
 		
 	}
+	   				
+	public void authorizeUserSearch(Subject peerSubject, MessageContext context, QName operation) throws AuthorizationException {
+		
+	}
+	   				
+	public void authorizeHostSearch(Subject peerSubject, MessageContext context, QName operation) throws AuthorizationException {
+		
+	}
 	   
 	
 	public boolean isPermitted(Subject peerSubject, MessageContext context, QName operation)
@@ -334,6 +342,12 @@ public class DorianAuthorization implements PDP {
 			return true;
 		} else if(operation.getLocalPart().equals("queryResourceProperties")){
 			authorizeQueryResourceProperties(peerSubject, context, operation);
+			return true;
+		} else if(operation.getLocalPart().equals("userSearch")){
+			authorizeUserSearch(peerSubject, context, operation);
+			return true;
+		} else if(operation.getLocalPart().equals("hostSearch")){
+			authorizeHostSearch(peerSubject, context, operation);
 			return true;
 		} 		
 		return false;

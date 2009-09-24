@@ -254,7 +254,7 @@ public abstract class DorianResourceBase extends ReflectionResource implements R
                 + getConfiguration().getRegistrationTemplateFile());
 
             if (registrationFile.exists() && registrationFile.canRead()) {
-                logger.debug("Loading registration arguments from:" + registrationFile);
+                logger.debug("Loading registration argumentsrmation from:" + registrationFile);
 
                 try {
                     params = ServiceGroupRegistrationClient.readParams(registrationFile.getAbsolutePath());
