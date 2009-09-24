@@ -28,7 +28,7 @@
 
 		<!-- delete the user's Introduce service preferences -->
 		<delete failonerror="false">
-			<fileset dir="${user.home}/.introduce_1_3/">
+			<fileset dir="${user.home}/.introduce_1_4/">
 				<include name="service_urls.properties" />
 			</fileset>
 		</delete>

@@ -1,4 +1,4 @@
-<ns1:ExtensionDescription extensionType="DISCOVERY" xmlns:ns1="gme://gov.nih.nci.cagrid.introduce/1/Extension">
+<ns1:ExtensionDescription extensionType="DISCOVERY" xmlns:ns1="gme://gov.nih.nci.cagrid.introduce/1/Extension" version="1.4">
  <ns1:DiscoveryExtensionDescription displayName="Global Model Exchange" name="gme-discovery" xsi:type="ns1:DiscoveryExtensionDescriptionType" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <ns1:DiscoveryToolsPanelExtension xsi:type="xsd:string" >org.cagrid.gme.discoverytools.GMEViewer</ns1:DiscoveryToolsPanelExtension>
   <ns1:DiscoveryPanelExtension xsi:type="xsd:string">org.cagrid.gme.discoverytools.GMETypeSelectionComponent</ns1:DiscoveryPanelExtension>

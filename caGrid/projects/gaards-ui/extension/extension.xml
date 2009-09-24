@@ -1,4 +1,4 @@
-<ns1:ExtensionDescription extensionType="INTRODUCE_GDE" version="1.2" xmlns:ns1="gme://gov.nih.nci.cagrid.introduce/1/Extension">
+<ns1:ExtensionDescription extensionType="INTRODUCE_GDE" version="1.4" xmlns:ns1="gme://gov.nih.nci.cagrid.introduce/1/Extension">
 	<ns1:IntroduceGDEExtensionDescriptionType displayName="Gaards UI" name="cagrid_gaards_ui">
 		<menus xmlns="http://www.cagrid.org/1/grape">
 		<menu>

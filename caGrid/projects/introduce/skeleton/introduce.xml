@@ -1,4 +1,4 @@
-<ns1:ServiceDescription introduceVersion="1.3" xmlns:ns1="gme://gov.nih.nci.cagrid/1/Introduce">
+<ns1:ServiceDescription introduceVersion="1.4" xmlns:ns1="gme://gov.nih.nci.cagrid/1/Introduce">
     <ns4:Namespaces xsi:type="ns4:NamespacesType" xmlns:ns4="gme://gov.nih.nci.cagrid.introduce/1/Namespace"
         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
         <ns4:Namespace generateStubs="false" namespace="http://www.w3.org/2001/XMLSchema" xsi:type="ns4:NamespaceType">

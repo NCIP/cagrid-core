@@ -1,4 +1,4 @@
-<ns1:ExtensionDescription extensionType="AUTHORIZATION" version="1.2" xmlns:ns1="gme://gov.nih.nci.cagrid.introduce/1/Extension">
+<ns1:ExtensionDescription extensionType="AUTHORIZATION" version="1.4" xmlns:ns1="gme://gov.nih.nci.cagrid.introduce/1/Extension">
 	<ns1:AuthorizationExtensionDescription displayName="Enforce Authentication" name="enforce_auth">
 		<ns1:MethodAuthorizationPanel>org.cagrid.enforce.authorization.extension.gui.MethodAuthorizationPanel</ns1:MethodAuthorizationPanel>
 		<ns1:ServiceAuthorizationPanel>org.cagrid.enforce.authorization.extension.gui.ServiceAuthorizationPanel</ns1:ServiceAuthorizationPanel>

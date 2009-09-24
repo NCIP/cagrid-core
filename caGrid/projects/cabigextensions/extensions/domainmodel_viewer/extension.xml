@@ -1,4 +1,4 @@
-<ns1:ExtensionDescription extensionType="RESOURCE_PROPERTY_EDITOR" version="1.2"
+<ns1:ExtensionDescription extensionType="RESOURCE_PROPERTY_EDITOR" version="1.4"
 	xmlns:ns1="gme://gov.nih.nci.cagrid.introduce/1/Extension">
 	<ns1:ResourcePropertyEditorExtensionDescription displayName="Domain Model Viewer" name="domainmodel_viewer"
 		xmlns:data="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.dataservice" qname="data:DomainModel">

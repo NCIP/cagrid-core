@@ -1,5 +1,5 @@
 #General Introduce Properties
-introduce.version=1.3
+introduce.version=1.4
 introduce.patch.version=0
 introduce.grape.configuration.file=conf/introduce-grape-conf.xml
 
