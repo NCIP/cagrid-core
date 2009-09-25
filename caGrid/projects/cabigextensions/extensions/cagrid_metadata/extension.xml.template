@@ -9,7 +9,7 @@
 		</ns1:Properties>
 	</ns1:ServiceExtensionDescription>
 	<ns1:UpgradesDescription>
-		<ns1:UpgradeDescription upgradeClass="gov.nih.nci.cagrid.introduce.extensions.metadata.upgrade.MetadataUpgrade1pt1to1pt3" fromVersion="1.1" toVersion="1.4"/>
-		<ns1:UpgradeDescription upgradeClass="gov.nih.nci.cagrid.introduce.extensions.metadata.upgrade.MetadataUpgrade1pt2to1pt3" fromVersion="1.2" toVersion="1.4"/>
+		<ns1:UpgradeDescription upgradeClass="gov.nih.nci.cagrid.introduce.extensions.metadata.upgrade.MetadataUpgrade1pt2" fromVersion="1.2" toVersion="1.4"/>
+		<ns1:UpgradeDescription upgradeClass="gov.nih.nci.cagrid.introduce.extensions.metadata.upgrade.MetadataUpgrade1pt3" fromVersion="1.3" toVersion="1.4"/>
 	</ns1:UpgradesDescription>
 </ns1:ExtensionDescription>
