@@ -38,12 +38,6 @@ public class CSMProviderImpl{
     return boxedResult;
   }
 
-    public org.cagrid.gaards.csm.stubs.ModifyApplicationResponse modifyApplication(org.cagrid.gaards.csm.stubs.ModifyApplicationRequest params) throws RemoteException, org.cagrid.gaards.csm.stubs.types.CSMInternalFault, org.cagrid.gaards.csm.stubs.types.AccessDeniedFault, org.cagrid.gaards.csm.stubs.types.CSMTransactionFault {
-    org.cagrid.gaards.csm.stubs.ModifyApplicationResponse boxedResult = new org.cagrid.gaards.csm.stubs.ModifyApplicationResponse();
-    impl.modifyApplication(params.getApplication().getApplication());
-    return boxedResult;
-  }
-
     public org.cagrid.gaards.csm.stubs.RemoveApplicationResponse removeApplication(org.cagrid.gaards.csm.stubs.RemoveApplicationRequest params) throws RemoteException, org.cagrid.gaards.csm.stubs.types.CSMInternalFault, org.cagrid.gaards.csm.stubs.types.AccessDeniedFault, org.cagrid.gaards.csm.stubs.types.CSMTransactionFault {
     org.cagrid.gaards.csm.stubs.RemoveApplicationResponse boxedResult = new org.cagrid.gaards.csm.stubs.RemoveApplicationResponse();
     impl.removeApplication(params.getApplicationId());

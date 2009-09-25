@@ -112,17 +112,6 @@ public class CSMClient extends CSMClientBase implements CSMI {
     }
   }
 
-  public void modifyApplication(org.cagrid.gaards.csm.bean.Application application) throws RemoteException, org.cagrid.gaards.csm.stubs.types.CSMInternalFault, org.cagrid.gaards.csm.stubs.types.AccessDeniedFault, org.cagrid.gaards.csm.stubs.types.CSMTransactionFault {
-    synchronized(portTypeMutex){
-      configureStubSecurity((Stub)portType,"modifyApplication");
-    org.cagrid.gaards.csm.stubs.ModifyApplicationRequest params = new org.cagrid.gaards.csm.stubs.ModifyApplicationRequest();
-    org.cagrid.gaards.csm.stubs.ModifyApplicationRequestApplication applicationContainer = new org.cagrid.gaards.csm.stubs.ModifyApplicationRequestApplication();
-    applicationContainer.setApplication(application);
-    params.setApplication(applicationContainer);
-    org.cagrid.gaards.csm.stubs.ModifyApplicationResponse boxedResult = portType.modifyApplication(params);
-    }
-  }
-
   public void removeApplication(long applicationId) throws RemoteException, org.cagrid.gaards.csm.stubs.types.CSMInternalFault, org.cagrid.gaards.csm.stubs.types.AccessDeniedFault, org.cagrid.gaards.csm.stubs.types.CSMTransactionFault {
     synchronized(portTypeMutex){
       configureStubSecurity((Stub)portType,"removeApplication");

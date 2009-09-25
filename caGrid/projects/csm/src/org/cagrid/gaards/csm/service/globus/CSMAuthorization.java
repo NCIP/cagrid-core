@@ -79,10 +79,6 @@ public class CSMAuthorization implements PDP {
 		
 	}
 	   				
-	public void authorizeModifyApplication(Subject peerSubject, MessageContext context, QName operation) throws AuthorizationException {
-		
-	}
-	   				
 	public void authorizeRemoveApplication(Subject peerSubject, MessageContext context, QName operation) throws AuthorizationException {
 		
 	}
@@ -111,9 +107,6 @@ public class CSMAuthorization implements PDP {
 			return true;
 		} else if(operation.getLocalPart().equals("createApplication")){
 			authorizeCreateApplication(peerSubject, context, operation);
-			return true;
-		} else if(operation.getLocalPart().equals("modifyApplication")){
-			authorizeModifyApplication(peerSubject, context, operation);
 			return true;
 		} else if(operation.getLocalPart().equals("removeApplication")){
 			authorizeRemoveApplication(peerSubject, context, operation);

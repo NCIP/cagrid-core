@@ -76,7 +76,6 @@ public class TestCSM extends TestCase {
 					1);
 			assertEquals(result, myapps.get(0));
 			
-			
 			// Test that a non admin cannot remove an application
 			try {
 				csm.removeApplication(GENERAL_USER, result.getId().longValue());

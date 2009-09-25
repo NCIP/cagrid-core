@@ -45,6 +45,10 @@ public class CSMConfiguration implements ServiceConfiguration {
 	
 
 	
+	private String csmProperties;
+	
+	private String csmConfiguration;
+	
 	
     public String getEtcDirectoryPath() {
 		return ContainerConfig.getBaseDirectory() + File.separator + etcDirectoryPath;
@@ -54,6 +58,26 @@ public class CSMConfiguration implements ServiceConfiguration {
 		this.etcDirectoryPath = etcDirectoryPath;
 	}
 
+
+	
+	public String getCsmProperties() {
+		return ContainerConfig.getBaseDirectory() + File.separator + csmProperties;
+	}
+	
+	
+	public void setCsmProperties(String csmProperties) {
+		this.csmProperties = csmProperties;
+	}
+
+	
+	public String getCsmConfiguration() {
+		return ContainerConfig.getBaseDirectory() + File.separator + csmConfiguration;
+	}
+	
+	
+	public void setCsmConfiguration(String csmConfiguration) {
+		this.csmConfiguration = csmConfiguration;
+	}
 
 	
 }

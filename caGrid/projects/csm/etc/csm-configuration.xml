@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
+<beans>
+
+	<bean id="csmProperties" class="org.cagrid.gaards.csm.service.CSMProperties">
+		<property name="databaseProperties" ref="databaseProperties" />
+	</bean>
+
+	<bean id="databaseProperties" class="org.cagrid.gaards.csm.service.DatabaseProperties">
+		<property name="connectionURL" value="${gaards.csm.db.connection.url}" />
+		<property name="userId" value="${gaards.csm.db.user.id}" />
+		<property name="password" value="${gaards.csm.db.password}" />
+		<property name="driver" value="${gaards.csm.db.driver}" />
+		<property name="hibernateDialect" value="${gaards.csm.db.hibernate.dialect}" />
+	</bean>	
+</beans>

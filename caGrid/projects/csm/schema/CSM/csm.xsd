@@ -9,6 +9,7 @@
 			<xs:element name="Id" type="xs:integer" />
 			<xs:element name="Name" type="xs:string" />
 			<xs:element name="Description" type="xs:string" />
+			<xs:element name="LastUpdated" type="xs:dateTime" />
 		</xs:sequence>
 	</xs:complexType>
 
@@ -18,6 +19,20 @@
 			<xs:element name="Id" type="xs:integer" />
 			<xs:element name="Name" type="xs:string" />
 			<xs:element name="Description" type="xs:string" />
+		</xs:sequence>
+	</xs:complexType>
+	
+	<xs:element name="ProtectionElement" type="csm:ProtectionElement" />
+	<xs:complexType name="ProtectionElement">
+		<xs:sequence>
+			<xs:element name="Id" type="xs:integer" />
+			<xs:element name="Name" type="xs:string" />
+			<xs:element name="Description" type="xs:string" />
+			<xs:element name="ObjectId" type="xs:string" />
+			<xs:element name="Attribute" type="xs:string" />
+			<xs:element name="AttributeValue" type="xs:string" />
+			<xs:element name="ApplicationId" type="xs:integer" />
+			<xs:element name="LastUpdated" type="xs:dateTime" />
 		</xs:sequence>
 	</xs:complexType>
 </xs:schema>

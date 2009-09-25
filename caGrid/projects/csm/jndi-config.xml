@@ -34,6 +34,14 @@
           <name>etcDirectoryPath</name>
           <value>ETC-PATH</value>
         </parameter>
+        <parameter>
+          <name>csmProperties</name>
+          <value>ETC-PATH/@csmProperties@</value>
+        </parameter>
+        <parameter>
+          <name>csmConfiguration</name>
+          <value>ETC-PATH/@csmConfiguration@</value>
+        </parameter>
       </resourceParams>
     </resource>
     <resource name="home" type="org.cagrid.gaards.csm.service.globus.resource.CSMResourceHome">
