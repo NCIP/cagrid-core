@@ -145,9 +145,9 @@ public class CSM {
 
                 am.createProtectionElement(CSMUtils.convert(pe));
                 gov.nih.nci.security.authorization.domainobjects.ProtectionElement search = new gov.nih.nci.security.authorization.domainobjects.ProtectionElement();
-                search.setProtectionElementName(pe.getName());
-                search.setObjectId(pe.getObjectId());
-                List<gov.nih.nci.security.authorization.domainobjects.ProtectionElement> result = this.auth
+                 search.setProtectionElementName(pe.getName());
+                 search.setObjectId(pe.getObjectId());
+                List<gov.nih.nci.security.authorization.domainobjects.ProtectionElement> result = am
                     .getObjects(new gov.nih.nci.security.dao.ProtectionElementSearchCriteria(search));
                 return CSMUtils.convert(result.get(0));
             } catch (Exception e) {
@@ -178,7 +178,7 @@ public class CSM {
             checkApplictionAdmin(callerIdentity, am.getApplicationContext().getApplicationName());
             try {
 
-                List<gov.nih.nci.security.authorization.domainobjects.ProtectionElement> result = this.auth
+                List<gov.nih.nci.security.authorization.domainobjects.ProtectionElement> result = am
                     .getObjects(CSMUtils.convert(criteria));
                 List<ProtectionElement> pes = new ArrayList<ProtectionElement>();
                 for (int i = 0; i < result.size(); i++) {
@@ -209,8 +209,9 @@ public class CSM {
             AuthorizationManager am = getAuthorizationManager(applicationId);
             checkApplictionAdmin(callerIdentity, am.getApplicationContext().getApplicationName());
             try {
+               
                 gov.nih.nci.security.authorization.domainobjects.ProtectionElement pe = auth
-                    .getProtectionElement(String.valueOf(protectionElementId));
+                    .getProtectionElementById(String.valueOf(protectionElementId));
                 if (pe.getApplication().getApplicationId().longValue() == applicationId) {
                     am.removeProtectionElement(String.valueOf(protectionElementId));
                 } else {

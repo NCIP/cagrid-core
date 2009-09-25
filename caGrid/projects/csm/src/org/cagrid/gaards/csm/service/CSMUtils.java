@@ -104,7 +104,9 @@ public class CSMUtils {
         elem.setProtectionElementType(pe.getType());
         elem.setAttribute(pe.getAttribute());
         elem.setValue(pe.getAttributeValue());
-        elem.setUpdateDate(pe.getLastUpdated().getTime());
+        if (pe.getLastUpdated() != null) {
+            elem.setUpdateDate(pe.getLastUpdated().getTime());
+        }
         return elem;
     }
 
@@ -194,20 +196,26 @@ public class CSMUtils {
     }
 
 
-    public static Group getWebServiceAdminGroup(AuthorizationManager auth) throws CSMInternalFault {
+    public static Group getAdminGroup(AuthorizationManager auth, String applicationName) throws CSMInternalFault {
         try {
             Application webService = auth.getApplication(Constants.CSM_WEB_SERVICE_CONTEXT);
             Group group = new Group();
             group.setApplication(webService);
-            group.setGroupName(webService.getApplicationName() + " " + Constants.ADMIN_GROUP_SUFFIX);
+            group.setGroupName(applicationName + " " + Constants.ADMIN_GROUP_SUFFIX);
             List<Group> groups = auth.getObjects(new GroupSearchCriteria(group));
             return groups.get(0);
         } catch (Exception e) {
             logError(e.getMessage(), e);
             CSMInternalFault fault = new CSMInternalFault();
-            fault.setFaultString("An unexpected error occurred loading the CSM Web Service Admin Group.");
+            fault.setFaultString("An unexpected error occurred loading the admin group for the application "
+                + applicationName + ".");
             throw fault;
         }
+    }
+
+
+    public static Group getWebServiceAdminGroup(AuthorizationManager auth) throws CSMInternalFault {
+        return getAdminGroup(auth, Constants.CSM_WEB_SERVICE_CONTEXT);
     }
 
 
