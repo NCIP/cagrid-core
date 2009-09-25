@@ -6,33 +6,50 @@
 	<xs:element name="Application" type="csm:Application" />
 	<xs:complexType name="Application">
 		<xs:sequence>
-			<xs:element name="Id" type="xs:integer" />
+			<xs:element name="Id" type="xs:integer" minOccurs="0" />
 			<xs:element name="Name" type="xs:string" />
-			<xs:element name="Description" type="xs:string" />
-			<xs:element name="LastUpdated" type="xs:dateTime" />
+			<xs:element name="Description" type="xs:string" minOccurs="0" />
+			<xs:element name="LastUpdated" type="xs:dateTime"
+				minOccurs="0" />
 		</xs:sequence>
 	</xs:complexType>
 
 	<xs:element name="ApplicationSearchCriteria" type="csm:ApplicationSearchCriteria" />
 	<xs:complexType name="ApplicationSearchCriteria">
 		<xs:sequence>
-			<xs:element name="Id" type="xs:integer" />
-			<xs:element name="Name" type="xs:string" />
-			<xs:element name="Description" type="xs:string" />
+			<xs:element name="Id" type="xs:integer" minOccurs="0" />
+			<xs:element name="Name" type="xs:string" minOccurs="0" />
+			<xs:element name="Description" type="xs:string" minOccurs="0" />
 		</xs:sequence>
 	</xs:complexType>
-	
+
 	<xs:element name="ProtectionElement" type="csm:ProtectionElement" />
 	<xs:complexType name="ProtectionElement">
 		<xs:sequence>
-			<xs:element name="Id" type="xs:integer" />
-			<xs:element name="Name" type="xs:string" />
-			<xs:element name="Description" type="xs:string" />
-			<xs:element name="ObjectId" type="xs:string" />
-			<xs:element name="Attribute" type="xs:string" />
-			<xs:element name="AttributeValue" type="xs:string" />
 			<xs:element name="ApplicationId" type="xs:integer" />
-			<xs:element name="LastUpdated" type="xs:dateTime" />
+			<xs:element name="Id" type="xs:integer" minOccurs="0" />
+			<xs:element name="Name" type="xs:string" />
+			<xs:element name="Description" type="xs:string" minOccurs="0" />
+			<xs:element name="ObjectId" type="xs:string" />
+			<xs:element name="Attribute" type="xs:string" minOccurs="0" />
+			<xs:element name="AttributeValue" type="xs:string" />
+			<xs:element name="Type" type="xs:string" minOccurs="0" />
+			<xs:element name="LastUpdated" type="xs:dateTime"
+				minOccurs="0" />
+		</xs:sequence>
+	</xs:complexType>
+	<xs:element name="ProtectionElementSearchCriteria" type="csm:ProtectionElementSearchCriteria" />
+	<xs:complexType name="ProtectionElementSearchCriteria">
+		<xs:sequence>
+			<xs:element name="ApplicationId" type="xs:integer" />
+			<xs:element name="Id" type="xs:integer" minOccurs="0" />
+			<xs:element name="Name" type="xs:string" minOccurs="0" />
+			<xs:element name="Description" type="xs:string" minOccurs="0" />
+			<xs:element name="ObjectId" type="xs:string" minOccurs="0" />
+			<xs:element name="Attribute" type="xs:string" minOccurs="0" />
+			<xs:element name="AttributeValue" type="xs:string"
+				minOccurs="0" />
+			<xs:element name="Type" type="xs:string" minOccurs="0" />
 		</xs:sequence>
 	</xs:complexType>
 </xs:schema>

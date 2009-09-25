@@ -10,7 +10,6 @@ import org.cagrid.gaards.csm.bean.Application;
 import org.globus.wsrf.security.SecurityManager;
 import org.springframework.core.io.FileSystemResource;
 
-
 /**
  * TODO:I am the service side implementation class. IMPLEMENT AND DOCUMENT ME
  * 
@@ -19,7 +18,6 @@ import org.springframework.core.io.FileSystemResource;
 public class CSMImpl extends CSMImplBase {
 
     private CSM csm;
-
 
     public CSMImpl() throws RemoteException {
         super();
@@ -35,7 +33,6 @@ public class CSMImpl extends CSMImplBase {
         }
     }
 
-
     private String getCallerIdentity() {
         String caller = SecurityManager.getManager().getCaller();
         // System.out.println("Caller: " + caller);
@@ -45,26 +42,17 @@ public class CSMImpl extends CSMImplBase {
         return caller;
     }
 
-
-    public org.cagrid.gaards.csm.bean.Application[] getApplications(
-        org.cagrid.gaards.csm.bean.ApplicationSearchCriteria applicationSearchCriteria) throws RemoteException,
-        org.cagrid.gaards.csm.stubs.types.CSMInternalFault {
+  public org.cagrid.gaards.csm.bean.Application[] getApplications(org.cagrid.gaards.csm.bean.ApplicationSearchCriteria applicationSearchCriteria) throws RemoteException, org.cagrid.gaards.csm.stubs.types.CSMInternalFault {
         List<Application> apps = csm.getApplications(applicationSearchCriteria);
         Application[] result = new Application[apps.size()];
         return apps.toArray(result);
     }
 
-
-    public org.cagrid.gaards.csm.bean.Application createApplication(org.cagrid.gaards.csm.bean.Application application)
-        throws RemoteException, org.cagrid.gaards.csm.stubs.types.CSMInternalFault,
-        org.cagrid.gaards.csm.stubs.types.AccessDeniedFault, org.cagrid.gaards.csm.stubs.types.CSMTransactionFault {
+  public org.cagrid.gaards.csm.bean.Application createApplication(org.cagrid.gaards.csm.bean.Application application) throws RemoteException, org.cagrid.gaards.csm.stubs.types.CSMInternalFault, org.cagrid.gaards.csm.stubs.types.AccessDeniedFault, org.cagrid.gaards.csm.stubs.types.CSMTransactionFault {
         return this.csm.createApplication(getCallerIdentity(), application);
     }
 
-
-    public void removeApplication(long applicationId) throws RemoteException,
-        org.cagrid.gaards.csm.stubs.types.CSMInternalFault, org.cagrid.gaards.csm.stubs.types.AccessDeniedFault,
-        org.cagrid.gaards.csm.stubs.types.CSMTransactionFault {
+  public void removeApplication(long applicationId) throws RemoteException, org.cagrid.gaards.csm.stubs.types.CSMInternalFault, org.cagrid.gaards.csm.stubs.types.AccessDeniedFault, org.cagrid.gaards.csm.stubs.types.CSMTransactionFault {
         this.csm.removeApplication(getCallerIdentity(), applicationId);
     }
 

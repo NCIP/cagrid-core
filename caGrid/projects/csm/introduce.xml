@@ -4,6 +4,7 @@
    <ns2:SchemaElement type="Application" xsi:type="ns2:SchemaElementType"/>
    <ns2:SchemaElement type="ApplicationSearchCriteria" xsi:type="ns2:SchemaElementType"/>
    <ns2:SchemaElement type="ProtectionElement" xsi:type="ns2:SchemaElementType"/>
+   <ns2:SchemaElement type="ProtectionElementSearchCriteria" xsi:type="ns2:SchemaElementType"/>
   </ns2:Namespace>
   <ns2:Namespace generateStubs="false" namespace="http://www.w3.org/2001/XMLSchema" xsi:type="ns2:NamespaceType">
    <ns2:SchemaElement type="anySimpleType" xsi:type="ns2:SchemaElementType"/>
