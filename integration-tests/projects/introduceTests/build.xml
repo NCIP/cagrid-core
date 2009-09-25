@@ -154,7 +154,7 @@
 	<target name="test" depends="setGlobus,defineClasspaths" description="Runs the service's tests.">
 		<echo message="Test results dir: ${junit.results.dir}" />
 		<mkdir dir="${junit.results.dir}" />
-		<junit dir="${introduce.dir}" printsummary="yes" showoutput="true">
+		<junit dir="${introduce.dir}" printsummary="yes" showoutput="true" fork="true">
 			<sysproperty key="testing.containers.dir" value="${basedir}/ext/dependencies/resources/containers" />
 			<sysproperty key="GLOBUS_LOCATION" value="${ext.globus.dir}" />
 			<sysproperty key="resources.dir" value="${introduce.dir}/resources" />
