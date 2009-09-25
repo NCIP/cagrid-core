@@ -4,7 +4,7 @@
 	ServiceType service = info.getService();;
 	String serviceName = service.getName();
 %><project name="run-tools file" basedir="." default="runClient">
-     <target name="runClient" depends="checkGlobus, defineClasspaths" description="Run the sample Client">
+     <target name="runClient" depends="init" description="Run the sample Client">
         <property name="service.url" value="http://localhost:8080/wsrf/services/cagrid/<%=service.getName() %>" />
         <echo message="Connecting to service: ${service.url}" />
         <java failonerror="true" classname="<%=service.getPackageName() + ".client." + service.getName() + "Client" %>" classpathref="run.classpath" fork="yes">
