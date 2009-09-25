@@ -10,5 +10,5 @@ package gov.nih.nci.cagrid.introduce.extensions.wsenum.upgrade;
 public interface UpgraderConstants {
 
     /** Current WS-Enumeration support version */
-    public static final String ENUMERATION_CURRENT_VERSION = "1.4-dev";
+    public static final String ENUMERATION_CURRENT_VERSION = "1.4";
 }
