@@ -145,8 +145,8 @@ public class CSM {
 
                 am.createProtectionElement(CSMUtils.convert(pe));
                 gov.nih.nci.security.authorization.domainobjects.ProtectionElement search = new gov.nih.nci.security.authorization.domainobjects.ProtectionElement();
-                 search.setProtectionElementName(pe.getName());
-                 search.setObjectId(pe.getObjectId());
+                search.setProtectionElementName(pe.getName());
+                search.setObjectId(pe.getObjectId());
                 List<gov.nih.nci.security.authorization.domainobjects.ProtectionElement> result = am
                     .getObjects(new gov.nih.nci.security.dao.ProtectionElementSearchCriteria(search));
                 return CSMUtils.convert(result.get(0));
@@ -199,6 +199,53 @@ public class CSM {
     }
 
 
+    public ProtectionElement modifyProtectionElement(String callerIdentity, ProtectionElement pe) throws CSMInternalFault,
+        AccessDeniedFault, CSMTransactionFault {
+        try {
+            //Check to make sure an protection element id is provided
+            if(pe.getId()==null){
+                CSMTransactionFault fault = new CSMTransactionFault();
+                fault.setFaultString("Cannot modify protection element, no id provided!!");
+                throw fault;
+            }
+            gov.nih.nci.security.authorization.domainobjects.ProtectionElement existing = auth
+                .getProtectionElementById(String.valueOf(pe.getId().longValue()));
+
+            // Ensure the application id has not changed.
+            if ((pe.getApplicationId() == null) || (pe.getApplicationId().longValue() <= 0)) {
+                CSMTransactionFault fault = new CSMTransactionFault();
+                fault.setFaultString("Cannot modify protection element, no application specified!!!");
+                throw fault;
+            }else if(existing.getApplication().getApplicationId().longValue()!=pe.getApplicationId().longValue()){
+                CSMTransactionFault fault = new CSMTransactionFault();
+                fault.setFaultString("Cannot modify protection element, you cannot change the application it belongs to!!");
+                throw fault;
+            }else {  
+                long applicationId = pe.getApplicationId().longValue();
+                AuthorizationManager am = getAuthorizationManager(applicationId);
+                checkApplictionAdmin(callerIdentity, am.getApplicationContext().getApplicationName());
+                existing.setAttribute(pe.getAttribute());
+                existing.setObjectId(pe.getObjectId());
+                existing.setProtectionElementDescription(pe.getDescription());
+                existing.setProtectionElementType(pe.getType());
+                existing.setProtectionElementName(pe.getName());
+                existing.setValue(pe.getAttributeValue());
+                am.modifyProtectionElement(existing);
+                return CSMUtils.convert(existing);
+            }
+        } catch (CSException e) {
+            String error = "Error modifying the protection element " + pe.getId().longValue() + ":\n" + e.getMessage();
+            log.error(error, e);
+            CSMTransactionFault fault = new CSMTransactionFault();
+            fault.setFaultString(error);
+            FaultHelper helper = new FaultHelper(fault);
+            helper.addFaultCause(e);
+            fault = (CSMTransactionFault) helper.getFault();
+            throw fault;
+        }
+    }
+
+
     public void removeProtectionElement(String callerIdentity, long applicationId, long protectionElementId)
         throws CSMInternalFault, AccessDeniedFault, CSMTransactionFault {
         if (applicationId <= 0) {
@@ -209,7 +256,7 @@ public class CSM {
             AuthorizationManager am = getAuthorizationManager(applicationId);
             checkApplictionAdmin(callerIdentity, am.getApplicationContext().getApplicationName());
             try {
-               
+
                 gov.nih.nci.security.authorization.domainobjects.ProtectionElement pe = auth
                     .getProtectionElementById(String.valueOf(protectionElementId));
                 if (pe.getApplication().getApplicationId().longValue() == applicationId) {
