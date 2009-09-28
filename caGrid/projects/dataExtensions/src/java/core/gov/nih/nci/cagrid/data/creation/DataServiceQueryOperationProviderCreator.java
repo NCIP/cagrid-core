@@ -245,15 +245,13 @@ public class DataServiceQueryOperationProviderCreator implements CreationExtensi
             directory.mkdirs();
         }
         // from the lib directory
-        // FIXME: These depend on the caGrid version, and should probably read
-        // it from a file
         File libDir = new File(ExtensionsLoader.getInstance().getExtensionsDir(), "lib");
         File[] libs = libDir.listFiles(new FileFilter() {
             public boolean accept(File pathname) {
                 String name = pathname.getName();
                 return (name.endsWith(".jar") && (name.startsWith("caGrid-data-") 
                     || name.startsWith("caGrid-core-") || name.startsWith("caGrid-caDSR-") 
-                    || name.startsWith("caGrid-metadata-")));
+                    || name.startsWith("caGrid-metadata-") || name.startsWith("caGrid-mms-")));
             }
         });
         File[] copiedLibs = new File[libs.length];

@@ -16,15 +16,11 @@
     <!-- Public Configurations-->
     <conf name="stubs" visibility="public"/>
     <conf name="common" extends="stubs" visibility="public"/>
-
     <conf name="processors" extends="common" visibility="public"/>
     <conf name="utils" extends="common" visibility="public"/>
-
     <conf name="validation" extends="utils" visibility="public"/>
-
     <conf name="service" visibility="public" extends="validation,utils,processors"/>
     <conf name="tools" visibility="public" extends="validation,utils,processors"/>
-    
     <conf name="full" visibility="public" extends="service,tools"/>
 
     <conf name="test" visibility="public" extends="full"/>
@@ -35,7 +31,6 @@
     <conf name="enum-schemas" visibility="public"/>
     <conf name="transfer-schemas" visibility="public"/>
     <conf name="service-schemas" visibility="public" extends="bdt-schemas,enum-schemas,transfer-schemas"/>
-    
     <conf name="extension-schemas" visibility="public"/>
   </configurations>
 
@@ -126,7 +121,7 @@
     <dependency rev="latest.integration" org="caGrid" name="graph" conf="tools->default"/>
     <dependency rev="latest.integration" org="caGrid" name="grape" conf="tools->default"/>
     <dependency rev="latest.integration" org="caGrid" name="bulkDataTransfer" conf="utils->client"/>
-    <dependency rev="latest.integration" org="caGrid" name="mms" conf="impl->schemas,stubs" />
+    <dependency rev="latest.integration" org="caGrid" name="mms" conf="stubs->schemas,stubs" />
     <dependency rev="latest.integration" org="caGrid" name="cql" conf="common->cql;service->cql,cql-schemas;service-schemas->cql-schemas;extension-schemas->cql-schemas;utils->cql2,cql2-schemas"/>
     <dependency rev="latest.integration" org="caGrid" name="transfer" conf="service->stubs,common,service,client"/>
     
