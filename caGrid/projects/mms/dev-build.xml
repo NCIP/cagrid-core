@@ -153,6 +153,26 @@
 	<target name="postJar">
 
 	</target>
+	
+	
+	<!-- Create a JAR file with the implementation classes -->
+	<target name="jar" depends="compile">
+		<runtarget target="preJar" />
+		<jar jarfile="${build.lib.dir}/${client.jar.name}" basedir="${build.dest}">
+			<include name="**/client/**" />
+		</jar>
+		<jar jarfile="${build.lib.dir}/${service.jar.name}" basedir="${build.dest}">
+			<include name="**/application-config-client.xml"/>
+			<include name="**/service/**" />
+		</jar>
+		<jar jarfile="${build.lib.dir}/${common.jar.name}" basedir="${build.dest}">
+			<include name="**/*" />
+			<exclude name="**/application-config-client.xml"/>
+			<exclude name="**/client/**" />
+			<exclude name="**/service/**" />
+		</jar>
+		<runtarget target="postJar" />
+	</target>
 
 	<!-- ============================================================== -->
 	<!-- Pre Compile Tests Build Target                                 -->
