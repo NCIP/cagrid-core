@@ -2,6 +2,7 @@ package gov.nih.nci.cagrid.common;
 
 import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
+import java.io.FileInputStream;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.StringReader;
@@ -11,6 +12,7 @@ import org.jdom.Element;
 import org.jdom.input.SAXBuilder;
 import org.jdom.output.Format;
 import org.jdom.output.XMLOutputter;
+import org.xml.sax.EntityResolver;
 
 
 /**
@@ -45,14 +47,10 @@ public class XMLUtilities {
      * @throws Exception
      */
     public static Document fileNameToDocument(String fileName) throws Exception {
-        // TODO: add schema validation
-        try {
-            SAXBuilder builder = new SAXBuilder(false);
-            Document doc = builder.build(fileName);
-            return doc;
-        } catch (Exception e) {
-            throw new Exception("Error creating document: " + e.getMessage(), e);
-        }
+        FileInputStream fis = new FileInputStream(fileName);
+        Document doc = streamToDocument(fis);
+        fis.close();
+        return doc;
     }
 
 
@@ -64,7 +62,7 @@ public class XMLUtilities {
      * @throws Exception
      */
     public static Document stringToDocument(String string) throws Exception {
-        return XMLUtilities.streamToDocument(new ByteArrayInputStream(string.getBytes()));
+        return streamToDocument(new ByteArrayInputStream(string.getBytes()));
     }
 
 
@@ -76,15 +74,21 @@ public class XMLUtilities {
      * @throws Exception
      */
     public static Document streamToDocument(InputStream stream) throws Exception {
+        return streamToDocument(stream, null);
+    }
+    
+    
+    public static Document streamToDocument(InputStream stream, EntityResolver resolver) throws Exception {
         try {
             SAXBuilder builder = new SAXBuilder(false);
+            if (resolver != null) {
+                builder.setEntityResolver(resolver);
+            }
             Document doc = builder.build(stream);
             return doc;
         } catch (Exception e) {
-            e.printStackTrace();
-            throw new Exception("Document construction failed:" + e.getMessage(), e);
+            throw new Exception("Document construction failed: " + e.getMessage(), e);
         }
-
     }
 
 
@@ -101,6 +105,12 @@ public class XMLUtilities {
     }
 
 
+    public static String streamToString(InputStream stream) throws Exception {
+        BufferedReader br = new BufferedReader(new InputStreamReader(stream));
+        return bufferToString(br);
+    }
+    
+    
     private static String bufferToString(BufferedReader br) throws Exception {
         StringBuffer sb = new StringBuffer();
         try {
@@ -111,11 +121,5 @@ public class XMLUtilities {
             throw new Exception("Error reading the buffer: " + e.getMessage());
         }
         return sb.toString();
-    }
-
-
-    public static String streamToString(InputStream stream) throws Exception {
-        BufferedReader br = new BufferedReader(new InputStreamReader(stream));
-        return bufferToString(br);
     }
 }
