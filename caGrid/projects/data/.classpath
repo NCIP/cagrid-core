@@ -95,5 +95,6 @@
 	<classpathentry kind="lib" path="ext/dependencies/jars/caGrid-Transfer-service-1.4-dev.jar"/>
 	<classpathentry kind="lib" path="ext/dependencies/jars/caGrid-Transfer-stubs-1.4-dev.jar"/>
 	<classpathentry kind="lib" path="ext/dependencies/jars/caGrid-CQL-cql.2.0-1.4-dev.jar"/>
+	<classpathentry kind="lib" path="ext/dependencies/jars/caGrid-mms-stubs-1.4-dev.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

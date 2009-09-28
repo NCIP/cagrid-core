@@ -210,12 +210,14 @@
 			<property name="source.stubs.dir" location="${schema.dest}/Data" />
 			<property name="wsdl.file" value="Beans.wsdl" />
 			<property name="target.stubs.dir" location="${stubs.src}" />
+			<property name="ns.excludes" value="${GT4.ns.excludes} ${introduce.ns.excludes}" />
 		</ant>
 		<!-- generate stubs for Bookstore classes used in testing -->
 		<ant antfile="${ant.build.stubs}" target="generateStubs">
 			<property name="source.stubs.dir" location="${test.resources.dir}" />
 			<property name="wsdl.file" value="bookstore.wsdl" />
 			<property name="target.stubs.dir" location="${test.stubs.src}" />
+			<property name="ns.excludes" value="${GT4.ns.excludes} ${introduce.ns.excludes}" />
 		</ant>
 		<!-- generate data service bindings for globus -->
 		<ant antfile="${ant.build.stubs}" target="generateBinding">
@@ -230,6 +232,21 @@
 			<property name="source.stubs.dir" location="${schema.dest}/Data" />
 			<property name="target.stubs.dir" location="${stubs.src}" />
 			<property name="wsdl.file" value="DataService_service.wsdl" />
+			<property name="ns.excludes" value="${GT4.ns.excludes} ${introduce.ns.excludes}" />
+		</ant>
+		<!-- generate CQL 2 data service bindings for globus -->
+		<ant antfile="${ant.build.stubs}" target="generateBinding">
+			<property name="source.binding.dir" value="${schema.dest}/Data" />
+			<property name="target.binding.dir" value="${schema.dest}/Data" />
+			<property name="porttype.wsdl" value="Cql2DataService.wsdl" />
+			<property name="binding.root" value="Cql2DataService" />
+		</ant>
+		<!-- Invoke stub generator for CQL 2 data service -->
+		<ant antfile="${ant.build.stubs}" target="generateStubs">
+			<property name="mapping.file" location="${build.dir}/NStoPkg.properties" />
+			<property name="source.stubs.dir" location="${schema.dest}/Data" />
+			<property name="target.stubs.dir" location="${stubs.src}" />
+			<property name="wsdl.file" value="Cql2DataService_service.wsdl" />
 			<property name="ns.excludes" value="${GT4.ns.excludes} ${introduce.ns.excludes}" />
 		</ant>
 		<!-- generate enumeration query bindings for globus -->
