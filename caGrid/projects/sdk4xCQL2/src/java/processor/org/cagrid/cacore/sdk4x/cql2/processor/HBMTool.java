@@ -2,14 +2,19 @@ package org.cagrid.cacore.sdk4x.cql2.processor;
 
 import gov.nih.nci.cagrid.common.XMLUtilities;
 
+import java.io.IOException;
 import java.io.InputStream;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
+import org.apache.axis.utils.ClassUtils;
 import org.jdom.Element;
 import org.jdom.filter.ElementFilter;
 import org.jdom.filter.Filter;
+import org.xml.sax.EntityResolver;
+import org.xml.sax.InputSource;
+import org.xml.sax.SAXException;
 
 /**
  * HBMTool
@@ -20,11 +25,15 @@ import org.jdom.filter.Filter;
  */
 public class HBMTool {
     
+    public static final String HIBERNATE_MAPPING_DTD_ENTITY = "-//Hibernate/Hibernate Mapping DTD 3.0//EN";
+    public static final String HIBERNATE_MAPPING_DTD = "hibernate-mapping-3.0.dtd";
+    
     private Map<String, Object> subclassIdentifiers = null;
     private Map<String, String> instanceIdentifiers = null;
     
     private Filter discriminatorFilter = null;
     private Filter joinedSubclassFilter = null;
+    private EntityResolver hibernateDtdResolver = null;
 
     public HBMTool() {
         subclassIdentifiers = new HashMap<String, Object>();
@@ -33,6 +42,16 @@ public class HBMTool {
         this.discriminatorFilter = new ElementFilter("discriminator");
         // filter for joined-subclass elements
         this.joinedSubclassFilter = new ElementFilter("joined-subclass");
+        // entity resolver for the Hibernate 3.x DTD
+        this.hibernateDtdResolver = new EntityResolver() {
+            public InputSource resolveEntity(String publicId, String systemId) throws SAXException, IOException {
+                if (publicId.equals(HIBERNATE_MAPPING_DTD_ENTITY)) {
+                    InputStream in = ClassUtils.getResourceAsStream(HBMTool.class, HIBERNATE_MAPPING_DTD);
+                    return new InputSource(in);
+                }
+                return null;
+            }
+        };
     }
     
     
@@ -117,7 +136,7 @@ public class HBMTool {
         String hbmResourceName = getHbmResourceName(className);
         InputStream hbmStream = Thread.currentThread().getContextClassLoader()
             .getResourceAsStream(hbmResourceName);
-        Element hbmElem = XMLUtilities.streamToDocument(hbmStream).getRootElement();
+        Element hbmElem = XMLUtilities.streamToDocument(hbmStream, hibernateDtdResolver).getRootElement();
         hbmStream.close();
         return hbmElem;
     }

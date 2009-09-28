@@ -31,6 +31,7 @@
 
 	<!-- source directories -->
 	<property name="processor.src.dir" location="${basedir}/src/java/processor" />
+	<property name="resources.dir" location="${basedir}/resources"/>
 
 	<!-- libraries -->
 	<property name="lib.dir" location="${basedir}/lib" />
@@ -147,6 +148,9 @@
 			</fileset>
 			<fileset dir="${processor.src.dir}">
 				<include name="**/*.java" />
+			</fileset>
+			<fileset dir="${resources.dir}">
+				<include name="**/*"/>
 			</fileset>
 		</jar>
 	</target>
