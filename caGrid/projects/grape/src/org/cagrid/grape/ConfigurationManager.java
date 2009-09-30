@@ -60,7 +60,7 @@ public class ConfigurationManager {
 		this.configuration = configuration;
 		this.synchronizer = synchronizer;
 		if (configuration != null) {
-			File f = new File(configurationDirectory);
+			File f = new File(this.configurationDirectory);
 			f.mkdirs();
 			this.processConfigurationGroups(configuration
 					.getConfigurationGroups());
@@ -123,7 +123,7 @@ public class ConfigurationManager {
 			File conf = new File(configurationDirectory + File.separator
 					+ des.getSystemName() + "-conf.xml");
 			if (!conf.exists()) {
-				File template = new File(configurationDirectory + File.separator + des.getDefaultFile());
+				File template = new File(des.getDefaultFile());
 				if (!template.exists()) {
 					throw new Exception(
 							"Error configuring the application,the default file specified for the configuration "
