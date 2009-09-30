@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<?xml-stylesheet type="text/xsl" href="http://ivyrep.jayasoft.org/ivy-doc.xsl"?>
+<ivy-module version="2.0">
+    <info organisation="htmlparser" module="htmlparser" revision="2.0" status="release">
+        <license name="HTMLParser" url="http://htmlparser.sourceforge.net"/>
+
+        <description homepage="http://htmlparser.sourceforge.net">HTML Parser is a Java library used to parse HTML in either a linear or nested fashion. Primarily used for transformation or extraction, it features filters, visitors, custom tags and easy to use JavaBeans. It is a fast, robust and well tested package. 
+        </description>
+    </info>    
+</ivy-module>
+
