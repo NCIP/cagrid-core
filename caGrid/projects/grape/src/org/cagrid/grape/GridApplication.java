@@ -27,6 +27,7 @@ import org.cagrid.grape.filters.XMLFileFilter;
 import org.cagrid.grape.model.Application;
 import org.cagrid.grape.model.Component;
 import org.cagrid.grape.model.Components;
+import org.cagrid.grape.model.Configuration;
 import org.cagrid.grape.model.Dimensions;
 import org.cagrid.grape.model.Menu;
 import org.cagrid.grape.model.Menus;
@@ -70,17 +71,21 @@ public class GridApplication extends JFrame {
 
 	private ApplicationComponent lastComp = null;
 
-	private Application app;
+	protected Application app;
 
-	private ThreadManager threadManager;
+	protected ThreadManager threadManager;
 
-	private ConfigurationManager configurationManager;
+	protected ConfigurationManager configurationManager;
 
-	private static GridApplication application;
+	protected static GridApplication application;
 
-	private ApplicationContext context;
+	protected ApplicationContext context;
 
-	private GridApplication(Application app) throws Exception {
+	protected GridApplication() {
+		super();
+	}
+
+	protected GridApplication(Application app) throws Exception {
 		super();
 		ErrorDialog.setOwnerFrame(this);
 		this.app = app;
@@ -94,8 +99,7 @@ public class GridApplication extends JFrame {
 		return threadManager;
 	}
 
-	public static synchronized GridApplication getInstance(Application app)
-			throws Exception {
+	public static GridApplication getInstance(Application app) throws Exception {
 		if (application == null) {
 			application = new GridApplication(app);
 			application.startPostInitializer();
@@ -192,7 +196,7 @@ public class GridApplication extends JFrame {
 		}
 	}
 
-	private void startPostInitializer() throws Exception {
+	protected void startPostInitializer() throws Exception {
 		if (this.app.getPostInitializerClass() != null) {
 			ApplicationInitializer appInit = (ApplicationInitializer) Class
 					.forName(this.app.getPostInitializerClass()).newInstance();
@@ -200,7 +204,7 @@ public class GridApplication extends JFrame {
 		}
 	}
 
-	private void startPreInitializer() throws Exception {
+	protected void startPreInitializer() throws Exception {
 		if (this.app.getPreInitializerClass() != null) {
 			ApplicationInitializer appInit = (ApplicationInitializer) Class
 					.forName(this.app.getPreInitializerClass()).newInstance();
@@ -208,7 +212,7 @@ public class GridApplication extends JFrame {
 		}
 	}
 
-	private void initialize() throws Exception {
+	protected void initialize() throws Exception {
 		try {
 			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
 		} catch (Exception e) {
@@ -222,8 +226,8 @@ public class GridApplication extends JFrame {
 			cs = (ConfigurationSynchronizer) Class.forName(syncClass)
 					.newInstance();
 		}
-		configurationManager = new ConfigurationManager(app.getConfiguration(),
-				cs);
+		configurationManager = createConfigurationManager(app
+				.getConfiguration(), cs);
 
 		List<Component> toolbarComponents = new ArrayList<Component>();
 		this.setJMenuBar(getJJMenuBar(toolbarComponents));
@@ -249,6 +253,11 @@ public class GridApplication extends JFrame {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+	}
+
+	protected ConfigurationManager createConfigurationManager(
+			Configuration conf, ConfigurationSynchronizer cs) throws Exception {
+		return new ConfigurationManager(conf, cs);
 	}
 
 	private javax.swing.JMenuItem getComponentItem(final Component comp,
@@ -283,7 +292,7 @@ public class GridApplication extends JFrame {
 		return button;
 	}
 
-	private JScrollPane getJScrollPane() {
+	protected JScrollPane getJScrollPane() {
 		if (scrollPane == null) {
 			scrollPane = new JScrollPane();
 			scrollPane.getViewport().add(this.getMDIDesktopPane());
@@ -296,8 +305,8 @@ public class GridApplication extends JFrame {
 	 * 
 	 * @return javax.swing.JMenuBar
 	 */
-	private javax.swing.JMenuBar getJJMenuBar(List<Component> toolbarComponents)
-			throws Exception {
+	protected javax.swing.JMenuBar getJJMenuBar(
+			List<Component> toolbarComponents) throws Exception {
 		if (jJMenuBar == null) {
 			jJMenuBar = new javax.swing.JMenuBar();
 
@@ -502,7 +511,7 @@ public class GridApplication extends JFrame {
 				LookAndFeel.getApplicationLogo());
 	}
 
-	private javax.swing.JToolBar getToolBar(List comps) {
+	protected javax.swing.JToolBar getToolBar(List comps) {
 		if (toolBar == null) {
 			toolBar = new javax.swing.JToolBar("tools",
 					SwingConstants.HORIZONTAL);

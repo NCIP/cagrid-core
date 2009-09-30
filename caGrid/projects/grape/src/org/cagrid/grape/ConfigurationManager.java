@@ -34,27 +34,44 @@ public class ConfigurationManager {
 
 	private Map<String, Object> objectsByName = null;
 
-	private Logger log;
+	private static Logger log = Logger.getLogger(ConfigurationManager.class);
 
 	private Configuration configuration;
 
 	private ConfigurationSynchronizer synchronizer;
+	
+	private boolean useFileSystem = true;
+	
+	private String configurationDirectory = GRAPE_USER_HOME;
+	
+	public ConfigurationManager() {
+		
+	}
 
 	public ConfigurationManager(Configuration configuration,
-			ConfigurationSynchronizer synchronizer) throws Exception {
+			ConfigurationSynchronizer synchronizer, String configurationDirectory) throws Exception {
+		
+		if (configurationDirectory != null) {
+			this.configurationDirectory = configurationDirectory;
+		}
+		
 		confsByName = new HashMap<String, ConfigurationDescriptor>();
 		objectsByName = new HashMap<String, Object>();
 		this.configuration = configuration;
 		this.synchronizer = synchronizer;
-		log = Logger.getLogger(this.getClass().getName());
 		if (configuration != null) {
-			File f = new File(GRAPE_USER_HOME);
+			File f = new File(configurationDirectory);
 			f.mkdirs();
 			this.processConfigurationGroups(configuration
 					.getConfigurationGroups());
 			this.processConfigurationDescriptors(configuration
 					.getConfigurationDescriptors());
 		}
+	}
+	
+	public ConfigurationManager(Configuration configuration,
+			ConfigurationSynchronizer synchronizer) throws Exception {
+		this(configuration, synchronizer, null);
 	}
 
 	public Configuration getConfiguration() {
@@ -103,10 +120,10 @@ public class ConfigurationManager {
 							+ des.getSystemName() + "!!!");
 		} else {
 			Object obj = null;
-			File conf = new File(GRAPE_USER_HOME + File.separator
+			File conf = new File(configurationDirectory + File.separator
 					+ des.getSystemName() + "-conf.xml");
 			if (!conf.exists()) {
-				File template = new File(des.getDefaultFile());
+				File template = new File(configurationDirectory + File.separator + des.getDefaultFile());
 				if (!template.exists()) {
 					throw new Exception(
 							"Error configuring the application,the default file specified for the configuration "
@@ -166,7 +183,7 @@ public class ConfigurationManager {
 		try {
 			ConfigurationDescriptor des = getConfigurationDescriptor(systemName);
 			Object obj = objectsByName.get(systemName);
-			File conf = new File(GRAPE_USER_HOME + File.separator
+			File conf = new File(configurationDirectory + File.separator
 					+ des.getSystemName() + "-conf.xml");
 			QName ns = new QName(des.getQname().getNamespace(), des.getQname()
 					.getName());
@@ -180,5 +197,29 @@ public class ConfigurationManager {
 			throw new Exception("Error saving the configuration " + systemName
 					+ ":\n" + e.getMessage());
 		}
+	}
+
+	public void reload() throws Exception {
+		confsByName.clear();
+		objectsByName.clear();
+		this.processConfigurationGroups(configuration.getConfigurationGroups());
+		this.processConfigurationDescriptors(configuration
+				.getConfigurationDescriptors());
+	}
+
+	public boolean useFileSystem() {
+		return useFileSystem;
+	}
+
+	public void setUseFileSystem(boolean useFileSystem) {
+		this.useFileSystem = useFileSystem;
+	}
+
+	public String getConfigurationDirectory() {
+		return configurationDirectory;
+	}
+
+	public void setConfigurationDirectory(String configurationDirectory) {
+		this.configurationDirectory = configurationDirectory;
 	}
 }

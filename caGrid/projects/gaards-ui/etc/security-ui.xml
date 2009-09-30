@@ -113,6 +113,17 @@
 						<height>200</height>
 					</dimensions>
 				</component>
+				<component>
+					<title>Change Target Grid</title>
+					<description>Change The Target Grid</description>
+					<classname>org.cagrid.gaards.ui.dorian.federation.ReloadConfigWindow</classname>
+					<icon>/download.png</icon>
+					<showOnToolBar>false</showOnToolBar>
+					<dimensions>
+						<width>625</width>
+						<height>200</height>
+					</dimensions>
+				</component>
 			</components>
 		</menu>
 		<menu>
@@ -324,7 +335,7 @@
 							<name>ServiceConfiguration</name>
 						</qname>
 						<ConfigurationPanel>org.cagrid.grape.ServiceConfigurationEditor</ConfigurationPanel>
-						<DefaultFile>ext/target_grid/dorian-services-configuration.xml</DefaultFile>
+						<DefaultFile>dorian-services-configuration.xml</DefaultFile>
 					</ConfigurationDescriptor>
 					<ConfigurationDescriptor>
 						<DisplayName>Authentication Service(s)</DisplayName>
@@ -335,7 +346,7 @@
 							<name>ServiceConfiguration</name>
 						</qname>
 						<ConfigurationPanel>org.cagrid.grape.ServiceConfigurationEditor</ConfigurationPanel>
-						<DefaultFile>ext/target_grid/authentication-services-configuration.xml</DefaultFile>
+						<DefaultFile>authentication-services-configuration.xml</DefaultFile>
 					</ConfigurationDescriptor>
 				</ConfigurationDescriptors>
 			</ConfigurationGroup>
@@ -351,7 +362,7 @@
 							<name>ServiceConfiguration</name>
 						</qname>
 						<ConfigurationPanel>org.cagrid.grape.ServiceConfigurationEditor</ConfigurationPanel>
-						<DefaultFile>ext/target_grid/cds-services-configuration.xml</DefaultFile>
+						<DefaultFile>cds-services-configuration.xml</DefaultFile>
 					</ConfigurationDescriptor>
 				</ConfigurationDescriptors>
 			</ConfigurationGroup>
@@ -367,7 +378,7 @@
 							<name>ServiceConfiguration</name>
 						</qname>
 						<ConfigurationPanel>org.cagrid.grape.ServiceConfigurationEditor</ConfigurationPanel>
-						<DefaultFile>ext/target_grid/gts-services-configuration.xml</DefaultFile>
+						<DefaultFile>gts-services-configuration.xml</DefaultFile>
 					</ConfigurationDescriptor>
 				</ConfigurationDescriptors>
 			</ConfigurationGroup>
@@ -383,7 +394,7 @@
 							<name>ServiceConfiguration</name>
 						</qname>
 						<ConfigurationPanel>org.cagrid.grape.ServiceConfigurationEditor</ConfigurationPanel>
-						<DefaultFile>ext/target_grid/gridgrouper-services-configuration.xml</DefaultFile>
+						<DefaultFile>gridgrouper-services-configuration.xml</DefaultFile>
 					</ConfigurationDescriptor>
 				</ConfigurationDescriptors>
 			</ConfigurationGroup>
