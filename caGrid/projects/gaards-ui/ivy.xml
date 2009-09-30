@@ -44,8 +44,6 @@
     <dependency rev="latest.integration" org="caGrid" name="syncgts" conf="gts->client"/>
  
     <dependency rev="0.1" org="jcalendar" name="jcalendar" conf="base->*"/>
-    <dependency rev="0.1" org="jcalendar" name="jcalendar" conf="base->*"/>
-    <dependency rev="0.1" org="jcalendar" name="jcalendar" conf="base->*"/>
     <dependency rev="4.0" org="apache" name="httpcomponents-client" conf="base->*"/>
     <dependency rev="4.0.1" org="apache" name="httpcomponents-core" conf="base->*"/>
     <dependency rev="2.0" org="htmlparser" name="htmlparser" conf="base->*"/>
