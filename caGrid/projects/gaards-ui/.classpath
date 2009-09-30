@@ -1,11 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
+	<classpathentry kind="lib" path="ext/dependencies/endorsed/jars/xercesImpl.jar"/>
+	<classpathentry kind="lib" path="ext/dependencies/endorsed/jars/xml-apis.jar"/>
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="src" path="resources/images/cds"/>
 	<classpathentry kind="src" path="resources/images/gts"/>
 	<classpathentry kind="src" path="resources/images/gridgrouper"/>
 	<classpathentry kind="src" path="resources/images/common"/>
 	<classpathentry kind="src" path="resources/images/dorian"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/caGrid-gaards-core"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/caGrid-grape"/>
+	<classpathentry kind="lib" path="ext/dependencies/endorsed/jars/resolver.jar"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="var" path="GT4_LOCATION/lib/addressing-1.0.jar"/>
 	<classpathentry kind="var" path="GT4_LOCATION/lib/axis.jar"/>
@@ -49,8 +54,6 @@
 	<classpathentry kind="var" path="GT4_LOCATION/lib/wsrf_tools.jar"/>
 	<classpathentry kind="var" path="GT4_LOCATION/lib/wss4j.jar"/>
 	<classpathentry kind="var" path="GT4_LOCATION/lib/xalan.jar"/>
-	<classpathentry kind="var" path="GT4_LOCATION/lib/xercesImpl.jar"/>
-	<classpathentry kind="var" path="GT4_LOCATION/lib/xml-apis.jar"/>
 	<classpathentry kind="var" path="GT4_LOCATION/lib/xmlsec.jar"/>
 	<classpathentry kind="lib" path="ext/dependencies/impl/jars/caGrid-authentication-service-client-1.4-dev.jar"/>
 	<classpathentry kind="lib" path="ext/dependencies/impl/jars/caGrid-authentication-service-common-1.4-dev.jar"/>
@@ -86,5 +89,14 @@
 	<classpathentry kind="lib" path="ext/dependencies/impl/jars/caGrid-gaards-core-1.4-dev.jar"/>
 	<classpathentry kind="lib" path="ext/dependencies/impl/jars/caGrid-dorian-stubs-1.2.jar"/>
 	<classpathentry kind="lib" path="ext/dependencies/impl/jars/castor-1.0.2.jar"/>
+	<classpathentry kind="lib" path="ext/dependencies/impl/jars/caGrid-syncgts-client-1.4-dev.jar"/>
+	<classpathentry kind="lib" path="ext/dependencies/impl/jars/caGrid-syncgts-common-1.4-dev.jar"/>
+	<classpathentry kind="lib" path="ext/dependencies/impl/jars/caGrid-syncgts-stubs-1.4-dev.jar"/>
+	<classpathentry kind="lib" path="ext/dependencies/impl/jars/mobius_common_client-1.1.jar"/>
+	<classpathentry kind="lib" path="ext/dependencies/impl/jars/htmlparser.jar"/>
+	<classpathentry kind="lib" path="ext/dependencies/impl/jars/httpclient-4.0.jar"/>
+	<classpathentry kind="lib" path="ext/dependencies/impl/jars/httpcore-4.0.1.jar"/>
+	<classpathentry kind="lib" path="ext/dependencies/impl/jars/htmllexer.jar"/>
+	<classpathentry kind="lib" path="ext/dependencies/impl/jars/cog-jglobus.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
