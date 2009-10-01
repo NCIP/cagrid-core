@@ -1,6 +1,7 @@
 package org.cagrid.gaards.dorian.federation;
 
 import gov.nih.nci.cagrid.common.FaultUtil;
+import gov.nih.nci.cagrid.dorian.common.CommonUtils;
 
 import java.security.cert.X509Certificate;
 import java.util.List;
@@ -85,7 +86,7 @@ public class TestUserManager extends TestCase implements Publisher {
 			user.setLastName("Doe");
 			user.setEmail("user@user.com");
 			user = um.addUser(getIdp(user), user);
-			String expectedGridIdentity = UserManager
+			String expectedGridIdentity = CommonUtils
 					.subjectToIdentity(UserManager.getUserSubject(um
 							.getIdentityAssignmentPolicy(), ca
 							.getCACertificate().getSubjectDN().getName(),
@@ -107,6 +108,13 @@ public class TestUserManager extends TestCase implements Publisher {
 			GridUserFilter f1 = new GridUserFilter();
 			GridUser[] l1 = um.getUsers(f1);
 			assertEquals(1 + INIT_USER, l1.length);
+			
+			GridUser u3 = um.getUser(user.getGridId());
+            u3.setUserStatus(GridUserStatus.Active);
+            um.updateUser(u3);
+            assertEquals(u3, um.getUser(u3.getGridId()));
+            user = u3;
+			
 			List<GridUserRecord> s1 = um.getUsers(toSearchCriteria(f1));
 			assertEquals(1 + INIT_USER, s1.size());
 
@@ -167,8 +175,8 @@ public class TestUserManager extends TestCase implements Publisher {
 			assertEquals(0, l7.length);
 			f7.setUserStatus(user.getUserStatus());
 			l7 = um.getUsers(f7);
-			assertEquals(1, l7.length);
-			assertEquals(user, l7[0]);
+			assertEquals(1 + INIT_USER, l7.length);
+			
 
 			// Test querying by First Name
 			GridUserFilter f8 = new GridUserFilter();
@@ -224,10 +232,7 @@ public class TestUserManager extends TestCase implements Publisher {
 			um.updateUser(u1);
 			assertEquals(u1, um.getUser(u1.getGridId()));
 
-			GridUser u3 = um.getUser(user.getGridId());
-			u3.setUserStatus(GridUserStatus.Active);
-			um.updateUser(u3);
-			assertEquals(u3, um.getUser(u3.getGridId()));
+			
 
 			GridUser u4 = um.getUser(user.getGridId());
 			u4.setUserStatus(GridUserStatus.Suspended);
@@ -288,7 +293,7 @@ public class TestUserManager extends TestCase implements Publisher {
 				user.setEmail(uname + "@user.com");
 				user = um.addUser(getIdp(user), user);
 
-				String expectedGridIdentity = UserManager
+				String expectedGridIdentity = CommonUtils
 						.subjectToIdentity(UserManager.getUserSubject(um
 								.getIdentityAssignmentPolicy(), ca
 								.getCACertificate().getSubjectDN().getName(),
@@ -309,6 +314,13 @@ public class TestUserManager extends TestCase implements Publisher {
 				GridUserFilter f1 = new GridUserFilter();
 				GridUser[] l1 = um.getUsers(f1);
 				assertEquals((i + 1 + INIT_USER), l1.length);
+				
+				GridUser u3 = um.getUser(user.getGridId());
+                u3.setUserStatus(GridUserStatus.Active);
+                um.updateUser(u3);
+                assertEquals(u3, um.getUser(u3.getGridId()));
+                user = u3;
+				
 				List<GridUserRecord> s1 = um.getUsers(toSearchCriteria(f1));
 				assertEquals((i + 1 + INIT_USER), s1.size());
 
@@ -378,11 +390,10 @@ public class TestUserManager extends TestCase implements Publisher {
 				GridUserFilter f7 = new GridUserFilter();
 				f7.setUserStatus(GridUserStatus.Suspended);
 				GridUser[] l7 = um.getUsers(f7);
-				assertEquals(i, l7.length);
+				assertEquals(0, l7.length);
 				f7.setUserStatus(user.getUserStatus());
 				l7 = um.getUsers(f7);
-				assertEquals(1, l7.length);
-				assertEquals(user, l7[0]);
+				assertEquals((i + 1 + INIT_USER), l7.length);
 
 				// Test querying by First Name
 				GridUserFilter f8 = new GridUserFilter();
@@ -447,17 +458,14 @@ public class TestUserManager extends TestCase implements Publisher {
 				um.updateUser(u1);
 				assertEquals(u1, um.getUser(u1.getGridId()));
 
-				GridUser u3 = um.getUser(user.getGridId());
-				u3.setUserStatus(GridUserStatus.Active);
-				um.updateUser(u3);
-				assertEquals(u3, um.getUser(u3.getGridId()));
+				
 
 				u3.setUserStatus(GridUserStatus.Suspended);
 				um.updateUser(u3);
 				assertEquals(u3, um.getUser(u3.getGridId()));
 
 				GridUser u4 = um.getUser(user.getGridId());
-				u4.setUserStatus(GridUserStatus.Suspended);
+				u4.setUserStatus(GridUserStatus.Active);
 				u4.setEmail("newemail2@example.com");
 				um.updateUser(u4);
 				assertEquals(u4, um.getUser(u4.getGridId()));
@@ -511,7 +519,7 @@ public class TestUserManager extends TestCase implements Publisher {
 			user.setLastName("Doe");
 			user.setEmail("user@user.com");
 			user = um.addUser(getIdp(user), user);
-			String expectedGridIdentity = UserManager
+			String expectedGridIdentity = CommonUtils
 					.subjectToIdentity(UserManager.getUserSubject(um
 							.getIdentityAssignmentPolicy(), ca
 							.getCACertificate().getSubjectDN().getName(),
@@ -570,7 +578,7 @@ public class TestUserManager extends TestCase implements Publisher {
 			user.setLastName("Doe");
 			user.setEmail("user@user.com");
 			user = um.addUser(getIdp(user), user);
-			String expectedGridIdentity = UserManager
+			String expectedGridIdentity = CommonUtils
 					.subjectToIdentity(UserManager.getUserSubject(um
 							.getIdentityAssignmentPolicy(), ca
 							.getCACertificate().getSubjectDN().getName(),

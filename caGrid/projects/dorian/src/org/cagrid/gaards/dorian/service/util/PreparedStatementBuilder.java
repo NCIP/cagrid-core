@@ -82,7 +82,6 @@ public class PreparedStatementBuilder {
             }
             sql.append((String) clauses.get(i));
         }
-
         PreparedStatement s = c.prepareStatement(sql.toString());
 
         for (int i = 0; i < whereValues.size(); i++) {

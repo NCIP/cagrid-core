@@ -2,6 +2,7 @@ package org.cagrid.gaards.dorian.service;
 
 import gov.nih.nci.cagrid.common.FaultHelper;
 import gov.nih.nci.cagrid.common.FaultUtil;
+import gov.nih.nci.cagrid.dorian.common.CommonUtils;
 import gov.nih.nci.cagrid.opensaml.SAMLAssertion;
 import gov.nih.nci.cagrid.opensaml.SAMLAttribute;
 import gov.nih.nci.cagrid.opensaml.SAMLAttributeStatement;
@@ -94,7 +95,7 @@ public class TestDorian extends TestCase {
             assertNotNull(dorian.getDatabase());
 
             String gridSubject = getDorianIdPUserId(conf, dorian, Dorian.IDP_ADMIN_USER_ID);
-            String gridId = UserManager.subjectToIdentity(gridSubject);
+            String gridId = CommonUtils.subjectToIdentity(gridSubject);
 
             // test authentication with an active user
             Application a = createApplication();
@@ -200,7 +201,7 @@ public class TestDorian extends TestCase {
             assertNotNull(dorian.getDatabase());
 
             String gridSubject = getDorianIdPUserId(conf, dorian, Dorian.IDP_ADMIN_USER_ID);
-            String gridId = UserManager.subjectToIdentity(gridSubject);
+            String gridId = CommonUtils.subjectToIdentity(gridSubject);
 
             Application a = createApplication();
             dorian.registerLocalUser(a);
@@ -312,7 +313,7 @@ public class TestDorian extends TestCase {
             PublicKey publicKey = pair.getPublic();
             CertificateLifetime lifetime = getLifetime();
             X509Certificate cert = dorian.requestUserCertificate(saml, publicKey, lifetime);
-            String gid = UserManager.subjectToIdentity(getDorianIdPUserId(conf, dorian, Dorian.IDP_ADMIN_USER_ID));
+            String gid = CommonUtils.subjectToIdentity(getDorianIdPUserId(conf, dorian, Dorian.IDP_ADMIN_USER_ID));
             checkCertificate(gid, lifetime, pair.getPrivate(), cert);
         } catch (Exception e) {
             FaultUtil.printFault(e);
@@ -337,7 +338,7 @@ public class TestDorian extends TestCase {
             assertNotNull(dorian.getConfiguration());
             assertNotNull(dorian.getDatabase());
             String gridSubject = getDorianIdPUserId(conf, dorian, Dorian.IDP_ADMIN_USER_ID);
-            String gridId = UserManager.subjectToIdentity(gridSubject);
+            String gridId = CommonUtils.subjectToIdentity(gridSubject);
 
             GridUserFilter uf = new GridUserFilter();
             uf.setGridId(gridId);
@@ -362,7 +363,7 @@ public class TestDorian extends TestCase {
             KeyPair pair = KeyUtil.generateRSAKeyPair1024();
             CertificateLifetime lifetime = getLifetime();
             X509Certificate cert = dorian.requestUserCertificate(saml, pair.getPublic(), lifetime);
-            String gid = UserManager.subjectToIdentity(getDorianIdPUserId(conf, dorian, username));
+            String gid = CommonUtils.subjectToIdentity(getDorianIdPUserId(conf, dorian, username));
             checkCertificate(gid, lifetime, pair.getPrivate(), cert);
             GridUserFilter filter = new GridUserFilter();
             filter.setUID(username);
@@ -426,7 +427,7 @@ public class TestDorian extends TestCase {
             assertNotNull(dorian.getConfiguration());
             assertNotNull(dorian.getDatabase());
             String gridSubject = getDorianIdPUserId(conf, dorian, Dorian.IDP_ADMIN_USER_ID);
-            String gridId = UserManager.subjectToIdentity(gridSubject);
+            String gridId = CommonUtils.subjectToIdentity(gridSubject);
 
             GridUserFilter uf = new GridUserFilter();
             uf.setGridId(gridId);
@@ -449,7 +450,7 @@ public class TestDorian extends TestCase {
             KeyPair pair = KeyUtil.generateRSAKeyPair1024();
             CertificateLifetime lifetime = getLifetime();
             X509Certificate cert = dorian.requestUserCertificate(saml, pair.getPublic(), lifetime);
-            String gid = UserManager.subjectToIdentity(getDorianIdPUserId(conf, dorian, username));
+            String gid = CommonUtils.subjectToIdentity(getDorianIdPUserId(conf, dorian, username));
             checkCertificate(gid, lifetime, pair.getPrivate(), cert);
             GridUserFilter filter = new GridUserFilter();
             filter.setUID(username);
@@ -508,7 +509,7 @@ public class TestDorian extends TestCase {
             assertNotNull(dorian.getConfiguration());
             assertNotNull(dorian.getDatabase());
             String gridSubject = getDorianIdPUserId(conf, dorian, Dorian.IDP_ADMIN_USER_ID);
-            String gridId = UserManager.subjectToIdentity(gridSubject);
+            String gridId = CommonUtils.subjectToIdentity(gridSubject);
             Application app = createApplication();
             dorian.registerLocalUser(app);
 
@@ -527,7 +528,7 @@ public class TestDorian extends TestCase {
             KeyPair pair = KeyUtil.generateRSAKeyPair1024();
             CertificateLifetime lifetime = getLifetime();
             X509Certificate cert = dorian.requestUserCertificate(saml, pair.getPublic(), lifetime);
-            String gid = UserManager.subjectToIdentity(getDorianIdPUserId(conf, dorian, username));
+            String gid = CommonUtils.subjectToIdentity(getDorianIdPUserId(conf, dorian, username));
             checkCertificate(gid, lifetime, pair.getPrivate(), cert);
             GridUserFilter filter = new GridUserFilter();
             filter.setUID(username);
@@ -582,7 +583,7 @@ public class TestDorian extends TestCase {
             assertNotNull(dorian.getConfiguration());
             assertNotNull(dorian.getDatabase());
             String gridSubject = getDorianIdPUserId(conf, dorian, Dorian.IDP_ADMIN_USER_ID);
-            String gridId = UserManager.subjectToIdentity(gridSubject);
+            String gridId = CommonUtils.subjectToIdentity(gridSubject);
             IdPContainer idp = this.getTrustedIdpAutoApprove("My IdP");
             idp.getIdp().setId(dorian.addTrustedIdP(gridId, idp.getIdp()).getId());
             String username = "user";
@@ -590,7 +591,7 @@ public class TestDorian extends TestCase {
             CertificateLifetime lifetime = getLifetime();
             X509Certificate cert = dorian.requestUserCertificate(getSAMLAssertion(username, idp), pair.getPublic(),
                 lifetime);
-            String gid = UserManager.subjectToIdentity(getGridIdentity(conf, dorian, idp.getIdp(), username));
+            String gid = CommonUtils.subjectToIdentity(getGridIdentity(conf, dorian, idp.getIdp(), username));
             checkCertificate(gid, lifetime, pair.getPrivate(), cert);
             GridUserFilter filter = new GridUserFilter();
             filter.setUID(username);
@@ -645,7 +646,7 @@ public class TestDorian extends TestCase {
             assertNotNull(dorian.getDatabase());
 
             String gridSubject = getDorianIdPUserId(conf, dorian, Dorian.IDP_ADMIN_USER_ID);
-            String gridId = UserManager.subjectToIdentity(gridSubject);
+            String gridId = CommonUtils.subjectToIdentity(gridSubject);
             IdPContainer idp = this.getTrustedIdpAutoApprove("My IdP");
             idp.getIdp().setId(dorian.addTrustedIdP(gridId, idp.getIdp()).getId());
             String username = "user";
@@ -653,7 +654,7 @@ public class TestDorian extends TestCase {
             CertificateLifetime lifetime = getLifetime();
             X509Certificate cert = dorian.requestUserCertificate(getSAMLAssertion(username, idp), pair.getPublic(),
                 lifetime);
-            String gid = UserManager.subjectToIdentity(getGridIdentity(conf, dorian, idp.getIdp(), username));
+            String gid = CommonUtils.subjectToIdentity(getGridIdentity(conf, dorian, idp.getIdp(), username));
 
             checkCertificate(gid, lifetime, pair.getPrivate(), cert);
 
@@ -688,7 +689,7 @@ public class TestDorian extends TestCase {
             assertNotNull(dorian.getDatabase());
 
             String gridSubject = getDorianIdPUserId(conf, dorian, Dorian.IDP_ADMIN_USER_ID);
-            String gridId = UserManager.subjectToIdentity(gridSubject);
+            String gridId = CommonUtils.subjectToIdentity(gridSubject);
 
             IdPContainer idp = this.getTrustedIdpManualApprove("My IdP");
             idp.getIdp().setId(dorian.addTrustedIdP(gridId, idp.getIdp()).getId());
@@ -713,7 +714,7 @@ public class TestDorian extends TestCase {
             dorian.updateGridUser(gridId, before);
             X509Certificate cert = dorian.requestUserCertificate(getSAMLAssertion(username, idp), pair.getPublic(),
                 lifetime);
-            String gid = UserManager.subjectToIdentity(getGridIdentity(conf, dorian, idp.getIdp(), username));
+            String gid = CommonUtils.subjectToIdentity(getGridIdentity(conf, dorian, idp.getIdp(), username));
 
             checkCertificate(gid, lifetime, pair.getPrivate(), cert);
         } catch (Exception e) {

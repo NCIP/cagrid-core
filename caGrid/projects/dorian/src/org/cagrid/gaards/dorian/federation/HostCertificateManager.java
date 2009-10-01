@@ -2,6 +2,7 @@ package org.cagrid.gaards.dorian.federation;
 
 import gov.nih.nci.cagrid.common.FaultHelper;
 import gov.nih.nci.cagrid.common.Utils;
+import gov.nih.nci.cagrid.dorian.common.CommonUtils;
 
 import java.security.interfaces.RSAPublicKey;
 import java.sql.Connection;
@@ -360,6 +361,65 @@ public class HostCertificateManager extends LoggingObject {
                     cert.setCertificateAsString(certStr);
                     record.setCertificate(cert);
                 }
+                hosts.add(record);
+            }
+            rs.close();
+            s.close();
+
+        } catch (Exception e) {
+            logError(e.getMessage(), e);
+            DorianInternalFault fault = new DorianInternalFault();
+            fault.setFaultString("An unexpected error occurred.");
+            FaultHelper helper = new FaultHelper(fault);
+            helper.addFaultCause(e);
+            fault = (DorianInternalFault) helper.getFault();
+            throw fault;
+        } finally {
+            db.releaseConnection(c);
+        }
+        return hosts;
+    }
+
+
+    public List<HostRecord> getHostRecords(HostSearchCriteria f) throws DorianInternalFault {
+        this.buildDatabase();
+        Connection c = null;
+        List<HostRecord> hosts = new ArrayList<HostRecord>();
+
+        try {
+            c = db.getConnection();
+            PreparedStatementBuilder select = new PreparedStatementBuilder(TABLE);
+            select.addSelectField(HOST);
+            select.addSelectField(OWNER);
+            select.addSelectField(SUBJECT);
+
+            if (f != null) {
+                select.addWhereField(STATUS, "=", HostCertificateStatus.Active.getValue());
+
+                if (f.getHostname() != null) {
+                    select.addWhereField(HOST, "LIKE", "%" + f.getHostname() + "%");
+                }
+                if (f.getIdentity() != null) {
+                    String subject = CommonUtils.identityToSubject(f.getIdentity());
+                    select.addWhereField(SUBJECT, "LIKE", "%" + subject + "%");
+                }
+
+                if (f.getHostCertificateSubject() != null) {
+                    select.addWhereField(SUBJECT, "LIKE", "%" + f.getHostCertificateSubject() + "%");
+                }
+
+                if (f.getOwner() != null) {
+                    select.addWhereField(OWNER, "LIKE", "%" + f.getOwner() + "%");
+                }
+            }
+            PreparedStatement s = select.prepareStatement(c);
+            ResultSet rs = s.executeQuery();
+            while (rs.next()) {
+                HostRecord record = new HostRecord();
+                record.setHostname(rs.getString(HOST));
+                record.setOwner(rs.getString(OWNER));
+                record.setIdentity(CommonUtils.subjectToIdentity(rs.getString(SUBJECT)));
+                record.setHostCertificateSubject(rs.getString(SUBJECT));
                 hosts.add(record);
             }
             rs.close();

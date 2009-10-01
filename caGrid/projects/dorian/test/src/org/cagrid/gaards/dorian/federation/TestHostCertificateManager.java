@@ -1,6 +1,7 @@
 package org.cagrid.gaards.dorian.federation;
 
 import gov.nih.nci.cagrid.common.FaultUtil;
+import gov.nih.nci.cagrid.dorian.common.CommonUtils;
 
 import java.math.BigInteger;
 import java.security.KeyPair;
@@ -242,6 +243,101 @@ public class TestHostCertificateManager extends TestCase implements Publisher {
                         fail("Serial Number not returned.");
                     }
                 }
+            }
+
+        } catch (Exception e) {
+            FaultUtil.printFault(e);
+            fail(e.getMessage());
+        }
+    }
+
+
+    public void testHostSearch() {
+        try {
+            int total = 5;
+            String hostPrefix = "localhost";
+            HostCertificateManager hcm = new HostCertificateManager(db, getConf(), ca, this, blackList);
+            hcm.clearDatabase();
+            List<Long> ids = new ArrayList<Long>();
+            String owner = OWNER;
+            for (int i = 0; i < total; i++) {
+                String host = hostPrefix + i;
+                HostCertificateRequest req = getHostCertificateRequest(host);
+                long id = hcm.requestHostCertifcate(owner, req);
+
+                assertEquals(0, hcm.getHostRecords(new HostSearchCriteria()).size());
+                HostSearchCriteria hs = new HostSearchCriteria();
+                hs.setHostname(host);
+                assertEquals(0, hcm.getHostRecords(hs).size());
+                ids.add(Long.valueOf(id));
+            }
+
+            for (int i = 0; i < total; i++) {
+                long id = ids.get(i).longValue();
+                HostCertificateRecord hr = hcm.approveHostCertifcate(id);
+
+                assertEquals((i + 1), hcm.getHostRecords(new HostSearchCriteria()).size());
+                HostSearchCriteria hs = new HostSearchCriteria();
+                hs.setHostname(hr.getHost());
+                assertEquals(1, hcm.getHostRecords(hs).size());
+
+                hs = new HostSearchCriteria();
+                hs.setIdentity(CommonUtils.subjectToIdentity(hr.getSubject()));
+                assertEquals(1, hcm.getHostRecords(hs).size());
+
+                hs = new HostSearchCriteria();
+                hs.setHostCertificateSubject(hr.getSubject());
+                assertEquals(1, hcm.getHostRecords(hs).size());
+
+                hs = new HostSearchCriteria();
+                hs.setOwner(hr.getOwner());
+                assertEquals((i + 1), hcm.getHostRecords(hs).size());
+
+                hs = new HostSearchCriteria();
+                hs.setHostname(hr.getHost());
+                hs.setIdentity(CommonUtils.subjectToIdentity(hr.getSubject()));
+                hs.setHostCertificateSubject(hr.getSubject());
+                hs.setOwner(hr.getOwner());
+                assertEquals(1, hcm.getHostRecords(hs).size());
+            }
+
+            for (int i = 0; i < total; i++) {
+                long id = ids.get(i).longValue();
+                HostCertificateUpdate update = new HostCertificateUpdate();
+                update.setId(id);
+                if (i % 2 == 0) {
+                    update.setStatus(HostCertificateStatus.Suspended);
+                } else {
+                    update.setStatus(HostCertificateStatus.Compromised);
+
+                }
+                hcm.updateHostCertificateRecord(update);
+
+                HostCertificateRecord hr = hcm.getHostCertificateRecord(id);
+                assertEquals((total - (i + 1)), hcm.getHostRecords(new HostSearchCriteria()).size());
+                HostSearchCriteria hs = new HostSearchCriteria();
+                hs.setHostname(hr.getHost());
+                assertEquals(0, hcm.getHostRecords(hs).size());
+
+                hs = new HostSearchCriteria();
+                hs.setIdentity(CommonUtils.subjectToIdentity(hr.getSubject()));
+                assertEquals(0, hcm.getHostRecords(hs).size());
+
+                hs = new HostSearchCriteria();
+                hs.setHostCertificateSubject(hr.getSubject());
+                assertEquals(0, hcm.getHostRecords(hs).size());
+
+                hs = new HostSearchCriteria();
+                hs.setOwner(hr.getOwner());
+                assertEquals((total - (i + 1)), hcm.getHostRecords(hs).size());
+
+                hs = new HostSearchCriteria();
+                hs.setHostname(hr.getHost());
+                hs.setIdentity(CommonUtils.subjectToIdentity(hr.getSubject()));
+                hs.setHostCertificateSubject(hr.getSubject());
+                hs.setOwner(hr.getOwner());
+                assertEquals(0, hcm.getHostRecords(hs).size());
+
             }
 
         } catch (Exception e) {
