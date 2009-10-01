@@ -5,6 +5,7 @@ import gov.nih.nci.cagrid.introduce.common.AntTools;
 import gov.nih.nci.cagrid.sdkinstall.description.InstallationDescription;
 
 import java.io.File;
+import java.util.List;
 
 /** 
  *  Version321BuildInvoker
@@ -24,7 +25,7 @@ public class Version321BuildInvoker extends BuildInvoker {
 
 
     public void invokeBuildProcess() throws BuildInvocationException {
-        String antCommand = null;
+        List<String> antCommand = null;
         try {
             antCommand = AntTools.getAntCommand(BUILD_COMMAND, getSdkDir().getAbsolutePath());
         } catch (Exception ex) {
@@ -34,7 +35,7 @@ public class Version321BuildInvoker extends BuildInvoker {
         // exec the ant process
         Process proc = null;
         try {
-            proc = Runtime.getRuntime().exec(antCommand);
+            proc = Runtime.getRuntime().exec(antCommand.toArray(new String[antCommand.size()]));
         } catch (Exception ex) {
             throw new BuildInvocationException("Error creating ant build process: " + ex.getMessage(), ex);
         }

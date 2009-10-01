@@ -11,6 +11,7 @@ import gov.nih.nci.cagrid.introduce.common.CommonTools;
 import gov.nih.nci.cagrid.testing.system.haste.Step;
 
 import java.io.File;
+import java.util.List;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -44,7 +45,7 @@ public class RebuildServiceStep extends Step {
 		System.out.println("Running step: " + getClass().getName());
 		
 		System.out.println("Invoking post creation processes...");
-		String cmd = AntTools.getAntSkeletonPostCreationCommand(introduceDir, 
+		List<String> cmd = AntTools.getAntSkeletonPostCreationCommand(introduceDir, 
             serviceInfo.getName(), serviceInfo.getDir(), serviceInfo.getPackageName(), 
             serviceInfo.getNamespace(), getServiceExtensions());
         System.out.println("Invoking ant:");

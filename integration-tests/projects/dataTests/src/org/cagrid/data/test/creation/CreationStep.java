@@ -12,6 +12,7 @@ import gov.nih.nci.cagrid.introduce.common.CommonTools;
 import gov.nih.nci.cagrid.testing.system.haste.Step;
 
 import java.io.File;
+import java.util.List;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -43,7 +44,7 @@ public class CreationStep extends Step {
 	public void runStep() throws Throwable {
 		System.out.println("Creating service...");
 
-		String cmd = AntTools.getAntSkeletonCreationCommand(introduceDir, serviceInfo.getName(), 
+		List<String> cmd = AntTools.getAntSkeletonCreationCommand(introduceDir, serviceInfo.getName(), 
 			serviceInfo.getDir(), serviceInfo.getPackageName(), serviceInfo.getNamespace(), 
             serviceInfo.getResourceFrameworkType(), serviceInfo.getExtensions());
         System.out.println("EXECUTING COMMAND: " + cmd);

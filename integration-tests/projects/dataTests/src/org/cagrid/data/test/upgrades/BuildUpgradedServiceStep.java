@@ -5,6 +5,7 @@ import gov.nih.nci.cagrid.introduce.common.CommonTools;
 import gov.nih.nci.cagrid.testing.system.haste.Step;
 
 import java.io.File;
+import java.util.List;
 
 /** 
  *  BuildUpgradedServiceStep
@@ -31,7 +32,7 @@ public class BuildUpgradedServiceStep extends Step {
 	
 	
 	private void cleanService() throws Exception {
-		String cmd = AntTools.getAntCommand("clean", new File(serviceDir).getAbsolutePath());
+		List<String> cmd = AntTools.getAntCommand("clean", new File(serviceDir).getAbsolutePath());
 		Process p = CommonTools.createAndOutputProcess(cmd);
 		p.waitFor();
 		assertTrue("Call to '" + cmd + "' failed", p.exitValue() == 0);
@@ -40,7 +41,7 @@ public class BuildUpgradedServiceStep extends Step {
 	
 	private void invokeBuildProcess() throws Exception {
 		System.out.println("Building upgraded service...");
-		String cmd = AntTools.getAntAllCommand(serviceDir);
+		List<String> cmd = AntTools.getAntAllCommand(serviceDir);
 		Process p = CommonTools.createAndOutputProcess(cmd);
 		p.waitFor();
 		assertTrue("Call to '" + cmd + "' failed", p.exitValue() == 0);	

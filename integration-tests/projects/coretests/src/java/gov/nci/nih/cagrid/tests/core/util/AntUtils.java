@@ -7,6 +7,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Enumeration;
+import java.util.List;
 import java.util.Properties;
 
 
@@ -98,13 +99,13 @@ public class AntUtils {
     }
 
 
-    public static String getAntCommand(File baseDir, String target) throws Exception {
+    public static List<String> getAntCommand(File baseDir, String target) throws Exception {
         return getAntCommand(baseDir, target, null);
     }
 
 
-    public static String getAntCommand(File baseDir, String target, Properties systemProps) throws Exception {
-        String command = AntTools.getAntCommand(target, baseDir.getAbsolutePath());
+    public static List<String> getAntCommand(File baseDir, String target, Properties systemProps) throws Exception {
+        List<String> command = AntTools.getAntCommand(target, baseDir.getAbsolutePath());
         // add system properties
         if (systemProps != null) {
             Enumeration keys = systemProps.keys();
@@ -115,7 +116,7 @@ public class AntUtils {
                     value = value.replaceAll(" ", "\\\\ ");
                 }
                 String propPart = " \"-D" + name + "=" + value + "\"";
-                command += propPart;
+                command.add(propPart);
             }
         }
 
