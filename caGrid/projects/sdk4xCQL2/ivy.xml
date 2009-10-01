@@ -9,11 +9,11 @@
   </info>
 
   <configurations>
-    <conf name="impl-test" visibility="private"/>
+    <conf name="impl-test" visibility="private" extends="test"/>
 
     <!-- Public Configurations-->
     <conf name="processor" visibility="public"/>
-    <conf name="test" visibility="public" extends="impl-test"/>
+    <conf name="test" visibility="public"/>
   </configurations>
 
 
@@ -25,8 +25,8 @@
   <dependencies>
     <dependency rev="latest.integration" org="caGrid" name="core"
       conf="processor->default;impl-test->test"/>
-    <dependency rev="latest.integration" org="caGrid" name="data"
-      conf="processor->processors,utils;impl-test->test"/>
+    <dependency rev="latest.integration" org="caGrid" name="metadatautils"
+      conf="processor->default"/>
     <dependency rev="latest.integration" org="caGrid" name="cql"
       conf="processor->cql2,cql2-schemas"/>
 

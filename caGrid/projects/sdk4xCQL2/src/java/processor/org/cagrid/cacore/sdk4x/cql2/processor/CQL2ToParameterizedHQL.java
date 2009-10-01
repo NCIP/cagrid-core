@@ -16,7 +16,6 @@ import gov.nih.nci.cagrid.cql2.components.GroupLogicalOperator;
 import gov.nih.nci.cagrid.cql2.modifiers.CQLQueryModifier;
 import gov.nih.nci.cagrid.cql2.predicates.BinaryPredicate;
 import gov.nih.nci.cagrid.cql2.predicates.UnaryPredicate;
-import gov.nih.nci.cagrid.data.QueryProcessingException;
 import gov.nih.nci.cagrid.metadata.dataservice.DomainModel;
 import gov.nih.nci.cagrid.metadata.dataservice.UMLClass;
 
