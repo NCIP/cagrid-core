@@ -398,7 +398,7 @@ public class DeploymentViewer extends ApplicationComponent {
                             setProgressText("deploying");
 
                             try {
-                                String cmd = "";
+                                List<String> cmd;
                                 if (((String) getDeploymentTypeSelector().getSelectedItem()).equals(GLOBUS)) {
                                     cmd = AntTools.getAntDeployGlobusCommand(serviceDirectory.getAbsolutePath());
                                 } else if (((String) getDeploymentTypeSelector().getSelectedItem()).equals(TOMCAT)) {

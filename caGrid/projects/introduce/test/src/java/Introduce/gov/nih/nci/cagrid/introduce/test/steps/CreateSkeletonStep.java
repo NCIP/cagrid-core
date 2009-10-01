@@ -1,5 +1,7 @@
 package gov.nih.nci.cagrid.introduce.test.steps;
 
+import java.util.List;
+
 import gov.nih.nci.cagrid.introduce.common.AntTools;
 import gov.nih.nci.cagrid.introduce.common.CommonTools;
 import gov.nih.nci.cagrid.introduce.test.TestCaseInfo;
@@ -16,7 +18,7 @@ public class CreateSkeletonStep extends BaseStep {
 	public void runStep() throws Throwable {
 		System.out.println("Creating the service skeleton");
 
-		String cmd = AntTools.getAntSkeletonCreationCommand(getBaseDir(),
+        List<String> cmd = AntTools.getAntSkeletonCreationCommand(getBaseDir(),
 				tci.getName(), tci.getDir(), tci.getPackageName(), tci
 						.getNamespace(), tci.getResourceFrameworkType(), tci.getExtensions() );
 
@@ -25,9 +27,8 @@ public class CreateSkeletonStep extends BaseStep {
 		assertEquals("Creation process exited abnormally", 0, p.exitValue());
         p.destroy();
 
-		cmd = AntTools.getAntSkeletonPostCreationCommand(getBaseDir(), tci
-				.getName(), tci.getDir(), tci.getPackageName(), tci
-				.getNamespace(), "");
+        cmd = AntTools.getAntSkeletonPostCreationCommand(getBaseDir(), tci.getName(), tci.getDir(), tci
+            .getPackageName(), tci.getNamespace(), "");
 
 		p = CommonTools.createAndOutputProcess(cmd);
 		p.waitFor();

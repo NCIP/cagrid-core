@@ -21,7 +21,7 @@
 			<classpath refid="Introduce.test.classpath" />
 			<classpath refid="UpdateManager.test.classpath" />
 			<formatter type="xml" />
-			<test if="testcase" name="${testcase}" fork="no" todir="${junit.results.dir}" />
+			<test if="testcase" name="${testcase}" fork="yes" todir="${junit.results.dir}" />
 			<batchtest unless="testcase" fork="yes" todir="${junit.results.dir}">
 				<fileset dir="${test.src.dir}/Introduce">
 					<include name="**/test/unit/**/*Test.java" />

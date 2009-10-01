@@ -546,14 +546,11 @@ public class ModificationViewer extends ApplicationComponent {
             this.reloadButton.setToolTipText("reload the service and throw away the current modifications");
             this.reloadButton.addActionListener(new java.awt.event.ActionListener() {
                 public void actionPerformed(java.awt.event.ActionEvent e) {
-                    int decision = JOptionPane
-                        .showConfirmDialog(
-                            ModificationViewer.this,
-                            "Are you sure you wish to reload?\n" +
-                            "All current modifactions will be lost!\n" +
-                            "This will simply reload the modification viewer with the\n" +
-                            "service without saving the current changes since the last save.",
-                            "Are you sure?", JOptionPane.YES_NO_OPTION);
+                    int decision = JOptionPane.showConfirmDialog(ModificationViewer.this,
+                        "Are you sure you wish to reload?\n" + "All current modifactions will be lost!\n"
+                            + "This will simply reload the modification viewer with the\n"
+                            + "service without saving the current changes since the last save.", "Are you sure?",
+                        JOptionPane.YES_NO_OPTION);
                     if (decision == JOptionPane.OK_OPTION) {
                         BusyDialogRunnable r = new BusyDialogRunnable(GridApplication.getContext().getApplication(),
                             "Reload") {
@@ -1049,7 +1046,11 @@ public class ModificationViewer extends ApplicationComponent {
                             getSchemaElementTypeConfigurationPanel().setSchemaElementType(
                                 (SchemaElementType) node.getUserObject(), false);
                         } else {
-                            getSchemaElementTypeConfigurationPanel().setHide((((NamespaceType)((NamespaceTypeTreeNode)node.getParent()).getUserObject()).getGenerateStubs()==null) || (((NamespaceType)((NamespaceTypeTreeNode)node.getParent()).getUserObject()).getGenerateStubs().booleanValue()));
+                            getSchemaElementTypeConfigurationPanel().setHide(
+                                (((NamespaceType) ((NamespaceTypeTreeNode) node.getParent()).getUserObject())
+                                    .getGenerateStubs() == null)
+                                    || (((NamespaceType) ((NamespaceTypeTreeNode) node.getParent()).getUserObject())
+                                        .getGenerateStubs().booleanValue()));
                             getSchemaElementTypeConfigurationPanel().setSchemaElementType(
                                 (SchemaElementType) node.getUserObject(), true);
                         }
@@ -1204,7 +1205,9 @@ public class ModificationViewer extends ApplicationComponent {
 
                                 // walk through all the types and make sure they
                                 // have valid serialization configurations
-                                if (currentNs.getGenerateStubs()!=null && !currentNs.getGenerateStubs().booleanValue() && currentNs.getSchemaElement() != null) {
+                                if (currentNs.getGenerateStubs() != null
+                                    && !currentNs.getGenerateStubs().booleanValue()
+                                    && currentNs.getSchemaElement() != null) {
                                     for (int schemaElementI = 0; schemaElementI < currentNs.getSchemaElement().length; schemaElementI++) {
                                         SchemaElementType type = currentNs.getSchemaElement(schemaElementI);
                                         ValidationResult result = SchemaElementTypeValidator.validateSchemaElementType(
@@ -1355,7 +1358,7 @@ public class ModificationViewer extends ApplicationComponent {
 
                         // build the synchronized service
                         setProgressText("rebuilding skeleton");
-                        String cmd = AntTools.getAntCommand("clean all", ModificationViewer.this.methodsDirectory
+                        List<String> cmd = AntTools.getAntCommand("clean all", ModificationViewer.this.methodsDirectory
                             .getAbsolutePath());
                         Process p = CommonTools.createAndOutputProcess(cmd);
                         p.waitFor();

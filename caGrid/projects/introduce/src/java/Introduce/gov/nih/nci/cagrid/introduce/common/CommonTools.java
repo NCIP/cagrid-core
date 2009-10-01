@@ -94,10 +94,33 @@ public final class CommonTools {
     }
 
 
+    /**
+     * @deprecated The signature does not deal with commands where arguments
+     *             require escaping or quoting (such as with commands with paths
+     *             with whitespace in them). Use the List<String> variant
+     *             instead.
+     * @param cmd
+     * @return
+     * @throws Exception
+     */
+    @Deprecated
     public static Process createAndOutputProcess(String cmd) throws Exception {
         final Process p;
 
         p = Runtime.getRuntime().exec(cmd);
+        StreamGobbler errGobbler = new StreamGobbler(p.getErrorStream(), "ERR", logger, Priority.ERROR);
+        StreamGobbler outGobbler = new StreamGobbler(p.getInputStream(), "OUT", logger, Priority.DEBUG);
+        errGobbler.start();
+        outGobbler.start();
+
+        return p;
+    }
+
+
+    public static Process createAndOutputProcess(List<String> cmd) throws Exception {
+        final Process p;
+
+        p = Runtime.getRuntime().exec(cmd.toArray(new String[cmd.size()]));
         StreamGobbler errGobbler = new StreamGobbler(p.getErrorStream(), "ERR", logger, Priority.ERROR);
         StreamGobbler outGobbler = new StreamGobbler(p.getInputStream(), "OUT", logger, Priority.DEBUG);
         errGobbler.start();

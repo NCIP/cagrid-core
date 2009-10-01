@@ -9,6 +9,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.List;
 import java.util.Properties;
 
 import org.apache.commons.logging.Log;
@@ -183,7 +184,7 @@ public class SDKExecutor {
     private static void invokeAnt(String targets, File sdkDirectory) throws SDKExecutionException {
         Process p;
         try {
-            String cmd = AntTools.getAntCommand(targets, sdkDirectory.getPath());
+            List<String> cmd = AntTools.getAntCommand(targets, sdkDirectory.getPath());
             LOG.debug("Running ant command:" + cmd);
             p = CommonTools.createAndOutputProcess(cmd);
             p.waitFor();

@@ -106,20 +106,16 @@ public class FixXmiExecutor {
         List<String> command = new ArrayList<String>();
         if (osIsWindows()) {
             command.add("java.exe");
-            command.add("-classpath");
-            command.add(getAntLauncherJarLocation(System.getProperty("java.class.path")));
-            command.add("org.apache.tools.ant.launch.Launcher");
-            command.add("-buildfile");
-            command.add(buildFileDir + File.separator + "build.xml");
         } else {
-            // escape out the spaces.....
             command.add("java");
-            command.add("-classpath");
-            command.add(getAntLauncherJarLocation(System.getProperty("java.class.path")));
-            command.add("org.apache.tools.ant.launch.Launcher");
-            command.add("-buildfile");
-            command.add(buildFileDir + File.separator + "build.xml");
         }
+        
+        command.add("-classpath");
+        command.add(getAntLauncherJarLocation(System.getProperty("java.class.path")));
+        command.add("org.apache.tools.ant.launch.Launcher");
+        command.add("-buildfile");
+        command.add(buildFileDir + File.separator + "build.xml");
+        
         // add targets
         command.add(FIX_XMI_TASK);
         return command;

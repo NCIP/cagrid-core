@@ -1005,7 +1005,7 @@ public class SyncTools {
 
 
     private void mergeNamespaces() throws Exception {
-        String cmd = AntTools.getAntMergeCommand(this.baseDirectory.getAbsolutePath());
+        List<String> cmd = AntTools.getAntMergeCommand(this.baseDirectory.getAbsolutePath());
         Process p = CommonTools.createAndOutputProcess(cmd);
         p.waitFor();
         if (p.exitValue() != 0) {
