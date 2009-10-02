@@ -185,7 +185,7 @@
 		</copy>
 
 		<ant dir="${antfiles.dir}/ivy/repository" antfile="gen-content.xml" target="gen" inheritall="false" inheritrefs="false">
-			<property name="repository.dir" value="${ivy.repository.dir}" />
+			<property name="repository.dir" location="${ivy.repository.dir}" />
 		</ant>
 	</target>
 
