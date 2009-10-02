@@ -1,13 +1,3 @@
-[NEXT STEPS]
-
-finish licenses
-
-fix other projects (non services) to use the resolve private conf approach
-
-
-
-[POST MERGE]
-data cql schemas have moved to cql project.. remove those artifacts and custom dependencies-build
 
 [RECIPE]
 Your organization should be caGrid, your module should be your project name (e.g projects/<projectname>)
@@ -46,8 +36,4 @@ currently having each project do it
 * we can do stuff like this for schemas (to not put versions on them):
         <ivy:retrieve pattern="${resolved.artifacts.dir}/[conf]/[type]s/[artifact]-[revision].[ext]" type="jar"/>
         <ivy:retrieve pattern="${resolved.artifacts.dir}/[conf]/[type]s/[artifact].[ext]" type="xsd"/>
-** how can we specify type=!xsd such that a pattern can be used for "everything except xsd"?
-  - its problematic listing all known types (such as jar), as those are determined by the artifacts, not the configurations (and so could change)
-  
-* should i be configuring it to not use a cache (as everything is on the local filesystem)?
 
