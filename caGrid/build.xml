@@ -51,7 +51,7 @@
 
 	<target name="define-ant-tasks" depends="init-ivy" unless="defined.anttasks">
 		<taskdef resource="net/sf/antcontrib/antlib.xml" loaderref="antcontrib">
-			<classpath>
+			<classpath id="ant-contrib.classpath">
 				<fileset dir="${ant.library.dir}">
 					<include name="ant.jar" />
 				</fileset>
@@ -158,6 +158,35 @@
 				</propertyfile>
 			</sequential>
 		</for>
+	</target>
+
+
+
+	<target name="createIvyRepository" depends="define-ant-tasks">
+		<!-- OVERRIDE AS NECESSARY -->
+		<property name="ivy.repository.url" value="http://software.cagrid.org/repository-nightly" />
+		<property name="ivy.repository.dir" location="${caGrid-Master.basedir}/tmp" />
+
+
+		<delete dir="${ivy.repository.dir}" failonerror="false" />
+		<mkdir dir="${ivy.repository.dir}" />
+
+		<copy todir="${ivy.repository.dir}">
+			<fileset dir="${integration.repository.dir}" />
+		</copy>
+		<copy todir="${ivy.repository.dir}">
+			<fileset dir="${repository.dir}" />
+		</copy>
+
+		<copy tofile="${ivy.repository.dir}/ivysettings.xml" file="${antfiles.dir}/ivy/repository/ivysettings.xml.template" filtering="true" overwrite="true">
+			<filterset>
+				<filter token="BASE_URL" value="${ivy.repository.url}" />
+			</filterset>
+		</copy>
+
+		<ant dir="${antfiles.dir}/ivy/repository" antfile="gen-content.xml" target="gen" inheritall="false" inheritrefs="false">
+			<property name="repository.dir" value="${ivy.repository.dir}" />
+		</ant>
 	</target>
 
 

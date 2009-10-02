@@ -30,6 +30,9 @@
         For example, you can overload the "resolve-dependencies" call to do something different by 
         defining that target in your build file. 
     -->
+	<property name="ivy.publish.version" value="${project.version}"/>
+	<property name="ivy.publish.status" value="integration"/>
+	
 	<property name="ivy.resolved.artifacts.dir" location="${basedir}/ext" description="The directoy in which resolved dependencies should be placed" />
 	<property name="ivy.resolved.artifacts.pattern" value="${ivy.resolved.artifacts.dir}/dependencies/[conf]/[type]s/[originalname](.[ext])" description="The Ivy pattern used to determine how resolved dependencies should be copied into the project" />
 	<property name="ivy.generated.artifacts.dir" location="build" description="The directoy in which artifacts are created" />
@@ -130,7 +133,7 @@
 			<echo message="Publishing artifacts for ${ivy.module}." />
 			<delete file="${ivy.generated.artifacts.dir}/ivy.xml" />
 			<!-- delete last produced ivy file to be sure a new one will be generated -->
-			<ivy:publish overwrite="true" resolver="caGrid-ivy-resolver" pubrevision="${project.version}" status="integration">
+			<ivy:publish overwrite="true" resolver="caGrid-ivy-resolver" pubrevision="${ivy.publish.version}" status="${ivy.publish.status}">
 				<artifacts-list />
 			</ivy:publish>
 		</sequential>

@@ -1,0 +1,136 @@
+<!--
+  BSD License for IvyRep
+Copyright (c) 2005, JAYASOFT
+All rights reserved.
+
+Redistribution and use in source and binary forms, with or without modification, 
+are permitted provided that the following conditions are met:
+
+    * Redistributions of source code must retain the above copyright notice, 
+      this list of conditions and the following disclaimer.
+    * Redistributions in binary form must reproduce the above copyright notice, 
+      this list of conditions and the following disclaimer in the documentation 
+      and/or other materials provided with the distribution.
+    * Neither the name of JAYASOFT nor the names of its contributors 
+      may be used to endorse or promote products derived from this software 
+      without specific prior written permission.
+
+THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
+ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED 
+WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE 
+DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR 
+ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES 
+(INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; 
+LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON 
+ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT 
+(INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS 
+SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+  -->
+<project name="ivyrep-gencontent" default="gen">
+
+
+	<target name="gen-content" description="generates content.xml from files in repository">
+		<delete file="${repository.dir}/content.xml" />
+		<echo file="${repository.dir}/content.xml" append="true"><![CDATA[<?xml version="1.0" encoding="ISO-8859-1"?>
+<?xml-stylesheet type="text/xsl" href="content.xsl"?>
+			<ivy-rep>]]></echo>
+			<var name="org" value="" />
+			<var name="mod" value="" />
+			<for param="ivyfile">
+				<path>
+					<fileset dir="${repository.dir}" includes="*/*/ivy-*.xml" />
+				</path>
+				<sequential>
+					<var name="lastorg" value="${org}" />
+					<var name="lastmod" value="${mod}" />
+					<propertyregex override="yes" property="rev" input="@{ivyfile}" regexp=".*[\\/]([^\\/]*)[\\/]([^\\/]*)[\\/]ivy-(.*)\.xml" replace="\3" />
+					<propertyregex override="yes" property="mod" input="@{ivyfile}" regexp=".*[\\/]([^\\/]*)[\\/]([^\\/]*)[\\/]ivy-(.*)\.xml" replace="\2" />
+					<propertyregex override="yes" property="org" input="@{ivyfile}" regexp=".*[\\/]([^\\/]*)[\\/]([^\\/]*)[\\/]ivy-(.*)\.xml" replace="\1" />
+					<echo message="${org} ${mod} ${rev} :: @{ivyfile}" />
+					<if>
+						<or>
+							<and>
+								<not>
+									<equals arg1="${lastorg}" arg2="${org}" />
+								</not>
+								<not>
+									<equals arg1="${lastorg}" arg2="" />
+								</not>
+							</and>
+							<and>
+								<not>
+									<equals arg1="${lastmod}" arg2="${mod}" />
+								</not>
+								<not>
+									<equals arg1="${lastmod}" arg2="" />
+								</not>
+							</and>
+						</or>
+						<then>
+							<echo file="${repository.dir}/content.xml" append="true">
+								<![CDATA[
+		</module>]]></echo>
+						</then>
+					</if>
+
+					<if>
+						<and>
+							<not>
+								<equals arg1="${lastorg}" arg2="${org}" />
+							</not>
+							<not>
+								<equals arg1="${lastorg}" arg2="" />
+							</not>
+						</and>
+						<then>
+							<echo file="${repository.dir}/content.xml" append="true">
+								<![CDATA[
+	</organisation>]]></echo>
+						</then>
+					</if>
+
+					<if>
+						<not>
+							<equals arg1="${lastorg}" arg2="${org}" />
+						</not>
+						<then>
+							<echo file="${repository.dir}/content.xml" append="true">
+								<![CDATA[
+	<organisation name="${org}">]]></echo>
+						</then>
+					</if>
+
+					<if>
+						<not>
+							<equals arg1="${lastmod}" arg2="${mod}" />
+						</not>
+						<then>
+							<echo file="${repository.dir}/content.xml" append="true">
+								<![CDATA[
+		<module name="${mod}">]]></echo>
+						</then>
+					</if>
+
+					<echo file="${repository.dir}/content.xml" append="true">
+						<![CDATA[
+			<revision name="${rev}"/>]]></echo>
+				</sequential>
+			</for>
+			<echo file="${repository.dir}/content.xml" append="true">
+				<![CDATA[
+		</module>
+			</organisation>
+		</ivy-rep>
+]]></echo>
+</target>
+
+<target name="gen" depends="gen-content">
+	<fail unless="repository.dir" message="You must set the property repository.dir to the location of the repository!" />
+	<style basedir="." destdir="${repository.dir}" includes="${repository.dir}/content.xml" style="content.xsl" />
+	<copy todir="${repository.dir}">
+		<fileset dir="${basedir}">
+			<include name="content.*" />
+		</fileset>
+	</copy>
+</target>
+</project>

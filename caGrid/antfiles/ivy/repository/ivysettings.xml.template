@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ivysettings>
+  <settings defaultResolver="remote-caGrid-ivy-resolver"/>
+
+  <resolvers>
+    <url name="remote-caGrid-ivy-resolver">
+      <ivy pattern="@BASE_URL@/[organisation]/[module]/ivy-[revision].xml"/>
+      <artifact pattern="@BASE_URL@/[organisation]/[module]/[revision]/[artifact]-[revision].[ext]"/>
+      <artifact pattern="@BASE_URL@/[organisation]/[module]/[revision]/[artifact].[ext]"/>
+    </url>
+  </resolvers>
+
+</ivysettings>

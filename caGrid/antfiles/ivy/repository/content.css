@@ -1,0 +1,120 @@
+/*
+  BSD License for IvyRep
+Copyright (c) 2005, JAYASOFT
+All rights reserved.
+
+Redistribution and use in source and binary forms, with or without modification, 
+are permitted provided that the following conditions are met:
+
+    * Redistributions of source code must retain the above copyright notice, 
+      this list of conditions and the following disclaimer.
+    * Redistributions in binary form must reproduce the above copyright notice, 
+      this list of conditions and the following disclaimer in the documentation 
+      and/or other materials provided with the distribution.
+    * Neither the name of JAYASOFT nor the names of its contributors 
+      may be used to endorse or promote products derived from this software 
+      without specific prior written permission.
+
+THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
+ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED 
+WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE 
+DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR 
+ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES 
+(INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; 
+LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON 
+ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT 
+(INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS 
+SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+*/
+body {
+	font-family:"Trebuchet MS",Verdana,Geneva,Arial,Helvetica,sans-serif;
+	font-size:small; 
+}
+
+div#logo {
+    float: right; 
+    padding-left: 10px; 
+    padding-bottom: 10px; 
+    background: white;
+    text-align: center;
+}
+
+#logo img {
+	border: 0;
+}
+
+div#copyright {
+    text-align: center;
+    margin-top:10px;
+    font-size:small;
+    font-style: italic;
+    font-weight:500;
+}
+
+h1 {
+	font-size:20; 
+    margin-bottom:2px;
+    
+	border-color:#7A9437;
+	border-style:solid;
+	border-width:0 0 3px 0;
+}
+
+table {
+	width:90%;
+	margin:auto;
+}
+
+h2 {
+	font-size:16; 
+	margin-left:20px;
+	margin-bottom:2px;
+}
+
+h2:first-letter {
+	text-transform:uppercase;
+}
+
+.org a:first-letter {
+	text-transform:uppercase;
+}
+
+.org a {
+	color:#7A9437;
+	text-decoration:none;
+}
+
+.org a:hover {
+	background-color:#DEE4CD;
+	color:#7A9437;
+}
+
+.org td {
+	border-color:#7A9437;
+	border-style:solid;
+	border-width:0 0 2px 0;
+}
+
+h3 {
+	font-size:14; 
+	margin-left:40px;
+	margin-bottom:2px;
+}
+
+.mod a {
+	color:black;
+	text-decoration:none;
+}
+
+.mod a:hover {
+	background-color:black;
+	color:white;
+}
+
+.rev div {
+	font-size:12; 
+	padding-left: 10px;
+	padding-right: 5px;
+	
+	float: left;
+}
