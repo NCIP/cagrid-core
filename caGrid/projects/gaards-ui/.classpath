@@ -8,8 +8,6 @@
 	<classpathentry kind="src" path="resources/images/gridgrouper"/>
 	<classpathentry kind="src" path="resources/images/common"/>
 	<classpathentry kind="src" path="resources/images/dorian"/>
-	<classpathentry combineaccessrules="false" kind="src" path="/caGrid-gaards-core"/>
-	<classpathentry combineaccessrules="false" kind="src" path="/caGrid-grape"/>
 	<classpathentry kind="lib" path="ext/dependencies/endorsed/jars/resolver.jar"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="var" path="GT4_LOCATION/lib/addressing-1.0.jar"/>
