@@ -21,7 +21,6 @@
 
 
   <publications>
-    <artifact name="caGrid-${ivy.module}-beans" conf="stubs" type="jar" />
     <artifact name="caGrid-${ivy.module}-processor" conf="processor" type="jar" />
     <artifact name="caGrid-${ivy.module}-style" conf="style" type="jar" />
     <artifact name="caGrid-${ivy.module}-tests" conf="test" type="jar" />
