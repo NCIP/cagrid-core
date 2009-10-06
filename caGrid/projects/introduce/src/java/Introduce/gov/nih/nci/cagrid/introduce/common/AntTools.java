@@ -185,12 +185,12 @@ public class AntTools {
     }
 
 
-    static String getAntLauncherJarLocation(String path) {
+    static String getAntLauncherJarLocation(String path) throws Exception {
         return getAntLauncherJarLocation(path, isWindowsOS());
     }
 
 
-    static String getAntLauncherJarLocation(String path, boolean isWindows) {
+    static String getAntLauncherJarLocation(String path, boolean isWindows) throws Exception {
         String separator = isWindows ? ";" : ":";
         StringTokenizer pathTokenizer = new StringTokenizer(path, separator);
         while (pathTokenizer.hasMoreTokens()) {
@@ -199,7 +199,7 @@ public class AntTools {
                 return pathElement;
             }
         }
-        return null;
+        throw new Exception("Unable to locate ant-launcher in classpath");
     }
 
 
