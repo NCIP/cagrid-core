@@ -1,0 +1,248 @@
+<!-- ======================================================================= -->
+<!-- caGrid SDK (4.2) Query Processor and Style build file                   -->
+<!-- ======================================================================= -->
+<project name="caGrid-sdkQuery42" default="all" basedir=".">
+	<!-- Environment -->
+	<property environment="env" />
+	<property file="${basedir}/project.properties" />
+	<property file="${basedir}/build.properties" />
+	<property name="globus.dir" location="${env.GLOBUS_LOCATION}" />
+
+	<!-- build with debugging information -->
+	<property name="java.debug" value="on" />
+	<!-- enforce java 1.5 compliance at build time -->
+	<property name="java.source" value="1.5" />
+
+	<!-- Information -->
+	<property name="project.name" value="${ant.project.name}" />
+	<property name="project.jar.prefix" value="${project.name}-" />
+	<property name="project.jar.suffix" value="-${project.version}.jar" />
+
+	<!-- build output dirs -->
+	<property name="build.dir" location="build" />
+	<property name="build.style.dest" location="${build.dir}/style/classes" />
+	<property name="build.processor.dest" location="${build.dir}/processor/classes" />
+	<property name="build.jars.dir" location="build/lib" />
+
+	<!-- jar names -->
+	<property name="style.jar.name" value="${project.jar.prefix}style${project.jar.suffix}" />
+	<property name="processor.jar.name" value="${project.jar.prefix}processor${project.jar.suffix}" />
+
+	<!-- jar files -->
+	<property name="style.jar.file" value="${build.jars.dir}/${style.jar.name}" />
+	<property name="processor.jar.file" value="${build.jars.dir}/${processor.jar.name}" />
+
+	<!-- source directories -->
+	<property name="style.src.dir" location="${basedir}/src/java/style" />
+	<property name="processor.src.dir" location="${basedir}/src/java/processor" />
+
+	<!-- libraries -->
+	<property name="lib.dir" location="${basedir}/lib" />
+	<property name="ext.lib.dir" location="${basedir}/ext/dependencies/jars" />
+	<property name="ext.test.lib.dir" location="${basedir}/ext/dependencies/test/jars" />
+	<!-- change me to an ext dir when we get a final SDK 4.2 in the ivy repository 
+	<property name="ext.zip.dir" location="${basedir}/ext/dependencies/zips" />
+	-->
+	<property name="ext.zip.dir" location="${lib.dir}/zips"/>
+
+	<!-- sdk artifacts -->
+	<property name="sdk.zip.file" location="${ext.zip.dir}/sdk42-example-target-trimmed.zip" />
+	<property name="sdk.unpack.dir" location="${build.dir}/sdk-example-project" />
+	<property name="sdk.output.package.dir" location="${sdk.unpack.dir}/target/dist/exploded/output/example/package" />
+	<property name="ext.remote-client.dir" location="${sdk.output.package.dir}/remote-client" />
+	<property name="ext.local-client.dir" location="${sdk.output.package.dir}/local-client" />
+	<property name="ext.remote-client.lib.dir" location="${ext.remote-client.dir}/lib" />
+	<property name="ext.local-client.lib.dir" location="${ext.local-client.dir}/lib" />
+
+	<!-- testing stuff -->
+	<property name="test.dir" location="${basedir}/test" />
+	<property name="test.src.dir" location="${test.dir}/src/java" />
+	<property name="test.classes.dir" location="${build.dir}/test/classes" />
+	<property name="test.logs.dir" location="${test.dir}/logs" />
+	<property name="test.project.jar" location="${build.jars.dir}/${project.jar.prefix}tests${project.jar.suffix}" />
+	<!--
+	<import file="test\test.xml" />
+	-->
+
+	<!-- build file for stub generation -->
+	<property name="ant.build.stubs" location="${globus.dir}/share/globus_wsrf_tools/build-stubs.xml" />
+
+	<!-- style related stuff -->
+	<property name="introduce.extensions.dir" location="../introduce/extensions" />
+	<property name="style.document" location="${basedir}/style/style.xml" />
+	<property name="style.dest.dir" location="${introduce.extensions.dir}/data/styles/cacore41" />
+
+	<!-- SDK remote and local libraries needed for builds -->
+	<!-- TODO: evaluate if these are still the same as for SDK 4.1 -->
+	<property name="style.sdk.remote.lib.names" value="asm.jar, castor-1.0.2.jar, hibernate3.jar, spring.jar, cglib-2.1.3.jar, sdk-client-framework.jar, antlr-2.7.6.jar, acegi-security-1.0.4.jar" />
+	<property name="style.sdk.local.lib.names" value="c3p0-0.9.0.jar, csmapi.jar, dom4j-1.4.jar, ehcache-1.2.2.jar, jta.jar, mysql-connector-java-3.1.13-bin.jar, sdk-core.jar" />
+	
+	<!-- base classpath -->
+	<path id="base.classpath">
+		<fileset dir="${lib.dir}">
+			<include name="**/*.jar" />
+		</fileset>
+		<fileset dir="${ext.remote-client.lib.dir}" includes="${required.sdk.libs}"/>
+		<fileset dir="${globus.dir}/lib">
+			<include name="**/*.jar" />
+			<exclude name="junit.jar" />
+		</fileset>
+	</path>
+
+	<!-- =============================================================== -->
+	<!-- The Build Classpath                                             -->
+	<!-- =============================================================== -->
+	<path id="build.classpath">
+		<path refid="base.classpath"/>
+		<fileset dir="${ext.lib.dir}">
+			<include name="**/*.jar" />
+			<!-- castor is supplied from the remote-client -->
+			<exclude name="castor-0.9.9.jar" />
+		</fileset>
+		<pathelement location="${build.beans.dest}" />
+	</path>
+
+
+	<!-- =============================================================== -->
+	<!-- The Test Classpath                                              -->
+	<!-- =============================================================== -->
+	<path id="test.classpath">
+		<path refid="base.classpath"/>
+		<fileset dir="${ext.test.lib.dir}" excludes="${build.classpath}">
+			<include name="**/*.jar" />
+		</fileset>
+		<pathelement location="${test.resources.jar}" />
+		<pathelement location="${build.processor.dest}" />
+		<pathelement location="${build.style.dest}" />
+	</path>
+
+
+	<!-- unpacks the caCORE SDK client zip files -->
+	<target name="unpackSdk">
+		<mkdir dir="${sdk.unpack.dir}" />
+		<unzip src="${sdk.zip.file}" dest="${sdk.unpack.dir}" />
+	</target>
+
+
+	<!-- creates output directories -->
+	<target name="init" depends="unpackSdk">
+		<mkdir dir="${build.dir}" />
+		<mkdir dir="${build.jars.dir}" />
+		<mkdir dir="${build.style.dest}" />
+		<mkdir dir="${build.processor.dest}" />
+		<mkdir dir="${test.classes.dir}" />
+	</target>
+	
+
+	<!-- compiles the style source code -->
+	<target name="compileStyle" depends="init, compileProcessor">
+		<javac fork="true" memorymaximumsize="128m" srcdir="${style.src.dir}" destdir="${build.style.dest}" debug="${java.debug}" source="${java.source}">
+			<classpath refid="build.classpath" />
+			<classpath>
+				<pathelement location="${build.processor.dest}" />
+			</classpath>
+			<include name="**/*.java" />
+		</javac>
+	</target>
+
+
+	<!-- compiles the query processor source code -->
+	<target name="compileProcessor" depends="init">
+		<javac fork="true" memorymaximumsize="128m" srcdir="${processor.src.dir}" destdir="${build.processor.dest}" debug="${java.debug}" source="${java.source}">
+			<classpath refid="build.classpath" />
+			<include name="**/*.java" />
+		</javac>
+	</target>
+
+
+	<!-- compiles the testing source code -->
+	<target name="compileTests" depends="compileProcessor, compileStyle">
+		<javac fork="true" memorymaximumsize="128m" srcdir="${test.src.dir}" destdir="${test.classes.dir}" debug="${java.debug}" source="${java.source}">
+			<classpath refid="test.classpath"/>
+			<include name="**/*.java" />
+		</javac>
+	</target>
+	
+
+	<!-- jars the style -->
+	<target name="jarStyle" depends="compileStyle" description="Builds the style jar file">
+		<jar destfile="${style.jar.file}">
+			<fileset dir="${build.style.dest}">
+				<include name="**/*.class" />
+			</fileset>
+			<fileset dir="${style.src.dir}">
+				<include name="**/*.java" />
+				<!-- include the gif for the SDK logo -->
+				<include name="**/*.gif" />
+			</fileset>
+		</jar>
+	</target>
+
+
+	<!-- jars the processor -->
+	<target name="jarProcessor" depends="compileProcessor" description="Builds the processor jar file">
+		<jar destfile="${processor.jar.file}">
+			<fileset dir="${build.processor.dest}">
+				<include name="**/*.class" />
+			</fileset>
+			<fileset dir="${processor.src.dir}">
+				<include name="**/*.java" />
+			</fileset>
+		</jar>
+	</target>
+
+
+	<!-- jars the tests -->
+	<target name="jarTests" depends="compileTests" description="Builds the testing jar file">
+		<jar destfile="${test.project.jar}">
+			<fileset dir="${test.classes.dir}">
+				<include name="**/*.class" />
+			</fileset>
+			<fileset dir="${test.src.dir}">
+				<include name="**/*"/>
+			</fileset>
+		</jar>
+	</target>
+
+
+	<!-- installs the service style -->
+	<target name="installServiceStyle" description="Installs the SDK 4.2 data service style">
+		<echo message="Installing Data Service Style SDK v 4.2" />
+		<!-- some properties for the install -->
+		<!-- make requisite directories -->
+		<delete dir="${style.dest.dir}" />
+		<mkdir dir="${style.dest.dir}" />
+		<mkdir dir="${style.dest.dir}/lib" />
+		<!-- copy in the style.xml file -->
+		<copy file="${style.document}" todir="${style.dest.dir}" />
+		<!-- copy in the style's jar file -->
+		<copy todir="${style.dest.dir}/lib">
+			<!-- the style itself and query processor -->
+			<fileset dir="${build.jars.dir}">
+				<include name="*.jar" />
+			</fileset>
+			<!-- copy the SDK common style jar file -->
+			<fileset dir="${ext.lib.dir}">
+				<include name="*sdkstyle.jar" />
+			</fileset>
+			<!-- copy the dependencies -->
+			<fileset dir="${lib.dir}">
+				<include name="*.jar" />
+			</fileset>
+		</copy>
+	</target>
+
+
+	<!-- allows style to be installed by top-level build -->
+	<target name="installIntroduceExtensions" depends="installServiceStyle" />
+
+
+	<!-- removes all build output -->
+	<target name="clean">
+		<delete dir="${build.dir}" />
+	</target>
+
+
+	<!-- build and jar everything -->
+	<target name="all" depends="jarProcessor, jarStyle, jarTests" description="Builds and jars all the classes in the project" />
+</project>
