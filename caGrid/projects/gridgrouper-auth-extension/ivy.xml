@@ -11,6 +11,7 @@
   <configurations>
     <conf name="target_grid" visibility="private"/>
     <conf name="impl" visibility="private" extends="full"/>
+    <conf name="service" visibility="private"/>
     <conf name="schema.gridgrouper" visibility="private"/>
 
     <!-- Public Configurations-->
@@ -37,5 +38,6 @@
     <dependency rev="latest.integration" org="caGrid" name="gridgrouper" conf="schema.gridgrouper->schemas"/>
     <dependency rev="latest.integration" org="caGrid" name="introduce"
       conf="gridgrouperauth->extension,serviceTools"/> 
+    <dependency rev="latest.integration" org="caGrid" name="gridgrouper" conf="service->client"/>  
   </dependencies>
 </ivy-module>

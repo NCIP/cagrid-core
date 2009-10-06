@@ -24,6 +24,7 @@
 	<target name="do.resolve-dependencies" depends="pre.resolve-dependencies">
 		<ivy:retrieve conf="${ivy.resolve.configurations}" pattern="${ivy.resolved.artifacts.pattern}" sync="true" />
 		<ivy:retrieve conf="impl" pattern="${ivy.resolved.artifacts.dir}/dependencies/impl/[type]s/[originalname](.[ext])" sync="true" type="jar" />
+		<ivy:retrieve conf="service" pattern="${ivy.resolved.artifacts.dir}/dependencies/service/[type]s/[originalname](.[ext])" sync="true" type="jar" />
 		<ivy:retrieve conf="schema.gridgrouper" pattern="${ivy.resolved.artifacts.dir}/dependencies/xsd/gridgrouper/[type]/[artifact](.[ext])" sync="true" type="xsd" />			
 	</target>
 
