@@ -7,6 +7,7 @@ import gov.nih.nci.cagrid.introduce.codegen.provider.ProviderTools;
 import gov.nih.nci.cagrid.introduce.common.CommonTools;
 import gov.nih.nci.cagrid.introduce.common.ServiceInformation;
 import gov.nih.nci.cagrid.introduce.common.SpecificServiceInformation;
+import gov.nih.nci.cagrid.introduce.templates.RunToolsTemplate;
 import gov.nih.nci.cagrid.introduce.templates.client.ClientConfigTemplate;
 import gov.nih.nci.cagrid.introduce.templates.client.ServiceClientBaseTemplate;
 import gov.nih.nci.cagrid.introduce.templates.client.ServiceClientTemplate;
@@ -27,11 +28,11 @@ import org.jdom.Element;
 import org.jdom.Namespace;
 
 
-public class Introduce_1_2__1_3_Upgrader extends IntroduceUpgraderBase {
+public class Introduce_1_2__1_4_Upgrader extends IntroduceUpgraderBase {
 
-    public Introduce_1_2__1_3_Upgrader(IntroduceUpgradeStatus status, ServiceInformation serviceInformation,
+    public Introduce_1_2__1_4_Upgrader(IntroduceUpgradeStatus status, ServiceInformation serviceInformation,
         String servicePath) throws Exception {
-        super(status, serviceInformation, servicePath, "1.2", "1.3");
+        super(status, serviceInformation, servicePath, "1.2", "1.4");
     }
 
 
@@ -79,11 +80,20 @@ public class Introduce_1_2__1_3_Upgrader extends IntroduceUpgraderBase {
             + File.separator + "build.xml.OLD"));
         Utils.copyFile(new File(getServicePath() + File.separator + "build-deploy.xml"), new File(getServicePath()
             + File.separator + "build-deploy.xml.OLD"));
+        Utils.copyFile(new File(getServicePath() + File.separator + "run-tools.xml"), new File(getServicePath()
+            + File.separator + "run-tools.xml.OLD"));
         Utils.copyFile(new File("." + File.separator + "skeleton" + File.separator + "build.xml"), new File(
             getServicePath() + File.separator + "build.xml"));
         Utils.copyFile(new File("." + File.separator + "skeleton" + File.separator + "build-deploy.xml"), new File(
             getServicePath() + File.separator + "build-deploy.xml"));
-        getStatus().addDescriptionLine("replaced build.xml and build-deploy.xml with new version");
+        RunToolsTemplate runToolsT = new RunToolsTemplate();
+        String runToolsS = runToolsT.generate(new SpecificServiceInformation(getServiceInformation(),
+            getServiceInformation().getServices().getService(0)));
+        File runToolsF = new File(getServicePath() + File.separator + "run-tools.xml");
+        FileWriter runToolsFW = new FileWriter(runToolsF);
+        runToolsFW.write(runToolsS);
+        runToolsFW.close();
+        getStatus().addDescriptionLine("replaced run-tools.xml, build.xml, and build-deploy.xml with new version");
 
         upgradeJars();
         fixDevBuildDeploy();
@@ -93,11 +103,13 @@ public class Introduce_1_2__1_3_Upgrader extends IntroduceUpgraderBase {
 
         getStatus().setStatus(StatusBase.UPGRADE_OK);
     }
-    
-    protected void fixDevBuildDeploy() throws Exception{
-        //if this service was upgraded from 1.1 to 1.2 the dev build deploy will have a bug
-        //preventing the undeployTomcat target to work
-        
+
+
+    protected void fixDevBuildDeploy() throws Exception {
+        // if this service was upgraded from 1.1 to 1.2 the dev build deploy
+        // will have a bug
+        // preventing the undeployTomcat target to work
+
         StringBuffer devsb = Utils.fileToStringBuffer(new File(getServicePath() + File.separator
             + "dev-build-deploy.xml"));
         String newFileString = devsb.toString();
@@ -105,8 +117,9 @@ public class Introduce_1_2__1_3_Upgrader extends IntroduceUpgraderBase {
         FileWriter fw = new FileWriter(new File(getServicePath() + File.separator + "dev-build-deploy.xml"));
         fw.write(newFileString);
         fw.close();
-        
-        getStatus().addDescriptionLine("fixed typo error created during upgrade from 1.1 to 1.2 with target undeployTomcat");
+
+        getStatus().addDescriptionLine(
+            "fixed typo error created during upgrade from 1.1 to 1.2 with target undeployTomcat");
 
     }
 
