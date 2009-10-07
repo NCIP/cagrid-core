@@ -25,6 +25,8 @@ import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.JTextField;
 import javax.swing.border.TitledBorder;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 
@@ -195,6 +197,7 @@ public class ProjectSelectionPanel extends AbstractWizardPanel {
         NotifyingButtonGroup group = new NotifyingButtonGroup();
         group.addGroupSelectionListener(new GroupSelectionListener() {
             public void selectionChanged(ButtonModel previousSelection, ButtonModel currentSelection) {
+                configuration.setLocalApi(getLocalApiRadioButton().isSelected());
                 setLocalRemoteComponentsEnabled();
                 validateInput();
             }
@@ -280,6 +283,11 @@ public class ProjectSelectionPanel extends AbstractWizardPanel {
         if (applicationNameTextField == null) {
             applicationNameTextField = new JTextField();
             applicationNameTextField.getDocument().addDocumentListener(textFieldChangeListener);
+            applicationNameTextField.getDocument().addDocumentListener(new DocumentChangeAdapter() {
+                public void documentEdited(DocumentEvent e) {
+                    configuration.setApplicationName(getApplicationNameTextField().getText());                    
+                }
+            });
         }
         return applicationNameTextField;
     }
@@ -309,6 +317,11 @@ public class ProjectSelectionPanel extends AbstractWizardPanel {
             remoteClientDirTextField = new JTextField();
             remoteClientDirTextField.setEditable(false);
             remoteClientDirTextField.getDocument().addDocumentListener(textFieldChangeListener);
+            remoteClientDirTextField.getDocument().addDocumentListener(new DocumentChangeAdapter() {
+                public void documentEdited(DocumentEvent e) {
+                    configuration.setRemoteClientDir(getRemoteClientDirTextField().getText());                    
+                }
+            });
         }
         return remoteClientDirTextField;
     }
@@ -357,6 +370,11 @@ public class ProjectSelectionPanel extends AbstractWizardPanel {
             localClientDirTextField = new JTextField();
             localClientDirTextField.setEditable(false);
             localClientDirTextField.getDocument().addDocumentListener(textFieldChangeListener);
+            localClientDirTextField.getDocument().addDocumentListener(new DocumentChangeAdapter() {
+                public void documentEdited(DocumentEvent e) {
+                    configuration.setLocalClientDir(getLocalClientDirTextField().getText());
+                }
+            });
         }
         return localClientDirTextField;
     }
@@ -439,7 +457,9 @@ public class ProjectSelectionPanel extends AbstractWizardPanel {
             gridBagConstraints6.gridy = 0;
             localApiPanel = new JPanel();
             localApiPanel.setLayout(new GridBagLayout());
-            localApiPanel.setBorder(BorderFactory.createTitledBorder(null, "Local API", TitledBorder.DEFAULT_JUSTIFICATION, TitledBorder.DEFAULT_POSITION, new Font("Dialog", Font.BOLD, 12), new Color(51, 51, 51)));
+            localApiPanel.setBorder(BorderFactory.createTitledBorder(
+                null, "Local API", TitledBorder.DEFAULT_JUSTIFICATION, 
+                TitledBorder.DEFAULT_POSITION, new Font("Dialog", Font.BOLD, 12), new Color(51, 51, 51)));
             localApiPanel.add(getLocalApiRadioButton(), gridBagConstraints6);
             localApiPanel.add(getLocalClientDirLabel(), gridBagConstraints7);
             localApiPanel.add(getLocalClientDirTextField(), gridBagConstraints8);
@@ -509,7 +529,9 @@ public class ProjectSelectionPanel extends AbstractWizardPanel {
             gridBagConstraints10.gridy = 0;
             remoteApiPanel = new JPanel();
             remoteApiPanel.setLayout(new GridBagLayout());
-            remoteApiPanel.setBorder(BorderFactory.createTitledBorder(null, "Remote API", TitledBorder.DEFAULT_JUSTIFICATION, TitledBorder.DEFAULT_POSITION, new Font("Dialog", Font.BOLD, 12), new Color(51, 51, 51)));
+            remoteApiPanel.setBorder(BorderFactory.createTitledBorder(
+                null, "Remote API", TitledBorder.DEFAULT_JUSTIFICATION, 
+                TitledBorder.DEFAULT_POSITION, new Font("Dialog", Font.BOLD, 12), new Color(51, 51, 51)));
             remoteApiPanel.add(getRemoteApiRadioButton(), gridBagConstraints10);
             remoteApiPanel.add(getRemoteClientDirLabel(), gridBagConstraints11);
             remoteApiPanel.add(getRemoteClientDirTextField(), gridBagConstraints12);
@@ -574,6 +596,11 @@ public class ProjectSelectionPanel extends AbstractWizardPanel {
         if (hostnameTextField == null) {
             hostnameTextField = new JTextField();
             hostnameTextField.getDocument().addDocumentListener(textFieldChangeListener);
+            hostnameTextField.getDocument().addDocumentListener(new DocumentChangeAdapter() {
+                public void documentEdited(DocumentEvent e) {
+                    configuration.setApplicationHostname(getHostnameTextField().getText());
+                }
+            });
         }
         return hostnameTextField;
     }
@@ -602,6 +629,17 @@ public class ProjectSelectionPanel extends AbstractWizardPanel {
         if (portTextField == null) {
             portTextField = new JTextField();
             portTextField.getDocument().addDocumentListener(textFieldChangeListener);
+            portTextField.getDocument().addDocumentListener(new DocumentChangeAdapter() {
+                public void documentEdited(DocumentEvent e) {
+                    Integer port = null;
+                    try {
+                        port = Integer.valueOf(getPortTextField().getText());
+                    } catch (Exception ex) {
+                        // silent, since users could enter random stuff here, but validation will catch it
+                    }
+                    configuration.setApplicationPort(port);
+                }
+            });
         }
         return portTextField;
     }
@@ -616,7 +654,12 @@ public class ProjectSelectionPanel extends AbstractWizardPanel {
         if (useHttpsCheckBox == null) {
             useHttpsCheckBox = new JCheckBox();
             useHttpsCheckBox.setText("Use HTTPS For Connections");
+            useHttpsCheckBox.addChangeListener(new ChangeListener() {
+                public void stateChanged(ChangeEvent e) {
+                    configuration.setUseHttps(getUseHttpsCheckBox().isSelected());
+                }
+            });
         }
         return useHttpsCheckBox;
     }
-}  //  @jve:decl-index=0:visual-constraint="20,4"
+}
