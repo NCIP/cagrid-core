@@ -69,8 +69,8 @@
 	<classpathentry kind="var" path="GT4_LOCATION/lib/xmlsec.jar"/>
 	<classpathentry kind="lib" path="ext/dependencies/jars/caGrid-core-1.4-dev.jar"/>
 	<classpathentry kind="lib" path="ext/dependencies/jars/caGrid-core-tests-1.4-dev.jar"/>
-	<classpathentry kind="lib" path="ext/dependencies/jars/caGrid-Introduce-core-1.4-dev.jar"/>
-	<classpathentry kind="lib" path="ext/dependencies/jars/caGrid-Introduce-core-tests-1.4-dev.jar" />
+	<classpathentry kind="lib" path="ext/dependencies/jars/caGrid-Introduce-core-1.4-dev.jar" sourcepath="/caGrid-introduce"/>
+	<classpathentry kind="lib" path="ext/dependencies/jars/caGrid-Introduce-core-tests-1.4-dev.jar" sourcepath="/caGrid-introduce"/>
 	<classpathentry kind="lib" path="ext/dependencies/jars/caGrid-Introduce-portal-1.4-dev.jar"/>
 	<classpathentry kind="lib" path="ext/dependencies/jars/caGrid-Introduce-portal-tests-1.4-dev.jar"/>
 	<classpathentry kind="lib" path="ext/dependencies/jars/caGrid-testing-core-1.4-dev.jar"/>
@@ -83,5 +83,6 @@
 	<classpathentry kind="lib" path="ext/dependencies/jars/junit-4.4.jar"/>
 	<classpathentry kind="lib" path="ext/dependencies/jars/relaxngDatatype.jar"/>
 	<classpathentry kind="lib" path="ext/dependencies/jars/xsom14.jar"/>
+	<classpathentry kind="var" path="ANT_HOME/lib/ant-launcher.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
