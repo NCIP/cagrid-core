@@ -14,6 +14,7 @@ import org.cagrid.data.test.creation.DataTestCaseInfo;
 public class SDK4ServiceStyleSystemTestConstants {
     // the service style's internal name
     public static final String STYLE_NAME = "caCORE SDK v 4.0";
+    public static final String STYLE_VERSION = "1.4";
     
     // system property to locate the Introduce base directory
     public static final String INTRODUCE_DIR_PROPERTY = "introduce.base.dir";
