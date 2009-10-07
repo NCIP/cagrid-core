@@ -99,8 +99,15 @@ public class ProjectSelectionPanel extends AbstractWizardPanel {
 
 
     public void update() {
-        // TODO Auto-generated method stub
-
+        getApplicationNameTextField().setText(configuration.getApplicationName());
+        getLocalClientDirTextField().setText(configuration.getLocalClientDir());
+        getRemoteClientDirTextField().setText(configuration.getRemoteClientDir());
+        getHostnameTextField().setText(configuration.getApplicationHostname());
+        getPortTextField().setText(configuration.getApplicationPort() != null ? 
+            configuration.getApplicationPort().toString() : null);
+        getUseHttpsCheckBox().setSelected(configuration.isUseHttps());
+        getLocalApiRadioButton().setSelected(configuration.isLocalApi());
+        getRemoteApiRadioButton().setSelected(!configuration.isLocalApi());
     }
     
     

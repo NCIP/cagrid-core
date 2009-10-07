@@ -31,7 +31,6 @@ public class ProjectSelectionConfigurationStep extends AbstractStyleConfiguratio
 
     public void applyConfiguration() throws Exception {
         // TODO Auto-generated method stub
-
     }
     
     
