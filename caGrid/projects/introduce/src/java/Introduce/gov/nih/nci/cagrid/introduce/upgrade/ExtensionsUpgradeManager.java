@@ -1,10 +1,14 @@
 package gov.nih.nci.cagrid.introduce.upgrade;
 
+import gov.nih.nci.cagrid.introduce.IntroduceConstants;
 import gov.nih.nci.cagrid.introduce.beans.extension.ExtensionDescription;
 import gov.nih.nci.cagrid.introduce.beans.extension.ExtensionType;
 import gov.nih.nci.cagrid.introduce.beans.extension.UpgradeDescriptionType;
 import gov.nih.nci.cagrid.introduce.common.ServiceInformation;
+import gov.nih.nci.cagrid.introduce.extension.ExtensionRemovalException;
+import gov.nih.nci.cagrid.introduce.extension.ExtensionTools;
 import gov.nih.nci.cagrid.introduce.extension.ExtensionsLoader;
+import gov.nih.nci.cagrid.introduce.extension.ServiceExtensionRemover;
 import gov.nih.nci.cagrid.introduce.upgrade.common.ExtensionUpgraderI;
 import gov.nih.nci.cagrid.introduce.upgrade.common.IntroduceUpgradeStatus;
 
@@ -25,6 +29,9 @@ public class ExtensionsUpgradeManager {
 
 
     public boolean needsUpgrading() {
+        if (needsRemoving()) {
+            return true;
+        }
         ExtensionType[] extensions = serviceInformation.getServiceDescriptor().getExtensions().getExtension();
         if (extensions != null) {
             for (int extensionI = 0; extensionI < extensions.length; extensionI++) {
@@ -44,7 +51,69 @@ public class ExtensionsUpgradeManager {
         return false;
     }
 
+
+    private boolean needsRemoving() {
+
+        ExtensionType[] extensions = serviceInformation.getServiceDescriptor().getExtensions().getExtension();
+        if (extensions != null) {
+            for (int extensionI = 0; extensionI < extensions.length; extensionI++) {
+                ExtensionType extension = extensions[extensionI];
+                ExtensionDescription extDescription = ExtensionsLoader.getInstance().getExtension(extension.getName());
+                if (extDescription.getServiceExtensionDescription().getShouldBeRemoved()) {
+                    return true;
+                }
+            }
+            return false;
+        }
+        return false;
+    }
+
+
+    private void remove(IntroduceUpgradeStatus status) {
+        List<String> toBeRemoved = new ArrayList<String>();
+
+        List<ExtensionType> newExtensions =  new ArrayList<ExtensionType>();
+        String extensionsPropertyString = "";
+        ExtensionType[] extensions = serviceInformation.getServiceDescriptor().getExtensions().getExtension();
+        if (extensions != null) {
+            for (int extensionI = 0; extensionI < extensions.length; extensionI++) {
+                ExtensionType extension = extensions[extensionI];
+                ExtensionDescription extDescription = ExtensionsLoader.getInstance().getExtension(extension.getName());
+                if (extDescription.getServiceExtensionDescription().getShouldBeRemoved()) {
+                    toBeRemoved.add(extension.getName());
+                    if (extDescription.getServiceExtensionDescription().getServiceExtensionRemover() != null) {
+                        try {
+                            ServiceExtensionRemover remover = ExtensionTools.getServiceExtensionRemover(extension.getName());
+                            if (remover != null) {
+                                remover.remove(ExtensionsLoader.getInstance().getServiceExtension(extension.getName()), this.serviceInformation);
+                            }
+                        } catch (ExtensionRemovalException e) {
+                            e.printStackTrace();
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    }
+                } else {
+                    newExtensions.add(extension);
+                    if(extensionsPropertyString.length()>0){
+                        extensionsPropertyString += ",";
+                    }
+                    extensionsPropertyString += extension.getName();
+                }
+            }
+            ExtensionType[] newExtensionsArr = new ExtensionType[newExtensions.size()];
+            System.arraycopy(newExtensions.toArray(), 0, newExtensionsArr, 0, newExtensionsArr.length);
+            serviceInformation.getServiceDescriptor().getExtensions().setExtension(newExtensionsArr);
+            serviceInformation.getIntroduceServiceProperties().setProperty(
+                IntroduceConstants.INTRODUCE_SKELETON_EXTENSIONS, extensionsPropertyString);
+        }
+
+    }
+
+
     public void upgrade(IntroduceUpgradeStatus status) throws Exception {
+        remove(status);
+
         List error = new ArrayList();
 
         ExtensionType[] extensions = serviceInformation.getServiceDescriptor().getExtensions().getExtension();
