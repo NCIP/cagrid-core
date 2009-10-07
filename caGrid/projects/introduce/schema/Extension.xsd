@@ -180,6 +180,9 @@
 		</xs:sequence>
 		<xs:attribute name="displayName" type="xs:string" use="required"/>
 		<xs:attribute name="name" type="xs:string" use="required"/>
+		<xs:attribute name="isDeprecated" type="xs:boolean" use="optional"/>
+		<xs:attribute name="deprecatedDescription" type="xs:string" use="optional"/>
+		<xs:attribute name="shouldBeRemoved" type="xs:boolean" use="optional"/>
 	</xs:complexType>
 	<xs:element name="AuthorizationExtensionDescription"
 		type="AuthorizationExtensionDescriptionType"/>

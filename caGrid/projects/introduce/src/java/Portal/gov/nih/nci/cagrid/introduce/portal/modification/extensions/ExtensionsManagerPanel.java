@@ -148,7 +148,9 @@ public class ExtensionsManagerPanel extends JPanel {
             List extensionDescriptors = ExtensionsLoader.getInstance().getServiceExtensions();
             for (int i = 0; i < extensionDescriptors.size(); i++) {
                 ServiceExtensionDescriptionType ex = (ServiceExtensionDescriptionType) extensionDescriptors.get(i);
-                serviceStyleSeletor.addItem(ex.getDisplayName());
+                if (ex.getShouldBeRemoved()==null || !ex.getShouldBeRemoved()) {
+                    serviceStyleSeletor.addItem(ex.getDisplayName());
+                }
             }
         }
         return serviceStyleSeletor;
@@ -182,7 +184,8 @@ public class ExtensionsManagerPanel extends JPanel {
                     }
                     info.getIntroduceServiceProperties().setProperty(IntroduceConstants.INTRODUCE_SKELETON_EXTENSIONS,
                         extS);
-                    JOptionPane.showMessageDialog(GridApplication.getContext().getApplication(), "A save should be performed after removing an extension in order to deactivate the extension");
+                    JOptionPane.showMessageDialog(GridApplication.getContext().getApplication(),
+                        "A save should be performed after removing an extension in order to deactivate the extension");
                 }
             });
         }
@@ -214,7 +217,9 @@ public class ExtensionsManagerPanel extends JPanel {
                         }
                         info.getIntroduceServiceProperties().setProperty(
                             IntroduceConstants.INTRODUCE_SKELETON_EXTENSIONS, extS);
-                        JOptionPane.showMessageDialog(GridApplication.getContext().getApplication(), "After adding a new extension a save should be perfomred in order for the extension to be active.");
+                        JOptionPane
+                            .showMessageDialog(GridApplication.getContext().getApplication(),
+                                "After adding a new extension a save should be perfomred in order for the extension to be active.");
                     }
                 }
             });

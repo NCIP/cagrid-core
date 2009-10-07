@@ -20,7 +20,9 @@ import gov.nih.nci.cagrid.introduce.common.AntTools;
 import gov.nih.nci.cagrid.introduce.common.CommonTools;
 import gov.nih.nci.cagrid.introduce.common.ConfigurationUtil;
 import gov.nih.nci.cagrid.introduce.common.ServiceInformation;
+import gov.nih.nci.cagrid.introduce.extension.ExtensionTools;
 import gov.nih.nci.cagrid.introduce.extension.ExtensionsLoader;
+import gov.nih.nci.cagrid.introduce.extension.ServiceExtensionRemover;
 import gov.nih.nci.cagrid.introduce.portal.common.IntroduceLookAndFeel;
 import gov.nih.nci.cagrid.introduce.portal.extension.ServiceModificationUIPanel;
 import gov.nih.nci.cagrid.introduce.portal.modification.discovery.NamespaceTypeDiscoveryComponent;
@@ -310,12 +312,9 @@ public class ModificationViewer extends ApplicationComponent {
     private void initialize(BusyDialogRunnable dialog) throws Exception {
         if (this.methodsDirectory != null) {
             try {
-                // validate the extensions exist
-                File servicePropertiesFile = new File(this.methodsDirectory.getAbsolutePath() + File.separator
-                    + IntroduceConstants.INTRODUCE_PROPERTIES_FILE);
-                Properties introduceServiceProperties = new Properties();
 
-                introduceServiceProperties.load(new FileInputStream(servicePropertiesFile));
+                this.info = new ServiceInformation(this.methodsDirectory);
+                Properties introduceServiceProperties = this.info.getIntroduceServiceProperties();
 
                 String extensionsProp = introduceServiceProperties
                     .getProperty(IntroduceConstants.INTRODUCE_SKELETON_EXTENSIONS);
@@ -332,7 +331,6 @@ public class ModificationViewer extends ApplicationComponent {
                         ModificationViewer.this.dispose();
                         this.beenDisposed = true;
                     }
-
                 }
 
             } catch (Exception e1) {
@@ -377,6 +375,107 @@ public class ModificationViewer extends ApplicationComponent {
                             if (dialog != null) {
                                 dialog.setProgressText("Upgrading service");
                             }
+
+                            // check extensions for deprecation or removal.
+                            String extensionsProp = info.getIntroduceServiceProperties().getProperty(
+                                IntroduceConstants.INTRODUCE_SKELETON_EXTENSIONS);
+                            StringTokenizer strtok = new StringTokenizer(extensionsProp, ",", false);
+                            strtok = new StringTokenizer(extensionsProp, ",", false);
+                            String newExtension = "";
+                            while (strtok.hasMoreElements()) {
+                                String extensionName = strtok.nextToken();
+                                extensionName = extensionName.trim();
+                                ServiceExtensionDescriptionType extDtype = ExtensionsLoader.getInstance()
+                                    .getServiceExtension(extensionName);
+
+                                if (extDtype.getShouldBeRemoved().booleanValue()) {
+                                    if (extDtype.getServiceExtensionRemover() != null) {
+                                        PromptButtonDialog diag2 = new PromptButtonDialog(
+                                            GridApplication.getContext().getApplication(),
+                                            "Ignore?",
+                                            new String[]{
+                                                    "",
+                                                    "WARNING: This service uses the "
+                                                        + extensionName
+                                                        + "  and this extension is no longer supported and is scheduled to be removed.",
+                                                    "Ignore: Ignore this extension in the future but do not remove it.",
+                                                    "Remove: Let this extension remove itself from the service if it can.",
+                                                    ""}, new String[]{"Ignore", "Remove"}, "Remove");
+                                        GridApplication.getContext().showDialog(diag2);
+                                        String result2 = diag2.getSelection();
+                                        if (result2.equals("Ignore")) {
+                                            // need to remove this extension
+                                            // from
+                                            // the extensions list
+                                            ExtensionType[] modifiedExtensionsArray = new ExtensionType[info
+                                                .getExtensions().getExtension().length - 1];
+                                            int kept = 0;
+                                            for (int i = 0; i < info.getExtensions().getExtension().length; i++) {
+                                                ExtensionType extType = info.getExtensions().getExtension(i);
+                                                if (!extType.getName().equals(extensionName)) {
+                                                    modifiedExtensionsArray[kept++] = extType;
+                                                }
+                                            }
+                                        } else if (result2.equals("Remove")) {
+                                            // need to call the remover and
+                                            // remove
+                                            // the extension
+                                            ServiceExtensionRemover remover = ExtensionTools
+                                                .getServiceExtensionRemover(extensionName);
+                                            if (remover != null) {
+                                                remover.remove(ExtensionsLoader.getInstance().getServiceExtension(
+                                                    extensionName), info);
+                                            }
+                                            ExtensionType[] modifiedExtensionsArray = new ExtensionType[info
+                                                .getExtensions().getExtension().length - 1];
+                                            int kept = 0;
+                                            for (int i = 0; i < info.getExtensions().getExtension().length; i++) {
+                                                ExtensionType extType = info.getExtensions().getExtension(i);
+                                                if (!extType.getName().equals(extensionName)) {
+                                                    modifiedExtensionsArray[kept++] = extType;
+                                                }
+                                            }
+                                        }
+                                    } else {
+                                        JOptionPane
+                                            .showMessageDialog(
+                                                GridApplication.getContext().getApplication(),
+                                                "WARNING: This service uses the "
+                                                    + extensionName
+                                                    + "  and this extension is no longer supported and will no longer be processed");
+
+                                        ExtensionType[] modifiedExtensionsArray = new ExtensionType[info
+                                            .getExtensions().getExtension().length - 1];
+                                        int kept = 0;
+                                        for (int i = 0; i < info.getExtensions().getExtension().length; i++) {
+                                            ExtensionType extType = info.getExtensions().getExtension(i);
+                                            if (!extType.getName().equals(extensionName)) {
+                                                modifiedExtensionsArray[kept++] = extType;
+                                            }
+                                        }
+                                    }
+
+                                    if (newExtension.length() > 0) {
+                                        newExtension += ",";
+                                    }
+                                    newExtension += extensionName;
+
+                                } else if (extDtype.getIsDeprecated().booleanValue()) {
+                                    JOptionPane
+                                        .showMessageDialog(
+                                            GridApplication.getContext().getApplication(),
+                                            "WARNING: This service uses the "
+                                                + extensionName
+                                                + "  and this extension is deprecated and may not be supported by future versions of Introduce.");
+                                }
+
+                            }
+
+                            info.getIntroduceServiceProperties().setProperty(
+                                IntroduceConstants.INTRODUCE_SKELETON_EXTENSIONS, newExtension);
+                            info.persistInformation();
+                            info = null;
+
                             UpgradeStatus status = upgrader.upgrade();
                             logger.info("SERVICE UPGRADE STATUS:\n" + status);
                             int answer = UpgradeStatusView.showUpgradeStatusView(status);

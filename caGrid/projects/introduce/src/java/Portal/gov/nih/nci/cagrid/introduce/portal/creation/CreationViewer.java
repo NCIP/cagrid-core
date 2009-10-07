@@ -67,7 +67,7 @@ public class CreationViewer extends CreationViewerBaseComponent {
 
     private JPanel inputPanel = null;
 
-    private JPanel mainPanel = null;  //  @jve:decl-index=0:visual-constraint="10,267"
+    private JPanel mainPanel = null; // @jve:decl-index=0:visual-constraint="10,267"
 
     private JPanel buttonPanel = null;
 
@@ -117,21 +117,21 @@ public class CreationViewer extends CreationViewerBaseComponent {
 
     private ValidationResultModel validationModel = new DefaultValidationResultModel();
 
-	private JTabbedPane mainTabbedPane = null;
+    private JTabbedPane mainTabbedPane = null;
 
-	private JPanel advancedPanel = null;
+    private JPanel advancedPanel = null;
 
-	private JPanel resourceOptionsConfigPanel = null;
+    private JPanel resourceOptionsConfigPanel = null;
 
-	private JCheckBox lifetimeResource = null;
+    private JCheckBox lifetimeResource = null;
 
-	private JCheckBox persistantResource = null;
+    private JCheckBox persistantResource = null;
 
-	private JCheckBox notificationResource = null;
+    private JCheckBox notificationResource = null;
 
-	private JCheckBox secureResource = null;
+    private JCheckBox secureResource = null;
 
-	private JCheckBox resourceProperty = null;
+    private JCheckBox resourceProperty = null;
 
 
     public CreationViewer() {
@@ -191,8 +191,10 @@ public class CreationViewer extends CreationViewerBaseComponent {
             result.add(new SimpleValidationMessage(SERVICE_DIR + " must not be blank.", Severity.ERROR, SERVICE_DIR));
         } else {
             File file = new File(this.getDir().getText());
-            if(file.exists()){
-                result.add(new SimpleValidationMessage(SERVICE_DIR + " already exists and will be removed when new skeleton is created.", Severity.WARNING, SERVICE_DIR));
+            if (file.exists()) {
+                result.add(new SimpleValidationMessage(SERVICE_DIR
+                    + " already exists and will be removed when new skeleton is created.", Severity.WARNING,
+                    SERVICE_DIR));
             }
         }
 
@@ -201,7 +203,8 @@ public class CreationViewer extends CreationViewerBaseComponent {
         } else if (!CommonTools.isValidServiceName(this.getService().getText())) {
             result.add(new SimpleValidationMessage(SERVICE_NAME
                 + " is not valid.  Service name must be a java compatible class name ("
-                + CommonTools.ALLOWED_JAVA_CLASS_REGEX + ") and not contain any java reserved words.", Severity.ERROR, SERVICE_NAME));
+                + CommonTools.ALLOWED_JAVA_CLASS_REGEX + ") and not contain any java reserved words.", Severity.ERROR,
+                SERVICE_NAME));
         }
 
         if (!ValidationUtils.isNotBlank(this.getServicePackage().getText())) {
@@ -210,7 +213,8 @@ public class CreationViewer extends CreationViewerBaseComponent {
         } else if (!CommonTools.isValidPackageName(this.getServicePackage().getText())) {
             result.add(new SimpleValidationMessage(SERVICE_PACKAGE
                 + " is not valid.  Service package must be in valid java package format ("
-                + CommonTools.ALLOWED_JAVA_PACKAGE_REGEX + ")  and not contain any java reserved words.", Severity.ERROR, SERVICE_PACKAGE));
+                + CommonTools.ALLOWED_JAVA_PACKAGE_REGEX + ")  and not contain any java reserved words.",
+                Severity.ERROR, SERVICE_PACKAGE));
         }
 
         if (!ValidationUtils.isNotBlank(this.getNamespaceDomain().getText())) {
@@ -408,28 +412,28 @@ public class CreationViewer extends CreationViewerBaseComponent {
             createButton.setIcon(IntroduceLookAndFeel.getCreateServiceIcon());
             createButton.addActionListener(new java.awt.event.ActionListener() {
                 public void actionPerformed(java.awt.event.ActionEvent e) {
-                    
+
                     List resourceOptions = new ArrayList();
                     resourceOptions.add(IntroduceConstants.INTRODUCE_MAIN_RESOURCE);
                     resourceOptions.add(IntroduceConstants.INTRODUCE_SINGLETON_RESOURCE);
                     resourceOptions.add(IntroduceConstants.INTRODUCE_IDENTIFIABLE_RESOURCE);
-                    if(getLifetimeResource().isSelected()){
-                    	resourceOptions.add(IntroduceConstants.INTRODUCE_LIFETIME_RESOURCE);
+                    if (getLifetimeResource().isSelected()) {
+                        resourceOptions.add(IntroduceConstants.INTRODUCE_LIFETIME_RESOURCE);
                     }
-                    if(getPersistantResource().isSelected()){
-                    	resourceOptions.add(IntroduceConstants.INTRODUCE_PERSISTENT_RESOURCE);
+                    if (getPersistantResource().isSelected()) {
+                        resourceOptions.add(IntroduceConstants.INTRODUCE_PERSISTENT_RESOURCE);
                     }
-                    if(getResourceProperty().isSelected()){
-                    	resourceOptions.add(IntroduceConstants.INTRODUCE_RESOURCEPROPETIES_RESOURCE);
+                    if (getResourceProperty().isSelected()) {
+                        resourceOptions.add(IntroduceConstants.INTRODUCE_RESOURCEPROPETIES_RESOURCE);
                     }
-                    if(getNotificationResource().isSelected()){
-                    	resourceOptions.add(IntroduceConstants.INTRODUCE_NOTIFICATION_RESOURCE);
+                    if (getNotificationResource().isSelected()) {
+                        resourceOptions.add(IntroduceConstants.INTRODUCE_NOTIFICATION_RESOURCE);
                     }
-                    if(getSecureResource().isSelected()){
-                    	resourceOptions.add(IntroduceConstants.INTRODUCE_SECURE_RESOURCE);
+                    if (getSecureResource().isSelected()) {
+                        resourceOptions.add(IntroduceConstants.INTRODUCE_SECURE_RESOURCE);
                     }
                     createService(getDir().getText(), getService().getText(), getServicePackage().getText(),
-                        getNamespaceDomain().getText(),resourceOptions, getExtensionsTable().getExtensionNamesAsList());
+                        getNamespaceDomain().getText(), resourceOptions, getExtensionsTable().getExtensionNamesAsList());
 
                     try {
                         ResourceManager.setStateProperty(ResourceManager.LAST_DIRECTORY, getDir().getText());
@@ -457,7 +461,9 @@ public class CreationViewer extends CreationViewerBaseComponent {
             List extensionDescriptors = ExtensionsLoader.getInstance().getServiceExtensions();
             for (int i = 0; i < extensionDescriptors.size(); i++) {
                 ServiceExtensionDescriptionType ex = (ServiceExtensionDescriptionType) extensionDescriptors.get(i);
-                serviceStyleSeletor.addItem(ex.getDisplayName());
+                if (ex.getShouldBeRemoved()==null || !ex.getShouldBeRemoved().booleanValue()) {
+                    serviceStyleSeletor.addItem(ex.getDisplayName());
+                }
             }
         }
         return serviceStyleSeletor;
@@ -529,8 +535,7 @@ public class CreationViewer extends CreationViewerBaseComponent {
         if (dir == null) {
             dir = new JTextField();
             String home = System.getProperty("user.home");
-            dir.setText(home + File.separator
-                + ConfigurationUtil.getIntroduceServiceDefaults().getServiceName());
+            dir.setText(home + File.separator + ConfigurationUtil.getIntroduceServiceDefaults().getServiceName());
             dir.getDocument().addDocumentListener(new DocumentListener() {
                 public void changedUpdate(DocumentEvent e) {
                     updateSuggestedNamespace();
@@ -627,16 +632,17 @@ public class CreationViewer extends CreationViewerBaseComponent {
     private JTextField getNamespaceDomain() {
         if (namespaceDomain == null) {
             namespaceDomain = new JTextField();
-            namespaceDomain
-                .setText(ConfigurationUtil.getIntroduceServiceDefaults().getServiceNamespace());
+            namespaceDomain.setText(ConfigurationUtil.getIntroduceServiceDefaults().getServiceNamespace());
             namespaceDomain.getDocument().addDocumentListener(new DocumentListener() {
-                public void changedUpdate(DocumentEvent e) {          
+                public void changedUpdate(DocumentEvent e) {
                     validateInput();
                 }
 
-                public void removeUpdate(DocumentEvent e) {              
+
+                public void removeUpdate(DocumentEvent e) {
                     validateInput();
                 }
+
 
                 public void insertUpdate(DocumentEvent e) {
                     validateInput();
@@ -896,166 +902,168 @@ public class CreationViewer extends CreationViewerBaseComponent {
     }
 
 
-	/**
-	 * This method initializes mainTabbedPane	
-	 * 	
-	 * @return javax.swing.JTabbedPane	
-	 */
-	private JTabbedPane getMainTabbedPane() {
-		if (mainTabbedPane == null) {
-			mainTabbedPane = new JTabbedPane();
-			mainTabbedPane.addTab("Settings", null, new IconFeedbackPanel(this.validationModel, getInputPanel()), null);
-			mainTabbedPane.addTab("Advanced", null, getAdvancedPanel(), null);
-		}
-		return mainTabbedPane;
-	}
+    /**
+     * This method initializes mainTabbedPane
+     * 
+     * @return javax.swing.JTabbedPane
+     */
+    private JTabbedPane getMainTabbedPane() {
+        if (mainTabbedPane == null) {
+            mainTabbedPane = new JTabbedPane();
+            mainTabbedPane.addTab("Settings", null, new IconFeedbackPanel(this.validationModel, getInputPanel()), null);
+            mainTabbedPane.addTab("Advanced", null, getAdvancedPanel(), null);
+        }
+        return mainTabbedPane;
+    }
 
 
-	/**
-	 * This method initializes advancedPanel	
-	 * 	
-	 * @return javax.swing.JPanel	
-	 */
-	private JPanel getAdvancedPanel() {
-		if (advancedPanel == null) {
-			GridBagConstraints gridBagConstraints23 = new GridBagConstraints();
-			gridBagConstraints23.gridx = 0;
-			gridBagConstraints23.fill = GridBagConstraints.BOTH;
-			gridBagConstraints23.gridy = 0;
-			GridBagConstraints gridBagConstraints = new GridBagConstraints();
-			gridBagConstraints.gridx = 1;
-			gridBagConstraints.fill = GridBagConstraints.BOTH;
-			gridBagConstraints.weightx = 1.0D;
-			gridBagConstraints.weighty = 1.0D;
-			gridBagConstraints.gridy = 0;
-			advancedPanel = new JPanel();
-			advancedPanel.setLayout(new GridBagLayout());
-			advancedPanel.add(getServiceStylePanel(), gridBagConstraints);
-			advancedPanel.add(getResourceOptionsConfigPanel(), gridBagConstraints23);
-		}
-		return advancedPanel;
-	}
+    /**
+     * This method initializes advancedPanel
+     * 
+     * @return javax.swing.JPanel
+     */
+    private JPanel getAdvancedPanel() {
+        if (advancedPanel == null) {
+            GridBagConstraints gridBagConstraints23 = new GridBagConstraints();
+            gridBagConstraints23.gridx = 0;
+            gridBagConstraints23.fill = GridBagConstraints.BOTH;
+            gridBagConstraints23.gridy = 0;
+            GridBagConstraints gridBagConstraints = new GridBagConstraints();
+            gridBagConstraints.gridx = 1;
+            gridBagConstraints.fill = GridBagConstraints.BOTH;
+            gridBagConstraints.weightx = 1.0D;
+            gridBagConstraints.weighty = 1.0D;
+            gridBagConstraints.gridy = 0;
+            advancedPanel = new JPanel();
+            advancedPanel.setLayout(new GridBagLayout());
+            advancedPanel.add(getServiceStylePanel(), gridBagConstraints);
+            advancedPanel.add(getResourceOptionsConfigPanel(), gridBagConstraints23);
+        }
+        return advancedPanel;
+    }
 
 
-	/**
-	 * This method initializes resourceOptionsConfigPanel	
-	 * 	
-	 * @return javax.swing.JPanel	
-	 */
-	private JPanel getResourceOptionsConfigPanel() {
-		if (resourceOptionsConfigPanel == null) {
-			GridBagConstraints gridBagConstraints201 = new GridBagConstraints();
-			gridBagConstraints201.gridwidth = 2;
-			gridBagConstraints201.gridy = 2;
-			gridBagConstraints201.fill = GridBagConstraints.HORIZONTAL;
-			gridBagConstraints201.gridx = 0;
-			GridBagConstraints gridBagConstraints61 = new GridBagConstraints();
-			gridBagConstraints61.anchor = GridBagConstraints.NORTHWEST;
-			gridBagConstraints61.gridy = 1;
-			gridBagConstraints61.gridx = 1;
-			GridBagConstraints gridBagConstraints181 = new GridBagConstraints();
-			gridBagConstraints181.anchor = GridBagConstraints.NORTHWEST;
-			gridBagConstraints181.gridy = 0;
-			gridBagConstraints181.gridx = 1;
-			GridBagConstraints gridBagConstraints171 = new GridBagConstraints();
-			gridBagConstraints171.anchor = GridBagConstraints.NORTHWEST;
-			gridBagConstraints171.gridy = 1;
-			gridBagConstraints171.gridx = 0;
-			GridBagConstraints gridBagConstraints51 = new GridBagConstraints();
-			gridBagConstraints51.anchor = GridBagConstraints.NORTHWEST;
-			gridBagConstraints51.gridy = 0;
-			gridBagConstraints51.gridx = 0;
-			resourceOptionsConfigPanel = new JPanel();
-			resourceOptionsConfigPanel.setLayout(new GridBagLayout());
-			resourceOptionsConfigPanel.setBorder(BorderFactory.createTitledBorder(null, "Resource Framework Options", TitledBorder.DEFAULT_JUSTIFICATION, TitledBorder.DEFAULT_POSITION, null, IntroduceLookAndFeel.getPanelLabelColor()));
-			resourceOptionsConfigPanel.add(getLifetimeResource(), gridBagConstraints51);
-			resourceOptionsConfigPanel.add(getPersistantResource(), gridBagConstraints171);
-			resourceOptionsConfigPanel.add(getNotificationResource(), gridBagConstraints181);
-			resourceOptionsConfigPanel.add(getSecureResource(), gridBagConstraints61);
-			resourceOptionsConfigPanel.add(getResourceProperty(), gridBagConstraints201);
-		}
-		return resourceOptionsConfigPanel;
-	}
+    /**
+     * This method initializes resourceOptionsConfigPanel
+     * 
+     * @return javax.swing.JPanel
+     */
+    private JPanel getResourceOptionsConfigPanel() {
+        if (resourceOptionsConfigPanel == null) {
+            GridBagConstraints gridBagConstraints201 = new GridBagConstraints();
+            gridBagConstraints201.gridwidth = 2;
+            gridBagConstraints201.gridy = 2;
+            gridBagConstraints201.fill = GridBagConstraints.HORIZONTAL;
+            gridBagConstraints201.gridx = 0;
+            GridBagConstraints gridBagConstraints61 = new GridBagConstraints();
+            gridBagConstraints61.anchor = GridBagConstraints.NORTHWEST;
+            gridBagConstraints61.gridy = 1;
+            gridBagConstraints61.gridx = 1;
+            GridBagConstraints gridBagConstraints181 = new GridBagConstraints();
+            gridBagConstraints181.anchor = GridBagConstraints.NORTHWEST;
+            gridBagConstraints181.gridy = 0;
+            gridBagConstraints181.gridx = 1;
+            GridBagConstraints gridBagConstraints171 = new GridBagConstraints();
+            gridBagConstraints171.anchor = GridBagConstraints.NORTHWEST;
+            gridBagConstraints171.gridy = 1;
+            gridBagConstraints171.gridx = 0;
+            GridBagConstraints gridBagConstraints51 = new GridBagConstraints();
+            gridBagConstraints51.anchor = GridBagConstraints.NORTHWEST;
+            gridBagConstraints51.gridy = 0;
+            gridBagConstraints51.gridx = 0;
+            resourceOptionsConfigPanel = new JPanel();
+            resourceOptionsConfigPanel.setLayout(new GridBagLayout());
+            resourceOptionsConfigPanel.setBorder(BorderFactory.createTitledBorder(null, "Resource Framework Options",
+                TitledBorder.DEFAULT_JUSTIFICATION, TitledBorder.DEFAULT_POSITION, null, IntroduceLookAndFeel
+                    .getPanelLabelColor()));
+            resourceOptionsConfigPanel.add(getLifetimeResource(), gridBagConstraints51);
+            resourceOptionsConfigPanel.add(getPersistantResource(), gridBagConstraints171);
+            resourceOptionsConfigPanel.add(getNotificationResource(), gridBagConstraints181);
+            resourceOptionsConfigPanel.add(getSecureResource(), gridBagConstraints61);
+            resourceOptionsConfigPanel.add(getResourceProperty(), gridBagConstraints201);
+        }
+        return resourceOptionsConfigPanel;
+    }
 
 
-	/**
-	 * This method initializes lifetimeResource	
-	 * 	
-	 * @return javax.swing.JCheckBox	
-	 */
-	private JCheckBox getLifetimeResource() {
-		if (lifetimeResource == null) {
-			lifetimeResource = new JCheckBox();
-			lifetimeResource.setToolTipText("add support for the WS-Lifetime specification");
-			lifetimeResource.setHorizontalAlignment(SwingConstants.LEADING);
-			lifetimeResource.setSelected(false);
-			lifetimeResource.setText(IntroduceConstants.INTRODUCE_LIFETIME_RESOURCE);
-			lifetimeResource.setHorizontalTextPosition(SwingConstants.TRAILING);
-		}
-		return lifetimeResource;
-	}
+    /**
+     * This method initializes lifetimeResource
+     * 
+     * @return javax.swing.JCheckBox
+     */
+    private JCheckBox getLifetimeResource() {
+        if (lifetimeResource == null) {
+            lifetimeResource = new JCheckBox();
+            lifetimeResource.setToolTipText("add support for the WS-Lifetime specification");
+            lifetimeResource.setHorizontalAlignment(SwingConstants.LEADING);
+            lifetimeResource.setSelected(false);
+            lifetimeResource.setText(IntroduceConstants.INTRODUCE_LIFETIME_RESOURCE);
+            lifetimeResource.setHorizontalTextPosition(SwingConstants.TRAILING);
+        }
+        return lifetimeResource;
+    }
 
 
-	/**
-	 * This method initializes persistantResource	
-	 * 	
-	 * @return javax.swing.JCheckBox	
-	 */
-	private JCheckBox getPersistantResource() {
-		if (persistantResource == null) {
-			persistantResource = new JCheckBox();
-			persistantResource.setToolTipText("enables resources to save state to disk and recover from disk");
-			persistantResource.setSelected(false);
-			persistantResource.setText(IntroduceConstants.INTRODUCE_PERSISTENT_RESOURCE);
-		}
-		return persistantResource;
-	}
+    /**
+     * This method initializes persistantResource
+     * 
+     * @return javax.swing.JCheckBox
+     */
+    private JCheckBox getPersistantResource() {
+        if (persistantResource == null) {
+            persistantResource = new JCheckBox();
+            persistantResource.setToolTipText("enables resources to save state to disk and recover from disk");
+            persistantResource.setSelected(false);
+            persistantResource.setText(IntroduceConstants.INTRODUCE_PERSISTENT_RESOURCE);
+        }
+        return persistantResource;
+    }
 
 
-	/**
-	 * This method initializes notificationResource	
-	 * 	
-	 * @return javax.swing.JCheckBox	
-	 */
-	private JCheckBox getNotificationResource() {
-		if (notificationResource == null) {
-			notificationResource = new JCheckBox();
-			notificationResource.setSelected(false);
-			notificationResource.setToolTipText("add support for WS-Notification");
-			notificationResource.setText(IntroduceConstants.INTRODUCE_NOTIFICATION_RESOURCE);
-		}
-		return notificationResource;
-	}
+    /**
+     * This method initializes notificationResource
+     * 
+     * @return javax.swing.JCheckBox
+     */
+    private JCheckBox getNotificationResource() {
+        if (notificationResource == null) {
+            notificationResource = new JCheckBox();
+            notificationResource.setSelected(false);
+            notificationResource.setToolTipText("add support for WS-Notification");
+            notificationResource.setText(IntroduceConstants.INTRODUCE_NOTIFICATION_RESOURCE);
+        }
+        return notificationResource;
+    }
 
 
-	/**
-	 * This method initializes secureResource	
-	 * 	
-	 * @return javax.swing.JCheckBox	
-	 */
-	private JCheckBox getSecureResource() {
-		if (secureResource == null) {
-			secureResource = new JCheckBox();
-			secureResource.setSelected(false);
-			secureResource.setToolTipText("enables security to be added to this resource type");
-			secureResource.setText(IntroduceConstants.INTRODUCE_SECURE_RESOURCE);
-		}
-		return secureResource;
-	}
+    /**
+     * This method initializes secureResource
+     * 
+     * @return javax.swing.JCheckBox
+     */
+    private JCheckBox getSecureResource() {
+        if (secureResource == null) {
+            secureResource = new JCheckBox();
+            secureResource.setSelected(false);
+            secureResource.setToolTipText("enables security to be added to this resource type");
+            secureResource.setText(IntroduceConstants.INTRODUCE_SECURE_RESOURCE);
+        }
+        return secureResource;
+    }
 
 
-	/**
-	 * This method initializes resourceProperty	
-	 * 	
-	 * @return javax.swing.JCheckBox	
-	 */
-	private JCheckBox getResourceProperty() {
-		if (resourceProperty == null) {
-			resourceProperty = new JCheckBox();
-			resourceProperty.setSelected(true);
-			resourceProperty.setToolTipText("enables access/query/set operations for the resource properties");
-			resourceProperty.setText("resource property access");
-		}
-		return resourceProperty;
-	}
-}  //  @jve:decl-index=0:visual-constraint="10,10"
+    /**
+     * This method initializes resourceProperty
+     * 
+     * @return javax.swing.JCheckBox
+     */
+    private JCheckBox getResourceProperty() {
+        if (resourceProperty == null) {
+            resourceProperty = new JCheckBox();
+            resourceProperty.setSelected(true);
+            resourceProperty.setToolTipText("enables access/query/set operations for the resource properties");
+            resourceProperty.setText("resource property access");
+        }
+        return resourceProperty;
+    }
+} // @jve:decl-index=0:visual-constraint="10,10"

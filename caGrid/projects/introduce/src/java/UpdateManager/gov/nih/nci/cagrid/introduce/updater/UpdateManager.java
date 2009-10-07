@@ -36,7 +36,7 @@ public class UpdateManager {
     public UpdateManager(SoftwareType software) throws Exception {
         this.software = software;
         if (software == null) {
-            throw new Exception("SofwareType cannot be null");
+            throw new Exception("SoftwareType cannot be null");
         }
     }
 

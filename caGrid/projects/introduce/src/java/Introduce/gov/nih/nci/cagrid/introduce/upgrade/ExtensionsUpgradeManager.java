@@ -44,7 +44,6 @@ public class ExtensionsUpgradeManager {
         return false;
     }
 
-
     public void upgrade(IntroduceUpgradeStatus status) throws Exception {
         List error = new ArrayList();
 
