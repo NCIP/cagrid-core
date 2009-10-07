@@ -14,11 +14,30 @@
     <!-- Public Configurations-->
     <conf name="processor" visibility="public"/>
     <conf name="test" visibility="public"/>
+    <conf name="cql2-examples" visibility="public"/>
   </configurations>
 
 
   <publications>
     <artifact name="caGrid-${ivy.module}-processor" conf="processor" type="jar"/>
+    
+    <!--  CQL 2 example queries -->
+    <artifact conf="cql2-examples" type="xml" name="cql2Examples/allAttributePredicates"/>
+    <artifact conf="cql2-examples" type="xml" name="cql2Examples/countDistinctAttributeOfTarget"/>
+    <artifact conf="cql2-examples" type="xml" name="cql2Examples/distinctAttributeOfTarget"/>
+    <artifact conf="cql2-examples" type="xml" name="cql2Examples/maxDistinctAttributeOfTarget"/>
+    <artifact conf="cql2-examples" type="xml" name="cql2Examples/minDistinctAttributeOfTarget"/>
+    <artifact conf="cql2-examples" type="xml" name="cql2Examples/namedAttributesOfTarget"/>
+    <artifact conf="cql2-examples" type="xml" name="cql2Examples/nestedGroups"/>
+    <artifact conf="cql2-examples" type="xml" name="cql2Examples/plainTargetObject"/>
+    <artifact conf="cql2-examples" type="xml" name="cql2Examples/targetWithAssociation"/>
+    <artifact conf="cql2-examples" type="xml" name="cql2Examples/targetWithAssociationWithAttribute"/>
+    <artifact conf="cql2-examples" type="xml" name="cql2Examples/targetWithNestedAssociation"/>
+    <artifact conf="cql2-examples" type="xml" name="cql2Examples/targetWithNestedAssociationWithAttribute"/>
+    <artifact conf="cql2-examples" type="xml" name="cql2Examples/targetWithSubclassedAssociation"/>
+    <artifact conf="cql2-examples" type="xml" name="cql2Examples/topLevelStringAttribute"/>
+    <artifact conf="cql2-examples" type="xml" name="models/sdk40example_DomainModel"/>
+    <artifact conf="cql2-examples" type="xml" name="models/sdk411example_DomainModel"/>
   </publications>
   
 

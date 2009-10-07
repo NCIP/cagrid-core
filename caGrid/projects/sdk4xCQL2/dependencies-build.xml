@@ -14,5 +14,15 @@
 		<ivy:retrieve conf="impl-test" pattern="${ivy.resolved.artifacts.dir}/dependencies/test/jars/[originalname](.[ext])" sync="true" type="jar" />
 		<ivy:retrieve conf="processor" pattern="${ivy.resolved.artifacts.dir}/dependencies/jars/[originalname](.[ext])" sync="true" type="jar" />
 	</target>
+	
+	<!-- Overloaded to support multiple artifact patterns  -->
+	<target name="do.publish" depends="pre.publish">
+		<publish-artifacts>
+			<artifacts-list>
+				<artifacts pattern="${ivy.generated.artifacts.dir}/lib/[artifact]-[revision].[ext]" />
+				<artifacts pattern="${basedir}/test/docs/[artifact].[ext]" />
+			</artifacts-list>
+		</publish-artifacts>
+	</target>
 </project>
 
