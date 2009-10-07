@@ -2,6 +2,11 @@ package org.cagrid.data.sdkquery42.style.wizard.config;
 
 import gov.nih.nci.cagrid.introduce.common.ServiceInformation;
 
+import java.io.File;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.Set;
+
 /**
  * ProjectSelectionConfigurationStep
  * Configures basic aspects of the service such as application name, local / remote
@@ -31,12 +36,66 @@ public class ProjectSelectionConfigurationStep extends AbstractStyleConfiguratio
     
     
     public boolean isLocalClientDirValid() {
-        return false;
+        boolean valid = false;
+        File dir = new File(getLocalClientDir());
+        if (dir.exists() && dir.isDirectory()) {
+            File confDir = new File(dir, "conf");
+            File libDir = new File(dir, "lib");
+            boolean confValid = false;
+            boolean libValid = false;
+            if (confDir.exists() && confDir.isDirectory()) {
+                File[] confFiles = confDir.listFiles();
+                Set<String> filesMustExist = new HashSet<String>();
+                Collections.addAll(filesMustExist, SdkProjectExpectedFiles.getExpectedLocalClientConfFiles());
+                for (File f : confFiles) {
+                    filesMustExist.remove(f.getName());
+                }
+                confValid = filesMustExist.size() == 0;
+            }
+            if (libDir.exists() && libDir.isDirectory()) {
+                File[] libFiles = libDir.listFiles();
+                Set<String> filesMustExist = new HashSet<String>();
+                Collections.addAll(filesMustExist, SdkProjectExpectedFiles.getExpectedLocalClientLibFiles(getApplicationName()));
+                for (File f : libFiles) {
+                    filesMustExist.remove(f.getName());
+                }
+                libValid = filesMustExist.size() == 0;
+            }
+            valid = confValid && libValid;
+        }
+        return valid;
     }
     
     
     public boolean isRemoteClientDirValid() {
-        return false;
+        boolean valid = false;
+        File dir = new File(getRemoteClientDir());
+        if (dir.exists() && dir.isDirectory()) {
+            File confDir = new File(dir, "conf");
+            File libDir = new File(dir, "lib");
+            boolean confValid = false;
+            boolean libValid = false;
+            if (confDir.exists() && confDir.isDirectory()) {
+                File[] confFiles = confDir.listFiles();
+                Set<String> filesMustExist = new HashSet<String>();
+                Collections.addAll(filesMustExist, SdkProjectExpectedFiles.getExpectedRemoteClientConfFiles());
+                for (File f : confFiles) {
+                    filesMustExist.remove(f.getName());
+                }
+                confValid = filesMustExist.size() == 0;
+            }
+            if (libDir.exists() && libDir.isDirectory()) {
+                File[] libFiles = libDir.listFiles();
+                Set<String> filesMustExist = new HashSet<String>();
+                Collections.addAll(filesMustExist, SdkProjectExpectedFiles.getExpectedRemoteClientLibFiles(getApplicationName()));
+                for (File f : libFiles) {
+                    filesMustExist.remove(f.getName());
+                }
+                libValid = filesMustExist.size() == 0;
+            }
+            valid = confValid && libValid;
+        }
+        return valid;
     }
 
 

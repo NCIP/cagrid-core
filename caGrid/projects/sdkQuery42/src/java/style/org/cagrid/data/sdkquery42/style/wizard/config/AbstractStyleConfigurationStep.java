@@ -1,12 +1,14 @@
 package org.cagrid.data.sdkquery42.style.wizard.config;
 
 import gov.nih.nci.cagrid.common.Utils;
+import gov.nih.nci.cagrid.data.DataServiceConstants;
 import gov.nih.nci.cagrid.data.ExtensionDataUtils;
 import gov.nih.nci.cagrid.data.extension.Data;
 import gov.nih.nci.cagrid.introduce.IntroduceConstants;
 import gov.nih.nci.cagrid.introduce.beans.ServiceDescription;
 import gov.nih.nci.cagrid.introduce.beans.extension.ExtensionType;
 import gov.nih.nci.cagrid.introduce.beans.extension.ExtensionTypeExtensionData;
+import gov.nih.nci.cagrid.introduce.common.CommonTools;
 import gov.nih.nci.cagrid.introduce.common.ServiceInformation;
 
 import java.io.File;
@@ -72,5 +74,12 @@ public abstract class AbstractStyleConfigurationStep {
         }
         ExtensionDataUtils.storeExtensionData(dataExtension.getExtensionData(), data);
         Utils.serializeDocument(serviceModelFile.getAbsolutePath(), serviceDesc, IntroduceConstants.INTRODUCE_SKELETON_QNAME);
+    }
+    
+    
+    protected void setServiceProperty(String shortKey, String value, boolean fromEtc) {
+        ServiceDescription desc = getServiceInformation().getServiceDescriptor();
+        CommonTools.setServiceProperty(desc,
+            DataServiceConstants.QUERY_PROCESSOR_CONFIG_PREFIX + shortKey, value, fromEtc);
     }
 }
