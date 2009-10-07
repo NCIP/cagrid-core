@@ -2,41 +2,58 @@ package org.cagrid.data.sdkquery42.style.wizard;
 
 import gov.nih.nci.cagrid.common.portal.DocumentChangeAdapter;
 import gov.nih.nci.cagrid.common.portal.validation.IconFeedbackPanel;
+import gov.nih.nci.cagrid.data.ui.GroupSelectionListener;
+import gov.nih.nci.cagrid.data.ui.NotifyingButtonGroup;
 import gov.nih.nci.cagrid.data.ui.wizard.AbstractWizardPanel;
 import gov.nih.nci.cagrid.introduce.beans.extension.ServiceExtensionDescriptionType;
 import gov.nih.nci.cagrid.introduce.common.ServiceInformation;
 
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.Font;
+import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.GridLayout;
+import java.awt.Insets;
 
+import javax.swing.BorderFactory;
+import javax.swing.ButtonModel;
+import javax.swing.JButton;
+import javax.swing.JCheckBox;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JRadioButton;
+import javax.swing.JTextField;
+import javax.swing.border.TitledBorder;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 
+import org.cagrid.data.sdkquery42.style.wizard.config.ProjectSelectionConfigurationStep;
+import org.cagrid.grape.utils.CompositeErrorDialog;
+
+import com.jgoodies.validation.Severity;
 import com.jgoodies.validation.ValidationResult;
 import com.jgoodies.validation.ValidationResultModel;
+import com.jgoodies.validation.message.SimpleValidationMessage;
 import com.jgoodies.validation.util.DefaultValidationResultModel;
+import com.jgoodies.validation.util.ValidationUtils;
 import com.jgoodies.validation.view.ValidationComponentUtils;
-import java.awt.Dimension;
-import javax.swing.JRadioButton;
-import javax.swing.JLabel;
-import javax.swing.JTextField;
-import javax.swing.JButton;
-import java.awt.GridBagConstraints;
-import java.awt.Insets;
-import javax.swing.BorderFactory;
-import javax.swing.border.TitledBorder;
-import java.awt.Font;
-import java.awt.Color;
-import javax.swing.JCheckBox;
 
 public class ProjectSelectionPanel extends AbstractWizardPanel {
     
+    // keys for validation
+    private static final String KEY_APPLICATION_NAME = "Application Name";
+    private static final String KEY_REMOTE_CLIENT_DIR = "Remote Client directory";
+    private static final String KEY_LOCAL_CLIENT_DIR = "Local Client directory";
+    private static final String KEY_HOSTNAME = "Application Hostname";
+    private static final String KEY_PORT = "Application Port";
+    
     private ValidationResultModel validationModel = null;
     private DocumentListener textFieldChangeListener = null;
+    private ProjectSelectionConfigurationStep configuration = null;
     
-    private IconFeedbackPanel validationPanel = null;  //  @jve:decl-index=0:visual-constraint="24,2"
-    private JPanel mainPanel = null;  //  @jve:decl-index=0:visual-constraint="18,35"
+    private IconFeedbackPanel validationPanel = null;
+    private JPanel mainPanel = null;
     private JLabel applicationNameLabel = null;
     private JTextField applicationNameTextField = null;
     private JLabel remoteClientDirLabel = null;
@@ -55,9 +72,11 @@ public class ProjectSelectionPanel extends AbstractWizardPanel {
     private JLabel portLabel = null;
     private JTextField portTextField = null;
     private JCheckBox useHttpsCheckBox = null;
+    
     public ProjectSelectionPanel(ServiceExtensionDescriptionType extensionDescription, ServiceInformation info) {
         super(extensionDescription, info);
         this.validationModel = new DefaultValidationResultModel();
+        this.configuration = new ProjectSelectionConfigurationStep(info);
         this.textFieldChangeListener = new DocumentChangeAdapter() {
             public void documentEdited(DocumentEvent e) {
                 validateInput();                
@@ -84,11 +103,16 @@ public class ProjectSelectionPanel extends AbstractWizardPanel {
     
     
     public void movingNext() {
-        // TODO: when user clicks "next", run the configuration step to copy files around, etc
+        try {
+            configuration.applyConfiguration();
+        } catch (Exception e) {
+            CompositeErrorDialog.showErrorDialog("Error configuring: " + e.getMessage(), e);
+        }
     }
     
     
     private void initialize() {
+        initLocalRemoteGroup();
         setLayout(new GridLayout(1, 1));
         add(getValidationPanel());
         configureValidation();
@@ -96,7 +120,11 @@ public class ProjectSelectionPanel extends AbstractWizardPanel {
     
     
     private void configureValidation() {
-        // ValidationComponentUtils.setMessageKey(getPortTextField(), KEY_PORT_NUMBER);
+        ValidationComponentUtils.setMessageKey(getApplicationNameTextField(), KEY_APPLICATION_NAME);
+        ValidationComponentUtils.setMessageKey(getRemoteClientDirTextField(), KEY_REMOTE_CLIENT_DIR);
+        ValidationComponentUtils.setMessageKey(getLocalClientDirTextField(), KEY_LOCAL_CLIENT_DIR);
+        ValidationComponentUtils.setMessageKey(getHostnameTextField(), KEY_HOSTNAME);
+        ValidationComponentUtils.setMessageKey(getPortTextField(), KEY_PORT);
         
         validateInput();
         updateComponentTreeSeverity();
@@ -105,6 +133,49 @@ public class ProjectSelectionPanel extends AbstractWizardPanel {
     
     private void validateInput() {
         ValidationResult result = new ValidationResult();
+        
+        if (ValidationUtils.isBlank(getApplicationNameTextField().getText())) {
+            result.add(new SimpleValidationMessage(
+                "An application name must be specified", Severity.ERROR, KEY_APPLICATION_NAME));
+        }
+        if (getLocalApiRadioButton().isSelected()) {
+            String localClientDir = getLocalClientDirTextField().getText();
+            if (ValidationUtils.isBlank(localClientDir)) {
+                result.add(new SimpleValidationMessage(
+                    "The local-client directory must be specified", Severity.ERROR, KEY_LOCAL_CLIENT_DIR));
+            } else if (!configuration.isLocalClientDirValid()) {
+                result.add(new SimpleValidationMessage(
+                    "The specified local-client directory does not appear to be valid", Severity.ERROR, KEY_LOCAL_CLIENT_DIR));
+            }
+        } else {
+            String remoteClientDir = getRemoteClientDirTextField().getText();
+            if (ValidationUtils.isBlank(remoteClientDir)) {
+                result.add(new SimpleValidationMessage(
+                    "The remote-client directory must be specified", Severity.ERROR, KEY_REMOTE_CLIENT_DIR));
+            } else if (!configuration.isRemoteClientDirValid()) {
+                result.add(new SimpleValidationMessage(
+                    "The specified remote-client directory does not appear to be valid", Severity.ERROR, KEY_REMOTE_CLIENT_DIR));
+            }
+            if (ValidationUtils.isBlank(getHostnameTextField().getText())) {
+                result.add(new SimpleValidationMessage(
+                    "The host name of the remote application service must be specified", Severity.ERROR, KEY_HOSTNAME));
+            }
+            if (ValidationUtils.isBlank(getPortTextField().getText())) {
+                result.add(new SimpleValidationMessage(
+                    "The port number of the remote application service must be specified", Severity.ERROR, KEY_PORT));
+            } else {
+                SimpleValidationMessage portError = new SimpleValidationMessage(
+                    "The port number must be a valid integer between 0 and 65535", Severity.ERROR, KEY_PORT);
+                try {
+                    int port = Integer.valueOf(getPortTextField().getText()).intValue();
+                    if (!(port >= 0 && port <= 65535)) {
+                        result.add(portError);
+                    }
+                } catch (Exception ex) {
+                    result.add(portError);
+                }
+            }
+        }
         
         validationModel.setResult(result);
         
@@ -117,6 +188,37 @@ public class ProjectSelectionPanel extends AbstractWizardPanel {
     private void updateComponentTreeSeverity() {
         ValidationComponentUtils.updateComponentTreeMandatoryAndBlankBackground(this);
         ValidationComponentUtils.updateComponentTreeSeverityBackground(this, validationModel.getResult());
+    }
+    
+    
+    private void initLocalRemoteGroup() {
+        NotifyingButtonGroup group = new NotifyingButtonGroup();
+        group.addGroupSelectionListener(new GroupSelectionListener() {
+            public void selectionChanged(ButtonModel previousSelection, ButtonModel currentSelection) {
+                setLocalRemoteComponentsEnabled();
+                validateInput();
+            }
+        });
+        group.add(getLocalApiRadioButton());
+        group.add(getRemoteApiRadioButton());
+        group.setSelected(getLocalApiRadioButton().getModel(), true);
+    }
+    
+    
+    private void setLocalRemoteComponentsEnabled() {
+        boolean isLocal = getLocalApiRadioButton().isSelected();
+        getLocalClientDirLabel().setEnabled(isLocal);
+        getLocalClientDirTextField().setEnabled(isLocal);
+        getLocalClientDirBrowseButton().setEnabled(isLocal);
+        
+        getRemoteClientDirLabel().setEnabled(!isLocal);
+        getRemoteClientDirTextField().setEnabled(!isLocal);
+        getRemoteClientDirBrowseButton().setEnabled(!isLocal);
+        getHostnameLabel().setEnabled(!isLocal);
+        getHostnameTextField().setEnabled(!isLocal);
+        getPortLabel().setEnabled(!isLocal);
+        getPortTextField().setEnabled(!isLocal);
+        getUseHttpsCheckBox().setEnabled(!isLocal);
     }
     
     
