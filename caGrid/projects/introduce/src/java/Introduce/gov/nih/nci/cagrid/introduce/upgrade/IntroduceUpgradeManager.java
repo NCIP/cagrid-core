@@ -132,7 +132,6 @@ public class IntroduceUpgradeManager {
                                 "Extensions Upgrader Failed: " + e.getMessage());
                         }
                     }
-                  
 
                     serviceInfo.persistInformation();
 
