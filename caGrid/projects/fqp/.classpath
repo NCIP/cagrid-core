@@ -64,9 +64,6 @@
 	<classpathentry kind="var" path="GT4_LOCATION/lib/xml-apis.jar"/>
 	<classpathentry kind="var" path="GT4_LOCATION/lib/xmlsec.jar"/>
 	<classpathentry kind="lib" path="ext/dependencies/service/jars/caGrid-advertisement-1.4-dev.jar"/>
-	<classpathentry kind="lib" path="ext/dependencies/service/jars/caGrid-BulkDataHandler-client-1.4-dev.jar"/>
-	<classpathentry kind="lib" path="ext/dependencies/service/jars/caGrid-BulkDataHandler-common-1.4-dev.jar"/>
-	<classpathentry kind="lib" path="ext/dependencies/service/jars/caGrid-BulkDataHandler-stubs-1.4-dev.jar"/>
 	<classpathentry kind="lib" path="ext/dependencies/service/jars/caGrid-cds-client-1.4-dev.jar"/>
 	<classpathentry kind="lib" path="ext/dependencies/service/jars/caGrid-cds-common-1.4-dev.jar"/>
 	<classpathentry kind="lib" path="ext/dependencies/service/jars/caGrid-cds-stubs-1.4-dev.jar"/>
