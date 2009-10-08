@@ -15,6 +15,8 @@ import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.GridLayout;
 import java.awt.Insets;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
 
 import javax.swing.BorderFactory;
 import javax.swing.ButtonModel;
@@ -25,8 +27,6 @@ import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.JTextField;
 import javax.swing.border.TitledBorder;
-import javax.swing.event.ChangeEvent;
-import javax.swing.event.ChangeListener;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 
@@ -661,8 +661,8 @@ public class ProjectSelectionPanel extends AbstractWizardPanel {
         if (useHttpsCheckBox == null) {
             useHttpsCheckBox = new JCheckBox();
             useHttpsCheckBox.setText("Use HTTPS For Connections");
-            useHttpsCheckBox.addChangeListener(new ChangeListener() {
-                public void stateChanged(ChangeEvent e) {
+            useHttpsCheckBox.addItemListener(new ItemListener() {
+                public void itemStateChanged(ItemEvent e) {
                     configuration.setUseHttps(getUseHttpsCheckBox().isSelected());
                 }
             });
