@@ -1,5 +1,5 @@
 <!-- ======================================================================= -->
-<!-- caGrid i2b2 Data Service Style test build file                          -->
+<!-- caGrid SDK 4.x CQL 2 conversion project test build file                 -->
 <!-- ======================================================================= -->
 <project name="caGrid-sdk4xCQL2_tests_harness" basedir=".">
 	<property name="junit.results.dir" location="${test.logs.dir}/junit" />
