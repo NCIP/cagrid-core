@@ -28,11 +28,15 @@ public class SDK42QueryProcessor extends CQLQueryProcessor {
     
     // security configuration properties
     public static final String PROPERTY_USE_GRID_IDENTITY_LOGIN = "useGridIdentityLogin";
+    public static final String PROPERTY_USE_STATIC_LOGIN = "useStaticLogin";
+    public static final String PROPERTY_STATIC_LOGIN_USER = "staticLoginUser";
+    public static final String PROPERTY_STATIC_LOGIN_PASS = "staticLoginPass";
     
     // default values for properties
     public static final String DEFAULT_USE_LOCAL_API = String.valueOf(false);
     public static final String DEFAULT_HOST_HTTPS = String.valueOf(false);
     public static final String DEFAULT_USE_GRID_IDENTITY_LOGIN = String.valueOf(false);
+    public static final String DEFAULT_USE_STATIC_LOGIN = String.valueOf(false);
     
     // the "empty" password passed to the SDK when using CSM / grid identity login
     public static final String EMPTY_PASSWORD = "EMPTYPASSWORD";
@@ -50,6 +54,9 @@ public class SDK42QueryProcessor extends CQLQueryProcessor {
         props.setProperty(PROPERTY_HOST_PORT, "");
         props.setProperty(PROPERTY_HOST_HTTPS, DEFAULT_HOST_HTTPS);
         props.setProperty(PROPERTY_USE_GRID_IDENTITY_LOGIN, DEFAULT_USE_GRID_IDENTITY_LOGIN);
+        props.setProperty(PROPERTY_USE_STATIC_LOGIN, DEFAULT_USE_STATIC_LOGIN);
+        props.setProperty(PROPERTY_STATIC_LOGIN_USER, "");
+        props.setProperty(PROPERTY_STATIC_LOGIN_PASS, "");
         return props;
     }
     
@@ -93,6 +100,19 @@ public class SDK42QueryProcessor extends CQLQueryProcessor {
     }
     
     
+    private boolean isUseStaticLogin() {
+        boolean useStatic = false;
+        String useStaticValue = getConfiguredParameters().getProperty(PROPERTY_USE_STATIC_LOGIN);
+        try {
+            useStatic = Boolean.parseBoolean(useStaticValue);
+        } catch (Exception ex) {
+            LOG.error("Error parsing property " + PROPERTY_USE_STATIC_LOGIN
+                + ".  Value was " + useStaticValue, ex);
+        }
+        return useStatic;
+    }
+    
+    
     private boolean isUseHttps() {
         boolean useHttps = Boolean.parseBoolean(DEFAULT_HOST_HTTPS);
         String useHttpsValue = getConfiguredParameters().getProperty(PROPERTY_HOST_HTTPS);
@@ -103,5 +123,15 @@ public class SDK42QueryProcessor extends CQLQueryProcessor {
                 + ".  Value was " + useHttpsValue, ex);
         }
         return useHttps;
+    }
+    
+    
+    private String getStaticLoginUser() {
+        return getConfiguredParameters().getProperty(PROPERTY_STATIC_LOGIN_USER);
+    }
+    
+    
+    private String getStaticLoginPass() {
+        return getConfiguredParameters().getProperty(PROPERTY_STATIC_LOGIN_PASS);
     }
 }
