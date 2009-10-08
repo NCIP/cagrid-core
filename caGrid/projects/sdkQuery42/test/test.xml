@@ -27,5 +27,6 @@
 				</fileset>
 			</batchtest>
 		</junit>
+		<fail if="tests.failed" message="Tests failed.  Check the logs for details"/>
 	</target>
 </project>
