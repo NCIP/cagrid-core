@@ -69,7 +69,7 @@
 	<!-- style related stuff -->
 	<property name="introduce.extensions.dir" location="../introduce/extensions" />
 	<property name="style.document" location="${basedir}/style/style.xml" />
-	<property name="style.dest.dir" location="${introduce.extensions.dir}/data/styles/cacore41" />
+	<property name="style.dest.dir" location="${introduce.extensions.dir}/data/styles/cacore42" />
 
 	<!-- SDK remote and local libraries needed for builds -->
 	<!-- TODO: evaluate if these are still the same as for SDK 4.1 -->
