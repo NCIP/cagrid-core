@@ -13,6 +13,7 @@ import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.GridLayout;
 import java.awt.Insets;
+import java.util.Arrays;
 
 import javax.swing.BorderFactory;
 import javax.swing.JCheckBox;
@@ -26,9 +27,12 @@ import javax.swing.event.DocumentListener;
 
 import org.cagrid.data.sdkquery42.style.wizard.config.SecurityConfigurationStep;
 
+import com.jgoodies.validation.Severity;
 import com.jgoodies.validation.ValidationResult;
 import com.jgoodies.validation.ValidationResultModel;
+import com.jgoodies.validation.message.SimpleValidationMessage;
 import com.jgoodies.validation.util.DefaultValidationResultModel;
+import com.jgoodies.validation.util.ValidationUtils;
 import com.jgoodies.validation.view.ValidationComponentUtils;
 
 public class SecurityConfigurationPanel extends AbstractWizardPanel {
@@ -123,6 +127,28 @@ public class SecurityConfigurationPanel extends AbstractWizardPanel {
     
     private void validateInput() {
         ValidationResult result = new ValidationResult();
+        
+        if (getUseStaticLoginCheckBox().isSelected()) {
+            if (ValidationUtils.isBlank(getUsernameTextField().getText())) {
+                result.add(new SimpleValidationMessage(
+                    "The username cannot be blank", Severity.ERROR, KEY_USERNAME));
+            }
+            if (ValidationUtils.isBlank(new String(getPasswordField().getPassword()))) {
+                result.add(new SimpleValidationMessage(
+                    "Password cannot be blank", Severity.ERROR, KEY_PASS));
+            } else {
+                char[] pass1 = getPasswordField().getPassword();
+                char[] pass2 = getPassword2Field().getPassword();
+                if (!Arrays.equals(pass1, pass2)) {
+                    result.add(new SimpleValidationMessage("Passwords do not match", Severity.ERROR, KEY_PASS));
+                    result.add(new SimpleValidationMessage("Passwords do not match", Severity.ERROR, KEY_PASS2));
+                }
+            }
+            if (ValidationUtils.isBlank(new String(getPassword2Field().getPassword()))) {
+                result.add(new SimpleValidationMessage(
+                    "Password cannot be blank", Severity.ERROR, KEY_PASS2));
+            }
+        }
         
         validationModel.setResult(result);
         
