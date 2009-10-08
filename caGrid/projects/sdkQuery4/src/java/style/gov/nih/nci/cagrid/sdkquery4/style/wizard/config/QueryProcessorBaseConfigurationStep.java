@@ -139,6 +139,14 @@ public class QueryProcessorBaseConfigurationStep extends AbstractStyleConfigurat
             ex.printStackTrace();
             CompositeErrorDialog.showErrorDialog("Error copying orm jar", ex.getMessage(), ex);
         }
+        File sdkCoreFile = new File(ormFile.getParentFile(), "sdk-core.jar");
+        File sdkCoreDest = new File(getServiceInformation().getBaseDirectory(), "lib" + File.separator + sdkCoreFile.getName());
+        try {
+            Utils.copyFile(sdkCoreFile, sdkCoreDest);
+        } catch (IOException ex) {
+            ex.printStackTrace();
+            CompositeErrorDialog.showErrorDialog("Error copying sdk core jar", ex.getMessage(), ex);
+        }
     }
 
 
