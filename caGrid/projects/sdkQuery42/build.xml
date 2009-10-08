@@ -22,6 +22,7 @@
 	<property name="build.dir" location="build" />
 	<property name="build.style.dest" location="${build.dir}/style/classes" />
 	<property name="build.processor.dest" location="${build.dir}/processor/classes" />
+	<property name="build.dirs.list" value="${build.processor.dest},${build.style.dest}"/>
 	<property name="build.jars.dir" location="build/lib" />
 
 	<!-- jar names -->
@@ -60,9 +61,7 @@
 	<property name="test.classes.dir" location="${build.dir}/test/classes" />
 	<property name="test.logs.dir" location="${test.dir}/logs" />
 	<property name="test.project.jar" location="${build.jars.dir}/${project.jar.prefix}tests${project.jar.suffix}" />
-	<!--
 	<import file="test\test.xml" />
-	-->
 
 	<!-- build file for stub generation -->
 	<property name="ant.build.stubs" location="${globus.dir}/share/globus_wsrf_tools/build-stubs.xml" />
