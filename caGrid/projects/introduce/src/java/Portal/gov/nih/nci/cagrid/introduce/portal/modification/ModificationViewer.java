@@ -388,7 +388,7 @@ public class ModificationViewer extends ApplicationComponent {
                                 ServiceExtensionDescriptionType extDtype = ExtensionsLoader.getInstance()
                                     .getServiceExtension(extensionName);
 
-                                if (extDtype.getShouldBeRemoved().booleanValue()) {
+                                if (extDtype.getShouldBeRemoved()!=null && extDtype.getShouldBeRemoved().booleanValue()) {
                                     if (extDtype.getServiceExtensionRemover() != null) {
                                         PromptButtonDialog diag2 = new PromptButtonDialog(
                                             GridApplication.getContext().getApplication(),
