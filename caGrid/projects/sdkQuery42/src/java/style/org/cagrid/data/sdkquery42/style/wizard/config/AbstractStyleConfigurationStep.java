@@ -82,4 +82,20 @@ public abstract class AbstractStyleConfigurationStep {
         CommonTools.setServiceProperty(desc,
             DataServiceConstants.QUERY_PROCESSOR_CONFIG_PREFIX + shortKey, value, fromEtc);
     }
+    
+    
+    protected String getServicePropertyValue(String shortKey) {
+        ServiceDescription desc = getServiceInformation().getServiceDescriptor();
+        String longKey = DataServiceConstants.QUERY_PROCESSOR_CONFIG_PREFIX + shortKey;
+        String value = null;
+        if (CommonTools.servicePropertyExists(desc, longKey)) {
+            try {
+                value = CommonTools.getServicePropertyValue(desc, longKey);
+            } catch (Exception ex) {
+                System.err.println("Error retrieving service property: " + ex.getMessage());
+                ex.printStackTrace();
+            }
+        }
+        return value;
+    }
 }

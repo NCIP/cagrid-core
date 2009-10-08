@@ -66,4 +66,16 @@ public class SecurityConfigurationStep extends AbstractStyleConfigurationStep {
     public void setStaticLoginPass(String staticLoginPass) {
         this.staticLoginPass = staticLoginPass;
     }
+    
+    
+    public boolean isUsingLocalApi() {
+        boolean usingLocal = false;
+        try {
+            String usingLocalValue = getServicePropertyValue(SDK42QueryProcessor.PROPERTY_USE_LOCAL_API);
+            usingLocal = Boolean.parseBoolean(usingLocalValue);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+        return usingLocal;
+    }
 }
