@@ -1,4 +1,4 @@
-package org.cagrid.data.sdkquery42.style.wizard;
+package org.cagrid.data.sdkquery42.style.wizard.model;
 
 import javax.swing.JPanel;
 

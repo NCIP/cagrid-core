@@ -22,6 +22,8 @@ import javax.swing.border.TitledBorder;
 
 import org.cagrid.data.sdkquery42.style.wizard.config.DomainModelConfigurationStep;
 import org.cagrid.data.sdkquery42.style.wizard.config.DomainModelConfigurationStep.DomainModelConfigurationSource;
+import org.cagrid.data.sdkquery42.style.wizard.model.DomainModelSourcePanel;
+import org.cagrid.data.sdkquery42.style.wizard.model.DomainModelSourceValidityListener;
 import org.cagrid.data.sdkquery42.style.wizard.model.ModelFromFileSystemPanel;
 import org.cagrid.data.sdkquery42.style.wizard.model.ModelFromMMSPanel;
 import org.cagrid.data.sdkquery42.style.wizard.model.ModelFromXmiPanel;

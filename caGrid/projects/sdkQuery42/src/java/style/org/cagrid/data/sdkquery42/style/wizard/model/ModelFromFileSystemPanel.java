@@ -31,8 +31,6 @@ import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.border.TitledBorder;
 
-import org.cagrid.data.sdkquery42.style.wizard.DomainModelSourcePanel;
-import org.cagrid.data.sdkquery42.style.wizard.DomainModelSourceValidityListener;
 import org.cagrid.data.sdkquery42.style.wizard.config.DomainModelConfigurationStep;
 import org.cagrid.data.sdkquery42.style.wizard.config.DomainModelConfigurationStep.DomainModelConfigurationSource;
 import org.cagrid.grape.utils.CompositeErrorDialog;
