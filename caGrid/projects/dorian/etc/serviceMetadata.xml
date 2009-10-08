@@ -1,6 +1,6 @@
 <ns1:ServiceMetadata xmlns:ns1="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata">
  <ns1:serviceDescription>
-  <ns2:Service description="A grid service for the provisioning and management of grid users accounts.  Dorian provides an integration point between external security domains and the grid, allowing accounts managed in external domains to be federated and managed in the grid.   Dorian allows users to use their existing credentials to authenticate to the grid." name="Dorian" version="1.3" xmlns:ns2="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.service">
+  <ns2:Service description="A grid service for the provisioning and management of grid users accounts.  Dorian provides an integration point between external security domains and the grid, allowing accounts managed in external domains to be federated and managed in the grid.   Dorian allows users to use their existing credentials to authenticate to the grid." name="Dorian" version="1.4" xmlns:ns2="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.service">
    <ns2:pointOfContactCollection>
     <ns3:PointOfContact affiliation="Ohio State University" email="Stephen.Langella@osumc.edu" firstName="Stephen" lastName="Langella" role="Architect" xmlns:ns3="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common"/>
    </ns2:pointOfContactCollection>

@@ -26,6 +26,7 @@ public abstract class DorianBaseClient {
     public static final String VERSION_1_1 = "1.1";
     public static final String VERSION_1_2 = "1.2";
     public static final String VERSION_1_3 = "1.3";
+    public static final String VERSION_1_4 = "1.4";
 
     public static final QName SERVICE_METADATA = new QName("gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata",
         "ServiceMetadata");

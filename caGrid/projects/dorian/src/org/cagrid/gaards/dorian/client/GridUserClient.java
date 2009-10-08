@@ -23,8 +23,12 @@ import org.apache.axis.types.URI.MalformedURIException;
 import org.cagrid.gaards.dorian.common.DorianFault;
 import org.cagrid.gaards.dorian.federation.CertificateLifetime;
 import org.cagrid.gaards.dorian.federation.DelegationPathLength;
+import org.cagrid.gaards.dorian.federation.GridUserRecord;
+import org.cagrid.gaards.dorian.federation.GridUserSearchCriteria;
 import org.cagrid.gaards.dorian.federation.HostCertificateRecord;
 import org.cagrid.gaards.dorian.federation.HostCertificateRequest;
+import org.cagrid.gaards.dorian.federation.HostRecord;
+import org.cagrid.gaards.dorian.federation.HostSearchCriteria;
 import org.cagrid.gaards.dorian.federation.ProxyLifetime;
 import org.cagrid.gaards.dorian.federation.TrustedIdentityProvider;
 import org.cagrid.gaards.dorian.federation.TrustedIdentityProviders;
@@ -274,5 +278,116 @@ public class GridUserClient extends DorianBaseClient {
         } catch (Exception e) {
             throw new ResourcePropertyRetrievalException("Unable to deserailize: " + e.getMessage(), e);
         }
+    }
+
+
+    /**
+     * This method allows one to search for users managed by Dorian.
+     * 
+     * @param criteria
+     *            The search criteria
+     * @return The list of users meeting the search criteria.
+     * @throws DorianFault
+     * @throws DorianInternalFault
+     * @throws PermissionDeniedFault
+     */
+
+    public List<GridUserRecord> userSearch(GridUserSearchCriteria criteria) throws DorianFault, DorianInternalFault,
+        PermissionDeniedFault {
+        String version = VERSION_UNKNOWN;
+        try {
+            version = getServiceVersion();
+        } catch (Exception e) {
+            FaultUtil.printFault(e);
+            DorianFault fault = new DorianFault();
+            fault
+                .setFaultString("Could not perform user search, an unexpected error occurred determining the version of the Dorian "
+                    + getServiceURL() + ":\n" + Utils.getExceptionMessage(e));
+            FaultHelper helper = new FaultHelper(fault);
+            helper.addFaultCause(e);
+            fault = (DorianFault) helper.getFault();
+            throw fault;
+        }
+        if (version.equals(VERSION_1_0) || version.equals(VERSION_1_1) || version.equals(VERSION_1_2)
+            || version.equals(VERSION_1_3) || version.equals(VERSION_UNKNOWN)) {
+            DorianFault fault = new DorianFault();
+            fault.setFaultString("The Dorian " + getServiceURL() + ", is operating the version " + version
+                + ", which does not support user searching.");
+            throw fault;
+
+        } else {
+            try {
+                List<GridUserRecord> list = Utils.asList(getClient().userSearch(criteria));
+                return list;
+            } catch (DorianInternalFault gie) {
+                throw gie;
+            } catch (PermissionDeniedFault f) {
+                throw f;
+            } catch (Exception e) {
+                FaultUtil.printFault(e);
+                DorianFault fault = new DorianFault();
+                fault.setFaultString(Utils.getExceptionMessage(e));
+                FaultHelper helper = new FaultHelper(fault);
+                helper.addFaultCause(e);
+                fault = (DorianFault) helper.getFault();
+                throw fault;
+            }
+        }
+    }
+
+
+    /**
+     * This method allows one to search for hosts managed by Dorian.
+     * 
+     * @param criteria
+     *            The search criteria
+     * @return The list of hosts meeting the search criteria.
+     * @throws DorianFault
+     * @throws DorianInternalFault
+     * @throws PermissionDeniedFault
+     */
+
+    public List<HostRecord> hostSearch(HostSearchCriteria criteria) throws DorianFault, DorianInternalFault,
+        PermissionDeniedFault {
+        String version = VERSION_UNKNOWN;
+        try {
+            version = getServiceVersion();
+        } catch (Exception e) {
+            FaultUtil.printFault(e);
+            DorianFault fault = new DorianFault();
+            fault
+                .setFaultString("Could not perform user search, an unexpected error occurred determining the version of the Dorian "
+                    + getServiceURL() + ":\n" + Utils.getExceptionMessage(e));
+            FaultHelper helper = new FaultHelper(fault);
+            helper.addFaultCause(e);
+            fault = (DorianFault) helper.getFault();
+            throw fault;
+        }
+        if (version.equals(VERSION_1_0) || version.equals(VERSION_1_1) || version.equals(VERSION_1_2)
+            || version.equals(VERSION_1_3) || version.equals(VERSION_UNKNOWN)) {
+            DorianFault fault = new DorianFault();
+            fault.setFaultString("The Dorian " + getServiceURL() + ", is operating the version " + version
+                + ", which does not support user searching.");
+            throw fault;
+
+        } else {
+            try {
+                List<HostRecord> list = Utils.asList(getClient().hostSearch(criteria));
+                return list;
+            } catch (DorianInternalFault gie) {
+                throw gie;
+            } catch (PermissionDeniedFault f) {
+                throw f;
+            } catch (Exception e) {
+                FaultUtil.printFault(e);
+                DorianFault fault = new DorianFault();
+                fault.setFaultString(Utils.getExceptionMessage(e));
+                FaultHelper helper = new FaultHelper(fault);
+                helper.addFaultCause(e);
+                fault = (DorianFault) helper.getFault();
+                throw fault;
+            }
+        }
+
     }
 }
