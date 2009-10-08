@@ -60,4 +60,9 @@ public class SdkProjectExpectedFiles {
         }
         return expected;
     }
+    
+    
+    private SdkProjectExpectedFiles() {
+        // don't instantiate me
+    }
 }
