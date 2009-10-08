@@ -59,8 +59,10 @@ public class ExtensionsUpgradeManager {
             for (int extensionI = 0; extensionI < extensions.length; extensionI++) {
                 ExtensionType extension = extensions[extensionI];
                 ExtensionDescription extDescription = ExtensionsLoader.getInstance().getExtension(extension.getName());
-                if (extDescription.getServiceExtensionDescription().getShouldBeRemoved()) {
-                    return true;
+                if (extDescription.getServiceExtensionDescription() != null) {
+                    if (extDescription.getServiceExtensionDescription().getShouldBeRemoved()) {
+                        return true;
+                    }
                 }
             }
             return false;
@@ -72,20 +74,22 @@ public class ExtensionsUpgradeManager {
     private void remove(IntroduceUpgradeStatus status) {
         List<String> toBeRemoved = new ArrayList<String>();
 
-        List<ExtensionType> newExtensions =  new ArrayList<ExtensionType>();
+        List<ExtensionType> newExtensions = new ArrayList<ExtensionType>();
         String extensionsPropertyString = "";
         ExtensionType[] extensions = serviceInformation.getServiceDescriptor().getExtensions().getExtension();
         if (extensions != null) {
             for (int extensionI = 0; extensionI < extensions.length; extensionI++) {
                 ExtensionType extension = extensions[extensionI];
                 ExtensionDescription extDescription = ExtensionsLoader.getInstance().getExtension(extension.getName());
-                if (extDescription.getServiceExtensionDescription().getShouldBeRemoved()) {
+                if (extDescription.getServiceExtensionDescription()!=null && extDescription.getServiceExtensionDescription().getShouldBeRemoved()) {
                     toBeRemoved.add(extension.getName());
                     if (extDescription.getServiceExtensionDescription().getServiceExtensionRemover() != null) {
                         try {
-                            ServiceExtensionRemover remover = ExtensionTools.getServiceExtensionRemover(extension.getName());
+                            ServiceExtensionRemover remover = ExtensionTools.getServiceExtensionRemover(extension
+                                .getName());
                             if (remover != null) {
-                                remover.remove(ExtensionsLoader.getInstance().getServiceExtension(extension.getName()), this.serviceInformation);
+                                remover.remove(ExtensionsLoader.getInstance().getServiceExtension(extension.getName()),
+                                    this.serviceInformation);
                             }
                         } catch (ExtensionRemovalException e) {
                             e.printStackTrace();
@@ -95,7 +99,7 @@ public class ExtensionsUpgradeManager {
                     }
                 } else {
                     newExtensions.add(extension);
-                    if(extensionsPropertyString.length()>0){
+                    if (extensionsPropertyString.length() > 0) {
                         extensionsPropertyString += ",";
                     }
                     extensionsPropertyString += extension.getName();
