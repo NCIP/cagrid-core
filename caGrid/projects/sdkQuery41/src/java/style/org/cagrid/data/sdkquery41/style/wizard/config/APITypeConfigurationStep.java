@@ -1,9 +1,12 @@
 package org.cagrid.data.sdkquery41.style.wizard.config;
 
+import gov.nih.nci.cagrid.common.Utils;
 import gov.nih.nci.cagrid.data.DataServiceConstants;
 import gov.nih.nci.cagrid.introduce.beans.ServiceDescription;
 import gov.nih.nci.cagrid.introduce.common.CommonTools;
 import gov.nih.nci.cagrid.introduce.common.ServiceInformation;
+
+import java.io.File;
 
 import org.cagrid.data.sdkquery41.processor.SDK41QueryProcessor;
 
@@ -34,6 +37,12 @@ public class APITypeConfigurationStep extends AbstractStyleConfigurationStep {
         CommonTools.setServiceProperty(desc,
             DataServiceConstants.QUERY_PROCESSOR_CONFIG_PREFIX + SDK41QueryProcessor.PROPERTY_HOST_HTTPS,
             useHttps != null ? String.valueOf(useHttps) : SDK41QueryProcessor.DEFAULT_HOST_HTTPS, false);
+        // copy the right config jar into the service's lib dir
+        File libDir = new File(getServiceInformation().getBaseDirectory(), "lib");
+        File configJar = getApiType() == ApiType.LOCAL_API ? 
+            SharedConfiguration.getInstance().getLocalConfigJarFile() : 
+                SharedConfiguration.getInstance().getRemoteConfigJarFile();
+        Utils.copyFile(configJar, new File(libDir, configJar.getName()));
     }
     
         

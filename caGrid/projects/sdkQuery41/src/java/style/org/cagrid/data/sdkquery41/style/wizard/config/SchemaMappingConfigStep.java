@@ -76,7 +76,7 @@ public class SchemaMappingConfigStep extends AbstractStyleConfigurationStep {
         
         // get cadsr information
         // the config jar will have the xsds in it
-        File configJarFile = SharedConfiguration.getInstance().getGeneratedConfigJarFile();
+        File configJarFile = SharedConfiguration.getInstance().getRemoteConfigJarFile();
         JarFile configJar = new JarFile(configJarFile);
         
         // copy all the XSDs into a temporary location.  Must do this so 

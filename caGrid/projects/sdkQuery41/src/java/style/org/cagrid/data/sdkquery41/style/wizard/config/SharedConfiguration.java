@@ -12,7 +12,8 @@ public class SharedConfiguration {
     private ServiceInformation serviceInfo = null;
     private File sdkDirectory = null;
     private Properties sdkDeployProperties = null;
-    private File generatedConfigJar = null;
+    private File remoteConfigJar = null;
+    private File localClientJar = null;
     
     private SharedConfiguration() {
         
@@ -57,12 +58,22 @@ public class SharedConfiguration {
     }
     
     
-    public File getGeneratedConfigJarFile() {
-        return this.generatedConfigJar;
+    public File getRemoteConfigJarFile() {
+        return this.remoteConfigJar;
     }
     
     
-    public void setGeneratedConfigJarFile(File file) {
-        this.generatedConfigJar = file;
+    public void setRemoteConfigJarFile(File file) {
+        this.remoteConfigJar = file;
+    }
+    
+    
+    public void setLocalConfigJarFile(File file) {
+        this.localClientJar = file;
+    }
+    
+    
+    public File getLocalConfigJarFile() {
+        return this.localClientJar;
     }
 }

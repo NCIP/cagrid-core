@@ -30,6 +30,7 @@ public class SDK41PostCodegenHelper extends PostCodegenHelper {
 
     // need to edit the config to use my proxy helper implementation
     public static final String REMOTE_CONFIG_FILENAME = "application-config-client-info.xml";
+    public static final String LOCAL_CONFIG_FILENAME = "application-config-client.xml";
     
     // SDK provided proxy helper
     public static final String SDK_PROXY_HELPER = "gov.nih.nci.system.client.proxy.ProxyHelperImpl";
@@ -47,16 +48,22 @@ public class SDK41PostCodegenHelper extends PostCodegenHelper {
 
 
     private void editApplicationSpringConfigFile(ServiceInformation info) throws Exception {
+        // FIXME: make sure this works for both remote AND local
         // the config file is in the configured jar file
         LOG.debug("Locating config jar");
         String applicationName = CommonTools.getServicePropertyValue(info.getServiceDescriptor(),
             DataServiceConstants.QUERY_PROCESSOR_CONFIG_PREFIX + SDK41QueryProcessor.PROPERTY_APPLICATION_NAME);
-        File configJar = new File(info.getBaseDirectory().getAbsolutePath() + File.separator + "lib" + File.separator
-            + applicationName + "-config.jar");
+        boolean isLocal = false;
+        String isLocalValue = CommonTools.getServicePropertyValue(info.getServiceDescriptor(),
+            DataServiceConstants.QUERY_PROCESSOR_CONFIG_PREFIX + SDK41QueryProcessor.PROPERTY_USE_LOCAL_API);
+        isLocal = Boolean.parseBoolean(isLocalValue);
+        String jarFilename = applicationName + (isLocal ? "-local" : "-remote") + "-config.jar";
+        File configJar = new File(info.getBaseDirectory(), "lib" + File.separator + jarFilename);
         LOG.debug("Config jar found to be " + configJar.getAbsolutePath());
         
         // extract the configuration
-        StringBuffer configContents = JarUtilities.getFileContents(new JarFile(configJar), REMOTE_CONFIG_FILENAME);
+        String configFilename = isLocal ? LOCAL_CONFIG_FILENAME : REMOTE_CONFIG_FILENAME;
+        StringBuffer configContents = JarUtilities.getFileContents(new JarFile(configJar), configFilename);
 
         // replace the default bean proxy class with mine
         LOG.debug("Replacing references to bean proxy class");
@@ -68,6 +75,6 @@ public class SDK41PostCodegenHelper extends PostCodegenHelper {
         // add the edited config to the config jar file
         LOG.debug("Inserting edited config in jar");
         byte[] configData = configContents.toString().getBytes();
-        JarUtilities.insertEntry(configJar, REMOTE_CONFIG_FILENAME, configData);
+        JarUtilities.insertEntry(configJar, configFilename, configData);
     }
 }

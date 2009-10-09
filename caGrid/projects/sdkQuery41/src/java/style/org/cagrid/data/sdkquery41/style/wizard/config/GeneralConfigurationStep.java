@@ -55,22 +55,34 @@ public class GeneralConfigurationStep extends AbstractStyleConfigurationStep {
         
         // new data service's lib directory
         File libOutDir = new File(getServiceInformation().getBaseDirectory(), "lib");
+        File tempLibDir = new File(getServiceInformation().getBaseDirectory(), "temp");
+        tempLibDir.mkdir();
         
         String projectName = getDeployPropertiesFromSdkDir().getProperty(
             SDK41StyleConstants.DeployProperties.PROJECT_NAME);
         File remoteClientDir = new File(sdkDirectory, 
             "output" + File.separator + projectName + File.separator + 
             "package" + File.separator + "remote-client");
+        File localClientDir = new File(sdkDirectory, 
+            "output" + File.separator + projectName + File.separator + 
+            "package" + File.separator + "local-client");
         // wrap up the remote-client config files as a jar file so it'll be on the classpath
         // local client stuff might be added by the API Type configuration step
         LOG.debug("Creating a jar to contain the remote configuration of the caCORE SDK system");
         File remoteConfigDir = new File(remoteClientDir, "conf");
-        String configJarName = projectName + "-config.jar";
-        File configJar = new File(libOutDir, configJarName);
-        JarUtilities.jarDirectory(remoteConfigDir, configJar);
+        String remoteConfigJarName = projectName + "-remote-config.jar";
+        File remoteConfigJar = new File(tempLibDir, remoteConfigJarName);
+        JarUtilities.jarDirectory(remoteConfigDir, remoteConfigJar);
+        // also jar up the local-client config files
+        LOG.debug("Creating a jar to contain the local configuration of the caCORE SDK system");
+        File localConfigDir = new File(localClientDir, "conf");
+        String localConfigJarName = projectName + "-local-config.jar";
+        File localConfigJar = new File(tempLibDir, localConfigJarName);
+        JarUtilities.jarDirectory(localConfigDir, localConfigJar);
         
         // set the config jar in the shared configuration
-        SharedConfiguration.getInstance().setGeneratedConfigJarFile(configJar);
+        SharedConfiguration.getInstance().setRemoteConfigJarFile(remoteConfigJar);
+        SharedConfiguration.getInstance().setLocalConfigJarFile(localConfigJar);
         
         // get a list of jars found in GLOBUS_LOCATION/lib
         File globusLocation = new File(System.getenv(GLOBUS_LOCATION_ENV));
@@ -80,6 +92,10 @@ public class GeneralConfigurationStep extends AbstractStyleConfigurationStep {
         for (File jar : globusJars) {
             globusJarNames.add(jar.getName());
         }
+        
+        // get the application name
+        String applicationName = getDeployPropertiesFromSdkDir().getProperty(
+            SDK41StyleConstants.DeployProperties.PROJECT_NAME);
         
         // copy in libraries from the remote lib dir that DON'T collide with Globus's
         LOG.debug("Copying libraries from remote client directory");
@@ -95,10 +111,14 @@ public class GeneralConfigurationStep extends AbstractStyleConfigurationStep {
                         " and was NOT copied to the service");
             }
         }
+        LOG.debug("Copying libraries from the local client directory");
+        File localLibDir = new File(localClientDir, "lib");
+        File ormFile = new File(localLibDir, applicationName + "-orm.jar");
+        File sdkCoreFile = new File(localLibDir, "sdk-core.jar");
+        Utils.copyFile(ormFile, new File(libOutDir, ormFile.getName()));
+        Utils.copyFile(sdkCoreFile, new File(libOutDir, sdkCoreFile.getName()));
         
         // set the application name service property
-        String applicationName = getDeployPropertiesFromSdkDir().getProperty(
-            SDK41StyleConstants.DeployProperties.PROJECT_NAME);
         CommonTools.setServiceProperty(getServiceInformation().getServiceDescriptor(), 
             DataServiceConstants.QUERY_PROCESSOR_CONFIG_PREFIX 
             + SDK41QueryProcessor.PROPERTY_APPLICATION_NAME,
