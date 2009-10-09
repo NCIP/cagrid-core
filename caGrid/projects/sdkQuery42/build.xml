@@ -81,7 +81,7 @@
 		<fileset dir="${lib.dir}">
 			<include name="**/*.jar" />
 		</fileset>
-		<fileset dir="${ext.remote-client.lib.dir}" includes="${required.sdk.libs}"/>
+		<fileset dir="${ext.remote-client.lib.dir}"/>
 		<fileset dir="${globus.dir}/lib">
 			<include name="**/*.jar" />
 			<exclude name="junit.jar" />
