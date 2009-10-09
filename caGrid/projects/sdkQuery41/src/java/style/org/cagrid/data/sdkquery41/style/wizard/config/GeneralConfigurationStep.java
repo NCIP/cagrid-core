@@ -92,9 +92,13 @@ public class GeneralConfigurationStep extends AbstractStyleConfigurationStep {
         for (File jar : globusJars) {
             globusJarNames.add(jar.getName());
         }
+        Set<String> serviceJarNames = new HashSet<String>();
+        for (File jar : libOutDir.listFiles(new FileFilters.JarFileFilter())) {
+            serviceJarNames.add(jar.getName());
+        }
         
         // get the application name
-        String applicationName = getDeployPropertiesFromSdkDir().getProperty(
+        final String applicationName = getDeployPropertiesFromSdkDir().getProperty(
             SDK41StyleConstants.DeployProperties.PROJECT_NAME);
         
         // copy in libraries from the remote lib dir that DON'T collide with Globus's
@@ -103,20 +107,36 @@ public class GeneralConfigurationStep extends AbstractStyleConfigurationStep {
         for (File lib : remoteLibs) {
             String libName = lib.getName();
             if (!globusJarNames.contains(libName)) {
-                LOG.debug(libName + " copied to the service");
                 File libOutput = new File(libOutDir, libName);
                 Utils.copyFile(lib, libOutput);
-            } else {
-                LOG.debug(libName + " appears to conflict with a Globus library," +
-                        " and was NOT copied to the service");
+                LOG.debug(libName + " copied to the service");
             }
         }
         LOG.debug("Copying libraries from the local client directory");
         File localLibDir = new File(localClientDir, "lib");
-        File ormFile = new File(localLibDir, applicationName + "-orm.jar");
-        File sdkCoreFile = new File(localLibDir, "sdk-core.jar");
-        Utils.copyFile(ormFile, new File(libOutDir, ormFile.getName()));
-        Utils.copyFile(sdkCoreFile, new File(libOutDir, sdkCoreFile.getName()));
+        File[] localLibs = localLibDir.listFiles();
+        for (File lib : localLibs) {
+            String name = lib.getName();
+            boolean ok = name.equals(applicationName + "-orm.jar") || name.equals("sdk-core.jar")
+                || name.startsWith("caGrid-sdkQuery4-");
+            if (ok && serviceJarNames.contains(name)) {
+                ok = false;
+            }
+            if (ok && name.startsWith("caGrid-") && name.endsWith("-1.2.jar")) {
+                String trimmedName = name.substring(name.length() - 8);
+                for (String inService : serviceJarNames) {
+                    if (inService.startsWith(trimmedName)) {
+                        ok = false;
+                        break;
+                    }
+                }
+            }
+            if (ok && !globusJarNames.contains(name)) {
+                File libOutput = new File(libOutDir, name);
+                Utils.copyFile(lib, libOutput);
+                LOG.debug(name + " copied to the service");
+            }
+        }
         
         // set the application name service property
         CommonTools.setServiceProperty(getServiceInformation().getServiceDescriptor(), 

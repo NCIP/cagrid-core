@@ -43,6 +43,14 @@ public class APITypeConfigurationStep extends AbstractStyleConfigurationStep {
             SharedConfiguration.getInstance().getLocalConfigJarFile() : 
                 SharedConfiguration.getInstance().getRemoteConfigJarFile();
         Utils.copyFile(configJar, new File(libDir, configJar.getName()));
+        // if other jar exists, delete it
+        File otherConfigJar = getApiType() == ApiType.LOCAL_API ?
+            SharedConfiguration.getInstance().getRemoteConfigJarFile() :
+                SharedConfiguration.getInstance().getLocalConfigJarFile();
+        File maybeCopiedOtherConfigJar = new File(libDir, otherConfigJar.getName());
+        if (maybeCopiedOtherConfigJar.exists()) {
+            maybeCopiedOtherConfigJar.delete();
+        }
     }
     
         
