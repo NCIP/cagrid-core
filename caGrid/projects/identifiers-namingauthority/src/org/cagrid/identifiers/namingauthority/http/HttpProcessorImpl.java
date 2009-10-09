@@ -5,10 +5,11 @@ import java.io.IOException;
 import org.cagrid.identifiers.namingauthority.NamingAuthority;
 import org.cagrid.identifiers.namingauthority.impl.IdentifierValuesImpl;
 import org.cagrid.identifiers.namingauthority.util.IdentifierUtil;
+import org.cagrid.identifiers.namingauthority.HttpProcessor;
 
 import javax.servlet.http.*;
 
-public class HttpProcessor {
+public class HttpProcessorImpl implements HttpProcessor {
 	
 	private NamingAuthority namingAuthority;
 	
@@ -17,7 +18,7 @@ public class HttpProcessor {
 	public static String HTTP_ACCEPT_XML = "application/xml";
 	public static String HTTP_ACCEPT_ANY = "*/*";
 		
-	public HttpProcessor( NamingAuthority na ) {
+	public void setNamingAuthority( NamingAuthority na ) {
 		this.namingAuthority = na;
 	}
 	
@@ -111,7 +112,7 @@ public class HttpProcessor {
         return baos.toString();
 	}
 	
-	public void processRequest(HttpServletRequest request, HttpServletResponse response) throws IOException {
+	public void process(HttpServletRequest request, HttpServletResponse response) throws IOException {
 		StringBuffer msg = new StringBuffer();
 
 		//

@@ -1,14 +1,14 @@
-drop database if exists identifiers;
+drop database if exists IDENTIFIERS;
 
-create database identifiers;
+create database IDENTIFIERS;
 
-use identifiers;
+use IDENTIFIERS;
 
-DROP TABLE IF EXISTS `identifier_values`;
-CREATE TABLE `identifier_values` (
-  `ID` bigint(20) NOT NULL AUTO_INCREMENT,
-  `name` varchar(255) NOT NULL,
-  `type` varchar(255) NOT NULL,
-  `data` varchar(2048) DEFAULT NULL,
+DROP TABLE IF EXISTS IDENTIFIER_VALUES;
+CREATE TABLE IDENTIFIER_VALUES (
+  id bigint(20) NOT NULL AUTO_INCREMENT,
+  name varchar(255) NOT NULL,
+  type varchar(255) NOT NULL,
+  data varchar(2048) DEFAULT NULL,
   PRIMARY KEY (`ID`)
 );

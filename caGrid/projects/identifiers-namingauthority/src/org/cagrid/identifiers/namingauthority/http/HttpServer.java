@@ -31,7 +31,7 @@ public class HttpServer implements Runnable {
 		    public void handle(String target, HttpServletRequest request, HttpServletResponse response, int dispatch)
 		        throws java.io.IOException, javax.servlet.ServletException
 		    {
-		    	namingAuthority.processHttpRequest(request, response);
+		    	namingAuthority.getHttpProcessor().process(request, response);
 		        ((Request)request).setHandled(true);
 		    }
 		};

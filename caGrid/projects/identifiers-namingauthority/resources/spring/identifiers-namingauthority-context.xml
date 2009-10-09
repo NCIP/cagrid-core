@@ -12,7 +12,7 @@
     
     	<property name="configuration">
     		<bean class="org.cagrid.identifiers.namingauthority.impl.NamingAuthorityConfigImpl">
-    			<property name="prefix" value="http://na.cagrid.org:8090/osumc" />
+    			<property name="prefix" value="http://purlz.cagrid.org:8080/localhost" />
 				<property name="gridSvcUrl" value="http://localhost:8081/wsrf/services/cagrid/IdentifiersNAService" />
 			</bean>
     	</property>
@@ -20,7 +20,11 @@
     	<property name="identifierGenerator">
     		<bean class="org.cagrid.identifiers.namingauthority.impl.IdentifierGeneratorImpl"/>
     	</property>
-    	
+
+    	<property name="httpProcessor">
+    		<bean class="org.cagrid.identifiers.namingauthority.http.HttpProcessorImpl"/>
+    	</property>
+    	    	
     	<property name="database">
     		<bean class="org.cagrid.identifiers.namingauthority.util.Database">
 				<property name="dbUrl" value="jdbc:mysql://localhost/identifiers" />
@@ -28,6 +32,6 @@
 				<property name="dbPassword" value="cagrid" />
 			</bean>
     	</property>
-    
+ 
     </bean>
 </beans>

@@ -1,19 +1,15 @@
 package org.cagrid.identifiers.namingauthority;
 
-import java.io.IOException;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
 public abstract class NamingAuthority {
 	
 	private NamingAuthorityConfig configuration;
 	private IdentifierGenerator identifierGenerator;
+	private HttpProcessor httpProcessor;
 	
 	public NamingAuthorityConfig getConfiguration() { 
 		return this.configuration; 
 	}
-	
+		
 	public void setConfiguration( NamingAuthorityConfig config ) {
 		this.configuration = config;
 	}
@@ -30,10 +26,17 @@ public abstract class NamingAuthority {
 		this.identifierGenerator = generator;
 	}
 	
-	public abstract void initialize();
+	public HttpProcessor getHttpProcessor() {
+		return this.httpProcessor;
+	}
 	
-	public abstract void processHttpRequest(HttpServletRequest request, HttpServletResponse response) throws IOException;
-
+	public void setHttpProcessor( HttpProcessor processor ) {
+		this.httpProcessor = processor;
+		this.httpProcessor.setNamingAuthority(this);
+	}
+	
+	public void initialize(){};
+	
 	public abstract IdentifierValues resolveIdentifier(Object identifier);
 	
 	public abstract Object createIdentifier(IdentifierValues values) throws Exception;
