@@ -1,17 +1,20 @@
 package org.cagrid.data.sdkquery42.processor;
 
-import java.io.InputStream;
-import java.util.Properties;
-
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-
 import gov.nih.nci.cagrid.cqlquery.CQLQuery;
 import gov.nih.nci.cagrid.cqlresultset.CQLQueryResults;
 import gov.nih.nci.cagrid.data.InitializationException;
 import gov.nih.nci.cagrid.data.MalformedQueryException;
 import gov.nih.nci.cagrid.data.QueryProcessingException;
 import gov.nih.nci.cagrid.data.cql.CQLQueryProcessor;
+import gov.nih.nci.system.applicationservice.ApplicationService;
+import gov.nih.nci.system.client.ApplicationServiceProvider;
+
+import java.io.InputStream;
+import java.util.Properties;
+
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.globus.wsrf.security.SecurityManager;
 
 public class SDK42QueryProcessor extends CQLQueryProcessor {
     
@@ -133,5 +136,51 @@ public class SDK42QueryProcessor extends CQLQueryProcessor {
     
     private String getStaticLoginPass() {
         return getConfiguredParameters().getProperty(PROPERTY_STATIC_LOGIN_PASS);
+    }
+    
+    
+    private String getRemoteApplicationUrl() {
+        StringBuffer url = new StringBuffer();
+        if (isUseHttps()) {
+            url.append("https://");
+        } else {
+            url.append("http://");
+        }
+        url.append(getConfiguredParameters().getProperty(PROPERTY_HOST_NAME));
+        url.append(":");
+        url.append(getConfiguredParameters().getProperty(PROPERTY_HOST_PORT));
+        url.append("/");
+        url.append(getConfiguredParameters().getProperty(PROPERTY_APPLICATION_NAME));
+        String completedUrl = url.toString();
+        LOG.debug("Application Service remote URL determined to be: " + completedUrl);
+        return completedUrl;
+    }
+    
+    
+    private ApplicationService getApplicationService() throws QueryProcessingException {
+        ApplicationService service = null;
+        try {
+            if (isUseLocalApi()) {
+                if (isUseGridIdentLogin()) {
+                    SecurityManager securityManager = SecurityManager.getManager();
+                    String username = securityManager.getCaller();
+                    service = ApplicationServiceProvider.getApplicationService(username, EMPTY_PASSWORD);
+                } else {
+                    service = ApplicationServiceProvider.getApplicationService();
+                }
+            } else {
+                String url = getRemoteApplicationUrl();
+                if (isUseStaticLogin()) {
+                    String username = getStaticLoginUser();
+                    String password = getStaticLoginPass();
+                    service = ApplicationServiceProvider.getApplicationServiceFromUrl(url, username, password);
+                } else {
+                    service = ApplicationServiceProvider.getApplicationServiceFromUrl(url);
+                }
+            }
+        } catch (Exception ex) {
+            throw new QueryProcessingException("Error obtaining application service: " + ex.getMessage(), ex);
+        }
+        return service;
     }
 }
