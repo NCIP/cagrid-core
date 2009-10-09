@@ -21,8 +21,6 @@
 	
 	<target name="prepareClasspaths">
 		<path id="all.test.classpath">
-			<pathelement path="${classes.dir}" />
-			<pathelement path="${stubs.dest}" />
 			<path refid="test.run.classpath" />
 			<fileset dir="${jar.dir}">
 				<include name="**/*.jar"/>
@@ -48,8 +46,7 @@
 	</target>
 	
 	
-	<target name="testUpgrades" depends="testUpgradeFrom1pt1, testUpgradeFrom1pt2" description="Runs upgrade tests">
-		<fail message="Data upgrade from 1.1 ${failed.message}" if="upgrade.1.1.test.failed" />
+	<target name="testUpgrades" depends="testUpgradeFrom1pt2" description="Runs upgrade tests">
 		<fail message="Data upgrade from 1.2 ${failed.message}" if="upgrade.1.2.test.failed" />
 	</target>
 	
@@ -102,6 +99,7 @@
 		</junit>
 		<property name="enumeration.service.created" value="true" />
 	</target>
+	
 	
 	<!-- tests creation of a transfer supporting data service -->
 	<target name="testTransferCreation" depends="setGlobus, prepareClasspaths" description="Runs the service creation tests for a data service supporting caGrid Transfer" unless="transfer.service.created">
@@ -208,38 +206,30 @@
 			</batchtest>
 		</junit>
 	</target>
+	
 
-
-
-	<!-- tests upgrading a 1.1 service to current -->
-	<target name="testUpgradeFrom1pt1" depends="setGlobus, prepareClasspaths" description="Tests the ability to upgrade a service from 1.1 to the current version" unless="upgrade.1pt1.completed">
-		<mkdir dir="${junit.results.dir}" />
-		<junit dir="${introduce.dir}" printsummary="yes" haltonerror="${halt.on.error}" haltonfailure="${halt.on.error}" errorproperty="upgrade.1.1.test.failed" failureproperty="upgrade.1.1.test.failed" showoutput="true" fork="yes">
+	<!-- system tests for the BDT data service -->
+	<target name="testBdtSystem" depends="setGlobus, testBdtCreation" description="Tests invocation of the BDT data service">
+		<junit dir="${basedir}" printsummary="yes" haltonerror="${halt.on.error}" haltonfailure="${halt.on.error}" errorproperty="bdt.system.test.failed" failureproperty="bdt.system.test.failed" showoutput="true" fork="yes" forkmode="once">
+			<sysproperty key="use.testing.port.assignment" value="${testing.port.assignment.mode}" />
 			<sysproperty key="introduce.base.dir" value="${introduce.dir}" />
 			<sysproperty key="build.dir" value="${classes.dir}" />
 			<sysproperty key="cql.docs.dir" value="${basedir}/docs/cqlExamples" />
 			<sysproperty key="temp.test.service.dir" value="${temp.test.service.dir}"/>
-			<sysproperty key="upgrade.services.zip.dir" value="${testing.upgrade.services.dir}"/>
+			<sysproperty key="testing.containers.dir" value="${testing.containers.dir}"/>
 			<classpath refid="all.test.classpath" />
-			<!-- also needs the other extensions (such as metadata) to be upgraded, so need their upgraders on the classpath -->
-			<classpath>
-				<fileset dir="${introduce.dir}/extensions/lib">
-					<include name="*.jar" />
-				</fileset>
-			</classpath>
 			<formatter type="xml" />
 			<test if="testcase" name="${testcase}" fork="no" todir="${junit.results.dir}" />
 			<batchtest unless="testcase" fork="yes" todir="${junit.results.dir}">
 				<fileset dir="${src.dir}">
-					<include name="**/from1pt1/**/Upgrade*From1pt1Tests.java" />
+					<include name="**/system/bdt/BDTDataServiceSystemTests.java" />
 				</fileset>
 			</batchtest>
 		</junit>
-		<property name="upgrade.1pt1.completed" value="true" />
 	</target>
 
 	
-	<!-- tests upgrading a 1.1 service to current -->
+	<!-- tests upgrading 1.2 services to current -->
 	<target name="testUpgradeFrom1pt2" depends="setGlobus, prepareClasspaths" description="Tests the ability to upgrade a service from 1.2 to the current version" unless="upgrade.1pt2.completed">
 		<mkdir dir="${junit.results.dir}" />
 		<junit dir="${introduce.dir}" printsummary="yes" haltonerror="${halt.on.error}" haltonfailure="${halt.on.error}" errorproperty="upgrade.1.2.test.failed" failureproperty="upgrade.1.2.test.failed" showoutput="true" fork="yes">
@@ -264,26 +254,5 @@
 			</batchtest>
 		</junit>
 		<property name="upgrade.1pt2.completed" value="true" />
-	</target>
-
-
-	<!-- system tests for the BDT data service -->
-	<target name="testBdtSystem" depends="setGlobus, testBdtCreation" description="Tests invocation of the BDT data service">
-		<junit dir="${basedir}" printsummary="yes" haltonerror="${halt.on.error}" haltonfailure="${halt.on.error}" errorproperty="bdt.system.test.failed" failureproperty="bdt.system.test.failed" showoutput="true" fork="yes" forkmode="once">
-			<sysproperty key="use.testing.port.assignment" value="${testing.port.assignment.mode}" />
-			<sysproperty key="introduce.base.dir" value="${introduce.dir}" />
-			<sysproperty key="build.dir" value="${classes.dir}" />
-			<sysproperty key="cql.docs.dir" value="${basedir}/docs/cqlExamples" />
-			<sysproperty key="temp.test.service.dir" value="${temp.test.service.dir}"/>
-			<sysproperty key="testing.containers.dir" value="${testing.containers.dir}"/>
-			<classpath refid="all.test.classpath" />
-			<formatter type="xml" />
-			<test if="testcase" name="${testcase}" fork="no" todir="${junit.results.dir}" />
-			<batchtest unless="testcase" fork="yes" todir="${junit.results.dir}">
-				<fileset dir="${src.dir}">
-					<include name="**/system/bdt/BDTDataServiceSystemTests.java" />
-				</fileset>
-			</batchtest>
-		</junit>
 	</target>
 </project>
