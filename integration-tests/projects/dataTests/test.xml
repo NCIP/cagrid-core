@@ -50,10 +50,9 @@
 	</target>
 	
 	
-	<target name="systemTest" depends="setGlobus, prepareClasspaths, testBasicSystem, testEnumerationSystem, testBdtSystem, testTransferSystem" description="Runs system tests (deploy, invoke, etc)">
+	<target name="systemTest" depends="setGlobus, prepareClasspaths, testBasicSystem, testEnumerationSystem, testTransferSystem" description="Runs system tests (deploy, invoke, etc)">
 		<fail message="Tests failed! Check test reports." if="basic.system.test.failed" />
 		<fail message="Tests failed! Check test reports." if="enumeration.system.test.failed" />
-		<fail message="Tests failed! Check test reports." if="bdt.system.test.failed" />
 		<fail message="Tests failed! Check test reports." if="transfer.system.test.failed"/>
 	</target>
 
