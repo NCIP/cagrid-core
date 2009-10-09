@@ -260,11 +260,11 @@ public class DomainModelCql2DomainValidator extends Cql2DomainValidator {
                 + " with role name " + assoc.getSourceRoleName());
         }
         
-        // validate instanceof (must be a subclass of the association's named class
+        // validate instanceof (must be a subclass of the association's named class)
         if (assoc.get_instanceof() != null) {
             boolean validInstanceof = false;
             // verify the association's named class is a superclass of the instanceof
-            String[] superclasses = getClassHierarchy(assoc.get_instanceof());
+            String[] superclasses = getSuperclassNames(assoc.get_instanceof());
             for (String sup : superclasses) {
                 if (sup.equals(assoc.getClassName())) {
                     validInstanceof = true;
@@ -366,7 +366,7 @@ public class DomainModelCql2DomainValidator extends Cql2DomainValidator {
     
     
     private Set<SimplifiedUmlAssociation> getAllAssociationsInvolvingClass(String involvedClass) {
-        String[] searchClassNames = getClassHierarchy(involvedClass);
+        String[] searchClassNames = getSuperclassNames(involvedClass);
         Set<SimplifiedUmlAssociation> associations = new HashSet<SimplifiedUmlAssociation>();
         for (String className : searchClassNames) {
             associations.addAll(getUmlAssociations(className));
@@ -375,7 +375,7 @@ public class DomainModelCql2DomainValidator extends Cql2DomainValidator {
     }
 
 
-    private String[] getClassHierarchy(String className) {
+    private String[] getSuperclassNames(String className) {
         UMLClass[] superclasses = DomainModelUtils.getAllSuperclasses(model, className);
         String[] names = new String[superclasses.length + 1];
         for (int i = 0; i < superclasses.length; i++) {
@@ -383,6 +383,11 @@ public class DomainModelCql2DomainValidator extends Cql2DomainValidator {
         }
         names[names.length - 1] = className;
         return names;
+    }
+    
+    
+    private UMLClass[] getSuperclasses(String className) {
+        return DomainModelUtils.getAllSuperclasses(model, className);
     }
 
 
