@@ -4,7 +4,6 @@ import gov.nih.nci.cagrid.common.Utils;
 import gov.nih.nci.cagrid.cql2.components.CQLQuery;
 import gov.nih.nci.cagrid.data.cql2.validation.Cql2DomainValidator;
 import gov.nih.nci.cagrid.data.cql2.validation.DomainModelCql2DomainValidator;
-import gov.nih.nci.cagrid.introduce.common.FileFilters;
 import gov.nih.nci.cagrid.metadata.MetadataUtils;
 import gov.nih.nci.cagrid.metadata.dataservice.DomainModel;
 
