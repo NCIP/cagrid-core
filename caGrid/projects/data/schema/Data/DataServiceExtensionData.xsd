@@ -28,15 +28,16 @@
 		<xsd:annotation>
 			<xsd:documentation>Features of data services which can be enabled / disabled</xsd:documentation>
 		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="ServiceStyle" type="ext:ServiceStyle" minOccurs="0"/>
+		</xsd:sequence>
 		<xsd:attribute name="useWsEnumeration" type="xsd:boolean" use="required"/>
 		<xsd:attribute name="useGridIdentifiers" type="xsd:boolean" use="required"/>
-		<xsd:attribute name="useBdt" type="xsd:boolean" use="required"/>
 		<xsd:attribute name="useTransfer" type="xsd:boolean" use="required"/>
-		<xsd:attribute name="serviceStyle" type="xsd:string" use="optional"/>
 	</xsd:complexType>
 	<xsd:complexType name="ModelInformation">
 		<xsd:sequence>
-			<xsd:element ref="mms:UMLProjectIdentifer" minOccurs="0" maxOccurs="1"/>
+			<xsd:element ref="mms:UMLProjectIdentifer" minOccurs="0"/>
 			<xsd:element name="ModelPackage" type="ext:ModelPackage" minOccurs="0" maxOccurs="unbounded"/>
 		</xsd:sequence>
 		<xsd:attribute name="source" type="ext:ModelSourceType" use="required"/>
@@ -58,5 +59,9 @@
 		<xsd:attribute name="shortClassName" type="xsd:string" use="required"/>
 		<xsd:attribute name="targetable" type="xsd:boolean" use="required"/>
 		<xsd:attribute name="selected" type="xsd:boolean" use="required"/>
+	</xsd:complexType>
+	<xsd:complexType name="ServiceStyle">
+		<xsd:attribute name="name" type="xsd:string" use="required"/>
+		<xsd:attribute name="version" type="xsd:string" use="required"/>
 	</xsd:complexType>
 </xsd:schema>

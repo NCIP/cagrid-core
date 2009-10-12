@@ -50,7 +50,11 @@
 	<xsd:complexType name="VersionUpgrade">
 		<xsd:attribute name="fromVersion" type="xsd:string" use="required"/>
 		<xsd:attribute name="toVersion" type="xsd:string" use="required"/>
-		<xsd:attribute name="classname" type="xsd:string" use="required"/>
+		<xsd:attribute name="classname" type="xsd:string" use="required">
+			<xsd:annotation>
+				<xsd:documentation>Must implement gov.nih.nci.cagrid.data.style.StyleVersionUpgrader</xsd:documentation>
+			</xsd:annotation>
+		</xsd:attribute>
 	</xsd:complexType>
 	<xsd:element name="CodegenHelpers" type="tns:CodegenHelpers"/>
 	<xsd:complexType name="CodegenHelpers">
