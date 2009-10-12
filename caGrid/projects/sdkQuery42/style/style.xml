@@ -7,6 +7,7 @@
 		<CreationWizardPanel classname="gov.nih.nci.cagrid.sdkquery42.style.wizard.ProjectSelectionPanel"/>
 		<CreationWizardPanel classname="gov.nih.nci.cagrid.sdkquery42.style.wizard.SecurityConfigurationPanel"/>
 		<CreationWizardPanel classname="gov.nih.nci.cagrid.sdkquery42.style.wizard.DomainModelPanel"/>
+		<CreationWizardPanel classname="gov.nih.nci.cagrid.sdkquery42.style.wizard.SchemaMappingPanel"/>
 	</CreationWizardPanels>
 	<ModificationUiPanel classname="gov.nih.nci.cagrid.sdkquery42.style.modification.InformationPanel"/>
 	<CreationHelper postCreationClassname="gov.nih.nci.cagrid.sdkquery42.style.helper.PostCreationHelper"/>
