@@ -360,11 +360,6 @@ public class DataServiceQueryOperationProviderCreator implements CreationExtensi
                 FeatureCreator wsEnumCreator = new WsEnumerationFeatureCreator(info, service);
                 wsEnumCreator.addFeature();
             }
-            // bdt
-            if (features.isUseBdt()) {
-                FeatureCreator bdtCreator = new BDTFeatureCreator(info, service);
-                bdtCreator.addFeature();
-            }
             // transfer
             if (features.isUseTransfer()) {
                 FeatureCreator transferCreator = new TransferFeatureCreator(info, service);
@@ -373,7 +368,7 @@ public class DataServiceQueryOperationProviderCreator implements CreationExtensi
             // service style
             if (features.getServiceStyle() != null) {
                 try {
-                    ServiceStyleContainer styleContainer = ServiceStyleLoader.getStyle(features.getServiceStyle());
+                    ServiceStyleContainer styleContainer = ServiceStyleLoader.getStyle(features.getServiceStyle().getName());
                     if (styleContainer == null) {
                         throw new CreationExtensionException("Could not load service style "
                             + features.getServiceStyle());
