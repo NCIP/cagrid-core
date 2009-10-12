@@ -66,7 +66,7 @@ public class SDK42QueryProcessor extends CQLQueryProcessor {
     
     public void initialize(Properties parameters, InputStream wsdd) throws InitializationException {
         super.initialize(parameters, wsdd);
-        // verify that if we're using grid identity login, we're also using the Local API
+        // TODO: verify that if we're using grid identity login, we're also using the Local API
         
     }
     
