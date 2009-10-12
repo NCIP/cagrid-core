@@ -38,7 +38,7 @@ public class CreateEnumerationDataServiceStep extends CreationStep {
         
         // deserialize the service model
         System.out.println("Deserializing service description from introduce.xml");
-        ServiceDescription serviceDesc = (ServiceDescription) Utils.deserializeDocument(
+        ServiceDescription serviceDesc = Utils.deserializeDocument(
             serviceModelFile.getAbsolutePath(), ServiceDescription.class);      
         
         // verify the data extension is in there

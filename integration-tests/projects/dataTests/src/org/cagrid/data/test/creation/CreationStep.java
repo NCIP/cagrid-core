@@ -3,7 +3,6 @@ package org.cagrid.data.test.creation;
 
 import gov.nih.nci.cagrid.common.StreamGobbler;
 import gov.nih.nci.cagrid.common.Utils;
-import gov.nih.nci.cagrid.common.StreamGobbler.LogPriority;
 import gov.nih.nci.cagrid.introduce.IntroduceConstants;
 import gov.nih.nci.cagrid.introduce.beans.ServiceDescription;
 import gov.nih.nci.cagrid.introduce.beans.extension.ExtensionType;
@@ -50,9 +49,9 @@ public class CreationStep extends Step {
         System.out.println("EXECUTING COMMAND: " + cmd);
 		Process createSkeletonProcess = CommonTools.createAndOutputProcess(cmd);
         new StreamGobbler(createSkeletonProcess.getInputStream(), 
-            StreamGobbler.TYPE_OUT, logger, LogPriority.DEBUG).start();
+            StreamGobbler.TYPE_OUT, System.out).start();
         new StreamGobbler(createSkeletonProcess.getErrorStream(), 
-            StreamGobbler.TYPE_ERR, logger, LogPriority.ERROR).start();
+            StreamGobbler.TYPE_ERR, System.err).start();
         createSkeletonProcess.waitFor();
 		assertTrue("Creating new data service failed", createSkeletonProcess.exitValue() == 0);
         
@@ -64,9 +63,9 @@ public class CreationStep extends Step {
         System.out.println("EXECUTING COMMAND: " + cmd);
 		Process postCreateProcess = CommonTools.createAndOutputProcess(cmd);
         new StreamGobbler(postCreateProcess.getInputStream(), 
-            StreamGobbler.TYPE_OUT, logger, LogPriority.DEBUG).start();
+            StreamGobbler.TYPE_OUT, System.out).start();
         new StreamGobbler(postCreateProcess.getErrorStream(), 
-            StreamGobbler.TYPE_ERR, logger, LogPriority.ERROR).start();
+            StreamGobbler.TYPE_ERR, System.err).start();
         postCreateProcess.waitFor();
 		assertTrue("Service post creation process failed", postCreateProcess.exitValue() == 0);
         
@@ -77,9 +76,9 @@ public class CreationStep extends Step {
         System.out.println("EXECUTING COMMAND: " + cmd);
 		Process antAllProcess = CommonTools.createAndOutputProcess(cmd);
         new StreamGobbler(antAllProcess.getInputStream(), 
-            StreamGobbler.TYPE_OUT, logger, LogPriority.DEBUG).start();
+            StreamGobbler.TYPE_OUT, System.out).start();
         new StreamGobbler(antAllProcess.getErrorStream(), 
-            StreamGobbler.TYPE_ERR, logger, LogPriority.ERROR).start();
+            StreamGobbler.TYPE_ERR, System.err).start();
         antAllProcess.waitFor();
 		assertTrue("Build process failed", antAllProcess.exitValue() == 0);
 	}
@@ -96,7 +95,7 @@ public class CreationStep extends Step {
     
     
     private String getServiceExtensions() throws Exception {
-        ServiceDescription description = (ServiceDescription) Utils.deserializeDocument(
+        ServiceDescription description = Utils.deserializeDocument(
             serviceInfo.getDir() + File.separator + IntroduceConstants.INTRODUCE_XML_FILE,
             ServiceDescription.class);
         String ext = "";
