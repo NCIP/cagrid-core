@@ -6,6 +6,7 @@ import gov.nih.nci.cagrid.data.ui.GroupSelectionListener;
 import gov.nih.nci.cagrid.data.ui.NotifyingButtonGroup;
 import gov.nih.nci.cagrid.data.ui.wizard.AbstractWizardPanel;
 import gov.nih.nci.cagrid.introduce.beans.extension.ServiceExtensionDescriptionType;
+import gov.nih.nci.cagrid.introduce.common.ResourceManager;
 import gov.nih.nci.cagrid.introduce.common.ServiceInformation;
 
 import java.awt.Color;
@@ -345,7 +346,14 @@ public class ProjectSelectionPanel extends AbstractWizardPanel {
             remoteClientDirBrowseButton.setText("Browse");
             remoteClientDirBrowseButton.addActionListener(new java.awt.event.ActionListener() {
                 public void actionPerformed(java.awt.event.ActionEvent e) {
-                    System.out.println("actionPerformed()"); // TODO Auto-generated Event stub actionPerformed()
+                    String dir = null;
+                    try {
+                        dir = ResourceManager.promptDir(ProjectSelectionPanel.this, configuration.getRemoteClientDir());
+                    } catch (Exception ex) {
+                        CompositeErrorDialog.showErrorDialog("Error selecting directory: " + ex.getMessage(), ex);
+                    }
+                    getRemoteClientDirTextField().setText(dir);
+                    validateInput();
                 }
             });
         }
@@ -398,7 +406,14 @@ public class ProjectSelectionPanel extends AbstractWizardPanel {
             localClientDirBrowseButton.setText("Browse");
             localClientDirBrowseButton.addActionListener(new java.awt.event.ActionListener() {
                 public void actionPerformed(java.awt.event.ActionEvent e) {
-                    System.out.println("actionPerformed()"); // TODO Auto-generated Event stub actionPerformed()
+                    String dir = null;
+                    try {
+                        dir = ResourceManager.promptDir(ProjectSelectionPanel.this, configuration.getLocalClientDir());
+                    } catch (Exception ex) {
+                        CompositeErrorDialog.showErrorDialog("Error selecting directory: " + ex.getMessage(), ex);
+                    }
+                    getLocalClientDirTextField().setText(dir);
+                    validateInput();
                 }
             });
         }

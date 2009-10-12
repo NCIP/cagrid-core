@@ -1,11 +1,19 @@
 package org.cagrid.data.sdkquery42.style.wizard.config;
 
+import gov.nih.nci.cagrid.common.JarUtilities;
+import gov.nih.nci.cagrid.common.Utils;
+import gov.nih.nci.cagrid.data.common.CastorMappingUtil;
 import gov.nih.nci.cagrid.introduce.common.ServiceInformation;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.jar.JarFile;
+
+import org.cagrid.data.sdkquery42.processor.SDK42QueryProcessor;
+import org.cagrid.grape.utils.CompositeErrorDialog;
 
 /**
  * ProjectSelectionConfigurationStep
@@ -30,7 +38,49 @@ public class ProjectSelectionConfigurationStep extends AbstractStyleConfiguratio
 
 
     public void applyConfiguration() throws Exception {
-        // TODO Auto-generated method stub
+        // set service properties required by the query processor
+        setServiceProperty(SDK42QueryProcessor.PROPERTY_APPLICATION_NAME, getApplicationName(), false);
+        setServiceProperty(SDK42QueryProcessor.PROPERTY_USE_LOCAL_API, String.valueOf(isLocalApi()), false);
+        setServiceProperty(SDK42QueryProcessor.PROPERTY_HOST_NAME, getApplicationHostname(), false);
+        setServiceProperty(SDK42QueryProcessor.PROPERTY_HOST_PORT, 
+            getApplicationPort() != null ? String.valueOf(getApplicationPort()) : "", false);
+        setServiceProperty(SDK42QueryProcessor.PROPERTY_HOST_HTTPS, String.valueOf(isUseHttps()), false);
+        // store the information about the local and remote client dirs
+        setStyleProperty(StyleProperties.SDK_REMOTE_CLIENT_DIR, getRemoteClientDir() != null ? getRemoteClientDir() : "");
+        setStyleProperty(StyleProperties.SDK_LOCAL_CLIENT_DIR, getLocalClientDir() != null ? getLocalClientDir() : "");
+        // roll up the local or remote configs as a jar file
+        File sdkConfigDir = null;
+        File sdkLibDir = null;
+        if (isLocalApi()) {
+            sdkConfigDir = new File(getLocalClientDir(), "conf");
+            sdkLibDir = new File(getLocalClientDir(), "lib");
+        } else {
+            sdkConfigDir = new File(getRemoteClientDir(), "conf");
+            sdkLibDir = new File(getRemoteClientDir(), "lib");
+        }
+        File serviceLibDir = new File(getServiceInformation().getBaseDirectory(), "lib");
+        File configJarFile = new File(serviceLibDir, getApplicationName() + "-config.jar");
+        JarUtilities.jarDirectory(sdkConfigDir, configJarFile);
+        // grab the castor marshaling and unmarshaling xml mapping files
+        // from the schemas jar and copy them into the service's package structure
+        try {
+            File schemasJar = new File(sdkLibDir, getApplicationName() + "-schema.jar");
+            StringBuffer marshaling = JarUtilities.getFileContents(
+                new JarFile(schemasJar), CastorMappingUtil.CASTOR_MARSHALLING_MAPPING_FILE);
+            StringBuffer unmarshalling = JarUtilities.getFileContents(
+                new JarFile(schemasJar), CastorMappingUtil.CASTOR_UNMARSHALLING_MAPPING_FILE);
+            // copy the mapping files to the service's source dir + base package name
+            String marshallOut = CastorMappingUtil.getMarshallingCastorMappingFileName(getServiceInformation());
+            String unmarshallOut = CastorMappingUtil.getUnmarshallingCastorMappingFileName(getServiceInformation());
+            Utils.stringBufferToFile(marshaling, marshallOut);
+            Utils.stringBufferToFile(unmarshalling, unmarshallOut);
+        } catch (IOException ex) {
+            ex.printStackTrace();
+            CompositeErrorDialog.showErrorDialog("Error extracting castor mapping files", ex.getMessage(), ex);
+        }
+        
+        // copy SDK libs to the service
+        Utils.copyDirectory(sdkLibDir, serviceLibDir);
     }
     
     

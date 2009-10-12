@@ -4,20 +4,27 @@ import gov.nih.nci.cagrid.common.portal.DocumentChangeAdapter;
 import gov.nih.nci.cagrid.common.portal.validation.IconFeedbackPanel;
 import gov.nih.nci.cagrid.data.ui.GroupSelectionListener;
 import gov.nih.nci.cagrid.data.ui.NotifyingButtonGroup;
+import gov.nih.nci.cagrid.introduce.common.FileFilters;
 import gov.nih.nci.cagrid.introduce.common.ResourceManager;
 import gov.nih.nci.cagrid.metadata.xmi.XmiFileType;
 
+import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.GridLayout;
 import java.awt.Insets;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.io.File;
+import java.io.IOException;
 
 import javax.swing.ButtonModel;
+import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JRadioButton;
 import javax.swing.JTextField;
 import javax.swing.event.DocumentEvent;
-import javax.swing.filechooser.FileFilter;
 
 import org.cagrid.data.sdkquery42.style.wizard.config.DomainModelConfigurationStep;
 import org.cagrid.data.sdkquery42.style.wizard.config.DomainModelConfigurationStep.DomainModelConfigurationSource;
@@ -30,14 +37,6 @@ import com.jgoodies.validation.message.SimpleValidationMessage;
 import com.jgoodies.validation.util.DefaultValidationResultModel;
 import com.jgoodies.validation.util.ValidationUtils;
 import com.jgoodies.validation.view.ValidationComponentUtils;
-import java.awt.Dimension;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.io.File;
-import java.io.IOException;
-
-import javax.swing.JButton;
-import javax.swing.JRadioButton;
 
 /**
  * ModelFromXmiPanel
@@ -107,6 +106,7 @@ public class ModelFromXmiPanel extends DomainModelSourcePanel {
         });
         xmiTypeGroup.add(getEaXmiTypeRadioButton());
         xmiTypeGroup.add(getArgoXmiTypeRadioButton());
+        xmiTypeGroup.setSelected(getEaXmiTypeRadioButton().getModel(), true);
         configureValidation();
         setLayout(new GridLayout());
         add(getValidationOverlayPanel());
@@ -323,20 +323,12 @@ public class ModelFromXmiPanel extends DomainModelSourcePanel {
                 public void actionPerformed(ActionEvent e) {
                     String filename = null;
                     try {
-                        filename = ResourceManager.promptFile(null, new FileFilter() {
-                            public String getDescription() {
-                                return "(*.xmi) Xml Metadata Interchange";
-                            }
-                            
-                        
-                            public boolean accept(File f) {
-                                return f.getName().toLowerCase().endsWith(".xmi");
-                            }
-                        });
+                        filename = ResourceManager.promptFile(null, new FileFilters.XMIFileFilter());
                     } catch (IOException ex) {
                         CompositeErrorDialog.showErrorDialog("Error selecting file: " + ex.getMessage(), ex);
                     }
                     getConfiguration().setXmiFile(filename != null ? new File(filename) : null);
+                    getXmiFileTextField().setText(filename);
                     validateInput();
                 }
             });

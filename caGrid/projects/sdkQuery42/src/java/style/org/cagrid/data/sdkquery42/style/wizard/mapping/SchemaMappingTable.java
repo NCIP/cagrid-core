@@ -79,7 +79,7 @@ public class SchemaMappingTable extends JTable {
     }
     
     
-    public void reloadCadsrInformation() throws Exception {
+    public void reloadModelInformation() throws Exception {
         // empty the table
         while (tableModel.getRowCount() != 0) {
             tableModel.removeRow(0);
@@ -111,13 +111,13 @@ public class SchemaMappingTable extends JTable {
                 tableModel.addRow(row);
             }
         } else {
-            System.out.println("Packages in caDSR information are null!!!!!!!");
+            System.out.println("Packages in model information are null!!!!!!!");
         }
     }
     
     
     private PackageMappingStatus determineMappingStatus(ModelPackage pack) {
-        // see if there's even a schema associated witht the package
+        // see if there's even a schema associated with the package
         NamespaceType mappedNamespace = modelInfoUtil.getMappedNamespace(pack.getPackageName());
         if (mappedNamespace == null) {
             return PackageMappingStatus.NO_SCHEMA;

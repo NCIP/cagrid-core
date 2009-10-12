@@ -12,6 +12,10 @@ import gov.nih.nci.cagrid.introduce.common.CommonTools;
 import gov.nih.nci.cagrid.introduce.common.ServiceInformation;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.util.Properties;
 
 /** 
  *  AbstractStyleConfigurationStep
@@ -23,6 +27,8 @@ import java.io.File;
  * @version $Id: AbstractStyleConfigurationStep.java,v 1.2 2008-01-23 19:58:20 dervin Exp $ 
  */
 public abstract class AbstractStyleConfigurationStep {
+    
+    public static final String STYLE_PROPERTIES_FILE = "style.configuration.properties";
 
     private ServiceInformation serviceInfo = null;
     
@@ -97,5 +103,34 @@ public abstract class AbstractStyleConfigurationStep {
             }
         }
         return value;
+    }
+        
+    
+    protected String getStyleProperty(String key) throws IOException {
+        return getStyleProperties().getProperty(key);
+    }
+    
+    
+    protected synchronized void setStyleProperty(String key, String value) throws IOException {
+        Properties props = getStyleProperties();
+        props.setProperty(key, value);
+        FileOutputStream propsOut = new FileOutputStream(
+            new File(getServiceInformation().getBaseDirectory(), STYLE_PROPERTIES_FILE));
+        props.store(propsOut, "Written by " + getClass().getName());
+        propsOut.close();
+    }
+    
+    
+    private synchronized Properties getStyleProperties() throws IOException {
+        Properties props = new Properties();
+        File propsFile = new File(getServiceInformation().getBaseDirectory(), STYLE_PROPERTIES_FILE);
+        if (propsFile.exists()) {
+            FileInputStream propsIn = new FileInputStream(propsFile);
+            props.load(propsIn);
+            propsIn.close();
+        } else {
+            propsFile.createNewFile();
+        }
+        return props;
     }
 }

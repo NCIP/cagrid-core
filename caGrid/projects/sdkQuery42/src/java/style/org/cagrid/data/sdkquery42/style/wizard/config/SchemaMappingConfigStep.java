@@ -45,7 +45,7 @@ public class SchemaMappingConfigStep extends AbstractStyleConfigurationStep {
 
 
     public void applyConfiguration() throws Exception {
-        
+        // TODO: implement me
     }
     
     
@@ -75,10 +75,10 @@ public class SchemaMappingConfigStep extends AbstractStyleConfigurationStep {
         // locate the directory we'll copy schemas in to
         File schemaDir = getServiceSchemaDirectory();
         
-        // the sdk generates an <applicationName>-schemas.jar which contains the XSDs
+        // the sdk generates an <applicationName>-schema.jar which contains the XSDs
         String applicationName = getServicePropertyValue(SDK42QueryProcessor.PROPERTY_APPLICATION_NAME);
         File serviceLibDir = new File(getServiceInformation().getBaseDirectory(), "lib");
-        File schemasJarFile = new File(serviceLibDir, applicationName + "-schemas.jar");
+        File schemasJarFile = new File(serviceLibDir, applicationName + "-schema.jar");
         JarFile schemasJar = new JarFile(schemasJarFile);
         
         // copy all the XSDs into a temporary location.  Must do this so 

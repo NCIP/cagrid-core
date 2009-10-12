@@ -406,11 +406,6 @@ public class ModelFromMMSPanel extends DomainModelSourcePanel {
      */
     private static class InternalCaDSRBrowserPanel extends CaDSRBrowserPanel {
         
-        public InternalCaDSRBrowserPanel() {
-            super();
-        }
-        
-        
         public InternalCaDSRBrowserPanel(boolean showQueryPanel, boolean showClassSelection) {
             super(showQueryPanel, showClassSelection);
         }

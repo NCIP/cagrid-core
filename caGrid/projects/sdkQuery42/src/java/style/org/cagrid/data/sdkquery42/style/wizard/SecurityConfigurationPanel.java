@@ -26,6 +26,7 @@ import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 
 import org.cagrid.data.sdkquery42.style.wizard.config.SecurityConfigurationStep;
+import org.cagrid.grape.utils.CompositeErrorDialog;
 
 import com.jgoodies.validation.Severity;
 import com.jgoodies.validation.ValidationResult;
@@ -89,6 +90,15 @@ public class SecurityConfigurationPanel extends AbstractWizardPanel {
         getPasswordField().setText(configuration.getStaticLoginPass());
         getPassword2Field().setText(configuration.getStaticLoginPass());
         enableDisableComponents();
+    }
+    
+    
+    public void movingNext() {
+        try {
+            configuration.applyConfiguration();
+        } catch (Exception ex) {
+            CompositeErrorDialog.showErrorDialog("Error configuring: " + ex.getMessage(), ex);
+        }
     }
     
     
@@ -314,9 +324,10 @@ public class SecurityConfigurationPanel extends AbstractWizardPanel {
             useStaticLoginCheckBox.setText("Use Static Login");
             useStaticLoginCheckBox.addItemListener(new java.awt.event.ItemListener() {
                 public void itemStateChanged(java.awt.event.ItemEvent e) {
-                    validateInput();
+                    System.out.println("Use static check box ticked");
                     configuration.setUseStaticLogin(getUseStaticLoginCheckBox().isSelected());
                     enableDisableComponents();
+                    validateInput();
                 }
             });
         }

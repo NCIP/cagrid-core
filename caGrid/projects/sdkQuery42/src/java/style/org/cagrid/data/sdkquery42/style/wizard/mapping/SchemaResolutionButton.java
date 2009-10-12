@@ -58,7 +58,7 @@ public class SchemaResolutionButton extends JButton implements ActionListener {
             
             // update the rendering of this mapping
             try {
-                mappingTable.reloadCadsrInformation();
+                mappingTable.reloadModelInformation();
             } catch (Exception ex) {
                 ex.printStackTrace();
                 CompositeErrorDialog.showErrorDialog(

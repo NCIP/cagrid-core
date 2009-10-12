@@ -57,7 +57,7 @@ public class SchemaMappingPanel extends AbstractWizardPanel {
 
     public void update() {
         try {
-            getSchemaMappingTable().reloadCadsrInformation();
+            getSchemaMappingTable().reloadModelInformation();
         } catch (Exception ex) {
             ex.printStackTrace();
             CompositeErrorDialog.showErrorDialog(
