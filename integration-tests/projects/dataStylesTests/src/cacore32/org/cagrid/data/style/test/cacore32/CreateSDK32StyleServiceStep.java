@@ -6,6 +6,7 @@ import gov.nih.nci.cagrid.data.ExtensionDataUtils;
 import gov.nih.nci.cagrid.data.common.CastorMappingUtil;
 import gov.nih.nci.cagrid.data.extension.Data;
 import gov.nih.nci.cagrid.data.extension.ServiceFeatures;
+import gov.nih.nci.cagrid.data.extension.ServiceStyle;
 import gov.nih.nci.cagrid.introduce.IntroduceConstants;
 import gov.nih.nci.cagrid.introduce.beans.ServiceDescription;
 import gov.nih.nci.cagrid.introduce.beans.extension.ExtensionType;
@@ -62,7 +63,7 @@ public class CreateSDK32StyleServiceStep extends CreationStep {
             features = new ServiceFeatures();
             extensionData.setServiceFeatures(features);
         }
-        features.setServiceStyle(Sdk32TestConstants.STYLE_NAME);
+        features.setServiceStyle(new ServiceStyle(Sdk32TestConstants.STYLE_NAME, "1.4"));
         storeExtensionData(extensionData);
     }
     
