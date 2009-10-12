@@ -22,7 +22,8 @@ import junit.textui.TestRunner;
 public class Cql2DomainModelValidatorTestCase extends TestCase {
     
     public static final String TEST_DOCS_LOCATION = "ext" + File.separator + "dependencies" + File.separator + "test" + File.separator + "docs";
-    public static final String SDK40_DOMAIN_MODEL_NAME = "sdk40example_DomainModel.xml";
+    public static final String CQL2_EXAMPLES_LOCATION = TEST_DOCS_LOCATION + File.separator + "cql2Examples";
+    public static final String SDK40_DOMAIN_MODEL_NAME = TEST_DOCS_LOCATION + File.separator + "models" + File.separator + "sdk40example_DomainModel.xml";
     
     private Cql2DomainValidator validator = null;
     
@@ -33,7 +34,7 @@ public class Cql2DomainModelValidatorTestCase extends TestCase {
     
     public void setUp() {
         try {
-            FileReader reader = new FileReader(TEST_DOCS_LOCATION + File.separator + SDK40_DOMAIN_MODEL_NAME);
+            FileReader reader = new FileReader(SDK40_DOMAIN_MODEL_NAME);
             DomainModel model = MetadataUtils.deserializeDomainModel(reader);
             reader.close();
             validator = new DomainModelCql2DomainValidator(model);
@@ -45,12 +46,11 @@ public class Cql2DomainModelValidatorTestCase extends TestCase {
     
     
     public void testExampleQueries() {
-        File docsDir = new File(TEST_DOCS_LOCATION);
+        File docsDir = new File(CQL2_EXAMPLES_LOCATION);
         File[] queryDocs = docsDir.listFiles(new FileFilter() {
             public boolean accept(File pathname) {
                 return pathname.isFile() 
-                    && pathname.getName().toLowerCase().endsWith(".xml")
-                    && !pathname.getName().equals(SDK40_DOMAIN_MODEL_NAME);   
+                    && pathname.getName().toLowerCase().endsWith(".xml");   
                 }
             });
         Comparator<File> fileSorter = new Comparator<File>() {
