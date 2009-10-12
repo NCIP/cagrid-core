@@ -11,7 +11,7 @@ import gov.nih.nci.cagrid.data.QueryProcessingException;
 import gov.nih.nci.cagrid.data.cql.CQLQueryProcessor;
 import gov.nih.nci.cagrid.data.faults.MalformedQueryExceptionType;
 import gov.nih.nci.cagrid.data.faults.QueryProcessingExceptionType;
-import gov.nih.nci.cagrid.data.service.BaseServiceImpl;
+import gov.nih.nci.cagrid.data.service.BaseCQL1DataServiceImpl;
 import gov.nih.nci.cagrid.data.service.DataServiceInitializationException;
 import gov.nih.nci.cagrid.data.service.ServiceConfigUtil;
 
@@ -40,7 +40,7 @@ import org.globus.wsrf.container.ServiceManager.HelperAxisEngine;
  * @created by Introduce Toolkit version 1.0
  * 
  */
-public class TransferDataServiceImpl extends BaseServiceImpl {
+public class TransferDataServiceImpl extends BaseCQL1DataServiceImpl {
 
     private static Log LOG = LogFactory.getLog(TransferDataServiceImpl.class);
     
@@ -112,7 +112,6 @@ public class TransferDataServiceImpl extends BaseServiceImpl {
                     String error = "Error serializing CQL query results to byte queue: " 
                         + ex.getMessage();
                     LOG.error(error, ex);
-                    ex.printStackTrace();
                     throw new QueryProcessingException(error, ex);
                 } finally {
                     try {
@@ -179,8 +178,7 @@ public class TransferDataServiceImpl extends BaseServiceImpl {
                     DataServiceConstants.SERVER_CONFIG_LOCATION);
             } catch (Exception ex) {
                 String err = "Error obtaining server config location: " + ex.getMessage();
-                LOG.error(err);
-                ex.printStackTrace();
+                LOG.error(err, ex);
                 throw new IOException(err);
             }
             StringBuffer wsdd = Utils.fileToStringBuffer(new File(serverConfigLocation));

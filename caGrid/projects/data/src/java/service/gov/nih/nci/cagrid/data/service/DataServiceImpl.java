@@ -23,7 +23,7 @@ import org.globus.wsrf.ResourceHome;
   * @created May 17, 2007 2:20:26 PM
   * @version $Id$
  */
-public class DataServiceImpl extends BaseServiceImpl {
+public class DataServiceImpl extends BaseCQL1DataServiceImpl {
 	
 	public DataServiceImpl() throws DataServiceInitializationException {
 		super();

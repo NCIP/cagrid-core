@@ -13,7 +13,7 @@ import gov.nih.nci.cagrid.data.cql.CQLQueryProcessor;
 import gov.nih.nci.cagrid.data.cql.LazyCQLQueryProcessor;
 import gov.nih.nci.cagrid.data.faults.MalformedQueryExceptionType;
 import gov.nih.nci.cagrid.data.faults.QueryProcessingExceptionType;
-import gov.nih.nci.cagrid.data.service.BaseServiceImpl;
+import gov.nih.nci.cagrid.data.service.BaseCQL1DataServiceImpl;
 import gov.nih.nci.cagrid.data.service.DataServiceInitializationException;
 import gov.nih.nci.cagrid.data.service.ServiceConfigUtil;
 import gov.nih.nci.cagrid.data.utilities.CQLQueryResultsIterator;
@@ -55,7 +55,7 @@ import org.xmlsoap.schemas.ws._2004._09.enumeration.EnumerationContextType;
  * @created by Introduce Toolkit version 1.0
  * 
  */
-public class EnumerationDataServiceImpl extends BaseServiceImpl {
+public class EnumerationDataServiceImpl extends BaseCQL1DataServiceImpl {
 
     private static Log LOG = LogFactory.getLog(EnumerationDataServiceImpl.class);
 	
@@ -144,14 +144,14 @@ public class EnumerationDataServiceImpl extends BaseServiceImpl {
 			String serverConfigLocation = ServiceConfigUtil.getConfigProperty(
 				DataServiceConstants.SERVER_CONFIG_LOCATION);
 			InputStream configStream = new FileInputStream(serverConfigLocation);
-			Iterator resIter = new CQLQueryResultsIterator(results, configStream);
+			Iterator<?> resIter = new CQLQueryResultsIterator(results, configStream);
 			while (resIter.hasNext()) {
 				resultList.add(resIter.next());
 			}
 			if (resultList.size() != 0) {
 			    // create the EnumIterator from the objects
 			    configStream = new FileInputStream(serverConfigLocation);
-			    Class resultClass = resultList.get(0).getClass();
+			    Class<?> resultClass = resultList.get(0).getClass();
 			    QName name = Utils.getRegisteredQName(resultClass);
 
 			    // get the service property for the enum iterator type
@@ -174,7 +174,7 @@ public class EnumerationDataServiceImpl extends BaseServiceImpl {
 		throws gov.nih.nci.cagrid.data.QueryProcessingException, 
 		gov.nih.nci.cagrid.data.MalformedQueryException {
 		// perform the query
-		Iterator results = processor.processQueryLazy(query);
+		Iterator<?> results = processor.processQueryLazy(query);
         // TODO: fire results auditing, but HOW?
         
         try {
