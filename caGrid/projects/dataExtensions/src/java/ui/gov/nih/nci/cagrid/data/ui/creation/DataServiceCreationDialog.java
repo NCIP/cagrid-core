@@ -4,6 +4,7 @@ import gov.nih.nci.cagrid.common.portal.PortalLookAndFeel;
 import gov.nih.nci.cagrid.data.ExtensionDataUtils;
 import gov.nih.nci.cagrid.data.extension.Data;
 import gov.nih.nci.cagrid.data.extension.ServiceFeatures;
+import gov.nih.nci.cagrid.data.extension.ServiceStyle;
 import gov.nih.nci.cagrid.data.style.ServiceStyleContainer;
 import gov.nih.nci.cagrid.data.style.ServiceStyleLoader;
 import gov.nih.nci.cagrid.data.ui.StyleUiLoader;
@@ -64,13 +65,11 @@ public class DataServiceCreationDialog extends CreationExtensionUIDialog {
     
     // extension names needed for additional features
     public static final String WS_ENUM_EXTENSION_NAME = "cagrid_wsEnum";
-    public static final String BDT_EXTENSION_NAME = "bdt";
     public static final String TRANSFER_EXTENSION_NAME = "caGrid_Transfer";
 
     private JPanel mainPanel = null;
     private JCheckBox wsEnumCheckBox = null;
     private JCheckBox gridIdentCheckBox = null;
-    private JCheckBox bdtCheckBox = null;
     private JCheckBox transferCheckBox = null;
     private JButton okButton = null;
     private JPanel featuresPanel = null;
@@ -156,27 +155,6 @@ public class DataServiceCreationDialog extends CreationExtensionUIDialog {
             }
         }
         return this.wsEnumCheckBox;
-    }
-
-
-    /**
-     * This method initializes bdtCheckBox
-     * 
-     * @return javax.swing.JCheckBox
-     */
-    private JCheckBox getBdtCheckBox() {
-        if (this.bdtCheckBox == null) {
-            this.bdtCheckBox = new JCheckBox();
-            this.bdtCheckBox.setText("caGrid BDT");
-            // can only enable BDT if it has been installed
-            boolean bdtInstalled = bdtExtensionInstalled();
-            this.bdtCheckBox.setEnabled(bdtInstalled);
-            bdtCheckBox.setHorizontalAlignment(SwingConstants.CENTER);
-            if (!bdtInstalled) {
-                bdtCheckBox.setToolTipText("The BDT service extension is not installed");
-            }
-        }
-        return this.bdtCheckBox;
     }
     
     
@@ -283,7 +261,6 @@ public class DataServiceCreationDialog extends CreationExtensionUIDialog {
                 null, "Optional Features",javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION,
                 javax.swing.border.TitledBorder.DEFAULT_POSITION, null, PortalLookAndFeel.getPanelLabelColor()));
             featuresPanel.add(getWsEnumCheckBox());
-            featuresPanel.add(getBdtCheckBox());
             featuresPanel.add(getTransferCheckBox());
             featuresPanel.add(getGridIdentCheckBox());
         }
@@ -298,13 +275,15 @@ public class DataServiceCreationDialog extends CreationExtensionUIDialog {
         try {
             features.setUseGridIdentifiers(getGridIdentCheckBox().isSelected());
             features.setUseWsEnumeration(getWsEnumCheckBox().isSelected());
-            features.setUseBdt(getBdtCheckBox().isSelected());
             features.setUseTransfer(getTransferCheckBox().isSelected());
             
             // service style
             if (getStyleComboBox().getSelectedItem() != DEFAULT_SERVICE_STYLE) {
-                ServiceStyleContainer style = (ServiceStyleContainer) getStyleComboBox().getSelectedItem();
-                features.setServiceStyle(style.getServiceStyle().getName());
+                ServiceStyleContainer styleContainer = (ServiceStyleContainer) getStyleComboBox().getSelectedItem();
+                ServiceStyle selectedStyle = new ServiceStyle();
+                selectedStyle.setName(styleContainer.getServiceStyle().getName());
+                selectedStyle.setVersion(styleContainer.getServiceStyle().getVersion());
+                features.setServiceStyle(selectedStyle);
             } else if (features.getServiceStyle() != null) {
                 features.setServiceStyle(null);
             }
@@ -320,7 +299,7 @@ public class DataServiceCreationDialog extends CreationExtensionUIDialog {
 
 
     private boolean wsEnumExtensionInstalled() {
-        List extensionDescriptors = ExtensionsLoader.getInstance().getServiceExtensions();
+        List<?> extensionDescriptors = ExtensionsLoader.getInstance().getServiceExtensions();
         for (int i = 0; i < extensionDescriptors.size(); i++) {
             ServiceExtensionDescriptionType ex = (ServiceExtensionDescriptionType) extensionDescriptors.get(i);
             if (ex.getName().equals(WS_ENUM_EXTENSION_NAME)) {
@@ -329,22 +308,10 @@ public class DataServiceCreationDialog extends CreationExtensionUIDialog {
         }
         return false;
     }
-
-
-    private boolean bdtExtensionInstalled() {
-        List extensionDescriptors = ExtensionsLoader.getInstance().getServiceExtensions();
-        for (int i = 0; i < extensionDescriptors.size(); i++) {
-            ServiceExtensionDescriptionType desc = (ServiceExtensionDescriptionType) extensionDescriptors.get(i);
-            if (desc.getName().equals(BDT_EXTENSION_NAME)) {
-                return true;
-            }
-        }
-        return false;
-    }
     
     
     private boolean transferExtensionInstalled() {
-        List extensionDescriptors = ExtensionsLoader.getInstance().getServiceExtensions();
+        List<?> extensionDescriptors = ExtensionsLoader.getInstance().getServiceExtensions();
         for (int i = 0; i < extensionDescriptors.size(); i++) {
             ServiceExtensionDescriptionType desc = (ServiceExtensionDescriptionType) extensionDescriptors.get(i);
             if (desc.getName().equals(TRANSFER_EXTENSION_NAME)) {
