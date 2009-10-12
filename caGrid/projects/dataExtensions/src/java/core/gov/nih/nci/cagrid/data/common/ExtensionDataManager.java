@@ -9,6 +9,7 @@ import gov.nih.nci.cagrid.data.extension.ModelClass;
 import gov.nih.nci.cagrid.data.extension.ModelInformation;
 import gov.nih.nci.cagrid.data.extension.ModelPackage;
 import gov.nih.nci.cagrid.data.extension.ModelSourceType;
+import gov.nih.nci.cagrid.data.extension.ServiceStyle;
 import gov.nih.nci.cagrid.introduce.beans.extension.ExtensionTypeExtensionData;
 
 import java.util.Arrays;
@@ -387,19 +388,6 @@ public class ExtensionDataManager {
     
     
     /**
-     * Gets the flag indicating the service is to use BDT
-     * 
-     * @return
-     *      The use BDT flag
-     * @throws Exception
-     */
-    public boolean isUseBdt() throws Exception {
-        Data data = getExtensionData();
-        return data.getServiceFeatures().isUseBdt();
-    }
-    
-    
-    /**
      * Gets the flag indicating the service is to use WS-Enumeration
      * 
      * @return
@@ -413,13 +401,37 @@ public class ExtensionDataManager {
     
     
     /**
+     * Gets the flag indicating the service is to use caGrid Transfer
+     * 
+     * @return
+     * @throws Exception
+     */
+    public boolean isUseTransfer() throws Exception {
+        Data data = getExtensionData();
+        return data.getServiceFeatures().isUseTransfer();
+    }
+    
+    
+    /**
+     * Gets the flag indicating the service is to use Identifiers
+     * 
+     * @return
+     * @throws Exception
+     */
+    public boolean isUseIdentifiers() throws Exception {
+        Data data = getExtensionData();
+        return data.getServiceFeatures().isUseGridIdentifiers();
+    }
+    
+    
+    /**
      * Gets the service style
      * 
      * @return
      *      The service style, or <code>null</code> if none is supplied
      * @throws Exception
      */
-    public String getServiceStyle() throws Exception {
+    public ServiceStyle getServiceStyle() throws Exception {
         Data data = getExtensionData();
         return data.getServiceFeatures().getServiceStyle();
     }
