@@ -65,7 +65,7 @@ public class DataServiceCodegenPreProcessor implements CodegenExtensionPreProces
         ServiceFeatures features = data.getServiceFeatures();
         if (features != null && features.getServiceStyle() != null) {
             try {
-                ServiceStyleContainer container = ServiceStyleLoader.getStyle(features.getServiceStyle());
+                ServiceStyleContainer container = ServiceStyleLoader.getStyle(features.getServiceStyle().getName());
                 if (container == null) {
                     throw new CodegenExtensionException(
                         "Could not load service style " + features.getServiceStyle());

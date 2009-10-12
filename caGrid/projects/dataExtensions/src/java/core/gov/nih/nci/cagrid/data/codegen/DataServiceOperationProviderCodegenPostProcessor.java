@@ -38,37 +38,23 @@ public class DataServiceOperationProviderCodegenPostProcessor extends BaseCodege
 		generateClassToQnameMapping(extensionData, info);
 		
 		// handle service feature modifications
-		if (extensionData.getServiceFeatures() != null) {
-		    if (extensionData.getServiceFeatures().isUseBdt()) {
-		        BDTFeatureCodegen bdtCodegen = new BDTFeatureCodegen(
-		            info, info.getServices().getService(0), info.getIntroduceServiceProperties());
-		        bdtCodegen.codegenFeature();
-            }
-            if (extensionData.getServiceFeatures().isUseWsEnumeration()) {
-                /*
-                WsEnumerationFeatureCodegen wsEnumCodegen = new WsEnumerationFeatureCodegen(
-                    info, info.getServices().getService(0), info.getIntroduceServiceProperties());
-                wsEnumCodegen.codegenFeature();
-                */
-            }
-            
-            // if a style provided a codegen post processor, execute it here
-            String styleName = extensionData.getServiceFeatures().getServiceStyle();
-            if (styleName != null) {
-                try {
-                    ServiceStyleContainer styleContainer = ServiceStyleLoader.getStyle(styleName);
-                    if (styleContainer == null) {
-                        throw new CreationExtensionException("Could not load service style " + styleName);
-                    }
-                    StyleCodegenPostProcessor stylePostProcessor = styleContainer.loadCodegenPostProcessor();
-                    if (stylePostProcessor != null) {
-                        stylePostProcessor.codegenPostProcessStyle(desc, info);
-                    }
-                } catch (Exception ex) {
-                    throw new CodegenExtensionException(
-                        "Error executing style codegen post processor: " + ex.getMessage(), ex);
-                }
-            }            
+		if (extensionData.getServiceFeatures() != null 
+		    && extensionData.getServiceFeatures().getServiceStyle() != null) {
+		    // if a style provided a codegen post processor, execute it here
+		    String styleName = extensionData.getServiceFeatures().getServiceStyle().getName();
+		    try {
+		        ServiceStyleContainer styleContainer = ServiceStyleLoader.getStyle(styleName);
+		        if (styleContainer == null) {
+		            throw new CreationExtensionException("Could not load service style " + styleName);
+		        }
+		        StyleCodegenPostProcessor stylePostProcessor = styleContainer.loadCodegenPostProcessor();
+		        if (stylePostProcessor != null) {
+		            stylePostProcessor.codegenPostProcessStyle(desc, info);
+		        }
+		    } catch (Exception ex) {
+		        throw new CodegenExtensionException(
+		            "Error executing style codegen post processor: " + ex.getMessage(), ex);
+		    }
 		}
 	}
 }
