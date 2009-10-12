@@ -93,9 +93,6 @@
 	<classpathentry kind="lib" path="lib/sdk321Example/wsdl4j-1.5.1.jar"/>
 	<classpathentry kind="lib" path="lib/sdk321Example/xercesImpl.jar"/>
 	<classpathentry kind="lib" path="lib/sdk321Example/xml-apis.jar"/>
-	<classpathentry kind="lib" path="ext/dependencies/test/jars/caGrid-BulkDataHandler-client-1.4-dev.jar"/>
-	<classpathentry kind="lib" path="ext/dependencies/test/jars/caGrid-BulkDataHandler-common-1.4-dev.jar"/>
-	<classpathentry kind="lib" path="ext/dependencies/test/jars/caGrid-BulkDataHandler-stubs-1.4-dev.jar"/>
 	<classpathentry kind="lib" path="ext/dependencies/test/jars/caGrid-core-1.4-dev.jar"/>
 	<classpathentry kind="lib" path="ext/dependencies/test/jars/caGrid-core-tests-1.4-dev.jar"/>
 	<classpathentry kind="lib" path="ext/dependencies/test/jars/caGrid-CQL-cql.1.0-1.4-dev.jar"/>
