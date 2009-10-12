@@ -27,10 +27,9 @@
 
     <conf name="cql-examples" visibility="public"/>
 
-    <conf name="bdt-schemas" visibility="public"/>
     <conf name="enum-schemas" visibility="public"/>
     <conf name="transfer-schemas" visibility="public"/>
-    <conf name="service-schemas" visibility="public" extends="bdt-schemas,enum-schemas,transfer-schemas"/>
+    <conf name="service-schemas" visibility="public" extends="enum-schemas,transfer-schemas"/>
     <conf name="extension-schemas" visibility="public"/>
   </configurations>
 
@@ -46,15 +45,6 @@
     <artifact name="caGrid-${ivy.module}-tools" conf="tools" type="jar"/>
     <artifact name="caGrid-${ivy.module}-utils" conf="utils" type="jar"/>
     <artifact name="caGrid-${ivy.module}-validation" conf="validation" type="jar"/>
-    
-    <artifact name="BDTDataService" conf="bdt-schemas" type="wsdl"/>
-    <artifact name="BDTDataServiceBulkDataHandler" conf="bdt-schemas" type="wsdl"/>
-    <artifact name="BDTDataServiceBulkDataHandlerTypes" conf="bdt-schemas" type="xsd"/>
-    <artifact name="BDTDataServiceTypes" conf="bdt-schemas" type="xsd"/>
-    <!-- TODO: some of these should be coming from a bdt dependency -->    
-    <artifact name="BulkDataHandler" conf="bdt-schemas" type="wsdl"/>
-    <artifact name="BulkDataHandlerReference" conf="bdt-schemas" type="xsd"/>
-    <artifact name="BulkDataTransferServiceMetadata" conf="bdt-schemas" type="xsd"/>
     
     <artifact name="DataService" conf="service-schemas" type="wsdl"/>
     <artifact name="DataServiceExceptions" conf="service-schemas" type="xsd"/>
@@ -107,7 +97,7 @@
 
   <dependencies>
     <dependency rev="latest.integration" org="caGrid" name="core"
-      conf="service,tools->default;impl-test->test"/>
+      conf="service,tools->default;test->test"/>
     <dependency rev="latest.integration" org="caGrid" name="metadata"
       conf="impl,service-schemas->schemas;utils->data.jars,security.jars"/>
     <dependency rev="latest.integration" org="caGrid" name="service-security-provider"
@@ -120,10 +110,10 @@
       conf="validation->default"/>
     <dependency rev="latest.integration" org="caGrid" name="graph" conf="tools->default"/>
     <dependency rev="latest.integration" org="caGrid" name="grape" conf="tools->default"/>
-    <dependency rev="latest.integration" org="caGrid" name="bulkDataTransfer" conf="utils->client"/>
     <dependency rev="latest.integration" org="caGrid" name="mms" conf="stubs->schemas,stubs" />
-    <dependency rev="latest.integration" org="caGrid" name="cql" conf="common->cql;service->cql,cql-schemas;service-schemas->cql-schemas;extension-schemas->cql-schemas;utils->cql2,cql2-schemas"/>
+    <dependency rev="latest.integration" org="caGrid" name="cql" conf="stubs->cql,cql2;common->cql;service->cql,cql-schemas;service-schemas->cql-schemas;extension-schemas->cql-schemas;utils->cql2,cql2-schemas"/>
     <dependency rev="latest.integration" org="caGrid" name="transfer" conf="service->stubs,common,service,client"/>
+    <dependency rev="latest.integration" org="caGrid" name="sdk4xCQL2" conf="impl-test->cql2-examples"/>
     
     <!-- Extenernal Dependencies -->
     <dependency rev="1.0" org="jdom" name="jdom" conf="service->*"/>
