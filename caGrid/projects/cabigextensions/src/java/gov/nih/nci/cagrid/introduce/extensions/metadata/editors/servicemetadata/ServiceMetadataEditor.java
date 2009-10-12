@@ -50,6 +50,7 @@ import com.jgoodies.validation.message.SimpleValidationMessage;
 import com.jgoodies.validation.util.DefaultValidationResultModel;
 import com.jgoodies.validation.util.ValidationUtils;
 import com.jgoodies.validation.view.ValidationComponentUtils;
+import java.awt.Insets;
 
 
 /**
@@ -92,6 +93,10 @@ public class ServiceMetadataEditor extends ResourcePropertyEditorPanel {
     private JTextField centerImageTextField = null;
     private String result;
     private JButton searchCenterButton;
+    private JLabel serviceDescriptionLabel = null;
+    private JTextField serviceDescriptionTextField = null;
+    private JLabel serviceVersionLabel = null;
+    private JTextField serviceVersionTextField = null;
 
 
     public ServiceMetadataEditor(ResourcePropertyType type, String doc, File schemaFile, File schemaDir) {
@@ -141,6 +146,8 @@ public class ServiceMetadataEditor extends ResourcePropertyEditorPanel {
     private void initValidation() {
         ValidationComponentUtils.setMessageKey(getCenterDisplayNameTextField(), "service-display-name");
         ValidationComponentUtils.setMessageKey(getCenterShortNameTextField(), "service-short-name");
+        ValidationComponentUtils.setMessageKey(getServiceDescriptionTextField(), "service-description");
+        ValidationComponentUtils.setMessageKey(getServiceVersionTextField(), "service-version");
 
         validateInput();
     }
@@ -155,6 +162,14 @@ public class ServiceMetadataEditor extends ResourcePropertyEditorPanel {
         if (ValidationUtils.isBlank(getCenterShortNameTextField().getText())) {
             validationResult.add(new SimpleValidationMessage("Center Short Name must not be blank", Severity.ERROR,
                 "service-short-name"));
+        }
+        if (ValidationUtils.isBlank(getServiceDescriptionTextField().getText())) {
+            validationResult.add(new SimpleValidationMessage("Service description should not be blank",
+                Severity.WARNING, "service-description"));
+        }
+        if (ValidationUtils.isBlank(getServiceVersionTextField().getText())) {
+            validationResult.add(new SimpleValidationMessage("Service version should not be blank", Severity.WARNING,
+                "service-version"));
         }
 
         this.validationModel.setResult(validationResult);
@@ -219,10 +234,19 @@ public class ServiceMetadataEditor extends ResourcePropertyEditorPanel {
      */
     private JPanel getServicePanel() {
         if (this.servicePanel == null) {
+            GridBagConstraints gridBagConstraints15 = new GridBagConstraints();
+            gridBagConstraints15.fill = GridBagConstraints.BOTH;
+            gridBagConstraints15.weightx = 1.0;
+            gridBagConstraints15.weighty = 1.0;
+            gridBagConstraints15.gridx = 0;
+            gridBagConstraints15.gridy = 1;
+            GridBagConstraints gridBagConstraints14 = new GridBagConstraints();
+            gridBagConstraints14.gridx = 0;
+            gridBagConstraints14.gridy = 0;
             this.servicePanel = new JPanel();
-            this.servicePanel.setLayout(new BorderLayout());
-            this.servicePanel.add(getServiceInfoPanel(), java.awt.BorderLayout.NORTH);
-            this.servicePanel.add(getServiceTabbedPane(), java.awt.BorderLayout.CENTER);
+            this.servicePanel.setLayout(new GridBagLayout());
+            servicePanel.add(new IconFeedbackPanel(this.validationModel, getServiceInfoPanel()), gridBagConstraints14);
+            servicePanel.add(getServiceTabbedPane(), gridBagConstraints15);
         }
         return this.servicePanel;
     }
@@ -273,92 +297,9 @@ public class ServiceMetadataEditor extends ResourcePropertyEditorPanel {
             this.centerInfoPanel.add(getCenterDisplayNameTextField(), gridBagConstraints1);
             this.centerInfoPanel.add(this.centerShortNameLabel, gridBagConstraints2);
             this.centerInfoPanel.add(getCenterShortNameTextField(), gridBagConstraints11);
-            //this.centerInfoPanel.add(getSearchCenterButton(), gridBagConstraints12);
         }
         return this.centerInfoPanel;
     }
-
-
-//    private JButton getSearchCenterButton() {
-//        if (this.searchCenterButton == null) {
-//            this.searchCenterButton = new JButton("Load from caDSR");
-//            this.searchCenterButton.addActionListener(new java.awt.event.ActionListener() {
-//                public void actionPerformed(java.awt.event.ActionEvent e) {
-//                    searchForCenter();
-//                }
-//            });
-//        }
-//        return this.searchCenterButton;
-//    }
-
-
-//    /**
-//     * 
-//     */
-//    protected void searchForCenter() {
-//        ApplicationService appService = ApplicationService
-//            .getRemoteInstance("http://cabio.nci.nih.gov/cacore31/http/remoteService");
-//        Organization org = new Organization();
-//        org.setName(getCenterShortNameTextField().getText());
-//        try {
-//            List<Organization> rList = appService.search(Organization.class, org);
-//            if (rList.size() < 1) {
-//                return;
-//            }
-//            Organization foundOrg = rList.get(0);
-//            ResearchCenter center = new ResearchCenter();
-//            center.setDisplayName(foundOrg.getName());
-//            center.setShortName(foundOrg.getName());
-//            // don't have this kind of info in caDSR, so clear it out
-//            center.setResearchCenterDescription(null);
-//
-//            // build up the address
-//            Address address = new Address();
-//            Collection<gov.nih.nci.cadsr.domain.Address> addressCollection = foundOrg.getAddressCollection();
-//            if (!addressCollection.isEmpty()) {
-//                gov.nih.nci.cadsr.domain.Address add = addressCollection.iterator().next();
-//                address.setCountry(add.getCountry());
-//                address.setLocality(add.getState());
-//                address.setPostalCode(add.getPostalCode());
-//                address.setStateProvince(add.getState());
-//                address.setStreet1(add.getAddressLine1());
-//                address.setStreet2(add.getAddressLine2());
-//            }
-//            center.setAddress(address);
-//
-//            // build up the points of contact
-//            ResearchCenterPointOfContactCollection pocCollection = new ResearchCenterPointOfContactCollection();
-//            Collection<Person> personCollection = foundOrg.getPerson();
-//            PointOfContact[] pocs = new PointOfContact[personCollection.size()];
-//            pocCollection.setPointOfContact(pocs);
-//            int index = 0;
-//            for (Person person : personCollection) {
-//                PointOfContact poc = new PointOfContact();
-//                poc.setAffiliation(foundOrg.getName());
-//                poc.setFirstName(person.getFirstName());
-//                poc.setLastName(person.getLastName());
-//                // 3.1 model seems to have ContactCommunication, but code
-//                // doesn't; can't set email and phone for now
-//                pocs[index++] = poc;
-//                if (index > MAXIMUM_CONTACTS) {
-//                    // let's not get out of hand with too many contacts; break
-//                    // point in case of data error or too many associated
-//                    // contacts (really should only be a couple)
-//                    break;
-//                }
-//            }
-//            center.setPointOfContactCollection(pocCollection);
-//
-//            // update the view with info from caDSR
-//            updateCenterView(center);
-//            JOptionPane.showMessageDialog(this, "All " + HOSTING_CENTER_TAB_NAME
-//                + " information has been replaced; please review.");
-//        } catch (ApplicationException e) {
-//            e.printStackTrace();
-//            return;
-//        }
-//
-//    }
 
 
     /**
@@ -497,7 +438,44 @@ public class ServiceMetadataEditor extends ResourcePropertyEditorPanel {
      */
     private JPanel getServiceInfoPanel() {
         if (this.serviceInfoPanel == null) {
+            GridBagConstraints gridBagConstraints19 = new GridBagConstraints();
+            gridBagConstraints19.fill = GridBagConstraints.HORIZONTAL;
+            gridBagConstraints19.gridx = 1;
+            gridBagConstraints19.gridy = 1;
+            gridBagConstraints19.weightx = 1;
+            gridBagConstraints19.weighty = 1;
+            gridBagConstraints19.insets = new Insets(2, 2, 2, 2);
+            GridBagConstraints gridBagConstraints18 = new GridBagConstraints();
+            gridBagConstraints18.insets = new Insets(2, 2, 2, 2);
+            gridBagConstraints18.gridy = 1;
+            gridBagConstraints18.anchor = GridBagConstraints.EAST;
+            gridBagConstraints18.gridx = 0;
+            gridBagConstraints18.weightx = 1;
+            gridBagConstraints18.weighty = 1;
+            GridBagConstraints gridBagConstraints17 = new GridBagConstraints();
+            gridBagConstraints17.fill = GridBagConstraints.HORIZONTAL;
+            gridBagConstraints17.gridx = 1;
+            gridBagConstraints17.gridy = 0;
+            gridBagConstraints17.weightx = 1;
+            gridBagConstraints17.weighty = 1;
+            gridBagConstraints17.insets = new Insets(2, 2, 2, 2);
+            GridBagConstraints gridBagConstraints16 = new GridBagConstraints();
+            gridBagConstraints16.insets = new Insets(2, 2, 2, 2);
+            gridBagConstraints16.gridy = 0;
+            gridBagConstraints16.anchor = GridBagConstraints.EAST;
+            gridBagConstraints16.gridx = 0;
+            gridBagConstraints16.weightx = 1;
+            gridBagConstraints16.weighty = 1;
+            serviceVersionLabel = new JLabel();
+            serviceVersionLabel.setText("Version");
+            serviceDescriptionLabel = new JLabel();
+            serviceDescriptionLabel.setText("Description");
             this.serviceInfoPanel = new JPanel();
+            serviceInfoPanel.setLayout(new GridBagLayout());
+            serviceInfoPanel.add(serviceDescriptionLabel, gridBagConstraints16);
+            serviceInfoPanel.add(getServiceDescriptionTextField(), gridBagConstraints17);
+            serviceInfoPanel.add(serviceVersionLabel, gridBagConstraints18);
+            serviceInfoPanel.add(getServiceVersionTextField(), gridBagConstraints19);
         }
         return this.serviceInfoPanel;
     }
@@ -670,6 +648,35 @@ public class ServiceMetadataEditor extends ResourcePropertyEditorPanel {
     }
 
 
+    /**
+     * This method initializes serviceDescriptionTextField
+     * 
+     * @return javax.swing.JTextField
+     */
+    private JTextField getServiceDescriptionTextField() {
+        if (serviceDescriptionTextField == null) {
+            serviceDescriptionTextField = new JTextField();
+            serviceDescriptionTextField.setColumns(25);
+            serviceDescriptionTextField.getDocument().addDocumentListener(new TextBoxListener());
+        }
+        return serviceDescriptionTextField;
+    }
+
+
+    /**
+     * This method initializes serviceVersionTextField
+     * 
+     * @return javax.swing.JTextField
+     */
+    private JTextField getServiceVersionTextField() {
+        if (serviceVersionTextField == null) {
+            serviceVersionTextField = new JTextField();
+            serviceVersionTextField.getDocument().addDocumentListener(new TextBoxListener());
+        }
+        return serviceVersionTextField;
+    }
+
+
     public static void main(String[] args) {
         JFrame f = new JFrame();
         JPanel p = new JPanel();
@@ -689,7 +696,12 @@ public class ServiceMetadataEditor extends ResourcePropertyEditorPanel {
             JButton saveButton = new JButton("Save");
             saveButton.addActionListener(new ActionListener() {
                 public void actionPerformed(ActionEvent e) {
-
+                    try {
+                        viewer.validateResourceProperty();
+                    } catch (Exception e1) {
+                        // TODO Auto-generated catch block
+                        e1.printStackTrace();
+                    }
                     System.out.println(viewer.getResultRPString());
 
                 }
@@ -744,8 +756,18 @@ public class ServiceMetadataEditor extends ResourcePropertyEditorPanel {
 
 
     private void updateServiceView(Service service) {
-        PointOfContact[] pointsOfContact = null;
 
+        String desc = "";
+        String version = "";
+
+        if (service != null) {
+            desc = service.getDescription();
+            version = service.getVersion();
+        }
+        getServiceDescriptionTextField().setText(desc);
+        getServiceVersionTextField().setText(version);
+
+        PointOfContact[] pointsOfContact = null;
         if (service != null && service.getPointOfContactCollection() != null) {
             pointsOfContact = service.getPointOfContactCollection().getPointOfContact();
         }
@@ -848,7 +870,7 @@ public class ServiceMetadataEditor extends ResourcePropertyEditorPanel {
         Service service = this.serviceMetadata.getServiceDescription().getService();
         if (service != null) {
             if (!saveService(service)) {
-                throw new Exception();
+                throw new Exception("Unknown error saving service");
             }
         }
 
@@ -861,7 +883,6 @@ public class ServiceMetadataEditor extends ResourcePropertyEditorPanel {
         }
 
         // should we validate?
-
         if (getSchemaFile() != null) {
             try {
                 SchemaValidator validator = new SchemaValidator(getSchemaFile().getAbsolutePath());
@@ -873,7 +894,7 @@ public class ServiceMetadataEditor extends ResourcePropertyEditorPanel {
         }
 
         if (!validatePanel()) {
-            throw new Exception("CaBIG Service Metadata is not properly populated.");
+            throw new Exception("caBIG Service Metadata is not properly populated.  See validation errors.");
         }
     }
 
@@ -888,6 +909,9 @@ public class ServiceMetadataEditor extends ResourcePropertyEditorPanel {
      * @param serviceDescription
      */
     private boolean saveService(Service serviceDescription) {
+        serviceDescription.setDescription(getServiceDescriptionTextField().getText());
+        serviceDescription.setVersion(getServiceVersionTextField().getText());
+
         // save pocs
         List<PointOfContact> pointsOfContact = getServicePointsOfContactEditorPanel().getPointsOfContact();
         PointOfContact[] poc = null;
