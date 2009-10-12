@@ -144,8 +144,8 @@ public class DataServiceModificationPanel extends ServiceModificationUIPanel {
             
             // tab for the service style
             try {
-                String styleName = dataManager.getServiceStyle();
-                if (styleName != null) {
+                if (dataManager.getServiceStyle() != null) {
+                    String styleName = dataManager.getServiceStyle().getName();
                     ServiceStyleContainer styleContainer = ServiceStyleLoader.getStyle(styleName);
                     if (styleContainer == null) {
                         String[] message = {
