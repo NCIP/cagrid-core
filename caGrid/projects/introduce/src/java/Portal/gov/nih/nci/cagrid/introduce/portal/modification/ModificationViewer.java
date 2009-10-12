@@ -460,7 +460,7 @@ public class ModificationViewer extends ApplicationComponent {
                                     }
                                     newExtension += extensionName;
 
-                                } else if (extDtype.getIsDeprecated().booleanValue()) {
+                                } else if (extDtype.getIsDeprecated() != null && extDtype.getIsDeprecated().booleanValue()) {
                                     JOptionPane
                                         .showMessageDialog(
                                             GridApplication.getContext().getApplication(),
