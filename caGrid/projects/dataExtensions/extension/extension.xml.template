@@ -13,8 +13,6 @@
 		</ns1:Properties>
 	</ns1:ServiceExtensionDescription>
 	<ns1:UpgradesDescription>
-		<!-- this upgrader will go away shortly -->
-		<ns1:UpgradeDescription upgradeClass="gov.nih.nci.cagrid.data.upgrades.DataServiceUpgradeFrom1pt1" fromVersion="1.1" toVersion="1.4"/>
 		<ns1:UpgradeDescription upgradeClass="gov.nih.nci.cagrid.data.upgrades.DataServiceUpgradeFrom1pt2" fromVersion="1.2" toVersion="1.4"/>
 		<ns1:UpgradeDescription upgradeClass="gov.nih.nci.cagrid.data.upgrades.DataServiceUpgradeFrom1pt3" fromVersion="1.3" toVersion="1.4"/>	
 	</ns1:UpgradesDescription>
