@@ -59,7 +59,7 @@ public class ServiceStyleContainer {
         if (style.getCreationHelper() != null && style.getCreationHelper().getPostCreationClassname() != null) {
             String classname = style.getCreationHelper().getPostCreationClassname();
             ClassLoader loader = createClassLoader();
-            Class processorClass = loader.loadClass(classname);
+            Class<?> processorClass = loader.loadClass(classname);
             return (StyleCreationPostProcessor) processorClass.newInstance();
         }
         return null;
@@ -77,7 +77,7 @@ public class ServiceStyleContainer {
         if (style.getCodegenHelpers() != null && style.getCodegenHelpers().getPreCodegenClassname() != null) {
             String classname = style.getCodegenHelpers().getPreCodegenClassname();
             ClassLoader loader = createClassLoader();
-            Class processorClass = loader.loadClass(classname);
+            Class<?> processorClass = loader.loadClass(classname);
             return (StyleCodegenPreProcessor) processorClass.newInstance();
         }
         return null;
@@ -95,8 +95,25 @@ public class ServiceStyleContainer {
         if (style.getCodegenHelpers() != null && style.getCodegenHelpers().getPostCodegenClassname() != null) {
             String classname = style.getCodegenHelpers().getPostCodegenClassname();
             ClassLoader loader = createClassLoader();
-            Class processorClass = loader.loadClass(classname);
+            Class<?> processorClass = loader.loadClass(classname);
             return (StyleCodegenPostProcessor) processorClass.newInstance();
+        }
+        return null;
+    }
+    
+    
+    public StyleVersionUpgrader loadVersionUpgrader(String fromVersion, String toVersion) throws Exception {
+        if (style.getVersionUpgrade() != null) {
+            String classname = null;
+            for (VersionUpgrade upgrade : style.getVersionUpgrade()) {
+                if (upgrade.getFromVersion().equals(fromVersion) && upgrade.getToVersion().equals(toVersion)) {
+                    classname = upgrade.getClassname();
+                    break;
+                }
+            }
+            ClassLoader loader = createClassLoader();
+            Class<?> upgraderClass = loader.loadClass(classname);
+            return (StyleVersionUpgrader) upgraderClass.newInstance();
         }
         return null;
     }
