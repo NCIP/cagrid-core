@@ -4,6 +4,7 @@ import gov.nih.nci.cagrid.common.Utils;
 import gov.nih.nci.cagrid.data.ExtensionDataUtils;
 import gov.nih.nci.cagrid.data.extension.Data;
 import gov.nih.nci.cagrid.data.extension.ServiceFeatures;
+import gov.nih.nci.cagrid.data.extension.ServiceStyle;
 import gov.nih.nci.cagrid.introduce.IntroduceConstants;
 import gov.nih.nci.cagrid.introduce.beans.ServiceDescription;
 import gov.nih.nci.cagrid.introduce.beans.extension.ExtensionType;
@@ -57,7 +58,10 @@ public class SDK4StyleCreationStep extends CreationStep {
             features = new ServiceFeatures();
             extensionData.setServiceFeatures(features);
         }
-        features.setServiceStyle(SDK4ServiceStyleSystemTestConstants.STYLE_NAME);
+        features.setServiceStyle(
+            new ServiceStyle(
+                SDK4ServiceStyleSystemTestConstants.STYLE_NAME, 
+                SDK4ServiceStyleSystemTestConstants.STYLE_VERSION));
         storeExtensionData(extensionData);
     }
     
