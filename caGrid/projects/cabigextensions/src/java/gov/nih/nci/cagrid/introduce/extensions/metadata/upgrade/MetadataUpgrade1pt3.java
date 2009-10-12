@@ -33,6 +33,9 @@ public class MetadataUpgrade1pt3 extends ExtensionUpgraderBase {
     private static final String CAGRID_1_3_METADATA_JAR_PREFIX = "caGrid-metadata";
     private static final String CAGRID_1_3_METADATA_JAR_SUFFIX = "-1.3.jar";
 
+    private static final String CAGRID_1_3_METADATA_VALIDATOR_JAR_PREFIX = "caGrid-metadata-validator";
+    private static final String CAGRID_1_3_METADATA_VALIDATOR_JAR_SUFFIX = "-1.3.jar";
+
     protected MetadataExtensionHelper helper;
     protected static Log LOG = LogFactory.getLog(MetadataUpgrade1pt3.class.getName());
 
@@ -85,13 +88,22 @@ public class MetadataUpgrade1pt3 extends ExtensionUpgraderBase {
                     && !name.startsWith(MetadataConstants.METADATA_JAR_PREFIX + "-security");
             }
         };
-        // locate the old data service libs in the service
+
+        FileFilter validatorLibFilter = new FileFilter() {
+            public boolean accept(File pathname) {
+                String name = pathname.getName();
+                return name.endsWith(CAGRID_1_3_METADATA_VALIDATOR_JAR_SUFFIX)
+                    && name.startsWith(CAGRID_1_3_METADATA_VALIDATOR_JAR_PREFIX);
+            }
+        };
+
+        // locate the old service libs in the service
         File serviceLibDir = new File(getServicePath() + File.separator + "lib");
         File[] serviceMetadataLibs = serviceLibDir.listFiles(metadataLibFilter);
         // delete the old libraries
         for (File oldLib : serviceMetadataLibs) {
             oldLib.delete();
-            getStatus().addDescriptionLine("caGrid 1.4 library " + oldLib.getName() + " removed");
+            getStatus().addDescriptionLine("caGrid 1.4 library " + oldLib.getName() + " removed fron lib.");
         }
         // copy new libraries in
         File extLibDir = new File(ExtensionsLoader.EXTENSIONS_DIRECTORY + File.separator + "lib");
@@ -107,6 +119,15 @@ public class MetadataUpgrade1pt3 extends ExtensionUpgraderBase {
                 throw new RuntimeException("Error copying new metadata library: " + ex.getMessage(), ex);
             }
             outLibs.add(out);
+        }
+
+        // locate the old service tools libs in the service
+        File serviceToolsLibDir = new File(getServicePath() + File.separator + "tools" + File.separator + "lib");
+        File[] serviceToolsLibs = serviceToolsLibDir.listFiles(validatorLibFilter);
+        // delete the old libraries
+        for (File oldLib : serviceToolsLibs) {
+            oldLib.delete();
+            getStatus().addDescriptionLine("caGrid 1.4 library " + oldLib.getName() + " removed from tools lib.");
         }
 
         // copy in the deployment validator stuff
@@ -140,6 +161,7 @@ public class MetadataUpgrade1pt3 extends ExtensionUpgraderBase {
                 }
             }
         }
+
         // update the Eclipse .classpath file
         File classpathFile = new File(getServicePath() + File.separator + ".classpath");
         File[] outLibArray = new File[metadataLibs.length];
