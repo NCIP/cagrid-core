@@ -2,7 +2,9 @@ package org.cagrid.data.sdkquery42.style.wizard.config;
 
 import gov.nih.nci.cagrid.common.JarUtilities;
 import gov.nih.nci.cagrid.common.Utils;
+import gov.nih.nci.cagrid.data.DataServiceConstants;
 import gov.nih.nci.cagrid.data.common.CastorMappingUtil;
+import gov.nih.nci.cagrid.introduce.common.CommonTools;
 import gov.nih.nci.cagrid.introduce.common.ServiceInformation;
 
 import java.io.File;
@@ -38,6 +40,10 @@ public class ProjectSelectionConfigurationStep extends AbstractStyleConfiguratio
 
 
     public void applyConfiguration() throws Exception {
+        // set the query processor class name for the data service
+        CommonTools.setServiceProperty(getServiceInformation().getServiceDescriptor(),
+            DataServiceConstants.QUERY_PROCESSOR_CLASS_PROPERTY, SDK42QueryProcessor.class.getName(), false);
+        
         // set service properties required by the query processor
         setServiceProperty(SDK42QueryProcessor.PROPERTY_APPLICATION_NAME, getApplicationName(), false);
         setServiceProperty(SDK42QueryProcessor.PROPERTY_USE_LOCAL_API, String.valueOf(isLocalApi()), false);
@@ -49,6 +55,7 @@ public class ProjectSelectionConfigurationStep extends AbstractStyleConfiguratio
         // store the information about the local and remote client dirs
         setStyleProperty(StyleProperties.SDK_REMOTE_CLIENT_DIR, getRemoteClientDir() != null ? getRemoteClientDir() : "");
         setStyleProperty(StyleProperties.SDK_LOCAL_CLIENT_DIR, getLocalClientDir() != null ? getLocalClientDir() : "");
+        
         // roll up the local or remote configs as a jar file
         File sdkConfigDir = null;
         File sdkLibDir = null;
@@ -62,6 +69,7 @@ public class ProjectSelectionConfigurationStep extends AbstractStyleConfiguratio
         File serviceLibDir = new File(getServiceInformation().getBaseDirectory(), "lib");
         File configJarFile = new File(serviceLibDir, getApplicationName() + "-config.jar");
         JarUtilities.jarDirectory(sdkConfigDir, configJarFile);
+        
         // grab the castor marshaling and unmarshaling xml mapping files
         // from the schemas jar and copy them into the service's package structure
         try {
@@ -81,6 +89,8 @@ public class ProjectSelectionConfigurationStep extends AbstractStyleConfiguratio
         }
         
         // copy SDK libs to the service
+        // TODO: we'll have to be selective here since there's LOTS of conflicts with things
+        // cagrid and globus already provide and depend on
         Utils.copyDirectory(sdkLibDir, serviceLibDir);
     }
     
