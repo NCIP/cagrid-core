@@ -10,7 +10,6 @@
 		<CreationWizardPanel classname="org.cagrid.data.sdkquery42.style.wizard.SchemaMappingPanel"/>
 	</CreationWizardPanels>
 	<ModificationUiPanel classname="org.cagrid.data.sdkquery42.style.modification.InformationPanel"/>
-	<CreationHelper postCreationClassname="org.cagrid.data.sdkquery42.style.helper.PostCreationHelper"/>
-	<CodegenHelpers postCodegenClassname="org.cagrid.data.sdkquery42.style.helper.PostCodegenHelper"
-		preCodegenClassname="org.cagrid.data.sdkquery42.style.helper.PreCodegenHelper"/>
+	<CreationHelper postCreationClassname="org.cagrid.data.sdkquery42.style.helpers.PostCreationHelper"/>
+	<CodegenHelpers postCodegenClassname="org.cagrid.data.sdkquery42.style.helpers.PostCodegenHelper"/>
 </DataServiceStyle>
