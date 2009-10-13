@@ -95,6 +95,8 @@ public class InformationPanel extends DataServiceModificationSubPanel {
         
         getApplicationHostnameLabel().setEnabled(!useLocal);
         getApplicationHostnameTextField().setEnabled(!useLocal);
+        getApplicationPortNumberLabel().setEnabled(!useLocal);
+        getApplicationPortNumberTextField().setEnabled(!useLocal);
         getUseHttpsCheckBox().setEnabled(!useLocal);
         getGridIdentLoginCheckBox().setEnabled(useLocal);
         
