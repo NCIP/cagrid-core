@@ -16,6 +16,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.regex.Pattern;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -34,6 +35,9 @@ import org.xml.sax.helpers.DefaultHandler;
 public abstract class BaseXMIHandler extends DefaultHandler {
     
     private static Log logger = LogFactory.getLog(BaseXMIHandler.class);
+    
+    // regex that matches variations on the "value domain" package name for exclusion
+    public static final String VALUE_DOMAIN_REGEX = ".*?[V|v]alue.?domain.*";
 
     // parser contains configuration options and information for the handler
     private XMIParser parser;
@@ -306,10 +310,11 @@ public abstract class BaseXMIHandler extends DefaultHandler {
         // from oteher components of the model
         Set<String> validClassIds = new HashSet<String>();
         
+        Pattern valueDomainPattern = Pattern.compile(VALUE_DOMAIN_REGEX);
         for (UMLClass clazz : classList) {
             String pack = clazz.getPackageName();
             if ((this.parser.filterPrimitiveClasses && !pack.startsWith("java")) && 
-                !pack.startsWith("ValueDomain") && 
+                !valueDomainPattern.matcher(pack).matches() && 
                 !pack.equals("")) {
                 validClassIds.add(clazz.getId());
             }
