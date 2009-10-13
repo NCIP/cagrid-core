@@ -112,15 +112,15 @@ public class SecurityConfigurationPanel extends AbstractWizardPanel {
     private void enableDisableComponents() {
         getGridIdentCheckBox().setSelected(
             configuration.isUsingLocalApi() && configuration.isUseCsmGridIdent());
-        boolean useGridIdent = getGridIdentCheckBox().isSelected(); 
-        getUseStaticLoginCheckBox().setEnabled(!useGridIdent);
-        getUsernameLabel().setEnabled(!useGridIdent);
-        getUsernameTextField().setEnabled(!useGridIdent);
-        getPasswordLabel().setEnabled(!useGridIdent);
-        getPasswordField().setEnabled(!useGridIdent);
-        getPassword2Label().setEnabled(!useGridIdent);
-        getPassword2Field().setEnabled(!useGridIdent);
+        boolean useGridIdent = getGridIdentCheckBox().isSelected();
         boolean useStatic = getUseStaticLoginCheckBox().isSelected();
+        getUseStaticLoginCheckBox().setEnabled(!useGridIdent);
+        getUsernameLabel().setEnabled(!useGridIdent && useStatic);
+        getUsernameTextField().setEnabled(!useGridIdent && useStatic);
+        getPasswordLabel().setEnabled(!useGridIdent && useStatic);
+        getPasswordField().setEnabled(!useGridIdent && useStatic);
+        getPassword2Label().setEnabled(!useGridIdent && useStatic);
+        getPassword2Field().setEnabled(!useGridIdent && useStatic);
         getGridIdentCheckBox().setEnabled(configuration.isUsingLocalApi() && !useStatic);
     }
     

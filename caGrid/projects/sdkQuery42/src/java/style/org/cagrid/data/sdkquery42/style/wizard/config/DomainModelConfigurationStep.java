@@ -51,14 +51,13 @@ public class DomainModelConfigurationStep extends AbstractStyleConfigurationStep
     // from local file system
     private File domainModelFile = null;
     
-    // from SDK's config
+    // from a provided XMI
     private String projectShortName = null;
     private String projectVersion = null;
     private File xmiFile = null;
     private XmiFileType xmiType = null;
     
-    // from cadsr
-    // TODO: from mms??
+    // from MMS
     private String mmsUrl = null;
     private Project selectedProject = null;
     private List<UMLPackageMetadata> selectedPackages = null;
@@ -226,8 +225,7 @@ public class DomainModelConfigurationStep extends AbstractStyleConfigurationStep
         // copy the domain model to the service's etc dir
         File etcDir = new File(
             getServiceInformation().getBaseDirectory(), "etc");
-        String applicationName = getServicePropertyValue(SDK42QueryProcessor.PROPERTY_APPLICATION_NAME);
-        File serviceModelFile = new File(etcDir, applicationName + "_domainModel.xml");
+        File serviceModelFile = new File(etcDir, domainModelFile.getName());
         Utils.copyFile(domainModelFile, serviceModelFile);
         
         // get / create the domain model resource property
@@ -268,7 +266,7 @@ public class DomainModelConfigurationStep extends AbstractStyleConfigurationStep
         ModelInformation modelInfo = new ModelInformation();
         // model from filesystem
         modelInfo.setSource(ModelSourceType.preBuilt);
-        // TODO: mms identifier
+        // mms identifier
         UMLProjectIdentifer id = new UMLProjectIdentifer();
         id.setIdentifier(model.getProjectShortName());
         id.setVersion(model.getProjectVersion());

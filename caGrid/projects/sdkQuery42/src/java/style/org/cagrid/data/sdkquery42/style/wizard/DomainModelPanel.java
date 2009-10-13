@@ -82,7 +82,7 @@ public class DomainModelPanel extends AbstractWizardPanel {
             configuration.applyConfiguration();
         } catch (Exception ex) {
             ex.printStackTrace();
-            CompositeErrorDialog.showErrorDialog("Error obtaining domain model information", ex.getMessage(), ex);
+            CompositeErrorDialog.showErrorDialog("Error storing domain model information", ex.getMessage(), ex);
         }
     }
     
