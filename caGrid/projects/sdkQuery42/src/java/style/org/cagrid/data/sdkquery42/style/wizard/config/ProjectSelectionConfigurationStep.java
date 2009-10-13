@@ -41,7 +41,8 @@ public class ProjectSelectionConfigurationStep extends AbstractStyleConfiguratio
         // set service properties required by the query processor
         setServiceProperty(SDK42QueryProcessor.PROPERTY_APPLICATION_NAME, getApplicationName(), false);
         setServiceProperty(SDK42QueryProcessor.PROPERTY_USE_LOCAL_API, String.valueOf(isLocalApi()), false);
-        setServiceProperty(SDK42QueryProcessor.PROPERTY_HOST_NAME, getApplicationHostname(), false);
+        setServiceProperty(SDK42QueryProcessor.PROPERTY_HOST_NAME, 
+            getApplicationHostname() != null ? getApplicationHostname() : "", false);
         setServiceProperty(SDK42QueryProcessor.PROPERTY_HOST_PORT, 
             getApplicationPort() != null ? String.valueOf(getApplicationPort()) : "", false);
         setServiceProperty(SDK42QueryProcessor.PROPERTY_HOST_HTTPS, String.valueOf(isUseHttps()), false);

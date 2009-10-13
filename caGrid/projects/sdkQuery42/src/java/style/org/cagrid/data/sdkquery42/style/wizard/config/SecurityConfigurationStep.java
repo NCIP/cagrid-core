@@ -22,9 +22,9 @@ public class SecurityConfigurationStep extends AbstractStyleConfigurationStep {
         setServiceProperty(SDK42QueryProcessor.PROPERTY_USE_GRID_IDENTITY_LOGIN, 
             String.valueOf(isUseCsmGridIdent()), false);
         setServiceProperty(SDK42QueryProcessor.PROPERTY_STATIC_LOGIN_PASS, 
-            getStaticLoginPass(), false);
+            getStaticLoginPass() != null ? getStaticLoginPass() : "", false);
         setServiceProperty(SDK42QueryProcessor.PROPERTY_STATIC_LOGIN_USER, 
-            getStaticLoginUser(), false);
+            getStaticLoginUser() != null ? getStaticLoginUser() : "", false);
     }
 
 
