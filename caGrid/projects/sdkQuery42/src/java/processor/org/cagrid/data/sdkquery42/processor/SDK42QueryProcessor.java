@@ -1,15 +1,26 @@
 package org.cagrid.data.sdkquery42.processor;
 
+import gov.nih.nci.cagrid.common.Utils;
 import gov.nih.nci.cagrid.cqlquery.CQLQuery;
+import gov.nih.nci.cagrid.cqlquery.QueryModifier;
 import gov.nih.nci.cagrid.cqlresultset.CQLQueryResults;
 import gov.nih.nci.cagrid.data.InitializationException;
 import gov.nih.nci.cagrid.data.MalformedQueryException;
 import gov.nih.nci.cagrid.data.QueryProcessingException;
 import gov.nih.nci.cagrid.data.cql.CQLQueryProcessor;
+import gov.nih.nci.cagrid.data.mapping.Mappings;
+import gov.nih.nci.cagrid.data.service.ServiceConfigUtil;
+import gov.nih.nci.cagrid.data.utilities.CQLResultsCreationUtil;
+import gov.nih.nci.cagrid.data.utilities.ResultsCreationException;
+import gov.nih.nci.system.applicationservice.ApplicationException;
 import gov.nih.nci.system.applicationservice.ApplicationService;
 import gov.nih.nci.system.client.ApplicationServiceProvider;
 
 import java.io.InputStream;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Properties;
 
 import org.apache.commons.logging.Log;
@@ -44,6 +55,8 @@ public class SDK42QueryProcessor extends CQLQueryProcessor {
     // the "empty" password passed to the SDK when using CSM / grid identity login
     public static final String EMPTY_PASSWORD = "EMPTYPASSWORD";
     
+    private Mappings mappings = null;
+    
     public SDK42QueryProcessor() {
         super();
     }
@@ -66,14 +79,85 @@ public class SDK42QueryProcessor extends CQLQueryProcessor {
     
     public void initialize(Properties parameters, InputStream wsdd) throws InitializationException {
         super.initialize(parameters, wsdd);
-        // TODO: verify that if we're using grid identity login, we're also using the Local API
-        
+        // verify that if we're using grid identity login, we're also using the Local API
+        if (isUseGridIdentLogin() && !isUseLocalApi()) {
+            throw new InitializationException("Grid identity + CSM authentication can only be used with the local API!");
+        }
+        // verify we have a URL for the remote API
+        if (!isUseLocalApi()) {
+            try {
+                new URL(getRemoteApplicationUrl());
+            } catch (MalformedURLException ex) {
+                throw new InitializationException("Could not determine a remote API url: " + ex.getMessage(), ex);
+            }
+        }
     }
     
 
     public CQLQueryResults processQuery(CQLQuery cqlQuery) throws MalformedQueryException, QueryProcessingException {
-        // TODO Auto-generated method stub
-        return null;
+        try {
+            cqlQuery = CQLAttributeDefaultPredicateUtil.checkDefaultPredicates(cqlQuery);
+        } catch (Exception ex) {
+            throw new QueryProcessingException(
+                "Error checking query for default Attribute predicate values: " + ex.getMessage(), ex);
+        }
+        ApplicationService applicationService = getApplicationService();
+        List<?> rawResults = null;
+        try {
+            rawResults = applicationService.query(cqlQuery);
+        } catch (ApplicationException ex) {
+            String message = "Error processing CQL query in the caCORE ApplicationService: " + ex.getMessage();
+            LOG.error(message, ex);
+            throw new QueryProcessingException(message, ex);
+        }
+        
+        CQLQueryResults cqlResults = null;
+        // determine which type of results to package up
+        if (cqlQuery.getQueryModifier() != null) {
+            QueryModifier mods = cqlQuery.getQueryModifier();
+            if (mods.isCountOnly()) {
+                long count = Long.parseLong(rawResults.get(0).toString());
+                cqlResults = CQLResultsCreationUtil.createCountResults(count, cqlQuery.getTarget().getName());
+            } else { // attributes
+                String[] attributeNames = null;
+                List<Object[]> resultsAsArrays = null;
+                if (mods.getDistinctAttribute() != null) {
+                    attributeNames = new String[] {mods.getDistinctAttribute()};
+                    resultsAsArrays = new LinkedList<Object[]>();
+                    for (Object o : rawResults) {
+                        resultsAsArrays.add(new Object[] {o});
+                    }
+                } else { // multiple attributes
+                    attributeNames = mods.getAttributeNames();
+                    resultsAsArrays = new LinkedList<Object[]>();
+                    for (Object o : rawResults) {
+                        Object[] array = null;
+                        if (o.getClass().isArray()) {
+                            array = (Object[]) o;
+                        } else {
+                            array = new Object[] {o};
+                        }
+                        resultsAsArrays.add(array);
+                    }
+                }
+                cqlResults = CQLResultsCreationUtil.createAttributeResults(
+                    resultsAsArrays, cqlQuery.getTarget().getName(), attributeNames);
+            }
+        } else {
+            Mappings classToQname = null;
+            try {
+                classToQname = getClassToQnameMappings();
+            } catch (Exception ex) {
+                throw new QueryProcessingException("Error loading class to QName mappings: " + ex.getMessage(), ex);
+            }
+            try {
+                cqlResults = CQLResultsCreationUtil.createObjectResults(
+                    rawResults, cqlQuery.getTarget().getName(), classToQname);
+            } catch (ResultsCreationException ex) {
+                throw new QueryProcessingException("Error packaging query results: " + ex.getMessage(), ex);
+            }
+        }
+        return cqlResults;
     }
     
     
@@ -182,5 +266,15 @@ public class SDK42QueryProcessor extends CQLQueryProcessor {
             throw new QueryProcessingException("Error obtaining application service: " + ex.getMessage(), ex);
         }
         return service;
+    }
+    
+    
+    private Mappings getClassToQnameMappings() throws Exception {
+        if (mappings == null) {
+            // get the mapping file name
+            String filename = ServiceConfigUtil.getClassToQnameMappingsFile();
+            mappings = Utils.deserializeDocument(filename, Mappings.class);
+        }
+        return mappings;
     }
 }
