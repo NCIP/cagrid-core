@@ -1,5 +1,6 @@
 package org.cagrid.tests.data.styles.cacore42;
 
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -12,7 +13,7 @@ import java.util.Properties;
  */
 public class DatabaseProperties {
     
-    public static final String PROPERTIES_FILENAME = "sdk42.test.database.properties";
+    public static final String PROPERTIES_FILENAME = "resources" + File.separator + "sdk42.test.database.properties";
     
     private static Properties props = null;
     
