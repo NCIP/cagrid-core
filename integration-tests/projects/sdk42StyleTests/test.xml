@@ -36,9 +36,7 @@
 		<junit dir="${introduce.dir}" printsummary="yes" errorproperty="test.failed" failureproperty="test.failed" showoutput="true" fork="yes" forkmode="once">
 			<!-- is this needed any more? -->
 			<sysproperty key="introduce.base.dir" value="${introduce.dir}" />
-			<sysproperty key="remote.sdk.host.name" value="${remote.sdk.host.name}" />
-			<sysproperty key="remote.sdk.host.port" value="${remote.sdk.host.port}" />
-			<sysproperty key="sdk42.tests.base.dir" value="${sdk41.tests.base.dir}"/>
+			<sysproperty key="sdk42.tests.base.dir" value="${sdk42.tests.base.dir}"/>
 			<sysproperty key="sdk.unpack.dir" value="${sdk.unpack.dir}"/>
 			<classpath refid="all.test.classpath" />
 			<formatter type="xml" />
