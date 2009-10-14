@@ -217,10 +217,6 @@
 			<fileset dir="${ext.lib.dir}">
 				<include name="*sdkstyle.jar" />
 			</fileset>
-			<!-- copy the dependencies -->
-			<fileset dir="${lib.dir}">
-				<include name="*.jar" />
-			</fileset>
 		</copy>
 	</target>
 
