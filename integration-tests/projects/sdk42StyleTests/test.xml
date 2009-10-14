@@ -1,0 +1,53 @@
+<!-- ======================================================================= -->
+<!-- caGrid SDK 4.2 Data Services test build file                            -->
+<!-- ======================================================================= -->
+<project name="caGrid-sdk42_data_tests_harness" basedir=".">
+	
+	<!-- should all testing stop on the first error or failure encountered? -->
+	<property name="halt.on.error" value="false" />
+	<!-- message when tests fail -->
+	<property name="failed.message" value="Tests failed! Check test reports." />
+	<!-- tells the service container factories to assign ports in testing mode -->
+	<property name="testing.port.assignment.mode" value="true" />
+	<!-- tells data tests the base directory in which to create data services -->
+	<property name="temp.test.service.dir" value="${basedir}/test_services"/>
+	<!-- tells the creation tests where libraries and resources live -->
+	<property name="sdk42.tests.base.dir" value="${basedir}"/>
+	<!-- tells the test containers where to find their zip files -->
+	<property name="testing.containers.dir" value="${basedir}/../testUtils/containers"/>
+
+	<!-- properties for caCORE SDK application's location -->
+	<!-- TODO: this could be configured by a properties file -->
+	<property name="remote.sdk.host.name" value="sdkexamples.bmi.ohio-state.edu" />
+	<property name="remote.sdk.host.port" value="8042" />
+	
+	<target name="prepareClasspaths">
+		<path id="all.test.classpath">
+			<path refid="test.run.classpath" />
+			<fileset dir="${jar.dir}">
+				<include name="**/*.jar"/>
+			</fileset>
+		</path>
+	</target>
+	
+
+	<target name="test" description="Runs tests">
+		<mkdir dir="${junit.results.dir}" />
+		<junit dir="${introduce.dir}" printsummary="yes" errorproperty="test.failed" failureproperty="test.failed" showoutput="true" fork="yes" forkmode="once">
+			<!-- is this needed any more? -->
+			<sysproperty key="introduce.base.dir" value="${introduce.dir}" />
+			<sysproperty key="remote.sdk.host.name" value="${remote.sdk.host.name}" />
+			<sysproperty key="remote.sdk.host.port" value="${remote.sdk.host.port}" />
+			<sysproperty key="sdk42.tests.base.dir" value="${sdk41.tests.base.dir}"/>
+			<sysproperty key="sdk.unpack.dir" value="${sdk.unpack.dir}"/>
+			<classpath refid="all.test.classpath" />
+			<formatter type="xml" />
+			<batchtest fork="yes" todir="${junit.results.dir}">
+				<fileset dir="${src.dir}">
+					<include name="**/*Test.java" />
+				</fileset>
+			</batchtest>
+		</junit>
+		<fail message="Tests failed! Check test reports." if="test.failed" />
+	</target>
+</project>
