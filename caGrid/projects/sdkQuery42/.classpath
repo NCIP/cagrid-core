@@ -9,7 +9,7 @@
 	<classpathentry kind="var" path="GT4_LOCATION/lib/axis.jar" sourcepath="/GT4_LOCATION/ws-axis-src.zip"/>
 	<classpathentry kind="var" path="GT4_LOCATION/lib/bootstrap.jar"/>
 	<classpathentry kind="var" path="GT4_LOCATION/lib/cog-axis.jar"/>
-	<classpathentry kind="var" path="GT4_LOCATION/lib/cog-jglobus.jar" sourcepath="/COG_SOURCE"/>
+	<classpathentry kind="var" path="GT4_LOCATION/lib/cog-jglobus.jar"/>
 	<classpathentry kind="var" path="GT4_LOCATION/lib/cog-tomcat.jar"/>
 	<classpathentry kind="var" path="GT4_LOCATION/lib/cog-url.jar"/>
 	<classpathentry kind="var" path="GT4_LOCATION/lib/commonj.jar"/>
@@ -150,8 +150,13 @@
 	<classpathentry kind="lib" path="ext/dependencies/jars/xsom14.jar"/>
 	<classpathentry kind="lib" path="ext/dependencies/test/jars/caGrid-core-tests-1.4-dev.jar"/>
 	<classpathentry kind="lib" path="ext/dependencies/test/jars/jdepend-2.7.jar"/>
-	<classpathentry kind="lib" path="build/sdk-example-project/target/dist/exploded/output/example/package/local-client/lib/hibernate-3.2.0.ga.jar"/>
-	<classpathentry kind="lib" path="build/sdk-example-project/target/dist/exploded/output/example/package/local-client/lib/sdk-client-framework-4.2.jar"/>
-	<classpathentry kind="lib" path="build/sdk-example-project/target/dist/exploded/output/example/package/local-client/lib/acegi-security-1.0.4.jar"/>
+	<classpathentry kind="lib" path="build/sdk-example-project/example-project/target/dist/exploded/output/example/package/local-client/lib/example-beans.jar"/>
+	<classpathentry kind="lib" path="build/sdk-example-project/example-project/target/dist/exploded/output/example/package/local-client/lib/example-orm.jar"/>
+	<classpathentry kind="lib" path="build/sdk-example-project/example-project/target/dist/exploded/output/example/package/local-client/lib/example-schema.jar"/>
+	<classpathentry kind="lib" path="build/sdk-example-project/example-project/target/dist/exploded/output/example/package/local-client/lib/sdk-client-framework-4.2.jar"/>
+	<classpathentry kind="lib" path="build/sdk-example-project/example-project/target/dist/exploded/output/example/package/local-client/lib/sdk-security-4.2.jar"/>
+	<classpathentry kind="lib" path="build/sdk-example-project/example-project/target/dist/exploded/output/example/package/local-client/lib/sdk-security-client-4.2.jar"/>
+	<classpathentry kind="lib" path="build/sdk-example-project/example-project/target/dist/exploded/output/example/package/local-client/lib/hibernate-3.2.0.ga.jar"/>
+	<classpathentry kind="lib" path="build/sdk-example-project/example-project/target/dist/exploded/output/example/package/local-client/lib/sdk-system-core-4.2.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

@@ -49,8 +49,7 @@
     <dependency rev="4.4" org="junit" name="junit" conf="impl-test->default" />
     <dependency rev="2.0.0" org="jgoodies" name="validation" conf="style->default"/>
     
-    <!-- caCORE SDK 4.2 zip 
-    <dependency rev="4.1" org="cacore" name="sdk" conf="style->example-trimmed"/>
-    -->
+    <!-- caCORE SDK 4.2 zip -->
+    <dependency rev="4.2" org="cacore" name="sdk" conf="processor->example-trimmed"/>
   </dependencies>
 </ivy-module>

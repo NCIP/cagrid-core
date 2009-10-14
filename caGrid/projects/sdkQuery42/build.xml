@@ -38,18 +38,14 @@
 	<property name="processor.src.dir" location="${basedir}/src/java/processor" />
 
 	<!-- libraries -->
-	<property name="lib.dir" location="${basedir}/lib" />
 	<property name="ext.lib.dir" location="${basedir}/ext/dependencies/jars" />
 	<property name="ext.test.lib.dir" location="${basedir}/ext/dependencies/test/jars" />
-	<!-- change me to an ext dir when we get a final SDK 4.2 in the ivy repository 
 	<property name="ext.zip.dir" location="${basedir}/ext/dependencies/zips" />
-	-->
-	<property name="ext.zip.dir" location="${lib.dir}/zips"/>
 
 	<!-- sdk artifacts -->
-	<property name="sdk.zip.file" location="${ext.zip.dir}/sdk42-example-target-trimmed.zip" />
+	<property name="sdk.zip.file" location="${ext.zip.dir}/sdk42-example-trimmed.zip" />
 	<property name="sdk.unpack.dir" location="${build.dir}/sdk-example-project" />
-	<property name="sdk.output.package.dir" location="${sdk.unpack.dir}/target/dist/exploded/output/example/package" />
+	<property name="sdk.output.package.dir" location="${sdk.unpack.dir}/example-project/target/dist/exploded/output/example/package" />
 	<property name="ext.remote-client.dir" location="${sdk.output.package.dir}/remote-client" />
 	<property name="ext.local-client.dir" location="${sdk.output.package.dir}/local-client" />
 	<property name="ext.remote-client.lib.dir" location="${ext.remote-client.dir}/lib" />
@@ -78,9 +74,6 @@
 	
 	<!-- base classpath -->
 	<path id="base.classpath">
-		<fileset dir="${lib.dir}">
-			<include name="**/*.jar" />
-		</fileset>
 		<fileset dir="${ext.remote-client.lib.dir}"/>
 		<fileset dir="${globus.dir}/lib">
 			<include name="**/*.jar" />
