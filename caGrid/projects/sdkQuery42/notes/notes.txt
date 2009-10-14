@@ -1,0 +1,29 @@
+Dave,
+
+I have created a new tag for cagrid team to test the SDK 4.2. http://gforge.nci.nih.gov/svnroot/cacoresdk/tags/CACORESDK_42_caGRID1302
+
+You can check it out and then execute following steps to get SDK running
+
+1	go to sdk-toolkit\example-project\build
+2	Modify codegen.properties and install.properties
+3	If you want to SDK to setup the database then “comment” the exclude.database property
+4	Set the DB_* properties for your database
+5	Copy cagrid ivy repository in sdk-toolkit\software\local-ivy-repo directory
+	* create the local-ivy-repo directory
+	* cp the caGrid\integration-repository\caGrid\* dirs as a subdirs of local-ivy-repo
+	** maybe it's \bda-local-ivy-repo???? - nope
+	*** Satish provided a new ivysettings.xml that goes in software\common and pulls from the 1.3 latest integration published by Hudson.  Using that, and throwing out my local-ivy-repo dir seems to build OK
+6	Execute and deploy:local:install command
+	* In the sdk-toolkit\example-project\build dir
+7	Output goes to sdk-toolkit\example-project\target\dist\exploded\output\example\package\directory
+
+
+Let me know if you have any question
+
+Thanks,
+Satish
+
+Satish Patel, Contractor NCI CBIIT
+Project Manager
+Ekagra Software Technologies
+301-451-2229
