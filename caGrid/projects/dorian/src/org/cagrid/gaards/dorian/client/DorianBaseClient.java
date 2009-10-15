@@ -47,6 +47,14 @@ public abstract class DorianBaseClient {
     }
 
 
+    public DorianBaseClient(String serviceURI, GlobusCredential cred, boolean anonymousPrefered)
+        throws MalformedURIException, RemoteException {
+        this.serviceURL = serviceURI;
+        client = new DorianClient(serviceURI, cred);
+        client.setAnonymousPrefered(anonymousPrefered);
+    }
+
+
     protected DorianClient getClient() {
         return this.client;
     }

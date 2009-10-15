@@ -63,6 +63,12 @@ public class GridUserClient extends DorianBaseClient {
     }
 
 
+    public GridUserClient(String serviceURI, GlobusCredential cred, boolean anonymousPreferred)
+        throws MalformedURIException, RemoteException {
+        super(serviceURI, cred, anonymousPreferred);
+    }
+
+
     /**
      * Allow a user to request a short term Grid credential from Dorian, which
      * they may user to authenticate to Grid service.
