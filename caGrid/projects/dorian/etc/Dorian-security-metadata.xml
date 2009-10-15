@@ -68,5 +68,15 @@
     <ns1:None xsi:type="ns1:None"/>
    </ns1:CommunicationMechanism>
   </ns1:Operation>
+  <ns1:Operation name="userSearch" xsi:type="ns1:Operation">
+   <ns1:CommunicationMechanism anonymousPermitted="true" xsi:type="ns1:CommunicationMechanism">
+    <ns1:GSITransport protectionLevel="privacy" xsi:type="ns1:GSITransport"/>
+   </ns1:CommunicationMechanism>
+  </ns1:Operation>
+  <ns1:Operation name="hostSearch" xsi:type="ns1:Operation">
+   <ns1:CommunicationMechanism anonymousPermitted="true" xsi:type="ns1:CommunicationMechanism">
+    <ns1:GSITransport protectionLevel="privacy" xsi:type="ns1:GSITransport"/>
+   </ns1:CommunicationMechanism>
+  </ns1:Operation>
  </ns1:operations>
 </ns1:ServiceSecurityMetadata>

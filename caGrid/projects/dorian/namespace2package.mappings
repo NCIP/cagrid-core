@@ -8,18 +8,18 @@ http\://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ResourceProperties-1.2-draft-01
 http\://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ResourceProperties-1.2-draft-01.wsdl=org.oasis.wsrf.properties
 http\://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ResourceProperties-1.2-draft-01.wsdl=org.oasis.wsrf.properties
 
-http\://cagrid.nci.nih.gov/1/dorian-idp=org.cagrid.gaards.dorian.idp
 http\://gaards.cagrid.org/authentication-faults=org.cagrid.gaards.authentication.faults
-gme\://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.security=gov.nih.nci.cagrid.metadata.security
-http\://authentication.gaards.cagrid.org/AuthenticationService/types=org.cagrid.gaards.authentication.stubs.types
 http\://cagrid.nci.nih.gov/Dorian/types=org.cagrid.gaards.dorian.stubs.types
 gme\://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata=gov.nih.nci.cagrid.metadata
-urn\:oasis\:names\:tc\:SAML\:1.0\:assertion=gov.nih.nci.cagrid.opensaml
-http\://cagrid.nci.nih.gov/AuthenticationService/types=gov.nih.nci.cagrid.authentication.stubs.types
 http\://cagrid.nci.nih.gov/1/dorian-ifs=org.cagrid.gaards.dorian.federation
-http\://cagrid.nci.nih.gov/1/dorian-common=org.cagrid.gaards.dorian
 http\://gaards.cagrid.org/authentication=org.cagrid.gaards.authentication
 http\://cagrid.nci.nih.gov/1/authentication-service=gov.nih.nci.cagrid.authentication.bean
-
+gme\://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.security=gov.nih.nci.cagrid.metadata.security
+http\://cagrid.nci.nih.gov/1/dorian-common=org.cagrid.gaards.dorian
+http\://cagrid.nci.nih.gov/AuthenticationService/types=gov.nih.nci.cagrid.authentication.stubs.types
+urn\:oasis\:names\:tc\:SAML\:1.0\:assertion=gov.nih.nci.cagrid.opensaml
+http\://authentication.gaards.cagrid.org/AuthenticationService/types=org.cagrid.gaards.authentication.stubs.types
+http\://cagrid.nci.nih.gov/1/dorian-idp=org.cagrid.gaards.dorian.idp
 gme\://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.service=gov.nih.nci.cagrid.metadata.service
+
 gme\://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common=gov.nih.nci.cagrid.metadata.common
