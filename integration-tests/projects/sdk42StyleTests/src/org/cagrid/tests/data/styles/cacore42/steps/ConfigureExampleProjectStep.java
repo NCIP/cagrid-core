@@ -55,9 +55,12 @@ public class ConfigureExampleProjectStep extends Step {
             Properties installProps = new Properties();
             installProps.load(installIn);
             installIn.close();
+            // 3    If you want to SDK to setup the database then “comment” the exclude.database property
+            //      -- Satish
+            installProps.remove(EXCLUDE_DATABASE);
             installProps.setProperty(SERVER_TYPE, SERVER_TYPE_VALUE);
-            installProps.setProperty(EXCLUDE_DATABASE, EXCLUDE_DATABASE_VALUE);
             installProps.setProperty(INSTALL_CONTAINER, INSTALL_CONTAINER_VALUE);
+            installProps.setProperty(DB_TYPE, DB_TYPE_VALUE);
             installProps.setProperty(DB_SERVER, DatabaseProperties.getServer());
             installProps.setProperty(DB_SERVER_PORT, DatabaseProperties.getPort());
             installProps.setProperty(DB_USERNAME, DatabaseProperties.getUsername());
