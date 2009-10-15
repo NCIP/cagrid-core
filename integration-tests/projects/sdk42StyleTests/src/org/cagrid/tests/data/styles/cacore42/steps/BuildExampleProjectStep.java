@@ -2,6 +2,7 @@ package org.cagrid.tests.data.styles.cacore42.steps;
 
 import gov.nih.nci.cagrid.common.StreamGobbler;
 import gov.nih.nci.cagrid.common.StreamGobbler.LogPriority;
+import gov.nih.nci.cagrid.testing.system.haste.Step;
 
 import java.io.File;
 import java.util.List;
@@ -9,9 +10,10 @@ import java.util.List;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.cagrid.tests.data.styles.cacore42.AntCommandUtil;
+import org.cagrid.tests.data.styles.cacore42.ExampleProjectInfo;
 
 
-public class BuildExampleProjectStep extends BaseExampleProjectStep {
+public class BuildExampleProjectStep extends Step {
     
     public static final String BUILD_ANT_TARGET = "deploy:local:install:re-configure";
     
@@ -23,7 +25,7 @@ public class BuildExampleProjectStep extends BaseExampleProjectStep {
 
 
     public void runStep() throws Throwable {
-        File buildDir = new File(getExampleProjectDir(), "build");
+        File buildDir = new File(ExampleProjectInfo.getExampleProjectDir(), "build");
         AntCommandUtil antUtil = new AntCommandUtil(buildDir, false);
         List<String> command = null;
         try {

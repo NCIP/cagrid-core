@@ -1,13 +1,16 @@
 package org.cagrid.tests.data.styles.cacore42.steps;
 
+import gov.nih.nci.cagrid.testing.system.haste.Step;
+
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.Properties;
 
 import org.cagrid.tests.data.styles.cacore42.DatabaseProperties;
+import org.cagrid.tests.data.styles.cacore42.ExampleProjectInfo;
 
-public class ConfigureExampleProjectStep extends BaseExampleProjectStep {
+public class ConfigureExampleProjectStep extends Step {
     // codegen properties
     public static final String NAMESPACE_PREFIX_PROPERTY = "NAMESPACE_PREFIX";
     public static final String NAMESPACE_PREFIX_VALUE = "gme://caCORE.caCORE/4.2";
@@ -35,12 +38,12 @@ public class ConfigureExampleProjectStep extends BaseExampleProjectStep {
     public void runStep() throws Throwable {
         // edit the codegen properties
         try {
-            FileInputStream codegenIn = new FileInputStream(getCodegenPropertiesFile());
+            FileInputStream codegenIn = new FileInputStream(ExampleProjectInfo.getCodegenPropertiesFile());
             Properties codegenProps = new Properties();
             codegenProps.load(codegenIn);
             codegenIn.close();
             codegenProps.setProperty(NAMESPACE_PREFIX_PROPERTY , NAMESPACE_PREFIX_VALUE);
-            FileOutputStream codegenOut = new FileOutputStream(getCodegenPropertiesFile());
+            FileOutputStream codegenOut = new FileOutputStream(ExampleProjectInfo.getCodegenPropertiesFile());
             codegenProps.store(codegenOut, "Edited by " + getClass().getName());
         } catch (IOException ex) {
             ex.printStackTrace();
@@ -48,7 +51,7 @@ public class ConfigureExampleProjectStep extends BaseExampleProjectStep {
         }
         // edit the install properties
         try {
-            FileInputStream installIn = new FileInputStream(getInstallPropertiesFile());
+            FileInputStream installIn = new FileInputStream(ExampleProjectInfo.getInstallPropertiesFile());
             Properties installProps = new Properties();
             installProps.load(installIn);
             installIn.close();
@@ -60,7 +63,7 @@ public class ConfigureExampleProjectStep extends BaseExampleProjectStep {
             installProps.setProperty(DB_USERNAME, DatabaseProperties.getUsername());
             installProps.setProperty(DB_PASSWORD, DatabaseProperties.getPassword());
             installProps.setProperty(DB_NAME, DatabaseProperties.getSchemaName());
-            FileOutputStream installOut = new FileOutputStream(getInstallPropertiesFile());
+            FileOutputStream installOut = new FileOutputStream(ExampleProjectInfo.getInstallPropertiesFile());
             installProps.store(installOut, "Edited by " + getClass().getName());
         } catch (IOException ex) {
             ex.printStackTrace();
