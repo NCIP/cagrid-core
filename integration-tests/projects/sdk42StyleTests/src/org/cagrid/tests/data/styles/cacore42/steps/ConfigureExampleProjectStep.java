@@ -1,8 +1,5 @@
 package org.cagrid.tests.data.styles.cacore42.steps;
 
-import gov.nih.nci.cagrid.testing.system.haste.Step;
-
-import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -10,7 +7,7 @@ import java.util.Properties;
 
 import org.cagrid.tests.data.styles.cacore42.DatabaseProperties;
 
-public class ConfigureExampleProjectStep extends Step {
+public class ConfigureExampleProjectStep extends BaseExampleProjectStep {
     // codegen properties
     public static final String NAMESPACE_PREFIX_PROPERTY = "NAMESPACE_PREFIX";
     public static final String NAMESPACE_PREFIX_VALUE = "gme://caCORE.caCORE/4.2";
@@ -29,10 +26,6 @@ public class ConfigureExampleProjectStep extends Step {
     public static final String DB_NAME = "DB_NAME";
     public static final String DB_USERNAME = "DB_USERNAME";
     public static final String DB_PASSWORD = "DB_PASSWORD";
-    
-    public static final String PROPERTY_SDK_BASE = "sdk.unpack.dir";
-    
-    public static final String EXAMPLE_PROJECT_DIR = "sdk-toolkit" + File.separator + "example-project";
     
     public ConfigureExampleProjectStep() {
         super();
@@ -73,22 +66,5 @@ public class ConfigureExampleProjectStep extends Step {
             ex.printStackTrace();
             fail("Error editing install properties: " + ex.getMessage());
         }
-    }
-    
-    
-    private File getSdkDir() {
-        String dirName = System.getProperty(PROPERTY_SDK_BASE);
-        assertNotNull("System property " + PROPERTY_SDK_BASE + " not defined or empty", dirName);
-        return new File(dirName);
-    }
-    
-    
-    private File getCodegenPropertiesFile() {
-        return new File(getSdkDir(), EXAMPLE_PROJECT_DIR + File.separator + "build" + File.separator + "codegen.properties");
-    }
-    
-    
-    private File getInstallPropertiesFile() {
-        return new File(getSdkDir(), EXAMPLE_PROJECT_DIR + File.separator + "build" + File.separator + "install.properties");
     }
 }
