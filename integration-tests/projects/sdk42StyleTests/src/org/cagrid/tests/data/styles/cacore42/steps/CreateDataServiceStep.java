@@ -90,6 +90,7 @@ public class CreateDataServiceStep extends CreationStep {
     private AbstractStyleConfigurationStep getProjectSelectionConfiguration() throws Exception {
         ProjectSelectionConfigurationStep config = new ProjectSelectionConfigurationStep(getServiceInformation());
         // TODO: this only does the local API for now, but should be extended to handle remote configs too
+        config.setApplicationName("example");
         config.setLocalApi(true);
         config.setLocalClientDir(getExampleProjectLocalClientDir().getAbsolutePath());
         return config;
