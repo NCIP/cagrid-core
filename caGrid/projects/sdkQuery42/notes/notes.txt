@@ -17,15 +17,8 @@ You can check it out and then execute following steps to get SDK running
 	* In the sdk-toolkit\example-project\build dir
 	* This builds everything and tries to set up a tomcat container for you.  Can I just get a build???
 	** Yes: deploy:local:install:re-configure
+	*** No, actually that doesn't generate any of the output dir artifacts
+	* This command would give you what you want i.e. Not installing container and not putting anything in the container. ant dist deploy:local:install:re-configure
 7	Output goes to sdk-toolkit\example-project\target\dist\exploded\output\example\package\directory
 
-
-Let me know if you have any question
-
-Thanks,
-Satish
-
-Satish Patel, Contractor NCI CBIIT
-Project Manager
-Ekagra Software Technologies
-301-451-2229
+The build script will download the container no matter what. The BDA team here at NCICB has come up with this build methodology and all projects at NCICB is required to follow it. The reasoning behind downloading the container is that someone may want to install the already built system. In that case everything that’s needed to install the app should be already available in the target/dist folder. The end user is given the zip of the target/dist folder. The end user has an option at the time of final installation whether to install the container or not. If he chooses to install then it will be used from the previously downloaded version in the dist/exploded folder.
