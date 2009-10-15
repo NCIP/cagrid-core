@@ -18,7 +18,10 @@ public class BuildExampleProjectStep extends Step {
     // public static final String BUILD_ANT_TARGET = "deploy:local:install:re-configure";
     
     // generates EVERYTHING and tries to install Tomcat, which I don't want, but does create the output dir
-    public static final String BUILD_ANT_TARGET = "deploy:local:install";
+    // public static final String BUILD_ANT_TARGET = "deploy:local:install";
+    
+    // again per Satish.  JBoss AND Tomcat containers still get downloaded, though
+    public static final String BUILD_ANT_TARGET = "dist deploy:local:install:re-configure";
     
     private static Log LOG = LogFactory.getLog(BuildExampleProjectStep.class);
     
