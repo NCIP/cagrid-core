@@ -62,7 +62,8 @@ public class CreateDataServiceStep extends CreationStep {
             features = new ServiceFeatures();
             extensionData.setServiceFeatures(features);
         }
-        features.setServiceStyle(new ServiceStyle(SDK42ServiceStyleSystemTestConstants.STYLE_NAME, "1.4"));
+        features.setServiceStyle(new ServiceStyle(
+            SDK42ServiceStyleSystemTestConstants.STYLE_NAME, SDK42ServiceStyleSystemTestConstants.STYLE_VERSION));
         storeExtensionData(extensionData);
     }
     
