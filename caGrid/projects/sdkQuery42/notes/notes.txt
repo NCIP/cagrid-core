@@ -1,6 +1,7 @@
 Dave,
 
 I have created a new tag for cagrid team to test the SDK 4.2. http://gforge.nci.nih.gov/svnroot/cacoresdk/tags/CACORESDK_42_caGRID1302
+* Another new tag here: http://gforge.nci.nih.gov/svnroot/cacoresdk/tags/CACORESDK_42_QA_10132009
 
 You can check it out and then execute following steps to get SDK running
 
