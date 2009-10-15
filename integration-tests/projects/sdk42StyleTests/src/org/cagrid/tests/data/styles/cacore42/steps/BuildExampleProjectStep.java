@@ -1,7 +1,6 @@
 package org.cagrid.tests.data.styles.cacore42.steps;
 
 import gov.nih.nci.cagrid.common.StreamGobbler;
-import gov.nih.nci.cagrid.common.StreamGobbler.LogPriority;
 import gov.nih.nci.cagrid.testing.system.haste.Step;
 
 import java.io.File;
@@ -15,7 +14,11 @@ import org.cagrid.tests.data.styles.cacore42.ExampleProjectInfo;
 
 public class BuildExampleProjectStep extends Step {
     
-    public static final String BUILD_ANT_TARGET = "deploy:local:install:re-configure";
+    // per Satish, but doesn't generate the output dirs... 
+    // public static final String BUILD_ANT_TARGET = "deploy:local:install:re-configure";
+    
+    // generates EVERYTHING and tries to install Tomcat, which I don't want, but does create the output dir
+    public static final String BUILD_ANT_TARGET = "deploy:local:install";
     
     private static Log LOG = LogFactory.getLog(BuildExampleProjectStep.class);
     
@@ -38,9 +41,9 @@ public class BuildExampleProjectStep extends Step {
         try {
             proc = Runtime.getRuntime().exec(command.toArray(new String[command.size()]));
             StreamGobbler errGobbler = new StreamGobbler(
-                proc.getErrorStream(), "ERR", LOG, LogPriority.ERROR);
+                proc.getErrorStream(), "ERR", System.err);
             StreamGobbler outGobbler = new StreamGobbler(
-                proc.getInputStream(), "OUT", LOG, LogPriority.DEBUG);
+                proc.getInputStream(), "OUT", System.out);
             errGobbler.start();
             outGobbler.start();
         } catch (Exception ex) {
