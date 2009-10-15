@@ -1,8 +1,8 @@
-<ns1:CQLQueryResultCollection targetClassname="gov.nih.nci.cacoresdk.domain.onetoone.multipleassociation.Child" xmlns:ns1="http://CQL.caBIG/1/gov.nih.nci.cagrid.CQLResultSet">
+<ns1:CQLQueryResults targetClassname="gov.nih.nci.cacoresdk.domain.onetoone.multipleassociation.Child" xmlns:ns1="http://CQL.caBIG/1/gov.nih.nci.cagrid.CQLResultSet">
  <ns1:ObjectResult>
-  <ns2:Child name="Child_Name1" id="1" xmlns:ns2="gme://caCORE.caCORE/4.0/gov.nih.nci.cacoresdk.domain.onetoone.multipleassociation"/>
+  <ns2:Child name="Child_Name1" id="1" xmlns:ns2="gme://caCORE.caCORE/4.2/gov.nih.nci.cacoresdk.domain.onetoone.multipleassociation"/>
  </ns1:ObjectResult>
  <ns1:ObjectResult>
-  <ns3:Child name="Child_Name2" id="2" xmlns:ns3="gme://caCORE.caCORE/4.0/gov.nih.nci.cacoresdk.domain.onetoone.multipleassociation"/>
+  <ns3:Child name="Child_Name2" id="2" xmlns:ns3="gme://caCORE.caCORE/4.2/gov.nih.nci.cacoresdk.domain.onetoone.multipleassociation"/>
  </ns1:ObjectResult>
-</ns1:CQLQueryResultCollection>
+</ns1:CQLQueryResults>
