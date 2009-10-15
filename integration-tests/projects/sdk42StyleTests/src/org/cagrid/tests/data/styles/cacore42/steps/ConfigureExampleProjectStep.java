@@ -19,7 +19,7 @@ public class ConfigureExampleProjectStep extends Step {
     public static final String SERVER_TYPE = "SERVER_TYPE";
     public static final String SERVER_TYPE_VALUE = "tomcat";
     public static final String EXCLUDE_DATABASE = "exclude.database";
-    public static final String EXCLUDE_DATABASE_VALUE = "false";
+    // public static final String EXCLUDE_DATABASE_VALUE = "false";
     public static final String INSTALL_CONTAINER = "INSTALL_CONTAINER";
     public static final String INSTALL_CONTAINER_VALUE = "false";
     public static final String DB_TYPE = "DB_TYPE";
