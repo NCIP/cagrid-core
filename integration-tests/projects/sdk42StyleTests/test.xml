@@ -38,6 +38,8 @@
 			<sysproperty key="introduce.base.dir" value="${introduce.dir}" />
 			<sysproperty key="sdk42.tests.base.dir" value="${sdk42.tests.base.dir}"/>
 			<sysproperty key="sdk.unpack.dir" value="${sdk.unpack.dir}"/>
+			<sysproperty key="testing.port.assignment.mode" value="${testing.port.assignment.mode}"/>
+			<sysproperty key="testing.containers.dir" value="${testing.containers.dir}"/>
 			<classpath refid="all.test.classpath" />
 			<formatter type="xml" />
 			<batchtest fork="yes" todir="${junit.results.dir}">
