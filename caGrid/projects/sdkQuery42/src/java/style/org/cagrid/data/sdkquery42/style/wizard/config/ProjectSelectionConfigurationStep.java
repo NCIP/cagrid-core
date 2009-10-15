@@ -30,9 +30,13 @@ import org.cagrid.grape.utils.CompositeErrorDialog;
 public class ProjectSelectionConfigurationStep extends AbstractStyleConfigurationStep {
     
     public static final String[] excludeSdkLibs = {
-        "axis-1.4.jar", "caGrid-CQL-cql.1.0-1.3.jar", "caGrid-data-common-1.3.jar",
-        "caGrid-data-stubs-1.3.jar", "caGrid-data-utils-1.3.jar", "caGrid-metadata-common-1.3.jar",
-        "caGrid-metadata-data-1.3.jar"
+        "axis-1.4.jar", "caGrid-BulkDataHandler-client-1.3.jar", "caGrid-BulkDataHandler-common-1.3.jar",
+        "caGrid-BulkDataHandler-stubs-1.3.jar", "caGrid-CQL-cql.1.0-1.3.jar", "caGrid-ServiceSecurityProvider-client-1.3.jar",
+        "caGrid-ServiceSecurityProvider-common-1.3.jar", "caGrid-ServiceSecurityProvider-service-1.3.jar", 
+        "caGrid-ServiceSecurityProvider-stubs-1.3.jar", "caGrid-core-1.3.jar", "caGrid-data-common-1.3.jar",
+        "caGrid-data-cql-1.3.jar", "caGrid-data-service-1.3.jar", "caGrid-data-stubs-1.3.jar", "caGrid-data-utils-1.3.jar",
+        "caGrid-data-validation-1.3.jar", "caGrid-metadata-common-1.3.jar", "caGrid-metadata-data-1.3.jar",
+        "caGrid-metadata-security-1.3.jar", "caGrid-metadatautils-1.3.jar", "caGrid-wsEnum-1.3.jar", "caGrid-wsEnum-stubs-1.3.jar"
     };
     
     private static Log LOG = LogFactory.getLog(ProjectSelectionConfigurationStep.class);
@@ -107,7 +111,11 @@ public class ProjectSelectionConfigurationStep extends AbstractStyleConfiguratio
         // cagrid and globus already provide and depend on
         Set<String> excludeNames = new HashSet<String>();
         Collections.addAll(excludeNames, excludeSdkLibs);
-        File[] sdkLibs = sdkLibDir.listFiles();
+        File[] sdkLibs = sdkLibDir.listFiles(new FileFilter() {
+            public boolean accept(File pathname) {
+                return pathname.getName().endsWith(".jar");
+            }
+        });
         for (File sdkLib : sdkLibs) {
             if (!excludeNames.contains(sdkLib.getName())) {
                 File serviceLib = new File(serviceLibDir, sdkLib.getName());
