@@ -30,6 +30,7 @@ import org.cagrid.gaards.cds.common.DelegationRecord;
 import org.cagrid.gaards.ui.common.ProgressPanel;
 import org.cagrid.gaards.ui.common.SelectDateDialog;
 import org.cagrid.gaards.ui.common.TitlePanel;
+import org.cagrid.gaards.ui.dorian.federation.CommunitySearchDialog;
 import org.cagrid.gaards.ui.dorian.federation.UserSearchDialog;
 import org.cagrid.grape.ApplicationComponent;
 import org.cagrid.grape.GridApplication;
@@ -989,11 +990,11 @@ public class DelegatedCredentialWindow extends ApplicationComponent {
             findSource.setText("Find");
             findSource.addActionListener(new java.awt.event.ActionListener() {
                 public void actionPerformed(java.awt.event.ActionEvent e) {
-                    UserSearchDialog dialog = new UserSearchDialog();
+                    CommunitySearchDialog dialog = new CommunitySearchDialog();
                     dialog.setModal(true);
                     GridApplication.getContext().showDialog(dialog);
-                    if (dialog.getSelectedUser() != null) {
-                        getGridIdentity().setText(dialog.getSelectedUser());
+                    if (dialog.getSelectedIdentity() != null) {
+                        getGridIdentity().setText(dialog.getSelectedIdentity());
                     }
                 }
             });

@@ -19,6 +19,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
+import org.cagrid.gaards.ui.dorian.federation.CommunitySearchDialog;
 import org.cagrid.gaards.ui.dorian.federation.UserSearchDialog;
 import org.cagrid.grape.GridApplication;
 
@@ -292,11 +293,11 @@ public class PermissionPanel extends JPanel {
             find.setText("Find...");
             find.addActionListener(new java.awt.event.ActionListener() {
                 public void actionPerformed(java.awt.event.ActionEvent e) {
-                    UserSearchDialog dialog = new UserSearchDialog();
+                    CommunitySearchDialog dialog = new CommunitySearchDialog();
                     dialog.setModal(true);
                     GridApplication.getContext().showDialog(dialog);
-                    if (dialog.getSelectedUser() != null) {
-                        getGid().setText(dialog.getSelectedUser());
+                    if (dialog.getSelectedIdentity() != null) {
+                        getGid().setText(dialog.getSelectedIdentity());
                     }
                 }
             });

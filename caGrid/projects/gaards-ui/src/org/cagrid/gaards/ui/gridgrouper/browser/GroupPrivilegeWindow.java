@@ -23,6 +23,7 @@ import javax.swing.JTextField;
 import javax.swing.border.TitledBorder;
 
 import org.cagrid.gaards.ui.common.TitlePanel;
+import org.cagrid.gaards.ui.dorian.federation.CommunitySearchDialog;
 import org.cagrid.gaards.ui.dorian.federation.UserSearchDialog;
 import org.cagrid.gaards.ui.gridgrouper.GridGrouperLookAndFeel;
 import org.cagrid.grape.ApplicationComponent;
@@ -619,12 +620,12 @@ public class GroupPrivilegeWindow extends ApplicationComponent {
 			find.setText("Find...");
 			find.addActionListener(new java.awt.event.ActionListener() {
 				public void actionPerformed(java.awt.event.ActionEvent e) {
-					UserSearchDialog dialog = new UserSearchDialog();
-					dialog.setModal(true);
-					GridApplication.getContext().showDialog(dialog);
-					if (dialog.getSelectedUser() != null) {
-						getIdentity().setText(dialog.getSelectedUser());
-					}
+				    CommunitySearchDialog dialog = new CommunitySearchDialog();
+                    dialog.setModal(true);
+                    GridApplication.getContext().showDialog(dialog);
+                    if (dialog.getSelectedIdentity() != null) {
+                        getIdentity().setText(dialog.getSelectedIdentity());
+                    }
 				}
 			});
 		}

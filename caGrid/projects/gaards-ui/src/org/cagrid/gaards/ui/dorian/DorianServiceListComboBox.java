@@ -35,7 +35,9 @@ public class DorianServiceListComboBox extends JComboBox {
         this.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent e) {
                 lastSelectedService = getSelectedService();
-                setToolTipText(getSelectedService().getServiceURL());
+                if (getSelectedService() != null) {
+                    setToolTipText(getSelectedService().getServiceURL());
+                }
             }
         });
     }
