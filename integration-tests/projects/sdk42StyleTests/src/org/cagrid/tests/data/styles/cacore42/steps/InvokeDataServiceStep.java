@@ -483,7 +483,7 @@ public class InvokeDataServiceStep extends Step {
     private InputStream getClientConfigStream() {
         InputStream is = null;
         File wsdd = new File(testInfo.getDir(), 
-            testInfo.getPackageDir() + File.separator + "client" + File.separator + "client-config.wsdd");
+            "src" + File.separator + testInfo.getPackageDir() + File.separator + "client" + File.separator + "client-config.wsdd");
         try {
             is = new FileInputStream(wsdd);
         } catch (Exception ex) {
