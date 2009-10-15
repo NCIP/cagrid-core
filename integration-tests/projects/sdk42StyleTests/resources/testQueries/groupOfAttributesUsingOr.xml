@@ -1,0 +1,8 @@
+<ns1:CQLQuery xmlns:ns1="http://CQL.caBIG/1/gov.nih.nci.cagrid.CQLQuery">
+ <ns1:Target name="gov.nih.nci.cacoresdk.domain.inheritance.onechild.Human">
+  <ns1:Group logicRelation="OR">
+   <ns1:Attribute name="hairColor" predicate="LIKE" value="%Color%"/>
+   <ns1:Attribute name="diet" predicate="LIKE" value="%3"/>
+  </ns1:Group>
+ </ns1:Target>
+</ns1:CQLQuery>

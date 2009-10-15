@@ -1,0 +1,5 @@
+<ns1:CQLQueryResultCollection targetClassname="gov.nih.nci.cacoresdk.domain.inheritance.onechild.Human" xmlns:ns1="http://CQL.caBIG/1/gov.nih.nci.cagrid.CQLResultSet">
+ <ns1:ObjectResult>
+  <ns2:Human hairColor="Hair_Color3" id="3" diet="DIET3" xmlns:ns2="gme://caCORE.caCORE/4.0/gov.nih.nci.cacoresdk.domain.inheritance.onechild"/>
+ </ns1:ObjectResult>
+</ns1:CQLQueryResultCollection>

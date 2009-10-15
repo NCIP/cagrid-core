@@ -1,0 +1,6 @@
+<ns1:CQLQuery xmlns:ns1="http://CQL.caBIG/1/gov.nih.nci.cagrid.CQLQuery">
+ <ns1:Target name="gov.nih.nci.cacoresdk.domain.inheritance.childwithassociation.Cash"/>
+ <ns1:QueryModifier countOnly="false">
+		<ns1:DistinctAttribute>amount</ns1:DistinctAttribute>
+ </ns1:QueryModifier>
+</ns1:CQLQuery>

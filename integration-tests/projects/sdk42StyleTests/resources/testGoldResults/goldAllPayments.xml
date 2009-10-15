@@ -1,0 +1,5 @@
+<ns1:CQLQueryResultCollection targetClassname="gov.nih.nci.cacoresdk.domain.inheritance.childwithassociation.Payment" xmlns:ns1="http://CQL.caBIG/1/gov.nih.nci.cagrid.CQLResultSet">
+ <ns1:ObjectResult>
+  <ns2:Payment amount="5" id="5" xmlns:ns2="gme://caCORE.caCORE/4.0/gov.nih.nci.cacoresdk.domain.inheritance.childwithassociation"/>
+ </ns1:ObjectResult>
+</ns1:CQLQueryResultCollection>

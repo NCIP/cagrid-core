@@ -1,0 +1,7 @@
+<ns1:CQLQuery xmlns:ns1="http://CQL.caBIG/1/gov.nih.nci.cagrid.CQLQuery">
+ <ns1:Target name="gov.nih.nci.cacoresdk.domain.onetomany.bidirectional.Computer">
+  <ns1:Association name="gov.nih.nci.cacoresdk.domain.onetomany.bidirectional.HardDrive" roleName="hardDriveCollection">
+   <ns1:Attribute name="size" predicate="EQUAL_TO" value="Something"/>
+  </ns1:Association>
+ </ns1:Target>
+</ns1:CQLQuery>
