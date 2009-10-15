@@ -13,6 +13,7 @@ import java.util.Properties;
  */
 public class DatabaseProperties {
     
+    public static final String TESTS_BASE_DIR_PROPERTY = "sdk42.tests.base.dir";
     public static final String PROPERTIES_FILENAME = "resources" + File.separator + "sdk42.test.database.properties";
     
     private static Properties props = null;
@@ -24,8 +25,9 @@ public class DatabaseProperties {
     
     private static synchronized Properties getProps() throws IOException {
         if (props == null) {
+            String baseDir = System.getProperty(TESTS_BASE_DIR_PROPERTY);
             props = new Properties();
-            InputStream propsIn = new FileInputStream(PROPERTIES_FILENAME);
+            InputStream propsIn = new FileInputStream(new File(baseDir, PROPERTIES_FILENAME));
             props.load(propsIn);
             propsIn.close();
         }
