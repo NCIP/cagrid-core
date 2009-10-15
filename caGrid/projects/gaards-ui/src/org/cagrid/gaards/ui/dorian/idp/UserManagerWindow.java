@@ -34,7 +34,8 @@ import org.cagrid.grape.utils.ErrorDialog;
  * @author <A HREF="MAILTO:langella@bmi.osu.edu">Stephen Langella </A>
  * @author <A HREF="MAILTO:oster@bmi.osu.edu">Scott Oster </A>
  * @author <A HREF="MAILTO:hastings@bmi.osu.edu">Shannon Langella </A>
- * @version $Id: UserManagerWindow.java,v 1.10 2009-03-13 15:54:13 langella Exp $
+ * @version $Id: UserManagerWindow.java,v 1.10 2009-03-13 15:54:13 langella Exp
+ *          $
  */
 public class UserManagerWindow extends ApplicationComponent {
 
@@ -739,7 +740,7 @@ public class UserManagerWindow extends ApplicationComponent {
      */
     private SessionPanel getSession() {
         if (session == null) {
-            session = new SessionPanel(false);
+            session = new SessionPanel(false, false);
         }
         return session;
     }

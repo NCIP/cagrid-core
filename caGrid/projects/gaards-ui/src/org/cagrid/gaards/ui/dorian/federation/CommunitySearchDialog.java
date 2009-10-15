@@ -185,7 +185,7 @@ public class CommunitySearchDialog extends JDialog {
      */
     private SessionPanel getSessionPanel() {
         if (sessionPanel == null) {
-            sessionPanel = new SessionPanel();
+            sessionPanel = new SessionPanel(true, true);
         }
         return sessionPanel;
     }

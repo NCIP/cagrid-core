@@ -37,7 +37,12 @@ public class DorianHandle extends ServiceHandle {
 
 
     public GridUserClient getUserClient(GlobusCredential credential) throws Exception {
-        GridUserClient client = new GridUserClient(getServiceDescriptor().getServiceURL(), credential);
+        GridUserClient client = null;
+        if (credential == null) {
+            client = new GridUserClient(getServiceDescriptor().getServiceURL(), credential, true);
+        } else {
+            client = new GridUserClient(getServiceDescriptor().getServiceURL(), credential);
+        }
         if (Utils.clean(getServiceDescriptor().getServiceIdentity()) != null) {
             IdentityAuthorization auth = new IdentityAuthorization(getServiceDescriptor().getServiceIdentity());
             client.setAuthorization(auth);

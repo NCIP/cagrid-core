@@ -269,7 +269,7 @@ public class MyHostCertificatesWindow extends ApplicationComponent implements
 	 */
 	private SessionPanel getSession() {
 		if (session == null) {
-			session = new SessionPanel(false);
+			session = new SessionPanel(false,false);
 		}
 		return session;
 	}

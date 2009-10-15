@@ -285,7 +285,7 @@ public class TrustedIdPsWindow extends ApplicationComponent {
 	 */
 	private SessionPanel getSession() {
 		if (session == null) {
-			session = new SessionPanel(false);
+			session = new SessionPanel(false,false);
 		}
 		return session;
 	}

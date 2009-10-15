@@ -113,7 +113,7 @@ public class FederationAuditSearchWindow extends ApplicationComponent {
 	 */
 	private SessionPanel getSessionPanel() {
 		if (sessionPanel == null) {
-			sessionPanel = new SessionPanel(false);
+			sessionPanel = new SessionPanel(false,false);
 		}
 		return sessionPanel;
 	}
