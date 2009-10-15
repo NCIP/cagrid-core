@@ -8,12 +8,15 @@ import gov.nih.nci.cagrid.introduce.common.CommonTools;
 import gov.nih.nci.cagrid.introduce.common.ServiceInformation;
 
 import java.io.File;
+import java.io.FileFilter;
 import java.io.IOException;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.jar.JarFile;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.cagrid.data.sdkquery42.processor.SDK42QueryProcessor;
 import org.cagrid.grape.utils.CompositeErrorDialog;
 
@@ -25,6 +28,14 @@ import org.cagrid.grape.utils.CompositeErrorDialog;
  * @author David
  */
 public class ProjectSelectionConfigurationStep extends AbstractStyleConfigurationStep {
+    
+    public static final String[] excludeSdkLibs = {
+        "axis-1.4.jar", "caGrid-CQL-cql.1.0-1.3.jar", "caGrid-data-common-1.3.jar",
+        "caGrid-data-stubs-1.3.jar", "caGrid-data-utils-1.3.jar", "caGrid-metadata-common-1.3.jar",
+        "caGrid-metadata-data-1.3.jar"
+    };
+    
+    private static Log LOG = LogFactory.getLog(ProjectSelectionConfigurationStep.class);
     
     private String applicationName = null;
     private boolean isLocalApi = false;
@@ -69,6 +80,7 @@ public class ProjectSelectionConfigurationStep extends AbstractStyleConfiguratio
         File serviceLibDir = new File(getServiceInformation().getBaseDirectory(), "lib");
         File configJarFile = new File(serviceLibDir, getApplicationName() + "-config.jar");
         JarUtilities.jarDirectory(sdkConfigDir, configJarFile);
+        LOG.debug("Packaged " + sdkConfigDir.getAbsolutePath() + " as " + configJarFile.getAbsolutePath());
         
         // grab the castor marshaling and unmarshaling xml mapping files
         // from the schemas jar and copy them into the service's package structure
@@ -83,15 +95,28 @@ public class ProjectSelectionConfigurationStep extends AbstractStyleConfiguratio
             String unmarshallOut = CastorMappingUtil.getUnmarshallingCastorMappingFileName(getServiceInformation());
             Utils.stringBufferToFile(marshaling, marshallOut);
             Utils.stringBufferToFile(unmarshalling, unmarshallOut);
+            LOG.debug("Extracted castor mapping files into service package structure");
         } catch (IOException ex) {
-            ex.printStackTrace();
-            CompositeErrorDialog.showErrorDialog("Error extracting castor mapping files", ex.getMessage(), ex);
+            String message = "Error extracting castor mapping files";
+            LOG.error(message, ex);
+            CompositeErrorDialog.showErrorDialog(message, ex.getMessage(), ex);
         }
         
         // copy SDK libs to the service
-        // TODO: we'll have to be selective here since there's LOTS of conflicts with things
+        // have to be selective here since there's LOTS of conflicts with things
         // cagrid and globus already provide and depend on
-        Utils.copyDirectory(sdkLibDir, serviceLibDir);
+        Set<String> excludeNames = new HashSet<String>();
+        Collections.addAll(excludeNames, excludeSdkLibs);
+        File[] sdkLibs = sdkLibDir.listFiles();
+        for (File sdkLib : sdkLibs) {
+            if (!excludeNames.contains(sdkLib.getName())) {
+                File serviceLib = new File(serviceLibDir, sdkLib.getName());
+                Utils.copyFile(sdkLib, serviceLib);
+                LOG.debug("Copied SDK library " + sdkLib.getName() + " into service");
+            } else {
+                LOG.debug("SDK library " + sdkLib.getName() + " excluded from service");
+            }
+        }
     }
     
     
