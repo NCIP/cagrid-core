@@ -110,6 +110,8 @@ public class CreateDataServiceStep extends CreationStep {
         config.setModelSource(DomainModelConfigurationSource.XMI);
         config.setXmiType(XmiFileType.SDK_40_EA);
         config.setXmiFile(getDomainModelXmiFile());
+        config.setProjectShortName("example");
+        config.setProjectVersion("4.2");
         return config;
     }
     
