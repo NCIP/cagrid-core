@@ -54,12 +54,12 @@ public class GridUserClient extends DorianBaseClient {
 
 
     public GridUserClient(String serviceURI) throws MalformedURIException, RemoteException {
-        super(serviceURI,null, false);
+        super(serviceURI,null, true);
     }
 
 
     public GridUserClient(String serviceURI, GlobusCredential cred) throws MalformedURIException, RemoteException {
-        super(serviceURI, cred,false);
+        super(serviceURI, cred,true);
     }
 
 
