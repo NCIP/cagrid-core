@@ -48,7 +48,7 @@ public class CQLAttributeDefaultPredicateUtil {
             elem.setAttribute("predicate", "EQUAL_TO");
         }
         String xml = XMLUtilities.elementToString(root);
-        CQLQuery edited = (CQLQuery) Utils.deserializeObject(new StringReader(xml), CQLQuery.class);
+        CQLQuery edited = Utils.deserializeObject(new StringReader(xml), CQLQuery.class);
         return edited;
     }
 }
