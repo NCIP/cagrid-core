@@ -60,7 +60,7 @@
     <dependency rev="latest.integration" org="caGrid" name="service-tools" conf="default->db"/>
         
     <!-- caCORE SDK 4.2 sdk -->
-    <dependency rev="4.2" org="cacore" name="sdk" conf="sdk->sdk"/>
+    <dependency rev="4.2" org="cacore" name="sdk" conf="sdk->sdk,example-trimmed"/>
     
     <!-- Apache Commons Logging-->
     <dependency rev="1.1" org="apache" name="commons-logging" conf="default"/>

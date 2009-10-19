@@ -19,7 +19,9 @@
 	
 	<!-- dependencies on SDK -->
 	<property name="sdk.zip" location="${ext.resources.dir}/sdk/caCORE_SDK_42.zip"/>
-	<property name="sdk.unpack.dir" location="${build.dir}/cacoresdk"/>
+	<property name="example.project.zip" location="${ext.resources.dir}/sdk/sdk42-example-trimmed.zip"/>
+	<property name="sdk.unpack.dir" location="${build.dir}/cacore/sdk"/>
+	<property name="example.project.unpack.dir" location="${build.dir}/cacore/example"/>
 	<property name="sdk.application.name" value="example42"/>
 	
 	<!-- depends on Introduce toolkit -->
@@ -83,6 +85,9 @@
 		<path id="test.run.classpath">
 			<path refid="build.classpath"/>
 			<path refid="Introduce.test.classpath"/>
+			<fileset dir="${example.project.unpack.dir}/example-project/target/dist/exploded/output/example/package/local-client/lib">
+				<include name="*-beans.jar"/>
+			</fileset>
 		</path>
 	</target>
 
@@ -103,6 +108,7 @@
 	<!-- unpacks the caCORE SDK -->
 	<target name="unpackSdk">
 		<unzip src="${sdk.zip}" dest="${sdk.unpack.dir}"/>
+		<unzip src="${example.project.zip}" dest="${example.project.unpack.dir}"/>
 	</target>
 	
 

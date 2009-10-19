@@ -1,11 +1,11 @@
 package org.cagrid.tests.data.styles.cacore42.steps;
 
+import gov.nih.nci.cagrid.common.PropertiesPreservingComments;
 import gov.nih.nci.cagrid.testing.system.haste.Step;
 
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.util.Properties;
 
 import org.cagrid.tests.data.styles.cacore42.DatabaseProperties;
 import org.cagrid.tests.data.styles.cacore42.ExampleProjectInfo;
@@ -39,12 +39,12 @@ public class ConfigureExampleProjectStep extends Step {
         // edit the codegen properties
         try {
             FileInputStream codegenIn = new FileInputStream(ExampleProjectInfo.getCodegenPropertiesFile());
-            Properties codegenProps = new Properties();
+            PropertiesPreservingComments codegenProps = new PropertiesPreservingComments();
             codegenProps.load(codegenIn);
             codegenIn.close();
             codegenProps.setProperty(NAMESPACE_PREFIX_PROPERTY , NAMESPACE_PREFIX_VALUE);
             FileOutputStream codegenOut = new FileOutputStream(ExampleProjectInfo.getCodegenPropertiesFile());
-            codegenProps.store(codegenOut, "Edited by " + getClass().getName());
+            codegenProps.store(codegenOut);
         } catch (IOException ex) {
             ex.printStackTrace();
             fail("Error editing codegen properties: " + ex.getMessage());
@@ -52,12 +52,12 @@ public class ConfigureExampleProjectStep extends Step {
         // edit the install properties
         try {
             FileInputStream installIn = new FileInputStream(ExampleProjectInfo.getInstallPropertiesFile());
-            Properties installProps = new Properties();
+            PropertiesPreservingComments installProps = new PropertiesPreservingComments();
             installProps.load(installIn);
             installIn.close();
-            // 3    If you want to SDK to setup the database then “comment” the exclude.database property
+            // If you want to SDK to setup the database then "comment" the exclude.database property
             //      -- Satish
-            installProps.remove(EXCLUDE_DATABASE);
+            installProps.commentOutProperty(EXCLUDE_DATABASE);
             installProps.setProperty(SERVER_TYPE, SERVER_TYPE_VALUE);
             installProps.setProperty(INSTALL_CONTAINER, INSTALL_CONTAINER_VALUE);
             installProps.setProperty(DB_TYPE, DB_TYPE_VALUE);

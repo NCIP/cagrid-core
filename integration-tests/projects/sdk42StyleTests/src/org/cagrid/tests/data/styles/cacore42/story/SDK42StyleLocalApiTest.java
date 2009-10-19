@@ -62,6 +62,7 @@ public class SDK42StyleLocalApiTest extends Story {
         steps.add(new SdkDatabaseStep(DatabaseOperation.CREATE));
         steps.add(new ConfigureExampleProjectStep());
         steps.add(new BuildExampleProjectStep());
+        steps.add(new SdkDatabaseStep(DatabaseOperation.INSTALL));
         steps.add(new CreateDataServiceStep(testInfo, getIntroduceBaseDir()));
         steps.add(new UnpackContainerStep(container));
         List<String> deploymentArgs = 
@@ -75,7 +76,7 @@ public class SDK42StyleLocalApiTest extends Story {
     
     public void storyTearDown() throws Throwable {
         List<Throwable> errors = new LinkedList<Throwable>();
-        try {        
+        try {
             new StopContainerStep(container).runStep();
         } catch (Throwable th) {
             errors.add(th);

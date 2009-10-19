@@ -36,4 +36,9 @@ public class ExampleProjectInfo {
     public static File getInstallPropertiesFile() {
         return new File(getExampleProjectDir(), "build" + File.separator + "install.properties");
     }
+    
+    
+    public static File getMysqlDatabaseInstallFile() {
+        return new File(getExampleProjectDir(), "db" + File.separator + "db-install" + File.separator + "mysql" + File.separator + "SDKTestSchema-mysql.sql");
+    }
 }
