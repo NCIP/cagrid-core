@@ -120,7 +120,7 @@ public class PropertiesPreservingCommentsTestCase extends TestCase {
     
     private void compareProperties(String gold) {
         ByteArrayOutputStream propsOut = new ByteArrayOutputStream();
-        properties.write(propsOut);
+        properties.store(propsOut);
         String propertiesString = propsOut.toString();
         assertEquals("Edited properties differed from expected", gold, propertiesString);
     }

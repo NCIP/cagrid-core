@@ -60,8 +60,16 @@ public class PropertiesPreservingComments {
     }
     
     
-    public void write(OutputStream stream) {
+    public void store(OutputStream stream) {
+        store(stream, null);
+    }
+    
+    
+    public void store(OutputStream stream, String comments) {
         PrintWriter writer = new PrintWriter(stream);
+        if (comments != null) {
+            writer.println("#" + comments);
+        }
         for (String line : lines) {
             writer.print(line);
         }
