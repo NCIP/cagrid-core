@@ -92,15 +92,15 @@ public class ZipUtilities {
 	 */
 	public static void zipDirectory(File dir, File zipFile) throws IOException {
 		ZipOutputStream zipOut = new ZipOutputStream(new FileOutputStream(zipFile));
-		List files = Utils.recursiveListFiles(dir, new FileFilter() {
+		List<File> files = Utils.recursiveListFiles(dir, new FileFilter() {
 			public boolean accept(File name) {
 				return true;
 			}
 		});
 		int baseDirNameLength = dir.getAbsolutePath().length();
-		Iterator fileIter = files.iterator();
+		Iterator<File> fileIter = files.iterator();
 		while (fileIter.hasNext()) {
-			File fileToAdd = (File) fileIter.next();
+			File fileToAdd = fileIter.next();
 			String relativeFileName = fileToAdd.getAbsolutePath().substring(baseDirNameLength + 1);
 			ZipEntry entry = new ZipEntry(relativeFileName);
 			zipOut.putNextEntry(entry);

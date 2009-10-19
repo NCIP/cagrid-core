@@ -19,11 +19,11 @@ import org.xml.sax.SAXException;
  */
 public class ConfigurableObjectDeserializationContext extends DeserializationContext {
 	
-	private Class objectClass = null; 
+	private Class<?> objectClass = null; 
 	private Object value = null;
 
 	public ConfigurableObjectDeserializationContext(
-		MessageContext context, InputSource source, Class clazz) {
+		MessageContext context, InputSource source, Class<?> clazz) {
 		super(context, new SOAPHandler());
 		this.inputSource = source;
 		this.objectClass = clazz;

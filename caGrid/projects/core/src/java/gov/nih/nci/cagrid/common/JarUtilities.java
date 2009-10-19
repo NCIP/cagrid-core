@@ -68,9 +68,9 @@ public class JarUtilities {
         
 		// copy all entries except the one with the matching name
 		Set<String> copiedEntries = new HashSet<String>();
-		Enumeration jarEntries = jar.entries();
+		Enumeration<JarEntry> jarEntries = jar.entries();
 		while (jarEntries.hasMoreElements()) {
-		    JarEntry entry = (JarEntry) jarEntries.nextElement();
+		    JarEntry entry = jarEntries.nextElement();
 		    String name = entry.getName();
 		    if (!name.equals(entryName)) {
 		        if (!copiedEntries.contains(name)) {

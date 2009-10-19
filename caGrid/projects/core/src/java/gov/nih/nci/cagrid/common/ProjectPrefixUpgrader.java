@@ -35,13 +35,13 @@ public class ProjectPrefixUpgrader {
         int choice = chooser.showOpenDialog(null);
         if (choice == JFileChooser.APPROVE_OPTION) {
             File baseDir = chooser.getSelectedFile();
-            List projectFiles = Utils.recursiveListFiles(baseDir, new FileFilter() {
+            List<File> projectFiles = Utils.recursiveListFiles(baseDir, new FileFilter() {
                 public boolean accept(File pathname) {
                     return pathname.getName().equals(".project");
                 }
             });
             for (int i = 0; i < projectFiles.size(); i++) {
-                File proj = (File) projectFiles.get(i);
+                File proj = projectFiles.get(i);
                 System.out.println("Upgrading " + proj.getAbsolutePath());
                 try {
                     FileInputStream in = new FileInputStream(proj);
@@ -73,5 +73,4 @@ public class ProjectPrefixUpgrader {
             }
         }
     }
-
 }

@@ -84,15 +84,15 @@ public class JarUtilitiesTestCase extends TestCase {
 				return true;
 			}
 		};
-		Set expectedFiles = new HashSet();
+		Set<String> expectedFiles = new HashSet<String>();
 		File sourceDir = new File(SOURCE_DIR);
 		String[] expectedFileNames = sourceDir.list(everythingFilter);
-		Collections.addAll(expectedFiles, (Object[]) expectedFileNames);
+		Collections.addAll(expectedFiles, expectedFileNames);
 		// list files in the extracted jar
-		Set extractedFiles = new HashSet();
+		Set<String> extractedFiles = new HashSet<String>();
 		String[] extractedFileNames = outDir.list(everythingFilter);
-		Collections.addAll(extractedFiles, (Object[]) extractedFileNames);
-		// check for congruency
+		Collections.addAll(extractedFiles, extractedFileNames);
+		// check for congruence
 		assertTrue("Expected files contains all extracted files", expectedFiles.containsAll(extractedFiles));
 		assertTrue("Extracted files contain all expected files", extractedFiles.containsAll(expectedFiles));
 		// blow away the extracted files directory
