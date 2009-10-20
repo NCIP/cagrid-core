@@ -11,6 +11,7 @@ import gov.nih.nci.cagrid.introduce.beans.extension.ExtensionType;
 import gov.nih.nci.cagrid.introduce.beans.extension.ExtensionTypeExtensionData;
 import gov.nih.nci.cagrid.introduce.common.ServiceInformation;
 import gov.nih.nci.cagrid.metadata.xmi.XmiFileType;
+import gov.nih.nci.cagrid.testing.system.deployment.ServiceContainer;
 
 import java.io.File;
 import java.io.FileWriter;
@@ -39,9 +40,16 @@ public class CreateDataServiceStep extends CreationStep {
     private static Log LOG = LogFactory.getLog(CreateDataServiceStep.class);
     
     private ServiceInformation serviceInformation = null;
+    private ServiceContainer remoteSdkApplicationContainer = null;
 
     public CreateDataServiceStep(DataTestCaseInfo testInfo, String introduceDir) {
+        this(testInfo, introduceDir, null);
+    }
+    
+    
+    public CreateDataServiceStep(DataTestCaseInfo testInfo, String introduceDir, ServiceContainer sdkContainer) {
         super(testInfo, introduceDir);
+        this.remoteSdkApplicationContainer = sdkContainer;
     }
     
     
@@ -89,10 +97,19 @@ public class CreateDataServiceStep extends CreationStep {
     
     private AbstractStyleConfigurationStep getProjectSelectionConfiguration() throws Exception {
         ProjectSelectionConfigurationStep config = new ProjectSelectionConfigurationStep(getServiceInformation());
-        // TODO: this only does the local API for now, but should be extended to handle remote configs too
         config.setApplicationName("example");
-        config.setLocalApi(true);
-        config.setLocalClientDir(getExampleProjectLocalClientDir().getAbsolutePath());
+        // if an SDK application container is available, use the remote API, else local
+        if (remoteSdkApplicationContainer == null) {
+            config.setLocalApi(true);
+            config.setLocalClientDir(getExampleProjectLocalClientDir().getAbsolutePath());
+        } else {
+            config.setLocalApi(false);
+            config.setRemoteClientDir(getExampleProjectRemoteClientDir().getAbsolutePath());
+            config.setApplicationHostname(
+                remoteSdkApplicationContainer.getContainerBaseURI().getHost());
+            config.setApplicationPort(
+                Integer.valueOf(remoteSdkApplicationContainer.getContainerBaseURI().getPort()));
+        }
         return config;
     }
     
@@ -111,8 +128,8 @@ public class CreateDataServiceStep extends CreationStep {
         config.setModelSource(DomainModelConfigurationSource.XMI);
         config.setXmiType(XmiFileType.SDK_40_EA);
         config.setXmiFile(getDomainModelXmiFile());
-        config.setProjectShortName("example");
-        config.setProjectVersion("4.2");
+        config.setProjectShortName(ExampleProjectInfo.EXAMPLE_PROJECT_NAME);
+        config.setProjectVersion(ExampleProjectInfo.EXAMPLE_PROJECT_VERSION);
         return config;
     }
     
