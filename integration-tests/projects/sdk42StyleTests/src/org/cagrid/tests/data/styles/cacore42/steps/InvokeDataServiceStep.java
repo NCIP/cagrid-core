@@ -1,7 +1,14 @@
 package org.cagrid.tests.data.styles.cacore42.steps;
 
-import java.io.File;
-import java.io.FileInputStream;
+import gov.nih.nci.cagrid.common.Utils;
+import gov.nih.nci.cagrid.cqlquery.CQLQuery;
+import gov.nih.nci.cagrid.cqlresultset.CQLQueryResults;
+import gov.nih.nci.cagrid.cqlresultset.TargetAttribute;
+import gov.nih.nci.cagrid.data.client.DataServiceClient;
+import gov.nih.nci.cagrid.data.utilities.CQLQueryResultsIterator;
+import gov.nih.nci.cagrid.testing.system.deployment.ServiceContainer;
+import gov.nih.nci.cagrid.testing.system.haste.Step;
+
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.lang.reflect.Method;
@@ -17,15 +24,6 @@ import org.apache.axis.types.URI.MalformedURIException;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.cagrid.data.test.creation.DataTestCaseInfo;
-
-import gov.nih.nci.cagrid.common.Utils;
-import gov.nih.nci.cagrid.cqlquery.CQLQuery;
-import gov.nih.nci.cagrid.cqlresultset.CQLQueryResults;
-import gov.nih.nci.cagrid.cqlresultset.TargetAttribute;
-import gov.nih.nci.cagrid.data.client.DataServiceClient;
-import gov.nih.nci.cagrid.data.utilities.CQLQueryResultsIterator;
-import gov.nih.nci.cagrid.testing.system.deployment.ServiceContainer;
-import gov.nih.nci.cagrid.testing.system.haste.Step;
 
 public class InvokeDataServiceStep extends Step {
     
@@ -482,10 +480,9 @@ public class InvokeDataServiceStep extends Step {
     
     private InputStream getClientConfigStream() {
         InputStream is = null;
-        File wsdd = new File(testInfo.getDir(), 
-            "src" + File.separator + testInfo.getPackageDir() + File.separator + "client" + File.separator + "client-config.wsdd");
+        String resourceName = TEST_RESOURCES_DIR + "wsdd/client-config.wsdd";
         try {
-            is = new FileInputStream(wsdd);
+            is = InvokeDataServiceStep.class.getResourceAsStream(resourceName);
         } catch (Exception ex) {
             ex.printStackTrace();
             fail("Error obtaining client config input stream: " + ex.getMessage());
