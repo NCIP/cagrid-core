@@ -161,6 +161,6 @@
 	<!-- ============================================================== -->
 	<!-- Builds everything                                              -->
 	<!-- ============================================================== -->
-	<target name="all" description="Builds the entire application" depends="clean, compile, jar" />
+	<target name="all" description="Builds the entire application" depends="compile, jar"/>
 </project>
 

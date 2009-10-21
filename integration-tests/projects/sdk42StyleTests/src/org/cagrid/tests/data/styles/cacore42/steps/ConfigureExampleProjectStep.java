@@ -3,6 +3,7 @@ package org.cagrid.tests.data.styles.cacore42.steps;
 import gov.nih.nci.cagrid.common.PropertiesPreservingComments;
 import gov.nih.nci.cagrid.testing.system.haste.Step;
 
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -16,6 +17,8 @@ public class ConfigureExampleProjectStep extends Step {
     public static final String NAMESPACE_PREFIX_VALUE = "gme://caCORE.caCORE/4.2";
     
     // install properties
+    public static final String APPLICATION_BASE_PATH_LINUX = "application.base.path.linux";
+    public static final String APPLICATION_BASE_PATH_WINDOWS = "application.base.path.windows";
     public static final String SERVER_TYPE = "SERVER_TYPE";
     public static final String SERVER_TYPE_VALUE = "tomcat";
     public static final String EXCLUDE_DATABASE = "exclude.database";
@@ -30,8 +33,11 @@ public class ConfigureExampleProjectStep extends Step {
     public static final String DB_USERNAME = "DB_USERNAME";
     public static final String DB_PASSWORD = "DB_PASSWORD";
     
-    public ConfigureExampleProjectStep() {
+    private File tempApplicationDir = null;
+    
+    public ConfigureExampleProjectStep(File tempApplicationDir) {
         super();
+        this.tempApplicationDir = tempApplicationDir;
     }
 
 
@@ -58,6 +64,11 @@ public class ConfigureExampleProjectStep extends Step {
             // If you want to SDK to setup the database then "comment" the exclude.database property
             //      -- Satish
             installProps.commentOutProperty(EXCLUDE_DATABASE);
+            if (isWindowsOs()) {
+                installProps.setProperty(APPLICATION_BASE_PATH_WINDOWS, tempApplicationDir.getAbsolutePath());
+            } else {
+                installProps.setProperty(APPLICATION_BASE_PATH_LINUX, tempApplicationDir.getAbsolutePath());
+            }
             installProps.setProperty(SERVER_TYPE, SERVER_TYPE_VALUE);
             installProps.setProperty(INSTALL_CONTAINER, INSTALL_CONTAINER_VALUE);
             installProps.setProperty(DB_TYPE, DB_TYPE_VALUE);
@@ -72,5 +83,11 @@ public class ConfigureExampleProjectStep extends Step {
             ex.printStackTrace();
             fail("Error editing install properties: " + ex.getMessage());
         }
+    }
+    
+    
+    private boolean isWindowsOs() {
+        String os = System.getProperty("os.name").toLowerCase();
+        return os.contains("windows");
     }
 }

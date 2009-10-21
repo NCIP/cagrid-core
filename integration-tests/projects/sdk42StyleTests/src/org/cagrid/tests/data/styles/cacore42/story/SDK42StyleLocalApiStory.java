@@ -20,19 +20,15 @@ import java.util.Vector;
 
 import org.cagrid.data.test.creation.DataTestCaseInfo;
 import org.cagrid.tests.data.styles.cacore42.SDK42ServiceStyleSystemTestConstants;
-import org.cagrid.tests.data.styles.cacore42.steps.BuildExampleProjectStep;
-import org.cagrid.tests.data.styles.cacore42.steps.ConfigureExampleProjectStep;
 import org.cagrid.tests.data.styles.cacore42.steps.CreateDataServiceStep;
 import org.cagrid.tests.data.styles.cacore42.steps.InvokeDataServiceStep;
-import org.cagrid.tests.data.styles.cacore42.steps.SdkDatabaseStep;
-import org.cagrid.tests.data.styles.cacore42.steps.SdkDatabaseStep.DatabaseOperation;
 
-public class SDK42StyleLocalApiTest extends Story {
+public class SDK42StyleLocalApiStory extends Story {
     
     private DataTestCaseInfo testInfo = null;
     private ServiceContainer container = null;
 
-    public SDK42StyleLocalApiTest() {
+    public SDK42StyleLocalApiStory() {
         super();
     }
 
@@ -59,10 +55,6 @@ public class SDK42StyleLocalApiTest extends Story {
 
     protected Vector steps() {
         Vector<Step> steps = new Vector<Step>();
-        steps.add(new SdkDatabaseStep(DatabaseOperation.CREATE));
-        steps.add(new ConfigureExampleProjectStep());
-        steps.add(new BuildExampleProjectStep());
-        steps.add(new SdkDatabaseStep(DatabaseOperation.INSTALL));
         steps.add(new CreateDataServiceStep(testInfo, getIntroduceBaseDir()));
         steps.add(new UnpackContainerStep(container));
         List<String> deploymentArgs = 
@@ -88,11 +80,6 @@ public class SDK42StyleLocalApiTest extends Story {
         }
         try {
             Utils.deleteDir(new File(testInfo.getDir()));
-        } catch (Throwable th) {
-            errors.add(th);
-        }
-        try {
-            new SdkDatabaseStep(DatabaseOperation.DESTROY).runStep();
         } catch (Throwable th) {
             errors.add(th);
         }

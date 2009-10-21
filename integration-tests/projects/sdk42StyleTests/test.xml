@@ -44,7 +44,7 @@
 			<formatter type="xml" />
 			<batchtest fork="yes" todir="${junit.results.dir}">
 				<fileset dir="${src.dir}">
-					<include name="**/*Test.java" />
+					<include name="**/*SystemTests.java" />
 				</fileset>
 			</batchtest>
 		</junit>
