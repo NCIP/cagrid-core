@@ -44,6 +44,7 @@ import org.cagrid.gaards.dorian.test.system.steps.FindGridUserStep;
 import org.cagrid.gaards.dorian.test.system.steps.FindLocalUserStep;
 import org.cagrid.gaards.dorian.test.system.steps.GetAsserionSigningCertificateStep;
 import org.cagrid.gaards.dorian.test.system.steps.GridCredentialRequestStep;
+import org.cagrid.gaards.dorian.test.system.steps.GridUserSearchStep;
 import org.cagrid.gaards.dorian.test.system.steps.InvalidGridCredentialRequest;
 import org.cagrid.gaards.dorian.test.system.steps.RegisterUserWithDorianIdentityProviderStep;
 import org.cagrid.gaards.dorian.test.system.steps.SuccessfullGridCredentialRequest;
@@ -215,6 +216,12 @@ public class DorianLocaIdentityProviderTest extends ServiceStoryBase {
                 gridUser.setExpectedLocalUserId(users.get(i).getUserId());
                 gridUser.setExpectedStatus(GridUserStatus.Active);
                 steps.add(gridUser);
+                
+                GridUserSearchStep gridUserRecord = new GridUserSearchStep(serviceURL,proxy);
+                gridUserRecord.setExpectedEmail(users.get(i).getEmail());
+                gridUserRecord.setExpectedFirstName(users.get(i).getFirstName());
+                gridUserRecord.setExpectedLastName(users.get(i).getLastName());
+                steps.add(gridUserRecord);
             }
 
             // Test Suspending Accounts Locally

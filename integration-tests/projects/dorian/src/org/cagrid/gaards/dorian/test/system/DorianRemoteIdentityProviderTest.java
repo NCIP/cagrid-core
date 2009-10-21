@@ -38,6 +38,7 @@ import org.cagrid.gaards.dorian.test.system.steps.CopyConfigurationStep;
 import org.cagrid.gaards.dorian.test.system.steps.FindGridUserStep;
 import org.cagrid.gaards.dorian.test.system.steps.GetAsserionSigningCertificateStep;
 import org.cagrid.gaards.dorian.test.system.steps.GridCredentialRequestStep;
+import org.cagrid.gaards.dorian.test.system.steps.GridUserSearchStep;
 import org.cagrid.gaards.dorian.test.system.steps.InvalidGridCredentialRequest;
 import org.cagrid.gaards.dorian.test.system.steps.SuccessfullGridCredentialRequest;
 import org.cagrid.gaards.dorian.test.system.steps.UpdateTrustedIdPStatusStep;
@@ -210,6 +211,13 @@ public class DorianRemoteIdentityProviderTest extends ServiceStoryBase {
             gridUser.setExpectedLocalUserId(success.getExpectedUserId());
             gridUser.setExpectedStatus(GridUserStatus.Active);
             steps.add(gridUser);
+            
+
+            GridUserSearchStep gridUserRecord = new GridUserSearchStep(dorianURL, remoteUser);
+            gridUserRecord.setExpectedEmail(success.getExpectedEmail());
+            gridUserRecord.setExpectedFirstName(success.getExpectedFirstName());
+            gridUserRecord.setExpectedLastName(success.getExpectedLastName());
+            steps.add(gridUserRecord);
 
  
             steps.add(new UpdateTrustedIdPStatusStep(dorianURL, admin, idp.getName(), TrustedIdPStatus.Suspended));
