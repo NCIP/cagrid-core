@@ -26,8 +26,9 @@ public class SDK42DataServiceSystemTests {
     public void sdk42DataServiceSystemTests() throws Throwable {
         // create a temporary directory for the SDK application to package things in
         tempApplicationDir = File.createTempFile("SdkExample", "temp");
-        LOG.debug("Creating temp application base dir: " + tempApplicationDir.getAbsolutePath());
+        tempApplicationDir.delete();
         tempApplicationDir.mkdirs();
+        LOG.debug("Created temp application base dir: " + tempApplicationDir.getAbsolutePath());
         
         // create the caCORE SDK example project
         splitTime();
