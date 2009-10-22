@@ -3,13 +3,23 @@ package org.cagrid.tests.data.styles.cacore42;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.StringTokenizer;
+
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
 public class AntCommandUtil {
     
+    public static final String PATH_ENV = "PATH";
+    public static final String ANT_HOME_ENV = "ANT_HOME";
+    
     public static final String DEBUG_ANT_CALL_JAVA_OPTS[] = {"-Xdebug", "-Xnoagent", "-Djava.compiler=NONE",
         "-Xrunjdwp:transport=dt_socket,server=y,suspend=y,address=8000"};
+    
+    private static Log LOG = LogFactory.getLog(AntCommandUtil.class);
     
     private File buildDir = null;
     private boolean debug = false;
@@ -21,14 +31,16 @@ public class AntCommandUtil {
     }
     
     
-    public List<String> getAntCommand(String command) throws Exception {
+    public ExecutableCommand getAntCommand(String command) throws Exception {
         List<String> cmd = getAntCommandCall();
 
         StringTokenizer stok = new StringTokenizer(command, " ");
         while (stok.hasMoreTokens()) {
             cmd.add(stok.nextToken());
         }
-        return cmd;
+        
+        Map<String, String> environment = getEnvironment();
+        return new ExecutableCommand(cmd, environment);
     }
     
     
@@ -108,5 +120,41 @@ public class AntCommandUtil {
         s = s.replaceAll("([\\\\]*)\"", "$1$1\\\\\"");
         s = s.replaceAll("([\\\\]*)\\z", "$1$1");
         return "\"" + s + "\"";
+    }
+    
+    
+    private Map<String, String> getEnvironment() throws Exception {
+        Map<String, String> mutableEnv = new HashMap<String, String>(System.getenv());
+        if (!isAntOnPath()) {
+            // see if we have ANT_HOME defined
+            String antHome = mutableEnv.get(ANT_HOME_ENV);
+            if (antHome != null) {
+                String path = antHome + File.separator + "bin" 
+                    + File.pathSeparator + mutableEnv.get(PATH_ENV);
+                mutableEnv.put(PATH_ENV, path);
+                LOG.debug("Adding " + ANT_HOME_ENV + File.separator + "bin to path");
+            } else {
+                // no ant on path, no ANT_HOME, no-can-run
+                throw new Exception("Ant not found on " + PATH_ENV 
+                    + " and " + ANT_HOME_ENV + " was not defined!");
+            }
+        }
+        return mutableEnv;
+    }
+    
+    
+    private boolean isAntOnPath() {
+        String antExecutable = isWindowsOS() ? "ant.bat" : "ant";
+        StringTokenizer pathTokenizer = new StringTokenizer(System.getenv(PATH_ENV), File.pathSeparator);
+        while (pathTokenizer.hasMoreTokens()) {
+            String path = pathTokenizer.nextToken();
+            File maybeAnt = new File(path, antExecutable);
+            if (maybeAnt.exists() && maybeAnt.isFile()) {
+                LOG.debug("Probably found ant on the path: " + maybeAnt.getAbsolutePath());
+                return true;
+            }
+        }
+        LOG.debug("Ant not found on the path");
+        return false;
     }
 }

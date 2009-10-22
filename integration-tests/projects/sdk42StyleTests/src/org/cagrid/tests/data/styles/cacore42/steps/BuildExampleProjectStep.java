@@ -4,12 +4,12 @@ import gov.nih.nci.cagrid.common.StreamGobbler;
 import gov.nih.nci.cagrid.testing.system.haste.Step;
 
 import java.io.File;
-import java.util.List;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.cagrid.tests.data.styles.cacore42.AntCommandUtil;
 import org.cagrid.tests.data.styles.cacore42.ExampleProjectInfo;
+import org.cagrid.tests.data.styles.cacore42.ExecutableCommand;
 
 
 public class BuildExampleProjectStep extends Step {
@@ -33,16 +33,17 @@ public class BuildExampleProjectStep extends Step {
     public void runStep() throws Throwable {
         File buildDir = new File(ExampleProjectInfo.getExampleProjectDir(), "build");
         AntCommandUtil antUtil = new AntCommandUtil(buildDir, false);
-        List<String> command = null;
+        ExecutableCommand command = null;
         try {
             command = antUtil.getAntCommand(BUILD_ANT_TARGET);
         } catch (Exception ex) {
-            ex.printStackTrace();
-            fail("Error generating ant build command: " + ex.getMessage());
+            String message = "Error generating ant build command: " + ex.getMessage();
+            LOG.error(message, ex);
+            fail(message);
         }
         Process proc = null;
         try {
-            proc = Runtime.getRuntime().exec(command.toArray(new String[command.size()]));
+            proc = Runtime.getRuntime().exec(command.getCommandArray(), command.getEnvironmentArray());
             StreamGobbler errGobbler = new StreamGobbler(
                 proc.getErrorStream(), "ERR", System.err);
             StreamGobbler outGobbler = new StreamGobbler(
@@ -50,8 +51,9 @@ public class BuildExampleProjectStep extends Step {
             errGobbler.start();
             outGobbler.start();
         } catch (Exception ex) {
-            ex.printStackTrace();
-            fail("Error executing ant build command: " + ex.getMessage());
+            String message = "Error executing ant build command: " + ex.getMessage();
+            LOG.error(message, ex);
+            fail(message);
         }
         int status = proc.waitFor();
         assertEquals("Build process exited abnormaly", 0, status);
