@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<TargetGridsConfiguration
+	xmlns="http://www.cagrid.org/1/grape-target-grid-configuration"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.cagrid.org/1/grape-target-grid-configuration file://Users/jgeorge/Documents/Workspaces/caGrid-trunk/cagrid/projects/grape/schema/grape-target-grid-configuration.xsd">
+	<lastUpdated>2009-10-08</lastUpdated>
+	<activeGrid>training-1.3</activeGrid>
+	<grid>
+		<SystemName>training-1.3</SystemName>
+		<DisplayName>Training Grid v1.3</DisplayName>
+		<!--
+		<uri>http://software.cagrid.org/repository-1.3.0.1/caGrid/target_grid/training-1.3</uri>
+		<DorianConfigurationFile>dorian-services-configuration.xml</DorianConfigurationFile>
+		<AuthenticationServicesConfigurationFile>authentication-services-configuration.xml</AuthenticationServicesConfigurationFile>
+		<DelegationServicesConfigurationFile>cds-services-configuration.xml</DelegationServicesConfigurationFile>
+		<GridTrustServicesConfigurationFile>gts-services-configuration.xml</GridTrustServicesConfigurationFile>
+		<GridGrouperServicesConfigurationFile>gridgrouper-services-configuration.xml</GridGrouperServicesConfigurationFile>
+		<certificatesDirectory>certificates</certificatesDirectory>
+		-->
+	</grid>
+	<grid>
+		<SystemName>nci_prod-1.3</SystemName>
+		<DisplayName>NCI Production Grid v1.3</DisplayName>
+		<!--
+		<uri>http://software.cagrid.org/repository-1.3.0.1/caGrid/target_grid/nci_prod-1.3</uri>
+		<DorianConfigurationFile>dorian-services-configuration.xml</DorianConfigurationFile>
+		<AuthenticationServicesConfigurationFile>authentication-services-configuration.xml</AuthenticationServicesConfigurationFile>
+		<DelegationServicesConfigurationFile>cds-services-configuration.xml</DelegationServicesConfigurationFile>
+		<GridTrustServicesConfigurationFile>gts-services-configuration.xml</GridTrustServicesConfigurationFile>
+		<GridGrouperServicesConfigurationFile>gridgrouper-services-configuration.xml</GridGrouperServicesConfigurationFile>
+		<certificatesDirectory>certificates</certificatesDirectory>
+		-->
+	</grid>	
+</TargetGridsConfiguration>

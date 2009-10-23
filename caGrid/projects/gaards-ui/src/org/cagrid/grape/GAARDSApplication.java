@@ -9,44 +9,35 @@ import gov.nih.nci.cagrid.syncgts.core.SyncGTSDefault;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Properties;
 
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.UIManager;
 
 import org.apache.axis.utils.XMLUtils;
-import org.cagrid.gaards.tasks.DownloadGridsTask;
+import org.cagrid.grape.configuration.Grid;
+import org.cagrid.grape.configuration.TargetGridsConfiguration;
 import org.cagrid.grape.model.Application;
 import org.cagrid.grape.model.Component;
 import org.cagrid.grape.model.Configuration;
 import org.cagrid.grape.utils.ErrorDialog;
 import org.cagrid.grape.utils.IconUtils;
+import org.cagrid.ivy.Retrieve;
 import org.globus.wsrf.encoding.ObjectDeserializer;
 
-/**
- * User: kherm
- *
- * @author kherm manav.kher@semanticbits.com
- */
 public class GAARDSApplication extends GridApplication{
 	
 	private static String GAARDS_CONFIG_DIR = Utils.getCaGridUserHome().getAbsolutePath() + File.separator + "gaards";
 	
-	private String targetGrid = null;
-	private String targetGridUrl = null;
-
+	private static String targetGrid = null;
+	
     public GAARDSApplication(Application app) throws Exception {
         super();
-        configureTargetGrid();
-        retrieveTargetGridConfigurationFiles();
-        configureGlobusCertificates();
 
 		ErrorDialog.setOwnerFrame(this);
 		this.app = app;
@@ -59,20 +50,25 @@ public class GAARDSApplication extends GridApplication{
     public static void main(String[] args) {
     	
         try {
+        	Application app = null;
+        	
         	File file = null;
     		if (args.length == 0) {
-    			System.out.println("No configuration file supplied");    
-    			System.exit(1);
+    			InputStream inputStream = ClassLoader.getSystemClassLoader().getResourceAsStream("security-ui.xml");
+    			
+    			app = (Application) deserializeInputStream(inputStream, Application.class);
+    			inputStream.close();
+    			
     		} else {
     			file = new File(args[0]);
     			if (!file.exists()) {
     				System.out.println("Invalid configuration file supplied");
         			System.exit(1);
     			}
+    			app = (Application) Utils.deserializeDocument(file
+    					.getAbsolutePath(), Application.class);
     		}
-            
-			Application app = (Application) Utils.deserializeDocument(file
-					.getAbsolutePath(), Application.class);
+             
 
             // launch the portal with the passed config
             GridApplication applicationInstance = GAARDSApplication.getInstance(app);
@@ -93,42 +89,8 @@ public class GAARDSApplication extends GridApplication{
         } catch (Exception e) {
             e.printStackTrace();
         }
-   }
-
-	private void configureTargetGrid() throws Exception {
-		File configurationDir = new File(Utils.getCaGridUserHome()
-				.getAbsolutePath()
-				+ File.separator + "gaards");
-		String defaultGrid = "training-1.3";
-		String defaultTargetGridUrl = "http://software.cagrid.org/repository-1.3.0.1/caGrid/target_grid";
-		if (!configurationDir.exists()) {
-			Properties gaardsPropertyFile = null;
-			configurationDir.mkdirs();
-			gaardsPropertyFile = new Properties();
-			gaardsPropertyFile.setProperty("target.grid", defaultGrid);
-			gaardsPropertyFile.setProperty("target.url", defaultTargetGridUrl);
-			try {
-				gaardsPropertyFile.store(new FileOutputStream(configurationDir + File.separator 
-						+ "gaards.properties"), null);
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-			targetGrid = defaultGrid;
-			targetGridUrl = defaultTargetGridUrl;
-
-		} else {
-			Properties gaardsPropertyFile = new Properties();
-			try {
-				gaardsPropertyFile.load(new FileInputStream(configurationDir + File.separator 
-						+ "gaards.properties"));
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-			targetGrid = gaardsPropertyFile.getProperty("target.grid", defaultGrid);
-			targetGridUrl = gaardsPropertyFile.getProperty("target.url", defaultGrid);
-		}		
-	}
-
+    }
+	
 	public static GridApplication getInstance(Application app) throws Exception {
 		if (application == null) {
 			application = new GAARDSApplication(app);
@@ -141,13 +103,17 @@ public class GAARDSApplication extends GridApplication{
 	}
 	
 	protected void initialize() throws Exception {
-		try {
+
+        try {
 			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
 		} catch (Exception e) {
 			System.out.println("Failed to set system look and feel.");
 		}
 		
 		startPreInitializer();
+			
+		targetGridsConfiguration();
+        
 		String syncClass = app.getConfigurationSynchronizerClass();
 
 		ConfigurationSynchronizer cs = null;
@@ -156,9 +122,12 @@ public class GAARDSApplication extends GridApplication{
 					.newInstance();
 		}
 		
-		String configurationDirectory = GAARDS_CONFIG_DIR + File.separator + targetGrid;
+		String configurationDirectory = GAARDS_CONFIG_DIR;
 		configurationManager = createConfigurationManager(app
 				.getConfiguration(), cs, configurationDirectory);
+		
+        getTargetGrids();
+        configureGlobusCertificates();
 
 		List<Component> toolbarComponents = new ArrayList<Component>();
 		this.setJMenuBar(getJJMenuBar(toolbarComponents));
@@ -175,6 +144,8 @@ public class GAARDSApplication extends GridApplication{
 				this.setIconImage(icon.getImage());
 			}
 		}
+		
+
 	}
 	
 	private ConfigurationManager createConfigurationManager(
@@ -198,10 +169,77 @@ public class GAARDSApplication extends GridApplication{
 			sync.syncOnce(description);
 		}
 	}
-	
-	private void retrieveTargetGridConfigurationFiles() throws Exception {
-		DownloadGridsTask task = new DownloadGridsTask(targetGridUrl, GAARDS_CONFIG_DIR);
-		task.execute();
+		
+	private Configuration loadConfiguration() throws Exception {
+		InputStream inputStream = this.getClass().getResourceAsStream("/configuration.xml");
+		
+        org.w3c.dom.Document doc = XMLUtils.newDocument(inputStream);
+        Object obj = ObjectDeserializer.toObject(doc.getDocumentElement(), Configuration.class);
+        inputStream.close();
+        return Configuration.class.cast(obj);
+
+	}
+			
+	private void getTargetGrids() throws Exception {
+		String configDirName = Utils.getCaGridUserHome().getAbsolutePath() + File.separator + "gaards";
+		File targetGridConfFile = new File(configDirName + File.separator + "target-grid-conf.xml");
+		if (!targetGridConfFile.exists()) {
+			targetGridConfFile = new File(configDirName + File.separator + "target-grid-configuration.xml");			
+		}
+		
+		TargetGridsConfiguration targetGridsConfiguration = null;
+		try {
+			targetGridsConfiguration = (TargetGridsConfiguration) Utils.deserializeDocument(targetGridConfFile
+					.getAbsolutePath(), TargetGridsConfiguration.class);
+		} catch (Exception e1) {
+			e1.printStackTrace();
+		}
+
+		if (targetGridsConfiguration == null)
+			return;
+		
+		targetGrid = targetGridsConfiguration.getActiveGrid();
+		
+		Grid[] grids = targetGridsConfiguration.getGrid();
+		for (int counter = 0; counter < grids.length; counter++) {
+			Retrieve ivy = new Retrieve();
+			ivy.execute("commandline-ivysettings.xml", "commandline-ivy.xml", configDirName, "caGrid", "target_grid", grids[counter].getSystemName());
+			configurationManager.addConfiguration(loadConfiguration(), grids[counter]);
+		}
+		
+		configurationManager.setActiveConfiguration(targetGrid);
 	}
 		
+	private void targetGridsConfiguration() {
+		File configurationDir = new File(Utils.getCaGridUserHome()
+				.getAbsolutePath()+ File.separator+ "gaards");
+		File targetGridsConfigurationFile = new File(configurationDir, "target-grid-configuration.xml");
+		
+		if (!configurationDir.exists()) {
+			configurationDir.mkdirs();
+		}
+		
+		if (!targetGridsConfigurationFile.exists()) {
+			InputStream inputStream = this.getClass().getResourceAsStream("/target-grid-configuration.xml");
+
+			try {
+				FileOutputStream fos = new FileOutputStream(targetGridsConfigurationFile);
+				while (inputStream.available() > 0) {
+					fos.write(inputStream.read());
+				}
+				fos.close();
+				inputStream.close();
+			} catch (IOException e) {
+				e.printStackTrace();
+				System.exit(ERROR);
+			}
+		}
+	}
+	
+	private static <T> T deserializeInputStream(InputStream inputStream, Class<T> objectType) throws Exception {
+        org.w3c.dom.Document doc = XMLUtils.newDocument(inputStream);
+        Object obj = ObjectDeserializer.toObject(doc.getDocumentElement(), objectType);
+        return objectType.cast(obj);
+    }
+
 }

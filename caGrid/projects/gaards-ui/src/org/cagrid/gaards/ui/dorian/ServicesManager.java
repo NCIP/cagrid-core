@@ -8,7 +8,7 @@ import java.util.List;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.cagrid.grape.GridApplication;
+import org.cagrid.grape.GAARDSApplication;
 import org.cagrid.grape.configuration.ServiceConfiguration;
 import org.cagrid.grape.configuration.ServiceDescriptor;
 import org.cagrid.grape.configuration.Services;
@@ -35,7 +35,7 @@ public class ServicesManager extends Runner {
     
     private void startup(){
         try {
-            GridApplication.getContext().getApplication().getThreadManager().executeInBackground(this);
+        	GAARDSApplication.getContext().getApplication().getThreadManager().executeInBackground(this);
         } catch (Exception e) {
             log.error(e);
         }
@@ -81,8 +81,8 @@ public class ServicesManager extends Runner {
     public synchronized void syncServices() {
         List<DorianHandle> dorians = new ArrayList<DorianHandle>();
         try {
-            ServiceConfiguration conf = (ServiceConfiguration) GridApplication.getContext().getConfigurationManager()
-                .getConfigurationObject(DorianUIConstants.DORIAN_UI_CONF);
+            ServiceConfiguration conf = (ServiceConfiguration) GAARDSApplication.getContext().getConfigurationManager()
+                .getActiveConfigurationObject(DorianUIConstants.DORIAN_UI_CONF);
             Services s = conf.getServices();
             if (s != null) {
                 ServiceDescriptor[] list = s.getServiceDescriptor();
@@ -93,7 +93,7 @@ public class ServicesManager extends Runner {
                         dorians.add(handle);
                         group.add(new AuthenticationLookupThread(handle));
                     }
-                    GridApplication.getContext().getApplication().getThreadManager().executeGroup(group);
+                    GAARDSApplication.getContext().getApplication().getThreadManager().executeGroup(group);
                 }
             }
         } catch (Throwable e) {

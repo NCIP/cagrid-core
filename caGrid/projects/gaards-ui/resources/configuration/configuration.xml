@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration xmlns="http://www.cagrid.org/1/grape"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.cagrid.org/1/grape file:/C:/projects/cagrid-1-0/caGrid/projects/grape/schema/grape.xsd">
+	<ConfigurationGroups>
+		<ConfigurationGroup>
+			<name>User Management</name>
+			<ConfigurationDescriptors>
+				<ConfigurationDescriptor>
+					<DisplayName>Dorian</DisplayName>
+					<SystemName>dorian</SystemName>
+					<ModelClassname>org.cagrid.grape.configuration.ServiceConfiguration</ModelClassname>
+					<qname>
+						<namespace>http://www.cagrid.org/1/grape-service-configuration</namespace>
+						<name>ServiceConfiguration</name>
+					</qname>
+					<ConfigurationPanel>org.cagrid.grape.ServiceConfigurationEditor</ConfigurationPanel>
+					<DefaultFile>dorian-services-configuration.xml</DefaultFile>
+				</ConfigurationDescriptor>
+				<ConfigurationDescriptor>
+					<DisplayName>Authentication Service(s)</DisplayName>
+					<SystemName>authentication-service</SystemName>
+					<ModelClassname>org.cagrid.grape.configuration.ServiceConfiguration</ModelClassname>
+					<qname>
+						<namespace>http://www.cagrid.org/1/grape-service-configuration</namespace>
+						<name>ServiceConfiguration</name>
+					</qname>
+					<ConfigurationPanel>org.cagrid.grape.ServiceConfigurationEditor</ConfigurationPanel>
+					<DefaultFile>authentication-services-configuration.xml</DefaultFile>
+				</ConfigurationDescriptor>
+			</ConfigurationDescriptors>
+		</ConfigurationGroup>
+		<ConfigurationGroup>
+			<name>Delegation</name>
+			<ConfigurationDescriptors>
+				<ConfigurationDescriptor>
+					<DisplayName>Delegation Service(s)</DisplayName>
+					<SystemName>cds</SystemName>
+					<ModelClassname>org.cagrid.grape.configuration.ServiceConfiguration</ModelClassname>
+					<qname>
+						<namespace>http://www.cagrid.org/1/grape-service-configuration</namespace>
+						<name>ServiceConfiguration</name>
+					</qname>
+					<ConfigurationPanel>org.cagrid.grape.ServiceConfigurationEditor</ConfigurationPanel>
+					<DefaultFile>cds-services-configuration.xml</DefaultFile>
+				</ConfigurationDescriptor>
+			</ConfigurationDescriptors>
+		</ConfigurationGroup>
+		<ConfigurationGroup>
+			<name>Trust Fabric</name>
+			<ConfigurationDescriptors>
+				<ConfigurationDescriptor>
+					<DisplayName>Grid Trust Service(s)</DisplayName>
+					<SystemName>gts</SystemName>
+					<ModelClassname>org.cagrid.grape.configuration.ServiceConfiguration</ModelClassname>
+					<qname>
+						<namespace>http://www.cagrid.org/1/grape-service-configuration</namespace>
+						<name>ServiceConfiguration</name>
+					</qname>
+					<ConfigurationPanel>org.cagrid.grape.ServiceConfigurationEditor</ConfigurationPanel>
+					<DefaultFile>gts-services-configuration.xml</DefaultFile>
+				</ConfigurationDescriptor>
+			</ConfigurationDescriptors>
+		</ConfigurationGroup>
+		<ConfigurationGroup>
+			<name>Group Management</name>
+			<ConfigurationDescriptors>
+				<ConfigurationDescriptor>
+					<DisplayName>Grid Grouper Service(s)</DisplayName>
+					<SystemName>gridgrouper</SystemName>
+					<ModelClassname>org.cagrid.grape.configuration.ServiceConfiguration</ModelClassname>
+					<qname>
+						<namespace>http://www.cagrid.org/1/grape-service-configuration</namespace>
+						<name>ServiceConfiguration</name>
+					</qname>
+					<ConfigurationPanel>org.cagrid.grape.ServiceConfigurationEditor</ConfigurationPanel>
+					<DefaultFile>gridgrouper-services-configuration.xml</DefaultFile>
+				</ConfigurationDescriptor>
+			</ConfigurationDescriptors>
+		</ConfigurationGroup>
+	</ConfigurationGroups>
+</Configuration>

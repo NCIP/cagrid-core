@@ -24,6 +24,8 @@ GSBT - Globus Service Build Tools
 	<property name="gts.images" value="${images.dir}/gts" />
 	<property name="gridgrouper.images" value="${images.dir}/gridgrouper" />
 	<property name="cds.images" value="${images.dir}/cds" />
+	
+	<property name="configuration.dir" value="resources/configuration" />
 
 	<property name="ext.dir" location="${basedir}/ext" />
 	<property name="endorsed.lib.dir" location="${ext.dir}/dependencies/endorsed/jars" />
@@ -66,25 +68,6 @@ GSBT - Globus Service Build Tools
 			<fileset dir="${ext.lib.dir}">
 				<include name="*.jar" />
 			</fileset>
-			<fileset dir="${globus.location}/lib">
-				<include name="*.jar" />
-                <exclude name="junit.jar"/>
-				<!-- Exclude UI and client jars -->
-				<exclude name="caGrid-*-Dorian-*stubs.jar" />
-				<exclude name="caGrid-*-Dorian-*common.jar" />
-				<exclude name="caGrid-*-Dorian-*client.jar" />
-				<exclude name="caGrid-*-Dorian-*ui.jar" />
-				<exclude name="caGrid-*-GridGrouper-*stubs.jar" />
-				<exclude name="caGrid-*-GridGrouper-*common.jar" />
-				<exclude name="caGrid-*-GridGrouper-*client.jar" />
-				<exclude name="caGrid-*-GridGrouper-*ui.jar" />
-				<exclude name="caGrid-*-GTS-*stubs.jar" />
-				<exclude name="caGrid-*-GTS-*common.jar" />
-				<exclude name="caGrid-*-GTS-*client.jar" />
-				<exclude name="caGrid-*-GTS-*ui.jar" />
-				<exclude name="xml-apis.jar" />
-				<exclude name="xercesImpl.jar" />
-			</fileset>
 		</path>
 		<path id="run.classpath">
 			<pathelement location="${build.dest}" />
@@ -94,6 +77,7 @@ GSBT - Globus Service Build Tools
 			<pathelement location="${gts.images}" />
 			<pathelement location="${gridgrouper.images}" />
 			<pathelement location="${cds.images}" />
+			<pathelement location="${configuration.dir}" />
 
 		</path>
 	</target>
@@ -136,6 +120,11 @@ GSBT - Globus Service Build Tools
 				<include name="**" />
 				<exclude name="view-refresh.png" />
 			</fileset>
+			
+			<fileset dir="${configuration.dir}">
+				<include name="**" />
+			</fileset>
+
 		</jar>
 
 	</target>
@@ -156,7 +145,6 @@ GSBT - Globus Service Build Tools
 	<!-- Post Introduce Edit-->
 	<target name="ui" description="Run the Security UI" depends="defineClasspaths">
 		<java classname="org.cagrid.grape.GAARDSApplication" classpathref="run.classpath" fork="yes">
-			<arg value="etc/security-ui.xml" />
 			<jvmarg value="-Djava.endorsed.dirs=${endorsed.lib.dir}" />
 		</java>
 	</target>

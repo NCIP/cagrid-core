@@ -59,7 +59,7 @@ public class DownloadGridsTask {
 			Matcher m = p.matcher(targetGrid);
 			if (m.matches()) {
 				parseServerDirectory(targetGridUrl, targetGrid, CONFIG_PATTERN);
-				parseServerDirectory(targetGridUrl, targetGrid + File.separator + "certificates", CERT_PATTERN);
+				parseServerDirectory(targetGridUrl, targetGrid + "/certificates", CERT_PATTERN);
 
 				File tempTargetGridDir = new File(tempDir + File.separator + targetGrid);
 				File gaardsTargetGridDir = new File(gaardsConfigDirectory + File.separator + targetGrid);

@@ -113,17 +113,6 @@
 						<height>200</height>
 					</dimensions>
 				</component>
-				<component>
-					<title>Change Target Grid</title>
-					<description>Change The Target Grid</description>
-					<classname>org.cagrid.gaards.ui.dorian.federation.ReloadConfigWindow</classname>
-					<icon>/download.png</icon>
-					<showOnToolBar>false</showOnToolBar>
-					<dimensions>
-						<width>625</width>
-						<height>200</height>
-					</dimensions>
-				</component>
 			</components>
 		</menu>
 		<menu>
@@ -322,85 +311,18 @@
 		</menu>
 	</menus>
 	<configuration>
-		<ConfigurationGroups>
-			<ConfigurationGroup>
-				<name>User Management</name>
-				<ConfigurationDescriptors>
-					<ConfigurationDescriptor>
-						<DisplayName>Dorian</DisplayName>
-						<SystemName>dorian</SystemName>
-						<ModelClassname>org.cagrid.grape.configuration.ServiceConfiguration</ModelClassname>
-						<qname>
-							<namespace>http://www.cagrid.org/1/grape-service-configuration</namespace>
-							<name>ServiceConfiguration</name>
-						</qname>
-						<ConfigurationPanel>org.cagrid.grape.ServiceConfigurationEditor</ConfigurationPanel>
-						<DefaultFile>ext/target_grid/dorian-services-configuration.xml</DefaultFile>
-					</ConfigurationDescriptor>
-					<ConfigurationDescriptor>
-						<DisplayName>Authentication Service(s)</DisplayName>
-						<SystemName>authentication-service</SystemName>
-						<ModelClassname>org.cagrid.grape.configuration.ServiceConfiguration</ModelClassname>
-						<qname>
-							<namespace>http://www.cagrid.org/1/grape-service-configuration</namespace>
-							<name>ServiceConfiguration</name>
-						</qname>
-						<ConfigurationPanel>org.cagrid.grape.ServiceConfigurationEditor</ConfigurationPanel>
-						<DefaultFile>ext/target_grid/authentication-services-configuration.xml</DefaultFile>
-					</ConfigurationDescriptor>
-				</ConfigurationDescriptors>
-			</ConfigurationGroup>
-			<ConfigurationGroup>
-				<name>Delegation</name>
-				<ConfigurationDescriptors>
-					<ConfigurationDescriptor>
-						<DisplayName>Delegation Service(s)</DisplayName>
-						<SystemName>cds</SystemName>
-			    		<ModelClassname>org.cagrid.grape.configuration.ServiceConfiguration</ModelClassname>
-			    		<qname>
-							<namespace>http://www.cagrid.org/1/grape-service-configuration</namespace>
-							<name>ServiceConfiguration</name>
-						</qname>
-						<ConfigurationPanel>org.cagrid.grape.ServiceConfigurationEditor</ConfigurationPanel>
-						<DefaultFile>ext/target_grid/cds-services-configuration.xml</DefaultFile>
-					</ConfigurationDescriptor>
-				</ConfigurationDescriptors>
-			</ConfigurationGroup>
-				<ConfigurationGroup>
-				<name>Trust Fabric</name>
-				<ConfigurationDescriptors>
-					<ConfigurationDescriptor>
-						<DisplayName>Grid Trust Service(s)</DisplayName>
-						<SystemName>gts</SystemName>
-			    		<ModelClassname>org.cagrid.grape.configuration.ServiceConfiguration</ModelClassname>
-			    		<qname>
-							<namespace>http://www.cagrid.org/1/grape-service-configuration</namespace>
-							<name>ServiceConfiguration</name>
-						</qname>
-						<ConfigurationPanel>org.cagrid.grape.ServiceConfigurationEditor</ConfigurationPanel>
-						<DefaultFile>ext/target_grid/gts-services-configuration.xml</DefaultFile>
-					</ConfigurationDescriptor>
-				</ConfigurationDescriptors>
-			</ConfigurationGroup>
-				<ConfigurationGroup>
-				<name>Group Management</name>
-				<ConfigurationDescriptors>
-					<ConfigurationDescriptor>
-						<DisplayName>Grid Grouper Service(s)</DisplayName>
-						<SystemName>gridgrouper</SystemName>
-			    		<ModelClassname>org.cagrid.grape.configuration.ServiceConfiguration</ModelClassname>
-			    		<qname>
-							<namespace>http://www.cagrid.org/1/grape-service-configuration</namespace>
-							<name>ServiceConfiguration</name>
-						</qname>
-						<ConfigurationPanel>org.cagrid.grape.ServiceConfigurationEditor</ConfigurationPanel>
-						<DefaultFile>ext/target_grid/gridgrouper-services-configuration.xml</DefaultFile>
-					</ConfigurationDescriptor>
-				</ConfigurationDescriptors>
-			</ConfigurationGroup>
-		</ConfigurationGroups>
 		<ConfigurationDescriptors>
-			
+			<ConfigurationDescriptor>
+				<DisplayName>Target Grids</DisplayName>
+				<SystemName>target-grid</SystemName>
+				<ModelClassname>org.cagrid.grape.configuration.TargetGridsConfiguration</ModelClassname>
+				<qname>
+					<namespace>http://www.cagrid.org/1/grape-target-grid-configuration</namespace>
+					<name>TargetGridsConfiguration</name>
+				</qname>
+				<ConfigurationPanel>org.cagrid.grape.TargetGridEditor</ConfigurationPanel>
+				<DefaultFile>target-grid-configuration.xml</DefaultFile>
+			</ConfigurationDescriptor>
 		</ConfigurationDescriptors>
 	</configuration>
 </application>
