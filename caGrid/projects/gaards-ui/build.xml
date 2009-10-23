@@ -180,6 +180,35 @@ GSBT - Globus Service Build Tools
 		</copy>
 
 	</target>
+	
+	<target name="standalone" description="Creates a zip containing all files needed to run the GAARDS UI without the rest of the caGrid software.">
+		<mkdir dir="${build.dir}/gaards/lib" />
+		<mkdir dir="${build.dir}/gaards/endorsed" />
+		<copy todir="${build.dir}/gaards/lib">
+			<fileset dir="ext/dependencies/impl/jars">
+				<include name="*.jar" />
+			</fileset>
+		</copy>
+		<copy todir="${build.dir}/gaards/endorsed">
+			<fileset dir="${endorsed.lib.dir}">
+				<include name="*.jar" />
+			</fileset>
+		</copy>
+		<copy todir="${build.dir}/gaards/lib">
+			<fileset dir="build/lib">
+				<include name="*.jar" />
+			</fileset>
+		</copy>
+		<copy todir="${build.dir}/gaards">
+			<fileset dir="resources/standalone">
+				<include name="run.*" />
+			</fileset>
+		</copy>
+
+		<zip destfile="${build.dir}/gaards.zip" basedir="${build.dir}/gaards" >
+		</zip>
+		
+	</target>
 
 
 </project>
