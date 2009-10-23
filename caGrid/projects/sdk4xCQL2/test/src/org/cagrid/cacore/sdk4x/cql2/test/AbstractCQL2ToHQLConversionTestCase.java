@@ -1,8 +1,7 @@
 package org.cagrid.cacore.sdk4x.cql2.test;
 
-import gov.nih.nci.cagrid.cql2.components.CQLQuery;
-
 import org.cagrid.cacore.sdk4x.cql2.processor.ParameterizedHqlQuery;
+import org.cagrid.cql2.CQLQuery;
 
 public abstract class AbstractCQL2ToHQLConversionTestCase extends AbstractCQL2ExamplesTestCase {
     

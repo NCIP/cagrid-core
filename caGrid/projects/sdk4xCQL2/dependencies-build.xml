@@ -11,7 +11,8 @@
 	<import file="${ivy-shared-targets.file}" />
 
 	<target name="do.resolve-dependencies" depends="pre.resolve-dependencies">
-		<ivy:retrieve conf="impl-test" pattern="${ivy.resolved.artifacts.dir}/dependencies/test/jars/[originalname](.[ext])" sync="true" type="jar" />
+		<ivy:retrieve conf="impl-test" pattern="${ivy.resolved.artifacts.dir}/dependencies/test/jars/[originalname](.[ext])" sync="true" type="jar"/>
+		<ivy:retrieve conf="impl-test" pattern="${ivy.resolved.artifacts.dir}/dependencies/test/xsds/[artifact](.[ext])" sync="true" type="xsd"/>
 		<ivy:retrieve conf="processor" pattern="${ivy.resolved.artifacts.dir}/dependencies/jars/[originalname](.[ext])" sync="true" type="jar" />
 	</target>
 	

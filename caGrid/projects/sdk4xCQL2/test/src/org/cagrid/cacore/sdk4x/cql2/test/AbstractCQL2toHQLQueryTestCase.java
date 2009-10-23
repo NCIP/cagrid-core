@@ -1,6 +1,5 @@
 package org.cagrid.cacore.sdk4x.cql2.test;
 
-import gov.nih.nci.cagrid.cql2.components.CQLQuery;
 import gov.nih.nci.system.applicationservice.ApplicationService;
 import gov.nih.nci.system.client.ApplicationServiceProvider;
 import gov.nih.nci.system.query.hibernate.HQLCriteria;
@@ -10,6 +9,7 @@ import java.util.List;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.cagrid.cacore.sdk4x.cql2.processor.ParameterizedHqlQuery;
+import org.cagrid.cql2.CQLQuery;
 
 
 public abstract class AbstractCQL2toHQLQueryTestCase extends AbstractCQL2ExamplesTestCase {

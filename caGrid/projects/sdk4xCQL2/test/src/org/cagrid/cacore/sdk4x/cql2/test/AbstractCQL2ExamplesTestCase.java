@@ -1,7 +1,6 @@
 package org.cagrid.cacore.sdk4x.cql2.test;
 
 import gov.nih.nci.cagrid.common.Utils;
-import gov.nih.nci.cagrid.cql2.components.CQLQuery;
 import gov.nih.nci.cagrid.metadata.MetadataUtils;
 import gov.nih.nci.cagrid.metadata.dataservice.DomainModel;
 
@@ -12,6 +11,7 @@ import java.io.IOException;
 import junit.framework.TestCase;
 
 import org.cagrid.cacore.sdk4x.cql2.processor.CQL2ToParameterizedHQL;
+import org.cagrid.cql2.CQLQuery;
 
 public abstract class AbstractCQL2ExamplesTestCase extends TestCase {
 
@@ -118,7 +118,7 @@ public abstract class AbstractCQL2ExamplesTestCase extends TestCase {
         assertTrue("Query file " + cqlFile.getAbsolutePath() + " not found", cqlFile.exists());
         try {
             FileReader reader = new FileReader(cqlFile);
-            query = (CQLQuery) Utils.deserializeObject(reader, CQLQuery.class);
+            query = Utils.deserializeObject(reader, CQLQuery.class);
             reader.close();
         } catch (Exception ex) {
             ex.printStackTrace();

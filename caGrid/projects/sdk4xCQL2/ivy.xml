@@ -47,7 +47,7 @@
     <dependency rev="latest.integration" org="caGrid" name="metadatautils"
       conf="processor->default"/>
     <dependency rev="latest.integration" org="caGrid" name="cql"
-      conf="processor->cql2,cql2-schemas"/>
+      conf="processor->cql2;test->cql2-schemas"/>
 
     <dependency rev="latest.integration" org="caGrid" name="testing" conf="impl-test->system"/>
 
