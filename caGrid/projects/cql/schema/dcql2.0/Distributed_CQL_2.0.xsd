@@ -1,19 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xsd:schema 
 	xmlns:xsd="http://www.w3.org/2001/XMLSchema"
-	xmlns:com="http://CQL.caBIG/2/gov.nih.nci.cagrid.cql.Components" 
-	xmlns:att="http://CQL.caBIG/2/gov.nih.nci.cagrid.cql.Attribute" 
-	xmlns:mods="http://CQL.caBIG/2/gov.nih.nci.cagrid.cql.Modifiers" 
-	xmlns:assoc="http://CQL.caBIG/2/gov.nih.nci.cagrid.cql.AssociationPopulationSpec" 
-	xmlns:pred="http://CQL.caBIG/2/gov.nih.nci.cagrid.cql.Predicates" 
+	xmlns:cql2="http://CQL.caBIG/2/org.cagrid.cql2"
 	xmlns:dcql="http://DCQL.caBIG/2/org.cagrid.data.dcql" 
 	targetNamespace="http://DCQL.caBIG/2/org.cagrid.data.dcql"
 	elementFormDefault="qualified" attributeFormDefault="unqualified">
-	<xsd:import namespace="http://CQL.caBIG/2/gov.nih.nci.cagrid.cql.Attribute" schemaLocation="CQLAttribute.xsd"/>
-	<xsd:import namespace="http://CQL.caBIG/2/gov.nih.nci.cagrid.cql.Modifiers" schemaLocation="CQLQueryModifier.xsd"/>
-	<xsd:import namespace="http://CQL.caBIG/2/gov.nih.nci.cagrid.cql.AssociationPopulationSpec" schemaLocation="AssociationPopulationSpec.xsd"/>
-	<xsd:import namespace="http://CQL.caBIG/2/gov.nih.nci.cagrid.cql.Components" schemaLocation="CQLQueryComponents.xsd"/>
-	<xsd:import namespace="http://CQL.caBIG/2/gov.nih.nci.cagrid.cql.Predicates" schemaLocation="Predicates.xsd"/>
+	<xsd:import namespace="http://CQL.caBIG/2/org.cagrid.cql2" schemaLocation="../cql2.0/CQLQueryComponents.xsd"/>
 
 	<xsd:element name="DCQLQuery">
 		<xsd:annotation>
@@ -34,11 +26,10 @@
 	<xsd:complexType name="DCQLObject">
 		<!-- does not extend CQLObject because we need to make associations, foreign associations, and groups go to the DCQL types -->
 		<xsd:annotation>
-			<xsd:documentation>Describes a query for a perticular data type</xsd:documentation>
+			<xsd:documentation>Describes a query for a particular data type</xsd:documentation>
 		</xsd:annotation>
 		<xsd:choice>
-			<xsd:element name="BinaryCQLAttribute" type="att:BinaryCQLAttribute" minOccurs="0" maxOccurs="1"/>
-			<xsd:element name="UnaryCQLAttribute" type="att:UnaryCQLAttribute" minOccurs="0" maxOccurs="1"/>
+			<xsd:element name="CQLAttribute" type="cql2:CQLAttribute" minOccurs="0" maxOccurs="1"/>
 			<xsd:element name="DCQLAssociatedObject" type="dcql:DCQLAssociatedObject" minOccurs="0" maxOccurs="1"/>
 			<xsd:element name="ForeignAssociatedObject" type="dcql:ForeignAssociatedObject" minOccurs="0" maxOccurs="1"/>
 			<xsd:element name="DCQLGroup" type="dcql:DCQLGroup" minOccurs="0" maxOccurs="1"/>
@@ -63,12 +54,11 @@
 		</xsd:annotation>
 		<xsd:choice minOccurs="2" maxOccurs="unbounded">
 			<xsd:element name="DCQLAssociatedObject" type="dcql:DCQLAssociatedObject" maxOccurs="unbounded"/>
-			<xsd:element name="BinaryCQLAttribute" type="att:BinaryCQLAttribute" minOccurs="0" maxOccurs="1"/>
-			<xsd:element name="UnaryCQLAttribute" type="att:UnaryCQLAttribute" minOccurs="0" maxOccurs="1"/>
+			<xsd:element name="CQLAttribute" type="cql2:CQLAttribute" minOccurs="0" maxOccurs="1"/>
 			<xsd:element name="ForeignAssociatedObject" type="dcql:ForeignAssociatedObject" maxOccurs="unbounded"/>
 			<xsd:element name="DCQLGroup" type="dcql:DCQLGroup" maxOccurs="unbounded"/>
 		</xsd:choice>
-		<xsd:attribute name="logicalOperation" type="com:GroupLogicalOperator" use="required"/>
+		<xsd:attribute name="logicalOperation" type="cql2:GroupLogicalOperator" use="required"/>
 	</xsd:complexType>
 	
 	<xsd:complexType name="ForeignAssociatedObject">
@@ -90,7 +80,7 @@
 		<xsd:annotation>
 			<xsd:documentation>Specifies a relationship, defined by the predicate, between a local attribute and a remote attribute.</xsd:documentation>
 		</xsd:annotation>
-		<xsd:attribute name="predicate" type="pred:BinaryPredicate" use="required"/>
+		<xsd:attribute name="predicate" type="cql2:BinaryPredicate" use="required"/>
 		<xsd:attribute name="localAttributeName" type="xsd:string" use="required"/>
 		<xsd:attribute name="foreignAttributeName" type="xsd:string" use="required"/>
 	</xsd:complexType>

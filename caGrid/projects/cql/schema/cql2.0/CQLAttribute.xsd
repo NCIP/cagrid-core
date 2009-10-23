@@ -1,39 +1,23 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" 
-	xmlns:att="http://CQL.caBIG/2/gov.nih.nci.cagrid.cql.Attribute" 
-	xmlns:pred="http://CQL.caBIG/2/gov.nih.nci.cagrid.cql.Predicates" 
-	targetNamespace="http://CQL.caBIG/2/gov.nih.nci.cagrid.cql.Attribute" 
+	xmlns:cql2="http://CQL.caBIG/2/org.cagrid.cql2" 
+	targetNamespace="http://CQL.caBIG/2/org.cagrid.cql2" 
 	elementFormDefault="qualified" attributeFormDefault="unqualified">
-	<xsd:import namespace="http://CQL.caBIG/2/gov.nih.nci.cagrid.cql.Predicates" schemaLocation="Predicates.xsd"/>
+	<xsd:include schemaLocation="Predicates.xsd"/>
 	
-	<xsd:complexType name="CQLAttribute" abstract="true">
+	<xsd:complexType name="CQLAttribute">
+		<xsd:choice>
+			<xsd:sequence>
+				<xsd:element name="BinaryPredicate" type="cql2:BinaryPredicate"/>
+				<xsd:element name="AttributeValue" type="cql2:AttributeValue"/>
+			</xsd:sequence>
+			<xsd:sequence>
+				<xsd:element name="UnaryPredicate" type="cql2:UnaryPredicate"/>
+			</xsd:sequence>
+		</xsd:choice>
 		<xsd:attribute name="name" type="xsd:string" use="required"/>
 	</xsd:complexType>
 	
-	<xsd:element name="BinaryCQLAttribute" type="att:BinaryCQLAttribute"/>
-	<xsd:complexType name="BinaryCQLAttribute">
-		<xsd:complexContent>
-			<xsd:extension base="att:CQLAttribute">
-				<xsd:sequence>
-					<xsd:element name="Predicate" type="pred:BinaryPredicate" minOccurs="1" maxOccurs="1"/>
-					<xsd:element ref="att:AttributeValue" minOccurs="1" maxOccurs="1"/>
-				</xsd:sequence>
-			</xsd:extension>
-		</xsd:complexContent>
-	</xsd:complexType>
-	
-	<xsd:element name="UnaryCQLAttribute" type="att:UnaryCQLAttribute"/>
-	<xsd:complexType name="UnaryCQLAttribute">
-		<xsd:complexContent>
-			<xsd:extension base="att:CQLAttribute">
-				<xsd:sequence>
-					<xsd:element name="Predicate" type="pred:UnaryPredicate" minOccurs="1" maxOccurs="1"/>
-				</xsd:sequence>
-			</xsd:extension>
-		</xsd:complexContent>
-	</xsd:complexType>
-	
-	<xsd:element name="AttributeValue" type="att:AttributeValue"/>
 	<xsd:complexType name="AttributeValue">
 		<xsd:choice>
 			<xsd:element name="StringValue" type="xsd:string"/>

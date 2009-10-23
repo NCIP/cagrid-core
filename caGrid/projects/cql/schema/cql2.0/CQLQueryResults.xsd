@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" 
-	xmlns:res="http://CQL.caBIG/2/gov.nih.nci.cagrid.cql.Results" 
-	xmlns:agg="http://CQL.caBIG/2/gov.nih.nci.cagrid.cql.Aggregations" 
-	targetNamespace="http://CQL.caBIG/2/gov.nih.nci.cagrid.cql.Results" 
+	xmlns:res="http://CQL.caBIG/2/org.cagrid.cql2.results" 
+	xmlns:cql2="http://CQL.caBIG/2/org.cagrid.cql2" 
+	targetNamespace="http://CQL.caBIG/2/org.cagrid.cql2.results" 
 	elementFormDefault="qualified" attributeFormDefault="unqualified">
-	<xsd:import namespace="http://CQL.caBIG/2/gov.nih.nci.cagrid.cql.Aggregations" schemaLocation="Aggregations.xsd"/>
+	<xsd:import namespace="http://CQL.caBIG/2/org.cagrid.cql2" schemaLocation="Aggregations.xsd"/>
 	
 	<xsd:element name="CQLQueryResults" type="res:CQLQueryResults"/>
 	<xsd:complexType name="CQLQueryResults">
@@ -71,6 +71,6 @@
 		</xsd:annotation>
 		<xsd:attribute name="attributeName" type="xsd:string" use="required"/>
 		<xsd:attribute name="value" type="xsd:anySimpleType" use="required"/>
-		<xsd:attribute name="aggregation" type="agg:Aggregation" use="required"/>
+		<xsd:attribute name="aggregation" type="cql2:Aggregation" use="required"/>
 	</xsd:complexType>
 </xsd:schema>

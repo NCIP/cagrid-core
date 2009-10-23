@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" 
-	xmlns:pred="http://CQL.caBIG/2/gov.nih.nci.cagrid.cql.Predicates" 
-	targetNamespace="http://CQL.caBIG/2/gov.nih.nci.cagrid.cql.Predicates" 
+	xmlns:cql2="http://CQL.caBIG/2/org.cagrid.cql2" 
+	targetNamespace="http://CQL.caBIG/2/org.cagrid.cql2" 
 	elementFormDefault="qualified" attributeFormDefault="unqualified">
 	<xsd:simpleType name="BinaryPredicate">
 		<xsd:restriction base="xsd:string">

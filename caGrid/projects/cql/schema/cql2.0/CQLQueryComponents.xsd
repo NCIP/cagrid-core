@@ -1,51 +1,42 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" 
-	xmlns:com="http://CQL.caBIG/2/gov.nih.nci.cagrid.cql.Components" 
-	xmlns:att="http://CQL.caBIG/2/gov.nih.nci.cagrid.cql.Attribute" 
-	xmlns:mods="http://CQL.caBIG/2/gov.nih.nci.cagrid.cql.Modifiers" 
-	xmlns:assoc="http://CQL.caBIG/2/gov.nih.nci.cagrid.cql.AssociationPopulationSpec" 
-	targetNamespace="http://CQL.caBIG/2/gov.nih.nci.cagrid.cql.Components" 
-	elementFormDefault="qualified" attributeFormDefault="unqualified">
-	<xsd:import namespace="http://CQL.caBIG/2/gov.nih.nci.cagrid.cql.Attribute" schemaLocation="CQLAttribute.xsd"/>
-	<xsd:import namespace="http://CQL.caBIG/2/gov.nih.nci.cagrid.cql.Modifiers" schemaLocation="CQLQueryModifier.xsd"/>
-	<xsd:import namespace="http://CQL.caBIG/2/gov.nih.nci.cagrid.cql.AssociationPopulationSpec" schemaLocation="AssociationPopulationSpec.xsd"/>
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:cql2="http://CQL.caBIG/2/org.cagrid.cql2" targetNamespace="http://CQL.caBIG/2/org.cagrid.cql2" elementFormDefault="qualified" attributeFormDefault="unqualified">
+	<xsd:include schemaLocation="CQLAttribute.xsd"/>
+	<xsd:include schemaLocation="CQLQueryModifier.xsd"/>
+	<xsd:include schemaLocation="AssociationPopulationSpec.xsd"/>
 	
 	<xsd:complexType name="CQLObject" abstract="true">
 		<xsd:choice>
-			<xsd:element ref="com:CQLAssociatedObject" minOccurs="0" maxOccurs="1"/>
-			<xsd:element ref="com:CQLGroup" minOccurs="0" maxOccurs="1"/>
-			<xsd:element ref="att:BinaryCQLAttribute" minOccurs="0" maxOccurs="1"/>
-			<xsd:element ref="att:UnaryCQLAttribute" minOccurs="0" maxOccurs="1"/>
+			<xsd:element name="CQLAssociatedObject" type="cql2:CQLAssociatedObject" minOccurs="0"/>
+			<xsd:element name="CQLGroup" type="cql2:CQLGroup" minOccurs="0"/>
+			<xsd:element name="CQLAttribute" type="cql2:CQLAttribute" minOccurs="0"/>
 		</xsd:choice>
 		<xsd:attribute name="className" type="xsd:string" use="required"/>
+		<xsd:attribute name="instanceof" type="xsd:string" use="optional"/>
 	</xsd:complexType>
 	
-	<xsd:element name="CQLTargetObject" type="com:CQLTargetObject"/>
 	<xsd:complexType name="CQLTargetObject">
 		<xsd:complexContent>
-			<xsd:extension base="com:CQLObject"/>
+			<xsd:extension base="cql2:CQLObject"/>
 		</xsd:complexContent>
 	</xsd:complexType>
 	
-	<xsd:element name="CQLAssociatedObject" type="com:CQLAssociatedObject"/>
 	<xsd:complexType name="CQLAssociatedObject">
 		<xsd:complexContent>
-			<xsd:extension base="com:CQLObject">
-				<xsd:attribute name="sourceRoleName" type="xsd:string" use="required"/>
-				<xsd:attribute name="instanceof" type="xsd:string" use="optional"/>
+			<xsd:extension base="cql2:CQLObject">
+				<xsd:attribute name="endName" type="xsd:string" use="required"/>
 			</xsd:extension>
 		</xsd:complexContent>
 	</xsd:complexType>
 	
-	<xsd:element name="CQLGroup" type="com:CQLGroup"/>
 	<xsd:complexType name="CQLGroup">
-		<xsd:sequence>
-			<xsd:element ref="com:CQLAssociatedObject" minOccurs="0" maxOccurs="unbounded"/>
-			<xsd:element ref="com:CQLGroup" minOccurs="0" maxOccurs="unbounded"/>
-			<xsd:element ref="att:BinaryCQLAttribute" minOccurs="0" maxOccurs="unbounded"/>
-			<xsd:element ref="att:UnaryCQLAttribute" minOccurs="0" maxOccurs="unbounded"/>
-		</xsd:sequence>
-		<xsd:attribute name="logicalOperation" type="com:GroupLogicalOperator" use="required"/>
+		<!-- the two choice blocks and a sequence enforce 
+		groups having two or more query components -->
+		<xsd:choice minOccurs="2" maxOccurs="unbounded">
+			<xsd:element name="CQLAssociatedObject" type="cql2:CQLAssociatedObject" minOccurs="1" maxOccurs="unbounded"/>
+			<xsd:element name="CQLGroup" type="cql2:CQLGroup" minOccurs="1" maxOccurs="unbounded"/>
+			<xsd:element name="CQLAttribute" type="cql2:CQLAttribute" minOccurs="1" maxOccurs="unbounded"/>
+		</xsd:choice>
+		<xsd:attribute name="logicalOperation" type="cql2:GroupLogicalOperator" use="required"/>
 	</xsd:complexType>
 	
 	<xsd:simpleType name="GroupLogicalOperator">
@@ -55,14 +46,14 @@
 		</xsd:restriction>
 	</xsd:simpleType>
 	
-	<xsd:element name="CQLQuery" type="com:CQLQuery"/>
+	<xsd:element name="CQLQuery" type="cql2:CQLQuery"/>
 	<xsd:complexType name="CQLQuery">
 		<xsd:sequence>
-			<xsd:element ref="com:CQLTargetObject" minOccurs="1" maxOccurs="1"/>
+			<xsd:element name="CQLTargetObject" type="cql2:CQLTargetObject"/>
 			<xsd:choice>
-				<xsd:element ref="mods:CQLQueryModifier" minOccurs="0" maxOccurs="1"/>
-				<xsd:element ref="assoc:AssociationPopulationSpecification" minOccurs="0" maxOccurs="1"/>
-		</xsd:choice>
+				<xsd:element name="CQLQueryModifier" type="cql2:CQLQueryModifier" minOccurs="0"/>
+				<xsd:element name="AssociationPopulationSpecification" type="cql2:AssociationPopulationSpecification" minOccurs="0"/>
+			</xsd:choice>
 		</xsd:sequence>
 	</xsd:complexType>
 </xsd:schema>

@@ -1,30 +1,33 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- edited with XMLSpy v2005 rel. 3 U (http://www.altova.com) by David W. Ervin (The Ohio State University / Department of Biomedical Informatics) -->
-<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:assoc="http://CQL.caBIG/2/gov.nih.nci.cagrid.cql.AssociationPopulationSpec" targetNamespace="http://CQL.caBIG/2/gov.nih.nci.cagrid.cql.AssociationPopulationSpec" elementFormDefault="qualified" attributeFormDefault="unqualified">
-	<xsd:element name="AssociationPopulationSpecification" type="assoc:AssociationPopulationSpecification"/>
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" 
+	xmlns:cql2="http://CQL.caBIG/2/org.cagrid.cql2"
+	targetNamespace="http://CQL.caBIG/2/org.cagrid.cql2" 
+	elementFormDefault="qualified" attributeFormDefault="unqualified">
+
+	<xsd:element name="AssociationPopulationSpecification" type="cql2:AssociationPopulationSpecification"/>
 	<xsd:complexType name="AssociationPopulationSpecification">
 		<xsd:choice>
-			<xsd:element ref="assoc:PopulationDepth"/>
-			<xsd:element ref="assoc:NamedAssociationList"/>
+			<xsd:element name="PopulationDepth" type="cql2:PopulationDepth"/>
+			<xsd:element name="NamedAssociationList" type="cql2:NamedAssociationList"/>
 		</xsd:choice>
 	</xsd:complexType>
-	<xsd:element name="PopulationDepth" type="assoc:PopulationDepth"/>
+	
 	<xsd:complexType name="PopulationDepth">
 		<xsd:attribute name="depth" type="xsd:int" use="required"/>
 	</xsd:complexType>
-	<xsd:element name="NamedAssociationList" type="assoc:NamedAssociationList"/>
-	<xsd:complexType name="NamedAssociationList">
-		<xsd:sequence>
-			<xsd:element ref="assoc:NamedAssociation" minOccurs="0" maxOccurs="unbounded"/>
-		</xsd:sequence>
-	</xsd:complexType>
-	<xsd:element name="NamedAssociation" type="assoc:NamedAssociation"/>
+	
 	<xsd:complexType name="NamedAssociation">
 		<xsd:choice>
-			<xsd:element ref="assoc:NamedAssociation" minOccurs="0" maxOccurs="unbounded"/>
-			<xsd:element ref="assoc:PopulationDepth" minOccurs="0" maxOccurs="1"/>
+			<xsd:element name="NamedAssociationList" type="cql2:NamedAssociationList" minOccurs="0" maxOccurs="1"/>
+			<xsd:element name="PopulationDepth" type="cql2:PopulationDepth" minOccurs="0" maxOccurs="1"/>
 		</xsd:choice>
 		<xsd:attribute name="roleName" type="xsd:string" use="required"/>
 		<xsd:attribute name="instanceof" type="xsd:string" use="optional"/>
+	</xsd:complexType>
+	
+	<xsd:complexType name="NamedAssociationList">
+		<xsd:sequence>
+			<xsd:element name="NamedAssociation" type="cql2:NamedAssociation" minOccurs="0" maxOccurs="unbounded"/>
+		</xsd:sequence>
 	</xsd:complexType>
 </xsd:schema>

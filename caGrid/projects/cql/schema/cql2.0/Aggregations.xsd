@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" 
-	xmlns:agg="http://CQL.caBIG/2/gov.nih.nci.cagrid.cql.Aggregations" 
-	targetNamespace="http://CQL.caBIG/2/gov.nih.nci.cagrid.cql.Aggregations" 
+	xmlns:cql2="http://CQL.caBIG/2/org.cagrid.cql2" 
+	targetNamespace="http://CQL.caBIG/2/org.cagrid.cql2" 
 	elementFormDefault="qualified" attributeFormDefault="unqualified">
+	
 	<xsd:simpleType name="Aggregation">
 		<xsd:annotation>
 			<xsd:documentation>Aggregation operations for modifying a query attribute</xsd:documentation>
@@ -11,9 +12,6 @@
 			<xsd:enumeration value="COUNT" id="count"/>
 			<xsd:enumeration value="MIN" id="min"/>
 			<xsd:enumeration value="MAX" id="max"/>
-			<!-- this may or may not be used in the final spec
-			<xsd:enumeration value="AVERAGE" id="average"/>
-			-->
 		</xsd:restriction>
 	</xsd:simpleType>
 </xsd:schema>
