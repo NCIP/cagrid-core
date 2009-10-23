@@ -1,26 +1,8 @@
 package org.cagrid.cacore.sdk4x.cql2.processor;
 
-import gov.nih.nci.cagrid.cql2.aggregations.Aggregation;
-import gov.nih.nci.cagrid.cql2.associations.AssociationPopulationSpecification;
-import gov.nih.nci.cagrid.cql2.associations.NamedAssociation;
-import gov.nih.nci.cagrid.cql2.attribute.AttributeValue;
-import gov.nih.nci.cagrid.cql2.attribute.BinaryCQLAttribute;
-import gov.nih.nci.cagrid.cql2.attribute.CQLAttribute;
-import gov.nih.nci.cagrid.cql2.attribute.UnaryCQLAttribute;
-import gov.nih.nci.cagrid.cql2.components.CQLAssociatedObject;
-import gov.nih.nci.cagrid.cql2.components.CQLGroup;
-import gov.nih.nci.cagrid.cql2.components.CQLObject;
-import gov.nih.nci.cagrid.cql2.components.CQLQuery;
-import gov.nih.nci.cagrid.cql2.components.CQLTargetObject;
-import gov.nih.nci.cagrid.cql2.components.GroupLogicalOperator;
-import gov.nih.nci.cagrid.cql2.modifiers.CQLQueryModifier;
-import gov.nih.nci.cagrid.cql2.predicates.BinaryPredicate;
-import gov.nih.nci.cagrid.cql2.predicates.UnaryPredicate;
 import gov.nih.nci.cagrid.metadata.dataservice.DomainModel;
 import gov.nih.nci.cagrid.metadata.dataservice.UMLClass;
 
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedList;
@@ -31,6 +13,20 @@ import java.util.Stack;
 
 import org.apache.log4j.Logger;
 import org.cagrid.cacore.sdk4x.cql2.processor.RoleNameResolver.ClassAssociation;
+import org.cagrid.cql2.Aggregation;
+import org.cagrid.cql2.AssociationPopulationSpecification;
+import org.cagrid.cql2.AttributeValue;
+import org.cagrid.cql2.BinaryPredicate;
+import org.cagrid.cql2.CQLAssociatedObject;
+import org.cagrid.cql2.CQLAttribute;
+import org.cagrid.cql2.CQLGroup;
+import org.cagrid.cql2.CQLObject;
+import org.cagrid.cql2.CQLQuery;
+import org.cagrid.cql2.CQLQueryModifier;
+import org.cagrid.cql2.CQLTargetObject;
+import org.cagrid.cql2.GroupLogicalOperator;
+import org.cagrid.cql2.NamedAssociation;
+import org.cagrid.cql2.UnaryPredicate;
 
 
 /**
@@ -157,13 +153,10 @@ public class CQL2ToParameterizedHQL {
             hql.append("where ");
             processAssociation(target.getCQLAssociatedObject(), hql, parameters, associationStack, target, TARGET_ALIAS);
         }
-        if (target.getBinaryCQLAttribute() != null || target.getUnaryCQLAttribute() != null) {
+        if (target.getCQLAttribute() != null) {
             hql.append("where ");
-            CQLAttribute baseAttribute = target.getBinaryCQLAttribute();
-            if (baseAttribute == null) {
-                baseAttribute = target.getUnaryCQLAttribute();
-            }
-            processAttribute(baseAttribute, hql, parameters, target, TARGET_ALIAS);
+            CQLAttribute attribute = target.getCQLAttribute();
+            processAttribute(attribute, hql, parameters, target, TARGET_ALIAS);
         }
         if (target.getCQLGroup() != null) {
             hql.append("where ");
@@ -172,8 +165,7 @@ public class CQL2ToParameterizedHQL {
 
         if (avoidSubclasses) {
             boolean mustAddWhereClause = target.getCQLAssociatedObject() == null
-                && target.getBinaryCQLAttribute() == null && target.getUnaryCQLAttribute() == null
-                && target.getCQLGroup() == null;
+                && target.getCQLAttribute() == null && target.getCQLGroup() == null;
             if (mustAddWhereClause) {
                 hql.append(" where ");
             } else {
@@ -207,17 +199,15 @@ public class CQL2ToParameterizedHQL {
         CQLObject queryObject, String queryObjectAlias) throws Exception {
         LOG.debug("Processing attribute " + queryObject.getClassName() + "." + attribute.getName());
 
-        boolean unaryAttribute = attribute instanceof UnaryCQLAttribute;
-
         // construct the attribute path
         String attributePath = queryObjectAlias + "." + attribute.getName();
 
         hql.append(' ');
-        if (unaryAttribute) {
+        if (attribute.getUnaryPredicate() != null) {
             // unary predicates just get appended w/o values
             hql.append(attributePath).append(' ');
             // append the predicate
-            String predicateAsString = predicateValues.get(((UnaryCQLAttribute) attribute).getPredicate());
+            String predicateAsString = predicateValues.get(attribute.getUnaryPredicate());
             hql.append(predicateAsString);
         } else {
             // binary predicates have a predicate string and a value
@@ -230,8 +220,8 @@ public class CQL2ToParameterizedHQL {
                 hql.append(")");
             }
             
-            String predicateAsString = predicateValues.get(((BinaryCQLAttribute) attribute).getPredicate());
-            AttributeValue rawValue = ((BinaryCQLAttribute) attribute).getAttributeValue();
+            String predicateAsString = predicateValues.get(attribute.getBinaryPredicate());
+            AttributeValue rawValue = (attribute.getAttributeValue());
             boolean stringAttributeValue = rawValue.getStringValue() != null;
 
             hql.append(' ').append(predicateAsString).append(' ');
@@ -272,8 +262,8 @@ public class CQL2ToParameterizedHQL {
         LOG.debug("Processing association " + sourceQueryObject.getClassName() 
             + " to " + association.getClassName());
 
-        // get the association's role name
-        String roleName = association.getSourceRoleName();
+        // get the association's end name (role name)
+        String roleName = association.getEndName();
         LOG.debug("Role name determined to be " + roleName);
 
         // determine the alias for this association
@@ -297,13 +287,9 @@ public class CQL2ToParameterizedHQL {
                 associationStack, association, alias);
             hql.append(") ");
         }
-        if (association.getBinaryCQLAttribute() != null 
-            || association.getUnaryCQLAttribute() != null) {
+        if (association.getCQLAttribute() != null) {
             simpleNullCheck = false;
-            CQLAttribute attrib = association.getBinaryCQLAttribute();
-            if (attrib == null) {
-                attrib = association.getUnaryCQLAttribute();
-            }
+            CQLAttribute attrib = association.getCQLAttribute();
             hql.append(sourceAlias).append('.').append(roleName);
             hql.append(".id in (select ").append(alias).append(".id from ");
             hql.append(association.getClassName()).append(" as ").append(alias).append(" where ");
@@ -381,22 +367,15 @@ public class CQL2ToParameterizedHQL {
                 }
             }
         }
-        if (group.getBinaryCQLAttribute() != null || group.getUnaryCQLAttribute() != null) {
+        if (group.getCQLAttribute() != null) {
             if (mustAddLogic) {
                 hql.append(' ').append(logic).append(' ');
             }
-            List<CQLAttribute> groupAttributes = new ArrayList<CQLAttribute>();
-            if (group.getBinaryCQLAttribute() != null) {
-                Collections.addAll(groupAttributes, group.getBinaryCQLAttribute());
-            }
-            if (group.getUnaryCQLAttribute() != null) {
-                Collections.addAll(groupAttributes, group.getUnaryCQLAttribute());
-            }
-            for (int i = 0; i < groupAttributes.size(); i++) {
+            for (int i = 0; i < group.getCQLAttribute().length; i++) {
                 mustAddLogic = true;
-                processAttribute(groupAttributes.get(i), hql, parameters, 
+                processAttribute(group.getCQLAttribute(i), hql, parameters, 
                     sourceQueryObject, sourceAlias);
-                if (i + 1 < groupAttributes.size()) {
+                if (i + 1 < group.getCQLAttribute().length) {
                     hql.append(' ').append(logic).append(' ');
                 }
             }
@@ -506,8 +485,8 @@ public class CQL2ToParameterizedHQL {
         aliasIndex++;
         buff.append("left join fetch ").append(parentAlias).append('.').append(na.getRoleName())
             .append(" as ").append(myAlias).append(' ');
-        if (na.getNamedAssociation() != null) {
-            for (NamedAssociation subAssociation : na.getNamedAssociation()) {
+        if (na.getNamedAssociationList() != null && na.getNamedAssociationList().getNamedAssociation() != null) {
+            for (NamedAssociation subAssociation : na.getNamedAssociationList().getNamedAssociation()) {
                 appendNamedJoins(buff, subAssociation, associationClassName, myAlias, aliasIndex);
             }
         } else if (na.getPopulationDepth() != null) {
