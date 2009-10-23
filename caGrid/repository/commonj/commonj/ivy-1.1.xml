@@ -1,0 +1,6 @@
+<?xml version="1.0" ?>
+<ivy-module version="1.0">
+    <info organisation="commonj" module="commonj" revision="1.1">
+        <description />
+    </info>
+</ivy-module>

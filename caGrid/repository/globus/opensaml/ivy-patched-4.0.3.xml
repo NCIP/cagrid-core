@@ -1,0 +1,10 @@
+<?xml version="1.0"?>
+
+<ivy-module version="2.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:noNamespaceSchemaLocation="http://incubator.apache.org/ivy/schemas/ivy.xsd">
+
+	<info organisation="globus" module="opensaml" revision="patched-4.0.3">
+		<description>This version was patched by the Globus team</description>
+	</info>
+	
+</ivy-module>

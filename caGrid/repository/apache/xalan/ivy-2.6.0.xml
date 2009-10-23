@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<?xml-stylesheet type="text/xsl" href="http://ivyrep.jayasoft.org/ivy-doc.xsl"?>
+<ivy-module version="1.0">
+	<info organisation="apache" module="xalan" revision="2.6.0" >
+		<description homepage="http://xml.apache.org/xalan-j/"> 
+		</description>
+	</info>
+
+</ivy-module>

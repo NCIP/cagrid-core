@@ -1,0 +1,24 @@
+<?xml version="1.0"?>
+
+<ivy-module version="2.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:noNamespaceSchemaLocation="http://incubator.apache.org/ivy/schemas/ivy.xsd">
+
+	<info organisation="globus" module="axis" revision="patched-4.0.3">
+		<description>This version was patched by the Globus team</description>
+	</info>
+
+	<configurations>
+		<conf name="default" visibility="public"/>
+	</configurations>
+
+
+	<publications>
+		<artifact name="axis" type="jar"/>
+		<artifact name="jaxrpc" type="jar"/>
+		<artifact name="saaj" type="jar"/>
+		<artifact name="wsdl4j" type="jar"/>
+	</publications>
+
+	<dependencies/>
+
+</ivy-module>

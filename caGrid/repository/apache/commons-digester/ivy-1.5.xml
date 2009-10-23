@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<?xml-stylesheet type="text/xsl" href="http://ivyrep.jayasoft.org/ivy-doc.xsl"?>
+<ivy-module version="2.0">
+	<info organisation="apache" module="commons-digester" revision="1.5" >
+		<description homepage="http://jakarta.apache.org/commons/digester/">
+		</description>
+	</info>
+</ivy-module>

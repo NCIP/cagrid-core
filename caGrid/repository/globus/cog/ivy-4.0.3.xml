@@ -1,0 +1,24 @@
+<?xml version="1.0"?>
+
+<ivy-module version="2.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:noNamespaceSchemaLocation="http://incubator.apache.org/ivy/schemas/ivy.xsd">
+
+	<info organisation="globus" module="cog" revision="4.0.3">
+		<description></description>
+	</info>
+
+	<configurations>
+		<conf name="default" visibility="public"/>
+	</configurations>
+
+
+	<publications>
+		<artifact name="cog-axis" type="jar"/>
+		<artifact name="cog-tomcat" type="jar"/>
+		<artifact name="cog-url" type="jar"/>
+		<artifact name="jgss" type="jar"/>
+	</publications>
+
+	<dependencies/>
+
+</ivy-module>
