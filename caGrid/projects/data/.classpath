@@ -5,6 +5,12 @@
 	<classpathentry kind="src" path="src/java/service"/>
 	<classpathentry kind="src" path="src/java/utilities"/>
 	<classpathentry kind="src" path="build/stubs/test/src"/>
+	<classpathentry kind="src" path="test/src/java"/>
+	<classpathentry kind="src" path="src/java/validation"/>
+	<classpathentry kind="src" path="src/java/common"/>
+	<classpathentry kind="src" path="src/java/cql"/>
+	<classpathentry kind="src" path="test/resources"/>
+	<classpathentry kind="src" path="src/java/tools"/>
 	<classpathentry kind="var" path="GT4_LOCATION/lib/addressing-1.0.jar"/>
 	<classpathentry kind="var" path="GT4_LOCATION/lib/axis.jar"/>
 	<classpathentry kind="var" path="GT4_LOCATION/lib/axis-url.jar"/>
@@ -50,12 +56,6 @@
 	<classpathentry kind="var" path="GT4_LOCATION/lib/xercesImpl.jar"/>
 	<classpathentry kind="var" path="GT4_LOCATION/lib/xml-apis.jar"/>
 	<classpathentry kind="var" path="GT4_LOCATION/lib/xmlsec.jar"/>
-	<classpathentry kind="src" path="test/src/java"/>
-	<classpathentry kind="src" path="src/java/validation"/>
-	<classpathentry kind="src" path="src/java/common"/>
-	<classpathentry kind="src" path="src/java/cql"/>
-	<classpathentry kind="src" path="test/resources"/>
-	<classpathentry kind="src" path="src/java/tools"/>
 	<classpathentry kind="var" path="ANT_HOME/lib/ant-launcher.jar"/>
 	<classpathentry kind="lib" path="ext/dependencies/jars/caGrid-core-1.4-dev.jar"/>
 	<classpathentry kind="lib" path="ext/dependencies/jars/caGrid-CQL-cql.1.0-1.4-dev.jar"/>
