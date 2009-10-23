@@ -69,7 +69,7 @@ public class CQL1toCQL2ConverterTestCase extends TestCase {
     
     private void convertAndValidate(String queryFilename) {
         CQLQuery query = loadCqlQuery(queryFilename);
-        gov.nih.nci.cagrid.cql2.components.CQLQuery cql2Query = null;
+        org.cagrid.cql2.CQLQuery cql2Query = null;
         try {
             cql2Query = converter.convertToCql2Query(query);
         } catch (QueryConversionException ex) {

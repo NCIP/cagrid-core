@@ -1,11 +1,5 @@
 package gov.nih.nci.cagrid.data.utilities;
 
-import gov.nih.nci.cagrid.cql2.aggregations.Aggregation;
-import gov.nih.nci.cagrid.cql2.results.CQLAggregateResult;
-import gov.nih.nci.cagrid.cql2.results.CQLAttributeResult;
-import gov.nih.nci.cagrid.cql2.results.CQLObjectResult;
-import gov.nih.nci.cagrid.cql2.results.CQLQueryResults;
-import gov.nih.nci.cagrid.cql2.results.TargetAttribute;
 import gov.nih.nci.cagrid.data.mapping.ClassToQname;
 import gov.nih.nci.cagrid.data.mapping.Mappings;
 
@@ -19,6 +13,12 @@ import java.util.Map;
 import javax.xml.namespace.QName;
 
 import org.apache.axis.message.MessageElement;
+import org.cagrid.cql2.Aggregation;
+import org.cagrid.cql2.results.CQLAggregateResult;
+import org.cagrid.cql2.results.CQLAttributeResult;
+import org.cagrid.cql2.results.CQLObjectResult;
+import org.cagrid.cql2.results.CQLQueryResults;
+import org.cagrid.cql2.results.TargetAttribute;
 
 /**
  * CQL2ResultsCreationUtil

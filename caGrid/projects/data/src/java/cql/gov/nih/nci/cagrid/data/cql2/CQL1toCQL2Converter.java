@@ -1,19 +1,5 @@
 package gov.nih.nci.cagrid.data.cql2;
 
-import gov.nih.nci.cagrid.cql2.attribute.AttributeValue;
-import gov.nih.nci.cagrid.cql2.attribute.BinaryCQLAttribute;
-import gov.nih.nci.cagrid.cql2.attribute.UnaryCQLAttribute;
-import gov.nih.nci.cagrid.cql2.components.CQLAssociatedObject;
-import gov.nih.nci.cagrid.cql2.components.CQLGroup;
-import gov.nih.nci.cagrid.cql2.components.CQLObject;
-import gov.nih.nci.cagrid.cql2.components.CQLQuery;
-import gov.nih.nci.cagrid.cql2.components.CQLTargetObject;
-import gov.nih.nci.cagrid.cql2.components.GroupLogicalOperator;
-import gov.nih.nci.cagrid.cql2.modifiers.CQLQueryModifier;
-import gov.nih.nci.cagrid.cql2.modifiers.DistinctAttribute;
-import gov.nih.nci.cagrid.cql2.modifiers.NamedAttribute;
-import gov.nih.nci.cagrid.cql2.predicates.BinaryPredicate;
-import gov.nih.nci.cagrid.cql2.predicates.UnaryPredicate;
 import gov.nih.nci.cagrid.cqlquery.Association;
 import gov.nih.nci.cagrid.cqlquery.Attribute;
 import gov.nih.nci.cagrid.cqlquery.Group;
@@ -34,6 +20,20 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
+import org.cagrid.cql2.AttributeValue;
+import org.cagrid.cql2.BinaryPredicate;
+import org.cagrid.cql2.CQLAssociatedObject;
+import org.cagrid.cql2.CQLAttribute;
+import org.cagrid.cql2.CQLGroup;
+import org.cagrid.cql2.CQLObject;
+import org.cagrid.cql2.CQLQuery;
+import org.cagrid.cql2.CQLQueryModifier;
+import org.cagrid.cql2.CQLTargetObject;
+import org.cagrid.cql2.DistinctAttribute;
+import org.cagrid.cql2.GroupLogicalOperator;
+import org.cagrid.cql2.NamedAttribute;
+import org.cagrid.cql2.UnaryPredicate;
+
 public class CQL1toCQL2Converter {
     
     private static Map<Predicate, BinaryPredicate> binaryPredicateConversion = null;
@@ -48,7 +48,6 @@ public class CQL1toCQL2Converter {
         binaryPredicateConversion.put(Predicate.LESS_THAN_EQUAL_TO, BinaryPredicate.LESS_THAN_EQUAL_TO);
         binaryPredicateConversion.put(Predicate.LIKE, BinaryPredicate.LIKE);
         binaryPredicateConversion.put(Predicate.NOT_EQUAL_TO, BinaryPredicate.NOT_EQUAL_TO);
-
         unaryPredicateConversion.put(Predicate.IS_NOT_NULL, UnaryPredicate.IS_NOT_NULL);
         unaryPredicateConversion.put(Predicate.IS_NULL, UnaryPredicate.IS_NULL);
     }
@@ -92,7 +91,7 @@ public class CQL1toCQL2Converter {
         } catch (RoleNameResolutionException ex) {
             throw new QueryConversionException("Error resolving role name: " + ex.getMessage(), ex);
         }
-        assoc.setSourceRoleName(roleName);
+        assoc.setEndName(roleName);
         return assoc;
     }
     
@@ -100,14 +99,14 @@ public class CQL1toCQL2Converter {
     private void convertObject(Object cqlObj, CQLObject instance) throws QueryConversionException {
         instance.setClassName(cqlObj.getName());
         if (cqlObj.getAttribute() != null) {
+            CQLAttribute convertedAttribute = null;
             // determine if the attribute is unary or binary in CQL 2
             if (unaryPredicateConversion.containsKey(cqlObj.getAttribute().getPredicate())) {
-                UnaryCQLAttribute unary = convertUnaryAttribute(cqlObj.getAttribute());
-                instance.setUnaryCQLAttribute(unary);
+                convertedAttribute = convertUnaryAttribute(cqlObj.getAttribute());
             } else {
-                BinaryCQLAttribute binary = convertBinaryAttribute(cqlObj.getName(), cqlObj.getAttribute());
-                instance.setBinaryCQLAttribute(binary);
+                convertedAttribute = convertBinaryAttribute(cqlObj.getName(), cqlObj.getAttribute());
             }
+            instance.setCQLAttribute(convertedAttribute);
         } else if (cqlObj.getAssociation() != null) {
             instance.setCQLAssociatedObject(convertAssociation(cqlObj.getName(), cqlObj.getAssociation()));
         } else if (cqlObj.getGroup() != null) {
@@ -126,26 +125,20 @@ public class CQL1toCQL2Converter {
             group.setCQLAssociatedObject(associations);
         }
         if (cqlGroup.getAttribute() != null) {
-            List<BinaryCQLAttribute> binaryAttributes = new LinkedList<BinaryCQLAttribute>();
-            List<UnaryCQLAttribute> unaryAttributes = new LinkedList<UnaryCQLAttribute>();
+            List<CQLAttribute> convertedAttributes = new LinkedList<CQLAttribute>();
             for (Attribute attrib : cqlGroup.getAttribute()) {
+                CQLAttribute conversion = null;
                 if (unaryPredicateConversion.containsKey(attrib.getPredicate())) {
-                    UnaryCQLAttribute unary = convertUnaryAttribute(attrib);
-                    unaryAttributes.add(unary);
+                    conversion = convertUnaryAttribute(attrib);
                 } else {
-                    BinaryCQLAttribute binary = convertBinaryAttribute(parentClassName, attrib);
-                    binaryAttributes.add(binary);
+                    conversion = convertBinaryAttribute(parentClassName, attrib);
                 }
+                convertedAttributes.add(conversion);
             }
-            if (binaryAttributes.size() != 0) {
-                BinaryCQLAttribute[] bin = new BinaryCQLAttribute[binaryAttributes.size()];
-                binaryAttributes.toArray(bin);
-                group.setBinaryCQLAttribute(bin);
-            }
-            if (unaryAttributes.size() != 0) {
-                UnaryCQLAttribute[] un = new UnaryCQLAttribute[unaryAttributes.size()];
-                unaryAttributes.toArray(un);
-                group.setUnaryCQLAttribute(un);
+            if (convertedAttributes.size() != 0) {
+                CQLAttribute[] conversions = new CQLAttribute[convertedAttributes.size()];
+                convertedAttributes.toArray(conversions);
+                group.setCQLAttribute(conversions);
             }
         }
         if (cqlGroup.getGroup() != null) {
@@ -163,11 +156,11 @@ public class CQL1toCQL2Converter {
     }
     
     
-    private BinaryCQLAttribute convertBinaryAttribute(String className, Attribute cqlAttribute) throws QueryConversionException {
-        BinaryCQLAttribute bin = new BinaryCQLAttribute();
+    private CQLAttribute convertBinaryAttribute(String className, Attribute cqlAttribute) throws QueryConversionException {
+        CQLAttribute bin = new CQLAttribute();
         bin.setName(cqlAttribute.getName());
         BinaryPredicate predicate = binaryPredicateConversion.get(cqlAttribute.getPredicate());
-        bin.setPredicate(predicate);
+        bin.setBinaryPredicate(predicate);
         AttributeValue value = convertAttributeValue(
             className, cqlAttribute.getName(), cqlAttribute.getValue());
         bin.setAttributeValue(value);
@@ -175,10 +168,10 @@ public class CQL1toCQL2Converter {
     }
     
     
-    private UnaryCQLAttribute convertUnaryAttribute(Attribute cqlAttribute) {
-        UnaryCQLAttribute un = new UnaryCQLAttribute();
+    private CQLAttribute convertUnaryAttribute(Attribute cqlAttribute) {
+        CQLAttribute un = new CQLAttribute();
         un.setName(cqlAttribute.getName());
-        un.setPredicate(unaryPredicateConversion.get(cqlAttribute.getPredicate()));
+        un.setUnaryPredicate(unaryPredicateConversion.get(cqlAttribute.getPredicate()));
         return un;
     }
     

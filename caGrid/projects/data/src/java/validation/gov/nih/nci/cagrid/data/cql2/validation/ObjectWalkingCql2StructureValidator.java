@@ -1,16 +1,14 @@
 package gov.nih.nci.cagrid.data.cql2.validation;
 
-import gov.nih.nci.cagrid.cql2.attribute.AttributeValue;
-import gov.nih.nci.cagrid.cql2.attribute.BinaryCQLAttribute;
-import gov.nih.nci.cagrid.cql2.attribute.CQLAttribute;
-import gov.nih.nci.cagrid.cql2.attribute.UnaryCQLAttribute;
-import gov.nih.nci.cagrid.cql2.components.CQLAssociatedObject;
-import gov.nih.nci.cagrid.cql2.components.CQLGroup;
-import gov.nih.nci.cagrid.cql2.components.CQLObject;
-import gov.nih.nci.cagrid.cql2.components.CQLQuery;
-import gov.nih.nci.cagrid.cql2.components.CQLTargetObject;
-import gov.nih.nci.cagrid.cql2.components.GroupLogicalOperator;
-import gov.nih.nci.cagrid.cql2.modifiers.CQLQueryModifier;
+import org.cagrid.cql2.AttributeValue;
+import org.cagrid.cql2.CQLAssociatedObject;
+import org.cagrid.cql2.CQLAttribute;
+import org.cagrid.cql2.CQLGroup;
+import org.cagrid.cql2.CQLObject;
+import org.cagrid.cql2.CQLQuery;
+import org.cagrid.cql2.CQLQueryModifier;
+import org.cagrid.cql2.CQLTargetObject;
+import org.cagrid.cql2.GroupLogicalOperator;
 
 /**
  * ObjectWalkingCql2StructureValidator
@@ -43,13 +41,9 @@ public class ObjectWalkingCql2StructureValidator implements Cql2StructureValidat
             throw new StructureValidationException("No class name specified on an object definition");
         }
         int populatedChildren = 0;
-        if (obj.getBinaryCQLAttribute() != null) {
+        if (obj.getCQLAttribute() != null) {
             populatedChildren++;
-            validateAttribute(obj.getBinaryCQLAttribute());
-        }
-        if (obj.getUnaryCQLAttribute() != null) {
-            populatedChildren++;
-            validateAttribute(obj.getUnaryCQLAttribute());
+            validateAttribute(obj.getCQLAttribute());
         }
         if (obj.getCQLAssociatedObject() != null) {
             populatedChildren++;
@@ -67,8 +61,8 @@ public class ObjectWalkingCql2StructureValidator implements Cql2StructureValidat
     
     
     private void validateAssociation(CQLAssociatedObject assoc) throws StructureValidationException {
-        if (isEmpty(assoc.getSourceRoleName())) {
-            throw new StructureValidationException("No source role name specified on an association definition");
+        if (isEmpty(assoc.getEndName())) {
+            throw new StructureValidationException("No end name specified on an association definition");
         }
         validateObjectStructure(assoc);
     }
@@ -78,52 +72,43 @@ public class ObjectWalkingCql2StructureValidator implements Cql2StructureValidat
         if (isEmpty(attrib.getName())) {
             throw new StructureValidationException("No name specified on an attribute definition");
         }
-        if (attrib instanceof UnaryCQLAttribute) {
-            UnaryCQLAttribute unary = (UnaryCQLAttribute) attrib;
-            if (unary.getPredicate() == null) {
-                throw new StructureValidationException("No predicate specified on an attribute definition");
-            }
-        } else {
-            validateBinaryAttribute((BinaryCQLAttribute) attrib);
-        }
-    }
-    
-    
-    private void validateBinaryAttribute(BinaryCQLAttribute attrib) throws StructureValidationException {
-        if (attrib.getPredicate() == null) {
+        if (attrib.getBinaryPredicate() == null && attrib.getUnaryPredicate() == null) {
             throw new StructureValidationException("No predicate was specified on an attribute definition");
-        }
-        AttributeValue value = attrib.getAttributeValue();
-        if (value == null) {
-            throw new StructureValidationException("No attribute value was specified on a binary attribute definition");
-        }
-        int populatedValues = 0;
-        if (value.getBooleanValue() != null) {
-            populatedValues++;
-        }
-        if (value.getDateValue() != null) {
-            populatedValues++;
-        }
-        if (value.getDoubleValue() != null) {
-            populatedValues++;
-        }
-        if (value.getIntegerValue() != null) {
-            populatedValues++;
-        }
-        if (value.getLongValue() != null) {
-            populatedValues++;
-        }
-        if (value.getStringValue() != null) {
-            populatedValues++;
-        }
-        if (value.getTimeValue() != null) {
-            populatedValues++;
-        }
-        if (populatedValues == 0) {
-            throw new StructureValidationException("No typed value was specified on a binary attribute definition");
-        } else if (populatedValues > 1) {
-            throw new StructureValidationException("More than one (" + populatedValues 
-                + ") typed values were specified on a binary attribute definition");
+        } else if (attrib.getBinaryPredicate() != null && attrib.getUnaryPredicate() != null) {
+            throw new StructureValidationException("An attribute had both a binary and unary predicate definition");
+        } else if (attrib.getBinaryPredicate() != null) { // binary needs an attribute value
+            AttributeValue value = attrib.getAttributeValue();
+            if (value == null) {
+                throw new StructureValidationException("No attribute value was specified on a binary attribute definition");
+            }
+            int populatedValues = 0;
+            if (value.getBooleanValue() != null) {
+                populatedValues++;
+            }
+            if (value.getDateValue() != null) {
+                populatedValues++;
+            }
+            if (value.getDoubleValue() != null) {
+                populatedValues++;
+            }
+            if (value.getIntegerValue() != null) {
+                populatedValues++;
+            }
+            if (value.getLongValue() != null) {
+                populatedValues++;
+            }
+            if (value.getStringValue() != null) {
+                populatedValues++;
+            }
+            if (value.getTimeValue() != null) {
+                populatedValues++;
+            }
+            if (populatedValues == 0) {
+                throw new StructureValidationException("No typed value was specified on a binary attribute definition");
+            } else if (populatedValues > 1) {
+                throw new StructureValidationException("More than one (" + populatedValues 
+                    + ") typed values were specified on a binary attribute definition");
+            }
         }
     }
     
@@ -142,15 +127,9 @@ public class ObjectWalkingCql2StructureValidator implements Cql2StructureValidat
         int groupMemberCount = 0;
         
         // validate children of the group
-        if (group.getBinaryCQLAttribute() != null) {
-            groupMemberCount += group.getBinaryCQLAttribute().length;
-            for (BinaryCQLAttribute att : group.getBinaryCQLAttribute()) {
-                validateAttribute(att);
-            }
-        }
-        if (group.getUnaryCQLAttribute() != null) {
-            groupMemberCount += group.getUnaryCQLAttribute().length;
-            for (UnaryCQLAttribute att : group.getUnaryCQLAttribute()) {
+        if (group.getCQLAttribute() != null) {
+            groupMemberCount += group.getCQLAttribute().length;
+            for (CQLAttribute att : group.getCQLAttribute()) {
                 validateAttribute(att);
             }
         }

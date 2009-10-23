@@ -1,7 +1,5 @@
 package gov.nih.nci.cagrid.data.cql2;
 
-import gov.nih.nci.cagrid.cql2.components.CQLQuery;
-import gov.nih.nci.cagrid.cql2.results.CQLQueryResults;
 import gov.nih.nci.cagrid.data.InitializationException;
 import gov.nih.nci.cagrid.data.QueryProcessingException;
 import gov.nih.nci.cagrid.data.mapping.Mappings;
@@ -12,6 +10,9 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Properties;
 import java.util.Set;
+
+import org.cagrid.cql2.CQLQuery;
+import org.cagrid.cql2.results.CQLQueryResults;
 
 /**
  * CQL2 Query Processor base class

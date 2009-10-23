@@ -1,17 +1,5 @@
 package gov.nih.nci.cagrid.data.cql2.validation;
 
-import gov.nih.nci.cagrid.cql2.associations.AssociationPopulationSpecification;
-import gov.nih.nci.cagrid.cql2.associations.NamedAssociation;
-import gov.nih.nci.cagrid.cql2.attribute.AttributeValue;
-import gov.nih.nci.cagrid.cql2.attribute.BinaryCQLAttribute;
-import gov.nih.nci.cagrid.cql2.attribute.CQLAttribute;
-import gov.nih.nci.cagrid.cql2.components.CQLAssociatedObject;
-import gov.nih.nci.cagrid.cql2.components.CQLGroup;
-import gov.nih.nci.cagrid.cql2.components.CQLObject;
-import gov.nih.nci.cagrid.cql2.components.CQLQuery;
-import gov.nih.nci.cagrid.cql2.components.CQLTargetObject;
-import gov.nih.nci.cagrid.cql2.modifiers.CQLQueryModifier;
-import gov.nih.nci.cagrid.cql2.modifiers.NamedAttribute;
 import gov.nih.nci.cagrid.data.utilities.DomainModelUtils;
 import gov.nih.nci.cagrid.metadata.common.Enumeration;
 import gov.nih.nci.cagrid.metadata.common.UMLAttribute;
@@ -30,6 +18,18 @@ import java.util.Set;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.cagrid.cql2.AssociationPopulationSpecification;
+import org.cagrid.cql2.AttributeValue;
+import org.cagrid.cql2.CQLAssociatedObject;
+import org.cagrid.cql2.CQLAttribute;
+import org.cagrid.cql2.CQLGroup;
+import org.cagrid.cql2.CQLObject;
+import org.cagrid.cql2.CQLQuery;
+import org.cagrid.cql2.CQLQueryModifier;
+import org.cagrid.cql2.CQLTargetObject;
+import org.cagrid.cql2.NamedAssociation;
+import org.cagrid.cql2.NamedAssociationList;
+import org.cagrid.cql2.NamedAttribute;
 
 /**
  * DomainModelCql2DomainValidator
@@ -90,13 +90,13 @@ public class DomainModelCql2DomainValidator extends Cql2DomainValidator {
                 throw new DomainValidationException("Negative association population depth specified");
             }
         } else if (spec.getNamedAssociationList() != null && spec.getNamedAssociationList().getNamedAssociation() != null) {
-            validateNamedAssociationList(targetClassName, spec.getNamedAssociationList().getNamedAssociation());
+            validateNamedAssociationList(targetClassName, spec.getNamedAssociationList());
         }
     }
     
     
-    private void validateNamedAssociationList(String parentClassName, NamedAssociation[] list) throws DomainValidationException {
-        for (NamedAssociation association : list) {
+    private void validateNamedAssociationList(String parentClassName, NamedAssociationList list) throws DomainValidationException {
+        for (NamedAssociation association : list.getNamedAssociation()) {
             SimplifiedUmlAssociation foundAssociation = null;
             List<SimplifiedUmlAssociation> simpleAssociations = getUmlAssociations(parentClassName);
             for (SimplifiedUmlAssociation simple : simpleAssociations) {
@@ -109,9 +109,9 @@ public class DomainModelCql2DomainValidator extends Cql2DomainValidator {
                 // association not found
                 throw new DomainValidationException("Association from " + parentClassName 
                     + " via role name " + association.getRoleName() + " not found");
-            } else if (association.getNamedAssociation() != null && association.getNamedAssociation().length != 0) {
+            } else if (association.getNamedAssociationList() != null && association.getNamedAssociationList().getNamedAssociation().length != 0) {
                 // association found, if there is another nested layer of associations, follow those
-                validateNamedAssociationList(foundAssociation.getTargetClass(), association.getNamedAssociation());
+                validateNamedAssociationList(foundAssociation.getTargetClass(), association.getNamedAssociationList());
             }
         }
     }
@@ -138,10 +138,8 @@ public class DomainModelCql2DomainValidator extends Cql2DomainValidator {
                 + " could be found in the domain model");
         }
 
-        if (obj.getBinaryCQLAttribute() != null) {
-            validateAttributeModel(obj.getBinaryCQLAttribute(), classMd);
-        } else if (obj.getUnaryCQLAttribute() != null) {
-            validateAttributeModel(obj.getUnaryCQLAttribute(), classMd);
+        if (obj.getCQLAttribute() != null) {
+            validateAttributeModel(obj.getCQLAttribute(), classMd);
         }
 
         if (obj.getCQLAssociatedObject() != null) {
@@ -154,6 +152,10 @@ public class DomainModelCql2DomainValidator extends Cql2DomainValidator {
         if (obj.getCQLGroup() != null) {
             validateGroupModel(obj, obj.getCQLGroup());
         }
+        
+        if (obj.get_instanceof() != null) {
+            validateInstanceof(obj.getClassName(), obj.get_instanceof());
+        }
     }
 
 
@@ -164,83 +166,77 @@ public class DomainModelCql2DomainValidator extends Cql2DomainValidator {
             throw new DomainValidationException("Attribute '" + attrib.getName() + "' is not defined for the class "
                 + classMd.getClassName());
         }
-        if (attrib instanceof BinaryCQLAttribute) {
+        if (attrib.getBinaryPredicate() != null) {
             // verify the data type being used is compatible
-            validateAttributeValue((BinaryCQLAttribute) attrib, attribMd);
-        }
-    }
-
-
-    private void validateAttributeValue(BinaryCQLAttribute attrib, UMLAttribute attribMetadata)
-        throws DomainValidationException {
-        String datatype = attribMetadata.getDataTypeName();
-        String valueAsString = null;
-        if (datatype == null) {
-            // can't validate anything if there isn't a data type
-            LOG.warn("No datatype defined for attribute " + attrib.getName());
-        } else {
-            // verify the proper typed value is populated
-            AttributeValue value = attrib.getAttributeValue();
-            if (String.class.getName().equals(datatype)) {
-                if (value.getStringValue() == null) {
-                    throw new DomainValidationException("Attribute " + attrib.getName() 
-                        + " was expected to have a value of type " + String.class.getName() + ", but did not");
-                } else {
-                    valueAsString = value.getStringValue();
-                }
-            } else if (Integer.class.getName().equals(datatype)) {
-                if (value.getIntegerValue() == null) {
-                    throw new DomainValidationException("Attribute " + attrib.getName() 
-                        + " was expected to have a value of type " + Integer.class.getName() + ", but did not");
-                } else {
-                    valueAsString = value.getIntegerValue().toString();
-                }
-            } else if (Long.class.getName().equals(datatype)) {
-                if (value.getLongValue() == null) {
-                    throw new DomainValidationException("Attribute " + attrib.getName() 
-                        + " was expected to have a value of type " + Long.class.getName() + ", but did not");
-                } else {
-                    valueAsString = value.getLongValue().toString();
-                }
-            } else if (Date.class.getName().equals(datatype)) {
-                if (value.getDateValue() == null) {
-                    throw new DomainValidationException("Attribute " + attrib.getName() 
-                        + " was expected to have a value of type " + Date.class.getName() + ", but did not");
-                } else {
-                    valueAsString = DateFormat.getDateInstance().format(value.getDateValue());                    
-                }
-            } else if (Boolean.class.getName().equals(datatype)) {
-                if (value.getBooleanValue() == null) {
-                    throw new DomainValidationException("Attribute " + attrib.getName() 
-                        + " was expected to have a value of type " + Boolean.class.getName() + ", but did not");
-                } else {
-                    valueAsString = value.getBooleanValue().toString();
-                }
-            } else if (Double.class.getName().equals(datatype)) {
-                if (value.getDoubleValue() == null) {
-                    throw new DomainValidationException("Attribute " + attrib.getName() 
-                        + " was expected to have a value of type " + Double.class.getName() + ", but did not");
-                } else {
-                    valueAsString = value.getDoubleValue().toString();
+            String datatype = attribMd.getDataTypeName();
+            String valueAsString = null;
+            if (datatype == null) {
+                // can't validate anything if there isn't a data type
+                LOG.warn("No datatype defined for attribute " + attrib.getName());
+            } else {
+                // verify the proper typed value is populated
+                AttributeValue value = attrib.getAttributeValue();
+                if (String.class.getName().equals(datatype)) {
+                    if (value.getStringValue() == null) {
+                        throw new DomainValidationException("Attribute " + attrib.getName() 
+                            + " was expected to have a value of type " + String.class.getName() + ", but did not");
+                    } else {
+                        valueAsString = value.getStringValue();
+                    }
+                } else if (Integer.class.getName().equals(datatype)) {
+                    if (value.getIntegerValue() == null) {
+                        throw new DomainValidationException("Attribute " + attrib.getName() 
+                            + " was expected to have a value of type " + Integer.class.getName() + ", but did not");
+                    } else {
+                        valueAsString = value.getIntegerValue().toString();
+                    }
+                } else if (Long.class.getName().equals(datatype)) {
+                    if (value.getLongValue() == null) {
+                        throw new DomainValidationException("Attribute " + attrib.getName() 
+                            + " was expected to have a value of type " + Long.class.getName() + ", but did not");
+                    } else {
+                        valueAsString = value.getLongValue().toString();
+                    }
+                } else if (Date.class.getName().equals(datatype)) {
+                    if (value.getDateValue() == null) {
+                        throw new DomainValidationException("Attribute " + attrib.getName() 
+                            + " was expected to have a value of type " + Date.class.getName() + ", but did not");
+                    } else {
+                        valueAsString = DateFormat.getDateInstance().format(value.getDateValue());                    
+                    }
+                } else if (Boolean.class.getName().equals(datatype)) {
+                    if (value.getBooleanValue() == null) {
+                        throw new DomainValidationException("Attribute " + attrib.getName() 
+                            + " was expected to have a value of type " + Boolean.class.getName() + ", but did not");
+                    } else {
+                        valueAsString = value.getBooleanValue().toString();
+                    }
+                } else if (Double.class.getName().equals(datatype)) {
+                    if (value.getDoubleValue() == null) {
+                        throw new DomainValidationException("Attribute " + attrib.getName() 
+                            + " was expected to have a value of type " + Double.class.getName() + ", but did not");
+                    } else {
+                        valueAsString = value.getDoubleValue().toString();
+                    }
                 }
             }
-        }
-        //check enumeration values
-        ValueDomain valueDomain = attribMetadata.getValueDomain();
-        if (valueDomain != null) {
-            ValueDomainEnumerationCollection enumerationCollection = valueDomain.getEnumerationCollection();
-            if (enumerationCollection != null && enumerationCollection.getEnumeration() != null
-                && enumerationCollection.getEnumeration().length > 0) {
-                Enumeration[] enumeration = enumerationCollection.getEnumeration();
-                Set<String> permValues = new HashSet<String>();
-                for (int i = 0; i < enumeration.length; i++) {
-                    Enumeration e = enumeration[i];
-                    permValues.add(e.getPermissibleValue());
-                }
-                if (!permValues.contains(valueAsString)) {
-                    throw new DomainValidationException("Attribute '" + attrib.getName()
-                        + "' defines a permissible value enumeration, and the value'" + valueAsString
-                        + "' is not permissible.");
+            //check enumeration values
+            ValueDomain valueDomain = attribMd.getValueDomain();
+            if (valueDomain != null) {
+                ValueDomainEnumerationCollection enumerationCollection = valueDomain.getEnumerationCollection();
+                if (enumerationCollection != null && enumerationCollection.getEnumeration() != null
+                    && enumerationCollection.getEnumeration().length > 0) {
+                    Enumeration[] enumeration = enumerationCollection.getEnumeration();
+                    Set<String> permValues = new HashSet<String>();
+                    for (int i = 0; i < enumeration.length; i++) {
+                        Enumeration e = enumeration[i];
+                        permValues.add(e.getPermissibleValue());
+                    }
+                    if (!permValues.contains(valueAsString)) {
+                        throw new DomainValidationException("Attribute '" + attrib.getName()
+                            + "' defines a permissible value enumeration, and the value'" + valueAsString
+                            + "' is not permissible.");
+                    }
                 }
             }
         }
@@ -252,28 +248,33 @@ public class DomainModelCql2DomainValidator extends Cql2DomainValidator {
         // determine if an association exists between the current
         // and association object
         boolean associationFound = associationExists(
-            current.getClassName(), assoc.getClassName(), assoc.getSourceRoleName());
+            current.getClassName(), assoc.getClassName(), assoc.getEndName());
         
         // fail if the association was never found
         if (!associationFound) {
             throw new DomainValidationException("No association from " + current.getClassName() + " to " + assoc.getClassName()
-                + " with role name " + assoc.getSourceRoleName());
+                + " with role name " + assoc.getEndName());
         }
-        
-        // validate instanceof (must be a subclass of the association's named class)
         if (assoc.get_instanceof() != null) {
-            boolean validInstanceof = false;
-            // verify the association's named class is a superclass of the instanceof
-            String[] superclasses = getSuperclassNames(assoc.get_instanceof());
-            for (String sup : superclasses) {
-                if (sup.equals(assoc.getClassName())) {
-                    validInstanceof = true;
-                    break;
-                }
+            validateInstanceof(assoc.getClassName(), assoc.get_instanceof());
+        }
+    }
+    
+    
+    private void validateInstanceof(String parentClassName, String instanceClassName) throws DomainValidationException {
+        // validate instanceof (must be a subclass of the association's named class)
+        boolean validInstanceof = false;
+        // verify the association's named class is a superclass of the instanceof
+        String[] superclasses = getSuperclassNames(instanceClassName);
+        for (String sup : superclasses) {
+            if (sup.equals(parentClassName)) {
+                validInstanceof = true;
+                break;
             }
-            if (!validInstanceof) {
-                throw new DomainValidationException(assoc.get_instanceof() + " is not a subclass of " + assoc.getClassName());
-            }
+        }
+        if (!validInstanceof) {
+            throw new DomainValidationException(
+                instanceClassName + " is not a subclass of " + parentClassName);
         }
     }
     
@@ -305,17 +306,10 @@ public class DomainModelCql2DomainValidator extends Cql2DomainValidator {
 
 
     private void validateGroupModel(CQLObject current, CQLGroup group) throws DomainValidationException {
-        if (group.getBinaryCQLAttribute() != null) {
+        if (group.getCQLAttribute() != null) {
             UMLClass classMd = getUmlClass(current.getClassName());
-            for (int i = 0; i < group.getBinaryCQLAttribute().length; i++) {
-                validateAttributeModel(group.getBinaryCQLAttribute(i), classMd);
-            }
-        }
-        
-        if (group.getUnaryCQLAttribute() != null) {
-            UMLClass classMd = getUmlClass(current.getClassName());
-            for (int i = 0; i < group.getUnaryCQLAttribute().length; i++) {
-                validateAttributeModel(group.getUnaryCQLAttribute(i), classMd);
+            for (int i = 0; i < group.getCQLAttribute().length; i++) {
+                validateAttributeModel(group.getCQLAttribute(i), classMd);
             }
         }
 
@@ -383,11 +377,6 @@ public class DomainModelCql2DomainValidator extends Cql2DomainValidator {
         }
         names[names.length - 1] = className;
         return names;
-    }
-    
-    
-    private UMLClass[] getSuperclasses(String className) {
-        return DomainModelUtils.getAllSuperclasses(model, className);
     }
 
 

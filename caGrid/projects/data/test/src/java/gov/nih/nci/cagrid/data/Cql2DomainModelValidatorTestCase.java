@@ -1,7 +1,6 @@
 package gov.nih.nci.cagrid.data;
 
 import gov.nih.nci.cagrid.common.Utils;
-import gov.nih.nci.cagrid.cql2.components.CQLQuery;
 import gov.nih.nci.cagrid.data.cql2.validation.Cql2DomainValidator;
 import gov.nih.nci.cagrid.data.cql2.validation.DomainModelCql2DomainValidator;
 import gov.nih.nci.cagrid.metadata.MetadataUtils;
@@ -17,6 +16,8 @@ import junit.framework.TestCase;
 import junit.framework.TestResult;
 import junit.framework.TestSuite;
 import junit.textui.TestRunner;
+
+import org.cagrid.cql2.CQLQuery;
 
 public class Cql2DomainModelValidatorTestCase extends TestCase {
     
