@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CQLQuery xmlns="http://CQL.caBIG/2/org.cagrid.cql2">
+	<CQLTargetObject className="gov.nih.nci.cacoresdk.domain.other.levelassociation.Suit">
+		<CQLGroup logicalOperation="AND">
+			<CQLAttribute name="name">
+				<BinaryPredicate>EQUAL_TO</BinaryPredicate>
+				<AttributeValue>
+					<StringValue>Spade</StringValue>
+				</AttributeValue>
+			</CQLAttribute>
+		</CQLGroup>
+	</CQLTargetObject>
+</CQLQuery>

@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CQLQuery xmlns="http://CQL.caBIG/2/org.cagrid.cql2">
+	<CQLTargetObject className="gov.nih.nci.cacoresdk.domain.other.levelassociation.Suit">
+		<CQLGroup logicalOperation="AND">
+		</CQLGroup>
+	</CQLTargetObject>
+</CQLQuery>
