@@ -31,7 +31,7 @@
 	<property name="build.dir" location="build" />
 	<property name="build.cql.1.0.stubs.dest" location="${build.dir}/stubs/cql1.0/classes" />
 	<property name="build.cql.2.0.stubs.dest" location="${build.dir}/stubs/cql2.0/classes" />
-	<property name="build.dcql.2.0.stubs.dest" location="${build.dir}/stibs/dcql2.0/classes"/>
+	<property name="build.dcql.2.0.stubs.dest" location="${build.dir}/stubs/dcql2.0/classes"/>
 	<property name="build.test.dest" location="${build.dir}/test/classes" />
 	<property name="build.jars.dir" location="build/lib" />
 
