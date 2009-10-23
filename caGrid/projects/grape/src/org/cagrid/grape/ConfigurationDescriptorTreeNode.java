@@ -29,7 +29,7 @@ public class ConfigurationDescriptorTreeNode extends ConfigurationBaseTreeNode {
 
 
 	public ConfigurationDescriptorTreeNode(ConfigurationWindow window, ConfigurationTree tree,
-		ConfigurationDescriptor des) throws Exception {
+		ConfigurationDescriptor des, String configurationName) throws Exception {
 		super(window, tree);
 		this.displayName = des.getDisplayName();
 		this.systemName = des.getSystemName();
@@ -44,7 +44,7 @@ public class ConfigurationDescriptorTreeNode extends ConfigurationBaseTreeNode {
 				Constructor c = Class.forName(des.getConfigurationPanel()).getConstructor(types);
 				Object[] args = new Object[2];
 				args[0] = this;
-				args[1] = this.getConfigurationManager().getConfigurationObject(des.getSystemName());
+				args[1] = this.getConfigurationManager().getConfigurationObjectByConfiguration(des.getSystemName(), configurationName);
 				this.setDisplayPanel((ConfigurationBasePanel) c.newInstance(args));
 			} catch (Exception e) {
 				this.setDisplayPanel(new ConfigurationDisplayPanel(des.getDisplayName()));
@@ -57,6 +57,10 @@ public class ConfigurationDescriptorTreeNode extends ConfigurationBaseTreeNode {
 		// this.processConfigurationDescriptors(des.getConfigurationDescriptors());
 	}
 
+	public ConfigurationDescriptorTreeNode(ConfigurationWindow window, ConfigurationTree tree,
+			ConfigurationDescriptor des) throws Exception {
+		this(window, tree, des, "default");
+	}
 
 	protected void processConfigurationEditors(ConfigurationEditors list) throws Exception {
 
@@ -97,5 +101,12 @@ public class ConfigurationDescriptorTreeNode extends ConfigurationBaseTreeNode {
 	public String toString() {
 		return this.displayName;
 	}
-
+	
+	public String getDisplayName() {
+		return this.displayName;
+	}
+	
+	public String getSystemName() {
+		return this.systemName;
+	}
 }

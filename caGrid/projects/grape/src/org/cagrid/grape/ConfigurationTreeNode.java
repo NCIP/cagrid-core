@@ -19,7 +19,7 @@ public class ConfigurationTreeNode extends ConfigurationBaseTreeNode {
 
 	public ConfigurationTreeNode(ConfigurationWindow window, ConfigurationTree tree) throws Exception {
 		super(window, tree);
-		processConfiguration(GridApplication.getContext().getConfigurationManager().getConfiguration());
+		processConfiguration(GridApplication.getContext().getConfigurationManager().getConfiguration("default"));
 		this.setDisplayPanel(new ConfigurationDisplayPanel("Preferences"));
 	}
 

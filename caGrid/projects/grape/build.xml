@@ -96,7 +96,15 @@
 			<property name="target.stubs.dir" location="${stubs.src}" />
 			<property name="ns.excludes" value="${GT4.ns.excludes}" />
 		</ant>
-	</target>
+
+		<!-- GRAPE TARGET GRID CONFIGURATION SCHEMA -->
+		<ant antfile="${ant.build.stubs}" target="generateStubs">
+			<property name="source.stubs.dir" location="${schema.dest}" />
+			<property name="wsdl.file" value="GrapeTargetGridConfiguration.wsdl" />
+			<property name="target.stubs.dir" location="${stubs.src}" />
+			<property name="ns.excludes" value="${GT4.ns.excludes}" />
+		</ant>
+</target>
 
 
 	<target name="compileStubs" depends="defineClasspaths,stubs">

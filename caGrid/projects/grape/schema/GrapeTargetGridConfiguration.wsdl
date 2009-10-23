@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions name="GrapeTargetGridConfiguration" xmlns="http://schemas.xmlsoap.org/wsdl/" >
+	<import location="grape-target-grid-configuration.xsd"/>
+</definitions>
+

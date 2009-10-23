@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xsd:schema targetNamespace="http://www.cagrid.org/1/grape-target-grid-configuration"
+    attributeFormDefault="qualified"
+    elementFormDefault="qualified"
+    xmlns:xsd="http://www.w3.org/2001/XMLSchema" 
+    xmlns:grape="http://www.cagrid.org/1/grape-target-grid-configuration">
+    
+	<xsd:element name="TargetGridsConfiguration" type="grape:TargetGridsConfiguration"></xsd:element>
+	
+	<xsd:complexType name="TargetGridsConfiguration">
+		<xsd:sequence>
+			<xsd:element name="activeGrid" minOccurs="1" maxOccurs="1" type="xsd:string" />
+			<xsd:element name="lastUpdated" minOccurs="1" maxOccurs="1" type="xsd:date" />
+			<xsd:element name="grid" type="grape:grid" minOccurs="1" maxOccurs="unbounded"></xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	
+	<xsd:element name="grid" type="grape:grid"></xsd:element>
+	
+	<xsd:complexType name="grid">
+		<xsd:sequence>
+			<xsd:element name="DisplayName" minOccurs="1" maxOccurs="1"
+				type="xsd:string" />
+			<xsd:element name="SystemName" minOccurs="1" maxOccurs="1"
+				type="xsd:string" />
+				<!--
+			<xsd:element name="uri" minOccurs="1" maxOccurs="1"
+				type="xsd:string" />
+			<xsd:element name="certificatesDirectory" minOccurs="1" maxOccurs="1"
+				type="xsd:string" />
+			<xsd:element name="DorianConfigurationFile" minOccurs="1" maxOccurs="1" type="xsd:string" />
+			<xsd:element name="AuthenticationServicesConfigurationFile" minOccurs="1" maxOccurs="1" type="xsd:string" />
+			<xsd:element name="DelegationServicesConfigurationFile" minOccurs="1" maxOccurs="1" type="xsd:string" />
+			<xsd:element name="GridTrustServicesConfigurationFile" minOccurs="1" maxOccurs="1" type="xsd:string" />
+			<xsd:element name="GridGrouperServicesConfigurationFile" minOccurs="1" maxOccurs="1" type="xsd:string" />
+			-->
+		</xsd:sequence>
+	</xsd:complexType>
+	
+</xsd:schema>
