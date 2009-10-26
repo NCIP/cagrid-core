@@ -96,5 +96,6 @@
 	<classpathentry kind="lib" path="ext/dependencies/impl/jars/httpcore-4.0.1.jar"/>
 	<classpathentry kind="lib" path="ext/dependencies/impl/jars/htmllexer.jar"/>
 	<classpathentry kind="lib" path="ext/dependencies/impl/jars/cog-jglobus.jar"/>
+	<classpathentry kind="lib" path="ext/dependencies/impl/jars/ivy-2.1.0.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
