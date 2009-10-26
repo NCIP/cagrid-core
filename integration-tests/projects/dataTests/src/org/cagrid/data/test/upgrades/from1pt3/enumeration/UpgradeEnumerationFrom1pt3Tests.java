@@ -25,8 +25,8 @@ import org.cagrid.data.test.upgrades.UpgradeTestConstants;
  * @version $Id: UpgradeEnumerationFrom1pt3Tests.java,v 1.1 2008-10-28 15:55:16 dervin Exp $ 
  */
 public class UpgradeEnumerationFrom1pt3Tests extends Story {
-    public static final String SERVICE_ZIP_NAME = "DataServiceWithEnumeration_1-3.zip";
-    public static final String SERVICE_DIR_NAME = "DataServiceWithEnumeration_1-3";
+    public static final String SERVICE_ZIP_NAME = "DataServiceWithWsEnum_1-3.zip";
+    public static final String SERVICE_DIR_NAME = "DataServiceWithWsEnum_1-3";
     public static final String SERVICE_NAME = "DataServiceWithEnum";
     public static final String SERVICE_PACKAGE = "org.cagrid.test.data.with.wsenum";
     public static final String SERVICE_NAMESPACE = "http://wsenum.with.data.test.cagrid.org/DataServiceWithEnum";

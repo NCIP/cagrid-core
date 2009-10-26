@@ -25,8 +25,8 @@ import org.cagrid.data.test.upgrades.UpgradeTestConstants;
  * @version $Id: UpgradeEnumerationFrom1pt3Tests.java,v 1.1 2008-10-28 15:55:16 dervin Exp $ 
  */
 public class UpgradeBdtFrom1pt3Tests extends Story {
-    public static final String SERVICE_ZIP_NAME = "DataServiceWithBDT_1-3.zip";
-    public static final String SERVICE_DIR_NAME = "DataServiceWithBDT_1-3";
+    public static final String SERVICE_ZIP_NAME = "DataServiceWithBdt_1-3.zip";
+    public static final String SERVICE_DIR_NAME = "DataServiceWithBdt_1-3";
     public static final String SERVICE_NAME = "DataServiceWithBdt";
     public static final String SERVICE_PACKAGE = "org.cagrid.test.data.with.bdt";
     public static final String SERVICE_NAMESPACE = "http://bdt.with.data.test.cagrid.org/DataServiceWithBdt";
