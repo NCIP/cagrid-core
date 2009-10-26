@@ -171,6 +171,11 @@ public class Introduce_1_3__1_4_Upgrader extends IntroduceUpgraderBase {
         File serviceTasksJar = new File(serviceToolsLibDir.getAbsolutePath() + File.separator
             + "caGrid-Introduce-buildTools-1.3.jar");
         serviceTasksJar.delete();
+        
+        // remove the old core jar from 1.3
+        File coreJar = new File(serviceToolsLibDir.getAbsolutePath() + File.separator
+            + "caGrid-core-1.3.jar");
+        coreJar.delete();
 
         FileFilter srcSkeletonToolsLibFilter = new FileFilter() {
             public boolean accept(File name) {
