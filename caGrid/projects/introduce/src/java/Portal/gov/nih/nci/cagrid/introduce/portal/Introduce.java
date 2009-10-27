@@ -69,9 +69,9 @@ public final class Introduce {
 
             if (patchProperties.containsKey(IntroduceConstants.INTRODUCE_PATCH_VERSION_PROPERTY)) {
                 // need to set the patch version in the
-                // introduce.engine.properties file
+                // introduce.properties file
                 File engineProps = new File("." + File.separator + "conf" + File.separator
-                    + "introduce.engine.properties");
+                    + "introduce.properties");
                 Properties props = new Properties();
 
                 try {
