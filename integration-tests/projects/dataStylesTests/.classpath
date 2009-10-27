@@ -6,10 +6,6 @@
 	<classpathentry kind="lib" path="ext/dependencies/jars/asm.jar"/>
 	<classpathentry kind="lib" path="ext/dependencies/jars/c3p0-0.8.5.2.jar"/>
 	<classpathentry kind="lib" path="ext/dependencies/jars/caGrid-authz-common-1.4-dev.jar"/>
-	<classpathentry kind="lib" path="ext/dependencies/jars/caGrid-BulkDataHandler-client-1.4-dev.jar"/>
-	<classpathentry kind="lib" path="ext/dependencies/jars/caGrid-BulkDataHandler-common-1.4-dev.jar"/>
-	<classpathentry kind="lib" path="ext/dependencies/jars/caGrid-BulkDataHandler-service-1.4-dev.jar"/>
-	<classpathentry kind="lib" path="ext/dependencies/jars/caGrid-BulkDataHandler-stubs-1.4-dev.jar"/>
 	<classpathentry kind="lib" path="ext/dependencies/jars/caGrid-core-1.4-dev.jar"/>
 	<classpathentry kind="lib" path="ext/dependencies/jars/caGrid-core-tests-1.4-dev.jar"/>
 	<classpathentry kind="lib" path="ext/dependencies/jars/caGrid-CQL-cql.1.0-1.4-dev.jar"/>
