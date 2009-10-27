@@ -20,9 +20,7 @@ import gov.nih.nci.cagrid.introduce.common.AntTools;
 import gov.nih.nci.cagrid.introduce.common.CommonTools;
 import gov.nih.nci.cagrid.introduce.common.ConfigurationUtil;
 import gov.nih.nci.cagrid.introduce.common.ServiceInformation;
-import gov.nih.nci.cagrid.introduce.extension.ExtensionTools;
 import gov.nih.nci.cagrid.introduce.extension.ExtensionsLoader;
-import gov.nih.nci.cagrid.introduce.extension.ServiceExtensionRemover;
 import gov.nih.nci.cagrid.introduce.portal.common.IntroduceLookAndFeel;
 import gov.nih.nci.cagrid.introduce.portal.extension.ServiceModificationUIPanel;
 import gov.nih.nci.cagrid.introduce.portal.modification.discovery.NamespaceTypeDiscoveryComponent;
@@ -416,26 +414,7 @@ public class ModificationViewer extends ApplicationComponent {
                                                     modifiedExtensionsArray[kept++] = extType;
                                                 }
                                             }
-                                        } else if (result2.equals("Remove")) {
-                                            // need to call the remover and
-                                            // remove
-                                            // the extension
-                                            ServiceExtensionRemover remover = ExtensionTools
-                                                .getServiceExtensionRemover(extensionName);
-                                            if (remover != null) {
-                                                remover.remove(ExtensionsLoader.getInstance().getServiceExtension(
-                                                    extensionName), info);
-                                            }
-                                            ExtensionType[] modifiedExtensionsArray = new ExtensionType[info
-                                                .getExtensions().getExtension().length - 1];
-                                            int kept = 0;
-                                            for (int i = 0; i < info.getExtensions().getExtension().length; i++) {
-                                                ExtensionType extType = info.getExtensions().getExtension(i);
-                                                if (!extType.getName().equals(extensionName)) {
-                                                    modifiedExtensionsArray[kept++] = extType;
-                                                }
-                                            }
-                                        }
+                                        } // do nothing for remove -- the Extensions Upgrade Manager will find and remove it
                                     } else {
                                         JOptionPane
                                             .showMessageDialog(
