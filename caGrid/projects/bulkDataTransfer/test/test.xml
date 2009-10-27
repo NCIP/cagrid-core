@@ -1,11 +1,10 @@
 <!-- ======================================================================= -->
-<!-- caGrid Data Services test build file                                    -->
+<!-- caGrid Bulk Data Handler test build file                                -->
 <!-- ======================================================================= -->
 <project name="caGrid-BDT_tests_harness" basedir=".">
-	<property name="junit.results.dir" value="${test.logs.dir}/junit" />
 	<property name="introduce.dir" location="../introduce" />
 
-	<target name="prepareClasspaths" depends="checkGlobus, defineClasspaths">
+	<target name="prepareClasspaths" depends="init">
 		<path id="Introduce.test.classpath">
 			<fileset dir="${introduce.dir}/lib">
 				<include name="*.jar" />
@@ -25,9 +24,6 @@
 			<fileset dir="${ant.library.dir}">
 				<include name="*.jar" />
 			</fileset>
-			<fileset dir="${ext.globus.dir}/lib">
-				<include name="*.jar" />
-			</fileset>
 		</path>
 		<path id="all.test.classpath">
 			<path refid="test.run.classpath" />
@@ -36,7 +32,7 @@
 	</target>
 
 
-	<target name="test" depends="setGlobus, prepareClasspaths" description="Runs tests">
+	<target name="test" depends="prepareClasspaths" description="Runs tests">
 		<mkdir dir="${junit.results.dir}" />
 		<junit dir="${introduce.dir}" printsummary="yes" errorproperty="test.failed" failureproperty="test.failed" showoutput="true" fork="yes">
 			<jvmarg value="-Dintroduce.base.dir=${introduce.dir}" />
@@ -46,13 +42,13 @@
 			<test if="testcase" name="${testcase}" fork="no" todir="${junit.results.dir}" />
 			<batchtest unless="testcase" fork="yes" todir="${junit.results.dir}">
 				<fileset dir="${test.src.dir}">
+					<!-- off  
 					<include name="**/test/unit/**/*Test.java" />
 					<include name="**/test/unit/**/*TestCase.java" />
+					-->
 				</fileset>
 			</batchtest>
 		</junit>
 		<fail message="Tests failed! Check test reports." if="test.failed" />
-		<property name="base.service.created" value="true" />
 	</target>
-
 </project>
