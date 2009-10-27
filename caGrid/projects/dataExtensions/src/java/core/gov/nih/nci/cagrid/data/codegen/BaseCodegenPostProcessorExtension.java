@@ -101,9 +101,9 @@ public abstract class BaseCodegenPostProcessorExtension implements CodegenExtens
 		try {
             Mappings mappings = new Mappings();
             List<ClassToQname> classMappings = new LinkedList<ClassToQname>();
-            // the first placeto look for mappings is in the model information, which 
+            // the first place to look for mappings is in the model information, which 
             // is derived from the data service Domain Model.  If no domain model is to be used,
-            // the mappings are still required to do anything with caCORE SDK beans, or BDT in general
+            // the mappings are still required to do anything with caCORE SDK beans.
             ModelInformation modelInfo = extData.getModelInformation();
             if (modelInfo != null && !ModelSourceType.none.equals(modelInfo.getSource())
                 && modelInfo.getModelPackage() != null) {
@@ -152,7 +152,6 @@ public abstract class BaseCodegenPostProcessorExtension implements CodegenExtens
                 Set<String> nsIgnores = new HashSet<String>();
                 nsIgnores.add(IntroduceConstants.W3CNAMESPACE);
                 nsIgnores.add(info.getServices().getService(0).getNamespace());
-                nsIgnores.add(DataServiceConstants.BDT_DATA_SERVICE_NAMESPACE);
                 nsIgnores.add(DataServiceConstants.ENUMERATION_DATA_SERVICE_NAMESPACE);
                 nsIgnores.add(DataServiceConstants.DATA_SERVICE_NAMESPACE);
                 nsIgnores.add(DataServiceConstants.CQL_QUERY_URI);

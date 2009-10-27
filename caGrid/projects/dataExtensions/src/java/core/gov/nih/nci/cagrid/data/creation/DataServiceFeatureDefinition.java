@@ -18,14 +18,11 @@ import java.util.List;
  */
 public enum DataServiceFeatureDefinition {
 
-    BDT_FEATURE, ENUMERATION_FEATURE, TRANSFER_FEATURE;
+    ENUMERATION_FEATURE, TRANSFER_FEATURE;
     
     public String getName() {
         String name = null;
         switch (this) {
-            case BDT_FEATURE:
-                name = "Bulk Data Transfer";
-                break;
             case ENUMERATION_FEATURE:
                 name = "WS-Enumeration";
                 break;
@@ -42,9 +39,6 @@ public enum DataServiceFeatureDefinition {
     public String getDescription() {
         String description = null;
         switch (this) {
-            case BDT_FEATURE:
-                description = "Adds Bulk Data Transport support to the data service";
-                break;
             case ENUMERATION_FEATURE:
                 description = "Adds caGrid WS-Enumeration support to the data service";
                 break;
@@ -61,9 +55,6 @@ public enum DataServiceFeatureDefinition {
     public List<String> getExtensionNames() {
         List<String> extensions = new ArrayList<String>();
         switch (this) {
-            case BDT_FEATURE:
-                extensions.add("bdt");
-                break;
             case ENUMERATION_FEATURE:
                 extensions.add("cagrid_wsEnum");
                 break;
@@ -80,9 +71,6 @@ public enum DataServiceFeatureDefinition {
     public FeatureCreator getFeatureCreator(ServiceInformation info, ServiceType mainService) {
         FeatureCreator creator = null;
         switch (this) {
-            case BDT_FEATURE:
-                creator = new BDTFeatureCreator(info, mainService);
-                break;
             case ENUMERATION_FEATURE:
                 creator = new WsEnumerationFeatureCreator(info, mainService);
                 break;
