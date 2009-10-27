@@ -50,11 +50,6 @@
     <!-- WS-Enumeration -->
     <dependency rev="latest.integration" org="caGrid" name="wsEnum" conf="default->default"/>
     
-    <!-- BDT service for constant -->
-    <!-- NOTE: just needs this for a constant, so not using transitive dependency-->
-    <dependency transitive="false" rev="latest.integration" org="caGrid" name="bulkDataTransfer"
-      conf="default->service"/>
-      
     <!-- metadata -->
     <dependency rev="latest.integration" org="caGrid" name="metadata" conf="default->data.jars,schemas"/>
     <dependency rev="latest.integration" org="caGrid" name="metadatautils" conf="default->default"/>
