@@ -11,55 +11,27 @@
 
   <configurations>
     <!-- Private Configurations-->
-    <conf name="impl" visibility="private" extends="service,extension"/>
+    <conf name="impl" visibility="private" extends="extension"/>
     <conf name="impl-test" visibility="private"/>
 
     <!-- Public Configurations-->
-    <conf name="stubs" visibility="public"/>
-    <conf name="common" extends="stubs" visibility="public"/>
-    <conf name="client" extends="common" visibility="public"/>
-
-    <conf name="service" visibility="public" extends="client"/>
-    <conf name="test" visibility="public" extends="service,impl-test"/>
-    
-    <conf name="extension" visibility="public" extends="service"/>
-
+    <conf name="extension" visibility="public"/>
+    <conf name="test" visibility="public" extends="impl-test"/>
   </configurations>
 
 
   <publications>
-    <artifact name="caGrid-BulkDataHandler-stubs" conf="stubs" type="jar"/>
-    <artifact name="caGrid-BulkDataHandler-common" conf="common" type="jar"/>
-    <artifact name="caGrid-BulkDataHandler-client" conf="client" type="jar"/>
-    <artifact name="caGrid-BulkDataHandler-service" conf="service" type="jar"/>
     <artifact name="caGrid-BulkDataHandler-tests" conf="test" type="jar"/>
     <artifact name="caGrid-BulkDataHandler-extension" conf="extension" type="jar"/>
   </publications>
 
   <dependencies>
-
-    <!-- Standard caGrid Service Dependencies -->
     <dependency rev="latest.integration" org="caGrid" name="core"
-      conf="service->default;impl-test->test"/>
-    <dependency rev="latest.integration" org="caGrid" name="metadata"
-      conf="service->security.schemas;client->security.jars"/>
-    <dependency rev="latest.integration" org="caGrid" name="service-security-provider"
-      conf="client->client;service->service"/>
-    <dependency rev="latest.integration" org="caGrid" name="advertisement" conf="service->default"/>
-
-    <!-- Specific caGrid Service Dependencies -->
-    <dependency rev="latest.integration" org="caGrid" name="wsEnum"
-      conf="service->default,schemas"/>
+      conf="extension->default;test->test"/>
     <dependency rev="latest.integration" org="caGrid" name="introduce"
-    conf="extension->extension"/>
-    <dependency rev="latest.integration" org="caGrid" name="testing" conf="impl-test->system"/>
+      conf="extension->extension"/>
     
-
-    <!-- Extenernal Dependencies -->
-    <dependency rev="1.0" org="wannheden" name="jetc-task" conf="impl->*"/>
-    
-    <dependency rev="1.0" org="jdom" name="jdom" conf="service->*"/>
-    <dependency rev="0.5.2-patched" org="jaxme" name="jaxmejs" conf="extension->*"/>
+    <!-- tied to impl-test so everybody doesn't get junit if they depend on BDT -->
     <dependency rev="4.4" org="junit" name="junit" conf="impl-test->default"/>
   </dependencies>
 </ivy-module>

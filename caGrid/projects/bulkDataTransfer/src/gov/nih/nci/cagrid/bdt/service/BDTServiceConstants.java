@@ -2,7 +2,7 @@ package gov.nih.nci.cagrid.bdt.service;
 
 import javax.xml.namespace.QName;
 
-
+@Deprecated
 public interface BDTServiceConstants {
     public static final String BDT_SERVICE_NAME = "BulkDataHandler";
     public static final String BDT_SERVICE_PACKAGE = "gov.nih.nci.cagrid.bdt";
