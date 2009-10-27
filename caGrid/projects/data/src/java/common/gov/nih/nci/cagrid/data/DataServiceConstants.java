@@ -132,13 +132,21 @@ public class DataServiceConstants {
     public static final String SERVICE_STYLE_FILE_NAME = "style.xml";
 	
 	// bdt query method constants
+    @Deprecated
 	public static final String BDT_QUERY_METHOD_NAME = "bdtQuery";
+    @Deprecated
 	public static final String BDT_QUERY_METHOD_DESCRIPTION = "The standard caGrid Data Service query method which returns results handled by Bulk Data Transfer.";
+    @Deprecated
 	public static final String BDT_DATA_SERVICE_NAMESPACE = "http://gov.nih.nci.cagrid.data.bdt/BDTDataService";
+    @Deprecated
 	public static final String BDT_DATA_SERVICE_PACKAGE_NAME = DATA_SERVICE_PACKAGE + ".bdt";
+    @Deprecated
 	public static final String BDT_HANDLER_CLIENT_CLASSNAME = "gov.nih.nci.cagrid.bdt.client.BulkDataHandlerClient";
+    @Deprecated
     public static final QName BDT_HANDLER_REFERENCE_QNAME = new QName("http://cagrid.nci.nih.gov/BulkDataHandlerReference", "BulkDataHandlerReference");
+    @Deprecated
     public static final QName BDT_QUERY_METHOD_INPUT_MESSAGE = new QName(BDT_DATA_SERVICE_NAMESPACE, "BdtQueryRequest");
+    @Deprecated
     public static final QName BDT_QUERY_METHOD_OUTPUT_MESSAGE = new QName(BDT_DATA_SERVICE_NAMESPACE, "BdtQueryResponse");
     
     // transfer query method constants
