@@ -53,14 +53,14 @@ public class ExtensionsUpgradeManager {
 
 
     private boolean needsRemoving() {
-
         ExtensionType[] extensions = serviceInformation.getServiceDescriptor().getExtensions().getExtension();
         if (extensions != null) {
             for (int extensionI = 0; extensionI < extensions.length; extensionI++) {
                 ExtensionType extension = extensions[extensionI];
                 ExtensionDescription extDescription = ExtensionsLoader.getInstance().getExtension(extension.getName());
                 if (extDescription.getServiceExtensionDescription() != null) {
-                    if (extDescription.getServiceExtensionDescription().getShouldBeRemoved() !=null && extDescription.getServiceExtensionDescription().getShouldBeRemoved()) {
+                    if (extDescription.getServiceExtensionDescription().getShouldBeRemoved() != null
+                        && extDescription.getServiceExtensionDescription().getShouldBeRemoved().booleanValue()) {
                         return true;
                     }
                 }
@@ -81,7 +81,9 @@ public class ExtensionsUpgradeManager {
             for (int extensionI = 0; extensionI < extensions.length; extensionI++) {
                 ExtensionType extension = extensions[extensionI];
                 ExtensionDescription extDescription = ExtensionsLoader.getInstance().getExtension(extension.getName());
-                if (extDescription.getServiceExtensionDescription()!=null && extDescription.getServiceExtensionDescription().getShouldBeRemoved() != null && extDescription.getServiceExtensionDescription().getShouldBeRemoved()) {
+                if (extDescription.getServiceExtensionDescription() != null
+                    && extDescription.getServiceExtensionDescription().getShouldBeRemoved() != null
+                    && extDescription.getServiceExtensionDescription().getShouldBeRemoved().booleanValue()) {
                     toBeRemoved.add(extension.getName());
                     if (extDescription.getServiceExtensionDescription().getServiceExtensionRemover() != null) {
                         try {
@@ -90,6 +92,7 @@ public class ExtensionsUpgradeManager {
                             if (remover != null) {
                                 remover.remove(ExtensionsLoader.getInstance().getServiceExtension(extension.getName()),
                                     this.serviceInformation);
+                                status.addDescriptionLine("Removed extension " + extension.getName());
                             }
                         } catch (ExtensionRemovalException e) {
                             e.printStackTrace();
@@ -111,7 +114,6 @@ public class ExtensionsUpgradeManager {
             serviceInformation.getIntroduceServiceProperties().setProperty(
                 IntroduceConstants.INTRODUCE_SKELETON_EXTENSIONS, extensionsPropertyString);
         }
-
     }
 
 
@@ -149,24 +151,21 @@ public class ExtensionsUpgradeManager {
                                     found = true;
                                     break;
                                 }
-
                             }
                             if (found) {
                                 upgrades.add(extensionUpgrades[i]);
                                 currentVersion = extensionUpgrades[i].getToVersion();
                             } else {
-                                error
-                                    .add(extension.getName()
-                                        + " extension used on service is older than currently installed and does not appear to have correct upgrade.");
+                                error.add(extension.getName() 
+                                    + " extension used on service is older than currently installed " 
+                                    + "and does not appear to have correct upgrade.");
                                 break;
                             }
-
                         }
 
                     } else {
-                        error
-                            .add(extension.getName()
-                                + " extension used on service is older than currently installed and does not appear to have any upgrades.");
+                        error.add(extension.getName() + " extension used on service is older than currently " 
+                            + "installed and does not appear to have any upgrades.");
                     }
 
                 }
@@ -193,6 +192,5 @@ public class ExtensionsUpgradeManager {
             }
             throw new Exception(errorString);
         }
-
     }
 }
