@@ -185,7 +185,13 @@ public class FileTypesSelectionComponent extends NamespaceTypeDiscoveryComponent
                                 .fileNameToDocument(FileTypesSelectionComponent.this.currentFile);
                             FileTypesSelectionComponent.this.currentNamespace = doc.getRootElement().getAttributeValue(
                                 "targetNamespace");
-                            getNamespaceText().setText(FileTypesSelectionComponent.this.currentNamespace);
+                            if (FileTypesSelectionComponent.this.currentNamespace == null
+                                || FileTypesSelectionComponent.this.currentNamespace.trim().equals("")) {
+                                CompositeErrorDialog
+                                    .showErrorDialog("The selected file does not have a valid targetNamespace; no namespace schemas are not supported.");
+                            } else {
+                                getNamespaceText().setText(FileTypesSelectionComponent.this.currentNamespace);
+                            }
                         }
                     } catch (Exception ex) {
                         CompositeErrorDialog.showErrorDialog("Please make sure the file is a valid XML Schema", ex);
@@ -344,7 +350,7 @@ public class FileTypesSelectionComponent extends NamespaceTypeDiscoveryComponent
             storedSchemas.add(currentSchema);
 
         }
-        
+
         // Look for redefines
         List redefineEls = schema.getRootElement().getChildren("redefine",
             schema.getRootElement().getNamespace(IntroduceConstants.W3CNAMESPACE));
@@ -377,7 +383,6 @@ public class FileTypesSelectionComponent extends NamespaceTypeDiscoveryComponent
             }
 
         }
-        
 
         // Look for includes
         List includeEls = schema.getRootElement().getChildren("include",
