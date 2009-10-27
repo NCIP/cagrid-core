@@ -22,15 +22,7 @@
 	<property name="ext.lib.dir" value="${basedir}/ext/dependencies/jars" />
 
 	<property name="extension.jar.name" value="${project.jar.prefix}extension${project.jar.suffix}" />
-	<property name="test.jar.name" value="${project.jar.prefix}tests${project.jar.suffix}" />
-
-	<!-- Important test directories and files -->
-	<property name="test.dir" value="test" />
-	<property name="test.src.dir" value="${test.dir}/src" />
-	<property name="ext.test.lib.dir" value="${basedir}/ext/dependencies/test/jars" />
-	<property name="test.log.dir" value="${test.dir}/logs" />
-	<property name="junit.results.dir" value="${test.log.dir}/junit" />
-
+	
 	<!-- Basic Build directories -->
 	<property name="extension.description.file" value="${basedir}/extension/extension.xml" />
 	<property name="introduce.extensions.dir" location="../introduce/extensions" />
@@ -39,7 +31,6 @@
 	<property name="build.dir" location="build" />
 	<!-- Directory for compiled service classes -->
 	<property name="build.dest" location="${build.dir}/classes" />
-	<property name="test.build.dest" value="${build.dir}/test/classes" />
 	<!-- Directory for compiled JAR files (additional library files required by
 	     the service will also be placed here) -->
 	<property name="build.lib.dir" location="${build.dir}/lib" />
@@ -47,14 +38,10 @@
 	<!-- We want detailed error messages -->
 	<property name="java.debug" value="on" />
 
-	<import file="test/test.xml" />
-
 	<!-- Sets up the build directory structure -->
 	<target name="init" depends="defineClasspaths">
 		<mkdir dir="${build.dir}" />
 		<mkdir dir="${build.dest}" />
-		<mkdir dir="${test.build.dest}" />
-		<mkdir dir="${test.log.dir}" />
 		<mkdir dir="${build.lib.dir}" />
 	</target>
 
@@ -68,18 +55,6 @@
 				<exclude name="junit.jar"/>
 			</fileset>
 		</path>
-		<path id="test.build.classpath">
-			<path refid="base.classpath"/>
-			<fileset dir="${ext.test.lib.dir}">
-				<include name="*.jar" />
-			</fileset>
-			<pathelement location="${build.dest}" />
-		</path>
-		<path id="test.run.classpath">
-			<pathelement location="${test.build.dest}" />
-			<pathelement location="${test.dir}/resources" />
-			<path refid="test.build.classpath" />
-		</path>
 		<path id="run.classpath">
 			<pathelement location="${build.dest}" />
 			<path refid="base.classpath"/>
@@ -92,13 +67,7 @@
 		<javac srcdir="${src.dir}" classpathref="base.classpath" includes="**" destdir="${build.dest}" debug="${java.debug}" deprecation="${deprecation}" />
 	</target>
 
-
-	<!-- Compile the test implementation classes (service, resource, etc.) -->
-	<target name="compileTests" depends="compile">
-		<javac srcdir="${test.src.dir}" classpathref="test.build.classpath" destdir="${test.build.dest}" debug="${java.debug}" deprecation="${deprecation}" />
-	</target>
-
-
+	
 	<!-- Create a JAR file with the implementation classes -->
 	<target name="jar" depends="compile">
 		<jar jarfile="${build.lib.dir}/${extension.jar.name}">
@@ -111,22 +80,6 @@
 		</jar>
 	</target>
 
-
-	<!-- Create a JAR file with the test implementation classes -->
-	<target name="jarTests" depends="compileTests">
-		<jar jarfile="${build.lib.dir}/${test.jar.name}">
-			<fileset dir="${test.build.dest}">
-				<include name="**/*" />
-			</fileset>
-			<fileset dir="${test.src.dir}">
-				<include name="**/*"/>
-			</fileset>
-			<fileset dir="${test.dir}">
-				<include name="resources/**/*" />
-			</fileset>
-		</jar>
-	</target>
-	
 	
 	<!-- Clean up all the intermediate files -->
 	<target name="clean" description="Removes all generated build artifacts."> 
@@ -135,7 +88,7 @@
 
 	
 	<!-- Default target "all" builds and jars everything, including test -->
-	<target name="all" depends="jar, jarTests" description="Builds everything" />
+	<target name="all" depends="jar" description="Builds everything" />
 
 	
 	<target name="help" description="Prints usage information.">

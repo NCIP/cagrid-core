@@ -12,26 +12,20 @@
   <configurations>
     <!-- Private Configurations-->
     <conf name="impl" visibility="private" extends="extension"/>
-    <conf name="impl-test" visibility="private"/>
 
     <!-- Public Configurations-->
     <conf name="extension" visibility="public"/>
-    <conf name="test" visibility="public" extends="impl-test"/>
   </configurations>
 
 
   <publications>
-    <artifact name="caGrid-BulkDataHandler-tests" conf="test" type="jar"/>
     <artifact name="caGrid-BulkDataHandler-extension" conf="extension" type="jar"/>
   </publications>
 
   <dependencies>
     <dependency rev="latest.integration" org="caGrid" name="core"
-      conf="extension->default;test->test"/>
+      conf="extension->default"/>
     <dependency rev="latest.integration" org="caGrid" name="introduce"
       conf="extension->extension"/>
-    
-    <!-- tied to impl-test so everybody doesn't get junit if they depend on BDT -->
-    <dependency rev="4.4" org="junit" name="junit" conf="impl-test->default"/>
   </dependencies>
 </ivy-module>
