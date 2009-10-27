@@ -21,7 +21,7 @@ public class UpgradeTestProperties {
     public static final String UPGRADE_SERVICES_ZIP_DIR = "upgrade.services.zip.dir";
     
     // defaults
-    public static final String DEFAULT_UPGRADE_SERVICES_ZIP_DIR = "resources/services";
+    public static final String DEFAULT_UPGRADE_SERVICES_ZIP_DIR = "resources/services/upgrade";
     public static final String DEFAULT_UPGRADE_SERVICES_EXTRACT_DIR = "test/services";
     
     private UpgradeTestProperties() {
