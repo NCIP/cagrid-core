@@ -29,6 +29,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.axis.message.MessageElement;
+import org.apache.commons.logging.LogFactory;
 import org.jdom.Element;
 import org.jdom.JDOMException;
 
@@ -53,6 +54,7 @@ public class DataServiceUpgradeFrom1pt3 extends ExtensionUpgraderBase {
 
 	
 	protected void upgrade() throws Exception {
+	    LogFactory.getLog(DataServiceUpgradeFrom1pt3.class).debug("UPGRADING DATA FROM 1.3");
 		try {
 			validateUpgrade();
 			
