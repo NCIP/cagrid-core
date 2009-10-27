@@ -5,7 +5,6 @@ import gov.nih.nci.cagrid.common.XMLUtilities;
 import gov.nih.nci.cagrid.introduce.IntroduceConstants;
 import gov.nih.nci.cagrid.introduce.beans.ServiceDescription;
 import gov.nih.nci.cagrid.introduce.beans.extension.ExtensionType;
-import gov.nih.nci.cagrid.introduce.beans.extension.ExtensionsType;
 import gov.nih.nci.cagrid.introduce.beans.extension.ServiceExtensionDescriptionType;
 import gov.nih.nci.cagrid.introduce.beans.method.MethodType;
 import gov.nih.nci.cagrid.introduce.beans.method.MethodTypeExceptionsException;
@@ -51,6 +50,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintStream;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
@@ -238,8 +238,7 @@ public class SyncTools {
 
 
     public void sync() throws Exception {
-
-        // instatiate and load up service information
+        // instantiate and load up service information
         ServiceInformation info = new ServiceInformation(this.baseDirectory);
 
         if ((info.getServiceDescriptor().getIntroduceVersion() == null)
@@ -352,7 +351,7 @@ public class SyncTools {
             }
         }
 
-        // persit the changed information model back to the service diretory
+        // persist the changed information model back to the service directory
         info.persistInformation();
 
         // STEP 4: write out namespace mappings and flatten the wsdl file then
@@ -365,7 +364,7 @@ public class SyncTools {
         MultiServiceSymbolTable table = new MultiServiceSymbolTable(info, excludeSet);
         table.generateSymbolTable();
 
-        // STEP 6: fill out the object model with the generated classnames where
+        // STEP 6: fill out the object model with the generated class names where
         // the user didn't specify them explicitly
         try {
             populateClassnames(info, table);
@@ -412,12 +411,12 @@ public class SyncTools {
 
         generateDeploymentValidatorList(info);
 
-        // make a copy of the model to compate with next time
+        // make a copy of the model to compare with next time
         Utils.copyFile(new File(baseDirectory.getAbsolutePath() + File.separator
             + IntroduceConstants.INTRODUCE_XML_FILE), new File(baseDirectory.getAbsolutePath() + File.separator
             + IntroduceConstants.INTRODUCE_XML_FILE + ".prev"));
 
-        // make a copy of the properties to compate with next time
+        // make a copy of the properties to compare with next time
         Utils.copyFile(new File(baseDirectory.getAbsolutePath() + File.separator
             + IntroduceConstants.INTRODUCE_PROPERTIES_FILE), new File(baseDirectory.getAbsolutePath() + File.separator
             + IntroduceConstants.INTRODUCE_PROPERTIES_FILE + ".prev"));
@@ -668,66 +667,76 @@ public class SyncTools {
 
     private void updateServiceExtensions(ServiceInformation info) throws Exception {
         Properties oldProps = new Properties();
-        try {
-            oldProps.load(new FileInputStream(new File(baseDirectory.getAbsolutePath() + File.separator
-                + IntroduceConstants.INTRODUCE_PROPERTIES_FILE + ".prev").getAbsolutePath()));
-        } catch (Exception e) {
-            // do nothing this might be right after creation, therefore no prev
-            // file exists
+        File oldPropsFile = new File(baseDirectory.getAbsolutePath() + File.separator
+            + IntroduceConstants.INTRODUCE_PROPERTIES_FILE + ".prev");
+        // right after creation, this file won't exist
+        if (oldPropsFile.exists()) {
+            FileInputStream fis = new FileInputStream(oldPropsFile);
+            oldProps.load(fis);
+            fis.close();
+        } else {
+            logger.debug("Previous properties file " 
+                + oldPropsFile.getAbsolutePath() + " did not exist");
         }
         if (oldProps.size() >= 0 && oldProps.getProperty(IntroduceConstants.INTRODUCE_SKELETON_EXTENSIONS) != null) {
-            String oldExtensions = oldProps.getProperty(IntroduceConstants.INTRODUCE_SKELETON_EXTENSIONS);
+            // list the current extensions
             String currentExtensions = info.getIntroduceServiceProperties().getProperty(
                 IntroduceConstants.INTRODUCE_SKELETON_EXTENSIONS);
-            StringTokenizer strtok = new StringTokenizer(oldExtensions, ",", false);
-            List oldExts = new ArrayList<String>();
-            while (strtok.hasMoreElements()) {
-                String next = strtok.nextToken();
+            logger.debug("Current extensions list: " + currentExtensions);
+            // list the old extensions
+            String oldExtensions = oldProps.getProperty(IntroduceConstants.INTRODUCE_SKELETON_EXTENSIONS);
+            logger.debug("Old extensions list: " + oldExtensions);
+            StringTokenizer oldExtTok = new StringTokenizer(oldExtensions, ",", false);
+            List<String> oldExts = new ArrayList<String>();
+            while (oldExtTok.hasMoreElements()) {
+                String next = oldExtTok.nextToken();
                 oldExts.add(next);
             }
 
             // process the new ones and compare them to the old ones
-            List newExts = new ArrayList<String>();
-            strtok = new StringTokenizer(currentExtensions, ",", false);
-            while (strtok.hasMoreElements()) {
-                String next = strtok.nextToken();
+            List<String> newExts = new ArrayList<String>();
+            StringTokenizer newExtTok = new StringTokenizer(currentExtensions, ",", false);
+            while (newExtTok.hasMoreElements()) {
+                String next = newExtTok.nextToken();
                 newExts.add(next);
                 if (!oldExts.contains(next)) {
                     logger.info("A new extension needs added: " + next);
-                    CreationExtensionPostProcessor pp = null;
-                    ServiceExtensionDescriptionType desc = ExtensionsLoader.getInstance().getServiceExtension(next);
-
-                    pp = ExtensionTools.getCreationPostProcessor(next);
-
+                    ServiceExtensionDescriptionType desc = 
+                        ExtensionsLoader.getInstance().getServiceExtension(next);
+                    CreationExtensionPostProcessor pp = ExtensionTools.getCreationPostProcessor(next);
                     if (pp != null) {
                         pp.postCreate(desc, info);
                     }
                 }
-
             }
 
             // process the old ones and compare to the new ones
-            Iterator it = oldExts.iterator();
-            while (it.hasNext()) {
-                String next = (String) it.next();
-                if (!newExts.contains(next)) {
-                    logger.info("An extension needs removed: " + next);
-                    ServiceExtensionRemover remover = ExtensionTools.getServiceExtensionRemover(next);
+            List<ExtensionType> currentExtensionsList = new ArrayList<ExtensionType>();
+            if (info.getExtensions() != null && info.getExtensions().getExtension() != null) {
+                Collections.addAll(currentExtensionsList, info.getExtensions().getExtension());
+            }
+            for (String oldExtName : oldExts){
+                if (!newExts.contains(oldExtName)) {
+                    logger.info("An extension needs removed: " + oldExtName);
+                    // if there's a remover utility for the extension, run it
+                    ServiceExtensionRemover remover = 
+                        ExtensionTools.getServiceExtensionRemover(oldExtName);
                     if (remover != null) {
-                        remover.remove(ExtensionsLoader.getInstance().getServiceExtension(next), info);
+                        remover.remove(ExtensionsLoader.getInstance().getServiceExtension(oldExtName), info);
                     }
-                    ExtensionType[] modifiedExtensionsArray = new ExtensionType[info.getExtensions().getExtension().length - 1];
-                    int kept = 0;
-                    for (int i = 0; i < info.getExtensions().getExtension().length; i++) {
-                        ExtensionType extType = info.getExtensions().getExtension(i);
-                        if (!extType.getName().equals(next)) {
-                            modifiedExtensionsArray[kept++] = extType;
+                    // locate the removed extension in the current extensions list and remove it too
+                    for (ExtensionType ext : currentExtensionsList) {
+                        if (ext.getName().equals(oldExtName)) {
+                            currentExtensionsList.remove(ext);
+                            break;
                         }
                     }
-                    info.getExtensions().setExtension(modifiedExtensionsArray);
                 }
             }
-
+            // set the kept extensions list back into the service model
+            ExtensionType[] currentExtensionsArray = new ExtensionType[currentExtensionsList.size()];
+            currentExtensionsList.toArray(currentExtensionsArray);
+            info.getExtensions().setExtension(currentExtensionsArray);
         }
     }
 
@@ -736,7 +745,7 @@ public class SyncTools {
         try {
             ServiceDescription sd = null;
             try {
-                sd = (ServiceDescription) Utils.deserializeDocument(new File(baseDirectory.getAbsolutePath()
+                sd = Utils.deserializeDocument(new File(baseDirectory.getAbsolutePath()
                     + File.separator + IntroduceConstants.INTRODUCE_XML_FILE + ".prev").getAbsolutePath(),
                     ServiceDescription.class);
             } catch (Exception e) {
@@ -792,7 +801,6 @@ public class SyncTools {
                 }
             }
         }
-
     }
 
 
@@ -940,12 +948,12 @@ public class SyncTools {
                         SchemaElementType type = ntype.getSchemaElement(j);
                         if (type.getClassName() != null) {
                             if (ntype.getLocation() != null) {
-                                // the namespace contains customly serialized
+                                // the namespace contains custom serialized
                                 // beans... so don't generate stubs
 
                                 excludeSet.add(ntype.getNamespace());
                                 // this schema is excluded.. no need to check
-                                // the rest of the schemaelements
+                                // the rest of the schema elements
                                 break;
                             }
                         }
@@ -973,14 +981,14 @@ public class SyncTools {
                         SchemaElementType type = ntype.getSchemaElement(j);
                         if (type.getClassName() != null) {
                             if (ntype.getLocation() != null) {
-                                // the namespace contains customly serialized
+                                // the namespace contains custom serialized
                                 // beans... so don't generate stubs
 
                                 excludeSet.add(ntype.getNamespace());
                                 SyncUtils.walkSchemasGetNamespaces(schemaDir + File.separator + ntype.getLocation(),
                                     excludeSet, new HashSet(), new HashSet());
                                 // this schema is excluded.. no need to check
-                                // the rest of the schemaelements
+                                // the rest of the schema elements
                                 break;
                             }
                         }
@@ -1051,7 +1059,6 @@ public class SyncTools {
         }
 
         writeNamespaceMappings(info);
-
     }
 
 
@@ -1093,8 +1100,8 @@ public class SyncTools {
      * @throws Exception
      */
     public static boolean addFault(String exceptionName, SpecificServiceInformation info) throws Exception {
-        // just for backwars compatibility with some earlier non releases
-        // i will check for the existance of the xsd for service before i
+        // just for backwards compatibility with some earlier non releases
+        // i will check for the existence of the xsd for service before i
         // attempt
         // to add faults to it.
         String serviceSchemaDir = info.getBaseDirectory() + File.separator + "schema" + File.separator
