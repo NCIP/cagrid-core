@@ -224,6 +224,7 @@
 		</path>
 	</target>
 
+	
 	<!-- =================================================================== -->
 	<!--  Generate JET template classes                                      -->
 	<!-- =================================================================== -->
@@ -233,6 +234,7 @@
 		<jetc destdir="${src.dir}" template="jettemplates/jndi-config-resource.xmljet" />
 	</target>
 
+	
 	<!-- Generate bindings for our WSDL file -->
 	<!-- This is done with a GT4 tool -->
 	<target name="serviceGenerateBindings" depends="init">
@@ -244,6 +246,7 @@
 		</ant>
 	</target>
 
+	
 	<target name="merge" depends="init">
 		<!-- Merge our namespace mappings file with the GT4 mappins file -->
 		<ant antfile="${build.stubs}" target="mergePackageMapping" inheritall="false">
@@ -252,6 +255,7 @@
 		</ant>
 	</target>
 
+	
 	<!-- Generate the stub source files -->
 	<!-- This is done with a GT4 tool -->
 	<target name="serviceStubs" depends="serviceGenerateBindings,merge">
@@ -348,6 +352,7 @@
 	<!-- Empty target, in case we simply want to generate the JAR files -->
 	<target name="jars" depends="jarStubs, jar, jarTests" />
 
+	
 	<!-- Clean up all the intermediate files -->
 		<target name="clean" description="Removes all generated build artifacts." depends="checkContribTasksDefined, defineContribTasks"> 
 		<delete dir="tmp" />
@@ -355,9 +360,11 @@
 		<delete file="${gar.name}" />
 	</target>
 
+	
 	<!-- Default target "all" builds and jars everything, including test....does not make a GAR-->
 	<target name="all" depends="jars" description="Builds the entire service." />
 
+	
 	<target name="help" description="Prints usage information.">
 		<echo message="================================================================================" />
 		<echo message="|    Introduce Created Grid Service                                            |" />
@@ -365,14 +372,14 @@
 		<echo message="--------------------------------------------------------------------------------" />
 		<echo message="|  USAGE:                                                                      |" />
 		<echo message="|    Type 'ant -h' for general help with Ant                                   |" />
-		<echo message="|    Type 'ant -p' for a description of this service's build targets.          |" />
+		<echo message="|    Type 'ant -p' for a description of this project's build targets.          |" />
 		<echo message="================================================================================" />
 	</target>
 
+	
 	<target name="installIntroduceExtensions">
 		<delete dir="${introduce.extensions.dir}/bdt" />
 		<mkdir dir="${introduce.extensions.dir}/bdt" />
-		<mkdir dir="${introduce.extensions.dir}/bdt/schema" />
 		<!-- extension description file -->
 		<copy todir="${introduce.extensions.dir}/bdt" file="${extension.description.file}" />
 		<!-- libraries -->
@@ -388,35 +395,5 @@
 				<include name="**/*.jar" />
 			</fileset>
 		</copy>
-
-		<!-- bdt specific schemas and wsdl -->
-		<copy todir="${introduce.extensions.dir}/bdt/schema">
-			<fileset dir="${basedir}/schema/BulkDataHandler/">
-				<include name="**/*.xsd" />
-				<include name="**/*.wsdl" />
-			</fileset>
-		</copy>
-
-		<!-- enumeration response container -->
-		<copy todir="${introduce.extensions.dir}/bdt/schema">
-			<fileset dir="${ext.schema.dir}">
-				<include name="EnumerationResponseContainer.xsd" />
-			</fileset>
-		</copy>
-
-		<!-- etc/metadata file -->
-		<copy todir="${introduce.extensions.dir}/bdt/etc">
-			<fileset dir="./etc">
-				<include name="BulkDataHandler-metadata.xml" />
-			</fileset>
-		</copy>
-
-		<!-- introduce xml file -->
-		<copy todir="${introduce.extensions.dir}/bdt">
-			<fileset dir="./">
-				<include name="introduce.xml" />
-			</fileset>
-		</copy>
 	</target>
-
 </project>
