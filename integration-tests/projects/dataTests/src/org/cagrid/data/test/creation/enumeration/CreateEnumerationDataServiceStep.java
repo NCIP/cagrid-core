@@ -11,6 +11,8 @@ import gov.nih.nci.cagrid.introduce.beans.extension.ExtensionTypeExtensionData;
 
 import java.io.File;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.cagrid.data.test.creation.CreationStep;
 import org.cagrid.data.test.creation.DataTestCaseInfo;
 
@@ -23,6 +25,8 @@ import org.cagrid.data.test.creation.DataTestCaseInfo;
  * @version $Id: CreateEnumerationDataServiceStep.java,v 1.1 2008-05-16 19:25:25 dervin Exp $ 
  */
 public class CreateEnumerationDataServiceStep extends CreationStep {
+    
+    private static Log LOG = LogFactory.getLog(CreateEnumerationDataServiceStep.class);
 	
 	public CreateEnumerationDataServiceStep(DataTestCaseInfo info, String introduceDir) {
 		super(info, introduceDir);
@@ -31,13 +35,13 @@ public class CreateEnumerationDataServiceStep extends CreationStep {
     
     public void postSkeletonCreation() throws Throwable {
         // verify the service model exists
-        System.out.println("Verifying the service model file exists");
+        LOG.debug("Verifying the service model file exists");
         File serviceModelFile = new File(serviceInfo.getDir() + File.separator + IntroduceConstants.INTRODUCE_XML_FILE);
         assertTrue("Service model file does not exist: " + serviceModelFile.getAbsolutePath(), serviceModelFile.exists());
         assertTrue("Service model file cannot be read: " + serviceModelFile.getAbsolutePath(), serviceModelFile.canRead());
         
         // deserialize the service model
-        System.out.println("Deserializing service description from introduce.xml");
+        LOG.debug("Deserializing service description from introduce.xml");
         ServiceDescription serviceDesc = Utils.deserializeDocument(
             serviceModelFile.getAbsolutePath(), ServiceDescription.class);      
         
@@ -59,7 +63,7 @@ public class CreateEnumerationDataServiceStep extends CreationStep {
         dataExtension.setExtensionData(extData);
         
         // enable the ws-enumeration support feature
-        System.out.println("Setting ws-enumeration feature enabled");
+        LOG.debug("Setting ws-enumeration feature enabled");
         Data data = ExtensionDataUtils.getExtensionData(extData);
         ServiceFeatures features = data.getServiceFeatures();
         if (features == null) {
@@ -70,7 +74,7 @@ public class CreateEnumerationDataServiceStep extends CreationStep {
         ExtensionDataUtils.storeExtensionData(extData, data);
         
         // serialize the edited model to disk
-        System.out.println("Serializing service model to disk");
+        LOG.debug("Serializing service model to disk");
         Utils.serializeDocument(serviceInfo.getDir() + File.separator + IntroduceConstants.INTRODUCE_XML_FILE,
             serviceDesc, IntroduceConstants.INTRODUCE_SKELETON_QNAME);
     }

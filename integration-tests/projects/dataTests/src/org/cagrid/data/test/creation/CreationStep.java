@@ -3,6 +3,7 @@ package org.cagrid.data.test.creation;
 
 import gov.nih.nci.cagrid.common.StreamGobbler;
 import gov.nih.nci.cagrid.common.Utils;
+import gov.nih.nci.cagrid.common.StreamGobbler.LogPriority;
 import gov.nih.nci.cagrid.introduce.IntroduceConstants;
 import gov.nih.nci.cagrid.introduce.beans.ServiceDescription;
 import gov.nih.nci.cagrid.introduce.beans.extension.ExtensionType;
@@ -27,7 +28,7 @@ import org.apache.commons.logging.LogFactory;
  */
 public class CreationStep extends Step {
     
-    private static final Log logger = LogFactory.getLog(CreationStep.class);
+    private static final Log log = LogFactory.getLog(CreationStep.class);
     
     protected DataTestCaseInfo serviceInfo;
     protected String introduceDir;
@@ -41,46 +42,56 @@ public class CreationStep extends Step {
 	
 
 	public void runStep() throws Throwable {
-		System.out.println("Creating service...");
-
+		log.debug("Creating service...");
 		List<String> cmd = AntTools.getAntSkeletonCreationCommand(introduceDir, serviceInfo.getName(), 
 			serviceInfo.getDir(), serviceInfo.getPackageName(), serviceInfo.getNamespace(), 
             serviceInfo.getResourceFrameworkType(), serviceInfo.getExtensions());
-        System.out.println("EXECUTING COMMAND: " + cmd);
+        debugCommand(cmd);
 		Process createSkeletonProcess = CommonTools.createAndOutputProcess(cmd);
         new StreamGobbler(createSkeletonProcess.getInputStream(), 
-            StreamGobbler.TYPE_OUT, System.out).start();
+            StreamGobbler.TYPE_OUT, log, LogPriority.INFO).start();
         new StreamGobbler(createSkeletonProcess.getErrorStream(), 
-            StreamGobbler.TYPE_ERR, System.err).start();
+            StreamGobbler.TYPE_ERR, log, LogPriority.ERROR).start();
         createSkeletonProcess.waitFor();
 		assertTrue("Creating new data service failed", createSkeletonProcess.exitValue() == 0);
         
         postSkeletonCreation();
 		
-		System.out.println("Invoking post creation processes...");
+		log.debug("Invoking post creation processes...");
 		cmd = AntTools.getAntSkeletonPostCreationCommand(introduceDir, serviceInfo.getName(),
 			serviceInfo.getDir(), serviceInfo.getPackageName(), serviceInfo.getNamespace(), getServiceExtensions());
-        System.out.println("EXECUTING COMMAND: " + cmd);
+        debugCommand(cmd);
 		Process postCreateProcess = CommonTools.createAndOutputProcess(cmd);
         new StreamGobbler(postCreateProcess.getInputStream(), 
-            StreamGobbler.TYPE_OUT, System.out).start();
+            StreamGobbler.TYPE_OUT, log, LogPriority.INFO).start();
         new StreamGobbler(postCreateProcess.getErrorStream(), 
-            StreamGobbler.TYPE_ERR, System.err).start();
+            StreamGobbler.TYPE_ERR, log, LogPriority.ERROR).start();
         postCreateProcess.waitFor();
 		assertTrue("Service post creation process failed", postCreateProcess.exitValue() == 0);
         
         postSkeletonPostCreation();
 
-		System.out.println("Building created service...");
+		log.debug("Building created service...");
 		cmd = AntTools.getAntAllCommand(serviceInfo.getDir());
-        System.out.println("EXECUTING COMMAND: " + cmd);
+        debugCommand(cmd);
 		Process antAllProcess = CommonTools.createAndOutputProcess(cmd);
         new StreamGobbler(antAllProcess.getInputStream(), 
-            StreamGobbler.TYPE_OUT, System.out).start();
+            StreamGobbler.TYPE_OUT, log, LogPriority.INFO).start();
         new StreamGobbler(antAllProcess.getErrorStream(), 
-            StreamGobbler.TYPE_ERR, System.err).start();
+            StreamGobbler.TYPE_ERR, log, LogPriority.ERROR).start();
         antAllProcess.waitFor();
 		assertTrue("Build process failed", antAllProcess.exitValue() == 0);
+	}
+	
+	
+	protected void debugCommand(List<String> cmd) {
+	    if (log.isDebugEnabled()) {
+	        StringBuffer buf = new StringBuffer();
+	        for (String s : cmd) {
+	            buf.append(s).append(' ');
+	        }
+	        log.debug("COMMAND: " + buf.toString().trim());
+	    }
 	}
     
     
