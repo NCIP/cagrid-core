@@ -156,18 +156,10 @@ public class PointsOfContactEditorPanel extends JPanel implements ListSelectionL
                 this.validationResult.add(new SimpleValidationMessage("First name must not be blank.", Severity.ERROR,
                     "first-name"));
             }
-            if (!ValidationUtils.isAlphaSpace(getFnameTextField().getText())) {
-                this.validationResult.add(new SimpleValidationMessage("First name must be be alpha characters.",
-                    Severity.ERROR, "first-name"));
-            }
 
             if (ValidationUtils.isBlank(getLnameTextField().getText())) {
                 this.validationResult.add(new SimpleValidationMessage("Last name must not be blank.", Severity.ERROR,
                     "last-name"));
-            }
-            if (!ValidationUtils.isAlphaSpace(getLnameTextField().getText())) {
-                this.validationResult.add(new SimpleValidationMessage("Last name must be be alpha characters.",
-                    Severity.ERROR, "last-name"));
             }
 
             if (ValidationUtils.isBlank(getEmailTextField().getText())) {
