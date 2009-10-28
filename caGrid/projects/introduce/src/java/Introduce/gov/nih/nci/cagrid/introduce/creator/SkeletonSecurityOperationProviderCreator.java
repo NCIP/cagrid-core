@@ -120,8 +120,10 @@ public class SkeletonSecurityOperationProviderCreator {
                 // excludes do that
                 // the message beans are not generated again
                 Properties props = new Properties();
-                props.load(new FileInputStream(new File(info.getBaseDirectory().getAbsolutePath() + File.separator
-                    + IntroduceConstants.INTRODUCE_PROPERTIES_FILE)));
+                FileInputStream fis = new FileInputStream(new File(info.getBaseDirectory(),
+                    IntroduceConstants.INTRODUCE_PROPERTIES_FILE));
+                props.load(fis);
+                fis.close();
                 if (props.getProperty(IntroduceConstants.INTRODUCE_NS_EXCLUDES) != null) {
                     props.setProperty(IntroduceConstants.INTRODUCE_NS_EXCLUDES, props
                         .getProperty(IntroduceConstants.INTRODUCE_NS_EXCLUDES)
@@ -129,8 +131,10 @@ public class SkeletonSecurityOperationProviderCreator {
                 } else {
                     props.setProperty(IntroduceConstants.INTRODUCE_NS_EXCLUDES, SERVICE_NS_EXCLUDE);
                 }
-                props.store(new FileOutputStream(new File(info.getBaseDirectory().getAbsolutePath() + File.separator
-                    + IntroduceConstants.INTRODUCE_PROPERTIES_FILE)), "Introduce service properties");
+                FileOutputStream fos = new FileOutputStream(new File(info.getBaseDirectory(),
+                    IntroduceConstants.INTRODUCE_PROPERTIES_FILE));
+                props.store(fos, "Introduce service properties");
+                fos.close();
             }
         }
     }

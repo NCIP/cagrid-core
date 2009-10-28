@@ -1341,9 +1341,10 @@ public class ModificationViewer extends ApplicationComponent {
                         // introduce model for them to use.....
                         Properties oldProps = new Properties();
                         try {
-                            oldProps.load(new FileInputStream(new File(info.getBaseDirectory().getAbsolutePath()
-                                + File.separator + IntroduceConstants.INTRODUCE_PROPERTIES_FILE + ".prev")
-                                .getAbsolutePath()));
+                            FileInputStream fis = new FileInputStream(new File(info.getBaseDirectory(),
+                                IntroduceConstants.INTRODUCE_PROPERTIES_FILE + ".prev"));
+                            oldProps.load(fis);
+                            fis.close();
                         } catch (Exception e) {
                             // do nothing this might be right after creation,
                             // therefore no prev file exists

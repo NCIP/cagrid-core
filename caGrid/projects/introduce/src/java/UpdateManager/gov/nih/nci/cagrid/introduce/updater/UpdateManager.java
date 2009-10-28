@@ -3,7 +3,6 @@ package gov.nih.nci.cagrid.introduce.updater;
 import gov.nih.nci.cagrid.introduce.beans.software.ExtensionType;
 import gov.nih.nci.cagrid.introduce.beans.software.IntroduceType;
 import gov.nih.nci.cagrid.introduce.beans.software.SoftwareType;
-import gov.nih.nci.cagrid.introduce.codegen.SyncTools;
 
 import java.io.BufferedInputStream;
 import java.io.File;
@@ -94,7 +93,9 @@ public class UpdateManager {
                         + "introduce.properties");
                     Properties props = new Properties();
                     try {
-                        props.load(new FileInputStream(engineProps));
+                        FileInputStream enginePropsIn = new FileInputStream(engineProps);
+                        props.load(enginePropsIn);
+                        enginePropsIn.close();
                         props.setProperty("introduce.patch.version", String.valueOf(update.getIntroduceRev(0)
                             .getPatchVersion()));
                         FileOutputStream fos = new FileOutputStream(engineProps);
@@ -109,7 +110,9 @@ public class UpdateManager {
                         + "introduce.properties.template");
                     Properties propsT = new Properties();
                     try {
-                        propsT.load(new FileInputStream(enginePropsT));
+                        FileInputStream enginePropsTin = new FileInputStream(enginePropsT);
+                        propsT.load(enginePropsTin);
+                        enginePropsTin.close();
                         propsT.setProperty("introduce.patch.version", String.valueOf(update.getIntroduceRev(0)
                             .getPatchVersion()));
                         FileOutputStream fos = new FileOutputStream(enginePropsT);
@@ -217,8 +220,10 @@ public class UpdateManager {
         }
 
         org.w3c.dom.Document doc = null;
+        FileInputStream fis = null;
         try {
-            doc = XMLUtils.newDocument(new InputSource(new FileInputStream(updateFile)));
+            fis = new FileInputStream(updateFile);
+            doc = XMLUtils.newDocument(new InputSource(fis));
         } catch (FileNotFoundException e) {
             logger.error(e);
         } catch (ParserConfigurationException e) {
@@ -240,6 +245,11 @@ public class UpdateManager {
         } catch (Exception e) {
             logger.error(e);
             System.exit(2);
+        }
+        try {
+            fis.close();
+        } catch (Exception ex) {
+            logger.error(ex);
         }
         manager.execute();
         updateFile.delete();

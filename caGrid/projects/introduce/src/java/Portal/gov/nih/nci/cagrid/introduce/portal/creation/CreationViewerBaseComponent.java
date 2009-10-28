@@ -128,9 +128,10 @@ public abstract class CreationViewerBaseComponent extends ApplicationComponent {
 
                         setProgressText("Invoking extension viewers...");
                         Properties properties = new Properties();
-                        properties.load(new FileInputStream(dir + File.separator
-                            + IntroduceConstants.INTRODUCE_PROPERTIES_FILE));
-                        ServiceDescription introService = (ServiceDescription) Utils.deserializeDocument(dir
+                        FileInputStream propsIn = new FileInputStream(new File(dir, IntroduceConstants.INTRODUCE_PROPERTIES_FILE));
+                        properties.load(propsIn);
+                        propsIn.close();
+                        ServiceDescription introService = Utils.deserializeDocument(dir
                             + File.separator + IntroduceConstants.INTRODUCE_XML_FILE, ServiceDescription.class);
                         ServiceInformation info = new ServiceInformation(introService, properties, new File(dir));
 

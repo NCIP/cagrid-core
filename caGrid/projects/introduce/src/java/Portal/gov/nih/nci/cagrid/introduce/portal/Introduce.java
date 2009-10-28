@@ -75,7 +75,9 @@ public final class Introduce {
                 Properties props = new Properties();
 
                 try {
-                    props.load(new FileInputStream(engineProps));
+                    FileInputStream enginePropsIn = new FileInputStream(engineProps);
+                    props.load(enginePropsIn);
+                    enginePropsIn.close();
                     props.setProperty("introduce.patch.version", String.valueOf(patchProperties
                         .get(IntroduceConstants.INTRODUCE_PATCH_VERSION_PROPERTY)));
                     FileOutputStream fos = new FileOutputStream(engineProps);
@@ -92,7 +94,9 @@ public final class Introduce {
                     + "introduce.properties.template");
                 Properties propsT = new Properties();
                 try {
-                    propsT.load(new FileInputStream(enginePropsT));
+                    FileInputStream enginePropsTin = new FileInputStream(enginePropsT);
+                    propsT.load(enginePropsTin);
+                    enginePropsTin.close();
                     propsT.setProperty("introduce.patch.version", String.valueOf(patchProperties
                         .get(IntroduceConstants.INTRODUCE_PATCH_VERSION_PROPERTY)));
                     FileOutputStream fos = new FileOutputStream(enginePropsT);

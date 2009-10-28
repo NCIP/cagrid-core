@@ -76,7 +76,9 @@ public class ResourceManager {
         if (!lastDir.exists()) {
             lastDir.createNewFile();
         }
-        properties.load(new FileInputStream(lastDir));
+        FileInputStream fis = new FileInputStream(lastDir);
+        properties.load(fis);
+        fis.close();
         return properties.getProperty(key);
     }
 
@@ -88,9 +90,13 @@ public class ResourceManager {
                 lastDir.createNewFile();
             }
             Properties properties = new Properties();
-            properties.load(new FileInputStream(lastDir));
+            FileInputStream fis = new FileInputStream(lastDir);
+            properties.load(fis);
+            fis.close();
             properties.setProperty(key, value);
-            properties.store(new FileOutputStream(lastDir), "");
+            FileOutputStream fos = new FileOutputStream(lastDir);
+            properties.store(fos, "");
+            fos.close();
         }
     }
 

@@ -1,7 +1,6 @@
 package gov.nih.nci.cagrid.introduce.common;
 
 import gov.nih.nci.cagrid.introduce.IntroduceConstants;
-import gov.nih.nci.cagrid.introduce.codegen.SyncTools;
 
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -34,7 +33,9 @@ public final class IntroducePropertiesManager {
     public static String getIntroducePropertyValue(String propertyKey) {
         Properties engineProps = new Properties();
         try {
-            engineProps.load(new FileInputStream(IntroduceConstants.INTRODUCE_PROPERTIES));
+            FileInputStream fis = new FileInputStream(IntroduceConstants.INTRODUCE_PROPERTIES);
+            engineProps.load(fis);
+            fis.close();
             return engineProps.getProperty(propertyKey);
         } catch (IOException e) {
             logger.error(e);
