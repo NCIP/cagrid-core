@@ -4,10 +4,6 @@
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="lib" path="ext/dependencies/jars/c3p0-0.8.5.2.jar"/>
 	<classpathentry kind="lib" path="ext/dependencies/jars/caGrid-authz-common-1.4-dev.jar"/>
-	<classpathentry kind="lib" path="ext/dependencies/jars/caGrid-BulkDataHandler-client-1.4-dev.jar"/>
-	<classpathentry kind="lib" path="ext/dependencies/jars/caGrid-BulkDataHandler-common-1.4-dev.jar"/>
-	<classpathentry kind="lib" path="ext/dependencies/jars/caGrid-BulkDataHandler-service-1.4-dev.jar"/>
-	<classpathentry kind="lib" path="ext/dependencies/jars/caGrid-BulkDataHandler-stubs-1.4-dev.jar"/>
 	<classpathentry kind="lib" path="ext/dependencies/jars/caGrid-core-1.4-dev.jar"/>
 	<classpathentry kind="lib" path="ext/dependencies/jars/caGrid-core-resources-1.4-dev.jar"/>
 	<classpathentry kind="lib" path="ext/dependencies/jars/caGrid-core-tests-1.4-dev.jar"/>

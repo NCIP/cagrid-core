@@ -5,10 +5,6 @@
 	<classpathentry kind="lib" path="ext/dependencies/jars/antlr-2.7.6.jar"/>
 	<classpathentry kind="lib" path="ext/dependencies/jars/cadsrapi40-beans.jar"/>
 	<classpathentry kind="lib" path="ext/dependencies/jars/caGrid-advertisement-1.4-dev.jar"/>
-	<classpathentry kind="lib" path="ext/dependencies/jars/caGrid-BulkDataHandler-client-1.4-dev.jar"/>
-	<classpathentry kind="lib" path="ext/dependencies/jars/caGrid-BulkDataHandler-common-1.4-dev.jar"/>
-	<classpathentry kind="lib" path="ext/dependencies/jars/caGrid-BulkDataHandler-service-1.4-dev.jar"/>
-	<classpathentry kind="lib" path="ext/dependencies/jars/caGrid-BulkDataHandler-stubs-1.4-dev.jar"/>
 	<classpathentry kind="lib" path="ext/dependencies/jars/caGrid-caDSR-1.4-dev.jar"/>
 	<classpathentry kind="lib" path="ext/dependencies/jars/caGrid-core-1.4-dev.jar"/>
 	<classpathentry kind="lib" path="ext/dependencies/jars/caGrid-core-resources-1.4-dev.jar"/>
@@ -83,15 +79,10 @@
 	<classpathentry kind="lib" path="ext/dependencies/jars/globus_wsrf_servicegroup.jar"/>
 	<classpathentry kind="lib" path="ext/dependencies/jars/hibernate-annotations.jar"/>
 	<classpathentry kind="lib" path="ext/dependencies/jars/hibernate-commons-annotations.jar"/>
-	<classpathentry kind="lib" path="ext/dependencies/jars/htmllexer.jar"/>
-	<classpathentry kind="lib" path="ext/dependencies/jars/htmlparser.jar"/>
-	<classpathentry kind="lib" path="ext/dependencies/jars/httpclient-4.0.jar"/>
-	<classpathentry kind="lib" path="ext/dependencies/jars/httpcore-4.0.1.jar"/>
 	<classpathentry kind="lib" path="ext/dependencies/jars/jasciidammit-1.1.jar"/>
 	<classpathentry kind="lib" path="ext/dependencies/jars/jaxen-1.1.jar"/>
 	<classpathentry kind="lib" path="ext/dependencies/jars/jaxmejs-0.5.2.jar"/>
 	<classpathentry kind="lib" path="ext/dependencies/jars/jcalendar.jar"/>
-	<classpathentry kind="lib" path="ext/dependencies/jars/jcip-annotations.jar"/>
 	<classpathentry kind="lib" path="ext/dependencies/jars/jdepend-2.7.jar"/>
 	<classpathentry kind="lib" path="ext/dependencies/jars/jdom-1.0.jar"/>
 	<classpathentry kind="lib" path="ext/dependencies/jars/jdtcore.jar"/>
