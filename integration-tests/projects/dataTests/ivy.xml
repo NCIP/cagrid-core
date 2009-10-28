@@ -16,8 +16,7 @@
 
 
   <publications>
-	<artifact name="caGrid-${ivy.module}" conf="default" type="jar"/>
-	
+	<artifact name="caGrid-${ivy.module}" conf="default" type="jar"/>	
   </publications>
 
   <dependencies>
@@ -30,6 +29,9 @@
     
     <!-- Data core -->
     <dependency rev="latest.integration" org="caGrid" name="data" conf="default->service"/>
+    
+    <!-- Transfer client -->
+    <dependency rev="latest.integration" org="caGrid" name="transfer" conf="default->client"/>
     
     <!-- CQL stubs -->
     <dependency rev="latest.integration" org="caGrid" name="cql" conf="default->cql"/>
