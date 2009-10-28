@@ -1,21 +1,14 @@
 package gov.nih.nci.cagrid.introduce.upgrade.one.x;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.util.Properties;
-
-import org.apache.log4j.Logger;
-
-import gov.nih.nci.cagrid.introduce.codegen.SyncTools;
 import gov.nih.nci.cagrid.introduce.common.ServiceInformation;
 import gov.nih.nci.cagrid.introduce.upgrade.common.IntroduceUpgradeStatus;
 import gov.nih.nci.cagrid.introduce.upgrade.common.IntroduceUpgraderI;
 import gov.nih.nci.cagrid.introduce.upgrade.common.StatusBase;
 
+import org.apache.log4j.Logger;
 
-public abstract class IntroduceUpgraderBase implements  IntroduceUpgraderI{
+
+public abstract class IntroduceUpgraderBase implements IntroduceUpgraderI {
     
     private static final Logger logger = Logger.getLogger(IntroduceUpgraderBase.class);
     
