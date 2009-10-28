@@ -1,0 +1,122 @@
+<?xml version="1.0"?>
+<!-- adopted from GTBS and modified -->
+<project default="help" name="caGrid-BDT-Remover" basedir=".">
+
+	<!-- Define the environment variable -->
+	<property environment="env" />
+	<property name="globus.dir" location="${env.GLOBUS_LOCATION}" />
+	<!--  Properties in these files will override the properties defined in this file.
+	 -->
+	<property file="${basedir}/project.properties" />
+	<property file="${basedir}/build.properties" />
+	
+	<property name="project.name" value="${ant.project.name}" />
+	<property name="java.source" value="1.5" />
+
+	<property name="project.jar.prefix" value="${project.name}-" />
+	<property name="project.jar.suffix" value="-${project.version}.jar" />
+
+	<!-- Important directories and files -->
+	<property name="src.dir" location="${basedir}/src" />
+
+	<property name="ext.lib.dir" value="${basedir}/ext/dependencies/jars" />
+
+	<property name="extension.jar.name" value="${project.jar.prefix}extension${project.jar.suffix}" />
+	
+	<!-- Basic Build directories -->
+	<property name="extension.description.file" value="${basedir}/extension/extension.xml" />
+	<property name="introduce.extensions.dir" location="../introduce/extensions" />
+
+	<!-- Auxiliary directory where all the intermediate files will be placed -->
+	<property name="build.dir" location="build" />
+	<!-- Directory for compiled service classes -->
+	<property name="build.dest" location="${build.dir}/classes" />
+	<!-- Directory for compiled JAR files (additional library files required by
+	     the service will also be placed here) -->
+	<property name="build.lib.dir" location="${build.dir}/lib" />
+	
+	<!-- We want detailed error messages -->
+	<property name="java.debug" value="on" />
+
+	<!-- Sets up the build directory structure -->
+	<target name="init" depends="defineClasspaths">
+		<mkdir dir="${build.dir}" />
+		<mkdir dir="${build.dest}" />
+		<mkdir dir="${build.lib.dir}" />
+	</target>
+
+	<target name="defineClasspaths">
+		<path id="base.classpath">
+			<fileset dir="${ext.lib.dir}">
+				<include name="*.jar" />
+			</fileset>
+			<fileset dir="${globus.dir}/lib">
+				<include name="*.jar"/>
+				<exclude name="junit.jar"/>
+			</fileset>
+		</path>
+		<path id="run.classpath">
+			<pathelement location="${build.dest}" />
+			<path refid="base.classpath"/>
+		</path>
+	</target>
+
+
+	<!-- Compile the implementation classes (service, resource, etc.) -->
+	<target name="compile" depends="init" description="Compiles the service.">
+		<javac srcdir="${src.dir}" classpathref="base.classpath" includes="**" destdir="${build.dest}" debug="${java.debug}" deprecation="${deprecation}" />
+	</target>
+
+	
+	<!-- Create a JAR file with the implementation classes -->
+	<target name="jar" depends="compile">
+		<jar jarfile="${build.lib.dir}/${extension.jar.name}">
+			<fileset dir="${build.dest}">
+				<include name="**" />
+			</fileset>
+			<fileset dir="${src.dir}">
+				<include name="**"/>
+			</fileset>
+		</jar>
+	</target>
+
+	
+	<!-- Clean up all the intermediate files -->
+	<target name="clean" description="Removes all generated build artifacts."> 
+		<delete dir="${build.dir}"/>
+	</target>
+
+	
+	<!-- Default target "all" builds and jars everything, including test -->
+	<target name="all" depends="jar" description="Builds everything" />
+
+	
+	<target name="help" description="Prints usage information.">
+		<echo message="================================================================================" />
+		<echo message="|    Introduce Created Grid Service                                            |" />
+		<echo message="          Service: ${service.name}" />
+		<echo message="--------------------------------------------------------------------------------" />
+		<echo message="|  USAGE:                                                                      |" />
+		<echo message="|    Type 'ant -h' for general help with Ant                                   |" />
+		<echo message="|    Type 'ant -p' for a description of this project's build targets.          |" />
+		<echo message="================================================================================" />
+	</target>
+
+	
+	<target name="installIntroduceExtensions">
+		<delete dir="${introduce.extensions.dir}/bdt" />
+		<mkdir dir="${introduce.extensions.dir}/bdt" />
+		<!-- extension description file -->
+		<copy todir="${introduce.extensions.dir}/bdt" file="${extension.description.file}" />
+		<!-- libraries -->
+		<copy todir="${introduce.extensions.dir}/lib">
+			<fileset dir="${ext.lib.dir}">
+				<include name="*.jar" />
+				<exclude name="${cagrid.master.jar.prefix}*Introduce*.jar" />
+			</fileset>
+			<fileset dir="${build.lib.dir}">
+				<include name="**/*.jar" />
+			</fileset>
+		</copy>
+	</target>
+</project>
