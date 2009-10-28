@@ -3,11 +3,11 @@
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="var" path="GT4_LOCATION/lib/addressing-1.0.jar"/>
-	<classpathentry kind="var" path="GT4_LOCATION/lib/axis.jar" />
+	<classpathentry kind="var" path="GT4_LOCATION/lib/axis.jar"/>
 	<classpathentry kind="var" path="GT4_LOCATION/lib/axis-url.jar"/>
 	<classpathentry kind="var" path="GT4_LOCATION/lib/bootstrap.jar"/>
 	<classpathentry kind="var" path="GT4_LOCATION/lib/cog-axis.jar"/>
-	<classpathentry kind="var" path="GT4_LOCATION/lib/cog-jglobus.jar" />
+	<classpathentry kind="var" path="GT4_LOCATION/lib/cog-jglobus.jar"/>
 	<classpathentry kind="var" path="GT4_LOCATION/lib/cog-tomcat.jar"/>
 	<classpathentry kind="var" path="GT4_LOCATION/lib/cog-url.jar"/>
 	<classpathentry kind="var" path="GT4_LOCATION/lib/commonj.jar"/>
@@ -33,7 +33,7 @@
 	<classpathentry kind="var" path="GT4_LOCATION/lib/jaxrpc.jar"/>
 	<classpathentry kind="var" path="GT4_LOCATION/lib/jce-jdk13-125.jar"/>
 	<classpathentry kind="var" path="GT4_LOCATION/lib/jgss.jar"/>
-	<classpathentry kind="var" path="GT4_LOCATION/lib/junit.jar" />
+	<classpathentry kind="var" path="GT4_LOCATION/lib/junit.jar"/>
 	<classpathentry kind="var" path="GT4_LOCATION/lib/log4j-1.2.8.jar"/>
 	<classpathentry kind="var" path="GT4_LOCATION/lib/naming-common.jar"/>
 	<classpathentry kind="var" path="GT4_LOCATION/lib/naming-factory.jar"/>
@@ -55,7 +55,7 @@
 	<classpathentry kind="var" path="GT4_LOCATION/lib/wsrf_core_samples_mgmt_stubs.jar"/>
 	<classpathentry kind="var" path="GT4_LOCATION/lib/wsrf_core_samples_mgmt.jar"/>
 	<classpathentry kind="var" path="GT4_LOCATION/lib/wsrf_core_stubs.jar"/>
-	<classpathentry kind="var" path="GT4_LOCATION/lib/wsrf_core.jar" />
+	<classpathentry kind="var" path="GT4_LOCATION/lib/wsrf_core.jar"/>
 	<classpathentry kind="var" path="GT4_LOCATION/lib/wsrf_provider_jce.jar"/>
 	<classpathentry kind="var" path="GT4_LOCATION/lib/wsrf_test_interop_stubs.jar"/>
 	<classpathentry kind="var" path="GT4_LOCATION/lib/wsrf_test_interop.jar"/>
@@ -65,16 +65,12 @@
 	<classpathentry kind="var" path="GT4_LOCATION/lib/wsrf_tools.jar"/>
 	<classpathentry kind="var" path="GT4_LOCATION/lib/wss4j.jar"/>
 	<classpathentry kind="var" path="GT4_LOCATION/lib/xalan.jar"/>
-	<classpathentry kind="var" path="GT4_LOCATION/lib/xercesImpl.jar" />
+	<classpathentry kind="var" path="GT4_LOCATION/lib/xercesImpl.jar"/>
 	<classpathentry kind="var" path="GT4_LOCATION/lib/xml-apis.jar"/>
 	<classpathentry kind="var" path="GT4_LOCATION/lib/xmlsec.jar"/>
 	<classpathentry kind="lib" path="ext/dependencies/jars/asm.jar"/>
 	<classpathentry kind="lib" path="ext/dependencies/jars/c3p0-0.8.5.2.jar"/>
 	<classpathentry kind="lib" path="ext/dependencies/jars/caGrid-authz-common-1.4-dev.jar"/>
-	<classpathentry kind="lib" path="ext/dependencies/jars/caGrid-BulkDataHandler-client-1.4-dev.jar"/>
-	<classpathentry kind="lib" path="ext/dependencies/jars/caGrid-BulkDataHandler-common-1.4-dev.jar"/>
-	<classpathentry kind="lib" path="ext/dependencies/jars/caGrid-BulkDataHandler-service-1.4-dev.jar"/>
-	<classpathentry kind="lib" path="ext/dependencies/jars/caGrid-BulkDataHandler-stubs-1.4-dev.jar"/>
 	<classpathentry kind="lib" path="ext/dependencies/jars/caGrid-core-1.4-dev.jar"/>
 	<classpathentry kind="lib" path="ext/dependencies/jars/caGrid-core-resources-1.4-dev.jar"/>
 	<classpathentry kind="lib" path="ext/dependencies/jars/caGrid-core-tests-1.4-dev.jar"/>
