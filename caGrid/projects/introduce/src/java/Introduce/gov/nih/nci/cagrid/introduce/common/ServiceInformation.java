@@ -13,6 +13,7 @@ import gov.nih.nci.cagrid.introduce.beans.service.ServicesType;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.Properties;
 
 
@@ -61,16 +62,14 @@ public class ServiceInformation {
                 + e.getMessage(), e);
         }
 
-        introService = (ServiceDescription) Utils.deserializeDocument(introduceXML, ServiceDescription.class);
+        introService = Utils.deserializeDocument(introduceXML, ServiceDescription.class);
         
         File servicePropertiesFile = new File(baseDirectory.getAbsolutePath() + File.separator
             + IntroduceConstants.INTRODUCE_PROPERTIES_FILE);
-        introduceServiceProperties = new Properties();
-        introduceServiceProperties.load(new FileInputStream(servicePropertiesFile));
+        introduceServiceProperties = loadProperties(servicePropertiesFile);
         File deployPropertiesFile = new File(baseDirectory.getAbsolutePath() + File.separator
                 + IntroduceConstants.DEPLOY_PROPERTIES_FILE);
-        deploymentProperties = new Properties();
-        deploymentProperties.load(new FileInputStream(deployPropertiesFile));
+        deploymentProperties = loadProperties(deployPropertiesFile);
     }
 
 
@@ -148,12 +147,25 @@ public class ServiceInformation {
             + IntroduceConstants.INTRODUCE_XML_FILE, introService, IntroduceConstants.INTRODUCE_SKELETON_QNAME);
         File servicePropertiesFile = new File(baseDirectory.getAbsolutePath() + File.separator
             + IntroduceConstants.INTRODUCE_PROPERTIES_FILE);
-        introduceServiceProperties.store(new FileOutputStream(servicePropertiesFile), "Introduce Properties");
+        storeProperties(introduceServiceProperties, servicePropertiesFile, "Introduce Properties");
         File deploymentPropertiesFile = new File(baseDirectory.getAbsolutePath() + File.separator
                 + IntroduceConstants.DEPLOY_PROPERTIES_FILE);
-        FileOutputStream fos = new FileOutputStream(deploymentPropertiesFile);
-            deploymentProperties.store(fos, "Service Deployment Properties");
-        fos.close();
+        storeProperties(deploymentProperties, deploymentPropertiesFile, "Service Deployment Properties");
+    }
+    
+    
+    public void createArchive() throws Exception {
+        // create the archive
+        load();
+        long id = System.currentTimeMillis();
+
+        getIntroduceServiceProperties().setProperty(
+            IntroduceConstants.INTRODUCE_SKELETON_TIMESTAMP, String.valueOf(id));
+        storeProperties(getIntroduceServiceProperties(), new File(getBaseDirectory(),
+            IntroduceConstants.INTRODUCE_PROPERTIES_FILE), "Introduce Properties");
+
+        ResourceManager.createArchive(String.valueOf(id), getIntroduceServiceProperties().getProperty(
+            IntroduceConstants.INTRODUCE_SKELETON_SERVICE_NAME), getBaseDirectory().getAbsolutePath());
     }
 
 
@@ -165,20 +177,19 @@ public class ServiceInformation {
         return new File("schema" + File.separator + IntroduceConstants.INTRODUCE_XML_XSD_FILE).getAbsolutePath();
     }
     
-    public void createArchive() throws Exception {
-        // create the archive
-        load();
-        long id = System.currentTimeMillis();
-
-        getIntroduceServiceProperties().setProperty(IntroduceConstants.INTRODUCE_SKELETON_TIMESTAMP,
-            String.valueOf(id));
-        getIntroduceServiceProperties().store(
-            new FileOutputStream(getBaseDirectory().getAbsolutePath() + File.separator
-                + IntroduceConstants.INTRODUCE_PROPERTIES_FILE), "Introduce Properties");
-
-        ResourceManager.createArchive(String.valueOf(id), getIntroduceServiceProperties().getProperty(
-            IntroduceConstants.INTRODUCE_SKELETON_SERVICE_NAME), getBaseDirectory().getAbsolutePath());
+    
+    private Properties loadProperties(File propsFile) throws IOException {
+        Properties props = new Properties();
+        FileInputStream fis = new FileInputStream(propsFile);
+        props.load(fis);
+        fis.close();
+        return props;
     }
-
-
+    
+    
+    private void storeProperties(Properties props, File propsFile, String comments) throws IOException {
+        FileOutputStream fos = new FileOutputStream(propsFile);
+        props.store(fos, comments);
+        fos.close();
+    }
 }
