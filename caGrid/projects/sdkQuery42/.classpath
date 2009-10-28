@@ -6,7 +6,7 @@
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="var" path="GT4_LOCATION/lib/addressing-1.0.jar" sourcepath="/GT4_LOCATION/ws-core-4.0.3-src.zip"/>
 	<classpathentry kind="var" path="GT4_LOCATION/lib/axis-url.jar"/>
-	<classpathentry kind="var" path="GT4_LOCATION/lib/axis.jar" sourcepath="/GT4_LOCATION/ws-axis-src.zip"/>
+	<classpathentry kind="var" path="GT4_LOCATION/lib/axis.jar" sourcepath="/GT4_LOCATION/java/lib-src/ws-axis/ws-axis/java/src"/>
 	<classpathentry kind="var" path="GT4_LOCATION/lib/bootstrap.jar"/>
 	<classpathentry kind="var" path="GT4_LOCATION/lib/cog-axis.jar"/>
 	<classpathentry kind="var" path="GT4_LOCATION/lib/cog-jglobus.jar"/>
@@ -132,15 +132,10 @@
 	<classpathentry kind="lib" path="ext/dependencies/jars/globus_wsrf_servicegroup.jar"/>
 	<classpathentry kind="lib" path="ext/dependencies/jars/hibernate-annotations.jar"/>
 	<classpathentry kind="lib" path="ext/dependencies/jars/hibernate-commons-annotations.jar"/>
-	<classpathentry kind="lib" path="ext/dependencies/jars/htmllexer.jar"/>
-	<classpathentry kind="lib" path="ext/dependencies/jars/htmlparser.jar"/>
-	<classpathentry kind="lib" path="ext/dependencies/jars/httpclient-4.0.jar"/>
-	<classpathentry kind="lib" path="ext/dependencies/jars/httpcore-4.0.1.jar"/>
 	<classpathentry kind="lib" path="ext/dependencies/jars/jasciidammit-1.1.jar"/>
 	<classpathentry kind="lib" path="ext/dependencies/jars/jaxen-1.1.jar"/>
 	<classpathentry kind="lib" path="ext/dependencies/jars/jaxmejs-0.5.2.jar"/>
 	<classpathentry kind="lib" path="ext/dependencies/jars/jcalendar.jar"/>
-	<classpathentry kind="lib" path="ext/dependencies/jars/jcip-annotations.jar"/>
 	<classpathentry kind="lib" path="ext/dependencies/jars/jdom-1.0.jar"/>
 	<classpathentry kind="lib" path="ext/dependencies/jars/jhall.jar"/>
 	<classpathentry kind="lib" path="ext/dependencies/jars/jprov.jar"/>
