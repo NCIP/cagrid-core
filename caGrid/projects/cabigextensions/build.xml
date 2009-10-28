@@ -63,12 +63,12 @@
 	</fileset>
 
 
-
 	<target name="checkContribTasksDefined">
 		<condition property="contrib.tasks.defined">
 			<typefound name="for" />
 		</condition>
 	</target>
+	
 
 	<target name="defineContribTasks" unless="contrib.tasks.defined">
 		<taskdef resource="net/sf/antcontrib/antlib.xml">
@@ -318,13 +318,10 @@
 	</macrodef>
 
 	<!-- Build and install extensions for introduce -->
-	<target name="installIntroduceExtensions" description="Installs the caBIG extensions into Introduce (must build first).">
+	<target name="installIntroduceExtensions" depends="checkContribTasksDefined, defineContribTasks" description="Installs the caBIG extensions into Introduce (must build first).">
 
 		<!-- copy libraries -->
 		<copy todir="${introduce.extensions.dir}/lib">
-			<fileset dir="${lib.dir}">
-				<include name="*.jar" />
-			</fileset>
 			<fileset dir="${ext.lib.dir}">
 				<include name="*.jar" />
 				<exclude name="${cagrid.master.jar.prefix}*Introduce*.jar" />
