@@ -11,10 +11,9 @@ import org.apache.ivy.core.retrieve.RetrieveOptions;
 
 public class Retrieve {
 
-	public void execute(String ivySettingsFilename, String ivyDependenciesFilename, String baseDownloadDir, String organisation, String module, String targetGridName) {
+	public void execute(URL ivySettings, URL ivyDependencies, String baseDownloadDir, String organisation, String module, String targetGridName) {
 		Ivy ivy = Ivy.newInstance();
 		
-		URL ivySettings = this.getClass().getResource("/" + ivySettingsFilename);
 		try {
 			ivy.configure(ivySettings);
 		} catch (Exception e) {
@@ -29,7 +28,6 @@ public class Retrieve {
 		ivy.setVariable("organisation", organisation);
 		ivy.setVariable("module", module);
 		
-		URL ivyDependencies = this.getClass().getResource("/" + ivyDependenciesFilename);
 		try {
 			ivy.resolve(ivyDependencies);
 		} catch (Exception e) {

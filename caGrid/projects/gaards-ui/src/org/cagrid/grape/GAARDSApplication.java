@@ -12,6 +12,7 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -20,6 +21,12 @@ import javax.swing.JFrame;
 import javax.swing.UIManager;
 
 import org.apache.axis.utils.XMLUtils;
+import org.apache.commons.cli.CommandLine;
+import org.apache.commons.cli.CommandLineParser;
+import org.apache.commons.cli.GnuParser;
+import org.apache.commons.cli.Option;
+import org.apache.commons.cli.OptionBuilder;
+import org.apache.commons.cli.Options;
 import org.cagrid.grape.configuration.Grid;
 import org.cagrid.grape.configuration.TargetGridsConfiguration;
 import org.cagrid.grape.model.Application;
@@ -36,6 +43,10 @@ public class GAARDSApplication extends GridApplication{
 	
 	private static String targetGrid = null;
 	
+	private static URL ivySettingsURL = null;
+	private static URL ivyURL = null;
+	private static URL targetGridURL = null;
+		
     public GAARDSApplication(Application app) throws Exception {
         super();
 
@@ -48,29 +59,15 @@ public class GAARDSApplication extends GridApplication{
     }
 
     public static void main(String[] args) {
-    	
+    	loadDefaultConfigurationFiles();
+   	
         try {
         	Application app = null;
+        	    			
+        	processCommandLineParameters(args);
         	
-        	File file = null;
-    		if (args.length == 0) {
-    			InputStream inputStream = ClassLoader.getSystemClassLoader().getResourceAsStream("security-ui.xml");
-    			
-    			app = (Application) deserializeInputStream(inputStream, Application.class);
-    			inputStream.close();
-    			
-    		} else {
-    			file = new File(args[0]);
-    			if (!file.exists()) {
-    				System.out.println("Invalid configuration file supplied");
-        			System.exit(1);
-    			}
-    			app = (Application) Utils.deserializeDocument(file
-    					.getAbsolutePath(), Application.class);
-    		}
+        	app = loadApplicationSettings();
              
-
-            // launch the portal with the passed config
             GridApplication applicationInstance = GAARDSApplication.getInstance(app);
 
             try {
@@ -90,6 +87,22 @@ public class GAARDSApplication extends GridApplication{
             e.printStackTrace();
         }
     }
+
+	private static void loadDefaultConfigurationFiles() {
+		Throwable obj = new Throwable();
+    	ivySettingsURL = obj.getClass().getResource("/commandline-ivysettings.xml");
+    	ivyURL = obj.getClass().getResource("/commandline-ivy.xml");
+    	targetGridURL = obj.getClass().getResource("/target-grid-configuration.xml");
+	}
+
+	private static Application loadApplicationSettings() throws Exception,
+			IOException {
+		Application app;
+		InputStream inputStream = ClassLoader.getSystemClassLoader().getResourceAsStream("security-ui.xml");
+		app = (Application) deserializeInputStream(inputStream, Application.class);
+		inputStream.close();
+		return app;
+	}
 	
 	public static GridApplication getInstance(Application app) throws Exception {
 		if (application == null) {
@@ -144,7 +157,6 @@ public class GAARDSApplication extends GridApplication{
 				this.setIconImage(icon.getImage());
 			}
 		}
-		
 
 	}
 	
@@ -203,7 +215,7 @@ public class GAARDSApplication extends GridApplication{
 		Grid[] grids = targetGridsConfiguration.getGrid();
 		for (int counter = 0; counter < grids.length; counter++) {
 			Retrieve ivy = new Retrieve();
-			ivy.execute("commandline-ivysettings.xml", "commandline-ivy.xml", configDirName, "caGrid", "target_grid", grids[counter].getSystemName());
+			ivy.execute(ivySettingsURL, ivyURL, configDirName, "caGrid", "target_grid", grids[counter].getSystemName());
 			configurationManager.addConfiguration(loadConfiguration(), grids[counter]);
 		}
 		
@@ -220,9 +232,9 @@ public class GAARDSApplication extends GridApplication{
 		}
 		
 		if (!targetGridsConfigurationFile.exists()) {
-			InputStream inputStream = this.getClass().getResourceAsStream("/target-grid-configuration.xml");
-
 			try {
+				InputStream inputStream = targetGridURL.openStream();
+
 				FileOutputStream fos = new FileOutputStream(targetGridsConfigurationFile);
 				while (inputStream.available() > 0) {
 					fos.write(inputStream.read());
@@ -241,5 +253,53 @@ public class GAARDSApplication extends GridApplication{
         Object obj = ObjectDeserializer.toObject(doc.getDocumentElement(), objectType);
         return objectType.cast(obj);
     }
+	
+	@SuppressWarnings("static-access")
+	private static void processCommandLineParameters(String[] args) {
+		Option ivysettingsfile = OptionBuilder.withArgName("file").hasArg()
+				.withDescription("use given ivysettings").create("ivysettings");
+		Option ivyfile = OptionBuilder.withArgName("file").hasArg()
+				.withDescription("use given ivy").create("ivy");
+		Option targetgridfile = OptionBuilder.withArgName("file").hasArg()
+				.withDescription("use given targetgrid").create("targetgrid");
+		
+		Options options = new Options();
 
+		options.addOption(ivysettingsfile);
+		options.addOption(ivyfile);
+		options.addOption(targetgridfile);
+		
+	    CommandLineParser parser = new GnuParser();
+	    CommandLine line = null;
+	    try {
+			line = parser.parse( options, args );
+		} catch (org.apache.commons.cli.ParseException e) {
+			System.out.println("Unable to parse the command line options");
+			System.exit(1);
+		}
+		
+		ivySettingsURL = getConfigurationFiles(line, "ivysettings", ivySettingsURL);
+		ivyURL = getConfigurationFiles(line, "ivy", ivyURL);
+		targetGridURL = getConfigurationFiles(line, "targetgrid", targetGridURL);
+		
+	}
+
+	private static URL getConfigurationFiles(CommandLine line, String option, URL configurationURL) {
+		try {
+			if (line.hasOption(option)) {
+				String optionFilename = line.getOptionValue(option);
+				File optionFile = new File(optionFilename);
+				if (optionFile.exists()) {
+					return optionFile.toURL();
+				} else {
+					System.out.println("Invalid " + option + " file supplied");
+					System.exit(1);
+				}
+			}
+		} catch (Exception e) {
+			System.out.println("Invalid " + option + " file supplied");
+			System.exit(1);
+		}
+		return configurationURL;
+	}
 }
