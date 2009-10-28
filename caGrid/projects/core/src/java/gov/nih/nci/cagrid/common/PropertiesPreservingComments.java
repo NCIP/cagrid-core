@@ -93,8 +93,6 @@ public class PropertiesPreservingComments {
     
     
     public Object setProperty(String key, String value) {
-        // if the property already exists but is just commented out, uncomment it
-        uncommentProperty(key);
         String line = key + "=" + value + "\n";
         String oldValue = null;
         // see if the property exists
@@ -111,8 +109,6 @@ public class PropertiesPreservingComments {
     
     
     public Object remove(Object key) {
-        // if the property exists but is commented, uncomment it so it can be found
-        uncommentProperty((String) key);
         Object oldValue = getProperty((String) key);
         Integer lineIndex = propertyIndices.remove(key);
         if (lineIndex != null) {

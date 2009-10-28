@@ -18,6 +18,7 @@ public class PropertiesPreservingCommentsTestCase extends TestCase {
         "#property3=value3\n" +
         "### some comment\n" +
         "\n" +
+        "#property4=value4\n" +
         "property4=value4\n";
     
     private static final String SET_PROPERTY1 = 
@@ -29,6 +30,7 @@ public class PropertiesPreservingCommentsTestCase extends TestCase {
         "#property3=value3\n" +
         "### some comment\n" +
         "\n" +
+        "#property4=value4\n" +
         "property4=value4\n";
     
     private static final String SET_PROPERTY4 = 
@@ -40,6 +42,7 @@ public class PropertiesPreservingCommentsTestCase extends TestCase {
         "#property3=value3\n" +
         "### some comment\n" +
         "\n" +
+        "#property4=value4\n" +
         "property4=changed\n";
     
     private static final String ADD_PROPERTY5 = 
@@ -51,6 +54,7 @@ public class PropertiesPreservingCommentsTestCase extends TestCase {
         "#property3=value3\n" +
         "### some comment\n" +
         "\n" +
+        "#property4=value4\n" +
         "property4=value4\n" +
         "property5=value5\n";
     
@@ -62,6 +66,7 @@ public class PropertiesPreservingCommentsTestCase extends TestCase {
         "#property3=value3\n" +
         "### some comment\n" +
         "\n" +
+        "#property4=value4\n" +
         "property4=value4\n";
     
     private static final String COMMENT_PROPERTY2 = 
@@ -73,6 +78,7 @@ public class PropertiesPreservingCommentsTestCase extends TestCase {
         "#property3=value3\n" +
         "### some comment\n" +
         "\n" +
+        "#property4=value4\n" +
         "property4=value4\n";
     
     private static final String UNCOMMENT_PROPERTY3 = 
@@ -84,6 +90,7 @@ public class PropertiesPreservingCommentsTestCase extends TestCase {
         "property3=value3\n" +
         "### some comment\n" +
         "\n" +
+        "#property4=value4\n" +
         "property4=value4\n";
     
     private static final String SET_PROPERTY3 = 
@@ -92,10 +99,12 @@ public class PropertiesPreservingCommentsTestCase extends TestCase {
         "property2=value2\n" +
         "\n" +
         "\n" +
-        "property3=changed\n" +
+        "#property3=value3\n" +
         "### some comment\n" +
         "\n" +
-        "property4=value4\n";
+        "#property4=value4\n" +
+        "property4=value4\n" +
+        "property3=changed\n";
     
     
     private PropertiesPreservingComments properties = null;
@@ -147,7 +156,8 @@ public class PropertiesPreservingCommentsTestCase extends TestCase {
     
     
     public void testRemoveProperty2() {
-        properties.remove("property2");
+        Object oldValue = properties.remove("property2");
+        assertEquals("Previous value of property2 was not as expected", "value2", oldValue);
         compareProperties(REMOVE_PROPERTY2);
     }
     
@@ -170,7 +180,7 @@ public class PropertiesPreservingCommentsTestCase extends TestCase {
     
     public void testSetProperty3() {
         Object oldValue = properties.setProperty("property3", "changed");
-        assertEquals("Old value of property3 was not expected", "value3", oldValue);
+        assertEquals("Old value of property3 was not expected", null, oldValue);
         compareProperties(SET_PROPERTY3);
     }
 }
