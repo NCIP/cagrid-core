@@ -1,11 +1,16 @@
 package gov.nih.nci.cagrid.data.style;
 
+import gov.nih.nci.cagrid.common.Utils;
 import gov.nih.nci.cagrid.introduce.common.FileFilters;
 
 import java.io.File;
+import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLClassLoader;
+import java.util.HashSet;
+import java.util.Set;
+import java.util.StringTokenizer;
 
 /** 
  *  ServiceStyleContainer
@@ -17,6 +22,8 @@ import java.net.URLClassLoader;
  * @version $Id: ServiceStyleContainer.java,v 1.1 2007-07-12 17:20:52 dervin Exp $ 
  */
 public class ServiceStyleContainer {
+    
+    public static final String NOCOPY_LIBS_FILE = "nocopy.libs";
 
     private DataServiceStyle style;
     private File styleDir;
@@ -38,10 +45,24 @@ public class ServiceStyleContainer {
     }
     
     
-    public File[] getStyleLibraries() {
-        File styleLib = new File(styleDir.getAbsolutePath() + File.separator + "lib");
+    public File[] getStyleCopyLibs() throws IOException {
+        File styleLib = new File(styleDir, "lib");
         if (styleLib.exists() && styleLib.isDirectory()) {
-            File[] jars = styleLib.listFiles(new FileFilters.JarFileFilter());
+            final Set<String> nocopy = new HashSet<String>();
+            File nocopyFile = new File(styleDir, NOCOPY_LIBS_FILE);
+            if (nocopyFile.exists()) {
+                StringBuffer nocopyContents = Utils.fileToStringBuffer(nocopyFile);
+                StringTokenizer nocopyTok = new StringTokenizer(nocopyContents.toString(), ",");
+                while (nocopyTok.hasMoreTokens()) {
+                    nocopy.add(nocopyTok.nextToken());
+                }
+            }
+            File[] jars = styleLib.listFiles(new FileFilters.JarFileFilter() {
+                public boolean accept(File path) {
+                    boolean ok = super.accept(path);
+                    return !nocopy.contains(path.getName()) && ok;
+                }
+            });
             return jars;
         }
         return null;
@@ -129,11 +150,11 @@ public class ServiceStyleContainer {
      */
     public ClassLoader createClassLoader() throws MalformedURLException {
         if (classLoader == null) {
-            File[] libs = getStyleLibraries();
+            File[] libs = getStyleRuntimeLibs();
             if (libs != null) {
                 URL[] urls = new URL[libs.length];
                 for (int i = 0; i < libs.length; i++) {
-                    urls[i] = libs[i].toURL();
+                    urls[i] = libs[i].toURI().toURL();
                 }
                 classLoader = new URLClassLoader(urls, Thread.currentThread().getContextClassLoader());
             } else {
@@ -141,5 +162,15 @@ public class ServiceStyleContainer {
             }
         }
         return classLoader;
+    }
+    
+    
+    protected File[] getStyleRuntimeLibs() {
+        File styleLib = new File(styleDir, "lib");
+        if (styleLib.exists() && styleLib.isDirectory()) {
+            File[] jars = styleLib.listFiles(new FileFilters.JarFileFilter());
+            return jars;
+        }
+        return null;
     }
 }
