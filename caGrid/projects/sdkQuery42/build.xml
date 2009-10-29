@@ -64,7 +64,7 @@
 
 	<!-- style related stuff -->
 	<property name="introduce.extensions.dir" location="../introduce/extensions" />
-	<property name="style.document" location="${basedir}/style/style.xml" />
+	<property name="style.info.dir" location="${basedir}/style"/>
 	<property name="style.dest.dir" location="${introduce.extensions.dir}/data/styles/cacore42" />
 
 	<!-- SDK remote and local libraries needed for builds -->
@@ -205,8 +205,12 @@
 		<delete dir="${style.dest.dir}" />
 		<mkdir dir="${style.dest.dir}" />
 		<mkdir dir="${style.dest.dir}/lib" />
-		<!-- copy in the style.xml file -->
-		<copy file="${style.document}" todir="${style.dest.dir}" />
+		<!-- copy in the info -->
+		<copy todir="${style.dest.dir}">
+			<fileset dir="${style.info.dir}">
+				<include name="**/*"/>
+			</fileset>
+		</copy>
 		<!-- copy in the style's jar file -->
 		<copy todir="${style.dest.dir}/lib">
 			<!-- the style itself and query processor -->
@@ -216,6 +220,9 @@
 			<!-- copy the SDK common style jar file -->
 			<fileset dir="${ext.lib.dir}">
 				<include name="*sdkstyle.jar" />
+			</fileset>
+			<fileset dir="${ext.local-client.lib.dir}" >
+				<include name="sdk-client-framework-4.2.jar"/>
 			</fileset>
 		</copy>
 	</target>
