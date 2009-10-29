@@ -100,13 +100,14 @@
 		<mkdir dir="${build.dir}"/>
 		<mkdir dir="${classes.dir}"/>
 		<mkdir dir="${jar.dir}"/>
-		<mkdir dir="${sdk.unpack.dir}"/>
 		<antcall target="unpackSdk"/>
 	</target>
 	
 	
 	<!-- unpacks the caCORE SDK -->
 	<target name="unpackSdk">
+		<delete dir="${sdk.unpack.dir}"/>
+		<delete dir="${example.project.unpack.dir}"/>
 		<unzip src="${sdk.zip}" dest="${sdk.unpack.dir}"/>
 		<unzip src="${example.project.zip}" dest="${example.project.unpack.dir}"/>
 	</target>
@@ -117,7 +118,7 @@
 	<!-- =============================================================== -->
 	<target name="compile" depends="prepare" description="compiles.">
 		<!-- test source -->
-		<javac srcdir="${src.dir}" destdir="${classes.dir}" source="${java.source}" target="${java.source}" debug="${java.debug}" deprecation="off" optimize="off">
+		<javac srcdir="${src.dir}" destdir="${classes.dir}" source="${java.source}" target="${java.source}" debug="${java.debug}" memoryinitialsize="256m" memorymaximumsize="1024m" fork="true">
 			<classpath refid="build.classpath" />
 		</javac>
 	</target>
