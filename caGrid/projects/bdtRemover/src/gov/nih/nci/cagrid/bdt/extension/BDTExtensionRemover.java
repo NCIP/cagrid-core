@@ -13,11 +13,17 @@ import gov.nih.nci.cagrid.introduce.extension.ServiceExtensionRemover;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.StringReader;
+import java.util.Iterator;
 
 import javax.xml.namespace.QName;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.apache.ws.jaxme.js.JavaMethod;
+import org.apache.ws.jaxme.js.JavaSource;
+import org.apache.ws.jaxme.js.JavaSourceFactory;
+import org.apache.ws.jaxme.js.util.JavaParser;
 
 /**
  * Removes the BDT extension from a service
@@ -39,9 +45,14 @@ public class BDTExtensionRemover implements ServiceExtensionRemover {
             if (service.getMethods() != null && service.getMethods().getMethod() != null) {
                 for (MethodType method : service.getMethods().getMethod()) {
                     if (methodReturnsBdtHandle(service, method)) {
-                        LOG.debug("Method " + method.getName() + " of service " + service.getName() 
-                            + " returns a BDT handle and will have it's implementation disabled");
-                        unimplementBdtMethod(info, service, method);
+                        if (!method.isIsProvided()) {
+                            LOG.debug("Method " + method.getName() + " of service " + service.getName() 
+                                + " returns a BDT handle and will have it's implementation disabled");
+                            unimplementBdtMethod(info, service, method);
+                        } else {
+                            LOG.debug("Method " + method.getName() + " of service " + service.getName()
+                                + " returns a BDT handle, but is provided and so will not be edited");
+                        }
                     }
                 }
             }
@@ -80,9 +91,10 @@ public class BDTExtensionRemover implements ServiceExtensionRemover {
     
     
     private void unimplementBdtMethod(ServiceInformation info, ServiceType service, MethodType method) throws ExtensionRemovalException {
+        String implClassName = service.getName() + "Impl";
         File implSourceFile = new File(info.getBaseDirectory(), "src" + File.separator
             + CommonTools.getPackageDir(service) + File.separator 
-            + "service" + File.separator + service.getName() + "Impl.java");
+            + "service" + File.separator + implClassName + ".java");
         LOG.debug("Editing source file: " + implSourceFile.getAbsolutePath());
 
         StringBuffer fileContent = null;
@@ -93,8 +105,39 @@ public class BDTExtensionRemover implements ServiceExtensionRemover {
                 "Error loading service implementaton: " + ex.getMessage(), ex);
         }
 
+        // find the method in the source code using Jaxme
+        JavaSource implSource = null;
+        JavaSourceFactory sourceFactory = new JavaSourceFactory();
+        JavaParser sourceParser = new JavaParser(sourceFactory);
+        try {
+            sourceParser.parse(new StringReader(fileContent.toString()));
+        } catch (Exception ex) {
+            throw new ExtensionRemovalException("Error parsing source file " 
+                + implSourceFile.getAbsolutePath() + ": " + ex.getMessage(), ex);
+        }
+        Iterator<?> implIter = sourceFactory.getJavaSources();
+        while (implIter.hasNext()) {
+            JavaSource source = (JavaSource) implIter.next();
+            if (source.getClassName().equals(implClassName)) {
+                implSource = source;
+                break;
+            }
+        }
+        if (implSource == null) {
+            throw new ExtensionRemovalException("Could not locate class " + implClassName + " in parsed source");
+        }
+        JavaMethod implMethod = null;
+        for (JavaMethod m : implSource.getMethods()) {
+            if (CommonTools.lowerCaseFirstCharacter(method.getName()).equals(m.getName())) {
+                implMethod = m;
+                break;
+            }
+        }
+        if (implMethod == null) {
+            throw new ExtensionRemovalException("Could not locate method " + method.getName() + " in parsed source");
+        }
         // comment out the implementation of that method
-        String methodSignature = SyncHelper.createUnBoxedSignatureStringFromMethod(method, info);
+        String methodSignature = SyncHelper.createUnBoxedSignatureStringFromMethod(implMethod, info);
         LOG.debug("Looking for method signature " + methodSignature);
         int startOfMethod = SyncHelper.startOfSignature(fileContent, methodSignature);
         int endOfMethod = SyncHelper.bracketMatch(fileContent, startOfMethod);
@@ -103,16 +146,16 @@ public class BDTExtensionRemover implements ServiceExtensionRemover {
             throw new ExtensionRemovalException("WARNING: Unable to locate method in Impl : " + method.getName());
         }
         // find the start of the method body
-        startOfMethod = fileContent.indexOf("{", startOfMethod);
+        int startOfBody = fileContent.indexOf("{", startOfMethod) + 1;
         // comment out whatever implementation is there
-        fileContent.insert(startOfMethod, "/*");
-        int insertIndex = endOfMethod + 2;
-        insertIndex = insertString(fileContent, insertIndex, "*/");
+        fileContent.insert(startOfBody, "/*");
+        int insertIndex = endOfMethod + 2; // offset from "/*"
+        insertIndex = insertString(fileContent, insertIndex - 1, "*/\n"); // index  - 1 to be before the }
         
         // insert a comment and throw a not yet implemented exception
         insertIndex = insertString(fileContent, insertIndex, "// BDT has been removed from caGrid 1.4\n");
-        insertIndex = insertString(fileContent, insertIndex, "throw new java.rmi.RemoteException(\"BDT has been removed from caGrid 1.4\")\n");
-        
+        insertIndex = insertString(fileContent, insertIndex, "throw new java.rmi.RemoteException(\"BDT has been removed from caGrid 1.4\");\n");
+                
         // write out the edited service implementation
         try {
             Utils.stringBufferToFile(fileContent, implSourceFile.getAbsolutePath());
