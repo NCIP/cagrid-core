@@ -6,15 +6,7 @@ import org.cagrid.grape.configuration.Grid;
 import org.cagrid.grape.model.ConfigurationDescriptor;
 import org.cagrid.grape.model.ConfigurationDescriptors;
 import org.cagrid.grape.model.ConfigurationGroup;
-
-/**
- * @author <A HREF="MAILTO:langella@bmi.osu.edu">Stephen Langella</A>
- * @author <A HREF="MAILTO:oster@bmi.osu.edu">Scott Oster</A>
- * @author <A HREF="MAILTO:hastings@bmi.osu.edu">Shannon Hastings</A>
- * @author <A HREF="MAILTO:ervin@bmi.osu.edu">David W. Ervin</A>
- * @version $Id: GridGrouperBaseTreeNode.java,v 1.1 2006/08/04 03:49:26 langella
- *          Exp $
- */
+import org.cagrid.grape.utils.IconUtils;
 
 class TargetGridBaseTreeNode extends ConfigurationBaseTreeNode {
 
@@ -42,7 +34,6 @@ class TargetGridBaseTreeNode extends ConfigurationBaseTreeNode {
 						.getChildAt(i);
 				node.addToDisplay();
 			}
-
 		}
 	}
 
@@ -66,7 +57,6 @@ class TargetGridBaseTreeNode extends ConfigurationBaseTreeNode {
 				for (int i = 0; i < des.length; i++) {
 					this.processConfigurationDescriptor(des[i]);
 				}
-
 			}
 		}
 	}
@@ -90,11 +80,19 @@ class TargetGridBaseTreeNode extends ConfigurationBaseTreeNode {
 	}
 
 	public String toString() {
-		return grid.getDisplayName();
+		if (GAARDSApplication.getTargetGrid().equals(grid.getSystemName())) {
+			return grid.getDisplayName() + " (Active)";
+		} else {
+			return grid.getDisplayName();
+		}
 	}
 
 	public ImageIcon getIcon() {
-		return LookAndFeel.getConfigurationGroupIcon();
+		if (GAARDSApplication.getTargetGrid().equals(grid.getSystemName())) {
+			return IconUtils.loadIcon("/document-properties16x16.png");
+		} else {
+			return LookAndFeel.getConfigurationGroupIcon();
+		}
 	}
 
 	public String getIdentifier() {

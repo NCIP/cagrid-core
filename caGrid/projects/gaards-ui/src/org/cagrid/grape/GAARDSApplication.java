@@ -27,6 +27,7 @@ import org.apache.commons.cli.GnuParser;
 import org.apache.commons.cli.Option;
 import org.apache.commons.cli.OptionBuilder;
 import org.apache.commons.cli.Options;
+import org.apache.ivy.core.module.id.ModuleRevisionId;
 import org.cagrid.grape.configuration.Grid;
 import org.cagrid.grape.configuration.TargetGridsConfiguration;
 import org.cagrid.grape.model.Application;
@@ -34,6 +35,7 @@ import org.cagrid.grape.model.Component;
 import org.cagrid.grape.model.Configuration;
 import org.cagrid.grape.utils.ErrorDialog;
 import org.cagrid.grape.utils.IconUtils;
+import org.cagrid.ivy.Discover;
 import org.cagrid.ivy.Retrieve;
 import org.globus.wsrf.encoding.ObjectDeserializer;
 
@@ -213,10 +215,32 @@ public class GAARDSApplication extends GridApplication{
 		targetGrid = targetGridsConfiguration.getActiveGrid();
 		
 		Grid[] grids = targetGridsConfiguration.getGrid();
+		Retrieve ivy = new Retrieve();
 		for (int counter = 0; counter < grids.length; counter++) {
-			Retrieve ivy = new Retrieve();
 			ivy.execute(ivySettingsURL, ivyURL, configDirName, "caGrid", "target_grid", grids[counter].getSystemName());
 			configurationManager.addConfiguration(loadConfiguration(), grids[counter]);
+		}
+		Discover discover = new Discover();
+		ModuleRevisionId[] mrids = discover.execute("caGrid", "target_grid", ivySettingsURL);
+		
+		for (int counter = 0; counter < mrids.length; counter++) {
+			String systemName = mrids[counter].getRevision();
+			//configurationManager.addConfiguration(loadConfiguration(), grids[counter]);
+			if ("nci_stage-1.3".equals(systemName)) {
+				Grid grid = new Grid();
+				grid.setDisplayName(systemName);
+				grid.setSystemName(systemName);
+				ivy.execute(ivySettingsURL, ivyURL, configDirName, "caGrid", "target_grid", systemName);
+
+				Grid[] newGrid = new Grid[grids.length + 1];
+				
+
+				System.arraycopy(grids, 0, newGrid, 0, grids.length);
+				newGrid[grids.length] = grid;
+				
+				configurationManager.addConfiguration(loadConfiguration(), grid);	
+//				configurationManager.saveAll();
+			}
 		}
 		
 		configurationManager.setActiveConfiguration(targetGrid);
@@ -262,12 +286,15 @@ public class GAARDSApplication extends GridApplication{
 				.withDescription("use given ivy").create("ivy");
 		Option targetgridfile = OptionBuilder.withArgName("file").hasArg()
 				.withDescription("use given targetgrid").create("targetgrid");
+		Option targetgrid = OptionBuilder.withArgName("file").hasArg()
+				.withDescription("use given grid").create("grid");
 		
 		Options options = new Options();
 
 		options.addOption(ivysettingsfile);
 		options.addOption(ivyfile);
 		options.addOption(targetgridfile);
+		options.addOption(targetgrid);
 		
 	    CommandLineParser parser = new GnuParser();
 	    CommandLine line = null;
@@ -281,7 +308,9 @@ public class GAARDSApplication extends GridApplication{
 		ivySettingsURL = getConfigurationFiles(line, "ivysettings", ivySettingsURL);
 		ivyURL = getConfigurationFiles(line, "ivy", ivyURL);
 		targetGridURL = getConfigurationFiles(line, "targetgrid", targetGridURL);
-		
+		if (line.hasOption("grid")) {
+			targetGrid = line.getOptionValue("grid");
+		}
 	}
 
 	private static URL getConfigurationFiles(CommandLine line, String option, URL configurationURL) {
@@ -302,4 +331,13 @@ public class GAARDSApplication extends GridApplication{
 		}
 		return configurationURL;
 	}
+	
+	public static String getTargetGrid() {
+		return targetGrid;
+	}
+	
+	public static void setTargetGrid(String grid) {
+		targetGrid = grid;
+	}
+
 }

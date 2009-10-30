@@ -132,9 +132,7 @@ public class TargetGridDisplayPanel extends JPanel {
 					+ "certificates";
 			gridSyncGTDCertsDir = new File(gridSyncGTDCertsDirName);
 			if (gridSyncGTDCertsDir.exists()) {
-				gridSyncGTSCertFiles = gridSyncGTDCertsDir
-						.listFiles(fileOnlyFilter);
-
+				gridSyncGTSCertFiles = gridSyncGTDCertsDir.listFiles(fileOnlyFilter);
 				for (int i = 0; i < gridSyncGTSCertFiles.length; i++) {
 					gridSyncGTSCertFiles[i].delete();
 				}
@@ -166,26 +164,10 @@ public class TargetGridDisplayPanel extends JPanel {
 			GAARDSApplication.getContext().getConfigurationManager().reload();
 			ServicesManager.getInstance().syncWithUpdatedConfiguration();
 
-			//saveTargetGridToPropertyFile();
+			GAARDSApplication.setTargetGrid(grid.getSystemName());
 		} catch (Exception e) {
 			ErrorDialog.showError(e);
 		}
-
-	}
-
-	private void saveTargetGridToPropertyFile()
-			throws Exception {
-		
-		
-		
-		String gaardsPropertyFileName = GAARDS_CONFIGURATION_DIRECTORY
-				+ File.separator + "gaards.properties";
-		Properties gaardsPropertyFile = null;
-		gaardsPropertyFile = new Properties();
-		gaardsPropertyFile.load(new FileInputStream(gaardsPropertyFileName));
-		gaardsPropertyFile.setProperty("target.grid", grid.getSystemName());
-		gaardsPropertyFile.store(new FileOutputStream(gaardsPropertyFileName),
-				null);
 	}
 
 } 
