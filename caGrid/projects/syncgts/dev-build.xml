@@ -321,13 +321,13 @@
 	</target>
 
 
-	<target name="deployTrustedCerts" depends="checkGlobus,defineClasspaths">
+	<target name="deployTrustedCerts" depends="init">
 		<java classpathref="service.run.classpath" classname="gov.nih.nci.cagrid.syncgts.tools.DeployGTSTrustRoots" fork="yes" failonerror="true">
 			<arg value="${ext.targetgrid.dir}/certificates" />
 		</java>
 	</target>
 
-	<target name="syncWithTrustFabric" description="Sync with the GTS Once" depends="checkGlobus,deployTrustedCerts,defineClasspaths">
+	<target name="syncWithTrustFabric" description="Sync with the GTS Once" depends="init,deployTrustedCerts">
 		<java classpathref="service.run.classpath" classname="gov.nih.nci.cagrid.syncgts.tools.SyncGTSCommand" fork="yes" failonerror="true">
 			<jvmarg value="-Dlog4j.configuration=sync-gts-log4j.properties" />
 			<jvmarg value="-Dlog4j.debug" />
