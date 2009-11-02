@@ -87,11 +87,11 @@ public class ExtensionsUpgradeManager {
                     toBeRemoved.add(extension.getName());
                     if (extDescription.getServiceExtensionDescription().getServiceExtensionRemover() != null) {
                         try {
-                            ServiceExtensionRemover remover = ExtensionTools.getServiceExtensionRemover(extension
-                                .getName());
+                            ServiceExtensionRemover remover = ExtensionTools.getServiceExtensionRemover(
+                                extension.getName());
                             if (remover != null) {
-                                remover.remove(ExtensionsLoader.getInstance().getServiceExtension(extension.getName()),
-                                    this.serviceInformation);
+                                remover.remove(ExtensionsLoader.getInstance().getServiceExtension(
+                                    extension.getName()), serviceInformation);
                                 status.addDescriptionLine("Removed extension " + extension.getName());
                             }
                         } catch (ExtensionRemovalException e) {
