@@ -112,7 +112,7 @@
 	<!-- =============================================================== -->
 	<target name="compile" depends="prepare" description="compiles.">
 		<!-- test source -->
-		<javac srcdir="${src.dir}" destdir="${classes.dir}" source="${java.source}" target="${java.source}" debug="${java.debug}" deprecation="off" optimize="off">
+		<javac srcdir="${src.dir}" destdir="${classes.dir}" source="${java.source}" target="${java.source}" debug="${java.debug}" memoryinitialsize="256m" memorymaximumsize="1024m" fork="true">
 			<classpath refid="build.classpath" />
 		</javac>
 	</target>
