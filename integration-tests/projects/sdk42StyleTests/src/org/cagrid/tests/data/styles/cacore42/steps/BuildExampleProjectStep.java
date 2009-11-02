@@ -14,14 +14,8 @@ import org.cagrid.tests.data.styles.cacore42.ExecutableCommand;
 
 public class BuildExampleProjectStep extends Step {
     
-    // per Satish, but doesn't generate the output dirs... 
-    // public static final String BUILD_ANT_TARGET = "deploy:local:install:re-configure";
-    
-    // generates EVERYTHING and tries to install Tomcat, which I don't want, but does create the output dir
-    // public static final String BUILD_ANT_TARGET = "deploy:local:install";
-    
-    // again per Satish.  JBoss AND Tomcat containers still get downloaded, though
-    public static final String BUILD_ANT_TARGET = "dist deploy:local:install:re-configure";
+    // builds the system with NO CONTAINERS DOWNLOADED!
+    public static final String BUILD_ANT_TARGET = "build-system";
     
     private static Log LOG = LogFactory.getLog(BuildExampleProjectStep.class);
     
