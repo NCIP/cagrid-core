@@ -1,6 +1,7 @@
 package org.cagrid.gaards.dorian.policy;
 
 import gov.nih.nci.cagrid.common.FaultUtil;
+import gov.nih.nci.cagrid.opensaml.InvalidCryptoException;
 
 import java.security.PrivateKey;
 import java.security.Security;
@@ -42,15 +43,37 @@ public class TestHostAgreementEncoding extends TestCase {
             ha.sign(certs, key);
             ha.verify(cert);
             ha.verify();
+
+            try {
+                ha.verify(c2.getCertificate());
+                fail("Signing should not be verified.");
+            } catch (Exception e) {
+
+            }
+
             String xml = PolicyUtils.hostAgreementToString(ha);
             HostAgreement haFromString = PolicyUtils.stringToHostAgreement(xml);
             haFromString.verify(cert);
             haFromString.verify();
+            
+            try {
+                haFromString.verify(c2.getCertificate());
+                fail("Signing should not be verified.");
+            } catch (Exception e) {
+
+            }
 
             String str = Utils.serialize(ha);
             HostAgreement ha2 = (HostAgreement) Utils.deserialize(str, HostAgreement.class);
             ha2.verify(cert);
             ha2.verify();
+            
+            try {
+                ha2.verify(c2.getCertificate());
+                fail("Signing should not be verified.");
+            } catch (Exception e) {
+
+            }
         } catch (Exception e) {
             FaultUtil.printFault(e);
             fail(e.getMessage());
