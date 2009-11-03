@@ -25,6 +25,8 @@ With this tag, you can use following commands
 		** Re-configures your container if you made changes in install.properties and redeploys
 	* dist deploy:local:install:re-configure
 		** Does what the deploy:local:install target does, but doesn't install a container
+	* build-system
+		** Works as expected, builds SDK, builds your project, lays out artifacts in dist dir
 4	Output we depend on goes to sdk-toolkit\example-project\target\dist\exploded\output\example\package 
 
 The build script will download the container no matter what. The BDA team at NCICB has come up with this build methodology and all projects at NCICB is required to follow it. The reasoning behind downloading the container is that someone may want to install the already built system. In that case everything that’s needed to install the app should be already available in the target/dist folder. The end user is given the zip of the target/dist folder. The end user has an option at the time of final installation whether to install the container or not. If he chooses to install then it will be used from the previously downloaded version in the dist/exploded folder.
