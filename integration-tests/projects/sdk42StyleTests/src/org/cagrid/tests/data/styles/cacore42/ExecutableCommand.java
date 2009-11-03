@@ -38,4 +38,18 @@ public class ExecutableCommand {
         }
         return envp;
     }
+    
+    
+    public String toString() {
+        StringBuffer buff = new StringBuffer();
+        buff.append("COMMAND:\n\t");
+        for (String c : getCommandArray()) {
+            buff.append(c).append(" ");
+        }
+        buff.append("\nENVIRONMENT:\n");
+        for (String e : getEnvironmentArray()) {
+            buff.append("\t").append(e).append("\n");
+        }
+        return buff.toString();
+    }
 }
