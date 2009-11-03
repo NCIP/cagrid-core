@@ -1,0 +1,15 @@
+<xsd:schema targetNamespace="http://www.cagrid.org/gaards/1/dorian-policy"
+	attributeFormDefault="qualified" elementFormDefault="qualified"
+	xmlns:policy="http://www.cagrid.org/gaards/1/dorian-policy" xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+	xmlns:ds="http://www.w3.org/2000/09/xmldsig#">
+	<xsd:import namespace="http://www.w3.org/2000/09/xmldsig#" schemaLocation="./xmldsig-core-schema.xsd" />
+ 
+	<xsd:element name="HostAgreement" type="policy:HostAgreement" />
+	<xsd:complexType name="HostAgreement">
+		<xsd:sequence>
+			<xsd:element name="name" type="xsd:string" />
+			<xsd:element ref="ds:Signature" minOccurs="0" />
+		</xsd:sequence>
+	</xsd:complexType>
+
+</xsd:schema>

@@ -2,6 +2,7 @@
 <classpath>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="src" path="src"/>
+	<classpathentry kind="src" path="build/schema"/>
 	<classpathentry kind="src" path="test/resources"/>
 	<classpathentry kind="src" path="test/src"/>
 	<classpathentry kind="src" path="build/stubs-Dorian/src"/>
@@ -64,7 +65,7 @@
 	<classpathentry kind="lib" path="ext/dependencies/service/jars/caGrid-metadata-data-1.4-dev.jar"/>
 	<classpathentry kind="lib" path="ext/dependencies/service/jars/caGrid-metadata-security-1.4-dev.jar"/>
 	<classpathentry kind="lib" path="ext/dependencies/service/jars/caGrid-metadatautils-1.4-dev.jar"/>
-	<classpathentry kind="lib" path="ext/dependencies/service/jars/caGrid-opensaml-1.4-dev.jar"/>
+	<classpathentry kind="lib" path="ext/dependencies/service/jars/caGrid-opensaml-1.4-dev.jar" sourcepath="/caGrid-opensaml"/>
 	<classpathentry kind="lib" path="ext/dependencies/service/jars/caGrid-ServiceSecurityProvider-client-1.4-dev.jar"/>
 	<classpathentry kind="lib" path="ext/dependencies/service/jars/caGrid-ServiceSecurityProvider-common-1.4-dev.jar"/>
 	<classpathentry kind="lib" path="ext/dependencies/service/jars/caGrid-ServiceSecurityProvider-service-1.4-dev.jar"/>

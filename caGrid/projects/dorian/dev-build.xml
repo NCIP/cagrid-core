@@ -102,6 +102,7 @@
 			<include name="**/*.wsdd" />
 			<!-- Post Introduce Edit-->
 			<include name="**/common/**" />
+			<include name="**/policy/**" />
 			<exclude name="**/client/**" />
 			<exclude name="**/service/**" />
 			<exclude name="**/dorian/tools/**" />

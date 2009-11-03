@@ -94,7 +94,7 @@
 			<xsd:element name="email" type="xsd:string" />
 		</xsd:sequence>
 	</xsd:complexType>
-	
+
 	<xsd:element name="HostSearchCriteria" type="federation:HostSearchCriteria" />
 	<xsd:complexType name="HostSearchCriteria">
 		<xsd:sequence>
@@ -104,7 +104,7 @@
 			<xsd:element name="owner" type="xsd:string" />
 		</xsd:sequence>
 	</xsd:complexType>
-	
+
 	<xsd:element name="HostRecord" type="federation:HostRecord" />
 	<xsd:complexType name="HostRecord">
 		<xsd:sequence>
