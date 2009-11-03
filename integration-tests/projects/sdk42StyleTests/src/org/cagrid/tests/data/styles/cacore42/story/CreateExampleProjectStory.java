@@ -8,6 +8,7 @@ import java.util.Vector;
 
 import org.cagrid.tests.data.styles.cacore42.steps.BuildExampleProjectStep;
 import org.cagrid.tests.data.styles.cacore42.steps.ConfigureExampleProjectStep;
+import org.cagrid.tests.data.styles.cacore42.steps.NukeIvyCacheStep;
 import org.cagrid.tests.data.styles.cacore42.steps.SdkDatabaseStep;
 import org.cagrid.tests.data.styles.cacore42.steps.SdkDatabaseStep.DatabaseOperation;
 
@@ -52,6 +53,7 @@ public class CreateExampleProjectStory extends Story {
 
     protected Vector steps() {
         Vector<Step> steps = new Vector<Step>();
+        steps.add(new NukeIvyCacheStep());
         steps.add(new SdkDatabaseStep(DatabaseOperation.CREATE));
         steps.add(new ConfigureExampleProjectStep(tempApplicationDir));
         steps.add(new BuildExampleProjectStep());
