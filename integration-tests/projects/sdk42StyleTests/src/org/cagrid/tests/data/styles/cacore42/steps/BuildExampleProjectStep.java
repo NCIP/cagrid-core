@@ -37,6 +37,7 @@ public class BuildExampleProjectStep extends Step {
         }
         Process proc = null;
         try {
+            System.out.println(command);
             proc = Runtime.getRuntime().exec(command.getCommandArray(), command.getEnvironmentArray());
             StreamGobbler errGobbler = new StreamGobbler(
                 proc.getErrorStream(), "ERR", System.err);
