@@ -3,9 +3,6 @@ package org.cagrid.transfer.context.service;
 import java.rmi.RemoteException;
 
 import org.cagrid.transfer.context.service.globus.resource.TransferServiceContextResource;
-import org.cagrid.transfer.context.service.helper.DataStagedCallback;
-import org.cagrid.transfer.descriptor.DataStorageDescriptor;
-import org.cagrid.transfer.descriptor.Status;
 
 /**
  * TODO:I am the service side implementation class. IMPLEMENT AND DOCUMENT ME
@@ -49,6 +46,7 @@ public class TransferServiceContextImpl extends TransferServiceContextImplBase {
 
         dataDesc.setDataDescriptor(resource.getDataStorageDescriptor().getDataDescriptor());
         return dataDesc;
+       
     }
 
   public org.cagrid.transfer.descriptor.Status getStatus() throws RemoteException {
@@ -70,20 +68,8 @@ public class TransferServiceContextImpl extends TransferServiceContextImplBase {
             e.printStackTrace();
             throw new RemoteException("Error locating resource: " + e.getMessage(), e);
         }
-        DataStorageDescriptor desc = resource.getDataStorageDescriptor();
-        desc.setStatus(status);
-        resource.setDataStorageDescriptor(desc);
+        resource.setStatus(status);
 
-        if (status.equals(Status.Staged) && resource.getDataStagedCallback() != null) {
-            final TransferServiceContextResource threadresource = resource;
-            Thread th = new Thread(new Runnable() {
-                public void run() {
-                    DataStagedCallback callback = threadresource.getDataStagedCallback();
-                    callback.dataStaged(threadresource);
-                }
-            });
-            th.start();
-        }
     }
 
 }

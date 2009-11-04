@@ -446,6 +446,7 @@ public abstract class TransferServiceContextResourceBase extends ReflectionResou
 
     public void load(ResourceKey resourceKey) throws ResourceException, NoSuchResourceException, InvalidResourceKeyException {
 	  beingLoaded = true;
+	   this.setResourceKey(resourceKey);
        //first we will recover the resource properties and initialize the resource
 	   TransferServiceContextResourceProperties props = (TransferServiceContextResourceProperties)resourcePropertyPersistenceHelper.load(TransferServiceContextResourceProperties.class, resourceKey.getValue());
        this.initialize(props, TransferServiceContextConstants.RESOURCE_PROPERTY_SET, resourceKey.getValue());
