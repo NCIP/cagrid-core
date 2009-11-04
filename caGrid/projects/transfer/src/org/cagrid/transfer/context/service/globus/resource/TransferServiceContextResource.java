@@ -14,7 +14,6 @@ import javax.xml.namespace.QName;
 
 import org.apache.axis.MessageContext;
 import org.cagrid.transfer.context.service.helper.DataStagedCallback;
-import org.cagrid.transfer.context.service.helper.PersistentTransferCallback;
 import org.cagrid.transfer.descriptor.DataDescriptor;
 import org.cagrid.transfer.descriptor.DataStorageDescriptor;
 import org.cagrid.transfer.descriptor.Status;
