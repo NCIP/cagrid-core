@@ -1,15 +1,136 @@
-<xsd:schema targetNamespace="http://www.cagrid.org/gaards/1/dorian-policy"
+<xsd:schema targetNamespace="http://cagrid.nci.nih.gov/1/dorian-policy"
 	attributeFormDefault="qualified" elementFormDefault="qualified"
-	xmlns:policy="http://www.cagrid.org/gaards/1/dorian-policy" xmlns:xsd="http://www.w3.org/2001/XMLSchema"
-	xmlns:ds="http://www.w3.org/2000/09/xmldsig#">
-	<xsd:import namespace="http://www.w3.org/2000/09/xmldsig#" schemaLocation="./xmldsig-core-schema.xsd" />
- 
-	<xsd:element name="HostAgreement" type="policy:HostAgreement" />
-	<xsd:complexType name="HostAgreement">
+	xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:policy="http://cagrid.nci.nih.gov/1/dorian-policy"
+	xmlns:ha="http://www.cagrid.org/gaards/1/dorian-host-agreement">
+	<xsd:import namespace="http://www.cagrid.org/gaards/1/dorian-host-agreement"
+		schemaLocation="./dorian-host-agreement.xsd" />
+	<xsd:element name="DorianPolicy" type="policy:DorianPolicy" />
+	<xsd:complexType name="DorianPolicy">
 		<xsd:sequence>
-			<xsd:element name="name" type="xsd:string" />
-			<xsd:element ref="ds:Signature" minOccurs="0" />
+			<xsd:element ref="policy:IdentityProviderPolicy"
+				minOccurs="1" maxOccurs="1" />
+			<xsd:element ref="policy:FederationPolicy" minOccurs="1"
+				maxOccurs="1" />
 		</xsd:sequence>
 	</xsd:complexType>
 
+
+	<xsd:element name="IdentityProviderPolicy" type="policy:IdentityProviderPolicy" />
+	<xsd:complexType name="IdentityProviderPolicy">
+		<xsd:sequence>
+			<xsd:element ref="policy:UserIdPolicy" minOccurs="1"
+				maxOccurs="1" />
+			<xsd:element ref="policy:PasswordPolicy" minOccurs="1"
+				maxOccurs="1" />
+		</xsd:sequence>
+	</xsd:complexType>
+
+	<xsd:element name="UserIdPolicy" type="policy:UserIdPolicy" />
+	<xsd:complexType name="UserIdPolicy">
+		<xsd:attribute name="MinLength" type="xsd:int" use="required" />
+		<xsd:attribute name="MaxLength" type="xsd:int" use="required" />
+	</xsd:complexType>
+
+	<xsd:element name="PasswordPolicy" type="policy:PasswordPolicy" />
+	<xsd:complexType name="PasswordPolicy">
+		<xsd:sequence>
+			<xsd:element name="Description" type="xsd:string"
+				minOccurs="1" maxOccurs="1" />
+			<xsd:element name="SymbolsSupported" type="xsd:string"
+				minOccurs="1" maxOccurs="1" />
+			<xsd:element ref="policy:PasswordLockoutPolicy"
+				minOccurs="1" maxOccurs="1" />
+		</xsd:sequence>
+		<xsd:attribute name="MinLength" type="xsd:int" use="required" />
+		<xsd:attribute name="MaxLength" type="xsd:int" use="required" />
+		<xsd:attribute name="DictionaryWordsAllowed" type="xsd:boolean"
+			use="required" />
+		<xsd:attribute name="UpperCaseLetterRequired" type="xsd:boolean"
+			use="required" />
+		<xsd:attribute name="LowerCaseLetterRequired" type="xsd:boolean"
+			use="required" />
+		<xsd:attribute name="SymbolRequired" type="xsd:boolean"
+			use="required" />
+		<xsd:attribute name="NumericRequired" type="xsd:boolean"
+			use="required" />
+	</xsd:complexType>
+
+
+	<xsd:element name="PasswordLockoutPolicy" type="policy:PasswordLockoutPolicy" />
+	<xsd:complexType name="PasswordLockoutPolicy">
+		<xsd:attribute name="Hours" type="xsd:int" use="required" />
+		<xsd:attribute name="Minutes" type="xsd:int" use="required" />
+		<xsd:attribute name="Seconds" type="xsd:int" use="required" />
+		<xsd:attribute name="ConsecutiveInvalidLogins" type="xsd:int"
+			use="required" />
+	</xsd:complexType>
+
+	<xsd:element name="FederationPolicy" type="policy:FederationPolicy" />
+	<xsd:complexType name="FederationPolicy">
+		<xsd:sequence>
+			<xsd:element ref="policy:UserPolicy" minOccurs="1"
+				maxOccurs="1" />
+			<xsd:element ref="policy:HostPolicy" minOccurs="1"
+				maxOccurs="1" />
+			<xsd:element ref="policy:SearchPolicy" minOccurs="1"
+				maxOccurs="1" />
+		</xsd:sequence>
+	</xsd:complexType>
+
+	<xsd:element name="SearchPolicy" type="policy:SearchPolicy" />
+	<xsd:complexType name="SearchPolicy">
+		<xsd:attribute name="UserSearchPolicy" type="policy:SearchPolicyType"
+			use="required" />
+		<xsd:attribute name="HostSearchPolicy" type="policy:SearchPolicyType"
+			use="required" />
+	</xsd:complexType>
+
+	<xsd:element name="SearchPolicyType" type="policy:SearchPolicyType" />
+	<xsd:simpleType name="SearchPolicyType">
+		<xsd:restriction base="xsd:string">
+			<xsd:enumeration value="Admin" />
+			<xsd:enumeration value="Authenticated" />
+			<xsd:enumeration value="Public" />
+		</xsd:restriction>
+	</xsd:simpleType>
+
+
+	<xsd:element name="UserPolicy" type="policy:UserPolicy" />
+	<xsd:complexType name="UserPolicy">
+		<xsd:sequence>
+			<xsd:element ref="policy:UserCertificateLifetime"
+				minOccurs="1" maxOccurs="1" />
+		</xsd:sequence>
+	</xsd:complexType>
+
+	<xsd:element name="UserCertificateLifetime" type="policy:UserCertificateLifetime" />
+	<xsd:complexType name="UserCertificateLifetime">
+		<xsd:attribute name="Hours" type="xsd:int" use="required" />
+		<xsd:attribute name="Minutes" type="xsd:int" use="required" />
+		<xsd:attribute name="Seconds" type="xsd:int" use="required" />
+	</xsd:complexType>
+
+
+	<xsd:element name="HostPolicy" type="policy:HostPolicy" />
+	<xsd:complexType name="HostPolicy">
+		<xsd:sequence>
+			<xsd:element ref="ha:HostAgreement" minOccurs="0" maxOccurs="1" />
+			<xsd:element ref="policy:HostCertificateLifetime"
+				minOccurs="1" maxOccurs="1" />
+		</xsd:sequence>
+		<xsd:attribute name="SignedHostAgreementRequired" type="xsd:boolean"
+			use="required" />
+		<xsd:attribute name="AdministrativeApprovalRequired"
+			type="xsd:boolean" use="required" />
+	</xsd:complexType>
+
+	<xsd:element name="HostCertificateLifetime" type="policy:HostCertificateLifetime" />
+	<xsd:complexType name="HostCertificateLifetime">
+		<xsd:attribute name="Years" type="xsd:int" use="required" />
+		<xsd:attribute name="Months" type="xsd:int" use="required" />
+		<xsd:attribute name="Days" type="xsd:int" use="required" />
+		<xsd:attribute name="Hours" type="xsd:int" use="required" />
+		<xsd:attribute name="Minutes" type="xsd:int" use="required" />
+		<xsd:attribute name="Seconds" type="xsd:int" use="required" />
+	</xsd:complexType>
 </xsd:schema>

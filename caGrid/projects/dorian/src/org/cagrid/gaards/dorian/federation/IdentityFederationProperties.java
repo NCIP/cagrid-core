@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.StringTokenizer;
 
 import org.cagrid.gaards.dorian.common.Lifetime;
+import org.cagrid.gaards.dorian.policy.SearchPolicyType;
 import org.cagrid.gaards.dorian.stubs.types.DorianInternalFault;
 
 
@@ -16,9 +17,9 @@ public class IdentityFederationProperties {
     public static int DEFAULT_MAX_IDP_DISPLAY_NAME_LENGTH = 60;
     public static int DEFAULT_MIN_IDP_NAME_LENGTH = 3;
     public static int DEFAULT_MAX_IDP_NAME_LENGTH = 25;
-    public static String PUBLIC_SEARCH_POLICY = "public";
-    public static String AUTHENTICATED_SEARCH_POLICY = "authenticated";
-    public static String ADMIN_SEARCH_POLICY = "admin";
+    public static final String PUBLIC_SEARCH_POLICY = SearchPolicyType.Public.getValue();
+    public static final String AUTHENTICATED_SEARCH_POLICY = SearchPolicyType.Authenticated.getValue();
+    public static final String ADMIN_SEARCH_POLICY = SearchPolicyType.Admin.getValue();
 
     private String identityAssignmentPolicy;
     private int minIdPNameLength;

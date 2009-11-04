@@ -4,6 +4,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.cagrid.gaards.dorian.common.DorianConstants;
 import org.cagrid.gaards.dorian.federation.TrustedIdentityProviders;
+import org.cagrid.gaards.dorian.policy.DorianPolicy;
 import org.cagrid.gaards.dorian.service.Dorian;
 import org.cagrid.gaards.dorian.stubs.DorianResourceProperties;
 import org.globus.wsrf.ResourceProperty;
@@ -29,6 +30,7 @@ public class DorianResource extends DorianResourceBase {
     public ResourcePropertySet getResourcePropertySet() {
         ResourcePropertySet set = super.getResourcePropertySet();
         updateTrustedIdentityProviders(set);
+        updateDorianPolicy(set);
         return set;
     }
 
@@ -45,7 +47,24 @@ public class DorianResource extends DorianResourceBase {
             ResourceProperty prop = set.get(DorianConstants.TRUSTEDIDENTITYPROVIDERS);
             prop.set(0, idps);
         } catch (Exception e) {
-            log.error(e.getMessage(),e);
+            log.error(e.getMessage(), e);
+        }
+    }
+
+
+    public org.cagrid.gaards.dorian.policy.DorianPolicy getDorianPolicy() {
+        updateDorianPolicy(super.getResourcePropertySet());
+        return ((DorianResourceProperties) getResourceBean()).getDorianPolicy();
+    }
+
+
+    private void updateDorianPolicy(ResourcePropertySet set) {
+        try {
+            DorianPolicy policy = this.dorian.getDorianPolicy();
+            ResourceProperty prop = set.get(DorianConstants.DORIANPOLICY);
+            prop.set(0, policy);
+        } catch (Exception e) {
+            log.error(e.getMessage(), e);
         }
     }
 

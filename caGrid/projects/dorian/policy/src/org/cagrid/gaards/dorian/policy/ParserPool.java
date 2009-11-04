@@ -103,8 +103,8 @@ public class ParserPool implements ErrorHandler, EntityResolver {
             PolicyConstants.XML_SCHEMA_ID));
         sources.add(new StreamSource(PolicyConstants.class.getResourceAsStream("/Dorian/" + PolicyConstants.XMLSIG_SCHEMA_ID),
             PolicyConstants.XMLSIG_SCHEMA_ID)); 
-        sources.add(new StreamSource(PolicyConstants.class.getResourceAsStream("/Dorian/" + PolicyConstants.DORIAN_POLICY_ID),
-            PolicyConstants.DORIAN_POLICY_ID));
+        sources.add(new StreamSource(PolicyConstants.class.getResourceAsStream("/Dorian/" + PolicyConstants.HOST_AGREEMENT_ID),
+            PolicyConstants.HOST_AGREEMENT_ID));
             
         for (Iterator i = extensions.entrySet().iterator(); i.hasNext();) {
             Entry entry = (Entry) i.next();

@@ -23,9 +23,9 @@ public class PolicyConstants {
     /** XML Signature Schema Identifier */
     public final static String XMLSIG_SCHEMA_ID = "xmldsig-core-schema.xsd";
 
-    public final static String DORIAN_POLICY_ID = "dorian-policy.xsd";
+    public final static String HOST_AGREEMENT_ID = "dorian-host-agreement.xsd";
 
-    public static String DORIAN_POLICY_NS = "http://www.cagrid.org/gaards/1/dorian-policy";
+    public static String HOST_AGREEMENT_NS = "http://www.cagrid.org/gaards/1/dorian-host-agreement";
     public static String HOST_AGREEMENT_ELEMENT = "HostAgreement";
     public static String NAME_ELEMENT = "name";
     public static String INCLUSIVE_NAMESPACES = "#default policy ds xsd xsi code kind rw typens";

@@ -14,6 +14,6 @@ public class HostAgreementSerializerFactory extends BaseSerializerFactory {
 
     public HostAgreementSerializerFactory(Class javaType, QName xmlType) {
         super(HostAgreementSerializer.class, xmlType, javaType);
-        LOG.debug("Initializing SDKSerializerFactory for class:" + javaType + " and QName:" + xmlType);
+        LOG.debug("Initializing HostAgreementSerializerFactory for class:" + javaType + " and QName:" + xmlType);
     }
 }

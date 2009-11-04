@@ -13,29 +13,33 @@
   <Content xsi:type="agg:AggregatorContent" xmlns:agg="http://mds.globus.org/aggregator/types">
     <agg:AggregatorConfig xsi:type="agg:AggregatorConfig">
       <agg:GetMultipleResourcePropertiesPollType
-			xmlns:ns8="http://gaards.cagrid.org/authentication-faults"
-			xmlns:ns10="http://cagrid.nci.nih.gov/Dorian/types"
-			xmlns:ns6="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata"
-			xmlns:ns0="http://cagrid.nci.nih.gov/1/dorian-ifs"
-			xmlns:ns3="http://gaards.cagrid.org/authentication"
-			xmlns:ns5="http://cagrid.nci.nih.gov/1/authentication-service"
+			xmlns:ns13="http://cagrid.nci.nih.gov/Dorian/types"
+			xmlns:ns11="http://gaards.cagrid.org/authentication-faults"
+			xmlns:ns1="http://www.cagrid.org/gaards/1/dorian-host-agreement"
+			xmlns:ns9="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata"
+			xmlns:ns3="http://cagrid.nci.nih.gov/1/dorian-ifs"
+			xmlns:ns6="http://gaards.cagrid.org/authentication"
+			xmlns:ns8="http://cagrid.nci.nih.gov/1/authentication-service"
 			xmlns:xs="http://www.w3.org/2001/XMLSchema"
-			xmlns:ns7="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.security"
-			xmlns:ns1="http://cagrid.nci.nih.gov/1/dorian-common"
-			xmlns:ns4="http://cagrid.nci.nih.gov/AuthenticationService/types"
-			xmlns:ns12="urn:oasis:names:tc:SAML:1.0:assertion"
-			xmlns:ns11="http://www.w3.org/2000/09/xmldsig#"
-			xmlns:ns9="http://authentication.gaards.cagrid.org/AuthenticationService/types"
-			xmlns:ns2="http://cagrid.nci.nih.gov/1/dorian-idp">
+			xmlns:ns10="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.security"
+			xmlns:ns4="http://cagrid.nci.nih.gov/1/dorian-common"
+			xmlns:ns7="http://cagrid.nci.nih.gov/AuthenticationService/types"
+			xmlns:ns14="urn:oasis:names:tc:SAML:1.0:assertion"
+			xmlns:ns2="http://www.w3.org/2000/09/xmldsig#"
+			xmlns:ns12="http://authentication.gaards.cagrid.org/AuthenticationService/types"
+			xmlns:ns0="http://cagrid.nci.nih.gov/1/dorian-policy"
+			xmlns:ns5="http://cagrid.nci.nih.gov/1/dorian-idp">
         <!-- Specifies that the index should refresh information
             every 300000 milliseconds (once every 5 minutes) -->
         <agg:PollIntervalMillis>INDEX_REFRESH</agg:PollIntervalMillis>
         <!-- specifies all Resource Properties that should be retrieved from the service -->
-		<agg:ResourcePropertyNames>ns6:ServiceMetadata</agg:ResourcePropertyNames>
+		<agg:ResourcePropertyNames>ns9:ServiceMetadata</agg:ResourcePropertyNames>
 	
-		<agg:ResourcePropertyNames>ns3:AuthenticationProfiles</agg:ResourcePropertyNames>
+		<agg:ResourcePropertyNames>ns6:AuthenticationProfiles</agg:ResourcePropertyNames>
 	
-		<agg:ResourcePropertyNames>ns0:TrustedIdentityProviders</agg:ResourcePropertyNames>
+		<agg:ResourcePropertyNames>ns3:TrustedIdentityProviders</agg:ResourcePropertyNames>
+	
+		<agg:ResourcePropertyNames>ns0:DorianPolicy</agg:ResourcePropertyNames>
 	
       </agg:GetMultipleResourcePropertiesPollType>
     </agg:AggregatorConfig>

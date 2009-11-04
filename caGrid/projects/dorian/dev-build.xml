@@ -17,6 +17,9 @@
 
 	<property name="jar.prefix" value="caGrid-dorian" />
 	<property name="jar.suffix" value="${project.version}.jar" />
+	
+	
+	<property name="policy.src.dir" location="${basedir}/policy/src" />
 
 	<property name="common.jar.name" value="${jar.prefix}-common-${jar.suffix}" />
 	<property name="client.jar.name" value="${jar.prefix}-client-${jar.suffix}" />
@@ -52,6 +55,7 @@
 			<fileset dir="${ext.lib}">
 				<include name="*.jar" />
 			</fileset>
+			<pathelement location="${build.dest}" />
 		</path>
 		<path id="service.build.extended.classpath">
 		</path>
@@ -134,6 +138,17 @@
 
 	</target>
 
+	
+	<target name="compilePolicy" depends="init" description="Compiles the policy model for the service.">
+		<javac srcdir="${policy.src.dir}" classpathref="service.build.classpath" includes="**" destdir="${build.dest}" debug="${java.debug}" deprecation="${deprecation}" />
+
+		<!-- Copy the source code, wsdd, properties, etc to the build dir for include in the jar -->
+		<copy toDir="${build.dest}">
+			<fileset dir="${policy.src.dir}">
+				<include name="**/*" />
+			</fileset>
+		</copy>
+	</target>
 
 	<!-- ============================================================== -->
 	<!-- Pre Stubs Target                                               -->
@@ -152,7 +167,7 @@
 	<!-- ============================================================== -->
 	<!-- Pre Compile Stubs Build Target                                 -->
 	<!-- ============================================================== -->
-	<target name="preCompileStubs">
+	<target name="preCompileStubs" depends="compilePolicy">
 
 	</target>
 

@@ -1,5 +1,48 @@
 <ns1:ServiceDescription description="A grid service for the provisioning and management of grid users accounts.  Dorian provides an integration point between external security domains and the grid, allowing accounts managed in external domains to be federated and managed in the grid.   Dorian allows users to use their existing credentials to authenticate to the grid." introduceVersion="1.3" xmlns:ns1="gme://gov.nih.nci.cagrid/1/Introduce">
  <ns2:Namespaces xsi:type="ns2:NamespacesType" xmlns:ns2="gme://gov.nih.nci.cagrid.introduce/1/Namespace" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <ns2:Namespace location="./dorian-policy.xsd" namespace="http://cagrid.nci.nih.gov/1/dorian-policy" packageName="org.cagrid.gaards.dorian.policy" xsi:type="ns2:NamespaceType">
+   <ns2:SchemaElement type="DorianPolicy" xsi:type="ns2:SchemaElementType"/>
+   <ns2:SchemaElement type="FederationPolicy" xsi:type="ns2:SchemaElementType"/>
+   <ns2:SchemaElement type="HostCertificateLifetime" xsi:type="ns2:SchemaElementType"/>
+   <ns2:SchemaElement type="HostPolicy" xsi:type="ns2:SchemaElementType"/>
+   <ns2:SchemaElement type="IdentityProviderPolicy" xsi:type="ns2:SchemaElementType"/>
+   <ns2:SchemaElement type="PasswordLockoutPolicy" xsi:type="ns2:SchemaElementType"/>
+   <ns2:SchemaElement type="PasswordPolicy" xsi:type="ns2:SchemaElementType"/>
+   <ns2:SchemaElement type="SearchPolicy" xsi:type="ns2:SchemaElementType"/>
+   <ns2:SchemaElement type="SearchPolicyType" xsi:type="ns2:SchemaElementType"/>
+   <ns2:SchemaElement type="UserCertificateLifetime" xsi:type="ns2:SchemaElementType"/>
+   <ns2:SchemaElement type="UserIdPolicy" xsi:type="ns2:SchemaElementType"/>
+   <ns2:SchemaElement type="UserPolicy" xsi:type="ns2:SchemaElementType"/>
+  </ns2:Namespace>
+  <ns2:Namespace location="./dorian-host-agreement.xsd" namespace="http://www.cagrid.org/gaards/1/dorian-host-agreement" packageName="org.cagrid.gaards.dorian.policy" xsi:type="ns2:NamespaceType">
+   <ns2:SchemaElement className="HostAgreement" deserializer="org.cagrid.gaards.dorian.policy.HostAgreementDeserializerFactory" serializer="org.cagrid.gaards.dorian.policy.HostAgreementSerializerFactory" type="HostAgreement" xsi:type="ns2:SchemaElementType"/>
+  </ns2:Namespace>
+  <ns2:Namespace location="./xmldsig-core-schema.xsd" namespace="http://www.w3.org/2000/09/xmldsig#" packageName="org.w3.www._2000._09.xmldsig" xsi:type="ns2:NamespaceType">
+   <ns2:SchemaElement type="CanonicalizationMethod" xsi:type="ns2:SchemaElementType"/>
+   <ns2:SchemaElement type="DigestMethod" xsi:type="ns2:SchemaElementType"/>
+   <ns2:SchemaElement type="DigestValue" xsi:type="ns2:SchemaElementType"/>
+   <ns2:SchemaElement type="DSAKeyValue" xsi:type="ns2:SchemaElementType"/>
+   <ns2:SchemaElement type="KeyInfo" xsi:type="ns2:SchemaElementType"/>
+   <ns2:SchemaElement type="KeyName" xsi:type="ns2:SchemaElementType"/>
+   <ns2:SchemaElement type="KeyValue" xsi:type="ns2:SchemaElementType"/>
+   <ns2:SchemaElement type="Manifest" xsi:type="ns2:SchemaElementType"/>
+   <ns2:SchemaElement type="MgmtData" xsi:type="ns2:SchemaElementType"/>
+   <ns2:SchemaElement type="Object" xsi:type="ns2:SchemaElementType"/>
+   <ns2:SchemaElement type="PGPData" xsi:type="ns2:SchemaElementType"/>
+   <ns2:SchemaElement type="Reference" xsi:type="ns2:SchemaElementType"/>
+   <ns2:SchemaElement type="RetrievalMethod" xsi:type="ns2:SchemaElementType"/>
+   <ns2:SchemaElement type="RSAKeyValue" xsi:type="ns2:SchemaElementType"/>
+   <ns2:SchemaElement type="Signature" xsi:type="ns2:SchemaElementType"/>
+   <ns2:SchemaElement type="SignatureMethod" xsi:type="ns2:SchemaElementType"/>
+   <ns2:SchemaElement type="SignatureProperties" xsi:type="ns2:SchemaElementType"/>
+   <ns2:SchemaElement type="SignatureProperty" xsi:type="ns2:SchemaElementType"/>
+   <ns2:SchemaElement type="SignatureValue" xsi:type="ns2:SchemaElementType"/>
+   <ns2:SchemaElement type="SignedInfo" xsi:type="ns2:SchemaElementType"/>
+   <ns2:SchemaElement type="SPKIData" xsi:type="ns2:SchemaElementType"/>
+   <ns2:SchemaElement type="Transform" xsi:type="ns2:SchemaElementType"/>
+   <ns2:SchemaElement type="Transforms" xsi:type="ns2:SchemaElementType"/>
+   <ns2:SchemaElement type="X509Data" xsi:type="ns2:SchemaElementType"/>
+  </ns2:Namespace>
   <ns2:Namespace location="./dorian-ifs.xsd" namespace="http://cagrid.nci.nih.gov/1/dorian-ifs" packageName="org.cagrid.gaards.dorian.federation" xsi:type="ns2:NamespaceType">
    <ns2:SchemaElement type="CertificateLifetime" xsi:type="ns2:SchemaElementType"/>
    <ns2:SchemaElement type="DateRange" xsi:type="ns2:SchemaElementType"/>
@@ -96,32 +139,6 @@
    <ns2:SchemaElement type="NoSuchUserFault" xsi:type="ns2:SchemaElementType"/>
    <ns2:SchemaElement type="PermissionDeniedFault" xsi:type="ns2:SchemaElementType"/>
    <ns2:SchemaElement type="UserPolicyFault" xsi:type="ns2:SchemaElementType"/>
-  </ns2:Namespace>
-  <ns2:Namespace generateStubs="false" location="./xmldsig-core-schema.xsd" namespace="http://www.w3.org/2000/09/xmldsig#" packageName="org.w3.www._2000._09.xmldsig" xsi:type="ns2:NamespaceType">
-   <ns2:SchemaElement type="CanonicalizationMethod" xsi:type="ns2:SchemaElementType"/>
-   <ns2:SchemaElement type="DigestMethod" xsi:type="ns2:SchemaElementType"/>
-   <ns2:SchemaElement type="DigestValue" xsi:type="ns2:SchemaElementType"/>
-   <ns2:SchemaElement type="DSAKeyValue" xsi:type="ns2:SchemaElementType"/>
-   <ns2:SchemaElement type="KeyInfo" xsi:type="ns2:SchemaElementType"/>
-   <ns2:SchemaElement type="KeyName" xsi:type="ns2:SchemaElementType"/>
-   <ns2:SchemaElement type="KeyValue" xsi:type="ns2:SchemaElementType"/>
-   <ns2:SchemaElement type="Manifest" xsi:type="ns2:SchemaElementType"/>
-   <ns2:SchemaElement type="MgmtData" xsi:type="ns2:SchemaElementType"/>
-   <ns2:SchemaElement type="Object" xsi:type="ns2:SchemaElementType"/>
-   <ns2:SchemaElement type="PGPData" xsi:type="ns2:SchemaElementType"/>
-   <ns2:SchemaElement type="Reference" xsi:type="ns2:SchemaElementType"/>
-   <ns2:SchemaElement type="RetrievalMethod" xsi:type="ns2:SchemaElementType"/>
-   <ns2:SchemaElement type="RSAKeyValue" xsi:type="ns2:SchemaElementType"/>
-   <ns2:SchemaElement type="Signature" xsi:type="ns2:SchemaElementType"/>
-   <ns2:SchemaElement type="SignatureMethod" xsi:type="ns2:SchemaElementType"/>
-   <ns2:SchemaElement type="SignatureProperties" xsi:type="ns2:SchemaElementType"/>
-   <ns2:SchemaElement type="SignatureProperty" xsi:type="ns2:SchemaElementType"/>
-   <ns2:SchemaElement type="SignatureValue" xsi:type="ns2:SchemaElementType"/>
-   <ns2:SchemaElement type="SignedInfo" xsi:type="ns2:SchemaElementType"/>
-   <ns2:SchemaElement type="SPKIData" xsi:type="ns2:SchemaElementType"/>
-   <ns2:SchemaElement type="Transform" xsi:type="ns2:SchemaElementType"/>
-   <ns2:SchemaElement type="Transforms" xsi:type="ns2:SchemaElementType"/>
-   <ns2:SchemaElement type="X509Data" xsi:type="ns2:SchemaElementType"/>
   </ns2:Namespace>
   <ns2:Namespace generateStubs="false" location="./cs-sstc-schema-assertion-1.1.xsd" namespace="urn:oasis:names:tc:SAML:1.0:assertion" packageName="gov.nih.nci.cagrid.opensaml" xsi:type="ns2:NamespaceType">
    <ns2:SchemaElement type="Action" xsi:type="ns2:SchemaElementType"/>
@@ -704,18 +721,19 @@
     <ns172:ResourceProperty qName="ns173:ServiceMetadata" description="" fileLocation="serviceMetadata.xml" populateFromFile="true" register="true" xsi:type="ns172:ResourcePropertyType" xmlns:ns173="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata"/>
     <ns172:ResourceProperty qName="ns174:AuthenticationProfiles" description="" fileLocation="Dorian_authenticationProfiles.xml" populateFromFile="false" register="true" xsi:type="ns172:ResourcePropertyType" xmlns:ns174="http://gaards.cagrid.org/authentication"/>
     <ns172:ResourceProperty qName="ns175:TrustedIdentityProviders" description="" fileLocation="Dorian_trustedIdentityProviders.xml" populateFromFile="false" register="true" xsi:type="ns172:ResourcePropertyType" xmlns:ns175="http://cagrid.nci.nih.gov/1/dorian-ifs"/>
+    <ns172:ResourceProperty qName="ns176:DorianPolicy" description="" fileLocation="Dorian_dorianPolicy.xml" populateFromFile="false" register="true" xsi:type="ns172:ResourcePropertyType" xmlns:ns176="http://cagrid.nci.nih.gov/1/dorian-policy"/>
    </ns172:ResourcePropertiesList>
-   <ns176:ServiceSecurity xsi:type="ns176:ServiceSecurity" xmlns:ns176="gme://gov.nih.nci.cagrid.introduce/1/Security">
-    <ns176:SecuritySetting xsi:type="ns176:SecuritySetting">Custom</ns176:SecuritySetting>
-    <ns176:TransportLevelSecurity xsi:type="ns176:TransportLevelSecurity">
-     <ns176:CommunicationMethod xsi:type="ns176:CommunicationMethod">Privacy</ns176:CommunicationMethod>
-    </ns176:TransportLevelSecurity>
-    <ns176:RunAsMode xsi:type="ns176:RunAsMode">System</ns176:RunAsMode>
-    <ns176:AnonymousClients xsi:type="ns176:AnonymousCommunication">No</ns176:AnonymousClients>
-    <ns176:ServiceAuthorization xsi:type="ns176:ServiceAuthorization">
-     <ns176:NoAuthorization xsi:type="ns176:NoAuthorization"/>
-    </ns176:ServiceAuthorization>
-   </ns176:ServiceSecurity>
+   <ns177:ServiceSecurity xsi:type="ns177:ServiceSecurity" xmlns:ns177="gme://gov.nih.nci.cagrid.introduce/1/Security">
+    <ns177:SecuritySetting xsi:type="ns177:SecuritySetting">Custom</ns177:SecuritySetting>
+    <ns177:TransportLevelSecurity xsi:type="ns177:TransportLevelSecurity">
+     <ns177:CommunicationMethod xsi:type="ns177:CommunicationMethod">Privacy</ns177:CommunicationMethod>
+    </ns177:TransportLevelSecurity>
+    <ns177:RunAsMode xsi:type="ns177:RunAsMode">System</ns177:RunAsMode>
+    <ns177:AnonymousClients xsi:type="ns177:AnonymousCommunication">No</ns177:AnonymousClients>
+    <ns177:ServiceAuthorization xsi:type="ns177:ServiceAuthorization">
+     <ns177:NoAuthorization xsi:type="ns177:NoAuthorization"/>
+    </ns177:ServiceAuthorization>
+   </ns177:ServiceSecurity>
    <ns3:description xsi:type="xsd:string" xmlns:xsd="http://www.w3.org/2001/XMLSchema">Dorian Grid Service</ns3:description>
    <ns3:ResourceFrameworkOptions xsi:type="ns3:ResourceFrameworkOptions">
     <ns3:Main xsi:type="ns3:Main"/>
@@ -726,11 +744,11 @@
    </ns3:ResourceFrameworkOptions>
   </ns3:Service>
  </ns3:Services>
- <ns177:Extensions xsi:type="ns177:ExtensionsType" xmlns:ns177="gme://gov.nih.nci.cagrid.introduce/1/Extension" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
-  <ns177:Extension name="cagrid_metadata" version="1.3" xsi:type="ns177:ExtensionType"/>
- </ns177:Extensions>
- <ns178:ServiceProperties xmlns:ns178="gme://gov.nih.nci.cagrid.introduce/1/Property">
-  <ns178:Property description="" isFromETC="true" key="dorianConfiguration" value="dorian-configuration.xml"/>
-  <ns178:Property description="" isFromETC="true" key="dorianProperties" value="dorian.properties"/>
- </ns178:ServiceProperties>
+ <ns178:Extensions xsi:type="ns178:ExtensionsType" xmlns:ns178="gme://gov.nih.nci.cagrid.introduce/1/Extension" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <ns178:Extension name="cagrid_metadata" version="1.3" xsi:type="ns178:ExtensionType"/>
+ </ns178:Extensions>
+ <ns179:ServiceProperties xmlns:ns179="gme://gov.nih.nci.cagrid.introduce/1/Property">
+  <ns179:Property description="" isFromETC="true" key="dorianConfiguration" value="dorian-configuration.xml"/>
+  <ns179:Property description="" isFromETC="true" key="dorianProperties" value="dorian.properties"/>
+ </ns179:ServiceProperties>
 </ns1:ServiceDescription>

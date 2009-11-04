@@ -52,6 +52,7 @@ import org.cagrid.gaards.dorian.idp.IdentityProviderAuditRecord;
 import org.cagrid.gaards.dorian.idp.LocalUser;
 import org.cagrid.gaards.dorian.idp.LocalUserFilter;
 import org.cagrid.gaards.dorian.idp.UserManager;
+import org.cagrid.gaards.dorian.policy.DorianPolicy;
 import org.cagrid.gaards.dorian.stubs.types.DorianInternalFault;
 import org.cagrid.gaards.dorian.stubs.types.InvalidAssertionFault;
 import org.cagrid.gaards.dorian.stubs.types.InvalidHostCertificateFault;
@@ -468,6 +469,14 @@ public class Dorian extends LoggingObject {
     public List<HostRecord> hostSearch(String callerIdentity, HostSearchCriteria criteria) throws RemoteException,
         DorianInternalFault, PermissionDeniedFault {
         return this.ifm.hostSearch(callerIdentity, criteria);
+    }
+
+
+    public DorianPolicy getDorianPolicy() {
+        DorianPolicy p = new DorianPolicy();
+        p.setIdentityProviderPolicy(this.identityProvider.getPolicy());
+        p.setFederationPolicy(this.ifm.getFederationPolicy());
+        return p;
     }
 
 }

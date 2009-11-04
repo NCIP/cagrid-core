@@ -21,6 +21,10 @@ import org.cagrid.gaards.dorian.ca.CertificateAuthority;
 import org.cagrid.gaards.dorian.common.AuditConstants;
 import org.cagrid.gaards.dorian.common.LoggingObject;
 import org.cagrid.gaards.dorian.federation.FederationAudit;
+import org.cagrid.gaards.dorian.policy.IdentityProviderPolicy;
+import org.cagrid.gaards.dorian.policy.PasswordLockoutPolicy;
+import org.cagrid.gaards.dorian.policy.PasswordPolicy;
+import org.cagrid.gaards.dorian.policy.UserIdPolicy;
 import org.cagrid.gaards.dorian.stubs.types.DorianInternalFault;
 import org.cagrid.gaards.dorian.stubs.types.InvalidUserPropertyFault;
 import org.cagrid.gaards.dorian.stubs.types.NoSuchUserFault;
@@ -54,9 +58,12 @@ public class IdentityProvider extends LoggingObject {
 
     private Database db;
 
+    private IdentityProviderProperties conf;
+
 
     public IdentityProvider(IdentityProviderProperties conf, Database db, CertificateAuthority ca,
         EventManager eventManager) throws DorianInternalFault {
+        this.conf = conf;
         this.eventManager = eventManager;
         this.db = db;
         try {
@@ -90,13 +97,13 @@ public class IdentityProvider extends LoggingObject {
                 this.eventManager.registerHandler(this.identityProviderAuditor);
             }
 
-            this.eventManager.registerEventWithHandler(new EventToHandlerMapping(IdentityProviderAudit.LocalAccountLocked
-                .getValue(), AuditingConstants.IDENTITY_PROVIDER_AUDITOR));
+            this.eventManager.registerEventWithHandler(new EventToHandlerMapping(
+                IdentityProviderAudit.LocalAccountLocked.getValue(), AuditingConstants.IDENTITY_PROVIDER_AUDITOR));
 
-            this.eventManager.registerEventWithHandler(new EventToHandlerMapping(IdentityProviderAudit.LocalAccountRemoved
-                .getValue(), AuditingConstants.IDENTITY_PROVIDER_AUDITOR));
-            this.eventManager.registerEventWithHandler(new EventToHandlerMapping(IdentityProviderAudit.LocalAccountUpdated
-                .getValue(), AuditingConstants.IDENTITY_PROVIDER_AUDITOR));
+            this.eventManager.registerEventWithHandler(new EventToHandlerMapping(
+                IdentityProviderAudit.LocalAccountRemoved.getValue(), AuditingConstants.IDENTITY_PROVIDER_AUDITOR));
+            this.eventManager.registerEventWithHandler(new EventToHandlerMapping(
+                IdentityProviderAudit.LocalAccountUpdated.getValue(), AuditingConstants.IDENTITY_PROVIDER_AUDITOR));
 
             this.eventManager.registerEventWithHandler(new EventToHandlerMapping(IdentityProviderAudit.InvalidLogin
                 .getValue(), AuditingConstants.IDENTITY_PROVIDER_AUDITOR));
@@ -326,8 +333,8 @@ public class IdentityProvider extends LoggingObject {
                 this.eventManager.logEvent(u.getUserId(), requestorUID, IdentityProviderAudit.PasswordChanged
                     .getValue(), "Password changed by " + u.getUserId() + ".");
             }
-            this.eventManager.logEvent(u.getUserId(), requestorUID, IdentityProviderAudit.LocalAccountUpdated.getValue(),
-                ReportUtils.generateReport(beforeUpdate, this.userManager.getUser(u.getUserId())));
+            this.eventManager.logEvent(u.getUserId(), requestorUID, IdentityProviderAudit.LocalAccountUpdated
+                .getValue(), ReportUtils.generateReport(beforeUpdate, this.userManager.getUser(u.getUserId())));
         } catch (DorianInternalFault e) {
             String message = "An unexpected error occurred while trying to update the user " + u.getUserId() + ": ";
             this.eventManager.logEvent(AuditConstants.SYSTEM_ID, AuditConstants.SYSTEM_ID,
@@ -479,4 +486,45 @@ public class IdentityProvider extends LoggingObject {
         }
     }
 
+
+    public IdentityProviderPolicy getPolicy() {
+        IdentityProviderPolicy policy = new IdentityProviderPolicy();
+        UserIdPolicy u = new UserIdPolicy();
+        u.setMinLength(this.conf.getMinUserIdLength());
+        u.setMaxLength(this.conf.getMaxUserIdLength());
+        policy.setUserIdPolicy(u);
+        PasswordPolicy p = new PasswordPolicy();
+        p.setDictionaryWordsAllowed(false);
+        p.setLowerCaseLetterRequired(true);
+        p.setMaxLength(conf.getPasswordSecurityPolicy().getMaxPasswordLength());
+        p.setMinLength(conf.getPasswordSecurityPolicy().getMinPasswordLength());
+        p.setNumericRequired(true);
+        PasswordLockoutPolicy plp = new PasswordLockoutPolicy();
+        plp.setConsecutiveInvalidLogins(conf.getPasswordSecurityPolicy().getConsecutiveInvalidLogins());
+        plp.setHours(conf.getPasswordSecurityPolicy().getLockout().getHours());
+        plp.setMinutes(conf.getPasswordSecurityPolicy().getLockout().getMinutes());
+        plp.setSeconds(conf.getPasswordSecurityPolicy().getLockout().getSeconds());
+        p.setPasswordLockoutPolicy(plp);
+
+        p.setSymbolRequired(true);
+        StringBuffer sb = new StringBuffer();
+        for (int i = 0; i < PasswordUtils.SYMBOLS.length; i++) {
+            sb.append(PasswordUtils.SYMBOLS[i]);
+            if ((i + 1) != PasswordUtils.SYMBOLS.length) {
+                sb.append(", ");
+            }
+        }
+        p.setSymbolsSupported(sb.toString());
+        p.setUpperCaseLetterRequired(true);
+        p
+            .setDescription("A valid password MUST contain at least 1 lower case letter, 1 upper case letter, 1 number, and 1 symbol ("
+                + sb.toString()
+                + ").  A valid password MUST be between "
+                + conf.getPasswordSecurityPolicy().getMinPasswordLength()
+                + " and "
+                + conf.getPasswordSecurityPolicy().getMaxPasswordLength()
+                + " characters in length.  A valid password MAY NOT contain a dictionary word greater than 3 characters, spelled forwards or backwards.");
+        policy.setPasswordPolicy(p);
+        return policy;
+    }
 }

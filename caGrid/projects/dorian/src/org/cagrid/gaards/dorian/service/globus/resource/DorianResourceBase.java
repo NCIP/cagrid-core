@@ -164,6 +164,17 @@ public abstract class DorianResourceBase extends ReflectionResource implements R
 		prop.set(0, trustedIdentityProviders);
 	}
 	
+	
+	
+	public org.cagrid.gaards.dorian.policy.DorianPolicy getDorianPolicy(){
+		return ((DorianResourceProperties) getResourceBean()).getDorianPolicy();
+	}
+	
+	public void setDorianPolicy(org.cagrid.gaards.dorian.policy.DorianPolicy dorianPolicy ) throws ResourceException {
+        ResourceProperty prop = getResourcePropertySet().get(DorianConstants.DORIANPOLICY);
+		prop.set(0, dorianPolicy);
+	}
+	
 
 
 	

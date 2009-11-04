@@ -75,20 +75,20 @@ public class HostAgreement {
 
     private void initializeDOM() {
         doc = PolicyUtils.getParserPool().newDocument();
-        root = doc.createElementNS(PolicyConstants.DORIAN_POLICY_NS, PolicyConstants.HOST_AGREEMENT_ELEMENT);
-        root.setAttributeNS(PolicyConstants.XMLNS_NS, "xmlns", PolicyConstants.DORIAN_POLICY_NS);
+        root = doc.createElementNS(PolicyConstants.HOST_AGREEMENT_NS, PolicyConstants.HOST_AGREEMENT_ELEMENT);
+        root.setAttributeNS(PolicyConstants.XMLNS_NS, "xmlns", PolicyConstants.HOST_AGREEMENT_NS);
         root.setAttributeNS(PolicyConstants.XMLNS_NS, "xmlns:xsd", PolicyConstants.XSD_NS);
-        root.setAttributeNS(PolicyConstants.XMLNS_NS, "xmlns:policy", PolicyConstants.DORIAN_POLICY_NS);
+        root.setAttributeNS(PolicyConstants.XMLNS_NS, "xmlns:policy", PolicyConstants.HOST_AGREEMENT_NS);
         root.setAttributeNS(PolicyConstants.XMLNS_NS, "xmlns:xsi", PolicyConstants.XSI_NS);
         root.getOwnerDocument().appendChild(root);
     }
 
 
     public void setName(String name) {
-        Element e = PolicyUtils.getFirstChildElement(root, PolicyConstants.DORIAN_POLICY_NS,
+        Element e = PolicyUtils.getFirstChildElement(root, PolicyConstants.HOST_AGREEMENT_NS,
             PolicyConstants.NAME_ELEMENT);
         if (e == null) {
-            e = doc.createElementNS(PolicyConstants.DORIAN_POLICY_NS, PolicyConstants.NAME_ELEMENT);
+            e = doc.createElementNS(PolicyConstants.HOST_AGREEMENT_NS, PolicyConstants.NAME_ELEMENT);
             root.appendChild(e);
         }
         e.setTextContent(name);
@@ -96,7 +96,7 @@ public class HostAgreement {
 
 
     public String getName() {
-        Element e = PolicyUtils.getFirstChildElement(root, PolicyConstants.DORIAN_POLICY_NS,
+        Element e = PolicyUtils.getFirstChildElement(root, PolicyConstants.HOST_AGREEMENT_NS,
             PolicyConstants.NAME_ELEMENT);
         if (e == null) {
             return null;
@@ -269,41 +269,4 @@ public class HostAgreement {
             throw new java.io.IOException(e.getMessage());
         }
     }
-
-
-    public static void main(String[] args) {
-
-        try {
-            Security.addProvider(new org.bouncycastle.jce.provider.BouncyCastleProvider());
-            org.apache.xml.security.Init.init();
-            Security.addProvider(new SunRsaSign());
-            HostAgreement ha = new HostAgreement();
-            ha.setName("Stephen Langella");
-            X509Certificate cert = CertUtil.loadCertificate(new File("/Users/langella/certificates/llanowar-cert.pem"));
-            PrivateKey key = KeyUtil.loadPrivateKey(new File("/Users/langella/certificates/llanowar-key.pem"), null);
-            List<X509Certificate> certs = new ArrayList<X509Certificate>();
-            certs.add(cert);
-            ha.sign(certs, key);
-            // System.out.println(ha.toString());
-
-            ha.verify(cert);
-            System.out.println("Verified with signing cert.");
-
-            ha.verify();
-            System.out.println("Verified with cert in signature.");
-
-            String xml = PolicyUtils.hostAgreementToString(ha);
-            // System.out.println(xml);
-            HostAgreement haFromString = PolicyUtils.stringToHostAgreement(xml);
-            ha.verify(cert);
-            System.out.println("From String verified with signing cert.");
-            haFromString.verify();
-            System.out.println("From String Verified with cert in signature.");
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-    }
-
 }

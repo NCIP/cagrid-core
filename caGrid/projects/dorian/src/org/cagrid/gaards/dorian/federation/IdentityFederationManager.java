@@ -32,6 +32,14 @@ import org.cagrid.gaards.dorian.ca.CertificateAuthority;
 import org.cagrid.gaards.dorian.ca.CertificateAuthorityFault;
 import org.cagrid.gaards.dorian.common.AuditConstants;
 import org.cagrid.gaards.dorian.common.LoggingObject;
+import org.cagrid.gaards.dorian.policy.FederationPolicy;
+import org.cagrid.gaards.dorian.policy.HostAgreement;
+import org.cagrid.gaards.dorian.policy.HostCertificateLifetime;
+import org.cagrid.gaards.dorian.policy.HostPolicy;
+import org.cagrid.gaards.dorian.policy.SearchPolicy;
+import org.cagrid.gaards.dorian.policy.SearchPolicyType;
+import org.cagrid.gaards.dorian.policy.UserCertificateLifetime;
+import org.cagrid.gaards.dorian.policy.UserPolicy;
 import org.cagrid.gaards.dorian.service.DorianConstants;
 import org.cagrid.gaards.dorian.service.PropertyManager;
 import org.cagrid.gaards.dorian.service.util.AddressValidator;
@@ -1728,5 +1736,46 @@ public class IdentityFederationManager extends LoggingObject implements Publishe
                 .getValue(), mess + "\n\n" + Utils.getExceptionMessage(e));
             throw e;
         }
+    }
+
+
+    public FederationPolicy getFederationPolicy() {
+        FederationPolicy policy = new FederationPolicy();
+
+        // Populate User Policy
+        UserPolicy user = new UserPolicy();
+        UserCertificateLifetime ucl = new UserCertificateLifetime();
+        ucl.setHours(conf.getUserCertificateLifetime().getHours());
+        ucl.setMinutes(conf.getUserCertificateLifetime().getMinutes());
+        ucl.setSeconds(conf.getUserCertificateLifetime().getSeconds());
+        user.setUserCertificateLifetime(ucl);
+        policy.setUserPolicy(user);
+
+        // Populate Host Policy
+        HostPolicy host = new HostPolicy();
+        host.setAdministrativeApprovalRequired(!this.conf.autoHostCertificateApproval());
+        HostCertificateLifetime hcl = new HostCertificateLifetime();
+        hcl.setYears(conf.getIssuedCertificateLifetime().getYears());
+        hcl.setMonths(conf.getIssuedCertificateLifetime().getMonths());
+        hcl.setDays(conf.getIssuedCertificateLifetime().getDays());
+        hcl.setHours(conf.getIssuedCertificateLifetime().getHours());
+        hcl.setMinutes(conf.getIssuedCertificateLifetime().getMinutes());
+        hcl.setSeconds(conf.getIssuedCertificateLifetime().getSeconds());
+        host.setHostCertificateLifetime(hcl);
+        // TODO: Finish Host Agreement Stuff
+        host.setSignedHostAgreementRequired(false);
+        HostAgreement ha = new HostAgreement();
+        ha.setName("Dorian Host Agreement");
+        host.setHostAgreement(ha);
+        // TODO: Support renewal policy
+        policy.setHostPolicy(host);
+
+        // Populate Search Policy
+
+        SearchPolicy search = new SearchPolicy();
+        search.setHostSearchPolicy(SearchPolicyType.fromValue(conf.getHostSearchPolicy()));
+        search.setUserSearchPolicy(SearchPolicyType.fromValue(conf.getUserSearchPolicy()));
+        policy.setSearchPolicy(search);
+        return policy;
     }
 }

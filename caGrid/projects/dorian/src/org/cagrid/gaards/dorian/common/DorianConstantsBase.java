@@ -15,5 +15,6 @@ public interface DorianConstantsBase {
 	public static final QName SERVICEMETADATA = new QName("gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata", "ServiceMetadata");
 	public static final QName AUTHENTICATIONPROFILES = new QName("http://gaards.cagrid.org/authentication", "AuthenticationProfiles");
 	public static final QName TRUSTEDIDENTITYPROVIDERS = new QName("http://cagrid.nci.nih.gov/1/dorian-ifs", "TrustedIdentityProviders");
+	public static final QName DORIANPOLICY = new QName("http://cagrid.nci.nih.gov/1/dorian-policy", "DorianPolicy");
 	
 }
