@@ -102,7 +102,6 @@ public class SchemaMappingConfigStep extends AbstractStyleConfigurationStep {
             // find the package of this name
             for (String packageName : dataManager.getCadsrPackageNames()) {
                 if (packageName.equals(schemaPackageName)) {
-                    System.out.println("Mapping xsd " + xsdFile.getName());
                     // create the namespace type of the XSD
                     NamespaceType nsType = CommonTools.createNamespaceType(xsdFile.getAbsolutePath(), schemaDir);
                     
