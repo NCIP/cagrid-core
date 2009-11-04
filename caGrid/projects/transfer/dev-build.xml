@@ -268,7 +268,7 @@
 	</target>
 
 	<!-- Clean up all the intermediate files -->
-	<target name="clean" description="Removes all generated build artifacts.">
+	<target name="clean" depends="checkContribTasksDefined, defineContribTasks" description="Removes all generated build artifacts.">
 		<runtarget target="preClean" />
 		<delete dir="tmp" />
 		<delete dir="${build.dir}" />
