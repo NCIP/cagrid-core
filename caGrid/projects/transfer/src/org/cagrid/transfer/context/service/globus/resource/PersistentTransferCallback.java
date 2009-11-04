@@ -3,7 +3,7 @@ package org.cagrid.transfer.context.service.globus.resource;
 import org.cagrid.transfer.context.service.helper.DataStagedCallback;
 import org.cagrid.transfer.context.stubs.types.TransferServiceContextReference;
 
-/*
+/**
  * PersistentTransferCallback should be implemented by an Resource using the TransferServiceHelper
  * to create upload transfers with callbacks.  This interface will enable the TransferServiceContextResource 
  * to call back into your resource to get a handle to the DataStorageCallback if the TransferServiceContextResource
@@ -12,6 +12,6 @@ import org.cagrid.transfer.context.stubs.types.TransferServiceContextReference;
  */
 public interface PersistentTransferCallback {
 	
-	public DataStagedCallback getCallback(TransferServiceContextReference ref) throws Exception;
+	public DataStagedCallback getCallback(String transferContextID) throws Exception;
 
 }

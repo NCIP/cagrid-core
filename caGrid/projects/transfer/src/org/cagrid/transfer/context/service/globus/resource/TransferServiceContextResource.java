@@ -73,14 +73,9 @@ public class TransferServiceContextResource extends
 			}
 			Resource resource = resourceHome.find(key);
 			if (resource instanceof PersistentTransferCallback) {
-				String homeName = "java:comp/env/services/cagrid/TransferServiceContext/home";
-				org.cagrid.transfer.context.service.globus.resource.TransferServiceContextResourceHome thome = (org.cagrid.transfer.context.service.globus.resource.TransferServiceContextResourceHome) initialContext
-						.lookup(homeName);
-
 				this
 						.setDataStagedCallback(((PersistentTransferCallback) resource)
-								.getCallback(thome.getResourceReference(this
-										.getResourceKey())));
+								.getCallback((String)this.getResourceKey().getValue()));
 			}
 		}
 	}
