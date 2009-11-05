@@ -86,7 +86,8 @@ public class SDK42Serializer implements Serializer {
 	 * @return a type element containing a schema simpleType/complexType
 	 * @see org.apache.axis.wsdl.fromJava.Types
 	 */
-	public Element writeSchema(Class javaType, Types types) throws Exception {
+	@SuppressWarnings("unchecked")
+    public Element writeSchema(Class javaType, Types types) throws Exception {
 		return null;
 	}
 }
