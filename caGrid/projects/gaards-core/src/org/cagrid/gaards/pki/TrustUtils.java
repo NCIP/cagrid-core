@@ -5,9 +5,11 @@ import gov.nih.nci.cagrid.common.Utils;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 
 public class TrustUtils {
@@ -19,8 +21,12 @@ public class TrustUtils {
 
 
 	public static List<TrustedCAFileListing> getTrustedCertificates(File dir) throws Exception {
-		Map caListings = new HashMap<String, TrustedCAFileListing>();
+		Map<String, TrustedCAFileListing> tempCAListings = new HashMap<String, TrustedCAFileListing>();
+		
 		File[] list = dir.listFiles();
+		
+		//iterate over all files in the trusted certs directory
+		//skip files that don't have a "." in the name
 		for (int i = 0; i < list.length; i++) {
 			String fn = list[i].getName();
 			int index = fn.lastIndexOf(".");
@@ -30,10 +36,10 @@ public class TrustUtils {
 			String name = fn.substring(0, index);
 			String extension = fn.substring(index + 1);
 
-			TrustedCAFileListing ca = (TrustedCAFileListing) caListings.get(name);
+			TrustedCAFileListing ca = (TrustedCAFileListing) tempCAListings.get(name);
 			if (ca == null) {
 				ca = new TrustedCAFileListing(name);
-				caListings.put(name, ca);
+				tempCAListings.put(name, ca);
 			}
 
 			if (extension.matches("[0-9]+")) {
@@ -50,11 +56,17 @@ public class TrustUtils {
 			}
 
 		}
-		Iterator<TrustedCAFileListing> itr = caListings.values().iterator();
-		List<TrustedCAFileListing> listings = new ArrayList<TrustedCAFileListing>();
-		while (itr.hasNext()) {
-			listings.add(itr.next());
+		
+		//populate final list. Validate each entry.
+		Map<String, TrustedCAFileListing> caListings = new HashMap<String, TrustedCAFileListing>();
+		List<TrustedCAFileListing> finalListings = new ArrayList<TrustedCAFileListing>();
+		
+		for (TrustedCAFileListing listing : tempCAListings.values()) {
+			if (listing.isValid()) {
+				finalListings.add(listing);
+			}
 		}
-		return listings;
+		
+		return finalListings;
 	}
 }
