@@ -1929,10 +1929,15 @@ public class MethodViewer extends javax.swing.JDialog {
             isImportedCheckBox.setText("Imported");
             isImportedCheckBox.setSelected(method.isIsImported());
             if (isImportedCheckBox.isSelected()) {
-                isImportedCheckBox.setEnabled(false);
+                getTabbedPanel().setEnabledAt(3, true);
                 getTabbedPanel().setEnabledAt(0, false);
+                getTabbedPanel().setSelectedIndex(3);
+            } else {
                 getTabbedPanel().setEnabledAt(3, false);
-                getTabbedPanel().setSelectedIndex(1);
+                getTabbedPanel().setEnabledAt(0, true);
+                if (getTabbedPanel().getSelectedIndex() == 3) {
+                    getTabbedPanel().setSelectedIndex(0);
+                }
             }
 
             isImportedCheckBox.addActionListener(new ActionListener() {
@@ -2788,6 +2793,7 @@ public class MethodViewer extends javax.swing.JDialog {
                 public void actionPerformed(java.awt.event.ActionEvent e) {
                     JFileChooser chooser = new JFileChooser(info.getBaseDirectory().getAbsolutePath() + File.separator
                         + "schema" + File.separator + info.getServices().getService(0).getName());
+                    chooser.setDialogTitle("Import WSDL from the schema directory");
                     chooser.setFileFilter(new FileFilter() {
 
                         public String getDescription() {
@@ -2803,6 +2809,7 @@ public class MethodViewer extends javax.swing.JDialog {
                         }
 
                     });
+                    
                     chooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
                     GridApplication.getContext().centerComponent(chooser);
                     int returnVal = chooser.showOpenDialog(MethodViewer.this);
@@ -2845,11 +2852,20 @@ public class MethodViewer extends javax.swing.JDialog {
                     if (getWsdlServiceServicesComboBox().getItemCount() <= 0) {
                         JOptionPane.showMessageDialog(MethodViewer.this,
                             "The WSDL file does not contain a port type with an operation named: "
-                                + getNameField().getText());
+                                + getNameField().getText(), "No port type found", JOptionPane.WARNING_MESSAGE);
                     }
                     String schemaDir = info.getBaseDirectory().getAbsolutePath() + File.separator + "schema"
                         + File.separator + info.getServices().getService(0).getName();
-                    String relativeFile = chooser.getSelectedFile().getAbsolutePath().substring(
+                    //verify that user selected WSDL from expected directory (schemaDir)
+                    String selectedDir = chooser.getSelectedFile().getAbsolutePath();
+                    if (!selectedDir.contains(schemaDir)) {
+                    	//error case. they selected a file in some other directory
+                        JOptionPane.showMessageDialog(MethodViewer.this,
+                                "Please select a WSDL file from the service's schema/<SERVICE NAME> directory",
+                                "Invalid Directory Selection", JOptionPane.ERROR_MESSAGE);
+                        return;
+                    }
+                    String relativeFile = selectedDir.substring(
                         chooser.getSelectedFile().getAbsolutePath().indexOf(schemaDir) + schemaDir.length() + 1);
                     getWsdlFileNameTextField().setText(relativeFile);
 
