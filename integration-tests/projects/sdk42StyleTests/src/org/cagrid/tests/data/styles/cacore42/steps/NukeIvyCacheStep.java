@@ -22,17 +22,17 @@ public class NukeIvyCacheStep extends Step {
         if (homeDir.exists()) {
             File bdaCache = new File(homeDir, ".ivy2-bda-utils");
             if (bdaCache.exists()) {
-                LOG.debug("Deleting BDA utils ivy cache at " + bdaCache.getAbsolutePath());
+                LOG.info("Deleting BDA utils ivy cache at " + bdaCache.getAbsolutePath());
                 Utils.deleteDir(bdaCache);
             } else {
-                LOG.debug("BDA utils ivy cache " + bdaCache.getAbsolutePath() + " not found");
+                LOG.info("BDA utils ivy cache " + bdaCache.getAbsolutePath() + " not found");
             }
             File sdkCache = new File(homeDir, ".ivy2-sdk");
             if (sdkCache.exists()) {
-                LOG.debug("Deleting sdk ivy cache at " + sdkCache.getAbsolutePath());
-                Utils.deleteDir(bdaCache);
+                LOG.info("Deleting sdk ivy cache at " + sdkCache.getAbsolutePath());
+                Utils.deleteDir(sdkCache);
             } else {
-                LOG.debug("SDK ivy cache " + sdkCache.getAbsolutePath() + " not found");
+                LOG.info("SDK ivy cache " + sdkCache.getAbsolutePath() + " not found");
             }
         } else {
             LOG.warn("User home dir " + homeDir.getAbsolutePath() + " not found");
