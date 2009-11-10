@@ -39,7 +39,9 @@ public class AntCommandUtil {
             cmd.add(stok.nextToken());
         }
         
-        cmd.add("-verbose");
+        if (LOG.isDebugEnabled()) {
+            cmd.add("-verbose");
+        }
         
         Map<String, String> environment = getEnvironment();
         return new ExecutableCommand(cmd, environment);
