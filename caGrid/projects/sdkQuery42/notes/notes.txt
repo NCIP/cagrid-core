@@ -1,7 +1,7 @@
 Downloading and building the SDK example project:
 
 
-http://gforge.nci.nih.gov/svnroot/cacoresdk/tags/CACORESDK_42_QA_10302009. Unless we find a show stopper, we will not change anything in this codebase except the ivysettings.xml to point to cagrid 1.3.0.2 release repository. I will send this tag to the QA team as well.
+http://gforge.nci.nih.gov/svnroot/cacoresdk/tags/CACORESDK_42_QA_11032009. Unless we find a show stopper, we will not change anything in this codebase except the ivysettings.xml to point to cagrid 1.3.0.2 release repository. I will send this tag to the QA team as well.
 
 With this tag, you can use following commands 
 
@@ -10,8 +10,9 @@ With this tag, you can use following commands
 -	ant deploy:local:install: this target builds and deploys the complete system
 
 
-* previous tag here: http://gforge.nci.nih.gov/svnroot/cacoresdk/tags/CACORESDK_42_QA_10262009
-* old: http://gforge.nci.nih.gov/svnroot/cacoresdk/tags/CACORESDK_42_QA_10132009
+* previous: http://gforge.nci.nih.gov/svnroot/cacoresdk/tags/CACORESDK_42_QA_10302009
+* old: http://gforge.nci.nih.gov/svnroot/cacoresdk/tags/CACORESDK_42_QA_10262009
+* older: http://gforge.nci.nih.gov/svnroot/cacoresdk/tags/CACORESDK_42_QA_10132009
 * ancient: http://gforge.nci.nih.gov/svnroot/cacoresdk/tags/CACORESDK_42_caGRID1302
 
 1	cd sdk-toolkit\example-project\build
@@ -28,5 +29,3 @@ With this tag, you can use following commands
 	* build-system
 		** Works as expected, builds SDK, builds your project, lays out artifacts in dist dir
 4	Output we depend on goes to sdk-toolkit\example-project\target\dist\exploded\output\example\package 
-
-The build script will download the container no matter what. The BDA team at NCICB has come up with this build methodology and all projects at NCICB is required to follow it. The reasoning behind downloading the container is that someone may want to install the already built system. In that case everything that’s needed to install the app should be already available in the target/dist folder. The end user is given the zip of the target/dist folder. The end user has an option at the time of final installation whether to install the container or not. If he chooses to install then it will be used from the previously downloaded version in the dist/exploded folder.
