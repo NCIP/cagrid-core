@@ -15,7 +15,7 @@
 
 	<taskdef resource="net/sf/antcontrib/antlib.xml">
 		<classpath>
-			<fileset dir="${cagrid.home}/antfiles/lib">
+			<fileset dir="${lib.dir}">
 				<include name="ant-contrib*.jar" />
 			</fileset>
 		</classpath>
@@ -34,6 +34,13 @@
 			location="./resources/spring-beans.dtd"/>
 	</xmlcatalog>
 	
+	<target name="fix-permissions">
+		<chmod perm="u+x">
+			  <fileset dir="${jboss.home}/bin">
+			    <include name="*.sh"/>
+			  </fileset>
+		</chmod>
+	</target>
 
 	<target name="fix-secure-web-xml">
 		<antcall target="fix-web-xml">
@@ -76,7 +83,7 @@
 		<xmltask source="${jboss.home}/server/default/deploy/jbossweb-tomcat55.sar/server.xml"
 			dest="${jboss.home}/server/default/deploy/jbossweb-tomcat55.sar/server.xml">
 			<remove
-				path="/Server/Service[@name='Catalina' or @name='jboss.web']/Connector[@scheme='https']" />
+				path="/Server/Service[@name='Catalina' or @name='jboss.web']/Connector[@scheme='https' or not(@protocol)]" />
 			<insert path="/Server/Service[@name='Catalina' or @name='jboss.web']">
 				<![CDATA[
 				<Connector

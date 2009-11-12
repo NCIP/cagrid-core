@@ -36,12 +36,14 @@ public class ConfigureJBossTask extends CaGridInstallerAntTask {
 		boolean secure = model.isTrue(Constants.USE_SECURE_CONTAINER);
 
 		if (!secure) {
-			setStepCount(3);
+			setStepCount(4);
 			new AntExecutionTask("", "", getBuildFilePath(), "fix-web-xml", env, sysProps).execute(model);
 			setLastStep(1);
+			new AntExecutionTask("", "", getBuildFilePath(), "configure-ports", env, sysProps).execute(model);
+            setLastStep(2);
 			new AntExecutionTask("", "", getBuildFilePath(), "configure-server-config", env, sysProps)
 			.execute(model);
-			setLastStep(2);
+			setLastStep(3);
 		} else {
 			setStepCount(6);
 			new AntExecutionTask("", "", getBuildFilePath(), "insert-secure-connector", env, sysProps)

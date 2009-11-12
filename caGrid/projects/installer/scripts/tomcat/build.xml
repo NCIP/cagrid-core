@@ -15,7 +15,7 @@
 
 	<taskdef resource="net/sf/antcontrib/antlib.xml">
 		<classpath>
-			<fileset dir="${cagrid.home}/antfiles/lib">
+			<fileset dir="${lib.dir}">
 				<include name="ant-contrib*.jar" />
 			</fileset>
 		</classpath>
@@ -33,6 +33,14 @@
 			location="./resources/spring-beans.dtd"/>
 	</xmlcatalog>
 
+	<target name="fix-permissions">
+		<chmod perm="u+x">
+			<fileset dir="${tomcat.home}/bin">
+				<include name="*.sh" />
+			</fileset>
+		</chmod>
+
+	</target>
 	
 	<target name="globus-deploy-tomcat">
 
@@ -100,10 +108,10 @@
 	</target>
 
 	<target name="insert-secure-connector">
-		<xmltask source="${tomcat.home}/conf/server.xml"
+		<xmltask source="${tomcat.home}/conf/server.xml" 
 			dest="${tomcat.home}/conf/server.xml">
-			<remove
-				path="/Server/Service[@name='Catalina' or @name='jboss.web']/Connector[@scheme='https']" />
+			<remove 
+				path="/Server/Service[@name='Catalina' or @name='jboss.web']/Connector[@scheme='https' or not(@protocol)]" />
 			<insert path="/Server/Service[@name='Catalina' or @name='jboss.web']">
 				<![CDATA[
 				<Connector
@@ -189,24 +197,34 @@
 	</target>
 
 
+	
+<target name="configure-tomcat-shutdown-ports">
+
+  <xmltask source="${tomcat.home}/conf/server.xml" dest="${tomcat.home}/conf/server.xml">
+
+	<attr path="/Server" attr="port" value="${shutdown.port}" />
+
+  </xmltask>
+
+</target>
+
+
+	
 	<target name="configure-tomcat-ports">
 
-		<xmltask source="${tomcat.home}/conf/server.xml"
+		<xmltask source="${tomcat.home}/conf/server.xml" 
 			dest="${tomcat.home}/conf/server.xml">
 
-			<attr path="/Server" attr="port"
-				value="${tomcat.shutdown.port}" />
-
-			<attr
-				path="/Server/Service[@name='Catalina' or @name='jboss.web']/Connector[@port='${old.http.port}' and @redirectPort='${old.https.port}']"
+			<attr 
+				path="/Server/Service[@name='Catalina' or @name='jboss.web']/Connector[@port='${old.http.port}' and @redirectPort='${old.https.port}']" 
 				attr="port" value="${http.port}" />
 
-			<attr
-				path="/Server/Service[@name='Catalina' or @name='jboss.web']/Connector[@port='${http.port}' and @redirectPort='${old.https.port}']"
+			<attr 
+				path="/Server/Service[@name='Catalina' or @name='jboss.web']/Connector[@port='${http.port}' and @redirectPort='${old.https.port}']" 
 				attr="redirectPort" value="${https.port}" />
 
-			<attr
-				path="/Server/Service[@name='Catalina' or @name='jboss.web']/Connector[@scheme='https']"
+			<attr 
+				path="/Server/Service[@name='Catalina' or @name='jboss.web']/Connector[@scheme='https']" 
 				attr="port" value="${https.port}" />
 
 		</xmltask>

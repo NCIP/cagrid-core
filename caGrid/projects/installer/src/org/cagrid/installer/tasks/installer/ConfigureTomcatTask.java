@@ -38,14 +38,18 @@ public class ConfigureTomcatTask extends CaGridInstallerAntTask {
         boolean secure = model.isTrue(Constants.USE_SECURE_CONTAINER);
 
         if (!secure) {
-            setStepCount(3);
+            setStepCount(5);
             new AntExecutionTask("", "", getBuildFilePath(), "fix-web-xml", env, sysProps).execute(model);
             setLastStep(1);
+            new AntExecutionTask("", "", getBuildFilePath(), "configure-tomcat-ports", env, sysProps).execute(model);
+            setLastStep(2);
+            new AntExecutionTask("", "", getBuildFilePath(), "configure-tomcat-shutdown-ports", env, sysProps).execute(model);
+            setLastStep(3);
             new AntExecutionTask("", "", getBuildFilePath(), "configure-server-config", env, sysProps)
             .execute(model);
-            setLastStep(2);
+            setLastStep(4);
         } else {
-            setStepCount(6);
+            setStepCount(7);
             new AntExecutionTask("", "", getBuildFilePath(), "insert-secure-connector", env, sysProps)
                     .execute(model);
             setLastStep(1);
@@ -57,9 +61,11 @@ public class ConfigureTomcatTask extends CaGridInstallerAntTask {
             new AntExecutionTask("", "", getBuildFilePath(), "fix-secure-web-xml", env, sysProps)
                     .execute(model);
             setLastStep(4);
+            new AntExecutionTask("", "", getBuildFilePath(), "configure-tomcat-shutdown-ports", env, sysProps).execute(model);
+            setLastStep(5);
             new AntExecutionTask("", "", getBuildFilePath(), "configure-server-config", env, sysProps)
                     .execute(model);
-            setLastStep(5);
+            setLastStep(6);
         }
         
         new AntExecutionTask("", "", getBuildFilePath(), "fix-permissions", env, sysProps)

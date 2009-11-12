@@ -25,7 +25,7 @@
 	</pathconvert>
 	<!-- NOTE: these are expected to be changed/overridden when releases are created -->
 	<property name="cagrid.version" value="${project.version}" />
-	<property name="download.properties.url" value="file://${download.properties.path}" />
+	<property name="download.properties.url" value="file:/${download.properties.path}" />
 	<property name="cagrid.download.url" value="http://localhost:8080/downloads/caGrid-${project.version}.zip" />
 
 	<fileset id="globus.jars" dir="${globus.dir}/lib">
@@ -119,12 +119,12 @@
 
 	<target name="dist-installer" depends="jar" description="Generates an installer release.">
 
-		<mkdir dir="build/installer/lib" />
-		<mkdir dir="build/installer/scripts/resources" />
+		<mkdir dir="build/installer/${project.artificat.name}/lib" />
+		<mkdir dir="build/installer/${project.artificat.name}/scripts/resources" />
 
-		<copy todir="build/installer" file="${build.jars}/${project.jar.name}" overwrite="true" />
+		<copy todir="build/installer/${project.artificat.name}" file="${build.jars}/${project.jar.name}" overwrite="true" />
 
-		<copy todir="build/installer/lib">
+		<copy todir="build/installer/${project.artificat.name}/lib">
 			<fileset refid="globus.jars" />
 
 			<fileset dir="${java.home}/lib">
@@ -137,13 +137,13 @@
 		</copy>
 
 		
-		<copy todir="build/installer/scripts">
+		<copy todir="build/installer/${project.artificat.name}/scripts">
 			<fileset dir="scripts">
 				<include name="**" />
 			</fileset>
 		</copy>
 		
-		<copy todir="build/installer/scripts/resources">
+		<copy todir="build/installer/${project.artificat.name}/scripts/resources">
 			<fileset dir="src/resources">
 				<include name="**" />
 			</fileset>
@@ -162,7 +162,7 @@
 	<target name="run-installer" depends="dist-installer">
 		<mkdir dir="${build}/temp" />
 		<unzip src="build/${project.zip.name}" dest="${build}/temp" />
-		<java jar="${build}/temp/${project.jar.name}" fork="true" dir="${build}/temp" failonerror="true" />
+		<java jar="${build}/temp/${project.artificat.name}/${project.jar.name}" fork="true" dir="${build}/temp" failonerror="true" />
 	</target>
 
 </project>

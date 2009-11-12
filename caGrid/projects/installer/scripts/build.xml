@@ -17,7 +17,7 @@
 
 	<taskdef resource="net/sf/antcontrib/antlib.xml">
 		<classpath>
-			<fileset dir="${cagrid.home}/antfiles/lib">
+			<fileset dir="${lib.dir}">
 				<include name="ant-contrib*.jar" />
 			</fileset>
 		</classpath>
@@ -34,6 +34,23 @@
 			publicId="-//SPRING//DTD BEAN//EN"
 			location="./resources/spring-beans.dtd"/>
 	</xmlcatalog>
+
+	<target name="fix-ant-permissions">
+		<chmod perm="u+x">
+			<fileset dir="${ant.home}/bin">
+				<include name="ant" />
+				<include name="antRun" />
+			</fileset>
+		</chmod>
+	</target>
+
+	<target name="fix-globus-permissions">
+		<chmod perm="u+x">
+			<fileset dir="${globus.home}/bin">
+				<exclude name="*.bat" />
+			</fileset>
+		</chmod>
+	</target>
 
 	<target name="copy-selected-services">
 
