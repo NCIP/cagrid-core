@@ -415,7 +415,7 @@ public class UserManager extends LoggingObject {
                 s = c.prepareStatement("select " + GID_FIELD + "," + FIRST_NAME_FIELD + "," + LAST_NAME_FIELD + ","
                     + EMAIL_FIELD + " from  " + USERS_TABLE + " WHERE " + GID_FIELD + " LIKE ? AND " + FIRST_NAME_FIELD
                     + " LIKE ? AND " + LAST_NAME_FIELD + " LIKE ? AND " + EMAIL_FIELD + " LIKE ? AND " + STATUS_FIELD
-                    + " = '" + GridUserStatus.Active+"'");
+                    + " = '" + GridUserStatus.Active + "'");
 
                 if (filter.getIdentity() != null) {
                     s.setString(1, "%" + filter.getIdentity() + "%");
@@ -513,7 +513,7 @@ public class UserManager extends LoggingObject {
                 s.setString(6, user.getLastName());
                 s.setString(7, user.getEmail());
                 s.execute();
-                if (!user.getUserStatus().equals(GridUserStatus.Active)) {
+                if (user.getUserStatus().equals(GridUserStatus.Suspended)) {
                     publisher.publishCRL();
                 }
             } catch (InvalidUserFault iuf) {
@@ -599,9 +599,11 @@ public class UserManager extends LoggingObject {
                         fault.setFaultString("Cannot change the status of account that has been rejected.");
                         throw fault;
                     }
-                    if (curr.getUserStatus().equals(GridUserStatus.Active)) {
+                    if ((curr.getUserStatus().equals(GridUserStatus.Active))
+                        && (u.getUserStatus().equals(GridUserStatus.Suspended))) {
                         publishCRL = true;
-                    } else if (u.getUserStatus().equals(GridUserStatus.Active)) {
+                    } else if ((curr.getUserStatus().equals(GridUserStatus.Suspended))
+                        && (u.getUserStatus().equals(GridUserStatus.Active))) {
                         publishCRL = true;
                     }
                     curr.setUserStatus(u.getUserStatus());

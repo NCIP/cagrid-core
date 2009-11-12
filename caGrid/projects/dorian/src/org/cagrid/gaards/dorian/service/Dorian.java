@@ -106,8 +106,8 @@ public class Dorian extends LoggingObject {
 
     public Dorian(DorianProperties conf, String serviceId, boolean ignoreCRL) throws DorianInternalFault {
         try {
-
             this.configuration = conf;
+            org.apache.xml.security.Init.init();
             this.eventManager = this.configuration.getEventManager();
             UserManager.ADMIN_USER_ID = IDP_ADMIN_USER_ID;
             UserManager.ADMIN_PASSWORD = IDP_ADMIN_PASSWORD;

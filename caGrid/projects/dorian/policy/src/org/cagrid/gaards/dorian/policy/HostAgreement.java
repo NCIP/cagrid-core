@@ -4,15 +4,12 @@ import gov.nih.nci.cagrid.opensaml.XML;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
-import java.io.File;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.security.Key;
 import java.security.PrivateKey;
-import java.security.Security;
 import java.security.cert.Certificate;
 import java.security.cert.X509Certificate;
-import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.xml.security.algorithms.MessageDigestAlgorithm;
@@ -27,13 +24,9 @@ import org.apache.xml.security.signature.SignedInfo;
 import org.apache.xml.security.signature.XMLSignature;
 import org.apache.xml.security.transforms.Transforms;
 import org.apache.xml.security.transforms.params.InclusiveNamespaces;
-import org.cagrid.gaards.pki.CertUtil;
-import org.cagrid.gaards.pki.KeyUtil;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.xml.sax.SAXException;
-
-import sun.security.rsa.SunRsaSign;
 
 
 public class HostAgreement {
@@ -64,6 +57,8 @@ public class HostAgreement {
 
 
     public void fromDOM(Element e) throws Exception {
+        this.root = e;
+        this.doc = e.getOwnerDocument();
         // Locate the Signature beneath the root.
         Element n = XML.getFirstChildElement(e, PolicyConstants.XMLSIG_NS, "Signature");
         if (n != null) {

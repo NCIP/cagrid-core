@@ -2,15 +2,20 @@
 <!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
 <beans>
 
-<bean id="UpgradeList" class="java.util.ArrayList">
-	<constructor-arg index="0">
-		<list>
-       	    <ref bean="Upgrade1_1To1_2"/>
-       	    <ref bean="Upgrade1_2To1_3"/>
-        </list> 
-	</constructor-arg>
-</bean>
+	<bean id="UpgradeList" class="java.util.ArrayList">
+		<constructor-arg index="0">
+			<list>
+				<ref bean="Upgrade1_1To1_2" />
+				<ref bean="Upgrade1_2To1_3" />
+				<ref bean="Upgrade1_3To1_4" />
+			</list>
+		</constructor-arg>
+	</bean>
 
-<bean id="Upgrade1_1To1_2" class="org.cagrid.gaards.dorian.service.upgrader.Upgrade1_1To1_2"/>
-<bean id="Upgrade1_2To1_3" class="org.cagrid.gaards.dorian.service.upgrader.Upgrade1_2To1_3"/>
+	<bean id="Upgrade1_1To1_2"
+		class="org.cagrid.gaards.dorian.service.upgrader.Upgrade1_1To1_2" />
+	<bean id="Upgrade1_2To1_3"
+		class="org.cagrid.gaards.dorian.service.upgrader.Upgrade1_2To1_3" />
+	<bean id="Upgrade1_3To1_4"
+		class="org.cagrid.gaards.dorian.service.upgrader.Upgrade1_3To1_4" />
 </beans>	

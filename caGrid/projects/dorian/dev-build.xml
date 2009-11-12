@@ -17,14 +17,15 @@
 
 	<property name="jar.prefix" value="caGrid-dorian" />
 	<property name="jar.suffix" value="${project.version}.jar" />
-	
-	
+
+
 	<property name="policy.src.dir" location="${basedir}/policy/src" />
 
 	<property name="common.jar.name" value="${jar.prefix}-common-${jar.suffix}" />
 	<property name="client.jar.name" value="${jar.prefix}-client-${jar.suffix}" />
 	<property name="service.jar.name" value="${jar.prefix}-service-${jar.suffix}" />
 	<property name="stubs.jar.name" value="${jar.prefix}-stubs-${jar.suffix}" />
+	<property name="schema.jar.name" value="${jar.prefix}-schema-${jar.suffix}" />
 	<property name="test.jar.name" value="${jar.prefix}-tests-${jar.suffix}" />
 
 
@@ -91,6 +92,10 @@
 			<include name="**/dorian/tools/**" />
 		</jar>
 
+		<jar jarfile="${build.lib.dir}/${schema.jar.name}" basedir="${build.dir}/schema">
+			<include name="**" />
+		</jar>
+
 
 		<jar jarfile="${build.lib.dir}/${service.jar.name}" basedir="${build.dest}">
 			<include name="**/service/**" />
@@ -138,7 +143,7 @@
 
 	</target>
 
-	
+
 	<target name="compilePolicy" depends="init" description="Compiles the policy model for the service.">
 		<javac srcdir="${policy.src.dir}" classpathref="service.build.classpath" includes="**" destdir="${build.dest}" debug="${java.debug}" deprecation="${deprecation}" />
 
