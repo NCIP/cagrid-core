@@ -5,11 +5,11 @@ package org.cagrid.installer.util;
 
 import java.awt.Component;
 import java.awt.GridBagConstraints;
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
+import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
 import java.io.File;
-import java.io.FileReader;
-import java.io.FileWriter;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.StringWriter;
 import java.lang.reflect.Method;
@@ -88,19 +88,33 @@ public class InstallerUtils {
 
 
     public static void copyFile(String from, String to) throws IOException {
-        BufferedReader in = new BufferedReader(new FileReader(from));
-        File toFile = new File(to);
-        if (!toFile.getParentFile().exists()) {
-            toFile.getParentFile().mkdirs();
+    	File inCannon  = new File(from);
+    	File outCannon = new File(to);
+    	
+    	// [#20196] Installer overwrites the installed credentials if already installed credentials are selected
+        // Applies to Windows only
+        if (inCannon.equals(outCannon)) {
+            return;
         }
-        BufferedWriter out = new BufferedWriter(new FileWriter(toFile));
-        String line = null;
-        while ((line = in.readLine()) != null) {
-            out.write(line + "\n");
+
+        // ensure the output file location exists
+        outCannon.getParentFile().mkdirs();
+
+        BufferedInputStream fis = new BufferedInputStream(new FileInputStream(inCannon));
+        BufferedOutputStream fos = new BufferedOutputStream(new FileOutputStream(outCannon));
+
+        // a temporary buffer to read into
+        byte[] tmpBuffer = new byte[8192];
+        int len = 0;
+        while ((len = fis.read(tmpBuffer)) != -1) {
+            // add the temp data to the output
+            fos.write(tmpBuffer, 0, len);
         }
-        in.close();
-        out.flush();
-        out.close();
+        // close the input stream
+        fis.close();
+        // close the output stream
+        fos.flush();
+        fos.close();
     }
 
 
