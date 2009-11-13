@@ -15,6 +15,7 @@ GSBT - Globus Service Build Tools
 	<property name="globus.location" location="${env.GLOBUS_LOCATION}" />
 
 	<property name="jar.name" value="caGrid-gaards-ui-${project.version}.jar" />
+	<property name="jar.config.name" value="caGrid-gaards-ui-config-${project.version}.jar" />
 
 	<!-- Important directories and files -->
 	<property name="src.dir" value="src" />
@@ -33,7 +34,7 @@ GSBT - Globus Service Build Tools
 
 	<property name="etc.dir" value="etc" />
 
-
+	<property name="runtime.mainclass" value="org.cagrid.grape.GAARDSApplication" />
 
 	<!-- Build directories -->
 
@@ -91,8 +92,27 @@ GSBT - Globus Service Build Tools
 	</target>
 
 
-	<target name="jar" depends="compile">
-		<jar jarfile="${build.lib.dir}/${jar.name}">
+	<target name="jar" depends="compile">		
+		<pathconvert property="manifest.classpath" pathsep=" ">
+			<path location="${jar.config.name}" />
+			<path refid="run.classpath" />
+			<mapper>
+				<chainedmapper>
+					<flattenmapper />
+					<globmapper from="*.jar" to="lib/*.jar" />
+				</chainedmapper>
+			</mapper>
+		</pathconvert>
+	
+		<jar jarfile="${build.lib.dir}/${jar.name}" >
+			<manifest>
+				<attribute name="Built-By" value="${user.name}" />
+				<attribute name="Specification-Version" value="${project.version}" />
+				<attribute name="Implementation-Version" value="${project.version}" />
+				<attribute name="Main-Class" value="${runtime.mainclass}" />
+				<attribute name="Class-Path" value="${manifest.classpath}" />
+			</manifest>
+
 			<fileset dir="${build.dest}">
 				<include name="**/**" />
 			</fileset>
@@ -121,16 +141,15 @@ GSBT - Globus Service Build Tools
 				<exclude name="view-refresh.png" />
 			</fileset>
 			
+		</jar>
+		<jar jarfile="${build.lib.dir}/${jar.config.name}">
 			<fileset dir="${configuration.dir}">
 				<include name="**" />
 			</fileset>
-
 		</jar>
+		
 
 	</target>
-
-
-
 
 	<!-- Clean up all the intermediate files -->
 	<target name="clean">
@@ -144,7 +163,7 @@ GSBT - Globus Service Build Tools
 
 	<!-- Post Introduce Edit-->
 	<target name="ui" description="Run the Security UI" depends="defineClasspaths">
-		<java classname="org.cagrid.grape.GAARDSApplication" classpathref="run.classpath" fork="yes">
+		<java classname="${runtime.mainclass}" classpathref="run.classpath" fork="yes">
 			<jvmarg value="-Djava.endorsed.dirs=${endorsed.lib.dir}" />
 		</java>
 	</target>
@@ -194,16 +213,20 @@ GSBT - Globus Service Build Tools
 				<include name="*.jar" />
 			</fileset>
 		</copy>
-		<copy todir="${build.dir}/gaards/lib">
-			<fileset dir="build/lib">
-				<include name="*.jar" />
-			</fileset>
-		</copy>
+		
+		<copy todir="${build.dir}/gaards" file="${build.lib.dir}/${jar.name}" />
+		<copy todir="${build.dir}/gaards/lib" file="${build.lib.dir}/${jar.config.name}" />
+
 		<copy todir="${build.dir}/gaards">
 			<fileset dir="resources/standalone">
 				<include name="run.*" />
 			</fileset>
 		</copy>
+		
+		<replace dir="${build.dir}/gaards" value="${project.version}" >
+			<include name="run.*" />
+			<replacetoken>@project.version@</replacetoken>
+		</replace>
 
 		<zip destfile="${build.dir}/gaards.zip" basedir="${build.dir}/gaards" >
 		</zip>
