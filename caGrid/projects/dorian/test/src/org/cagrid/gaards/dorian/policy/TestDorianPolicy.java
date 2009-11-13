@@ -59,7 +59,8 @@ public class TestDorianPolicy extends TestCase {
             System.out.println(str);
             DorianPolicy policy2 = (DorianPolicy) gov.nih.nci.cagrid.common.Utils.deserializeObject(new StringReader(
                 str), DorianPolicy.class, TestDorianPolicy.class.getResourceAsStream("/client-config.wsdd"));
-           // assertEquals(policy, policy2);
+           //assertEquals(policy, policy2);
+
         } catch (Exception e) {
             FaultUtil.printFault(e);
             assertTrue(false);
