@@ -1,5 +1,8 @@
 package org.cagrid.gaards.dorian.service.util;
 
+import javax.mail.internet.AddressException;
+import javax.mail.internet.InternetAddress;
+
 import gov.nih.nci.cagrid.common.Utils;
 
 
@@ -13,9 +16,28 @@ import gov.nih.nci.cagrid.common.Utils;
 public class AddressValidator {
 
     public static void validateEmail(String email) throws IllegalArgumentException {
-        validateField("email", email);
-        if (email.indexOf("@") == -1) {
+        validateField("Email", email);
+        try {
+            InternetAddress emailAddr = new InternetAddress(email);
+            if (!hasNameAndDomain(email)) {
+                throw new IllegalArgumentException("Invalid email address specified.");
+            }
+        } catch (AddressException ex) {
             throw new IllegalArgumentException("Invalid email address specified.");
+        }
+    }
+
+
+    private static boolean hasNameAndDomain(String aEmailAddress) {
+        String[] tokens = aEmailAddress.split("@");
+        if (tokens.length == 2) {
+            if ((Utils.clean(tokens[0]) != null) && (Utils.clean(tokens[0]) != null)) {
+                return true;
+            } else {
+                return false;
+            }
+        } else {
+            return false;
         }
     }
 

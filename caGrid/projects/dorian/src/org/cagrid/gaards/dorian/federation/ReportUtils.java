@@ -59,6 +59,13 @@ public class ReportUtils {
                 + ".\n");
         }
 
+        if (updated.isPublish() != original.isPublish()) {
+            count = count + 1;
+            sb.append(count
+                + ". The property specifying whether or not to publish the identity provider was changed from  "
+                + original.isPublish() + " to " + updated.isPublish() + ".\n");
+        }
+
         if ((updated.getUserIdAttributeDescriptor() != null)
             && (!updated.getUserIdAttributeDescriptor().equals(original.getUserIdAttributeDescriptor()))) {
             count = count + 1;

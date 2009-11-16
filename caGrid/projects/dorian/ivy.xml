@@ -86,6 +86,7 @@
     <dependency rev="2.0" org="apache" name="commons-lang" conf="service->*" />
     <dependency rev="jce-1.2" org="eracom" name="protecttoolkit-j" conf="service->ui" />
     <dependency rev="4.4" org="junit" name="junit" conf="impl-test->default" />
+    <dependency rev="1.4" org="javax" name="mail" conf="service->*" />
 
   </dependencies>
 </ivy-module>

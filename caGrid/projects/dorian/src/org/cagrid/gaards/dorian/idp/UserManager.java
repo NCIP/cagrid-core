@@ -11,6 +11,9 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import javax.mail.internet.AddressException;
+import javax.mail.internet.InternetAddress;
+
 import org.cagrid.gaards.authentication.BasicAuthentication;
 import org.cagrid.gaards.authentication.Credential;
 import org.cagrid.gaards.authentication.faults.CredentialNotSupportedFault;
@@ -100,7 +103,8 @@ public class UserManager extends LoggingObject {
                         }
                     } else {
                         DorianInternalFault fault = new DorianInternalFault();
-                        fault.setFaultString("Could not obtain password digest, unknown digest algorithm ("+entry.getDigestAlgorithm()+")!!!");
+                        fault.setFaultString("Could not obtain password digest, unknown digest algorithm ("
+                            + entry.getDigestAlgorithm() + ")!!!");
                         throw fault;
                     }
                     if (!u.getPassword().equals(digest)) {
@@ -233,6 +237,17 @@ public class UserManager extends LoggingObject {
     }
 
 
+    private void validateEmail(String email) throws InvalidUserPropertyFault {
+        try {
+            AddressValidator.validateEmail(email);
+        } catch (Exception e) {
+            InvalidUserPropertyFault fault = new InvalidUserPropertyFault();
+            fault.setFaultString(e.getMessage());
+            throw fault;
+        }
+    }
+
+
     private void validatePassword(LocalUser user) throws DorianInternalFault, InvalidUserPropertyFault {
         String password = user.getPassword();
         if (password == null) {
@@ -299,14 +314,7 @@ public class UserManager extends LoggingObject {
         validateSpecifiedField("Organization", user.getOrganization());
         validateSpecifiedField("Zip Code", user.getZipcode());
         validateSpecifiedField("Phone", user.getPhoneNumber());
-
-        try {
-            AddressValidator.validateEmail(user.getEmail());
-        } catch (IllegalArgumentException e) {
-            InvalidUserPropertyFault fault = new InvalidUserPropertyFault();
-            fault.setFaultString(e.getMessage());
-            throw fault;
-        }
+        validateEmail(user.getEmail());
     }
 
 
@@ -709,10 +717,10 @@ public class UserManager extends LoggingObject {
                     }
                 } else {
                     DorianInternalFault fault = new DorianInternalFault();
-                    fault.setFaultString("Could not obtain password digest, unknown digest algorithm ("+existingDigestAlgorithm+")!!!");
+                    fault.setFaultString("Could not obtain password digest, unknown digest algorithm ("
+                        + existingDigestAlgorithm + ")!!!");
                     throw fault;
                 }
-                
 
                 if (!newPasswordDigest.equals(curr.getPassword())) {
                     validatePassword(u);
@@ -733,13 +741,7 @@ public class UserManager extends LoggingObject {
             }
 
             if ((u.getEmail() != null) && (!u.getEmail().equals(curr.getEmail()))) {
-                try {
-                    AddressValidator.validateEmail(u.getEmail());
-                } catch (IllegalArgumentException e) {
-                    InvalidUserPropertyFault fault = new InvalidUserPropertyFault();
-                    fault.setFaultString(e.getMessage());
-                    throw fault;
-                }
+                validateEmail(u.getEmail());
                 curr.setEmail(u.getEmail());
             }
 
