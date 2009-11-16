@@ -69,8 +69,12 @@
 		<xsd:annotation>
 			<xsd:documentation>An aggregation result (count, min, max, etc)</xsd:documentation>
 		</xsd:annotation>
-		<xsd:attribute name="attributeName" type="xsd:string" use="required"/>
-		<xsd:attribute name="value" type="xsd:anySimpleType" use="required"/>
-		<xsd:attribute name="aggregation" type="cql2:Aggregation" use="required"/>
+		<xsd:complexContent>
+			<xsd:extension base="res:CQLResult">
+				<xsd:attribute name="attributeName" type="xsd:string" use="required"/>
+				<xsd:attribute name="value" type="xsd:anySimpleType" use="required"/>
+				<xsd:attribute name="aggregation" type="cql2:Aggregation" use="required"/>
+			</xsd:extension>
+		</xsd:complexContent>
 	</xsd:complexType>
 </xsd:schema>
