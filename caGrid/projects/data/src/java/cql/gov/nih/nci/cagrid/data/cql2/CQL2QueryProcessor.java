@@ -9,11 +9,13 @@ import java.io.InputStream;
 import java.util.Enumeration;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.NoSuchElementException;
 import java.util.Properties;
 import java.util.Set;
 
 import org.cagrid.cql2.CQLQuery;
 import org.cagrid.cql2.results.CQLQueryResults;
+import org.cagrid.cql2.results.CQLResult;
 
 /**
  * CQL2 Query Processor base class
@@ -197,4 +199,58 @@ public abstract class CQL2QueryProcessor {
     
     
     public abstract CQLQueryResults processQuery(CQLQuery query) throws QueryProcessingException, MalformedQueryException;
+    
+    
+    /**
+     * Returns an iterator over the CQL results.  Subclasses may optionally override this method to provide
+     * a lazy implementation of an Iterator to the result set.
+     * 
+     * @param query
+     * @return
+     * @throws QueryProcessingException
+     * @throws MalformedQueryException
+     */
+    public Iterator<CQLResult> processQueryAndIterate(CQLQuery query) throws QueryProcessingException, MalformedQueryException {
+        CQLQueryResults results = processQuery(query);
+        return new ResultsIterator(results);
+    }
+    
+    
+    private static class ResultsIterator implements Iterator<CQLResult> {
+        
+        private CQLResult[] results = null;
+        private int index = -1;
+        
+        public ResultsIterator(CQLQueryResults queryResults) {
+            if (queryResults.getAggregationResult() != null) {
+                results = new CQLResult[] {queryResults.getAggregationResult()};
+            } else if (queryResults.getAttributeResult() != null && queryResults.getAttributeResult().length != 0) {
+                results = queryResults.getAttributeResult();
+            } else if (queryResults.getObjectResult() != null && queryResults.getAttributeResult().length != 0) {
+                results = queryResults.getObjectResult();
+            } else {
+                results = new CQLResult[0];
+            }
+        }
+        
+
+        public boolean hasNext() {
+            return index + 1 < results.length;
+        }
+
+        
+        public CQLResult next() {
+            if (hasNext()) {
+                index++;
+                return results[index];
+            } else {
+                throw new NoSuchElementException();
+            }
+        }
+        
+
+        public void remove() {
+            throw new UnsupportedOperationException("remove is not supported");
+        }
+    }
 }
