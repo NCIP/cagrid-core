@@ -78,5 +78,9 @@ public class PropertyManager {
             return s;
         }
     }
+    
+    public void clearDatabase() throws Exception{
+        this.manager.clearDatabase();
+    }
 
 }

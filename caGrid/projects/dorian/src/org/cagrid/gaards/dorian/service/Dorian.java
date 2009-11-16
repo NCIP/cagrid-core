@@ -426,8 +426,22 @@ public class Dorian extends LoggingObject {
 
 
     public void clearDatabase() throws DorianInternalFault {
-        this.identityProvider.clearDatabase();
-        this.ifm.clearDatabase();
+        try {
+            this.identityProvider.clearDatabase();
+
+        } catch (Exception e) {
+            log.error(e);
+        }
+        try {
+            this.ifm.clearDatabase();
+        } catch (Exception e) {
+            log.error(e);
+        }
+        try {
+            this.properties.clearDatabase();
+        } catch (Exception e) {
+            log.error(e);
+        }
     }
 
 
