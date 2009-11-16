@@ -15,19 +15,19 @@
       <agg:GetMultipleResourcePropertiesPollType
 			xmlns:ns13="http://cagrid.nci.nih.gov/Dorian/types"
 			xmlns:ns11="http://gaards.cagrid.org/authentication-faults"
-			xmlns:ns1="http://www.cagrid.org/gaards/1/dorian-host-agreement"
+			xmlns:ns3="http://www.cagrid.org/gaards/1/dorian-host-agreement"
 			xmlns:ns9="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata"
-			xmlns:ns3="http://cagrid.nci.nih.gov/1/dorian-ifs"
+			xmlns:ns0="http://cagrid.nci.nih.gov/1/dorian-ifs"
 			xmlns:ns6="http://gaards.cagrid.org/authentication"
 			xmlns:ns8="http://cagrid.nci.nih.gov/1/authentication-service"
 			xmlns:xs="http://www.w3.org/2001/XMLSchema"
 			xmlns:ns10="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.security"
-			xmlns:ns4="http://cagrid.nci.nih.gov/1/dorian-common"
+			xmlns:ns1="http://cagrid.nci.nih.gov/1/dorian-common"
 			xmlns:ns7="http://cagrid.nci.nih.gov/AuthenticationService/types"
 			xmlns:ns14="urn:oasis:names:tc:SAML:1.0:assertion"
-			xmlns:ns2="http://www.w3.org/2000/09/xmldsig#"
+			xmlns:ns4="http://www.w3.org/2000/09/xmldsig#"
 			xmlns:ns12="http://authentication.gaards.cagrid.org/AuthenticationService/types"
-			xmlns:ns0="http://cagrid.nci.nih.gov/1/dorian-policy"
+			xmlns:ns2="http://cagrid.nci.nih.gov/1/dorian-policy"
 			xmlns:ns5="http://cagrid.nci.nih.gov/1/dorian-idp">
         <!-- Specifies that the index should refresh information
             every 300000 milliseconds (once every 5 minutes) -->
@@ -37,9 +37,9 @@
 	
 		<agg:ResourcePropertyNames>ns6:AuthenticationProfiles</agg:ResourcePropertyNames>
 	
-		<agg:ResourcePropertyNames>ns3:TrustedIdentityProviders</agg:ResourcePropertyNames>
+		<agg:ResourcePropertyNames>ns0:TrustedIdentityProviders</agg:ResourcePropertyNames>
 	
-		<agg:ResourcePropertyNames>ns0:DorianPolicy</agg:ResourcePropertyNames>
+		<agg:ResourcePropertyNames>ns2:DorianPolicy</agg:ResourcePropertyNames>
 	
       </agg:GetMultipleResourcePropertiesPollType>
     </agg:AggregatorConfig>

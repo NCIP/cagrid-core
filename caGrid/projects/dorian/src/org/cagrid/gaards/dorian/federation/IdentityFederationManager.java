@@ -1492,7 +1492,7 @@ public class IdentityFederationManager extends LoggingObject implements Publishe
             if (list1 != null) {
                 List<TrustedIdentityProvider> list2 = new ArrayList<TrustedIdentityProvider>();
                 for (int i = 0; i < list1.length; i++) {
-                    if (list1[i].getStatus().equals(TrustedIdPStatus.Active)) {
+                    if ((list1[i].getStatus().equals(TrustedIdPStatus.Active) && (list1[i].isPublish()))) {
                         TrustedIdentityProvider idp = new TrustedIdentityProvider();
                         idp.setName(list1[i].getName());
                         idp.setDisplayName(list1[i].getDisplayName());

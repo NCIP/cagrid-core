@@ -46,6 +46,7 @@ public class TrustedIdPManager extends LoggingObject {
     public final static String IDP_CERTIFICATE_FIELD = "IDP_CERTIFICATE";
     public final static String AUTHENTICATION_SERVICE_URL_FIELD = "AUTHENTICATION_SERVICE_URL";
     public final static String AUTHENTICATION_SERVICE_IDENTITY_FIELD = "AUTHENTICATION_SERVICE_IDENTITY";
+    public final static String PUBLISH_FIELD = "PUBLISH";
     public final static String USER_ID_ATT_NS_FIELD = "USER_ID_ATT_NS";
     public final static String USER_ID_ATT_NAME_FIELD = "USER_ID_ATT_NAME";
     public final static String FIRST_NAME_ATT_NS_FIELD = "FIRST_NAME_ATT_NS";
@@ -114,11 +115,12 @@ public class TrustedIdPManager extends LoggingObject {
                         + DISPLAY_NAME_FIELD + " TEXT NOT NULL," + STATUS_FIELD + " VARCHAR(50) NOT NULL,"
                         + POLICY_CLASS_FIELD + " TEXT NOT NULL," + IDP_SUBJECT_FIELD + " TEXT NOT NULL,"
                         + IDP_CERTIFICATE_FIELD + " TEXT NOT NULL," + AUTHENTICATION_SERVICE_URL_FIELD + " TEXT,"
-                        + AUTHENTICATION_SERVICE_IDENTITY_FIELD + " TEXT," + USER_ID_ATT_NS_FIELD + " TEXT NOT NULL,"
-                        + USER_ID_ATT_NAME_FIELD + " TEXT NOT NULL," + FIRST_NAME_ATT_NS_FIELD + " TEXT NOT NULL,"
-                        + FIRST_NAME_ATT_NAME_FIELD + " TEXT NOT NULL," + LAST_NAME_ATT_NS_FIELD + " TEXT NOT NULL,"
-                        + LAST_NAME_ATT_NAME_FIELD + " TEXT NOT NULL," + EMAIL_ATT_NS_FIELD + " TEXT NOT NULL,"
-                        + EMAIL_ATT_NAME_FIELD + " TEXT NOT NULL," + "INDEX document_index (" + NAME_FIELD + "));";
+                        + AUTHENTICATION_SERVICE_IDENTITY_FIELD + " TEXT," + PUBLISH_FIELD + " VARCHAR(1),"
+                        + USER_ID_ATT_NS_FIELD + " TEXT NOT NULL," + USER_ID_ATT_NAME_FIELD + " TEXT NOT NULL,"
+                        + FIRST_NAME_ATT_NS_FIELD + " TEXT NOT NULL," + FIRST_NAME_ATT_NAME_FIELD + " TEXT NOT NULL,"
+                        + LAST_NAME_ATT_NS_FIELD + " TEXT NOT NULL," + LAST_NAME_ATT_NAME_FIELD + " TEXT NOT NULL,"
+                        + EMAIL_ATT_NS_FIELD + " TEXT NOT NULL," + EMAIL_ATT_NAME_FIELD + " TEXT NOT NULL,"
+                        + "INDEX document_index (" + NAME_FIELD + "));";
                     db.update(trust);
 
                     String methods = "CREATE TABLE " + AUTH_METHODS_TABLE + " (" + METHOD_ID_FIELD
@@ -291,6 +293,18 @@ public class TrustedIdPManager extends LoggingObject {
             needsUpdate = true;
             authenticationServiceIdentity = validateAndGetAuthenticationServiceIdentity(idp);
         }
+        String publish = "Y";
+        if (!curr.isPublish()) {
+            publish = "N";
+        }
+        if ((idp.isPublish() != curr.isPublish())) {
+            needsUpdate = true;
+            if (idp.isPublish()) {
+                publish = "Y";
+            } else {
+                publish = "N";
+            }
+        }
 
         String uidNS = curr.getUserIdAttributeDescriptor().getNamespaceURI();
         String uidName = curr.getUserIdAttributeDescriptor().getName();
@@ -342,9 +356,9 @@ public class TrustedIdPManager extends LoggingObject {
                 PreparedStatement s = c.prepareStatement("UPDATE " + TRUST_MANAGER_TABLE + " SET " + NAME_FIELD
                     + "= ?, " + DISPLAY_NAME_FIELD + "= ?, " + IDP_SUBJECT_FIELD + "= ?, " + STATUS_FIELD + "= ?, "
                     + POLICY_CLASS_FIELD + "= ?, " + IDP_CERTIFICATE_FIELD + "= ?, " + AUTHENTICATION_SERVICE_URL_FIELD
-                    + "= ?, " + AUTHENTICATION_SERVICE_IDENTITY_FIELD + "= ?, " + USER_ID_ATT_NS_FIELD + " = ?, "
-                    + USER_ID_ATT_NAME_FIELD + " = ?, " + FIRST_NAME_ATT_NS_FIELD + " = ?, "
-                    + FIRST_NAME_ATT_NAME_FIELD + " = ?, " + LAST_NAME_ATT_NS_FIELD + " = ?, "
+                    + "= ?, " + AUTHENTICATION_SERVICE_IDENTITY_FIELD + "= ?, " + PUBLISH_FIELD + "= ?, "
+                    + USER_ID_ATT_NS_FIELD + " = ?, " + USER_ID_ATT_NAME_FIELD + " = ?, " + FIRST_NAME_ATT_NS_FIELD
+                    + " = ?, " + FIRST_NAME_ATT_NAME_FIELD + " = ?, " + LAST_NAME_ATT_NS_FIELD + " = ?, "
                     + LAST_NAME_ATT_NAME_FIELD + " = ?, " + EMAIL_ATT_NS_FIELD + " = ?, " + EMAIL_ATT_NAME_FIELD
                     + " = ? WHERE " + ID_FIELD + "= ?");
 
@@ -356,15 +370,16 @@ public class TrustedIdPManager extends LoggingObject {
                 s.setString(6, certEncoded);
                 s.setString(7, authenticationServiceURL);
                 s.setString(8, authenticationServiceIdentity);
-                s.setString(9, uidNS);
-                s.setString(10, uidName);
-                s.setString(11, firstNS);
-                s.setString(12, firstName);
-                s.setString(13, lastNS);
-                s.setString(14, lastName);
-                s.setString(15, emailNS);
-                s.setString(16, emailName);
-                s.setLong(17, curr.getId());
+                s.setString(9, publish);
+                s.setString(10, uidNS);
+                s.setString(11, uidName);
+                s.setString(12, firstNS);
+                s.setString(13, firstName);
+                s.setString(14, lastNS);
+                s.setString(15, lastName);
+                s.setString(16, emailNS);
+                s.setString(17, emailName);
+                s.setLong(18, curr.getId());
                 s.execute();
                 s.close();
             }
@@ -455,6 +470,13 @@ public class TrustedIdPManager extends LoggingObject {
                 idp.setUserPolicyClass(rs.getString(POLICY_CLASS_FIELD));
                 idp.setAuthenticationServiceURL(Utils.clean(rs.getString(AUTHENTICATION_SERVICE_URL_FIELD)));
                 idp.setAuthenticationServiceIdentity(Utils.clean(rs.getString(AUTHENTICATION_SERVICE_IDENTITY_FIELD)));
+                String publish = rs.getString(PUBLISH_FIELD);
+                if(publish.equalsIgnoreCase("Y")){
+                    idp.setPublish(true);
+                }else{
+                    idp.setPublish(false);
+                }
+                
                 SAMLAttributeDescriptor uid = new SAMLAttributeDescriptor();
                 uid.setNamespaceURI(rs.getString(USER_ID_ATT_NS_FIELD));
                 uid.setName(rs.getString(USER_ID_ATT_NAME_FIELD));
@@ -519,6 +541,13 @@ public class TrustedIdPManager extends LoggingObject {
                 idp.setUserPolicyClass(rs.getString(POLICY_CLASS_FIELD));
                 idp.setAuthenticationServiceURL(Utils.clean(rs.getString(AUTHENTICATION_SERVICE_URL_FIELD)));
                 idp.setAuthenticationServiceIdentity(Utils.clean(rs.getString(AUTHENTICATION_SERVICE_IDENTITY_FIELD)));
+                String publish = rs.getString(PUBLISH_FIELD);
+                if(publish.equalsIgnoreCase("Y")){
+                    idp.setPublish(true);
+                }else{
+                    idp.setPublish(false);
+                }
+                
                 SAMLAttributeDescriptor uid = new SAMLAttributeDescriptor();
                 uid.setNamespaceURI(rs.getString(USER_ID_ATT_NS_FIELD));
                 uid.setName(rs.getString(USER_ID_ATT_NAME_FIELD));
@@ -584,6 +613,13 @@ public class TrustedIdPManager extends LoggingObject {
                 idp.setUserPolicyClass(rs.getString(POLICY_CLASS_FIELD));
                 idp.setAuthenticationServiceURL(Utils.clean(rs.getString(AUTHENTICATION_SERVICE_URL_FIELD)));
                 idp.setAuthenticationServiceIdentity(Utils.clean(rs.getString(AUTHENTICATION_SERVICE_IDENTITY_FIELD)));
+                String publish = rs.getString(PUBLISH_FIELD);
+                if(publish.equalsIgnoreCase("Y")){
+                    idp.setPublish(true);
+                }else{
+                    idp.setPublish(false);
+                }
+                
                 SAMLAttributeDescriptor uid = new SAMLAttributeDescriptor();
                 uid.setNamespaceURI(rs.getString(USER_ID_ATT_NS_FIELD));
                 uid.setName(rs.getString(USER_ID_ATT_NAME_FIELD));
@@ -647,6 +683,12 @@ public class TrustedIdPManager extends LoggingObject {
                 idp.setUserPolicyClass(rs.getString(POLICY_CLASS_FIELD));
                 idp.setAuthenticationServiceURL(Utils.clean(rs.getString(AUTHENTICATION_SERVICE_URL_FIELD)));
                 idp.setAuthenticationServiceIdentity(Utils.clean(rs.getString(AUTHENTICATION_SERVICE_IDENTITY_FIELD)));
+                String publish = rs.getString(PUBLISH_FIELD);
+                if(publish.equalsIgnoreCase("Y")){
+                    idp.setPublish(true);
+                }else{
+                    idp.setPublish(false);
+                }
                 SAMLAttributeDescriptor uid = new SAMLAttributeDescriptor();
                 uid.setNamespaceURI(rs.getString(USER_ID_ATT_NS_FIELD));
                 uid.setName(rs.getString(USER_ID_ATT_NAME_FIELD));
@@ -710,6 +752,12 @@ public class TrustedIdPManager extends LoggingObject {
                 idp.setUserPolicyClass(rs.getString(POLICY_CLASS_FIELD));
                 idp.setAuthenticationServiceURL(Utils.clean(rs.getString(AUTHENTICATION_SERVICE_URL_FIELD)));
                 idp.setAuthenticationServiceIdentity(Utils.clean(rs.getString(AUTHENTICATION_SERVICE_IDENTITY_FIELD)));
+                String publish = rs.getString(PUBLISH_FIELD);
+                if(publish.equalsIgnoreCase("Y")){
+                    idp.setPublish(true);
+                }else{
+                    idp.setPublish(false);
+                }
                 SAMLAttributeDescriptor uid = new SAMLAttributeDescriptor();
                 uid.setNamespaceURI(rs.getString(USER_ID_ATT_NS_FIELD));
                 uid.setName(rs.getString(USER_ID_ATT_NAME_FIELD));
@@ -927,6 +975,11 @@ public class TrustedIdPManager extends LoggingObject {
             verifyFirstNameAttributeDescriptor(idp.getFirstNameAttributeDescriptor());
             verifyLastNameAttributeDescriptor(idp.getLastNameAttributeDescriptor());
             verifyEmailAttributeDescriptor(idp.getEmailAttributeDescriptor());
+            
+            String publish = "N";
+            if(idp.isPublish()){
+                publish = "Y";
+            }
 
             if (!isCertificateUnique(idp.getIdPCertificate())) {
                 InvalidTrustedIdPFault fault = new InvalidTrustedIdPFault();
@@ -940,7 +993,7 @@ public class TrustedIdPManager extends LoggingObject {
                 PreparedStatement s = c.prepareStatement("INSERT INTO " + TRUST_MANAGER_TABLE + " SET " + NAME_FIELD
                     + "= ?, " + DISPLAY_NAME_FIELD + "= ?, " + IDP_SUBJECT_FIELD + "= ?, " + STATUS_FIELD + "= ?, "
                     + POLICY_CLASS_FIELD + "= ?, " + IDP_CERTIFICATE_FIELD + "= ?, " + AUTHENTICATION_SERVICE_URL_FIELD
-                    + "= ?, " + AUTHENTICATION_SERVICE_IDENTITY_FIELD + "= ?, " + USER_ID_ATT_NS_FIELD + " = ?, "
+                    + "= ?, " + AUTHENTICATION_SERVICE_IDENTITY_FIELD + "= ?, "+ PUBLISH_FIELD + "= ?, "  + USER_ID_ATT_NS_FIELD + " = ?, "
                     + USER_ID_ATT_NAME_FIELD + " = ?, " + FIRST_NAME_ATT_NS_FIELD + " = ?, "
                     + FIRST_NAME_ATT_NAME_FIELD + " = ?, " + LAST_NAME_ATT_NS_FIELD + " = ?, "
                     + LAST_NAME_ATT_NAME_FIELD + " = ?, " + EMAIL_ATT_NS_FIELD + " = ?, " + EMAIL_ATT_NAME_FIELD
@@ -954,14 +1007,15 @@ public class TrustedIdPManager extends LoggingObject {
                 s.setString(6, idp.getIdPCertificate());
                 s.setString(7, authenticationServiceURL);
                 s.setString(8, authenticationServiceIdentity);
-                s.setString(9, idp.getUserIdAttributeDescriptor().getNamespaceURI());
-                s.setString(10, idp.getUserIdAttributeDescriptor().getName());
-                s.setString(11, idp.getFirstNameAttributeDescriptor().getNamespaceURI());
-                s.setString(12, idp.getFirstNameAttributeDescriptor().getName());
-                s.setString(13, idp.getLastNameAttributeDescriptor().getNamespaceURI());
-                s.setString(14, idp.getLastNameAttributeDescriptor().getName());
-                s.setString(15, idp.getEmailAttributeDescriptor().getNamespaceURI());
-                s.setString(16, idp.getEmailAttributeDescriptor().getName());
+                s.setString(9, publish);
+                s.setString(10, idp.getUserIdAttributeDescriptor().getNamespaceURI());
+                s.setString(11, idp.getUserIdAttributeDescriptor().getName());
+                s.setString(12, idp.getFirstNameAttributeDescriptor().getNamespaceURI());
+                s.setString(13, idp.getFirstNameAttributeDescriptor().getName());
+                s.setString(14, idp.getLastNameAttributeDescriptor().getNamespaceURI());
+                s.setString(15, idp.getLastNameAttributeDescriptor().getName());
+                s.setString(16, idp.getEmailAttributeDescriptor().getNamespaceURI());
+                s.setString(17, idp.getEmailAttributeDescriptor().getName());
                 s.execute();
                 idp.setId(db.getLastAutoId(c));
                 s.close();

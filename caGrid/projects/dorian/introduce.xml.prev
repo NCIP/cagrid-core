@@ -1,5 +1,37 @@
 <ns1:ServiceDescription description="A grid service for the provisioning and management of grid users accounts.  Dorian provides an integration point between external security domains and the grid, allowing accounts managed in external domains to be federated and managed in the grid.   Dorian allows users to use their existing credentials to authenticate to the grid." introduceVersion="1.3" xmlns:ns1="gme://gov.nih.nci.cagrid/1/Introduce">
  <ns2:Namespaces xsi:type="ns2:NamespacesType" xmlns:ns2="gme://gov.nih.nci.cagrid.introduce/1/Namespace" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <ns2:Namespace location="./dorian-ifs.xsd" namespace="http://cagrid.nci.nih.gov/1/dorian-ifs" packageName="org.cagrid.gaards.dorian.federation" xsi:type="ns2:NamespaceType">
+   <ns2:SchemaElement type="CertificateLifetime" xsi:type="ns2:SchemaElementType"/>
+   <ns2:SchemaElement type="DateRange" xsi:type="ns2:SchemaElementType"/>
+   <ns2:SchemaElement type="DelegationPathLength" xsi:type="ns2:SchemaElementType"/>
+   <ns2:SchemaElement type="FederationAudit" xsi:type="ns2:SchemaElementType"/>
+   <ns2:SchemaElement type="FederationAuditFilter" xsi:type="ns2:SchemaElementType"/>
+   <ns2:SchemaElement type="FederationAuditRecord" xsi:type="ns2:SchemaElementType"/>
+   <ns2:SchemaElement type="GridUser" xsi:type="ns2:SchemaElementType"/>
+   <ns2:SchemaElement type="GridUserFilter" xsi:type="ns2:SchemaElementType"/>
+   <ns2:SchemaElement type="GridUserPolicy" xsi:type="ns2:SchemaElementType"/>
+   <ns2:SchemaElement type="GridUserRecord" xsi:type="ns2:SchemaElementType"/>
+   <ns2:SchemaElement type="GridUserSearchCriteria" xsi:type="ns2:SchemaElementType"/>
+   <ns2:SchemaElement type="HostCertificateFilter" xsi:type="ns2:SchemaElementType"/>
+   <ns2:SchemaElement type="HostCertificateRecord" xsi:type="ns2:SchemaElementType"/>
+   <ns2:SchemaElement type="HostCertificateRequest" xsi:type="ns2:SchemaElementType"/>
+   <ns2:SchemaElement type="HostCertificateUpdate" xsi:type="ns2:SchemaElementType"/>
+   <ns2:SchemaElement type="HostRecord" xsi:type="ns2:SchemaElementType"/>
+   <ns2:SchemaElement type="HostSearchCriteria" xsi:type="ns2:SchemaElementType"/>
+   <ns2:SchemaElement type="ProxyLifetime" xsi:type="ns2:SchemaElementType"/>
+   <ns2:SchemaElement type="PublicKey" xsi:type="ns2:SchemaElementType"/>
+   <ns2:SchemaElement type="TrustedIdentityProvider" xsi:type="ns2:SchemaElementType"/>
+   <ns2:SchemaElement type="TrustedIdentityProviders" xsi:type="ns2:SchemaElementType"/>
+   <ns2:SchemaElement type="TrustedIdP" xsi:type="ns2:SchemaElementType"/>
+   <ns2:SchemaElement type="UserCertificateFilter" xsi:type="ns2:SchemaElementType"/>
+   <ns2:SchemaElement type="UserCertificateRecord" xsi:type="ns2:SchemaElementType"/>
+   <ns2:SchemaElement type="UserCertificateUpdate" xsi:type="ns2:SchemaElementType"/>
+  </ns2:Namespace>
+  <ns2:Namespace location="./dorian-common.xsd" namespace="http://cagrid.nci.nih.gov/1/dorian-common" packageName="org.cagrid.gaards.dorian" xsi:type="ns2:NamespaceType">
+   <ns2:SchemaElement type="Metadata" xsi:type="ns2:SchemaElementType"/>
+   <ns2:SchemaElement type="SAMLAssertion" xsi:type="ns2:SchemaElementType"/>
+   <ns2:SchemaElement type="X509Certificate" xsi:type="ns2:SchemaElementType"/>
+  </ns2:Namespace>
   <ns2:Namespace location="./dorian-policy.xsd" namespace="http://cagrid.nci.nih.gov/1/dorian-policy" packageName="org.cagrid.gaards.dorian.policy" xsi:type="ns2:NamespaceType">
    <ns2:SchemaElement type="DorianPolicy" xsi:type="ns2:SchemaElementType"/>
    <ns2:SchemaElement type="FederationPolicy" xsi:type="ns2:SchemaElementType"/>
@@ -42,38 +74,6 @@
    <ns2:SchemaElement type="Transform" xsi:type="ns2:SchemaElementType"/>
    <ns2:SchemaElement type="Transforms" xsi:type="ns2:SchemaElementType"/>
    <ns2:SchemaElement type="X509Data" xsi:type="ns2:SchemaElementType"/>
-  </ns2:Namespace>
-  <ns2:Namespace location="./dorian-ifs.xsd" namespace="http://cagrid.nci.nih.gov/1/dorian-ifs" packageName="org.cagrid.gaards.dorian.federation" xsi:type="ns2:NamespaceType">
-   <ns2:SchemaElement type="CertificateLifetime" xsi:type="ns2:SchemaElementType"/>
-   <ns2:SchemaElement type="DateRange" xsi:type="ns2:SchemaElementType"/>
-   <ns2:SchemaElement type="DelegationPathLength" xsi:type="ns2:SchemaElementType"/>
-   <ns2:SchemaElement type="FederationAudit" xsi:type="ns2:SchemaElementType"/>
-   <ns2:SchemaElement type="FederationAuditFilter" xsi:type="ns2:SchemaElementType"/>
-   <ns2:SchemaElement type="FederationAuditRecord" xsi:type="ns2:SchemaElementType"/>
-   <ns2:SchemaElement type="GridUser" xsi:type="ns2:SchemaElementType"/>
-   <ns2:SchemaElement type="GridUserFilter" xsi:type="ns2:SchemaElementType"/>
-   <ns2:SchemaElement type="GridUserPolicy" xsi:type="ns2:SchemaElementType"/>
-   <ns2:SchemaElement type="GridUserRecord" xsi:type="ns2:SchemaElementType"/>
-   <ns2:SchemaElement type="GridUserSearchCriteria" xsi:type="ns2:SchemaElementType"/>
-   <ns2:SchemaElement type="HostCertificateFilter" xsi:type="ns2:SchemaElementType"/>
-   <ns2:SchemaElement type="HostCertificateRecord" xsi:type="ns2:SchemaElementType"/>
-   <ns2:SchemaElement type="HostCertificateRequest" xsi:type="ns2:SchemaElementType"/>
-   <ns2:SchemaElement type="HostCertificateUpdate" xsi:type="ns2:SchemaElementType"/>
-   <ns2:SchemaElement type="HostRecord" xsi:type="ns2:SchemaElementType"/>
-   <ns2:SchemaElement type="HostSearchCriteria" xsi:type="ns2:SchemaElementType"/>
-   <ns2:SchemaElement type="ProxyLifetime" xsi:type="ns2:SchemaElementType"/>
-   <ns2:SchemaElement type="PublicKey" xsi:type="ns2:SchemaElementType"/>
-   <ns2:SchemaElement type="TrustedIdentityProvider" xsi:type="ns2:SchemaElementType"/>
-   <ns2:SchemaElement type="TrustedIdentityProviders" xsi:type="ns2:SchemaElementType"/>
-   <ns2:SchemaElement type="TrustedIdP" xsi:type="ns2:SchemaElementType"/>
-   <ns2:SchemaElement type="UserCertificateFilter" xsi:type="ns2:SchemaElementType"/>
-   <ns2:SchemaElement type="UserCertificateRecord" xsi:type="ns2:SchemaElementType"/>
-   <ns2:SchemaElement type="UserCertificateUpdate" xsi:type="ns2:SchemaElementType"/>
-  </ns2:Namespace>
-  <ns2:Namespace location="./dorian-common.xsd" namespace="http://cagrid.nci.nih.gov/1/dorian-common" packageName="org.cagrid.gaards.dorian" xsi:type="ns2:NamespaceType">
-   <ns2:SchemaElement type="Metadata" xsi:type="ns2:SchemaElementType"/>
-   <ns2:SchemaElement type="SAMLAssertion" xsi:type="ns2:SchemaElementType"/>
-   <ns2:SchemaElement type="X509Certificate" xsi:type="ns2:SchemaElementType"/>
   </ns2:Namespace>
   <ns2:Namespace location="./dorian-idp.xsd" namespace="http://cagrid.nci.nih.gov/1/dorian-idp" packageName="org.cagrid.gaards.dorian.idp" xsi:type="ns2:NamespaceType">
    <ns2:SchemaElement type="Application" xsi:type="ns2:SchemaElementType"/>

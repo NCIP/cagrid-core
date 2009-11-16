@@ -607,6 +607,7 @@ public class TestTrustedIdPManager extends TestCase {
         idp.setAuthenticationMethod(getAuthenticationMethods());
         idp.setAuthenticationServiceURL("https://localhost");
         idp.setAuthenticationServiceIdentity("/O=caGrid/OU=Testing/CN=Admin");
+        idp.setPublish(true);
         SAMLAttributeDescriptor uid = new SAMLAttributeDescriptor();
         uid.setNamespaceURI(SAMLConstants.UID_ATTRIBUTE_NAMESPACE);
         uid.setName(SAMLConstants.UID_ATTRIBUTE);

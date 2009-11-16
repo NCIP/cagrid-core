@@ -80,7 +80,6 @@ public class HostCertificateManager extends LoggingObject {
         }
 
         Connection c = null;
-
         try {
             java.security.cert.X509Certificate oldCert = CertUtil.loadCertificate(record.getCertificate()
                 .getCertificateAsString());
