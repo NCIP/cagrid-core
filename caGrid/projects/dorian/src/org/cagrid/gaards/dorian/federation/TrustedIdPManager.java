@@ -471,12 +471,12 @@ public class TrustedIdPManager extends LoggingObject {
                 idp.setAuthenticationServiceURL(Utils.clean(rs.getString(AUTHENTICATION_SERVICE_URL_FIELD)));
                 idp.setAuthenticationServiceIdentity(Utils.clean(rs.getString(AUTHENTICATION_SERVICE_IDENTITY_FIELD)));
                 String publish = rs.getString(PUBLISH_FIELD);
-                if(publish.equalsIgnoreCase("Y")){
+                if ((publish != null) && (publish.equalsIgnoreCase("Y"))) {
                     idp.setPublish(true);
-                }else{
+                } else {
                     idp.setPublish(false);
                 }
-                
+
                 SAMLAttributeDescriptor uid = new SAMLAttributeDescriptor();
                 uid.setNamespaceURI(rs.getString(USER_ID_ATT_NS_FIELD));
                 uid.setName(rs.getString(USER_ID_ATT_NAME_FIELD));
@@ -509,6 +509,7 @@ public class TrustedIdPManager extends LoggingObject {
             return list;
 
         } catch (Exception e) {
+            e.printStackTrace();
             DorianInternalFault fault = new DorianInternalFault();
             fault.setFaultString("Error obtaining a list of trusted IdPs, unexpected database error");
             FaultHelper helper = new FaultHelper(fault);
@@ -542,12 +543,12 @@ public class TrustedIdPManager extends LoggingObject {
                 idp.setAuthenticationServiceURL(Utils.clean(rs.getString(AUTHENTICATION_SERVICE_URL_FIELD)));
                 idp.setAuthenticationServiceIdentity(Utils.clean(rs.getString(AUTHENTICATION_SERVICE_IDENTITY_FIELD)));
                 String publish = rs.getString(PUBLISH_FIELD);
-                if(publish.equalsIgnoreCase("Y")){
+                if ((publish != null) && (publish.equalsIgnoreCase("Y"))) {
                     idp.setPublish(true);
-                }else{
+                } else {
                     idp.setPublish(false);
                 }
-                
+
                 SAMLAttributeDescriptor uid = new SAMLAttributeDescriptor();
                 uid.setNamespaceURI(rs.getString(USER_ID_ATT_NS_FIELD));
                 uid.setName(rs.getString(USER_ID_ATT_NAME_FIELD));
@@ -614,12 +615,12 @@ public class TrustedIdPManager extends LoggingObject {
                 idp.setAuthenticationServiceURL(Utils.clean(rs.getString(AUTHENTICATION_SERVICE_URL_FIELD)));
                 idp.setAuthenticationServiceIdentity(Utils.clean(rs.getString(AUTHENTICATION_SERVICE_IDENTITY_FIELD)));
                 String publish = rs.getString(PUBLISH_FIELD);
-                if(publish.equalsIgnoreCase("Y")){
+                if ((publish != null) && (publish.equalsIgnoreCase("Y"))) {
                     idp.setPublish(true);
-                }else{
+                } else {
                     idp.setPublish(false);
                 }
-                
+
                 SAMLAttributeDescriptor uid = new SAMLAttributeDescriptor();
                 uid.setNamespaceURI(rs.getString(USER_ID_ATT_NS_FIELD));
                 uid.setName(rs.getString(USER_ID_ATT_NAME_FIELD));
@@ -684,9 +685,9 @@ public class TrustedIdPManager extends LoggingObject {
                 idp.setAuthenticationServiceURL(Utils.clean(rs.getString(AUTHENTICATION_SERVICE_URL_FIELD)));
                 idp.setAuthenticationServiceIdentity(Utils.clean(rs.getString(AUTHENTICATION_SERVICE_IDENTITY_FIELD)));
                 String publish = rs.getString(PUBLISH_FIELD);
-                if(publish.equalsIgnoreCase("Y")){
+                if ((publish != null) && (publish.equalsIgnoreCase("Y"))) {
                     idp.setPublish(true);
-                }else{
+                } else {
                     idp.setPublish(false);
                 }
                 SAMLAttributeDescriptor uid = new SAMLAttributeDescriptor();
@@ -753,9 +754,9 @@ public class TrustedIdPManager extends LoggingObject {
                 idp.setAuthenticationServiceURL(Utils.clean(rs.getString(AUTHENTICATION_SERVICE_URL_FIELD)));
                 idp.setAuthenticationServiceIdentity(Utils.clean(rs.getString(AUTHENTICATION_SERVICE_IDENTITY_FIELD)));
                 String publish = rs.getString(PUBLISH_FIELD);
-                if(publish.equalsIgnoreCase("Y")){
+                if ((publish != null) && (publish.equalsIgnoreCase("Y"))) {
                     idp.setPublish(true);
-                }else{
+                } else {
                     idp.setPublish(false);
                 }
                 SAMLAttributeDescriptor uid = new SAMLAttributeDescriptor();
@@ -975,9 +976,9 @@ public class TrustedIdPManager extends LoggingObject {
             verifyFirstNameAttributeDescriptor(idp.getFirstNameAttributeDescriptor());
             verifyLastNameAttributeDescriptor(idp.getLastNameAttributeDescriptor());
             verifyEmailAttributeDescriptor(idp.getEmailAttributeDescriptor());
-            
+
             String publish = "N";
-            if(idp.isPublish()){
+            if (idp.isPublish()) {
                 publish = "Y";
             }
 
@@ -993,9 +994,9 @@ public class TrustedIdPManager extends LoggingObject {
                 PreparedStatement s = c.prepareStatement("INSERT INTO " + TRUST_MANAGER_TABLE + " SET " + NAME_FIELD
                     + "= ?, " + DISPLAY_NAME_FIELD + "= ?, " + IDP_SUBJECT_FIELD + "= ?, " + STATUS_FIELD + "= ?, "
                     + POLICY_CLASS_FIELD + "= ?, " + IDP_CERTIFICATE_FIELD + "= ?, " + AUTHENTICATION_SERVICE_URL_FIELD
-                    + "= ?, " + AUTHENTICATION_SERVICE_IDENTITY_FIELD + "= ?, "+ PUBLISH_FIELD + "= ?, "  + USER_ID_ATT_NS_FIELD + " = ?, "
-                    + USER_ID_ATT_NAME_FIELD + " = ?, " + FIRST_NAME_ATT_NS_FIELD + " = ?, "
-                    + FIRST_NAME_ATT_NAME_FIELD + " = ?, " + LAST_NAME_ATT_NS_FIELD + " = ?, "
+                    + "= ?, " + AUTHENTICATION_SERVICE_IDENTITY_FIELD + "= ?, " + PUBLISH_FIELD + "= ?, "
+                    + USER_ID_ATT_NS_FIELD + " = ?, " + USER_ID_ATT_NAME_FIELD + " = ?, " + FIRST_NAME_ATT_NS_FIELD
+                    + " = ?, " + FIRST_NAME_ATT_NAME_FIELD + " = ?, " + LAST_NAME_ATT_NS_FIELD + " = ?, "
                     + LAST_NAME_ATT_NAME_FIELD + " = ?, " + EMAIL_ATT_NS_FIELD + " = ?, " + EMAIL_ATT_NAME_FIELD
                     + " = ?");
 

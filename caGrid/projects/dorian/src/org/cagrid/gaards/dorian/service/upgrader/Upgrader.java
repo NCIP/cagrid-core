@@ -1,5 +1,7 @@
 package org.cagrid.gaards.dorian.service.upgrader;
 
+import gov.nih.nci.cagrid.common.FaultUtil;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -99,8 +101,7 @@ public class Upgrader {
                 }
             }
         } catch (Exception e) {
-            System.out.println(e);
-            e.printStackTrace();
+            FaultUtil.printFault(e);
         }
 
     }
