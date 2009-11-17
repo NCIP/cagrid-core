@@ -140,6 +140,7 @@ public class Dorian extends LoggingObject {
             idp.setIdPCertificate(CertUtil.writeCertificate(this.identityProvider.getIdPCertificate()));
             idp.setStatus(TrustedIdPStatus.Active);
             idp.setAuthenticationServiceURL(serviceId);
+            idp.setPublish(true);
             SAMLAttributeDescriptor uid = new SAMLAttributeDescriptor();
             uid.setNamespaceURI(SAMLConstants.UID_ATTRIBUTE_NAMESPACE);
             uid.setName(SAMLConstants.UID_ATTRIBUTE);
