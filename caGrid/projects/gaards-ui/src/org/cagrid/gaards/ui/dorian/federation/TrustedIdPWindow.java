@@ -52,6 +52,10 @@ public class TrustedIdPWindow extends ApplicationComponent implements DorianSess
 
     private static final long serialVersionUID = 1L;
 
+    public static final String PUBLISH_YES = "Yes";
+
+    public static final String PUBLISH_NO = "No";
+
     public static final String PASSWORD = SAMLAuthenticationMethod.value1.getValue();
 
     public static final String KERBEROS = SAMLAuthenticationMethod.value2.getValue();
@@ -236,6 +240,10 @@ public class TrustedIdPWindow extends ApplicationComponent implements DorianSess
 
     private ProgressPanel progressPanel = null;
 
+    private JLabel jLabel11 = null;
+
+    private JComboBox publish = null;
+
 
     public TrustedIdPWindow(DorianSession session, TrustedIdPsWindow window, List<GridUserPolicy> policies) {
         super();
@@ -320,6 +328,7 @@ public class TrustedIdPWindow extends ApplicationComponent implements DorianSess
             this.setTitle(this.titleStr);
         }
         this.setFrameIcon(DorianLookAndFeel.getTrustedIdPIcon());
+        this.setSize(600, 400);
 
     }
 
@@ -450,6 +459,13 @@ public class TrustedIdPWindow extends ApplicationComponent implements DorianSess
             idp.setAuthenticationServiceIdentity(getAuthenticationServiceIdentity().getText());
             idp.setStatus(getStatus().getSelectedStatus());
             idp.setUserPolicyClass(((UserPolicyCaddy) getUserPolicy().getSelectedItem()).getPolicy().getClassName());
+
+            if (getPublish().getSelectedItem().equals(PUBLISH_YES)) {
+                idp.setPublish(true);
+            } else {
+                idp.setPublish(false);
+            }
+
             List<SAMLAuthenticationMethod> authMethod = new ArrayList<SAMLAuthenticationMethod>();
             if (getPasswordMethod().isSelected()) {
                 authMethod.add(SAMLAuthenticationMethod.fromValue(PASSWORD));
@@ -1512,6 +1528,20 @@ public class TrustedIdPWindow extends ApplicationComponent implements DorianSess
      */
     private JPanel getJPanel3() {
         if (jPanel3 == null) {
+            GridBagConstraints gridBagConstraints3 = new GridBagConstraints();
+            gridBagConstraints3.fill = GridBagConstraints.HORIZONTAL;
+            gridBagConstraints3.gridx = 1;
+            gridBagConstraints3.gridy = 2;
+            gridBagConstraints3.anchor = GridBagConstraints.WEST;
+            gridBagConstraints3.insets = new Insets(2, 2, 2, 2);
+            gridBagConstraints3.weightx = 1.0;
+            GridBagConstraints gridBagConstraints1 = new GridBagConstraints();
+            gridBagConstraints1.anchor = GridBagConstraints.WEST;
+            gridBagConstraints1.gridy = 2;
+            gridBagConstraints1.insets = new Insets(2, 2, 2, 2);
+            gridBagConstraints1.gridx = 0;
+            jLabel11 = new JLabel();
+            jLabel11.setText("Publish");
             GridBagConstraints gridBagConstraints62 = new GridBagConstraints();
             gridBagConstraints62.fill = GridBagConstraints.HORIZONTAL;
             gridBagConstraints62.gridy = 1;
@@ -1546,6 +1576,8 @@ public class TrustedIdPWindow extends ApplicationComponent implements DorianSess
             jPanel3.add(getAuthenticationServiceURL(), gridBagConstraints59);
             jPanel3.add(jLabel10, gridBagConstraints61);
             jPanel3.add(getAuthenticationServiceIdentity(), gridBagConstraints62);
+            jPanel3.add(jLabel11, gridBagConstraints1);
+            jPanel3.add(getPublish(), gridBagConstraints3);
         }
         return jPanel3;
     }
@@ -1620,6 +1652,30 @@ public class TrustedIdPWindow extends ApplicationComponent implements DorianSess
             progressPanel = new ProgressPanel();
         }
         return progressPanel;
+    }
+
+
+    /**
+     * This method initializes publish
+     * 
+     * @return javax.swing.JComboBox
+     */
+    private JComboBox getPublish() {
+        if (publish == null) {
+            publish = new JComboBox();
+            publish.addItem(PUBLISH_YES);
+            publish.addItem(PUBLISH_NO);
+            if (!newTrustedIdP) {
+                if (idp.isPublish()) {
+                    publish.setSelectedItem(PUBLISH_YES);
+                } else {
+                    publish.setSelectedItem(PUBLISH_NO);
+                }
+            } else {
+                publish.setSelectedItem(PUBLISH_YES);
+            }
+        }
+        return publish;
     }
 
 }
