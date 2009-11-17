@@ -15,14 +15,16 @@ public class UpdateTrustedIdPStatusStep extends Step {
     private GridCredentialRequestStep admin;
     private String name;
     private TrustedIdPStatus status;
+    private boolean publish;
 
 
     public UpdateTrustedIdPStatusStep(String serviceURL, GridCredentialRequestStep admin, String name,
-        TrustedIdPStatus status) {
+        TrustedIdPStatus status, boolean publish) {
         this.serviceURL = serviceURL;
         this.admin = admin;
         this.name = name;
         this.status = status;
+        this.publish = publish;
     }
 
 
@@ -35,6 +37,7 @@ public class UpdateTrustedIdPStatusStep extends Step {
             if (idp.getName().endsWith(this.name)) {
                 found = true;
                idp.setStatus(status);
+               idp.setPublish(publish);
                client.updateTrustedIdP(idp);
             }
         }

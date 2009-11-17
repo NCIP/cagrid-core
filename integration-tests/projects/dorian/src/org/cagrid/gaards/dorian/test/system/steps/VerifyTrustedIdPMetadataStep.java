@@ -16,19 +16,25 @@ public class VerifyTrustedIdPMetadataStep extends Step {
     private String authenticationServiceURL;
     private String authenticationServiceIdentity;
     private boolean found;
+   
 
 
     public VerifyTrustedIdPMetadataStep(String serviceURL, String name) {
        this(serviceURL,name,true);
     }
     
+
     public VerifyTrustedIdPMetadataStep(String serviceURL, String name, boolean found) {
         this.serviceURL = serviceURL;
         this.name = name;
         this.found = found;
     }
+    
+    
 
 
+
+   
 
     public void runStep() throws Throwable {
         GridUserClient client = new GridUserClient(serviceURL);

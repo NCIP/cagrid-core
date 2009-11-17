@@ -139,6 +139,7 @@ public class DorianLocaIdentityProviderTest extends ServiceStoryBase {
             idp.setStatus(TrustedIdPStatus.Active);
             idp.setUserPolicyClass(AutoApprovalPolicy.class.getName());
             idp.setAuthenticationServiceURL(serviceURL);
+            idp.setPublish(true);
             steps.add(idp);
 
             // Create Users

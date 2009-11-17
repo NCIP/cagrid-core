@@ -58,9 +58,11 @@ public class DorianRemoteIdentityProviderTest extends ServiceStoryBase {
     private File dorianTempService;
     private ConfigureGlobusToTrustDorianStep trust;
 
+
     public DorianRemoteIdentityProviderTest() {
-    	super();
+        super();
     }
+
 
     public DorianRemoteIdentityProviderTest(ServiceContainer container, File dorianConfiguration,
         File dorianProperties, File authenticationServiceConfiguration) {
@@ -145,6 +147,7 @@ public class DorianRemoteIdentityProviderTest extends ServiceStoryBase {
             localIdP.setStatus(TrustedIdPStatus.Active);
             localIdP.setUserPolicyClass(AutoApprovalPolicy.class.getName());
             localIdP.setAuthenticationServiceURL(dorianURL);
+            localIdP.setPublish(true);
             steps.add(localIdP);
 
             VerifyTrustedIdPMetadataStep localIdPMetadata = new VerifyTrustedIdPMetadataStep(dorianURL, "Dorian");
@@ -183,6 +186,7 @@ public class DorianRemoteIdentityProviderTest extends ServiceStoryBase {
             SAMLAuthenticationMethod[] methods = new SAMLAuthenticationMethod[1];
             methods[0] = SAMLAuthenticationMethod.fromValue("urn:oasis:names:tc:SAML:1.0:am:unspecified");
             idp.setAuthenticationMethod(methods);
+            idp.setPublish(true);
 
             steps.add(new AddTrustedIdPStep(dorianURL, admin, idp));
 
@@ -192,6 +196,7 @@ public class DorianRemoteIdentityProviderTest extends ServiceStoryBase {
             remoteIdP.setUserPolicyClass(AutoApprovalPolicy.class.getName());
             remoteIdP.setAuthenticationServiceURL(asURL);
             remoteIdP.setAuthenticationServiceIdentity(idp.getAuthenticationServiceIdentity());
+            remoteIdP.setPublish(true);
             steps.add(remoteIdP);
 
             VerifyTrustedIdPMetadataStep remoteIdPMetadata = new VerifyTrustedIdPMetadataStep(dorianURL, idp.getName());
@@ -211,7 +216,6 @@ public class DorianRemoteIdentityProviderTest extends ServiceStoryBase {
             gridUser.setExpectedLocalUserId(success.getExpectedUserId());
             gridUser.setExpectedStatus(GridUserStatus.Active);
             steps.add(gridUser);
-            
 
             GridUserSearchStep gridUserRecord = new GridUserSearchStep(dorianURL, remoteUser);
             gridUserRecord.setExpectedEmail(success.getExpectedEmail());
@@ -219,8 +223,8 @@ public class DorianRemoteIdentityProviderTest extends ServiceStoryBase {
             gridUserRecord.setExpectedLastName(success.getExpectedLastName());
             steps.add(gridUserRecord);
 
- 
-            steps.add(new UpdateTrustedIdPStatusStep(dorianURL, admin, idp.getName(), TrustedIdPStatus.Suspended));
+            steps
+                .add(new UpdateTrustedIdPStatusStep(dorianURL, admin, idp.getName(), TrustedIdPStatus.Suspended, true));
 
             VerifyTrustedIdPStep remoteIdP2 = new VerifyTrustedIdPStep(dorianURL, admin, idp.getName());
             remoteIdP2.setDisplayName(idp.getDisplayName());
@@ -228,17 +232,34 @@ public class DorianRemoteIdentityProviderTest extends ServiceStoryBase {
             remoteIdP2.setUserPolicyClass(AutoApprovalPolicy.class.getName());
             remoteIdP2.setAuthenticationServiceURL(asURL);
             remoteIdP2.setAuthenticationServiceIdentity(idp.getAuthenticationServiceIdentity());
+            remoteIdP2.setPublish(true);
             steps.add(remoteIdP2);
-            
-            steps.add(new VerifyTrustedIdPMetadataStep(dorianURL,idp.getName(),false));
+
+            steps.add(new VerifyTrustedIdPMetadataStep(dorianURL, idp.getName(), false));
             steps.add(new GridCredentialRequestStep(dorianURL, user, new InvalidGridCredentialRequest(
                 "Access for your Identity Provider has been suspended!!!", PermissionDeniedFault.class)));
 
-            steps.add(new UpdateTrustedIdPStatusStep(dorianURL, admin, idp.getName(), TrustedIdPStatus.Active));
-
+            steps.add(new UpdateTrustedIdPStatusStep(dorianURL, admin, idp.getName(), TrustedIdPStatus.Active, true));
 
             steps.add(new GridCredentialRequestStep(dorianURL, user, new SuccessfullGridCredentialRequest()));
 
+            steps.add(new UpdateTrustedIdPStatusStep(dorianURL, admin, idp.getName(), TrustedIdPStatus.Active, false));
+
+            VerifyTrustedIdPStep remoteIdP3 = new VerifyTrustedIdPStep(dorianURL, admin, idp.getName());
+            remoteIdP3.setDisplayName(idp.getDisplayName());
+            remoteIdP3.setStatus(TrustedIdPStatus.Active);
+            remoteIdP3.setUserPolicyClass(AutoApprovalPolicy.class.getName());
+            remoteIdP3.setAuthenticationServiceURL(asURL);
+            remoteIdP3.setAuthenticationServiceIdentity(idp.getAuthenticationServiceIdentity());
+            remoteIdP3.setPublish(false);
+            steps.add(remoteIdP3);
+
+            VerifyTrustedIdPMetadataStep remoteIdPMetadata2 = new VerifyTrustedIdPMetadataStep(dorianURL,
+                idp.getName(), false);
+            remoteIdPMetadata2.setDisplayName(idp.getDisplayName());
+            remoteIdPMetadata2.setAuthenticationServiceURL(asURL);
+            remoteIdPMetadata2.setAuthenticationServiceIdentity(idp.getAuthenticationServiceIdentity());
+            steps.add(remoteIdPMetadata2);
         } catch (Exception e) {
             e.printStackTrace();
         }
