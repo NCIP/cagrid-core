@@ -51,10 +51,7 @@ public class SDK42QueryProcessor extends CQLQueryProcessor {
     public static final String DEFAULT_HOST_HTTPS = String.valueOf(false);
     public static final String DEFAULT_USE_GRID_IDENTITY_LOGIN = String.valueOf(false);
     public static final String DEFAULT_USE_STATIC_LOGIN = String.valueOf(false);
-    
-    // the "empty" password passed to the SDK when using CSM / grid identity login
-    public static final String EMPTY_PASSWORD = "EMPTYPASSWORD";
-    
+        
     private Mappings mappings = null;
     
     public SDK42QueryProcessor() {
@@ -248,7 +245,7 @@ public class SDK42QueryProcessor extends CQLQueryProcessor {
                 if (isUseGridIdentLogin()) {
                     SecurityManager securityManager = SecurityManager.getManager();
                     String username = securityManager.getCaller();
-                    service = ApplicationServiceProvider.getApplicationService(username, EMPTY_PASSWORD);
+                    service = ApplicationServiceProvider.getApplicationServiceForUser(username);
                 } else {
                     service = ApplicationServiceProvider.getApplicationService();
                 }
