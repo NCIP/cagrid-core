@@ -27,7 +27,7 @@ public class IdentifierMetadata {
 
     @Column(nullable = false, unique = true)
     @Type(type = "org.cagrid.identifiers.namingauthority.hibernate.URIUserType")
-    private URI relativeIdentifier;
+    private URI localIdentifier;
 
     @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "identifier_id", nullable = false)
@@ -58,7 +58,7 @@ public class IdentifierMetadata {
     public int hashCode() {
         final int prime = 31;
         int result = 1;
-        result = prime * result + ((getRelativeIdentifier() == null) ? 0 : getRelativeIdentifier().hashCode());
+        result = prime * result + ((getLocalIdentifier() == null) ? 0 : getLocalIdentifier().hashCode());
         result = prime * result + ((values == null) ? 0 : values.hashCode());
         return result;
     }
@@ -73,10 +73,10 @@ public class IdentifierMetadata {
         if (getClass() != obj.getClass())
             return false;
         IdentifierMetadata other = (IdentifierMetadata) obj;
-        if (getRelativeIdentifier() == null) {
-            if (other.getRelativeIdentifier() != null)
+        if (getLocalIdentifier() == null) {
+            if (other.getLocalIdentifier() != null)
                 return false;
-        } else if (!getRelativeIdentifier().equals(other.getRelativeIdentifier()))
+        } else if (!getLocalIdentifier().equals(other.getLocalIdentifier()))
             return false;
         if (values == null) {
             if (other.values != null)
@@ -87,13 +87,13 @@ public class IdentifierMetadata {
     }
 
 
-    public void setRelativeIdentifier(URI relativeIdentifier) {
-        this.relativeIdentifier = relativeIdentifier;
+    public void setLocalIdentifier(URI relativeIdentifier) {
+        this.localIdentifier = relativeIdentifier;
     }
 
 
-    public URI getRelativeIdentifier() {
-        return relativeIdentifier;
+    public URI getLocalIdentifier() {
+        return localIdentifier;
     }
 
 }

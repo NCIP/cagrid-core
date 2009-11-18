@@ -37,7 +37,7 @@ public class NamingAuthorityImpl extends NamingAuthority {
         URI identifier = generateIdentifier();
 
         IdentifierMetadata md = new IdentifierMetadata();
-        md.setRelativeIdentifier(identifier);
+        md.setLocalIdentifier(identifier);
         List<IdentifierValueKey> values = new ArrayList<IdentifierValueKey>();
         md.setValues(values);
 
@@ -54,7 +54,7 @@ public class NamingAuthorityImpl extends NamingAuthority {
 
         this.identifierDao.save(md);
 
-        return IdentifierUtil.build(getConfiguration().getPrefix(), md.getRelativeIdentifier());
+        return IdentifierUtil.build(getConfiguration().getPrefix(), md.getLocalIdentifier());
 
     }
 
@@ -64,7 +64,7 @@ public class NamingAuthorityImpl extends NamingAuthority {
         URI localURI = IdentifierUtil.getLocalName(getConfiguration().getPrefix(), identifier);
 
         IdentifierMetadata template = new IdentifierMetadata();
-        template.setRelativeIdentifier(localURI);
+        template.setLocalIdentifier(localURI);
 
         IdentifierMetadata md = this.identifierDao.getByExample(template);
         if (md == null) {

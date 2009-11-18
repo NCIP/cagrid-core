@@ -40,5 +40,5 @@
 		</copy>
 	</target>
    
-	<target name="deployTomcat" depends="all,setDeployProperties,create,copy" />
+	<target name="deployWebApp" depends="setDeployProperties,create,copy" />
 </project>

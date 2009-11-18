@@ -170,5 +170,10 @@
     <!-- Builds from scratch                                                -->
     <!-- ============================================================== -->
     <target name="all" description="Builds the entire application" depends="jar,jar-tests" />
+    
+    <!-- ============================================================== -->
+    <!-- Deploys Naming Authority to Tomcat                             -->
+    <!-- ============================================================== -->
+    <target name="deployTomcat" description="Deploys Naming Authority to Tomcat" depends="all,deployWebApp" />
 </project>
 
