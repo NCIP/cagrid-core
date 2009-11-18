@@ -1,5 +1,7 @@
 package org.cagrid.identifiers.namingauthority;
 
+import java.net.URI;
+
 public interface IdentifierGenerator {
-	String generate( NamingAuthorityConfig config );
+	URI generate( NamingAuthorityConfig config );
 }

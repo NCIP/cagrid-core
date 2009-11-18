@@ -1,6 +1,8 @@
 package org.cagrid.identifiers.namingauthority;
 
+import java.net.URI;
+
 public interface NamingAuthorityConfig {
-	public String getPrefix();
+	public URI getPrefix();
 	public String getGridSvcUrl();
 }

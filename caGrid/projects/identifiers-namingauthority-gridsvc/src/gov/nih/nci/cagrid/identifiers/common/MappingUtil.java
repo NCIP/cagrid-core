@@ -1,18 +1,18 @@
 package gov.nih.nci.cagrid.identifiers.common;
 
-import java.util.Set;
+import gov.nih.nci.cagrid.identifiers.TypeValues;
+import gov.nih.nci.cagrid.identifiers.TypeValuesMap;
+import gov.nih.nci.cagrid.identifiers.Values;
 
-import org.cagrid.identifiers.namingauthority.impl.IdentifierValuesImpl;
-
-import gov.nih.nci.cagrid.identifiers.*;
+import org.cagrid.identifiers.namingauthority.IdentifierValues;
 
 public class MappingUtil {
 
-	public static IdentifierValuesImpl toIdentifierValues(TypeValuesMap typeValues) {
+	public static IdentifierValues toIdentifierValues(TypeValuesMap typeValues) {
 		if (typeValues == null)
 			return null;
 		
-		IdentifierValuesImpl ivs = new IdentifierValuesImpl();
+		IdentifierValues ivs = new IdentifierValues();
 		
 		for( TypeValues tv : typeValues.getTypeValues() ) {
 			if (tv.getValues() != null) {
@@ -25,7 +25,7 @@ public class MappingUtil {
 		return ivs;
 	}
 
-	public static TypeValuesMap toTypeValuesMap(IdentifierValuesImpl values) {
+	public static TypeValuesMap toTypeValuesMap(IdentifierValues values) {
 		String[] types = values.getTypes();
 		TypeValues[] tvs = new TypeValues[ types.length ];
 		

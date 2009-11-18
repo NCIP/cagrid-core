@@ -1,21 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
 	<classpathentry kind="src" path="src"/>
+	<classpathentry kind="src" path="test/resources"/>
+	<classpathentry kind="src" path="test/src"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
-	<classpathentry kind="lib" path="ext/dependencies/impl/jars/antlr-2.7.6rc1.jar"/>
-	<classpathentry kind="lib" path="ext/dependencies/impl/jars/asm.jar"/>
-	<classpathentry kind="lib" path="ext/dependencies/impl/jars/cglib-2.1_3.jar"/>
-	<classpathentry kind="lib" path="ext/dependencies/impl/jars/commons-collections-3.2.jar"/>
-	<classpathentry kind="lib" path="ext/dependencies/impl/jars/dom4j-1.6.1.jar"/>
-	<classpathentry kind="lib" path="ext/dependencies/impl/jars/ehcache-1.2.3.jar"/>
-	<classpathentry kind="lib" path="ext/dependencies/impl/jars/hibernate3.jar"/>
-	<classpathentry kind="lib" path="ext/dependencies/impl/jars/jetty-6.1.18.jar"/>
-	<classpathentry kind="lib" path="ext/dependencies/impl/jars/jetty-util-6.1.18.jar"/>
-	<classpathentry kind="lib" path="ext/dependencies/impl/jars/jta-1.0.1B.jar"/>
-	<classpathentry kind="lib" path="ext/dependencies/impl/jars/mysql-connector-java-3.0.16-ga-bin.jar"/>
-	<classpathentry kind="lib" path="ext/dependencies/impl/jars/servlet.jar"/>
-	<classpathentry kind="lib" path="ext/dependencies/impl/jars/spring-test.jar"/>
-	<classpathentry kind="lib" path="ext/dependencies/impl/jars/spring.jar"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.junit.JUNIT_CONTAINER/4"/>
 	<classpathentry kind="var" path="GT4_LOCATION/lib/addressing-1.0.jar"/>
 	<classpathentry kind="var" path="GT4_LOCATION/lib/axis-url.jar"/>
@@ -83,5 +71,25 @@
 	<classpathentry kind="var" path="GT4_LOCATION/lib/xercesImpl.jar"/>
 	<classpathentry kind="var" path="GT4_LOCATION/lib/xml-apis.jar"/>
 	<classpathentry kind="var" path="GT4_LOCATION/lib/xmlsec.jar"/>
+	<classpathentry kind="lib" path="ext/dependencies/impl/jars/antlr-2.7.6rc1.jar"/>
+	<classpathentry kind="lib" path="ext/dependencies/impl/jars/asm.jar"/>
+	<classpathentry kind="lib" path="ext/dependencies/impl/jars/cglib-2.1_3.jar"/>
+	<classpathentry kind="lib" path="ext/dependencies/impl/jars/commons-collections-3.2.jar"/>
+	<classpathentry kind="lib" path="ext/dependencies/impl/jars/commons-dbcp-1.2.2.jar"/>
+	<classpathentry kind="lib" path="ext/dependencies/impl/jars/commons-logging-1.1.jar"/>
+	<classpathentry kind="lib" path="ext/dependencies/impl/jars/commons-pool-1.2.jar"/>
+	<classpathentry kind="lib" path="ext/dependencies/impl/jars/dom4j-1.6.1.jar"/>
+	<classpathentry kind="lib" path="ext/dependencies/impl/jars/ehcache-1.2.3.jar"/>
+	<classpathentry kind="lib" path="ext/dependencies/impl/jars/ejb3-persistence.jar"/>
+	<classpathentry kind="lib" path="ext/dependencies/impl/jars/hibernate-annotations.jar"/>
+	<classpathentry kind="lib" path="ext/dependencies/impl/jars/hibernate-commons-annotations.jar"/>
+	<classpathentry kind="lib" path="ext/dependencies/impl/jars/hibernate3.jar"/>
+	<classpathentry kind="lib" path="ext/dependencies/impl/jars/jetty-6.1.18.jar"/>
+	<classpathentry kind="lib" path="ext/dependencies/impl/jars/jetty-util-6.1.18.jar"/>
+	<classpathentry kind="lib" path="ext/dependencies/impl/jars/jta-1.0.1B.jar"/>
+	<classpathentry kind="lib" path="ext/dependencies/impl/jars/mysql-connector-java-3.0.16-ga-bin.jar"/>
+	<classpathentry kind="lib" path="ext/dependencies/impl/jars/servlet.jar"/>
+	<classpathentry kind="lib" path="ext/dependencies/impl/jars/spring-test.jar"/>
+	<classpathentry kind="lib" path="ext/dependencies/impl/jars/spring.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

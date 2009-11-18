@@ -1,43 +1,48 @@
 package org.cagrid.identifiers.namingauthority;
 
+import java.net.URI;
+import java.net.URISyntaxException;
+
+
 public abstract class NamingAuthority {
-	
-	private NamingAuthorityConfig configuration;
-	private IdentifierGenerator identifierGenerator;
-	private HttpProcessor httpProcessor;
-	
-	public NamingAuthorityConfig getConfiguration() { 
-		return this.configuration; 
-	}
-		
-	public void setConfiguration( NamingAuthorityConfig config ) {
-		this.configuration = config;
-	}
-	
-	public String generateIdentifier() { 
-		return identifierGenerator.generate(configuration);
-	}
-	
-	public IdentifierGenerator getIdentifierGenerator() {
-		return identifierGenerator;
-	}
-	
-	public void setIdentifierGenerator( IdentifierGenerator generator ) {
-		this.identifierGenerator = generator;
-	}
-	
-	public HttpProcessor getHttpProcessor() {
-		return this.httpProcessor;
-	}
-	
-	public void setHttpProcessor( HttpProcessor processor ) {
-		this.httpProcessor = processor;
-		this.httpProcessor.setNamingAuthority(this);
-	}
-	
-	public void initialize(){};
-	
-	public abstract IdentifierValues resolveIdentifier(Object identifier);
-	
-	public abstract Object createIdentifier(IdentifierValues values) throws Exception;
+
+    private NamingAuthorityConfig configuration;
+    private IdentifierGenerator identifierGenerator;
+
+
+    public NamingAuthorityConfig getConfiguration() {
+        return this.configuration;
+    }
+
+
+    public void setConfiguration(NamingAuthorityConfig config) {
+        this.configuration = config;
+    }
+
+
+    public URI generateIdentifier() {
+        return identifierGenerator.generate(configuration);
+    }
+
+
+    public IdentifierGenerator getIdentifierGenerator() {
+        return identifierGenerator;
+    }
+
+
+    public void setIdentifierGenerator(IdentifierGenerator generator) {
+        this.identifierGenerator = generator;
+    }
+
+
+    public void initialize() {
+    }
+
+
+    public abstract IdentifierValues resolveIdentifier(URI identifier) throws URISyntaxException,
+        InvalidIdentifierException, NamingAuthorityConfigurationException;
+
+
+    public abstract URI createIdentifier(IdentifierValues values) throws Exception,
+        NamingAuthorityConfigurationException, InvalidIdentifierValuesException;
 }

@@ -1,7 +1,6 @@
 package org.cagrid.identifiers.resolver;
 
 import gov.nih.nci.cagrid.identifiers.TypeValues;
-import gov.nih.nci.cagrid.identifiers.TypeValuesMap;
 import gov.nih.nci.cagrid.identifiers.Values;
 import gov.nih.nci.cagrid.identifiers.client.IdentifiersNAServiceClient;
 
@@ -10,11 +9,6 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.StringBufferInputStream;
-import java.rmi.RemoteException;
-
-import javax.net.ssl.SSLContext;
-
-import org.apache.axis.types.URI.MalformedURIException;
 
 import org.apache.http.Header;
 import org.apache.http.HttpEntity;
@@ -23,14 +17,13 @@ import org.apache.http.HttpRequest;
 import org.apache.http.HttpRequestInterceptor;
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
-import org.apache.http.protocol.HttpContext;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.params.ClientPNames;
-import org.apache.http.conn.scheme.Scheme;
 import org.apache.http.conn.ssl.SSLSocketFactory;
 import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.protocol.HttpContext;
+import org.cagrid.identifiers.namingauthority.IdentifierValues;
 import org.cagrid.identifiers.namingauthority.http.NamingAuthorityConfig;
-import org.cagrid.identifiers.namingauthority.impl.IdentifierValuesImpl;
 
 
 public class ResolverUtil {
@@ -128,11 +121,11 @@ public class ResolverUtil {
 	    return dataObject;
 	}
 		
-	public static IdentifierValuesImpl convert( TypeValues[] tvsArr ) {
+	public static IdentifierValues convert( TypeValues[] tvsArr ) {
 		if (tvsArr == null)
 			return null;
 		
-		IdentifierValuesImpl ivs = new IdentifierValuesImpl();
+		IdentifierValues ivs = new IdentifierValues();
 		
 		for( TypeValues tvs : tvsArr ) {
 			String type = tvs.getType();
@@ -145,7 +138,7 @@ public class ResolverUtil {
 		return ivs;
 	}
 	
-	public static IdentifierValuesImpl resolveGrid( String identifier ) throws HttpException, IOException {
+	public static IdentifierValues resolveGrid( String identifier ) throws HttpException, IOException {
 		
 		//
 		// Retrieve Naming Authority Configuration
@@ -161,9 +154,9 @@ public class ResolverUtil {
 				client.getTypeValues(identifier) );
 	}
 	
-	public static IdentifierValuesImpl resolveHttp( String identifier ) throws HttpException, IOException {
+	public static IdentifierValues resolveHttp( String identifier ) throws HttpException, IOException {
 		
-		return (IdentifierValuesImpl)
+		return (IdentifierValues)
 			httpGet(identifier, "Identifier [" + identifier + "] failed resolution");
 	}
 }

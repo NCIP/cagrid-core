@@ -1,25 +1,12 @@
 package org.cagrid.identifiers.resolver.test;
 
-import java.io.IOException;
+import junit.framework.TestCase;
 
-import javax.xml.namespace.QName;
-
-import org.apache.axis.message.addressing.Address;
-import org.apache.axis.message.addressing.AttributedQName;
-import org.apache.axis.message.addressing.AttributedURI;
-import org.apache.axis.message.addressing.EndpointReference;
-import org.apache.axis.message.addressing.EndpointReferenceType;
-import org.apache.axis.message.addressing.ServiceNameType;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.cagrid.identifiers.namingauthority.impl.IdentifierValuesImpl;
+import org.cagrid.identifiers.namingauthority.IdentifierValues;
 import org.cagrid.identifiers.resolver.ResolverUtil;
 import org.cagrid.identifiers.retriever.impl.RetrieverService;
-import org.globus.wsrf.encoding.ObjectDeserializer;
-import org.globus.wsrf.encoding.ObjectSerializer;
-import org.xml.sax.InputSource;
-
-import junit.framework.TestCase;
 
 public class ResolverTestCase extends TestCase {
 
@@ -31,7 +18,7 @@ public class ResolverTestCase extends TestCase {
 	public void testGridResolution() {
 		try {
 			System.out.println("========== testGridResolution =============");
-			IdentifierValuesImpl ivs = ResolverUtil.resolveGrid(identifier);
+			IdentifierValues ivs = ResolverUtil.resolveGrid(identifier);
 			System.out.println(ivs.toString());
 			System.out.println("========== testGridResolution SUCCESS =============");
 		} catch (Exception e) {
@@ -43,7 +30,7 @@ public class ResolverTestCase extends TestCase {
 	public void testHttpResolution() {
 		try {
 			System.out.println("========== testHttpResolution =============");
-			IdentifierValuesImpl ivs = ResolverUtil.resolveHttp(identifier);
+			IdentifierValues ivs = ResolverUtil.resolveHttp(identifier);
 			System.out.println(ivs.toString());
 			System.out.println("========== testHttpResolution SUCCESS =============");
 		} catch (Exception e) {
@@ -55,7 +42,7 @@ public class ResolverTestCase extends TestCase {
 	public void testCQLRetriever() {
 		try {
 			System.out.println("========== testCQLRetriever =============");
-			IdentifierValuesImpl ivs = ResolverUtil.resolveHttp(identifier);
+			IdentifierValues ivs = ResolverUtil.resolveHttp(identifier);
 			RetrieverService rs = new RetrieverService();
 			gov.nih.nci.cagrid.cqlresultset.CQLQueryResults results = 
 				(gov.nih.nci.cagrid.cqlresultset.CQLQueryResults)

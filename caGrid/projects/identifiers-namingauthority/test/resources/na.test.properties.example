@@ -1,0 +1,10 @@
+
+cagrid.na.prefix=http://purlz.cagrid.org:8080/localhost/
+cagrid.na.grid.url=http://localhost:8081/wsrf/services/cagrid/IdentifiersNAService
+
+cagrid.na.db.dialect=org.hibernate.dialect.MySQL5InnoDBDialect
+cagrid.na.db.driver=com.mysql.jdbc.Driver
+cagrid.na.db.name=natest
+cagrid.na.db.url=jdbc:mysql://localhost:3306/${cagrid.na.db.name}
+cagrid.na.db.username=root
+cagrid.na.db.password=

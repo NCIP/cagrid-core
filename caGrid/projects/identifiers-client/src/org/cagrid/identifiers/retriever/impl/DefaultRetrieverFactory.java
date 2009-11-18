@@ -2,7 +2,7 @@ package org.cagrid.identifiers.retriever.impl;
 
 import java.util.Map;
 
-import org.cagrid.identifiers.namingauthority.impl.IdentifierValuesImpl;
+import org.cagrid.identifiers.namingauthority.IdentifierValues;
 import org.cagrid.identifiers.retriever.Retriever;
 import org.cagrid.identifiers.retriever.RetrieverFactory;
 
@@ -13,7 +13,7 @@ public class DefaultRetrieverFactory implements RetrieverFactory {
 		this.retrievers = retrievers;
 	}
 	
-	public Retriever getRetriever( IdentifierValuesImpl ivs ) throws Exception {
+	public Retriever getRetriever( IdentifierValues ivs ) throws Exception {
 		//TODO
 		throw new Exception("Not implemented yet");
 	}

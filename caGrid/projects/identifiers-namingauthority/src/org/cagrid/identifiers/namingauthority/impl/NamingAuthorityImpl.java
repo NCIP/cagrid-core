@@ -1,55 +1,97 @@
 package org.cagrid.identifiers.namingauthority.impl;
 
-import org.cagrid.identifiers.namingauthority.*;
-import org.cagrid.identifiers.namingauthority.IdentifierValues;
-import org.cagrid.identifiers.namingauthority.util.Database;
+import java.net.URI;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
-import org.cagrid.identifiers.namingauthority.util.*;
-import org.cagrid.identifiers.namingauthority.http.HttpServer;
+import org.cagrid.identifiers.namingauthority.IdentifierValues;
+import org.cagrid.identifiers.namingauthority.InvalidIdentifierException;
+import org.cagrid.identifiers.namingauthority.NamingAuthority;
+import org.cagrid.identifiers.namingauthority.dao.IdentifierMetadataDao;
+import org.cagrid.identifiers.namingauthority.hibernate.IdentifierMetadata;
+import org.cagrid.identifiers.namingauthority.hibernate.IdentifierValueKey;
+import org.cagrid.identifiers.namingauthority.util.IdentifierUtil;
+
 
 public class NamingAuthorityImpl extends NamingAuthority {
 
-	private HttpServer httpServer = null;
-	private Database database;
-	
-	public void initialize() {
-		database.initialize();
-		super.initialize();
-	}
-	
-	public Database getDatabase() {
-		return database;
-	}
-	
-	public void setDatabase( Database database ) {
-		this.database = database;
-	}
-	
-	// This starts a jetty http server for debugging/playing/whatever
-	// purposes, not used in a live/production system
-	public synchronized void startHttpServer() {
-		if (httpServer == null) {
-			httpServer = new HttpServer(this, 
-					((NamingAuthorityConfigImpl)getConfiguration()).getHttpServerPort());
-			httpServer.start();
-		}
-	}
+    private IdentifierMetadataDao identifierDao = null;
 
-	@Override
-	public String createIdentifier(IdentifierValues ivalues) throws Exception {
-		IdentifierValuesImpl values = (IdentifierValuesImpl) ivalues;
-		
-		if (values == null)
-			throw new Exception("Input IdentifierValues can't be null");
-		
-		String identifier = generateIdentifier();
-		database.save(identifier, values);
-        return IdentifierUtil.build(getConfiguration().getPrefix(), identifier);
-	}
 
-	@Override
-	public IdentifierValuesImpl resolveIdentifier(Object identifier) {
-		return database.getValues(
-				IdentifierUtil.getLocalName( getConfiguration().getPrefix(), (String)identifier ));
-	}
+    public void initialize() {
+        super.initialize();
+    }
+
+
+    @Override
+    public URI createIdentifier(IdentifierValues ivalues) throws Exception {
+
+        // TODO: I think we should allow this so you can request "placeholder"
+        // identifiers, and update them later
+        // if (ivalues == null)
+        // throw new Exception("Input IdentifierValues can't be null");
+
+        URI identifier = generateIdentifier();
+
+        IdentifierMetadata md = new IdentifierMetadata();
+        md.setRelativeIdentifier(identifier);
+        List<IdentifierValueKey> values = new ArrayList<IdentifierValueKey>();
+        md.setValues(values);
+
+        if (ivalues != null) {
+            String[] keys = ivalues.getTypes();
+            for (String key : keys) {
+                IdentifierValueKey vk = new IdentifierValueKey();
+                vk.setKey(key);
+                String[] data = ivalues.getValues(key);
+                vk.setValues(Arrays.asList(data));
+                values.add(vk);
+            }
+        }
+
+        this.identifierDao.save(md);
+
+        return IdentifierUtil.build(getConfiguration().getPrefix(), md.getRelativeIdentifier());
+
+    }
+
+
+    @Override
+    public IdentifierValues resolveIdentifier(URI identifier) throws InvalidIdentifierException {
+        URI localURI = IdentifierUtil.getLocalName(getConfiguration().getPrefix(), identifier);
+
+        IdentifierMetadata template = new IdentifierMetadata();
+        template.setRelativeIdentifier(localURI);
+
+        IdentifierMetadata md = this.identifierDao.getByExample(template);
+        if (md == null) {
+            throw new InvalidIdentifierException("The specified identifier (" + identifier + ") was not found.");
+        }
+
+        IdentifierValues result = null;
+        if (md.getValues() != null && md.getValues().size() > 0) {
+            result = new IdentifierValues();
+            Map<String, List<String>> values = new HashMap<String, List<String>>();
+            result.setValues(values);
+
+            for (IdentifierValueKey vk : md.getValues()) {
+                values.put(vk.getKey(), vk.getValues());
+            }
+        }
+
+        return result;
+    }
+
+
+    public void setIdentifierDao(IdentifierMetadataDao identifierDao) {
+        this.identifierDao = identifierDao;
+    }
+
+
+    public IdentifierMetadataDao getIdentifierDao() {
+        return identifierDao;
+    }
 }

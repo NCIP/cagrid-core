@@ -1,35 +1,18 @@
 package org.cagrid.identifiers.resolver.test;
 
 import java.io.BufferedReader;
-import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 
-import javax.xml.namespace.QName;
-
-import org.apache.axis.message.addressing.Address;
-import org.apache.axis.message.addressing.AttributedQName;
-import org.apache.axis.message.addressing.AttributedURI;
-import org.apache.axis.message.addressing.EndpointReference;
-import org.apache.axis.message.addressing.EndpointReferenceType;
-import org.apache.axis.message.addressing.ServiceNameType;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.apache.http.HttpException;
-import org.cagrid.identifiers.namingauthority.impl.IdentifierValuesImpl;
+import org.cagrid.identifiers.namingauthority.IdentifierValues;
 import org.cagrid.identifiers.resolver.ResolverUtil;
-import org.cagrid.identifiers.retriever.impl.RetrieverService;
-import org.globus.wsrf.encoding.ObjectDeserializer;
-import org.globus.wsrf.encoding.ObjectSerializer;
-import org.xml.sax.InputSource;
-
-import junit.framework.TestCase;
 
 public class StressResolve {
 	
 	public void httpResolution( String identifier ) throws HttpException, IOException {
 		
-		IdentifierValuesImpl ivs = ResolverUtil.resolveHttp(identifier);
+		IdentifierValues ivs = ResolverUtil.resolveHttp(identifier);
 		//System.out.println(ivs.toString());
 		//System.out.println("========== httpResolution SUCCESS =============");
 	}

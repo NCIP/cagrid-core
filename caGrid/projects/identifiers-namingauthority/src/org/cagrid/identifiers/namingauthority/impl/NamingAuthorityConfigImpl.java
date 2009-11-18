@@ -1,18 +1,20 @@
 package org.cagrid.identifiers.namingauthority.impl;
 
+import java.net.URI;
+
 import org.cagrid.identifiers.namingauthority.NamingAuthorityConfig;
 
 public class NamingAuthorityConfigImpl implements NamingAuthorityConfig {
 
-	private String prefix = null;
+	private URI prefix = null;
 	private Integer httpServerPort = null;
 	private String gridSvcUrl = null;
 	
-	public void setPrefix( String prefix ) {
+	public void setPrefix( URI prefix ) {
 		this.prefix = prefix;
 	}
 	
-	public String getPrefix() {
+	public URI getPrefix() {
 		return this.prefix;
 	}
 	

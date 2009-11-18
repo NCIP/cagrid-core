@@ -1,28 +1,57 @@
 package org.cagrid.identifiers.namingauthority.util;
 
+import java.net.URI;
+
+import org.cagrid.identifiers.namingauthority.InvalidIdentifierException;
+
+
 public class IdentifierUtil {
 
-	public static String build( String prefix, String localName ) {
-		if (prefix == null || prefix.length() == 0)
-			return localName;
-		
-		if (prefix.endsWith("/"))
-			return prefix + localName;
-		
-		return prefix + "/" + localName;
-	}
-	
-	public static String getLocalName( String prefix, String identifier ) {
-		if (identifier.startsWith(prefix)) {
-			if ( prefix.length() == identifier.length() )
-				return identifier;
-			
-			String local = identifier.substring(prefix.length());
-			if (local.startsWith("/"))
-				return local.substring(1);
-			return local;
-		}
-		
-		return identifier;
-	}
+    public static URI build(URI prefix, URI localName) {
+        verifyPrefix(prefix);
+        if (localName == null) {
+            throw new IllegalArgumentException("Localname must not be null.");
+        } else if (localName.isAbsolute()) {
+            throw new IllegalArgumentException("Localname must be a relative URI.");
+
+        }
+
+        // trim off any leading / so the URI resolving doesn't treat it as an
+        // absolute path
+        if (localName.getPath().startsWith("/")) {
+            localName = URI.create(localName.getPath().substring(1));
+        }
+
+        return prefix.resolve(localName);
+    }
+
+
+    public static URI getLocalName(URI prefix, URI identifier) throws InvalidIdentifierException {
+        verifyPrefix(prefix);
+        String idStr = identifier.normalize().toString();
+        String prefixStr = prefix.normalize().toString();
+        if (!idStr.startsWith(prefixStr) || prefixStr.length() >= idStr.length()) {
+            throw new InvalidIdentifierException("Identifier (" + identifier + ") is not local to prefix (" + prefix
+                + ").");
+        }
+
+        return prefix.relativize(identifier);
+
+    }
+
+
+    public static void verifyPrefix(URI prefix) {
+        if (prefix == null) {
+            throw new IllegalArgumentException("Prefix must not be null.");
+        } else if (!prefix.isAbsolute()) {
+            throw new IllegalArgumentException("Prefix must be an absolute URI : " + prefix);
+        } else if (prefix.getFragment() != null) {
+            throw new IllegalArgumentException("Prefix must not contain a fragment: " + prefix);
+        } else if (prefix.getQuery() != null) {
+            throw new IllegalArgumentException("Prefix must not contain a query: " + prefix);
+        } else if (!prefix.getPath().endsWith("/")) {
+            throw new IllegalArgumentException("Prefix must have a trailing slash: " + prefix);
+        }
+    }
+
 }

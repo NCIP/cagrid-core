@@ -36,7 +36,7 @@
 	<property name="ivy.resolved.artifacts.dir" location="${basedir}/ext" description="The directoy in which resolved dependencies should be placed" />
 	<property name="ivy.resolved.artifacts.pattern" value="${ivy.resolved.artifacts.dir}/dependencies/[conf]/[type]s/[originalname](.[ext])" description="The Ivy pattern used to determine how resolved dependencies should be copied into the project" />
 	<property name="ivy.generated.artifacts.dir" location="build" description="The directoy in which artifacts are created" />
-	<property name="ivy.generated.artifacts.pattern" value="${ivy.generated.artifacts.dir}/[type]s/[artifact]-[revision].[ext]" description="The ivy pattern used to locate generated artifacts" />
+	<property name="ivy.generated.artifacts.pattern" value="${ivy.generated.artifacts.dir}/[type]s/[artifact]-${project.version}.[ext]" description="The ivy pattern used to locate generated artifacts" />
 
 	<property name="ivy.resolve.configurations" value="${ivy.public.configurations}" description="The Ivy configurations that should be resolved (defaults to public scope)" />
 	<property name="ivy.resolve.configure.configurations" value="target_grid" description="The Ivy configurations that should be resolved during a configure call (defaults to just the special 'target_grid' configuration)" />
