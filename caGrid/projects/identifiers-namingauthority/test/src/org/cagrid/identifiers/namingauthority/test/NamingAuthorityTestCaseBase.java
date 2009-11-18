@@ -1,7 +1,5 @@
 package org.cagrid.identifiers.namingauthority.test;
 
-import javax.annotation.Resource;
-
 import org.cagrid.identifiers.namingauthority.NamingAuthority;
 
 
