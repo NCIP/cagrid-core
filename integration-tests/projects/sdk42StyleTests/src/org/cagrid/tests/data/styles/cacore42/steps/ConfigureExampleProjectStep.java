@@ -16,12 +16,23 @@ public class ConfigureExampleProjectStep extends Step {
     public static final String NAMESPACE_PREFIX_PROPERTY = "NAMESPACE_PREFIX";
     public static final String NAMESPACE_PREFIX_VALUE = "gme://caCORE.caCORE/4.2";
     
+    // csm codegen properties
+    public static final String ENABLE_SECURITY = "ENABLE_SECURITY";
+    public static final String ENABLE_SECURITY_VALUE = "true";
+    public static final String ENABLE_INSTANCE_LEVEL_SECURITY = "ENABLE_INSTANCE_LEVEL_SECURITY";
+    public static final String ENABLE_INSTANCE_LEVEL_SECURITY_VALUE = "true";
+    
     // install properties
     public static final String APPLICATION_BASE_PATH_LINUX = "application.base.path.linux";
     public static final String APPLICATION_BASE_PATH_WINDOWS = "application.base.path.windows";
     public static final String SERVER_TYPE = "SERVER_TYPE";
     public static final String SERVER_TYPE_VALUE = "tomcat";
     public static final String EXCLUDE_DATABASE = "exclude.database";
+    
+    // csm install properties
+    public static final String CSM_DB_INSTALL_LIST = "db.install.create.mysql.file.list";
+    public static final String CSM_DB_INSTALL_LIST_VALUE = "SDKTestSchema-mysql.sql,SDKTestCSMSchema-mysql-template.sql";
+    
     // public static final String EXCLUDE_DATABASE_VALUE = "false";
     public static final String INSTALL_CONTAINER = "INSTALL_CONTAINER";
     public static final String INSTALL_CONTAINER_VALUE = "false";
@@ -34,10 +45,12 @@ public class ConfigureExampleProjectStep extends Step {
     public static final String DB_PASSWORD = "DB_PASSWORD";
     
     private File tempApplicationDir = null;
+    private boolean enableCsm = false;
     
-    public ConfigureExampleProjectStep(File tempApplicationDir) {
+    public ConfigureExampleProjectStep(File tempApplicationDir, boolean enableCsm) {
         super();
         this.tempApplicationDir = tempApplicationDir;
+        this.enableCsm = enableCsm;
     }
 
 
@@ -49,6 +62,10 @@ public class ConfigureExampleProjectStep extends Step {
             codegenProps.load(codegenIn);
             codegenIn.close();
             codegenProps.setProperty(NAMESPACE_PREFIX_PROPERTY , NAMESPACE_PREFIX_VALUE);
+            if (enableCsm) {
+                codegenProps.setProperty(ENABLE_SECURITY, ENABLE_SECURITY_VALUE);
+                codegenProps.setProperty(ENABLE_INSTANCE_LEVEL_SECURITY, ENABLE_INSTANCE_LEVEL_SECURITY_VALUE);
+            }
             FileOutputStream codegenOut = new FileOutputStream(ExampleProjectInfo.getCodegenPropertiesFile());
             codegenProps.store(codegenOut);
         } catch (IOException ex) {
@@ -77,6 +94,9 @@ public class ConfigureExampleProjectStep extends Step {
             installProps.setProperty(DB_USERNAME, DatabaseProperties.getUsername());
             installProps.setProperty(DB_PASSWORD, DatabaseProperties.getPassword());
             installProps.setProperty(DB_NAME, DatabaseProperties.getSchemaName());
+            if (enableCsm) {
+                installProps.setProperty(CSM_DB_INSTALL_LIST, CSM_DB_INSTALL_LIST_VALUE);
+            }
             FileOutputStream installOut = new FileOutputStream(ExampleProjectInfo.getInstallPropertiesFile());
             installProps.store(installOut, "Edited by " + getClass().getName());
         } catch (IOException ex) {

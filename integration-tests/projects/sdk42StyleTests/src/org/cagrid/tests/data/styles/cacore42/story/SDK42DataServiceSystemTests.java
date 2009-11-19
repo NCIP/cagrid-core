@@ -30,23 +30,52 @@ public class SDK42DataServiceSystemTests {
         tempApplicationDir.mkdirs();
         LOG.debug("Created temp application base dir: " + tempApplicationDir.getAbsolutePath());
         
+        // throw out the ivy cache dirs used by the SDK
+        splitTime();
+        LOG.debug("Destroying SDK ivy cache");
+        NukeIvyCacheStory nukeStory = new NukeIvyCacheStory();
+        nukeStory.runBare();
+        
         // create the caCORE SDK example project
         splitTime();
         LOG.debug("Running caCORE SDK example project creation story");
-        CreateExampleProjectStory createExampleStory = new CreateExampleProjectStory(tempApplicationDir);
+        CreateExampleProjectStory createExampleStory = new CreateExampleProjectStory(tempApplicationDir, false);
         createExampleStory.runBare();
         
         // create and run a caGrid Data Service using the SDK's local API
         splitTime();
         LOG.debug("Running data service using local API story");
-        SDK42StyleLocalApiStory localApiStory = new SDK42StyleLocalApiStory();
+        SDK42StyleLocalApiStory localApiStory = new SDK42StyleLocalApiStory(false, false);
         localApiStory.runBare();
+        
+        // create and run a secure caGrid Data Service using the SDK's local API
+        splitTime();
+        LOG.debug("Running secure data service using local API story");
+        SDK42StyleLocalApiStory secureLocalApiStory = new SDK42StyleLocalApiStory(true, false);
+        secureLocalApiStory.runBare();
         
         // create and run a caGrid Data Service using the SDK's remote API
         splitTime();
         LOG.debug("Running data service using remote API story");
-        SDK42StyleRemoteApiStory remoteApiStory = new SDK42StyleRemoteApiStory();
+        SDK42StyleRemoteApiStory remoteApiStory = new SDK42StyleRemoteApiStory(false);
         remoteApiStory.runBare();
+        
+        // create and run a secure caGrid Data Service using the SDK's remote API
+        splitTime();
+        LOG.debug("Running secure data service using remote API story");
+        SDK42StyleRemoteApiStory secureRemoteApiStory = new SDK42StyleRemoteApiStory(true);
+        secureRemoteApiStory.runBare();
+        
+        splitTime();
+        LOG.debug("Running caCORE SDK example project with CSM creation story");
+        CreateExampleProjectStory createExampleWithCsmStory = new CreateExampleProjectStory(tempApplicationDir, true);
+        createExampleWithCsmStory.runBare();
+
+        // create and run a caGrid Data Service using the SDK's local API
+        splitTime();
+        LOG.debug("Running secure data service using local API and CSM story");
+        SDK42StyleLocalApiStory localApiWithCsmStory = new SDK42StyleLocalApiStory(true, true);
+        localApiWithCsmStory.runBare();
     }
     
     

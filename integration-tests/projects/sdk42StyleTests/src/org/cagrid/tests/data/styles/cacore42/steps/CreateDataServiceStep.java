@@ -9,6 +9,15 @@ import gov.nih.nci.cagrid.introduce.IntroduceConstants;
 import gov.nih.nci.cagrid.introduce.beans.ServiceDescription;
 import gov.nih.nci.cagrid.introduce.beans.extension.ExtensionType;
 import gov.nih.nci.cagrid.introduce.beans.extension.ExtensionTypeExtensionData;
+import gov.nih.nci.cagrid.introduce.beans.security.AnonymousCommunication;
+import gov.nih.nci.cagrid.introduce.beans.security.CommunicationMethod;
+import gov.nih.nci.cagrid.introduce.beans.security.NoAuthorization;
+import gov.nih.nci.cagrid.introduce.beans.security.RunAsMode;
+import gov.nih.nci.cagrid.introduce.beans.security.SecuritySetting;
+import gov.nih.nci.cagrid.introduce.beans.security.ServiceAuthorization;
+import gov.nih.nci.cagrid.introduce.beans.security.ServiceSecurity;
+import gov.nih.nci.cagrid.introduce.beans.security.TransportLevelSecurity;
+import gov.nih.nci.cagrid.introduce.beans.service.ServiceType;
 import gov.nih.nci.cagrid.introduce.common.ServiceInformation;
 import gov.nih.nci.cagrid.metadata.xmi.XmiFileType;
 import gov.nih.nci.cagrid.testing.system.deployment.ServiceContainer;
@@ -41,15 +50,19 @@ public class CreateDataServiceStep extends CreationStep {
     
     private ServiceInformation serviceInformation = null;
     private ServiceContainer remoteSdkApplicationContainer = null;
+    private boolean useServiceSecurity = false;
+    private boolean useCsmSecurity = false;
 
-    public CreateDataServiceStep(DataTestCaseInfo testInfo, String introduceDir) {
-        this(testInfo, introduceDir, null);
+    public CreateDataServiceStep(DataTestCaseInfo testInfo, String introduceDir, boolean useServiceSecurity, boolean useCsmSecurity) {
+        this(testInfo, introduceDir, null, useServiceSecurity);
+        this.useCsmSecurity = useCsmSecurity;
     }
     
     
-    public CreateDataServiceStep(DataTestCaseInfo testInfo, String introduceDir, ServiceContainer sdkContainer) {
+    public CreateDataServiceStep(DataTestCaseInfo testInfo, String introduceDir, ServiceContainer sdkContainer, boolean useServiceSecurity) {
         super(testInfo, introduceDir);
         this.remoteSdkApplicationContainer = sdkContainer;
+        this.useServiceSecurity = useServiceSecurity;
     }
     
     
@@ -59,6 +72,9 @@ public class CreateDataServiceStep extends CreationStep {
     protected void postSkeletonCreation() throws Throwable {
         setServiceStyle();
         configureStyle();
+        if (useServiceSecurity) {
+            turnOnSecurity();
+        }
         persistModelChanges();
     }
     
@@ -81,6 +97,33 @@ public class CreateDataServiceStep extends CreationStep {
         getSecurityConfiguration().applyConfiguration();
         getDomainModelConfiguration().applyConfiguration();
         getSchemaMappingConfiguration().applyConfiguration();
+    }
+    
+    
+    private void turnOnSecurity() throws Throwable {
+        ServiceType mainService = getServiceInformation().getServiceDescriptor().getServices().getService(0);
+        /*
+         * <ns21:ServiceSecurity xsi:type="ns21:ServiceSecurity" xmlns:ns21="gme://gov.nih.nci.cagrid.introduce/1/Security">
+            <ns21:SecuritySetting xsi:type="ns21:SecuritySetting">Custom</ns21:SecuritySetting>
+            <ns21:TransportLevelSecurity xsi:type="ns21:TransportLevelSecurity">
+             <ns21:CommunicationMethod xsi:type="ns21:CommunicationMethod">Privacy</ns21:CommunicationMethod>
+            </ns21:TransportLevelSecurity>
+            <ns21:RunAsMode xsi:type="ns21:RunAsMode">System</ns21:RunAsMode>
+            <ns21:AnonymousClients xsi:type="ns21:AnonymousCommunication">No</ns21:AnonymousClients>
+            <ns21:ServiceAuthorization xsi:type="ns21:ServiceAuthorization">
+             <ns21:NoAuthorization xsi:type="ns21:NoAuthorization"/>
+            </ns21:ServiceAuthorization>
+           </ns21:ServiceSecurity>
+         */
+        ServiceSecurity security = new ServiceSecurity();
+        security.setSecuritySetting(SecuritySetting.Custom);
+        security.setRunAsMode(RunAsMode.System);
+        security.setAnonymousClients(AnonymousCommunication.No);
+        security.setTransportLevelSecurity(new TransportLevelSecurity(CommunicationMethod.Privacy));
+        ServiceAuthorization auth = new ServiceAuthorization();
+        auth.setNoAuthorization(new NoAuthorization());
+        security.setServiceAuthorization(auth);
+        mainService.setServiceSecurity(security);
     }
     
     
@@ -116,8 +159,7 @@ public class CreateDataServiceStep extends CreationStep {
     
     private AbstractStyleConfigurationStep getSecurityConfiguration() throws Exception {
         SecurityConfigurationStep config = new SecurityConfigurationStep(getServiceInformation());
-        // TODO: make this configurable to turn on CSM authz
-        config.setUseCsmGridIdent(false);
+        config.setUseCsmGridIdent(this.useCsmSecurity);
         config.setUseStaticLogin(false);
         return config;
     }

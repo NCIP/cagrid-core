@@ -1,6 +1,7 @@
 package org.cagrid.tests.data.styles.cacore42.story;
 
 import gov.nih.nci.cagrid.common.Utils;
+import gov.nih.nci.cagrid.testing.system.deployment.SecureContainer;
 import gov.nih.nci.cagrid.testing.system.deployment.ServiceContainer;
 import gov.nih.nci.cagrid.testing.system.deployment.ServiceContainerFactory;
 import gov.nih.nci.cagrid.testing.system.deployment.ServiceContainerType;
@@ -20,32 +21,46 @@ import java.util.Vector;
 
 import org.cagrid.data.test.creation.DataTestCaseInfo;
 import org.cagrid.tests.data.styles.cacore42.SDK42ServiceStyleSystemTestConstants;
+import org.cagrid.tests.data.styles.cacore42.steps.ChangeCsmUserInDatabaseStep;
 import org.cagrid.tests.data.styles.cacore42.steps.CreateDataServiceStep;
+import org.cagrid.tests.data.styles.cacore42.steps.InvokeCsmDataServiceStep;
 import org.cagrid.tests.data.styles.cacore42.steps.InvokeDataServiceStep;
 
 public class SDK42StyleLocalApiStory extends Story {
     
     private DataTestCaseInfo testInfo = null;
     private ServiceContainer container = null;
+    private boolean useSecureContainer = false;
+    private boolean useCsmSecurity = false;
 
-    public SDK42StyleLocalApiStory() {
+    public SDK42StyleLocalApiStory(boolean useSecureContainer, boolean useCsmSecurity) {
         super();
+        this.useSecureContainer = useSecureContainer;
+        this.useCsmSecurity = useCsmSecurity;
     }
 
 
     public String getDescription() {
-        return "Creates an SDK 4.2 style data service, configures it to use the local API, deploys and invokes it.";
+        return "Creates an SDK 4.2 style data service, configures it to use the local API" + 
+            (useCsmSecurity ? " with CSM security" : "") +
+            ", deploys it to " + 
+            (useSecureContainer ? "a secure " : "an insecure ") + 
+            "container, and invokes it.";
     }
     
     
     public String getName() {
-        return "SDK 4_2 Style data service using local API creation and invocation test";
+        return "SDK 4_2 Style data service using local API " + 
+            (useCsmSecurity ? " with CSM" : "") + 
+            "creation and " + (useSecureContainer ? " secure" : "") + " invocation test";
     }
     
     
     public boolean storySetUp() throws Throwable {
         testInfo = SDK42ServiceStyleSystemTestConstants.getTestServiceInfo();
-        container = ServiceContainerFactory.createContainer(ServiceContainerType.TOMCAT_CONTAINER);
+        ServiceContainerType containerType = useSecureContainer ? 
+            ServiceContainerType.SECURE_TOMCAT_CONTAINER : ServiceContainerType.TOMCAT_CONTAINER;
+        container = ServiceContainerFactory.createContainer(containerType);
         File serviceDir = new File(testInfo.getDir());
         serviceDir.mkdirs();
         
@@ -55,13 +70,20 @@ public class SDK42StyleLocalApiStory extends Story {
 
     protected Vector steps() {
         Vector<Step> steps = new Vector<Step>();
-        steps.add(new CreateDataServiceStep(testInfo, getIntroduceBaseDir()));
+        steps.add(new CreateDataServiceStep(testInfo, getIntroduceBaseDir(), useSecureContainer, useCsmSecurity));
         steps.add(new UnpackContainerStep(container));
+        if (useCsmSecurity) {
+            steps.add(new ChangeCsmUserInDatabaseStep((SecureContainer) container));
+        }
         List<String> deploymentArgs = 
             Arrays.asList(new String[] {"-Dno.deployment.validation=true"});
         steps.add(new DeployServiceStep(container, testInfo.getDir(), deploymentArgs));
         steps.add(new StartContainerStep(container));
-        steps.add(new InvokeDataServiceStep(testInfo, container));
+        if (useCsmSecurity) {
+            steps.add(new InvokeCsmDataServiceStep(testInfo, container));
+        } else {
+            steps.add(new InvokeDataServiceStep(testInfo, container));
+        }
         return steps;
     }
     

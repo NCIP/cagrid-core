@@ -8,7 +8,6 @@ import java.util.Vector;
 
 import org.cagrid.tests.data.styles.cacore42.steps.BuildExampleProjectStep;
 import org.cagrid.tests.data.styles.cacore42.steps.ConfigureExampleProjectStep;
-import org.cagrid.tests.data.styles.cacore42.steps.NukeIvyCacheStep;
 import org.cagrid.tests.data.styles.cacore42.steps.SdkDatabaseStep;
 import org.cagrid.tests.data.styles.cacore42.steps.SdkDatabaseStep.DatabaseOperation;
 
@@ -21,10 +20,12 @@ import org.cagrid.tests.data.styles.cacore42.steps.SdkDatabaseStep.DatabaseOpera
 public class CreateExampleProjectStory extends Story {
     
     private File tempApplicationDir = null;
+    private boolean enableCsm = false;
 
-    public CreateExampleProjectStory(File tempApplicationDir) {
+    public CreateExampleProjectStory(File tempApplicationDir, boolean enableCsm) {
         super();
         this.tempApplicationDir = tempApplicationDir;
+        this.enableCsm = enableCsm;
     }
 
 
@@ -53,9 +54,8 @@ public class CreateExampleProjectStory extends Story {
 
     protected Vector steps() {
         Vector<Step> steps = new Vector<Step>();
-        steps.add(new NukeIvyCacheStep());
         steps.add(new SdkDatabaseStep(DatabaseOperation.CREATE));
-        steps.add(new ConfigureExampleProjectStep(tempApplicationDir));
+        steps.add(new ConfigureExampleProjectStep(tempApplicationDir, enableCsm));
         steps.add(new BuildExampleProjectStep());
         steps.add(new SdkDatabaseStep(DatabaseOperation.INSTALL));
         return steps;

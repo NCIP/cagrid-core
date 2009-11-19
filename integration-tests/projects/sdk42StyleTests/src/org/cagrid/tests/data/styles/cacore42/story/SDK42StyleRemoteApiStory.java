@@ -29,25 +29,32 @@ public class SDK42StyleRemoteApiStory extends Story {
     private DataTestCaseInfo testInfo = null;
     private ServiceContainer dataServiceContainer = null;
     private ServiceContainer sdkApplicationServiceContainer = null;
+    private boolean useSecureContainer = false;
 
-    public SDK42StyleRemoteApiStory() {
+    public SDK42StyleRemoteApiStory(boolean useSecureContainer) {
         super();
+        this.useSecureContainer = useSecureContainer;
     }
 
 
     public String getDescription() {
-        return "Creates an SDK 4.2 style data service, configures it to use the remote API, deploys and invokes it.";
+        return "Creates an SDK 4.2 style data service, configures it to use the remote API, " + 
+            (useSecureContainer ? "securely" : "") + 
+            " deploys and invokes it.";
     }
     
     
     public String getName() {
-        return "SDK 4_2 Style data service using remote API creation and invocation test";
+        return "SDK 4_2 Style data service using remote API creation and " + 
+            (useSecureContainer ? "secure" : "") + " invocation test";
     }
     
     
     public boolean storySetUp() throws Throwable {
         testInfo = SDK42ServiceStyleSystemTestConstants.getTestServiceInfo();
-        dataServiceContainer = ServiceContainerFactory.createContainer(ServiceContainerType.TOMCAT_CONTAINER);
+        ServiceContainerType containerType = useSecureContainer ? 
+            ServiceContainerType.SECURE_TOMCAT_CONTAINER : ServiceContainerType.TOMCAT_CONTAINER;
+        dataServiceContainer = ServiceContainerFactory.createContainer(containerType);
         sdkApplicationServiceContainer = ServiceContainerFactory.createContainer(ServiceContainerType.TOMCAT_CONTAINER);
         File serviceDir = new File(testInfo.getDir());
         serviceDir.mkdirs();
@@ -60,7 +67,7 @@ public class SDK42StyleRemoteApiStory extends Story {
         Vector<Step> steps = new Vector<Step>();
         steps.add(new UnpackContainerStep(sdkApplicationServiceContainer));
         steps.add(new DeployExampleProjectStep(sdkApplicationServiceContainer));
-        steps.add(new CreateDataServiceStep(testInfo, getIntroduceBaseDir(), sdkApplicationServiceContainer));
+        steps.add(new CreateDataServiceStep(testInfo, getIntroduceBaseDir(), sdkApplicationServiceContainer, useSecureContainer));
         steps.add(new UnpackContainerStep(dataServiceContainer));
         List<String> deploymentArgs = 
             Arrays.asList(new String[] {"-Dno.deployment.validation=true"});
