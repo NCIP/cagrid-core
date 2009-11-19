@@ -1,6 +1,10 @@
 package org.cagrid.tests.data.styles.cacore42;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.util.Properties;
+import java.util.StringTokenizer;
 
 import junit.framework.Assert;
 
@@ -40,7 +44,21 @@ public class ExampleProjectInfo {
     }
     
     
-    public static File getMysqlDatabaseInstallFile() {
-        return new File(getExampleProjectDir(), "db" + File.separator + "db-install" + File.separator + "mysql" + File.separator + "SDKTestSchema-mysql.sql");
+    public static File[] getMysqlDatabaseInstallFiles() throws IOException {
+        // load up the install.properties
+        Properties props = new Properties();
+        FileInputStream fis = new FileInputStream(getInstallPropertiesFile());
+        props.load(fis);
+        fis.close();
+        String installFileList = props.getProperty("db.install.create.mysql.file.list");
+        File dbInstallDir = new File(getExampleProjectDir(), "db" + File.separator + "db-install" + File.separator + "mysql");
+        StringTokenizer fileTokenizer = new StringTokenizer(installFileList, ",");
+        File[] files = new File[fileTokenizer.countTokens()];
+        int index = 0;
+        while (fileTokenizer.hasMoreTokens()) {
+            files[index] = new File(dbInstallDir, fileTokenizer.nextToken().trim());
+            index++;
+        }
+        return files;
     }
 }
