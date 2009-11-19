@@ -31,7 +31,6 @@ import gov.nih.nci.cagrid.introduce.portal.extension.tools.ExtensionTools;
 
 import java.awt.BorderLayout;
 import java.awt.CardLayout;
-import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
@@ -42,7 +41,6 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.logging.Logger;
 
 import javax.swing.ButtonGroup;
 import javax.swing.JButton;
@@ -106,15 +104,7 @@ public class ServiceSecurityPanel extends JPanel implements PanelSynchronizer {
 
     private final static String CUSTOM_AUTHORIZATION = "Custom PDP Chain Authorization";
 
-    private final static String FILE_SYSTEM_PROXY = "Proxy from file system"; // @
-    // jve
-    // :
-    // decl
-    // -
-    // index
-    // =
-    // 0
-    // :
+    private final static String FILE_SYSTEM_PROXY = "Proxy from file system";
 
     private final static String FILE_SYSTEM_CERT_KEY = "Certificate/Private Key from file system";
 
@@ -205,7 +195,7 @@ public class ServiceSecurityPanel extends JPanel implements PanelSynchronizer {
             // PortalUtils.showErrorDialogDialog(e);
             CompositeErrorDialog.showErrorDialog(e);
         }
-        
+
         isInited = true;
     }
 
@@ -228,7 +218,7 @@ public class ServiceSecurityPanel extends JPanel implements PanelSynchronizer {
             new Font("Dialog", Font.BOLD, 12), PortalLookAndFeel.getPanelLabelColor()));
         this.add(getTransportPanel(), gridBagConstraints17);
         synchronize();
-        
+
     }
 
 
@@ -389,7 +379,7 @@ public class ServiceSecurityPanel extends JPanel implements PanelSynchronizer {
                 AuthorizationExtensionDescriptionType authExt = ExtensionsLoader.getInstance()
                     .getAuthorizationExtensionByDisplayName(authType);
                 AbstractServiceAuthorizationPanel panel = authPanels.get(authExt.getDisplayName());
-                
+
                 ExtensionType extensionType = panel.getAuthorizationExtensionData();
 
                 // need to add this extension type and replace what might have
