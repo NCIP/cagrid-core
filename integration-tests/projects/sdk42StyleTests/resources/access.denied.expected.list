@@ -12,10 +12,8 @@ gov.nih.nci.cacoresdk.domain.inheritance.implicit.TankAccessory
 gov.nih.nci.cacoresdk.domain.inheritance.parentwithassociation.sametable.HardTopType
 gov.nih.nci.cacoresdk.domain.onetomany.bidirectional.withjoin.Passanger
 gov.nih.nci.cacoresdk.domain.onetomany.selfassociation.Element
-gov.nih.nci.cacoresdk.domain.onetomany.unidirectional.KeyChain
 gov.nih.nci.cacoresdk.domain.onetomany.unidirectional.LatchKey
 gov.nih.nci.cacoresdk.domain.onetomany.unidirectional.withjoin.Button
-gov.nih.nci.cacoresdk.domain.onetomany.unidirectional.withjoin.Shirt
 gov.nih.nci.cacoresdk.domain.other.differentpackage.Dessert
 gov.nih.nci.cacoresdk.domain.other.differentpackage.associations.IceCream
 gov.nih.nci.cacoresdk.domain.other.differentpackage.associations.Pie
