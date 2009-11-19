@@ -36,7 +36,8 @@ public class ProjectSelectionConfigurationStep extends AbstractStyleConfiguratio
         "caGrid-ServiceSecurityProvider-stubs-1.3.jar", "caGrid-core-1.3.jar", "caGrid-data-common-1.3.jar",
         "caGrid-data-cql-1.3.jar", "caGrid-data-service-1.3.jar", "caGrid-data-stubs-1.3.jar", "caGrid-data-utils-1.3.jar",
         "caGrid-data-validation-1.3.jar", "caGrid-metadata-common-1.3.jar", "caGrid-metadata-data-1.3.jar",
-        "caGrid-metadata-security-1.3.jar", "caGrid-metadatautils-1.3.jar", "caGrid-wsEnum-1.3.jar", "caGrid-wsEnum-stubs-1.3.jar"
+        "caGrid-metadata-security-1.3.jar", "caGrid-metadatautils-1.3.jar", "caGrid-wsEnum-1.3.jar", "caGrid-wsEnum-stubs-1.3.jar",
+        "cog-jglobus-1.2.jar"
     };
     
     private static Log LOG = LogFactory.getLog(ProjectSelectionConfigurationStep.class);
