@@ -6,9 +6,11 @@ import gov.nih.nci.cagrid.cqlresultset.CQLQueryResults;
 import gov.nih.nci.cagrid.cqlresultset.TargetAttribute;
 import gov.nih.nci.cagrid.data.client.DataServiceClient;
 import gov.nih.nci.cagrid.data.utilities.CQLQueryResultsIterator;
+import gov.nih.nci.cagrid.testing.system.deployment.SecureContainer;
 import gov.nih.nci.cagrid.testing.system.deployment.ServiceContainer;
 import gov.nih.nci.cagrid.testing.system.haste.Step;
 
+import java.io.File;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.lang.reflect.Method;
@@ -24,9 +26,13 @@ import org.apache.axis.types.URI.MalformedURIException;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.cagrid.data.test.creation.DataTestCaseInfo;
+import org.globus.gsi.GlobusCredential;
 
 public class InvokeDataServiceStep extends Step {
     
+    // credential filename
+    public static final String PROXY_FILENAME = "user.proxy";
+
     public static final String TEST_RESOURCES_DIR = "/resources/";
     public static final String TEST_QUERIES_DIR = TEST_RESOURCES_DIR + "testQueries/";
     public static final String TEST_RESULTS_DIR = TEST_RESOURCES_DIR + "testGoldResults/";
@@ -302,7 +308,12 @@ public class InvokeDataServiceStep extends Step {
     private DataServiceClient getServiceClient() {
         DataServiceClient client = null;
         try {
-            client = new DataServiceClient(getServiceUrl()); 
+            if (container instanceof SecureContainer) {
+                client = new DataServiceClient(getServiceUrl(), loadGlobusCredential());
+                client.setAnonymousPrefered(false);
+            } else {
+                client = new DataServiceClient(getServiceUrl());
+            }
         } catch (Exception ex) {
             ex.printStackTrace();
             fail("Error creating data service client: " + ex.getMessage());
@@ -488,5 +499,19 @@ public class InvokeDataServiceStep extends Step {
             fail("Error obtaining client config input stream: " + ex.getMessage());
         }
         return is;
+    }
+    
+    
+    private GlobusCredential loadGlobusCredential() {
+        // Load the testing proxy cert
+        GlobusCredential proxyCredential = null;
+        try {
+            File proxyFile = new File(((SecureContainer) container).getCertificatesDirectory(), PROXY_FILENAME);
+            proxyCredential = new GlobusCredential(proxyFile.getAbsolutePath());
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            fail("Error obtaining client proxy: " + ex.getMessage());
+        }
+        return proxyCredential;
     }
 }
