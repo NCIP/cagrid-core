@@ -3,8 +3,8 @@ package gov.nih.nci.cagrid.identifiers.test;
 import java.rmi.RemoteException;
 import java.util.Arrays;
 
-import gov.nih.nci.cagrid.identifiers.TypeValues;
-import gov.nih.nci.cagrid.identifiers.TypeValuesMap;
+import gov.nih.nci.cagrid.identifiers.KeyValues;
+import gov.nih.nci.cagrid.identifiers.KeyValuesMap;
 import gov.nih.nci.cagrid.identifiers.Values;
 import gov.nih.nci.cagrid.identifiers.client.IdentifiersNAServiceClient;
 
@@ -17,52 +17,52 @@ import junit.framework.TestCase;
 public class NATestCase extends TestCase {
 	private static Log log = LogFactory.getLog(NATestCase.class);
 
-	private static final TypeValues[] typeValues;
+	private static final KeyValues[] keyValues;
 	private static final String gridSvcUrl = "http://140.254.126.81:8080/wsrf/services/cagrid/IdentifiersNAService";
 
 	static {
-		typeValues = new TypeValues[2];
-		typeValues[0] = new TypeValues();
-		typeValues[0].setType("URL");
+		keyValues = new KeyValues[2];
+		keyValues[0] = new KeyValues();
+		keyValues[0].setKey("URL");
 		Values values = new Values();
 		values.setValue(new String[] { "http://www.google.com" });
-		typeValues[0].setValues(values);
+		keyValues[0].setValues(values);
 
-		typeValues[1] = new TypeValues();
-		typeValues[1].setType("EPR");
+		keyValues[1] = new KeyValues();
+		keyValues[1].setKey("EPR");
 		values = new Values();
 		values.setValue(new String[] { "end point reference 1", "end point reference 2" });
-		typeValues[1].setValues(values);
+		keyValues[1].setValues(values);
 	}
 
 	public void testNamingAuthorityGridService() throws Exception {
 		IdentifiersNAServiceClient client = new IdentifiersNAServiceClient( gridSvcUrl );
 
-		TypeValuesMap tvm1 = new TypeValuesMap();
-		tvm1.setTypeValues(typeValues);
+		KeyValuesMap tvm1 = new KeyValuesMap();
+		tvm1.setKeyValues(keyValues);
 
-		String identifier = client.createIdentifier(tvm1);
+		org.apache.axis.types.URI identifier = client.createIdentifier(tvm1);
 		System.out.println("Identifier: " + identifier);
 
-		TypeValuesMap tvm2 = client.getTypeValues(identifier);
+		KeyValuesMap tvm2 = client.resolveIdentifier(identifier);
 		if (!compare(tvm1, tvm2)) {
-			fail("TypeValuesMap arrays are different");
+			fail("KeyValuesMap arrays are different");
 		}
 	}
 
-	private String[] getSortedTypes(TypeValues[] tvs) {
-		String[] types = new String[ tvs.length ];
+	private String[] getSortedKeys(KeyValues[] tvs) {
+		String[] Keys = new String[ tvs.length ];
 		for(int i=0; i < tvs.length; i++) {
-			types[i] = tvs[i].getType();
+			Keys[i] = tvs[i].getKey();
 		}
 
-		Arrays.sort(types);
-		return types;
+		Arrays.sort(Keys);
+		return Keys;
 	}
 
-	private boolean compare(TypeValues[] tvs, String type, String[] values) {
-		for( TypeValues tv : tvs ) {
-			if (tv.getType().equals(type)) {
+	private boolean compare(KeyValues[] tvs, String Key, String[] values) {
+		for( KeyValues tv : tvs ) {
+			if (tv.getKey().equals(Key)) {
 				String[] myValues = tv.getValues().getValue();
 				Arrays.sort(values);
 				Arrays.sort(myValues);
@@ -72,17 +72,17 @@ public class NATestCase extends TestCase {
 		return true;
 	}
 
-	private boolean compare(TypeValuesMap tvm1, TypeValuesMap tvm2) {
-		TypeValues[] tvs1 = tvm1.getTypeValues();
-		TypeValues[] tvs2 = tvm2.getTypeValues();
+	private boolean compare(KeyValuesMap tvm1, KeyValuesMap tvm2) {
+		KeyValues[] tvs1 = tvm1.getKeyValues();
+		KeyValues[] tvs2 = tvm2.getKeyValues();
 
-		// Make sure the types match
-		if (!Arrays.equals(getSortedTypes(tvs1), getSortedTypes(tvs2))) {
+		// Make sure the Keys match
+		if (!Arrays.equals(getSortedKeys(tvs1), getSortedKeys(tvs2))) {
 			return false;
 		}
 
-		for( TypeValues tv : tvs1 ) {
-			if (!compare(tvs2, tv.getType(), tv.getValues().getValue())) {
+		for( KeyValues tv : tvs1 ) {
+			if (!compare(tvs2, tv.getKey(), tv.getValues().getValue())) {
 				return false;
 			}
 		}

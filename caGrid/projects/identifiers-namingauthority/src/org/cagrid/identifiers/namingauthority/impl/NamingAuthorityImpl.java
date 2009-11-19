@@ -42,7 +42,7 @@ public class NamingAuthorityImpl extends NamingAuthority {
         md.setValues(values);
 
         if (ivalues != null) {
-            String[] keys = ivalues.getTypes();
+            String[] keys = ivalues.getKeys();
             for (String key : keys) {
                 IdentifierValueKey vk = new IdentifierValueKey();
                 vk.setKey(key);
@@ -61,7 +61,12 @@ public class NamingAuthorityImpl extends NamingAuthority {
 
     @Override
     public IdentifierValues resolveIdentifier(URI identifier) throws InvalidIdentifierException {
+ //TODO: remove this
+ System.out.println("NamingAuthority: resolveIdentifier:" + identifier.normalize().toString());
+  
         URI localURI = IdentifierUtil.getLocalName(getConfiguration().getPrefix(), identifier);
+ //TODO: remove this
+ System.out.println("localURI:" + localURI.normalize().toString());
 
         IdentifierMetadata template = new IdentifierMetadata();
         template.setLocalIdentifier(localURI);

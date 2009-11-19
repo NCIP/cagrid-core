@@ -29,7 +29,7 @@ import org.w3c.dom.Node;
  * authorization requirements placed on each method call.  Each method will either return
  * apon a successful authorization or will throw an exception apon a failed authorization.
  * 
- * @created by Introduce Toolkit version 1.3
+ * @created by Introduce Toolkit version 1.4
  * 
  */
 public class IdentifiersNAServiceAuthorization implements PDP {
@@ -75,7 +75,7 @@ public class IdentifiersNAServiceAuthorization implements PDP {
 		
 	}
 	   				
-	public void authorizeGetTypeValues(Subject peerSubject, MessageContext context, QName operation) throws AuthorizationException {
+	public void authorizeResolveIdentifier(Subject peerSubject, MessageContext context, QName operation) throws AuthorizationException {
 		
 	}
 	   
@@ -101,8 +101,8 @@ public class IdentifiersNAServiceAuthorization implements PDP {
 		} else if(operation.getLocalPart().equals("createIdentifier")){
 			authorizeCreateIdentifier(peerSubject, context, operation);
 			return true;
-		} else if(operation.getLocalPart().equals("getTypeValues")){
-			authorizeGetTypeValues(peerSubject, context, operation);
+		} else if(operation.getLocalPart().equals("resolveIdentifier")){
+			authorizeResolveIdentifier(peerSubject, context, operation);
 			return true;
 		} 		
 		return false;

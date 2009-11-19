@@ -16,7 +16,7 @@ import org.globus.wsrf.Constants;
  * This class holds all service properties which were defined for the service to have
  * access to.
  * 
- * @created by Introduce Toolkit version 1.3
+ * @created by Introduce Toolkit version 1.4
  * 
  */
 public class IdentifiersNAServiceConfiguration implements ServiceConfiguration {
@@ -44,7 +44,11 @@ public class IdentifiersNAServiceConfiguration implements ServiceConfiguration {
 	}
 	
 
-
+	
+	private String naConfigurationFile;
+	
+	private String naPropertiesFile;
+	
 	
     public String getEtcDirectoryPath() {
 		return ContainerConfig.getBaseDirectory() + File.separator + etcDirectoryPath;
@@ -52,5 +56,28 @@ public class IdentifiersNAServiceConfiguration implements ServiceConfiguration {
 	
 	public void setEtcDirectoryPath(String etcDirectoryPath) {
 		this.etcDirectoryPath = etcDirectoryPath;
-	}	
+	}
+
+
+	
+	public String getNaConfigurationFile() {
+		return ContainerConfig.getBaseDirectory() + File.separator + naConfigurationFile;
+	}
+	
+	
+	public void setNaConfigurationFile(String naConfigurationFile) {
+		this.naConfigurationFile = naConfigurationFile;
+	}
+
+	
+	public String getNaPropertiesFile() {
+		return ContainerConfig.getBaseDirectory() + File.separator + naPropertiesFile;
+	}
+	
+	
+	public void setNaPropertiesFile(String naPropertiesFile) {
+		this.naPropertiesFile = naPropertiesFile;
+	}
+
+	
 }

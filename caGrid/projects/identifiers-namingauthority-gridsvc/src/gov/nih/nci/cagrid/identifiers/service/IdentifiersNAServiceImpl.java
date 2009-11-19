@@ -6,74 +6,74 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.rmi.RemoteException;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.cagrid.identifiers.namingauthority.InvalidIdentifierException;
 import org.cagrid.identifiers.namingauthority.NamingAuthority;
 import org.cagrid.identifiers.namingauthority.NamingAuthorityConfigurationException;
-import org.cagrid.identifiers.namingauthority.NamingAuthorityLoader;
-
+import org.springframework.beans.factory.config.PropertyPlaceholderConfigurer;
+import org.springframework.beans.factory.xml.XmlBeanFactory;
+import org.springframework.core.io.FileSystemResource;
 
 /**
- * TODO:I am the service side implementation class. IMPLEMENT AND DOCUMENT ME
+ * The service side implementation class of the IdentifiersNAService, managed by
+ * Introduce. This mostly just delegates the operations to a Spring-loaded 
+ * bean implementation of the NamingAuthority and does any necessary mapping 
+ * to/from Axis types or arrays to the Naming Authority interface.
  * 
  * @created by Introduce Toolkit version 1.3
  */
 public class IdentifiersNAServiceImpl extends IdentifiersNAServiceImplBase {
 
-    private NamingAuthority namingAuthority;
-
+	protected static Log LOG = LogFactory.getLog(IdentifiersNAServiceImpl.class.getName());
+	protected static final String NA_BEAN_NAME = "NamingAuthority";
+    protected NamingAuthority namingAuthority = null;
 
     public IdentifiersNAServiceImpl() throws RemoteException {
         super();
 
         try {
-            //TODO: replace with service properties to load properties file and spring file (as GME does it)
-            namingAuthority = new NamingAuthorityLoader().getNamingAuthority();
-        } catch (NamingAuthorityConfigurationException e) {
-            throw new RemoteException(e.getMessage(),e);
-        }
+            String naConfigurationFile = getConfiguration().getNaConfigurationFile();
+            String naProperties = getConfiguration().getNaPropertiesFile();
+            FileSystemResource naConfResource = new FileSystemResource(naConfigurationFile);
+            FileSystemResource naPropertiesResource = new FileSystemResource(naProperties);
 
-        System.out.println("Initializing naming authority with prefix ["
-            + namingAuthority.getConfiguration().getPrefix() + "]");
+            XmlBeanFactory factory = new XmlBeanFactory(naConfResource);
+            PropertyPlaceholderConfigurer cfg = new PropertyPlaceholderConfigurer();
+            cfg.setLocation(naPropertiesResource);
+            cfg.postProcessBeanFactory(factory);
 
-        namingAuthority.initialize();
-    }
+            this.namingAuthority = (NamingAuthority) factory.getBean(NA_BEAN_NAME, NamingAuthority.class);
 
-
-    // TODO: fix the method to return a URI or an "Identifier"
-    // TODO: handle all the exceptions appropriately, returning faults as
-    // necessary
-    public java.lang.String createIdentifier(gov.nih.nci.cagrid.identifiers.TypeValuesMap typeValues)
-        throws RemoteException {
-        try {
-            return namingAuthority.createIdentifier(MappingUtil.toIdentifierValues(typeValues)).toString();
         } catch (Exception e) {
-            e.printStackTrace();
-            throw new RemoteException(e.toString());
+            String message = "Problem inititializing NamingAuthority while loading configuration:" + e.getMessage();
+            LOG.error(message, e);
+            throw new RemoteException(message, e);
         }
     }
 
-
-    // TODO: fix the method to take a URI or an "Identifier"
     // TODO: handle all the exceptions appropriately, returning faults as
     // necessary
-    public gov.nih.nci.cagrid.identifiers.TypeValuesMap getTypeValues(java.lang.String identifier)
-        throws RemoteException {
-        try {
-            return MappingUtil.toTypeValuesMap(namingAuthority.resolveIdentifier(new URI(identifier)));
-        } catch (URISyntaxException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-            throw new RemoteException(e.getMessage(), e);
-        } catch (InvalidIdentifierException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-            throw new RemoteException(e.getMessage(), e);
-
-        } catch (NamingAuthorityConfigurationException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-            throw new RemoteException(e.getMessage(), e);
-
-        }
+    public org.apache.axis.types.URI createIdentifier(gov.nih.nci.cagrid.identifiers.KeyValuesMap keyValuesMap) throws RemoteException {
+	   try {
+		   java.net.URI identifier = namingAuthority.createIdentifier(MappingUtil.toIdentifierValues(keyValuesMap));
+		   return new org.apache.axis.types.URI(identifier.toString());
+	   } catch (Exception e) {
+	      e.printStackTrace();
+	      throw new RemoteException(e.toString());
+	   }
     }
+
+
+    // TODO: handle all the exceptions appropriately, returning faults as
+    // necessary
+    public gov.nih.nci.cagrid.identifiers.KeyValuesMap resolveIdentifier(org.apache.axis.types.URI identifier) throws RemoteException {
+    	try {
+    		return MappingUtil.toKeyValuesMap(namingAuthority.resolveIdentifier( new URI(identifier.toString() )));
+    	} catch(Exception e) {
+    		e.printStackTrace();
+    		throw new RemoteException(e.toString());
+    	}
+    }
+
 }

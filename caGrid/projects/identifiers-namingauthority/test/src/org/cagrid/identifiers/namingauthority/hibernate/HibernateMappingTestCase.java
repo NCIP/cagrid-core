@@ -23,10 +23,10 @@ public class HibernateMappingTestCase extends NamingAuthorityIntegrationTestCase
             try {
                 EntityPersister persister = (EntityPersister) i.next();
                 className = persister.getEntityName();
-                // log.debug("select: " + className);
+                System.out.println("select: " + className);
                 List result = session.createQuery("from " + className + " c").list();
-                // log.debug("returned " + result.size() + " records for " +
-                // className);
+                System.out.println("returned " + result.size() + " records for " +
+                 className);
 
                 assertTrue(true);
 

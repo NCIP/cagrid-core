@@ -6,8 +6,8 @@ import java.io.IOException;
 import java.rmi.RemoteException;
 import java.util.Arrays;
 
-import gov.nih.nci.cagrid.identifiers.TypeValues;
-import gov.nih.nci.cagrid.identifiers.TypeValuesMap;
+import gov.nih.nci.cagrid.identifiers.KeyValues;
+import gov.nih.nci.cagrid.identifiers.KeyValuesMap;
 import gov.nih.nci.cagrid.identifiers.Values;
 import gov.nih.nci.cagrid.identifiers.client.IdentifiersNAServiceClient;
 
@@ -33,26 +33,26 @@ public class StressCreate  {
 	private static void run(String gridSvcUrl, int iterations, String eprStr, String cqlStr) 
 		throws MalformedURIException, RemoteException {
 		
-		TypeValues[] typeValues = new TypeValues[2];
-		typeValues[0] = new TypeValues();
-		typeValues[0].setType("EPR");
+		KeyValues[] keyValues = new KeyValues[2];
+		keyValues[0] = new KeyValues();
+		keyValues[0].setKey("EPR");
 		Values values = new Values();
 		values.setValue(new String[] { eprStr });
-		typeValues[0].setValues(values);
+		keyValues[0].setValues(values);
 
-		typeValues[1] = new TypeValues();
-		typeValues[1].setType("CQL");
+		keyValues[1] = new KeyValues();
+		keyValues[1].setKey("CQL");
 		values = new Values();
 		values.setValue(new String[] { cqlStr });
-		typeValues[1].setValues(values);
+		keyValues[1].setValues(values);
 		
-		TypeValuesMap typeValuesMap = new TypeValuesMap();
-		typeValuesMap.setTypeValues(typeValues);
+		KeyValuesMap keyValuesMap = new KeyValuesMap();
+		keyValuesMap.setKeyValues(keyValues);
 		
 		IdentifiersNAServiceClient client = new IdentifiersNAServiceClient( gridSvcUrl );
 	
 		for(int i=0; i < iterations; i++) {
-			String identifier = client.createIdentifier(typeValuesMap);
+			org.apache.axis.types.URI identifier = client.createIdentifier(keyValuesMap);
 			System.out.println("["+i+"] " + identifier);
 		}
 	}

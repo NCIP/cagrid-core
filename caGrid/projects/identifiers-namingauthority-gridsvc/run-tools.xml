@@ -1,22 +1,11 @@
 <project name="run-tools file" basedir="." default="runClient">
-     <target name="runClient" depends="checkGlobus, defineClasspaths" description="Run the sample Client">
-        <property name="service.url" value="http://localhost:8081/wsrf/services/cagrid/IdentifiersNAService" />
+     <target name="runClient" depends="init" description="Run the sample Client">
+        <property name="service.url" value="http://localhost:8080/wsrf/services/cagrid/IdentifiersNAService" />
         <echo message="Connecting to service: ${service.url}" />
         <java failonerror="true" classname="gov.nih.nci.cagrid.identifiers.client.IdentifiersNAServiceClient" classpathref="run.classpath" fork="yes">
             <jvmarg value="-DGLOBUS_LOCATION=${ext.globus.dir}" />
             <arg value="-url" />
             <arg value="${service.url}" />
-        </java>
-    </target>
-    
-    <target name="StressCreate" depends="checkGlobus, defineClasspaths" description="Creates identifiers stressfully">
-        <java failonerror="true" classname="gov.nih.nci.cagrid.identifiers.test.StressCreate" classpathref="test.run.classpath" fork="yes">
-            <jvmarg value="-DGLOBUS_LOCATION=${ext.globus.dir}" />
-
-            <jvmarg value="-Dservice.url=http://140.254.126.81:8080/wsrf/services/cagrid/IdentifiersNAService" />
-            <jvmarg value="-Depr.file=/Users/cmelean/Documents/code/eclipse/workspace/cagrid-HEAD/caGrid/projects/identifiers-namingauthority-gridsvc/test/resources/epr.txt" />
-            <jvmarg value="-Dcql.file=/Users/cmelean/Documents/code/eclipse/workspace/cagrid-HEAD/caGrid/projects/identifiers-namingauthority-gridsvc/test/resources/cql.txt" />
-            <jvmarg value="-Diterations=15000" />
         </java>
     </target>
 </project>

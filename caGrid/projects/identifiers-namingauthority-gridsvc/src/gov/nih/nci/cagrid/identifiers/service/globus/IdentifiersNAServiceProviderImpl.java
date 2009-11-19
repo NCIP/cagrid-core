@@ -28,13 +28,13 @@ public class IdentifiersNAServiceProviderImpl{
 
     public gov.nih.nci.cagrid.identifiers.stubs.CreateIdentifierResponse createIdentifier(gov.nih.nci.cagrid.identifiers.stubs.CreateIdentifierRequest params) throws RemoteException {
     gov.nih.nci.cagrid.identifiers.stubs.CreateIdentifierResponse boxedResult = new gov.nih.nci.cagrid.identifiers.stubs.CreateIdentifierResponse();
-    boxedResult.setResponse(impl.createIdentifier(params.getTypeValues().getTypeValuesMap()));
+    boxedResult.setIdentifier(impl.createIdentifier(params.getKeyValuesMap().getKeyValuesMap()));
     return boxedResult;
   }
 
-    public gov.nih.nci.cagrid.identifiers.stubs.GetTypeValuesResponse getTypeValues(gov.nih.nci.cagrid.identifiers.stubs.GetTypeValuesRequest params) throws RemoteException {
-    gov.nih.nci.cagrid.identifiers.stubs.GetTypeValuesResponse boxedResult = new gov.nih.nci.cagrid.identifiers.stubs.GetTypeValuesResponse();
-    boxedResult.setTypeValuesMap(impl.getTypeValues(params.getIdentifier()));
+    public gov.nih.nci.cagrid.identifiers.stubs.ResolveIdentifierResponse resolveIdentifier(gov.nih.nci.cagrid.identifiers.stubs.ResolveIdentifierRequest params) throws RemoteException {
+    gov.nih.nci.cagrid.identifiers.stubs.ResolveIdentifierResponse boxedResult = new gov.nih.nci.cagrid.identifiers.stubs.ResolveIdentifierResponse();
+    boxedResult.setKeyValuesMap(impl.resolveIdentifier(params.getIdentifier().getIdentifier()));
     return boxedResult;
   }
 

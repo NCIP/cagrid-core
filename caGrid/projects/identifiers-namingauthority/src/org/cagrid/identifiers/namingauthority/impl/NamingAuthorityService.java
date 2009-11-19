@@ -10,6 +10,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.cagrid.identifiers.namingauthority.HttpProcessor;
+import org.cagrid.identifiers.namingauthority.NamingAuthority;
+import org.springframework.beans.factory.xml.XmlBeanFactory;
 
 
 public class NamingAuthorityService extends HttpServlet {
@@ -30,6 +32,12 @@ public class NamingAuthorityService extends HttpServlet {
      */
     public void init(ServletConfig config) throws ServletException {
         super.init(config);
+        
+        org.springframework.web.context.WebApplicationContext context = 
+        	org.springframework.web.context.support.WebApplicationContextUtils.getRequiredWebApplicationContext(/*request.getSession().*/getServletContext() );
+        
+
+        this.processor = (HttpProcessor) context.getBean("httpProcessor", HttpProcessor.class);
     }
 
 

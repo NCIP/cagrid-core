@@ -29,6 +29,14 @@
           <name>etcDirectoryPath</name>
           <value>ETC-PATH</value>
         </parameter>
+        <parameter>
+          <name>naConfigurationFile</name>
+          <value>ETC-PATH/@naConfigurationFile@</value>
+        </parameter>
+        <parameter>
+          <name>naPropertiesFile</name>
+          <value>ETC-PATH/@naPropertiesFile@</value>
+        </parameter>
       </resourceParams>
     </resource>
     <resource name="home" type="gov.nih.nci.cagrid.identifiers.service.globus.resource.IdentifiersNAServiceResourceHome">

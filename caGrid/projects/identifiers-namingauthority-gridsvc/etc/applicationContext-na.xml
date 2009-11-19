@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xmlns:p="http://www.springframework.org/schema/p" xmlns:tx="http://www.springframework.org/schema/tx"
+  xsi:schemaLocation="
+	http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd
+	http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-2.0.xsd">
+
+  <bean id="dataSourceTemplate" abstract="true" class="org.apache.commons.dbcp.BasicDataSource"
+    destroy-method="close" p:driverClassName="${cagrid.na.db.driver}" p:maxActive="10" p:maxIdle="2"
+    p:maxWait="180000" p:removeAbandoned="true" p:removeAbandonedTimeout="300" p:logAbandoned="true"
+    p:testWhileIdle="true" p:testOnReturn="true" p:validationQuery="select 1"
+    p:timeBetweenEvictionRunsMillis="300000" p:minEvictableIdleTimeMillis="600000" />
+
+  <bean id="dataSource" parent="dataSourceTemplate" p:url="${cagrid.na.db.url}" p:username="${cagrid.na.db.username}"
+    p:password="${cagrid.na.db.password}" />
+
+  <bean id="databaseValidator" class="org.springframework.jdbc.support.DatabaseStartupValidator">
+    <property name="dataSource" ref="dataSource" />
+    <!-- timeout in seconds -->
+    <property name="timeout" value="15" />
+    <property name="validationQuery" value="Select 1" />
+  </bean>
+
+  <bean id="sessionFactory" class="org.springframework.orm.hibernate3.annotation.AnnotationSessionFactoryBean"
+    depends-on="databaseValidator">
+    <property name="dataSource">
+      <ref bean="dataSource" />
+    </property>
+    <property name="hibernateProperties">
+      <props>
+        <prop key="hibernate.dialect">${cagrid.na.db.dialect}</prop>
+        <!--
+          <prop key="hibernate.hbm2ddl.auto">create-drop</prop>
+         -->
+        <prop key="hibernate.hbm2ddl.auto">update</prop>
+        <prop key="hibernate.show_sql">false</prop>
+      </props>
+    </property>
+    <property name="annotatedClasses">
+      <list>
+        <value>org.cagrid.identifiers.namingauthority.hibernate.IdentifierValueKey</value>
+        <value>org.cagrid.identifiers.namingauthority.hibernate.IdentifierMetadata</value>
+      </list>
+    </property>
+  </bean>
+
+  <bean id="transactionManager" class="org.springframework.orm.hibernate3.HibernateTransactionManager">
+    <property name="sessionFactory" ref="sessionFactory" />
+  </bean>
+
+  <tx:annotation-driven transaction-manager="transactionManager"
+    proxy-target-class="true" />
+
+  <bean id="hibernateTemplate" class="org.springframework.orm.hibernate3.HibernateTemplate">
+    <property name="checkWriteOperations">
+      <value>true</value>
+    </property>
+    <property name="sessionFactory">
+      <ref bean="sessionFactory" />
+    </property>
+  </bean>
+
+  <bean id="daoTemplate" abstract="true">
+    <property name="hibernateTemplate">
+      <ref bean="hibernateTemplate" />
+    </property>
+  </bean>
+
+  <bean id="identifierDao" parent="daoTemplate" class="org.cagrid.identifiers.namingauthority.dao.IdentifierMetadataDao" />
+
+
+  <bean id="NamingAuthority" class="org.cagrid.identifiers.namingauthority.impl.NamingAuthorityImpl">
+    <property name="configuration">
+      <bean class="org.cagrid.identifiers.namingauthority.impl.NamingAuthorityConfigImpl">
+        <property name="prefix" value="${cagrid.na.prefix}" />
+        <property name="gridSvcUrl" value="${cagrid.na.grid.url}" />
+      </bean>
+    </property>
+
+    <property name="identifierGenerator">
+      <bean class="org.cagrid.identifiers.namingauthority.impl.IdentifierGeneratorImpl" />
+    </property>
+
+    <property name="identifierDao" ref="identifierDao" />
+  </bean>
+
+  <bean id="httpProcessor" class="org.cagrid.identifiers.namingauthority.http.HttpProcessorImpl">
+    <property name="namingAuthority">
+      <ref bean="NamingAuthority" />
+    </property>
+  </bean>
+
+</beans>

@@ -1,6 +1,6 @@
 package org.cagrid.identifiers.resolver;
 
-import gov.nih.nci.cagrid.identifiers.TypeValues;
+import gov.nih.nci.cagrid.identifiers.KeyValues;
 import gov.nih.nci.cagrid.identifiers.Values;
 import gov.nih.nci.cagrid.identifiers.client.IdentifiersNAServiceClient;
 
@@ -9,6 +9,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.StringBufferInputStream;
+import java.net.URI;
 
 import org.apache.http.Header;
 import org.apache.http.HttpEntity;
@@ -76,16 +77,16 @@ public class ResolverUtil {
     		throw new HttpException(errMsg + " [" + statusCode + ":" + response.getStatusLine().toString() + "]");
     	}
     	
-    	Header ctHeader = response.getFirstHeader("Content-Type");
+    	Header ctHeader = response.getFirstHeader("Content-Key");
     	if (ctHeader == null || ctHeader.getValue() == null ||
     			ctHeader.getValue().indexOf("application/xml") == -1) {
-    		throw new HttpException("Response has no XML content (Content-Type: "
+    		throw new HttpException("Response has no XML content (Content-Key: "
     				+ (ctHeader != null ? ctHeader.getValue() : "null") + 
     				"). " + errMsg);
     	}
 	}
 	
-	private static Object httpGet(String url, String errMsg) throws HttpException, IOException {
+	private static Object httpGet(URI url, String errMsg) throws HttpException, IOException {
 		
 		Object dataObject;
 		
@@ -121,29 +122,29 @@ public class ResolverUtil {
 	    return dataObject;
 	}
 		
-	public static IdentifierValues convert( TypeValues[] tvsArr ) {
+	public static IdentifierValues convert( KeyValues[] tvsArr ) {
 		if (tvsArr == null)
 			return null;
 		
 		IdentifierValues ivs = new IdentifierValues();
 		
-		for( TypeValues tvs : tvsArr ) {
-			String type = tvs.getType();
+		for( KeyValues tvs : tvsArr ) {
+			String key = tvs.getKey();
 			Values values = tvs.getValues();
 			for( String value : values.getValue() ) {
-				ivs.add(type, value);
+				ivs.add(key, value);
 			}
 		}
 		
 		return ivs;
 	}
 	
-	public static IdentifierValues resolveGrid( String identifier ) throws HttpException, IOException {
+	public static IdentifierValues resolveGrid( URI identifier ) throws Exception {//HttpException, IOException {
 		
 		//
 		// Retrieve Naming Authority Configuration
 		//
-		String configUrl = identifier + "?config";
+		URI configUrl = new URI(identifier.toString() + "?config");
 		NamingAuthorityConfig config = (NamingAuthorityConfig)
 			httpGet(configUrl, "Unable to retrieve naming authority configuration from " + configUrl);
 				
@@ -151,10 +152,10 @@ public class ResolverUtil {
 		
 		//System.out.println("Connecting to " + config.getGridSvcUrl() + " to retrieve values for identifier " + identifier);
 		return gov.nih.nci.cagrid.identifiers.common.MappingUtil.toIdentifierValues(
-				client.getTypeValues(identifier) );
+				client.resolveIdentifier(new org.apache.axis.types.URI(identifier.toString())) );
 	}
 	
-	public static IdentifierValues resolveHttp( String identifier ) throws HttpException, IOException {
+	public static IdentifierValues resolveHttp( URI identifier ) throws HttpException, IOException {
 		
 		return (IdentifierValues)
 			httpGet(identifier, "Identifier [" + identifier + "] failed resolution");

@@ -3,6 +3,7 @@ package org.cagrid.identifiers.resolver.test;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
+import java.net.URI;
 
 import org.apache.http.HttpException;
 import org.cagrid.identifiers.namingauthority.IdentifierValues;
@@ -10,7 +11,7 @@ import org.cagrid.identifiers.resolver.ResolverUtil;
 
 public class StressResolve {
 	
-	public void httpResolution( String identifier ) throws HttpException, IOException {
+	public void httpResolution( URI identifier ) throws HttpException, IOException {
 		
 		IdentifierValues ivs = ResolverUtil.resolveHttp(identifier);
 		//System.out.println(ivs.toString());
@@ -21,9 +22,9 @@ public class StressResolve {
 		FileReader fileReader = new FileReader( identifiers );
 		BufferedReader bfReader = new BufferedReader(fileReader);
 		try {
-			String identifier;
+			URI identifier;
 			int i =0;
-			while ((identifier = bfReader.readLine()) != null)
+			while ((identifier = new URI(bfReader.readLine())) != null)
 			{
 				httpResolution(identifier);
 				i++;

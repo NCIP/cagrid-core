@@ -1,5 +1,7 @@
 package org.cagrid.identifiers.resolver.test;
 
+import java.net.URI;
+
 import junit.framework.TestCase;
 
 import org.apache.commons.logging.Log;
@@ -12,7 +14,15 @@ public class ResolverTestCase extends TestCase {
 
 	private static Log log = LogFactory.getLog(ResolverTestCase.class);
 	
-	private String identifier = "http://140.254.126.79:8080/osumc/70ef4ac1-a39a-4652-a46b-a2c6b0194728";
+	private static URI identifier;
+	
+	static {
+		try {
+			identifier = new URI("http://140.254.126.79:8080/osumc/70ef4ac1-a39a-4652-a46b-a2c6b0194728");
+		} catch(Exception e){
+			identifier = null;
+		}
+	}
 	//private String identifier = "https://140.254.126.79:8443/osumc/ssl/70ef4ac1-a39a-4652-a46b-a2c6b0194728";
 
 	public void testGridResolution() {

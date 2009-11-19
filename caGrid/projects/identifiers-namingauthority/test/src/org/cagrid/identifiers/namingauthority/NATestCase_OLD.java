@@ -50,7 +50,7 @@ public class NATestCase_OLD extends TestCase {
 
         // keys (types) are the same, compare values now
 
-        for (String type : a.getTypes()) {
+        for (String type : a.getKeys()) {
             String[] aValues = a.getValues(type);
             String[] bValues = b.getValues(type);
 
@@ -75,7 +75,7 @@ public class NATestCase_OLD extends TestCase {
         // //////////////////////////////////////////////////////////////////
         // Test getTypes()
         // //////////////////////////////////////////////////////////////////
-        String[] types = identifierValues.getTypes();
+        String[] types = identifierValues.getKeys();
         if (types.length != 2) {
             fail("Expected two data types (URL, EPR). Got " + types.length);
         }

@@ -87,7 +87,7 @@ public class HttpProcessorImpl implements HttpProcessor {
             msg.append("<h3>" + IdentifierUtil.build(namingAuthority.getConfiguration().getPrefix(), uri)
                 + "</h3>\n<hr>\n");
 
-            for (String type : ivs.getTypes()) {
+            for (String type : ivs.getKeys()) {
                 msg.append("<b>Type: &nbsp;</b>" + type + "<br>\n");
                 for (String value : ivs.getValues(type)) {
                     msg.append("<b>Data: &nbsp;</b>" + escape(value) + "<br>\n");

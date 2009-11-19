@@ -5,35 +5,28 @@
 
 	<complexType name="Values">
 		<sequence>
-			<element name="Value" type="string" minOccurs="1" maxOccurs="unbounded" />
+			<element name="Value" type="string" minOccurs="1" maxOccurs="unbounded"/>
 		</sequence>
 	</complexType>
 
-   <element name="Values" type="tns:Values" />
+	<element name="Values" type="tns:Values"/>
 
-	<complexType name="TypeValues">
-        <sequence>
-          <element name="type" type="string" />
-          <element ref="tns:Values" />
-        </sequence>
-   </complexType>
-
-	<element name="TypeValues" type="tns:TypeValues" />
-
-	<complexType name="TypeValuesMap">
-  		<sequence>
-    		<element ref="tns:TypeValues" minOccurs="0" maxOccurs="unbounded" />
-  		</sequence>
+	<complexType name="KeyValues">
+		<sequence>
+			<element name="key" type="string"/>
+			<element ref="tns:Values"/>
+		</sequence>
 	</complexType>
 
-	<element name="TypeValuesMap" type="tns:TypeValuesMap" />
+	<element name="KeyValues" type="tns:KeyValues"/>
 
-   <complexType name="Identifier">
-      <sequence>
-         <element type="string" name="Name"/>
-         <element ref="tns:TypeValuesMap"/>
-      </sequence>
-   </complexType>
-        
-   <element name="Identifier" type="tns:Identifier"/>
+	<complexType name="KeyValuesMap">
+		<sequence>
+			<element ref="tns:KeyValues" minOccurs="0" maxOccurs="unbounded"/>
+		</sequence>
+	</complexType>
+
+	<element name="KeyValuesMap" type="tns:KeyValuesMap"/>
+
+	<element name="Identifier" type="anyURI"/>
 </schema>

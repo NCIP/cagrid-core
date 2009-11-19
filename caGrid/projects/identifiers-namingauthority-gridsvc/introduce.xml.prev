@@ -1,10 +1,9 @@
-<ns1:ServiceDescription introduceVersion="1.3" xmlns:ns1="gme://gov.nih.nci.cagrid/1/Introduce">
+<ns1:ServiceDescription introduceVersion="1.4" xmlns:ns1="gme://gov.nih.nci.cagrid/1/Introduce">
  <ns2:Namespaces xsi:type="ns2:NamespacesType" xmlns:ns2="gme://gov.nih.nci.cagrid.introduce/1/Namespace" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <ns2:Namespace location="./IdentifiersNA.xsd" namespace="http://types.identifers-na.cagrid.org/IdentifiersNAService" packageName="gov.nih.nci.cagrid.identifiers" xsi:type="ns2:NamespaceType">
    <ns2:SchemaElement type="Identifier" xsi:type="ns2:SchemaElementType"/>
-   <ns2:SchemaElement type="Type" xsi:type="ns2:SchemaElementType"/>
-   <ns2:SchemaElement type="TypeValues" xsi:type="ns2:SchemaElementType"/>
-   <ns2:SchemaElement type="TypeValuesMap" xsi:type="ns2:SchemaElementType"/>
+   <ns2:SchemaElement type="KeyValues" xsi:type="ns2:SchemaElementType"/>
+   <ns2:SchemaElement type="KeyValuesMap" xsi:type="ns2:SchemaElementType"/>
    <ns2:SchemaElement type="Values" xsi:type="ns2:SchemaElementType"/>
   </ns2:Namespace>
   <ns2:Namespace generateStubs="false" namespace="http://www.w3.org/2001/XMLSchema" xsi:type="ns2:NamespaceType">
@@ -109,16 +108,16 @@
     </ns4:Method>
     <ns4:Method description="Creates a new identifier" isImported="false" isProvided="false" name="createIdentifier" xsi:type="ns4:MethodType">
      <ns4:Inputs>
-      <ns4:Input qName="ns13:TypeValuesMap" description="" isArray="false" name="typeValues" xmlns:ns13="http://types.identifers-na.cagrid.org/IdentifiersNAService"/>
+      <ns4:Input qName="ns13:KeyValuesMap" description="" isArray="false" name="keyValuesMap" xmlns:ns13="http://types.identifers-na.cagrid.org/IdentifiersNAService"/>
      </ns4:Inputs>
-     <ns4:Output qName="xsd:string" description="" isArray="false" xmlns:xsd="http://www.w3.org/2001/XMLSchema"/>
+     <ns4:Output qName="ns14:Identifier" description="" isArray="false" xmlns:ns14="http://types.identifers-na.cagrid.org/IdentifiersNAService"/>
      <ns4:Exceptions/>
     </ns4:Method>
-    <ns4:Method description="Returns type/values stored with the identifier" isImported="false" isProvided="false" name="getTypeValues" xsi:type="ns4:MethodType">
+    <ns4:Method description="Returns type/values stored with the identifier" isImported="false" isProvided="false" name="resolveIdentifier" xsi:type="ns4:MethodType">
      <ns4:Inputs>
-      <ns4:Input qName="xsd:string" description="" isArray="false" name="identifier" xmlns:xsd="http://www.w3.org/2001/XMLSchema"/>
+      <ns4:Input qName="ns15:Identifier" description="" isArray="false" name="identifier" xmlns:ns15="http://types.identifers-na.cagrid.org/IdentifiersNAService"/>
      </ns4:Inputs>
-     <ns4:Output qName="ns14:TypeValuesMap" description="" isArray="false" xmlns:ns14="http://types.identifers-na.cagrid.org/IdentifiersNAService"/>
+     <ns4:Output qName="ns16:KeyValuesMap" description="" isArray="false" xmlns:ns16="http://types.identifers-na.cagrid.org/IdentifiersNAService"/>
      <ns4:Exceptions/>
     </ns4:Method>
    </ns4:Methods>
@@ -130,12 +129,9 @@
    </ns3:ResourceFrameworkOptions>
   </ns3:Service>
  </ns3:Services>
- <ns15:Extensions xsi:type="ns15:ExtensionsType" xmlns:ns15="gme://gov.nih.nci.cagrid.introduce/1/Extension" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"/>
- <ns16:ServiceProperties xmlns:ns16="gme://gov.nih.nci.cagrid.introduce/1/Property">
-  <ns16:Property description="The naming authority prefix" isFromETC="false" key="identifiersNaPrefix" value="http://localhost:8090/cagrid"/>
-  <ns16:Property description="DB hosting the naming authority's identifier_values table" isFromETC="false" key="identifiersNaDbUrl" value="jdbc:mysql://localhost/identifiers"/>
-  <ns16:Property description="User name to connect to the DB" isFromETC="false" key="identifiersNaDbUser" value="root"/>
-  <ns16:Property description="Password to connect to the DB" isFromETC="false" key="identifiersNaDbPassword" value="cagrid"/>
-  <ns16:Property description="URL where the NA grid service will listen for requests" isFromETC="false" key="identifiersNaGridSvcUrl" value="http://localhost:8080/wsrf/services/cagrid/IdentifiersNAService"/>
- </ns16:ServiceProperties>
+ <ns17:Extensions xsi:type="ns17:ExtensionsType" xmlns:ns17="gme://gov.nih.nci.cagrid.introduce/1/Extension" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"/>
+ <ns18:ServiceProperties xmlns:ns18="gme://gov.nih.nci.cagrid.introduce/1/Property">
+  <ns18:Property description="The location (relative to the service's ETC location) of the XML configuration file" isFromETC="true" key="naConfigurationFile" value="applicationContext-na.xml"/>
+  <ns18:Property description="The location (relative to the service's ETC location) of the properties file containing information about the naming authority" isFromETC="true" key="naPropertiesFile" value="na.properties"/>
+ </ns18:ServiceProperties>
 </ns1:ServiceDescription>
