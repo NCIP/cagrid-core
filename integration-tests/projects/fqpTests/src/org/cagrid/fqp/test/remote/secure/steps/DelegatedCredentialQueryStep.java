@@ -3,7 +3,6 @@ package org.cagrid.fqp.test.remote.secure.steps;
 import gov.nih.nci.cagrid.dcql.DCQLQuery;
 import gov.nih.nci.cagrid.dcqlresult.DCQLQueryResultsCollection;
 import gov.nih.nci.cagrid.fqp.client.FederatedQueryProcessorClient;
-import gov.nih.nci.cagrid.fqp.processor.exceptions.FederatedQueryProcessingException;
 import gov.nih.nci.cagrid.fqp.results.client.FederatedQueryResultsClient;
 import gov.nih.nci.cagrid.fqp.results.stubs.types.InternalErrorFault;
 import gov.nih.nci.cagrid.testing.system.deployment.SecureContainer;
@@ -149,7 +148,7 @@ public class DelegatedCredentialQueryStep extends BaseQueryExecutionStep {
     
     
     private DCQLQueryResultsCollection queryAndWait(DCQLQuery query, FederatedQueryProcessorClient fqpClient)
-        throws FederatedQueryProcessingException, InternalErrorFault, MalformedURIException, RemoteException {
+        throws InternalErrorFault, MalformedURIException, RemoteException {
         LOG.debug("Starting work executor service");
         ThreadFactory deamonThreadFactory = new ThreadFactory() {
             private ThreadFactory base = Executors.defaultThreadFactory();
@@ -204,20 +203,6 @@ public class DelegatedCredentialQueryStep extends BaseQueryExecutionStep {
         } catch (Exception ex) {
             ex.printStackTrace();
             fail("Error loading proxy: " + ex.getMessage());
-        }
-        return cred;
-    }
-    
-    
-    private GlobusCredential getGlobusCredential(String cert, String key) {
-        GlobusCredential cred = null;
-        try {
-            String fullCert = new File(secureServiceContainer.getCertificatesDirectory(), cert).getAbsolutePath();
-            String fullKey = new File(secureServiceContainer.getCertificatesDirectory(), key).getAbsolutePath();
-            cred = new GlobusCredential(fullCert, fullKey);
-        } catch (Exception ex) {
-            ex.printStackTrace();
-            fail("Error loading credential: " + ex.getMessage());
         }
         return cred;
     }
