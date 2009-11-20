@@ -264,6 +264,21 @@
 			<property name="wsdl.file" value="EnumerationDataService_service.wsdl" />
 			<property name="ns.excludes" value="${GT4.ns.excludes} ${introduce.ns.excludes} -x ${data.service.namespace}" />
 		</ant>
+		<!-- generate enumeration query bindings for globus -->
+		<ant antfile="${ant.build.stubs}" target="generateBinding">
+			<property name="source.binding.dir" value="${schema.dest}/Data" />
+			<property name="target.binding.dir" value="${schema.dest}/Data" />
+			<property name="porttype.wsdl" value="Cql2EnumerationDataService.wsdl" />
+			<property name="binding.root" value="Cql2EnumerationDataService" />
+		</ant>
+		<!-- stub generator -->
+		<ant antfile="${ant.build.stubs}" target="generateStubs">
+			<property name="mapping.file" location="${build.dir}/NStoPkg.properties" />
+			<property name="source.stubs.dir" location="${schema.dest}/Data" />
+			<property name="target.stubs.dir" location="${stubs.src}" />
+			<property name="wsdl.file" value="Cql2EnumerationDataService_service.wsdl" />
+			<property name="ns.excludes" value="${GT4.ns.excludes} ${introduce.ns.excludes} -x ${data.service.namespace}" />
+		</ant>
 		<!-- generate Transfer query bindings for globus -->
 		<ant antfile="${ant.build.stubs}" target="generateBinding">
 			<property name="source.binding.dir" value="${schema.dest}/Data" />
