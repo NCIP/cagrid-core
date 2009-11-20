@@ -109,6 +109,7 @@ public class SdkDatabaseStep extends AbstractDatabaseStep {
                 return maybeMysql.getAbsolutePath();
             }
         }
+        fail("No mysql executable found on $PATH!");
         return null;
     }
     
