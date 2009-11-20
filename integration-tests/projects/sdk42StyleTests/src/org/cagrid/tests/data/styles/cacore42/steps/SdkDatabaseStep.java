@@ -7,7 +7,6 @@ import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.StringTokenizer;
 
@@ -37,12 +36,7 @@ public class SdkDatabaseStep extends AbstractDatabaseStep {
                     break;
                 case INSTALL:
                     LOG.debug("INSTALLING caCORE SDK DATABASE");
-                    List<String> creationStatements = getExampleDatabaseCreationStatements();
-                    for (String statement : creationStatements) {
-                        LOG.debug("-- EXECUTING DB CREATION STATEMENT --");
-                        LOG.debug(statement);
-                        getDatabase().update(statement);
-                    }
+                    createDatabase();
                     break;
                 case DESTROY:
                     LOG.debug("DESTROYING caCORE SDK DATABASE");
@@ -57,8 +51,7 @@ public class SdkDatabaseStep extends AbstractDatabaseStep {
     }
     
     
-    private List<String> getExampleDatabaseCreationStatements() {
-        List<String> statements = new LinkedList<String>();
+    private void createDatabase() {
         try {
             File[] dbScripts = ExampleProjectInfo.getMysqlDatabaseInstallFiles();
             for (File script : dbScripts) {
@@ -89,16 +82,15 @@ public class SdkDatabaseStep extends AbstractDatabaseStep {
                     code = proc.waitFor();
                 } catch (InterruptedException ex) {
                     ex.printStackTrace();
-                    fail("Error running database script: " + ex.getMessage());
+                    fail("Error running database script " + script.getName() + ": " + ex.getMessage());
                 }
-                assertEquals("Unexpected exit code from mysql script", 0, code);
+                assertEquals("Unexpected exit code from mysql script " + script.getName(), 0, code);
             }
         } catch (IOException ex) {
             String message = "Error reading database creation script: " + ex.getMessage();
             LOG.error(message, ex);
             fail(message);
         }
-        return statements;
     }
     
     
