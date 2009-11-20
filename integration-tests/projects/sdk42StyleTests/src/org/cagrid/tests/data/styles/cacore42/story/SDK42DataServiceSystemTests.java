@@ -97,9 +97,9 @@ public class SDK42DataServiceSystemTests {
     
     private void splitTime() {
         if (lastTime == 0) {
-            LOG.debug("Timer started");
+            System.out.println("Timer started");
         } else {
-            LOG.debug("Time elapsed: " 
+            System.out.println("Time elapsed: " 
                 + (System.currentTimeMillis() - lastTime) / 1000D + " sec");
         }
         lastTime = System.currentTimeMillis();
