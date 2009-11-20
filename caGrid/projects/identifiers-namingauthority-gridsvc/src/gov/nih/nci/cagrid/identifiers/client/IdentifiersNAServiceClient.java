@@ -68,33 +68,33 @@ public class IdentifiersNAServiceClient extends IdentifiersNAServiceClientBase i
 			  // place client calls here if you want to use this main as a
 			  // test....
 				
-//			  KeyValues[] tvs = new KeyValues[2];
-//			  tvs[0] = new KeyValues();
-//			  tvs[0].setKey("URL");
-//			  Values values = new Values();
-//			  values.setValue(new String[] { "http://www.google.com" });
-//			  tvs[0].setValues(values);
-//			  
-//			  tvs[1] = new KeyValues();
-//			  tvs[1].setKey("DOI");
-//			  values = new Values();
-//			  values.setValue(new String[] { "abc def hij" });
-//			  tvs[1].setValues(values);
-//			  
-//			  KeyValuesMap tvm = new KeyValuesMap();
-//			  tvm.setKeyValues(tvs);
-//
-//			  org.apache.axis.types.URI identifier = client.createIdentifier(tvm);
-//			  System.out.println("Created [" + identifier.toString() + "]");
+			  KeyValues[] tvs = new KeyValues[2];
+			  tvs[0] = new KeyValues();
+			  tvs[0].setKey("URL");
+			  Values values = new Values();
+			  values.setValue(new String[] { "http://www.yahoo1.com", "http://www.yahoo2.com" });
+			  tvs[0].setValues(values);
+			  
+			  tvs[1] = new KeyValues();
+			  tvs[1].setKey("XXX");
+			  values = new Values();
+			  values.setValue(new String[] { "text1", "text2" });
+			  tvs[1].setValues(values);
+			  
+			  KeyValuesMap tvm = new KeyValuesMap();
+			  tvm.setKeyValues(tvs);
+
+			  org.apache.axis.types.URI identifier = client.createIdentifier(tvm);
+			  System.out.println("Created [" + identifier.toString() + "]");
 				
-			  org.apache.axis.types.URI identifier = new org.apache.axis.types.URI(
-					  "http://purlz.cagrid.org:8080/localhost/90efcbb0-8e4a-4421-b5c9-5eecdb9da056");
+//			  org.apache.axis.types.URI identifier = new org.apache.axis.types.URI(
+//					  "http://purlz.cagrid.org:8080/localhost/90efcbb0-8e4a-4421-b5c9-5eecdb9da056");
 			  System.out.println("Now retrieving values for " + identifier);
 			  KeyValuesMap tvm2 = client.resolveIdentifier(identifier);
 			  for( KeyValues tv : tvm2.getKeyValues() ) {
-				  System.out.println("TYPE: " + tv.getKey());
+				  System.out.println("KEY: " + tv.getKey());
 				  for( String value : tv.getValues().getValue() ) {
-					  System.out.println("DATA: " + value);
+					  System.out.println("\tVALUE: " + value);
 				  }
 			  }
 			} else {

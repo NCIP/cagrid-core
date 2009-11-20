@@ -64,27 +64,16 @@ public class NamingAuthorityImpl extends NamingAuthority {
  //TODO: remove this
  System.out.println("NamingAuthority: resolveIdentifier:" + identifier.normalize().toString());
   
-        URI localURI = IdentifierUtil.getLocalName(getConfiguration().getPrefix(), identifier);
+        URI localIdentifier = IdentifierUtil.getLocalName(getConfiguration().getPrefix(), identifier);
  //TODO: remove this
- System.out.println("localURI:" + localURI.normalize().toString());
+ System.out.println("localURI:" + localIdentifier.normalize().toString());
 
-        IdentifierMetadata template = new IdentifierMetadata();
-        template.setLocalIdentifier(localURI);
+        //IdentifierMetadata template = new IdentifierMetadata();
+        //template.setLocalIdentifier(localURI);
 
-        IdentifierMetadata md = this.identifierDao.getByExample(template);
-        if (md == null) {
+        IdentifierValues result = this.identifierDao.getIdentifierValues(localIdentifier);
+        if (result == null) {
             throw new InvalidIdentifierException("The specified identifier (" + identifier + ") was not found.");
-        }
-
-        IdentifierValues result = null;
-        if (md.getValues() != null && md.getValues().size() > 0) {
-            result = new IdentifierValues();
-            Map<String, List<String>> values = new HashMap<String, List<String>>();
-            result.setValues(values);
-
-            for (IdentifierValueKey vk : md.getValues()) {
-                values.put(vk.getKey(), vk.getValues());
-            }
         }
 
         return result;
