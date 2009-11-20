@@ -51,20 +51,13 @@
 		</fileset>
 	</path>
 
-	<!-- ant configure must be executed before ant all target -->
-	<target name="websso-config-jar">
-		<jar destfile="${build.war.dir}/WEB-INF/lib/${ant.project.name}-conf-${project.version}.jar">
-			<fileset dir="${ext.targetgrid.dir}">
-				<include name="sync-description.xml" />
-			</fileset>
+	<target name="build-war">
+		<copy todir="${webcontent.dir}/WEB-INF/grid-resources" overwrite="true">
 			<fileset dir="${src.resources.dir}">
 				<include name="**/*.*" />
 				<exclude name="*-template.*" />
 			</fileset>
-		</jar>
-	</target>
-
-	<target name="build-war">
+		</copy>
 		<copy todir="${build.war.dir}/WEB-INF/lib" overwrite="true">
 			<fileset dir="${lib.dir}">
 				<include name="*.jar" />
@@ -104,7 +97,7 @@
 		<copy tofile="${build.war.dir}/WEB-INF/lib/${ant.project.name}-core-${project.version}.jar" file="${build.dir}/${ant.project.name}-core.jar" />
 	</target>
 
-	<target name="war" depends="compile,websso-config-jar,build-war">
+	<target name="war" depends="compile,build-war">
 		<war destfile="${build.dir}/${webapp.name}.war" webxml="${webcontent.dir}/WEB-INF/web.xml">
 			<fileset dir="${webcontent.dir}">
 				<exclude name="**/*-template.*"/>
@@ -129,7 +122,8 @@
 		<input message="Enter websso server host name:" addproperty="host.name" />
 		<input message="Enter websso server https port (int value):" addproperty="host.https.port" />
 		<input message="Enter start auto sync gts (yes or no) :" addproperty="start.auto.sync.gts" defaultvalue="no" description="state whether to start auto sync gts or not"/>
-		<antcall target="-replace-token-contents"></antcall>
+		<antcall target="-replace-token-contents">
+		</antcall>
 	</target>
 
 	<target name="deployTomcat" depends="configure-tomcat-endorsedjars,war" description="deploy websso server in %CATALINA_HOME%">
@@ -172,10 +166,11 @@
 			</fileset>
 		</copy>
 	</target>
-	
+
 	<!-- copy websso-properties.xml to ${src.resources} as websso-properties-template.xml -->
 	<target name="configure" description="Configures the project based on settings." depends="defineAntTask">
-		<copyfile dest="${src.resources.dir}/websso-properties-template.xml" src="${ext.targetgrid.dir}/websso-properties.xml"/>
+		<copyfile  src="${ext.targetgrid.dir}/websso-properties.xml" dest="${src.resources.dir}/websso-properties-template.xml"/>
+		<copyfile  src="${ext.targetgrid.dir}/sync-description.xml" dest="${src.resources.dir}/sync-description.xml" />
 	</target>
 
 	<target name="-resolve-template-tokens" depends="defineAntTask">

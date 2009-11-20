@@ -17,13 +17,13 @@
     <conf name="impl-test" visibility="private"/>
     <!-- Public Configurations-->
     <conf name="target_grid" visibility="private"/>
-    <conf name="default" visibility="public" />    
+    <conf name="default" visibility="public" />  
   </configurations>
  
   <publications>
 	<artifact name="caGrid-websso-client-common" conf="default" type="jar" />
-	<artifact name="caGrid-websso-client-common-conf" conf="default" type="jar" />
 	<artifact name="cacerts" conf="default" type="cert" />
+	<artifact name="sync-description" conf="default" type="xml" />		
   </publications>
 
   <dependencies>

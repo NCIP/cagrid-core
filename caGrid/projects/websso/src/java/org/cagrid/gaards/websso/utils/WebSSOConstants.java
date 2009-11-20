@@ -11,6 +11,7 @@ public class WebSSOConstants {
 	public static final String WEBSSO_BEAN_CONFIG_FILE = "websso-beans.xml";
 	public static final String FILE_HELPER = "fileHelper";
 	public static final String WEBSSO_PROPERTIES = "webSSOProperties";
+	public static final String SYNC_DESC_RESOURCE = "syncdescriptionResouce";
 	public static final String AUTHENTICATION_SERVICE_HELPER = "authenticationServiceHelper";
 	public static final String DORIAN_HELPER = "dorianHelper";
 	public static final String PROXY_VALIDATOR = "proxyValidator";

@@ -14,7 +14,7 @@
 	</credential-delegation-service-information>
 	<dorian-services-information>
 		<dorian-service-descriptor>
-			<display-name>>caBIG LOA1</display-name>
+			<display-name>caBIG LOA1</display-name>
 			<service-url>https://cagrid-dorian.nci.nih.gov:8443/wsrf/services/cagrid/Dorian</service-url>
             <service-identity>/O=caBIG/OU=caGrid/OU=LOA1/OU=Services/CN=cagrid-dorian.nci.nih.gov</service-identity>
 			<proxy-lifetime-hours>12</proxy-lifetime-hours>

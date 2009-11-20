@@ -107,7 +107,7 @@
 	<classpathentry kind="lib" path="ext/dependencies/default/jars/spring-test.jar"/>
 	<classpathentry kind="lib" path="ext/dependencies/default/jars/spring-webflow-1.0.5.jar"/>
 	<classpathentry kind="lib" path="ext/dependencies/default/jars/spring-webmvc.jar"/>
-	<classpathentry kind="lib" path="ext/dependencies/default/jars/spring.jar"/>
+	<classpathentry kind="lib" path="ext/dependencies/default/jars/spring.jar" sourcepath="C:/dev-examples/spring-framework-2.5.6/dist/spring-sources.jar"/>
 	<classpathentry kind="lib" path="ext/dependencies/default/jars/standard-1.1.2.jar"/>
 	<classpathentry kind="lib" path="ext/dependencies/default/jars/xmldsig-1.0.jar"/>
 	<classpathentry kind="lib" path="ext/dependencies/default/jars/xmlsec-1.4.0.jar"/>
@@ -140,5 +140,6 @@
 	<classpathentry kind="lib" path="ext/dependencies/default/jars/caGrid-syncgts-common-1.4-dev.jar"/>
 	<classpathentry kind="lib" path="ext/dependencies/default/jars/caGrid-syncgts-stubs-1.4-dev.jar"/>
 	<classpathentry kind="lib" path="ext/dependencies/test/jars/junit-4.4.jar"/>
+	<classpathentry kind="var" path="GT4_LOCATION"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

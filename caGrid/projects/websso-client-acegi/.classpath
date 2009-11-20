@@ -79,6 +79,5 @@
 	<classpathentry kind="lib" path="ext/dependencies/default/jars/castor-1.0.2.jar"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/caGrid-websso-client-common"/>
 	<classpathentry kind="lib" path="ext/dependencies/default/jars/caGrid-websso-client-common-1.4-dev.jar"/>
-	<classpathentry kind="lib" path="ext/dependencies/default/jars/caGrid-websso-client-common-conf-1.4-dev.jar"/>
 	<classpathentry kind="output" path="build"/>
 </classpath>

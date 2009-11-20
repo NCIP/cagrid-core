@@ -14,7 +14,7 @@
 	</credential-delegation-service-information>
 	<dorian-services-information>
 		<dorian-service-descriptor>
-			<display-name>>Training</display-name>
+			<display-name>Training</display-name>
 			<service-url>https://dorian.training.cagrid.org:8443/wsrf/services/cagrid/Dorian</service-url>
 			<service-identity>/O=caBIG/OU=caGrid/OU=Training/OU=Services/CN=dorian.training.cagrid.org</service-identity>
 			<proxy-lifetime-hours>12</proxy-lifetime-hours>

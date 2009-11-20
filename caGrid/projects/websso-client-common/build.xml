@@ -117,27 +117,16 @@
 		<mkdir dir="${build.dir}" />
 		<mkdir dir="${build.classes.dir}" />
 		<javac srcdir="${src.java.dir}" destdir="${build.classes.dir}" classpathref="ext.run.classpath" debug="true" />
-		<!--<copy file="${src.java.dir}/client-config.wsdd" todir="${build.classes.dir}/" />-->
+		<copy file="${src.resources.dir}/client-config.wsdd" todir="${build.classes.dir}/" />
 	</target>
 
 	<target name="jar" depends="defineClasspaths,compile,build-jar,dist">
 	</target>
 
-	<target name="websso-client-config-jar">
-		<jar destfile="${build.dir}/${ant.project.name}-conf-${project.version}.jar">
-			<fileset dir="${ext.targetgrid.dir}">
-				<include name="sync-description.xml" />
-			</fileset>
-			<fileset dir="${src.resources.dir}">
-				<include name="client-config.wsdd" />
-			</fileset>
-		</jar>
-	</target>
-
 	<target name="copy-configuration-files">
 		<copy file="${src.resources.dir}/cacerts.cert" tofile="${build.dir}/cacerts-${project.version}.cert" />
+		<copy file="${src.resources.dir}/sync-description.xml" tofile="${build.dir}/sync-description-${project.version}.xml" />
 	</target>
-
 
 	<target name="deployTrustedCerts" depends="checkGlobus,defineClasspaths">
 		<java classpathref="ext.run.classpath" classname="gov.nih.nci.cagrid.syncgts.tools.DeployGTSTrustRoots" fork="yes" failonerror="true">
@@ -146,17 +135,7 @@
 	</target>
 
 	<target name="configure" description="Configures the project based on settings.">
-		<!-- These are the template files we are copying from -->
-		<fileset id="templates.fileset" dir="${basedir}">
-			<include name="*.template" />
-		</fileset>
-
-		<copy todir="${basedir}" overwrite="true">
-			<fileset refid="templates.fileset" />
-			<mapper type="glob" from="*.template" to="*" />
-			<filterset filtersfile="${ext.targetgrid.dir}/service_urls.properties" />
-		</copy>
-
+		<copyfile  src="${ext.targetgrid.dir}/sync-description.xml" dest="${src.resources.dir}/sync-description.xml" />
 	</target>
 
 	<target name="clean">
@@ -166,7 +145,6 @@
 	<target name="all">
 		<antcall target="clean" />
 		<antcall target="jar" />
-		<antcall target="websso-client-config-jar" />
 		<antcall target="copy-configuration-files" />
 	</target>
 </project>

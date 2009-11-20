@@ -124,7 +124,6 @@
 	<classpathentry kind="lib" path="ext/dependencies/jars/clm.jar"/>
 	<classpathentry kind="lib" path="ext/dependencies/jars/csmapi.jar"/>
 	<classpathentry kind="lib" path="ext/dependencies/jars/junit-4.4.jar"/>
-	<classpathentry combineaccessrules="false" kind="src" path="/caGrid-AuthenticationService"/>
 	<classpathentry kind="lib" path="ext/dependencies/jars/caGrid-DorianSystemTests-1.4-dev.jar"/>
 	<classpathentry kind="lib" path="ext/dependencies/jars/httpunit-1.7.jar"/>
 	<classpathentry kind="lib" path="ext/dependencies/jars/js-1.6R5.jar"/>

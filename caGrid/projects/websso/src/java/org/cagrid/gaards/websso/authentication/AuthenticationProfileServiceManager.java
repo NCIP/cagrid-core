@@ -121,6 +121,12 @@ public class AuthenticationProfileServiceManager extends Runner implements Initi
 				String authenticationServiceURL = idps.get(i).getAuthenticationServiceURL();
 				log.debug("Authenticated Service display Name "+displayName);
 				log.debug("Authenticated Service authenticationServiceURL "+authenticationServiceURL);
+				
+				if(authenticationServiceURL == null){  
+					log.warn("The URL for " + displayName + " is null. Skipping.");                    
+					continue;
+				}
+
 				String authenticationServiceIdentity = idps.get(i).getAuthenticationServiceIdentity();
 				AuthenticationServiceInformation information=new AuthenticationServiceInformation(displayName,authenticationServiceURL,authenticationServiceIdentity);
             	
@@ -168,8 +174,8 @@ public class AuthenticationProfileServiceManager extends Runner implements Initi
 			if (authenticationServiceInformation.getAuthenticationServiceURL().equals(authenticationServiceURL)) {
 				authenticationServiceProfiles
 						.addAll(authenticationServiceInformation.getAuthenticationServiceProfiles());
+				break;
 			}
-			break;
 		}
 		return authenticationServiceProfiles;
 	}

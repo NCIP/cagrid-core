@@ -12,6 +12,7 @@ import org.cagrid.gaards.websso.exception.AuthenticationConfigurationException;
 
 import org.jdom.Document;
 import org.jdom.Element;
+import org.springframework.core.io.Resource;
 
 public class WebSSOProperties {
 	private Document propertiesFile = null;
@@ -21,7 +22,7 @@ public class WebSSOProperties {
 	private CredentialDelegationServiceInformation credentialDelegationServiceInformation = null;
 
 	public WebSSOProperties(final FileHelper fileHelper,
-			final String propertiesFileName, final String schemaFileName)
+			final Resource propertiesFileName, final Resource schemaFileName)
 			throws AuthenticationConfigurationException {
 		this.propertiesFile = fileHelper.validateXMLwithSchema(
 				propertiesFileName, schemaFileName);

@@ -14,11 +14,20 @@
 	<context:annotation-config/>
 	
 	<bean name="fileHelper" class="org.cagrid.gaards.websso.utils.FileHelper" />
+
+	<bean name="syncdescriptionResouce"
+		class="org.springframework.web.context.support.ServletContextResource">
+		<constructor-arg>
+			<bean
+				class="org.springframework.web.context.support.ServletContextFactoryBean" />
+		</constructor-arg>
+		<constructor-arg value="/WEB-INF/grid-resources/sync-description.xml"></constructor-arg>
+	</bean>
 	
 	<bean name="webSSOProperties" class="org.cagrid.gaards.websso.utils.WebSSOProperties">
 		<constructor-arg ref="fileHelper"></constructor-arg>
-		<constructor-arg value="websso-properties.xml"></constructor-arg>
-		<constructor-arg value="websso-properties.xsd"></constructor-arg>
+		<constructor-arg value="/WEB-INF/grid-resources/websso-properties.xml"></constructor-arg>
+		<constructor-arg value="/WEB-INF/grid-resources/websso-properties.xsd"></constructor-arg>
 	</bean>
 	
 	<bean name="authenticationServiceHelper"
@@ -45,20 +54,4 @@
 		factory-method="getInstance" scope="singleton">
 		<property name="webSSOProperties" ref="webSSOProperties" />
 	</bean>
-
-	<!--
-		If you want provide specific trust store and CRL paths use the entry
-		below
-	-->
-	<!--
-	<bean name="trust-store-path" factory-bean="WebSSOProperties"
-		factory-method="getTrustStorePath"/>
-	<bean name="certificate-revocation-list-path" factory-bean="WebSSOProperties"
-		factory-method="getCertificateRevocationListPath"/>
-	<bean name="ProxyValidator"
-		class="org.cagrid.gaards.websso.authentication.helper.impl.ProxyValidatorImpl">
-		<constructor-arg ref="trust-store-path"></constructor-arg>
-		<constructor-arg ref="certificate-revocation-list-path"></constructor-arg>
-	</bean>
-	 -->	
 </beans>

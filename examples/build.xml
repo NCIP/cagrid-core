@@ -30,6 +30,7 @@
 	<!-- Cleans up generated stuff                                      -->
 	<!-- ============================================================== -->
 	<target name="clean" depends="prepare" description="Cleans all projects.">
+		<ivy:cleancache />
 		<for parallel="true" param="project.buildfile" trim="true" threadcount="10">
 			<path refid="ivy.projects.list" />
 			<sequential>

@@ -11,7 +11,7 @@ import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 
-import org.springframework.core.io.ClassPathResource;
+import org.springframework.web.context.support.ServletContextResource;
 
 public class StartSyncGTSServlet extends HttpServlet {
 
@@ -22,8 +22,9 @@ public class StartSyncGTSServlet extends HttpServlet {
 		try {
 			String isSyncGtsAuto = config.getInitParameter("start-auto-syncgts");
 			if (isSyncGtsAuto.equals("true")) {
-				ClassPathResource pathResource=new ClassPathResource("sync-description.xml");
-				InputStream inputStream = pathResource.getInputStream();
+
+				ServletContextResource contextResource=new ServletContextResource(config.getServletContext(), "/WEB-INF/sync-description.xml");
+				InputStream inputStream = contextResource.getInputStream();
 				final InputStreamReader inputStreamReader = new InputStreamReader(inputStream);
 				SyncDescription description = (SyncDescription) Utils.deserializeObject(inputStreamReader,SyncDescription.class);
 				inputStreamReader.close();
