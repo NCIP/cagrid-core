@@ -24,13 +24,6 @@ public class NamingAuthorityTestCase extends NamingAuthorityTestCaseBase {
 
         assertResolvedValues(null);
         assertResolvedValues(values);
-        
-        values = new IdentifierValues();
-        values.add("URL", "http://www.google.com");
-        values.add("URL", "http://www.gmail.com");
-        values.add("ERP", "End point reference 1");
-        assertResolvedValues(values);
-
     }
 
 
@@ -38,7 +31,6 @@ public class NamingAuthorityTestCase extends NamingAuthorityTestCaseBase {
         URI id = null;
         try {
             id = this.NamingAuthority.createIdentifier(values);
- System.out.println("IDENTIFIER:" + id.toString());
         } catch (NamingAuthorityConfigurationException e) {
             e.printStackTrace();
             fail("test configuration error");

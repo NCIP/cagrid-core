@@ -61,19 +61,14 @@ public class NamingAuthorityImpl extends NamingAuthority {
 
     @Override
     public IdentifierValues resolveIdentifier(URI identifier) throws InvalidIdentifierException {
- //TODO: remove this
- System.out.println("NamingAuthority: resolveIdentifier:" + identifier.normalize().toString());
   
         URI localIdentifier = IdentifierUtil.getLocalName(getConfiguration().getPrefix(), identifier);
- //TODO: remove this
- System.out.println("localURI:" + localIdentifier.normalize().toString());
 
-        //IdentifierMetadata template = new IdentifierMetadata();
-        //template.setLocalIdentifier(localURI);
-
-        IdentifierValues result = this.identifierDao.getIdentifierValues(localIdentifier);
-        if (result == null) {
-            throw new InvalidIdentifierException("The specified identifier (" + identifier + ") was not found.");
+        IdentifierValues result = null;
+        try {
+        	result = this.identifierDao.getIdentifierValues( localIdentifier );
+        } catch(InvalidIdentifierException e) {
+        	throw new InvalidIdentifierException("The specified  identifier (" + identifier + ") was not found.");
         }
 
         return result;

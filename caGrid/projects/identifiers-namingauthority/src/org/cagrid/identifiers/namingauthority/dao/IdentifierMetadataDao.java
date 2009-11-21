@@ -8,6 +8,7 @@ import java.util.Map;
 import javax.persistence.NonUniqueResultException;
 
 import org.cagrid.identifiers.namingauthority.IdentifierValues;
+import org.cagrid.identifiers.namingauthority.InvalidIdentifierException;
 import org.cagrid.identifiers.namingauthority.hibernate.IdentifierMetadata;
 import org.cagrid.identifiers.namingauthority.hibernate.IdentifierValueKey;
 import org.hibernate.Hibernate;
@@ -23,7 +24,7 @@ public class IdentifierMetadataDao extends AbstractDao<IdentifierMetadata> {
         return IdentifierMetadata.class;
     }
     
-    public IdentifierValues getIdentifierValues( java.net.URI localIdentifier ) {
+    public IdentifierValues getIdentifierValues( java.net.URI localIdentifier ) throws InvalidIdentifierException {
 //TODO: remove this junk    	
 //    	IdentifierMetadata md = null;
 //
@@ -44,14 +45,15 @@ public class IdentifierMetadataDao extends AbstractDao<IdentifierMetadata> {
 
     	IdentifierMetadata md = getByExample(template);
     	if (md == null) {
-    		return null;
+    		throw new InvalidIdentifierException("The specified local identifier (" + localIdentifier + ") was not found.");
     	}
     	
     	materializeIdentifierMetadata(md);
     	
-    	IdentifierValues result = new IdentifierValues();
+    	IdentifierValues result = null;
     	
     	if (md.getValues() != null && md.getValues().size() > 0) {
+    		result = new IdentifierValues();
     		Map<String, List<String>> values = new HashMap<String, List<String>>();
     		result.setValues(values);
 
