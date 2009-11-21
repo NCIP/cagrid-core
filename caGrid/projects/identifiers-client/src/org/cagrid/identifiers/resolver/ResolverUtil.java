@@ -77,10 +77,10 @@ public class ResolverUtil {
     		throw new HttpException(errMsg + " [" + statusCode + ":" + response.getStatusLine().toString() + "]");
     	}
     	
-    	Header ctHeader = response.getFirstHeader("Content-Key");
+    	Header ctHeader = response.getFirstHeader("Content-Type");
     	if (ctHeader == null || ctHeader.getValue() == null ||
     			ctHeader.getValue().indexOf("application/xml") == -1) {
-    		throw new HttpException("Response has no XML content (Content-Key: "
+    		throw new HttpException("Response has no XML content (Content-Type: "
     				+ (ctHeader != null ? ctHeader.getValue() : "null") + 
     				"). " + errMsg);
     	}
