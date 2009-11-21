@@ -4,12 +4,15 @@ import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinTable;
 import javax.persistence.Table;
 
 import org.hibernate.annotations.CollectionOfElements;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 import org.hibernate.annotations.GenericGenerator;
 
 
@@ -25,7 +28,8 @@ public class IdentifierValueKey {
     @Column(nullable = false, name = "value_key", length = 1024)
     private String key;
 
-    @CollectionOfElements
+    @CollectionOfElements(fetch = FetchType.EAGER)
+    @Fetch(FetchMode.SUBSELECT)
     @JoinTable(name = "identifier_value_key_data")
     @Column(name = "value", length = 16777215)
     private List<String> values;
