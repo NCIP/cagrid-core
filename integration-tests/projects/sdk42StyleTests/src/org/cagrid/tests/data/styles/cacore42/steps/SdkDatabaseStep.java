@@ -97,20 +97,35 @@ public class SdkDatabaseStep extends AbstractDatabaseStep {
     private String getMysqlExecutable() {
         StringTokenizer pathTokenizer = new StringTokenizer(System.getenv("PATH"), File.pathSeparator);
         String mysqlName = "mysql";
-        boolean isWindows = System.getProperty("os.name").toLowerCase().contains("windows");
+        String osName = System.getProperty("os.name").toLowerCase();
+        boolean isWindows = osName.contains("windows");
+        boolean isMac = osName.contains("mac");
         if (isWindows) {
             mysqlName += ".exe";
         }
+        String exeLocation = null;
         while (pathTokenizer.hasMoreTokens()) {
             String path = pathTokenizer.nextToken();
             File maybeMysql = new File(path, mysqlName);
             if (maybeMysql.exists() && maybeMysql.isFile()) {
                 LOG.debug("Probably found mysql on the path: " + maybeMysql.getAbsolutePath());
-                return maybeMysql.getAbsolutePath();
+                exeLocation = maybeMysql.getAbsolutePath();
+                break;
             }
         }
-        fail("No mysql executable found on $PATH!");
-        return null;
+        if (exeLocation == null) {
+            if (isMac) {
+                File maybeMysqlMac = new File("/usr/local/mysql/bin/mysql");
+                if (maybeMysqlMac.exists() && maybeMysqlMac.isFile()) {
+                    LOG.debug("Probaby found mysql for mac at " + maybeMysqlMac.getAbsolutePath());
+                    exeLocation = maybeMysqlMac.getAbsolutePath();
+                } else {
+                    LOG.error("On Mac OS checked " + maybeMysqlMac.getAbsolutePath() + " and did not find executable!");
+                }
+            }
+        }
+        assertNotNull("No mysql executable found on $PATH!", exeLocation);
+        return exeLocation;
     }
     
     
