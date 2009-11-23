@@ -442,7 +442,11 @@ public class Utils {
 
 
     public static void stringBufferToFile(StringBuffer string, String fileName) throws IOException {
-        FileWriter fw = new FileWriter(new File(fileName));
+    	stringBufferToFile(string, new File(fileName));
+    }
+
+    public static void stringBufferToFile(StringBuffer string, File file) throws IOException {
+        FileWriter fw = new FileWriter(file);
         fw.write(string.toString());
         fw.close();
     }
