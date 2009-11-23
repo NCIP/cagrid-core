@@ -15,6 +15,8 @@
 	<property name="sdk42.tests.base.dir" value="${basedir}"/>
 	<!-- tells the test containers where to find their zip files -->
 	<property name="testing.containers.dir" value="${basedir}/../testUtils/containers"/>
+	<!-- SDK 42 database properties -->
+	<property file="${resources.dir}/sdk42.test.database.properties"/>
 
 	<!-- properties for caCORE SDK application's location -->
 	<!-- TODO: this could be configured by a properties file -->
@@ -30,8 +32,23 @@
 		</path>
 	</target>
 	
+	
+	<target name="sdkDbSetup" description="Sets up the caCORE SDK 4.2 test database">
+		<property name="db.script.dir" location="${sdk.unpack.dir}/sdk-toolkit/example-project/db/db-install/mysql"/>
+		<sql driver="${db.driver}" url="jdbc:mysql://${db.server}:${db.port}/" userid="${db.username}" password="${db.password}">
+			<classpath refid="test.run.classpath"/>
+			DROP DATABASE IF EXISTS ${db.schema.name};
+			CREATE DATABASE ${db.schema.name};
+		</sql>
+		<sql driver="${db.driver}" url="jdbc:mysql://${db.server}:${db.port}/${db.schema.name}" userid="${db.username}" password="${db.password}">
+			<classpath refid="test.run.classpath"/>
+			<transaction src="${db.script.dir}/SDKTestSchema-mysql.sql"/>
+			<transaction src="${db.script.dir}/SDKTestCSMSchema-mysql-template.sql"/>
+		</sql>
+	</target>
+	
 
-	<target name="test" description="Runs tests">
+	<target name="test" depends="sdkDbSetup" description="Runs tests">
 		<mkdir dir="${junit.results.dir}" />
 		<junit dir="${introduce.dir}" printsummary="yes" errorproperty="test.failed" failureproperty="test.failed" showoutput="true" fork="yes" forkmode="once">
 			<!-- is this needed any more? -->

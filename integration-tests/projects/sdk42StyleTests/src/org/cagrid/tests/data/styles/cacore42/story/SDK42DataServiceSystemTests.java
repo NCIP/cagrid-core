@@ -10,8 +10,6 @@ import junit.textui.TestRunner;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.cagrid.tests.data.styles.cacore42.steps.SdkDatabaseStep;
-import org.cagrid.tests.data.styles.cacore42.steps.SdkDatabaseStep.DatabaseOperation;
 import org.junit.After;
 import org.junit.Test;
 
@@ -82,13 +80,6 @@ public class SDK42DataServiceSystemTests {
     @After
     public void cleanUp() {
         LOG.debug("Cleaning up after tests");
-        // tear down the sdk example database
-        try {
-            new SdkDatabaseStep(DatabaseOperation.DESTROY).runStep();
-        } catch (Exception ex) {
-            LOG.warn("Error destroying SDK example project database: " + ex.getMessage());
-            ex.printStackTrace();
-        }
         // throw away the temp sdk dir
         LOG.debug("Deleting temp application base dir: " + tempApplicationDir.getAbsolutePath());
         Utils.deleteDir(tempApplicationDir);

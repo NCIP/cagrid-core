@@ -7,11 +7,11 @@
 	
 	<!-- locations within the testing project -->
 	<property name="project.name" value="${ant.project.name}" />
-	<property name="src.dir" value="${basedir}/src" />
-	<property name="resources.dir" value="resources" />
-	<property name="build.dir" value="${basedir}/build" />
-	<property name="classes.dir" value="${build.dir}/classes" />
-	<property name="jar.dir" value="${build.dir}/lib" />
+	<property name="src.dir" location="${basedir}/src" />
+	<property name="resources.dir" location="${basedir}/resources" />
+	<property name="build.dir" location="${basedir}/build" />
+	<property name="classes.dir" location="${build.dir}/classes" />
+	<property name="jar.dir" location="${build.dir}/lib" />
 	<property name="project.jarfile" value="${jar.dir}/${project.name}-${project.version}.jar" />
 	<property name="resources.jarfile" value="${jar.dir}/${project.name}-resources-${project.version}.jar" />
 	<property name="ext.lib.dir" location="${basedir}/ext/dependencies/jars" />

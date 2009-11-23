@@ -8,8 +8,6 @@ import java.util.Vector;
 
 import org.cagrid.tests.data.styles.cacore42.steps.BuildExampleProjectStep;
 import org.cagrid.tests.data.styles.cacore42.steps.ConfigureExampleProjectStep;
-import org.cagrid.tests.data.styles.cacore42.steps.SdkDatabaseStep;
-import org.cagrid.tests.data.styles.cacore42.steps.SdkDatabaseStep.DatabaseOperation;
 
 /**
  * Story that configures and builds 
@@ -37,27 +35,12 @@ public class CreateExampleProjectStory extends Story {
     public String getName() {
         return "caCORE SDK 4_2 Example Project Creation Story";
     }
-    
-    
-    public boolean storySetUp() throws Throwable {
-        boolean ok = false;
-        try {
-            new SdkDatabaseStep(DatabaseOperation.DESTROY).runStep();
-            ok = true;
-        } catch (Throwable th) {
-            ok = false;
-            throw th;
-        }
-        return ok;
-    }
 
 
     protected Vector steps() {
         Vector<Step> steps = new Vector<Step>();
-        steps.add(new SdkDatabaseStep(DatabaseOperation.CREATE));
         steps.add(new ConfigureExampleProjectStep(tempApplicationDir, enableCsm));
         steps.add(new BuildExampleProjectStep());
-        steps.add(new SdkDatabaseStep(DatabaseOperation.INSTALL));
         return steps;
     }
 }
