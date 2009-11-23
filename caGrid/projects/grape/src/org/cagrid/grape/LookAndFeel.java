@@ -107,6 +107,10 @@ public class LookAndFeel {
 	public final static ImageIcon getLogoNoText22x22() {
 		return IconUtils.loadIcon("/caGrid-icon-22x22.gif");
 	}
+	
+	public final static ImageIcon getActiveGridIcon() {
+		return IconUtils.loadIcon("/star-16x16.png");
+	}
 
 
 	public final static Color getPanelLabelColor() {

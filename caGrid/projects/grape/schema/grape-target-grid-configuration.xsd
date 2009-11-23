@@ -23,17 +23,11 @@
 				type="xsd:string" />
 			<xsd:element name="SystemName" minOccurs="1" maxOccurs="1"
 				type="xsd:string" />
-				<!--
-			<xsd:element name="uri" minOccurs="1" maxOccurs="1"
+			<xsd:element name="IvySettings" minOccurs="0" maxOccurs="1"
 				type="xsd:string" />
-			<xsd:element name="certificatesDirectory" minOccurs="1" maxOccurs="1"
-				type="xsd:string" />
-			<xsd:element name="DorianConfigurationFile" minOccurs="1" maxOccurs="1" type="xsd:string" />
-			<xsd:element name="AuthenticationServicesConfigurationFile" minOccurs="1" maxOccurs="1" type="xsd:string" />
-			<xsd:element name="DelegationServicesConfigurationFile" minOccurs="1" maxOccurs="1" type="xsd:string" />
-			<xsd:element name="GridTrustServicesConfigurationFile" minOccurs="1" maxOccurs="1" type="xsd:string" />
-			<xsd:element name="GridGrouperServicesConfigurationFile" minOccurs="1" maxOccurs="1" type="xsd:string" />
-			-->
+			<xsd:element name="publicationDate" minOccurs="0" maxOccurs="1" type="xsd:date" />
+			<xsd:element name="version" minOccurs="0" maxOccurs="1" type="xsd:string" />
+
 		</xsd:sequence>
 	</xsd:complexType>
 	
