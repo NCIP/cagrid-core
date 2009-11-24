@@ -7,30 +7,45 @@
 	<activeGrid>training-1.3</activeGrid>
 	<grid>
 		<SystemName>training-1.3</SystemName>
-		<DisplayName>Training Grid v1.3</DisplayName>
+		<DisplayName>Training Grid for caGrid 1.3</DisplayName>
 		<IvySettings>default</IvySettings>
-		<!--
-		<uri>http://software.cagrid.org/repository-1.3.0.1/caGrid/target_grid/training-1.3</uri>
-		<DorianConfigurationFile>dorian-services-configuration.xml</DorianConfigurationFile>
-		<AuthenticationServicesConfigurationFile>authentication-services-configuration.xml</AuthenticationServicesConfigurationFile>
-		<DelegationServicesConfigurationFile>cds-services-configuration.xml</DelegationServicesConfigurationFile>
-		<GridTrustServicesConfigurationFile>gts-services-configuration.xml</GridTrustServicesConfigurationFile>
-		<GridGrouperServicesConfigurationFile>gridgrouper-services-configuration.xml</GridGrouperServicesConfigurationFile>
-		<certificatesDirectory>certificates</certificatesDirectory>
-		-->
+		<publicationDate>2009-11-24</publicationDate>
+		<version>training-1.3</version>
 	</grid>
 	<grid>
 		<SystemName>nci_prod-1.3</SystemName>
-		<DisplayName>NCI Production Grid v1.3</DisplayName>
+		<DisplayName>NCI Production Grid for caGrid 1.3</DisplayName>
 		<IvySettings>default</IvySettings>
-		<!--
-		<uri>http://software.cagrid.org/repository-1.3.0.1/caGrid/target_grid/nci_prod-1.3</uri>
-		<DorianConfigurationFile>dorian-services-configuration.xml</DorianConfigurationFile>
-		<AuthenticationServicesConfigurationFile>authentication-services-configuration.xml</AuthenticationServicesConfigurationFile>
-		<DelegationServicesConfigurationFile>cds-services-configuration.xml</DelegationServicesConfigurationFile>
-		<GridTrustServicesConfigurationFile>gts-services-configuration.xml</GridTrustServicesConfigurationFile>
-		<GridGrouperServicesConfigurationFile>gridgrouper-services-configuration.xml</GridGrouperServicesConfigurationFile>
-		<certificatesDirectory>certificates</certificatesDirectory>
-		-->
-	</grid>	
+		<publicationDate>2009-11-24</publicationDate>
+		<version>training-1.3</version>
+	</grid>
+	<grid>
+		<DisplayName>NCI Development Grid for caGrid 1.3</DisplayName>
+		<SystemName>nci_dev-1.3</SystemName>
+		<IvySettings>default</IvySettings>
+		<publicationDate>2009-11-24</publicationDate>
+		<version>nci_dev-1.3</version>
+	</grid>
+	<grid>
+		<DisplayName>NCI QA Grid for caGrid 1.3</DisplayName>
+		<SystemName>nci_qa-1.3</SystemName>
+		<IvySettings>default</IvySettings>
+		<publicationDate>2009-11-24</publicationDate>
+		<version>nci_qa-1.3</version>
+	</grid>
+	<grid>
+		<DisplayName>NCI Staging Grid for caGrid 1.3</DisplayName>
+		<SystemName>nci_stage-1.3</SystemName>
+		<IvySettings>default</IvySettings>
+		<publicationDate>2009-11-24</publicationDate>
+		<version>nci_stage-1.3</version>
+	</grid>
+	<grid>
+		<DisplayName>OSU Development Grid for caGrid 1.3</DisplayName>
+		<SystemName>osu_dev-1.3</SystemName>
+		<IvySettings>default</IvySettings>
+		<publicationDate>2009-11-24</publicationDate>
+		<version>osu_dev-1.3</version>
+	</grid>
+	
 </TargetGridsConfiguration>
