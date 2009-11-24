@@ -85,7 +85,7 @@ public class Retrieve {
 				Map extraInfo = resolved.getDescriptor().getExtraInfo();
 				String displayName = (String) extraInfo.get("grid:displayName");
 
-				if (displayName == null || displayName.isEmpty()) {
+				if (displayName == null || (displayName.length() == 0)) {
 					grid.setDisplayName(grid.getSystemName());
 				}
 			} catch (IOException e) {
