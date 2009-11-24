@@ -17,7 +17,6 @@ import org.apache.ivy.core.resolve.IvyNode;
 import org.apache.ivy.core.resolve.ResolvedModuleRevision;
 import org.apache.ivy.core.retrieve.RetrieveOptions;
 import org.apache.ivy.plugins.matcher.PatternMatcher;
-import org.apache.ivy.util.StringUtils;
 import org.cagrid.grape.configuration.Grid;
 
 public class Retrieve {

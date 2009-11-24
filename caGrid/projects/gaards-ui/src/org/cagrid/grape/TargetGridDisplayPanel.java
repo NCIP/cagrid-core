@@ -11,7 +11,6 @@ import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.io.File;
-import java.io.FilenameFilter;
 
 import javax.swing.JButton;
 import javax.swing.JLabel;
@@ -85,7 +84,7 @@ public class TargetGridDisplayPanel extends JPanel {
 	private JButton getSetGrid() {
 		if (setGrid == null) {
 			setGrid = new JButton();
-			setGrid.setText("Make Default Grid");
+			setGrid.setText("Set Target Grid");
 
 			setGrid.addActionListener(new java.awt.event.ActionListener() {
 				public void actionPerformed(java.awt.event.ActionEvent e) {
@@ -104,38 +103,21 @@ public class TargetGridDisplayPanel extends JPanel {
 					+ File.separator + grid.getSystemName();
 
 			File gridSyncGTDCertsDir = null;
-			FilenameFilter fileOnlyFilter = new FilenameFilter() {
-
-				public boolean accept(File dir, String name) {
-					File file = new File(dir + "/" + name);
-					if (file.isFile() && !name.equals(".svn"))
-						return true;
-					else
-						return false;
-				}
-			};
-			File[] gridSyncGTSCertFiles = null;
 
 			String gridSyncGTDCertsDirName = System.getProperty("user.home")
 					+ File.separator + ".globus" + File.separator
 					+ "certificates";
 			gridSyncGTDCertsDir = new File(gridSyncGTDCertsDirName);
 			if (gridSyncGTDCertsDir.exists()) {
-				gridSyncGTSCertFiles = gridSyncGTDCertsDir.listFiles(fileOnlyFilter);
-				for (int i = 0; i < gridSyncGTSCertFiles.length; i++) {
-					gridSyncGTSCertFiles[i].delete();
-				}
-			} else {
-				gridSyncGTDCertsDir.mkdirs();
+				Utils.deleteDir(gridSyncGTDCertsDir);
 			}
+			gridSyncGTDCertsDir.mkdirs();
+			
 
 			File gridTargetCertsDir = new File(targetGridDirectory
 					+ File.separator + "certificates");
-			File[] gridCertFiles = gridTargetCertsDir.listFiles(fileOnlyFilter);
-			for (int i = 0; i < gridCertFiles.length; i++) {
-				Utils.copyFile(gridCertFiles[i], new File(gridSyncGTDCertsDir,
-						gridCertFiles[i].getName()));
-			}
+			Utils.copyDirectory(gridTargetCertsDir, gridSyncGTDCertsDir);
+
 
 			// sync with trust fabric
 			SyncGTSDefault

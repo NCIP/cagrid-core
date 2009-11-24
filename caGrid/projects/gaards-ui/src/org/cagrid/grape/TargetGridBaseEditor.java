@@ -398,7 +398,7 @@ public class TargetGridBaseEditor extends ConfigurationBasePanel {
 					Utils.copyFile(in, out);
 					ivySettings = out.toURI().toString();
 					grid.setIvySettings(ivySettings);
-					url = out.toURL();
+					url = out.toURI().toURL();
 				} else if (ivySettings.startsWith("http://")) {
 					url = new URL(ivySettings);
 				} else {
@@ -407,7 +407,7 @@ public class TargetGridBaseEditor extends ConfigurationBasePanel {
 					Utils.copyFile(in, out);
 					ivySettings = out.toURI().toString();
 					grid.setIvySettings(ivySettings);
-					url = out.toURL();
+					url = out.toURI().toURL();
 				}
 				ivy.execute(url, ivyURL, configDirName, "caGrid", "target_grid", grid);
 			} catch (IOException e) {
@@ -468,10 +468,7 @@ public class TargetGridBaseEditor extends ConfigurationBasePanel {
 					}
 					conf.setGrid(des);
 					loadValues();
-				}
-//				File gridDir = new File(Utils.getCaGridUserHome().getAbsolutePath() + File.separator + "gaards" + File.separator + grid.getSystemName());
-//				Utils.deleteDir(gridDir);
-				
+				}				
 			}
 
 		} catch (Exception e) {

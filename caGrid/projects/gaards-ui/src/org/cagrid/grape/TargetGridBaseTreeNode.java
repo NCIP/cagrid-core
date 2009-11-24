@@ -98,7 +98,7 @@ class TargetGridBaseTreeNode extends ConfigurationBaseTreeNode {
 		ConfigurationBaseTreeNode node = (ConfigurationBaseTreeNode) this
 				.getParent();
 		if (node == null) {
-			return "BLEE";
+			return "Base";
 		} else {
 			return node.getIdentifier() + ":" + toString();
 		}

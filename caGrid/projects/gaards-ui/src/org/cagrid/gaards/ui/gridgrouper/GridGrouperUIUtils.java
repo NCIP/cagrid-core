@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.log4j.Logger;
-import org.cagrid.grape.GridApplication;
+import org.cagrid.grape.GAARDSApplication;
 import org.cagrid.grape.configuration.ServiceConfiguration;
 import org.cagrid.grape.configuration.ServiceDescriptor;
 import org.cagrid.grape.configuration.Services;
@@ -18,8 +18,8 @@ public class GridGrouperUIUtils {
     public static List<GridGrouperHandle> getGridGrouperServices() {
         List<GridGrouperHandle> services = new ArrayList<GridGrouperHandle>();
         try {
-            ServiceConfiguration conf = (ServiceConfiguration) GridApplication.getContext().getConfigurationManager()
-                .getConfigurationObject(GridGrouperUIConstants.UI_CONF);
+            ServiceConfiguration conf = (ServiceConfiguration) GAARDSApplication.getContext().getConfigurationManager()
+                .getActiveConfigurationObject(GridGrouperUIConstants.UI_CONF);
             Services s = conf.getServices();
             if (s != null) {
                 ServiceDescriptor[] list = s.getServiceDescriptor();

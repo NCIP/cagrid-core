@@ -8,7 +8,7 @@ import org.apache.commons.logging.LogFactory;
 import org.cagrid.gaards.cds.common.DelegationPolicy;
 import org.cagrid.gaards.cds.common.GroupDelegationPolicy;
 import org.cagrid.gaards.cds.common.IdentityDelegationPolicy;
-import org.cagrid.grape.GridApplication;
+import org.cagrid.grape.GAARDSApplication;
 import org.cagrid.grape.configuration.ServiceConfiguration;
 import org.cagrid.grape.configuration.ServiceDescriptor;
 import org.cagrid.grape.configuration.Services;
@@ -22,8 +22,8 @@ public class CDSUIUtils {
     public static List<CDSHandle> getCDSServices() {
         List<CDSHandle> services = new ArrayList<CDSHandle>();
         try {
-            ServiceConfiguration conf = (ServiceConfiguration) GridApplication.getContext().getConfigurationManager()
-                .getConfigurationObject(CDSUIConstants.UI_CONF);
+            ServiceConfiguration conf = (ServiceConfiguration) GAARDSApplication.getContext().getConfigurationManager()
+                .getActiveConfigurationObject(CDSUIConstants.UI_CONF);
             Services s = conf.getServices();
             if (s != null) {
                 ServiceDescriptor[] list = s.getServiceDescriptor();

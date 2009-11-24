@@ -9,6 +9,7 @@ import java.util.List;
 import org.apache.log4j.Logger;
 import org.cagrid.gaards.dorian.client.GridUserClient;
 import org.cagrid.gaards.dorian.federation.TrustedIdentityProvider;
+import org.cagrid.grape.GAARDSApplication;
 import org.cagrid.grape.GridApplication;
 import org.cagrid.grape.configuration.ServiceConfiguration;
 import org.cagrid.grape.configuration.ServiceDescriptor;
@@ -52,9 +53,9 @@ public class AuthenticationLookupThread extends Runner {
 					}
 				}
 			} else {
-				ServiceConfiguration conf = (ServiceConfiguration) GridApplication
+				ServiceConfiguration conf = (ServiceConfiguration) GAARDSApplication
 						.getContext().getConfigurationManager()
-						.getConfigurationObject(
+						.getActiveConfigurationObject(
 								DorianUIConstants.AUTHENTICATION_SERVICE_CONF);
 				Services s = conf.getServices();
 				if (s != null) {

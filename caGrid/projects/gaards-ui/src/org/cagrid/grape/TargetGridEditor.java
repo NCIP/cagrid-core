@@ -24,8 +24,6 @@ public class TargetGridEditor extends ConfigurationBasePanel {
 		super(treeNode, conf);
 		initialize();
 
-//		HashMap<String, ConfigurationManager> configurationManagers = GAARDSApplication.getConfigurationManagers();
-		
 		Set<String> configurationNames = GAARDSApplication.getContext().getConfigurationManager().getConfigurationNames();
 		for (String configurationName : configurationNames) {
 			if ("default".equalsIgnoreCase(configurationName)) {
