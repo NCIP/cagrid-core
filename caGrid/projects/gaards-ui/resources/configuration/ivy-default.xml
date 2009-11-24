@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ivy-module version="2.0">
+    <info organisation="org.cagrid" module="target-grids">
+    </info>
+    
+    <dependencies>
+        <dependency org="${organisation}" name="${module}" rev="${target.grid}+" />
+    </dependencies>
+</ivy-module>
+

@@ -19,7 +19,7 @@
 				</ConfigurationDescriptor>
 				<ConfigurationDescriptor>
 					<DisplayName>Authentication Service(s)</DisplayName>
-					<SystemName>authentication-service</SystemName>
+					<SystemName>authentication</SystemName>
 					<ModelClassname>org.cagrid.grape.configuration.ServiceConfiguration</ModelClassname>
 					<qname>
 						<namespace>http://www.cagrid.org/1/grape-service-configuration</namespace>

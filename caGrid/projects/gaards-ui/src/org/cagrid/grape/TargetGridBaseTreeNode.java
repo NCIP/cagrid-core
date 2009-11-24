@@ -6,7 +6,6 @@ import org.cagrid.grape.configuration.Grid;
 import org.cagrid.grape.model.ConfigurationDescriptor;
 import org.cagrid.grape.model.ConfigurationDescriptors;
 import org.cagrid.grape.model.ConfigurationGroup;
-import org.cagrid.grape.utils.IconUtils;
 
 class TargetGridBaseTreeNode extends ConfigurationBaseTreeNode {
 
@@ -89,7 +88,7 @@ class TargetGridBaseTreeNode extends ConfigurationBaseTreeNode {
 
 	public ImageIcon getIcon() {
 		if (GAARDSApplication.getTargetGrid().equals(grid.getSystemName())) {
-			return IconUtils.loadIcon("/document-properties16x16.png");
+			return LookAndFeel.getActiveGridIcon();
 		} else {
 			return LookAndFeel.getConfigurationGroupIcon();
 		}

@@ -10,7 +10,6 @@
 		<width>1024</width>
 		<height>768</height>
 	</dimensions>
-	 <PostInitializerClass>org.cagrid.gaards.ui.common.GAARDSUIInitializer</PostInitializerClass>
 	 <configurationSynchronizerClass>org.cagrid.gaards.ui.common.GAARDSConfigurationSynchronizer</configurationSynchronizerClass>
 	<menus>
 		<menu>
@@ -320,7 +319,7 @@
 					<namespace>http://www.cagrid.org/1/grape-target-grid-configuration</namespace>
 					<name>TargetGridsConfiguration</name>
 				</qname>
-				<ConfigurationPanel>org.cagrid.grape.TargetGridEditor</ConfigurationPanel>
+				<ConfigurationPanel>org.cagrid.grape.TargetGridBaseEditor</ConfigurationPanel>
 				<DefaultFile>target-grid-configuration.xml</DefaultFile>
 			</ConfigurationDescriptor>
 		</ConfigurationDescriptors>

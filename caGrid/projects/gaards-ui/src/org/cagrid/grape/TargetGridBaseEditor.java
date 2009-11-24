@@ -7,6 +7,11 @@ import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.URISyntaxException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
@@ -18,12 +23,14 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 
+import org.apache.axis.utils.XMLUtils;
 import org.cagrid.grape.configuration.Grid;
-import org.cagrid.grape.configuration.ServiceConfiguration;
-import org.cagrid.grape.configuration.ServiceDescriptor;
-import org.cagrid.grape.configuration.Services;
+import org.cagrid.grape.configuration.TargetGridsConfiguration;
+import org.cagrid.grape.model.Configuration;
+import org.cagrid.ivy.Retrieve;
+import org.globus.wsrf.encoding.ObjectDeserializer;
 
-public class TargetGridServiceEditor extends ConfigurationBasePanel {
+public class TargetGridBaseEditor extends ConfigurationBasePanel {
 
 	private static final long serialVersionUID = 1L;
 
@@ -45,13 +52,9 @@ public class TargetGridServiceEditor extends ConfigurationBasePanel {
 
 	private JPanel priorityPanel = null;
 
-	private JButton increaseButton = null;
-
-	private JButton decreaseButton = null;
-
 	private JScrollPane jScrollPane1 = null;
 
-	private ServiceTable services = null;
+	private GridTable grids = null;
 
 	private JPanel buttonPanel = null;
 
@@ -59,24 +62,36 @@ public class TargetGridServiceEditor extends ConfigurationBasePanel {
 
 	private JLabel jLabel1 = null;
 
-	private JTextField serviceURL = null;
+	private JTextField systemName = null;
 
 	private JLabel jLabel2 = null;
 
-	private JTextField serviceIdentity = null;
-
-	/**
-	 * This is the default constructor
-	 */
-	public TargetGridServiceEditor(TargetGridDescriptorTreeNode treeNode,
-			Object conf) {
+	private JTextField ivySettings = null;
+	
+	public TargetGridBaseEditor(ConfigurationDescriptorTreeNode treeNode,
+			Object conf) throws Exception {
 		super(treeNode, conf);
 		initialize();
+
+		Set<String> configurationNames = GAARDSApplication.getContext().getConfigurationManager().getConfigurationNames();
+		for (String configurationName : configurationNames) {
+			if ("default".equalsIgnoreCase(configurationName)) {
+				continue;
+			}
+			Grid grid = GAARDSApplication.getContext()
+					.getConfigurationManager().getConfigurationGrid(
+							configurationName);
+
+			TargetGridBaseTreeNode gridNode = new TargetGridBaseTreeNode(
+					treeNode.getConfigurationWindow(), treeNode.getTree(), grid);
+			treeNode.add(gridNode);
+			gridNode.processConfigurationGroups();
+		}
 		loadValues();
 	}
 
-	public ServiceConfiguration getServiceConfiguration() {
-		return (ServiceConfiguration) this.getConfigurationObject();
+	public TargetGridsConfiguration getTargetGridsConfiguration() {
+		return (TargetGridsConfiguration) this.getConfigurationObject();
 	}
 
 	/**
@@ -85,7 +100,7 @@ public class TargetGridServiceEditor extends ConfigurationBasePanel {
 	 */
 	private void initialize() {
 		jLabel2 = new JLabel();
-		jLabel2.setText("Service Identity");
+		jLabel2.setText("Ivy Configuration");
 		GridBagConstraints gridBagConstraints12 = new GridBagConstraints();
 		gridBagConstraints12.gridx = 0;
 		gridBagConstraints12.fill = GridBagConstraints.HORIZONTAL;
@@ -133,7 +148,7 @@ public class TargetGridServiceEditor extends ConfigurationBasePanel {
 			gridBagConstraints1.weightx = 1.0D;
 			gridBagConstraints1.gridx = 1;
 			titleLabel = new JLabel();
-			titleLabel.setText(getServiceConfiguration().getServiceGroupDescription());
+			titleLabel.setText("Grid Configurations");
 			titleLabel.setFont(new Font("Dialog", Font.BOLD, 14));
 			titlePanel = new JPanel();
 			titlePanel.setLayout(new GridBagLayout());
@@ -144,16 +159,13 @@ public class TargetGridServiceEditor extends ConfigurationBasePanel {
 	}
 
 	private void loadValues() {
-		this.services.clearTable();
-		ServiceConfiguration conf = getServiceConfiguration();
+		this.grids.clearTable();
+		TargetGridsConfiguration conf = getTargetGridsConfiguration();
 		if (conf != null) {
-			Services s = conf.getServices();
-			if (s != null) {
-				ServiceDescriptor[] list = s.getServiceDescriptor();
-				if (list != null) {
-					for (int i = 0; i < list.length; i++) {
-						getServices().addService(list[i]);
-					}
+			Grid[] list = conf.getGrid();
+			if (list != null) {
+				for (int i = 0; i < list.length; i++) {
+					getGrids().addGrid(list[i]);
 				}
 			}
 		}
@@ -182,7 +194,7 @@ public class TargetGridServiceEditor extends ConfigurationBasePanel {
 			valuesPanel = new JPanel();
 			valuesPanel.setLayout(new GridBagLayout());
 			valuesPanel.setBorder(javax.swing.BorderFactory.createTitledBorder(
-					null, "Services",
+					null, "Target Grids",
 					javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION,
 					javax.swing.border.TitledBorder.DEFAULT_POSITION, null,
 					LookAndFeel.getPanelLabelColor()));
@@ -223,7 +235,7 @@ public class TargetGridServiceEditor extends ConfigurationBasePanel {
 			gridBagConstraints8.anchor = GridBagConstraints.WEST;
 			gridBagConstraints8.gridy = 1;
 			jLabel1 = new JLabel();
-			jLabel1.setText("Service URL");
+			jLabel1.setText("Service Name");
 			GridBagConstraints gridBagConstraints4 = new GridBagConstraints();
 			gridBagConstraints4.anchor = GridBagConstraints.WEST;
 			gridBagConstraints4.gridy = 0;
@@ -245,7 +257,7 @@ public class TargetGridServiceEditor extends ConfigurationBasePanel {
 			actionPanel = new JPanel();
 			actionPanel.setLayout(new GridBagLayout());
 			actionPanel.setBorder(javax.swing.BorderFactory.createTitledBorder(
-					null, "Add Service",
+					null, "Add",
 					javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION,
 					javax.swing.border.TitledBorder.DEFAULT_POSITION, null,
 					LookAndFeel.getPanelLabelColor()));
@@ -253,9 +265,9 @@ public class TargetGridServiceEditor extends ConfigurationBasePanel {
 			actionPanel.add(getButtonPanel(), gridBagConstraints9);
 			actionPanel.add(jLabel, gridBagConstraints4);
 			actionPanel.add(jLabel1, gridBagConstraints8);
-			actionPanel.add(getServiceURL(), gridBagConstraints10);
+			actionPanel.add(getSystemName(), gridBagConstraints10);
 			actionPanel.add(jLabel2, gridBagConstraints11);
-			actionPanel.add(getServiceIdentity(), gridBagConstraints13);
+			actionPanel.add(getIvySettings(), gridBagConstraints13);
 		}
 		return actionPanel;
 	}
@@ -310,42 +322,10 @@ public class TargetGridServiceEditor extends ConfigurationBasePanel {
 		return removeButton;
 	}
 
-	private void moveUp() {
-		int index = getServices().getSelectedRow();
-		if (index > 0) {
-			Services s = getServiceConfiguration().getServices();
-			if (s != null) {
-				ServiceDescriptor[] services = s.getServiceDescriptor();
-				ServiceDescriptor temp = services[index - 1];
-				services[index - 1] = services[index];
-				services[index] = temp;
-				loadValues();
-				int row = (index - 1);
-				getServices().setRowSelectionInterval(row, row);
-			}
-		}
-	}
-
-	private void moveDown() {
-		int index = getServices().getSelectedRow();
-		if (index != -1) {
-			Services s = getServiceConfiguration().getServices();
-			if ((s != null) && ((index+1)<getServices().getRowCount())) {
-				ServiceDescriptor[] services = s.getServiceDescriptor();
-				ServiceDescriptor temp = services[index + 1];
-				services[index + 1] = services[index];
-				services[index] = temp;
-				loadValues();
-				int row = (index + 1);
-				getServices().setRowSelectionInterval(row, row);
-			}
-		}
-	}
-
 	private void addValue() {
 		String displayName = Utils.clean(getDisplayName().getText());
-		String serviceURL = Utils.clean(getServiceURL().getText());
-		String serviceIdentity = Utils.clean(getServiceIdentity().getText());
+		String systemName = Utils.clean(getSystemName().getText());
+		String ivySettings = Utils.clean(getIvySettings().getText());
 
 		if (displayName == null) {
 			GridApplication.getContext().showMessage(
@@ -353,69 +333,145 @@ public class TargetGridServiceEditor extends ConfigurationBasePanel {
 			return;
 		}
 
-		if (serviceURL == null) {
+		if (systemName == null) {
 			GridApplication.getContext().showMessage(
-					"Please specify a Service URL!!!");
+					"Please specify a System name!!!");
+			return;
+		}
+		
+		if (ivySettings == null) {
+			GridApplication.getContext().showMessage(
+					"Please specify the ivy configuration!!!");
 			return;
 		}
 
-		ServiceDescriptor des = new ServiceDescriptor();
-		des.setDisplayName(displayName);
-		des.setServiceURL(serviceURL);
-		des.setServiceIdentity(serviceIdentity);
+		Grid grid = new Grid();
+		grid.setDisplayName(displayName);
+		grid.setSystemName(systemName);
+		grid.setIvySettings(ivySettings);
+		
+		String configDirName = Utils.getCaGridUserHome().getAbsolutePath() + File.separator + "gaards";
+		Retrieve ivy = new Retrieve();
+    	URL ivyURL = this.getClass().getResource("/ivy-default.xml");
+		if ("default".equals(ivySettings)) {
+			URL settings = this.getClass().getResource("/ivysettings-default.xml");
+			ivy.execute(settings, ivyURL, configDirName, "caGrid", "target_grid", grid);
+		} else if ("local".equals(ivySettings)) {
+			File newGridDir = new File(Utils.getCaGridUserHome().getAbsolutePath() + File.separator + "gaards" + File.separator + systemName);
+			newGridDir.mkdir();
+			File newCertDir = new File(newGridDir,"certificates");
+			newCertDir.mkdir();
+			try {
+				InputStream configFileFromJar = null;
+				File configFile = null;
+				configFileFromJar = this.getClass().getResourceAsStream("/authentication-services-configuration.xml");
+				configFile = new File(newGridDir, "authentication-services-configuration.xml");
+				Utils.stringBufferToFile(Utils.inputStreamToStringBuffer(configFileFromJar), configFile);
+				configFileFromJar = this.getClass().getResourceAsStream("/cds-services-configuration.xml");
+				configFile = new File(newGridDir, "cds-services-configuration.xml");
+				Utils.stringBufferToFile(Utils.inputStreamToStringBuffer(configFileFromJar), configFile);
+				configFileFromJar = this.getClass().getResourceAsStream("/dorian-services-configuration.xml");
+				configFile = new File(newGridDir, "dorian-services-configuration.xml");
+				Utils.stringBufferToFile(Utils.inputStreamToStringBuffer(configFileFromJar), configFile);
+				configFileFromJar = this.getClass().getResourceAsStream("/gridgrouper-services-configuration.xml");
+				configFile = new File(newGridDir, "gridgrouper-services-configuration.xml");
+				Utils.stringBufferToFile(Utils.inputStreamToStringBuffer(configFileFromJar), configFile);
+				configFileFromJar = this.getClass().getResourceAsStream("/gts-services-configuration.xml");
+				configFile = new File(newGridDir, "gts-services-configuration.xml");
+				Utils.stringBufferToFile(Utils.inputStreamToStringBuffer(configFileFromJar), configFile);
+				configFileFromJar = this.getClass().getResourceAsStream("/sync-description.xml");
+				configFile = new File(newGridDir, "sync-description.xml");
+				Utils.stringBufferToFile(Utils.inputStreamToStringBuffer(configFileFromJar), configFile);
 
-		ServiceConfiguration conf = getServiceConfiguration();
-		Services s = conf.getServices();
-		if (s == null) {
-			s = new Services();
-			conf.setServices(s);
-		}
-		ServiceDescriptor[] list = s.getServiceDescriptor();
-		int size = 1;
-		if (list != null) {
-			size = list.length + 1;
-		}
-
-		ServiceDescriptor[] newList = new ServiceDescriptor[size];
-
-		if (list != null) {
-			for (int i = 0; i < list.length; i++) {
-				newList[i] = list[i];
+				GAARDSApplication.getContext().getConfigurationManager().addConfiguration(loadConfiguration(), grid);
+			} catch (Exception e) {
+				GridApplication.getContext().showMessage("Error extracting grid configuration template files!");
+				e.printStackTrace();
+			}
+		} else {
+			try {
+				URL url = null;
+				if (ivySettings.startsWith("file://") && !ivySettings.startsWith("file://" + configDirName)) {
+					url = new URL(ivySettings);
+					File in = new File(url.toURI());
+					File out = new File(configDirName + File.separator + "ivysettings-" + systemName + ".xml");
+					Utils.copyFile(in, out);
+					ivySettings = out.toURI().toString();
+					grid.setIvySettings(ivySettings);
+					url = out.toURL();
+				} else if (ivySettings.startsWith("http://")) {
+					url = new URL(ivySettings);
+				} else {
+					File in = new File(ivySettings);
+					File out = new File(configDirName + File.separator + "ivysettings-" + systemName + ".xml");
+					Utils.copyFile(in, out);
+					ivySettings = out.toURI().toString();
+					grid.setIvySettings(ivySettings);
+					url = out.toURL();
+				}
+				ivy.execute(url, ivyURL, configDirName, "caGrid", "target_grid", grid);
+			} catch (IOException e) {
+				e.printStackTrace();
+			} catch (URISyntaxException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
 			}
 		}
-		newList[size - 1] = des;
+		
+		TargetGridsConfiguration conf = getTargetGridsConfiguration();
+		Grid[] list = conf.getGrid();
+		int size = 1;
+		if (list != null) {
+			size += list.length;
+		}
 
-		s.setServiceDescriptor(newList);
+		Grid[] newList = new Grid[size];
 
+		System.arraycopy(list, 0, newList, 0, list.length);
+		newList[size - 1] = grid;
+
+		conf.setGrid(newList);
 		loadValues();
+
+
+
+	}
+	
+	private Configuration loadConfiguration() throws Exception {
+		InputStream inputStream = this.getClass().getResourceAsStream("/configuration.xml");
+		
+        org.w3c.dom.Document doc = XMLUtils.newDocument(inputStream);
+        Object obj = ObjectDeserializer.toObject(doc.getDocumentElement(), Configuration.class);
+        inputStream.close();
+        return Configuration.class.cast(obj);
+
 	}
 
 	private void removeValue() {
 		try {
-			ServiceDescriptor service = getServices().getSelectedService();
-			ServiceConfiguration conf = getServiceConfiguration();
+			Grid grid = getGrids().getSelectedGrid();
+			TargetGridsConfiguration conf = getTargetGridsConfiguration();
 			if (conf != null) {
-				Services s = conf.getServices();
-				if (s != null) {
-					ServiceDescriptor[] list = s.getServiceDescriptor();
-					if (list != null) {
-						List<ServiceDescriptor> newList = new ArrayList<ServiceDescriptor>();
-						for (int i = 0; i < list.length; i++) {
-							if (!service.equals(list[i])) {
-								newList.add(list[i]);
-							}
+				Grid[] grids = conf.getGrid();
+				if (grids != null) {
+					List<Grid> newList = new ArrayList<Grid>();
+					for (int i = 0; i < grids.length; i++) {
+						if (!grid.equals(grids[i])) {
+							newList.add(grids[i]);
 						}
-						getServices().clearTable();
-						ServiceDescriptor[] des = new ServiceDescriptor[newList
-								.size()];
-						for (int i = 0; i < newList.size(); i++) {
-							des[i] = newList.get(i);
-							getServices().addService(des[i]);
-						}
-						s.setServiceDescriptor(des);
-						loadValues();
 					}
+					getGrids().clearTable();
+					Grid[] des = new Grid[newList.size()];
+					for (int i = 0; i < newList.size(); i++) {
+						des[i] = newList.get(i);
+						getGrids().addGrid(des[i]);
+					}
+					conf.setGrid(des);
+					loadValues();
 				}
+//				File gridDir = new File(Utils.getCaGridUserHome().getAbsolutePath() + File.separator + "gaards" + File.separator + grid.getSystemName());
+//				Utils.deleteDir(gridDir);
+				
 			}
 
 		} catch (Exception e) {
@@ -443,51 +499,9 @@ public class TargetGridServiceEditor extends ConfigurationBasePanel {
 		if (priorityPanel == null) {
 			priorityPanel = new JPanel();
 			priorityPanel.setLayout(new FlowLayout());
-			priorityPanel.add(getIncreaseButton(), null);
-			priorityPanel.add(getDecreaseButton(), null);
 			priorityPanel.add(getRemoveButton(), null);
 		}
 		return priorityPanel;
-	}
-
-	/**
-	 * This method initializes increaseButton
-	 * 
-	 * @return javax.swing.JButton
-	 */
-	private JButton getIncreaseButton() {
-		if (increaseButton == null) {
-			increaseButton = new JButton();
-			increaseButton.setText("Move Up");
-			increaseButton.setIcon(LookAndFeel.getUpIcon());
-			increaseButton
-					.addActionListener(new java.awt.event.ActionListener() {
-						public void actionPerformed(java.awt.event.ActionEvent e) {
-							moveUp();
-						}
-					});
-		}
-		return increaseButton;
-	}
-
-	/**
-	 * This method initializes decreaseButton
-	 * 
-	 * @return javax.swing.JButton
-	 */
-	private JButton getDecreaseButton() {
-		if (decreaseButton == null) {
-			decreaseButton = new JButton();
-			decreaseButton.setText("Move Down");
-			decreaseButton.setIcon(LookAndFeel.getDownIcon());
-			decreaseButton
-					.addActionListener(new java.awt.event.ActionListener() {
-						public void actionPerformed(java.awt.event.ActionEvent e) {
-							moveDown();
-						}
-					});
-		}
-		return decreaseButton;
 	}
 
 	/**
@@ -498,7 +512,7 @@ public class TargetGridServiceEditor extends ConfigurationBasePanel {
 	private JScrollPane getJScrollPane1() {
 		if (jScrollPane1 == null) {
 			jScrollPane1 = new JScrollPane();
-			jScrollPane1.setViewportView(getServices());
+			jScrollPane1.setViewportView(getGrids());
 		}
 		return jScrollPane1;
 	}
@@ -508,11 +522,11 @@ public class TargetGridServiceEditor extends ConfigurationBasePanel {
 	 * 
 	 * @return javax.swing.JTable
 	 */
-	private ServiceTable getServices() {
-		if (services == null) {
-			services = new ServiceTable();
+	private GridTable getGrids() {
+		if (grids == null) {
+			grids = new GridTable();
 		}
-		return services;
+		return grids;
 	}
 
 	/**
@@ -534,11 +548,11 @@ public class TargetGridServiceEditor extends ConfigurationBasePanel {
 	 * 
 	 * @return javax.swing.JTextField
 	 */
-	private JTextField getServiceURL() {
-		if (serviceURL == null) {
-			serviceURL = new JTextField();
+	private JTextField getSystemName() {
+		if (systemName == null) {
+			systemName = new JTextField();
 		}
-		return serviceURL;
+		return systemName;
 	}
 
 	/**
@@ -546,12 +560,10 @@ public class TargetGridServiceEditor extends ConfigurationBasePanel {
 	 * 
 	 * @return javax.swing.JTextField
 	 */
-	private JTextField getServiceIdentity() {
-		if (serviceIdentity == null) {
-			serviceIdentity = new JTextField();
+	private JTextField getIvySettings() {
+		if (ivySettings == null) {
+			ivySettings = new JTextField();
 		}
-		return serviceIdentity;
+		return ivySettings;
 	}
-	
-
 }

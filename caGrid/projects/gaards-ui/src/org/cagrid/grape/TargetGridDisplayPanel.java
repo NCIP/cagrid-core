@@ -5,15 +5,13 @@ import gov.nih.nci.cagrid.syncgts.bean.SyncDescription;
 import gov.nih.nci.cagrid.syncgts.core.SyncGTS;
 import gov.nih.nci.cagrid.syncgts.core.SyncGTSDefault;
 
+import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
 import java.io.FilenameFilter;
-import java.util.Properties;
 
 import javax.swing.JButton;
 import javax.swing.JLabel;
@@ -22,16 +20,7 @@ import javax.swing.JPanel;
 import org.cagrid.gaards.ui.dorian.ServicesManager;
 import org.cagrid.grape.configuration.Grid;
 import org.cagrid.grape.utils.ErrorDialog;
-import java.awt.Dimension;
 
-/**
- * @author <A href="mailto:langella@bmi.osu.edu">Stephen Langella </A>
- * @author <A href="mailto:oster@bmi.osu.edu">Scott Oster </A>
- * @author <A href="mailto:hastings@bmi.osu.edu">Shannon Hastings </A>
- * @created Oct 14, 2004
- * @version $Id: ArgumentManagerTable.java,v 1.2 2004/10/15 16:35:16 langella
- *          Exp $
- */
 public class TargetGridDisplayPanel extends JPanel {
 
 	private static final long serialVersionUID = 1L;

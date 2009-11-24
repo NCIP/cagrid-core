@@ -8,6 +8,7 @@
 	<grid>
 		<SystemName>training-1.3</SystemName>
 		<DisplayName>Training Grid v1.3</DisplayName>
+		<IvySettings>default</IvySettings>
 		<!--
 		<uri>http://software.cagrid.org/repository-1.3.0.1/caGrid/target_grid/training-1.3</uri>
 		<DorianConfigurationFile>dorian-services-configuration.xml</DorianConfigurationFile>
@@ -21,6 +22,7 @@
 	<grid>
 		<SystemName>nci_prod-1.3</SystemName>
 		<DisplayName>NCI Production Grid v1.3</DisplayName>
+		<IvySettings>default</IvySettings>
 		<!--
 		<uri>http://software.cagrid.org/repository-1.3.0.1/caGrid/target_grid/nci_prod-1.3</uri>
 		<DorianConfigurationFile>dorian-services-configuration.xml</DorianConfigurationFile>
