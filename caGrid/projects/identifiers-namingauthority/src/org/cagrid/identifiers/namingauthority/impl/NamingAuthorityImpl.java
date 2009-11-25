@@ -1,18 +1,11 @@
 package org.cagrid.identifiers.namingauthority.impl;
 
 import java.net.URI;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 import org.cagrid.identifiers.namingauthority.IdentifierValues;
 import org.cagrid.identifiers.namingauthority.InvalidIdentifierException;
 import org.cagrid.identifiers.namingauthority.NamingAuthority;
 import org.cagrid.identifiers.namingauthority.dao.IdentifierMetadataDao;
-import org.cagrid.identifiers.namingauthority.hibernate.IdentifierMetadata;
-import org.cagrid.identifiers.namingauthority.hibernate.IdentifierValueKey;
 import org.cagrid.identifiers.namingauthority.util.IdentifierUtil;
 
 
@@ -29,33 +22,11 @@ public class NamingAuthorityImpl extends NamingAuthority {
     @Override
     public URI createIdentifier(IdentifierValues ivalues) throws Exception {
 
-        // TODO: I think we should allow this so you can request "placeholder"
-        // identifiers, and update them later
-        // if (ivalues == null)
-        // throw new Exception("Input IdentifierValues can't be null");
-
         URI identifier = generateIdentifier();
+        
+        this.identifierDao.saveIdentifierValues( identifier, ivalues );
 
-        IdentifierMetadata md = new IdentifierMetadata();
-        md.setLocalIdentifier(identifier);
-        List<IdentifierValueKey> values = new ArrayList<IdentifierValueKey>();
-        md.setValues(values);
-
-        if (ivalues != null) {
-            String[] keys = ivalues.getKeys();
-            for (String key : keys) {
-                IdentifierValueKey vk = new IdentifierValueKey();
-                vk.setKey(key);
-                String[] data = ivalues.getValues(key);
-                vk.setValues(Arrays.asList(data));
-                values.add(vk);
-            }
-        }
-
-        this.identifierDao.save(md);
-
-        return IdentifierUtil.build(getConfiguration().getPrefix(), md.getLocalIdentifier());
-
+        return IdentifierUtil.build(getConfiguration().getPrefix(), identifier);
     }
 
 

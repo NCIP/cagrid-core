@@ -26,6 +26,19 @@
     <servlet-name>NamingAuthorityService</servlet-name>
     <url-pattern>/NamingAuthorityService/*</url-pattern>
   </servlet-mapping>
+  <!-- Uncomment this to force the container to SSL 
+   <security-constraint>
+      <web-resource-collection>
+         <web-resource-name>HTTPS Only Naming Authority</web-resource-name>
+         <url-pattern>/NamingAuthorityService/*</url-pattern>
+         <http-method>GET</http-method>
+         <http-method>POST</http-method>
+      </web-resource-collection>
+      <user-data-constraint>
+         <transport-guarantee>CONFIDENTIAL</transport-guarantee>
+      </user-data-constraint>
+   </security-constraint>
+   -->
   <welcome-file-list>
     <welcome-file>index.html</welcome-file>
     <welcome-file>index.htm</welcome-file>

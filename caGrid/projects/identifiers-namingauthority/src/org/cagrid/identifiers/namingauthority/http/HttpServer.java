@@ -45,7 +45,6 @@ public class HttpServer implements Runnable {
             System.out.println("HTTP Jetty Server Started on port " + _port);
             server.join();
         } catch (Exception e) {
-            // TODO Auto-generated catch block
             System.out.println("Failed to start Jetty HTTP Server: " + e);
             e.printStackTrace();
         }

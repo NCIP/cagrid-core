@@ -1,6 +1,8 @@
 package org.cagrid.identifiers.namingauthority.http;
 
 import java.io.IOException;
+import java.io.PrintWriter;
+import java.io.StringWriter;
 import java.net.URI;
 import java.net.URISyntaxException;
 
@@ -120,9 +122,33 @@ public class HttpProcessorImpl implements HttpProcessor {
         return baos.toString();
     }
 
+    protected String prepHtmlError( String msg, Exception e) {
+    	StringBuffer sb = new StringBuffer( "<h2>There was an error processing your request</h2>");
+    	sb.append("<h3>")
+    		.append(msg)
+    		.append("</h3>");
+    	
+    	if (e != null) {
+    		StringWriter sw = new StringWriter();
+    		e.printStackTrace(new PrintWriter(sw));
+    		sb.append("<hr>")
+    			.append("<br>")
+    			.append(e.toString())
+    			.append("<br>")
+    			.append(sw.toString());
+    	}
+    	
+    	String outStr = sb.toString().replace("\n", "<br>");
+    	return outStr;
+    }
+    
+    protected String prepHtmlError( String msg ) {
+    	return prepHtmlError( msg, null );
+    }
 
     public void process(HttpServletRequest request, HttpServletResponse response) throws IOException {
         StringBuffer msg = new StringBuffer();
+        int responseStatus = HttpServletResponse.SC_OK;
 
         //
         // ?config causes to ignore resolution and
@@ -145,52 +171,48 @@ public class HttpProcessorImpl implements HttpProcessor {
             }
 
             boolean xmlResponse = forceXML || xmlResponseRequired(request);
-            boolean noErrors = true;
-
-            // TODO: this is stripping all request params... are we ok with
-            // that?
+        
             URI uri = URI.create(request.getPathInfo());
-            System.out.println("URI[" + uri + "]");
+
             if (uri == null || uri.getPath().length() <= 1 || !uri.getPath().startsWith("/")) {
-                msg.append("<h1>No identifier provided</h1>");
-                noErrors = false;
-                response.setContentType(HTTP_ACCEPT_HTML);
-            }
+                msg.append(prepHtmlError("No identifier provided"));
+                responseStatus = HttpServletResponse.SC_BAD_REQUEST;
+            } else {
 
-            if (noErrors) {
-
-                IdentifierValues ivs=null;
+                IdentifierValues ivs = null;
                 try {
                     ivs = (IdentifierValues) namingAuthority.resolveIdentifier(IdentifierUtil.build(namingAuthority
                         .getConfiguration().getPrefix(), uri));
+                    
+                    if (xmlResponse) {
+                        msg.append(xmlResponse(ivs));
+                        response.setContentType(HTTP_ACCEPT_XML);
+                    } else {
+                        msg.append(htmlResponse(uri, ivs));
+                        response.setContentType(HTTP_ACCEPT_HTML);
+                    }
+                    
                 } catch (URISyntaxException e) {
-                    // TODO return appropriate HTTP Error and info
-                    // response.setStatus()
-                    e.printStackTrace();
-                    return;
+                	e.printStackTrace();
+                	msg.append(prepHtmlError("A URI syntax error has been detected in the input identifier", e));
+                    responseStatus = HttpServletResponse.SC_BAD_REQUEST;
                 } catch (InvalidIdentifierException e) {
-                    // TODO return appropriate HTTP Error and info
-                    // response.setStatus()
                     e.printStackTrace();
-                    return;
+                    msg.append(prepHtmlError("Input identifier was not found in the system", e));
+                    responseStatus = HttpServletResponse.SC_NOT_FOUND;
                 } catch (NamingAuthorityConfigurationException e) {
-                    // TODO return appropriate HTTP Error and info
-                    // response.setStatus()
                     e.printStackTrace();
-                    return;
-                }
-
-                if (xmlResponse) {
-                    msg.append(xmlResponse(ivs));
-                    response.setContentType(HTTP_ACCEPT_XML);
-                } else {
-                    msg.append(htmlResponse(uri, ivs));
-                    response.setContentType(HTTP_ACCEPT_HTML);
-                }
+                    msg.append(prepHtmlError("A configuration error has been detected", e));
+                    responseStatus = HttpServletResponse.SC_INTERNAL_SERVER_ERROR;
+                }         
             }
         }
 
-        response.setStatus(HttpServletResponse.SC_OK);
+        if ( responseStatus != HttpServletResponse.SC_OK ) {
+        	response.setContentType(HTTP_ACCEPT_HTML);
+        }
+        
+        response.setStatus(responseStatus);
         response.getWriter().println(msg.toString());
     };
 
