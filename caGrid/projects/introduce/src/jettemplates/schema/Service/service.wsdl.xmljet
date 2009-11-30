@@ -10,11 +10,7 @@
 <definitions name="<%=service.getName()%>" targetNamespace="<%=service.getNamespace()%>"
     xmlns:tns="<%=service.getNamespace()%>"
     xmlns:wsrp="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ResourceProperties-1.2-draft-01.xsd"
-    xmlns:wsrlw="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ResourceLifetime-1.2-draft-01.wsdl"
-    xmlns:wsdlpp="http://www.globus.org/namespaces/2004/10/WSDLPreprocessor"
-    xmlns:gtwsdl1="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ServiceGroup-1.2-draft-01.wsdl"
     xmlns:wsa="http://schemas.xmlsoap.org/ws/2004/03/addressing"
-    xmlns:wsntw="http://docs.oasis-open.org/wsn/2004/06/wsn-WS-BaseNotification-1.2-draft-01.wsdl"
     xmlns:wsrbfw="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-BaseFaults-1.2-draft-01.wsdl"
     xmlns:wsrpw="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ResourceProperties-1.2-draft-01.wsdl"
 <%
@@ -43,16 +39,16 @@
         location="../wsrf/properties/WS-ResourceProperties.wsdl"/>
     <import namespace="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-BaseFaults-1.2-draft-01.wsdl"
         location="../wsrf/faults/WS-BaseFaults.wsdl"/>
-    <import namespace="http://docs.oasis-open.org/wsn/2004/06/wsn-WS-BaseNotification-1.2-draft-01.wsdl"
-        location="../wsrf/notification/WS-BaseN.wsdl"/>
 <%
 	imiterator = imprefixmap.keySet().iterator();
 		while(imiterator.hasNext()){
 			String namespace = (String)imiterator.next();
+			//these two are static imports above, so make sure to not add them in again
+			if(!namespace.equals("http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ResourceProperties-1.2-draft-01.wsdl") && !namespace.equals("http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-BaseFaults-1.2-draft-01.wsdl") ){
 			ImportInformation importInformation=(ImportInformation)imprefixmap.get(namespace);
 %>    <import namespace="<%=importInformation.getInformation().getNamespace()%>"
         location="./<%=importInformation.getInformation().getWsdlFile()%>"/>
-<%  		
+<%  		}
 		}
 		
 %>
