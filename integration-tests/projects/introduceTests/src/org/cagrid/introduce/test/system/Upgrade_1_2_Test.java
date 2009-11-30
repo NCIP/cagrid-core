@@ -5,6 +5,7 @@ import gov.nih.nci.cagrid.introduce.test.TestCaseInfoMain;
 import gov.nih.nci.cagrid.introduce.test.steps.RemoveSkeletonStep;
 import gov.nih.nci.cagrid.introduce.test.steps.UnzipOldServiceStep;
 import gov.nih.nci.cagrid.introduce.test.steps.UpgradesStep;
+import gov.nih.nci.cagrid.introduce.test.steps.ValidateWSDLStep;
 import gov.nih.nci.cagrid.testing.system.deployment.ServiceContainer;
 import gov.nih.nci.cagrid.testing.system.deployment.ServiceContainerFactory;
 import gov.nih.nci.cagrid.testing.system.deployment.ServiceContainerType;
@@ -57,6 +58,7 @@ public class Upgrade_1_2_Test extends Story {
             steps.add(new UnzipOldServiceStep(this.getClass().getResource(
                 "/gold/serviceVersions/" + "IntroduceTestService-1_2.zip").getFile(), this.tci1));
             steps.add(new UpgradesStep(this.tci1, true));
+            steps.add(new ValidateWSDLStep(this.tci1, false));
             steps.add(new DeployServiceStep(container, this.tci1.getDir()));
             steps.add(new StartContainerStep(container));
             steps.add(new InvokeClientStep(container, this.tci1));

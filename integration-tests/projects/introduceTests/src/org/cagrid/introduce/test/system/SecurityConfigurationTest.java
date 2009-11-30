@@ -4,6 +4,7 @@ import gov.nih.nci.cagrid.introduce.test.NotificationTestCaseInfo;
 import gov.nih.nci.cagrid.introduce.test.TestCaseInfo;
 import gov.nih.nci.cagrid.introduce.test.steps.CreateSkeletonStep;
 import gov.nih.nci.cagrid.introduce.test.steps.RemoveSkeletonStep;
+import gov.nih.nci.cagrid.introduce.test.steps.ValidateWSDLStep;
 import gov.nih.nci.cagrid.testing.system.deployment.SecureContainer;
 import gov.nih.nci.cagrid.testing.system.deployment.ServiceContainer;
 import gov.nih.nci.cagrid.testing.system.deployment.ServiceContainerFactory;
@@ -60,6 +61,7 @@ public class SecurityConfigurationTest extends Story {
             steps.add(new CopyCAStep((SecureContainer) container, tci));
             steps.add(new AddSecurityMethodsStep(tci,true));
             steps.add(new AddSecurityMethodsImplStep(tci,true));
+            steps.add(new ValidateWSDLStep(tci,false));
             
             steps.add(new DeployServiceStep(container,tci.getDir()));
             

@@ -7,6 +7,7 @@ import gov.nih.nci.cagrid.introduce.test.steps.AddImportedMethodStep;
 import gov.nih.nci.cagrid.introduce.test.steps.AddSimpleMethodStep;
 import gov.nih.nci.cagrid.introduce.test.steps.CreateSkeletonStep;
 import gov.nih.nci.cagrid.introduce.test.steps.RemoveSkeletonStep;
+import gov.nih.nci.cagrid.introduce.test.steps.ValidateWSDLStep;
 import gov.nih.nci.cagrid.testing.system.haste.Story;
 
 import java.io.File;
@@ -51,6 +52,8 @@ public class SyncToolsSimpleImportTest extends Story {
 
             steps.add(new AddSimpleMethodStep(tci3, "newMethod", true));
             steps.add(new AddImportedMethodStep(tci1, tci3, "newMethod", true, true));
+            steps.add(new ValidateWSDLStep(tci1,false));
+
         } catch (Exception e) {
             e.printStackTrace();
             fail();

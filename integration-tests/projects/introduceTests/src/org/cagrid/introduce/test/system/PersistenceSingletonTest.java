@@ -9,6 +9,7 @@ import gov.nih.nci.cagrid.introduce.test.steps.AddSetBookMethodStep;
 import gov.nih.nci.cagrid.introduce.test.steps.CreateSkeletonStep;
 import gov.nih.nci.cagrid.introduce.test.steps.ModifyPersistenceClientStep;
 import gov.nih.nci.cagrid.introduce.test.steps.RemoveSkeletonStep;
+import gov.nih.nci.cagrid.introduce.test.steps.ValidateWSDLStep;
 import gov.nih.nci.cagrid.testing.system.deployment.ServiceContainer;
 import gov.nih.nci.cagrid.testing.system.deployment.ServiceContainerFactory;
 import gov.nih.nci.cagrid.testing.system.deployment.ServiceContainerType;
@@ -56,6 +57,7 @@ public class PersistenceSingletonTest extends Story {
             steps.add(new AddSetBookMethodStep(tci,false));
             steps.add(new AddGetBookMethodStep(tci,false));
             steps.add(new AddPersistenceMethodImplStep(tci,true));
+            steps.add(new ValidateWSDLStep(tci,false));
             
             steps.add(new DeployServiceStep(container,tci.getDir()));
             steps.add(new StartContainerStep(container));

@@ -12,6 +12,7 @@ import gov.nih.nci.cagrid.introduce.test.steps.AddServiceContextStep;
 import gov.nih.nci.cagrid.introduce.test.steps.AddSetBookMethodStep;
 import gov.nih.nci.cagrid.introduce.test.steps.CreateSkeletonStep;
 import gov.nih.nci.cagrid.introduce.test.steps.RemoveSkeletonStep;
+import gov.nih.nci.cagrid.introduce.test.steps.ValidateWSDLStep;
 import gov.nih.nci.cagrid.testing.system.deployment.ServiceContainer;
 import gov.nih.nci.cagrid.testing.system.deployment.ServiceContainerFactory;
 import gov.nih.nci.cagrid.testing.system.deployment.ServiceContainerType;
@@ -68,6 +69,8 @@ public class PersistenceResourcesTest extends Story {
             steps.add(new AddSetBookMethodStep(ptci,false));
             steps.add(new AddGetBookMethodStep(ptci,false));
             steps.add(new AddPersistenceResourceMethodImplStep(tci,ptci,true));
+            steps.add(new ValidateWSDLStep(tci,false));
+
             
             steps.add(new DeployServiceStep(container,tci.getDir()));
             steps.add(new StartContainerStep(container));

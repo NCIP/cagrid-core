@@ -24,6 +24,7 @@ import gov.nih.nci.cagrid.introduce.test.steps.RemoveAllServicePropertiesStep;
 import gov.nih.nci.cagrid.introduce.test.steps.RemoveMethodStep;
 import gov.nih.nci.cagrid.introduce.test.steps.RemoveSimpleMethodImplStep;
 import gov.nih.nci.cagrid.introduce.test.steps.RemoveSkeletonStep;
+import gov.nih.nci.cagrid.introduce.test.steps.ValidateWSDLStep;
 import gov.nih.nci.cagrid.testing.system.deployment.ServiceContainer;
 import gov.nih.nci.cagrid.testing.system.deployment.ServiceContainerFactory;
 import gov.nih.nci.cagrid.testing.system.deployment.ServiceContainerType;
@@ -81,12 +82,14 @@ public class SyncToolsTest extends Story {
             steps.add(new AddSimpleMethodStep(tci1, "newMethod", false));
             steps.add(new AddSimpleMethodImplStep(tci1, "newMethod", true));
             steps.add(new AddSimpleMethodStep(tci2, "newMethod2", true));
+            steps.add(new ValidateWSDLStep(tci1,false));
             steps.add(new DeployServiceStep(container, tci1.getDir()));
             steps.add(new StartContainerStep(container));
             steps.add(new InvokeClientStep(container, tci1));
             steps.add(new RemoveSimpleMethodImplStep(tci1, "newMethod", true));
             steps.add(new ModifySimpleMethodStep(tci1, "newMethod", false));
             steps.add(new ModifySimpleMethodStep(tci2, "newMethod2", true));
+            steps.add(new ValidateWSDLStep(tci1,false));
             steps.add(new RemoveMethodStep(tci1, "newMethod", false));
             steps.add(new RemoveMethodStep(tci2, "newMethod2", false));
             steps.add(new AddSimpleMethodStep(tci2, "newMethod1", true));
@@ -99,8 +102,10 @@ public class SyncToolsTest extends Story {
             steps
                 .add(new AddComplexMethodWithFaulsAndArraysStep(tci1, "newComplexMethodWithFaultStepsAndArrays", true));
             steps.add(new AddMetadatatWithLoadFromFileStep(tci1, true));
+            steps.add(new ValidateWSDLStep(tci1,false));
             steps.add(new RemoveAllMetadataStep(tci1, true));
             steps.add(new RemoveAllServicePropertiesStep(tci1, true));
+            steps.add(new ValidateWSDLStep(tci1,false));
         } catch (Exception e) {
             e.printStackTrace();
             fail(e.getMessage());

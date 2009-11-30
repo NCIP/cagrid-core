@@ -7,6 +7,7 @@ import gov.nih.nci.cagrid.introduce.test.steps.AddNotificationMethodImplStep;
 import gov.nih.nci.cagrid.introduce.test.steps.AddSetBookMethodStep;
 import gov.nih.nci.cagrid.introduce.test.steps.CreateSkeletonStep;
 import gov.nih.nci.cagrid.introduce.test.steps.RemoveSkeletonStep;
+import gov.nih.nci.cagrid.introduce.test.steps.ValidateWSDLStep;
 import gov.nih.nci.cagrid.testing.system.deployment.ServiceContainer;
 import gov.nih.nci.cagrid.testing.system.deployment.ServiceContainerFactory;
 import gov.nih.nci.cagrid.testing.system.deployment.ServiceContainerType;
@@ -53,6 +54,7 @@ public class NotificationTest extends Story {
             steps.add(new AddBookResourcePropertyStep(tci,false));
             steps.add(new AddSetBookMethodStep(tci,false));
             steps.add(new AddNotificationMethodImplStep(tci,true));
+            steps.add(new ValidateWSDLStep(tci,false));
             steps.add(new DeployServiceStep(container,tci.getDir()));
             steps.add(new StartContainerStep(container));
             steps.add(new InvokeClientStep(container,tci));

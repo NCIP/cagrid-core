@@ -12,6 +12,7 @@ import gov.nih.nci.cagrid.introduce.test.steps.AddBookstoreSchemaStep;
 import gov.nih.nci.cagrid.introduce.test.steps.AddServiceContextStep;
 import gov.nih.nci.cagrid.introduce.test.steps.CreateSkeletonStep;
 import gov.nih.nci.cagrid.introduce.test.steps.RemoveSkeletonStep;
+import gov.nih.nci.cagrid.introduce.test.steps.ValidateWSDLStep;
 import gov.nih.nci.cagrid.testing.system.deployment.ServiceContainer;
 import gov.nih.nci.cagrid.testing.system.deployment.ServiceContainerFactory;
 import gov.nih.nci.cagrid.testing.system.deployment.ServiceContainerType;
@@ -72,6 +73,7 @@ public class ResourceCreationTest extends Story {
             steps.add(new AddBookResourcePropertyStep(tci4, false));
             steps.add(new AddBookResourcePropertyStep(tci5, false));
             steps.add(new AddBookResourcePropertyStep(tci6, true));
+            steps.add(new ValidateWSDLStep(tci1,false));
             steps.add(new DeployServiceStep(container, tci1.getDir()));
             steps.add(new StartContainerStep(container));
         } catch (Exception e) {
