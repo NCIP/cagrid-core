@@ -1,0 +1,11 @@
+<?xml version="1.0"?>
+
+<ivy-module version="2.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:noNamespaceSchemaLocation="http://incubator.apache.org/ivy/schemas/ivy.xsd">
+
+	<info organisation="castor" module="spring-xml" revision="1.2.1">
+		<license name="Apache" url="http://www.apache.org/licenses/LICENSE-2.0.txt"/>
+		<description>Castor XML Spring factory beans (http://repository.codehaus.org/org/codehaus/castor/spring-xml/1.2.1/)
+		</description>
+	</info>
+</ivy-module>
