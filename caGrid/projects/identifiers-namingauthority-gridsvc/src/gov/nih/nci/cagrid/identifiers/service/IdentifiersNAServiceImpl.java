@@ -54,9 +54,9 @@ public class IdentifiersNAServiceImpl extends IdentifiersNAServiceImplBase {
 
     // TODO: handle all the exceptions appropriately, returning faults as
     // necessary
-    public org.apache.axis.types.URI createIdentifier(gov.nih.nci.cagrid.identifiers.KeyValuesMap keyValuesMap) throws RemoteException {
+  public org.apache.axis.types.URI createIdentifier(namingauthority.IdentifierValues identifierValues) throws RemoteException {
 	   try {
-		   java.net.URI identifier = namingAuthority.createIdentifier(MappingUtil.toIdentifierValues(keyValuesMap));
+		   java.net.URI identifier = namingAuthority.createIdentifier(MappingUtil.map(identifierValues));
 		   return new org.apache.axis.types.URI(identifier.toString());
 	   } catch (Exception e) {
 	      e.printStackTrace();
@@ -64,12 +64,11 @@ public class IdentifiersNAServiceImpl extends IdentifiersNAServiceImplBase {
 	   }
     }
 
-
     // TODO: handle all the exceptions appropriately, returning faults as
     // necessary
-    public gov.nih.nci.cagrid.identifiers.KeyValuesMap resolveIdentifier(org.apache.axis.types.URI identifier) throws RemoteException {
+  public namingauthority.IdentifierValues resolveIdentifier(org.apache.axis.types.URI identifier) throws RemoteException {
     	try {
-    		return MappingUtil.toKeyValuesMap(namingAuthority.resolveIdentifier( new URI(identifier.toString() )));
+    		return MappingUtil.map(namingAuthority.resolveIdentifier( new URI(identifier.toString() )));
     	} catch(Exception e) {
     		e.printStackTrace();
     		throw new RemoteException(e.toString());

@@ -18,9 +18,6 @@ import org.oasis.wsrf.properties.GetResourcePropertyResponse;
 
 import org.globus.gsi.GlobusCredential;
 
-import gov.nih.nci.cagrid.identifiers.KeyValues;
-import gov.nih.nci.cagrid.identifiers.KeyValuesMap;
-import gov.nih.nci.cagrid.identifiers.Values;
 import gov.nih.nci.cagrid.identifiers.stubs.IdentifiersNAServicePortType;
 import gov.nih.nci.cagrid.identifiers.stubs.service.IdentifiersNAServiceAddressingLocator;
 import gov.nih.nci.cagrid.identifiers.common.IdentifiersNAServiceI;
@@ -64,39 +61,39 @@ public class IdentifiersNAServiceClient extends IdentifiersNAServiceClientBase i
 		try{
 		if(!(args.length < 2)){
 			if(args[0].equals("-url")){
-			  IdentifiersNAServiceClient client = new IdentifiersNAServiceClient(args[1]);
+//			  IdentifiersNAServiceClient client = new IdentifiersNAServiceClient(args[1]);
 			  // place client calls here if you want to use this main as a
 			  // test....
 				
-			  KeyValues[] tvs = new KeyValues[2];
-			  tvs[0] = new KeyValues();
-			  tvs[0].setKey("URL");
-			  Values values = new Values();
-			  values.setValue(new String[] { "http://www.yahoo1.com", "http://www.yahoo2.com" });
-			  tvs[0].setValues(values);
-			  
-			  tvs[1] = new KeyValues();
-			  tvs[1].setKey("XXX");
-			  values = new Values();
-			  values.setValue(new String[] { "text1", "text2" });
-			  tvs[1].setValues(values);
-			  
-			  KeyValuesMap tvm = new KeyValuesMap();
-			  tvm.setKeyValues(tvs);
-
-			  org.apache.axis.types.URI identifier = client.createIdentifier(tvm);
-			  System.out.println("Created [" + identifier.toString() + "]");
-				
+//			  KeyValues[] tvs = new KeyValues[2];
+//			  tvs[0] = new KeyValues();
+//			  tvs[0].setKey("URL");
+//			  Values values = new Values();
+//			  values.setValue(new String[] { "http://www.yahoo1.com", "http://www.yahoo2.com" });
+//			  tvs[0].setValues(values);
+//
+//			  tvs[1] = new KeyValues();
+//			  tvs[1].setKey("XXX");
+//			  values = new Values();
+//			  values.setValue(new String[] { "text1", "text2" });
+//			  tvs[1].setValues(values);
+//
+//			  KeyValuesMap tvm = new KeyValuesMap();
+//			  tvm.setKeyValues(tvs);
+//
+//			  org.apache.axis.types.URI identifier = client.createIdentifier(tvm);
+//			  System.out.println("Created [" + identifier.toString() + "]");
+//				
 //			  org.apache.axis.types.URI identifier = new org.apache.axis.types.URI(
-//					  "http://purlz.cagrid.org:8080/localhost/90efcbb0-8e4a-4421-b5c9-5eecdb9da056");
-			  System.out.println("Now retrieving values for " + identifier);
-			  KeyValuesMap tvm2 = client.resolveIdentifier(identifier);
-			  for( KeyValues tv : tvm2.getKeyValues() ) {
-				  System.out.println("KEY: " + tv.getKey());
-				  for( String value : tv.getValues().getValue() ) {
-					  System.out.println("\tVALUE: " + value);
-				  }
-			  }
+//					  "http://purlz.cagrid.org:8080/localhost/d34c03a9-705b-4287-92f9-a021452e3716");
+//			  System.out.println("Now retrieving values for " + identifier);
+//			  namingauthority tvm2 = client.resolveIdentifier(identifier);
+//			  for( KeyValues tv : tvm2.getKeyValues() ) {
+//				  System.out.println("KEY: " + tv.getKey());
+//				  for( String value : tv.getValues().getValue() ) {
+//					  System.out.println("\tVALUE: " + value);
+//				  }
+//			  }
 			} else {
 				usage();
 				System.exit(1);
@@ -132,19 +129,19 @@ public class IdentifiersNAServiceClient extends IdentifiersNAServiceClientBase i
     }
   }
 
-  public org.apache.axis.types.URI createIdentifier(gov.nih.nci.cagrid.identifiers.KeyValuesMap keyValuesMap) throws RemoteException {
+  public org.apache.axis.types.URI createIdentifier(namingauthority.IdentifierValues identifierValues) throws RemoteException {
     synchronized(portTypeMutex){
       configureStubSecurity((Stub)portType,"createIdentifier");
     gov.nih.nci.cagrid.identifiers.stubs.CreateIdentifierRequest params = new gov.nih.nci.cagrid.identifiers.stubs.CreateIdentifierRequest();
-    gov.nih.nci.cagrid.identifiers.stubs.CreateIdentifierRequestKeyValuesMap keyValuesMapContainer = new gov.nih.nci.cagrid.identifiers.stubs.CreateIdentifierRequestKeyValuesMap();
-    keyValuesMapContainer.setKeyValuesMap(keyValuesMap);
-    params.setKeyValuesMap(keyValuesMapContainer);
+    gov.nih.nci.cagrid.identifiers.stubs.CreateIdentifierRequestIdentifierValues identifierValuesContainer = new gov.nih.nci.cagrid.identifiers.stubs.CreateIdentifierRequestIdentifierValues();
+    identifierValuesContainer.setIdentifierValues(identifierValues);
+    params.setIdentifierValues(identifierValuesContainer);
     gov.nih.nci.cagrid.identifiers.stubs.CreateIdentifierResponse boxedResult = portType.createIdentifier(params);
     return boxedResult.getIdentifier();
     }
   }
 
-  public gov.nih.nci.cagrid.identifiers.KeyValuesMap resolveIdentifier(org.apache.axis.types.URI identifier) throws RemoteException {
+  public namingauthority.IdentifierValues resolveIdentifier(org.apache.axis.types.URI identifier) throws RemoteException {
     synchronized(portTypeMutex){
       configureStubSecurity((Stub)portType,"resolveIdentifier");
     gov.nih.nci.cagrid.identifiers.stubs.ResolveIdentifierRequest params = new gov.nih.nci.cagrid.identifiers.stubs.ResolveIdentifierRequest();
@@ -152,7 +149,7 @@ public class IdentifiersNAServiceClient extends IdentifiersNAServiceClientBase i
     identifierContainer.setIdentifier(identifier);
     params.setIdentifier(identifierContainer);
     gov.nih.nci.cagrid.identifiers.stubs.ResolveIdentifierResponse boxedResult = portType.resolveIdentifier(params);
-    return boxedResult.getKeyValuesMap();
+    return boxedResult.getIdentifierValues();
     }
   }
 

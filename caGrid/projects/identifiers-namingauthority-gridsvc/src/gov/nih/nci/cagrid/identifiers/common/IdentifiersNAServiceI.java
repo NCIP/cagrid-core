@@ -21,16 +21,16 @@ public interface IdentifiersNAServiceI {
   /**
    * Creates a new identifier
    *
-   * @param keyValuesMap
+   * @param identifierValues
    */
-  public org.apache.axis.types.URI createIdentifier(gov.nih.nci.cagrid.identifiers.KeyValuesMap keyValuesMap) throws RemoteException ;
+  public org.apache.axis.types.URI createIdentifier(namingauthority.IdentifierValues identifierValues) throws RemoteException ;
 
   /**
    * Returns type/values stored with the identifier
    *
    * @param identifier
    */
-  public gov.nih.nci.cagrid.identifiers.KeyValuesMap resolveIdentifier(org.apache.axis.types.URI identifier) throws RemoteException ;
+  public namingauthority.IdentifierValues resolveIdentifier(org.apache.axis.types.URI identifier) throws RemoteException ;
 
 }
 

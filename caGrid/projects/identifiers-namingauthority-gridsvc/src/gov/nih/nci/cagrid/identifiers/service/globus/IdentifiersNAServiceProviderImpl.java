@@ -28,13 +28,13 @@ public class IdentifiersNAServiceProviderImpl{
 
     public gov.nih.nci.cagrid.identifiers.stubs.CreateIdentifierResponse createIdentifier(gov.nih.nci.cagrid.identifiers.stubs.CreateIdentifierRequest params) throws RemoteException {
     gov.nih.nci.cagrid.identifiers.stubs.CreateIdentifierResponse boxedResult = new gov.nih.nci.cagrid.identifiers.stubs.CreateIdentifierResponse();
-    boxedResult.setIdentifier(impl.createIdentifier(params.getKeyValuesMap().getKeyValuesMap()));
+    boxedResult.setIdentifier(impl.createIdentifier(params.getIdentifierValues().getIdentifierValues()));
     return boxedResult;
   }
 
     public gov.nih.nci.cagrid.identifiers.stubs.ResolveIdentifierResponse resolveIdentifier(gov.nih.nci.cagrid.identifiers.stubs.ResolveIdentifierRequest params) throws RemoteException {
     gov.nih.nci.cagrid.identifiers.stubs.ResolveIdentifierResponse boxedResult = new gov.nih.nci.cagrid.identifiers.stubs.ResolveIdentifierResponse();
-    boxedResult.setKeyValuesMap(impl.resolveIdentifier(params.getIdentifier().getIdentifier()));
+    boxedResult.setIdentifierValues(impl.resolveIdentifier(params.getIdentifier().getIdentifier()));
     return boxedResult;
   }
 
