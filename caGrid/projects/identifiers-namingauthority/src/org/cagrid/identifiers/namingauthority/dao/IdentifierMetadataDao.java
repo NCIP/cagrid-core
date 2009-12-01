@@ -10,8 +10,8 @@ import java.util.Map;
 
 import javax.persistence.NonUniqueResultException;
 
-import org.cagrid.identifiers.namingauthority.IdentifierValues;
 import org.cagrid.identifiers.namingauthority.InvalidIdentifierException;
+import org.cagrid.identifiers.namingauthority.domain.IdentifierValues;
 import org.cagrid.identifiers.namingauthority.hibernate.IdentifierMetadata;
 import org.cagrid.identifiers.namingauthority.hibernate.IdentifierValueKey;
 import org.hibernate.HibernateException;

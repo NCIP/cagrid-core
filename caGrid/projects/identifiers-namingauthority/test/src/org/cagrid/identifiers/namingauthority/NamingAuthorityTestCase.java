@@ -3,6 +3,7 @@ package org.cagrid.identifiers.namingauthority;
 import java.net.URI;
 import java.net.URISyntaxException;
 
+import org.cagrid.identifiers.namingauthority.domain.IdentifierValues;
 import org.cagrid.identifiers.namingauthority.test.NamingAuthorityTestCaseBase;
 
 

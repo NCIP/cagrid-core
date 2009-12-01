@@ -2,10 +2,10 @@ package org.cagrid.identifiers.namingauthority.impl;
 
 import java.net.URI;
 
-import org.cagrid.identifiers.namingauthority.IdentifierValues;
 import org.cagrid.identifiers.namingauthority.InvalidIdentifierException;
 import org.cagrid.identifiers.namingauthority.NamingAuthority;
 import org.cagrid.identifiers.namingauthority.dao.IdentifierMetadataDao;
+import org.cagrid.identifiers.namingauthority.domain.IdentifierValues;
 import org.cagrid.identifiers.namingauthority.util.IdentifierUtil;
 
 

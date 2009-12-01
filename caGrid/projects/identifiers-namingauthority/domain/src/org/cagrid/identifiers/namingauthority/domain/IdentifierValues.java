@@ -1,13 +1,10 @@
-package org.cagrid.identifiers.namingauthority;
+package org.cagrid.identifiers.namingauthority.domain;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import org.cagrid.identifiers.namingauthority.hibernate.IdentifierValueKey;
-
 
 public class IdentifierValues implements java.io.Serializable {
     private Map<String, List<String>> values = new HashMap<String, List<String>>();
@@ -40,6 +37,10 @@ public class IdentifierValues implements java.io.Serializable {
             values.put(key, currValues);
         }
         currValues.add(data);
+    }
+    
+    public void set(String key, String[] data) {
+    	this.values.put(key, Arrays.asList(data));
     }
     
     public boolean equals(Object obj) { 

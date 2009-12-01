@@ -6,12 +6,14 @@ import java.io.StringWriter;
 import java.net.URI;
 import java.net.URISyntaxException;
 
-import org.cagrid.identifiers.namingauthority.IdentifierValues;
 import org.cagrid.identifiers.namingauthority.InvalidIdentifierException;
 import org.cagrid.identifiers.namingauthority.NamingAuthority;
 import org.cagrid.identifiers.namingauthority.NamingAuthorityConfigurationException;
+import org.cagrid.identifiers.namingauthority.domain.IdentifierValues;
+import org.cagrid.identifiers.namingauthority.domain.Serializer;
 import org.cagrid.identifiers.namingauthority.util.IdentifierUtil;
 import org.cagrid.identifiers.namingauthority.HttpProcessor;
+
 
 import javax.servlet.http.*;
 
@@ -19,17 +21,20 @@ import javax.servlet.http.*;
 public class HttpProcessorImpl implements HttpProcessor {
 
     private NamingAuthority namingAuthority;
+    private Serializer serializer;
 
     public static String HTTP_ACCEPT_HDR = "Accept";
     public static String HTTP_ACCEPT_HTML = "text/html";
     public static String HTTP_ACCEPT_XML = "application/xml";
     public static String HTTP_ACCEPT_ANY = "*/*";
 
-
     public void setNamingAuthority(NamingAuthority na) {
         this.namingAuthority = na;
     }
-
+    
+    public void setSerializer( Serializer aSerializer ) {
+    	this.serializer = aSerializer;
+    }
 
     public boolean xmlResponseRequired(HttpServletRequest req) {
         boolean htmlOk = false;
@@ -100,17 +105,6 @@ public class HttpProcessorImpl implements HttpProcessor {
 
         return msg.toString();
     }
-
-
-    public String xmlResponse(IdentifierValues ivs) {
-        java.io.ByteArrayOutputStream baos = new java.io.ByteArrayOutputStream();
-        java.beans.XMLEncoder encoder = new java.beans.XMLEncoder(baos);
-        encoder.writeObject(ivs);
-        encoder.close();
-
-        return baos.toString();
-    }
-
 
     public String xmlConfigResponse() {
         NamingAuthorityConfig publicConfig = new NamingAuthorityConfig(namingAuthority.getConfiguration());
@@ -185,13 +179,12 @@ public class HttpProcessorImpl implements HttpProcessor {
                         .getConfiguration().getPrefix(), uri));
                     
                     if (xmlResponse) {
-                        msg.append(xmlResponse(ivs));
+                        msg.append(serializer.serialize(ivs));
                         response.setContentType(HTTP_ACCEPT_XML);
                     } else {
                         msg.append(htmlResponse(uri, ivs));
                         response.setContentType(HTTP_ACCEPT_HTML);
                     }
-                    
                 } catch (URISyntaxException e) {
                 	e.printStackTrace();
                 	msg.append(prepHtmlError("A URI syntax error has been detected in the input identifier", e));
@@ -204,7 +197,11 @@ public class HttpProcessorImpl implements HttpProcessor {
                     e.printStackTrace();
                     msg.append(prepHtmlError("A configuration error has been detected", e));
                     responseStatus = HttpServletResponse.SC_INTERNAL_SERVER_ERROR;
-                }         
+                } catch (Exception e) {
+                	e.printStackTrace();
+                	msg.append(prepHtmlError("Unexpected system error", e));
+                	responseStatus = HttpServletResponse.SC_INTERNAL_SERVER_ERROR;
+                }
             }
         }
 

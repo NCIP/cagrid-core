@@ -84,9 +84,30 @@
     <property name="identifierDao" ref="identifierDao" />
   </bean>
 
+   <bean id="castorXmlContext" class="org.castor.spring.xml.XMLContextFactoryBean">
+    <property name="mappingLocations">
+      <list>
+         <value>org/cagrid/identifiers/namingauthority/na-castor-mapping.xml</value>
+      </list>
+   </property>
+  </bean>
+  
+  <bean id="marshaller" class="org.castor.spring.xml.CastorMarshallerFactoryBean">
+   <property name="xmlContext"><ref local="castorXmlContext"/></property>
+  </bean>
+  
+  <bean id="serializer" class="org.cagrid.identifiers.namingauthority.domain.Serializer">
+  	<property name="marshaller">
+		<ref bean="marshaller" />
+    </property>
+  </bean>
+  
   <bean id="httpProcessor" class="org.cagrid.identifiers.namingauthority.http.HttpProcessorImpl">
     <property name="namingAuthority">
       <ref bean="NamingAuthority" />
+    </property>
+    <property name="serializer">
+		<ref bean="serializer" />
     </property>
   </bean>
 

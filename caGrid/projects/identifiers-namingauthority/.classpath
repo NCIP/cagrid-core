@@ -3,6 +3,7 @@
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="src" path="test/resources"/>
 	<classpathentry kind="src" path="test/src"/>
+	<classpathentry kind="src" path="domain/src"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.junit.JUNIT_CONTAINER/4"/>
 	<classpathentry kind="var" path="GT4_LOCATION/lib/addressing-1.0.jar"/>
@@ -91,5 +92,6 @@
 	<classpathentry kind="lib" path="ext/dependencies/impl/jars/servlet.jar"/>
 	<classpathentry kind="lib" path="ext/dependencies/impl/jars/spring-test.jar"/>
 	<classpathentry kind="lib" path="ext/dependencies/impl/jars/spring.jar"/>
+	<classpathentry kind="lib" path="ext/dependencies/impl/jars/castor-1.3.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

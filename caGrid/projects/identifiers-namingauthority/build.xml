@@ -13,6 +13,7 @@
 	<property name="project.name" value="${ant.project.name}" />
     
     <property name="src.dir" value="${basedir}/src" />
+	<property name="domain.dir" value="${basedir}/domain/src" />
     <property name="build.dir" value="${basedir}/build" />
 	<property name="javadoc.dir" value="${build.dir}/javadoc" />
     <property name="classes.dir" value="${build.dir}/classes" />
@@ -92,8 +93,20 @@
     <!-- =============================================================== -->
     <!-- Compiles the source code                                        -->
     <!-- =============================================================== -->
-    <target name="compile" depends="prepare" description="compiles.">
+	 <target name="compileDomain" depends="prepare" description="compiles domain classes.">
         <mkdir dir="${classes.dir}" />
+        <javac srcdir="${domain.dir}" destdir="${classes.dir}" source="${java.source}" debug="${java.debug}" deprecation="off" optimize="off">
+            <classpath refid="build.classpath" />
+        </javac>
+        <copy toDir="${classes.dir}">
+            <fileset dir="${domain.dir}">
+                <include name="**/*" />
+                <exclude name="**/*.java"/>
+            </fileset>
+        </copy>
+    </target>
+
+    <target name="compile" depends="compileDomain" description="compiles.">
         <javac srcdir="${src.dir}" destdir="${classes.dir}" source="${java.source}" debug="${java.debug}" deprecation="off" optimize="off">
             <classpath refid="build.classpath" />
         </javac>
@@ -102,9 +115,6 @@
                 <include name="**/*" />
 					 <exclude name="**/*.java"/>
             </fileset>
-        </copy>
-        <copy toDir="${classes.dir}">
-            <fileset dir="." includes="resources/**"/>
         </copy>
     </target>
 

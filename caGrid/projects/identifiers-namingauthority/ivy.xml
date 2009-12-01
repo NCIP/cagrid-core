@@ -40,6 +40,8 @@
     <dependency rev="6.1.18" org="jetty" name="jetty-util" conf="default->default" />
     <dependency rev="3.0.16-ga-bin" org="mysql" name="connector-java" conf="default->default" />
     <dependency rev="1.2.2" org="apache" name="commons-dbcp" conf="default->default" />
+    <dependency rev="1.3" org="castor" name="castor" conf="default->default" />
+    <dependency rev="1.2.1" org="castor" name="spring-xml" conf="default->default" />
     <dependency rev="2.5.5" org="springframework" name="spring" conf="default->full"
       transitive="true" />
 
