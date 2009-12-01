@@ -13,15 +13,26 @@ import org.apache.ivy.core.settings.IvySettings;
 import org.apache.ivy.plugins.matcher.PatternMatcher;
 
 public class Discover {
-	public ModuleRevisionId[] execute(String organization, String name, String revision, URL ivysettings) {
-		Ivy ivy = Ivy.newInstance();
-				
+	URL ivySettings = null;
+	String cacheDir = null;
+	
+	Ivy ivy = null;
+	
+	public Discover(URL ivySettings, String cacheDir) {
+		this.ivySettings = ivySettings;
+		this.cacheDir = cacheDir;
+	
+		ivy = Ivy.newInstance();
+		ivy.setVariable("cache", cacheDir);
+		
 		try {
-			ivy.configure(ivysettings);
+			ivy.configure(ivySettings);
 		} catch (Exception e) {
 			e.printStackTrace();
-		}
-				
+		}			
+	}
+	
+	public ModuleRevisionId[] execute(String organization, String name, String revision) {		
 		IvySettings settings = ivy.getSettings();
 		
         ModuleRevisionId[] mrids = ivy.listModules(ModuleRevisionId.newInstance(organization,
@@ -47,15 +58,14 @@ public class Discover {
 
 	}
 
-	public String getDisplayName(ModuleRevisionId moduleRevisionId, URL ivysettings) {
-		Ivy ivy = Ivy.newInstance();
+	public String getDisplayName(String organization, String name, String revision) {
+		ModuleRevisionId moduleRevisionId = ModuleRevisionId.newInstance(organization, name, revision);
 		
-		try {
-			ivy.configure(ivysettings);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		
+        return getDisplayName(moduleRevisionId);
+
+	}
+	
+	public String getDisplayName(ModuleRevisionId moduleRevisionId) {		
         ResolvedModuleRevision resolvedModuleRevision = ivy.findModule(moduleRevisionId);
         Map extraInfo = resolvedModuleRevision.getDescriptor().getExtraInfo();
         String displayName = (String) extraInfo.get("grid:displayName");
@@ -65,4 +75,5 @@ public class Discover {
         return displayName;
 
 	}
+	
 }

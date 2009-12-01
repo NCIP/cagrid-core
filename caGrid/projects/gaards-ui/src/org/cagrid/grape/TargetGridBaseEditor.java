@@ -8,9 +8,7 @@ import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.io.File;
-import java.io.IOException;
 import java.io.InputStream;
-import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
@@ -350,14 +348,13 @@ public class TargetGridBaseEditor extends ConfigurationBasePanel {
 		grid.setSystemName(systemName);
 		grid.setIvySettings(ivySettings);
 		
-		String configDirName = Utils.getCaGridUserHome().getAbsolutePath() + File.separator + "gaards";
-		Retrieve ivy = new Retrieve();
     	URL ivyURL = this.getClass().getResource("/ivy-default.xml");
 		if ("default".equals(ivySettings)) {
 			URL settings = this.getClass().getResource("/ivysettings-default.xml");
-			ivy.execute(settings, ivyURL, configDirName, "caGrid", "target_grid", grid);
+			Retrieve ivy = new Retrieve(settings, GAARDSApplication.getGAARDSConfigurationDirectory().getAbsolutePath() + File.separator + "cache");
+			ivy.execute(ivyURL, GAARDSApplication.getGAARDSConfigurationDirectory().getAbsolutePath(), "caGrid", "target_grid", grid);
 		} else if ("local".equals(ivySettings)) {
-			File newGridDir = new File(Utils.getCaGridUserHome().getAbsolutePath() + File.separator + "gaards" + File.separator + systemName);
+			File newGridDir = new File(GAARDSApplication.getGAARDSConfigurationDirectory(), systemName);
 			newGridDir.mkdir();
 			File newCertDir = new File(newGridDir,"certificates");
 			newCertDir.mkdir();
@@ -385,16 +382,18 @@ public class TargetGridBaseEditor extends ConfigurationBasePanel {
 
 				GAARDSApplication.getContext().getConfigurationManager().addConfiguration(loadConfiguration(), grid);
 			} catch (Exception e) {
-				GridApplication.getContext().showMessage("Error extracting grid configuration template files!");
 				e.printStackTrace();
+				GridApplication.getContext().showMessage(
+						Utils.getExceptionMessage(e));
+				return;
 			}
 		} else {
 			try {
 				URL url = null;
-				if (ivySettings.startsWith("file://") && !ivySettings.startsWith("file://" + configDirName)) {
+				if (ivySettings.startsWith("file://") && !ivySettings.startsWith("file://" + GAARDSApplication.getGAARDSConfigurationDirectory().getAbsolutePath())) {
 					url = new URL(ivySettings);
 					File in = new File(url.toURI());
-					File out = new File(configDirName + File.separator + "ivysettings-" + systemName + ".xml");
+					File out = new File(GAARDSApplication.getGAARDSConfigurationDirectory(), "ivysettings-" + systemName + ".xml");
 					Utils.copyFile(in, out);
 					ivySettings = out.toURI().toString();
 					grid.setIvySettings(ivySettings);
@@ -403,18 +402,19 @@ public class TargetGridBaseEditor extends ConfigurationBasePanel {
 					url = new URL(ivySettings);
 				} else {
 					File in = new File(ivySettings);
-					File out = new File(configDirName + File.separator + "ivysettings-" + systemName + ".xml");
+					File out = new File(GAARDSApplication.getGAARDSConfigurationDirectory(), "ivysettings-" + systemName + ".xml");
 					Utils.copyFile(in, out);
 					ivySettings = out.toURI().toString();
 					grid.setIvySettings(ivySettings);
 					url = out.toURI().toURL();
 				}
-				ivy.execute(url, ivyURL, configDirName, "caGrid", "target_grid", grid);
-			} catch (IOException e) {
+				Retrieve ivy = new Retrieve(url, GAARDSApplication.getGAARDSConfigurationDirectory().getAbsolutePath() + File.separator + "cache");
+				ivy.execute(ivyURL, GAARDSApplication.getGAARDSConfigurationDirectory().getAbsolutePath(), "caGrid", "target_grid", grid);
+			} catch (Exception e) {
 				e.printStackTrace();
-			} catch (URISyntaxException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+				GridApplication.getContext().showMessage(
+						Utils.getExceptionMessage(e));
+				return;
 			}
 		}
 		
@@ -432,8 +432,6 @@ public class TargetGridBaseEditor extends ConfigurationBasePanel {
 
 		conf.setGrid(newList);
 		loadValues();
-
-
 
 	}
 	

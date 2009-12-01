@@ -20,26 +20,37 @@ import org.apache.ivy.plugins.matcher.PatternMatcher;
 import org.cagrid.grape.configuration.Grid;
 
 public class Retrieve {
-
-	public int execute(URL ivySettings, URL ivyDependencies, String baseDownloadDir, String organisation, String module, Grid grid) {
-		int retrieved = 0;
-		Ivy ivy = Ivy.newInstance();
-		String targetGridName = grid.getSystemName();
+	URL ivySettings = null;
+	String cacheDir = null;
+	
+	Ivy ivy = null;
+	
+	public Retrieve(URL ivySettings, String cacheDir) {
+		this.ivySettings = ivySettings;
+		this.cacheDir = cacheDir;
+		
+		ivy = Ivy.newInstance();
+		ivy.setVariable("cache", cacheDir);
 		
 		try {
 			ivy.configure(ivySettings);
 		} catch (Exception e) {
 			e.printStackTrace();
-			System.exit(1);
-		}
-		
-		DefaultResolutionCacheManager resolveEngine = (DefaultResolutionCacheManager) ivy.getResolutionCacheManager();
-		resolveEngine.setResolvedIvyPattern("[organisation]/[module]/ivy-[revision].xml");
+		}			
+
+	}
+
+	public int execute(URL ivyDependencies, String baseDownloadDir, String organisation, String module, Grid grid) {
+		int retrieved = 0;
+		String targetGridName = grid.getSystemName();
 		
 		ivy.setVariable("target.grid", targetGridName);
 		ivy.setVariable("organisation", organisation);
 		ivy.setVariable("module", module);
 		
+		DefaultResolutionCacheManager resolveEngine = (DefaultResolutionCacheManager) ivy.getResolutionCacheManager();
+		resolveEngine.setResolvedIvyPattern("[organisation]/[module]/ivy-[revision].xml");
+				
 		ResolveReport report = null;
 		try {
 			report = ivy.resolve(ivyDependencies);

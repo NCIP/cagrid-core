@@ -47,7 +47,7 @@ import org.globus.wsrf.encoding.ObjectDeserializer;
 
 public class GAARDSApplication extends GridApplication{
 	
-	private static String GAARDS_CONFIG_DIR = Utils.getCaGridUserHome().getAbsolutePath() + File.separator + "gaards";
+	private static File gaardsConfigurationDirectory = new File(Utils.getCaGridUserHome(), "gaards");
 	
 	private static String targetGrid = null;
 	
@@ -75,7 +75,8 @@ public class GAARDSApplication extends GridApplication{
         	processCommandLineParameters(args);
         	
         	app = loadApplicationSettings();
-             
+        	
+        	setGAARDSConfigurationDirectory(); 
         	GAARDSApplication applicationInstance = (GAARDSApplication) GAARDSApplication.getInstance(app);
 
             try {
@@ -94,6 +95,7 @@ public class GAARDSApplication extends GridApplication{
             applicationInstance.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         } catch (Exception e) {
             e.printStackTrace();
+            System.exit(1);
         }
     }
 
@@ -104,13 +106,18 @@ public class GAARDSApplication extends GridApplication{
     	targetGridURL = obj.getClass().getResource("/target-grid-configuration.xml");
 	}
 
-	private static Application loadApplicationSettings() throws Exception,
-			IOException {
-		Application app;
-		Throwable obj = new Throwable();
-		InputStream inputStream = obj.getClass().getResourceAsStream("/security-ui.xml");
-		app = (Application) deserializeInputStream(inputStream, Application.class);
-		inputStream.close();
+	private static Application loadApplicationSettings() {
+		Application app = null;
+		try {
+			Throwable obj = new Throwable();
+			InputStream inputStream = obj.getClass().getResourceAsStream("/security-ui.xml");
+			app = (Application) deserializeInputStream(inputStream, Application.class);
+			inputStream.close();
+		} catch (Exception e) {
+			System.out.println("Failed to load the security configuration");
+			e.printStackTrace();
+			System.exit(1);
+		}
 		return app;
 	}
 	
@@ -161,15 +168,12 @@ public class GAARDSApplication extends GridApplication{
 	}
 	
 	private void configureGlobusCertificates() throws Exception {
-		File globusCertificateDir = new File(System.getProperty("user.home")
-				+ File.separator + ".globus" + File.separator + "certificates");
-		globusCertificateDir.mkdirs();
-		File gridTargetCertsDir = new File(GAARDS_CONFIG_DIR + File.separator
-				+ targetGrid + File.separator + "certificates");
+		File globusCertificateDir = Utils.getTrustedCerificatesDirectory();
+		File gridTargetCertsDir = new File(gaardsConfigurationDirectory, targetGrid + File.separator + "certificates");
 
 		Utils.copyDirectory(gridTargetCertsDir, globusCertificateDir);
 
-		SyncGTSDefault.setServiceSyncDescriptionLocation(GAARDS_CONFIG_DIR
+		SyncGTSDefault.setServiceSyncDescriptionLocation(gaardsConfigurationDirectory.getAbsolutePath()
 				+ File.separator + targetGrid + File.separator
 				+ "sync-description.xml");
 
@@ -210,22 +214,22 @@ public class GAARDSApplication extends GridApplication{
 		boolean discoveredNewGrids = false;
 		String DEFAULT = "default";
 
-		Retrieve gridRetriever = new Retrieve();
-		Discover gridDiscover = new Discover();
-
 		List<String> settings = new ArrayList<String>();
 		for (Grid grid : grids) {
 			if (!settings.contains(grid.getIvySettings())) {
 				settings.add(grid.getIvySettings());
-				URL settingUrl = ivySettingsURL;
+				URL settingsURL = ivySettingsURL;
 				if (!DEFAULT.equals(grid.getIvySettings())) {
-					settingUrl = new URL(grid.getIvySettings());
+					settingsURL = new URL(grid.getIvySettings());
 				}
 				if ("local".equals(grid.getIvySettings())) {
 					continue;
 				}
 
-				ModuleRevisionId[] mrids = gridDiscover.execute("caGrid", "target_grid", "*", settingUrl);
+				Retrieve gridRetriever = new Retrieve(settingsURL, getGAARDSConfigurationDirectory().getAbsolutePath() + File.separator + "cache");
+				Discover gridDiscover = new Discover(settingsURL, getGAARDSConfigurationDirectory().getAbsolutePath() + File.separator + "cache");
+
+				ModuleRevisionId[] mrids = gridDiscover.execute("caGrid", "target_grid", "*");
 
 				for (ModuleRevisionId moduleRevisionId : mrids) {
 					String systemName = moduleRevisionId.getRevision();
@@ -233,15 +237,15 @@ public class GAARDSApplication extends GridApplication{
 					if (discoveredNewGrid(grids, systemName)) {
 						Grid discoveredGrid = new Grid();
 
-						discoveredGrid.setDisplayName(gridDiscover.getDisplayName(moduleRevisionId, settingUrl));
+						discoveredGrid.setDisplayName(gridDiscover.getDisplayName(moduleRevisionId));
 						discoveredGrid.setSystemName(systemName);
 						if (DEFAULT.equals(grid.getIvySettings())) {
 							discoveredGrid.setIvySettings(DEFAULT);
 						} else {
-							discoveredGrid.setIvySettings(settingUrl.toURI().toString());
+							discoveredGrid.setIvySettings(settingsURL.toURI().toString());
 						}
 						discoveredGrid.setVersion(moduleRevisionId.getRevision());
-						gridRetriever.execute(settingUrl, ivyURL, GAARDS_CONFIG_DIR, "caGrid", "target_grid", discoveredGrid);
+						gridRetriever.execute(ivyURL, gaardsConfigurationDirectory.getAbsolutePath(), "caGrid", "target_grid", discoveredGrid);
 
 						Grid[] newGrid = new Grid[grids.length + 1];
 
@@ -262,7 +266,6 @@ public class GAARDSApplication extends GridApplication{
 
 	private boolean updateGridConfigurationFiles(Grid[] grids) throws Exception {
 		boolean updatedGridConfiguration = false;
-		Retrieve gridRetriever = new Retrieve();
 
 		for (int counter = 0; counter < grids.length; counter++) {
 			URL settingsURL = null;
@@ -279,12 +282,17 @@ public class GAARDSApplication extends GridApplication{
 					e.printStackTrace();
 				}			
 			}
-			int retrieved = gridRetriever.execute(settingsURL, ivyURL, GAARDS_CONFIG_DIR, "caGrid", "target_grid", grids[counter]);
+			Retrieve gridRetriever = new Retrieve(settingsURL, getGAARDSConfigurationDirectory().getAbsolutePath() + File.separator + "cache");
+
+			int retrieved = gridRetriever.execute(ivyURL, gaardsConfigurationDirectory.getAbsolutePath(), "caGrid", "target_grid", grids[counter]);
 			if (retrieved > 0) {
 				updatedGridConfiguration = true;
+				Discover gridDiscover = new Discover(settingsURL, getGAARDSConfigurationDirectory().getAbsolutePath() + File.separator + "cache");
+				String newDisplayName = gridDiscover.getDisplayName("caGrid", "target_grid", grids[counter].getVersion());
+				grids[counter].setDisplayName(newDisplayName);
 			}
 			
-			File gridConfigurationDir = new File(GAARDS_CONFIG_DIR + File.separator + grids[counter].getSystemName());
+			File gridConfigurationDir = new File(gaardsConfigurationDirectory, grids[counter].getSystemName());
 			deleteDuplicateConfFiles(gridConfigurationDir);
 			if (updatedGridConfiguration && conflictingConfs(gridConfigurationDir)) {
 				ErrorDialog.showError("The updated target grid configuration conflicts with your locally modified version.  Please contact your admin for assitance.");
@@ -305,19 +313,19 @@ public class GAARDSApplication extends GridApplication{
 	}
 		
 	private void setupTargetGridsConfigurationFile() {
-		File configurationDir = new File(GAARDS_CONFIG_DIR);
-		File targetGridsConfigurationFile = new File(configurationDir, "target-grid-configuration.xml");
+		File targetGridsConfigurationFile = new File(gaardsConfigurationDirectory, "target-grid-configuration.xml");
 		
-		if (!configurationDir.exists()) {
-			configurationDir.mkdirs();
+		if (!gaardsConfigurationDirectory.exists()) {
+			gaardsConfigurationDirectory.mkdirs();
 		}
 		
 		if (!targetGridsConfigurationFile.exists()) {
 			try {
 				Utils.stringBufferToFile(Utils.inputStreamToStringBuffer(targetGridURL.openStream()), targetGridsConfigurationFile);
 			} catch (IOException e) {
+				System.out.println("Unable to write to file: " + targetGridsConfigurationFile.getName());
 				e.printStackTrace();
-				System.exit(ERROR);
+				System.exit(1);
 			}
 		}
 	}
@@ -404,7 +412,6 @@ public class GAARDSApplication extends GridApplication{
 		File[] confFiles = configurationDir.listFiles(conf);
 				
 		for (int i = 0; i < confFiles.length; i++) {
-			String confFileName = confFiles[i].getName();
 			String configurationFileName = confFiles[i].getAbsolutePath().substring(0, confFiles[i].getAbsolutePath().length() - SAVED_CONFIGFILE_SUFFIX_LENGTH) + "-services-configuration.xml";
 
 			try {
@@ -457,9 +464,8 @@ public class GAARDSApplication extends GridApplication{
 								syncClass).newInstance();
 					}
 
-					String configurationDirectory = GAARDS_CONFIG_DIR;
 					configurationManager = createConfigurationManager(app
-							.getConfiguration(), cs, configurationDirectory);
+							.getConfiguration(), cs, gaardsConfigurationDirectory.getAbsolutePath());
 
 					getTargetGrids();
 					configureGlobusCertificates();
@@ -476,7 +482,6 @@ public class GAARDSApplication extends GridApplication{
 		Thread th = new Thread(r);
 		th.start();
 		
-
 	}
 	
 	private ServiceConfiguration loadServiceConfiguration(File serviceFile) throws Exception {
@@ -484,16 +489,24 @@ public class GAARDSApplication extends GridApplication{
 				.getAbsolutePath(), ServiceConfiguration.class);
 	}
 	
-//	private String getVersion() {
-//		String version = "1.0";
-//		Properties props = new Properties(); 
-//		try {
-//			props.load(this.getClass().getResourceAsStream("/project.properties"));
-//			version = (String) props.get("project.version");
-//		} catch (IOException e) {
-//			e.printStackTrace();
-//		}
-//		return version;
-//	}
+	private static void setGAARDSConfigurationDirectory() {
+		String version = null;
+		Properties props = new Properties(); 
+		try {
+			props.load(props.getClass().getResourceAsStream("/project.properties"));
+			version = (String) props.get("project.version");
+		} catch (Exception e) {
+			System.out.println("Unable to determine the version of the GAARDS UI.");
+			version = "";
+		}
+		
+		version = (version == null || version.length() == 0) ? "" : "-" + version;
+		
+		gaardsConfigurationDirectory = new File(Utils.getCaGridUserHome(), "gaards" + version);
+	}
+	
+	public static File getGAARDSConfigurationDirectory() {
+		return gaardsConfigurationDirectory;
+	}
 
 }

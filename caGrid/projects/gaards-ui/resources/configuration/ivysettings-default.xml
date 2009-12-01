@@ -1,13 +1,13 @@
 <ivysettings>
 	<settings defaultResolver="remote-caGrid-ivy-resolver" />
 	
-	<caches checkUpToDate="false" useOrigin="true"/>
+	<caches checkUpToDate="false" useOrigin="true" defaultCacheDir="${cache}"/>
 	
 	<resolvers>
 		<url name="remote-caGrid-ivy-resolver">
-			<ivy pattern="http://download.cagrid.org/repository-1.4/[organisation]/[module]/ivy-[revision].xml" />
-			<artifact pattern="http://download.cagrid.org/repository-1.4/[organisation]/[module]/[revision]/[artifact]-[revision].[ext]" />
-			<artifact pattern="http://download.cagrid.org/repository-1.4/[organisation]/[module]/[revision]/[artifact].[ext]" />
+			<ivy pattern="http://quality.cagrid.org/job/caGrid-Nightly-IvyRepository/lastSuccessfulBuild/artifact/caGrid/ivy-repository/[organisation]/[module]/ivy-[revision].xml" />
+			<artifact pattern="http://quality.cagrid.org/job/caGrid-Nightly-IvyRepository/lastSuccessfulBuild/artifact/caGrid/ivy-repository/[organisation]/[module]/[revision]/[artifact]-[revision].[ext]" />
+			<artifact pattern="http://quality.cagrid.org/job/caGrid-Nightly-IvyRepository/lastSuccessfulBuild/artifact/caGrid/ivy-repository/[organisation]/[module]/[revision]/[artifact].[ext]" />
 		</url>		
 	</resolvers>
 	

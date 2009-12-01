@@ -31,9 +31,6 @@ public class TargetGridDisplayPanel extends JPanel {
 	private JLabel logo = null;
 
 	private JButton setGrid = null;
-
-	private String GAARDS_CONFIGURATION_DIRECTORY = Utils.getCaGridUserHome()
-			+ File.separator + "gaards";
 	
 	private ConfigurationWindow window;
 
@@ -99,29 +96,17 @@ public class TargetGridDisplayPanel extends JPanel {
 
 	private void setDefaultGrid() {
 		try {
-			String targetGridDirectory = GAARDS_CONFIGURATION_DIRECTORY
-					+ File.separator + grid.getSystemName();
+			File targetGridDirectory = new File(GAARDSApplication.getGAARDSConfigurationDirectory(), grid.getSystemName());
 
-			File gridSyncGTDCertsDir = null;
+			File gridSyncGTDCertsDir = Utils.getTrustedCerificatesDirectory();			
 
-			String gridSyncGTDCertsDirName = System.getProperty("user.home")
-					+ File.separator + ".globus" + File.separator
-					+ "certificates";
-			gridSyncGTDCertsDir = new File(gridSyncGTDCertsDirName);
-			if (gridSyncGTDCertsDir.exists()) {
-				Utils.deleteDir(gridSyncGTDCertsDir);
-			}
-			gridSyncGTDCertsDir.mkdirs();
-			
-
-			File gridTargetCertsDir = new File(targetGridDirectory
-					+ File.separator + "certificates");
+			File gridTargetCertsDir = new File(targetGridDirectory, "certificates");
 			Utils.copyDirectory(gridTargetCertsDir, gridSyncGTDCertsDir);
 
 
 			// sync with trust fabric
 			SyncGTSDefault
-					.setServiceSyncDescriptionLocation(targetGridDirectory
+					.setServiceSyncDescriptionLocation(targetGridDirectory.getAbsolutePath()
 							+ File.separator + "sync-description.xml");
 
 			SyncDescription description = SyncGTSDefault.getSyncDescription();
