@@ -1,12 +1,12 @@
 <ns1:ServiceDescription introduceVersion="1.4" xmlns:ns1="gme://gov.nih.nci.cagrid/1/Introduce">
  <ns2:Namespaces xsi:type="ns2:NamespacesType" xmlns:ns2="gme://gov.nih.nci.cagrid.introduce/1/Namespace" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
-  <ns2:Namespace location="./IdentifiersNA.xsd" namespace="http://types.identifers-na.cagrid.org/IdentifiersNAService" packageName="gov.nih.nci.cagrid.identifiers" xsi:type="ns2:NamespaceType">
+  <ns2:Namespace location="./org.cagrid.identifiers.namingauthority.xsd" namespace="na://na.cagrid.org/1.0/NamingAuthority" packageName="namingauthority" xsi:type="ns2:NamespaceType">
+   <ns2:SchemaElement type="Configuration" xsi:type="ns2:SchemaElementType"/>
    <ns2:SchemaElement type="Identifier" xsi:type="ns2:SchemaElementType"/>
+   <ns2:SchemaElement type="IdentifierValues" xsi:type="ns2:SchemaElementType"/>
    <ns2:SchemaElement type="KeyValues" xsi:type="ns2:SchemaElementType"/>
-   <ns2:SchemaElement type="KeyValuesMap" xsi:type="ns2:SchemaElementType"/>
-   <ns2:SchemaElement type="Values" xsi:type="ns2:SchemaElementType"/>
   </ns2:Namespace>
-  <ns2:Namespace generateStubs="false" namespace="http://www.w3.org/2001/XMLSchema" xsi:type="ns2:NamespaceType">
+  <ns2:Namespace generateStubs="false" location="" namespace="http://www.w3.org/2001/XMLSchema" packageName="" xsi:type="ns2:NamespaceType">
    <ns2:SchemaElement type="anySimpleType" xsi:type="ns2:SchemaElementType"/>
    <ns2:SchemaElement type="anyType" xsi:type="ns2:SchemaElementType"/>
    <ns2:SchemaElement type="anyURI" xsi:type="ns2:SchemaElementType"/>
@@ -108,16 +108,16 @@
     </ns4:Method>
     <ns4:Method description="Creates a new identifier" isImported="false" isProvided="false" name="createIdentifier" xsi:type="ns4:MethodType">
      <ns4:Inputs>
-      <ns4:Input qName="ns13:KeyValuesMap" description="" isArray="false" name="keyValuesMap" xmlns:ns13="http://types.identifers-na.cagrid.org/IdentifiersNAService"/>
+      <ns4:Input qName="ns13:IdentifierValues" description="" isArray="false" name="identifierValues" xmlns:ns13="na://na.cagrid.org/1.0/NamingAuthority"/>
      </ns4:Inputs>
-     <ns4:Output qName="ns14:Identifier" description="" isArray="false" xmlns:ns14="http://types.identifers-na.cagrid.org/IdentifiersNAService"/>
+     <ns4:Output qName="ns14:Identifier" description="" isArray="false" xmlns:ns14="na://na.cagrid.org/1.0/NamingAuthority"/>
      <ns4:Exceptions/>
     </ns4:Method>
     <ns4:Method description="Returns type/values stored with the identifier" isImported="false" isProvided="false" name="resolveIdentifier" xsi:type="ns4:MethodType">
      <ns4:Inputs>
-      <ns4:Input qName="ns15:Identifier" description="" isArray="false" name="identifier" xmlns:ns15="http://types.identifers-na.cagrid.org/IdentifiersNAService"/>
+      <ns4:Input qName="ns15:Identifier" description="" isArray="false" name="identifier" xmlns:ns15="na://na.cagrid.org/1.0/NamingAuthority"/>
      </ns4:Inputs>
-     <ns4:Output qName="ns16:KeyValuesMap" description="" isArray="false" xmlns:ns16="http://types.identifers-na.cagrid.org/IdentifiersNAService"/>
+     <ns4:Output qName="ns16:IdentifierValues" description="" isArray="false" xmlns:ns16="na://na.cagrid.org/1.0/NamingAuthority"/>
      <ns4:Exceptions/>
     </ns4:Method>
    </ns4:Methods>

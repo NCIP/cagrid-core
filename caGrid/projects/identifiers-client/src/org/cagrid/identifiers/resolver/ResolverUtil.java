@@ -95,8 +95,14 @@ public class ResolverUtil {
 	}
 	
 	private static Unmarshaller getDeserializer() throws IOException, MappingException {
+		String resource = "org/cagrid/identifiers/namingauthority/na-castor-mapping.xml";
+		
 		URL mappingResource = ResolverUtil.class.getClassLoader()
-        	.getResource("/org/cagrid/identifiers/namingauthority/na-castor-mapping.xml");
+        	.getResource(resource);
+		
+		if (mappingResource == null) {
+			throw new IOException("Unable to load resource " + resource + ". Make sure this is available via CLASSPATH");
+		}
 		
 		Mapping mapping = new Mapping();
 		mapping.loadMapping(new InputSource(mappingResource.openStream()));
