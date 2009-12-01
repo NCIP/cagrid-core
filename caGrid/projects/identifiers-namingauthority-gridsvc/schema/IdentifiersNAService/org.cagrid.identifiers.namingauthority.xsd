@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema targetNamespace="na://na.cagrid.org/1.0/NamingAuthority"
+	xmlns="na://na.cagrid.org/1.0/NamingAuthority"
+	xmlns:xs="http://www.w3.org/2001/XMLSchema"
+	elementFormDefault="qualified" attributeFormDefault="unqualified">
+
+	<xs:element name="Identifier" type="xs:anyURI"/>
+	
+	<xs:element name="IdentifierValues" type="IdentifierValues" />
+	<xs:complexType name="IdentifierValues">
+		<xs:sequence>
+			<xs:element ref="KeyValues" minOccurs="0" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	
+	<xs:element name="KeyValues" type="KeyValues"/>
+	<xs:complexType name="KeyValues">
+		<xs:sequence>
+			<xs:element name="key" type="xs:string"/>
+			<xs:element name="value" type="xs:string" minOccurs="1" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	
+	<xs:element name="Configuration" type="Configuration"/>
+	<xs:complexType name="Configuration">
+		<xs:sequence>
+			<xs:element name="gridSvcUrl" type="xs:string" minOccurs="1" maxOccurs="1"/>
+		</xs:sequence>
+	</xs:complexType>
+</xs:schema>
