@@ -32,15 +32,16 @@ public class AdvertisementClient {
     protected AdvertisementClient() {
         this.client = new ServiceGroupRegistrationClient();
         this.client.setClientCallback(new Callback());
-        LOG.debug("Installing JVM shutdown hook to unregister.");
+       	System.out.println("Installing JVM shutdown hook to unregister.");
         Runtime.getRuntime().addShutdownHook(new Thread() {
             @Override
             public void run() {
-                LOG.info("Running shutdown hook.");
+               	System.out.println("Running shutdown hook.");
                 try {
                     unregister();
                 } catch (UnregistrationException e) {
-                    LOG.error("Problem unreqistering", e);
+               		System.err.println("Problem unreqistering");
+               		System.err.println(e);
                 }
             }
         });
@@ -137,14 +138,14 @@ public class AdvertisementClient {
         if (this.sgParams == null) {
             return;
         }
-        LOG.info("Unregistering " + printServiceGroupRegistrationParameters(this.sgParams));
+        System.out.println("Unregistering " + printServiceGroupRegistrationParameters(this.sgParams));
         this.client.terminate();
         TerminationClient termClient = new TerminationClient(this.sgParams.getServiceGroupEPR());
         if (this.sgParams.getSecurityDescriptorFile() != null) {
             termClient.setSecurityDescriptorFile(this.sgParams.getSecurityDescriptorFile());
         }
         int unregisterCount = termClient.unregister(this.sgParams.getRegistrantEPR());
-        LOG.info("Unregistered " + unregisterCount + " service entries.");
+        System.out.println("Unregistered " + unregisterCount + " service entries.");
     }
 
 
