@@ -6,7 +6,7 @@ import javax.xml.namespace.QName;
 
 import org.apache.axis.message.addressing.EndpointReferenceType;
 import org.apache.axis.utils.XMLUtils;
-import org.cagrid.identifiers.namingauthority.IdentifierValues;
+import org.cagrid.identifiers.namingauthority.domain.IdentifierValues;
 import org.cagrid.identifiers.retriever.Retriever;
 import org.globus.wsrf.encoding.ObjectDeserializer;
 import org.w3c.dom.Element;

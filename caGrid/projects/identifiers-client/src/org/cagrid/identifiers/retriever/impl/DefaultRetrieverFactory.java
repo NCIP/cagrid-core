@@ -2,7 +2,7 @@ package org.cagrid.identifiers.retriever.impl;
 
 import java.util.Map;
 
-import org.cagrid.identifiers.namingauthority.IdentifierValues;
+import org.cagrid.identifiers.namingauthority.domain.IdentifierValues;
 import org.cagrid.identifiers.retriever.Retriever;
 import org.cagrid.identifiers.retriever.RetrieverFactory;
 

@@ -1,6 +1,6 @@
 package org.cagrid.identifiers.retriever.impl;
 
-import org.cagrid.identifiers.namingauthority.IdentifierValues;
+import org.cagrid.identifiers.namingauthority.domain.IdentifierValues;
 import org.cagrid.identifiers.retriever.Retriever;
 import org.cagrid.identifiers.retriever.RetrieverFactory;
 import org.springframework.context.ApplicationContext;

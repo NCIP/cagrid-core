@@ -1,6 +1,6 @@
 package org.cagrid.identifiers.retriever;
 
-import org.cagrid.identifiers.namingauthority.IdentifierValues;
+import org.cagrid.identifiers.namingauthority.domain.IdentifierValues;
 
 
 public interface RetrieverFactory {
