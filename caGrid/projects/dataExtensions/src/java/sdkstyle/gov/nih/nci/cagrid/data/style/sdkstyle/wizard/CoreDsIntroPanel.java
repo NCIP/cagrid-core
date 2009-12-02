@@ -4,7 +4,6 @@ import gov.nih.nci.cagrid.data.ui.wizard.AbstractWizardPanel;
 import gov.nih.nci.cagrid.introduce.beans.extension.ServiceExtensionDescriptionType;
 import gov.nih.nci.cagrid.introduce.common.ServiceInformation;
 
-import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
@@ -21,8 +20,8 @@ import javax.swing.border.BevelBorder;
 /**
  * CoreDsIntroPanel 
  * Simple panel to show the user some information about what
- * they're getting into for developing a caGrid data service backended by the
- * cacore SDK
+ * they're getting into for developing a caGrid data service backed by the
+ * caCORE SDK
  * 
  * @author <A HREF="MAILTO:ervin@bmi.osu.edu">David W. Ervin</A>
  * @created Sep 25, 2006
@@ -33,9 +32,10 @@ public abstract class CoreDsIntroPanel extends AbstractWizardPanel {
     /**
      * This is the text message shown to the user to let them know what the
      * wizard does and what it expects from them. A better idea may be to load
-     * this from a text file so if it changes, we dont need to recompile.
+     * this from a text file so if it changes, we don't need to recompile.
      */
-    private static String INFO_TEXT = "This wizard will guide you through a simplified process to create a caGrid Data Service "
+    private static String INFO_TEXT = 
+        "This wizard will guide you through a simplified process to create a caGrid Data Service "
         + "using a caCORE SDK backend as your data source.  In the following screens, you will be "
         + "required to provide your generated client.jar, along with the URL of the data source to "
         + "have the data service connect to.  Your domain model should be registered in the caDSR "
@@ -78,7 +78,7 @@ public abstract class CoreDsIntroPanel extends AbstractWizardPanel {
 
 
     public String getPanelTitle() {
-        return "Create caCORE SDK Backended caGrid Data Service";
+        return "Create caCORE SDK Backed caGrid Data Service";
     }
 
 
