@@ -96,9 +96,9 @@ public class SchemaTypesPanel extends AbstractWizardPanel {
                     }
                 }
             }
-            Iterator invalidPackageNameIter = currentPackageNames.iterator();
+            Iterator<String> invalidPackageNameIter = currentPackageNames.iterator();
             while (invalidPackageNameIter.hasNext()) {
-                String invalidName = (String) invalidPackageNameIter.next();
+                String invalidName = invalidPackageNameIter.next();
                 getPackageNamespaceTable().removeCadsrPackage(invalidName);
             }
             setWizardComplete(allSchemasResolved());
@@ -324,9 +324,7 @@ public class SchemaTypesPanel extends AbstractWizardPanel {
     private void pullSchemas(XMLSchemaNamespace ns, GlobalModelExchangeClient gme) throws Exception {
         // get the service's schema dir
         File schemaDir = new File(CacoreWizardUtils.getServiceBaseDir(getServiceInformation())
-            + File.separator
-            + "schema"
-            + File.separator
+            + File.separator + "schema" + File.separator
             + getServiceInformation().getIntroduceServiceProperties().getProperty(
                 IntroduceConstants.INTRODUCE_SKELETON_SERVICE_NAME));
         // have the GME cache the schema and its imports locally
@@ -346,14 +344,12 @@ public class SchemaTypesPanel extends AbstractWizardPanel {
             deserializerClass = DataServiceConstants.SDK_DESERIALIZER;
         }
         // create namespace types and add them to the service
-        Iterator nsIter = cachedNamespaces.keySet().iterator();
+        Iterator<XMLSchemaNamespace> nsIter = cachedNamespaces.keySet().iterator();
         while (nsIter.hasNext()) {
-            XMLSchemaNamespace storedNs = (XMLSchemaNamespace) nsIter.next();
-            //NamespaceType nsType = CommonTools.createNamespaceType(cachedNamespaces.get(storedNs).getAbsolutePath(),
-            //    schemaDir);
+            XMLSchemaNamespace storedNs = nsIter.next();
             
-            NamespaceType nsType = NamespaceTools.createNamespaceTypeForFile(cachedNamespaces.get(storedNs).getCanonicalPath(),
-                schemaDir);
+            NamespaceType nsType = NamespaceTools.createNamespaceTypeForFile(
+                cachedNamespaces.get(storedNs).getCanonicalPath(), schemaDir);
             // if the namespace already exists in the service, ignore it
             if (CommonTools.getNamespaceType(getServiceInformation().getNamespaces(), nsType.getNamespace()) == null) {
                 // set the package name
