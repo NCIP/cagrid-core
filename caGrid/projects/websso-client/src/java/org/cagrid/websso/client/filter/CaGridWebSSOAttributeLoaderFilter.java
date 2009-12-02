@@ -14,6 +14,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.cagrid.websso.common.WebSSOConstants;
 import org.cagrid.websso.common.WebSSOClientHelper;
 import org.jasig.cas.client.authentication.AttributePrincipal;
@@ -22,6 +24,8 @@ import org.jasig.cas.client.validation.Assertion;
 
 public class CaGridWebSSOAttributeLoaderFilter implements Filter {
 
+	private final Log log = LogFactory.getLog(getClass());
+	
 	public void destroy() {
 		// do nothing
 	}
@@ -33,6 +37,7 @@ public class CaGridWebSSOAttributeLoaderFilter implements Filter {
 			Assertion assertion = (Assertion) session.getAttribute(AbstractCasFilter.CONST_CAS_ASSERTION);
 			AttributePrincipal attributePrincipal = assertion.getPrincipal();
 			String attributesString = attributePrincipal.getName();
+			log.debug("User Principal retrived from WebSSO-server:  "+attributesString);
 			loadSessionAttributes(attributesString,session);
 			session.setAttribute(WebSSOConstants.IS_SESSION_ATTRIBUTES_LOADED, Boolean.TRUE);			
 		}

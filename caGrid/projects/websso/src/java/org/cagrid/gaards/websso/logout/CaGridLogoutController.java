@@ -4,6 +4,7 @@ import gov.nih.nci.cagrid.common.FaultUtil;
 import gov.nih.nci.cagrid.common.Utils;
 
 import java.io.StringReader;
+import java.util.Map;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -22,6 +23,9 @@ import org.globus.gsi.GlobusCredential;
 import org.globus.gsi.GlobusCredentialException;
 import org.globus.wsrf.encoding.DeserializationException;
 import org.jasig.cas.CentralAuthenticationService;
+import org.jasig.cas.ticket.Ticket;
+import org.jasig.cas.ticket.TicketGrantingTicket;
+import org.jasig.cas.ticket.registry.TicketRegistry;
 import org.jasig.cas.web.LogoutController;
 import org.jasig.cas.web.support.CookieRetrievingCookieGenerator;
 import org.springframework.web.context.WebApplicationContext;
@@ -30,13 +34,23 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.AbstractController;
 
 public class CaGridLogoutController extends AbstractController {
-	LogoutController logoutController = new LogoutController();
-
+	
+	private LogoutController logoutController = new LogoutController();
+	
+	private CookieRetrievingCookieGenerator ticketGrantingTicketCookieGenerator;
+	
+    private TicketRegistry ticketRegistry;
+	
 	protected ModelAndView handleRequestInternal(
 			final HttpServletRequest request, final HttpServletResponse response)
 			throws Exception {
-		String delegationEPR = request
-				.getParameter(WebSSOConstants.CAGRID_SSO_DELEGATION_SERVICE_EPR);
+		
+        final String ticketGrantingTicketId = this.ticketGrantingTicketCookieGenerator.retrieveCookieValue(request);
+        Ticket ticket=this.ticketRegistry.getTicket(ticketGrantingTicketId);
+        final TicketGrantingTicket tgt = (TicketGrantingTicket) ticket;       
+
+        Map<String, Object> userInfo=tgt.getAuthentication().getPrincipal().getAttributes();
+		String delegationEPR = (String)userInfo.get(WebSSOConstants.CAGRID_SSO_DELEGATION_SERVICE_EPR);
 		if (delegationEPR != null && delegationEPR.trim().length() != 0) {
 			WebApplicationContext ctx = WebApplicationContextUtils
 					.getRequiredWebApplicationContext(this.getServletContext());
@@ -103,6 +117,8 @@ public class CaGridLogoutController extends AbstractController {
 
 	public void setTicketGrantingTicketCookieGenerator(
 			final CookieRetrievingCookieGenerator ticketGrantingTicketCookieGenerator) {
+		
+		this.ticketGrantingTicketCookieGenerator=ticketGrantingTicketCookieGenerator;
 		logoutController
 				.setTicketGrantingTicketCookieGenerator(ticketGrantingTicketCookieGenerator);
 	}
@@ -112,10 +128,6 @@ public class CaGridLogoutController extends AbstractController {
 		logoutController.setWarnCookieGenerator(warnCookieGenerator);
 	}
 
-	/**
-	 * @param centralAuthenticationService
-	 *            The centralAuthenticationService to set.
-	 */
 	public void setCentralAuthenticationService(
 			final CentralAuthenticationService centralAuthenticationService) {
 		logoutController
@@ -129,4 +141,8 @@ public class CaGridLogoutController extends AbstractController {
 	public void setLogoutView(final String logoutView) {
 		logoutController.setLogoutView(logoutView);
 	}
+	
+    public void setTicketRegistry(final TicketRegistry ticketRegistry) {
+        this.ticketRegistry = ticketRegistry;
+    }
 }

@@ -5,6 +5,7 @@ import gov.nih.nci.cagrid.opensaml.SAMLAssertion;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import org.cagrid.gaards.websso.authentication.helper.AuthenticationServiceHelper;
@@ -79,6 +80,7 @@ public class CaGridAuthenticationManager implements AuthenticationManager {
 	 * Create the Principal from the grid identity
 	 * Create a new Authentication Object using the Principal
 	 */
+	@SuppressWarnings("unchecked")
 	public Authentication authenticate(Credentials credentials)
 			throws AuthenticationException {
 		if (null == webSSOProperties) {
@@ -95,11 +97,13 @@ public class CaGridAuthenticationManager implements AuthenticationManager {
 		String serializedDelegatedCredentialReference = gridCredentialDelegator
 														.delegateGridCredential(globusCredential, this.getHostIdentities());
 
-		HashMap<String, String> attributesMap = samlToAttributeMapper.convertSAMLtoHashMap(samlAssertion);
+		Map<String, Object> attributesMap = (Map<String, Object>)samlToAttributeMapper.convertSAMLtoHashMap(samlAssertion);
 		attributesMap.put(WebSSOConstants.CAGRID_SSO_DELEGATION_SERVICE_EPR, serializedDelegatedCredentialReference);
 		attributesMap.put(WebSSOConstants.CAGRID_SSO_GRID_IDENTITY, globusCredential.getIdentity());
 		
-		Principal p = new SimplePrincipal(this.constructPrincipal(attributesMap));
+		String principal = this.constructPrincipal(attributesMap);
+		
+		Principal p = new SimplePrincipal(principal,attributesMap);
 		MutableAuthentication mutableAuthentication = new MutableAuthentication(p);
 		return mutableAuthentication;
 	}
@@ -141,11 +145,11 @@ public class CaGridAuthenticationManager implements AuthenticationManager {
 		return hostIdentities;
 	}
 	
-	private String constructPrincipal(HashMap<String, String> attributeMap) {
+	private String constructPrincipal(Map<String, Object> attributeMap) {
 		String principalName = new String();
 		Set<String> keySet = attributeMap.keySet();
 		for (String key : keySet) {
-			String value = attributeMap.get(key);
+			String value = (String)attributeMap.get(key);
 			principalName = principalName.concat(key
 					+ WebSSOConstants.KEY_VALUE_PAIR_DELIMITER + value
 					+ WebSSOConstants.ATTRIBUTE_DELIMITER);
