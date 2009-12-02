@@ -567,7 +567,7 @@ public class DomainModelConfigPanel extends DataServiceModificationSubPanel {
 
 
     private boolean removeUmlPackage(Project proj, String packageName) {
-        Set packageNames = getUmlTree().getPackagesInTree();
+        Set<String> packageNames = getUmlTree().getPackagesInTree();
         if (!packageNames.contains(packageName)
             || (mostRecentProject != null && !projectEquals(proj, mostRecentProject))) {
             GridApplication.getContext().showMessage("The selected package is not involved in the model");
