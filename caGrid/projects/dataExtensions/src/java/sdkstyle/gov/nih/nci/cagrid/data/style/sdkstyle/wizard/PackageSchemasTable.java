@@ -52,9 +52,9 @@ public class PackageSchemasTable extends JTable {
     public static final String STATUS_NEVER_TRIED = "Unknown";
     
     private ModelInformationUtil modelInfoUtil = null;
-    private Map wizardProperties = null;
+    private Map<Object, Object> wizardProperties = null;
 
-    public PackageSchemasTable(ModelInformationUtil modelInfoUtil, Map wizardProperties) {
+    public PackageSchemasTable(ModelInformationUtil modelInfoUtil, Map<Object, Object> wizardProperties) {
         setModel(new PackageSchemasTableModel());
         setDefaultRenderer(Object.class, new PackageSchemasTableRenderer());
         setDefaultEditor(Object.class, new PackageSchemasTableEditor());
