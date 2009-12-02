@@ -96,18 +96,12 @@
    <property name="xmlContext"><ref local="castorXmlContext"/></property>
   </bean>
   
-  <bean id="serializer" class="org.cagrid.identifiers.namingauthority.domain.Serializer">
-  	<property name="marshaller">
-		<ref bean="marshaller" />
-    </property>
-  </bean>
-  
   <bean id="httpProcessor" class="org.cagrid.identifiers.namingauthority.http.HttpProcessorImpl">
     <property name="namingAuthority">
       <ref bean="NamingAuthority" />
     </property>
     <property name="serializer">
-		<ref bean="serializer" />
+		<ref bean="marshaller" />
     </property>
   </bean>
 

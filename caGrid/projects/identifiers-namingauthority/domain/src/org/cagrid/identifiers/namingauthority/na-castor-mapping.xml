@@ -18,4 +18,13 @@
 			</bind-xml>
 		</field>
 	</class>
+	
+	<class name="org.cagrid.identifiers.namingauthority.domain.NamingAuthorityConfig">
+		<map-to xml="Configuration"
+			ns-uri="na://na.cagrid.org/1.0/NamingAuthority"
+         	ns-prefix="na" />
+		<field name="gridSvcUrl" type="java.lang.String">
+			<bind-xml name="gridSvcUrl"/>
+		</field>
+	</class>
 </mapping>

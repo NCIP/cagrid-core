@@ -3,6 +3,7 @@ package org.cagrid.identifiers.namingauthority.http;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.StringWriter;
+import java.io.Writer;
 import java.net.URI;
 import java.net.URISyntaxException;
 
@@ -10,9 +11,12 @@ import org.cagrid.identifiers.namingauthority.InvalidIdentifierException;
 import org.cagrid.identifiers.namingauthority.NamingAuthority;
 import org.cagrid.identifiers.namingauthority.NamingAuthorityConfigurationException;
 import org.cagrid.identifiers.namingauthority.domain.IdentifierValues;
-import org.cagrid.identifiers.namingauthority.domain.Serializer;
+import org.cagrid.identifiers.namingauthority.domain.NamingAuthorityConfig;
 import org.cagrid.identifiers.namingauthority.util.IdentifierUtil;
 import org.cagrid.identifiers.namingauthority.HttpProcessor;
+import org.exolab.castor.xml.MarshalException;
+import org.exolab.castor.xml.Marshaller;
+import org.exolab.castor.xml.ValidationException;
 
 
 import javax.servlet.http.*;
@@ -21,7 +25,7 @@ import javax.servlet.http.*;
 public class HttpProcessorImpl implements HttpProcessor {
 
     private NamingAuthority namingAuthority;
-    private Serializer serializer;
+    private Marshaller serializer;
 
     public static String HTTP_ACCEPT_HDR = "Accept";
     public static String HTTP_ACCEPT_HTML = "text/html";
@@ -32,7 +36,7 @@ public class HttpProcessorImpl implements HttpProcessor {
         this.namingAuthority = na;
     }
     
-    public void setSerializer( Serializer aSerializer ) {
+    public void setSerializer( Marshaller aSerializer ) {
     	this.serializer = aSerializer;
     }
 
@@ -106,16 +110,6 @@ public class HttpProcessorImpl implements HttpProcessor {
         return msg.toString();
     }
 
-    public String xmlConfigResponse() {
-        NamingAuthorityConfig publicConfig = new NamingAuthorityConfig(namingAuthority.getConfiguration());
-        java.io.ByteArrayOutputStream baos = new java.io.ByteArrayOutputStream();
-        java.beans.XMLEncoder encoder = new java.beans.XMLEncoder(baos);
-        encoder.writeObject(publicConfig);
-        encoder.close();
-
-        return baos.toString();
-    }
-
     protected String prepHtmlError( String msg, Exception e) {
     	StringBuffer sb = new StringBuffer( "<h2>There was an error processing your request</h2>");
     	sb.append("<h3>")
@@ -139,7 +133,21 @@ public class HttpProcessorImpl implements HttpProcessor {
     protected String prepHtmlError( String msg ) {
     	return prepHtmlError( msg, null );
     }
+    
+    protected String serialize( Object ivs ) throws IOException, MarshalException, ValidationException {
+		Writer out = new StringWriter();
+        serializer.setWriter(out);
+        serializer.marshal(ivs);
+        
+        return out.toString();
+	}
 
+    protected String serializeNAConfiguration() throws MarshalException, ValidationException, IOException {
+    	NamingAuthorityConfig config = new NamingAuthorityConfig();
+    	config.setGridSvcUrl(namingAuthority.getConfiguration().getGridSvcUrl());
+    	return serialize(config);
+    }
+    
     public void process(HttpServletRequest request, HttpServletResponse response) throws IOException {
         StringBuffer msg = new StringBuffer();
         int responseStatus = HttpServletResponse.SC_OK;
@@ -151,8 +159,13 @@ public class HttpProcessorImpl implements HttpProcessor {
         //
         String config = request.getParameter("config");
         if (config != null) {
-            msg.append(xmlConfigResponse());
-            response.setContentType(HTTP_ACCEPT_XML);
+        	try {
+        		msg.append(serializeNAConfiguration());
+        		response.setContentType(HTTP_ACCEPT_XML);
+        	} catch( Exception e ) {
+        		msg.append(prepHtmlError("Server error while serializing naming authority's configuration", e));
+        		responseStatus = HttpServletResponse.SC_INTERNAL_SERVER_ERROR;
+        	}
         } else {
             //
             // Specifying ?xml in the URL forces XML output
@@ -179,7 +192,7 @@ public class HttpProcessorImpl implements HttpProcessor {
                         .getConfiguration().getPrefix(), uri));
                     
                     if (xmlResponse) {
-                        msg.append(serializer.serialize(ivs));
+                        msg.append(serialize(ivs));
                         response.setContentType(HTTP_ACCEPT_XML);
                     } else {
                         msg.append(htmlResponse(uri, ivs));

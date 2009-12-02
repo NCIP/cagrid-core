@@ -1,4 +1,4 @@
-package org.cagrid.identifiers.namingauthority.http;
+package org.cagrid.identifiers.namingauthority.domain;
 
 //
 // This class holds configuration that can be made
@@ -7,14 +7,6 @@ package org.cagrid.identifiers.namingauthority.http;
 public class NamingAuthorityConfig implements java.io.Serializable {
 	
 	private String gridSvcUrl;
-	
-	public NamingAuthorityConfig() {
-		
-	}
-	
-	public NamingAuthorityConfig( org.cagrid.identifiers.namingauthority.NamingAuthorityConfig config) {
-		setGridSvcUrl(config.getGridSvcUrl());
-	}
 	
 	public void setGridSvcUrl( String gridSvcUrl ) {
 		this.gridSvcUrl = gridSvcUrl;

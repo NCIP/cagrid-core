@@ -24,7 +24,7 @@ import org.apache.http.conn.ssl.SSLSocketFactory;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.protocol.HttpContext;
 import org.cagrid.identifiers.namingauthority.domain.IdentifierValues;
-import org.cagrid.identifiers.namingauthority.http.NamingAuthorityConfig;
+import org.cagrid.identifiers.namingauthority.domain.NamingAuthorityConfig;
 import org.exolab.castor.mapping.Mapping;
 import org.exolab.castor.mapping.MappingException;
 import org.exolab.castor.xml.MarshalException;
