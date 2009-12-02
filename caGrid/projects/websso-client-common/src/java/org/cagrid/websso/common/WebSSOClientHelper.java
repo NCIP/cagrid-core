@@ -12,6 +12,7 @@ import java.util.Map;
 import java.util.Properties;
 import java.util.StringTokenizer;
 
+import org.apache.log4j.Logger;
 import org.cagrid.gaards.cds.client.DelegatedCredentialUserClient;
 import org.cagrid.gaards.cds.delegated.stubs.types.DelegatedCredentialReference;
 import org.cagrid.gaards.cds.stubs.types.CDSInternalFault;
@@ -22,6 +23,8 @@ import org.globus.gsi.GlobusCredentialException;
 import org.springframework.core.io.ClassPathResource;
 
 public class WebSSOClientHelper {
+	
+	private static Logger log = Logger.getLogger(WebSSOClientHelper.class.getName());
 
 	public static Map<String, String> getUserAttributes(String attributeString){
 		Map<String, String> userAttributes = new HashMap<String, String>();
@@ -29,8 +32,10 @@ public class WebSSOClientHelper {
 		while (stringTokenizer.hasMoreTokens()) {
 			String attributeKeyValuePair = stringTokenizer.nextToken();
 			final int index = attributeKeyValuePair.indexOf(WebSSOConstants.KEY_VALUE_PAIR_DELIMITER);
-			if (index == -1)
+			if (index == -1){
+				log.error("Invalid UserAttributes from WebSSO-Server ");
 				throw new RuntimeException("Invalid UserAttributes from WebSSO-Server ");
+			}
 			final String key = attributeKeyValuePair.substring(0, index);
 			final String value = attributeKeyValuePair.substring(index + 1,attributeKeyValuePair.length());
 			userAttributes.put(key, value);
@@ -56,15 +61,16 @@ public class WebSSOClientHelper {
 		try {
 			userCredential = delegatedCredentialUserClient.getDelegatedCredential();
 		} catch (CDSInternalFault e) {
-			FaultUtil.printFaultToString(e);
+			log.info(FaultUtil.printFaultToString(e));
 			throw new WebSSOClientException("Error retrieving the Delegated Credentials", e);
 		} catch (DelegationFault e) {
-			FaultUtil.printFaultToString(e);
+			log.info(FaultUtil.printFaultToString(e));
 			throw new WebSSOClientException("Error retrieving the Delegated Credentials", e);
 		} catch (PermissionDeniedFault e) {
-			FaultUtil.printFaultToString(e);
+			log.info(FaultUtil.printFaultToString(e));
 			throw new WebSSOClientException("Permission denied to retrieve Delegated Credentials"+FaultUtil.printFaultToString(e));
 		}catch (RemoteException e) {
+			log.info(FaultUtil.printFaultToString(e));
 			throw new WebSSOClientException("Error retrieving the Delegated Credentials", e);
 		}
 		return userCredential;
@@ -77,6 +83,7 @@ public class WebSSOClientHelper {
 		try {
 			delegatedCredentialUserClient = new DelegatedCredentialUserClient(delegatedCredentialReference, hostCredential);
 		} catch (Exception e) {
+			log.info(FaultUtil.printFaultToString(e));
 			throw new WebSSOClientException("Unable to Initialize the Delegation Lookup Client", e);
 		}
 		return delegatedCredentialUserClient;
@@ -90,6 +97,7 @@ public class WebSSOClientHelper {
 		try {
 			inputStream = pathResource.getInputStream();
 		} catch (IOException e) {
+			log.info(FaultUtil.printFaultToString(e));
 			throw new WebSSOClientException("file client-config.wsdd not found in classpath ", e);
 		}
 		try {
@@ -98,6 +106,7 @@ public class WebSSOClientHelper {
 							DelegatedCredentialReference.class,inputStream
 							);
 		} catch (Exception e) {
+			log.info("Unable to deserialize the Delegation Reference  "+FaultUtil.printFaultToString(e));
 			throw new WebSSOClientException("Unable to deserialize the Delegation Reference", e);
 		}
 		return delegatedCredentialReference;
@@ -110,16 +119,16 @@ public class WebSSOClientHelper {
 		try {
 			hostCredential = new GlobusCredential(certificateFilePath,keyFilePath);
 		} catch (GlobusCredentialException e) {
+			log.info(FaultUtil.printFaultToString(e));
 			throw new WebSSOClientException("Invalid Certificate and Key File. Error creating Globus Credential",e);
 		}
 		return hostCredential;
 	}
 	
-	public static String getLogoutURL(Properties properties, String delegationEPR) {
+	public static String getLogoutURL(Properties properties) {
 		String logoutURL = properties.getProperty("cas.server.url")+ "/logout";
 		String logoutLandingURL=properties.getProperty("logout.landing.url");
 		logoutURL = logoutURL + "?service=" + logoutLandingURL;
-		logoutURL = logoutURL + "&" + WebSSOConstants.CAGRID_SSO_DELEGATION_SERVICE_EPR+ "=" + delegationEPR;
 		return logoutURL;
 	}
 }

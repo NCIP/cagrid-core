@@ -1,5 +1,7 @@
 package org.cagrid.websso.client.filter;
 
+import gov.nih.nci.cagrid.common.FaultUtil;
+
 import java.io.IOException;
 
 import javax.servlet.Filter;
@@ -11,15 +13,20 @@ import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.cagrid.websso.common.WebSSOClientException;
 import org.cagrid.websso.common.WebSSOConstants;
 import org.cagrid.websso.common.WebSSOClientHelper;
 import org.globus.gsi.GlobusCredential;
+import org.springframework.util.Assert;
 
 
 public class CaGridWebSSODelegationLookupFilter implements Filter {
 
 	private static final String CERTIFICATE_FILE_PATH = "certificate-file-path";
 	private static final String KEY_FILE_PATH = "key-file-path";
+	private final Log log = LogFactory.getLog(getClass());
 
 	private String certificateFilePath = null;
 	private String keyFilePath = null;
@@ -43,7 +50,8 @@ public class CaGridWebSSODelegationLookupFilter implements Filter {
 				GlobusCredential userCredential;
 				try {
 					userCredential = WebSSOClientHelper.getUserCredential(delegationEPR,certificateFilePath,keyFilePath);
-				} catch (Exception e) {
+				} catch (WebSSOClientException e) {
+					log.info(FaultUtil.printFaultToString(e));
 					throw new ServletException(e);
 				}
 				session.setAttribute(WebSSOConstants.CAGRID_SSO_GRID_CREDENTIAL,userCredential);
@@ -56,5 +64,7 @@ public class CaGridWebSSODelegationLookupFilter implements Filter {
 	public void init(FilterConfig filterConfig) throws ServletException {
 		this.certificateFilePath = filterConfig.getInitParameter(CERTIFICATE_FILE_PATH);
 		this.keyFilePath = filterConfig.getInitParameter(KEY_FILE_PATH);
+		Assert.notNull(this.certificateFilePath,"Please spcify host certificate in web.xml");
+		Assert.notNull(this.keyFilePath,"Please spcify host key in web.xml");
 	}
 }

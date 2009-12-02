@@ -36,8 +36,7 @@ public class CaGridWebSSOLogoutFilter implements Filter {
 		if (null == isSessionLoaded || isSessionLoaded == Boolean.FALSE) {
 			throw new ServletException("WebSSO Attributes are not loaded in the Session");
 		} else {
-			String delegationEPR = (String) session.getAttribute(WebSSOConstants.CAGRID_SSO_DELEGATION_SERVICE_EPR);
-			String logoutURL = WebSSOClientHelper.getLogoutURL(getCasClientPropertyResource(),delegationEPR);
+			String logoutURL = WebSSOClientHelper.getLogoutURL(getCasClientPropertyResource());
 			session.invalidate();
 			((HttpServletResponse) response).sendRedirect(logoutURL);
 		}

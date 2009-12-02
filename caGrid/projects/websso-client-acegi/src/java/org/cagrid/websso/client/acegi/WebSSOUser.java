@@ -73,4 +73,12 @@ public class WebSSOUser extends User {
 	public void setGridCredential(GlobusCredential gridCredential) {
 		this.gridCredential = gridCredential;
 	}
+
+	@Override
+	public String toString() {
+		return "WebSSOUser [delegatedEPR=" + delegatedEPR + ", emailId="
+				+ emailId + ", firstName=" + firstName + ", gridCredential="
+				+ gridCredential + ", gridId=" + gridId + ", lastName="
+				+ lastName + "]";
+	}
 }

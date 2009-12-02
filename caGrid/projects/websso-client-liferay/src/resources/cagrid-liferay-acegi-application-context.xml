@@ -86,8 +86,7 @@
       <property name="cache"><ref local="ticketCacheBackend"/></property>
 	</bean>
 
-	<!-- must be modified accordingly to the client User Detail Service -->
-		<!-- must be modified accordingly to the client User Detail Service -->
+	<!-- must be modified accordingly to the client User Detail Service -->		
 	<bean id="defaultUserDetailsService" class="org.cagrid.websso.client.acegi.DefaultUserDetailsService" />
 	
 	<bean id="casAuthoritiesPopulator" class="org.cagrid.websso.client.acegi.WebSSOAuthoritiesPopulator">

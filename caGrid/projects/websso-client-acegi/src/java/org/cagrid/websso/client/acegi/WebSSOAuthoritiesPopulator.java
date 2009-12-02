@@ -1,5 +1,7 @@
 package org.cagrid.websso.client.acegi;
 
+import gov.nih.nci.cagrid.common.FaultUtil;
+
 import org.acegisecurity.AuthenticationException;
 import org.acegisecurity.BadCredentialsException;
 import org.acegisecurity.providers.cas.CasAuthoritiesPopulator;
@@ -7,6 +9,7 @@ import org.acegisecurity.userdetails.UserDetails;
 import org.acegisecurity.userdetails.UserDetailsService;
 import org.apache.log4j.Logger;
 
+import org.cagrid.websso.common.WebSSOClientException;
 import org.cagrid.websso.common.WebSSOClientHelper;
 import org.globus.gsi.GlobusCredential;
 import org.springframework.beans.factory.annotation.Required;
@@ -31,11 +34,13 @@ public class WebSSOAuthoritiesPopulator implements CasAuthoritiesPopulator {
     public UserDetails getUserDetails(String casUserId) throws AuthenticationException {
     	WebSSOUser user = (WebSSOUser) userDetailsService.loadUserByUsername(casUserId);
 		String delegationEPR =user.getDelegatedEPR(); 
+		log.debug("User Info "+user);
 		try {
 			GlobusCredential userCredential = WebSSOClientHelper.getUserCredential(delegationEPR,hostCertificate,hostKey);
 			user.setGridCredential(userCredential);
-		} catch (Exception e) {
-			throw new BadCredentialsException("Error occured validating user credentials ",e);
+		} catch (WebSSOClientException e) {
+			log.info(FaultUtil.printFaultToString(e));
+			throw new BadCredentialsException("Error occured while validating user credentials ",e);
 		}
 		return user;
     }
@@ -53,6 +58,7 @@ public class WebSSOAuthoritiesPopulator implements CasAuthoritiesPopulator {
 		return hostCertificate;
 	}
 
+	@Required
 	public void setHostCertificate(String hostCertificate) {
 		this.hostCertificate = hostCertificate;
 	}
@@ -61,6 +67,7 @@ public class WebSSOAuthoritiesPopulator implements CasAuthoritiesPopulator {
 		return hostKey;
 	}
 
+	@Required
 	public void setHostKey(String hostKey) {
 		this.hostKey = hostKey;
 	}
