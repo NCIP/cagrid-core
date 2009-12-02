@@ -7,7 +7,7 @@ import java.net.URI;
 
 import org.apache.http.HttpException;
 import org.cagrid.identifiers.namingauthority.domain.IdentifierValues;
-import org.cagrid.identifiers.resolver.ResolverUtil;
+import org.cagrid.identifiers.resolver.Resolver;
 import org.exolab.castor.xml.MarshalException;
 import org.exolab.castor.mapping.MappingException;
 import org.exolab.castor.xml.ValidationException;
@@ -16,7 +16,7 @@ public class StressResolve {
 	
 	public void httpResolution( URI identifier ) throws HttpException, IOException, MarshalException, MappingException, ValidationException {
 		
-		IdentifierValues ivs = ResolverUtil.resolveHttp(identifier);
+		IdentifierValues ivs = new Resolver().resolveHttp(identifier);
 		//System.out.println(ivs.toString());
 		//System.out.println("========== httpResolution SUCCESS =============");
 	}

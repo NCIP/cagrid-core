@@ -4,12 +4,13 @@ import gov.nih.nci.cagrid.identifiers.client.IdentifiersNAServiceClient;
 
 import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.io.StringBufferInputStream;
 import java.io.StringReader;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
+import java.util.Properties;
 
 import org.apache.http.Header;
 import org.apache.http.HttpEntity;
@@ -29,15 +30,47 @@ import org.exolab.castor.mapping.Mapping;
 import org.exolab.castor.mapping.MappingException;
 import org.exolab.castor.xml.MarshalException;
 import org.exolab.castor.xml.ValidationException;
-import org.exolab.castor.xml.Marshaller;
 import org.exolab.castor.xml.Unmarshaller;
 import org.exolab.castor.xml.XMLContext;
 import org.xml.sax.InputSource;
 
 
-public class ResolverUtil {
-
-	private static String getResponseString( HttpResponse response ) throws IOException {
+public class Resolver {
+	
+	private static String PROPERTIES_FILE = "etc/identifiers-client.properties";
+	private static String CASTORMAPPING_PROPERTY = "na-castor-mapping";
+	
+	private Properties properties = null;
+	private XMLContext xmlContext = null;
+	
+	public Resolver() throws IOException, MappingException {
+		InputStream in = this.getClass().getClassLoader()
+			.getResourceAsStream(PROPERTIES_FILE);
+		
+		if (in == null) {
+			throw new IOException("Unable to load properties file " + PROPERTIES_FILE);
+		}
+		
+		properties = new Properties ();
+        properties.load (in);
+        
+        String castorMapping = properties.getProperty(CASTORMAPPING_PROPERTY);
+        
+		URL mappingResource = Resolver.class.getClassLoader()
+        	.getResource(castorMapping);
+		
+		if (mappingResource == null) {
+			throw new IOException("Unable to load resource [" + castorMapping + "]. Make sure this is available via CLASSPATH");
+		}
+		
+		Mapping mapping = new Mapping();
+		mapping.loadMapping(new InputSource(mappingResource.openStream()));
+		
+		xmlContext = new XMLContext();
+		xmlContext.addMapping(mapping);
+	}
+	
+	private String getResponseString( HttpResponse response ) throws IOException {
 		
 		StringBuffer responseStr = new StringBuffer();
 		
@@ -58,7 +91,7 @@ public class ResolverUtil {
 		return responseStr.toString();
 	}
 	
-	private static DefaultHttpClient getHttpClient() {
+	private DefaultHttpClient getHttpClient() {
 		
 		DefaultHttpClient client = new DefaultHttpClient();
 		
@@ -79,7 +112,7 @@ public class ResolverUtil {
 		return client;
 	}
 	
-	private static void checkXMLResponse(HttpResponse response, String errMsg) throws HttpException {
+	private void checkXMLResponse(HttpResponse response, String errMsg) throws HttpException {
 		int statusCode = response.getStatusLine().getStatusCode();
     	if (statusCode != HttpStatus.SC_OK) {
     		throw new HttpException(errMsg + " [" + statusCode + ":" + response.getStatusLine().toString() + "]");
@@ -94,44 +127,16 @@ public class ResolverUtil {
     	}
 	}
 	
-	private static Unmarshaller getDeserializer() throws IOException, MappingException {
-		String resource = "org/cagrid/identifiers/namingauthority/na-castor-mapping.xml";
-		
-		URL mappingResource = ResolverUtil.class.getClassLoader()
-        	.getResource(resource);
-		
-		if (mappingResource == null) {
-			throw new IOException("Unable to load resource " + resource + ". Make sure this is available via CLASSPATH");
-		}
-		
-		Mapping mapping = new Mapping();
-		mapping.loadMapping(new InputSource(mappingResource.openStream()));
-		
-		XMLContext context = new XMLContext();
-		context.addMapping(mapping);
-		
-		return context.createUnmarshaller();
-	}
+	private String httpGet(URI url, String errMsg) throws HttpException, IOException {
 	
-	private static String httpGet(URI url, String errMsg) throws HttpException, IOException {
-		
-		Object dataObject;
-		
 		DefaultHttpClient client = getHttpClient();
-
 		HttpGet method = new HttpGet( url );
-	      
-	    NamingAuthorityConfig config = null;
-	    
+     	    
 	    try {
 	    	//System.out.println("Connecting to " + url);
-	    	
 	    	HttpResponse response = client.execute( method );
-	    	
 	    	checkXMLResponse(response, errMsg);
-	    	
 	    	return getResponseString(response);
-					
 	    } finally {
 	         // Release the connection.
 	         method.abort();
@@ -139,24 +144,7 @@ public class ResolverUtil {
 	    }  
 	}
 		
-//	public static IdentifierValues convert( KeyValues[] tvsArr ) {
-//		if (tvsArr == null)
-//			return null;
-//		
-//		IdentifierValues ivs = new IdentifierValues();
-//		
-//		for( KeyValues tvs : tvsArr ) {
-//			String key = tvs.getKey();
-//			Values values = tvs.getValues();
-//			for( String value : values.getValue() ) {
-//				ivs.add(key, value);
-//			}
-//		}
-//		
-//		return ivs;
-//	}
-	
-	private static NamingAuthorityConfig retrieveNamingAuthorityConfig( URI identifier ) 
+	private NamingAuthorityConfig retrieveNamingAuthorityConfig( URI identifier ) 
 		throws URISyntaxException, IOException, HttpException, MappingException, MarshalException, ValidationException {
 		
 		URI configUrl = new URI(identifier.toString() + "?config");
@@ -164,14 +152,14 @@ public class ResolverUtil {
 		String naConfigStr = httpGet(configUrl, "Unable to retrieve naming authority configuration from " + configUrl);
 			
 		// Deserialize response
-		Unmarshaller unmarshaller = getDeserializer();
+		Unmarshaller unmarshaller = xmlContext.createUnmarshaller();
 		unmarshaller.setClass(NamingAuthorityConfig.class);
 		
 		return (NamingAuthorityConfig) 
 			unmarshaller.unmarshal(new StringReader(naConfigStr));
 	}
 	
-	public static IdentifierValues resolveGrid( URI identifier ) throws Exception {
+	public IdentifierValues resolveGrid( URI identifier ) throws Exception {
 		
 		NamingAuthorityConfig config = retrieveNamingAuthorityConfig( identifier );
 		
@@ -181,7 +169,7 @@ public class ResolverUtil {
 				client.resolveIdentifier(new org.apache.axis.types.URI(identifier.toString())) );
 	}
 	
-	public static IdentifierValues resolveHttp( URI identifier ) 
+	public IdentifierValues resolveHttp( URI identifier ) 
 		throws HttpException, IOException, MarshalException, MappingException, ValidationException {
 		
 		//
@@ -190,7 +178,7 @@ public class ResolverUtil {
 		String iValuesStr = httpGet(identifier, "Identifier [" + identifier + "] failed resolution");
 		
 		//Deserialize the response
-		Unmarshaller unmarshaller = getDeserializer();
+		Unmarshaller unmarshaller = xmlContext.createUnmarshaller();
 		unmarshaller.setClass(IdentifierValues.class);
 		
 		return (IdentifierValues) unmarshaller.unmarshal(new StringReader(iValuesStr));

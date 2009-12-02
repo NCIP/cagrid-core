@@ -7,7 +7,7 @@ import junit.framework.TestCase;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.cagrid.identifiers.namingauthority.domain.IdentifierValues;
-import org.cagrid.identifiers.resolver.ResolverUtil;
+import org.cagrid.identifiers.resolver.Resolver;
 import org.cagrid.identifiers.retriever.impl.RetrieverService;
 
 public class ResolverTestCase extends TestCase {
@@ -18,29 +18,28 @@ public class ResolverTestCase extends TestCase {
 	
 	static {
 		try {
-			identifier = new URI("http://purlz.cagrid.org:8080/localhost/d34c03a9-705b-4287-92f9-a021452e3716");
+			identifier = new URI("http://purlz.cagrid.org:8080/localhost/616db4cc-6500-4d0b-81e6-e8672815b8e0");
 		} catch(Exception e){
 			identifier = null;
 		}
 	}
 	
-
-//	public void testGridResolution() {
-//		try {
-//			System.out.println("========== testGridResolution =============");
-//			IdentifierValues ivs = ResolverUtil.resolveGrid(identifier);
-//			System.out.println(ivs.toString());
-//			System.out.println("========== testGridResolution SUCCESS =============");
-//		} catch (Exception e) {
-//			e.printStackTrace();
-//			fail(e.getMessage());
-//		}
-//	}
+	public void testGridResolution() {
+		try {
+			System.out.println("========== testGridResolution =============");
+			IdentifierValues ivs = new Resolver().resolveGrid(identifier);
+			System.out.println(ivs.toString());
+			System.out.println("========== testGridResolution SUCCESS =============");
+		} catch (Exception e) {
+			e.printStackTrace();
+			fail(e.getMessage());
+		}
+	}
 	
 	public void testHttpResolution() {
 		try {
 			System.out.println("========== testHttpResolution =============");
-			IdentifierValues ivs = ResolverUtil.resolveHttp(identifier);
+			IdentifierValues ivs = new Resolver().resolveHttp(identifier);
 			System.out.println(ivs.toString());
 			System.out.println("========== testHttpResolution SUCCESS =============");
 		} catch (Exception e) {

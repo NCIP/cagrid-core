@@ -13,7 +13,7 @@ public class RetrieverService {
 
 
     public RetrieverService() {
-        init(new String[]{"/resources/spring/identifiers-client-context.xml"}, "RetrieverFactory");
+        init(new String[]{"/etc/identifiers-client-context.xml"}, "RetrieverFactory");
     }
 
 

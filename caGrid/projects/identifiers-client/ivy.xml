@@ -11,44 +11,46 @@
 
 	<configurations>
 		<!-- Private Configurations -->
-		<conf name="impl" visibility="private" extends="default" />
-      <conf name="impl-test" visibility="private" />
+		<conf name="impl" visibility="private" extends="full" />
+      	<conf name="impl-test" visibility="private" />
 
 		<!-- Public Configurations -->
-		<conf name="default" visibility="public" />
-      <conf name="test" visibility="public" extends="impl-test,default" />
+		<conf name="minimal" visibility="public" />
+		<conf name="cql" visibility="public" extends="minimal" />
+		<conf name="full" visibility="public" extends="cql" />
+      	<conf name="test" visibility="public" extends="impl-test,full" />
 	</configurations>
 
 	<publications>
-		<artifact name="caGrid-identifiers-client" conf="default" type="jar" />
+		<artifact name="caGrid-identifiers-client" conf="minimal" type="jar" />
 		<artifact name="caGrid-identifiers-client-tests" conf="test" type="jar" />
 	</publications>
 
 	<dependencies>
-		<dependency rev="latest.integration" org="caGrid" name="core" conf="default->default" />
-		<dependency rev="latest.integration" org="caGrid" name="data" conf="default->stubs" />
-		<dependency rev="latest.integration" org="caGrid" name="cql" conf="default->cql" />
-      <dependency rev="latest.integration" org="caGrid" name="service-security-provider" 
-			conf="default->client"/>
+		<dependency rev="latest.integration" org="caGrid" name="core" conf="minimal->default" />
+		<dependency rev="latest.integration" org="caGrid" name="data" conf="minimal->stubs" />
+		<dependency rev="latest.integration" org="caGrid" name="cql" conf="cql->cql" />
+      	<dependency rev="latest.integration" org="caGrid" name="service-security-provider" 
+			conf="minimal->client"/>
 
-      <dependency rev="latest.integration" org="caGrid" name="identifiers-namingauthority"
-         conf="default->default" transitive="true" />
+      	<dependency rev="latest.integration" org="caGrid" name="identifiers-namingauthority"
+         conf="minimal->default" transitive="true" />
 		<dependency rev="latest.integration" org="caGrid" name="identifiers-namingauthority-gridsvc"
-         conf="default->stubs,client" transitive="true" />
+         conf="minimal->stubs,client" transitive="true" />
 
 		<dependency rev="4.0.1" org="apache" name="httpcomponents-core"
-                        conf="default->default" transitive="true" />
+                        conf="minimal->default" transitive="true" />
 		<dependency rev="4.0" org="apache" name="httpcomponents-client"
-                        conf="default->default" transitive="true" />
+                        conf="minimal->default" transitive="true" />
 
 		<dependency rev="1.3" org="apache" name="commons-codec"
-			conf="default->default" transitive="true" />
+			conf="minimal->default" transitive="true" />
 		<dependency rev="2.5.5" org="springframework" name="spring"
-			conf="default->full" transitive="true" />
-      <dependency rev="1.3" org="castor" name="castor" conf="default->default" />
+			conf="minimal->full" transitive="true" />
+      	<dependency rev="1.3" org="castor" name="castor" conf="minimal->default" />
 
-      <dependency rev="4.4" org="junit" name="junit" conf="impl-test->default" />
-      <dependency rev="1.1" org="apache" name="commons-logging" conf="impl-test->default" />
+      	<dependency rev="4.4" org="junit" name="junit" conf="impl-test->default" />
+      	<dependency rev="1.1" org="apache" name="commons-logging" conf="impl-test->default" />
 	</dependencies>
 
 </ivy-module>

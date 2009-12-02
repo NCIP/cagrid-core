@@ -136,7 +136,7 @@
             </fileset>
         </copy>
 		  <copy toDir="${classes.dir}">
-				<fileset dir="." includes="resources/**"/>
+				<fileset dir="." includes="etc/**"/>
 		  </copy>
     </target>
 
