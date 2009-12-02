@@ -40,7 +40,7 @@ public class AdvertisementClient {
                 try {
                     unregister();
                 } catch (UnregistrationException e) {
-               		System.err.println("Problem unreqistering");
+               		System.err.println("Problem unregistering");
                		System.err.println(e);
                 }
             }
