@@ -75,7 +75,7 @@
 	<classpathentry kind="lib" path="ext/dependencies/default/jars/backport-util-concurrent-3.0.jar"/>
 	<classpathentry kind="lib" path="ext/dependencies/default/jars/caGrid-ServiceSecurityProvider-common-1.4-dev.jar"/>
 	<classpathentry kind="lib" path="ext/dependencies/default/jars/cas-client-core-3.1.3.jar"/>
-	<classpathentry kind="lib" path="ext/dependencies/default/jars/cas-server-core-3.2.2.jar"/>
+	<classpathentry kind="lib" path="ext/dependencies/default/jars/cas-server-core-3.2.2.jar" sourcepath="C:/dev-examples/cas-server-3.2.2-RC1"/>
 	<classpathentry kind="lib" path="ext/dependencies/default/jars/cog-jglobus.jar"/>
 	<classpathentry kind="lib" path="ext/dependencies/default/jars/commons-codec-1.3.jar"/>
 	<classpathentry kind="lib" path="ext/dependencies/default/jars/commons-collections-3.2.jar"/>
@@ -105,8 +105,8 @@
 	<classpathentry kind="lib" path="ext/dependencies/default/jars/spring-security-2.0.1.jar"/>
 	<classpathentry kind="lib" path="ext/dependencies/default/jars/spring-security-cas-client-2.0.1.jar"/>
 	<classpathentry kind="lib" path="ext/dependencies/default/jars/spring-test.jar"/>
-	<classpathentry kind="lib" path="ext/dependencies/default/jars/spring-webflow-1.0.5.jar"/>
-	<classpathentry kind="lib" path="ext/dependencies/default/jars/spring-webmvc.jar"/>
+	<classpathentry kind="lib" path="ext/dependencies/default/jars/spring-webflow-1.0.5.jar" sourcepath="C:/dev-examples/spring-webflow-1.0.5"/>
+	<classpathentry kind="lib" path="ext/dependencies/default/jars/spring-webmvc.jar" sourcepath="C:/dev-examples/spring-framework-2.5.6/dist/module-sources/spring-webmvc-sources.jar"/>
 	<classpathentry kind="lib" path="ext/dependencies/default/jars/spring.jar" sourcepath="C:/dev-examples/spring-framework-2.5.6/dist/spring-sources.jar"/>
 	<classpathentry kind="lib" path="ext/dependencies/default/jars/standard-1.1.2.jar"/>
 	<classpathentry kind="lib" path="ext/dependencies/default/jars/xmldsig-1.0.jar"/>
