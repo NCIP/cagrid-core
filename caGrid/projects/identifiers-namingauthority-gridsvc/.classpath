@@ -2,6 +2,7 @@
 <classpath>
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="src" path="build/stubs-IdentifiersNAService/src"/>
+	<classpathentry kind="src" path="test/src"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.junit.JUNIT_CONTAINER/4"/>
 	<classpathentry kind="var" path="GT4_LOCATION/lib/addressing-1.0.jar"/>
@@ -108,5 +109,6 @@
 	<classpathentry kind="lib" path="ext/dependencies/service/jars/ejb3-persistence.jar"/>
 	<classpathentry kind="lib" path="ext/dependencies/service/jars/hibernate-annotations.jar"/>
 	<classpathentry kind="lib" path="ext/dependencies/service/jars/hibernate-commons-annotations.jar"/>
+	<classpathentry kind="var" path="GT4_LOCATION"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

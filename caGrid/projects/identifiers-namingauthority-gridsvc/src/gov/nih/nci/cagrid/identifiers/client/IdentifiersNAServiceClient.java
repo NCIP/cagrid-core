@@ -61,39 +61,10 @@ public class IdentifiersNAServiceClient extends IdentifiersNAServiceClientBase i
 		try{
 		if(!(args.length < 2)){
 			if(args[0].equals("-url")){
-//			  IdentifiersNAServiceClient client = new IdentifiersNAServiceClient(args[1]);
+			  IdentifiersNAServiceClient client = new IdentifiersNAServiceClient(args[1]);
 			  // place client calls here if you want to use this main as a
 			  // test....
 				
-//			  KeyValues[] tvs = new KeyValues[2];
-//			  tvs[0] = new KeyValues();
-//			  tvs[0].setKey("URL");
-//			  Values values = new Values();
-//			  values.setValue(new String[] { "http://www.yahoo1.com", "http://www.yahoo2.com" });
-//			  tvs[0].setValues(values);
-//
-//			  tvs[1] = new KeyValues();
-//			  tvs[1].setKey("XXX");
-//			  values = new Values();
-//			  values.setValue(new String[] { "text1", "text2" });
-//			  tvs[1].setValues(values);
-//
-//			  KeyValuesMap tvm = new KeyValuesMap();
-//			  tvm.setKeyValues(tvs);
-//
-//			  org.apache.axis.types.URI identifier = client.createIdentifier(tvm);
-//			  System.out.println("Created [" + identifier.toString() + "]");
-//				
-//			  org.apache.axis.types.URI identifier = new org.apache.axis.types.URI(
-//					  "http://purlz.cagrid.org:8080/localhost/d34c03a9-705b-4287-92f9-a021452e3716");
-//			  System.out.println("Now retrieving values for " + identifier);
-//			  namingauthority tvm2 = client.resolveIdentifier(identifier);
-//			  for( KeyValues tv : tvm2.getKeyValues() ) {
-//				  System.out.println("KEY: " + tv.getKey());
-//				  for( String value : tv.getValues().getValue() ) {
-//					  System.out.println("\tVALUE: " + value);
-//				  }
-//			  }
 			} else {
 				usage();
 				System.exit(1);

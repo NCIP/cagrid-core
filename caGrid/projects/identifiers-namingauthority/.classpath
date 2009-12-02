@@ -93,5 +93,7 @@
 	<classpathentry kind="lib" path="ext/dependencies/impl/jars/spring-test.jar"/>
 	<classpathentry kind="lib" path="ext/dependencies/impl/jars/spring.jar"/>
 	<classpathentry kind="lib" path="ext/dependencies/impl/jars/castor-1.3.jar"/>
+	<classpathentry kind="lib" path="ext/dependencies/impl/jars/castor-1.3-core.jar"/>
+	<classpathentry kind="lib" path="ext/dependencies/impl/jars/spring-xml-1.2.1.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
