@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<project name="build-deploy file" basedir="." default="deploy">
+<project name="build-deploy file" basedir="." default="deployTomcat">
 	<!-- ============================================================== -->
 	<!-- MASTER DEPLOY FILE DO NOT EDIT OR INTRODUCE MAY OVERWRITE      -->
 	<!-- In order to customize the deployment process please edit the   -->
@@ -33,7 +33,7 @@
 	</target>
 	
 	
-	<target name="setDeploymentProperties">
+	<target name="setDeploymentProperties" depends="init">
 		<property file="deploy.properties" />
 		<property name="globus.webapp" value="wsrf" />
 		<property name="service.deployment.path" value="${service.deployment.prefix}/${introduce.skeleton.service.name}" />
@@ -181,7 +181,7 @@
 	</target>
 
 	<!-- make deployment configured gar -->
-	<target name="createDeploymentGar" depends="all,setDeploymentProperties" description="creates a gar file that can be deployed or moved around">
+	<target name="createDeploymentGar" depends="setDeploymentProperties" description="creates a gar file that can be deployed or moved around">
 
 		<!-- prepare the server-config file -->
 		<mkdir dir="tmp" />
@@ -208,7 +208,7 @@
 
 
 	<!-- deploy a gar to globus -->
-	<target name="deployGlobus" depends="checkGlobus, deploymentValidator,createDeploymentGar" description="Deploys a gar to GLOBUS_LOCATION (to set the services properties file set the ant command line variable -Dservice.properties.file)">
+	<target name="deployGlobus" depends="all, createDeploymentGar, deploymentValidator" description="Deploys a gar to GLOBUS_LOCATION (to set the services properties file set the ant command line variable -Dservice.properties.file)">
 
 		<echo message="Deploying server to Globus Container" />
 
