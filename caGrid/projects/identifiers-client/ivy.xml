@@ -28,25 +28,25 @@
 
 	<dependencies>
 		<dependency rev="latest.integration" org="caGrid" name="core" conf="minimal->default" />
-		<dependency rev="latest.integration" org="caGrid" name="data" conf="minimal->stubs" />
+		<dependency rev="latest.integration" org="caGrid" name="data" conf="cql->stubs" />
 		<dependency rev="latest.integration" org="caGrid" name="cql" conf="cql->cql" />
       	<dependency rev="latest.integration" org="caGrid" name="service-security-provider" 
 			conf="minimal->client"/>
 
       	<dependency rev="latest.integration" org="caGrid" name="identifiers-namingauthority"
-         conf="minimal->default" transitive="true" />
+         conf="minimal->default" />
 		<dependency rev="latest.integration" org="caGrid" name="identifiers-namingauthority-gridsvc"
-         conf="minimal->stubs,client" transitive="true" />
+         conf="minimal->stubs,client" />
 
 		<dependency rev="4.0.1" org="apache" name="httpcomponents-core"
-                        conf="minimal->default" transitive="true" />
+                        conf="minimal->default" />
 		<dependency rev="4.0" org="apache" name="httpcomponents-client"
-                        conf="minimal->default" transitive="true" />
+                        conf="minimal->default" />
 
 		<dependency rev="1.3" org="apache" name="commons-codec"
-			conf="minimal->default" transitive="true" />
+			conf="minimal->default" />
 		<dependency rev="2.5.5" org="springframework" name="spring"
-			conf="minimal->full" transitive="true" />
+			conf="minimal->full" />
       	<dependency rev="1.3" org="castor" name="castor" conf="minimal->default" />
 
       	<dependency rev="4.4" org="junit" name="junit" conf="impl-test->default" />

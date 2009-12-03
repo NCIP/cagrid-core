@@ -4,14 +4,10 @@ import gov.nih.nci.cagrid.identifiers.client.IdentifiersNAServiceClient;
 
 import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.StringReader;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.net.URL;
-import java.util.Properties;
-
 import org.apache.http.Header;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpException;
@@ -26,48 +22,26 @@ import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.protocol.HttpContext;
 import org.cagrid.identifiers.namingauthority.domain.IdentifierValues;
 import org.cagrid.identifiers.namingauthority.domain.NamingAuthorityConfig;
-import org.exolab.castor.mapping.Mapping;
 import org.exolab.castor.mapping.MappingException;
 import org.exolab.castor.xml.MarshalException;
 import org.exolab.castor.xml.ValidationException;
 import org.exolab.castor.xml.Unmarshaller;
 import org.exolab.castor.xml.XMLContext;
-import org.xml.sax.InputSource;
-
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 public class Resolver {
 	
-	private static String PROPERTIES_FILE = "etc/identifiers-client.properties";
-	private static String CASTORMAPPING_PROPERTY = "na-castor-mapping";
+	private static String SPRING_CONTEXT_RESOURCE = "/etc/identifiers-client-context.xml";
+	private static String CASTOR_CONTEXT_BEAN = "castorXmlContext";
 	
-	private Properties properties = null;
 	private XMLContext xmlContext = null;
+	private ApplicationContext appCtx = null;
+    
 	
-	public Resolver() throws IOException, MappingException {
-		InputStream in = this.getClass().getClassLoader()
-			.getResourceAsStream(PROPERTIES_FILE);
-		
-		if (in == null) {
-			throw new IOException("Unable to load properties file " + PROPERTIES_FILE);
-		}
-		
-		properties = new Properties ();
-        properties.load (in);
-        
-        String castorMapping = properties.getProperty(CASTORMAPPING_PROPERTY);
-        
-		URL mappingResource = Resolver.class.getClassLoader()
-        	.getResource(castorMapping);
-		
-		if (mappingResource == null) {
-			throw new IOException("Unable to load resource [" + castorMapping + "]. Make sure this is available via CLASSPATH");
-		}
-		
-		Mapping mapping = new Mapping();
-		mapping.loadMapping(new InputSource(mappingResource.openStream()));
-		
-		xmlContext = new XMLContext();
-		xmlContext.addMapping(mapping);
+	public Resolver() {
+		appCtx = new ClassPathXmlApplicationContext(SPRING_CONTEXT_RESOURCE);
+        xmlContext = (XMLContext) appCtx.getBean(CASTOR_CONTEXT_BEAN);
 	}
 	
 	private String getResponseString( HttpResponse response ) throws IOException {

@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
 <project name="Deploy Naming Authority as a web app" basedir=".">
 
-	<property name="warfile" value="build/namingauthority.war"/>
+	<property name="build.webcontent.dir" value="${build.dir}/WebContent" />
+	<property name="warfile" value="${build.dir}/namingauthority.war"/>
   	<property environment="env"/>
 
 	<target name="setTomcat" if="env.CATALINA_HOME">
@@ -18,14 +19,25 @@
 	</target>
 
 	<target name="create">
-		<copy todir="WebContent/WEB-INF/lib" overwrite="true">
+		<mkdir dir="${build.webcontent.dir}" />
+		
+		<copy todir="${build.webcontent.dir}">
+		    <fileset dir="WebContent"/>
+		</copy>
+
+		<copy todir="${build.webcontent.dir}" overwrite="true">
+			<fileset dir="schema">
+				<include name="*.xsd"/>
+			</fileset>
+		</copy>
+		<copy todir="${build.webcontent.dir}/WEB-INF/lib" overwrite="true">
          <fileset dir="${ext.lib.dir}">
             <include name="*.jar"/>
          </fileset>
       </copy>
-		<war destfile="${warfile}" webxml="WebContent/WEB-INF/web.xml" update="true">
-			<classes dir="build/classes"/>
-			<fileset dir="WebContent">
+		<war destfile="${warfile}" webxml="${build.webcontent.dir}/WEB-INF/web.xml" update="true">
+			<classes dir="${build.dir}/classes"/>
+			<fileset dir="${build.webcontent.dir}">
 				<exclude name="WEB-INF/web.xml"/>
 			</fileset>
 		</war>
@@ -34,7 +46,7 @@
 	<target name="copy" depends="checkTomcat">
 		<echo message="Deploying web app under Tomcat at ${webapp.deploy.dir}" />
 		<copy todir="${webapp.deploy.dir}" overwrite="true">
-			<fileset dir="build/">
+			<fileset dir="${build.dir}/">
 				<include name="*.war"/>
 			</fileset>
 		</copy>
