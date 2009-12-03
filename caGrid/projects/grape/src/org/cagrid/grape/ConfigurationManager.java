@@ -24,24 +24,15 @@ import org.cagrid.grape.model.ConfigurationGroups;
  * @author <A href="mailto:oster@bmi.osu.edu">Scott Oster </A>
  * @author <A href="mailto:hastings@bmi.osu.edu">Shannon Hastings </A>
  * @created Oct 14, 2004
- * @version $Id: ArgumentManagerTable.java,v 1.2 2004/10/15 16:35:16 langella
- *          Exp $
  */
 public class ConfigurationManager {
 
 	private static final String DEFAULT = "default";
 
-	private static final String DEFAULT_CONFIGURATION_DIR = "."; //Utils.getCaGridUserHome()
-			//.getAbsolutePath()
-			//+ File.separator + "grape";
-
-//	private Map<String, ConfigurationDescriptor> confsByName = null;
-
-//	private Map<String, Object> objectsByName = null;
+	private static final String DEFAULT_CONFIGURATION_DIR = Utils.getCaGridUserHome()
+			.getAbsolutePath() + File.separator + "grape";
 
 	private static Logger log = Logger.getLogger(ConfigurationManager.class);
-
-//	private Configuration configuration;
 
 	private ConfigurationSynchronizer synchronizer;
 	
@@ -178,10 +169,6 @@ public class ConfigurationManager {
 					+ " does not exist!!!");
 		}
 	}
-
-//	public Grid getConfigurationGrid(String configurationName) {
-//		return configurations.get(configurationName).getGrid();
-//	}
 	
 	public void saveAll() throws Exception {
 		for (ConfigurationObjects configurationObjects : configurations
@@ -355,8 +342,11 @@ public class ConfigurationManager {
 				File conf = new File(configurationDirectory + File.separator + tmpConfName + File.separator
 						+ des.getSystemName() + "-conf.xml");
 				if (!conf.exists()) {
-					File template = new File(configurationDirectory
+					File template = new File(des.getDefaultFile());
+					if (!template.exists()) {
+						template = new File(configurationDirectory
 							+ File.separator  + tmpConfName + File.separator + des.getDefaultFile());
+					}
 					if (!template.exists()) {
 						throw new Exception(
 								"Error configuring the application,the default file specified for the configuration "
