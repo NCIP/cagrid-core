@@ -90,10 +90,18 @@
          <value>org/cagrid/identifiers/namingauthority/na-castor-mapping.xml</value>
       </list>
    </property>
+   <property name="castorProperties">
+     <props>
+       <prop key="org.exolab.castor.indent">true</prop>
+       <prop key="org.exolab.castor.parser.namespaces">true</prop>
+       <prop key="org.exolab.castor.sax.features">http://xml.org/sax/features/validation,http://apache.org/xml/features/validation/schema,http://apache.org/xml/features/validation/schema-full-checking</prop>
+     </props>
+   </property>
   </bean>
   
   <bean id="marshaller" class="org.castor.spring.xml.CastorMarshallerFactoryBean">
    <property name="xmlContext"><ref local="castorXmlContext"/></property>
+   <property name="schemaLocation" value="na://na.cagrid.org/1.0/NamingAuthority org.cagrid.identifiers.namingauthority.xsd" />
   </bean>
   
   <bean id="httpProcessor" class="org.cagrid.identifiers.namingauthority.http.HttpProcessorImpl">
