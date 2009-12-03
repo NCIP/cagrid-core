@@ -59,6 +59,8 @@ public class GAARDSApplication extends GridApplication{
         super();
 
 		ErrorDialog.setOwnerFrame(this);
+		YesNoDialog.setOwnerFrame(this);
+		
 		this.app = app;
 		LookAndFeel.setApplicationLogo(this.app.getApplicationLogo());
 		this.threadManager = new ThreadManager();
@@ -295,7 +297,7 @@ public class GAARDSApplication extends GridApplication{
 			File gridConfigurationDir = new File(gaardsConfigurationDirectory, grids[counter].getSystemName());
 			deleteDuplicateConfFiles(gridConfigurationDir);
 			if (updatedGridConfiguration && conflictingConfs(gridConfigurationDir)) {
-				ErrorDialog.showError("The updated target grid configuration conflicts with your locally modified version.  Please contact your admin for assitance.");
+				YesNoDialog.showChoice("The updated configuration files for Grid: "+grids[counter].getSystemName()+", conflict with your locally modified versions.  Do you wish to keep your current version or delete it and use the updated version.", gridConfigurationDir.getAbsolutePath());
 			}
 
 			configurationManager.addConfiguration(loadConfiguration(), grids[counter]);
