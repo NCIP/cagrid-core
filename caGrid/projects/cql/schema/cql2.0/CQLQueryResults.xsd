@@ -21,6 +21,9 @@
 			<xsd:sequence>
 				<xsd:element name="AggregationResult" type="res:CQLAggregateResult" minOccurs="0" maxOccurs="1"/>
 			</xsd:sequence>
+			<xsd:sequence>
+				<xsd:element name="ExtendedResult" type="res:ExtendedCQLResult" minOccurs="0" maxOccurs="1"/>
+			</xsd:sequence>
 		</xsd:choice>
 		<xsd:attribute name="targetClassname" type="xsd:string" use="required"/>
 	</xsd:complexType>
@@ -38,7 +41,7 @@
 		<xsd:complexContent>
 			<xsd:extension base="res:CQLResult">
 				<xsd:sequence>
-					<xsd:any processContents="lax"/>
+					<xsd:any namespace="##any" processContents="lax" minOccurs="0" maxOccurs="1"/>
 				</xsd:sequence>
 			</xsd:extension>
 		</xsd:complexContent>
@@ -57,14 +60,6 @@
 		</xsd:complexContent>
 	</xsd:complexType>
 	
-	<xsd:complexType name="TargetAttribute">
-		<xsd:annotation>
-			<xsd:documentation>An attribute (name and value pair) of a target data object instance</xsd:documentation>
-		</xsd:annotation>
-		<xsd:attribute name="name" type="xsd:string" use="required"/>
-		<xsd:attribute name="value" type="xsd:anySimpleType" use="optional"/>
-	</xsd:complexType>
-	
 	<xsd:complexType name="CQLAggregateResult">
 		<xsd:annotation>
 			<xsd:documentation>An aggregation result (count, min, max, etc)</xsd:documentation>
@@ -74,6 +69,27 @@
 				<xsd:attribute name="attributeName" type="xsd:string" use="required"/>
 				<xsd:attribute name="value" type="xsd:anySimpleType" use="required"/>
 				<xsd:attribute name="aggregation" type="cql2:Aggregation" use="required"/>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>	
+	
+	<xsd:complexType name="TargetAttribute">
+		<xsd:annotation>
+			<xsd:documentation>An attribute (name and value pair) of a target data object instance</xsd:documentation>
+		</xsd:annotation>
+		<xsd:attribute name="name" type="xsd:string" use="required"/>
+		<xsd:attribute name="value" type="xsd:anySimpleType" use="optional"/>
+	</xsd:complexType>
+	
+	<xsd:complexType name="ExtendedCQLResult">
+		<xsd:annotation>
+			<xsd:documentation>Result type for extensibility</xsd:documentation>
+		</xsd:annotation>
+		<xsd:complexContent>
+			<xsd:extension base="res:CQLResult">
+				<xsd:sequence>
+					<xsd:any namespace="##any" processContents="lax" minOccurs="0" maxOccurs="1"/>
+				</xsd:sequence>
 			</xsd:extension>
 		</xsd:complexContent>
 	</xsd:complexType>

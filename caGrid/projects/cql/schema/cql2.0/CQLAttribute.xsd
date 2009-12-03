@@ -4,6 +4,7 @@
 	targetNamespace="http://CQL.caBIG/2/org.cagrid.cql2" 
 	elementFormDefault="qualified" attributeFormDefault="unqualified">
 	<xsd:include schemaLocation="Predicates.xsd"/>
+	<xsd:include schemaLocation="CQLExtension.xsd"/>
 	
 	<xsd:complexType name="CQLAttribute">
 		<xsd:choice>
@@ -13,6 +14,9 @@
 			</xsd:sequence>
 			<xsd:sequence>
 				<xsd:element name="UnaryPredicate" type="cql2:UnaryPredicate"/>
+			</xsd:sequence>
+			<xsd:sequence>
+				<xsd:element name="AttributeExtension" type="cql2:CQLExtension"/>
 			</xsd:sequence>
 		</xsd:choice>
 		<xsd:attribute name="name" type="xsd:string" use="required"/>

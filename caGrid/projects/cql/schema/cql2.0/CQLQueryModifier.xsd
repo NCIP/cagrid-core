@@ -4,12 +4,14 @@
 	targetNamespace="http://CQL.caBIG/2/org.cagrid.cql2" 
 	elementFormDefault="qualified" attributeFormDefault="unqualified">
 	<xsd:include schemaLocation="Aggregations.xsd"/>
+	<xsd:include schemaLocation="CQLExtension.xsd"/>
 	
 	<xsd:complexType name="CQLQueryModifier">
 		<xsd:choice>
 			<xsd:element name="NamedAttribute" type="cql2:NamedAttribute" minOccurs="1" maxOccurs="unbounded"/>
 			<xsd:element name="DistinctAttribute" type="cql2:DistinctAttribute" minOccurs="1" maxOccurs="1"/>
 			<xsd:element name="CountOnly" type="xsd:boolean" minOccurs="1" maxOccurs="1"/>
+			<xsd:element name="ModifierExtension" type="cql2:CQLExtension" minOccurs="1" maxOccurs="1"/>
 		</xsd:choice>
 	</xsd:complexType>
 	
