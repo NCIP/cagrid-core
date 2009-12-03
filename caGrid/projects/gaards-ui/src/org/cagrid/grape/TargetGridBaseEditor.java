@@ -2,12 +2,14 @@ package org.cagrid.grape;
 
 import gov.nih.nci.cagrid.common.Utils;
 
+import java.awt.Component;
 import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.io.File;
+import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
 import java.util.ArrayList;
@@ -15,11 +17,13 @@ import java.util.List;
 import java.util.Set;
 
 import javax.swing.JButton;
+import javax.swing.JFileChooser;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
+import javax.swing.filechooser.FileFilter;
 
 import org.apache.axis.utils.XMLUtils;
 import org.cagrid.grape.configuration.Grid;
@@ -65,6 +69,10 @@ public class TargetGridBaseEditor extends ConfigurationBasePanel {
 	private JLabel jLabel2 = null;
 
 	private JTextField ivySettings = null;
+	
+	private JPanel ivySettingsPanel = null;
+
+	private JButton browseIvySettings = null;
 	
 	public TargetGridBaseEditor(ConfigurationDescriptorTreeNode treeNode,
 			Object conf) throws Exception {
@@ -265,7 +273,7 @@ public class TargetGridBaseEditor extends ConfigurationBasePanel {
 			actionPanel.add(jLabel1, gridBagConstraints8);
 			actionPanel.add(getSystemName(), gridBagConstraints10);
 			actionPanel.add(jLabel2, gridBagConstraints11);
-			actionPanel.add(getIvySettings(), gridBagConstraints13);
+			actionPanel.add(getIvySettingsPanel(), gridBagConstraints13);
 		}
 		return actionPanel;
 	}
@@ -550,15 +558,103 @@ public class TargetGridBaseEditor extends ConfigurationBasePanel {
 		return systemName;
 	}
 
-	/**
-	 * This method initializes serviceIdentity
-	 * 
-	 * @return javax.swing.JTextField
-	 */
+	private JPanel getIvySettingsPanel() {
+		if (ivySettingsPanel == null) {
+			ivySettingsPanel = new JPanel();
+			ivySettingsPanel.setLayout(new GridBagLayout());
+
+			GridBagConstraints gridBagConstraints0 = new GridBagConstraints();
+			gridBagConstraints0.fill = java.awt.GridBagConstraints.HORIZONTAL;
+			gridBagConstraints0.anchor = java.awt.GridBagConstraints.WEST;
+			gridBagConstraints0.gridx = 0;
+			gridBagConstraints0.insets = new java.awt.Insets(2, 2, 2, 2);
+			gridBagConstraints0.gridy = 0;
+			gridBagConstraints0.weighty = 1.0D;
+			gridBagConstraints0.weightx = 1.0;
+			gridBagConstraints0.gridwidth = 1;
+			GridBagConstraints gridBagConstraints1 = new GridBagConstraints();
+			gridBagConstraints1.anchor = java.awt.GridBagConstraints.WEST;
+			gridBagConstraints1.gridx = 1;
+			gridBagConstraints1.gridy = 0;
+			gridBagConstraints1.insets = new java.awt.Insets(2, 2, 2, 2);
+			gridBagConstraints1.gridwidth = 1;
+
+			ivySettingsPanel.add(getIvySettings(), gridBagConstraints0);
+
+			ivySettingsPanel.add(getBrowseIvySettings(), gridBagConstraints1);
+		}
+
+		return ivySettingsPanel;
+	}
+
 	private JTextField getIvySettings() {
 		if (ivySettings == null) {
 			ivySettings = new JTextField();
 		}
 		return ivySettings;
 	}
+
+	/**
+	 * This method initializes browseIvySettings	
+	 * 	
+	 * @return javax.swing.JButton	
+	 */
+	private JButton getBrowseIvySettings() {
+		if (browseIvySettings == null) {
+			browseIvySettings = new JButton();
+			browseIvySettings.setText("Browse");
+			browseIvySettings.setIcon(LookAndFeel.getImportIcon());
+			browseIvySettings.addActionListener(new java.awt.event.ActionListener() {
+				public void actionPerformed(java.awt.event.ActionEvent e) {
+					try {
+						String previous = getIvySettings().getText();
+						String location = promptDir(previous);
+						if (location != null && location.length() > 0) {
+							getIvySettings().setText(location);
+						} else {
+							getIvySettings().setText(previous);
+						}
+						// validateInput();
+					} catch (Exception ex) {
+						ex.printStackTrace();
+					}
+				}
+			});
+		}
+		return browseIvySettings;
+	}
+	
+    public static String promptDir(String defaultLocation) throws IOException {
+        return promptDir(GridApplication.getContext().getApplication(), defaultLocation);
+    }
+
+    public static String promptDir(Component owner, String defaultLocation) throws IOException {
+        JFileChooser chooser = new JFileChooser();
+        
+        class XMLFilter extends FileFilter {
+            public boolean accept(File file) {
+                String filename = file.getName();
+                return filename.endsWith(".xml");
+            }
+            public String getDescription() {
+                return "*.xml";
+            }
+        }
+  
+        chooser.setApproveButtonText("Open");
+        chooser.setDialogTitle("Select Ivy Settings File");
+        chooser.setDialogType(JFileChooser.OPEN_DIALOG);
+        chooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
+        chooser.setFileHidingEnabled(true);
+        chooser.addChoosableFileFilter(new XMLFilter());
+        chooser.setMultiSelectionEnabled(false);
+        GridApplication.getContext().centerComponent(chooser);
+
+        int returnVal = chooser.showOpenDialog(owner);
+        if (returnVal == JFileChooser.APPROVE_OPTION) {
+            return chooser.getSelectedFile().getAbsolutePath();
+        }
+        return null;
+    }
+
 }
