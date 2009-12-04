@@ -44,6 +44,7 @@
     <artifact name="CQLQueryComponents" conf="cql2-schemas" type="xsd"/>
     <artifact name="CQLQueryModifier" conf="cql2-schemas" type="xsd"/>
     <artifact name="CQLQueryResults" conf="cql2-schemas" type="xsd"/>
+    <artifact name="CQLExtension" conf="cql2-schemas" type="xsd"/>
     <artifact name="Predicates" conf="cql2-schemas" type="xsd"/>
     
     <artifact name="Distributed_CQL_2.0" conf="dcql2-schemas" type="xsd"/>
