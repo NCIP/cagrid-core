@@ -5,7 +5,7 @@
 	<property name="test.logs.dir" value="test/logs"/>
     <property name="junit.results.dir" value="${test.logs.dir}/junit" />
 	
-	<path id="test.classpath">
+	<path id="test.run.classpath">
 		<fileset dir="${globus.dir}/lib">
 			<include name="*.jar"/>
 		</fileset>
@@ -23,7 +23,7 @@
         <junit dir="${basedir}" printsummary="yes" errorproperty="test.failed" failureproperty="test.failed" showoutput="true" fork="yes" forkmode="once">        	
             <sysproperty key="build.dir" value="${build.dir}" />
             <jvmarg value="-Dbuild.dir=${build.dir}" />
-            <classpath refid="test.classpath" />
+            <classpath refid="test.run.classpath" />
             <formatter type="xml" />
             <batchtest fork="yes" todir="${junit.results.dir}">
                 <fileset dir="${test.src.dir}">
