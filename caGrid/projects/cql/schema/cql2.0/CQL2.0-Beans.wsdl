@@ -2,4 +2,5 @@
 <definitions name="CQL_2.0_Beans" xmlns="http://schemas.xmlsoap.org/wsdl/" >
 	<import location="CQLQueryComponents.xsd"/>
 	<import location="CQLQueryResults.xsd"/>
+	<import location="CQLSupportedExtensions.xsd"/>
 </definitions>
