@@ -336,7 +336,7 @@ public class GeneralConfigurationPanel extends AbstractWizardPanel {
                 
                 // sort the property keys alphabetically
                 SortedSet<String> keys = new TreeSet<String>();
-                Iterator keyIter = props.keySet().iterator();
+                Iterator<?> keyIter = props.keySet().iterator();
                 while (keyIter.hasNext()) {
                     keys.add((String) keyIter.next());
                 }
