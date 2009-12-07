@@ -17,8 +17,6 @@
   <ns3:typeMapping xmlns:ns3="http://xml.apache.org/axis/wsdd/" xmlns:ns1="http://xml.apache.org/axis/wsdd/providers/java" xmlns:ns2="http://gaards.cagrid.org/authentication" encodingStyle="" serializer="org.apache.axis.encoding.ser.BeanSerializerFactory" deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory" type="ns1:org.cagrid.gaards.authentication.BasicAuthentication" qname="ns2:BasicAuthentication" />
   <ns3:typeMapping xmlns:ns3="http://xml.apache.org/axis/wsdd/" xmlns:ns1="http://xml.apache.org/axis/wsdd/providers/java" xmlns:ns2="http://gaards.cagrid.org/authentication" encodingStyle="" serializer="org.apache.axis.encoding.ser.BeanSerializerFactory" deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory" type="ns1:org.cagrid.gaards.authentication.OneTimePassword" qname="ns2:OneTimePassword" />
   <!-- START INTRODUCE TYPEMAPPINGS -->
-<ns3:typeMapping encodingStyle="" serializer="org.cagrid.gaards.dorian.policy.HostAgreementSerializerFactory" deserializer="org.cagrid.gaards.dorian.policy.HostAgreementDeserializerFactory" type="ns1:org.cagrid.gaards.dorian.policy.HostAgreement" qname="ns2:HostAgreement" xmlns:ns1="http://xml.apache.org/axis/wsdd/providers/java" xmlns:ns2="http://www.cagrid.org/gaards/1/dorian-host-agreement" xmlns:ns3="http://xml.apache.org/axis/wsdd/"/>
-
 <ns3:typeMapping encodingStyle="" serializer="org.cagrid.gaards.saml.encoding.SAMLSerializerFactory" deserializer="org.cagrid.gaards.saml.encoding.SAMLDeserializerFactory" type="ns1:gov.nih.nci.cagrid.opensaml.SAMLAssertion" qname="ns2:Assertion" xmlns:ns1="http://xml.apache.org/axis/wsdd/providers/java" xmlns:ns2="urn:oasis:names:tc:SAML:1.0:assertion" xmlns:ns3="http://xml.apache.org/axis/wsdd/"/>
 
 

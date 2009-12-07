@@ -33,8 +33,8 @@ import org.cagrid.gaards.dorian.ca.CertificateAuthorityFault;
 import org.cagrid.gaards.dorian.common.AuditConstants;
 import org.cagrid.gaards.dorian.common.LoggingObject;
 import org.cagrid.gaards.dorian.policy.FederationPolicy;
-import org.cagrid.gaards.dorian.policy.HostAgreement;
 import org.cagrid.gaards.dorian.policy.HostCertificateLifetime;
+import org.cagrid.gaards.dorian.policy.HostCertificateRenewalPolicy;
 import org.cagrid.gaards.dorian.policy.HostPolicy;
 import org.cagrid.gaards.dorian.policy.SearchPolicy;
 import org.cagrid.gaards.dorian.policy.SearchPolicyType;
@@ -1160,13 +1160,39 @@ public class IdentityFederationManager extends LoggingObject implements Publishe
         InvalidHostCertificateFault, PermissionDeniedFault {
         try {
             GridUser caller = getUser(callerGridId);
-            verifyActiveUser(caller);
-            verifyAdminUser(caller);
+            if (conf.getHostCertificateRenewalPolicy().equals(HostCertificateRenewalPolicy.Admin.getValue())) {
+                verifyActiveUser(caller);
+                verifyAdminUser(caller);
+            } else if (conf.getHostCertificateRenewalPolicy().equals(HostCertificateRenewalPolicy.Owner.getValue())) {
+                verifyActiveUser(caller);
+                HostCertificateRecord r = hostManager.getHostCertificateRecord(recordId);
+                if (!callerGridId.equals(r.getOwner())) {
+                    if (!this.administrators.isMember(callerGridId)) {
+                        PermissionDeniedFault fault = new PermissionDeniedFault();
+                        fault.setFaultString("Cannot renew the requested host certificate, you are not the owner.");
+                        throw fault;
+                    }
+                }
+            } else {
+                PermissionDeniedFault fault = new PermissionDeniedFault();
+                fault.setFaultString("Could not determine if you have permission to renew host certificates.");
+                throw fault;
+            }
             HostCertificateRecord record = hostManager.renewHostCertificate(recordId);
             this.eventManager.logEvent(String.valueOf(recordId), callerGridId, FederationAudit.HostCertificateRenewed
                 .getValue(), "The host certificate for the host " + record.getHost() + " was renewed by "
                 + callerGridId + ".");
             return record;
+        } catch (GroupException e) {
+            String mess = "An unexpected error occurred in determining if the user is a member of the administrators group.";
+            this.eventManager.logEvent(AuditConstants.SYSTEM_ID, AuditConstants.SYSTEM_ID,
+                FederationAudit.InternalError.getValue(), mess + "\n\n" + FaultUtil.printFaultToString(e));
+            DorianInternalFault fault = new DorianInternalFault();
+            fault.setFaultString(mess);
+            FaultHelper helper = new FaultHelper(fault);
+            helper.addFaultCause(e);
+            fault = (DorianInternalFault) helper.getFault();
+            throw fault;
         } catch (DorianInternalFault e) {
             String mess = "An unexpected error occurred in renewing the host certificate " + recordId + ":";
             this.eventManager.logEvent(AuditConstants.SYSTEM_ID, AuditConstants.SYSTEM_ID,
@@ -1673,11 +1699,11 @@ public class IdentityFederationManager extends LoggingObject implements Publishe
         DorianInternalFault, PermissionDeniedFault {
         try {
 
-            if (conf.getHostSearchPolicy().equals(IdentityFederationProperties.ADMIN_SEARCH_POLICY)) {
+            if (conf.getHostSearchPolicy().equals(SearchPolicyType.Admin.getValue())) {
                 GridUser caller = getUser(callerIdentity);
                 verifyActiveUser(caller);
                 verifyAdminUser(caller);
-            } else if (conf.getHostSearchPolicy().equals(IdentityFederationProperties.AUTHENTICATED_SEARCH_POLICY)) {
+            } else if (conf.getHostSearchPolicy().equals(SearchPolicyType.Authenticated.getValue())) {
                 if ((callerIdentity == null) || (callerIdentity.equals(DorianConstants.ANONYMOUS_CALLER))) {
                     PermissionDeniedFault fault = new PermissionDeniedFault();
                     fault.setFaultString("Authentication Required!!!");
@@ -1712,11 +1738,11 @@ public class IdentityFederationManager extends LoggingObject implements Publishe
         throws RemoteException, DorianInternalFault, PermissionDeniedFault {
         try {
 
-            if (conf.getUserSearchPolicy().equals(IdentityFederationProperties.ADMIN_SEARCH_POLICY)) {
+            if (conf.getUserSearchPolicy().equals(SearchPolicyType.Admin.getValue())) {
                 GridUser caller = getUser(callerIdentity);
                 verifyActiveUser(caller);
                 verifyAdminUser(caller);
-            } else if (conf.getUserSearchPolicy().equals(IdentityFederationProperties.AUTHENTICATED_SEARCH_POLICY)) {
+            } else if (conf.getUserSearchPolicy().equals(SearchPolicyType.Authenticated.getValue())) {
                 if ((callerIdentity == null) || (callerIdentity.equals(DorianConstants.ANONYMOUS_CALLER))) {
                     PermissionDeniedFault fault = new PermissionDeniedFault();
                     fault.setFaultString("Authentication Required!!!");
@@ -1762,12 +1788,8 @@ public class IdentityFederationManager extends LoggingObject implements Publishe
         hcl.setMinutes(conf.getIssuedCertificateLifetime().getMinutes());
         hcl.setSeconds(conf.getIssuedCertificateLifetime().getSeconds());
         host.setHostCertificateLifetime(hcl);
-        // TODO: Finish Host Agreement Stuff
-        host.setSignedHostAgreementRequired(false);
-        HostAgreement ha = new HostAgreement();
-        ha.setName("Dorian Host Agreement");
-        host.setHostAgreement(ha);
-        // TODO: Support renewal policy
+        host.setHostCertificateRenewalPolicy(HostCertificateRenewalPolicy.fromValue(conf
+            .getHostCertificateRenewalPolicy()));
         policy.setHostPolicy(host);
 
         // Populate Search Policy

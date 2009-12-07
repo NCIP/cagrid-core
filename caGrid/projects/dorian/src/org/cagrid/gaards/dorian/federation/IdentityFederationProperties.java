@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.StringTokenizer;
 
 import org.cagrid.gaards.dorian.common.Lifetime;
+import org.cagrid.gaards.dorian.policy.HostCertificateRenewalPolicy;
 import org.cagrid.gaards.dorian.policy.SearchPolicyType;
 import org.cagrid.gaards.dorian.stubs.types.DorianInternalFault;
 
@@ -17,9 +18,6 @@ public class IdentityFederationProperties {
     public static int DEFAULT_MAX_IDP_DISPLAY_NAME_LENGTH = 60;
     public static int DEFAULT_MIN_IDP_NAME_LENGTH = 3;
     public static int DEFAULT_MAX_IDP_NAME_LENGTH = 25;
-    public static final String PUBLIC_SEARCH_POLICY = SearchPolicyType.Public.getValue();
-    public static final String AUTHENTICATED_SEARCH_POLICY = SearchPolicyType.Authenticated.getValue();
-    public static final String ADMIN_SEARCH_POLICY = SearchPolicyType.Admin.getValue();
 
     private String identityAssignmentPolicy;
     private int minIdPNameLength;
@@ -31,8 +29,9 @@ public class IdentityFederationProperties {
     private Lifetime userCertificateLifetime;
     private List<AccountPolicy> accountPolicies;
     private List<String> gtsPublishCRLList;
-    private String hostSearchPolicy;
-    private String userSearchPolicy;
+    private SearchPolicyType hostSearchPolicy;
+    private SearchPolicyType userSearchPolicy;
+    private HostCertificateRenewalPolicy hostCertificateRenewalPolicy;
 
 
     public IdentityFederationProperties() {
@@ -49,8 +48,8 @@ public class IdentityFederationProperties {
         this.accountPolicies = new ArrayList<AccountPolicy>();
         this.accountPolicies.add(new ManualApprovalPolicy());
         this.gtsPublishCRLList = new ArrayList<String>();
-        this.userSearchPolicy = PUBLIC_SEARCH_POLICY;
-        this.hostSearchPolicy = PUBLIC_SEARCH_POLICY;
+        this.userSearchPolicy = SearchPolicyType.Admin;
+        this.hostSearchPolicy = SearchPolicyType.Admin;
     }
 
 
@@ -182,21 +181,22 @@ public class IdentityFederationProperties {
 
     public String getHostSearchPolicy() {
         if (hostSearchPolicy == null) {
-            this.hostSearchPolicy = ADMIN_SEARCH_POLICY;
+            this.hostSearchPolicy = SearchPolicyType.Admin;
         }
-        return hostSearchPolicy;
+        return hostSearchPolicy.getValue();
     }
 
 
     public void setHostSearchPolicy(String searchPolicy) throws DorianInternalFault {
-        if (searchPolicy.equals(PUBLIC_SEARCH_POLICY) || searchPolicy.equals(AUTHENTICATED_SEARCH_POLICY)
-            || searchPolicy.equals(ADMIN_SEARCH_POLICY)) {
-            this.hostSearchPolicy = searchPolicy;
+        if (searchPolicy.equals(SearchPolicyType.Public.getValue())
+            || searchPolicy.equals(SearchPolicyType.Authenticated.getValue())
+            || searchPolicy.equals(SearchPolicyType.Admin.getValue())) {
+            this.hostSearchPolicy = SearchPolicyType.fromValue(searchPolicy);
         } else {
             DorianInternalFault f = new DorianInternalFault();
             f.setFaultString("The user search policy " + searchPolicy
-                + ", is invalid.  Please specify a valid search policy (" + PUBLIC_SEARCH_POLICY + ", "
-                + AUTHENTICATED_SEARCH_POLICY + ", " + ADMIN_SEARCH_POLICY + ").");
+                + ", is invalid.  Please specify a valid search policy (" + SearchPolicyType.Public.getValue() + ", "
+                + SearchPolicyType.Authenticated.getValue() + ", " + SearchPolicyType.Admin.getValue() + ").");
             throw f;
         }
     }
@@ -204,21 +204,45 @@ public class IdentityFederationProperties {
 
     public String getUserSearchPolicy() {
         if (userSearchPolicy == null) {
-            userSearchPolicy = ADMIN_SEARCH_POLICY;
+            this.userSearchPolicy = SearchPolicyType.Admin;
         }
-        return userSearchPolicy;
+        return userSearchPolicy.getValue();
     }
 
 
     public void setUserSearchPolicy(String searchPolicy) throws DorianInternalFault {
-        if (searchPolicy.equals(PUBLIC_SEARCH_POLICY) || searchPolicy.equals(AUTHENTICATED_SEARCH_POLICY)
-            || searchPolicy.equals(ADMIN_SEARCH_POLICY)) {
-            this.userSearchPolicy = searchPolicy;
+        if (searchPolicy.equals(SearchPolicyType.Public.getValue())
+            || searchPolicy.equals(SearchPolicyType.Authenticated.getValue())
+            || searchPolicy.equals(SearchPolicyType.Admin.getValue())) {
+            this.userSearchPolicy = SearchPolicyType.fromValue(searchPolicy);
         } else {
             DorianInternalFault f = new DorianInternalFault();
             f.setFaultString("The user search policy " + searchPolicy
-                + ", is invalid.  Please specify a valid search policy (" + PUBLIC_SEARCH_POLICY + ", "
-                + AUTHENTICATED_SEARCH_POLICY + ", " + ADMIN_SEARCH_POLICY + ").");
+                + ", is invalid.  Please specify a valid search policy (" + SearchPolicyType.Public.getValue() + ", "
+                + SearchPolicyType.Authenticated.getValue() + ", " + SearchPolicyType.Admin.getValue() + ").");
+            throw f;
+        }
+    }
+
+
+    public String getHostCertificateRenewalPolicy() {
+        if (hostCertificateRenewalPolicy == null) {
+            this.hostCertificateRenewalPolicy = HostCertificateRenewalPolicy.Admin;
+        }
+        return hostCertificateRenewalPolicy.getValue();
+    }
+
+
+    public void setHostCertificateRenewalPolicy(String renewalPolicy) throws DorianInternalFault {
+        if (renewalPolicy.equals(HostCertificateRenewalPolicy.Owner.getValue())
+            || renewalPolicy.equals(HostCertificateRenewalPolicy.Admin.getValue())) {
+            this.hostCertificateRenewalPolicy = HostCertificateRenewalPolicy.fromValue(renewalPolicy);
+        } else {
+            DorianInternalFault f = new DorianInternalFault();
+            f.setFaultString("The host certificate renewal policy " + renewalPolicy
+                + ", is invalid.  Please specify a valid renewal policy ("
+                + HostCertificateRenewalPolicy.Owner.getValue() + ", " + HostCertificateRenewalPolicy.Admin.getValue()
+                + ").");
             throw f;
         }
     }

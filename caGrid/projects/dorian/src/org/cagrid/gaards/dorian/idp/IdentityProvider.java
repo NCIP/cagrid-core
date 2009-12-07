@@ -325,7 +325,7 @@ public class IdentityProvider extends LoggingObject {
     public void updateUser(String requestorUID, LocalUser u) throws DorianInternalFault, PermissionDeniedFault,
         NoSuchUserFault, InvalidUserPropertyFault {
         try {
-            LocalUser requestor = verifyUser(requestorUID);
+            LocalUser requestor = verifyUser(requestorUID);          
             verifyAdministrator(requestor);
             LocalUser beforeUpdate = this.userManager.getUser(u.getUserId());
             this.userManager.updateUser(u);

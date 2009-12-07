@@ -1,9 +1,6 @@
 <xsd:schema targetNamespace="http://cagrid.nci.nih.gov/1/dorian-policy"
 	attributeFormDefault="qualified" elementFormDefault="qualified"
-	xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:policy="http://cagrid.nci.nih.gov/1/dorian-policy"
-	xmlns:ha="http://www.cagrid.org/gaards/1/dorian-host-agreement">
-	<xsd:import namespace="http://www.cagrid.org/gaards/1/dorian-host-agreement"
-		schemaLocation="./dorian-host-agreement.xsd" />
+	xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:policy="http://cagrid.nci.nih.gov/1/dorian-policy">
 	<xsd:element name="DorianPolicy" type="policy:DorianPolicy" />
 	<xsd:complexType name="DorianPolicy">
 		<xsd:sequence>
@@ -94,6 +91,14 @@
 		</xsd:restriction>
 	</xsd:simpleType>
 
+	<xsd:element name="HostCertificateRenewalPolicy" type="policy:HostCertificateRenewalPolicy" />
+	<xsd:simpleType name="HostCertificateRenewalPolicy">
+		<xsd:restriction base="xsd:string">
+			<xsd:enumeration value="Admin" />
+			<xsd:enumeration value="Owner" />
+		</xsd:restriction>
+	</xsd:simpleType>
+
 
 	<xsd:element name="UserPolicy" type="policy:UserPolicy" />
 	<xsd:complexType name="UserPolicy">
@@ -114,14 +119,13 @@
 	<xsd:element name="HostPolicy" type="policy:HostPolicy" />
 	<xsd:complexType name="HostPolicy">
 		<xsd:sequence>
-			<xsd:element ref="ha:HostAgreement" minOccurs="0" maxOccurs="1" />
 			<xsd:element ref="policy:HostCertificateLifetime"
 				minOccurs="1" maxOccurs="1" />
 		</xsd:sequence>
-		<xsd:attribute name="SignedHostAgreementRequired" type="xsd:boolean"
-			use="required" />
 		<xsd:attribute name="AdministrativeApprovalRequired"
 			type="xsd:boolean" use="required" />
+		<xsd:attribute name="HostCertificateRenewalPolicy"
+			type="policy:HostCertificateRenewalPolicy" use="required" />
 	</xsd:complexType>
 
 	<xsd:element name="HostCertificateLifetime" type="policy:HostCertificateLifetime" />

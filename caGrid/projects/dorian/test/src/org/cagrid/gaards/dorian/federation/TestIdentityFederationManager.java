@@ -30,6 +30,8 @@ import org.apache.xml.security.signature.XMLSignature;
 import org.cagrid.gaards.dorian.ca.CertificateAuthority;
 import org.cagrid.gaards.dorian.common.AuditConstants;
 import org.cagrid.gaards.dorian.common.Lifetime;
+import org.cagrid.gaards.dorian.policy.HostCertificateRenewalPolicy;
+import org.cagrid.gaards.dorian.policy.SearchPolicyType;
 import org.cagrid.gaards.dorian.service.DorianConstants;
 import org.cagrid.gaards.dorian.service.PropertyManager;
 import org.cagrid.gaards.dorian.stubs.types.DorianInternalFault;
@@ -83,7 +85,7 @@ public class TestIdentityFederationManager extends TestCase {
         try {
             IdPContainer idp = this.getTrustedIdpAutoApprove("My IdP");
             IdentityFederationProperties conf = getConf(false);
-            conf.setUserSearchPolicy(IdentityFederationProperties.ADMIN_SEARCH_POLICY);
+            conf.setUserSearchPolicy(SearchPolicyType.Admin.getValue());
             FederationDefaults defaults = getDefaults();
             defaults.setDefaultIdP(idp.getIdp());
             ifs = new IdentityFederationManager(conf, db, props, ca, eventManager, defaults);
@@ -133,7 +135,7 @@ public class TestIdentityFederationManager extends TestCase {
         try {
             IdPContainer idp = this.getTrustedIdpAutoApprove("My IdP");
             IdentityFederationProperties conf = getConf(false);
-            conf.setHostSearchPolicy(IdentityFederationProperties.ADMIN_SEARCH_POLICY);
+            conf.setHostSearchPolicy(SearchPolicyType.Admin.getValue());
             conf.setAutoHostCertificateApproval(true);
             FederationDefaults defaults = getDefaults();
             defaults.setDefaultIdP(idp.getIdp());
@@ -192,7 +194,7 @@ public class TestIdentityFederationManager extends TestCase {
         try {
             IdPContainer idp = this.getTrustedIdpAutoApprove("My IdP");
             IdentityFederationProperties conf = getConf(false);
-            conf.setHostSearchPolicy(IdentityFederationProperties.AUTHENTICATED_SEARCH_POLICY);
+            conf.setHostSearchPolicy(SearchPolicyType.Authenticated.getValue());
             conf.setAutoHostCertificateApproval(true);
             FederationDefaults defaults = getDefaults();
             defaults.setDefaultIdP(idp.getIdp());
@@ -251,7 +253,7 @@ public class TestIdentityFederationManager extends TestCase {
         try {
             IdPContainer idp = this.getTrustedIdpAutoApprove("My IdP");
             IdentityFederationProperties conf = getConf(false);
-            conf.setHostSearchPolicy(IdentityFederationProperties.PUBLIC_SEARCH_POLICY);
+            conf.setHostSearchPolicy(SearchPolicyType.Public.getValue());
             conf.setAutoHostCertificateApproval(true);
             FederationDefaults defaults = getDefaults();
             defaults.setDefaultIdP(idp.getIdp());
@@ -313,7 +315,7 @@ public class TestIdentityFederationManager extends TestCase {
         try {
             IdPContainer idp = this.getTrustedIdpAutoApprove("My IdP");
             IdentityFederationProperties conf = getConf(false);
-            conf.setUserSearchPolicy(IdentityFederationProperties.AUTHENTICATED_SEARCH_POLICY);
+            conf.setUserSearchPolicy(SearchPolicyType.Authenticated.getValue());
             FederationDefaults defaults = getDefaults();
             defaults.setDefaultIdP(idp.getIdp());
             ifs = new IdentityFederationManager(conf, db, props, ca, eventManager, defaults);
@@ -358,7 +360,7 @@ public class TestIdentityFederationManager extends TestCase {
         try {
             IdPContainer idp = this.getTrustedIdpAutoApprove("My IdP");
             IdentityFederationProperties conf = getConf(false);
-            conf.setUserSearchPolicy(IdentityFederationProperties.AUTHENTICATED_SEARCH_POLICY);
+            conf.setUserSearchPolicy(SearchPolicyType.Authenticated.getValue());
             FederationDefaults defaults = getDefaults();
             defaults.setDefaultIdP(idp.getIdp());
             ifs = new IdentityFederationManager(conf, db, props, ca, eventManager, defaults);
@@ -370,7 +372,7 @@ public class TestIdentityFederationManager extends TestCase {
             GridUserSearchCriteria criteria = new GridUserSearchCriteria();
             criteria.setIdentity(usr.getGridId());
 
-            List<GridUserRecord> users = ifs.userSearch(IdentityFederationProperties.PUBLIC_SEARCH_POLICY, criteria);
+            List<GridUserRecord> users = ifs.userSearch(SearchPolicyType.Public.getValue(), criteria);
             assertEquals(1, users.size());
             assertEquals(userRecord, users.get(0));
 
@@ -1497,6 +1499,98 @@ public class TestIdentityFederationManager extends TestCase {
     }
 
 
+    public void testRenewHostCertificateAdminOnly() {
+        IdentityFederationManager ifs = null;
+        try {
+            IdPContainer idp = this.getTrustedIdpAutoApprove("My IdP");
+            IdentityFederationProperties conf = getConf(false);
+            conf.setHostSearchPolicy(SearchPolicyType.Admin.getValue());
+            conf.setAutoHostCertificateApproval(true);
+            FederationDefaults defaults = getDefaults();
+            defaults.setDefaultIdP(idp.getIdp());
+            ifs = new IdentityFederationManager(conf, db, props, ca, eventManager, defaults);
+            String adminSubject = UserManager.getUserSubject(conf.getIdentityAssignmentPolicy(), ca.getCACertificate()
+                .getSubjectDN().getName(), idp.getIdp(), INITIAL_ADMIN);
+            String adminGridId = CommonUtils.subjectToIdentity(adminSubject);
+            GridUser usr = createUser(ifs, adminGridId, idp, "user");
+            GridUser usr2 = createUser(ifs, adminGridId, idp, "user2");
+            String host = "myhost.example.com";
+            HostCertificateRequest req = getHostCertificateRequest(host);
+            HostCertificateRecord record = ifs.requestHostCertificate(usr.getGridId(), req);
+
+            try {
+                ifs.renewHostCertificate(usr2.getGridId(), record.getId());
+                fail("Only admins should be able to renew a host certificate.");
+            } catch (PermissionDeniedFault e) {
+
+            }
+
+            try {
+                ifs.renewHostCertificate(usr.getGridId(), record.getId());
+                fail("Only admins should be able to renew a host certificate.");
+            } catch (PermissionDeniedFault e) {
+
+            }
+
+            ifs.renewHostCertificate(adminGridId, record.getId());
+
+        } catch (Exception e) {
+            FaultUtil.printFault(e);
+            fail("Exception occured:" + e.getMessage());
+        } finally {
+            try {
+                ifs.clearDatabase();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+
+    public void testRenewHostCertificateOwnerAndAdminOnly() {
+        IdentityFederationManager ifs = null;
+        try {
+            IdPContainer idp = this.getTrustedIdpAutoApprove("My IdP");
+            IdentityFederationProperties conf = getConf(false);
+            conf.setHostSearchPolicy(SearchPolicyType.Admin.getValue());
+            conf.setAutoHostCertificateApproval(true);
+            conf.setHostCertificateRenewalPolicy(HostCertificateRenewalPolicy.Owner.getValue());
+            FederationDefaults defaults = getDefaults();
+            defaults.setDefaultIdP(idp.getIdp());
+            ifs = new IdentityFederationManager(conf, db, props, ca, eventManager, defaults);
+            String adminSubject = UserManager.getUserSubject(conf.getIdentityAssignmentPolicy(), ca.getCACertificate()
+                .getSubjectDN().getName(), idp.getIdp(), INITIAL_ADMIN);
+            String adminGridId = CommonUtils.subjectToIdentity(adminSubject);
+            GridUser usr = createUser(ifs, adminGridId, idp, "user");
+            GridUser usr2 = createUser(ifs, adminGridId, idp, "user2");
+            String host = "myhost.example.com";
+            HostCertificateRequest req = getHostCertificateRequest(host);
+            HostCertificateRecord record = ifs.requestHostCertificate(usr.getGridId(), req);
+
+            try {
+                ifs.renewHostCertificate(usr2.getGridId(), record.getId());
+                fail("Only admins and owners should be able to renew a host certificate.");
+            } catch (PermissionDeniedFault e) {
+
+            }
+
+            ifs.renewHostCertificate(usr.getGridId(), record.getId());
+
+            ifs.renewHostCertificate(adminGridId, record.getId());
+
+        } catch (Exception e) {
+            FaultUtil.printFault(e);
+            fail("Exception occured:" + e.getMessage());
+        } finally {
+            try {
+                ifs.clearDatabase();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+
     public void testRequestCertificateInvalidLifetime() {
         IdentityFederationManager ifs = null;
         try {
@@ -1989,8 +2083,9 @@ public class TestIdentityFederationManager extends TestCase {
         policies.add(new ManualApprovalPolicy());
         policies.add(new AutoApprovalPolicy());
         conf.setAccountPolicies(policies);
-        conf.setUserSearchPolicy(IdentityFederationProperties.PUBLIC_SEARCH_POLICY);
-        conf.setHostSearchPolicy(IdentityFederationProperties.PUBLIC_SEARCH_POLICY);
+        conf.setUserSearchPolicy(SearchPolicyType.Public.getValue());
+        conf.setHostSearchPolicy(SearchPolicyType.Public.getValue());
+        conf.setHostCertificateRenewalPolicy(HostCertificateRenewalPolicy.Admin.getValue());
         return conf;
     }
 
@@ -2021,6 +2116,7 @@ public class TestIdentityFederationManager extends TestCase {
         policies.add(new ManualApprovalPolicy());
         policies.add(new AutoApprovalPolicy());
         conf.setAccountPolicies(policies);
+        conf.setHostCertificateRenewalPolicy(HostCertificateRenewalPolicy.Admin.getValue());
         return conf;
     }
 

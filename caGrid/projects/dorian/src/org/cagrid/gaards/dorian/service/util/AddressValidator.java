@@ -1,9 +1,9 @@
 package org.cagrid.gaards.dorian.service.util;
 
+import gov.nih.nci.cagrid.common.Utils;
+
 import javax.mail.internet.AddressException;
 import javax.mail.internet.InternetAddress;
-
-import gov.nih.nci.cagrid.common.Utils;
 
 
 /**

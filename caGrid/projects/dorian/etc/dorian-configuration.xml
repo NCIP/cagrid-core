@@ -47,6 +47,7 @@
 		<property name="CRLPublishList" value="${gaards.dorian.federation.crl.publish}" />
 		<property name="userSearchPolicy" value="${gaards.dorian.federation.user.search.policy}" />
 		<property name="hostSearchPolicy" value="${gaards.dorian.federation.host.search.policy}" />
+		<property name="hostCertificateRenewalPolicy" value="${gaards.dorian.federation.host.certificate.renewal.policy}" />
 	</bean>
 	<bean id="accountPolicyList"
 		class="org.springframework.beans.factory.config.ListFactoryBean">

@@ -38,6 +38,7 @@ public abstract class DorianBaseClient {
     private ServiceMetadata serviceMetadata;
     private String serviceURL;
     private DorianPolicy policy;
+    private boolean policyLoaded = false;
 
 
     public DorianBaseClient(String serviceURL) throws MalformedURIException, RemoteException {
@@ -136,10 +137,11 @@ public abstract class DorianBaseClient {
 
 
     public DorianPolicy getPolicy() throws InvalidResourcePropertyException, ResourcePropertyRetrievalException {
-        if (this.policy == null) {
+        if (!policyLoaded) {
             String version = getServiceVersion();
             if (version.equals(VERSION_1_0) || version.equals(VERSION_1_1) || version.equals(VERSION_1_2)
                 || version.equals(VERSION_1_3) || version.equals(VERSION_UNKNOWN)) {
+                policyLoaded = true;
                 return null;
             } else {
                 Element resourceProperty = null;
@@ -154,12 +156,18 @@ public abstract class DorianBaseClient {
                     throw new ResourcePropertyRetrievalException("Unable to deserailize the Dorian Policy: "
                         + e.getMessage(), e);
                 }
-
+                policyLoaded = true;
                 return this.policy;
             }
         } else {
             return this.policy;
         }
+    }
+
+
+    public void setPolicy(DorianPolicy policy) {
+        this.policy = policy;
+        policyLoaded = true;
     }
 
 

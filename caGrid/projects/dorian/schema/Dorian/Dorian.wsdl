@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<definitions xmlns="http://schemas.xmlsoap.org/wsdl/" xmlns:tns="http://cagrid.nci.nih.gov/Dorian" xmlns:wsrp="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ResourceProperties-1.2-draft-01.xsd" xmlns:wsrlw="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ResourceLifetime-1.2-draft-01.wsdl" xmlns:wsdlpp="http://www.globus.org/namespaces/2004/10/WSDLPreprocessor" xmlns:gtwsdl1="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ServiceGroup-1.2-draft-01.wsdl" xmlns:wsa="http://schemas.xmlsoap.org/ws/2004/03/addressing" xmlns:wsntw="http://docs.oasis-open.org/wsn/2004/06/wsn-WS-BaseNotification-1.2-draft-01.wsdl" xmlns:wsrbfw="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-BaseFaults-1.2-draft-01.wsdl" xmlns:wsrpw="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ResourceProperties-1.2-draft-01.wsdl" xmlns:wns1="http://cagrid.nci.nih.gov/AuthenticationService" xmlns:wns2="http://authentication.gaards.cagrid.org/AuthenticationService" xmlns:wns3="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ResourceProperties-1.2-draft-01.wsdl" xmlns:wns0="http://security.introduce.cagrid.nci.nih.gov/ServiceSecurity" xmlns:ns13="http://cagrid.nci.nih.gov/Dorian/types" xmlns:ns11="http://gaards.cagrid.org/authentication-faults" xmlns:ns3="http://www.cagrid.org/gaards/1/dorian-host-agreement" xmlns:ns9="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata" xmlns:ns0="http://cagrid.nci.nih.gov/1/dorian-ifs" xmlns:ns6="http://gaards.cagrid.org/authentication" xmlns:ns8="http://cagrid.nci.nih.gov/1/authentication-service" xmlns:ns10="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.security" xmlns:ns1="http://cagrid.nci.nih.gov/1/dorian-common" xmlns:ns7="http://cagrid.nci.nih.gov/AuthenticationService/types" xmlns:ns14="urn:oasis:names:tc:SAML:1.0:assertion" xmlns:ns4="http://www.w3.org/2000/09/xmldsig#" xmlns:ns12="http://authentication.gaards.cagrid.org/AuthenticationService/types" xmlns:ns2="http://cagrid.nci.nih.gov/1/dorian-policy" xmlns:ns5="http://cagrid.nci.nih.gov/1/dorian-idp" name="Dorian" targetNamespace="http://cagrid.nci.nih.gov/Dorian">
+<definitions xmlns="http://schemas.xmlsoap.org/wsdl/" xmlns:tns="http://cagrid.nci.nih.gov/Dorian" xmlns:wsrp="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ResourceProperties-1.2-draft-01.xsd" xmlns:wsrlw="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ResourceLifetime-1.2-draft-01.wsdl" xmlns:wsdlpp="http://www.globus.org/namespaces/2004/10/WSDLPreprocessor" xmlns:gtwsdl1="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ServiceGroup-1.2-draft-01.wsdl" xmlns:wsa="http://schemas.xmlsoap.org/ws/2004/03/addressing" xmlns:wsntw="http://docs.oasis-open.org/wsn/2004/06/wsn-WS-BaseNotification-1.2-draft-01.wsdl" xmlns:wsrbfw="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-BaseFaults-1.2-draft-01.wsdl" xmlns:wsrpw="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ResourceProperties-1.2-draft-01.wsdl" xmlns:wns1="http://cagrid.nci.nih.gov/AuthenticationService" xmlns:wns2="http://authentication.gaards.cagrid.org/AuthenticationService" xmlns:wns3="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ResourceProperties-1.2-draft-01.wsdl" xmlns:wns0="http://security.introduce.cagrid.nci.nih.gov/ServiceSecurity" xmlns:ns12="http://cagrid.nci.nih.gov/Dorian/types" xmlns:ns10="http://gaards.cagrid.org/authentication-faults" xmlns:ns8="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata" xmlns:ns1="http://cagrid.nci.nih.gov/1/dorian-ifs" xmlns:ns5="http://gaards.cagrid.org/authentication" xmlns:ns7="http://cagrid.nci.nih.gov/1/authentication-service" xmlns:ns9="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.security" xmlns:ns2="http://cagrid.nci.nih.gov/1/dorian-common" xmlns:ns6="http://cagrid.nci.nih.gov/AuthenticationService/types" xmlns:ns13="urn:oasis:names:tc:SAML:1.0:assertion" xmlns:ns3="http://www.w3.org/2000/09/xmldsig#" xmlns:ns11="http://authentication.gaards.cagrid.org/AuthenticationService/types" xmlns:ns0="http://cagrid.nci.nih.gov/1/dorian-policy" xmlns:ns4="http://cagrid.nci.nih.gov/1/dorian-idp" name="Dorian" targetNamespace="http://cagrid.nci.nih.gov/Dorian">
   <import namespace="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ResourceProperties-1.2-draft-01.wsdl" location="../wsrf/properties/WS-ResourceProperties.wsdl" />
   <import namespace="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-BaseFaults-1.2-draft-01.wsdl" location="../wsrf/faults/WS-BaseFaults.wsdl" />
   <import namespace="http://docs.oasis-open.org/wsn/2004/06/wsn-WS-BaseNotification-1.2-draft-01.wsdl" location="../wsrf/notification/WS-BaseN.wsdl" />
@@ -17,7 +17,6 @@
       <import namespace="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-BaseFaults-1.2-draft-01.xsd" schemaLocation="../wsrf/faults/WS-BaseFaults.xsd" />
       <import namespace="http://cagrid.nci.nih.gov/Dorian/types" schemaLocation="./DorianTypes.xsd" />
       <import namespace="http://gaards.cagrid.org/authentication-faults" schemaLocation="./authentication-faults.xsd" />
-      <import namespace="http://www.cagrid.org/gaards/1/dorian-host-agreement" schemaLocation="./dorian-host-agreement.xsd" />
       <import namespace="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata" schemaLocation="./xsd/cagrid/types/caGridMetadata.xsd" />
       <import namespace="http://cagrid.nci.nih.gov/1/dorian-ifs" schemaLocation="./dorian-ifs.xsd" />
       <import namespace="http://gaards.cagrid.org/authentication" schemaLocation="./authentication-core-types.xsd" />
@@ -36,7 +35,7 @@
             <element name="application">
               <complexType>
                 <sequence>
-                  <element ref="ns5:Application" minOccurs="1" maxOccurs="1" />
+                  <element ref="ns4:Application" minOccurs="1" maxOccurs="1" />
                 </sequence>
               </complexType>
             </element>
@@ -56,7 +55,7 @@
             <element name="f">
               <complexType>
                 <sequence>
-                  <element ref="ns5:LocalUserFilter" minOccurs="1" maxOccurs="1" />
+                  <element ref="ns4:LocalUserFilter" minOccurs="1" maxOccurs="1" />
                 </sequence>
               </complexType>
             </element>
@@ -66,7 +65,7 @@
       <element name="FindLocalUsersResponse">
         <complexType>
           <sequence>
-            <element ref="ns5:LocalUser" minOccurs="1" maxOccurs="unbounded" />
+            <element ref="ns4:LocalUser" minOccurs="1" maxOccurs="unbounded" />
           </sequence>
         </complexType>
       </element>
@@ -76,7 +75,7 @@
             <element name="user">
               <complexType>
                 <sequence>
-                  <element ref="ns5:LocalUser" minOccurs="1" maxOccurs="1" />
+                  <element ref="ns4:LocalUser" minOccurs="1" maxOccurs="1" />
                 </sequence>
               </complexType>
             </element>
@@ -106,28 +105,28 @@
             <element name="saml">
               <complexType>
                 <sequence>
-                  <element ref="ns1:SAMLAssertion" minOccurs="1" maxOccurs="1" />
+                  <element ref="ns2:SAMLAssertion" minOccurs="1" maxOccurs="1" />
                 </sequence>
               </complexType>
             </element>
             <element name="publicKey">
               <complexType>
                 <sequence>
-                  <element ref="ns0:PublicKey" minOccurs="1" maxOccurs="1" />
+                  <element ref="ns1:PublicKey" minOccurs="1" maxOccurs="1" />
                 </sequence>
               </complexType>
             </element>
             <element name="lifetime">
               <complexType>
                 <sequence>
-                  <element ref="ns0:ProxyLifetime" minOccurs="1" maxOccurs="1" />
+                  <element ref="ns1:ProxyLifetime" minOccurs="1" maxOccurs="1" />
                 </sequence>
               </complexType>
             </element>
             <element name="delegation">
               <complexType>
                 <sequence>
-                  <element ref="ns0:DelegationPathLength" minOccurs="1" maxOccurs="1" />
+                  <element ref="ns1:DelegationPathLength" minOccurs="1" maxOccurs="1" />
                 </sequence>
               </complexType>
             </element>
@@ -137,7 +136,7 @@
       <element name="CreateProxyResponse">
         <complexType>
           <sequence>
-            <element ref="ns1:X509Certificate" minOccurs="1" maxOccurs="unbounded" />
+            <element ref="ns2:X509Certificate" minOccurs="1" maxOccurs="unbounded" />
           </sequence>
         </complexType>
       </element>
@@ -149,7 +148,7 @@
       <element name="GetCACertificateResponse">
         <complexType>
           <sequence>
-            <element ref="ns1:X509Certificate" minOccurs="1" maxOccurs="1" />
+            <element ref="ns2:X509Certificate" minOccurs="1" maxOccurs="1" />
           </sequence>
         </complexType>
       </element>
@@ -161,7 +160,7 @@
       <element name="GetTrustedIdPsResponse">
         <complexType>
           <sequence>
-            <element ref="ns0:TrustedIdP" minOccurs="1" maxOccurs="unbounded" />
+            <element ref="ns1:TrustedIdP" minOccurs="1" maxOccurs="unbounded" />
           </sequence>
         </complexType>
       </element>
@@ -171,7 +170,7 @@
             <element name="idp">
               <complexType>
                 <sequence>
-                  <element ref="ns0:TrustedIdP" minOccurs="1" maxOccurs="1" />
+                  <element ref="ns1:TrustedIdP" minOccurs="1" maxOccurs="1" />
                 </sequence>
               </complexType>
             </element>
@@ -181,7 +180,7 @@
       <element name="AddTrustedIdPResponse">
         <complexType>
           <sequence>
-            <element ref="ns0:TrustedIdP" minOccurs="1" maxOccurs="1" />
+            <element ref="ns1:TrustedIdP" minOccurs="1" maxOccurs="1" />
           </sequence>
         </complexType>
       </element>
@@ -191,7 +190,7 @@
             <element name="trustedIdP">
               <complexType>
                 <sequence>
-                  <element ref="ns0:TrustedIdP" minOccurs="1" maxOccurs="1" />
+                  <element ref="ns1:TrustedIdP" minOccurs="1" maxOccurs="1" />
                 </sequence>
               </complexType>
             </element>
@@ -209,7 +208,7 @@
             <element name="trustedIdP">
               <complexType>
                 <sequence>
-                  <element ref="ns0:TrustedIdP" minOccurs="1" maxOccurs="1" />
+                  <element ref="ns1:TrustedIdP" minOccurs="1" maxOccurs="1" />
                 </sequence>
               </complexType>
             </element>
@@ -227,7 +226,7 @@
             <element name="filter">
               <complexType>
                 <sequence>
-                  <element ref="ns0:GridUserFilter" minOccurs="1" maxOccurs="1" />
+                  <element ref="ns1:GridUserFilter" minOccurs="1" maxOccurs="1" />
                 </sequence>
               </complexType>
             </element>
@@ -237,7 +236,7 @@
       <element name="FindGridUsersResponse">
         <complexType>
           <sequence>
-            <element ref="ns0:GridUser" minOccurs="1" maxOccurs="unbounded" />
+            <element ref="ns1:GridUser" minOccurs="1" maxOccurs="unbounded" />
           </sequence>
         </complexType>
       </element>
@@ -247,7 +246,7 @@
             <element name="user">
               <complexType>
                 <sequence>
-                  <element ref="ns0:GridUser" minOccurs="1" maxOccurs="1" />
+                  <element ref="ns1:GridUser" minOccurs="1" maxOccurs="1" />
                 </sequence>
               </complexType>
             </element>
@@ -265,7 +264,7 @@
             <element name="user">
               <complexType>
                 <sequence>
-                  <element ref="ns0:GridUser" minOccurs="1" maxOccurs="1" />
+                  <element ref="ns1:GridUser" minOccurs="1" maxOccurs="1" />
                 </sequence>
               </complexType>
             </element>
@@ -285,7 +284,7 @@
       <element name="GetGridUserPoliciesResponse">
         <complexType>
           <sequence>
-            <element ref="ns0:GridUserPolicy" minOccurs="1" maxOccurs="unbounded" />
+            <element ref="ns1:GridUserPolicy" minOccurs="1" maxOccurs="unbounded" />
           </sequence>
         </complexType>
       </element>
@@ -331,7 +330,7 @@
             <element name="req">
               <complexType>
                 <sequence>
-                  <element ref="ns0:HostCertificateRequest" minOccurs="1" maxOccurs="1" />
+                  <element ref="ns1:HostCertificateRequest" minOccurs="1" maxOccurs="1" />
                 </sequence>
               </complexType>
             </element>
@@ -341,7 +340,7 @@
       <element name="RequestHostCertificateResponse">
         <complexType>
           <sequence>
-            <element ref="ns0:HostCertificateRecord" minOccurs="1" maxOccurs="1" />
+            <element ref="ns1:HostCertificateRecord" minOccurs="1" maxOccurs="1" />
           </sequence>
         </complexType>
       </element>
@@ -353,7 +352,7 @@
       <element name="GetOwnedHostCertificatesResponse">
         <complexType>
           <sequence>
-            <element ref="ns0:HostCertificateRecord" minOccurs="1" maxOccurs="unbounded" />
+            <element ref="ns1:HostCertificateRecord" minOccurs="1" maxOccurs="unbounded" />
           </sequence>
         </complexType>
       </element>
@@ -367,7 +366,7 @@
       <element name="ApproveHostCertificateResponse">
         <complexType>
           <sequence>
-            <element ref="ns0:HostCertificateRecord" minOccurs="1" maxOccurs="1" />
+            <element ref="ns1:HostCertificateRecord" minOccurs="1" maxOccurs="1" />
           </sequence>
         </complexType>
       </element>
@@ -377,7 +376,7 @@
             <element name="hostCertificateFilter">
               <complexType>
                 <sequence>
-                  <element ref="ns0:HostCertificateFilter" minOccurs="1" maxOccurs="1" />
+                  <element ref="ns1:HostCertificateFilter" minOccurs="1" maxOccurs="1" />
                 </sequence>
               </complexType>
             </element>
@@ -387,7 +386,7 @@
       <element name="FindHostCertificatesResponse">
         <complexType>
           <sequence>
-            <element ref="ns0:HostCertificateRecord" minOccurs="1" maxOccurs="unbounded" />
+            <element ref="ns1:HostCertificateRecord" minOccurs="1" maxOccurs="unbounded" />
           </sequence>
         </complexType>
       </element>
@@ -397,7 +396,7 @@
             <element name="hostCertificateUpdate">
               <complexType>
                 <sequence>
-                  <element ref="ns0:HostCertificateUpdate" minOccurs="1" maxOccurs="1" />
+                  <element ref="ns1:HostCertificateUpdate" minOccurs="1" maxOccurs="1" />
                 </sequence>
               </complexType>
             </element>
@@ -419,7 +418,7 @@
       <element name="RenewHostCertificateResponse">
         <complexType>
           <sequence>
-            <element ref="ns0:HostCertificateRecord" minOccurs="1" maxOccurs="1" />
+            <element ref="ns1:HostCertificateRecord" minOccurs="1" maxOccurs="1" />
           </sequence>
         </complexType>
       </element>
@@ -429,7 +428,7 @@
             <element name="credential">
               <complexType>
                 <sequence>
-                  <element ref="ns5:BasicAuthCredential" minOccurs="1" maxOccurs="1" />
+                  <element ref="ns4:BasicAuthCredential" minOccurs="1" maxOccurs="1" />
                 </sequence>
               </complexType>
             </element>
@@ -462,7 +461,7 @@
             <element name="credential">
               <complexType>
                 <sequence>
-                  <element ref="ns6:BasicAuthentication" minOccurs="1" maxOccurs="1" />
+                  <element ref="ns5:BasicAuthentication" minOccurs="1" maxOccurs="1" />
                 </sequence>
               </complexType>
             </element>
@@ -481,7 +480,7 @@
             <element name="update">
               <complexType>
                 <sequence>
-                  <element ref="ns0:UserCertificateUpdate" minOccurs="1" maxOccurs="1" />
+                  <element ref="ns1:UserCertificateUpdate" minOccurs="1" maxOccurs="1" />
                 </sequence>
               </complexType>
             </element>
@@ -499,21 +498,21 @@
             <element name="saml">
               <complexType>
                 <sequence>
-                  <element ref="ns14:Assertion" minOccurs="1" maxOccurs="1" />
+                  <element ref="ns13:Assertion" minOccurs="1" maxOccurs="1" />
                 </sequence>
               </complexType>
             </element>
             <element name="key">
               <complexType>
                 <sequence>
-                  <element ref="ns0:PublicKey" minOccurs="1" maxOccurs="1" />
+                  <element ref="ns1:PublicKey" minOccurs="1" maxOccurs="1" />
                 </sequence>
               </complexType>
             </element>
             <element name="lifetime">
               <complexType>
                 <sequence>
-                  <element ref="ns0:CertificateLifetime" minOccurs="1" maxOccurs="1" />
+                  <element ref="ns1:CertificateLifetime" minOccurs="1" maxOccurs="1" />
                 </sequence>
               </complexType>
             </element>
@@ -523,7 +522,7 @@
       <element name="RequestUserCertificateResponse">
         <complexType>
           <sequence>
-            <element ref="ns1:X509Certificate" minOccurs="1" maxOccurs="1" />
+            <element ref="ns2:X509Certificate" minOccurs="1" maxOccurs="1" />
           </sequence>
         </complexType>
       </element>
@@ -533,7 +532,7 @@
             <element name="userCertificateFilter">
               <complexType>
                 <sequence>
-                  <element ref="ns0:UserCertificateFilter" minOccurs="1" maxOccurs="1" />
+                  <element ref="ns1:UserCertificateFilter" minOccurs="1" maxOccurs="1" />
                 </sequence>
               </complexType>
             </element>
@@ -543,7 +542,7 @@
       <element name="FindUserCertificatesResponse">
         <complexType>
           <sequence>
-            <element ref="ns0:UserCertificateRecord" minOccurs="1" maxOccurs="unbounded" />
+            <element ref="ns1:UserCertificateRecord" minOccurs="1" maxOccurs="unbounded" />
           </sequence>
         </complexType>
       </element>
@@ -565,7 +564,7 @@
             <element name="f">
               <complexType>
                 <sequence>
-                  <element ref="ns0:FederationAuditFilter" minOccurs="1" maxOccurs="1" />
+                  <element ref="ns1:FederationAuditFilter" minOccurs="1" maxOccurs="1" />
                 </sequence>
               </complexType>
             </element>
@@ -575,7 +574,7 @@
       <element name="PerformFederationAuditResponse">
         <complexType>
           <sequence>
-            <element ref="ns0:FederationAuditRecord" minOccurs="1" maxOccurs="unbounded" />
+            <element ref="ns1:FederationAuditRecord" minOccurs="1" maxOccurs="unbounded" />
           </sequence>
         </complexType>
       </element>
@@ -585,7 +584,7 @@
             <element name="f">
               <complexType>
                 <sequence>
-                  <element ref="ns5:IdentityProviderAuditFilter" minOccurs="1" maxOccurs="1" />
+                  <element ref="ns4:IdentityProviderAuditFilter" minOccurs="1" maxOccurs="1" />
                 </sequence>
               </complexType>
             </element>
@@ -595,7 +594,7 @@
       <element name="PerformIdentityProviderAuditResponse">
         <complexType>
           <sequence>
-            <element ref="ns5:IdentityProviderAuditRecord" minOccurs="1" maxOccurs="unbounded" />
+            <element ref="ns4:IdentityProviderAuditRecord" minOccurs="1" maxOccurs="unbounded" />
           </sequence>
         </complexType>
       </element>
@@ -605,7 +604,7 @@
             <element name="a">
               <complexType>
                 <sequence>
-                  <element ref="ns5:Application" minOccurs="1" maxOccurs="1" />
+                  <element ref="ns4:Application" minOccurs="1" maxOccurs="1" />
                 </sequence>
               </complexType>
             </element>
@@ -625,7 +624,7 @@
             <element name="gridUserSearchCriteria">
               <complexType>
                 <sequence>
-                  <element ref="ns0:GridUserSearchCriteria" minOccurs="1" maxOccurs="1" />
+                  <element ref="ns1:GridUserSearchCriteria" minOccurs="1" maxOccurs="1" />
                 </sequence>
               </complexType>
             </element>
@@ -635,7 +634,7 @@
       <element name="UserSearchResponse">
         <complexType>
           <sequence>
-            <element ref="ns0:GridUserRecord" minOccurs="1" maxOccurs="unbounded" />
+            <element ref="ns1:GridUserRecord" minOccurs="1" maxOccurs="unbounded" />
           </sequence>
         </complexType>
       </element>
@@ -645,7 +644,7 @@
             <element name="hostSearchCriteria">
               <complexType>
                 <sequence>
-                  <element ref="ns0:HostSearchCriteria" minOccurs="1" maxOccurs="1" />
+                  <element ref="ns1:HostSearchCriteria" minOccurs="1" maxOccurs="1" />
                 </sequence>
               </complexType>
             </element>
@@ -655,17 +654,17 @@
       <element name="HostSearchResponse">
         <complexType>
           <sequence>
-            <element ref="ns0:HostRecord" minOccurs="1" maxOccurs="unbounded" />
+            <element ref="ns1:HostRecord" minOccurs="1" maxOccurs="unbounded" />
           </sequence>
         </complexType>
       </element>
       <element name="DorianResourceProperties">
         <complexType>
           <sequence>
-            <element ref="ns9:ServiceMetadata" />
-            <element ref="ns6:AuthenticationProfiles" />
-            <element ref="ns0:TrustedIdentityProviders" />
-            <element ref="ns2:DorianPolicy" />
+            <element ref="ns8:ServiceMetadata" />
+            <element ref="ns5:AuthenticationProfiles" />
+            <element ref="ns1:TrustedIdentityProviders" />
+            <element ref="ns0:DorianPolicy" />
           </sequence>
         </complexType>
       </element>
@@ -883,40 +882,40 @@
     <part name="parameters" element="tns:HostSearchResponse" />
   </message>
   <message name="DorianInternalFaultFaultMessage">
-    <part name="fault" element="ns13:DorianInternalFault" />
+    <part name="fault" element="ns12:DorianInternalFault" />
   </message>
   <message name="InvalidUserPropertyFaultFaultMessage">
-    <part name="fault" element="ns13:InvalidUserPropertyFault" />
+    <part name="fault" element="ns12:InvalidUserPropertyFault" />
   </message>
   <message name="PermissionDeniedFaultFaultMessage">
-    <part name="fault" element="ns13:PermissionDeniedFault" />
+    <part name="fault" element="ns12:PermissionDeniedFault" />
   </message>
   <message name="NoSuchUserFaultFaultMessage">
-    <part name="fault" element="ns13:NoSuchUserFault" />
+    <part name="fault" element="ns12:NoSuchUserFault" />
   </message>
   <message name="InvalidAssertionFaultFaultMessage">
-    <part name="fault" element="ns13:InvalidAssertionFault" />
+    <part name="fault" element="ns12:InvalidAssertionFault" />
   </message>
   <message name="InvalidProxyFaultFaultMessage">
-    <part name="fault" element="ns13:InvalidProxyFault" />
+    <part name="fault" element="ns12:InvalidProxyFault" />
   </message>
   <message name="UserPolicyFaultFaultMessage">
-    <part name="fault" element="ns13:UserPolicyFault" />
+    <part name="fault" element="ns12:UserPolicyFault" />
   </message>
   <message name="InvalidTrustedIdPFaultFaultMessage">
-    <part name="fault" element="ns13:InvalidTrustedIdPFault" />
+    <part name="fault" element="ns12:InvalidTrustedIdPFault" />
   </message>
   <message name="InvalidUserFaultFaultMessage">
-    <part name="fault" element="ns13:InvalidUserFault" />
+    <part name="fault" element="ns12:InvalidUserFault" />
   </message>
   <message name="InvalidHostCertificateRequestFaultFaultMessage">
-    <part name="fault" element="ns13:InvalidHostCertificateRequestFault" />
+    <part name="fault" element="ns12:InvalidHostCertificateRequestFault" />
   </message>
   <message name="InvalidHostCertificateFaultFaultMessage">
-    <part name="fault" element="ns13:InvalidHostCertificateFault" />
+    <part name="fault" element="ns12:InvalidHostCertificateFault" />
   </message>
   <message name="InvalidUserCertificateFaultFaultMessage">
-    <part name="fault" element="ns13:InvalidUserCertificateFault" />
+    <part name="fault" element="ns12:InvalidUserCertificateFault" />
   </message>
   <!--============================================================
 

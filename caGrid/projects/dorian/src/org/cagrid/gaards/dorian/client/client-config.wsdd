@@ -65,8 +65,6 @@
  <typeMapping deserializer="org.apache.axis.encoding.ser.SimpleDeserializerFactory" encodingStyle="" qname="ns11:QueryExpressionDialect" serializer="org.apache.axis.encoding.ser.SimpleSerializerFactory" type="java:java.lang.String" xmlns:ns11="http://www.globus.org/foobar"/>
  <typeMapping deserializer="org.globus.wsrf.encoding.QueryExpressionDeserializerFactory" encodingStyle="" qname="ns12:QueryExpressionType" serializer="org.globus.wsrf.encoding.QueryExpressionSerializerFactory" type="java:org.oasis.wsrf.properties.QueryExpressionType" xmlns:ns12="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ResourceProperties-1.2-draft-01.xsd"/>
 <!-- START INTRODUCE TYPEMAPPINGS -->
-<ns3:typeMapping encodingStyle="" serializer="org.cagrid.gaards.dorian.policy.HostAgreementSerializerFactory" deserializer="org.cagrid.gaards.dorian.policy.HostAgreementDeserializerFactory" type="ns1:org.cagrid.gaards.dorian.policy.HostAgreement" qname="ns2:HostAgreement" xmlns:ns1="http://xml.apache.org/axis/wsdd/providers/java" xmlns:ns2="http://www.cagrid.org/gaards/1/dorian-host-agreement" xmlns:ns3="http://xml.apache.org/axis/wsdd/"/>
-
 <ns3:typeMapping encodingStyle="" serializer="org.cagrid.gaards.saml.encoding.SAMLSerializerFactory" deserializer="org.cagrid.gaards.saml.encoding.SAMLDeserializerFactory" type="ns1:gov.nih.nci.cagrid.opensaml.SAMLAssertion" qname="ns2:Assertion" xmlns:ns1="http://xml.apache.org/axis/wsdd/providers/java" xmlns:ns2="urn:oasis:names:tc:SAML:1.0:assertion" xmlns:ns3="http://xml.apache.org/axis/wsdd/"/>
 
 
