@@ -24,6 +24,8 @@ import org.cagrid.gaards.dorian.client.GridAdministrationClient;
 import org.cagrid.gaards.dorian.federation.HostCertificateRecord;
 import org.cagrid.gaards.dorian.federation.HostCertificateStatus;
 import org.cagrid.gaards.dorian.federation.HostCertificateUpdate;
+import org.cagrid.gaards.dorian.policy.DorianPolicy;
+import org.cagrid.gaards.dorian.policy.HostCertificateRenewalPolicy;
 import org.cagrid.gaards.pki.CertUtil;
 import org.cagrid.gaards.pki.KeyUtil;
 import org.cagrid.gaards.ui.common.CertificateInformationComponent;
@@ -198,7 +200,14 @@ public class HostCertificateWindow extends ApplicationComponent implements Doria
             getApprove().setVisible(false);
         }
 
+        DorianPolicy policy = session.getHandle().getPolicy();
         if (record.getStatus().equals(HostCertificateStatus.Active) && admin) {
+            getRenew().setEnabled(true);
+            getRenew().setVisible(true);
+        } else if (record.getStatus().equals(HostCertificateStatus.Active)
+            && (policy != null)
+            && (policy.getFederationPolicy().getHostPolicy().getHostCertificateRenewalPolicy()
+                .equals(HostCertificateRenewalPolicy.Owner))) {
             getRenew().setEnabled(true);
             getRenew().setVisible(true);
         } else {
@@ -215,6 +224,7 @@ public class HostCertificateWindow extends ApplicationComponent implements Doria
     private void initialize() {
         this.setContentPane(getJContentPane());
         this.setTitle("Host Certificate [" + record.getHost() + "]");
+        this.setSize(600, 400);
     }
 
 

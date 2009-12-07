@@ -9,6 +9,7 @@ import org.cagrid.gaards.dorian.client.GridAdministrationClient;
 import org.cagrid.gaards.dorian.client.GridUserClient;
 import org.cagrid.gaards.dorian.client.LocalAdministrationClient;
 import org.cagrid.gaards.dorian.client.LocalUserClient;
+import org.cagrid.gaards.dorian.policy.DorianPolicy;
 import org.cagrid.gaards.ui.common.ServiceHandle;
 import org.cagrid.grape.configuration.ServiceDescriptor;
 import org.globus.gsi.GlobusCredential;
@@ -18,10 +19,18 @@ import org.globus.wsrf.impl.security.authorization.IdentityAuthorization;
 public class DorianHandle extends ServiceHandle {
 
     private List<AuthenticationServiceHandle> authenticationServices;
+    private DorianPolicy policy;
 
 
-    public DorianHandle(ServiceDescriptor des) {
+    public DorianHandle(ServiceDescriptor des) throws Exception {
         super(des);
+        GridUserClient client = new GridUserClient(des.getServiceURL());
+        this.policy = client.getPolicy();
+    }
+
+
+    public DorianPolicy getPolicy() {
+        return policy;
     }
 
 
@@ -32,6 +41,7 @@ public class DorianHandle extends ServiceHandle {
             IdentityAuthorization auth = new IdentityAuthorization(getServiceDescriptor().getServiceIdentity());
             client.setAuthorization(auth);
         }
+        client.setPolicy(policy);
         return client;
     }
 
@@ -47,6 +57,7 @@ public class DorianHandle extends ServiceHandle {
             IdentityAuthorization auth = new IdentityAuthorization(getServiceDescriptor().getServiceIdentity());
             client.setAuthorization(auth);
         }
+        client.setPolicy(policy);
         return client;
     }
 
@@ -57,6 +68,7 @@ public class DorianHandle extends ServiceHandle {
             IdentityAuthorization auth = new IdentityAuthorization(getServiceDescriptor().getServiceIdentity());
             client.setAuthorization(auth);
         }
+        client.setPolicy(policy);
         return client;
     }
 
@@ -68,6 +80,7 @@ public class DorianHandle extends ServiceHandle {
             IdentityAuthorization auth = new IdentityAuthorization(getServiceDescriptor().getServiceIdentity());
             client.setAuthorization(auth);
         }
+        client.setPolicy(policy);
         return client;
     }
 
@@ -78,6 +91,7 @@ public class DorianHandle extends ServiceHandle {
             IdentityAuthorization auth = new IdentityAuthorization(getServiceDescriptor().getServiceIdentity());
             client.setAuthorization(auth);
         }
+
         return client;
     }
 
@@ -88,6 +102,7 @@ public class DorianHandle extends ServiceHandle {
             IdentityAuthorization auth = new IdentityAuthorization(getServiceDescriptor().getServiceIdentity());
             client.setAuthorization(auth);
         }
+        client.setPolicy(policy);
         return client;
     }
 
