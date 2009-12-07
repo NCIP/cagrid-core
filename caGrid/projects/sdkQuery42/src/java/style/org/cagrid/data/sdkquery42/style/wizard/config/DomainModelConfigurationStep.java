@@ -54,6 +54,7 @@ public class DomainModelConfigurationStep extends AbstractStyleConfigurationStep
     // from a provided XMI
     private String projectShortName = null;
     private String projectVersion = null;
+    private String excludePackages = null;
     private File xmiFile = null;
     private XmiFileType xmiType = null;
     
@@ -128,6 +129,9 @@ public class DomainModelConfigurationStep extends AbstractStyleConfigurationStep
     private void applySdkModelConfiguration() throws Exception {
         // create a domain model from the XMI
         XMIParser parser = new XMIParser(projectShortName, projectVersion);
+        if (excludePackages != null && excludePackages.length() != 0) {
+            parser.setPackageExcludeRegex(excludePackages);
+        }
         DomainModel generatedModel = parser.parse(xmiFile, xmiType);
         // save the domain model to the service's etc dir
         File etcDir = new File(
@@ -398,6 +402,16 @@ public class DomainModelConfigurationStep extends AbstractStyleConfigurationStep
 
     public void setProjectVersion(String projectVersion) {
         this.projectVersion = projectVersion;
+    }
+        
+    
+    public String getExcludePackages() {
+        return excludePackages;
+    }
+    
+    
+    public void setExcludePackages(String excludePackages) {
+        this.excludePackages = excludePackages;
     }
 
 

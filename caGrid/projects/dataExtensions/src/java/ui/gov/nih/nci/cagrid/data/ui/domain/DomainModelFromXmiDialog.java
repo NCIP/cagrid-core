@@ -21,6 +21,8 @@ import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.io.File;
 import java.io.FileWriter;
+import java.util.regex.Pattern;
+import java.util.regex.PatternSyntaxException;
 
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
@@ -65,6 +67,7 @@ public class DomainModelFromXmiDialog extends JDialog {
     public static final String KEY_SDK_DIR = "caCORE SDK Directory";
     public static final String KEY_PROJECT_SHORT_NAME = "Project Short Name";
     public static final String KEY_PROJECT_VERSION = "Project Version";
+    public static final String KEY_EXCLUDE_REGEX = "Package Excludes";
 
     private JLabel xmiFileLabel = null;
     private JTextField xmiFileTextField = null;
@@ -91,16 +94,20 @@ public class DomainModelFromXmiDialog extends JDialog {
     private JPanel fixEaModelPanel = null;
     private JPanel xmiBrowsePanel = null;
     private JPanel mainPanel = null;
-    
+    private JLabel excludePackagesLabel = null;
+    private JTextField excludePackagesTextField = null;
+        
     private boolean canceled;
     private String suppliedXmiFilename = null;
+    private String suppliedPackageExcludes = null;
     private ValidationResultModel validationModel = null;
     private DocumentChangeAdapter documentChangeListener = null;
     
-    private DomainModelFromXmiDialog(JFrame parent, String xmiFilename) {
+    private DomainModelFromXmiDialog(JFrame parent, String xmiFilename, String packageExcludes) {
         super(parent, "Generate Domain Model", true);
         canceled = true;
         suppliedXmiFilename = xmiFilename;
+        suppliedPackageExcludes = packageExcludes;
         validationModel = new DefaultValidationResultModel();
         documentChangeListener = new DocumentChangeAdapter() {
             public void documentEdited(DocumentEvent e) {
@@ -121,12 +128,12 @@ public class DomainModelFromXmiDialog extends JDialog {
     
     
     public static DomainModel createDomainModel(JFrame parent) {
-        return createDomainModel(parent, null);
+        return createDomainModel(parent, null, null);
     }
     
     
-    public static DomainModel createDomainModel(JFrame parent, String xmiFilename) {
-        DomainModelFromXmiDialog dialog = new DomainModelFromXmiDialog(parent, xmiFilename);
+    public static DomainModel createDomainModel(JFrame parent, String xmiFilename, String packageExcludes) {
+        DomainModelFromXmiDialog dialog = new DomainModelFromXmiDialog(parent, xmiFilename, packageExcludes);
         if (!dialog.canceled) {
             File xmiFile = null;
             if (dialog.getFixEaModelCheckBox().isSelected()) {
@@ -157,6 +164,10 @@ public class DomainModelFromXmiDialog extends JDialog {
             if (description != null && description.length() != 0) {
                 parser.setProjectDescription(description);
             }
+            String excludeRegex = dialog.getExcludePackagesTextField().getText();
+            if (excludeRegex != null && excludeRegex.length() != 0) {
+                parser.setPackageExcludeRegex(excludeRegex);
+            }
             
             DomainModel model = null;
             try {
@@ -179,6 +190,7 @@ public class DomainModelFromXmiDialog extends JDialog {
         ValidationComponentUtils.setMessageKey(getSdkDirTextField(), KEY_SDK_DIR);
         ValidationComponentUtils.setMessageKey(getProjectShortNameTextField(), KEY_PROJECT_SHORT_NAME);
         ValidationComponentUtils.setMessageKey(getProjectVersionTextField(), KEY_PROJECT_VERSION);
+        ValidationComponentUtils.setMessageKey(getExcludePackagesTextField(), KEY_EXCLUDE_REGEX);
         
         validateInput();
         updateComponentTreeSeverity();
@@ -208,6 +220,16 @@ public class DomainModelFromXmiDialog extends JDialog {
                 result.add(new SimpleValidationMessage(
                     KEY_SDK_DIR + " must not be blank.\nPlease select the caCORE SDK directory", 
                     Severity.ERROR, KEY_SDK_DIR));
+            }
+        }
+        
+        if (!ValidationUtils.isBlank(getExcludePackagesTextField().getText())) {
+            try {
+                Pattern.compile(getExcludePackagesTextField().getText());
+            } catch (PatternSyntaxException ex) {
+                result.add(new SimpleValidationMessage(
+                    KEY_EXCLUDE_REGEX + " is not a valid regular expression", 
+                    Severity.ERROR, KEY_EXCLUDE_REGEX));
             }
         }
         
@@ -430,6 +452,39 @@ public class DomainModelFromXmiDialog extends JDialog {
         }
         return projectDescriptionScrollPane;
     }
+    
+    
+    /**
+     * This method initializes excludePackagesLabel 
+     *  
+     * @return javax.swing.JLabel   
+     */
+    private JLabel getExcludePackagesLabel() {
+        if (excludePackagesLabel == null) {
+            excludePackagesLabel = new JLabel();
+            excludePackagesLabel.setText("Exclude Packages:");
+        }
+        return excludePackagesLabel;
+    }
+
+
+    /**
+     * This method initializes excludePackagesTextField 
+     *  
+     * @return javax.swing.JTextField   
+     */
+    private JTextField getExcludePackagesTextField() {
+        if (excludePackagesTextField == null) {
+            excludePackagesTextField = new JTextField();
+            String excludeValue = suppliedPackageExcludes != null ? 
+                suppliedPackageExcludes : XMIParser.DEFAULT_PACKAGE_EXCLUDE_REGEX;
+            excludePackagesTextField.setText(excludeValue);
+            excludePackagesTextField.setToolTipText("A regular expression indicating what packages to ignore in the XMI");
+            excludePackagesTextField.addFocusListener(new FocusChangeHandler());
+            excludePackagesTextField.getDocument().addDocumentListener(documentChangeListener);
+        }
+        return excludePackagesTextField;
+    }
 
 
     /**
@@ -439,6 +494,17 @@ public class DomainModelFromXmiDialog extends JDialog {
      */
     private JPanel getInformationPanel() {
         if (informationPanel == null) {
+            GridBagConstraints gridBagConstraints22 = new GridBagConstraints();
+            gridBagConstraints22.fill = GridBagConstraints.HORIZONTAL;
+            gridBagConstraints22.gridy = 4;
+            gridBagConstraints22.weightx = 1.0;
+            gridBagConstraints22.insets = new Insets(2, 2, 2, 2);
+            gridBagConstraints22.gridx = 1;
+            GridBagConstraints gridBagConstraints21 = new GridBagConstraints();
+            gridBagConstraints21.gridx = 0;
+            gridBagConstraints21.fill = GridBagConstraints.HORIZONTAL;
+            gridBagConstraints21.insets = new Insets(2, 2, 2, 2);
+            gridBagConstraints21.gridy = 4;
             GridBagConstraints gridBagConstraints10 = new GridBagConstraints();
             gridBagConstraints10.fill = GridBagConstraints.BOTH;
             gridBagConstraints10.gridy = 3;
@@ -501,6 +567,8 @@ public class DomainModelFromXmiDialog extends JDialog {
             informationPanel.add(getProjectLongNameTextField(), gridBagConstraints8);
             informationPanel.add(getProjectDescriptionLabel(), gridBagConstraints9);
             informationPanel.add(getProjectDescriptionScrollPane(), gridBagConstraints10);
+            informationPanel.add(getExcludePackagesLabel(), gridBagConstraints21);
+            informationPanel.add(getExcludePackagesTextField(), gridBagConstraints22);
         }
         return informationPanel;
     }
@@ -815,7 +883,6 @@ public class DomainModelFromXmiDialog extends JDialog {
 
         public void focusGained(FocusEvent e) {
             update();
-
         }
 
 

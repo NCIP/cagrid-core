@@ -26,18 +26,11 @@ import org.xml.sax.helpers.DefaultHandler;
   * @version $Id: XMIParser.java,v 1.5 2008-04-22 19:41:23 dervin Exp $
  */
 public class XMIParser {
-    DomainModel model;
-    boolean filterPrimitiveClasses = true;
-    String projectDescription;
-    String projectLongName;
-    String projectShortName;
-    String projectVersion;
-    float attributeVersion = 1.0f;
-    boolean debug = false;
-
+    // regex that matches variations on the "value domain" package name for exclusion
+    public static final String DEFAULT_PACKAGE_EXCLUDE_REGEX = ".*?[V|v]alue.?domain.*";
     // maps XMI data types to Java type class names
-    static final Hashtable<String, String> DATATYPE_MAP = new Hashtable<String, String>();
-    {
+    public static final Hashtable<String, String> DATATYPE_MAP = new Hashtable<String, String>();
+    static {
         DATATYPE_MAP.put("Date", "java.util.Date");
         DATATYPE_MAP.put("Short", "java.lang.Short");
         DATATYPE_MAP.put("Integer", "java.lang.Integer");
@@ -49,12 +42,20 @@ public class XMIParser {
         DATATYPE_MAP.put("String", "java.lang.String");
         DATATYPE_MAP.put("Character", "java.lang.Character");
     }
-
+    
+    private DomainModel model = null;
+    private String projectDescription = null;
+    private String projectLongName = null;
+    private String projectShortName = null;
+    private String projectVersion = null;
+    private String packageExcludeRegex = null;
+    private float attributeVersion = 1.0f;
 
     public XMIParser(String projectShortName, String projectVersion) {
         super();
         this.projectShortName = projectShortName;
         this.projectVersion = projectVersion;
+        this.packageExcludeRegex = DEFAULT_PACKAGE_EXCLUDE_REGEX;
     }
     
     
@@ -91,16 +92,6 @@ public class XMIParser {
         parse(fis, type);
         fis.close();
         return model;
-    }
-
-
-    public boolean isFilterPrimitiveClasses() {
-        return filterPrimitiveClasses;
-    }
-
-
-    public void setFilterPrimitiveClasses(boolean filterPrimitiveClasses) {
-        this.filterPrimitiveClasses = filterPrimitiveClasses;
     }
 
 
@@ -152,14 +143,19 @@ public class XMIParser {
     public void setAttributeVersion(float attributeVersion) {
         this.attributeVersion = attributeVersion;
     }
-
-
-    public boolean isDebug() {
-        return debug;
+    
+    
+    public String getPackageExcludeRegex() {
+        return this.packageExcludeRegex;
     }
-
-
-    public void setDebug(boolean debug) {
-        this.debug = debug;
+    
+    
+    public void setPackageExcludeRegex(String regex) {
+        this.packageExcludeRegex = regex;
+    }
+    
+    
+    void setModel(DomainModel model) {
+        this.model = model;
     }
 }

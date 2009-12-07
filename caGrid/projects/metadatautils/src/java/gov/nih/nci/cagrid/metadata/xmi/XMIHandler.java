@@ -33,10 +33,10 @@ class XMIHandler extends BaseXMIHandler {
     private static final Log LOG = LogFactory.getLog(XMIHandler.class);   
     
     // state variables
-    private UMLAssociationEdge edge;
+    private UMLAssociationEdge edge = null;
     private boolean sourceNavigable = false;
     private boolean targetNavigable = false;
-    private String pkg;
+    private String pkg = null;
     private boolean handlingAttribute;
 
     public XMIHandler(XMIParser parser) {
@@ -150,7 +150,7 @@ class XMIHandler extends BaseXMIHandler {
         // get the most recently found association
         UMLAssociation assoc = getLastAssociation();
         // TODO: something with type?
-        String type = atts.getValue(XMIConstants.XMI_TYPE_ATTRIBUTE);
+        // String type = atts.getValue(XMIConstants.XMI_TYPE_ATTRIBUTE);
         boolean isNavigable = "true".equals(atts.getValue(XMIConstants.XMI_UML_ASSOCIATION_IS_NAVIGABLE));
 
         edge = new UMLAssociationEdge();
@@ -171,7 +171,7 @@ class XMIHandler extends BaseXMIHandler {
         UMLAttribute att = new UMLAttribute();
         att.setName(atts.getValue(XMIConstants.XMI_NAME_ATTRIBUTE));
         att.setPublicID(atts.getValue(XMIConstants.XMI_ID_ATTRIBUTE).hashCode());
-        att.setVersion(getParser().attributeVersion);
+        att.setVersion(getParser().getAttributeVersion());
         addAttribute(att);
     }
     
@@ -181,8 +181,8 @@ class XMIHandler extends BaseXMIHandler {
         cl.setClassName(atts.getValue(XMIConstants.XMI_NAME_ATTRIBUTE));
         cl.setId(atts.getValue(XMIConstants.XMI_ID_ATTRIBUTE));
         cl.setPackageName(pkg);
-        cl.setProjectName(getParser().projectShortName);
-        cl.setProjectVersion(getParser().projectVersion);
+        cl.setProjectName(getParser().getProjectShortName());
+        cl.setProjectVersion(getParser().getProjectVersion());
         addClass(cl);
     }
     

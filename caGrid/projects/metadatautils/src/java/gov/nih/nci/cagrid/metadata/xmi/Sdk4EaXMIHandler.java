@@ -32,8 +32,7 @@ import org.xml.sax.SAXException;
 class Sdk4EaXMIHandler extends BaseXMIHandler {
     private static final Log LOG = LogFactory.getLog(Sdk4EaXMIHandler.class);   
     
-    // state variables
-    private UMLAssociationEdge edge;
+    private UMLAssociationEdge edge = null;
     private boolean sourceNavigable = false;
     private boolean targetNavigable = false;
     private String pkg = "";
@@ -194,7 +193,7 @@ class Sdk4EaXMIHandler extends BaseXMIHandler {
         handlingAttribute = true;
         currentAttribute = new UMLAttribute();
         currentAttribute.setName(atts.getValue(XMIConstants.XMI_NAME_ATTRIBUTE));
-        currentAttribute.setVersion(getParser().attributeVersion);
+        currentAttribute.setVersion(getParser().getAttributeVersion());
     }
     
     
@@ -212,8 +211,8 @@ class Sdk4EaXMIHandler extends BaseXMIHandler {
         cl.setClassName(atts.getValue(XMIConstants.XMI_NAME_ATTRIBUTE));
         cl.setId(atts.getValue(XMIConstants.XMI_ID_ATTRIBUTE));
         cl.setPackageName(pkg);
-        cl.setProjectName(getParser().projectShortName);
-        cl.setProjectVersion(getParser().projectVersion);
+        cl.setProjectName(getParser().getProjectShortName());
+        cl.setProjectVersion(getParser().getProjectVersion());
         addClass(cl);
     }
     

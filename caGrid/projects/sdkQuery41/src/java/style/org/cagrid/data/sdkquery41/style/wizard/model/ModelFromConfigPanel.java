@@ -10,6 +10,8 @@ import java.awt.GridLayout;
 import java.awt.Insets;
 import java.io.File;
 import java.util.Properties;
+import java.util.regex.Pattern;
+import java.util.regex.PatternSyntaxException;
 
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -30,6 +32,7 @@ import com.jgoodies.validation.message.SimpleValidationMessage;
 import com.jgoodies.validation.util.DefaultValidationResultModel;
 import com.jgoodies.validation.util.ValidationUtils;
 import com.jgoodies.validation.view.ValidationComponentUtils;
+import java.awt.Dimension;
 
 /**
  * ModelFromConfigPanel
@@ -42,6 +45,7 @@ public class ModelFromConfigPanel extends DomainModelSourcePanel {
     
     public static final String KEY_PROJECT_NAME = "Project name";
     public static final String KEY_PROJECT_VERSION = "Project version";
+    public static final String KEY_PACKAGE_EXCLUDE = "Package exclude";
     
     private ValidationResultModel validationModel = null;
     private IconFeedbackPanel validationOverlayPanel = null;
@@ -55,6 +59,8 @@ public class ModelFromConfigPanel extends DomainModelSourcePanel {
     private JLabel projectVersionLabel = null;
     private JTextField projectNameTextField = null;
     private JTextField projectVersionTextField = null;
+    private JLabel excludePackagesLabel = null;
+    private JTextField excludePackagesTextField = null;
     
     public ModelFromConfigPanel(
         DomainModelSourceValidityListener validityListener, 
@@ -95,6 +101,11 @@ public class ModelFromConfigPanel extends DomainModelSourcePanel {
         String projectName = deployProps.getProperty(SDK41StyleConstants.DeployProperties.PROJECT_NAME);
         getProjectNameTextField().setText(projectName);
         getConfiguration().setProjectShortName(projectName);
+        String excludePackages = deployProps.getProperty(SDK41StyleConstants.DeployProperties.EXCLUDE_PACKAGE);
+        if (excludePackages != null && excludePackages.length() != 0) {
+            getExcludePackagesTextField().setText(excludePackages);
+            getConfiguration().setExcludePackages(excludePackages);
+        }
         validateInput();
     }
     
@@ -117,6 +128,17 @@ public class ModelFromConfigPanel extends DomainModelSourcePanel {
     
     private JPanel getMainPanel() {
         if (mainPanel == null) {
+            GridBagConstraints gridBagConstraints22 = new GridBagConstraints();
+            gridBagConstraints22.fill = GridBagConstraints.HORIZONTAL;
+            gridBagConstraints22.gridy = 4;
+            gridBagConstraints22.weightx = 1.0;
+            gridBagConstraints22.insets = new Insets(2, 2, 2, 2);
+            gridBagConstraints22.gridx = 1;
+            GridBagConstraints gridBagConstraints12 = new GridBagConstraints();
+            gridBagConstraints12.gridx = 0;
+            gridBagConstraints12.fill = GridBagConstraints.HORIZONTAL;
+            gridBagConstraints12.insets = new Insets(2, 2, 2, 2);
+            gridBagConstraints12.gridy = 4;
             mainPanel = new JPanel();
             GridBagConstraints gridBagConstraints5 = new GridBagConstraints();
             gridBagConstraints5.gridx = 0;
@@ -169,6 +191,7 @@ public class ModelFromConfigPanel extends DomainModelSourcePanel {
             gridBagConstraints.insets = new Insets(2, 2, 2, 2);
             gridBagConstraints.gridy = 0;
             mainPanel.setLayout(new GridBagLayout());
+            mainPanel.setSize(new Dimension(302, 132));
             mainPanel.add(getXmiFileLabel(), gridBagConstraints);
             mainPanel.add(getXmiFileTextField(), gridBagConstraints1);
             mainPanel.add(getXmiTypeLabel(), gridBagConstraints2);
@@ -177,6 +200,8 @@ public class ModelFromConfigPanel extends DomainModelSourcePanel {
             mainPanel.add(getProjectVersionLabel(), gridBagConstraints21);
             mainPanel.add(getProjectNameTextField(), gridBagConstraints31);
             mainPanel.add(getProjectVersionTextField(), gridBagConstraints4);
+            mainPanel.add(getExcludePackagesLabel(), gridBagConstraints12);
+            mainPanel.add(getExcludePackagesTextField(), gridBagConstraints22);
         }
         return mainPanel;
     }
@@ -302,6 +327,39 @@ public class ModelFromConfigPanel extends DomainModelSourcePanel {
         }
         return projectVersionTextField;
     }
+
+
+    /**
+     * This method initializes excludePackagesLabel 
+     *  
+     * @return javax.swing.JLabel   
+     */
+    private JLabel getExcludePackagesLabel() {
+        if (excludePackagesLabel == null) {
+            excludePackagesLabel = new JLabel();
+            excludePackagesLabel.setText("Exclude Packages:");
+        }
+        return excludePackagesLabel;
+    }
+
+
+    /**
+     * This method initializes excludePackagesTextField 
+     *  
+     * @return javax.swing.JTextField   
+     */
+    private JTextField getExcludePackagesTextField() {
+        if (excludePackagesTextField == null) {
+            excludePackagesTextField = new JTextField();
+            excludePackagesTextField.getDocument().addDocumentListener(new DocumentChangeAdapter() {
+                public void documentEdited(DocumentEvent e) {
+                    getConfiguration().setExcludePackages(getExcludePackagesTextField().getText());
+                    validateInput();
+                }
+            });
+        }
+        return excludePackagesTextField;
+    }
     
     
     // ----------
@@ -312,6 +370,7 @@ public class ModelFromConfigPanel extends DomainModelSourcePanel {
     private void configureValidation() {
         ValidationComponentUtils.setMessageKey(getProjectNameTextField(), KEY_PROJECT_NAME);
         ValidationComponentUtils.setMessageKey(getProjectVersionTextField(), KEY_PROJECT_VERSION);
+        ValidationComponentUtils.setMessageKey(getExcludePackagesTextField(), KEY_PACKAGE_EXCLUDE);
         
         validateInput();
         updateComponentTreeSeverity();
@@ -322,10 +381,20 @@ public class ModelFromConfigPanel extends DomainModelSourcePanel {
         ValidationResult result = new ValidationResult();
         
         if (ValidationUtils.isBlank(getProjectNameTextField().getText())) {
-            result.add(new SimpleValidationMessage(KEY_PROJECT_NAME + " cannot be blank!", Severity.ERROR, KEY_PROJECT_NAME));
+            result.add(new SimpleValidationMessage(
+                KEY_PROJECT_NAME + " cannot be blank!", Severity.ERROR, KEY_PROJECT_NAME));
         }
         if (ValidationUtils.isBlank(getProjectVersionTextField().getText())) {
-            result.add(new SimpleValidationMessage(KEY_PROJECT_VERSION + " cannot be blank!", Severity.ERROR, KEY_PROJECT_VERSION));
+            result.add(new SimpleValidationMessage(
+                KEY_PROJECT_VERSION + " cannot be blank!", Severity.ERROR, KEY_PROJECT_VERSION));
+        }
+        if (!ValidationUtils.isBlank(getExcludePackagesTextField().getText())) {
+            try {
+                Pattern.compile(getExcludePackagesTextField().getText());
+            } catch (PatternSyntaxException ex) {
+                result.add(new SimpleValidationMessage(
+                    KEY_PACKAGE_EXCLUDE + " must be a valid regex", Severity.ERROR, KEY_PACKAGE_EXCLUDE));
+            }
         }
         
         validationModel.setResult(result);

@@ -6,6 +6,7 @@ import gov.nih.nci.cagrid.data.ui.GroupSelectionListener;
 import gov.nih.nci.cagrid.data.ui.NotifyingButtonGroup;
 import gov.nih.nci.cagrid.introduce.common.FileFilters;
 import gov.nih.nci.cagrid.introduce.common.ResourceManager;
+import gov.nih.nci.cagrid.metadata.xmi.XMIParser;
 import gov.nih.nci.cagrid.metadata.xmi.XmiFileType;
 
 import java.awt.Dimension;
@@ -17,6 +18,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.IOException;
+import java.util.regex.Pattern;
+import java.util.regex.PatternSyntaxException;
 
 import javax.swing.ButtonModel;
 import javax.swing.JButton;
@@ -50,6 +53,7 @@ public class ModelFromXmiPanel extends DomainModelSourcePanel {
     private static final String KEY_XMI_FILENAME = "XMI filename";
     private static final String KEY_PROJECT_NAME = "Project name";
     private static final String KEY_PROJECT_VERSION = "Project version";
+    private static final String KEY_EXCLUDE_PACKAGES = "Exclude packages";
     
     private ValidationResultModel validationModel = null;
     private IconFeedbackPanel validationOverlayPanel = null;
@@ -66,6 +70,8 @@ public class ModelFromXmiPanel extends DomainModelSourcePanel {
     private JPanel xmiTypePanel = null;
     private JRadioButton eaXmiTypeRadioButton = null;
     private JRadioButton argoXmiTypeRadioButton = null;
+    private JLabel excludePackagesLabel = null;
+    private JTextField excludePackagesTextField = null;
     
     public ModelFromXmiPanel(
         DomainModelSourceValidityListener validityListener, 
@@ -124,6 +130,18 @@ public class ModelFromXmiPanel extends DomainModelSourcePanel {
     
     private JPanel getMainPanel() {
         if (mainPanel == null) {
+            GridBagConstraints gridBagConstraints41 = new GridBagConstraints();
+            gridBagConstraints41.fill = GridBagConstraints.HORIZONTAL;
+            gridBagConstraints41.gridy = 4;
+            gridBagConstraints41.weightx = 1.0;
+            gridBagConstraints41.insets = new Insets(2, 2, 2, 2);
+            gridBagConstraints41.gridwidth = 2;
+            gridBagConstraints41.gridx = 1;
+            GridBagConstraints gridBagConstraints3 = new GridBagConstraints();
+            gridBagConstraints3.gridx = 0;
+            gridBagConstraints3.insets = new Insets(2, 2, 2, 2);
+            gridBagConstraints3.fill = GridBagConstraints.HORIZONTAL;
+            gridBagConstraints3.gridy = 4;
             mainPanel = new JPanel();
             GridBagConstraints gridBagConstraints22 = new GridBagConstraints();
             gridBagConstraints22.gridx = 1;
@@ -182,7 +200,7 @@ public class ModelFromXmiPanel extends DomainModelSourcePanel {
             gridBagConstraints.insets = new Insets(2, 2, 2, 2);
             gridBagConstraints.gridy = 0;
             mainPanel.setLayout(new GridBagLayout());
-            mainPanel.setSize(new Dimension(482, 115));
+            mainPanel.setSize(new Dimension(482, 134));
             mainPanel.add(getXmiFileLabel(), gridBagConstraints);
             mainPanel.add(getXmiFileTextField(), gridBagConstraints1);
             mainPanel.add(getXmiTypeLabel(), gridBagConstraints2);
@@ -192,6 +210,8 @@ public class ModelFromXmiPanel extends DomainModelSourcePanel {
             mainPanel.add(getProjectVersionTextField(), gridBagConstraints4);
             mainPanel.add(getBrowseButton(), gridBagConstraints12);
             mainPanel.add(getXmiTypePanel(), gridBagConstraints22);
+            mainPanel.add(getExcludePackagesLabel(), gridBagConstraints3);
+            mainPanel.add(getExcludePackagesTextField(), gridBagConstraints41);
         }
         return mainPanel;
     }
@@ -383,6 +403,40 @@ public class ModelFromXmiPanel extends DomainModelSourcePanel {
         }
         return argoXmiTypeRadioButton;
     }
+
+
+    /**
+     * This method initializes excludePackagesLabel 
+     *  
+     * @return javax.swing.JLabel   
+     */
+    private JLabel getExcludePackagesLabel() {
+        if (excludePackagesLabel == null) {
+            excludePackagesLabel = new JLabel();
+            excludePackagesLabel.setText("Exclude Packages:");
+        }
+        return excludePackagesLabel;
+    }
+
+
+    /**
+     * This method initializes excludePackagesTextField 
+     *  
+     * @return javax.swing.JTextField   
+     */
+    private JTextField getExcludePackagesTextField() {
+        if (excludePackagesTextField == null) {
+            excludePackagesTextField = new JTextField();
+            excludePackagesTextField.setText(XMIParser.DEFAULT_PACKAGE_EXCLUDE_REGEX);
+            excludePackagesTextField.getDocument().addDocumentListener(new DocumentChangeAdapter() {
+                public void documentEdited(DocumentEvent e) {
+                    getConfiguration().setExcludePackages(getExcludePackagesTextField().getText());
+                    validateInput();
+                }
+            });
+        }
+        return excludePackagesTextField;
+    }
     
     
     // ----------
@@ -394,6 +448,7 @@ public class ModelFromXmiPanel extends DomainModelSourcePanel {
         ValidationComponentUtils.setMessageKey(getXmiFileTextField(), KEY_XMI_FILENAME);
         ValidationComponentUtils.setMessageKey(getProjectNameTextField(), KEY_PROJECT_NAME);
         ValidationComponentUtils.setMessageKey(getProjectVersionTextField(), KEY_PROJECT_VERSION);
+        ValidationComponentUtils.setMessageKey(getExcludePackagesTextField(), KEY_EXCLUDE_PACKAGES);
         
         validateInput();
         updateComponentTreeSeverity();
@@ -404,13 +459,24 @@ public class ModelFromXmiPanel extends DomainModelSourcePanel {
         ValidationResult result = new ValidationResult();
         
         if (ValidationUtils.isBlank(getXmiFileTextField().getText())) {
-            result.add(new SimpleValidationMessage("XMI Filename cannot be blank!", Severity.ERROR, KEY_XMI_FILENAME));
+            result.add(new SimpleValidationMessage(
+                "XMI filename cannot be blank!", Severity.ERROR, KEY_XMI_FILENAME));
         }
         if (ValidationUtils.isBlank(getProjectNameTextField().getText())) {
-            result.add(new SimpleValidationMessage(KEY_PROJECT_NAME + " cannot be blank!", Severity.ERROR, KEY_PROJECT_NAME));
+            result.add(new SimpleValidationMessage(
+                KEY_PROJECT_NAME + " cannot be blank!", Severity.ERROR, KEY_PROJECT_NAME));
         }
         if (ValidationUtils.isBlank(getProjectVersionTextField().getText())) {
-            result.add(new SimpleValidationMessage(KEY_PROJECT_VERSION + " cannot be blank!", Severity.ERROR, KEY_PROJECT_VERSION));
+            result.add(new SimpleValidationMessage(
+                KEY_PROJECT_VERSION + " cannot be blank!", Severity.ERROR, KEY_PROJECT_VERSION));
+        }
+        if (!ValidationUtils.isBlank(getExcludePackagesTextField().getText())) {
+            try {
+                Pattern.compile(getExcludePackagesTextField().getText());
+            } catch (PatternSyntaxException ex) {
+                result.add(new SimpleValidationMessage(
+                    KEY_EXCLUDE_PACKAGES + " must be a valid regex!", Severity.ERROR, KEY_EXCLUDE_PACKAGES));
+            }
         }
         
         validationModel.setResult(result);

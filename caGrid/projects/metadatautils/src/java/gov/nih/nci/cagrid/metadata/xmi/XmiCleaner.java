@@ -148,7 +148,7 @@ public class XmiCleaner {
             throw ioe;
         }
         
-        Iterator filterElements = xmiElement.getDescendants(filter);
+        Iterator<?> filterElements = xmiElement.getDescendants(filter);
         List<Element> removeElements = new LinkedList<Element>();
         while (filterElements.hasNext()) {
             removeElements.add((Element) filterElements.next());

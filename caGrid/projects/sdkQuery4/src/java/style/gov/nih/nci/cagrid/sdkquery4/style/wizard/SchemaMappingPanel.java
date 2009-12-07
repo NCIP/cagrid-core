@@ -55,7 +55,8 @@ import org.cagrid.grape.utils.CompositeErrorDialog;
 
 
 /**
- * SchemaMappingPanel Panel to configure mapping of packages to schemas
+ * SchemaMappingPanel
+ * Panel to configure mapping of packages to schemas
  * 
  * @author David Ervin
  * @created Jan 9, 2008 11:09:22 AM
@@ -116,9 +117,9 @@ public class SchemaMappingPanel extends AbstractWizardPanel {
                     }
                 }
             }
-            Iterator invalidPackageNameIter = currentPackageNames.iterator();
+            Iterator<String> invalidPackageNameIter = currentPackageNames.iterator();
             while (invalidPackageNameIter.hasNext()) {
-                String invalidName = (String) invalidPackageNameIter.next();
+                String invalidName = invalidPackageNameIter.next();
                 getPackageNamespaceTable().removeCadsrPackage(invalidName);
             }
             setWizardComplete(allSchemasResolved());
@@ -230,11 +231,10 @@ public class SchemaMappingPanel extends AbstractWizardPanel {
         if (gmeUrlTextField == null) {
             gmeUrlTextField = new JTextField();
             try {
-                String url = ConfigurationUtil.getGlobalExtensionProperty(DataServiceConstants.GME_SERVICE_URL)
-                    .getValue();
+                String url = ConfigurationUtil.getGlobalExtensionProperty(
+                    DataServiceConstants.GME_SERVICE_URL).getValue();
                 gmeUrlTextField.setText(url);
             } catch (Exception e) {
-                // TODO Auto-generated catch block
                 e.printStackTrace();
                 return null;
             }

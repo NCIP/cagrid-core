@@ -18,5 +18,6 @@ public interface SDK41StyleConstants {
         public static final String MODEL_TYPE_EA = "EA";
         public static final String MODEL_TYPE_ARGO = "ARGO";
         public static final String SERVER_URL = "SERVER_URL";
+        public static final String EXCLUDE_PACKAGE = "EXCLUDE_PACKAGE";
     }
 }

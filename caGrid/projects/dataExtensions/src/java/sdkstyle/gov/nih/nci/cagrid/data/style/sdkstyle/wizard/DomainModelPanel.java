@@ -70,8 +70,9 @@ import org.cagrid.mms.domain.UMLProjectIdentifer;
 
 
 /**
- * DomainModelPanel Panel to allow selection / generation of a domain model for
- * the service
+ * DomainModelPanel 
+ * Panel to allow selection / generation of a domain model
+ * for the service
  * 
  * @author <A HREF="MAILTO:ervin@bmi.osu.edu">David W. Ervin</A>
  * @created Sep 25, 2006
@@ -363,8 +364,9 @@ public class DomainModelPanel extends AbstractWizardPanel {
 
             // if user selected an XMI file, there is more processing to be done
             if (chooser.getFileFilter() == FileFilters.XMI_FILTER) {
-                DomainModel model = DomainModelFromXmiDialog.createDomainModel(GridApplication.getContext()
-                    .getApplication(), selectedFilename);
+                // TODO: excludes
+                DomainModel model = DomainModelFromXmiDialog.createDomainModel(
+                    GridApplication.getContext().getApplication(), selectedFilename, null);
                 if (model != null) {
                     String trimmedFileName = new File(selectedFilename).getName();
                     trimmedFileName = trimmedFileName.substring(0, trimmedFileName.length() - 4);
@@ -383,8 +385,8 @@ public class DomainModelPanel extends AbstractWizardPanel {
                         setSelectedDomainModelFilename(convertedModelFile.getAbsolutePath());
                     } catch (Exception ex) {
                         ex.printStackTrace();
-                        CompositeErrorDialog.showErrorDialog("Error storing converted domain model", ex.getMessage(),
-                            ex);
+                        CompositeErrorDialog.showErrorDialog(
+                            "Error storing converted domain model", ex.getMessage(), ex);
                     }
                 } else {
                     CompositeErrorDialog.showErrorDialog("Domain model was not generated");
@@ -845,9 +847,9 @@ public class DomainModelPanel extends AbstractWizardPanel {
                 ModelPackage[] packages = new ModelPackage[packageClasses.keySet().size()];
                 String[] packageNames = new String[packages.length];
                 int packIndex = 0;
-                Iterator packageNameIter = packageClasses.keySet().iterator();
+                Iterator<String> packageNameIter = packageClasses.keySet().iterator();
                 while (packageNameIter.hasNext()) {
-                    String packName = (String) packageNameIter.next();
+                    String packName = packageNameIter.next();
                     // leave the package unmapped to any particular namespace until the
                     // user explicitly does this on the schema mapping panel
                     ModelPackage pack = new ModelPackage();
@@ -925,12 +927,7 @@ public class DomainModelPanel extends AbstractWizardPanel {
 
 
     private static class InternalCaDSRBrowserPanel extends CaDSRBrowserPanel {
-
-        public InternalCaDSRBrowserPanel() {
-            super();
-        }
-
-
+        
         public InternalCaDSRBrowserPanel(boolean showQueryPanel, boolean showClassSelection) {
             super(showQueryPanel, showClassSelection);
         }

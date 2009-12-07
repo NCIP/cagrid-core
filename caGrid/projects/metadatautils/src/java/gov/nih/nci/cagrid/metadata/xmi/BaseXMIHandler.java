@@ -36,25 +36,22 @@ public abstract class BaseXMIHandler extends DefaultHandler {
     
     private static Log logger = LogFactory.getLog(BaseXMIHandler.class);
     
-    // regex that matches variations on the "value domain" package name for exclusion
-    public static final String VALUE_DOMAIN_REGEX = ".*?[V|v]alue.?domain.*";
-
     // parser contains configuration options and information for the handler
-    private XMIParser parser;
+    private XMIParser parser = null;
 
-    private StringBuffer chars;
+    private StringBuffer chars = null;
 
     // lists of domain model components
-    private List<UMLClass> classList;
-    private List<UMLAttribute> attribList;
-    private List<UMLAssociation> assocList;
-    private List<UMLGeneralization> generalizationList;
+    private List<UMLClass> classList = null;
+    private List<UMLAttribute> attribList = null;
+    private List<UMLAssociation> assocList = null;
+    private List<UMLGeneralization> generalizationList = null;
     
     // maps from XMI name to domain model component
-    private Map<String, UMLClass> classTable; // class ID to class instance
-    private Map<String, UMLAttribute> attribTable; // attribute ID to attribute instance
-    private Map<String, List<SemanticMetadata>> semanticMetadataTable; // element ID to semantic metadata list
-    private Map<String, String> typeTable; // type ID to type name
+    private Map<String, UMLClass> classTable = null; // class ID to class instance
+    private Map<String, UMLAttribute> attribTable = null; // attribute ID to attribute instance
+    private Map<String, List<SemanticMetadata>> semanticMetadataTable = null; // element ID to semantic metadata list
+    private Map<String, String> typeTable = null; // type ID to type name
     
     public BaseXMIHandler(XMIParser parser) {
         super();
@@ -173,12 +170,12 @@ public abstract class BaseXMIHandler extends DefaultHandler {
         flattenAttributes();
         applyFilters();
 
-        this.parser.model = new DomainModel();
-
-        this.parser.model.setProjectShortName(this.parser.projectShortName);
-        this.parser.model.setProjectLongName(this.parser.projectLongName);
-        this.parser.model.setProjectVersion(this.parser.projectVersion);
-        this.parser.model.setProjectDescription(this.parser.projectDescription);
+        DomainModel model = new DomainModel();
+        
+        model.setProjectShortName(getParser().getProjectShortName());
+        model.setProjectLongName(getParser().getProjectLongName());
+        model.setProjectVersion(getParser().getProjectVersion());
+        model.setProjectDescription(getParser().getProjectDescription());
 
         // convert base UML classes to data UML classes
         gov.nih.nci.cagrid.metadata.dataservice.UMLClass[] dataClasses = 
@@ -198,12 +195,14 @@ public abstract class BaseXMIHandler extends DefaultHandler {
             dataClass.setAllowableAsTarget(true); // NEW attribute for data classes
             dataClasses[i++] = dataClass;
         }
-        this.parser.model.setExposedUMLClassCollection(
+        model.setExposedUMLClassCollection(
             new DomainModelExposedUMLClassCollection(dataClasses));
-        this.parser.model.setExposedUMLAssociationCollection(
+        model.setExposedUMLAssociationCollection(
             new DomainModelExposedUMLAssociationCollection(assocList.toArray(new UMLAssociation[0])));
-        this.parser.model.setUmlGeneralizationCollection(
+        model.setUmlGeneralizationCollection(
             new DomainModelUmlGeneralizationCollection(generalizationList.toArray(new UMLGeneralization[0])));
+        
+        getParser().setModel(model);
     }
     
     
@@ -303,33 +302,37 @@ public abstract class BaseXMIHandler extends DefaultHandler {
 
         return flatAttributes;
     }
+    
+    
+    private boolean shouldExcludeClass(UMLClass clazz, Pattern excludePattern) {
+        String pack = clazz.getPackageName();
+        return pack.equals("") || pack.startsWith("java") 
+            || (excludePattern != null && excludePattern.matcher(pack).matches());
+    }
 
 
     private void applyFilters() {
         // build a set of class IDs which are valid to keep references to
-        // from oteher components of the model
+        // from other components of the model
         Set<String> validClassIds = new HashSet<String>();
+        List<UMLClass> filteredClasses = new ArrayList<UMLClass>();
         
-        Pattern valueDomainPattern = Pattern.compile(VALUE_DOMAIN_REGEX);
-        for (UMLClass clazz : classList) {
-            String pack = clazz.getPackageName();
-            if ((this.parser.filterPrimitiveClasses && !pack.startsWith("java")) && 
-                !valueDomainPattern.matcher(pack).matches() && 
-                !pack.equals("")) {
-                validClassIds.add(clazz.getId());
-            }
+        // exclude java.* packages, blank package names, and potentially anything matching the exclude regex
+        String excludeRegex = getParser().getPackageExcludeRegex();
+        Pattern excludePattern = null;
+        if (excludeRegex != null) {
+            logger.debug("Excluding packages matching " + excludeRegex);
+            excludePattern = Pattern.compile(excludeRegex);
         }
-        
-        // filter class list
-        List<UMLClass> filteredClasses = new ArrayList<UMLClass>(this.classList.size());
-        for (UMLClass cl : this.classList) {
-            if (validClassIds.contains(cl.getId())) {
-                filteredClasses.add(cl);
+        for (UMLClass clazz : classList) {
+            if (!shouldExcludeClass(clazz, excludePattern)) {
+                validClassIds.add(clazz.getId());
+                filteredClasses.add(clazz);
             }
         }
         this.classList = filteredClasses;
 
-        // filter assocations
+        // filter associations
         List<UMLAssociation> filteredAssociations = 
             new ArrayList<UMLAssociation>(this.assocList.size());
         for (UMLAssociation assoc : this.assocList) {
