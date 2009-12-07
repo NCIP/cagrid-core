@@ -26,7 +26,7 @@ public class ChangeCsmUserInDatabaseStep extends AbstractDatabaseStep {
     public void runStep() throws Throwable {
         String userId = getTestUserId();
         StringBuffer update = new StringBuffer();
-        update.append("Update csm_user set LOGIN_NAME = '");
+        update.append("Update CSM_USER set LOGIN_NAME = '");
         update.append(userId).append("' ");
         update.append("where LOGIN_NAME = '");
         update.append(SDK_USER_ID).append("';");
