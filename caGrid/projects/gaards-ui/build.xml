@@ -140,14 +140,15 @@ GSBT - Globus Service Build Tools
 				<include name="**" />
 				<exclude name="view-refresh.png" />
 			</fileset>
-			
+						
 		</jar>
+		
 		<jar jarfile="${build.lib.dir}/${jar.config.name}">
 			<fileset dir="${configuration.dir}">
 				<include name="**" />
 			</fileset>
+			<fileset file="${basedir}/project.properties" />
 		</jar>
-		
 
 	</target>
 

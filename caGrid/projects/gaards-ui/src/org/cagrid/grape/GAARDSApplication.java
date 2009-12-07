@@ -9,10 +9,8 @@ import gov.nih.nci.cagrid.syncgts.core.SyncGTSDefault;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.io.File;
-import java.io.FilenameFilter;
 import java.io.IOException;
 import java.io.InputStream;
-import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
@@ -22,7 +20,6 @@ import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.UIManager;
 
-import org.apache.axis.utils.StringUtils;
 import org.apache.axis.utils.XMLUtils;
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.CommandLineParser;
@@ -30,10 +27,8 @@ import org.apache.commons.cli.GnuParser;
 import org.apache.commons.cli.Option;
 import org.apache.commons.cli.OptionBuilder;
 import org.apache.commons.cli.Options;
-import org.apache.ivy.core.module.id.ModuleRevisionId;
 import org.cagrid.gaards.ui.dorian.ServicesManager;
 import org.cagrid.grape.configuration.Grid;
-import org.cagrid.grape.configuration.ServiceConfiguration;
 import org.cagrid.grape.configuration.TargetGridsConfiguration;
 import org.cagrid.grape.model.Application;
 import org.cagrid.grape.model.Component;
@@ -41,8 +36,6 @@ import org.cagrid.grape.model.Configuration;
 import org.cagrid.grape.utils.BusyDialogRunnable;
 import org.cagrid.grape.utils.ErrorDialog;
 import org.cagrid.grape.utils.IconUtils;
-import org.cagrid.ivy.Discover;
-import org.cagrid.ivy.Retrieve;
 import org.globus.wsrf.encoding.ObjectDeserializer;
 
 public class GAARDSApplication extends GridApplication{
@@ -52,7 +45,6 @@ public class GAARDSApplication extends GridApplication{
 	private static String targetGrid = null;
 	
 	private static URL ivySettingsURL = null;
-	private static URL ivyURL = null;
 	private static URL targetGridURL = null;
 		
     public GAARDSApplication(Application app) throws Exception {
@@ -103,8 +95,6 @@ public class GAARDSApplication extends GridApplication{
 
 	private static void loadDefaultConfigurationFiles() {
 		Throwable obj = new Throwable();
-    	ivySettingsURL = obj.getClass().getResource("/ivysettings-default.xml");
-    	ivyURL = obj.getClass().getResource("/ivy-default.xml");
     	targetGridURL = obj.getClass().getResource("/target-grid-configuration.xml");
 	}
 
@@ -184,17 +174,7 @@ public class GAARDSApplication extends GridApplication{
 		SyncGTS sync = SyncGTS.getInstance();
 		sync.syncOnce(description);
 	}
-		
-	private Configuration loadConfiguration() throws Exception {
-		InputStream inputStream = this.getClass().getResourceAsStream("/configuration.xml");
-		
-        org.w3c.dom.Document doc = XMLUtils.newDocument(inputStream);
-        Object obj = ObjectDeserializer.toObject(doc.getDocumentElement(), Configuration.class);
-        inputStream.close();
-        return Configuration.class.cast(obj);
-
-	}
-			
+					
 	private void getTargetGrids() throws Exception {
 		TargetGridsConfiguration targetGridsConfiguration = (TargetGridsConfiguration) configurationManager.getConfigurationObjectByConfiguration("target-grid", "default");
 		
@@ -202,8 +182,10 @@ public class GAARDSApplication extends GridApplication{
 		
 		Grid[] grids = targetGridsConfiguration.getGrid();
 		
-		boolean updatedGridConfiguration = updateGridConfigurationFiles(grids);
-		boolean discoveredNewGrids = findNewGrids(targetGridsConfiguration, grids);
+		TargetGridsManager gridManager = new TargetGridsManager(gaardsConfigurationDirectory, configurationManager);
+		
+		boolean updatedGridConfiguration = gridManager.updateGridConfigurationFiles(grids);
+		boolean discoveredNewGrids = gridManager.findNewGrids(targetGridsConfiguration, grids);
 		
 		configurationManager.setActiveConfiguration(targetGrid);
 		
@@ -212,107 +194,6 @@ public class GAARDSApplication extends GridApplication{
 		}
 	}
 
-	private boolean findNewGrids(TargetGridsConfiguration targetGridsConfiguration, Grid[] grids) throws Exception {
-		boolean discoveredNewGrids = false;
-		String DEFAULT = "default";
-
-		List<String> settings = new ArrayList<String>();
-		for (Grid grid : grids) {
-			if (!settings.contains(grid.getIvySettings())) {
-				settings.add(grid.getIvySettings());
-				URL settingsURL = ivySettingsURL;
-				if (!DEFAULT.equals(grid.getIvySettings())) {
-					settingsURL = new URL(grid.getIvySettings());
-				}
-				if ("local".equals(grid.getIvySettings())) {
-					continue;
-				}
-
-				Retrieve gridRetriever = new Retrieve(settingsURL, getGAARDSConfigurationDirectory().getAbsolutePath() + File.separator + "cache");
-				Discover gridDiscover = new Discover(settingsURL, getGAARDSConfigurationDirectory().getAbsolutePath() + File.separator + "cache");
-
-				ModuleRevisionId[] mrids = gridDiscover.execute("caGrid", "target_grid", "*");
-
-				for (ModuleRevisionId moduleRevisionId : mrids) {
-					String systemName = moduleRevisionId.getRevision();
-
-					if (discoveredNewGrid(grids, systemName)) {
-						Grid discoveredGrid = new Grid();
-
-						discoveredGrid.setDisplayName(gridDiscover.getDisplayName(moduleRevisionId));
-						discoveredGrid.setSystemName(systemName);
-						if (DEFAULT.equals(grid.getIvySettings())) {
-							discoveredGrid.setIvySettings(DEFAULT);
-						} else {
-							discoveredGrid.setIvySettings(settingsURL.toURI().toString());
-						}
-						discoveredGrid.setVersion(moduleRevisionId.getRevision());
-						gridRetriever.execute(ivyURL, gaardsConfigurationDirectory.getAbsolutePath(), "caGrid", "target_grid", discoveredGrid);
-
-						Grid[] newGrid = new Grid[grids.length + 1];
-
-						System.arraycopy(grids, 0, newGrid, 0, grids.length);
-						newGrid[grids.length] = discoveredGrid;
-
-						configurationManager.addConfiguration(loadConfiguration(), discoveredGrid);
-						targetGridsConfiguration.setGrid(newGrid);
-						grids = newGrid;
-						discoveredNewGrids = true;
-					}
-				}
-			}
-		}
-
-		return discoveredNewGrids;
-	}
-
-	private boolean updateGridConfigurationFiles(Grid[] grids) throws Exception {
-		boolean updatedGridConfiguration = false;
-
-		for (int counter = 0; counter < grids.length; counter++) {
-			URL settingsURL = null;
-			if ("default".equals(grids[counter].getIvySettings())) {
-				settingsURL = ivySettingsURL;
-			} else if ("local".equals(grids[counter].getIvySettings())) {
-				// Grid added by interface
-				// Nothing to retrieve
-				continue;
-			} else if (!StringUtils.isEmpty(grids[counter].getIvySettings())) {
-				try {
-					settingsURL = new URL(grids[counter].getIvySettings());
-				} catch (MalformedURLException e) {
-					e.printStackTrace();
-				}			
-			}
-			Retrieve gridRetriever = new Retrieve(settingsURL, getGAARDSConfigurationDirectory().getAbsolutePath() + File.separator + "cache");
-
-			int retrieved = gridRetriever.execute(ivyURL, gaardsConfigurationDirectory.getAbsolutePath(), "caGrid", "target_grid", grids[counter]);
-			if (retrieved > 0) {
-				updatedGridConfiguration = true;
-				Discover gridDiscover = new Discover(settingsURL, getGAARDSConfigurationDirectory().getAbsolutePath() + File.separator + "cache");
-				String newDisplayName = gridDiscover.getDisplayName("caGrid", "target_grid", grids[counter].getVersion());
-				grids[counter].setDisplayName(newDisplayName);
-			}
-			
-			File gridConfigurationDir = new File(gaardsConfigurationDirectory, grids[counter].getSystemName());
-			deleteDuplicateConfFiles(gridConfigurationDir);
-			if (updatedGridConfiguration && conflictingConfs(gridConfigurationDir)) {
-				YesNoDialog.showChoice("The updated configuration files for Grid: "+grids[counter].getSystemName()+", conflict with your locally modified versions.  Do you wish to keep your current version or delete it and use the updated version.", gridConfigurationDir.getAbsolutePath());
-			}
-
-			configurationManager.addConfiguration(loadConfiguration(), grids[counter]);
-		}
-		return updatedGridConfiguration;
-	}
-
-	private boolean discoveredNewGrid(Grid[] grids, String gridName) {
-		for (int i = 0; i < grids.length; i++) {
-			if (grids[i].getSystemName().equalsIgnoreCase(gridName)) {
-				return false;
-			}
-		}
-		return true;
-	}
 		
 	private void setupTargetGridsConfigurationFile() {
 		File targetGridsConfigurationFile = new File(gaardsConfigurationDirectory, "target-grid-configuration.xml");
@@ -396,59 +277,6 @@ public class GAARDSApplication extends GridApplication{
 		targetGrid = grid;
 	}
 	
-	private void deleteDuplicateConfFiles(File configurationDir) {
-		int SAVED_CONFIGFILE_SUFFIX_LENGTH = 9;
-		
-		if (!configurationDir.exists()) {
-			return;
-		}
-		
-		FilenameFilter conf = new FilenameFilter() {
-			public boolean accept(File dir, String name) {
-				if (name.endsWith("conf.xml"))
-					return true;
-				else
-					return false;
-			}
-		};
-		File[] confFiles = configurationDir.listFiles(conf);
-				
-		for (int i = 0; i < confFiles.length; i++) {
-			String configurationFileName = confFiles[i].getAbsolutePath().substring(0, confFiles[i].getAbsolutePath().length() - SAVED_CONFIGFILE_SUFFIX_LENGTH) + "-services-configuration.xml";
-
-			try {
-				ServiceConfiguration configurationSC = loadServiceConfiguration(new File(configurationFileName));
-				ServiceConfiguration confSC = loadServiceConfiguration(confFiles[i]);
-				if (confSC.equals(configurationSC)) {
-					confFiles[i].delete();
-				}
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-		}
-	}
-
-	private boolean conflictingConfs(File configurationDir) {
-		if (!configurationDir.exists()) {
-			return false;
-		}
-		
-		FilenameFilter conf = new FilenameFilter() {
-			public boolean accept(File dir, String name) {
-				if (name.endsWith("conf.xml"))
-					return true;
-				else
-					return false;
-			}
-		};
-		File[] confFiles = configurationDir.listFiles(conf);
-		
-		if (confFiles != null && confFiles.length >= 1) {
-			return true;
-		}
-		
-		return false;
-	}
 
 	
 	public void gridInitialization() throws Exception {
@@ -486,10 +314,6 @@ public class GAARDSApplication extends GridApplication{
 		
 	}
 	
-	private ServiceConfiguration loadServiceConfiguration(File serviceFile) throws Exception {
-		return (ServiceConfiguration) Utils.deserializeDocument(serviceFile
-				.getAbsolutePath(), ServiceConfiguration.class);
-	}
 	
 	private static void setGAARDSConfigurationDirectory() {
 		String version = null;
