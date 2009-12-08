@@ -6,6 +6,7 @@ import java.net.URISyntaxException;
 import junit.framework.TestCase;
 
 import org.cagrid.identifiers.namingauthority.InvalidIdentifierException;
+import org.cagrid.identifiers.namingauthority.NamingAuthorityConfigurationException;
 import org.junit.Test;
 
 
@@ -77,7 +78,7 @@ public class IdentifierUtilTestCase extends TestCase {
 
 
     @Test
-    public void testBuild() throws URISyntaxException {
+    public void testBuild() throws URISyntaxException, NamingAuthorityConfigurationException {
         URI prefix = new URI("http://na.cagrid.org/foo/");
         URI shortID = new URI("http://na.cagrid.org/foo/1");
 
@@ -99,7 +100,7 @@ public class IdentifierUtilTestCase extends TestCase {
 
 
     @Test
-    public void testLocalName() throws URISyntaxException, InvalidIdentifierException {
+    public void testLocalName() throws URISyntaxException, InvalidIdentifierException, NamingAuthorityConfigurationException {
         URI prefix = new URI("http://na.cagrid.org/foo/");
         URI shortID = new URI("http://na.cagrid.org/foo/1");
 

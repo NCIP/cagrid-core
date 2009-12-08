@@ -1,6 +1,6 @@
 <ns1:ServiceDescription introduceVersion="1.4" xmlns:ns1="gme://gov.nih.nci.cagrid/1/Introduce">
  <ns2:Namespaces xsi:type="ns2:NamespacesType" xmlns:ns2="gme://gov.nih.nci.cagrid.introduce/1/Namespace" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
-  <ns2:Namespace location="./org.cagrid.identifiers.namingauthority.xsd" namespace="na://na.cagrid.org/1.0/NamingAuthority" packageName="namingauthority" xsi:type="ns2:NamespaceType">
+  <ns2:Namespace location="./org.cagrid.identifiers.namingauthority.xsd" namespace="http://na.cagrid.org/1.0/NamingAuthority" packageName="namingauthority" xsi:type="ns2:NamespaceType">
    <ns2:SchemaElement type="Configuration" xsi:type="ns2:SchemaElementType"/>
    <ns2:SchemaElement type="Identifier" xsi:type="ns2:SchemaElementType"/>
    <ns2:SchemaElement type="IdentifierValues" xsi:type="ns2:SchemaElementType"/>
@@ -56,6 +56,9 @@
   </ns2:Namespace>
   <ns2:Namespace location="./IdentifiersNAServiceTypes.xsd" namespace="http://identifiers.cagrid.nci.nih.gov/IdentifiersNAService/types" packageName="gov.nih.nci.cagrid.identifiers.stubs.types" xsi:type="ns2:NamespaceType">
    <ns2:SchemaElement type="IdentifiersNAServiceReference" xsi:type="ns2:SchemaElementType"/>
+   <ns2:SchemaElement type="InvalidIdentifierFault" xsi:type="ns2:SchemaElementType"/>
+   <ns2:SchemaElement type="InvalidIdentifierValuesFault" xsi:type="ns2:SchemaElementType"/>
+   <ns2:SchemaElement type="NamingAuthorityConfigurationFault" xsi:type="ns2:SchemaElementType"/>
   </ns2:Namespace>
   <ns2:Namespace generateStubs="false" location="./xsd/cagrid/types/security/security.xsd" namespace="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.security" packageName="gov.nih.nci.cagrid.metadata.security" xsi:type="ns2:NamespaceType">
    <ns2:SchemaElement type="CommunicationMechanism" xsi:type="ns2:SchemaElementType"/>
@@ -106,19 +109,25 @@
      <ns4:ImportInformation namespace="http://security.introduce.cagrid.nci.nih.gov/ServiceSecurity" packageName="gov.nih.nci.cagrid.introduce.security.stubs" portTypeName="ServiceSecurityPortType" wsdlFile="ServiceSecurity.wsdl"/>
      <ns4:ProviderInformation providerClass="gov.nih.nci.cagrid.introduce.security.service.globus.ServiceSecurityProviderImpl"/>
     </ns4:Method>
-    <ns4:Method description="Creates a new identifier" isImported="false" isProvided="false" name="createIdentifier" xsi:type="ns4:MethodType">
+    <ns4:Method description="Creates a new identifier using the provided metadata (IdentifierValues)" isImported="false" isProvided="false" name="createIdentifier" xsi:type="ns4:MethodType">
      <ns4:Inputs>
-      <ns4:Input qName="ns13:IdentifierValues" description="" isArray="false" name="identifierValues" xmlns:ns13="na://na.cagrid.org/1.0/NamingAuthority"/>
+      <ns4:Input qName="ns13:IdentifierValues" description="" isArray="false" name="identifierValues" xmlns:ns13="http://na.cagrid.org/1.0/NamingAuthority"/>
      </ns4:Inputs>
-     <ns4:Output qName="ns14:Identifier" description="" isArray="false" xmlns:ns14="na://na.cagrid.org/1.0/NamingAuthority"/>
-     <ns4:Exceptions/>
+     <ns4:Output qName="ns14:Identifier" description="" isArray="false" xmlns:ns14="http://na.cagrid.org/1.0/NamingAuthority"/>
+     <ns4:Exceptions>
+      <ns4:Exception description="" name="NamingAuthorityConfigurationFault" qname="ns15:NamingAuthorityConfigurationFault" xmlns:ns15="http://identifiers.cagrid.nci.nih.gov/IdentifiersNAService/types"/>
+      <ns4:Exception description="" name="InvalidIdentifierValuesFault" qname="ns16:InvalidIdentifierValuesFault" xmlns:ns16="http://identifiers.cagrid.nci.nih.gov/IdentifiersNAService/types"/>
+     </ns4:Exceptions>
     </ns4:Method>
-    <ns4:Method description="Returns type/values stored with the identifier" isImported="false" isProvided="false" name="resolveIdentifier" xsi:type="ns4:MethodType">
+    <ns4:Method description="Returns metadata (IdentifierValues) associated with the provided identifier" isImported="false" isProvided="false" name="resolveIdentifier" xsi:type="ns4:MethodType">
      <ns4:Inputs>
-      <ns4:Input qName="ns15:Identifier" description="" isArray="false" name="identifier" xmlns:ns15="na://na.cagrid.org/1.0/NamingAuthority"/>
+      <ns4:Input qName="ns17:Identifier" description="" isArray="false" name="identifier" xmlns:ns17="http://na.cagrid.org/1.0/NamingAuthority"/>
      </ns4:Inputs>
-     <ns4:Output qName="ns16:IdentifierValues" description="" isArray="false" xmlns:ns16="na://na.cagrid.org/1.0/NamingAuthority"/>
-     <ns4:Exceptions/>
+     <ns4:Output qName="ns18:IdentifierValues" description="" isArray="false" xmlns:ns18="http://na.cagrid.org/1.0/NamingAuthority"/>
+     <ns4:Exceptions>
+      <ns4:Exception description="" name="NamingAuthorityConfigurationFault" qname="ns19:NamingAuthorityConfigurationFault" xmlns:ns19="http://identifiers.cagrid.nci.nih.gov/IdentifiersNAService/types"/>
+      <ns4:Exception description="" name="InvalidIdentifierFault" qname="ns20:InvalidIdentifierFault" xmlns:ns20="http://identifiers.cagrid.nci.nih.gov/IdentifiersNAService/types"/>
+     </ns4:Exceptions>
     </ns4:Method>
    </ns4:Methods>
    <ns3:ResourceFrameworkOptions xsi:type="ns3:ResourceFrameworkOptions">
@@ -129,9 +138,9 @@
    </ns3:ResourceFrameworkOptions>
   </ns3:Service>
  </ns3:Services>
- <ns17:Extensions xsi:type="ns17:ExtensionsType" xmlns:ns17="gme://gov.nih.nci.cagrid.introduce/1/Extension" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"/>
- <ns18:ServiceProperties xmlns:ns18="gme://gov.nih.nci.cagrid.introduce/1/Property">
-  <ns18:Property description="The location (relative to the service's ETC location) of the XML configuration file" isFromETC="true" key="naConfigurationFile" value="applicationContext-na.xml"/>
-  <ns18:Property description="The location (relative to the service's ETC location) of the properties file containing information about the naming authority" isFromETC="true" key="naPropertiesFile" value="na.properties"/>
- </ns18:ServiceProperties>
+ <ns21:Extensions xsi:type="ns21:ExtensionsType" xmlns:ns21="gme://gov.nih.nci.cagrid.introduce/1/Extension" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"/>
+ <ns22:ServiceProperties xmlns:ns22="gme://gov.nih.nci.cagrid.introduce/1/Property">
+  <ns22:Property description="The location (relative to the service's ETC location) of the XML configuration file" isFromETC="true" key="naConfigurationFile" value="applicationContext-na.xml"/>
+  <ns22:Property description="The location (relative to the service's ETC location) of the properties file containing information about the naming authority" isFromETC="true" key="naPropertiesFile" value="na.properties"/>
+ </ns22:ServiceProperties>
 </ns1:ServiceDescription>

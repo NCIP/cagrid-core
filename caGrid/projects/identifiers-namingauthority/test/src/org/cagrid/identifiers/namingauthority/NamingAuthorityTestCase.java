@@ -9,24 +9,44 @@ import org.cagrid.identifiers.namingauthority.test.NamingAuthorityTestCaseBase;
 
 public class NamingAuthorityTestCase extends NamingAuthorityTestCaseBase {
 
-    public void test() {
+	
+	public void testInvalidIdentifier() {
+		
+		//
+		// Identifier is not local to prefix hosted by naming authority
+		//
         URI prefix = URI.create("http://na.cagrid.org/foo/");
 
         IdentifierValues values = null;
         try {
             values = this.NamingAuthority.resolveIdentifier(prefix);
-        } catch (URISyntaxException e) {
-            fail("test configuration error");
         } catch (InvalidIdentifierException e) {
             // expected
         } catch (NamingAuthorityConfigurationException e) {
             fail("test configuration error");
         }
+        
+        //
+        // Identifier does not exist
+        //
+        prefix = URI.create(this.NamingAuthority.getConfiguration().getPrefix() 
+        		+ "BADIDENTIFIER");
 
+        try {
+            values = this.NamingAuthority.resolveIdentifier(prefix);
+        } catch (InvalidIdentifierException e) {
+            // expected
+        } catch (NamingAuthorityConfigurationException e) {
+            fail("test configuration error");
+        }
+	}
+	
+	//
+	// Can create and resolve identifier that has no IdentifierValues
+	//
+	public void testNullIdentifierValues() {
         assertResolvedValues(null);
-        assertResolvedValues(values);
     }
-
 
     private void assertResolvedValues(IdentifierValues values) {
         URI id = null;

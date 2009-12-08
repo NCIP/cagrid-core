@@ -2,6 +2,7 @@
 <classpath>
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="src" path="test/src"/>
+	<classpathentry kind="src" path="etc"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="lib" path="ext/dependencies/impl/jars/antlr-2.7.6rc1.jar"/>
 	<classpathentry kind="lib" path="ext/dependencies/impl/jars/asm.jar"/>

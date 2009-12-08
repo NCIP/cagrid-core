@@ -3,13 +3,14 @@ package org.cagrid.identifiers.namingauthority.impl;
 import java.net.URI;
 
 import org.cagrid.identifiers.namingauthority.InvalidIdentifierException;
-import org.cagrid.identifiers.namingauthority.NamingAuthority;
+import org.cagrid.identifiers.namingauthority.MaintainerNamingAuthority;
+import org.cagrid.identifiers.namingauthority.NamingAuthorityConfigurationException;
 import org.cagrid.identifiers.namingauthority.dao.IdentifierMetadataDao;
 import org.cagrid.identifiers.namingauthority.domain.IdentifierValues;
 import org.cagrid.identifiers.namingauthority.util.IdentifierUtil;
 
 
-public class NamingAuthorityImpl extends NamingAuthority {
+public class NamingAuthorityImpl extends MaintainerNamingAuthority {
 
     private IdentifierMetadataDao identifierDao = null;
 
@@ -20,7 +21,7 @@ public class NamingAuthorityImpl extends NamingAuthority {
 
 
     @Override
-    public URI createIdentifier(IdentifierValues ivalues) throws Exception {
+    public URI createIdentifier(IdentifierValues ivalues) throws NamingAuthorityConfigurationException {
 
         URI identifier = generateIdentifier();
         
@@ -31,7 +32,7 @@ public class NamingAuthorityImpl extends NamingAuthority {
 
 
     @Override
-    public IdentifierValues resolveIdentifier(URI identifier) throws InvalidIdentifierException {
+    public IdentifierValues resolveIdentifier(URI identifier) throws InvalidIdentifierException, NamingAuthorityConfigurationException {
   
         URI localIdentifier = IdentifierUtil.getLocalName(getConfiguration().getPrefix(), identifier);
 
@@ -39,7 +40,7 @@ public class NamingAuthorityImpl extends NamingAuthority {
         try {
         	result = this.identifierDao.getIdentifierValues( localIdentifier );
         } catch(InvalidIdentifierException e) {
-        	throw new InvalidIdentifierException("The specified  identifier (" + identifier + ") was not found.");
+        	throw new InvalidIdentifierException("The specified identifier (" + identifier + ") was not found.");
         }
 
         return result;

@@ -1,10 +1,10 @@
 package org.cagrid.identifiers.namingauthority.test;
 
-import org.cagrid.identifiers.namingauthority.NamingAuthority;
+import org.cagrid.identifiers.namingauthority.MaintainerNamingAuthority;
 
 
 public abstract class NamingAuthorityTestCaseBase extends NamingAuthorityIntegrationTestCaseBase {
-    protected NamingAuthority NamingAuthority;
+    protected MaintainerNamingAuthority NamingAuthority;
 
 
     @Override

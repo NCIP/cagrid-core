@@ -19,18 +19,26 @@ public interface IdentifiersNAServiceI {
   public org.oasis.wsrf.properties.QueryResourcePropertiesResponse queryResourceProperties(org.oasis.wsrf.properties.QueryResourceProperties_Element params) throws RemoteException ;
 
   /**
-   * Creates a new identifier
+   * Creates a new identifier using the provided metadata (IdentifierValues)
    *
    * @param identifierValues
+   * @throws NamingAuthorityConfigurationFault
+   *	
+   * @throws InvalidIdentifierValuesFault
+   *	
    */
-  public org.apache.axis.types.URI createIdentifier(namingauthority.IdentifierValues identifierValues) throws RemoteException ;
+  public org.apache.axis.types.URI createIdentifier(namingauthority.IdentifierValues identifierValues) throws RemoteException, gov.nih.nci.cagrid.identifiers.stubs.types.NamingAuthorityConfigurationFault, gov.nih.nci.cagrid.identifiers.stubs.types.InvalidIdentifierValuesFault ;
 
   /**
-   * Returns type/values stored with the identifier
+   * Returns metadata (IdentifierValues) associated with the provided identifier
    *
    * @param identifier
+   * @throws NamingAuthorityConfigurationFault
+   *	
+   * @throws InvalidIdentifierFault
+   *	
    */
-  public namingauthority.IdentifierValues resolveIdentifier(org.apache.axis.types.URI identifier) throws RemoteException ;
+  public namingauthority.IdentifierValues resolveIdentifier(org.apache.axis.types.URI identifier) throws RemoteException, gov.nih.nci.cagrid.identifiers.stubs.types.NamingAuthorityConfigurationFault, gov.nih.nci.cagrid.identifiers.stubs.types.InvalidIdentifierFault ;
 
 }
 

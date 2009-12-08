@@ -100,7 +100,7 @@ public class IdentifiersNAServiceClient extends IdentifiersNAServiceClientBase i
     }
   }
 
-  public org.apache.axis.types.URI createIdentifier(namingauthority.IdentifierValues identifierValues) throws RemoteException {
+  public org.apache.axis.types.URI createIdentifier(namingauthority.IdentifierValues identifierValues) throws RemoteException, gov.nih.nci.cagrid.identifiers.stubs.types.NamingAuthorityConfigurationFault, gov.nih.nci.cagrid.identifiers.stubs.types.InvalidIdentifierValuesFault {
     synchronized(portTypeMutex){
       configureStubSecurity((Stub)portType,"createIdentifier");
     gov.nih.nci.cagrid.identifiers.stubs.CreateIdentifierRequest params = new gov.nih.nci.cagrid.identifiers.stubs.CreateIdentifierRequest();
@@ -112,7 +112,7 @@ public class IdentifiersNAServiceClient extends IdentifiersNAServiceClientBase i
     }
   }
 
-  public namingauthority.IdentifierValues resolveIdentifier(org.apache.axis.types.URI identifier) throws RemoteException {
+  public namingauthority.IdentifierValues resolveIdentifier(org.apache.axis.types.URI identifier) throws RemoteException, gov.nih.nci.cagrid.identifiers.stubs.types.NamingAuthorityConfigurationFault, gov.nih.nci.cagrid.identifiers.stubs.types.InvalidIdentifierFault {
     synchronized(portTypeMutex){
       configureStubSecurity((Stub)portType,"resolveIdentifier");
     gov.nih.nci.cagrid.identifiers.stubs.ResolveIdentifierRequest params = new gov.nih.nci.cagrid.identifiers.stubs.ResolveIdentifierRequest();

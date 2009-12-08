@@ -99,7 +99,7 @@
   
   <bean id="marshaller" class="org.castor.spring.xml.CastorMarshallerFactoryBean">
    <property name="xmlContext"><ref local="castorXmlContext"/></property>
-   <property name="schemaLocation" value="na://na.cagrid.org/1.0/NamingAuthority ${cagrid.na.schemauri}" />
+   <property name="schemaLocation" value="http://na.cagrid.org/1.0/NamingAuthority ${cagrid.na.schemauri}" />
   </bean>
   
   <bean id="httpProcessor" class="org.cagrid.identifiers.namingauthority.http.HttpProcessorImpl">

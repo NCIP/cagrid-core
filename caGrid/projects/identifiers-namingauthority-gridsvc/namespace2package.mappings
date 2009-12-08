@@ -6,6 +6,6 @@ http\://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ResourceProperties-1.2-draft-01
 http\://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ResourceProperties-1.2-draft-01.wsdl=org.oasis.wsrf.properties
 http\://security.introduce.cagrid.nci.nih.gov/ServiceSecurity=gov.nih.nci.cagrid.introduce.security.stubs
 
-na\://na.cagrid.org/1.0/NamingAuthority=namingauthority
+http\://na.cagrid.org/1.0/NamingAuthority=namingauthority
 http\://identifiers.cagrid.nci.nih.gov/IdentifiersNAService/types=gov.nih.nci.cagrid.identifiers.stubs.types
 gme\://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.security=gov.nih.nci.cagrid.metadata.security

@@ -1,5 +1,6 @@
 package org.cagrid.identifiers.retriever.impl;
 
+import org.cagrid.identifiers.client.Util;
 import org.cagrid.identifiers.namingauthority.domain.IdentifierValues;
 import org.cagrid.identifiers.retriever.Retriever;
 import org.cagrid.identifiers.retriever.RetrieverFactory;
@@ -13,7 +14,7 @@ public class RetrieverService {
 
 
     public RetrieverService() {
-        init(new String[]{"/etc/identifiers-client-context.xml"}, "RetrieverFactory");
+        init(new String[]{ Util.DEFAULT_SPRING_CONTEXT_RESOURCE}, "RetrieverFactory");
     }
 
 

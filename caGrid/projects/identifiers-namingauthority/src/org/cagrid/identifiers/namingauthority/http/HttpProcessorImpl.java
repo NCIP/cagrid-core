@@ -89,7 +89,7 @@ public class HttpProcessorImpl implements HttpProcessor {
     }
 
 
-    public String htmlResponse(URI uri, IdentifierValues ivs) {
+    public String htmlResponse(URI uri, IdentifierValues ivs) throws NamingAuthorityConfigurationException {
         StringBuffer msg = new StringBuffer();
 
         if (ivs == null) {
@@ -198,10 +198,6 @@ public class HttpProcessorImpl implements HttpProcessor {
                         msg.append(htmlResponse(uri, ivs));
                         response.setContentType(HTTP_ACCEPT_HTML);
                     }
-                } catch (URISyntaxException e) {
-                	e.printStackTrace();
-                	msg.append(prepHtmlError("A URI syntax error has been detected in the input identifier", e));
-                    responseStatus = HttpServletResponse.SC_BAD_REQUEST;
                 } catch (InvalidIdentifierException e) {
                     e.printStackTrace();
                     msg.append(prepHtmlError("Input identifier was not found in the system", e));

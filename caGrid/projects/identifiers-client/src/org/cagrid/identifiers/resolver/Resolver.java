@@ -20,6 +20,7 @@ import org.apache.http.client.params.ClientPNames;
 import org.apache.http.conn.ssl.SSLSocketFactory;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.protocol.HttpContext;
+import org.cagrid.identifiers.client.Util;
 import org.cagrid.identifiers.namingauthority.domain.IdentifierValues;
 import org.cagrid.identifiers.namingauthority.domain.NamingAuthorityConfig;
 import org.exolab.castor.mapping.MappingException;
@@ -32,18 +33,22 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 public class Resolver {
 	
-	private static String SPRING_CONTEXT_RESOURCE = "/etc/identifiers-client-context.xml";
-	private static String CASTOR_CONTEXT_BEAN = "castorXmlContext";
-	
 	private XMLContext xmlContext = null;
 	private ApplicationContext appCtx = null;
     
-	
 	public Resolver() {
-		appCtx = new ClassPathXmlApplicationContext(SPRING_CONTEXT_RESOURCE);
-        xmlContext = (XMLContext) appCtx.getBean(CASTOR_CONTEXT_BEAN);
+		init( new String[] {Util.DEFAULT_SPRING_CONTEXT_RESOURCE} );
 	}
 	
+	public Resolver( String[] springCtxList ) {
+		init( springCtxList );
+	}
+	
+	private void init(String[] springCtxList) {
+		appCtx = new ClassPathXmlApplicationContext( springCtxList );
+        xmlContext = (XMLContext) appCtx.getBean(Util.CASTOR_CONTEXT_BEAN);	
+	}
+
 	private String getResponseString( HttpResponse response ) throws IOException {
 		
 		StringBuffer responseStr = new StringBuffer();

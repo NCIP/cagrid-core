@@ -4,11 +4,13 @@ import java.rmi.RemoteException;
 import java.util.Arrays;
 
 import gov.nih.nci.cagrid.identifiers.client.IdentifiersNAServiceClient;
+import gov.nih.nci.cagrid.identifiers.stubs.types.InvalidIdentifierFault;
 
 import namingauthority.IdentifierValues;
 import namingauthority.KeyValues;
 
 import org.apache.axis.client.Stub;
+import org.apache.axis.types.URI;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
@@ -34,15 +36,41 @@ public class NATestCase extends TestCase {
 	public void testNamingAuthorityGridService() throws Exception {
 		IdentifiersNAServiceClient client = new IdentifiersNAServiceClient( gridSvcUrl );
 
-		org.apache.axis.types.URI identifier = client.createIdentifier(new IdentifierValues(keyValues));
-		System.out.println("Identifier: " + identifier.toString());
+		try {
+			org.apache.axis.types.URI identifier = client.createIdentifier(new IdentifierValues(keyValues));
+			System.out.println("Identifier: " + identifier.toString());
 
-		IdentifierValues ivs2 = client.resolveIdentifier(identifier);
-		if (!compare(keyValues, ivs2.getKeyValues())) {
-			fail("IdentifierValues are different");
+			IdentifierValues ivs2 = client.resolveIdentifier(identifier);
+			if (!compare(keyValues, ivs2.getKeyValues())) {
+				fail("IdentifierValues are different");
+			}
+		}
+		catch(Exception e) {
+			e.printStackTrace();
+			fail(e.toString());
 		}
 	}
 
+	public void testInvalidIdentifier() throws Exception {
+		IdentifiersNAServiceClient client = new IdentifiersNAServiceClient( gridSvcUrl );
+
+		try {
+			org.apache.axis.types.URI identifier = new URI("file://324324325");
+
+			IdentifierValues ivs2 = client.resolveIdentifier(identifier);
+			if (!compare(keyValues, ivs2.getKeyValues())) {
+				fail("IdentifierValues are different");
+			}
+		}
+		catch(InvalidIdentifierFault e) {
+			//expected
+		}
+		catch(Exception e) {
+			e.printStackTrace();
+			fail(e.toString());
+		}
+	}
+	
 	private String[] getSortedKeys(KeyValues[] tvs) {
 		String[] Keys = new String[ tvs.length ];
 		for(int i=0; i < tvs.length; i++) {

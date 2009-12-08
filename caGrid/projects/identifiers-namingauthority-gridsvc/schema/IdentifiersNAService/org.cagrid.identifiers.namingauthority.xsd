@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<xs:schema targetNamespace="na://na.cagrid.org/1.0/NamingAuthority"
-	xmlns="na://na.cagrid.org/1.0/NamingAuthority"
+<xs:schema targetNamespace="http://na.cagrid.org/1.0/NamingAuthority"
+	xmlns="http://na.cagrid.org/1.0/NamingAuthority"
 	xmlns:xs="http://www.w3.org/2001/XMLSchema"
 	elementFormDefault="qualified" attributeFormDefault="unqualified">
 

@@ -1,9 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<definitions xmlns="http://schemas.xmlsoap.org/wsdl/" xmlns:tns="http://identifiers.cagrid.nci.nih.gov/IdentifiersNAService" xmlns:wsrp="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ResourceProperties-1.2-draft-01.xsd" xmlns:wsrlw="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ResourceLifetime-1.2-draft-01.wsdl" xmlns:wsdlpp="http://www.globus.org/namespaces/2004/10/WSDLPreprocessor" xmlns:gtwsdl1="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ServiceGroup-1.2-draft-01.wsdl" xmlns:wsa="http://schemas.xmlsoap.org/ws/2004/03/addressing" xmlns:wsntw="http://docs.oasis-open.org/wsn/2004/06/wsn-WS-BaseNotification-1.2-draft-01.wsdl" xmlns:wsrbfw="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-BaseFaults-1.2-draft-01.wsdl" xmlns:wsrpw="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ResourceProperties-1.2-draft-01.wsdl" xmlns:wns0="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ResourceProperties-1.2-draft-01.wsdl" xmlns:wns1="http://security.introduce.cagrid.nci.nih.gov/ServiceSecurity" xmlns:ns0="na://na.cagrid.org/1.0/NamingAuthority" xmlns:ns1="http://identifiers.cagrid.nci.nih.gov/IdentifiersNAService/types" xmlns:ns2="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.security" name="IdentifiersNAService" targetNamespace="http://identifiers.cagrid.nci.nih.gov/IdentifiersNAService">
+<definitions xmlns="http://schemas.xmlsoap.org/wsdl/" xmlns:tns="http://identifiers.cagrid.nci.nih.gov/IdentifiersNAService" xmlns:wsrp="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ResourceProperties-1.2-draft-01.xsd" xmlns:wsa="http://schemas.xmlsoap.org/ws/2004/03/addressing" xmlns:wsrbfw="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-BaseFaults-1.2-draft-01.wsdl" xmlns:wsrpw="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ResourceProperties-1.2-draft-01.wsdl" xmlns:wns0="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ResourceProperties-1.2-draft-01.wsdl" xmlns:wns1="http://security.introduce.cagrid.nci.nih.gov/ServiceSecurity" xmlns:ns0="http://na.cagrid.org/1.0/NamingAuthority" xmlns:ns1="http://identifiers.cagrid.nci.nih.gov/IdentifiersNAService/types" xmlns:ns2="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.security" name="IdentifiersNAService" targetNamespace="http://identifiers.cagrid.nci.nih.gov/IdentifiersNAService">
   <import namespace="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ResourceProperties-1.2-draft-01.wsdl" location="../wsrf/properties/WS-ResourceProperties.wsdl" />
   <import namespace="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-BaseFaults-1.2-draft-01.wsdl" location="../wsrf/faults/WS-BaseFaults.wsdl" />
-  <import namespace="http://docs.oasis-open.org/wsn/2004/06/wsn-WS-BaseNotification-1.2-draft-01.wsdl" location="../wsrf/notification/WS-BaseN.wsdl" />
-  <import namespace="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ResourceProperties-1.2-draft-01.wsdl" location="./../wsrf/properties/WS-ResourceProperties.wsdl" />
   <import namespace="http://security.introduce.cagrid.nci.nih.gov/ServiceSecurity" location="./ServiceSecurity.wsdl" />
   <!--============================================================
 
@@ -13,7 +11,7 @@
   <types>
     <schema xmlns="http://www.w3.org/2001/XMLSchema" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:wsrbf="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-BaseFaults-1.2-draft-01.xsd" targetNamespace="http://identifiers.cagrid.nci.nih.gov/IdentifiersNAService" elementFormDefault="qualified" attributeFormDefault="unqualified">
       <import namespace="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-BaseFaults-1.2-draft-01.xsd" schemaLocation="../wsrf/faults/WS-BaseFaults.xsd" />
-      <import namespace="na://na.cagrid.org/1.0/NamingAuthority" schemaLocation="./org.cagrid.identifiers.namingauthority.xsd" />
+      <import namespace="http://na.cagrid.org/1.0/NamingAuthority" schemaLocation="./org.cagrid.identifiers.namingauthority.xsd" />
       <import namespace="http://identifiers.cagrid.nci.nih.gov/IdentifiersNAService/types" schemaLocation="./IdentifiersNAServiceTypes.xsd" />
       <import namespace="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.security" schemaLocation="./xsd/cagrid/types/security/security.xsd" />
       <element name="CreateIdentifierRequest">
@@ -76,6 +74,15 @@
   <message name="ResolveIdentifierResponse">
     <part name="parameters" element="tns:ResolveIdentifierResponse" />
   </message>
+  <message name="NamingAuthorityConfigurationFaultFaultMessage">
+    <part name="fault" element="ns1:NamingAuthorityConfigurationFault" />
+  </message>
+  <message name="InvalidIdentifierValuesFaultFaultMessage">
+    <part name="fault" element="ns1:InvalidIdentifierValuesFault" />
+  </message>
+  <message name="InvalidIdentifierFaultFaultMessage">
+    <part name="fault" element="ns1:InvalidIdentifierFault" />
+  </message>
   <!--============================================================
 
                        P O R T T Y P E
@@ -85,10 +92,14 @@
     <operation name="createIdentifier">
       <input message="tns:CreateIdentifierRequest" wsa:Action="http://identifiers.cagrid.nci.nih.gov/IdentifiersNAService/CreateIdentifierRequest" />
       <output message="tns:CreateIdentifierResponse" wsa:Action="http://identifiers.cagrid.nci.nih.gov/IdentifiersNAService/CreateIdentifierResponse" />
+      <fault name="NamingAuthorityConfigurationFault" message="tns:NamingAuthorityConfigurationFaultFaultMessage" wsa:Action="http://identifiers.cagrid.nci.nih.gov/IdentifiersNAService/NamingAuthorityConfigurationFaultFaultMessage" />
+      <fault name="InvalidIdentifierValuesFault" message="tns:InvalidIdentifierValuesFaultFaultMessage" wsa:Action="http://identifiers.cagrid.nci.nih.gov/IdentifiersNAService/InvalidIdentifierValuesFaultFaultMessage" />
     </operation>
     <operation name="resolveIdentifier">
       <input message="tns:ResolveIdentifierRequest" wsa:Action="http://identifiers.cagrid.nci.nih.gov/IdentifiersNAService/ResolveIdentifierRequest" />
       <output message="tns:ResolveIdentifierResponse" wsa:Action="http://identifiers.cagrid.nci.nih.gov/IdentifiersNAService/ResolveIdentifierResponse" />
+      <fault name="NamingAuthorityConfigurationFault" message="tns:NamingAuthorityConfigurationFaultFaultMessage" wsa:Action="http://identifiers.cagrid.nci.nih.gov/IdentifiersNAService/NamingAuthorityConfigurationFaultFaultMessage" />
+      <fault name="InvalidIdentifierFault" message="tns:InvalidIdentifierFaultFaultMessage" wsa:Action="http://identifiers.cagrid.nci.nih.gov/IdentifiersNAService/InvalidIdentifierFaultFaultMessage" />
     </operation>
     <wsdl:operation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" name="GetMultipleResourceProperties">
       <wsdl:input name="GetMultipleResourcePropertiesRequest" message="wsrpw:GetMultipleResourcePropertiesRequest" wsa:Action="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ResourceProperties/GetMultipleResourceProperties" />

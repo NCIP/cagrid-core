@@ -3,12 +3,18 @@ package org.cagrid.identifiers.namingauthority.util;
 import java.net.URI;
 
 import org.cagrid.identifiers.namingauthority.InvalidIdentifierException;
+import org.cagrid.identifiers.namingauthority.NamingAuthorityConfigurationException;
 
 
 public class IdentifierUtil {
 
-    public static URI build(URI prefix, URI localName) {
-        verifyPrefix(prefix);
+    public static URI build(URI prefix, URI localName) throws NamingAuthorityConfigurationException {
+    	try {
+    		verifyPrefix(prefix);
+    	} catch(Exception e) {
+        	throw new NamingAuthorityConfigurationException(e.getMessage());
+        }
+    	
         if (localName == null) {
             throw new IllegalArgumentException("Localname must not be null.");
         } else if (localName.isAbsolute()) {
@@ -25,9 +31,13 @@ public class IdentifierUtil {
         return prefix.resolve(localName);
     }
 
-
-    public static URI getLocalName(URI prefix, URI identifier) throws InvalidIdentifierException {
-        verifyPrefix(prefix);
+    public static URI getLocalName(URI prefix, URI identifier) throws InvalidIdentifierException, NamingAuthorityConfigurationException {
+        try {
+        	verifyPrefix(prefix);
+        } catch(Exception e) {
+        	throw new NamingAuthorityConfigurationException(e.getMessage());
+        }
+ 
         String idStr = identifier.normalize().toString();
         String prefixStr = prefix.normalize().toString();
         if (!idStr.startsWith(prefixStr) || prefixStr.length() >= idStr.length()) {
@@ -36,11 +46,9 @@ public class IdentifierUtil {
         }
 
         return prefix.relativize(identifier);
-
     }
 
-
-    public static void verifyPrefix(URI prefix) {
+    public static void verifyPrefix(URI prefix) throws IllegalArgumentException {
         if (prefix == null) {
             throw new IllegalArgumentException("Prefix must not be null.");
         } else if (!prefix.isAbsolute()) {
@@ -53,5 +61,4 @@ public class IdentifierUtil {
             throw new IllegalArgumentException("Prefix must have a trailing slash: " + prefix);
         }
     }
-
 }

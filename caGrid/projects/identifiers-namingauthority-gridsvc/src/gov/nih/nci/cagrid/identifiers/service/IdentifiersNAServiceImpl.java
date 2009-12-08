@@ -1,6 +1,7 @@
 package gov.nih.nci.cagrid.identifiers.service;
 
 import gov.nih.nci.cagrid.identifiers.common.MappingUtil;
+import gov.nih.nci.cagrid.identifiers.stubs.types.InvalidIdentifierFault;
 
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -9,7 +10,8 @@ import java.rmi.RemoteException;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.cagrid.identifiers.namingauthority.InvalidIdentifierException;
-import org.cagrid.identifiers.namingauthority.NamingAuthority;
+import org.cagrid.identifiers.namingauthority.InvalidIdentifierValuesException;
+import org.cagrid.identifiers.namingauthority.MaintainerNamingAuthority;
 import org.cagrid.identifiers.namingauthority.NamingAuthorityConfigurationException;
 import org.springframework.beans.factory.config.PropertyPlaceholderConfigurer;
 import org.springframework.beans.factory.xml.XmlBeanFactory;
@@ -27,7 +29,7 @@ public class IdentifiersNAServiceImpl extends IdentifiersNAServiceImplBase {
 
 	protected static Log LOG = LogFactory.getLog(IdentifiersNAServiceImpl.class.getName());
 	protected static final String NA_BEAN_NAME = "NamingAuthority";
-    protected NamingAuthority namingAuthority = null;
+    protected MaintainerNamingAuthority namingAuthority = null;
 
     public IdentifiersNAServiceImpl() throws RemoteException {
         super();
@@ -43,7 +45,7 @@ public class IdentifiersNAServiceImpl extends IdentifiersNAServiceImplBase {
             cfg.setLocation(naPropertiesResource);
             cfg.postProcessBeanFactory(factory);
 
-            this.namingAuthority = (NamingAuthority) factory.getBean(NA_BEAN_NAME, NamingAuthority.class);
+            this.namingAuthority = (MaintainerNamingAuthority) factory.getBean(NA_BEAN_NAME, MaintainerNamingAuthority.class);
 
         } catch (Exception e) {
             String message = "Problem inititializing NamingAuthority while loading configuration:" + e.getMessage();
@@ -52,27 +54,34 @@ public class IdentifiersNAServiceImpl extends IdentifiersNAServiceImplBase {
         }
     }
 
-    // TODO: handle all the exceptions appropriately, returning faults as
-    // necessary
-  public org.apache.axis.types.URI createIdentifier(namingauthority.IdentifierValues identifierValues) throws RemoteException {
-	   try {
-		   java.net.URI identifier = namingAuthority.createIdentifier(MappingUtil.map(identifierValues));
-		   return new org.apache.axis.types.URI(identifier.toString());
-	   } catch (Exception e) {
-	      e.printStackTrace();
-	      throw new RemoteException(e.toString());
-	   }
-    }
-
-    // TODO: handle all the exceptions appropriately, returning faults as
-    // necessary
-  public namingauthority.IdentifierValues resolveIdentifier(org.apache.axis.types.URI identifier) throws RemoteException {
+    public org.apache.axis.types.URI createIdentifier(namingauthority.IdentifierValues identifierValues) throws RemoteException, gov.nih.nci.cagrid.identifiers.stubs.types.NamingAuthorityConfigurationFault, gov.nih.nci.cagrid.identifiers.stubs.types.InvalidIdentifierValuesFault {
     	try {
-    		return MappingUtil.map(namingAuthority.resolveIdentifier( new URI(identifier.toString() )));
-    	} catch(Exception e) {
+    		java.net.URI identifier = namingAuthority.createIdentifier(MappingUtil.map(identifierValues));
+    		return new org.apache.axis.types.URI(identifier.toString());
+    	} catch( InvalidIdentifierValuesException e) {
+    		e.printStackTrace();
+    		throw MappingUtil.map(e);
+    	} catch( NamingAuthorityConfigurationException e ) {
+    		e.printStackTrace();
+    		throw MappingUtil.map(e);
+    	} catch (Exception e) {
     		e.printStackTrace();
     		throw new RemoteException(e.toString());
     	}
     }
 
+    public namingauthority.IdentifierValues resolveIdentifier(org.apache.axis.types.URI identifier) throws RemoteException, gov.nih.nci.cagrid.identifiers.stubs.types.NamingAuthorityConfigurationFault, gov.nih.nci.cagrid.identifiers.stubs.types.InvalidIdentifierFault {
+    	try {
+    		return MappingUtil.map(namingAuthority.resolveIdentifier( new URI(identifier.toString() )));
+    	} catch( InvalidIdentifierException e) {
+    		e.printStackTrace();
+    		throw MappingUtil.map(e);
+    	} catch( NamingAuthorityConfigurationException e ) {
+    		e.printStackTrace();
+    		throw MappingUtil.map(e);
+    	} catch(Exception e) {
+    		e.printStackTrace();
+    		throw new RemoteException(e.toString());
+    	}
+    }
 }

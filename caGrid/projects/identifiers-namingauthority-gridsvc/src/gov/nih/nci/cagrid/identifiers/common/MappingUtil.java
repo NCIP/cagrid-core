@@ -1,5 +1,13 @@
 package gov.nih.nci.cagrid.identifiers.common;
 
+import org.cagrid.identifiers.namingauthority.InvalidIdentifierException;
+import org.cagrid.identifiers.namingauthority.InvalidIdentifierValuesException;
+import org.cagrid.identifiers.namingauthority.NamingAuthorityConfigurationException;
+
+import gov.nih.nci.cagrid.identifiers.stubs.types.InvalidIdentifierFault;
+import gov.nih.nci.cagrid.identifiers.stubs.types.InvalidIdentifierValuesFault;
+import gov.nih.nci.cagrid.identifiers.stubs.types.NamingAuthorityConfigurationFault;
+
 public class MappingUtil {
 
 	public static org.cagrid.identifiers.namingauthority.domain.IdentifierValues map(
@@ -31,5 +39,23 @@ public class MappingUtil {
 		}
 				
 		return new namingauthority.IdentifierValues( kvs );
+	}
+	
+	public static InvalidIdentifierFault map(InvalidIdentifierException e) {
+		InvalidIdentifierFault out = new InvalidIdentifierFault();
+		out.setFaultString(e.getMessage());
+		return out;
+	}
+
+	public static NamingAuthorityConfigurationFault map(NamingAuthorityConfigurationException e) {
+		NamingAuthorityConfigurationFault out = new NamingAuthorityConfigurationFault();
+		out.setFaultString(e.getMessage());
+		return out;
+	}
+
+	public static InvalidIdentifierValuesFault map(InvalidIdentifierValuesException e) {
+		InvalidIdentifierValuesFault out = new InvalidIdentifierValuesFault();
+		out.setFaultString(e.getMessage());
+		return out;
 	}
 }

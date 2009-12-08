@@ -1,11 +1,11 @@
 #Introduce Properties
-#Thu Nov 19 13:32:31 EST 2009
+#Tue Dec 08 13:46:43 EST 2009
 introduce.skeleton.services.list=IdentifiersNAService
 introduce.skeleton.extensions=
-introduce.skeleton.timestamp=1258650281185
+introduce.skeleton.timestamp=1260297432929
 introduce.skeleton.service.name=IdentifiersNAService
 introduce.skeleton.resource.options=main,singleton,identifiable,resourcePropertyManagement
-introduce.skeleton.destination.dir=/Users/cmelean/Documents/code/eclipse/workspace/cagrid-core/caGrid/projects/identifiers-namingauthority-gridsvc
+introduce.skeleton.destination.dir=C\:\\code\\workspace\\cagrid-Software\\core\\caGrid\\projects\\identifiers-namingauthority-gridsvc
 introduce.skeleton.namespace.domain=http\://identifiers.cagrid.nci.nih.gov/IdentifiersNAService
 introduce.ns.excludes=\ -x gme\://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.security
 introduce.soap.binding.excludes=\ 
