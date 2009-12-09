@@ -5,6 +5,6 @@ import java.net.URI;
 import org.cagrid.identifiers.namingauthority.domain.IdentifierValues;
 
 public interface MaintainerNamingAuthority extends NamingAuthority {
-	URI createIdentifier(IdentifierValues values) 
+	public URI createIdentifier(IdentifierValues values) 
 		throws NamingAuthorityConfigurationException, InvalidIdentifierValuesException;
 }
