@@ -2,25 +2,58 @@ package org.cagrid.identifiers.namingauthority.impl;
 
 import java.net.URI;
 
+import org.cagrid.identifiers.namingauthority.IdentifierGenerator;
 import org.cagrid.identifiers.namingauthority.InvalidIdentifierException;
+import org.cagrid.identifiers.namingauthority.InvalidIdentifierValuesException;
 import org.cagrid.identifiers.namingauthority.MaintainerNamingAuthority;
+import org.cagrid.identifiers.namingauthority.NamingAuthorityConfig;
 import org.cagrid.identifiers.namingauthority.NamingAuthorityConfigurationException;
 import org.cagrid.identifiers.namingauthority.dao.IdentifierMetadataDao;
 import org.cagrid.identifiers.namingauthority.domain.IdentifierValues;
 import org.cagrid.identifiers.namingauthority.util.IdentifierUtil;
 
 
-public class NamingAuthorityImpl extends MaintainerNamingAuthority {
+public class NamingAuthorityImpl implements MaintainerNamingAuthority {
 
     private IdentifierMetadataDao identifierDao = null;
+	private IdentifierGenerator identifierGenerator = null;   
+	private NamingAuthorityConfig configuration = null;
+	
+	//
+	// Getters/Setters
+	//
 
-
-    public void initialize() {
-        super.initialize();
+    public void setIdentifierDao(IdentifierMetadataDao identifierDao) {
+        this.identifierDao = identifierDao;
     }
 
+    public IdentifierMetadataDao getIdentifierDao() {
+        return identifierDao;
+    }
 
-    @Override
+    public void setConfiguration(NamingAuthorityConfig config) {
+    	this.configuration = config;
+    }
+    
+	public NamingAuthorityConfig getConfiguration() {
+		return this.configuration;
+	}
+
+	public void setIdentifierGenerator(IdentifierGenerator generator) {
+		this.identifierGenerator = generator;
+	}
+	
+	public IdentifierGenerator getIdentifierGenerator() {
+		return identifierGenerator;
+	}
+
+	//
+	// Interfaces
+	//
+
+    public void initialize() { // nothing to initialize 
+    }
+
     public URI createIdentifier(IdentifierValues ivalues) throws NamingAuthorityConfigurationException {
 
         URI identifier = generateIdentifier();
@@ -30,8 +63,6 @@ public class NamingAuthorityImpl extends MaintainerNamingAuthority {
         return IdentifierUtil.build(getConfiguration().getPrefix(), identifier);
     }
 
-
-    @Override
     public IdentifierValues resolveIdentifier(URI identifier) throws InvalidIdentifierException, NamingAuthorityConfigurationException {
   
         URI localIdentifier = IdentifierUtil.getLocalName(getConfiguration().getPrefix(), identifier);
@@ -46,13 +77,10 @@ public class NamingAuthorityImpl extends MaintainerNamingAuthority {
         return result;
     }
 
-
-    public void setIdentifierDao(IdentifierMetadataDao identifierDao) {
-        this.identifierDao = identifierDao;
-    }
-
-
-    public IdentifierMetadataDao getIdentifierDao() {
-        return identifierDao;
-    }
+    //
+    // Private
+    //
+	private URI generateIdentifier() {
+		return identifierGenerator.generate(getConfiguration());
+	}
 }
