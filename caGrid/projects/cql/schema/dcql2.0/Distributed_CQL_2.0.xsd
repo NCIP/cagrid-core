@@ -13,12 +13,13 @@
 		</xsd:annotation>
 		<xsd:complexType>
 			<xsd:sequence>
-				<xsd:element name="DCQLTargetObject" type="dcql:DCQLObject" minOccurs="1" maxOccurs="1"/>
+				<xsd:element name="TargetObject" type="dcql:DCQLObject" minOccurs="1" maxOccurs="1"/>
 				<xsd:element name="TargetServiceURL" type="xsd:string" minOccurs="1" maxOccurs="unbounded">
 					<xsd:annotation>
-						<xsd:documentation>The URL of a data service which should be sent the resulting CQL query.</xsd:documentation>
+						<xsd:documentation>The URL of a data service which should be sent the resulting CQL query</xsd:documentation>
 					</xsd:annotation>
 				</xsd:element>
+				<xsd:element name="QueryModifier" type="cql2:CQLQueryModifier" minOccurs="0"/>
 			</xsd:sequence>
 		</xsd:complexType>
 	</xsd:element>
@@ -29,10 +30,10 @@
 			<xsd:documentation>Describes a query for a particular data type</xsd:documentation>
 		</xsd:annotation>
 		<xsd:choice>
-			<xsd:element name="CQLAttribute" type="cql2:CQLAttribute" minOccurs="0" maxOccurs="1"/>
-			<xsd:element name="DCQLAssociatedObject" type="dcql:DCQLAssociatedObject" minOccurs="0" maxOccurs="1"/>
+			<xsd:element name="Attribute" type="cql2:CQLAttribute" minOccurs="0" maxOccurs="1"/>
+			<xsd:element name="AssociatedObject" type="dcql:DCQLAssociatedObject" minOccurs="0" maxOccurs="1"/>
 			<xsd:element name="ForeignAssociatedObject" type="dcql:ForeignAssociatedObject" minOccurs="0" maxOccurs="1"/>
-			<xsd:element name="DCQLGroup" type="dcql:DCQLGroup" minOccurs="0" maxOccurs="1"/>
+			<xsd:element name="Group" type="dcql:DCQLGroup" minOccurs="0" maxOccurs="1"/>
 		</xsd:choice>
 		<xsd:attribute name="name" type="xsd:string" use="required"/>
 	</xsd:complexType>
@@ -43,7 +44,7 @@
 		</xsd:annotation>
 		<xsd:complexContent>
 			<xsd:extension base="dcql:DCQLObject">
-				<xsd:attribute name="roleName" type="xsd:string" use="required"/>
+				<xsd:attribute name="endName" type="xsd:string" use="required"/>
 			</xsd:extension>
 		</xsd:complexContent>
 	</xsd:complexType>
@@ -53,10 +54,10 @@
 			<xsd:documentation>A collection of two or more sub-constraints, grouped together by the logicalRelation.</xsd:documentation>
 		</xsd:annotation>
 		<xsd:choice minOccurs="2" maxOccurs="unbounded">
-			<xsd:element name="DCQLAssociatedObject" type="dcql:DCQLAssociatedObject" maxOccurs="unbounded"/>
-			<xsd:element name="CQLAttribute" type="cql2:CQLAttribute" minOccurs="0" maxOccurs="1"/>
+			<xsd:element name="AssociatedObject" type="dcql:DCQLAssociatedObject" maxOccurs="unbounded"/>
+			<xsd:element name="Attribute" type="cql2:CQLAttribute" minOccurs="0" maxOccurs="1"/>
 			<xsd:element name="ForeignAssociatedObject" type="dcql:ForeignAssociatedObject" maxOccurs="unbounded"/>
-			<xsd:element name="DCQLGroup" type="dcql:DCQLGroup" maxOccurs="unbounded"/>
+			<xsd:element name="Group" type="dcql:DCQLGroup" maxOccurs="unbounded"/>
 		</xsd:choice>
 		<xsd:attribute name="logicalOperation" type="cql2:GroupLogicalOperator" use="required"/>
 	</xsd:complexType>
@@ -80,8 +81,8 @@
 		<xsd:annotation>
 			<xsd:documentation>Specifies a relationship, defined by the predicate, between a local attribute and a remote attribute.</xsd:documentation>
 		</xsd:annotation>
-		<xsd:attribute name="predicate" type="cql2:BinaryPredicate" use="required"/>
 		<xsd:attribute name="localAttributeName" type="xsd:string" use="required"/>
+		<xsd:attribute name="predicate" type="cql2:BinaryPredicate" use="required"/>		
 		<xsd:attribute name="foreignAttributeName" type="xsd:string" use="required"/>
 	</xsd:complexType>
 	
