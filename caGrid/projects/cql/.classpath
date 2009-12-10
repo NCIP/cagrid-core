@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
 	<classpathentry kind="src" path="build/stubs/cql1.0/source"/>
-	<classpathentry kind="src" path="build/stubs/dcql2.0/source"/>
 	<classpathentry kind="src" path="build/stubs/cql2.0/source"/>
+	<classpathentry kind="src" path="build/stubs/dcql2.0/source"/>
 	<classpathentry kind="src" path="test/src/java"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="var" path="GT4_LOCATION/lib/addressing-1.0.jar"/>
