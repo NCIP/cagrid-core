@@ -10,7 +10,7 @@
                 
     <!-- CQLRetriever Retriever Profile -->
     <bean id="CQLRetriever" class="org.cagrid.identifiers.retriever.impl.CQLRetriever">
-    	<property name="requiredTypes">
+    	<property name="requiredKeys">
 		   <util:list>
 		    	<value>CQL</value>
 		    	<value>EPR</value>
