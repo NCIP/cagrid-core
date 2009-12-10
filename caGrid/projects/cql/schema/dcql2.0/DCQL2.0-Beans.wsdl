@@ -1,7 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <definitions name="DCQL_2.0_Beans" xmlns="http://schemas.xmlsoap.org/wsdl/" >
-	<import location="Distributed_CQL_2.0.xsd"/>
-	<!-- turn this on when results schema is ready
-	<import location="Distributed_CQL_Results_2.0.xsd"/>
-	-->
+	<import location="DCQL_2.0.xsd"/>
+	<import location="DCQLResults_2.0.xsd"/>
 </definitions>

@@ -48,8 +48,8 @@
     <artifact name="CQLSupportedExtensions" conf="cql2-schemas" type="xsd"/>
     <artifact name="Predicates" conf="cql2-schemas" type="xsd"/>
     
-    <artifact name="Distributed_CQL_2.0" conf="dcql2-schemas" type="xsd"/>
-    <artifact name="Distributed_CQL_Results_2.0" conf="dcql2-schemas" type="xsd"/>
+    <artifact name="DCQL_2.0" conf="dcql2-schemas" type="xsd"/>
+    <artifact name="DCQLResults_2.0" conf="dcql2-schemas" type="xsd"/>
   </publications>
 
   <dependencies>
