@@ -26,7 +26,7 @@ public class SerializationUtils {
 
 	/**
 	 * Write the XML representation of the specified query to the specified
-	 * writer. If either are null, an IllegalArgumentException will be thown.
+	 * writer. If either are null, an IllegalArgumentException will be thrown.
 	 * 
 	 * @param cqlQuery
 	 * @param writer
@@ -43,7 +43,7 @@ public class SerializationUtils {
 	/**
 	 * Create an instance of CQLQuery from the specified input stream. The stream
 	 * must contain an XML representation of the CQLQuery. If the reader is
-	 * null, an IllegalArgumentException will be thown.
+	 * null, an IllegalArgumentException will be thrown.
 	 * 
 	 * @param xmlStream
 	 * @return an instance of CQLQuery from the specified inputstream.
@@ -62,7 +62,7 @@ public class SerializationUtils {
 
 	/**
 	 * Write the XML representation of the specified query to the specified
-	 * writer. If either are null, an IllegalArgumentException will be thown.
+	 * writer. If either are null, an IllegalArgumentException will be thrown.
 	 * 
 	 * @param dcqlQuery
 	 * @param writer
@@ -79,7 +79,7 @@ public class SerializationUtils {
 	/**
 	 * Create an instance of DCQLQuery from the specified input stream. The
 	 * stream must contain an XML representation of the DCQLQuery. If the
-	 * reader is null, an IllegalArgumentException will be thown.
+	 * reader is null, an IllegalArgumentException will be thrown.
 	 * 
 	 * @param xmlStream
 	 * @return an instance of DCQLQuery from the specified inputstream.
@@ -98,7 +98,7 @@ public class SerializationUtils {
     
     /**
      * Write the XML representation of the specified query results to the specified
-     * writer. If either are null, an IllegalArgumentException will be thown.
+     * writer. If either are null, an IllegalArgumentException will be thrown.
      * 
      * @param results
      * @param writer
@@ -112,7 +112,7 @@ public class SerializationUtils {
     /**
      * Write the XML representation of the specified query results to the specified
      * writer, using the configuration specified by the WSDD configuration.
-     * If either the results or writer are null, an IllegalArgumentException will be thown.
+     * If either the results or writer are null, an IllegalArgumentException will be thrown.
      * 
      * @param results
      * @param writer
@@ -134,7 +134,7 @@ public class SerializationUtils {
     /**
      * Create an instance of CQLQuery from the specified input stream. The stream
      * must contain an XML representation of the CQLQuery. If the reader is
-     * null, an IllegalArgumentException will be thown.
+     * null, an IllegalArgumentException will be thrown.
      * 
      * @param xmlStream
      * @return an instance of CQLQueryResults from the specified input stream.
@@ -150,7 +150,7 @@ public class SerializationUtils {
      * Create an instance of CQLQueryResults from the specified input stream, 
      * using the configuration supplied by the WSDD stream. The xml stream
      * must contain an XML representation of the CQLQueryResults. If the reader is
-     * null, an IllegalArgumentException will be thown.
+     * null, an IllegalArgumentException will be thrown.
      * 
      * @param xmlStream
      * @param wsddStream
@@ -166,9 +166,9 @@ public class SerializationUtils {
         InputStreamReader reader = new InputStreamReader(xmlStream);
         CQLQueryResults results = null;
         if (wsddStream == null) {
-            results = (CQLQueryResults) Utils.deserializeObject(reader, CQLQueryResults.class);
+            results = Utils.deserializeObject(reader, CQLQueryResults.class);
         } else {
-            results = (CQLQueryResults) Utils.deserializeObject(reader, CQLQueryResults.class, wsddStream);
+            results = Utils.deserializeObject(reader, CQLQueryResults.class, wsddStream);
         }
         return results;
     }
@@ -176,7 +176,7 @@ public class SerializationUtils {
     
     /**
      * Write the XML representation of the specified query results to the specified
-     * writer. If either are null, an IllegalArgumentException will be thown.
+     * writer. If either are null, an IllegalArgumentException will be thrown.
      * 
      * @param results
      * @param writer
@@ -190,7 +190,7 @@ public class SerializationUtils {
     /**
      * Write the XML representation of the specified query results to the specified
      * writer, using the configuration specified by the WSDD configuration.
-     * If either the results or writer are null, an IllegalArgumentException will be thown.
+     * If either the results or writer are null, an IllegalArgumentException will be thrown.
      * 
      * @param results
      * @param writer
@@ -212,7 +212,7 @@ public class SerializationUtils {
     /**
      * Create an instance of DCQLQueryResultsCollection from the specified input stream. 
      * The stream must contain an XML representation of the DCQLQueryResultsCollection.
-     * If the reader is null, an IllegalArgumentException will be thown.
+     * If the reader is null, an IllegalArgumentException will be thrown.
      * 
      * @param xmlStream
      * @return an instance of DCQLQueryResultsCollection from the specified input stream.
@@ -228,7 +228,7 @@ public class SerializationUtils {
      * Create an instance of DCQLQueryResultsCollection from the specified input stream,
      * using the configuration supplied by the WSDD stream.  The xml stream
      * must contain an XML representation of the DCQLQueryResultsCollection.
-     * If the reader is null, an IllegalArgumentException will be thown.
+     * If the reader is null, an IllegalArgumentException will be thrown.
      * 
      * @param xmlStream
      * @param wsddStream
@@ -244,10 +244,10 @@ public class SerializationUtils {
         InputStreamReader reader = new InputStreamReader(xmlStream);
         DCQLQueryResultsCollection results = null;
         if (wsddStream == null) {
-            results = (DCQLQueryResultsCollection) Utils.deserializeObject(
+            results = Utils.deserializeObject(
                 reader, DCQLQueryResultsCollection.class);
         } else {
-            results = (DCQLQueryResultsCollection) Utils.deserializeObject(
+            results = Utils.deserializeObject(
                 reader, DCQLQueryResultsCollection.class, wsddStream);
         }
         return results;

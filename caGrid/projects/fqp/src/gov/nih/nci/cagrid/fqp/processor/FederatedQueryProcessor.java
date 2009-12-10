@@ -125,8 +125,8 @@ class FederatedQueryProcessor {
         // convert basic group information and attach group to CQL object
         gov.nih.nci.cagrid.cqlquery.Group cqlGroup = new gov.nih.nci.cagrid.cqlquery.Group();
         // attach logical relationship
-        cqlGroup.setLogicRelation(gov.nih.nci.cagrid.cqlquery.LogicalOperator.fromValue(dcqlGroup.getLogicRelation()
-            .toString()));
+        cqlGroup.setLogicRelation(gov.nih.nci.cagrid.cqlquery.LogicalOperator.fromValue(
+            dcqlGroup.getLogicRelation().toString()));
 
         // attributes (PASS THRU)
         if (dcqlGroup.getAttribute() != null) {
@@ -136,7 +136,8 @@ class FederatedQueryProcessor {
         // associations
         if (dcqlGroup.getAssociation() != null && dcqlGroup.getAssociation().length > 0) {
             Association dcqlAssociationArray[] = dcqlGroup.getAssociation();
-            gov.nih.nci.cagrid.cqlquery.Association[] cqlAssociationArray = new gov.nih.nci.cagrid.cqlquery.Association[dcqlAssociationArray.length];
+            gov.nih.nci.cagrid.cqlquery.Association[] cqlAssociationArray = 
+                new gov.nih.nci.cagrid.cqlquery.Association[dcqlAssociationArray.length];
             for (int i = 0; i < dcqlAssociationArray.length; i++) {
                 cqlAssociationArray[i] = processAssociation(dcqlAssociationArray[i]);
             }
@@ -146,7 +147,8 @@ class FederatedQueryProcessor {
         // groups
         if (dcqlGroup.getGroup() != null && dcqlGroup.getGroup().length > 0) {
             Group dcqlGroupArray[] = dcqlGroup.getGroup();
-            gov.nih.nci.cagrid.cqlquery.Group[] cqlGroupArray = new gov.nih.nci.cagrid.cqlquery.Group[dcqlGroupArray.length];
+            gov.nih.nci.cagrid.cqlquery.Group[] cqlGroupArray = 
+                new gov.nih.nci.cagrid.cqlquery.Group[dcqlGroupArray.length];
             for (int i = 0; i < dcqlGroupArray.length; i++) {
                 gov.nih.nci.cagrid.cqlquery.Group cqlNestedGroup = processGroup(dcqlGroupArray[i]);
                 cqlGroupArray[i] = cqlNestedGroup;
@@ -157,9 +159,10 @@ class FederatedQueryProcessor {
         // foreign associations
         if (dcqlGroup.getForeignAssociation() != null && dcqlGroup.getForeignAssociation().length > 0) {
             ForeignAssociation[] foreignAssociationArray = dcqlGroup.getForeignAssociation();
-            gov.nih.nci.cagrid.cqlquery.Group[] cqlGroupArray = new gov.nih.nci.cagrid.cqlquery.Group[foreignAssociationArray.length];
+            gov.nih.nci.cagrid.cqlquery.Group[] cqlGroupArray = 
+                new gov.nih.nci.cagrid.cqlquery.Group[foreignAssociationArray.length];
             for (int i = 0; i < foreignAssociationArray.length; i++) {
-                // need to attach the results as crieteria ...
+                // need to attach the results as criteria ...
                 gov.nih.nci.cagrid.cqlquery.Group resultedGroup = processForeignAssociation(foreignAssociationArray[i]);
                 cqlGroupArray[i] = resultedGroup;
             }
@@ -170,7 +173,6 @@ class FederatedQueryProcessor {
         }
 
         return cqlGroup;
-
     }
 
 
@@ -256,8 +258,8 @@ class FederatedQueryProcessor {
             }
         }
 
-        gov.nih.nci.cagrid.cqlquery.Group criteriaGroup = buildGroup(foreignAssociation.getJoinCondition(),
-            remoteAttributeValues);
+        gov.nih.nci.cagrid.cqlquery.Group criteriaGroup = 
+            buildGroup(foreignAssociation.getJoinCondition(), remoteAttributeValues);
         return criteriaGroup;
     }
 
@@ -275,12 +277,12 @@ class FederatedQueryProcessor {
      * @return A CQL Group of attributes
      * @throws FederatedQueryProcessingException
      */
-    public static gov.nih.nci.cagrid.cqlquery.Group buildGroup(JoinCondition joinCondition, List list)
+    public static gov.nih.nci.cagrid.cqlquery.Group buildGroup(JoinCondition joinCondition, List<String> list)
         throws FederatedQueryProcessingException {
         gov.nih.nci.cagrid.cqlquery.Group cqlGroup = new gov.nih.nci.cagrid.cqlquery.Group();
         String property = joinCondition.getLocalAttributeName();
 
-        // preprocess the results to deal with null values
+        // pre-process the results to deal with null values
         // we need to deal with these here, so the logic to handle the special
         // cases (of list size) is correct.
         // we don't need to process EQUAL_TO or NOT_EQUAL_TO, because we will
@@ -308,7 +310,7 @@ class FederatedQueryProcessor {
         // add an impossible IS_NULL AND IS_NOT_NULL
         // this needs to be done because the client asked for a predicate that
         // evaluated to false (no remote results, so no join can be true), so we
-        // need to propegate this evaluation (not just ommit it).
+        // need to propagate this evaluation (not just omit it).
         if (list.size() == 0) {
             cqlGroup.setLogicRelation(LogicalOperator.AND);
             gov.nih.nci.cagrid.cqlquery.Attribute[] attrArray = new gov.nih.nci.cagrid.cqlquery.Attribute[2];
@@ -338,14 +340,13 @@ class FederatedQueryProcessor {
             attrArray[1] = attr;
             // attach the created attribute array
             cqlGroup.setAttribute(attrArray);
-
         } else {
             gov.nih.nci.cagrid.cqlquery.Attribute[] attrArray = new gov.nih.nci.cagrid.cqlquery.Attribute[list.size()];
             cqlGroup.setLogicRelation(LogicalOperator.OR);
             for (int i = 0; i < list.size(); i++) {
                 java.lang.Object currRemoteValue = list.get(i);
-                gov.nih.nci.cagrid.cqlquery.Attribute attr = createAttributeFromValue(joinCondition, property,
-                    currRemoteValue);
+                gov.nih.nci.cagrid.cqlquery.Attribute attr = createAttributeFromValue(
+                    joinCondition, property, currRemoteValue);
                 attrArray[i] = attr;
             }
             // attach the created attribute array
@@ -415,5 +416,4 @@ class FederatedQueryProcessor {
             && (cqlResults.getAttributeResult() != null && cqlResults.getCountResult() != null
                 || cqlResults.getIdentifierResult() != null || cqlResults.getObjectResult() != null);
     }
-
 }
