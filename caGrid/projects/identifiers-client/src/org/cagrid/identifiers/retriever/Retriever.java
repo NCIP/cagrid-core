@@ -4,5 +4,4 @@ import org.cagrid.identifiers.namingauthority.domain.IdentifierValues;
 
 public interface Retriever {
 	public Object retrieve(IdentifierValues ivs) throws Exception;
-    public String[] getRequiredKeys();
 }
