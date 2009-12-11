@@ -7,6 +7,7 @@
 		<xsd:sequence>
 			<xsd:element name="ModifierExtension" type="xsd:QName" minOccurs="0" maxOccurs="unbounded"/>
 			<xsd:element name="AttributeExtension" type="xsd:QName" minOccurs="0" maxOccurs="unbounded"/>
+			<xsd:element name="ObjectExtension" type="xsd:QName" minOccurs="0" maxOccurs="unbounded"/>
 			<xsd:element name="ResultExtension" type="xsd:QName" minOccurs="0" maxOccurs="unbounded"/>
 		</xsd:sequence>
 	</xsd:complexType>
