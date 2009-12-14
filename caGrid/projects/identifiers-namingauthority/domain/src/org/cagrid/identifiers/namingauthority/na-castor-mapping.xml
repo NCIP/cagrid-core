@@ -1,5 +1,4 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE mapping PUBLIC "-//EXOLAB/Castor Object Mapping DTD Version 1.0//EN" "http://www.castor.org/mapping.dtd">
 <mapping>
 	<class name="org.cagrid.identifiers.namingauthority.domain.IdentifierValues">
  		<map-to xml="IdentifierValues"
