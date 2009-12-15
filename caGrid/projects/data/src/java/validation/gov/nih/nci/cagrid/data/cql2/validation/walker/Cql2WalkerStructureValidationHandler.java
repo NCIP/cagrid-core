@@ -188,9 +188,6 @@ public class Cql2WalkerStructureValidationHandler implements Cql2WalkerHandler {
 
 
     public void startNamedAssociation(NamedAssociation assoc) throws Cql2WalkerException {
-        if (assoc.getRoleName() == null) {
-            throw new StructureValidationException("Named Associations must have a role name");
-        }
         if (assoc.getNamedAssociationList() != null && assoc.getPopulationDepth() != null) {
             throw new StructureValidationException(
                 "Named associations may have either a named association list or a population depth.  Found both");

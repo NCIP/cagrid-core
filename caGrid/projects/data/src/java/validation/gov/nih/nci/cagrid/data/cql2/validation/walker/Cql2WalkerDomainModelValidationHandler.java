@@ -347,7 +347,7 @@ public class Cql2WalkerDomainModelValidationHandler implements Cql2WalkerHandler
         SimplifiedUmlAssociation foundAssociation = null;
         List<SimplifiedUmlAssociation> simpleAssociations = getUmlAssociations(parentClassName);
         for (SimplifiedUmlAssociation simple : simpleAssociations) {
-            if (!simple.isBidirectional() && simple.getSourceRoleName().equals(assoc.getRoleName())) {
+            if (!simple.isBidirectional() && simple.getSourceRoleName().equals(assoc.getEndName())) {
                 foundAssociation = simple;
                 break;
             }
@@ -355,9 +355,9 @@ public class Cql2WalkerDomainModelValidationHandler implements Cql2WalkerHandler
         if (foundAssociation == null) {
             // association not found
             throw new DomainValidationException("Association from " + parentClassName 
-                + " via role name " + assoc.getRoleName() + " not found");
+                + " via role name " + assoc.getEndName() + " not found");
         }
-        String associatedClassname = foundAssociation.getSourceRoleName().equals(assoc.getRoleName()) 
+        String associatedClassname = foundAssociation.getSourceRoleName().equals(assoc.getEndName()) 
             ? foundAssociation.getSourceClass() : foundAssociation.getTargetClass();
         if (assoc.get_instanceof() != null && !(assoc.get_instanceof().equals(associatedClassname))) {
             if (!isInstanceof(associatedClassname, assoc.get_instanceof())) {

@@ -100,7 +100,8 @@ public class DomainModelCql2DomainValidator extends Cql2DomainValidator {
             SimplifiedUmlAssociation foundAssociation = null;
             List<SimplifiedUmlAssociation> simpleAssociations = getUmlAssociations(parentClassName);
             for (SimplifiedUmlAssociation simple : simpleAssociations) {
-                if (!simple.isBidirectional() && simple.getSourceRoleName().equals(association.getRoleName())) {
+                // TODO: end name resolution of association.getEndName() == null
+                if (!simple.isBidirectional() && simple.getSourceRoleName().equals(association.getEndName())) {
                     foundAssociation = simple;
                     break;
                 }
@@ -108,7 +109,7 @@ public class DomainModelCql2DomainValidator extends Cql2DomainValidator {
             if (foundAssociation == null) {
                 // association not found
                 throw new DomainValidationException("Association from " + parentClassName 
-                    + " via role name " + association.getRoleName() + " not found");
+                    + " via role name " + association.getEndName() + " not found");
             } else if (association.getNamedAssociationList() != null && association.getNamedAssociationList().getNamedAssociation().length != 0) {
                 // association found, if there is another nested layer of associations, follow those
                 validateNamedAssociationList(foundAssociation.getTargetClass(), association.getNamedAssociationList());
