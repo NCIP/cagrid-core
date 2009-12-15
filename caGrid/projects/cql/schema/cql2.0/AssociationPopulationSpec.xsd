@@ -21,7 +21,7 @@
 			<xsd:element name="NamedAssociationList" type="cql2:NamedAssociationList" minOccurs="0" maxOccurs="1"/>
 			<xsd:element name="PopulationDepth" type="cql2:PopulationDepth" minOccurs="0" maxOccurs="1"/>
 		</xsd:choice>
-		<xsd:attribute name="roleName" type="xsd:string" use="required"/>
+		<xsd:attribute name="endName" type="xsd:string" use="required"/>
 		<xsd:attribute name="instanceof" type="xsd:string" use="optional"/>
 	</xsd:complexType>
 	
