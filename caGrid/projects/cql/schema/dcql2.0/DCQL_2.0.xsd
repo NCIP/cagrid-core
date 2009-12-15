@@ -44,7 +44,7 @@
 		</xsd:annotation>
 		<xsd:complexContent>
 			<xsd:extension base="dcql:DCQLObject">
-				<xsd:attribute name="endName" type="xsd:string" use="required"/>
+				<xsd:attribute name="endName" type="xsd:string" use="optional"/>
 			</xsd:extension>
 		</xsd:complexContent>
 	</xsd:complexType>
