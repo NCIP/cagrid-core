@@ -481,9 +481,9 @@ public class CQL2ToParameterizedHQL {
         LOG.debug("Populating named associations");
         String myAlias = "fetchAlias" + aliasIndex;
         String associationClassName = roleNameResolver.getClassNameOfAssociationByRoleName(
-            parentClassName, na.getRoleName());
+            parentClassName, na.getEndName());
         aliasIndex++;
-        buff.append("left join fetch ").append(parentAlias).append('.').append(na.getRoleName())
+        buff.append("left join fetch ").append(parentAlias).append('.').append(na.getEndName())
             .append(" as ").append(myAlias).append(' ');
         if (na.getNamedAssociationList() != null && na.getNamedAssociationList().getNamedAssociation() != null) {
             for (NamedAssociation subAssociation : na.getNamedAssociationList().getNamedAssociation()) {
