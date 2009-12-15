@@ -14,6 +14,8 @@
 	<property name="project.jarfile" value="${jar.dir}/${project.name}-${project.version}.jar" />
 	<property name="ext.lib.dir" value="${basedir}/ext/dependencies/jars" />
 	<property name="ext.endorsed.dir" location="${basedir}/ext/dependencies/endorsed/jars" />
+	<property name="gridgrouper.dir" value="../../../caGrid/projects/gridgrouper" />
+
 
 	<!-- should all testing stop on the first error or failure encountered? -->
 	<property name="halt.on.error" value="false" />
@@ -133,6 +135,24 @@
 		<delete dir="${basedir}/tmp" />
 		<fail if="${test.failed}" message="Tests failed!  Check logs for details." />
 
+	</target>
+	
+	
+	<target name="createTestDatabase" description="Creates the testing database.">
+		<property file="${gridgrouper.dir}/resources/conf/grouper.hibernate.properties" />
+		<property name="root.db.username" value="${hibernate.connection.username}" />
+		<property name="root.db.password" value="${hibernate.connection.password}" />
+		<property name="root.db.url" value="${hibernate.connection.url}" />
+		<property name="driver_class" value="${hibernate.connection.driver_class}" />
+		<sql driver="${driver_class}" url="jdbc:mysql://localhost:3306/" userid="${root.db.username}" password="${root.db.password}">
+			<classpath>
+				<fileset dir="${ext.lib.dir}" includes="**/mysql*.jar" />
+					
+			</classpath>
+			
+			DROP DATABASE IF EXISTS grouper;
+			CREATE DATABASE grouper;
+		</sql>
 	</target>
 
 

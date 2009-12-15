@@ -12,10 +12,8 @@ import gov.nih.nci.cagrid.testing.system.deployment.story.ServiceStoryBase;
 import gov.nih.nci.cagrid.testing.system.haste.Step;
 
 import java.io.File;
-import java.io.FileInputStream;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Properties;
 import java.util.Vector;
 
 import org.cagrid.gaards.authentication.BasicAuthentication;
@@ -25,6 +23,8 @@ import org.cagrid.gaards.dorian.idp.Application;
 import org.cagrid.gaards.dorian.idp.CountryCode;
 import org.cagrid.gaards.dorian.idp.LocalUserStatus;
 import org.cagrid.gaards.dorian.idp.StateCode;
+import org.cagrid.gaards.dorian.service.BeanUtils;
+import org.cagrid.gaards.dorian.service.DorianProperties;
 import org.cagrid.gaards.dorian.test.system.steps.CleanupDorianStep;
 import org.cagrid.gaards.dorian.test.system.steps.ConfigureGlobusToTrustDorianStep;
 import org.cagrid.gaards.dorian.test.system.steps.CopyConfigurationStep;
@@ -46,6 +46,7 @@ import org.cagrid.gridgrouper.test.system.steps.GrouperCreateStemStep;
 import org.cagrid.gridgrouper.test.system.steps.GrouperGrantPrivilegeStep;
 import org.cagrid.gridgrouper.test.system.steps.GrouperInitStep;
 import org.cagrid.gridgrouper.test.system.steps.GrouperRemoveMemberStep;
+import org.springframework.core.io.FileSystemResource;
 
 public class GridGrouperTest extends ServiceStoryBase {
 
@@ -96,14 +97,13 @@ public class GridGrouperTest extends ServiceStoryBase {
 			trust = new ConfigureGlobusToTrustDorianStep(getContainer());
 			steps.add(trust);
 
-			Properties props = new Properties();
-			props.load(new FileInputStream(properties));
-			steps.add(new GrouperCreateDbStep(props.getProperty("gridgrouper.db.host"), props.getProperty("gridgrouper.db.port"),
-					props.getProperty("gridgrouper.db.user"), props.getProperty("gridgrouper.db.password")));
+			steps.add(new GrouperCreateDbStep("."));
 			steps.add(new GrouperInitStep(new File(PATH_TO_GRIDGROUPER_PROJECT)));
+			
+			String idp = getDorianSubject();
 
 			steps.add(new GrouperAddAdminStep(new File(PATH_TO_GRIDGROUPER_PROJECT),
-					"/C=US/O=abc/OU=xyz/OU=caGrid/OU=Dorian/CN=jdoe0"));
+					idp + "jdoe0"));
 
 			steps.add(new StartContainerStep(getContainer()));
 
@@ -151,8 +151,6 @@ public class GridGrouperTest extends ServiceStoryBase {
 				steps.add(new UpdateLocalUserStatusStep(dorianServiceURL, admin, users.get(i).getUserId(), LocalUserStatus.Active));
 
 			}
-
-			String idp = "/C=US/O=abc/OU=xyz/OU=caGrid/OU=Dorian/CN=";
 
 			steps.add(new DorianAuthenticateStep(users.get(0).getUserId(), users.get(0).getPassword(), dorianServiceURL));
 
@@ -265,6 +263,17 @@ public class GridGrouperTest extends ServiceStoryBase {
 			e.printStackTrace();
 		}
 
+	}
+
+	private String getDorianSubject() throws Exception {
+		File conf = new File(tempDorianService + File.separator + "etc" + File.separator + "dorian-configuration.xml");
+		File props = new File(tempDorianService + File.separator + "etc" + File.separator + "dorian.properties");
+		BeanUtils utils = new BeanUtils(new FileSystemResource(conf), new FileSystemResource(props));
+		DorianProperties c = utils.getDorianProperties();
+		String subject = c.getCertificateAuthority().getProperties().getCreationPolicy().getSubject();
+		subject = subject.substring(0, subject.lastIndexOf("CN="))+"OU=Dorian,CN=";
+		subject = "/" + subject.replaceAll(",", "/");
+		return subject;
 	}
 
 }

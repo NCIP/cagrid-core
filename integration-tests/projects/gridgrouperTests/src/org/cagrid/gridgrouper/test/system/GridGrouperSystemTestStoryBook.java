@@ -10,7 +10,7 @@ import org.junit.Test;
 
 public class GridGrouperSystemTestStoryBook {
 	
-	public static File DORIAN_PROPERTIES_FILE = new File("resources/dorian.properties");
+	public static File DORIAN_PROPERTIES_FILE = new File("../dorian/resources/dorian.properties");
 	
     @Test
     public void gridgrouperTest() throws Throwable {
