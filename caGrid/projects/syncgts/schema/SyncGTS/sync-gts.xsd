@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
 <xsd:schema targetNamespace="http://cagrid.nci.nih.gov/12/SyncGTS"
 	attributeFormDefault="qualified"
 	elementFormDefault="qualified"
