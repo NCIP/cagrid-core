@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xsd:schema 
 	xmlns:xsd="http://www.w3.org/2001/XMLSchema"
-	xmlns:cql2="http://CQL.caBIG/2/org.cagrid.cql2"
+	xmlns:cql2="http://CQL.caBIG/2/org.cagrid.cql2" 
 	xmlns:dcql="http://DCQL.caBIG/2/org.cagrid.data.dcql" 
-	targetNamespace="http://DCQL.caBIG/2/org.cagrid.data.dcql"
+	targetNamespace="http://DCQL.caBIG/2/org.cagrid.data.dcql" 
 	elementFormDefault="qualified" attributeFormDefault="unqualified">
 	<xsd:import namespace="http://CQL.caBIG/2/org.cagrid.cql2" schemaLocation="../cql2.0/CQLQueryComponents.xsd"/>
 
@@ -34,7 +34,7 @@
 			<xsd:element name="AssociatedObject" type="dcql:DCQLAssociatedObject" minOccurs="0" maxOccurs="1"/>
 			<xsd:element name="ForeignAssociatedObject" type="dcql:ForeignAssociatedObject" minOccurs="0" maxOccurs="1"/>
 			<xsd:element name="Group" type="dcql:DCQLGroup" minOccurs="0" maxOccurs="1"/>
-			<xsd:element name="DCQLExtension" type="dcql:DCQLExtension" minOccurs="0" maxOccurs="1"/>
+			<xsd:element name="ObjectExtension" type="cql2:CQLExtension" minOccurs="0" maxOccurs="1"/>
 		</xsd:choice>
 		<xsd:attribute name="name" type="xsd:string" use="required"/>
 	</xsd:complexType>
@@ -59,7 +59,7 @@
 			<xsd:element name="Attribute" type="cql2:CQLAttribute" minOccurs="1" maxOccurs="unbounded"/>
 			<xsd:element name="ForeignAssociatedObject" type="dcql:ForeignAssociatedObject" minOccurs="1" maxOccurs="unbounded"/>
 			<xsd:element name="Group" type="dcql:DCQLGroup" minOccurs="1" maxOccurs="unbounded"/>
-			<xsd:element name="DCQLExtension" type="dcql:DCQLExtension" minOccurs="1" maxOccurs="unbounded"/>
+			<xsd:element name="ObjectExtension" type="cql2:CQLExtension" minOccurs="1" maxOccurs="unbounded"/>
 		</xsd:choice>
 		<xsd:attribute name="logicalOperation" type="cql2:GroupLogicalOperator" use="required"/>
 	</xsd:complexType>
@@ -84,7 +84,7 @@
 			<xsd:documentation>Specifies a relationship, defined by the predicate, between a local attribute and a remote attribute.</xsd:documentation>
 		</xsd:annotation>
 		<xsd:attribute name="localAttributeName" type="xsd:string" use="required"/>
-		<xsd:attribute name="predicate" type="cql2:BinaryPredicate" use="required"/>		
+		<xsd:attribute name="predicate" type="cql2:BinaryPredicate" use="required"/>
 		<xsd:attribute name="foreignAttributeName" type="xsd:string" use="required"/>
 	</xsd:complexType>
 	
@@ -92,14 +92,21 @@
 		<xsd:annotation>
 			<xsd:documentation>Specifies a transformation to apply to attribute data values</xsd:documentation>
 		</xsd:annotation>
-		<xsd:attribute name="operation" type="dcql:DataTransformationOperation" use="required"/>
-		<xsd:attribute name="value" type="xsd:anySimpleType" use="required"/>
-		<xsd:attribute name="operationDirection" type="dcql:DataTransformationDirection" use="required"/>
+		<xsd:choice>
+			<xsd:element name="Operation">
+				<xsd:complexType>
+					<xsd:attribute name="operator" type="dcql:TransformationOperator" use="required"/>
+					<xsd:attribute name="value" type="xsd:anySimpleType" use="required"/>
+					<xsd:attribute name="operationDirection" type="dcql:TransformationDirection" use="required"/>
+				</xsd:complexType>
+			</xsd:element>
+			<xsd:element name="TransformationExtension" type="cql2:CQLExtension"/>
+		</xsd:choice>
 	</xsd:complexType>
 	
-	<xsd:simpleType name="DataTransformationOperation">
+	<xsd:simpleType name="TransformationOperator">
 		<xsd:annotation>
-			<xsd:documentation>Operations used for data transformations</xsd:documentation>
+			<xsd:documentation>Basic operators used for data transformations</xsd:documentation>
 		</xsd:annotation>
 		<xsd:restriction base="xsd:string">
 			<xsd:enumeration value="ADD" id="add"/>
@@ -107,7 +114,7 @@
 		</xsd:restriction>
 	</xsd:simpleType>
 	
-	<xsd:simpleType name="DataTransformationDirection">
+	<xsd:simpleType name="TransformationDirection">
 		<xsd:annotation>
 			<xsd:documentation>Direction (or side) of the comparison that the data transformation operation is applied to</xsd:documentation>
 		</xsd:annotation>
@@ -115,14 +122,5 @@
 			<xsd:enumeration value="LOCAL" id="local"/>
 			<xsd:enumeration value="FOREIGN" id="foreign"/>
 		</xsd:restriction>
-	</xsd:simpleType>	
-	
-	<xsd:complexType name="DCQLExtension">
-		<xsd:annotation>
-			<xsd:documentation>Extensibility type for DCQL 2 queries</xsd:documentation>
-		</xsd:annotation>
-		<xsd:complexContent>
-			<xsd:extension base="cql2:CQLExtension"/>
-		</xsd:complexContent>
-	</xsd:complexType>
+	</xsd:simpleType>
 </xsd:schema>
