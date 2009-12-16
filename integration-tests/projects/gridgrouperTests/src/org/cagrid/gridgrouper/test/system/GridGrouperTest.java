@@ -214,6 +214,7 @@ public class GridGrouperTest extends ServiceStoryBase {
 
 		} catch (Exception e) {
 			e.printStackTrace();
+			fail("Failed to create the GridGrouper System Tests: " + e.getMessage());
 		}
 		return steps;
 
@@ -232,20 +233,25 @@ public class GridGrouperTest extends ServiceStoryBase {
 	}
 
 	protected void storyTearDown() throws Throwable {
+		StopContainerStep stopContainerStep = new StopContainerStep(getContainer());
 		try {
-			if (this.tempDorianService != null) {
-				new DeleteServiceStep(tempDorianService).runStep();
-			}
-			if (this.tempGridGrouperService != null) {
-				new DeleteServiceStep(tempGridGrouperService).runStep();
-			}
+			stopContainerStep.runStep();
 		} catch (Throwable e) {
 			e.printStackTrace();
 		}
 
-		StopContainerStep step2 = new StopContainerStep(getContainer());
 		try {
-			step2.runStep();
+			if (this.tempDorianService != null) {
+				new DeleteServiceStep(tempDorianService).runStep();
+			}
+		} catch (Throwable e) {
+			e.printStackTrace();
+		}
+		
+		try {
+			if (this.tempGridGrouperService != null) {
+				new DeleteServiceStep(tempGridGrouperService).runStep();
+			}
 		} catch (Throwable e) {
 			e.printStackTrace();
 		}
@@ -256,9 +262,10 @@ public class GridGrouperTest extends ServiceStoryBase {
 		} catch (Throwable e) {
 			e.printStackTrace();
 		}
-		DestroyContainerStep step3 = new DestroyContainerStep(getContainer());
+		
+		DestroyContainerStep destroyContainerStep = new DestroyContainerStep(getContainer());
 		try {
-			step3.runStep();
+			destroyContainerStep.runStep();
 		} catch (Throwable e) {
 			e.printStackTrace();
 		}
