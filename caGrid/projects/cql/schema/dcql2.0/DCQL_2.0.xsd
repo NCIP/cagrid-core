@@ -34,13 +34,14 @@
 			<xsd:element name="AssociatedObject" type="dcql:DCQLAssociatedObject" minOccurs="0" maxOccurs="1"/>
 			<xsd:element name="ForeignAssociatedObject" type="dcql:ForeignAssociatedObject" minOccurs="0" maxOccurs="1"/>
 			<xsd:element name="Group" type="dcql:DCQLGroup" minOccurs="0" maxOccurs="1"/>
+			<xsd:element name="DCQLExtension" type="dcql:DCQLExtension" minOccurs="0" maxOccurs="1"/>
 		</xsd:choice>
 		<xsd:attribute name="name" type="xsd:string" use="required"/>
 	</xsd:complexType>
 	
 	<xsd:complexType name="DCQLAssociatedObject">
 		<xsd:annotation>
-			<xsd:documentation>Describes named relationship from this Object to another.</xsd:documentation>
+			<xsd:documentation>Describes named relationship from the parent object to another</xsd:documentation>
 		</xsd:annotation>
 		<xsd:complexContent>
 			<xsd:extension base="dcql:DCQLObject">
@@ -51,20 +52,21 @@
 	
 	<xsd:complexType name="DCQLGroup">
 		<xsd:annotation>
-			<xsd:documentation>A collection of two or more sub-constraints, grouped together by the logicalRelation.</xsd:documentation>
+			<xsd:documentation>A collection of two or more sub-constraints, grouped together by a logical operation</xsd:documentation>
 		</xsd:annotation>
 		<xsd:choice minOccurs="2" maxOccurs="unbounded">
-			<xsd:element name="AssociatedObject" type="dcql:DCQLAssociatedObject" maxOccurs="unbounded"/>
-			<xsd:element name="Attribute" type="cql2:CQLAttribute" minOccurs="0" maxOccurs="1"/>
-			<xsd:element name="ForeignAssociatedObject" type="dcql:ForeignAssociatedObject" maxOccurs="unbounded"/>
-			<xsd:element name="Group" type="dcql:DCQLGroup" maxOccurs="unbounded"/>
+			<xsd:element name="AssociatedObject" type="dcql:DCQLAssociatedObject" minOccurs="1" maxOccurs="unbounded"/>
+			<xsd:element name="Attribute" type="cql2:CQLAttribute" minOccurs="1" maxOccurs="unbounded"/>
+			<xsd:element name="ForeignAssociatedObject" type="dcql:ForeignAssociatedObject" minOccurs="1" maxOccurs="unbounded"/>
+			<xsd:element name="Group" type="dcql:DCQLGroup" minOccurs="1" maxOccurs="unbounded"/>
+			<xsd:element name="DCQLExtension" type="dcql:DCQLExtension" minOccurs="1" maxOccurs="unbounded"/>
 		</xsd:choice>
 		<xsd:attribute name="logicalOperation" type="cql2:GroupLogicalOperator" use="required"/>
 	</xsd:complexType>
 	
 	<xsd:complexType name="ForeignAssociatedObject">
 		<xsd:annotation>
-			<xsd:documentation>An association or relationship defined between this Object and an Object defined by the ForeignObject, located on the data service located at the targetServiceURL.</xsd:documentation>
+			<xsd:documentation>An association or relationship defined between the parent object and another object located on the data service located at the targetServiceURL.  The nature of the relationship is described by the join condition and optional data transformation.</xsd:documentation>
 		</xsd:annotation>
 		<xsd:complexContent>
 			<xsd:extension base="dcql:DCQLAssociatedObject">
@@ -114,4 +116,13 @@
 			<xsd:enumeration value="FOREIGN" id="foreign"/>
 		</xsd:restriction>
 	</xsd:simpleType>	
+	
+	<xsd:complexType name="DCQLExtension">
+		<xsd:annotation>
+			<xsd:documentation>Extensibility type for DCQL 2 queries</xsd:documentation>
+		</xsd:annotation>
+		<xsd:complexContent>
+			<xsd:extension base="cql2:CQLExtension"/>
+		</xsd:complexContent>
+	</xsd:complexType>
 </xsd:schema>
