@@ -25,5 +25,6 @@
     
     <dependency rev="latest.integration" org="caGrid" name="DorianSystemTests" conf="default->default"/>
     
+    <dependency rev="latest.integration" org="caGrid" name="introduce" conf="default->extension"/>
   </dependencies>
 </ivy-module>
