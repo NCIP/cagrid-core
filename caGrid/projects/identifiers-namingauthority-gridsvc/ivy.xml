@@ -34,34 +34,25 @@
 	<dependencies>
 		<!-- Standard caGrid Service Dependencies -->
 		<dependency rev="latest.integration" org="caGrid" name="core"
-			conf="impl->default" />
+			conf="client->serialization;impl-test->test" />
 		<dependency rev="latest.integration" org="caGrid" name="metadata"
-			conf="impl->schemas,common.jars,data.jars" />
+			conf="service->schemas;client->common.jars" />
 		<dependency rev="latest.integration" org="caGrid" name="metadatautils"
-			conf="impl->default" />
+			conf="service->default" />
 		<dependency rev="latest.integration" org="caGrid"
-			name="service-security-provider" conf="impl->client,service" />
+			name="service-security-provider" conf="client->client;service->service" />
 		<dependency rev="latest.integration" org="caGrid" name="advertisement"
-			conf="impl->default" />
+			conf="service->default" />
 		<dependency rev="latest.integration" org="caGrid"
-			name="introduce-servicetools" conf="impl->default" />
-
-		<!--  Build file dependencies -->
+			name="introduce-servicetools" conf="service->default" />
 		<dependency rev="latest.integration" org="caGrid"
 			name="introduce-buildtools" conf="serviceTools->default" />
 		<dependency rev="1.0b3" org="ant-contrib" name="ant-contrib"
 			conf="serviceTools->*" />
-		<!--
-			This is non-transitive, because we already have all the extension
-			jars in the service, and the deploy time validation which uses this
-			uses the service's classpath too.
-		-->
 		<dependency rev="latest.integration" org="caGrid"
 			name="metadata-validator" conf="serviceTools->default" transitive="false" />
-
 		<dependency rev="latest.integration" org="caGrid" name="identifiers-namingauthority"
-         conf="impl->default" transitive="true" />
-
+         conf="service->default" />
 		<dependency rev="4.4" org="junit" name="junit" conf="impl-test->default" />
       <dependency rev="1.1" org="apache" name="commons-logging" conf="impl-test->default" />
 

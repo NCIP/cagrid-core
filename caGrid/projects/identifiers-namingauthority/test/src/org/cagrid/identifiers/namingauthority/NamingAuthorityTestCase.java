@@ -1,7 +1,6 @@
 package org.cagrid.identifiers.namingauthority;
 
 import java.net.URI;
-import java.net.URISyntaxException;
 
 import org.cagrid.identifiers.namingauthority.domain.IdentifierValues;
 import org.cagrid.identifiers.namingauthority.test.NamingAuthorityTestCaseBase;
@@ -17,12 +16,12 @@ public class NamingAuthorityTestCase extends NamingAuthorityTestCaseBase {
 		//
         URI prefix = URI.create("http://na.cagrid.org/foo/");
 
-        IdentifierValues values = null;
         try {
-            values = this.NamingAuthority.resolveIdentifier(prefix);
+            this.NamingAuthority.resolveIdentifier(prefix);
         } catch (InvalidIdentifierException e) {
             // expected
         } catch (NamingAuthorityConfigurationException e) {
+        	e.printStackTrace();
             fail("test configuration error");
         }
         
@@ -33,10 +32,11 @@ public class NamingAuthorityTestCase extends NamingAuthorityTestCaseBase {
         		+ "BADIDENTIFIER");
 
         try {
-            values = this.NamingAuthority.resolveIdentifier(prefix);
+            this.NamingAuthority.resolveIdentifier(prefix);
         } catch (InvalidIdentifierException e) {
             // expected
         } catch (NamingAuthorityConfigurationException e) {
+        	e.printStackTrace();
             fail("test configuration error");
         }
 	}
@@ -47,6 +47,16 @@ public class NamingAuthorityTestCase extends NamingAuthorityTestCaseBase {
 	public void testNullIdentifierValues() {
         assertResolvedValues(null);
     }
+	
+	// Create identifier with multiple values per key
+	public void testMultipleIdentifierValues() {
+		IdentifierValues values = new IdentifierValues();
+		values.add("URL", "http://na.cagrid.org/foo");
+		values.add("URL", "http://na.cagrid.org/bar");
+		values.add("CODE", "007");
+		
+		assertResolvedValues(values);
+	}
 
     private void assertResolvedValues(IdentifierValues values) {
         URI id = null;

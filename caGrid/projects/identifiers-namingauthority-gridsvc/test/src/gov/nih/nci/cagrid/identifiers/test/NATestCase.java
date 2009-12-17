@@ -36,31 +36,31 @@ public class NATestCase extends TestCase {
 	public void testNamingAuthorityGridService() throws Exception {
 		IdentifiersNAServiceClient client = new IdentifiersNAServiceClient( gridSvcUrl );
 
+		IdentifierValues values1 = new IdentifierValues(keyValues);
+		IdentifierValues values2 = null;
+		
 		try {
-			org.apache.axis.types.URI identifier = client.createIdentifier(new IdentifierValues(keyValues));
+			org.apache.axis.types.URI identifier = client.createIdentifier(values1);
 			System.out.println("Identifier: " + identifier.toString());
 
-			IdentifierValues ivs2 = client.resolveIdentifier(identifier);
-			if (!compare(keyValues, ivs2.getKeyValues())) {
-				fail("IdentifierValues are different");
-			}
+			values2 = client.resolveIdentifier(identifier);	
 		}
 		catch(Exception e) {
 			e.printStackTrace();
 			fail(e.toString());
 		}
+		
+		Util.assertEquals(values1, values2);
 	}
 
 	public void testInvalidIdentifier() throws Exception {
 		IdentifiersNAServiceClient client = new IdentifiersNAServiceClient( gridSvcUrl );
-
+		
 		try {
 			org.apache.axis.types.URI identifier = new URI("file://324324325");
 
-			IdentifierValues ivs2 = client.resolveIdentifier(identifier);
-			if (!compare(keyValues, ivs2.getKeyValues())) {
-				fail("IdentifierValues are different");
-			}
+			client.resolveIdentifier(identifier);
+
 		}
 		catch(InvalidIdentifierFault e) {
 			//expected
@@ -71,45 +71,6 @@ public class NATestCase extends TestCase {
 		}
 	}
 	
-	private String[] getSortedKeys(KeyValues[] tvs) {
-		String[] Keys = new String[ tvs.length ];
-		for(int i=0; i < tvs.length; i++) {
-			Keys[i] = tvs[i].getKey();
-		}
-
-		Arrays.sort(Keys);
-		return Keys;
-	}
-
-	private boolean compare(KeyValues[] tvs, String Key, String[] values) {
-		for( KeyValues tv : tvs ) {
-			if (tv.getKey().equals(Key)) {
-				String[] myValues = tv.getValue();
-				Arrays.sort(values);
-				Arrays.sort(myValues);
-				return Arrays.equals(values, myValues);
-			}
-		}
-		return true;
-	}
-
-	private boolean compare(KeyValues[] tvs1, KeyValues[] tvs2) {
-		
-
-		// Make sure the Keys match
-		if (!Arrays.equals(getSortedKeys(tvs1), getSortedKeys(tvs2))) {
-			return false;
-		}
-
-		for( KeyValues tv : tvs1 ) {
-			if (!compare(tvs2, tv.getKey(), tv.getValue())) {
-				return false;
-			}
-		}
-		return true;
-	}
-
-
 	public static void main(String[] args) {
 		junit.textui.TestRunner.run(NATestCase.class);
 	}

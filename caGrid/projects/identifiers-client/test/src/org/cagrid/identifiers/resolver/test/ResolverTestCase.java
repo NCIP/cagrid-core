@@ -18,23 +18,23 @@ public class ResolverTestCase extends TestCase {
 	
 	static {
 		try {
-			identifier = new URI("http://purlz.cagrid.org:8080/localhost/616db4cc-6500-4d0b-81e6-e8672815b8e0");
+			identifier = new URI("http://purlz.cagrid.org:8080/localhost/759dfce8-6c52-47ea-abe8-7ab0dd7bbbf0");
 		} catch(Exception e){
 			identifier = null;
 		}
 	}
 	
-	public void testGridResolution() {
-		try {
-			System.out.println("========== testGridResolution =============");
-			IdentifierValues ivs = new Resolver().resolveGrid(identifier);
-			System.out.println(ivs.toString());
-			System.out.println("========== testGridResolution SUCCESS =============");
-		} catch (Exception e) {
-			e.printStackTrace();
-			fail(e.getMessage());
-		}
-	}
+//	public void testGridResolution() {
+//		try {
+//			System.out.println("========== testGridResolution =============");
+//			IdentifierValues ivs = new Resolver().resolveGrid(identifier);
+//			System.out.println(ivs.toString());
+//			System.out.println("========== testGridResolution SUCCESS =============");
+//		} catch (Exception e) {
+//			e.printStackTrace();
+//			fail(e.getMessage());
+//		}
+//	}
 	
 	public void testHttpResolution() {
 		try {
