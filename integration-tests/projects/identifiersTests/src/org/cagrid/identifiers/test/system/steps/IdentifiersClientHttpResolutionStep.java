@@ -43,7 +43,7 @@ public class IdentifiersClientHttpResolutionStep extends Step {
 		} 
     	
 		org.cagrid.identifiers.namingauthority.domain.IdentifierValues
-			insertedValues = gov.nih.nci.cagrid.identifiers.common.MappingUtil.map( values );
+			insertedValues = gov.nih.nci.cagrid.identifiers.common.IdentifiersNAUtil.map( values );
 					
     	assertEquals( insertedValues, resolvedValues );
     }

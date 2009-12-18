@@ -1,6 +1,6 @@
 package gov.nih.nci.cagrid.identifiers.service;
 
-import gov.nih.nci.cagrid.identifiers.common.MappingUtil;
+import gov.nih.nci.cagrid.identifiers.common.IdentifiersNAUtil;
 import gov.nih.nci.cagrid.identifiers.stubs.types.InvalidIdentifierFault;
 
 import java.net.URI;
@@ -56,14 +56,14 @@ public class IdentifiersNAServiceImpl extends IdentifiersNAServiceImplBase {
 
     public org.apache.axis.types.URI createIdentifier(namingauthority.IdentifierValues identifierValues) throws RemoteException, gov.nih.nci.cagrid.identifiers.stubs.types.NamingAuthorityConfigurationFault, gov.nih.nci.cagrid.identifiers.stubs.types.InvalidIdentifierValuesFault {
     	try {
-    		java.net.URI identifier = namingAuthority.createIdentifier(MappingUtil.map(identifierValues));
+    		java.net.URI identifier = namingAuthority.createIdentifier(IdentifiersNAUtil.map(identifierValues));
     		return new org.apache.axis.types.URI(identifier.toString());
     	} catch( InvalidIdentifierValuesException e) {
     		e.printStackTrace();
-    		throw MappingUtil.map(e);
+    		throw IdentifiersNAUtil.map(e);
     	} catch( NamingAuthorityConfigurationException e ) {
     		e.printStackTrace();
-    		throw MappingUtil.map(e);
+    		throw IdentifiersNAUtil.map(e);
     	} catch (Exception e) {
     		e.printStackTrace();
     		throw new RemoteException(e.toString());
@@ -72,13 +72,13 @@ public class IdentifiersNAServiceImpl extends IdentifiersNAServiceImplBase {
 
     public namingauthority.IdentifierValues resolveIdentifier(org.apache.axis.types.URI identifier) throws RemoteException, gov.nih.nci.cagrid.identifiers.stubs.types.NamingAuthorityConfigurationFault, gov.nih.nci.cagrid.identifiers.stubs.types.InvalidIdentifierFault {
     	try {
-    		return MappingUtil.map(namingAuthority.resolveIdentifier( new URI(identifier.toString() )));
+    		return IdentifiersNAUtil.map(namingAuthority.resolveIdentifier( new URI(identifier.toString() )));
     	} catch( InvalidIdentifierException e) {
     		e.printStackTrace();
-    		throw MappingUtil.map(e);
+    		throw IdentifiersNAUtil.map(e);
     	} catch( NamingAuthorityConfigurationException e ) {
     		e.printStackTrace();
-    		throw MappingUtil.map(e);
+    		throw IdentifiersNAUtil.map(e);
     	} catch(Exception e) {
     		e.printStackTrace();
     		throw new RemoteException(e.toString());

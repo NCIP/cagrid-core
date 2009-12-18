@@ -144,7 +144,7 @@ public class Resolver {
 		
 		IdentifiersNAServiceClient client = new IdentifiersNAServiceClient( config.getGridSvcUrl() );
 		
-		return gov.nih.nci.cagrid.identifiers.common.MappingUtil.map(
+		return gov.nih.nci.cagrid.identifiers.common.IdentifiersNAUtil.map(
 				client.resolveIdentifier(new org.apache.axis.types.URI(identifier.toString())) );
 	}
 	

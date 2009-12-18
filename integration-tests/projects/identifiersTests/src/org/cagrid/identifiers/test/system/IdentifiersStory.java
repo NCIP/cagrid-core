@@ -15,6 +15,7 @@ import java.util.Arrays;
 import java.util.Vector;
 import org.cagrid.identifiers.test.system.steps.CopyNamingAuthorityConfigStep;
 import org.cagrid.identifiers.test.system.steps.CreateDatabaseStep;
+import org.cagrid.identifiers.test.system.steps.GridServiceFaultsTestStep;
 import org.cagrid.identifiers.test.system.steps.GridServiceIdentifierCreationStep;
 import org.cagrid.identifiers.test.system.steps.IdentifiersClientGridResolutionStep;
 import org.cagrid.identifiers.test.system.steps.IdentifiersClientHttpResolutionStep;
@@ -105,6 +106,7 @@ public class IdentifiersStory extends Story {
         /////////////////////////////////////////////////////
         // Can we test now?
         /////////////////////////////////////////////////////
+        steps.add(new GridServiceFaultsTestStep(testInfo));
         steps.add(new GridServiceIdentifierCreationStep(testInfo));
         steps.add(new IdentifiersClientHttpResolutionStep(testInfo));
         steps.add(new IdentifiersClientGridResolutionStep(testInfo));

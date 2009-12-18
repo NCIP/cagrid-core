@@ -2,21 +2,19 @@ package org.cagrid.identifiers.test.system.steps;
 
 import gov.nih.nci.cagrid.identifiers.client.IdentifiersNAServiceClient;
 import gov.nih.nci.cagrid.testing.system.haste.Step;
-
+import gov.nih.nci.cagrid.identifiers.stubs.types.InvalidIdentifierFault;
 import java.rmi.RemoteException;
-import namingauthority.IdentifierValues;
-import namingauthority.KeyValues;
 
 import org.apache.axis.message.addressing.EndpointReferenceType;
 import org.apache.axis.types.URI;
 import org.apache.axis.types.URI.MalformedURIException;
 import org.cagrid.identifiers.test.system.IdentifiersTestInfo;
 
-public class GridServiceIdentifierCreationStep extends Step {
+public class GridServiceFaultsTestStep extends Step {
 
     private IdentifiersTestInfo testInfo;
 
-    public GridServiceIdentifierCreationStep(IdentifiersTestInfo info) {
+    public GridServiceFaultsTestStep(IdentifiersTestInfo info) {
         this.testInfo = info;
     }
     
@@ -32,30 +30,22 @@ public class GridServiceIdentifierCreationStep extends Step {
             fail("Error constructing client:" + e.getMessage());
         }
         
-        KeyValues[] keyValues = new KeyValues[2];
-		keyValues[0] = new KeyValues();
-		keyValues[0].setKey("URL");
-		keyValues[0].setValue(new String[] { 
-				"http://na.cagrid.org/foo", "http://na.cagrid.org/bar" });
-
-		keyValues[1] = new KeyValues();
-		keyValues[1].setKey("CODE");
-		keyValues[1].setValue(new String[] { "007" });
-		
-		IdentifierValues values = new IdentifierValues(keyValues);
-		
         IdentifiersNAServiceClient client = new IdentifiersNAServiceClient( epr );
-        URI identifier = null;
-        try {
-			identifier = 
-				client.createIdentifier(new IdentifierValues(keyValues));
-			System.out.println("Identifier: " + identifier.toString());
+        testInvalidIdentifierFault( client );
+    }
+    
+    private void testInvalidIdentifierFault( IdentifiersNAServiceClient client ) {
+		try {
+			org.apache.axis.types.URI identifier = new URI("file://324324325");
+			client.resolveIdentifier(identifier);
+		}
+		catch(InvalidIdentifierFault e) {
+			//expected
+			System.out.println("Caught expected fault: InvalidIdentifierFault");
 		}
 		catch(Exception e) {
 			e.printStackTrace();
 			fail(e.toString());
 		}
-		
-        this.testInfo.addIdentifier(identifier, values);
-    }
+	}
 }
