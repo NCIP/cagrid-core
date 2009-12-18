@@ -14,6 +14,7 @@ import java.io.File;
 import java.util.Arrays;
 import java.util.Vector;
 import org.cagrid.identifiers.test.system.steps.CopyNamingAuthorityConfigStep;
+import org.cagrid.identifiers.test.system.steps.CreateDatabaseStep;
 import org.cagrid.identifiers.test.system.steps.GridServiceIdentifierCreationStep;
 import org.cagrid.identifiers.test.system.steps.IdentifiersClientGridResolutionStep;
 import org.cagrid.identifiers.test.system.steps.IdentifiersClientHttpResolutionStep;
@@ -89,6 +90,11 @@ public class IdentifiersStory extends Story {
         steps.add(new DeployServiceStep(this.testInfo.getGridSvcContainer(), 
         		gridTmpDir.getAbsolutePath(), 
         		Arrays.asList(new String[]{"-Dno.deployment.validation=true"})));
+        
+        /////////////////////////////////////////////////////
+        // Create Database
+        /////////////////////////////////////////////////////
+        steps.add(new CreateDatabaseStep(testInfo));
         
         /////////////////////////////////////////////////////
         // Start up containers
