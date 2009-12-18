@@ -109,8 +109,18 @@
 			<xsd:documentation>Basic operators used for data transformations</xsd:documentation>
 		</xsd:annotation>
 		<xsd:restriction base="xsd:string">
+			<!-- numeric operations -->
 			<xsd:enumeration value="ADD" id="add"/>
 			<xsd:enumeration value="SUBTRACT" id="subtract"/>
+			<xsd:enumeration value="MULTIPLY" id="multiply"/>
+			<xsd:enumeration value="DIVIDE" id="divide"/>
+			<xsd:enumeration value="ABS" id="abs"/>
+			<!-- string operations -->
+			<xsd:enumeration value="APPEND" id="append"/>
+			<xsd:enumeration value="PREPEND" id="prepend"/>
+			<xsd:enumeration value="STRLENGTH" id="strlen"/>
+			<xsd:enumeration value="UPPER" id="upper"/>
+			<xsd:enumeration value="LOWER" id="lower"/>
 		</xsd:restriction>
 	</xsd:simpleType>
 	
