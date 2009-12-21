@@ -6,12 +6,15 @@ import gov.nih.nci.cagrid.data.QueryProcessingException;
 import gov.nih.nci.cagrid.data.mapping.Mappings;
 
 import java.io.InputStream;
+import java.util.Collection;
 import java.util.Enumeration;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 import java.util.Properties;
 import java.util.Set;
+
+import javax.xml.namespace.QName;
 
 import org.cagrid.cql2.CQLQuery;
 import org.cagrid.cql2.results.CQLQueryResults;
@@ -33,9 +36,13 @@ public abstract class CQL2QueryProcessor {
     
     
     /**
-     * Initialize the query processor with the properties it requires as specified
+     * Configure the query processor with the properties it requires as specified
      * in the Properties instance provided by getRequiredParameters(), and values
      * populated by the user's custom entries, if any.
+     * 
+     * Subclasses which need to do one-time initialization after configuration has completed
+     * may override the <code>initialize()</code> method, which will be invoked
+     * at the completion of <code>configure()</code>
      * 
      * @param parameters
      *      The parameters as configured by the user.  The set of keys must contain all
@@ -47,6 +54,8 @@ public abstract class CQL2QueryProcessor {
      *      The input stream which contains the wsdd configuration for the data service.
      *      This stream may be important to locating type mappings for serializing and
      *      deserializing beans.
+     * @param classToQnameMappings
+     *      The mapping from classname to QName for serialization purposes.
      * @throws InitializationException
      */
     public void configure(Properties parameters, InputStream wsdd, Mappings classToQnameMappings) throws InitializationException {
@@ -59,7 +68,7 @@ public abstract class CQL2QueryProcessor {
     
     
     /**
-     * Varifies parameters provided from the configure method 
+     * Verifies parameters provided from the configure method 
      * contain all required properties
      * 
      * @param parameters
@@ -99,14 +108,14 @@ public abstract class CQL2QueryProcessor {
      * Get a Properties object of parameters the query processor will require 
      * on initialization.  
      * 
-     * Subclasses can override this method to return a map describing paramters
+     * Subclasses can override this method to return a map describing parameters
      * their implementation needs.
      * 
      * The keys are the names of parameters the query processor 
      * requires, the values are the defaults for those properties.  The default value
-     * of a property may be an empty string if it is an optional paramter.
+     * of a property may be an empty string if it is an optional parameter.
      * The keys MUST be valid java variable names.  They MUST NOT contain spaces 
-     * or punctuation.  They may begin with an uppercase character.
+     * or punctuation.  They may begin with an upper case character.
      * 
      * @return
      *      The required properties for the query processor with their default values
@@ -127,25 +136,20 @@ public abstract class CQL2QueryProcessor {
      * @return
      *      The set of property names
      */
-    public Set<String> getPropertiesFromEtc() {
+    public Set<String> getParametersFromEtc() {
         return new HashSet<String>();
     }
     
     
     /**
-     * Get the classname of the configuration user interface for 
-     * this CQL Query Processor.  This class should exist in the same 
-     * JAR as the query processor, as well as any (non-java / caGrid)
-     * classes it depends on.  This class <i><b>MUST</b></i>
-     * implement the abstract base class
-     * <code>gov.nih.nci.cagrid.data.cql.ui.CQLQueryProcessorConfigUI</code>
-     *  
+     * Get a collection of the supported CQL 2 Extension types
+     * for the specified extension point
+     * 
+     * @param point
      * @return
-     *      The class name of the configuration user interface,
-     *      or <code>null</code> if no UI is provided
      */
-    public String getConfigurationUiClassname() {
-        return null;
+    public Collection<QName> getSupportedExtensions(Cql2ExtensionPoint point) {
+        return new HashSet<QName>();
     }
     
     
@@ -153,7 +157,7 @@ public abstract class CQL2QueryProcessor {
      * @return
      *      The parameters as configured by the user at runtime.
      *      The set of keys must contain all of the keys contained in 
-     *      the Properties object returned by <code>getRequiredParamters()</code>.  
+     *      the Properties object returned by <code>getRequiredParameters()</code>.  
      *      The values in the parameters will be either the user defined 
      *      value or the default value from <code>getRequiredParameters()</code>.
      */
@@ -174,7 +178,7 @@ public abstract class CQL2QueryProcessor {
     
     
     /**
-     * Gets the class to qname mapping for the query processor.
+     * Gets the class to QName mapping for the query processor.
      * This is derived from information in the service properties supplied
      * through JNDI at service runtime, or it may be overridden for testing.
      * 
@@ -198,12 +202,23 @@ public abstract class CQL2QueryProcessor {
     }
     
     
+    /**
+     * The primary query processing method.
+     * 
+     * @param query
+     * @return
+     * @throws QueryProcessingException
+     *      Thrown when an error occurs while handling the query
+     * @throws MalformedQueryException
+     *      Thrown when the query is found to be defective
+     */
     public abstract CQLQueryResults processQuery(CQLQuery query) throws QueryProcessingException, MalformedQueryException;
     
     
     /**
-     * Returns an iterator over the CQL results.  Subclasses may optionally override this method to provide
-     * a lazy implementation of an Iterator to the result set.
+     * Returns an iterator over the CQL results.
+     * Subclasses may optionally override this method to provide
+     * a custom lazy implementation of an Iterator to the result set.
      * 
      * @param query
      * @return
@@ -216,6 +231,12 @@ public abstract class CQL2QueryProcessor {
     }
     
     
+    /**
+     * A simple iterator implementation over a CQL Query Results instance
+     * which returns individual CQLResult instances on next()
+     * 
+     * @author David
+     */
     private static class ResultsIterator implements Iterator<CQLResult> {
         
         private CQLResult[] results = null;
@@ -250,7 +271,7 @@ public abstract class CQL2QueryProcessor {
         
 
         public void remove() {
-            throw new UnsupportedOperationException("remove is not supported");
+            throw new UnsupportedOperationException("remove() is not supported by " + getClass().getName());
         }
     }
 }
