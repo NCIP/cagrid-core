@@ -10,7 +10,6 @@ import java.util.List;
 import org.apache.axis.message.MessageElement;
 import org.cagrid.cds.test.util.DelegatedCredential;
 import org.cagrid.cds.test.util.DelegationIdentifierReference;
-import org.cagrid.cds.test.util.GridCredential;
 import org.cagrid.gaards.cds.client.DelegationUserClient;
 import org.cagrid.gaards.cds.common.AllowedParties;
 import org.cagrid.gaards.cds.common.DelegationIdentifier;

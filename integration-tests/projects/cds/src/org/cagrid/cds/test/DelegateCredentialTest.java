@@ -13,10 +13,7 @@ import gov.nih.nci.cagrid.testing.system.deployment.steps.UnpackContainerStep;
 import gov.nih.nci.cagrid.testing.system.deployment.story.ServiceStoryBase;
 import gov.nih.nci.cagrid.testing.system.haste.Step;
 
-import javax.xml.namespace.QName;
-
 import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
@@ -24,12 +21,11 @@ import java.util.List;
 import java.util.Set;
 import java.util.Vector;
 
-import org.cagrid.cds.test.steps.CopyCdsConfigurationStep;
+import javax.xml.namespace.QName;
+
 import org.cagrid.cds.test.steps.CleanupCdsStep;
 import org.cagrid.cds.test.steps.DelegateCredentialStep;
 import org.cagrid.cds.test.steps.DorianAddTrustedCAStep;
-import org.cagrid.cds.test.steps.DorianApproveRegistrationStep;
-import org.cagrid.cds.test.steps.DorianAuthenticateStep;
 import org.cagrid.cds.test.steps.DorianDestroyDefaultProxyStep;
 import org.cagrid.cds.test.steps.DorianSubmitRegistrationStep;
 import org.cagrid.cds.test.steps.FindCredentialsDelegatedToClientStep;
