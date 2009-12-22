@@ -22,7 +22,7 @@ public class GridTable extends GrapeBaseTable {
 
 	public final static String SYSTEM_NAME = "System Name";
 
-	public final static String IVY_SETTINGS = "Ivy Settings";
+	public final static String IVY_SETTINGS = "Repository";
 
 
 	public GridTable() {

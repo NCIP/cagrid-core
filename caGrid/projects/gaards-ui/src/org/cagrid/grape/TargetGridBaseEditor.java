@@ -28,6 +28,7 @@ import org.apache.axis.utils.XMLUtils;
 import org.cagrid.grape.configuration.Grid;
 import org.cagrid.grape.configuration.TargetGridsConfiguration;
 import org.cagrid.grape.model.Configuration;
+import org.cagrid.grape.utils.ErrorDialog;
 import org.globus.wsrf.encoding.ObjectDeserializer;
 
 public class TargetGridBaseEditor extends ConfigurationBasePanel {
@@ -68,11 +69,22 @@ public class TargetGridBaseEditor extends ConfigurationBasePanel {
 
 	private JButton browseIvySettings = null;
 	
+	private ConfigurationWindow window;
+	private ConfigurationDescriptorTreeNode treeNode;
+	
 	public TargetGridBaseEditor(ConfigurationDescriptorTreeNode treeNode,
 			Object conf) throws Exception {
 		super(treeNode, conf);
 		initialize();
 
+		window = treeNode.getConfigurationWindow();
+		this.treeNode = treeNode;
+		
+		loadGridTree();
+		loadValues();
+	}
+
+	private void loadGridTree() throws Exception {
 		Set<String> configurationNames = GAARDSApplication.getContext().getConfigurationManager().getConfigurationNames();
 		for (String configurationName : configurationNames) {
 			if ("default".equalsIgnoreCase(configurationName)) {
@@ -87,7 +99,6 @@ public class TargetGridBaseEditor extends ConfigurationBasePanel {
 			treeNode.add(gridNode);
 			gridNode.processConfigurationGroups();
 		}
-		loadValues();
 	}
 
 	public TargetGridsConfiguration getTargetGridsConfiguration() {
@@ -100,7 +111,7 @@ public class TargetGridBaseEditor extends ConfigurationBasePanel {
 	 */
 	private void initialize() {
 		jLabel2 = new JLabel();
-		jLabel2.setText("Ivy Configuration");
+		jLabel2.setText("Repository Settings");
 		GridBagConstraints gridBagConstraints12 = new GridBagConstraints();
 		gridBagConstraints12.gridx = 0;
 		gridBagConstraints12.fill = GridBagConstraints.HORIZONTAL;
@@ -302,15 +313,47 @@ public class TargetGridBaseEditor extends ConfigurationBasePanel {
 	private JButton getRemoveButton() {
 		if (removeButton == null) {
 			removeButton = new JButton();
-			removeButton.setText("Remove");
+			removeButton.setText("Remove Repository");
 			removeButton.setIcon(LookAndFeel.getRemoveIcon());
 			removeButton.addActionListener(new java.awt.event.ActionListener() {
 				public void actionPerformed(java.awt.event.ActionEvent e) {
-					removeValue();
+					try {						
+						if (removingRepositoryWithActiveGrid(getGrids().getSelectedGrid())) {
+							ErrorDialog.showError("Cannot remove a repository if it contains the target grid.");
+							return;
+						}
+					
+						removeValue();
+						GridApplication.getContext().getConfigurationManager().saveAll();
+						window.dispose();
+						
+					} catch (Exception ex) {
+						ex.printStackTrace();
+						GridApplication.getContext().showMessage(
+								Utils.getExceptionMessage(ex));
+					}
+									
 				}
+
 			});
 		}
 		return removeButton;
+	}
+	
+	private boolean removingRepositoryWithActiveGrid(Grid selectedGrid) {
+		TargetGridsConfiguration conf = getTargetGridsConfiguration();
+		Grid[] grids = conf.getGrid();
+		if (grids != null) {
+			for (int i = 0; i < grids.length; i++) {
+				if (GAARDSApplication.getTargetGrid().equals(grids[i].getSystemName())) {
+					if (grids[i].getIvySettings().equals(selectedGrid.getIvySettings())) {
+						return true;
+					}
+				}
+			}
+		}
+
+		return false;
 	}
 
 	private void addValue() {
@@ -379,10 +422,12 @@ public class TargetGridBaseEditor extends ConfigurationBasePanel {
 				if (grids != null) {
 					List<Grid> newList = new ArrayList<Grid>();
 					for (int i = 0; i < grids.length; i++) {
-						if (!grid.equals(grids[i])) {
+						if (!grid.getIvySettings().equals(grids[i].getIvySettings())) {
 							newList.add(grids[i]);
 						}
 					}
+					File settingsFile = new File(GAARDSApplication.getGAARDSConfigurationDirectory(), grid.getIvySettings());
+					settingsFile.delete();
 					getGrids().clearTable();
 					Grid[] des = new Grid[newList.size()];
 					for (int i = 0; i < newList.size(); i++) {
