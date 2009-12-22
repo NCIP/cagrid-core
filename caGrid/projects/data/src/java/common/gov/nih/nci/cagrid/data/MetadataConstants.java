@@ -1,0 +1,20 @@
+package gov.nih.nci.cagrid.data;
+
+import javax.xml.namespace.QName;
+
+public interface MetadataConstants {
+
+    // metadata schema constants
+    public static final String METADATA_SCHEMA_LOCATION = "xsd/cagrid/types";
+    public static final String DATA_METADATA_SCHEMA = METADATA_SCHEMA_LOCATION + "/data/data.xsd";
+    public static final String COMMON_METADATA_SCHEMA = METADATA_SCHEMA_LOCATION + "/common/common.xsd";
+    public static final String CAGRID_METADATA_SCHEMA = METADATA_SCHEMA_LOCATION + "/caGridMetadata.xsd";
+    public static final String DATA_METADATA_URI = "gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.dataservice";
+    
+    
+    // DomainModel QName
+    public static final QName DOMAIN_MODEL_QNAME = new QName("gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.dataservice", "DomainModel");
+    
+    // service metadata QName
+    public static final QName SERVICE_METADATA_QNAME = new QName("gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata", "ServiceMetadata");
+}
