@@ -38,7 +38,7 @@ import org.cagrid.cql2.NamedAssociationList;
 import org.cagrid.cql2.NamedAttribute;
 import org.cagrid.cql2.PopulationDepth;
 
-public class Cql2WalkerDomainModelValidationHandler implements Cql2WalkerHandler {
+public class Cql2WalkerDomainModelValidationHandler extends Cql2WalkerHandlerAdapter {
     
     private static Log LOG = LogFactory.getLog(Cql2WalkerDomainModelValidationHandler.class);
     
@@ -49,7 +49,6 @@ public class Cql2WalkerDomainModelValidationHandler implements Cql2WalkerHandler
     private Stack<UMLClass> populatedAssociationStack = null;
     private UMLClass currentPopulatedAssociation = null;
     private UMLAttribute currentAttribute = null;
-    private boolean insideGroup = false;
     
     public Cql2WalkerDomainModelValidationHandler(DomainModel model) {
         this.model = model;
@@ -63,54 +62,8 @@ public class Cql2WalkerDomainModelValidationHandler implements Cql2WalkerHandler
     }
 
 
-    public void endAssociationPopulation(AssociationPopulationSpecification pop) throws Cql2WalkerException {
-        // TODO Auto-generated method stub
-
-    }
-
-
     public void endAttribute(CQLAttribute attrib) throws Cql2WalkerException {
         currentAttribute = null;
-    }
-
-
-    public void endAttributeValue(AttributeValue val) throws Cql2WalkerException {
-        // TODO Auto-generated method stub
-
-    }
-
-
-    public void endDistinctAttribute(DistinctAttribute distinct) throws Cql2WalkerException {
-        // TODO Auto-generated method stub
-
-    }
-
-
-    public void endExtension(CQLExtension ext) throws Cql2WalkerException {
-        // TODO Auto-generated method stub
-
-    }
-
-
-    public void endGroup(CQLGroup group) throws Cql2WalkerException {
-        insideGroup = false;
-    }
-
-
-    public void endNamedAttribute(NamedAttribute named) throws Cql2WalkerException {
-        // TODO Auto-generated method stub
-
-    }
-    
-    
-    public void endQuery(CQLQuery query) throws Cql2WalkerException {
-        // TODO: clean up any resources, wrap up / zero out state variables
-    }
-
-
-    public void endQueryModifier(CQLQueryModifier mods) throws Cql2WalkerException {
-        // TODO Auto-generated method stub
-
     }
 
 
@@ -257,13 +210,7 @@ public class Cql2WalkerDomainModelValidationHandler implements Cql2WalkerHandler
     }
 
 
-    public void startExtension(CQLExtension ext) throws Cql2WalkerException {
-        
-    }
-
-
     public void startGroup(CQLGroup group) throws Cql2WalkerException {
-        insideGroup = true;
         // check out the logical operation
         GroupLogicalOperator op = group.getLogicalOperation();
         if (op == null) {

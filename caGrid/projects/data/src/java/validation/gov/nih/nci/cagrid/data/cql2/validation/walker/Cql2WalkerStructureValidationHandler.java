@@ -19,7 +19,7 @@ import org.cagrid.cql2.NamedAttribute;
 import org.cagrid.cql2.PopulationDepth;
 
 
-public class Cql2WalkerStructureValidationHandler implements Cql2WalkerHandler {
+public class Cql2WalkerStructureValidationHandler extends Cql2WalkerHandlerAdapter {
 
     private Stack<BigInteger> childCount = null;
     private boolean processingModifier = false;
