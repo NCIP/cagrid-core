@@ -125,6 +125,11 @@ public abstract class BaseDataServiceImpl {
     }
     
     
+    protected InputStream getServerConfigWsddStream() {
+        return new ByteArrayInputStream(serverConfigBytes);
+    }
+    
+    
     /**
      * Helper method to easily and consistently create a typed exception
      * 
@@ -260,7 +265,7 @@ public abstract class BaseDataServiceImpl {
         } else {
             // process normally and wrap the results with an iterator
             CQLQueryResults results = processCql1Query(query);
-            resultsIterator = new CQLQueryResultsIterator(results, new ByteArrayInputStream(serverConfigBytes));
+            resultsIterator = new CQLQueryResultsIterator(results, getServerConfigWsddStream());
         }
         return resultsIterator;
     }
