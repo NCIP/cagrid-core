@@ -27,7 +27,6 @@ import org.cagrid.gaards.cds.stubs.types.PermissionDeniedFault;
 import org.cagrid.gaards.ui.common.ProgressPanel;
 import org.cagrid.gaards.ui.common.TitlePanel;
 import org.cagrid.gaards.ui.dorian.federation.CommunitySearchDialog;
-import org.cagrid.gaards.ui.dorian.federation.UserSearchDialog;
 import org.cagrid.grape.ApplicationComponent;
 import org.cagrid.grape.GridApplication;
 import org.cagrid.grape.LookAndFeel;

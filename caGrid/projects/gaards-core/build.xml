@@ -35,7 +35,20 @@
 	<!-- Directory for compiled JAR files (additional library files required by
 	     the service will also be placed here) -->
 	<property name="build.lib.dir" location="${build.dir}/jars" />
+
+	<property name="stubs.dir" location="${build.dir}/stubs" />
+
 	<!-- Directory where stub source and class files are placed -->
+	<property name="stubs.src" location="${stubs.dir}/src" />
+	<!-- Compiled stub classes -->
+	<property name="stubs.dest" location="${stubs.dir}/classes" />
+	<!-- Where we have to copy schema files inside the build directory -->
+	<property name="schema.dest" location="${build.dir}/schema" />
+
+	<property name="schema.dir" value="schema" />
+
+	<property name="schema.path" value="gaards-credential-types.xsd" />
+
 
 	<!-- We want detailed error messages -->
 	<property name="java.debug" value="on" />
@@ -43,22 +56,59 @@
 	<!-- Load test files -->
 	<import file="test/test.xml" />
 
+
+	<target name="stubs" depends="init">
+		<!-- Invoke the stub generator -->
+		<ant antfile="${build.stubs}" target="generateStubs" inheritall="false">
+			<property name="source.stubs.dir" location="${schema.dest}/" />
+			<property name="target.stubs.dir" location="${stubs.src}" />
+			<property name="wsdl.file" value="GAARDSCredentialTypes.wsdl" />
+			<property name="ns.excludes" value="${GT4.ns.excludes}" />
+		</ant>
+	</target>
+
+	<target name="compileStubs" depends="stubs">
+		<javac srcdir="${stubs.src}" destdir="${stubs.dest}" debug="${java.debug}" classpathref="base.classpath">
+			<include name="**/*.java" />
+		</javac>
+	</target>
+
+
 	<!-- Sets up the build directory structure -->
-	<target name="init">
+	<target name="init" depends="checkGlobus">
 		<mkdir dir="${build.dir}" />
 		<mkdir dir="${build.dest}" />
 		<mkdir dir="${test.build.dest}" />
 		<mkdir dir="${build.lib.dir}" />
 		<mkdir dir="${test.log.dir}" />
 
+		<mkdir dir="${stubs.dir}" />
+		<mkdir dir="${stubs.src}" />
+		<mkdir dir="${stubs.dest}" />
+
+		<mkdir dir="${schema.dest}" />
+		<copy toDir="${schema.dest}">
+			<fileset dir="${schema.src}" casesensitive="yes">
+				<include name="wsrf/**/*" />
+				<include name="ws/**/*" />
+			</fileset>
+			<fileset dir="${schema.dir}" casesensitive="yes">
+				<include name="**" />
+			</fileset>
+		</copy>
+
+
 		<path id="base.classpath">
+
+			<pathelement location="${stubs.dest}" />
+
 			<fileset dir="${ext.lib.dir}">
 				<include name="*.jar" />
 			</fileset>
 
 			<fileset dir="${globus.location}/lib">
 				<include name="*.jar" />
-                <exclude name="junit.jar"/>
+				<exclude name="junit.jar" />
 				<exclude name="${jar.name}" />
 				<exclude name="xml-apis.jar" />
 				<exclude name="xercesImpl.jar" />
@@ -89,8 +139,36 @@
 	</target>
 
 
+
+
+	<!-- ============================================================== -->
+	<!-- Globus properties                                              -->
+	<!-- ============================================================== -->
+	<target name="checkGlobus" depends="setGlobus">
+		<condition property="globus.not.found">
+			<or>
+				<not>
+					<isset property="ext.globus.dir" />
+				</not>
+				<equals arg1="${ext.globus.dir}" arg2="" />
+			</or>
+		</condition>
+		<fail message="Globus installation is not set in either GLOBUS_LOCATION or ext.globus.dir" if="globus.not.found" />
+		<echo message="Globus: ${ext.globus.dir}" />
+	</target>
+	<target name="setGlobus" if="env.GLOBUS_LOCATION">
+		<!-- GT4 build files and directories-->
+		<property name="ext.globus.dir" value="${env.GLOBUS_LOCATION}" />
+		<property name="build.stubs" location="${ext.globus.dir}/share/globus_wsrf_tools/build-stubs.xml" />
+		<property name="schema.src" location="${ext.globus.dir}/share/schema" />
+		<property name="build.packages" location="${ext.globus.dir}/share/globus_wsrf_common/build-packages.xml" />
+		<!-- Copied from build.stubs file, as there is no way to "append" to the value in the remote file -->
+		<property name="GT4.ns.excludes" value="-x http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-BaseFaults-1.2-draft-01.xsd -x http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-BaseFaults-1.2-draft-01.wsdl -x http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ResourceLifetime-1.2-draft-01.xsd -x http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ResourceLifetime-1.2-draft-01.wsdl -x http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ResourceProperties-1.2-draft-01.xsd -x http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ResourceProperties-1.2-draft-01.wsdl -x http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ServiceGroup-1.2-draft-01.xsd -x http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ServiceGroup-1.2-draft-01.wsdl -x http://docs.oasis-open.org/wsn/2004/06/wsn-WS-BaseNotification-1.2-draft-01.xsd -x http://docs.oasis-open.org/wsn/2004/06/wsn-WS-BaseNotification-1.2-draft-01.wsdl -x http://schemas.xmlsoap.org/ws/2004/04/trust -x http://schemas.xmlsoap.org/ws/2002/12/policy -x http://schemas.xmlsoap.org/ws/2002/07/utility -x http://schemas.xmlsoap.org/ws/2004/04/sc -x http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-secext-1.0.xsd -x http://www.w3.org/2000/09/xmldsig# -x http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd -x http://schemas.xmlsoap.org/ws/2004/09/enumeration" />
+	</target>
+
+
 	<!-- Compile the implementation classes (service, resource, etc.) -->
-	<target name="compile" depends="init">
+	<target name="compile" depends="compileStubs">
 		<javac srcdir="${src.dir}" destdir="${build.dest}" debug="${java.debug}" deprecation="${deprecation}" classpathref="base.classpath" />
 		<copy toDir="${build.dest}">
 			<fileset dir="${src.dir}">
@@ -107,8 +185,12 @@
 
 	<!-- Create a JAR file with the implementation classes -->
 	<target name="jar" depends="compile">
-		<jar jarfile="${build.lib.dir}/${jar.name}" basedir="${build.dest}">
-			<include name="**/gaards/**" />
+		<jar jarfile="${build.lib.dir}/${jar.name}">
+			<manifest>
+				<attribute name="Built-By" value="${user.name}" />
+			</manifest>
+			<fileset dir="${build.dest}" includes="**/gaards/**" />
+			<fileset dir="${stubs.dest}" includes="**/gaards/**" />
 		</jar>
 	</target>
 
@@ -218,7 +300,7 @@
 			<classpath refid="run.classpath" />
 		</java>
 	</target>
-	
+
 	<target name="signCertificateRequest" description="Signs a certificate request." depends="init">
 		<input message="Please enter the location of the CA's private key:" addproperty="key.input" />
 		<input message="Please enter the CA's password:" addproperty="password.input" />
@@ -256,13 +338,13 @@
 
 	<target name="createTomcatKeystore" description="Create a keystore." depends="init">
 		<java classname="org.cagrid.gaards.pki.tools.TomcatKeystoreCreator" fork="false" newenvironment="true" failonerror="true">
-				<classpath refid="run.classpath" />
+			<classpath refid="run.classpath" />
 		</java>
 	</target>
-	
+
 	<target name="createTruststore" description="Create a truststore." depends="init">
-			<java classname="org.cagrid.gaards.pki.tools.TruststoreCreator" fork="false" newenvironment="true" failonerror="true">
-					<classpath refid="run.classpath" />
-			</java>
-		</target>
+		<java classname="org.cagrid.gaards.pki.tools.TruststoreCreator" fork="false" newenvironment="true" failonerror="true">
+			<classpath refid="run.classpath" />
+		</java>
+	</target>
 </project>

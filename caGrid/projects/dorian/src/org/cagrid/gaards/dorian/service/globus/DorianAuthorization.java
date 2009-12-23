@@ -218,6 +218,14 @@ public class DorianAuthorization implements PDP {
 	public void authorizeHostSearch(Subject peerSubject, MessageContext context, QName operation) throws AuthorizationException {
 		
 	}
+	   				
+	public void authorizeGetAccountProfile(Subject peerSubject, MessageContext context, QName operation) throws AuthorizationException {
+		
+	}
+	   				
+	public void authorizeUpdateAccountProfile(Subject peerSubject, MessageContext context, QName operation) throws AuthorizationException {
+		
+	}
 	   
 	
 	public boolean isPermitted(Subject peerSubject, MessageContext context, QName operation)
@@ -348,6 +356,12 @@ public class DorianAuthorization implements PDP {
 			return true;
 		} else if(operation.getLocalPart().equals("hostSearch")){
 			authorizeHostSearch(peerSubject, context, operation);
+			return true;
+		} else if(operation.getLocalPart().equals("getAccountProfile")){
+			authorizeGetAccountProfile(peerSubject, context, operation);
+			return true;
+		} else if(operation.getLocalPart().equals("updateAccountProfile")){
+			authorizeUpdateAccountProfile(peerSubject, context, operation);
 			return true;
 		} 		
 		return false;

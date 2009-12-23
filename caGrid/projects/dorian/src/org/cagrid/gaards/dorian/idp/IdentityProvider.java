@@ -5,6 +5,7 @@ import gov.nih.nci.cagrid.common.FaultUtil;
 import gov.nih.nci.cagrid.common.Utils;
 import gov.nih.nci.cagrid.opensaml.SAMLAssertion;
 
+import java.rmi.RemoteException;
 import java.security.cert.X509Certificate;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -21,6 +22,7 @@ import org.cagrid.gaards.dorian.ca.CertificateAuthority;
 import org.cagrid.gaards.dorian.common.AuditConstants;
 import org.cagrid.gaards.dorian.common.LoggingObject;
 import org.cagrid.gaards.dorian.federation.FederationAudit;
+import org.cagrid.gaards.dorian.policy.AccountInformationModificationPolicy;
 import org.cagrid.gaards.dorian.policy.IdentityProviderPolicy;
 import org.cagrid.gaards.dorian.policy.PasswordLockoutPolicy;
 import org.cagrid.gaards.dorian.policy.PasswordPolicy;
@@ -325,7 +327,7 @@ public class IdentityProvider extends LoggingObject {
     public void updateUser(String requestorUID, LocalUser u) throws DorianInternalFault, PermissionDeniedFault,
         NoSuchUserFault, InvalidUserPropertyFault {
         try {
-            LocalUser requestor = verifyUser(requestorUID);          
+            LocalUser requestor = verifyUser(requestorUID);
             verifyAdministrator(requestor);
             LocalUser beforeUpdate = this.userManager.getUser(u.getUserId());
             this.userManager.updateUser(u);
@@ -487,6 +489,98 @@ public class IdentityProvider extends LoggingObject {
     }
 
 
+    private AccountProfile userToAccountProfile(LocalUser u) {
+        AccountProfile p = new AccountProfile();
+        p.setUserId(u.getUserId());
+        p.setAddress(u.getAddress());
+        p.setAddress2(u.getAddress2());
+        p.setCity(u.getCity());
+        p.setCountry(u.getCountry());
+        p.setEmail(u.getEmail());
+        p.setFirstName(u.getFirstName());
+        p.setLastName(u.getLastName());
+        p.setOrganization(u.getOrganization());
+        p.setPhoneNumber(u.getPhoneNumber());
+        p.setState(u.getState());
+        p.setZipcode(u.getZipcode());
+        return p;
+    }
+
+
+    public AccountProfile getAccountProfile(String requestorUID) throws RemoteException, DorianInternalFault,
+        PermissionDeniedFault {
+        try {
+            LocalUser requestor = verifyUser(requestorUID);
+            return userToAccountProfile(requestor);
+        } catch (DorianInternalFault e) {
+            String message = "An unexpected error occurred while trying to get the account profile for the user "
+                + requestorUID + ".";
+            this.eventManager.logEvent(AuditConstants.SYSTEM_ID, AuditConstants.SYSTEM_ID,
+                FederationAudit.InternalError.getValue(), message + "\n\n" + FaultUtil.printFaultToString(e));
+            throw e;
+        } catch (PermissionDeniedFault e) {
+            String message = "Permission to get the requested account profile was denied.";
+            this.eventManager.logEvent(requestorUID, AuditConstants.SYSTEM_ID, IdentityProviderAudit.LocalAccessDenied
+                .getValue(), message + "\n\n" + Utils.getExceptionMessage(e));
+            throw e;
+        }
+    }
+
+
+    public void updateAccountProfile(String requestorUID, AccountProfile profile) throws RemoteException,
+        DorianInternalFault, InvalidUserPropertyFault, PermissionDeniedFault, NoSuchUserFault {
+        try {
+            LocalUser requestor = verifyUser(requestorUID);
+            if (profile == null) {
+                InvalidUserPropertyFault f = new InvalidUserPropertyFault();
+                f.setFaultString("Could not update the account profile, no profile was provided.");
+                throw f;
+            } else if (conf.getAccountInformationModificationPolicy().equals(
+                AccountInformationModificationPolicy.Admin.getValue())) {
+                PermissionDeniedFault f = new PermissionDeniedFault();
+                f.setFaultString("You do not have permission to update the account profile for " + profile.getUserId()
+                    + ".");
+                throw f;
+            } else if ((Utils.clean(profile.getUserId()) == null)
+                || (!requestor.getUserId().equals(profile.getUserId()))) {
+                PermissionDeniedFault f = new PermissionDeniedFault();
+                f.setFaultString("You do not have permission to update the account profile for " + profile.getUserId()
+                    + ".");
+                throw f;
+            } else {
+                LocalUser beforeUpdate = this.userManager.getUser(requestor.getUserId());
+                requestor.setPassword(null);
+                requestor.setAddress(profile.getAddress());
+                requestor.setAddress2(profile.getAddress2());
+                requestor.setCity(profile.getCity());
+                requestor.setCountry(profile.getCountry());
+                requestor.setEmail(profile.getEmail());
+                requestor.setFirstName(profile.getFirstName());
+                requestor.setLastName(profile.getLastName());
+                requestor.setOrganization(profile.getOrganization());
+                requestor.setPhoneNumber(profile.getPhoneNumber());
+                requestor.setState(profile.getState());
+                requestor.setZipcode(profile.getZipcode());
+                this.userManager.updateUser(requestor);
+                this.eventManager.logEvent(requestor.getUserId(), requestorUID,
+                    IdentityProviderAudit.LocalAccountUpdated.getValue(), ReportUtils.generateReport(beforeUpdate,
+                        this.userManager.getUser(requestor.getUserId())));
+            }
+        } catch (DorianInternalFault e) {
+            String message = "An unexpected error occurred while trying to get the account profile for the user "
+                + requestorUID + ".";
+            this.eventManager.logEvent(AuditConstants.SYSTEM_ID, AuditConstants.SYSTEM_ID,
+                FederationAudit.InternalError.getValue(), message + "\n\n" + FaultUtil.printFaultToString(e));
+            throw e;
+        } catch (PermissionDeniedFault e) {
+            String message = "Permission to get the requested account profile was denied.";
+            this.eventManager.logEvent(requestorUID, AuditConstants.SYSTEM_ID, IdentityProviderAudit.LocalAccessDenied
+                .getValue(), message + "\n\n" + Utils.getExceptionMessage(e));
+            throw e;
+        }
+    }
+
+
     public IdentityProviderPolicy getPolicy() {
         IdentityProviderPolicy policy = new IdentityProviderPolicy();
         UserIdPolicy u = new UserIdPolicy();
@@ -505,7 +599,8 @@ public class IdentityProvider extends LoggingObject {
         plp.setMinutes(conf.getPasswordSecurityPolicy().getLockout().getMinutes());
         plp.setSeconds(conf.getPasswordSecurityPolicy().getLockout().getSeconds());
         p.setPasswordLockoutPolicy(plp);
-
+        policy.setAccountInformationModificationPolicy(AccountInformationModificationPolicy.fromValue(this.conf
+            .getAccountInformationModificationPolicy()));
         p.setSymbolRequired(true);
         StringBuffer sb = new StringBuffer();
         for (int i = 0; i < PasswordUtils.SYMBOLS.length; i++) {

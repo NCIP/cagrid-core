@@ -16,7 +16,6 @@ import org.cagrid.gaards.cds.common.AllowedParties;
 import org.cagrid.gaards.cds.common.DelegationPolicy;
 import org.cagrid.gaards.cds.common.IdentityDelegationPolicy;
 import org.cagrid.gaards.ui.dorian.federation.CommunitySearchDialog;
-import org.cagrid.gaards.ui.dorian.federation.UserSearchDialog;
 import org.cagrid.grape.GridApplication;
 import org.cagrid.grape.LookAndFeel;
 

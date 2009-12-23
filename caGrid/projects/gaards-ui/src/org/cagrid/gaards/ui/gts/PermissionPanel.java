@@ -20,7 +20,6 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 
 import org.cagrid.gaards.ui.dorian.federation.CommunitySearchDialog;
-import org.cagrid.gaards.ui.dorian.federation.UserSearchDialog;
 import org.cagrid.grape.GridApplication;
 
 

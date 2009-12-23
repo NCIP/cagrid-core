@@ -9,6 +9,7 @@ import org.cagrid.gaards.dorian.client.GridAdministrationClient;
 import org.cagrid.gaards.dorian.client.GridUserClient;
 import org.cagrid.gaards.dorian.client.LocalAdministrationClient;
 import org.cagrid.gaards.dorian.client.LocalUserClient;
+import org.cagrid.gaards.dorian.policy.AccountInformationModificationPolicy;
 import org.cagrid.gaards.dorian.policy.DorianPolicy;
 import org.cagrid.gaards.ui.common.ServiceHandle;
 import org.cagrid.grape.configuration.ServiceDescriptor;
@@ -121,4 +122,22 @@ public class DorianHandle extends ServiceHandle {
         return authenticationServices;
     }
 
+
+    public boolean localAccountModification() {
+        if (policy != null) {
+            if (policy.getIdentityProviderPolicy() != null) {
+                if ((policy.getIdentityProviderPolicy().getAccountInformationModificationPolicy() != null)
+                    && (policy.getIdentityProviderPolicy().getAccountInformationModificationPolicy()
+                        .equals(AccountInformationModificationPolicy.User))) {
+                    return true;
+                } else {
+                    return false;
+                }
+            } else {
+                return false;
+            }
+        } else {
+            return false;
+        }
+    }
 }

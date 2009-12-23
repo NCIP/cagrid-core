@@ -18,6 +18,31 @@ public interface DorianI {
     public gov.nih.nci.cagrid.metadata.security.ServiceSecurityMetadata getServiceSecurityMetadata() throws RemoteException ;
 
   /**
+   * The method allows a user to get their account profile.
+   *
+   * @throws DorianInternalFault
+   *	
+   * @throws PermissionDeniedFault
+   *	
+   */
+  public org.cagrid.gaards.dorian.idp.AccountProfile getAccountProfile() throws RemoteException, org.cagrid.gaards.dorian.stubs.types.DorianInternalFault, org.cagrid.gaards.dorian.stubs.types.PermissionDeniedFault ;
+
+  /**
+   * This method allows a user to update their account profile.
+   *
+   * @param profile
+   * @throws DorianInternalFault
+   *	
+   * @throws InvalidUserPropertyFault
+   *	
+   * @throws PermissionDeniedFault
+   *	
+   * @throws NoSuchUserFault
+   *	
+   */
+  public void updateAccountProfile(org.cagrid.gaards.dorian.idp.AccountProfile profile) throws RemoteException, org.cagrid.gaards.dorian.stubs.types.DorianInternalFault, org.cagrid.gaards.dorian.stubs.types.InvalidUserPropertyFault, org.cagrid.gaards.dorian.stubs.types.PermissionDeniedFault, org.cagrid.gaards.dorian.stubs.types.NoSuchUserFault ;
+
+  /**
    * Submits an application for an account with a the Dorian Identity Provider.  (This method is DEPRECATED, please use registerLocalUser)
    *
    * @param application

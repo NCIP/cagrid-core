@@ -32,10 +32,11 @@ public class ServicesManager extends Runner {
         this.mutex = new Object();
         this.firstRun = true;
     }
-    
-    private void startup(){
+
+
+    private void startup() {
         try {
-        	GAARDSApplication.getContext().getApplication().getThreadManager().executeInBackground(this);
+            GAARDSApplication.getContext().getApplication().getThreadManager().executeInBackground(this);
         } catch (Exception e) {
             log.error(e);
         }
@@ -68,11 +69,12 @@ public class ServicesManager extends Runner {
             }
         }
     }
-    
-    public void syncWithUpdatedConfiguration(){
+
+
+    public void syncWithUpdatedConfiguration() {
         synchronized (mutex) {
-            if(!firstRun){
-               syncServices(); 
+            if (!firstRun) {
+                syncServices();
             }
         }
     }
@@ -89,9 +91,13 @@ public class ServicesManager extends Runner {
                 if (list != null) {
                     RunnerGroup group = new RunnerGroup();
                     for (int i = 0; i < list.length; i++) {
-                        DorianHandle handle = new DorianHandle(list[i]);
-                        dorians.add(handle);
-                        group.add(new AuthenticationLookupThread(handle));
+                        try {
+                            DorianHandle handle = new DorianHandle(list[i]);
+                            dorians.add(handle);
+                            group.add(new AuthenticationLookupThread(handle));
+                        } catch (Exception e) {
+                            log.error(e);
+                        }
                     }
                     GAARDSApplication.getContext().getApplication().getThreadManager().executeGroup(group);
                 }
@@ -101,6 +107,18 @@ public class ServicesManager extends Runner {
         }
         synchronized (mutex) {
             this.dorianServices = dorians;
+        }
+    }
+
+
+    public DorianHandle getDorianHandle(String serviceURL) {
+        synchronized (mutex) {
+            for (int i = 0; i < dorianServices.size(); i++) {
+                if (serviceURL.equals(dorianServices.get(i).getServiceURL())) {
+                    return dorianServices.get(i);
+                }
+            }
+            return null;
         }
     }
 

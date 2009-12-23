@@ -7,6 +7,7 @@ import java.awt.Insets;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
+import org.cagrid.gaards.credentials.X509CredentialEntry;
 import org.cagrid.gaards.ui.common.CredentialComboBox;
 import org.globus.gsi.GlobusCredential;
 
@@ -109,8 +110,14 @@ public class SessionPanel extends JPanel {
 
 
     public GTSSession getSession() throws Exception {
+
         if (getService().getSelectedService() != null) {
-            return new GTSSession(getService().getSelectedService(), getCred().getSelectedCredential());
+            X509CredentialEntry entry = getCred().getSelectedCredential();
+            GlobusCredential cred = null;
+            if (entry != null) {
+                cred = entry.getCredential();
+            }
+            return new GTSSession(getService().getSelectedService(), cred);
         } else {
             return null;
         }
@@ -127,7 +134,12 @@ public class SessionPanel extends JPanel {
 
 
     public GlobusCredential getCredential() throws Exception {
-        return getCred().getSelectedCredential();
+        X509CredentialEntry entry = getCred().getSelectedCredential();
+        GlobusCredential cred = null;
+        if (entry != null) {
+            cred = entry.getCredential();
+        }
+        return cred;
     }
 
 }

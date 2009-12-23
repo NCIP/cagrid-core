@@ -24,7 +24,6 @@ import javax.swing.border.TitledBorder;
 
 import org.cagrid.gaards.ui.common.TitlePanel;
 import org.cagrid.gaards.ui.dorian.federation.CommunitySearchDialog;
-import org.cagrid.gaards.ui.dorian.federation.UserSearchDialog;
 import org.cagrid.gaards.ui.gridgrouper.GridGrouperLookAndFeel;
 import org.cagrid.grape.ApplicationComponent;
 import org.cagrid.grape.GridApplication;

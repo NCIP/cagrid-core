@@ -13,6 +13,7 @@ import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
+import org.cagrid.gaards.credentials.X509CredentialEntry;
 import org.cagrid.gaards.ui.common.CredentialComboBox;
 import org.cagrid.gaards.ui.common.TitlePanel;
 import org.cagrid.gaards.ui.gridgrouper.GridGrouperHandle;
@@ -237,7 +238,11 @@ public class AddGridGrouperWindow extends ApplicationComponent {
         GridGrouperHandle handle = null;
         try {
             handle = ((GridGrouperServiceList) this.services).getSelectedService();
-            GlobusCredential cred = ((CredentialComboBox) this.credentials).getSelectedCredential();
+            X509CredentialEntry entry = ((CredentialComboBox) this.credentials).getSelectedCredential();
+            GlobusCredential cred = null;
+            if (entry != null) {
+                cred = entry.getCredential();
+            }
             this.dispose();
             this.root.addGridGrouper(handle.getClient(cred));
         } catch (Exception e) {
@@ -248,13 +253,13 @@ public class AddGridGrouperWindow extends ApplicationComponent {
 
 
     /**
-     * This method initializes titlePanel	
-     * 	
-     * @return javax.swing.JPanel	
+     * This method initializes titlePanel
+     * 
+     * @return javax.swing.JPanel
      */
     private JPanel getTitlePanel() {
         if (titlePanel == null) {
-            titlePanel = new TitlePanel("Add Grid Grouper","Browse stem(s) and group(s) managed by a Grid Grouper.");
+            titlePanel = new TitlePanel("Add Grid Grouper", "Browse stem(s) and group(s) managed by a Grid Grouper.");
         }
         return titlePanel;
     }

@@ -18,6 +18,7 @@ import org.cagrid.gaards.authentication.faults.InvalidCredentialFault;
 import org.cagrid.gaards.dorian.ca.CertificateAuthority;
 import org.cagrid.gaards.dorian.common.AuditConstants;
 import org.cagrid.gaards.dorian.common.SAMLConstants;
+import org.cagrid.gaards.dorian.policy.AccountInformationModificationPolicy;
 import org.cagrid.gaards.dorian.stubs.types.InvalidUserPropertyFault;
 import org.cagrid.gaards.dorian.stubs.types.PermissionDeniedFault;
 import org.cagrid.gaards.dorian.test.Utils;
@@ -96,6 +97,124 @@ public class TestIdentityProvider extends TestCase {
             assertEquals(LocalUserRole.Non_Administrator, users[0].getRole());
             verifyAuthentication(cred.getUserId(), idp, a);
 
+        } catch (Exception e) {
+            FaultUtil.printFault(e);
+            assertTrue(false);
+        } finally {
+            try {
+                idp.clearDatabase();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+
+    private void compareUserToProfile(LocalUser u, AccountProfile p) {
+        assertEquals(u.getAddress(), p.getAddress());
+        assertEquals(u.getAddress2(), p.getAddress2());
+        assertEquals(u.getCity(), p.getCity());
+        assertEquals(u.getEmail(), p.getEmail());
+        assertEquals(u.getFirstName(), p.getFirstName());
+        assertEquals(u.getLastName(), p.getLastName());
+        assertEquals(u.getOrganization(), p.getOrganization());
+        assertEquals(u.getPhoneNumber(), p.getPhoneNumber());
+        assertEquals(u.getUserId(), p.getUserId());
+        assertEquals(u.getZipcode(), p.getZipcode());
+        assertEquals(u.getCountry(), p.getCountry());
+        assertEquals(u.getState(), p.getState());
+    }
+
+
+    public void testGetModifyAccountProfile() {
+        IdentityProvider idp = null;
+        try {
+            IdentityProviderProperties props = Utils.getIdentityProviderProperties();
+            props.setRegistrationPolicy(new AutomaticRegistrationPolicy());
+            props.setAccountInformationModificationPolicy(AccountInformationModificationPolicy.User.getValue());
+            idp = new IdentityProvider(props, db, ca, eventManager);
+            Application a = createApplication();
+            idp.register(a);
+            BasicAuthCredential cred = getAdminCreds();
+            performAndValidateSingleAudit(idp, cred.getUserId(), a.getUserId(), AuditConstants.SYSTEM_ID,
+                IdentityProviderAudit.Registration);
+            LocalUserFilter uf = new LocalUserFilter();
+            uf.setUserId(a.getUserId());
+            LocalUser[] users = idp.findUsers(cred.getUserId(), uf);
+            assertEquals(1, users.length);
+            LocalUser u = users[0];
+            assertEquals(LocalUserStatus.Active, u.getStatus());
+            assertEquals(LocalUserRole.Non_Administrator, u.getRole());
+            AccountProfile p = idp.getAccountProfile(u.getUserId());
+            compareUserToProfile(u, p);
+
+            p.setAddress("new address");
+            p.setAddress2("new address2");
+            p.setCity("new city");
+            p.setCountry(CountryCode.AD);
+            p.setEmail("new@cagrid.org");
+            p.setFirstName("new name");
+            p.setLastName("new last name");
+            p.setOrganization("new organization");
+            p.setPhoneNumber("111-111-1111");
+            p.setState(StateCode.SC);
+            p.setZipcode("44444");
+
+            try {
+                idp.updateAccountProfile(cred.getUserId(), p);
+                fail("Only the user should be able to update their profile.");
+            } catch (PermissionDeniedFault e) {
+
+            }
+            idp.updateAccountProfile(u.getUserId(), p);
+            assertEquals(p, idp.getAccountProfile(u.getUserId()));
+        } catch (Exception e) {
+            FaultUtil.printFault(e);
+            assertTrue(false);
+        } finally {
+            try {
+                idp.clearDatabase();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+
+    public void testGetModifyAccountProfileAdminOnly() {
+        IdentityProvider idp = null;
+        try {
+            IdentityProviderProperties props = Utils.getIdentityProviderProperties();
+            props.setRegistrationPolicy(new AutomaticRegistrationPolicy());
+            idp = new IdentityProvider(props, db, ca, eventManager);
+            Application a = createApplication();
+            idp.register(a);
+            BasicAuthCredential cred = getAdminCreds();
+            performAndValidateSingleAudit(idp, cred.getUserId(), a.getUserId(), AuditConstants.SYSTEM_ID,
+                IdentityProviderAudit.Registration);
+            LocalUserFilter uf = new LocalUserFilter();
+            uf.setUserId(a.getUserId());
+            LocalUser[] users = idp.findUsers(cred.getUserId(), uf);
+            assertEquals(1, users.length);
+            LocalUser u = users[0];
+            assertEquals(LocalUserStatus.Active, u.getStatus());
+            assertEquals(LocalUserRole.Non_Administrator, u.getRole());
+            AccountProfile p = idp.getAccountProfile(u.getUserId());
+            compareUserToProfile(u, p);
+
+            try {
+                idp.updateAccountProfile(cred.getUserId(), p);
+                fail("Users should not be able to update profiles.");
+            } catch (PermissionDeniedFault e) {
+
+            }
+            try {
+                idp.updateAccountProfile(u.getUserId(), p);
+                fail("Users should not be able to update profiles.");
+            } catch (PermissionDeniedFault e) {
+
+            }
+            assertEquals(p, idp.getAccountProfile(u.getUserId()));
         } catch (Exception e) {
             FaultUtil.printFault(e);
             assertTrue(false);

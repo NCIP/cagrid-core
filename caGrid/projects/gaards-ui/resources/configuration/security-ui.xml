@@ -40,6 +40,17 @@
 					</dimensions>
 				</component>
 				<component>
+					<title>My Profile</title>
+					<description>View your local account profile</description>
+					<classname>org.cagrid.gaards.ui.dorian.idp.AccountProfileWindow</classname>
+					<icon>/grouper_logo_no_background_22x22.png</icon>
+					<showOnToolBar>false</showOnToolBar>
+					<dimensions>
+						<width>600</width>
+						<height>350</height>
+					</dimensions>
+				</component>
+				<component>
 					<title>My Groups</title>
 					<description>View the groups in which you are a member of.</description>
 					<classname>org.cagrid.gaards.ui.gridgrouper.mygroups.MyGroupsWindow</classname>

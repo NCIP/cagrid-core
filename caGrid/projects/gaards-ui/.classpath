@@ -42,7 +42,6 @@
 	<classpathentry kind="lib" path="ext/dependencies/impl/jars/jdom-1.0.jar"/>
 	<classpathentry kind="lib" path="ext/dependencies/impl/jars/jprov.jar"/>
 	<classpathentry kind="lib" path="ext/dependencies/impl/jars/subject-0.2.1.jar"/>
-	<classpathentry kind="lib" path="ext/dependencies/impl/jars/caGrid-gaards-core-1.4-dev.jar"/>
 	<classpathentry kind="lib" path="ext/dependencies/impl/jars/caGrid-dorian-stubs-1.2.jar"/>
 	<classpathentry kind="lib" path="ext/dependencies/impl/jars/castor-1.0.2.jar"/>
 	<classpathentry kind="lib" path="ext/dependencies/impl/jars/caGrid-syncgts-client-1.4-dev.jar"/>
@@ -116,5 +115,7 @@
 	<classpathentry kind="lib" path="ext/dependencies/impl/jars/xercesImpl.jar"/>
 	<classpathentry kind="lib" path="ext/dependencies/impl/jars/xml-apis.jar"/>
 	<classpathentry kind="lib" path="ext/dependencies/impl/jars/xmlsec.jar"/>
+	<classpathentry kind="lib" path="ext/dependencies/impl/jars/commons-io-1.3.2.jar"/>
+	<classpathentry kind="lib" path="ext/dependencies/impl/jars/caGrid-gaards-core-1.4-dev.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

@@ -44,6 +44,7 @@ import org.cagrid.gaards.dorian.federation.TrustedIdentityProviders;
 import org.cagrid.gaards.dorian.federation.UserCertificateFilter;
 import org.cagrid.gaards.dorian.federation.UserCertificateRecord;
 import org.cagrid.gaards.dorian.federation.UserCertificateUpdate;
+import org.cagrid.gaards.dorian.idp.AccountProfile;
 import org.cagrid.gaards.dorian.idp.Application;
 import org.cagrid.gaards.dorian.idp.IdentityProvider;
 import org.cagrid.gaards.dorian.idp.IdentityProviderAudit;
@@ -484,6 +485,40 @@ public class Dorian extends LoggingObject {
     public List<HostRecord> hostSearch(String callerIdentity, HostSearchCriteria criteria) throws RemoteException,
         DorianInternalFault, PermissionDeniedFault {
         return this.ifm.hostSearch(callerIdentity, criteria);
+    }
+
+
+    public AccountProfile getAccountProfile(String gridIdentity) throws RemoteException, DorianInternalFault,
+        PermissionDeniedFault {
+        String uid = null;
+        try {
+            uid = ifm.getUserIdVerifyTrustedIdP(identityProvider.getIdPCertificate(), gridIdentity);
+        } catch (Exception e) {
+            String message = "Permission to get the account profile for the user was denied, caller is not a valid user.";
+            this.eventManager.logEvent(gridIdentity, AuditConstants.SYSTEM_ID, IdentityProviderAudit.LocalAccessDenied
+                .getValue(), message);
+            PermissionDeniedFault fault = new PermissionDeniedFault();
+            fault.setFaultString(message);
+            throw fault;
+        }
+        return this.identityProvider.getAccountProfile(uid);
+    }
+
+
+    public void updateAccountProfile(String gridIdentity, AccountProfile profile) throws RemoteException,
+        DorianInternalFault, InvalidUserPropertyFault, PermissionDeniedFault, NoSuchUserFault {
+        String uid = null;
+        try {
+            uid = ifm.getUserIdVerifyTrustedIdP(identityProvider.getIdPCertificate(), gridIdentity);
+        } catch (Exception e) {
+            String message = "Permission to update the account profile for the user was denied, caller is not a valid user.";
+            this.eventManager.logEvent(gridIdentity, AuditConstants.SYSTEM_ID, IdentityProviderAudit.LocalAccessDenied
+                .getValue(), message);
+            PermissionDeniedFault fault = new PermissionDeniedFault();
+            fault.setFaultString(message);
+            throw fault;
+        }
+        this.identityProvider.updateAccountProfile(uid, profile);
     }
 
 

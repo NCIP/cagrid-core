@@ -17,6 +17,8 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 
 import org.cagrid.gaards.cds.client.DelegatedCredentialUserClient;
+import org.cagrid.gaards.credentials.CredentialEntryFactory;
+import org.cagrid.gaards.credentials.X509CredentialEntry;
 import org.cagrid.gaards.ui.common.CredentialManager;
 import org.cagrid.gaards.ui.common.CredentialManagerComponent;
 import org.cagrid.gaards.ui.common.ProgressPanel;
@@ -348,9 +350,10 @@ public class GetDelegatedCredentialWindow extends ApplicationComponent {
             DelegatedCredentialUserClient client = new DelegatedCredentialUserClient(getDelegatedCredentials()
                 .getSelectedDelegationDescriptor().getDelegatedCredentialReference());
             GlobusCredential cred = client.getDelegatedCredential();
-            CredentialManager.getInstance().addCredential(cred);
+            X509CredentialEntry entry = CredentialEntryFactory.getEntry(cred);
+            CredentialManager.getInstance().addCredential(entry);
             dispose();
-            GridApplication.getContext().addApplicationComponent(new CredentialManagerComponent(cred), 800, 500);
+            GridApplication.getContext().addApplicationComponent(new CredentialManagerComponent(entry), 800, 500);
 
         } catch (Exception e) {
             getGetButton().setEnabled(true);

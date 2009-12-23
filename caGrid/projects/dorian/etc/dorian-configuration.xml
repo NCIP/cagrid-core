@@ -45,9 +45,12 @@
 		</property>
 		<property name="accountPolicies" ref="accountPolicyList" />
 		<property name="CRLPublishList" value="${gaards.dorian.federation.crl.publish}" />
-		<property name="userSearchPolicy" value="${gaards.dorian.federation.user.search.policy}" />
-		<property name="hostSearchPolicy" value="${gaards.dorian.federation.host.search.policy}" />
-		<property name="hostCertificateRenewalPolicy" value="${gaards.dorian.federation.host.certificate.renewal.policy}" />
+		<property name="userSearchPolicy"
+			value="${gaards.dorian.federation.user.search.policy}" />
+		<property name="hostSearchPolicy"
+			value="${gaards.dorian.federation.host.search.policy}" />
+		<property name="hostCertificateRenewalPolicy"
+			value="${gaards.dorian.federation.host.certificate.renewal.policy}" />
 	</bean>
 	<bean id="accountPolicyList"
 		class="org.springframework.beans.factory.config.ListFactoryBean">
@@ -84,6 +87,8 @@
 		<property name="maxUserIdLength" value="${gaards.dorian.idp.max.uid}" />
 		<property name="registrationPolicy" ref="registrationPolicy" />
 		<property name="passwordSecurityPolicy" ref="passwordSecurityPolicy" />
+		<property name="accountInformationModificationPolicy"
+			value="${gaards.dorian.idp.account.modification.policy}" />
 	</bean>
 	<bean id="registrationPolicy" class="org.cagrid.gaards.dorian.idp.ManualRegistrationPolicy" />
 	<!--
@@ -183,16 +188,16 @@
 		<constructor-arg index="3" value="${gaards.dorian.db.password}" />
 		<constructor-arg index="4" value="${gaards.dorian.name}" />
 	</bean>
-	
+
 	<bean id="eventManager" class="org.cagrid.tools.events.EventManager">
 		<constructor-arg index="0">
 			<list>
-				
+
 			</list>
 		</constructor-arg>
 		<constructor-arg index="1">
 			<list>
-			
+
 			</list>
 		</constructor-arg>
 	</bean>

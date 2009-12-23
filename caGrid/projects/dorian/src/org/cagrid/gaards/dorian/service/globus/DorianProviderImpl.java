@@ -17,6 +17,18 @@ public class DorianProviderImpl {
         impl = new DorianImpl();
     }
 
+    public org.cagrid.gaards.dorian.stubs.GetAccountProfileResponse getAccountProfile(org.cagrid.gaards.dorian.stubs.GetAccountProfileRequest params) throws RemoteException, org.cagrid.gaards.dorian.stubs.types.DorianInternalFault, org.cagrid.gaards.dorian.stubs.types.PermissionDeniedFault {
+    org.cagrid.gaards.dorian.stubs.GetAccountProfileResponse boxedResult = new org.cagrid.gaards.dorian.stubs.GetAccountProfileResponse();
+    boxedResult.setAccountProfile(impl.getAccountProfile());
+    return boxedResult;
+  }
+
+    public org.cagrid.gaards.dorian.stubs.UpdateAccountProfileResponse updateAccountProfile(org.cagrid.gaards.dorian.stubs.UpdateAccountProfileRequest params) throws RemoteException, org.cagrid.gaards.dorian.stubs.types.DorianInternalFault, org.cagrid.gaards.dorian.stubs.types.InvalidUserPropertyFault, org.cagrid.gaards.dorian.stubs.types.PermissionDeniedFault, org.cagrid.gaards.dorian.stubs.types.NoSuchUserFault {
+    org.cagrid.gaards.dorian.stubs.UpdateAccountProfileResponse boxedResult = new org.cagrid.gaards.dorian.stubs.UpdateAccountProfileResponse();
+    impl.updateAccountProfile(params.getProfile().getAccountProfile());
+    return boxedResult;
+  }
+
     public org.cagrid.gaards.dorian.stubs.RegisterWithIdPResponse registerWithIdP(org.cagrid.gaards.dorian.stubs.RegisterWithIdPRequest params) throws RemoteException, org.cagrid.gaards.dorian.stubs.types.DorianInternalFault, org.cagrid.gaards.dorian.stubs.types.InvalidUserPropertyFault {
     org.cagrid.gaards.dorian.stubs.RegisterWithIdPResponse boxedResult = new org.cagrid.gaards.dorian.stubs.RegisterWithIdPResponse();
     boxedResult.setResponse(impl.registerWithIdP(params.getApplication().getApplication()));

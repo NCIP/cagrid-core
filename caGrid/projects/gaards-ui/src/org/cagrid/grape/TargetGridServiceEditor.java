@@ -9,7 +9,6 @@ import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 
 import javax.swing.JButton;
 import javax.swing.JLabel;
@@ -18,7 +17,6 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 
-import org.cagrid.grape.configuration.Grid;
 import org.cagrid.grape.configuration.ServiceConfiguration;
 import org.cagrid.grape.configuration.ServiceDescriptor;
 import org.cagrid.grape.configuration.Services;

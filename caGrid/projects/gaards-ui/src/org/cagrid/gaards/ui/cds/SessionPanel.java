@@ -104,20 +104,20 @@ public class SessionPanel extends JPanel {
 
     public DelegationAdminClient getAdminClient() throws Exception {
         CDSHandle handle = getService().getSelectedService();
-        GlobusCredential proxyCred = getCred().getSelectedCredential();
+        GlobusCredential proxyCred = getCred().getSelectedCredential().getCredential();
         return handle.getAdminClient(proxyCred);
     }
 
 
     public DelegationUserClient getUserClient() throws Exception {
         CDSHandle handle = getService().getSelectedService();
-        GlobusCredential proxyCred = getCred().getSelectedCredential();
+        GlobusCredential proxyCred = getCred().getSelectedCredential().getCredential();
         return handle.getUserClient(proxyCred);
     }
 
 
     public CDSSession getSession() throws Exception {
-        return new CDSSession(getService().getSelectedService(), getCred().getSelectedCredential());
+        return new CDSSession(getService().getSelectedService(), getCred().getSelectedCredential().getCredential());
     }
 
 
@@ -127,7 +127,7 @@ public class SessionPanel extends JPanel {
 
 
     public GlobusCredential getCredential() throws Exception {
-        return getCred().getSelectedCredential();
+        return getCred().getSelectedCredential().getCredential();
     }
 
 }

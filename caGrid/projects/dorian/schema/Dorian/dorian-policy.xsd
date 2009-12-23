@@ -20,6 +20,7 @@
 			<xsd:element ref="policy:PasswordPolicy" minOccurs="1"
 				maxOccurs="1" />
 		</xsd:sequence>
+		<xsd:attribute name="AccountInformationModificationPolicy" type="policy:AccountInformationModificationPolicy" use="required" />
 	</xsd:complexType>
 
 	<xsd:element name="UserIdPolicy" type="policy:UserIdPolicy" />
@@ -90,6 +91,14 @@
 			<xsd:enumeration value="Public" />
 		</xsd:restriction>
 	</xsd:simpleType>
+	
+	<xsd:element name="AccountInformationModificationPolicy" type="policy:AccountInformationModificationPolicy" />
+	<xsd:simpleType name="AccountInformationModificationPolicy">
+		<xsd:restriction base="xsd:string">
+			<xsd:enumeration value="Admin" />
+			<xsd:enumeration value="User" />
+		</xsd:restriction>
+	</xsd:simpleType>
 
 	<xsd:element name="HostCertificateRenewalPolicy" type="policy:HostCertificateRenewalPolicy" />
 	<xsd:simpleType name="HostCertificateRenewalPolicy">
@@ -116,7 +125,7 @@
 	</xsd:complexType>
 
 
-	<xsd:element name="HostPolicy" type="policy:HostPolicy" />
+	<xsd:element name="HostPolicy" type="policy:HostPolicy" /> 
 	<xsd:complexType name="HostPolicy">
 		<xsd:sequence>
 			<xsd:element ref="policy:HostCertificateLifetime"

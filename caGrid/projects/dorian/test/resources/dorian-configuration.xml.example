@@ -84,6 +84,7 @@
 		<property name="maxUserIdLength" value="${gaards.dorian.idp.max.uid}" />
 		<property name="registrationPolicy" ref="registrationPolicy" />
 		<property name="passwordSecurityPolicy" ref="passwordSecurityPolicy" />
+		<property name="accountInformationModificationPolicy" value="${gaards.dorian.idp.account.modification.policy}" />
 	</bean>
 	<bean id="registrationPolicy" class="org.cagrid.gaards.dorian.idp.ManualRegistrationPolicy" />
 	<!--

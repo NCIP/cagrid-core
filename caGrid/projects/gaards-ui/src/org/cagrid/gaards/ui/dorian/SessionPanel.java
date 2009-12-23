@@ -9,6 +9,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.border.TitledBorder;
 
+import org.cagrid.gaards.credentials.X509CredentialEntry;
 import org.cagrid.gaards.dorian.client.GridAdministrationClient;
 import org.cagrid.gaards.dorian.client.GridUserClient;
 import org.cagrid.gaards.dorian.client.LocalAdministrationClient;
@@ -148,6 +149,16 @@ public class SessionPanel extends JPanel implements DorianSessionProvider {
 
 
     public GlobusCredential getCredential() throws Exception {
+        X509CredentialEntry entry = getCred().getSelectedCredential();
+        if (entry == null) {
+            return null;
+        } else {
+            return entry.getCredential();
+        }
+    }
+
+
+    public X509CredentialEntry getCredentialEntry() throws Exception {
         return getCred().getSelectedCredential();
     }
 

@@ -19,8 +19,6 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.border.TitledBorder;
 
-import org.cagrid.grape.configuration.ServiceConfiguration;
-
 
 public class YesNoDialog extends JDialog {
 

@@ -28,6 +28,8 @@ import javax.xml.namespace.QName;
 
 import org.cagrid.gaards.authentication.client.AuthenticationClient;
 import org.cagrid.gaards.authentication.common.AuthenticationProfile;
+import org.cagrid.gaards.credentials.DorianUserCredentialDescriptor;
+import org.cagrid.gaards.credentials.DorianUserCredentialEntry;
 import org.cagrid.gaards.dorian.client.GridUserClient;
 import org.cagrid.gaards.dorian.federation.CertificateLifetime;
 import org.cagrid.gaards.ui.common.CredentialManager;
@@ -432,7 +434,9 @@ public class LoginWindow extends ApplicationComponent {
                 lifetime.setSeconds(Integer.valueOf((String) getSeconds().getSelectedItem()).intValue());
                 cred = c2.requestUserCertificate(saml, lifetime);
             }
-            CredentialManager.getInstance().addCredential(cred);
+            DorianUserCredentialDescriptor des = CredentialUtils.encode(dorian.getServiceURL(), as.getServiceURL(), as.getDisplayName(), saml, cred);
+            DorianUserCredentialEntry entry = new DorianUserCredentialEntry(des);
+            CredentialManager.getInstance().addCredential(entry);
             if (getSetDefault().isSelected()) {
                 ProxyUtil.saveProxyAsDefault(cred);
             }

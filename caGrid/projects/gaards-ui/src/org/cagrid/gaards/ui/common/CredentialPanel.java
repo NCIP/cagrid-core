@@ -55,7 +55,7 @@ public class CredentialPanel extends JPanel {
 	}
 
 
-	public void clearProxy() {
+	public void clearCredential() {
 		subjectField.setText("");
 		issuer.setText("");
 		identity.setText("");
@@ -65,8 +65,8 @@ public class CredentialPanel extends JPanel {
 	}
 
 
-	public void showProxy(GlobusCredential cred) {
-		clearProxy();
+	public void showCredential(GlobusCredential cred) {
+		clearCredential();
 		subjectField.setText(cred.getSubject());
 		issuer.setText(cred.getIssuer());
 		identity.setText(cred.getIdentity());

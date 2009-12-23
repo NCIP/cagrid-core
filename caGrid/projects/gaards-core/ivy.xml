@@ -25,6 +25,7 @@
   <dependencies>
     <dependency rev="latest.integration" org="caGrid" name="core" conf="default->serialization;impl-test->test"/>
     <dependency rev="1.0" org="jdom" name="jdom" conf="default->default"/>
+     <dependency rev="1.3.2" org="apache" name="commons-io" conf="default->default"/>
     <dependency rev="jce-1.2" org="eracom" name="protecttoolkit-j" conf="default->default"/>
     <dependency rev="latest.integration" org="caGrid" name="opensaml" conf="default->default;endorsed->endorsed"/>
     <dependency rev="4.4" org="junit" name="junit" conf="impl-test->default"/>

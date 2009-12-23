@@ -6,6 +6,8 @@ import java.util.List;
 
 import javax.swing.JComboBox;
 
+import org.cagrid.gaards.credentials.CredentialEntryFactory;
+import org.cagrid.gaards.credentials.X509CredentialEntry;
 import org.globus.gsi.GlobusCredential;
 
 
@@ -20,9 +22,9 @@ public class CredentialComboBox extends JComboBox {
 
     private static final long serialVersionUID = 1L;
 
-    private static final String DEFAULT_CREDENTIAL = "Globus Default Proxy";
-
     private static final String NO_CREDENTIAL = "Anonymous";
+
+    private boolean allowAnonymous = false;
 
 
     public CredentialComboBox() {
@@ -31,51 +33,76 @@ public class CredentialComboBox extends JComboBox {
 
 
     public CredentialComboBox(boolean none) {
-        List creds = CredentialManager.getInstance().getCredentials();
-        if (none) {
-            addItem(new CredentialCaddy(NO_CREDENTIAL, null));
-        }
-        addItem(new CredentialCaddy(DEFAULT_CREDENTIAL, null));
-        for (int i = 0; i < creds.size(); i++) {
-            addItem(new CredentialCaddy((GlobusCredential) creds.get(i)));
-        }
+        allowAnonymous = none;
+        handleDefaultCredential(true);
+        addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent e) {
+                try {
+                    X509CredentialEntry cred = getSelectedCredential();
+                    if (cred != null) {
+                        setToolTipText(cred.getDescription());
+                    } else {
+                        setToolTipText("Anonymous");
+                    }
+                    // handleDefaultCredential(false);
+                } catch (Exception ex) {
+                    setToolTipText("Anonymous");
+                }
+            }
+        });
+
     }
 
 
-    public CredentialComboBox(GlobusCredential cred) {
+    public CredentialComboBox(X509CredentialEntry cred) {
         this(false);
-        this.setSelectedItem(new CredentialCaddy(cred));
+        this.setSelectedItem(cred);
     }
 
 
-    public CredentialComboBox(GlobusCredential cred, boolean none) {
+    public CredentialComboBox(X509CredentialEntry cred, boolean none) {
         this(none);
-        this.setSelectedItem(new CredentialCaddy(cred));
+        this.setSelectedItem(cred);
     }
 
 
-    public CredentialCaddy getSelectedCredentialCaddy() {
-        CredentialCaddy caddy = ((CredentialCaddy) this.getSelectedItem());
-        return caddy;
+    public void populateList() {
+        this.removeAllItems();
+        List<X509CredentialEntry> creds = CredentialManager.getInstance().getCredentials();
+        if (allowAnonymous) {
+            addItem(NO_CREDENTIAL);
+        }
+        for (int i = 0; i < creds.size(); i++) {
+            addItem(creds.get(i));
+        }
+
     }
 
 
-    public GlobusCredential getSelectedCredential() throws Exception {
-        CredentialCaddy caddy = ((CredentialCaddy) this.getSelectedItem());
-        if (caddy.getIdentity().equals(DEFAULT_CREDENTIAL)) {
-            try {
-                caddy.setProxy(ProxyUtil.getDefaultProxy());
-            } catch (Exception e) {
-                throw new Exception("No default proxy found!!!");
-            }
-            if (caddy.getProxy().getTimeLeft() == 0) {
-                throw new Exception("The default proxy has expired!!!");
-            }
-            return caddy.getProxy();
-        } else if (caddy.getIdentity().equals(NO_CREDENTIAL)) {
+    public void handleDefaultCredential(boolean setSelected) {
+        X509CredentialEntry defaultCredential = null;
+        try {
+            GlobusCredential cred = ProxyUtil.getDefaultProxy();
+            defaultCredential = CredentialEntryFactory.getEntry(cred);
+            defaultCredential = CredentialManager.getInstance().setDefaultCredential(defaultCredential);
+
+        } catch (Exception ex) {
+
+        }
+        populateList();
+        if ((setSelected) && (defaultCredential != null)) {
+            setSelectedItem(defaultCredential);
+        }
+    }
+
+
+    public X509CredentialEntry getSelectedCredential() throws Exception {
+        Object obj = getSelectedItem();
+        if ((obj == null) || (!(obj instanceof X509CredentialEntry))) {
             return null;
         } else {
-            return caddy.getProxy();
+            X509CredentialEntry credential = (X509CredentialEntry) obj;
+            return credential;
         }
     }
 }

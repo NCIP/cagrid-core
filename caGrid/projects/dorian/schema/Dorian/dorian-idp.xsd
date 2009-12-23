@@ -1,7 +1,6 @@
 <xsd:schema targetNamespace="http://cagrid.nci.nih.gov/1/dorian-idp"
 	attributeFormDefault="qualified" elementFormDefault="qualified"
 	xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:idp="http://cagrid.nci.nih.gov/1/dorian-idp">
-
 	<xsd:element name="LocalUser" type="idp:LocalUser" />
 	<xsd:complexType name="LocalUser">
 		<xsd:sequence>
@@ -36,6 +35,37 @@
 			<xsd:element name="role" type="idp:LocalUserRole"
 				minOccurs="1" maxOccurs="1" />
 			<xsd:element name="PasswordSecurity" type="idp:PasswordSecurity"
+				minOccurs="1" maxOccurs="1" />
+		</xsd:sequence>
+	</xsd:complexType>
+	
+	
+	<xsd:element name="AccountProfile" type="idp:AccountProfile" />
+	<xsd:complexType name="AccountProfile">
+		<xsd:sequence>
+			<xsd:element name="userId" type="xsd:string" minOccurs="1"
+				maxOccurs="1" />
+			<xsd:element name="email" type="xsd:string" minOccurs="1"
+				maxOccurs="1" />
+			<xsd:element name="firstName" type="xsd:string"
+				minOccurs="1" maxOccurs="1" />
+			<xsd:element name="lastName" type="xsd:string" minOccurs="1"
+				maxOccurs="1" />
+			<xsd:element name="organization" type="xsd:string"
+				minOccurs="1" maxOccurs="1" />
+			<xsd:element name="address" type="xsd:string" minOccurs="1"
+				maxOccurs="1" />
+			<xsd:element name="address2" type="xsd:string" minOccurs="0"
+				maxOccurs="1" />
+			<xsd:element name="city" type="xsd:string" minOccurs="1"
+				maxOccurs="1" />
+			<xsd:element name="state" type="idp:stateCode" minOccurs="0"
+				maxOccurs="1" />
+			<xsd:element name="zipcode" type="xsd:string" minOccurs="0"
+				maxOccurs="1" />
+			<xsd:element name="country" type="idp:countryCode"
+				minOccurs="1" maxOccurs="1" />
+			<xsd:element name="phoneNumber" type="xsd:string"
 				minOccurs="1" maxOccurs="1" />
 		</xsd:sequence>
 	</xsd:complexType>

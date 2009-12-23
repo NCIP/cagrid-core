@@ -1,7 +1,6 @@
 package org.cagrid.gaards.ui.common;
 
 import gov.nih.nci.cagrid.common.Utils;
-import gov.nih.nci.cagrid.common.security.ProxyUtil;
 
 import java.io.File;
 import java.io.FileFilter;
@@ -11,6 +10,10 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+import org.cagrid.gaards.credentials.CredentialEntryFactory;
+import org.cagrid.gaards.credentials.EncodingUtil;
+import org.cagrid.gaards.credentials.X509CredentialDescriptor;
+import org.cagrid.gaards.credentials.X509CredentialEntry;
 import org.globus.gsi.GlobusCredential;
 
 
@@ -22,124 +25,152 @@ import org.globus.gsi.GlobusCredential;
  *          Exp $
  */
 public class CredentialManager {
-	
-	private static final long serialVersionUID = 1L;
 
-	private static CredentialManager instance;
+    private static final long serialVersionUID = 1L;
 
-	private Map proxies;
+    private static CredentialManager instance;
 
-	private File proxyDir;
+    private Map<String, X509CredentialEntry> credentials;
 
-	private long lastId = 0;
+    private File credentialDir;
 
-	private Map proxiesToFile;
+    private long lastId = 0;
 
-
-	private CredentialManager() {
-		this.proxies = new HashMap();
-		this.proxiesToFile = new HashMap();
-		loadCredential();
-	}
+    private Map<String, File> credentialFiles;
 
 
-	public synchronized void loadCredential() {
-		this.proxies.clear();
-		this.proxiesToFile.clear();
-		String dir = Utils.getCaGridUserHome() + File.separator + File.separator + "proxy";
-		proxyDir = new File(dir);
-		proxyDir.mkdirs();
-		FileFilter ff = new ProxyFilter();
-		File list[] = proxyDir.listFiles(ff);
-		for (int i = 0; i < list.length; i++) {
-			try {
-				long fileId = getFileId(list[i]);
-				if (fileId > lastId) {
-					lastId = fileId;
-				}
-
-				GlobusCredential cred = ProxyUtil.loadProxy(list[i].getAbsolutePath());
-				if (cred.getTimeLeft() == 0) {
-					list[i].delete();
-				} else {
-					proxies.put(cred.getIdentity(), cred);
-					proxiesToFile.put(cred.getIdentity(), list[i]);
-				}
-
-			} catch (Exception e) {
-				list[i].delete();
-				e.printStackTrace();
-			}
-		}
-	}
+    private CredentialManager() {
+        this.credentials = new HashMap<String, X509CredentialEntry>();
+        this.credentialFiles = new HashMap<String, File>();
+        loadCredentials();
+    }
 
 
-	private long getFileId(File f) throws Exception {
-		String name = f.getName();
-		int index = name.indexOf(".proxy");
-		String sid = name.substring(0, index);
-		return Long.valueOf(sid).longValue();
-	}
+    public synchronized void loadCredentials() {
+        this.credentials.clear();
+        this.credentialFiles.clear();
+        String dir = Utils.getCaGridUserHome() + File.separator + File.separator + "credentials";
+        credentialDir = new File(dir);
+        credentialDir.mkdirs();
+        FileFilter ff = new CredentialFilter();
+        File list[] = credentialDir.listFiles(ff);
+        for (int i = 0; i < list.length; i++) {
+            try {
+                long fileId = getFileId(list[i]);
+                if (fileId > lastId) {
+                    lastId = fileId;
+                }
+
+                X509CredentialDescriptor des = EncodingUtil.deserialize(list[i]);
+                X509CredentialEntry entry = CredentialEntryFactory.getEntry(des);
+                GlobusCredential cred = entry.getCredential();
+                if (cred.getTimeLeft() == 0) {
+                    list[i].delete();
+                } else {
+                    credentials.put(entry.getIdentity(), entry);
+                    credentialFiles.put(entry.getIdentity(), list[i]);
+                }
+
+            } catch (Exception e) {
+                list[i].delete();
+                e.printStackTrace();
+            }
+        }
+    }
 
 
-	public class ProxyFilter implements FileFilter {
-
-		public boolean accept(File pathname) {
-			String name = pathname.getName();
-			if (name.endsWith(".proxy")) {
-				int index = name.indexOf(".proxy");
-				String sid = name.substring(0, index);
-				try {
-					Long.valueOf(sid).longValue();
-					return true;
-				} catch (Exception e) {
-					return false;
-				}
-			}
-			return false;
-		}
-
-	}
+    private long getFileId(File f) throws Exception {
+        String name = f.getName();
+        int index = name.indexOf(".credential");
+        String sid = name.substring(0, index);
+        return Long.valueOf(sid).longValue();
+    }
 
 
-	public static CredentialManager getInstance() {
-		if (instance == null) {
-			instance = new CredentialManager();
-		}
-		return instance;
-	}
+    public class CredentialFilter implements FileFilter {
+
+        public boolean accept(File pathname) {
+            String name = pathname.getName();
+            if (name.endsWith(".credential")) {
+                int index = name.indexOf(".credential");
+                String sid = name.substring(0, index);
+                try {
+                    Long.valueOf(sid).longValue();
+                    return true;
+                } catch (Exception e) {
+                    return false;
+                }
+            }
+            return false;
+        }
+
+    }
 
 
-	public synchronized void addCredential(GlobusCredential cred) throws Exception {
-		proxies.put(cred.getIdentity(), cred);
-		lastId = lastId + 1;
-		File f = new File(proxyDir.getAbsolutePath() + File.separator + lastId + ".proxy");
-		ProxyUtil.saveProxy(cred, f.getAbsolutePath());
-		proxiesToFile.put(cred.getIdentity(), f);
-	}
+    public static CredentialManager getInstance() {
+        if (instance == null) {
+            instance = new CredentialManager();
+        }
+        return instance;
+    }
 
 
-	public synchronized void deleteCredential(GlobusCredential cred) {
-		proxies.remove(cred.getIdentity());
-		File f = (File) proxiesToFile.get(cred.getIdentity());
-		f.delete();
-		proxiesToFile.remove(cred.getIdentity());
-	}
+    public synchronized X509CredentialEntry setDefaultCredential(X509CredentialEntry credential) throws Exception {
+        List<X509CredentialEntry> creds = getCredentials();
+        boolean found = false;
+        for (int i = 0; i < creds.size(); i++) {
+            X509CredentialEntry entry = creds.get(i);
+            if (entry.equals(credential)) {
+                credential = entry;
+                entry.setDefault(true);
+                found = true;
+            } else if (entry.isDefault()) {
+                entry.setDefault(false);
+                if (!credentialFiles.containsKey(entry.getIdentity())) {
+                    credentials.remove(entry.getIdentity());
+                }
+            }
+
+        }
+        if (!found) {
+            credential.setDefault(true);
+            credentials.put(credential.getIdentity(), credential);
+        }
+        return credential;
+    }
 
 
-	public synchronized List getCredentials() {
-		loadCredential();
-		List l = new ArrayList();
-		Iterator itr = this.proxies.values().iterator();
-		while (itr.hasNext()) {
-			GlobusCredential cred = (GlobusCredential) itr.next();
-			if (cred.getTimeLeft() == 0) {
-				deleteCredential(cred);
-			} else {
-				l.add(cred);
-			}
-		}
-		return l;
-	}
+    public synchronized void addCredential(X509CredentialEntry credential) throws Exception {
+        credentials.put(credential.getIdentity(), credential);
+        lastId = lastId + 1;
+        File f = new File(credentialDir.getAbsolutePath() + File.separator + lastId + ".credential");
+        EncodingUtil.serialize(f, credential.getDescriptor());
+        credentialFiles.put(credential.getIdentity(), f);
+    }
+
+
+    public synchronized void deleteCredential(X509CredentialEntry credential) {
+        credentials.remove(credential.getIdentity());
+        File f = (File) credentialFiles.get(credential.getIdentity());
+        f.delete();
+        credentialFiles.remove(credential.getIdentity());
+    }
+
+
+    public synchronized List<X509CredentialEntry> getCredentials() {
+        // loadCredentials();
+        List<X509CredentialEntry> l = new ArrayList<X509CredentialEntry>();
+        Iterator<X509CredentialEntry> itr = this.credentials.values().iterator();
+        while (itr.hasNext()) {
+            X509CredentialEntry credential = itr.next();
+            GlobusCredential cred = credential.getCredential();
+            if (cred.getTimeLeft() == 0) {
+                deleteCredential(credential);
+            } else {
+                l.add(credential);
+            }
+        }
+        return l;
+    }
 
 }

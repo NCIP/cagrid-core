@@ -2,13 +2,13 @@ package org.cagrid.gaards.ui.cds;
 
 import org.cagrid.gaards.cds.common.DelegationPolicy;
 import org.cagrid.gaards.cds.common.ProxyLifetime;
-import org.globus.gsi.GlobusCredential;
+import org.cagrid.gaards.credentials.X509CredentialEntry;
 
 public class DelegationRequestCache {
 
 	private CDSHandle cds;
 
-	private GlobusCredential credential;
+	private X509CredentialEntry credential;
 
 	private ProxyLifetime delegationLifetime;
 
@@ -69,12 +69,12 @@ public class DelegationRequestCache {
 		this.policy = policy;
 	}
 
-	public GlobusCredential getCredential() {
+	public X509CredentialEntry getCredential() {
 		return credential;
 	}
 
-	public void setCredential(GlobusCredential proxy) {
-		this.credential = proxy;
+	public void setCredential(X509CredentialEntry cred) {
+		this.credential = cred;
 	}
 
 }

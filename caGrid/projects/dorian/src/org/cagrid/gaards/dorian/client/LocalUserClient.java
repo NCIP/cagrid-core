@@ -21,10 +21,12 @@ import org.cagrid.gaards.authentication.faults.AuthenticationProviderFault;
 import org.cagrid.gaards.authentication.faults.CredentialNotSupportedFault;
 import org.cagrid.gaards.authentication.faults.InvalidCredentialFault;
 import org.cagrid.gaards.dorian.common.DorianFault;
+import org.cagrid.gaards.dorian.idp.AccountProfile;
 import org.cagrid.gaards.dorian.idp.Application;
 import org.cagrid.gaards.dorian.idp.BasicAuthCredential;
 import org.cagrid.gaards.dorian.stubs.types.DorianInternalFault;
 import org.cagrid.gaards.dorian.stubs.types.InvalidUserPropertyFault;
+import org.cagrid.gaards.dorian.stubs.types.NoSuchUserFault;
 import org.cagrid.gaards.dorian.stubs.types.PermissionDeniedFault;
 
 
@@ -220,4 +222,84 @@ public class LocalUserClient extends DorianBaseClient {
         return auth.getSupportedAuthenticationProfiles();
     }
 
+
+    /**
+     * This method allows a user to view their account profile.
+     * 
+     * @return The user's account profile.
+     * @throws DorianFault
+     * @throws DorianInternalFault
+     * @throws PermissionDeniedFault
+     */
+
+    public AccountProfile getAccountProfile() throws DorianFault, DorianInternalFault, PermissionDeniedFault {
+        try {
+            String version = getServiceVersion();
+            if (version.equals(VERSION_1_0) || version.equals(VERSION_1_1) || version.equals(VERSION_1_2)
+                || version.equals(VERSION_1_3) || version.equals(VERSION_UNKNOWN)) {
+                DorianFault fault = new DorianFault();
+                fault.setFaultString("The version of Dorian (" + version
+                    + ") you are attemping to communicate with, does not support viewing your account profile.");
+                throw fault;
+            } else {
+                return getClient().getAccountProfile();
+            }
+        } catch (DorianFault f) {
+            throw f;
+        } catch (DorianInternalFault gie) {
+            throw gie;
+        } catch (Exception e) {
+            FaultUtil.printFault(e);
+            DorianFault fault = new DorianFault();
+            fault.setFaultString(Utils.getExceptionMessage(e));
+            FaultHelper helper = new FaultHelper(fault);
+            helper.addFaultCause(e);
+            fault = (DorianFault) helper.getFault();
+            throw fault;
+        }
+    }
+
+
+    /**
+     * This method allow a user to update their account profile.
+     * 
+     * @param profile
+     *            The user's updated account profile.
+     * @throws RemoteException
+     * @throws DorianInternalFault
+     * @throws InvalidUserPropertyFault
+     * @throws PermissionDeniedFault
+     * @throws NoSuchUserFault
+     */
+    public void updateAccountProfile(AccountProfile profile) throws RemoteException, DorianInternalFault,
+        InvalidUserPropertyFault, PermissionDeniedFault, NoSuchUserFault {
+        try {
+            String version = getServiceVersion();
+            if (version.equals(VERSION_1_0) || version.equals(VERSION_1_1) || version.equals(VERSION_1_2)
+                || version.equals(VERSION_1_3) || version.equals(VERSION_UNKNOWN)) {
+                DorianFault fault = new DorianFault();
+                fault.setFaultString("The version of Dorian (" + version
+                    + ") you are attemping to communicate with, does not support updating your account profile.");
+                throw fault;
+            } else {
+                getClient().updateAccountProfile(profile);
+            }
+        } catch (DorianFault f) {
+            throw f;
+        } catch (DorianInternalFault gie) {
+            throw gie;
+        } catch (InvalidUserPropertyFault f) {
+            throw f;
+        } catch (NoSuchUserFault f) {
+            throw f;
+        } catch (Exception e) {
+            FaultUtil.printFault(e);
+            DorianFault fault = new DorianFault();
+            fault.setFaultString(Utils.getExceptionMessage(e));
+            FaultHelper helper = new FaultHelper(fault);
+            helper.addFaultCause(e);
+            fault = (DorianFault) helper.getFault();
+            throw fault;
+        }
+    }
 }

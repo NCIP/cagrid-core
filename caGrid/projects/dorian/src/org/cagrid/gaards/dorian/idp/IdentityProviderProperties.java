@@ -2,6 +2,7 @@ package org.cagrid.gaards.dorian.idp;
 
 import gov.nih.nci.cagrid.common.Utils;
 
+import org.cagrid.gaards.dorian.policy.AccountInformationModificationPolicy;
 import org.cagrid.gaards.dorian.stubs.types.DorianInternalFault;
 
 
@@ -18,6 +19,7 @@ public class IdentityProviderProperties {
     private int maxUserIdLength = 255;
     private IdPRegistrationPolicy registrationPolicy;
     private PasswordSecurityPolicy passwordSecurityPolicy;
+    private AccountInformationModificationPolicy accountInformationModificationPolicy;
 
 
     public String getName() {
@@ -111,6 +113,30 @@ public class IdentityProviderProperties {
 
     public void setPasswordSecurityPolicy(PasswordSecurityPolicy passwordSecurityPolicy) {
         this.passwordSecurityPolicy = passwordSecurityPolicy;
+    }
+
+
+    public String getAccountInformationModificationPolicy() {
+        if (this.accountInformationModificationPolicy == null) {
+            this.accountInformationModificationPolicy = AccountInformationModificationPolicy.Admin;
+        }
+        return accountInformationModificationPolicy.getValue();
+    }
+
+
+    public void setAccountInformationModificationPolicy(String policy) throws DorianInternalFault {
+        if (policy.equals(AccountInformationModificationPolicy.User.getValue())
+            || policy.equals(AccountInformationModificationPolicy.Admin.getValue())) {
+            this.accountInformationModificationPolicy = AccountInformationModificationPolicy.fromValue(policy);
+        } else {
+            DorianInternalFault f = new DorianInternalFault();
+            f.setFaultString("The account information modification policy " + policy
+                + ", is invalid.  Please specify a valid policy ("
+                + AccountInformationModificationPolicy.User.getValue() + ", "
+                + AccountInformationModificationPolicy.Admin.getValue() + ").");
+            throw f;
+        }
+
     }
 
 }
