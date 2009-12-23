@@ -129,6 +129,16 @@ public class ServiceConfigUtil {
     }
 	
 	
+	public static boolean hasConfigProperty(String propertyName) throws Exception {
+	    String getterName = "get" + Character.toUpperCase(propertyName.charAt(0)) 
+	        + propertyName.substring(1);
+	    Object serviceConfig = getServiceConfigObject();
+	    Class<?> configClass = serviceConfig.getClass();
+	    Method getter = configClass.getMethod(getterName, new Class[] {});
+	    return getter != null;
+	}
+	
+	
 	private static Properties getPropertiesByPrefix(String prefix) throws Exception {
         Properties props = new Properties();
         Object serviceConfig = getServiceConfigObject();
