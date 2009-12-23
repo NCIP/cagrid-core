@@ -1002,8 +1002,8 @@ public class ServiceSecurityPanel extends JPanel implements PanelSynchronizer {
             privateKeyLocation = null;
             proxyLocation = proxy.getProxyLocation();
             try {
-                proxyPanel.clearProxy();
-                proxyPanel.showProxy(ProxyUtil.loadProxy(proxyLocation));
+                proxyPanel.clearCredential();
+                proxyPanel.showCredential(ProxyUtil.loadProxy(proxyLocation));
             } catch (Exception e) {
                 CompositeErrorDialog.showErrorDialog("Invalid proxy specified!!!");
             }

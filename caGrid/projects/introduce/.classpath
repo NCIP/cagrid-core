@@ -112,5 +112,6 @@
 	<classpathentry kind="lib" path="ext/dependencies/jars/caGrid-Introduce-buildTools-1.4-dev.jar"/>
 	<classpathentry kind="lib" path="ext/dependencies/jars/castor-1.0.2.jar"/>
 	<classpathentry kind="lib" path="ext/dependencies/jars/antlr-2.7.6.jar"/>
+	<classpathentry kind="var" path="ANT_HOME"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
