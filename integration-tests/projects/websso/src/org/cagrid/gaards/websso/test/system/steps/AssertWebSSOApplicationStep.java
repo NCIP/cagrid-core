@@ -170,6 +170,9 @@ public class AssertWebSSOApplicationStep extends Step {
 		} catch (HttpNotFoundException nfe) {
 			log.error("The URL '" + request.getURL()+ "' is not active any more");
 			throw nfe;
+		} catch (Exception e) {
+			log.error(e);
+			throw e;
 		}
 		return response;
 	}

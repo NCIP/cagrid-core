@@ -1,5 +1,19 @@
 package org.cagrid.gaards.websso.test.system;
 
+import gov.nih.nci.cagrid.testing.system.deployment.ServiceContainer;
+import gov.nih.nci.cagrid.testing.system.deployment.ServiceContainerFactory;
+import gov.nih.nci.cagrid.testing.system.deployment.ServiceContainerType;
+import gov.nih.nci.cagrid.testing.system.deployment.steps.CopyServiceStep;
+import gov.nih.nci.cagrid.testing.system.deployment.steps.DeleteServiceStep;
+import gov.nih.nci.cagrid.testing.system.deployment.steps.DeployServiceStep;
+import gov.nih.nci.cagrid.testing.system.deployment.steps.DestroyContainerStep;
+import gov.nih.nci.cagrid.testing.system.deployment.steps.StartContainerStep;
+import gov.nih.nci.cagrid.testing.system.deployment.steps.StopContainerStep;
+import gov.nih.nci.cagrid.testing.system.deployment.steps.UnpackContainerStep;
+import gov.nih.nci.cagrid.testing.system.haste.Step;
+import gov.nih.nci.cagrid.testing.system.haste.Story;
+import gov.nih.nci.cagrid.testing.system.utils.steps.ModifyConfigurationStep;
+
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -31,7 +45,6 @@ import org.cagrid.gaards.dorian.idp.LocalUserStatus;
 import org.cagrid.gaards.dorian.idp.StateCode;
 import org.cagrid.gaards.dorian.test.system.steps.CleanupDorianStep;
 import org.cagrid.gaards.dorian.test.system.steps.ConfigureGlobusToTrustDorianStep;
-import org.cagrid.gaards.dorian.test.system.steps.CopyConfigurationStep;
 import org.cagrid.gaards.dorian.test.system.steps.FindGridUserStep;
 import org.cagrid.gaards.dorian.test.system.steps.FindLocalUserStep;
 import org.cagrid.gaards.dorian.test.system.steps.GetAsserionSigningCertificateStep;
@@ -55,19 +68,6 @@ import org.cagrid.gaards.websso.test.system.steps.WebSSOClientCertificatesStep;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.core.io.Resource;
 
-import gov.nih.nci.cagrid.testing.system.deployment.ServiceContainer;
-import gov.nih.nci.cagrid.testing.system.deployment.ServiceContainerFactory;
-import gov.nih.nci.cagrid.testing.system.deployment.ServiceContainerType;
-import gov.nih.nci.cagrid.testing.system.deployment.steps.CopyServiceStep;
-import gov.nih.nci.cagrid.testing.system.deployment.steps.DeleteServiceStep;
-import gov.nih.nci.cagrid.testing.system.deployment.steps.DeployServiceStep;
-import gov.nih.nci.cagrid.testing.system.deployment.steps.DestroyContainerStep;
-import gov.nih.nci.cagrid.testing.system.deployment.steps.StartContainerStep;
-import gov.nih.nci.cagrid.testing.system.deployment.steps.StopContainerStep;
-import gov.nih.nci.cagrid.testing.system.deployment.steps.UnpackContainerStep;
-import gov.nih.nci.cagrid.testing.system.haste.Step;
-import gov.nih.nci.cagrid.testing.system.haste.Story;
-
 public class WebSSOSystemTest extends Story {
 
 	private static Log log = LogFactory.getLog(WebSSOSystemTest.class);
@@ -76,14 +76,12 @@ public class WebSSOSystemTest extends Story {
 	private ServiceContainer webSSOJasigClientServiceContainer = null;
 	private ServiceContainer webSSOAcegiClientServiceContainer = null;
 	private ServiceContainer webSSOServiceContainer = null;
-	private File dorianProperties = new File("resources/dorian.properties");
 	private ConfigureGlobusToTrustDorianStep trust;
 	private File tempDorianService;
 	private File tempWebSSOService;
 	private File tempcdsService;
 	private File tempwebssoJasigClientService;
 	private File tempwebssoAcegiClientService;
-	private File configuration;
 	private String systemName="localhost";
 	private String webSSOClientAcegiURL = null;
 	private String webSSOClientJasigURL = null;
@@ -450,8 +448,13 @@ public class WebSSOSystemTest extends Story {
 		List<Application> users = new ArrayList<Application>();
 
 		try {
-			steps.add(new CopyConfigurationStep(tempDorianService,
-					this.configuration, this.dorianProperties));
+			File originalPropertyFile = new File(tempDorianService
+					.getAbsolutePath()
+					+ File.separator
+					+ "etc"
+					+ File.separator
+					+ "dorian.properties");
+            steps.add(new ModifyConfigurationStep(originalPropertyFile, new File("resources/dorian.properties")));
 
 			steps.add(new DeployServiceStep(dorianServiceContainer,
 					this.tempDorianService.getAbsolutePath()));
