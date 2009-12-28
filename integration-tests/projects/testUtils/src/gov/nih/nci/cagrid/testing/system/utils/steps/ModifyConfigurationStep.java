@@ -5,6 +5,7 @@ import gov.nih.nci.cagrid.testing.system.haste.Step;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
+import java.util.Enumeration;
 import java.util.Properties;
 
 public class ModifyConfigurationStep extends Step {
@@ -24,7 +25,9 @@ public class ModifyConfigurationStep extends Step {
 		Properties customProperties = new Properties();
 		customProperties.load(new FileInputStream(customPropertyFile));
 
-		for (String propertyName : customProperties.stringPropertyNames()) {
+		Enumeration<?> propertyNames = customProperties.propertyNames();
+		while (propertyNames.hasMoreElements()) {
+			String propertyName = (String) propertyNames.nextElement();
 			if (originalProperties.containsKey(propertyName)) {
 				originalProperties.setProperty(propertyName, customProperties.getProperty(propertyName));
 			} else { 
