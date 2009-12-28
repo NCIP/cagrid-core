@@ -4,14 +4,13 @@ import gov.nih.nci.cagrid.authentication.bean.BasicAuthenticationCredential;
 import gov.nih.nci.cagrid.authentication.bean.Credential;
 import gov.nih.nci.cagrid.testing.system.deployment.ServiceContainer;
 import gov.nih.nci.cagrid.testing.system.deployment.steps.CopyServiceStep;
-import gov.nih.nci.cagrid.testing.system.deployment.steps.DeleteServiceStep;
 import gov.nih.nci.cagrid.testing.system.deployment.steps.DeployServiceStep;
-import gov.nih.nci.cagrid.testing.system.deployment.steps.DestroyContainerStep;
 import gov.nih.nci.cagrid.testing.system.deployment.steps.StartContainerStep;
 import gov.nih.nci.cagrid.testing.system.deployment.steps.StopContainerStep;
 import gov.nih.nci.cagrid.testing.system.deployment.steps.UnpackContainerStep;
 import gov.nih.nci.cagrid.testing.system.deployment.story.ServiceStoryBase;
 import gov.nih.nci.cagrid.testing.system.haste.Step;
+import gov.nih.nci.cagrid.testing.system.utils.steps.ModifyConfigurationStep;
 
 import java.io.File;
 import java.util.HashSet;
@@ -30,16 +29,13 @@ import org.cagrid.gaards.authentication.test.system.steps.DeprecatedAuthenticati
 import org.cagrid.gaards.authentication.test.system.steps.InvalidAuthentication;
 import org.cagrid.gaards.authentication.test.system.steps.SuccessfullAuthentication;
 import org.cagrid.gaards.authentication.test.system.steps.ValidateSupportedAuthenticationProfilesStep;
-import org.cagrid.gaards.dorian.test.system.steps.CleanupDorianStep;
 import org.cagrid.gaards.dorian.test.system.steps.ConfigureGlobusToTrustDorianStep;
-import org.cagrid.gaards.dorian.test.system.steps.CopyConfigurationStep;
 import org.cagrid.gaards.dorian.test.system.steps.GetAsserionSigningCertificateStep;
 import org.cagrid.gaards.dorian.test.system.steps.SleepStep;
 
 
 public class DorianIdentityProviderAuthenticationTest extends ServiceStoryBase {
 
-    private File configuration;
     private File properties;
     private File tempService;
     private ConfigureGlobusToTrustDorianStep trust;
@@ -51,18 +47,12 @@ public class DorianIdentityProviderAuthenticationTest extends ServiceStoryBase {
     
     
     public DorianIdentityProviderAuthenticationTest(ServiceContainer container) {
-        this(container, null, null);
+        this(container, null);
     }
 
 
     public DorianIdentityProviderAuthenticationTest(ServiceContainer container, File properties) {
-        this(container, null, properties);
-    }
-
-
-    public DorianIdentityProviderAuthenticationTest(ServiceContainer container, File configuration, File properties) {
         super(container);
-        this.configuration = configuration;
         this.properties = properties;
     }
 
@@ -82,7 +72,13 @@ public class DorianIdentityProviderAuthenticationTest extends ServiceStoryBase {
         Vector<Step> steps = new Vector<Step>();
         try {
             steps.add(new UnpackContainerStep(getContainer()));
-            steps.add(new CopyConfigurationStep(tempService, this.configuration, this.properties));
+            File originalPropertyFile = new File(tempService
+					.getAbsolutePath()
+					+ File.separator
+					+ "etc"
+					+ File.separator
+					+ "dorian.properties");
+            steps.add(new ModifyConfigurationStep(originalPropertyFile, properties));
 
             steps.add(new DeployServiceStep(getContainer(), this.tempService.getAbsolutePath()));
 
@@ -188,13 +184,13 @@ public class DorianIdentityProviderAuthenticationTest extends ServiceStoryBase {
 
 
     protected void storyTearDown() throws Throwable {
-        try {
-            if (this.tempService != null) {
-                new DeleteServiceStep(tempService).runStep();
-            }
-        } catch (Throwable e) {
-            e.printStackTrace();
-        }
+//        try {
+//            if (this.tempService != null) {
+//                new DeleteServiceStep(tempService).runStep();
+//            }
+//        } catch (Throwable e) {
+//            e.printStackTrace();
+//        }
 
         StopContainerStep step2 = new StopContainerStep(getContainer());
         try {
@@ -203,18 +199,18 @@ public class DorianIdentityProviderAuthenticationTest extends ServiceStoryBase {
             e.printStackTrace();
         }
 
-        CleanupDorianStep cleanup = new CleanupDorianStep(getContainer(), trust);
-        try {
-            cleanup.runStep();
-        } catch (Throwable e) {
-            e.printStackTrace();
-        }
-        DestroyContainerStep step3 = new DestroyContainerStep(getContainer());
-        try {
-            step3.runStep();
-        } catch (Throwable e) {
-            e.printStackTrace();
-        }
+//        CleanupDorianStep cleanup = new CleanupDorianStep(getContainer(), trust);
+//        try {
+//            cleanup.runStep();
+//        } catch (Throwable e) {
+//            e.printStackTrace();
+//        }
+//        DestroyContainerStep step3 = new DestroyContainerStep(getContainer());
+//        try {
+//            step3.runStep();
+//        } catch (Throwable e) {
+//            e.printStackTrace();
+//        }
 
     }
 }

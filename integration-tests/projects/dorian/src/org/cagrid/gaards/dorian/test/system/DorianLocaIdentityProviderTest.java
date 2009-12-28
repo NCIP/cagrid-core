@@ -10,6 +10,7 @@ import gov.nih.nci.cagrid.testing.system.deployment.steps.StopContainerStep;
 import gov.nih.nci.cagrid.testing.system.deployment.steps.UnpackContainerStep;
 import gov.nih.nci.cagrid.testing.system.deployment.story.ServiceStoryBase;
 import gov.nih.nci.cagrid.testing.system.haste.Step;
+import gov.nih.nci.cagrid.testing.system.utils.steps.ModifyConfigurationStep;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -39,7 +40,6 @@ import org.cagrid.gaards.dorian.stubs.types.PermissionDeniedFault;
 import org.cagrid.gaards.dorian.test.system.steps.ChangeLocalUserPasswordStep;
 import org.cagrid.gaards.dorian.test.system.steps.CleanupDorianStep;
 import org.cagrid.gaards.dorian.test.system.steps.ConfigureGlobusToTrustDorianStep;
-import org.cagrid.gaards.dorian.test.system.steps.CopyConfigurationStep;
 import org.cagrid.gaards.dorian.test.system.steps.FindGridUserStep;
 import org.cagrid.gaards.dorian.test.system.steps.FindLocalUserStep;
 import org.cagrid.gaards.dorian.test.system.steps.GetAsserionSigningCertificateStep;
@@ -55,7 +55,6 @@ import org.cagrid.gaards.dorian.test.system.steps.VerifyTrustedIdPStep;
 
 public class DorianLocaIdentityProviderTest extends ServiceStoryBase {
 
-    private File configuration;
     private File properties;
     private File tempService;
     private ConfigureGlobusToTrustDorianStep trust;
@@ -65,18 +64,12 @@ public class DorianLocaIdentityProviderTest extends ServiceStoryBase {
 	}
 
     public DorianLocaIdentityProviderTest(ServiceContainer container) {
-        this(container, null, null);
+        this(container, null);
     }
 
 
     public DorianLocaIdentityProviderTest(ServiceContainer container, File properties) {
-        this(container, null, properties);
-    }
-
-
-    public DorianLocaIdentityProviderTest(ServiceContainer container, File configuration, File properties) {
         super(container);
-        this.configuration = configuration;
         this.properties = properties;
     }
 
@@ -96,7 +89,13 @@ public class DorianLocaIdentityProviderTest extends ServiceStoryBase {
         Vector<Step> steps = new Vector<Step>();
         try {
             steps.add(new UnpackContainerStep(getContainer()));
-            steps.add(new CopyConfigurationStep(tempService, this.configuration, this.properties));
+            File originalPropertyFile = new File(tempService
+					.getAbsolutePath()
+					+ File.separator
+					+ "etc"
+					+ File.separator
+					+ "dorian.properties");
+            steps.add(new ModifyConfigurationStep(originalPropertyFile, properties));
 
             steps.add(new DeployServiceStep(getContainer(), this.tempService.getAbsolutePath()));
 

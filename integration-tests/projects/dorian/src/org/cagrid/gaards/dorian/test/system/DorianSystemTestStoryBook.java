@@ -29,7 +29,7 @@ public class DorianSystemTestStoryBook {
     @Test
     public void dorianRemoteIdentityProviderTest() throws Throwable {
     	Story test = new DorianRemoteIdentityProviderTest(ServiceContainerFactory
-                .createContainer(ServiceContainerType.SECURE_TOMCAT_CONTAINER), null, DORIAN_PROPERTIES_FILE, new File(
+                .createContainer(ServiceContainerType.SECURE_TOMCAT_CONTAINER), DORIAN_PROPERTIES_FILE, new File(
                 "resources/authentication-config.xml"));
     	test.runBare();
 

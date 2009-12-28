@@ -10,6 +10,7 @@ import gov.nih.nci.cagrid.testing.system.deployment.steps.StopContainerStep;
 import gov.nih.nci.cagrid.testing.system.deployment.steps.UnpackContainerStep;
 import gov.nih.nci.cagrid.testing.system.deployment.story.ServiceStoryBase;
 import gov.nih.nci.cagrid.testing.system.haste.Step;
+import gov.nih.nci.cagrid.testing.system.utils.steps.ModifyConfigurationStep;
 
 import java.io.File;
 import java.util.HashSet;
@@ -34,7 +35,6 @@ import org.cagrid.gaards.dorian.stubs.types.PermissionDeniedFault;
 import org.cagrid.gaards.dorian.test.system.steps.AddTrustedIdPStep;
 import org.cagrid.gaards.dorian.test.system.steps.CleanupDorianStep;
 import org.cagrid.gaards.dorian.test.system.steps.ConfigureGlobusToTrustDorianStep;
-import org.cagrid.gaards.dorian.test.system.steps.CopyConfigurationStep;
 import org.cagrid.gaards.dorian.test.system.steps.FindGridUserStep;
 import org.cagrid.gaards.dorian.test.system.steps.GetAsserionSigningCertificateStep;
 import org.cagrid.gaards.dorian.test.system.steps.GridCredentialRequestStep;
@@ -50,7 +50,6 @@ import org.cagrid.gaards.saml.encoding.SAMLConstants;
 
 public class DorianRemoteIdentityProviderTest extends ServiceStoryBase {
 
-    private File dorianConfiguration;
     private File dorianProperties;
     private File authenticationServiceConfiguration;
     private AuthenticationProperties authenticationProperties;
@@ -64,10 +63,9 @@ public class DorianRemoteIdentityProviderTest extends ServiceStoryBase {
     }
 
 
-    public DorianRemoteIdentityProviderTest(ServiceContainer container, File dorianConfiguration,
+    public DorianRemoteIdentityProviderTest(ServiceContainer container,
         File dorianProperties, File authenticationServiceConfiguration) {
         super(container);
-        this.dorianConfiguration = dorianConfiguration;
         this.dorianProperties = dorianProperties;
         this.authenticationServiceConfiguration = authenticationServiceConfiguration;
     }
@@ -88,7 +86,14 @@ public class DorianRemoteIdentityProviderTest extends ServiceStoryBase {
         Vector<Step> steps = new Vector<Step>();
         try {
             steps.add(new UnpackContainerStep(getContainer()));
-            steps.add(new CopyConfigurationStep(dorianTempService, this.dorianConfiguration, this.dorianProperties));
+            File originalPropertyFile = new File(dorianTempService
+					.getAbsolutePath()
+					+ File.separator
+					+ "etc"
+					+ File.separator
+					+ "dorian.properties");
+            steps.add(new ModifyConfigurationStep(originalPropertyFile, dorianProperties));
+
             steps.add(new org.cagrid.gaards.authentication.test.system.steps.CopyConfigurationStep(
                 authenticationTempService, this.authenticationServiceConfiguration, this.authenticationProperties
                     .getPropertiesFile()));
