@@ -11,6 +11,8 @@ import org.apache.ivy.core.module.id.ModuleRevisionId;
 import org.apache.ivy.core.resolve.ResolvedModuleRevision;
 import org.apache.ivy.core.settings.IvySettings;
 import org.apache.ivy.plugins.matcher.PatternMatcher;
+import org.apache.ivy.util.DefaultMessageLogger;
+import org.apache.ivy.util.Message;
 
 public class Discover {
 	URL ivySettings = null;
@@ -24,6 +26,9 @@ public class Discover {
 	
 		ivy = Ivy.newInstance();
 		ivy.setVariable("cache", cacheDir);
+		ivy.setVariable("log", "quiet");
+
+		ivy.getLoggerEngine().setDefaultLogger(new DefaultMessageLogger(Message.MSG_ERR));
 		
 		try {
 			ivy.configure(ivySettings);

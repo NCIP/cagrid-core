@@ -17,6 +17,8 @@ import org.apache.ivy.core.resolve.IvyNode;
 import org.apache.ivy.core.resolve.ResolvedModuleRevision;
 import org.apache.ivy.core.retrieve.RetrieveOptions;
 import org.apache.ivy.plugins.matcher.PatternMatcher;
+import org.apache.ivy.util.DefaultMessageLogger;
+import org.apache.ivy.util.Message;
 import org.cagrid.grape.configuration.Grid;
 
 public class Retrieve {
@@ -31,6 +33,9 @@ public class Retrieve {
 		
 		ivy = Ivy.newInstance();
 		ivy.setVariable("cache", cacheDir);
+		ivy.setVariable("log", "quiet");
+		
+		ivy.getLoggerEngine().setDefaultLogger(new DefaultMessageLogger(Message.MSG_ERR));
 		
 		try {
 			ivy.configure(ivySettings);
