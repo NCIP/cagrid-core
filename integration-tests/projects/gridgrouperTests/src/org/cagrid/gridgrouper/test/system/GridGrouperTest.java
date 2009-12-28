@@ -10,6 +10,7 @@ import gov.nih.nci.cagrid.testing.system.deployment.steps.StopContainerStep;
 import gov.nih.nci.cagrid.testing.system.deployment.steps.UnpackContainerStep;
 import gov.nih.nci.cagrid.testing.system.deployment.story.ServiceStoryBase;
 import gov.nih.nci.cagrid.testing.system.haste.Step;
+import gov.nih.nci.cagrid.testing.system.utils.steps.ModifyConfigurationStep;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -27,7 +28,6 @@ import org.cagrid.gaards.dorian.service.BeanUtils;
 import org.cagrid.gaards.dorian.service.DorianProperties;
 import org.cagrid.gaards.dorian.test.system.steps.CleanupDorianStep;
 import org.cagrid.gaards.dorian.test.system.steps.ConfigureGlobusToTrustDorianStep;
-import org.cagrid.gaards.dorian.test.system.steps.CopyConfigurationStep;
 import org.cagrid.gaards.dorian.test.system.steps.GetAsserionSigningCertificateStep;
 import org.cagrid.gaards.dorian.test.system.steps.GridCredentialRequestStep;
 import org.cagrid.gaards.dorian.test.system.steps.RegisterUserWithDorianIdentityProviderStep;
@@ -53,7 +53,6 @@ public class GridGrouperTest extends ServiceStoryBase {
 	private static final String PATH_TO_DORIAN_PROJECT = "../../../caGrid/projects/dorian";
 	private static final String PATH_TO_GRIDGROUPER_PROJECT = "../../../caGrid/projects/gridgrouper";
 
-	private File configuration;
 	private File properties;
 	private File tempDorianService;
 	private File tempGridGrouperService;
@@ -65,16 +64,11 @@ public class GridGrouperTest extends ServiceStoryBase {
 	}
 
 	public GridGrouperTest(ServiceContainer container) {
-		this(container, null, null);
+		this(container, null);
 	}
 
 	public GridGrouperTest(ServiceContainer container, File properties) {
-		this(container, null, properties);
-	}
-
-	public GridGrouperTest(ServiceContainer container, File configuration, File properties) {
 		super(container);
-		this.configuration = configuration;
 		this.properties = properties;
 	}
 
@@ -84,12 +78,17 @@ public class GridGrouperTest extends ServiceStoryBase {
 	}
 
 	@Override
-	protected Vector steps() {
+	protected Vector<?> steps() {
 		Vector<Step> steps = new Vector<Step>();
 		try {
 			steps.add(new UnpackContainerStep(getContainer()));
-			steps.add(new CopyConfigurationStep(tempDorianService, this.configuration, this.properties));
-			steps.add(new CopyConfigurationStep(tempGridGrouperService, this.configuration, this.properties));
+			File originalPropertyFile = new File(tempDorianService
+					.getAbsolutePath()
+					+ File.separator
+					+ "etc"
+					+ File.separator
+					+ "dorian.properties");
+            steps.add(new ModifyConfigurationStep(originalPropertyFile, properties));
 
 			steps.add(new DeployServiceStep(getContainer(), this.tempDorianService.getAbsolutePath()));
 			steps.add(new DeployServiceStep(getContainer(), this.tempGridGrouperService.getAbsolutePath()));

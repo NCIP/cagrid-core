@@ -10,12 +10,12 @@ import org.junit.Test;
 
 public class GridGrouperSystemTestStoryBook {
 	
-	public static File DORIAN_PROPERTIES_FILE = new File("../dorian/resources/dorian.properties");
+	public static File DORIAN_PROPERTIES_FILE = new File("resources/dorian.properties");
 	
     @Test
     public void gridgrouperTest() throws Throwable {
     	Story test = new GridGrouperTest(ServiceContainerFactory
-                .createContainer(ServiceContainerType.SECURE_TOMCAT_CONTAINER), null, DORIAN_PROPERTIES_FILE);
+                .createContainer(ServiceContainerType.SECURE_TOMCAT_CONTAINER), DORIAN_PROPERTIES_FILE);
     	test.runBare();
 
     }
