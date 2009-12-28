@@ -12,6 +12,7 @@ import gov.nih.nci.cagrid.testing.system.deployment.steps.StopContainerStep;
 import gov.nih.nci.cagrid.testing.system.deployment.steps.UnpackContainerStep;
 import gov.nih.nci.cagrid.testing.system.deployment.story.ServiceStoryBase;
 import gov.nih.nci.cagrid.testing.system.haste.Step;
+import gov.nih.nci.cagrid.testing.system.utils.steps.ModifyConfigurationStep;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -54,7 +55,6 @@ import org.cagrid.gaards.dorian.idp.LocalUserStatus;
 import org.cagrid.gaards.dorian.idp.StateCode;
 import org.cagrid.gaards.dorian.test.system.steps.CleanupDorianStep;
 import org.cagrid.gaards.dorian.test.system.steps.ConfigureGlobusToTrustDorianStep;
-import org.cagrid.gaards.dorian.test.system.steps.CopyConfigurationStep;
 import org.cagrid.gaards.dorian.test.system.steps.FindLocalUserStep;
 import org.cagrid.gaards.dorian.test.system.steps.GetAsserionSigningCertificateStep;
 import org.cagrid.gaards.dorian.test.system.steps.GridCredentialRequestStep;
@@ -68,7 +68,7 @@ public class DelegateCredentialTest extends ServiceStoryBase {
 	private ServiceContainer dorianContainer;
 	private ServiceContainer cdsContainer;
 	private ConfigureGlobusToTrustDorianStep trust;
-	public static File DORIAN_PROPERTIES_FILE = new File("../dorian/resources/dorian.properties");
+	public static File DORIAN_PROPERTIES_FILE = new File("resources/dorian.properties");
 	
 	private final static int SHORT_LIFETIME_SECONDS = 30;
 
@@ -183,7 +183,7 @@ public class DelegateCredentialTest extends ServiceStoryBase {
 
 	}
 
-	protected Vector steps() {
+	protected Vector<?> steps() {
 		Vector<Step> steps = new Vector<Step>();
 		int containersCreated = 0;
 		
@@ -192,8 +192,15 @@ public class DelegateCredentialTest extends ServiceStoryBase {
 		steps.add(new UnpackContainerStep(dorianContainer));
 		List<String> args = Arrays.asList(new String[] {
 	            "-Dno.deployment.validation=true", "-Dperform.index.service.registration=false"});
-		// copy configuration and properties to service dir
-        steps.add(new CopyConfigurationStep(this.dorianServiceDir, null, DORIAN_PROPERTIES_FILE));
+		// modify the configuration and properties to service dir
+		File originalPropertyFile = new File(dorianServiceDir
+				.getAbsolutePath()
+				+ File.separator
+				+ "etc"
+				+ File.separator
+				+ "dorian.properties");
+        steps.add(new ModifyConfigurationStep(originalPropertyFile, DORIAN_PROPERTIES_FILE));
+
         steps.add(new DeployServiceStep(dorianContainer, this.dorianServiceDir.getAbsolutePath(), args));
         trust = new ConfigureGlobusToTrustDorianStep(dorianContainer);
         steps.add(trust);
