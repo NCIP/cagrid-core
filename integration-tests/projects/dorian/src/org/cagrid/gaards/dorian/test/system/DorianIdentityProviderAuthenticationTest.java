@@ -4,7 +4,9 @@ import gov.nih.nci.cagrid.authentication.bean.BasicAuthenticationCredential;
 import gov.nih.nci.cagrid.authentication.bean.Credential;
 import gov.nih.nci.cagrid.testing.system.deployment.ServiceContainer;
 import gov.nih.nci.cagrid.testing.system.deployment.steps.CopyServiceStep;
+import gov.nih.nci.cagrid.testing.system.deployment.steps.DeleteServiceStep;
 import gov.nih.nci.cagrid.testing.system.deployment.steps.DeployServiceStep;
+import gov.nih.nci.cagrid.testing.system.deployment.steps.DestroyContainerStep;
 import gov.nih.nci.cagrid.testing.system.deployment.steps.StartContainerStep;
 import gov.nih.nci.cagrid.testing.system.deployment.steps.StopContainerStep;
 import gov.nih.nci.cagrid.testing.system.deployment.steps.UnpackContainerStep;
@@ -29,6 +31,7 @@ import org.cagrid.gaards.authentication.test.system.steps.DeprecatedAuthenticati
 import org.cagrid.gaards.authentication.test.system.steps.InvalidAuthentication;
 import org.cagrid.gaards.authentication.test.system.steps.SuccessfullAuthentication;
 import org.cagrid.gaards.authentication.test.system.steps.ValidateSupportedAuthenticationProfilesStep;
+import org.cagrid.gaards.dorian.test.system.steps.CleanupDorianStep;
 import org.cagrid.gaards.dorian.test.system.steps.ConfigureGlobusToTrustDorianStep;
 import org.cagrid.gaards.dorian.test.system.steps.GetAsserionSigningCertificateStep;
 import org.cagrid.gaards.dorian.test.system.steps.SleepStep;
@@ -184,13 +187,13 @@ public class DorianIdentityProviderAuthenticationTest extends ServiceStoryBase {
 
 
     protected void storyTearDown() throws Throwable {
-//        try {
-//            if (this.tempService != null) {
-//                new DeleteServiceStep(tempService).runStep();
-//            }
-//        } catch (Throwable e) {
-//            e.printStackTrace();
-//        }
+        try {
+            if (this.tempService != null) {
+                new DeleteServiceStep(tempService).runStep();
+            }
+        } catch (Throwable e) {
+            e.printStackTrace();
+        }
 
         StopContainerStep step2 = new StopContainerStep(getContainer());
         try {
@@ -199,18 +202,18 @@ public class DorianIdentityProviderAuthenticationTest extends ServiceStoryBase {
             e.printStackTrace();
         }
 
-//        CleanupDorianStep cleanup = new CleanupDorianStep(getContainer(), trust);
-//        try {
-//            cleanup.runStep();
-//        } catch (Throwable e) {
-//            e.printStackTrace();
-//        }
-//        DestroyContainerStep step3 = new DestroyContainerStep(getContainer());
-//        try {
-//            step3.runStep();
-//        } catch (Throwable e) {
-//            e.printStackTrace();
-//        }
+        CleanupDorianStep cleanup = new CleanupDorianStep(getContainer(), trust);
+        try {
+            cleanup.runStep();
+        } catch (Throwable e) {
+            e.printStackTrace();
+        }
+        DestroyContainerStep step3 = new DestroyContainerStep(getContainer());
+        try {
+            step3.runStep();
+        } catch (Throwable e) {
+            e.printStackTrace();
+        }
 
     }
 }
