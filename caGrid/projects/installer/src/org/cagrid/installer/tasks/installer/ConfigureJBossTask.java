@@ -60,6 +60,9 @@ public class ConfigureJBossTask extends CaGridInstallerAntTask {
 			new AntExecutionTask("", "", getBuildFilePath(), "configure-server-config", env, sysProps)
 					.execute(model);
 			setLastStep(5);
+			new AntExecutionTask("", "", getBuildFilePath(), "configure-secure-redirect-port", env, sysProps)
+				.execute(model);
+			setLastStep(6);
 		}
 		
 		new AntExecutionTask("", "", getBuildFilePath(), "fix-permissions", env, sysProps)

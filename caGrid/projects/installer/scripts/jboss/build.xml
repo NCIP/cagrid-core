@@ -188,6 +188,14 @@
 		</xmltask>
 
 	</target>
+	
+	<target name="configure-secure-redirect-port">
+		<xmltask source="${jboss.home}/server/default/deploy/jbossweb-tomcat55.sar/server.xml"
+			dest="${jboss.home}/server/default/deploy/jbossweb-tomcat55.sar/server.xml">
+			<attr
+				path="/Server/Service[@name='jboss.web']/Connector[@protocol='AJP/1.3']" attr="redirectPort" value="${https.port}"/>
+		</xmltask>
+	</target>
 
 
 </project>
