@@ -283,25 +283,29 @@ public class InstallerUtils {
 
     public static boolean checkTomcatVersion(String home) {
         boolean correctVersion = false;
+        logger.info("Checking Tomcat version...");
         try {
             String javaHome = getJavaHomePath();
             String[] envp = new String[]{"JAVA_HOME=" + javaHome, "CATALINA_HOME=" + home};
 
             String[] cmd = null;
             if (InstallerUtils.isWindows()) {
-                cmd = new String[]{"cmd.exe", "/c", home + "/bin/version.bat"};
+            	// change to use catalina.bat due to a version.bat bug in Tomcat 5.5.27 
+                cmd = new String[]{"cmd.exe", "/c", home + "/bin/catalina.bat", "version"};
             } else {
                 cmd = new String[]{"sh", home + "/bin/version.sh"};
             }
-            Process p = Runtime.getRuntime().exec(cmd, envp);
+            
+            Process p = Runtime.getRuntime().exec(cmd, envp);          
             StringBuffer stdout = new StringBuffer();
-
+            
             new IOThread(p.getInputStream(), System.out, stdout).start();
             StringBuffer stderr = new StringBuffer();
-
+            
             new IOThread(p.getErrorStream(), System.err, stderr).start();
+            
             int code = p.waitFor();
-
+            
             correctVersion = stdout.toString().indexOf("Apache Tomcat/5.5.27") != -1;
             if (!correctVersion) {
 
