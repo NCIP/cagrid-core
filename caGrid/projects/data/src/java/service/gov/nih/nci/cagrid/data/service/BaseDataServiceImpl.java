@@ -45,6 +45,7 @@ public abstract class BaseDataServiceImpl {
     private byte[] serverConfigBytes = null;
     private Properties dataServiceConfig = null;
     private DomainModel domainModel = null;
+    private Mappings classToQnameMappings = null;
     
     private CQLQueryProcessor cql1QueryProcessor = null;
     private CQL2QueryProcessor cql2QueryProcessor = null;
@@ -96,6 +97,16 @@ public abstract class BaseDataServiceImpl {
         } else {
             LOG.warn("Domain Model NOT FOUND in base resource");
         }
+        LOG.debug("Loading class to QName mappings information");
+        try {
+            // get the mapping file name
+            String filename = ServiceConfigUtil.getClassToQnameMappingsFile();
+            LOG.debug("Loading class to QName mappings from " + filename);
+            // deserialize the mapping file
+            classToQnameMappings = Utils.deserializeDocument(filename, Mappings.class);
+        } catch (Exception ex) {
+            throw new DataServiceInitializationException("Error loading class to QName mappings: " + ex.getMessage(), ex);
+        }
         // initialize the query validator
         LOG.debug("Initializing query validator");
         queryValidator = new CqlValidationUtil(dataServiceConfig, domainModel);
@@ -125,6 +136,11 @@ public abstract class BaseDataServiceImpl {
     }
     
     
+    protected Mappings getClassToQnameMappings() {
+        return classToQnameMappings;
+    }
+    
+    
     protected InputStream getServerConfigWsddStream() {
         return new ByteArrayInputStream(serverConfigBytes);
     }
@@ -136,12 +152,15 @@ public abstract class BaseDataServiceImpl {
      * @param cause
      * @param fault
      * @return
+     * @throws IllegalAccessException 
+     * @throws InstantiationException 
      */
-    protected Exception getTypedException(Exception cause, BaseFaultType fault) {
-        FaultHelper helper = new FaultHelper(fault);
+    @SuppressWarnings("unchecked")
+    protected <T extends BaseFaultType> T getTypedException(Exception cause, T faultType) {
+        FaultHelper helper = new FaultHelper(faultType);
         helper.addFaultCause(cause);
         helper.setDescription(cause.getClass().getSimpleName() + " -- " + cause.getMessage());
-        return helper.getFault();
+        return (T) helper.getFault();
     }
         
     
@@ -318,7 +337,7 @@ public abstract class BaseDataServiceImpl {
     
     
     private CQLQueryProcessor getCql1QueryProcessor() throws QueryProcessingException {
-        if (cql1QueryProcessor != null) {
+        if (cql1QueryProcessor == null) {
             LOG.debug("Instantiating CQL query processor");
             // get the query processor's class
             String qpClassName = null;
@@ -373,7 +392,7 @@ public abstract class BaseDataServiceImpl {
     
     
     private CQL2QueryProcessor getCql2QueryProcessor() throws QueryProcessingException {
-        if (cql2QueryProcessor != null) {
+        if (cql2QueryProcessor == null) {
             LOG.debug("Instantiating CQL 2 query processor");
             // get the query processor's class
             String qpClassName = null;
@@ -418,11 +437,7 @@ public abstract class BaseDataServiceImpl {
                     }
                     unionProperties.setProperty(key, value);
                 }
-                // get the mapping file name
-                String filename = ServiceConfigUtil.getClassToQnameMappingsFile();
-                // deserialize the mapping file
-                Mappings mappings = Utils.deserializeDocument(filename, Mappings.class);
-                cql2QueryProcessor.configure(unionProperties, configStream, mappings);
+                cql2QueryProcessor.configure(unionProperties, configStream, getClassToQnameMappings());
             } catch (Exception ex) {
                 throw new QueryProcessingException("Error initializing query processor: " + ex.getMessage(), ex);
             }
