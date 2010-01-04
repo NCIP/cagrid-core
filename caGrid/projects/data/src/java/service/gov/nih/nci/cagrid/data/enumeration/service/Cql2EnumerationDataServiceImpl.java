@@ -21,6 +21,8 @@ import org.xmlsoap.schemas.ws._2004._09.enumeration.EnumerationContextType;
 import gov.nih.nci.cagrid.data.CqlSchemaConstants;
 import gov.nih.nci.cagrid.data.MalformedQueryException;
 import gov.nih.nci.cagrid.data.QueryProcessingException;
+import gov.nih.nci.cagrid.data.faults.MalformedQueryExceptionType;
+import gov.nih.nci.cagrid.data.faults.QueryProcessingExceptionType;
 import gov.nih.nci.cagrid.data.service.BaseDataServiceImpl;
 import gov.nih.nci.cagrid.data.service.DataServiceInitializationException;
 import gov.nih.nci.cagrid.enumeration.stubs.response.EnumerationResponseContainer;
@@ -46,8 +48,15 @@ public class Cql2EnumerationDataServiceImpl extends BaseDataServiceImpl {
 
 
     public EnumerationResponseContainer executeEnumerationQuery(CQLQuery query) 
-        throws QueryProcessingException, MalformedQueryException {
-        Iterator<CQLResult> resultsIterator = processCql2QueryAndIterate(query);
+        throws QueryProcessingExceptionType, MalformedQueryExceptionType {
+        Iterator<CQLResult> resultsIterator;
+        try {
+            resultsIterator = processCql2QueryAndIterate(query);
+        } catch (QueryProcessingException ex) {
+            throw getTypedException(ex, new QueryProcessingExceptionType());
+        } catch (MalformedQueryException ex) {
+            throw getTypedException(ex, new MalformedQueryExceptionType());
+        }
 
         // get the service property for the enum iterator type
         IterImplType implType = EnumConfigDiscoveryUtil.getConfiguredIterImplType();
@@ -59,8 +68,9 @@ public class Cql2EnumerationDataServiceImpl extends BaseDataServiceImpl {
             enumIter = EnumIteratorFactory.createIterator(implType, resultsIterator, 
                 CqlSchemaConstants.CQL2_RESULT_QNAME, getServerConfigWsddStream());
         } catch (Exception ex) {
-            throw new QueryProcessingException("Error creating EnumIterator implementation: " 
-                + ex.getMessage(), ex);
+            throw getTypedException(
+                new QueryProcessingException("Error creating EnumIterator implementation: " + ex.getMessage(), ex),
+                new QueryProcessingExceptionType());
         }
 
         LOG.debug("Creating enumeration resource");
@@ -79,7 +89,7 @@ public class Cql2EnumerationDataServiceImpl extends BaseDataServiceImpl {
 
             // create the context's EPR
             URL baseURL = ServiceHost.getBaseURL();
-            // TODO: the "cagrid" part is configurable, so we need to read this// from somewhere
+            // TODO: the "cagrid" part is configurable, so we need to read this from somewhere
             String serviceURI = baseURL.toString() + "cagrid/" + WsEnumConstants.CAGRID_ENUMERATION_SERVICE_NAME;
 
             EndpointReferenceType epr = AddressingUtils.createEndpointReference(serviceURI, key);
@@ -89,7 +99,9 @@ public class Cql2EnumerationDataServiceImpl extends BaseDataServiceImpl {
             container.setContext(enumContext);
             container.setEPR(epr);
         } catch (Exception ex) {
-            throw new QueryProcessingException("Error creating enum resource: " + ex.getMessage(), ex);
+            throw getTypedException(
+                new QueryProcessingException("Error creating enum resource: " + ex.getMessage(), ex),
+                new QueryProcessingExceptionType());
         }
         return container;
     }

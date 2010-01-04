@@ -5,6 +5,8 @@ import gov.nih.nci.cagrid.data.MalformedQueryException;
 import gov.nih.nci.cagrid.data.QueryProcessingException;
 import gov.nih.nci.cagrid.data.faults.MalformedQueryExceptionType;
 import gov.nih.nci.cagrid.data.faults.QueryProcessingExceptionType;
+import gov.nih.nci.cagrid.data.mapping.ClassToQname;
+import gov.nih.nci.cagrid.data.mapping.Mappings;
 import gov.nih.nci.cagrid.data.service.BaseDataServiceImpl;
 import gov.nih.nci.cagrid.data.service.DataServiceInitializationException;
 import gov.nih.nci.cagrid.enumeration.stubs.response.EnumerationResponseContainer;
@@ -50,14 +52,14 @@ public class Cql1EnumerationDataServiceImpl extends BaseDataServiceImpl {
 	
 	public EnumerationResponseContainer enumerationQuery(gov.nih.nci.cagrid.cqlquery.CQLQuery cqlQuery) 
 	    throws MalformedQueryExceptionType, QueryProcessingExceptionType {
-	    // perform base query, get an iterator over OBJECTS, not CQLResults :(
+	    // perform base query, get an iterator over OBJECTS, NOT CQLResults
 	    Iterator<?> resultsIterator;
         try {
             resultsIterator = processCql1QueryAndIterate(cqlQuery);
         } catch (QueryProcessingException e) {
-            throw (QueryProcessingExceptionType) getTypedException(e, new QueryProcessingExceptionType());
+            throw getTypedException(e, new QueryProcessingExceptionType());
         } catch (MalformedQueryException e) {
-            throw (MalformedQueryExceptionType) getTypedException(e, new MalformedQueryExceptionType());
+            throw getTypedException(e, new MalformedQueryExceptionType());
         }
 	    
 	    // need to know the data type of the results, no way to do that without a call to next()
@@ -65,7 +67,22 @@ public class Cql1EnumerationDataServiceImpl extends BaseDataServiceImpl {
 	    Object first = resultsIterator.hasNext() ? resultsIterator.next() : null;
 	    if (first != null) {
 	        Class<?> resultClass = first.getClass();
+	        System.out.println("Determining result QName for class " + resultClass.getName());
             datatypeQName = Utils.getRegisteredQName(resultClass);
+            if (datatypeQName == null) {
+                LOG.debug("Could not locate QName in Axis type mappings, checking class to QName mappings");
+                Mappings mappings = getClassToQnameMappings();
+                if (mappings.getMapping() != null) {
+                    for (ClassToQname c2q : mappings.getMapping()) {
+                        if (c2q.getClassName().equals(resultClass.getName())) {
+                            datatypeQName = QName.valueOf(c2q.getQname());
+                            LOG.debug("Found mapping");
+                            break;
+                        }
+                    }
+                }
+            }
+            System.out.println("Results QName is " + datatypeQName);
 	    }
 	    
         // get the service property for the enum iterator type
@@ -84,9 +101,8 @@ public class Cql1EnumerationDataServiceImpl extends BaseDataServiceImpl {
                 enumIter = new DummyEnumIterator();
             }
         } catch (Exception ex) {
-            throw (QueryProcessingExceptionType) getTypedException(
-                new QueryProcessingException(
-                    "Error creating EnumIterator implementation: " + ex.getMessage(), ex),
+            throw getTypedException(
+                new QueryProcessingException("Error creating EnumIterator implementation: " + ex.getMessage(), ex),
                 new QueryProcessingExceptionType());
         }
 
@@ -116,7 +132,7 @@ public class Cql1EnumerationDataServiceImpl extends BaseDataServiceImpl {
             container.setContext(enumContext);
             container.setEPR(epr);
         } catch (Exception ex) {
-            throw (QueryProcessingExceptionType) getTypedException( 
+            throw getTypedException( 
                 new QueryProcessingException("Error creating enum resource: " + ex.getMessage(), ex), 
                 new QueryProcessingExceptionType());
         }
@@ -129,7 +145,7 @@ public class Cql1EnumerationDataServiceImpl extends BaseDataServiceImpl {
 	        private boolean returnedFirst = false;
 	        
 	        public boolean hasNext() {
-	            return first != null || iter.hasNext();
+	            return (first != null && !returnedFirst) || iter.hasNext();
 	        }
 
 	        
