@@ -231,7 +231,7 @@ public class CredentialManagerComponent extends ApplicationComponent {
                     try {
                         proxyInfoPanel.getCertificates().doubleClick();
                     } catch (Exception ex) {
-                        ErrorDialog.showError("An unexpected error in loading the requested certificate.", ex);
+                        ErrorDialog.showError(ex);
                     }
                 }
             });
