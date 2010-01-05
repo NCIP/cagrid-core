@@ -70,7 +70,6 @@ public class CqlValidationUtil {
         try {
             cql2Walker.walkCql(query);
         } catch (Cql2WalkerException ex) {
-            // TODO: probably need to change the cql2 walker to throw MalformedQueryException and QueryProcessingException directly
             throw new MalformedQueryException(ex.getMessage(), ex);
         }
     }
