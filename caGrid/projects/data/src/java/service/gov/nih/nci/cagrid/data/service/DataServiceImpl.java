@@ -23,7 +23,7 @@ import org.globus.wsrf.ResourceHome;
   * @created May 17, 2007 2:20:26 PM
   * @version $Id$
  */
-public class DataServiceImpl extends BaseCQL1DataServiceImpl {
+public class DataServiceImpl extends BaseDataServiceImpl {
 	
 	public DataServiceImpl() throws DataServiceInitializationException {
 		super();
@@ -31,34 +31,16 @@ public class DataServiceImpl extends BaseCQL1DataServiceImpl {
 	
 	
 	public gov.nih.nci.cagrid.cqlresultset.CQLQueryResults query(gov.nih.nci.cagrid.cqlquery.CQLQuery cqlQuery) 
-		throws RemoteException, gov.nih.nci.cagrid.data.faults.QueryProcessingExceptionType, gov.nih.nci.cagrid.data.faults.MalformedQueryExceptionType {
-        fireAuditQueryBegins(cqlQuery);
-        
+		throws RemoteException, QueryProcessingExceptionType, MalformedQueryExceptionType {
+	    CQLQueryResults results = null;
         try {
-            preProcess(cqlQuery);
-        } catch (MalformedQueryException ex) {
-            throw (MalformedQueryExceptionType) getTypedException(ex, new MalformedQueryExceptionType());
+            results = processCql1Query(cqlQuery);
         } catch (QueryProcessingException ex) {
-            throw (QueryProcessingExceptionType) getTypedException(ex, new QueryProcessingExceptionType());
+            throw getTypedException(ex, new QueryProcessingExceptionType());
+        } catch (MalformedQueryException ex) {
+            throw getTypedException(ex, new MalformedQueryExceptionType());
         }
-		
-		// process the query
-		gov.nih.nci.cagrid.data.cql.CQLQueryProcessor processor = null;
-		try {
-			processor = getCqlQueryProcessorInstance();
-		} catch (Exception ex) {
-			throw (QueryProcessingExceptionType) getTypedException(ex, new QueryProcessingExceptionType());
-		}
-		try {
-            CQLQueryResults results = processor.processQuery(cqlQuery);
-            fireAuditQueryResults(cqlQuery, results);
-            return results;
-		} catch (gov.nih.nci.cagrid.data.QueryProcessingException ex) {
-            fireAuditQueryProcessingFailure(cqlQuery, ex);
-			throw (QueryProcessingExceptionType) getTypedException(ex, new QueryProcessingExceptionType());
-		} catch (gov.nih.nci.cagrid.data.MalformedQueryException ex) {
-			throw (MalformedQueryExceptionType) getTypedException(ex, new MalformedQueryExceptionType());
-		}
+        return results;
 	}
 	
 	
