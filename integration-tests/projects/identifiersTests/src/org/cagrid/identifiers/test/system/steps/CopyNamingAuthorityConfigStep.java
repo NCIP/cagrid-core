@@ -25,7 +25,7 @@ public class CopyNamingAuthorityConfigStep extends Step {
     public String buildNAConfigStr() throws MalformedURIException {
     	StringBuffer sb = new StringBuffer();
     	sb.append("cagrid.na.prefix=").append(testInfo.getNAPrefix())
-    		.append("\ncagrid.na.schemauri=http://localhost:8080/namingauthority/org.cagrid.identifiers.namingauthority.xsd")
+    		.append("\ncagrid.na.schemauri=http://na.cagrid.org/org.cagrid.identifiers.namingauthority.xsd")
     		.append("\ncagrid.na.grid.url=").append(testInfo.getGridSvcURL())
     		.append("\ncagrid.na.db.dialect=org.hibernate.dialect.MySQL5InnoDBDialect")
     		.append("\ncagrid.na.db.driver=com.mysql.jdbc.Driver")

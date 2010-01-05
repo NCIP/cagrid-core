@@ -32,7 +32,7 @@ public class IdentifiersClientGridResolutionStep extends Step {
     	assertNotNull("Null identifier", identifier);
     	assertNotNull("Null values", values);
     	
-    	System.out.println("Going to HTTP resolve [" + identifier.toString() + "]");
+    	System.out.println("Going to GRID resolve [" + identifier.toString() + "]");
     	org.cagrid.identifiers.namingauthority.domain.IdentifierValues resolvedValues = null;
     	try {
 			resolvedValues = new Resolver().resolveGrid(new java.net.URI(identifier.toString()));

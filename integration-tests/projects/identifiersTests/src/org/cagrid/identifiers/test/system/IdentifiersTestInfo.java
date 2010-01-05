@@ -1,10 +1,14 @@
 package org.cagrid.identifiers.test.system;
 
+import gov.nih.nci.cagrid.testing.core.TestingConstants;
 import gov.nih.nci.cagrid.testing.system.deployment.ServiceContainer;
 import gov.nih.nci.cagrid.testing.system.deployment.ServiceContainerFactory;
 import gov.nih.nci.cagrid.testing.system.deployment.ServiceContainerType;
 
+import java.io.BufferedReader;
+import java.io.File;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -13,6 +17,9 @@ import namingauthority.IdentifierValues;
 import org.apache.axis.message.addressing.EndpointReferenceType;
 import org.apache.axis.types.URI;
 import org.apache.axis.types.URI.MalformedURIException;
+import org.apache.http.HttpEntity;
+import org.apache.http.HttpResponse;
+import org.apache.http.cookie.Cookie;
 
 
 public class IdentifiersTestInfo {
@@ -25,11 +32,32 @@ public class IdentifiersTestInfo {
     public static final String GRIDSVC_TMP_DIR = "tmp/TempSVC";
     public static final String GRIDSVC_NA_PROPERTIES = GRIDSVC_TMP_DIR + "/etc/na.properties";
     public static final String GRIDSVC_URL_PATH = "cagrid/IdentifiersNAService";
+    
+    public static final String PURLZ_ZIP = "resources/PURLZ-Server-1.6.1.zip";
+    public static final String PURLZ_BOOTLOADER = "lib" + File.separator + "1060netkernel-2.8.5.jar";
+    public static final String PURLZ_BOOTLOADER_CFG = "etc" + File.separator + "bootloader.cfg";
+    public static final String PURLZ_DB = "purls";
+    public static final String PURLZ_LOGIN_COOKIE = "NETKERNELSESSION";
+    public static final String PURLZ_REST_LOGIN = "/admin/login/login-submit.bsh";
+    public static final String PURLZ_WELCOME_MSG = "Welcome to your PURL administrator interface";
+    public static final String PURLZ_USER = "admin";
+    public static final String PURLZ_PASSWORD = "password";
+    public static final String PURLZ_TESTDOMAIN_ID = "/localhost";
+    public static final String PURLZ_TESTDOMAIN_NAME = "Local Domain";
+    public static final String PURLZ_TRANSPORT_FILE = "/modules/mod-fulcrum-frontend/etc/TransportJettyConfig.xml";
         
 	private List<URI> identifiers = null;
 	private List<IdentifierValues> identifierValues = null;
 	private ServiceContainer webAppContainer = null;
 	private ServiceContainer gridSvcContainer = null;
+	public Process purlzProcess = null;
+	private File purlzDirectory = null;
+	private Cookie purlzLoginCookie = null;
+	private Integer purlzPort = null;
+	
+	public IdentifiersTestInfo() throws IOException {
+		this.purlzDirectory = genPurlzTempDirectory();
+	}
 	
 	public List<URI> getIdentifiers() { 
 		return this.identifiers; 
@@ -72,12 +100,63 @@ public class IdentifiersTestInfo {
 	}
 	
 	public String getNAPrefix() throws MalformedURIException {
+		String prefix = "http://localhost:" +
+			this.purlzPort + 
+			PURLZ_TESTDOMAIN_ID +
+			"/";
+		
+		return prefix;
+	}
+
+	public String getNamingAuthorityURI() throws MalformedURIException {
 		URI baseURI = this.webAppContainer.getContainerBaseURI();
 		return "http://" + baseURI.getHost() + ":" + baseURI.getPort() + WEBAPP_URL_PATH;
 	}
-
+	
 	public String getGridSvcURL() throws MalformedURIException {
 		return this.gridSvcContainer.getContainerBaseURI().toString() + GRIDSVC_URL_PATH;
+	}
+	
+	public File getPurlzDirectory() {
+		return this.purlzDirectory;
+	}
+	
+	public void setPurlzPort(Integer port) {
+		this.purlzPort = port;
+	}
+	
+	public Integer getPurlzPort() {
+		return this.purlzPort;
+	}
+	
+	public void setPurlzLoginCookie( Cookie cookie ) {
+		this.purlzLoginCookie = cookie;
+	}
+	
+	public Cookie getPurlzLoginCookie() {
+		return this.purlzLoginCookie;
+	}
+	
+	public static String getResponseString( HttpResponse response ) throws IOException {
+
+		StringBuffer responseStr = new StringBuffer();
+
+		HttpEntity entity = response.getEntity();
+
+		if (entity != null) {
+			BufferedReader reader = new BufferedReader(
+					new InputStreamReader( entity.getContent() ));
+			try {
+				String line;
+				while ( (line = reader.readLine()) != null ) {
+					responseStr.append(line).append("\n");
+				}
+			} finally {
+				reader.close();
+			}
+		}
+
+		return responseStr.toString();
 	}
 	
 	//
@@ -86,4 +165,16 @@ public class IdentifiersTestInfo {
 	private ServiceContainer createContainer() throws IOException {
 		return ServiceContainerFactory.createContainer(ServiceContainerType.TOMCAT_CONTAINER);
 	}
+	
+	private static File genPurlzTempDirectory() throws IOException {
+        File tempDir = new File(TestingConstants.TEST_TEMP_DIR);
+        if (!tempDir.exists()) {
+            tempDir.mkdirs();
+        }
+        File tempContainerDir = File.createTempFile("PURLZ", "tmp", tempDir);
+        // create a directory, not a file
+        tempContainerDir.delete();
+        tempContainerDir.mkdirs();
+        return tempContainerDir;
+    }
 }
