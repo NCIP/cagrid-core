@@ -13,26 +13,31 @@ import org.cagrid.gaards.authentication.client.AuthenticationServiceClient;
 import org.cagrid.gaards.saml.encoding.SAMLUtils;
 import org.globus.wsrf.impl.security.authorization.Authorization;
 
+
 /**
  * @author <A href="mailto:langella@bmi.osu.edu">Stephen Langella </A>
  * @author <A href="mailto:oster@bmi.osu.edu">Scott Oster </A>
  * @author <A href="mailto:hastings@bmi.osu.edu">Shannon Hastings </A>
  * @version $Id: ArgumentManagerTable.java,v 1.2 2004/10/15 16:35:16 langella
  *          Exp $
+ *          
+ * @deprecated As of release 1.3, replaced by {@link org.cagrid.gaards.authentication.client.AuthenticationClient}
  */
+@Deprecated
 public class AuthenticationClient {
 
-	private Credential cred;
+    private Credential cred;
 
-	private AuthenticationServiceClient client;
+    private AuthenticationServiceClient client;
 
-	public AuthenticationClient(String serviceURI, Credential cred)
-			throws MalformedURIException, RemoteException {
-		client = new AuthenticationServiceClient(serviceURI);
-		this.cred = cred;
-	}
-	
-	/**
+
+    public AuthenticationClient(String serviceURI, Credential cred) throws MalformedURIException, RemoteException {
+        client = new AuthenticationServiceClient(serviceURI);
+        this.cred = cred;
+    }
+
+
+    /**
      * This method specifies an authorization policy that the client should use
      * for authorizing the server that it connects to.
      * 
@@ -44,21 +49,21 @@ public class AuthenticationClient {
         client.setAuthorization(authorization);
     }
 
-	public SAMLAssertion authenticate() throws RemoteException,
-			InvalidCredentialFault, InsufficientAttributeFault,
-			AuthenticationProviderFault {
-		try {
-			String xml = client.authenticate(cred).getXml();
-			// System.out.println(XMLUtilities.formatXML(xml));
-			return SAMLUtils.stringToSAMLAssertion(xml);
-		} catch (InvalidCredentialFault gie) {
-			throw gie;
-		} catch (InsufficientAttributeFault ilf) {
-			throw ilf;
-		} catch (AuthenticationProviderFault ilf) {
-			throw ilf;
-		} catch (Exception e) {
-			throw new RemoteException(e.getMessage());
-		}
-	}
+
+    public SAMLAssertion authenticate() throws RemoteException, InvalidCredentialFault, InsufficientAttributeFault,
+        AuthenticationProviderFault {
+        try {
+            String xml = client.authenticate(cred).getXml();
+            // System.out.println(XMLUtilities.formatXML(xml));
+            return SAMLUtils.stringToSAMLAssertion(xml);
+        } catch (InvalidCredentialFault gie) {
+            throw gie;
+        } catch (InsufficientAttributeFault ilf) {
+            throw ilf;
+        } catch (AuthenticationProviderFault ilf) {
+            throw ilf;
+        } catch (Exception e) {
+            throw new RemoteException(e.getMessage());
+        }
+    }
 }

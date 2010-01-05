@@ -30,6 +30,11 @@ import org.globus.gsi.GlobusCredential;
 import org.globus.wsrf.impl.security.authorization.Authorization;
 
 
+/**
+ * @deprecated As of release 1.3, replaced by
+ *             {@link org.cagrid.gaards.dorian.client.GridUserClient}
+ */
+@Deprecated
 public class IFSUserClient {
 
     private DorianClient client;

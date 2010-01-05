@@ -20,7 +20,10 @@ import org.globus.wsrf.impl.security.authorization.Authorization;
  * @author <A href="mailto:hastings@bmi.osu.edu">Shannon Hastings </A>
  * @version $Id: ArgumentManagerTable.java,v 1.2 2004/10/15 16:35:16 langella
  *          Exp $
+ * @deprecated As of release 1.3, replaced by
+ *             {@link org.cagrid.gaards.dorian.client.LocalUserClient}
  */
+@Deprecated
 public class IdPRegistrationClient {
 
     private DorianClient client;
