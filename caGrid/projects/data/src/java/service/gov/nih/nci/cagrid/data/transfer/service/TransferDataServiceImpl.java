@@ -8,15 +8,11 @@ import gov.nih.nci.cagrid.cqlresultset.CQLQueryResults;
 import gov.nih.nci.cagrid.data.DataServiceConstants;
 import gov.nih.nci.cagrid.data.MalformedQueryException;
 import gov.nih.nci.cagrid.data.QueryProcessingException;
-import gov.nih.nci.cagrid.data.cql.CQLQueryProcessor;
 import gov.nih.nci.cagrid.data.faults.MalformedQueryExceptionType;
 import gov.nih.nci.cagrid.data.faults.QueryProcessingExceptionType;
-import gov.nih.nci.cagrid.data.service.BaseCQL1DataServiceImpl;
+import gov.nih.nci.cagrid.data.service.BaseDataServiceImpl;
 import gov.nih.nci.cagrid.data.service.DataServiceInitializationException;
-import gov.nih.nci.cagrid.data.service.ServiceConfigUtil;
 
-import java.io.ByteArrayInputStream;
-import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -25,6 +21,7 @@ import java.rmi.RemoteException;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Executors;
+import java.util.concurrent.ThreadFactory;
 
 import org.apache.axis.MessageContext;
 import org.apache.commons.logging.Log;
@@ -40,12 +37,9 @@ import org.globus.wsrf.container.ServiceManager.HelperAxisEngine;
  * @created by Introduce Toolkit version 1.0
  * 
  */
-public class TransferDataServiceImpl extends BaseCQL1DataServiceImpl {
+public class TransferDataServiceImpl extends BaseDataServiceImpl {
 
-    private static Log LOG = LogFactory.getLog(TransferDataServiceImpl.class);
-    
-    private byte[] serverConfigWsddBytes = null;
-    
+    private static Log LOG = LogFactory.getLog(TransferDataServiceImpl.class);    
 	
 	public TransferDataServiceImpl() throws DataServiceInitializationException {
 		super();
@@ -55,36 +49,20 @@ public class TransferDataServiceImpl extends BaseCQL1DataServiceImpl {
 	public TransferServiceContextReference transferQuery(gov.nih.nci.cagrid.cqlquery.CQLQuery cqlQuery) throws RemoteException, 
 		gov.nih.nci.cagrid.data.faults.MalformedQueryExceptionType, 
 		gov.nih.nci.cagrid.data.faults.QueryProcessingExceptionType {
-        fireAuditQueryBegins(cqlQuery);
-        
-        try {
-            preProcess(cqlQuery);
-        } catch (MalformedQueryException ex) {
-            throw (MalformedQueryExceptionType) getTypedException(ex, new MalformedQueryExceptionType());
-        } catch (QueryProcessingException ex) {
-            throw (QueryProcessingExceptionType) getTypedException(ex, new QueryProcessingExceptionType());
-        }
-		
-		CQLQueryProcessor processor = null;
-        try {
-            processor = getCqlQueryProcessorInstance();
-        } catch (QueryProcessingException ex) {
-            throw (QueryProcessingExceptionType) getTypedException(ex, new QueryProcessingExceptionType());
-        }
         
         TransferServiceContextReference transferReference = null;
         try {
-            transferReference = performQuery(processor, cqlQuery);
+            transferReference = performQuery(cqlQuery);
         } catch (MalformedQueryException ex) {
-            throw (MalformedQueryExceptionType) getTypedException(ex, new MalformedQueryExceptionType());
+            throw getTypedException(ex, new MalformedQueryExceptionType());
         } catch (QueryProcessingException ex) {
-            throw (QueryProcessingExceptionType) getTypedException(ex, new QueryProcessingExceptionType());
+            throw getTypedException(ex, new QueryProcessingExceptionType());
         }
         return transferReference;
     }
     
     
-    private TransferServiceContextReference performQuery(final CQLQueryProcessor processor, final CQLQuery query)
+    private TransferServiceContextReference performQuery(final CQLQuery query)
         throws QueryProcessingException, MalformedQueryException {
         // start up a ByteQueue which will be used to push data in and out of
         // TODO: configurable disk byte buffer dir via system property
@@ -96,14 +74,13 @@ public class TransferDataServiceImpl extends BaseCQL1DataServiceImpl {
             public Object call() throws QueryProcessingException, MalformedQueryException {
                 HelperAxisEngine.setCurrentMessageContext(threadMessageContext);
                 LOG.debug("CQL query processing started");
-                CQLQueryResults results = processor.processQuery(query);
-                fireAuditQueryResults(query, results);
+                CQLQueryResults results = processCql1Query(query);
                 LOG.debug("CQL query processing complete.");
                 OutputStream byteOutput = byteQueue.getByteOutputStream();
                 OutputStreamWriter writer = new OutputStreamWriter(byteOutput);
                 try {
                     LOG.debug("Serializing CQL results to byte queue for transfer");
-                    InputStream serverConfigWsdd = getServerConfigWsdd();
+                    InputStream serverConfigWsdd = getServerConfigWsddStream();
                     Utils.serializeObject(results, 
                         DataServiceConstants.CQL_RESULT_SET_QNAME, 
                         writer, serverConfigWsdd);
@@ -134,7 +111,14 @@ public class TransferDataServiceImpl extends BaseCQL1DataServiceImpl {
         // actually execute the query and serialize task
         try {
             LOG.debug("Starting query execution task");
-            Executors.newSingleThreadExecutor().submit(queryTask).get();
+            ThreadFactory daemonThreadFactory = new ThreadFactory() {
+                public Thread newThread(Runnable r) {
+                    Thread th = Executors.defaultThreadFactory().newThread(r);
+                    th.setDaemon(true);
+                    return th;
+                }
+            };
+            Executors.newSingleThreadExecutor(daemonThreadFactory).submit(queryTask).get();
         } catch (ExecutionException ex) {
             Throwable cause = ex.getCause();
             if (cause != null) {
@@ -166,24 +150,5 @@ public class TransferDataServiceImpl extends BaseCQL1DataServiceImpl {
         }
         
         return transferReference;
-    }
-    
-    
-    private InputStream getServerConfigWsdd() throws IOException {
-        if (serverConfigWsddBytes == null) {
-            LOG.debug("Reading and caching server config wsdd file");
-            String serverConfigLocation = null;
-            try {
-                serverConfigLocation = ServiceConfigUtil.getConfigProperty(
-                    DataServiceConstants.SERVER_CONFIG_LOCATION);
-            } catch (Exception ex) {
-                String err = "Error obtaining server config location: " + ex.getMessage();
-                LOG.error(err, ex);
-                throw new IOException(err);
-            }
-            StringBuffer wsdd = Utils.fileToStringBuffer(new File(serverConfigLocation));
-            serverConfigWsddBytes = wsdd.toString().getBytes();
-        }
-        return new ByteArrayInputStream(serverConfigWsddBytes);
     }
 }
