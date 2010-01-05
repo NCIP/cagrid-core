@@ -8,11 +8,19 @@ import gov.nih.nci.cagrid.data.DataServiceConstants;
 import gov.nih.nci.cagrid.data.MalformedQueryException;
 import gov.nih.nci.cagrid.data.QueryProcessingException;
 import gov.nih.nci.cagrid.data.QueryProcessorConstants;
+import gov.nih.nci.cagrid.data.auditing.AuditorConfiguration;
+import gov.nih.nci.cagrid.data.auditing.DataServiceAuditors;
 import gov.nih.nci.cagrid.data.cql.CQLQueryProcessor;
 import gov.nih.nci.cagrid.data.cql.LazyCQLQueryProcessor;
 import gov.nih.nci.cagrid.data.cql2.CQL1toCQL2Converter;
 import gov.nih.nci.cagrid.data.cql2.CQL2QueryProcessor;
+import gov.nih.nci.cagrid.data.cql2.validation.StructureValidationException;
 import gov.nih.nci.cagrid.data.mapping.Mappings;
+import gov.nih.nci.cagrid.data.service.auditing.DataServiceAuditor;
+import gov.nih.nci.cagrid.data.service.auditing.QueryBeginAuditingEvent;
+import gov.nih.nci.cagrid.data.service.auditing.QueryProcessingFailedAuditingEvent;
+import gov.nih.nci.cagrid.data.service.auditing.QueryResultsAuditingEvent;
+import gov.nih.nci.cagrid.data.service.auditing.ValidationAuditingEvent;
 import gov.nih.nci.cagrid.data.utilities.CQLQueryResultsIterator;
 import gov.nih.nci.cagrid.metadata.dataservice.DomainModel;
 
@@ -20,14 +28,18 @@ import java.io.ByteArrayInputStream;
 import java.io.FileInputStream;
 import java.io.InputStream;
 import java.lang.reflect.Method;
+import java.rmi.RemoteException;
 import java.util.Enumeration;
 import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Properties;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.globus.wsrf.Resource;
 import org.globus.wsrf.ResourceContext;
+import org.globus.wsrf.security.SecurityManager;
 import org.oasis.wsrf.faults.BaseFaultType;
 
 /**
@@ -46,6 +58,7 @@ public abstract class BaseDataServiceImpl {
     private Properties dataServiceConfig = null;
     private DomainModel domainModel = null;
     private Mappings classToQnameMappings = null;
+    private List<DataServiceAuditor> auditors = null;
     
     private CQLQueryProcessor cql1QueryProcessor = null;
     private CQL2QueryProcessor cql2QueryProcessor = null;
@@ -122,6 +135,24 @@ public abstract class BaseDataServiceImpl {
             serverConfigBytes = Utils.inputStreamToStringBuffer(configStream).toString().getBytes();
         } catch (Exception ex) {
             throw new DataServiceInitializationException("Error loading server config wsdd: " + ex.getMessage(), ex);
+        }
+        LOG.debug("Initializing data service auditors");
+        auditors = new LinkedList<DataServiceAuditor>();
+        String configFileName = getDataServiceConfig().getProperty(
+            DataServiceConstants.DATA_SERVICE_AUDITORS_CONFIG_FILE_PROPERTY);
+        if (configFileName != null) {
+            try {
+                DataServiceAuditors auditorConfig = 
+                    Utils.deserializeDocument(configFileName, DataServiceAuditors.class);
+                if (auditorConfig.getAuditorConfiguration() != null) {
+                    for (AuditorConfiguration config : auditorConfig.getAuditorConfiguration()) {
+                        DataServiceAuditor auditor = createAuditor(config);
+                        auditors.add(auditor);
+                    }
+                }
+            } catch (Exception ex) {
+                throw new DataServiceInitializationException("Error initializing data service auditors: " + ex.getMessage(), ex);
+            }
         }
     }
     
@@ -242,11 +273,21 @@ public abstract class BaseDataServiceImpl {
      * @throws MalformedQueryException
      */
     public CQLQueryResults processCql1Query(CQLQuery query) throws QueryProcessingException, MalformedQueryException {
-        // TODO:
         // 1. Validate query
         // 2. If can process native, process and return
         // 3. Else, convert, process w/ CQL 2, convert results, return
-        queryValidator.validateCql1Query(query);
+        fireAuditQueryBegins(query);
+        try {
+            queryValidator.validateCql1Query(query);
+        } catch (MalformedQueryException ex) {
+            // log the failure and rethrow
+            if (ex instanceof StructureValidationException) {
+                fireAuditValidationFailure(query, ex, null);
+            } else {
+                fireAuditValidationFailure(query, null, ex);
+            }
+            throw ex;
+        }
         CQLQueryResults results = null;
         boolean processNative = true;
         try {
@@ -257,13 +298,20 @@ public abstract class BaseDataServiceImpl {
         }
         if (processNative) {
             LOG.debug("Processing CQL 1 query with native query processor");
-            results = getCql1QueryProcessor().processQuery(query);
+            try {
+                results = getCql1QueryProcessor().processQuery(query);
+            } catch (QueryProcessingException ex) {
+                // log the failure and rethrow
+                fireAuditQueryProcessingFailure(query, ex);
+                throw ex;
+            }
         } else {
             LOG.debug("Converting CQL 1 to CQL 2 for non-native processing");
             org.cagrid.cql2.CQLQuery cql2Query = cql1to2converter.convertToCql2Query(query);
             org.cagrid.cql2.results.CQLQueryResults cql2Results = processCql2Query(cql2Query);
             // TODO: converter to turn CQL 2 results into CQL 1
         }
+        fireAuditQueryResults(query, results);
         return results;
     }
     
@@ -278,9 +326,26 @@ public abstract class BaseDataServiceImpl {
                 "Error determining if a native CQL 1 query processor has been configured: " + ex.getMessage(), ex);
         }
         if (processNative && getCql1QueryProcessor() instanceof LazyCQLQueryProcessor) {
+            fireAuditQueryBegins(query);
             // if we can natively handle the query with a lazy implementation, do so
-            queryValidator.validateCql1Query(query);
-            resultsIterator = ((LazyCQLQueryProcessor) getCql1QueryProcessor()).processQueryLazy(query);
+            try {
+                queryValidator.validateCql1Query(query);
+            } catch (MalformedQueryException ex) {
+                // log the failure and rethrow
+                if (ex instanceof StructureValidationException) {
+                    fireAuditValidationFailure(query, ex, null);
+                } else {
+                    fireAuditValidationFailure(query, null, ex);
+                }
+                throw ex;
+            }
+            try {
+                resultsIterator = ((LazyCQLQueryProcessor) getCql1QueryProcessor()).processQueryLazy(query);
+            } catch (QueryProcessingException ex) {
+                // log the failure and rethrow
+                fireAuditQueryProcessingFailure(query, ex);
+                throw ex;
+            }
         } else {
             // process normally and wrap the results with an iterator
             CQLQueryResults results = processCql1Query(query);
@@ -291,7 +356,6 @@ public abstract class BaseDataServiceImpl {
     
     
     public org.cagrid.cql2.results.CQLQueryResults processCql2Query(org.cagrid.cql2.CQLQuery query) throws QueryProcessingException, MalformedQueryException {
-        // TODO:
         // 1. Validate query
         // 2. If can process native, process and return
         // 3. Else, convert, process w/ CQL 1, convert results, return
@@ -463,5 +527,110 @@ public abstract class BaseDataServiceImpl {
             hasProcessor = processorClassname != null && processorClassname.length() != 0;
         }
         return hasProcessor;
+    }
+    
+    
+
+    
+    
+    // ----------
+    // Auditor support
+    // ----------
+    
+    
+    private DataServiceAuditor createAuditor(AuditorConfiguration config) throws Exception {
+        String auditorClassName = config.getClassName();
+        Class<?> auditorClass = Class.forName(auditorClassName);
+        DataServiceAuditor auditor = (DataServiceAuditor) auditorClass.newInstance();
+        auditor.setAuditorConfiguration(config);
+        return auditor;
+    }
+    
+    
+    /**
+     * Fires a query begins auditing event
+     * 
+     * @param query
+     * @throws RemoteException
+     */
+    protected void fireAuditQueryBegins(CQLQuery query) {
+        if (auditors.size() != 0) {
+            String callerIdentity = SecurityManager.getManager().getCaller();
+            QueryBeginAuditingEvent event = new QueryBeginAuditingEvent(query, callerIdentity);
+            for (DataServiceAuditor auditor : auditors) {
+                if (auditor.getAuditorConfiguration()
+                    .getMonitoredEvents().isQueryBegin()) {
+                    auditor.auditQueryBegin(event);
+                }
+            }
+        }
+    }
+    
+    
+    /**
+     * Fires a validation failure auditing event
+     * 
+     * @param query
+     * @param structureException
+     * @param domainException
+     * @throws RemoteException
+     */
+    protected void fireAuditValidationFailure(CQLQuery query, 
+        MalformedQueryException structureException, MalformedQueryException domainException) {
+        if (auditors.size() != 0) {
+            String callerIdentity = SecurityManager.getManager().getCaller();
+            ValidationAuditingEvent event = 
+                new ValidationAuditingEvent(query, callerIdentity, structureException, domainException);
+            for (DataServiceAuditor auditor : auditors) {
+                if (auditor.getAuditorConfiguration()
+                    .getMonitoredEvents().isValidationFailure()) {
+                    auditor.auditValidation(event);
+                }
+            }
+        }
+    }
+    
+    
+    /**
+     * Fires a query processing failure auditing event
+     * 
+     * @param query
+     * @param qpException
+     * @throws RemoteException
+     */
+    protected void fireAuditQueryProcessingFailure(CQLQuery query,
+        QueryProcessingException qpException) {
+        if (auditors.size() != 0) {
+            String callerIdentity = SecurityManager.getManager().getCaller();
+            QueryProcessingFailedAuditingEvent event = 
+                new QueryProcessingFailedAuditingEvent(query, callerIdentity, qpException);
+            for (DataServiceAuditor auditor : auditors) {
+                if (auditor.getAuditorConfiguration()
+                    .getMonitoredEvents().isQueryProcessingFailure()) {
+                    auditor.auditQueryProcessingFailed(event);
+                }
+            }
+        }
+    }
+    
+    
+    /**
+     * Fires a query results auditing event
+     * 
+     * @param query
+     * @param results
+     * @throws RemoteException
+     */
+    protected void fireAuditQueryResults(CQLQuery query, CQLQueryResults results) {
+        if (auditors.size() != 0) {
+            String callerIdentity = SecurityManager.getManager().getCaller();
+            QueryResultsAuditingEvent event = new QueryResultsAuditingEvent(query, callerIdentity, results);
+            for (DataServiceAuditor auditor : auditors) {
+                if (auditor.getAuditorConfiguration()
+                    .getMonitoredEvents().isQueryResults()) {
+                    auditor.auditQueryResults(event);
+                }
+            }
+        }
     }
 }
