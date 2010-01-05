@@ -14,10 +14,10 @@ import java.rmi.RemoteException;
  * @created by Introduce Toolkit version 1.0
  * 
  */
-public class Cql1EnumerationDataServiceAuthorization{
+public class EnumerationDataServiceAuthorization{
 	
 	
-	public Cql1EnumerationDataServiceAuthorization() {
+	public EnumerationDataServiceAuthorization() {
 	}
 	
 	public static String getCallerIdentity() {

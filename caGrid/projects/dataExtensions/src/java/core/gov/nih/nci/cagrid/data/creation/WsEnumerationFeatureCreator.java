@@ -2,7 +2,7 @@ package gov.nih.nci.cagrid.data.creation;
 
 import gov.nih.nci.cagrid.common.Utils;
 import gov.nih.nci.cagrid.data.DataServiceConstants;
-import gov.nih.nci.cagrid.data.enumeration.service.globus.Cql1EnumerationDataServiceProviderImpl;
+import gov.nih.nci.cagrid.data.enumeration.service.globus.EnumerationDataServiceProviderImpl;
 import gov.nih.nci.cagrid.data.enumeration.stubs.EnumerationDataServicePortType;
 import gov.nih.nci.cagrid.introduce.IntroduceConstants;
 import gov.nih.nci.cagrid.introduce.beans.ServiceDescription;
@@ -125,7 +125,7 @@ public class WsEnumerationFeatureCreator extends FeatureCreator {
 		enumerateMethod.setImportInformation(enumImport);
 		// provider info
 		MethodTypeProviderInformation enumProvider = new MethodTypeProviderInformation();
-		enumProvider.setProviderClass(Cql1EnumerationDataServiceProviderImpl.class.getName());
+		enumProvider.setProviderClass(EnumerationDataServiceProviderImpl.class.getName());
 		enumerateMethod.setProviderInformation(enumProvider);
 		// exceptions
 		MethodTypeExceptions methodExceptions = new MethodTypeExceptions();

@@ -18,11 +18,11 @@ import java.rmi.RemoteException;
  * @created by Introduce Toolkit version 1.0
  * 
  */
-public class Cql1EnumerationDataServiceProviderImpl{
+public class EnumerationDataServiceProviderImpl{
 	
 	Cql1EnumerationDataServiceImpl impl;
 	
-	public Cql1EnumerationDataServiceProviderImpl() throws DataServiceInitializationException {
+	public EnumerationDataServiceProviderImpl() throws DataServiceInitializationException {
 		impl = new Cql1EnumerationDataServiceImpl();
 	}
 	
@@ -31,7 +31,7 @@ public class Cql1EnumerationDataServiceProviderImpl{
         gov.nih.nci.cagrid.data.enumeration.stubs.EnumerationQueryRequest params) 
             throws RemoteException, gov.nih.nci.cagrid.data.faults.MalformedQueryExceptionType, 
             gov.nih.nci.cagrid.data.faults.QueryProcessingExceptionType {
-		Cql1EnumerationDataServiceAuthorization.authorizeEnumerationQuery();
+		EnumerationDataServiceAuthorization.authorizeEnumerationQuery();
 		gov.nih.nci.cagrid.data.enumeration.stubs.EnumerationQueryResponse boxedResult = 
             new gov.nih.nci.cagrid.data.enumeration.stubs.EnumerationQueryResponse();
 		boxedResult.setEnumerationResponseContainer(impl.enumerationQuery(params.getCqlQuery().getCQLQuery()));
