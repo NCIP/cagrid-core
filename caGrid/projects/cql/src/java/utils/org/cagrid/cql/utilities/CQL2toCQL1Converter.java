@@ -48,11 +48,11 @@ public class CQL2toCQL1Converter {
     }
     
     
-    public CQL2toCQL1Converter() {
+    private CQL2toCQL1Converter() {
     }
     
     
-    public CQLQuery convertToCql1Query(org.cagrid.cql2.CQLQuery cql2Query) throws QueryConversionException {
+    public static CQLQuery convertToCql1Query(org.cagrid.cql2.CQLQuery cql2Query) throws QueryConversionException {
         assertNoAssociationPopulation(cql2Query);
         assertValidAggregation(cql2Query);
         
@@ -62,14 +62,14 @@ public class CQL2toCQL1Converter {
     }
     
     
-    private void assertNoAssociationPopulation(org.cagrid.cql2.CQLQuery query) throws QueryConversionException {
+    private static void assertNoAssociationPopulation(org.cagrid.cql2.CQLQuery query) throws QueryConversionException {
         if (query.getAssociationPopulationSpecification() != null) {
             throw new QueryConversionException("Association population is not supported in CQL 1");
         }
     }
     
     
-    private void assertValidAggregation(org.cagrid.cql2.CQLQuery query) throws QueryConversionException {
+    private static void assertValidAggregation(org.cagrid.cql2.CQLQuery query) throws QueryConversionException {
         CQLQueryModifier mods = query.getCQLQueryModifier();
         if (mods != null && mods.getDistinctAttribute() != null && mods.getDistinctAttribute().getAggregation() != null) {
             Aggregation agg = mods.getDistinctAttribute().getAggregation();
@@ -80,7 +80,7 @@ public class CQL2toCQL1Converter {
     }
     
     
-    private Object convertObject(CQLObject cql2Object) throws QueryConversionException {
+    private static Object convertObject(CQLObject cql2Object) throws QueryConversionException {
         if (cql2Object.get_instanceof() != null) {
             throw new QueryConversionException("CQL 1 does not support \"instanceof\" operations");
         }
@@ -102,7 +102,7 @@ public class CQL2toCQL1Converter {
     }
     
     
-    private Association convertAssociation(CQLAssociatedObject cql2Association) throws QueryConversionException {
+    private static Association convertAssociation(CQLAssociatedObject cql2Association) throws QueryConversionException {
         Object base = convertObject(cql2Association);
         Association assoc = new Association();
         assoc.setAssociation(base.getAssociation());
@@ -114,7 +114,7 @@ public class CQL2toCQL1Converter {
     }
     
     
-    private Attribute convertAttribute(CQLAttribute cql2Attribute) throws QueryConversionException {
+    private static Attribute convertAttribute(CQLAttribute cql2Attribute) throws QueryConversionException {
         Attribute attr = new Attribute();
         attr.setName(cql2Attribute.getName());
         Predicate pred = null;
@@ -129,7 +129,7 @@ public class CQL2toCQL1Converter {
     }
     
     
-    private String getAttributeValueAsString(AttributeValue value) throws QueryConversionException {
+    private static String getAttributeValueAsString(AttributeValue value) throws QueryConversionException {
         Document valueDoc = null;
         try {
             StringWriter writer = new StringWriter();
@@ -152,7 +152,7 @@ public class CQL2toCQL1Converter {
     }
     
     
-    private Group convertGroup(CQLGroup cql2Group) throws QueryConversionException {
+    private static Group convertGroup(CQLGroup cql2Group) throws QueryConversionException {
         Group group = new Group();
         group.setLogicRelation(cql2Group.getLogicalOperation() == GroupLogicalOperator.AND 
             ? LogicalOperator.AND : LogicalOperator.OR);
