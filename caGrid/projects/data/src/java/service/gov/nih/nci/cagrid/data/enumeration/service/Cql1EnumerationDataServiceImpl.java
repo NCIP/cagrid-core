@@ -1,17 +1,13 @@
 package gov.nih.nci.cagrid.data.enumeration.service;
 
-import gov.nih.nci.cagrid.common.Utils;
 import gov.nih.nci.cagrid.data.MalformedQueryException;
 import gov.nih.nci.cagrid.data.QueryProcessingException;
 import gov.nih.nci.cagrid.data.faults.MalformedQueryExceptionType;
 import gov.nih.nci.cagrid.data.faults.QueryProcessingExceptionType;
-import gov.nih.nci.cagrid.data.mapping.ClassToQname;
-import gov.nih.nci.cagrid.data.mapping.Mappings;
 import gov.nih.nci.cagrid.data.service.BaseDataServiceImpl;
 import gov.nih.nci.cagrid.data.service.DataServiceInitializationException;
 import gov.nih.nci.cagrid.enumeration.stubs.response.EnumerationResponseContainer;
 import gov.nih.nci.cagrid.wsenum.common.WsEnumConstants;
-import gov.nih.nci.cagrid.wsenum.utils.DummyEnumIterator;
 import gov.nih.nci.cagrid.wsenum.utils.EnumConfigDiscoveryUtil;
 import gov.nih.nci.cagrid.wsenum.utils.EnumIteratorFactory;
 import gov.nih.nci.cagrid.wsenum.utils.IterImplType;
@@ -63,28 +59,8 @@ public class Cql1EnumerationDataServiceImpl extends BaseDataServiceImpl {
         }
 	    
 	    // need to know the data type of the results, no way to do that without a call to next()
-	    QName datatypeQName = null;
-	    Object first = resultsIterator.hasNext() ? resultsIterator.next() : null;
-	    if (first != null) {
-	        Class<?> resultClass = first.getClass();
-	        System.out.println("Determining result QName for class " + resultClass.getName());
-            datatypeQName = Utils.getRegisteredQName(resultClass);
-            if (datatypeQName == null) {
-                LOG.debug("Could not locate QName in Axis type mappings, checking class to QName mappings");
-                Mappings mappings = getClassToQnameMappings();
-                if (mappings.getMapping() != null) {
-                    for (ClassToQname c2q : mappings.getMapping()) {
-                        if (c2q.getClassName().equals(resultClass.getName())) {
-                            datatypeQName = QName.valueOf(c2q.getQname());
-                            LOG.debug("Found mapping");
-                            break;
-                        }
-                    }
-                }
-            }
-            System.out.println("Results QName is " + datatypeQName);
-	    }
-	    
+	    QName datatypeQName = getQNameForClass(cqlQuery.getTarget().getName());
+	    	    
         // get the service property for the enum iterator type
         IterImplType implType = EnumConfigDiscoveryUtil.getConfiguredIterImplType();
 
@@ -92,14 +68,8 @@ public class Cql1EnumerationDataServiceImpl extends BaseDataServiceImpl {
         LOG.debug("Creating EnumIterator for results");
         EnumIterator enumIter = null;
         try {
-            if (first != null) {
-                // results exist to iterate
-                enumIter = EnumIteratorFactory.createIterator(implType, wrapIterator(first, resultsIterator), 
-                    datatypeQName, getServerConfigWsddStream());
-            } else {
-                // no results, use a placeholder
-                enumIter = new DummyEnumIterator();
-            }
+            enumIter = EnumIteratorFactory.createIterator(implType, resultsIterator, 
+                datatypeQName, getServerConfigWsddStream());
         } catch (Exception ex) {
             throw getTypedException(
                 new QueryProcessingException("Error creating EnumIterator implementation: " + ex.getMessage(), ex),
@@ -137,35 +107,6 @@ public class Cql1EnumerationDataServiceImpl extends BaseDataServiceImpl {
                 new QueryProcessingExceptionType());
         }
         return container;
-	}
-	
-	
-	private Iterator<?> wrapIterator(final Object first, final Iterator<?> iter) {
-	    Iterator<?> wrapper = new Iterator<Object>() {
-	        private boolean returnedFirst = false;
-	        
-	        public boolean hasNext() {
-	            return (first != null && !returnedFirst) || iter.hasNext();
-	        }
-
-	        
-	        public Object next() {
-	            if (!returnedFirst) {
-	                returnedFirst = true;
-	                return first;
-	            }
-	            return iter.next();
-	        }
-
-	        
-	        public void remove() {
-	            if (!returnedFirst) {
-	                throw new UnsupportedOperationException();
-	            }
-	            iter.remove();
-	        }
-        };
-        return wrapper;
 	}
 }
 
