@@ -1,18 +1,9 @@
 package gov.nih.nci.cagrid.introduce.upgrade.introduce;
 
 import gov.nih.nci.cagrid.common.Utils;
-import gov.nih.nci.cagrid.common.XMLUtilities;
-import gov.nih.nci.cagrid.introduce.beans.service.ServiceType;
-import gov.nih.nci.cagrid.introduce.codegen.provider.ProviderTools;
-import gov.nih.nci.cagrid.introduce.common.CommonTools;
 import gov.nih.nci.cagrid.introduce.common.ServiceInformation;
 import gov.nih.nci.cagrid.introduce.common.SpecificServiceInformation;
 import gov.nih.nci.cagrid.introduce.templates.RunToolsTemplate;
-import gov.nih.nci.cagrid.introduce.templates.client.ClientConfigTemplate;
-import gov.nih.nci.cagrid.introduce.templates.client.ServiceClientBaseTemplate;
-import gov.nih.nci.cagrid.introduce.templates.client.ServiceClientTemplate;
-import gov.nih.nci.cagrid.introduce.templates.common.ServiceConstantsBaseTemplate;
-import gov.nih.nci.cagrid.introduce.templates.common.ServiceConstantsTemplate;
 import gov.nih.nci.cagrid.introduce.upgrade.common.IntroduceUpgradeStatus;
 import gov.nih.nci.cagrid.introduce.upgrade.common.StatusBase;
 import gov.nih.nci.cagrid.introduce.upgrade.one.x.IntroduceUpgraderBase;
@@ -21,13 +12,6 @@ import java.io.File;
 import java.io.FileFilter;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.util.List;
-
-import org.jdom.Document;
-import org.jdom.Element;
-import org.jdom.Namespace;
-
-import sun.security.action.GetBooleanAction;
 
 
 public class Introduce_1_3__1_4_Upgrader extends IntroduceUpgraderBase {
@@ -39,9 +23,6 @@ public class Introduce_1_3__1_4_Upgrader extends IntroduceUpgraderBase {
 
 
     private final class OldJarsFilter implements FileFilter {
-        boolean hadGridGrouperJars = false;
-        boolean hadCSMJars = false;
-
 
         public boolean accept(File name) {
             String filename = name.getName();
@@ -54,13 +35,8 @@ public class Introduce_1_3__1_4_Upgrader extends IntroduceUpgraderBase {
                 && filename.endsWith(".jar");
 
             boolean gridGrouper = (filename.startsWith("caGrid-gridgrouper")) && filename.endsWith(".jar");
-            if (gridGrouper) {
-                hadGridGrouperJars = true;
-            }
+     
             boolean csm = (filename.startsWith("caGrid-authz-common")) && filename.endsWith(".jar");
-            if (csm) {
-                hadCSMJars = true;
-            }
 
             boolean otherSecurityJarsNotNeeded = (filename.startsWith("caGrid-gridca")) && filename.endsWith(".jar");
 

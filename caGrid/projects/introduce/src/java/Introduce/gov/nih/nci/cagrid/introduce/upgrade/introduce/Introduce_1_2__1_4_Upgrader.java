@@ -37,9 +37,6 @@ public class Introduce_1_2__1_4_Upgrader extends IntroduceUpgraderBase {
 
 
     private final class OldJarsFilter implements FileFilter {
-        boolean hadGridGrouperJars = false;
-        boolean hadCSMJars = false;
-
 
         public boolean accept(File name) {
             String filename = name.getName();
@@ -52,14 +49,9 @@ public class Introduce_1_2__1_4_Upgrader extends IntroduceUpgraderBase {
                 && filename.endsWith(".jar");
 
             boolean gridGrouper = (filename.startsWith("caGrid-gridgrouper")) && filename.endsWith(".jar");
-            if (gridGrouper) {
-                hadGridGrouperJars = true;
-            }
+  
             boolean csm = (filename.startsWith("caGrid-authz-common")) && filename.endsWith(".jar");
-            if (csm) {
-                hadCSMJars = true;
-            }
-
+     
             boolean otherSecurityJarsNotNeeded = (filename.startsWith("caGrid-gridca")) && filename.endsWith(".jar");
 
             boolean wsrf = (filename.startsWith("globus_wsrf_mds") || filename.startsWith("globus_wsrf_servicegroup"))
