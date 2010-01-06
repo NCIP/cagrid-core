@@ -15,6 +15,9 @@ public interface CqlSchemaConstants {
     public static final QName CQL_RESULT_SET_QNAME = new QName(CQL_RESULT_SET_URI, "CQLQueryResults");
     public static final QName CQL_RESULT_COLLECTION_QNAME = new QName(CQL_RESULT_SET_URI, "CQLQueryResultCollection");
     
+    // CQL 2 constants
+    public static final String CQL2_SCHEMA_FILENAME = "CQLQueryComponents.xsd";
+    public static final String CQL2_RESULTS_SCHEMA_FILENAME = "CQLQueryResults.xsd";
     public static final String CQL2_QUERY_NAMESPACE = "http://CQL.caBIG/2/org.cagrid.cql2";
     public static final String CQL2_RESULTS_NAMESPACE = "http://CQL.caBIG/2/org.cagrid.cql2.results";
     public static final QName CQL2_QUERY_QNAME = new QName(CQL2_QUERY_NAMESPACE, "CQLQuery");
