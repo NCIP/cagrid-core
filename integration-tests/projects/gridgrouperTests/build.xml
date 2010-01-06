@@ -155,6 +155,21 @@
 		</sql>
 	</target>
 
+	<target name="dropTestDatabase" description="Drops the testing database.">
+		<property file="${gridgrouper.dir}/resources/conf/grouper.hibernate.properties" />
+		<property name="root.db.username" value="${hibernate.connection.username}" />
+		<property name="root.db.password" value="${hibernate.connection.password}" />
+		<property name="root.db.url" value="${hibernate.connection.url}" />
+		<property name="driver_class" value="${hibernate.connection.driver_class}" />
+		<sql driver="${driver_class}" url="jdbc:mysql://localhost:3306/" userid="${root.db.username}" password="${root.db.password}">
+			<classpath>
+				<fileset dir="${ext.lib.dir}" includes="**/mysql*.jar" />
+					
+			</classpath>
+			DROP DATABASE IF EXISTS grouper;
+		</sql>
+	</target>
+
 
 	<!-- ============================================================== -->
 	<!-- Builds everything                                              -->

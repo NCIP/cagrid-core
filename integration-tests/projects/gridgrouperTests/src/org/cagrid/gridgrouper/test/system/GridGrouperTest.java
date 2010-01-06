@@ -43,6 +43,7 @@ import org.cagrid.gridgrouper.test.system.steps.GrouperCheckStemsStep;
 import org.cagrid.gridgrouper.test.system.steps.GrouperCreateDbStep;
 import org.cagrid.gridgrouper.test.system.steps.GrouperCreateGroupStep;
 import org.cagrid.gridgrouper.test.system.steps.GrouperCreateStemStep;
+import org.cagrid.gridgrouper.test.system.steps.GrouperDropDbStep;
 import org.cagrid.gridgrouper.test.system.steps.GrouperGrantPrivilegeStep;
 import org.cagrid.gridgrouper.test.system.steps.GrouperInitStep;
 import org.cagrid.gridgrouper.test.system.steps.GrouperRemoveMemberStep;
@@ -265,6 +266,13 @@ public class GridGrouperTest extends ServiceStoryBase {
 		DestroyContainerStep destroyContainerStep = new DestroyContainerStep(getContainer());
 		try {
 			destroyContainerStep.runStep();
+		} catch (Throwable e) {
+			e.printStackTrace();
+		}
+		
+		GrouperDropDbStep dropDB = new GrouperDropDbStep(".");
+		try {
+			dropDB.runStep();
 		} catch (Throwable e) {
 			e.printStackTrace();
 		}
