@@ -1,4 +1,4 @@
-package gov.nih.nci.cagrid.cql2.test;
+package org.cagrid.cql.test;
 
 
 import gov.nih.nci.cagrid.core.CycleTestCase;
