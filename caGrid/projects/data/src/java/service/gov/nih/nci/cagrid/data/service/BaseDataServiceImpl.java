@@ -14,6 +14,7 @@ import gov.nih.nci.cagrid.data.cql.CQLQueryProcessor;
 import gov.nih.nci.cagrid.data.cql.LazyCQLQueryProcessor;
 import gov.nih.nci.cagrid.data.cql2.CQL2QueryProcessor;
 import gov.nih.nci.cagrid.data.cql2.validation.StructureValidationException;
+import gov.nih.nci.cagrid.data.mapping.ClassToQname;
 import gov.nih.nci.cagrid.data.mapping.Mappings;
 import gov.nih.nci.cagrid.data.service.auditing.DataServiceAuditor;
 import gov.nih.nci.cagrid.data.service.auditing.QueryBeginAuditingEvent;
@@ -34,10 +35,15 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Properties;
 
+import javax.xml.namespace.QName;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.cagrid.cql.utilities.CQL1ResultsIteratorToCQL2ResultsIterator;
+import org.cagrid.cql.utilities.CQL1ResultsToCQL2ResultsConverter;
 import org.cagrid.cql.utilities.CQL1toCQL2Converter;
 import org.cagrid.cql.utilities.CQL2ResultsToCQL1ResultsConverter;
+import org.cagrid.cql.utilities.CQL2toCQL1Converter;
 import org.cagrid.cql.utilities.QueryConversionException;
 import org.cagrid.cql.utilities.ResultsConversionException;
 import org.globus.wsrf.Resource;
@@ -180,6 +186,34 @@ public abstract class BaseDataServiceImpl {
     }
     
     
+    protected QName getQNameForClass(String clazz) {
+        QName name = null;
+        LOG.debug("Checking class to qname mappings for " + clazz);
+        Mappings mappings = getClassToQnameMappings();
+        if (mappings.getMapping() != null) {
+            for (ClassToQname c2q : mappings.getMapping()) {
+                if (c2q.getClassName().equals(clazz)) {
+                    name = QName.valueOf(c2q.getQname());
+                    LOG.debug("Found mapping");
+                    break;
+                }
+            }
+        }
+        if (name == null) {
+            LOG.debug("QName not found in class to qname mappings, checking Axis types registry");
+            try {
+                name = Utils.getRegisteredQName(Class.forName(clazz));
+            } catch (ClassNotFoundException e) {
+                LOG.error("UNABLE TO LOAD CLASS " + clazz + " TO DETERMINE QNAME: " + e.getMessage(), e);
+            }
+        }
+        if (name == null) {
+            LOG.warn("Unable to determine a QName for class " + clazz);
+        }
+        return name;
+    }
+    
+    
     /**
      * Helper method to easily and consistently create a typed exception
      * 
@@ -318,6 +352,7 @@ public abstract class BaseDataServiceImpl {
             }
             org.cagrid.cql2.results.CQLQueryResults cql2Results = processCql2Query(cql2Query);
             try {
+                LOG.debug("Converting CQL 2 results to CQL 1 results");
                 results = CQL2ResultsToCQL1ResultsConverter.convertResults(cql2Results);
             } catch (ResultsConversionException ex) {
                 throw new QueryProcessingException(ex.getMessage(), ex);
@@ -385,7 +420,15 @@ public abstract class BaseDataServiceImpl {
             results = getCql2QueryProcessor().processQuery(query);
         } else {
             LOG.debug("Converting CQL 2 to CQL 1 for non-native processing");
-            // TODO: convert query and results
+            CQLQuery cql1Query = null;
+            try {
+                cql1Query = CQL2toCQL1Converter.convertToCql1Query(query);
+            } catch (QueryConversionException ex) {
+                throw new QueryProcessingException(ex.getMessage(), ex);
+            }
+            CQLQueryResults cql1QueryResults = processCql1Query(cql1Query);
+            LOG.debug("Converting CQL 1 results to CQL 2 results");
+            results = CQL1ResultsToCQL2ResultsConverter.convertResults(cql1QueryResults);
         }
         return results;
     }
@@ -406,7 +449,17 @@ public abstract class BaseDataServiceImpl {
             resultsIterator = getCql2QueryProcessor().processQueryAndIterate(query);
         } else {
             LOG.debug("Converting CQL 2 to CQL 1 for non-native processing");
-            // TODO: convert query and results
+            CQLQuery cql1Query = null;
+            try {
+                cql1Query = CQL2toCQL1Converter.convertToCql1Query(query);
+            } catch (QueryConversionException ex) {
+                throw new QueryProcessingException(ex.getMessage(), ex);
+            }
+            QName targetQName = getQNameForClass(cql1Query.getTarget().getName());
+            Iterator<?> cql1ResultsIterator = processCql1QueryAndIterate(cql1Query);
+            LOG.debug("Wraping CQL 1 iterator results with CQL 2 style iterator");
+            resultsIterator = new CQL1ResultsIteratorToCQL2ResultsIterator(
+                cql1ResultsIterator, targetQName, cql1Query.getQueryModifier());
         }
         return resultsIterator;
     }
@@ -540,9 +593,6 @@ public abstract class BaseDataServiceImpl {
         }
         return hasProcessor;
     }
-    
-    
-
     
     
     // ----------
