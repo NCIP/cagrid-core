@@ -10,9 +10,11 @@
 
   <configurations>
     <conf name="impl-test" visibility="private"/>
-    <!-- Public Configurations-->
+    <conf name="impl" visibility="private" extends="jars" />
+    
     <!-- Jars -->
-    <conf name="jars" visibility="public" extends="cql,cql2,dcql2"/>
+    <conf name="jars" visibility="public" extends="utils"/>
+    <conf name="utils" visibility="public" extends="cql,cql2,dcql2" />
     <conf name="cql" visibility="public"/>
     <conf name="cql2" visibility="public"/>
     <conf name="dcql2" visibility="public"/>
@@ -30,14 +32,22 @@
 
 
   <publications>
+  	<!-- beans jars -->
     <artifact name="caGrid-CQL-cql.1.0" conf="cql" type="jar"/>
     <artifact name="caGrid-CQL-cql.2.0" conf="cql2" type="jar"/>
     <artifact name="caGrid-CQL-dcql.2.0" conf="dcql2" type="jar"/>
+    
+    <!-- utils jar -->
+    <artifact name="caGrid-CQL-utils" conf="utils" type="jar"/>
+    
+    <!-- testing jar -->
     <artifact name="caGrid-CQL-tests" conf="test" type="jar"/>
 
+	<!-- CQL 1 schemas -->
     <artifact name="1_gov.nih.nci.cagrid.CQLQuery" conf="cql-schemas" type="xsd"/>
     <artifact name="1_gov.nih.nci.cagrid.CQLResultSet" conf="cql-schemas" type="xsd"/>
 
+	<!-- CQL 2 schemas -->
     <artifact name="Aggregations" conf="cql2-schemas" type="xsd"/>
     <artifact name="AssociationPopulationSpec" conf="cql2-schemas" type="xsd"/>
     <artifact name="CQLAttribute" conf="cql2-schemas" type="xsd"/>
@@ -48,11 +58,13 @@
     <artifact name="CQLSupportedExtensions" conf="cql2-schemas" type="xsd"/>
     <artifact name="Predicates" conf="cql2-schemas" type="xsd"/>
     
+    <!-- DCQL 2 schemas -->
     <artifact name="DCQL_2.0" conf="dcql2-schemas" type="xsd"/>
     <artifact name="DCQLResults_2.0" conf="dcql2-schemas" type="xsd"/>
   </publications>
 
   <dependencies>
+  	<dependency org="caGrid" name="metadatautils" rev="latest.integration" conf="utils->default"/>
     <dependency org="caGrid" name="core" rev="latest.integration" conf="impl-test->test"/>
     <dependency rev="4.4" org="junit" name="junit" conf="impl-test->default"/>
   </dependencies>

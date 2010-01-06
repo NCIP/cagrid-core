@@ -22,9 +22,11 @@
 
 	<!-- directory locations -->
 	<property name="ext.dir" location="${basedir}/ext" />
+	<property name="ext.impl.lib.dir" location="${ext.dir}/dependencies/impl/jars"/>
 	<property name="ext.test.lib.dir" location="${ext.dir}/dependencies/test/jars" />
 
 	<!-- source dirs -->
+	<property name="utils.src.dir" location="${basedir}/src/java/utils"/>
 	<property name="test.src.dir" location="${basedir}/test/src/java" />
 
 	<!-- build output dirs -->
@@ -32,6 +34,7 @@
 	<property name="build.cql.1.0.stubs.dest" location="${build.dir}/stubs/cql1.0/classes" />
 	<property name="build.cql.2.0.stubs.dest" location="${build.dir}/stubs/cql2.0/classes" />
 	<property name="build.dcql.2.0.stubs.dest" location="${build.dir}/stubs/dcql2.0/classes"/>
+	<property name="build.utils.dest" location="${build.dir}/utils/classes"/>
 	<property name="build.test.dest" location="${build.dir}/test/classes" />
 	<property name="build.jars.dir" location="build/lib" />
 
@@ -39,12 +42,14 @@
 	<property name="cql.1.0.jar.name" value="${project.jar.prefix}cql.1.0${project.jar.suffix}" />
 	<property name="cql.2.0.jar.name" value="${project.jar.prefix}cql.2.0${project.jar.suffix}" />
 	<property name="dcql.2.0.jar.name" value="${project.jar.prefix}dcql.2.0${project.jar.suffix}" />
+	<property name="utils.jar.name" value="${project.jar.prefix}utils${project.jar.suffix}"/>
 	<property name="test.jar.name" value="${project.jar.prefix}tests${project.jar.suffix}" />
 
 	<!-- jar files -->
 	<property name="cql.1.0.jar.file" value="${build.jars.dir}/${cql.1.0.jar.name}" />
 	<property name="cql.2.0.jar.file" value="${build.jars.dir}/${cql.2.0.jar.name}" />
 	<property name="dcql.2.0.jar.file" value="${build.jars.dir}/${dcql.2.0.jar.name}" />
+	<property name="utils.jar.file" value="${build.jars.dir}/${utils.jar.name}"/>
 	<property name="test.jar.file" value="${build.jars.dir}/${test.jar.name}" />
 
 	<!-- build file for stub generation -->
@@ -71,6 +76,9 @@
 	</path>
 	<path id="build.classpath">
 		<path refid="globus.classpath"/>
+		<fileset dir="${ext.impl.lib.dir}">
+			<include name="**/*.jar"/>
+		</fileset>
 		<fileset dir="${ext.test.lib.dir}">
 			<include name="**/*.jar" />
 		</fileset>
@@ -80,6 +88,7 @@
 		<pathelement location="${build.cql.1.0.stubs.dest}" />
 		<pathelement location="${build.cql.2.0.stubs.dest}" />
 		<pathelement location="${build.dcql.2.0.stubs.dest}" />
+		<pathelement location="${build.utils.dest}"/>
 	</path>
 
 	<!-- sets up GT4 related variables -->
@@ -101,6 +110,7 @@
 		<mkdir dir="${build.cql.1.0.stubs.dest}" />
 		<mkdir dir="${build.cql.2.0.stubs.dest}" />
 		<mkdir dir="${build.dcql.2.0.stubs.dest}" />
+		<mkdir dir="${build.utils.dest}"/>
 		<mkdir dir="${build.test.dest}" />
 		<!-- copy schemas to the output directory -->
 		<copy toDir="${cql.1.0.schema.dest}">
@@ -180,12 +190,26 @@
 			<classpath>
 				<pathelement location="${build.cql.2.0.stubs.dest}"/>
 			</classpath>
-		</javac>	
+		</javac>
 	</target>
 
 
+	<!-- compiles the utils -->
+	<target name="compileUtils" depends="compileStubs">
+		<javac srcdir="${utils.src.dir}" destdir="${build.utils.dest}" debug="${java.debug}" source="${java.source}">
+			<include name="**/*.java"/>
+			<classpath refid="build.classpath"/>
+			<classpath>
+				<pathelement location="${build.cql.1.0.stubs.dest}" />
+				<pathelement location="${build.cql.2.0.stubs.dest}" />
+				<pathelement location="${build.dcql.2.0.stubs.dest}" />
+			</classpath>
+		</javac>
+	</target>
+	
+	
 	<!-- compiles the test classes -->
-	<target name="compileTests" depends="compileStubs">
+	<target name="compileTests" depends="compileStubs, compileUtils">
 		<javac srcdir="${test.src.dir}" destdir="${build.test.dest}" debug="${java.debug}" source="${java.source}">
 			<include name="**/*.java" />
 			<classpath refid="test.classpath"/>
@@ -194,7 +218,7 @@
 
 
 	<!-- jars the common classes -->
-	<target name="jar" depends="compileStubs, compileTests" description="Builds and jars">
+	<target name="jar" depends="compileStubs, compileUtils, compileTests" description="Builds and jars">
 		<jar destfile="${cql.1.0.jar.file}">
 			<fileset dir="${build.cql.1.0.stubs.dest}">
 				<include name="**/*.class" />
@@ -217,6 +241,14 @@
 			</fileset>
 			<fileset dir="${dcql.2.0.stubs.src}">
 				<include name="**/*.java" />
+			</fileset>
+		</jar>
+		<jar destfile="${utils.jar.file}">
+			<fileset dir="${build.utils.dest}">
+				<include name="**/*.class"/>
+			</fileset>
+			<fileset dir="${utils.src.dir}">
+				<include name="**/*.java"/>
 			</fileset>
 		</jar>
 		<jar destfile="${test.jar.file}">

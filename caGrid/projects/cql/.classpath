@@ -4,6 +4,7 @@
 	<classpathentry kind="src" path="build/stubs/cql2.0/source"/>
 	<classpathentry kind="src" path="build/stubs/dcql2.0/source"/>
 	<classpathentry kind="src" path="test/src/java"/>
+	<classpathentry kind="src" path="src/java/utils"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="var" path="GT4_LOCATION/lib/addressing-1.0.jar"/>
 	<classpathentry kind="var" path="GT4_LOCATION/lib/axis.jar"/>
@@ -72,5 +73,10 @@
 	<classpathentry kind="var" path="GT4_LOCATION/lib/xmlsec.jar"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.junit.JUNIT_CONTAINER/4"/>
 	<classpathentry kind="lib" path="ext/dependencies/test/jars/caGrid-core-tests-1.4-dev.jar"/>
+	<classpathentry kind="lib" path="ext/dependencies/impl/jars/caGrid-core-1.4-dev.jar"/>
+	<classpathentry kind="lib" path="ext/dependencies/impl/jars/caGrid-metadata-common-1.4-dev.jar"/>
+	<classpathentry kind="lib" path="ext/dependencies/impl/jars/caGrid-metadata-data-1.4-dev.jar"/>
+	<classpathentry kind="lib" path="ext/dependencies/impl/jars/caGrid-metadatautils-1.4-dev.jar"/>
+	<classpathentry kind="lib" path="ext/dependencies/impl/jars/jdom-1.0.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
