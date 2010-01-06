@@ -12,7 +12,6 @@ import gov.nih.nci.cagrid.data.auditing.AuditorConfiguration;
 import gov.nih.nci.cagrid.data.auditing.DataServiceAuditors;
 import gov.nih.nci.cagrid.data.cql.CQLQueryProcessor;
 import gov.nih.nci.cagrid.data.cql.LazyCQLQueryProcessor;
-import gov.nih.nci.cagrid.data.cql2.CQL1toCQL2Converter;
 import gov.nih.nci.cagrid.data.cql2.CQL2QueryProcessor;
 import gov.nih.nci.cagrid.data.cql2.validation.StructureValidationException;
 import gov.nih.nci.cagrid.data.mapping.Mappings;
@@ -37,6 +36,10 @@ import java.util.Properties;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.cagrid.cql.utilities.CQL1toCQL2Converter;
+import org.cagrid.cql.utilities.CQL2ResultsToCQL1ResultsConverter;
+import org.cagrid.cql.utilities.QueryConversionException;
+import org.cagrid.cql.utilities.ResultsConversionException;
 import org.globus.wsrf.Resource;
 import org.globus.wsrf.ResourceContext;
 import org.globus.wsrf.security.SecurityManager;
@@ -307,9 +310,18 @@ public abstract class BaseDataServiceImpl {
             }
         } else {
             LOG.debug("Converting CQL 1 to CQL 2 for non-native processing");
-            org.cagrid.cql2.CQLQuery cql2Query = cql1to2converter.convertToCql2Query(query);
+            org.cagrid.cql2.CQLQuery cql2Query;
+            try {
+                cql2Query = cql1to2converter.convertToCql2Query(query);
+            } catch (QueryConversionException ex) {
+                throw new QueryProcessingException(ex.getMessage(), ex);
+            }
             org.cagrid.cql2.results.CQLQueryResults cql2Results = processCql2Query(cql2Query);
-            // TODO: converter to turn CQL 2 results into CQL 1
+            try {
+                results = CQL2ResultsToCQL1ResultsConverter.convertResults(cql2Results);
+            } catch (ResultsConversionException ex) {
+                throw new QueryProcessingException(ex.getMessage(), ex);
+            }
         }
         fireAuditQueryResults(query, results);
         return results;
