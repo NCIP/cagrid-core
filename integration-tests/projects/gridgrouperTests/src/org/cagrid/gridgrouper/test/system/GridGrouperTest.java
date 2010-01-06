@@ -1,5 +1,6 @@
 package org.cagrid.gridgrouper.test.system;
 
+import gov.nih.nci.cagrid.common.security.ProxyUtil;
 import gov.nih.nci.cagrid.testing.system.deployment.ServiceContainer;
 import gov.nih.nci.cagrid.testing.system.deployment.steps.CopyServiceStep;
 import gov.nih.nci.cagrid.testing.system.deployment.steps.DeleteServiceStep;
@@ -276,7 +277,8 @@ public class GridGrouperTest extends ServiceStoryBase {
 		} catch (Throwable e) {
 			e.printStackTrace();
 		}
-
+		
+		ProxyUtil.destroyDefaultProxy();	
 	}
 
 	private String getDorianSubject() throws Exception {
