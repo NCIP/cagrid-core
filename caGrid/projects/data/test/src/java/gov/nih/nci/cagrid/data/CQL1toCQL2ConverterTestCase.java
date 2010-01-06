@@ -2,8 +2,6 @@ package gov.nih.nci.cagrid.data;
 
 import gov.nih.nci.cagrid.common.Utils;
 import gov.nih.nci.cagrid.cqlquery.CQLQuery;
-import gov.nih.nci.cagrid.data.cql2.CQL1toCQL2Converter;
-import gov.nih.nci.cagrid.data.cql2.QueryConversionException;
 import gov.nih.nci.cagrid.data.cql2.validation.Cql2DomainValidator;
 import gov.nih.nci.cagrid.data.cql2.validation.Cql2StructureValidator;
 import gov.nih.nci.cagrid.data.cql2.validation.DomainModelCql2DomainValidator;
@@ -20,6 +18,9 @@ import junit.framework.TestCase;
 import junit.framework.TestResult;
 import junit.framework.TestSuite;
 import junit.textui.TestRunner;
+
+import org.cagrid.cql.utilities.CQL1toCQL2Converter;
+import org.cagrid.cql.utilities.QueryConversionException;
 
 public class CQL1toCQL2ConverterTestCase extends TestCase {
     
@@ -57,7 +58,7 @@ public class CQL1toCQL2ConverterTestCase extends TestCase {
         try {
             System.out.println("Loading CQL 1 query from " + filename);
             FileReader reader = new FileReader(cqlDocsDir + File.separator + "domain" + File.separator + filename);
-            query = (CQLQuery) Utils.deserializeObject(reader, CQLQuery.class);
+            query = Utils.deserializeObject(reader, CQLQuery.class);
             reader.close();
         } catch (Exception ex) {
             ex.printStackTrace();
