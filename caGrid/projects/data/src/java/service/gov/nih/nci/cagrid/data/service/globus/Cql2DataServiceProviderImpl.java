@@ -20,7 +20,7 @@ public class Cql2DataServiceProviderImpl{
 	}
 	
 
-	public org.cagrid.dataservice.stubs.ExecuteQueryResponse query(org.cagrid.dataservice.stubs.ExecuteQueryRequest params)
+	public org.cagrid.dataservice.stubs.ExecuteQueryResponse executeQuery(org.cagrid.dataservice.stubs.ExecuteQueryRequest params)
             throws RemoteException, gov.nih.nci.cagrid.data.faults.QueryProcessingExceptionType, 
             gov.nih.nci.cagrid.data.faults.MalformedQueryExceptionType {
 	    org.cagrid.dataservice.stubs.ExecuteQueryResponse boxedResult = 

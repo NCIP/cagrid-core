@@ -63,7 +63,7 @@
                        P O R T T Y P E
                       
   ============================================================-->
-  <portType name="DataServicePortType" wsrp:ResourceProperties="tns:DataServiceResourceProperties">
+  <portType name="Cql2DataServicePortType" wsrp:ResourceProperties="tns:DataServiceResourceProperties">
     <operation name="executeQuery">
       <input message="tns:ExecuteQueryRequest" wsa:Action="http://org.cagrid.dataservice/DataService/ExecuteQueryRequest" />
       <output message="tns:ExecuteQueryResponse" wsa:Action="http://org.cagrid.dataservice/DataService/ExecuteQueryResponse" />

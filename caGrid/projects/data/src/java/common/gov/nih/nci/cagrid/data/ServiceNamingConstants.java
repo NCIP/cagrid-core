@@ -12,5 +12,5 @@ public interface ServiceNamingConstants {
     public static final String CQL2_DATA_SERVICE_PACKAGE = "org.cagrid.dataservice";
     public static final String CQL2_DATA_SERVICE_SERVICE_NAME = "DataService";
     public static final String CQL2_DATA_SERVICE_NAMESPACE = "http://" + CQL2_DATA_SERVICE_PACKAGE + "/" + CQL2_DATA_SERVICE_SERVICE_NAME;
-    public static final String CQL2_DATA_SERVICE_PORT_TYPE_NAME = CQL2_DATA_SERVICE_SERVICE_NAME + "PortType";
+    public static final String CQL2_DATA_SERVICE_PORT_TYPE_NAME = "Cql2DataServicePortType";
 }
