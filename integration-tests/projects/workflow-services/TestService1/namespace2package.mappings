@@ -1,7 +1,0 @@
-http\://sample1.tests.workflow.cagrid.nci.nih.gov/WorkflowTestService1=gov.nih.nci.cagrid.workflow.tests.sample1.stubs
-http\://sample1.tests.workflow.cagrid.nci.nih.gov/WorkflowTestService1/bindings=gov.nih.nci.cagrid.workflow.tests.sample1.stubs.bindings
-http\://sample1.tests.workflow.cagrid.nci.nih.gov/WorkflowTestService1/service=gov.nih.nci.cagrid.workflow.tests.sample1.stubs.service
-http\://security.introduce.cagrid.nci.nih.gov/ServiceSecurity=gov.nih.nci.cagrid.introduce.security.stubs
-
-gme\://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.security=gov.nih.nci.cagrid.metadata.security
-http\://sample1.tests.workflow.cagrid.nci.nih.gov/WorkflowTestService1/types=gov.nih.nci.cagrid.workflow.tests.sample1.stubs.types

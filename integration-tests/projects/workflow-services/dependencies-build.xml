@@ -1,9 +1,0 @@
-<?xml version="1.0"?>
-
-<project name="dependencies" basedir="." xmlns:ivy="antlib:org.apache.ivy.ant">
-	<property file="project.properties" />
-
-	<property name="ivy-shared-targets.file" location="${basedir}/../../../caGrid/antfiles/ivy/ivy-shared-targets.xml" />
-	<import file="${ivy-shared-targets.file}" />
-</project>
-

@@ -1,4 +1,0 @@
-http\://cagrid.nci.nih.gov/SecureSample=gov.nih.nci.cagrid.workflow.samples.secure.stubs
-http\://cagrid.nci.nih.gov/SecureSample/bindings=gov.nih.nci.cagrid.workflow.samples.secure.stubs.bindings
-http\://cagrid.nci.nih.gov/SecureSample/service=gov.nih.nci.cagrid.workflow.samples.secure.stubs.service
-

@@ -1,3 +1,0 @@
- http\://workflow.cagrid.nci.nih.gov/SampleService2=gov.nih.nci.cagrid.workflow.stubs
-http\://workflow.cagrid.nci.nih.gov/SampleService2/bindings=gov.nih.nci.cagrid.workflow.stubs.bindings
-http\://workflow.cagrid.nci.nih.gov/SampleService2/service=gov.nih.nci.cagrid.workflow.stubs.service
