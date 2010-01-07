@@ -45,24 +45,34 @@
     <artifact name="caGrid-${ivy.module}-tools" conf="tools" type="jar"/>
     <artifact name="caGrid-${ivy.module}-utils" conf="utils" type="jar"/>
     <artifact name="caGrid-${ivy.module}-validation" conf="validation" type="jar"/>
+
+    <!-- TODO: this schema should be coming from a service-security-provider dependency -->
+    <artifact name="ServiceSecurity" conf="service-schemas" type="wsdl"/>
     
+    <!-- Data service schemas and WSDLs -->
     <artifact name="DataService" conf="service-schemas" type="wsdl"/>
     <artifact name="DataServiceExceptions" conf="service-schemas" type="xsd"/>
     <artifact name="DataServiceTypes" conf="service-schemas" type="xsd"/>
-    <!-- TODO: these should be coming from a service-security-provider dependency -->
-    <artifact name="ServiceSecurity" conf="service-schemas" type="wsdl"/>
+    <artifact name="Cql2DataService" conf="service-schemas" type="wsdl"/>
+    <artifact name="Cql2DataServiceTypes" conf="service-schemas" type="xsd"/>
     
     <artifact name="EnumerationDataService" conf="enum-schemas" type="wsdl"/>
     <artifact name="EnumerationDataServiceTypes" conf="enum-schemas" type="xsd"/>
+    <artifact name="Cql2EnumerationDataService" conf="enum-schemas" type="wsdl"/>
+    <artifact name="Cql2EnumerationDataServiceTypes" conf="enum-schemas" type="xsd"/>
     
     <artifact name="TransferDataService" conf="transfer-schemas" type="wsdl"/>
     <artifact name="TransferDataServiceTypes" conf="transfer-schemas" type="xsd"/>
+    <artifact name="Cql2TransferDataService" conf="transfer-schemas" type="wsdl"/>
+    <artifact name="Cql2TransferDataServiceTypes" conf="transfer-schemas" type="xsd"/>
     
+    <!-- Data service tooling related schemas -->
     <artifact name="ClassToQname" conf="extension-schemas" type="xsd"/>
     <artifact name="DataServiceAuditorConfiguration" conf="extension-schemas" type="xsd"/>
     <artifact name="DataServiceExtensionData" conf="extension-schemas" type="xsd"/>
     <artifact name="DataServiceStyle" conf="extension-schemas" type="xsd"/>
 
+	<!-- CQL examples -->
     <artifact name="domain/groupWithValidAttributes" conf="cql-examples" type="xml"/>
     <artifact name="domain/objectWithAssociation" conf="cql-examples" type="xml"/>
     <artifact name="domain/objectWithAssociationNoRoleName" conf="cql-examples" type="xml"/>
