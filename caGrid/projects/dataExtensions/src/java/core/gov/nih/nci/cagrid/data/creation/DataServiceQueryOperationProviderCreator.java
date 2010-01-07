@@ -1,13 +1,18 @@
 package gov.nih.nci.cagrid.data.creation;
 
 import gov.nih.nci.cagrid.common.Utils;
+import gov.nih.nci.cagrid.data.CqlSchemaConstants;
 import gov.nih.nci.cagrid.data.DataServiceConstants;
 import gov.nih.nci.cagrid.data.ExtensionDataUtils;
+import gov.nih.nci.cagrid.data.MetadataConstants;
+import gov.nih.nci.cagrid.data.QueryMethodConstants;
+import gov.nih.nci.cagrid.data.ServiceNamingConstants;
 import gov.nih.nci.cagrid.data.codegen.CQLResultTypesGenerator;
 import gov.nih.nci.cagrid.data.codegen.ResultTypeGeneratorInformation;
 import gov.nih.nci.cagrid.data.cql.validation.DomainModelValidator;
 import gov.nih.nci.cagrid.data.cql.validation.ObjectWalkingCQLValidator;
 import gov.nih.nci.cagrid.data.extension.ServiceFeatures;
+import gov.nih.nci.cagrid.data.service.globus.Cql2DataServiceProviderImpl;
 import gov.nih.nci.cagrid.data.service.globus.DataServiceProviderImpl;
 import gov.nih.nci.cagrid.data.style.ServiceStyleContainer;
 import gov.nih.nci.cagrid.data.style.ServiceStyleLoader;
@@ -25,7 +30,6 @@ import gov.nih.nci.cagrid.introduce.beans.method.MethodTypeInputsInput;
 import gov.nih.nci.cagrid.introduce.beans.method.MethodTypeOutput;
 import gov.nih.nci.cagrid.introduce.beans.method.MethodTypeProviderInformation;
 import gov.nih.nci.cagrid.introduce.beans.namespace.NamespaceType;
-import gov.nih.nci.cagrid.introduce.beans.namespace.NamespacesType;
 import gov.nih.nci.cagrid.introduce.beans.service.ServiceType;
 import gov.nih.nci.cagrid.introduce.common.CommonTools;
 import gov.nih.nci.cagrid.introduce.common.ServiceInformation;
@@ -38,8 +42,6 @@ import gov.nih.nci.cagrid.wsenum.common.WsEnumConstants;
 
 import java.io.File;
 import java.io.FileFilter;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import javax.xml.namespace.QName;
@@ -92,7 +94,7 @@ public class DataServiceQueryOperationProviderCreator implements CreationExtensi
             // edit service properties
             modifyServiceProperties(serviceInfo);
             // add the query method
-            addQueryMethod(mainService);
+            addQueryMethods(mainService);
             // features and service style
             processFeatures(serviceInfo, mainService, desc);
         }
@@ -101,20 +103,20 @@ public class DataServiceQueryOperationProviderCreator implements CreationExtensi
 
     private void checkServiceNaming(ServiceInformation serviceInfo) throws CreationExtensionException {
         ServiceType mainService = serviceInfo.getServices().getService(0);
-        if (DataServiceConstants.DATA_SERVICE_SERVICE_NAME.equals(mainService.getName())) {
+        if (ServiceNamingConstants.DATA_SERVICE_SERVICE_NAME.equals(mainService.getName())) {
             throw new CreationExtensionException(
                 "The data service infrastructure already makes use of the Service Name "
-                    + DataServiceConstants.DATA_SERVICE_SERVICE_NAME);
+                    + ServiceNamingConstants.DATA_SERVICE_SERVICE_NAME);
         }
-        if (DataServiceConstants.DATA_SERVICE_PACKAGE.equals(mainService.getPackageName())) {
+        if (ServiceNamingConstants.DATA_SERVICE_PACKAGE.equals(mainService.getPackageName())) {
             throw new CreationExtensionException(
                 "The data service infrastructure already makes use of the package name "
-                    + DataServiceConstants.DATA_SERVICE_PACKAGE);
+                    + ServiceNamingConstants.DATA_SERVICE_PACKAGE);
         }
-        if (DataServiceConstants.DATA_SERVICE_NAMESPACE.equals(mainService.getNamespace())) {
+        if (ServiceNamingConstants.DATA_SERVICE_NAMESPACE.equals(mainService.getNamespace())) {
             throw new CreationExtensionException(
                 "The data service infrastructure already makes use of the namespace "
-                    + DataServiceConstants.DATA_SERVICE_NAMESPACE);
+                    + ServiceNamingConstants.DATA_SERVICE_NAMESPACE);
         }
     }
 
@@ -123,7 +125,7 @@ public class DataServiceQueryOperationProviderCreator implements CreationExtensi
         // grab cql query and result set schemas and move them into the
         // service's directory
         String schemaDir = getServiceSchemaDir(serviceInfo);
-        System.out.println("Copying schemas to " + schemaDir);
+        log.debug("Copying schemas to " + schemaDir);
         FileFilter dataXsdFilter = new FileFilter() {
             public boolean accept(File pathname) {
                 if (pathname.isDirectory() || pathname.getName().endsWith(".xsd")) {
@@ -139,8 +141,9 @@ public class DataServiceQueryOperationProviderCreator implements CreationExtensi
             "data" + File.separator + "schema");
         File dataSchemaDir = new File(baseSchemaDir, "Data");
         List<File> dataSchemaFiles = Utils.recursiveListFiles(dataSchemaDir, dataXsdFilter);
-        // also copy the WSDL for data services
+        // also copy the WSDLs for data services
         dataSchemaFiles.add(new File(dataSchemaDir, "DataService.wsdl"));
+        dataSchemaFiles.add(new File(dataSchemaDir, "Cql2DataService.wsdl"));
         try {
             for (File schemaFile : dataSchemaFiles) {
                 String subname = schemaFile.getAbsolutePath().substring(
@@ -158,66 +161,53 @@ public class DataServiceQueryOperationProviderCreator implements CreationExtensi
     private void addDataServiceNamespaces(ServiceInformation serviceInfo) throws CreationExtensionException {
         String schemaDir = getServiceSchemaDir(serviceInfo);
         File schemaDirFile = new File(schemaDir);
-        NamespacesType namespaces = serviceInfo.getServiceDescriptor().getNamespaces();
-        if (namespaces == null) {
-            namespaces = new NamespacesType();
-        }
-        // add some namespaces to the service
-        List<NamespaceType> dsNamespaces = 
-            new ArrayList<NamespaceType>(Arrays.asList(namespaces.getNamespace()));
-        NamespaceType queryNamespace = null;
-        NamespaceType resultNamespace = null;
-        NamespaceType resultRestrictionNamespace = null;
-        NamespaceType dsMetadataNamespace = null;
-        NamespaceType dsExceptionsNamespace = null;
-        NamespaceType cagridMdNamespace = null;
+        // add the data service namespaces and schemas to the service descriptor
         try {
-            // query namespace
-            queryNamespace = CommonTools.createNamespaceType(schemaDir + File.separator
-                + DataServiceConstants.CQL_QUERY_SCHEMA, schemaDirFile);
-            // query result namespace
-            resultNamespace = CommonTools.createNamespaceType(schemaDir + File.separator
-                + DataServiceConstants.CQL_RESULT_SET_SCHEMA, schemaDirFile);
-            resultRestrictionNamespace = CommonTools.createNamespaceType(schemaDir + File.separator
-                + CQLResultTypesGenerator.getResultTypeXSDFileName(getDataService(serviceInfo.getServiceDescriptor())),
-                schemaDirFile);
-            // ds metadata namespace
-            dsMetadataNamespace = CommonTools.createNamespaceType(schemaDir + File.separator
-                + DataServiceConstants.DATA_METADATA_SCHEMA, schemaDirFile);
+            // CQL query namespace
+            CommonTools.addNamespace(serviceInfo.getServiceDescriptor(), 
+                CommonTools.createNamespaceType(schemaDir + File.separator
+                    + CqlSchemaConstants.CQL_QUERY_SCHEMA, schemaDirFile));
+            // CQL 2 query namespace
+            CommonTools.addNamespace(serviceInfo.getServiceDescriptor(),
+                CommonTools.createNamespaceType(schemaDir + File.separator
+                    + CqlSchemaConstants.CQL2_SCHEMA_FILENAME, schemaDirFile));
+            // CQL result namespace
+            CommonTools.addNamespace(serviceInfo.getServiceDescriptor(),
+                CommonTools.createNamespaceType(schemaDir + File.separator
+                    + CqlSchemaConstants.CQL_RESULT_SET_SCHEMA, schemaDirFile));
+            // CQL 2 result namespace
+            CommonTools.addNamespace(serviceInfo.getServiceDescriptor(),
+                CommonTools.createNamespaceType(schemaDir + File.separator
+                    + CqlSchemaConstants.CQL2_RESULTS_SCHEMA_FILENAME, schemaDirFile));
+            // results restriction namespace
+            NamespaceType restrictionNamespace = CommonTools.createNamespaceType(schemaDir + File.separator
+                + CQLResultTypesGenerator.getResultTypeXSDFileName(
+                    getDataService(serviceInfo.getServiceDescriptor())),
+                    schemaDirFile);
+            restrictionNamespace.setPackageName(
+                serviceInfo.getServiceDescriptor().getServices().getService(0).getPackageName()
+                + ".cqlresulttypes");
+            CommonTools.addNamespace(serviceInfo.getServiceDescriptor(), restrictionNamespace);
+            // Domain Model namespace
+            CommonTools.addNamespace(serviceInfo.getServiceDescriptor(),
+                CommonTools.createNamespaceType(schemaDir + File.separator
+                    + MetadataConstants.DATA_METADATA_SCHEMA, schemaDirFile));
             // ds exceptions namespace
-            dsExceptionsNamespace = CommonTools.createNamespaceType(schemaDir + File.separator
-                + DataServiceConstants.DATA_SERVICE_EXCEPTIONS_SCHEMA, schemaDirFile);
+            NamespaceType exceptionsNamespace = CommonTools.createNamespaceType(schemaDir + File.separator
+                + QueryMethodConstants.DATA_SERVICE_EXCEPTIONS_SCHEMA, schemaDirFile);
+            exceptionsNamespace.setGenerateStubs(Boolean.FALSE);
+            exceptionsNamespace.setPackageName(DataServiceConstants.DATA_SERVICE_PACKAGE + ".faults");
+            CommonTools.addNamespace(serviceInfo.getServiceDescriptor(), exceptionsNamespace);
             // caGrid metadata namespace
-            cagridMdNamespace = CommonTools.createNamespaceType(schemaDir + File.separator
-                + DataServiceConstants.CAGRID_METADATA_SCHEMA, schemaDirFile);
+            NamespaceType caGridMdNamespace = CommonTools.createNamespaceType(schemaDir + File.separator
+                + MetadataConstants.CAGRID_METADATA_SCHEMA, schemaDirFile);
+            caGridMdNamespace.setGenerateStubs(Boolean.FALSE);
+            CommonTools.addNamespace(serviceInfo.getServiceDescriptor(), caGridMdNamespace);
         } catch (Exception ex) {
             ex.printStackTrace();
             throw new CreationExtensionException(
                 "Error creating namespace for data service: " + ex.getMessage(), ex);
         }
-        // prevent the metadata beans from being generated
-        cagridMdNamespace.setGenerateStubs(Boolean.FALSE);
-        dsExceptionsNamespace.setGenerateStubs(Boolean.FALSE);
-
-        // set package mappings for result restriction types
-        resultRestrictionNamespace.setPackageName(
-            serviceInfo.getServiceDescriptor().getServices().getService(0).getPackageName()
-            + ".cqlresulttypes");
-
-        // set package mappings for exceptions
-        dsExceptionsNamespace.setPackageName(DataServiceConstants.DATA_SERVICE_PACKAGE + ".faults");
-        // add those new namespaces to the list of namespace types
-        dsNamespaces.add(queryNamespace);
-        dsNamespaces.add(resultNamespace);
-        dsNamespaces.add(resultRestrictionNamespace);
-        dsNamespaces.add(dsMetadataNamespace);
-        dsNamespaces.add(dsExceptionsNamespace);
-        dsNamespaces.add(cagridMdNamespace);
-        // add the namespaces back to the service description
-        NamespaceType[] nsArray = new NamespaceType[dsNamespaces.size()];
-        dsNamespaces.toArray(nsArray);
-        namespaces.setNamespace(nsArray);
-        serviceInfo.getServiceDescriptor().setNamespaces(namespaces);
     }
 
 
@@ -225,16 +215,18 @@ public class DataServiceQueryOperationProviderCreator implements CreationExtensi
         String serviceName = serviceDescription.getServices().getService(0).getName();
         ServiceType mainService = CommonTools.getService(serviceDescription.getServices(), serviceName);
         if (mainService == null) {
-            throw new CreationExtensionException("No service could be located!");
+            throw new CreationExtensionException("No main service could be located!");
         }
         return mainService;
     }
 
 
-    private void addQueryMethod(ServiceType service) {
-        MethodType queryMethod = createQueryMethodType();
+    private void addQueryMethods(ServiceType service) {
+        MethodType queryMethod = createCql1QueryMethod();
+        MethodType cql2QueryMethod = createCql2QueryMethod();
         // add the query method to the service
         CommonTools.addMethod(service, queryMethod);
+        CommonTools.addMethod(service, cql2QueryMethod);
     }
 
 
@@ -315,11 +307,27 @@ public class DataServiceQueryOperationProviderCreator implements CreationExtensi
             try {
                 String value = CommonTools.getServicePropertyValue(desc,
                     DataServiceConstants.QUERY_PROCESSOR_CLASS_PROPERTY);
-                System.out.println(DataServiceConstants.QUERY_PROCESSOR_CLASS_PROPERTY
+                log.debug(DataServiceConstants.QUERY_PROCESSOR_CLASS_PROPERTY
                     + " property is already defined as " + value);
             } catch (Exception ex) {
                 throw new CreationExtensionException("Error creating service property "
                     + DataServiceConstants.QUERY_PROCESSOR_CLASS_PROPERTY);
+            }
+        }
+        // does the cql2 query processor class property exist?
+        if (!CommonTools.servicePropertyExists(desc, DataServiceConstants.CQL2_QUERY_PROCESSOR_CLASS_PROPERTY)) {
+            // set the service property to be empty
+            CommonTools.setServiceProperty(desc, DataServiceConstants.CQL2_QUERY_PROCESSOR_CLASS_PROPERTY,
+                "", false);
+        } else {
+            try {
+                String value = CommonTools.getServicePropertyValue(desc,
+                    DataServiceConstants.CQL2_QUERY_PROCESSOR_CLASS_PROPERTY);
+                log.debug(DataServiceConstants.CQL2_QUERY_PROCESSOR_CLASS_PROPERTY
+                    + " property is already defined as " + value);
+            } catch (Exception ex) {
+                throw new CreationExtensionException("Error creating service property "
+                    + DataServiceConstants.CQL2_QUERY_PROCESSOR_CLASS_PROPERTY);
             }
         }
         // does the server config location property exist?
@@ -413,7 +421,7 @@ public class DataServiceQueryOperationProviderCreator implements CreationExtensi
     }
 
 
-    private MethodType createQueryMethodType() {
+    private MethodType createCql1QueryMethod() {
         MethodType queryMethod = new MethodType();
         queryMethod.setName(DataServiceConstants.QUERY_METHOD_NAME);
         queryMethod.setDescription(DataServiceConstants.QUERY_METHOD_DESCRIPTION);
@@ -459,6 +467,55 @@ public class DataServiceQueryOperationProviderCreator implements CreationExtensi
         queryMethod.setIsProvided(true);
         return queryMethod;
     }
+    
+    
+    private MethodType createCql2QueryMethod() {
+        MethodType queryMethod = new MethodType();
+        queryMethod.setName(QueryMethodConstants.CQL2_QUERY_METHOD_NAME);
+        queryMethod.setDescription(QueryMethodConstants.CQL2_QUERY_METHOD_DESCRIPTION);
+        // method input parameters
+        MethodTypeInputs inputs = new MethodTypeInputs();
+        MethodTypeInputsInput queryInput = new MethodTypeInputsInput();
+        queryInput.setName(QueryMethodConstants.CQL2_QUERY_METHOD_PARAMETER_NAME);
+        queryInput.setIsArray(false);
+        queryInput.setQName(CqlSchemaConstants.CQL2_QUERY_QNAME);
+        queryInput.setDescription(QueryMethodConstants.CQL2_QUERY_METHOD_PARAMETER_DESCRIPTION);
+        inputs.setInput(new MethodTypeInputsInput[]{queryInput});
+        queryMethod.setInputs(inputs);
+        // method output
+        MethodTypeOutput output = new MethodTypeOutput();
+        output.setIsArray(false);
+        output.setQName(CqlSchemaConstants.CQL2_RESULTS_QNAME);
+        output.setDescription(QueryMethodConstants.CQL2_QUERY_METHOD_OUTPUT_DESCRIPTION);
+        queryMethod.setOutput(output);
+        // exceptions on query method
+        MethodTypeExceptions queryExceptions = new MethodTypeExceptions();
+        MethodTypeExceptionsException qpException = new MethodTypeExceptionsException(
+            QueryMethodConstants.QUERY_PROCESSING_EXCEPTION_DESCRIPTION,
+            QueryMethodConstants.QUERY_PROCESSING_EXCEPTION_NAME, DataServiceConstants.QUERY_PROCESSING_EXCEPTION_QNAME);
+        MethodTypeExceptionsException mqException = new MethodTypeExceptionsException(
+            QueryMethodConstants.MALFORMED_QUERY_EXCEPTION_DESCRIPTION,
+            QueryMethodConstants.MALFORMED_QUERY_EXCEPTION_NAME, DataServiceConstants.MALFORMED_QUERY_EXCEPTION_QNAME);
+        queryExceptions.setException(new MethodTypeExceptionsException[]{qpException, mqException});
+        queryMethod.setExceptions(queryExceptions);
+        // query method is imported
+        MethodTypeImportInformation importInfo = new MethodTypeImportInformation();
+        importInfo.setNamespace(ServiceNamingConstants.CQL2_DATA_SERVICE_NAMESPACE);
+        importInfo.setPackageName(ServiceNamingConstants.CQL2_DATA_SERVICE_PACKAGE);
+        importInfo.setPortTypeName(ServiceNamingConstants.CQL2_DATA_SERVICE_PORT_TYPE_NAME);
+        importInfo.setWsdlFile("Cql2DataService.wsdl");
+        importInfo.setInputMessage(new QName(ServiceNamingConstants.CQL2_DATA_SERVICE_NAMESPACE, "ExecuteQueryRequest"));
+        importInfo.setOutputMessage(new QName(ServiceNamingConstants.CQL2_DATA_SERVICE_NAMESPACE, "ExecuteQueryResponse"));
+        queryMethod.setIsImported(true);
+        queryMethod.setImportInformation(importInfo);
+        // query method is provided
+        MethodTypeProviderInformation providerInfo = new MethodTypeProviderInformation();
+        providerInfo.setProviderClass(Cql2DataServiceProviderImpl.class.getName());
+        queryMethod.setProviderInformation(providerInfo);
+        queryMethod.setIsProvided(true);
+        return queryMethod;
+    }
+
 
 
     private boolean queryOperationCreated(ServiceInformation info) {
@@ -466,7 +523,7 @@ public class DataServiceQueryOperationProviderCreator implements CreationExtensi
         MethodType queryMethod = CommonTools
             .getMethod(mainService.getMethods(), DataServiceConstants.QUERY_METHOD_NAME);
         if (queryMethod != null) {
-            return createQueryMethodType().equals(queryMethod);
+            return createCql1QueryMethod().equals(queryMethod);
         }
         return false;
     }
