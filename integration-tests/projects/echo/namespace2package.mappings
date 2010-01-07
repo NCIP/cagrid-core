@@ -1,6 +1,0 @@
-http\://tests.cagrid.nci.nih.gov/IntroduceEcho=gov.nih.nci.cagrid.tests.stubs
-http\://tests.cagrid.nci.nih.gov/IntroduceEcho/bindings=gov.nih.nci.cagrid.tests.stubs.bindings
-http\://tests.cagrid.nci.nih.gov/IntroduceEcho/service=gov.nih.nci.cagrid.tests.stubs.service
-http\://security.introduce.cagrid.nci.nih.gov/ServiceSecurity=gov.nih.nci.cagrid.introduce.security
-
-gme\://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.security=gov.nih.nci.cagrid.metadata.security

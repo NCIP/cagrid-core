@@ -1,3 +1,0 @@
-<gene xsi:type="ns1:Gene" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ns1="gme://caGrid.tests/1.0/gov.nih.nci.cagrid.tests.gene">
- <ns1:dna xsi:type="xsd:string" xmlns:xsd="http://www.w3.org/2001/XMLSchema">ATCGATCG</ns1:dna>
-</gene>

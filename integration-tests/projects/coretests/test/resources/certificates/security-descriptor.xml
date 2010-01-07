@@ -1,7 +1,0 @@
-<securityConfig xmlns="http://www.globus.org">
-   <credential>
-      <key-file value="localhost-key.pem"/>
-      <cert-file value="localhost-cert.pem"/>
-   </credential>
-   <authz value="none"/>
-</securityConfig>

@@ -1,9 +1,0 @@
-<ns1:ValidationDescription xmlns:ns1="http://gov.nih.nci.cagrid.tests.core.validation/ValidationDescription">
- <ns2:Schedule taskName="Production Service Tests" xmlns:ns2="http://gov.nih.nci.cagrid.tests.core.validation/Schedule">
-  <ns2:Interval hours="0" minutes="0" seconds="0"/>
- </ns2:Schedule>
- <ns1:ServiceType typeName="GME">
-  <ns1:TestStep classname="gov.nci.nih.cagrid.validator.steps.gme.DomainsAndNamespacesStep"/>
-  <ns1:TestStep classname="gov.nci.nih.cagrid.validator.steps.gme.SchemaDownloadStep"/>
- </ns1:ServiceType>
-</ns1:ValidationDescription>
