@@ -69,6 +69,7 @@ import javax.swing.table.TableCellEditor;
 import javax.xml.namespace.QName;
 
 import org.apache.axis.utils.JavaUtils;
+import org.apache.axis.utils.StringUtils;
 import org.apache.log4j.Logger;
 import org.apache.xml.utils.DefaultErrorHandler;
 import org.cagrid.grape.GridApplication;
@@ -550,6 +551,17 @@ public class MethodViewer extends javax.swing.JDialog {
             result.add(new SimpleValidationMessage("New fault must be a valid java class name format. ("
                 + CommonTools.ALLOWED_JAVA_CLASS_REGEX + ")", Severity.ERROR, METHOD_FAULT));
         }
+        
+		if (!result.hasErrors() && !StringUtils.isEmpty(getNewFaultNameTextField().getText())) {
+			QName exceptionQName = new QName(info.getService().getNamespace() + "/types", getNewFaultNameTextField().getText());
+			ExceptionHolder holder = new ExceptionHolder(exceptionQName, false);
+			for (int index = 0; index < getExceptionJComboBox().getItemCount(); index++) {
+				ExceptionHolder currentHolder = (ExceptionHolder) getExceptionJComboBox().getItemAt(index);
+				if (holder.compareTo(currentHolder) == 0) {
+		            result.add(new SimpleValidationMessage("New fault already exists in the Used Faults drop-down.", Severity.ERROR, METHOD_FAULT));
+				}
+			}
+		}
 
         this.methodFaultValidationModel.setResult(result);
         updateNewFaultComponentTreeSeverity();
@@ -1384,33 +1396,26 @@ public class MethodViewer extends javax.swing.JDialog {
             addExceptionButton = new JButton(PortalLookAndFeel.getAddIcon());
             addExceptionButton.setText("Add Used Fault");
             addExceptionButton.addActionListener(new java.awt.event.ActionListener() {
-                public void actionPerformed(java.awt.event.ActionEvent e) {
-                    ExceptionHolder exceptionHolder = null;
-                    if (getExceptionJComboBox().getSelectedItem() != null) {
-                        exceptionHolder = (ExceptionHolder) getExceptionJComboBox().getSelectedItem();
-                    }
-                    if (exceptionHolder != null) {
-                        // parse qname string into qname
-
-                        for (int i = 0; i < getExceptionsTable().getRowCount(); i++) {
-                            MethodTypeExceptionsException exception = null;
-                            try {
-                                exception = getExceptionsTable().getRowData(i);
-                            } catch (Exception e1) {
-                                logger.error("Exception getting data from exceptions table", e1);
-                            }
-                            if ((exception != null) && (exception.getQname() != null)
-                                && exception.getQname().equals(exceptionHolder.qname)) {
-                                JOptionPane.showMessageDialog(MethodViewer.this, "Exception (" + exceptionHolder
-                                    + ") already thrown by method.");
-                                return;
-                            }
-                        }
-                        getExceptionsTable().addRow(exceptionHolder.qname, exceptionHolder.isCreated, "");
-                    } else {
-                        JOptionPane.showMessageDialog(MethodViewer.this, "Please select an exception first!");
-                    }
-                }
+				public void actionPerformed(java.awt.event.ActionEvent e) {
+					ExceptionHolder exceptionHolder = null;
+					if (getExceptionJComboBox().getSelectedItem() != null) {
+						exceptionHolder = (ExceptionHolder) getExceptionJComboBox().getSelectedItem();
+					}
+					if (exceptionHolder != null) {
+						try {
+							if (getExceptionsTable().containsFault(exceptionHolder.qname)) {
+								JOptionPane.showMessageDialog(MethodViewer.this, "Exception (" + exceptionHolder
+										+ ") already thrown by method.");
+								return;
+							}
+						} catch (Exception e1) {
+							logger.error("Exception getting data from exceptions table", e1);
+						}
+						getExceptionsTable().addRow(exceptionHolder.qname, exceptionHolder.isCreated, "");
+					} else {
+						JOptionPane.showMessageDialog(MethodViewer.this, "Please select an exception first!");
+					}
+				}
             });
         }
         return addExceptionButton;
@@ -2252,8 +2257,8 @@ public class MethodViewer extends javax.swing.JDialog {
                     exceptionQName = new QName(info.getService().getNamespace() + "/types", getNewFaultNameTextField()
                         .getText());
 
-                    ExceptionHolder holder = new ExceptionHolder(exceptionQName, false);
-                    getExceptionJComboBox().addItem(holder);
+                    ExceptionHolder holder = new ExceptionHolder(exceptionQName, false);                                      
+                    getExceptionJComboBox().addItem(holder);                    
                     getExceptionsTable().addRow(holder.qname, holder.isCreated, "");
                     getNewFaultNameTextField().setText("");
 

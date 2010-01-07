@@ -82,6 +82,18 @@ public class ExceptionsTable extends PortalBaseTable {
 		return exception;
 	}
 
+	public boolean containsFault(QName exception) throws Exception {
+		
+		for (int index = 0; index < getRowCount(); index++) {
+			QName qname = new QName((String) getValueAt(index, 0), (String) getValueAt(index, 1));
+			if (qname.equals(exception)) {
+				return true;
+			}
+		}
+
+		return false;
+	}
+
 
 	public void removeSelectedRow() throws Exception {
 		int row = getSelectedRow();
