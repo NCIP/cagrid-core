@@ -1,7 +1,9 @@
 package gov.nih.nci.cagrid.data.creation;
 
 import gov.nih.nci.cagrid.common.Utils;
-import gov.nih.nci.cagrid.data.DataServiceConstants;
+import gov.nih.nci.cagrid.data.CqlSchemaConstants;
+import gov.nih.nci.cagrid.data.QueryMethodConstants;
+import gov.nih.nci.cagrid.data.TransferMethodConstants;
 import gov.nih.nci.cagrid.data.transfer.service.globus.TransferDataServiceProviderImpl;
 import gov.nih.nci.cagrid.data.transfer.stubs.TransferDataServicePortType;
 import gov.nih.nci.cagrid.introduce.IntroduceConstants;
@@ -23,6 +25,7 @@ import gov.nih.nci.cagrid.introduce.extension.ExtensionTools;
 import gov.nih.nci.cagrid.introduce.extension.ExtensionsLoader;
 
 import java.io.File;
+import java.io.FileFilter;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -52,7 +55,7 @@ public class TransferFeatureCreator extends FeatureCreator {
 	    if (!featureAlreadyCreated()) {
 	        installTransferExtension();
 	        copySchemas();
-	        addTransferQueryMethod();
+	        addTransferQueryMethods();
         }
 	}
 
@@ -89,71 +92,132 @@ public class TransferFeatureCreator extends FeatureCreator {
 	}
 
 
-	private void addTransferQueryMethod() {
-		// add the transferQuery method to the data service
-		MethodType transferQueryMethod = new MethodType();
-		transferQueryMethod.setName(DataServiceConstants.TRANSFER_QUERY_METHOD_NAME);
-		transferQueryMethod.setDescription(DataServiceConstants.TRANSFER_QUERY_METHOD_DESCRIPTION);
-		transferQueryMethod.setIsImported(true);
-		transferQueryMethod.setIsProvided(true);
+	private void addTransferQueryMethods() {
+		CommonTools.addMethod(getMainService(), getTransferQueryMethod());
+		CommonTools.addMethod(getMainService(), getCql2TransferQueryMethod());
+	}
+	
+	
+	private MethodType getTransferQueryMethod() {
+	    // build the transferQuery method
+        MethodType method = new MethodType();
+        method.setName(TransferMethodConstants.TRANSFER_QUERY_METHOD_NAME);
+        method.setDescription(TransferMethodConstants.TRANSFER_QUERY_METHOD_DESCRIPTION);
+        method.setIsImported(true);
+        method.setIsProvided(true);
         // input
-		MethodTypeInputs transferInputs = new MethodTypeInputs();
-		MethodTypeInputsInput queryParam = new MethodTypeInputsInput();
-		queryParam.setName(DataServiceConstants.QUERY_METHOD_PARAMETER_NAME);
-		queryParam.setIsArray(false);
-		queryParam.setQName(DataServiceConstants.CQL_QUERY_QNAME);
-		queryParam.setDescription(DataServiceConstants.QUERY_METHOD_PARAMETER_DESCRIPTION);
-		transferInputs.setInput(new MethodTypeInputsInput[]{queryParam});
-		transferQueryMethod.setInputs(transferInputs);
+        MethodTypeInputs transferInputs = new MethodTypeInputs();
+        MethodTypeInputsInput queryParam = new MethodTypeInputsInput();
+        queryParam.setName(QueryMethodConstants.QUERY_METHOD_PARAMETER_NAME);
+        queryParam.setIsArray(false);
+        queryParam.setQName(CqlSchemaConstants.CQL_QUERY_QNAME);
+        queryParam.setDescription(QueryMethodConstants.QUERY_METHOD_PARAMETER_DESCRIPTION);
+        transferInputs.setInput(new MethodTypeInputsInput[]{queryParam});
+        method.setInputs(transferInputs);
         // output
-		MethodTypeOutput transferOutput = new MethodTypeOutput();
-		transferOutput.setIsArray(false);
-        transferOutput.setQName(DataServiceConstants.TRANSFER_CONTEXT_REFERENCE_QNAME);
-        transferOutput.setDescription(DataServiceConstants.TRANSFER_QUERY_METHOD_OUTPUT_DESCRIPTION);
-		transferQueryMethod.setOutput(transferOutput);
-		// import info
-		MethodTypeImportInformation transferImport = new MethodTypeImportInformation();
-		transferImport.setPortTypeName(TransferDataServicePortType.class.getSimpleName());
-		transferImport.setWsdlFile("TransferDataService.wsdl");
-		transferImport.setInputMessage(DataServiceConstants.TRANSFER_QUERY_METHOD_INPUT_MESSAGE);
-		transferImport.setOutputMessage(DataServiceConstants.TRANSFER_QUERY_METHOD_OUTPUT_MESSAGE);
-		transferImport.setNamespace(DataServiceConstants.TRANSFER_DATA_SERVICE_NAMESPACE);
-		transferImport.setPackageName(DataServiceConstants.TRANSFER_DATA_SERVICE_PACKAGE_NAME);
-		transferQueryMethod.setImportInformation(transferImport);
-		// provider info
-		MethodTypeProviderInformation transferProvider = new MethodTypeProviderInformation();
-		transferProvider.setProviderClass(TransferDataServiceProviderImpl.class.getName());
-		transferQueryMethod.setProviderInformation(transferProvider);
-		// exceptions
-		MethodTypeExceptions methodExceptions = new MethodTypeExceptions();
-		MethodTypeExceptionsException qpException = new MethodTypeExceptionsException(
-			DataServiceConstants.QUERY_PROCESSING_EXCEPTION_DESCRIPTION,
-			DataServiceConstants.QUERY_PROCESSING_EXCEPTION_NAME, 
-			DataServiceConstants.QUERY_PROCESSING_EXCEPTION_QNAME);
-		MethodTypeExceptionsException mqException = new MethodTypeExceptionsException(
-			DataServiceConstants.MALFORMED_QUERY_EXCEPTION_DESCRIPTION,
-			DataServiceConstants.MALFORMED_QUERY_EXCEPTION_NAME, 
-			DataServiceConstants.MALFORMED_QUERY_EXCEPTION_QNAME);
-		methodExceptions.setException(new MethodTypeExceptionsException[]{qpException, mqException});
-		transferQueryMethod.setExceptions(methodExceptions);
-		// add the method to the service
-		CommonTools.addMethod(getMainService(), transferQueryMethod);
+        MethodTypeOutput transferOutput = new MethodTypeOutput();
+        transferOutput.setIsArray(false);
+        transferOutput.setQName(TransferMethodConstants.TRANSFER_CONTEXT_REFERENCE_QNAME);
+        transferOutput.setDescription(TransferMethodConstants.TRANSFER_QUERY_METHOD_OUTPUT_DESCRIPTION);
+        method.setOutput(transferOutput);
+        // import info
+        MethodTypeImportInformation transferImport = new MethodTypeImportInformation();
+        transferImport.setPortTypeName(TransferDataServicePortType.class.getSimpleName());
+        transferImport.setWsdlFile("TransferDataService.wsdl");
+        transferImport.setInputMessage(TransferMethodConstants.TRANSFER_QUERY_METHOD_INPUT_MESSAGE);
+        transferImport.setOutputMessage(TransferMethodConstants.TRANSFER_QUERY_METHOD_OUTPUT_MESSAGE);
+        transferImport.setNamespace(TransferMethodConstants.TRANSFER_DATA_SERVICE_NAMESPACE);
+        transferImport.setPackageName(TransferMethodConstants.TRANSFER_DATA_SERVICE_PACKAGE_NAME);
+        method.setImportInformation(transferImport);
+        // provider info
+        MethodTypeProviderInformation transferProvider = new MethodTypeProviderInformation();
+        transferProvider.setProviderClass(TransferDataServiceProviderImpl.class.getName());
+        method.setProviderInformation(transferProvider);
+        // exceptions
+        MethodTypeExceptions methodExceptions = new MethodTypeExceptions();
+        MethodTypeExceptionsException qpException = new MethodTypeExceptionsException(
+            QueryMethodConstants.QUERY_PROCESSING_EXCEPTION_DESCRIPTION,
+            QueryMethodConstants.QUERY_PROCESSING_EXCEPTION_NAME, 
+            QueryMethodConstants.QUERY_PROCESSING_EXCEPTION_QNAME);
+        MethodTypeExceptionsException mqException = new MethodTypeExceptionsException(
+            QueryMethodConstants.MALFORMED_QUERY_EXCEPTION_DESCRIPTION,
+            QueryMethodConstants.MALFORMED_QUERY_EXCEPTION_NAME, 
+            QueryMethodConstants.MALFORMED_QUERY_EXCEPTION_QNAME);
+        methodExceptions.setException(new MethodTypeExceptionsException[]{qpException, mqException});
+        method.setExceptions(methodExceptions);
+        return method;
+	}
+	
+	
+	private MethodType getCql2TransferQueryMethod() {
+	    // build the executeTransferQuery method
+        MethodType method = new MethodType();
+        method.setName(TransferMethodConstants.CQL2_TRANSFER_QUERY_METHOD_NAME);
+        method.setDescription(TransferMethodConstants.CQL2_TRANSFER_QUERY_METHOD_DESCRIPTION);
+        method.setIsImported(true);
+        method.setIsProvided(true);
+        // input
+        MethodTypeInputs transferInputs = new MethodTypeInputs();
+        MethodTypeInputsInput queryParam = new MethodTypeInputsInput();
+        queryParam.setName(QueryMethodConstants.QUERY_METHOD_PARAMETER_NAME);
+        queryParam.setIsArray(false);
+        queryParam.setQName(CqlSchemaConstants.CQL2_QUERY_QNAME);
+        queryParam.setDescription(QueryMethodConstants.CQL2_QUERY_METHOD_PARAMETER_DESCRIPTION);
+        transferInputs.setInput(new MethodTypeInputsInput[]{queryParam});
+        method.setInputs(transferInputs);
+        // output
+        MethodTypeOutput transferOutput = new MethodTypeOutput();
+        transferOutput.setIsArray(false);
+        transferOutput.setQName(TransferMethodConstants.TRANSFER_CONTEXT_REFERENCE_QNAME);
+        transferOutput.setDescription(TransferMethodConstants.TRANSFER_QUERY_METHOD_OUTPUT_DESCRIPTION);
+        method.setOutput(transferOutput);
+        // import info
+        MethodTypeImportInformation transferImport = new MethodTypeImportInformation();
+        transferImport.setPortTypeName(TransferMethodConstants.CQL2_TRANSFER_DATA_SERVICE_PORT_TYPE);
+        transferImport.setWsdlFile("Cql2TransferDataService.wsdl");
+        transferImport.setInputMessage(TransferMethodConstants.CQL2_TRANSFER_QUERY_METHOD_INPUT_MESSAGE);
+        transferImport.setOutputMessage(TransferMethodConstants.CQL2_TRANSFER_QUERY_METHOD_OUTPUT_MESSAGE);
+        transferImport.setNamespace(TransferMethodConstants.CQL2_TRANSFER_DATA_SERVICE_NAMESPACE);
+        transferImport.setPackageName(TransferMethodConstants.CQL2_TRANSFER_DATA_SERVICE_PACKAGE_NAME);
+        method.setImportInformation(transferImport);
+        // provider info
+        MethodTypeProviderInformation transferProvider = new MethodTypeProviderInformation();
+        transferProvider.setProviderClass(TransferDataServiceProviderImpl.class.getName());
+        method.setProviderInformation(transferProvider);
+        // exceptions
+        MethodTypeExceptions methodExceptions = new MethodTypeExceptions();
+        MethodTypeExceptionsException qpException = new MethodTypeExceptionsException(
+            QueryMethodConstants.QUERY_PROCESSING_EXCEPTION_DESCRIPTION,
+            QueryMethodConstants.QUERY_PROCESSING_EXCEPTION_NAME, 
+            QueryMethodConstants.QUERY_PROCESSING_EXCEPTION_QNAME);
+        MethodTypeExceptionsException mqException = new MethodTypeExceptionsException(
+            QueryMethodConstants.MALFORMED_QUERY_EXCEPTION_DESCRIPTION,
+            QueryMethodConstants.MALFORMED_QUERY_EXCEPTION_NAME, 
+            QueryMethodConstants.MALFORMED_QUERY_EXCEPTION_QNAME);
+        methodExceptions.setException(new MethodTypeExceptionsException[]{qpException, mqException});
+        method.setExceptions(methodExceptions);
+        return method;
 	}
 
 
 	private void copySchemas() throws CreationExtensionException {
-		// copy over the TransferDataService.wsdl file
+		// copy over the [Cql2]TransferDataService.wsdl files
 		String serviceSchemaDir = getServiceSchemaDir();
-		File dataExtensionSchemaDir = new File(ExtensionsLoader.EXTENSIONS_DIRECTORY, 
-            "data" + File.separator + "schema");
-        File wsdlFile = new File(dataExtensionSchemaDir, 
-            "Data" + File.separator + "TransferDataService.wsdl");
-        File wsdlOutFile = new File(serviceSchemaDir, wsdlFile.getName());
-        try {
-			Utils.copyFile(wsdlFile, wsdlOutFile);
-        } catch (Exception ex) {
-			throw new CreationExtensionException("Error copying data service schemas: " + ex.getMessage(), ex);
-		}
+		File dataExtensionSchemaDir = new File(ExtensionsLoader.getInstance().getExtensionsDir(), 
+            "data" + File.separator + "schema" + File.separator + "Data");
+		File[] transferWsdls = dataExtensionSchemaDir.listFiles(new FileFilter() {
+            public boolean accept(File pathname) {
+                return pathname.getName().endsWith("TransferDataService.wsdl");
+            }
+        });
+		for (File wsdl : transferWsdls) {
+		    File wsdlOutFile = new File(serviceSchemaDir, wsdl.getName());
+		    try {
+		        Utils.copyFile(wsdl, wsdlOutFile);
+	        } catch (Exception ex) {
+	            throw new CreationExtensionException("Error copying transfer data service wsdls: " + ex.getMessage(), ex);
+	        }
+		}        
 	}
 
 
