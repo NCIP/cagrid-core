@@ -8,14 +8,15 @@ import java.io.FileFilter;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.xpath.XPath;
+import javax.xml.xpath.XPathExpression;
+import javax.xml.xpath.XPathFactory;
 
 import org.cagrid.installer.steps.options.ListPropertyConfigurationOption;
 import org.cagrid.installer.steps.options.ListPropertyConfigurationOption.LabelValuePair;
 import org.pietschy.wizard.InvalidStateException;
 import org.pietschy.wizard.WizardModel;
 import org.w3c.dom.Document;
-
-import com.sun.org.apache.xpath.internal.XPathAPI;
 
 
 /**
@@ -64,12 +65,21 @@ public class TargetGridConfigurationStep extends PropertyConfigurationStep {
                     DocumentBuilder docBuilder = docBuilderFactory.newDocumentBuilder();
                     Document doc = docBuilder.parse(files[i]);
                     doc.getDocumentElement().normalize();
-                    String targetGrid = XPathAPI.eval(doc, "/ivy-module/info/@revision").toString();
-                    String targetDescription = XPathAPI.eval(doc, "/ivy-module/info/description/text()").toString();
+
+                    XPathFactory factory = javax.xml.xpath.XPathFactory.newInstance();
+                    
+                    XPath revXPath = factory.newXPath();
+                    XPathExpression revisionExp = revXPath.compile("/ivy-module/info/@revision");
+                    String targetGrid = revisionExp.evaluate(doc);
+
+                    XPath descXPath = factory.newXPath();
+                    XPathExpression descExp = descXPath.compile("/ivy-module/info/description/text()");
+                    String targetDescription = descExp.evaluate(doc);
+   
                     targetGridPairs[i] = new LabelValuePair(targetDescription, targetGrid);
 
                 }
-                
+
                 targetGridPairs[files.length] = new LabelValuePair("No Target Grid", Constants.NO_TARGET_GRID);
                 addListOption(new ListPropertyConfigurationOption(Constants.TARGET_GRID, model
                     .getMessage("target.grid"), targetGridPairs, true));
@@ -81,5 +91,6 @@ public class TargetGridConfigurationStep extends PropertyConfigurationStep {
 
         super.prepare();
     }
+   
 
 } // @jve:decl-index=0:visual-constraint="10,10"

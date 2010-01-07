@@ -25,7 +25,7 @@
 	</pathconvert>
 	<!-- NOTE: these are expected to be changed/overridden when releases are created -->
 	<property name="cagrid.version" value="${project.version}" />
-	<property name="download.properties.url" value="file:/${download.properties.path}" />
+	<property name="download.properties.url" value="file://${download.properties.path}" />
 	<property name="cagrid.download.url" value="http://localhost:8080/downloads/caGrid-${project.version}.zip" />
 
 	<fileset id="globus.jars" dir="${globus.dir}/lib">
