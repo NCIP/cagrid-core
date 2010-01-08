@@ -5,6 +5,7 @@
 	elementFormDefault="qualified" attributeFormDefault="unqualified">
 	<xsd:import namespace="http://CQL.caBIG/2/org.cagrid.cql2.extensionsupport" schemaLocation="CQLSupportedExtensions.xsd"/>
 	
+	<xsd:element name="QueryLanguageSupport" type="tns:QueryLanguageSupport"/>
 	<xsd:complexType name="QueryLanguageSupport">
 		<xsd:sequence>
 			<xsd:element name="CQL1Support" minOccurs="1" maxOccurs="1">
