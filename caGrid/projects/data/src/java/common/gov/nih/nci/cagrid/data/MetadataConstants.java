@@ -17,4 +17,10 @@ public interface MetadataConstants {
     
     // service metadata QName
     public static final QName SERVICE_METADATA_QNAME = new QName("gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata", "ServiceMetadata");
+    
+    // query language support
+    public static final String QUERY_LANGUAGE_SUPPORT_XSD = "QueryLanguageSupportMetadata.xsd";
+    public static final QName QUERY_LANGUAGE_SUPPORT_QNAME = new QName("http://org.cagrid.dataservice.cql/QueryLanguageSupport", "QueryLanguageSupport");
+    public static final String QUERY_LANGUAGE_SUPPORT_PACKAGE = "org.cagrid.dataservice.cql.support";
+    public static final String QUERY_LANGUAGE_SUPPORT_DESCRIPTION = "Describes the level of support for CQL versions";
 }
