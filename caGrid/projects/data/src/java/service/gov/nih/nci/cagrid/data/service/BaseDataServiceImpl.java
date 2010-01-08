@@ -13,6 +13,7 @@ import gov.nih.nci.cagrid.data.auditing.DataServiceAuditors;
 import gov.nih.nci.cagrid.data.cql.CQLQueryProcessor;
 import gov.nih.nci.cagrid.data.cql.LazyCQLQueryProcessor;
 import gov.nih.nci.cagrid.data.cql2.CQL2QueryProcessor;
+import gov.nih.nci.cagrid.data.cql2.Cql2ExtensionPoint;
 import gov.nih.nci.cagrid.data.cql2.validation.StructureValidationException;
 import gov.nih.nci.cagrid.data.mapping.ClassToQname;
 import gov.nih.nci.cagrid.data.mapping.Mappings;
@@ -46,6 +47,11 @@ import org.cagrid.cql.utilities.CQL2ResultsToCQL1ResultsConverter;
 import org.cagrid.cql.utilities.CQL2toCQL1Converter;
 import org.cagrid.cql.utilities.QueryConversionException;
 import org.cagrid.cql.utilities.ResultsConversionException;
+import org.cagrid.cql2.extensionsupport.SupportedExtensions;
+import org.cagrid.dataservice.cql.support.QueryLanguageSupport;
+import org.cagrid.dataservice.cql.support.QueryLanguageSupportCQL1Support;
+import org.cagrid.dataservice.cql.support.QueryLanguageSupportCQL2Support;
+import org.cagrid.dataservice.cql.support.SupportType;
 import org.globus.wsrf.Resource;
 import org.globus.wsrf.ResourceContext;
 import org.globus.wsrf.security.SecurityManager;
@@ -119,6 +125,54 @@ public abstract class BaseDataServiceImpl {
         } else {
             LOG.warn("Domain Model NOT FOUND in base resource");
         }
+        // set the query language support metadata
+        LOG.debug("Creating the language support resource property");
+        try {
+            // build up the language support bean
+            QueryLanguageSupport languageSupport = new QueryLanguageSupport();
+            QueryLanguageSupportCQL1Support cql1Support = 
+                new QueryLanguageSupportCQL1Support(
+                    hasNativeCql1Processor() ? SupportType.NATIVE : SupportType.EMULATED);
+            languageSupport.setCQL1Support(cql1Support);
+            QueryLanguageSupportCQL2Support cql2Support = new QueryLanguageSupportCQL2Support();
+            cql2Support.setSupport(hasNativeCql2Processor() ? SupportType.NATIVE : SupportType.EMULATED);
+            if (cql2Support.getSupport().equals(SupportType.NATIVE)) {
+                SupportedExtensions extSupport = new SupportedExtensions();
+                extSupport.setAttributeExtension(
+                    getCql2QueryProcessor().getSupportedExtensions(
+                        Cql2ExtensionPoint.ATTRIBUTE).toArray(new QName[0]));
+                extSupport.setModifierExtension(
+                    getCql2QueryProcessor().getSupportedExtensions(
+                        Cql2ExtensionPoint.MODIFIER).toArray(new QName[0]));
+                extSupport.setObjectExtension(
+                    getCql2QueryProcessor().getSupportedExtensions(
+                        Cql2ExtensionPoint.OBJECT).toArray(new QName[0]));
+                extSupport.setResultExtension(
+                    getCql2QueryProcessor().getSupportedExtensions(
+                        Cql2ExtensionPoint.RESULT).toArray(new QName[0]));
+                cql2Support.setSupportedExtensions(extSupport);
+            }
+            languageSupport.setCQL2Support(cql2Support);
+            // locate the setter method on the base resource
+            boolean foundMethod = false;
+            for (Method method : resourceMethods) {
+                // TODO: derive method name from constant
+                if (method.getName().equals("setQueryLanguageSupport")) {
+                    method.invoke(serviceBaseResource, languageSupport);
+                    LOG.debug("Set the query language support resource property");
+                    foundMethod = true;
+                    break;
+                }
+            }
+            if (!foundMethod) {
+                LOG.error("Could not locate 'setQueryLanguageSupport()' method on service base resource.  " +
+                    "Query language support resource property NOT SET");
+            }
+        } catch (Exception ex) {
+            throw new DataServiceInitializationException(
+                "Error setting query language support resource property: " + ex.getMessage(), ex);
+        }
+        // load the class to QName mappings
         LOG.debug("Loading class to QName mappings information");
         try {
             // get the mapping file name
