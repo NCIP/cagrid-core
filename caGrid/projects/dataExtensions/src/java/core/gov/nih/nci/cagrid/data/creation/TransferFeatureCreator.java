@@ -4,6 +4,7 @@ import gov.nih.nci.cagrid.common.Utils;
 import gov.nih.nci.cagrid.data.CqlSchemaConstants;
 import gov.nih.nci.cagrid.data.QueryMethodConstants;
 import gov.nih.nci.cagrid.data.TransferMethodConstants;
+import gov.nih.nci.cagrid.data.transfer.service.globus.Cql2TransferDataServiceProviderImpl;
 import gov.nih.nci.cagrid.data.transfer.service.globus.TransferDataServiceProviderImpl;
 import gov.nih.nci.cagrid.data.transfer.stubs.TransferDataServicePortType;
 import gov.nih.nci.cagrid.introduce.IntroduceConstants;
@@ -182,7 +183,7 @@ public class TransferFeatureCreator extends FeatureCreator {
         method.setImportInformation(transferImport);
         // provider info
         MethodTypeProviderInformation transferProvider = new MethodTypeProviderInformation();
-        transferProvider.setProviderClass(TransferDataServiceProviderImpl.class.getName());
+        transferProvider.setProviderClass(Cql2TransferDataServiceProviderImpl.class.getName());
         method.setProviderInformation(transferProvider);
         // exceptions
         MethodTypeExceptions methodExceptions = new MethodTypeExceptions();
