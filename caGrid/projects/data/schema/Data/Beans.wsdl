@@ -4,4 +4,5 @@
 	<import location="DataServiceAuditorConfiguration.xsd"/>
 	<import location="DataServiceExtensionData.xsd"/>
 	<import location="DataServiceStyle.xsd"/>
+	<import location="QueryLanguageSupportMetadata.xsd"/>
 </definitions>

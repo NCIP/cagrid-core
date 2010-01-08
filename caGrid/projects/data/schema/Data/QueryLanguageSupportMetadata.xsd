@@ -1,0 +1,32 @@
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" 
+	xmlns:exts="http://CQL.caBIG/2/org.cagrid.cql2.extensionsupport"
+	xmlns:tns="http://org.cagrid.dataservice.cql/QueryLanguageSupport"
+	targetNamespace="http://org.cagrid.dataservice.cql/QueryLanguageSupport"
+	elementFormDefault="qualified" attributeFormDefault="unqualified">
+	<xsd:import namespace="http://CQL.caBIG/2/org.cagrid.cql2.extensionsupport" schemaLocation="CQLSupportedExtensions.xsd"/>
+	
+	<xsd:complexType name="QueryLanguageSupport">
+		<xsd:sequence>
+			<xsd:element name="CQL1Support" minOccurs="1" maxOccurs="1">
+				<xsd:complexType>
+					<xsd:attribute name="support" type="tns:SupportType"/>
+				</xsd:complexType>
+			</xsd:element>
+			<xsd:element name="CQL2Support" minOccurs="1" maxOccurs="1">
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element name="SupportedExtensions" minOccurs="0" maxOccurs="1" type="exts:SupportedExtensions"/>
+					</xsd:sequence>
+					<xsd:attribute name="support" type="tns:SupportType"/>
+				</xsd:complexType>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	
+	<xsd:simpleType name="SupportType">
+		<xsd:restriction base="xsd:string">
+			<xsd:enumeration value="NATIVE" id="native"/>
+			<xsd:enumeration value="EMULATED" id="emulated"/>
+		</xsd:restriction>
+	</xsd:simpleType>
+</xsd:schema>
