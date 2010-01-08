@@ -10,14 +10,13 @@
 
   <configurations>
     <conf name="impl-test" visibility="private"/>
-    <conf name="impl" visibility="private" extends="jars" />
+    <conf name="impl" visibility="private" extends="utils" />
     
     <!-- Jars -->
-    <conf name="jars" visibility="public" extends="utils"/>
-    <conf name="utils" visibility="public" extends="cql,cql2,dcql2" />
     <conf name="cql" visibility="public"/>
     <conf name="cql2" visibility="public"/>
-    <conf name="dcql2" visibility="public"/>
+    <conf name="dcql2" visibility="public" extends="cql2"/>
+    <conf name="utils" visibility="public" extends="cql,cql2,dcql2" />
     
     <!-- Schemas-->
     <conf name="schemas" visibility="public" extends="cql-schemas,cql2-schemas,dcql2-schemas"/>
