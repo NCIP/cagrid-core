@@ -55,6 +55,7 @@
     <artifact name="DataServiceTypes" conf="service-schemas" type="xsd"/>
     <artifact name="Cql2DataService" conf="service-schemas" type="wsdl"/>
     <artifact name="Cql2DataServiceTypes" conf="service-schemas" type="xsd"/>
+    <artifact name="QueryLanguageSupportMetadata" conf="service-schemas" type="xsd"/>
     
     <artifact name="EnumerationDataService" conf="enum-schemas" type="wsdl"/>
     <artifact name="EnumerationDataServiceTypes" conf="enum-schemas" type="xsd"/>
@@ -71,7 +72,7 @@
     <artifact name="DataServiceAuditorConfiguration" conf="extension-schemas" type="xsd"/>
     <artifact name="DataServiceExtensionData" conf="extension-schemas" type="xsd"/>
     <artifact name="DataServiceStyle" conf="extension-schemas" type="xsd"/>
-
+    
 	<!-- CQL examples -->
     <artifact name="domain/groupWithValidAttributes" conf="cql-examples" type="xml"/>
     <artifact name="domain/objectWithAssociation" conf="cql-examples" type="xml"/>
