@@ -2,6 +2,7 @@ package gov.nih.nci.cagrid.data.codegen;
 
 import gov.nih.nci.cagrid.data.DataServiceConstants;
 import gov.nih.nci.cagrid.data.ExtensionDataUtils;
+import gov.nih.nci.cagrid.data.MetadataConstants;
 import gov.nih.nci.cagrid.data.codegen.templates.StubCQLQueryProcessorTemplate;
 import gov.nih.nci.cagrid.data.extension.Data;
 import gov.nih.nci.cagrid.data.extension.ModelInformation;
@@ -52,8 +53,10 @@ public class DataServiceCodegenPreProcessor implements CodegenExtensionPreProces
             createStubQueryProcessor(info);
         }
         
-		modifyMetadata(desc, info);
+		addDomainModelResourceProperty(desc, info);
         
+		addQueryLanguageSupportResourceProperty(info);
+		
         // execute the service style's pre codegen processor
         ExtensionTypeExtensionData extData = ExtensionTools.getExtensionData(desc, info);
         Data data = null;
@@ -126,7 +129,7 @@ public class DataServiceCodegenPreProcessor implements CodegenExtensionPreProces
 	}
 
 
-	private void modifyMetadata(ServiceExtensionDescriptionType desc, ServiceInformation info)
+	private void addDomainModelResourceProperty(ServiceExtensionDescriptionType desc, ServiceInformation info)
 		throws CodegenExtensionException {
         // determine the name for the domain model document
         String localDomainModelFilename = getDestinationDomainModelFilename(info);
@@ -253,5 +256,18 @@ public class DataServiceCodegenPreProcessor implements CodegenExtensionPreProces
             LOG.debug("Found existing domain model resource property");
 			return typedProps[0];
 		}
+	}
+	
+	
+	private void addQueryLanguageSupportResourceProperty(ServiceInformation info) {
+	    ServiceType baseService = info.getServices().getService(0);
+	    
+	    if (CommonTools.getResourcePropertiesOfType(baseService, MetadataConstants.QUERY_LANGUAGE_SUPPORT_QNAME).length == 0) {
+	        ResourcePropertyType supportRp = new ResourcePropertyType();
+	        supportRp.setRegister(true);
+	        supportRp.setDescription(MetadataConstants.QUERY_LANGUAGE_SUPPORT_DESCRIPTION);
+	        supportRp.setQName(MetadataConstants.QUERY_LANGUAGE_SUPPORT_QNAME);
+	        CommonTools.addResourcePropety(baseService, supportRp);
+	    }
 	}
 }

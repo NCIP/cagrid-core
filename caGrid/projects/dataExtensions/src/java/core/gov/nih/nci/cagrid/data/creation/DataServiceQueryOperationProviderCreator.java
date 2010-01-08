@@ -192,17 +192,23 @@ public class DataServiceQueryOperationProviderCreator implements CreationExtensi
             CommonTools.addNamespace(serviceInfo.getServiceDescriptor(),
                 CommonTools.createNamespaceType(schemaDir + File.separator
                     + MetadataConstants.DATA_METADATA_SCHEMA, schemaDirFile));
+            // caGrid metadata namespace
+            NamespaceType caGridMdNamespace = CommonTools.createNamespaceType(schemaDir + File.separator
+                + MetadataConstants.CAGRID_METADATA_SCHEMA, schemaDirFile);
+            caGridMdNamespace.setGenerateStubs(Boolean.FALSE);
+            CommonTools.addNamespace(serviceInfo.getServiceDescriptor(), caGridMdNamespace);
+            // Query language support metadata namespace
+            NamespaceType supportNamespace = CommonTools.createNamespaceType(schemaDir + File.separator
+                + MetadataConstants.QUERY_LANGUAGE_SUPPORT_XSD, schemaDirFile);
+            supportNamespace.setPackageName(MetadataConstants.QUERY_LANGUAGE_SUPPORT_PACKAGE);
+            supportNamespace.setGenerateStubs(Boolean.FALSE);
+            CommonTools.addNamespace(serviceInfo.getServiceDescriptor(), supportNamespace);
             // ds exceptions namespace
             NamespaceType exceptionsNamespace = CommonTools.createNamespaceType(schemaDir + File.separator
                 + QueryMethodConstants.DATA_SERVICE_EXCEPTIONS_SCHEMA, schemaDirFile);
             exceptionsNamespace.setGenerateStubs(Boolean.FALSE);
             exceptionsNamespace.setPackageName(DataServiceConstants.DATA_SERVICE_PACKAGE + ".faults");
             CommonTools.addNamespace(serviceInfo.getServiceDescriptor(), exceptionsNamespace);
-            // caGrid metadata namespace
-            NamespaceType caGridMdNamespace = CommonTools.createNamespaceType(schemaDir + File.separator
-                + MetadataConstants.CAGRID_METADATA_SCHEMA, schemaDirFile);
-            caGridMdNamespace.setGenerateStubs(Boolean.FALSE);
-            CommonTools.addNamespace(serviceInfo.getServiceDescriptor(), caGridMdNamespace);
         } catch (Exception ex) {
             ex.printStackTrace();
             throw new CreationExtensionException(
@@ -516,8 +522,7 @@ public class DataServiceQueryOperationProviderCreator implements CreationExtensi
         return queryMethod;
     }
 
-
-
+    
     private boolean queryOperationCreated(ServiceInformation info) {
         ServiceType mainService = info.getServices().getService(0);
         MethodType queryMethod = CommonTools
