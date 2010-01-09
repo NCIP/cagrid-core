@@ -50,6 +50,11 @@ public class DataServiceUpgradeFrom1pt2 extends ExtensionUpgraderBase {
             
             upgradeWsdls();
             
+            Cql2FeaturesInstaller cql2Installer = 
+                new Cql2FeaturesInstaller(
+                    getServiceInformation(), getExtensionType(), getStatus());
+            cql2Installer.installCql2Features();
+            
             upgradeModelInformation();
 			
 			setCurrentExtensionVersion();
