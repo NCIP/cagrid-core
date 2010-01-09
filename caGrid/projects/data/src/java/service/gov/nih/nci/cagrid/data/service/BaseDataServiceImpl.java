@@ -48,10 +48,9 @@ import org.cagrid.cql.utilities.CQL2toCQL1Converter;
 import org.cagrid.cql.utilities.QueryConversionException;
 import org.cagrid.cql.utilities.ResultsConversionException;
 import org.cagrid.cql2.extensionsupport.SupportedExtensions;
+import org.cagrid.dataservice.cql.support.Cql2SupportType;
 import org.cagrid.dataservice.cql.support.QueryLanguageSupport;
-import org.cagrid.dataservice.cql.support.QueryLanguageSupportCQL1Support;
 import org.cagrid.dataservice.cql.support.QueryLanguageSupportCQL2Support;
-import org.cagrid.dataservice.cql.support.SupportType;
 import org.globus.wsrf.Resource;
 import org.globus.wsrf.ResourceContext;
 import org.globus.wsrf.security.SecurityManager;
@@ -130,13 +129,10 @@ public abstract class BaseDataServiceImpl {
         try {
             // build up the language support bean
             QueryLanguageSupport languageSupport = new QueryLanguageSupport();
-            QueryLanguageSupportCQL1Support cql1Support = 
-                new QueryLanguageSupportCQL1Support(
-                    hasNativeCql1Processor() ? SupportType.NATIVE : SupportType.EMULATED);
-            languageSupport.setCQL1Support(cql1Support);
             QueryLanguageSupportCQL2Support cql2Support = new QueryLanguageSupportCQL2Support();
-            cql2Support.setSupport(hasNativeCql2Processor() ? SupportType.NATIVE : SupportType.EMULATED);
-            if (cql2Support.getSupport().equals(SupportType.NATIVE)) {
+            if (!hasNativeCql2Processor()) {
+                cql2Support.setSupport(Cql2SupportType.ImplementationNotProvided);
+            } else {
                 SupportedExtensions extSupport = new SupportedExtensions();
                 extSupport.setAttributeExtension(
                     getCql2QueryProcessor().getSupportedExtensions(

@@ -8,26 +8,20 @@
 	<xsd:element name="QueryLanguageSupport" type="tns:QueryLanguageSupport"/>
 	<xsd:complexType name="QueryLanguageSupport">
 		<xsd:sequence>
-			<xsd:element name="CQL1Support" minOccurs="1" maxOccurs="1">
-				<xsd:complexType>
-					<xsd:attribute name="support" type="tns:SupportType"/>
-				</xsd:complexType>
-			</xsd:element>
 			<xsd:element name="CQL2Support" minOccurs="1" maxOccurs="1">
 				<xsd:complexType>
 					<xsd:sequence>
 						<xsd:element name="SupportedExtensions" minOccurs="0" maxOccurs="1" type="exts:SupportedExtensions"/>
 					</xsd:sequence>
-					<xsd:attribute name="support" type="tns:SupportType"/>
+					<xsd:attribute name="support" use="optional" type="tns:Cql2SupportType"/>
 				</xsd:complexType>
 			</xsd:element>
 		</xsd:sequence>
 	</xsd:complexType>
 	
-	<xsd:simpleType name="SupportType">
+	<xsd:simpleType name="Cql2SupportType">
 		<xsd:restriction base="xsd:string">
-			<xsd:enumeration value="NATIVE" id="native"/>
-			<xsd:enumeration value="EMULATED" id="emulated"/>
+			<xsd:enumeration value="ImplementationNotProvided" id="ImplementationNotProvided"/>
 		</xsd:restriction>
 	</xsd:simpleType>
 </xsd:schema>
