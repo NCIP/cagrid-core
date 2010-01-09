@@ -427,7 +427,7 @@ public class DataServiceQueryOperationProviderCreator implements CreationExtensi
     }
 
 
-    private MethodType createCql1QueryMethod() {
+    public static MethodType createCql1QueryMethod() {
         MethodType queryMethod = new MethodType();
         queryMethod.setName(DataServiceConstants.QUERY_METHOD_NAME);
         queryMethod.setDescription(DataServiceConstants.QUERY_METHOD_DESCRIPTION);
@@ -475,7 +475,7 @@ public class DataServiceQueryOperationProviderCreator implements CreationExtensi
     }
     
     
-    private MethodType createCql2QueryMethod() {
+    public static MethodType createCql2QueryMethod() {
         MethodType queryMethod = new MethodType();
         queryMethod.setName(QueryMethodConstants.CQL2_QUERY_METHOD_NAME);
         queryMethod.setDescription(QueryMethodConstants.CQL2_QUERY_METHOD_DESCRIPTION);

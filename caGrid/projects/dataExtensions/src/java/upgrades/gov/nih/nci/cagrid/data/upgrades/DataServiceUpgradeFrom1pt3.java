@@ -66,6 +66,11 @@ public class DataServiceUpgradeFrom1pt3 extends ExtensionUpgraderBase {
 			
 			removeBdt();
 			
+			Cql2FeaturesInstaller cql2Installer = 
+			    new Cql2FeaturesInstaller(
+			        getServiceInformation(), getExtensionType(), getStatus());
+			cql2Installer.installCql2Features();
+			
 			upgradeExtensionData();
             
 			setCurrentExtensionVersion();
@@ -96,6 +101,12 @@ public class DataServiceUpgradeFrom1pt3 extends ExtensionUpgraderBase {
 				+ " upgrades FROM 1.3 TO " + UpgraderConstants.DATA_CURRENT_VERSION + 
                 ", current version found is " + currentVersion);
 		}
+	}
+	
+	
+	private File getDataSchemaDir() {
+	    return new File(ExtensionsLoader.getInstance().getExtensionsDir(),
+	        "data" + File.separator + "schema" + File.separator + "Data");
 	}
 	
 	
@@ -247,7 +258,7 @@ public class DataServiceUpgradeFrom1pt3 extends ExtensionUpgraderBase {
         File serviceSchemasDir = new File(getServicePath(), "schema" + File.separator + serviceName);
         
         // get the data service schemas dir
-        File dataSchemasDir = new File(".." + File.separator + "data" + File.separator + "schema" + File.separator + "Data");
+        File dataSchemasDir = getDataSchemaDir();
         
         // find data wsdls
         Map<String, File> dataWsdlsByName = new HashMap<String, File>();
@@ -277,6 +288,24 @@ public class DataServiceUpgradeFrom1pt3 extends ExtensionUpgraderBase {
                 }
             }
         }
+        
+        /*
+        
+        // add the new Cql2* wsdls
+        for (String name : dataWsdlsByName.keySet()) {
+            if (name.startsWith("Cql2")) {
+                File wsdlOut = new File(serviceSchemasDir, name);
+                try {
+                    Utils.copyFile(dataWsdlsByName.get(name), wsdlOut);
+                    getStatus().addDescriptionLine("Added CQL 2 Wsdl " + name);
+                } catch (IOException ex) {
+                    throw new UpgradeException("Error copying wsdl: " + ex.getMessage(), ex);
+                }
+            }
+        }
+        
+        // add CQL 2 schemas to the service
+        */
     }
     
     
