@@ -1,7 +1,10 @@
 package gov.nih.nci.cagrid.data.creation;
 
 import gov.nih.nci.cagrid.common.Utils;
-import gov.nih.nci.cagrid.data.DataServiceConstants;
+import gov.nih.nci.cagrid.data.CqlSchemaConstants;
+import gov.nih.nci.cagrid.data.EnumerationMethodConstants;
+import gov.nih.nci.cagrid.data.QueryMethodConstants;
+import gov.nih.nci.cagrid.data.enumeration.service.globus.Cql2EnumerationDataServiceProviderImpl;
 import gov.nih.nci.cagrid.data.enumeration.service.globus.EnumerationDataServiceProviderImpl;
 import gov.nih.nci.cagrid.data.enumeration.stubs.EnumerationDataServicePortType;
 import gov.nih.nci.cagrid.introduce.IntroduceConstants;
@@ -24,6 +27,7 @@ import gov.nih.nci.cagrid.introduce.extension.ExtensionsLoader;
 import gov.nih.nci.cagrid.wsenum.common.WsEnumConstants;
 
 import java.io.File;
+import java.io.FileFilter;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -31,6 +35,8 @@ import java.util.List;
 import java.util.Properties;
 
 import javax.xml.namespace.QName;
+
+import org.cagrid.dataservice.enumeration.stubs.Cql2EnumerationDataServicePortType;
 
 
 /**
@@ -55,7 +61,7 @@ public class WsEnumerationFeatureCreator extends FeatureCreator {
 	    if (!featureAlreadyCreated()) {
 	        installWsEnumExtension();
 	        copySchemas();
-	        addEnumerationQueryMethod();
+	        addEnumerationQueryMethods();
         }
 	}
 
@@ -92,71 +98,132 @@ public class WsEnumerationFeatureCreator extends FeatureCreator {
 	}
 
 
-	private void addEnumerationQueryMethod() {
-		// add the enumerationQuery method to the data service
-		MethodType enumerateMethod = new MethodType();
-		enumerateMethod.setName(DataServiceConstants.ENUMERATION_QUERY_METHOD_NAME);
-		enumerateMethod.setDescription(DataServiceConstants.ENUMERATION_QUERY_METHOD_DESCRIPTION);
-		enumerateMethod.setIsImported(true);
-		enumerateMethod.setIsProvided(true);
-        // input
-		MethodTypeInputs enumInputs = new MethodTypeInputs();
-		MethodTypeInputsInput queryParam = new MethodTypeInputsInput();
-		queryParam.setName(DataServiceConstants.QUERY_METHOD_PARAMETER_NAME);
-		queryParam.setIsArray(false);
-		queryParam.setQName(DataServiceConstants.CQL_QUERY_QNAME);
-		queryParam.setDescription(DataServiceConstants.QUERY_METHOD_PARAMETER_DESCRIPTION);
-		enumInputs.setInput(new MethodTypeInputsInput[]{queryParam});
-		enumerateMethod.setInputs(enumInputs);
-        // output
-		MethodTypeOutput enumOutput = new MethodTypeOutput();
-		enumOutput.setIsArray(false);
-        enumOutput.setQName(DataServiceConstants.ENUMERATION_QUERY_METHOD_OUTPUT_TYPE);
-		enumOutput.setDescription(DataServiceConstants.ENUMERATION_QUERY_METHOD_OUTPUT_DESCRIPTION);
-		enumerateMethod.setOutput(enumOutput);
-		// import info
-		MethodTypeImportInformation enumImport = new MethodTypeImportInformation();
-		enumImport.setPortTypeName(EnumerationDataServicePortType.class.getSimpleName());
-		enumImport.setWsdlFile("EnumerationDataService.wsdl");
-		enumImport.setInputMessage(new QName(DataServiceConstants.ENUMERATION_DATA_SERVICE_NAMESPACE, "EnumerationQueryRequest"));
-		enumImport.setOutputMessage(new QName(DataServiceConstants.ENUMERATION_DATA_SERVICE_NAMESPACE, "EnumerationQueryResponse"));
-		enumImport.setNamespace(DataServiceConstants.ENUMERATION_DATA_SERVICE_NAMESPACE);
-		enumImport.setPackageName(DataServiceConstants.ENUMERATION_DATA_SERVICE_PACKAGE);
-		enumerateMethod.setImportInformation(enumImport);
-		// provider info
-		MethodTypeProviderInformation enumProvider = new MethodTypeProviderInformation();
-		enumProvider.setProviderClass(EnumerationDataServiceProviderImpl.class.getName());
-		enumerateMethod.setProviderInformation(enumProvider);
-		// exceptions
-		MethodTypeExceptions methodExceptions = new MethodTypeExceptions();
-		MethodTypeExceptionsException qpException = new MethodTypeExceptionsException(
-			DataServiceConstants.QUERY_PROCESSING_EXCEPTION_DESCRIPTION,
-			DataServiceConstants.QUERY_PROCESSING_EXCEPTION_NAME, 
-			DataServiceConstants.QUERY_PROCESSING_EXCEPTION_QNAME);
-		MethodTypeExceptionsException mqException = new MethodTypeExceptionsException(
-			DataServiceConstants.MALFORMED_QUERY_EXCEPTION_DESCRIPTION,
-			DataServiceConstants.MALFORMED_QUERY_EXCEPTION_NAME, 
-			DataServiceConstants.MALFORMED_QUERY_EXCEPTION_QNAME);
-		methodExceptions.setException(new MethodTypeExceptionsException[]{qpException, mqException});
-		enumerateMethod.setExceptions(methodExceptions);
-		// add the method to the service
-		CommonTools.addMethod(getMainService(), enumerateMethod);
+	private void addEnumerationQueryMethods() {
+		CommonTools.addMethod(getMainService(), getCql1EnumerationQueryMethod());
+		CommonTools.addMethod(getMainService(), getCql2EnumerationQueryMethod());
 	}
+	
+	
+	private MethodType getCql1EnumerationQueryMethod() {
+	    // the enumerationQuery method
+        MethodType enumerateMethod = new MethodType();
+        enumerateMethod.setName(EnumerationMethodConstants.ENUMERATION_QUERY_METHOD_NAME);
+        enumerateMethod.setDescription(EnumerationMethodConstants.ENUMERATION_QUERY_METHOD_DESCRIPTION);
+        enumerateMethod.setIsImported(true);
+        enumerateMethod.setIsProvided(true);
+        // input
+        MethodTypeInputs enumInputs = new MethodTypeInputs();
+        MethodTypeInputsInput queryParam = new MethodTypeInputsInput();
+        queryParam.setName(QueryMethodConstants.QUERY_METHOD_PARAMETER_NAME);
+        queryParam.setIsArray(false);
+        queryParam.setQName(CqlSchemaConstants.CQL_QUERY_QNAME);
+        queryParam.setDescription(QueryMethodConstants.QUERY_METHOD_PARAMETER_DESCRIPTION);
+        enumInputs.setInput(new MethodTypeInputsInput[]{queryParam});
+        enumerateMethod.setInputs(enumInputs);
+        // output
+        MethodTypeOutput enumOutput = new MethodTypeOutput();
+        enumOutput.setIsArray(false);
+        enumOutput.setQName(EnumerationMethodConstants.ENUMERATION_QUERY_METHOD_OUTPUT_TYPE);
+        enumOutput.setDescription(EnumerationMethodConstants.ENUMERATION_QUERY_METHOD_OUTPUT_DESCRIPTION);
+        enumerateMethod.setOutput(enumOutput);
+        // import info
+        MethodTypeImportInformation enumImport = new MethodTypeImportInformation();
+        enumImport.setPortTypeName(EnumerationDataServicePortType.class.getSimpleName());
+        enumImport.setWsdlFile("EnumerationDataService.wsdl");
+        enumImport.setInputMessage(new QName(EnumerationMethodConstants.ENUMERATION_DATA_SERVICE_NAMESPACE, "EnumerationQueryRequest"));
+        enumImport.setOutputMessage(new QName(EnumerationMethodConstants.ENUMERATION_DATA_SERVICE_NAMESPACE, "EnumerationQueryResponse"));
+        enumImport.setNamespace(EnumerationMethodConstants.ENUMERATION_DATA_SERVICE_NAMESPACE);
+        enumImport.setPackageName(EnumerationMethodConstants.ENUMERATION_DATA_SERVICE_PACKAGE);
+        enumerateMethod.setImportInformation(enumImport);
+        // provider info
+        MethodTypeProviderInformation enumProvider = new MethodTypeProviderInformation();
+        enumProvider.setProviderClass(EnumerationDataServiceProviderImpl.class.getName());
+        enumerateMethod.setProviderInformation(enumProvider);
+        // exceptions
+        MethodTypeExceptions methodExceptions = new MethodTypeExceptions();
+        MethodTypeExceptionsException qpException = new MethodTypeExceptionsException(
+            QueryMethodConstants.QUERY_PROCESSING_EXCEPTION_DESCRIPTION,
+            QueryMethodConstants.QUERY_PROCESSING_EXCEPTION_NAME, 
+            QueryMethodConstants.QUERY_PROCESSING_EXCEPTION_QNAME);
+        MethodTypeExceptionsException mqException = new MethodTypeExceptionsException(
+            QueryMethodConstants.MALFORMED_QUERY_EXCEPTION_DESCRIPTION,
+            QueryMethodConstants.MALFORMED_QUERY_EXCEPTION_NAME, 
+            QueryMethodConstants.MALFORMED_QUERY_EXCEPTION_QNAME);
+        methodExceptions.setException(new MethodTypeExceptionsException[]{qpException, mqException});
+        enumerateMethod.setExceptions(methodExceptions);
+        return enumerateMethod;
+	}
+	
+	
+	private MethodType getCql2EnumerationQueryMethod() {
+        // the executeEnumerationQuery method
+        MethodType enumerateMethod = new MethodType();
+        enumerateMethod.setName(EnumerationMethodConstants.CQL2_ENUMERATION_QUERY_METHOD_NAME);
+        enumerateMethod.setDescription(EnumerationMethodConstants.CQL2_ENUMERATION_QUERY_METHOD_DESCRIPTION);
+        enumerateMethod.setIsImported(true);
+        enumerateMethod.setIsProvided(true);
+        // input
+        MethodTypeInputs enumInputs = new MethodTypeInputs();
+        MethodTypeInputsInput queryParam = new MethodTypeInputsInput();
+        queryParam.setName(QueryMethodConstants.QUERY_METHOD_PARAMETER_NAME);
+        queryParam.setIsArray(false);
+        queryParam.setQName(CqlSchemaConstants.CQL2_QUERY_QNAME);
+        queryParam.setDescription(QueryMethodConstants.CQL2_QUERY_METHOD_PARAMETER_DESCRIPTION);
+        enumInputs.setInput(new MethodTypeInputsInput[]{queryParam});
+        enumerateMethod.setInputs(enumInputs);
+        // output
+        MethodTypeOutput enumOutput = new MethodTypeOutput();
+        enumOutput.setIsArray(false);
+        enumOutput.setQName(EnumerationMethodConstants.ENUMERATION_QUERY_METHOD_OUTPUT_TYPE);
+        enumOutput.setDescription(EnumerationMethodConstants.ENUMERATION_QUERY_METHOD_OUTPUT_DESCRIPTION);
+        enumerateMethod.setOutput(enumOutput);
+        // import info
+        MethodTypeImportInformation enumImport = new MethodTypeImportInformation();
+        enumImport.setPortTypeName(Cql2EnumerationDataServicePortType.class.getSimpleName());
+        enumImport.setWsdlFile("Cql2EnumerationDataService.wsdl");
+        enumImport.setInputMessage(new QName(EnumerationMethodConstants.CQL2_ENUMERATION_DATA_SERVICE_NAMESPACE, "ExecuteEnumerationQueryRequest"));
+        enumImport.setOutputMessage(new QName(EnumerationMethodConstants.CQL2_ENUMERATION_DATA_SERVICE_NAMESPACE, "ExecuteEnumerationQueryResponse"));
+        enumImport.setNamespace(EnumerationMethodConstants.CQL2_ENUMERATION_DATA_SERVICE_NAMESPACE);
+        enumImport.setPackageName(EnumerationMethodConstants.CQL2_ENUMERATION_DATA_SERVICE_PACKAGE);
+        enumerateMethod.setImportInformation(enumImport);
+        // provider info
+        MethodTypeProviderInformation enumProvider = new MethodTypeProviderInformation();
+        enumProvider.setProviderClass(Cql2EnumerationDataServiceProviderImpl.class.getName());
+        enumerateMethod.setProviderInformation(enumProvider);
+        // exceptions
+        MethodTypeExceptions methodExceptions = new MethodTypeExceptions();
+        MethodTypeExceptionsException qpException = new MethodTypeExceptionsException(
+            QueryMethodConstants.QUERY_PROCESSING_EXCEPTION_DESCRIPTION,
+            QueryMethodConstants.QUERY_PROCESSING_EXCEPTION_NAME, 
+            QueryMethodConstants.QUERY_PROCESSING_EXCEPTION_QNAME);
+        MethodTypeExceptionsException mqException = new MethodTypeExceptionsException(
+            QueryMethodConstants.MALFORMED_QUERY_EXCEPTION_DESCRIPTION,
+            QueryMethodConstants.MALFORMED_QUERY_EXCEPTION_NAME, 
+            QueryMethodConstants.MALFORMED_QUERY_EXCEPTION_QNAME);
+        methodExceptions.setException(new MethodTypeExceptionsException[]{qpException, mqException});
+        enumerateMethod.setExceptions(methodExceptions);
+        return enumerateMethod;
+    }
 
 
 	private void copySchemas() throws CreationExtensionException {
 		// copy over the EnumerationQuery.wsdl file
 		String schemaDir = getServiceSchemaDir();
-		File dataExtensionSchemaDir = new File(ExtensionsLoader.EXTENSIONS_DIRECTORY + File.separator + "data"
-			+ File.separator + "schema");
-        
-		File wsdlFile = new File(dataExtensionSchemaDir.getAbsolutePath() + File.separator + "Data" + File.separator
-			+ "EnumerationDataService.wsdl");
-        File wsdlOutFile = new File(schemaDir + File.separator + wsdlFile.getName());
+		File dataExtensionSchemaDir = new File(ExtensionsLoader.getInstance().getExtensionsDir(),
+		    "data" + File.separator + "schema" + File.separator + "Data");
+		
+		File[] enumerationWsdls = dataExtensionSchemaDir.listFiles(new FileFilter() {
+            public boolean accept(File pathname) {
+                String name = pathname.toString();
+                return name.endsWith("EnumerationDataService.wsdl");
+            }
+        });
         try {
-			Utils.copyFile(wsdlFile, wsdlOutFile);
+            for (File wsdl : enumerationWsdls) {
+                Utils.copyFile(wsdl, new File(schemaDir, wsdl.getName()));
+            }
         } catch (Exception ex) {
-			throw new CreationExtensionException("Error copying data service schemas: " + ex.getMessage(), ex);
+			throw new CreationExtensionException("Error copying data service enumeration schemas: " + ex.getMessage(), ex);
 		}
 	}
 
