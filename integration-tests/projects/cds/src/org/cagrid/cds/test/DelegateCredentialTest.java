@@ -15,10 +15,16 @@ import gov.nih.nci.cagrid.testing.system.haste.Step;
 import gov.nih.nci.cagrid.testing.system.utils.steps.ModifyConfigurationStep;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Properties;
 import java.util.Set;
 import java.util.Vector;
 
@@ -102,7 +108,24 @@ public class DelegateCredentialTest extends ServiceStoryBase {
         File cdsLocation = new File("../../../caGrid/projects/cds");
         CopyServiceStep copyCDSService = new CopyServiceStep(cdsLocation, cdsServiceDir);
         copyCDSService.runStep();
-        
+
+        // modify the configuration to use the "cds_test' database name
+		String propsLocation = this.cdsServiceDir.getAbsolutePath() + File.separator 
+			+ "etc" + File.separator + Constants.CDS_CONFIG_PROPERTIES_FILENAME;
+		System.out.println("Editing DB Name in : " + propsLocation);
+		Properties props = new Properties();
+		try {
+			props.load(new FileInputStream(propsLocation));
+			props.put(Constants.CDS_DB_NAME_KEY, Constants.CDS_DB_NAME_VALUE);
+			props.store(new FileOutputStream(propsLocation), null);
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+			fail("Failed to set DB Name in CDS properties file " + e.getMessage());
+		} catch (IOException e) {
+			e.printStackTrace();
+			fail("Failed to set DB Name in CDS properties file " + e.getMessage());
+		}
+		
         try {
         	dorianContainer = ServiceContainerFactory.createContainer(ServiceContainerType.SECURE_TOMCAT_CONTAINER);
         
@@ -188,7 +211,6 @@ public class DelegateCredentialTest extends ServiceStoryBase {
 		int containersCreated = 0;
 		
 		// setup Dorian container
-		//dorianContainer = ServiceContainerFactory.createContainer(ServiceContainerType.SECURE_TOMCAT_CONTAINER);
 		steps.add(new UnpackContainerStep(dorianContainer));
 		List<String> args = Arrays.asList(new String[] {
 	            "-Dno.deployment.validation=true", "-Dperform.index.service.registration=false"});
@@ -207,10 +229,7 @@ public class DelegateCredentialTest extends ServiceStoryBase {
         containersCreated++;
 		
         //setup CDS container
-		//if (this.cdsContainer == null) {
-		//	cdsContainer = ServiceContainerFactory.createContainer(ServiceContainerType.SECURE_TOMCAT_CONTAINER);
-		//}
-		steps.add(new UnpackContainerStep(cdsContainer));
+		steps.add(new UnpackContainerStep(cdsContainer));	
         steps.add(new DeployServiceStep(cdsContainer, this.cdsServiceDir.getAbsolutePath(), args));
         containersCreated++;
         
