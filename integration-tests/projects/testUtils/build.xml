@@ -16,6 +16,7 @@
 	<property name="java.source" value="1.5" />
 
 	<property name="src.dir" value="${basedir}/src" />
+	<property name="resources.dir" value="${basedir}/resources"/>
 	<property name="build.dir" value="${basedir}/build" />
 	<property name="javadoc.dir" value="${build.dir}/javadoc" />
 	<property name="classes.dir" value="${build.dir}/classes" />
@@ -127,6 +128,9 @@
 			</fileset>
 			<fileset dir="${src.dir}">
 				<include name="**/*.java" />
+			</fileset>
+			<fileset dir="${resources.dir}">
+				<include name="**/*"/>
 			</fileset>
 		</jar>
 	</target>

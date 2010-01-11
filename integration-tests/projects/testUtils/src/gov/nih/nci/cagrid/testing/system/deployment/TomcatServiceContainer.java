@@ -6,7 +6,9 @@ import gov.nih.nci.cagrid.common.XMLUtilities;
 import gov.nih.nci.cagrid.common.StreamGobbler.LogPriority;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -33,6 +35,9 @@ import org.globus.common.CoGProperties;
 import org.globus.wsrf.impl.security.authorization.NoAuthorization;
 import org.jdom.Element;
 import org.oasis.wsrf.lifetime.Destroy;
+import org.xml.sax.EntityResolver;
+import org.xml.sax.InputSource;
+import org.xml.sax.SAXException;
 
 import com.counter.CounterPortType;
 import com.counter.CreateCounter;
@@ -63,6 +68,8 @@ public class TomcatServiceContainer extends ServiceContainer {
     public static final String CACERTS_DIR_PROPERTY = "X509_CERT_DIR";
 
 	public static final String DEPLOY_ANT_TARGET = "deployTomcat";
+	
+	public static final String J2EE_SCHEMA_NAME = "http://java.sun.com/xml/ns/j2ee";
 
 	private Process catalinaProcess;
 
@@ -530,8 +537,23 @@ public class TomcatServiceContainer extends ServiceContainer {
 		File webappConfigFile = new File(getProperties()
 				.getContainerDirectory(), "webapps" + File.separator + "wsrf"
 				+ File.separator + "WEB-INF" + File.separator + "web.xml");
-		Element webappConfigRoot = XMLUtilities.fileNameToDocument(
-				webappConfigFile.getAbsolutePath()).getRootElement();
+		FileInputStream configInput = new FileInputStream(webappConfigFile);
+		Element webappConfigRoot = XMLUtilities.streamToDocument(configInput, new EntityResolver() {
+            public InputSource resolveEntity(String publicId, String systemId) throws SAXException, IOException {
+                InputSource source = null;
+                int lastSlash = systemId.lastIndexOf('/');
+                String filename = systemId.substring(lastSlash);
+                LOG.debug("Trying to resolve resource " + systemId + " as " + filename);
+                InputStream stream = getClass().getResourceAsStream(filename);
+                if (stream != null) {
+                    LOG.debug("Resource succesfully resolved");
+                    source = new InputSource(stream);
+                }
+                return source;
+                
+            }
+        }).getRootElement();
+		configInput.close();
 		Element servletEl = webappConfigRoot.getChild("servlet");
 		Element initEl = new Element("init-param");
 		Element paramName = new Element("param-name");
