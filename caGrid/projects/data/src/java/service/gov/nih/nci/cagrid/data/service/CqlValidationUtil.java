@@ -72,8 +72,7 @@ public class CqlValidationUtil {
         } catch (Cql2WalkerException ex) {
             throw new MalformedQueryException(ex.getMessage(), ex);
         }
-    }
-    
+    }    
     
     
     protected boolean shouldValidateCqlStructure() {

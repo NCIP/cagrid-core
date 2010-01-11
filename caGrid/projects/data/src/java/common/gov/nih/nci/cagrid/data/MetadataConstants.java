@@ -21,6 +21,7 @@ public interface MetadataConstants {
     // query language support
     public static final String QUERY_LANGUAGE_SUPPORT_XSD = "QueryLanguageSupportMetadata.xsd";
     public static final QName QUERY_LANGUAGE_SUPPORT_QNAME = new QName("http://org.cagrid.dataservice.cql/QueryLanguageSupport", "QueryLanguageSupport");
+    public static final String QUERY_LANGUAGE_SUPPORT_RESOURCE_GETTER_METHOD_NAME = "getQueryLanguageSupport";
     public static final String QUERY_LANGUAGE_SUPPORT_PACKAGE = "org.cagrid.dataservice.cql.support";
     public static final String QUERY_LANGUAGE_SUPPORT_DESCRIPTION = "Describes the level of support for CQL versions";
 }

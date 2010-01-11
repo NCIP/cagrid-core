@@ -6,6 +6,7 @@ import gov.nih.nci.cagrid.cqlquery.CQLQuery;
 import gov.nih.nci.cagrid.cqlresultset.CQLQueryResults;
 import gov.nih.nci.cagrid.data.DataServiceConstants;
 import gov.nih.nci.cagrid.data.MalformedQueryException;
+import gov.nih.nci.cagrid.data.MetadataConstants;
 import gov.nih.nci.cagrid.data.QueryProcessingException;
 import gov.nih.nci.cagrid.data.QueryProcessorConstants;
 import gov.nih.nci.cagrid.data.auditing.AuditorConfiguration;
@@ -40,11 +41,8 @@ import javax.xml.namespace.QName;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.cagrid.cql.utilities.CQL1ResultsIteratorToCQL2ResultsIterator;
-import org.cagrid.cql.utilities.CQL1ResultsToCQL2ResultsConverter;
 import org.cagrid.cql.utilities.CQL1toCQL2Converter;
 import org.cagrid.cql.utilities.CQL2ResultsToCQL1ResultsConverter;
-import org.cagrid.cql.utilities.CQL2toCQL1Converter;
 import org.cagrid.cql.utilities.QueryConversionException;
 import org.cagrid.cql.utilities.ResultsConversionException;
 import org.cagrid.cql2.extensionsupport.SupportedExtensions;
@@ -132,6 +130,11 @@ public abstract class BaseDataServiceImpl {
             QueryLanguageSupportCQL2Support cql2Support = new QueryLanguageSupportCQL2Support();
             if (!hasNativeCql2Processor()) {
                 cql2Support.setSupport(Cql2SupportType.ImplementationNotProvided);
+                LOG.error("*******************************************************************");
+                LOG.error("* NO CQL 2 QUERY PROCESSOR WAS PROVIDED IN THE SERVICE PROPERTIES *");
+                LOG.error("*   A CQL 2 QUERY PROCESSOR IS REQUIRED FOR CAGRID 1.4 AND NEWER  *");
+                LOG.error("*      QUERIES TO ANY CQL 2 METHOD ON THIS SERVICE WILL FAIL      *");
+                LOG.error("*******************************************************************");
             } else {
                 SupportedExtensions extSupport = new SupportedExtensions();
                 extSupport.setAttributeExtension(
@@ -152,8 +155,7 @@ public abstract class BaseDataServiceImpl {
             // locate the setter method on the base resource
             boolean foundMethod = false;
             for (Method method : resourceMethods) {
-                // TODO: derive method name from constant
-                if (method.getName().equals("setQueryLanguageSupport")) {
+                if (method.getName().equals(MetadataConstants.QUERY_LANGUAGE_SUPPORT_RESOURCE_GETTER_METHOD_NAME)) {
                     method.invoke(serviceBaseResource, languageSupport);
                     LOG.debug("Set the query language support resource property");
                     foundMethod = true;
@@ -161,8 +163,10 @@ public abstract class BaseDataServiceImpl {
                 }
             }
             if (!foundMethod) {
-                LOG.error("Could not locate 'setQueryLanguageSupport()' method on service base resource.  " +
-                    "Query language support resource property NOT SET");
+                LOG.error("Could not locate '" + 
+                    MetadataConstants.QUERY_LANGUAGE_SUPPORT_RESOURCE_GETTER_METHOD_NAME + 
+                    "()' method on service base resource.  " +
+                    "Query language support resource property WAS NOT SET");
             }
         } catch (Exception ex) {
             throw new DataServiceInitializationException(
@@ -465,21 +469,15 @@ public abstract class BaseDataServiceImpl {
             throw new QueryProcessingException(
                 "Error determining if a native CQL 2 query processor has been configured: " + ex.getMessage(), ex);
         }
-        if (processNative) {
-            LOG.debug("Processing CQL 2 query with native query processor");
-            results = getCql2QueryProcessor().processQuery(query);
-        } else {
-            LOG.debug("Converting CQL 2 to CQL 1 for non-native processing");
-            CQLQuery cql1Query = null;
-            try {
-                cql1Query = CQL2toCQL1Converter.convertToCql1Query(query);
-            } catch (QueryConversionException ex) {
-                throw new QueryProcessingException(ex.getMessage(), ex);
-            }
-            CQLQueryResults cql1QueryResults = processCql1Query(cql1Query);
-            LOG.debug("Converting CQL 1 results to CQL 2 results");
-            results = CQL1ResultsToCQL2ResultsConverter.convertResults(cql1QueryResults);
+        if (!processNative) {
+            // to handle CQL 2 you MUST have a CQL 2 query processor.  The data service publishes 
+            // a resource property that warns if there is no implementation provided, and 
+            // enumerates the supported extension points if any are available
+            throw new QueryProcessingException(
+                "No implementation of CQL 2 is provided by this service", new UnsupportedOperationException());
         }
+        LOG.debug("Processing CQL 2 query with native query processor");
+        results = getCql2QueryProcessor().processQuery(query);
         return results;
     }
     
@@ -494,23 +492,15 @@ public abstract class BaseDataServiceImpl {
             throw new QueryProcessingException(
                 "Error determining if a native CQL 2 query processor has been configured: " + ex.getMessage(), ex);
         }
-        if (processNative) {
-            LOG.debug("Processing CQL 2 query with native query processor");
-            resultsIterator = getCql2QueryProcessor().processQueryAndIterate(query);
-        } else {
-            LOG.debug("Converting CQL 2 to CQL 1 for non-native processing");
-            CQLQuery cql1Query = null;
-            try {
-                cql1Query = CQL2toCQL1Converter.convertToCql1Query(query);
-            } catch (QueryConversionException ex) {
-                throw new QueryProcessingException(ex.getMessage(), ex);
-            }
-            QName targetQName = getQNameForClass(cql1Query.getTarget().getName());
-            Iterator<?> cql1ResultsIterator = processCql1QueryAndIterate(cql1Query);
-            LOG.debug("Wraping CQL 1 iterator results with CQL 2 style iterator");
-            resultsIterator = new CQL1ResultsIteratorToCQL2ResultsIterator(
-                cql1ResultsIterator, targetQName, cql1Query.getQueryModifier());
+        if (!processNative) {
+            // to handle CQL 2 you MUST have a CQL 2 query processor.  The data service publishes 
+            // a resource property that warns if there is no implementation provided, and 
+            // enumerates the supported extension points if any are available
+            throw new QueryProcessingException(
+                "No implementation of CQL 2 is provided by this service", new UnsupportedOperationException());
         }
+        LOG.debug("Processing CQL 2 query with native query processor");
+        resultsIterator = getCql2QueryProcessor().processQueryAndIterate(query);
         return resultsIterator;
     }
     
