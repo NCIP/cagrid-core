@@ -45,6 +45,12 @@ public class Cql2FeaturesInstaller {
             addCql2EnumerationQuery();
         }
         // no transfer was available before 1.4, so no installTransfer...
+        // let the developer know about CQL 2
+        status.addIssue("caGrid 1.4 data services add support for CQL 2." +
+        		"  As such, a CQL 2 query processor must be provided for full " +
+        		"compatibility with the data service specification.",
+        		"A guide for upgrading to CQL 2 is provided online here: " +
+        		"https://cagrid.org/display/dataservices/Upgrade+to+CQL+2");
     }
     
 
