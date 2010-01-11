@@ -104,7 +104,7 @@ public class WsEnumerationFeatureCreator extends FeatureCreator {
 	}
 	
 	
-	private MethodType getCql1EnumerationQueryMethod() {
+	public static MethodType getCql1EnumerationQueryMethod() {
 	    // the enumerationQuery method
         MethodType enumerateMethod = new MethodType();
         enumerateMethod.setName(EnumerationMethodConstants.ENUMERATION_QUERY_METHOD_NAME);
@@ -155,7 +155,7 @@ public class WsEnumerationFeatureCreator extends FeatureCreator {
 	}
 	
 	
-	private MethodType getCql2EnumerationQueryMethod() {
+	public static MethodType getCql2EnumerationQueryMethod() {
         // the executeEnumerationQuery method
         MethodType enumerateMethod = new MethodType();
         enumerateMethod.setName(EnumerationMethodConstants.CQL2_ENUMERATION_QUERY_METHOD_NAME);

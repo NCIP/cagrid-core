@@ -4,6 +4,7 @@ import gov.nih.nci.cagrid.common.Utils;
 import gov.nih.nci.cagrid.data.CqlSchemaConstants;
 import gov.nih.nci.cagrid.data.MetadataConstants;
 import gov.nih.nci.cagrid.data.creation.DataServiceQueryOperationProviderCreator;
+import gov.nih.nci.cagrid.data.creation.WsEnumerationFeatureCreator;
 import gov.nih.nci.cagrid.data.extension.Data;
 import gov.nih.nci.cagrid.introduce.beans.extension.ExtensionType;
 import gov.nih.nci.cagrid.introduce.beans.method.MethodType;
@@ -88,7 +89,6 @@ public class Cql2FeaturesInstaller {
     private void addCql2Query() throws UpgradeException {
         String schemaDirName = getServiceSchemaDir().getAbsolutePath();
         File schemaDirFile = getServiceSchemaDir();
-        // TODO: copy wsdl, copy schemas, set namespaces / packages, add method
         // copy schemas into service first, then run add namespace operations
         List<File> neededSchemas = new ArrayList<File>();
         Collections.addAll(neededSchemas,
@@ -147,8 +147,10 @@ public class Cql2FeaturesInstaller {
     }
     
     
-    private void addCql2EnumerationQuery() throws UpgradeException {
-     // TODO: copy wsdl, copy schemas, set namespaces / packages, add method
+    private void addCql2EnumerationQuery() {
+        MethodType cql2EnumerationMethod = WsEnumerationFeatureCreator.getCql2EnumerationQueryMethod();
+        CommonTools.addMethod(serviceInfo.getServices().getService(0), cql2EnumerationMethod);
+        status.addDescriptionLine("Added CQL 2 enumeration query operation " + cql2EnumerationMethod.getName());
     }
     
     
@@ -187,10 +189,5 @@ public class Cql2FeaturesInstaller {
                 throw new UpgradeException("Error copying schema:" + ex.getMessage(), ex);
             }
         }
-    }
-    
-    
-    private void addCql2Schemas() throws UpgradeException {
-        
     }
 }
