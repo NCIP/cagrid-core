@@ -1,9 +1,7 @@
 package org.cagrid.data.test.creation;
 
 
-import gov.nih.nci.cagrid.common.StreamGobbler;
 import gov.nih.nci.cagrid.common.Utils;
-import gov.nih.nci.cagrid.common.StreamGobbler.LogPriority;
 import gov.nih.nci.cagrid.introduce.IntroduceConstants;
 import gov.nih.nci.cagrid.introduce.beans.ServiceDescription;
 import gov.nih.nci.cagrid.introduce.beans.extension.ExtensionType;
@@ -42,45 +40,42 @@ public class CreationStep extends Step {
 	
 
 	public void runStep() throws Throwable {
-		log.debug("Creating service...");
-		List<String> cmd = AntTools.getAntSkeletonCreationCommand(introduceDir, serviceInfo.getName(), 
-			serviceInfo.getDir(), serviceInfo.getPackageName(), serviceInfo.getNamespace(), 
-            serviceInfo.getResourceFrameworkType(), serviceInfo.getExtensions());
+	    log.debug("Creating service");
+        List<String> cmd = AntTools.getAntSkeletonCreationCommand(introduceDir,
+            serviceInfo.getName(), serviceInfo.getDir(), serviceInfo.getPackageName(),
+            serviceInfo.getNamespace(), serviceInfo.getResourceFrameworkType(), serviceInfo.getExtensions());
         debugCommand(cmd);
-		Process createSkeletonProcess = CommonTools.createAndOutputProcess(cmd);
-        new StreamGobbler(createSkeletonProcess.getInputStream(), 
-            StreamGobbler.TYPE_OUT, log, LogPriority.INFO).start();
-        new StreamGobbler(createSkeletonProcess.getErrorStream(), 
-            StreamGobbler.TYPE_ERR, log, LogPriority.ERROR).start();
-        createSkeletonProcess.waitFor();
-		assertTrue("Creating new data service failed", createSkeletonProcess.exitValue() == 0);
+
+        Process p = CommonTools.createAndOutputProcess(cmd);
+        p.waitFor();
+        assertEquals("Creation process exited abnormally", 0, p.exitValue());
+        p.destroy();
         
+        log.debug("Post skeleton creation");
         postSkeletonCreation();
-		
-		log.debug("Invoking post creation processes...");
-		cmd = AntTools.getAntSkeletonPostCreationCommand(introduceDir, serviceInfo.getName(),
-			serviceInfo.getDir(), serviceInfo.getPackageName(), serviceInfo.getNamespace(), getServiceExtensions());
+
+        log.debug("Invoking post creation processes...");
+        cmd = AntTools.getAntSkeletonPostCreationCommand(introduceDir,
+            serviceInfo.getName(), serviceInfo.getDir(),
+            serviceInfo.getPackageName(), serviceInfo.getNamespace(), getCurrentServiceExtensions());
         debugCommand(cmd);
-		Process postCreateProcess = CommonTools.createAndOutputProcess(cmd);
-        new StreamGobbler(postCreateProcess.getInputStream(), 
-            StreamGobbler.TYPE_OUT, log, LogPriority.INFO).start();
-        new StreamGobbler(postCreateProcess.getErrorStream(), 
-            StreamGobbler.TYPE_ERR, log, LogPriority.ERROR).start();
-        postCreateProcess.waitFor();
-		assertTrue("Service post creation process failed", postCreateProcess.exitValue() == 0);
-        
+
+        p = CommonTools.createAndOutputProcess(cmd);
+        p.waitFor();
+        assertEquals("Post creation process exited abnormally", 0, p.exitValue());
+        p.destroy();
+
+        log.debug("Post skeleton post creation");
         postSkeletonPostCreation();
 
-		log.debug("Building created service...");
-		cmd = AntTools.getAntAllCommand(serviceInfo.getDir());
+        log.debug("Building created service");
+        cmd = AntTools.getAntAllCommand(serviceInfo.getDir());
         debugCommand(cmd);
-		Process antAllProcess = CommonTools.createAndOutputProcess(cmd);
-        new StreamGobbler(antAllProcess.getInputStream(), 
-            StreamGobbler.TYPE_OUT, log, LogPriority.INFO).start();
-        new StreamGobbler(antAllProcess.getErrorStream(), 
-            StreamGobbler.TYPE_ERR, log, LogPriority.ERROR).start();
-        antAllProcess.waitFor();
-		assertTrue("Build process failed", antAllProcess.exitValue() == 0);
+
+        p = CommonTools.createAndOutputProcess(cmd);
+        p.waitFor();
+        assertEquals("Build process exited abnormally", 0, p.exitValue());
+        p.destroy();
 	}
 	
 	
@@ -105,7 +100,16 @@ public class CreationStep extends Step {
     }
     
     
-    private String getServiceExtensions() throws Exception {
+    /**
+     * Gets the extensions of the service being created from the current introduce.xml
+     * service descriptor.  Use this after initial creation to determine the service
+     * extensions to run, since the data service extension can add other extensions 
+     * to the service at runtime (enum, transfer, etc)
+     * 
+     * @return
+     * @throws Exception
+     */
+    private String getCurrentServiceExtensions() throws Exception {
         ServiceDescription description = Utils.deserializeDocument(
             serviceInfo.getDir() + File.separator + IntroduceConstants.INTRODUCE_XML_FILE,
             ServiceDescription.class);

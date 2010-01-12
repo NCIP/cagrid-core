@@ -92,7 +92,7 @@ public class InvokeDataServiceStep extends Step {
 	
 	
 	private void iterateBookResults(CQLQueryResults results) throws Exception {
-		Iterator iter = new CQLQueryResultsIterator(results);
+		Iterator<?> iter = new CQLQueryResultsIterator(results);
 		while (iter.hasNext()) {
 			java.lang.Object obj = iter.next();
 			if (!(obj instanceof Book)) {

@@ -1,8 +1,6 @@
 package org.cagrid.data.test.system;
 
-import gov.nih.nci.cagrid.common.StreamGobbler;
 import gov.nih.nci.cagrid.common.Utils;
-import gov.nih.nci.cagrid.common.StreamGobbler.LogPriority;
 import gov.nih.nci.cagrid.introduce.IntroduceConstants;
 import gov.nih.nci.cagrid.introduce.beans.ServiceDescription;
 import gov.nih.nci.cagrid.introduce.beans.extension.ExtensionType;
@@ -26,15 +24,15 @@ import org.cagrid.data.test.creation.DataTestCaseInfo;
  * @created Nov 7, 2006 
  * @version $Id: RebuildServiceStep.java,v 1.1 2008-05-16 19:25:25 dervin Exp $ 
  */
-public class RebuildServiceStep extends Step {
+public class ResyncAndBuildStep extends Step {
 	
-    private static final Log logger = LogFactory.getLog(RebuildServiceStep.class);
+    private static final Log logger = LogFactory.getLog(ResyncAndBuildStep.class);
     
     
     private DataTestCaseInfo serviceInfo;
 	private String introduceDir;
 	
-	public RebuildServiceStep(DataTestCaseInfo serviceInfo, String introduceDir) {
+	public ResyncAndBuildStep(DataTestCaseInfo serviceInfo, String introduceDir) {
 		super();
         this.serviceInfo = serviceInfo;
 		this.introduceDir = introduceDir;
@@ -42,34 +40,28 @@ public class RebuildServiceStep extends Step {
 	
 
 	public void runStep() throws Throwable {		
-		System.out.println("Running step: " + getClass().getName());
-		
-		System.out.println("Invoking post creation processes...");
+		logger.debug("Invoking post creation processes");
 		List<String> cmd = AntTools.getAntSkeletonPostCreationCommand(introduceDir, 
             serviceInfo.getName(), serviceInfo.getDir(), serviceInfo.getPackageName(), 
             serviceInfo.getNamespace(), getServiceExtensions());
         System.out.println("Invoking ant:");
         System.out.println(cmd);
 		Process p = CommonTools.createAndOutputProcess(cmd);
-        new StreamGobbler(p.getInputStream(), StreamGobbler.TYPE_OUT, logger, LogPriority.DEBUG).start();
-        new StreamGobbler(p.getErrorStream(), StreamGobbler.TYPE_ERR, logger, LogPriority.ERROR).start();
 		p.waitFor();
 		assertTrue("Service post creation process failed", p.exitValue() == 0);
 
-		System.out.println("Building created service...");
+		logger.debug("Building created service");
 		cmd = AntTools.getAntAllCommand(serviceInfo.getDir());
         System.out.println("Invoking ant:");
         System.out.println(cmd);
 		p = CommonTools.createAndOutputProcess(cmd);
-        new StreamGobbler(p.getInputStream(), StreamGobbler.TYPE_OUT, logger, LogPriority.DEBUG).start();
-        new StreamGobbler(p.getErrorStream(), StreamGobbler.TYPE_ERR, logger, LogPriority.ERROR).start();
         p.waitFor();
 		assertTrue("Build process failed", p.exitValue() == 0);
 	}
     
     
     private String getServiceExtensions() throws Exception {
-        ServiceDescription description = (ServiceDescription) Utils.deserializeDocument(
+        ServiceDescription description = Utils.deserializeDocument(
             serviceInfo.getDir() + File.separator + IntroduceConstants.INTRODUCE_XML_FILE,
             ServiceDescription.class);
         String ext = "";

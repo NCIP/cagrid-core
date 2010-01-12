@@ -102,7 +102,7 @@ public class SystemTests extends BaseSystemTest {
         // Turn on and configure auditing
         steps.add(new AddFileSystemAuditorStep(info.getDir(), auditorLogFile.getAbsolutePath()));
         // Rebuild the service to pick up the bookstore beans
-        steps.add(new RebuildServiceStep(info, getIntroduceBaseDir()));
+        steps.add(new ResyncAndBuildStep(info, getIntroduceBaseDir()));
         // Enable CQL validation, disable model validation
         steps.add(new SetCqlValidationStep(info, true, false));
         // turn off index service registration

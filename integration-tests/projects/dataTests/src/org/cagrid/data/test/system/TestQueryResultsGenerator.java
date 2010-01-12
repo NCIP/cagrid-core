@@ -46,7 +46,7 @@ public class TestQueryResultsGenerator {
     }
     
     
-    public static List getResultBooks() {
+    public static List<Book> getResultBooks() {
         List<Book> books = new LinkedList<Book>();
         for (int i = 0; i < BOOK_COUNT; i++) {          
             Book book = new Book();
@@ -58,7 +58,7 @@ public class TestQueryResultsGenerator {
     }
     
     
-    public static List getResultBookStore() {
+    public static List<BookStore> getResultBookStore() {
         return Collections.singletonList(new BookStore());
     }
 }

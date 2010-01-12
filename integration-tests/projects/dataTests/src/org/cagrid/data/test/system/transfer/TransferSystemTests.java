@@ -28,7 +28,7 @@ import org.cagrid.data.test.creation.transfer.CreateTransferTests;
 import org.cagrid.data.test.system.AddBookstoreStep;
 import org.cagrid.data.test.system.AddTestingJarToServiceStep;
 import org.cagrid.data.test.system.BaseSystemTest;
-import org.cagrid.data.test.system.RebuildServiceStep;
+import org.cagrid.data.test.system.ResyncAndBuildStep;
 import org.cagrid.data.test.system.SetCqlValidationStep;
 import org.cagrid.data.test.system.SetQueryProcessorStep;
 import org.junit.Assert;
@@ -111,7 +111,7 @@ public class TransferSystemTests extends BaseSystemTest {
 		// change out query processor
 		steps.add(new SetQueryProcessorStep(info.getDir()));
 		// Rebuild the service to pick up the bookstore beans
-		steps.add(new RebuildServiceStep(info, getIntroduceBaseDir()));
+		steps.add(new ResyncAndBuildStep(info, getIntroduceBaseDir()));
         // Turn on query validation, turn off model validation
         steps.add(new SetCqlValidationStep(info, true, false));
         // disable index service registration

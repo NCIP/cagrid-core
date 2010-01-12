@@ -40,7 +40,7 @@ public class AddFileSystemAuditorStep extends Step {
         System.out.println("Running step: " + getClass().getName());
         
         // set the service property for the auditors config file
-        ServiceDescription serviceDesc = (ServiceDescription) Utils.deserializeDocument(
+        ServiceDescription serviceDesc = Utils.deserializeDocument(
             serviceDir + File.separator + IntroduceConstants.INTRODUCE_XML_FILE, 
             ServiceDescription.class);
         CommonTools.setServiceProperty(serviceDesc, 

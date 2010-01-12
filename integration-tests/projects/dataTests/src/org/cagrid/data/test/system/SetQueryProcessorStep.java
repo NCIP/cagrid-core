@@ -41,7 +41,7 @@ public class SetQueryProcessorStep extends Step {
         String serviceModelFile = serviceDir + File.separator + IntroduceConstants.INTRODUCE_XML_FILE;
         ServiceDescription desc = null;
         try {
-            desc = (ServiceDescription) Utils.deserializeDocument(serviceModelFile, ServiceDescription.class);
+            desc = Utils.deserializeDocument(serviceModelFile, ServiceDescription.class);
         } catch (Exception ex) {
             ex.printStackTrace();
             fail("Error loading service description: " + ex.getMessage());
@@ -75,7 +75,7 @@ public class SetQueryProcessorStep extends Step {
             }
         }
         // create properties for the test QP's properties
-        Enumeration testPropKeys = testProperties.keys();
+        Enumeration<?> testPropKeys = testProperties.keys();
         while (testPropKeys.hasMoreElements()) {
             String key = (String) testPropKeys.nextElement();
             String prefixedKey = DataServiceConstants.QUERY_PROCESSOR_CONFIG_PREFIX + key;

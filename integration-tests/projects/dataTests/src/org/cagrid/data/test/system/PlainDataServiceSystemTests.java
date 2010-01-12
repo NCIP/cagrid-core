@@ -51,7 +51,7 @@ public class PlainDataServiceSystemTests extends BaseSystemTest {
     protected boolean storySetUp() {
         // instantiate a new container instance
         try {
-            container = ServiceContainerFactory.createContainer(ServiceContainerType.GLOBUS_CONTAINER);
+            container = ServiceContainerFactory.createContainer(ServiceContainerType.TOMCAT_CONTAINER);
         } catch (Exception ex) {
             ex.printStackTrace();
             fail("Failed to create container: " + ex.getMessage());
@@ -75,7 +75,7 @@ public class PlainDataServiceSystemTests extends BaseSystemTest {
         // data service presumed to have been created
         // by the data service creation tests
         // Rebuild the service
-        steps.add(new RebuildServiceStep(info, getIntroduceBaseDir()));
+        steps.add(new ResyncAndBuildStep(info, getIntroduceBaseDir()));
         // turn off index registration
         steps.add(new SetIndexRegistrationStep(info.getDir(), false));
         // deploy data service

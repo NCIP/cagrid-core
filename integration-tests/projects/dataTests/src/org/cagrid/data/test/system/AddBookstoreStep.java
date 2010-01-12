@@ -36,7 +36,7 @@ public class AddBookstoreStep extends Step {
 		String serviceModelFile = serviceInfo.getDir() + File.separator + IntroduceConstants.INTRODUCE_XML_FILE;
 		ServiceDescription desc = null;
 		try {
-			desc = (ServiceDescription) Utils.deserializeDocument(serviceModelFile, ServiceDescription.class);
+			desc = Utils.deserializeDocument(serviceModelFile, ServiceDescription.class);
 		} catch (Exception ex) {
 			ex.printStackTrace();
 			fail("Error loading service description: " + ex.getMessage());
