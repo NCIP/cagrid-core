@@ -19,7 +19,7 @@ import java.util.Vector;
 
 import org.cagrid.data.test.creation.DataTestCaseInfo;
 import org.cagrid.data.test.creation.DeleteOldServiceStep;
-import org.cagrid.data.test.system.RebuildServiceStep;
+import org.cagrid.data.test.system.ResyncAndBuildStep;
 
 /** 
  *  SDK32StyleSystemTestStory
@@ -133,7 +133,7 @@ public class SDK32StyleSystemTestStory extends Story {
         steps.add(new AddCabioSchemaStep(tci, sdkPackageDir));
         steps.add(new CopyEtcFilesStep(tci));
         steps.add(new CopySdkLibrariesStep(tci, sdkPackageDir));
-        steps.add(new RebuildServiceStep(tci, getIntroduceBaseDir()));
+        steps.add(new ResyncAndBuildStep(tci, getIntroduceBaseDir()));
         // deploy the service to the container
         steps.add(new DeployServiceStep(serviceContainer, tci.getDir()));
         // start the container
