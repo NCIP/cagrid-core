@@ -1,6 +1,7 @@
 package gov.nih.nci.cagrid.gridgrouper.service;
 
 import java.rmi.RemoteException;
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Set;
 
@@ -1707,7 +1708,6 @@ public class GridGrouper {
 		}
 	}
 
-
 	private void validateMemberAccess(String caller, String member) throws SubjectNotFoundException,
 		InsufficientPrivilegeFault {
 		if ((caller.equals(member)) || (getAdminGroup().hasMember(SubjectUtils.getSubject(caller)))) {
@@ -1718,7 +1718,6 @@ public class GridGrouper {
 			throw fault;
 		}
 	}
-
 
 	public MemberDescriptor getMember(String gridIdentity, String memberIdentity) throws GridGrouperRuntimeFault,
 		InsufficientPrivilegeFault {
@@ -1754,14 +1753,13 @@ public class GridGrouper {
 
 
 	public GroupDescriptor[] getMembersGroups(String gridIdentity, String memberIdentity, MembershipType type)
-		throws GridGrouperRuntimeFault, InsufficientPrivilegeFault {
+		throws GridGrouperRuntimeFault {
 		GrouperSession session = null;
 		try {
-			validateMemberAccess(gridIdentity, memberIdentity);
 			Subject subj = SubjectFinder.findById(gridIdentity);
 			session = GrouperSession.start(subj);
 			Member m = MemberFinder.findBySubject(session, SubjectUtils.getSubject(memberIdentity));
-			Set set = null;
+			Set<?> set = null;
 			if ((type != null) && (type.equals(MembershipType.EffectiveMembers))) {
 				set = m.getEffectiveGroups();
 			} else if ((type != null) && (type.equals(MembershipType.ImmediateMembers))) {
@@ -1770,16 +1768,16 @@ public class GridGrouper {
 				set = m.getGroups();
 			}
 
-			GroupDescriptor[] grps = new GroupDescriptor[set.size()];
-			Iterator itr = set.iterator();
-			int count = 0;
+			Iterator<?> itr = set.iterator();
+			ArrayList<GroupDescriptor> groups = new ArrayList<GroupDescriptor>();
 			while (itr.hasNext()) {
-				grps[count] = grouptoGroupDescriptor((Group) itr.next());
-				count++;
+				Group group = (Group) itr.next();
+				if (group.hasRead(subj) || gridIdentity.equals(memberIdentity) || (getAdminGroup().hasMember(subj))) {					
+					groups.add(grouptoGroupDescriptor(group));
+				}
 			}
+			GroupDescriptor[] grps = groups.toArray(new GroupDescriptor[groups.size()]);
 			return grps;
-		} catch (InsufficientPrivilegeFault e) {
-			throw e;
 		} catch (Exception e) {
 			this.log.error(e.getMessage(), e);
 			GridGrouperRuntimeFault fault = new GridGrouperRuntimeFault();

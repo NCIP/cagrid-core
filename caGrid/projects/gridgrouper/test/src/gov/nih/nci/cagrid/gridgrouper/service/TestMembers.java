@@ -1,5 +1,6 @@
 package gov.nih.nci.cagrid.gridgrouper.service;
 
+import edu.internet2.middleware.grouper.Group;
 import gov.nih.nci.cagrid.common.FaultUtil;
 import gov.nih.nci.cagrid.gridgrouper.bean.GroupCompositeType;
 import gov.nih.nci.cagrid.gridgrouper.bean.GroupDescriptor;
@@ -73,14 +74,8 @@ public class TestMembers extends GrouperBaseTest {
 
 	public void testGetMemberGroups() {
 		try {
-
-			// First test that the admin user cannot get any groups for a user
-			try {
-				grouper.getMembersGroups(SUPER_USER, USER_A, null);
-				fail("Should not be able to get member!!!");
-			} catch (InsufficientPrivilegeFault f) {
-
-			}
+			GroupDescriptor[] groups = grouper.getMembersGroups(SUPER_USER, USER_A, null);
+			assertEquals("The super user should not see any of the member's groups yet", 0, groups.length);
 
 			GridGrouperBootstrapper.addAdminMember(SUPER_USER);
 
@@ -124,13 +119,9 @@ public class TestMembers extends GrouperBaseTest {
 			expected.put(USER_C, getGridMember(USER_C));
 			verifyMembers(SUPER_USER, grpb, MemberFilter.All, expected);
 
-			try {
-				grouper.getMembersGroups(USER_D, USER_B, null);
-				fail("Should not be able to get member!!!");
-			} catch (InsufficientPrivilegeFault f) {
-
-			}
-
+			groups = grouper.getMembersGroups(USER_D, USER_B, null);
+			assertEquals("USER_D should not see USER_B's group.  GrouperAll does not have READ or VIEW for GroupB", 0, groups.length);
+				
 			expected.clear();
 			expected.put(grpa.getName(), grpa);
 			verifyMembersGroups(USER_A, USER_A, null, expected);
@@ -139,12 +130,8 @@ public class TestMembers extends GrouperBaseTest {
 			expected.put(grpa.getName(), grpa);
 			verifyMembersGroups(SUPER_USER, USER_A, null, expected);
 
-			try {
-				grouper.getMembersGroups(USER_D, USER_B, null);
-				fail("Should not be able to get member!!!");
-			} catch (InsufficientPrivilegeFault f) {
-
-			}
+			groups = grouper.getMembersGroups(USER_D, USER_B, null);
+			assertEquals("UUSER_D should not see USER_B's group.  GrouperAll does not have READ or VIEW for GroupB", 0, groups.length);
 
 			expected.clear();
 			expected.put(grpb.getName(), grpb);
@@ -154,13 +141,10 @@ public class TestMembers extends GrouperBaseTest {
 			expected.put(grpb.getName(), grpb);
 			verifyMembersGroups(SUPER_USER, USER_B, null, expected);
 
-			try {
-				grouper.getMembersGroups(USER_D, USER_C, null);
-				fail("Should not be able to get member!!!");
-			} catch (InsufficientPrivilegeFault f) {
-
-			}
-
+			groups = grouper.getMembersGroups(USER_D, USER_C, null);
+			assertEquals("USER_D should only see 1 of USER_C's groups", 1, groups.length);
+			assertEquals(grpa.getName(), groups[0].getName());
+				
 			expected.clear();
 			expected.put(grpa.getName(), grpa);
 			expected.put(grpb.getName(), grpb);
@@ -171,13 +155,9 @@ public class TestMembers extends GrouperBaseTest {
 			expected.put(grpb.getName(), grpb);
 			verifyMembersGroups(SUPER_USER, USER_C, null, expected);
 
-			try {
-				grouper.getMembersGroups(USER_C, USER_D, null);
-				fail("Should not be able to get member!!!");
-			} catch (InsufficientPrivilegeFault f) {
-
-			}
-
+			groups = grouper.getMembersGroups(USER_C, USER_D, null);
+			assertEquals("USER_C should not see any groups for USER_D. USER_D has not been added to any groups.", 0, groups.length);
+				
 			expected.clear();
 			verifyMembersGroups(USER_D, USER_D, null, expected);
 
