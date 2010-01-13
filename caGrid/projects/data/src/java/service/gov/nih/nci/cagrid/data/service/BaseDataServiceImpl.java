@@ -628,7 +628,7 @@ public abstract class BaseDataServiceImpl {
     private boolean hasNativeCql2Processor() throws Exception {
         boolean hasProcessor = false;
         if (ServiceConfigUtil.hasConfigProperty(QueryProcessorConstants.CQL2_QUERY_PROCESSOR_CLASS_PROPERTY)) {
-            String processorClassname = getDataServiceConfig().getProperty(QueryProcessorConstants.CQL2_QUERY_PROCESSOR_CLASS_PROPERTY);
+            String processorClassname = ServiceConfigUtil.getCql2QueryProcessorClassName();
             hasProcessor = processorClassname != null && processorClassname.length() != 0;
         }
         return hasProcessor;
