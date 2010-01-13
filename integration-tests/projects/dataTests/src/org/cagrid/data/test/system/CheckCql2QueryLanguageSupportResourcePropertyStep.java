@@ -55,8 +55,10 @@ public class CheckCql2QueryLanguageSupportResourcePropertyStep extends Step {
         Cql2SupportType supportType = cql2Support.getSupport();
         SupportedExtensions supportedExtensions = cql2Support.getSupportedExtensions();
         if (expectedCql2Support) {
-            assertNull("CQL 2 should be supported by " + dataServiceInfo.getName() + 
-                " but the resource property says otherwise: " + supportType.getValue(), supportType);
+            if (supportType != null) {
+                fail("CQL 2 should be supported by " + dataServiceInfo.getName() + 
+                    " but the resource property says otherwise: " + supportType.getValue());
+            }
             compareExtensions(supportedExtensions);
         } else {
             assertEquals("CQL 2 should not be supported by " + dataServiceInfo.getName() + 

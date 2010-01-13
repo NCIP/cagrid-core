@@ -85,6 +85,19 @@ public class PlainDataServiceSystemTests extends BaseSystemTest {
         steps.add(new StartContainerStep(container));
         // check the CQL 2 support metadata
         steps.add(new CheckCql2QueryLanguageSupportResourcePropertyStep(container, info));
+        // stop globus so the service can be redeployed
+        steps.add(new StopContainerStep(container));
+        // add the Testing CQL 2 query processor to the service
+        steps.add(new AddTestingJarToServiceStep(info));
+        steps.add(new SetCql2QueryProcessorStep(info.getDir()));
+        steps.add(new ResyncAndBuildStep(info, getIntroduceBaseDir()));
+        // deploy the service again
+        steps.add(new DeployServiceStep(container, info.getDir(), Collections.singletonList("-Dno.deployment.validation=true")));
+        // start the container
+        steps.add(new StartContainerStep(container));
+        // check the CQL 2 support metadata again
+        steps.add(new CheckCql2QueryLanguageSupportResourcePropertyStep(container, info, 
+            true, TestingCQL2QueryProcessor.getTestingSupportedExtensionsBean()));
         return steps;
     }
     
