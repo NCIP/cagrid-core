@@ -13,6 +13,7 @@ import gov.nih.nci.cagrid.testing.system.haste.Step;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Vector;
 
@@ -108,7 +109,7 @@ public class SystemTests extends BaseSystemTest {
         // turn off index service registration
         steps.add(new SetIndexRegistrationStep(info.getDir(), false));
         // deploy data service
-        steps.add(new DeployServiceStep(container, info.getDir()));
+        steps.add(new DeployServiceStep(container, info.getDir(), Collections.singletonList("-Dno.deployment.validation=true")));
         // start globus
         steps.add(new StartContainerStep(container));
         // test data service

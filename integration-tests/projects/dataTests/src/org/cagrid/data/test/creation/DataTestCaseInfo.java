@@ -34,7 +34,10 @@ public abstract class DataTestCaseInfo extends TestCaseInfo {
     
 
     public String getResourceFrameworkType() {
-        return IntroduceConstants.INTRODUCE_MAIN_RESOURCE + "," + IntroduceConstants.INTRODUCE_SINGLETON_RESOURCE + "," + IntroduceConstants.INTRODUCE_IDENTIFIABLE_RESOURCE;
+        return IntroduceConstants.INTRODUCE_MAIN_RESOURCE + "," + 
+        IntroduceConstants.INTRODUCE_SINGLETON_RESOURCE + "," + 
+        IntroduceConstants.INTRODUCE_IDENTIFIABLE_RESOURCE + "," +
+        IntroduceConstants.INTRODUCE_RESOURCEPROPETIES_RESOURCE;
     }
     
     

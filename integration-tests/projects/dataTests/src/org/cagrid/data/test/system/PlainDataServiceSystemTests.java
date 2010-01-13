@@ -11,6 +11,7 @@ import gov.nih.nci.cagrid.testing.system.deployment.steps.StopContainerStep;
 import gov.nih.nci.cagrid.testing.system.deployment.steps.UnpackContainerStep;
 import gov.nih.nci.cagrid.testing.system.haste.Step;
 
+import java.util.Collections;
 import java.util.Vector;
 
 import org.cagrid.data.test.creation.CreationTests;
@@ -51,7 +52,7 @@ public class PlainDataServiceSystemTests extends BaseSystemTest {
     protected boolean storySetUp() {
         // instantiate a new container instance
         try {
-            container = ServiceContainerFactory.createContainer(ServiceContainerType.TOMCAT_CONTAINER);
+            container = ServiceContainerFactory.createContainer(ServiceContainerType.GLOBUS_CONTAINER);
         } catch (Exception ex) {
             ex.printStackTrace();
             fail("Failed to create container: " + ex.getMessage());
@@ -79,9 +80,11 @@ public class PlainDataServiceSystemTests extends BaseSystemTest {
         // turn off index registration
         steps.add(new SetIndexRegistrationStep(info.getDir(), false));
         // deploy data service
-        steps.add(new DeployServiceStep(container, info.getDir()));
+        steps.add(new DeployServiceStep(container, info.getDir(), Collections.singletonList("-Dno.deployment.validation=true")));
         //  start the container
         steps.add(new StartContainerStep(container));
+        // check the CQL 2 support metadata
+        steps.add(new CheckCql2QueryLanguageSupportResourcePropertyStep(container, info));
         return steps;
     }
     
