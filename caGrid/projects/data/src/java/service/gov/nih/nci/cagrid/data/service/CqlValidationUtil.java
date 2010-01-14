@@ -38,8 +38,17 @@ public class CqlValidationUtil {
         this.domainModel = domainModel;
         this.cql2Walker = new Cql2Walker();
         // initialize the CQL 2 walker handlers
-        this.cql2Walker.addListener(new Cql2WalkerStructureValidationHandler());
-        this.cql2Walker.addListener(new Cql2WalkerDomainModelValidationHandler(domainModel));
+        initializeCql2WalkerHandlers();
+    }
+    
+    
+    private void initializeCql2WalkerHandlers() {
+        if (shouldValidateCqlStructure()) {
+            this.cql2Walker.addListener(new Cql2WalkerStructureValidationHandler());
+        }
+        if (shouldValidateDomainModel()) {
+            this.cql2Walker.addListener(new Cql2WalkerDomainModelValidationHandler(domainModel));
+        }
         Collection<QName> empty = Collections.emptyList();
         this.cql2Walker.addListener(new Cql2WalkerExtensionCompatibilityValidationHandler(empty));
     }
