@@ -2,7 +2,7 @@
 <TargetGridsConfiguration
 	xmlns="http://www.cagrid.org/1/grape-target-grid-configuration"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://www.cagrid.org/1/grape-target-grid-configuration file://Users/jgeorge/Documents/Workspaces/caGrid-trunk/cagrid/projects/grape/schema/grape-target-grid-configuration.xsd">
+	xsi:schemaLocation="http://www.cagrid.org/1/grape-target-grid-configuration">
 	<lastUpdated>2009-10-08</lastUpdated>
 	<activeGrid>training-1.3</activeGrid>
 	<grid>

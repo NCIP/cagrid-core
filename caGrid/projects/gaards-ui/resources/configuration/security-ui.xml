@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <application xmlns="http://www.cagrid.org/1/grape"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://www.cagrid.org/1/grape file:/C:/projects/cagrid-1-0/caGrid/projects/grape/schema/grape.xsd">
+	xsi:schemaLocation="http://www.cagrid.org/1/grape">
 	<name>GAARDS</name>
 	<icon>/caGrid-icon-22x22.gif</icon>
 	<ApplicationLogo>/caGrid.gif</ApplicationLogo>
