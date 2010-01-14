@@ -16,5 +16,15 @@
 		<ivy:retrieve conf="${ivy.resolve.configurations}" pattern="${basedir}/schema/GTS/xsd/[artifact](.[ext])" sync="true" type="xsd" />
 		<ivy:retrieve conf="serviceTools" pattern="${ivy.resolved.artifacts.dir}/dependencies/tools/[type]s/[originalname](.[ext])" type="jar" />
 	</target>
+
+	<!-- Overloaded to support multiple artifact patterns  -->
+	<target name="do.publish" depends="pre.publish">
+		<publish-artifacts>
+			<artifacts-list>
+				<artifacts pattern="${ivy.generated.artifacts.pattern}" />
+				<artifacts pattern="${basedir}/schema/GTS/[artifact].[ext]" />
+			</artifacts-list>
+		</publish-artifacts>
+	</target>
 </project>
 

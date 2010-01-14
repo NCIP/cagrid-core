@@ -5,7 +5,7 @@
 	xmlns:xsd="http://www.w3.org/2001/XMLSchema" 
 	xmlns:sync="http://cagrid.nci.nih.gov/12/SyncGTS"
 	xmlns:gts="http://cagrid.nci.nih.gov/8/gts">    
-	<xsd:import namespace="http://cagrid.nci.nih.gov/8/gts" schemaLocation="./gts.xsd"/>
+	<xsd:import namespace="http://cagrid.nci.nih.gov/8/gts" schemaLocation="./xsd/gts.xsd"/>
 	   <xsd:element name="SyncDescription" type="sync:SyncDescription"/>
 	
 	   <xsd:complexType name="SyncDescription">

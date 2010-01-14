@@ -16,7 +16,7 @@
       <import namespace="http://cagrid.nci.nih.gov/SyncGTS/types" schemaLocation="./SyncGTSTypes.xsd" />
       <import namespace="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata" schemaLocation="./xsd/cagrid/types/caGridMetadata.xsd" />
       <import namespace="http://cagrid.nci.nih.gov/12/SyncGTS" schemaLocation="./sync-gts.xsd" />
-      <import namespace="http://cagrid.nci.nih.gov/8/gts" schemaLocation="./gts.xsd" />
+      <import namespace="http://cagrid.nci.nih.gov/8/gts" schemaLocation="./xsd/gts.xsd" />
       <import namespace="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.security" schemaLocation="./xsd/cagrid/types/security/security.xsd" />
       <element name="SyncGTSResourceProperties">
         <complexType>

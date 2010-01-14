@@ -6,7 +6,7 @@
    <ns2:SchemaElement type="SyncReport" xsi:type="ns2:SchemaElementType"/>
    <ns2:SchemaElement type="TrustedCA" xsi:type="ns2:SchemaElementType"/>
   </ns2:Namespace>
-  <ns2:Namespace location="./gts.xsd" namespace="http://cagrid.nci.nih.gov/8/gts" packageName="gov.nih.nci.cagrid.gts.bean" xsi:type="ns2:NamespaceType">
+  <ns2:Namespace location="./xsd/gts.xsd" namespace="http://cagrid.nci.nih.gov/8/gts" packageName="gov.nih.nci.cagrid.gts.bean" xsi:type="ns2:NamespaceType">
    <ns2:SchemaElement type="AuthorityGTS" xsi:type="ns2:SchemaElementType"/>
    <ns2:SchemaElement type="AuthorityPriorityUpdate" xsi:type="ns2:SchemaElementType"/>
    <ns2:SchemaElement type="Permission" xsi:type="ns2:SchemaElementType"/>
