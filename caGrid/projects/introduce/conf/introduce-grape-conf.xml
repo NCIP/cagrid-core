@@ -5,7 +5,7 @@
     <name>Introduce: Grid Service Authoring Toolkit</name>
     <icon>/applications-internet.png</icon>
     <ApplicationLogo>/caGrid.gif</ApplicationLogo>
-    <AboutHTML><![CDATA[<html><center><h2>Introduce: Grid Service Authoring Toolkit</h2></center><center><h3>Version 1.4</h3></center><br><center><h3>This software is produced by<br>The Ohio State University<br>Department of Biomedicalinformatics (http://bmi.osu.edu)</h3></center><br><center><h3><a href="http://www.cagrid.org/mwiki/index.php?title=Introduce">http://www.cagrid.org/mwiki/index.php?title=Introduce</a></h3></center><br><h3>Authors:</h3><br><a href="mailto:hastings@bmi.osu.edu">Shannon Hastings</a><br><a href="mailto:langella@bmi.osu.edu">Stephen Langella</a><br> <a href="mailto:oster@bmi.osu.edu">Scott Oster</a><br><a href="mailto:ervin@bmi.osu.edu">David Ervin</a>]]></AboutHTML>
+    <AboutHTML><![CDATA[<html><center><h2>Introduce: Grid Service Authoring Toolkit</h2></center><center><h3>Version 1.4</h3></center><br><center><h3>This software is produced by<br>The Ohio State University<br>Department of Biomedical Informatics (http://bmi.osu.edu)</h3></center><br><center><h3><a href="http://cagrid.org/display/introduce/Home">http://cagrid.org/display/introduce/Home</a></h3></center><br><h3>Authors:</h3><br><a href="mailto:hastings@bmi.osu.edu">Shannon Hastings</a><br><a href="mailto:langella@bmi.osu.edu">Stephen Langella</a><br> <a href="mailto:oster@bmi.osu.edu">Scott Oster</a><br><a href="mailto:ervin@bmi.osu.edu">David Ervin</a>]]></AboutHTML>
     <dimensions>
         <width>1200</width>
         <height>900</height>
