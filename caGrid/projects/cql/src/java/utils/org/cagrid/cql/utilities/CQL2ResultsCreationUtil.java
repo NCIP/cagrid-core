@@ -1,8 +1,8 @@
 package org.cagrid.cql.utilities;
 
-import java.lang.reflect.Array;
-import java.util.Arrays;
+import java.text.DateFormat;
 import java.util.Collection;
+import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -74,34 +74,46 @@ public class CQL2ResultsCreationUtil {
      *      The attribute names in the order in which the values appear in the data arrays
      * @return
      */
-    public static CQLQueryResults createAttributeResults(Collection<?> data, String targetClassname, String[] attributeNames) {
+    public static CQLQueryResults createAttributeResults(Collection<Object[]> data, String targetClassname, String[] attributeNames) {
         CQLQueryResults results = new CQLQueryResults();
         results.setTargetClassname(targetClassname);
-        List<CQLAttributeResult> attribResults = new LinkedList<CQLAttributeResult>();
-        for (Object attributeArray : data) {
-            TargetAttribute[] attribs = new TargetAttribute[attributeNames.length];
-            String[] attribValues = new String[attributeNames.length];
-            if (attributeArray == null) {
-                Arrays.fill(attribValues, null);
-            } else if (attributeArray.getClass().isArray()) {
-                for (int j = 0; j < Array.getLength(attributeArray); j++) {
-                    Object singleValue = Array.get(attributeArray, j); 
-                    attribValues[j] = singleValue == null ? null : singleValue.toString();
+        List<CQLAttributeResult> attributeResults = new LinkedList<CQLAttributeResult>();
+        for (Object[] array : data) {
+            if (array.length != attributeNames.length) {
+                throw new IllegalArgumentException(
+                    "Number of attributes (" + array.length + ") and number of attribute names (" 
+                    + attributeNames.length + ") must match!");
+            }
+            CQLAttributeResult singleResult = new CQLAttributeResult();
+            TargetAttribute[] attributes = new TargetAttribute[array.length];
+            for (int i = 0; i < array.length; i++) {
+                String stringValue = null;
+                if (array[i] != null) {
+                    if (array[i] instanceof Date) {
+                        stringValue = DateFormat.getDateInstance().format((Date) array[i]);
+                    } else {
+                        stringValue = String.valueOf(array[i]);
+                    }
                 }
-            } else {
-                // not an array, but a single value
-                attribValues = new String[] {attributeArray.toString()};
+                attributes[i] = new TargetAttribute(attributeNames[i], stringValue);
             }
-            
-            for (int j = 0; j < attributeNames.length; j++) {
-                attribs[j] = new TargetAttribute(attributeNames[j], attribValues[j]);
-            }
-            attribResults.add(new CQLAttributeResult(attribs));
+            singleResult.setAttribute(attributes);
+            attributeResults.add(singleResult);
         }
-        CQLAttributeResult[] attributeResultArray = new CQLAttributeResult[attribResults.size()];
-        attribResults.toArray(attributeResultArray);
-        results.setAttributeResult(attributeResultArray);
+        CQLAttributeResult[] resultArray = new CQLAttributeResult[attributeResults.size()];
+        attributeResults.toArray(resultArray);
+        results.setAttributeResult(resultArray);
         return results;
+    }
+    
+
+    public static CQLQueryResults createDistinctAttributeResults(
+        List<Object> attributeValues, String targetClassname, String attributeName) {
+        List<Object[]> attributeArrays = new LinkedList<Object[]>();
+        for (Object value : attributeValues) {
+            attributeValues.add(new Object[] {value});
+        }
+        return createAttributeResults(attributeArrays, targetClassname, new String[] {attributeName});
     }
     
     
@@ -118,11 +130,17 @@ public class CQL2ResultsCreationUtil {
      *      The aggregation operation which was performed
      * @return
      */
-    public static CQLQueryResults createAggregateResults(String data, String targetClassname, String attributeName, Aggregation aggregation) {
+    public static CQLQueryResults createAggregateResults(String data, String targetClassname, 
+        String attributeName, Aggregation aggregation) {
         CQLQueryResults results = new CQLQueryResults();
         results.setTargetClassname(targetClassname);
         CQLAggregateResult aggregateResult = new CQLAggregateResult(aggregation, attributeName, data);
         results.setAggregationResult(aggregateResult);
         return results;
+    }
+    
+    
+    public static CQLQueryResults createCountResults(long count, String targetClassname) {
+        return createAggregateResults(String.valueOf(count), targetClassname, "id", Aggregation.COUNT);
     }
 }
