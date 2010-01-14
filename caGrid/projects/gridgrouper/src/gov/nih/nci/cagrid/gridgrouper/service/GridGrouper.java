@@ -1753,7 +1753,7 @@ public class GridGrouper {
 
 
 	public GroupDescriptor[] getMembersGroups(String gridIdentity, String memberIdentity, MembershipType type)
-		throws GridGrouperRuntimeFault {
+		throws GridGrouperRuntimeFault, InsufficientPrivilegeFault {
 		GrouperSession session = null;
 		try {
 			Subject subj = SubjectFinder.findById(gridIdentity);
