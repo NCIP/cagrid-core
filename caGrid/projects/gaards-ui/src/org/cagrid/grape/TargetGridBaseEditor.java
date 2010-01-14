@@ -383,7 +383,7 @@ public class TargetGridBaseEditor extends ConfigurationBasePanel {
 		try {
 			Utils.copyFile(in, out);
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
+			ErrorDialog.showError("Unable to copy the repository configuration file into gaards configuration directory.");
 			e.printStackTrace();
 		}
 
@@ -393,7 +393,7 @@ public class TargetGridBaseEditor extends ConfigurationBasePanel {
 		try {
 			gridManager.getGridsFromRepository(out, targetGridsConfiguration);
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
+			ErrorDialog.showError("Encountered an error while trying to obtain target grids from the repository.");
 			e.printStackTrace();
 		}
 		

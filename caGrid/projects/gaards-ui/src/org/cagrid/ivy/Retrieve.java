@@ -27,7 +27,7 @@ public class Retrieve {
 	
 	Ivy ivy = null;
 	
-	public Retrieve(URL ivySettings, String cacheDir) {
+	public Retrieve(URL ivySettings, String cacheDir) throws Exception {
 		this.ivySettings = ivySettings;
 		this.cacheDir = cacheDir;
 		
@@ -37,15 +37,11 @@ public class Retrieve {
 		
 		ivy.getLoggerEngine().setDefaultLogger(new DefaultMessageLogger(Message.MSG_ERR));
 		
-		try {
-			ivy.configure(ivySettings);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}			
+		ivy.configure(ivySettings);
 
 	}
 
-	public int execute(URL ivyDependencies, String baseDownloadDir, String organisation, String module, Grid grid) {
+	public int execute(URL ivyDependencies, String baseDownloadDir, String organisation, String module, Grid grid) throws Exception {
 		int retrieved = 0;
 		String targetGridName = grid.getSystemName();
 		
@@ -60,8 +56,7 @@ public class Retrieve {
 		try {
 			report = ivy.resolve(ivyDependencies);
 		} catch (Exception e) {
-			e.printStackTrace();
-			System.exit(1);
+			throw new Exception("Unable to resolve the ivy dependencies", e);
 		}
 		
 		ModuleRevisionId mrid = ModuleRevisionId.newInstance(organisation, module, targetGridName);
@@ -74,6 +69,9 @@ public class Retrieve {
 		
         ModuleRevisionId[] mrids = ivy.listModules(ModuleRevisionId.newInstance(organisation,
         		module, "*", targetGridName + ".*?"), ivy.getSettings().getMatcher(PatternMatcher.REGEXP));
+        if (mrids == null || mrids.length < 1) {
+			throw new Exception("Unable to find revisions for target grid: " + targetGridName);
+        }
         
         Arrays.sort(mrids, new Comparator<ModuleRevisionId>() {
 			public int compare(ModuleRevisionId o1, ModuleRevisionId o2) {
@@ -104,8 +102,7 @@ public class Retrieve {
 					grid.setDisplayName(grid.getSystemName());
 				}
 			} catch (IOException e) {
-				e.printStackTrace();
-				System.exit(1);
+				throw new Exception("Unable to find configuration files for target grid: " + targetGridName);
 			}
 		}
 		

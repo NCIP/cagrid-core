@@ -20,7 +20,7 @@ public class Discover {
 	
 	Ivy ivy = null;
 	
-	public Discover(URL ivySettings, String cacheDir) {
+	public Discover(URL ivySettings, String cacheDir) throws Exception {
 		this.ivySettings = ivySettings;
 		this.cacheDir = cacheDir;
 	
@@ -30,11 +30,7 @@ public class Discover {
 
 		ivy.getLoggerEngine().setDefaultLogger(new DefaultMessageLogger(Message.MSG_ERR));
 		
-		try {
-			ivy.configure(ivySettings);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}			
+		ivy.configure(ivySettings);
 	}
 	
 	public ModuleRevisionId[] execute(String organization, String name, String revision) {		
