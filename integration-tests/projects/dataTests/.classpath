@@ -70,7 +70,6 @@
 	<classpathentry kind="var" path="GT4_LOCATION/lib/xmlsec.jar"/>
 	<classpathentry kind="lib" path="ext/dependencies/jars/caGrid-core-1.4-dev.jar"/>
 	<classpathentry kind="lib" path="ext/dependencies/jars/caGrid-core-tests-1.4-dev.jar"/>
-	<classpathentry kind="lib" path="ext/dependencies/jars/caGrid-data-common-1.4-dev.jar"/>
 	<classpathentry kind="lib" path="ext/dependencies/jars/caGrid-data-stubs-1.4-dev.jar"/>
 	<classpathentry kind="lib" path="ext/dependencies/jars/caGrid-data-utils-1.4-dev.jar"/>
 	<classpathentry kind="lib" path="ext/dependencies/jars/caGrid-Introduce-core-1.4-dev.jar"/>
@@ -106,5 +105,8 @@
 	<classpathentry kind="lib" path="ext/dependencies/jars/caGrid-Transfer-common-1.4-dev.jar"/>
 	<classpathentry kind="lib" path="ext/dependencies/jars/caGrid-Transfer-stubs-1.4-dev.jar"/>
 	<classpathentry kind="lib" path="ext/dependencies/jars/caGrid-CQL-cql.2.0-1.4-dev.jar"/>
+	<classpathentry kind="lib" path="ext/dependencies/jars/caGrid-CQL-dcql.2.0-1.4-dev.jar"/>
+	<classpathentry kind="lib" path="ext/dependencies/jars/caGrid-CQL-utils-1.4-dev.jar"/>
+	<classpathentry kind="lib" path="ext/dependencies/jars/caGrid-data-common-1.4-dev.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

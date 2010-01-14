@@ -100,6 +100,8 @@ public class SystemTests extends BaseSystemTest {
         steps.add(new AddBookstoreStep(info));
         // change out query processor
         steps.add(new SetQueryProcessorStep(info.getDir()));
+        // ... and the CQL 2 query processor
+        steps.add(new SetCql2QueryProcessorStep(info.getDir()));
         // Turn on and configure auditing
         steps.add(new AddFileSystemAuditorStep(info.getDir(), auditorLogFile.getAbsolutePath()));
         // Rebuild the service to pick up the bookstore beans
@@ -114,6 +116,8 @@ public class SystemTests extends BaseSystemTest {
         steps.add(new StartContainerStep(container));
         // test data service
         steps.add(new InvokeDataServiceStep(container, info.getName()));
+        // test CQL 2
+        steps.add(new InvokeCql2DataServiceStep(container, info.getName()));
         // verify the audit log
         steps.add(new VerifyAuditLogStep(auditorLogFile.getAbsolutePath()));
         return steps;

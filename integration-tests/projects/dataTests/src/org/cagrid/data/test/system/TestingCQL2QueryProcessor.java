@@ -4,15 +4,22 @@ import gov.nih.nci.cagrid.data.MalformedQueryException;
 import gov.nih.nci.cagrid.data.QueryProcessingException;
 import gov.nih.nci.cagrid.data.cql2.CQL2QueryProcessor;
 import gov.nih.nci.cagrid.data.cql2.Cql2ExtensionPoint;
+import gov.nih.nci.cagrid.data.mapping.ClassToQname;
+import gov.nih.nci.cagrid.data.mapping.Mappings;
 
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.LinkedList;
+import java.util.List;
 
 import javax.xml.namespace.QName;
 
+import org.cagrid.cql.utilities.CQL2ResultsCreationUtil;
 import org.cagrid.cql2.CQLQuery;
 import org.cagrid.cql2.extensionsupport.SupportedExtensions;
 import org.cagrid.cql2.results.CQLQueryResults;
+import org.projectmobius.bookstore.Book;
+import org.projectmobius.bookstore.BookStore;
 
 /**
  * TestingCQL2QueryProcessor
@@ -30,8 +37,10 @@ public class TestingCQL2QueryProcessor extends CQL2QueryProcessor {
 
 
     public CQLQueryResults processQuery(CQLQuery query) throws QueryProcessingException, MalformedQueryException {
-        // TODO Auto-generated method stub
-        return null;
+        List<?> results = getResultsList(query);
+        String targetName = query.getCQLTargetObject().getClassName();
+        CQLQueryResults queryResults = CQL2ResultsCreationUtil.createObjectResults(results, targetName, getQname(targetName));
+        return queryResults;
     }
 
     
@@ -52,6 +61,31 @@ public class TestingCQL2QueryProcessor extends CQL2QueryProcessor {
                 break;
         }
         return Arrays.asList(names);
+    }
+    
+
+    private List<?> getResultsList(CQLQuery query) throws QueryProcessingException {
+        List<?> results = new LinkedList();
+        String targetName = query.getCQLTargetObject().getClassName();
+        if (targetName.equals(Book.class.getName())) {
+            results = TestQueryResultsGenerator.getResultBooks();
+        } else if (targetName.equals(BookStore.class.getName())) {
+            results = TestQueryResultsGenerator.getResultBookStore();
+        } else {
+            throw new QueryProcessingException("Target " + targetName + " is not valid!");
+        }
+        return results;
+    }
+    
+    
+    private QName getQname(String targetClassname) {
+        Mappings map = TestQueryResultsGenerator.getClassToQnameMappings();
+        for (ClassToQname c2q : map.getMapping()) {
+            if (c2q.getClassName().equals(targetClassname)) {
+                return QName.valueOf(c2q.getQname());
+            }
+        }
+        return null;
     }
     
     

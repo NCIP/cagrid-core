@@ -34,7 +34,7 @@
     <dependency rev="latest.integration" org="caGrid" name="transfer" conf="default->client"/>
     
     <!-- CQL stubs -->
-    <dependency rev="latest.integration" org="caGrid" name="cql" conf="default->cql"/>
+    <dependency rev="latest.integration" org="caGrid" name="cql" conf="default->cql,utils"/>
     
     <!-- Apache Commons Logging-->
     <dependency rev="1.1" org="apache" name="commons-logging" conf="default"/>
