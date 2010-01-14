@@ -41,6 +41,67 @@ public class UpdateTree extends JTree {
         this.setCellRenderer(new UpdateTreeRenderer(model));
         this.setRootVisible(true);
         expandAll(true);
+    }
+
+
+    public SoftwareType getNonInstalledSelectedSoftware() {
+        SoftwareType software = new SoftwareType();
+        List introduceInstalls = new ArrayList();
+        List extensionInstalls = new ArrayList();
+
+        int introduceNodeCount = root.getChildCount();
+        for (int i = 0; i < introduceNodeCount; i++) {
+            DefaultMutableTreeNode treenode = (DefaultMutableTreeNode) root.getChildAt(i);
+            IntroduceUpdateTreeNode introducenode = (IntroduceUpdateTreeNode) treenode;
+
+            if (!introducenode.isInstalled() && introducenode.isSelected()) {
+                introduceInstalls.add(introducenode.getIntroduce());
+            } else if (introducenode.isInstalled()) {
+                if (introducenode.getChildCount() > 0
+                    && introducenode.getChildAt(0) instanceof IntroduceRevUpdateTreeNode) {
+                    DefaultMutableTreeNode treenodetemp = (DefaultMutableTreeNode) introducenode.getChildAt(0);
+                    IntroduceRevUpdateTreeNode introducerevnode = (IntroduceRevUpdateTreeNode) treenodetemp;
+                    if (introducerevnode.isSelected() && !introducerevnode.isInstalled()) {
+                        introduceInstalls.add(introducenode.getIntroduce());
+                    }
+
+                }
+            }
+            introducenode.getCheckBox().setSelected(false);
+            int children = introducenode.getChildCount();
+            for (int j = 0; j < children; j++) {
+                if (introducenode.getChildAt(j) instanceof ExtensionUpdateTreeNode) {
+                    ExtensionUpdateTreeNode extensionnode = (ExtensionUpdateTreeNode) introducenode.getChildAt(j);
+
+                    if (!extensionnode.isInstalled() && extensionnode.isSelected()) {
+                        extensionInstalls.add(extensionnode.getExtension());
+                    }
+                }
+            }
+
+        }
+
+        IntroduceType[] introduces = new IntroduceType[introduceInstalls.size()];
+        introduceInstalls.toArray(introduces);
+        ExtensionType[] extensions = new ExtensionType[extensionInstalls.size()];
+        extensionInstalls.toArray(extensions);
+
+        software.setIntroduce(introduces);
+        software.setExtension(extensions);
+
+        return software;
+    }
+
+
+    private void initialize() {
+        root = new MainUpdateTreeNode("Introduce Versions and Extensions", model, null);
+        model = new DefaultTreeModel(root);
+        this.setModel(model);
+        root.setModel(model);
+        this.setCellRenderer(new UpdateTreeRenderer(model));
+        this.setRootVisible(true);
+        expandAll(true);
+        
         this.addMouseListener(new MouseAdapter() {
             public void mouseClicked(MouseEvent e) {
                 DefaultMutableTreeNode node = (DefaultMutableTreeNode) UpdateTree.this.getLastSelectedPathComponent();
@@ -112,66 +173,6 @@ public class UpdateTree extends JTree {
                 } 
             }
         });
-    }
-
-
-    public SoftwareType getNonInstalledSelectedSoftware() {
-        SoftwareType software = new SoftwareType();
-        List introduceInstalls = new ArrayList();
-        List extensionInstalls = new ArrayList();
-
-        int introduceNodeCount = root.getChildCount();
-        for (int i = 0; i < introduceNodeCount; i++) {
-            DefaultMutableTreeNode treenode = (DefaultMutableTreeNode) root.getChildAt(i);
-            IntroduceUpdateTreeNode introducenode = (IntroduceUpdateTreeNode) treenode;
-
-            if (!introducenode.isInstalled() && introducenode.isSelected()) {
-                introduceInstalls.add(introducenode.getIntroduce());
-            } else if (introducenode.isInstalled()) {
-                if (introducenode.getChildCount() > 0
-                    && introducenode.getChildAt(0) instanceof IntroduceRevUpdateTreeNode) {
-                    DefaultMutableTreeNode treenodetemp = (DefaultMutableTreeNode) introducenode.getChildAt(0);
-                    IntroduceRevUpdateTreeNode introducerevnode = (IntroduceRevUpdateTreeNode) treenodetemp;
-                    if (introducerevnode.isSelected() && !introducerevnode.isInstalled()) {
-                        introduceInstalls.add(introducenode.getIntroduce());
-                    }
-
-                }
-            }
-            introducenode.getCheckBox().setSelected(false);
-            int children = introducenode.getChildCount();
-            for (int j = 0; j < children; j++) {
-                if (introducenode.getChildAt(j) instanceof ExtensionUpdateTreeNode) {
-                    ExtensionUpdateTreeNode extensionnode = (ExtensionUpdateTreeNode) introducenode.getChildAt(j);
-
-                    if (!extensionnode.isInstalled() && extensionnode.isSelected()) {
-                        extensionInstalls.add(extensionnode.getExtension());
-                    }
-                }
-            }
-
-        }
-
-        IntroduceType[] introduces = new IntroduceType[introduceInstalls.size()];
-        introduceInstalls.toArray(introduces);
-        ExtensionType[] extensions = new ExtensionType[extensionInstalls.size()];
-        extensionInstalls.toArray(extensions);
-
-        software.setIntroduce(introduces);
-        software.setExtension(extensions);
-
-        return software;
-    }
-
-
-    private void initialize() {
-        root = new MainUpdateTreeNode("Introduce Versions and Extensions", model, null);
-        model = new DefaultTreeModel(root);
-        this.setModel(model);
-        root.setModel(model);
-        this.setCellRenderer(new UpdateTreeRenderer(model));
-        this.setRootVisible(true);
-        expandAll(true);
     }
 
 
