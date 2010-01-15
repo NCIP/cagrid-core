@@ -13,7 +13,6 @@ import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
 
 import org.xml.sax.SAXException;
-import org.xml.sax.helpers.DefaultHandler;
 
 /**
   *  XMIParser
@@ -44,6 +43,7 @@ public class XMIParser {
     }
     
     private DomainModel model = null;
+    private int errorLineNumber;
     private String projectDescription = null;
     private String projectLongName = null;
     private String projectShortName = null;
@@ -53,6 +53,7 @@ public class XMIParser {
 
     public XMIParser(String projectShortName, String projectVersion) {
         super();
+        this.errorLineNumber = -1;
         this.projectShortName = projectShortName;
         this.projectVersion = projectVersion;
         this.packageExcludeRegex = DEFAULT_PACKAGE_EXCLUDE_REGEX;
@@ -69,9 +70,10 @@ public class XMIParser {
     }
     
     
-    public DomainModel parse(InputStream xmiStream, XmiFileType type) throws SAXException, IOException, ParserConfigurationException {
+    public synchronized DomainModel parse(InputStream xmiStream, XmiFileType type) throws SAXException, IOException, ParserConfigurationException {
+        this.errorLineNumber = -1;
         SAXParser parser = SAXParserFactory.newInstance().newSAXParser();
-        DefaultHandler handler = null;
+        BaseXMIHandler handler = null;
         switch (type) {
             case SDK_32_EA:
                 handler = new XMIHandler(this);
@@ -82,8 +84,27 @@ public class XMIParser {
             case SDK_40_ARGO:
                 handler = new Sdk4ArgoUMLXMIHandler(this);
         }
-        parser.parse(xmiStream, handler);
+        try {
+            parser.parse(xmiStream, handler);
+        } catch (SAXException ex) {
+            this.errorLineNumber = handler.getCurrentLine();
+            String message = "Error handling " + (errorLineNumber == -1 ? "unknown line" : "line " + errorLineNumber);
+            System.err.println(message);
+            throw ex;
+        }
         return model;
+    }
+    
+    
+    /**
+     * Returns the line number of the XMI file on which a parsing error
+     * occurred.  If no parsing error occurred, or the line number could
+     * not be determined, -1 is returned.
+     * @return
+     *      The error line number of -1 if no line number could be determined
+     */
+    public int getErrorLineNumber() {
+        return this.errorLineNumber;
     }
 
 

@@ -20,6 +20,7 @@ import java.util.regex.Pattern;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.xml.sax.Locator;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
 
@@ -39,7 +40,11 @@ public abstract class BaseXMIHandler extends DefaultHandler {
     // parser contains configuration options and information for the handler
     private XMIParser parser = null;
 
+    // element text content
     private StringBuffer chars = null;
+    
+    // SAX locator tells us where we are in the document
+    private Locator locator = null;
 
     // lists of domain model components
     private List<UMLClass> classList = null;
@@ -67,6 +72,29 @@ public abstract class BaseXMIHandler extends DefaultHandler {
         this.attribTable = new HashMap<String, UMLAttribute>();
         this.semanticMetadataTable = new HashMap<String, List<SemanticMetadata>>();
         this.typeTable = new HashMap<String, String>();
+    }
+    
+    
+    /**
+     * If the SAX parser supports a Locator, this will get invoked before startDocument()
+     */
+    public void setDocumentLocator(Locator locator) {
+        this.locator = locator;
+    }
+    
+    
+    /**
+     * Gets the current line of the XMI document being parsed
+     * 
+     * @return
+     *      The line number, or -1 if no locator was supplied
+     */
+    public int getCurrentLine() {
+        int line = -1;
+        if (locator != null) {
+            line = locator.getLineNumber();
+        }
+        return line;
     }
     
     
