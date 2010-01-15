@@ -69,7 +69,7 @@ public class AddServiceContextStep extends BaseStep {
         }
 
         // add new service to array in bean
-        // this seems to be a wierd way be adding things....
+        // this seems to be a weird way be adding things....
         ServiceType[] newMethods;
         int newLength = 0;
         if (servicesType != null && servicesType.getService() != null) {

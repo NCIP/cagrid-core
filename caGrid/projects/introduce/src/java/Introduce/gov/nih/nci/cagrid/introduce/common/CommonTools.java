@@ -988,7 +988,7 @@ public final class CommonTools {
             }
             namespaces.setNamespace(namespacesArray);
         } else {
-            logger.warn("Namesapce already exists and is being ignored: " + nsType.getNamespace(), new Throwable());
+            logger.warn("Namespace already exists and is being ignored: " + nsType.getNamespace(), new Throwable());
         }
     }
 
