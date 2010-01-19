@@ -49,7 +49,7 @@ public class GridGroupersTreeNode extends GridGrouperBaseTreeNode {
 					this.add(node);
 					getTree().reload(this);
 				}
-				node.loadStem();
+				node.loadStem(0);
 				getTree().stopEvent(id,
 						"Grid Grouper Service Successfully Loaded!!!");
 				this.groupers.put(grouper.getName(), node);

@@ -21,8 +21,6 @@ import org.cagrid.grape.utils.ErrorDialog;
  * @author <A HREF="MAILTO:oster@bmi.osu.edu">Scott Oster</A>
  * @author <A HREF="MAILTO:hastings@bmi.osu.edu">Shannon Hastings</A>
  * @author <A HREF="MAILTO:ervin@bmi.osu.edu">David W. Ervin</A>
- * @version $Id: GridGrouperBaseTreeNode.java,v 1.1 2006/08/04 03:49:26 langella
- *          Exp $
  */
 public class StemTreeNode extends GridGrouperBaseTreeNode {
 	
@@ -31,6 +29,8 @@ public class StemTreeNode extends GridGrouperBaseTreeNode {
 	private Stem stem;
 
 	private boolean rootStem;
+	
+	private boolean loadedChildStems = false;
 
 	public StemTreeNode(GridGrouperTree tree, Stem stem, boolean root) {
 		super(tree);
@@ -39,9 +39,19 @@ public class StemTreeNode extends GridGrouperBaseTreeNode {
 	}
 
 	public void loadStem() throws Exception {
+		// Load all descendant stems of this node
+		this.loadStem(-1);
+	}
+
+	/**
+	 * loadStem 
+	 * @param depth number of descendant stems to load. A value of -1 will load all descendants.
+	 * @throws Exception
+	 */
+	public void loadStem(int depth) throws Exception {
 		this.removeAllChildren();
-		Set set = stem.getChildStems();
-		Iterator itr = set.iterator();
+		Set<?> set = stem.getChildStems();
+		Iterator<?> itr = set.iterator();
 		while (itr.hasNext()) {
 			StemI currentStem = (StemI) itr.next();
 			StemTreeNode node = new StemTreeNode(getTree(),
@@ -55,10 +65,13 @@ public class StemTreeNode extends GridGrouperBaseTreeNode {
 					getTree().reload();
 				}
 			}
-			node.loadStem();
+			// Determine if the child stem needs to be loaded.
+			if (depth != 0) {
+				node.loadStem(depth - 1);
+			}
 		}
-		Set grps = stem.getChildGroups();
-		Iterator itr2 = grps.iterator();
+		Set<?> grps = stem.getChildGroups();
+		Iterator<?> itr2 = grps.iterator();
 		while (itr2.hasNext()) {
 			GroupI group = (GroupI) itr2.next();
 			GroupTreeNode node = new GroupTreeNode(getTree(), (Group) group);
@@ -119,5 +132,14 @@ public class StemTreeNode extends GridGrouperBaseTreeNode {
 	public Stem getStem() {
 		return stem;
 	}
+	
+	public boolean loadedChildStems() {
+		return loadedChildStems;
+	}
+
+	public void setLoadedChildStems(boolean loadedChildStems) {
+		this.loadedChildStems = loadedChildStems;
+	}
+
 
 }

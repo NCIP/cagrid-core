@@ -193,6 +193,7 @@ public class GroupManagementBrowser extends ApplicationComponent {
             groupTree = new GridGrouperTree();
             groupTree.setProgress(getProgress());
             groupTree.addMouseListener(new GridGrouperTreeEventListener(groupTree, this));
+            groupTree.addTreeExpansionListener(new GridGrouperTreeExpansionListener(groupTree));
         }
         return groupTree;
     }
