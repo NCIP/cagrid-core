@@ -16,12 +16,14 @@ import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
+import org.apache.log4j.Logger;
 import org.cagrid.gaards.ui.dorian.ServicesManager;
 import org.cagrid.grape.configuration.Grid;
 import org.cagrid.grape.utils.ErrorDialog;
 
 public class TargetGridDisplayPanel extends JPanel {
-
+	private static Logger log = Logger.getLogger(TargetGridDisplayPanel.class);
+	
 	private static final long serialVersionUID = 1L;
 
 	private Grid grid;
@@ -123,6 +125,7 @@ public class TargetGridDisplayPanel extends JPanel {
 			GAARDSApplication.setTargetGrid(grid.getSystemName());
 		} catch (Exception e) {
 			ErrorDialog.showError(e);
+			log.error(e, e);
 		}
 	}
 

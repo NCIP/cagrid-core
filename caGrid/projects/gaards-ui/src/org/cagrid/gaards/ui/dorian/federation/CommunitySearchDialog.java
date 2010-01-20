@@ -21,6 +21,7 @@ import javax.swing.border.TitledBorder;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
+import org.apache.log4j.Logger;
 import org.cagrid.gaards.dorian.client.GridAdministrationClient;
 import org.cagrid.gaards.dorian.client.GridUserClient;
 import org.cagrid.gaards.dorian.federation.GridUser;
@@ -42,7 +43,8 @@ import org.cagrid.grape.utils.ErrorDialog;
 
 
 public class CommunitySearchDialog extends JDialog {
-
+	private static Logger log = Logger.getLogger(CommunitySearchDialog.class);
+	
     private static final long serialVersionUID = 1L;
     private JPanel jContentPane = null;
     private DorianSessionProvider sessionProvider;
@@ -469,9 +471,11 @@ public class CommunitySearchDialog extends JDialog {
         } catch (PermissionDeniedFault pdf) {
             ErrorDialog.showError(pdf);
             getProgress().stopProgress("Error");
+            log.error(pdf, pdf);
         } catch (Exception e) {
             ErrorDialog.showError(e);
             getProgress().stopProgress("Error");
+            log.error(e, e);
         } finally {
             userSearchButton.setEnabled(true);
         }
@@ -522,9 +526,11 @@ public class CommunitySearchDialog extends JDialog {
         } catch (PermissionDeniedFault pdf) {
             ErrorDialog.showError(pdf);
             getProgress().stopProgress("Error");
+            log.error(pdf, pdf);
         } catch (Exception e) {
             ErrorDialog.showError(e);
             getProgress().stopProgress("Error");
+            log.error(e, e);
         } finally {
             hostSearchButton.setEnabled(true);
         }
@@ -589,6 +595,7 @@ public class CommunitySearchDialog extends JDialog {
                         dispose();
                     } catch (Exception ex) {
                         ErrorDialog.showError(ex);
+                        log.error(ex, ex);
                     }
                 }
             });
@@ -878,6 +885,7 @@ public class CommunitySearchDialog extends JDialog {
                         dispose();
                     } catch (Exception ex) {
                         ErrorDialog.showError(ex);
+                        log.error(ex, ex);
                     }
                 }
             });

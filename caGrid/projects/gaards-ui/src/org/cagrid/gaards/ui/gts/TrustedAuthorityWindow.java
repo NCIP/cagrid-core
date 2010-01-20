@@ -32,6 +32,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
 import javax.swing.JTextField;
 
+import org.apache.log4j.Logger;
 import org.cagrid.gaards.pki.CertUtil;
 import org.cagrid.gaards.ui.common.CRLPanel;
 import org.cagrid.gaards.ui.common.CertificatePanel;
@@ -47,11 +48,10 @@ import org.cagrid.grape.utils.ErrorDialog;
  * @author <A href="mailto:langella@bmi.osu.edu">Stephen Langella </A>
  * @author <A href="mailto:oster@bmi.osu.edu">Scott Oster </A>
  * @author <A href="mailto:hastings@bmi.osu.edu">Shannon Hastings </A>
- * @version $Id: ArgumentManagerTable.java,v 1.2 2004/10/15 16:35:16 langella
- *          Exp $
  */
 public class TrustedAuthorityWindow extends ApplicationComponent {
-
+	private static Logger log = Logger.getLogger(TrustedAuthorityWindow.class);
+	
     private static final long serialVersionUID = 1L;
 
     private JPanel jContentPane = null;
@@ -523,7 +523,7 @@ public class TrustedAuthorityWindow extends ApplicationComponent {
                         try {
                             GridApplication.getContext().executeInBackground(runner);
                         } catch (Exception t) {
-                            t.printStackTrace();
+                            log.error(t, t);
                         }
                     }
 
@@ -540,7 +540,7 @@ public class TrustedAuthorityWindow extends ApplicationComponent {
                         try {
                             GridApplication.getContext().executeInBackground(runner);
                         } catch (Exception t) {
-                            t.printStackTrace();
+                            log.error(t, t);
                         }
                     }
                 });

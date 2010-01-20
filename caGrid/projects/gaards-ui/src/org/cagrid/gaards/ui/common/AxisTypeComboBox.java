@@ -6,6 +6,8 @@ import java.util.List;
 
 import javax.swing.JComboBox;
 
+import org.apache.log4j.Logger;
+
 /**
  * @author <A href="mailto:langella@bmi.osu.edu">Stephen Langella </A>
  * @author <A href="mailto:oster@bmi.osu.edu">Scott Oster </A>
@@ -14,6 +16,7 @@ import javax.swing.JComboBox;
  *          Exp $
  */
 public abstract class AxisTypeComboBox extends JComboBox {
+	private static Logger log = Logger.getLogger(AxisTypeComboBox.class);
 	
 	private static final long serialVersionUID = 1L;
 	
@@ -44,7 +47,7 @@ public abstract class AxisTypeComboBox extends JComboBox {
 					Object o = fields[i].get(null);
 					list.add(o);
 				} catch (Exception e) {
-					e.printStackTrace();
+					log.error(e, e);
 				}
 			}
 		}

@@ -21,6 +21,7 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.border.TitledBorder;
 
+import org.apache.log4j.Logger;
 import org.cagrid.gaards.dorian.client.GridUserClient;
 import org.cagrid.gaards.dorian.federation.HostCertificateRecord;
 import org.cagrid.gaards.pki.KeyUtil;
@@ -35,7 +36,8 @@ import org.cagrid.grape.utils.ErrorDialog;
 
 
 public class RequestHostCertificateWindow extends ApplicationComponent {
-
+	private static Logger log = Logger.getLogger(RequestHostCertificateWindow.class);
+	
     private static final long serialVersionUID = 1L;
 
     private JPanel jContentPane = null;
@@ -339,6 +341,7 @@ public class RequestHostCertificateWindow extends ApplicationComponent {
         	getProgressPanel().stopProgress("Error");
             ErrorDialog.showError(e);
             this.getRequest().setEnabled(true);
+            log.error(e, e);
         }
 
     }
@@ -415,6 +418,7 @@ public class RequestHostCertificateWindow extends ApplicationComponent {
                             directory.setText(fc.getSelectedFile().getAbsolutePath());
                         } catch (Exception ex) {
                             ErrorDialog.showError(ex);
+                            log.error(ex, ex);
                         }
                     }
                 }

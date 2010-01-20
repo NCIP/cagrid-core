@@ -16,6 +16,7 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 
+import org.apache.log4j.Logger;
 import org.cagrid.gaards.dorian.client.GridAdministrationClient;
 import org.cagrid.gaards.dorian.federation.HostCertificateFilter;
 import org.cagrid.gaards.dorian.federation.HostCertificateRecord;
@@ -32,11 +33,10 @@ import org.cagrid.grape.utils.ErrorDialog;
  * @author <A HREF="MAILTO:langella@bmi.osu.edu">Stephen Langella </A>
  * @author <A HREF="MAILTO:oster@bmi.osu.edu">Scott Oster </A>
  * @author <A HREF="MAILTO:hastings@bmi.osu.edu">Shannon Langella </A>
- * @version $Id: HostCertificatesWindow.java,v 1.1 2007/06/06 19:27:54 langella
- *          Exp $
  */
 public class HostCertificatesWindow extends ApplicationComponent implements
 		HostCertificateLauncher {
+	private static Logger log = Logger.getLogger(HostCertificatesWindow.class);
 	
 	private static final long serialVersionUID = 1L;
 
@@ -128,6 +128,7 @@ public class HostCertificatesWindow extends ApplicationComponent implements
 					500);
 		} catch (Exception e) {
 			ErrorDialog.showError(e);
+			log.error(e, e);
 		}
 
 	}
@@ -291,6 +292,7 @@ public class HostCertificatesWindow extends ApplicationComponent implements
 												.getSelectedHostCertificate());
 									} catch (Exception ex) {
 										ErrorDialog.showError(ex);
+										log.error(ex, ex);
 									}
 								}
 							};
@@ -298,7 +300,7 @@ public class HostCertificatesWindow extends ApplicationComponent implements
 								GridApplication.getContext()
 										.executeInBackground(runner);
 							} catch (Exception t) {
-								t.getMessage();
+								log.error(t, t);
 							}
 						}
 
@@ -427,6 +429,7 @@ public class HostCertificatesWindow extends ApplicationComponent implements
 		} catch (Exception e) {
 			ErrorDialog.showError(e);
 			getProgressPanel().stopProgress("Error");
+			log.error(e, e);
 		} finally {
 			this.getQuery().setEnabled(true);
 			getViewHostCertificate().setEnabled(true);

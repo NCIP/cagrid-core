@@ -26,6 +26,7 @@ import javax.swing.JTabbedPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 
+import org.apache.log4j.Logger;
 import org.cagrid.gaards.ui.gridgrouper.tree.GroupTreeNode;
 import org.cagrid.grape.GridApplication;
 import org.cagrid.grape.LookAndFeel;
@@ -37,11 +38,10 @@ import org.cagrid.grape.utils.ErrorDialog;
  * @author <A HREF="MAILTO:oster@bmi.osu.edu">Scott Oster</A>
  * @author <A HREF="MAILTO:hastings@bmi.osu.edu">Shannon Hastings</A>
  * @author <A HREF="MAILTO:ervin@bmi.osu.edu">David W. Ervin</A>
- * @version $Id: GridGrouperBaseTreeNode.java,v 1.1 2006/08/04 03:49:26 langella
- *          Exp $
  */
 public class GroupBrowser extends BaseBrowserPanel {
-
+	private static Logger log = Logger.getLogger(GroupBrowser.class);
+	
     private static final String ALL_MEMBERS = "All Members"; // @jve:decl-index=0:
 
     private static final String IMMEDIATE_MEMBERS = "Immediate Members";
@@ -927,7 +927,7 @@ public class GroupBrowser extends BaseBrowserPanel {
             stopEvent(eid, "Error listing group members!!!");
             ErrorDialog.showError(e);
             node.refresh();
-            e.printStackTrace();
+            log.error(e, e);
         } finally {
             getListMembers().setEnabled(true);
             getMemberFilter().setEnabled(true);

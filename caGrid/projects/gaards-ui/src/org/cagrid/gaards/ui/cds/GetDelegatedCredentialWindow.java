@@ -16,6 +16,7 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 
+import org.apache.log4j.Logger;
 import org.cagrid.gaards.cds.client.DelegatedCredentialUserClient;
 import org.cagrid.gaards.credentials.CredentialEntryFactory;
 import org.cagrid.gaards.credentials.X509CredentialEntry;
@@ -34,10 +35,9 @@ import org.globus.gsi.GlobusCredential;
  * @author <A HREF="MAILTO:oster@bmi.osu.edu">Scott Oster</A>
  * @author <A HREF="MAILTO:hastings@bmi.osu.edu">Shannon Hastings</A>
  * @author <A HREF="MAILTO:ervin@bmi.osu.edu">David W. Ervin</A>
- * @version $Id: GridGrouperBaseTreeNode.java,v 1.1 2006/08/04 03:49:26 langella
- *          Exp $
  */
 public class GetDelegatedCredentialWindow extends ApplicationComponent {
+	private static Logger log = Logger.getLogger(GetDelegatedCredentialWindow.class);
 
     private static final long serialVersionUID = 1L;
 
@@ -118,7 +118,7 @@ public class GetDelegatedCredentialWindow extends ApplicationComponent {
             getProgressPanel().stopProgress(getDelegatedCredentials().getRowCount() + " credential(s) found.");
 
         } catch (Exception ex) {
-            ex.printStackTrace();
+            log.error(ex, ex);
             getProgressPanel().stopProgress("Error");
         }
     }
@@ -358,6 +358,7 @@ public class GetDelegatedCredentialWindow extends ApplicationComponent {
         } catch (Exception e) {
             getGetButton().setEnabled(true);
             ErrorDialog.showError(e);
+            log.error(e, e);
         }
 
     }

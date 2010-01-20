@@ -27,6 +27,7 @@ import org.apache.commons.cli.GnuParser;
 import org.apache.commons.cli.Option;
 import org.apache.commons.cli.OptionBuilder;
 import org.apache.commons.cli.Options;
+import org.apache.log4j.Logger;
 import org.cagrid.gaards.ui.dorian.ServicesManager;
 import org.cagrid.grape.configuration.Grid;
 import org.cagrid.grape.configuration.TargetGridsConfiguration;
@@ -46,6 +47,8 @@ public class GAARDSApplication extends GridApplication{
 	
 	private static URL ivySettingsURL = null;
 	private static URL targetGridURL = null;
+	
+	private static Logger log = Logger.getLogger(GAARDSApplication.class);
 		
     public GAARDSApplication(Application app) throws Exception {
         super();
@@ -88,7 +91,7 @@ public class GAARDSApplication extends GridApplication{
             applicationInstance.gridInitialization();
             applicationInstance.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         } catch (Exception e) {
-            e.printStackTrace();
+            log.error(e, e);
             System.exit(1);
         }
     }
@@ -106,8 +109,8 @@ public class GAARDSApplication extends GridApplication{
 			app = (Application) deserializeInputStream(inputStream, Application.class);
 			inputStream.close();
 		} catch (Exception e) {
-			System.out.println("Failed to load the security configuration");
-			e.printStackTrace();
+			log.error("Failed to load the security configuration");
+			log.error(e, e);
 			System.exit(1);
 		}
 		return app;
@@ -129,7 +132,7 @@ public class GAARDSApplication extends GridApplication{
         try {
 			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
 		} catch (Exception e) {
-			System.out.println("Failed to set system look and feel.");
+			log.error("Failed to set system look and feel.");
 		}
 		
 		startPreInitializer();
@@ -206,8 +209,7 @@ public class GAARDSApplication extends GridApplication{
 			try {
 				Utils.stringBufferToFile(Utils.inputStreamToStringBuffer(targetGridURL.openStream()), targetGridsConfigurationFile);
 			} catch (IOException e) {
-				System.out.println("Unable to write to file: " + targetGridsConfigurationFile.getName());
-				e.printStackTrace();
+				log.error("Unable to write to file: " + targetGridsConfigurationFile.getName(), e);
 				System.exit(1);
 			}
 		}
@@ -239,7 +241,7 @@ public class GAARDSApplication extends GridApplication{
 	    try {
 			line = parser.parse( options, args );
 		} catch (org.apache.commons.cli.ParseException e) {
-			System.out.println("Unable to parse the command line options");
+			log.error("Unable to parse the command line options");
 			System.exit(1);
 		}
 		
@@ -258,12 +260,12 @@ public class GAARDSApplication extends GridApplication{
 				if (optionFile.exists()) {
 					return optionFile.toURI().toURL();
 				} else {
-					System.out.println("Invalid " + option + " file supplied");
+					log.error("Invalid " + option + " file supplied");
 					System.exit(1);
 				}
 			}
 		} catch (Exception e) {
-			System.out.println("Invalid " + option + " file supplied");
+			log.error("Invalid " + option + " file supplied");
 			System.exit(1);
 		}
 		return configurationURL;
@@ -302,7 +304,7 @@ public class GAARDSApplication extends GridApplication{
 					ServicesManager.getInstance();
 
 				} catch (Exception ex) {
-					ex.printStackTrace();
+					log.error(ex, ex);
 					setErrorMessage("Error: " + ex.getMessage());
 					return;
 				}
@@ -322,7 +324,7 @@ public class GAARDSApplication extends GridApplication{
 			props.load(props.getClass().getResourceAsStream("/project.properties"));
 			version = (String) props.get("project.version");
 		} catch (Exception e) {
-			System.out.println("Unable to determine the version of the GAARDS UI.");
+			log.info("Unable to determine the version of the GAARDS UI.");
 			version = "";
 		}
 		

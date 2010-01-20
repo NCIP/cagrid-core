@@ -10,6 +10,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.log4j.Logger;
 import org.cagrid.gaards.credentials.CredentialEntryFactory;
 import org.cagrid.gaards.credentials.EncodingUtil;
 import org.cagrid.gaards.credentials.X509CredentialDescriptor;
@@ -21,11 +22,10 @@ import org.globus.gsi.GlobusCredential;
  * @author <A href="mailto:langella@bmi.osu.edu">Stephen Langella </A>
  * @author <A href="mailto:oster@bmi.osu.edu">Scott Oster </A>
  * @author <A href="mailto:hastings@bmi.osu.edu">Shannon Hastings </A>
- * @version $Id: ArgumentManagerTable.java,v 1.2 2004/10/15 16:35:16 langella
- *          Exp $
  */
 public class CredentialManager {
-
+	private static Logger log = Logger.getLogger(CredentialManager.class);
+	
     private static final long serialVersionUID = 1L;
 
     private static CredentialManager instance;
@@ -73,7 +73,7 @@ public class CredentialManager {
 
             } catch (Exception e) {
                 list[i].delete();
-                e.printStackTrace();
+                log.error(e, e);
             }
         }
     }
@@ -152,7 +152,11 @@ public class CredentialManager {
     public synchronized void deleteCredential(X509CredentialEntry credential) {
         credentials.remove(credential.getIdentity());
         File f = (File) credentialFiles.get(credential.getIdentity());
-        f.delete();
+        if (f != null) {
+        	f.delete();
+        } else {
+        	log.error("Credential file does not exist.");
+        }
         credentialFiles.remove(credential.getIdentity());
     }
 

@@ -26,6 +26,7 @@ import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 import javax.swing.border.TitledBorder;
 
+import org.apache.log4j.Logger;
 import org.cagrid.gaards.pki.CertUtil;
 import org.cagrid.gaards.pki.KeyUtil;
 import org.cagrid.grape.GridApplication;
@@ -33,7 +34,8 @@ import org.cagrid.grape.LookAndFeel;
 import org.globus.gsi.GlobusCredential;
 
 public class ImportCredentialDialog extends JDialog {
-
+	private static Logger log = Logger.getLogger(ImportCredentialDialog.class);
+	
 	private static final String CERTIFICATE_PRIVATE_KEY_TYPE = "Certificate / Private Key"; // @jve:decl-index=0:
 
 	private static final String PROXY_TYPE = "Grid Proxy";
@@ -254,7 +256,7 @@ public class ImportCredentialDialog extends JDialog {
 				dispose();
 				return;
 			} catch (Exception ex) {
-				ex.printStackTrace();
+				log.error(ex, ex);
 				GridApplication.getContext().showMessage(
 						Utils.getExceptionMessage(ex));
 				return;
@@ -279,7 +281,7 @@ public class ImportCredentialDialog extends JDialog {
 				dispose();
 				return;
 			} catch (Exception ex) {
-				ex.printStackTrace();
+				log.error(ex, ex);
 				GridApplication.getContext().showMessage(
 						Utils.getExceptionMessage(ex));
 				return;

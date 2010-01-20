@@ -22,6 +22,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 import javax.swing.border.TitledBorder;
 
+import org.apache.log4j.Logger;
 import org.cagrid.gaards.ui.common.ProgressPanel;
 import org.cagrid.gaards.ui.common.TitlePanel;
 import org.cagrid.grape.ApplicationComponent;
@@ -34,14 +35,14 @@ import org.cagrid.grape.utils.ErrorDialog;
  * @author <A HREF="MAILTO:langella@bmi.osu.edu">Stephen Langella </A>
  * @author <A HREF="MAILTO:oster@bmi.osu.edu">Scott Oster </A>
  * @author <A HREF="MAILTO:hastings@bmi.osu.edu">Shannon Langella </A>
- * @version $Id: TrustedAuthoritiesWindow.java,v 1.2 2006/03/27 19:05:40
- *          langella Exp $
  */
 public class TrustedAuthoritiesWindow extends ApplicationComponent
     implements
         TrustedAuthorityRefresher,
         ServiceSelectionListener {
 
+	private static Logger log = Logger.getLogger(TrustedAuthoritiesWindow.class);
+	
     private static final long serialVersionUID = 1L;
 
     private final static String ANY = "Any";
@@ -175,7 +176,7 @@ public class TrustedAuthoritiesWindow extends ApplicationComponent
             }
             getProgressPanel().stopProgress();
         } catch (Exception e) {
-            e.printStackTrace();
+            log.error(e, e);
             ErrorDialog.showError("Error obtaining the trust levels from " + getSessionPanel().getServiceURI() + ":\n"
                 + e.getMessage());
             getProgressPanel().stopProgress();

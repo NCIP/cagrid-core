@@ -11,6 +11,7 @@ import javax.swing.JButton;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 
+import org.apache.log4j.Logger;
 import org.cagrid.gaards.dorian.client.GridUserClient;
 import org.cagrid.gaards.dorian.federation.HostCertificateRecord;
 import org.cagrid.gaards.ui.common.ProgressPanel;
@@ -31,6 +32,8 @@ import org.cagrid.grape.utils.ErrorDialog;
  */
 public class MyHostCertificatesWindow extends ApplicationComponent implements
 		HostCertificateLauncher {
+	
+	private static Logger log = Logger.getLogger(MyHostCertificatesWindow.class);
 	
 	private static final long serialVersionUID = 1L;
 
@@ -87,6 +90,7 @@ public class MyHostCertificatesWindow extends ApplicationComponent implements
 					500);
 		} catch (Exception e) {
 			ErrorDialog.showError(e);
+			log.error(e, e);
 		}
 
 	}
@@ -245,6 +249,7 @@ public class MyHostCertificatesWindow extends ApplicationComponent implements
 												.getSelectedHostCertificate());
 									} catch (Exception ex) {
 										ErrorDialog.showError(ex);
+										log.error(ex, ex);
 									}
 								}
 							};
@@ -252,7 +257,7 @@ public class MyHostCertificatesWindow extends ApplicationComponent implements
 								GridApplication.getContext()
 										.executeInBackground(runner);
 							} catch (Exception t) {
-								t.getMessage();
+								log.error(t, t);
 							}
 						}
 
@@ -339,6 +344,7 @@ public class MyHostCertificatesWindow extends ApplicationComponent implements
 		} catch (Exception e) {
 			ErrorDialog.showError(e);
 			this.getProgressPanel().stopProgress("Error");
+			log.error(e, e);
 		} finally {
 			this.getQuery().setEnabled(true);
 		}

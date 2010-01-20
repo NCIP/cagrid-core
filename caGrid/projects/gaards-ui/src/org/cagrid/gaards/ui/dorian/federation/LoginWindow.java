@@ -26,6 +26,7 @@ import javax.swing.JTabbedPane;
 import javax.swing.JTextField;
 import javax.xml.namespace.QName;
 
+import org.apache.log4j.Logger;
 import org.cagrid.gaards.authentication.client.AuthenticationClient;
 import org.cagrid.gaards.authentication.common.AuthenticationProfile;
 import org.cagrid.gaards.credentials.DorianUserCredentialDescriptor;
@@ -47,7 +48,8 @@ import org.globus.gsi.GlobusCredential;
 
 
 public class LoginWindow extends ApplicationComponent {
-
+	private static Logger log = Logger.getLogger(LoginWindow.class);
+	
     private static final long serialVersionUID = 1L;
 
     private JPanel jContentPane = null;
@@ -452,8 +454,8 @@ public class LoginWindow extends ApplicationComponent {
             getProgressPanel().stopProgress("Error");
             ErrorDialog.showError(e);
             getAuthenticateButton().setEnabled(true);
+            log.error(e, e);
         }
-
 
     }
 

@@ -11,6 +11,7 @@ import javax.swing.JButton;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 
+import org.apache.log4j.Logger;
 import org.cagrid.gaards.dorian.client.GridAdministrationClient;
 import org.cagrid.gaards.dorian.federation.GridUser;
 import org.cagrid.gaards.dorian.federation.GridUserFilter;
@@ -29,10 +30,9 @@ import org.cagrid.grape.utils.ErrorDialog;
  * @author <A HREF="MAILTO:langella@bmi.osu.edu">Stephen Langella </A>
  * @author <A HREF="MAILTO:oster@bmi.osu.edu">Scott Oster </A>
  * @author <A HREF="MAILTO:hastings@bmi.osu.edu">Shannon Langella </A>
- * @version $Id: AdministratorsWindow.java,v 1.1 2007/04/26 18:43:49 langella
- *          Exp $
  */
 public class AdministratorsWindow extends ApplicationComponent {
+	private static Logger log = Logger.getLogger(AdministratorsWindow.class);
 	
 	private static final long serialVersionUID = 1L;
 
@@ -276,6 +276,7 @@ public class AdministratorsWindow extends ApplicationComponent {
 			}
 		} catch (Exception e) {
 			ErrorDialog.showError(e);
+			log.error(e, e);
 		}
 	}
 
@@ -289,6 +290,7 @@ public class AdministratorsWindow extends ApplicationComponent {
 			}
 		} catch (Exception e) {
 			ErrorDialog.showError(e);
+			log.error(e, e);
 		}
 	}
 
@@ -365,9 +367,11 @@ public class AdministratorsWindow extends ApplicationComponent {
 		} catch (PermissionDeniedFault pdf) {
 			ErrorDialog.showError(pdf);
 			getProgressPanel().stopProgress("Error");
+			log.error(pdf, pdf);
 		} catch (Exception e) {
 			ErrorDialog.showError(e);
 			getProgressPanel().stopProgress("Error");
+			log.error(e, e);
 		} finally {
 			enableAllButtons();
 		}
@@ -410,6 +414,7 @@ public class AdministratorsWindow extends ApplicationComponent {
 			getAdminsTable().removeSelectedAdmin();
 		} catch (Exception e) {
 			ErrorDialog.showError(e);
+			log.error(e, e);
 		}
 	}
 
@@ -433,7 +438,7 @@ public class AdministratorsWindow extends ApplicationComponent {
 						GridApplication.getContext()
 								.executeInBackground(runner);
 					} catch (Exception t) {
-						t.getMessage();
+						log.error(t, t);
 					}
 
 				}

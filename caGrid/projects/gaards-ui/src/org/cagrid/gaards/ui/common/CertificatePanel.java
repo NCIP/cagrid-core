@@ -13,6 +13,7 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 
+import org.apache.log4j.Logger;
 import org.cagrid.gaards.pki.CertUtil;
 import org.cagrid.grape.LookAndFeel;
 import org.cagrid.grape.utils.ErrorDialog;
@@ -21,9 +22,9 @@ import org.cagrid.grape.utils.ErrorDialog;
  * @author <A HREF="MAILTO:langella@bmi.osu.edu">Stephen Langella </A>
  * @author <A HREF="MAILTO:oster@bmi.osu.edu">Scott Oster </A>
  * @author <A HREF="MAILTO:hastings@bmi.osu.edu">Shannon Hastings </A>
- * @version $Id: CertificatePanel.java,v 1.4 2008-11-20 15:29:42 langella Exp $
  */
 public class CertificatePanel extends JPanel {
+	private static Logger log = Logger.getLogger(CertificatePanel.class);
 	
 	private static final long serialVersionUID = 1L;
 
@@ -445,6 +446,7 @@ public class CertificatePanel extends JPanel {
 				setCertificate(certificate);
 			} catch (Exception ex) {
 				ErrorDialog.showError(ex);
+	            log.error(ex, ex);
 			}
 		}
 
@@ -460,6 +462,7 @@ public class CertificatePanel extends JPanel {
 						.getSelectedFile().getAbsolutePath()));
 			} catch (Exception ex) {
 				ErrorDialog.showError(ex);
+	            log.error(ex, ex);
 			}
 		}
 

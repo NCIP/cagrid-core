@@ -12,6 +12,7 @@ import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
+import org.apache.log4j.Logger;
 import org.cagrid.gaards.cds.common.ProxyLifetime;
 import org.cagrid.gaards.pki.CertificateExtensionsUtil;
 import org.cagrid.gaards.ui.common.CredentialComboBox;
@@ -27,10 +28,9 @@ import org.globus.gsi.bc.BouncyCastleUtil;
  * @author <A href="mailto:langella@bmi.osu.edu">Stephen Langella </A>
  * @author <A href="mailto:oster@bmi.osu.edu">Scott Oster </A>
  * @author <A href="mailto:hastings@bmi.osu.edu">Shannon Hastings </A>
- * @version $Id: ArgumentManagerTable.java,v 1.2 2004/10/15 16:35:16 langella
- *          Exp $
  */
 public class DelegateProxyWindowStep1 extends ApplicationComponent implements ProxyLifetimeListener {
+	private static Logger log = Logger.getLogger(DelegateProxyWindowStep1.class);
 
     private static final long serialVersionUID = 1L;
 
@@ -381,6 +381,7 @@ public class DelegateProxyWindowStep1 extends ApplicationComponent implements Pr
             dispose();
         } catch (Exception e) {
             ErrorDialog.showError(e);
+            log.error(e, e);
         }
 
     }
@@ -447,7 +448,7 @@ public class DelegateProxyWindowStep1 extends ApplicationComponent implements Pr
             maxPathLength = getDelegationPathLength(certs[0]);
             lifetimeSeconds = cred.getTimeLeft() - SECONDS_OFFSET;
         } catch (Exception e) {
-            e.printStackTrace();
+            log.error(e, e);
         }
         if (maxPathLength < 0) {
             maxPathLength = 0;

@@ -6,6 +6,7 @@ import java.util.List;
 
 import javax.swing.JComboBox;
 
+import org.apache.log4j.Logger;
 import org.cagrid.gaards.dorian.idp.IdentityProviderAudit;
 
 
@@ -13,11 +14,10 @@ import org.cagrid.gaards.dorian.idp.IdentityProviderAudit;
  * @author <A href="mailto:langella@bmi.osu.edu">Stephen Langella </A>
  * @author <A href="mailto:oster@bmi.osu.edu">Scott Oster </A>
  * @author <A href="mailto:hastings@bmi.osu.edu">Shannon Hastings </A>
- * @version $Id: ArgumentManagerTable.java,v 1.2 2004/10/15 16:35:16 langella
- *          Exp $
  */
 public class IdentityProviderAuditComboBox extends JComboBox {
-
+	private static Logger log = Logger.getLogger(IdentityProviderAuditComboBox.class);
+	
     private static final long serialVersionUID = 1L;
 
     public static String ANY = "Any";
@@ -36,7 +36,7 @@ public class IdentityProviderAuditComboBox extends JComboBox {
                     IdentityProviderAudit o = (IdentityProviderAudit) fields[i].get(null);
                     list.add(o);
                 } catch (Exception e) {
-                    e.printStackTrace();
+                    log.error(e, e);
                 }
             }
         }

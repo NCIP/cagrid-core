@@ -22,6 +22,7 @@ import javax.swing.JTabbedPane;
 import javax.swing.JTextField;
 import javax.swing.border.TitledBorder;
 
+import org.apache.log4j.Logger;
 import org.cagrid.gaards.cds.client.DelegationAdminClient;
 import org.cagrid.gaards.cds.client.DelegationUserClient;
 import org.cagrid.gaards.cds.common.DelegatedCredentialAuditFilter;
@@ -41,10 +42,9 @@ import org.cagrid.grape.utils.ErrorDialog;
  * @author <A HREF="MAILTO:langella@bmi.osu.edu">Stephen Langella </A>
  * @author <A HREF="MAILTO:oster@bmi.osu.edu">Scott Oster </A>
  * @author <A HREF="MAILTO:hastings@bmi.osu.edu">Shannon Langella </A>
- * @version $Id: DelegatedCredentialWindow.java,v 1.2 2007/11/27 20:09:50
- *          langella Exp $
  */
 public class DelegatedCredentialWindow extends ApplicationComponent {
+	private static Logger log = Logger.getLogger(DelegatedCredentialWindow.class);
 
     private static final long serialVersionUID = 1L;
 
@@ -351,6 +351,7 @@ public class DelegatedCredentialWindow extends ApplicationComponent {
             getProgressPanel().stopProgress("Error");
             enableAllButtons();
             ErrorDialog.showError(e);
+            log.error(e, e);
         }
     }
 
@@ -1309,6 +1310,7 @@ public class DelegatedCredentialWindow extends ApplicationComponent {
             getProgressPanel().stopProgress("Error");
             enableAllButtons();
             ErrorDialog.showError(f);
+            log.error(f, f);
             return;
         }
     }
@@ -1396,6 +1398,7 @@ public class DelegatedCredentialWindow extends ApplicationComponent {
                         getAuditRecords().doubleClick();
                     } catch (Exception ex) {
                         ErrorDialog.showError(ex.getMessage(), ex);
+                        log.error(ex, ex);
                     }
                 }
             });

@@ -22,6 +22,7 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.border.TitledBorder;
 
+import org.apache.log4j.Logger;
 import org.cagrid.gaards.ui.common.TitlePanel;
 import org.cagrid.gaards.ui.dorian.federation.CommunitySearchDialog;
 import org.cagrid.gaards.ui.gridgrouper.GridGrouperLookAndFeel;
@@ -35,11 +36,10 @@ import org.cagrid.grape.utils.ErrorDialog;
  * @author <A HREF="MAILTO:oster@bmi.osu.edu">Scott Oster</A>
  * @author <A HREF="MAILTO:hastings@bmi.osu.edu">Shannon Hastings</A>
  * @author <A HREF="MAILTO:ervin@bmi.osu.edu">David W. Ervin</A>
- * @version $Id: GridGrouperBaseTreeNode.java,v 1.1 2006/08/04 03:49:26 langella
- *          Exp $
  */
 public class StemPrivilegeWindow extends ApplicationComponent {
-
+	private static Logger log = Logger.getLogger(StemPrivilegeWindow.class);
+	
 	private static final long serialVersionUID = 1L;
 
 	private JPanel jContentPane = null;
@@ -388,7 +388,7 @@ public class StemPrivilegeWindow extends ApplicationComponent {
 					targetStem.grantPriv(subj, priv);
 					return "GRANTED " + priv.getName() + " privilege.";
 				} catch (Exception e) {
-					e.printStackTrace();
+					log.error(e, e);
 					throw new Exception("ERROR granting " + priv.getName() + " privilege: " + e.getMessage());
 				}
 
@@ -397,7 +397,7 @@ public class StemPrivilegeWindow extends ApplicationComponent {
 					targetStem.revokePriv(subj, priv);
 					return "REVOKED " + priv.getName() + " privilege.";
 				} catch (Exception e) {
-					e.printStackTrace();
+					log.error(e, e);
 					throw new Exception("ERROR revoking " + priv.getName() + " privilege: " + e.getMessage());
 				}
 			}
@@ -407,7 +407,7 @@ public class StemPrivilegeWindow extends ApplicationComponent {
 					targetStem.grantPriv(subj, priv);
 					return "GRANTED " + priv.getName() + " privilege.";
 				} catch (Exception e) {
-					e.printStackTrace();
+					log.error(e, e);
 					throw new Exception("ERROR granting " + priv.getName() + " privilege: " + e.getMessage());
 				}
 			}

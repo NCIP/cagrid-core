@@ -20,6 +20,7 @@ import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
 import javax.swing.JTextField;
 
+import org.apache.log4j.Logger;
 import org.cagrid.gaards.dorian.client.GridAdministrationClient;
 import org.cagrid.gaards.dorian.federation.HostCertificateRecord;
 import org.cagrid.gaards.dorian.federation.HostCertificateStatus;
@@ -43,11 +44,10 @@ import org.cagrid.grape.utils.ErrorDialog;
  * @author <A HREF="MAILTO:langella@bmi.osu.edu">Stephen Langella </A>
  * @author <A HREF="MAILTO:oster@bmi.osu.edu">Scott Oster </A>
  * @author <A HREF="MAILTO:hastings@bmi.osu.edu">Shannon Langella </A>
- * @version $Id: HostCertificateWindow.java,v 1.1 2007/06/06 20:55:45 langella
- *          Exp $
  */
 public class HostCertificateWindow extends ApplicationComponent implements DorianSessionProvider {
-
+	private static Logger log = Logger.getLogger(HostCertificateWindow.class);
+	
     private static final long serialVersionUID = 1L;
 
     private final static String INFO_PANEL = "Summary";
@@ -166,7 +166,7 @@ public class HostCertificateWindow extends ApplicationComponent implements Doria
             PublicKey key = KeyUtil.loadPublicKey(record.getPublicKey().getKeyAsString());
             strength.setText(String.valueOf(((RSAPublicKey) key).getModulus().bitLength()));
         } catch (Exception e) {
-            e.printStackTrace();
+            log.error(e, e);
         }
 
         try {
@@ -189,7 +189,7 @@ public class HostCertificateWindow extends ApplicationComponent implements Doria
                 getView().setVisible(false);
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            log.error(e, e);
         }
 
         if (record.getStatus().equals(HostCertificateStatus.Pending) && admin) {
@@ -314,6 +314,7 @@ public class HostCertificateWindow extends ApplicationComponent implements Doria
             ErrorDialog.showError(e);
             getApprove().setEnabled(true);
             getProgressPanel().stopProgress("Error");
+            log.error(e, e);
         }
 
     }
@@ -331,6 +332,7 @@ public class HostCertificateWindow extends ApplicationComponent implements Doria
             ErrorDialog.showError(e);
             getRenew().setEnabled(true);
             getProgressPanel().stopProgress("Error");
+            log.error(e, e);
         }
 
     }
@@ -386,6 +388,7 @@ public class HostCertificateWindow extends ApplicationComponent implements Doria
             ErrorDialog.showError(e);
             getUpdate().setEnabled(true);
             getProgressPanel().stopProgress("Error");
+            log.error(e, e);
         }
 
     }
@@ -818,6 +821,7 @@ public class HostCertificateWindow extends ApplicationComponent implements Doria
                 CertUtil.writeCertificate(cert, new File(fc.getSelectedFile().getAbsolutePath()));
             } catch (Exception ex) {
                 ErrorDialog.showError(ex);
+                log.error(ex, ex);
             }
         }
 

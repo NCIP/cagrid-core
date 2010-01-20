@@ -12,6 +12,7 @@ import javax.swing.JDialog;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 
+import org.apache.log4j.Logger;
 import org.cagrid.gaards.dorian.client.GridAdministrationClient;
 import org.cagrid.gaards.dorian.federation.TrustedIdP;
 import org.cagrid.gaards.dorian.stubs.types.PermissionDeniedFault;
@@ -26,9 +27,9 @@ import org.cagrid.grape.utils.ErrorDialog;
  * @author <A HREF="MAILTO:langella@bmi.osu.edu">Stephen Langella </A>
  * @author <A HREF="MAILTO:oster@bmi.osu.edu">Scott Oster </A>
  * @author <A HREF="MAILTO:hastings@bmi.osu.edu">Shannon Langella </A>
- * @version $Id: IdentityProviderSearchDialog.java,v 1.3 2008-11-20 15:29:42 langella Exp $
  */
 public class IdentityProviderSearchDialog extends JDialog {
+	private static Logger log = Logger.getLogger(IdentityProviderSearchDialog.class);
 	
 	private static final long serialVersionUID = 1L;
 
@@ -236,6 +237,7 @@ public class IdentityProviderSearchDialog extends JDialog {
 						dispose();
 					} catch (Exception ex) {
 						ErrorDialog.showError(ex);
+						log.error(ex, ex);
 					}
 				}
 
@@ -309,9 +311,11 @@ public class IdentityProviderSearchDialog extends JDialog {
 		} catch (PermissionDeniedFault pdf) {
 			ErrorDialog.showError(pdf);
 			getProgressPanel().stopProgress("Error");
+			log.error(pdf, pdf);
 		} catch (Exception e) {
 			ErrorDialog.showError(e);
 			getProgressPanel().stopProgress("Error");
+			log.error(e, e);
 		} finally {
 			query.setEnabled(true);
 		}

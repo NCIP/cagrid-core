@@ -16,6 +16,7 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 
+import org.apache.log4j.Logger;
 import org.cagrid.gaards.ui.common.ProgressPanel;
 import org.cagrid.gaards.ui.common.TitlePanel;
 import org.cagrid.gaards.ui.gridgrouper.GridGrouperHandle;
@@ -32,11 +33,10 @@ import org.globus.gsi.GlobusCredential;
  * @author <A HREF="MAILTO:oster@bmi.osu.edu">Scott Oster</A>
  * @author <A HREF="MAILTO:hastings@bmi.osu.edu">Shannon Hastings</A>
  * @author <A HREF="MAILTO:ervin@bmi.osu.edu">David W. Ervin</A>
- * @version $Id: GridGrouperBaseTreeNode.java,v 1.1 2006/08/04 03:49:26 langella
- *          Exp $
  */
 public class MyGroupsWindow extends ApplicationComponent {
-
+	private static Logger log = Logger.getLogger(MyGroupsWindow.class);
+	
     private static final long serialVersionUID = 1L;
 
     private JPanel jContentPane = null;
@@ -113,7 +113,7 @@ public class MyGroupsWindow extends ApplicationComponent {
             getProgressPanel().stopProgress();
 
         } catch (Exception ex) {
-            ex.printStackTrace();
+            log.error(ex, ex);
             getProgressPanel().stopProgress();
         }
     }

@@ -12,6 +12,7 @@ import javax.swing.JDialog;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
+import org.apache.log4j.Logger;
 import org.cagrid.gaards.dorian.client.GridAdministrationClient;
 import org.cagrid.gaards.ui.common.TitlePanel;
 import org.cagrid.gaards.ui.dorian.DorianSessionProvider;
@@ -20,6 +21,7 @@ import org.cagrid.grape.utils.ErrorDialog;
 
 
 public class AddAdminWindow extends JDialog {
+	private static Logger log = Logger.getLogger(AddAdminWindow.class);
 
 	private static final long serialVersionUID = 1L;
 
@@ -149,6 +151,7 @@ public class AddAdminWindow extends JDialog {
 		} catch (Exception e) {
 			ErrorDialog.showError(e);
 			addAdminButton.setEnabled(true);
+			log.error(e, e);
 		}
 	}
 

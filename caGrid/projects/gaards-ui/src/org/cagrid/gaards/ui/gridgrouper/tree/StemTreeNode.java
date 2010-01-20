@@ -13,6 +13,7 @@ import java.util.Set;
 import javax.swing.ImageIcon;
 import javax.swing.tree.TreeNode;
 
+import org.apache.log4j.Logger;
 import org.cagrid.gaards.ui.gridgrouper.GridGrouperLookAndFeel;
 import org.cagrid.grape.utils.ErrorDialog;
 
@@ -23,6 +24,7 @@ import org.cagrid.grape.utils.ErrorDialog;
  * @author <A HREF="MAILTO:ervin@bmi.osu.edu">David W. Ervin</A>
  */
 public class StemTreeNode extends GridGrouperBaseTreeNode {
+	private static Logger log = Logger.getLogger(StemTreeNode.class);
 	
 	private static final long serialVersionUID = 1L;
 
@@ -99,7 +101,7 @@ public class StemTreeNode extends GridGrouperBaseTreeNode {
 			loadStem();
 			getTree().stopEvent(id, "Refreshed " + toString() + "!!!");
 		} catch (Exception e) {
-			e.printStackTrace();
+			log.error(e, e);
 			getTree().stopEvent(id, "Error refreshing " + toString() + "!!!");
 			ErrorDialog.showError(e);
 		}

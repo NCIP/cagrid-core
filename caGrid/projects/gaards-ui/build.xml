@@ -72,14 +72,13 @@ GSBT - Globus Service Build Tools
 		</path>
 		<path id="run.classpath">
 			<pathelement location="${build.dest}" />
-			<path refid="base.classpath" />
 			<pathelement location="${common.images}" />
 			<pathelement location="${dorian.images}" />
 			<pathelement location="${gts.images}" />
 			<pathelement location="${gridgrouper.images}" />
 			<pathelement location="${cds.images}" />
 			<pathelement location="${configuration.dir}" />
-
+			<path refid="base.classpath" />
 		</path>
 	</target>
 

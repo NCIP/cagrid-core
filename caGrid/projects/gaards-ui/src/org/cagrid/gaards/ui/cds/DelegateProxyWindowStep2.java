@@ -11,6 +11,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
+import org.apache.log4j.Logger;
 import org.cagrid.gaards.cds.client.ClientConstants;
 import org.cagrid.gaards.cds.client.DelegationUserClient;
 import org.cagrid.gaards.ui.common.ProgressPanel;
@@ -24,10 +25,9 @@ import org.cagrid.grape.utils.ErrorDialog;
  * @author <A href="mailto:langella@bmi.osu.edu">Stephen Langella </A>
  * @author <A href="mailto:oster@bmi.osu.edu">Scott Oster </A>
  * @author <A href="mailto:hastings@bmi.osu.edu">Shannon Hastings </A>
- * @version $Id: ArgumentManagerTable.java,v 1.2 2004/10/15 16:35:16 langella
- *          Exp $
  */
 public class DelegateProxyWindowStep2 extends ApplicationComponent {
+	private static Logger log = Logger.getLogger(DelegateProxyWindowStep2.class);
 
     private static final long serialVersionUID = 1L;
 
@@ -277,6 +277,7 @@ public class DelegateProxyWindowStep2 extends ApplicationComponent {
             getProgressPanel().stopProgress("Error");
             getDelegateCredentialButton().setEnabled(true);
             getCancelButton().setEnabled(true);
+            log.error(e, e);
         }
 
     }

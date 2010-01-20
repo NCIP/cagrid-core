@@ -18,6 +18,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 import javax.swing.border.TitledBorder;
 
+import org.apache.log4j.Logger;
 import org.cagrid.gaards.cds.client.DelegationAdminClient;
 import org.cagrid.gaards.cds.client.DelegationUserClient;
 import org.cagrid.gaards.cds.common.DelegationIdentifier;
@@ -36,10 +37,9 @@ import org.cagrid.grape.utils.ErrorDialog;
  * @author <A HREF="MAILTO:langella@bmi.osu.edu">Stephen Langella </A>
  * @author <A HREF="MAILTO:oster@bmi.osu.edu">Scott Oster </A>
  * @author <A HREF="MAILTO:hastings@bmi.osu.edu">Shannon Langella </A>
- * @version $Id: DelegatedCredentialManagerWindow.java,v 1.1 2007/11/19 17:05:26
- *          langella Exp $
  */
 public class DelegatedCredentialManagerWindow extends ApplicationComponent {
+	private static Logger log = Logger.getLogger(DelegatedCredentialManagerWindow.class);
 	
 	private static final long serialVersionUID = 1L;
 
@@ -395,9 +395,11 @@ public class DelegatedCredentialManagerWindow extends ApplicationComponent {
 		} catch (PermissionDeniedFault pdf) {
 			ErrorDialog.showError(pdf);
 			getProgressPanel().stopProgress("Error");
+			log.error(pdf, pdf);
 		} catch (Exception e) {
 			ErrorDialog.showError(e);
 			getProgressPanel().stopProgress("Error");
+			log.error(e, e);
 		} finally {
 			enableButtons();
 		}
@@ -672,6 +674,7 @@ public class DelegatedCredentialManagerWindow extends ApplicationComponent {
 							} catch (Exception ex) {
 								ErrorDialog.showError(Utils
 										.getExceptionMessage(ex), ex);
+								log.error(ex, ex);
 							} finally {
 								enableButtons();
 							}
@@ -759,6 +762,7 @@ public class DelegatedCredentialManagerWindow extends ApplicationComponent {
 							} catch (Exception ex) {
 								ErrorDialog.showError(Utils
 										.getExceptionMessage(ex), ex);
+								log.error(ex, ex);
 							} finally {
 								for (int i = 0; i < removed.size(); i++) {
 									getDelegatedCredentialsTable()
@@ -776,6 +780,7 @@ public class DelegatedCredentialManagerWindow extends ApplicationComponent {
 								.executeInBackground(runner);
 					} catch (Exception t) {
 						t.getMessage();
+						log.error(t, t);
 					}
 
 				}

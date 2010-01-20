@@ -9,6 +9,7 @@ import java.awt.Insets;
 import javax.swing.JButton;
 import javax.swing.JPanel;
 
+import org.apache.log4j.Logger;
 import org.cagrid.gaards.credentials.CredentialEntryFactory;
 import org.cagrid.gaards.credentials.X509CredentialEntry;
 import org.cagrid.grape.ApplicationComponent;
@@ -21,10 +22,9 @@ import org.globus.gsi.GlobusCredential;
  * @author <A HREF="MAILTO:langella@bmi.osu.edu">Stephen Langella </A>
  * @author <A HREF="MAILTO:oster@bmi.osu.edu">Scott Oster </A>
  * @author <A HREF="MAILTO:hastings@bmi.osu.edu">Shannon Hastings </A>
- * @version $Id: ProxyInformationComponent.java,v 1.3 2005/12/03 07:18:56
- *          langella Exp $
  */
 public class CredentialManagerComponent extends ApplicationComponent {
+	private static Logger log = Logger.getLogger(CredentialManagerComponent.class);
 
     private static final long serialVersionUID = 1L;
 
@@ -64,7 +64,7 @@ public class CredentialManagerComponent extends ApplicationComponent {
                 proxyInfoPanel.showCredential(cred.getCredential());
             }
         } catch (Exception e) {
-            e.printStackTrace();
+        	log.error(e, e);
         }
 
     }
@@ -207,7 +207,7 @@ public class CredentialManagerComponent extends ApplicationComponent {
                             proxyInfoPanel.showCredential(cred.getCredential());
                         }
                     } catch (Exception ex) {
-                        ex.printStackTrace();
+                        log.error(ex, ex);
                     }
                 }
             });
@@ -232,6 +232,7 @@ public class CredentialManagerComponent extends ApplicationComponent {
                         proxyInfoPanel.getCertificates().doubleClick();
                     } catch (Exception ex) {
                         ErrorDialog.showError(ex);
+                        log.error(ex, ex);
                     }
                 }
             });
@@ -261,6 +262,7 @@ public class CredentialManagerComponent extends ApplicationComponent {
                     } catch (Exception ex) {
                         ErrorDialog.showError("An unexpected error occurred in saving the currently selected proxy!!!",
                             ex);
+                        log.error("An unexpected error occurred in saving the currently selected proxy!!!", ex);
                     }
                 }
             });
@@ -292,7 +294,7 @@ public class CredentialManagerComponent extends ApplicationComponent {
                             getProxyComboBox().populateList();
                         }
                     } catch (Exception ex) {
-                        ex.printStackTrace();
+                        log.error(ex, ex);
                     }
                 }
             });
@@ -337,7 +339,7 @@ public class CredentialManagerComponent extends ApplicationComponent {
                             getProxyComboBox().addItem(credential);
                             getProxyComboBox().setSelectedItem(credential);
                         } catch (Exception ex) {
-                            ex.printStackTrace();
+                            log.error(ex, ex);
                             ErrorDialog.showError(ex);
                         }
                     }

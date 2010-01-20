@@ -16,6 +16,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.border.TitledBorder;
 
+import org.apache.log4j.Logger;
 import org.cagrid.gaards.dorian.federation.HostCertificateRecord;
 import org.cagrid.gaards.dorian.federation.HostCertificateStatus;
 import org.cagrid.gaards.pki.CertUtil;
@@ -29,7 +30,8 @@ import org.cagrid.grape.LookAndFeel;
 import org.cagrid.grape.utils.ErrorDialog;
 
 public class RequestHostCertificateResponseWindow extends ApplicationComponent {
-
+	private static Logger log = Logger.getLogger(RequestHostCertificateResponseWindow.class);
+	
 	private static final long serialVersionUID = 1L;
 
 	private JPanel jContentPane = null;
@@ -110,6 +112,7 @@ public class RequestHostCertificateResponseWindow extends ApplicationComponent {
 			this.getResponse().setText(str);
 		} catch (Exception e) {
 			ErrorDialog.showError(e);
+			log.error(e, e);
 		}
 	}
 
@@ -285,6 +288,7 @@ public class RequestHostCertificateResponseWindow extends ApplicationComponent {
 															cert), 600, 425);
 								} catch (Exception ex) {
 									ErrorDialog.showError(ex);
+									log.error(ex, ex);
 								}
 
 							}

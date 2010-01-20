@@ -21,6 +21,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 import javax.swing.border.TitledBorder;
 
+import org.apache.log4j.Logger;
 import org.cagrid.gaards.dorian.client.GridAdministrationClient;
 import org.cagrid.gaards.dorian.federation.FederationAudit;
 import org.cagrid.gaards.dorian.federation.FederationAuditFilter;
@@ -34,7 +35,8 @@ import org.cagrid.grape.utils.ErrorDialog;
 
 
 public class FederationAuditPanel extends JPanel {
-
+	private static Logger log = Logger.getLogger(FederationAuditPanel.class);
+	
     public static int FULL_MODE = 1;
 
     public static int GRID_ACCOUNT_MODE = 2;
@@ -167,6 +169,7 @@ public class FederationAuditPanel extends JPanel {
             stopProgess(records.size() + " audit record(s) found.");
         } catch (Exception f) {
             stopProgess("Error");
+            log.error(f, f);
             ErrorDialog.showError(f);
             return;
         } finally {
@@ -223,7 +226,7 @@ public class FederationAuditPanel extends JPanel {
                         FederationAudit o = (FederationAudit) fields[i].get(null);
                         this.auditTypes.add(o);
                     } catch (Exception e) {
-                        e.printStackTrace();
+                        log.error(e, e);
                     }
                 }
             }

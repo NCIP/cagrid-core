@@ -25,6 +25,7 @@ import javax.swing.JTextField;
 import javax.swing.filechooser.FileFilter;
 
 import org.apache.axis.utils.XMLUtils;
+import org.apache.log4j.Logger;
 import org.cagrid.grape.configuration.Grid;
 import org.cagrid.grape.configuration.TargetGridsConfiguration;
 import org.cagrid.grape.model.Configuration;
@@ -32,7 +33,8 @@ import org.cagrid.grape.utils.ErrorDialog;
 import org.globus.wsrf.encoding.ObjectDeserializer;
 
 public class TargetGridBaseEditor extends ConfigurationBasePanel {
-
+	private static Logger log = Logger.getLogger(TargetGridBaseEditor.class);
+	
 	private static final long serialVersionUID = 1L;
 
 	private JPanel titlePanel = null;
@@ -320,6 +322,7 @@ public class TargetGridBaseEditor extends ConfigurationBasePanel {
 					try {						
 						if (removingRepositoryWithActiveGrid(getGrids().getSelectedGrid())) {
 							ErrorDialog.showError("Cannot remove a repository if it contains the target grid.");
+							log.error("Cannot remove a repository if it contains the target grid.");
 							return;
 						}
 					
@@ -328,7 +331,7 @@ public class TargetGridBaseEditor extends ConfigurationBasePanel {
 						window.dispose();
 						
 					} catch (Exception ex) {
-						ex.printStackTrace();
+						log.error(ex, ex);
 						GridApplication.getContext().showMessage(
 								Utils.getExceptionMessage(ex));
 					}
@@ -384,7 +387,7 @@ public class TargetGridBaseEditor extends ConfigurationBasePanel {
 			Utils.copyFile(in, out);
 		} catch (IOException e) {
 			ErrorDialog.showError("Unable to copy the repository configuration file into gaards configuration directory.");
-			e.printStackTrace();
+			log.error("Unable to copy the repository configuration file into gaards configuration directory.", e);
 		}
 
 		TargetGridsManager gridManager = new TargetGridsManager(GAARDSApplication.getGAARDSConfigurationDirectory(),
@@ -394,7 +397,7 @@ public class TargetGridBaseEditor extends ConfigurationBasePanel {
 			gridManager.getGridsFromRepository(out, targetGridsConfiguration);
 		} catch (Exception e) {
 			ErrorDialog.showError("Encountered an error while trying to obtain target grids from the repository.");
-			e.printStackTrace();
+			log.error("Encountered an error while trying to obtain target grids from the repository.", e);
 		}
 		
 		loadValues();
@@ -440,7 +443,7 @@ public class TargetGridBaseEditor extends ConfigurationBasePanel {
 			}
 
 		} catch (Exception e) {
-			e.printStackTrace();
+			log.error(e, e);
 			GridApplication.getContext().showMessage(
 					Utils.getExceptionMessage(e));
 		}
@@ -566,7 +569,7 @@ public class TargetGridBaseEditor extends ConfigurationBasePanel {
 						}
 						// validateInput();
 					} catch (Exception ex) {
-						ex.printStackTrace();
+						log.error(ex, ex);
 					}
 				}
 			});

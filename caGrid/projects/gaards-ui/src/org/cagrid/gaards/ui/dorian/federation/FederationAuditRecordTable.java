@@ -7,6 +7,7 @@ import java.util.Vector;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumn;
 
+import org.apache.log4j.Logger;
 import org.cagrid.gaards.dorian.federation.FederationAuditRecord;
 import org.cagrid.grape.GridApplication;
 import org.cagrid.grape.table.GrapeBaseTable;
@@ -16,10 +17,9 @@ import org.cagrid.grape.utils.ErrorDialog;
  * @author <A HREF="MAILTO:langella@bmi.osu.edu">Stephen Langella </A>
  * @author <A HREF="MAILTO:oster@bmi.osu.edu">Scott Oster </A>
  * @author <A HREF="MAILTO:hastings@bmi.osu.edu">Shannon Hastings </A>
- * @version $Id: DelegatedCredentialAuditRecordTable.java,v 1.1 2008/01/07
- *          20:21:57 langella Exp $
  */
 public class FederationAuditRecordTable extends GrapeBaseTable {
+	private static Logger log = Logger.getLogger(FederationAuditRecordTable.class);
 	
 	private static final long serialVersionUID = 1L;
 
@@ -108,6 +108,7 @@ public class FederationAuditRecordTable extends GrapeBaseTable {
 					400);
 		} catch (Exception ex) {
 			ErrorDialog.showError(ex.getMessage(), ex);
+			log.error(ex, ex);
 		}
 	}
 

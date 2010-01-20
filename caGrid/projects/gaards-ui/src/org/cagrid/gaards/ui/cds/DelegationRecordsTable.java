@@ -8,6 +8,7 @@ import java.util.Vector;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumn;
 
+import org.apache.log4j.Logger;
 import org.cagrid.gaards.cds.common.DelegationIdentifier;
 import org.cagrid.gaards.cds.common.DelegationRecord;
 import org.cagrid.grape.GridApplication;
@@ -18,10 +19,9 @@ import org.cagrid.grape.utils.ErrorDialog;
  * @author <A HREF="MAILTO:langella@bmi.osu.edu">Stephen Langella </A>
  * @author <A HREF="MAILTO:oster@bmi.osu.edu">Scott Oster </A>
  * @author <A HREF="MAILTO:hastings@bmi.osu.edu">Shannon Hastings </A>
- * @version $Id: DelegationRecordsTable.java,v 1.1 2007/11/19 17:05:26 langella
- *          Exp $
  */
 public class DelegationRecordsTable extends GrapeBaseTable {
+	private static Logger log = Logger.getLogger(DelegationRecordsTable.class);
 	
 	private static final long serialVersionUID = 1L;
 	
@@ -130,6 +130,7 @@ public class DelegationRecordsTable extends GrapeBaseTable {
 									getSelectedRecord()), 700, 500);
 				} catch (Exception e) {
 					ErrorDialog.showError(e);
+		            log.error(e, e);
 				}
 			}
 		};
@@ -137,6 +138,7 @@ public class DelegationRecordsTable extends GrapeBaseTable {
 			GridApplication.getContext().executeInBackground(runner);
 		} catch (Exception t) {
 			t.getMessage();
+            log.error(t, t);
 		}
 
 	}

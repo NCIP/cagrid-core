@@ -21,6 +21,7 @@ import javax.swing.JTabbedPane;
 import javax.swing.JTextField;
 import javax.swing.border.TitledBorder;
 
+import org.apache.log4j.Logger;
 import org.cagrid.gaards.dorian.client.GridAdministrationClient;
 import org.cagrid.gaards.dorian.common.SAMLConstants;
 import org.cagrid.gaards.dorian.federation.GridUserPolicy;
@@ -45,11 +46,10 @@ import org.cagrid.grape.utils.ErrorDialog;
  * @author <A HREF="MAILTO:langella@bmi.osu.edu">Stephen Langella </A>
  * @author <A HREF="MAILTO:oster@bmi.osu.edu">Scott Oster </A>
  * @author <A HREF="MAILTO:hastings@bmi.osu.edu">Shannon Langella </A>
- * @version $Id: TrustedIdPWindow.java,v 1.6.2.1 2009/02/10 20:26:02 langella
- *          Exp $
  */
 public class TrustedIdPWindow extends ApplicationComponent implements DorianSessionProvider {
-
+	private static Logger log = Logger.getLogger(TrustedIdPWindow.class);
+	
     private static final long serialVersionUID = 1L;
 
     public static final String PUBLISH_YES = "Yes";
@@ -748,7 +748,7 @@ public class TrustedIdPWindow extends ApplicationComponent implements DorianSess
                 }
 
             } catch (Exception e) {
-                e.printStackTrace();
+                log.error(e, e);
             }
         }
         return credPanel;
