@@ -87,5 +87,13 @@
 	<classpathentry kind="lib" path="ext/dependencies/service/jars/caGrid-ServiceSecurityProvider-service-1.4-dev.jar"/>
 	<classpathentry kind="lib" path="ext/dependencies/service/jars/caGrid-ServiceSecurityProvider-stubs-1.4-dev.jar"/>
 	<classpathentry kind="lib" path="ext/dependencies/service/jars/jasciidammit-1.1.jar"/>
+	<classpathentry kind="lib" path="ext/dependencies/service/jars/caGrid-cds-client-1.4-dev.jar"/>
+	<classpathentry kind="lib" path="ext/dependencies/service/jars/caGrid-cds-common-1.4-dev.jar"/>
+	<classpathentry kind="lib" path="ext/dependencies/service/jars/caGrid-cds-stubs-1.4-dev.jar" sourcepath="/caGrid"/>
+	<classpathentry kind="lib" path="ext/dependencies/service/jars/caGrid-gaards-core-1.4-dev.jar"/>
+	<classpathentry kind="lib" path="ext/dependencies/service/jars/caGrid-opensaml-1.4-dev.jar"/>
+	<classpathentry kind="lib" path="ext/dependencies/service/jars/castor-1.0.2.jar"/>
+	<classpathentry kind="lib" path="ext/dependencies/service/jars/commons-codec-1.3.jar"/>
+	<classpathentry kind="lib" path="ext/dependencies/service/jars/jprov.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

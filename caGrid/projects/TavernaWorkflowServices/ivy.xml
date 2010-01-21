@@ -46,6 +46,8 @@
     <dependency rev="latest.integration" org="caGrid" name="advertisement" conf="service->default" />
     <dependency rev="latest.integration" org="caGrid" name="introduce-servicetools" conf="service->default" />
 
+    <dependency rev="latest.integration" org="caGrid" name="cds" conf="client->client" />
+
     <dependency rev="${target.grid}" org="caGrid" name="target_grid" conf="target_grid->urls" />
 
     <!-- Specific caGrid Service Dependencies -->

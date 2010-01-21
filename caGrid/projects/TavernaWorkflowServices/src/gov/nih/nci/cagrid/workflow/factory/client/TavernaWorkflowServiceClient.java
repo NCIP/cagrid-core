@@ -1,6 +1,7 @@
 package gov.nih.nci.cagrid.workflow.factory.client;
 
 import gov.nih.nci.cagrid.common.Utils;
+import gov.nih.nci.cagrid.common.security.ProxyUtil;
 import gov.nih.nci.cagrid.workflow.factory.common.TavernaWorkflowServiceI;
 import gov.nih.nci.cagrid.workflow.service.impl.client.TavernaWorkflowServiceImplClient;
 import gov.nih.nci.cagrid.workflow.service.impl.common.TavernaWorkflowServiceImplConstantsBase;
@@ -9,6 +10,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileWriter;
 import java.rmi.RemoteException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
@@ -19,6 +21,11 @@ import org.apache.axis.client.Stub;
 import org.apache.axis.message.addressing.EndpointReferenceType;
 import org.apache.axis.types.URI;
 import org.apache.axis.types.URI.MalformedURIException;
+import org.cagrid.gaards.cds.client.ClientConstants;
+import org.cagrid.gaards.cds.client.DelegationUserClient;
+import org.cagrid.gaards.cds.common.IdentityDelegationPolicy;
+import org.cagrid.gaards.cds.common.ProxyLifetime;
+import org.cagrid.gaards.cds.delegated.stubs.types.DelegatedCredentialReference;
 import org.globus.gsi.GlobusCredential;
 import org.globus.wsrf.container.ContainerException;
 import org.globus.wsrf.encoding.ObjectDeserializer;
@@ -213,6 +220,72 @@ TavernaWorkflowServiceClientBase implements TavernaWorkflowServiceI {
 			return boxedResult.getWMSOutputElement();
 		}
 	}
+
+
+	//Method that returns an EPR from the Credential Delegation Service. It automatically picks the Clients
+	// credentials from /tmp/x509... file and if CDS is able to authenticate with it, it then retuns an epr representing the CD
+
+	public static DelegatedCredentialReference delegateCredential(String cdsURL) throws Exception {
+
+		// The default credential or the user that is currently logged in.
+
+		GlobusCredential credential = ProxyUtil.getDefaultProxy();
+
+		// Specifies how long the delegation service can delegated this
+		// credential to other parties.
+
+		ProxyLifetime delegationLifetime = new ProxyLifetime();
+		delegationLifetime.setHours(4);
+		delegationLifetime.setMinutes(0);
+		delegationLifetime.setSeconds(0);
+
+		// Specifies the path length of the credential being delegate the
+		// minumum is 1.
+
+		int delegationPathLength = 1;
+
+		// Specifies the how long credentials issued to allowed parties will
+		// be
+		// valid for.
+
+		ProxyLifetime issuedCredentialLifetime = new ProxyLifetime();
+		issuedCredentialLifetime.setHours(1);
+		issuedCredentialLifetime.setMinutes(0);
+		issuedCredentialLifetime.setSeconds(0);
+
+		// Specifies the path length of the credentials issued to allowed
+		// parties. A path length of 0 means that
+		// the requesting party cannot further delegate the credential.
+
+		int issuedCredentialPathLength = 0;
+
+		// Specifies the key length of the delegated credential
+
+		int keySize = ClientConstants.DEFAULT_KEY_SIZE;
+
+		// The policy stating which parties will be allowed to obtain a
+		// delegated credential. The CDS will only
+		// issue credentials to parties listed in this policy.
+
+		List<String> parties = new ArrayList<String>();
+		parties.add("/O=caBIG/OU=caGrid/OU=Training/OU=Dorian/CN=jdoe");
+		IdentityDelegationPolicy policy = org.cagrid.gaards.cds.common.Utils.createIdentityDelegationPolicy(parties);
+
+		// Create an instance of the delegation client, specifies the CDS
+		// Service URL and the credential
+		// to be delegated.
+
+		DelegationUserClient client = new DelegationUserClient(cdsURL, credential);
+
+		// Delegates the credential and returns a reference which can later
+		// be
+		// used by allowed parties to
+		// obtain a credential.
+
+		DelegatedCredentialReference ref = client.delegateCredential(delegationLifetime, delegationPathLength, policy, issuedCredentialLifetime, issuedCredentialPathLength, keySize);
+		return ref;
+	} 
+
 
 	public org.oasis.wsrf.properties.GetMultipleResourcePropertiesResponse getMultipleResourceProperties(org.oasis.wsrf.properties.GetMultipleResourceProperties_Element params) throws RemoteException {
 		synchronized(portTypeMutex){

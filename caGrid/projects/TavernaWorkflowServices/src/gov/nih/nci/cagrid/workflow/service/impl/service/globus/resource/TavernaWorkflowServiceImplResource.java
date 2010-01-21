@@ -319,7 +319,8 @@ public class TavernaWorkflowServiceImplResource extends TavernaWorkflowServiceIm
 			args[0] = "java";
 			args[1] = "-Xms256m";
 			args[2] = "-Xmx1g";
-			args[3] = "gov.nih.nci.cagrid.workflow.factory.taverna.ExecuteWorkflow";
+			//args[3] = "gov.nih.nci.cagrid.workflow.factory.taverna.ExecuteWorkflow";
+			args[3] = "net.sf.taverna.raven.prelauncher.PreLauncher";
 			args[4] = this.getScuflDoc();
 			for(int i = 0; i < inputPorts; i++)
 			{
