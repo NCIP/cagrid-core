@@ -547,11 +547,12 @@ public class TrustedIdPWindow extends ApplicationComponent implements DorianSess
             FaultUtil.printFault(pdf);
             getProgressPanel().stopProgress("Error");
             ErrorDialog.showError(pdf);
-
+            log.error(pdf, pdf);
         } catch (Exception e) {
             FaultUtil.printFault(e);
             getProgressPanel().stopProgress("Error");
             ErrorDialog.showError(e);
+            log.error(e, e);
         } finally {
             getUpdateTrustedIdP().setEnabled(true);
         }

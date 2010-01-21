@@ -14,6 +14,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
+import org.apache.log4j.Logger;
 import org.cagrid.gaards.credentials.CredentialEntryFactory;
 import org.cagrid.gaards.credentials.DorianUserCredentialEntry;
 import org.cagrid.gaards.credentials.X509CredentialEntry;
@@ -37,10 +38,10 @@ import org.globus.gsi.GlobusCredential;
  * @author <A HREF="MAILTO:langella@bmi.osu.edu">Stephen Langella </A>
  * @author <A HREF="MAILTO:oster@bmi.osu.edu">Scott Oster </A>
  * @author <A HREF="MAILTO:hastings@bmi.osu.edu">Shannon Langella </A>
- * @version $Id: UserWindow.java,v 1.9 2009-03-13 15:54:13 langella Exp $
  */
 public class AccountProfileWindow extends ApplicationComponent {
-
+	private static Logger log = Logger.getLogger(AccountProfileWindow.class);
+	
     private static final long serialVersionUID = 1L;
 
     private final static String INFO_PANEL = "User Information";
@@ -140,6 +141,7 @@ public class AccountProfileWindow extends ApplicationComponent {
             }
         } catch (Exception e) {
             ErrorDialog.showError(e);
+            log.error(e, e);
             dispose();
         }
         initialize();
@@ -307,9 +309,11 @@ public class AccountProfileWindow extends ApplicationComponent {
             getProgressPanel().stopProgress("User profile successfully modified.");
         } catch (PermissionDeniedFault pdf) {
             ErrorDialog.showError(pdf);
+            log.error(pdf, pdf);
             getProgressPanel().stopProgress("Error.");
         } catch (Exception e) {
             ErrorDialog.showError(e);
+            log.error(e, e);
             getProgressPanel().stopProgress("Error.");
         }
         setActiveComponents(true);

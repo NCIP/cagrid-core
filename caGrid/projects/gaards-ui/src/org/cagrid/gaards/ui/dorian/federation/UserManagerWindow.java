@@ -18,6 +18,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 import javax.swing.border.TitledBorder;
 
+import org.apache.log4j.Logger;
 import org.cagrid.gaards.dorian.client.GridAdministrationClient;
 import org.cagrid.gaards.dorian.federation.GridUser;
 import org.cagrid.gaards.dorian.federation.GridUserFilter;
@@ -38,10 +39,10 @@ import org.globus.gsi.GlobusCredential;
  * @author <A HREF="MAILTO:langella@bmi.osu.edu">Stephen Langella </A>
  * @author <A HREF="MAILTO:oster@bmi.osu.edu">Scott Oster </A>
  * @author <A HREF="MAILTO:hastings@bmi.osu.edu">Shannon Langella </A>
- * @version $Id: UserManagerWindow.java,v 1.7 2008-12-07 02:08:21 langella Exp $
  */
 public class UserManagerWindow extends ApplicationComponent {
-
+	private static Logger log = Logger.getLogger(UserManagerWindow.class);
+	
     private static final long serialVersionUID = 1L;
 
     private javax.swing.JPanel jContentPane = null;
@@ -381,9 +382,11 @@ public class UserManagerWindow extends ApplicationComponent {
         } catch (PermissionDeniedFault pdf) {
             ErrorDialog.showError(pdf);
             getProgressPanel().stopProgress("Error");
+            log.error(pdf, pdf);
         } catch (Exception e) {
             ErrorDialog.showError(e);
             getProgressPanel().stopProgress("Error");
+            log.error(e, e);
         } finally {
             enableAllButtons();
         }
@@ -581,6 +584,7 @@ public class UserManagerWindow extends ApplicationComponent {
             getIdp().showPopup();
         } catch (Exception e) {
             ErrorDialog.showError(e);
+            log.error(e, e);
             idpFindError = true;
         } finally {
             getProgressPanel().stopProgress();
@@ -609,12 +613,13 @@ public class UserManagerWindow extends ApplicationComponent {
                 try {
                     GridApplication.getContext().executeInBackground(runner);
                 } catch (Exception t) {
-                    t.getMessage();
+                	log.error(t, t);
                 }
 
             }
         } catch (Exception e) {
             ErrorDialog.showError(e);
+            log.error(e, e);
             idpFindError = true;
         }
     }
@@ -734,6 +739,7 @@ public class UserManagerWindow extends ApplicationComponent {
         } catch (Exception e) {
             ErrorDialog.showError(e);
             getProgressPanel().stopProgress("Error");
+            log.error(e, e);
         } finally {
 
             enableAllButtons();

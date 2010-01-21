@@ -17,6 +17,7 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 
+import org.apache.log4j.Logger;
 import org.cagrid.gaards.dorian.client.GridAdministrationClient;
 import org.cagrid.gaards.dorian.federation.DateRange;
 import org.cagrid.gaards.dorian.federation.UserCertificateFilter;
@@ -30,7 +31,8 @@ import org.cagrid.grape.LookAndFeel;
 import org.cagrid.grape.utils.ErrorDialog;
 
 public class UserCertificateSearchPanel extends JPanel implements DorianSessionProvider{
-
+	private static Logger log = Logger.getLogger(UserCertificateSearchPanel.class);
+	
 	private static final long serialVersionUID = 1L;
 
 	private JPanel searchCriteriaPanel = null;
@@ -730,6 +732,7 @@ public class UserCertificateSearchPanel extends JPanel implements DorianSessionP
 		} catch (Exception e) {
 			stopProgess("Error");
 			ErrorDialog.showError(Utils.getExceptionMessage(e), e);
+			log.error(Utils.getExceptionMessage(e), e);
 		}
 		enableButtons();
 	}
@@ -885,6 +888,7 @@ public class UserCertificateSearchPanel extends JPanel implements DorianSessionP
 		} catch (Exception e) {
 			ErrorDialog.showError(e);
 			stopProgess("Error");
+			log.error(e, e);
 		}
 		enableButtons();
 	}
@@ -912,6 +916,7 @@ public class UserCertificateSearchPanel extends JPanel implements DorianSessionP
 		} catch (Exception e) {
 			stopProgess("Error");
 			ErrorDialog.showError(e);
+			log.error(e, e);
 		}
 		enableButtons();
 	}

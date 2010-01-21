@@ -8,6 +8,7 @@ import java.util.Vector;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumn;
 
+import org.apache.log4j.Logger;
 import org.cagrid.gaards.dorian.client.GridAdministrationClient;
 import org.cagrid.gaards.dorian.federation.GridUser;
 import org.cagrid.gaards.dorian.federation.TrustedIdP;
@@ -20,9 +21,9 @@ import org.cagrid.grape.utils.ErrorDialog;
  * @author <A HREF="MAILTO:langella@bmi.osu.edu">Stephen Langella </A>
  * @author <A HREF="MAILTO:oster@bmi.osu.edu">Scott Oster </A>
  * @author <A HREF="MAILTO:hastings@bmi.osu.edu">Shannon Hastings </A>
- * @version $Id: UsersTable.java,v 1.4 2008-11-20 15:29:42 langella Exp $
  */
 public class UsersTable extends GrapeBaseTable {
+	private static Logger log = Logger.getLogger(UsersTable.class);
 	
 	private static final long serialVersionUID = 1L;
 	
@@ -133,6 +134,7 @@ public class UsersTable extends GrapeBaseTable {
 												user, tidp), 700, 500);
 					} catch (Exception e) {
 						ErrorDialog.showError(e);
+						log.error(e, e);
 					}
 				}
 			};

@@ -1,6 +1,5 @@
 package org.cagrid.gaards.ui.dorian.federation;
 
-import gov.nih.nci.cagrid.common.FaultUtil;
 import gov.nih.nci.cagrid.common.Runner;
 import gov.nih.nci.cagrid.common.Utils;
 
@@ -21,6 +20,7 @@ import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.border.TitledBorder;
 
+import org.apache.log4j.Logger;
 import org.cagrid.gaards.dorian.client.GridAdministrationClient;
 import org.cagrid.gaards.dorian.federation.UserCertificateRecord;
 import org.cagrid.gaards.pki.CertUtil;
@@ -37,6 +37,8 @@ import org.cagrid.grape.utils.ErrorDialog;
 public class UserCertificateWindow extends ApplicationComponent implements
 		DorianSessionProvider {
 
+	private static Logger log = Logger.getLogger(UserCertificateWindow.class);
+	
 	private final static String DETAILS_PANEL = "Details"; // @jve:decl-index=0:
 
 	private final static String AUDIT_PANEL = "Audit";
@@ -532,8 +534,8 @@ public class UserCertificateWindow extends ApplicationComponent implements
 					.stopProgress("Certificate successfully updated.");
 		} catch (Exception e) {
 			getProgressPanel().stopProgress("Error");
-			FaultUtil.printFault(e);
 			ErrorDialog.showError(e);
+			log.error(e, e);
 		} finally {
 			getUpdate().setEnabled(true);
 			getViewCertificate().setEnabled(true);

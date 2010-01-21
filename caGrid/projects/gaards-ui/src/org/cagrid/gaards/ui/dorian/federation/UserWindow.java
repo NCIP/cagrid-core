@@ -17,6 +17,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
 import javax.swing.JTextField;
 
+import org.apache.log4j.Logger;
 import org.cagrid.gaards.dorian.client.GridAdministrationClient;
 import org.cagrid.gaards.dorian.federation.GridUser;
 import org.cagrid.gaards.dorian.federation.HostCertificateFilter;
@@ -37,10 +38,10 @@ import org.cagrid.grape.utils.ErrorDialog;
  * @author <A HREF="MAILTO:langella@bmi.osu.edu">Stephen Langella </A>
  * @author <A HREF="MAILTO:oster@bmi.osu.edu">Scott Oster </A>
  * @author <A HREF="MAILTO:hastings@bmi.osu.edu">Shannon Langella </A>
- * @version $Id: UserWindow.java,v 1.9 2009-03-13 15:54:13 langella Exp $
  */
 public class UserWindow extends ApplicationComponent implements
 		HostCertificateLauncher, DorianSessionProvider {
+	private static Logger log = Logger.getLogger(UserWindow.class);
 	
 	private static final long serialVersionUID = 1L;
 
@@ -247,9 +248,11 @@ public class UserWindow extends ApplicationComponent implements
 		} catch (PermissionDeniedFault pdf) {
 			ErrorDialog.showError(pdf);
 			this.getProgressPanel().stopProgress("Error");
+			log.error(pdf, pdf);
 		} catch (Exception e) {
 			ErrorDialog.showError(e);
 			this.getProgressPanel().stopProgress("Error");
+			log.error(e, e);
 		} finally {
 			updateUser.setEnabled(true);
 			
@@ -746,6 +749,7 @@ public class UserWindow extends ApplicationComponent implements
 		} catch (Exception e) {
 			ErrorDialog.showError(e);
 			getProgressPanel().stopProgress("Error");
+			log.error(e, e);
 		} finally {
 			getFindHostCertificates().setEnabled(true);
 			getViewHostCertificate().setEnabled(true);
@@ -786,6 +790,7 @@ public class UserWindow extends ApplicationComponent implements
 					500);
 		} catch (Exception e) {
 			ErrorDialog.showError(e);
+			log.error(e, e);
 		}
 
 	}
@@ -836,6 +841,7 @@ public class UserWindow extends ApplicationComponent implements
 								getHostCertificateRecords().doubleClick();
 							} catch (Exception ex) {
 								ErrorDialog.showError(ex);
+								log.error(ex, ex);
 							}
 						}
 					});

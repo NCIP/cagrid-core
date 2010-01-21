@@ -19,6 +19,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 import javax.swing.border.TitledBorder;
 
+import org.apache.log4j.Logger;
 import org.cagrid.gaards.dorian.client.GridAdministrationClient;
 import org.cagrid.gaards.dorian.federation.GridUser;
 import org.cagrid.gaards.dorian.federation.GridUserFilter;
@@ -37,9 +38,9 @@ import org.globus.gsi.GlobusCredential;
  * @author <A HREF="MAILTO:langella@bmi.osu.edu">Stephen Langella </A>
  * @author <A HREF="MAILTO:oster@bmi.osu.edu">Scott Oster </A>
  * @author <A HREF="MAILTO:hastings@bmi.osu.edu">Shannon Langella </A>
- * @version $Id: UserSearchDialog.java,v 1.5 2008-11-20 15:29:42 langella Exp $
  */
 public class UserSearchDialog extends JDialog {
+	private static Logger log = Logger.getLogger(UserSearchDialog.class);
 	
 	private static final long serialVersionUID = 1L;
 
@@ -320,6 +321,7 @@ public class UserSearchDialog extends JDialog {
 						dispose();
 					} catch (Exception ex) {
 						ErrorDialog.showError(ex);
+						log.error(ex, ex);
 					}
 				}
 
@@ -422,9 +424,11 @@ public class UserSearchDialog extends JDialog {
 		} catch (PermissionDeniedFault pdf) {
 			ErrorDialog.showError(pdf);
 			getProgressPanel().stopProgress("Error");
+			log.error(pdf, pdf);
 		} catch (Exception e) {
 			ErrorDialog.showError(e);
 			getProgressPanel().stopProgress("Error");
+			log.error(e, e);
 		} finally {
 			query.setEnabled(true);
 		}
@@ -629,6 +633,7 @@ public class UserSearchDialog extends JDialog {
 		} catch (Exception e) {
 			getProgressPanel().stopProgress("Error");
 			ErrorDialog.showError(e);
+			log.error(e, e);
 		}
 	}
 
@@ -660,6 +665,7 @@ public class UserSearchDialog extends JDialog {
 			}
 		} catch (Exception e) {
 			ErrorDialog.showError(e);
+			log.error(e, e);
 		} finally {
 			query.setEnabled(true);
 		}

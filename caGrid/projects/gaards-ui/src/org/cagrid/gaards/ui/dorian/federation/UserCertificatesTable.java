@@ -9,6 +9,7 @@ import java.util.Vector;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumn;
 
+import org.apache.log4j.Logger;
 import org.cagrid.gaards.dorian.federation.UserCertificateRecord;
 import org.cagrid.gaards.pki.CertUtil;
 import org.cagrid.gaards.ui.dorian.DorianSession;
@@ -20,10 +21,9 @@ import org.cagrid.grape.utils.ErrorDialog;
  * @author <A HREF="MAILTO:langella@bmi.osu.edu">Stephen Langella </A>
  * @author <A HREF="MAILTO:oster@bmi.osu.edu">Scott Oster </A>
  * @author <A HREF="MAILTO:hastings@bmi.osu.edu">Shannon Hastings </A>
- * @version $Id: UserCertificatesTable.java,v 1.3 2008/09/30 23:26:17 langella
- *          Exp $
  */
 public class UserCertificatesTable extends GrapeBaseTable {
+	private static Logger log = Logger.getLogger(UserCertificatesTable.class);
 	
 	private static final long serialVersionUID = 1L;
 	
@@ -125,6 +125,7 @@ public class UserCertificatesTable extends GrapeBaseTable {
 							getSelectedCertificate()), 650, 550);
 		} catch (Exception e) {
 			ErrorDialog.showError(e);
+			log.error(e, e);
 		}
 	}
 
