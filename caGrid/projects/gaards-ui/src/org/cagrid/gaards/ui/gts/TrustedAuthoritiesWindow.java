@@ -366,6 +366,7 @@ public class TrustedAuthoritiesWindow extends ApplicationComponent
             GridApplication.getContext().addApplicationComponent(window, 800, 600);
         } catch (Exception e) {
             ErrorDialog.showError(e);
+            log.error(e, e);
         }
     }
 
@@ -476,6 +477,7 @@ public class TrustedAuthoritiesWindow extends ApplicationComponent
         } catch (Exception e) {
             ErrorDialog.showError(e);
             this.getProgressPanel().stopProgress("Error");
+            log.error(e, e);
         }
     }
 
@@ -521,6 +523,7 @@ public class TrustedAuthoritiesWindow extends ApplicationComponent
         } catch (Exception e) {
             ErrorDialog.showError(e);
             getProgressPanel().stopProgress("Error");
+            log.error(e, e);
         }
     }
 
@@ -719,6 +722,7 @@ public class TrustedAuthoritiesWindow extends ApplicationComponent
                 new TrustedAuthorityWindow(getSessionPanel().getSession(), this));
         } catch (Exception e) {
             ErrorDialog.showError(e);
+            log.error(e, e);
         }
     }
 

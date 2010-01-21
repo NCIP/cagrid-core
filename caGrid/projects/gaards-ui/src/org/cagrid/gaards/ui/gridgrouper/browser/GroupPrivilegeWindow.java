@@ -441,6 +441,7 @@ public class GroupPrivilegeWindow extends ApplicationComponent {
 			GridApplication.getContext().showMessage(sb.toString());
 		} catch (Exception e) {
 			ErrorDialog.showError(e);
+			log.error(e, e);
 		}
 
 	}

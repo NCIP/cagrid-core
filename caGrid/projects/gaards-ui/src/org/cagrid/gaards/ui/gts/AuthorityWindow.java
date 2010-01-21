@@ -16,6 +16,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
+import org.apache.log4j.Logger;
 import org.cagrid.gaards.ui.common.ProgressPanel;
 import org.cagrid.gaards.ui.common.TitlePanel;
 import org.cagrid.grape.ApplicationComponent;
@@ -27,11 +28,10 @@ import org.cagrid.grape.utils.ErrorDialog;
  * @author <A href="mailto:langella@bmi.osu.edu">Stephen Langella </A>
  * @author <A href="mailto:oster@bmi.osu.edu">Scott Oster </A>
  * @author <A href="mailto:hastings@bmi.osu.edu">Shannon Hastings </A>
- * @version $Id: ArgumentManagerTable.java,v 1.2 2004/10/15 16:35:16 langella
- *          Exp $
  */
 public class AuthorityWindow extends ApplicationComponent {
-
+	private static Logger log = Logger.getLogger(AuthorityWindow.class);
+	
     private static final long serialVersionUID = 1L;
 
     private JPanel jContentPane = null;
@@ -147,6 +147,7 @@ public class AuthorityWindow extends ApplicationComponent {
         } catch (Exception e) {
             ErrorDialog.showError(e);
             getProgressPanel().stopProgress("Error");
+            log.error(e, e);
         } finally {
             unlockAll();
         }
@@ -297,6 +298,7 @@ public class AuthorityWindow extends ApplicationComponent {
 
         } catch (Exception e) {
             ErrorDialog.showError(e);
+            log.error(e, e);
             getProgressPanel().stopProgress("Error");
         } finally {
             unlockAll();

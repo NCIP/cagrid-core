@@ -10,6 +10,7 @@ import java.awt.Insets;
 import javax.swing.JButton;
 import javax.swing.JPanel;
 
+import org.apache.log4j.Logger;
 import org.cagrid.gaards.ui.common.ProgressPanel;
 import org.cagrid.gaards.ui.common.TitlePanel;
 import org.cagrid.grape.ApplicationComponent;
@@ -21,11 +22,10 @@ import org.cagrid.grape.utils.ErrorDialog;
  * @author <A href="mailto:langella@bmi.osu.edu">Stephen Langella </A>
  * @author <A href="mailto:oster@bmi.osu.edu">Scott Oster </A>
  * @author <A href="mailto:hastings@bmi.osu.edu">Shannon Hastings </A>
- * @version $Id: ArgumentManagerTable.java,v 1.2 2004/10/15 16:35:16 langella
- *          Exp $
  */
 public class AddPermissionWindow extends ApplicationComponent {
-
+	private static Logger log = Logger.getLogger(AddPermissionWindow.class);
+	
     private static final long serialVersionUID = 1L;
 
     private JPanel jContentPane = null;
@@ -168,6 +168,7 @@ public class AddPermissionWindow extends ApplicationComponent {
             getPermissionPanel().enableAll();
             ErrorDialog.showError(e);
             getProgressPanel().stopProgress("Error");
+            log.error(e, e);
         }
 
     }
@@ -191,6 +192,7 @@ public class AddPermissionWindow extends ApplicationComponent {
             permissionPanel.syncWithService(this.session);
         } catch (Exception e) {
             ErrorDialog.showError(e);
+            log.error(e, e);
         }
     }
 

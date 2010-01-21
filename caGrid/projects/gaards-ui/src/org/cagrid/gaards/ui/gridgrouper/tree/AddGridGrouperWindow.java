@@ -13,6 +13,7 @@ import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
+import org.apache.log4j.Logger;
 import org.cagrid.gaards.credentials.X509CredentialEntry;
 import org.cagrid.gaards.ui.common.CredentialComboBox;
 import org.cagrid.gaards.ui.common.TitlePanel;
@@ -30,11 +31,10 @@ import org.globus.gsi.GlobusCredential;
  * @author <A HREF="MAILTO:oster@bmi.osu.edu">Scott Oster</A>
  * @author <A HREF="MAILTO:hastings@bmi.osu.edu">Shannon Hastings</A>
  * @author <A HREF="MAILTO:ervin@bmi.osu.edu">David W. Ervin</A>
- * @version $Id: GridGrouperBaseTreeNode.java,v 1.1 2006/08/04 03:49:26 langella
- *          Exp $
  */
 public class AddGridGrouperWindow extends ApplicationComponent {
-
+	private static Logger log = Logger.getLogger(AddGridGrouperWindow.class);
+	
     private static final long serialVersionUID = 1L;
 
     private JPanel jContentPane = null;
@@ -247,6 +247,7 @@ public class AddGridGrouperWindow extends ApplicationComponent {
             this.root.addGridGrouper(handle.getClient(cred));
         } catch (Exception e) {
             ErrorDialog.showError(e);
+            log.error(e, e);
         }
 
     }

@@ -393,7 +393,7 @@ public class AddMemberWindow extends ApplicationComponent {
 					try {
 						GridApplication.getContext().executeInBackground(runner);
 					} catch (Exception t) {
-						t.getMessage();
+						log.error(t, t);
 					}
 				}
 
@@ -436,6 +436,7 @@ public class AddMemberWindow extends ApplicationComponent {
 				GridApplication.getContext().showMessage("The group member was added successfully!!!");
 			} catch (Exception e) {
 				ErrorDialog.showError(e);
+				log.error(e, e);
 				return;
 			}
 
@@ -454,6 +455,7 @@ public class AddMemberWindow extends ApplicationComponent {
 				GridApplication.getContext().showMessage("The composite member was added successfully!!!");
 			} catch (Exception e) {
 				ErrorDialog.showError(e);
+				log.error(e, e);
 				return;
 			}
 

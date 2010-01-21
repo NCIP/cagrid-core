@@ -1319,13 +1319,14 @@ public class GroupBrowser extends BaseBrowserPanel {
                                 getPrivilegesTable().doubleClick();
                             } catch (Exception ex) {
                                 ErrorDialog.showError(ex);
+                                log.error(ex, ex);
                             }
                         }
                     };
                     try {
                         GridApplication.getContext().executeInBackground(runner);
                     } catch (Exception t) {
-                        t.getMessage();
+                    	log.error(t, t);;
                     }
                 }
 

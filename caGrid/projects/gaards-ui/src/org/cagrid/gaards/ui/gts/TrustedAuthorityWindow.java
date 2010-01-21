@@ -232,6 +232,8 @@ public class TrustedAuthorityWindow extends ApplicationComponent {
         } catch (Exception e) {
             ErrorDialog.showError("Error obtaining the levels of assurance from "
                 + this.session.getHandle().getDisplayName() + ":\n" + e.getMessage());
+            log.error("Error obtaining the levels of assurance from "
+                    + this.session.getHandle().getDisplayName() + ":\n" + e.getMessage(), e);
         }
 
         invalidate();
@@ -600,6 +602,7 @@ public class TrustedAuthorityWindow extends ApplicationComponent {
                 this.getTrustedAuthorityName().setText(certificate.getSubjectDN().getName());
             } catch (Exception ex) {
                 ErrorDialog.showError(ex);
+                log.error(ex, ex);
             }
         }
 
@@ -611,7 +614,7 @@ public class TrustedAuthorityWindow extends ApplicationComponent {
         X509Certificate cert = certificatePanel.getCertificate();
         if (cert == null) {
             ErrorDialog.showError("You must import a certificate before importing a CRL");
-
+            log.error("You must import a certificate before importing a CRL");
         }
         JFileChooser fc = new JFileChooser();
         fc.setFileSelectionMode(JFileChooser.FILES_ONLY);
@@ -624,10 +627,12 @@ public class TrustedAuthorityWindow extends ApplicationComponent {
                 } catch (Exception crle) {
                     ErrorDialog
                         .showError("Error verifying CRL, the CRL must be issued and signed by same key is the Trusted Authority's Certificate");
+                    log.error("Error verifying CRL, the CRL must be issued and signed by same key is the Trusted Authority's Certificate", crle);
                 }
                 crlPanel.setCRL(crl);
             } catch (Exception ex) {
                 ErrorDialog.showError(ex);
+                log.error(ex, ex);
             }
         }
 
@@ -697,6 +702,7 @@ public class TrustedAuthorityWindow extends ApplicationComponent {
             getAddButton().setEnabled(true);
             ErrorDialog.showError(e);
             getProgressPanel().stopProgress("Error");
+            log.error(e, e);
         }
 
     }
@@ -722,6 +728,7 @@ public class TrustedAuthorityWindow extends ApplicationComponent {
             getAddButton().setEnabled(true);
             ErrorDialog.showError(e);
             getProgressPanel().stopProgress("Error");
+            log.error(e, e);
         }
 
     }

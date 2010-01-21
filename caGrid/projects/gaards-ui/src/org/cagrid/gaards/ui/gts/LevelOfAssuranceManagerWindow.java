@@ -13,6 +13,7 @@ import javax.swing.JButton;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 
+import org.apache.log4j.Logger;
 import org.cagrid.gaards.ui.common.ProgressPanel;
 import org.cagrid.gaards.ui.common.TitlePanel;
 import org.cagrid.grape.ApplicationComponent;
@@ -25,11 +26,10 @@ import org.cagrid.grape.utils.ErrorDialog;
  * @author <A HREF="MAILTO:langella@bmi.osu.edu">Stephen Langella </A>
  * @author <A HREF="MAILTO:oster@bmi.osu.edu">Scott Oster </A>
  * @author <A HREF="MAILTO:hastings@bmi.osu.edu">Shannon Langella </A>
- * @version $Id: TrustedAuthoritiesWindow.java,v 1.2 2006/03/27 19:05:40
- *          langella Exp $
  */
 public class LevelOfAssuranceManagerWindow extends ApplicationComponent implements LevelOfAssuranceRefresher {
-
+	private static Logger log = Logger.getLogger(LevelOfAssuranceManagerWindow.class);
+	
     private static final long serialVersionUID = 1L;
 
     private javax.swing.JPanel jContentPane = null;
@@ -238,7 +238,7 @@ public class LevelOfAssuranceManagerWindow extends ApplicationComponent implemen
                     try {
                         GridApplication.getContext().executeInBackground(runner);
                     } catch (Exception t) {
-                        t.getMessage();
+                        log.error(t, t);
                     }
                 }
 
@@ -255,6 +255,7 @@ public class LevelOfAssuranceManagerWindow extends ApplicationComponent implemen
                 new LevelOfAssuranceWindow(getSessionPanel().getSession(), this), 600, 300);
         } catch (Exception e) {
             ErrorDialog.showError(e);
+            log.error(e, e);
         }
     }
 
@@ -266,6 +267,7 @@ public class LevelOfAssuranceManagerWindow extends ApplicationComponent implemen
                     getTrustLevelTable().getSelectedTrustLevel(), this), 700, 500);
         } catch (Exception e) {
             ErrorDialog.showError(e);
+            log.error(e, e);
         }
     }
 
@@ -336,6 +338,7 @@ public class LevelOfAssuranceManagerWindow extends ApplicationComponent implemen
         } catch (Exception e) {
             ErrorDialog.showError(e);
             this.getProgressPanel().stopProgress("Error");
+            log.error(e, e);
         }
     }
 
@@ -361,7 +364,7 @@ public class LevelOfAssuranceManagerWindow extends ApplicationComponent implemen
                     try {
                         GridApplication.getContext().executeInBackground(runner);
                     } catch (Exception t) {
-                        t.getMessage();
+                        log.error(t, t);
                     }
                 }
             });
@@ -382,6 +385,7 @@ public class LevelOfAssuranceManagerWindow extends ApplicationComponent implemen
         } catch (Exception e) {
             ErrorDialog.showError(e);
             getProgressPanel().stopProgress("Error");
+            log.error(e, e);
         }
     }
 
@@ -402,6 +406,7 @@ public class LevelOfAssuranceManagerWindow extends ApplicationComponent implemen
                         getTrustLevelTable().doubleClick();
                     } catch (Exception ex) {
                         ErrorDialog.showError(ex);
+                        log.error(ex, ex);
                     } finally {
                         enableAllActions();
                     }

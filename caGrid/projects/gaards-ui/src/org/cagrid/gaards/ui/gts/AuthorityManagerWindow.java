@@ -13,6 +13,7 @@ import javax.swing.JButton;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 
+import org.apache.log4j.Logger;
 import org.cagrid.gaards.ui.common.ProgressPanel;
 import org.cagrid.gaards.ui.common.TitlePanel;
 import org.cagrid.grape.ApplicationComponent;
@@ -25,10 +26,9 @@ import org.cagrid.grape.utils.ErrorDialog;
  * @author <A HREF="MAILTO:langella@bmi.osu.edu">Stephen Langella </A>
  * @author <A HREF="MAILTO:oster@bmi.osu.edu">Scott Oster </A>
  * @author <A HREF="MAILTO:hastings@bmi.osu.edu">Shannon Langella </A>
- * @version $Id: TrustedAuthoritiesWindow.java,v 1.2 2006/03/27 19:05:40
- *          langella Exp $
  */
 public class AuthorityManagerWindow extends ApplicationComponent implements AuthorityRefresher {
+	private static Logger log = Logger.getLogger(AuthorityManagerWindow.class);
 	
 	private static final long serialVersionUID = 1L;
 
@@ -269,6 +269,7 @@ public class AuthorityManagerWindow extends ApplicationComponent implements Auth
 			GridApplication.getContext().addApplicationComponent(new AuthorityWindow(getSession().getSession(), this), 700, 375);
 		} catch (Exception e) {
 			ErrorDialog.showError(e);
+			log.error(e, e);
 		}
 	}
 
@@ -279,6 +280,7 @@ public class AuthorityManagerWindow extends ApplicationComponent implements Auth
 				new AuthorityWindow(getSession().getSession(), getAuthorityTable().getSelectedAuthority(), this), 700, 375);
 		} catch (Exception e) {
 			ErrorDialog.showError(e);
+			log.error(e, e);
 		}
 	}
 
@@ -347,6 +349,7 @@ public class AuthorityManagerWindow extends ApplicationComponent implements Auth
 
 		} catch (Exception e) {
 			ErrorDialog.showError(e);
+			log.error(e, e);
 			getProgressPanel().stopProgress("Error.");
 		} finally {
 			enableAllActions();
@@ -396,6 +399,7 @@ public class AuthorityManagerWindow extends ApplicationComponent implements Auth
 		} catch (Exception e) {
 			ErrorDialog.showError(e);
 			getProgressPanel().stopProgress("Error");
+			log.error(e, e);
 		}
 	}
 
@@ -411,6 +415,7 @@ public class AuthorityManagerWindow extends ApplicationComponent implements Auth
 		} catch (Exception e) {
 			ErrorDialog.showError(e);
 			getProgressPanel().stopProgress("Error");
+			log.error(e, e);
 		} finally {
 			enableAllActions();
 		}
@@ -457,6 +462,7 @@ public class AuthorityManagerWindow extends ApplicationComponent implements Auth
 								getAuthorityTable().doubleClick();
 							} catch (Exception ex) {
 								ErrorDialog.showError(ex);
+								log.error(ex, ex);
 							}
 							enableAllActions();
 						}
@@ -465,6 +471,7 @@ public class AuthorityManagerWindow extends ApplicationComponent implements Auth
 						GridApplication.getContext().executeInBackground(runner);
 					} catch (Exception t) {
 						t.getMessage();
+						log.error(t, t);
 					}
 
 				}
@@ -520,6 +527,7 @@ public class AuthorityManagerWindow extends ApplicationComponent implements Auth
 						getAuthorityTable().increasePriority();
 					} catch (Exception ex) {
 						ErrorDialog.showError(ex);
+						log.error(ex, ex);
 					}
 				}
 			});
@@ -543,6 +551,7 @@ public class AuthorityManagerWindow extends ApplicationComponent implements Auth
 						getAuthorityTable().decreasePriority();
 					} catch (Exception ex) {
 						ErrorDialog.showError(ex);
+						log.error(ex, ex);
 					}
 				}
 			});

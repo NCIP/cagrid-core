@@ -9,6 +9,7 @@ import java.util.Vector;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumn;
 
+import org.apache.log4j.Logger;
 import org.cagrid.grape.GridApplication;
 import org.cagrid.grape.table.GrapeBaseTable;
 import org.cagrid.grape.utils.ErrorDialog;
@@ -18,10 +19,9 @@ import org.cagrid.grape.utils.ErrorDialog;
  * @author <A HREF="MAILTO:oster@bmi.osu.edu">Scott Oster</A>
  * @author <A HREF="MAILTO:hastings@bmi.osu.edu">Shannon Hastings</A>
  * @author <A HREF="MAILTO:ervin@bmi.osu.edu">David W. Ervin</A>
- * @version $Id: GridGrouperBaseTreeNode.java,v 1.1 2006/08/04 03:49:26 langella
- *          Exp $
  */
 public class MyGroupsTable extends GrapeBaseTable {
+	private static Logger log = Logger.getLogger(MyGroupsTable.class);
 	
 	private static final long serialVersionUID = 1L;
 	
@@ -86,6 +86,7 @@ public class MyGroupsTable extends GrapeBaseTable {
 					new MyGroupViewer(getSelectedGroup()), 650, 400);
 		} catch (Exception e) {
 			ErrorDialog.showError(e);
+			log.error(e, e);
 		}
 
 	}

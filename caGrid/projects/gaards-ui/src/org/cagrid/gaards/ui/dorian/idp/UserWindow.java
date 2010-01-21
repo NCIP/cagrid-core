@@ -17,6 +17,7 @@ import javax.swing.JPasswordField;
 import javax.swing.JTabbedPane;
 import javax.swing.JTextField;
 
+import org.apache.log4j.Logger;
 import org.cagrid.gaards.dorian.client.LocalAdministrationClient;
 import org.cagrid.gaards.dorian.idp.LocalUser;
 import org.cagrid.gaards.dorian.stubs.types.PermissionDeniedFault;
@@ -33,10 +34,10 @@ import org.cagrid.grape.utils.ErrorDialog;
  * @author <A HREF="MAILTO:langella@bmi.osu.edu">Stephen Langella </A>
  * @author <A HREF="MAILTO:oster@bmi.osu.edu">Scott Oster </A>
  * @author <A HREF="MAILTO:hastings@bmi.osu.edu">Shannon Langella </A>
- * @version $Id: UserWindow.java,v 1.9 2009-03-13 15:54:13 langella Exp $
  */
 public class UserWindow extends ApplicationComponent {
-
+	private static Logger log = Logger.getLogger(UserWindow.class);
+	
     private static final long serialVersionUID = 1L;
 
     private final static String ACCOUNT_PANEL = "Account Information";
@@ -319,17 +320,20 @@ public class UserWindow extends ApplicationComponent {
                 ErrorDialog.showError("Cannot update the user " + user.getUserId() + ", password don't match.");
                 getProgressPanel().stopProgress("Error.");
                 enableAllButtons();
+                log.warn("Cannot update the user " + user.getUserId() + ", password don't match.");
                 return;
             }
         }else if((pass.length()>0) && (verify.length()<=0)){
             ErrorDialog.showError("Cannot update the user " + user.getUserId() + ", password don't match.");
             getProgressPanel().stopProgress("Error.");
             enableAllButtons();
+            log.warn("Cannot update the user " + user.getUserId() + ", password don't match.");
             return;
         }else if((pass.length()<=0) && (verify.length()>0)){
             ErrorDialog.showError("Cannot update the user " + user.getUserId() + ", password don't match.");
             getProgressPanel().stopProgress("Error.");
             enableAllButtons();
+            log.warn("Cannot update the user " + user.getUserId() + ", password don't match.");
             return;
         }
 
@@ -356,9 +360,11 @@ public class UserWindow extends ApplicationComponent {
         } catch (PermissionDeniedFault pdf) {
             ErrorDialog.showError(pdf);
             getProgressPanel().stopProgress("Error.");
+            log.error(pdf, pdf);
         } catch (Exception e) {
             ErrorDialog.showError(e);
             getProgressPanel().stopProgress("Error.");
+            log.error(e, e);
         }
         enableAllButtons();
     }

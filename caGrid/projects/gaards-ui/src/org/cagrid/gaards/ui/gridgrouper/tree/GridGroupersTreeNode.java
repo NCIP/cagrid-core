@@ -12,6 +12,7 @@ import java.util.Map;
 
 import javax.swing.ImageIcon;
 
+import org.apache.log4j.Logger;
 import org.cagrid.gaards.ui.gridgrouper.GridGrouperLookAndFeel;
 import org.cagrid.grape.GridApplication;
 import org.cagrid.grape.utils.ErrorDialog;
@@ -21,10 +22,9 @@ import org.cagrid.grape.utils.ErrorDialog;
  * @author <A HREF="MAILTO:oster@bmi.osu.edu">Scott Oster</A>
  * @author <A HREF="MAILTO:hastings@bmi.osu.edu">Shannon Hastings</A>
  * @author <A HREF="MAILTO:ervin@bmi.osu.edu">David W. Ervin</A>
- * @version $Id: GridGrouperBaseTreeNode.java,v 1.1 2006/08/04 03:49:26 langella
- *          Exp $
  */
 public class GridGroupersTreeNode extends GridGrouperBaseTreeNode {
+	private static Logger log = Logger.getLogger(GridGroupersTreeNode.class);
 	
 	private static final long serialVersionUID = 1L;
 
@@ -57,6 +57,7 @@ public class GridGroupersTreeNode extends GridGrouperBaseTreeNode {
 				ErrorDialog.showError(e);
 				getTree()
 						.stopEvent(id, "Error loading Grid Grouper Service!!!");
+				log.error(e, e);
 			}
 
 		}

@@ -24,6 +24,7 @@ import javax.swing.JTabbedPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 
+import org.apache.log4j.Logger;
 import org.cagrid.gaards.ui.gridgrouper.tree.GridGrouperBaseTreeNode;
 import org.cagrid.gaards.ui.gridgrouper.tree.GroupTreeNode;
 import org.cagrid.gaards.ui.gridgrouper.tree.StemTreeNode;
@@ -37,11 +38,10 @@ import org.cagrid.grape.utils.ErrorDialog;
  * @author <A HREF="MAILTO:oster@bmi.osu.edu">Scott Oster</A>
  * @author <A HREF="MAILTO:hastings@bmi.osu.edu">Shannon Hastings</A>
  * @author <A HREF="MAILTO:ervin@bmi.osu.edu">David W. Ervin</A>
- * @version $Id: GridGrouperBaseTreeNode.java,v 1.1 2006/08/04 03:49:26 langella
- *          Exp $
  */
 public class StemBrowser extends BaseBrowserPanel {
-
+	private static Logger log = Logger.getLogger(StemBrowser.class);
+	
     private static final long serialVersionUID = 1L;
 
     private StemTreeNode node;
@@ -727,6 +727,7 @@ public class StemBrowser extends BaseBrowserPanel {
             ErrorDialog.showError(e);
             node.refresh();
             this.monitorUpdate();
+            log.error(e, e);
         }
     }
 
@@ -870,6 +871,7 @@ public class StemBrowser extends BaseBrowserPanel {
                     } catch (Exception e) {
                         stopEvent(eid, "Error loading the privileges for " + stem.getDisplayExtension() + "!!!");
                         ErrorDialog.showError(e);
+                        log.error(e, e);
                     }
                 }
             }
@@ -877,7 +879,7 @@ public class StemBrowser extends BaseBrowserPanel {
         try {
             GridApplication.getContext().executeInBackground(runner);
         } catch (Exception t) {
-            t.getMessage();
+        	log.error(t, t);
         }
     }
 
@@ -899,6 +901,7 @@ public class StemBrowser extends BaseBrowserPanel {
                                 getPrivs().doubleClick();
                             } catch (Exception ex) {
                                 ErrorDialog.showError(ex);
+                                log.error(ex, ex);
                             }
                         }
                     };
@@ -906,6 +909,7 @@ public class StemBrowser extends BaseBrowserPanel {
                         GridApplication.getContext().executeInBackground(runner);
                     } catch (Exception t) {
                         t.getMessage();
+                        log.error(t, t);
                     }
                 }
 
@@ -1095,6 +1099,7 @@ public class StemBrowser extends BaseBrowserPanel {
                             } catch (Exception ex) {
                                 stopEvent(eid, "Error adding a child stem!!!");
                                 ErrorDialog.showError(ex);
+                                log.error(ex, ex);
                             }
                         }
                     };
@@ -1150,6 +1155,7 @@ public class StemBrowser extends BaseBrowserPanel {
                         getChildStemsTable().doubleClick();
                     } catch (Exception ex) {
                         ErrorDialog.showError(ex);
+                        log.error(ex, ex);
                     }
                 }
             });
@@ -1177,6 +1183,7 @@ public class StemBrowser extends BaseBrowserPanel {
                                 child = getChildStemsTable().getSelectedStem();
                             } catch (Exception ex) {
                                 ErrorDialog.showError(ex);
+                                log.error(ex, ex);
                                 return;
                             }
 
@@ -1189,6 +1196,7 @@ public class StemBrowser extends BaseBrowserPanel {
                             } catch (Exception ex) {
                                 stopEvent(eid, "Error removing the child stem!!!");
                                 ErrorDialog.showError(ex);
+                                log.error(ex, ex);
                             }
                         }
                     };
@@ -1354,6 +1362,7 @@ public class StemBrowser extends BaseBrowserPanel {
                         getGroupsTable().doubleClick();
                     } catch (Exception ex) {
                         ErrorDialog.showError(ex);
+                        log.error(ex, ex);
                     }
                 }
             });
@@ -1381,6 +1390,7 @@ public class StemBrowser extends BaseBrowserPanel {
                                 child = getGroupsTable().getSelectedGroup();
                             } catch (Exception ex) {
                                 ErrorDialog.showError(ex);
+                                log.error(ex, ex);
                                 return;
                             }
 
@@ -1393,6 +1403,7 @@ public class StemBrowser extends BaseBrowserPanel {
                             } catch (Exception ex) {
                                 stopEvent(eid, "Error removing the child group!!!");
                                 ErrorDialog.showError(ex);
+                                log.error(ex, ex);
                             }
                         }
                     };
@@ -1470,6 +1481,7 @@ public class StemBrowser extends BaseBrowserPanel {
                             } catch (Exception ex) {
                                 stopEvent(eid, "Error adding a child group!!!");
                                 ErrorDialog.showError(ex);
+                                log.error(ex, ex);
                             }
                         }
                     };
@@ -1562,13 +1574,14 @@ public class StemBrowser extends BaseBrowserPanel {
 
                             } catch (Exception ex) {
                                 ErrorDialog.showError(ex);
+                                log.error(ex, ex);
                             }
                         }
                     };
                     try {
                         GridApplication.getContext().executeInBackground(runner);
                     } catch (Exception t) {
-                        t.getMessage();
+                    	log.error(t, t);
                     }
                 }
 

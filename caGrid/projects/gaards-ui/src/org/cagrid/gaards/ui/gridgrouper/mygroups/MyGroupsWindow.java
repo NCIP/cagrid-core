@@ -108,6 +108,7 @@ public class MyGroupsWindow extends ApplicationComponent {
                 if (!finder.isSuccessful()) {
                     ErrorDialog.showError("Could not discover groups from " + finder.getGridGrouperURI() + ".", finder
                         .getError());
+                    log.error("Could not discover groups from " + finder.getGridGrouperURI() + ".");
                 }
             }
             getProgressPanel().stopProgress();
