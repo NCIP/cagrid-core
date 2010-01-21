@@ -61,16 +61,6 @@ public class DataServiceFeatureDiscoveryUtil {
     }
     
     
-    public static PortType getPortType(EndpointReferenceType epr, QName name) throws WSDLException {
-        String wsdlLocation = WSDLUtils.getWSDLLocation(epr);
-        LOG.debug("Loading WSDL from " + wsdlLocation);
-        Definition wsdlDef = WSDLUtils.parseServiceWSDL(wsdlLocation);
-        LOG.debug("Checking for port type " + name.toString());
-        PortType portType = wsdlDef.getPortType(name);
-        return portType;
-    }
-    
-    
     public static Operation getOperation(EndpointReferenceType epr, QName inputMessage, QName outputMessage, String operationName) throws WSDLException {
         String wsdlLocation = WSDLUtils.getWSDLLocation(epr);
         LOG.debug("Loading WSDL from " + wsdlLocation);
