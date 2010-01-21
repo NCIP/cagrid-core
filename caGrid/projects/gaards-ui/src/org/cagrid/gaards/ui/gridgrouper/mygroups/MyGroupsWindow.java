@@ -16,7 +16,8 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 
-import org.apache.log4j.Logger;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.cagrid.gaards.ui.common.ProgressPanel;
 import org.cagrid.gaards.ui.common.TitlePanel;
 import org.cagrid.gaards.ui.gridgrouper.GridGrouperHandle;
@@ -35,7 +36,7 @@ import org.globus.gsi.GlobusCredential;
  * @author <A HREF="MAILTO:ervin@bmi.osu.edu">David W. Ervin</A>
  */
 public class MyGroupsWindow extends ApplicationComponent {
-	private static Logger log = Logger.getLogger(MyGroupsWindow.class);
+	private static Log log = LogFactory.getLog(MyGroupsWindow.class);
 	
     private static final long serialVersionUID = 1L;
 

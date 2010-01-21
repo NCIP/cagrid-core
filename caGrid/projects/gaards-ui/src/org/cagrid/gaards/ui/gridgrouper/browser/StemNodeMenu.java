@@ -2,7 +2,8 @@ package org.cagrid.gaards.ui.gridgrouper.browser;
 
 import javax.swing.JMenuItem;
 
-import org.apache.log4j.Logger;
+import org.apache.commons.logging.Log; import org.apache.commons.logging.LogFactory; 
+import org.apache.commons.logging.LogFactory; 
 import org.cagrid.gaards.ui.gridgrouper.GridGrouperLookAndFeel;
 import org.cagrid.gaards.ui.gridgrouper.tree.AddGroupWindow;
 import org.cagrid.gaards.ui.gridgrouper.tree.AddStemWindow;
@@ -20,7 +21,7 @@ import org.cagrid.grape.utils.ErrorDialog;
  * @author <A HREF="MAILTO:ervin@bmi.osu.edu">David W. Ervin</A>
  */
 public class StemNodeMenu extends GridGrouperTreeNodeMenu {
-	private static Logger log = Logger.getLogger(StemNodeMenu.class);
+	private static Log log = LogFactory.getLog(StemNodeMenu.class);
 	
     private static final long serialVersionUID = 1L;
 

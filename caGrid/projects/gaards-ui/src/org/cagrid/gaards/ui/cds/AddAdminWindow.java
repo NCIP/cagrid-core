@@ -15,7 +15,8 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
-import org.apache.log4j.Logger;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.cagrid.gaards.cds.client.DelegationAdminClient;
 import org.cagrid.gaards.ui.common.ProgressPanel;
 import org.cagrid.gaards.ui.common.TitlePanel;
@@ -26,7 +27,7 @@ import org.cagrid.grape.utils.ErrorDialog;
 
 
 public class AddAdminWindow extends JDialog {
-	private static Logger log = Logger.getLogger(AddAdminWindow.class);
+	private static Log log = LogFactory.getLog(AddAdminWindow.class);
 
     private static final long serialVersionUID = 1L;
 

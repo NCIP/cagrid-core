@@ -21,7 +21,8 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 import javax.swing.border.TitledBorder;
 
-import org.apache.log4j.Logger;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.cagrid.gaards.dorian.client.GridAdministrationClient;
 import org.cagrid.gaards.dorian.federation.FederationAudit;
 import org.cagrid.gaards.dorian.federation.FederationAuditFilter;
@@ -35,7 +36,7 @@ import org.cagrid.grape.utils.ErrorDialog;
 
 
 public class FederationAuditPanel extends JPanel {
-	private static Logger log = Logger.getLogger(FederationAuditPanel.class);
+	private static Log log = LogFactory.getLog(FederationAuditPanel.class);
 	
     public static int FULL_MODE = 1;
 

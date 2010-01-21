@@ -16,13 +16,14 @@ import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
-import org.apache.log4j.Logger;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.cagrid.gaards.ui.dorian.ServicesManager;
 import org.cagrid.grape.configuration.Grid;
 import org.cagrid.grape.utils.ErrorDialog;
 
 public class TargetGridDisplayPanel extends JPanel {
-	private static Logger log = Logger.getLogger(TargetGridDisplayPanel.class);
+	private static Log log = LogFactory.getLog(TargetGridDisplayPanel.class);
 	
 	private static final long serialVersionUID = 1L;
 

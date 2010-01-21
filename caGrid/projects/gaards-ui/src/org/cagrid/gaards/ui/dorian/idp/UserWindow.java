@@ -17,7 +17,8 @@ import javax.swing.JPasswordField;
 import javax.swing.JTabbedPane;
 import javax.swing.JTextField;
 
-import org.apache.log4j.Logger;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.cagrid.gaards.dorian.client.LocalAdministrationClient;
 import org.cagrid.gaards.dorian.idp.LocalUser;
 import org.cagrid.gaards.dorian.stubs.types.PermissionDeniedFault;
@@ -36,7 +37,7 @@ import org.cagrid.grape.utils.ErrorDialog;
  * @author <A HREF="MAILTO:hastings@bmi.osu.edu">Shannon Langella </A>
  */
 public class UserWindow extends ApplicationComponent {
-	private static Logger log = Logger.getLogger(UserWindow.class);
+	private static Log log = LogFactory.getLog(UserWindow.class);
 	
     private static final long serialVersionUID = 1L;
 

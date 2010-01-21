@@ -32,7 +32,8 @@ import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
 import javax.swing.JTextField;
 
-import org.apache.log4j.Logger;
+import org.apache.commons.logging.Log; import org.apache.commons.logging.LogFactory; 
+import org.apache.commons.logging.LogFactory; 
 import org.cagrid.gaards.pki.CertUtil;
 import org.cagrid.gaards.ui.common.CRLPanel;
 import org.cagrid.gaards.ui.common.CertificatePanel;
@@ -50,7 +51,7 @@ import org.cagrid.grape.utils.ErrorDialog;
  * @author <A href="mailto:hastings@bmi.osu.edu">Shannon Hastings </A>
  */
 public class TrustedAuthorityWindow extends ApplicationComponent {
-	private static Logger log = Logger.getLogger(TrustedAuthorityWindow.class);
+	private static Log log = LogFactory.getLog(TrustedAuthorityWindow.class);
 	
     private static final long serialVersionUID = 1L;
 

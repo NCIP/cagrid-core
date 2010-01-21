@@ -1,6 +1,7 @@
 package org.cagrid.gaards.ui.gridgrouper.browser;
 
-import org.apache.log4j.Logger;
+import org.apache.commons.logging.Log; import org.apache.commons.logging.LogFactory; 
+import org.apache.commons.logging.LogFactory; 
 import org.cagrid.gaards.ui.gridgrouper.tree.GridGrouperBaseTreeNode;
 import org.cagrid.gaards.ui.gridgrouper.tree.GridGrouperTree;
 import org.cagrid.gaards.ui.gridgrouper.tree.GroupTreeNode;
@@ -14,7 +15,7 @@ import org.cagrid.grape.utils.ErrorDialog;
  * @author <A HREF="MAILTO:ervin@bmi.osu.edu">David W. Ervin</A>
  */
 public class GroupNodeMenu extends GridGrouperTreeNodeMenu {
-	private static Logger log = Logger.getLogger(GroupNodeMenu.class);
+	private static Log log = LogFactory.getLog(GroupNodeMenu.class);
 	
 	private static final long serialVersionUID = 1L;
 

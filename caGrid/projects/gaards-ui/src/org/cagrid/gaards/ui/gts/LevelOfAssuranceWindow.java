@@ -17,7 +17,8 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 
-import org.apache.log4j.Logger;
+import org.apache.commons.logging.Log; import org.apache.commons.logging.LogFactory; 
+import org.apache.commons.logging.LogFactory; 
 import org.cagrid.gaards.ui.common.ProgressPanel;
 import org.cagrid.gaards.ui.common.TitlePanel;
 import org.cagrid.grape.ApplicationComponent;
@@ -31,7 +32,7 @@ import org.cagrid.grape.utils.ErrorDialog;
  * @author <A href="mailto:hastings@bmi.osu.edu">Shannon Hastings </A>
  */
 public class LevelOfAssuranceWindow extends ApplicationComponent {
-	private static Logger log = Logger.getLogger(LevelOfAssuranceWindow.class);
+	private static Log log = LogFactory.getLog(LevelOfAssuranceWindow.class);
 	
     private static final long serialVersionUID = 1L;
 

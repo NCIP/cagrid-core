@@ -15,7 +15,8 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.border.TitledBorder;
 
-import org.apache.log4j.Logger;
+import org.apache.commons.logging.Log; import org.apache.commons.logging.LogFactory; 
+import org.apache.commons.logging.LogFactory; 
 import org.cagrid.gaards.ui.common.ProgressPanel;
 import org.cagrid.gaards.ui.common.TitlePanel;
 import org.cagrid.grape.ApplicationComponent;
@@ -30,7 +31,7 @@ import org.cagrid.grape.utils.ErrorDialog;
  * @author <A HREF="MAILTO:hastings@bmi.osu.edu">Shannon Langella </A>
  */
 public class PermissionManagerWindow extends ApplicationComponent implements PermissionRefresher, ServiceSelectionListener {
-	private static Logger log = Logger.getLogger(PermissionManagerWindow.class);
+	private static Log log = LogFactory.getLog(PermissionManagerWindow.class);
 	
 	private static final long serialVersionUID = 1L;
 

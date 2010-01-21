@@ -3,7 +3,8 @@ package org.cagrid.gaards.ui.gridgrouper;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.log4j.Logger;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.cagrid.grape.GAARDSApplication;
 import org.cagrid.grape.configuration.ServiceConfiguration;
 import org.cagrid.grape.configuration.ServiceDescriptor;
@@ -12,7 +13,7 @@ import org.cagrid.grape.configuration.Services;
 
 public class GridGrouperUIUtils {
 
-	private static Logger log = Logger.getLogger(GridGrouperUIUtils.class);
+	private static Log log = LogFactory.getLog(GridGrouperUIUtils.class);
 
 
     public static List<GridGrouperHandle> getGridGrouperServices() {

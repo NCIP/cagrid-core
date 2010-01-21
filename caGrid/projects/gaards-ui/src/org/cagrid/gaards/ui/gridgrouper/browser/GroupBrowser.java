@@ -26,7 +26,8 @@ import javax.swing.JTabbedPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 
-import org.apache.log4j.Logger;
+import org.apache.commons.logging.Log; import org.apache.commons.logging.LogFactory; 
+import org.apache.commons.logging.LogFactory; 
 import org.cagrid.gaards.ui.gridgrouper.tree.GroupTreeNode;
 import org.cagrid.grape.GridApplication;
 import org.cagrid.grape.LookAndFeel;
@@ -40,7 +41,7 @@ import org.cagrid.grape.utils.ErrorDialog;
  * @author <A HREF="MAILTO:ervin@bmi.osu.edu">David W. Ervin</A>
  */
 public class GroupBrowser extends BaseBrowserPanel {
-	private static Logger log = Logger.getLogger(GroupBrowser.class);
+	private static Log log = LogFactory.getLog(GroupBrowser.class);
 	
     private static final String ALL_MEMBERS = "All Members"; // @jve:decl-index=0:
 

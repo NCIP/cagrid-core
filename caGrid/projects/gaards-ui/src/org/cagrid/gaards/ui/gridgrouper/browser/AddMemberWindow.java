@@ -23,7 +23,8 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.border.TitledBorder;
 
-import org.apache.log4j.Logger;
+import org.apache.commons.logging.Log; import org.apache.commons.logging.LogFactory; 
+import org.apache.commons.logging.LogFactory; 
 import org.cagrid.gaards.ui.common.TitlePanel;
 import org.cagrid.gaards.ui.dorian.federation.CommunitySearchDialog;
 import org.cagrid.gaards.ui.gridgrouper.GridGrouperLookAndFeel;
@@ -40,7 +41,7 @@ import org.cagrid.grape.utils.ErrorDialog;
  * @author <A HREF="MAILTO:ervin@bmi.osu.edu">David W. Ervin</A>
  */
 public class AddMemberWindow extends ApplicationComponent {
-	private static Logger log = Logger.getLogger(AddMemberWindow.class);
+	private static Log log = LogFactory.getLog(AddMemberWindow.class);
 	
 	private static final String USER = "User";
 

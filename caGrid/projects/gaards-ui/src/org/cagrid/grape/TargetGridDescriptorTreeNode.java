@@ -4,22 +4,21 @@ import java.lang.reflect.Constructor;
 
 import javax.swing.ImageIcon;
 
-import org.apache.log4j.Logger;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.cagrid.grape.model.ConfigurationDescriptor;
 import org.cagrid.grape.model.ConfigurationEditor;
 import org.cagrid.grape.model.ConfigurationEditors;
 
 
 public class TargetGridDescriptorTreeNode extends ConfigurationDescriptorTreeNode {
-
-	private Logger log;
+	private static Log log = LogFactory.getLog(TargetGridDescriptorTreeNode.class);
 	
 	private String configurationName = null;
 
 	public TargetGridDescriptorTreeNode(ConfigurationWindow window, ConfigurationTree tree,
 		ConfigurationDescriptor des, String configurationName) throws Exception {
 		super(window, tree, des, configurationName);
-		log = Logger.getLogger(this.getClass().getName());
 		this.configurationName = configurationName;
 		if (des.getConfigurationPanel() == null) {
 			this.setDisplayPanel(new ConfigurationDisplayPanel(des.getDisplayName()));

@@ -8,7 +8,8 @@ import java.util.Vector;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumn;
 
-import org.apache.log4j.Logger;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.cagrid.gaards.cds.common.DelegationIdentifier;
 import org.cagrid.gaards.cds.common.DelegationRecord;
 import org.cagrid.grape.GridApplication;
@@ -21,7 +22,7 @@ import org.cagrid.grape.utils.ErrorDialog;
  * @author <A HREF="MAILTO:hastings@bmi.osu.edu">Shannon Hastings </A>
  */
 public class DelegationRecordsTable extends GrapeBaseTable {
-	private static Logger log = Logger.getLogger(DelegationRecordsTable.class);
+	private static Log log = LogFactory.getLog(DelegationRecordsTable.class);
 	
 	private static final long serialVersionUID = 1L;
 	

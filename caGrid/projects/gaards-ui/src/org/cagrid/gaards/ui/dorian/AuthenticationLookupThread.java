@@ -6,7 +6,8 @@ import gov.nih.nci.cagrid.common.RunnerGroup;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.log4j.Logger;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.cagrid.gaards.dorian.client.GridUserClient;
 import org.cagrid.gaards.dorian.federation.TrustedIdentityProvider;
 import org.cagrid.grape.GAARDSApplication;
@@ -16,15 +17,13 @@ import org.cagrid.grape.configuration.ServiceDescriptor;
 import org.cagrid.grape.configuration.Services;
 
 public class AuthenticationLookupThread extends Runner {
-
-	private Logger log;
+	private static Log log = LogFactory.getLog(AuthenticationLookupThread.class);
 
 	private DorianHandle handle;
 
 	private List<AuthenticationServiceHandle> authenticationServices;
 
 	public AuthenticationLookupThread(DorianHandle handle) {
-		this.log = Logger.getLogger(getClass());
 		this.handle = handle;
 	}
 

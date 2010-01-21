@@ -15,7 +15,8 @@ import javax.swing.tree.TreeNode;
 import javax.swing.tree.TreePath;
 import javax.swing.tree.TreeSelectionModel;
 
-import org.apache.log4j.Logger;
+import org.apache.commons.logging.Log; import org.apache.commons.logging.LogFactory; 
+import org.apache.commons.logging.LogFactory; 
 import org.cagrid.grape.GridApplication;
 import org.cagrid.grape.utils.ErrorDialog;
 import org.cagrid.grape.utils.MultiEventProgressBar;
@@ -28,7 +29,7 @@ import org.globus.gsi.GlobusCredential;
  * @author <A HREF="MAILTO:ervin@bmi.osu.edu">David W. Ervin</A>
  */
 public class GridGrouperTree extends JTree {
-	private static Logger log = Logger.getLogger(GridGrouperTree.class);
+	private static Log log = LogFactory.getLog(GridGrouperTree.class);
 	
 	private static final long serialVersionUID = 1L;
 

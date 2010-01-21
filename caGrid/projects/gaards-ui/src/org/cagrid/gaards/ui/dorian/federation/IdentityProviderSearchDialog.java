@@ -12,7 +12,8 @@ import javax.swing.JDialog;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 
-import org.apache.log4j.Logger;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.cagrid.gaards.dorian.client.GridAdministrationClient;
 import org.cagrid.gaards.dorian.federation.TrustedIdP;
 import org.cagrid.gaards.dorian.stubs.types.PermissionDeniedFault;
@@ -29,7 +30,7 @@ import org.cagrid.grape.utils.ErrorDialog;
  * @author <A HREF="MAILTO:hastings@bmi.osu.edu">Shannon Langella </A>
  */
 public class IdentityProviderSearchDialog extends JDialog {
-	private static Logger log = Logger.getLogger(IdentityProviderSearchDialog.class);
+	private static Log log = LogFactory.getLog(IdentityProviderSearchDialog.class);
 	
 	private static final long serialVersionUID = 1L;
 

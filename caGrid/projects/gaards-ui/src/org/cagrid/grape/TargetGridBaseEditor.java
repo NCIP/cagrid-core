@@ -25,7 +25,8 @@ import javax.swing.JTextField;
 import javax.swing.filechooser.FileFilter;
 
 import org.apache.axis.utils.XMLUtils;
-import org.apache.log4j.Logger;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.cagrid.grape.configuration.Grid;
 import org.cagrid.grape.configuration.TargetGridsConfiguration;
 import org.cagrid.grape.model.Configuration;
@@ -33,7 +34,7 @@ import org.cagrid.grape.utils.ErrorDialog;
 import org.globus.wsrf.encoding.ObjectDeserializer;
 
 public class TargetGridBaseEditor extends ConfigurationBasePanel {
-	private static Logger log = Logger.getLogger(TargetGridBaseEditor.class);
+	private static Log log = LogFactory.getLog(TargetGridBaseEditor.class);
 	
 	private static final long serialVersionUID = 1L;
 

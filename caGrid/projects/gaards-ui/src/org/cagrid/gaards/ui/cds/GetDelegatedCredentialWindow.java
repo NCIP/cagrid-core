@@ -16,7 +16,8 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 
-import org.apache.log4j.Logger;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.cagrid.gaards.cds.client.DelegatedCredentialUserClient;
 import org.cagrid.gaards.credentials.CredentialEntryFactory;
 import org.cagrid.gaards.credentials.X509CredentialEntry;
@@ -37,7 +38,7 @@ import org.globus.gsi.GlobusCredential;
  * @author <A HREF="MAILTO:ervin@bmi.osu.edu">David W. Ervin</A>
  */
 public class GetDelegatedCredentialWindow extends ApplicationComponent {
-	private static Logger log = Logger.getLogger(GetDelegatedCredentialWindow.class);
+	private static Log log = LogFactory.getLog(GetDelegatedCredentialWindow.class);
 
     private static final long serialVersionUID = 1L;
 

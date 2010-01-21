@@ -20,7 +20,8 @@ import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
 import javax.swing.JTextField;
 
-import org.apache.log4j.Logger;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.cagrid.gaards.dorian.client.GridAdministrationClient;
 import org.cagrid.gaards.dorian.federation.HostCertificateRecord;
 import org.cagrid.gaards.dorian.federation.HostCertificateStatus;
@@ -46,7 +47,7 @@ import org.cagrid.grape.utils.ErrorDialog;
  * @author <A HREF="MAILTO:hastings@bmi.osu.edu">Shannon Langella </A>
  */
 public class HostCertificateWindow extends ApplicationComponent implements DorianSessionProvider {
-	private static Logger log = Logger.getLogger(HostCertificateWindow.class);
+	private static Log log = LogFactory.getLog(HostCertificateWindow.class);
 	
     private static final long serialVersionUID = 1L;
 

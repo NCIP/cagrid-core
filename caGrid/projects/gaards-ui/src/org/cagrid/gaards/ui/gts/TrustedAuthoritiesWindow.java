@@ -22,7 +22,8 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 import javax.swing.border.TitledBorder;
 
-import org.apache.log4j.Logger;
+import org.apache.commons.logging.Log; import org.apache.commons.logging.LogFactory; 
+import org.apache.commons.logging.LogFactory; 
 import org.cagrid.gaards.ui.common.ProgressPanel;
 import org.cagrid.gaards.ui.common.TitlePanel;
 import org.cagrid.grape.ApplicationComponent;
@@ -41,7 +42,7 @@ public class TrustedAuthoritiesWindow extends ApplicationComponent
         TrustedAuthorityRefresher,
         ServiceSelectionListener {
 
-	private static Logger log = Logger.getLogger(TrustedAuthoritiesWindow.class);
+	private static Log log = LogFactory.getLog(TrustedAuthoritiesWindow.class);
 	
     private static final long serialVersionUID = 1L;
 

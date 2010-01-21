@@ -14,7 +14,8 @@ import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 
-import org.apache.log4j.Logger;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.cagrid.gaards.dorian.client.LocalUserClient;
 import org.cagrid.gaards.dorian.idp.Application;
 import org.cagrid.gaards.ui.common.ProgressPanel;
@@ -34,7 +35,7 @@ import org.cagrid.grape.utils.ErrorDialog;
  * @author <A href="mailto:hastings@bmi.osu.edu">Shannon Hastings </A>
  */
 public class ApplicationWindow extends ApplicationComponent {
-	private static Logger log = Logger.getLogger(ApplicationWindow.class);
+	private static Log log = LogFactory.getLog(ApplicationWindow.class);
 	
     private static final long serialVersionUID = 1L;
 

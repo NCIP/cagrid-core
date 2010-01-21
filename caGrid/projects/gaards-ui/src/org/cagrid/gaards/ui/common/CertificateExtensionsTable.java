@@ -8,7 +8,8 @@ import java.util.Vector;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumn;
 
-import org.apache.log4j.Logger;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.cagrid.gaards.pki.CertificateExtensionsUtil;
 import org.cagrid.grape.table.GrapeBaseTable;
 
@@ -19,7 +20,7 @@ import org.cagrid.grape.table.GrapeBaseTable;
  * @author <A HREF="MAILTO:hastings@bmi.osu.edu">Shannon Hastings </A>
  */
 public class CertificateExtensionsTable extends GrapeBaseTable {
-	private static Logger log = Logger.getLogger(CertificateExtensionsTable.class);
+	private static Log log = LogFactory.getLog(CertificateExtensionsTable.class);
 	
 	private static final long serialVersionUID = 1L;
 

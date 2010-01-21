@@ -26,7 +26,8 @@ import javax.swing.JTabbedPane;
 import javax.swing.JTextField;
 import javax.xml.namespace.QName;
 
-import org.apache.log4j.Logger;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.cagrid.gaards.authentication.client.AuthenticationClient;
 import org.cagrid.gaards.authentication.common.AuthenticationProfile;
 import org.cagrid.gaards.credentials.DorianUserCredentialDescriptor;
@@ -48,7 +49,7 @@ import org.globus.gsi.GlobusCredential;
 
 
 public class LoginWindow extends ApplicationComponent {
-	private static Logger log = Logger.getLogger(LoginWindow.class);
+	private static Log log = LogFactory.getLog(LoginWindow.class);
 	
     private static final long serialVersionUID = 1L;
 

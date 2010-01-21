@@ -5,13 +5,14 @@ import java.util.Enumeration;
 import javax.swing.event.TreeExpansionEvent;
 import javax.swing.event.TreeExpansionListener;
 
-import org.apache.log4j.Logger;
+import org.apache.commons.logging.Log; import org.apache.commons.logging.LogFactory; 
+import org.apache.commons.logging.LogFactory; 
 import org.cagrid.gaards.ui.gridgrouper.tree.GridGrouperTree;
 import org.cagrid.gaards.ui.gridgrouper.tree.StemTreeNode;
 import org.cagrid.grape.utils.ErrorDialog;
 
 public class GridGrouperTreeExpansionListener implements TreeExpansionListener {
-	private static Logger log = Logger.getLogger(GridGrouperTreeExpansionListener.class);
+	private static Log log = LogFactory.getLog(GridGrouperTreeExpansionListener.class);
 	
 	private GridGrouperTree tree = null;
 

@@ -6,7 +6,8 @@ import java.util.List;
 
 import javax.swing.JComboBox;
 
-import org.apache.log4j.Logger;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.cagrid.gaards.dorian.federation.FederationAudit;
 
 /**
@@ -15,7 +16,7 @@ import org.cagrid.gaards.dorian.federation.FederationAudit;
  * @author <A href="mailto:hastings@bmi.osu.edu">Shannon Hastings </A>
  */
 public class FederationAuditComboBox extends JComboBox {
-	private static Logger log = Logger.getLogger(FederationAuditComboBox.class);
+	private static Log log = LogFactory.getLog(FederationAuditComboBox.class);
 	
 	private static final long serialVersionUID = 1L;
 	

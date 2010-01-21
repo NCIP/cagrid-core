@@ -11,7 +11,8 @@ import javax.swing.JButton;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 
-import org.apache.log4j.Logger;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.cagrid.gaards.dorian.client.GridUserClient;
 import org.cagrid.gaards.dorian.federation.HostCertificateRecord;
 import org.cagrid.gaards.ui.common.ProgressPanel;
@@ -33,7 +34,7 @@ import org.cagrid.grape.utils.ErrorDialog;
 public class MyHostCertificatesWindow extends ApplicationComponent implements
 		HostCertificateLauncher {
 	
-	private static Logger log = Logger.getLogger(MyHostCertificatesWindow.class);
+	private static Log log = LogFactory.getLog(MyHostCertificatesWindow.class);
 	
 	private static final long serialVersionUID = 1L;
 

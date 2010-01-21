@@ -21,7 +21,8 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.border.TitledBorder;
 
-import org.apache.log4j.Logger;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.cagrid.gaards.dorian.client.GridUserClient;
 import org.cagrid.gaards.dorian.federation.HostCertificateRecord;
 import org.cagrid.gaards.pki.KeyUtil;
@@ -36,7 +37,7 @@ import org.cagrid.grape.utils.ErrorDialog;
 
 
 public class RequestHostCertificateWindow extends ApplicationComponent {
-	private static Logger log = Logger.getLogger(RequestHostCertificateWindow.class);
+	private static Log log = LogFactory.getLog(RequestHostCertificateWindow.class);
 	
     private static final long serialVersionUID = 1L;
 

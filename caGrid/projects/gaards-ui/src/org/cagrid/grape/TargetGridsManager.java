@@ -11,8 +11,9 @@ import java.util.List;
 
 import org.apache.axis.utils.StringUtils;
 import org.apache.axis.utils.XMLUtils;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.apache.ivy.core.module.id.ModuleRevisionId;
-import org.apache.log4j.Logger;
 import org.cagrid.grape.configuration.Grid;
 import org.cagrid.grape.configuration.ServiceConfiguration;
 import org.cagrid.grape.configuration.TargetGridsConfiguration;
@@ -22,7 +23,7 @@ import org.cagrid.ivy.Retrieve;
 import org.globus.wsrf.encoding.ObjectDeserializer;
 
 public class TargetGridsManager {
-	private static Logger log = Logger.getLogger(TargetGridsManager.class);
+	private static Log log = LogFactory.getLog(TargetGridsManager.class);
 	
 	private File configurationDirectory = null;
 	private ConfigurationManager configurationManager = null;

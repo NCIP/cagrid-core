@@ -16,7 +16,8 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.border.TitledBorder;
 
-import org.apache.log4j.Logger;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.cagrid.gaards.dorian.federation.HostCertificateRecord;
 import org.cagrid.gaards.dorian.federation.HostCertificateStatus;
 import org.cagrid.gaards.pki.CertUtil;
@@ -30,7 +31,7 @@ import org.cagrid.grape.LookAndFeel;
 import org.cagrid.grape.utils.ErrorDialog;
 
 public class RequestHostCertificateResponseWindow extends ApplicationComponent {
-	private static Logger log = Logger.getLogger(RequestHostCertificateResponseWindow.class);
+	private static Log log = LogFactory.getLog(RequestHostCertificateResponseWindow.class);
 	
 	private static final long serialVersionUID = 1L;
 

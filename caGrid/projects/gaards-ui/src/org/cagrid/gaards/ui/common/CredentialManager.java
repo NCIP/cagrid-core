@@ -10,7 +10,8 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.log4j.Logger;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.cagrid.gaards.credentials.CredentialEntryFactory;
 import org.cagrid.gaards.credentials.EncodingUtil;
 import org.cagrid.gaards.credentials.X509CredentialDescriptor;
@@ -24,7 +25,7 @@ import org.globus.gsi.GlobusCredential;
  * @author <A href="mailto:hastings@bmi.osu.edu">Shannon Hastings </A>
  */
 public class CredentialManager {
-	private static Logger log = Logger.getLogger(CredentialManager.class);
+	private static Log log = LogFactory.getLog(CredentialManager.class);
 	
     private static final long serialVersionUID = 1L;
 

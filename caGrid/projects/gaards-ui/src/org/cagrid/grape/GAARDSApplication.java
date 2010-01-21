@@ -27,7 +27,8 @@ import org.apache.commons.cli.GnuParser;
 import org.apache.commons.cli.Option;
 import org.apache.commons.cli.OptionBuilder;
 import org.apache.commons.cli.Options;
-import org.apache.log4j.Logger;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.cagrid.gaards.ui.dorian.ServicesManager;
 import org.cagrid.grape.configuration.Grid;
 import org.cagrid.grape.configuration.TargetGridsConfiguration;
@@ -48,7 +49,7 @@ public class GAARDSApplication extends GridApplication{
 	private static URL ivySettingsURL = null;
 	private static URL targetGridURL = null;
 	
-	private static Logger log = Logger.getLogger(GAARDSApplication.class);
+	private static Log log = LogFactory.getLog(GAARDSApplication.class);
 		
     public GAARDSApplication(Application app) throws Exception {
         super();

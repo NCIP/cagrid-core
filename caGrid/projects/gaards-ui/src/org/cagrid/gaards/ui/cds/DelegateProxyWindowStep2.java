@@ -11,7 +11,8 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
-import org.apache.log4j.Logger;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.cagrid.gaards.cds.client.ClientConstants;
 import org.cagrid.gaards.cds.client.DelegationUserClient;
 import org.cagrid.gaards.ui.common.ProgressPanel;
@@ -27,7 +28,7 @@ import org.cagrid.grape.utils.ErrorDialog;
  * @author <A href="mailto:hastings@bmi.osu.edu">Shannon Hastings </A>
  */
 public class DelegateProxyWindowStep2 extends ApplicationComponent {
-	private static Logger log = Logger.getLogger(DelegateProxyWindowStep2.class);
+	private static Log log = LogFactory.getLog(DelegateProxyWindowStep2.class);
 
     private static final long serialVersionUID = 1L;
 

@@ -22,7 +22,8 @@ import javax.swing.JTabbedPane;
 import javax.swing.JTextField;
 import javax.swing.border.TitledBorder;
 
-import org.apache.log4j.Logger;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.cagrid.gaards.cds.client.DelegationAdminClient;
 import org.cagrid.gaards.cds.client.DelegationUserClient;
 import org.cagrid.gaards.cds.common.DelegatedCredentialAuditFilter;
@@ -44,7 +45,7 @@ import org.cagrid.grape.utils.ErrorDialog;
  * @author <A HREF="MAILTO:hastings@bmi.osu.edu">Shannon Langella </A>
  */
 public class DelegatedCredentialWindow extends ApplicationComponent {
-	private static Logger log = Logger.getLogger(DelegatedCredentialWindow.class);
+	private static Log log = LogFactory.getLog(DelegatedCredentialWindow.class);
 
     private static final long serialVersionUID = 1L;
 

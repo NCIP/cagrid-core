@@ -21,7 +21,8 @@ import javax.swing.JTabbedPane;
 import javax.swing.JTextField;
 import javax.swing.border.TitledBorder;
 
-import org.apache.log4j.Logger;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.cagrid.gaards.dorian.client.GridAdministrationClient;
 import org.cagrid.gaards.dorian.common.SAMLConstants;
 import org.cagrid.gaards.dorian.federation.GridUserPolicy;
@@ -48,7 +49,7 @@ import org.cagrid.grape.utils.ErrorDialog;
  * @author <A HREF="MAILTO:hastings@bmi.osu.edu">Shannon Langella </A>
  */
 public class TrustedIdPWindow extends ApplicationComponent implements DorianSessionProvider {
-	private static Logger log = Logger.getLogger(TrustedIdPWindow.class);
+	private static Log log = LogFactory.getLog(TrustedIdPWindow.class);
 	
     private static final long serialVersionUID = 1L;
 

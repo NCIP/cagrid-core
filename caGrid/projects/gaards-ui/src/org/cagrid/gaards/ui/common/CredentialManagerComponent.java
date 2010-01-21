@@ -9,7 +9,8 @@ import java.awt.Insets;
 import javax.swing.JButton;
 import javax.swing.JPanel;
 
-import org.apache.log4j.Logger;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.cagrid.gaards.credentials.CredentialEntryFactory;
 import org.cagrid.gaards.credentials.X509CredentialEntry;
 import org.cagrid.grape.ApplicationComponent;
@@ -24,7 +25,7 @@ import org.globus.gsi.GlobusCredential;
  * @author <A HREF="MAILTO:hastings@bmi.osu.edu">Shannon Hastings </A>
  */
 public class CredentialManagerComponent extends ApplicationComponent {
-	private static Logger log = Logger.getLogger(CredentialManagerComponent.class);
+	private static Log log = LogFactory.getLog(CredentialManagerComponent.class);
 
     private static final long serialVersionUID = 1L;
 

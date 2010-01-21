@@ -16,7 +16,8 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
-import org.apache.log4j.Logger;
+import org.apache.commons.logging.Log; import org.apache.commons.logging.LogFactory; 
+import org.apache.commons.logging.LogFactory; 
 import org.cagrid.gaards.ui.common.ProgressPanel;
 import org.cagrid.gaards.ui.common.TitlePanel;
 import org.cagrid.grape.ApplicationComponent;
@@ -30,7 +31,7 @@ import org.cagrid.grape.utils.ErrorDialog;
  * @author <A href="mailto:hastings@bmi.osu.edu">Shannon Hastings </A>
  */
 public class AuthorityWindow extends ApplicationComponent {
-	private static Logger log = Logger.getLogger(AuthorityWindow.class);
+	private static Log log = LogFactory.getLog(AuthorityWindow.class);
 	
     private static final long serialVersionUID = 1L;
 

@@ -6,7 +6,8 @@ import gov.nih.nci.cagrid.gridgrouper.client.Group;
 
 import javax.swing.ImageIcon;
 
-import org.apache.log4j.Logger;
+import org.apache.commons.logging.Log; import org.apache.commons.logging.LogFactory; 
+import org.apache.commons.logging.LogFactory; 
 import org.cagrid.gaards.ui.gridgrouper.GridGrouperLookAndFeel;
 import org.cagrid.grape.utils.ErrorDialog;
 
@@ -18,7 +19,7 @@ import org.cagrid.grape.utils.ErrorDialog;
  * @author <A HREF="MAILTO:ervin@bmi.osu.edu">David W. Ervin</A>
  */
 public class GroupTreeNode extends GridGrouperBaseTreeNode {
-	private static Logger log = Logger.getLogger(GroupTreeNode.class);
+	private static Log log = LogFactory.getLog(GroupTreeNode.class);
 	
 	private static final long serialVersionUID = 1L;
 

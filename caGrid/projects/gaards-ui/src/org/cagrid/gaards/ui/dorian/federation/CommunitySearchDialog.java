@@ -21,7 +21,8 @@ import javax.swing.border.TitledBorder;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
-import org.apache.log4j.Logger;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.cagrid.gaards.dorian.client.GridAdministrationClient;
 import org.cagrid.gaards.dorian.client.GridUserClient;
 import org.cagrid.gaards.dorian.federation.GridUser;
@@ -43,7 +44,7 @@ import org.cagrid.grape.utils.ErrorDialog;
 
 
 public class CommunitySearchDialog extends JDialog {
-	private static Logger log = Logger.getLogger(CommunitySearchDialog.class);
+	private static Log log = LogFactory.getLog(CommunitySearchDialog.class);
 	
     private static final long serialVersionUID = 1L;
     private JPanel jContentPane = null;

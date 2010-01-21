@@ -8,7 +8,8 @@ import java.util.Vector;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumn;
 
-import org.apache.log4j.Logger;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.cagrid.gaards.cds.common.DelegatedCredentialAuditRecord;
 import org.cagrid.grape.GridApplication;
 import org.cagrid.grape.table.GrapeBaseTable;
@@ -20,7 +21,7 @@ import org.cagrid.grape.utils.ErrorDialog;
  * @author <A HREF="MAILTO:hastings@bmi.osu.edu">Shannon Hastings </A>
  */
 public class DelegatedCredentialAuditRecordTable extends GrapeBaseTable {
-	private static Logger log = Logger.getLogger(DelegatedCredentialAuditRecordTable.class);
+	private static Log log = LogFactory.getLog(DelegatedCredentialAuditRecordTable.class);
 	
 	private static final long serialVersionUID = 1L;
 

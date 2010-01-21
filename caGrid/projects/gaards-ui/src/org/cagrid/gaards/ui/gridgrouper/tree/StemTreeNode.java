@@ -13,7 +13,8 @@ import java.util.Set;
 import javax.swing.ImageIcon;
 import javax.swing.tree.TreeNode;
 
-import org.apache.log4j.Logger;
+import org.apache.commons.logging.Log; import org.apache.commons.logging.LogFactory; 
+import org.apache.commons.logging.LogFactory; 
 import org.cagrid.gaards.ui.gridgrouper.GridGrouperLookAndFeel;
 import org.cagrid.grape.utils.ErrorDialog;
 
@@ -24,7 +25,7 @@ import org.cagrid.grape.utils.ErrorDialog;
  * @author <A HREF="MAILTO:ervin@bmi.osu.edu">David W. Ervin</A>
  */
 public class StemTreeNode extends GridGrouperBaseTreeNode {
-	private static Logger log = Logger.getLogger(StemTreeNode.class);
+	private static Log log = LogFactory.getLog(StemTreeNode.class);
 	
 	private static final long serialVersionUID = 1L;
 

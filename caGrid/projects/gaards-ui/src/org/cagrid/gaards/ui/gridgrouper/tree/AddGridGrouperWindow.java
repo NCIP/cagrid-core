@@ -13,7 +13,8 @@ import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
-import org.apache.log4j.Logger;
+import org.apache.commons.logging.Log; import org.apache.commons.logging.LogFactory; 
+import org.apache.commons.logging.LogFactory; 
 import org.cagrid.gaards.credentials.X509CredentialEntry;
 import org.cagrid.gaards.ui.common.CredentialComboBox;
 import org.cagrid.gaards.ui.common.TitlePanel;
@@ -33,7 +34,7 @@ import org.globus.gsi.GlobusCredential;
  * @author <A HREF="MAILTO:ervin@bmi.osu.edu">David W. Ervin</A>
  */
 public class AddGridGrouperWindow extends ApplicationComponent {
-	private static Logger log = Logger.getLogger(AddGridGrouperWindow.class);
+	private static Log log = LogFactory.getLog(AddGridGrouperWindow.class);
 	
     private static final long serialVersionUID = 1L;
 

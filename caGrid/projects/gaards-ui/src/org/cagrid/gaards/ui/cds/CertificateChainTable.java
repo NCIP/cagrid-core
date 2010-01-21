@@ -8,7 +8,8 @@ import java.util.Vector;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumn;
 
-import org.apache.log4j.Logger;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.cagrid.gaards.cds.common.CertificateChain;
 import org.cagrid.gaards.cds.common.Utils;
 import org.cagrid.gaards.ui.common.CertificateInformationComponent;
@@ -22,7 +23,7 @@ import org.cagrid.grape.utils.ErrorDialog;
  * @author <A HREF="MAILTO:hastings@bmi.osu.edu">Shannon Hastings </A>
  */
 public class CertificateChainTable extends GrapeBaseTable {
-	private static Logger log = Logger.getLogger(CertificateChainTable.class);
+	private static Log log = LogFactory.getLog(CertificateChainTable.class);
 	
 	private static final long serialVersionUID = 1L;
 	

@@ -12,7 +12,8 @@ import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
-import org.apache.log4j.Logger;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.cagrid.gaards.cds.common.ProxyLifetime;
 import org.cagrid.gaards.pki.CertificateExtensionsUtil;
 import org.cagrid.gaards.ui.common.CredentialComboBox;
@@ -30,7 +31,7 @@ import org.globus.gsi.bc.BouncyCastleUtil;
  * @author <A href="mailto:hastings@bmi.osu.edu">Shannon Hastings </A>
  */
 public class DelegateProxyWindowStep1 extends ApplicationComponent implements ProxyLifetimeListener {
-	private static Logger log = Logger.getLogger(DelegateProxyWindowStep1.class);
+	private static Log log = LogFactory.getLog(DelegateProxyWindowStep1.class);
 
     private static final long serialVersionUID = 1L;
 

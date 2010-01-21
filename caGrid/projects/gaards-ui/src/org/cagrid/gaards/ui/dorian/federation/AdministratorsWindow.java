@@ -11,7 +11,8 @@ import javax.swing.JButton;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 
-import org.apache.log4j.Logger;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.cagrid.gaards.dorian.client.GridAdministrationClient;
 import org.cagrid.gaards.dorian.federation.GridUser;
 import org.cagrid.gaards.dorian.federation.GridUserFilter;
@@ -32,7 +33,7 @@ import org.cagrid.grape.utils.ErrorDialog;
  * @author <A HREF="MAILTO:hastings@bmi.osu.edu">Shannon Langella </A>
  */
 public class AdministratorsWindow extends ApplicationComponent {
-	private static Logger log = Logger.getLogger(AdministratorsWindow.class);
+	private static Log log = LogFactory.getLog(AdministratorsWindow.class);
 	
 	private static final long serialVersionUID = 1L;
 
