@@ -19,7 +19,6 @@ import javax.wsdl.Service;
 import javax.wsdl.WSDLException;
 import javax.xml.namespace.QName;
 
-import org.apache.axis.message.addressing.Address;
 import org.apache.axis.message.addressing.EndpointReferenceType;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -127,16 +126,5 @@ public class DataServiceFeatureDiscoveryUtil {
             EnumerationMethodConstants.ENUMERATION_QUERY_OUTPUT_MESSAGE,
             EnumerationMethodConstants.ENUMERATION_QUERY_METHOD_NAME);
         return enumerationOp != null;
-    }
-    
-    
-    public static void main(String[] args) {
-        try {
-            EndpointReferenceType epr = new EndpointReferenceType(new Address(
-                "http://localhost:8080/wsrf/services/cagrid/DataEnum"));
-            System.out.println("Has enum? " + serviceHasCql2EnumerationOperation(epr));
-        } catch (Exception ex) {
-            ex.printStackTrace();
-        }
     }
 }
