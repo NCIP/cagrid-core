@@ -1,20 +1,27 @@
 <ns1:ServiceMetadata xmlns:ns1="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata">
  <ns1:serviceDescription>
-  <ns2:Service description="The Global Model Exchange (GME) service provides registry of XML Schemas which define the syntax of data exchanged on the grid." name="GlobalModelExchange" version="1.3" xmlns:ns2="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.service">
+  <ns2:Service description="The Global Model Exchange (GME) service provides registry of XML Schemas which define the syntax of data exchanged on the grid." name="GlobalModelExchange" version="1.4" xmlns:ns2="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.service">
    <ns2:pointOfContactCollection>
     <ns3:PointOfContact affiliation="Ohio State University" email="knowledge@cagrid.org" firstName="Scott" lastName="Oster" role="Architect" xmlns:ns3="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common"/>
    </ns2:pointOfContactCollection>
    <ns2:serviceContextCollection>
-    <ns2:ServiceContext description="" name="GlobalModelExchange">
+    <ns2:ServiceContext description="The Global Model Exchange (GME) acts as an authoritative source         for XML Schemas, providing a robust type management system for         use in Grids and other XML-based environments." name="GlobalModelExchange">
      <ns2:operationCollection>
       <ns2:Operation description="" name="getServiceSecurityMetadata">
        <ns2:inputParameterCollection/>
-       <ns2:Output qName="ns4:ServiceSecurityMetadata" dimensionality="1" isArray="false" xmlns:ns4="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.security"/>
+       <ns2:Output qName="ns4:ServiceSecurityMetadata" dimensionality="1" isArray="false" xmlns:ns4="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.security">
+        <ns5:UMLClass className="ServiceSecurityMetadata" description="An instance of the Security Service Metadata." id="7DBE7711-CC01-8A3A-E040-BB89AD43512F" packageName="gov.nih.nci.cagrid.metadata.security" projectName="caGrid_Metadata_Models" projectVersion="1" xmlns:ns5="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common">
+         <ns5:umlAttributeCollection/>
+         <ns5:SemanticMetadata conceptCode="C80736" conceptDefinition="A software system providing a public need." conceptName="Software Service" order="2"/>
+         <ns5:SemanticMetadata conceptCode="C25669" conceptDefinition="Security; freedom from anxiety or fear." conceptName="Security" order="1"/>
+         <ns5:SemanticMetadata conceptCode="C52095" conceptDefinition="Data about data; information that describes another set of data." conceptName="Metadata" order="0"/>
+        </ns5:UMLClass>
+       </ns2:Output>
        <ns2:faultCollection/>
       </ns2:Operation>
       <ns2:Operation description="Publishes the provided schemas, replacing existing versions as necessary." name="publishXMLSchemas">
        <ns2:inputParameterCollection>
-        <ns2:InputParameter qName="ns5:XMLSchema" dimensionality="1" index="0" isArray="true" isRequired="false" name="schemas" xmlns:ns5="gme://gme.cagrid.org/2.0/GlobalModelExchange/domain"/>
+        <ns2:InputParameter qName="ns6:XMLSchema" dimensionality="1" index="0" isArray="true" isRequired="false" name="schemas" xmlns:ns6="gme://gme.cagrid.org/2.0/GlobalModelExchange/domain"/>
        </ns2:inputParameterCollection>
        <ns2:faultCollection>
         <ns2:Fault description="" name="InvalidSchemaSubmissionFault"/>
@@ -22,30 +29,30 @@
       </ns2:Operation>
       <ns2:Operation description="Returns a single XML Schema, not including any referenced (i.e. imported) XML Schemas" name="getXMLSchema">
        <ns2:inputParameterCollection>
-        <ns2:InputParameter qName="ns6:XMLSchemaNamespace" dimensionality="1" index="0" isArray="false" isRequired="false" name="targetNamespace" xmlns:ns6="gme://gme.cagrid.org/2.0/GlobalModelExchange/domain"/>
+        <ns2:InputParameter qName="ns7:XMLSchemaNamespace" dimensionality="1" index="0" isArray="false" isRequired="false" name="targetNamespace" xmlns:ns7="gme://gme.cagrid.org/2.0/GlobalModelExchange/domain"/>
        </ns2:inputParameterCollection>
-       <ns2:Output qName="ns7:XMLSchema" dimensionality="1" isArray="false" xmlns:ns7="gme://gme.cagrid.org/2.0/GlobalModelExchange/domain"/>
+       <ns2:Output qName="ns8:XMLSchema" dimensionality="1" isArray="false" xmlns:ns8="gme://gme.cagrid.org/2.0/GlobalModelExchange/domain"/>
        <ns2:faultCollection>
         <ns2:Fault description="" name="NoSuchNamespaceExistsFault"/>
        </ns2:faultCollection>
       </ns2:Operation>
       <ns2:Operation description="Returns the targetNamespaces (represented by XMLSchemaNamespaces) of all published XMLSchemas" name="getXMLSchemaNamespaces">
        <ns2:inputParameterCollection/>
-       <ns2:Output qName="ns8:XMLSchemaNamespace" dimensionality="1" isArray="true" xmlns:ns8="gme://gme.cagrid.org/2.0/GlobalModelExchange/domain"/>
+       <ns2:Output qName="ns9:XMLSchemaNamespace" dimensionality="1" isArray="true" xmlns:ns9="gme://gme.cagrid.org/2.0/GlobalModelExchange/domain"/>
        <ns2:faultCollection/>
       </ns2:Operation>
       <ns2:Operation description="Returns an XMLSchemaBundle containing the transitive closure of the XMLSchema with the targetNamespace of the given XMLSchemaNamespace and every XMLSchema it imports (as well as each imported XMLSchema's imports)" name="getXMLSchemaAndDependencies">
        <ns2:inputParameterCollection>
-        <ns2:InputParameter qName="ns9:XMLSchemaNamespace" dimensionality="1" index="0" isArray="false" isRequired="false" name="targetNamespace" xmlns:ns9="gme://gme.cagrid.org/2.0/GlobalModelExchange/domain"/>
+        <ns2:InputParameter qName="ns10:XMLSchemaNamespace" dimensionality="1" index="0" isArray="false" isRequired="false" name="targetNamespace" xmlns:ns10="gme://gme.cagrid.org/2.0/GlobalModelExchange/domain"/>
        </ns2:inputParameterCollection>
-       <ns2:Output qName="ns10:XMLSchemaBundle" dimensionality="1" isArray="false" xmlns:ns10="gme://gme.cagrid.org/2.0/GlobalModelExchange/domain"/>
+       <ns2:Output qName="ns11:XMLSchemaBundle" dimensionality="1" isArray="false" xmlns:ns11="gme://gme.cagrid.org/2.0/GlobalModelExchange/domain"/>
        <ns2:faultCollection>
         <ns2:Fault description="" name="NoSuchNamespaceExistsFault"/>
        </ns2:faultCollection>
       </ns2:Operation>
       <ns2:Operation description="Deletes the XMLSchemas with targetNamespaces identified by the given XMLSchemaNamespace array.  This does NOT cascade, so you must delete any schemas which reference these schemas, or an error will be thrown." name="deleteXMLSchemas">
        <ns2:inputParameterCollection>
-        <ns2:InputParameter qName="ns11:XMLSchemaNamespace" dimensionality="1" index="0" isArray="true" isRequired="false" name="targetNamespaces" xmlns:ns11="gme://gme.cagrid.org/2.0/GlobalModelExchange/domain"/>
+        <ns2:InputParameter qName="ns12:XMLSchemaNamespace" dimensionality="1" index="0" isArray="true" isRequired="false" name="targetNamespaces" xmlns:ns12="gme://gme.cagrid.org/2.0/GlobalModelExchange/domain"/>
        </ns2:inputParameterCollection>
        <ns2:faultCollection>
         <ns2:Fault description="Thrown if a provided namespace does not correspond to a published XMLSchema" name="NoSuchNamespaceExistsFault"/>
@@ -54,18 +61,18 @@
       </ns2:Operation>
       <ns2:Operation description="Returns the targetNamespaces of all the XMLSchemas which are imported by the given XMLSchema (identififed by its targetNamespace)" name="getImportedXMLSchemaNamespaces">
        <ns2:inputParameterCollection>
-        <ns2:InputParameter qName="ns12:XMLSchemaNamespace" dimensionality="1" index="0" isArray="false" isRequired="false" name="targetNamespace" xmlns:ns12="gme://gme.cagrid.org/2.0/GlobalModelExchange/domain"/>
+        <ns2:InputParameter qName="ns13:XMLSchemaNamespace" dimensionality="1" index="0" isArray="false" isRequired="false" name="targetNamespace" xmlns:ns13="gme://gme.cagrid.org/2.0/GlobalModelExchange/domain"/>
        </ns2:inputParameterCollection>
-       <ns2:Output qName="ns13:XMLSchemaNamespace" dimensionality="1" isArray="true" xmlns:ns13="gme://gme.cagrid.org/2.0/GlobalModelExchange/domain"/>
+       <ns2:Output qName="ns14:XMLSchemaNamespace" dimensionality="1" isArray="true" xmlns:ns14="gme://gme.cagrid.org/2.0/GlobalModelExchange/domain"/>
        <ns2:faultCollection>
         <ns2:Fault description="" name="NoSuchNamespaceExistsFault"/>
        </ns2:faultCollection>
       </ns2:Operation>
       <ns2:Operation description="Returns all the targetNamespaces of the XMLSchemas which import the given XMLSchema, identified its targetNamespace" name="getImportingXMLSchemaNamespaces">
        <ns2:inputParameterCollection>
-        <ns2:InputParameter qName="ns14:XMLSchemaNamespace" dimensionality="1" index="0" isArray="false" isRequired="false" name="targetNamespace" xmlns:ns14="gme://gme.cagrid.org/2.0/GlobalModelExchange/domain"/>
+        <ns2:InputParameter qName="ns15:XMLSchemaNamespace" dimensionality="1" index="0" isArray="false" isRequired="false" name="targetNamespace" xmlns:ns15="gme://gme.cagrid.org/2.0/GlobalModelExchange/domain"/>
        </ns2:inputParameterCollection>
-       <ns2:Output qName="ns15:XMLSchemaNamespace" dimensionality="1" isArray="true" xmlns:ns15="gme://gme.cagrid.org/2.0/GlobalModelExchange/domain"/>
+       <ns2:Output qName="ns16:XMLSchemaNamespace" dimensionality="1" isArray="true" xmlns:ns16="gme://gme.cagrid.org/2.0/GlobalModelExchange/domain"/>
        <ns2:faultCollection>
         <ns2:Fault description="" name="NoSuchNamespaceExistsFault"/>
        </ns2:faultCollection>
@@ -88,17 +95,17 @@
      </ns2:contextPropertyCollection>
     </ns2:ServiceContext>
    </ns2:serviceContextCollection>
-   <ns16:SemanticMetadata conceptCode="C63541" conceptDefinition="A service available on a system that coordinates resources that are not subject to central control, using open, general purpose protocols and interfaces to deliver nontrivial qualities of services." conceptName="Grid Service" order="0" xmlns:ns16="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common"/>
-   <ns17:SemanticMetadata conceptCode="C63543" conceptDefinition="A published API which receives data in the form of objects, performs computations based upon the input data, and returns information to a client via caGrid in the form of one or more objects." conceptName="Analytical Grid Service" order="1" xmlns:ns17="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common"/>
+   <ns17:SemanticMetadata conceptCode="C63541" conceptDefinition="A service available on a system that coordinates resources that are not subject to central control, using open, general purpose protocols and interfaces to deliver nontrivial qualities of services." conceptName="Grid Service" order="0" xmlns:ns17="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common"/>
+   <ns18:SemanticMetadata conceptCode="C63543" conceptDefinition="A published API which receives data in the form of objects, performs computations based upon the input data, and returns information to a client via caGrid in the form of one or more objects." conceptName="Analytical Grid Service" order="1" xmlns:ns18="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common"/>
   </ns2:Service>
  </ns1:serviceDescription>
  <ns1:hostingResearchCenter>
-  <ns18:ResearchCenter displayName="" shortName="" xmlns:ns18="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common">
-   <ns18:Address country="" locality="" postalCode="" stateProvince="" street1="" street2=""/>
-   <ns18:ResearchCenterDescription description="" homepageURL="" imageURL="" rssNewsURL=""/>
-   <ns18:pointOfContactCollection>
-    <ns18:PointOfContact affiliation="" email="" firstName="" lastName="" phoneNumber="" role=""/>
-   </ns18:pointOfContactCollection>
-  </ns18:ResearchCenter>
+  <ns19:ResearchCenter displayName="" shortName="" xmlns:ns19="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common">
+   <ns19:Address country="" locality="" postalCode="" stateProvince="" street1="" street2=""/>
+   <ns19:ResearchCenterDescription description="" homepageURL="" imageURL="" rssNewsURL=""/>
+   <ns19:pointOfContactCollection>
+    <ns19:PointOfContact affiliation="" email="" firstName="" lastName="" phoneNumber="" role=""/>
+   </ns19:pointOfContactCollection>
+  </ns19:ResearchCenter>
  </ns1:hostingResearchCenter>
 </ns1:ServiceMetadata>

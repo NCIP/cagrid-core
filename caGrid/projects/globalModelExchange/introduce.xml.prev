@@ -1,4 +1,4 @@
-<ns1:ServiceDescription introduceVersion="1.3" xmlns:ns1="gme://gov.nih.nci.cagrid/1/Introduce">
+<ns1:ServiceDescription introduceVersion="1.4" xmlns:ns1="gme://gov.nih.nci.cagrid/1/Introduce">
  <ns2:Namespaces xsi:type="ns2:NamespacesType" xmlns:ns2="gme://gov.nih.nci.cagrid.introduce/1/Namespace" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <ns2:Namespace location="./org.cagrid.gme.domain.xsd" namespace="gme://gme.cagrid.org/2.0/GlobalModelExchange/domain" packageName="org.cagrid.gme.domain" xsi:type="ns2:NamespaceType">
    <ns2:SchemaElement className="XMLSchema" deserializer="gov.nih.nci.cagrid.encoding.SDKDeserializerFactory" serializer="gov.nih.nci.cagrid.encoding.SDKSerializerFactory" type="XMLSchema" xsi:type="ns2:SchemaElementType"/>
@@ -184,7 +184,7 @@
   </ns3:Service>
  </ns3:Services>
  <ns32:Extensions xsi:type="ns32:ExtensionsType" xmlns:ns32="gme://gov.nih.nci.cagrid.introduce/1/Extension" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
-  <ns32:Extension name="cagrid_metadata" version="1.3" xsi:type="ns32:ExtensionType"/>
+  <ns32:Extension name="cagrid_metadata" version="1.4" xsi:type="ns32:ExtensionType"/>
  </ns32:Extensions>
  <ns33:ServiceProperties xmlns:ns33="gme://gov.nih.nci.cagrid.introduce/1/Property">
   <ns33:Property description="The location (relative to the service's ETC location) of the XML configuration file" isFromETC="true" key="gmeConfigurationFile" value="applicationContext-gme.xml"/>
