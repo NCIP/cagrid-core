@@ -154,7 +154,7 @@ public class InvokeEnumerationDataServiceStep extends Step {
 		 * remote exceptions from the user and throws an empty NoSuchElement exception.
 		 */
 		ClientEnumIterator iter = new ClientEnumIterator(dataSource, enumContainer.getContext());
-        List<Object> returnedObjects = new LinkedList<Object>();
+        List<Book> returnedObjects = new LinkedList<Book>();
         try {
             while (iter.hasNext()) {
                 SOAPElement elem = (SOAPElement) iter.next();
@@ -173,7 +173,7 @@ public class InvokeEnumerationDataServiceStep extends Step {
                 }
                 assertTrue("Deserialized object was not an instance of " 
                     + Book.class.getName(), instance instanceof Book);
-                returnedObjects.add(instance);
+                returnedObjects.add((Book) instance);
             }
         } catch (NoSuchElementException ex) {
             if (returnedObjects.size() == 0) {
@@ -191,11 +191,11 @@ public class InvokeEnumerationDataServiceStep extends Step {
                 fail("Exception other than NoSuchElementException thrown: " + ex.getClass().getName());
             }
         }
-        List goldObjects = TestQueryResultsGenerator.getResultBooks();
+        List<Book> goldObjects = TestQueryResultsGenerator.getResultBooks();
         // same number of results?
         assertEquals("Unexpected number of results returned from the enumeration", goldObjects.size(), returnedObjects.size());
         // verify each returned object matches one of the expected objects
-        Iterator returnedObjectIter = returnedObjects.iterator();
+        Iterator<?> returnedObjectIter = returnedObjects.iterator();
         while (returnedObjectIter.hasNext()) {
             Book returnedBook = (Book) returnedObjectIter.next();
             boolean bookFound = goldObjects.contains(returnedBook);
@@ -209,9 +209,9 @@ public class InvokeEnumerationDataServiceStep extends Step {
             }
         }
         // verify every gold object exists in the results
-        Iterator goldObjectIter = goldObjects.iterator();
+        Iterator<Book> goldObjectIter = goldObjects.iterator();
         while (goldObjectIter.hasNext()) {
-            Book goldBook = (Book) goldObjectIter.next();
+            Book goldBook = goldObjectIter.next();
             boolean bookFound = returnedObjects.contains(goldBook);
             if (!bookFound) {
                 // serialize it so we can see what happened
