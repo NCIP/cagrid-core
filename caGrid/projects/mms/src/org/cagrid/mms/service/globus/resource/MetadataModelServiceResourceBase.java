@@ -85,7 +85,7 @@ import org.oasis.wsrf.lifetime.TerminationNotification;
  * of these resource as well as code for registering any properties selected
  * to the index service.
  * 
- * @created by Introduce Toolkit version 1.3
+ * @created by Introduce Toolkit version 1.4
  * 
  */
 public abstract class MetadataModelServiceResourceBase extends ReflectionResource implements Resource
@@ -254,8 +254,8 @@ public abstract class MetadataModelServiceResourceBase extends ReflectionResourc
                     pollType = (GetMultipleResourcePropertiesPollType) ObjectDeserializer.toObject(elements[0],
                         GetMultipleResourcePropertiesPollType.class);
                 } catch (DeserializationException e1) {
+                    // TODO Auto-generated catch block
                     e1.printStackTrace();
-                    logger.error("Unable to deserialize registration file:" + e1.getMessage(),e1);
                 }
 
  

@@ -4,7 +4,7 @@
 <project name="caGrid-MMS_tests_harness" basedir=".">
 
 	<!-- call the test target for each project and aggregates the log resutls  -->
-	<target name="test" description="Runs the tests." depends="defineClasspaths">
+	<target name="test" description="Runs the tests." depends="init">
 		<mkdir dir="${junit.results.dir}" />
 		<junit dir="${basedir}" printsummary="yes" errorproperty="test.failed" failureproperty="test.failed" showoutput="true" fork="yes" forkmode="once">
 			<sysproperty key="build.dir" value="${build.dest}" />

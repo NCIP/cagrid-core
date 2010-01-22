@@ -25,7 +25,6 @@ import org.globus.wsrf.config.ContainerConfig;
 import org.springframework.beans.factory.xml.XmlBeanFactory;
 import org.springframework.core.io.FileSystemResource;
 
-
 /**
  * MMS Grid Service Implementation
  * 
@@ -37,7 +36,6 @@ public class MetadataModelServiceImpl extends MetadataModelServiceImplBase {
 
     private static final String MMS_BEAN_NAME = "mms";
     private MMS mms;
-
 
     public MetadataModelServiceImpl() throws RemoteException {
         super();
@@ -75,15 +73,11 @@ public class MetadataModelServiceImpl extends MetadataModelServiceImplBase {
         }
     }
 
-
     protected MMS getMms() {
         return this.mms;
     }
 
-
-    public gov.nih.nci.cagrid.metadata.dataservice.DomainModel generateDomainModelForProject(
-        org.cagrid.mms.domain.UMLProjectIdentifer umlProjectIdentifer) throws RemoteException,
-        org.cagrid.mms.stubs.types.InvalidUMLProjectIndentifier {
+  public gov.nih.nci.cagrid.metadata.dataservice.DomainModel generateDomainModelForProject(org.cagrid.mms.domain.UMLProjectIdentifer umlProjectIdentifer) throws RemoteException, org.cagrid.mms.stubs.types.InvalidUMLProjectIndentifier {
         if (umlProjectIdentifer == null) {
             InvalidUMLProjectIndentifier fault = new InvalidUMLProjectIndentifier();
             FaultHelper helper = new FaultHelper(fault);
@@ -99,10 +93,7 @@ public class MetadataModelServiceImpl extends MetadataModelServiceImplBase {
         }
     }
 
-
-    public gov.nih.nci.cagrid.metadata.dataservice.DomainModel generateDomainModelForPackages(
-        org.cagrid.mms.domain.UMLProjectIdentifer umlProjectIdentifer, java.lang.String[] packageNames)
-        throws RemoteException, org.cagrid.mms.stubs.types.InvalidUMLProjectIndentifier {
+  public gov.nih.nci.cagrid.metadata.dataservice.DomainModel generateDomainModelForPackages(org.cagrid.mms.domain.UMLProjectIdentifer umlProjectIdentifer,java.lang.String[] packageNames) throws RemoteException, org.cagrid.mms.stubs.types.InvalidUMLProjectIndentifier {
 
         if (umlProjectIdentifer == null) {
             InvalidUMLProjectIndentifier fault = new InvalidUMLProjectIndentifier();
@@ -126,10 +117,7 @@ public class MetadataModelServiceImpl extends MetadataModelServiceImplBase {
         }
     }
 
-
-    public gov.nih.nci.cagrid.metadata.dataservice.DomainModel generateDomainModelForClasses(
-        org.cagrid.mms.domain.UMLProjectIdentifer umlProjectIdentifer, java.lang.String[] fullyQualifiedClassNames)
-        throws RemoteException, org.cagrid.mms.stubs.types.InvalidUMLProjectIndentifier {
+  public gov.nih.nci.cagrid.metadata.dataservice.DomainModel generateDomainModelForClasses(org.cagrid.mms.domain.UMLProjectIdentifer umlProjectIdentifer,java.lang.String[] fullyQualifiedClassNames) throws RemoteException, org.cagrid.mms.stubs.types.InvalidUMLProjectIndentifier {
 
         if (umlProjectIdentifer == null) {
             InvalidUMLProjectIndentifier fault = new InvalidUMLProjectIndentifier();
@@ -153,11 +141,7 @@ public class MetadataModelServiceImpl extends MetadataModelServiceImplBase {
         }
     }
 
-
-    public gov.nih.nci.cagrid.metadata.dataservice.DomainModel generateDomainModelForClassesWithExcludes(
-        org.cagrid.mms.domain.UMLProjectIdentifer umlProjectIdentifer, java.lang.String[] fullyQualifiedClassNames,
-        org.cagrid.mms.domain.UMLAssociationExclude[] umlAssociationExclude) throws RemoteException,
-        org.cagrid.mms.stubs.types.InvalidUMLProjectIndentifier {
+  public gov.nih.nci.cagrid.metadata.dataservice.DomainModel generateDomainModelForClassesWithExcludes(org.cagrid.mms.domain.UMLProjectIdentifer umlProjectIdentifer,java.lang.String[] fullyQualifiedClassNames,org.cagrid.mms.domain.UMLAssociationExclude[] umlAssociationExclude) throws RemoteException, org.cagrid.mms.stubs.types.InvalidUMLProjectIndentifier {
 
         if (umlProjectIdentifer == null) {
             InvalidUMLProjectIndentifier fault = new InvalidUMLProjectIndentifier();
@@ -188,11 +172,7 @@ public class MetadataModelServiceImpl extends MetadataModelServiceImplBase {
         }
     }
 
-
-    public gov.nih.nci.cagrid.metadata.ServiceMetadata annotateServiceMetadata(
-        gov.nih.nci.cagrid.metadata.ServiceMetadata serviceMetadata,
-        org.cagrid.mms.domain.NamespaceToProjectMapping[] namespaceToProjectMappings) throws RemoteException,
-        org.cagrid.mms.stubs.types.InvalidUMLProjectIndentifier {
+  public gov.nih.nci.cagrid.metadata.ServiceMetadata annotateServiceMetadata(gov.nih.nci.cagrid.metadata.ServiceMetadata serviceMetadata,org.cagrid.mms.domain.NamespaceToProjectMapping[] namespaceToProjectMappings) throws RemoteException, org.cagrid.mms.stubs.types.InvalidUMLProjectIndentifier {
 
         Map<URI, UMLProjectIdentifer> mappings = new HashMap<URI, UMLProjectIdentifer>();
         if (namespaceToProjectMappings != null) {
@@ -224,8 +204,7 @@ public class MetadataModelServiceImpl extends MetadataModelServiceImplBase {
         }
     }
 
-
-    public org.cagrid.mms.domain.ModelSourceMetadata getModelSourceMetadata() throws RemoteException {
+  public org.cagrid.mms.domain.ModelSourceMetadata getModelSourceMetadata() throws RemoteException {
 
         try {
             return getMms().getModelSourceMetadata();

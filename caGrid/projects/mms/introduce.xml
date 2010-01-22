@@ -1,4 +1,4 @@
-<ns1:ServiceDescription introduceVersion="1.3" xmlns:ns1="gme://gov.nih.nci.cagrid/1/Introduce">
+<ns1:ServiceDescription introduceVersion="1.4" xmlns:ns1="gme://gov.nih.nci.cagrid/1/Introduce">
  <ns2:Namespaces xsi:type="ns2:NamespacesType" xmlns:ns2="gme://gov.nih.nci.cagrid.introduce/1/Namespace" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <ns2:Namespace location="./org.cagrid.mms.xsd" namespace="gme://caGrid.caBIG/1.0/org.cagrid.mms.domain" packageName="org.cagrid.mms.domain" xsi:type="ns2:NamespaceType">
    <ns2:SchemaElement type="ModelSourceMetadata" xsi:type="ns2:SchemaElementType"/>
@@ -200,6 +200,7 @@
     <ns31:ResourceProperty qName="ns32:ServiceMetadata" description="Standard caGrid Metadata" fileLocation="serviceMetadata.xml" populateFromFile="true" register="true" xsi:type="ns31:ResourcePropertyType" xmlns:ns32="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata"/>
     <ns31:ResourceProperty qName="ns33:ModelSourceMetadata" description="Metadata Model Service Metadata detailing the supported Model Sources" fileLocation="MetadataModelService_modelSourceMetadata.xml" populateFromFile="false" register="true" xsi:type="ns31:ResourcePropertyType" xmlns:ns33="gme://caGrid.caBIG/1.0/org.cagrid.mms.domain"/>
    </ns31:ResourcePropertiesList>
+   <ns3:description xsi:type="xsd:string" xmlns:xsd="http://www.w3.org/2001/XMLSchema">The Metadata Model Service (MMS) provides operations for generating and semantically annotating standard caGrid metadata instances using information extracted from external metadata repositories.</ns3:description>
    <ns3:ResourceFrameworkOptions xsi:type="ns3:ResourceFrameworkOptions">
     <ns3:Main xsi:type="ns3:Main"/>
     <ns3:Singleton xsi:type="ns3:Singleton"/>
@@ -209,7 +210,7 @@
   </ns3:Service>
  </ns3:Services>
  <ns34:Extensions xsi:type="ns34:ExtensionsType" xmlns:ns34="gme://gov.nih.nci.cagrid.introduce/1/Extension" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
-  <ns34:Extension name="cagrid_metadata" version="1.3" xsi:type="ns34:ExtensionType"/>
+  <ns34:Extension name="cagrid_metadata" version="1.4" xsi:type="ns34:ExtensionType"/>
  </ns34:Extensions>
  <ns35:ServiceProperties xmlns:ns35="gme://gov.nih.nci.cagrid.introduce/1/Property">
   <ns35:Property description="The Spring-based MMS configuration file" isFromETC="true" key="mmsConfigurationFile" value="applicationContext-mms.xml"/>

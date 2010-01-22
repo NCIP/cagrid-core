@@ -13,13 +13,13 @@
   <Content xsi:type="agg:AggregatorContent" xmlns:agg="http://mds.globus.org/aggregator/types">
     <agg:AggregatorConfig xsi:type="agg:AggregatorConfig">
       <agg:GetMultipleResourcePropertiesPollType
-			xmlns:ns6="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.service"
-			xmlns:ns5="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata"
-			xmlns:ns1="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.dataservice"
-			xmlns:ns3="http://mms.cagrid.org/MetadataModelService/types"
-			xmlns:xs="http://www.w3.org/2001/XMLSchema"
-			xmlns:ns4="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.security"
 			xmlns:ns0="gme://caGrid.caBIG/1.0/org.cagrid.mms.domain"
+			xmlns:xs="http://www.w3.org/2001/XMLSchema"
+			xmlns:ns6="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.service"
+			xmlns:ns1="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.dataservice"
+			xmlns:ns4="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.security"
+			xmlns:ns3="http://mms.cagrid.org/MetadataModelService/types"
+			xmlns:ns5="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata"
 			xmlns:ns2="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common">
         <!-- Specifies that the index should refresh information
             every 300000 milliseconds (once every 5 minutes) -->

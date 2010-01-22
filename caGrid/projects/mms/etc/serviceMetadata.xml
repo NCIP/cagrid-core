@@ -1,11 +1,11 @@
 <ns1:ServiceMetadata xmlns:ns1="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata">
  <ns1:serviceDescription>
-  <ns2:Service description="The Metadata Model Service (MMS) provides operations for generating and semantically annotating standard caGrid metadata instances using information extracted from external metadata repositories." name="MetadataModelService" version="1.3" xmlns:ns2="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.service">
+  <ns2:Service description="The Metadata Model Service (MMS) provides operations for generating and semantically annotating standard caGrid metadata instances using information extracted from external metadata repositories." name="MetadataModelService" version="1.4" xmlns:ns2="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.service">
    <ns2:pointOfContactCollection>
     <ns3:PointOfContact affiliation="Ohio State University" email="knowledge@cagrid.org" firstName="Scott" lastName="Oster" phoneNumber="" role="Developer" xmlns:ns3="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common"/>
    </ns2:pointOfContactCollection>
    <ns2:serviceContextCollection>
-    <ns2:ServiceContext description="" name="MetadataModelService">
+    <ns2:ServiceContext description="The Metadata Model Service (MMS) provides operations for generating and semantically annotating standard caGrid metadata instances using information extracted from external metadata repositories." name="MetadataModelService">
      <ns2:operationCollection>
       <ns2:Operation description="" name="GetMultipleResourceProperties">
        <ns2:inputParameterCollection/>
@@ -21,62 +21,229 @@
       </ns2:Operation>
       <ns2:Operation description="" name="getServiceSecurityMetadata">
        <ns2:inputParameterCollection/>
-       <ns2:Output qName="ns4:ServiceSecurityMetadata" dimensionality="1" isArray="false" xmlns:ns4="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.security"/>
+       <ns2:Output qName="ns4:ServiceSecurityMetadata" dimensionality="1" isArray="false" xmlns:ns4="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.security">
+        <ns5:UMLClass className="ServiceSecurityMetadata" description="An instance of the Security Service Metadata." id="7DBE7711-CC01-8A3A-E040-BB89AD43512F" packageName="gov.nih.nci.cagrid.metadata.security" projectName="caGrid_Metadata_Models" projectVersion="1" xmlns:ns5="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common">
+         <ns5:umlAttributeCollection/>
+         <ns5:SemanticMetadata conceptCode="C80736" conceptDefinition="A software system providing a public need." conceptName="Software Service" order="2"/>
+         <ns5:SemanticMetadata conceptCode="C25669" conceptDefinition="Security; freedom from anxiety or fear." conceptName="Security" order="1"/>
+         <ns5:SemanticMetadata conceptCode="C52095" conceptDefinition="Data about data; information that describes another set of data." conceptName="Metadata" order="0"/>
+        </ns5:UMLClass>
+       </ns2:Output>
        <ns2:faultCollection/>
       </ns2:Operation>
       <ns2:Operation description="Generates a complete DomainModel for the specified Project" name="generateDomainModelForProject">
        <ns2:inputParameterCollection>
-        <ns2:InputParameter qName="ns5:UMLProjectIdentifer" dimensionality="1" index="0" isArray="false" isRequired="false" name="umlProjectIdentifer" xmlns:ns5="gme://caGrid.caBIG/1.0/org.cagrid.mms.domain"/>
+        <ns2:InputParameter qName="ns6:UMLProjectIdentifer" dimensionality="1" index="0" isArray="false" isRequired="false" name="umlProjectIdentifer" xmlns:ns6="gme://caGrid.caBIG/1.0/org.cagrid.mms.domain"/>
        </ns2:inputParameterCollection>
-       <ns2:Output qName="ns6:DomainModel" dimensionality="1" isArray="false" xmlns:ns6="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.dataservice"/>
+       <ns2:Output qName="ns7:DomainModel" dimensionality="1" isArray="false" xmlns:ns7="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.dataservice">
+        <ns8:UMLClass className="DomainModel" description="For a Data Service, this is the data model it is based on." id="7DBE7711-CBFE-8A3A-E040-BB89AD43512F" packageName="gov.nih.nci.cagrid.metadata.data" projectName="caGrid_Metadata_Models" projectVersion="1" xmlns:ns8="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common">
+         <ns8:umlAttributeCollection>
+          <ns8:UMLAttribute dataTypeName="java.lang.String" description="The version of the Domain Model Project." name="projectVersion" publicID="2927755" version="1.0">
+           <ns8:SemanticMetadata conceptCode="C25714" conceptDefinition="Version; something a little different from others of the same type; one of a sequence of copies of a program, each incorporating new modifications." conceptName="Version" order="0"/>
+           <ns8:SemanticMetadata conceptCode="C47885" conceptDefinition="Any piece of work that is undertaken or attempted." conceptName="Project" order="1"/>
+           <ns8:ValueDomain longName="java.lang.String">
+            <ns8:enumerationCollection/>
+           </ns8:ValueDomain>
+          </ns8:UMLAttribute>
+          <ns8:UMLAttribute dataTypeName="java.lang.String" description="A description of the Domain Model Project." name="projectDescription" publicID="2927752" version="1.0">
+           <ns8:SemanticMetadata conceptCode="C25365" conceptDefinition="Description; a statement that represents something in words." conceptName="Description" order="0"/>
+           <ns8:SemanticMetadata conceptCode="C47885" conceptDefinition="Any piece of work that is undertaken or attempted." conceptName="Project" order="1"/>
+           <ns8:ValueDomain longName="java.lang.String">
+            <ns8:enumerationCollection/>
+           </ns8:ValueDomain>
+          </ns8:UMLAttribute>
+          <ns8:UMLAttribute dataTypeName="java.lang.String" description="The short name for a Domain Model." name="projectShortName" publicID="2927754" version="1.0">
+           <ns8:SemanticMetadata conceptCode="C47885" conceptDefinition="Any piece of work that is undertaken or attempted." conceptName="Project" order="2"/>
+           <ns8:SemanticMetadata conceptCode="C42614" conceptDefinition="The words or language units by which a thing is known." conceptName="Name" order="0"/>
+           <ns8:SemanticMetadata conceptCode="C25249" conceptDefinition="Having little (physical) length or seeming to be limited in (temporal) duration." conceptName="Short" order="1"/>
+           <ns8:ValueDomain longName="java.lang.String">
+            <ns8:enumerationCollection/>
+           </ns8:ValueDomain>
+          </ns8:UMLAttribute>
+          <ns8:UMLAttribute dataTypeName="java.lang.String" description="The long name for a Domain Model." name="projectLongName" publicID="2927753" version="1.0">
+           <ns8:SemanticMetadata conceptCode="C42614" conceptDefinition="The words or language units by which a thing is known." conceptName="Name" order="0"/>
+           <ns8:SemanticMetadata conceptCode="C25248" conceptDefinition="Of relatively great or greater than average spatial extension or temporal duration." conceptName="Long" order="1"/>
+           <ns8:SemanticMetadata conceptCode="C47885" conceptDefinition="Any piece of work that is undertaken or attempted." conceptName="Project" order="2"/>
+           <ns8:ValueDomain longName="java.lang.String">
+            <ns8:enumerationCollection/>
+           </ns8:ValueDomain>
+          </ns8:UMLAttribute>
+         </ns8:umlAttributeCollection>
+         <ns8:SemanticMetadata conceptCode="C62289" conceptDefinition="An area of knowledge considered as a discreet unit for some purpose." conceptName="Domain" order="1"/>
+         <ns8:SemanticMetadata conceptCode="C16866" conceptDefinition="1. A representation of something, often idealized or modified to make it conceptually easier to understand. 2. Something to be imitated. 3. In dentistry, a cast." conceptName="Model System" order="0"/>
+        </ns8:UMLClass>
+       </ns2:Output>
        <ns2:faultCollection>
         <ns2:Fault description="" name="InvalidUMLProjectIndentifier"/>
        </ns2:faultCollection>
       </ns2:Operation>
       <ns2:Operation description="Generates a DomainModel for the specified Project, including only the specified packages" name="generateDomainModelForPackages">
        <ns2:inputParameterCollection>
-        <ns2:InputParameter qName="ns7:UMLProjectIdentifer" dimensionality="1" index="0" isArray="false" isRequired="false" name="umlProjectIdentifer" xmlns:ns7="gme://caGrid.caBIG/1.0/org.cagrid.mms.domain"/>
+        <ns2:InputParameter qName="ns9:UMLProjectIdentifer" dimensionality="1" index="0" isArray="false" isRequired="false" name="umlProjectIdentifer" xmlns:ns9="gme://caGrid.caBIG/1.0/org.cagrid.mms.domain"/>
         <ns2:InputParameter qName="xsd:string" dimensionality="1" index="1" isArray="true" isRequired="false" name="packageNames" xmlns:xsd="http://www.w3.org/2001/XMLSchema"/>
        </ns2:inputParameterCollection>
-       <ns2:Output qName="ns8:DomainModel" dimensionality="1" isArray="false" xmlns:ns8="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.dataservice"/>
+       <ns2:Output qName="ns10:DomainModel" dimensionality="1" isArray="false" xmlns:ns10="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.dataservice">
+        <ns11:UMLClass className="DomainModel" description="For a Data Service, this is the data model it is based on." id="7DBE7711-CBFE-8A3A-E040-BB89AD43512F" packageName="gov.nih.nci.cagrid.metadata.data" projectName="caGrid_Metadata_Models" projectVersion="1" xmlns:ns11="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common">
+         <ns11:umlAttributeCollection>
+          <ns11:UMLAttribute dataTypeName="java.lang.String" description="The version of the Domain Model Project." name="projectVersion" publicID="2927755" version="1.0">
+           <ns11:SemanticMetadata conceptCode="C25714" conceptDefinition="Version; something a little different from others of the same type; one of a sequence of copies of a program, each incorporating new modifications." conceptName="Version" order="0"/>
+           <ns11:SemanticMetadata conceptCode="C47885" conceptDefinition="Any piece of work that is undertaken or attempted." conceptName="Project" order="1"/>
+           <ns11:ValueDomain longName="java.lang.String">
+            <ns11:enumerationCollection/>
+           </ns11:ValueDomain>
+          </ns11:UMLAttribute>
+          <ns11:UMLAttribute dataTypeName="java.lang.String" description="A description of the Domain Model Project." name="projectDescription" publicID="2927752" version="1.0">
+           <ns11:SemanticMetadata conceptCode="C25365" conceptDefinition="Description; a statement that represents something in words." conceptName="Description" order="0"/>
+           <ns11:SemanticMetadata conceptCode="C47885" conceptDefinition="Any piece of work that is undertaken or attempted." conceptName="Project" order="1"/>
+           <ns11:ValueDomain longName="java.lang.String">
+            <ns11:enumerationCollection/>
+           </ns11:ValueDomain>
+          </ns11:UMLAttribute>
+          <ns11:UMLAttribute dataTypeName="java.lang.String" description="The short name for a Domain Model." name="projectShortName" publicID="2927754" version="1.0">
+           <ns11:SemanticMetadata conceptCode="C47885" conceptDefinition="Any piece of work that is undertaken or attempted." conceptName="Project" order="2"/>
+           <ns11:SemanticMetadata conceptCode="C42614" conceptDefinition="The words or language units by which a thing is known." conceptName="Name" order="0"/>
+           <ns11:SemanticMetadata conceptCode="C25249" conceptDefinition="Having little (physical) length or seeming to be limited in (temporal) duration." conceptName="Short" order="1"/>
+           <ns11:ValueDomain longName="java.lang.String">
+            <ns11:enumerationCollection/>
+           </ns11:ValueDomain>
+          </ns11:UMLAttribute>
+          <ns11:UMLAttribute dataTypeName="java.lang.String" description="The long name for a Domain Model." name="projectLongName" publicID="2927753" version="1.0">
+           <ns11:SemanticMetadata conceptCode="C42614" conceptDefinition="The words or language units by which a thing is known." conceptName="Name" order="0"/>
+           <ns11:SemanticMetadata conceptCode="C25248" conceptDefinition="Of relatively great or greater than average spatial extension or temporal duration." conceptName="Long" order="1"/>
+           <ns11:SemanticMetadata conceptCode="C47885" conceptDefinition="Any piece of work that is undertaken or attempted." conceptName="Project" order="2"/>
+           <ns11:ValueDomain longName="java.lang.String">
+            <ns11:enumerationCollection/>
+           </ns11:ValueDomain>
+          </ns11:UMLAttribute>
+         </ns11:umlAttributeCollection>
+         <ns11:SemanticMetadata conceptCode="C62289" conceptDefinition="An area of knowledge considered as a discreet unit for some purpose." conceptName="Domain" order="1"/>
+         <ns11:SemanticMetadata conceptCode="C16866" conceptDefinition="1. A representation of something, often idealized or modified to make it conceptually easier to understand. 2. Something to be imitated. 3. In dentistry, a cast." conceptName="Model System" order="0"/>
+        </ns11:UMLClass>
+       </ns2:Output>
        <ns2:faultCollection>
         <ns2:Fault description="" name="InvalidUMLProjectIndentifier"/>
        </ns2:faultCollection>
       </ns2:Operation>
       <ns2:Operation description="Generates a complete DomainModel for the specified Project, including only the identified Classes" name="generateDomainModelForClasses">
        <ns2:inputParameterCollection>
-        <ns2:InputParameter qName="ns9:UMLProjectIdentifer" dimensionality="1" index="0" isArray="false" isRequired="false" name="umlProjectIdentifer" xmlns:ns9="gme://caGrid.caBIG/1.0/org.cagrid.mms.domain"/>
+        <ns2:InputParameter qName="ns12:UMLProjectIdentifer" dimensionality="1" index="0" isArray="false" isRequired="false" name="umlProjectIdentifer" xmlns:ns12="gme://caGrid.caBIG/1.0/org.cagrid.mms.domain"/>
         <ns2:InputParameter qName="xsd:string" dimensionality="1" index="1" isArray="true" isRequired="false" name="fullyQualifiedClassNames" xmlns:xsd="http://www.w3.org/2001/XMLSchema"/>
        </ns2:inputParameterCollection>
-       <ns2:Output qName="ns10:DomainModel" dimensionality="1" isArray="false" xmlns:ns10="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.dataservice"/>
+       <ns2:Output qName="ns13:DomainModel" dimensionality="1" isArray="false" xmlns:ns13="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.dataservice">
+        <ns14:UMLClass className="DomainModel" description="For a Data Service, this is the data model it is based on." id="7DBE7711-CBFE-8A3A-E040-BB89AD43512F" packageName="gov.nih.nci.cagrid.metadata.data" projectName="caGrid_Metadata_Models" projectVersion="1" xmlns:ns14="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common">
+         <ns14:umlAttributeCollection>
+          <ns14:UMLAttribute dataTypeName="java.lang.String" description="The version of the Domain Model Project." name="projectVersion" publicID="2927755" version="1.0">
+           <ns14:SemanticMetadata conceptCode="C25714" conceptDefinition="Version; something a little different from others of the same type; one of a sequence of copies of a program, each incorporating new modifications." conceptName="Version" order="0"/>
+           <ns14:SemanticMetadata conceptCode="C47885" conceptDefinition="Any piece of work that is undertaken or attempted." conceptName="Project" order="1"/>
+           <ns14:ValueDomain longName="java.lang.String">
+            <ns14:enumerationCollection/>
+           </ns14:ValueDomain>
+          </ns14:UMLAttribute>
+          <ns14:UMLAttribute dataTypeName="java.lang.String" description="A description of the Domain Model Project." name="projectDescription" publicID="2927752" version="1.0">
+           <ns14:SemanticMetadata conceptCode="C25365" conceptDefinition="Description; a statement that represents something in words." conceptName="Description" order="0"/>
+           <ns14:SemanticMetadata conceptCode="C47885" conceptDefinition="Any piece of work that is undertaken or attempted." conceptName="Project" order="1"/>
+           <ns14:ValueDomain longName="java.lang.String">
+            <ns14:enumerationCollection/>
+           </ns14:ValueDomain>
+          </ns14:UMLAttribute>
+          <ns14:UMLAttribute dataTypeName="java.lang.String" description="The short name for a Domain Model." name="projectShortName" publicID="2927754" version="1.0">
+           <ns14:SemanticMetadata conceptCode="C47885" conceptDefinition="Any piece of work that is undertaken or attempted." conceptName="Project" order="2"/>
+           <ns14:SemanticMetadata conceptCode="C42614" conceptDefinition="The words or language units by which a thing is known." conceptName="Name" order="0"/>
+           <ns14:SemanticMetadata conceptCode="C25249" conceptDefinition="Having little (physical) length or seeming to be limited in (temporal) duration." conceptName="Short" order="1"/>
+           <ns14:ValueDomain longName="java.lang.String">
+            <ns14:enumerationCollection/>
+           </ns14:ValueDomain>
+          </ns14:UMLAttribute>
+          <ns14:UMLAttribute dataTypeName="java.lang.String" description="The long name for a Domain Model." name="projectLongName" publicID="2927753" version="1.0">
+           <ns14:SemanticMetadata conceptCode="C42614" conceptDefinition="The words or language units by which a thing is known." conceptName="Name" order="0"/>
+           <ns14:SemanticMetadata conceptCode="C25248" conceptDefinition="Of relatively great or greater than average spatial extension or temporal duration." conceptName="Long" order="1"/>
+           <ns14:SemanticMetadata conceptCode="C47885" conceptDefinition="Any piece of work that is undertaken or attempted." conceptName="Project" order="2"/>
+           <ns14:ValueDomain longName="java.lang.String">
+            <ns14:enumerationCollection/>
+           </ns14:ValueDomain>
+          </ns14:UMLAttribute>
+         </ns14:umlAttributeCollection>
+         <ns14:SemanticMetadata conceptCode="C62289" conceptDefinition="An area of knowledge considered as a discreet unit for some purpose." conceptName="Domain" order="1"/>
+         <ns14:SemanticMetadata conceptCode="C16866" conceptDefinition="1. A representation of something, often idealized or modified to make it conceptually easier to understand. 2. Something to be imitated. 3. In dentistry, a cast." conceptName="Model System" order="0"/>
+        </ns14:UMLClass>
+       </ns2:Output>
        <ns2:faultCollection>
         <ns2:Fault description="" name="InvalidUMLProjectIndentifier"/>
        </ns2:faultCollection>
       </ns2:Operation>
       <ns2:Operation description="Generates a  DomainModel for the specified Project, including only the specified Classes, but excluding the specified Associations" name="generateDomainModelForClassesWithExcludes">
        <ns2:inputParameterCollection>
-        <ns2:InputParameter qName="ns11:UMLProjectIdentifer" dimensionality="1" index="0" isArray="false" isRequired="false" name="umlProjectIdentifer" xmlns:ns11="gme://caGrid.caBIG/1.0/org.cagrid.mms.domain"/>
+        <ns2:InputParameter qName="ns15:UMLProjectIdentifer" dimensionality="1" index="0" isArray="false" isRequired="false" name="umlProjectIdentifer" xmlns:ns15="gme://caGrid.caBIG/1.0/org.cagrid.mms.domain"/>
         <ns2:InputParameter qName="xsd:string" dimensionality="1" index="1" isArray="true" isRequired="false" name="fullyQualifiedClassNames" xmlns:xsd="http://www.w3.org/2001/XMLSchema"/>
-        <ns2:InputParameter qName="ns12:UMLAssociationExclude" dimensionality="1" index="2" isArray="true" isRequired="false" name="umlAssociationExclude" xmlns:ns12="gme://caGrid.caBIG/1.0/org.cagrid.mms.domain"/>
+        <ns2:InputParameter qName="ns16:UMLAssociationExclude" dimensionality="1" index="2" isArray="true" isRequired="false" name="umlAssociationExclude" xmlns:ns16="gme://caGrid.caBIG/1.0/org.cagrid.mms.domain"/>
        </ns2:inputParameterCollection>
-       <ns2:Output qName="ns13:DomainModel" dimensionality="1" isArray="false" xmlns:ns13="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.dataservice"/>
+       <ns2:Output qName="ns17:DomainModel" dimensionality="1" isArray="false" xmlns:ns17="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.dataservice">
+        <ns18:UMLClass className="DomainModel" description="For a Data Service, this is the data model it is based on." id="7DBE7711-CBFE-8A3A-E040-BB89AD43512F" packageName="gov.nih.nci.cagrid.metadata.data" projectName="caGrid_Metadata_Models" projectVersion="1" xmlns:ns18="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common">
+         <ns18:umlAttributeCollection>
+          <ns18:UMLAttribute dataTypeName="java.lang.String" description="The version of the Domain Model Project." name="projectVersion" publicID="2927755" version="1.0">
+           <ns18:SemanticMetadata conceptCode="C25714" conceptDefinition="Version; something a little different from others of the same type; one of a sequence of copies of a program, each incorporating new modifications." conceptName="Version" order="0"/>
+           <ns18:SemanticMetadata conceptCode="C47885" conceptDefinition="Any piece of work that is undertaken or attempted." conceptName="Project" order="1"/>
+           <ns18:ValueDomain longName="java.lang.String">
+            <ns18:enumerationCollection/>
+           </ns18:ValueDomain>
+          </ns18:UMLAttribute>
+          <ns18:UMLAttribute dataTypeName="java.lang.String" description="A description of the Domain Model Project." name="projectDescription" publicID="2927752" version="1.0">
+           <ns18:SemanticMetadata conceptCode="C25365" conceptDefinition="Description; a statement that represents something in words." conceptName="Description" order="0"/>
+           <ns18:SemanticMetadata conceptCode="C47885" conceptDefinition="Any piece of work that is undertaken or attempted." conceptName="Project" order="1"/>
+           <ns18:ValueDomain longName="java.lang.String">
+            <ns18:enumerationCollection/>
+           </ns18:ValueDomain>
+          </ns18:UMLAttribute>
+          <ns18:UMLAttribute dataTypeName="java.lang.String" description="The short name for a Domain Model." name="projectShortName" publicID="2927754" version="1.0">
+           <ns18:SemanticMetadata conceptCode="C47885" conceptDefinition="Any piece of work that is undertaken or attempted." conceptName="Project" order="2"/>
+           <ns18:SemanticMetadata conceptCode="C42614" conceptDefinition="The words or language units by which a thing is known." conceptName="Name" order="0"/>
+           <ns18:SemanticMetadata conceptCode="C25249" conceptDefinition="Having little (physical) length or seeming to be limited in (temporal) duration." conceptName="Short" order="1"/>
+           <ns18:ValueDomain longName="java.lang.String">
+            <ns18:enumerationCollection/>
+           </ns18:ValueDomain>
+          </ns18:UMLAttribute>
+          <ns18:UMLAttribute dataTypeName="java.lang.String" description="The long name for a Domain Model." name="projectLongName" publicID="2927753" version="1.0">
+           <ns18:SemanticMetadata conceptCode="C42614" conceptDefinition="The words or language units by which a thing is known." conceptName="Name" order="0"/>
+           <ns18:SemanticMetadata conceptCode="C25248" conceptDefinition="Of relatively great or greater than average spatial extension or temporal duration." conceptName="Long" order="1"/>
+           <ns18:SemanticMetadata conceptCode="C47885" conceptDefinition="Any piece of work that is undertaken or attempted." conceptName="Project" order="2"/>
+           <ns18:ValueDomain longName="java.lang.String">
+            <ns18:enumerationCollection/>
+           </ns18:ValueDomain>
+          </ns18:UMLAttribute>
+         </ns18:umlAttributeCollection>
+         <ns18:SemanticMetadata conceptCode="C62289" conceptDefinition="An area of knowledge considered as a discreet unit for some purpose." conceptName="Domain" order="1"/>
+         <ns18:SemanticMetadata conceptCode="C16866" conceptDefinition="1. A representation of something, often idealized or modified to make it conceptually easier to understand. 2. Something to be imitated. 3. In dentistry, a cast." conceptName="Model System" order="0"/>
+        </ns18:UMLClass>
+       </ns2:Output>
        <ns2:faultCollection>
         <ns2:Fault description="" name="InvalidUMLProjectIndentifier"/>
        </ns2:faultCollection>
       </ns2:Operation>
       <ns2:Operation description="Annotates the specified ServiceMetadata model with semantic information from the specified model, by mapping QNames to UMLClasses" name="annotateServiceMetadata">
        <ns2:inputParameterCollection>
-        <ns2:InputParameter qName="ns1:ServiceMetadata" dimensionality="1" index="0" isArray="false" isRequired="false" name="serviceMetadata"/>
-        <ns2:InputParameter qName="ns14:NamespaceToProjectMapping" dimensionality="1" index="1" isArray="true" isRequired="false" name="namespaceToProjectMappings" xmlns:ns14="gme://caGrid.caBIG/1.0/org.cagrid.mms.domain"/>
+        <ns2:InputParameter qName="ns1:ServiceMetadata" dimensionality="1" index="0" isArray="false" isRequired="false" name="serviceMetadata">
+         <ns19:UMLClass className="ServiceMetadata" description="An instance of the Service Metadata." id="7DBE7711-CF93-8A3A-E040-BB89AD43512F" packageName="gov.nih.nci.cagrid.metadata" projectName="caGrid_Metadata_Models" projectVersion="1" xmlns:ns19="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common">
+          <ns19:umlAttributeCollection/>
+          <ns19:SemanticMetadata conceptCode="C80736" conceptDefinition="A software system providing a public need." conceptName="Software Service" order="1"/>
+          <ns19:SemanticMetadata conceptCode="C52095" conceptDefinition="Data about data; information that describes another set of data." conceptName="Metadata" order="0"/>
+         </ns19:UMLClass>
+        </ns2:InputParameter>
+        <ns2:InputParameter qName="ns20:NamespaceToProjectMapping" dimensionality="1" index="1" isArray="true" isRequired="false" name="namespaceToProjectMappings" xmlns:ns20="gme://caGrid.caBIG/1.0/org.cagrid.mms.domain"/>
        </ns2:inputParameterCollection>
-       <ns2:Output qName="ns1:ServiceMetadata" dimensionality="1" isArray="false"/>
+       <ns2:Output qName="ns1:ServiceMetadata" dimensionality="1" isArray="false">
+        <ns21:UMLClass className="ServiceMetadata" description="An instance of the Service Metadata." id="7DBE7711-CF93-8A3A-E040-BB89AD43512F" packageName="gov.nih.nci.cagrid.metadata" projectName="caGrid_Metadata_Models" projectVersion="1" xmlns:ns21="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common">
+         <ns21:umlAttributeCollection/>
+         <ns21:SemanticMetadata conceptCode="C80736" conceptDefinition="A software system providing a public need." conceptName="Software Service" order="1"/>
+         <ns21:SemanticMetadata conceptCode="C52095" conceptDefinition="Data about data; information that describes another set of data." conceptName="Metadata" order="0"/>
+        </ns21:UMLClass>
+       </ns2:Output>
        <ns2:faultCollection>
         <ns2:Fault description="Thrown if the identifier is null or contains invalid properties." name="InvalidUMLProjectIndentifier"/>
        </ns2:faultCollection>
       </ns2:Operation>
       <ns2:Operation description="Returns the metadata detailing the supported Model sources and their characteristics" name="getModelSourceMetadata">
        <ns2:inputParameterCollection/>
-       <ns2:Output qName="ns15:ModelSourceMetadata" dimensionality="1" isArray="false" xmlns:ns15="gme://caGrid.caBIG/1.0/org.cagrid.mms.domain"/>
+       <ns2:Output qName="ns22:ModelSourceMetadata" dimensionality="1" isArray="false" xmlns:ns22="gme://caGrid.caBIG/1.0/org.cagrid.mms.domain"/>
        <ns2:faultCollection/>
       </ns2:Operation>
      </ns2:operationCollection>
@@ -86,17 +253,17 @@
      </ns2:contextPropertyCollection>
     </ns2:ServiceContext>
    </ns2:serviceContextCollection>
-   <ns16:SemanticMetadata conceptCode="C63541" conceptDefinition="A service available on a system that coordinates resources that are not subject to central control, using open, general purpose protocols and interfaces to deliver nontrivial qualities of services." conceptName="Grid Service" order="0" xmlns:ns16="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common"/>
-   <ns17:SemanticMetadata conceptCode="C63543" conceptDefinition="A published API which receives data in the form of objects, performs computations based upon the input data, and returns information to a client via caGrid in the form of one or more objects." conceptName="Analytical Grid Service" order="1" xmlns:ns17="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common"/>
+   <ns23:SemanticMetadata conceptCode="C63541" conceptDefinition="A service available on a system that coordinates resources that are not subject to central control, using open, general purpose protocols and interfaces to deliver nontrivial qualities of services." conceptName="Grid Service" order="0" xmlns:ns23="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common"/>
+   <ns24:SemanticMetadata conceptCode="C63543" conceptDefinition="A published API which receives data in the form of objects, performs computations based upon the input data, and returns information to a client via caGrid in the form of one or more objects." conceptName="Analytical Grid Service" order="1" xmlns:ns24="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common"/>
   </ns2:Service>
  </ns1:serviceDescription>
  <ns1:hostingResearchCenter>
-  <ns18:ResearchCenter displayName="OSU" shortName="OSU" xmlns:ns18="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common">
-   <ns18:Address country="US" locality="Columbus" postalCode="43210" stateProvince="OH" street1="333 W 10th Ave" street2=""/>
-   <ns18:ResearchCenterDescription description="" homepageURL="" imageURL="" rssNewsURL=""/>
-   <ns18:pointOfContactCollection>
-    <ns18:PointOfContact affiliation="OSU" email="scott.oster@osumc.edu" firstName="Scott" lastName="Oster" phoneNumber="" role="Maintainer"/>
-   </ns18:pointOfContactCollection>
-  </ns18:ResearchCenter>
+  <ns25:ResearchCenter displayName="OSU" shortName="OSU" xmlns:ns25="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common">
+   <ns25:Address country="US" locality="Columbus" postalCode="43210" stateProvince="OH" street1="333 W 10th Ave" street2=""/>
+   <ns25:ResearchCenterDescription description="" homepageURL="" imageURL="" rssNewsURL=""/>
+   <ns25:pointOfContactCollection>
+    <ns25:PointOfContact affiliation="OSU" email="scott.oster@osumc.edu" firstName="Scott" lastName="Oster" phoneNumber="" role="Maintainer"/>
+   </ns25:pointOfContactCollection>
+  </ns25:ResearchCenter>
  </ns1:hostingResearchCenter>
 </ns1:ServiceMetadata>
