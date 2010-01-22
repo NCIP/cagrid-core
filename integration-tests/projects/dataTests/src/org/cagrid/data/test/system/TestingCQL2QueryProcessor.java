@@ -65,7 +65,7 @@ public class TestingCQL2QueryProcessor extends CQL2QueryProcessor {
     
 
     private List<?> getResultsList(CQLQuery query) throws QueryProcessingException {
-        List<?> results = new LinkedList();
+        List<?> results = new LinkedList<Object>();
         String targetName = query.getCQLTargetObject().getClassName();
         if (targetName.equals(Book.class.getName())) {
             results = TestQueryResultsGenerator.getResultBooks();

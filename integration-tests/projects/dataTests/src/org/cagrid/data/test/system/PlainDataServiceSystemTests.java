@@ -70,7 +70,7 @@ public class PlainDataServiceSystemTests extends BaseSystemTest {
     }
 
 
-    protected Vector steps() {
+    protected Vector<?> steps() {
         DataTestCaseInfo info = new CreationTests.PlainDataServiceInfo();
         Vector<Step> steps = new Vector<Step>();
         // data service presumed to have been created

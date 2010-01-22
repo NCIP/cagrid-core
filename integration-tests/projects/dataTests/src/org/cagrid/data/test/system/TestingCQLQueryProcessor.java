@@ -50,14 +50,14 @@ public class TestingCQLQueryProcessor extends LazyCQLQueryProcessor {
 	}
 	
 
-	public Iterator processQueryLazy(CQLQuery cqlQuery) throws MalformedQueryException, QueryProcessingException {
-		List results = getResultsList(cqlQuery);
+	public Iterator<?> processQueryLazy(CQLQuery cqlQuery) throws MalformedQueryException, QueryProcessingException {
+		List<?> results = getResultsList(cqlQuery);
 		return results.iterator();
 	}
 
 
 	public CQLQueryResults processQuery(CQLQuery cqlQuery) throws MalformedQueryException, QueryProcessingException {
-		List results = getResultsList(cqlQuery);
+		List<?> results = getResultsList(cqlQuery);
 		Mappings mapping = TestQueryResultsGenerator.getClassToQnameMappings();
 		try {
 			CQLQueryResults queryResults = CQLResultsCreationUtil.createObjectResults(results, cqlQuery.getTarget().getName(), mapping);
@@ -68,8 +68,8 @@ public class TestingCQLQueryProcessor extends LazyCQLQueryProcessor {
 	}
 	
 	
-	private List getResultsList(CQLQuery query) throws QueryProcessingException {
-		List results = new LinkedList();
+	private List<?> getResultsList(CQLQuery query) throws QueryProcessingException {
+		List<?> results = new LinkedList<Object>();
 		if (query.getTarget().getName().equals(Book.class.getName())) {
 			results = TestQueryResultsGenerator.getResultBooks();
 		} else if (query.getTarget().getName().equals(BookStore.class.getName())) {
