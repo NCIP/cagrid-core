@@ -120,22 +120,23 @@ public abstract class BaseDataServiceImpl {
         if (domainModel != null) {
             LOG.debug("Domain Model found in base resource");
         } else {
-            LOG.warn("Domain Model NOT FOUND in base resource");
+            LOG.error("Domain Model NOT FOUND in base resource");
         }
         // set the query language support metadata
         LOG.debug("Creating the language support resource property");
         try {
             // build up the language support bean
             QueryLanguageSupport languageSupport = new QueryLanguageSupport();
-            QueryLanguageSupportCQL2Support cql2Support = new QueryLanguageSupportCQL2Support();
             if (!hasNativeCql2Processor()) {
-                cql2Support.setSupport(Cql2SupportType.ImplementationNotProvided);
                 LOG.error("*******************************************************************");
                 LOG.error("* NO CQL 2 QUERY PROCESSOR WAS PROVIDED IN THE SERVICE PROPERTIES *");
                 LOG.error("*   A CQL 2 QUERY PROCESSOR IS REQUIRED FOR CAGRID 1.4 AND NEWER  *");
                 LOG.error("*      QUERIES TO ANY CQL 2 METHOD ON THIS SERVICE WILL FAIL      *");
                 LOG.error("*******************************************************************");
+                languageSupport.setCQL2NotSupported(Cql2SupportType.ImplementationNotProvided);
             } else {
+                // CQL 2 fully supported, set the extensions on the resource property
+                QueryLanguageSupportCQL2Support cql2Support = new QueryLanguageSupportCQL2Support();
                 SupportedExtensions extSupport = new SupportedExtensions();
                 extSupport.setAttributeExtension(
                     getCql2QueryProcessor().getSupportedExtensions(
@@ -150,8 +151,8 @@ public abstract class BaseDataServiceImpl {
                     getCql2QueryProcessor().getSupportedExtensions(
                         Cql2ExtensionPoint.RESULT).toArray(new QName[0]));
                 cql2Support.setSupportedExtensions(extSupport);
+                languageSupport.setCQL2Support(cql2Support);
             }
-            languageSupport.setCQL2Support(cql2Support);
             // locate the setter method on the base resource
             boolean foundMethod = false;
             for (Method method : resourceMethods) {

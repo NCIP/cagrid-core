@@ -19,10 +19,10 @@ import javax.wsdl.Service;
 import javax.wsdl.WSDLException;
 import javax.xml.namespace.QName;
 
+import org.apache.axis.message.addressing.Address;
 import org.apache.axis.message.addressing.EndpointReferenceType;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.cagrid.dataservice.cql.support.Cql2SupportType;
 import org.cagrid.dataservice.cql.support.QueryLanguageSupport;
 import org.globus.wsrf.utils.XmlUtils;
 import org.w3c.dom.Element;
@@ -53,8 +53,7 @@ public class DataServiceFeatureDiscoveryUtil {
             // deserialize the resource property
             QueryLanguageSupport support = Utils.deserializeObject(
                 new StringReader(XmlUtils.toString(resourceProperty)), QueryLanguageSupport.class);
-            return !(support.getCQL2Support() != null && 
-                support.getCQL2Support().equals(Cql2SupportType.ImplementationNotProvided));
+            return support.getCQL2NotSupported() == null && support.getCQL2Support() != null;
         }
         return false;
     }
@@ -126,5 +125,17 @@ public class DataServiceFeatureDiscoveryUtil {
             EnumerationMethodConstants.ENUMERATION_QUERY_OUTPUT_MESSAGE,
             EnumerationMethodConstants.ENUMERATION_QUERY_METHOD_NAME);
         return enumerationOp != null;
+    }
+    
+    
+    public static void main(String[] args) {
+        try {
+            EndpointReferenceType epr = new EndpointReferenceType(new Address(
+                "http://localhost:8080/wsrf/services/cagrid/HelloWorld"));
+            System.out.println("Has cql2? " + serviceSupportsCql2(epr));
+            System.out.println("Has enum? " + serviceHasCql2EnumerationOperation(epr));
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
     }
 }
