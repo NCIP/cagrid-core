@@ -17,7 +17,8 @@ import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
 import javax.swing.JTextField;
 
-import org.apache.log4j.Logger;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.cagrid.gaards.dorian.client.GridAdministrationClient;
 import org.cagrid.gaards.dorian.federation.GridUser;
 import org.cagrid.gaards.dorian.federation.HostCertificateFilter;
@@ -41,7 +42,7 @@ import org.cagrid.grape.utils.ErrorDialog;
  */
 public class UserWindow extends ApplicationComponent implements
 		HostCertificateLauncher, DorianSessionProvider {
-	private static Logger log = Logger.getLogger(UserWindow.class);
+	private static Log log = LogFactory.getLog(UserWindow.class);
 	
 	private static final long serialVersionUID = 1L;
 

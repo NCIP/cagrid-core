@@ -8,7 +8,8 @@ import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JPanel;
 
-import org.apache.log4j.Logger;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.cagrid.gaards.dorian.federation.UserCertificateRecord;
 import org.cagrid.gaards.ui.common.ProgressPanel;
 import org.cagrid.gaards.ui.common.TitlePanel;
@@ -23,7 +24,7 @@ import org.cagrid.grape.utils.ErrorDialog;
  * @author <A HREF="MAILTO:hastings@bmi.osu.edu">Shannon Langella </A>
  */
 public class UserCertificateSearchDialog extends JDialog {
-	private static Logger log = Logger.getLogger(UserCertificateSearchDialog.class);
+	private static Log log = LogFactory.getLog(UserCertificateSearchDialog.class);
 	
 	private static final long serialVersionUID = 1L;
 

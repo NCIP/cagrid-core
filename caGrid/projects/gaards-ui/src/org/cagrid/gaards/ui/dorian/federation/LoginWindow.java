@@ -353,7 +353,7 @@ public class LoginWindow extends ApplicationComponent {
                 }
             }
         } catch (Exception e) {
-            FaultUtil.printFault(e);
+            FaultUtil.logFault(log, e);
         }
     }
 

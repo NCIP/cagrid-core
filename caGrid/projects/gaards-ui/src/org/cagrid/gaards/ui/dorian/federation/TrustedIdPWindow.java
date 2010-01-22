@@ -545,15 +545,13 @@ public class TrustedIdPWindow extends ApplicationComponent implements DorianSess
                 getProgressPanel().stopProgress("Successfully updated IdP.");
             }
         } catch (PermissionDeniedFault pdf) {
-            FaultUtil.printFault(pdf);
+            FaultUtil.logFault(log, pdf);
             getProgressPanel().stopProgress("Error");
             ErrorDialog.showError(pdf);
-            log.error(pdf, pdf);
         } catch (Exception e) {
-            FaultUtil.printFault(e);
+            FaultUtil.logFault(log, e);
             getProgressPanel().stopProgress("Error");
             ErrorDialog.showError(e);
-            log.error(e, e);
         } finally {
             getUpdateTrustedIdP().setEnabled(true);
         }

@@ -14,7 +14,8 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
-import org.apache.log4j.Logger;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.cagrid.gaards.credentials.CredentialEntryFactory;
 import org.cagrid.gaards.credentials.DorianUserCredentialEntry;
 import org.cagrid.gaards.credentials.X509CredentialEntry;
@@ -40,7 +41,7 @@ import org.globus.gsi.GlobusCredential;
  * @author <A HREF="MAILTO:hastings@bmi.osu.edu">Shannon Langella </A>
  */
 public class AccountProfileWindow extends ApplicationComponent {
-	private static Logger log = Logger.getLogger(AccountProfileWindow.class);
+	private static Log log = LogFactory.getLog(AccountProfileWindow.class);
 	
     private static final long serialVersionUID = 1L;
 

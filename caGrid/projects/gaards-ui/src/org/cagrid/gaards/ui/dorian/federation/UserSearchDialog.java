@@ -19,7 +19,8 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 import javax.swing.border.TitledBorder;
 
-import org.apache.log4j.Logger;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.cagrid.gaards.dorian.client.GridAdministrationClient;
 import org.cagrid.gaards.dorian.federation.GridUser;
 import org.cagrid.gaards.dorian.federation.GridUserFilter;
@@ -40,7 +41,7 @@ import org.globus.gsi.GlobusCredential;
  * @author <A HREF="MAILTO:hastings@bmi.osu.edu">Shannon Langella </A>
  */
 public class UserSearchDialog extends JDialog {
-	private static Logger log = Logger.getLogger(UserSearchDialog.class);
+	private static Log log = LogFactory.getLog(UserSearchDialog.class);
 	
 	private static final long serialVersionUID = 1L;
 

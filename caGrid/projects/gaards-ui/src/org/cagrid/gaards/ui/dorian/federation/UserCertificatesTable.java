@@ -9,7 +9,8 @@ import java.util.Vector;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumn;
 
-import org.apache.log4j.Logger;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.cagrid.gaards.dorian.federation.UserCertificateRecord;
 import org.cagrid.gaards.pki.CertUtil;
 import org.cagrid.gaards.ui.dorian.DorianSession;
@@ -23,7 +24,7 @@ import org.cagrid.grape.utils.ErrorDialog;
  * @author <A HREF="MAILTO:hastings@bmi.osu.edu">Shannon Hastings </A>
  */
 public class UserCertificatesTable extends GrapeBaseTable {
-	private static Logger log = Logger.getLogger(UserCertificatesTable.class);
+	private static Log log = LogFactory.getLog(UserCertificatesTable.class);
 	
 	private static final long serialVersionUID = 1L;
 	

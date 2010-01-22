@@ -17,7 +17,8 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 
-import org.apache.log4j.Logger;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.cagrid.gaards.dorian.client.GridAdministrationClient;
 import org.cagrid.gaards.dorian.federation.DateRange;
 import org.cagrid.gaards.dorian.federation.UserCertificateFilter;
@@ -31,7 +32,7 @@ import org.cagrid.grape.LookAndFeel;
 import org.cagrid.grape.utils.ErrorDialog;
 
 public class UserCertificateSearchPanel extends JPanel implements DorianSessionProvider{
-	private static Logger log = Logger.getLogger(UserCertificateSearchPanel.class);
+	private static Log log = LogFactory.getLog(UserCertificateSearchPanel.class);
 	
 	private static final long serialVersionUID = 1L;
 

@@ -11,7 +11,8 @@ import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
-import org.apache.log4j.Logger;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.cagrid.gaards.ui.common.CertificateInformationComponent;
 import org.cagrid.gaards.ui.dorian.DorianHandle;
 import org.cagrid.gaards.ui.dorian.DorianLookAndFeel;
@@ -23,7 +24,7 @@ import org.cagrid.grape.utils.ErrorDialog;
 
 
 public class ViewCACertificateWindow extends ApplicationComponent {
-	private static Logger log = Logger.getLogger(ViewCACertificateWindow.class);
+	private static Log log = LogFactory.getLog(ViewCACertificateWindow.class);
 	
 	private static final long serialVersionUID = 1L;
 
