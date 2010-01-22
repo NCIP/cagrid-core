@@ -145,7 +145,7 @@ public class MetadataCodegenPostProcessor implements CodegenExtensionPostProcess
 
             // if we found mappings, pass the mappings to the
             NamespaceToProjectMapping[] mappingArr = new NamespaceToProjectMapping[mappings.size()];
-            metadata=mmsService.annotateServiceMetadata(metadata, mappings.toArray(mappingArr));
+            metadata = mmsService.annotateServiceMetadata(metadata, mappings.toArray(mappingArr));
         } catch (Exception e) {
             LOG.error("Problem annotating ServiceMetadata; using unannotated model.", e);
         }
@@ -179,7 +179,10 @@ public class MetadataCodegenPostProcessor implements CodegenExtensionPostProcess
      * @throws CodegenExtensionException
      */
     private void populateService(Service service, ServiceInformation info) throws CodegenExtensionException {
-        service.setDescription(info.getServiceDescriptor().getDescription());
+        if (info.getServiceDescriptor().getDescription() != null
+            && !info.getServiceDescriptor().getDescription().trim().equals("")) {
+            service.setDescription(info.getServiceDescriptor().getDescription());
+        }
         if (service.getDescription() == null) {
             service.setDescription("");
         }
@@ -318,7 +321,7 @@ public class MetadataCodegenPostProcessor implements CodegenExtensionPostProcess
     private void editServiceContext(ServiceType service, ServiceContext serviceContext) {
         serviceContext.setName(service.getName());
 
-        // set a description (for xsd validation reasons)
+        serviceContext.setDescription(service.getDescription());
         if (serviceContext.getDescription() == null || serviceContext.getDescription().trim().equals("")) {
             serviceContext.setDescription("");
         }
