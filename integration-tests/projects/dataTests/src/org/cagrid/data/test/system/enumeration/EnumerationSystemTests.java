@@ -81,7 +81,7 @@ public class EnumerationSystemTests extends BaseSystemTest {
 	}
 
 
-	protected Vector steps() {
+	protected Vector<?> steps() {
         Vector<Step> steps = new Vector<Step>();
 		// an enumeration supporting data service is presumed to have been
 		// created by a previous testing process
