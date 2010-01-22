@@ -36,7 +36,7 @@ public class CreateTransferTests extends Story {
 	}
 
 
-	protected Vector steps() {
+	protected Vector<?> steps() {
         DataTestCaseInfo info = new TestTransferDataServiceInfo();
 		Vector<Step> steps = new Vector<Step>();
 		// delete any existing transfer data service directory

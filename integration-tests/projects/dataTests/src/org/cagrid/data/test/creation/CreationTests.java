@@ -39,7 +39,7 @@ public class CreationTests extends Story {
 	}
 	
 
-	protected Vector steps() {
+	protected Vector<?> steps() {
         DataTestCaseInfo info = new TestDataServiceInfo();
         DataTestCaseInfo plainInfo = new PlainDataServiceInfo();
         

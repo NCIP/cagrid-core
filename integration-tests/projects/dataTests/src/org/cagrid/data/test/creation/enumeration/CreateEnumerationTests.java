@@ -36,7 +36,7 @@ public class CreateEnumerationTests extends Story {
 	}
 
 
-	protected Vector steps() {
+	protected Vector<?> steps() {
         DataTestCaseInfo info = new TestEnumerationDataServiceInfo();
 		Vector<Step> steps = new Vector<Step>();
 		// delete any existing enumeration data service directory
