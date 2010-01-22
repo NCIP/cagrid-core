@@ -53,9 +53,9 @@ public class CheckCql2QueryLanguageSupportResourcePropertyStep extends Step {
         QueryLanguageSupportCQL2Support cql2Support = languageSupport.getCQL2Support();
         Cql2SupportType notSupported = languageSupport.getCQL2NotSupported();
         assertTrue("No CQL 2 support was defined in the resource property", 
-            cql2Support != null || notSupported != null);
+            !(cql2Support == null && notSupported == null));
         assertTrue("CQL 2 support metadata inconsistent: claims both supported AND not supported", 
-            cql2Support != null && notSupported != null);
+            !(cql2Support != null && notSupported != null));
         if (expectedCql2Support) {
             SupportedExtensions supportedExtensions = cql2Support.getSupportedExtensions();
             compareExtensions(supportedExtensions);
@@ -132,7 +132,10 @@ public class CheckCql2QueryLanguageSupportResourcePropertyStep extends Step {
         // deserialize the resource property
         QueryLanguageSupport support = null;
         try {
-            support = Utils.deserializeObject(new StringReader(XmlUtils.toString(resourceProperty)), QueryLanguageSupport.class);
+            String rpXml = XmlUtils.toString(resourceProperty);
+            System.out.println("Resource property:");
+            System.out.println(rpXml);
+            support = Utils.deserializeObject(new StringReader(rpXml), QueryLanguageSupport.class);
         } catch (Exception ex) {
             ex.printStackTrace();
             fail("Error deserializing query language support document: " + ex.getMessage());
