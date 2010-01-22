@@ -178,7 +178,7 @@ public class InvokeTransferDataServiceStep extends Step {
         StringReader xmlReader = new StringReader(xml);
         CQLQueryResults results = null;
         try {
-            results = (CQLQueryResults) Utils.deserializeObject(xmlReader, CQLQueryResults.class);
+            results = Utils.deserializeObject(xmlReader, CQLQueryResults.class);
         } catch (Exception ex) {
             ex.printStackTrace();
             fail("Error deserializing CQL query results: " + ex.getMessage());
@@ -193,18 +193,21 @@ public class InvokeTransferDataServiceStep extends Step {
         }
         
         // validate results from transfer
-        List<Object> returnedObjects = new LinkedList<Object>();
+        List<Book> returnedObjects = new LinkedList<Book>();
         CQLQueryResultsIterator iter = new CQLQueryResultsIterator(results);
         while (iter.hasNext()) {
-            returnedObjects.add(iter.next());
+            Object instance = iter.next();
+            assertTrue("Returned data was not of the type " + Book.class.getName(),
+                instance instanceof Book);
+            returnedObjects.add((Book) instance);
         }
-        List goldObjects = TestQueryResultsGenerator.getResultBooks();
+        List<Book> goldObjects = TestQueryResultsGenerator.getResultBooks();
         // same number of results?
         assertEquals("Unexpected number of results returned from the transfer", goldObjects.size(), returnedObjects.size());
         // verify each returned object matches one of the expected objects
-        Iterator returnedObjectIter = returnedObjects.iterator();
+        Iterator<Book> returnedObjectIter = returnedObjects.iterator();
         while (returnedObjectIter.hasNext()) {
-            Book returnedBook = (Book) returnedObjectIter.next();
+            Book returnedBook = returnedObjectIter.next();
             boolean bookFound = goldObjects.contains(returnedBook);
             if (!bookFound) {
                 // serialize it so we can see what happened
@@ -216,9 +219,9 @@ public class InvokeTransferDataServiceStep extends Step {
             }
         }
         // verify every gold object exists in the results
-        Iterator goldObjectIter = goldObjects.iterator();
+        Iterator<Book> goldObjectIter = goldObjects.iterator();
         while (goldObjectIter.hasNext()) {
-            Book goldBook = (Book) goldObjectIter.next();
+            Book goldBook = goldObjectIter.next();
             boolean bookFound = returnedObjects.contains(goldBook);
             if (!bookFound) {
                 // serialize it so we can see what happened

@@ -31,6 +31,7 @@ import org.cagrid.data.test.system.BaseSystemTest;
 import org.cagrid.data.test.system.ResyncAndBuildStep;
 import org.cagrid.data.test.system.SetCqlValidationStep;
 import org.cagrid.data.test.system.SetQueryProcessorStep;
+import org.cagrid.data.test.system.VerifyOperationsStep;
 import org.junit.Assert;
 
 
@@ -100,7 +101,7 @@ public class TransferSystemTests extends BaseSystemTest {
 	}
 
 
-	protected Vector steps() {
+	protected Vector<?> steps() {
         Vector<Step> steps = new Vector<Step>();
 		// a transfer supporting data service is presumed to have been
 		// created by a previous testing process
@@ -126,6 +127,9 @@ public class TransferSystemTests extends BaseSystemTest {
         steps.add(new DeployServiceStep(container, tempTransferDir.getAbsolutePath(), args));
 		// start container
 		steps.add(new StartContainerStep(container));
+		// verify the operations we expect
+        steps.add(new VerifyOperationsStep(container, info.getName(),
+            false, false, true));
 		// test data service
 		steps.add(new InvokeTransferDataServiceStep(container, info.getName()));
 		return steps;
