@@ -26,6 +26,7 @@ import org.cagrid.data.test.system.BaseSystemTest;
 import org.cagrid.data.test.system.ResyncAndBuildStep;
 import org.cagrid.data.test.system.SetCqlValidationStep;
 import org.cagrid.data.test.system.SetQueryProcessorStep;
+import org.cagrid.data.test.system.VerifyOperationsStep;
 
 
 /**
@@ -100,6 +101,9 @@ public class EnumerationSystemTests extends BaseSystemTest {
 		steps.add(new DeployServiceStep(container, info.getDir()));
 		// start container
 		steps.add(new StartContainerStep(container));
+		// verify the operations we expect
+		steps.add(new VerifyOperationsStep(container, info.getName(),
+		    false, true, false));
 		// test data service
 		steps.add(new InvokeEnumerationDataServiceStep(container, info.getName()));
 		return steps;

@@ -51,27 +51,18 @@ public class CheckCql2QueryLanguageSupportResourcePropertyStep extends Step {
         QueryLanguageSupport languageSupport = getQueryLanguageSupportResourceProperty();
         // ensure there is some mention of CQL 2 support
         QueryLanguageSupportCQL2Support cql2Support = languageSupport.getCQL2Support();
-        assertNotNull("No CQL 2 support was defined in the resource property", cql2Support);
-        Cql2SupportType supportType = cql2Support.getSupport();
-        SupportedExtensions supportedExtensions = cql2Support.getSupportedExtensions();
+        Cql2SupportType notSupported = languageSupport.getCQL2NotSupported();
+        assertTrue("No CQL 2 support was defined in the resource property", 
+            cql2Support != null || notSupported != null);
+        assertTrue("CQL 2 support metadata inconsistent: claims both supported AND not supported", 
+            cql2Support != null && notSupported != null);
         if (expectedCql2Support) {
-            if (supportType != null) {
-                fail("CQL 2 should be supported by " + dataServiceInfo.getName() + 
-                    " but the resource property says otherwise: " + supportType.getValue());
-            }
+            SupportedExtensions supportedExtensions = cql2Support.getSupportedExtensions();
             compareExtensions(supportedExtensions);
         } else {
             assertEquals("CQL 2 should not be supported by " + dataServiceInfo.getName() + 
                 " and the resource property should explicitly state this", 
-                Cql2SupportType.ImplementationNotProvided, supportType);
-            // shouldn't be any supported extensions either
-            if (supportedExtensions != null) {
-                // that's interesting...
-                assertTrue("Unexpected CQL 2 attribute extensions found!", supportedExtensions.getAttributeExtension() == null || supportedExtensions.getAttributeExtension().length == 0);
-                assertTrue("Unexpected CQL 2 modifier extensions found!", supportedExtensions.getModifierExtension() == null || supportedExtensions.getModifierExtension().length == 0);
-                assertTrue("Unexpected CQL 2 object extensions found!", supportedExtensions.getObjectExtension() == null || supportedExtensions.getObjectExtension().length == 0);
-                assertTrue("Unexpected CQL 2 result extensions found!", supportedExtensions.getResultExtension() == null || supportedExtensions.getResultExtension().length == 0);
-            }
+                Cql2SupportType.ImplementationNotProvided, notSupported);
         }
     }
     
