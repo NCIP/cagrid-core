@@ -1772,7 +1772,7 @@ public class GridGrouper {
 			ArrayList<GroupDescriptor> groups = new ArrayList<GroupDescriptor>();
 			while (itr.hasNext()) {
 				Group group = (Group) itr.next();
-				if (group.hasRead(subj) || gridIdentity.equals(memberIdentity) || (getAdminGroup().hasMember(subj))) {					
+				if ((group.hasRead(subj) && group.hasView(subj)) || group.hasUpdate(subj) || group.hasAdmin(subj) || gridIdentity.equals(memberIdentity) || (getAdminGroup().hasMember(subj))) {					
 					groups.add(grouptoGroupDescriptor(group));
 				}
 			}
