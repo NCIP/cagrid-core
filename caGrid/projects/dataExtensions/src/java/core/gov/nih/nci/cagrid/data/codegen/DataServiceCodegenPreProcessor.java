@@ -1,6 +1,5 @@
 package gov.nih.nci.cagrid.data.codegen;
 
-import gov.nih.nci.cagrid.data.DataServiceConstants;
 import gov.nih.nci.cagrid.data.ExtensionDataUtils;
 import gov.nih.nci.cagrid.data.MetadataConstants;
 import gov.nih.nci.cagrid.data.codegen.templates.StubCQLQueryProcessorTemplate;
@@ -244,10 +243,10 @@ public class DataServiceCodegenPreProcessor implements CodegenExtensionPreProces
 		ServiceType baseService = info.getServices().getService(0);
 		
 		ResourcePropertyType[] typedProps = CommonTools.getResourcePropertiesOfType(
-			info.getServices().getService(0), DataServiceConstants.DOMAIN_MODEL_QNAME);
+			info.getServices().getService(0), MetadataConstants.DOMAIN_MODEL_QNAME);
 		if (typedProps == null || typedProps.length == 0) {
 			ResourcePropertyType dmProp = new ResourcePropertyType();
-			dmProp.setQName(DataServiceConstants.DOMAIN_MODEL_QNAME);
+			dmProp.setQName(MetadataConstants.DOMAIN_MODEL_QNAME);
 			dmProp.setRegister(true);
 			CommonTools.addResourcePropety(baseService, dmProp);
             LOG.debug("Created new resource property for domain model");
