@@ -76,6 +76,7 @@
 	<import file="dev-build-deploy.xml" />
 
 
+
 	<target name="checkContribTasksDefined">
 		<condition property="contrib.tasks.defined">
 			<typefound name="for" />
@@ -150,7 +151,7 @@
 	</target>
 
 	<target name="defineClasspaths" depends="checkGlobus">
-		<path id="tasks.run.extended.classpath"/>
+		<path id="tasks.run.extended.classpath" />
 		<runtarget target="defineExtendedClasspaths" />
 		<path id="base.classpath">
 			<fileset dir="${lib.dir}">
@@ -296,7 +297,6 @@
 	</target>
 
 
-
 	<!-- Create a JAR file with the test implementation classes -->
 	<target name="jarTests" depends="jar,compileTests">
 		<runtarget target="preJarTests" />
@@ -318,7 +318,7 @@
 
 
 	<!-- Clean up all the intermediate files -->
-		<target name="clean" description="Removes all generated build artifacts." depends="checkContribTasksDefined, defineContribTasks"> 
+	<target name="clean" description="Removes all generated build artifacts." depends="checkContribTasksDefined, defineContribTasks">
 		<runtarget target="preClean" />
 		<delete dir="tmp" />
 		<delete dir="${build.dir}" />
@@ -346,6 +346,7 @@
 
 		</javadoc>
 	</target>
+
 	<!-- Default target "all" builds and jars everything, including test....does not make a GAR-->
 	<target name="all" depends="jars" description="Builds the entire service." />
 

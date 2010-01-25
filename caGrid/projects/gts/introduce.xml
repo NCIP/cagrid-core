@@ -1,4 +1,4 @@
-<ns1:ServiceDescription description="The Grid Trust Service (GTS) is a grid-wide mechanism for maintaining and provisioning a federated trust fabric consisting of trusted certificate authorities, such that grid services may make authentication decisions against the most up to date information." introduceVersion="1.3" xmlns:ns1="gme://gov.nih.nci.cagrid/1/Introduce">
+<ns1:ServiceDescription description="The Grid Trust Service (GTS) is a grid-wide mechanism for maintaining and provisioning a federated trust fabric consisting of trusted certificate authorities, such that grid services may make authentication decisions against the most up to date information." introduceVersion="1.4" xmlns:ns1="gme://gov.nih.nci.cagrid/1/Introduce">
  <ns2:Namespaces xsi:type="ns2:NamespacesType" xmlns:ns2="gme://gov.nih.nci.cagrid.introduce/1/Namespace" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <ns2:Namespace location="./gts.xsd" namespace="http://cagrid.nci.nih.gov/8/gts" packageName="gov.nih.nci.cagrid.gts.bean" xsi:type="ns2:NamespaceType">
    <ns2:SchemaElement type="AuthorityGTS" xsi:type="ns2:SchemaElementType"/>
@@ -327,7 +327,7 @@
   </ns3:Service>
  </ns3:Services>
  <ns89:Extensions xsi:type="ns89:ExtensionsType" xmlns:ns89="gme://gov.nih.nci.cagrid.introduce/1/Extension" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
-  <ns89:Extension name="cagrid_metadata" version="1.3" xsi:type="ns89:ExtensionType"/>
+  <ns89:Extension name="cagrid_metadata" version="1.4" xsi:type="ns89:ExtensionType"/>
  </ns89:Extensions>
  <ns90:ServiceProperties xmlns:ns90="gme://gov.nih.nci.cagrid.introduce/1/Property"/>
 </ns1:ServiceDescription>
