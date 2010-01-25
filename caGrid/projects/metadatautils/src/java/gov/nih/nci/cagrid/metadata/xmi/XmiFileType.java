@@ -18,9 +18,9 @@ public enum XmiFileType {
             case SDK_32_EA:
                 return "SDK 3.2 / 3.2.1 XMI from EA";
             case SDK_40_EA:
-                return "SDK 4.0 XMI from EA";
+                return "SDK 4.x XMI from EA";
             case SDK_40_ARGO:
-                return "SDK 4.0 XMI from ArgoUML";
+                return "SDK 4.x XMI from ArgoUML";
         }
         throw new IllegalArgumentException("Unknown type: " + this.name());
     }
