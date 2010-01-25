@@ -37,7 +37,6 @@ public class SetQueryProcessorStep extends Step {
 
 
     public void runStep() throws Throwable {
-        System.out.println("Running step: " + getClass().getName());
         String serviceModelFile = serviceDir + File.separator + IntroduceConstants.INTRODUCE_XML_FILE;
         ServiceDescription desc = null;
         try {

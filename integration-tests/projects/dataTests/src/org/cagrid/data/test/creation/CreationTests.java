@@ -1,13 +1,14 @@
 package org.cagrid.data.test.creation;
 
 import gov.nih.nci.cagrid.testing.system.haste.Step;
-import gov.nih.nci.cagrid.testing.system.haste.Story;
 
 import java.util.Vector;
 
 import junit.framework.TestResult;
 import junit.framework.TestSuite;
 import junit.textui.TestRunner;
+
+import org.cagrid.data.test.system.BaseSystemTest;
 
 /** 
  *  CreationTests
@@ -18,13 +19,7 @@ import junit.textui.TestRunner;
  * @created Aug 22, 2006 
  * @version $Id: CreationTests.java,v 1.4 2008-10-28 22:50:57 dervin Exp $ 
  */
-public class CreationTests extends Story {
-	public static final String INTRODUCE_DIR_PROPERTY = "introduce.base.dir";
-    
-	public static final String SERVICE_NAME = "TestDataService";
-	public static final String PACKAGE_NAME = "gov.nih.nci.cagrid.testds";
-	public static final String SERVICE_NAMESPACE = "http://" + PACKAGE_NAME + "/" + SERVICE_NAME;
-    
+public class CreationTests extends BaseSystemTest {	
     public static final String PLAIN_SERVICE_NAME = "PlainTestDataService";
     public static final String PLAIN_PACKAGE_NAME = "gov.nih.nci.cagrid.plainds";
     public static final String PLAIN_SERVICE_NAMESPACE = "http://" + PLAIN_PACKAGE_NAME + "/" + PLAIN_SERVICE_NAME;
@@ -40,26 +35,14 @@ public class CreationTests extends Story {
 	
 
 	protected Vector<?> steps() {
-        DataTestCaseInfo info = new TestDataServiceInfo();
         DataTestCaseInfo plainInfo = new PlainDataServiceInfo();
         
 		Vector<Step> steps = new Vector<Step>();
-		// delete any existing service dirs
-		steps.add(new DeleteOldServiceStep(info));
+		// delete any existing service dir
         steps.add(new DeleteOldServiceStep(plainInfo));
-		// create new data services
-		steps.add(new CreationStep(info, getIntroduceBaseDir()));
+		// create new data service
         steps.add(new CreationStep(plainInfo, getIntroduceBaseDir()));
 		return steps;
-	}
-	
-	
-	private String getIntroduceBaseDir() {
-		String dir = System.getProperty(INTRODUCE_DIR_PROPERTY);
-		if (dir == null) {
-			fail("Introduce base dir environment variable " + INTRODUCE_DIR_PROPERTY + " is required");
-		}
-		return dir;
 	}
 
 
@@ -70,28 +53,6 @@ public class CreationTests extends Story {
 		TestRunner runner = new TestRunner();
 		TestResult result = runner.doRun(new TestSuite(CreationTests.class));
 		System.exit(result.errorCount() + result.failureCount());
-	}
-    
-    
-	public static class TestDataServiceInfo extends DataTestCaseInfo {
-	    public String getName() {
-	        return SERVICE_NAME;
-	    }
-
-
-	    public String getServiceDirName() {
-	        return SERVICE_NAME;
-	    }
-
-
-	    public String getNamespace() {
-	        return SERVICE_NAMESPACE;
-	    }
-
-
-	    public String getPackageName() {
-	        return PACKAGE_NAME;
-	    }
 	}
     
     

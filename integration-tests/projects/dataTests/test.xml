@@ -123,7 +123,7 @@
 
 	<!-- system tests against the basic data service -->
 	<target name="testBasicSystem" depends="setGlobus, prepareClasspaths, testBasicCreation" description="Runs the service creation and then system tests">
-		<junit dir="${basedir}" printsummary="yes" haltonerror="${halt.on.error}" haltonfailure="${halt.on.error}" errorproperty="basic.system.test.failed" failureproperty="basic.system.test.failed" showoutput="true" fork="yes" forkmode="once">
+		<junit dir="${introduce.dir}" printsummary="yes" haltonerror="${halt.on.error}" haltonfailure="${halt.on.error}" errorproperty="basic.system.test.failed" failureproperty="basic.system.test.failed" showoutput="true" fork="yes" forkmode="once">
 			<sysproperty key="use.testing.port.assignment" value="${testing.port.assignment.mode}" />
 			<sysproperty key="introduce.base.dir" value="${introduce.dir}" />
 			<sysproperty key="build.dir" value="${classes.dir}" />
@@ -131,11 +131,19 @@
 			<sysproperty key="temp.test.service.dir" value="${temp.test.service.dir}"/>
 			<sysproperty key="testing.containers.dir" value="${testing.containers.dir}"/>
 			<classpath refid="all.test.classpath" />
+			<!-- also needs the other extensions (such as metadata) to be upgraded, so need their upgraders on the classpath -->
+			<classpath>
+				<fileset dir="${introduce.dir}/extensions/lib">
+					<include name="*.jar" />
+				</fileset>
+			</classpath>
 			<formatter type="xml" />
 			<test if="testcase" name="${testcase}" fork="no" todir="${junit.results.dir}" />
 			<batchtest unless="testcase" fork="yes" todir="${junit.results.dir}">
 				<fileset dir="${src.dir}">
+					<!--
 					<include name="**/SystemTests.java" />
+					-->
 					<include name="**/PlainDataServiceSystemTests.java" />
 				</fileset>
 			</batchtest>
@@ -153,6 +161,12 @@
 			<sysproperty key="temp.test.service.dir" value="${temp.test.service.dir}"/>
 			<sysproperty key="testing.containers.dir" value="${testing.containers.dir}"/>
 			<classpath refid="all.test.classpath" />
+			<!-- also needs the other extensions (such as metadata) to be upgraded, so need their upgraders on the classpath -->
+			<classpath>
+				<fileset dir="${introduce.dir}/extensions/lib">
+					<include name="*.jar" />
+				</fileset>
+			</classpath>
 			<formatter type="xml" />
 			<test if="testcase" name="${testcase}" fork="no" todir="${junit.results.dir}" />
 			<batchtest unless="testcase" fork="yes" todir="${junit.results.dir}">
@@ -175,6 +189,12 @@
 			<sysproperty key="testing.containers.dir" value="${testing.containers.dir}"/>
 			<sysproperty key="transfer.service.dir" value="${transfer.service.dir}"/>
 			<classpath refid="all.test.classpath" />
+			<!-- also needs the other extensions (such as metadata) to be upgraded, so need their upgraders on the classpath -->
+			<classpath>
+				<fileset dir="${introduce.dir}/extensions/lib">
+					<include name="*.jar" />
+				</fileset>
+			</classpath>
 			<formatter type="xml" />
 			<test if="testcase" name="${testcase}" fork="no" todir="${junit.results.dir}" />
 			<batchtest unless="testcase" fork="yes" todir="${junit.results.dir}">
