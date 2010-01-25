@@ -1,7 +1,6 @@
 package org.cagrid.data.test.upgrades.from1pt3.bdt;
 
 import gov.nih.nci.cagrid.data.BdtMethodConstants;
-import gov.nih.nci.cagrid.data.DataServiceConstants;
 import gov.nih.nci.cagrid.introduce.beans.method.MethodType;
 import gov.nih.nci.cagrid.introduce.beans.service.ServiceType;
 import gov.nih.nci.cagrid.introduce.common.CommonTools;
