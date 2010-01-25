@@ -1,4 +1,4 @@
-<ns1:ServiceDescription introduceVersion="1.3" xmlns:ns1="gme://gov.nih.nci.cagrid/1/Introduce">
+<ns1:ServiceDescription introduceVersion="1.4" xmlns:ns1="gme://gov.nih.nci.cagrid/1/Introduce">
  <ns2:Namespaces xsi:type="ns2:NamespacesType" xmlns:ns2="gme://gov.nih.nci.cagrid.introduce/1/Namespace" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <ns2:Namespace location="./sync-gts.xsd" namespace="http://cagrid.nci.nih.gov/12/SyncGTS" packageName="gov.nih.nci.cagrid.syncgts.bean" xsi:type="ns2:NamespaceType">
    <ns2:SchemaElement type="DateFilter" xsi:type="ns2:SchemaElementType"/>
@@ -6,7 +6,7 @@
    <ns2:SchemaElement type="SyncReport" xsi:type="ns2:SchemaElementType"/>
    <ns2:SchemaElement type="TrustedCA" xsi:type="ns2:SchemaElementType"/>
   </ns2:Namespace>
-  <ns2:Namespace location="./gts.xsd" namespace="http://cagrid.nci.nih.gov/8/gts" packageName="gov.nih.nci.cagrid.gts.bean" xsi:type="ns2:NamespaceType">
+  <ns2:Namespace location="./xsd/gts.xsd" namespace="http://cagrid.nci.nih.gov/8/gts" packageName="gov.nih.nci.cagrid.gts.bean" xsi:type="ns2:NamespaceType">
    <ns2:SchemaElement type="AuthorityGTS" xsi:type="ns2:SchemaElementType"/>
    <ns2:SchemaElement type="AuthorityPriorityUpdate" xsi:type="ns2:SchemaElementType"/>
    <ns2:SchemaElement type="Permission" xsi:type="ns2:SchemaElementType"/>

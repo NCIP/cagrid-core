@@ -13,12 +13,12 @@
   <Content xsi:type="agg:AggregatorContent" xmlns:agg="http://mds.globus.org/aggregator/types">
     <agg:AggregatorConfig xsi:type="agg:AggregatorConfig">
       <agg:GetMultipleResourcePropertiesPollType
-			xmlns:ns4="http://cagrid.nci.nih.gov/SyncGTS/types"
-			xmlns:ns2="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata"
-			xmlns:xs="http://www.w3.org/2001/XMLSchema"
 			xmlns:ns0="http://cagrid.nci.nih.gov/12/SyncGTS"
 			xmlns:ns1="http://cagrid.nci.nih.gov/8/gts"
-			xmlns:ns3="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.security">
+			xmlns:xs="http://www.w3.org/2001/XMLSchema"
+			xmlns:ns4="http://cagrid.nci.nih.gov/SyncGTS/types"
+			xmlns:ns3="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.security"
+			xmlns:ns2="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata">
         <!-- Specifies that the index should refresh information
             every 300000 milliseconds (once every 5 minutes) -->
         <agg:PollIntervalMillis>INDEX_REFRESH</agg:PollIntervalMillis>
