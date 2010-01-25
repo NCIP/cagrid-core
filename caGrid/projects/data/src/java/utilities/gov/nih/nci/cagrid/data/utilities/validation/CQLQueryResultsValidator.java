@@ -3,8 +3,9 @@ package gov.nih.nci.cagrid.data.utilities.validation;
 import gov.nih.nci.cagrid.common.SchemaValidationException;
 import gov.nih.nci.cagrid.common.SchemaValidator;
 import gov.nih.nci.cagrid.common.Utils;
+import gov.nih.nci.cagrid.common.XMLUtilities;
 import gov.nih.nci.cagrid.cqlresultset.CQLQueryResults;
-import gov.nih.nci.cagrid.data.DataServiceConstants;
+import gov.nih.nci.cagrid.data.CqlSchemaConstants;
 
 import java.io.File;
 import java.io.FileWriter;
@@ -12,7 +13,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.StringWriter;
 import java.net.URI;
-import java.net.URISyntaxException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -24,8 +24,6 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.globus.wsrf.utils.AddressingUtils;
 import org.jdom.Element;
-
-import gov.nih.nci.cagrid.common.XMLUtilities;
 
 
 /**
@@ -77,8 +75,8 @@ public class CQLQueryResultsValidator {
 			parseWSDL();
 
 			// load RestrictedCQLResultSet.xsd template
-			InputStream templateResourceAsStream = ClassUtils.getResourceAsStream(this.getClass(),
-				VALIDATION_XSD_TEMPLATE);
+			InputStream templateResourceAsStream = ClassUtils.getResourceAsStream(
+			    this.getClass(), VALIDATION_XSD_TEMPLATE);
 			if (templateResourceAsStream == null) {
 				throw new SchemaValidationException("Problem loading service specific XSD template.");
 			}
@@ -99,7 +97,7 @@ public class CQLQueryResultsValidator {
 			}
 
 			// write the populated result to temp file
-			String xsdFileLocation;
+			String xsdFileLocation = null;
 			try {
 				File xsdFile = File.createTempFile("RestrictedCQLResultSet", ".xsd");
 				xsdFile.deleteOnExit();
@@ -162,7 +160,7 @@ public class CQLQueryResultsValidator {
 		WSDLUtils.walkWSDLFindingSchema(wsdlDefinition, schemas);
 
 		// determine SERVICE_URL_TO_CQL_RESULT_XSD
-		String resultURI = DataServiceConstants.CQL_RESULT_COLLECTION_QNAME.getNamespaceURI();
+		String resultURI = CqlSchemaConstants.CQL_RESULT_COLLECTION_QNAME.getNamespaceURI();
 		URI cqlResultXSDLocationURI = WSDLUtils.determineSchemaLocation(schemas, resultURI);
 		if (cqlResultXSDLocationURI == null) {
 		    throw new SchemaValidationException("Unable to determine remote location of :" + resultURI);
@@ -203,7 +201,7 @@ public class CQLQueryResultsValidator {
 
 		StringWriter writer = new StringWriter();
 		try {
-			Utils.serializeObject(resultSet, DataServiceConstants.CQL_RESULT_COLLECTION_QNAME, writer);
+			Utils.serializeObject(resultSet, CqlSchemaConstants.CQL_RESULT_COLLECTION_QNAME, writer);
 		} catch (Exception e) {
 			LOG.error(e);
 			throw new SchemaValidationException("Problem serializing result set", e);
@@ -215,17 +213,42 @@ public class CQLQueryResultsValidator {
 		}
 		this.validator.validate(xmlContents);
 	}
+	
+	
+	public void validateCQL2ResultSet(org.cagrid.cql2.results.CQLQueryResults results) throws SchemaValidationException {
+	    // make sure we are ready to go
+        initializeRestrictedXSD();
+
+        if (results == null) {
+            LOG.debug("Null results passed, ignoring.");
+            return;
+        }
+
+        StringWriter writer = new StringWriter();
+        try {
+            Utils.serializeObject(results, CqlSchemaConstants.CQL2_RESULTS_QNAME, writer);
+        } catch (Exception e) {
+            LOG.error(e);
+            throw new SchemaValidationException("Problem serializing result set", e);
+        }
+
+        String xmlContents = writer.getBuffer().toString();
+        if (LOG.isDebugEnabled()) {
+            LOG.debug("RESULTS:\n" + xmlContents);
+        }
+        this.validator.validate(xmlContents);
+	}
 
 
 	public static void main(String[] args) {
 		try {
 			EndpointReferenceType epr = AddressingUtils.createEndpointReference(args[0], null);
 			CQLQueryResultsValidator validator = new CQLQueryResultsValidator(epr);
-			CQLQueryResults result = (CQLQueryResults) Utils.deserializeDocument(args[1], CQLQueryResults.class);
+			CQLQueryResults result = Utils.deserializeDocument(args[1], CQLQueryResults.class);
 			validator.validateCQLResultSet(result);
 			System.out.println("Results were valid.");
 		} catch (Exception e) {
-			System.out.println("Results were invalid.");
+			System.out.println("Results were invalid: " + e.getMessage());
 			e.printStackTrace();
 		}
 	}
