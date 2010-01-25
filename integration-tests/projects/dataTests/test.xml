@@ -195,6 +195,9 @@
 			<sysproperty key="cql.docs.dir" value="${basedir}/docs/cqlExamples" />
 			<sysproperty key="temp.test.service.dir" value="${temp.test.service.dir}"/>
 			<sysproperty key="upgrade.services.zip.dir" value="${testing.upgrade.services.dir}"/>
+			<sysproperty key="temp.test.service.dir" value="${temp.test.service.dir}"/>
+			<sysproperty key="testing.containers.dir" value="${testing.containers.dir}"/>
+			<sysproperty key="use.testing.port.assignment" value="${testing.port.assignment.mode}" />
 			<classpath refid="all.test.classpath" />
 			<!-- also needs the other extensions (such as metadata) to be upgraded, so need their upgraders on the classpath -->
 			<classpath>
@@ -223,6 +226,9 @@
 			<sysproperty key="cql.docs.dir" value="${basedir}/docs/cqlExamples" />
 			<sysproperty key="temp.test.service.dir" value="${temp.test.service.dir}"/>
 			<sysproperty key="upgrade.services.zip.dir" value="${testing.upgrade.services.dir}"/>
+			<sysproperty key="temp.test.service.dir" value="${temp.test.service.dir}"/>
+			<sysproperty key="testing.containers.dir" value="${testing.containers.dir}"/>
+			<sysproperty key="use.testing.port.assignment" value="${testing.port.assignment.mode}" />
 			<classpath refid="all.test.classpath" />
 			<!-- also needs the other extensions (such as metadata) to be upgraded, so need their upgraders on the classpath -->
 			<classpath>
