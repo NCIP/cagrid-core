@@ -1,8 +1,17 @@
 package org.cagrid.data.test.upgrades.from1pt3.enumeration;
 
+import gov.nih.nci.cagrid.testing.system.deployment.ServiceContainer;
+import gov.nih.nci.cagrid.testing.system.deployment.ServiceContainerFactory;
+import gov.nih.nci.cagrid.testing.system.deployment.ServiceContainerType;
+import gov.nih.nci.cagrid.testing.system.deployment.steps.DeployServiceStep;
+import gov.nih.nci.cagrid.testing.system.deployment.steps.DestroyContainerStep;
+import gov.nih.nci.cagrid.testing.system.deployment.steps.StartContainerStep;
+import gov.nih.nci.cagrid.testing.system.deployment.steps.StopContainerStep;
+import gov.nih.nci.cagrid.testing.system.deployment.steps.UnpackContainerStep;
 import gov.nih.nci.cagrid.testing.system.haste.Step;
-import gov.nih.nci.cagrid.testing.system.haste.Story;
 
+import java.io.IOException;
+import java.util.Collections;
 import java.util.Vector;
 
 import junit.framework.TestResult;
@@ -11,7 +20,9 @@ import junit.textui.TestRunner;
 
 import org.cagrid.data.test.creation.DataTestCaseInfo;
 import org.cagrid.data.test.creation.DeleteOldServiceStep;
-import org.cagrid.data.test.upgrades.BuildUpgradedServiceStep;
+import org.cagrid.data.test.system.BaseSystemTest;
+import org.cagrid.data.test.system.ResyncAndBuildStep;
+import org.cagrid.data.test.system.VerifyOperationsStep;
 import org.cagrid.data.test.upgrades.UnpackOldServiceStep;
 import org.cagrid.data.test.upgrades.UpgradeIntroduceServiceStep;
 import org.cagrid.data.test.upgrades.UpgradeTestConstants;
@@ -24,7 +35,7 @@ import org.cagrid.data.test.upgrades.UpgradeTestConstants;
  * @created Feb 20, 2007 
  * @version $Id: UpgradeEnumerationFrom1pt3Tests.java,v 1.1 2008-10-28 15:55:16 dervin Exp $ 
  */
-public class UpgradeEnumerationFrom1pt3Tests extends Story {
+public class UpgradeEnumerationFrom1pt3Tests extends BaseSystemTest {
     public static final String SERVICE_ZIP_NAME = "DataServiceWithWsEnum_1-3.zip";
     public static final String SERVICE_DIR_NAME = "DataServiceWithWsEnum_1-3";
     public static final String SERVICE_NAME = "DataServiceWithEnum";
@@ -32,6 +43,7 @@ public class UpgradeEnumerationFrom1pt3Tests extends Story {
     public static final String SERVICE_NAMESPACE = "http://wsenum.with.data.test.cagrid.org/DataServiceWithEnum";
     
     private DataTestCaseInfo testServiceInfo = null;
+    private ServiceContainer container = null;
 	
 	public String getDescription() {
 		return "Tests upgrade of an enumeration data service from version 1.3 to " + UpgradeTestConstants.getCurrentDataVersion();
@@ -66,22 +78,42 @@ public class UpgradeEnumerationFrom1pt3Tests extends Story {
                 return SERVICE_PACKAGE;
             }
         };
+        try {
+            this.container = ServiceContainerFactory.createContainer(ServiceContainerType.GLOBUS_CONTAINER);
+        } catch (IOException ex) {
+            ex.printStackTrace();
+            fail("Error creating service container: " + ex.getMessage());
+        }
         return true;
     }
 	
 
-	protected Vector steps() {
+	protected Vector<?> steps() {
         Vector<Step> steps = new Vector<Step>();
 		// steps to unpack and upgrade the old service
 		steps.add(new DeleteOldServiceStep(testServiceInfo));
 		steps.add(new UnpackOldServiceStep(SERVICE_ZIP_NAME));
 		steps.add(new UpgradeIntroduceServiceStep(testServiceInfo.getDir()));
-		steps.add(new BuildUpgradedServiceStep(testServiceInfo.getDir()));		
+		steps.add(new ResyncAndBuildStep(testServiceInfo, getIntroduceBaseDir()));
+	    // deploy the service, check out the CQL 2 related operations and metadata
+        steps.add(new UnpackContainerStep(container));
+        steps.add(new DeployServiceStep(container, testServiceInfo.getDir(), Collections.singletonList("-Dno.deployment.validation=true")));
+        steps.add(new StartContainerStep(container));
+        steps.add(new VerifyOperationsStep(container, testServiceInfo.getName(),
+            false, true, false));
 		return steps;
 	}
     
     
     protected void storyTearDown() throws Throwable {
+        if (container.isStarted()) {
+            Step stopStep = new StopContainerStep(container);
+            stopStep.runStep();
+        }
+        if (container.isUnpacked()) {
+            Step deleteStep = new DestroyContainerStep(container);
+            deleteStep.runStep();
+        }
         Step deleteServiceStep = new DeleteOldServiceStep(testServiceInfo);
         deleteServiceStep.runStep();
     }

@@ -4,6 +4,7 @@ import gov.nih.nci.cagrid.common.Utils;
 import gov.nih.nci.cagrid.introduce.IntroduceConstants;
 import gov.nih.nci.cagrid.introduce.beans.ServiceDescription;
 import gov.nih.nci.cagrid.introduce.beans.extension.ExtensionType;
+import gov.nih.nci.cagrid.introduce.codegen.SyncTools;
 import gov.nih.nci.cagrid.introduce.common.AntTools;
 import gov.nih.nci.cagrid.introduce.common.CommonTools;
 import gov.nih.nci.cagrid.testing.system.haste.Step;
@@ -41,20 +42,27 @@ public class ResyncAndBuildStep extends Step {
 
 	public void runStep() throws Throwable {		
 		logger.debug("Invoking post creation processes");
-		List<String> cmd = AntTools.getAntSkeletonPostCreationCommand(introduceDir, 
+		// FIXME: what does "Save" button do in Introduce?
+		// it runs SyncTools directly, rather than go through any ant task.  That's... probably not right
+		/*
+		 * Here's what I was doing...
+		 * List<String> cmd = AntTools.getAntSkeletonPostCreationCommand(introduceDir, 
             serviceInfo.getName(), serviceInfo.getDir(), serviceInfo.getPackageName(), 
             serviceInfo.getNamespace(), getServiceExtensions());
         System.out.println("Invoking ant:");
         System.out.println(cmd);
-		Process p = CommonTools.createAndOutputProcess(cmd);
-		p.waitFor();
-		assertTrue("Service post creation process failed", p.exitValue() == 0);
+        Process p = CommonTools.createAndOutputProcess(cmd);
+        p.waitFor();
+        assertTrue("Service post creation process failed", p.exitValue() == 0); 
+		 */
+		SyncTools sync = new SyncTools(new File(serviceInfo.getDir()));
+		sync.sync();
 
 		logger.debug("Building created service");
-		cmd = AntTools.getAntAllCommand(serviceInfo.getDir());
+		List<String> cmd = AntTools.getAntAllCommand(serviceInfo.getDir());
         System.out.println("Invoking ant:");
         System.out.println(cmd);
-		p = CommonTools.createAndOutputProcess(cmd);
+		Process p = CommonTools.createAndOutputProcess(cmd);
         p.waitFor();
 		assertTrue("Build process failed", p.exitValue() == 0);
 	}
