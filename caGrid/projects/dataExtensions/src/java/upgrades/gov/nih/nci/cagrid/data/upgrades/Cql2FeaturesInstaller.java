@@ -3,9 +3,11 @@ package gov.nih.nci.cagrid.data.upgrades;
 import gov.nih.nci.cagrid.common.Utils;
 import gov.nih.nci.cagrid.data.CqlSchemaConstants;
 import gov.nih.nci.cagrid.data.MetadataConstants;
+import gov.nih.nci.cagrid.data.QueryProcessorConstants;
 import gov.nih.nci.cagrid.data.creation.DataServiceQueryOperationProviderCreator;
 import gov.nih.nci.cagrid.data.creation.WsEnumerationFeatureCreator;
 import gov.nih.nci.cagrid.data.extension.Data;
+import gov.nih.nci.cagrid.introduce.beans.ServiceDescription;
 import gov.nih.nci.cagrid.introduce.beans.extension.ExtensionType;
 import gov.nih.nci.cagrid.introduce.beans.method.MethodType;
 import gov.nih.nci.cagrid.introduce.beans.namespace.NamespaceType;
@@ -45,6 +47,7 @@ public class Cql2FeaturesInstaller {
         if (serviceUsingEnumeration()) {
             addCql2EnumerationQuery();
         }
+        addCql2QueryProcessorServiceProperty();
         // no transfer was available before 1.4, so no installTransfer...
         // let the developer know about CQL 2
         status.addIssue("caGrid 1.4 data services add support for CQL 2." +
@@ -83,6 +86,21 @@ public class Cql2FeaturesInstaller {
         Element serviceFeaturesElement = extElement.getChild("ServiceFeatures", extElement.getNamespace());
         String useEnumValue = serviceFeaturesElement.getAttributeValue("useWsEnumeration");
         return Boolean.valueOf(useEnumValue).booleanValue();
+    }
+    
+    
+    private void addCql2QueryProcessorServiceProperty() {
+        ServiceDescription desc = this.serviceInfo.getServiceDescriptor();
+        // does the cql2 query processor class property exist?
+        if (!CommonTools.servicePropertyExists(desc,
+            QueryProcessorConstants.CQL2_QUERY_PROCESSOR_CLASS_PROPERTY)) {
+            // set the service property to be empty
+            CommonTools.setServiceProperty(desc, 
+                QueryProcessorConstants.CQL2_QUERY_PROCESSOR_CLASS_PROPERTY,
+                "", false);
+            status.addDescriptionLine("Added service property " 
+                + QueryProcessorConstants.CQL2_QUERY_PROCESSOR_CLASS_PROPERTY);
+        }
     }
     
     
