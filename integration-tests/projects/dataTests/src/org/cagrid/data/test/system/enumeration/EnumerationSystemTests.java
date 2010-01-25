@@ -11,6 +11,7 @@ import gov.nih.nci.cagrid.testing.system.deployment.steps.StopContainerStep;
 import gov.nih.nci.cagrid.testing.system.deployment.steps.UnpackContainerStep;
 import gov.nih.nci.cagrid.testing.system.haste.Step;
 
+import java.util.Collections;
 import java.util.Vector;
 
 import junit.framework.TestResult;
@@ -98,7 +99,7 @@ public class EnumerationSystemTests extends BaseSystemTest {
         // disable index service registration
         steps.add(new SetIndexRegistrationStep(info.getDir(), false));
 		// deploy data service
-		steps.add(new DeployServiceStep(container, info.getDir()));
+		steps.add(new DeployServiceStep(container, info.getDir(), Collections.singletonList("-Dno.deployment.validation=true")));
 		// start container
 		steps.add(new StartContainerStep(container));
 		// verify the operations we expect
