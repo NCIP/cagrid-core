@@ -6,7 +6,10 @@ import gov.nih.nci.cagrid.data.DataServiceConstants;
 import gov.nih.nci.cagrid.data.ExtensionDataUtils;
 import gov.nih.nci.cagrid.data.MetadataConstants;
 import gov.nih.nci.cagrid.data.QueryMethodConstants;
+import gov.nih.nci.cagrid.data.QueryProcessorConstants;
 import gov.nih.nci.cagrid.data.ServiceNamingConstants;
+import gov.nih.nci.cagrid.data.ServiceParametersConstants;
+import gov.nih.nci.cagrid.data.ValidatorConstants;
 import gov.nih.nci.cagrid.data.codegen.CQLResultTypesGenerator;
 import gov.nih.nci.cagrid.data.codegen.ResultTypeGeneratorInformation;
 import gov.nih.nci.cagrid.data.cql.validation.DomainModelValidator;
@@ -304,57 +307,57 @@ public class DataServiceQueryOperationProviderCreator implements CreationExtensi
     private void modifyServiceProperties(ServiceInformation info) throws CreationExtensionException {
         ServiceDescription desc = info.getServiceDescriptor();
         // does the query processor class property exist?
-        if (!CommonTools.servicePropertyExists(desc, DataServiceConstants.QUERY_PROCESSOR_CLASS_PROPERTY)) {
+        if (!CommonTools.servicePropertyExists(desc, QueryProcessorConstants.QUERY_PROCESSOR_CLASS_PROPERTY)) {
             // set the service property to the stub query processor class name
             String stubQpClassname = ExtensionDataUtils.getQueryProcessorStubClassName(info);
-            CommonTools.setServiceProperty(desc, DataServiceConstants.QUERY_PROCESSOR_CLASS_PROPERTY,
+            CommonTools.setServiceProperty(desc, QueryProcessorConstants.QUERY_PROCESSOR_CLASS_PROPERTY,
                 stubQpClassname, false);
         } else {
             try {
                 String value = CommonTools.getServicePropertyValue(desc,
-                    DataServiceConstants.QUERY_PROCESSOR_CLASS_PROPERTY);
-                log.debug(DataServiceConstants.QUERY_PROCESSOR_CLASS_PROPERTY
+                    QueryProcessorConstants.QUERY_PROCESSOR_CLASS_PROPERTY);
+                log.debug(QueryProcessorConstants.QUERY_PROCESSOR_CLASS_PROPERTY
                     + " property is already defined as " + value);
             } catch (Exception ex) {
                 throw new CreationExtensionException("Error creating service property "
-                    + DataServiceConstants.QUERY_PROCESSOR_CLASS_PROPERTY);
+                    + QueryProcessorConstants.QUERY_PROCESSOR_CLASS_PROPERTY);
             }
         }
         // does the cql2 query processor class property exist?
-        if (!CommonTools.servicePropertyExists(desc, DataServiceConstants.CQL2_QUERY_PROCESSOR_CLASS_PROPERTY)) {
+        if (!CommonTools.servicePropertyExists(desc, QueryProcessorConstants.CQL2_QUERY_PROCESSOR_CLASS_PROPERTY)) {
             // set the service property to be empty
-            CommonTools.setServiceProperty(desc, DataServiceConstants.CQL2_QUERY_PROCESSOR_CLASS_PROPERTY,
+            CommonTools.setServiceProperty(desc, QueryProcessorConstants.CQL2_QUERY_PROCESSOR_CLASS_PROPERTY,
                 "", false);
         } else {
             try {
                 String value = CommonTools.getServicePropertyValue(desc,
-                    DataServiceConstants.CQL2_QUERY_PROCESSOR_CLASS_PROPERTY);
+                    QueryProcessorConstants.CQL2_QUERY_PROCESSOR_CLASS_PROPERTY);
                 log.debug(DataServiceConstants.CQL2_QUERY_PROCESSOR_CLASS_PROPERTY
                     + " property is already defined as " + value);
             } catch (Exception ex) {
                 throw new CreationExtensionException("Error creating service property "
-                    + DataServiceConstants.CQL2_QUERY_PROCESSOR_CLASS_PROPERTY);
+                    + QueryProcessorConstants.CQL2_QUERY_PROCESSOR_CLASS_PROPERTY);
             }
         }
         // does the server config location property exist?
-        if (!CommonTools.servicePropertyExists(desc, DataServiceConstants.SERVER_CONFIG_LOCATION)) {
-            CommonTools.setServiceProperty(desc, DataServiceConstants.SERVER_CONFIG_LOCATION, 
+        if (!CommonTools.servicePropertyExists(desc, ServiceParametersConstants.SERVER_CONFIG_LOCATION)) {
+            CommonTools.setServiceProperty(desc, ServiceParametersConstants.SERVER_CONFIG_LOCATION, 
                 "server-config.wsdd", true, "The location of the server-config.wsdd file");
         }
         // validation properties
-        CommonTools.setServiceProperty(desc, DataServiceConstants.CQL_VALIDATOR_CLASS, DEFAULT_CQL_VALIDATOR_CLASS,
+        CommonTools.setServiceProperty(desc, ValidatorConstants.CQL_VALIDATOR_CLASS, DEFAULT_CQL_VALIDATOR_CLASS,
             false, "The name of the class to use for CQL query structure validation");
-        CommonTools.setServiceProperty(desc, DataServiceConstants.DOMAIN_MODEL_VALIDATOR_CLASS,
+        CommonTools.setServiceProperty(desc, ValidatorConstants.DOMAIN_MODEL_VALIDATOR_CLASS,
             DEFAULT_DOMAIN_MODEL_VALIDATOR, false,
             "The name of the class to use for CQL validation against a domain model");
-        CommonTools.setServiceProperty(desc, DataServiceConstants.VALIDATE_CQL_FLAG,
+        CommonTools.setServiceProperty(desc, ValidatorConstants.VALIDATE_CQL_FLAG,
             DataServiceConstants.DEFAULT_VALIDATE_CQL_FLAG, false,
             "A flag to indicate that CQL should be validated for structural correctness");
-        CommonTools.setServiceProperty(desc, DataServiceConstants.VALIDATE_DOMAIN_MODEL_FLAG,
+        CommonTools.setServiceProperty(desc, ValidatorConstants.VALIDATE_DOMAIN_MODEL_FLAG,
             DataServiceConstants.DEFAULT_VALIDATE_DOMAIN_MODEL_FLAG, false,
             "A flag to indicate that CQL should be validated for correctness against the domain model");
         // filename of class to qname mapping property
-        CommonTools.setServiceProperty(desc, DataServiceConstants.CLASS_MAPPINGS_FILENAME,
+        CommonTools.setServiceProperty(desc, ServiceParametersConstants.CLASS_MAPPINGS_FILENAME,
             DataServiceConstants.CLASS_TO_QNAME_XML, true,
             "The name of the file containing the class name to QName mapping");
     }
@@ -429,41 +432,41 @@ public class DataServiceQueryOperationProviderCreator implements CreationExtensi
 
     public static MethodType createCql1QueryMethod() {
         MethodType queryMethod = new MethodType();
-        queryMethod.setName(DataServiceConstants.QUERY_METHOD_NAME);
-        queryMethod.setDescription(DataServiceConstants.QUERY_METHOD_DESCRIPTION);
+        queryMethod.setName(QueryMethodConstants.QUERY_METHOD_NAME);
+        queryMethod.setDescription(QueryMethodConstants.QUERY_METHOD_DESCRIPTION);
         // method input parameters
         MethodTypeInputs inputs = new MethodTypeInputs();
         MethodTypeInputsInput queryInput = new MethodTypeInputsInput();
-        queryInput.setName(DataServiceConstants.QUERY_METHOD_PARAMETER_NAME);
+        queryInput.setName(QueryMethodConstants.QUERY_METHOD_PARAMETER_NAME);
         queryInput.setIsArray(false);
-        queryInput.setQName(DataServiceConstants.CQL_QUERY_QNAME);
-        queryInput.setDescription(DataServiceConstants.QUERY_METHOD_PARAMETER_DESCRIPTION);
+        queryInput.setQName(CqlSchemaConstants.CQL_QUERY_QNAME);
+        queryInput.setDescription(QueryMethodConstants.QUERY_METHOD_PARAMETER_DESCRIPTION);
         inputs.setInput(new MethodTypeInputsInput[]{queryInput});
         queryMethod.setInputs(inputs);
         // method output
         MethodTypeOutput output = new MethodTypeOutput();
         output.setIsArray(false);
-        output.setQName(DataServiceConstants.CQL_RESULT_COLLECTION_QNAME);
-        output.setDescription(DataServiceConstants.QUERY_METHOD_OUTPUT_DESCRIPTION);
+        output.setQName(CqlSchemaConstants.CQL_RESULT_COLLECTION_QNAME);
+        output.setDescription(QueryMethodConstants.QUERY_METHOD_OUTPUT_DESCRIPTION);
         queryMethod.setOutput(output);
         // exceptions on query method
         MethodTypeExceptions queryExceptions = new MethodTypeExceptions();
         MethodTypeExceptionsException qpException = new MethodTypeExceptionsException(
-            DataServiceConstants.QUERY_PROCESSING_EXCEPTION_DESCRIPTION,
-            DataServiceConstants.QUERY_PROCESSING_EXCEPTION_NAME, DataServiceConstants.QUERY_PROCESSING_EXCEPTION_QNAME);
+            QueryMethodConstants.QUERY_PROCESSING_EXCEPTION_DESCRIPTION,
+            QueryMethodConstants.QUERY_PROCESSING_EXCEPTION_NAME, QueryMethodConstants.QUERY_PROCESSING_EXCEPTION_QNAME);
         MethodTypeExceptionsException mqException = new MethodTypeExceptionsException(
-            DataServiceConstants.MALFORMED_QUERY_EXCEPTION_DESCRIPTION,
-            DataServiceConstants.MALFORMED_QUERY_EXCEPTION_NAME, DataServiceConstants.MALFORMED_QUERY_EXCEPTION_QNAME);
+            QueryMethodConstants.MALFORMED_QUERY_EXCEPTION_DESCRIPTION,
+            QueryMethodConstants.MALFORMED_QUERY_EXCEPTION_NAME, QueryMethodConstants.MALFORMED_QUERY_EXCEPTION_QNAME);
         queryExceptions.setException(new MethodTypeExceptionsException[]{qpException, mqException});
         queryMethod.setExceptions(queryExceptions);
         // query method is imported
         MethodTypeImportInformation importInfo = new MethodTypeImportInformation();
-        importInfo.setNamespace(DataServiceConstants.DATA_SERVICE_NAMESPACE);
-        importInfo.setPackageName(DataServiceConstants.DATA_SERVICE_PACKAGE);
-        importInfo.setPortTypeName(DataServiceConstants.DATA_SERVICE_PORT_TYPE_NAME);
+        importInfo.setNamespace(ServiceNamingConstants.DATA_SERVICE_NAMESPACE);
+        importInfo.setPackageName(ServiceNamingConstants.DATA_SERVICE_PACKAGE);
+        importInfo.setPortTypeName(ServiceNamingConstants.DATA_SERVICE_PORT_TYPE_NAME);
         importInfo.setWsdlFile("DataService.wsdl");
-        importInfo.setInputMessage(new QName(DataServiceConstants.DATA_SERVICE_NAMESPACE, "QueryRequest"));
-        importInfo.setOutputMessage(new QName(DataServiceConstants.DATA_SERVICE_NAMESPACE, "QueryResponse"));
+        importInfo.setInputMessage(new QName(ServiceNamingConstants.DATA_SERVICE_NAMESPACE, "QueryRequest"));
+        importInfo.setOutputMessage(new QName(ServiceNamingConstants.DATA_SERVICE_NAMESPACE, "QueryResponse"));
         queryMethod.setIsImported(true);
         queryMethod.setImportInformation(importInfo);
         // query method is provided
@@ -526,7 +529,7 @@ public class DataServiceQueryOperationProviderCreator implements CreationExtensi
     private boolean queryOperationCreated(ServiceInformation info) {
         ServiceType mainService = info.getServices().getService(0);
         MethodType queryMethod = CommonTools
-            .getMethod(mainService.getMethods(), DataServiceConstants.QUERY_METHOD_NAME);
+            .getMethod(mainService.getMethods(), QueryMethodConstants.QUERY_METHOD_NAME);
         if (queryMethod != null) {
             return createCql1QueryMethod().equals(queryMethod);
         }
