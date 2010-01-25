@@ -1,5 +1,6 @@
 package org.cagrid.data.test.upgrades.from1pt3.bdt;
 
+import gov.nih.nci.cagrid.data.BdtMethodConstants;
 import gov.nih.nci.cagrid.data.DataServiceConstants;
 import gov.nih.nci.cagrid.introduce.beans.method.MethodType;
 import gov.nih.nci.cagrid.introduce.beans.service.ServiceType;
@@ -25,7 +26,7 @@ public class VerifyBdtRemovedStep extends Step {
         ServiceInformation info = new ServiceInformation(new File(testInfo.getDir()));
         ServiceType baseService = info.getServices().getService(0);
         MethodType bdtQueryMethod = CommonTools.getMethod(baseService.getMethods(), 
-            DataServiceConstants.BDT_QUERY_METHOD_NAME);
-        assertNull(DataServiceConstants.BDT_QUERY_METHOD_NAME + " was not removed from the service", bdtQueryMethod);
+            BdtMethodConstants.BDT_QUERY_METHOD_NAME);
+        assertNull(BdtMethodConstants.BDT_QUERY_METHOD_NAME + " was not removed from the service", bdtQueryMethod);
     }
 }
