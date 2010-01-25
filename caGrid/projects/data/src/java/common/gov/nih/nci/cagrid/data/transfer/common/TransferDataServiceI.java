@@ -14,7 +14,10 @@ import org.cagrid.transfer.context.stubs.types.TransferServiceContextReference;
  */
 public interface TransferDataServiceI {
 
+    @Deprecated
     public TransferServiceContextReference transferQuery(gov.nih.nci.cagrid.cqlquery.CQLQuery query) throws RemoteException, gov.nih.nci.cagrid.data.faults.MalformedQueryExceptionType, gov.nih.nci.cagrid.data.faults.QueryProcessingExceptionType ;
+    
+    public TransferServiceContextReference executeTransferQuery(org.cagrid.cql2.CQLQuery cqlQuery) throws RemoteException, gov.nih.nci.cagrid.data.faults.MalformedQueryExceptionType, gov.nih.nci.cagrid.data.faults.QueryProcessingExceptionType ;
 
     public gov.nih.nci.cagrid.metadata.security.ServiceSecurityMetadata getServiceSecurityMetadata() throws RemoteException ;
 

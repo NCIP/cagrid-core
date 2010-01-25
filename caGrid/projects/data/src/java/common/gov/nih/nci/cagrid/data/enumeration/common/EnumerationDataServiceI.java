@@ -14,7 +14,10 @@ import java.rmi.RemoteException;
  */
 public interface EnumerationDataServiceI {
 
+    @Deprecated
     public EnumerationResponseContainer enumerationQuery(gov.nih.nci.cagrid.cqlquery.CQLQuery query) throws RemoteException, gov.nih.nci.cagrid.data.faults.MalformedQueryExceptionType, gov.nih.nci.cagrid.data.faults.QueryProcessingExceptionType ;
+    
+    public EnumerationResponseContainer executeEnumerationQuery(org.cagrid.cql2.CQLQuery cqlQuery) throws RemoteException, gov.nih.nci.cagrid.data.faults.MalformedQueryExceptionType, gov.nih.nci.cagrid.data.faults.QueryProcessingExceptionType ;
 
     public gov.nih.nci.cagrid.metadata.security.ServiceSecurityMetadata getServiceSecurityMetadata() throws RemoteException ;
 
