@@ -166,8 +166,10 @@ public class DataServiceUpgradeFrom1pt2 extends ExtensionUpgraderBase {
         FileFilter oldDataLibFilter = new FileFilter() {
             public boolean accept(File pathname) {
                 String name = pathname.getName();
-                return (name.endsWith(".jar") && (name.startsWith("caGrid-data-")
-                    || name.startsWith("caGrid-core-") || name.startsWith("caGrid-caDSR-") 
+                return (name.endsWith(".jar") && 
+                    (name.startsWith("caGrid-data-")
+                    || name.startsWith("caGrid-core-") 
+                    || name.startsWith("caGrid-caDSR-") 
                     || name.startsWith("caGrid-metadata-")));
             }
         };
@@ -176,9 +178,11 @@ public class DataServiceUpgradeFrom1pt2 extends ExtensionUpgraderBase {
                 String name = pathname.getName();
                 return (name.endsWith(".jar") && 
                     (name.startsWith("caGrid-data-")
-                    || name.startsWith("caGrid-core-") 
+                    || name.startsWith("caGrid-core-")
+                    || name.startsWith("caGrid-CQL-")
                     || name.startsWith("caGrid-caDSR-") 
-                    || name.startsWith("caGrid-metadata-")));
+                    || name.startsWith("caGrid-metadata-")
+                    || name.startsWith("caGrid-mms-")));
             }
         };
         // locate the old data service libs in the service
