@@ -2,7 +2,7 @@ package gov.nih.nci.cagrid.data.utilities;
 
 import gov.nih.nci.cagrid.common.Utils;
 import gov.nih.nci.cagrid.cqlresultset.CQLIdentifierResult;
-import gov.nih.nci.cagrid.data.DataServiceConstants;
+import gov.nih.nci.cagrid.data.CqlSchemaConstants;
 
 import java.io.StringWriter;
 import java.util.Iterator;
@@ -21,7 +21,7 @@ import javax.xml.namespace.QName;
  */
 public class CQLIdentifierResultIterator implements Iterator {
     public static final QName CQL_IDENTIFIER_RESULT_QNAME = 
-        new QName(DataServiceConstants.CQL_RESULT_SET_URI, "CQLIdentifierResult");
+        new QName(CqlSchemaConstants.CQL_RESULT_SET_URI, "CQLIdentifierResult");
     
 	private CQLIdentifierResult[] results;
     private boolean xmlOnly;

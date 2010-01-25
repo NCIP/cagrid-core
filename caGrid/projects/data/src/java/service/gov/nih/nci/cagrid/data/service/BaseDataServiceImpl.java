@@ -4,11 +4,12 @@ import gov.nih.nci.cagrid.common.FaultHelper;
 import gov.nih.nci.cagrid.common.Utils;
 import gov.nih.nci.cagrid.cqlquery.CQLQuery;
 import gov.nih.nci.cagrid.cqlresultset.CQLQueryResults;
-import gov.nih.nci.cagrid.data.DataServiceConstants;
+import gov.nih.nci.cagrid.data.AuditorConstants;
 import gov.nih.nci.cagrid.data.MalformedQueryException;
 import gov.nih.nci.cagrid.data.MetadataConstants;
 import gov.nih.nci.cagrid.data.QueryProcessingException;
 import gov.nih.nci.cagrid.data.QueryProcessorConstants;
+import gov.nih.nci.cagrid.data.ServiceParametersConstants;
 import gov.nih.nci.cagrid.data.auditing.AuditorConfiguration;
 import gov.nih.nci.cagrid.data.auditing.DataServiceAuditors;
 import gov.nih.nci.cagrid.data.cql.CQLQueryProcessor;
@@ -193,7 +194,7 @@ public abstract class BaseDataServiceImpl {
         // load the server-config.wsdd into memory
         try {
             String serverConfigLocation = ServiceConfigUtil.getConfigProperty(
-                DataServiceConstants.SERVER_CONFIG_LOCATION);
+                ServiceParametersConstants.SERVER_CONFIG_LOCATION);
             LOG.debug("Loading server side wsdd from " + serverConfigLocation);
             InputStream configStream = new FileInputStream(serverConfigLocation);
             serverConfigBytes = Utils.inputStreamToStringBuffer(configStream).toString().getBytes();
@@ -203,7 +204,7 @@ public abstract class BaseDataServiceImpl {
         LOG.debug("Initializing data service auditors");
         auditors = new LinkedList<DataServiceAuditor>();
         String configFileName = getDataServiceConfig().getProperty(
-            DataServiceConstants.DATA_SERVICE_AUDITORS_CONFIG_FILE_PROPERTY);
+            AuditorConstants.DATA_SERVICE_AUDITORS_CONFIG_FILE_PROPERTY);
         if (configFileName != null) {
             try {
                 DataServiceAuditors auditorConfig = 
@@ -536,7 +537,7 @@ public abstract class BaseDataServiceImpl {
             LOG.debug("Configuring CQL query processor");
             try {
                 String serverConfigLocation = ServiceConfigUtil.getConfigProperty(
-                    DataServiceConstants.SERVER_CONFIG_LOCATION);
+                    ServiceParametersConstants.SERVER_CONFIG_LOCATION);
                 InputStream configStream = new FileInputStream(serverConfigLocation);
                 Properties configuredProperties = getCql1QueryProcessorConfig();
                 Properties defaultProperties = cql1QueryProcessor.getRequiredParameters();
@@ -591,7 +592,7 @@ public abstract class BaseDataServiceImpl {
             LOG.debug("Configuring CQL 2 query processor");
             try {
                 String serverConfigLocation = ServiceConfigUtil.getConfigProperty(
-                    DataServiceConstants.SERVER_CONFIG_LOCATION);
+                    ServiceParametersConstants.SERVER_CONFIG_LOCATION);
                 InputStream configStream = new FileInputStream(serverConfigLocation);
                 Properties configuredProperties = getCql2QueryProcessorConfig();
                 Properties defaultProperties = cql2QueryProcessor.getRequiredParameters();

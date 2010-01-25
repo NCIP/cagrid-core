@@ -5,6 +5,7 @@ import gov.nih.nci.cagrid.common.DiskByteBuffer;
 import gov.nih.nci.cagrid.common.Utils;
 import gov.nih.nci.cagrid.cqlquery.CQLQuery;
 import gov.nih.nci.cagrid.cqlresultset.CQLQueryResults;
+import gov.nih.nci.cagrid.data.CqlSchemaConstants;
 import gov.nih.nci.cagrid.data.DataServiceConstants;
 import gov.nih.nci.cagrid.data.MalformedQueryException;
 import gov.nih.nci.cagrid.data.QueryProcessingException;
@@ -82,7 +83,7 @@ public class TransferDataServiceImpl extends BaseDataServiceImpl {
                     LOG.debug("Serializing CQL results to byte queue for transfer");
                     InputStream serverConfigWsdd = getServerConfigWsddStream();
                     Utils.serializeObject(results, 
-                        DataServiceConstants.CQL_RESULT_SET_QNAME, 
+                        CqlSchemaConstants.CQL_RESULT_SET_QNAME, 
                         writer, serverConfigWsdd);
                     serverConfigWsdd.close();
                 } catch (Exception ex) {
@@ -136,7 +137,7 @@ public class TransferDataServiceImpl extends BaseDataServiceImpl {
         // set up the transfer context
         // create a data descriptor for the results
         DataDescriptor descriptor = new DataDescriptor();
-        descriptor.setName(DataServiceConstants.CQL_RESULT_SET_QNAME.toString());
+        descriptor.setName(CqlSchemaConstants.CQL_RESULT_SET_QNAME.toString());
 
         // create the reference using the transfer service helper
         TransferServiceContextReference transferReference = null;

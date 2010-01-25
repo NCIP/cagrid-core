@@ -11,7 +11,7 @@ import gov.nih.nci.cagrid.cqlquery.LogicalOperator;
 import gov.nih.nci.cagrid.cqlquery.Object;
 import gov.nih.nci.cagrid.cqlquery.Predicate;
 import gov.nih.nci.cagrid.cqlquery.QueryModifier;
-import gov.nih.nci.cagrid.data.DataServiceConstants;
+import gov.nih.nci.cagrid.data.CqlSchemaConstants;
 import gov.nih.nci.cagrid.data.MalformedQueryException;
 import gov.nih.nci.cagrid.data.client.DataServiceClient;
 import gov.nih.nci.cagrid.data.cql.validation.CqlDomainValidator;
@@ -996,7 +996,7 @@ public class QueryBuilder extends JFrame {
 			CQLQuery query = queryNode.getQuery();
 			try {
 				FileWriter writer = new FileWriter(cqlFile);
-				Utils.serializeObject(query, DataServiceConstants.CQL_QUERY_QNAME, writer);
+				Utils.serializeObject(query, CqlSchemaConstants.CQL_QUERY_QNAME, writer);
 				writer.close();
 			} catch (Exception ex) {
 				ex.printStackTrace();

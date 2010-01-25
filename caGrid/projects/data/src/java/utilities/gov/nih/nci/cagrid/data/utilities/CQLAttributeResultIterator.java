@@ -2,7 +2,7 @@ package gov.nih.nci.cagrid.data.utilities;
 
 import gov.nih.nci.cagrid.common.Utils;
 import gov.nih.nci.cagrid.cqlresultset.CQLAttributeResult;
-import gov.nih.nci.cagrid.data.DataServiceConstants;
+import gov.nih.nci.cagrid.data.CqlSchemaConstants;
 
 import java.io.StringWriter;
 import java.util.Iterator;
@@ -22,7 +22,7 @@ import javax.xml.namespace.QName;
 public class CQLAttributeResultIterator implements Iterator {
     
     public static final QName CQL_ATTRIBUTE_RESULT_QNAME = 
-        new QName(DataServiceConstants.CQL_RESULT_SET_URI, "CQLAttributeResult");
+        new QName(CqlSchemaConstants.CQL_RESULT_SET_URI, "CQLAttributeResult");
     
 	private CQLAttributeResult[] results;
     private boolean xmlOnly;

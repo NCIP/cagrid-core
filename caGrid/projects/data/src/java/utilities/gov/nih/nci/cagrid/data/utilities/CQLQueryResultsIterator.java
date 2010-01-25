@@ -3,7 +3,7 @@ package gov.nih.nci.cagrid.data.utilities;
 import gov.nih.nci.cagrid.common.Utils;
 import gov.nih.nci.cagrid.cqlresultset.CQLCountResult;
 import gov.nih.nci.cagrid.cqlresultset.CQLQueryResults;
-import gov.nih.nci.cagrid.data.DataServiceConstants;
+import gov.nih.nci.cagrid.data.CqlSchemaConstants;
 
 import java.io.InputStream;
 import java.io.StringWriter;
@@ -28,7 +28,7 @@ import org.apache.axis.utils.ClassUtils;
  */
 public class CQLQueryResultsIterator implements Iterator {
     public static final QName CQL_COUNT_RESULT_QNAME = 
-        new QName(DataServiceConstants.CQL_RESULT_SET_URI, "CQLCountResult");
+        new QName(CqlSchemaConstants.CQL_RESULT_SET_URI, "CQLCountResult");
     
     
 	private CQLQueryResults results;

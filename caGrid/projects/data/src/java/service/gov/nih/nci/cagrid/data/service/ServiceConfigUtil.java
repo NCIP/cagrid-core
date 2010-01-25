@@ -1,6 +1,8 @@
 package gov.nih.nci.cagrid.data.service;
 
 import gov.nih.nci.cagrid.data.DataServiceConstants;
+import gov.nih.nci.cagrid.data.QueryProcessorConstants;
+import gov.nih.nci.cagrid.data.ServiceParametersConstants;
 
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
@@ -27,14 +29,14 @@ import org.globus.wsrf.Constants;
 public class ServiceConfigUtil {
     
     public static final String DATA_GETTER_PREFIX = "get" 
-        + Character.toUpperCase(DataServiceConstants.DATA_SERVICE_PARAMS_PREFIX.charAt(0)) 
-        + DataServiceConstants.DATA_SERVICE_PARAMS_PREFIX.substring(1);    
+        + Character.toUpperCase(ServiceParametersConstants.DATA_SERVICE_PARAMS_PREFIX.charAt(0)) 
+        + ServiceParametersConstants.DATA_SERVICE_PARAMS_PREFIX.substring(1);    
     public static final String CQL_GETTER_PREFIX = "get" 
-        + Character.toUpperCase(DataServiceConstants.QUERY_PROCESSOR_CONFIG_PREFIX.charAt(0)) 
-        + DataServiceConstants.QUERY_PROCESSOR_CONFIG_PREFIX.substring(1);
+        + Character.toUpperCase(QueryProcessorConstants.QUERY_PROCESSOR_CONFIG_PREFIX.charAt(0)) 
+        + QueryProcessorConstants.QUERY_PROCESSOR_CONFIG_PREFIX.substring(1);
     public static final String CQL2_GETTER_PREFIX = "get"
-        + Character.toUpperCase(DataServiceConstants.CQL2_QUERY_PROCESSOR_CONFIG_PREFIX.charAt(0))
-        + DataServiceConstants.CQL2_QUERY_PROCESSOR_CONFIG_PREFIX.substring(1);
+        + Character.toUpperCase(QueryProcessorConstants.CQL2_QUERY_PROCESSOR_CONFIG_PREFIX.charAt(0))
+        + QueryProcessorConstants.CQL2_QUERY_PROCESSOR_CONFIG_PREFIX.substring(1);
 
 	public static Properties getQueryProcessorConfigurationParameters() throws Exception {
 		Properties configParams = null;
@@ -63,7 +65,7 @@ public class ServiceConfigUtil {
 	public static String getCqlQueryProcessorClassName() throws Exception {
 	    String className = null;
 	    try {
-	        className = getConfigProperty(DataServiceConstants.QUERY_PROCESSOR_CLASS_PROPERTY);
+	        className = getConfigProperty(QueryProcessorConstants.QUERY_PROCESSOR_CLASS_PROPERTY);
 	    } catch (Exception ex) {
 		    throw new Exception("Unable to extract query processor class name from config: " 
 		        + ex.getMessage(), ex);
@@ -75,7 +77,7 @@ public class ServiceConfigUtil {
 	public static String getCql2QueryProcessorClassName() throws Exception {
 	    String className = null;
         try {
-            className = getConfigProperty(DataServiceConstants.CQL2_QUERY_PROCESSOR_CLASS_PROPERTY);
+            className = getConfigProperty(QueryProcessorConstants.CQL2_QUERY_PROCESSOR_CLASS_PROPERTY);
         } catch (Exception ex) {
             throw new Exception("Unable to extract query processor class name from config: " 
                 + ex.getMessage(), ex);
@@ -93,7 +95,7 @@ public class ServiceConfigUtil {
 		    for (Object key : nonPrefixed.keySet()) {
 		        String name = (String) key;
 		        String value = nonPrefixed.getProperty(name);
-		        name = DataServiceConstants.DATA_SERVICE_PARAMS_PREFIX + name;
+		        name = ServiceParametersConstants.DATA_SERVICE_PARAMS_PREFIX + name;
 		        props.setProperty(name, value);
 		    }
 		} catch (Exception ex) {
@@ -106,7 +108,7 @@ public class ServiceConfigUtil {
 	public static String getClassToQnameMappingsFile() throws Exception {
 	    String value = null;
 	    try {
-	        value = getConfigProperty(DataServiceConstants.CLASS_MAPPINGS_FILENAME);
+	        value = getConfigProperty(ServiceParametersConstants.CLASS_MAPPINGS_FILENAME);
 	    } catch (Exception ex) {
 			throw new Exception("Unable to get class mappings filename: " + ex.getMessage(), ex);
 		}

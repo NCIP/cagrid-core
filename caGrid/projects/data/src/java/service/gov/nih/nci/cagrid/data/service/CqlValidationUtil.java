@@ -4,6 +4,7 @@ import gov.nih.nci.cagrid.cqlquery.CQLQuery;
 import gov.nih.nci.cagrid.data.DataServiceConstants;
 import gov.nih.nci.cagrid.data.MalformedQueryException;
 import gov.nih.nci.cagrid.data.QueryProcessingException;
+import gov.nih.nci.cagrid.data.ValidatorConstants;
 import gov.nih.nci.cagrid.data.cql.validation.CqlDomainValidator;
 import gov.nih.nci.cagrid.data.cql.validation.CqlStructureValidator;
 import gov.nih.nci.cagrid.data.cql2.validation.walker.Cql2Walker;
@@ -85,14 +86,14 @@ public class CqlValidationUtil {
     
     
     protected boolean shouldValidateCqlStructure() {
-        return dataServiceConfiguration.getProperty(DataServiceConstants.VALIDATE_CQL_FLAG) != null 
+        return dataServiceConfiguration.getProperty(ValidatorConstants.VALIDATE_CQL_FLAG) != null 
             && Boolean.valueOf(dataServiceConfiguration.getProperty(
                 DataServiceConstants.VALIDATE_CQL_FLAG)).booleanValue();
     }
     
     
     protected boolean shouldValidateDomainModel() {
-        return dataServiceConfiguration.getProperty(DataServiceConstants.VALIDATE_DOMAIN_MODEL_FLAG) != null
+        return dataServiceConfiguration.getProperty(ValidatorConstants.VALIDATE_DOMAIN_MODEL_FLAG) != null
             && Boolean.valueOf(dataServiceConfiguration.getProperty(
                 DataServiceConstants.VALIDATE_DOMAIN_MODEL_FLAG)).booleanValue();
     }
@@ -101,7 +102,7 @@ public class CqlValidationUtil {
     private CqlStructureValidator getCqlStructureValidator() throws QueryProcessingException {
         if (cql1StructureValidator == null) {
             try {
-                String validatorClassName = dataServiceConfiguration.getProperty(DataServiceConstants.CQL_VALIDATOR_CLASS);
+                String validatorClassName = dataServiceConfiguration.getProperty(ValidatorConstants.CQL_VALIDATOR_CLASS);
                 LOG.debug("Loading CQL structure validator class " + validatorClassName);
                 Class<?> validatorClass = Class.forName(validatorClassName);
                 cql1StructureValidator = (CqlStructureValidator) validatorClass.newInstance();
@@ -116,7 +117,7 @@ public class CqlValidationUtil {
     private CqlDomainValidator getCqlDomainValidator() throws QueryProcessingException {
         if (cql1DomainValidator == null) {
             try {
-                String validatorClassName = dataServiceConfiguration.getProperty(DataServiceConstants.DOMAIN_MODEL_VALIDATOR_CLASS);
+                String validatorClassName = dataServiceConfiguration.getProperty(ValidatorConstants.DOMAIN_MODEL_VALIDATOR_CLASS);
                 LOG.debug("Loading CQL Domain Model validator class " + validatorClassName);
                 Class<?> validatorClass = Class.forName(validatorClassName);
                 cql1DomainValidator = (CqlDomainValidator) validatorClass.newInstance();

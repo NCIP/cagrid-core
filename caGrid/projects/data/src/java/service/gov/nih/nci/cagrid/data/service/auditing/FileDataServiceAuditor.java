@@ -1,7 +1,7 @@
 package gov.nih.nci.cagrid.data.service.auditing;
 
 import gov.nih.nci.cagrid.common.Utils;
-import gov.nih.nci.cagrid.data.DataServiceConstants;
+import gov.nih.nci.cagrid.data.CqlSchemaConstants;
 
 import java.io.BufferedWriter;
 import java.io.FileWriter;
@@ -79,7 +79,7 @@ public class FileDataServiceAuditor extends DataServiceAuditor {
                 StringWriter resultsWriter = new StringWriter();
                 try {
                     Utils.serializeObject(event.getResults(), 
-                        DataServiceConstants.CQL_RESULT_SET_QNAME, resultsWriter);
+                        CqlSchemaConstants.CQL_RESULT_SET_QNAME, resultsWriter);
                 } catch (Exception ex) {
                     resultsWriter.append("ERROR SERIALIZING CQL RESULTS: " + ex.getMessage());
                     ex.printStackTrace();
@@ -131,7 +131,7 @@ public class FileDataServiceAuditor extends DataServiceAuditor {
         buff.append("\t").append("Caller: ").append(event.getCallerId()).append("\n");
         StringWriter cqlWriter = new StringWriter();
         try {
-            Utils.serializeObject(event.getQuery(), DataServiceConstants.CQL_QUERY_QNAME, cqlWriter);
+            Utils.serializeObject(event.getQuery(), CqlSchemaConstants.CQL_QUERY_QNAME, cqlWriter);
         } catch (Exception ex) {
             cqlWriter.append("ERROR SERIALIZING QUERY: " + ex.getMessage());
             ex.printStackTrace();

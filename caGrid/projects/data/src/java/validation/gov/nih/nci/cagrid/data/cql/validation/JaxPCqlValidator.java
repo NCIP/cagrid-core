@@ -4,7 +4,7 @@ import gov.nih.nci.cagrid.common.SchemaValidationException;
 import gov.nih.nci.cagrid.common.SchemaValidator;
 import gov.nih.nci.cagrid.common.Utils;
 import gov.nih.nci.cagrid.cqlquery.CQLQuery;
-import gov.nih.nci.cagrid.data.DataServiceConstants;
+import gov.nih.nci.cagrid.data.CqlSchemaConstants;
 import gov.nih.nci.cagrid.data.MalformedQueryException;
 
 import java.io.File;
@@ -35,7 +35,7 @@ public class JaxPCqlValidator implements CqlStructureValidator {
 		StringWriter objectWriter = new StringWriter();
 		try {
 			FileInputStream configStream = new FileInputStream(new File("client-config.wsdd"));
-			Utils.serializeObject(query, DataServiceConstants.CQL_QUERY_QNAME, objectWriter, configStream);
+			Utils.serializeObject(query, CqlSchemaConstants.CQL_QUERY_QNAME, objectWriter, configStream);
 		} catch (Exception ex) {
 			throw new MalformedQueryException("Error serializing the query: " + ex.getMessage(), ex);
 		}

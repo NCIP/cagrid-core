@@ -68,6 +68,6 @@ public class ExtensionDataUtils {
 			info.getIntroduceServiceProperties().getProperty(IntroduceConstants.INTRODUCE_SKELETON_SERVICE_NAME));
 		String basePackage = mainService.getPackageName();
 		basePackage += ".stubs.cql";
-		return basePackage + "." + DataServiceConstants.QUERY_PROCESSOR_STUB_NAME;		
+		return basePackage + "." + QueryProcessorConstants.QUERY_PROCESSOR_STUB_NAME;		
 	}
 }
