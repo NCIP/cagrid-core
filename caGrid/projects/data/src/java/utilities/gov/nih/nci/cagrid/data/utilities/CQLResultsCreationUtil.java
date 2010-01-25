@@ -20,6 +20,7 @@ import org.apache.axis.message.MessageElement;
  *  Utility for creating CQL Query Results objects
  * 
  * @author <A HREF="MAILTO:ervin@bmi.osu.edu">David W. Ervin</A>
+ * @deprecated As of caGrid 1.4, CQL 2 is the preferred query language.  http://cagrid.org/display/dataservices/CQL+2
  * 
  * @created Oct 16, 2006 
  * @version $Id$ 

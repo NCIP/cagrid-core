@@ -19,6 +19,7 @@ import java.util.Iterator;
  *  over the CQL Result Set's objects
  *  
  * @author <A HREF="MAILTO:ervin@bmi.osu.edu">David W. Ervin</A>
+ * @deprecated As of caGrid 1.4, CQL 2 is the preferred query language.  http://cagrid.org/display/dataservices/CQL+2
  * 
  * @created Jun 15, 2006 
  * @version $Id$ 

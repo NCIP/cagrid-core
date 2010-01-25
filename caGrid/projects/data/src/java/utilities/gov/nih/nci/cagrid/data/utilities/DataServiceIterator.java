@@ -12,6 +12,8 @@ import java.util.Iterator;
  *  Interface for data service handles
  * 
  * @author <A HREF="MAILTO:ervin@bmi.osu.edu">David W. Ervin</A>  * 
+ * @deprecated As of caGrid 1.4, CQL 2 is the preferred query language.  http://cagrid.org/display/dataservices/CQL+2
+ * 
  * @created Nov 8, 2006 
  * @version $Id: DataServiceIterator.java,v 1.1 2006-11-08 19:08:14 dervin Exp $ 
  */

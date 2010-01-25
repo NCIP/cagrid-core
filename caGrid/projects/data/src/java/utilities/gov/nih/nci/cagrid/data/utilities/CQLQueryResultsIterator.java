@@ -21,6 +21,7 @@ import org.apache.axis.utils.ClassUtils;
  *  Iterator over CQL Query Results
  * 
  * @author <A HREF="MAILTO:ervin@bmi.osu.edu">David W. Ervin</A>
+ * @deprecated As of caGrid 1.4, CQL 2 is the preferred query language.  http://cagrid.org/display/dataservices/CQL+2
  * 
  * @created Mar 20, 2006 
  * @version $Id$ 
