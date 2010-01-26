@@ -47,18 +47,7 @@ public class FederatedQueryResultsImpl extends FederatedQueryResultsImplBase {
         gov.nih.nci.cagrid.fqp.stubs.types.FederatedQueryProcessingFault,
         gov.nih.nci.cagrid.fqp.results.stubs.types.InternalErrorFault {
         FederatedQueryResultsResource resource = getResource();
-        if (!resource.isComplete()) {
-            ProcessingNotCompleteFault fault = new ProcessingNotCompleteFault();
-            fault.setFaultString("The query processing is not yet complete; current status is: "
-                + resource.getStatusMessage());
-            throw fault;
-        } else if (resource.getProcessingException() != null) {
-            FederatedQueryProcessingFault fault = new FederatedQueryProcessingFault();
-            fault.setFaultString("Problem executing query: " + resource.getProcessingException());
-            FaultHelper helper = new FaultHelper(fault);
-            helper.addFaultCause(resource.getProcessingException());
-            throw helper.getFault();
-        }
+        testForErrors(resource);
         return resource.getResults();
     }
 
@@ -74,11 +63,7 @@ public class FederatedQueryResultsImpl extends FederatedQueryResultsImplBase {
         gov.nih.nci.cagrid.fqp.results.stubs.types.ProcessingNotCompleteFault,
         gov.nih.nci.cagrid.fqp.results.stubs.types.InternalErrorFault {
         FederatedQueryResultsResource resource = getResource();
-        if (!resource.isComplete()) {
-            FaultHelper helper = new FaultHelper(new ProcessingNotCompleteFault());
-            helper.addDescription("Query processing not complete!");
-            throw (ProcessingNotCompleteFault) helper.getFault();
-        }
+        testForErrors(resource);
         DCQLQueryResultsCollection dcqlResults = resource.getResults();
         CQLQueryResults cqlResults = DCQLAggregator.aggregateDCQLResults(
         	dcqlResults, resource.getQuery().getTargetObject().getName());
@@ -91,6 +76,7 @@ public class FederatedQueryResultsImpl extends FederatedQueryResultsImplBase {
         gov.nih.nci.cagrid.fqp.results.stubs.types.ProcessingNotCompleteFault,
         gov.nih.nci.cagrid.fqp.results.stubs.types.InternalErrorFault {
         FederatedQueryResultsResource resource = getResource();
+        testForErrors(resource);
         DCQLQueryResultsCollection dcqlResults = resource.getResults();
         CQLQueryResults cqlResults = DCQLAggregator.aggregateDCQLResults(
         	dcqlResults, resource.getQuery().getTargetObject().getName());
@@ -114,6 +100,7 @@ public class FederatedQueryResultsImpl extends FederatedQueryResultsImplBase {
         gov.nih.nci.cagrid.fqp.results.stubs.types.InternalErrorFault {
         // get the resource and its results
         FederatedQueryResultsResource resource = getResource();
+        testForErrors(resource);
         DCQLQueryResultsCollection dcqlResults = resource.getResults();
         
         // create a byte queue to push data in and out of without burning up memory
@@ -165,5 +152,22 @@ public class FederatedQueryResultsImpl extends FederatedQueryResultsImplBase {
         FederatedQueryResultsResource resource = (FederatedQueryResultsResource) ResourceContext.getResourceContext()
             .getResource();
         return resource;
+    }
+    
+    
+    private void testForErrors(FederatedQueryResultsResource resource) throws ProcessingNotCompleteFault, FederatedQueryProcessingFault {
+        // check for error conditions
+        if (!resource.isComplete()) {
+            FaultHelper helper = new FaultHelper(new ProcessingNotCompleteFault());
+            helper.addDescription("Processing is not complete");
+            throw (ProcessingNotCompleteFault) helper.getFault();
+        }
+        if (resource.getProcessingException() != null) {
+            FaultHelper helper = new FaultHelper(new FederatedQueryProcessingFault());
+            helper.addDescription("Error processing the query");
+            helper.addDescription(resource.getProcessingException().getMessage());
+            helper.addFaultCause(resource.getProcessingException());
+            throw (FederatedQueryProcessingFault) helper.getFault();
+        }
     }
 }
