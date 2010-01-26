@@ -1,8 +1,12 @@
 package gov.nih.nci.cagrid.data.upgrades;
 
 import gov.nih.nci.cagrid.common.Utils;
+import gov.nih.nci.cagrid.data.DataServiceConstants;
 import gov.nih.nci.cagrid.data.extension.Data;
 import gov.nih.nci.cagrid.introduce.beans.extension.ExtensionType;
+import gov.nih.nci.cagrid.introduce.beans.method.MethodType;
+import gov.nih.nci.cagrid.introduce.beans.service.ServiceType;
+import gov.nih.nci.cagrid.introduce.common.CommonTools;
 import gov.nih.nci.cagrid.introduce.common.ServiceInformation;
 import gov.nih.nci.cagrid.introduce.extension.ExtensionsLoader;
 import gov.nih.nci.cagrid.introduce.extension.utils.AxisJdomUtils;
@@ -49,6 +53,8 @@ public class DataServiceUpgradeFrom1pt2 extends ExtensionUpgraderBase {
 			updateLibraries();
             
             upgradeWsdls();
+            
+            removeBdt();
             
             Cql2FeaturesInstaller cql2Installer = 
                 new Cql2FeaturesInstaller(
@@ -137,6 +143,13 @@ public class DataServiceUpgradeFrom1pt2 extends ExtensionUpgraderBase {
         String useEnumValue = serviceFeaturesElement.getAttributeValue("useWsEnumeration");
         return Boolean.valueOf(useEnumValue).booleanValue();
     }
+    
+    
+    private boolean serviceIsUsingBdt(Element extElement) {
+        Element serviceFeaturesElement = extElement.getChild("ServiceFeatures", extElement.getNamespace());
+        String useBdtValue = serviceFeaturesElement.getAttributeValue("useBdt");
+        return Boolean.valueOf(useBdtValue).booleanValue();
+    }
 
 
     private boolean serviceIsUsingSdkDataSource(Element extDataElement) {
@@ -158,6 +171,37 @@ public class DataServiceUpgradeFrom1pt2 extends ExtensionUpgraderBase {
         if (serviceIsUsingSdkDataSource(extDataElement)) {
         	getStatus().addDescriptionLine("-- Data Service caCORE SDK Support Detected");
             updateSdkQueryLibraries();
+        }
+    }
+    
+    
+    private void removeBdt() throws UpgradeException {
+        Element extElement = getExtensionDataElement();
+        if (serviceIsUsingBdt(extElement)) {
+            getStatus().addDescriptionLine("BDT has been removed from caGrid 1.4.  " +
+                "The BDT features of this data service will be removed.");
+            // use the service name to find the schema dir
+            ServiceType mainService = getServiceInformation().getServices().getService(0);
+            String serviceName = mainService.getName();
+            File schemaDir = new File(getServiceInformation().getBaseDirectory(), "schema" + File.separator + serviceName);
+            FileFilter bdtDataSchemaFilter = new FileFilter() {
+                public boolean accept(File pathname) {
+                    return (pathname.isFile() && pathname.getName().startsWith("BDTDataService"));
+                }
+            };
+            // remove BDTDataService* schemas / wsdls
+            File[] deleteSchemas = schemaDir.listFiles(bdtDataSchemaFilter);
+            for (File delme : deleteSchemas) {
+                delme.delete();
+                getStatus().addDescriptionLine("Deleted BDT Data Service schema " + delme.getName());
+            }
+            // find and remove the bdt query operation
+            MethodType bdtQueryMethod = CommonTools.getMethod(
+                mainService.getMethods(), DataServiceConstants.BDT_QUERY_METHOD_NAME);
+            CommonTools.removeMethod(mainService.getMethods(), bdtQueryMethod);
+            getStatus().addDescriptionLine("Removed " + DataServiceConstants.BDT_QUERY_METHOD_NAME + " operation from the service");
+        } else {
+            getStatus().addDescriptionLine("Service was not using BDT");
         }
     }
 
