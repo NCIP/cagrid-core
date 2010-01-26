@@ -18,6 +18,7 @@
 
 	<!-- Important directories and files -->
 	<property name="src.dir" location="${basedir}/src" />
+	<property name="resources.dir" location="${basedir}/resources"/>
 
 	<property name="ext.lib.dir" value="${basedir}/ext/dependencies/jars" />
 
@@ -75,6 +76,9 @@
 				<include name="**" />
 			</fileset>
 			<fileset dir="${src.dir}">
+				<include name="**"/>
+			</fileset>
+			<fileset dir="${resources.dir}">
 				<include name="**"/>
 			</fileset>
 		</jar>

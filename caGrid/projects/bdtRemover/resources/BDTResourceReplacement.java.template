@@ -1,0 +1,33 @@
+package @resource.package@;
+
+import gov.nih.nci.cagrid.bdt.service.globus.resource.BDTResourceBase;
+import gov.nih.nci.cagrid.bdt.service.globus.resource.BDTResourceI;
+import gov.nih.nci.cagrid.bdt.service.globus.resource.BDTException;
+
+import org.globus.transfer.AnyXmlType;
+import org.globus.ws.enumeration.EnumIterator;
+import org.globus.wsrf.ResourceException;
+
+/**
+* BDTResource replaces the old BDTResource class (saved with a .old extension) 
+* since BDT is removed in caGrid 1.4 
+* @Deprecated 
+*/
+public class BDTResource extends BDTResourceBase implements BDTResourceI {
+	
+	public EnumIterator createEnumeration() throws BDTException {
+		throw new BDTException("\"createEnumeration()\" is not supported: http://cagrid.org/display/caGrid13/Deprecation+Plan#DeprecationPlan-BDT");
+	}
+	
+	public AnyXmlType get() throws BDTException {
+		throw new BDTException("\"get()\" is not supported: http://cagrid.org/display/caGrid13/Deprecation+Plan#DeprecationPlan-BDT");
+	}
+	
+	public org.apache.axis.types.URI[] getGridFTPURLs() throws BDTException {
+		throw new BDTException("\"getGridFTPURLs()\" is not supported: http://cagrid.org/display/caGrid13/Deprecation+Plan#DeprecationPlan-BDT");
+	}
+	
+	public void remove() throws ResourceException {
+		throw new ResourceException("\"remove()\" is not supported: http://cagrid.org/display/caGrid13/Deprecation+Plan#DeprecationPlan-BDT");
+	}
+}

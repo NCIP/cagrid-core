@@ -13,6 +13,7 @@ import gov.nih.nci.cagrid.introduce.extension.ServiceExtensionRemover;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.StringReader;
 import java.util.Iterator;
 
@@ -34,12 +35,11 @@ public class BDTExtensionRemover implements ServiceExtensionRemover {
     
     public static final QName BDT_HANDLER_REFERENCE_QNAME = new QName(
         "http://cagrid.nci.nih.gov/BulkDataHandlerReference", "BulkDataHandlerReference");
+    public static final String BDT_RESOURCE_PACKAGE_PLACEHOLDER = "@resource.package@";
     
     private static Log LOG = LogFactory.getLog(BDTExtensionRemover.class);
 
     public void remove(ServiceExtensionDescriptionType extDesc, ServiceInformation info) throws ExtensionRemovalException {
-        // throw away BDTResource.java
-        removeBdtResourceClass(info);
         // find any methods that return a BDT handle, comment out the impl (NOT blank it...) and just throw not implemented exception
         for (ServiceType service : info.getServices().getService()) {
             if (service.getMethods() != null && service.getMethods().getMethod() != null) {
@@ -57,16 +57,38 @@ public class BDTExtensionRemover implements ServiceExtensionRemover {
                 }
             }
         }
-        // rm BulkDataHandler.wsdl, BulkDataHandlerReference.xsd, BulkDataTransferServiceMetadata.xsd -- also rm those from ServiceInformation
+        // can't just throw away the BDT resource since we also can't remove the service context
+        // also can't rm BulkDataHandler.wsdl, BulkDataHandlerReference.xsd, BulkDataTransferServiceMetadata.xsd since they
+        // might be used throughout the service, and cleaning all that up is basically impossible
+        unimplementBdtResourceClass(info);
     }
     
     
-    private void removeBdtResourceClass(ServiceInformation info) {
+    private void unimplementBdtResourceClass(ServiceInformation info) throws ExtensionRemovalException {
+        // move the old resource class to a .old copy
         File resourceClassFile = new File(info.getBaseDirectory(),
             "src" + File.separator + CommonTools.getPackageDir(info.getServices().getService(0))
             + File.separator + "service" + File.separator + "BDTResource.java");
-        LOG.debug("Deleting BDT Resource class " + resourceClassFile.getAbsolutePath());
-        resourceClassFile.delete();
+        File movedResourceClassFile = new File(resourceClassFile.getParentFile(), "BDTResource.java.old");
+        LOG.debug("Moving BDT Resource class " + resourceClassFile.getAbsolutePath() + " to " + movedResourceClassFile.getAbsolutePath());
+        try {
+            Utils.copyFile(resourceClassFile, movedResourceClassFile);
+        } catch (IOException ex) {
+            throw new ExtensionRemovalException("Error moving BDT Resource class: " + ex.getMessage());
+        }
+        // load up the replacement class
+        InputStream replacementStream = getClass().getResourceAsStream("/BDTResourceReplacement.java.template");
+        try {
+            StringBuffer replacementText = Utils.inputStreamToStringBuffer(replacementStream);
+            String resourcePackageName = info.getServices().getService(0).getPackageName() + ".service";
+            LOG.debug("Setting BDT Resource package name to " + resourcePackageName);
+            StringBuffer complete = new StringBuffer(replacementText.toString()
+                .replace(BDT_RESOURCE_PACKAGE_PLACEHOLDER, resourcePackageName));
+            Utils.stringBufferToFile(complete, resourceClassFile);
+            LOG.debug("Replaced BDT Resource class");
+        } catch (IOException ex) {
+            throw new ExtensionRemovalException("Error creating replacement BDT Resource class: " + ex.getMessage());
+        }
     }
     
     
