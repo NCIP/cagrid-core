@@ -34,8 +34,8 @@ import org.jdom.Element;
 import org.jdom.JDOMException;
 
 /**
- * DataServiceUpgradeFrom1pt2
- * Utility to upgrade a 1.2 data service to current
+ * DataServiceUpgradeFrom1pt3
+ * Utility to upgrade a 1.3 data service to current
  * 
  * @author <A HREF="MAILTO:ervin@bmi.osu.edu">David W. Ervin</A> *
  * @created Feb 19, 2007
@@ -288,24 +288,6 @@ public class DataServiceUpgradeFrom1pt3 extends ExtensionUpgraderBase {
                 }
             }
         }
-        
-        /*
-        
-        // add the new Cql2* wsdls
-        for (String name : dataWsdlsByName.keySet()) {
-            if (name.startsWith("Cql2")) {
-                File wsdlOut = new File(serviceSchemasDir, name);
-                try {
-                    Utils.copyFile(dataWsdlsByName.get(name), wsdlOut);
-                    getStatus().addDescriptionLine("Added CQL 2 Wsdl " + name);
-                } catch (IOException ex) {
-                    throw new UpgradeException("Error copying wsdl: " + ex.getMessage(), ex);
-                }
-            }
-        }
-        
-        // add CQL 2 schemas to the service
-        */
     }
     
     
