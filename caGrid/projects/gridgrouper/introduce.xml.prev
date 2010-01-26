@@ -1,4 +1,4 @@
-<ns1:ServiceDescription description="Grid Grouper provides a group-based authorization solution for the Grid, wherein grid services and applications enforce authorization policy based on membership to groups defined and managed at the grid level." introduceVersion="1.3" xmlns:ns1="gme://gov.nih.nci.cagrid/1/Introduce">
+<ns1:ServiceDescription description="Grid Grouper provides a group-based authorization solution for the Grid, wherein grid services and applications enforce authorization policy based on membership to groups defined and managed at the grid level." introduceVersion="1.4" xmlns:ns1="gme://gov.nih.nci.cagrid/1/Introduce">
  <ns2:Namespaces xsi:type="ns2:NamespacesType" xmlns:ns2="gme://gov.nih.nci.cagrid.introduce/1/Namespace" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <ns2:Namespace location="./gridgrouper.xsd" namespace="http://cagrid.nci.nih.gov/1/GridGrouper" packageName="gov.nih.nci.cagrid.gridgrouper.bean" xsi:type="ns2:NamespaceType">
    <ns2:SchemaElement type="GroupCompositeType" xsi:type="ns2:SchemaElementType"/>
@@ -878,6 +878,6 @@
   </ns3:Service>
  </ns3:Services>
  <ns217:Extensions xsi:type="ns217:ExtensionsType" xmlns:ns217="gme://gov.nih.nci.cagrid.introduce/1/Extension" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
-  <ns217:Extension name="cagrid_metadata" version="1.3" xsi:type="ns217:ExtensionType"/>
+  <ns217:Extension name="cagrid_metadata" version="1.4" xsi:type="ns217:ExtensionType"/>
  </ns217:Extensions>
 </ns1:ServiceDescription>

@@ -48,7 +48,7 @@ import org.globus.wsrf.utils.AddressingUtils;
  * of these resource as well as code for registering any properties selected
  * to the index service.
  * 
- * @created by Introduce Toolkit version 1.3
+ * @created by Introduce Toolkit version 1.4
  * 
  */
 public abstract class GridGrouperResourceBase extends ReflectionResource implements Resource
