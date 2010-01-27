@@ -63,26 +63,6 @@ public class DorianClient extends DorianClientBase implements DorianI {
 		}
 	}
 
-  public org.cagrid.gaards.dorian.idp.AccountProfile getAccountProfile() throws RemoteException, org.cagrid.gaards.dorian.stubs.types.DorianInternalFault, org.cagrid.gaards.dorian.stubs.types.PermissionDeniedFault {
-    synchronized(portTypeMutex){
-      configureStubSecurity((Stub)portType,"getAccountProfile");
-    org.cagrid.gaards.dorian.stubs.GetAccountProfileRequest params = new org.cagrid.gaards.dorian.stubs.GetAccountProfileRequest();
-    org.cagrid.gaards.dorian.stubs.GetAccountProfileResponse boxedResult = portType.getAccountProfile(params);
-    return boxedResult.getAccountProfile();
-    }
-  }
-
-  public void updateAccountProfile(org.cagrid.gaards.dorian.idp.AccountProfile profile) throws RemoteException, org.cagrid.gaards.dorian.stubs.types.DorianInternalFault, org.cagrid.gaards.dorian.stubs.types.InvalidUserPropertyFault, org.cagrid.gaards.dorian.stubs.types.PermissionDeniedFault, org.cagrid.gaards.dorian.stubs.types.NoSuchUserFault {
-    synchronized(portTypeMutex){
-      configureStubSecurity((Stub)portType,"updateAccountProfile");
-    org.cagrid.gaards.dorian.stubs.UpdateAccountProfileRequest params = new org.cagrid.gaards.dorian.stubs.UpdateAccountProfileRequest();
-    org.cagrid.gaards.dorian.stubs.UpdateAccountProfileRequestProfile profileContainer = new org.cagrid.gaards.dorian.stubs.UpdateAccountProfileRequestProfile();
-    profileContainer.setAccountProfile(profile);
-    params.setProfile(profileContainer);
-    org.cagrid.gaards.dorian.stubs.UpdateAccountProfileResponse boxedResult = portType.updateAccountProfile(params);
-    }
-  }
-
   public gov.nih.nci.cagrid.metadata.security.ServiceSecurityMetadata getServiceSecurityMetadata() throws RemoteException {
     synchronized(portTypeMutex){
       configureStubSecurity((Stub)portType,"getServiceSecurityMetadata");
@@ -529,6 +509,26 @@ public class DorianClient extends DorianClientBase implements DorianI {
     params.setHostSearchCriteria(hostSearchCriteriaContainer);
     org.cagrid.gaards.dorian.stubs.HostSearchResponse boxedResult = portType.hostSearch(params);
     return boxedResult.getHostRecord();
+    }
+  }
+
+  public org.cagrid.gaards.dorian.idp.AccountProfile getAccountProfile() throws RemoteException, org.cagrid.gaards.dorian.stubs.types.DorianInternalFault, org.cagrid.gaards.dorian.stubs.types.PermissionDeniedFault {
+    synchronized(portTypeMutex){
+      configureStubSecurity((Stub)portType,"getAccountProfile");
+    org.cagrid.gaards.dorian.stubs.GetAccountProfileRequest params = new org.cagrid.gaards.dorian.stubs.GetAccountProfileRequest();
+    org.cagrid.gaards.dorian.stubs.GetAccountProfileResponse boxedResult = portType.getAccountProfile(params);
+    return boxedResult.getAccountProfile();
+    }
+  }
+
+  public void updateAccountProfile(org.cagrid.gaards.dorian.idp.AccountProfile profile) throws RemoteException, org.cagrid.gaards.dorian.stubs.types.DorianInternalFault, org.cagrid.gaards.dorian.stubs.types.InvalidUserPropertyFault, org.cagrid.gaards.dorian.stubs.types.PermissionDeniedFault, org.cagrid.gaards.dorian.stubs.types.NoSuchUserFault {
+    synchronized(portTypeMutex){
+      configureStubSecurity((Stub)portType,"updateAccountProfile");
+    org.cagrid.gaards.dorian.stubs.UpdateAccountProfileRequest params = new org.cagrid.gaards.dorian.stubs.UpdateAccountProfileRequest();
+    org.cagrid.gaards.dorian.stubs.UpdateAccountProfileRequestProfile profileContainer = new org.cagrid.gaards.dorian.stubs.UpdateAccountProfileRequestProfile();
+    profileContainer.setAccountProfile(profile);
+    params.setProfile(profileContainer);
+    org.cagrid.gaards.dorian.stubs.UpdateAccountProfileResponse boxedResult = portType.updateAccountProfile(params);
     }
   }
 

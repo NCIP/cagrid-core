@@ -1,4 +1,4 @@
-<ns1:ServiceDescription description="A grid service for the provisioning and management of grid users accounts.  Dorian provides an integration point between external security domains and the grid, allowing accounts managed in external domains to be federated and managed in the grid.   Dorian allows users to use their existing credentials to authenticate to the grid." introduceVersion="1.3" xmlns:ns1="gme://gov.nih.nci.cagrid/1/Introduce">
+<ns1:ServiceDescription description="A grid service for the provisioning and management of grid users accounts.  Dorian provides an integration point between external security domains and the grid, allowing accounts managed in external domains to be federated and managed in the grid.   Dorian allows users to use their existing credentials to authenticate to the grid." introduceVersion="1.4" xmlns:ns1="gme://gov.nih.nci.cagrid/1/Introduce">
  <ns2:Namespaces xsi:type="ns2:NamespacesType" xmlns:ns2="gme://gov.nih.nci.cagrid.introduce/1/Namespace" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <ns2:Namespace location="./dorian-idp.xsd" namespace="http://cagrid.nci.nih.gov/1/dorian-idp" packageName="org.cagrid.gaards.dorian.idp" xsi:type="ns2:NamespaceType">
    <ns2:SchemaElement type="AccountProfile" xsi:type="ns2:SchemaElementType"/>
@@ -767,7 +767,7 @@
   </ns3:Service>
  </ns3:Services>
  <ns188:Extensions xsi:type="ns188:ExtensionsType" xmlns:ns188="gme://gov.nih.nci.cagrid.introduce/1/Extension" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
-  <ns188:Extension name="cagrid_metadata" version="1.3" xsi:type="ns188:ExtensionType"/>
+  <ns188:Extension name="cagrid_metadata" version="1.4" xsi:type="ns188:ExtensionType"/>
  </ns188:Extensions>
  <ns189:ServiceProperties xmlns:ns189="gme://gov.nih.nci.cagrid.introduce/1/Property">
   <ns189:Property description="" isFromETC="true" key="dorianConfiguration" value="dorian-configuration.xml"/>

@@ -13,21 +13,21 @@
   <Content xsi:type="agg:AggregatorContent" xmlns:agg="http://mds.globus.org/aggregator/types">
     <agg:AggregatorConfig xsi:type="agg:AggregatorConfig">
       <agg:GetMultipleResourcePropertiesPollType
-			xmlns:ns12="http://cagrid.nci.nih.gov/Dorian/types"
-			xmlns:ns10="http://gaards.cagrid.org/authentication-faults"
-			xmlns:ns8="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata"
-			xmlns:ns2="http://cagrid.nci.nih.gov/1/dorian-ifs"
-			xmlns:ns5="http://gaards.cagrid.org/authentication"
-			xmlns:ns7="http://cagrid.nci.nih.gov/1/authentication-service"
-			xmlns:xs="http://www.w3.org/2001/XMLSchema"
-			xmlns:ns9="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.security"
-			xmlns:ns3="http://cagrid.nci.nih.gov/1/dorian-common"
-			xmlns:ns6="http://cagrid.nci.nih.gov/AuthenticationService/types"
-			xmlns:ns13="urn:oasis:names:tc:SAML:1.0:assertion"
-			xmlns:ns4="http://www.w3.org/2000/09/xmldsig#"
-			xmlns:ns11="http://authentication.gaards.cagrid.org/AuthenticationService/types"
 			xmlns:ns0="http://cagrid.nci.nih.gov/1/dorian-idp"
-			xmlns:ns1="http://cagrid.nci.nih.gov/1/dorian-policy">
+			xmlns:ns10="http://gaards.cagrid.org/authentication-faults"
+			xmlns:ns9="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.security"
+			xmlns:ns11="http://authentication.gaards.cagrid.org/AuthenticationService/types"
+			xmlns:ns4="http://www.w3.org/2000/09/xmldsig#"
+			xmlns:ns12="http://cagrid.nci.nih.gov/Dorian/types"
+			xmlns:ns8="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata"
+			xmlns:ns13="urn:oasis:names:tc:SAML:1.0:assertion"
+			xmlns:ns6="http://cagrid.nci.nih.gov/AuthenticationService/types"
+			xmlns:xs="http://www.w3.org/2001/XMLSchema"
+			xmlns:ns2="http://cagrid.nci.nih.gov/1/dorian-ifs"
+			xmlns:ns3="http://cagrid.nci.nih.gov/1/dorian-common"
+			xmlns:ns5="http://gaards.cagrid.org/authentication"
+			xmlns:ns1="http://cagrid.nci.nih.gov/1/dorian-policy"
+			xmlns:ns7="http://cagrid.nci.nih.gov/1/authentication-service">
         <!-- Specifies that the index should refresh information
             every 300000 milliseconds (once every 5 minutes) -->
         <agg:PollIntervalMillis>INDEX_REFRESH</agg:PollIntervalMillis>
