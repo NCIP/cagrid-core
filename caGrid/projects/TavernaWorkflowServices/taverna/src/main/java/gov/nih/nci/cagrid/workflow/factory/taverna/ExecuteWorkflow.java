@@ -117,7 +117,7 @@ public class ExecuteWorkflow extends java.lang.Object
 	}
 
 	// Maximum number of seconds to wait
-	protected static final long TIMEOUT = 5;
+	protected static final long TIMEOUT = 3600;//1 hour
 	
 	private static XMLDeserializer deserializer = XMLDeserializerRegistry
 			.getInstance().getDeserializer();
@@ -307,18 +307,20 @@ public class ExecuteWorkflow extends java.lang.Object
 		else{
 			
 			//	String workflow = System.getProperty("user.dir") + System.getProperty("file.separator") + "workflows/" + "caINT2_PCA_CMS_090826.t2flow";
-			//String workflow = System.getProperty("user.dir") + System.getProperty("file.separator") + "workflows/" + "PCA_transfer_plugin.t2flow";
-			//	String[] inputArgs = {"/Users/sulakhe/Desktop/dina/workingdir", "/Users/sulakhe/Desktop/dina/all_aml_train.gct"};
+			String workflow = System.getProperty("user.dir") + System.getProperty("file.separator") + "workflows/" + "PCA_transfer_plugin.t2flow";
+			//String[] inputArgs = {"/Users/sulakhe/Desktop/dina/workingdir", "/Users/sulakhe/Desktop/dina/all_aml_train.gct"};
+			String input1 = "/Users/sulakhe/taverna/10000";
+			String input = "/Users/sulakhe/Desktop/dina/all_aml_train.gct";
 
 			//String input1 = System.getProperty("user.dir");
 			//String input = System.getProperty("user.dir") + System.getProperty("file.separator") + "workflows/all_aml_train.gct";
 
 
-			String input1 = "Hello ";
-			String input = "World!";
+//			String input1 = "Hello ";
+//			String input = "World!";
 		
 //			String workflow = System.getProperty("user.dir") + System.getProperty("file.separator") + "workflows/PCA_transfer_plugin.t2flow";
-			String workflow = System.getProperty("user.dir") + System.getProperty("file.separator") + "workflows/fishsoup.t2flow";
+//			String workflow = System.getProperty("user.dir") + System.getProperty("file.separator") + "workflows/fishsoup.t2flow";
 			System.out.println("Workflow Path: " + workflow);
 			String[] temp = {workflow, input1, input};
 		
