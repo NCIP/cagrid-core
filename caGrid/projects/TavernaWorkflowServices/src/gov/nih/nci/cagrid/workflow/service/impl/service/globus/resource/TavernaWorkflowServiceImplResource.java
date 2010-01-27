@@ -146,7 +146,7 @@ public class TavernaWorkflowServiceImplResource extends TavernaWorkflowServiceIm
 				//for(String output : outputs)
 				for(int i =0; i < outputs.length; i++)
                 {
-                    System.out.println("Output-" + i+1 + ":\n");
+                    System.out.format("Output-%d:%n", i+1);
                     outputs[i] = outputs[i].replaceAll("^\\[+\\n|\\]+$", "");
                     outputs[i] = outputs[i].replaceAll("^\\[+|\\]+$", "");
                     System.out.println(outputs[i]);
