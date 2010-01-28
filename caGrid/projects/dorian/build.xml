@@ -298,6 +298,7 @@
 
 
 	<!-- Create a JAR file with the implementation classes -->
+	<!--
 	<target name="jar" depends="compile">
 		<runtarget target="preJar" />
 		<jar jarfile="${build.lib.dir}/${client.jar.name}" basedir="${build.dest}">
@@ -313,7 +314,7 @@
 		</jar>
 		<runtarget target="postJar" />
 	</target>
-
+    -->
 
 	<!-- Create a JAR file with the test implementation classes -->
 	<target name="jarTests" depends="jar,compileTests">
