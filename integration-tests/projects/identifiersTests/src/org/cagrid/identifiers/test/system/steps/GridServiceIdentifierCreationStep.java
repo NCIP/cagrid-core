@@ -5,6 +5,7 @@ import gov.nih.nci.cagrid.testing.system.haste.Step;
 
 import java.rmi.RemoteException;
 import namingauthority.IdentifierValues;
+import namingauthority.KeyData;
 import namingauthority.KeyValues;
 
 import org.apache.axis.message.addressing.EndpointReferenceType;
@@ -35,12 +36,12 @@ public class GridServiceIdentifierCreationStep extends Step {
         KeyValues[] keyValues = new KeyValues[2];
 		keyValues[0] = new KeyValues();
 		keyValues[0].setKey("URL");
-		keyValues[0].setValue(new String[] { 
-				"http://na.cagrid.org/foo", "http://na.cagrid.org/bar" });
+		keyValues[0].setKeyData(new KeyData(null, 
+				new String[] {"http://na.cagrid.org/foo", "http://na.cagrid.org/bar" }));
 
 		keyValues[1] = new KeyValues();
 		keyValues[1].setKey("CODE");
-		keyValues[1].setValue(new String[] { "007" });
+		keyValues[1].setKeyData(new KeyData(null, new String[] { "007" }));
 		
 		IdentifierValues values = new IdentifierValues(keyValues);
 		

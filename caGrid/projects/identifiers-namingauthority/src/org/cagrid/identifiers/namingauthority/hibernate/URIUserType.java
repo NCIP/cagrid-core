@@ -71,7 +71,10 @@ public class URIUserType implements UserType {
             return null;
         } else {
             try {
-                return new URI(rs.getString(names[0]));
+            	String val = rs.getString(names[0]);
+            	if (val == null)
+            		return null;
+                return new URI(val);
             } catch (URISyntaxException e) {
                 throw new HibernateException("Invalid URI", e);
             }

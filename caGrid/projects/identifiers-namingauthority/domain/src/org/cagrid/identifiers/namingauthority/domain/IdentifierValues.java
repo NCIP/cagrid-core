@@ -1,26 +1,23 @@
 package org.cagrid.identifiers.namingauthority.domain;
 
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 public class IdentifierValues implements java.io.Serializable {
-    private Map<String, List<String>> values = new HashMap<String, List<String>>();
+    private Map<String, KeyData> values = new HashMap<String, KeyData>();
 
 
-    public Map<String, List<String>> getValues() {
+    public Map<String, KeyData> getValues() {
         return this.values;
     }
 
 
-    public String[] getValues(String key) {
-        return values.get(key).toArray(new String[values.get(key).size()]);
+    public KeyData getValues(String key) {
+        return values.get(key);
     }
 
 
-    public void setValues(Map<String, List<String>> values) {
+    public void setValues(Map<String, KeyData> values) {
         this.values = values;
     }
 
@@ -30,17 +27,8 @@ public class IdentifierValues implements java.io.Serializable {
     }
 
 
-    public void add(String key, String data) {
-        List<String> currValues = values.get(key);
-        if (currValues == null) {
-            currValues = new ArrayList<String>();
-            values.put(key, currValues);
-        }
-        currValues.add(data);
-    }
-    
-    public void set(String key, String[] data) {
-    	this.values.put(key, Arrays.asList(data));
+    public void put(String key, KeyData data) {
+    	this.values.put(key, data);
     }
     
     public boolean equals(Object obj) { 
@@ -51,10 +39,6 @@ public class IdentifierValues implements java.io.Serializable {
         if (getClass() != obj.getClass())
             return false;
         IdentifierValues other = (IdentifierValues) obj;
-        if (values == null) {
-            if (other.values != null)
-                return false;
-        } 
         
         if (!this.values.keySet().equals(other.getValues().keySet())) {
             return false;
@@ -63,14 +47,9 @@ public class IdentifierValues implements java.io.Serializable {
         // keys (types) are the same, compare values now
 
         for (String type : this.getKeys()) {
-            String[] thisValues = this.getValues(type);
-            String[] otherValues = other.getValues(type);
-
-            Arrays.sort(thisValues);
-            Arrays.sort(otherValues);
-
-            if (!Arrays.equals(thisValues, otherValues)) {
-                return false;
+            if (!this.getValues(type).equals(
+            		other.getValues(type))) {
+            	return false;
             }
         }
         return true;
@@ -80,9 +59,11 @@ public class IdentifierValues implements java.io.Serializable {
         StringBuffer sb = new StringBuffer();
 
         for (String key : getKeys()) {
+        	KeyData data = getValues(key);
             sb.append("=====================================================================\n");
             sb.append("KEY [" + key + "]\n");
-            for (String value : getValues(key)) {
+            sb.append("      RWIDENTIFIER [" + data.getReadWriteIdentifier() + "]\n");
+            for (String value : data.getValues()) {
                 sb.append("      VALUE [" + value + "]\n");
             }
         }

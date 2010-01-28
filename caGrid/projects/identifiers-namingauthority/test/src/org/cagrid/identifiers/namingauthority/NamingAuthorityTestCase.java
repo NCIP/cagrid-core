@@ -3,6 +3,7 @@ package org.cagrid.identifiers.namingauthority;
 import java.net.URI;
 
 import org.cagrid.identifiers.namingauthority.domain.IdentifierValues;
+import org.cagrid.identifiers.namingauthority.domain.KeyData;
 import org.cagrid.identifiers.namingauthority.test.NamingAuthorityTestCaseBase;
 
 
@@ -51,10 +52,13 @@ public class NamingAuthorityTestCase extends NamingAuthorityTestCaseBase {
 	// Create identifier with multiple values per key
 	public void testMultipleIdentifierValues() {
 		IdentifierValues values = new IdentifierValues();
-		values.add("URL", "http://na.cagrid.org/foo");
-		values.add("URL", "http://na.cagrid.org/bar");
-		values.add("CODE", "007");
 		
+		values.put("URL", new KeyData( null, 
+				new String[]{"http://na.cagrid.org/foo", "http://na.cagrid.org/bar"} ));
+		
+		values.put("CODE", new KeyData( null,
+				new String[]{ "007" }));
+			
 		assertResolvedValues(values);
 	}
 

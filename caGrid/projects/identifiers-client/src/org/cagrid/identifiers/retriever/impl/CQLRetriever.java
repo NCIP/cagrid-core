@@ -7,6 +7,7 @@ import javax.xml.namespace.QName;
 import org.apache.axis.message.addressing.EndpointReferenceType;
 import org.apache.axis.utils.XMLUtils;
 import org.cagrid.identifiers.namingauthority.domain.IdentifierValues;
+import org.cagrid.identifiers.namingauthority.domain.KeyData;
 import org.globus.wsrf.encoding.ObjectDeserializer;
 import org.w3c.dom.Element;
 import org.xml.sax.InputSource;
@@ -18,8 +19,19 @@ public class CQLRetriever extends RetrieverImpl {
 
         validateTypes(ivs);
 
-        String[] eprStrs = ivs.getValues("EPR");
-        String[] cqlStrs = ivs.getValues("CQL");
+        KeyData eprKD = ivs.getValues("EPR");
+        KeyData cqlKD = ivs.getValues("CQL");
+                
+        String[] eprStrs = null;
+        String[] cqlStrs = null;
+        
+        if (eprKD != null) {
+        	eprStrs = eprKD.getValuesAsArray();
+        }
+        
+        if (cqlKD != null) {
+        	cqlStrs = cqlKD.getValuesAsArray();
+        }
 
         if (eprStrs == null || eprStrs.length == 0 || cqlStrs == null || cqlStrs.length == 0) {
             System.out.println("No data available to perform CQL resolution");

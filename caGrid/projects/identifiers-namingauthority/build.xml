@@ -37,11 +37,37 @@
 
    <import file="test/test.xml" />
 	<import file="webapp.xml" />
+	
+	<!-- ============================================================== -->
+	<!-- Globus properties                                              -->
+	<!-- ============================================================== -->
+	<target name="checkGlobus" depends="setGlobus">
+	      <condition property="globus.not.found">
+	         <or>
+	            <not>
+	               <isset property="ext.globus.dir" />
+	            </not>
+	            <equals arg1="${ext.globus.dir}" arg2="" />
+	         </or>
+	      </condition>
+	      <fail message="Globus installation is not set in either GLOBUS_LOCATION or ext.globus.dir" if="globus.not.found" />
+	      <echo message="Globus: ${ext.globus.dir}" />
+	</target>
+	<target name="setGlobus" if="env.GLOBUS_LOCATION">
+	      <!-- GT4 build files and directories-->
+	      <property name="ext.globus.dir" value="${env.GLOBUS_LOCATION}" />
+	      <property name="build.stubs" location="build-stubs.xml" />
+	      <property name="schema.src" location="${ext.globus.dir}/share/schema" />
+	      <property name="build.packages" location="${ext.globus.dir}/share/globus_wsrf_common/build-packages.xml" />
+	      <!-- Copied from build.stubs file, as there is no way to "append" to the value in the remote file -->
+	      <property name="GT4.ns.excludes" value="-x http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-BaseFaults-1.2-draft-01.xsd -x http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-BaseFaults-1.2-draft-01.wsdl -x http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ResourceLifetime-1.2-draft-01.xsd -x http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ResourceLifetime-1.2-draft-01.wsdl -x http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ResourceProperties-1.2-draft-01.xsd -x http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ResourceProperties-1.2-draft-01.wsdl -x http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ServiceGroup-1.2-draft-01.xsd -x http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ServiceGroup-1.2-draft-01.wsdl -x http://docs.oasis-open.org/wsn/2004/06/wsn-WS-BaseNotification-1.2-draft-01.xsd -x http://docs.oasis-open.org/wsn/2004/06/wsn-WS-BaseNotification-1.2-draft-01.wsdl -x http://schemas.xmlsoap.org/ws/2004/04/trust -x http://schemas.xmlsoap.org/ws/2002/12/policy -x http://schemas.xmlsoap.org/ws/2002/07/utility -x http://schemas.xmlsoap.org/ws/2004/04/sc -x http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-secext-1.0.xsd -x http://www.w3.org/2000/09/xmldsig# -x http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd -x http://schemas.xmlsoap.org/ws/2004/09/enumeration" />
+	</target>
+	
 
     <!-- =============================================================== -->
     <!-- Define the Classpaths                                           -->
     <!-- =============================================================== -->
-    <target name="defineClasspaths">
+    <target name="defineClasspaths" depends="checkGlobus">
         <path id="build.classpath">
             <fileset dir="${lib.dir}">
                 <include name="**/*.jar" />
@@ -49,6 +75,9 @@
             <fileset dir="${ext.lib.dir}">
                 <include name="**/*.jar" />
             </fileset>
+        	<fileset dir="${ext.globus.dir}/lib">
+        	    <include name="*.jar" />
+        	</fileset>
         </path>
 
         <path id="run.classpath">

@@ -1,6 +1,7 @@
 package org.cagrid.identifiers.retriever.impl;
 
 import org.cagrid.identifiers.namingauthority.domain.IdentifierValues;
+import org.cagrid.identifiers.namingauthority.domain.KeyData;
 import org.cagrid.identifiers.retriever.Retriever;
 
 public abstract class RetrieverImpl implements Retriever {
@@ -20,7 +21,11 @@ public abstract class RetrieverImpl implements Retriever {
 
     protected void validateTypes(IdentifierValues ivs) throws Exception {
         for (String type : requiredKeys) {
-            String[] values = ivs.getValues(type);
+        	KeyData kd = ivs.getValues(type);
+        	if (kd == null) {
+        		throw new Exception("No type [" + type + "] found in indetifier values");
+        	}
+            String[] values = kd.getValuesAsArray();
             if (values == null || values.length == 0)
                 throw new Exception("No type [" + type + "] found in indetifier values");
         }

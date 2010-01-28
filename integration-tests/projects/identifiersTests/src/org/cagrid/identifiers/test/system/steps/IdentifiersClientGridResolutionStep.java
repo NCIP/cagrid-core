@@ -34,17 +34,18 @@ public class IdentifiersClientGridResolutionStep extends Step {
     	
     	System.out.println("Going to GRID resolve [" + identifier.toString() + "]");
     	org.cagrid.identifiers.namingauthority.domain.IdentifierValues resolvedValues = null;
+    	org.cagrid.identifiers.namingauthority.domain.IdentifierValues insertedValues = null;
+    	
     	try {
+    		insertedValues = gov.nih.nci.cagrid.identifiers.common.IdentifiersNAUtil.map( values );
 			resolvedValues = new Resolver().resolveGrid(new java.net.URI(identifier.toString()));
 			System.out.println(resolvedValues.toString());
+			
 		} catch (Exception e) {
 			e.printStackTrace();
 			fail("Grid Resolution failed: " + e.getMessage());
 		} 
-    	
-		org.cagrid.identifiers.namingauthority.domain.IdentifierValues
-			insertedValues = gov.nih.nci.cagrid.identifiers.common.IdentifiersNAUtil.map( values );
-					
+    			
     	assertEquals( insertedValues, resolvedValues );
     }
 }

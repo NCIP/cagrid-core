@@ -1,11 +1,13 @@
 package gov.nih.nci.cagrid.identifiers.common;
 
+import java.net.URISyntaxException;
 import java.util.Arrays;
 
 import junit.framework.Assert;
 import namingauthority.IdentifierValues;
 import namingauthority.KeyValues;
 
+import org.apache.axis.types.URI.MalformedURIException;
 import org.cagrid.identifiers.namingauthority.InvalidIdentifierException;
 import org.cagrid.identifiers.namingauthority.InvalidIdentifierValuesException;
 import org.cagrid.identifiers.namingauthority.NamingAuthorityConfigurationException;
@@ -17,7 +19,7 @@ import gov.nih.nci.cagrid.identifiers.stubs.types.NamingAuthorityConfigurationFa
 public class IdentifiersNAUtil {
 
 	public static org.cagrid.identifiers.namingauthority.domain.IdentifierValues map(
-			namingauthority.IdentifierValues identifierValues) {
+			namingauthority.IdentifierValues identifierValues) throws URISyntaxException {
 		
 		if (identifierValues == null)
 			return null;
@@ -26,14 +28,43 @@ public class IdentifiersNAUtil {
 			new org.cagrid.identifiers.namingauthority.domain.IdentifierValues();
 		
 		for( namingauthority.KeyValues kvs : identifierValues.getKeyValues() ) {
-			ivs.set( kvs.getKey(), kvs.getValue() );
+			ivs.put(kvs.getKey(), map(kvs.getKeyData()));
 		}
 		
 		return ivs;
 	}
 
+	public static org.cagrid.identifiers.namingauthority.domain.KeyData map(
+			namingauthority.KeyData kd) throws URISyntaxException {
+	
+		if (kd == null)
+			return null;
+		
+		java.net.URI readWriteIdentifier = null;
+		if (kd.getReadWriteIdentifier() != null)
+			readWriteIdentifier = new java.net.URI(kd.getReadWriteIdentifier().toString());
+		
+		return new org.cagrid.identifiers.namingauthority.domain.KeyData(
+					readWriteIdentifier, kd.getValue());
+	}
+	
+	public static namingauthority.KeyData map(
+			org.cagrid.identifiers.namingauthority.domain.KeyData kd) throws URISyntaxException, MalformedURIException {
+	
+		if (kd == null)
+			return null;
+		
+		org.apache.axis.types.URI readWriteIdentifier = null;
+		if (kd.getReadWriteIdentifier() != null) {
+			readWriteIdentifier = new org.apache.axis.types.URI(kd.getReadWriteIdentifier().normalize().toString());
+		}
+	
+		return new namingauthority.KeyData(
+					readWriteIdentifier, kd.getValuesAsArray());
+	}
+	
 	public static namingauthority.IdentifierValues map(
-			org.cagrid.identifiers.namingauthority.domain.IdentifierValues identifierValues) {
+			org.cagrid.identifiers.namingauthority.domain.IdentifierValues identifierValues) throws MalformedURIException, URISyntaxException {
 		
 		String[] keys = identifierValues.getKeys();
 		namingauthority.KeyValues[] kvs = new namingauthority.KeyValues[ keys.length ];
@@ -41,7 +72,7 @@ public class IdentifiersNAUtil {
 		for( int i=0; i < kvs.length; i++) {
 			kvs[i] = new namingauthority.KeyValues();
 			kvs[i].setKey(keys[i]);
-			kvs[i].setValue(identifierValues.getValues(keys[i]));
+			kvs[i].setKeyData(map(identifierValues.getValues(keys[i])));
 		}
 				
 		return new namingauthority.IdentifierValues( kvs );
@@ -77,7 +108,11 @@ public class IdentifiersNAUtil {
 		}
 
 		for( KeyValues tv : tvs1 ) {
-			IdentifiersNAUtil.assertEquals(tvs2, tv.getKey(), tv.getValue());
+			String[] values = null;
+			if (tv.getKeyData() != null) {
+				values = tv.getKeyData().getValue();
+			}
+			IdentifiersNAUtil.assertEquals(tvs2, tv.getKey(), values);
 		}
 	}
     
@@ -94,7 +129,11 @@ public class IdentifiersNAUtil {
     private static void assertEquals(KeyValues[] tvs, String Key, String[] values) {
 		for( KeyValues tv : tvs ) {
 			if (tv.getKey().equals(Key)) {
-				String[] myValues = tv.getValue();
+				String[] myValues = null;
+				if (tv.getKeyData() != null) {
+					myValues = tv.getKeyData().getValue();
+				}
+				
 				Arrays.sort(values);
 				Arrays.sort(myValues);
 				Assert.assertEquals("values are not the same", true, Arrays.equals(values, myValues));

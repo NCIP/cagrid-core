@@ -11,6 +11,7 @@ import org.cagrid.identifiers.namingauthority.InvalidIdentifierException;
 import org.cagrid.identifiers.namingauthority.NamingAuthority;
 import org.cagrid.identifiers.namingauthority.NamingAuthorityConfigurationException;
 import org.cagrid.identifiers.namingauthority.domain.IdentifierValues;
+import org.cagrid.identifiers.namingauthority.domain.KeyData;
 import org.cagrid.identifiers.namingauthority.domain.NamingAuthorityConfig;
 import org.cagrid.identifiers.namingauthority.util.IdentifierUtil;
 import org.cagrid.identifiers.namingauthority.HttpProcessor;
@@ -100,7 +101,9 @@ public class HttpProcessorImpl implements HttpProcessor {
 
             for (String key : ivs.getKeys()) {
                 msg.append("<b>Type: &nbsp;</b>" + key + "<br>\n");
-                for (String value : ivs.getValues(key)) {
+                KeyData kd = ivs.getValues(key);
+                msg.append("<b>Security Identifier: &nbsp;</b>" + kd.getReadWriteIdentifier().normalize().toString() + "<br>\n");
+                for (String value : kd.getValues()) {
                     msg.append("<b>Data: &nbsp;</b>" + escape(value) + "<br>\n");
                 }
                 msg.append("<hr>\n");

@@ -2,6 +2,7 @@ package gov.nih.nci.cagrid.identifiers.client;
 
 import java.rmi.RemoteException;
 import namingauthority.IdentifierValues;
+import namingauthority.KeyData;
 import namingauthority.KeyValues;
 import org.apache.axis.client.Stub;
 import org.apache.axis.message.addressing.EndpointReferenceType;
@@ -54,20 +55,21 @@ public class IdentifiersNAServiceClient extends IdentifiersNAServiceClientBase i
 			  KeyValues[] keyValues1 = new KeyValues[2];
 			  keyValues1[0] = new KeyValues();
 			  keyValues1[0].setKey("URL");
-			  keyValues1[0].setValue(new String[] { "http://www.google.com" });
+			  keyValues1[0].setKeyData(new KeyData(new org.apache.axis.types.URI("http://identifier1"),
+					  new String[] { "http://www.google.com" }));
 
 			  keyValues1[1] = new KeyValues();
 			  keyValues1[1].setKey("EPR");
-			  keyValues1[1].setValue(new String[] { "end point reference 1", "end point reference 2" });
+			  keyValues1[1].setKeyData(new KeyData(new org.apache.axis.types.URI("http://identifier2"),
+					  new String[] { "end point reference 1", "end point reference 2" }));
+	
 			  IdentifierValues values1 = new IdentifierValues(keyValues1);
 			  IdentifierValues values2 = null;
-
 
 			  org.apache.axis.types.URI identifier = client.createIdentifier(values1);
 			  System.out.println("Identifier: " + identifier.toString());
 
 			  values2 = client.resolveIdentifier(identifier);	
-
 
 			  IdentifiersNAUtil.assertEquals(values1, values2);
 				

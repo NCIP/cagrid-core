@@ -11,6 +11,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.cagrid.identifiers.namingauthority.HttpProcessor;
 import org.cagrid.identifiers.namingauthority.NamingAuthority;
+import org.globus.axis.gsi.GSIConstants;
 import org.springframework.beans.factory.xml.XmlBeanFactory;
 
 
@@ -53,6 +54,9 @@ public class NamingAuthorityService extends HttpServlet {
         System.out.println("getServerName[" + request.getServerName() + "]");
         System.out.println("getServerPort[" + request.getServerPort() + "]");
         System.out.println("getServletPath[" + request.getServletPath() + "]");
+        
+        String userDN = (String) request.getAttribute(GSIConstants.GSI_USER_DN);
+        System.out.println("UserDN=" + userDN);
 
         processor.process(request, response);
     }

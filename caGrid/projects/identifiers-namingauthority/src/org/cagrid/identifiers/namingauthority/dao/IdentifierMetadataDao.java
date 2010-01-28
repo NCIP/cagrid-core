@@ -1,9 +1,7 @@
 package org.cagrid.identifiers.namingauthority.dao;
 
 import java.net.URI;
-import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -12,13 +10,9 @@ import javax.persistence.NonUniqueResultException;
 
 import org.cagrid.identifiers.namingauthority.InvalidIdentifierException;
 import org.cagrid.identifiers.namingauthority.domain.IdentifierValues;
+import org.cagrid.identifiers.namingauthority.domain.KeyData;
 import org.cagrid.identifiers.namingauthority.hibernate.IdentifierMetadata;
 import org.cagrid.identifiers.namingauthority.hibernate.IdentifierValueKey;
-import org.hibernate.HibernateException;
-import org.hibernate.Session;
-import org.hibernate.criterion.Example;
-import org.hibernate.criterion.MatchMode;
-import org.springframework.orm.hibernate3.HibernateCallback;
 
 public class IdentifierMetadataDao extends AbstractDao<IdentifierMetadata> {
 
@@ -54,11 +48,14 @@ public class IdentifierMetadataDao extends AbstractDao<IdentifierMetadata> {
     	
     	if (md.getValues() != null && md.getValues().size() > 0) {
     		result = new IdentifierValues();
-    		Map<String, List<String>> values = new HashMap<String, List<String>>();
+    		Map<String, KeyData> values = new HashMap<String, KeyData>();
     		result.setValues(values);
 
     		for (IdentifierValueKey vk : md.getValues()) {
-    			values.put(vk.getKey(), vk.getValues());
+    			KeyData kd = new KeyData();
+    			kd.setReadWriteIdentifier(vk.getReadWriteIdentifier());
+    			kd.setValues(vk.getValues());
+    			values.put(vk.getKey(), kd);
     		}
     	}
     	
@@ -75,9 +72,11 @@ public class IdentifierMetadataDao extends AbstractDao<IdentifierMetadata> {
             String[] keys = ivalues.getKeys();
             for (String key : keys) {
                 IdentifierValueKey vk = new IdentifierValueKey();
+                
+                KeyData kd = ivalues.getValues(key);
                 vk.setKey(key);
-                String[] data = ivalues.getValues(key);
-                vk.setValues(Arrays.asList(data));
+                vk.setReadWriteIdentifier(kd.getReadWriteIdentifier());
+                vk.setValues(kd.getValues());
                 values.add(vk);
             }
         }

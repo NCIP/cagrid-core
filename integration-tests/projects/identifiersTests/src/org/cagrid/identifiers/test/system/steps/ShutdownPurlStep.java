@@ -4,10 +4,12 @@ import gov.nih.nci.cagrid.common.StreamGobbler;
 import gov.nih.nci.cagrid.testing.system.deployment.ContainerException;
 import gov.nih.nci.cagrid.testing.system.haste.Step;
 
+import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.io.Writer;
 import java.net.ConnectException;
 import java.net.URI;
@@ -47,36 +49,17 @@ public class ShutdownPurlStep extends Step {
 	
 	@Override
 	public void runStep() throws Exception {
-				
-		String purlDir = testInfo.getPurlzDirectory().getName();
 
-		List<String> command = new ArrayList<String>();
-
-		// executable to call
 		if (System.getProperty("os.name").toLowerCase().contains("win")) {
-			//TODO
-			throw new Exception("No shutdown strategy for windows yet");
+			winKillIt();
 		} else {
-			writeUnixShutdownScript();
-			command.add(shutdownFilePath);
+			nixKillIt();
 		}
-        
-		List<String> additionalEnvironment = new ArrayList<String>();
- 		String[] editedEnvironment = editEnvironment(additionalEnvironment);
-		String[] commandArray = command.toArray(new String[command.size()]);
-		try {
-			
-			Process killProc = Runtime.getRuntime().exec(commandArray,
-					editedEnvironment);
-			new StreamGobbler(killProc.getInputStream(),
-					StreamGobbler.TYPE_OUT, System.out).start();
-			new StreamGobbler(killProc.getErrorStream(),
-					StreamGobbler.TYPE_OUT, System.err).start();
-		} catch (Exception ex) {
-			throw new Exception("Error invoking startup process: "
-					+ ex.getMessage(), ex);
-		}
+		
+		waitTilDown();
+	}
 
+	private void waitTilDown() throws ContainerException {
 		// start checking for running
 		Exception testException = null;
 		sleep(2000);
@@ -112,7 +95,89 @@ public class ShutdownPurlStep extends Step {
 		
 		System.out.println("PURLZ is now shutdown...");
 	}
+	
+	private void nixKillIt() throws Exception {
+		List<String> command = new ArrayList<String>();
+		
+		writeUnixShutdownScript();
+		command.add(shutdownFilePath);
+	
+    
+		List<String> additionalEnvironment = new ArrayList<String>();
+		String[] editedEnvironment = editEnvironment(additionalEnvironment);
+		String[] commandArray = command.toArray(new String[command.size()]);
+		try {
 
+			Process killProc = Runtime.getRuntime().exec(commandArray,
+					editedEnvironment);
+			new StreamGobbler(killProc.getInputStream(),
+					StreamGobbler.TYPE_OUT, System.out).start();
+			new StreamGobbler(killProc.getErrorStream(),
+					StreamGobbler.TYPE_OUT, System.err).start();
+		} catch (Exception ex) {
+			throw new Exception("Error invoking startup process: "
+					+ ex.getMessage(), ex);
+		}
+	}
+	
+	private void winKillIt() throws IOException {
+		List<String> command = new ArrayList<String>();
+		List<String> additionalEnvironment = new ArrayList<String>();
+		String[] editedEnvironment = editEnvironment(additionalEnvironment);
+		command.add("jps");
+		command.add("-l");
+		String[] commandArray = command.toArray(new String[command.size()]);
+
+		Process psProc = Runtime.getRuntime().exec(commandArray,
+				editedEnvironment);
+
+		InputStreamReader isr = new InputStreamReader(psProc.getInputStream());
+		BufferedReader br = new BufferedReader(isr);
+		String pidLine = null;
+		String line = null;
+		while ((line = br.readLine()) != null) {
+			if (line.contains("com.ten60.netkernel.bootloader.BootLoader")) {
+				pidLine = line;
+				break;
+			}
+		}
+		
+		try { psProc.waitFor(); } catch (Exception e) {}
+
+		psProc.destroy();
+		
+		if (pidLine == null) {
+			throw new IOException("Unable to determine windows process id for purl server");
+		}
+		
+		String pid = pidLine.split(" ")[0];
+		System.out.println("PURL PID=[" + pid + "]");
+		
+		command.clear();
+		command.add("taskkill");
+		command.add("/F");
+		command.add("/PID");
+		command.add(pid);
+		
+		Process killProc = Runtime.getRuntime().exec(
+				command.toArray(new String[command.size()]), 
+				editedEnvironment);
+		
+		isr = new InputStreamReader(killProc.getErrorStream());
+		br = new BufferedReader(isr);
+		while ((line = br.readLine()) != null) {
+			System.out.println(line);
+		}
+		
+		isr = new InputStreamReader(killProc.getInputStream());
+		br = new BufferedReader(isr);
+		while ((line = br.readLine()) != null) {
+			System.out.println(line);
+		}
+		
+		try { killProc.waitFor(); } catch(Exception e) {};
+		killProc.destroy();
+	}
 	
 	private String[] editEnvironment(List<String> edits) {
 		Map<String, String> systemEnvironment = new HashMap<String, String>(System.getenv());
@@ -218,7 +283,7 @@ public class ShutdownPurlStep extends Step {
 			client.getConnectionManager().shutdown();
 		}  
 		
-		return false;
+		return true;
 	}
 
 }

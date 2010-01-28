@@ -1,8 +1,13 @@
 package gov.nih.nci.cagrid.identifiers.test;
 
+import java.net.URISyntaxException;
+
 import gov.nih.nci.cagrid.identifiers.common.IdentifiersNAUtil;
 import namingauthority.IdentifierValues;
+import namingauthority.KeyData;
 import namingauthority.KeyValues;
+
+import org.apache.axis.types.URI.MalformedURIException;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
@@ -20,11 +25,11 @@ public class NATestCase extends TestCase {
 		keyValues1 = new KeyValues[2];
 		keyValues1[0] = new KeyValues();
 		keyValues1[0].setKey("URL");
-		keyValues1[0].setValue(new String[] { "http://www.google.com" });
+		keyValues1[0].setKeyData(new KeyData(null, new String[] { "http://www.google.com" }));
 
 		keyValues1[1] = new KeyValues();
 		keyValues1[1].setKey("EPR");
-		keyValues1[1].setValue(new String[] { "end point reference 1", "end point reference 2" });
+		keyValues1[1].setKeyData(new KeyData(null, new String[] { "end point reference 1", "end point reference 2" }));
 		
 		//
 		// keyValues2 (same as keyvalues1)
@@ -32,27 +37,37 @@ public class NATestCase extends TestCase {
 		keyValues2 = new KeyValues[2];
 		keyValues2[0] = new KeyValues();
 		keyValues2[0].setKey("URL");
-		keyValues2[0].setValue(new String[] { "http://www.google.com" });
+		keyValues2[0].setKeyData(new KeyData(null, new String[] { "http://www.google.com" }));
 
 		keyValues2[1] = new KeyValues();
 		keyValues2[1].setKey("EPR");
-		keyValues2[1].setValue(new String[] { "end point reference 1", "end point reference 2" });
+		keyValues2[1].setKeyData(new KeyData(null, new String[] { "end point reference 1", "end point reference 2" }));
 	}
 	
 	public void testUtil() {
 		IdentifierValues gridValues1 = new IdentifierValues(keyValues1);
 		
 		// convert to domain values
-		org.cagrid.identifiers.namingauthority.domain.IdentifierValues
+		org.cagrid.identifiers.namingauthority.domain.IdentifierValues domainValues1;
+		try {
 			domainValues1 = IdentifiersNAUtil.map(gridValues1);
-		
-		// convert back to grid values
-		IdentifierValues gridValues2 = IdentifiersNAUtil.map(domainValues1);
-		
-		// must be the same
-		IdentifiersNAUtil.assertEquals(gridValues1, gridValues2);
-		IdentifiersNAUtil.assertEquals(gridValues1, new IdentifierValues(keyValues2));
-		IdentifiersNAUtil.assertEquals(keyValues1, keyValues2);
+			
+			// convert back to grid values
+			IdentifierValues gridValues2;
+			gridValues2 = IdentifiersNAUtil.map(domainValues1);
+			
+			// must be the same
+			IdentifiersNAUtil.assertEquals(gridValues1, gridValues2);
+			IdentifiersNAUtil.assertEquals(gridValues1, new IdentifierValues(keyValues2));
+			IdentifiersNAUtil.assertEquals(keyValues1, keyValues2);
+			
+		} catch (URISyntaxException e) {
+			e.printStackTrace();
+			fail(e.toString());
+		} catch (MalformedURIException e) {
+			e.printStackTrace();
+			fail(e.toString());
+		}
 	}
 
 //	MOVED TO System Test

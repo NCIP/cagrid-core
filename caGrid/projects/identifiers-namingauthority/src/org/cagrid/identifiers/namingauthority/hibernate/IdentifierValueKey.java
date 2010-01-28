@@ -1,5 +1,6 @@
 package org.cagrid.identifiers.namingauthority.hibernate;
 
+import java.net.URI;
 import java.util.List;
 
 import javax.persistence.Column;
@@ -14,6 +15,7 @@ import org.hibernate.annotations.CollectionOfElements;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
 import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.Type;
 
 
 @Entity
@@ -34,7 +36,18 @@ public class IdentifierValueKey {
     @Column(name = "value", length = 16777215)
     private List<String> values;
 
+    @Column(nullable = true, unique = false)
+    @Type(type = "org.cagrid.identifiers.namingauthority.hibernate.URIUserType")
+    private URI readWriteIdentifier;
 
+    public URI getReadWriteIdentifier() {
+    	return readWriteIdentifier;
+    }
+    
+    public void setReadWriteIdentifier(URI identifier) {
+    	this.readWriteIdentifier = identifier;
+    }
+    
     public List<String> getValues() {
         return values;
     }
