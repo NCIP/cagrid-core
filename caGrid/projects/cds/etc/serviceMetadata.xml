@@ -109,7 +109,14 @@
       </ns2:Operation>
       <ns2:Operation description="" name="getServiceSecurityMetadata">
        <ns2:inputParameterCollection/>
-       <ns2:Output qName="ns17:ServiceSecurityMetadata" dimensionality="1" isArray="false" xmlns:ns17="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.security"/>
+       <ns2:Output qName="ns17:ServiceSecurityMetadata" dimensionality="1" isArray="false" xmlns:ns17="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.security">
+        <ns18:UMLClass className="ServiceSecurityMetadata" description="An instance of the Security Service Metadata." id="7E0EEE61-999D-5527-E040-BB89AD4338D3" packageName="gov.nih.nci.cagrid.metadata.security" projectName="caGrid_Metadata_Models" projectVersion="1" xmlns:ns18="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common">
+         <ns18:umlAttributeCollection/>
+         <ns18:SemanticMetadata conceptCode="C80736" conceptDefinition="A software system providing a public need." conceptName="Software Service" order="2"/>
+         <ns18:SemanticMetadata conceptCode="C25669" conceptDefinition="Security; freedom from anxiety or fear." conceptName="Security" order="1"/>
+         <ns18:SemanticMetadata conceptCode="C52095" conceptDefinition="Data about data; information that describes another set of data." conceptName="Metadata" order="0"/>
+        </ns18:UMLClass>
+       </ns2:Output>
        <ns2:faultCollection/>
       </ns2:Operation>
       <ns2:Operation description="" name="GetMultipleResourceProperties">
@@ -133,9 +140,9 @@
      <ns2:operationCollection>
       <ns2:Operation description="This method allows an authorized user to get a delegated credential." name="getDelegatedCredential">
        <ns2:inputParameterCollection>
-        <ns2:InputParameter qName="ns18:PublicKey" dimensionality="1" index="0" isArray="false" isRequired="false" name="publicKey" xmlns:ns18="http://gaards.cagrid.org/cds"/>
+        <ns2:InputParameter qName="ns19:PublicKey" dimensionality="1" index="0" isArray="false" isRequired="false" name="publicKey" xmlns:ns19="http://gaards.cagrid.org/cds"/>
        </ns2:inputParameterCollection>
-       <ns2:Output qName="ns19:CertificateChain" dimensionality="1" isArray="false" xmlns:ns19="http://gaards.cagrid.org/cds"/>
+       <ns2:Output qName="ns20:CertificateChain" dimensionality="1" isArray="false" xmlns:ns20="http://gaards.cagrid.org/cds"/>
        <ns2:faultCollection>
         <ns2:Fault description="" name="CDSInternalFault"/>
         <ns2:Fault description="" name="DelegationFault"/>
@@ -148,23 +155,30 @@
       </ns2:Operation>
       <ns2:Operation description="" name="getServiceSecurityMetadata">
        <ns2:inputParameterCollection/>
-       <ns2:Output qName="ns20:ServiceSecurityMetadata" dimensionality="1" isArray="false" xmlns:ns20="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.security"/>
+       <ns2:Output qName="ns21:ServiceSecurityMetadata" dimensionality="1" isArray="false" xmlns:ns21="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.security">
+        <ns22:UMLClass className="ServiceSecurityMetadata" description="An instance of the Security Service Metadata." id="7E0EEE61-999D-5527-E040-BB89AD4338D3" packageName="gov.nih.nci.cagrid.metadata.security" projectName="caGrid_Metadata_Models" projectVersion="1" xmlns:ns22="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common">
+         <ns22:umlAttributeCollection/>
+         <ns22:SemanticMetadata conceptCode="C80736" conceptDefinition="A software system providing a public need." conceptName="Software Service" order="2"/>
+         <ns22:SemanticMetadata conceptCode="C25669" conceptDefinition="Security; freedom from anxiety or fear." conceptName="Security" order="1"/>
+         <ns22:SemanticMetadata conceptCode="C52095" conceptDefinition="Data about data; information that describes another set of data." conceptName="Metadata" order="0"/>
+        </ns22:UMLClass>
+       </ns2:Output>
        <ns2:faultCollection/>
       </ns2:Operation>
      </ns2:operationCollection>
      <ns2:contextPropertyCollection/>
     </ns2:ServiceContext>
    </ns2:serviceContextCollection>
-   <ns21:SemanticMetadata conceptCode="C63541" conceptDefinition="A service available on a system that coordinates resources that are not subject to central control, using open, general purpose protocols and interfaces to deliver nontrivial qualities of services." conceptName="Grid Service" order="0" xmlns:ns21="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common"/>
-   <ns22:SemanticMetadata conceptCode="C63543" conceptDefinition="A published API which receives data in the form of objects, performs computations based upon the input data, and returns information to a client via caGrid in the form of one or more objects." conceptName="Analytical Grid Service" order="1" xmlns:ns22="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common"/>
+   <ns23:SemanticMetadata conceptCode="C63541" conceptDefinition="A service available on a system that coordinates resources that are not subject to central control, using open, general purpose protocols and interfaces to deliver nontrivial qualities of services." conceptName="Grid Service" order="0" xmlns:ns23="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common"/>
+   <ns24:SemanticMetadata conceptCode="C63543" conceptDefinition="A published API which receives data in the form of objects, performs computations based upon the input data, and returns information to a client via caGrid in the form of one or more objects." conceptName="Analytical Grid Service" order="1" xmlns:ns24="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common"/>
   </ns2:Service>
  </ns1:serviceDescription>
  <ns1:hostingResearchCenter>
-  <ns23:ResearchCenter displayName="" shortName="" xmlns:ns23="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common">
-   <ns23:Address country="" locality="" postalCode="" stateProvince="" street1="" street2=""/>
-   <ns23:pointOfContactCollection>
-    <ns23:PointOfContact affiliation="" email="" firstName="" lastName="" phoneNumber="" role=""/>
-   </ns23:pointOfContactCollection>
-  </ns23:ResearchCenter>
+  <ns25:ResearchCenter displayName="" shortName="" xmlns:ns25="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common">
+   <ns25:Address country="" locality="" postalCode="" stateProvince="" street1="" street2=""/>
+   <ns25:pointOfContactCollection>
+    <ns25:PointOfContact affiliation="" email="" firstName="" lastName="" phoneNumber="" role=""/>
+   </ns25:pointOfContactCollection>
+  </ns25:ResearchCenter>
  </ns1:hostingResearchCenter>
 </ns1:ServiceMetadata>

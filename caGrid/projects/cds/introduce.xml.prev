@@ -1,4 +1,4 @@
-<ns1:ServiceDescription introduceVersion="1.3" xmlns:ns1="gme://gov.nih.nci.cagrid/1/Introduce">
+<ns1:ServiceDescription introduceVersion="1.4" xmlns:ns1="gme://gov.nih.nci.cagrid/1/Introduce">
  <ns2:Namespaces xsi:type="ns2:NamespacesType" xmlns:ns2="gme://gov.nih.nci.cagrid.introduce/1/Namespace" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <ns2:Namespace location="./credential-delegation-service.xsd" namespace="http://gaards.cagrid.org/cds" packageName="org.cagrid.gaards.cds.common" xsi:type="ns2:NamespaceType">
    <ns2:SchemaElement type="CertificateChain" xsi:type="ns2:SchemaElementType"/>
@@ -306,7 +306,7 @@
   </ns3:Service>
  </ns3:Services>
  <ns65:Extensions xsi:type="ns65:ExtensionsType" xmlns:ns65="gme://gov.nih.nci.cagrid.introduce/1/Extension" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
-  <ns65:Extension name="cagrid_metadata" version="1.3" xsi:type="ns65:ExtensionType"/>
+  <ns65:Extension name="cagrid_metadata" version="1.4" xsi:type="ns65:ExtensionType"/>
  </ns65:Extensions>
  <ns66:ServiceProperties xmlns:ns66="gme://gov.nih.nci.cagrid.introduce/1/Property">
   <ns66:Property description="The configuration file for the credential delegation service." isFromETC="true" key="cdsConfiguration" value="cds-configuration.xml"/>

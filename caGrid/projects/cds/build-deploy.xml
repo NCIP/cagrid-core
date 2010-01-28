@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<project name="build-deploy file" basedir="." default="deploy">
+<project name="build-deploy file" basedir="." default="deployTomcat">
 	<!-- ============================================================== -->
 	<!-- MASTER DEPLOY FILE DO NOT EDIT OR INTRODUCE MAY OVERWRITE      -->
 	<!-- In order to customize the deployment process please edit the   -->
@@ -33,7 +33,7 @@
 	</target>
 	
 	
-	<target name="setDeploymentProperties">
+	<target name="setDeploymentProperties" depends="init">
 		<property file="deploy.properties" />
 		<property name="globus.webapp" value="wsrf" />
 		<property name="service.deployment.path" value="${service.deployment.prefix}/${introduce.skeleton.service.name}" />

@@ -17,7 +17,7 @@ import org.globus.wsrf.config.ContainerConfig;
  * This class holds all service properties which were defined for the service to have
  * access to.
  * 
- * @created by Introduce Toolkit version 1.3
+ * @created by Introduce Toolkit version 1.4
  * 
  */
 public class CredentialDelegationServiceConfiguration implements ServiceConfiguration {
