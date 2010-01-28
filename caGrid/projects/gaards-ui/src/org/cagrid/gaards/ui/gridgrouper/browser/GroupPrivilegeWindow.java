@@ -3,6 +3,7 @@ package org.cagrid.gaards.ui.gridgrouper.browser;
 import edu.internet2.middleware.grouper.AccessPrivilege;
 import edu.internet2.middleware.grouper.Privilege;
 import edu.internet2.middleware.subject.Subject;
+import gov.nih.nci.cagrid.common.FaultUtil;
 import gov.nih.nci.cagrid.common.Runner;
 import gov.nih.nci.cagrid.common.Utils;
 import gov.nih.nci.cagrid.gridgrouper.client.Group;
@@ -22,8 +23,8 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.border.TitledBorder;
 
-import org.apache.commons.logging.Log; import org.apache.commons.logging.LogFactory; 
-import org.apache.commons.logging.LogFactory; 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.cagrid.gaards.ui.common.TitlePanel;
 import org.cagrid.gaards.ui.dorian.federation.CommunitySearchDialog;
 import org.cagrid.gaards.ui.gridgrouper.GridGrouperLookAndFeel;
@@ -442,7 +443,7 @@ public class GroupPrivilegeWindow extends ApplicationComponent {
 			GridApplication.getContext().showMessage(sb.toString());
 		} catch (Exception e) {
 			ErrorDialog.showError(e);
-			log.error(e, e);
+			FaultUtil.logFault(log, e);
 		}
 
 	}
@@ -517,7 +518,7 @@ public class GroupPrivilegeWindow extends ApplicationComponent {
 					targetGroup.grantPriv(subj, priv);
 					return "GRANTED " + priv.getName() + " privilege.";
 				} catch (Exception e) {
-					log.error(e, e);
+					FaultUtil.logFault(log, e);
 					throw new Exception("ERROR granting " + priv.getName() + " privilege: " + e.getMessage());
 				}
 
@@ -526,7 +527,7 @@ public class GroupPrivilegeWindow extends ApplicationComponent {
 					targetGroup.revokePriv(subj, priv);
 					return "REVOKED " + priv.getName() + " privilege.";
 				} catch (Exception e) {
-					log.error(e, e);
+					FaultUtil.logFault(log, e);
 					throw new Exception("ERROR revoking " + priv.getName() + " privilege: " + e.getMessage());
 				}
 			}
@@ -536,7 +537,7 @@ public class GroupPrivilegeWindow extends ApplicationComponent {
 					targetGroup.grantPriv(subj, priv);
 					return "GRANTED " + priv.getName() + " privilege.";
 				} catch (Exception e) {
-					log.error(e, e);
+					FaultUtil.logFault(log, e);
 					throw new Exception("ERROR granting " + priv.getName() + " privilege: " + e.getMessage());
 				}
 			}

@@ -1,5 +1,6 @@
 package org.cagrid.gaards.ui.cds;
 
+import gov.nih.nci.cagrid.common.FaultUtil;
 import gov.nih.nci.cagrid.common.Runner;
 
 import java.awt.GridBagConstraints;
@@ -278,7 +279,7 @@ public class DelegateProxyWindowStep2 extends ApplicationComponent {
             getProgressPanel().stopProgress("Error");
             getDelegateCredentialButton().setEnabled(true);
             getCancelButton().setEnabled(true);
-            log.error(e, e);
+            FaultUtil.logFault(log, e);
         }
 
     }

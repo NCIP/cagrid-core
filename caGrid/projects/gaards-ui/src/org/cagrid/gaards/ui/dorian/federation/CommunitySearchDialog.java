@@ -1,5 +1,6 @@
 package org.cagrid.gaards.ui.dorian.federation;
 
+import gov.nih.nci.cagrid.common.FaultUtil;
 import gov.nih.nci.cagrid.common.Runner;
 import gov.nih.nci.cagrid.common.Utils;
 import gov.nih.nci.cagrid.dorian.common.CommonUtils;
@@ -476,7 +477,7 @@ public class CommunitySearchDialog extends JDialog {
         } catch (Exception e) {
             ErrorDialog.showError(e);
             getProgress().stopProgress("Error");
-            log.error(e, e);
+            FaultUtil.logFault(log, e);
         } finally {
             userSearchButton.setEnabled(true);
         }
@@ -531,7 +532,7 @@ public class CommunitySearchDialog extends JDialog {
         } catch (Exception e) {
             ErrorDialog.showError(e);
             getProgress().stopProgress("Error");
-            log.error(e, e);
+            FaultUtil.logFault(log, e);
         } finally {
             hostSearchButton.setEnabled(true);
         }

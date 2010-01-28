@@ -1,5 +1,6 @@
 package org.cagrid.gaards.ui.gts;
 
+import gov.nih.nci.cagrid.common.FaultUtil;
 import gov.nih.nci.cagrid.common.Runner;
 import gov.nih.nci.cagrid.gts.client.GTSAdminClient;
 
@@ -10,8 +11,8 @@ import java.awt.Insets;
 import javax.swing.JButton;
 import javax.swing.JPanel;
 
-import org.apache.commons.logging.Log; import org.apache.commons.logging.LogFactory; 
-import org.apache.commons.logging.LogFactory; 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.cagrid.gaards.ui.common.ProgressPanel;
 import org.cagrid.gaards.ui.common.TitlePanel;
 import org.cagrid.grape.ApplicationComponent;
@@ -169,7 +170,7 @@ public class AddPermissionWindow extends ApplicationComponent {
             getPermissionPanel().enableAll();
             ErrorDialog.showError(e);
             getProgressPanel().stopProgress("Error");
-            log.error(e, e);
+            FaultUtil.logFault(log, e);
         }
 
     }
@@ -193,7 +194,7 @@ public class AddPermissionWindow extends ApplicationComponent {
             permissionPanel.syncWithService(this.session);
         } catch (Exception e) {
             ErrorDialog.showError(e);
-            log.error(e, e);
+            FaultUtil.logFault(log, e);
         }
     }
 

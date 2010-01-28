@@ -1,5 +1,6 @@
 package org.cagrid.gaards.ui.gts;
 
+import gov.nih.nci.cagrid.common.FaultUtil;
 import gov.nih.nci.cagrid.common.Runner;
 import gov.nih.nci.cagrid.gts.bean.AuthorityGTS;
 import gov.nih.nci.cagrid.gts.bean.TimeToLive;
@@ -16,8 +17,8 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
-import org.apache.commons.logging.Log; import org.apache.commons.logging.LogFactory; 
-import org.apache.commons.logging.LogFactory; 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.cagrid.gaards.ui.common.ProgressPanel;
 import org.cagrid.gaards.ui.common.TitlePanel;
 import org.cagrid.grape.ApplicationComponent;
@@ -148,7 +149,7 @@ public class AuthorityWindow extends ApplicationComponent {
         } catch (Exception e) {
             ErrorDialog.showError(e);
             getProgressPanel().stopProgress("Error");
-            log.error(e, e);
+            FaultUtil.logFault(log, e);
         } finally {
             unlockAll();
         }
@@ -299,7 +300,7 @@ public class AuthorityWindow extends ApplicationComponent {
 
         } catch (Exception e) {
             ErrorDialog.showError(e);
-            log.error(e, e);
+            FaultUtil.logFault(log, e);
             getProgressPanel().stopProgress("Error");
         } finally {
             unlockAll();

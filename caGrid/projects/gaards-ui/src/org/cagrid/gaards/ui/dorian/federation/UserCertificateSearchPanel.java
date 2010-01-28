@@ -1,5 +1,6 @@
 package org.cagrid.gaards.ui.dorian.federation;
 
+import gov.nih.nci.cagrid.common.FaultUtil;
 import gov.nih.nci.cagrid.common.Runner;
 import gov.nih.nci.cagrid.common.Utils;
 
@@ -889,7 +890,7 @@ public class UserCertificateSearchPanel extends JPanel implements DorianSessionP
 		} catch (Exception e) {
 			ErrorDialog.showError(e);
 			stopProgess("Error");
-			log.error(e, e);
+			FaultUtil.logFault(log, e);
 		}
 		enableButtons();
 	}
@@ -917,7 +918,7 @@ public class UserCertificateSearchPanel extends JPanel implements DorianSessionP
 		} catch (Exception e) {
 			stopProgess("Error");
 			ErrorDialog.showError(e);
-			log.error(e, e);
+			FaultUtil.logFault(log, e);
 		}
 		enableButtons();
 	}

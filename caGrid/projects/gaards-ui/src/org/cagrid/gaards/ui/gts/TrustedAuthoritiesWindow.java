@@ -1,5 +1,6 @@
 package org.cagrid.gaards.ui.gts;
 
+import gov.nih.nci.cagrid.common.FaultUtil;
 import gov.nih.nci.cagrid.common.Runner;
 import gov.nih.nci.cagrid.common.Utils;
 import gov.nih.nci.cagrid.gts.bean.TrustLevel;
@@ -22,8 +23,8 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 import javax.swing.border.TitledBorder;
 
-import org.apache.commons.logging.Log; import org.apache.commons.logging.LogFactory; 
-import org.apache.commons.logging.LogFactory; 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.cagrid.gaards.ui.common.ProgressPanel;
 import org.cagrid.gaards.ui.common.TitlePanel;
 import org.cagrid.grape.ApplicationComponent;
@@ -177,7 +178,7 @@ public class TrustedAuthoritiesWindow extends ApplicationComponent
             }
             getProgressPanel().stopProgress();
         } catch (Exception e) {
-            log.error(e, e);
+            FaultUtil.logFault(log, e);
             ErrorDialog.showError("Error obtaining the trust levels from " + getSessionPanel().getServiceURI() + ":\n"
                 + e.getMessage());
             getProgressPanel().stopProgress();
@@ -367,7 +368,7 @@ public class TrustedAuthoritiesWindow extends ApplicationComponent
             GridApplication.getContext().addApplicationComponent(window, 800, 600);
         } catch (Exception e) {
             ErrorDialog.showError(e);
-            log.error(e, e);
+            FaultUtil.logFault(log, e);
         }
     }
 
@@ -478,7 +479,7 @@ public class TrustedAuthoritiesWindow extends ApplicationComponent
         } catch (Exception e) {
             ErrorDialog.showError(e);
             this.getProgressPanel().stopProgress("Error");
-            log.error(e, e);
+            FaultUtil.logFault(log, e);
         }
     }
 
@@ -524,7 +525,7 @@ public class TrustedAuthoritiesWindow extends ApplicationComponent
         } catch (Exception e) {
             ErrorDialog.showError(e);
             getProgressPanel().stopProgress("Error");
-            log.error(e, e);
+            FaultUtil.logFault(log, e);
         }
     }
 
@@ -723,7 +724,7 @@ public class TrustedAuthoritiesWindow extends ApplicationComponent
                 new TrustedAuthorityWindow(getSessionPanel().getSession(), this));
         } catch (Exception e) {
             ErrorDialog.showError(e);
-            log.error(e, e);
+            FaultUtil.logFault(log, e);
         }
     }
 

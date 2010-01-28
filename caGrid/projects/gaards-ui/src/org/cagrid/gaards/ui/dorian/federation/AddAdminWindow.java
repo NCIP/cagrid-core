@@ -1,5 +1,6 @@
 package org.cagrid.gaards.ui.dorian.federation;
 
+import gov.nih.nci.cagrid.common.FaultUtil;
 import gov.nih.nci.cagrid.common.Runner;
 
 import java.awt.FlowLayout;
@@ -152,7 +153,7 @@ public class AddAdminWindow extends JDialog {
 		} catch (Exception e) {
 			ErrorDialog.showError(e);
 			addAdminButton.setEnabled(true);
-			log.error(e, e);
+			FaultUtil.logFault(log, e);
 		}
 	}
 

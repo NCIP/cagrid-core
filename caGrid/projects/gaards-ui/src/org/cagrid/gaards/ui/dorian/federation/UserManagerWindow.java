@@ -1,5 +1,6 @@
 package org.cagrid.gaards.ui.dorian.federation;
 
+import gov.nih.nci.cagrid.common.FaultUtil;
 import gov.nih.nci.cagrid.common.Runner;
 
 import java.awt.GridBagConstraints;
@@ -387,7 +388,7 @@ public class UserManagerWindow extends ApplicationComponent {
         } catch (Exception e) {
             ErrorDialog.showError(e);
             getProgressPanel().stopProgress("Error");
-            log.error(e, e);
+            FaultUtil.logFault(log, e);
         } finally {
             enableAllButtons();
         }
@@ -585,7 +586,7 @@ public class UserManagerWindow extends ApplicationComponent {
             getIdp().showPopup();
         } catch (Exception e) {
             ErrorDialog.showError(e);
-            log.error(e, e);
+            FaultUtil.logFault(log, e);
             idpFindError = true;
         } finally {
             getProgressPanel().stopProgress();
@@ -614,13 +615,13 @@ public class UserManagerWindow extends ApplicationComponent {
                 try {
                     GridApplication.getContext().executeInBackground(runner);
                 } catch (Exception t) {
-                	log.error(t, t);
+                	FaultUtil.logFault(log, t);
                 }
 
             }
         } catch (Exception e) {
             ErrorDialog.showError(e);
-            log.error(e, e);
+            FaultUtil.logFault(log, e);
             idpFindError = true;
         }
     }
@@ -740,7 +741,7 @@ public class UserManagerWindow extends ApplicationComponent {
         } catch (Exception e) {
             ErrorDialog.showError(e);
             getProgressPanel().stopProgress("Error");
-            log.error(e, e);
+            FaultUtil.logFault(log, e);
         } finally {
 
             enableAllButtons();

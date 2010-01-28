@@ -1,5 +1,6 @@
 package org.cagrid.gaards.ui.cds;
 
+import gov.nih.nci.cagrid.common.FaultUtil;
 import gov.nih.nci.cagrid.common.Runner;
 
 import java.util.Date;
@@ -131,7 +132,7 @@ public class DelegationRecordsTable extends GrapeBaseTable {
 									getSelectedRecord()), 700, 500);
 				} catch (Exception e) {
 					ErrorDialog.showError(e);
-		            log.error(e, e);
+		            FaultUtil.logFault(log, e);
 				}
 			}
 		};
@@ -139,7 +140,7 @@ public class DelegationRecordsTable extends GrapeBaseTable {
 			GridApplication.getContext().executeInBackground(runner);
 		} catch (Exception t) {
 			t.getMessage();
-            log.error(t, t);
+            FaultUtil.logFault(log, t);
 		}
 
 	}

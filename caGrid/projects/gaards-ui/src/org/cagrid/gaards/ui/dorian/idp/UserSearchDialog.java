@@ -1,5 +1,6 @@
 package org.cagrid.gaards.ui.dorian.idp;
 
+import gov.nih.nci.cagrid.common.FaultUtil;
 import gov.nih.nci.cagrid.common.Runner;
 
 import java.awt.GridBagConstraints;
@@ -411,7 +412,7 @@ public class UserSearchDialog extends JDialog {
         } catch (Exception e) {
             ErrorDialog.showError(e);
             getProgressPanel().stopProgress("Error");
-            log.error(e, e);
+            FaultUtil.logFault(log, e);
         } finally {
             query.setEnabled(true);
         }

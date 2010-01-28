@@ -1,5 +1,6 @@
 package org.cagrid.gaards.ui.dorian.federation;
 
+import gov.nih.nci.cagrid.common.FaultUtil;
 import gov.nih.nci.cagrid.common.Runner;
 import gov.nih.nci.cagrid.common.Utils;
 
@@ -129,7 +130,7 @@ public class HostCertificatesWindow extends ApplicationComponent implements
 					500);
 		} catch (Exception e) {
 			ErrorDialog.showError(e);
-			log.error(e, e);
+			FaultUtil.logFault(log, e);
 		}
 
 	}
@@ -301,7 +302,7 @@ public class HostCertificatesWindow extends ApplicationComponent implements
 								GridApplication.getContext()
 										.executeInBackground(runner);
 							} catch (Exception t) {
-								log.error(t, t);
+								FaultUtil.logFault(log, t);
 							}
 						}
 
@@ -430,7 +431,7 @@ public class HostCertificatesWindow extends ApplicationComponent implements
 		} catch (Exception e) {
 			ErrorDialog.showError(e);
 			getProgressPanel().stopProgress("Error");
-			log.error(e, e);
+			FaultUtil.logFault(log, e);
 		} finally {
 			this.getQuery().setEnabled(true);
 			getViewHostCertificate().setEnabled(true);

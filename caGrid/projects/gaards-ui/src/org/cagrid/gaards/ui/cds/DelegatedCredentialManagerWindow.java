@@ -1,5 +1,6 @@
 package org.cagrid.gaards.ui.cds;
 
+import gov.nih.nci.cagrid.common.FaultUtil;
 import gov.nih.nci.cagrid.common.Runner;
 import gov.nih.nci.cagrid.common.Utils;
 
@@ -400,7 +401,7 @@ public class DelegatedCredentialManagerWindow extends ApplicationComponent {
 		} catch (Exception e) {
 			ErrorDialog.showError(e);
 			getProgressPanel().stopProgress("Error");
-			log.error(e, e);
+			FaultUtil.logFault(log, e);
 		} finally {
 			enableButtons();
 		}
@@ -781,7 +782,7 @@ public class DelegatedCredentialManagerWindow extends ApplicationComponent {
 								.executeInBackground(runner);
 					} catch (Exception t) {
 						t.getMessage();
-						log.error(t, t);
+						FaultUtil.logFault(log, t);
 					}
 
 				}

@@ -1,5 +1,6 @@
 package org.cagrid.gaards.ui.gridgrouper.mygroups;
 
+import gov.nih.nci.cagrid.common.FaultUtil;
 import gov.nih.nci.cagrid.gridgrouper.client.Group;
 
 import java.util.Iterator;
@@ -9,8 +10,8 @@ import java.util.Vector;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumn;
 
-import org.apache.commons.logging.Log; import org.apache.commons.logging.LogFactory; 
-import org.apache.commons.logging.LogFactory; 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.cagrid.grape.GridApplication;
 import org.cagrid.grape.table.GrapeBaseTable;
 import org.cagrid.grape.utils.ErrorDialog;
@@ -87,7 +88,7 @@ public class MyGroupsTable extends GrapeBaseTable {
 					new MyGroupViewer(getSelectedGroup()), 650, 400);
 		} catch (Exception e) {
 			ErrorDialog.showError(e);
-			log.error(e, e);
+			FaultUtil.logFault(log, e);
 		}
 
 	}

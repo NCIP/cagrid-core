@@ -1,5 +1,6 @@
 package org.cagrid.gaards.ui.dorian.federation;
 
+import gov.nih.nci.cagrid.common.FaultUtil;
 import gov.nih.nci.cagrid.common.Runner;
 import gov.nih.nci.cagrid.common.Utils;
 
@@ -342,7 +343,7 @@ public class RequestHostCertificateWindow extends ApplicationComponent {
         	getProgressPanel().stopProgress("Error");
             ErrorDialog.showError(e);
             this.getRequest().setEnabled(true);
-            log.error(e, e);
+            FaultUtil.logFault(log, e);
         }
 
     }

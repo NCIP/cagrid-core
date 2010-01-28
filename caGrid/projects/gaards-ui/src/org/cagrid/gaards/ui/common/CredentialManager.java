@@ -1,5 +1,6 @@
 package org.cagrid.gaards.ui.common;
 
+import gov.nih.nci.cagrid.common.FaultUtil;
 import gov.nih.nci.cagrid.common.Utils;
 
 import java.io.File;
@@ -74,7 +75,7 @@ public class CredentialManager {
 
             } catch (Exception e) {
                 list[i].delete();
-                log.error(e, e);
+                FaultUtil.logFault(log, e);
             }
         }
     }

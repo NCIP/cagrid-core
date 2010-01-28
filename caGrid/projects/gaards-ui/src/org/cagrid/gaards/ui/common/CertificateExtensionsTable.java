@@ -1,5 +1,7 @@
 package org.cagrid.gaards.ui.common;
 
+import gov.nih.nci.cagrid.common.FaultUtil;
+
 import java.security.cert.X509Certificate;
 import java.util.Iterator;
 import java.util.Set;
@@ -68,7 +70,7 @@ public class CertificateExtensionsTable extends GrapeBaseTable {
 				addRow(v);
 
 			} catch (Exception e) {
-				log.error(e, e);
+				FaultUtil.logFault(log, e);
 			}
 		}
 

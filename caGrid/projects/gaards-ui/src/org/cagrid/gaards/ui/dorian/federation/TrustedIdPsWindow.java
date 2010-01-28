@@ -1,5 +1,6 @@
 package org.cagrid.gaards.ui.dorian.federation;
 
+import gov.nih.nci.cagrid.common.FaultUtil;
 import gov.nih.nci.cagrid.common.Runner;
 
 import java.awt.GridBagConstraints;
@@ -268,7 +269,7 @@ public class TrustedIdPsWindow extends ApplicationComponent {
 									getUserPolicies()), 750, 650);
 		} catch (Exception e) {
 			ErrorDialog.showError(e);
-			log.error(e, e);
+			FaultUtil.logFault(log, e);
 		}
 	}
 
@@ -278,7 +279,7 @@ public class TrustedIdPsWindow extends ApplicationComponent {
 					new TrustedIdPWindow(getSession().getSession(), this, getUserPolicies()));
 		} catch (Exception e) {
 			ErrorDialog.showError(e);
-			log.error(e, e);
+			FaultUtil.logFault(log, e);
 		}
 	}
 
@@ -359,7 +360,7 @@ public class TrustedIdPsWindow extends ApplicationComponent {
 		} catch (Exception e) {
 			ErrorDialog.showError(e);
 			getProgressPanel().stopProgress("Error");
-			log.error(e, e);
+			FaultUtil.logFault(log, e);
 		}finally{
 			enableAllButtons();
 		}
@@ -408,7 +409,7 @@ public class TrustedIdPsWindow extends ApplicationComponent {
 			getTrustedIdPTable().removeSelectedTrustedIdP();
 		} catch (Exception e) {
 			ErrorDialog.showError(e);
-			log.error(e, e);
+			FaultUtil.logFault(log, e);
 		}
 	}
 

@@ -1,12 +1,14 @@
 package org.cagrid.gaards.ui.gridgrouper.browser;
 
+import gov.nih.nci.cagrid.common.FaultUtil;
+
 import java.util.Enumeration;
 
 import javax.swing.event.TreeExpansionEvent;
 import javax.swing.event.TreeExpansionListener;
 
-import org.apache.commons.logging.Log; import org.apache.commons.logging.LogFactory; 
-import org.apache.commons.logging.LogFactory; 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.cagrid.gaards.ui.gridgrouper.tree.GridGrouperTree;
 import org.cagrid.gaards.ui.gridgrouper.tree.StemTreeNode;
 import org.cagrid.grape.utils.ErrorDialog;
@@ -48,7 +50,7 @@ public class GridGrouperTreeExpansionListener implements TreeExpansionListener {
 		} catch (Exception e) {
 			ErrorDialog.showError(e);
 			endMessage = "Error loading stem!!!";
-			log.error(e, e);
+			FaultUtil.logFault(log, e);
 		}
 		tree.stopEvent(id, endMessage);
 	}

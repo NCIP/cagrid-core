@@ -1,5 +1,6 @@
 package org.cagrid.gaards.ui.cds;
 
+import gov.nih.nci.cagrid.common.FaultUtil;
 import gov.nih.nci.cagrid.common.Runner;
 import gov.nih.nci.cagrid.common.Utils;
 
@@ -173,7 +174,7 @@ public class AddAdminWindow extends JDialog {
 
         } catch (Exception e) {
             ErrorDialog.showError(e);
-            log.error(e, e);
+            FaultUtil.logFault(log, e);
             getProgressPanel().stopProgress("Error");
         } finally {
             getAddAdminButton().setEnabled(true);

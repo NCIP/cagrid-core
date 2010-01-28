@@ -455,7 +455,7 @@ public class LoginWindow extends ApplicationComponent {
             getProgressPanel().stopProgress("Error");
             ErrorDialog.showError(e);
             getAuthenticateButton().setEnabled(true);
-            log.error(e, e);
+            FaultUtil.logFault(log, e);
         }
 
     }

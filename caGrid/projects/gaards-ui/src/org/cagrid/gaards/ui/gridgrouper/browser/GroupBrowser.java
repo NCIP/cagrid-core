@@ -1,6 +1,7 @@
 package org.cagrid.gaards.ui.gridgrouper.browser;
 
 import edu.internet2.middleware.subject.Subject;
+import gov.nih.nci.cagrid.common.FaultUtil;
 import gov.nih.nci.cagrid.common.Runner;
 import gov.nih.nci.cagrid.gridgrouper.client.Membership;
 import gov.nih.nci.cagrid.gridgrouper.grouper.GroupI;
@@ -26,8 +27,8 @@ import javax.swing.JTabbedPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 
-import org.apache.commons.logging.Log; import org.apache.commons.logging.LogFactory; 
-import org.apache.commons.logging.LogFactory; 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.cagrid.gaards.ui.gridgrouper.tree.GroupTreeNode;
 import org.cagrid.grape.GridApplication;
 import org.cagrid.grape.LookAndFeel;
@@ -928,7 +929,7 @@ public class GroupBrowser extends BaseBrowserPanel {
             stopEvent(eid, "Error listing group members!!!");
             ErrorDialog.showError(e);
             node.refresh();
-            log.error(e, e);
+            FaultUtil.logFault(log, e);
         } finally {
             getListMembers().setEnabled(true);
             getMemberFilter().setEnabled(true);
@@ -1327,7 +1328,7 @@ public class GroupBrowser extends BaseBrowserPanel {
                     try {
                         GridApplication.getContext().executeInBackground(runner);
                     } catch (Exception t) {
-                    	log.error(t, t);;
+                    	FaultUtil.logFault(log, t);;
                     }
                 }
 

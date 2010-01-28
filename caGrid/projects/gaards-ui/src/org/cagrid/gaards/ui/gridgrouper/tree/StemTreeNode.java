@@ -1,6 +1,7 @@
 
 package org.cagrid.gaards.ui.gridgrouper.tree;
 
+import gov.nih.nci.cagrid.common.FaultUtil;
 import gov.nih.nci.cagrid.gridgrouper.client.GridGrouper;
 import gov.nih.nci.cagrid.gridgrouper.client.Group;
 import gov.nih.nci.cagrid.gridgrouper.client.Stem;
@@ -13,8 +14,8 @@ import java.util.Set;
 import javax.swing.ImageIcon;
 import javax.swing.tree.TreeNode;
 
-import org.apache.commons.logging.Log; import org.apache.commons.logging.LogFactory; 
-import org.apache.commons.logging.LogFactory; 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.cagrid.gaards.ui.gridgrouper.GridGrouperLookAndFeel;
 import org.cagrid.grape.utils.ErrorDialog;
 
@@ -102,7 +103,7 @@ public class StemTreeNode extends GridGrouperBaseTreeNode {
 			loadStem();
 			getTree().stopEvent(id, "Refreshed " + toString() + "!!!");
 		} catch (Exception e) {
-			log.error(e, e);
+			FaultUtil.logFault(log, e);
 			getTree().stopEvent(id, "Error refreshing " + toString() + "!!!");
 			ErrorDialog.showError(e);
 		}

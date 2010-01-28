@@ -1,5 +1,7 @@
 package org.cagrid.gaards.ui.dorian.federation;
 
+import gov.nih.nci.cagrid.common.FaultUtil;
+
 import java.security.cert.X509Certificate;
 import java.util.ArrayList;
 import java.util.Date;
@@ -126,7 +128,7 @@ public class UserCertificatesTable extends GrapeBaseTable {
 							getSelectedCertificate()), 650, 550);
 		} catch (Exception e) {
 			ErrorDialog.showError(e);
-			log.error(e, e);
+			FaultUtil.logFault(log, e);
 		}
 	}
 

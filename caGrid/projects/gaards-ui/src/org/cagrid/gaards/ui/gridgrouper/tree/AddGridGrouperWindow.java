@@ -1,5 +1,6 @@
 package org.cagrid.gaards.ui.gridgrouper.tree;
 
+import gov.nih.nci.cagrid.common.FaultUtil;
 import gov.nih.nci.cagrid.common.Runner;
 
 import java.awt.BorderLayout;
@@ -13,8 +14,8 @@ import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
-import org.apache.commons.logging.Log; import org.apache.commons.logging.LogFactory; 
-import org.apache.commons.logging.LogFactory; 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.cagrid.gaards.credentials.X509CredentialEntry;
 import org.cagrid.gaards.ui.common.CredentialComboBox;
 import org.cagrid.gaards.ui.common.TitlePanel;
@@ -248,7 +249,7 @@ public class AddGridGrouperWindow extends ApplicationComponent {
             this.root.addGridGrouper(handle.getClient(cred));
         } catch (Exception e) {
             ErrorDialog.showError(e);
-            log.error(e, e);
+            FaultUtil.logFault(log, e);
         }
 
     }

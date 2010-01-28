@@ -1,7 +1,9 @@
 package org.cagrid.gaards.ui.gridgrouper.browser;
 
-import org.apache.commons.logging.Log; import org.apache.commons.logging.LogFactory; 
-import org.apache.commons.logging.LogFactory; 
+import gov.nih.nci.cagrid.common.FaultUtil;
+
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.cagrid.gaards.ui.gridgrouper.tree.GridGrouperBaseTreeNode;
 import org.cagrid.gaards.ui.gridgrouper.tree.GridGrouperTree;
 import org.cagrid.gaards.ui.gridgrouper.tree.GroupTreeNode;
@@ -41,7 +43,7 @@ public class GroupNodeMenu extends GridGrouperTreeNodeMenu {
 		} catch (Exception e) {
 			getBrowser().getProgress().stopEvent(id, "Error removing the group !!!");
 			ErrorDialog.showError(e);
-			log.error(e, e);
+			FaultUtil.logFault(log, e);
 		}
 	}
 

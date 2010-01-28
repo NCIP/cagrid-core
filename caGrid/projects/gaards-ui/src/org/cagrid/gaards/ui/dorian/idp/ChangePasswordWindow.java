@@ -1,5 +1,6 @@
 package org.cagrid.gaards.ui.dorian.idp;
 
+import gov.nih.nci.cagrid.common.FaultUtil;
 import gov.nih.nci.cagrid.common.Runner;
 
 import java.awt.BorderLayout;
@@ -355,7 +356,7 @@ public class ChangePasswordWindow extends ApplicationComponent {
 					GridApplication.getContext().showMessage("Password successfully changed!!!");
 					dispose();
 				} catch (Exception e) {
-					log.error(e, e);
+					FaultUtil.logFault(log, e);
 					ErrorDialog.showError(e);
 					getResetPassword().setEnabled(true);
 				}

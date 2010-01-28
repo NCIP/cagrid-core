@@ -1,5 +1,6 @@
 package org.cagrid.gaards.ui.dorian.federation;
 
+import gov.nih.nci.cagrid.common.FaultUtil;
 import gov.nih.nci.cagrid.common.Runner;
 import gov.nih.nci.cagrid.common.Utils;
 
@@ -167,7 +168,7 @@ public class HostCertificateWindow extends ApplicationComponent implements Doria
             PublicKey key = KeyUtil.loadPublicKey(record.getPublicKey().getKeyAsString());
             strength.setText(String.valueOf(((RSAPublicKey) key).getModulus().bitLength()));
         } catch (Exception e) {
-            log.error(e, e);
+            FaultUtil.logFault(log, e);
         }
 
         try {
@@ -190,7 +191,7 @@ public class HostCertificateWindow extends ApplicationComponent implements Doria
                 getView().setVisible(false);
             }
         } catch (Exception e) {
-            log.error(e, e);
+            FaultUtil.logFault(log, e);
         }
 
         if (record.getStatus().equals(HostCertificateStatus.Pending) && admin) {
@@ -315,7 +316,7 @@ public class HostCertificateWindow extends ApplicationComponent implements Doria
             ErrorDialog.showError(e);
             getApprove().setEnabled(true);
             getProgressPanel().stopProgress("Error");
-            log.error(e, e);
+            FaultUtil.logFault(log, e);
         }
 
     }
@@ -333,7 +334,7 @@ public class HostCertificateWindow extends ApplicationComponent implements Doria
             ErrorDialog.showError(e);
             getRenew().setEnabled(true);
             getProgressPanel().stopProgress("Error");
-            log.error(e, e);
+            FaultUtil.logFault(log, e);
         }
 
     }
@@ -389,7 +390,7 @@ public class HostCertificateWindow extends ApplicationComponent implements Doria
             ErrorDialog.showError(e);
             getUpdate().setEnabled(true);
             getProgressPanel().stopProgress("Error");
-            log.error(e, e);
+            FaultUtil.logFault(log, e);
         }
 
     }

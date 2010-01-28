@@ -1,5 +1,6 @@
 package org.cagrid.grape;
 
+import gov.nih.nci.cagrid.common.FaultUtil;
 import gov.nih.nci.cagrid.common.Utils;
 
 import java.awt.FlowLayout;
@@ -420,7 +421,7 @@ public class TargetGridServiceEditor extends ConfigurationBasePanel {
 			}
 
 		} catch (Exception e) {
-			log.error(e, e);
+			FaultUtil.logFault(log, e);
 			GridApplication.getContext().showMessage(
 					Utils.getExceptionMessage(e));
 		}

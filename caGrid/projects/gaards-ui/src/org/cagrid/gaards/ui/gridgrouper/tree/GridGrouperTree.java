@@ -1,6 +1,7 @@
 
 package org.cagrid.gaards.ui.gridgrouper.tree;
 
+import gov.nih.nci.cagrid.common.FaultUtil;
 import gov.nih.nci.cagrid.common.Runner;
 import gov.nih.nci.cagrid.gridgrouper.client.GridGrouper;
 
@@ -15,8 +16,8 @@ import javax.swing.tree.TreeNode;
 import javax.swing.tree.TreePath;
 import javax.swing.tree.TreeSelectionModel;
 
-import org.apache.commons.logging.Log; import org.apache.commons.logging.LogFactory; 
-import org.apache.commons.logging.LogFactory; 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.cagrid.grape.GridApplication;
 import org.cagrid.grape.utils.ErrorDialog;
 import org.cagrid.grape.utils.MultiEventProgressBar;
@@ -112,7 +113,7 @@ public class GridGrouperTree extends JTree {
 					rootNode.addGridGrouper(grouper);
 				} catch (Exception e) {
 					ErrorDialog.showError(e);
-					log.error(e, e);
+					FaultUtil.logFault(log, e);
 				}
 			}
 		};

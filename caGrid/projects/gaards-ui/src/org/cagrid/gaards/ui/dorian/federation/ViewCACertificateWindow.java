@@ -1,5 +1,6 @@
 package org.cagrid.gaards.ui.dorian.federation;
 
+import gov.nih.nci.cagrid.common.FaultUtil;
 import gov.nih.nci.cagrid.common.Runner;
 
 import java.awt.BorderLayout;
@@ -201,7 +202,7 @@ public class ViewCACertificateWindow extends ApplicationComponent {
 			GridApplication.getContext().addApplicationComponent(cic, 700, 500);
 		} catch (Exception e) {
 			ErrorDialog.showError(e);
-            log.error(e, e);
+            FaultUtil.logFault(log, e);
 		}
 		getViewCAButton().setEnabled(true);
 	}

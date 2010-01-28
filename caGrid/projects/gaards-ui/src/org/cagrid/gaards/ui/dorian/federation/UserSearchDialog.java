@@ -1,5 +1,6 @@
 package org.cagrid.gaards.ui.dorian.federation;
 
+import gov.nih.nci.cagrid.common.FaultUtil;
 import gov.nih.nci.cagrid.common.Runner;
 
 import java.awt.GridBagConstraints;
@@ -429,7 +430,7 @@ public class UserSearchDialog extends JDialog {
 		} catch (Exception e) {
 			ErrorDialog.showError(e);
 			getProgressPanel().stopProgress("Error");
-			log.error(e, e);
+			FaultUtil.logFault(log, e);
 		} finally {
 			query.setEnabled(true);
 		}
@@ -634,7 +635,7 @@ public class UserSearchDialog extends JDialog {
 		} catch (Exception e) {
 			getProgressPanel().stopProgress("Error");
 			ErrorDialog.showError(e);
-			log.error(e, e);
+			FaultUtil.logFault(log, e);
 		}
 	}
 
@@ -666,7 +667,7 @@ public class UserSearchDialog extends JDialog {
 			}
 		} catch (Exception e) {
 			ErrorDialog.showError(e);
-			log.error(e, e);
+			FaultUtil.logFault(log, e);
 		} finally {
 			query.setEnabled(true);
 		}

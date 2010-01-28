@@ -1,5 +1,6 @@
 package org.cagrid.gaards.ui.gts;
 
+import gov.nih.nci.cagrid.common.FaultUtil;
 import gov.nih.nci.cagrid.common.Runner;
 import gov.nih.nci.cagrid.gts.bean.AuthorityGTS;
 import gov.nih.nci.cagrid.gts.client.GTSAdminClient;
@@ -13,8 +14,8 @@ import javax.swing.JButton;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 
-import org.apache.commons.logging.Log; import org.apache.commons.logging.LogFactory; 
-import org.apache.commons.logging.LogFactory; 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.cagrid.gaards.ui.common.ProgressPanel;
 import org.cagrid.gaards.ui.common.TitlePanel;
 import org.cagrid.grape.ApplicationComponent;
@@ -270,7 +271,7 @@ public class AuthorityManagerWindow extends ApplicationComponent implements Auth
 			GridApplication.getContext().addApplicationComponent(new AuthorityWindow(getSession().getSession(), this), 700, 375);
 		} catch (Exception e) {
 			ErrorDialog.showError(e);
-			log.error(e, e);
+			FaultUtil.logFault(log, e);
 		}
 	}
 
@@ -281,7 +282,7 @@ public class AuthorityManagerWindow extends ApplicationComponent implements Auth
 				new AuthorityWindow(getSession().getSession(), getAuthorityTable().getSelectedAuthority(), this), 700, 375);
 		} catch (Exception e) {
 			ErrorDialog.showError(e);
-			log.error(e, e);
+			FaultUtil.logFault(log, e);
 		}
 	}
 
@@ -350,7 +351,7 @@ public class AuthorityManagerWindow extends ApplicationComponent implements Auth
 
 		} catch (Exception e) {
 			ErrorDialog.showError(e);
-			log.error(e, e);
+			FaultUtil.logFault(log, e);
 			getProgressPanel().stopProgress("Error.");
 		} finally {
 			enableAllActions();
@@ -400,7 +401,7 @@ public class AuthorityManagerWindow extends ApplicationComponent implements Auth
 		} catch (Exception e) {
 			ErrorDialog.showError(e);
 			getProgressPanel().stopProgress("Error");
-			log.error(e, e);
+			FaultUtil.logFault(log, e);
 		}
 	}
 
@@ -416,7 +417,7 @@ public class AuthorityManagerWindow extends ApplicationComponent implements Auth
 		} catch (Exception e) {
 			ErrorDialog.showError(e);
 			getProgressPanel().stopProgress("Error");
-			log.error(e, e);
+			FaultUtil.logFault(log, e);
 		} finally {
 			enableAllActions();
 		}
@@ -472,7 +473,7 @@ public class AuthorityManagerWindow extends ApplicationComponent implements Auth
 						GridApplication.getContext().executeInBackground(runner);
 					} catch (Exception t) {
 						t.getMessage();
-						log.error(t, t);
+						FaultUtil.logFault(log, t);
 					}
 
 				}

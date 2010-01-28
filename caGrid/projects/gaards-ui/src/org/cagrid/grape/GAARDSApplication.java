@@ -1,5 +1,6 @@
 package org.cagrid.grape;
 
+import gov.nih.nci.cagrid.common.FaultUtil;
 import gov.nih.nci.cagrid.common.ThreadManager;
 import gov.nih.nci.cagrid.common.Utils;
 import gov.nih.nci.cagrid.syncgts.bean.SyncDescription;
@@ -92,7 +93,7 @@ public class GAARDSApplication extends GridApplication{
             applicationInstance.gridInitialization();
             applicationInstance.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         } catch (Exception e) {
-            log.error(e, e);
+            FaultUtil.logFault(log, e);
             System.exit(1);
         }
     }
@@ -111,7 +112,7 @@ public class GAARDSApplication extends GridApplication{
 			inputStream.close();
 		} catch (Exception e) {
 			log.error("Failed to load the security configuration");
-			log.error(e, e);
+			FaultUtil.logFault(log, e);
 			System.exit(1);
 		}
 		return app;

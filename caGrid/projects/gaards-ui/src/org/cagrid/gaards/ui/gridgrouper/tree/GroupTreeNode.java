@@ -1,13 +1,14 @@
 
 package org.cagrid.gaards.ui.gridgrouper.tree;
 
+import gov.nih.nci.cagrid.common.FaultUtil;
 import gov.nih.nci.cagrid.gridgrouper.client.GridGrouper;
 import gov.nih.nci.cagrid.gridgrouper.client.Group;
 
 import javax.swing.ImageIcon;
 
-import org.apache.commons.logging.Log; import org.apache.commons.logging.LogFactory; 
-import org.apache.commons.logging.LogFactory; 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.cagrid.gaards.ui.gridgrouper.GridGrouperLookAndFeel;
 import org.cagrid.grape.utils.ErrorDialog;
 
@@ -44,7 +45,7 @@ public class GroupTreeNode extends GridGrouperBaseTreeNode {
 		} catch (Exception e) {
 			getTree().stopEvent(id, "Error refreshing " + toString() + "!!!");
 			ErrorDialog.showError(e);
-			log.error(e, e);
+			FaultUtil.logFault(log, e);
 		}
 	}
 

@@ -1,9 +1,11 @@
 package org.cagrid.gaards.ui.gridgrouper.browser;
 
+import gov.nih.nci.cagrid.common.FaultUtil;
+
 import javax.swing.JMenuItem;
 
-import org.apache.commons.logging.Log; import org.apache.commons.logging.LogFactory; 
-import org.apache.commons.logging.LogFactory; 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.cagrid.gaards.ui.gridgrouper.GridGrouperLookAndFeel;
 import org.cagrid.gaards.ui.gridgrouper.tree.AddGroupWindow;
 import org.cagrid.gaards.ui.gridgrouper.tree.AddStemWindow;
@@ -70,7 +72,7 @@ public class StemNodeMenu extends GridGrouperTreeNodeMenu {
         } catch (Exception e) {
             getBrowser().getProgress().stopEvent(id, "Error removing the stem !!!");
             ErrorDialog.showError(e);
-            log.error(e, e);
+            FaultUtil.logFault(log, e);
         }
     }
 

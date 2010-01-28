@@ -1,5 +1,6 @@
 package org.cagrid.grape;
 
+import gov.nih.nci.cagrid.common.FaultUtil;
 import gov.nih.nci.cagrid.common.Utils;
 
 import java.io.File;
@@ -203,7 +204,7 @@ public class TargetGridsManager {
 					confFiles[i].delete();
 				}
 			} catch (Exception e) {
-				log.error(e, e);
+				FaultUtil.logFault(log, e);
 			}
 		}
 	}

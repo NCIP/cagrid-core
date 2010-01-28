@@ -1,5 +1,6 @@
 package org.cagrid.grape;
 
+import gov.nih.nci.cagrid.common.FaultUtil;
 import gov.nih.nci.cagrid.common.Utils;
 import gov.nih.nci.cagrid.syncgts.bean.SyncDescription;
 import gov.nih.nci.cagrid.syncgts.core.SyncGTS;
@@ -126,7 +127,7 @@ public class TargetGridDisplayPanel extends JPanel {
 			GAARDSApplication.setTargetGrid(grid.getSystemName());
 		} catch (Exception e) {
 			ErrorDialog.showError(e);
-			log.error(e, e);
+			FaultUtil.logFault(log, e);
 		}
 	}
 

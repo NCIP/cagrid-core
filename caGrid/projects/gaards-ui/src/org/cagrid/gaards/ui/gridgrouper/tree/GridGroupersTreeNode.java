@@ -1,6 +1,7 @@
 
 package org.cagrid.gaards.ui.gridgrouper.tree;
 
+import gov.nih.nci.cagrid.common.FaultUtil;
 import gov.nih.nci.cagrid.common.Runner;
 import gov.nih.nci.cagrid.gridgrouper.client.GridGrouper;
 import gov.nih.nci.cagrid.gridgrouper.client.Stem;
@@ -12,8 +13,8 @@ import java.util.Map;
 
 import javax.swing.ImageIcon;
 
-import org.apache.commons.logging.Log; import org.apache.commons.logging.LogFactory; 
-import org.apache.commons.logging.LogFactory; 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.cagrid.gaards.ui.gridgrouper.GridGrouperLookAndFeel;
 import org.cagrid.grape.GridApplication;
 import org.cagrid.grape.utils.ErrorDialog;
@@ -58,7 +59,7 @@ public class GridGroupersTreeNode extends GridGrouperBaseTreeNode {
 				ErrorDialog.showError(e);
 				getTree()
 						.stopEvent(id, "Error loading Grid Grouper Service!!!");
-				log.error(e, e);
+				FaultUtil.logFault(log, e);
 			}
 
 		}

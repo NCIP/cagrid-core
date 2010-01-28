@@ -1,5 +1,6 @@
 package org.cagrid.gaards.ui.cds;
 
+import gov.nih.nci.cagrid.common.FaultUtil;
 import gov.nih.nci.cagrid.common.Runner;
 
 import java.security.cert.X509Certificate;
@@ -84,7 +85,7 @@ public class CertificateChainTable extends GrapeBaseTable {
 									getSelectedRecord()));
 				} catch (Exception e) {
 					ErrorDialog.showError(e);
-					log.error(e, e);
+					FaultUtil.logFault(log, e);
 				}
 			}
 		};

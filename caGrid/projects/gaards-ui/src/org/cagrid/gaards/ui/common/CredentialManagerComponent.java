@@ -1,5 +1,6 @@
 package org.cagrid.gaards.ui.common;
 
+import gov.nih.nci.cagrid.common.FaultUtil;
 import gov.nih.nci.cagrid.common.security.ProxyUtil;
 
 import java.awt.GridBagConstraints;
@@ -65,7 +66,7 @@ public class CredentialManagerComponent extends ApplicationComponent {
                 proxyInfoPanel.showCredential(cred.getCredential());
             }
         } catch (Exception e) {
-        	log.error(e, e);
+        	FaultUtil.logFault(log, e);
         }
 
     }

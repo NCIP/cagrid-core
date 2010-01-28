@@ -1,5 +1,7 @@
 package org.cagrid.gaards.ui.common;
 
+import gov.nih.nci.cagrid.common.FaultUtil;
+
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
@@ -48,7 +50,7 @@ public abstract class AxisTypeComboBox extends JComboBox {
 					Object o = fields[i].get(null);
 					list.add(o);
 				} catch (Exception e) {
-					log.error(e, e);
+					FaultUtil.logFault(log, e);
 				}
 			}
 		}

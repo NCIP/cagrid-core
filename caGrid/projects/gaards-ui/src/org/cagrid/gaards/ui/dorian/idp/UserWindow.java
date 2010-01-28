@@ -1,5 +1,6 @@
 package org.cagrid.gaards.ui.dorian.idp;
 
+import gov.nih.nci.cagrid.common.FaultUtil;
 import gov.nih.nci.cagrid.common.Runner;
 
 import java.awt.BorderLayout;
@@ -365,7 +366,7 @@ public class UserWindow extends ApplicationComponent {
         } catch (Exception e) {
             ErrorDialog.showError(e);
             getProgressPanel().stopProgress("Error.");
-            log.error(e, e);
+            FaultUtil.logFault(log, e);
         }
         enableAllButtons();
     }

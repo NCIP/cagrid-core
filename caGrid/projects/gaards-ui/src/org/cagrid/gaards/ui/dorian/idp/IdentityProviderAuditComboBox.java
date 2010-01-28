@@ -1,5 +1,7 @@
 package org.cagrid.gaards.ui.dorian.idp;
 
+import gov.nih.nci.cagrid.common.FaultUtil;
+
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
@@ -37,7 +39,7 @@ public class IdentityProviderAuditComboBox extends JComboBox {
                     IdentityProviderAudit o = (IdentityProviderAudit) fields[i].get(null);
                     list.add(o);
                 } catch (Exception e) {
-                    log.error(e, e);
+                    FaultUtil.logFault(log, e);
                 }
             }
         }

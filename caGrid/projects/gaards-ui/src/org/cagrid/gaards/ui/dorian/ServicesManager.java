@@ -1,5 +1,6 @@
 package org.cagrid.gaards.ui.dorian;
 
+import gov.nih.nci.cagrid.common.FaultUtil;
 import gov.nih.nci.cagrid.common.Runner;
 import gov.nih.nci.cagrid.common.RunnerGroup;
 
@@ -96,7 +97,7 @@ public class ServicesManager extends Runner {
                             dorians.add(handle);
                             group.add(new AuthenticationLookupThread(handle));
                         } catch (Exception e) {
-                            log.error(e);
+                            FaultUtil.logFault(log, e);
                         }
                     }
                     GAARDSApplication.getContext().getApplication().getThreadManager().executeGroup(group);

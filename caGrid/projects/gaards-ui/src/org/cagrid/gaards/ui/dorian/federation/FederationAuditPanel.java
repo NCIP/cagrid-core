@@ -1,5 +1,6 @@
 package org.cagrid.gaards.ui.dorian.federation;
 
+import gov.nih.nci.cagrid.common.FaultUtil;
 import gov.nih.nci.cagrid.common.Runner;
 import gov.nih.nci.cagrid.common.Utils;
 
@@ -227,7 +228,7 @@ public class FederationAuditPanel extends JPanel {
                         FederationAudit o = (FederationAudit) fields[i].get(null);
                         this.auditTypes.add(o);
                     } catch (Exception e) {
-                        log.error(e, e);
+                        FaultUtil.logFault(log, e);
                     }
                 }
             }

@@ -1,5 +1,6 @@
 package org.cagrid.gaards.ui.dorian.idp;
 
+import gov.nih.nci.cagrid.common.FaultUtil;
 import gov.nih.nci.cagrid.common.Runner;
 
 import java.awt.BorderLayout;
@@ -750,7 +751,7 @@ public class ApplicationWindow extends ApplicationComponent {
         try {
             GridApplication.getContext().executeInBackground(runner);
         } catch (Exception t) {
-            log.error(t, t);
+            FaultUtil.logFault(log, t);
             getProgressPanel().stopProgress("Error");
             getApplyButton().setEnabled(true);
         }

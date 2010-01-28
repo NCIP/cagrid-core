@@ -1,5 +1,6 @@
 package org.cagrid.gaards.ui.cds;
 
+import gov.nih.nci.cagrid.common.FaultUtil;
 import gov.nih.nci.cagrid.common.Runner;
 
 import java.awt.GridBagConstraints;
@@ -228,7 +229,7 @@ public class AdministratorsWindow extends ApplicationComponent {
             }
         } catch (Exception e) {
             ErrorDialog.showError(e);
-            log.error(e, e);
+            FaultUtil.logFault(log, e);
         }
     }
 
@@ -325,7 +326,7 @@ public class AdministratorsWindow extends ApplicationComponent {
             getProgressPanel().stopProgress("Error");
         } catch (Exception e) {
             ErrorDialog.showError(e);
-            log.error(e, e);
+            FaultUtil.logFault(log, e);
             getProgressPanel().stopProgress("Error");
         } finally {
             enableButtons();
@@ -384,7 +385,7 @@ public class AdministratorsWindow extends ApplicationComponent {
             getProgressPanel().stopProgress("Administrator successfully removed.");
         } catch (Exception e) {
             getProgressPanel().stopProgress("Error");
-            log.error(e, e);
+            FaultUtil.logFault(log, e);
             ErrorDialog.showError(e);
         }finally{
             enableButtons();
@@ -412,7 +413,7 @@ public class AdministratorsWindow extends ApplicationComponent {
                         GridApplication.getContext().executeInBackground(runner);
                     } catch (Exception t) {
                         t.getMessage();
-                        log.error(t, t);
+                        FaultUtil.logFault(log, t);
                     }
 
                 }

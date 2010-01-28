@@ -1,5 +1,7 @@
 package org.cagrid.gaards.ui.dorian.federation;
 
+import gov.nih.nci.cagrid.common.FaultUtil;
+
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
@@ -37,7 +39,7 @@ public class FederationAuditComboBox extends JComboBox {
 							.get(null);
 					list.add(o);
 				} catch (Exception e) {
-					log.error(e, e);
+					FaultUtil.logFault(log, e);
 				}
 			}
 		}

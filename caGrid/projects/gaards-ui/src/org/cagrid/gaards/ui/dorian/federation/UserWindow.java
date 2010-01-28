@@ -1,5 +1,6 @@
 package org.cagrid.gaards.ui.dorian.federation;
 
+import gov.nih.nci.cagrid.common.FaultUtil;
 import gov.nih.nci.cagrid.common.Runner;
 
 import java.awt.BorderLayout;
@@ -253,7 +254,7 @@ public class UserWindow extends ApplicationComponent implements
 		} catch (Exception e) {
 			ErrorDialog.showError(e);
 			this.getProgressPanel().stopProgress("Error");
-			log.error(e, e);
+			FaultUtil.logFault(log, e);
 		} finally {
 			updateUser.setEnabled(true);
 			
@@ -750,7 +751,7 @@ public class UserWindow extends ApplicationComponent implements
 		} catch (Exception e) {
 			ErrorDialog.showError(e);
 			getProgressPanel().stopProgress("Error");
-			log.error(e, e);
+			FaultUtil.logFault(log, e);
 		} finally {
 			getFindHostCertificates().setEnabled(true);
 			getViewHostCertificate().setEnabled(true);
@@ -791,7 +792,7 @@ public class UserWindow extends ApplicationComponent implements
 					500);
 		} catch (Exception e) {
 			ErrorDialog.showError(e);
-			log.error(e, e);
+			FaultUtil.logFault(log, e);
 		}
 
 	}

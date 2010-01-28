@@ -1,6 +1,7 @@
 package org.cagrid.gaards.ui.gridgrouper.browser;
 
 import edu.internet2.middleware.grouper.CompositeType;
+import gov.nih.nci.cagrid.common.FaultUtil;
 import gov.nih.nci.cagrid.common.Runner;
 import gov.nih.nci.cagrid.common.Utils;
 import gov.nih.nci.cagrid.gridgrouper.common.SubjectUtils;
@@ -23,8 +24,8 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.border.TitledBorder;
 
-import org.apache.commons.logging.Log; import org.apache.commons.logging.LogFactory; 
-import org.apache.commons.logging.LogFactory; 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.cagrid.gaards.ui.common.TitlePanel;
 import org.cagrid.gaards.ui.dorian.federation.CommunitySearchDialog;
 import org.cagrid.gaards.ui.gridgrouper.GridGrouperLookAndFeel;
@@ -394,7 +395,7 @@ public class AddMemberWindow extends ApplicationComponent {
 					try {
 						GridApplication.getContext().executeInBackground(runner);
 					} catch (Exception t) {
-						log.error(t, t);
+						FaultUtil.logFault(log, t);
 					}
 				}
 
@@ -421,7 +422,7 @@ public class AddMemberWindow extends ApplicationComponent {
 
 					GridApplication.getContext().showMessage("The member was added successfully!!!");
 				} catch (Exception e) {
-					log.error(e, e);
+					FaultUtil.logFault(log, e);
 					ErrorDialog.showError(e);
 					return;
 				}
@@ -437,7 +438,7 @@ public class AddMemberWindow extends ApplicationComponent {
 				GridApplication.getContext().showMessage("The group member was added successfully!!!");
 			} catch (Exception e) {
 				ErrorDialog.showError(e);
-				log.error(e, e);
+				FaultUtil.logFault(log, e);
 				return;
 			}
 
@@ -456,7 +457,7 @@ public class AddMemberWindow extends ApplicationComponent {
 				GridApplication.getContext().showMessage("The composite member was added successfully!!!");
 			} catch (Exception e) {
 				ErrorDialog.showError(e);
-				log.error(e, e);
+				FaultUtil.logFault(log, e);
 				return;
 			}
 

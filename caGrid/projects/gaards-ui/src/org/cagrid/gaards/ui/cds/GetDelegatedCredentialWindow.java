@@ -1,5 +1,6 @@
 package org.cagrid.gaards.ui.cds;
 
+import gov.nih.nci.cagrid.common.FaultUtil;
 import gov.nih.nci.cagrid.common.Runner;
 import gov.nih.nci.cagrid.common.RunnerGroup;
 import gov.nih.nci.cagrid.common.security.ProxyUtil;
@@ -359,7 +360,7 @@ public class GetDelegatedCredentialWindow extends ApplicationComponent {
         } catch (Exception e) {
             getGetButton().setEnabled(true);
             ErrorDialog.showError(e);
-            log.error(e, e);
+            FaultUtil.logFault(log, e);
         }
 
     }

@@ -1,6 +1,7 @@
 package org.cagrid.gaards.ui.gridgrouper.browser;
 
 import edu.internet2.middleware.subject.Subject;
+import gov.nih.nci.cagrid.common.FaultUtil;
 import gov.nih.nci.cagrid.common.Runner;
 import gov.nih.nci.cagrid.common.Utils;
 import gov.nih.nci.cagrid.gridgrouper.grouper.StemI;
@@ -24,8 +25,8 @@ import javax.swing.JTabbedPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 
-import org.apache.commons.logging.Log; import org.apache.commons.logging.LogFactory; 
-import org.apache.commons.logging.LogFactory; 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.cagrid.gaards.ui.gridgrouper.tree.GridGrouperBaseTreeNode;
 import org.cagrid.gaards.ui.gridgrouper.tree.GroupTreeNode;
 import org.cagrid.gaards.ui.gridgrouper.tree.StemTreeNode;
@@ -728,7 +729,7 @@ public class StemBrowser extends BaseBrowserPanel {
             ErrorDialog.showError(e);
             node.refresh();
             this.monitorUpdate();
-            log.error(e, e);
+            FaultUtil.logFault(log, e);
         }
     }
 
@@ -872,7 +873,7 @@ public class StemBrowser extends BaseBrowserPanel {
                     } catch (Exception e) {
                         stopEvent(eid, "Error loading the privileges for " + stem.getDisplayExtension() + "!!!");
                         ErrorDialog.showError(e);
-                        log.error(e, e);
+                        FaultUtil.logFault(log, e);
                     }
                 }
             }
@@ -880,7 +881,7 @@ public class StemBrowser extends BaseBrowserPanel {
         try {
             GridApplication.getContext().executeInBackground(runner);
         } catch (Exception t) {
-        	log.error(t, t);
+        	FaultUtil.logFault(log, t);
         }
     }
 
@@ -910,7 +911,7 @@ public class StemBrowser extends BaseBrowserPanel {
                         GridApplication.getContext().executeInBackground(runner);
                     } catch (Exception t) {
                         t.getMessage();
-                        log.error(t, t);
+                        FaultUtil.logFault(log, t);
                     }
                 }
 
@@ -1582,7 +1583,7 @@ public class StemBrowser extends BaseBrowserPanel {
                     try {
                         GridApplication.getContext().executeInBackground(runner);
                     } catch (Exception t) {
-                    	log.error(t, t);
+                    	FaultUtil.logFault(log, t);
                     }
                 }
 

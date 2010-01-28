@@ -1,5 +1,6 @@
 package org.cagrid.gaards.ui.cds;
 
+import gov.nih.nci.cagrid.common.FaultUtil;
 import gov.nih.nci.cagrid.common.Runner;
 
 import java.awt.GridBagConstraints;
@@ -382,7 +383,7 @@ public class DelegateProxyWindowStep1 extends ApplicationComponent implements Pr
             dispose();
         } catch (Exception e) {
             ErrorDialog.showError(e);
-            log.error(e, e);
+            FaultUtil.logFault(log, e);
         }
 
     }
@@ -449,7 +450,7 @@ public class DelegateProxyWindowStep1 extends ApplicationComponent implements Pr
             maxPathLength = getDelegationPathLength(certs[0]);
             lifetimeSeconds = cred.getTimeLeft() - SECONDS_OFFSET;
         } catch (Exception e) {
-            log.error(e, e);
+            FaultUtil.logFault(log, e);
         }
         if (maxPathLength < 0) {
             maxPathLength = 0;

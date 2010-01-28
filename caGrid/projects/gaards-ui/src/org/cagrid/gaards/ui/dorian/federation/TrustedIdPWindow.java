@@ -748,7 +748,7 @@ public class TrustedIdPWindow extends ApplicationComponent implements DorianSess
                 }
 
             } catch (Exception e) {
-                log.error(e, e);
+                FaultUtil.logFault(log, e);
             }
         }
         return credPanel;

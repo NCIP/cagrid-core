@@ -1,5 +1,6 @@
 package org.cagrid.gaards.ui.dorian.idp;
 
+import gov.nih.nci.cagrid.common.FaultUtil;
 import gov.nih.nci.cagrid.common.Runner;
 import gov.nih.nci.cagrid.common.security.ProxyUtil;
 
@@ -142,7 +143,7 @@ public class AccountProfileWindow extends ApplicationComponent {
             }
         } catch (Exception e) {
             ErrorDialog.showError(e);
-            log.error(e, e);
+            FaultUtil.logFault(log, e);
             dispose();
         }
         initialize();
@@ -314,7 +315,7 @@ public class AccountProfileWindow extends ApplicationComponent {
             getProgressPanel().stopProgress("Error.");
         } catch (Exception e) {
             ErrorDialog.showError(e);
-            log.error(e, e);
+            FaultUtil.logFault(log, e);
             getProgressPanel().stopProgress("Error.");
         }
         setActiveComponents(true);
