@@ -28,11 +28,11 @@ import org.cagrid.grape.model.RenderOptions;
  */
 public class MDIDesktopPane extends JDesktopPane {
     private static int FRAME_OFFSET = 20;
-    private MDIDesktopManager manager;
+    private GrapeMDIDesktopManager manager;
 
 
     public MDIDesktopPane() {
-        manager = new MDIDesktopManager(this);
+        manager = new GrapeMDIDesktopManager(this);
         setDesktopManager(manager);
         setDragMode(JDesktopPane.OUTLINE_DRAG_MODE);
     }
