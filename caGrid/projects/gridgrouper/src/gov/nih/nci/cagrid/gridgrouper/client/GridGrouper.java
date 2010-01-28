@@ -13,7 +13,6 @@ import gov.nih.nci.cagrid.gridgrouper.bean.MembershipExpression;
 import gov.nih.nci.cagrid.gridgrouper.bean.MembershipType;
 import gov.nih.nci.cagrid.gridgrouper.bean.StemDescriptor;
 import gov.nih.nci.cagrid.gridgrouper.bean.StemIdentifier;
-import gov.nih.nci.cagrid.gridgrouper.client.GridGrouperClient;
 import gov.nih.nci.cagrid.gridgrouper.grouper.GroupI;
 import gov.nih.nci.cagrid.gridgrouper.grouper.GrouperI;
 import gov.nih.nci.cagrid.gridgrouper.grouper.MemberI;

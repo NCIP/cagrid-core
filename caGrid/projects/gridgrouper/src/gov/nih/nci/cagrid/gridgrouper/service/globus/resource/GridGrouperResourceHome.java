@@ -23,7 +23,7 @@ import org.globus.wsrf.jndi.Initializable;
  * This class implements the resource home for the resource type represented
  * by this service.
  * 
- * @created by Introduce Toolkit version 1.3
+ * @created by Introduce Toolkit version 1.4
  * 
  */
 public class GridGrouperResourceHome extends SingletonResourceHomeImpl implements Initializable {

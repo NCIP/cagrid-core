@@ -17,7 +17,7 @@ import org.globus.gsi.GlobusCredential;
  * contact the remote service and retrieve it's security metadata description
  * which it will use to configure the Stub specifically for each method call.
  * 
- * @created by Introduce Toolkit version 1.3
+ * @created by Introduce Toolkit version 1.4
  */
 public class GridGrouperClient extends GridGrouperClientBase implements GridGrouperI {
 
