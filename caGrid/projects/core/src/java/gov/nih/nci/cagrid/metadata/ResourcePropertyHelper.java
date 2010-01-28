@@ -67,7 +67,7 @@ public class ResourcePropertyHelper {
 
     public static MessageElement[] queryResourceProperties(EndpointReferenceType endpoint, String queryExpression,
         InputStream wsdd) throws RemoteResourcePropertyRetrievalException, QueryInvalidException {
-        return queryResourceProperties(endpoint, queryExpression, null, null);
+        return queryResourceProperties(endpoint, queryExpression, wsdd, null);
     }
 
 
@@ -123,7 +123,7 @@ public class ResourcePropertyHelper {
 
     public static Element getResourceProperties(EndpointReferenceType endpoint, InputStream wsdd)
         throws ResourcePropertyRetrievalException, RemoteResourcePropertyRetrievalException, QueryInvalidException {
-        return getResourceProperties(endpoint, (InputStream) null, null);
+        return getResourceProperties(endpoint, (InputStream) wsdd, null);
 
     }
 
@@ -197,7 +197,7 @@ public class ResourcePropertyHelper {
     public static Element getResourceProperty(EndpointReferenceType endpoint, QName rpName, InputStream wsdd)
         throws ResourcePropertyRetrievalException, RemoteResourcePropertyRetrievalException,
         InvalidResourcePropertyException {
-        return getResourceProperty(endpoint, rpName, null, null);
+        return getResourceProperty(endpoint, rpName, wsdd, null);
 
     }
 
@@ -259,7 +259,7 @@ public class ResourcePropertyHelper {
 
     public static Element[] getResourceProperties(EndpointReferenceType endpoint, QName[] rpNames, InputStream wsdd)
         throws ResourcePropertyRetrievalException {
-        return getResourceProperties(endpoint, rpNames, null, null);
+        return getResourceProperties(endpoint, rpNames, wsdd, null);
 
     }
 
