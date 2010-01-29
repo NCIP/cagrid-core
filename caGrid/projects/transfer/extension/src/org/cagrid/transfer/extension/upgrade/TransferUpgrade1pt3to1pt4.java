@@ -49,6 +49,7 @@ public class TransferUpgrade1pt3to1pt4 extends ExtensionUpgraderBase {
     protected void upgrade() throws Exception {
         upgradeJars();
         upgradeSchemas();
+        getStatus().addIssue(TransferCallbackUpgradeNotes.ISSUE, TransferCallbackUpgradeNotes.RESOLUTION);
         getStatus().setStatus(StatusBase.UPGRADE_OK);
     }
     
