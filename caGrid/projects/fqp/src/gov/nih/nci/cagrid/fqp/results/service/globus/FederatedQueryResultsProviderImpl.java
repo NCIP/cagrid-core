@@ -26,12 +26,6 @@ public class FederatedQueryResultsProviderImpl{
 	}
 	
 
-    public gov.nih.nci.cagrid.fqp.results.stubs.GetExecutionStatusResponse getExecutionStatus(gov.nih.nci.cagrid.fqp.results.stubs.GetExecutionStatusRequest params) throws RemoteException {
-    gov.nih.nci.cagrid.fqp.results.stubs.GetExecutionStatusResponse boxedResult = new gov.nih.nci.cagrid.fqp.results.stubs.GetExecutionStatusResponse();
-    boxedResult.setFederatedQueryExecutionStatus(impl.getExecutionStatus());
-    return boxedResult;
-  }
-
     public gov.nih.nci.cagrid.fqp.results.stubs.GetResultsResponse getResults(gov.nih.nci.cagrid.fqp.results.stubs.GetResultsRequest params) throws RemoteException, gov.nih.nci.cagrid.fqp.results.stubs.types.ProcessingNotCompleteFault, gov.nih.nci.cagrid.fqp.stubs.types.FederatedQueryProcessingFault, gov.nih.nci.cagrid.fqp.results.stubs.types.InternalErrorFault {
     gov.nih.nci.cagrid.fqp.results.stubs.GetResultsResponse boxedResult = new gov.nih.nci.cagrid.fqp.results.stubs.GetResultsResponse();
     boxedResult.setDCQLQueryResultsCollection(impl.getResults());
@@ -59,6 +53,12 @@ public class FederatedQueryResultsProviderImpl{
     public gov.nih.nci.cagrid.fqp.results.stubs.TransferResponse transfer(gov.nih.nci.cagrid.fqp.results.stubs.TransferRequest params) throws RemoteException, gov.nih.nci.cagrid.fqp.stubs.types.FederatedQueryProcessingFault, gov.nih.nci.cagrid.fqp.results.stubs.types.ProcessingNotCompleteFault, gov.nih.nci.cagrid.fqp.results.stubs.types.InternalErrorFault {
     gov.nih.nci.cagrid.fqp.results.stubs.TransferResponse boxedResult = new gov.nih.nci.cagrid.fqp.results.stubs.TransferResponse();
     boxedResult.setTransferServiceContextReference(impl.transfer());
+    return boxedResult;
+  }
+
+    public gov.nih.nci.cagrid.fqp.results.stubs.GetExecutionStatusResponse getExecutionStatus(gov.nih.nci.cagrid.fqp.results.stubs.GetExecutionStatusRequest params) throws RemoteException {
+    gov.nih.nci.cagrid.fqp.results.stubs.GetExecutionStatusResponse boxedResult = new gov.nih.nci.cagrid.fqp.results.stubs.GetExecutionStatusResponse();
+    boxedResult.setFederatedQueryExecutionStatus(impl.getExecutionStatus());
     return boxedResult;
   }
 

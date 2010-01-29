@@ -1,10 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<definitions xmlns="http://schemas.xmlsoap.org/wsdl/" xmlns:tns="http://fqp.cagrid.nci.nih.gov/FederatedResults" xmlns:wsrp="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ResourceProperties-1.2-draft-01.xsd" xmlns:wsrlw="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ResourceLifetime-1.2-draft-01.wsdl" xmlns:wsdlpp="http://www.globus.org/namespaces/2004/10/WSDLPreprocessor" xmlns:gtwsdl1="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ServiceGroup-1.2-draft-01.wsdl" xmlns:wsa="http://schemas.xmlsoap.org/ws/2004/03/addressing" xmlns:wsntw="http://docs.oasis-open.org/wsn/2004/06/wsn-WS-BaseNotification-1.2-draft-01.wsdl" xmlns:wsrbfw="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-BaseFaults-1.2-draft-01.wsdl" xmlns:wsrpw="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ResourceProperties-1.2-draft-01.wsdl" xmlns:wns1="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ResourceLifetime-1.2-draft-01.wsdl" xmlns:wns3="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ResourceProperties-1.2-draft-01.wsdl" xmlns:wns0="http://security.introduce.cagrid.nci.nih.gov/ServiceSecurity" xmlns:wns2="http://docs.oasis-open.org/wsn/2004/06/wsn-WS-BaseNotification-1.2-draft-01.wsdl" xmlns:ns2="http://CQL.caBIG/1/gov.nih.nci.cagrid.CQLQuery" xmlns:ns16="http://fqp.cagrid.nci.nih.gov/FederatedResults/types" xmlns:ns13="http://schemas.xmlsoap.org/ws/2004/08/addressing" xmlns:ns9="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata" xmlns:ns11="http://transfer.cagrid.org/Transfer" xmlns:ns14="http://gov.nih.nci.cagrid.enumeration/EnumerationResponseContainer" xmlns:ns7="http://fqp.cagrid.nci.nih.gov/FederatedQueryProcessor/types" xmlns:ns3="http://caGrid.caBIG/1.0/gov.nih.nci.cagrid.dcql" xmlns:ns6="http://cds.gaards.cagrid.org/CredentialDelegationService/DelegatedCredential/types" xmlns:ns12="http://schemas.xmlsoap.org/ws/2004/09/enumeration" xmlns:ns8="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.security" xmlns:ns5="http://caGrid.caBIG/1.0/gov.nih.nci.cagrid.dcqlresult" xmlns:ns10="http://transfer.cagrid.org/TransferService/Context/types" xmlns:ns4="http://CQL.caBIG/1/gov.nih.nci.cagrid.CQLResultSet" xmlns:ns15="http://gov.nih.nci.cagrid.enumeration/CaGridEnumeration/types" xmlns:ns0="http://fqp.cagrid.nci.nih.gov/FederatedQueryResultsMetadata" xmlns:ns17="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ResourceLifetime-1.2-draft-01.xsd" xmlns:ns1="http://fqp.cagrid.nci.nih.gov/QueryExecutionParameters" name="FederatedQueryResults" targetNamespace="http://fqp.cagrid.nci.nih.gov/FederatedResults">
+<definitions xmlns="http://schemas.xmlsoap.org/wsdl/" xmlns:tns="http://fqp.cagrid.nci.nih.gov/FederatedResults" xmlns:wsrp="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ResourceProperties-1.2-draft-01.xsd" xmlns:wsa="http://schemas.xmlsoap.org/ws/2004/03/addressing" xmlns:wsrbfw="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-BaseFaults-1.2-draft-01.wsdl" xmlns:wsrpw="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ResourceProperties-1.2-draft-01.wsdl" xmlns:wns1="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ResourceLifetime-1.2-draft-01.wsdl" xmlns:wns3="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ResourceProperties-1.2-draft-01.wsdl" xmlns:wns0="http://security.introduce.cagrid.nci.nih.gov/ServiceSecurity" xmlns:wns2="http://docs.oasis-open.org/wsn/2004/06/wsn-WS-BaseNotification-1.2-draft-01.wsdl" xmlns:ns2="http://CQL.caBIG/1/gov.nih.nci.cagrid.CQLQuery" xmlns:ns16="http://fqp.cagrid.nci.nih.gov/FederatedResults/types" xmlns:ns13="http://schemas.xmlsoap.org/ws/2004/08/addressing" xmlns:ns9="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata" xmlns:ns11="http://transfer.cagrid.org/Transfer" xmlns:ns14="http://gov.nih.nci.cagrid.enumeration/EnumerationResponseContainer" xmlns:ns7="http://fqp.cagrid.nci.nih.gov/FederatedQueryProcessor/types" xmlns:ns3="http://caGrid.caBIG/1.0/gov.nih.nci.cagrid.dcql" xmlns:ns6="http://cds.gaards.cagrid.org/CredentialDelegationService/DelegatedCredential/types" xmlns:ns12="http://schemas.xmlsoap.org/ws/2004/09/enumeration" xmlns:ns8="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.security" xmlns:ns5="http://caGrid.caBIG/1.0/gov.nih.nci.cagrid.dcqlresult" xmlns:ns10="http://transfer.cagrid.org/TransferService/Context/types" xmlns:ns4="http://CQL.caBIG/1/gov.nih.nci.cagrid.CQLResultSet" xmlns:ns15="http://gov.nih.nci.cagrid.enumeration/CaGridEnumeration/types" xmlns:ns0="http://fqp.cagrid.nci.nih.gov/FederatedQueryResultsMetadata" xmlns:ns17="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ResourceLifetime-1.2-draft-01.xsd" xmlns:ns1="http://fqp.cagrid.nci.nih.gov/QueryExecutionParameters" name="FederatedQueryResults" targetNamespace="http://fqp.cagrid.nci.nih.gov/FederatedResults">
   <import namespace="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ResourceProperties-1.2-draft-01.wsdl" location="../wsrf/properties/WS-ResourceProperties.wsdl" />
   <import namespace="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-BaseFaults-1.2-draft-01.wsdl" location="../wsrf/faults/WS-BaseFaults.wsdl" />
-  <import namespace="http://docs.oasis-open.org/wsn/2004/06/wsn-WS-BaseNotification-1.2-draft-01.wsdl" location="../wsrf/notification/WS-BaseN.wsdl" />
   <import namespace="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ResourceLifetime-1.2-draft-01.wsdl" location="./../wsrf/lifetime/WS-ResourceLifetime.wsdl" />
-  <import namespace="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ResourceProperties-1.2-draft-01.wsdl" location="./../wsrf/properties/WS-ResourceProperties.wsdl" />
   <import namespace="http://security.introduce.cagrid.nci.nih.gov/ServiceSecurity" location="./ServiceSecurity.wsdl" />
   <import namespace="http://docs.oasis-open.org/wsn/2004/06/wsn-WS-BaseNotification-1.2-draft-01.wsdl" location="./../wsrf/notification/WS-BaseN.wsdl" />
   <!--============================================================
@@ -209,26 +207,26 @@
       <output message="wns0:GetServiceSecurityMetadataResponse" wsa:Action="http://security.introduce.cagrid.nci.nih.gov/ServiceSecurity/GetServiceSecurityMetadataResponse" />
     </operation>
     <wsdl:operation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" name="Destroy">
-      <wsdl:input message="wsrlw:DestroyRequest" wsa:Action="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ResourceLifetime/Destroy" />
-      <wsdl:output message="wsrlw:DestroyResponse" wsa:Action="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ResourceLifetime/DestroyResponse" />
-      <wsdl:fault message="wsrlw:ResourceNotDestroyedFault" name="ResourceNotDestroyedFault" />
-      <wsdl:fault message="wsrlw:ResourceUnknownFault" name="ResourceUnknownFault" />
+      <wsdl:input message="wns1:DestroyRequest" wsa:Action="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ResourceLifetime/Destroy" />
+      <wsdl:output message="wns1:DestroyResponse" wsa:Action="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ResourceLifetime/DestroyResponse" />
+      <wsdl:fault message="wns1:ResourceNotDestroyedFault" name="ResourceNotDestroyedFault" />
+      <wsdl:fault message="wns1:ResourceUnknownFault" name="ResourceUnknownFault" />
     </wsdl:operation>
     <wsdl:operation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" name="SetTerminationTime">
-      <wsdl:input message="wsrlw:SetTerminationTimeRequest" wsa:Action="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ResourceLifetime/SetTerminationTime" />
-      <wsdl:output message="wsrlw:SetTerminationTimeResponse" wsa:Action="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ResourceLifetime/SetTerminationTimeResponse" />
-      <wsdl:fault message="wsrlw:UnableToSetTerminationTimeFault" name="UnableToSetTerminationTimeFault" />
-      <wsdl:fault message="wsrlw:ResourceUnknownFault" name="ResourceUnknownFault" />
-      <wsdl:fault message="wsrlw:TerminationTimeChangeRejectedFault" name="TerminationTimeChangeRejectedFault" />
+      <wsdl:input message="wns1:SetTerminationTimeRequest" wsa:Action="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ResourceLifetime/SetTerminationTime" />
+      <wsdl:output message="wns1:SetTerminationTimeResponse" wsa:Action="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ResourceLifetime/SetTerminationTimeResponse" />
+      <wsdl:fault message="wns1:UnableToSetTerminationTimeFault" name="UnableToSetTerminationTimeFault" />
+      <wsdl:fault message="wns1:ResourceUnknownFault" name="ResourceUnknownFault" />
+      <wsdl:fault message="wns1:TerminationTimeChangeRejectedFault" name="TerminationTimeChangeRejectedFault" />
     </wsdl:operation>
     <wsdl:operation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" name="Subscribe">
-      <wsdl:input message="wsntw:SubscribeRequest" wsa:Action="http://docs.oasis-open.org/wsn/2004/06/wsn-WS-BaseNotification/Subscribe" />
-      <wsdl:output message="wsntw:SubscribeResponse" wsa:Action="http://docs.oasis-open.org/wsn/2004/06/wsn-WS-BaseNotification/SubscribeResponse" />
-      <wsdl:fault name="ResourceUnknownFault" message="wsntw:ResourceUnknownFault" />
-      <wsdl:fault name="SubscribeCreationFailedFault" message="wsntw:SubscribeCreationFailedFault" />
-      <wsdl:fault name="TopicPathDialectUnknownFault" message="wsntw:TopicPathDialectUnknownFault" />
-      <wsdl:fault name="InvalidTopicExpressionFault" message="wsntw:InvalidTopicExpressionFault" />
-      <wsdl:fault name="TopicNotSupportedFault" message="wsntw:TopicNotSupportedFault" />
+      <wsdl:input message="wns2:SubscribeRequest" wsa:Action="http://docs.oasis-open.org/wsn/2004/06/wsn-WS-BaseNotification/Subscribe" />
+      <wsdl:output message="wns2:SubscribeResponse" wsa:Action="http://docs.oasis-open.org/wsn/2004/06/wsn-WS-BaseNotification/SubscribeResponse" />
+      <wsdl:fault name="ResourceUnknownFault" message="wns2:ResourceUnknownFault" />
+      <wsdl:fault name="SubscribeCreationFailedFault" message="wns2:SubscribeCreationFailedFault" />
+      <wsdl:fault name="TopicPathDialectUnknownFault" message="wns2:TopicPathDialectUnknownFault" />
+      <wsdl:fault name="InvalidTopicExpressionFault" message="wns2:InvalidTopicExpressionFault" />
+      <wsdl:fault name="TopicNotSupportedFault" message="wns2:TopicNotSupportedFault" />
     </wsdl:operation>
     <wsdl:operation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" name="GetMultipleResourceProperties">
       <wsdl:input name="GetMultipleResourcePropertiesRequest" message="wsrpw:GetMultipleResourcePropertiesRequest" wsa:Action="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ResourceProperties/GetMultipleResourceProperties" />

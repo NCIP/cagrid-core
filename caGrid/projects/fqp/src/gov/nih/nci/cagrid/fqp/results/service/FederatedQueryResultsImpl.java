@@ -28,7 +28,6 @@ import org.globus.wsrf.ResourceContext;
 import org.globus.wsrf.ResourceContextException;
 import org.globus.wsrf.ResourceException;
 
-
 /**
  * TODO:I am the service side implementation class. IMPLEMENT AND DOCUMENT ME
  * 
@@ -41,27 +40,18 @@ public class FederatedQueryResultsImpl extends FederatedQueryResultsImplBase {
         super();
     }
 
-
-    public gov.nih.nci.cagrid.dcqlresult.DCQLQueryResultsCollection getResults() throws RemoteException,
-        gov.nih.nci.cagrid.fqp.results.stubs.types.ProcessingNotCompleteFault,
-        gov.nih.nci.cagrid.fqp.stubs.types.FederatedQueryProcessingFault,
-        gov.nih.nci.cagrid.fqp.results.stubs.types.InternalErrorFault {
+  public gov.nih.nci.cagrid.dcqlresult.DCQLQueryResultsCollection getResults() throws RemoteException, gov.nih.nci.cagrid.fqp.results.stubs.types.ProcessingNotCompleteFault, gov.nih.nci.cagrid.fqp.stubs.types.FederatedQueryProcessingFault, gov.nih.nci.cagrid.fqp.results.stubs.types.InternalErrorFault {
         FederatedQueryResultsResource resource = getResource();
         testForErrors(resource);
         return resource.getResults();
     }
 
-
-    public boolean isProcessingComplete() throws RemoteException {
+  public boolean isProcessingComplete() throws RemoteException {
         FederatedQueryResultsResource resource = getResource();
         return resource.isComplete();
     }
 
-
-    public gov.nih.nci.cagrid.cqlresultset.CQLQueryResults getAggregateResults() throws RemoteException,
-        gov.nih.nci.cagrid.fqp.stubs.types.FederatedQueryProcessingFault,
-        gov.nih.nci.cagrid.fqp.results.stubs.types.ProcessingNotCompleteFault,
-        gov.nih.nci.cagrid.fqp.results.stubs.types.InternalErrorFault {
+  public gov.nih.nci.cagrid.cqlresultset.CQLQueryResults getAggregateResults() throws RemoteException, gov.nih.nci.cagrid.fqp.stubs.types.FederatedQueryProcessingFault, gov.nih.nci.cagrid.fqp.results.stubs.types.ProcessingNotCompleteFault, gov.nih.nci.cagrid.fqp.results.stubs.types.InternalErrorFault {
         FederatedQueryResultsResource resource = getResource();
         testForErrors(resource);
         DCQLQueryResultsCollection dcqlResults = resource.getResults();
@@ -70,11 +60,7 @@ public class FederatedQueryResultsImpl extends FederatedQueryResultsImplBase {
         return cqlResults;
     }
 
-
-    public gov.nih.nci.cagrid.enumeration.stubs.response.EnumerationResponseContainer enumerate()
-        throws RemoteException, gov.nih.nci.cagrid.fqp.stubs.types.FederatedQueryProcessingFault,
-        gov.nih.nci.cagrid.fqp.results.stubs.types.ProcessingNotCompleteFault,
-        gov.nih.nci.cagrid.fqp.results.stubs.types.InternalErrorFault {
+  public gov.nih.nci.cagrid.enumeration.stubs.response.EnumerationResponseContainer enumerate() throws RemoteException, gov.nih.nci.cagrid.fqp.stubs.types.FederatedQueryProcessingFault, gov.nih.nci.cagrid.fqp.results.stubs.types.ProcessingNotCompleteFault, gov.nih.nci.cagrid.fqp.results.stubs.types.InternalErrorFault {
         FederatedQueryResultsResource resource = getResource();
         testForErrors(resource);
         DCQLQueryResultsCollection dcqlResults = resource.getResults();
@@ -93,11 +79,7 @@ public class FederatedQueryResultsImpl extends FederatedQueryResultsImplBase {
         return response;
     }
 
-
-    public org.cagrid.transfer.context.stubs.types.TransferServiceContextReference transfer() throws RemoteException,
-        gov.nih.nci.cagrid.fqp.stubs.types.FederatedQueryProcessingFault,
-        gov.nih.nci.cagrid.fqp.results.stubs.types.ProcessingNotCompleteFault,
-        gov.nih.nci.cagrid.fqp.results.stubs.types.InternalErrorFault {
+  public org.cagrid.transfer.context.stubs.types.TransferServiceContextReference transfer() throws RemoteException, gov.nih.nci.cagrid.fqp.stubs.types.FederatedQueryProcessingFault, gov.nih.nci.cagrid.fqp.results.stubs.types.ProcessingNotCompleteFault, gov.nih.nci.cagrid.fqp.results.stubs.types.InternalErrorFault {
         // get the resource and its results
         FederatedQueryResultsResource resource = getResource();
         testForErrors(resource);
@@ -143,10 +125,9 @@ public class FederatedQueryResultsImpl extends FederatedQueryResultsImplBase {
     }
     
     
-    public org.cagrid.fqp.results.metadata.FederatedQueryExecutionStatus getExecutionStatus() throws RemoteException {
+  public org.cagrid.fqp.results.metadata.FederatedQueryExecutionStatus getExecutionStatus() throws RemoteException {
         return getResource().getFederatedQueryExecutionStatus();
     }
-
 
     private static FederatedQueryResultsResource getResource() throws ResourceException, ResourceContextException {
         FederatedQueryResultsResource resource = (FederatedQueryResultsResource) ResourceContext.getResourceContext()

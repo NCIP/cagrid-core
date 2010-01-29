@@ -76,15 +76,6 @@ public class FederatedQueryResultsClient extends FederatedQueryResultsClientBase
 		}
 	}
 
-  public org.cagrid.fqp.results.metadata.FederatedQueryExecutionStatus getExecutionStatus() throws RemoteException {
-    synchronized(portTypeMutex){
-      configureStubSecurity((Stub)portType,"getExecutionStatus");
-    gov.nih.nci.cagrid.fqp.results.stubs.GetExecutionStatusRequest params = new gov.nih.nci.cagrid.fqp.results.stubs.GetExecutionStatusRequest();
-    gov.nih.nci.cagrid.fqp.results.stubs.GetExecutionStatusResponse boxedResult = portType.getExecutionStatus(params);
-    return boxedResult.getFederatedQueryExecutionStatus();
-    }
-  }
-
   public org.oasis.wsrf.lifetime.DestroyResponse destroy(org.oasis.wsrf.lifetime.Destroy params) throws RemoteException {
     synchronized(portTypeMutex){
       configureStubSecurity((Stub)portType,"destroy");
@@ -169,6 +160,15 @@ public class FederatedQueryResultsClient extends FederatedQueryResultsClientBase
     synchronized(portTypeMutex){
       configureStubSecurity((Stub)portType,"queryResourceProperties");
     return portType.queryResourceProperties(params);
+    }
+  }
+
+  public org.cagrid.fqp.results.metadata.FederatedQueryExecutionStatus getExecutionStatus() throws RemoteException {
+    synchronized(portTypeMutex){
+      configureStubSecurity((Stub)portType,"getExecutionStatus");
+    gov.nih.nci.cagrid.fqp.results.stubs.GetExecutionStatusRequest params = new gov.nih.nci.cagrid.fqp.results.stubs.GetExecutionStatusRequest();
+    gov.nih.nci.cagrid.fqp.results.stubs.GetExecutionStatusResponse boxedResult = portType.getExecutionStatus(params);
+    return boxedResult.getFederatedQueryExecutionStatus();
     }
   }
 
