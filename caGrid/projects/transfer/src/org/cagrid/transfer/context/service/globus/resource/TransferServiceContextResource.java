@@ -13,6 +13,8 @@ import javax.naming.InitialContext;
 import javax.xml.namespace.QName;
 
 import org.apache.axis.MessageContext;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.cagrid.transfer.context.service.helper.DataStagedCallback;
 import org.cagrid.transfer.descriptor.DataDescriptor;
 import org.cagrid.transfer.descriptor.DataStorageDescriptor;
@@ -33,6 +35,8 @@ import org.globus.wsrf.impl.SimpleResourceKey;
  */
 public class TransferServiceContextResource extends
 		TransferServiceContextResourceBase {
+	
+	static final Log logger = LogFactory.getLog(TransferServiceContextResource.class);
 
 	public static final String STAGING_FLAG = ".staging";
 	private DataStagedCallback callback = null;
@@ -294,9 +298,10 @@ public class TransferServiceContextResource extends
 				File dataFile = new File(location);
 				boolean deleted = dataFile.delete();
 				if (!deleted) {
-					throw new Exception(
-							"Cound not delete file on destroy of resource: "
-									+ location);
+					if (dataFile.exists()) {
+						throw new Exception("Cound not delete file on destroy of resource: " + location);
+	                }
+					logger.warn("Attempt to delete non-existent file failed: " + location );
 				}
 			}
 		}
