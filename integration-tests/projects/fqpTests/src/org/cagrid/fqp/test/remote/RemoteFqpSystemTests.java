@@ -35,8 +35,7 @@ public class RemoteFqpSystemTests {
     public static final Log logger = LogFactory.getLog(RemoteFqpSystemTests.class);
     
     private DataServiceDeploymentStory[] dataServiceDeployments;
-    private FQPServiceDeploymentStory standardFqpDeployment;
-    private FQPServiceDeploymentStory transferFqpDeployment;
+    private FQPServiceDeploymentStory fqpDeployment;
     
     
     @Test
@@ -59,23 +58,19 @@ public class RemoteFqpSystemTests {
             exampleService1Deployment, exampleService2Deployment
         };
         
-        // deploy the plain FQP service
-        standardFqpDeployment = new FQPServiceDeploymentStory(getFqpDir(), false);
-        standardFqpDeployment.runBare();
-        
         // deploy the FQP with transfer service
-        transferFqpDeployment = new FQPServiceDeploymentStory(getFqpDir(), getTransferDir(), false);
-        transferFqpDeployment.runBare();
+        fqpDeployment = new FQPServiceDeploymentStory(getFqpDir(), getTransferDir(), false);
+        fqpDeployment.runBare();
         
         // run query constraint checking stories
         QueryConstraintsStory constraintsStory =
-            new QueryConstraintsStory(containerSources, standardFqpDeployment, 
-                standardFqpDeployment.getTempFqpServiceDir());
+            new QueryConstraintsStory(containerSources, fqpDeployment, 
+                fqpDeployment.getTempFqpServiceDir());
         constraintsStory.runBare();
         
-        // query helpers
+        // query helper
         FederatedQueryProcessorHelper standardQueryHelper = 
-            new FederatedQueryProcessorHelper(standardFqpDeployment);
+            new FederatedQueryProcessorHelper(fqpDeployment);
         
         // initialize ws-notification client side
         NotificationClientSetupStory notificationSetupStory = new NotificationClientSetupStory();
@@ -91,22 +86,22 @@ public class RemoteFqpSystemTests {
         
         // run asynchronous queries
         AsynchronousExecutionStory asynchronousStory = 
-            new AsynchronousExecutionStory(containerSources, standardFqpDeployment);
+            new AsynchronousExecutionStory(containerSources, fqpDeployment);
         asynchronousStory.runBare();
 
         // run enumeration queries
         EnumerationExecutionStory enumerationStory = 
-            new EnumerationExecutionStory(containerSources, standardFqpDeployment);
+            new EnumerationExecutionStory(containerSources, fqpDeployment);
         enumerationStory.runBare();
 
         // run partial results queries
         PartialResultsStory partialResultsStory = 
-            new PartialResultsStory(containerSources, standardFqpDeployment);
+            new PartialResultsStory(containerSources, fqpDeployment);
         partialResultsStory.runBare();
         
         // run transfer queries
         TransferExecutionStory transferStory = 
-            new TransferExecutionStory(containerSources, transferFqpDeployment);
+            new TransferExecutionStory(containerSources, fqpDeployment);
 		transferStory.runBare();
     }
     
@@ -150,19 +145,8 @@ public class RemoteFqpSystemTests {
             }
         }
         try {
-            if (standardFqpDeployment != null && standardFqpDeployment.getServiceContainer() != null) {
-                ServiceContainer fqpContainer = standardFqpDeployment.getServiceContainer();
-                // give FQP container 2 minutes to shut down
-                fqpContainer.getProperties().setMaxShutdownWaitTime(Integer.valueOf(120));
-                new StopContainerStep(fqpContainer).runStep();
-                new DestroyContainerStep(fqpContainer).runStep();
-            }
-        } catch (Throwable ex) {
-            ex.printStackTrace();
-        }
-        try {
-            if (transferFqpDeployment != null && transferFqpDeployment.getServiceContainer() != null) {
-                ServiceContainer fqpContainer = transferFqpDeployment.getServiceContainer();
+            if (fqpDeployment != null && fqpDeployment.getServiceContainer() != null) {
+                ServiceContainer fqpContainer = fqpDeployment.getServiceContainer();
                 // give FQP container 2 minutes to shut down
                 fqpContainer.getProperties().setMaxShutdownWaitTime(Integer.valueOf(120));
                 new StopContainerStep(fqpContainer).runStep();

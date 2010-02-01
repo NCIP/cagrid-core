@@ -40,12 +40,7 @@ public class FQPServiceDeploymentStory extends Story implements ServiceContainer
     private ServiceContainer fqpServiceContainer;
     private boolean secureDeployment;
     private boolean complete;
-    private File tempFqpServiceDir;
-    
-    public FQPServiceDeploymentStory(File fqpDir, boolean secureDeployment) {
-        this(fqpDir, null, secureDeployment);
-    }
-    
+    private File tempFqpServiceDir;    
     
     public FQPServiceDeploymentStory(File fqpDir, File transferDir, boolean secureDeployment) {
         this.fqpServiceDirectory = fqpDir;
@@ -91,11 +86,23 @@ public class FQPServiceDeploymentStory extends Story implements ServiceContainer
     }
 
 
-    protected Vector steps() {
+    protected Vector<?> steps() {
         Vector<Step> steps = new Vector<Step>();
         // unpack the container
         steps.add(new UnpackContainerStep(fqpServiceContainer));
         
+        List<String> args = Arrays.asList(new String[] {
+            "-Dno.deployment.validation=true", "-Dperform.index.service.registration=false"});
+        
+        // deploy transfer
+        // copy Transfer to a temp dir
+        File tempTransferServiceDir = new File("tmp/TempTransferService");
+        System.out.println("Copying Transfer for pre-deployment to " + tempTransferServiceDir.getAbsolutePath());
+        steps.add(new CopyServiceStep(transferServiceDirectory, tempTransferServiceDir));
+        steps.add(new SetIndexRegistrationStep(tempTransferServiceDir.getAbsolutePath(), false));
+        // deploy transfer
+        steps.add(new DeployServiceStep(fqpServiceContainer, tempTransferServiceDir.getAbsolutePath(), args));
+       
         // copy FQP to a temp dir
         this.tempFqpServiceDir = new File("tmp/Temp" + (secureDeployment ? "Secure" : "") + "FQP");
         System.out.println("Copying FQP for pre-deployment to " + tempFqpServiceDir.getAbsolutePath());
@@ -108,20 +115,7 @@ public class FQPServiceDeploymentStory extends Story implements ServiceContainer
             1, defaultBehavior.getTimeoutPerRetry().intValue(), 12, 5));
         steps.add(new SetIndexRegistrationStep(tempFqpServiceDir.getAbsolutePath(), false));
         // deploy FQP
-        List<String> args = Arrays.asList(new String[] {
-            "-Dno.deployment.validation=true", "-Dperform.index.service.registration=false"});
         steps.add(new DeployServiceStep(fqpServiceContainer, tempFqpServiceDir.getAbsolutePath(), args));
-        
-        // transfer?
-        if (transferServiceDirectory != null) {
-            // copy Transfer to a temp dir
-            File tempTransferServiceDir = new File("tmp/TempTransferService");
-            System.out.println("Copying Transfer for pre-deployment to " + tempTransferServiceDir.getAbsolutePath());
-            steps.add(new CopyServiceStep(transferServiceDirectory, tempTransferServiceDir));
-            steps.add(new SetIndexRegistrationStep(tempTransferServiceDir.getAbsolutePath(), false));
-            // deploy transfer
-            steps.add(new DeployServiceStep(fqpServiceContainer, tempTransferServiceDir.getAbsolutePath(), args));
-        }        
         
         // start the container
         steps.add(new StartContainerStep(fqpServiceContainer));

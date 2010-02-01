@@ -49,7 +49,7 @@ public class SecureRemoteFqpSystemTests {
         exampleService2Deployment.runBare();
         
         // deploy the secure FQP service
-        fqpDeployment = new FQPServiceDeploymentStory(getFqpDir(), true);
+        fqpDeployment = new FQPServiceDeploymentStory(getFqpDir(), getTransferDir(), true);
         fqpDeployment.runBare();
         FederatedQueryProcessorHelper queryHelper = 
             new FederatedQueryProcessorHelper(fqpDeployment);
@@ -124,6 +124,18 @@ public class SecureRemoteFqpSystemTests {
         if (value == null) {
             value = FQPTestingConstants.DEFAULT_CDS_DIR;
             logger.warn("System property " + FQPTestingConstants.CDS_SERVICE_DIR_PROPERTY + " was not set!");
+            logger.warn("Using default value of " + value);
+        }
+        File dir = new File(value);
+        return dir;
+    }
+    
+
+    private File getTransferDir() {
+        String value = System.getProperty(FQPTestingConstants.TRANSFER_SERVICE_DIR_PROPERTY);
+        if (value == null) {
+            value = FQPTestingConstants.DEFAULT_TRANSFER_DIR;
+            logger.warn("System property " + FQPTestingConstants.TRANSFER_SERVICE_DIR_PROPERTY + " was not set!");
             logger.warn("Using default value of " + value);
         }
         File dir = new File(value);
