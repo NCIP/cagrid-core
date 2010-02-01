@@ -18,12 +18,21 @@
 		<fail message="The caGrid Transfer service must be deployed for this service" if="transfer.not.installed" />
 		<echo message="caGrid Transfer has been found" />
 	</target>
+	
+	<!-- copy the ext/lib jars that Ivy puts into FQP -->
+	<target name="copyExtLibs">
+		<copy todir="${build.lib.dir}">
+			<fileset dir="${ext.lib}">
+				<include name="*.jar" />
+			</fileset>
+		</copy>
+	</target>
 
 	<!-- ============================================================== -->
 	<!-- Pre Deploy Tomcat                                              -->
 	<!-- ============================================================== -->
-	<target name="preDeployTomcat">
-		<antcall target="checkTransferDeployed" inheritall="true"/>
+	<target name="preDeployTomcat" depends="checkTransferDeployed, copyExtLibs">
+		
 	</target>
 
 
@@ -38,8 +47,8 @@
 	<!-- ============================================================== -->
 	<!-- Pre Deploy JBOSS                                               -->
 	<!-- ============================================================== -->
-	<target name="preDeployJBoss">
-		<antcall target="checkTransferDeployed" inheritall="true"/>
+	<target name="preDeployJBoss" depends="checkTransferDeployed, copyExtLibs">
+		
 	</target>
 
 
