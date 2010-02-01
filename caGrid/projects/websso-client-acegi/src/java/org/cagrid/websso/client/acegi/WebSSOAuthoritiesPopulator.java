@@ -7,7 +7,8 @@ import org.acegisecurity.BadCredentialsException;
 import org.acegisecurity.providers.cas.CasAuthoritiesPopulator;
 import org.acegisecurity.userdetails.UserDetails;
 import org.acegisecurity.userdetails.UserDetailsService;
-import org.apache.log4j.Logger;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
 import org.cagrid.websso.common.WebSSOClientException;
 import org.cagrid.websso.common.WebSSOClientHelper;
@@ -16,7 +17,7 @@ import org.springframework.beans.factory.annotation.Required;
 
 public class WebSSOAuthoritiesPopulator implements CasAuthoritiesPopulator {
 
-    Logger log = Logger.getLogger(WebSSOAuthoritiesPopulator.class);
+	private final Log log = LogFactory.getLog(getClass());
 
 	private UserDetailsService userDetailsService;
 

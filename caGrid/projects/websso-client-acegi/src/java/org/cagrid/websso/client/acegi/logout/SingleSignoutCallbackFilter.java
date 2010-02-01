@@ -4,6 +4,8 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.net.URLDecoder;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.util.Assert;
 import javax.servlet.Filter;
@@ -16,6 +18,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 public class SingleSignoutCallbackFilter implements Filter, InitializingBean {
+	
+	private final Log log = LogFactory.getLog(getClass());
 	private String filterProcessesUrl;
 	private ExpiredTicketCache expiredTicketCache;
 
@@ -30,6 +34,7 @@ public class SingleSignoutCallbackFilter implements Filter, InitializingBean {
 	public void afterPropertiesSet() throws Exception {
 		Assert.hasLength(this.filterProcessesUrl,
 				"filterProcessesUrl must be specified");
+		log.debug("filterProcessesUrl "+this.filterProcessesUrl);
 		Assert.notNull(this.expiredTicketCache, "cache mandatory");
 	}
 
@@ -86,6 +91,7 @@ public class SingleSignoutCallbackFilter implements Filter, InitializingBean {
 		}
 		reader.close();
 		if (sTicket != null) {
+			log.info("expired Service ticket "+sTicket);
 			this.expiredTicketCache.putTicketInCache(sTicket);
 		}
 		return true;

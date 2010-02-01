@@ -12,14 +12,15 @@ import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 
-import org.apache.log4j.Logger;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
 import org.springframework.web.context.support.ServletContextResource;
 
 public class StartSyncGTSServlet extends HttpServlet {
 
 	private static final long serialVersionUID = 1L;
-	private Logger log = Logger.getLogger(getClass());
+	private final Log log = LogFactory.getLog(getClass());
 	
 	@Override
 	public void init(ServletConfig config) throws ServletException {

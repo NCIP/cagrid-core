@@ -5,7 +5,6 @@
 	<classpathentry kind="var" path="GT4_LOCATION/lib/addressing-1.0.jar"/>
 	<classpathentry kind="var" path="GT4_LOCATION/lib/axis.jar"/>
 	<classpathentry kind="var" path="GT4_LOCATION/lib/cog-axis.jar"/>
-	<classpathentry kind="var" path="GT4_LOCATION/lib/cog-jglobus.jar"/>
 	<classpathentry kind="var" path="GT4_LOCATION/lib/commons-discovery.jar"/>
 	<classpathentry kind="var" path="GT4_LOCATION/lib/cryptix.jar"/>
 	<classpathentry kind="var" path="GT4_LOCATION/lib/cryptix32.jar"/>
@@ -48,6 +47,6 @@
 	<classpathentry kind="lib" path="ext/dependencies/default/jars/spring-test.jar"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.junit.JUNIT_CONTAINER/3"/>
 	<classpathentry kind="lib" path="ext/dependencies/default/jars/castor-1.0.2.jar"/>
-	<classpathentry kind="lib" path="ext/dependencies/default/jars/log4j-1.2.14.jar"/>
+	<classpathentry kind="var" path="GT4_LOCATION/lib/cog-jglobus.jar" sourcepath="/GT4_SOURCE"/>
 	<classpathentry kind="output" path="build"/>
 </classpath>

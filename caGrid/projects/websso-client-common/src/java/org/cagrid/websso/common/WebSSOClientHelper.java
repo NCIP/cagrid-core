@@ -26,7 +26,13 @@ public class WebSSOClientHelper {
 	
 	private static Logger log = Logger.getLogger(WebSSOClientHelper.class.getName());
 
+	/**
+	 * parse the attributeString got from WebSSO Server to load user information 
+	 * @param attributeString
+	 * @return
+	 */
 	public static Map<String, String> getUserAttributes(String attributeString){
+		log.info("User attribute information got from WebSSO server "+attributeString);
 		Map<String, String> userAttributes = new HashMap<String, String>();
 		StringTokenizer stringTokenizer = new StringTokenizer(attributeString,WebSSOConstants.ATTRIBUTE_DELIMITER);
 		while (stringTokenizer.hasMoreTokens()) {
@@ -129,6 +135,7 @@ public class WebSSOClientHelper {
 		String logoutURL = properties.getProperty("cas.server.url")+ "/logout";
 		String logoutLandingURL=properties.getProperty("logout.landing.url");
 		logoutURL = logoutURL + "?service=" + logoutLandingURL;
+		log.info("logout url sending to WebSSO server "+logoutURL);
 		return logoutURL;
 	}
 }

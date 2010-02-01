@@ -5,12 +5,16 @@ import java.util.Map;
 import org.acegisecurity.userdetails.UserDetails;
 import org.acegisecurity.userdetails.UserDetailsService;
 import org.acegisecurity.userdetails.UsernameNotFoundException;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.cagrid.websso.common.WebSSOConstants;
 import org.cagrid.websso.common.WebSSOClientHelper;
 import org.springframework.dao.DataAccessException;
 
 public abstract class BaseUserDetailsService implements UserDetailsService {
 
+	private final Log log = LogFactory.getLog(getClass());
+	
 	/**
 	 * Defines an interface for implementations that wish to retrieve user information from
 	 * database using CSM or Data Access Service
@@ -25,9 +29,13 @@ public abstract class BaseUserDetailsService implements UserDetailsService {
 		String gridId = getUserIdFromGridIdentity(userAttributesMap.get(WebSSOConstants.CAGRID_SSO_GRID_IDENTITY));
 		WebSSOUser user = loadUserByGridId(gridId);
 		loadSessionAttributes(userAttributesMap, user);
+		log.info("User Info "+user);
 		return user;
 	}
 	
+	/**
+	 *	load grid user information retrieved from WebSSO server 
+	 */
 	private void loadSessionAttributes(Map<String,String> userAttributesMap,WebSSOUser user){
 		user.setFirstName(userAttributesMap.get(WebSSOConstants.CAGRID_SSO_FIRST_NAME));
 		user.setGridId(userAttributesMap.get(WebSSOConstants.CAGRID_SSO_GRID_IDENTITY));

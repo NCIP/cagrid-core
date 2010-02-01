@@ -37,12 +37,13 @@ import java.security.cert.*;
 
 import javax.net.ssl.*;
 
-import org.apache.log4j.Logger;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.springframework.core.io.ClassPathResource;
 
 public class InstallCert {
 	
-	private static Logger log = Logger.getLogger(InstallCert.class);
+	private final static Log log = LogFactory.getLog(InstallCert.class.getClass());
 	
 	public static void main(String[] args) throws Exception {
 		String host;
