@@ -69,8 +69,7 @@ public class GridCredentialDelegatorImpl implements GridCredentialDelegator {
 				client.setAuthorization(auth);
 			}			
 		} catch (Exception e) {
-			e.printStackTrace();
-			throw new AuthenticationConfigurationException("Error accessing the Delegation Service : "+ e.getMessage(), e);
+			throw new AuthenticationConfigurationException("Error accessing the Delegation Service : "+FaultUtil.printFaultToString(e));
 		}
 
 		DelegatedCredentialReference delegatedCredentialReference = null;
@@ -95,12 +94,10 @@ public class GridCredentialDelegatorImpl implements GridCredentialDelegator {
 							+ FaultUtil.printFaultToString(e));
 		} catch (RemoteException e) {
 			throw new AuthenticationConfigurationException(
-					"Error accessing the Delegation Service : "
-							+ e.getMessage(), e);
+					"Error accessing the Delegation Service : "+FaultUtil.printFaultToString(e));
 		} catch (MalformedURIException e) {
 			throw new AuthenticationConfigurationException(
-					"Error accessing the Delegation Service, Please check the URL for Delegation Service : "
-							+ e.getMessage());
+					"Error accessing the Delegation Service, Please check the URL for Delegation Service : "+FaultUtil.printFaultToString(e));
 		}
 
 		String serializedDelegatedCredentialReference = null;
@@ -116,8 +113,7 @@ public class GridCredentialDelegatorImpl implements GridCredentialDelegator {
 			serializedDelegatedCredentialReference = stringWriter.toString();
 		} catch (Exception e) {
 			throw new AuthenticationConfigurationException(
-					"Unable to serialize the message Delegated Credentials : "
-							+ e.getMessage(), e);
+					"Unable to serialize the message Delegated Credentials : "+FaultUtil.printFaultToString(e));
 		}
 		return serializedDelegatedCredentialReference;
 	}

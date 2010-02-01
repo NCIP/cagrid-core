@@ -3,7 +3,6 @@ package org.cagrid.gaards.websso.authentication;
 import gov.nih.nci.cagrid.opensaml.SAMLAssertion;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
