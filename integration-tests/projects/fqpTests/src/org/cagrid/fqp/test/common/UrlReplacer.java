@@ -23,7 +23,7 @@ public class UrlReplacer {
         for (String placeholder : replacements.keySet()) {
             replaceAll(dcqlXml, placeholder, replacements.get(placeholder));
         }
-        DCQLQuery cleaned = (DCQLQuery) Utils.deserializeObject(new StringReader(dcqlXml.toString()), DCQLQuery.class);
+        DCQLQuery cleaned = Utils.deserializeObject(new StringReader(dcqlXml.toString()), DCQLQuery.class);
         return cleaned;
     }
     

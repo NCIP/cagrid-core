@@ -48,7 +48,7 @@ public class ChangeJndiSweeperDelayStep extends Step {
         }
         // walk the JNDI to find the right resource home
         Element jndiRootElement = jndiDocument.getRootElement();
-        Iterator fqpResultResourceElements = jndiRootElement.getDescendants(new Filter() {
+        Iterator<?> fqpResultResourceElements = jndiRootElement.getDescendants(new Filter() {
             public boolean matches(Object obj) {
                 if (obj instanceof Element) {
                     Element elem = (Element) obj;
@@ -73,7 +73,7 @@ public class ChangeJndiSweeperDelayStep extends Step {
         // create the sweeper delay parameter element
         Element delayParameter = createSweeperDelayElement(resourceParamsElement.getNamespace());
         // throw out the old sweeper delay
-        Iterator paramElementIter = resourceParamsElement.getChildren("parameter", resourceParamsElement.getNamespace()).iterator();
+        Iterator<?> paramElementIter = resourceParamsElement.getChildren("parameter", resourceParamsElement.getNamespace()).iterator();
         while (paramElementIter.hasNext()) {
             Element paramElement = (Element) paramElementIter.next();
             Element nameElement = paramElement.getChild("name", paramElement.getNamespace());

@@ -44,7 +44,7 @@ public class EnumerationExecutionStory extends Story {
     }
 
 
-    protected Vector steps() {
+    protected Vector<?> steps() {
         Vector<Step> steps = new Vector<Step>();
         // figure out the URLs of the test services
         String[] serviceUrls = new String[dataContainers.length];

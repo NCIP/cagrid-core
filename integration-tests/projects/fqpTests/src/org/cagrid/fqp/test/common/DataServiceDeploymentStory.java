@@ -96,7 +96,7 @@ public class DataServiceDeploymentStory extends Story implements ServiceContaine
     }
 
 
-    protected Vector steps() {
+    protected Vector<?> steps() {
         Vector<Step> steps = new Vector<Step>();
         steps.add(new UnpackContainerStep(dataServiceContainer));
         steps.add(new UnzipServiceStep(dataServiceZip, temp));

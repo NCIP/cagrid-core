@@ -9,7 +9,7 @@ import gov.nih.nci.cagrid.testing.system.haste.Story;
 
 
 /**
- * TransferClientSetupStory
+ * NotificationClientSetupStory
  * Sets up the client side of things to support ws-notification listeners
  * 
  * @author David
@@ -26,7 +26,7 @@ public class NotificationClientSetupStory extends Story {
     }
 
 
-    protected Vector steps() {
+    protected Vector<?> steps() {
         Vector<Step> steps = new Vector<Step>();
         steps.add(new NotificationClientSetupStep());
         return steps;

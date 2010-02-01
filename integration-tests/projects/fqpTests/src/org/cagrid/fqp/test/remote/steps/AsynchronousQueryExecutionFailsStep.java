@@ -77,7 +77,7 @@ public class AsynchronousQueryExecutionFailsStep extends Step {
         DCQLQuery query = null;
         try {
             FileReader reader = new FileReader(queryFilename);
-            query = (DCQLQuery) Utils.deserializeObject(reader, DCQLQuery.class);
+            query = Utils.deserializeObject(reader, DCQLQuery.class);
             reader.close();
         } catch (Exception ex) {
             ex.printStackTrace();

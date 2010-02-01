@@ -128,7 +128,7 @@ public class TransferQueryExecutionStep extends BaseQueryExecutionStep {
             public void subscriptionValueChanged(ResourcePropertyValueChangeNotificationType notification) {
                 try {
                     String newMetadataDocument = AnyHelper.toSingleString(notification.getNewValue().get_any());
-                    FederatedQueryExecutionStatus status = (FederatedQueryExecutionStatus) Utils.deserializeObject(
+                    FederatedQueryExecutionStatus status = Utils.deserializeObject(
                         new StringReader(newMetadataDocument), FederatedQueryExecutionStatus.class);
                     StringWriter writer = new StringWriter();
                     Utils.serializeObject(status, FederatedQueryResultsConstants.FEDERATEDQUERYEXECUTIONSTATUS, writer);

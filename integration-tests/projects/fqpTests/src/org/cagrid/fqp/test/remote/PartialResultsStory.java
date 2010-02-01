@@ -53,7 +53,7 @@ public class PartialResultsStory extends Story {
     }
 
 
-    protected Vector steps() {
+    protected Vector<?> steps() {
         Vector<Step> steps = new Vector<Step>();
         
         // create a new FQP client from the FQP service container
@@ -115,7 +115,7 @@ public class PartialResultsStory extends Story {
     private int getResultsCount(String dcqlResultsFilename) {
         DCQLQueryResultsCollection results = null;
         try {
-            results = (DCQLQueryResultsCollection) Utils.deserializeDocument(
+            results = Utils.deserializeDocument(
                 dcqlResultsFilename, DCQLQueryResultsCollection.class);
         } catch (Exception ex) {
             ex.printStackTrace();

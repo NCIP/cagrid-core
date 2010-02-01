@@ -125,7 +125,7 @@ public class PartialResultsQueryStep extends BaseQueryExecutionStep {
         
         FederatedQueryExecutionStatus status = null;
         try {
-            status = (FederatedQueryExecutionStatus) Utils.deserializeObject(
+            status = Utils.deserializeObject(
                 new StringReader(metadataDocument), FederatedQueryExecutionStatus.class);
         } catch (Exception ex) {
             ex.printStackTrace();

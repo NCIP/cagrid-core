@@ -35,7 +35,7 @@ public abstract class BaseQueryExecutionStep extends Step {
             fail("Unable to read query file " + queryFilename);
         }
         try {
-            query = (DCQLQuery) Utils.deserializeObject(reader, DCQLQuery.class);
+            query = Utils.deserializeObject(reader, DCQLQuery.class);
         } catch (Exception ex) {
             ex.printStackTrace();
             fail("Unable to deserialize query file " + queryFilename);
@@ -63,7 +63,7 @@ public abstract class BaseQueryExecutionStep extends Step {
         try {
             InputStream wsddStream = getClass().getResourceAsStream(FQPTestingConstants.CLIENT_WSDD);
             assertNotNull("Could not locate client-config.wsdd", wsddStream);
-            goldResults = (CQLQueryResults) Utils.deserializeObject(
+            goldResults = Utils.deserializeObject(
                 new InputStreamReader(fis), CQLQueryResults.class, wsddStream);
         } catch (Exception ex) {
             ex.printStackTrace();
@@ -93,7 +93,7 @@ public abstract class BaseQueryExecutionStep extends Step {
         try {
             InputStream wsddStream = getClass().getResourceAsStream(FQPTestingConstants.CLIENT_WSDD);
             assertNotNull("Could not locate client-config.wsdd", wsddStream);
-            goldResults = (DCQLQueryResultsCollection) Utils.deserializeObject(
+            goldResults = Utils.deserializeObject(
                 new InputStreamReader(fis), DCQLQueryResultsCollection.class, wsddStream);
         } catch (Exception ex) {
             ex.printStackTrace();

@@ -69,7 +69,7 @@ public class CDSDeploymentStory extends Story implements ServiceContainerSource 
     }
 
 
-    protected Vector steps() {
+    protected Vector<?> steps() {
         Vector<Step> steps = new Vector<Step>();
         File tempCdsDir = new File("tmp/TempCDS");
         steps.add(new UnpackContainerStep(serviceContainer));

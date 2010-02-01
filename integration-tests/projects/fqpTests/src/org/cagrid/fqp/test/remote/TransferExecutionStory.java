@@ -41,7 +41,7 @@ public class TransferExecutionStory extends Story {
     }
 
 
-    protected Vector steps() {
+    protected Vector<?> steps() {
         Vector<Step> steps = new Vector<Step>();
         
         // create a new FQP client from the FQP service container
