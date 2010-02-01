@@ -6,16 +6,24 @@
 	<!-- file. DO NOT REMOVE ANY TARGETS                                -->
 	<!-- ============================================================== -->
 
+	<!-- check that caGrid Transfer has been deployed -->
+	<target name="checkTransferDeployed">
+		<echo message="Checking for caGrid Transfer service at ${webapp.deploy.etc.dir}/cagrid_TransferService" />
+		<condition property="transfer.not.installed">
+			<not>
+				<available file="${webapp.deploy.etc.dir}/cagrid_TransferService" type="dir" />
+			</not>
+		</condition>
+
+		<fail message="The caGrid Transfer service must be deployed for this service" if="transfer.not.installed" />
+		<echo message="caGrid Transfer has been found" />
+	</target>
 
 	<!-- ============================================================== -->
 	<!-- Pre Deploy Tomcat                                              -->
 	<!-- ============================================================== -->
 	<target name="preDeployTomcat">
-		<copy todir="${build.lib.dir}">
-			<fileset dir="${ext.lib}">
-				<include name="*.jar" />
-			</fileset>
-		</copy>
+		<antcall target="checkTransferDeployed" inheritall="true"/>
 	</target>
 
 
@@ -23,31 +31,41 @@
 	<!-- Pre Deploy Globus                                              -->
 	<!-- ============================================================== -->
 	<target name="preDeployGlobus">
-		<copy todir="${build.lib.dir}">
-			<fileset dir="${ext.lib}">
-				<include name="*.jar" />
-			</fileset>
-		</copy>
+		<fail message="The Federated Query Processor service requires the caGrid Transfer service to be installed, and this cannot be deployed to Globus.  Please deploy to Tomcat or JBoss." />
 	</target>
 
 
+	<!-- ============================================================== -->
+	<!-- Pre Deploy JBOSS                                               -->
+	<!-- ============================================================== -->
+	<target name="preDeployJBoss">
+		<antcall target="checkTransferDeployed" inheritall="true"/>
+	</target>
+
 
 	<!-- ============================================================== -->
-	<!-- Post Undeploy Tomcat                                              -->
+	<!-- Post UnDeploy Tomcat                                           -->
 	<!-- ============================================================== -->
 	<target name="postUndeployTomcat">
+
 	</target>
 
+
 	<!-- ============================================================== -->
-	<!-- Post Undeploy Globus                                              -->
+	<!-- Post UnDeploy Globus                                           -->
 	<!-- ============================================================== -->
 	<target name="postUndeployGlobus">
+
 	</target>
 
+
 	<!-- ============================================================== -->
-	<!-- Post Undeploy JBOSS                                               -->
+	<!-- Post UnDeploy JBOSS                                            -->
 	<!-- ============================================================== -->
 	<target name="postUndeployJBoss">
+
 	</target>
+
+
 
 </project>
