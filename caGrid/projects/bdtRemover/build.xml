@@ -80,6 +80,7 @@
 			</fileset>
 			<fileset dir="${resources.dir}">
 				<include name="**"/>
+				<exclude name="bdt-introduce.xml"/>
 			</fileset>
 		</jar>
 	</target>
@@ -112,6 +113,8 @@
 		<mkdir dir="${introduce.extensions.dir}/bdt" />
 		<!-- extension description file -->
 		<copy todir="${introduce.extensions.dir}/bdt" file="${extension.description.file}" />
+		<!-- BDT operations in an introduce service model -->
+		<copy todir="${introduce.extensions.dir}/bdt" file="${resources.dir}/bdt-introduce.xml"/>
 		<!-- libraries -->
 		<copy todir="${introduce.extensions.dir}/lib">
 			<fileset dir="${ext.lib.dir}">

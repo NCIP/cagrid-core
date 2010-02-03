@@ -1,21 +1,28 @@
 package gov.nih.nci.cagrid.bdt.extension;
 
 import gov.nih.nci.cagrid.common.Utils;
+import gov.nih.nci.cagrid.introduce.beans.ServiceDescription;
 import gov.nih.nci.cagrid.introduce.beans.extension.ServiceExtensionDescriptionType;
 import gov.nih.nci.cagrid.introduce.beans.method.MethodType;
 import gov.nih.nci.cagrid.introduce.beans.method.MethodTypeOutput;
+import gov.nih.nci.cagrid.introduce.beans.method.MethodsType;
 import gov.nih.nci.cagrid.introduce.beans.service.ServiceType;
 import gov.nih.nci.cagrid.introduce.codegen.services.methods.SyncHelper;
 import gov.nih.nci.cagrid.introduce.common.CommonTools;
 import gov.nih.nci.cagrid.introduce.common.ServiceInformation;
 import gov.nih.nci.cagrid.introduce.extension.ExtensionRemovalException;
+import gov.nih.nci.cagrid.introduce.extension.ExtensionsLoader;
 import gov.nih.nci.cagrid.introduce.extension.ServiceExtensionRemover;
 
 import java.io.File;
+import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.StringReader;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Iterator;
+import java.util.List;
 
 import javax.xml.namespace.QName;
 
@@ -27,7 +34,8 @@ import org.apache.ws.jaxme.js.JavaSourceFactory;
 import org.apache.ws.jaxme.js.util.JavaParser;
 
 /**
- * Removes the BDT extension from a service
+ * Removes the BDT extension and its
+ * provided operations from a service
  * 
  * @author David
  */
@@ -38,29 +46,55 @@ public class BDTExtensionRemover implements ServiceExtensionRemover {
     public static final String BDT_RESOURCE_PACKAGE_PLACEHOLDER = "@resource.package@";
     
     private static Log LOG = LogFactory.getLog(BDTExtensionRemover.class);
-
+    
     public void remove(ServiceExtensionDescriptionType extDesc, ServiceInformation info) throws ExtensionRemovalException {
-        // find any methods that return a BDT handle, comment out the impl (NOT blank it...) and just throw not implemented exception
-        for (ServiceType service : info.getServices().getService()) {
-            if (service.getMethods() != null && service.getMethods().getMethod() != null) {
-                for (MethodType method : service.getMethods().getMethod()) {
-                    if (methodReturnsBdtHandle(service, method)) {
+        // find and remove any BDT methods
+        List<MethodType> bdtMethods = getBdtMethods();
+        ServiceType[] serviceContexts = info.getServices().getService();
+        for (ServiceType context : serviceContexts) {
+            MethodsType contextMethods = context.getMethods();
+            // clone the context methods so the remove operations work on the original
+            MethodType[] methods = contextMethods.getMethod();
+            if (methods != null) {
+                List<MethodType> keptMethods = new ArrayList<MethodType>();
+                Collections.addAll(keptMethods, methods);
+                for (MethodType method : methods) {
+                    // if the method is one of the BDT operations, remove it
+                    if (bdtMethods.contains(method)) {
+                        keptMethods.remove(method);
+                    } else if (methodReturnsBdtHandle(context, method)) {
                         if (!method.isIsProvided()) {
-                            LOG.debug("Method " + method.getName() + " of service " + service.getName() 
-                                + " returns a BDT handle and will have it's implementation disabled");
-                            unimplementBdtMethod(info, service, method);
+                            LOG.debug("Method " + method.getName() + " of service " + context.getName() 
+                                + " returns a BDT handle and will be removed and have its implementation disabled");
+                            keptMethods.remove(method);
+                            unimplementBdtMethod(info, context, method);
                         } else {
-                            LOG.debug("Method " + method.getName() + " of service " + service.getName()
+                            LOG.debug("Method " + method.getName() + " of service " + context.getName()
                                 + " returns a BDT handle, but is provided and so will not be edited");
                         }
                     }
                 }
+                contextMethods.setMethod(keptMethods.toArray(new MethodType[0]));
             }
         }
-        // can't just throw away the BDT resource since we also can't remove the service context
-        // also can't rm BulkDataHandler.wsdl, BulkDataHandlerReference.xsd, BulkDataTransferServiceMetadata.xsd since they
-        // might be used throughout the service, and cleaning all that up is basically impossible
         unimplementBdtResourceClass(info);
+    }
+    
+    
+    private List<MethodType> getBdtMethods() throws ExtensionRemovalException {
+        List<MethodType> methods = new ArrayList<MethodType>();
+        ServiceDescription desc = null;
+        try {
+            FileReader bdtModelReader = new FileReader(new File(
+                ExtensionsLoader.getInstance().getExtensionsDir(), 
+                "bdt" + File.separator + "bdt-introduce.xml"));
+            desc = Utils.deserializeObject(bdtModelReader, ServiceDescription.class);
+            bdtModelReader.close();
+        } catch (Exception ex) {
+            throw new ExtensionRemovalException(ex.getMessage(), ex);
+        }
+        Collections.addAll(methods, desc.getServices().getService(0).getMethods().getMethod());
+        return methods;
     }
     
     
