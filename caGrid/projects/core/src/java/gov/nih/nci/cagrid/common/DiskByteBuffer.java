@@ -103,7 +103,6 @@ public class DiskByteBuffer implements ByteBuffer {
     
     private void initNextBuffer() throws IOException {
         synchronized (bufferFiles) {
-            System.out.flush();
             // close out the previous writer, if any
             if (bufferOutput != null) {
                 bufferOutput.flush();
@@ -124,7 +123,6 @@ public class DiskByteBuffer implements ByteBuffer {
     
     private void advanceBufferReader() throws IOException {
         synchronized (bufferFiles) {
-            System.out.flush();
             // close the current reader, if any
             if (bufferInput != null) {
                 bufferInput.close();
