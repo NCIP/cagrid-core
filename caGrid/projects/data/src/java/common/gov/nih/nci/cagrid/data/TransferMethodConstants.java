@@ -23,4 +23,7 @@ public interface TransferMethodConstants {
     public static final String CQL2_TRANSFER_DATA_SERVICE_PORT_TYPE = "Cql2TransferDataServicePortType";
     public static final QName CQL2_TRANSFER_QUERY_METHOD_INPUT_MESSAGE = new QName(CQL2_TRANSFER_DATA_SERVICE_NAMESPACE, "ExecuteTransferQueryRequest");
     public static final QName CQL2_TRANSFER_QUERY_METHOD_OUTPUT_MESSAGE = new QName(CQL2_TRANSFER_DATA_SERVICE_NAMESPACE, "ExecuteTransferQueryResponse");
+    
+    // transfer disk buffer location
+    public static final String TRANSFER_DISK_BUFFER_DIR_PROPERTY = ServiceParametersConstants.DATA_SERVICE_PARAMS_PREFIX + "transferDiskBufferDir";
 }

@@ -7,6 +7,7 @@ import gov.nih.nci.cagrid.data.QueryProcessingException;
 import gov.nih.nci.cagrid.data.ValidatorConstants;
 import gov.nih.nci.cagrid.data.cql.validation.CqlDomainValidator;
 import gov.nih.nci.cagrid.data.cql.validation.CqlStructureValidator;
+import gov.nih.nci.cagrid.data.cql2.validation.walker.BaseCustomCql2WalkerHandler;
 import gov.nih.nci.cagrid.data.cql2.validation.walker.Cql2Walker;
 import gov.nih.nci.cagrid.data.cql2.validation.walker.Cql2WalkerDomainModelValidationHandler;
 import gov.nih.nci.cagrid.data.cql2.validation.walker.Cql2WalkerException;
@@ -15,9 +16,13 @@ import gov.nih.nci.cagrid.data.cql2.validation.walker.Cql2WalkerHandler;
 import gov.nih.nci.cagrid.data.cql2.validation.walker.Cql2WalkerStructureValidationHandler;
 import gov.nih.nci.cagrid.metadata.dataservice.DomainModel;
 
+import java.lang.reflect.Constructor;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Properties;
+import java.util.StringTokenizer;
 
 import javax.xml.namespace.QName;
 
@@ -34,7 +39,7 @@ public class CqlValidationUtil {
     private CqlDomainValidator cql1DomainValidator = null;
     private Cql2Walker cql2Walker = null;
         
-    CqlValidationUtil(Properties dataServiceConfiguration, DomainModel domainModel) {
+    CqlValidationUtil(Properties dataServiceConfiguration, DomainModel domainModel) throws DataServiceInitializationException {
         this.dataServiceConfiguration = dataServiceConfiguration;
         this.domainModel = domainModel;
         this.cql2Walker = new Cql2Walker();
@@ -43,15 +48,21 @@ public class CqlValidationUtil {
     }
     
     
-    private void initializeCql2WalkerHandlers() {
+    private void initializeCql2WalkerHandlers() throws DataServiceInitializationException {
         if (shouldValidateCqlStructure()) {
             this.cql2Walker.addListener(new Cql2WalkerStructureValidationHandler());
         }
         if (shouldValidateDomainModel()) {
             this.cql2Walker.addListener(new Cql2WalkerDomainModelValidationHandler(domainModel));
         }
+        // temporary empty extensions compatibility handler
         Collection<QName> empty = Collections.emptyList();
         this.cql2Walker.addListener(new Cql2WalkerExtensionCompatibilityValidationHandler(empty));
+        // load up any custom CQL 2 validators
+        List<BaseCustomCql2WalkerHandler> customValidators = getCustomCql2WalkerHandlers();
+        for (BaseCustomCql2WalkerHandler handler : customValidators) {
+            this.cql2Walker.addListener(handler);
+        }
     }
     
     
@@ -126,5 +137,42 @@ public class CqlValidationUtil {
             }
         }
         return cql1DomainValidator;
+    }
+    
+    
+    private List<BaseCustomCql2WalkerHandler> getCustomCql2WalkerHandlers() throws DataServiceInitializationException {
+        List<BaseCustomCql2WalkerHandler> handlers = new LinkedList<BaseCustomCql2WalkerHandler>();
+        String classNames = dataServiceConfiguration.getProperty(ValidatorConstants.CQL2_VALIDATOR_CLASSES);
+        if (classNames != null && classNames.length() != 0) {
+            LOG.debug("Custom CQL 2 validators: " + classNames);
+            StringTokenizer tokenizer = new StringTokenizer(classNames, ",");
+            while (tokenizer.hasMoreTokens()) {
+                String className = tokenizer.nextToken();
+                LOG.debug("Trying to load " + className);
+                try {
+                    Class<?> clazz = Class.forName(className);
+                    LOG.debug("Class loaded, verifying hierarchy");
+                    if (!BaseCustomCql2WalkerHandler.class.isAssignableFrom(clazz)) {
+                        throw new DataServiceInitializationException(
+                            clazz.getName() + " is not a subclass of " + 
+                            BaseCustomCql2WalkerHandler.class.getName());
+                    }
+                    LOG.debug("Getting constructor");
+                    Constructor<?> constructor = clazz.getConstructor(DomainModel.class);
+                    LOG.debug("Invoking constructor");
+                    BaseCustomCql2WalkerHandler handlerInstance = 
+                        (BaseCustomCql2WalkerHandler) constructor.newInstance(domainModel);
+                    LOG.debug("Custom CQL 2 validator " + className + " instantiated");
+                    handlers.add(handlerInstance);
+                } catch (Exception ex) {
+                    String message = "Could not load custom CQL 2 validator: " + ex.getMessage();
+                    LOG.error(message, ex);
+                    throw new DataServiceInitializationException(message, ex);
+                }
+            }
+        } else {
+            LOG.debug("No Custom CQL 2 validators found");
+        }
+        return handlers;
     }
 }

@@ -6,14 +6,15 @@ import gov.nih.nci.cagrid.common.Utils;
 import gov.nih.nci.cagrid.cqlquery.CQLQuery;
 import gov.nih.nci.cagrid.cqlresultset.CQLQueryResults;
 import gov.nih.nci.cagrid.data.CqlSchemaConstants;
-import gov.nih.nci.cagrid.data.DataServiceConstants;
 import gov.nih.nci.cagrid.data.MalformedQueryException;
 import gov.nih.nci.cagrid.data.QueryProcessingException;
+import gov.nih.nci.cagrid.data.TransferMethodConstants;
 import gov.nih.nci.cagrid.data.faults.MalformedQueryExceptionType;
 import gov.nih.nci.cagrid.data.faults.QueryProcessingExceptionType;
 import gov.nih.nci.cagrid.data.service.BaseDataServiceImpl;
 import gov.nih.nci.cagrid.data.service.DataServiceInitializationException;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -66,8 +67,14 @@ public class TransferDataServiceImpl extends BaseDataServiceImpl {
     private TransferServiceContextReference performQuery(final CQLQuery query)
         throws QueryProcessingException, MalformedQueryException {
         // start up a ByteQueue which will be used to push data in and out of
-        // TODO: configurable disk byte buffer dir via system property
-        final ByteQueue byteQueue = new ByteQueue(new DiskByteBuffer());
+        // using a configurable disk byte buffer dir via service property
+        File storageDir = DiskByteBuffer.DEFAULT_BUFFER_DIR;
+        String specifiedStorageDir = getDataServiceConfig().getProperty(TransferMethodConstants.TRANSFER_DISK_BUFFER_DIR_PROPERTY);
+        if (specifiedStorageDir != null && specifiedStorageDir.length() != 0) {
+            storageDir = new File(specifiedStorageDir);
+        }
+        LOG.debug("Temporary transfer storage dir: " + storageDir.getAbsolutePath());
+        final ByteQueue byteQueue = new ByteQueue(new DiskByteBuffer(storageDir, DiskByteBuffer.DEFAULT_BYTES_PER_FILE));
         
         final MessageContext threadMessageContext = MessageContext.getCurrentContext();
         // perform the query and serialize results in a thread so we can return quickly
@@ -138,6 +145,7 @@ public class TransferDataServiceImpl extends BaseDataServiceImpl {
         // create a data descriptor for the results
         DataDescriptor descriptor = new DataDescriptor();
         descriptor.setName(CqlSchemaConstants.CQL_RESULT_SET_QNAME.toString());
+        descriptor.setMetadata(CqlSchemaConstants.CQL_RESULT_SET_QNAME);
 
         // create the reference using the transfer service helper
         TransferServiceContextReference transferReference = null;

@@ -14,6 +14,7 @@ import gov.nih.nci.cagrid.data.codegen.CQLResultTypesGenerator;
 import gov.nih.nci.cagrid.data.codegen.ResultTypeGeneratorInformation;
 import gov.nih.nci.cagrid.data.cql.validation.DomainModelValidator;
 import gov.nih.nci.cagrid.data.cql.validation.ObjectWalkingCQLValidator;
+import gov.nih.nci.cagrid.data.cql2.validation.walker.BaseCustomCql2WalkerHandler;
 import gov.nih.nci.cagrid.data.extension.ServiceFeatures;
 import gov.nih.nci.cagrid.data.service.globus.Cql2DataServiceProviderImpl;
 import gov.nih.nci.cagrid.data.service.globus.DataServiceProviderImpl;
@@ -356,6 +357,11 @@ public class DataServiceQueryOperationProviderCreator implements CreationExtensi
         CommonTools.setServiceProperty(desc, ValidatorConstants.VALIDATE_DOMAIN_MODEL_FLAG,
             DataServiceConstants.DEFAULT_VALIDATE_DOMAIN_MODEL_FLAG, false,
             "A flag to indicate that CQL should be validated for correctness against the domain model");
+        // the service property for custom CQL 2 validators
+        if (!CommonTools.servicePropertyExists(desc, ValidatorConstants.CQL2_VALIDATOR_CLASSES)) {
+            CommonTools.setServiceProperty(desc, ValidatorConstants.CQL2_VALIDATOR_CLASSES, "", false,
+                "A comma separated list of class names which implement " + BaseCustomCql2WalkerHandler.class.getName());
+        }
         // filename of class to qname mapping property
         CommonTools.setServiceProperty(desc, ServiceParametersConstants.CLASS_MAPPINGS_FILENAME,
             DataServiceConstants.CLASS_TO_QNAME_XML, true,

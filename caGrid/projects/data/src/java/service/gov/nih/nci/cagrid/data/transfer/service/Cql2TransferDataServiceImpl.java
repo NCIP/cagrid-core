@@ -6,16 +6,19 @@ import gov.nih.nci.cagrid.common.Utils;
 import gov.nih.nci.cagrid.data.CqlSchemaConstants;
 import gov.nih.nci.cagrid.data.MalformedQueryException;
 import gov.nih.nci.cagrid.data.QueryProcessingException;
+import gov.nih.nci.cagrid.data.TransferMethodConstants;
 import gov.nih.nci.cagrid.data.faults.MalformedQueryExceptionType;
 import gov.nih.nci.cagrid.data.faults.QueryProcessingExceptionType;
 import gov.nih.nci.cagrid.data.service.BaseDataServiceImpl;
 import gov.nih.nci.cagrid.data.service.DataServiceInitializationException;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.rmi.RemoteException;
+import java.util.Iterator;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Executors;
@@ -25,7 +28,7 @@ import org.apache.axis.MessageContext;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.cagrid.cql2.CQLQuery;
-import org.cagrid.cql2.results.CQLQueryResults;
+import org.cagrid.cql2.results.CQLResult;
 import org.cagrid.transfer.context.service.helper.TransferServiceHelper;
 import org.cagrid.transfer.context.stubs.types.TransferServiceContextReference;
 import org.cagrid.transfer.descriptor.DataDescriptor;
@@ -65,8 +68,14 @@ public class Cql2TransferDataServiceImpl extends BaseDataServiceImpl {
     private TransferServiceContextReference performQuery(final CQLQuery query)
         throws QueryProcessingException, MalformedQueryException {
         // start up a ByteQueue which will be used to push data in and out of
-        // TODO: configurable disk byte buffer dir via system property
-        final ByteQueue byteQueue = new ByteQueue(new DiskByteBuffer());
+        // using a configurable disk byte buffer dir via service property
+        File storageDir = DiskByteBuffer.DEFAULT_BUFFER_DIR;
+        String specifiedStorageDir = getDataServiceConfig().getProperty(TransferMethodConstants.TRANSFER_DISK_BUFFER_DIR_PROPERTY);
+        if (specifiedStorageDir != null && specifiedStorageDir.length() != 0) {
+            storageDir = new File(specifiedStorageDir);
+        }
+        LOG.debug("Temporary transfer storage dir: " + storageDir.getAbsolutePath());
+        final ByteQueue byteQueue = new ByteQueue(new DiskByteBuffer(storageDir, DiskByteBuffer.DEFAULT_BYTES_PER_FILE));
         
         final MessageContext threadMessageContext = MessageContext.getCurrentContext();
         // perform the query and serialize results in a thread so we can return quickly
@@ -74,19 +83,23 @@ public class Cql2TransferDataServiceImpl extends BaseDataServiceImpl {
             public Object call() throws QueryProcessingException, MalformedQueryException {
                 HelperAxisEngine.setCurrentMessageContext(threadMessageContext);
                 LOG.debug("CQL 2 query processing started");
-                CQLQueryResults results = processCql2Query(query);
-                LOG.debug("CQL 2 query processing complete.");
+                Iterator<CQLResult> resultIter = processCql2QueryAndIterate(query);
+                LOG.debug("Got CQL 2 results iterator.");
                 OutputStream byteOutput = byteQueue.getByteOutputStream();
                 OutputStreamWriter writer = new OutputStreamWriter(byteOutput);
                 try {
                     LOG.debug("Serializing CQL 2 results to byte queue for transfer");
+                    // TODO: might have to get the wsdd every time we iterate??? SDK beans, for example
                     InputStream serverConfigWsdd = getServerConfigWsddStream();
-                    Utils.serializeObject(results, 
-                        CqlSchemaConstants.CQL2_RESULTS_QNAME, 
-                        writer, serverConfigWsdd);
+                    while (resultIter.hasNext()) {
+                        CQLResult result = resultIter.next();
+                        Utils.serializeObject(result, 
+                            CqlSchemaConstants.CQL2_RESULT_QNAME, 
+                            writer, serverConfigWsdd);
+                    }
                     serverConfigWsdd.close();
                 } catch (Exception ex) {
-                    String error = "Error serializing CQL 2 query results to byte queue: " 
+                    String error = "Error serializing CQL 2 results to byte queue: " 
                         + ex.getMessage();
                     LOG.error(error, ex);
                     throw new QueryProcessingException(error, ex);
@@ -136,7 +149,8 @@ public class Cql2TransferDataServiceImpl extends BaseDataServiceImpl {
         // set up the transfer context
         // create a data descriptor for the results
         DataDescriptor descriptor = new DataDescriptor();
-        descriptor.setName(CqlSchemaConstants.CQL2_RESULTS_QNAME.toString());
+        descriptor.setName(CqlSchemaConstants.CQL2_RESULT_QNAME.toString());
+        descriptor.setMetadata(CqlSchemaConstants.CQL2_RESULT_QNAME);
 
         // create the reference using the transfer service helper
         TransferServiceContextReference transferReference = null;

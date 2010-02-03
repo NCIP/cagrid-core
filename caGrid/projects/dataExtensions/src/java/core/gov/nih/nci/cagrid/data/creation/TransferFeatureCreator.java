@@ -57,6 +57,7 @@ public class TransferFeatureCreator extends FeatureCreator {
 	        installTransferExtension();
 	        copySchemas();
 	        addTransferQueryMethods();
+	        addTransferDirServiceProperty();
         }
 	}
 
@@ -220,6 +221,16 @@ public class TransferFeatureCreator extends FeatureCreator {
 	        }
 		}        
 	}
+	
+	
+	private void addTransferDirServiceProperty() {
+	    if (!CommonTools.servicePropertyExists(
+	        getServiceInformation().getServiceDescriptor(), 
+	        TransferMethodConstants.TRANSFER_DISK_BUFFER_DIR_PROPERTY)) {
+	        CommonTools.setServiceProperty(getServiceInformation().getServiceDescriptor(), 
+	            TransferMethodConstants.TRANSFER_DISK_BUFFER_DIR_PROPERTY, "", false);
+	    }
+	}
 
 
 	private boolean transferExtensionInstalled() {
@@ -255,12 +266,15 @@ public class TransferFeatureCreator extends FeatureCreator {
     
     private boolean featureAlreadyCreated() {
         // does the transfer service context exist?
-        // TODO: this only checks that the transfer context has been created.... need to check for the transferQuery method
-        ServiceType service = CommonTools.getService(
+        // this checks that the transfer context has been created and the transferQuery method exists
+        ServiceType transferContext = CommonTools.getService(
             getServiceInformation().getServices(), "TransferServiceContext");
-        if (service != null) {
-            return "org.cagrid.transfer.context".equals(service.getPackageName());
-        }
-        return false;
+        boolean contextOk = transferContext != null 
+            && "org.cagrid.transfer.context".equals(transferContext.getPackageName());
+        ServiceType mainService = getServiceInformation().getServices().getService(0);
+        MethodType transferMethod = CommonTools.getMethod(
+            mainService.getMethods(), TransferMethodConstants.TRANSFER_QUERY_METHOD_NAME);
+        boolean methodOk = transferMethod != null;
+        return contextOk && methodOk;
     }
 }

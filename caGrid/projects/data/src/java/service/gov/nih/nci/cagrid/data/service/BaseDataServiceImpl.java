@@ -98,7 +98,7 @@ public abstract class BaseDataServiceImpl {
         }
         // load the domain model
         LOG.debug("Attempting to locate Domain Model in base resource");
-        Resource serviceBaseResource;
+        Resource serviceBaseResource = null;
         try {
             serviceBaseResource = ResourceContext.getResourceContext().getResource();
         } catch (Exception ex) {
