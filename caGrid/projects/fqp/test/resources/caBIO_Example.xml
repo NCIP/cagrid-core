@@ -5,7 +5,7 @@
     xmlns:cql="http://CQL.caBIG/1/gov.nih.nci.cagrid.CQLQuery" xmlns="http://caGrid.caBIG/1.0/gov.nih.nci.cagrid.dcql">
     <TargetObject name="gov.nih.nci.cabio.domain.Gene">
         <Group logicRelation="AND">
-            <ForeignAssociation targetServiceURL="http://cabio-gridservice.nci.nih.gov:80/wsrf-cabio/services/cagrid/CaBIOSvc">
+            <ForeignAssociation targetServiceURL="http://cabiogrid40.nci.nih.gov:80/wsrf/services/cagrid/CaBIO40GridSvc">
                 <JoinCondition localAttributeName="fullName" foreignAttributeName="fullName" predicate="EQUAL_TO"/>
                 <ForeignObject name="gov.nih.nci.cabio.domain.Gene">
                     <Attribute name="fullName" value="BRCA%" predicate="LIKE"/>
@@ -14,5 +14,5 @@
             <Attribute name="fullName" value="BRCA%" predicate="LIKE"/>
         </Group>
     </TargetObject>
-    <targetServiceURL>http://cabio-gridservice.nci.nih.gov:80/wsrf-cabio/services/cagrid/CaBIOSvc</targetServiceURL>
+    <targetServiceURL>http://cabiogrid40.nci.nih.gov:80/wsrf/services/cagrid/CaBIO40GridSvc</targetServiceURL>
 </DCQLQuery>

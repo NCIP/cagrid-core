@@ -12,4 +12,20 @@
             <arg value="${service.dcql}" />
         </java>
     </target>
+	
+	<!-- FederatedQueryProcessorTransferClient will obtain default user credential for https service.url -->
+	<target name="runClientTransfer" depends="checkGlobus, defineClasspaths" description="Run the sample Client">
+	    <property name="service.url" value="http://localhost:8080/wsrf/services/cagrid/FederatedQueryProcessor" />
+	    <property name="service.dcql" value="test/resources/caBIO_Example.xml" />
+	    <echo message="Connecting to service: ${service.url}" />
+	    <echo message="Issuing query: ${service.dcql}" />
+	    <java classname="gov.nih.nci.cagrid.fqp.client.FederatedQueryProcessorTransferClient" classpathref="run.classpath" fork="no">
+	        <jvmarg value="-DGLOBUS_LOCATION=${ext.globus.dir}" />
+	        <arg value="-url" />
+	        <arg value="${service.url}" />
+	        <arg value="-dcql" />
+	        <arg value="${service.dcql}" />
+	    </java>
+	</target>	
+		
 </project>
