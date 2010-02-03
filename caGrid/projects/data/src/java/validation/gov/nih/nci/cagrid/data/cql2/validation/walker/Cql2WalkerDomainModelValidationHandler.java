@@ -25,7 +25,6 @@ import org.cagrid.cql2.AssociationPopulationSpecification;
 import org.cagrid.cql2.AttributeValue;
 import org.cagrid.cql2.CQLAssociatedObject;
 import org.cagrid.cql2.CQLAttribute;
-import org.cagrid.cql2.CQLExtension;
 import org.cagrid.cql2.CQLGroup;
 import org.cagrid.cql2.CQLObject;
 import org.cagrid.cql2.CQLQuery;
