@@ -1,7 +1,7 @@
 package gov.nih.nci.cagrid.data.upgrades;
 
 import gov.nih.nci.cagrid.common.Utils;
-import gov.nih.nci.cagrid.data.DataServiceConstants;
+import gov.nih.nci.cagrid.data.BdtMethodConstants;
 import gov.nih.nci.cagrid.data.extension.Data;
 import gov.nih.nci.cagrid.data.style.ServiceStyleContainer;
 import gov.nih.nci.cagrid.data.style.ServiceStyleLoader;
@@ -313,9 +313,13 @@ public class DataServiceUpgradeFrom1pt3 extends ExtensionUpgraderBase {
             }
             // find and remove the bdt query operation
             MethodType bdtQueryMethod = CommonTools.getMethod(
-                mainService.getMethods(), DataServiceConstants.BDT_QUERY_METHOD_NAME);
-            CommonTools.removeMethod(mainService.getMethods(), bdtQueryMethod);
-            getStatus().addDescriptionLine("Removed " + DataServiceConstants.BDT_QUERY_METHOD_NAME + " operation from the service");
+                mainService.getMethods(), BdtMethodConstants.BDT_QUERY_METHOD_NAME);
+            if (bdtQueryMethod != null) {
+                CommonTools.removeMethod(mainService.getMethods(), bdtQueryMethod);
+                getStatus().addDescriptionLine("Removed " + BdtMethodConstants.BDT_QUERY_METHOD_NAME + " operation from the service");
+            } else {
+                getStatus().addDescriptionLine(BdtMethodConstants.BDT_QUERY_METHOD_NAME + " not found; may have been removed earlier");
+            }
         } else {
             getStatus().addDescriptionLine("Service was not using BDT");
         }
