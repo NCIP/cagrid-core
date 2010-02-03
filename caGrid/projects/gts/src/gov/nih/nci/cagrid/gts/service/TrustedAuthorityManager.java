@@ -268,7 +268,11 @@ public class TrustedAuthorityManager {
 
 		if (ta.getCRL() != null) {
 			if ((clean(ta.getCRL().getCrlEncodedString()) != null) && (!ta.getCRL().equals(curr.getCRL()))) {
-				X509Certificate cert = checkAndExtractCertificate(ta);
+			    TrustedAuthority temp = curr;
+			    if(ta.getCertificate()!=null){
+			        temp = ta;
+			    }
+				X509Certificate cert = checkAndExtractCertificate(temp);
 				checkAndExtractCRL(ta, cert);
 				update.addField(TrustedAuthorityTable.CRL, ta.getCRL().getCrlEncodedString());
 				needsUpdate = true;
