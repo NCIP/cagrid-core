@@ -164,8 +164,10 @@ public class FaultHelper {
      */
     public void addDescription(String description) {
         if (description == null) {
-            throw new IllegalArgumentException(i18n.getMessage(
-                "nullArgument", "description"));
+            // not throwing an exception when this can be properly handled
+            // throw new IllegalArgumentException(i18n.getMessage(
+            //    "nullArgument", "description"));
+            description = "null";
         }
         BaseFaultTypeDescription [] desc = this.fault.getDescription();
         BaseFaultTypeDescription [] newDesc = null;
