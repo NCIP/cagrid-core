@@ -15,15 +15,6 @@
 	
 	<bean name="fileHelper" class="org.cagrid.gaards.websso.utils.FileHelper" />
 
-	<bean name="syncdescriptionResouce"
-		class="org.springframework.web.context.support.ServletContextResource">
-		<constructor-arg>
-			<bean
-				class="org.springframework.web.context.support.ServletContextFactoryBean" />
-		</constructor-arg>
-		<constructor-arg value="/WEB-INF/grid-resources/sync-description.xml"></constructor-arg>
-	</bean>
-	
 	<bean name="webSSOProperties" class="org.cagrid.gaards.websso.utils.WebSSOProperties">
 		<constructor-arg ref="fileHelper"></constructor-arg>
 		<constructor-arg value="/WEB-INF/grid-resources/websso-properties.xml"></constructor-arg>

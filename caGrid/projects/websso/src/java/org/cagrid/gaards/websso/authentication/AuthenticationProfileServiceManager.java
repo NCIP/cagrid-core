@@ -172,8 +172,10 @@ public class AuthenticationProfileServiceManager extends Runner implements Initi
 		Set<QName> authenticationServiceProfiles = new HashSet<QName>();
 		for (AuthenticationServiceInformation authenticationServiceInformation : authenticationServices) {
 			if (authenticationServiceInformation.getAuthenticationServiceURL().equals(authenticationServiceURL)) {
-				authenticationServiceProfiles
-						.addAll(authenticationServiceInformation.getAuthenticationServiceProfiles());
+				Set<QName> tempasProfiles = authenticationServiceInformation.getAuthenticationServiceProfiles();
+				if(tempasProfiles!=null && tempasProfiles.size()>0){
+					authenticationServiceProfiles.addAll(tempasProfiles);
+				}
 				break;
 			}
 		}

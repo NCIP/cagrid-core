@@ -18,7 +18,7 @@ public class WebSSOPropertiesTest extends
 		AbstractDependencyInjectionSpringContextTests {
 
 	protected String[] getConfigLocations() {
-		return new String[] { "classpath:websso-beans.xml" };
+		return new String[] { "classpath:/WEB-INF/websso-beans.xml" };
 	}
 
 	private WebSSOProperties webSSOProperties;

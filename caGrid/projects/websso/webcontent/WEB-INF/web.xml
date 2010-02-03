@@ -10,7 +10,8 @@
 			/WEB-INF/spring-configuration/*.xml
 			/WEB-INF/deployerConfigContext.xml
 			/WEB-INF/cagrid-deployerConfigContext.xml
-			/WEB-INF/websso-beans.xml
+			/WEB-INF/websso-webcontext-beans.xml
+			/WEB-INF/websso-beans.xml		
 		</param-value>
 	</context-param>
 

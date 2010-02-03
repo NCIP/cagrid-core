@@ -8,8 +8,6 @@ public class WebSSOConstants {
 	public static final String CAGRID_SSO_EMAIL_ID = "CAGRID_SSO_EMAIL_ID";
 	public static final String CAGRID_SSO_DELEGATION_SERVICE_EPR = "CAGRID_SSO_DELEGATION_SERVICE_EPR";
 	public static final String CAGRID_SSO_GRID_CREDENTIAL = "CAGRID_SSO_GRID_CREDENTIAL";
-	public static final String WEBSSO_BEAN_CONFIG_FILE = "websso-beans.xml";
-	public static final String FILE_HELPER = "fileHelper";
 	public static final String WEBSSO_PROPERTIES = "webSSOProperties";
 	public static final String SYNC_DESC_RESOURCE = "syncdescriptionResouce";
 	public static final String AUTHENTICATION_SERVICE_HELPER = "authenticationServiceHelper";
