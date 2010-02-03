@@ -149,7 +149,7 @@
 		<runtarget target="postInit" />
 	</target>
 
-	<target name="defineClasspaths" depends="checkGlobus">
+	<target name="defineClasspaths" depends="checkGlobus, defineContribTasks">
 		<path id="tasks.run.extended.classpath"/>
 		<runtarget target="defineExtendedClasspaths" />
 		<path id="base.classpath">
