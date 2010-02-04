@@ -14,6 +14,7 @@
 		<ivy:retrieve conf="impl" pattern="${ivy.resolved.artifacts.dir}/dependencies/service/[type]s/[originalname](.[ext])" sync="true" type="jar" />
 		<ivy:retrieve conf="impl-test" pattern="${ivy.resolved.artifacts.dir}/dependencies/test/[type]s/[originalname](.[ext])" sync="true" type="*"/>
 		<ivy:retrieve conf="serviceTools" pattern="${ivy.resolved.artifacts.dir}/dependencies/tools/[type]s/[originalname](.[ext])" type="jar" />
+		<ivy:retrieve conf="ext-cql-schemas" pattern="${basedir}/schema/cql2.0/[artifact](.[ext])" sync="true" type="xsd" />
 		<ivy:retrieve conf="${ivy.resolve.configurations}" pattern="${basedir}/schema/FederatedQueryProcessor/xsd/[artifact](.[ext])" sync="true" type="xsd" />
 	</target>
 	

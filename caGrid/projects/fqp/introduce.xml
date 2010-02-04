@@ -1,5 +1,15 @@
 <ns1:ServiceDescription introduceVersion="1.4" xmlns:ns1="gme://gov.nih.nci.cagrid/1/Introduce">
  <ns2:Namespaces xsi:type="ns2:NamespacesType" xmlns:ns2="gme://gov.nih.nci.cagrid.introduce/1/Namespace" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <ns2:Namespace generateStubs="false" location="../cql2.0/DCQLResults_2.0.xsd" namespace="http://DCQL.caBIG/2/org.cagrid.data.dcql.results" packageName="org.cagrid.data.dcql.results" xsi:type="ns2:NamespaceType">
+   <ns2:SchemaElement type="DCQLQueryResultsCollection" xsi:type="ns2:SchemaElementType"/>
+  </ns2:Namespace>
+  <ns2:Namespace generateStubs="false" location="../cql2.0/CQLQueryResults.xsd" namespace="http://CQL.caBIG/2/org.cagrid.cql2.results" packageName="org.cagrid.cql2.results" xsi:type="ns2:NamespaceType">
+   <ns2:SchemaElement type="CQLQueryResults" xsi:type="ns2:SchemaElementType"/>
+  </ns2:Namespace>
+  <ns2:Namespace generateStubs="false" location="../cql2.0/Aggregations.xsd" namespace="http://CQL.caBIG/2/org.cagrid.cql2" packageName="org.cagrid.cql2" xsi:type="ns2:NamespaceType"/>
+  <ns2:Namespace generateStubs="false" location="../cql2.0/DCQL_2.0.xsd" namespace="http://DCQL.caBIG/2/org.cagrid.data.dcql" packageName="org.cagrid.data.dcql" xsi:type="ns2:NamespaceType">
+   <ns2:SchemaElement type="DCQLQuery" xsi:type="ns2:SchemaElementType"/>
+  </ns2:Namespace>
   <ns2:Namespace location="./FQPResultsMetadata.xsd" namespace="http://fqp.cagrid.nci.nih.gov/FederatedQueryResultsMetadata" packageName="org.cagrid.fqp.results.metadata" xsi:type="ns2:NamespaceType">
    <ns2:SchemaElement type="FederatedQueryExecutionStatus" xsi:type="ns2:SchemaElementType"/>
   </ns2:Namespace>

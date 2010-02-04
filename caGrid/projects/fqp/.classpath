@@ -101,5 +101,7 @@
 	<classpathentry kind="lib" path="ext/dependencies/service/jars/jdom-1.0.jar"/>
 	<classpathentry kind="lib" path="ext/dependencies/service/jars/jprov.jar"/>
 	<classpathentry kind="lib" path="ext/dependencies/test/jars/caGrid-core-tests-1.4-dev.jar"/>
+	<classpathentry kind="lib" path="ext/dependencies/service/jars/caGrid-CQL-cql.2.0-1.4-dev.jar"/>
+	<classpathentry kind="lib" path="ext/dependencies/service/jars/caGrid-CQL-dcql.2.0-1.4-dev.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

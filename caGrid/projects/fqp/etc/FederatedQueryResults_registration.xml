@@ -13,25 +13,29 @@
   <Content xsi:type="agg:AggregatorContent" xmlns:agg="http://mds.globus.org/aggregator/types">
     <agg:AggregatorConfig xsi:type="agg:AggregatorConfig">
       <agg:GetMultipleResourcePropertiesPollType
-			xmlns:ns2="http://CQL.caBIG/1/gov.nih.nci.cagrid.CQLQuery"
-			xmlns:ns16="http://fqp.cagrid.nci.nih.gov/FederatedResults/types"
-			xmlns:ns13="http://schemas.xmlsoap.org/ws/2004/08/addressing"
-			xmlns:ns9="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata"
-			xmlns:ns11="http://transfer.cagrid.org/Transfer"
-			xmlns:ns14="http://gov.nih.nci.cagrid.enumeration/EnumerationResponseContainer"
+			xmlns:ns6="http://CQL.caBIG/1/gov.nih.nci.cagrid.CQLQuery"
+			xmlns:ns20="http://fqp.cagrid.nci.nih.gov/FederatedResults/types"
+			xmlns:ns17="http://schemas.xmlsoap.org/ws/2004/08/addressing"
+			xmlns:ns15="http://transfer.cagrid.org/Transfer"
+			xmlns:ns13="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata"
+			xmlns:ns18="http://gov.nih.nci.cagrid.enumeration/EnumerationResponseContainer"
 			xmlns:xs="http://www.w3.org/2001/XMLSchema"
-			xmlns:ns7="http://fqp.cagrid.nci.nih.gov/FederatedQueryProcessor/types"
-			xmlns:ns3="http://caGrid.caBIG/1.0/gov.nih.nci.cagrid.dcql"
-			xmlns:ns6="http://cds.gaards.cagrid.org/CredentialDelegationService/DelegatedCredential/types"
-			xmlns:ns12="http://schemas.xmlsoap.org/ws/2004/09/enumeration"
-			xmlns:ns8="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.security"
-			xmlns:ns5="http://caGrid.caBIG/1.0/gov.nih.nci.cagrid.dcqlresult"
-			xmlns:ns10="http://transfer.cagrid.org/TransferService/Context/types"
-			xmlns:ns4="http://CQL.caBIG/1/gov.nih.nci.cagrid.CQLResultSet"
-			xmlns:ns15="http://gov.nih.nci.cagrid.enumeration/CaGridEnumeration/types"
-			xmlns:ns0="http://fqp.cagrid.nci.nih.gov/FederatedQueryResultsMetadata"
-			xmlns:ns17="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ResourceLifetime-1.2-draft-01.xsd"
-			xmlns:ns1="http://fqp.cagrid.nci.nih.gov/QueryExecutionParameters">
+			xmlns:ns11="http://fqp.cagrid.nci.nih.gov/FederatedQueryProcessor/types"
+			xmlns:ns7="http://caGrid.caBIG/1.0/gov.nih.nci.cagrid.dcql"
+			xmlns:ns10="http://cds.gaards.cagrid.org/CredentialDelegationService/DelegatedCredential/types"
+			xmlns:ns16="http://schemas.xmlsoap.org/ws/2004/09/enumeration"
+			xmlns:ns12="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.security"
+			xmlns:ns2="http://CQL.caBIG/2/org.cagrid.cql2"
+			xmlns:ns9="http://caGrid.caBIG/1.0/gov.nih.nci.cagrid.dcqlresult"
+			xmlns:ns0="http://DCQL.caBIG/2/org.cagrid.data.dcql.results"
+			xmlns:ns14="http://transfer.cagrid.org/TransferService/Context/types"
+			xmlns:ns8="http://CQL.caBIG/1/gov.nih.nci.cagrid.CQLResultSet"
+			xmlns:ns19="http://gov.nih.nci.cagrid.enumeration/CaGridEnumeration/types"
+			xmlns:ns3="http://DCQL.caBIG/2/org.cagrid.data.dcql"
+			xmlns:ns1="http://CQL.caBIG/2/org.cagrid.cql2.results"
+			xmlns:ns4="http://fqp.cagrid.nci.nih.gov/FederatedQueryResultsMetadata"
+			xmlns:ns21="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ResourceLifetime-1.2-draft-01.xsd"
+			xmlns:ns5="http://fqp.cagrid.nci.nih.gov/QueryExecutionParameters">
         <!-- Specifies that the index should refresh information
             every 300000 milliseconds (once every 5 minutes) -->
         <agg:PollIntervalMillis>INDEX_REFRESH</agg:PollIntervalMillis>

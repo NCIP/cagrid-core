@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<definitions xmlns="http://schemas.xmlsoap.org/wsdl/" xmlns:tns="http://fqp.cagrid.nci.nih.gov/FederatedQueryProcessor" xmlns:wsrp="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ResourceProperties-1.2-draft-01.xsd" xmlns:wsa="http://schemas.xmlsoap.org/ws/2004/03/addressing" xmlns:wsrbfw="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-BaseFaults-1.2-draft-01.wsdl" xmlns:wsrpw="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ResourceProperties-1.2-draft-01.wsdl" xmlns:wns1="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ResourceProperties-1.2-draft-01.wsdl" xmlns:wns0="http://security.introduce.cagrid.nci.nih.gov/ServiceSecurity" xmlns:ns2="http://CQL.caBIG/1/gov.nih.nci.cagrid.CQLQuery" xmlns:ns16="http://fqp.cagrid.nci.nih.gov/FederatedResults/types" xmlns:ns13="http://schemas.xmlsoap.org/ws/2004/08/addressing" xmlns:ns9="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata" xmlns:ns11="http://transfer.cagrid.org/Transfer" xmlns:ns14="http://gov.nih.nci.cagrid.enumeration/EnumerationResponseContainer" xmlns:ns7="http://fqp.cagrid.nci.nih.gov/FederatedQueryProcessor/types" xmlns:ns3="http://caGrid.caBIG/1.0/gov.nih.nci.cagrid.dcql" xmlns:ns6="http://cds.gaards.cagrid.org/CredentialDelegationService/DelegatedCredential/types" xmlns:ns12="http://schemas.xmlsoap.org/ws/2004/09/enumeration" xmlns:ns8="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.security" xmlns:ns5="http://caGrid.caBIG/1.0/gov.nih.nci.cagrid.dcqlresult" xmlns:ns10="http://transfer.cagrid.org/TransferService/Context/types" xmlns:ns4="http://CQL.caBIG/1/gov.nih.nci.cagrid.CQLResultSet" xmlns:ns15="http://gov.nih.nci.cagrid.enumeration/CaGridEnumeration/types" xmlns:ns0="http://fqp.cagrid.nci.nih.gov/FederatedQueryResultsMetadata" xmlns:ns17="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ResourceLifetime-1.2-draft-01.xsd" xmlns:ns1="http://fqp.cagrid.nci.nih.gov/QueryExecutionParameters" name="FederatedQueryProcessor" targetNamespace="http://fqp.cagrid.nci.nih.gov/FederatedQueryProcessor">
+<definitions xmlns="http://schemas.xmlsoap.org/wsdl/" xmlns:tns="http://fqp.cagrid.nci.nih.gov/FederatedQueryProcessor" xmlns:wsrp="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ResourceProperties-1.2-draft-01.xsd" xmlns:wsa="http://schemas.xmlsoap.org/ws/2004/03/addressing" xmlns:wsrbfw="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-BaseFaults-1.2-draft-01.wsdl" xmlns:wsrpw="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ResourceProperties-1.2-draft-01.wsdl" xmlns:wns1="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ResourceProperties-1.2-draft-01.wsdl" xmlns:wns0="http://security.introduce.cagrid.nci.nih.gov/ServiceSecurity" xmlns:ns6="http://CQL.caBIG/1/gov.nih.nci.cagrid.CQLQuery" xmlns:ns20="http://fqp.cagrid.nci.nih.gov/FederatedResults/types" xmlns:ns17="http://schemas.xmlsoap.org/ws/2004/08/addressing" xmlns:ns15="http://transfer.cagrid.org/Transfer" xmlns:ns13="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata" xmlns:ns18="http://gov.nih.nci.cagrid.enumeration/EnumerationResponseContainer" xmlns:ns11="http://fqp.cagrid.nci.nih.gov/FederatedQueryProcessor/types" xmlns:ns7="http://caGrid.caBIG/1.0/gov.nih.nci.cagrid.dcql" xmlns:ns10="http://cds.gaards.cagrid.org/CredentialDelegationService/DelegatedCredential/types" xmlns:ns16="http://schemas.xmlsoap.org/ws/2004/09/enumeration" xmlns:ns12="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.security" xmlns:ns2="http://CQL.caBIG/2/org.cagrid.cql2" xmlns:ns9="http://caGrid.caBIG/1.0/gov.nih.nci.cagrid.dcqlresult" xmlns:ns0="http://DCQL.caBIG/2/org.cagrid.data.dcql.results" xmlns:ns14="http://transfer.cagrid.org/TransferService/Context/types" xmlns:ns8="http://CQL.caBIG/1/gov.nih.nci.cagrid.CQLResultSet" xmlns:ns19="http://gov.nih.nci.cagrid.enumeration/CaGridEnumeration/types" xmlns:ns3="http://DCQL.caBIG/2/org.cagrid.data.dcql" xmlns:ns1="http://CQL.caBIG/2/org.cagrid.cql2.results" xmlns:ns4="http://fqp.cagrid.nci.nih.gov/FederatedQueryResultsMetadata" xmlns:ns21="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ResourceLifetime-1.2-draft-01.xsd" xmlns:ns5="http://fqp.cagrid.nci.nih.gov/QueryExecutionParameters" name="FederatedQueryProcessor" targetNamespace="http://fqp.cagrid.nci.nih.gov/FederatedQueryProcessor">
   <import namespace="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ResourceProperties-1.2-draft-01.wsdl" location="../wsrf/properties/WS-ResourceProperties.wsdl" />
   <import namespace="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-BaseFaults-1.2-draft-01.wsdl" location="../wsrf/faults/WS-BaseFaults.wsdl" />
   <import namespace="http://security.introduce.cagrid.nci.nih.gov/ServiceSecurity" location="./ServiceSecurity.wsdl" />
@@ -14,18 +14,22 @@
       <import namespace="http://CQL.caBIG/1/gov.nih.nci.cagrid.CQLQuery" schemaLocation="./xsd/1_gov.nih.nci.cagrid.CQLQuery.xsd" />
       <import namespace="http://fqp.cagrid.nci.nih.gov/FederatedResults/types" schemaLocation="./FederatedQueryResultsTypes.xsd" />
       <import namespace="http://schemas.xmlsoap.org/ws/2004/08/addressing" schemaLocation="./addressing.xsd" />
-      <import namespace="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata" schemaLocation="./xsd/cagrid/types/caGridMetadata.xsd" />
       <import namespace="http://transfer.cagrid.org/Transfer" schemaLocation="./caGrid_Transfer.xsd" />
+      <import namespace="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata" schemaLocation="./xsd/cagrid/types/caGridMetadata.xsd" />
       <import namespace="http://gov.nih.nci.cagrid.enumeration/EnumerationResponseContainer" schemaLocation="./EnumerationResponseContainer.xsd" />
       <import namespace="http://fqp.cagrid.nci.nih.gov/FederatedQueryProcessor/types" schemaLocation="./FederatedQueryProcessorTypes.xsd" />
       <import namespace="http://caGrid.caBIG/1.0/gov.nih.nci.cagrid.dcql" schemaLocation="./Distributed_CQL_schema_2.0.xsd" />
       <import namespace="http://cds.gaards.cagrid.org/CredentialDelegationService/DelegatedCredential/types" schemaLocation="./DelegatedCredentialTypes.xsd" />
       <import namespace="http://schemas.xmlsoap.org/ws/2004/09/enumeration" schemaLocation="./enumeration.xsd" />
       <import namespace="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.security" schemaLocation="./xsd/cagrid/types/security/security.xsd" />
+      <import namespace="http://CQL.caBIG/2/org.cagrid.cql2" schemaLocation="../cql2.0/Aggregations.xsd" />
       <import namespace="http://caGrid.caBIG/1.0/gov.nih.nci.cagrid.dcqlresult" schemaLocation="./Distributed_CQL_Results_schema_2.0.xsd" />
+      <import namespace="http://DCQL.caBIG/2/org.cagrid.data.dcql.results" schemaLocation="../cql2.0/DCQLResults_2.0.xsd" />
       <import namespace="http://transfer.cagrid.org/TransferService/Context/types" schemaLocation="./TransferServiceContextTypes.xsd" />
       <import namespace="http://CQL.caBIG/1/gov.nih.nci.cagrid.CQLResultSet" schemaLocation="./xsd/1_gov.nih.nci.cagrid.CQLResultSet.xsd" />
       <import namespace="http://gov.nih.nci.cagrid.enumeration/CaGridEnumeration/types" schemaLocation="./CaGridEnumerationTypes.xsd" />
+      <import namespace="http://DCQL.caBIG/2/org.cagrid.data.dcql" schemaLocation="../cql2.0/DCQL_2.0.xsd" />
+      <import namespace="http://CQL.caBIG/2/org.cagrid.cql2.results" schemaLocation="../cql2.0/CQLQueryResults.xsd" />
       <import namespace="http://fqp.cagrid.nci.nih.gov/FederatedQueryResultsMetadata" schemaLocation="./FQPResultsMetadata.xsd" />
       <import namespace="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ResourceLifetime-1.2-draft-01.xsd" schemaLocation="../wsrf/lifetime/WS-ResourceLifetime.xsd" />
       <import namespace="http://fqp.cagrid.nci.nih.gov/QueryExecutionParameters" schemaLocation="./QueryExecutionParameters.xsd" />
@@ -35,7 +39,7 @@
             <element name="query">
               <complexType>
                 <sequence>
-                  <element ref="ns3:DCQLQuery" minOccurs="1" maxOccurs="1" />
+                  <element ref="ns7:DCQLQuery" minOccurs="1" maxOccurs="1" />
                 </sequence>
               </complexType>
             </element>
@@ -45,7 +49,7 @@
       <element name="ExecuteResponse">
         <complexType>
           <sequence>
-            <element ref="ns5:DCQLQueryResultsCollection" minOccurs="1" maxOccurs="1" />
+            <element ref="ns9:DCQLQueryResultsCollection" minOccurs="1" maxOccurs="1" />
           </sequence>
         </complexType>
       </element>
@@ -55,7 +59,7 @@
             <element name="query">
               <complexType>
                 <sequence>
-                  <element ref="ns3:DCQLQuery" minOccurs="1" maxOccurs="1" />
+                  <element ref="ns7:DCQLQuery" minOccurs="1" maxOccurs="1" />
                 </sequence>
               </complexType>
             </element>
@@ -65,7 +69,7 @@
       <element name="ExecuteAndAggregateResultsResponse">
         <complexType>
           <sequence>
-            <element ref="ns4:CQLQueryResultCollection" minOccurs="1" maxOccurs="1" />
+            <element ref="ns8:CQLQueryResultCollection" minOccurs="1" maxOccurs="1" />
           </sequence>
         </complexType>
       </element>
@@ -75,7 +79,7 @@
             <element name="query">
               <complexType>
                 <sequence>
-                  <element ref="ns3:DCQLQuery" minOccurs="1" maxOccurs="1" />
+                  <element ref="ns7:DCQLQuery" minOccurs="1" maxOccurs="1" />
                 </sequence>
               </complexType>
             </element>
@@ -85,7 +89,7 @@
       <element name="ExecuteAsynchronouslyResponse">
         <complexType>
           <sequence>
-            <element ref="ns16:FederatedQueryResultsReference" minOccurs="1" maxOccurs="1" />
+            <element ref="ns20:FederatedQueryResultsReference" minOccurs="1" maxOccurs="1" />
           </sequence>
         </complexType>
       </element>
@@ -95,21 +99,21 @@
             <element name="query">
               <complexType>
                 <sequence>
-                  <element ref="ns3:DCQLQuery" minOccurs="1" maxOccurs="1" />
+                  <element ref="ns7:DCQLQuery" minOccurs="1" maxOccurs="1" />
                 </sequence>
               </complexType>
             </element>
             <element name="delegatedCredentialReference">
               <complexType>
                 <sequence>
-                  <element ref="ns6:DelegatedCredentialReference" minOccurs="1" maxOccurs="1" />
+                  <element ref="ns10:DelegatedCredentialReference" minOccurs="1" maxOccurs="1" />
                 </sequence>
               </complexType>
             </element>
             <element name="queryExecutionParameters">
               <complexType>
                 <sequence>
-                  <element ref="ns1:QueryExecutionParameters" minOccurs="1" maxOccurs="1" />
+                  <element ref="ns5:QueryExecutionParameters" minOccurs="1" maxOccurs="1" />
                 </sequence>
               </complexType>
             </element>
@@ -119,14 +123,14 @@
       <element name="QueryResponse">
         <complexType>
           <sequence>
-            <element ref="ns16:FederatedQueryResultsReference" minOccurs="1" maxOccurs="1" />
+            <element ref="ns20:FederatedQueryResultsReference" minOccurs="1" maxOccurs="1" />
           </sequence>
         </complexType>
       </element>
       <element name="FederatedQueryProcessorResourceProperties">
         <complexType>
           <sequence>
-            <element ref="ns9:ServiceMetadata" />
+            <element ref="ns13:ServiceMetadata" />
           </sequence>
         </complexType>
       </element>
@@ -158,10 +162,10 @@
     <part name="parameters" element="tns:QueryResponse" />
   </message>
   <message name="FederatedQueryProcessingFaultFaultMessage">
-    <part name="fault" element="ns7:FederatedQueryProcessingFault" />
+    <part name="fault" element="ns11:FederatedQueryProcessingFault" />
   </message>
   <message name="InternalErrorFaultFaultMessage">
-    <part name="fault" element="ns16:InternalErrorFault" />
+    <part name="fault" element="ns20:InternalErrorFault" />
   </message>
   <!--============================================================
 

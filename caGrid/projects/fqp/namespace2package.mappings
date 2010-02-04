@@ -27,21 +27,27 @@ http\://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ResourceProperties-1.2-draft-01
 http\://CQL.caBIG/1/gov.nih.nci.cagrid.CQLQuery=gov.nih.nci.cagrid.cqlquery
 http\://fqp.cagrid.nci.nih.gov/FederatedResults/types=gov.nih.nci.cagrid.fqp.results.stubs.types
 http\://schemas.xmlsoap.org/ws/2004/08/addressing=org.globus.addressing
-gme\://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata=gov.nih.nci.cagrid.metadata
 http\://transfer.cagrid.org/Transfer=org.cagrid.transfer.descriptor
+gme\://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata=gov.nih.nci.cagrid.metadata
 http\://gov.nih.nci.cagrid.enumeration/EnumerationResponseContainer=gov.nih.nci.cagrid.enumeration.stubs.response
 http\://fqp.cagrid.nci.nih.gov/FederatedQueryProcessor/types=gov.nih.nci.cagrid.fqp.stubs.types
 http\://caGrid.caBIG/1.0/gov.nih.nci.cagrid.dcql=gov.nih.nci.cagrid.dcql
 http\://cds.gaards.cagrid.org/CredentialDelegationService/DelegatedCredential/types=org.cagrid.gaards.cds.delegated.stubs.types
 http\://schemas.xmlsoap.org/ws/2004/09/enumeration=org.xmlsoap.schemas.ws._2004._09.enumeration
 gme\://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.security=gov.nih.nci.cagrid.metadata.security
+http\://CQL.caBIG/2/org.cagrid.cql2=org.cagrid.cql2
 http\://caGrid.caBIG/1.0/gov.nih.nci.cagrid.dcqlresult=gov.nih.nci.cagrid.dcqlresult
+http\://DCQL.caBIG/2/org.cagrid.data.dcql.results=org.cagrid.data.dcql.results
 http\://transfer.cagrid.org/TransferService/Context/types=org.cagrid.transfer.context.stubs.types
 http\://CQL.caBIG/1/gov.nih.nci.cagrid.CQLResultSet=gov.nih.nci.cagrid.cqlresultset
 http\://gov.nih.nci.cagrid.enumeration/CaGridEnumeration/types=gov.nih.nci.cagrid.enumeration.stubs.types
+http\://DCQL.caBIG/2/org.cagrid.data.dcql=org.cagrid.data.dcql
+http\://CQL.caBIG/2/org.cagrid.cql2.results=org.cagrid.cql2.results
 http\://fqp.cagrid.nci.nih.gov/FederatedQueryResultsMetadata=org.cagrid.fqp.results.metadata
 http\://fqp.cagrid.nci.nih.gov/QueryExecutionParameters=org.cagrid.fqp.execution
 gme\://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.service=gov.nih.nci.cagrid.metadata.service
+
+
 
 
 
