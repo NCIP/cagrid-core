@@ -25,9 +25,9 @@ import org.w3c.dom.Node;
  *
  * This is a PDP for use with the globus authorization callout.
  * This class will have a authorize method for each method on this grid service.
- * The method is responsibe for making any authorization callouts required to satisfy the 
+ * The method is responsible for making any authorization callouts required to satisfy the 
  * authorization requirements placed on each method call.  Each method will either return
- * apon a successful authorization or will throw an exception apon a failed authorization.
+ * upon a successful authorization or will throw an exception upon a failed authorization.
  * 
  * @created by Introduce Toolkit version 1.4
  * 
@@ -78,6 +78,22 @@ public class IdentifiersNAServiceAuthorization implements PDP {
 	public void authorizeResolveIdentifier(Subject peerSubject, MessageContext context, QName operation) throws AuthorizationException {
 		
 	}
+	   				
+	public void authorizeDeleteKeys(Subject peerSubject, MessageContext context, QName operation) throws AuthorizationException {
+		
+	}
+	   				
+	public void authorizeCreateKeys(Subject peerSubject, MessageContext context, QName operation) throws AuthorizationException {
+		
+	}
+	   				
+	public void authorizeReplaceKeys(Subject peerSubject, MessageContext context, QName operation) throws AuthorizationException {
+		
+	}
+	   				
+	public void authorizeDeleteAllKeys(Subject peerSubject, MessageContext context, QName operation) throws AuthorizationException {
+		
+	}
 	   
 	
 	public boolean isPermitted(Subject peerSubject, MessageContext context, QName operation)
@@ -103,6 +119,18 @@ public class IdentifiersNAServiceAuthorization implements PDP {
 			return true;
 		} else if(operation.getLocalPart().equals("resolveIdentifier")){
 			authorizeResolveIdentifier(peerSubject, context, operation);
+			return true;
+		} else if(operation.getLocalPart().equals("deleteKeys")){
+			authorizeDeleteKeys(peerSubject, context, operation);
+			return true;
+		} else if(operation.getLocalPart().equals("createKeys")){
+			authorizeCreateKeys(peerSubject, context, operation);
+			return true;
+		} else if(operation.getLocalPart().equals("replaceKeys")){
+			authorizeReplaceKeys(peerSubject, context, operation);
+			return true;
+		} else if(operation.getLocalPart().equals("deleteAllKeys")){
+			authorizeDeleteAllKeys(peerSubject, context, operation);
 			return true;
 		} 		
 		return false;

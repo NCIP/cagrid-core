@@ -10,14 +10,18 @@ import java.net.URISyntaxException;
 import org.cagrid.identifiers.namingauthority.InvalidIdentifierException;
 import org.cagrid.identifiers.namingauthority.NamingAuthority;
 import org.cagrid.identifiers.namingauthority.NamingAuthorityConfigurationException;
+import org.cagrid.identifiers.namingauthority.NamingAuthoritySecurityException;
+import org.cagrid.identifiers.namingauthority.SecurityInfo;
 import org.cagrid.identifiers.namingauthority.domain.IdentifierValues;
 import org.cagrid.identifiers.namingauthority.domain.KeyData;
 import org.cagrid.identifiers.namingauthority.domain.NamingAuthorityConfig;
+import org.cagrid.identifiers.namingauthority.impl.SecurityInfoImpl;
 import org.cagrid.identifiers.namingauthority.util.IdentifierUtil;
 import org.cagrid.identifiers.namingauthority.HttpProcessor;
 import org.exolab.castor.xml.MarshalException;
 import org.exolab.castor.xml.Marshaller;
 import org.exolab.castor.xml.ValidationException;
+import org.globus.axis.gsi.GSIConstants;
 
 
 import javax.servlet.http.*;
@@ -100,11 +104,16 @@ public class HttpProcessorImpl implements HttpProcessor {
                 + "</h3>\n<hr>\n");
 
             for (String key : ivs.getKeys()) {
-                msg.append("<b>Type: &nbsp;</b>" + key + "<br>\n");
+                msg.append("<b>Key: &nbsp;</b>" + key + "<br>\n");
                 KeyData kd = ivs.getValues(key);
-                msg.append("<b>Security Identifier: &nbsp;</b>" + kd.getReadWriteIdentifier().normalize().toString() + "<br>\n");
+                msg.append("<b>Security Identifier: &nbsp;</b>");
+                if (kd.getReadWriteIdentifier() != null) {
+                	msg.append(kd.getReadWriteIdentifier().normalize().toString());
+                }
+                msg.append("<br>\n");
+                
                 for (String value : kd.getValues()) {
-                    msg.append("<b>Data: &nbsp;</b>" + escape(value) + "<br>\n");
+                    msg.append("<b>Key Data: &nbsp;</b>" + escape(value) + "<br>\n");
                 }
                 msg.append("<hr>\n");
             }
@@ -154,6 +163,9 @@ public class HttpProcessorImpl implements HttpProcessor {
     public void process(HttpServletRequest request, HttpServletResponse response) throws IOException {
         StringBuffer msg = new StringBuffer();
         int responseStatus = HttpServletResponse.SC_OK;
+        
+        SecurityInfoImpl secInfo = new SecurityInfoImpl(
+        		(String) request.getAttribute(GSIConstants.GSI_USER_DN));
         
 //        TODO: Authentication/Authorization checks
 //        There are a bunch of 403.x codes that relate to authentication stuff... 
@@ -215,7 +227,7 @@ public class HttpProcessorImpl implements HttpProcessor {
 
                 IdentifierValues ivs = null;
                 try {
-                    ivs = (IdentifierValues) namingAuthority.resolveIdentifier(IdentifierUtil.build(namingAuthority
+                    ivs = (IdentifierValues) namingAuthority.resolveIdentifier(secInfo, IdentifierUtil.build(namingAuthority
                         .getConfiguration().getPrefix(), uri));
                     
                     if (xmlResponse) {
@@ -227,12 +239,16 @@ public class HttpProcessorImpl implements HttpProcessor {
                     }
                 } catch (InvalidIdentifierException e) {
                     e.printStackTrace();
-                    msg.append(prepHtmlError("Input identifier was not found in the system", e));
+                    msg.append(prepHtmlError("Invalid Identifier Exception", e));
                     responseStatus = HttpServletResponse.SC_NOT_FOUND;
                 } catch (NamingAuthorityConfigurationException e) {
                     e.printStackTrace();
-                    msg.append(prepHtmlError("A configuration error has been detected", e));
+                    msg.append(prepHtmlError("Naming Authority Configuration Exception", e));
                     responseStatus = HttpServletResponse.SC_INTERNAL_SERVER_ERROR;
+                } catch (NamingAuthoritySecurityException e) {
+                    e.printStackTrace();
+                    msg.append(prepHtmlError("Naming Authority Security Exception", e));
+                    responseStatus = HttpServletResponse.SC_FORBIDDEN;
                 } catch (Exception e) {
                 	e.printStackTrace();
                 	msg.append(prepHtmlError("Unexpected system error", e));

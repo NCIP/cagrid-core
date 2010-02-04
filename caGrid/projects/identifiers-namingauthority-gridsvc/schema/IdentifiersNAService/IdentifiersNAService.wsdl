@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<definitions xmlns="http://schemas.xmlsoap.org/wsdl/" xmlns:tns="http://identifiers.cagrid.nci.nih.gov/IdentifiersNAService" xmlns:wsrp="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ResourceProperties-1.2-draft-01.xsd" xmlns:wsa="http://schemas.xmlsoap.org/ws/2004/03/addressing" xmlns:wsrbfw="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-BaseFaults-1.2-draft-01.wsdl" xmlns:wsrpw="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ResourceProperties-1.2-draft-01.wsdl" xmlns:wns0="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ResourceProperties-1.2-draft-01.wsdl" xmlns:wns1="http://security.introduce.cagrid.nci.nih.gov/ServiceSecurity" xmlns:ns0="http://na.cagrid.org/1.0/NamingAuthority" xmlns:ns1="http://identifiers.cagrid.nci.nih.gov/IdentifiersNAService/types" xmlns:ns2="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.security" name="IdentifiersNAService" targetNamespace="http://identifiers.cagrid.nci.nih.gov/IdentifiersNAService">
+<definitions xmlns="http://schemas.xmlsoap.org/wsdl/" xmlns:tns="http://identifiers.cagrid.nci.nih.gov/IdentifiersNAService" xmlns:wsrp="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ResourceProperties-1.2-draft-01.xsd" xmlns:wsa="http://schemas.xmlsoap.org/ws/2004/03/addressing" xmlns:wsrbfw="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-BaseFaults-1.2-draft-01.wsdl" xmlns:wsrpw="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ResourceProperties-1.2-draft-01.wsdl" xmlns:wns1="http://security.introduce.cagrid.nci.nih.gov/ServiceSecurity" xmlns:wns0="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ResourceProperties-1.2-draft-01.wsdl" xmlns:ns1="http://identifiers.cagrid.nci.nih.gov/IdentifiersNAService/types" xmlns:ns0="http://na.cagrid.org/1.0/NamingAuthority" xmlns:ns2="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.security" name="IdentifiersNAService" targetNamespace="http://identifiers.cagrid.nci.nih.gov/IdentifiersNAService">
   <import namespace="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ResourceProperties-1.2-draft-01.wsdl" location="../wsrf/properties/WS-ResourceProperties.wsdl" />
   <import namespace="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-BaseFaults-1.2-draft-01.wsdl" location="../wsrf/faults/WS-BaseFaults.wsdl" />
   <import namespace="http://security.introduce.cagrid.nci.nih.gov/ServiceSecurity" location="./ServiceSecurity.wsdl" />
@@ -11,8 +11,8 @@
   <types>
     <schema xmlns="http://www.w3.org/2001/XMLSchema" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:wsrbf="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-BaseFaults-1.2-draft-01.xsd" targetNamespace="http://identifiers.cagrid.nci.nih.gov/IdentifiersNAService" elementFormDefault="qualified" attributeFormDefault="unqualified">
       <import namespace="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-BaseFaults-1.2-draft-01.xsd" schemaLocation="../wsrf/faults/WS-BaseFaults.xsd" />
-      <import namespace="http://na.cagrid.org/1.0/NamingAuthority" schemaLocation="./org.cagrid.identifiers.namingauthority.xsd" />
       <import namespace="http://identifiers.cagrid.nci.nih.gov/IdentifiersNAService/types" schemaLocation="./IdentifiersNAServiceTypes.xsd" />
+      <import namespace="http://na.cagrid.org/1.0/NamingAuthority" schemaLocation="./org.cagrid.identifiers.namingauthority.xsd" />
       <import namespace="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.security" schemaLocation="./xsd/cagrid/types/security/security.xsd" />
       <element name="CreateIdentifierRequest">
         <complexType>
@@ -54,6 +54,93 @@
           </sequence>
         </complexType>
       </element>
+      <element name="DeleteKeysRequest">
+        <complexType>
+          <sequence>
+            <element name="identifier">
+              <complexType>
+                <sequence>
+                  <element ref="ns0:Identifier" minOccurs="1" maxOccurs="1" />
+                </sequence>
+              </complexType>
+            </element>
+            <element name="keyList" type="xs:string" minOccurs="1" maxOccurs="unbounded" />
+          </sequence>
+        </complexType>
+      </element>
+      <element name="DeleteKeysResponse">
+        <complexType>
+          <sequence />
+        </complexType>
+      </element>
+      <element name="CreateKeysRequest">
+        <complexType>
+          <sequence>
+            <element name="identifier">
+              <complexType>
+                <sequence>
+                  <element ref="ns0:Identifier" minOccurs="1" maxOccurs="1" />
+                </sequence>
+              </complexType>
+            </element>
+            <element name="identifierValues">
+              <complexType>
+                <sequence>
+                  <element ref="ns0:IdentifierValues" minOccurs="1" maxOccurs="1" />
+                </sequence>
+              </complexType>
+            </element>
+          </sequence>
+        </complexType>
+      </element>
+      <element name="CreateKeysResponse">
+        <complexType>
+          <sequence />
+        </complexType>
+      </element>
+      <element name="ReplaceKeysRequest">
+        <complexType>
+          <sequence>
+            <element name="identifier">
+              <complexType>
+                <sequence>
+                  <element ref="ns0:Identifier" minOccurs="1" maxOccurs="1" />
+                </sequence>
+              </complexType>
+            </element>
+            <element name="identifierValues">
+              <complexType>
+                <sequence>
+                  <element ref="ns0:IdentifierValues" minOccurs="1" maxOccurs="1" />
+                </sequence>
+              </complexType>
+            </element>
+          </sequence>
+        </complexType>
+      </element>
+      <element name="ReplaceKeysResponse">
+        <complexType>
+          <sequence />
+        </complexType>
+      </element>
+      <element name="DeleteAllKeysRequest">
+        <complexType>
+          <sequence>
+            <element name="identifier">
+              <complexType>
+                <sequence>
+                  <element ref="ns0:Identifier" minOccurs="1" maxOccurs="1" />
+                </sequence>
+              </complexType>
+            </element>
+          </sequence>
+        </complexType>
+      </element>
+      <element name="DeleteAllKeysResponse">
+        <complexType>
+          <sequence />
+        </complexType>
+      </element>
       <element name="IdentifiersNAServiceResourceProperties">
         <complexType>
           <sequence />
@@ -73,6 +160,30 @@
   </message>
   <message name="ResolveIdentifierResponse">
     <part name="parameters" element="tns:ResolveIdentifierResponse" />
+  </message>
+  <message name="DeleteKeysRequest">
+    <part name="parameters" element="tns:DeleteKeysRequest" />
+  </message>
+  <message name="DeleteKeysResponse">
+    <part name="parameters" element="tns:DeleteKeysResponse" />
+  </message>
+  <message name="CreateKeysRequest">
+    <part name="parameters" element="tns:CreateKeysRequest" />
+  </message>
+  <message name="CreateKeysResponse">
+    <part name="parameters" element="tns:CreateKeysResponse" />
+  </message>
+  <message name="ReplaceKeysRequest">
+    <part name="parameters" element="tns:ReplaceKeysRequest" />
+  </message>
+  <message name="ReplaceKeysResponse">
+    <part name="parameters" element="tns:ReplaceKeysResponse" />
+  </message>
+  <message name="DeleteAllKeysRequest">
+    <part name="parameters" element="tns:DeleteAllKeysRequest" />
+  </message>
+  <message name="DeleteAllKeysResponse">
+    <part name="parameters" element="tns:DeleteAllKeysResponse" />
   </message>
   <message name="NamingAuthorityConfigurationFaultFaultMessage">
     <part name="fault" element="ns1:NamingAuthorityConfigurationFault" />
@@ -100,6 +211,22 @@
       <output message="tns:ResolveIdentifierResponse" wsa:Action="http://identifiers.cagrid.nci.nih.gov/IdentifiersNAService/ResolveIdentifierResponse" />
       <fault name="NamingAuthorityConfigurationFault" message="tns:NamingAuthorityConfigurationFaultFaultMessage" wsa:Action="http://identifiers.cagrid.nci.nih.gov/IdentifiersNAService/NamingAuthorityConfigurationFaultFaultMessage" />
       <fault name="InvalidIdentifierFault" message="tns:InvalidIdentifierFaultFaultMessage" wsa:Action="http://identifiers.cagrid.nci.nih.gov/IdentifiersNAService/InvalidIdentifierFaultFaultMessage" />
+    </operation>
+    <operation name="deleteKeys">
+      <input message="tns:DeleteKeysRequest" wsa:Action="http://identifiers.cagrid.nci.nih.gov/IdentifiersNAService/DeleteKeysRequest" />
+      <output message="tns:DeleteKeysResponse" wsa:Action="http://identifiers.cagrid.nci.nih.gov/IdentifiersNAService/DeleteKeysResponse" />
+    </operation>
+    <operation name="createKeys">
+      <input message="tns:CreateKeysRequest" wsa:Action="http://identifiers.cagrid.nci.nih.gov/IdentifiersNAService/CreateKeysRequest" />
+      <output message="tns:CreateKeysResponse" wsa:Action="http://identifiers.cagrid.nci.nih.gov/IdentifiersNAService/CreateKeysResponse" />
+    </operation>
+    <operation name="replaceKeys">
+      <input message="tns:ReplaceKeysRequest" wsa:Action="http://identifiers.cagrid.nci.nih.gov/IdentifiersNAService/ReplaceKeysRequest" />
+      <output message="tns:ReplaceKeysResponse" wsa:Action="http://identifiers.cagrid.nci.nih.gov/IdentifiersNAService/ReplaceKeysResponse" />
+    </operation>
+    <operation name="deleteAllKeys">
+      <input message="tns:DeleteAllKeysRequest" wsa:Action="http://identifiers.cagrid.nci.nih.gov/IdentifiersNAService/DeleteAllKeysRequest" />
+      <output message="tns:DeleteAllKeysResponse" wsa:Action="http://identifiers.cagrid.nci.nih.gov/IdentifiersNAService/DeleteAllKeysResponse" />
     </operation>
     <wsdl:operation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" name="GetMultipleResourceProperties">
       <wsdl:input name="GetMultipleResourcePropertiesRequest" message="wsrpw:GetMultipleResourcePropertiesRequest" wsa:Action="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ResourceProperties/GetMultipleResourceProperties" />

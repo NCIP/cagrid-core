@@ -159,7 +159,6 @@
     </target>
 
 
-	
     <!-- ============================================================== -->
     <!-- Cleans up generated stuff                                      -->
     <!-- ============================================================== -->
@@ -214,5 +213,60 @@
     <!-- Deploys Naming Authority to Tomcat                             -->
     <!-- ============================================================== -->
     <target name="deployTomcat" description="Deploys Naming Authority to Tomcat" depends="all,deployWebApp" />
+	
+	<!-- Creates naming authority system identifier (use for security purposes) -->
+	<!-- ADMIN_USERS: list of grid identities who can administer the system identifier -->
+	<!-- IDENTIFIER_CREATION_USERS: list of grid identities authorized to create identifiers -->
+	<!-- PUBLIC_CREATION: whether anyone can create identifiers or not -->
+	<target name="createSystemIdentifier" description="Creates system identifier" depends="all,getAdminUsers,getIdentifierCreationUsers">
+		<java classname="org.cagrid.identifiers.namingauthority.util.SecurityUtil" fork="yes" failonerror="true">
+			<arg value="WebContent/WEB-INF/applicationContext-na.xml" />
+		    <arg value="WebContent/WEB-INF/na.properties" />
+			<arg value="${adminusers.input}" />
+			<arg value="${identifiercreationusers.input}" />
+			<arg value="${publiccreation.input}" />
+		    <classpath refid="run.classpath" />
+		</java>
+	</target>
+	
+	<target name="getAdminUsers" depends="inputAdminUsers,getAdminUsers-absent,getAdminUsers-present"/>
+	<target name="getIdentifierCreationUsers" depends="inputPublicCreation,publicCreation-no,publicCreation-yes"/>
+	
+	<target name="inputAdminUsers">
+		<input message="ADMIN_USERS (comma separated):" addproperty="adminusers.input.tmp" />
+		<condition property="no.adminusers">
+			<equals arg1="" arg2="${adminusers.input.tmp}" />
+		</condition>
+	</target>
+	
+	<target name="getAdminUsers-absent" if="no.adminusers">
+		<property name="adminusers.input" value="-" />
+	</target>
+	
+	<target name="getAdminUsers-present" unless="no.adminusers">
+		<property name="adminusers.input" value="${adminusers.input.tmp}" />
+	</target>
+		
+	<target name="inputPublicCreation">
+		<input message="PUBLIC_CREATION:" defaultvalue="n" validargs="y,n" addproperty="publiccreation.input" />
+		<condition property="publiccreation-is-no">
+		    <equals arg1="n" arg2="${publiccreation.input}" />
+		</condition>
+	</target>
+	
+	<target name="publicCreation-no" if="publiccreation-is-no">
+		<input message="IDENTIFIER_CREATION_USERS (comma separated):" addproperty="identifiercreationusers.input" />
+		<condition property="do.abort">
+			<equals arg1="" arg2="${identifiercreationusers.input}" />
+		</condition>
+		<fail if="do.abort">IDENTIFIER_CREATION_USERS is required if PUBLIC_CREATION = 'n'</fail>
+	</target>
+	
+	<target name="publicCreation-yes" unless="publiccreation-is-no">
+		<property name="identifiercreationusers.input" value="-" />
+	</target>
+	
+	
 </project>
+
 

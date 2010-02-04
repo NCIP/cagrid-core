@@ -1,6 +1,9 @@
 package org.cagrid.identifiers.namingauthority.impl;
 
 import java.net.URI;
+import java.net.URISyntaxException;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.cagrid.identifiers.namingauthority.IdentifierGenerator;
 import org.cagrid.identifiers.namingauthority.InvalidIdentifierException;
@@ -8,9 +11,15 @@ import org.cagrid.identifiers.namingauthority.InvalidIdentifierValuesException;
 import org.cagrid.identifiers.namingauthority.MaintainerNamingAuthority;
 import org.cagrid.identifiers.namingauthority.NamingAuthorityConfig;
 import org.cagrid.identifiers.namingauthority.NamingAuthorityConfigurationException;
+import org.cagrid.identifiers.namingauthority.NamingAuthoritySecurityException;
+import org.cagrid.identifiers.namingauthority.SecurityInfo;
 import org.cagrid.identifiers.namingauthority.dao.IdentifierMetadataDao;
 import org.cagrid.identifiers.namingauthority.domain.IdentifierValues;
+import org.cagrid.identifiers.namingauthority.domain.KeyData;
 import org.cagrid.identifiers.namingauthority.util.IdentifierUtil;
+import org.cagrid.identifiers.namingauthority.util.Keys;
+import org.cagrid.identifiers.namingauthority.util.SecurityUtil;
+import org.cagrid.identifiers.namingauthority.util.SecurityUtil.Access;
 
 
 public class NamingAuthorityImpl implements MaintainerNamingAuthority {
@@ -18,6 +27,11 @@ public class NamingAuthorityImpl implements MaintainerNamingAuthority {
     private IdentifierMetadataDao identifierDao = null;
 	private IdentifierGenerator identifierGenerator = null;   
 	private NamingAuthorityConfig configuration = null;
+	private SecurityHelper securityHelper = null;
+	
+	public NamingAuthorityImpl() {
+		this.securityHelper = new SecurityHelper(this);
+	}
 	
 	//
 	// Getters/Setters
@@ -46,15 +60,22 @@ public class NamingAuthorityImpl implements MaintainerNamingAuthority {
 	public IdentifierGenerator getIdentifierGenerator() {
 		return identifierGenerator;
 	}
+	
+	public void setSecurityHelper(SecurityHelper helper) {
+		this.securityHelper = helper;
+	}
+	
+
 
 	//
 	// Interfaces
 	//
 
-    public void initialize() { // nothing to initialize 
-    }
-
-    public URI createIdentifier(IdentifierValues ivalues) throws NamingAuthorityConfigurationException {
+	public URI createIdentifier(SecurityInfo secInfo, IdentifierValues ivalues) throws NamingAuthorityConfigurationException, InvalidIdentifierException, NamingAuthoritySecurityException {
+    	
+		SecurityInfo securityInfo = checkSecurityInfo(secInfo);
+		
+    	securityHelper.checkCreateIdentifierSecurity(securityInfo);
 
         URI identifier = generateIdentifier();
         
@@ -63,24 +84,96 @@ public class NamingAuthorityImpl implements MaintainerNamingAuthority {
         return IdentifierUtil.build(getConfiguration().getPrefix(), identifier);
     }
 
-    public IdentifierValues resolveIdentifier(URI identifier) throws InvalidIdentifierException, NamingAuthorityConfigurationException {
+    public IdentifierValues resolveIdentifier(SecurityInfo secInfo, URI identifier) 
+    	throws InvalidIdentifierException, NamingAuthorityConfigurationException, NamingAuthoritySecurityException {
   
-        URI localIdentifier = IdentifierUtil.getLocalName(getConfiguration().getPrefix(), identifier);
-
+    	SecurityInfo securityInfo = checkSecurityInfo(secInfo);
+   
+    	IdentifierValues values = loadIdentifier(identifier);
+       
         IdentifierValues result = null;
-        try {
-        	result = this.identifierDao.getIdentifierValues( localIdentifier );
-        } catch(InvalidIdentifierException e) {
-        	throw new InvalidIdentifierException("The specified identifier (" + identifier + ") was not found.");
-        }
+		try {
+			result = securityHelper.checkSecurity(securityInfo, values);
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw new NamingAuthoritySecurityException(e.getMessage() 
+					+ " " + IdentifierUtil.getStackTrace(e));
+		} 
 
         return result;
     }
 
+    @Override
+	public void createKeys(SecurityInfo secInfo, URI identifier, IdentifierValues values)
+		throws NamingAuthorityConfigurationException,
+			InvalidIdentifierValuesException, InvalidIdentifierException,
+			NamingAuthoritySecurityException {
+		
+    	SecurityInfo securityInfo = checkSecurityInfo(secInfo);
+        IdentifierValues resolvedValues = loadIdentifier(identifier);
+	}
+
+	@Override
+	public void deleteAllKeys(SecurityInfo secInfo, URI identifier)
+			throws NamingAuthorityConfigurationException,
+			InvalidIdentifierValuesException, InvalidIdentifierException,
+			NamingAuthoritySecurityException {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void deleteKeys(SecurityInfo secInfo, String[] keyList)
+			throws NamingAuthorityConfigurationException,
+			InvalidIdentifierValuesException, InvalidIdentifierException,
+			NamingAuthoritySecurityException {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void replaceKeys(SecurityInfo secInfo, URI identifier,
+			IdentifierValues values)
+			throws NamingAuthorityConfigurationException,
+			InvalidIdentifierValuesException, InvalidIdentifierException,
+			NamingAuthoritySecurityException {
+		// TODO Auto-generated method stub
+		
+	}
+	
+	//
+	// Other public methods
+	//
+	
+	public IdentifierValues resolveLocalIdentifier(URI localIdentifier) throws InvalidIdentifierException {
+		return this.identifierDao.getIdentifierValues( localIdentifier );
+	}
+	
     //
     // Private
     //
+	
+	private IdentifierValues loadIdentifier(URI identifier) throws InvalidIdentifierException, NamingAuthorityConfigurationException {
+	
+		URI localIdentifier = IdentifierUtil.getLocalName(getConfiguration().getPrefix(), identifier);
+	
+		try {
+			return resolveLocalIdentifier( localIdentifier );
+		} catch(InvalidIdentifierException e) {
+			throw new InvalidIdentifierException("Identifier [" + identifier + "] does not exist");
+		}
+	}
+	
 	private URI generateIdentifier() {
 		return identifierGenerator.generate(getConfiguration());
 	}
-}
+	
+	private SecurityInfo checkSecurityInfo( SecurityInfo secInfo ) {
+		if (secInfo == null || secInfo.getUser() == null) {
+			return new SecurityInfoImpl("");
+		}
+		
+		return secInfo;
+	}
+ }
+

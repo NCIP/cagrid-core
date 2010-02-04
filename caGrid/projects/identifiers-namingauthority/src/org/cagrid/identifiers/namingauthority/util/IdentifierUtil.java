@@ -1,9 +1,14 @@
 package org.cagrid.identifiers.namingauthority.util;
 
+import java.io.PrintWriter;
+import java.io.StringWriter;
 import java.net.URI;
+import java.util.List;
 
 import org.cagrid.identifiers.namingauthority.InvalidIdentifierException;
 import org.cagrid.identifiers.namingauthority.NamingAuthorityConfigurationException;
+import org.cagrid.identifiers.namingauthority.domain.IdentifierValues;
+import org.cagrid.identifiers.namingauthority.domain.KeyData;
 
 
 public class IdentifierUtil {
@@ -61,4 +66,28 @@ public class IdentifierUtil {
             throw new IllegalArgumentException("Prefix must have a trailing slash: " + prefix);
         }
     }
+	
+	public static List<String> getKeyValues( IdentifierValues values, String keyName ) {
+		
+		if (values == null) {
+			return null;
+		}
+		
+		KeyData kd = values.getValues(keyName);
+		if (kd != null) {
+			return kd.getValues();
+		}
+		
+		return null;
+	}
+	
+	public static String getStackTrace(Throwable t) {  
+	      StringWriter stringWritter = new StringWriter();  
+	      PrintWriter printWritter = new PrintWriter(stringWritter, true);  
+	      t.printStackTrace(printWritter);  
+	      printWritter.flush();  
+	      stringWritter.flush();   
+	  
+	     return stringWritter.toString();  
+	  }   
 }

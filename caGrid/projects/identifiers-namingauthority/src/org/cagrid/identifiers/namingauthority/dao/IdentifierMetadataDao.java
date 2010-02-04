@@ -41,7 +41,7 @@ public class IdentifierMetadataDao extends AbstractDao<IdentifierMetadata> {
     	
     	IdentifierMetadata md = loadIdentifier( localIdentifier );   
     	if (md == null) {
-    		throw new InvalidIdentifierException("The specified local identifier (" + localIdentifier + ") was not found.");
+    		throw new InvalidIdentifierException("Local identifier (" + localIdentifier + ") does not exist");
     	}
     	
     	IdentifierValues result = null;

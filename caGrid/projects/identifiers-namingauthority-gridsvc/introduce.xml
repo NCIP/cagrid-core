@@ -129,6 +129,37 @@
       <ns4:Exception description="" name="InvalidIdentifierFault" qname="ns20:InvalidIdentifierFault" xmlns:ns20="http://identifiers.cagrid.nci.nih.gov/IdentifiersNAService/types"/>
      </ns4:Exceptions>
     </ns4:Method>
+    <ns4:Method description="Deletes keys from an identifier" isImported="false" isProvided="false" name="deleteKeys" xsi:type="ns4:MethodType">
+     <ns4:Inputs>
+      <ns4:Input qName="ns21:Identifier" description="The identifier to be modified" isArray="false" name="identifier" xmlns:ns21="http://na.cagrid.org/1.0/NamingAuthority"/>
+      <ns4:Input qName="xsd:string" description="List of key names to be deleted from the identifier" isArray="true" name="keyList" xmlns:xsd="http://www.w3.org/2001/XMLSchema"/>
+     </ns4:Inputs>
+     <ns4:Output qName="void" description="" isArray="false"/>
+     <ns4:Exceptions/>
+    </ns4:Method>
+    <ns4:Method description="Creates new keys on an existing identifier" isImported="false" isProvided="false" name="createKeys" xsi:type="ns4:MethodType">
+     <ns4:Inputs>
+      <ns4:Input qName="ns22:Identifier" description="" isArray="false" name="identifier" xmlns:ns22="http://na.cagrid.org/1.0/NamingAuthority"/>
+      <ns4:Input qName="ns23:IdentifierValues" description="" isArray="false" name="identifierValues" xmlns:ns23="http://na.cagrid.org/1.0/NamingAuthority"/>
+     </ns4:Inputs>
+     <ns4:Output qName="void" description="" isArray="false"/>
+     <ns4:Exceptions/>
+    </ns4:Method>
+    <ns4:Method description="Replaces the values associated with the specified keys on an existing identifier" isImported="false" isProvided="false" name="replaceKeys" xsi:type="ns4:MethodType">
+     <ns4:Inputs>
+      <ns4:Input qName="ns24:Identifier" description="" isArray="false" name="identifier" xmlns:ns24="http://na.cagrid.org/1.0/NamingAuthority"/>
+      <ns4:Input qName="ns25:IdentifierValues" description="" isArray="false" name="identifierValues" xmlns:ns25="http://na.cagrid.org/1.0/NamingAuthority"/>
+     </ns4:Inputs>
+     <ns4:Output qName="void" description="" isArray="false"/>
+     <ns4:Exceptions/>
+    </ns4:Method>
+    <ns4:Method description="Deletes all keys (except admin keys) on an existing identifier" isImported="false" isProvided="false" name="deleteAllKeys" xsi:type="ns4:MethodType">
+     <ns4:Inputs>
+      <ns4:Input qName="ns26:Identifier" description="" isArray="false" name="identifier" xmlns:ns26="http://na.cagrid.org/1.0/NamingAuthority"/>
+     </ns4:Inputs>
+     <ns4:Output qName="void" description="" isArray="false"/>
+     <ns4:Exceptions/>
+    </ns4:Method>
    </ns4:Methods>
    <ns3:ResourceFrameworkOptions xsi:type="ns3:ResourceFrameworkOptions">
     <ns3:Main xsi:type="ns3:Main"/>
@@ -138,9 +169,9 @@
    </ns3:ResourceFrameworkOptions>
   </ns3:Service>
  </ns3:Services>
- <ns21:Extensions xsi:type="ns21:ExtensionsType" xmlns:ns21="gme://gov.nih.nci.cagrid.introduce/1/Extension" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"/>
- <ns22:ServiceProperties xmlns:ns22="gme://gov.nih.nci.cagrid.introduce/1/Property">
-  <ns22:Property description="The location (relative to the service's ETC location) of the XML configuration file" isFromETC="true" key="naConfigurationFile" value="applicationContext-na.xml"/>
-  <ns22:Property description="The location (relative to the service's ETC location) of the properties file containing information about the naming authority" isFromETC="true" key="naPropertiesFile" value="na.properties"/>
- </ns22:ServiceProperties>
+ <ns27:Extensions xsi:type="ns27:ExtensionsType" xmlns:ns27="gme://gov.nih.nci.cagrid.introduce/1/Extension" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"/>
+ <ns28:ServiceProperties xmlns:ns28="gme://gov.nih.nci.cagrid.introduce/1/Property">
+  <ns28:Property description="The location (relative to the service's ETC location) of the XML configuration file" isFromETC="true" key="naConfigurationFile" value="applicationContext-na.xml"/>
+  <ns28:Property description="The location (relative to the service's ETC location) of the properties file containing information about the naming authority" isFromETC="true" key="naPropertiesFile" value="na.properties"/>
+ </ns28:ServiceProperties>
 </ns1:ServiceDescription>

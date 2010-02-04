@@ -18,13 +18,16 @@ public class NamingAuthorityTestCase extends NamingAuthorityTestCaseBase {
         URI prefix = URI.create("http://na.cagrid.org/foo/");
 
         try {
-            this.NamingAuthority.resolveIdentifier(prefix);
+            this.NamingAuthority.resolveIdentifier(null, prefix);
         } catch (InvalidIdentifierException e) {
             // expected
         } catch (NamingAuthorityConfigurationException e) {
         	e.printStackTrace();
             fail("test configuration error");
-        }
+        } catch (NamingAuthoritySecurityException e) {
+			e.printStackTrace();
+			fail("test configuration exception error");
+		}
         
         //
         // Identifier does not exist
@@ -33,13 +36,16 @@ public class NamingAuthorityTestCase extends NamingAuthorityTestCaseBase {
         		+ "BADIDENTIFIER");
 
         try {
-            this.NamingAuthority.resolveIdentifier(prefix);
+            this.NamingAuthority.resolveIdentifier(null, prefix);
         } catch (InvalidIdentifierException e) {
             // expected
         } catch (NamingAuthorityConfigurationException e) {
         	e.printStackTrace();
             fail("test configuration error");
-        }
+        } catch (NamingAuthoritySecurityException e) {
+			e.printStackTrace();
+			fail("test configuration security exception");
+		}
 	}
 	
 	//
@@ -65,7 +71,7 @@ public class NamingAuthorityTestCase extends NamingAuthorityTestCaseBase {
     private void assertResolvedValues(IdentifierValues values) {
         URI id = null;
         try {
-            id = this.NamingAuthority.createIdentifier(values);
+            id = this.NamingAuthority.createIdentifier(null, values);
         } catch (NamingAuthorityConfigurationException e) {
             e.printStackTrace();
             fail("test configuration error");
@@ -80,7 +86,7 @@ public class NamingAuthorityTestCase extends NamingAuthorityTestCaseBase {
         IdentifierValues resolvedValues = null;
 
         try {
-            resolvedValues = this.NamingAuthority.resolveIdentifier(id);
+            resolvedValues = this.NamingAuthority.resolveIdentifier(null, id);
         } catch (NamingAuthorityConfigurationException e) {
             e.printStackTrace();
             fail("test configuration error");

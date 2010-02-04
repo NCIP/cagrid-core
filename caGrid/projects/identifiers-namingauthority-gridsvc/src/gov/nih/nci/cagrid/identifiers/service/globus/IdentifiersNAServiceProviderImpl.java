@@ -26,6 +26,24 @@ public class IdentifiersNAServiceProviderImpl{
 	}
 	
 
+    public gov.nih.nci.cagrid.identifiers.stubs.CreateKeysResponse createKeys(gov.nih.nci.cagrid.identifiers.stubs.CreateKeysRequest params) throws RemoteException {
+    gov.nih.nci.cagrid.identifiers.stubs.CreateKeysResponse boxedResult = new gov.nih.nci.cagrid.identifiers.stubs.CreateKeysResponse();
+    impl.createKeys(params.getIdentifier().getIdentifier(),params.getIdentifierValues().getIdentifierValues());
+    return boxedResult;
+  }
+
+    public gov.nih.nci.cagrid.identifiers.stubs.ReplaceKeysResponse replaceKeys(gov.nih.nci.cagrid.identifiers.stubs.ReplaceKeysRequest params) throws RemoteException {
+    gov.nih.nci.cagrid.identifiers.stubs.ReplaceKeysResponse boxedResult = new gov.nih.nci.cagrid.identifiers.stubs.ReplaceKeysResponse();
+    impl.replaceKeys(params.getIdentifier().getIdentifier(),params.getIdentifierValues().getIdentifierValues());
+    return boxedResult;
+  }
+
+    public gov.nih.nci.cagrid.identifiers.stubs.DeleteAllKeysResponse deleteAllKeys(gov.nih.nci.cagrid.identifiers.stubs.DeleteAllKeysRequest params) throws RemoteException {
+    gov.nih.nci.cagrid.identifiers.stubs.DeleteAllKeysResponse boxedResult = new gov.nih.nci.cagrid.identifiers.stubs.DeleteAllKeysResponse();
+    impl.deleteAllKeys(params.getIdentifier().getIdentifier());
+    return boxedResult;
+  }
+
     public gov.nih.nci.cagrid.identifiers.stubs.CreateIdentifierResponse createIdentifier(gov.nih.nci.cagrid.identifiers.stubs.CreateIdentifierRequest params) throws RemoteException, gov.nih.nci.cagrid.identifiers.stubs.types.NamingAuthorityConfigurationFault, gov.nih.nci.cagrid.identifiers.stubs.types.InvalidIdentifierValuesFault {
     gov.nih.nci.cagrid.identifiers.stubs.CreateIdentifierResponse boxedResult = new gov.nih.nci.cagrid.identifiers.stubs.CreateIdentifierResponse();
     boxedResult.setIdentifier(impl.createIdentifier(params.getIdentifierValues().getIdentifierValues()));
@@ -35,6 +53,12 @@ public class IdentifiersNAServiceProviderImpl{
     public gov.nih.nci.cagrid.identifiers.stubs.ResolveIdentifierResponse resolveIdentifier(gov.nih.nci.cagrid.identifiers.stubs.ResolveIdentifierRequest params) throws RemoteException, gov.nih.nci.cagrid.identifiers.stubs.types.NamingAuthorityConfigurationFault, gov.nih.nci.cagrid.identifiers.stubs.types.InvalidIdentifierFault {
     gov.nih.nci.cagrid.identifiers.stubs.ResolveIdentifierResponse boxedResult = new gov.nih.nci.cagrid.identifiers.stubs.ResolveIdentifierResponse();
     boxedResult.setIdentifierValues(impl.resolveIdentifier(params.getIdentifier().getIdentifier()));
+    return boxedResult;
+  }
+
+    public gov.nih.nci.cagrid.identifiers.stubs.DeleteKeysResponse deleteKeys(gov.nih.nci.cagrid.identifiers.stubs.DeleteKeysRequest params) throws RemoteException {
+    gov.nih.nci.cagrid.identifiers.stubs.DeleteKeysResponse boxedResult = new gov.nih.nci.cagrid.identifiers.stubs.DeleteKeysResponse();
+    impl.deleteKeys(params.getIdentifier().getIdentifier(),params.getKeyList());
     return boxedResult;
   }
 

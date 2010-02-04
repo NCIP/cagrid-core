@@ -5,7 +5,7 @@ import org.cagrid.identifiers.namingauthority.domain.IdentifierValues;
 
 public interface NamingAuthority {
     public NamingAuthorityConfig getConfiguration();
-    public void initialize();
-    public IdentifierValues resolveIdentifier(URI identifier) throws 
-        InvalidIdentifierException, NamingAuthorityConfigurationException;
+    public IdentifierValues resolveIdentifier(SecurityInfo secInfo, URI identifier) throws 
+        InvalidIdentifierException, NamingAuthorityConfigurationException, NamingAuthoritySecurityException;
 }
+

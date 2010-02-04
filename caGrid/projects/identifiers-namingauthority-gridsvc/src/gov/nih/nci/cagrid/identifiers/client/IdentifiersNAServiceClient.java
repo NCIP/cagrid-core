@@ -87,6 +87,45 @@ public class IdentifiersNAServiceClient extends IdentifiersNAServiceClientBase i
 		}
 	}
 
+  public void createKeys(org.apache.axis.types.URI identifier,namingauthority.IdentifierValues identifierValues) throws RemoteException {
+    synchronized(portTypeMutex){
+      configureStubSecurity((Stub)portType,"createKeys");
+    gov.nih.nci.cagrid.identifiers.stubs.CreateKeysRequest params = new gov.nih.nci.cagrid.identifiers.stubs.CreateKeysRequest();
+    gov.nih.nci.cagrid.identifiers.stubs.CreateKeysRequestIdentifier identifierContainer = new gov.nih.nci.cagrid.identifiers.stubs.CreateKeysRequestIdentifier();
+    identifierContainer.setIdentifier(identifier);
+    params.setIdentifier(identifierContainer);
+    gov.nih.nci.cagrid.identifiers.stubs.CreateKeysRequestIdentifierValues identifierValuesContainer = new gov.nih.nci.cagrid.identifiers.stubs.CreateKeysRequestIdentifierValues();
+    identifierValuesContainer.setIdentifierValues(identifierValues);
+    params.setIdentifierValues(identifierValuesContainer);
+    gov.nih.nci.cagrid.identifiers.stubs.CreateKeysResponse boxedResult = portType.createKeys(params);
+    }
+  }
+
+  public void replaceKeys(org.apache.axis.types.URI identifier,namingauthority.IdentifierValues identifierValues) throws RemoteException {
+    synchronized(portTypeMutex){
+      configureStubSecurity((Stub)portType,"replaceKeys");
+    gov.nih.nci.cagrid.identifiers.stubs.ReplaceKeysRequest params = new gov.nih.nci.cagrid.identifiers.stubs.ReplaceKeysRequest();
+    gov.nih.nci.cagrid.identifiers.stubs.ReplaceKeysRequestIdentifier identifierContainer = new gov.nih.nci.cagrid.identifiers.stubs.ReplaceKeysRequestIdentifier();
+    identifierContainer.setIdentifier(identifier);
+    params.setIdentifier(identifierContainer);
+    gov.nih.nci.cagrid.identifiers.stubs.ReplaceKeysRequestIdentifierValues identifierValuesContainer = new gov.nih.nci.cagrid.identifiers.stubs.ReplaceKeysRequestIdentifierValues();
+    identifierValuesContainer.setIdentifierValues(identifierValues);
+    params.setIdentifierValues(identifierValuesContainer);
+    gov.nih.nci.cagrid.identifiers.stubs.ReplaceKeysResponse boxedResult = portType.replaceKeys(params);
+    }
+  }
+
+  public void deleteAllKeys(org.apache.axis.types.URI identifier) throws RemoteException {
+    synchronized(portTypeMutex){
+      configureStubSecurity((Stub)portType,"deleteAllKeys");
+    gov.nih.nci.cagrid.identifiers.stubs.DeleteAllKeysRequest params = new gov.nih.nci.cagrid.identifiers.stubs.DeleteAllKeysRequest();
+    gov.nih.nci.cagrid.identifiers.stubs.DeleteAllKeysRequestIdentifier identifierContainer = new gov.nih.nci.cagrid.identifiers.stubs.DeleteAllKeysRequestIdentifier();
+    identifierContainer.setIdentifier(identifier);
+    params.setIdentifier(identifierContainer);
+    gov.nih.nci.cagrid.identifiers.stubs.DeleteAllKeysResponse boxedResult = portType.deleteAllKeys(params);
+    }
+  }
+
   public org.oasis.wsrf.properties.GetMultipleResourcePropertiesResponse getMultipleResourceProperties(org.oasis.wsrf.properties.GetMultipleResourceProperties_Element params) throws RemoteException {
     synchronized(portTypeMutex){
       configureStubSecurity((Stub)portType,"getMultipleResourceProperties");
@@ -129,6 +168,18 @@ public class IdentifiersNAServiceClient extends IdentifiersNAServiceClientBase i
     params.setIdentifier(identifierContainer);
     gov.nih.nci.cagrid.identifiers.stubs.ResolveIdentifierResponse boxedResult = portType.resolveIdentifier(params);
     return boxedResult.getIdentifierValues();
+    }
+  }
+
+  public void deleteKeys(org.apache.axis.types.URI identifier,java.lang.String[] keyList) throws RemoteException {
+    synchronized(portTypeMutex){
+      configureStubSecurity((Stub)portType,"deleteKeys");
+    gov.nih.nci.cagrid.identifiers.stubs.DeleteKeysRequest params = new gov.nih.nci.cagrid.identifiers.stubs.DeleteKeysRequest();
+    gov.nih.nci.cagrid.identifiers.stubs.DeleteKeysRequestIdentifier identifierContainer = new gov.nih.nci.cagrid.identifiers.stubs.DeleteKeysRequestIdentifier();
+    identifierContainer.setIdentifier(identifier);
+    params.setIdentifier(identifierContainer);
+    params.setKeyList(keyList);
+    gov.nih.nci.cagrid.identifiers.stubs.DeleteKeysResponse boxedResult = portType.deleteKeys(params);
     }
   }
 

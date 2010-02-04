@@ -12,6 +12,29 @@ import java.rmi.RemoteException;
  */
 public interface IdentifiersNAServiceI {
 
+  /**
+   * Creates new keys on an existing identifier
+   *
+   * @param identifier
+   * @param identifierValues
+   */
+  public void createKeys(org.apache.axis.types.URI identifier,namingauthority.IdentifierValues identifierValues) throws RemoteException ;
+
+  /**
+   * Replaces the values associated with the specified keys on an existing identifier
+   *
+   * @param identifier
+   * @param identifierValues
+   */
+  public void replaceKeys(org.apache.axis.types.URI identifier,namingauthority.IdentifierValues identifierValues) throws RemoteException ;
+
+  /**
+   * Deletes all keys (except admin keys) on an existing identifier
+   *
+   * @param identifier
+   */
+  public void deleteAllKeys(org.apache.axis.types.URI identifier) throws RemoteException ;
+
   public org.oasis.wsrf.properties.GetMultipleResourcePropertiesResponse getMultipleResourceProperties(org.oasis.wsrf.properties.GetMultipleResourceProperties_Element params) throws RemoteException ;
 
   public org.oasis.wsrf.properties.GetResourcePropertyResponse getResourceProperty(javax.xml.namespace.QName params) throws RemoteException ;
@@ -39,6 +62,16 @@ public interface IdentifiersNAServiceI {
    *	
    */
   public namingauthority.IdentifierValues resolveIdentifier(org.apache.axis.types.URI identifier) throws RemoteException, gov.nih.nci.cagrid.identifiers.stubs.types.NamingAuthorityConfigurationFault, gov.nih.nci.cagrid.identifiers.stubs.types.InvalidIdentifierFault ;
+
+  /**
+   * Deletes keys from an identifier
+   *
+   * @param identifier
+   *	The identifier to be modified
+   * @param keyList
+   *	List of key names to be deleted from the identifier
+   */
+  public void deleteKeys(org.apache.axis.types.URI identifier,java.lang.String[] keyList) throws RemoteException ;
 
 }
 
