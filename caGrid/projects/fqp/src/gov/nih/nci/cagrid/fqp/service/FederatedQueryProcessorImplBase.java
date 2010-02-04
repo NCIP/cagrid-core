@@ -55,6 +55,11 @@ public abstract class FederatedQueryProcessorImplBase {
 		return (gov.nih.nci.cagrid.fqp.results.service.globus.resource.FederatedQueryResultsResourceHome)resource;
 	}
 	
+	public gov.nih.nci.cagrid.fqp.resultsretrieval.service.globus.resource.FederatedQueryResultsRetrievalResourceHome getFederatedQueryResultsRetrievalResourceHome() throws Exception {
+		ResourceHome resource = getResourceHome("federatedQueryResultsRetrievalHome");
+		return (gov.nih.nci.cagrid.fqp.resultsretrieval.service.globus.resource.FederatedQueryResultsRetrievalResourceHome)resource;
+	}
+	
 	
 	protected ResourceHome getResourceHome(String resourceKey) throws Exception {
 		MessageContext ctx = MessageContext.getCurrentContext();

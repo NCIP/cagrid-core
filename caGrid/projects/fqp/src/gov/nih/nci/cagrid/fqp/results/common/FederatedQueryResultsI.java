@@ -33,7 +33,7 @@ public interface FederatedQueryResultsI {
   public gov.nih.nci.cagrid.dcqlresult.DCQLQueryResultsCollection getResults() throws RemoteException, gov.nih.nci.cagrid.fqp.results.stubs.types.ProcessingNotCompleteFault, gov.nih.nci.cagrid.fqp.stubs.types.FederatedQueryProcessingFault, gov.nih.nci.cagrid.fqp.results.stubs.types.InternalErrorFault ;
 
   /**
-   * Indicates whether or not the query processing is complete; until this is true, getResults cannot be excecuted.
+   * Indicates whether or not the query processing is complete; until this is true, any results retrieval methods will fail.
    *
    */
   public boolean isProcessingComplete() throws RemoteException ;

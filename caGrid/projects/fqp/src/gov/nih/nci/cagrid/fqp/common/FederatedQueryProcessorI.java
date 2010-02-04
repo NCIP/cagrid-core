@@ -13,6 +13,22 @@ import java.rmi.RemoteException;
 public interface FederatedQueryProcessorI {
 
   /**
+   * Performs the DCQL 2 query and creates a FederatedQueryResultsRetrieval resource using the specified parameters.
+   *
+   * @param query
+   *	The DCQL 2 query to be executed
+   * @param delegatedCredentialReference
+   *	An optional reference to a delegated credential.  If not null, the FQP service will use the credential when contacting data services in the DCQL 2 query
+   * @param queryExecutionParameters
+   *	An optional set of preferences specifying error handling and other preferences
+   * @throws InternalErrorFault
+   *	Indicates a problem internal to the Federated Query Processor
+   * @throws FederatedQueryProcessingFault
+   *	Thrown when a problem arises executing the DCQL 2 query
+   */
+  public gov.nih.nci.cagrid.fqp.resultsretrieval.client.FederatedQueryResultsRetrievalClient queryAsynchronously(org.cagrid.data.dcql.DCQLQuery query,org.cagrid.gaards.cds.delegated.stubs.types.DelegatedCredentialReference delegatedCredentialReference,org.cagrid.fqp.execution.QueryExecutionParameters queryExecutionParameters) throws RemoteException, org.apache.axis.types.URI.MalformedURIException, gov.nih.nci.cagrid.fqp.results.stubs.types.InternalErrorFault, gov.nih.nci.cagrid.fqp.stubs.types.FederatedQueryProcessingFault ;
+
+  /**
    * Executes the specified DCQL query, blocking until completion.
    *
    * @param query
@@ -41,8 +57,11 @@ public interface FederatedQueryProcessorI {
    * Performs the DCQL Query and created a FederatedQueryResults resource using the specified parameters.
    *
    * @param query
+   *	The DCQL query to execute
    * @param delegatedCredentialReference
+   *	An optional reference to a delegated credential.  If not null, the FQP service will use the credential when contacting data services in the DCQL query
    * @param queryExecutionParameters
+   *	An optional set of preferences specifying error handling and other preferences
    * @throws FederatedQueryProcessingFault
    *	
    * @throws InternalErrorFault
@@ -55,6 +74,32 @@ public interface FederatedQueryProcessorI {
   public org.oasis.wsrf.properties.GetResourcePropertyResponse getResourceProperty(javax.xml.namespace.QName params) throws RemoteException ;
 
   public org.oasis.wsrf.properties.QueryResourcePropertiesResponse queryResourceProperties(org.oasis.wsrf.properties.QueryResourceProperties_Element params) throws RemoteException ;
+
+  /**
+   * Executes a DCQL 2 query and returns the results, blocking until the query completes
+   *
+   * @param query
+   *	The DCQL 2 query to execute
+   * @return The results of executing the DCQL 2 query
+   * @throws FederatedQueryProcessingFault
+   *	Thrown when a problem arises executing the DCQL 2 query
+   * @throws InternalErrorFault
+   *	Indicates a problem internal to the Federated Query Processor
+   */
+  public org.cagrid.data.dcql.results.DCQLQueryResultsCollection executeQuery(org.cagrid.data.dcql.DCQLQuery query) throws RemoteException, gov.nih.nci.cagrid.fqp.stubs.types.FederatedQueryProcessingFault, gov.nih.nci.cagrid.fqp.results.stubs.types.InternalErrorFault ;
+
+  /**
+   * Executes a DCQL 2 query and aggregates the results as CQL 2 query results
+   *
+   * @param query
+   *	The DCQL 2 query to execute
+   * @return The aggregated DCQL 2 query results as CQL 2 results
+   * @throws FederatedQueryProcessingFault
+   *	Thrown when a problem arrises executing the DCQL 2 query
+   * @throws InternalErrorFault
+   *	Indicates a problem internal to the Federated Query Processor
+   */
+  public org.cagrid.cql2.results.CQLQueryResults executeQueryAndAggregate(org.cagrid.data.dcql.DCQLQuery query) throws RemoteException, gov.nih.nci.cagrid.fqp.stubs.types.FederatedQueryProcessingFault, gov.nih.nci.cagrid.fqp.results.stubs.types.InternalErrorFault ;
 
 }
 

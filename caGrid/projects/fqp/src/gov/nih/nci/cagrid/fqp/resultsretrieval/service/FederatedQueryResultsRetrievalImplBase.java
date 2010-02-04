@@ -1,5 +1,6 @@
-package gov.nih.nci.cagrid.enumeration.service;
+package gov.nih.nci.cagrid.fqp.resultsretrieval.service;
 
+import gov.nih.nci.cagrid.fqp.resultsretrieval.service.globus.resource.FederatedQueryResultsRetrievalResource;
 import  gov.nih.nci.cagrid.fqp.service.FederatedQueryProcessorConfiguration;
 
 import java.rmi.RemoteException;
@@ -25,9 +26,9 @@ import org.globus.wsrf.ResourcePropertySet;
  * @created by Introduce Toolkit version 1.4
  * 
  */
-public abstract class CaGridEnumerationImplBase {
+public abstract class FederatedQueryResultsRetrievalImplBase {
 	
-	public CaGridEnumerationImplBase() throws RemoteException {
+	public FederatedQueryResultsRetrievalImplBase() throws RemoteException {
 	
 	}
 	
@@ -36,6 +37,12 @@ public abstract class CaGridEnumerationImplBase {
 	}
 	
 	
+	public gov.nih.nci.cagrid.fqp.resultsretrieval.service.globus.resource.FederatedQueryResultsRetrievalResourceHome getResourceHome() throws Exception {
+		ResourceHome resource = getResourceHome("home");
+		return (gov.nih.nci.cagrid.fqp.resultsretrieval.service.globus.resource.FederatedQueryResultsRetrievalResourceHome)resource;
+	}
+
+	
 	
 	
 	public gov.nih.nci.cagrid.fqp.service.globus.resource.FederatedQueryProcessorResourceHome getFederatedQueryProcessorResourceHome() throws Exception {
@@ -43,14 +50,14 @@ public abstract class CaGridEnumerationImplBase {
 		return (gov.nih.nci.cagrid.fqp.service.globus.resource.FederatedQueryProcessorResourceHome)resource;
 	}
 	
+	public ResourceHome getCaGridEnumerationResourceHome() throws Exception {
+		ResourceHome resource = getResourceHome("caGridEnumerationHome");
+		return resource;
+	}
+	
 	public gov.nih.nci.cagrid.fqp.results.service.globus.resource.FederatedQueryResultsResourceHome getFederatedQueryResultsResourceHome() throws Exception {
 		ResourceHome resource = getResourceHome("federatedQueryResultsHome");
 		return (gov.nih.nci.cagrid.fqp.results.service.globus.resource.FederatedQueryResultsResourceHome)resource;
-	}
-	
-	public gov.nih.nci.cagrid.fqp.resultsretrieval.service.globus.resource.FederatedQueryResultsRetrievalResourceHome getFederatedQueryResultsRetrievalResourceHome() throws Exception {
-		ResourceHome resource = getResourceHome("federatedQueryResultsRetrievalHome");
-		return (gov.nih.nci.cagrid.fqp.resultsretrieval.service.globus.resource.FederatedQueryResultsRetrievalResourceHome)resource;
 	}
 	
 	

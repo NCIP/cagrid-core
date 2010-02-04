@@ -116,6 +116,25 @@ public class FederatedQueryProcessorClient extends FederatedQueryProcessorClient
         }
     }
 
+  public gov.nih.nci.cagrid.fqp.resultsretrieval.client.FederatedQueryResultsRetrievalClient queryAsynchronously(org.cagrid.data.dcql.DCQLQuery query,org.cagrid.gaards.cds.delegated.stubs.types.DelegatedCredentialReference delegatedCredentialReference,org.cagrid.fqp.execution.QueryExecutionParameters queryExecutionParameters) throws RemoteException, org.apache.axis.types.URI.MalformedURIException, gov.nih.nci.cagrid.fqp.results.stubs.types.InternalErrorFault, gov.nih.nci.cagrid.fqp.stubs.types.FederatedQueryProcessingFault {
+    synchronized(portTypeMutex){
+      configureStubSecurity((Stub)portType,"queryAsynchronously");
+    gov.nih.nci.cagrid.fqp.stubs.QueryAsynchronouslyRequest params = new gov.nih.nci.cagrid.fqp.stubs.QueryAsynchronouslyRequest();
+    gov.nih.nci.cagrid.fqp.stubs.QueryAsynchronouslyRequestQuery queryContainer = new gov.nih.nci.cagrid.fqp.stubs.QueryAsynchronouslyRequestQuery();
+    queryContainer.setDCQLQuery(query);
+    params.setQuery(queryContainer);
+    gov.nih.nci.cagrid.fqp.stubs.QueryAsynchronouslyRequestDelegatedCredentialReference delegatedCredentialReferenceContainer = new gov.nih.nci.cagrid.fqp.stubs.QueryAsynchronouslyRequestDelegatedCredentialReference();
+    delegatedCredentialReferenceContainer.setDelegatedCredentialReference(delegatedCredentialReference);
+    params.setDelegatedCredentialReference(delegatedCredentialReferenceContainer);
+    gov.nih.nci.cagrid.fqp.stubs.QueryAsynchronouslyRequestQueryExecutionParameters queryExecutionParametersContainer = new gov.nih.nci.cagrid.fqp.stubs.QueryAsynchronouslyRequestQueryExecutionParameters();
+    queryExecutionParametersContainer.setQueryExecutionParameters(queryExecutionParameters);
+    params.setQueryExecutionParameters(queryExecutionParametersContainer);
+    gov.nih.nci.cagrid.fqp.stubs.QueryAsynchronouslyResponse boxedResult = portType.queryAsynchronously(params);
+    EndpointReferenceType ref = boxedResult.getFederatedQueryResultsRetrievalReference().getEndpointReference();
+    return new gov.nih.nci.cagrid.fqp.resultsretrieval.client.FederatedQueryResultsRetrievalClient(ref,getProxy());
+    }
+  }
+
   public gov.nih.nci.cagrid.dcqlresult.DCQLQueryResultsCollection execute(gov.nih.nci.cagrid.dcql.DCQLQuery query) throws RemoteException, gov.nih.nci.cagrid.fqp.stubs.types.FederatedQueryProcessingFault {
     synchronized(portTypeMutex){
       configureStubSecurity((Stub)portType,"execute");
@@ -190,6 +209,30 @@ public class FederatedQueryProcessorClient extends FederatedQueryProcessorClient
     synchronized(portTypeMutex){
       configureStubSecurity((Stub)portType,"queryResourceProperties");
     return portType.queryResourceProperties(params);
+    }
+  }
+
+  public org.cagrid.data.dcql.results.DCQLQueryResultsCollection executeQuery(org.cagrid.data.dcql.DCQLQuery query) throws RemoteException, gov.nih.nci.cagrid.fqp.stubs.types.FederatedQueryProcessingFault, gov.nih.nci.cagrid.fqp.results.stubs.types.InternalErrorFault {
+    synchronized(portTypeMutex){
+      configureStubSecurity((Stub)portType,"executeQuery");
+    gov.nih.nci.cagrid.fqp.stubs.ExecuteQueryRequest params = new gov.nih.nci.cagrid.fqp.stubs.ExecuteQueryRequest();
+    gov.nih.nci.cagrid.fqp.stubs.ExecuteQueryRequestQuery queryContainer = new gov.nih.nci.cagrid.fqp.stubs.ExecuteQueryRequestQuery();
+    queryContainer.setDCQLQuery(query);
+    params.setQuery(queryContainer);
+    gov.nih.nci.cagrid.fqp.stubs.ExecuteQueryResponse boxedResult = portType.executeQuery(params);
+    return boxedResult.getDCQLQueryResultsCollection();
+    }
+  }
+
+  public org.cagrid.cql2.results.CQLQueryResults executeQueryAndAggregate(org.cagrid.data.dcql.DCQLQuery query) throws RemoteException, gov.nih.nci.cagrid.fqp.stubs.types.FederatedQueryProcessingFault, gov.nih.nci.cagrid.fqp.results.stubs.types.InternalErrorFault {
+    synchronized(portTypeMutex){
+      configureStubSecurity((Stub)portType,"executeQueryAndAggregate");
+    gov.nih.nci.cagrid.fqp.stubs.ExecuteQueryAndAggregateRequest params = new gov.nih.nci.cagrid.fqp.stubs.ExecuteQueryAndAggregateRequest();
+    gov.nih.nci.cagrid.fqp.stubs.ExecuteQueryAndAggregateRequestQuery queryContainer = new gov.nih.nci.cagrid.fqp.stubs.ExecuteQueryAndAggregateRequestQuery();
+    queryContainer.setDCQLQuery(query);
+    params.setQuery(queryContainer);
+    gov.nih.nci.cagrid.fqp.stubs.ExecuteQueryAndAggregateResponse boxedResult = portType.executeQueryAndAggregate(params);
+    return boxedResult.getCQLQueryResults();
     }
   }
 

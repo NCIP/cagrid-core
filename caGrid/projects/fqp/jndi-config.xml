@@ -1,5 +1,49 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jndiConfig xmlns="http://wsrf.globus.org/jndi/config">
+  <service name="SERVICE-INSTANCE-PREFIX/FederatedQueryResultsRetrieval">
+    <resource name="configuration" type="gov.nih.nci.cagrid.fqp.resultsretrieval.service.globus.resource.FederatedQueryResultsRetrievalResourceConfiguration">
+      <resourceParams>
+        <parameter>
+          <name>factory</name>
+          <value>org.globus.wsrf.jndi.BeanFactory</value>
+        </parameter>
+        <parameter>
+          <name>performRegistration</name>
+          <!-- Set this to false to skip ServiceGroup registration -->
+          <value>PERFORM_REGISTRATION</value>
+        </parameter>
+        <parameter>
+          <name>registrationTemplateFile</name>
+          <!-- Set this to the relative path (from the container root, e.g GLOBUS_LOCATION for globus container) of the registration parameters template file (ignored if performRegistration is false) -->
+          <value>ETC-PATH/FederatedQueryResultsRetrieval_registration.xml</value>
+        </parameter>
+      </resourceParams>
+    </resource>
+    <resource name="home" type="gov.nih.nci.cagrid.fqp.resultsretrieval.service.globus.resource.FederatedQueryResultsRetrievalResourceHome">
+      <resourceParams>
+        <parameter>
+          <name>factory</name>
+          <value>org.globus.wsrf.jndi.BeanFactory</value>
+        </parameter>
+        <parameter>
+          <name>resourceClass</name>
+          <value>gov.nih.nci.cagrid.fqp.resultsretrieval.service.globus.resource.FederatedQueryResultsRetrievalResource</value>
+        </parameter>
+        <parameter>
+          <name>resourceKeyName</name>
+          <value>{http://fqp.cagrid.nci.nih.gov/FederatedQueryProcessor/ResultsRetrieval}FederatedQueryResultsRetrievalResultsKey</value>
+        </parameter>
+        <parameter>
+          <name>resourceKeyType</name>
+          <value>java.lang.String</value>
+        </parameter>
+      </resourceParams>
+    </resource>
+    <resourceLink name="serviceconfiguration" target="java:comp/env/services/SERVICE-INSTANCE-PREFIX/FederatedQueryProcessor/serviceconfiguration" />
+    <resourceLink name="federatedQueryProcessorHome" target="java:comp/env/services/SERVICE-INSTANCE-PREFIX/FederatedQueryProcessor/home" />
+    <resourceLink name="caGridEnumerationHome" target="java:comp/env/services/SERVICE-INSTANCE-PREFIX/CaGridEnumeration/home" />
+    <resourceLink name="federatedQueryResultsHome" target="java:comp/env/services/SERVICE-INSTANCE-PREFIX/FederatedQueryResults/home" />
+  </service>
   <service name="SERVICE-INSTANCE-PREFIX/FederatedQueryResults">
     <resource name="configuration" type="gov.nih.nci.cagrid.fqp.results.service.globus.resource.FederatedQueryResultsResourceConfiguration">
       <resourceParams>
@@ -42,6 +86,7 @@
     <resourceLink name="serviceconfiguration" target="java:comp/env/services/SERVICE-INSTANCE-PREFIX/FederatedQueryProcessor/serviceconfiguration" />
     <resourceLink name="federatedQueryProcessorHome" target="java:comp/env/services/SERVICE-INSTANCE-PREFIX/FederatedQueryProcessor/home" />
     <resourceLink name="caGridEnumerationHome" target="java:comp/env/services/SERVICE-INSTANCE-PREFIX/CaGridEnumeration/home" />
+    <resourceLink name="federatedQueryResultsRetrievalHome" target="java:comp/env/services/SERVICE-INSTANCE-PREFIX/FederatedQueryResultsRetrieval/home" />
   </service>
   <service name="SERVICE-INSTANCE-PREFIX/CaGridEnumeration">
     <resource name="configuration" type="gov.nih.nci.cagrid.enumeration.service.globus.resource.CaGridEnumerationResourceConfiguration">
@@ -68,6 +113,7 @@
     <resourceLink name="serviceconfiguration" target="java:comp/env/services/SERVICE-INSTANCE-PREFIX/FederatedQueryProcessor/serviceconfiguration" />
     <resourceLink name="federatedQueryProcessorHome" target="java:comp/env/services/SERVICE-INSTANCE-PREFIX/FederatedQueryProcessor/home" />
     <resourceLink name="federatedQueryResultsHome" target="java:comp/env/services/SERVICE-INSTANCE-PREFIX/FederatedQueryResults/home" />
+    <resourceLink name="federatedQueryResultsRetrievalHome" target="java:comp/env/services/SERVICE-INSTANCE-PREFIX/FederatedQueryResultsRetrieval/home" />
   </service>
   <service name="SERVICE-INSTANCE-PREFIX/FederatedQueryProcessor">
     <resource name="configuration" type="gov.nih.nci.cagrid.fqp.service.globus.resource.FederatedQueryProcessorResourceConfiguration">
@@ -139,6 +185,7 @@
     </resource>
     <resourceLink name="caGridEnumerationHome" target="java:comp/env/services/SERVICE-INSTANCE-PREFIX/CaGridEnumeration/home" />
     <resourceLink name="federatedQueryResultsHome" target="java:comp/env/services/SERVICE-INSTANCE-PREFIX/FederatedQueryResults/home" />
+    <resourceLink name="federatedQueryResultsRetrievalHome" target="java:comp/env/services/SERVICE-INSTANCE-PREFIX/FederatedQueryResultsRetrieval/home" />
   </service>
 </jndiConfig>
 

@@ -30,6 +30,7 @@
 			xmlns:ns0="http://DCQL.caBIG/2/org.cagrid.data.dcql.results"
 			xmlns:ns14="http://transfer.cagrid.org/TransferService/Context/types"
 			xmlns:ns8="http://CQL.caBIG/1/gov.nih.nci.cagrid.CQLResultSet"
+			xmlns:ns22="http://fqp.cagrid.nci.nih.gov/FederatedQueryProcessor/ResultsRetrieval/types"
 			xmlns:ns19="http://gov.nih.nci.cagrid.enumeration/CaGridEnumeration/types"
 			xmlns:ns3="http://DCQL.caBIG/2/org.cagrid.data.dcql"
 			xmlns:ns1="http://CQL.caBIG/2/org.cagrid.cql2.results"

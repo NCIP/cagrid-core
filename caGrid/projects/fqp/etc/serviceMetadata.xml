@@ -10,7 +10,7 @@
       <ns2:Operation description="" name="getServiceSecurityMetadata">
        <ns2:inputParameterCollection/>
        <ns2:Output qName="ns4:ServiceSecurityMetadata" dimensionality="1" isArray="false" xmlns:ns4="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.security">
-        <ns5:UMLClass className="ServiceSecurityMetadata" description="An instance of the Security Service Metadata." id="7EAFDD25-1FA2-AE1D-E040-BB89AD437B66" packageName="gov.nih.nci.cagrid.metadata.security" projectName="caGrid_Metadata_Models" projectVersion="1" xmlns:ns5="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common">
+        <ns5:UMLClass className="ServiceSecurityMetadata" description="An instance of the Security Service Metadata." id="7EC3FAE9-60DB-2ACE-E040-BB89AD430977" packageName="gov.nih.nci.cagrid.metadata.security" projectName="caGrid_Metadata_Models" projectVersion="1" xmlns:ns5="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common">
          <ns5:umlAttributeCollection/>
          <ns5:SemanticMetadata conceptCode="C80736" conceptDefinition="A software system providing a public need." conceptName="Software Service" order="2"/>
          <ns5:SemanticMetadata conceptCode="C25669" conceptDefinition="Security; freedom from anxiety or fear." conceptName="Security" order="1"/>
@@ -68,6 +68,38 @@
        <ns2:inputParameterCollection/>
        <ns2:faultCollection/>
       </ns2:Operation>
+      <ns2:Operation description="Executes a DCQL 2 query and returns the results, blocking until the query completes" name="executeQuery">
+       <ns2:inputParameterCollection>
+        <ns2:InputParameter qName="ns16:DCQLQuery" dimensionality="1" index="0" isArray="false" isRequired="false" name="query" xmlns:ns16="http://DCQL.caBIG/2/org.cagrid.data.dcql"/>
+       </ns2:inputParameterCollection>
+       <ns2:Output qName="ns17:DCQLQueryResultsCollection" dimensionality="1" isArray="false" xmlns:ns17="http://DCQL.caBIG/2/org.cagrid.data.dcql.results"/>
+       <ns2:faultCollection>
+        <ns2:Fault description="Thrown when a problem arises executing the DCQL 2 query" name="FederatedQueryProcessingFault"/>
+        <ns2:Fault description="Indicates a problem internal to the Federated Query Processor" name="InternalErrorFault"/>
+       </ns2:faultCollection>
+      </ns2:Operation>
+      <ns2:Operation description="Executes a DCQL 2 query and aggregates the results as CQL 2 query results" name="executeQueryAndAggregate">
+       <ns2:inputParameterCollection>
+        <ns2:InputParameter qName="ns18:DCQLQuery" dimensionality="1" index="0" isArray="false" isRequired="false" name="query" xmlns:ns18="http://DCQL.caBIG/2/org.cagrid.data.dcql"/>
+       </ns2:inputParameterCollection>
+       <ns2:Output qName="ns19:CQLQueryResults" dimensionality="1" isArray="false" xmlns:ns19="http://CQL.caBIG/2/org.cagrid.cql2.results"/>
+       <ns2:faultCollection>
+        <ns2:Fault description="Thrown when a problem arrises executing the DCQL 2 query" name="FederatedQueryProcessingFault"/>
+        <ns2:Fault description="Indicates a problem internal to the Federated Query Processor" name="InternalErrorFault"/>
+       </ns2:faultCollection>
+      </ns2:Operation>
+      <ns2:Operation description="Performs the DCQL 2 query and creates a FederatedQueryResultsRetrieval resource using the specified parameters." name="queryAsynchronously">
+       <ns2:inputParameterCollection>
+        <ns2:InputParameter qName="ns20:DCQLQuery" dimensionality="1" index="0" isArray="false" isRequired="false" name="query" xmlns:ns20="http://DCQL.caBIG/2/org.cagrid.data.dcql"/>
+        <ns2:InputParameter qName="ns21:DelegatedCredentialReference" dimensionality="1" index="1" isArray="false" isRequired="false" name="delegatedCredentialReference" xmlns:ns21="http://cds.gaards.cagrid.org/CredentialDelegationService/DelegatedCredential/types"/>
+        <ns2:InputParameter qName="ns22:QueryExecutionParameters" dimensionality="1" index="2" isArray="false" isRequired="false" name="queryExecutionParameters" xmlns:ns22="http://fqp.cagrid.nci.nih.gov/QueryExecutionParameters"/>
+       </ns2:inputParameterCollection>
+       <ns2:Output qName="ns23:FederatedQueryResultsRetrievalReference" dimensionality="1" isArray="false" xmlns:ns23="http://fqp.cagrid.nci.nih.gov/FederatedQueryProcessor/ResultsRetrieval/types"/>
+       <ns2:faultCollection>
+        <ns2:Fault description="Indicates a problem internal to the Federated Query Processor" name="InternalErrorFault"/>
+        <ns2:Fault description="Thrown when a problem arises executing the DCQL 2 query" name="FederatedQueryProcessingFault"/>
+       </ns2:faultCollection>
+      </ns2:Operation>
      </ns2:operationCollection>
      <ns2:contextPropertyCollection>
       <ns2:ContextProperty description="caGrid standard service metadata" name="{gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata}ServiceMetadata"/>
@@ -77,40 +109,40 @@
      <ns2:operationCollection>
       <ns2:Operation description="" name="PullOp">
        <ns2:inputParameterCollection>
-        <ns2:InputParameter qName="ns16:Pull" dimensionality="1" index="0" isArray="false" isRequired="false" name="pull" xmlns:ns16="http://schemas.xmlsoap.org/ws/2004/09/enumeration"/>
+        <ns2:InputParameter qName="ns24:Pull" dimensionality="1" index="0" isArray="false" isRequired="false" name="pull" xmlns:ns24="http://schemas.xmlsoap.org/ws/2004/09/enumeration"/>
        </ns2:inputParameterCollection>
-       <ns2:Output qName="ns17:PullResponse" dimensionality="1" isArray="false" xmlns:ns17="http://schemas.xmlsoap.org/ws/2004/09/enumeration"/>
+       <ns2:Output qName="ns25:PullResponse" dimensionality="1" isArray="false" xmlns:ns25="http://schemas.xmlsoap.org/ws/2004/09/enumeration"/>
        <ns2:faultCollection/>
       </ns2:Operation>
       <ns2:Operation description="" name="RenewOp">
        <ns2:inputParameterCollection>
-        <ns2:InputParameter qName="ns18:Renew" dimensionality="1" index="0" isArray="false" isRequired="false" name="renew" xmlns:ns18="http://schemas.xmlsoap.org/ws/2004/09/enumeration"/>
+        <ns2:InputParameter qName="ns26:Renew" dimensionality="1" index="0" isArray="false" isRequired="false" name="renew" xmlns:ns26="http://schemas.xmlsoap.org/ws/2004/09/enumeration"/>
        </ns2:inputParameterCollection>
-       <ns2:Output qName="ns19:RenewResponse" dimensionality="1" isArray="false" xmlns:ns19="http://schemas.xmlsoap.org/ws/2004/09/enumeration"/>
+       <ns2:Output qName="ns27:RenewResponse" dimensionality="1" isArray="false" xmlns:ns27="http://schemas.xmlsoap.org/ws/2004/09/enumeration"/>
        <ns2:faultCollection/>
       </ns2:Operation>
       <ns2:Operation description="" name="GetStatusOp">
        <ns2:inputParameterCollection>
-        <ns2:InputParameter qName="ns20:GetStatus" dimensionality="1" index="0" isArray="false" isRequired="false" name="status" xmlns:ns20="http://schemas.xmlsoap.org/ws/2004/09/enumeration"/>
+        <ns2:InputParameter qName="ns28:GetStatus" dimensionality="1" index="0" isArray="false" isRequired="false" name="status" xmlns:ns28="http://schemas.xmlsoap.org/ws/2004/09/enumeration"/>
        </ns2:inputParameterCollection>
-       <ns2:Output qName="ns21:GetStatusResponse" dimensionality="1" isArray="false" xmlns:ns21="http://schemas.xmlsoap.org/ws/2004/09/enumeration"/>
+       <ns2:Output qName="ns29:GetStatusResponse" dimensionality="1" isArray="false" xmlns:ns29="http://schemas.xmlsoap.org/ws/2004/09/enumeration"/>
        <ns2:faultCollection/>
       </ns2:Operation>
       <ns2:Operation description="" name="ReleaseOp">
        <ns2:inputParameterCollection>
-        <ns2:InputParameter qName="ns22:Release" dimensionality="1" index="0" isArray="false" isRequired="false" name="release" xmlns:ns22="http://schemas.xmlsoap.org/ws/2004/09/enumeration"/>
+        <ns2:InputParameter qName="ns30:Release" dimensionality="1" index="0" isArray="false" isRequired="false" name="release" xmlns:ns30="http://schemas.xmlsoap.org/ws/2004/09/enumeration"/>
        </ns2:inputParameterCollection>
        <ns2:faultCollection/>
       </ns2:Operation>
       <ns2:Operation description="" name="getServiceSecurityMetadata">
        <ns2:inputParameterCollection/>
-       <ns2:Output qName="ns23:ServiceSecurityMetadata" dimensionality="1" isArray="false" xmlns:ns23="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.security">
-        <ns24:UMLClass className="ServiceSecurityMetadata" description="An instance of the Security Service Metadata." id="7EAFDD25-1FA2-AE1D-E040-BB89AD437B66" packageName="gov.nih.nci.cagrid.metadata.security" projectName="caGrid_Metadata_Models" projectVersion="1" xmlns:ns24="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common">
-         <ns24:umlAttributeCollection/>
-         <ns24:SemanticMetadata conceptCode="C80736" conceptDefinition="A software system providing a public need." conceptName="Software Service" order="2"/>
-         <ns24:SemanticMetadata conceptCode="C25669" conceptDefinition="Security; freedom from anxiety or fear." conceptName="Security" order="1"/>
-         <ns24:SemanticMetadata conceptCode="C52095" conceptDefinition="Data about data; information that describes another set of data." conceptName="Metadata" order="0"/>
-        </ns24:UMLClass>
+       <ns2:Output qName="ns31:ServiceSecurityMetadata" dimensionality="1" isArray="false" xmlns:ns31="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.security">
+        <ns32:UMLClass className="ServiceSecurityMetadata" description="An instance of the Security Service Metadata." id="7EC3FAE9-60DB-2ACE-E040-BB89AD430977" packageName="gov.nih.nci.cagrid.metadata.security" projectName="caGrid_Metadata_Models" projectVersion="1" xmlns:ns32="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common">
+         <ns32:umlAttributeCollection/>
+         <ns32:SemanticMetadata conceptCode="C80736" conceptDefinition="A software system providing a public need." conceptName="Software Service" order="2"/>
+         <ns32:SemanticMetadata conceptCode="C25669" conceptDefinition="Security; freedom from anxiety or fear." conceptName="Security" order="1"/>
+         <ns32:SemanticMetadata conceptCode="C52095" conceptDefinition="Data about data; information that describes another set of data." conceptName="Metadata" order="0"/>
+        </ns32:UMLClass>
        </ns2:Output>
        <ns2:faultCollection/>
       </ns2:Operation>
@@ -121,13 +153,13 @@
      <ns2:operationCollection>
       <ns2:Operation description="" name="getServiceSecurityMetadata">
        <ns2:inputParameterCollection/>
-       <ns2:Output qName="ns25:ServiceSecurityMetadata" dimensionality="1" isArray="false" xmlns:ns25="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.security">
-        <ns26:UMLClass className="ServiceSecurityMetadata" description="An instance of the Security Service Metadata." id="7EAFDD25-1FA2-AE1D-E040-BB89AD437B66" packageName="gov.nih.nci.cagrid.metadata.security" projectName="caGrid_Metadata_Models" projectVersion="1" xmlns:ns26="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common">
-         <ns26:umlAttributeCollection/>
-         <ns26:SemanticMetadata conceptCode="C80736" conceptDefinition="A software system providing a public need." conceptName="Software Service" order="2"/>
-         <ns26:SemanticMetadata conceptCode="C25669" conceptDefinition="Security; freedom from anxiety or fear." conceptName="Security" order="1"/>
-         <ns26:SemanticMetadata conceptCode="C52095" conceptDefinition="Data about data; information that describes another set of data." conceptName="Metadata" order="0"/>
-        </ns26:UMLClass>
+       <ns2:Output qName="ns33:ServiceSecurityMetadata" dimensionality="1" isArray="false" xmlns:ns33="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.security">
+        <ns34:UMLClass className="ServiceSecurityMetadata" description="An instance of the Security Service Metadata." id="7EC3FAE9-60DB-2ACE-E040-BB89AD430977" packageName="gov.nih.nci.cagrid.metadata.security" projectName="caGrid_Metadata_Models" projectVersion="1" xmlns:ns34="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common">
+         <ns34:umlAttributeCollection/>
+         <ns34:SemanticMetadata conceptCode="C80736" conceptDefinition="A software system providing a public need." conceptName="Software Service" order="2"/>
+         <ns34:SemanticMetadata conceptCode="C25669" conceptDefinition="Security; freedom from anxiety or fear." conceptName="Security" order="1"/>
+         <ns34:SemanticMetadata conceptCode="C52095" conceptDefinition="Data about data; information that describes another set of data." conceptName="Metadata" order="0"/>
+        </ns34:UMLClass>
        </ns2:Output>
        <ns2:faultCollection/>
       </ns2:Operation>
@@ -145,21 +177,21 @@
       </ns2:Operation>
       <ns2:Operation description="Returns the results of the query managed by this resource" name="getResults">
        <ns2:inputParameterCollection/>
-       <ns2:Output qName="ns27:DCQLQueryResultsCollection" dimensionality="1" isArray="false" xmlns:ns27="http://caGrid.caBIG/1.0/gov.nih.nci.cagrid.dcqlresult"/>
+       <ns2:Output qName="ns35:DCQLQueryResultsCollection" dimensionality="1" isArray="false" xmlns:ns35="http://caGrid.caBIG/1.0/gov.nih.nci.cagrid.dcqlresult"/>
        <ns2:faultCollection>
         <ns2:Fault description="Indicates the query has not yet completed." name="ProcessingNotCompleteFault"/>
         <ns2:Fault description="Indicates an error occured processing the query." name="FederatedQueryProcessingFault"/>
         <ns2:Fault description="Indicates an unrecoverable internal error." name="InternalErrorFault"/>
        </ns2:faultCollection>
       </ns2:Operation>
-      <ns2:Operation description="Indicates whether or not the query processing is complete; until this is true, getResults cannot be excecuted." name="isProcessingComplete">
+      <ns2:Operation description="Indicates whether or not the query processing is complete; until this is true, any results retrieval methods will fail." name="isProcessingComplete">
        <ns2:inputParameterCollection/>
        <ns2:Output qName="xsd:boolean" dimensionality="1" isArray="false" xmlns:xsd="http://www.w3.org/2001/XMLSchema"/>
        <ns2:faultCollection/>
       </ns2:Operation>
       <ns2:Operation description="Gets the results of the DCQL query aggregated as a single CQL query result." name="getAggregateResults">
        <ns2:inputParameterCollection/>
-       <ns2:Output qName="ns28:CQLQueryResultCollection" dimensionality="1" isArray="false" xmlns:ns28="http://CQL.caBIG/1/gov.nih.nci.cagrid.CQLResultSet"/>
+       <ns2:Output qName="ns36:CQLQueryResultCollection" dimensionality="1" isArray="false" xmlns:ns36="http://CQL.caBIG/1/gov.nih.nci.cagrid.CQLResultSet"/>
        <ns2:faultCollection>
         <ns2:Fault description="Indicates an error occured processing the query." name="FederatedQueryProcessingFault"/>
         <ns2:Fault description="Indicates the query has not yet completed." name="ProcessingNotCompleteFault"/>
@@ -168,7 +200,7 @@
       </ns2:Operation>
       <ns2:Operation description="Creates a WS-Enumeration resource for retrieving the query results and returns a reference to them." name="enumerate">
        <ns2:inputParameterCollection/>
-       <ns2:Output qName="ns29:EnumerationResponseContainer" dimensionality="1" isArray="false" xmlns:ns29="http://gov.nih.nci.cagrid.enumeration/EnumerationResponseContainer"/>
+       <ns2:Output qName="ns37:EnumerationResponseContainer" dimensionality="1" isArray="false" xmlns:ns37="http://gov.nih.nci.cagrid.enumeration/EnumerationResponseContainer"/>
        <ns2:faultCollection>
         <ns2:Fault description="Indicates an error occured processing the query." name="FederatedQueryProcessingFault"/>
         <ns2:Fault description="Indicates the query has not yet completed." name="ProcessingNotCompleteFault"/>
@@ -177,7 +209,7 @@
       </ns2:Operation>
       <ns2:Operation description="Creates a caGrid Transfer resource for retrieving the results and returns a reference to them." name="transfer">
        <ns2:inputParameterCollection/>
-       <ns2:Output qName="ns30:TransferServiceContextReference" dimensionality="1" isArray="false" xmlns:ns30="http://transfer.cagrid.org/TransferService/Context/types"/>
+       <ns2:Output qName="ns38:TransferServiceContextReference" dimensionality="1" isArray="false" xmlns:ns38="http://transfer.cagrid.org/TransferService/Context/types"/>
        <ns2:faultCollection>
         <ns2:Fault description="Indicates an error occured processing the query." name="FederatedQueryProcessingFault"/>
         <ns2:Fault description="Indicates the query has not yet completed." name="ProcessingNotCompleteFault"/>
@@ -198,7 +230,7 @@
       </ns2:Operation>
       <ns2:Operation description="Gets the current federated query execution status." name="getExecutionStatus">
        <ns2:inputParameterCollection/>
-       <ns2:Output qName="ns31:FederatedQueryExecutionStatus" dimensionality="1" isArray="false" xmlns:ns31="http://fqp.cagrid.nci.nih.gov/FederatedQueryResultsMetadata"/>
+       <ns2:Output qName="ns39:FederatedQueryExecutionStatus" dimensionality="1" isArray="false" xmlns:ns39="http://fqp.cagrid.nci.nih.gov/FederatedQueryResultsMetadata"/>
        <ns2:faultCollection/>
       </ns2:Operation>
      </ns2:operationCollection>
@@ -208,17 +240,108 @@
       <ns2:ContextProperty description="The current status of Federated Query execution.  May be subscribed to via ws-notification for updates." name="{http://fqp.cagrid.nci.nih.gov/FederatedQueryResultsMetadata}FederatedQueryExecutionStatus"/>
      </ns2:contextPropertyCollection>
     </ns2:ServiceContext>
+    <ns2:ServiceContext description="The resource-qualified DCQL 2 results retrieval service" name="FederatedQueryResultsRetrieval">
+     <ns2:operationCollection>
+      <ns2:Operation description="" name="getServiceSecurityMetadata">
+       <ns2:inputParameterCollection/>
+       <ns2:Output qName="ns40:ServiceSecurityMetadata" dimensionality="1" isArray="false" xmlns:ns40="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.security">
+        <ns41:UMLClass className="ServiceSecurityMetadata" description="An instance of the Security Service Metadata." id="7EC3FAE9-60DB-2ACE-E040-BB89AD430977" packageName="gov.nih.nci.cagrid.metadata.security" projectName="caGrid_Metadata_Models" projectVersion="1" xmlns:ns41="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common">
+         <ns41:umlAttributeCollection/>
+         <ns41:SemanticMetadata conceptCode="C80736" conceptDefinition="A software system providing a public need." conceptName="Software Service" order="2"/>
+         <ns41:SemanticMetadata conceptCode="C25669" conceptDefinition="Security; freedom from anxiety or fear." conceptName="Security" order="1"/>
+         <ns41:SemanticMetadata conceptCode="C52095" conceptDefinition="Data about data; information that describes another set of data." conceptName="Metadata" order="0"/>
+        </ns41:UMLClass>
+       </ns2:Output>
+       <ns2:faultCollection/>
+      </ns2:Operation>
+      <ns2:Operation description="" name="Destroy">
+       <ns2:inputParameterCollection/>
+       <ns2:faultCollection/>
+      </ns2:Operation>
+      <ns2:Operation description="" name="SetTerminationTime">
+       <ns2:inputParameterCollection/>
+       <ns2:faultCollection/>
+      </ns2:Operation>
+      <ns2:Operation description="" name="Subscribe">
+       <ns2:inputParameterCollection/>
+       <ns2:faultCollection/>
+      </ns2:Operation>
+      <ns2:Operation description="" name="GetMultipleResourceProperties">
+       <ns2:inputParameterCollection/>
+       <ns2:faultCollection/>
+      </ns2:Operation>
+      <ns2:Operation description="" name="GetResourceProperty">
+       <ns2:inputParameterCollection/>
+       <ns2:faultCollection/>
+      </ns2:Operation>
+      <ns2:Operation description="" name="QueryResourceProperties">
+       <ns2:inputParameterCollection/>
+       <ns2:faultCollection/>
+      </ns2:Operation>
+      <ns2:Operation description="Returns a flag indicating if Federated Query Processing is complete; Until this operation returns true, all results retrieval methods will fail." name="isProcessingComplete">
+       <ns2:inputParameterCollection/>
+       <ns2:Output qName="xsd:boolean" dimensionality="1" isArray="false" xmlns:xsd="http://www.w3.org/2001/XMLSchema"/>
+       <ns2:faultCollection/>
+      </ns2:Operation>
+      <ns2:Operation description="Gets the current status of Federated Query Processing" name="getExecutionStatus">
+       <ns2:inputParameterCollection/>
+       <ns2:Output qName="ns42:FederatedQueryExecutionStatus" dimensionality="1" isArray="false" xmlns:ns42="http://fqp.cagrid.nci.nih.gov/FederatedQueryResultsMetadata"/>
+       <ns2:faultCollection/>
+      </ns2:Operation>
+      <ns2:Operation description="Gets the results of the DCQL 2 query aggregated as a single CQL 2 query result." name="getAggregateResults">
+       <ns2:inputParameterCollection/>
+       <ns2:Output qName="ns43:CQLQueryResults" dimensionality="1" isArray="false" xmlns:ns43="http://CQL.caBIG/2/org.cagrid.cql2.results"/>
+       <ns2:faultCollection>
+        <ns2:Fault description="Indicates an error occured processing the query." name="FederatedQueryProcessingFault"/>
+        <ns2:Fault description="Indicates Federated Query Processing is not yet complete" name="ProcessingNotCompleteFault"/>
+        <ns2:Fault description="Indicates a problem internal to the Federated Query Processor" name="InternalErrorFault"/>
+       </ns2:faultCollection>
+      </ns2:Operation>
+      <ns2:Operation description="Gets the results of executing the DCQL 2 query." name="getResults">
+       <ns2:inputParameterCollection/>
+       <ns2:Output qName="ns44:DCQLQueryResultsCollection" dimensionality="1" isArray="false" xmlns:ns44="http://DCQL.caBIG/2/org.cagrid.data.dcql.results"/>
+       <ns2:faultCollection>
+        <ns2:Fault description="Indicates an error occured processing the query." name="FederatedQueryProcessingFault"/>
+        <ns2:Fault description="Indicates Federated Query Processing is not yet complete" name="ProcessingNotCompleteFault"/>
+        <ns2:Fault description="Indicates a problem internal to the Federated Query Processor" name="InternalErrorFault"/>
+       </ns2:faultCollection>
+      </ns2:Operation>
+      <ns2:Operation description="Creates a WS-Enumeration resource for retrieving the query results and returns a reference to them." name="enumerate">
+       <ns2:inputParameterCollection/>
+       <ns2:Output qName="ns45:EnumerationResponseContainer" dimensionality="1" isArray="false" xmlns:ns45="http://gov.nih.nci.cagrid.enumeration/EnumerationResponseContainer"/>
+       <ns2:faultCollection>
+        <ns2:Fault description="Indicates an error occured processing the query." name="FederatedQueryProcessingFault"/>
+        <ns2:Fault description="Indicates Federated Query Processing is not yet complete" name="ProcessingNotCompleteFault"/>
+        <ns2:Fault description="Indicates a problem internal to the Federated Query Processor" name="InternalErrorFault"/>
+       </ns2:faultCollection>
+      </ns2:Operation>
+      <ns2:Operation description="Creates a caGrid Transfer resource for retrieving the results and returns a reference to them." name="transfer">
+       <ns2:inputParameterCollection/>
+       <ns2:Output qName="ns46:TransferServiceContextReference" dimensionality="1" isArray="false" xmlns:ns46="http://transfer.cagrid.org/TransferService/Context/types"/>
+       <ns2:faultCollection>
+        <ns2:Fault description="Indicates an error occured processing the query." name="FederatedQueryProcessingFault"/>
+        <ns2:Fault description="Indicates Federated Query Processing is not yet complete" name="ProcessingNotCompleteFault"/>
+        <ns2:Fault description="Indicates a problem internal to the Federated Query Processor" name="InternalErrorFault"/>
+       </ns2:faultCollection>
+      </ns2:Operation>
+     </ns2:operationCollection>
+     <ns2:contextPropertyCollection>
+      <ns2:ContextProperty description="" name="{http://fqp.cagrid.nci.nih.gov/FederatedQueryResultsMetadata}FederatedQueryExecutionStatus"/>
+      <ns2:ContextProperty description="" name="{http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ResourceLifetime-1.2-draft-01.xsd}CurrentTime"/>
+      <ns2:ContextProperty description="" name="{http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ResourceLifetime-1.2-draft-01.xsd}TerminationTime"/>
+     </ns2:contextPropertyCollection>
+    </ns2:ServiceContext>
    </ns2:serviceContextCollection>
-   <ns32:SemanticMetadata conceptCode="C63541" conceptDefinition="A service available on a system that coordinates resources that are not subject to central control, using open, general purpose protocols and interfaces to deliver nontrivial qualities of services." conceptName="Grid Service" order="0" xmlns:ns32="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common"/>
-   <ns33:SemanticMetadata conceptCode="C63543" conceptDefinition="A published API which receives data in the form of objects, performs computations based upon the input data, and returns information to a client via caGrid in the form of one or more objects." conceptName="Analytical Grid Service" order="1" xmlns:ns33="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common"/>
+   <ns47:SemanticMetadata conceptCode="C63541" conceptDefinition="A service available on a system that coordinates resources that are not subject to central control, using open, general purpose protocols and interfaces to deliver nontrivial qualities of services." conceptName="Grid Service" order="0" xmlns:ns47="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common"/>
+   <ns48:SemanticMetadata conceptCode="C63543" conceptDefinition="A published API which receives data in the form of objects, performs computations based upon the input data, and returns information to a client via caGrid in the form of one or more objects." conceptName="Analytical Grid Service" order="1" xmlns:ns48="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common"/>
   </ns2:Service>
  </ns1:serviceDescription>
  <ns1:hostingResearchCenter>
-  <ns34:ResearchCenter displayName="" shortName="" xmlns:ns34="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common">
-   <ns34:Address country="" locality="" postalCode="" stateProvince="" street1="" street2=""/>
-   <ns34:pointOfContactCollection>
-    <ns34:PointOfContact affiliation="" email="" firstName="" lastName="" phoneNumber="" role=""/>
-   </ns34:pointOfContactCollection>
-  </ns34:ResearchCenter>
+  <ns49:ResearchCenter displayName="" shortName="" xmlns:ns49="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common">
+   <ns49:Address country="" locality="" postalCode="" stateProvince="" street1="" street2=""/>
+   <ns49:pointOfContactCollection>
+    <ns49:PointOfContact affiliation="" email="" firstName="" lastName="" phoneNumber="" role=""/>
+   </ns49:pointOfContactCollection>
+  </ns49:ResearchCenter>
  </ns1:hostingResearchCenter>
 </ns1:ServiceMetadata>

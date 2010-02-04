@@ -1,4 +1,4 @@
-package gov.nih.nci.cagrid.fqp.service.globus;
+package gov.nih.nci.cagrid.fqp.resultsretrieval.service.globus;
 
 
 import java.rmi.RemoteException;
@@ -32,14 +32,14 @@ import org.w3c.dom.Node;
  * @created by Introduce Toolkit version 1.4
  * 
  */
-public class FederatedQueryProcessorAuthorization implements PDP {
+public class FederatedQueryResultsRetrievalAuthorization implements PDP {
 
-	public static final String SERVICE_NAMESPACE = "http://fqp.cagrid.nci.nih.gov/FederatedQueryProcessor";
+	public static final String SERVICE_NAMESPACE = "http://fqp.cagrid.nci.nih.gov/FederatedQueryProcessor/ResultsRetrieval";
 	
 	Map authorizationClassMap = new HashMap();
 	
 	
-	public FederatedQueryProcessorAuthorization() {
+	public FederatedQueryResultsRetrievalAuthorization() {
 	}
 	
 	protected String getServiceNamespace(){
@@ -59,19 +59,15 @@ public class FederatedQueryProcessorAuthorization implements PDP {
 		
 	}
 	   				
-	public void authorizeExecute(Subject peerSubject, MessageContext context, QName operation) throws AuthorizationException {
+	public void authorizeDestroy(Subject peerSubject, MessageContext context, QName operation) throws AuthorizationException {
 		
 	}
 	   				
-	public void authorizeExecuteAndAggregateResults(Subject peerSubject, MessageContext context, QName operation) throws AuthorizationException {
+	public void authorizeSetTerminationTime(Subject peerSubject, MessageContext context, QName operation) throws AuthorizationException {
 		
 	}
 	   				
-	public void authorizeExecuteAsynchronously(Subject peerSubject, MessageContext context, QName operation) throws AuthorizationException {
-		
-	}
-	   				
-	public void authorizeQuery(Subject peerSubject, MessageContext context, QName operation) throws AuthorizationException {
+	public void authorizeSubscribe(Subject peerSubject, MessageContext context, QName operation) throws AuthorizationException {
 		
 	}
 	   				
@@ -87,15 +83,27 @@ public class FederatedQueryProcessorAuthorization implements PDP {
 		
 	}
 	   				
-	public void authorizeExecuteQuery(Subject peerSubject, MessageContext context, QName operation) throws AuthorizationException {
+	public void authorizeIsProcessingComplete(Subject peerSubject, MessageContext context, QName operation) throws AuthorizationException {
 		
 	}
 	   				
-	public void authorizeExecuteQueryAndAggregate(Subject peerSubject, MessageContext context, QName operation) throws AuthorizationException {
+	public void authorizeGetExecutionStatus(Subject peerSubject, MessageContext context, QName operation) throws AuthorizationException {
 		
 	}
 	   				
-	public void authorizeQueryAsynchronously(Subject peerSubject, MessageContext context, QName operation) throws AuthorizationException {
+	public void authorizeGetAggregateResults(Subject peerSubject, MessageContext context, QName operation) throws AuthorizationException {
+		
+	}
+	   				
+	public void authorizeGetResults(Subject peerSubject, MessageContext context, QName operation) throws AuthorizationException {
+		
+	}
+	   				
+	public void authorizeEnumerate(Subject peerSubject, MessageContext context, QName operation) throws AuthorizationException {
+		
+	}
+	   				
+	public void authorizeTransfer(Subject peerSubject, MessageContext context, QName operation) throws AuthorizationException {
 		
 	}
 	   
@@ -109,17 +117,14 @@ public class FederatedQueryProcessorAuthorization implements PDP {
 		if(operation.getLocalPart().equals("getServiceSecurityMetadata")){
 			authorizeGetServiceSecurityMetadata(peerSubject, context, operation);
 			return true;
-		} else if(operation.getLocalPart().equals("execute")){
-			authorizeExecute(peerSubject, context, operation);
+		} else if(operation.getLocalPart().equals("destroy")){
+			authorizeDestroy(peerSubject, context, operation);
 			return true;
-		} else if(operation.getLocalPart().equals("executeAndAggregateResults")){
-			authorizeExecuteAndAggregateResults(peerSubject, context, operation);
+		} else if(operation.getLocalPart().equals("setTerminationTime")){
+			authorizeSetTerminationTime(peerSubject, context, operation);
 			return true;
-		} else if(operation.getLocalPart().equals("executeAsynchronously")){
-			authorizeExecuteAsynchronously(peerSubject, context, operation);
-			return true;
-		} else if(operation.getLocalPart().equals("query")){
-			authorizeQuery(peerSubject, context, operation);
+		} else if(operation.getLocalPart().equals("subscribe")){
+			authorizeSubscribe(peerSubject, context, operation);
 			return true;
 		} else if(operation.getLocalPart().equals("getMultipleResourceProperties")){
 			authorizeGetMultipleResourceProperties(peerSubject, context, operation);
@@ -130,14 +135,23 @@ public class FederatedQueryProcessorAuthorization implements PDP {
 		} else if(operation.getLocalPart().equals("queryResourceProperties")){
 			authorizeQueryResourceProperties(peerSubject, context, operation);
 			return true;
-		} else if(operation.getLocalPart().equals("executeQuery")){
-			authorizeExecuteQuery(peerSubject, context, operation);
+		} else if(operation.getLocalPart().equals("isProcessingComplete")){
+			authorizeIsProcessingComplete(peerSubject, context, operation);
 			return true;
-		} else if(operation.getLocalPart().equals("executeQueryAndAggregate")){
-			authorizeExecuteQueryAndAggregate(peerSubject, context, operation);
+		} else if(operation.getLocalPart().equals("getExecutionStatus")){
+			authorizeGetExecutionStatus(peerSubject, context, operation);
 			return true;
-		} else if(operation.getLocalPart().equals("queryAsynchronously")){
-			authorizeQueryAsynchronously(peerSubject, context, operation);
+		} else if(operation.getLocalPart().equals("getAggregateResults")){
+			authorizeGetAggregateResults(peerSubject, context, operation);
+			return true;
+		} else if(operation.getLocalPart().equals("getResults")){
+			authorizeGetResults(peerSubject, context, operation);
+			return true;
+		} else if(operation.getLocalPart().equals("enumerate")){
+			authorizeEnumerate(peerSubject, context, operation);
+			return true;
+		} else if(operation.getLocalPart().equals("transfer")){
+			authorizeTransfer(peerSubject, context, operation);
 			return true;
 		} 		
 		return false;
