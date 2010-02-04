@@ -135,6 +135,11 @@ public class FederatedQueryProcessorClient extends FederatedQueryProcessorClient
     }
   }
 
+  /**
+   * @deprecated As of caGrid 1.4, DCQL 2 is the preferred query language.  http://cagrid.org/display/fqp/DCQL+2
+   * Use {@link #executeQuery(org.cagrid.data.dcql.DCQLQuery)}
+   */
+  @Deprecated
   public gov.nih.nci.cagrid.dcqlresult.DCQLQueryResultsCollection execute(gov.nih.nci.cagrid.dcql.DCQLQuery query) throws RemoteException, gov.nih.nci.cagrid.fqp.stubs.types.FederatedQueryProcessingFault {
     synchronized(portTypeMutex){
       configureStubSecurity((Stub)portType,"execute");
@@ -147,6 +152,11 @@ public class FederatedQueryProcessorClient extends FederatedQueryProcessorClient
     }
   }
 
+  /**
+   * @deprecated As of caGrid 1.4, DCQL 2 is the preferred query language.  http://cagrid.org/display/fqp/DCQL+2
+   * Use {@link #executeQueryAndAggregate(org.cagrid.data.dcql.DCQLQuery)}
+   */
+  @Deprecated
   public gov.nih.nci.cagrid.cqlresultset.CQLQueryResults executeAndAggregateResults(gov.nih.nci.cagrid.dcql.DCQLQuery query) throws RemoteException, gov.nih.nci.cagrid.fqp.stubs.types.FederatedQueryProcessingFault {
     synchronized(portTypeMutex){
       configureStubSecurity((Stub)portType,"executeAndAggregateResults");
@@ -159,6 +169,11 @@ public class FederatedQueryProcessorClient extends FederatedQueryProcessorClient
     }
   }
 
+  /**
+   * @deprecated As of caGrid 1.4, DCQL 2 is the preferred query language.  http://cagrid.org/display/fqp/DCQL+2
+   * Use {@link #queryAsynchronously(org.cagrid.data.dcql.DCQLQuery, org.cagrid.gaards.cds.delegated.stubs.types.DelegatedCredentialReference, org.cagrid.fqp.execution.QueryExecutionParameters)}
+   */
+  @Deprecated
   public gov.nih.nci.cagrid.fqp.results.client.FederatedQueryResultsClient executeAsynchronously(gov.nih.nci.cagrid.dcql.DCQLQuery query) throws RemoteException, org.apache.axis.types.URI.MalformedURIException {
     synchronized(portTypeMutex){
       configureStubSecurity((Stub)portType,"executeAsynchronously");
@@ -172,6 +187,11 @@ public class FederatedQueryProcessorClient extends FederatedQueryProcessorClient
     }
   }
 
+  /**
+   * @deprecated As of caGrid 1.4, DCQL 2 is the preferred query language.  http://cagrid.org/display/fqp/DCQL+2
+   * Use {@link #queryAsynchronously(org.cagrid.data.dcql.DCQLQuery, org.cagrid.gaards.cds.delegated.stubs.types.DelegatedCredentialReference, org.cagrid.fqp.execution.QueryExecutionParameters)}
+   */
+  @Deprecated
   public gov.nih.nci.cagrid.fqp.results.client.FederatedQueryResultsClient query(gov.nih.nci.cagrid.dcql.DCQLQuery query,org.cagrid.gaards.cds.delegated.stubs.types.DelegatedCredentialReference delegatedCredentialReference,org.cagrid.fqp.execution.QueryExecutionParameters queryExecutionParameters) throws RemoteException, org.apache.axis.types.URI.MalformedURIException, gov.nih.nci.cagrid.fqp.stubs.types.FederatedQueryProcessingFault, gov.nih.nci.cagrid.fqp.results.stubs.types.InternalErrorFault {
     synchronized(portTypeMutex){
       configureStubSecurity((Stub)portType,"query");
