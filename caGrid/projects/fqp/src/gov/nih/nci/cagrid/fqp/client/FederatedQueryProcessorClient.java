@@ -68,15 +68,15 @@ public class FederatedQueryProcessorClient extends FederatedQueryProcessorClient
                         System.exit(1);
                     }
 
-                    DCQLQuery dcql = (DCQLQuery) Utils.deserializeDocument(args[3], DCQLQuery.class);
+                    DCQLQuery dcql = Utils.deserializeDocument(args[3], DCQLQuery.class);
                     FederatedQueryResultsClient resultsClilent = client.executeAsynchronously(dcql);
 
                     Utils.serializeDocument("resultEPR.xml", resultsClilent.getEndpointReference(), new QName(
                         "http://schemas.xmlsoap.org/ws/2004/03/addressing", "EndPointReference"));
 
-                    // hackish... need to subscribe to isComplete RP
+                    // HACK: need to subscribe to the status Resource Property
                     while (!resultsClilent.isProcessingComplete()) {
-                        Thread.sleep(5000);
+                        Thread.sleep(500);
                         System.out.print(".");
                     }
 
