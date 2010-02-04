@@ -1,0 +1,3 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<p:AbstractCaArrayObject bigid="" id="0" xmlns:p="gme://caArray.caBIG/2.0/gov.nih.nci.caarray.domain" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="gme://caArray.caBIG/2.0/gov.nih.nci.caarray.domain ../../schemas/caarray/gov.nih.nci.caarray.domain.xsd " xsi:type="p:AbstractCaArrayObject">
+</p:AbstractCaArrayObject>

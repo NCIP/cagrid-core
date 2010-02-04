@@ -16,7 +16,6 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.List;
 import java.util.Vector;
 
 import org.apache.axis.message.addressing.EndpointReferenceType;
@@ -32,6 +31,7 @@ import org.cagrid.gme.test.system.steps.CreateDatabaseStep;
 import org.cagrid.gme.test.system.steps.DeleteSchemasStep;
 import org.cagrid.gme.test.system.steps.PublishSchemasStep;
 import org.cagrid.gme.test.system.steps.SetDatabasePropertiesStep;
+import org.cagrid.gme.test.system.steps.ValidateXMLStep;
 
 
 public class GlobalModelExchangeStory extends ServiceStoryBase {
@@ -42,6 +42,9 @@ public class GlobalModelExchangeStory extends ServiceStoryBase {
     private static final String PATH_TO_GME_PROJECT = "../../../caGrid/projects/globalModelExchange";
     public static final String GME_DIR_PROPERTY = "gme.service.dir";
     private static final File CAARRAY_TEST_CASE_DIR = new File("resources/schemas/caarray");
+    private static final File CAARRAY_TEST_CASE_XML_DIR = new File("resources/xml/caarray");
+    private static final File CAARRAY_TEST_CASE_INVALID_XML_DIR = new File("resources/xml/caarray/invalid");
+
 
 
     public GlobalModelExchangeStory(ServiceContainer container) {
@@ -117,7 +120,6 @@ public class GlobalModelExchangeStory extends ServiceStoryBase {
         Collection<XMLSchemaNamespace> caArrayNamespaces = null;
         Collection<XMLSchemaImportInformation> caArrayIIs = null;
 
-        // upload some schemas
         try {
             caArrayTestCaseInfo = new TestCaseInfo(CAARRAY_TEST_CASE_DIR);
             caArraySchemas = caArrayTestCaseInfo.getSchemas();
@@ -127,6 +129,12 @@ public class GlobalModelExchangeStory extends ServiceStoryBase {
             e.printStackTrace();
             fail("Unable to construct test case information");
         }
+
+        // make sure validation fails when nothing is loaded yet
+        steps.add(new ValidateXMLStep(epr, getSampleXMLFileForNamespace(CAARRAY_TEST_CASE_XML_DIR, caArrayNamespaces
+            .iterator().next()), false, false));
+
+        // upload some schemas
         steps.add(new PublishSchemasStep(epr, caArraySchemas));
 
         // check the namespaces
@@ -142,6 +150,16 @@ public class GlobalModelExchangeStory extends ServiceStoryBase {
             steps.add(new CheckCacheSchemasStep(epr, ii.getTargetNamespace(), new File(RESULTS_TEMP_PATH)));
         }
 
+        // do some validation
+        assertTrue("No namespaces were loaded by the test case!", caArrayNamespaces.size() > 0);
+        for (XMLSchemaNamespace ns : caArrayNamespaces) {
+            steps
+                .add(new ValidateXMLStep(epr, getSampleXMLFileForNamespace(CAARRAY_TEST_CASE_XML_DIR, ns), true, true));
+            steps
+            .add(new ValidateXMLStep(epr, getSampleXMLFileForNamespace(CAARRAY_TEST_CASE_INVALID_XML_DIR, ns), false, true));
+
+        }
+
         // delete
         steps.add(new DeleteSchemasStep(epr, caArrayNamespaces));
         steps.add(new CheckPublishedNamespacesStep(epr, new ArrayList<XMLSchemaNamespace>()));
@@ -149,6 +167,14 @@ public class GlobalModelExchangeStory extends ServiceStoryBase {
         // retrieve failures
 
         return steps;
+    }
+
+
+    protected File getSampleXMLFileForNamespace(File dir, XMLSchemaNamespace ns) {
+        String path = ns.getURI().getPath();
+        int ind = path.lastIndexOf("/");
+
+        return new File(dir, path.substring(ind + 1)+".xml");
     }
 
 

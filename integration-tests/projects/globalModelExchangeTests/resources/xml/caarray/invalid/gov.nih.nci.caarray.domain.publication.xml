@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<p:Publication authors="" bigid="" doi="" editor="" id="0" issue="" lsidAuthority="" lsidNamespace="" lsidObjectId="" pages="" pubMedId="" publication="" publisher="" title="" uri="" volume="" xmlns:p="gme://caArray.caBIG/2.0/gov.nih.nci.caarray.domain.publication" xmlns:p1="gme://caArray.caBIG/2.0/gov.nih.nci.caarray.domain.vocabulary" xmlns:p2="gme://caArray.caBIG/2.0/gov.nih.nci.caarray.domain" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="gme://caArray.caBIG/2.0/gov.nih.nci.caarray.domain.publication ../../schemas/caarray/gov.nih.nci.caarray.domain.publication.xsd " year="">
+  <p:status accession="" bigid="" description="" id="0" lsidAuthority="" lsidNamespace="" lsidObjectId="" url="" value="">
+    <p1:categories>
+      <p1:Category accession="" bigid="" id="0" lsidAuthority="" lsidNamespace="" lsidObjectId="" name="" url="">
+        <p1:parents/>
+        <p1:children/>
+        <p1:source bigid="" id="0" lsidAuthority="" lsidNamespace="" lsidObjectId="" name="" url="" version=""/>
+      </p1:Category>
+    </p1:categories>
+    <p1:source bigid="" id="0" lsidAuthority="" lsidNamespace="" lsidObjectId="" name="" url="" version=""/>
+  </p:status>
+  <p:type accession="" bigid="" description="" id="0" lsidAuthority="" lsidNamespace="" lsidObjectId="" url="" value="">
+    <p1:categories>
+      <p1:Category accession="" bigid="" id="0" lsidAuthority="" lsidNamespace="" lsidObjectId="" name="" url="">
+        <p1:parents/>
+        <p1:children/>
+        <p1:source bigid="" id="0" lsidAuthority="" lsidNamespace="" lsidObjectId="" name="" url="" version=""/>
+      </p1:Category>
+    </p1:categories>
+    <p1:source bigid="" id="0" lsidAuthority="" lsidNamespace="" lsidObjectId="" name="" url="" version=""/>
+  </p:type>
+  <foo/>
+</p:Publication>

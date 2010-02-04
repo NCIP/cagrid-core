@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<p:Organism commonName="" ethnicityStrain="" id="0" ncbiTaxonomyId="0" scientificName=""
+  taxonomyRank="" xmlns:p="gme://caArray.caBIG/2.0/edu.georgetown.pir" xmlns:p1="gme://caArray.caBIG/2.0/gov.nih.nci.caarray.domain.vocabulary"
+  xmlns:p2="gme://caArray.caBIG/2.0/gov.nih.nci.caarray.domain" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="gme://caArray.caBIG/2.0/edu.georgetown.pir ../../schemas/caarray/edu.georgetown.pir.xsd ">
+  <p:additionalOrganismNameCollection>
+    <p:AdditionalOrganismName comment="" id="0" source="" value="">
+      <p:organismCollection />
+    </p:AdditionalOrganismName>
+  </p:additionalOrganismNameCollection>
+  <p:termSource bigid="" id="0" lsidAuthority="" lsidNamespace="" lsidObjectId="" name=""
+    url="" version="" />
+</p:Organism>

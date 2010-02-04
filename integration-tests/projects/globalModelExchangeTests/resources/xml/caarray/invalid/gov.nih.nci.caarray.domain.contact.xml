@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<p:Organization bigid="" email="" fax="" id="0" lsidAuthority="" lsidNamespace="" lsidObjectId="" name="" phone="" url="" xmlns:p="gme://caArray.caBIG/2.0/gov.nih.nci.caarray.domain.contact" xmlns:p1="gme://caArray.caBIG/2.0/gov.nih.nci.caarray.domain" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="gme://caArray.caBIG/2.0/gov.nih.nci.caarray.domain.contact ../../schemas/caarray/gov.nih.nci.caarray.domain.contact.xsd ">
+  <p:address bigid="" city="" id="0" lsidAuthority="" lsidNamespace="" lsidObjectId="" sstate="" street1="" street2="" zipCode=""/>
+</p:Organization>

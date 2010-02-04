@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<p:Microarray annotationDate="2001-12-31T12:00:00" bigid="" dbSNPVersion="" genomeVersion="" id="0" name="" platform="" type="" xmlns:p="gme://caArray.caBIG/2.0/gov.nih.nci.cabio.domain" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="gme://caArray.caBIG/2.0/gov.nih.nci.cabio.domain ../../schemas/caarray/gov.nih.nci.cabio.domain.xsd ">
+  <p:reporterCollection>
+    <p:ArrayReporter bigid="" id="0" name="" xsi:type="p:ArrayReporter">
+      <p:microarray annotationDate="2001-12-31T12:00:00" bigid="" dbSNPVersion="" genomeVersion="" id="0" name="" platform="" type=""/>
+    </p:ArrayReporter>
+  </p:reporterCollection>
+    <p:reporterCollection>
+    <p:ArrayReporter bigid="" id="0" name="" xsi:type="p:ArrayReporter">
+      <p:microarray annotationDate="2001-12-31T12:00:00" bigid="" dbSNPVersion="" genomeVersion="" id="0" name="" platform="" type=""/>
+    </p:ArrayReporter>
+  </p:reporterCollection>
+</p:Microarray>

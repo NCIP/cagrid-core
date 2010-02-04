@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<p:Term accession="" bigid="" description="" id="0" lsidAuthority="" lsidNamespace=""
+  lsidObjectId="" url="" value="" xmlns:p="gme://caArray.caBIG/2.0/gov.nih.nci.caarray.domain.vocabulary"
+  xmlns:p1="gme://caArray.caBIG/2.0/gov.nih.nci.caarray.domain" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="gme://caArray.caBIG/2.0/gov.nih.nci.caarray.domain.vocabulary ../../schemas/caarray/gov.nih.nci.caarray.domain.vocabulary.xsd ">
+  <p:categories>
+    <p:Category accession="" bigid="" id="0" lsidAuthority="" lsidNamespace=""
+      lsidObjectId="" name="" url="">
+      <p:parents />
+      <p:parents />
+
+      <p:children />
+      <p:source bigid="" id="0" lsidAuthority="" lsidNamespace="" lsidObjectId="" name=""
+        url="" version="" />
+    </p:Category>
+  </p:categories>
+  <p:source bigid="" id="0" lsidAuthority="" lsidNamespace="" lsidObjectId="" name="" url=""
+    version="" />
+</p:Term>

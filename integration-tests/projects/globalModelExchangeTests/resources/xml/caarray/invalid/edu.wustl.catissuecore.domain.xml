@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<p:MolecularSpecimen activityStatus="" available="true" barcode="" comment=""
+  concentrationInMicrogramPerMicroliter="0.0" createdOn="2001-12-31T12:00:00" id="0" label=""
+  lineage="" pathologicalStatus="" positionDimensionOne="0" positionDimensionTwo="0" type=""
+  xmlns:p="gme://caArray.caBIG/2.0/edu.wustl.catissuecore.domain" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="gme://caArray.caBIG/2.0/edu.wustl.catissuecore.domain ../../schemas/caarray/edu.wustl.catissuecore.domain.xsd ">
+  <p:parentSpecimen activityStatus="" available="true" barcode="" comment=""
+    createdOn="2001-12-31T12:00:00" id="0" label="" lineage="" pathologicalStatus=""
+    positionDimensionOne="0" positionDimensionTwo="0" type="" />
+  <p:parentSpecimen activityStatus="" available="true" barcode="" comment=""
+    createdOn="2001-12-31T12:00:00" id="0" label="" lineage="" pathologicalStatus=""
+    positionDimensionOne="0" positionDimensionTwo="0" type="" />
+  <p:childrenSpecimen>
+    <p:Specimen createdOn="2001-12-31T12:00:00" id="0" label="" lineage=""
+      pathologicalStatus="" positionDimensionOne="0" positionDimensionTwo="0" type="" />
+  </p:childrenSpecimen>
+</p:MolecularSpecimen>

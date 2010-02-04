@@ -52,7 +52,10 @@ public class CreateDatabaseStep extends Step {
 
         try {
             Statement stmt = con.createStatement();
+            stmt.executeUpdate("drop database if exists " + dbname);
+            stmt = con.createStatement();
             stmt.executeUpdate("create database if not exists " + dbname);
+            
         } finally {
             try {
                 con.close();
