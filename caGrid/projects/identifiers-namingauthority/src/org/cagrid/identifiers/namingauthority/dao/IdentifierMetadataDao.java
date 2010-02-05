@@ -2,6 +2,7 @@ package org.cagrid.identifiers.namingauthority.dao;
 
 import java.net.URI;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -13,6 +14,7 @@ import org.cagrid.identifiers.namingauthority.domain.IdentifierValues;
 import org.cagrid.identifiers.namingauthority.domain.KeyData;
 import org.cagrid.identifiers.namingauthority.hibernate.IdentifierMetadata;
 import org.cagrid.identifiers.namingauthority.hibernate.IdentifierValueKey;
+import org.cagrid.identifiers.namingauthority.util.IdentifierUtil;
 
 public class IdentifierMetadataDao extends AbstractDao<IdentifierMetadata> {
 
@@ -71,16 +73,24 @@ public class IdentifierMetadataDao extends AbstractDao<IdentifierMetadata> {
         if (ivalues != null) {
             String[] keys = ivalues.getKeys();
             for (String key : keys) {
-                IdentifierValueKey vk = new IdentifierValueKey();
-                
-                KeyData kd = ivalues.getValues(key);
-                vk.setKey(key);
-                vk.setReadWriteIdentifier(kd.getReadWriteIdentifier());
-                vk.setValues(kd.getValues());
-                values.add(vk);
+                values.add(IdentifierUtil.convert(key, ivalues));
             }
         }
 
         save(md);
+	}
+
+	public void createKeys(URI localIdentifier, IdentifierValues values) {
+		
+		IdentifierMetadata resolvedValues = loadIdentifier(localIdentifier);
+		
+		String[] newKeys = values.getKeys();
+		Collection<IdentifierValueKey> valueKeys = resolvedValues.getValues();
+		
+		for( String key : newKeys ) {
+			valueKeys.add(IdentifierUtil.convert(key, values));
+		}
+
+		save(resolvedValues);
 	}
 }

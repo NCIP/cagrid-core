@@ -194,6 +194,9 @@
   <message name="InvalidIdentifierFaultFaultMessage">
     <part name="fault" element="ns1:InvalidIdentifierFault" />
   </message>
+  <message name="NamingAuthoritySecurityFaultFaultMessage">
+    <part name="fault" element="ns1:NamingAuthoritySecurityFault" />
+  </message>
   <!--============================================================
 
                        P O R T T Y P E
@@ -215,18 +218,30 @@
     <operation name="deleteKeys">
       <input message="tns:DeleteKeysRequest" wsa:Action="http://identifiers.cagrid.nci.nih.gov/IdentifiersNAService/DeleteKeysRequest" />
       <output message="tns:DeleteKeysResponse" wsa:Action="http://identifiers.cagrid.nci.nih.gov/IdentifiersNAService/DeleteKeysResponse" />
+      <fault name="InvalidIdentifierFault" message="tns:InvalidIdentifierFaultFaultMessage" wsa:Action="http://identifiers.cagrid.nci.nih.gov/IdentifiersNAService/InvalidIdentifierFaultFaultMessage" />
+      <fault name="NamingAuthorityConfigurationFault" message="tns:NamingAuthorityConfigurationFaultFaultMessage" wsa:Action="http://identifiers.cagrid.nci.nih.gov/IdentifiersNAService/NamingAuthorityConfigurationFaultFaultMessage" />
+      <fault name="NamingAuthoritySecurityFault" message="tns:NamingAuthoritySecurityFaultFaultMessage" wsa:Action="http://identifiers.cagrid.nci.nih.gov/IdentifiersNAService/NamingAuthoritySecurityFaultFaultMessage" />
     </operation>
     <operation name="createKeys">
       <input message="tns:CreateKeysRequest" wsa:Action="http://identifiers.cagrid.nci.nih.gov/IdentifiersNAService/CreateKeysRequest" />
       <output message="tns:CreateKeysResponse" wsa:Action="http://identifiers.cagrid.nci.nih.gov/IdentifiersNAService/CreateKeysResponse" />
+      <fault name="InvalidIdentifierFault" message="tns:InvalidIdentifierFaultFaultMessage" wsa:Action="http://identifiers.cagrid.nci.nih.gov/IdentifiersNAService/InvalidIdentifierFaultFaultMessage" />
+      <fault name="NamingAuthorityConfigurationFault" message="tns:NamingAuthorityConfigurationFaultFaultMessage" wsa:Action="http://identifiers.cagrid.nci.nih.gov/IdentifiersNAService/NamingAuthorityConfigurationFaultFaultMessage" />
+      <fault name="NamingAuthoritySecurityFault" message="tns:NamingAuthoritySecurityFaultFaultMessage" wsa:Action="http://identifiers.cagrid.nci.nih.gov/IdentifiersNAService/NamingAuthoritySecurityFaultFaultMessage" />
     </operation>
     <operation name="replaceKeys">
       <input message="tns:ReplaceKeysRequest" wsa:Action="http://identifiers.cagrid.nci.nih.gov/IdentifiersNAService/ReplaceKeysRequest" />
       <output message="tns:ReplaceKeysResponse" wsa:Action="http://identifiers.cagrid.nci.nih.gov/IdentifiersNAService/ReplaceKeysResponse" />
+      <fault name="InvalidIdentifierFault" message="tns:InvalidIdentifierFaultFaultMessage" wsa:Action="http://identifiers.cagrid.nci.nih.gov/IdentifiersNAService/InvalidIdentifierFaultFaultMessage" />
+      <fault name="NamingAuthorityConfigurationFault" message="tns:NamingAuthorityConfigurationFaultFaultMessage" wsa:Action="http://identifiers.cagrid.nci.nih.gov/IdentifiersNAService/NamingAuthorityConfigurationFaultFaultMessage" />
+      <fault name="NamingAuthoritySecurityFault" message="tns:NamingAuthoritySecurityFaultFaultMessage" wsa:Action="http://identifiers.cagrid.nci.nih.gov/IdentifiersNAService/NamingAuthoritySecurityFaultFaultMessage" />
     </operation>
     <operation name="deleteAllKeys">
       <input message="tns:DeleteAllKeysRequest" wsa:Action="http://identifiers.cagrid.nci.nih.gov/IdentifiersNAService/DeleteAllKeysRequest" />
       <output message="tns:DeleteAllKeysResponse" wsa:Action="http://identifiers.cagrid.nci.nih.gov/IdentifiersNAService/DeleteAllKeysResponse" />
+      <fault name="InvalidIdentifierFault" message="tns:InvalidIdentifierFaultFaultMessage" wsa:Action="http://identifiers.cagrid.nci.nih.gov/IdentifiersNAService/InvalidIdentifierFaultFaultMessage" />
+      <fault name="NamingAuthorityConfigurationFault" message="tns:NamingAuthorityConfigurationFaultFaultMessage" wsa:Action="http://identifiers.cagrid.nci.nih.gov/IdentifiersNAService/NamingAuthorityConfigurationFaultFaultMessage" />
+      <fault name="NamingAuthoritySecurityFault" message="tns:NamingAuthoritySecurityFaultFaultMessage" wsa:Action="http://identifiers.cagrid.nci.nih.gov/IdentifiersNAService/NamingAuthoritySecurityFaultFaultMessage" />
     </operation>
     <wsdl:operation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" name="GetMultipleResourceProperties">
       <wsdl:input name="GetMultipleResourcePropertiesRequest" message="wsrpw:GetMultipleResourcePropertiesRequest" wsa:Action="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ResourceProperties/GetMultipleResourceProperties" />

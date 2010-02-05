@@ -27,5 +27,11 @@
       <extension base="wsrbf:BaseFaultType" />
     </complexContent>
   </complexType>
+  <element name="NamingAuthoritySecurityFault" type="tns:NamingAuthoritySecurityFault" />
+  <complexType name="NamingAuthoritySecurityFault">
+    <complexContent>
+      <extension base="wsrbf:BaseFaultType" />
+    </complexContent>
+  </complexType>
 </schema>
 

@@ -9,7 +9,7 @@ public interface MaintainerNamingAuthority extends NamingAuthority {
 		throws NamingAuthorityConfigurationException, InvalidIdentifierValuesException, 
 			InvalidIdentifierException, NamingAuthoritySecurityException;
 	
-	public void deleteKeys(SecurityInfo secInfo, String[] keyList)
+	public void deleteKeys(SecurityInfo secInfo, URI identifier, String[] keyList)
 		throws NamingAuthorityConfigurationException, InvalidIdentifierValuesException, 
 			InvalidIdentifierException, NamingAuthoritySecurityException;
   

@@ -11,10 +11,12 @@ import org.apache.axis.types.URI.MalformedURIException;
 import org.cagrid.identifiers.namingauthority.InvalidIdentifierException;
 import org.cagrid.identifiers.namingauthority.InvalidIdentifierValuesException;
 import org.cagrid.identifiers.namingauthority.NamingAuthorityConfigurationException;
+import org.cagrid.identifiers.namingauthority.NamingAuthoritySecurityException;
 
 import gov.nih.nci.cagrid.identifiers.stubs.types.InvalidIdentifierFault;
 import gov.nih.nci.cagrid.identifiers.stubs.types.InvalidIdentifierValuesFault;
 import gov.nih.nci.cagrid.identifiers.stubs.types.NamingAuthorityConfigurationFault;
+import gov.nih.nci.cagrid.identifiers.stubs.types.NamingAuthoritySecurityFault;
 
 public class IdentifiersNAUtil {
 
@@ -92,6 +94,12 @@ public class IdentifiersNAUtil {
 
 	public static InvalidIdentifierValuesFault map(InvalidIdentifierValuesException e) {
 		InvalidIdentifierValuesFault out = new InvalidIdentifierValuesFault();
+		out.setFaultString(e.getMessage());
+		return out;
+	}
+	
+	public static NamingAuthoritySecurityFault map(NamingAuthoritySecurityException e) {
+		NamingAuthoritySecurityFault out = new NamingAuthoritySecurityFault();
 		out.setFaultString(e.getMessage());
 		return out;
 	}

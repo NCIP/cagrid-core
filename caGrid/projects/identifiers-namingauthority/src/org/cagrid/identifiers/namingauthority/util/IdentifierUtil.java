@@ -3,12 +3,15 @@ package org.cagrid.identifiers.namingauthority.util;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.net.URI;
+import java.util.Collection;
 import java.util.List;
 
 import org.cagrid.identifiers.namingauthority.InvalidIdentifierException;
 import org.cagrid.identifiers.namingauthority.NamingAuthorityConfigurationException;
 import org.cagrid.identifiers.namingauthority.domain.IdentifierValues;
 import org.cagrid.identifiers.namingauthority.domain.KeyData;
+import org.cagrid.identifiers.namingauthority.hibernate.IdentifierMetadata;
+import org.cagrid.identifiers.namingauthority.hibernate.IdentifierValueKey;
 
 
 public class IdentifierUtil {
@@ -82,12 +85,23 @@ public class IdentifierUtil {
 	}
 	
 	public static String getStackTrace(Throwable t) {  
-	      StringWriter stringWritter = new StringWriter();  
-	      PrintWriter printWritter = new PrintWriter(stringWritter, true);  
-	      t.printStackTrace(printWritter);  
-	      printWritter.flush();  
-	      stringWritter.flush();   
-	  
-	     return stringWritter.toString();  
-	  }   
+		StringWriter stringWritter = new StringWriter();  
+		PrintWriter printWritter = new PrintWriter(stringWritter, true);  
+		t.printStackTrace(printWritter);  
+		printWritter.flush();  
+		stringWritter.flush();   
+
+		return stringWritter.toString();  
+	}   
+	
+	public static IdentifierValueKey convert(String key, IdentifierValues values) {
+
+		KeyData kd = values.getValues(key);
+		IdentifierValueKey ivk = new IdentifierValueKey();
+		ivk.setKey(key);
+		ivk.setReadWriteIdentifier(kd.getReadWriteIdentifier());
+		ivk.setValues(kd.getValues());
+		
+		return ivk;
+	}
 }

@@ -103,17 +103,17 @@ public class NamingAuthorityImpl implements MaintainerNamingAuthority {
         return result;
     }
 
-    @Override
 	public void createKeys(SecurityInfo secInfo, URI identifier, IdentifierValues values)
 		throws NamingAuthorityConfigurationException,
 			InvalidIdentifierValuesException, InvalidIdentifierException,
 			NamingAuthoritySecurityException {
 		
-    	SecurityInfo securityInfo = checkSecurityInfo(secInfo);
-        IdentifierValues resolvedValues = loadIdentifier(identifier);
+    	//SecurityInfo securityInfo = checkSecurityInfo(secInfo);
+    	URI localIdentifier = IdentifierUtil.getLocalName(getConfiguration().getPrefix(), identifier);
+    	this.identifierDao.createKeys(localIdentifier, values);
+        //IdentifierValues resolvedValues = loadIdentifier(identifier);
 	}
 
-	@Override
 	public void deleteAllKeys(SecurityInfo secInfo, URI identifier)
 			throws NamingAuthorityConfigurationException,
 			InvalidIdentifierValuesException, InvalidIdentifierException,
@@ -122,8 +122,7 @@ public class NamingAuthorityImpl implements MaintainerNamingAuthority {
 		
 	}
 
-	@Override
-	public void deleteKeys(SecurityInfo secInfo, String[] keyList)
+	public void deleteKeys(SecurityInfo secInfo, URI identifier, String[] keyList)
 			throws NamingAuthorityConfigurationException,
 			InvalidIdentifierValuesException, InvalidIdentifierException,
 			NamingAuthoritySecurityException {
@@ -131,7 +130,6 @@ public class NamingAuthorityImpl implements MaintainerNamingAuthority {
 		
 	}
 
-	@Override
 	public void replaceKeys(SecurityInfo secInfo, URI identifier,
 			IdentifierValues values)
 			throws NamingAuthorityConfigurationException,
