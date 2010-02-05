@@ -5,10 +5,8 @@ import gov.nih.nci.cagrid.common.SchemaValidator;
 import gov.nih.nci.cagrid.common.Utils;
 import gov.nih.nci.cagrid.common.XMLUtilities;
 
-import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
-import java.io.StringReader;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.rmi.RemoteException;
@@ -26,7 +24,6 @@ import org.cagrid.gme.stubs.types.NoSuchNamespaceExistsFault;
 import org.globus.gsi.GlobusCredential;
 import org.jdom.Document;
 import org.jdom.Namespace;
-import org.xml.sax.InputSource;
 
 
 /**
@@ -94,7 +91,7 @@ public class GlobalModelExchangeClient extends GlobalModelExchangeClientBase imp
         try {
             doc = XMLUtilities.stringToDocument(xml);
         } catch (Exception e) {
-            throw new IOException("Error converting XML string to Document:" + e.getMessage(), e);
+            throw new IOException("Error converting XML string to Document:" + e.getMessage());
         }
         validateXMLDocument(doc);
     }
@@ -135,7 +132,7 @@ public class GlobalModelExchangeClient extends GlobalModelExchangeClientBase imp
         try {
             doc = XMLUtilities.fileNameToDocument(xmlFile.getAbsolutePath());
         } catch (Exception e) {
-            throw new IOException("Error converting XML File to Document:" + e.getMessage(), e);
+            throw new IOException("Error converting XML File to Document:" + e.getMessage());
         }
         validateXMLDocument(doc);
     }
