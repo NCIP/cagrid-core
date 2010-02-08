@@ -47,6 +47,8 @@ public class SyncGTSConfiguration implements ServiceConfiguration {
 	
 	private String performFirstSync;
 	
+	private String syncDescription;
+	
 	
     public String getEtcDirectoryPath() {
 		return ContainerConfig.getBaseDirectory() + File.separator + etcDirectoryPath;
@@ -65,6 +67,16 @@ public class SyncGTSConfiguration implements ServiceConfiguration {
 	
 	public void setPerformFirstSync(String performFirstSync) {
 		this.performFirstSync = performFirstSync;
+	}
+
+	
+	public String getSyncDescription() {
+		return ContainerConfig.getBaseDirectory() + File.separator + syncDescription;
+	}
+	
+	
+	public void setSyncDescription(String syncDescription) {
+		this.syncDescription = syncDescription;
 	}
 
 	

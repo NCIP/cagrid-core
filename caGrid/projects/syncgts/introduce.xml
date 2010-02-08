@@ -88,5 +88,6 @@
  <ns14:Extensions xsi:type="ns14:ExtensionsType" xmlns:ns14="gme://gov.nih.nci.cagrid.introduce/1/Extension" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"/>
  <ns15:ServiceProperties xmlns:ns15="gme://gov.nih.nci.cagrid.introduce/1/Property">
   <ns15:Property description="" key="performFirstSync" value="true"/>
+  <ns15:Property description="" isFromETC="true" key="syncDescription" value="sync-description.xml"/>
  </ns15:ServiceProperties>
 </ns1:ServiceDescription>

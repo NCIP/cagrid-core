@@ -15,6 +15,10 @@
           <name>performFirstSync</name>
           <value>@performFirstSync@</value>
         </parameter>
+        <parameter>
+          <name>syncDescription</name>
+          <value>ETC-PATH/@syncDescription@</value>
+        </parameter>
       </resourceParams>
     </resource>
     <resource name="configuration" type="gov.nih.nci.cagrid.syncgts.service.globus.resource.SyncGTSResourceConfiguration">

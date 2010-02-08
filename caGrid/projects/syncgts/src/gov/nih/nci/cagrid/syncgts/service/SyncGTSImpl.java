@@ -4,11 +4,7 @@ import gov.nih.nci.cagrid.syncgts.bean.SyncDescription;
 import gov.nih.nci.cagrid.syncgts.core.SyncGTS;
 import gov.nih.nci.cagrid.syncgts.core.SyncGTSDefault;
 
-import java.io.File;
 import java.rmi.RemoteException;
-
-import org.apache.axis.MessageContext;
-import org.globus.wsrf.config.ContainerConfig;
 
 
 /**
@@ -17,16 +13,12 @@ import org.globus.wsrf.config.ContainerConfig;
  * @created by Introduce Toolkit version 1.0
  */
 public class SyncGTSImpl {
-    private static final String SYNC_DESCRIPTION = "syncDescription";
     private SyncGTSConfiguration configuration;
-
 
     public SyncGTSImpl() throws RemoteException {
         try {
             this.configuration = SyncGTSConfiguration.getConfiguration();
-            String configFileEnd = (String) MessageContext.getCurrentContext().getProperty(SYNC_DESCRIPTION);
-            String configFile = ContainerConfig.getBaseDirectory() + File.separator + configFileEnd;
-            SyncGTSDefault.setServiceSyncDescriptionLocation(configFile);
+            SyncGTSDefault.setServiceSyncDescriptionLocation(SyncGTSConfiguration.getConfiguration().getSyncDescription());
             SyncDescription description = SyncGTSDefault.getSyncDescription();
             try {
                 SyncGTS sync = SyncGTS.getInstance();
