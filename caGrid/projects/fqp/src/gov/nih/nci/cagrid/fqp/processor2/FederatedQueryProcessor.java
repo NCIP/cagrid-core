@@ -347,7 +347,7 @@ class FederatedQueryProcessor {
             // entries and we only got one value.
             cqlGroup.setLogicalOperation(GroupLogicalOperator.OR);
             attributes = new CQLAttribute[2];
-            attributes[0] = createAttributeFromValue(joinCondition, localAttributeName, values.get(0));
+            attributes[0] = createAttributeFromValue(joinCondition, transformation, localAttributeName, values.get(0));
             attributes[1] = attributes[0];
         } else {
             // more than 1 value
@@ -356,7 +356,7 @@ class FederatedQueryProcessor {
             for (int i = 0; i < values.size(); i++) {
                 String currRemoteValue = values.get(i);
                 attributes[i] = createAttributeFromValue(
-                    joinCondition, localAttributeName, currRemoteValue);
+                    joinCondition, transformation, localAttributeName, currRemoteValue);
             }
         }
         cqlGroup.setCQLAttribute(attributes);
@@ -372,7 +372,7 @@ class FederatedQueryProcessor {
      * @return A CQL Attribute
      * @throws FederatedQueryProcessingException
      */
-    private static CQLAttribute createAttributeFromValue(JoinCondition joinCondition,
+    private static CQLAttribute createAttributeFromValue(JoinCondition joinCondition, DataTransformation transformation,
         String property, String value) throws FederatedQueryProcessingException {
         CQLAttribute attr = new CQLAttribute();
         // set the local property name
@@ -398,17 +398,24 @@ class FederatedQueryProcessor {
             // set the value to the string representation of 
             // the "foreign result value"
             // TODO: value types??
-            AttributeValue attrValue = new AttributeValue();
-            attrValue.setStringValue(value);
+            AttributeValue attrValue = null;
+            if (transformation != null) {
+                attrValue = applyTransformation(transformation, value);
+            } else {
+                attrValue = new AttributeValue();
+                attrValue.setStringValue(value);
+            }
             attr.setAttributeValue(attrValue);
         }
         return attr;
     }
     
     
-    private static String applyTransformation(DataTransformation transformation, String value) {
+    private static AttributeValue applyTransformation(DataTransformation transformation, String value) {
         // TODO: implement me
-        return value;
+        AttributeValue attrValue = new AttributeValue();
+        attrValue.setStringValue(value);
+        return attrValue;
     }
 
 
