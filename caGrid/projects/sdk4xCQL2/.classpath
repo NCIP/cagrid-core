@@ -72,12 +72,12 @@
 	<classpathentry kind="lib" path="ext/dependencies/test/jars/caGrid-core-tests-1.4-dev.jar"/>
 	<classpathentry kind="lib" path="ext/dependencies/test/jars/jdepend-2.7.jar"/>
 	<classpathentry kind="lib" path="test/lib/sdk4.0/sdk-client-framework.jar"/>
-	<classpathentry kind="lib" path="test/lib/sdk4.0/hibernate3.jar"/>
 	<classpathentry kind="lib" path="ext/dependencies/jars/caGrid-metadata-data-1.4-dev.jar"/>
 	<classpathentry kind="lib" path="ext/dependencies/jars/caGrid-metadatautils-1.4-dev.jar"/>
 	<classpathentry kind="lib" path="ext/dependencies/jars/caGrid-metadata-common-1.4-dev.jar"/>
 	<classpathentry kind="lib" path="ext/dependencies/jars/caGrid-core-1.4-dev.jar"/>
 	<classpathentry kind="lib" path="ext/dependencies/jars/caGrid-CQL-cql.2.0-1.4-dev.jar"/>
 	<classpathentry kind="lib" path="ext/dependencies/jars/jdom-1.0.jar"/>
+	<classpathentry kind="lib" path="ext/dependencies/jars/hibernate3.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

@@ -30,9 +30,10 @@ import org.cagrid.cql2.UnaryPredicate;
 
 
 /**
- * CQL2ToParameterizedHQL Converter utility to turn CQL 2 into HQL using
- * positional parameters compatible with Hibernate 3.2.0ga for use with caCORE
- * SDK 4 / 4.1 (and probably 4.2 when it's released)
+ * CQL2ToParameterizedHQL
+ * Converter utility to turn CQL 2 into HQL using
+ * positional parameters compatible with Hibernate 3.2.0ga.
+ * Indended for use with caCORE SDK 4.x, but may be useful elsewhere.
  * 
  * @author David Ervin
  * 
@@ -77,9 +78,9 @@ public class CQL2ToParameterizedHQL {
 
     /**
      * Converts CQL to parameterized HQL suitable for use with Hibernate
-     * v3.2.0ga and the caCORE SDK version 4.0. This translation process <b>does
-     * not</b> include application of CQL 2 Query Modifiers; this functionality
-     * should be implemented as a post-processing operation in the
+     * v3.2.0ga and the caCORE SDK version 4.x. This translation process 
+     * <b>does not</b> include application of CQL 2 Query Modifiers;
+     * this functionality should be implemented as a post-processing operation in the
      * CQL2QueryProcessor class.
      * 
      * @param query
