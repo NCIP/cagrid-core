@@ -25,5 +25,13 @@ public class DCQLConstants {
     public static final String DCQL_RESULTS_URI = "http://caGrid.caBIG/1.0/gov.nih.nci.cagrid.dcqlresult";
     public static final String DCQL_RESULTS_NAME = "DCQLQueryResultsCollection";
     public static final QName DCQL_RESULTS_QNAME = new QName(DCQL_RESULTS_URI, DCQL_RESULTS_NAME);
-
+    
+    // DCQL2
+    public static final String DCQL2_QUERY_URI = "http://DCQL.caBIG/2/org.cagrid.data.dcql";
+    public static final String DCQL2_QUERY_NAME = "DCQLQuery";
+    public static final QName DCQL2_QUERY_QNAME = new QName(DCQL2_QUERY_URI, DCQL2_QUERY_NAME);
+    
+    public static final String DCQL2_RESULTS_URI = "http://DCQL.caBIG/2/org.cagrid.data.dcql.results";
+    public static final String DCQL2_RESULTS_NAME = "DCQLQueryResultsCollection";
+    public static final QName DCQL2_RESULTS_QNAME = new QName(DCQL2_RESULTS_URI, DCQL2_RESULTS_NAME);
 }

@@ -8,8 +8,10 @@ import gov.nih.nci.cagrid.fqp.processor.exceptions.RemoteDataServiceException;
 import java.io.StringWriter;
 import java.net.ConnectException;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Set;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
@@ -209,7 +211,7 @@ public class FederatedQueryEngine {
         if (LOG.isDebugEnabled()) {
             try {
                 StringWriter s = new StringWriter();
-                SerializationUtils.serializeDCQLQuery(dcqlQuery, s);
+                SerializationUtils.serializeDCQL2Query(dcqlQuery, s);
                 LOG.debug(logMessage + ":\n" + s.toString());
                 s.close();
             } catch (Exception e) {
@@ -362,36 +364,34 @@ public class FederatedQueryEngine {
                 }
             } while (results == null && tryCount < maxRetries);
             
-            // verify we have Object results
+            // target data services may return any valid type of results, 
+            // but they must all be of the same type.  This has to be verified by the caller.
             boolean invalidQueryResponse = false;
             if (results != null) {
-                if (results.getAttributeResult() != null || results.getCountResult() != null || results.getIdentifierResult() != null) {
+                // verify the results type
+                if (!results.getTargetClassname().equals(query.getCQLTargetObject().getClassName())) {
                     invalidQueryResponse = true;
-                    queryException = new RemoteDataServiceException(
-                        "Remote data service " + serviceURL + " returned non-object results");
+                    queryException = new RemoteDataServiceException("Data service (" + serviceURL
+                        + ") returned results of type (" + results.getTargetClassname() 
+                        + ") when type (" + query.getCQLTargetObject().getClassName() + ") was requested!");
                 } else {
-                    // verify the results type
-                    if (!results.getTargetClassname().equals(query.getTarget().getName())) {
-                        invalidQueryResponse = true;
-                        queryException = new RemoteDataServiceException("Data service (" + serviceURL
-                            + ") returned results of type (" + results.getTargetClassname() 
-                            + ") when type (" + query.getTarget().getName() + ") was requested!");
-                    } else {
-                        // all is well
-                        fireStatusOk(serviceURL);
-                    }
+                    // all is well
+                    fireStatusOk(serviceURL);
                 }
             } else if (queryException == null) {
                 // not sure how we could have no results AND no exception, but...
                 invalidQueryResponse = true;
                 queryException = new RemoteDataServiceException(
-                    "Remote data service " + serviceURL + " returned no results at all");
+                    "Remote data service " + serviceURL + " returned no results at all, and threw no exception");
             }
             
+            // did an exception get thrown?
             if (queryException != null) {
                 boolean isConnectException = false;
+                Set<Throwable> seenExceptions = new HashSet<Throwable>();
                 Throwable cause = queryException;
-                while (cause != null && !isConnectException) {
+                while (cause != null && !isConnectException && !seenExceptions.contains(cause)) {
+                    seenExceptions.add(cause);
                     isConnectException = cause instanceof ConnectException;
                     cause = cause.getCause();
                 }

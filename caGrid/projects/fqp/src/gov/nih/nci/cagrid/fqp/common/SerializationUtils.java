@@ -3,6 +3,7 @@ package gov.nih.nci.cagrid.fqp.common;
 import gov.nih.nci.cagrid.common.Utils;
 import gov.nih.nci.cagrid.cqlquery.CQLQuery;
 import gov.nih.nci.cagrid.cqlresultset.CQLQueryResults;
+import gov.nih.nci.cagrid.data.CqlSchemaConstants;
 import gov.nih.nci.cagrid.data.DataServiceConstants;
 import gov.nih.nci.cagrid.dcql.DCQLQuery;
 import gov.nih.nci.cagrid.dcqlresult.DCQLQueryResultsCollection;
@@ -37,6 +38,14 @@ public class SerializationUtils {
 			throw new IllegalArgumentException("Null is not a valid argument");
 		}
 		Utils.serializeObject(cqlQuery, DCQLConstants.CQL_QUERY_QNAME, writer);
+	}
+	
+	
+	public static void serializeCQL2Query(org.cagrid.cql2.CQLQuery cqlQuery, Writer writer) throws Exception {
+	    if (cqlQuery == null || writer == null) {
+            throw new IllegalArgumentException("Null is not a valid argument");
+        }
+	    Utils.serializeObject(cqlQuery, CqlSchemaConstants.CQL2_QUERY_QNAME, writer);
 	}
 
 
@@ -73,6 +82,14 @@ public class SerializationUtils {
 			throw new IllegalArgumentException("Null is not a valid argument");
 		}
 		Utils.serializeObject(dcqlQuery, DCQLConstants.DCQL_QUERY_QNAME, writer);
+	}
+	
+	
+	public static void serializeDCQL2Query(org.cagrid.data.dcql.DCQLQuery dcqlQuery, Writer writer) throws Exception {
+	    if (dcqlQuery == null || writer == null) {
+            throw new IllegalArgumentException("Null is not a valid argument");
+        }
+        Utils.serializeObject(dcqlQuery, DCQLConstants.DCQL2_QUERY_QNAME, writer);
 	}
 
 
