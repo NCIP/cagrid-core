@@ -1,5 +1,6 @@
 package gov.nih.nci.cagrid.testing.system.deployment.steps;
 
+import gov.nih.nci.cagrid.testing.system.deployment.ContainerException;
 import gov.nih.nci.cagrid.testing.system.deployment.ServiceContainer;
 import gov.nih.nci.cagrid.testing.system.haste.Step;
 
@@ -40,10 +41,15 @@ public class DeployServiceStep extends Step {
     public void runStep() throws Throwable {
 		LOG.debug("Running step: " + getClass().getName());
 		File serviceBaseDir = new File(serviceBase);
-        if (deployArgs == null) {
-            container.deployService(serviceBaseDir);
-        } else {
-            container.deployService(serviceBaseDir, deployArgs);
-        }
+		try {
+		    if (deployArgs == null) {
+		        container.deployService(serviceBaseDir);
+		    } else {
+		        container.deployService(serviceBaseDir, deployArgs);
+		    }
+		} catch (ContainerException ex) {
+		    ex.printStackTrace();
+		    fail("Error deploying service: " + ex.getMessage());
+		}
 	}
 }
