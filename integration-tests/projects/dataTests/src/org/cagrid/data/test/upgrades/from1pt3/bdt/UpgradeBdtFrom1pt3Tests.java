@@ -5,6 +5,7 @@ import gov.nih.nci.cagrid.testing.system.deployment.ServiceContainerFactory;
 import gov.nih.nci.cagrid.testing.system.deployment.ServiceContainerType;
 import gov.nih.nci.cagrid.testing.system.deployment.steps.DeployServiceStep;
 import gov.nih.nci.cagrid.testing.system.deployment.steps.DestroyContainerStep;
+import gov.nih.nci.cagrid.testing.system.deployment.steps.SetIndexRegistrationStep;
 import gov.nih.nci.cagrid.testing.system.deployment.steps.StartContainerStep;
 import gov.nih.nci.cagrid.testing.system.deployment.steps.StopContainerStep;
 import gov.nih.nci.cagrid.testing.system.deployment.steps.UnpackContainerStep;
@@ -94,8 +95,9 @@ public class UpgradeBdtFrom1pt3Tests extends BaseSystemTest {
 		steps.add(new DeleteOldServiceStep(testServiceInfo));
 		steps.add(new UnpackOldServiceStep(SERVICE_ZIP_NAME));
 		steps.add(new UpgradeIntroduceServiceStep(testServiceInfo.getDir()));
-		steps.add(new ResyncAndBuildStep(testServiceInfo, getIntroduceBaseDir()));	
+		steps.add(new ResyncAndBuildStep(testServiceInfo, getIntroduceBaseDir()));
 		steps.add(new VerifyBdtRemovedStep(testServiceInfo));
+		steps.add(new SetIndexRegistrationStep(testServiceInfo.getDir(), false));
 		// deploy the service, check out the CQL 2 related operations and metadata
         steps.add(new UnpackContainerStep(container));
         steps.add(new DeployServiceStep(container, testServiceInfo.getDir(), Collections.singletonList("-Dno.deployment.validation=true")));
