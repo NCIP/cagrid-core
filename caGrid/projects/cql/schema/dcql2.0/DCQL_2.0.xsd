@@ -37,6 +37,7 @@
 			<xsd:element name="ObjectExtension" type="cql2:CQLExtension" minOccurs="0" maxOccurs="1"/>
 		</xsd:choice>
 		<xsd:attribute name="name" type="xsd:string" use="required"/>
+		<xsd:attribute name="instanceof" type="xsd:string" use="optional"/>
 	</xsd:complexType>
 	
 	<xsd:complexType name="DCQLAssociatedObject">
