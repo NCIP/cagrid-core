@@ -31,6 +31,7 @@
 	<property name="ext.test.lib.dir" value="${ext.dependencies.dir}/test/jars" />
 
 	<property name="introduce.dir" location="../introduce" />
+	<property name="introduce.extensions.dir" location="${introduce.dir}/extensions"/>
 
 	<!-- overide the introduce location of this which is suposed to be in tools/lib -->
 	<property name="ant.contrib.location" value="${ext.tools.lib.dir}/ant-contrib-1.0b3.jar" />
