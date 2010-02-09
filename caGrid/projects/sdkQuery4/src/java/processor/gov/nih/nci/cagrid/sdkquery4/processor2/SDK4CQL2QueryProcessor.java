@@ -8,6 +8,7 @@ import gov.nih.nci.system.applicationservice.ApplicationService;
 import gov.nih.nci.system.client.ApplicationServiceProvider;
 import gov.nih.nci.system.query.hibernate.HQLCriteria;
 
+import java.io.InputStream;
 import java.lang.reflect.Method;
 import java.text.DateFormat;
 import java.util.Date;
@@ -23,7 +24,9 @@ import org.apache.axis.message.MessageElement;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.cagrid.cacore.sdk4x.cql2.processor.CQL2ToParameterizedHQL;
+import org.cagrid.cacore.sdk4x.cql2.processor.HibernateConfigTypesInformationResolver;
 import org.cagrid.cacore.sdk4x.cql2.processor.ParameterizedHqlQuery;
+import org.cagrid.cacore.sdk4x.cql2.processor.TypesInformationResolver;
 import org.cagrid.cql2.Aggregation;
 import org.cagrid.cql2.CQLQuery;
 import org.cagrid.cql2.CQLQueryModifier;
@@ -36,6 +39,7 @@ import org.cagrid.cql2.results.TargetAttribute;
 import org.globus.wsrf.Resource;
 import org.globus.wsrf.ResourceContext;
 import org.globus.wsrf.security.SecurityManager;
+import org.hibernate.cfg.Configuration;
 
 public class SDK4CQL2QueryProcessor extends CQL2QueryProcessor {
     // configuration property keys
@@ -199,8 +203,13 @@ public class SDK4CQL2QueryProcessor extends CQL2QueryProcessor {
     
     private CQL2ToParameterizedHQL getCqlTranslator() throws Exception {
         if (cqlTranslator == null) {
-            cqlTranslator = new CQL2ToParameterizedHQL(
-                getDomainModel(), useCaseInsensitiveQueries());
+            InputStream configStream = getClass().getResourceAsStream("/hibernate.cfg.xml");
+            Configuration config = new Configuration();
+            config.addInputStream(configStream);
+            config.configure();
+            configStream.close();
+            TypesInformationResolver resolver = new HibernateConfigTypesInformationResolver(config);
+            cqlTranslator = new CQL2ToParameterizedHQL(resolver, useCaseInsensitiveQueries());
         }
         return cqlTranslator;
     }
