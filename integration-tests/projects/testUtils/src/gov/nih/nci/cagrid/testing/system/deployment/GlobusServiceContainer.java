@@ -186,7 +186,7 @@ public class GlobusServiceContainer extends ServiceContainer {
             try {
                 int retryCount = 0;
                 while (isGlobusRunningCounter() && retryCount < MAX_SHUTDOWN_RETRY) {
-                    Thread.sleep(500);
+                    sleep(500);
                     retryCount++;
                 }
             } catch (Exception ex) {
