@@ -79,5 +79,12 @@
 	<classpathentry kind="lib" path="ext/dependencies/jars/caGrid-CQL-cql.2.0-1.4-dev.jar"/>
 	<classpathentry kind="lib" path="ext/dependencies/jars/jdom-1.0.jar"/>
 	<classpathentry kind="lib" path="ext/dependencies/jars/hibernate3.jar"/>
+	<classpathentry kind="lib" path="test/lib/sdk4.0/example40-orm.jar"/>
+	<classpathentry kind="lib" path="ext/dependencies/jars/antlr-2.7.6rc1.jar"/>
+	<classpathentry kind="lib" path="ext/dependencies/jars/asm.jar"/>
+	<classpathentry kind="lib" path="ext/dependencies/jars/dom4j-1.6.1.jar"/>
+	<classpathentry kind="lib" path="ext/dependencies/jars/jta-1.0.1B.jar"/>
+	<classpathentry kind="lib" path="test/lib/sdk4.0/example40-beans.jar"/>
+	<classpathentry kind="lib" path="test/lib/sdk4.0/example40-conf.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
