@@ -80,7 +80,7 @@ public class CQL2ToParameterizedHQL {
         StringBuilder rawHql = new StringBuilder();
 
         // create the list in which parameters will be placed
-        List<java.lang.Object> parameters = new LinkedList<java.lang.Object>();
+        List<Object> parameters = new LinkedList<Object>();
 
         // determine if the target has subclasses
         boolean hasSubclasses;
@@ -98,7 +98,7 @@ public class CQL2ToParameterizedHQL {
         
         // add any query modifiers
         if (query.getCQLQueryModifier() != null) {
-            processQueryModifiers(rawHql, query.getCQLQueryModifier());
+            processQueryModifiers(query.getCQLQueryModifier(), rawHql);
         } else {
             rawHql.insert(0, "Select distinct " + TARGET_ALIAS + " ");
         }
@@ -137,8 +137,7 @@ public class CQL2ToParameterizedHQL {
         hql.append("From ").append(target.getClassName()).append(" as ").append(TARGET_ALIAS).append(' ');
 
         if (associtaionPopulation != null) {
-            String fetchSpec = generateAssociationFetchClause(target.getClassName(), associtaionPopulation);
-            hql.append(fetchSpec);
+            processAssociationFetchClause(target.getClassName(), associtaionPopulation, hql, parameters);
         }
 
         if (target.getCQLAssociatedObject() != null) {
@@ -438,25 +437,23 @@ public class CQL2ToParameterizedHQL {
     }
 
 
-    private String generateAssociationFetchClause(String targetClassName, AssociationPopulationSpecification spec) 
-        throws QueryConversionException {
-        StringBuffer clause = new StringBuffer();
+    private void processAssociationFetchClause(String targetClassName, 
+        AssociationPopulationSpecification spec, StringBuilder hql, List<Object> parameters) throws QueryConversionException { 
         if (spec.getPopulationDepth() != null) {
             int maxDepth = spec.getPopulationDepth().getDepth();
             Set<String> joinedAssociations = new HashSet<String>();
-            appendJoinsByDepth(clause, targetClassName, TARGET_ALIAS, 0, 0, maxDepth, joinedAssociations);
+            appendJoinsByDepth(hql, targetClassName, TARGET_ALIAS, 0, 0, maxDepth, joinedAssociations);
         } else {
             int aliasIndex = 0;
             NamedAssociation[] namedAssociations = spec.getNamedAssociationList().getNamedAssociation();
             for (NamedAssociation na : namedAssociations) {
-                appendNamedJoins(clause, na, targetClassName, TARGET_ALIAS, aliasIndex);
+                appendNamedJoins(na, targetClassName, TARGET_ALIAS, aliasIndex, hql, parameters);
             }
         }
-        return clause.toString();
     }
 
 
-    private void appendJoinsByDepth(StringBuffer buff, String parentClassName, String parentAlias, int aliasIndex,
+    private void appendJoinsByDepth(StringBuilder buff, String parentClassName, String parentAlias, int aliasIndex,
         int currentDepth, int maxDepth, Set<String> joinedAssociations) throws QueryConversionException {
         LOG.debug("Populating associations of " + parentClassName + " to depth" + maxDepth 
             + "(currently at level " + currentDepth + ")");
@@ -487,8 +484,9 @@ public class CQL2ToParameterizedHQL {
     }
 
 
-    private void appendNamedJoins(StringBuffer buff, NamedAssociation na, 
-        String parentClassName, String parentAlias, int aliasIndex) throws QueryConversionException {
+    private void appendNamedJoins(NamedAssociation na, String parentClassName, 
+        String parentAlias, int aliasIndex, StringBuilder buff, List<Object> parameters)
+        throws QueryConversionException {
         LOG.debug("Populating named associations");
         String myAlias = "fetchAlias" + aliasIndex;
         // get associations from the parent class, determine associated class goes with the named association's end name
@@ -510,17 +508,17 @@ public class CQL2ToParameterizedHQL {
             .append(" as ").append(myAlias).append(' ');
         if (na.get_instanceof() != null) {
             buff.append("where ").append(myAlias).append(".class = ?");
-            // FIXME: need to pass around parameters and append the class discriminator here
             Object classDiscriminator = null;
             try {
                 classDiscriminator = typesInfoResolver.getClassDiscriminatorValue(na.get_instanceof());
+                parameters.add(classDiscriminator);
             } catch (TypesInformationException ex) {
                 throw new QueryConversionException("Error determining class discriminator: " + ex.getMessage(), ex);
             }
         }
         if (na.getNamedAssociationList() != null && na.getNamedAssociationList().getNamedAssociation() != null) {
             for (NamedAssociation subAssociation : na.getNamedAssociationList().getNamedAssociation()) {
-                appendNamedJoins(buff, subAssociation, associationClassName, myAlias, aliasIndex);
+                appendNamedJoins(subAssociation, associationClassName, myAlias, aliasIndex, buff, parameters);
             }
         } else if (na.getPopulationDepth() != null) {
             int depth = na.getPopulationDepth().getDepth();
@@ -542,7 +540,7 @@ public class CQL2ToParameterizedHQL {
     }
     
     
-    private void processQueryModifiers(StringBuilder hql, CQLQueryModifier mods) {
+    private void processQueryModifiers(CQLQueryModifier mods, StringBuilder hql) {
         StringBuilder modHql = new StringBuilder();
         if (mods.getCountOnly() != null && mods.getCountOnly().booleanValue()) {
             modHql.append("Select count(id)");
