@@ -53,8 +53,10 @@ public interface IdentifiersNAServiceI {
    *	
    * @throws NamingAuthoritySecurityFault
    *	
+   * @throws InvalidIdentifierValuesFault
+   *	
    */
-  public void deleteKeys(org.apache.axis.types.URI identifier,java.lang.String[] keyList) throws RemoteException, gov.nih.nci.cagrid.identifiers.stubs.types.InvalidIdentifierFault, gov.nih.nci.cagrid.identifiers.stubs.types.NamingAuthorityConfigurationFault, gov.nih.nci.cagrid.identifiers.stubs.types.NamingAuthoritySecurityFault ;
+  public void deleteKeys(org.apache.axis.types.URI identifier,java.lang.String[] keyList) throws RemoteException, gov.nih.nci.cagrid.identifiers.stubs.types.InvalidIdentifierFault, gov.nih.nci.cagrid.identifiers.stubs.types.NamingAuthorityConfigurationFault, gov.nih.nci.cagrid.identifiers.stubs.types.NamingAuthoritySecurityFault, gov.nih.nci.cagrid.identifiers.stubs.types.InvalidIdentifierValuesFault ;
 
   /**
    * Creates new keys on an existing identifier
@@ -67,8 +69,10 @@ public interface IdentifiersNAServiceI {
    *	
    * @throws NamingAuthoritySecurityFault
    *	
+   * @throws InvalidIdentifierValuesFault
+   *	
    */
-  public void createKeys(org.apache.axis.types.URI identifier,namingauthority.IdentifierValues identifierValues) throws RemoteException, gov.nih.nci.cagrid.identifiers.stubs.types.InvalidIdentifierFault, gov.nih.nci.cagrid.identifiers.stubs.types.NamingAuthorityConfigurationFault, gov.nih.nci.cagrid.identifiers.stubs.types.NamingAuthoritySecurityFault ;
+  public void createKeys(org.apache.axis.types.URI identifier,namingauthority.IdentifierValues identifierValues) throws RemoteException, gov.nih.nci.cagrid.identifiers.stubs.types.InvalidIdentifierFault, gov.nih.nci.cagrid.identifiers.stubs.types.NamingAuthorityConfigurationFault, gov.nih.nci.cagrid.identifiers.stubs.types.NamingAuthoritySecurityFault, gov.nih.nci.cagrid.identifiers.stubs.types.InvalidIdentifierValuesFault ;
 
   /**
    * Replaces the values associated with the specified keys on an existing identifier
@@ -81,8 +85,10 @@ public interface IdentifiersNAServiceI {
    *	
    * @throws NamingAuthoritySecurityFault
    *	
+   * @throws InvalidIdentifierValuesFault
+   *	
    */
-  public void replaceKeys(org.apache.axis.types.URI identifier,namingauthority.IdentifierValues identifierValues) throws RemoteException, gov.nih.nci.cagrid.identifiers.stubs.types.InvalidIdentifierFault, gov.nih.nci.cagrid.identifiers.stubs.types.NamingAuthorityConfigurationFault, gov.nih.nci.cagrid.identifiers.stubs.types.NamingAuthoritySecurityFault ;
+  public void replaceKeys(org.apache.axis.types.URI identifier,namingauthority.IdentifierValues identifierValues) throws RemoteException, gov.nih.nci.cagrid.identifiers.stubs.types.InvalidIdentifierFault, gov.nih.nci.cagrid.identifiers.stubs.types.NamingAuthorityConfigurationFault, gov.nih.nci.cagrid.identifiers.stubs.types.NamingAuthoritySecurityFault, gov.nih.nci.cagrid.identifiers.stubs.types.InvalidIdentifierValuesFault ;
 
   /**
    * Deletes all keys (except admin keys) on an existing identifier

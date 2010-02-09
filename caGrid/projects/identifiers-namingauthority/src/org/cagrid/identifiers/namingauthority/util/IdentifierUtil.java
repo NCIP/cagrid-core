@@ -3,11 +3,15 @@ package org.cagrid.identifiers.namingauthority.util;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.net.URI;
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.cagrid.identifiers.namingauthority.InvalidIdentifierException;
 import org.cagrid.identifiers.namingauthority.NamingAuthorityConfigurationException;
+import org.cagrid.identifiers.namingauthority.dao.IdentifierMetadataDao;
 import org.cagrid.identifiers.namingauthority.domain.IdentifierValues;
 import org.cagrid.identifiers.namingauthority.domain.KeyData;
 import org.cagrid.identifiers.namingauthority.hibernate.IdentifierMetadata;
@@ -78,7 +82,30 @@ public class IdentifierUtil {
 		
 		KeyData kd = values.getValues(keyName);
 		if (kd != null) {
-			return kd.getValues();
+			List<String> keyValues = kd.getValues();
+			if (keyValues == null) {
+				return new ArrayList<String>();
+			}
+		}
+		
+		return null;
+	}
+	
+	public static List<String> getKeyValues( IdentifierMetadata values, String keyName ) {
+		
+		if (values == null) {
+			return null;
+		}
+		
+		Collection<IdentifierValueKey> cvalues = values.getValues();
+		if (cvalues == null) {
+			return null;
+		}
+		
+		for(IdentifierValueKey ivk : cvalues) {
+			if (ivk.getKey().equals(keyName)) {
+				return ivk.getValues();
+			}
 		}
 		
 		return null;
@@ -103,5 +130,41 @@ public class IdentifierUtil {
 		ivk.setValues(kd.getValues());
 		
 		return ivk;
+	}
+	
+	public static IdentifierMetadata convert(URI localIdentifier, IdentifierValues ivalues) {
+		
+		IdentifierMetadata md = new IdentifierMetadata();
+	    md.setLocalIdentifier(localIdentifier);
+	    List<IdentifierValueKey> values = new ArrayList<IdentifierValueKey>();
+	    md.setValues(values);
+
+	    if (ivalues != null) {
+	    	String[] keys = ivalues.getKeys();
+	        for (String key : keys) {
+	        	values.add(IdentifierUtil.convert(key, ivalues));
+	        }
+	    }
+	    
+	    return md;
+	}
+	
+	public static IdentifierValues convert(Collection<IdentifierValueKey> valueCollection) {
+		IdentifierValues result = null;
+   
+    	if (valueCollection != null && valueCollection.size() > 0) {
+    		result = new IdentifierValues();
+    		Map<String, KeyData> values = new HashMap<String, KeyData>();
+    		result.setValues(values);
+
+    		for (IdentifierValueKey vk : valueCollection) {
+    			KeyData kd = new KeyData();
+    			kd.setReadWriteIdentifier(vk.getReadWriteIdentifier());
+    			kd.setValues(vk.getValues());
+    			values.put(vk.getKey(), kd);
+    		}
+    	}
+    	
+    	return result;
 	}
 }

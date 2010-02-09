@@ -69,21 +69,71 @@ public class IdentifiersNAServiceClient extends IdentifiersNAServiceClientBase i
 			  org.apache.axis.types.URI identifier = client.createIdentifier(values1);
 			  System.out.println("Identifier: " + identifier.toString());
 
-			  values2 = client.resolveIdentifier(identifier);	
+			  values2 = client.resolveIdentifier(identifier);
+			  System.out.println("After creating identifier:");
+			  for( KeyValues kv : values2.getKeyValues()) {
+				  System.out.println("\n***********************\nKEY: " + kv.getKey());
+				  KeyData kd = kv.getKeyData();
+				  if (kd != null && kd.getValue() != null) {
+					  for(String value : kd.getValue()) {
+						  System.out.println("\t\tVALUE: " + value);
+					  }
+				  }
+			  }
 
 			  IdentifiersNAUtil.assertEquals(values1, values2);
 			  
 			  ////////////////////////////////////////
 			  // Add couple of other keys
 			  ////////////////////////////////////////
-			  KeyValues[] newKeyValues = new KeyValues[2];
-			  newKeyValues[0] = new KeyValues();
-			  newKeyValues[0].setKey("URL");
-			  newKeyValues[0].setKeyData(new KeyData(null, new String[]{"KEY3 VALUE"}));
-			  newKeyValues[1] = new KeyValues();
-			  newKeyValues[1].setKey("KEY4");
-			  newKeyValues[1].setKeyData(new KeyData(null, new String[]{"KEY4 VALUE"}));
-			  client.createKeys(identifier, new IdentifierValues(newKeyValues));
+//			  KeyValues[] newKeyValues = new KeyValues[2];
+//			  newKeyValues[0] = new KeyValues();
+//			  newKeyValues[0].setKey("KEY3");
+//			  newKeyValues[0].setKeyData(new KeyData(null, new String[]{"KEY3 VALUE"}));
+//			  newKeyValues[1] = new KeyValues();
+//			  newKeyValues[1].setKey("KEY4");
+//			  newKeyValues[1].setKeyData(new KeyData(null, new String[]{"KEY4 VALUE"}));
+//			  client.createKeys(identifier, new IdentifierValues(newKeyValues));
+//			  values2 = client.resolveIdentifier(identifier);
+//			  System.out.println("After createKeys:");
+//			  System.out.println(values2.toString());
+			  
+			  // Delete all keys
+			  //client.deleteAllKeys(identifier);
+			  //values2 = client.resolveIdentifier(identifier);
+			  //System.out.println("After deleteAllKeys:");
+			  //System.out.println(values2.toString());
+			  
+			  //Delete some keys
+//			  client.deleteKeys(identifier, new String[]{ "CODE", "KEY4" });
+//			  values2 = client.resolveIdentifier(identifier);
+//			  System.out.println("After deleteKeys:");
+//			  System.out.println(values2.toString());
+			  
+			  //Replace some keys
+			  KeyValues[] replacedKeys = new KeyValues[2];
+			  replacedKeys[0] = new KeyValues();
+			  replacedKeys[0].setKey("EPR");
+			  replacedKeys[0].setKeyData(new KeyData(null, new String[] {"end point reference 3"}));
+			  
+			  replacedKeys[1] = new KeyValues();
+			  replacedKeys[1].setKey("PUPU");
+			  replacedKeys[1].setKeyData(new KeyData(null, new String[] {"end point reference 4"}));
+			  
+			  client.replaceKeys(identifier, new IdentifierValues(replacedKeys));
+			  IdentifierValues replacedValues = client.resolveIdentifier(identifier);
+			  System.out.println("After replacedKeys:");
+			  
+			  for( KeyValues kv : replacedValues.getKeyValues()) {
+				  System.out.println("\n***********************\nKEY: " + kv.getKey());
+				  KeyData kd = kv.getKeyData();
+				  if (kd != null && kd.getValue() != null) {
+					  for(String value : kd.getValue()) {
+						  System.out.println("\t\tVALUE: " + value);
+					  }
+				  }
+			  }
+			  System.out.println(values2.toString());
 				
 			} else {
 				usage();
@@ -144,7 +194,7 @@ public class IdentifiersNAServiceClient extends IdentifiersNAServiceClientBase i
     }
   }
 
-  public void deleteKeys(org.apache.axis.types.URI identifier,java.lang.String[] keyList) throws RemoteException, gov.nih.nci.cagrid.identifiers.stubs.types.InvalidIdentifierFault, gov.nih.nci.cagrid.identifiers.stubs.types.NamingAuthorityConfigurationFault, gov.nih.nci.cagrid.identifiers.stubs.types.NamingAuthoritySecurityFault {
+  public void deleteKeys(org.apache.axis.types.URI identifier,java.lang.String[] keyList) throws RemoteException, gov.nih.nci.cagrid.identifiers.stubs.types.InvalidIdentifierFault, gov.nih.nci.cagrid.identifiers.stubs.types.NamingAuthorityConfigurationFault, gov.nih.nci.cagrid.identifiers.stubs.types.NamingAuthoritySecurityFault, gov.nih.nci.cagrid.identifiers.stubs.types.InvalidIdentifierValuesFault {
     synchronized(portTypeMutex){
       configureStubSecurity((Stub)portType,"deleteKeys");
     gov.nih.nci.cagrid.identifiers.stubs.DeleteKeysRequest params = new gov.nih.nci.cagrid.identifiers.stubs.DeleteKeysRequest();
@@ -156,7 +206,7 @@ public class IdentifiersNAServiceClient extends IdentifiersNAServiceClientBase i
     }
   }
 
-  public void createKeys(org.apache.axis.types.URI identifier,namingauthority.IdentifierValues identifierValues) throws RemoteException, gov.nih.nci.cagrid.identifiers.stubs.types.InvalidIdentifierFault, gov.nih.nci.cagrid.identifiers.stubs.types.NamingAuthorityConfigurationFault, gov.nih.nci.cagrid.identifiers.stubs.types.NamingAuthoritySecurityFault {
+  public void createKeys(org.apache.axis.types.URI identifier,namingauthority.IdentifierValues identifierValues) throws RemoteException, gov.nih.nci.cagrid.identifiers.stubs.types.InvalidIdentifierFault, gov.nih.nci.cagrid.identifiers.stubs.types.NamingAuthorityConfigurationFault, gov.nih.nci.cagrid.identifiers.stubs.types.NamingAuthoritySecurityFault, gov.nih.nci.cagrid.identifiers.stubs.types.InvalidIdentifierValuesFault {
     synchronized(portTypeMutex){
       configureStubSecurity((Stub)portType,"createKeys");
     gov.nih.nci.cagrid.identifiers.stubs.CreateKeysRequest params = new gov.nih.nci.cagrid.identifiers.stubs.CreateKeysRequest();
@@ -170,7 +220,7 @@ public class IdentifiersNAServiceClient extends IdentifiersNAServiceClientBase i
     }
   }
 
-  public void replaceKeys(org.apache.axis.types.URI identifier,namingauthority.IdentifierValues identifierValues) throws RemoteException, gov.nih.nci.cagrid.identifiers.stubs.types.InvalidIdentifierFault, gov.nih.nci.cagrid.identifiers.stubs.types.NamingAuthorityConfigurationFault, gov.nih.nci.cagrid.identifiers.stubs.types.NamingAuthoritySecurityFault {
+  public void replaceKeys(org.apache.axis.types.URI identifier,namingauthority.IdentifierValues identifierValues) throws RemoteException, gov.nih.nci.cagrid.identifiers.stubs.types.InvalidIdentifierFault, gov.nih.nci.cagrid.identifiers.stubs.types.NamingAuthorityConfigurationFault, gov.nih.nci.cagrid.identifiers.stubs.types.NamingAuthoritySecurityFault, gov.nih.nci.cagrid.identifiers.stubs.types.InvalidIdentifierValuesFault {
     synchronized(portTypeMutex){
       configureStubSecurity((Stub)portType,"replaceKeys");
     gov.nih.nci.cagrid.identifiers.stubs.ReplaceKeysRequest params = new gov.nih.nci.cagrid.identifiers.stubs.ReplaceKeysRequest();

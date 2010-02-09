@@ -11,8 +11,12 @@ import java.util.List;
 import org.cagrid.identifiers.namingauthority.InvalidIdentifierException;
 import org.cagrid.identifiers.namingauthority.MaintainerNamingAuthority;
 import org.cagrid.identifiers.namingauthority.NamingAuthorityConfigurationException;
+import org.cagrid.identifiers.namingauthority.NamingAuthoritySecurityException;
+import org.cagrid.identifiers.namingauthority.SecurityInfo;
+import org.cagrid.identifiers.namingauthority.dao.IdentifierMetadataDao;
 import org.cagrid.identifiers.namingauthority.domain.IdentifierValues;
 import org.cagrid.identifiers.namingauthority.domain.KeyData;
+import org.cagrid.identifiers.namingauthority.hibernate.IdentifierMetadata;
 import org.cagrid.identifiers.namingauthority.impl.NamingAuthorityImpl;
 
 public class SecurityUtil {
@@ -28,37 +32,45 @@ public class SecurityUtil {
 		} catch(Exception e){};
 	}
 	
-	public static List<String> getReadUsers(IdentifierValues values) {
+	public static String securityError(SecurityInfo secInfo, String opErr) {
+		return "User [" 
+			+ secInfo.getUser() 
+			+ "is not authorized ["
+			+ opErr
+			+ "]";
+	}
+	
+	public static List<String> getReadUsers(IdentifierMetadata values) {
 		return IdentifierUtil.getKeyValues(values, Keys.READ_USERS);
 	}
 	
-	public static List<String> getAdminUsers(IdentifierValues values) {
+	public static List<String> getAdminUsers(IdentifierMetadata values) {
 		return IdentifierUtil.getKeyValues(values, Keys.ADMIN_USERS);
 	}
 	
-	public static List<String> getWriteUsers(IdentifierValues values) {
+	public static List<String> getWriteUsers(IdentifierMetadata values) {
 		return IdentifierUtil.getKeyValues(values, Keys.WRITE_USERS);
 	}
-
-	public static List<String> getReadWriteIdentifiers(IdentifierValues values) {
+	
+	public static List<String> getReadWriteIdentifiers(IdentifierMetadata values) {
 		return IdentifierUtil.getKeyValues(values, Keys.READWRITE_IDENTIFIERS);
 	}
 	
-	public static List<String> getAdminIdentifiers(IdentifierValues values) {
+	public static List<String> getAdminIdentifiers(IdentifierMetadata values) {
 		return IdentifierUtil.getKeyValues(values, Keys.ADMIN_IDENTIFIERS);
 	}
 	
-	public static List<String> getIdentifierCreationUsers(IdentifierValues values) {
+	public static List<String> getIdentifierCreationUsers(IdentifierMetadata values) {
 		return IdentifierUtil.getKeyValues(values, Keys.IDENTIFIER_CREATION_USERS);
 	}
 	
-	public static List<String> getPublicCreation(IdentifierValues values) {
+	public static List<String> getPublicCreation(IdentifierMetadata values) {
 		return IdentifierUtil.getKeyValues(values, Keys.PUBLIC_CREATION);
 	}
 	
 	public static void createSystemIdentifier(String naConfigurationFile, 
 			String naProperties, String[] adminUsers, String[] creationUsers,
-			String creationFlag) throws InvalidIdentifierException, URISyntaxException {
+			String creationFlag) throws InvalidIdentifierException, URISyntaxException, NamingAuthorityConfigurationException, NamingAuthoritySecurityException {
 
         FileSystemResource naConfResource = new FileSystemResource(naConfigurationFile);
         FileSystemResource naPropertiesResource = new FileSystemResource(naProperties);
@@ -86,7 +98,7 @@ public class SecurityUtil {
         values.put(Keys.PUBLIC_CREATION, new KeyData(null, new String[]{dbFlag}));
         
         NamingAuthorityImpl na = (NamingAuthorityImpl) factory.getBean("NamingAuthority", MaintainerNamingAuthority.class);
-        na.getIdentifierDao().saveIdentifierValues( SYSTEM_IDENTIFIER, values );
+        na.getIdentifierDao().createIdentifier( null, SYSTEM_IDENTIFIER, values );
 	}
 	
 	private static void usage() {

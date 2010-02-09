@@ -92,11 +92,15 @@ public class IdentifierValueKey {
                 return false;
         } else if (!key.equals(other.key))
             return false;
+        
+        /* I NEED THE ABOVE ONLY, DOES ANYONE HAVE A PROBLEM WITH THAT?
         if (values == null) {
             if (other.values != null)
                 return false;
         } else if (!values.equals(other.values))
             return false;
+         */
+        
         return true;
     }
 

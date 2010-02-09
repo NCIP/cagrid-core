@@ -27,12 +27,7 @@ public class NamingAuthorityImpl implements MaintainerNamingAuthority {
     private IdentifierMetadataDao identifierDao = null;
 	private IdentifierGenerator identifierGenerator = null;   
 	private NamingAuthorityConfig configuration = null;
-	private SecurityHelper securityHelper = null;
-	
-	public NamingAuthorityImpl() {
-		this.securityHelper = new SecurityHelper(this);
-	}
-	
+		
 	//
 	// Getters/Setters
 	//
@@ -60,74 +55,51 @@ public class NamingAuthorityImpl implements MaintainerNamingAuthority {
 	public IdentifierGenerator getIdentifierGenerator() {
 		return identifierGenerator;
 	}
-	
-	public void setSecurityHelper(SecurityHelper helper) {
-		this.securityHelper = helper;
-	}
-	
-
 
 	//
 	// Interfaces
 	//
 
-	public URI createIdentifier(SecurityInfo secInfo, IdentifierValues ivalues) throws NamingAuthorityConfigurationException, InvalidIdentifierException, NamingAuthoritySecurityException {
-    	
-		SecurityInfo securityInfo = checkSecurityInfo(secInfo);
-		
-    	securityHelper.checkCreateIdentifierSecurity(securityInfo);
-
-        URI identifier = generateIdentifier();
-        
-        this.identifierDao.saveIdentifierValues( identifier, ivalues );
-
+	public URI createIdentifier(SecurityInfo secInfo, IdentifierValues ivalues) 
+		throws NamingAuthorityConfigurationException, InvalidIdentifierException, NamingAuthoritySecurityException {
+ 
+		URI identifier = generateIdentifier();
+        this.identifierDao.createIdentifier( secInfo, identifier, ivalues );
         return IdentifierUtil.build(getConfiguration().getPrefix(), identifier);
     }
 
     public IdentifierValues resolveIdentifier(SecurityInfo secInfo, URI identifier) 
     	throws InvalidIdentifierException, NamingAuthorityConfigurationException, NamingAuthoritySecurityException {
   
-    	SecurityInfo securityInfo = checkSecurityInfo(secInfo);
-   
-    	IdentifierValues values = loadIdentifier(identifier);
-       
-        IdentifierValues result = null;
-		try {
-			result = securityHelper.checkSecurity(securityInfo, values);
-		} catch (Exception e) {
-			e.printStackTrace();
-			throw new NamingAuthoritySecurityException(e.getMessage() 
-					+ " " + IdentifierUtil.getStackTrace(e));
-		} 
-
-        return result;
+        URI localIdentifier = IdentifierUtil.getLocalName(getConfiguration().getPrefix(), identifier);
+        return this.identifierDao.resolveIdentifier( secInfo, localIdentifier );
     }
 
-	public void createKeys(SecurityInfo secInfo, URI identifier, IdentifierValues values)
+	public void createKeys(SecurityInfo secInfo, URI identifier, IdentifierValues newKeys)
 		throws NamingAuthorityConfigurationException,
 			InvalidIdentifierValuesException, InvalidIdentifierException,
 			NamingAuthoritySecurityException {
 		
-    	//SecurityInfo securityInfo = checkSecurityInfo(secInfo);
     	URI localIdentifier = IdentifierUtil.getLocalName(getConfiguration().getPrefix(), identifier);
-    	this.identifierDao.createKeys(localIdentifier, values);
-        //IdentifierValues resolvedValues = loadIdentifier(identifier);
+    	this.identifierDao.createKeys(secInfo, localIdentifier, newKeys);
 	}
 
 	public void deleteAllKeys(SecurityInfo secInfo, URI identifier)
 			throws NamingAuthorityConfigurationException,
 			InvalidIdentifierValuesException, InvalidIdentifierException,
 			NamingAuthoritySecurityException {
-		// TODO Auto-generated method stub
 		
+		URI localIdentifier = IdentifierUtil.getLocalName(getConfiguration().getPrefix(), identifier);
+    	this.identifierDao.deleteAllKeys(secInfo, localIdentifier);
 	}
 
 	public void deleteKeys(SecurityInfo secInfo, URI identifier, String[] keyList)
 			throws NamingAuthorityConfigurationException,
 			InvalidIdentifierValuesException, InvalidIdentifierException,
 			NamingAuthoritySecurityException {
-		// TODO Auto-generated method stub
 		
+		URI localIdentifier = IdentifierUtil.getLocalName(getConfiguration().getPrefix(), identifier);
+    	this.identifierDao.deleteKeys(secInfo, localIdentifier, keyList);	
 	}
 
 	public void replaceKeys(SecurityInfo secInfo, URI identifier,
@@ -135,43 +107,20 @@ public class NamingAuthorityImpl implements MaintainerNamingAuthority {
 			throws NamingAuthorityConfigurationException,
 			InvalidIdentifierValuesException, InvalidIdentifierException,
 			NamingAuthoritySecurityException {
-		// TODO Auto-generated method stub
 		
+		URI localIdentifier = IdentifierUtil.getLocalName(getConfiguration().getPrefix(), identifier);
+    	this.identifierDao.replaceKeys(secInfo, localIdentifier, values);
 	}
 	
-	//
-	// Other public methods
-	//
-	
-	public IdentifierValues resolveLocalIdentifier(URI localIdentifier) throws InvalidIdentifierException {
-		return this.identifierDao.getIdentifierValues( localIdentifier );
-	}
-	
+
     //
     // Private
     //
-	
-	private IdentifierValues loadIdentifier(URI identifier) throws InvalidIdentifierException, NamingAuthorityConfigurationException {
-	
-		URI localIdentifier = IdentifierUtil.getLocalName(getConfiguration().getPrefix(), identifier);
-	
-		try {
-			return resolveLocalIdentifier( localIdentifier );
-		} catch(InvalidIdentifierException e) {
-			throw new InvalidIdentifierException("Identifier [" + identifier + "] does not exist");
-		}
-	}
 	
 	private URI generateIdentifier() {
 		return identifierGenerator.generate(getConfiguration());
 	}
 	
-	private SecurityInfo checkSecurityInfo( SecurityInfo secInfo ) {
-		if (secInfo == null || secInfo.getUser() == null) {
-			return new SecurityInfoImpl("");
-		}
-		
-		return secInfo;
-	}
+
  }
 
