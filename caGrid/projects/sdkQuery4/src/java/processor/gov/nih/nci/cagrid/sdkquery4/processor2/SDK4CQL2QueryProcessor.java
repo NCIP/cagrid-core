@@ -3,13 +3,11 @@ package gov.nih.nci.cagrid.sdkquery4.processor2;
 import gov.nih.nci.cagrid.common.Utils;
 import gov.nih.nci.cagrid.data.QueryProcessingException;
 import gov.nih.nci.cagrid.data.cql2.CQL2QueryProcessor;
-import gov.nih.nci.cagrid.metadata.dataservice.DomainModel;
 import gov.nih.nci.system.applicationservice.ApplicationService;
 import gov.nih.nci.system.client.ApplicationServiceProvider;
 import gov.nih.nci.system.query.hibernate.HQLCriteria;
 
 import java.io.InputStream;
-import java.lang.reflect.Method;
 import java.text.DateFormat;
 import java.util.Date;
 import java.util.Iterator;
@@ -36,8 +34,6 @@ import org.cagrid.cql2.results.CQLAttributeResult;
 import org.cagrid.cql2.results.CQLObjectResult;
 import org.cagrid.cql2.results.CQLQueryResults;
 import org.cagrid.cql2.results.TargetAttribute;
-import org.globus.wsrf.Resource;
-import org.globus.wsrf.ResourceContext;
 import org.globus.wsrf.security.SecurityManager;
 import org.hibernate.cfg.Configuration;
 
@@ -385,20 +381,5 @@ public class SDK4CQL2QueryProcessor extends CQL2QueryProcessor {
         } catch (Exception ex) {
             throw new QueryProcessingException("Error determining use of static login: " + ex.getMessage(), ex);
         }
-    }
-    
-    
-    private DomainModel getDomainModel() throws Exception {
-        DomainModel domainModel = null;
-        Resource serviceBaseResource = ResourceContext.getResourceContext().getResource();
-        Method[] resourceMethods = serviceBaseResource.getClass().getMethods();
-        for (int i = 0; i < resourceMethods.length; i++) {
-            if (resourceMethods[i].getReturnType() != null 
-                && resourceMethods[i].getReturnType().equals(DomainModel.class)) {
-                domainModel = (DomainModel) resourceMethods[i].invoke(serviceBaseResource, new Object[] {});
-                break;
-            }
-        }
-        return domainModel;
     }
 }
