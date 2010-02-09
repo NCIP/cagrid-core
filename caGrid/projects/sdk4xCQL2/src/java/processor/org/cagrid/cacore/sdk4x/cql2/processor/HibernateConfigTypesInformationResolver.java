@@ -1,7 +1,9 @@
 package org.cagrid.cacore.sdk4x.cql2.processor;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 
 import org.hibernate.cfg.Configuration;
@@ -16,24 +18,26 @@ import org.hibernate.mapping.Value;
 
 
 /**
- * Class discriminator resolver that leverages the information in a Hibernate
- * configuration
+ * Types Information Resolver implementation which leverages 
+ * the information in a Hibernate configuration
  * 
  * @author David Ervin
  */
-public class HibernateConfigDiscriminatorResolver implements TypesInformationResolver {
+public class HibernateConfigTypesInformationResolver implements TypesInformationResolver {
 
     private Configuration configuration = null;
     private Map<String, Boolean> subclasses = null;
     private Map<String, Object> discriminators = null;
     private Map<String, Class<?>> fieldDataTypes = null;
+    private Map<String, List<ClassAssociation>> classAssociations = null;
     private Map<String, String> roleNames = null;
     
-    public HibernateConfigDiscriminatorResolver(Configuration hibernateConfig) {
+    public HibernateConfigTypesInformationResolver(Configuration hibernateConfig) {
         this.configuration = hibernateConfig;
         this.subclasses = new HashMap<String, Boolean>();
         this.discriminators = new HashMap<String, Object>();
         this.fieldDataTypes = new HashMap<String, Class<?>>();
+        this.classAssociations = new HashMap<String, List<ClassAssociation>>();
         this.roleNames = new HashMap<String, String>();
     }
 
@@ -135,6 +139,26 @@ public class HibernateConfigDiscriminatorResolver implements TypesInformationRes
             }
         }
         return roleName;
+    }
+    
+    
+    public List<ClassAssociation> getAssociationsFromClass(String parentClassname) throws TypesInformationException {
+        List<ClassAssociation> associations = classAssociations.get(parentClassname);
+        if (associations == null) {
+            associations = new ArrayList<ClassAssociation>();
+            PersistentClass clazz = configuration.getClassMapping(parentClassname);
+            Iterator<?> propertyIter = clazz.getPropertyIterator();
+            while (propertyIter.hasNext()) {
+                Property property = (Property) propertyIter.next();
+                Value value = property.getValue();
+                if (value instanceof ToOne || value instanceof OneToMany) {
+                    ClassAssociation assoc = new ClassAssociation(property.getType().getName(), property.getName());
+                    associations.add(assoc);
+                }
+            }
+            classAssociations.put(parentClassname, associations);
+        }
+        return associations;
     }
 
     

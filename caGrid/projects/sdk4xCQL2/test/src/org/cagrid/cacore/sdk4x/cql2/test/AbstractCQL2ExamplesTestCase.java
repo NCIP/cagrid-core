@@ -7,11 +7,15 @@ import gov.nih.nci.cagrid.metadata.dataservice.DomainModel;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.InputStream;
 
 import junit.framework.TestCase;
 
 import org.cagrid.cacore.sdk4x.cql2.processor.CQL2ToParameterizedHQL;
+import org.cagrid.cacore.sdk4x.cql2.processor.HibernateConfigTypesInformationResolver;
+import org.cagrid.cacore.sdk4x.cql2.processor.TypesInformationResolver;
 import org.cagrid.cql2.CQLQuery;
+import org.hibernate.cfg.Configuration;
 
 public abstract class AbstractCQL2ExamplesTestCase extends TestCase {
 
@@ -107,8 +111,19 @@ public abstract class AbstractCQL2ExamplesTestCase extends TestCase {
     
     
     protected void createTranslator() {
-        DomainModel model = getDomainModel();
-        cqlTranslator = new CQL2ToParameterizedHQL(model, CASE_INSENSITIVE_QUERIES);
+        Configuration config = new Configuration();
+        InputStream configStream = getClass().getResourceAsStream("/hibernate.cfg.xml");
+        assertNotNull("No hibernate configuration found", configStream);
+        config.addInputStream(configStream);
+        config.configure();
+        try {
+            configStream.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+            fail("Error closing configuration stream: " + e.getMessage());
+        }
+        TypesInformationResolver resolver = new HibernateConfigTypesInformationResolver(config);
+        cqlTranslator = new CQL2ToParameterizedHQL(resolver, CASE_INSENSITIVE_QUERIES);
     }
     
     

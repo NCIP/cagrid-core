@@ -1,8 +1,5 @@
 package org.cagrid.cacore.sdk4x.cql2.processor;
 
-import gov.nih.nci.cagrid.metadata.dataservice.DomainModel;
-import gov.nih.nci.cagrid.metadata.dataservice.UMLClass;
-
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedList;
@@ -12,7 +9,6 @@ import java.util.Set;
 import java.util.Stack;
 
 import org.apache.log4j.Logger;
-import org.cagrid.cacore.sdk4x.cql2.processor.RoleNameResolver.ClassAssociation;
 import org.cagrid.cql2.Aggregation;
 import org.cagrid.cql2.AssociationPopulationSpecification;
 import org.cagrid.cql2.AttributeValue;
@@ -33,13 +29,9 @@ import org.cagrid.cql2.UnaryPredicate;
  * CQL2ToParameterizedHQL
  * Converter utility to turn CQL 2 into HQL using
  * positional parameters compatible with Hibernate 3.2.0ga.
- * Indended for use with caCORE SDK 4.x, but may be useful elsewhere.
+ * Intended for use with caCORE SDK 4.x, but may be useful elsewhere.
  * 
  * @author David Ervin
- * 
- * @created Mar 2, 2007 10:26:47 AM
- * @version $Id: CQL2ToParameterizedHQL.java,v 1.3 2008/04/08 13:56:46 dervin
- *          Exp $
  */
 public class CQL2ToParameterizedHQL {
     // default alias for the target data type
@@ -61,17 +53,13 @@ public class CQL2ToParameterizedHQL {
         predicateValues.put(UnaryPredicate.IS_NOT_NULL, "is not null");
         predicateValues.put(UnaryPredicate.IS_NULL, "is null");
     }
-
-    private RoleNameResolver roleNameResolver = null;
-    private DomainModelUtil domainModelUtil = null;
-    private HBMTool hbmTool = null;
+    
+    private TypesInformationResolver typesInfoResolver = null;
     private boolean caseInsensitive = false;
 
 
-    public CQL2ToParameterizedHQL(DomainModel model, boolean caseInsensitive) {
-        this.roleNameResolver = new RoleNameResolver(model);
-        this.domainModelUtil = new DomainModelUtil(model);
-        this.hbmTool = new HBMTool();
+    public CQL2ToParameterizedHQL(TypesInformationResolver typesInfoResolver, boolean caseInsensitive) {
+        this.typesInfoResolver = typesInfoResolver;
         this.caseInsensitive = caseInsensitive;
     }
 
@@ -80,15 +68,14 @@ public class CQL2ToParameterizedHQL {
      * Converts CQL to parameterized HQL suitable for use with Hibernate
      * v3.2.0ga and the caCORE SDK version 4.x. This translation process 
      * <b>does not</b> include application of CQL 2 Query Modifiers;
-     * this functionality should be implemented as a post-processing operation in the
-     * CQL2QueryProcessor class.
+     * this functionality should be implemented as a post-processing operation.
      * 
      * @param query
      *            The query to convert
      * @return A parameterized HQL Query representing the CQL query
      * @throws Exception
      */
-    public ParameterizedHqlQuery convertToHql(CQLQuery query) throws Exception {
+    public ParameterizedHqlQuery convertToHql(CQLQuery query) throws QueryConversionException {
         // create a string builder to build up the HQL
         StringBuilder rawHql = new StringBuilder();
 
@@ -96,10 +83,14 @@ public class CQL2ToParameterizedHQL {
         List<java.lang.Object> parameters = new LinkedList<java.lang.Object>();
 
         // determine if the target has subclasses
-        UMLClass[] subclasses = domainModelUtil.getAllSubclasses(query.getCQLTargetObject().getClassName());
-        boolean hasSubclasses = !(subclasses == null || subclasses.length == 0);
+        boolean hasSubclasses;
+        try {
+            hasSubclasses = typesInfoResolver.classHasSubclasses(query.getCQLTargetObject().getClassName());
+        } catch (TypesInformationException ex) {
+            throw new QueryConversionException("Error determining if query target has subclasses: " + ex.getMessage(), ex);
+        }
         LOG.debug(query.getCQLTargetObject().getClassName()
-            + (hasSubclasses ? " has " + subclasses.length + " subclasses" : " has no subclasses"));
+            + "has " + (hasSubclasses ? "" : "no ") + "subclasses");
 
         // begin processing at the target level
         processTarget(query.getCQLTargetObject(), query.getAssociationPopulationSpecification(),
@@ -136,7 +127,7 @@ public class CQL2ToParameterizedHQL {
      * @throws QueryProcessingException
      */
     private void processTarget(CQLTargetObject target, AssociationPopulationSpecification associtaionPopulation,
-        StringBuilder hql, List<java.lang.Object> parameters, boolean avoidSubclasses) throws Exception {
+        StringBuilder hql, List<java.lang.Object> parameters, boolean avoidSubclasses) throws QueryConversionException {
         LOG.debug("Processing target " + target.getClassName());
 
         // the stack of associations processed at the current depth of the query
@@ -173,9 +164,18 @@ public class CQL2ToParameterizedHQL {
                 hql.append(" and ");
             }
             hql.append(TARGET_ALIAS).append(".class = ?");
-            // read the HBMs to determine the class identifier
-            Object classDiscriminator = hbmTool.getClassFieldIdentifierValue(
-                target.getClassName(), target.getClassName());
+            
+            // determine the class discriminator value
+            String concreteClassName = target.getClassName();
+            if (target.get_instanceof() != null) {
+                concreteClassName = target.get_instanceof();
+            }
+            Object classDiscriminator;
+            try {
+                classDiscriminator = typesInfoResolver.getClassDiscriminatorValue(concreteClassName);
+            } catch (TypesInformationException ex) {
+                throw new QueryConversionException("Error determining class discriminator: " + ex.getMessage(), ex);
+            }
             parameters.add(classDiscriminator);
         }
     }
@@ -197,7 +197,7 @@ public class CQL2ToParameterizedHQL {
      * @throws QueryProcessingException
      */
     private void processAttribute(CQLAttribute attribute, StringBuilder hql, List<java.lang.Object> parameters,
-        CQLObject queryObject, String queryObjectAlias) throws Exception {
+        CQLObject queryObject, String queryObjectAlias) {
         LOG.debug("Processing attribute " + queryObject.getClassName() + "." + attribute.getName());
 
         // construct the attribute path
@@ -259,7 +259,7 @@ public class CQL2ToParameterizedHQL {
      */
     private void processAssociation(CQLAssociatedObject association, StringBuilder hql,
         List<java.lang.Object> parameters, Stack<CQLAssociatedObject> associationStack, 
-        CQLObject sourceQueryObject, String sourceAlias) throws Exception {
+        CQLObject sourceQueryObject, String sourceAlias) throws QueryConversionException {
         LOG.debug("Processing association " + sourceQueryObject.getClassName() 
             + " to " + association.getClassName());
 
@@ -322,8 +322,12 @@ public class CQL2ToParameterizedHQL {
                 hql.append(alias);
             }
             hql.append(".class = ?");
-            Object discriminator = hbmTool.getClassFieldIdentifierValue(
-                association.getClassName(), association.get_instanceof());
+            Object discriminator;
+            try {
+                discriminator = typesInfoResolver.getClassDiscriminatorValue(association.get_instanceof());
+            } catch (TypesInformationException ex) {
+                throw new QueryConversionException("Error determining class discriminator: " + ex.getMessage(), ex);
+            }
             parameters.add(discriminator);
         }
 
@@ -349,7 +353,7 @@ public class CQL2ToParameterizedHQL {
      * @throws QueryProcessingException
      */
     private void processGroup(CQLGroup group, StringBuilder hql, List<java.lang.Object> parameters,
-        Stack<CQLAssociatedObject> associationStack, CQLObject sourceQueryObject, String sourceAlias) throws Exception {
+        Stack<CQLAssociatedObject> associationStack, CQLObject sourceQueryObject, String sourceAlias) throws QueryConversionException {
         LOG.debug("Processing group on " + sourceQueryObject.getClassName());
 
         String logic = convertLogicalOperator(group.getLogicalOperation());
@@ -406,13 +410,13 @@ public class CQL2ToParameterizedHQL {
      *            The logical operator to convert
      * @return The CQL logical operator as HQL
      */
-    private String convertLogicalOperator(GroupLogicalOperator op) throws Exception {
+    private String convertLogicalOperator(GroupLogicalOperator op) throws QueryConversionException {
         if (op.getValue().equals(GroupLogicalOperator._AND)) {
             return "AND";
         } else if (op.getValue().equals(GroupLogicalOperator._OR)) {
             return "OR";
         }
-        throw new Exception("Logical operator '" + op.getValue() + "' is not recognized.");
+        throw new QueryConversionException("Logical operator '" + op.getValue() + "' is not recognized.");
     }
 
 
@@ -434,7 +438,8 @@ public class CQL2ToParameterizedHQL {
     }
 
 
-    private String generateAssociationFetchClause(String targetClassName, AssociationPopulationSpecification spec) {
+    private String generateAssociationFetchClause(String targetClassName, AssociationPopulationSpecification spec) 
+        throws QueryConversionException {
         StringBuffer clause = new StringBuffer();
         if (spec.getPopulationDepth() != null) {
             int maxDepth = spec.getPopulationDepth().getDepth();
@@ -452,22 +457,27 @@ public class CQL2ToParameterizedHQL {
 
 
     private void appendJoinsByDepth(StringBuffer buff, String parentClassName, String parentAlias, int aliasIndex,
-        int currentDepth, int maxDepth, Set<String> joinedAssociations) {
+        int currentDepth, int maxDepth, Set<String> joinedAssociations) throws QueryConversionException {
         LOG.debug("Populating associations of " + parentClassName + " to depth" + maxDepth 
             + "(currently at level " + currentDepth + ")");
         currentDepth++;
         if (currentDepth > maxDepth) {
             return;
         }
-        List<ClassAssociation> associations = roleNameResolver.getAssociationRoleNames(parentClassName);
+        List<ClassAssociation> associations;
+        try {
+            associations = typesInfoResolver.getAssociationsFromClass(parentClassName);
+        } catch (TypesInformationException ex) {
+            throw new QueryConversionException("Error determining associations: " + ex.getMessage(), ex);
+        }
         for (ClassAssociation ca : associations) {
-            String fetchName = ca.getClassName() + "." + ca.getRoleName();
+            String fetchName = ca.getClassName() + "." + ca.getEndName();
             if (!joinedAssociations.contains(fetchName)) {
                 joinedAssociations.add(fetchName);
                 String myAlias = "fetchAlias" + aliasIndex;
                 aliasIndex++;
                 buff.append("left join fetch ").append(parentAlias).append('.')
-                    .append(ca.getRoleName()).append(" as ").append(myAlias).append(' ');
+                    .append(ca.getEndName()).append(" as ").append(myAlias).append(' ');
                 int newMaxDepth = maxDepth;
                 int newCurrentDepth = currentDepth;
                 appendJoinsByDepth(buff, ca.getClassName(), myAlias, aliasIndex, 
@@ -477,15 +487,37 @@ public class CQL2ToParameterizedHQL {
     }
 
 
-    private void appendNamedJoins(StringBuffer buff, NamedAssociation na, String parentClassName, 
-        String parentAlias, int aliasIndex) {
+    private void appendNamedJoins(StringBuffer buff, NamedAssociation na, 
+        String parentClassName, String parentAlias, int aliasIndex) throws QueryConversionException {
         LOG.debug("Populating named associations");
         String myAlias = "fetchAlias" + aliasIndex;
-        String associationClassName = roleNameResolver.getClassNameOfAssociationByRoleName(
-            parentClassName, na.getEndName());
+        // get associations from the parent class, determine associated class goes with the named association's end name
+        List<ClassAssociation> associations;
+        try {
+            associations = typesInfoResolver.getAssociationsFromClass(parentClassName);
+        } catch (TypesInformationException ex) {
+            throw new QueryConversionException("Error determining associations: " + ex.getMessage(), ex);
+        }
+        String associationClassName = null;
+        for (ClassAssociation assoc : associations) {
+            if (assoc.getEndName().equals(na.getEndName())) {
+                associationClassName = assoc.getClassName();
+                break;
+            }
+        }
         aliasIndex++;
         buff.append("left join fetch ").append(parentAlias).append('.').append(na.getEndName())
             .append(" as ").append(myAlias).append(' ');
+        if (na.get_instanceof() != null) {
+            buff.append("where ").append(myAlias).append(".class = ?");
+            // FIXME: need to pass around parameters and append the class discriminator here
+            Object classDiscriminator = null;
+            try {
+                classDiscriminator = typesInfoResolver.getClassDiscriminatorValue(na.get_instanceof());
+            } catch (TypesInformationException ex) {
+                throw new QueryConversionException("Error determining class discriminator: " + ex.getMessage(), ex);
+            }
+        }
         if (na.getNamedAssociationList() != null && na.getNamedAssociationList().getNamedAssociation() != null) {
             for (NamedAssociation subAssociation : na.getNamedAssociationList().getNamedAssociation()) {
                 appendNamedJoins(buff, subAssociation, associationClassName, myAlias, aliasIndex);

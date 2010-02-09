@@ -1,8 +1,8 @@
 package org.cagrid.cacore.sdk4x.cql2.processor;
 
-import gov.nih.nci.cagrid.metadata.dataservice.UMLClass;
 import gov.nih.nci.cagrid.metadata.dataservice.DomainModel;
 import gov.nih.nci.cagrid.metadata.dataservice.UMLAssociation;
+import gov.nih.nci.cagrid.metadata.dataservice.UMLClass;
 import gov.nih.nci.cagrid.metadata.dataservice.UMLClassReference;
 
 import java.util.ArrayList;
@@ -132,26 +132,5 @@ public class RoleNameResolver {
             }
         }
         return associations;
-    }
-    
-    
-    public static class ClassAssociation {
-        private String className;
-        private String roleName;
-        
-        public ClassAssociation(String className, String roleName) {
-            this.className = className;
-            this.roleName = roleName;
-        }
-        
-        
-        public String getClassName() {
-            return className;
-        }
-        
-        
-        public String getRoleName() {
-            return roleName;
-        }
     }
 }
