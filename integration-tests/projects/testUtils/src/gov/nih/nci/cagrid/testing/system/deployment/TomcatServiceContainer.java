@@ -18,6 +18,7 @@ import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.FutureTask;
+import java.util.concurrent.ThreadFactory;
 import java.util.concurrent.TimeUnit;
 
 import javax.xml.rpc.ServiceException;
@@ -245,7 +246,14 @@ public class TomcatServiceContainer extends ServiceContainer {
 		        }
 		    });
 
-		ExecutorService executor = Executors.newSingleThreadExecutor();
+		ExecutorService executor = Executors.newSingleThreadExecutor(new ThreadFactory() {
+            
+            public Thread newThread(Runnable r) {
+                Thread th = Executors.defaultThreadFactory().newThread(r);
+                th.setDaemon(true);
+                return th;
+            }
+        });
 		executor.execute(future);
 
 		boolean success = false;
