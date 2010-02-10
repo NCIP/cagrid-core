@@ -27,11 +27,19 @@
 			</fileset>
 		</copy>
 	</target>
+	
+	<target name="copyDcqlSchemas">
+		<copy toDir="${webapp.deploy.schema.dir}/cql2.0" overwrite="true">
+			<fileset dir="build/schema/cql2.0">
+				<include name="**\*" />
+			</fileset>
+		</copy>
+	</target>
 
 	<!-- ============================================================== -->
 	<!-- Pre Deploy Tomcat                                              -->
 	<!-- ============================================================== -->
-	<target name="preDeployTomcat" depends="checkTransferDeployed, copyExtLibs">
+	<target name="preDeployTomcat" depends="checkTransferDeployed, copyExtLibs, copyDcqlSchemas">
 		
 	</target>
 
@@ -47,7 +55,7 @@
 	<!-- ============================================================== -->
 	<!-- Pre Deploy JBOSS                                               -->
 	<!-- ============================================================== -->
-	<target name="preDeployJBoss" depends="checkTransferDeployed, copyExtLibs">
+	<target name="preDeployJBoss" depends="checkTransferDeployed, copyExtLibs, copyDcqlSchemas">
 		
 	</target>
 
