@@ -59,7 +59,7 @@ public class IdentifiersNAServiceClient extends IdentifiersNAServiceClientBase i
 					  new String[] { "http://www.google.com" }));
 
 			  keyValues1[1] = new KeyValues();
-			  keyValues1[1].setKey("EPR");
+			  keyValues1[1].setKey("CODE");
 			  keyValues1[1].setKeyData(new KeyData(null,
 					  new String[] { "end point reference 1", "end point reference 2" }));
 	
@@ -70,16 +70,9 @@ public class IdentifiersNAServiceClient extends IdentifiersNAServiceClientBase i
 			  System.out.println("Identifier: " + identifier.toString());
 
 			  values2 = client.resolveIdentifier(identifier);
-			  System.out.println("After creating identifier:");
-			  for( KeyValues kv : values2.getKeyValues()) {
-				  System.out.println("\n***********************\nKEY: " + kv.getKey());
-				  KeyData kd = kv.getKeyData();
-				  if (kd != null && kd.getValue() != null) {
-					  for(String value : kd.getValue()) {
-						  System.out.println("\t\tVALUE: " + value);
-					  }
-				  }
-			  }
+			  System.out.println("\n-------------------------------------\nAfter creating identifier:");
+			  printValues(values2);
+
 
 			  IdentifiersNAUtil.assertEquals(values1, values2);
 			  
@@ -99,42 +92,31 @@ public class IdentifiersNAServiceClient extends IdentifiersNAServiceClientBase i
 //			  System.out.println(values2.toString());
 			  
 			  // Delete all keys
-			  //client.deleteAllKeys(identifier);
-			  //values2 = client.resolveIdentifier(identifier);
-			  //System.out.println("After deleteAllKeys:");
-			  //System.out.println(values2.toString());
+//			  client.deleteAllKeys(identifier);
+//			  IdentifierValues deleteAllKeysValues = client.resolveIdentifier(identifier);
+//			  System.out.println("\n-------------------------------\nAfter deleteAllKeys:");
+//			  printValues(deleteAllKeysValues);
 			  
 			  //Delete some keys
-//			  client.deleteKeys(identifier, new String[]{ "CODE", "KEY4" });
-//			  values2 = client.resolveIdentifier(identifier);
-//			  System.out.println("After deleteKeys:");
-//			  System.out.println(values2.toString());
+			  client.deleteKeys(identifier, new String[]{ "URL" });
+			  IdentifierValues deleteKeysValues = client.resolveIdentifier(identifier);
+			  System.out.println("\n-----------------------------------------------\nAfter deleteKeys:");
+			  printValues(deleteKeysValues);
 			  
 			  //Replace some keys
-			  KeyValues[] replacedKeys = new KeyValues[2];
-			  replacedKeys[0] = new KeyValues();
-			  replacedKeys[0].setKey("EPR");
-			  replacedKeys[0].setKeyData(new KeyData(null, new String[] {"end point reference 3"}));
-			  
-			  replacedKeys[1] = new KeyValues();
-			  replacedKeys[1].setKey("PUPU");
-			  replacedKeys[1].setKeyData(new KeyData(null, new String[] {"end point reference 4"}));
-			  
-			  client.replaceKeys(identifier, new IdentifierValues(replacedKeys));
-			  IdentifierValues replacedValues = client.resolveIdentifier(identifier);
-			  System.out.println("After replacedKeys:");
-			  
-			  for( KeyValues kv : replacedValues.getKeyValues()) {
-				  System.out.println("\n***********************\nKEY: " + kv.getKey());
-				  KeyData kd = kv.getKeyData();
-				  if (kd != null && kd.getValue() != null) {
-					  for(String value : kd.getValue()) {
-						  System.out.println("\t\tVALUE: " + value);
-					  }
-				  }
-			  }
-			  System.out.println(values2.toString());
-				
+//			  KeyValues[] replacedKeys = new KeyValues[2];
+//			  replacedKeys[0] = new KeyValues();
+//			  replacedKeys[0].setKey("EPR");
+//			  replacedKeys[0].setKeyData(new KeyData(null, new String[] {"end point reference 3"}));
+//			  
+//			  replacedKeys[1] = new KeyValues();
+//			  replacedKeys[1].setKey("URL");
+//			  replacedKeys[1].setKeyData(new KeyData(null, new String[] {"http://www.casafiesta.com"}));
+//			  
+//			  client.replaceKeys(identifier, new IdentifierValues(replacedKeys));
+//			  IdentifierValues replacedValues = client.resolveIdentifier(identifier);
+//			  System.out.println("\n***************\nAfter replacedKeys:");
+//			  printValues(replacedValues);				
 			} else {
 				usage();
 				System.exit(1);
@@ -149,6 +131,22 @@ public class IdentifiersNAServiceClient extends IdentifiersNAServiceClientBase i
 		}
 	}
 
+	private static void printValues(IdentifierValues values) {
+		if (values == null) {
+			return;
+		}
+		
+		for( KeyValues kv : values.getKeyValues()) {
+			  System.out.println("\n***********************\nKEY: " + kv.getKey());
+			  KeyData kd = kv.getKeyData();
+			  if (kd != null && kd.getValue() != null) {
+				  for(String value : kd.getValue()) {
+					  System.out.println("\t\tVALUE: " + value);
+				  }
+			  }
+		  }
+	}
+	
   public org.oasis.wsrf.properties.GetMultipleResourcePropertiesResponse getMultipleResourceProperties(org.oasis.wsrf.properties.GetMultipleResourceProperties_Element params) throws RemoteException {
     synchronized(portTypeMutex){
       configureStubSecurity((Stub)portType,"getMultipleResourceProperties");

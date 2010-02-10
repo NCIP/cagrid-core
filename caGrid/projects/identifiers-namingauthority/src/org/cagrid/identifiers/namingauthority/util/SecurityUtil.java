@@ -35,7 +35,7 @@ public class SecurityUtil {
 	public static String securityError(SecurityInfo secInfo, String opErr) {
 		return "User [" 
 			+ secInfo.getUser() 
-			+ "is not authorized ["
+			+ "] is not authorized ["
 			+ opErr
 			+ "]";
 	}
@@ -70,7 +70,13 @@ public class SecurityUtil {
 	
 	public static void createSystemIdentifier(String naConfigurationFile, 
 			String naProperties, String[] adminUsers, String[] creationUsers,
-			String creationFlag) throws InvalidIdentifierException, URISyntaxException, NamingAuthorityConfigurationException, NamingAuthoritySecurityException {
+			String creationFlag) 
+	
+		throws 
+			InvalidIdentifierException, 
+			URISyntaxException, 
+			NamingAuthorityConfigurationException, 
+			NamingAuthoritySecurityException {
 
         FileSystemResource naConfResource = new FileSystemResource(naConfigurationFile);
         FileSystemResource naPropertiesResource = new FileSystemResource(naProperties);
@@ -105,7 +111,7 @@ public class SecurityUtil {
 		System.err.println(SecurityUtil.class.getName() + " Usage:");
 		System.err.println();
 		System.err.println("java " + SecurityUtil.class.getName() 
-				+ " <NA Config File> <NA Properties File> <Admin Grid Identity> <Public Creation Flag>");
+			+ " <NA Config File> <NA Properties File> <ADMIN_USERS> <IDENTIFIER_CREATION_USERS> <PUBLIC_CREATION>");
 	}
 	
 	public static void main(String[] args) {

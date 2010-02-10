@@ -88,9 +88,9 @@ public class IdentifierMetadataDao extends AbstractDao<IdentifierMetadata> {
 	public void createKeys(SecurityInfo secInfo, URI localIdentifier, IdentifierValues values) 
 		throws InvalidIdentifierException, NamingAuthoritySecurityException, InvalidIdentifierValuesException {
 
-		IdentifierMetadata resolvedValues = loadIdentifier(localIdentifier);
+		secInfo = validateSecurityInfo(secInfo);
 		
-    	secInfo = validateSecurityInfo(secInfo);
+		IdentifierMetadata resolvedValues = loadIdentifier(localIdentifier);
 		
 		writeKeysSecurityChecks(secInfo, "createKeys", resolvedValues);
 		
@@ -100,7 +100,8 @@ public class IdentifierMetadataDao extends AbstractDao<IdentifierMetadata> {
 			IdentifierValueKey ivk = IdentifierUtil.convert(key, values);
 			if (valueKeys.contains(ivk)) {
 				throw new InvalidIdentifierValuesException("Key [" + key 
-						+ "] already exists for local identifier [" + localIdentifier.normalize().toString() 
+						+ "] already exists for local identifier [" 
+						+ localIdentifier.normalize().toString() 
 						+ "]");
 			}
 			valueKeys.add(ivk);
@@ -110,67 +111,76 @@ public class IdentifierMetadataDao extends AbstractDao<IdentifierMetadata> {
 	}
 	
 	public void deleteAllKeys(SecurityInfo secInfo, URI localIdentifier) 
-		throws InvalidIdentifierException, NamingAuthoritySecurityException, InvalidIdentifierValuesException {
+		throws 
+			InvalidIdentifierException, 
+			NamingAuthoritySecurityException, 
+			InvalidIdentifierValuesException {
+		
+		secInfo = validateSecurityInfo(secInfo);
 
 		IdentifierMetadata resolvedValues = loadIdentifier(localIdentifier);
-		
+
 		Collection<IdentifierValueKey> valueCol = resolvedValues.getValues();
 		if (valueCol == null || valueCol.size() == 0) {
 			// Identifier has nothing already
 			return;
 		}
 
-		secInfo = validateSecurityInfo(secInfo);
-
 		writeKeysSecurityChecks(secInfo, "deleteAllKeys", resolvedValues);
-		
+
 		//TODO:
 		System.err.println("User [" + secInfo.getUser() + "] deleting all keys for identifier [" + localIdentifier.toString() + "]");
+
+		List<IdentifierValueKey> keysToDelete = new ArrayList<IdentifierValueKey>();
 		
-		List<IdentifierValueKey> keysToRemove = new ArrayList<IdentifierValueKey>();
 		for( IdentifierValueKey ivk : valueCol) {
 			if (Keys.isAdminKey(ivk.getKey())) {
-				System.out.println("Skipping key [" + ivk.getKey() + "]");
+				System.out.println("Won't remove key [" + ivk.getKey() + "]");
 				// "ADMIN" keys can't be deleted using this API
 				continue;
 			}
-			keysToRemove.add(ivk);
+			keysToDelete.add(ivk);
 		}
-		
-		if (valueCol.removeAll(keysToRemove)) {
-			System.err.println("SUCCESSFULLY REMOVED " + keysToRemove.size() + " KEYS");
-		}
-		
-		//TODO: this is not deleting anything
-		save(resolvedValues);
-	}
-	
-	public void deleteKeys(SecurityInfo secInfo, URI localIdentifier, String[] keyList) 
-	throws InvalidIdentifierException, NamingAuthoritySecurityException, InvalidIdentifierValuesException {
 
-		IdentifierMetadata resolvedValues = loadIdentifier(localIdentifier);
+		if (keysToDelete.size() > 0) {
+			getHibernateTemplate().deleteAll(keysToDelete);
+		}
+	}
+		
+	public void deleteKeys(SecurityInfo secInfo, URI localIdentifier, String[] keyList) 
+		throws 
+			InvalidIdentifierException, 
+			NamingAuthoritySecurityException, 
+			InvalidIdentifierValuesException {
 
 		secInfo = validateSecurityInfo(secInfo);
+		
+		IdentifierMetadata resolvedValues = loadIdentifier(localIdentifier);
+	
+		if (resolvedValues.getValues() == null || resolvedValues.getValues().size() == 0) {
+			throw new InvalidIdentifierValuesException("Local identifier [" 
+					+ localIdentifier + "] has no keys");
+		}
 
 		writeKeysSecurityChecks(secInfo, "deleteKeys", resolvedValues);
 
 		//TODO:
 		System.err.println("User [" + secInfo.getUser() + "] deleting some keys for identifier [" + localIdentifier.toString() + "]");
 
-		Collection<IdentifierValueKey> valueCol = resolvedValues.getValues();
-		for(String key : keyList) {
-			IdentifierValueKey goneKey = new IdentifierValueKey();
-			goneKey.setKey(key);
-			if (valueCol.remove(goneKey)) {
-				System.err.println("KEY IS GONE NOW");
-			}
-			else {
-				System.err.println("KEY IS NOT GONE");
+		List<IdentifierValueKey> keysToDelete = new ArrayList<IdentifierValueKey>();	
+		ArrayList<String> keyNames = new ArrayList<String>(Arrays.asList(keyList));
+		
+		for(IdentifierValueKey ivk : resolvedValues.getValues()) {
+			
+			if (keyNames.contains(ivk.getKey())) {
+				System.out.println("Removing key [" + ivk.getKey() + "]");
+				keysToDelete.add(ivk);
 			}
 		}
 
-		//TODO: this is not deleting anything
-		save(resolvedValues);
+		if (keysToDelete.size() > 0) {
+			getHibernateTemplate().deleteAll(keysToDelete);
+		}
 	}
 	
 	public void replaceKeys(SecurityInfo secInfo, URI localIdentifier, IdentifierValues values) 
@@ -217,10 +227,10 @@ public class IdentifierMetadataDao extends AbstractDao<IdentifierMetadata> {
 		// User access as per Identifier's ADMIN_USERS settings
 		identifierAdminAccess = getIdentifierAdminUserAccess(secInfo, resolvedValues);
 		
-		ArrayList<String> keysToRemove = new ArrayList<String>(Arrays.asList(newValues.getKeys()));
+		ArrayList<String> keysToReplace = new ArrayList<String>(Arrays.asList(newValues.getKeys()));
 		for(IdentifierValueKey ivk : resolvedValues.getValues()) {
 			
-			if (!keysToRemove.contains(ivk.getKey())) {
+			if (!keysToReplace.contains(ivk.getKey())) {
 				continue;
 			}
 			
@@ -269,15 +279,19 @@ public class IdentifierMetadataDao extends AbstractDao<IdentifierMetadata> {
 			}
 
 			if (okToUpdate) {
-				keysToRemove.remove(ivk.getKey());
+				keysToReplace.remove(ivk.getKey());
 				KeyData kd = newValues.getValues(ivk.getKey());
 				ivk.setReadWriteIdentifier(kd.getReadWriteIdentifier());
 				ivk.setValues(kd.getValues());
+			
+			} else {
+				throw new NamingAuthoritySecurityException(
+						SecurityUtil.securityError(secInfo, "replaceKeys [Key=" + ivk.getKey() + "]"));
 			}
 		}
 
-		if (keysToRemove.size() > 0) {
-			throw new InvalidIdentifierValuesException("Key [" + keysToRemove.get(0) 
+		if (keysToReplace.size() > 0) {
+			throw new InvalidIdentifierValuesException("Key [" + keysToReplace.get(0) 
 					+ "] does not exist for local identifier [" + localIdentifier.normalize().toString() 
 					+ "]");
 		}

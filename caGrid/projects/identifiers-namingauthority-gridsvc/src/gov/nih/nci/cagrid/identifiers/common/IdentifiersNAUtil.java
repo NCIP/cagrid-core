@@ -68,6 +68,10 @@ public class IdentifiersNAUtil {
 	public static namingauthority.IdentifierValues map(
 			org.cagrid.identifiers.namingauthority.domain.IdentifierValues identifierValues) throws MalformedURIException, URISyntaxException {
 		
+		if (identifierValues == null) {
+			return null;
+		}
+		
 		String[] keys = identifierValues.getKeys();
 		namingauthority.KeyValues[] kvs = new namingauthority.KeyValues[ keys.length ];
 		

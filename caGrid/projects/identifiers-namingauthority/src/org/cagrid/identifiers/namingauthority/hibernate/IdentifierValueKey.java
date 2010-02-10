@@ -40,8 +40,16 @@ public class IdentifierValueKey {
     @Type(type = "org.cagrid.identifiers.namingauthority.hibernate.URIUserType")
     private URI readWriteIdentifier;
 
+    public IdentifierValueKey() {}
+    
+    public IdentifierValueKey(IdentifierValueKey ivk) {
+    	setReadWriteIdentifier(ivk.getReadWriteIdentifier());
+    	setKey(ivk.getKey());
+    	setValues(ivk.getValues());
+    }
+    
     public URI getReadWriteIdentifier() {
-    	return readWriteIdentifier;
+    	return this.readWriteIdentifier;
     }
     
     public void setReadWriteIdentifier(URI identifier) {
@@ -49,7 +57,7 @@ public class IdentifierValueKey {
     }
     
     public List<String> getValues() {
-        return values;
+        return this.values;
     }
 
 
@@ -64,7 +72,7 @@ public class IdentifierValueKey {
 
 
     public String getKey() {
-        return key;
+        return this.key;
     }
 
 
@@ -87,10 +95,10 @@ public class IdentifierValueKey {
         if (getClass() != obj.getClass())
             return false;
         IdentifierValueKey other = (IdentifierValueKey) obj;
-        if (key == null) {
+        if (this.key == null) {
             if (other.key != null)
                 return false;
-        } else if (!key.equals(other.key))
+        } else if (!this.key.equals(other.key))
             return false;
         
         /* I NEED THE ABOVE ONLY, DOES ANYONE HAVE A PROBLEM WITH THAT?
@@ -111,7 +119,7 @@ public class IdentifierValueKey {
 
 
     public Long getId() {
-        return id;
+        return this.id;
     }
 
 }
