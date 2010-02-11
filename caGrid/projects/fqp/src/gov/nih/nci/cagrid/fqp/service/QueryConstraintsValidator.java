@@ -20,8 +20,26 @@ public class QueryConstraintsValidator {
     }
     
     
+    public void validateAgainstConstraints(org.cagrid.data.dcql.DCQLQuery query, QueryExecutionParameters parameters) throws FederatedQueryProcessingException {
+        if (!validMaximumTargetServices(query.getTargetServiceURL())) {
+            throw new FederatedQueryProcessingException(
+                "Query specifies more target data services than allowed by this service");
+        }
+        if (parameters != null) {
+            if (!validMaximumTimeout(parameters)) {
+                throw new FederatedQueryProcessingException(
+                "Query specifies a retry timeout greater than is allowed by this serice");
+            }
+            if (!validMaximumRetries(parameters)) {
+                throw new FederatedQueryProcessingException(
+                "Query specifies a greater number of retries than is allowed by this service");
+            }
+        }
+    }
+    
+    
     public void validateAgainstConstraints(DCQLQuery query, QueryExecutionParameters parameters) throws FederatedQueryProcessingException {
-        if (!validMaximumTargetServices(query)) {
+        if (!validMaximumTargetServices(query.getTargetServiceURL())) {
             throw new FederatedQueryProcessingException(
                 "Query specifies more target data services than allowed by this service");
         }
@@ -71,8 +89,8 @@ public class QueryConstraintsValidator {
     }
     
     
-    private boolean validMaximumTargetServices(DCQLQuery query) {
-        return maxTargetServices != 0 && query.getTargetServiceURL().length <= maxTargetServices;
+    private boolean validMaximumTargetServices(String[] targetServices) {
+        return maxTargetServices != 0 && targetServices.length <= maxTargetServices;
     }
     
     
