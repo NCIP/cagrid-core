@@ -62,35 +62,41 @@ public class DCQLConverter {
         foreignPredicateConversion.put(ForeignPredicate.LESS_THAN_EQUAL_TO, BinaryPredicate.LESS_THAN_EQUAL_TO);
     }
     
-    private DomainModel model = null;
+    private DomainModelLocator modelLocator = null;
     
-    public DCQLConverter(DomainModel model) {
-        this.model = model;
+    public DCQLConverter() {
+        this(new DefaultDomainModelLocator());
     }
+    
+    
+    public DCQLConverter(DomainModelLocator modelLocator) {
+        this.modelLocator = modelLocator;
+    }
+    
     
     public DCQLQuery convertToDcql2(gov.nih.nci.cagrid.dcql.DCQLQuery oldQuery) throws DCQLQueryConversionException {
         DCQLQuery query = new DCQLQuery();
         // target service URLs
         query.setTargetServiceURL(oldQuery.getTargetServiceURL());
         // target object
-        DCQLObject target = convertToDcql2Object(oldQuery.getTargetObject());
+        DCQLObject target = convertToDcql2Object(oldQuery.getTargetServiceURL(0), oldQuery.getTargetObject());
         query.setTargetObject(target);
         return query;
     }
     
     
-    private DCQLObject convertToDcql2Object(Object oldObject) throws DCQLQueryConversionException {
+    private DCQLObject convertToDcql2Object(String targetServiceUrl, Object oldObject) throws DCQLQueryConversionException {
         DCQLObject object = new DCQLObject();
         object.setName(oldObject.getName());
         if (oldObject.getAssociation() != null) {
             object.setAssociatedObject(convertToDcql2Association(
-                oldObject.getAssociation()));
+                targetServiceUrl, oldObject.getAssociation()));
         } else if (oldObject.getAttribute() != null) {
             object.setAttribute(convertToCql2Attribute(
-                object.getName(), oldObject.getAttribute()));
+                targetServiceUrl, object.getName(), oldObject.getAttribute()));
         } else if (oldObject.getGroup() != null) {
             object.setGroup(convertToDcql2Group(
-                object.getName(), oldObject.getGroup()));
+                targetServiceUrl, object.getName(), oldObject.getGroup()));
         } else if (oldObject.getForeignAssociation() != null) {
             object.setForeignAssociatedObject(
                 convertToDcql2ForeignAssociation(
@@ -100,8 +106,8 @@ public class DCQLConverter {
     }
     
     
-    private DCQLAssociatedObject convertToDcql2Association(Association oldAssociation) throws DCQLQueryConversionException {
-        DCQLObject object = convertToDcql2Object(oldAssociation);
+    private DCQLAssociatedObject convertToDcql2Association(String targetServiceUrl, Association oldAssociation) throws DCQLQueryConversionException {
+        DCQLObject object = convertToDcql2Object(targetServiceUrl, oldAssociation);
         DCQLAssociatedObject association = new DCQLAssociatedObject();
         association.setName(object.getName());
         association.setEndName(oldAssociation.getRoleName());
@@ -112,7 +118,7 @@ public class DCQLConverter {
     }
     
     
-    private CQLAttribute convertToCql2Attribute(String className, Attribute oldAttribute) throws DCQLQueryConversionException {
+    private CQLAttribute convertToCql2Attribute(String targetServiceUrl, String className, Attribute oldAttribute) throws DCQLQueryConversionException {
         CQLAttribute attribute = new CQLAttribute();
         attribute.setName(oldAttribute.getName());
         Predicate oldPredicate = oldAttribute.getPredicate();
@@ -122,15 +128,24 @@ public class DCQLConverter {
             attribute.setBinaryPredicate(binaryPredicateConversion.get(oldPredicate));
             String oldValue = oldAttribute.getValue();
             AttributeValue value = convertAttributeValue(
-                className, oldAttribute.getName(), oldValue);
+                targetServiceUrl, className, oldAttribute.getName(), oldValue);
             attribute.setAttributeValue(value);
         }
         return attribute;
     }
     
     
-    private AttributeValue convertAttributeValue(String className, String attributeName, String rawValue) throws DCQLQueryConversionException {
+    private AttributeValue convertAttributeValue(
+        String targetServiceUrl, String className, String attributeName, String rawValue)
+        throws DCQLQueryConversionException {
         String datatypeName = null;
+        DomainModel model = null;
+        try {
+            model = modelLocator.getDomainModel(targetServiceUrl);
+        } catch (Exception ex) {
+            throw new DCQLQueryConversionException(
+                "Error locating domain model for service " + targetServiceUrl + ": " + ex.getMessage(), ex);
+        }
         UMLClass[] classes = model.getExposedUMLClassCollection().getUMLClass();
         for (UMLClass c : classes) {
             String fqName = c.getClassName();
@@ -173,7 +188,7 @@ public class DCQLConverter {
     }
     
     
-    private DCQLGroup convertToDcql2Group(String className, Group oldGroup) throws DCQLQueryConversionException {
+    private DCQLGroup convertToDcql2Group(String targetServiceUrl, String className, Group oldGroup) throws DCQLQueryConversionException {
         DCQLGroup group = new DCQLGroup();
         group.setLogicalOperation(LogicalOperator.AND.equals(
             oldGroup.getLogicRelation()) ? 
@@ -181,21 +196,21 @@ public class DCQLConverter {
         if (oldGroup.getAssociation() != null && oldGroup.getAssociation().length != 0) {
             DCQLAssociatedObject[] associations = new DCQLAssociatedObject[oldGroup.getAssociation().length];
             for (int i = 0; i < oldGroup.getAssociation().length; i++) {
-                associations[i] = convertToDcql2Association(oldGroup.getAssociation(i));
+                associations[i] = convertToDcql2Association(targetServiceUrl, oldGroup.getAssociation(i));
             }
             group.setAssociatedObject(associations);
         }
         if (oldGroup.getAttribute() != null && oldGroup.getAttribute().length != 0) {
             CQLAttribute[] attributes = new CQLAttribute[oldGroup.getAttribute().length];
             for (int i = 0; i < oldGroup.getAttribute().length; i++) {
-                attributes[i] = convertToCql2Attribute(className, oldGroup.getAttribute(i));
+                attributes[i] = convertToCql2Attribute(targetServiceUrl, className, oldGroup.getAttribute(i));
             }
             group.setAttribute(attributes);
         }
         if (oldGroup.getGroup() != null && oldGroup.getGroup().length != 0) {
             DCQLGroup groups[] = new DCQLGroup[oldGroup.getGroup().length];
             for (int i = 0; i < oldGroup.getGroup().length; i++) {
-                groups[i] = convertToDcql2Group(className, oldGroup.getGroup(i));
+                groups[i] = convertToDcql2Group(targetServiceUrl, className, oldGroup.getGroup(i));
             }
             group.setGroup(groups);
         }
@@ -214,7 +229,7 @@ public class DCQLConverter {
         throws DCQLQueryConversionException {
         ForeignAssociatedObject foreign = new ForeignAssociatedObject();
         foreign.setTargetServiceURL(oldForeignAssociation.getTargetServiceURL());
-        DCQLObject object = convertToDcql2Object(oldForeignAssociation.getForeignObject());
+        DCQLObject object = convertToDcql2Object(oldForeignAssociation.getTargetServiceURL(), oldForeignAssociation.getForeignObject());
         foreign.setName(object.getName());
         foreign.setAssociatedObject(object.getAssociatedObject());
         foreign.setAttribute(object.getAttribute());
