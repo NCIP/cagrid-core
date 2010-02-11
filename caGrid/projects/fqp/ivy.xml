@@ -68,7 +68,7 @@
 
     <!-- Specific caGrid Service Dependencies -->
     <dependency rev="latest.integration" org="caGrid" name="data" conf="service->utils"/>
-    <dependency rev="latest.integration" org="caGrid" name="cql" conf="service->cql,dcql2,cql-schemas;ext-cql-schemas->dcql2-schemas"/>
+    <dependency rev="latest.integration" org="caGrid" name="cql" conf="service->cql,dcql2,cql-schemas,utils;ext-cql-schemas->dcql2-schemas"/>
     <dependency rev="latest.intrgration" org="caGrid" name="wsEnum" conf="service->default"/>
     <dependency rev="latest.integration" org="caGrid" name="transfer" conf="service->stubs;service->common;service->service"/>
     <dependency rev="latest.integration" org="caGrid" name="cds" conf="service->client"/>

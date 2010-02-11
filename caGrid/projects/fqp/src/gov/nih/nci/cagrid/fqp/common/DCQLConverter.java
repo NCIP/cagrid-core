@@ -8,6 +8,8 @@ import gov.nih.nci.cagrid.dcql.ForeignAssociation;
 import gov.nih.nci.cagrid.dcql.ForeignPredicate;
 import gov.nih.nci.cagrid.dcql.Group;
 import gov.nih.nci.cagrid.dcql.Object;
+import gov.nih.nci.cagrid.dcqlresult.DCQLQueryResultsCollection;
+import gov.nih.nci.cagrid.dcqlresult.DCQLResult;
 import gov.nih.nci.cagrid.metadata.common.UMLAttribute;
 import gov.nih.nci.cagrid.metadata.common.UMLClass;
 import gov.nih.nci.cagrid.metadata.dataservice.DomainModel;
@@ -18,11 +20,14 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.cagrid.cql.utilities.CQL2ResultsToCQL1ResultsConverter;
+import org.cagrid.cql.utilities.ResultsConversionException;
 import org.cagrid.cql2.AttributeValue;
 import org.cagrid.cql2.BinaryPredicate;
 import org.cagrid.cql2.CQLAttribute;
 import org.cagrid.cql2.GroupLogicalOperator;
 import org.cagrid.cql2.UnaryPredicate;
+import org.cagrid.cql2.results.CQLQueryResults;
 import org.cagrid.data.dcql.DCQLAssociatedObject;
 import org.cagrid.data.dcql.DCQLGroup;
 import org.cagrid.data.dcql.DCQLObject;
@@ -74,7 +79,7 @@ public class DCQLConverter {
     }
     
     
-    public DCQLQuery convertToDcql2(gov.nih.nci.cagrid.dcql.DCQLQuery oldQuery) throws DCQLQueryConversionException {
+    public DCQLQuery convertToDcql2(gov.nih.nci.cagrid.dcql.DCQLQuery oldQuery) throws DCQLConversionException {
         DCQLQuery query = new DCQLQuery();
         // target service URLs
         query.setTargetServiceURL(oldQuery.getTargetServiceURL());
@@ -85,7 +90,7 @@ public class DCQLConverter {
     }
     
     
-    private DCQLObject convertToDcql2Object(String targetServiceUrl, Object oldObject) throws DCQLQueryConversionException {
+    private DCQLObject convertToDcql2Object(String targetServiceUrl, Object oldObject) throws DCQLConversionException {
         DCQLObject object = new DCQLObject();
         object.setName(oldObject.getName());
         if (oldObject.getAssociation() != null) {
@@ -106,7 +111,8 @@ public class DCQLConverter {
     }
     
     
-    private DCQLAssociatedObject convertToDcql2Association(String targetServiceUrl, Association oldAssociation) throws DCQLQueryConversionException {
+    private DCQLAssociatedObject convertToDcql2Association(String targetServiceUrl, Association oldAssociation)
+        throws DCQLConversionException {
         DCQLObject object = convertToDcql2Object(targetServiceUrl, oldAssociation);
         DCQLAssociatedObject association = new DCQLAssociatedObject();
         association.setName(object.getName());
@@ -118,7 +124,8 @@ public class DCQLConverter {
     }
     
     
-    private CQLAttribute convertToCql2Attribute(String targetServiceUrl, String className, Attribute oldAttribute) throws DCQLQueryConversionException {
+    private CQLAttribute convertToCql2Attribute(String targetServiceUrl, String className, Attribute oldAttribute)
+        throws DCQLConversionException {
         CQLAttribute attribute = new CQLAttribute();
         attribute.setName(oldAttribute.getName());
         Predicate oldPredicate = oldAttribute.getPredicate();
@@ -137,13 +144,13 @@ public class DCQLConverter {
     
     private AttributeValue convertAttributeValue(
         String targetServiceUrl, String className, String attributeName, String rawValue)
-        throws DCQLQueryConversionException {
+        throws DCQLConversionException {
         String datatypeName = null;
         DomainModel model = null;
         try {
             model = modelLocator.getDomainModel(targetServiceUrl);
         } catch (Exception ex) {
-            throw new DCQLQueryConversionException(
+            throw new DCQLConversionException(
                 "Error locating domain model for service " + targetServiceUrl + ": " + ex.getMessage(), ex);
         }
         UMLClass[] classes = model.getExposedUMLClassCollection().getUMLClass();
@@ -172,7 +179,7 @@ public class DCQLConverter {
                 try {
                     date = DateFormat.getDateInstance().parse(rawValue);
                 } catch (ParseException ex) {
-                    throw new DCQLQueryConversionException(
+                    throw new DCQLConversionException(
                         "Error converting value " + rawValue + " to date: " + ex.getMessage(), ex);
                 }
                 val.setDateValue(date);
@@ -188,7 +195,8 @@ public class DCQLConverter {
     }
     
     
-    private DCQLGroup convertToDcql2Group(String targetServiceUrl, String className, Group oldGroup) throws DCQLQueryConversionException {
+    private DCQLGroup convertToDcql2Group(String targetServiceUrl, String className, Group oldGroup)
+        throws DCQLConversionException {
         DCQLGroup group = new DCQLGroup();
         group.setLogicalOperation(LogicalOperator.AND.equals(
             oldGroup.getLogicRelation()) ? 
@@ -226,10 +234,11 @@ public class DCQLConverter {
     
     
     private ForeignAssociatedObject convertToDcql2ForeignAssociation(ForeignAssociation oldForeignAssociation) 
-        throws DCQLQueryConversionException {
+        throws DCQLConversionException {
         ForeignAssociatedObject foreign = new ForeignAssociatedObject();
         foreign.setTargetServiceURL(oldForeignAssociation.getTargetServiceURL());
-        DCQLObject object = convertToDcql2Object(oldForeignAssociation.getTargetServiceURL(), oldForeignAssociation.getForeignObject());
+        DCQLObject object = convertToDcql2Object(
+            oldForeignAssociation.getTargetServiceURL(), oldForeignAssociation.getForeignObject());
         foreign.setName(object.getName());
         foreign.setAssociatedObject(object.getAssociatedObject());
         foreign.setAttribute(object.getAttribute());
@@ -246,5 +255,32 @@ public class DCQLConverter {
         join.setLocalAttributeName(oldJoin.getLocalAttributeName());
         join.setPredicate(foreignPredicateConversion.get(oldJoin.getPredicate()));
         return join;
+    }
+    
+    
+    public DCQLQueryResultsCollection convertToDcqlQueryResults(org.cagrid.data.dcql.results.DCQLQueryResultsCollection results) throws DCQLConversionException {
+        DCQLQueryResultsCollection oldResultsCollection = new DCQLQueryResultsCollection();
+        if (results.getDCQLResult() != null) {
+            DCQLResult[] oldResults = new DCQLResult[results.getDCQLResult().length];
+            for (int i = 0; i < results.getDCQLResult().length; i++) {
+                oldResults[i] = convertToDcqlResult(results.getDCQLResult(i));
+            }
+        }
+        results.getDCQLResult();
+        return oldResultsCollection;
+    }
+    
+    
+    private DCQLResult convertToDcqlResult(org.cagrid.data.dcql.results.DCQLResult result) throws DCQLConversionException {
+        DCQLResult oldResult = new DCQLResult();
+        oldResult.setTargetServiceURL(result.getTargetServiceURL());
+        try {
+            gov.nih.nci.cagrid.cqlresultset.CQLQueryResults cqlResult = 
+                CQL2ResultsToCQL1ResultsConverter.convertResults(result.getCQLQueryResults());
+            oldResult.setCQLQueryResultCollection(cqlResult);
+        } catch (ResultsConversionException ex) {
+            throw new DCQLConversionException("Error converting inner CQL query results: " + ex.getMessage(), ex);
+        }
+        return oldResult;
     }
 }
