@@ -27,7 +27,6 @@ import org.cagrid.cql2.BinaryPredicate;
 import org.cagrid.cql2.CQLAttribute;
 import org.cagrid.cql2.GroupLogicalOperator;
 import org.cagrid.cql2.UnaryPredicate;
-import org.cagrid.cql2.results.CQLQueryResults;
 import org.cagrid.data.dcql.DCQLAssociatedObject;
 import org.cagrid.data.dcql.DCQLGroup;
 import org.cagrid.data.dcql.DCQLObject;
