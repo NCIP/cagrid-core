@@ -30,8 +30,6 @@ import org.w3c.dom.Element;
 /**
  * DataServiceFeatureDiscoveryUtil
  * Discover what features a data service supports
- * FIXME: needs to drill through port types and operations to find
- * the query operations, not just rely on the port type being there
  * 
  * @author David
  *
@@ -59,7 +57,8 @@ public class DataServiceFeatureDiscoveryUtil {
     }
     
     
-    public static Operation getOperation(EndpointReferenceType epr, QName inputMessage, QName outputMessage, String operationName) throws WSDLException {
+    public static Operation getOperation(EndpointReferenceType epr,
+        QName inputMessage, QName outputMessage, String operationName) throws WSDLException {
         String wsdlLocation = WSDLUtils.getWSDLLocation(epr);
         LOG.debug("Loading WSDL from " + wsdlLocation);
         Definition wsdlDef = WSDLUtils.parseServiceWSDL(wsdlLocation);
