@@ -9,6 +9,7 @@ import gov.nih.nci.cagrid.cqlquery.Group;
 import gov.nih.nci.cagrid.cqlquery.LogicalOperator;
 import gov.nih.nci.cagrid.cqlquery.Object;
 import gov.nih.nci.cagrid.cqlquery.Predicate;
+import gov.nih.nci.cagrid.cqlquery.QueryModifier;
 
 import java.io.StringWriter;
 import java.util.HashMap;
@@ -24,7 +25,9 @@ import org.cagrid.cql2.CQLAttribute;
 import org.cagrid.cql2.CQLGroup;
 import org.cagrid.cql2.CQLObject;
 import org.cagrid.cql2.CQLQueryModifier;
+import org.cagrid.cql2.DistinctAttribute;
 import org.cagrid.cql2.GroupLogicalOperator;
+import org.cagrid.cql2.NamedAttribute;
 import org.cagrid.cql2.UnaryPredicate;
 import org.jdom.Document;
 import org.jdom.Element;
@@ -57,6 +60,13 @@ public class CQL2toCQL1Converter {
         assertValidAggregation(cql2Query);
         
         CQLQuery query = new CQLQuery();
+        Object target = convertObject(cql2Query.getCQLTargetObject());
+        query.setTarget(target);
+        
+        if (cql2Query.getCQLQueryModifier() != null) {
+            QueryModifier mods = convertQueryModifier(cql2Query.getCQLQueryModifier());
+            query.setQueryModifier(mods);
+        }
         
         return query;
     }
@@ -178,5 +188,34 @@ public class CQL2toCQL1Converter {
             group.setGroup(groups);
         }
         return group;
+    }
+    
+    
+    private static QueryModifier convertQueryModifier(CQLQueryModifier cql2Modifier) throws QueryConversionException {
+        QueryModifier modifier = new QueryModifier();
+        if (cql2Modifier.getCountOnly() != null && cql2Modifier.getCountOnly().booleanValue()) {
+            modifier.setCountOnly(true);
+        }
+        
+        if (cql2Modifier.getDistinctAttribute() != null) {
+            DistinctAttribute da = cql2Modifier.getDistinctAttribute();
+            if (da.getAggregation() != null) {
+                if (Aggregation.COUNT.equals(da.getAggregation())) {
+                    modifier.setCountOnly(true);
+                } else {
+                    throw new QueryConversionException("Aggregation " +
+                        da.getAggregation().getValue() + " is not supported in CQL 1");
+                }
+            }
+            modifier.setDistinctAttribute(da.getAttributeName());
+        } else if (cql2Modifier.getNamedAttribute() != null && cql2Modifier.getNamedAttribute().length != 0) {
+            NamedAttribute[] namedAttribs = cql2Modifier.getNamedAttribute();
+            String[] names = new String[namedAttribs.length];
+            for (int i = 0; i < namedAttribs.length; i++) {
+                names[i] = namedAttribs[i].getAttributeName();
+            }
+            modifier.setAttributeNames(names);
+        }
+        return modifier;
     }
 }
