@@ -155,9 +155,11 @@ public class Cql2QueryExecutor {
                 supportsCql2 = cached.supportsCql2;
             }
         } else {
-            LOG.debug("Model was not in the cache");
+            LOG.debug("Support flag was not in the cache");
             supportsCql2 = getAndCacheCql2Support(targetServiceUrl);
         }
+        LOG.debug("Service " + targetServiceUrl + 
+            (supportsCql2 ? " supports" : " does not support") + " CQL 2");
         return supportsCql2;
     }
     
