@@ -253,7 +253,12 @@ public class DCQLConverter {
         JoinCondition join = new JoinCondition();
         join.setForeignAttributeName(oldJoin.getForeignAttributeName());
         join.setLocalAttributeName(oldJoin.getLocalAttributeName());
-        join.setPredicate(foreignPredicateConversion.get(oldJoin.getPredicate()));
+        if (oldJoin.getPredicate() != null) {
+            join.setPredicate(foreignPredicateConversion.get(oldJoin.getPredicate()));
+        } else {
+            // predicate is optional in DCQL 1, default is EQUAL_TO
+            join.setPredicate(BinaryPredicate.EQUAL_TO);
+        }
         return join;
     }
     
@@ -265,8 +270,8 @@ public class DCQLConverter {
             for (int i = 0; i < results.getDCQLResult().length; i++) {
                 oldResults[i] = convertToDcqlResult(results.getDCQLResult(i));
             }
+            oldResultsCollection.setDCQLResult(oldResults);
         }
-        results.getDCQLResult();
         return oldResultsCollection;
     }
     
