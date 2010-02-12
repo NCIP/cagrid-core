@@ -11,7 +11,6 @@ import java.io.FileWriter;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.cagrid.data.sdkquery41.processor.SDK41QueryProcessor;
 import org.cagrid.data.sdkquery41.style.wizard.config.APITypeConfigurationStep;
 import org.cagrid.data.sdkquery41.style.wizard.config.AbstractStyleConfigurationStep;
 import org.cagrid.data.sdkquery41.style.wizard.config.DomainModelConfigurationStep;
@@ -73,8 +72,7 @@ public class SDK41StyleConfigurationStep extends Step {
     private AbstractStyleConfigurationStep getInitialConfiguration() throws Exception {
         SDK41InitialConfigurationStep configuration = 
             new SDK41InitialConfigurationStep(getServiceInformation());
-        configuration.setQueryProcessorClassName(SDK41QueryProcessor.class.getName());
-        File styleLibDir = new File(ExtensionsLoader.getInstance().getExtensionsDir().getAbsolutePath(),
+        File styleLibDir = new File(ExtensionsLoader.getInstance().getExtensionsDir(),
             "data" + File.separator + "styles" + File.separator + "cacore41" + File.separator + "lib");
         configuration.setStyleLibDirectory(styleLibDir);
         return configuration;

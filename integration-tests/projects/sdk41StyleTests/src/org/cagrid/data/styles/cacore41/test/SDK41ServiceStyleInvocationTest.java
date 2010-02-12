@@ -13,7 +13,7 @@ import gov.nih.nci.cagrid.testing.system.haste.Step;
 import gov.nih.nci.cagrid.testing.system.haste.Story;
 
 import java.io.File;
-import java.util.Arrays;
+import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Vector;
@@ -64,12 +64,12 @@ public class SDK41ServiceStyleInvocationTest extends Story {
     }
 
 
-    protected Vector steps() {
+    protected Vector<?> steps() {
         Vector<Step> steps = new Vector<Step>();
         steps.add(new SDK41StyleCreationStep(serviceTestInfo, getIntroduceBaseDir()));
         steps.add(new UnpackContainerStep(container));
         List<String> deploymentArgs = 
-            Arrays.asList(new String[] {"-Dno.deployment.validation=true"});
+            Collections.singletonList("-Dno.deployment.validation=true");
         steps.add(new DeployServiceStep(container, serviceTestInfo.getDir(), deploymentArgs));
         steps.add(new StartContainerStep(container));
         steps.add(new InvokeSDK41DataServiceStep(container, serviceTestInfo));

@@ -68,6 +68,7 @@
 	<classpathentry kind="var" path="GT4_LOCATION/lib/xercesImpl.jar"/>
 	<classpathentry kind="var" path="GT4_LOCATION/lib/xml-apis.jar"/>
 	<classpathentry kind="var" path="GT4_LOCATION/lib/xmlsec.jar"/>
+	<classpathentry kind="lib" path="ext/dependencies/jars/castor-1.0.2.jar"/>
 	<classpathentry kind="lib" path="ext/dependencies/jars/asm.jar"/>
 	<classpathentry kind="lib" path="ext/dependencies/jars/c3p0-0.8.5.2.jar"/>
 	<classpathentry kind="lib" path="ext/dependencies/jars/caGrid-authz-common-1.4-dev.jar"/>
@@ -162,6 +163,5 @@
 	<classpathentry kind="lib" path="ext/dependencies/jars/caGrid-mms-client-1.4-dev.jar"/>
 	<classpathentry kind="lib" path="ext/dependencies/jars/caGrid-mms-common-1.4-dev.jar"/>
 	<classpathentry kind="lib" path="ext/dependencies/jars/caGrid-mms-stubs-1.4-dev.jar"/>
-	<classpathentry kind="lib" path="ext/dependencies/jars/castor-1.0.2.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

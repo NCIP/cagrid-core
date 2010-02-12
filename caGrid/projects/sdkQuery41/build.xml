@@ -307,6 +307,9 @@
 				<include name="*sdkstyle.jar" />
 				<include name="caGrid-sdk4xCQL2*.jar"/>
 			</fileset>
+			<fileset dir="${ext.local-client.lib.dir}" >
+				<include name="sdk-client-framework.jar"/>
+			</fileset>
 			<!-- copy the dependencies -->
 			<fileset dir="${lib.dir}">
 				<include name="*.jar" />

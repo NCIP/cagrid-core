@@ -1,6 +1,6 @@
 package org.cagrid.data.sdkquery41.style.wizard.config;
 
-import gov.nih.nci.cagrid.data.DataServiceConstants;
+import gov.nih.nci.cagrid.data.QueryProcessorConstants;
 import gov.nih.nci.cagrid.data.extension.AdditionalLibraries;
 import gov.nih.nci.cagrid.data.extension.Data;
 import gov.nih.nci.cagrid.introduce.common.CommonTools;
@@ -12,6 +12,8 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 
+import org.cagrid.data.sdkquery41.processor.SDK41QueryProcessor;
+import org.cagrid.data.sdkquery41.processor2.SDK41CQL2QueryProcessor;
 import org.cagrid.grape.utils.CompositeErrorDialog;
 
 /** 
@@ -26,7 +28,8 @@ import org.cagrid.grape.utils.CompositeErrorDialog;
  */
 public class SDK41InitialConfigurationStep extends AbstractStyleConfigurationStep {
     
-    private String queryProcessorClassName = null;
+    // private String cql1ProcessorClassName = null;
+    // private String cql2ProcessorClassName = null;
     private File styleLibDirectory = null;
 
     public SDK41InitialConfigurationStep(ServiceInformation serviceInfo) {
@@ -34,9 +37,16 @@ public class SDK41InitialConfigurationStep extends AbstractStyleConfigurationSte
     }
     
     
-    public void setQueryProcessorClassName(String className) {
-        this.queryProcessorClassName = className;
+    /*
+    public void setCql1ProcessorClassName(String className) {
+        this.cql1ProcessorClassName = className;
     }
+    
+    
+    public void setCql2ProcessorClassName(String className) {
+        this.cql2ProcessorClassName = className;
+    }
+    */
     
     
     public void setStyleLibDirectory(File dir) {
@@ -77,6 +87,8 @@ public class SDK41InitialConfigurationStep extends AbstractStyleConfigurationSte
         }
         // add the query processor class name as a service property
         CommonTools.setServiceProperty(getServiceInformation().getServiceDescriptor(),
-            DataServiceConstants.QUERY_PROCESSOR_CLASS_PROPERTY, queryProcessorClassName, false);
+            QueryProcessorConstants.QUERY_PROCESSOR_CLASS_PROPERTY, SDK41QueryProcessor.class.getName(), false);
+        CommonTools.setServiceProperty(getServiceInformation().getServiceDescriptor(),
+            QueryProcessorConstants.CQL2_QUERY_PROCESSOR_CLASS_PROPERTY, SDK41CQL2QueryProcessor.class.getName(), false);
     }
 }

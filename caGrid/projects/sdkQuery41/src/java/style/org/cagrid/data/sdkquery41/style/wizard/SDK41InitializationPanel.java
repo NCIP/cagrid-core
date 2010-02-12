@@ -7,6 +7,7 @@ import gov.nih.nci.cagrid.introduce.common.ServiceInformation;
 import java.io.File;
 
 import org.cagrid.data.sdkquery41.processor.SDK41QueryProcessor;
+import org.cagrid.data.sdkquery41.processor2.SDK41CQL2QueryProcessor;
 import org.cagrid.data.sdkquery41.style.common.SDK41StyleConstants;
 import org.cagrid.data.sdkquery41.style.wizard.config.SDK41InitialConfigurationStep;
 import org.cagrid.grape.utils.CompositeErrorDialog;
@@ -21,8 +22,6 @@ import org.cagrid.grape.utils.CompositeErrorDialog;
  */
 public class SDK41InitializationPanel extends CoreDsIntroPanel {
 
-    public static final String QUERY_PROCESSOR_CLASSNAME = SDK41QueryProcessor.class.getName();
-
     private SDK41InitialConfigurationStep configuration = null;
 
 
@@ -33,8 +32,9 @@ public class SDK41InitializationPanel extends CoreDsIntroPanel {
 
 
     protected void setLibrariesAndProcessor() {
-        // set the query processor and style lib dir on the configuration
-        this.configuration.setQueryProcessorClassName(QUERY_PROCESSOR_CLASSNAME);
+        // set the query processors and style lib dir on the configuration
+        // this.configuration.setCql1ProcessorClassName(SDK41QueryProcessor.class.getName());
+        // this.configuration.setCql2ProcessorClassName(SDK41CQL2QueryProcessor.class.getName());
         File styleLibDir = new File(SDK41StyleConstants.STYLE_DIR, "lib");
         this.configuration.setStyleLibDirectory(styleLibDir);
     }
