@@ -44,7 +44,7 @@
     <!-- Introduce for extension related stuff -->
     <dependency rev="latest.integration" org="caGrid" name="introduce" conf="style->extension" />
 	<dependency rev="latest.integration" org="caGrid" name="cadsr" conf="style->default" />
-    
+    <dependency rev="latest.integration" org="caGrid" name="sdk4xCQL2" conf="processor->processor"/>
 
     <!-- external dependencies -->
     <dependency rev="4.4" org="junit" name="junit" conf="impl-test->default" />
