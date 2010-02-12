@@ -6,6 +6,7 @@ import gov.nih.nci.cagrid.data.MetadataConstants;
 import gov.nih.nci.cagrid.data.TransferMethodConstants;
 import gov.nih.nci.cagrid.data.utilities.validation.WSDLUtils;
 import gov.nih.nci.cagrid.metadata.ResourcePropertyHelper;
+import gov.nih.nci.cagrid.metadata.exceptions.InvalidResourcePropertyException;
 
 import java.io.StringReader;
 import java.util.Iterator;
@@ -45,13 +46,22 @@ public class DataServiceFeatureDiscoveryUtil {
     
     public static boolean serviceSupportsCql2(EndpointReferenceType epr) throws Exception {
         Element resourceProperty = null;
-        resourceProperty = ResourcePropertyHelper.getResourceProperty(
-            epr, MetadataConstants.QUERY_LANGUAGE_SUPPORT_QNAME);
-        if (resourceProperty != null) {
-            // deserialize the resource property
-            QueryLanguageSupport support = Utils.deserializeObject(
-                new StringReader(XmlUtils.toString(resourceProperty)), QueryLanguageSupport.class);
-            return support.getCQL2NotSupported() == null && support.getCQL2Support() != null;
+        try {
+            resourceProperty = ResourcePropertyHelper.getResourceProperty(
+                epr, MetadataConstants.QUERY_LANGUAGE_SUPPORT_QNAME);
+            if (resourceProperty != null) {
+                // deserialize the resource property
+                QueryLanguageSupport support = Utils.deserializeObject(
+                    new StringReader(XmlUtils.toString(resourceProperty)), QueryLanguageSupport.class);
+                return support.getCQL2NotSupported() == null && support.getCQL2Support() != null;
+            }
+        } catch (InvalidResourcePropertyException ex) {
+            // expected for caGrid 1.3 and earlier data services
+            if (LOG.isTraceEnabled()) {
+                LOG.trace("Resource property not found - assuming no CQL 2 support for " 
+                    + epr.getAddress().toString());
+                LOG.trace(ex);
+            }
         }
         return false;
     }
