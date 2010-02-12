@@ -2,8 +2,9 @@ package org.cagrid.data.styles.cacore4.test.steps;
 
 import gov.nih.nci.cagrid.common.JarUtilities;
 import gov.nih.nci.cagrid.common.Utils;
-import gov.nih.nci.cagrid.data.DataServiceConstants;
 import gov.nih.nci.cagrid.data.ExtensionDataUtils;
+import gov.nih.nci.cagrid.data.MetadataConstants;
+import gov.nih.nci.cagrid.data.QueryProcessorConstants;
 import gov.nih.nci.cagrid.data.common.ModelInformationUtil;
 import gov.nih.nci.cagrid.data.extension.Data;
 import gov.nih.nci.cagrid.data.extension.ModelClass;
@@ -100,9 +101,8 @@ public class SDK4StyleConfigurationStep extends Step {
     private AbstractStyleConfigurationStep getInitialConfiguration() throws Exception {
         SDK4InitialConfigurationStep configuration = 
             new SDK4InitialConfigurationStep(getServiceInformation());
-        configuration.setQueryProcessorClassName(SDK4QueryProcessor.class.getName());
-        File styleLibDir = new File(ExtensionsLoader.getInstance().getExtensionsDir().getAbsolutePath()
-            + File.separator + "data" + File.separator + "styles" + File.separator + "cacore4" + File.separator + "lib");
+        File styleLibDir = new File(ExtensionsLoader.getInstance().getExtensionsDir(),
+                "data" + File.separator + "styles" + File.separator + "cacore4" + File.separator + "lib");
         configuration.setStyleLibDirectory(styleLibDir);
         return configuration;
     }
@@ -155,14 +155,14 @@ public class SDK4StyleConfigurationStep extends Step {
         // the sdk's config dir jar will have the schemas in it
         String applicationName = CommonTools.getServicePropertyValue(
             getServiceInformation().getServiceDescriptor(), 
-            DataServiceConstants.QUERY_PROCESSOR_CONFIG_PREFIX 
+            QueryProcessorConstants.QUERY_PROCESSOR_CONFIG_PREFIX 
                 + SDK4QueryProcessor.PROPERTY_APPLICATION_NAME);
         String configJarFilename = getServiceInformation().getBaseDirectory().getAbsolutePath()
             + File.separator + "lib" + File.separator + applicationName + "-config.jar";
         // get the package names from the domain model
         File domainModelFile = new File(getDomainModelFilename());
         FileReader modelReader = new FileReader(domainModelFile);
-        DomainModel model = (DomainModel) Utils.deserializeObject(modelReader, DomainModel.class);
+        DomainModel model = Utils.deserializeObject(modelReader, DomainModel.class);
         UMLClass[] classes = model.getExposedUMLClassCollection().getUMLClass();
         // extract a set of package names
         Set<String> packages = new HashSet<String>();
@@ -262,7 +262,7 @@ public class SDK4StyleConfigurationStep extends Step {
     private void loadDomainModelFile(File domainModelFile) throws Exception {
         // get the domain model
         FileReader modelReader = new FileReader(domainModelFile);
-        DomainModel model = (DomainModel) Utils.deserializeObject(modelReader, DomainModel.class);
+        DomainModel model = Utils.deserializeObject(modelReader, DomainModel.class);
         modelReader.close();
         // get extension data
         Data extensionData = getExtensionData();
@@ -356,10 +356,10 @@ public class SDK4StyleConfigurationStep extends Step {
         ServiceType baseService = getServiceInformation().getServices().getService(0);
 
         ResourcePropertyType[] typedProps = CommonTools.getResourcePropertiesOfType(
-            getServiceInformation().getServices().getService(0), DataServiceConstants.DOMAIN_MODEL_QNAME);
+            getServiceInformation().getServices().getService(0), MetadataConstants.DOMAIN_MODEL_QNAME);
         if (typedProps == null || typedProps.length == 0) {
             ResourcePropertyType dmProp = new ResourcePropertyType();
-            dmProp.setQName(DataServiceConstants.DOMAIN_MODEL_QNAME);
+            dmProp.setQName(MetadataConstants.DOMAIN_MODEL_QNAME);
             dmProp.setRegister(true);
             CommonTools.addResourcePropety(baseService, dmProp);
             return dmProp;

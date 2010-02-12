@@ -1,11 +1,13 @@
 package gov.nih.nci.cagrid.sdkquery4.style.wizard.config;
 
-import gov.nih.nci.cagrid.data.DataServiceConstants;
+import gov.nih.nci.cagrid.data.QueryProcessorConstants;
 import gov.nih.nci.cagrid.data.extension.AdditionalLibraries;
 import gov.nih.nci.cagrid.data.extension.Data;
 import gov.nih.nci.cagrid.introduce.common.CommonTools;
 import gov.nih.nci.cagrid.introduce.common.FileFilters;
 import gov.nih.nci.cagrid.introduce.common.ServiceInformation;
+import gov.nih.nci.cagrid.sdkquery4.processor.SDK4QueryProcessor;
+import gov.nih.nci.cagrid.sdkquery4.processor2.SDK4CQL2QueryProcessor;
 
 import java.io.File;
 import java.util.Collections;
@@ -26,16 +28,10 @@ import org.cagrid.grape.utils.CompositeErrorDialog;
  */
 public class SDK4InitialConfigurationStep extends AbstractStyleConfigurationStep {
     
-    private String queryProcessorClassName = null;
     private File styleLibDirectory = null;
 
     public SDK4InitialConfigurationStep(ServiceInformation serviceInfo) {
         super(serviceInfo);
-    }
-    
-    
-    public void setQueryProcessorClassName(String className) {
-        this.queryProcessorClassName = className;
     }
     
     
@@ -77,6 +73,11 @@ public class SDK4InitialConfigurationStep extends AbstractStyleConfigurationStep
         }
         // add the query processor class name as a service property
         CommonTools.setServiceProperty(getServiceInformation().getServiceDescriptor(),
-            DataServiceConstants.QUERY_PROCESSOR_CLASS_PROPERTY, queryProcessorClassName, false);
+            QueryProcessorConstants.QUERY_PROCESSOR_CLASS_PROPERTY, 
+            SDK4QueryProcessor.class.getName(), false);
+        // add the CQL 2 query processor class name as a service property
+        CommonTools.setServiceProperty(getServiceInformation().getServiceDescriptor(),
+            QueryProcessorConstants.CQL2_QUERY_PROCESSOR_CLASS_PROPERTY, 
+            SDK4CQL2QueryProcessor.class.getName(), false);
     }
 }

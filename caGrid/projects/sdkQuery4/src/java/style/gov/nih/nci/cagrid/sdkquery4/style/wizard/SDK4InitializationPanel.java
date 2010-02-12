@@ -33,10 +33,9 @@ public class SDK4InitializationPanel extends CoreDsIntroPanel {
 
 
     protected void setLibrariesAndProcessor() {
-        // set the query processor and style lib dir on the configuration
-        this.configuration.setQueryProcessorClassName(SDK4_QUERY_PROCESSOR_CLASSNAME);
-        File styleLibDir = new File(ExtensionsLoader.getInstance().getExtensionsDir().getAbsolutePath()
-            + File.separator + "data" + File.separator + "styles" + File.separator + "cacore4" + File.separator + "lib");
+        // set the style lib dir on the configuration
+        File styleLibDir = new File(ExtensionsLoader.getInstance().getExtensionsDir(),
+            "data" + File.separator + "styles" + File.separator + "cacore4" + File.separator + "lib");
         this.configuration.setStyleLibDirectory(styleLibDir);
     }
     

@@ -51,7 +51,7 @@ public class SDK4ServiceStyleCreationTest extends Story {
     }
 
 
-    protected Vector steps() {
+    protected Vector<?> steps() {
         Vector<Step> steps = new Vector<Step>();
         steps.add(new SDK4StyleCreationStep(styleTestCaseInfo, getIntroduceBaseDir()));
         return steps;
