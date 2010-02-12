@@ -4,7 +4,7 @@ import gov.nih.nci.cagrid.cqlresultset.CQLQueryResults;
 import gov.nih.nci.cagrid.dcql.DCQLQuery;
 import gov.nih.nci.cagrid.dcqlresult.DCQLQueryResultsCollection;
 import gov.nih.nci.cagrid.fqp.client.FederatedQueryProcessorClient;
-import gov.nih.nci.cagrid.fqp.processor.FederatedQueryEngine;
+import gov.nih.nci.cagrid.fqp.processor2.FederatedQueryEngine;
 import gov.nih.nci.cagrid.fqp.processor.exceptions.FederatedQueryProcessingException;
 import gov.nih.nci.cagrid.fqp.stubs.types.FederatedQueryProcessingFault;
 import gov.nih.nci.cagrid.testing.system.deployment.SecureContainer;

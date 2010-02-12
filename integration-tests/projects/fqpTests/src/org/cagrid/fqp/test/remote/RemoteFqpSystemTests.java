@@ -147,8 +147,8 @@ public class RemoteFqpSystemTests {
         try {
             if (fqpDeployment != null && fqpDeployment.getServiceContainer() != null) {
                 ServiceContainer fqpContainer = fqpDeployment.getServiceContainer();
-                // give FQP container 2 minutes to shut down
-                fqpContainer.getProperties().setMaxShutdownWaitTime(Integer.valueOf(120));
+                // give FQP container 60 seconds to shut down
+                fqpContainer.getProperties().setMaxShutdownWaitTime(Integer.valueOf(60));
                 new StopContainerStep(fqpContainer).runStep();
                 new DestroyContainerStep(fqpContainer).runStep();
             }

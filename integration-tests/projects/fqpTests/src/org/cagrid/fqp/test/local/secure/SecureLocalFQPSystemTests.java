@@ -1,6 +1,6 @@
 package org.cagrid.fqp.test.local.secure;
 
-import gov.nih.nci.cagrid.fqp.processor.FederatedQueryEngine;
+import gov.nih.nci.cagrid.fqp.processor2.FederatedQueryEngine;
 import gov.nih.nci.cagrid.testing.system.deployment.ServiceContainer;
 import gov.nih.nci.cagrid.testing.system.deployment.steps.DestroyContainerStep;
 import gov.nih.nci.cagrid.testing.system.deployment.steps.StopContainerStep;
