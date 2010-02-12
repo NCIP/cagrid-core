@@ -19,6 +19,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
+import org.cagrid.cql2.Aggregation;
 import org.cagrid.cql2.AttributeValue;
 import org.cagrid.cql2.BinaryPredicate;
 import org.cagrid.cql2.CQLAssociatedObject;
@@ -65,10 +66,11 @@ public class CQL1toCQL2Converter {
         CQLQuery cql2 = new CQLQuery();
         // walk the core of the object model
         CQLTargetObject target = convertTarget(cqlQuery.getTarget());
+        cql2.setCQLTargetObject(target);
+        // convert any modifiers
         if (cqlQuery.getQueryModifier() != null) {
             cql2.setCQLQueryModifier(convertQueryModifier(cqlQuery.getQueryModifier()));
         }
-        cql2.setCQLTargetObject(target);
         return cql2;
     }
     
@@ -227,6 +229,9 @@ public class CQL1toCQL2Converter {
         if (cqlModifier.getDistinctAttribute() != null) {
             DistinctAttribute attrib = new DistinctAttribute();
             attrib.setAttributeName(cqlModifier.getDistinctAttribute());
+            if (cqlModifier.isCountOnly()) {
+                attrib.setAggregation(Aggregation.COUNT);
+            }
             mods.setDistinctAttribute(attrib);
         } else if (cqlModifier.getAttributeNames() != null) {
             NamedAttribute[] named = new NamedAttribute[cqlModifier.getAttributeNames().length];
