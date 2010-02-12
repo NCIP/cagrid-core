@@ -153,5 +153,6 @@
 	<classpathentry kind="lib" path="build/sdk-example-project/example-project/target/dist/exploded/output/example/package/local-client/lib/sdk-security-client-4.2.jar"/>
 	<classpathentry kind="lib" path="build/sdk-example-project/example-project/target/dist/exploded/output/example/package/local-client/lib/hibernate-3.2.0.ga.jar"/>
 	<classpathentry kind="lib" path="build/sdk-example-project/example-project/target/dist/exploded/output/example/package/local-client/lib/sdk-system-core-4.2.jar"/>
+	<classpathentry kind="lib" path="ext/dependencies/jars/caGrid-sdk4xCQL2-processor-1.4-dev.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
