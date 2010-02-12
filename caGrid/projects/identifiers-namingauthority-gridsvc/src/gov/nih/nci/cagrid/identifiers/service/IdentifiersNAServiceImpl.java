@@ -1,10 +1,8 @@
 package gov.nih.nci.cagrid.identifiers.service;
 
 import gov.nih.nci.cagrid.identifiers.common.IdentifiersNAUtil;
-import gov.nih.nci.cagrid.identifiers.stubs.types.InvalidIdentifierFault;
 
 import java.net.URI;
-import java.net.URISyntaxException;
 import java.rmi.RemoteException;
 
 import org.apache.commons.logging.Log;
@@ -14,6 +12,9 @@ import org.cagrid.identifiers.namingauthority.InvalidIdentifierValuesException;
 import org.cagrid.identifiers.namingauthority.MaintainerNamingAuthority;
 import org.cagrid.identifiers.namingauthority.NamingAuthorityConfigurationException;
 import org.cagrid.identifiers.namingauthority.NamingAuthoritySecurityException;
+import org.cagrid.identifiers.namingauthority.SecurityInfo;
+import org.cagrid.identifiers.namingauthority.impl.SecurityInfoImpl;
+import org.globus.wsrf.security.SecurityManager;
 import org.springframework.beans.factory.config.PropertyPlaceholderConfigurer;
 import org.springframework.beans.factory.xml.XmlBeanFactory;
 import org.springframework.core.io.FileSystemResource;
@@ -57,7 +58,9 @@ public class IdentifiersNAServiceImpl extends IdentifiersNAServiceImplBase {
 
   public org.apache.axis.types.URI createIdentifier(namingauthority.IdentifierValues identifierValues) throws RemoteException, gov.nih.nci.cagrid.identifiers.stubs.types.NamingAuthorityConfigurationFault, gov.nih.nci.cagrid.identifiers.stubs.types.InvalidIdentifierValuesFault {
     	try {
-    		java.net.URI identifier = namingAuthority.createIdentifier(null, IdentifiersNAUtil.map(identifierValues));
+    		LOG.debug("createIdentifier: USER=========["+SecurityManager.getManager().getCaller()+"]");
+    		SecurityInfo secInfo = new SecurityInfoImpl(SecurityManager.getManager().getCaller());
+    		java.net.URI identifier = namingAuthority.createIdentifier(secInfo, IdentifiersNAUtil.map(identifierValues));
     		return new org.apache.axis.types.URI(identifier.toString());
     	} catch( InvalidIdentifierValuesException e) {
     		e.printStackTrace();
@@ -73,7 +76,9 @@ public class IdentifiersNAServiceImpl extends IdentifiersNAServiceImplBase {
 
   public namingauthority.IdentifierValues resolveIdentifier(org.apache.axis.types.URI identifier) throws RemoteException, gov.nih.nci.cagrid.identifiers.stubs.types.NamingAuthorityConfigurationFault, gov.nih.nci.cagrid.identifiers.stubs.types.InvalidIdentifierFault {
     	try {
-    		return IdentifiersNAUtil.map(namingAuthority.resolveIdentifier( null, new URI(identifier.toString() )));
+    		LOG.debug("resolveIdentifier: USER=========["+SecurityManager.getManager().getCaller()+"]");
+    		SecurityInfo secInfo = new SecurityInfoImpl(SecurityManager.getManager().getCaller());
+    		return IdentifiersNAUtil.map(namingAuthority.resolveIdentifier(secInfo, new URI(identifier.toString())));
     	} catch( InvalidIdentifierException e) {
     		e.printStackTrace();
     		throw IdentifiersNAUtil.map(e);
@@ -88,7 +93,9 @@ public class IdentifiersNAServiceImpl extends IdentifiersNAServiceImplBase {
   public void deleteKeys(org.apache.axis.types.URI identifier,java.lang.String[] keyList) throws RemoteException, gov.nih.nci.cagrid.identifiers.stubs.types.InvalidIdentifierFault, gov.nih.nci.cagrid.identifiers.stubs.types.NamingAuthorityConfigurationFault, gov.nih.nci.cagrid.identifiers.stubs.types.NamingAuthoritySecurityFault, gov.nih.nci.cagrid.identifiers.stubs.types.InvalidIdentifierValuesFault {
     
     try {
-    	namingAuthority.deleteKeys(null, new URI(identifier.toString()), keyList);
+    	LOG.debug("deleteKeys: USER=========["+SecurityManager.getManager().getCaller()+"]");
+		SecurityInfo secInfo = new SecurityInfoImpl(SecurityManager.getManager().getCaller());
+    	namingAuthority.deleteKeys(secInfo, new URI(identifier.toString()), keyList);
 	} catch (NamingAuthorityConfigurationException e) {
 		e.printStackTrace();
 		throw IdentifiersNAUtil.map(e);
@@ -109,7 +116,9 @@ public class IdentifiersNAServiceImpl extends IdentifiersNAServiceImplBase {
 
   public void createKeys(org.apache.axis.types.URI identifier,namingauthority.IdentifierValues identifierValues) throws RemoteException, gov.nih.nci.cagrid.identifiers.stubs.types.InvalidIdentifierFault, gov.nih.nci.cagrid.identifiers.stubs.types.NamingAuthorityConfigurationFault, gov.nih.nci.cagrid.identifiers.stubs.types.NamingAuthoritySecurityFault, gov.nih.nci.cagrid.identifiers.stubs.types.InvalidIdentifierValuesFault {
     try {
-		namingAuthority.createKeys(null, new URI(identifier.toString()), IdentifiersNAUtil.map(identifierValues));
+    	LOG.debug("createKeys: USER=========["+SecurityManager.getManager().getCaller()+"]");
+		SecurityInfo secInfo = new SecurityInfoImpl(SecurityManager.getManager().getCaller());
+		namingAuthority.createKeys(secInfo, new URI(identifier.toString()), IdentifiersNAUtil.map(identifierValues));
 	} catch (NamingAuthorityConfigurationException e) {
 		e.printStackTrace();
 		throw IdentifiersNAUtil.map(e);
@@ -130,7 +139,9 @@ public class IdentifiersNAServiceImpl extends IdentifiersNAServiceImplBase {
 
   public void replaceKeys(org.apache.axis.types.URI identifier,namingauthority.IdentifierValues identifierValues) throws RemoteException, gov.nih.nci.cagrid.identifiers.stubs.types.InvalidIdentifierFault, gov.nih.nci.cagrid.identifiers.stubs.types.NamingAuthorityConfigurationFault, gov.nih.nci.cagrid.identifiers.stubs.types.NamingAuthoritySecurityFault, gov.nih.nci.cagrid.identifiers.stubs.types.InvalidIdentifierValuesFault {
     try {
-		namingAuthority.replaceKeys(null, new URI(identifier.toString()), IdentifiersNAUtil.map(identifierValues));
+    	LOG.debug("replaceKeys: USER=========["+SecurityManager.getManager().getCaller()+"]");
+		SecurityInfo secInfo = new SecurityInfoImpl(SecurityManager.getManager().getCaller());
+		namingAuthority.replaceKeys(secInfo, new URI(identifier.toString()), IdentifiersNAUtil.map(identifierValues));
     } catch (NamingAuthorityConfigurationException e) {
 		e.printStackTrace();
 		throw IdentifiersNAUtil.map(e);
@@ -151,20 +162,22 @@ public class IdentifiersNAServiceImpl extends IdentifiersNAServiceImplBase {
 
   public void deleteAllKeys(org.apache.axis.types.URI identifier) throws RemoteException, gov.nih.nci.cagrid.identifiers.stubs.types.InvalidIdentifierFault, gov.nih.nci.cagrid.identifiers.stubs.types.NamingAuthorityConfigurationFault, gov.nih.nci.cagrid.identifiers.stubs.types.NamingAuthoritySecurityFault {
 	  try {
-			namingAuthority.deleteAllKeys(null, new URI(identifier.toString()));
-	    } catch (NamingAuthorityConfigurationException e) {
-			e.printStackTrace();
-			throw IdentifiersNAUtil.map(e);
-		} catch (InvalidIdentifierException e) {
-			e.printStackTrace();
-			throw IdentifiersNAUtil.map(e);
-		} catch (NamingAuthoritySecurityException e) {
-			e.printStackTrace();
-			throw IdentifiersNAUtil.map(e);
-		} catch (Exception e) {
-			e.printStackTrace();
-			throw new RemoteException(e.toString());
-		}
+		  LOG.debug("deleteAllKeys: USER=========["+SecurityManager.getManager().getCaller()+"]");
+		  SecurityInfo secInfo = new SecurityInfoImpl(SecurityManager.getManager().getCaller());
+		  namingAuthority.deleteAllKeys(secInfo, new URI(identifier.toString()));
+	  } catch (NamingAuthorityConfigurationException e) {
+		  e.printStackTrace();
+		  throw IdentifiersNAUtil.map(e);
+	  } catch (InvalidIdentifierException e) {
+		  e.printStackTrace();
+		  throw IdentifiersNAUtil.map(e);
+	  } catch (NamingAuthoritySecurityException e) {
+		  e.printStackTrace();
+		  throw IdentifiersNAUtil.map(e);
+	  } catch (Exception e) {
+		  e.printStackTrace();
+		  throw new RemoteException(e.toString());
+	  }
   }
 
 }

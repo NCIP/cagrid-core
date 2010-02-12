@@ -50,6 +50,8 @@ public class IdentifiersNAServiceClient extends IdentifiersNAServiceClientBase i
 		if(!(args.length < 2)){
 			if(args[0].equals("-url")){
 			  IdentifiersNAServiceClient client = new IdentifiersNAServiceClient(args[1]);
+			  client.setAnonymousPrefered(false);
+			  
 			  // place client calls here if you want to use this main as a
 			  // test....
 			  KeyValues[] keyValues1 = new KeyValues[2];
@@ -68,13 +70,13 @@ public class IdentifiersNAServiceClient extends IdentifiersNAServiceClientBase i
 
 			  org.apache.axis.types.URI identifier = client.createIdentifier(values1);
 			  System.out.println("Identifier: " + identifier.toString());
-
-			  values2 = client.resolveIdentifier(identifier);
-			  System.out.println("\n-------------------------------------\nAfter creating identifier:");
-			  printValues(values2);
-
-
-			  IdentifiersNAUtil.assertEquals(values1, values2);
+//
+//			  values2 = client.resolveIdentifier(identifier);
+//			  System.out.println("\n-------------------------------------\nAfter creating identifier:");
+//			  printValues(values2);
+//
+//
+//			  IdentifiersNAUtil.assertEquals(values1, values2);
 			  
 			  ////////////////////////////////////////
 			  // Add couple of other keys
@@ -98,10 +100,10 @@ public class IdentifiersNAServiceClient extends IdentifiersNAServiceClientBase i
 //			  printValues(deleteAllKeysValues);
 			  
 			  //Delete some keys
-			  client.deleteKeys(identifier, new String[]{ "URL" });
-			  IdentifierValues deleteKeysValues = client.resolveIdentifier(identifier);
-			  System.out.println("\n-----------------------------------------------\nAfter deleteKeys:");
-			  printValues(deleteKeysValues);
+//			  client.deleteKeys(identifier, new String[]{ "URL" });
+//			  IdentifierValues deleteKeysValues = client.resolveIdentifier(identifier);
+//			  System.out.println("\n-----------------------------------------------\nAfter deleteKeys:");
+//			  printValues(deleteKeysValues);
 			  
 			  //Replace some keys
 //			  KeyValues[] replacedKeys = new KeyValues[2];

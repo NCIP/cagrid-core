@@ -1,9 +1,5 @@
 package org.cagrid.identifiers.namingauthority.util;
 
-import org.springframework.core.io.FileSystemResource;
-import org.springframework.beans.factory.xml.XmlBeanFactory;
-import org.springframework.beans.factory.config.PropertyPlaceholderConfigurer;
-
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.List;
@@ -13,15 +9,17 @@ import org.cagrid.identifiers.namingauthority.MaintainerNamingAuthority;
 import org.cagrid.identifiers.namingauthority.NamingAuthorityConfigurationException;
 import org.cagrid.identifiers.namingauthority.NamingAuthoritySecurityException;
 import org.cagrid.identifiers.namingauthority.SecurityInfo;
-import org.cagrid.identifiers.namingauthority.dao.IdentifierMetadataDao;
 import org.cagrid.identifiers.namingauthority.domain.IdentifierValues;
 import org.cagrid.identifiers.namingauthority.domain.KeyData;
 import org.cagrid.identifiers.namingauthority.hibernate.IdentifierMetadata;
 import org.cagrid.identifiers.namingauthority.impl.NamingAuthorityImpl;
+import org.springframework.beans.factory.config.PropertyPlaceholderConfigurer;
+import org.springframework.beans.factory.xml.XmlBeanFactory;
+import org.springframework.core.io.FileSystemResource;
 
 public class SecurityUtil {
 
-	//public static String ANONYMOUS_USER = "<anonymous>";
+	public static String ANONYMOUS_USER = "<anonymous>";
 	public static URI SYSTEM_IDENTIFIER;
 	
 	public enum Access { GRANTED, DENIED, NOSECURITY };

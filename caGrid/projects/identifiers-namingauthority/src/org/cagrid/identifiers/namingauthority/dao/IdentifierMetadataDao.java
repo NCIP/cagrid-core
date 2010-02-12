@@ -5,12 +5,12 @@ import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import javax.persistence.NonUniqueResultException;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.cagrid.identifiers.namingauthority.InvalidIdentifierException;
 import org.cagrid.identifiers.namingauthority.InvalidIdentifierValuesException;
 import org.cagrid.identifiers.namingauthority.NamingAuthorityConfigurationException;
@@ -27,6 +27,8 @@ import org.cagrid.identifiers.namingauthority.util.SecurityUtil;
 import org.cagrid.identifiers.namingauthority.util.SecurityUtil.Access;
 
 public class IdentifierMetadataDao extends AbstractDao<IdentifierMetadata> {
+	
+	protected static Log LOG = LogFactory.getLog(IdentifierMetadataDao.class.getName());
 	
 	private volatile IdentifierMetadata systemValues = null;
 	
@@ -128,14 +130,13 @@ public class IdentifierMetadataDao extends AbstractDao<IdentifierMetadata> {
 
 		writeKeysSecurityChecks(secInfo, "deleteAllKeys", resolvedValues);
 
-		//TODO:
-		System.err.println("User [" + secInfo.getUser() + "] deleting all keys for identifier [" + localIdentifier.toString() + "]");
+		LOG.warn("User [" + secInfo.getUser() + "] deleting all keys for identifier [" + localIdentifier.toString() + "]");
 
 		List<IdentifierValueKey> keysToDelete = new ArrayList<IdentifierValueKey>();
 		
 		for( IdentifierValueKey ivk : valueCol) {
 			if (Keys.isAdminKey(ivk.getKey())) {
-				System.out.println("Won't remove key [" + ivk.getKey() + "]");
+				LOG.debug("Won't remove key [" + ivk.getKey() + "]");
 				// "ADMIN" keys can't be deleted using this API
 				continue;
 			}
@@ -164,8 +165,7 @@ public class IdentifierMetadataDao extends AbstractDao<IdentifierMetadata> {
 
 		writeKeysSecurityChecks(secInfo, "deleteKeys", resolvedValues);
 
-		//TODO:
-		System.err.println("User [" + secInfo.getUser() + "] deleting some keys for identifier [" + localIdentifier.toString() + "]");
+		LOG.warn("User [" + secInfo.getUser() + "] deleting some keys for identifier [" + localIdentifier.toString() + "]");
 
 		List<IdentifierValueKey> keysToDelete = new ArrayList<IdentifierValueKey>();	
 		ArrayList<String> keyNames = new ArrayList<String>(Arrays.asList(keyList));
@@ -173,7 +173,7 @@ public class IdentifierMetadataDao extends AbstractDao<IdentifierMetadata> {
 		for(IdentifierValueKey ivk : resolvedValues.getValues()) {
 			
 			if (keyNames.contains(ivk.getKey())) {
-				System.out.println("Removing key [" + ivk.getKey() + "]");
+				LOG.debug("Removing key [" + ivk.getKey() + "]");
 				keysToDelete.add(ivk);
 			}
 		}
@@ -240,8 +240,7 @@ public class IdentifierMetadataDao extends AbstractDao<IdentifierMetadata> {
 				// User is a USER_ADMIN
 				okToUpdate = true;
 				
-				//TODO: 
-				System.out.println("SECURITY: User [" + secInfo.getUser() + "] is authorized to write key [" + ivk.getKey() + "] by ADMIN_USERS");
+				LOG.debug("SECURITY: User [" + secInfo.getUser() + "] is authorized to write key [" + ivk.getKey() + "] by ADMIN_USERS");
 				
 			} else {
 				// Look at key level security
@@ -251,8 +250,7 @@ public class IdentifierMetadataDao extends AbstractDao<IdentifierMetadata> {
 					// User is a WRITE_USER at the key level
 					okToUpdate = true;
 					
-					//TODO: 
-					System.out.println("SECURITY: User [" + secInfo.getUser() + "] is authorized to write key [" + ivk.getKey() + "] by key's WRITE_USERS");
+					LOG.debug("SECURITY: User [" + secInfo.getUser() + "] is authorized to write key [" + ivk.getKey() + "] by key's WRITE_USERS");
 					
 				} else if (keyAccess == Access.NOSECURITY) {
 					//
@@ -264,17 +262,13 @@ public class IdentifierMetadataDao extends AbstractDao<IdentifierMetadata> {
 					}
 					
 					if (identifierWriteAccess == Access.DENIED) {
-						//TODO:
-						System.out.println("SECURITY: User [" + secInfo.getUser() + "] is NOT authorized to write key [" + ivk.getKey() + "] by identifier");
+						LOG.debug("SECURITY: User [" + secInfo.getUser() + "] is NOT authorized to write key [" + ivk.getKey() + "] by identifier");
 					} else {
-						// This is either GRANTED or NOSECURITY
-						//TODO:
-						System.out.println("SECURITY: User [" + secInfo.getUser() + "] is authorized to write [" + ivk.getKey() + "] by identifier");
+						LOG.debug("SECURITY: User [" + secInfo.getUser() + "] is authorized to write [" + ivk.getKey() + "] by identifier");
 						okToUpdate = true;
 					}
 				} else if (keyAccess == Access.DENIED) {
-					//TODO:
-					System.out.println("SECURITY: User [" + secInfo.getUser() + "] is NOT authorized to write key [" + ivk.getKey() + "] by key's WRITE_USERS");
+					LOG.debug("SECURITY: User [" + secInfo.getUser() + "] is NOT authorized to write key [" + ivk.getKey() + "] by key's WRITE_USERS");
 				}
 			}
 
@@ -325,17 +319,14 @@ public class IdentifierMetadataDao extends AbstractDao<IdentifierMetadata> {
 						
 			Access keyAccess = getKeyReadAccess(secInfo, ivk.getReadWriteIdentifier());
 			if (keyAccess == Access.GRANTED) {
-				//TODO:
-				System.out.println("SECURITY: User [" + secInfo.getUser() + "] can access key [" + ivk.getKey() + "]");
+				LOG.debug("SECURITY: User [" + secInfo.getUser() + "] can access key [" + ivk.getKey() + "]");
 				newValues.put(ivk.getKey(), new KeyData(ivk.getReadWriteIdentifier(), ivk.getValues()));
 				
 			} else if (keyAccess == Access.DENIED) {
-				//TODO:
-				System.out.println("SECURITY: User [" + secInfo.getUser() + "] can't access key [" + ivk.getKey() + "]");
+				LOG.debug("SECURITY: User [" + secInfo.getUser() + "] can't access key [" + ivk.getKey() + "]");
 				
 			} else if (keyAccess == Access.NOSECURITY) {
-				//TODO:
-				System.out.println("SECURITY: No key security for ["+ ivk.getKey() + "]. Checking identifier security...");
+				LOG.debug("SECURITY: No key security for ["+ ivk.getKey() + "]. Checking identifier security...");
 				
 				// Apply identifier level security
 
@@ -345,11 +336,10 @@ public class IdentifierMetadataDao extends AbstractDao<IdentifierMetadata> {
 				}
 				
 				if (identifierReadAccess == Access.DENIED) {
-					//TODO:
-					System.out.println("SECURITY: User [" + secInfo.getUser() + "] is NOT authorized to read key [" + ivk.getKey() + "] by identifier");
+					LOG.debug("SECURITY: User [" + secInfo.getUser() + "] is NOT authorized to read key [" + ivk.getKey() + "] by identifier");
+				
 				} else {
-					//TODO:
-					System.out.println("SECURITY: User [" + secInfo.getUser() + "] is authorized to read [" + ivk.getKey() + "] by identifier");
+					LOG.debug("SECURITY: User [" + secInfo.getUser() + "] is authorized to read [" + ivk.getKey() + "] by identifier");
 					newValues.put(ivk.getKey(), new KeyData(ivk.getReadWriteIdentifier(), ivk.getValues()));
 				}
 
@@ -365,12 +355,14 @@ public class IdentifierMetadataDao extends AbstractDao<IdentifierMetadata> {
 		IdentifierMetadata sysValues = getSystemValues();
 		if (sysValues == null) {
 			// no security
+			LOG.debug("SECURITY: No System Values");
 			return;
 		}
 		
 		List<String> values = SecurityUtil.getPublicCreation(sysValues);
 		if (values == null || values.size() == 0) {
 			// no security
+			LOG.debug("ERROR. SECURITY: No System values");
 			return;
 		}
 		
@@ -664,7 +656,7 @@ public class IdentifierMetadataDao extends AbstractDao<IdentifierMetadata> {
 					try {
 						systemValues = loadIdentifier(SecurityUtil.SYSTEM_IDENTIFIER);
 					} catch(InvalidIdentifierException e) {
-						System.out.println("No system identifier defined");
+						LOG.debug("No system identifier defined");
 						systemValues = new IdentifierMetadata();
 					}
 				}
