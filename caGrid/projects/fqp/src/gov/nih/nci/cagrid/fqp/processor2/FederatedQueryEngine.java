@@ -1,7 +1,10 @@
 package gov.nih.nci.cagrid.fqp.processor2;
 
+import gov.nih.nci.cagrid.fqp.common.DCQLConversionException;
+import gov.nih.nci.cagrid.fqp.common.DCQLConverter;
 import gov.nih.nci.cagrid.fqp.common.FQPConstants;
 import gov.nih.nci.cagrid.fqp.common.SerializationUtils;
+import gov.nih.nci.cagrid.fqp.processor.FQPProcessingStatusListener;
 import gov.nih.nci.cagrid.fqp.processor.exceptions.FederatedQueryProcessingException;
 import gov.nih.nci.cagrid.fqp.processor.exceptions.RemoteDataServiceException;
 
@@ -20,6 +23,8 @@ import java.util.concurrent.Future;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.cagrid.cql.utilities.CQL2ResultsToCQL1ResultsConverter;
+import org.cagrid.cql.utilities.ResultsConversionException;
 import org.cagrid.cql2.CQLQuery;
 import org.cagrid.cql2.results.CQLQueryResults;
 import org.cagrid.data.dcql.DCQLQuery;
@@ -48,6 +53,8 @@ public class FederatedQueryEngine {
     private QueryExecutionParameters executionParameters = null;
     private ExecutorService workExecutor = null;
     private List<FQPProcessingStatusListener> statusListeners = null;
+    
+    private DCQLConverter dcqlConverter = null;
 
     /**
      * Creates a new federated query engine instance.  A default thread pool 
@@ -88,6 +95,41 @@ public class FederatedQueryEngine {
             this.workExecutor = workExecutor;
         }
         this.statusListeners = new LinkedList<FQPProcessingStatusListener>();
+        this.dcqlConverter = new DCQLConverter();
+    }
+    
+    
+    /**
+     * Call Federated Query Processor, and send the generated CQLQuery to each
+     * targeted service, placing each results into a single DCQLQueryResults
+     * object.
+     * 
+     * @deprecated
+     *      DCQL is deprecated for caGrid 1.4.  DCQL 2 is preferred: http://cagrid.org/display/fqp/DCQL+2
+     * @param dcqlQuery
+     * @return
+     * @throws FederatedQueryProcessingException
+     */
+    @Deprecated
+    public gov.nih.nci.cagrid.dcqlresult.DCQLQueryResultsCollection execute(
+        gov.nih.nci.cagrid.dcql.DCQLQuery dcqlQuery) throws FederatedQueryProcessingException {
+        // convert the query to DCQL 2, execute as normal, convert the results back
+        DCQLQuery query = null;
+        try {
+            query = dcqlConverter.convertToDcql2(dcqlQuery);
+        } catch (DCQLConversionException ex) {
+            throw new FederatedQueryProcessingException(
+                "Error converting DCQL to DCQL 2: " + ex.getMessage(), ex);
+        }
+        DCQLQueryResultsCollection results = execute(query);
+        gov.nih.nci.cagrid.dcqlresult.DCQLQueryResultsCollection dcql1Results;
+        try {
+            dcql1Results = dcqlConverter.convertToDcqlQueryResults(results);
+        } catch (DCQLConversionException ex) {
+            throw new FederatedQueryProcessingException(
+                "Error converting DCQL 2 results to DCQL results: " + ex.getMessage(), ex);
+        }
+        return dcql1Results;
     }
 
 
@@ -183,6 +225,39 @@ public class FederatedQueryEngine {
         fireProcessingStatusChanged(status, "Query processing complete");
         
         return resultsCollection;
+    }
+    
+    
+    /**
+     * Call Federated Query Processor, and send the generated CQLQuery to each
+     * targeted service, aggregating the results into a single CQLQueryResults
+     * object.
+     * 
+     * @deprecated
+     *      DCQL is deprecated for caGrid 1.4.  DCQL 2 is preferred: http://cagrid.org/display/fqp/DCQL+2
+     * @param dcqlQuery
+     * @return Aggregated results of the DCQL query
+     * @throws FederatedQueryProcessingException
+     */
+    @Deprecated
+    public gov.nih.nci.cagrid.cqlresultset.CQLQueryResults executeAndAggregateResults(gov.nih.nci.cagrid.dcql.DCQLQuery dcqlQuery) throws FederatedQueryProcessingException {
+        // convert the query to DCQL 2, execute as normal, convert the results back
+        DCQLQuery query = null;
+        try {
+            query = dcqlConverter.convertToDcql2(dcqlQuery);
+        } catch (DCQLConversionException ex) {
+            throw new FederatedQueryProcessingException(
+                "Error converting DCQL to DCQL 2: " + ex.getMessage(), ex);
+        }
+        CQLQueryResults results = executeAndAggregateResults(query);
+        gov.nih.nci.cagrid.cqlresultset.CQLQueryResults cql1Results;
+        try {
+            cql1Results = CQL2ResultsToCQL1ResultsConverter.convertResults(results);
+        } catch (ResultsConversionException ex) {
+            throw new FederatedQueryProcessingException(
+                "Error converting DCQL 2 results to DCQL results: " + ex.getMessage(), ex);
+        }
+        return cql1Results;
     }
 
 
