@@ -49,6 +49,7 @@ public class DCQLConverter {
     static {
         binaryPredicateConversion = new HashMap<Predicate, BinaryPredicate>();
         unaryPredicateConversion = new HashMap<Predicate, UnaryPredicate>();
+        foreignPredicateConversion = new HashMap<ForeignPredicate, BinaryPredicate>();
         binaryPredicateConversion.put(Predicate.EQUAL_TO, BinaryPredicate.EQUAL_TO);
         binaryPredicateConversion.put(Predicate.GREATER_THAN, BinaryPredicate.GREATER_THAN);
         binaryPredicateConversion.put(Predicate.GREATER_THAN_EQUAL_TO, BinaryPredicate.GREATER_THAN_EQUAL_TO);
