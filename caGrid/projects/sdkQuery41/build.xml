@@ -305,6 +305,7 @@
 			<!-- copy the SDK common style jar file -->
 			<fileset dir="${ext.lib.dir}">
 				<include name="*sdkstyle.jar" />
+				<include name="caGrid-sdk4xCQL2*.jar"/>
 			</fileset>
 			<!-- copy the dependencies -->
 			<fileset dir="${lib.dir}">

@@ -220,6 +220,7 @@
 			<!-- copy the SDK common style jar file -->
 			<fileset dir="${ext.lib.dir}">
 				<include name="*sdkstyle.jar" />
+				<include name="caGrid-sdk4xCQL2*.jar"/>
 			</fileset>
 			<fileset dir="${ext.local-client.lib.dir}" >
 				<include name="sdk-client-framework-4.2.jar"/>
