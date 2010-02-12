@@ -12,6 +12,7 @@ import java.util.Iterator;
  *  Extends CQLQueryProcessor to include a method for retrieving results lazily (on demand)
  *  from the backend data source
  * 
+ * @deprecated As of caGrid 1.4, CQL 2 is the preferred query language.  http://cagrid.org/display/dataservices/CQL+2
  * @author <A HREF="MAILTO:ervin@bmi.osu.edu">David W. Ervin</A>
  * 
  * @created Jun 12, 2006 

@@ -23,6 +23,7 @@ import java.util.Set;
  *  All subsequent calls to the query method will simply invoke the 
  *  <code>processQuery</code> method.
  * 
+ * @deprecated As of caGrid 1.4, CQL 2 is the preferred query language.  http://cagrid.org/display/dataservices/CQL+2
  * @author <A HREF="MAILTO:ervin@bmi.osu.edu">David W. Ervin</A>
  * 
  * @created Apr 25, 2006 
