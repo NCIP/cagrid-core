@@ -76,8 +76,7 @@ class FederatedQueryProcessor {
         // be resolved and eventually attached to this CQL object.
         CQLTargetObject cqlObject = new CQLTargetObject();
         cqlObject.setClassName(targetObject.getName());
-        // FIXME: turn this on when we fix the DCQL language
-        // cqlObject.set_instanceof(targetObject.get_instanceof());
+        cqlObject.set_instanceof(targetObject.get_instanceof());
 
         // process the DCQL 2 object, building up the CQL 2 target
         populateObjectFromDCQLObject(targetObject, cqlObject);
@@ -247,16 +246,16 @@ class FederatedQueryProcessor {
      */
     private CQLGroup processForeignAssociation(ForeignAssociatedObject foreignAssociation)
         throws FederatedQueryProcessingException {
-        // get foreign associated object
-        DCQLAssociatedObject dcqlAssociatedObject = foreignAssociation.getAssociatedObject();
-
+        
         // make a new query with the CQL Target Object created by processing the
         // foreign associated object
         CQLQuery cqlQuery = new CQLQuery();
         CQLTargetObject cqlTargetObject = new CQLTargetObject();
-        cqlTargetObject.setClassName(dcqlAssociatedObject.getName());
-        // FIXME: cqlTargetObject.set_instanceof(dcqlAssociatedObject.get_instanceof());
-        populateObjectFromDCQLObject(dcqlAssociatedObject, cqlTargetObject);
+        cqlTargetObject.setClassName(foreignAssociation.getName());
+        if (foreignAssociation.get_instanceof() != null) {
+            cqlTargetObject.set_instanceof(foreignAssociation.get_instanceof());
+        }
+        populateObjectFromDCQLObject(foreignAssociation, cqlTargetObject);
         cqlQuery.setCQLTargetObject(cqlTargetObject);
 
         // build up a query result modifier to only return distinct values of
