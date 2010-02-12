@@ -2,7 +2,7 @@ package gov.nih.nci.cagrid.fqp.results.service.globus.resource;
 
 import gov.nih.nci.cagrid.dcql.DCQLQuery;
 import gov.nih.nci.cagrid.dcqlresult.DCQLQueryResultsCollection;
-import gov.nih.nci.cagrid.fqp.processor.FederatedQueryEngine;
+import gov.nih.nci.cagrid.fqp.processor2.FederatedQueryEngine;
 import gov.nih.nci.cagrid.fqp.processor.exceptions.FederatedQueryProcessingException;
 
 import java.util.concurrent.ExecutorService;

@@ -2,8 +2,9 @@ package gov.nih.nci.cagrid.fqp.service;
 
 import gov.nih.nci.cagrid.common.FaultHelper;
 import gov.nih.nci.cagrid.cqlresultset.CQLQueryResults;
+import gov.nih.nci.cagrid.dcql.DCQLQuery;
 import gov.nih.nci.cagrid.dcqlresult.DCQLQueryResultsCollection;
-import gov.nih.nci.cagrid.fqp.processor.FederatedQueryEngine;
+import gov.nih.nci.cagrid.fqp.processor2.FederatedQueryEngine;
 import gov.nih.nci.cagrid.fqp.processor.exceptions.FederatedQueryProcessingException;
 import gov.nih.nci.cagrid.fqp.results.service.globus.resource.FederatedQueryResultsResourceHome;
 import gov.nih.nci.cagrid.fqp.results.stubs.types.FederatedQueryResultsReference;
@@ -20,10 +21,13 @@ import java.util.concurrent.TimeUnit;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.cagrid.fqp.execution.QueryExecutionParameters;
+
 
 /**
- * FederatedQueryProcessorImpl
- * Server side implementation of the Federated Query Processor service.
+ * FederatedQueryProcessorImpl 
+ * Server side implementation of the 
+ * Federated Query Processor service.
  * 
  * @created by Introduce Toolkit version 1.2
  */
@@ -35,6 +39,7 @@ public class FederatedQueryProcessorImpl extends FederatedQueryProcessorImplBase
     private FQPAsynchronousExecutionUtil asynchronousExecutor = null;
     private ThreadPoolExecutor workManager = null;
     private QueryConstraintsValidator queryConstraintsValidator = null;
+
 
     public FederatedQueryProcessorImpl() throws RemoteException {
         super();
@@ -48,17 +53,11 @@ public class FederatedQueryProcessorImpl extends FederatedQueryProcessorImplBase
         queryConstraintsValidator = new QueryConstraintsValidator(fqpConfig);
     }
 
-  public gov.nih.nci.cagrid.dcqlresult.DCQLQueryResultsCollection execute(gov.nih.nci.cagrid.dcql.DCQLQuery query) throws RemoteException, gov.nih.nci.cagrid.fqp.stubs.types.FederatedQueryProcessingFault {
-        // validate the query constraints before trying to do anything else
-        try {
-            queryConstraintsValidator.validateAgainstConstraints(query, null);
-        } catch (FederatedQueryProcessingException ex) {
-            FaultHelper helper = new FaultHelper(new FederatedQueryProcessingFault());
-            helper.addDescription("Query or query execution parameters violate this service's query constraints");
-            helper.addDescription(ex.getMessage());
-            helper.addFaultCause(ex);
-            throw (FederatedQueryProcessingFault) helper.getFault();
-        }
+
+    public gov.nih.nci.cagrid.dcqlresult.DCQLQueryResultsCollection execute(gov.nih.nci.cagrid.dcql.DCQLQuery query)
+        throws RemoteException, gov.nih.nci.cagrid.fqp.stubs.types.FederatedQueryProcessingFault {
+        validateQueryConstraints(query, null);
+        
         FederatedQueryEngine engine = new FederatedQueryEngine(null, null, getWorkExecutorService());
         DCQLQueryResultsCollection results = null;
         try {
@@ -74,17 +73,12 @@ public class FederatedQueryProcessorImpl extends FederatedQueryProcessorImplBase
         return results;
     }
 
-  public gov.nih.nci.cagrid.cqlresultset.CQLQueryResults executeAndAggregateResults(gov.nih.nci.cagrid.dcql.DCQLQuery query) throws RemoteException, gov.nih.nci.cagrid.fqp.stubs.types.FederatedQueryProcessingFault {
-        // validate the query constraints before trying to do anything else
-        try {
-            queryConstraintsValidator.validateAgainstConstraints(query, null);
-        } catch (FederatedQueryProcessingException ex) {
-            FaultHelper helper = new FaultHelper(new FederatedQueryProcessingFault());
-            helper.addDescription("Query or query execution parameters violate this service's query constraints");
-            helper.addDescription(ex.getMessage());
-            helper.addFaultCause(ex);
-            throw (FederatedQueryProcessingFault) helper.getFault();
-        }
+
+    public gov.nih.nci.cagrid.cqlresultset.CQLQueryResults executeAndAggregateResults(
+        gov.nih.nci.cagrid.dcql.DCQLQuery query) throws RemoteException,
+        gov.nih.nci.cagrid.fqp.stubs.types.FederatedQueryProcessingFault {
+        validateQueryConstraints(query, null);
+        
         FederatedQueryEngine engine = new FederatedQueryEngine(null, null, getWorkExecutorService());
         CQLQueryResults results = null;
         try {
@@ -100,17 +94,11 @@ public class FederatedQueryProcessorImpl extends FederatedQueryProcessorImplBase
         return results;
     }
 
-  public gov.nih.nci.cagrid.fqp.results.stubs.types.FederatedQueryResultsReference executeAsynchronously(gov.nih.nci.cagrid.dcql.DCQLQuery query) throws RemoteException {
-        // validate the query constraints before trying to do anything else
-        try {
-            queryConstraintsValidator.validateAgainstConstraints(query, null);
-        } catch (FederatedQueryProcessingException ex) {
-            FaultHelper helper = new FaultHelper(new FederatedQueryProcessingFault());
-            helper.addDescription("Query or query execution parameters violate this service's query constraints");
-            helper.addDescription(ex.getMessage());
-            helper.addFaultCause(ex);
-            throw (FederatedQueryProcessingFault) helper.getFault();
-        }
+
+    public gov.nih.nci.cagrid.fqp.results.stubs.types.FederatedQueryResultsReference executeAsynchronously(
+        gov.nih.nci.cagrid.dcql.DCQLQuery query) throws RemoteException {
+        validateQueryConstraints(query, null);
+        
         FederatedQueryResultsReference ref = null;
         try {
             ref = getAsynchronousExecutor().executeAsynchronousQuery(query, null, null);
@@ -120,81 +108,123 @@ public class FederatedQueryProcessorImpl extends FederatedQueryProcessorImplBase
         return ref;
     }
 
-  public gov.nih.nci.cagrid.fqp.results.stubs.types.FederatedQueryResultsReference query(gov.nih.nci.cagrid.dcql.DCQLQuery query,org.cagrid.gaards.cds.delegated.stubs.types.DelegatedCredentialReference delegatedCredentialReference,org.cagrid.fqp.execution.QueryExecutionParameters queryExecutionParameters) throws RemoteException, gov.nih.nci.cagrid.fqp.stubs.types.FederatedQueryProcessingFault, gov.nih.nci.cagrid.fqp.results.stubs.types.InternalErrorFault {
-        // validate the query constraints before trying to do anything else
-        try {
-            queryConstraintsValidator.validateAgainstConstraints(query, queryExecutionParameters);
-        } catch (FederatedQueryProcessingException ex) {
-            FaultHelper helper = new FaultHelper(new FederatedQueryProcessingFault());
-            helper.addDescription("Query or query execution parameters violate this service's query constraints");
-            helper.addDescription(ex.getMessage());
-            helper.addFaultCause(ex);
-            throw (FederatedQueryProcessingFault) helper.getFault();
-        }
+
+    public gov.nih.nci.cagrid.fqp.results.stubs.types.FederatedQueryResultsReference query(
+        gov.nih.nci.cagrid.dcql.DCQLQuery query,
+        org.cagrid.gaards.cds.delegated.stubs.types.DelegatedCredentialReference delegatedCredentialReference,
+        org.cagrid.fqp.execution.QueryExecutionParameters queryExecutionParameters) throws RemoteException,
+        gov.nih.nci.cagrid.fqp.stubs.types.FederatedQueryProcessingFault,
+        gov.nih.nci.cagrid.fqp.results.stubs.types.InternalErrorFault {
+        validateQueryConstraints(query, queryExecutionParameters);
+        
         // execute the query
         FederatedQueryResultsReference ref = null;
         try {
-            ref = getAsynchronousExecutor().executeAsynchronousQuery(
-                query, delegatedCredentialReference, queryExecutionParameters);
+            ref = getAsynchronousExecutor().executeAsynchronousQuery(query, delegatedCredentialReference,
+                queryExecutionParameters);
         } catch (FederatedQueryProcessingException ex) {
             throw new RemoteException("Error setting up resource: " + ex.getMessage(), ex);
         }
         return ref;
     }
-  
 
-  public org.cagrid.data.dcql.results.DCQLQueryResultsCollection executeQuery(org.cagrid.data.dcql.DCQLQuery query) throws RemoteException, gov.nih.nci.cagrid.fqp.stubs.types.FederatedQueryProcessingFault, gov.nih.nci.cagrid.fqp.results.stubs.types.InternalErrorFault {
-    //TODO: Implement this autogenerated method
-    throw new RemoteException("Not yet implemented");
-  }
 
-  public org.cagrid.cql2.results.CQLQueryResults executeQueryAndAggregate(org.cagrid.data.dcql.DCQLQuery query) throws RemoteException, gov.nih.nci.cagrid.fqp.stubs.types.FederatedQueryProcessingFault, gov.nih.nci.cagrid.fqp.results.stubs.types.InternalErrorFault {
-    //TODO: Implement this autogenerated method
-    throw new RemoteException("Not yet implemented");
-  }
+    public org.cagrid.data.dcql.results.DCQLQueryResultsCollection executeQuery(org.cagrid.data.dcql.DCQLQuery query)
+        throws RemoteException, gov.nih.nci.cagrid.fqp.stubs.types.FederatedQueryProcessingFault,
+        gov.nih.nci.cagrid.fqp.results.stubs.types.InternalErrorFault {
+        validateQueryConstraints(query, null);
+        
+        FederatedQueryEngine engine = new FederatedQueryEngine(null, null, getWorkExecutorService());
+        org.cagrid.data.dcql.results.DCQLQueryResultsCollection results = null;
+        try {
+            results = engine.execute(query);
+        } catch (FederatedQueryProcessingException e) {
+            LOG.error("Problem executing query: " + e.getMessage());
+            FederatedQueryProcessingFault fault = new FederatedQueryProcessingFault();
+            fault.setFaultString("Problem executing query: " + e.getMessage());
+            FaultHelper helper = new FaultHelper(fault);
+            helper.addFaultCause(e);
+            throw helper.getFault();
+        }
+        return results;
+    }
 
-  public gov.nih.nci.cagrid.fqp.resultsretrieval.stubs.types.FederatedQueryResultsRetrievalReference queryAsynchronously(org.cagrid.data.dcql.DCQLQuery query,org.cagrid.gaards.cds.delegated.stubs.types.DelegatedCredentialReference delegatedCredentialReference,org.cagrid.fqp.execution.QueryExecutionParameters queryExecutionParameters) throws RemoteException, gov.nih.nci.cagrid.fqp.results.stubs.types.InternalErrorFault, gov.nih.nci.cagrid.fqp.stubs.types.FederatedQueryProcessingFault {
+
+    public org.cagrid.cql2.results.CQLQueryResults executeQueryAndAggregate(org.cagrid.data.dcql.DCQLQuery query)
+        throws RemoteException, gov.nih.nci.cagrid.fqp.stubs.types.FederatedQueryProcessingFault,
+        gov.nih.nci.cagrid.fqp.results.stubs.types.InternalErrorFault {
+        validateQueryConstraints(query, null);
+        
+        FederatedQueryEngine engine = new FederatedQueryEngine(null, null, getWorkExecutorService());
+        org.cagrid.cql2.results.CQLQueryResults results = null;
+        try {
+            results = engine.executeAndAggregateResults(query);
+        } catch (FederatedQueryProcessingException e) {
+            LOG.error("Problem executing query: " + e.getMessage(), e);
+            FederatedQueryProcessingFault fault = new FederatedQueryProcessingFault();
+            fault.setFaultString("Problem executing query: " + e.getMessage());
+            FaultHelper helper = new FaultHelper(fault);
+            helper.addFaultCause(e);
+            throw helper.getFault();
+        }
+        return results;
+    }
+
+
+    public gov.nih.nci.cagrid.fqp.resultsretrieval.stubs.types.FederatedQueryResultsRetrievalReference queryAsynchronously(
+        org.cagrid.data.dcql.DCQLQuery query,
+        org.cagrid.gaards.cds.delegated.stubs.types.DelegatedCredentialReference delegatedCredentialReference,
+        org.cagrid.fqp.execution.QueryExecutionParameters queryExecutionParameters) throws RemoteException,
+        gov.nih.nci.cagrid.fqp.results.stubs.types.InternalErrorFault,
+        gov.nih.nci.cagrid.fqp.stubs.types.FederatedQueryProcessingFault {
+        validateQueryConstraints(query, queryExecutionParameters);
+        
         org.apache.axis.message.addressing.EndpointReferenceType epr = new org.apache.axis.message.addressing.EndpointReferenceType();
         gov.nih.nci.cagrid.fqp.resultsretrieval.service.globus.resource.FederatedQueryResultsRetrievalResourceHome home = null;
         org.globus.wsrf.ResourceKey resourceKey = null;
         org.apache.axis.MessageContext ctx = org.apache.axis.MessageContext.getCurrentContext();
         String servicePath = ctx.getTargetService();
-        String homeName = org.globus.wsrf.Constants.JNDI_SERVICES_BASE_NAME + servicePath + "/" + "federatedQueryResultsRetrievalHome";
+        String homeName = org.globus.wsrf.Constants.JNDI_SERVICES_BASE_NAME + servicePath + "/"
+            + "federatedQueryResultsRetrievalHome";
 
         try {
             javax.naming.Context initialContext = new javax.naming.InitialContext();
-            home = (gov.nih.nci.cagrid.fqp.resultsretrieval.service.globus.resource.FederatedQueryResultsRetrievalResourceHome) initialContext.lookup(homeName);
+            home = (gov.nih.nci.cagrid.fqp.resultsretrieval.service.globus.resource.FederatedQueryResultsRetrievalResourceHome) initialContext
+                .lookup(homeName);
             resourceKey = home.createResource();
-            
-            //  Grab the newly created resource
-            gov.nih.nci.cagrid.fqp.resultsretrieval.service.globus.resource.FederatedQueryResultsRetrievalResource thisResource = (gov.nih.nci.cagrid.fqp.resultsretrieval.service.globus.resource.FederatedQueryResultsRetrievalResource)home.find(resourceKey);
-            
-            //  This is where the creator of this resource type can set whatever needs
-            //  to be set on the resource so that it can function appropriatly  for instance
-            //  if you want the resouce to only have the query string then there is where you would
-            //  give it the query string.
-            
-            
-            // sample of setting creator only security.  This will only allow the caller that created
+
+            // Grab the newly created resource
+            gov.nih.nci.cagrid.fqp.resultsretrieval.service.globus.resource.FederatedQueryResultsRetrievalResource thisResource = (gov.nih.nci.cagrid.fqp.resultsretrieval.service.globus.resource.FederatedQueryResultsRetrievalResource) home
+                .find(resourceKey);
+
+            // This is where the creator of this resource type can set whatever
+            // needs
+            // to be set on the resource so that it can function appropriately
+            // for instance
+            // if you want the resource to only have the query string then there
+            // is where you would
+            // give it the query string.
+
+            // sample of setting creator only security. This will only allow the
+            // caller that created
             // this resource to be able to use it.
-            //thisResource.setSecurityDescriptor(gov.nih.nci.cagrid.introduce.servicetools.security.SecurityUtils.createCreatorOnlyResourceSecurityDescriptor());
-            
-            
+            // thisResource.setSecurityDescriptor(gov.nih.nci.cagrid.introduce.servicetools.security.SecurityUtils.createCreatorOnlyResourceSecurityDescriptor());
 
             String transportURL = (String) ctx.getProperty(org.apache.axis.MessageContext.TRANS_URL);
-            transportURL = transportURL.substring(0,transportURL.lastIndexOf('/') +1 );
+            transportURL = transportURL.substring(0, transportURL.lastIndexOf('/') + 1);
             transportURL += "FederatedQueryResultsRetrieval";
-            epr = org.globus.wsrf.utils.AddressingUtils.createEndpointReference(transportURL,resourceKey);
+            epr = org.globus.wsrf.utils.AddressingUtils.createEndpointReference(transportURL, resourceKey);
         } catch (Exception e) {
             throw new RemoteException("Error looking up FederatedQueryResultsRetrieval home:" + e.getMessage(), e);
         }
 
-        //return the typed EPR
+        // return the typed EPR
         gov.nih.nci.cagrid.fqp.resultsretrieval.stubs.types.FederatedQueryResultsRetrievalReference ref = new gov.nih.nci.cagrid.fqp.resultsretrieval.stubs.types.FederatedQueryResultsRetrievalReference();
         ref.setEndpointReference(epr);
 
         return ref;
-  }
+    }
+
 
     public synchronized ExecutorService getWorkExecutorService() {
         if (this.workManager == null) {
@@ -211,6 +241,7 @@ public class FederatedQueryProcessorImpl extends FederatedQueryProcessorImplBase
             ThreadFactory threadFactory = new ThreadFactory() {
                 ThreadFactory base = Executors.defaultThreadFactory();
                 private int numThreads = 0;
+
 
                 public Thread newThread(Runnable runnable) {
                     LOG.debug("CREATING THREAD #" + numThreads + " FOR THE POOL");
@@ -254,6 +285,7 @@ public class FederatedQueryProcessorImpl extends FederatedQueryProcessorImplBase
         return this.workManager;
     }
 
+
     private synchronized FQPAsynchronousExecutionUtil getAsynchronousExecutor() throws InternalErrorFault {
         if (asynchronousExecutor == null) {
             // get FQP result resource home
@@ -281,13 +313,40 @@ public class FederatedQueryProcessorImpl extends FederatedQueryProcessorImplBase
 
             // create the executor instance
             if (leaseMinutes == -1) {
-                asynchronousExecutor = new FQPAsynchronousExecutionUtil(
-                    resultHome, getWorkExecutorService());
+                asynchronousExecutor = new FQPAsynchronousExecutionUtil(resultHome, getWorkExecutorService());
             } else {
-                asynchronousExecutor = new FQPAsynchronousExecutionUtil(
-                    resultHome, getWorkExecutorService(), leaseMinutes);
+                asynchronousExecutor = new FQPAsynchronousExecutionUtil(resultHome, getWorkExecutorService(),
+                    leaseMinutes);
             }
         }
         return asynchronousExecutor;
+    }
+    
+    
+    private void validateQueryConstraints(DCQLQuery query, QueryExecutionParameters parameters) throws FederatedQueryProcessingFault {
+        // validate the query constraints before trying to do anything else
+        try {
+            queryConstraintsValidator.validateAgainstConstraints(query, parameters);
+        } catch (FederatedQueryProcessingException ex) {
+            FaultHelper helper = new FaultHelper(new FederatedQueryProcessingFault());
+            helper.addDescription("Query or query execution parameters violate this service's query constraints");
+            helper.addDescription(ex.getMessage());
+            helper.addFaultCause(ex);
+            throw (FederatedQueryProcessingFault) helper.getFault();
+        }
+    }
+    
+    
+    private void validateQueryConstraints(org.cagrid.data.dcql.DCQLQuery query, QueryExecutionParameters parameters) throws FederatedQueryProcessingFault {
+        // validate the query constraints before trying to do anything else
+        try {
+            queryConstraintsValidator.validateAgainstConstraints(query, parameters);
+        } catch (FederatedQueryProcessingException ex) {
+            FaultHelper helper = new FaultHelper(new FederatedQueryProcessingFault());
+            helper.addDescription("Query or query execution parameters violate this service's query constraints");
+            helper.addDescription(ex.getMessage());
+            helper.addFaultCause(ex);
+            throw (FederatedQueryProcessingFault) helper.getFault();
+        }        
     }
 }
