@@ -1,10 +1,10 @@
 package gov.nih.nci.cagrid.fqp.service;
 
-import gov.nih.nci.cagrid.dcql.DCQLQuery;
 import gov.nih.nci.cagrid.fqp.processor.exceptions.FederatedQueryProcessingException;
 
 import java.rmi.RemoteException;
 
+import org.cagrid.data.dcql.DCQLQuery;
 import org.cagrid.fqp.execution.QueryExecutionParameters;
 import org.cagrid.fqp.execution.TargetDataServiceQueryBehavior;
 
@@ -20,7 +20,7 @@ public class QueryConstraintsValidator {
     }
     
     
-    public void validateAgainstConstraints(org.cagrid.data.dcql.DCQLQuery query, QueryExecutionParameters parameters) throws FederatedQueryProcessingException {
+    public void validateAgainstConstraints(DCQLQuery query, QueryExecutionParameters parameters) throws FederatedQueryProcessingException {
         if (!validMaximumTargetServices(query.getTargetServiceURL())) {
             throw new FederatedQueryProcessingException(
                 "Query specifies more target data services than allowed by this service");
@@ -38,7 +38,8 @@ public class QueryConstraintsValidator {
     }
     
     
-    public void validateAgainstConstraints(DCQLQuery query, QueryExecutionParameters parameters) throws FederatedQueryProcessingException {
+    @Deprecated
+    public void validateAgainstConstraints(gov.nih.nci.cagrid.dcql.DCQLQuery query, QueryExecutionParameters parameters) throws FederatedQueryProcessingException {
         if (!validMaximumTargetServices(query.getTargetServiceURL())) {
             throw new FederatedQueryProcessingException(
                 "Query specifies more target data services than allowed by this service");
