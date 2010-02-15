@@ -61,11 +61,11 @@ public class CheckTavernaWorkflowServiceStep extends Step {
 			System.out.println(" >> Workflow status is :" + status.getValue() + "\n");
 			
 			// Subscribing to the resource property..
-			System.out.println("4. Waiting 60secs for the workflow to complete.\n");
+			System.out.println("4. Waiting 30 mins for the workflow to complete.\n");
 			//TavernaWorkflowServiceClient.subscribeRP(serviceEPR, 60);
-			for(int i=0; (i<12 && !status.equals(WorkflowStatusType.Done)); i++)
+			for(int i=0; (i<180 && !status.equals(WorkflowStatusType.Done)); i++)
 			{
-				Thread.sleep(5000);
+				Thread.sleep(10000);
 				status = TavernaWorkflowServiceClient.getStatus(serviceEPR);
 			}
 
