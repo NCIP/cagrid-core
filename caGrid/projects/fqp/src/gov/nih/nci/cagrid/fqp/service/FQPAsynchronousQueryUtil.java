@@ -1,13 +1,12 @@
 package gov.nih.nci.cagrid.fqp.service;
 
 import gov.nih.nci.cagrid.common.FaultHelper;
-import gov.nih.nci.cagrid.dcql.DCQLQuery;
 import gov.nih.nci.cagrid.fqp.common.FQPConstants;
 import gov.nih.nci.cagrid.fqp.processor.exceptions.FederatedQueryProcessingException;
-import gov.nih.nci.cagrid.fqp.results.service.globus.resource.FederatedQueryResultsResource;
-import gov.nih.nci.cagrid.fqp.results.service.globus.resource.FederatedQueryResultsResourceHome;
-import gov.nih.nci.cagrid.fqp.results.stubs.types.FederatedQueryResultsReference;
 import gov.nih.nci.cagrid.fqp.results.stubs.types.InternalErrorFault;
+import gov.nih.nci.cagrid.fqp.resultsretrieval.service.globus.resource.FederatedQueryResultsRetrievalResource;
+import gov.nih.nci.cagrid.fqp.resultsretrieval.service.globus.resource.FederatedQueryResultsRetrievalResourceHome;
+import gov.nih.nci.cagrid.fqp.resultsretrieval.stubs.types.FederatedQueryResultsRetrievalReference;
 import gov.nih.nci.cagrid.introduce.servicetools.security.SecurityUtils;
 
 import java.io.IOException;
@@ -20,6 +19,7 @@ import org.apache.axis.message.addressing.AttributedURI;
 import org.apache.axis.message.addressing.EndpointReferenceType;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.cagrid.data.dcql.DCQLQuery;
 import org.cagrid.fqp.execution.QueryExecutionParameters;
 import org.cagrid.gaards.cds.client.DelegatedCredentialUserClient;
 import org.cagrid.gaards.cds.delegated.stubs.types.DelegatedCredentialReference;
@@ -30,51 +30,50 @@ import org.globus.wsrf.security.SecurityManager;
 import org.globus.wsrf.utils.AddressingUtils;
 
 /**
- * FQPAsynchronousExecutionUtil
- * Performs asynchronous execution of a federated query in the context of 
- * a federated query results resource.
+ * FQPAsynchronousQueryUtil
+ * Performs asynchronous execution of a DCQL 2 federated query in 
+ * the context of a federated query results retrieval resource.
  * 
- * @deprecated Replaced by FQPAsynchronousQueryUtil for DCQL 2 support
  * @author ervin
  */
-public class FQPAsynchronousExecutionUtil {
+public class FQPAsynchronousQueryUtil {
     
     private static final int DEFAULT_RESULT_LEASE_MINS = 30;
     
-    private static Log LOG = LogFactory.getLog(FQPAsynchronousExecutionUtil.class);
+    private static Log LOG = LogFactory.getLog(FQPAsynchronousQueryUtil.class);
 
-    private FederatedQueryResultsResourceHome resourceHome;
+    private FederatedQueryResultsRetrievalResourceHome resourceHome;
     private int leaseDurration = DEFAULT_RESULT_LEASE_MINS;
     private ExecutorService workExecutor = null;
     
-    public FQPAsynchronousExecutionUtil(FederatedQueryResultsResourceHome resourceHome, ExecutorService workExecutor) {
+    public FQPAsynchronousQueryUtil(FederatedQueryResultsRetrievalResourceHome resourceHome, ExecutorService workExecutor) {
         this(resourceHome, workExecutor, DEFAULT_RESULT_LEASE_MINS);
     }
     
     
-    public FQPAsynchronousExecutionUtil(FederatedQueryResultsResourceHome resourceHome, ExecutorService workExecutor, int leaseDurration) {
+    public FQPAsynchronousQueryUtil(FederatedQueryResultsRetrievalResourceHome resourceHome, ExecutorService workExecutor, int leaseDurration) {
         this.resourceHome = resourceHome;
         this.workExecutor = workExecutor;
         this.leaseDurration = leaseDurration;
     }
 
 
-    public synchronized FederatedQueryResultsReference executeAsynchronousQuery(
+    public synchronized FederatedQueryResultsRetrievalReference executeAsynchronousQuery(
         DCQLQuery query, DelegatedCredentialReference delegatedCredential, QueryExecutionParameters executionParameters) 
         throws InternalErrorFault, FederatedQueryProcessingException {
-        // use the resource home to create an FQP result resource
-        FederatedQueryResultsResource fqpResultResource = null;
+        // use the resource home to create an FQP results retrieval resource
+        FederatedQueryResultsRetrievalResource resultsResource = null;
         ResourceKey key = null;
         try {
             key = resourceHome.createResource();
-            fqpResultResource = (FederatedQueryResultsResource) resourceHome.find(key);
-        } catch (Exception e) {
-            String message = "Problem creating and accessing resource:" + e.getMessage();
-            LOG.error(message, e);
+            resultsResource = (FederatedQueryResultsRetrievalResource) resourceHome.find(key);
+        } catch (Exception ex) {
+            String message = "Problem creating and accessing resource:" + ex.getMessage();
+            LOG.error(message, ex);
             InternalErrorFault fault = new InternalErrorFault();
             fault.setFaultString(message);
             FaultHelper helper = new FaultHelper(fault);
-            helper.addFaultCause(e);
+            helper.addFaultCause(ex);
             throw (InternalErrorFault) helper.getFault();
         }
 
@@ -82,14 +81,14 @@ public class FQPAsynchronousExecutionUtil {
         // resource (whoever is executing this method) can operate on it
         try {
             // may be null if no current caller
-            fqpResultResource.setSecurityDescriptor(SecurityUtils.createCreatorOnlyResourceSecurityDescriptor());
-        } catch (Exception e) {
-            String message = "Problem configuring caller-only security on resource: " + e.getMessage();
-            LOG.error(message, e);
+            resultsResource.setSecurityDescriptor(SecurityUtils.createCreatorOnlyResourceSecurityDescriptor());
+        } catch (Exception ex) {
+            String message = "Problem configuring caller-only security on resource: " + ex.getMessage();
+            LOG.error(message, ex);
             InternalErrorFault fault = new InternalErrorFault();
             fault.setFaultString(message);
             FaultHelper helper = new FaultHelper(fault);
-            helper.addFaultCause(e);
+            helper.addFaultCause(ex);
             throw (InternalErrorFault) helper.getFault();
         }
 
@@ -98,28 +97,28 @@ public class FQPAsynchronousExecutionUtil {
         // set to terminate after lease expires
         Calendar termTime = Calendar.getInstance();
         termTime.add(Calendar.MINUTE, leaseDurration);
-        fqpResultResource.setTerminationTime(termTime);
+        resultsResource.setTerminationTime(termTime);
 
         // set the query
-        fqpResultResource.setQuery(query);
+        resultsResource.setQuery(query);
         
         // set the credential (if any)
         if (delegatedCredential != null) {
             GlobusCredential clientCredential = validateAndRetrieveDelegatedCredential(delegatedCredential);
-            fqpResultResource.setDelegatedCredential(clientCredential);
+            resultsResource.setDelegatedCredential(clientCredential);
         }
         
         // set the query execution parameters
-        fqpResultResource.setQueryExecutionParameters(executionParameters);
+        resultsResource.setQueryExecutionParameters(executionParameters);
         
         // set the work manager for tasks the resource needs to do
-        fqpResultResource.setWorkExecutor(workExecutor);
+        resultsResource.setWorkExecutor(workExecutor);
         
         // start the resource working on the query
-        fqpResultResource.beginQueryProcessing();
+        resultsResource.beginQueryProcessing();
         
         // return handle to resource
-        FederatedQueryResultsReference resultsReference = createEPR(key);
+        FederatedQueryResultsRetrievalReference resultsReference = createEPR(key);
         return resultsReference;
     }
     
@@ -175,7 +174,7 @@ public class FQPAsynchronousExecutionUtil {
     }
     
 
-    private FederatedQueryResultsReference createEPR(ResourceKey key) throws InternalErrorFault {
+    private FederatedQueryResultsRetrievalReference createEPR(ResourceKey key) throws InternalErrorFault {
         MessageContext ctx = MessageContext.getCurrentContext();
         String transportURL = (String) ctx.getProperty(org.apache.axis.MessageContext.TRANS_URL);
         // modify URL to fix a bug https://gforge.nci.nih.gov/tracker/?func=detail&aid=22308&group_id=25&atid=174
@@ -194,16 +193,16 @@ public class FQPAsynchronousExecutionUtil {
             throw (InternalErrorFault) helper.getFault();
         }
         transportURL = transportURL.substring(0, transportURL.lastIndexOf('/') + 1);
-        transportURL += FQPConstants.RESULTS_SERVICE_NAME;
+        transportURL += FQPConstants.RESULTS_RETRIEVAL_SERVICE_NAME;
         try {
             EndpointReferenceType epr = AddressingUtils.createEndpointReference(transportURL, key);
-            return new FederatedQueryResultsReference(epr);
-        } catch (Exception e) {
-            LOG.error("Problem returning reference to result:" + e.getMessage(), e);
+            return new FederatedQueryResultsRetrievalReference(epr);
+        } catch (Exception ex) {
+            LOG.error("Problem returning reference to result:" + ex.getMessage(), ex);
             InternalErrorFault fault = new InternalErrorFault();
-            fault.setFaultString("Problem returning reference to result:" + e.getMessage());
+            fault.setFaultString("Problem returning reference to result:" + ex.getMessage());
             FaultHelper helper = new FaultHelper(fault);
-            helper.addFaultCause(e);
+            helper.addFaultCause(ex);
             throw (InternalErrorFault) helper.getFault();
         }
     }

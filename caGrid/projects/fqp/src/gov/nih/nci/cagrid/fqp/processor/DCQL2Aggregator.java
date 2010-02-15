@@ -1,4 +1,4 @@
-package gov.nih.nci.cagrid.fqp.processor2;
+package gov.nih.nci.cagrid.fqp.processor;
 
 import gov.nih.nci.cagrid.fqp.processor.exceptions.FederatedQueryProcessingException;
 

@@ -13,6 +13,7 @@ import gov.nih.nci.cagrid.dcqlresult.DCQLResult;
  * Simple util to aggregate a DCQLQueryResultsCollection
  * as a single CQLQueryResults instance
  * 
+ * @deprecated
  * @author ervin
  */
 public class DCQLAggregator {

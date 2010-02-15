@@ -1,10 +1,7 @@
 package gov.nih.nci.cagrid.fqp.processor;
 
-import gov.nih.nci.cagrid.cqlquery.CQLQuery;
-import gov.nih.nci.cagrid.cqlresultset.CQLQueryResults;
-import gov.nih.nci.cagrid.dcql.DCQLQuery;
-import gov.nih.nci.cagrid.dcqlresult.DCQLQueryResultsCollection;
-import gov.nih.nci.cagrid.dcqlresult.DCQLResult;
+import gov.nih.nci.cagrid.fqp.common.DCQLConversionException;
+import gov.nih.nci.cagrid.fqp.common.DCQLConverter;
 import gov.nih.nci.cagrid.fqp.common.FQPConstants;
 import gov.nih.nci.cagrid.fqp.common.SerializationUtils;
 import gov.nih.nci.cagrid.fqp.processor.exceptions.FederatedQueryProcessingException;
@@ -13,8 +10,10 @@ import gov.nih.nci.cagrid.fqp.processor.exceptions.RemoteDataServiceException;
 import java.io.StringWriter;
 import java.net.ConnectException;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Set;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
@@ -23,6 +22,13 @@ import java.util.concurrent.Future;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.cagrid.cql.utilities.CQL2ResultsToCQL1ResultsConverter;
+import org.cagrid.cql.utilities.ResultsConversionException;
+import org.cagrid.cql2.CQLQuery;
+import org.cagrid.cql2.results.CQLQueryResults;
+import org.cagrid.data.dcql.DCQLQuery;
+import org.cagrid.data.dcql.results.DCQLQueryResultsCollection;
+import org.cagrid.data.dcql.results.DCQLResult;
 import org.cagrid.fqp.execution.QueryExecutionParameters;
 import org.cagrid.fqp.execution.TargetDataServiceQueryBehavior;
 import org.cagrid.fqp.results.metadata.ProcessingStatus;
@@ -46,6 +52,8 @@ public class FederatedQueryEngine {
     private QueryExecutionParameters executionParameters = null;
     private ExecutorService workExecutor = null;
     private List<FQPProcessingStatusListener> statusListeners = null;
+    
+    private DCQLConverter dcqlConverter = null;
 
     /**
      * Creates a new federated query engine instance.  A default thread pool 
@@ -86,6 +94,41 @@ public class FederatedQueryEngine {
             this.workExecutor = workExecutor;
         }
         this.statusListeners = new LinkedList<FQPProcessingStatusListener>();
+        this.dcqlConverter = new DCQLConverter();
+    }
+    
+    
+    /**
+     * Call Federated Query Processor, and send the generated CQLQuery to each
+     * targeted service, placing each results into a single DCQLQueryResults
+     * object.
+     * 
+     * @deprecated
+     *      DCQL is deprecated for caGrid 1.4.  DCQL 2 is preferred: http://cagrid.org/display/fqp/DCQL+2
+     * @param dcqlQuery
+     * @return
+     * @throws FederatedQueryProcessingException
+     */
+    @Deprecated
+    public gov.nih.nci.cagrid.dcqlresult.DCQLQueryResultsCollection execute(
+        gov.nih.nci.cagrid.dcql.DCQLQuery dcqlQuery) throws FederatedQueryProcessingException {
+        // convert the query to DCQL 2, execute as normal, convert the results back
+        DCQLQuery query = null;
+        try {
+            query = dcqlConverter.convertToDcql2(dcqlQuery);
+        } catch (DCQLConversionException ex) {
+            throw new FederatedQueryProcessingException(
+                "Error converting DCQL to DCQL 2: " + ex.getMessage(), ex);
+        }
+        DCQLQueryResultsCollection results = execute(query);
+        gov.nih.nci.cagrid.dcqlresult.DCQLQueryResultsCollection dcql1Results;
+        try {
+            dcql1Results = dcqlConverter.convertToDcqlQueryResults(results);
+        } catch (DCQLConversionException ex) {
+            throw new FederatedQueryProcessingException(
+                "Error converting DCQL 2 results to DCQL results: " + ex.getMessage(), ex);
+        }
+        return dcql1Results;
     }
 
 
@@ -151,7 +194,7 @@ public class FederatedQueryEngine {
                 // if results are null, it means some exception was thrown by the 
                 DCQLResult dcqlResult = new DCQLResult();
                 dcqlResult.setTargetServiceURL(serviceURL);
-                dcqlResult.setCQLQueryResultCollection(results);
+                dcqlResult.setCQLQueryResults(results);
                 dcqlResults.add(dcqlResult);
                 int resultsCount = results.getObjectResult() != null ? results.getObjectResult().length : 0;
                 // fire results range for target service
@@ -182,6 +225,39 @@ public class FederatedQueryEngine {
         
         return resultsCollection;
     }
+    
+    
+    /**
+     * Call Federated Query Processor, and send the generated CQLQuery to each
+     * targeted service, aggregating the results into a single CQLQueryResults
+     * object.
+     * 
+     * @deprecated
+     *      DCQL is deprecated for caGrid 1.4.  DCQL 2 is preferred: http://cagrid.org/display/fqp/DCQL+2
+     * @param dcqlQuery
+     * @return Aggregated results of the DCQL query
+     * @throws FederatedQueryProcessingException
+     */
+    @Deprecated
+    public gov.nih.nci.cagrid.cqlresultset.CQLQueryResults executeAndAggregateResults(gov.nih.nci.cagrid.dcql.DCQLQuery dcqlQuery) throws FederatedQueryProcessingException {
+        // convert the query to DCQL 2, execute as normal, convert the results back
+        DCQLQuery query = null;
+        try {
+            query = dcqlConverter.convertToDcql2(dcqlQuery);
+        } catch (DCQLConversionException ex) {
+            throw new FederatedQueryProcessingException(
+                "Error converting DCQL to DCQL 2: " + ex.getMessage(), ex);
+        }
+        CQLQueryResults results = executeAndAggregateResults(query);
+        gov.nih.nci.cagrid.cqlresultset.CQLQueryResults cql1Results;
+        try {
+            cql1Results = CQL2ResultsToCQL1ResultsConverter.convertResults(results);
+        } catch (ResultsConversionException ex) {
+            throw new FederatedQueryProcessingException(
+                "Error converting DCQL 2 results to DCQL results: " + ex.getMessage(), ex);
+        }
+        return cql1Results;
+    }
 
 
     /**
@@ -199,7 +275,7 @@ public class FederatedQueryEngine {
         
         LOG.debug("Aggregating DCQL results");
         String targetClassname = dcqlQuery.getTargetObject().getName();
-        CQLQueryResults aggregate = DCQLAggregator.aggregateDCQLResults(dcqlResults, targetClassname);
+        CQLQueryResults aggregate = DCQL2Aggregator.aggregateDCQLResults(dcqlResults, targetClassname);
         
         return aggregate;
     }
@@ -209,7 +285,7 @@ public class FederatedQueryEngine {
         if (LOG.isDebugEnabled()) {
             try {
                 StringWriter s = new StringWriter();
-                SerializationUtils.serializeDCQLQuery(dcqlQuery, s);
+                SerializationUtils.serializeDCQL2Query(dcqlQuery, s);
                 LOG.debug(logMessage + ":\n" + s.toString());
                 s.close();
             } catch (Exception e) {
@@ -341,7 +417,7 @@ public class FederatedQueryEngine {
             do {
                 tryCount++;
                 try {
-                    results = DataServiceQueryExecutor.queryDataService(
+                    results = Cql2QueryExecutor.queryDataService(
                         query, serviceURL, clientCredential);
                     // clear any previous exception state.  
                     // If this query succeeded and a previous one failed, 
@@ -362,36 +438,34 @@ public class FederatedQueryEngine {
                 }
             } while (results == null && tryCount < maxRetries);
             
-            // verify we have Object results
+            // target data services may return any valid type of results, 
+            // but they must all be of the same type.  This has to be verified by the caller.
             boolean invalidQueryResponse = false;
             if (results != null) {
-                if (results.getAttributeResult() != null || results.getCountResult() != null || results.getIdentifierResult() != null) {
+                // verify the results type
+                if (!results.getTargetClassname().equals(query.getCQLTargetObject().getClassName())) {
                     invalidQueryResponse = true;
-                    queryException = new RemoteDataServiceException(
-                        "Remote data service " + serviceURL + " returned non-object results");
+                    queryException = new RemoteDataServiceException("Data service (" + serviceURL
+                        + ") returned results of type (" + results.getTargetClassname() 
+                        + ") when type (" + query.getCQLTargetObject().getClassName() + ") was requested!");
                 } else {
-                    // verify the results type
-                    if (!results.getTargetClassname().equals(query.getTarget().getName())) {
-                        invalidQueryResponse = true;
-                        queryException = new RemoteDataServiceException("Data service (" + serviceURL
-                            + ") returned results of type (" + results.getTargetClassname() 
-                            + ") when type (" + query.getTarget().getName() + ") was requested!");
-                    } else {
-                        // all is well
-                        fireStatusOk(serviceURL);
-                    }
+                    // all is well
+                    fireStatusOk(serviceURL);
                 }
             } else if (queryException == null) {
                 // not sure how we could have no results AND no exception, but...
                 invalidQueryResponse = true;
                 queryException = new RemoteDataServiceException(
-                    "Remote data service " + serviceURL + " returned no results at all");
+                    "Remote data service " + serviceURL + " returned no results at all, and threw no exception");
             }
             
+            // did an exception get thrown?
             if (queryException != null) {
                 boolean isConnectException = false;
+                Set<Throwable> seenExceptions = new HashSet<Throwable>();
                 Throwable cause = queryException;
-                while (cause != null && !isConnectException) {
+                while (cause != null && !isConnectException && !seenExceptions.contains(cause)) {
+                    seenExceptions.add(cause);
                     isConnectException = cause instanceof ConnectException;
                     cause = cause.getCause();
                 }

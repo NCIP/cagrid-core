@@ -4,11 +4,13 @@ import gov.nih.nci.cagrid.common.FaultHelper;
 import gov.nih.nci.cagrid.cqlresultset.CQLQueryResults;
 import gov.nih.nci.cagrid.dcql.DCQLQuery;
 import gov.nih.nci.cagrid.dcqlresult.DCQLQueryResultsCollection;
-import gov.nih.nci.cagrid.fqp.processor2.FederatedQueryEngine;
+import gov.nih.nci.cagrid.fqp.processor.FederatedQueryEngine;
 import gov.nih.nci.cagrid.fqp.processor.exceptions.FederatedQueryProcessingException;
 import gov.nih.nci.cagrid.fqp.results.service.globus.resource.FederatedQueryResultsResourceHome;
 import gov.nih.nci.cagrid.fqp.results.stubs.types.FederatedQueryResultsReference;
 import gov.nih.nci.cagrid.fqp.results.stubs.types.InternalErrorFault;
+import gov.nih.nci.cagrid.fqp.resultsretrieval.service.globus.resource.FederatedQueryResultsRetrievalResourceHome;
+import gov.nih.nci.cagrid.fqp.resultsretrieval.stubs.types.FederatedQueryResultsRetrievalReference;
 import gov.nih.nci.cagrid.fqp.stubs.types.FederatedQueryProcessingFault;
 
 import java.rmi.RemoteException;
@@ -36,7 +38,8 @@ public class FederatedQueryProcessorImpl extends FederatedQueryProcessorImplBase
 
     protected static Log LOG = LogFactory.getLog(FederatedQueryProcessorImpl.class.getName());
 
-    private FQPAsynchronousExecutionUtil asynchronousExecutor = null;
+    private FQPAsynchronousExecutionUtil dcql1AsynchronousExecutor = null;
+    private FQPAsynchronousQueryUtil dcql2AsynchronousExecutor = null;
     private ThreadPoolExecutor workManager = null;
     private QueryConstraintsValidator queryConstraintsValidator = null;
 
@@ -120,8 +123,8 @@ public class FederatedQueryProcessorImpl extends FederatedQueryProcessorImplBase
         // execute the query
         FederatedQueryResultsReference ref = null;
         try {
-            ref = getAsynchronousExecutor().executeAsynchronousQuery(query, delegatedCredentialReference,
-                queryExecutionParameters);
+            ref = getAsynchronousExecutor().executeAsynchronousQuery(
+                query, delegatedCredentialReference, queryExecutionParameters);
         } catch (FederatedQueryProcessingException ex) {
             throw new RemoteException("Error setting up resource: " + ex.getMessage(), ex);
         }
@@ -179,49 +182,14 @@ public class FederatedQueryProcessorImpl extends FederatedQueryProcessorImplBase
         gov.nih.nci.cagrid.fqp.stubs.types.FederatedQueryProcessingFault {
         validateQueryConstraints(query, queryExecutionParameters);
         
-        org.apache.axis.message.addressing.EndpointReferenceType epr = new org.apache.axis.message.addressing.EndpointReferenceType();
-        gov.nih.nci.cagrid.fqp.resultsretrieval.service.globus.resource.FederatedQueryResultsRetrievalResourceHome home = null;
-        org.globus.wsrf.ResourceKey resourceKey = null;
-        org.apache.axis.MessageContext ctx = org.apache.axis.MessageContext.getCurrentContext();
-        String servicePath = ctx.getTargetService();
-        String homeName = org.globus.wsrf.Constants.JNDI_SERVICES_BASE_NAME + servicePath + "/"
-            + "federatedQueryResultsRetrievalHome";
-
+        // execute the query
+        FederatedQueryResultsRetrievalReference ref = null;
         try {
-            javax.naming.Context initialContext = new javax.naming.InitialContext();
-            home = (gov.nih.nci.cagrid.fqp.resultsretrieval.service.globus.resource.FederatedQueryResultsRetrievalResourceHome) initialContext
-                .lookup(homeName);
-            resourceKey = home.createResource();
-
-            // Grab the newly created resource
-            gov.nih.nci.cagrid.fqp.resultsretrieval.service.globus.resource.FederatedQueryResultsRetrievalResource thisResource = (gov.nih.nci.cagrid.fqp.resultsretrieval.service.globus.resource.FederatedQueryResultsRetrievalResource) home
-                .find(resourceKey);
-
-            // This is where the creator of this resource type can set whatever
-            // needs
-            // to be set on the resource so that it can function appropriately
-            // for instance
-            // if you want the resource to only have the query string then there
-            // is where you would
-            // give it the query string.
-
-            // sample of setting creator only security. This will only allow the
-            // caller that created
-            // this resource to be able to use it.
-            // thisResource.setSecurityDescriptor(gov.nih.nci.cagrid.introduce.servicetools.security.SecurityUtils.createCreatorOnlyResourceSecurityDescriptor());
-
-            String transportURL = (String) ctx.getProperty(org.apache.axis.MessageContext.TRANS_URL);
-            transportURL = transportURL.substring(0, transportURL.lastIndexOf('/') + 1);
-            transportURL += "FederatedQueryResultsRetrieval";
-            epr = org.globus.wsrf.utils.AddressingUtils.createEndpointReference(transportURL, resourceKey);
-        } catch (Exception e) {
-            throw new RemoteException("Error looking up FederatedQueryResultsRetrieval home:" + e.getMessage(), e);
+            ref = getAsynchronousQueryExecutor().executeAsynchronousQuery(
+                query, delegatedCredentialReference, queryExecutionParameters);
+        } catch (FederatedQueryProcessingException ex) {
+            throw new RemoteException("Error setting up resource: " + ex.getMessage(), ex);
         }
-
-        // return the typed EPR
-        gov.nih.nci.cagrid.fqp.resultsretrieval.stubs.types.FederatedQueryResultsRetrievalReference ref = new gov.nih.nci.cagrid.fqp.resultsretrieval.stubs.types.FederatedQueryResultsRetrievalReference();
-        ref.setEndpointReference(epr);
-
         return ref;
     }
 
@@ -287,7 +255,7 @@ public class FederatedQueryProcessorImpl extends FederatedQueryProcessorImplBase
 
 
     private synchronized FQPAsynchronousExecutionUtil getAsynchronousExecutor() throws InternalErrorFault {
-        if (asynchronousExecutor == null) {
+        if (dcql1AsynchronousExecutor == null) {
             // get FQP result resource home
             FederatedQueryResultsResourceHome resultHome = null;
             try {
@@ -313,13 +281,53 @@ public class FederatedQueryProcessorImpl extends FederatedQueryProcessorImplBase
 
             // create the executor instance
             if (leaseMinutes == -1) {
-                asynchronousExecutor = new FQPAsynchronousExecutionUtil(resultHome, getWorkExecutorService());
+                dcql1AsynchronousExecutor = new FQPAsynchronousExecutionUtil(
+                    resultHome, getWorkExecutorService());
             } else {
-                asynchronousExecutor = new FQPAsynchronousExecutionUtil(resultHome, getWorkExecutorService(),
-                    leaseMinutes);
+                dcql1AsynchronousExecutor = new FQPAsynchronousExecutionUtil(
+                    resultHome, getWorkExecutorService(), leaseMinutes);
             }
         }
-        return asynchronousExecutor;
+        return dcql1AsynchronousExecutor;
+    }
+    
+    
+    private synchronized FQPAsynchronousQueryUtil getAsynchronousQueryExecutor() throws InternalErrorFault {
+        if (dcql2AsynchronousExecutor == null) {
+            // get the FQP Results Retrieval resource home
+            FederatedQueryResultsRetrievalResourceHome resourceHome = null;
+            try {
+                resourceHome = getFederatedQueryResultsRetrievalResourceHome();
+            } catch (Exception e) {
+                String message = "Problem locating results retrieval resource home: " + e.getMessage();
+                LOG.error(message, e);
+                InternalErrorFault fault = new InternalErrorFault();
+                fault.setFaultString(message);
+                FaultHelper helper = new FaultHelper(fault);
+                helper.addFaultCause(e);
+                throw (InternalErrorFault) helper.getFault();
+            }
+            
+            // determine the resource lease time
+            int leaseMinutes = -1;
+            try {
+                String leaseProp = getConfiguration().getInitialResultLeaseInMinutes();
+                LOG.debug("Result Lease Minutes property was:" + leaseProp);
+                leaseMinutes = Integer.parseInt(leaseProp);
+            } catch (Exception e) {
+                LOG.error("Problem determing result lease duration, using default");
+            }
+            
+            // create the executor instance
+            if (leaseMinutes == -1) {
+                dcql2AsynchronousExecutor = new FQPAsynchronousQueryUtil(
+                    resourceHome, getWorkExecutorService());
+            } else {
+                dcql2AsynchronousExecutor = new FQPAsynchronousQueryUtil(
+                    resourceHome, getWorkExecutorService(), leaseMinutes);
+            }
+        }
+        return dcql2AsynchronousExecutor;
     }
     
     

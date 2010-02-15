@@ -11,6 +11,11 @@ public interface FQPConstants {
     public static final String RESULTS_SERVICE_NAME = "FederatedQueryResults";
     
     /**
+     * The name of the results retrieval service context for DCQL 2
+     */
+    public static final String RESULTS_RETRIEVAL_SERVICE_NAME = "FederatedQueryResultsRetrieval";
+    
+    /**
      * The default target data service query behavior.  Derived from the XSD
      * definition, since Axis doesn't set the defaults with the no-arg constructor
      */

@@ -1,17 +1,17 @@
-package gov.nih.nci.cagrid.fqp.results.service.globus.resource;
+package gov.nih.nci.cagrid.fqp.resultsretrieval.service.globus.resource;
 
-import gov.nih.nci.cagrid.dcql.DCQLQuery;
-import gov.nih.nci.cagrid.dcqlresult.DCQLQueryResultsCollection;
 import gov.nih.nci.cagrid.fqp.processor.FederatedQueryEngine;
 import gov.nih.nci.cagrid.fqp.processor.exceptions.FederatedQueryProcessingException;
 
 import java.util.concurrent.ExecutorService;
 
+import org.cagrid.data.dcql.DCQLQuery;
+import org.cagrid.data.dcql.results.DCQLQueryResultsCollection;
 import org.cagrid.fqp.execution.QueryExecutionParameters;
 import org.globus.gsi.GlobusCredential;
 
 /**
- * Encapsulates execution of a DCQL query in a thread so that
+ * Encapsulates execution of a DCQL 2 query in a thread so that
  * status of the resource may be maintained and other operations
  * do not block while waiting on the query to complete.
  * 
