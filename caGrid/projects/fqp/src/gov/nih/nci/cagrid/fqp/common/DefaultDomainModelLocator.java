@@ -3,11 +3,11 @@ package gov.nih.nci.cagrid.fqp.common;
 import gov.nih.nci.cagrid.metadata.MetadataUtils;
 import gov.nih.nci.cagrid.metadata.dataservice.DomainModel;
 
-import java.util.HashMap;
 import java.util.Map;
 
 import org.apache.axis.message.addressing.Address;
 import org.apache.axis.message.addressing.EndpointReferenceType;
+import org.apache.commons.collections.map.LRUMap;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
@@ -20,9 +20,10 @@ import org.apache.commons.logging.LogFactory;
  * @author David
  */
 public class DefaultDomainModelLocator implements DomainModelLocator {
+    public static final long DEFAULT_CACHE_TIME = 20 * 60 * 1000; // 20 minutes
+    public static final int MAX_CACHED_MODELS = 25;
     
     private static Log LOG = LogFactory.getLog(DefaultDomainModelLocator.class);
-    private static long DEFAULT_CACHE_TIME = 20 * 60 * 1000; // 20 minutes
     
     private long cacheTimeMills;
     private Map<String, CachedDomainModel> cachedModels = null;
@@ -32,9 +33,10 @@ public class DefaultDomainModelLocator implements DomainModelLocator {
     }
     
     
+    @SuppressWarnings("unchecked")
     public DefaultDomainModelLocator(long cacheTimeMills) {
         this.cacheTimeMills = cacheTimeMills;
-        this.cachedModels = new HashMap<String, CachedDomainModel>();
+        this.cachedModels = new LRUMap(MAX_CACHED_MODELS);
     }
     
 

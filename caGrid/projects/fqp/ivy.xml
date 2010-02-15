@@ -76,6 +76,7 @@
     <!-- Extenernal Dependencies -->
     <dependency rev="1.0" org="jdom" name="jdom" conf="service->*"/>
     <dependency rev="3.0" org="apache" name="jarkarta-commons-httpclient" conf="client->*"/>
+    <dependency rev="3.2" org="apache" name="commons-collections" conf="service->default" />
     <dependency rev="4.4" org="junit" name="junit" conf="impl-test->default"/>
   </dependencies>
 </ivy-module>

@@ -7,12 +7,12 @@ import gov.nih.nci.cagrid.fqp.processor.exceptions.RemoteDataServiceException;
 
 import java.io.StringWriter;
 import java.rmi.RemoteException;
-import java.util.HashMap;
 import java.util.Map;
 
 import org.apache.axis.message.addressing.Address;
 import org.apache.axis.message.addressing.EndpointReferenceType;
 import org.apache.axis.types.URI.MalformedURIException;
+import org.apache.commons.collections.map.LRUMap;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.cagrid.cql.utilities.CQL1ResultsToCQL2ResultsConverter;
@@ -32,10 +32,13 @@ import org.globus.gsi.GlobusCredential;
  * @author David
  */
 public class Cql2QueryExecutor {
+    public static final long CQL2_SUPPORT_CACHE_TIME = 20 * 60 * 1000; // 20 minutes
+    public static final int MAX_CACHED_CQL2_SUPPORT = 50; // max number of services to cache CQL2 support info for
     
     protected static Log LOG = LogFactory.getLog(Cql2QueryExecutor.class.getName());
-    protected static Map<String, CachedCql2Support> cql2Support = new HashMap<String, CachedCql2Support>();
-    protected static long CQL2_SUPPORT_CACHE_TIME = 20 * 60 * 1000; // 20 minutes
+    @SuppressWarnings("unchecked")
+    protected static Map<String, CachedCql2Support> cql2Support = new LRUMap(MAX_CACHED_CQL2_SUPPORT);
+
 
     /**
      * Executes the specified query against the specified service, properly
@@ -139,7 +142,7 @@ public class Cql2QueryExecutor {
     }
     
     
-    private static boolean serviceSupportsCql2(String targetServiceUrl) throws Exception {
+    private static synchronized boolean serviceSupportsCql2(String targetServiceUrl) throws Exception {
         LOG.debug("Determining CQL 2 support for " + targetServiceUrl);
         CachedCql2Support cached = cql2Support.get(targetServiceUrl);
         boolean supportsCql2 = false;
