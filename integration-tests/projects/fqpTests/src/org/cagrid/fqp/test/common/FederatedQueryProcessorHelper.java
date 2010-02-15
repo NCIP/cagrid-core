@@ -71,6 +71,55 @@ public class FederatedQueryProcessorHelper {
     }
     
     
+    public synchronized org.cagrid.data.dcql.results.DCQLQueryResultsCollection executeQuery(org.cagrid.data.dcql.DCQLQuery query)
+        throws RemoteException, FederatedQueryProcessingFault, FederatedQueryProcessingException {
+        if (fqpClient == null && fqpContainerSource != null) {
+            createClientFromContainer();
+        }
+        
+        if (fqpContainerSource != null && fqpContainerSource.getServiceContainer() instanceof SecureContainer) {
+            configureCaDirectory();
+        }
+        
+        org.cagrid.data.dcql.results.DCQLQueryResultsCollection results = null;
+        if (fqpClient != null) {
+            System.out.println("Connecting to FQP service at "
+                + fqpClient.getEndpointReference().getAddress().toString());
+            results = fqpClient.executeQuery(query);
+        } else if (fqpEngine != null) {
+            results = fqpEngine.execute(query);
+        } else {
+            throw new IllegalStateException("NO CLIENT OR ENGINE!");
+        }
+        
+        return results;
+    }
+    
+    
+    public synchronized org.cagrid.cql2.results.CQLQueryResults executeAndAggregateResults(
+        org.cagrid.data.dcql.DCQLQuery query) throws RemoteException,
+        FederatedQueryProcessingFault, FederatedQueryProcessingException {
+        if (fqpClient == null && fqpContainerSource != null) {
+            createClientFromContainer();
+        }
+
+        if (fqpContainerSource != null && fqpContainerSource.getServiceContainer() instanceof SecureContainer) {
+            configureCaDirectory();
+        }
+
+        org.cagrid.cql2.results.CQLQueryResults results = null;
+        if (fqpClient != null) {
+            results = fqpClient.executeQueryAndAggregate(query);
+        } else if (fqpEngine != null) {
+            results = fqpEngine.executeAndAggregateResults(query);
+        } else {
+            throw new IllegalStateException("NO CLIENT OR ENGINE!");
+        }
+
+        return results;
+    }
+
+    
     public synchronized CQLQueryResults executeAndAggregateResults(DCQLQuery query) throws RemoteException,
         FederatedQueryProcessingFault, FederatedQueryProcessingException {
         if (fqpClient == null && fqpContainerSource != null) {
