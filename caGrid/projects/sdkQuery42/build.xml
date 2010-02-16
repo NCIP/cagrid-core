@@ -217,7 +217,7 @@
 			<fileset dir="${build.jars.dir}">
 				<include name="*.jar" />
 			</fileset>
-			<!-- copy the SDK common style jar file -->
+			<!-- copy the SDK common style jar file and CQL 2 query engine -->
 			<fileset dir="${ext.lib.dir}">
 				<include name="*sdkstyle.jar" />
 				<include name="caGrid-sdk4xCQL2*.jar"/>
