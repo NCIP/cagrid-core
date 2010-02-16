@@ -1,14 +1,13 @@
-import org.cagrid.fqp.results.metadata.ProcessingStatus;
-import org.cagrid.fqp.results.metadata.ResultsRange;
-
 import gov.nih.nci.cagrid.common.Utils;
 import gov.nih.nci.cagrid.cqlresultset.CQLQueryResults;
 import gov.nih.nci.cagrid.data.utilities.CQLQueryResultsIterator;
 import gov.nih.nci.cagrid.dcql.DCQLQuery;
 import gov.nih.nci.cagrid.fqp.processor.FQPProcessingStatusListener;
 import gov.nih.nci.cagrid.fqp.processor.FederatedQueryEngine;
-import gov.nih.nci.cagrid.fqp.processor.FederatedQueryEngine;
 import gov.nih.nci.cagrid.fqp.processor.exceptions.FederatedQueryProcessingException;
+
+import org.cagrid.fqp.results.metadata.ProcessingStatus;
+import org.cagrid.fqp.results.metadata.ResultsRange;
 
 
 /**
@@ -21,7 +20,7 @@ public class RunQueryEngine {
 		try {
 			FederatedQueryEngine fqp = new FederatedQueryEngine(null, null);
             fqp.addStatusListener(new Listener());
-			DCQLQuery dcql = (DCQLQuery) Utils.deserializeDocument(args[0], DCQLQuery.class);
+			DCQLQuery dcql = Utils.deserializeDocument(args[0], DCQLQuery.class);
 			CQLQueryResults results = fqp.executeAndAggregateResults(dcql);
 			CQLQueryResultsIterator iterator = new CQLQueryResultsIterator(results, true);
 			int resultCount = 0;

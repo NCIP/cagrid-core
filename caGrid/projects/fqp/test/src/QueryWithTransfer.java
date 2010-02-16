@@ -2,6 +2,7 @@ import gov.nih.nci.cagrid.common.Utils;
 import gov.nih.nci.cagrid.dcql.DCQLQuery;
 import gov.nih.nci.cagrid.dcqlresult.DCQLQueryResultsCollection;
 import gov.nih.nci.cagrid.fqp.client.FederatedQueryProcessorClient;
+import gov.nih.nci.cagrid.fqp.common.DCQLConstants;
 import gov.nih.nci.cagrid.fqp.results.client.FederatedQueryResultsClient;
 
 import java.io.InputStream;
@@ -23,13 +24,16 @@ public class QueryWithTransfer {
     public static void main(String[] args) {
         try {
             FederatedQueryProcessorClient fqpClient = new FederatedQueryProcessorClient("http://localhost:8080/wsrf/services/cagrid/FederatedQueryProcessor");
-            DCQLQuery query = (DCQLQuery) Utils.deserializeDocument("exampleDistributedJoin1.xml", DCQLQuery.class);
+            DCQLQuery query = Utils.deserializeDocument("exampleDistributedJoin1.xml", DCQLQuery.class);
             
             final FederatedQueryResultsClient resultsClient = fqpClient.query(query, null, null);
-            
+            System.out.print("Waiting for query to complete");
             while (!resultsClient.isProcessingComplete()) {
                 Thread.sleep(200);
+                System.out.print(".");
             }
+            System.out.println();
+            System.out.println("Done, using transfer to retrieve results");
             
             TransferServiceContextReference transferReference = resultsClient.transfer();
             
@@ -59,8 +63,11 @@ public class QueryWithTransfer {
             
             StringReader xmlReader = new StringReader(xml);
             DCQLQueryResultsCollection results = null;
-            results = (DCQLQueryResultsCollection) Utils.deserializeObject(xmlReader, DCQLQueryResultsCollection.class);
+            results = Utils.deserializeObject(xmlReader, DCQLQueryResultsCollection.class);
             System.out.println("Done, got DCQL results!");
+            
+            StringWriter writer = new StringWriter();
+            Utils.serializeObject(results, DCQLConstants.DCQL_QUERY_QNAME, writer);
         } catch (Throwable ex) {
             ex.printStackTrace();
         }

@@ -26,24 +26,31 @@ public class QueryWithNotification {
     public static void main(String[] args) {
         String globusEnv = System.getenv("GLOBUS_LOCATION");
         // MUST POINT TO $GLOBUS_LOCATION
+        if (globusEnv == null) {
+            System.err.println("GLOBUS_LOCATION environment variable must be set!");
+            System.exit(-1);
+        }
+        // GLOBUS_LOCATION system property has to point to $GLOBUS_LOCATION
+        // note system property != environment variable
         System.setProperty("GLOBUS_LOCATION", globusEnv != null ? globusEnv : "w:/Projects/dev-lib/ws-core-4.0.3");
         try {
             FederatedQueryProcessorClient fqpClient = new FederatedQueryProcessorClient("http://localhost:8080/wsrf/services/cagrid/FederatedQueryProcessor");
-            DCQLQuery query = (DCQLQuery) Utils.deserializeDocument("exampleDistributedJoin1.xml", DCQLQuery.class);
-            
+            DCQLQuery query = Utils.deserializeDocument("exampleDistributedJoin1.xml", DCQLQuery.class);
+            System.out.println("Starting query");
             final FederatedQueryResultsClient resultsClient = fqpClient.query(query, null, null);
             
             // basic subscribe
+            System.out.println("Subscribing to results client for " + FederatedQueryResultsConstants.FEDERATEDQUERYEXECUTIONSTATUS);
             resultsClient.subscribe(FederatedQueryResultsConstants.FEDERATEDQUERYEXECUTIONSTATUS);
 
             // advanced subscribe
             SubscriptionHelper subscriptionHelper = new SubscriptionHelper();
             SubscriptionListener listener = new SubscriptionListener() {
                 public void subscriptionValueChanged(ResourcePropertyValueChangeNotificationType notification) {
-                    System.out.println("NOTIFICATION...");
+                    System.out.println("RECIEVED NOTIFICATION...");
                     try {
                         String newMetadataDocument = AnyHelper.toSingleString(notification.getNewValue().get_any());
-                        FederatedQueryExecutionStatus status = (FederatedQueryExecutionStatus) Utils.deserializeObject(
+                        FederatedQueryExecutionStatus status = Utils.deserializeObject(
                             new StringReader(newMetadataDocument), FederatedQueryExecutionStatus.class);
                         StringWriter writer = new StringWriter();
                         Utils.serializeObject(status, FederatedQueryResultsConstants.FEDERATEDQUERYEXECUTIONSTATUS, writer);
@@ -65,9 +72,10 @@ public class QueryWithNotification {
                 ex.printStackTrace();
             }
             
-            System.out.println("Subscribed; waiting for processing to complete");
+            System.out.print("Subscribed; waiting for processing to complete");
             while (!resultsClient.isProcessingComplete()) {
-                Thread.sleep(200);
+                Thread.sleep(500);
+                System.out.print(".");
             }
             CQLQueryResults results = resultsClient.getAggregateResults();
             CQLQueryResultsIterator iterator = new CQLQueryResultsIterator(results, true);
@@ -78,7 +86,7 @@ public class QueryWithNotification {
                 System.out.println("=====END RESULT=====\n\n");
             }
             System.out.println("DONE");
-            // gives the notification listener time to recieve and process the events
+            // gives the notification listener time to receive and process the events
             Thread.sleep(5000);
         } catch (Throwable ex) {
             ex.printStackTrace();
