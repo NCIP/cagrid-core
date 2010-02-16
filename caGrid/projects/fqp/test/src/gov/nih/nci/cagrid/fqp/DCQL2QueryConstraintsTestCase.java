@@ -1,19 +1,14 @@
 package gov.nih.nci.cagrid.fqp;
 
-import java.rmi.RemoteException;
-
-import org.cagrid.fqp.execution.QueryExecutionParameters;
-import org.cagrid.fqp.execution.TargetDataServiceQueryBehavior;
-
-import gov.nih.nci.cagrid.dcql.DCQLQuery;
 import gov.nih.nci.cagrid.fqp.common.FQPConstants;
 import gov.nih.nci.cagrid.fqp.processor.exceptions.FederatedQueryProcessingException;
-import gov.nih.nci.cagrid.fqp.service.FederatedQueryProcessorConfiguration;
-import gov.nih.nci.cagrid.fqp.service.QueryConstraintsValidator;
-import junit.framework.TestCase;
 import junit.framework.TestResult;
 import junit.framework.TestSuite;
 import junit.textui.TestRunner;
+
+import org.cagrid.data.dcql.DCQLQuery;
+import org.cagrid.fqp.execution.QueryExecutionParameters;
+import org.cagrid.fqp.execution.TargetDataServiceQueryBehavior;
 
 
 /**
@@ -22,14 +17,9 @@ import junit.textui.TestRunner;
  * 
  * @author David
  */
-public class QueryConstraintsTestCase extends TestCase {
+public class DCQL2QueryConstraintsTestCase extends BaseQueryConstraintsTest {
     
-    public static final int MAX_TARGET_SERVICES = 12;
-    public static final int MAX_RETRY_TIMEOUT = 30;
-    public static final int MAX_RETRIES = 10;
-
-
-    public QueryConstraintsTestCase(String name) {
+    public DCQL2QueryConstraintsTestCase(String name) {
         super(name);
     }
     
@@ -159,26 +149,10 @@ public class QueryConstraintsTestCase extends TestCase {
         }
     }
     
-    
-    private QueryConstraintsValidator getValidator() {
-        FederatedQueryProcessorConfiguration config = new FederatedQueryProcessorConfiguration();
-        config.setMaxRetries(String.valueOf(MAX_RETRIES));
-        config.setMaxRetryTimeout(String.valueOf(MAX_RETRY_TIMEOUT));
-        config.setMaxTargetServicesPerQuery(String.valueOf(MAX_TARGET_SERVICES));
-        QueryConstraintsValidator validator = null;
-        try {
-            validator = new QueryConstraintsValidator(config);
-        } catch (RemoteException ex) {
-            ex.printStackTrace();
-            fail("Error setting up query constaints validator: " + ex.getMessage());
-        }
-        return validator;
-    }
-    
 
     public static void main(String[] args) {
         TestRunner runner = new TestRunner();
-        TestResult result = runner.doRun(new TestSuite(QueryConstraintsTestCase.class));
+        TestResult result = runner.doRun(new TestSuite(DCQL2QueryConstraintsTestCase.class));
         System.exit(result.errorCount() + result.failureCount());
     }
 }
