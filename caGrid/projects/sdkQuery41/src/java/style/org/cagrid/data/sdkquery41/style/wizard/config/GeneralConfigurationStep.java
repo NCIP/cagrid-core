@@ -2,9 +2,7 @@ package org.cagrid.data.sdkquery41.style.wizard.config;
 
 import gov.nih.nci.cagrid.common.JarUtilities;
 import gov.nih.nci.cagrid.common.Utils;
-import gov.nih.nci.cagrid.data.DataServiceConstants;
 import gov.nih.nci.cagrid.data.common.CastorMappingUtil;
-import gov.nih.nci.cagrid.introduce.common.CommonTools;
 import gov.nih.nci.cagrid.introduce.common.FileFilters;
 import gov.nih.nci.cagrid.introduce.common.ServiceInformation;
 
@@ -19,6 +17,7 @@ import java.util.Set;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.cagrid.data.sdkquery41.processor.SDK41QueryProcessor;
+import org.cagrid.data.sdkquery41.processor2.SDK41CQL2QueryProcessor;
 import org.cagrid.data.sdkquery41.style.common.SDK41StyleConstants;
 import org.cagrid.grape.utils.CompositeErrorDialog;
 
@@ -139,9 +138,11 @@ public class GeneralConfigurationStep extends AbstractStyleConfigurationStep {
         }
         
         // set the application name service property
-        CommonTools.setServiceProperty(getServiceInformation().getServiceDescriptor(), 
-            DataServiceConstants.QUERY_PROCESSOR_CONFIG_PREFIX 
-            + SDK41QueryProcessor.PROPERTY_APPLICATION_NAME,
+        setCql1ProcessorProperty( 
+            SDK41QueryProcessor.PROPERTY_APPLICATION_NAME,
+            applicationName, false);
+        setCql2ProcessorProperty(
+            SDK41CQL2QueryProcessor.PROPERTY_APPLICATION_NAME,
             applicationName, false);
         
         // grab the castor marshalling and unmarshalling xml mapping files

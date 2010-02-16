@@ -2,7 +2,7 @@ package org.cagrid.data.sdkquery42.style.wizard.config;
 
 import gov.nih.nci.cagrid.common.JarUtilities;
 import gov.nih.nci.cagrid.common.Utils;
-import gov.nih.nci.cagrid.data.DataServiceConstants;
+import gov.nih.nci.cagrid.data.QueryProcessorConstants;
 import gov.nih.nci.cagrid.data.common.CastorMappingUtil;
 import gov.nih.nci.cagrid.introduce.common.CommonTools;
 import gov.nih.nci.cagrid.introduce.common.ServiceInformation;
@@ -18,6 +18,7 @@ import java.util.jar.JarFile;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.cagrid.data.sdkquery42.processor.SDK42QueryProcessor;
+import org.cagrid.data.sdkquery42.processor2.SDK42CQL2QueryProcessor;
 import org.cagrid.grape.utils.CompositeErrorDialog;
 
 /**
@@ -58,16 +59,28 @@ public class ProjectSelectionConfigurationStep extends AbstractStyleConfiguratio
     public void applyConfiguration() throws Exception {
         // set the query processor class name for the data service
         CommonTools.setServiceProperty(getServiceInformation().getServiceDescriptor(),
-            DataServiceConstants.QUERY_PROCESSOR_CLASS_PROPERTY, SDK42QueryProcessor.class.getName(), false);
+            QueryProcessorConstants.QUERY_PROCESSOR_CLASS_PROPERTY, SDK42QueryProcessor.class.getName(), false);
+        CommonTools.setServiceProperty(getServiceInformation().getServiceDescriptor(),
+            QueryProcessorConstants.CQL2_QUERY_PROCESSOR_CLASS_PROPERTY, SDK42CQL2QueryProcessor.class.getName(), false);
         
         // set service properties required by the query processor
-        setServiceProperty(SDK42QueryProcessor.PROPERTY_APPLICATION_NAME, getApplicationName(), false);
-        setServiceProperty(SDK42QueryProcessor.PROPERTY_USE_LOCAL_API, String.valueOf(isLocalApi()), false);
-        setServiceProperty(SDK42QueryProcessor.PROPERTY_HOST_NAME, 
+        setCql1ProcessorProperty(SDK42QueryProcessor.PROPERTY_APPLICATION_NAME, getApplicationName(), false);
+        setCql1ProcessorProperty(SDK42QueryProcessor.PROPERTY_USE_LOCAL_API, String.valueOf(isLocalApi()), false);
+        setCql1ProcessorProperty(SDK42QueryProcessor.PROPERTY_HOST_NAME, 
             getApplicationHostname() != null ? getApplicationHostname() : "", false);
-        setServiceProperty(SDK42QueryProcessor.PROPERTY_HOST_PORT, 
+        setCql1ProcessorProperty(SDK42QueryProcessor.PROPERTY_HOST_PORT, 
             getApplicationPort() != null ? String.valueOf(getApplicationPort()) : "", false);
-        setServiceProperty(SDK42QueryProcessor.PROPERTY_HOST_HTTPS, String.valueOf(isUseHttps()), false);
+        setCql1ProcessorProperty(SDK42QueryProcessor.PROPERTY_HOST_HTTPS, String.valueOf(isUseHttps()), false);
+        
+        // set service properties required by the CQL 2 query processor
+        setCql2ProcessorProperty(SDK42CQL2QueryProcessor.PROPERTY_APPLICATION_NAME, getApplicationName(), false);
+        setCql2ProcessorProperty(SDK42CQL2QueryProcessor.PROPERTY_USE_LOCAL_API, String.valueOf(isLocalApi()), false);
+        setCql2ProcessorProperty(SDK42CQL2QueryProcessor.PROPERTY_HOST_NAME, 
+            getApplicationHostname() != null ? getApplicationHostname() : "", false);
+        setCql2ProcessorProperty(SDK42CQL2QueryProcessor.PROPERTY_HOST_PORT, 
+            getApplicationPort() != null ? String.valueOf(getApplicationPort()) : "", false);
+        setCql2ProcessorProperty(SDK42CQL2QueryProcessor.PROPERTY_HOST_HTTPS, String.valueOf(isUseHttps()), false);
+        
         // store the information about the local and remote client dirs
         setStyleProperty(StyleProperties.SDK_REMOTE_CLIENT_DIR, getRemoteClientDir() != null ? getRemoteClientDir() : "");
         setStyleProperty(StyleProperties.SDK_LOCAL_CLIENT_DIR, getLocalClientDir() != null ? getLocalClientDir() : "");

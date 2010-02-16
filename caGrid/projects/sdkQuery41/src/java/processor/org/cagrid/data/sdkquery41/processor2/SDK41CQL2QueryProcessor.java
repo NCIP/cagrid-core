@@ -40,24 +40,28 @@ import org.hibernate.cfg.Configuration;
 
 
 public class SDK41CQL2QueryProcessor extends CQL2QueryProcessor {
-    // configuration property keys
+
+    // general configuration options
     public static final String PROPERTY_APPLICATION_NAME = "applicationName";
     public static final String PROPERTY_USE_LOCAL_API = "useLocalApiFlag";
-    public static final String PROPERTY_ORM_JAR_NAME = "ormJarName"; // only for local
-    public static final String PROPERTY_HOST_NAME = "applicationHostName"; // only for remote
-    public static final String PROPERTY_HOST_PORT = "applicationHostPort"; // only for remote
-    public static final String PROPERTY_CASE_INSENSITIVE_QUERYING = "queryCaseInsensitive";
+    
+    // remote service configuration properties
+    public static final String PROPERTY_HOST_NAME = "applicationHostName";
+    public static final String PROPERTY_HOST_PORT = "applicationHostPort";
+    public static final String PROPERTY_HOST_HTTPS = "useHttpsUrl";
+    
+    // security configuration properties
     public static final String PROPERTY_USE_LOGIN = "useServiceLogin";
     public static final String PROPERTY_USE_GRID_IDENTITY_LOGIN = "useGridIdentityLogin";
     public static final String PROPERTY_STATIC_LOGIN_USERNAME = "staticLoginUsername";
     public static final String PROPERTY_STATIC_LOGIN_PASSWORD = "staticLoginPassword";
-
+    
     // default values for properties
+    public static final String DEFAULT_HOST_HTTPS = String.valueOf(false);
     public static final String DEFAULT_USE_LOCAL_API = String.valueOf(false);
-    public static final String DEFAULT_CASE_INSENSITIVE_QUERYING = String.valueOf(false);
     public static final String DEFAULT_USE_LOGIN = String.valueOf(false);
     public static final String DEFAULT_USE_GRID_IDENTITY_LOGIN = String.valueOf(false);
-
+    
     public static final String EMPTY_PASSWORD = "EMPTYPASSWORD";
 
     private static Log LOG = LogFactory.getLog(SDK41CQL2QueryProcessor.class);
@@ -76,9 +80,7 @@ public class SDK41CQL2QueryProcessor extends CQL2QueryProcessor {
         props.setProperty(PROPERTY_APPLICATION_NAME, "");
         props.setProperty(PROPERTY_HOST_NAME, "");
         props.setProperty(PROPERTY_HOST_PORT, "");
-        props.setProperty(PROPERTY_ORM_JAR_NAME, "");
         props.setProperty(PROPERTY_USE_LOCAL_API, DEFAULT_USE_LOCAL_API);
-        props.setProperty(PROPERTY_CASE_INSENSITIVE_QUERYING, DEFAULT_CASE_INSENSITIVE_QUERYING);
         props.setProperty(PROPERTY_USE_LOGIN, DEFAULT_USE_LOGIN);
         props.setProperty(PROPERTY_USE_GRID_IDENTITY_LOGIN, DEFAULT_USE_GRID_IDENTITY_LOGIN);
         props.setProperty(PROPERTY_STATIC_LOGIN_USERNAME, "");
@@ -229,7 +231,7 @@ public class SDK41CQL2QueryProcessor extends CQL2QueryProcessor {
             config.configure();
             configStream.close();
             TypesInformationResolver resolver = new HibernateConfigTypesInformationResolver(config);
-            cqlTranslator = new CQL2ToParameterizedHQL(resolver, useCaseInsensitiveQueries());
+            cqlTranslator = new CQL2ToParameterizedHQL(resolver, false);
         }
         return cqlTranslator;
     }
@@ -336,9 +338,8 @@ public class SDK41CQL2QueryProcessor extends CQL2QueryProcessor {
 
 
     private ApplicationService getApplicationService() throws QueryProcessingException {
-        LOG.debug("Obtaining application service instance");
         ApplicationService service = null;
-
+        
         boolean useLocal = useLocalApplicationService();
         boolean useLogin = useServiceLogin();
         boolean useStaticLogin = useStaticLogin();
@@ -347,37 +348,33 @@ public class SDK41CQL2QueryProcessor extends CQL2QueryProcessor {
             String passwd = null;
             if (useLogin) {
                 if (useStaticLogin) {
-                    LOG.trace("Application service using static login");
                     username = getConfiguredParameters().getProperty(PROPERTY_STATIC_LOGIN_USERNAME);
                     passwd = username = getConfiguredParameters().getProperty(PROPERTY_STATIC_LOGIN_PASSWORD);
                 } else {
-                    LOG.trace("Application service using caller identity login");
                     SecurityManager securityManager = SecurityManager.getManager();
                     username = securityManager.getCaller();
                     passwd = EMPTY_PASSWORD;
                 }
             }
-
+            
             if (useLocal) {
-                LOG.trace("Application service using local API");
                 if (useLogin) {
                     service = ApplicationServiceProvider.getApplicationService(username, passwd);
                 } else {
-                    service = ApplicationServiceProvider.getApplicationService();
+                    service = ApplicationServiceProvider.getApplicationService();   
                 }
             } else {
                 String url = getRemoteApplicationUrl();
-                LOG.trace("Application service using remote API at " + url);
                 if (useLogin) {
                     service = ApplicationServiceProvider.getApplicationServiceFromUrl(url, username, passwd);
                 } else {
-                    service = ApplicationServiceProvider.getApplicationServiceFromUrl(url);
+                    service = ApplicationServiceProvider.getApplicationServiceFromUrl(url);   
                 }
             }
         } catch (Exception ex) {
             throw new QueryProcessingException("Error obtaining application service instance: " + ex.getMessage(), ex);
         }
-
+        
         return service;
     }
 
@@ -400,16 +397,6 @@ public class SDK41CQL2QueryProcessor extends CQL2QueryProcessor {
         urlPart += "/";
         urlPart += getConfiguredParameters().getProperty(PROPERTY_APPLICATION_NAME);
         return urlPart;
-    }
-
-
-    private boolean useCaseInsensitiveQueries() throws QueryProcessingException {
-        String caseInsensitiveValue = getConfiguredParameters().getProperty(PROPERTY_CASE_INSENSITIVE_QUERYING);
-        try {
-            return Boolean.parseBoolean(caseInsensitiveValue);
-        } catch (Exception ex) {
-            throw new QueryProcessingException("Error determining case insensitivity: " + ex.getMessage(), ex);
-        }
     }
 
 

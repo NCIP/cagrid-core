@@ -1,8 +1,8 @@
 package org.cagrid.data.sdkquery42.style.wizard.config;
 
 import gov.nih.nci.cagrid.common.Utils;
-import gov.nih.nci.cagrid.data.DataServiceConstants;
 import gov.nih.nci.cagrid.data.ExtensionDataUtils;
+import gov.nih.nci.cagrid.data.QueryProcessorConstants;
 import gov.nih.nci.cagrid.data.extension.Data;
 import gov.nih.nci.cagrid.introduce.IntroduceConstants;
 import gov.nih.nci.cagrid.introduce.beans.ServiceDescription;
@@ -83,16 +83,23 @@ public abstract class AbstractStyleConfigurationStep {
     }
     
     
-    protected void setServiceProperty(String shortKey, String value, boolean fromEtc) {
+    protected void setCql1ProcessorProperty(String shortKey, String value, boolean fromEtc) {
         ServiceDescription desc = getServiceInformation().getServiceDescriptor();
         CommonTools.setServiceProperty(desc,
-            DataServiceConstants.QUERY_PROCESSOR_CONFIG_PREFIX + shortKey, value, fromEtc);
+            QueryProcessorConstants.QUERY_PROCESSOR_CONFIG_PREFIX + shortKey, value, fromEtc);
     }
     
     
-    protected String getServicePropertyValue(String shortKey) {
+    protected void setCql2ProcessorProperty(String shortKey, String value, boolean fromEtc) {
         ServiceDescription desc = getServiceInformation().getServiceDescriptor();
-        String longKey = DataServiceConstants.QUERY_PROCESSOR_CONFIG_PREFIX + shortKey;
+        CommonTools.setServiceProperty(desc,
+            QueryProcessorConstants.CQL2_QUERY_PROCESSOR_CONFIG_PREFIX + shortKey, value, fromEtc);
+    }
+    
+    
+    protected String getCql1ProcessorPropertyValue(String shortKey) {
+        ServiceDescription desc = getServiceInformation().getServiceDescriptor();
+        String longKey = QueryProcessorConstants.QUERY_PROCESSOR_CONFIG_PREFIX + shortKey;
         String value = null;
         if (CommonTools.servicePropertyExists(desc, longKey)) {
             try {
@@ -104,7 +111,23 @@ public abstract class AbstractStyleConfigurationStep {
         }
         return value;
     }
-        
+    
+    
+    protected String getCql2ProcessorPropertyValue(String shortKey) {
+        ServiceDescription desc = getServiceInformation().getServiceDescriptor();
+        String longKey = QueryProcessorConstants.CQL2_QUERY_PROCESSOR_CONFIG_PREFIX + shortKey;
+        String value = null;
+        if (CommonTools.servicePropertyExists(desc, longKey)) {
+            try {
+                value = CommonTools.getServicePropertyValue(desc, longKey);
+            } catch (Exception ex) {
+                System.err.println("Error retrieving service property: " + ex.getMessage());
+                ex.printStackTrace();
+            }
+        }
+        return value;
+    }
+    
     
     protected String getStyleProperty(String key) throws IOException {
         return getStyleProperties().getProperty(key);

@@ -28,25 +28,11 @@ import org.cagrid.grape.utils.CompositeErrorDialog;
  */
 public class SDK41InitialConfigurationStep extends AbstractStyleConfigurationStep {
     
-    // private String cql1ProcessorClassName = null;
-    // private String cql2ProcessorClassName = null;
     private File styleLibDirectory = null;
 
     public SDK41InitialConfigurationStep(ServiceInformation serviceInfo) {
         super(serviceInfo);
     }
-    
-    
-    /*
-    public void setCql1ProcessorClassName(String className) {
-        this.cql1ProcessorClassName = className;
-    }
-    
-    
-    public void setCql2ProcessorClassName(String className) {
-        this.cql2ProcessorClassName = className;
-    }
-    */
     
     
     public void setStyleLibDirectory(File dir) {
@@ -85,7 +71,7 @@ public class SDK41InitialConfigurationStep extends AbstractStyleConfigurationSte
             CompositeErrorDialog.showErrorDialog("Error adding the library to the service information", ex);
             return;
         }
-        // add the query processor class name as a service property
+        // add the query processor class names as a service properties
         CommonTools.setServiceProperty(getServiceInformation().getServiceDescriptor(),
             QueryProcessorConstants.QUERY_PROCESSOR_CLASS_PROPERTY, SDK41QueryProcessor.class.getName(), false);
         CommonTools.setServiceProperty(getServiceInformation().getServiceDescriptor(),

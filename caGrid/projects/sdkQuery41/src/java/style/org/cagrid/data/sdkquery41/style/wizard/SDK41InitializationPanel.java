@@ -6,8 +6,6 @@ import gov.nih.nci.cagrid.introduce.common.ServiceInformation;
 
 import java.io.File;
 
-import org.cagrid.data.sdkquery41.processor.SDK41QueryProcessor;
-import org.cagrid.data.sdkquery41.processor2.SDK41CQL2QueryProcessor;
 import org.cagrid.data.sdkquery41.style.common.SDK41StyleConstants;
 import org.cagrid.data.sdkquery41.style.wizard.config.SDK41InitialConfigurationStep;
 import org.cagrid.grape.utils.CompositeErrorDialog;

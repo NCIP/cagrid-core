@@ -76,7 +76,7 @@ public class SchemaMappingConfigStep extends AbstractStyleConfigurationStep {
         File schemaDir = getServiceSchemaDirectory();
         
         // the sdk generates an <applicationName>-schema.jar which contains the XSDs
-        String applicationName = getServicePropertyValue(SDK42QueryProcessor.PROPERTY_APPLICATION_NAME);
+        String applicationName = getCql1ProcessorPropertyValue(SDK42QueryProcessor.PROPERTY_APPLICATION_NAME);
         File serviceLibDir = new File(getServiceInformation().getBaseDirectory(), "lib");
         File schemasJarFile = new File(serviceLibDir, applicationName + "-schema.jar");
         JarFile schemasJar = new JarFile(schemasJarFile);

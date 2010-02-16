@@ -136,7 +136,7 @@ public class DomainModelConfigurationStep extends AbstractStyleConfigurationStep
         // save the domain model to the service's etc dir
         File etcDir = new File(
             getServiceInformation().getBaseDirectory(), "etc");
-        String applicationName = getServicePropertyValue(SDK42QueryProcessor.PROPERTY_APPLICATION_NAME);
+        String applicationName = getCql1ProcessorPropertyValue(SDK42QueryProcessor.PROPERTY_APPLICATION_NAME);
         File generatedModelFile = new File(etcDir, applicationName + "_domainModel.xml");
         FileWriter modelWriter = new FileWriter(generatedModelFile);
         MetadataUtils.serializeDomainModel(generatedModel, modelWriter);

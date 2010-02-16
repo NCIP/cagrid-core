@@ -1,8 +1,9 @@
 package org.cagrid.data.sdkquery42.style.wizard.config;
 
-import org.cagrid.data.sdkquery42.processor.SDK42QueryProcessor;
-
 import gov.nih.nci.cagrid.introduce.common.ServiceInformation;
+
+import org.cagrid.data.sdkquery42.processor.SDK42QueryProcessor;
+import org.cagrid.data.sdkquery42.processor2.SDK42CQL2QueryProcessor;
 
 public class SecurityConfigurationStep extends AbstractStyleConfigurationStep {
     
@@ -17,14 +18,25 @@ public class SecurityConfigurationStep extends AbstractStyleConfigurationStep {
 
 
     public void applyConfiguration() throws Exception {
-        setServiceProperty(SDK42QueryProcessor.PROPERTY_USE_STATIC_LOGIN, 
+        // CQL 1 processor config
+        setCql1ProcessorProperty(SDK42QueryProcessor.PROPERTY_USE_STATIC_LOGIN, 
             String.valueOf(isUseStaticLogin()), false);
-        setServiceProperty(SDK42QueryProcessor.PROPERTY_USE_GRID_IDENTITY_LOGIN, 
+        setCql1ProcessorProperty(SDK42QueryProcessor.PROPERTY_USE_GRID_IDENTITY_LOGIN, 
             String.valueOf(isUseCsmGridIdent()), false);
-        setServiceProperty(SDK42QueryProcessor.PROPERTY_STATIC_LOGIN_PASS, 
+        setCql1ProcessorProperty(SDK42QueryProcessor.PROPERTY_STATIC_LOGIN_PASS, 
             getStaticLoginPass() != null ? getStaticLoginPass() : "", false);
-        setServiceProperty(SDK42QueryProcessor.PROPERTY_STATIC_LOGIN_USER, 
+        setCql1ProcessorProperty(SDK42QueryProcessor.PROPERTY_STATIC_LOGIN_USER, 
             getStaticLoginUser() != null ? getStaticLoginUser() : "", false);
+        // CQL 2 processor config
+        setCql2ProcessorProperty(SDK42CQL2QueryProcessor.PROPERTY_USE_STATIC_LOGIN,
+            String.valueOf(isUseStaticLogin()), false);
+        setCql2ProcessorProperty(SDK42CQL2QueryProcessor.PROPERTY_USE_GRID_IDENTITY_LOGIN, 
+            String.valueOf(isUseCsmGridIdent()), false);
+        setCql2ProcessorProperty(SDK42CQL2QueryProcessor.PROPERTY_STATIC_LOGIN_PASS, 
+            getStaticLoginPass() != null ? getStaticLoginPass() : "", false);
+        setCql2ProcessorProperty(SDK42CQL2QueryProcessor.PROPERTY_STATIC_LOGIN_USER, 
+            getStaticLoginUser() != null ? getStaticLoginUser() : "", false);
+
     }
 
 
@@ -71,7 +83,7 @@ public class SecurityConfigurationStep extends AbstractStyleConfigurationStep {
     public boolean isUsingLocalApi() {
         boolean usingLocal = false;
         try {
-            String usingLocalValue = getServicePropertyValue(SDK42QueryProcessor.PROPERTY_USE_LOCAL_API);
+            String usingLocalValue = getCql1ProcessorPropertyValue(SDK42QueryProcessor.PROPERTY_USE_LOCAL_API);
             usingLocal = Boolean.parseBoolean(usingLocalValue);
         } catch (Exception ex) {
             ex.printStackTrace();

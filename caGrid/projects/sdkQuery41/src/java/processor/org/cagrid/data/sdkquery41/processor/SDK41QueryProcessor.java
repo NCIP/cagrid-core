@@ -191,9 +191,7 @@ public class SDK41QueryProcessor extends CQLQueryProcessor {
         
         return service;
     }
-    
-
-    
+        
     
     private Mappings getClassToQnameMappings() throws Exception {
         // get the mapping file name

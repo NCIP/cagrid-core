@@ -1,14 +1,12 @@
 package org.cagrid.data.sdkquery41.style.wizard.config;
 
 import gov.nih.nci.cagrid.common.Utils;
-import gov.nih.nci.cagrid.data.DataServiceConstants;
-import gov.nih.nci.cagrid.introduce.beans.ServiceDescription;
-import gov.nih.nci.cagrid.introduce.common.CommonTools;
 import gov.nih.nci.cagrid.introduce.common.ServiceInformation;
 
 import java.io.File;
 
 import org.cagrid.data.sdkquery41.processor.SDK41QueryProcessor;
+import org.cagrid.data.sdkquery41.processor2.SDK41CQL2QueryProcessor;
 
 public class APITypeConfigurationStep extends AbstractStyleConfigurationStep {
     
@@ -24,18 +22,25 @@ public class APITypeConfigurationStep extends AbstractStyleConfigurationStep {
 
     public void applyConfiguration() throws Exception {
         // set service properties
-        ServiceDescription desc = getServiceInformation().getServiceDescriptor();
-        CommonTools.setServiceProperty(desc, 
-            DataServiceConstants.QUERY_PROCESSOR_CONFIG_PREFIX + SDK41QueryProcessor.PROPERTY_USE_LOCAL_API, 
+        setCql1ProcessorProperty(SDK41QueryProcessor.PROPERTY_USE_LOCAL_API,
             apiType != null ? String.valueOf(apiType == ApiType.LOCAL_API) : SDK41QueryProcessor.DEFAULT_USE_LOCAL_API, false);
-        CommonTools.setServiceProperty(desc,
-            DataServiceConstants.QUERY_PROCESSOR_CONFIG_PREFIX + SDK41QueryProcessor.PROPERTY_HOST_NAME,
+        setCql2ProcessorProperty(SDK41CQL2QueryProcessor.PROPERTY_USE_LOCAL_API,
+            apiType != null ? String.valueOf(apiType == ApiType.LOCAL_API) : SDK41QueryProcessor.DEFAULT_USE_LOCAL_API, false);
+        setCql1ProcessorProperty(SDK41QueryProcessor.PROPERTY_HOST_NAME,
             hostname != null ? hostname : "", false);
-        CommonTools.setServiceProperty(desc,
-            DataServiceConstants.QUERY_PROCESSOR_CONFIG_PREFIX + SDK41QueryProcessor.PROPERTY_HOST_PORT,
+        setCql2ProcessorProperty(SDK41CQL2QueryProcessor.PROPERTY_HOST_NAME,
+            hostname != null ? hostname : "", false);
+        setCql1ProcessorProperty(
+            SDK41QueryProcessor.PROPERTY_HOST_PORT,
             portNumber != null ? String.valueOf(portNumber) : "", false);
-        CommonTools.setServiceProperty(desc,
-            DataServiceConstants.QUERY_PROCESSOR_CONFIG_PREFIX + SDK41QueryProcessor.PROPERTY_HOST_HTTPS,
+        setCql2ProcessorProperty(
+            SDK41CQL2QueryProcessor.PROPERTY_HOST_PORT,
+            portNumber != null ? String.valueOf(portNumber) : "", false);
+        setCql1ProcessorProperty(
+            SDK41QueryProcessor.PROPERTY_HOST_HTTPS,
+            useHttps != null ? String.valueOf(useHttps) : SDK41QueryProcessor.DEFAULT_HOST_HTTPS, false);
+        setCql2ProcessorProperty(
+            SDK41CQL2QueryProcessor.PROPERTY_HOST_HTTPS,
             useHttps != null ? String.valueOf(useHttps) : SDK41QueryProcessor.DEFAULT_HOST_HTTPS, false);
         // copy the right config jar into the service's lib dir
         File libDir = new File(getServiceInformation().getBaseDirectory(), "lib");
