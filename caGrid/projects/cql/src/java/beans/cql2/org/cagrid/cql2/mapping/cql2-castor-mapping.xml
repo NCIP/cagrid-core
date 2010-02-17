@@ -1,0 +1,333 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mapping xmlns="http://castor.exolab.org/" xmlns:cst="http://castor.exolab.org/">
+  <description xmlns="">CQL 2 Castor Mapping File</description>
+  <!-- Do I need this here?? wth? -->
+  <class name="javax.xml.namespace.QName">
+    <description xmlns="">Default mapping for class javax.xml.namespace.QName</description>
+    <map-to xml="QName" />
+    <field name="localPart" type="java.lang.String">
+      <bind-xml name="local-part" node="element" />
+    </field>
+    <field name="namespaceURI" type="java.lang.String">
+      <bind-xml name="namespace-uRI" node="element" />
+    </field>
+    <field name="prefix" type="java.lang.String">
+      <bind-xml name="prefix" node="element" />
+    </field>
+  </class>
+  
+  
+  <class name="org.cagrid.cql2.results.CQLAggregateResult">
+    <description xmlns="">Default mapping for class org.cagrid.cql2.results.CQLAggregateResult</description>
+    <map-to xml="CQLAggregateResult" />
+    <field name="attributeName" type="java.lang.String">
+      <bind-xml name="attributeName" node="attribute" />
+    </field>
+    <field name="value" type="java.lang.String">
+      <bind-xml name="value" node="attribute" />
+    </field>
+  </class>
+  <class name="org.cagrid.cql2.BinaryPredicate">
+    <description xmlns="">Default mapping for class org.cagrid.cql2.BinaryPredicate</description>
+    <map-to xml="BinaryPredicate" />
+    <field name="value" type="java.lang.String">
+      <bind-xml name="value" node="text" />
+    </field>
+  </class>
+  <class name="org.cagrid.cql2.CQLObject">
+    <description xmlns="">Default mapping for class org.cagrid.cql2.CQLObject</description>
+    <map-to xml="CQLObject" />
+    <field name="CQLExtension" type="org.cagrid.cql2.CQLExtension">
+      <bind-xml name="CQLExtension" node="element" />
+    </field>
+    <field name="className" type="java.lang.String">
+      <bind-xml name="className" node="attribute" />
+    </field>
+    <field name="CQLAttribute" type="org.cagrid.cql2.CQLAttribute">
+      <bind-xml name="CQLAttribute" node="element" />
+    </field>
+    <field name="CQLGroup" type="org.cagrid.cql2.CQLGroup">
+      <bind-xml name="CQLGroup" node="element" />
+    </field>
+    <field name="CQLAssociatedObject" type="org.cagrid.cql2.CQLAssociatedObject">
+      <bind-xml name="CQLAssociatedObject" node="element" />
+    </field>
+    <field name="_instanceof" type="java.lang.String">
+      <bind-xml name="instanceof" node="attribute" />
+    </field>
+  </class>
+  <class name="org.cagrid.cql2.results.TargetAttribute">
+    <description xmlns="">Default mapping for class org.cagrid.cql2.results.TargetAttribute</description>
+    <map-to xml="TargetAttribute" />
+    <field name="name" type="java.lang.String">
+      <bind-xml name="name" node="attribute" />
+    </field>
+    <field name="value" type="java.lang.String">
+      <bind-xml name="value" node="attribute" />
+    </field>
+  </class>
+  <class name="org.cagrid.cql2.extensionsupport.SupportedExtensions">
+    <description xmlns="">Default mapping for class org.cagrid.cql2.extensionsupport.SupportedExtensions</description>
+    <map-to xml="SupportedExtensions" />
+    <field name="attributeExtension" type="javax.xml.namespace.QName" collection="array">
+      <bind-xml name="AttributeExtension" node="element" />
+    </field>
+    <field name="modifierExtension" type="javax.xml.namespace.QName" collection="array">
+      <bind-xml name="ModifierExtension" node="element" />
+    </field>
+    <field name="objectExtension" type="javax.xml.namespace.QName" collection="array">
+      <bind-xml name="ObjectExtension" node="element" />
+    </field>
+    <field name="resultExtension" type="javax.xml.namespace.QName" collection="array">
+      <bind-xml name="ResultExtension" node="element" />
+    </field>
+  </class>
+  <class name="org.cagrid.cql2.CQLTargetObject">
+    <description xmlns="">Default mapping for class org.cagrid.cql2.CQLTargetObject</description>
+    <map-to xml="CQLTargetObject" />
+    <field name="CQLExtension" type="org.cagrid.cql2.CQLExtension">
+      <bind-xml name="CQLExtension" node="element" />
+    </field>
+    <field name="className" type="java.lang.String">
+      <bind-xml name="className" node="attribute" />
+    </field>
+    <field name="CQLAttribute" type="org.cagrid.cql2.CQLAttribute">
+      <bind-xml name="CQLAttribute" node="element" />
+    </field>
+    <field name="CQLGroup" type="org.cagrid.cql2.CQLGroup">
+      <bind-xml name="CQLGroup" node="element" />
+    </field>
+    <field name="CQLAssociatedObject" type="org.cagrid.cql2.CQLAssociatedObject">
+      <bind-xml name="CQLAssociatedObject" node="element" />
+    </field>
+    <field name="_instanceof" type="java.lang.String">
+      <bind-xml name="instanceof" node="attribute" />
+    </field>
+  </class>
+  <class name="org.cagrid.cql2.GroupLogicalOperator">
+    <description xmlns="">Default mapping for class org.cagrid.cql2.GroupLogicalOperator</description>
+    <map-to xml="GroupLogicalOperator" />
+    <field name="value" type="java.lang.String">
+      <bind-xml name="value" node="text" />
+    </field>
+  </class>
+  <class name="org.cagrid.cql2.CQLExtension">
+    <description xmlns="">Default mapping for class org.cagrid.cql2.CQLExtension</description>
+    <map-to xml="CQLExtension" />
+    <field name="mustUnderstand" type="java.lang.Boolean">
+      <bind-xml name="mustUnderstand" node="attribute" />
+    </field>
+  </class>
+  <class name="org.cagrid.cql2.CQLQueryModifier">
+    <description xmlns="">Default mapping for class org.cagrid.cql2.CQLQueryModifier</description>
+    <map-to xml="CQLQueryModifier" />
+    <field name="distinctAttribute" type="org.cagrid.cql2.DistinctAttribute">
+      <bind-xml name="DistinctAttribute" node="element" />
+    </field>
+    <field name="modifierExtension" type="org.cagrid.cql2.CQLExtension">
+      <bind-xml name="ModifierExtension" node="element" />
+    </field>
+    <field name="countOnly" type="java.lang.Boolean">
+      <bind-xml name="CountOnly" node="element" />
+    </field>
+    <field name="namedAttribute" type="org.cagrid.cql2.NamedAttribute" collection="array">
+      <bind-xml name="NamedAttribute" node="element" />
+    </field>
+  </class>
+  <class name="org.cagrid.cql2.results.CQLQueryResults">
+    <description xmlns="">Default mapping for class org.cagrid.cql2.results.CQLQueryResults</description>
+    <map-to xml="CQLQueryResults" />
+    <field name="extendedResult" type="org.cagrid.cql2.results.ExtendedCQLResult">
+      <bind-xml name="ExtendedResult" node="element" />
+    </field>
+    <field name="objectResult" type="org.cagrid.cql2.results.CQLObjectResult" collection="array">
+      <bind-xml name="ObjectResult" node="element" />
+    </field>
+    <field name="targetClassname" type="java.lang.String">
+      <bind-xml name="targetClassname" node="attribute" />
+    </field>
+    <field name="aggregationResult" type="org.cagrid.cql2.results.CQLAggregateResult">
+      <bind-xml name="AggregationResult" node="element" />
+    </field>
+    <field name="attributeResult" type="org.cagrid.cql2.results.CQLAttributeResult" collection="array">
+      <bind-xml name="AttributeResult" node="element" />
+    </field>
+  </class>
+  <class name="org.cagrid.cql2.CQLQuery">
+    <description xmlns="">Default mapping for class org.cagrid.cql2.CQLQuery</description>
+    <map-to xml="CQLQuery" />
+    <field name="CQLQueryModifier" type="org.cagrid.cql2.CQLQueryModifier">
+      <bind-xml name="CQLQueryModifier" node="element" />
+    </field>
+    <field name="CQLTargetObject" type="org.cagrid.cql2.CQLTargetObject">
+      <bind-xml name="CQLTargetObject" node="element" />
+    </field>
+    <field name="associationPopulationSpecification" type="org.cagrid.cql2.AssociationPopulationSpecification">
+      <bind-xml name="AssociationPopulationSpecification" node="element" />
+    </field>
+  </class>
+  <class name="org.cagrid.cql2.CQLGroup">
+    <description xmlns="">Default mapping for class org.cagrid.cql2.CQLGroup</description>
+    <map-to xml="CQLGroup" />
+    <field name="CQLExtension" type="org.cagrid.cql2.CQLExtension" collection="array">
+      <bind-xml name="CQLExtension" node="element" />
+    </field>
+    <field name="CQLAttribute" type="org.cagrid.cql2.CQLAttribute" collection="array">
+      <bind-xml name="CQLAttribute" node="element" />
+    </field>
+    <field name="CQLGroup" type="org.cagrid.cql2.CQLGroup" collection="array">
+      <bind-xml name="CQLGroup" node="element" />
+    </field>
+    <field name="CQLAssociatedObject" type="org.cagrid.cql2.CQLAssociatedObject" collection="array">
+      <bind-xml name="CQLAssociatedObject" node="element" />
+    </field>
+  </class>
+  <class name="org.cagrid.cql2.CQLAttribute">
+    <description xmlns="">Default mapping for class org.cagrid.cql2.CQLAttribute</description>
+    <map-to xml="CQLAttribute" />
+    <field name="attributeExtension" type="org.cagrid.cql2.CQLExtension">
+      <bind-xml name="AttributeExtension" node="element" />
+    </field>
+    <field name="name" type="java.lang.String">
+      <bind-xml name="name" node="attribute" />
+    </field>
+    <field name="attributeValue" type="org.cagrid.cql2.AttributeValue">
+      <bind-xml name="AttributeValue" node="element" />
+    </field>
+  </class>
+  <class name="org.cagrid.cql2.Aggregation">
+    <description xmlns="">Default mapping for class org.cagrid.cql2.Aggregation</description>
+    <map-to xml="aggregation" />
+    <field name="value" type="java.lang.String">
+      <bind-xml name="value" node="text" />
+    </field>
+  </class>
+  <class name="org.cagrid.cql2.results.ExtendedCQLResult">
+    <description xmlns="">Default mapping for class org.cagrid.cql2.results.ExtendedCQLResult</description>
+    <map-to xml="ExtendedCQLResult" />
+  </class>
+  <class name="org.cagrid.cql2.results.CQLAttributeResult">
+    <description xmlns="">Default mapping for class org.cagrid.cql2.results.CQLAttributeResult</description>
+    <map-to xml="CQLAttributeResult" />
+    <field name="attribute" type="org.cagrid.cql2.results.TargetAttribute" collection="array">
+      <bind-xml name="Attribute" node="element" />
+    </field>
+  </class>
+  <class name="org.cagrid.cql2.UnaryPredicate">
+    <description xmlns="">Default mapping for class org.cagrid.cql2.UnaryPredicate</description>
+    <map-to xml="UnaryPredicate" />
+    <field name="value" type="java.lang.String">
+      <bind-xml name="value" node="text" />
+    </field>
+  </class>
+  <class name="org.cagrid.cql2.DistinctAttribute">
+    <description xmlns="">Default mapping for class org.cagrid.cql2.DistinctAttribute</description>
+    <map-to xml="DistinctAttribute" />
+    <field name="attributeName" type="java.lang.String">
+      <bind-xml name="attributeName" node="attribute" />
+    </field>
+  </class>
+  <class name="org.cagrid.cql2.NamedAssociation">
+    <description xmlns="">Default mapping for class org.cagrid.cql2.NamedAssociation</description>
+    <map-to xml="NamedAssociation" />
+    <field name="populationDepth" type="org.cagrid.cql2.PopulationDepth">
+      <bind-xml name="PopulationDepth" node="element" />
+    </field>
+    <field name="namedAssociationList" type="org.cagrid.cql2.NamedAssociationList">
+      <bind-xml name="NamedAssociationList" node="element" />
+    </field>
+    <field name="endName" type="java.lang.String">
+      <bind-xml name="endNname" node="attribute" />
+    </field>
+    <field name="_instanceof" type="java.lang.String">
+      <bind-xml name="instanceof" node="attribute" />
+    </field>
+  </class>
+  <class name="org.cagrid.cql2.CQLAssociatedObject">
+    <description xmlns="">Default mapping for class org.cagrid.cql2.CQLAssociatedObject</description>
+    <map-to xml="CQLAssociatedObject" />
+    <field name="endName" type="java.lang.String">
+      <bind-xml name="endName" node="attribute" />
+    </field>
+    <field name="CQLExtension" type="org.cagrid.cql2.CQLExtension">
+      <bind-xml name="CQLExtension" node="element" />
+    </field>
+    <field name="className" type="java.lang.String">
+      <bind-xml name="className" node="attribute" />
+    </field>
+    <field name="CQLAttribute" type="org.cagrid.cql2.CQLAttribute">
+      <bind-xml name="CQLAttribute" node="element" />
+    </field>
+    <field name="CQLGroup" type="org.cagrid.cql2.CQLGroup">
+      <bind-xml name="CQLGroup" node="element" />
+    </field>
+    <field name="CQLAssociatedObject" type="org.cagrid.cql2.CQLAssociatedObject">
+      <bind-xml name="CQLAssociatedObject" node="element" />
+    </field>
+    <field name="_instanceof" type="java.lang.String">
+      <bind-xml name="instanceof" node="attribute" />
+    </field>
+  </class>
+  <class name="org.cagrid.cql2.AssociationPopulationSpecification">
+    <description xmlns="">Default mapping for class org.cagrid.cql2.AssociationPopulationSpecification</description>
+    <map-to xml="AssociationPopulationSpecification" />
+    <field name="populationDepth" type="org.cagrid.cql2.PopulationDepth">
+      <bind-xml name="PopulationDepth" node="element" />
+    </field>
+    <field name="namedAssociationList" type="org.cagrid.cql2.NamedAssociationList">
+      <bind-xml name="NamedAssociationList" node="element" />
+    </field>
+  </class>
+  <class name="org.cagrid.cql2.NamedAssociationList">
+    <description xmlns="">Default mapping for class org.cagrid.cql2.NamedAssociationList</description>
+    <map-to xml="NamedAssociationList" />
+    <field name="namedAssociation" type="org.cagrid.cql2.NamedAssociation" collection="array">
+      <bind-xml name="NamedAssociation" node="element" />
+    </field>
+  </class>
+  <class name="org.cagrid.cql2.results.CQLResult">
+    <description xmlns="">Default mapping for class org.cagrid.cql2.results.CQLResult</description>
+    <map-to xml="CQLResult" />
+  </class>
+  <class name="org.cagrid.cql2.results.CQLObjectResult">
+    <description xmlns="">Default mapping for class org.cagrid.cql2.results.CQLObjectResult</description>
+    <map-to xml="CQLObjectResult" />
+  </class>
+  <class name="org.cagrid.cql2.PopulationDepth">
+    <description xmlns="">Default mapping for class org.cagrid.cql2.PopulationDepth</description>
+    <map-to xml="PopulationDepth" />
+    <field name="depth" type="int">
+      <bind-xml name="depth" node="attribute" />
+    </field>
+  </class>
+  <class name="org.cagrid.cql2.PopulationDepth">
+    <description xmlns="">Default mapping for class org.cagrid.cql2.NamedAttribute</description>
+    <map-to xml="PopulationDepth" />
+    <field name="attributeName" type="java.lang.String">
+      <bind-xml name="attributeName" node="attribute" />
+    </field>
+  </class>
+  <class name="org.cagrid.cql2.AttributeValue">
+    <description xmlns="">Default mapping for class org.cagrid.cql2.AttributeValue</description>
+    <map-to xml="AttributeValue" />
+    <field name="stringValue" type="java.lang.String">
+      <bind-xml name="StringValue" node="element" />
+    </field>
+    <field name="integerValue" type="java.lang.Integer">
+      <bind-xml name="IntegerValue" node="element" />
+    </field>
+    <field name="dateValue" type="java.util.Date">
+      <bind-xml name="DateValue" node="element" />
+    </field>
+    <field name="booleanValue" type="java.lang.Boolean">
+      <bind-xml name="BooleanValue" node="element" />
+    </field>
+    <field name="doubleValue" type="java.lang.Double">
+      <bind-xml name="DoubleValue" node="element" />
+    </field>
+    <field name="longValue" type="java.lang.Long">
+      <bind-xml name="LongValue" node="element" />
+    </field>
+  </class>
+</mapping>
+
