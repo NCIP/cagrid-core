@@ -91,7 +91,11 @@ public class IdentifiersNAServiceAuthorization implements PDP {
 		
 	}
 	   				
-	public void authorizeDeleteAllKeys(Subject peerSubject, MessageContext context, QName operation) throws AuthorizationException {
+	public void authorizeGetKeys(Subject peerSubject, MessageContext context, QName operation) throws AuthorizationException {
+		
+	}
+	   				
+	public void authorizeGetKeyValues(Subject peerSubject, MessageContext context, QName operation) throws AuthorizationException {
 		
 	}
 	   
@@ -129,8 +133,11 @@ public class IdentifiersNAServiceAuthorization implements PDP {
 		} else if(operation.getLocalPart().equals("replaceKeys")){
 			authorizeReplaceKeys(peerSubject, context, operation);
 			return true;
-		} else if(operation.getLocalPart().equals("deleteAllKeys")){
-			authorizeDeleteAllKeys(peerSubject, context, operation);
+		} else if(operation.getLocalPart().equals("getKeys")){
+			authorizeGetKeys(peerSubject, context, operation);
+			return true;
+		} else if(operation.getLocalPart().equals("getKeyValues")){
+			authorizeGetKeyValues(peerSubject, context, operation);
 			return true;
 		} 		
 		return false;

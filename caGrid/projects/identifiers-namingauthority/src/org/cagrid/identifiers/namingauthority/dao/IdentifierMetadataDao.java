@@ -29,16 +29,29 @@ import org.cagrid.identifiers.namingauthority.util.SecurityUtil.Access;
 public class IdentifierMetadataDao extends AbstractDao<IdentifierMetadata> {
 	
 	protected static Log LOG = LogFactory.getLog(IdentifierMetadataDao.class.getName());
-	
-	private volatile IdentifierMetadata systemValues = null;
+	private IdentifierMetadata systemValues = null;
+	private URI prefix = null;
 	
     @Override
     public Class<IdentifierMetadata> domainClass() {
         return IdentifierMetadata.class;
     }
-        
-    protected IdentifierMetadata loadIdentifier( final URI localIdentifier ) throws InvalidIdentifierException {
-    	List<IdentifierMetadata> results = getHibernateTemplate().find(
+    
+    public synchronized void initialize( URI prefix ) throws NamingAuthorityConfigurationException {
+    	this.prefix = prefix;
+    	
+   		try {
+   			systemValues = loadLocalIdentifier(SecurityUtil.LOCAL_SYSTEM_IDENTIFIER);
+   		} catch(InvalidIdentifierException e) {
+   			LOG.debug("No system identifier defined");
+   			createSystemIdentifier();
+   		}
+    }
+    
+    public IdentifierMetadata loadLocalIdentifier( final URI localIdentifier ) 
+    	throws InvalidIdentifierException, NamingAuthorityConfigurationException {
+    	
+     	List<IdentifierMetadata> results = getHibernateTemplate().find(
                 "SELECT md FROM " + domainClass().getName() + " md WHERE md.localIdentifier = ?",
                 new Object[]{localIdentifier});
     	
@@ -58,12 +71,18 @@ public class IdentifierMetadataDao extends AbstractDao<IdentifierMetadata> {
         return result;
     }
     
-    public IdentifierValues resolveIdentifier( SecurityInfo secInfo, java.net.URI localIdentifier ) 
-    	throws InvalidIdentifierException, NamingAuthoritySecurityException {
+    public IdentifierMetadata loadIdentifier( URI identifier ) 
+		throws InvalidIdentifierException, NamingAuthorityConfigurationException {
+	
+    	return loadLocalIdentifier(IdentifierUtil.getLocalName(prefix, identifier));
+    }
+	
+    public IdentifierValues resolveIdentifier( SecurityInfo secInfo, java.net.URI identifier ) 
+    	throws InvalidIdentifierException, NamingAuthoritySecurityException, NamingAuthorityConfigurationException {
     	
     	secInfo = validateSecurityInfo(secInfo);
     	
-    	IdentifierMetadata resolvedValues = loadIdentifier( localIdentifier );  
+    	IdentifierMetadata resolvedValues = loadIdentifier( identifier );  
     			
 		IdentifierValues outValues = null;
 		try {
@@ -77,22 +96,57 @@ public class IdentifierMetadataDao extends AbstractDao<IdentifierMetadata> {
 		return outValues;
     }
 
+    public String[] getKeys( SecurityInfo secInfo, java.net.URI identifier ) 
+		throws 
+			InvalidIdentifierException, 
+			NamingAuthoritySecurityException, 
+			NamingAuthorityConfigurationException {
+    	
+    	IdentifierValues values = resolveIdentifier( secInfo, identifier );
+    	if (values != null) {
+    		return values.getKeys();
+    	}
+    	
+    	return null;
+    }
+    
+    public String[] getKeyValues( SecurityInfo secInfo, URI identifier, String key) 
+    	throws 
+    		InvalidIdentifierException, 
+    		NamingAuthoritySecurityException, 
+    		NamingAuthorityConfigurationException {
+    	
+    	IdentifierValues values = resolveIdentifier(secInfo, identifier);
+    	if (values != null && values.getValues(key) != null) {
+    		List<String> valList = values.getValues(key).getValues();
+    		if (valList != null) {
+    			return (String[]) valList.toArray(new String[valList.size()]);
+    		}
+    	}
+    	return null;
+    }
+    
 	public void createIdentifier(SecurityInfo secInfo, URI localIdentifier, IdentifierValues ivalues) 
 		throws InvalidIdentifierException, NamingAuthorityConfigurationException, NamingAuthoritySecurityException {
 		
 		secInfo = validateSecurityInfo(secInfo);
 		
     	createIdentifierSecurityChecks(secInfo);
-    	
-        save(IdentifierUtil.convert(localIdentifier, ivalues));
+        
+    	save(IdentifierUtil.convert(localIdentifier, ivalues));
 	}
 	
-	public void createKeys(SecurityInfo secInfo, URI localIdentifier, IdentifierValues values) 
-		throws InvalidIdentifierException, NamingAuthoritySecurityException, InvalidIdentifierValuesException {
+	public void createKeys(SecurityInfo secInfo, URI identifier, IdentifierValues values) 
+		throws 
+			InvalidIdentifierException, 
+			NamingAuthoritySecurityException, 
+			InvalidIdentifierValuesException, 
+			NamingAuthorityConfigurationException {
 
 		secInfo = validateSecurityInfo(secInfo);
 		
-		IdentifierMetadata resolvedValues = loadIdentifier(localIdentifier);
+		URI localIdentifier = IdentifierUtil.getLocalName(prefix, identifier);
+		IdentifierMetadata resolvedValues = loadLocalIdentifier(localIdentifier);
 		
 		writeKeysSecurityChecks(secInfo, "createKeys", resolvedValues);
 		
@@ -102,70 +156,40 @@ public class IdentifierMetadataDao extends AbstractDao<IdentifierMetadata> {
 			IdentifierValueKey ivk = IdentifierUtil.convert(key, values);
 			if (valueKeys.contains(ivk)) {
 				throw new InvalidIdentifierValuesException("Key [" + key 
-						+ "] already exists for local identifier [" 
-						+ localIdentifier.normalize().toString() 
+						+ "] already exists for identifier [" 
+						+ identifier.normalize().toString() 
 						+ "]");
 			}
 			valueKeys.add(ivk);
 		}
 
 		save(resolvedValues);
+		
+		if (SecurityUtil.isSystemIdentifier(localIdentifier)) {
+			replaceSystemValues(secInfo, resolvedValues);
+		}
 	}
-	
-	public void deleteAllKeys(SecurityInfo secInfo, URI localIdentifier) 
+
+	public void deleteKeys(SecurityInfo secInfo, URI identifier, String[] keyList) 
 		throws 
 			InvalidIdentifierException, 
 			NamingAuthoritySecurityException, 
-			InvalidIdentifierValuesException {
-		
-		secInfo = validateSecurityInfo(secInfo);
-
-		IdentifierMetadata resolvedValues = loadIdentifier(localIdentifier);
-
-		Collection<IdentifierValueKey> valueCol = resolvedValues.getValues();
-		if (valueCol == null || valueCol.size() == 0) {
-			// Identifier has nothing already
-			return;
-		}
-
-		writeKeysSecurityChecks(secInfo, "deleteAllKeys", resolvedValues);
-
-		LOG.warn("User [" + secInfo.getUser() + "] deleting all keys for identifier [" + localIdentifier.toString() + "]");
-
-		List<IdentifierValueKey> keysToDelete = new ArrayList<IdentifierValueKey>();
-		
-		for( IdentifierValueKey ivk : valueCol) {
-			if (Keys.isAdminKey(ivk.getKey())) {
-				LOG.debug("Won't remove key [" + ivk.getKey() + "]");
-				// "ADMIN" keys can't be deleted using this API
-				continue;
-			}
-			keysToDelete.add(ivk);
-		}
-
-		if (keysToDelete.size() > 0) {
-			getHibernateTemplate().deleteAll(keysToDelete);
-		}
-	}
-		
-	public void deleteKeys(SecurityInfo secInfo, URI localIdentifier, String[] keyList) 
-		throws 
-			InvalidIdentifierException, 
-			NamingAuthoritySecurityException, 
-			InvalidIdentifierValuesException {
+			InvalidIdentifierValuesException, 
+			NamingAuthorityConfigurationException {
 
 		secInfo = validateSecurityInfo(secInfo);
 		
-		IdentifierMetadata resolvedValues = loadIdentifier(localIdentifier);
+		URI localIdentifier = IdentifierUtil.getLocalName(prefix, identifier);
+		IdentifierMetadata resolvedValues = loadLocalIdentifier(localIdentifier);
 	
 		if (resolvedValues.getValues() == null || resolvedValues.getValues().size() == 0) {
-			throw new InvalidIdentifierValuesException("Local identifier [" 
-					+ localIdentifier + "] has no keys");
+			throw new InvalidIdentifierValuesException("Identifier [" 
+					+ identifier + "] has no keys");
 		}
 
 		writeKeysSecurityChecks(secInfo, "deleteKeys", resolvedValues);
 
-		LOG.warn("User [" + secInfo.getUser() + "] deleting some keys for identifier [" + localIdentifier.toString() + "]");
+		LOG.warn("User [" + secInfo.getUser() + "] deleting some keys for identifier [" + identifier.toString() + "]");
 
 		List<IdentifierValueKey> keysToDelete = new ArrayList<IdentifierValueKey>();	
 		ArrayList<String> keyNames = new ArrayList<String>(Arrays.asList(keyList));
@@ -181,45 +205,102 @@ public class IdentifierMetadataDao extends AbstractDao<IdentifierMetadata> {
 		if (keysToDelete.size() > 0) {
 			getHibernateTemplate().deleteAll(keysToDelete);
 		}
+		
+		if (SecurityUtil.isSystemIdentifier(localIdentifier)) {
+			replaceSystemValues(secInfo, resolvedValues);
+		}
 	}
 	
-	public void replaceKeys(SecurityInfo secInfo, URI localIdentifier, IdentifierValues values) 
-		throws InvalidIdentifierException, NamingAuthoritySecurityException, InvalidIdentifierValuesException {
+	public void replaceKeys(SecurityInfo secInfo, URI identifier, IdentifierValues values) 
+		throws 
+			InvalidIdentifierException, 
+			NamingAuthoritySecurityException, 
+			InvalidIdentifierValuesException, 
+			NamingAuthorityConfigurationException {
 
 		secInfo = validateSecurityInfo(secInfo);
 
-		IdentifierMetadata resolvedValues = loadIdentifier( localIdentifier );
+		URI localIdentifier = IdentifierUtil.getLocalName(prefix, identifier);
+		IdentifierMetadata resolvedValues = loadLocalIdentifier(localIdentifier);
 		
 		if (resolvedValues.getValues() == null || resolvedValues.getValues().size() == 0) {
-			throw new InvalidIdentifierValuesException("Local identifier [" 
-					+ localIdentifier + "] has no keys");
+			throw new InvalidIdentifierValuesException("Identifier [" 
+					+ identifier + "] has no keys");
 		}
 
 		try {
-			replaceKeysSecurityChecks(secInfo, localIdentifier, resolvedValues, values);
+			replaceKeysSecurityChecks(secInfo, identifier, resolvedValues, values);
 		} catch (URISyntaxException e) {
 			e.printStackTrace();
 			throw new NamingAuthoritySecurityException(e.getMessage() 
 					+ " " + IdentifierUtil.getStackTrace(e));
 		}
+		
+		if (SecurityUtil.isSystemIdentifier(localIdentifier)) {
+			replaceSystemValues(secInfo, resolvedValues);
+		}
 	}
 	
+    public synchronized void createInitialAdministrator(String identity) 
+    	throws NamingAuthorityConfigurationException {
+    	
+    	if (systemValues == null || systemValues.getValues() == null) {
+    		throw new NamingAuthorityConfigurationException("No system values. Please initialize DAO first");
+    	}
+    	
+    	IdentifierValueKey adminKey = null;
+    	Collection<IdentifierValueKey> valCol = systemValues.getValues();
+    	for(IdentifierValueKey ivk : valCol) {
+    		if (ivk.getKey().equals(Keys.ADMIN_USERS)) {
+    			adminKey = ivk;
+    			break;
+    		}
+    	}
 
+    	if (adminKey == null) {
+    		adminKey = new IdentifierValueKey();
+    		valCol.add(adminKey);
+    	}
+    	
+    	if (adminKey.getValues() != null && adminKey.getValues().size() > 0) {
+    		throw new NamingAuthorityConfigurationException("An administrator already exists");
+    	}
+
+    	ArrayList<String> values = new ArrayList<String>();
+    	values.add(identity);
+    	adminKey.setValues(values);
+    	save(systemValues);
+    }
 	
 	///////////////////////////////////////////////////////////////////
 	/////////////////// SECURITY CHECKS ///////////////////////////////
 	///////////////////////////////////////////////////////////////////
 
+	//
+	// A user can replace the value of a key if any one of the below 
+	// conditions are met:
+	//
+	//    (a) User is identifier's administrator
+	//       - User is listed by ADMIN_USERS key
+	//       - User is listed by ADMIN_IDENTIFIERS's ADMIN_USERS key
+	//       - User is listed by root identifier's ADMIN_USERS key
+	//
+	//    (b) User is listed by the key's READWRITE_IDENTIFIER's WRITE_USERS list
+	//    (c) Key has no READWRITE_IDENTIFIER and user is listed by identifier's WRITE_USERS
+	//    (d) Key has no READWRITE_IDENTIFIER and user is listed by identifier's READWRITE_IDENTIFIERS's WRITE_USERS
+	//    (e) No WRITE_USERS keys at any level (key & identifier) (??). Not sure here, for now, this is
+    //			allowed, unless it is an admin key.
+	//
 	public void replaceKeysSecurityChecks(
 			SecurityInfo secInfo, 
-			URI localIdentifier, 
+			URI identifier, 
 			IdentifierMetadata resolvedValues, 
 			IdentifierValues newValues) 
 		throws 
 			InvalidIdentifierException, 
 			NamingAuthoritySecurityException, 
 			InvalidIdentifierValuesException, 
-			URISyntaxException {
+			URISyntaxException, NamingAuthorityConfigurationException {
 
 		Access identifierAdminAccess = null;
 		Access identifierWriteAccess = null;
@@ -252,6 +333,9 @@ public class IdentifierMetadataDao extends AbstractDao<IdentifierMetadata> {
 					
 					LOG.debug("SECURITY: User [" + secInfo.getUser() + "] is authorized to write key [" + ivk.getKey() + "] by key's WRITE_USERS");
 					
+				} else if (keyAccess == Access.DENIED) {
+					LOG.debug("SECURITY: User [" + secInfo.getUser() + "] is NOT authorized to write key [" + ivk.getKey() + "] by key's WRITE_USERS");
+				
 				} else if (keyAccess == Access.NOSECURITY) {
 					//
 					// Fall back to identifier level security
@@ -261,15 +345,24 @@ public class IdentifierMetadataDao extends AbstractDao<IdentifierMetadata> {
 						identifierWriteAccess = userAccess(secInfo.getUser(), identifierWriteUsers);
 					}
 					
-					if (identifierWriteAccess == Access.DENIED) {
-						LOG.debug("SECURITY: User [" + secInfo.getUser() + "] is NOT authorized to write key [" + ivk.getKey() + "] by identifier");
-					} else {
+					if (identifierWriteAccess == Access.GRANTED) { 
 						LOG.debug("SECURITY: User [" + secInfo.getUser() + "] is authorized to write [" + ivk.getKey() + "] by identifier");
 						okToUpdate = true;
 					}
-				} else if (keyAccess == Access.DENIED) {
-					LOG.debug("SECURITY: User [" + secInfo.getUser() + "] is NOT authorized to write key [" + ivk.getKey() + "] by key's WRITE_USERS");
-				}
+					else if (identifierWriteAccess == Access.DENIED) {
+						LOG.debug("SECURITY: User [" + secInfo.getUser() + "] is NOT authorized to write key [" + ivk.getKey() + "] by identifier");
+					
+					} 
+					else if (identifierWriteAccess == Access.NOSECURITY) { 
+						if (Keys.isAdminKey(ivk.getKey()) && identifierAdminAccess == Access.DENIED) {
+							LOG.debug("SECURITY: User [" + secInfo.getUser() + "] is NOT authorized to write key [" + ivk.getKey() + "]. Neither writer nor admin");
+						
+						} else {
+							LOG.debug("SECURITY: User [" + secInfo.getUser() + "] is authorized to write [" + ivk.getKey() + "] by identifier");
+							okToUpdate = true;
+						}
+					}
+				} 
 			}
 
 			if (okToUpdate) {
@@ -286,15 +379,36 @@ public class IdentifierMetadataDao extends AbstractDao<IdentifierMetadata> {
 
 		if (keysToReplace.size() > 0) {
 			throw new InvalidIdentifierValuesException("Key [" + keysToReplace.get(0) 
-					+ "] does not exist for local identifier [" + localIdentifier.normalize().toString() 
+					+ "] does not exist for identifier [" + identifier.normalize().toString() 
 					+ "]");
 		}
 
 		save(resolvedValues);
 	}
 	
+	//
+	// A user can read a key from an identifier if any one of the below 
+	// conditions are met:
+	//
+	//    (a) User is identifier's administrator
+	//       - User is listed by ADMIN_USERS key
+	//       - User is listed by ADMIN_IDENTIFIERS's ADMIN_USERS key
+	//       - User is listed by root identifier's ADMIN_USERS key
+	//
+	//    (b) User is listed by the key's READWRITE_IDENTIFIER's READ_USERS list
+	//    (c) Key has no READWRITE_IDENTIFIER and user is listed by identifier's READ_USERS
+	//    (d) Key has no READWRITE_IDENTIFIER and user is listed by identifier's READWRITE_IDENTIFIERS's READ_USERS
+	//    (e) No READ_USERS keys at any level (key & identifier)
+	//
+	// A security exception is thrown if the identifier has keys and none are returned due to
+	// permission checks.
+	//
 	private IdentifierValues resolveIdentifierSecurityChecks(SecurityInfo secInfo, IdentifierMetadata tmpValues) 
-		throws InvalidIdentifierException, URISyntaxException {
+		throws 
+			InvalidIdentifierException, 
+			URISyntaxException, 
+			NamingAuthoritySecurityException, 
+			NamingAuthorityConfigurationException {
 		
 		if (tmpValues == null) {
 			return null;
@@ -346,23 +460,31 @@ public class IdentifierMetadataDao extends AbstractDao<IdentifierMetadata> {
 			};
 		}
 		
+		// Is this the only case when we bark?
+		if (newValues.getKeys() == null || newValues.getKeys().length == 0) {
+			throw new NamingAuthoritySecurityException(SecurityUtil.securityError(secInfo, "resolveIdentifierSecurityChecks"));
+		}
+		
 		return newValues;
 	}
 	
-	private void createIdentifierSecurityChecks(SecurityInfo secInfo) 
+	//
+	// A user can create identifiers if any one of the below 
+	// conditions are met:
+	//
+	//    (a) PUBLIC_CREATTION key set to "Y" in root identifier
+	//    (b) User is listed by IDENTIFIER_CREATION_USERS key in root identifier
+	//    (c) No security settings are specified
+	//       - No root identifier
+	//       - No PUBLIC_CREATION key in root identifier
+	//
+	private synchronized void createIdentifierSecurityChecks(SecurityInfo secInfo) 
 		throws InvalidIdentifierException, NamingAuthorityConfigurationException, NamingAuthoritySecurityException {
 		
-		IdentifierMetadata sysValues = getSystemValues();
-		if (sysValues == null) {
-			// no security
-			LOG.debug("SECURITY: No System Values");
-			return;
-		}
-		
-		List<String> values = SecurityUtil.getPublicCreation(sysValues);
+		List<String> values = SecurityUtil.getPublicCreation(systemValues);
 		if (values == null || values.size() == 0) {
 			// no security
-			LOG.debug("ERROR. SECURITY: No System values");
+			LOG.debug("SECURITY: No PUBLIC_CREATION");
 			return;
 		}
 		
@@ -370,20 +492,32 @@ public class IdentifierMetadataDao extends AbstractDao<IdentifierMetadata> {
 			throw new NamingAuthorityConfigurationException("Bad PUBLIC_CREATION setting detected");
 		}
 		
-		if (values.get(0).equalsIgnoreCase("Y")) {
+		if (values.get(0).equalsIgnoreCase(SecurityUtil.PUBLIC_CREATION_YES)) {
 			// everyone can create identifiers
 			return;
 		}
 		
-		List<String> authorizedUsers = SecurityUtil.getIdentifierCreationUsers(sysValues);
+		List<String> authorizedUsers = SecurityUtil.getIdentifierCreationUsers(systemValues);
 		if (authorizedUsers == null || !authorizedUsers.contains(secInfo.getUser())) {
 			throw new NamingAuthoritySecurityException(SecurityUtil.securityError(secInfo, "createIdentifier"));
 		}	
 	}
 	
 	//
-	// User must be in identifier's writer list, OR
-	// User must be in identifier's admin list
+	// A user can add keys to an identifier if any one of the below 
+	// conditions are met:
+	//
+	//    (a) User is listed by WRITE_USERS key
+	//    (b) User is listed by WRITE_USERS key in READWRITE_IDENTIFIERS
+	//    (c) User is listed by ADMIN_USERS key
+	//    (d) User is listed by ADMIN_USERS key in ADMIN_IDENTIFIERS
+	//    (e) User is listed by the system root identifier's ADMIN_USERS key
+	//    (f) No security settings are specified
+	//       - No WRITE_USERS key
+	//       - No WRITE_USERS key in READWRITE_IDENTIFIERS
+	//       - No ADMIN_USERS key
+	//       - No ADMIN_USERS key in ADMIN_IDENTIFIERS
+	//       - No ADMIN_USERS key in the system root identifier
 	//
 	private void writeKeysSecurityChecks(SecurityInfo secInfo, String op, IdentifierMetadata resolvedValues) 
 		throws NamingAuthoritySecurityException {
@@ -419,7 +553,12 @@ public class IdentifierMetadataDao extends AbstractDao<IdentifierMetadata> {
 	// Returns any directly specified READ_USERS plus any
 	// included by READWRITE_IDENTIFIERS
 	//
-	private List<String> getAllReadUsers( IdentifierMetadata values ) throws InvalidIdentifierException, URISyntaxException {
+	private List<String> getAllReadUsers( IdentifierMetadata values ) 
+		throws 
+			InvalidIdentifierException, 
+			URISyntaxException, 
+			NamingAuthorityConfigurationException {
+		
 		List<String> readUsers = SecurityUtil.getReadUsers(values);
 		List<String> otherReadUsers = getReadUsersFromReadWriteIdentifiers(values);
 		
@@ -438,7 +577,12 @@ public class IdentifierMetadataDao extends AbstractDao<IdentifierMetadata> {
 	// Returns any directly specified WRITE_USERS plus any
 	// included by READWRITE_IDENTIFIERS
 	//
-	private List<String> getAllWriteUsers( IdentifierMetadata values ) throws InvalidIdentifierException, URISyntaxException {
+	private List<String> getAllWriteUsers( IdentifierMetadata values ) 
+		throws 
+			InvalidIdentifierException, 
+			URISyntaxException, 
+			NamingAuthorityConfigurationException {
+		
 		List<String> writeUsers = SecurityUtil.getWriteUsers(values);
 		List<String> otherWriteUsers = getWriteUsersFromReadWriteIdentifiers(values);
 		
@@ -454,7 +598,10 @@ public class IdentifierMetadataDao extends AbstractDao<IdentifierMetadata> {
 	}
 	
 	private Access getIdentifierAdminUserAccess(SecurityInfo secInfo, IdentifierMetadata values) 
-		throws InvalidIdentifierException, URISyntaxException {
+		throws 
+			InvalidIdentifierException, 
+			URISyntaxException, 
+			NamingAuthorityConfigurationException {
 
 		// Check administrators defined by ADMIN_USERS and
 		// ADMIN_IDENTIFIERS
@@ -465,12 +612,16 @@ public class IdentifierMetadataDao extends AbstractDao<IdentifierMetadata> {
 		}
 		
 		// Check ADMIN_USERS defined by system (root) identifier
-		Access sysAccess = userAccess(secInfo.getUser(), SecurityUtil.getAdminUsers(getSystemValues()));
-		if (sysAccess == Access.NOSECURITY) {
-			return access;
+		if (getSystemAdminUserAccess(secInfo) == Access.GRANTED) {
+			return Access.GRANTED;
 		}
 		
-		return sysAccess;
+		return access;
+	}
+	
+	// Checks if user is in ADMIN_USERS in system identifier
+	private synchronized Access getSystemAdminUserAccess(SecurityInfo secInfo) {
+		return userAccess(secInfo.getUser(), SecurityUtil.getAdminUsers(systemValues));
 	}
 	
 	//
@@ -480,7 +631,10 @@ public class IdentifierMetadataDao extends AbstractDao<IdentifierMetadata> {
 	//		DENIED: WRITE_USERS list defined and the user is not listed
 	//		
 	private Access getAdminUserAccess(SecurityInfo secInfo, IdentifierMetadata values) 
-		throws InvalidIdentifierException, URISyntaxException {
+		throws 
+			InvalidIdentifierException, 
+			URISyntaxException, 
+			NamingAuthorityConfigurationException {
 		
 		// Check locally defined ADMIN_USERS list
 		Access access = userAccess(secInfo.getUser(), SecurityUtil.getAdminUsers(values));
@@ -505,7 +659,10 @@ public class IdentifierMetadataDao extends AbstractDao<IdentifierMetadata> {
 	//		DENIED: WRITE_USERS list defined and the user is not listed
 	//		
 	private Access getWriteUserAccess(SecurityInfo secInfo, IdentifierMetadata values) 
-		throws InvalidIdentifierException, URISyntaxException {
+		throws 
+			InvalidIdentifierException, 
+			URISyntaxException, 
+			NamingAuthorityConfigurationException {
 		
 		// Check locally defined WRITE_USERS list
 		Access access = userAccess(secInfo.getUser(), SecurityUtil.getWriteUsers(values));
@@ -539,7 +696,10 @@ public class IdentifierMetadataDao extends AbstractDao<IdentifierMetadata> {
 	// Returns WRITE_USERS listed by any READWRITE_IDENTIFIERS
 	//
 	private List<String> getWriteUsersFromReadWriteIdentifiers( IdentifierMetadata values ) 
-		throws InvalidIdentifierException, URISyntaxException {
+		throws 
+			InvalidIdentifierException, 
+			URISyntaxException, 
+			NamingAuthorityConfigurationException {
 		
 		List<String> writers = null;
 		
@@ -564,7 +724,10 @@ public class IdentifierMetadataDao extends AbstractDao<IdentifierMetadata> {
 	// Returns READ_USERS listed by any READWRITE_IDENTIFIERS
 	//
 	private List<String> getReadUsersFromReadWriteIdentifiers( IdentifierMetadata values ) 
-		throws InvalidIdentifierException, URISyntaxException {
+		throws 
+			InvalidIdentifierException, 
+			URISyntaxException, 
+			NamingAuthorityConfigurationException {
 		
 		List<String> readers = null;
 		
@@ -589,7 +752,7 @@ public class IdentifierMetadataDao extends AbstractDao<IdentifierMetadata> {
 	// Returns ADMIN_USERS listed by any ADMIN_IDENTIFIERS
 	//
 	private List<String> getAdminUsersFromAdminIdentifiers( IdentifierMetadata values ) 
-		throws InvalidIdentifierException, URISyntaxException {
+		throws InvalidIdentifierException, URISyntaxException, NamingAuthorityConfigurationException {
 		
 		List<String> allAdmins = null;
 		
@@ -616,7 +779,7 @@ public class IdentifierMetadataDao extends AbstractDao<IdentifierMetadata> {
 	// attached to the key.
 	// 
 	private Access getKeyReadAccess(SecurityInfo secInfo, 
-			URI rwIdentifier) throws InvalidIdentifierException {
+			URI rwIdentifier) throws InvalidIdentifierException, NamingAuthorityConfigurationException {
 		
 		if (rwIdentifier == null || rwIdentifier.normalize().toString().length() == 0) {
 			// no security at key level
@@ -635,7 +798,7 @@ public class IdentifierMetadataDao extends AbstractDao<IdentifierMetadata> {
 	// attached to the key.
 	// 
 	private Access getKeyWriteAccess(SecurityInfo secInfo, 
-			URI rwIdentifier) throws InvalidIdentifierException {
+			URI rwIdentifier) throws InvalidIdentifierException, NamingAuthorityConfigurationException {
 		
 		if (rwIdentifier == null || rwIdentifier.normalize().toString().length() == 0) {
 			// no security at key level
@@ -648,22 +811,29 @@ public class IdentifierMetadataDao extends AbstractDao<IdentifierMetadata> {
 		return userAccess(secInfo.getUser(), writers);
 	}
 	
-	private IdentifierMetadata getSystemValues() {
+	private synchronized void replaceSystemValues(SecurityInfo secInfo, IdentifierMetadata resolvedValues) {
+		systemValues = resolvedValues;
+		LOG.warn("System identifier updated by [" + secInfo.getUser() + "]");
+	}
+	
+	private synchronized void createSystemIdentifier() {
+		systemValues = new IdentifierMetadata();
+		Collection<IdentifierValueKey> valCol = new ArrayList<IdentifierValueKey>();
+		systemValues.setLocalIdentifier(SecurityUtil.LOCAL_SYSTEM_IDENTIFIER);
+		systemValues.setValues(valCol);
 		
-		if (systemValues == null) {
-			synchronized(this) {
-				if (systemValues == null) {
-					try {
-						systemValues = loadIdentifier(SecurityUtil.SYSTEM_IDENTIFIER);
-					} catch(InvalidIdentifierException e) {
-						LOG.debug("No system identifier defined");
-						systemValues = new IdentifierMetadata();
-					}
-				}
-			}
-		}
+		//
+		// PUBLIC_CREATION is true by default
+		//
+		valCol.add(new IdentifierValueKey(Keys.PUBLIC_CREATION, 
+				new String[]{ SecurityUtil.PUBLIC_CREATION_YES }, null ));
 		
-		return systemValues;
+		//
+		// ADMIN_USERS is an empty list by default
+		//
+		valCol.add(new IdentifierValueKey(Keys.ADMIN_USERS, 
+				new String[]{}, null ));
+		save(systemValues);
 	}
 	
 	private SecurityInfo validateSecurityInfo( SecurityInfo secInfo ) {
@@ -673,4 +843,41 @@ public class IdentifierMetadataDao extends AbstractDao<IdentifierMetadata> {
 		
 		return secInfo;
 	}
+		
+//	Not supported
+//	public void deleteAllKeys(SecurityInfo secInfo, URI localIdentifier) 
+//		throws 
+//			InvalidIdentifierException, 
+//			NamingAuthoritySecurityException, 
+//			InvalidIdentifierValuesException {
+//		
+//		secInfo = validateSecurityInfo(secInfo);
+//
+//		IdentifierMetadata resolvedValues = loadIdentifier(localIdentifier);
+//
+//		Collection<IdentifierValueKey> valueCol = resolvedValues.getValues();
+//		if (valueCol == null || valueCol.size() == 0) {
+//			// Identifier has nothing already
+//			return;
+//		}
+//
+//		writeKeysSecurityChecks(secInfo, "deleteAllKeys", resolvedValues);
+//
+//		LOG.warn("User [" + secInfo.getUser() + "] deleting all keys for identifier [" + localIdentifier.toString() + "]");
+//
+//		List<IdentifierValueKey> keysToDelete = new ArrayList<IdentifierValueKey>();
+//		
+//		for( IdentifierValueKey ivk : valueCol) {
+//			if (Keys.isAdminKey(ivk.getKey())) {
+//				LOG.debug("Won't remove key [" + ivk.getKey() + "]");
+//				// "ADMIN" keys can't be deleted using this API
+//				continue;
+//			}
+//			keysToDelete.add(ivk);
+//		}
+//
+//		if (keysToDelete.size() > 0) {
+//			getHibernateTemplate().deleteAll(keysToDelete);
+//		}
+//	}
 }

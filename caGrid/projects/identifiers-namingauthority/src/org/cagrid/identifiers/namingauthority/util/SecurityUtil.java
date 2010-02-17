@@ -2,9 +2,11 @@ package org.cagrid.identifiers.namingauthority.util;
 
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.cagrid.identifiers.namingauthority.InvalidIdentifierException;
+import org.cagrid.identifiers.namingauthority.InvalidIdentifierValuesException;
 import org.cagrid.identifiers.namingauthority.MaintainerNamingAuthority;
 import org.cagrid.identifiers.namingauthority.NamingAuthorityConfigurationException;
 import org.cagrid.identifiers.namingauthority.NamingAuthoritySecurityException;
@@ -20,13 +22,14 @@ import org.springframework.core.io.FileSystemResource;
 public class SecurityUtil {
 
 	public static String ANONYMOUS_USER = "<anonymous>";
-	public static URI SYSTEM_IDENTIFIER;
+	public static String PUBLIC_CREATION_YES = "Y";
+	public static URI LOCAL_SYSTEM_IDENTIFIER;
 	
 	public enum Access { GRANTED, DENIED, NOSECURITY };
 	
 	static {
 		try {
-			SYSTEM_IDENTIFIER = new URI("0");
+			LOCAL_SYSTEM_IDENTIFIER = new URI("0");
 		} catch(Exception e){};
 	}
 	
@@ -66,15 +69,14 @@ public class SecurityUtil {
 		return IdentifierUtil.getKeyValues(values, Keys.PUBLIC_CREATION);
 	}
 	
-	public static void createSystemIdentifier(String naConfigurationFile, 
-			String naProperties, String[] adminUsers, String[] creationUsers,
-			String creationFlag) 
+	public static void addAdmin(String naConfigurationFile, 
+			String naProperties, String adminUser) 
 	
 		throws 
 			InvalidIdentifierException, 
 			URISyntaxException, 
 			NamingAuthorityConfigurationException, 
-			NamingAuthoritySecurityException {
+			NamingAuthoritySecurityException, InvalidIdentifierValuesException {
 
         FileSystemResource naConfResource = new FileSystemResource(naConfigurationFile);
         FileSystemResource naPropertiesResource = new FileSystemResource(naProperties);
@@ -83,78 +85,80 @@ public class SecurityUtil {
         PropertyPlaceholderConfigurer cfg = new PropertyPlaceholderConfigurer();
         cfg.setLocation(naPropertiesResource);
         cfg.postProcessBeanFactory(factory);
-             
-        String dbFlag = "N";
-        if (creationFlag.equalsIgnoreCase("y") || creationFlag.equalsIgnoreCase("true")) {
-        	dbFlag = "Y";
-        }
-                
-        IdentifierValues values = new IdentifierValues();
-  
-        if (adminUsers != null) {
-        	values.put(Keys.ADMIN_USERS, new KeyData(null, adminUsers));
-        }
-        
-        if (creationUsers != null) {
-        	values.put(Keys.IDENTIFIER_CREATION_USERS, new KeyData(null, creationUsers));
-        }
-        
-        values.put(Keys.PUBLIC_CREATION, new KeyData(null, new String[]{dbFlag}));
         
         NamingAuthorityImpl na = (NamingAuthorityImpl) factory.getBean("NamingAuthority", MaintainerNamingAuthority.class);
-        na.getIdentifierDao().createIdentifier( null, SYSTEM_IDENTIFIER, values );
+        na.getIdentifierDao().createInitialAdministrator(adminUser);
+        
+//        KeyData kd = na.getKeyData(null, na.getSystemIdentifier(), Keys.ADMIN_USERS);
+//        if (kd == null) {
+//        	System.err.println("KD IS NULL");
+//        	kd = new KeyData();
+//        }
+//        
+//        List<String> values = kd.getValues();
+//        if (values == null) {
+//        	System.err.println("VALUES IS NULL");
+//        	values = new ArrayList<String>();
+//        }
+//        
+//        if (values.contains(adminUser)) {
+//        	throw new NamingAuthorityConfigurationException("Provided identity [" + adminUser + "] is already an administrator");
+//        }
+//        
+//        values.add(adminUser);
+//        
+//        IdentifierValues ivalues = new IdentifierValues();
+//        ivalues.put(Keys.ADMIN_USERS, kd);
+//        na.replaceKeys(null, na.getSystemIdentifier(), ivalues);
 	}
 	
 	private static void usage() {
 		System.err.println(SecurityUtil.class.getName() + " Usage:");
 		System.err.println();
 		System.err.println("java " + SecurityUtil.class.getName() 
-			+ " <NA Config File> <NA Properties File> <ADMIN_USERS> <IDENTIFIER_CREATION_USERS> <PUBLIC_CREATION>");
+			+ " <NA Config File> <NA Properties File> <OPERATION> <OPERATION PARAMS>\n\n"
+			+ " addAdmin <grid identity>");
 	}
 	
 	public static void main(String[] args) {
 		int index = 0;
 		int NA_CONFIG = index++;
 		int NA_PROPS = index++;
-		int ADMIN_USERS = index++;
-		int IDENTIFIER_CREATION_USERS = index++;
-		int PUBLIC_CREATION = index++;
+		int OPERATION = index++;
+		int ADMIN_USER = index++;
+		
+		// OPERATIONS
+		String ADD_ADMIN = "addAdmin";
 		
 		/*
 		 * arg0: na configuration file (e.g. "WebContent/WEB-INF/applicationContext-na.xml")
 		 * arg1: na properties file (e.g. "WebContent/WEB-INF/na.properties")
-		 * arg2: ADMIN_USERS (comma separated list of grid identifiers)
-		 * arg3: IDENTIFIER_CREATION_USERS (comma separated list of grid identities)
-		 * arg4: PUBLIC_CREATION (y/n)
+		 * arg2: operation (e.g., addAdmin)
+		 * arg2: ADMIN_USER
 		 */
 				
 		System.err.println("args[NA_CONFIG]=["+args[NA_CONFIG]+"]");
 		System.err.println("args[NA_PROPS]=["+args[NA_PROPS]+"]");
-		System.err.println("args[ADMIN_USERS]=["+args[ADMIN_USERS]+"]");
-		System.err.println("args[IDENTIFIER_CREATION_USERS]=["+args[IDENTIFIER_CREATION_USERS]+"]");
-		System.err.println("args[PUBLIC_CREATION]=["+args[PUBLIC_CREATION]+"]");
+		System.err.println("args[OPERATION]=["+args[OPERATION]+"]");
+		System.err.println("args[ADMIN_USER]=["+args[ADMIN_USER]+"]");
 		
 		if (args.length != index) {
 			usage();
 			System.exit(1);
 		}
 		
-		String[] adminUsers = null;
-		if (!args[ADMIN_USERS].equals("-") && args[ADMIN_USERS].length() > 0) {
-			adminUsers = args[ADMIN_USERS].split(",");
-		}
-		
-		String[] creationUsers = null;
-		if (!args[IDENTIFIER_CREATION_USERS].equals("-") && args[IDENTIFIER_CREATION_USERS].length() > 0) {
-			creationUsers = args[IDENTIFIER_CREATION_USERS].split(",");
-		}
-		
 		try {
-			createSystemIdentifier(args[NA_CONFIG], args[NA_PROPS], adminUsers, creationUsers, args[PUBLIC_CREATION]);
+			if (args[OPERATION].equals(ADD_ADMIN)) {
+				addAdmin(args[NA_CONFIG], args[NA_PROPS], args[ADMIN_USER]);
+			}
 		} catch (Exception e) {
 			e.printStackTrace();
 			System.exit(1);
 		}
+	}
+
+	public static boolean isSystemIdentifier(URI localIdentifier) {
+		return localIdentifier.normalize().toString().equals(LOCAL_SYSTEM_IDENTIFIER.normalize().toString());
 	}
 }
 

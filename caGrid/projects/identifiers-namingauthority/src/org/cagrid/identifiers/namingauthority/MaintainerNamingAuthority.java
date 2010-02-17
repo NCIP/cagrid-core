@@ -19,9 +19,5 @@ public interface MaintainerNamingAuthority extends NamingAuthority {
 
 	public void replaceKeys(SecurityInfo secInfo, URI identifier, IdentifierValues values)
 		throws NamingAuthorityConfigurationException, InvalidIdentifierValuesException, 
-			InvalidIdentifierException, NamingAuthoritySecurityException;;
-
-	public void deleteAllKeys(SecurityInfo secInfo, URI identifier)
-		throws NamingAuthorityConfigurationException, InvalidIdentifierValuesException, 
 			InvalidIdentifierException, NamingAuthoritySecurityException;
 }

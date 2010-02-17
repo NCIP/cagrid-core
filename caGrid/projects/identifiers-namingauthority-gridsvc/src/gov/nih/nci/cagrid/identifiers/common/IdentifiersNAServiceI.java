@@ -12,6 +12,33 @@ import java.rmi.RemoteException;
  */
 public interface IdentifiersNAServiceI {
 
+  /**
+   * Gets key names associated with an existing identifier
+   *
+   * @param identifier
+   * @throws InvalidIdentifierFault
+   *	
+   * @throws NamingAuthorityConfigurationFault
+   *	
+   * @throws NamingAuthoritySecurityFault
+   *	
+   */
+  public java.lang.String[] getKeys(org.apache.axis.types.URI identifier) throws RemoteException, gov.nih.nci.cagrid.identifiers.stubs.types.InvalidIdentifierFault, gov.nih.nci.cagrid.identifiers.stubs.types.NamingAuthorityConfigurationFault, gov.nih.nci.cagrid.identifiers.stubs.types.NamingAuthoritySecurityFault ;
+
+  /**
+   * Gets values associated with the given key
+   *
+   * @param identifier
+   * @param keyName
+   * @throws InvalidIdentifierFault
+   *	
+   * @throws NamingAuthoritySecurityFault
+   *	
+   * @throws NamingAuthorityConfigurationFault
+   *	
+   */
+  public java.lang.String[] getKeyValues(org.apache.axis.types.URI identifier,java.lang.String keyName) throws RemoteException, gov.nih.nci.cagrid.identifiers.stubs.types.InvalidIdentifierFault, gov.nih.nci.cagrid.identifiers.stubs.types.NamingAuthoritySecurityFault, gov.nih.nci.cagrid.identifiers.stubs.types.NamingAuthorityConfigurationFault ;
+
   public org.oasis.wsrf.properties.GetMultipleResourcePropertiesResponse getMultipleResourceProperties(org.oasis.wsrf.properties.GetMultipleResourceProperties_Element params) throws RemoteException ;
 
   public org.oasis.wsrf.properties.GetResourcePropertyResponse getResourceProperty(javax.xml.namespace.QName params) throws RemoteException ;
@@ -24,10 +51,12 @@ public interface IdentifiersNAServiceI {
    * @param identifierValues
    * @throws NamingAuthorityConfigurationFault
    *	
-   * @throws InvalidIdentifierValuesFault
+   * @throws InvalidIdentifierFault
+   *	
+   * @throws NamingAuthoritySecurityFault
    *	
    */
-  public org.apache.axis.types.URI createIdentifier(namingauthority.IdentifierValues identifierValues) throws RemoteException, gov.nih.nci.cagrid.identifiers.stubs.types.NamingAuthorityConfigurationFault, gov.nih.nci.cagrid.identifiers.stubs.types.InvalidIdentifierValuesFault ;
+  public org.apache.axis.types.URI createIdentifier(namingauthority.IdentifierValues identifierValues) throws RemoteException, gov.nih.nci.cagrid.identifiers.stubs.types.NamingAuthorityConfigurationFault, gov.nih.nci.cagrid.identifiers.stubs.types.InvalidIdentifierFault, gov.nih.nci.cagrid.identifiers.stubs.types.NamingAuthoritySecurityFault ;
 
   /**
    * Returns metadata (IdentifierValues) associated with the provided identifier
@@ -37,8 +66,10 @@ public interface IdentifiersNAServiceI {
    *	
    * @throws InvalidIdentifierFault
    *	
+   * @throws NamingAuthoritySecurityFault
+   *	
    */
-  public namingauthority.IdentifierValues resolveIdentifier(org.apache.axis.types.URI identifier) throws RemoteException, gov.nih.nci.cagrid.identifiers.stubs.types.NamingAuthorityConfigurationFault, gov.nih.nci.cagrid.identifiers.stubs.types.InvalidIdentifierFault ;
+  public namingauthority.IdentifierValues resolveIdentifier(org.apache.axis.types.URI identifier) throws RemoteException, gov.nih.nci.cagrid.identifiers.stubs.types.NamingAuthorityConfigurationFault, gov.nih.nci.cagrid.identifiers.stubs.types.InvalidIdentifierFault, gov.nih.nci.cagrid.identifiers.stubs.types.NamingAuthoritySecurityFault ;
 
   /**
    * Deletes keys from an identifier
@@ -89,19 +120,6 @@ public interface IdentifiersNAServiceI {
    *	
    */
   public void replaceKeys(org.apache.axis.types.URI identifier,namingauthority.IdentifierValues identifierValues) throws RemoteException, gov.nih.nci.cagrid.identifiers.stubs.types.InvalidIdentifierFault, gov.nih.nci.cagrid.identifiers.stubs.types.NamingAuthorityConfigurationFault, gov.nih.nci.cagrid.identifiers.stubs.types.NamingAuthoritySecurityFault, gov.nih.nci.cagrid.identifiers.stubs.types.InvalidIdentifierValuesFault ;
-
-  /**
-   * Deletes all keys (except admin keys) on an existing identifier
-   *
-   * @param identifier
-   * @throws InvalidIdentifierFault
-   *	
-   * @throws NamingAuthorityConfigurationFault
-   *	
-   * @throws NamingAuthoritySecurityFault
-   *	
-   */
-  public void deleteAllKeys(org.apache.axis.types.URI identifier) throws RemoteException, gov.nih.nci.cagrid.identifiers.stubs.types.InvalidIdentifierFault, gov.nih.nci.cagrid.identifiers.stubs.types.NamingAuthorityConfigurationFault, gov.nih.nci.cagrid.identifiers.stubs.types.NamingAuthoritySecurityFault ;
 
 }
 

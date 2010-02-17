@@ -1,6 +1,7 @@
 package org.cagrid.identifiers.namingauthority.hibernate;
 
 import java.net.URI;
+import java.util.Arrays;
 import java.util.List;
 
 import javax.persistence.Column;
@@ -20,7 +21,7 @@ import org.hibernate.annotations.Type;
 
 @Entity
 @GenericGenerator(name = "id-generator", strategy = "native")
-@Table(name = "identifier_value_keys")
+@Table(name = "identifier_keys")
 public class IdentifierValueKey {
 
     @Id
@@ -32,7 +33,7 @@ public class IdentifierValueKey {
 
     @CollectionOfElements(fetch = FetchType.EAGER)
     @Fetch(FetchMode.SUBSELECT)
-    @JoinTable(name = "identifier_value_key_data")
+    @JoinTable(name = "identifier_key_values")
     @Column(name = "value", length = 16777215)
     private List<String> values;
 
@@ -46,6 +47,16 @@ public class IdentifierValueKey {
     	setReadWriteIdentifier(ivk.getReadWriteIdentifier());
     	setKey(ivk.getKey());
     	setValues(ivk.getValues());
+    }
+    
+    public IdentifierValueKey(String key, List<String> values, URI rwIdentifier) {
+    	setReadWriteIdentifier(rwIdentifier);
+    	setKey(key);
+    	setValues(values);
+    }
+    
+    public IdentifierValueKey(String key, String[] values, URI rwIdentifier) {
+    	this(key, Arrays.asList(values), rwIdentifier);
     }
     
     public URI getReadWriteIdentifier() {

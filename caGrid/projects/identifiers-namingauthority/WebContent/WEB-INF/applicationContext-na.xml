@@ -68,8 +68,7 @@
 
   <bean id="identifierDao" parent="daoTemplate" class="org.cagrid.identifiers.namingauthority.dao.IdentifierMetadataDao" />
 
-
-  <bean id="NamingAuthority" class="org.cagrid.identifiers.namingauthority.impl.NamingAuthorityImpl">
+  <bean id="NamingAuthority" class="org.cagrid.identifiers.namingauthority.impl.NamingAuthorityImpl" init-method="initialize">
     <property name="configuration">
       <bean class="org.cagrid.identifiers.namingauthority.impl.NamingAuthorityConfigImpl">
         <property name="prefix" value="${cagrid.na.prefix}" />

@@ -20,6 +20,7 @@ import org.cagrid.identifiers.namingauthority.util.IdentifierUtil;
 import org.cagrid.identifiers.namingauthority.util.Keys;
 import org.cagrid.identifiers.namingauthority.util.SecurityUtil;
 import org.cagrid.identifiers.namingauthority.util.SecurityUtil.Access;
+import org.mortbay.log.Log;
 
 
 public class NamingAuthorityImpl implements MaintainerNamingAuthority {
@@ -60,58 +61,91 @@ public class NamingAuthorityImpl implements MaintainerNamingAuthority {
 	// Interfaces
 	//
 
+	public void initialize() throws NamingAuthorityConfigurationException {
+		this.identifierDao.initialize(getConfiguration().getPrefix());
+	}
+	
 	public URI createIdentifier(SecurityInfo secInfo, IdentifierValues ivalues) 
-		throws NamingAuthorityConfigurationException, InvalidIdentifierException, NamingAuthoritySecurityException {
+		throws 
+			NamingAuthorityConfigurationException, 
+			InvalidIdentifierException, 
+			NamingAuthoritySecurityException {
  
+		validateIdentifierValues(ivalues);
+		
 		URI identifier = generateIdentifier();
         this.identifierDao.createIdentifier( secInfo, identifier, ivalues );
         return IdentifierUtil.build(getConfiguration().getPrefix(), identifier);
     }
 
     public IdentifierValues resolveIdentifier(SecurityInfo secInfo, URI identifier) 
-    	throws InvalidIdentifierException, NamingAuthorityConfigurationException, NamingAuthoritySecurityException {
+    	throws 
+    		InvalidIdentifierException, 
+    		NamingAuthorityConfigurationException, 
+    		NamingAuthoritySecurityException {
   
-        URI localIdentifier = IdentifierUtil.getLocalName(getConfiguration().getPrefix(), identifier);
-        return this.identifierDao.resolveIdentifier( secInfo, localIdentifier );
+        return this.identifierDao.resolveIdentifier( secInfo, identifier );
     }
 
 	public void createKeys(SecurityInfo secInfo, URI identifier, IdentifierValues newKeys)
-		throws NamingAuthorityConfigurationException,
-			InvalidIdentifierValuesException, InvalidIdentifierException,
+		throws 
+			NamingAuthorityConfigurationException,
+			InvalidIdentifierValuesException, 
+			InvalidIdentifierException,
 			NamingAuthoritySecurityException {
 		
-    	URI localIdentifier = IdentifierUtil.getLocalName(getConfiguration().getPrefix(), identifier);
-    	this.identifierDao.createKeys(secInfo, localIdentifier, newKeys);
+		validateIdentifierValues(newKeys);
+    	this.identifierDao.createKeys(secInfo, identifier, newKeys);
 	}
 
-	public void deleteAllKeys(SecurityInfo secInfo, URI identifier)
-			throws NamingAuthorityConfigurationException,
-			InvalidIdentifierValuesException, InvalidIdentifierException,
+	public String[] getKeys(SecurityInfo secInfo, URI identifier)
+		throws 
+			NamingAuthorityConfigurationException,
+			InvalidIdentifierException,
 			NamingAuthoritySecurityException {
 		
-		URI localIdentifier = IdentifierUtil.getLocalName(getConfiguration().getPrefix(), identifier);
-    	this.identifierDao.deleteAllKeys(secInfo, localIdentifier);
+    	return this.identifierDao.getKeys(secInfo, identifier);
+	}
+	
+	public String[] getKeyValues(SecurityInfo secInfo, URI identifier, String key) 
+		throws 
+			InvalidIdentifierException, 
+			NamingAuthoritySecurityException, 
+			NamingAuthorityConfigurationException {
+		
+		return this.identifierDao.getKeyValues(secInfo, identifier, key);
 	}
 
 	public void deleteKeys(SecurityInfo secInfo, URI identifier, String[] keyList)
-			throws NamingAuthorityConfigurationException,
+		throws 
+			NamingAuthorityConfigurationException,
 			InvalidIdentifierValuesException, InvalidIdentifierException,
 			NamingAuthoritySecurityException {
 		
-		URI localIdentifier = IdentifierUtil.getLocalName(getConfiguration().getPrefix(), identifier);
-    	this.identifierDao.deleteKeys(secInfo, localIdentifier, keyList);	
+    	this.identifierDao.deleteKeys(secInfo, identifier, keyList);	
 	}
 
 	public void replaceKeys(SecurityInfo secInfo, URI identifier,
 			IdentifierValues values)
-			throws NamingAuthorityConfigurationException,
-			InvalidIdentifierValuesException, InvalidIdentifierException,
+		throws 
+			NamingAuthorityConfigurationException,
+			InvalidIdentifierValuesException, 
+			InvalidIdentifierException,
 			NamingAuthoritySecurityException {
-		
-		URI localIdentifier = IdentifierUtil.getLocalName(getConfiguration().getPrefix(), identifier);
-    	this.identifierDao.replaceKeys(secInfo, localIdentifier, values);
+
+		validateIdentifierValues(values);
+    	this.identifierDao.replaceKeys(secInfo, identifier, values);
 	}
 	
+	//
+	// Other public
+	//
+	
+	public URI getSystemIdentifier() {
+		return URI.create(getConfiguration().getPrefix().normalize().toString() +
+				SecurityUtil.LOCAL_SYSTEM_IDENTIFIER.normalize().toString());
+	}
+
 
     //
     // Private
@@ -121,6 +155,38 @@ public class NamingAuthorityImpl implements MaintainerNamingAuthority {
 		return identifierGenerator.generate(getConfiguration());
 	}
 	
-
+	private void validateIdentifierValues(IdentifierValues values) 
+		throws 
+			InvalidIdentifierException, 
+			NamingAuthorityConfigurationException {
+		
+		if (values == null || values.getKeys() == null) {
+			return;
+		}
+		
+		for(String key : values.getKeys()) {
+			
+			KeyData kd = values.getValues(key);
+			
+			if (kd.getReadWriteIdentifier() != null) {
+				// make sure it's local to prefix
+				IdentifierUtil.getLocalName(getConfiguration().getPrefix(), 
+						kd.getReadWriteIdentifier());
+			}
+			
+			if (key.equals(Keys.ADMIN_IDENTIFIERS) ||
+					key.equals(Keys.READWRITE_IDENTIFIERS)) {
+				
+				List<String> identifiers = kd.getValues();
+				if (identifiers != null) {
+					for(String identifier : identifiers) {
+						// make sure it's local to prefix
+						IdentifierUtil.getLocalName(getConfiguration().getPrefix(), 
+								URI.create(identifier));
+					}
+				}
+			}
+		}
+	}
  }
 

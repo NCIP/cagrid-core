@@ -91,6 +91,9 @@ public class IdentifierUtil {
 		return null;
 	}
 	
+	// Returns list of values associated with the key
+	// Returns null if the key does not exist in values
+	// Returns an empty list if they key exists but have no values
 	public static List<String> getKeyValues( IdentifierMetadata values, String keyName ) {
 		
 		if (values == null) {
@@ -104,6 +107,9 @@ public class IdentifierUtil {
 		
 		for(IdentifierValueKey ivk : cvalues) {
 			if (ivk.getKey().equals(keyName)) {
+				if (ivk.getValues() == null) {
+					return new ArrayList<String>();
+				}
 				return ivk.getValues();
 			}
 		}

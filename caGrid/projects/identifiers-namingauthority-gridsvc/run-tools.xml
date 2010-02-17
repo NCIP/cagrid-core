@@ -1,6 +1,6 @@
 <project name="run-tools file" basedir="." default="runClient">
      <target name="runClient" depends="init" description="Run the sample Client">
-        <property name="service.url" value="http://localhost:8081/wsrf/services/cagrid/IdentifiersNAService" />
+        <property name="service.url" value="https://localhost:8443/wsrf/services/cagrid/IdentifiersNAService" />
         <echo message="Connecting to service: ${service.url}" />
         <java failonerror="true" classname="gov.nih.nci.cagrid.identifiers.client.IdentifiersNAServiceClient" classpathref="run.classpath" fork="yes">
             <jvmarg value="-DGLOBUS_LOCATION=${ext.globus.dir}" />
