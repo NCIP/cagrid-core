@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <mapping xmlns="http://castor.exolab.org/" xmlns:cst="http://castor.exolab.org/">
   <description xmlns="">CQL 2 Castor Mapping File</description>
-  <class name="org.cagrid.cql2.BinaryPredicate">
+  <class name="org.cagrid.cql2.BinaryPredicate" verify-constructable="false">
     <description xmlns="">Default mapping for class org.cagrid.cql2.BinaryPredicate</description>
     <map-to xml="BinaryPredicate" />
     <field name="value" type="java.lang.String">
@@ -52,7 +52,7 @@
       <bind-xml name="instanceof" node="attribute" />
     </field>
   </class>
-  <class name="org.cagrid.cql2.GroupLogicalOperator">
+  <class name="org.cagrid.cql2.GroupLogicalOperator" verify-constructable="false">
     <description xmlns="">Default mapping for class org.cagrid.cql2.GroupLogicalOperator</description>
     <map-to xml="GroupLogicalOperator" />
     <field name="value" type="java.lang.String">
@@ -114,6 +114,12 @@
   <class name="org.cagrid.cql2.CQLAttribute">
     <description xmlns="">Default mapping for class org.cagrid.cql2.CQLAttribute</description>
     <map-to xml="CQLAttribute" />
+    <field name="binaryPredicate" type="org.cagrid.cql2.BinaryPredicate">
+   	  <bind-xml name="BinaryPredicate" node="element"/>
+    </field>
+    <field name="unaryPredicate" type="org.cagrid.cql2.UnaryPredicate">
+   	  <bind-xml name="UnaryPredicate" node="element"/>
+    </field>
     <field name="attributeExtension" type="org.cagrid.cql2.CQLExtension">
       <bind-xml name="AttributeExtension" node="element" />
     </field>
@@ -124,14 +130,14 @@
       <bind-xml name="AttributeValue" node="element" />
     </field>
   </class>
-  <class name="org.cagrid.cql2.Aggregation">
+  <class name="org.cagrid.cql2.Aggregation" verify-constructable="false">
     <description xmlns="">Default mapping for class org.cagrid.cql2.Aggregation</description>
     <map-to xml="aggregation" />
     <field name="value" type="java.lang.String">
       <bind-xml name="value" node="text" />
     </field>
   </class>
-  <class name="org.cagrid.cql2.UnaryPredicate">
+  <class name="org.cagrid.cql2.UnaryPredicate" verify-constructable="false">
     <description xmlns="">Default mapping for class org.cagrid.cql2.UnaryPredicate</description>
     <map-to xml="UnaryPredicate" />
     <field name="value" type="java.lang.String">

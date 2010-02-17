@@ -11,21 +11,26 @@ public class UnaryPredicate implements java.io.Serializable {
     private java.lang.String _value_;
     private static java.util.HashMap<String, UnaryPredicate> _table_ = new java.util.HashMap<String, UnaryPredicate>();
 
-
-    // Constructor
-    protected UnaryPredicate(java.lang.String value) {
-        _value_ = value;
-        _table_.put(_value_, this);
-    }
-
     public static final java.lang.String _IS_NULL = "IS_NULL";
     public static final java.lang.String _IS_NOT_NULL = "IS_NOT_NULL";
     public static final UnaryPredicate IS_NULL = new UnaryPredicate(_IS_NULL);
     public static final UnaryPredicate IS_NOT_NULL = new UnaryPredicate(_IS_NOT_NULL);
 
 
+    private UnaryPredicate(java.lang.String value) {
+        _value_ = value;
+        _table_.put(_value_, this);
+    }
+
+
     public java.lang.String getValue() {
         return _value_;
+    }
+    
+    
+    // for castor per http://www.castor.org/how-to-map-enums.html
+    public static UnaryPredicate valueOf(String value) throws IllegalArgumentException {
+        return fromValue(value);
     }
 
 

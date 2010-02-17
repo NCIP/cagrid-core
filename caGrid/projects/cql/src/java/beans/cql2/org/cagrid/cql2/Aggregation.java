@@ -11,13 +11,6 @@ public class Aggregation implements java.io.Serializable {
     private java.lang.String _value_;
     private static java.util.HashMap<String, Aggregation> _table_ = new java.util.HashMap<String, Aggregation>();
 
-
-    // Constructor
-    protected Aggregation(java.lang.String value) {
-        _value_ = value;
-        _table_.put(_value_, this);
-    }
-
     public static final java.lang.String _COUNT = "COUNT";
     public static final java.lang.String _MIN = "MIN";
     public static final java.lang.String _MAX = "MAX";
@@ -26,8 +19,20 @@ public class Aggregation implements java.io.Serializable {
     public static final Aggregation MAX = new Aggregation(_MAX);
 
 
+    private Aggregation(java.lang.String value) {
+        _value_ = value;
+        _table_.put(_value_, this);
+    }
+
+
     public java.lang.String getValue() {
         return _value_;
+    }
+    
+    
+    // for castor per http://www.castor.org/how-to-map-enums.html
+    public static Aggregation valueOf(String value) throws IllegalArgumentException {
+        return fromValue(value);
     }
 
 

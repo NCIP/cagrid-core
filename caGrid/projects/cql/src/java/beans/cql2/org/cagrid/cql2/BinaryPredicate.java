@@ -10,14 +10,7 @@ package org.cagrid.cql2;
 public class BinaryPredicate implements java.io.Serializable {
     private java.lang.String _value_;
     private static java.util.HashMap<String, BinaryPredicate> _table_ = new java.util.HashMap<String, BinaryPredicate>();
-
-
-    // Constructor
-    protected BinaryPredicate(java.lang.String value) {
-        _value_ = value;
-        _table_.put(_value_, this);
-    }
-
+    
     public static final java.lang.String _EQUAL_TO = "EQUAL_TO";
     public static final java.lang.String _NOT_EQUAL_TO = "NOT_EQUAL_TO";
     public static final java.lang.String _LIKE = "LIKE";
@@ -32,6 +25,17 @@ public class BinaryPredicate implements java.io.Serializable {
     public static final BinaryPredicate LESS_THAN_EQUAL_TO = new BinaryPredicate(_LESS_THAN_EQUAL_TO);
     public static final BinaryPredicate GREATER_THAN = new BinaryPredicate(_GREATER_THAN);
     public static final BinaryPredicate GREATER_THAN_EQUAL_TO = new BinaryPredicate(_GREATER_THAN_EQUAL_TO);
+    
+    private BinaryPredicate(java.lang.String value) {
+        _value_ = value;
+        _table_.put(_value_, this);
+    }
+    
+    
+    // for castor per http://www.castor.org/how-to-map-enums.html
+    public static BinaryPredicate valueOf(String value) throws IllegalArgumentException {
+        return fromValue(value);
+    }
 
 
     public java.lang.String getValue() {

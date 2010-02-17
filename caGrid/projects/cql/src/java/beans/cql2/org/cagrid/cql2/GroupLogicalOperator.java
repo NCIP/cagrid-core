@@ -11,21 +11,26 @@ public class GroupLogicalOperator implements java.io.Serializable {
     private java.lang.String _value_;
     private static java.util.HashMap<String, GroupLogicalOperator> _table_ = new java.util.HashMap<String, GroupLogicalOperator>();
 
-
-    // Constructor
-    protected GroupLogicalOperator(java.lang.String value) {
-        _value_ = value;
-        _table_.put(_value_, this);
-    }
-
     public static final java.lang.String _AND = "AND";
     public static final java.lang.String _OR = "OR";
     public static final GroupLogicalOperator AND = new GroupLogicalOperator(_AND);
     public static final GroupLogicalOperator OR = new GroupLogicalOperator(_OR);
 
 
+    private GroupLogicalOperator(java.lang.String value) {
+        _value_ = value;
+        _table_.put(_value_, this);
+    }
+
+
     public java.lang.String getValue() {
         return _value_;
+    }
+    
+
+    // for castor per http://www.castor.org/how-to-map-enums.html
+    public static GroupLogicalOperator valueOf(String value) throws IllegalArgumentException {
+        return fromValue(value);
     }
 
 

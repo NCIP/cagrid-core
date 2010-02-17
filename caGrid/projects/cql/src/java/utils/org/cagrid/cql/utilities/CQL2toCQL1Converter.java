@@ -17,6 +17,8 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+import javax.xml.namespace.QName;
+
 import org.cagrid.cql2.Aggregation;
 import org.cagrid.cql2.AttributeValue;
 import org.cagrid.cql2.BinaryPredicate;
@@ -143,7 +145,7 @@ public class CQL2toCQL1Converter {
         Document valueDoc = null;
         try {
             StringWriter writer = new StringWriter();
-            Utils.serializeObject(value, AttributeValue.getTypeDesc().getXmlType(), writer);
+            Utils.serializeObject(value, new QName("http://CQL.caBIG/2/org.cagrid.cql2", "AttributeValue"), writer);
             valueDoc = XMLUtilities.stringToDocument(writer.getBuffer().toString());
         } catch (Exception ex) {
             throw new QueryConversionException("Error serializing attribute value: " + ex.getMessage(), ex);
