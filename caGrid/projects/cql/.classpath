@@ -5,6 +5,7 @@
 	<classpathentry kind="src" path="build/stubs/dcql2.0/source"/>
 	<classpathentry kind="src" path="test/src/java"/>
 	<classpathentry kind="src" path="src/java/utils"/>
+	<classpathentry kind="src" path="src/java/beans"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="var" path="GT4_LOCATION/lib/addressing-1.0.jar"/>
 	<classpathentry kind="var" path="GT4_LOCATION/lib/axis.jar"/>
@@ -78,5 +79,6 @@
 	<classpathentry kind="lib" path="ext/dependencies/impl/jars/caGrid-metadata-data-1.4-dev.jar"/>
 	<classpathentry kind="lib" path="ext/dependencies/impl/jars/caGrid-metadatautils-1.4-dev.jar"/>
 	<classpathentry kind="lib" path="ext/dependencies/impl/jars/jdom-1.0.jar"/>
+	<classpathentry kind="lib" path="ext/dependencies/utils/jars/castor-1.0.2.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
