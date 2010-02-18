@@ -63,7 +63,7 @@
   </publications>
 
   <dependencies>
-  	<dependency org="castor" name="castor" rev="1.0.2" conf="utils->default"/>
+  	<dependency org="castor" name="castor" rev="1.0.2" conf="cql2->*"/>
   	<dependency org="caGrid" name="metadatautils" rev="latest.integration" conf="utils->default"/>
     <dependency org="caGrid" name="core" rev="latest.integration" conf="impl-test->test"/>
     <dependency rev="4.4" org="junit" name="junit" conf="impl-test->default"/>

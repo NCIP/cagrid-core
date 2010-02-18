@@ -4,10 +4,10 @@ import java.util.Collection;
 
 import javax.xml.namespace.QName;
 
-import org.apache.axis.message.MessageElement;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.cagrid.cql2.CQLExtension;
+import org.exolab.castor.types.AnyNode;
 
 public class Cql2WalkerExtensionCompatibilityValidationHandler extends Cql2WalkerHandlerAdapter {
     
@@ -21,14 +21,14 @@ public class Cql2WalkerExtensionCompatibilityValidationHandler extends Cql2Walke
     
 
     public void startExtension(CQLExtension ext) throws Cql2WalkerException {
-        MessageElement extension = null;
-        if (ext.get_any() == null || ext.get_any().length == 0) {
+        AnyNode extension = null;
+        if (ext.get_any() == null) {
             throw new ExtensionValidationException("No extension element was defined");
         }
-        extension = ext.get_any()[0];
+        extension = ext.get_any();
         // must understand defaults to false
         if (ext.getMustUnderstand() == null || !ext.getMustUnderstand().booleanValue()) {
-            QName type = extension.getType();
+            QName type = new QName(extension.getNamespaceURI(), extension.getLocalName());
             if (!supportedExtensions.contains(type)) {
                 throw new ExtensionValidationException("Extension type " + type.toString() + " is not supported");
             }
