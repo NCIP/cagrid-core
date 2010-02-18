@@ -247,6 +247,7 @@ public class GeneralConfigurationStep extends AbstractStyleConfigurationStep {
         if (!remoteLibDir.exists() || !remoteLibDir.exists()) {
             throw new FileNotFoundException("Remote-client library directory (" + remoteLibDir.getAbsolutePath() + ") not found");
         }
+        
     }
     
     

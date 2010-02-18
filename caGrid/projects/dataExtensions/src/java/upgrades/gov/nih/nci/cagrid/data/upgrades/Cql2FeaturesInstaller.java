@@ -4,6 +4,7 @@ import gov.nih.nci.cagrid.common.Utils;
 import gov.nih.nci.cagrid.data.CqlSchemaConstants;
 import gov.nih.nci.cagrid.data.MetadataConstants;
 import gov.nih.nci.cagrid.data.QueryProcessorConstants;
+import gov.nih.nci.cagrid.data.creation.CQL2NamespaceUtil;
 import gov.nih.nci.cagrid.data.creation.DataServiceQueryOperationProviderCreator;
 import gov.nih.nci.cagrid.data.creation.WsEnumerationFeatureCreator;
 import gov.nih.nci.cagrid.data.extension.Data;
@@ -105,6 +106,13 @@ public class Cql2FeaturesInstaller {
     
     
     private void addCql2Query() throws UpgradeException {
+        CQL2NamespaceUtil nsUtil = new CQL2NamespaceUtil(serviceInfo, status);
+        try {
+            nsUtil.addCql2QuerySchema();
+        } catch (Exception ex) {
+            throw new UpgradeException("Error adding CQL 2 query namespace: " + ex.getMessage(), ex);
+        }
+        
         String schemaDirName = getServiceSchemaDir().getAbsolutePath();
         File schemaDirFile = getServiceSchemaDir();
         // copy schemas into service first, then run add namespace operations
@@ -120,19 +128,12 @@ public class Cql2FeaturesInstaller {
             getDataSchemaDir().listFiles(new FileFilter() {
                 public boolean accept(File pathname) {
                     String name = pathname.getName();
-                    return name.endsWith(".xsd") && (
-                        name.startsWith("CQL") || 
-                        (name.startsWith("Cql2") && name.endsWith("Types.xsd")) ||
-                        name.startsWith("Predicates") ||
-                        name.startsWith("AssociationPopulationSpec") ||
-                        name.startsWith("Aggregations") ||
-                        name.startsWith("QueryLanguageSupport"));
+                    return name.startsWith("Cql2") && name.endsWith("Types.xsd");
                 }
             }));
         try {
             for (File schema : neededSchemas) {
                 File schemaOut = new File(getServiceSchemaDir(), schema.getName());
-                System.out.println("copying " + schema.getAbsolutePath() + " to " + schemaOut.getAbsolutePath());
                 Utils.copyFile(schema, schemaOut);
                 status.addDescriptionLine("Added CQL 2 support schema: " + schema.getName());
             }
@@ -140,10 +141,6 @@ public class Cql2FeaturesInstaller {
             throw new UpgradeException("Error copying new schemas or wsdl: " + ex.getMessage(), ex);
         }
         try {
-            // CQL 2 query namespace
-            CommonTools.addNamespace(serviceInfo.getServiceDescriptor(),
-                CommonTools.createNamespaceType(schemaDirName + File.separator
-                    + CqlSchemaConstants.CQL2_SCHEMA_FILENAME, schemaDirFile));
             // CQL 2 result namespace
             CommonTools.addNamespace(serviceInfo.getServiceDescriptor(),
                 CommonTools.createNamespaceType(schemaDirName + File.separator

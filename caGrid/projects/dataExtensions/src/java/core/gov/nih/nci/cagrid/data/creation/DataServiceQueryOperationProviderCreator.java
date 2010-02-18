@@ -163,6 +163,12 @@ public class DataServiceQueryOperationProviderCreator implements CreationExtensi
 
 
     private void addDataServiceNamespaces(ServiceInformation serviceInfo) throws CreationExtensionException {
+        CQL2NamespaceUtil cql2NsUtil = new CQL2NamespaceUtil(serviceInfo);
+        try {
+            cql2NsUtil.addCql2QuerySchema();
+        } catch (Exception ex) {
+            throw new CreationExtensionException("Error adding CQL 2 query schema: " + ex.getMessage(), ex);
+        }
         String schemaDir = getServiceSchemaDir(serviceInfo);
         File schemaDirFile = new File(schemaDir);
         // add the data service namespaces and schemas to the service descriptor
@@ -171,10 +177,6 @@ public class DataServiceQueryOperationProviderCreator implements CreationExtensi
             CommonTools.addNamespace(serviceInfo.getServiceDescriptor(), 
                 CommonTools.createNamespaceType(schemaDir + File.separator
                     + CqlSchemaConstants.CQL_QUERY_SCHEMA, schemaDirFile));
-            // CQL 2 query namespace
-            CommonTools.addNamespace(serviceInfo.getServiceDescriptor(),
-                CommonTools.createNamespaceType(schemaDir + File.separator
-                    + CqlSchemaConstants.CQL2_SCHEMA_FILENAME, schemaDirFile));
             // CQL result namespace
             CommonTools.addNamespace(serviceInfo.getServiceDescriptor(),
                 CommonTools.createNamespaceType(schemaDir + File.separator

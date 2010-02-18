@@ -27,6 +27,7 @@
 
 	<!-- source dirs -->
 	<property name="utils.src.dir" location="${basedir}/src/java/utils"/>
+	<property name="cql2.beans.src.dir" location="${basedir}/src/java/beans/cql2"/>
 	<property name="test.src.dir" location="${basedir}/test/src/java" />
 
 	<!-- build output dirs -->
@@ -35,6 +36,7 @@
 	<property name="build.cql.2.0.stubs.dest" location="${build.dir}/stubs/cql2.0/classes" />
 	<property name="build.dcql.2.0.stubs.dest" location="${build.dir}/stubs/dcql2.0/classes"/>
 	<property name="build.utils.dest" location="${build.dir}/utils/classes"/>
+	<property name="build.cql2.beans.dest" location="${build.dir}/beans/cql2/classes"/>
 	<property name="build.test.dest" location="${build.dir}/test/classes" />
 	<property name="build.jars.dir" location="build/lib" />
 
@@ -87,6 +89,7 @@
 		<path refid="build.classpath"/>
 		<pathelement location="${build.cql.1.0.stubs.dest}" />
 		<pathelement location="${build.cql.2.0.stubs.dest}" />
+		<pathelement location="${build.cql2.beans.dest}"/>
 		<pathelement location="${build.dcql.2.0.stubs.dest}" />
 		<pathelement location="${build.utils.dest}"/>
 	</path>
@@ -109,6 +112,7 @@
 		<mkdir dir="${build.jars.dir}" />
 		<mkdir dir="${build.cql.1.0.stubs.dest}" />
 		<mkdir dir="${build.cql.2.0.stubs.dest}" />
+		<mkdir dir="${build.cql2.beans.dest}"/>
 		<mkdir dir="${build.dcql.2.0.stubs.dest}" />
 		<mkdir dir="${build.utils.dest}"/>
 		<mkdir dir="${build.test.dest}" />
@@ -163,6 +167,7 @@
 			<property name="source.stubs.dir" location="${cql.2.0.schema.dest}" />
 			<property name="wsdl.file" value="CQL2.0-Beans.wsdl" />
 			<property name="target.stubs.dir" location="${cql.2.0.stubs.src}" />
+			<property name="ns.excludes" value="-x http://CQL.caBIG/2/org.cagrid.cql2"/>
 		</ant>
 		<!-- generate beans for DCQL 2.0 -->
 		<ant antfile="${ant.build.stubs}" target="generateStubs">
@@ -175,7 +180,7 @@
 
 
 	<!-- compiles the source stubs for the schema defined types -->
-	<target name="compileStubs" depends="stubs">
+	<target name="compileStubs" depends="stubs, compileBeans">
 		<javac srcdir="${cql.1.0.stubs.src}" destdir="${build.cql.1.0.stubs.dest}" debug="${java.debug}" source="${java.source}">
 			<include name="**/*.java" />
 			<classpath refid="build.classpath"/>
@@ -183,25 +188,39 @@
 		<javac srcdir="${cql.2.0.stubs.src}" destdir="${build.cql.2.0.stubs.dest}" debug="${java.debug}" source="${java.source}">
 			<include name="**/*.java" />
 			<classpath refid="build.classpath"/>
+			<classpath>
+				<pathelement location="${build.cql2.beans.dest}"/>
+			</classpath>
 		</javac>
 		<javac srcdir="${dcql.2.0.stubs.src}" destdir="${build.dcql.2.0.stubs.dest}" debug="${java.debug}" source="${java.source}">
 			<include name="**/*.java" />
 			<classpath refid="build.classpath"/>
 			<classpath>
+				<pathelement location="${build.cql2.beans.dest}"/>
 				<pathelement location="${build.cql.2.0.stubs.dest}"/>
 			</classpath>
+		</javac>
+	</target>
+	
+	
+	<!-- compiles the beans -->
+	<target name="compileBeans">
+		<javac srcdir="${cql2.beans.src.dir}" destdir="${build.cql2.beans.dest}" debug="${java.debug}" source="${java.source}">
+			<include name="**/*.java"/>
+			<classpath refid="build.classpath"/>
 		</javac>
 	</target>
 
 
 	<!-- compiles the utils -->
-	<target name="compileUtils" depends="compileStubs">
+	<target name="compileUtils" depends="compileStubs, compileBeans">
 		<javac srcdir="${utils.src.dir}" destdir="${build.utils.dest}" debug="${java.debug}" source="${java.source}">
 			<include name="**/*.java"/>
 			<classpath refid="build.classpath"/>
 			<classpath>
 				<pathelement location="${build.cql.1.0.stubs.dest}" />
 				<pathelement location="${build.cql.2.0.stubs.dest}" />
+				<pathelement location="${build.cql2.beans.dest}" />
 				<pathelement location="${build.dcql.2.0.stubs.dest}" />
 			</classpath>
 		</javac>
@@ -209,7 +228,7 @@
 	
 	
 	<!-- compiles the test classes -->
-	<target name="compileTests" depends="compileStubs, compileUtils">
+	<target name="compileTests" depends="compileStubs, compileBeans, compileUtils">
 		<javac srcdir="${test.src.dir}" destdir="${build.test.dest}" debug="${java.debug}" source="${java.source}">
 			<include name="**/*.java" />
 			<classpath refid="test.classpath"/>
@@ -233,6 +252,12 @@
 			</fileset>
 			<fileset dir="${cql.2.0.stubs.src}">
 				<include name="**/*.java" />
+			</fileset>
+			<fileset dir="${build.cql2.beans.dest}">
+				<include name="**/*.class"/>
+			</fileset>
+			<fileset dir="${cql2.beans.src.dir}">
+				<include name="**/*"/>
 			</fileset>
 		</jar>
 		<jar destfile="${dcql.2.0.jar.file}">
