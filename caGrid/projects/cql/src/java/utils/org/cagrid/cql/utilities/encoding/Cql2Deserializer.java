@@ -64,7 +64,7 @@ public class Cql2Deserializer extends DeserializerImpl implements Deserializer {
             try {
                 value = unmarshall.unmarshal(asDOM);
             } catch (MarshalException e) {
-                LOG.error("Problem with CQL2 castor marshalling!", e);
+                LOG.error("Problem with CQL 2 castor marshalling!", e);
             } catch (ValidationException e) {
                 LOG.error("CQL 2 XML does not match schema!", e);
             }
