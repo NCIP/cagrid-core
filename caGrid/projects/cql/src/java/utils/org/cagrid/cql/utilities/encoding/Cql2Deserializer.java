@@ -69,7 +69,6 @@ public class Cql2Deserializer extends DeserializerImpl implements Deserializer {
                 LOG.error("CQL 2 XML does not match schema!", e);
             }
         }
-        long duration = System.currentTimeMillis() - start;
-        LOG.debug("Total time to deserialize(" + localName + "):" + duration + " ms.");
+        LOG.trace("Derialized " + localName + " in " + (System.currentTimeMillis() - start) + " ms");
     }
 }
