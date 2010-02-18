@@ -92,6 +92,9 @@
     <field name="CQLAssociatedObject" type="org.cagrid.cql2.CQLAssociatedObject" collection="array">
       <bind-xml name="cql2:CQLAssociatedObject" node="element" />
     </field>
+    <field name="logicalOperation" type="org.cagrid.cql2.GroupLogicalOperator">
+      <bind-xml name="logicalOperation" node="attribute" />
+    </field>
   </class>
   <class name="org.cagrid.cql2.CQLAttribute">
     <description xmlns="">Default mapping for class org.cagrid.cql2.CQLAttribute</description>
