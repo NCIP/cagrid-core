@@ -228,7 +228,6 @@
 					<include name="**/Test*.java" />
 					<include name="**/*TestCase.java" />
 					<exclude name="**/*CycleTestCase.java" />
-					<exclude name="**/DCQLConvertAndValidateTestCase.java"/>
 				</fileset>
 			</batchtest>
 		</junit>

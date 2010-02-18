@@ -6,6 +6,10 @@
   <ns2:Namespace generateStubs="false" location="../cql2.0/CQLQueryResults.xsd" namespace="http://CQL.caBIG/2/org.cagrid.cql2.results" packageName="org.cagrid.cql2.results" xsi:type="ns2:NamespaceType">
    <ns2:SchemaElement type="CQLQueryResults" xsi:type="ns2:SchemaElementType"/>
   </ns2:Namespace>
+  <ns2:Namespace generateStubs="false" location="../cql2.0/CQLQueryComponents.xsd" namespace="http://CQL.caBIG/2/org.cagrid.cql2" packageName="org.cagrid.cql2" xsi:type="ns2:NamespaceType">
+   <ns2:SchemaElement className="CQLQuery" deserializer="org.cagrid.cql.utilities.encoding.Cql2DeserializerFactory" serializer="org.cagrid.cql.utilities.encoding.Cql2SerializerFactory" type="CQLQuery" xsi:type="ns2:SchemaElementType"/>
+   <ns2:SchemaElement className="AssociationPopulationSpecification" deserializer="org.cagrid.cql.utilities.encoding.Cql2DeserializerFactory" serializer="org.cagrid.cql.utilities.encoding.Cql2SerializerFactory" type="AssociationPopulationSpecification" xsi:type="ns2:SchemaElementType"/>
+  </ns2:Namespace>
   <ns2:Namespace generateStubs="false" location="../cql2.0/Aggregations.xsd" namespace="http://CQL.caBIG/2/org.cagrid.cql2" packageName="org.cagrid.cql2" xsi:type="ns2:NamespaceType"/>
   <ns2:Namespace generateStubs="false" location="../cql2.0/DCQL_2.0.xsd" namespace="http://DCQL.caBIG/2/org.cagrid.data.dcql" packageName="org.cagrid.data.dcql" xsi:type="ns2:NamespaceType">
    <ns2:SchemaElement type="DCQLQuery" xsi:type="ns2:SchemaElementType"/>

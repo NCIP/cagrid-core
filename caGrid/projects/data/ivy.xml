@@ -122,7 +122,7 @@
     <dependency rev="latest.integration" org="caGrid" name="graph" conf="tools->default"/>
     <dependency rev="latest.integration" org="caGrid" name="grape" conf="tools->default"/>
     <dependency rev="latest.integration" org="caGrid" name="mms" conf="stubs->schemas,stubs" />
-    <dependency rev="latest.integration" org="caGrid" name="cql" conf="stubs->cql,cql2;common->cql;service->cql,cql-schemas,utils;service-schemas->cql-schemas;extension-schemas->cql-schemas;utils->cql2,cql2-schemas"/>
+    <dependency rev="latest.integration" org="caGrid" name="cql" conf="stubs->cql,cql2;common->cql;service->cql,cql2,cql-schemas,utils;service-schemas->cql-schemas,cql2-schemas;extension-schemas->cql-schemas,cql2-schemas;utils->cql2,cql2-schemas"/>
     <dependency rev="latest.integration" org="caGrid" name="transfer" conf="service->stubs,common,service,client"/>
     <dependency rev="latest.integration" org="caGrid" name="sdk4xCQL2" conf="impl-test->cql2-examples"/>
     

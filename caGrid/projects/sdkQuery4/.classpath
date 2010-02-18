@@ -120,5 +120,6 @@
 	<classpathentry kind="lib" path="ext/dependencies/jars/caGrid-data-utils-1.4-dev.jar"/>
 	<classpathentry kind="lib" path="ext/dependencies/jars/caGrid-data-service-1.4-dev.jar"/>
 	<classpathentry kind="lib" path="ext/dependencies/jars/caGrid-metadatautils-1.4-dev.jar"/>
+	<classpathentry kind="lib" path="ext/dependencies/jars/caGrid-CQL-utils-1.4-dev.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

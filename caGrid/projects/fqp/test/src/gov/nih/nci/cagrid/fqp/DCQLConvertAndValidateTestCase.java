@@ -9,6 +9,8 @@ import gov.nih.nci.cagrid.fqp.common.DCQLConversionException;
 import gov.nih.nci.cagrid.fqp.common.DCQLConverter;
 
 import java.io.File;
+import java.io.FileReader;
+import java.io.InputStream;
 import java.io.StringWriter;
 
 import junit.framework.TestCase;
@@ -17,6 +19,13 @@ public class DCQLConvertAndValidateTestCase extends TestCase {
     
     public DCQLConvertAndValidateTestCase(String name) {
         super(name);
+    }
+    
+    
+    public InputStream getClientConfig() {
+        InputStream clientConfig = getClass().getResourceAsStream("/gov/nih/nci/cagrid/fqp/client/client-config.wsdd");
+        assertNotNull("Client config wsdd stream was null", clientConfig);
+        return clientConfig;
     }
     
     
@@ -36,8 +45,10 @@ public class DCQLConvertAndValidateTestCase extends TestCase {
         File queryFile = new File("test/resources/" + filename);
         DCQLQuery query = null;
         try {
-            query = Utils.deserializeDocument(
-                queryFile.getAbsolutePath(), DCQLQuery.class);
+            FileReader reader = new FileReader(queryFile);
+            InputStream clientConfig = getClientConfig();
+            query = Utils.deserializeObject(reader, DCQLQuery.class, clientConfig);
+            clientConfig.close();
         } catch (Exception ex) {
             ex.printStackTrace();
             fail("Error deserializing DCQL 1 query: " + ex.getMessage());
@@ -71,7 +82,9 @@ public class DCQLConvertAndValidateTestCase extends TestCase {
         String xml = null;
         try {
             StringWriter writer = new StringWriter();
-            Utils.serializeObject(query, DCQLConstants.DCQL2_QUERY_QNAME, writer);
+            InputStream clientConfig = getClientConfig();
+            Utils.serializeObject(query, DCQLConstants.DCQL2_QUERY_QNAME, writer, clientConfig);
+            clientConfig.close();
             xml = writer.getBuffer().toString();
         } catch (Exception ex) {
             ex.printStackTrace();
