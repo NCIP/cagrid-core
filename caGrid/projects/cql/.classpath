@@ -3,9 +3,9 @@
 	<classpathentry kind="src" path="build/stubs/cql1.0/source"/>
 	<classpathentry kind="src" path="build/stubs/cql2.0/source"/>
 	<classpathentry kind="src" path="build/stubs/dcql2.0/source"/>
-	<classpathentry kind="src" path="test/src/java"/>
+	<classpathentry kind="src" path="src/java/beans/cql2"/>
 	<classpathentry kind="src" path="src/java/utils"/>
-	<classpathentry kind="src" path="src/java/beans"/>
+	<classpathentry kind="src" path="test/src/java"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="var" path="GT4_LOCATION/lib/addressing-1.0.jar"/>
 	<classpathentry kind="var" path="GT4_LOCATION/lib/axis.jar"/>
