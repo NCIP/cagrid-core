@@ -27,6 +27,7 @@ public class CQL2SerializationUtil {
         
         Marshaller m = new Marshaller(writer);
         m.setSuppressNamespaces(true);
+        m.setSuppressXSIType(true);
         m.setMapping(mapping);
         m.marshal(query);
         

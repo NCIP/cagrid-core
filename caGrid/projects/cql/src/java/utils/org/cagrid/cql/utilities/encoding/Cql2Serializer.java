@@ -44,6 +44,9 @@ public class Cql2Serializer implements Serializer {
             ioe.initCause(ex);
             throw ioe;
         }
+        // TODO: evaluate if I need these, and if so, why
+        marshaller.setSuppressNamespaces(true);
+        marshaller.setSuppressXSIType(true);
         marshaller.setValidation(true);
         
         try {
