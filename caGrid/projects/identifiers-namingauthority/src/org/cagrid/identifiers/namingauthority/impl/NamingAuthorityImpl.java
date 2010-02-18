@@ -69,7 +69,8 @@ public class NamingAuthorityImpl implements MaintainerNamingAuthority {
 		throws 
 			NamingAuthorityConfigurationException, 
 			InvalidIdentifierException, 
-			NamingAuthoritySecurityException {
+			NamingAuthoritySecurityException, 
+			InvalidIdentifierValuesException {
  
 		validateIdentifierValues(ivalues);
 		
@@ -157,8 +158,8 @@ public class NamingAuthorityImpl implements MaintainerNamingAuthority {
 	
 	private void validateIdentifierValues(IdentifierValues values) 
 		throws 
-			InvalidIdentifierException, 
-			NamingAuthorityConfigurationException {
+			NamingAuthorityConfigurationException, 
+			InvalidIdentifierValuesException {
 		
 		if (values == null || values.getKeys() == null) {
 			return;
@@ -166,12 +167,22 @@ public class NamingAuthorityImpl implements MaintainerNamingAuthority {
 		
 		for(String key : values.getKeys()) {
 			
+			if (key == null || key.equals("")) {
+				throw new InvalidIdentifierValuesException("Key names are required");
+			}
+			
 			KeyData kd = values.getValues(key);
+			if (kd == null)
+				continue;
 			
 			if (kd.getReadWriteIdentifier() != null) {
 				// make sure it's local to prefix
-				IdentifierUtil.getLocalName(getConfiguration().getPrefix(), 
-						kd.getReadWriteIdentifier());
+				try {
+					IdentifierUtil.getLocalName(getConfiguration().getPrefix(), 
+							kd.getReadWriteIdentifier());
+				} catch (InvalidIdentifierException e) {
+					throw new InvalidIdentifierValuesException(e.getMessage());
+				}
 			}
 			
 			if (key.equals(Keys.ADMIN_IDENTIFIERS) ||
@@ -181,8 +192,12 @@ public class NamingAuthorityImpl implements MaintainerNamingAuthority {
 				if (identifiers != null) {
 					for(String identifier : identifiers) {
 						// make sure it's local to prefix
-						IdentifierUtil.getLocalName(getConfiguration().getPrefix(), 
-								URI.create(identifier));
+						try {
+							IdentifierUtil.getLocalName(getConfiguration().getPrefix(), 
+									URI.create(identifier));
+						} catch (InvalidIdentifierException e) {
+							throw new InvalidIdentifierValuesException(e.getMessage());
+						}
 					}
 				}
 			}

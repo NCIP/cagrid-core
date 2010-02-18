@@ -12,12 +12,20 @@ public class KeyData implements java.io.Serializable {
     public KeyData(){}
     
     public KeyData( URI identifier, List<String> values) {
-    	this.readWriteIdentifier = identifier;
-    	this.values = values;
+    	init(identifier, values);
     }
     
     public KeyData( URI identifier, String[] values) {
-    	this(identifier, Arrays.asList(values));
+    	if (values != null) {
+    		init(identifier, Arrays.asList(values));
+    	} else {
+    		init(identifier, null);
+    	}
+    }
+    
+    private void init(URI identifier, List<String> values) {
+    	this.readWriteIdentifier = identifier;
+    	this.values = values;
     }
     
     public URI getReadWriteIdentifier() {

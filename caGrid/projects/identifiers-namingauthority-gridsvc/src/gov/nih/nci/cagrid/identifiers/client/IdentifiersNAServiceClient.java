@@ -1,6 +1,9 @@
 package gov.nih.nci.cagrid.identifiers.client;
 
+import java.net.URI;
 import java.rmi.RemoteException;
+import java.util.ArrayList;
+
 import namingauthority.IdentifierValues;
 import namingauthority.KeyData;
 import namingauthority.KeyValues;
@@ -70,6 +73,37 @@ public class IdentifiersNAServiceClient extends IdentifiersNAServiceClientBase i
 
 			  org.apache.axis.types.URI identifier = client.createIdentifier(values1);
 			  System.out.println("Identifier: " + identifier.toString());
+			  
+			  //////////////////////////////////////////////////////////////////////
+			  // Test identifier keys with no values are supported
+			  //
+			  System.out.println(client.createIdentifier(null).toString());
+			  System.out.println(client.createIdentifier(new IdentifierValues()));
+			  
+			  IdentifierValues values = new IdentifierValues();
+			  values.setKeyValues(null);
+			  System.out.println(client.createIdentifier(values).toString());
+			  
+			  values.setKeyValues(new KeyValues[]{});
+			  System.out.println(client.createIdentifier(values).toString());
+
+			  KeyValues[] kvs = new KeyValues[] {
+				new KeyValues("key1", null),
+				new KeyValues("key2", new KeyData()),
+				new KeyValues("key3", new KeyData(null, null)),
+				new KeyValues("key4", new KeyData(null, new String[]{}))
+			  };
+			  values.setKeyValues(kvs);
+			  System.out.println(client.createIdentifier(values));
+
+			  // Try inserting a key with no name
+			  kvs = new KeyValues[] {
+					new KeyValues("", null),
+					new KeyValues("key2", new KeyData())
+			  };
+			  values.setKeyValues(kvs);
+			  System.out.println(client.createIdentifier(values));
+					  
 //
 //			  values2 = client.resolveIdentifier(identifier);
 //			  System.out.println("\n-------------------------------------\nAfter creating identifier:");
@@ -100,10 +134,10 @@ public class IdentifiersNAServiceClient extends IdentifiersNAServiceClientBase i
 //			  printValues(deleteAllKeysValues);
 			  
 			  //Delete some keys
-//			  client.deleteKeys(identifier, new String[]{ "URL" });
-//			  IdentifierValues deleteKeysValues = client.resolveIdentifier(identifier);
-//			  System.out.println("\n-----------------------------------------------\nAfter deleteKeys:");
-//			  printValues(deleteKeysValues);
+			  client.deleteKeys(identifier, new String[]{ "URL" });
+			  IdentifierValues deleteKeysValues = client.resolveIdentifier(identifier);
+			  System.out.println("\n-----------------------------------------------\nAfter deleteKeys:");
+			  printValues(deleteKeysValues);
 			  
 			  //Replace some keys
 //			  KeyValues[] replacedKeys = new KeyValues[2];
@@ -150,31 +184,6 @@ public class IdentifiersNAServiceClient extends IdentifiersNAServiceClientBase i
 	}
 	
 
-  public java.lang.String[] getKeys(org.apache.axis.types.URI identifier) throws RemoteException, gov.nih.nci.cagrid.identifiers.stubs.types.InvalidIdentifierFault, gov.nih.nci.cagrid.identifiers.stubs.types.NamingAuthorityConfigurationFault, gov.nih.nci.cagrid.identifiers.stubs.types.NamingAuthoritySecurityFault {
-    synchronized(portTypeMutex){
-      configureStubSecurity((Stub)portType,"getKeys");
-    gov.nih.nci.cagrid.identifiers.stubs.GetKeysRequest params = new gov.nih.nci.cagrid.identifiers.stubs.GetKeysRequest();
-    gov.nih.nci.cagrid.identifiers.stubs.GetKeysRequestIdentifier identifierContainer = new gov.nih.nci.cagrid.identifiers.stubs.GetKeysRequestIdentifier();
-    identifierContainer.setIdentifier(identifier);
-    params.setIdentifier(identifierContainer);
-    gov.nih.nci.cagrid.identifiers.stubs.GetKeysResponse boxedResult = portType.getKeys(params);
-    return boxedResult.getResponse();
-    }
-  }
-
-  public java.lang.String[] getKeyValues(org.apache.axis.types.URI identifier,java.lang.String keyName) throws RemoteException, gov.nih.nci.cagrid.identifiers.stubs.types.InvalidIdentifierFault, gov.nih.nci.cagrid.identifiers.stubs.types.NamingAuthoritySecurityFault, gov.nih.nci.cagrid.identifiers.stubs.types.NamingAuthorityConfigurationFault {
-    synchronized(portTypeMutex){
-      configureStubSecurity((Stub)portType,"getKeyValues");
-    gov.nih.nci.cagrid.identifiers.stubs.GetKeyValuesRequest params = new gov.nih.nci.cagrid.identifiers.stubs.GetKeyValuesRequest();
-    gov.nih.nci.cagrid.identifiers.stubs.GetKeyValuesRequestIdentifier identifierContainer = new gov.nih.nci.cagrid.identifiers.stubs.GetKeyValuesRequestIdentifier();
-    identifierContainer.setIdentifier(identifier);
-    params.setIdentifier(identifierContainer);
-    params.setKeyName(keyName);
-    gov.nih.nci.cagrid.identifiers.stubs.GetKeyValuesResponse boxedResult = portType.getKeyValues(params);
-    return boxedResult.getResponse();
-    }
-  }
-
   public org.oasis.wsrf.properties.GetMultipleResourcePropertiesResponse getMultipleResourceProperties(org.oasis.wsrf.properties.GetMultipleResourceProperties_Element params) throws RemoteException {
     synchronized(portTypeMutex){
       configureStubSecurity((Stub)portType,"getMultipleResourceProperties");
@@ -196,7 +205,7 @@ public class IdentifiersNAServiceClient extends IdentifiersNAServiceClientBase i
     }
   }
 
-  public org.apache.axis.types.URI createIdentifier(namingauthority.IdentifierValues identifierValues) throws RemoteException, gov.nih.nci.cagrid.identifiers.stubs.types.NamingAuthorityConfigurationFault, gov.nih.nci.cagrid.identifiers.stubs.types.InvalidIdentifierFault, gov.nih.nci.cagrid.identifiers.stubs.types.NamingAuthoritySecurityFault {
+  public org.apache.axis.types.URI createIdentifier(namingauthority.IdentifierValues identifierValues) throws RemoteException, gov.nih.nci.cagrid.identifiers.stubs.types.NamingAuthorityConfigurationFault, gov.nih.nci.cagrid.identifiers.stubs.types.InvalidIdentifierFault, gov.nih.nci.cagrid.identifiers.stubs.types.NamingAuthoritySecurityFault, gov.nih.nci.cagrid.identifiers.stubs.types.InvalidIdentifierValuesFault {
     synchronized(portTypeMutex){
       configureStubSecurity((Stub)portType,"createIdentifier");
     gov.nih.nci.cagrid.identifiers.stubs.CreateIdentifierRequest params = new gov.nih.nci.cagrid.identifiers.stubs.CreateIdentifierRequest();
@@ -257,6 +266,31 @@ public class IdentifiersNAServiceClient extends IdentifiersNAServiceClientBase i
     identifierValuesContainer.setIdentifierValues(identifierValues);
     params.setIdentifierValues(identifierValuesContainer);
     gov.nih.nci.cagrid.identifiers.stubs.ReplaceKeysResponse boxedResult = portType.replaceKeys(params);
+    }
+  }
+
+  public java.lang.String[] getKeys(org.apache.axis.types.URI identifier) throws RemoteException, gov.nih.nci.cagrid.identifiers.stubs.types.InvalidIdentifierFault, gov.nih.nci.cagrid.identifiers.stubs.types.NamingAuthorityConfigurationFault, gov.nih.nci.cagrid.identifiers.stubs.types.NamingAuthoritySecurityFault {
+    synchronized(portTypeMutex){
+      configureStubSecurity((Stub)portType,"getKeys");
+    gov.nih.nci.cagrid.identifiers.stubs.GetKeysRequest params = new gov.nih.nci.cagrid.identifiers.stubs.GetKeysRequest();
+    gov.nih.nci.cagrid.identifiers.stubs.GetKeysRequestIdentifier identifierContainer = new gov.nih.nci.cagrid.identifiers.stubs.GetKeysRequestIdentifier();
+    identifierContainer.setIdentifier(identifier);
+    params.setIdentifier(identifierContainer);
+    gov.nih.nci.cagrid.identifiers.stubs.GetKeysResponse boxedResult = portType.getKeys(params);
+    return boxedResult.getResponse();
+    }
+  }
+
+  public java.lang.String[] getKeyValues(org.apache.axis.types.URI identifier,java.lang.String keyName) throws RemoteException, gov.nih.nci.cagrid.identifiers.stubs.types.InvalidIdentifierFault, gov.nih.nci.cagrid.identifiers.stubs.types.NamingAuthoritySecurityFault, gov.nih.nci.cagrid.identifiers.stubs.types.NamingAuthorityConfigurationFault {
+    synchronized(portTypeMutex){
+      configureStubSecurity((Stub)portType,"getKeyValues");
+    gov.nih.nci.cagrid.identifiers.stubs.GetKeyValuesRequest params = new gov.nih.nci.cagrid.identifiers.stubs.GetKeyValuesRequest();
+    gov.nih.nci.cagrid.identifiers.stubs.GetKeyValuesRequestIdentifier identifierContainer = new gov.nih.nci.cagrid.identifiers.stubs.GetKeyValuesRequestIdentifier();
+    identifierContainer.setIdentifier(identifier);
+    params.setIdentifier(identifierContainer);
+    params.setKeyName(keyName);
+    gov.nih.nci.cagrid.identifiers.stubs.GetKeyValuesResponse boxedResult = portType.getKeyValues(params);
+    return boxedResult.getResponse();
     }
   }
 

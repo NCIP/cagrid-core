@@ -129,11 +129,14 @@ public class IdentifierUtil {
 	
 	public static IdentifierValueKey convert(String key, IdentifierValues values) {
 
-		KeyData kd = values.getValues(key);
 		IdentifierValueKey ivk = new IdentifierValueKey();
 		ivk.setKey(key);
-		ivk.setReadWriteIdentifier(kd.getReadWriteIdentifier());
-		ivk.setValues(kd.getValues());
+		
+		KeyData kd = values.getValues(key);
+		if (kd != null) {
+			ivk.setReadWriteIdentifier(kd.getReadWriteIdentifier());
+			ivk.setValues(kd.getValues());
+		}
 		
 		return ivk;
 	}

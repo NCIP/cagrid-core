@@ -5,6 +5,7 @@ import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Iterator;
 import java.util.List;
 
 import javax.persistence.NonUniqueResultException;
@@ -143,6 +144,10 @@ public class IdentifierMetadataDao extends AbstractDao<IdentifierMetadata> {
 			InvalidIdentifierValuesException, 
 			NamingAuthorityConfigurationException {
 
+		if (values == null || values.getKeys() == null || values.getKeys().length == 0) {
+			throw new InvalidIdentifierValuesException("No keys were provided");
+		}
+		
 		secInfo = validateSecurityInfo(secInfo);
 		
 		URI localIdentifier = IdentifierUtil.getLocalName(prefix, identifier);
@@ -177,6 +182,10 @@ public class IdentifierMetadataDao extends AbstractDao<IdentifierMetadata> {
 			InvalidIdentifierValuesException, 
 			NamingAuthorityConfigurationException {
 
+		if (keyList == null || keyList.length == 0) {
+			throw new InvalidIdentifierValuesException("No keys were provided");
+		}
+		
 		secInfo = validateSecurityInfo(secInfo);
 		
 		URI localIdentifier = IdentifierUtil.getLocalName(prefix, identifier);
@@ -189,7 +198,8 @@ public class IdentifierMetadataDao extends AbstractDao<IdentifierMetadata> {
 
 		writeKeysSecurityChecks(secInfo, "deleteKeys", resolvedValues);
 
-		LOG.warn("User [" + secInfo.getUser() + "] deleting some keys for identifier [" + identifier.toString() + "]");
+		LOG.warn("User [" + secInfo.getUser() + "] deleting some keys for identifier [" 
+				+ identifier.toString() + "]");
 
 		List<IdentifierValueKey> keysToDelete = new ArrayList<IdentifierValueKey>();	
 		ArrayList<String> keyNames = new ArrayList<String>(Arrays.asList(keyList));
@@ -202,9 +212,27 @@ public class IdentifierMetadataDao extends AbstractDao<IdentifierMetadata> {
 			}
 		}
 
+		if (keysToDelete.size() != keyNames.size()) {
+			// Unrecognized key. Should we actually fail this?
+			String missingKeys = "";
+			for(String key : keyNames) {
+				if (!keysToDelete.contains(key)) {
+					if (missingKeys.equals(""))
+						missingKeys += key;
+					else
+						missingKeys += ", " +  key;
+				}
+			}
+			throw new InvalidIdentifierValuesException("Unexpected keys found in the request [" 
+					+ missingKeys + "]");
+		}
+		
 		if (keysToDelete.size() > 0) {
 			getHibernateTemplate().deleteAll(keysToDelete);
+			resolvedValues.getValues().removeAll(keysToDelete);
 		}
+		
+		save(resolvedValues);
 		
 		if (SecurityUtil.isSystemIdentifier(localIdentifier)) {
 			replaceSystemValues(secInfo, resolvedValues);
@@ -218,6 +246,10 @@ public class IdentifierMetadataDao extends AbstractDao<IdentifierMetadata> {
 			InvalidIdentifierValuesException, 
 			NamingAuthorityConfigurationException {
 
+		if (values == null || values.getKeys() == null || values.getKeys().length == 0) {
+			throw new InvalidIdentifierValuesException("No keys were provided");
+		}
+		
 		secInfo = validateSecurityInfo(secInfo);
 
 		URI localIdentifier = IdentifierUtil.getLocalName(prefix, identifier);

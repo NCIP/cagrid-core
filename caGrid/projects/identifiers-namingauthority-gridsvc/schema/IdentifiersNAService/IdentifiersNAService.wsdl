@@ -238,6 +238,7 @@
       <fault name="NamingAuthorityConfigurationFault" message="tns:NamingAuthorityConfigurationFaultFaultMessage" wsa:Action="http://identifiers.cagrid.nci.nih.gov/IdentifiersNAService/NamingAuthorityConfigurationFaultFaultMessage" />
       <fault name="InvalidIdentifierFault" message="tns:InvalidIdentifierFaultFaultMessage" wsa:Action="http://identifiers.cagrid.nci.nih.gov/IdentifiersNAService/InvalidIdentifierFaultFaultMessage" />
       <fault name="NamingAuthoritySecurityFault" message="tns:NamingAuthoritySecurityFaultFaultMessage" wsa:Action="http://identifiers.cagrid.nci.nih.gov/IdentifiersNAService/NamingAuthoritySecurityFaultFaultMessage" />
+      <fault name="InvalidIdentifierValuesFault" message="tns:InvalidIdentifierValuesFaultFaultMessage" wsa:Action="http://identifiers.cagrid.nci.nih.gov/IdentifiersNAService/InvalidIdentifierValuesFaultFaultMessage" />
     </operation>
     <operation name="resolveIdentifier">
       <input message="tns:ResolveIdentifierRequest" wsa:Action="http://identifiers.cagrid.nci.nih.gov/IdentifiersNAService/ResolveIdentifierRequest" />

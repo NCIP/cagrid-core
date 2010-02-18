@@ -29,8 +29,10 @@ public class IdentifiersNAUtil {
 		org.cagrid.identifiers.namingauthority.domain.IdentifierValues ivs = 
 			new org.cagrid.identifiers.namingauthority.domain.IdentifierValues();
 		
-		for( namingauthority.KeyValues kvs : identifierValues.getKeyValues() ) {
-			ivs.put(kvs.getKey(), map(kvs.getKeyData()));
+		if (identifierValues.getKeyValues() != null) {
+			for( namingauthority.KeyValues kvs : identifierValues.getKeyValues() ) {
+				ivs.put(kvs.getKey(), map(kvs.getKeyData()));
+			}
 		}
 		
 		return ivs;
