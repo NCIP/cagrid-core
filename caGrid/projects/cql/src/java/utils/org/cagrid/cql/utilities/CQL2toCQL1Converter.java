@@ -1,7 +1,5 @@
 package org.cagrid.cql.utilities;
 
-import gov.nih.nci.cagrid.common.Utils;
-import gov.nih.nci.cagrid.common.XMLUtilities;
 import gov.nih.nci.cagrid.cqlquery.Association;
 import gov.nih.nci.cagrid.cqlquery.Attribute;
 import gov.nih.nci.cagrid.cqlquery.CQLQuery;
@@ -11,13 +9,9 @@ import gov.nih.nci.cagrid.cqlquery.Object;
 import gov.nih.nci.cagrid.cqlquery.Predicate;
 import gov.nih.nci.cagrid.cqlquery.QueryModifier;
 
-import java.io.StringWriter;
+import java.text.DateFormat;
 import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
 import java.util.Map;
-
-import javax.xml.namespace.QName;
 
 import org.cagrid.cql2.Aggregation;
 import org.cagrid.cql2.AttributeValue;
@@ -31,8 +25,6 @@ import org.cagrid.cql2.DistinctAttribute;
 import org.cagrid.cql2.GroupLogicalOperator;
 import org.cagrid.cql2.NamedAttribute;
 import org.cagrid.cql2.UnaryPredicate;
-import org.jdom.Document;
-import org.jdom.Element;
 
 public class CQL2toCQL1Converter {
     
@@ -142,6 +134,26 @@ public class CQL2toCQL1Converter {
     
     
     private static String getAttributeValueAsString(AttributeValue value) throws QueryConversionException {
+        String string = null;
+        if (value.getStringValue() != null) {
+            string = value.getStringValue();
+        } else if (value.getBooleanValue() != null) {
+            string = value.getBooleanValue().toString();
+        } else if (value.getDateValue() != null) {
+            // TODO: check this against XSD date
+            string = DateFormat.getDateInstance().format(value.getDateValue());
+        } else if (value.getDoubleValue() != null) {
+            string = value.getDoubleValue().toString();
+        } else if (value.getIntegerValue() != null) {
+            string = value.getIntegerValue().toString();
+        } else if (value.getLongValue() != null) {
+            string = value.getLongValue().toString();
+        } else if (value.getTimeValue() != null) {
+            string = DateFormat.getTimeInstance().format(
+                value.getTimeValue().getAsCalendar().getTime());
+        }
+        return string;
+        /*
         Document valueDoc = null;
         try {
             StringWriter writer = new StringWriter();
@@ -161,6 +173,7 @@ public class CQL2toCQL1Converter {
             }
         }
         return string;
+        */
     }
     
     
