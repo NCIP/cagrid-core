@@ -19,7 +19,6 @@ import java.util.List;
 import java.util.NoSuchElementException;
 
 import javax.xml.namespace.QName;
-import javax.xml.soap.Name;
 import javax.xml.soap.SOAPElement;
 
 import org.apache.axis.message.PrefixedQName;
