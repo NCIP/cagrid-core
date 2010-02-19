@@ -28,6 +28,12 @@ import java.util.List;
 import org.apache.axis.message.MessageElement;
 import org.jdom.Element;
 
+/**
+ * Cql2FeaturesInstaller
+ * Installs CQL 2 features into 1.2 and 1.3 data services on upgrade
+ * 
+ * @author David
+ */
 public class Cql2FeaturesInstaller {
 
     private ServiceInformation serviceInfo = null;
