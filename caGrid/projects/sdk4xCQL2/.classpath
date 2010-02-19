@@ -86,5 +86,7 @@
 	<classpathentry kind="lib" path="ext/dependencies/jars/jta-1.0.1B.jar"/>
 	<classpathentry kind="lib" path="test/lib/sdk4.0/example40-beans.jar"/>
 	<classpathentry kind="lib" path="test/lib/sdk4.0/example40-conf.jar"/>
+	<classpathentry kind="lib" path="ext/dependencies/jars/castor-1.0.2.jar"/>
+	<classpathentry kind="lib" path="ext/dependencies/jars/caGrid-CQL-utils-1.4-dev.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
