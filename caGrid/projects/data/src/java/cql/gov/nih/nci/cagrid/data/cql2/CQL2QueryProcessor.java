@@ -17,8 +17,10 @@ import java.util.Set;
 import javax.xml.namespace.QName;
 
 import org.cagrid.cql2.CQLQuery;
+import org.cagrid.cql2.results.CQLAggregateResult;
 import org.cagrid.cql2.results.CQLQueryResults;
 import org.cagrid.cql2.results.CQLResult;
+import org.cagrid.cql2.results.ExtendedCQLResult;
 
 /**
  * CQL2 Query Processor base class
@@ -244,13 +246,13 @@ public abstract class CQL2QueryProcessor {
         
         public ResultsIterator(CQLQueryResults queryResults) {
             if (queryResults.getAggregationResult() != null) {
-                results = new CQLResult[] {queryResults.getAggregationResult()};
+                results = new CQLAggregateResult[] {queryResults.getAggregationResult()};
             } else if (queryResults.getAttributeResult() != null && queryResults.getAttributeResult().length != 0) {
                 results = queryResults.getAttributeResult();
             } else if (queryResults.getObjectResult() != null && queryResults.getObjectResult().length != 0) {
                 results = queryResults.getObjectResult();
             } else if (queryResults.getExtendedResult() != null) {
-                results = new CQLResult[] {queryResults.getExtendedResult()};
+                results = new ExtendedCQLResult[] {queryResults.getExtendedResult()};
             } else {
                 results = new CQLResult[0];
             }
