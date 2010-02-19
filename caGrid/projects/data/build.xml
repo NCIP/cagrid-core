@@ -444,9 +444,9 @@
 			<fileset dir="${build.common.dest}">
 				<include name="**/*.class" />
 			</fileset>
+			<!-- pick up all source, xml, wsdd, etc -->
 			<fileset dir="${common.src.dir}">
-				<include name="**/*.java" />
-				<include name="**/*.xml" />
+				<include name="**/*"/>
 			</fileset>
 		</jar>
 	</target>
