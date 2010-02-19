@@ -1,6 +1,7 @@
 package org.cagrid.data.test.system;
 
 import gov.nih.nci.cagrid.common.Utils;
+import gov.nih.nci.cagrid.common.XMLUtilities;
 import gov.nih.nci.cagrid.data.MetadataConstants;
 import gov.nih.nci.cagrid.introduce.test.TestCaseInfo;
 import gov.nih.nci.cagrid.metadata.ResourcePropertyHelper;
@@ -134,7 +135,7 @@ public class CheckCql2QueryLanguageSupportResourcePropertyStep extends Step {
         try {
             String rpXml = XmlUtils.toString(resourceProperty);
             System.out.println("Resource property:");
-            System.out.println(rpXml);
+            System.out.println(XMLUtilities.formatXML(rpXml));
             support = Utils.deserializeObject(new StringReader(rpXml), QueryLanguageSupport.class);
         } catch (Exception ex) {
             ex.printStackTrace();
