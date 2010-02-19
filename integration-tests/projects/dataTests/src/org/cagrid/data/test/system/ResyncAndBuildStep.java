@@ -29,9 +29,8 @@ public class ResyncAndBuildStep extends Step {
 	
     private static final Log logger = LogFactory.getLog(ResyncAndBuildStep.class);
     
-    
+    private String introduceDir = null;
     private DataTestCaseInfo serviceInfo;
-	private String introduceDir;
 	
 	public ResyncAndBuildStep(DataTestCaseInfo serviceInfo, String introduceDir) {
 		super();
@@ -42,18 +41,18 @@ public class ResyncAndBuildStep extends Step {
 
 	public void runStep() throws Throwable {		
 		logger.debug("Invoking post creation processes");
-		// FIXME: what does "Save" button do in Introduce?
-		// it runs SyncTools directly, rather than go through any ant task.  That's... probably not right
-		/*
-		 * Here's what I was doing...
+		/* NOTE: The "Save" button do in Introduce 
+		 * runs SyncTools directly, rather than go through any ant task.  That's... probably not right
+		 *
+		 * Here's what I was doing, which isn't the same thing...
 		 * List<String> cmd = AntTools.getAntSkeletonPostCreationCommand(introduceDir, 
-            serviceInfo.getName(), serviceInfo.getDir(), serviceInfo.getPackageName(), 
-            serviceInfo.getNamespace(), getServiceExtensions());
-        System.out.println("Invoking ant:");
-        System.out.println(cmd);
-        Process p = CommonTools.createAndOutputProcess(cmd);
-        p.waitFor();
-        assertTrue("Service post creation process failed", p.exitValue() == 0); 
+         *   serviceInfo.getName(), serviceInfo.getDir(), serviceInfo.getPackageName(), 
+         *  serviceInfo.getNamespace(), getServiceExtensions());
+         * System.out.println("Invoking ant:");
+         * System.out.println(cmd);
+         * Process p = CommonTools.createAndOutputProcess(cmd);
+         * p.waitFor();
+         * assertTrue("Service post creation process failed", p.exitValue() == 0); 
 		 */
 		SyncTools sync = new SyncTools(new File(serviceInfo.getDir()));
 		sync.sync();
