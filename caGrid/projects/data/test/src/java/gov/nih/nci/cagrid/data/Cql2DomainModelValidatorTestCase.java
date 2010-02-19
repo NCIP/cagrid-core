@@ -17,6 +17,7 @@ import junit.framework.TestResult;
 import junit.framework.TestSuite;
 import junit.textui.TestRunner;
 
+import org.cagrid.cql.utilities.CQL2SerializationUtil;
 import org.cagrid.cql2.CQLQuery;
 
 public class Cql2DomainModelValidatorTestCase extends TestCase {
@@ -61,9 +62,8 @@ public class Cql2DomainModelValidatorTestCase extends TestCase {
         Arrays.sort(queryDocs, fileSorter);
         for (File queryDocument : queryDocs) {
             try {
-                FileReader reader = new FileReader(queryDocument);
-                CQLQuery query = Utils.deserializeObject(reader, CQLQuery.class);
-                reader.close();
+                String text = Utils.fileToStringBuffer(queryDocument).toString();
+                CQLQuery query = CQL2SerializationUtil.deserializeCql2Query(text);
                 validator.validateAgainstDomainModel(query);
             } catch (Exception ex) {
                 ex.printStackTrace();
