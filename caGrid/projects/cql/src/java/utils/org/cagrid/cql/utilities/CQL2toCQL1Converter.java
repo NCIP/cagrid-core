@@ -151,6 +151,9 @@ public class CQL2toCQL1Converter {
         } else if (value.getTimeValue() != null) {
             string = DateFormat.getTimeInstance().format(
                 value.getTimeValue().getAsCalendar().getTime());
+        } else {
+            // no value???
+            throw new QueryConversionException("No attribute value found to convert!");
         }
         return string;
         /*
