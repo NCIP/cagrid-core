@@ -3,16 +3,15 @@ package gov.nih.nci.cagrid.fqp.processor;
 import gov.nih.nci.cagrid.data.client.DataServiceClient;
 import gov.nih.nci.cagrid.data.utilities.DataServiceFeatureDiscoveryUtil;
 import gov.nih.nci.cagrid.fqp.common.SerializationUtils;
+import gov.nih.nci.cagrid.fqp.common.TimeLimitedCache;
 import gov.nih.nci.cagrid.fqp.processor.exceptions.RemoteDataServiceException;
 
 import java.io.StringWriter;
 import java.rmi.RemoteException;
-import java.util.Map;
 
 import org.apache.axis.message.addressing.Address;
 import org.apache.axis.message.addressing.EndpointReferenceType;
 import org.apache.axis.types.URI.MalformedURIException;
-import org.apache.commons.collections.map.LRUMap;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.cagrid.cql.utilities.CQL1ResultsToCQL2ResultsConverter;
@@ -36,8 +35,8 @@ public class Cql2QueryExecutor {
     public static final int MAX_CACHED_CQL2_SUPPORT = 50; // max number of services to cache CQL2 support info for
     
     protected static Log LOG = LogFactory.getLog(Cql2QueryExecutor.class.getName());
-    @SuppressWarnings("unchecked")
-    protected static Map<String, CachedCql2Support> cql2Support = new LRUMap(MAX_CACHED_CQL2_SUPPORT);
+    protected static TimeLimitedCache<String, Boolean> cql2Support = 
+        new TimeLimitedCache<String, Boolean>(CQL2_SUPPORT_CACHE_TIME, MAX_CACHED_CQL2_SUPPORT);
 
 
     /**
@@ -144,42 +143,24 @@ public class Cql2QueryExecutor {
     
     private static synchronized boolean serviceSupportsCql2(String targetServiceUrl) throws Exception {
         LOG.debug("Determining CQL 2 support for " + targetServiceUrl);
-        CachedCql2Support cached = cql2Support.get(targetServiceUrl);
-        boolean supportsCql2 = false;
-        if (cached != null) {
+        Boolean supportsCql2 = cql2Support.getItem(targetServiceUrl);
+        if (supportsCql2 != null) {
             LOG.debug("Support flag was in the cache");
-            long age = System.currentTimeMillis() - cached.cacheTime;
-            if (age > CQL2_SUPPORT_CACHE_TIME) {
-                LOG.debug("Cached support flag is too old");
-                cql2Support.remove(targetServiceUrl);
-                supportsCql2 = getAndCacheCql2Support(targetServiceUrl);
-            } else {
-                LOG.debug("Support flag age does not excede " + CQL2_SUPPORT_CACHE_TIME + " ms");
-                supportsCql2 = cached.supportsCql2;
-            }
         } else {
             LOG.debug("Support flag was not in the cache");
             supportsCql2 = getAndCacheCql2Support(targetServiceUrl);
         }
         LOG.debug("Service " + targetServiceUrl + 
-            (supportsCql2 ? " supports" : " does not support") + " CQL 2");
-        return supportsCql2;
+            (supportsCql2.booleanValue() ? " supports" : " does not support") + " CQL 2");
+        return supportsCql2.booleanValue();
     }
     
     
-    private static boolean getAndCacheCql2Support(String targetServiceUrl) throws Exception {
-        boolean flag = DataServiceFeatureDiscoveryUtil.serviceSupportsCql2(
-            new EndpointReferenceType(new Address(targetServiceUrl)));
-        CachedCql2Support support = new CachedCql2Support();
-        support.supportsCql2 = flag;
-        support.cacheTime = System.currentTimeMillis();
-        cql2Support.put(targetServiceUrl, support);
+    private static Boolean getAndCacheCql2Support(String targetServiceUrl) throws Exception {
+        Boolean flag = Boolean.valueOf(
+            DataServiceFeatureDiscoveryUtil.serviceSupportsCql2(
+                new EndpointReferenceType(new Address(targetServiceUrl))));
+        cql2Support.cacheItem(targetServiceUrl, flag);
         return flag;
-    }
-    
-    
-    private static class CachedCql2Support {
-        public boolean supportsCql2;
-        public long cacheTime;
     }
 }
