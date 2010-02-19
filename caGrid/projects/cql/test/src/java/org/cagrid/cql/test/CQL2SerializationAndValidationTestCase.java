@@ -23,6 +23,7 @@ import org.cagrid.cql2.CQLGroup;
 import org.cagrid.cql2.CQLQuery;
 import org.cagrid.cql2.CQLTargetObject;
 import org.cagrid.cql2.GroupLogicalOperator;
+import org.cagrid.cql2.UnaryPredicate;
 
 public class CQL2SerializationAndValidationTestCase extends TestCase {
     
@@ -161,6 +162,26 @@ public class CQL2SerializationAndValidationTestCase extends TestCase {
     }
     
     
+    public void testNestedAssociations() {
+        CQLQuery query = new CQLQuery();
+        CQLTargetObject target = new CQLTargetObject();
+        target.setClassName("foo.bar");
+        target.set_instanceof("zor");
+        
+        CQLAssociatedObject assoc = new CQLAssociatedObject();
+        assoc.setClassName("abc.def");
+        
+        CQLAssociatedObject nested = new CQLAssociatedObject();
+        nested.setClassName("lol.idk");
+        
+        assoc.setCQLAssociatedObject(nested);
+        target.setCQLAssociatedObject(assoc);
+        query.setCQLTargetObject(target);
+        
+        validate(query);
+    }
+    
+    
     public void testGroupedAssociations() {
         CQLQuery query = new CQLQuery();
         CQLTargetObject target = new CQLTargetObject();
@@ -186,6 +207,49 @@ public class CQL2SerializationAndValidationTestCase extends TestCase {
         
         target.setCQLGroup(group);
         query.setCQLTargetObject(target);
+        
+        validate(query);
+    }
+    
+    
+    public void testNestedGroups() {
+        CQLQuery query = new CQLQuery();
+        CQLTargetObject target = new CQLTargetObject();
+        target.setClassName("foo.bar");
+        target.set_instanceof("zor");
+        
+        CQLAssociatedObject assoc1 = new CQLAssociatedObject();
+        assoc1.setClassName("abc.def");
+        CQLAttribute haveYouHeard = new CQLAttribute();
+        haveYouHeard.setName("bird");
+        haveYouHeard.setBinaryPredicate(BinaryPredicate.EQUAL_TO);
+        AttributeValue value2 = new AttributeValue();
+        value2.setStringValue("the word");
+        haveYouHeard.setAttributeValue(value2);
+        assoc1.setCQLAttribute(haveYouHeard);
+        
+        CQLAssociatedObject assoc2 = new CQLAssociatedObject();
+        assoc2.setClassName("xyz.abc");
+        
+        CQLGroup nestedGroup = new CQLGroup();
+        nestedGroup.setLogicalOperation(GroupLogicalOperator.OR);
+        CQLAttribute a1 = new CQLAttribute();
+        a1.setName("nested1");
+        a1.setUnaryPredicate(UnaryPredicate.IS_NOT_NULL);
+        CQLAttribute a2 = new CQLAttribute();
+        a2.setName("nested2");
+        a2.setUnaryPredicate(UnaryPredicate.IS_NULL);
+        nestedGroup.setCQLAttribute(new CQLAttribute[] {a1, a2});
+        
+        CQLGroup group = new CQLGroup();
+        group.setLogicalOperation(GroupLogicalOperator.AND);
+        group.setCQLAssociatedObject(new CQLAssociatedObject[] {assoc1, assoc2});
+        group.setCQLGroup(new CQLGroup[] {nestedGroup});
+        
+        target.setCQLGroup(group);
+        query.setCQLTargetObject(target);
+        
+        validate(query);
     }
     
 

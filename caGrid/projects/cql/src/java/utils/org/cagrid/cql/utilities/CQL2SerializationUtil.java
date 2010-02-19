@@ -1,49 +1,45 @@
 package org.cagrid.cql.utilities;
 
+import gov.nih.nci.cagrid.common.Utils;
 import gov.nih.nci.cagrid.common.XMLUtilities;
 
 import java.io.InputStream;
+import java.io.Reader;
 import java.io.StringReader;
 import java.io.StringWriter;
+import java.io.Writer;
 
 import org.cagrid.cql2.AttributeValue;
 import org.cagrid.cql2.BinaryPredicate;
 import org.cagrid.cql2.CQLAttribute;
 import org.cagrid.cql2.CQLQuery;
 import org.cagrid.cql2.CQLTargetObject;
-import org.exolab.castor.mapping.Mapping;
-import org.exolab.castor.xml.Marshaller;
-import org.exolab.castor.xml.Unmarshaller;
-import org.xml.sax.InputSource;
 
 public class CQL2SerializationUtil {
+    
+    public static void serializeCql2Query(CQLQuery query, Writer writer) throws Exception {
+        InputStream wsddStream = CQL2SerializationUtil.class.getResourceAsStream("/org/cagrid/cql2/mapping/client-config.wsdd");
+        Utils.serializeObject(query, CQLConstants.CQL2_QUERY_QNAME, writer, wsddStream);
+        wsddStream.close();
+    }
+    
 
     public static String serializeCql2Query(CQLQuery query) throws Exception {
-        Mapping mapping = new Mapping();
-        InputStream mappingStream = CQL2SerializationUtil.class.getResourceAsStream("/org/cagrid/cql2/mapping/cql2-castor-mapping.xml");
-        mapping.loadMapping(new InputSource(mappingStream));
-        
         StringWriter writer = new StringWriter();
-        
-        Marshaller m = new Marshaller(writer);
-        m.setSuppressNamespaces(true);
-        m.setSuppressXSIType(true);
-        m.setMapping(mapping);
-        m.marshal(query);
-        
+        serializeCql2Query(query, writer);
         return writer.getBuffer().toString();
     }
     
     
     public static CQLQuery deserializeCql2Query(String text) throws Exception {
-        Mapping mapping = new Mapping();
-        InputStream mappingStream = CQL2SerializationUtil.class.getResourceAsStream("/org/cagrid/cql2/mapping/cql2-castor-mapping.xml");
-        mapping.loadMapping(new InputSource(mappingStream));
-        
-        Unmarshaller u = new Unmarshaller();
-        u.setMapping(mapping);
-        Object val = u.unmarshal(new StringReader(text));
-        return (CQLQuery) val;
+        return deserializeCql2Query(new StringReader(text));
+    }
+    
+    
+    public static CQLQuery deserializeCql2Query(Reader reader) throws Exception {
+        InputStream wsddStream = CQL2SerializationUtil.class.getResourceAsStream("/org/cagrid/cql2/mapping/client-config.wsdd");
+        CQLQuery query = Utils.deserializeObject(reader, CQLQuery.class, wsddStream);
+        return query;
     }
     
     
