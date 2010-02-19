@@ -247,8 +247,10 @@ public abstract class CQL2QueryProcessor {
                 results = new CQLResult[] {queryResults.getAggregationResult()};
             } else if (queryResults.getAttributeResult() != null && queryResults.getAttributeResult().length != 0) {
                 results = queryResults.getAttributeResult();
-            } else if (queryResults.getObjectResult() != null && queryResults.getAttributeResult().length != 0) {
+            } else if (queryResults.getObjectResult() != null && queryResults.getObjectResult().length != 0) {
                 results = queryResults.getObjectResult();
+            } else if (queryResults.getExtendedResult() != null) {
+                results = new CQLResult[] {queryResults.getExtendedResult()};
             } else {
                 results = new CQLResult[0];
             }
