@@ -224,7 +224,7 @@
 		</java>
 	</target>
 	
-	<target name="inputAdminUser">
+	<target name="inputAdminUser" unless="adminuser.input">
 		<input message="Enter administrator's grid identity:" addproperty="adminuser.input" />
 		<condition property="no.adminuser">
 			<equals arg1="" arg2="${adminuser.input}" />

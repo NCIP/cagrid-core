@@ -20,6 +20,7 @@ import org.apache.axis.types.URI.MalformedURIException;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.cookie.Cookie;
+import org.cagrid.identifiers.namingauthority.util.SecurityUtil;
 
 
 public class IdentifiersTestInfo {
@@ -82,8 +83,12 @@ public class IdentifiersTestInfo {
 		return webAppContainer;
 	}
 	
-	public ServiceContainer createGridSvcContainer() throws IOException {
-		gridSvcContainer = createContainer();
+	public ServiceContainer createGridSvcContainer(boolean isSecure) throws IOException {
+		if (isSecure) {
+			gridSvcContainer = createSecureContainer();
+		} else {
+			gridSvcContainer = createContainer();
+		}
 		return gridSvcContainer;
 	}
 	
@@ -106,6 +111,10 @@ public class IdentifiersTestInfo {
 			"/";
 		
 		return prefix;
+	}
+	
+	public URI getSystemIdentifier() throws MalformedURIException {
+		return new URI(getNAPrefix() + SecurityUtil.LOCAL_SYSTEM_IDENTIFIER); 
 	}
 
 	public String getNamingAuthorityURI() throws MalformedURIException {
@@ -164,6 +173,10 @@ public class IdentifiersTestInfo {
 	//
 	private ServiceContainer createContainer() throws IOException {
 		return ServiceContainerFactory.createContainer(ServiceContainerType.TOMCAT_CONTAINER);
+	}
+	
+	private ServiceContainer createSecureContainer() throws IOException {
+		return ServiceContainerFactory.createContainer(ServiceContainerType.SECURE_TOMCAT_CONTAINER);
 	}
 	
 	private static File genPurlzTempDirectory() throws IOException {

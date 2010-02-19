@@ -153,7 +153,7 @@ public class IdentifierMetadataDao extends AbstractDao<IdentifierMetadata> {
 		URI localIdentifier = IdentifierUtil.getLocalName(prefix, identifier);
 		IdentifierMetadata resolvedValues = loadLocalIdentifier(localIdentifier);
 		
-		writeKeysSecurityChecks(secInfo, "createKeys", resolvedValues);
+		writeKeysSecurityChecks(secInfo, "to create keys", resolvedValues);
 		
 		String[] newKeys = values.getKeys();
 		Collection<IdentifierValueKey> valueKeys = resolvedValues.getValues();
@@ -196,7 +196,7 @@ public class IdentifierMetadataDao extends AbstractDao<IdentifierMetadata> {
 					+ identifier + "] has no keys");
 		}
 
-		writeKeysSecurityChecks(secInfo, "deleteKeys", resolvedValues);
+		writeKeysSecurityChecks(secInfo, "to delete keys", resolvedValues);
 
 		LOG.warn("User [" + secInfo.getUser() + "] deleting some keys for identifier [" 
 				+ identifier.toString() + "]");
@@ -405,7 +405,7 @@ public class IdentifierMetadataDao extends AbstractDao<IdentifierMetadata> {
 			
 			} else {
 				throw new NamingAuthoritySecurityException(
-						SecurityUtil.securityError(secInfo, "replaceKeys [Key=" + ivk.getKey() + "]"));
+						SecurityUtil.securityError(secInfo, "replace key [" + ivk.getKey() + "]"));
 			}
 		}
 
@@ -494,7 +494,8 @@ public class IdentifierMetadataDao extends AbstractDao<IdentifierMetadata> {
 		
 		// Is this the only case when we bark?
 		if (newValues.getKeys() == null || newValues.getKeys().length == 0) {
-			throw new NamingAuthoritySecurityException(SecurityUtil.securityError(secInfo, "resolveIdentifierSecurityChecks"));
+			throw new NamingAuthoritySecurityException(SecurityUtil.securityError(secInfo, 
+					"to resolve identifier"));
 		}
 		
 		return newValues;
@@ -531,7 +532,7 @@ public class IdentifierMetadataDao extends AbstractDao<IdentifierMetadata> {
 		
 		List<String> authorizedUsers = SecurityUtil.getIdentifierCreationUsers(systemValues);
 		if (authorizedUsers == null || !authorizedUsers.contains(secInfo.getUser())) {
-			throw new NamingAuthoritySecurityException(SecurityUtil.securityError(secInfo, "createIdentifier"));
+			throw new NamingAuthoritySecurityException(SecurityUtil.securityError(secInfo, "to create identifiers"));
 		}	
 	}
 	

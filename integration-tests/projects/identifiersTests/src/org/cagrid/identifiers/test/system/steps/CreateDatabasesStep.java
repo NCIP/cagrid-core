@@ -26,7 +26,7 @@ public class CreateDatabasesStep extends Step {
     @Override
     public void runStep() throws ClassNotFoundException, SQLException, FileNotFoundException, IOException {
         Class.forName("com.mysql.jdbc.Driver");
-        File dbPropertiesFile = new File(IdentifiersTestInfo.WEBAPP_NA_PROPERTIES);
+        File dbPropertiesFile = new File(IdentifiersTestInfo.GRIDSVC_NA_PROPERTIES);
 
         assertNotNull(dbPropertiesFile);
         assertTrue("Couldn't read the  properties file (" + dbPropertiesFile.getCanonicalPath() + ")", dbPropertiesFile
@@ -55,7 +55,8 @@ public class CreateDatabasesStep extends Step {
             Statement stmt = con.createStatement();
             
             // grid service and web app target same db (dbname)
-            stmt.executeUpdate("create database if not exists " + dbname);
+            stmt.executeUpdate("drop database if exists " + dbname);
+            stmt.executeUpdate("create database " + dbname);
             
             // a separate one (purls) is dedicated to PURLZ
             stmt.executeUpdate("drop database if exists " + IdentifiersTestInfo.PURLZ_DB);

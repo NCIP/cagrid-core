@@ -13,21 +13,15 @@ import gov.nih.nci.cagrid.testing.system.haste.Story;
 import java.io.File;
 import java.util.Arrays;
 import java.util.Vector;
+
+import org.cagrid.identifiers.namingauthority.util.SecurityUtil;
+import org.cagrid.identifiers.test.system.steps.ChangePublicIdentifierCreationStep;
 import org.cagrid.identifiers.test.system.steps.CopyNamingAuthorityConfigStep;
 import org.cagrid.identifiers.test.system.steps.CreateDatabasesStep;
-import org.cagrid.identifiers.test.system.steps.CreateRedirectPurlStep;
-import org.cagrid.identifiers.test.system.steps.GridServiceFaultsTestStep;
-import org.cagrid.identifiers.test.system.steps.GridServiceIdentifierCreationStep;
-import org.cagrid.identifiers.test.system.steps.IdentifiersClientGridResolutionStep;
-import org.cagrid.identifiers.test.system.steps.IdentifiersClientHttpResolutionStep;
-import org.cagrid.identifiers.test.system.steps.IdentifiersMaintenanceStep;
-import org.cagrid.identifiers.test.system.steps.ShutdownPurlStep;
-import org.cagrid.identifiers.test.system.steps.StartPurlStep;
-import org.cagrid.identifiers.test.system.steps.UnpackPurlStep;
-import org.cagrid.identifiers.test.system.steps.CreatePurlDomainStep;
+import org.cagrid.identifiers.test.system.steps.CreateSystemAdminStep;
 
 
-public class IdentifiersStory extends Story {
+public class IdentifiersSecurityStory extends Story {
 
 	private IdentifiersTestInfo testInfo = null;
 
@@ -38,7 +32,7 @@ public class IdentifiersStory extends Story {
 
     @Override
     public String getDescription() {
-        return "Identifiers System Test";
+        return "Identifiers Security System Test";
     }
 
 	@Override
@@ -46,8 +40,7 @@ public class IdentifiersStory extends Story {
 		
 		try {
 			testInfo = new IdentifiersTestInfo();
-			testInfo.createGridSvcContainer(false);
-			testInfo.createWebAppContainer();
+			testInfo.createGridSvcContainer(true);
 
 		} catch (Throwable ex) {
 			String message = "Error creating naming authority containers: "
@@ -70,10 +63,8 @@ public class IdentifiersStory extends Story {
         File gridTmpDir = new File(IdentifiersTestInfo.GRIDSVC_TMP_DIR);
 
         /////////////////////////////////////////////////////
-        // Unpack PURLZ & Tomcat Containers
+        // Unpack Tomcat Container
         /////////////////////////////////////////////////////
-        steps.add(new UnpackPurlStep(testInfo));
-        steps.add(new UnpackContainerStep(testInfo.getWebAppContainer()));
         steps.add(new UnpackContainerStep(testInfo.getGridSvcContainer()));
         
         /////////////////////////////////////////////////////
@@ -91,9 +82,6 @@ public class IdentifiersStory extends Story {
         /////////////////////////////////////////////////////
         // Deploy services to containers
         /////////////////////////////////////////////////////
-        steps.add(new DeployServiceStep(testInfo.getWebAppContainer(), 
-        		webTmpDir.getAbsolutePath(), 
-        		Arrays.asList(new String[]{"-Dno.deployment.validation=true"})));
         steps.add(new DeployServiceStep(testInfo.getGridSvcContainer(), 
         		gridTmpDir.getAbsolutePath(), 
         		Arrays.asList(new String[]{"-Dno.deployment.validation=true"})));
@@ -102,30 +90,21 @@ public class IdentifiersStory extends Story {
         // Create Databases
         /////////////////////////////////////////////////////
         steps.add(new CreateDatabasesStep(testInfo));
+        
+        /////////////////////////////////////////////////////
+        // Add administrator identity
+        /////////////////////////////////////////////////////
+        steps.add(new CreateSystemAdminStep(testInfo));
 
         /////////////////////////////////////////////////////
-        // Start up PURLZ & Tomcat Containers
+        // Start up Tomcat Container
         /////////////////////////////////////////////////////
-        steps.add(new StartPurlStep(testInfo));
-        steps.add(new StartContainerStep(testInfo.getWebAppContainer()));
         steps.add(new StartContainerStep(testInfo.getGridSvcContainer()));
 
-
-        ////////////////////////////////////////////////////
-        // Create PURL Domain & Partial Redirect PURL
-        ////////////////////////////////////////////////////
-        steps.add(new CreatePurlDomainStep(testInfo));
-        steps.add(new CreateRedirectPurlStep(testInfo));
-       
-        
         /////////////////////////////////////////////////////
         // Can we test now?
         /////////////////////////////////////////////////////
-        steps.add(new GridServiceFaultsTestStep(testInfo));
-        steps.add(new GridServiceIdentifierCreationStep(testInfo));
-        steps.add(new IdentifiersClientHttpResolutionStep(testInfo));
-        steps.add(new IdentifiersClientGridResolutionStep(testInfo));
-        steps.add(new IdentifiersMaintenanceStep(testInfo));
+        steps.add(new ChangePublicIdentifierCreationStep(testInfo, SecurityUtil.PUBLIC_CREATION_NO));
 
         return steps;
     }
@@ -133,14 +112,8 @@ public class IdentifiersStory extends Story {
 
     @Override
     protected void storyTearDown() throws Throwable {
-    	ServiceContainer webAppContainer = testInfo.getWebAppContainer();
     	ServiceContainer gridSvcContainer = testInfo.getGridSvcContainer();
-
-        new StopContainerStep(webAppContainer).runStep();
         new StopContainerStep(gridSvcContainer).runStep();
-        new DestroyContainerStep(webAppContainer).runStep();
         new DestroyContainerStep(gridSvcContainer).runStep();
-    	
-    	new ShutdownPurlStep(testInfo).runStep();
     }
 }

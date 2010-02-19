@@ -1,6 +1,10 @@
 package org.cagrid.identifiers.resolver;
 
 import gov.nih.nci.cagrid.identifiers.client.IdentifiersNAServiceClient;
+import gov.nih.nci.cagrid.identifiers.stubs.types.InvalidIdentifierFault;
+import gov.nih.nci.cagrid.identifiers.stubs.types.InvalidIdentifierValuesFault;
+import gov.nih.nci.cagrid.identifiers.stubs.types.NamingAuthorityConfigurationFault;
+import gov.nih.nci.cagrid.identifiers.stubs.types.NamingAuthoritySecurityFault;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -8,6 +12,9 @@ import java.io.InputStreamReader;
 import java.io.StringReader;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.rmi.RemoteException;
+
+import org.apache.axis.types.URI.MalformedURIException;
 import org.apache.http.Header;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpException;
@@ -21,6 +28,11 @@ import org.apache.http.conn.ssl.SSLSocketFactory;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.protocol.HttpContext;
 import org.cagrid.identifiers.client.Util;
+import org.cagrid.identifiers.namingauthority.InvalidIdentifierException;
+import org.cagrid.identifiers.namingauthority.InvalidIdentifierValuesException;
+import org.cagrid.identifiers.namingauthority.NamingAuthorityConfigurationException;
+import org.cagrid.identifiers.namingauthority.NamingAuthoritySecurityException;
+import org.cagrid.identifiers.namingauthority.UnexpectedIdentifiersException;
 import org.cagrid.identifiers.namingauthority.domain.IdentifierValues;
 import org.cagrid.identifiers.namingauthority.domain.NamingAuthorityConfig;
 import org.exolab.castor.mapping.MappingException;
@@ -138,14 +150,30 @@ public class Resolver {
 			unmarshaller.unmarshal(new StringReader(naConfigStr));
 	}
 	
-	public IdentifierValues resolveGrid( URI identifier ) throws Exception {
+	public IdentifierValues resolveGrid( URI identifier ) 
+		throws 
+			NamingAuthorityConfigurationException, 
+			InvalidIdentifierException, 
+			NamingAuthoritySecurityException, 
+			UnexpectedIdentifiersException {
 		
-		NamingAuthorityConfig config = retrieveNamingAuthorityConfig( identifier );
-		
-		IdentifiersNAServiceClient client = new IdentifiersNAServiceClient( config.getGridSvcUrl() );
-		
-		return gov.nih.nci.cagrid.identifiers.common.IdentifiersNAUtil.map(
-				client.resolveIdentifier(new org.apache.axis.types.URI(identifier.toString())) );
+		try {
+			NamingAuthorityConfig config = retrieveNamingAuthorityConfig( identifier );
+
+			IdentifiersNAServiceClient client = new IdentifiersNAServiceClient( config.getGridSvcUrl() );
+
+			return gov.nih.nci.cagrid.identifiers.common.IdentifiersNAUtil.map(
+					client.resolveIdentifier(new org.apache.axis.types.URI(identifier.toString())) );
+
+		} catch (NamingAuthorityConfigurationFault e) {
+			throw new NamingAuthorityConfigurationException(e);
+		} catch (InvalidIdentifierFault e) {
+			throw new InvalidIdentifierException(e);
+		} catch (NamingAuthoritySecurityFault e) {
+			throw new NamingAuthoritySecurityException(e);
+		} catch (Exception e) {
+			throw new UnexpectedIdentifiersException(e);
+		}
 	}
 	
 	public IdentifierValues resolveHttp( URI identifier ) 

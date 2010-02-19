@@ -23,6 +23,7 @@ public class SecurityUtil {
 
 	public static String ANONYMOUS_USER = "<anonymous>";
 	public static String PUBLIC_CREATION_YES = "Y";
+	public static String PUBLIC_CREATION_NO = "N";
 	public static URI LOCAL_SYSTEM_IDENTIFIER;
 	
 	public enum Access { GRANTED, DENIED, NOSECURITY };
@@ -36,9 +37,7 @@ public class SecurityUtil {
 	public static String securityError(SecurityInfo secInfo, String opErr) {
 		return "User [" 
 			+ secInfo.getUser() 
-			+ "] is not authorized ["
-			+ opErr
-			+ "]";
+			+ "] is not authorized " + opErr + ".";
 	}
 	
 	public static List<String> getReadUsers(IdentifierMetadata values) {
