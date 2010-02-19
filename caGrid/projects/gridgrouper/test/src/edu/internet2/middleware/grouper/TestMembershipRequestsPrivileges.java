@@ -186,10 +186,12 @@ public class TestMembershipRequestsPrivileges extends TestCase {
 
 		createAndCheckGroup(test, subGroupExtension, subGroupDisplayExtension, 2);
 
-		grouper.addMembershipRequest(SUPER_USER, Utils.getGroupIdentifier(grp), USER_A);
-		grouper.addMembershipRequest(SUPER_USER, Utils.getGroupIdentifier(grp), USER_B);
-		grouper.addMembershipRequest(SUPER_USER, Utils.getGroupIdentifier(grp), USER_C);
-		grouper.addMembershipRequest(SUPER_USER, Utils.getGroupIdentifier(grp), USER_D);
+		grouper.grantGroupPrivilege(SUPER_USER, Utils.getGroupIdentifier(grp), SUPER_USER, GroupPrivilegeType.membershiprequest);
+
+		grouper.addMembershipRequest(USER_A, Utils.getGroupIdentifier(grp), USER_A);
+		grouper.addMembershipRequest(USER_B, Utils.getGroupIdentifier(grp), USER_B);
+		grouper.addMembershipRequest(USER_C, Utils.getGroupIdentifier(grp), USER_C);
+		grouper.addMembershipRequest(USER_D, Utils.getGroupIdentifier(grp), USER_D);
 		return grp;
 	}
 

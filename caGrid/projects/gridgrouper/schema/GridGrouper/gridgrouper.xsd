@@ -197,6 +197,7 @@
    				<xsd:enumeration value="read"/>	
    				<xsd:enumeration value="update"/>	
    				<xsd:enumeration value="view"/>	
+   				<xsd:enumeration value="membershiprequest"/>	
   			</xsd:restriction>
  	  </xsd:simpleType>
  	  

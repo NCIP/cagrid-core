@@ -23,13 +23,18 @@ import java.util.List;
 import net.sf.hibernate.HibernateException;
 import net.sf.hibernate.Query;
 import net.sf.hibernate.Session;
+
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
+import gov.nih.nci.cagrid.common.FaultUtil;
 import gov.nih.nci.cagrid.gridgrouper.bean.MembershipRequestStatus;
 
 public class MembershipRequestsFinder {
 
-	private static final String KLASS = MembershipRequestsFinder.class.getName();
-
-	public static ArrayList<MembershipRequests> findRequestsByStatus(GrouperSession s, Group group, MembershipRequestStatus status) throws MemberNotFoundException {
+	private static Log log = LogFactory.getLog(MembershipRequestsFinder.class);
+	
+	public static ArrayList<MembershipRequests> findRequestsByStatus(GrouperSession s, Group group, MembershipRequestStatus status) {
 		ArrayList<MembershipRequests> requests = new ArrayList<MembershipRequests>();
 		GrouperSessionValidator.validate(s);
 		try {
@@ -50,11 +55,10 @@ public class MembershipRequestsFinder {
 			}
 
 		} catch (HibernateException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			FaultUtil.logFault(log, e);
 		}
 		return requests;
-	} // public static Member findBySubject(s, subj)
+	} 
 
 	public static MembershipRequests findRequest(GrouperSession s, Group group, String requestor) throws MemberNotFoundException {
 		GrouperSessionValidator.validate(s);
@@ -71,10 +75,9 @@ public class MembershipRequestsFinder {
 			}
 
 		} catch (HibernateException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			FaultUtil.logFault(log, e);
 		}
 		return null;
-	} // public static Member findBySubject(s, subj)
+	} 
 
 }

@@ -9,6 +9,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 import edu.internet2.middleware.grouper.AccessPrivilege;
+import edu.internet2.middleware.grouper.AttributeNotFoundException;
 import edu.internet2.middleware.grouper.CompositeType;
 import edu.internet2.middleware.grouper.GrantPrivilegeException;
 import edu.internet2.middleware.grouper.Group;
@@ -16,6 +17,8 @@ import edu.internet2.middleware.grouper.GroupDeleteException;
 import edu.internet2.middleware.grouper.GroupFinder;
 import edu.internet2.middleware.grouper.GroupModifyException;
 import edu.internet2.middleware.grouper.GroupNotFoundException;
+import edu.internet2.middleware.grouper.GroupType;
+import edu.internet2.middleware.grouper.GroupTypeFinder;
 import edu.internet2.middleware.grouper.GrouperSession;
 import edu.internet2.middleware.grouper.GrouperSourceAdapter;
 import edu.internet2.middleware.grouper.InsufficientPrivilegeException;
@@ -1452,7 +1455,13 @@ public class GridGrouper {
 			Subject subj = SubjectFinder.findById(gridIdentity);
 			session = GrouperSession.start(subj);
 			Group grp = GroupFinder.findByName(session, group.getGroupName());
-			grp.grantPriv(SubjectFinder.findById(subject), Privilege.getInstance(privilege.getValue()));
+			
+			if (GroupPrivilegeType.membershiprequest.equals(privilege)) {
+				MembershipRequests.configureGroup(session, grp);
+				grp.setAttribute("allowMembershipRequests", "true");
+			} else {
+				grp.grantPriv(SubjectFinder.findById(subject), Privilege.getInstance(privilege.getValue()));
+			}
 		} catch (GroupNotFoundException e) {
 			GroupNotFoundFault fault = new GroupNotFoundFault();
 			fault.setFaultString("The group, " + group.getGroupName() + "was not found.");
@@ -1504,7 +1513,13 @@ public class GridGrouper {
 			Subject subj = SubjectFinder.findById(gridIdentity);
 			session = GrouperSession.start(subj);
 			Group grp = GroupFinder.findByName(session, group.getGroupName());
-			grp.revokePriv(SubjectFinder.findById(subject), Privilege.getInstance(privilege.getValue()));
+			if (GroupPrivilegeType.membershiprequest.equals(privilege)) {
+				grp.setAttribute("allowMembershipRequests", "false");
+				MembershipRequests.rejectAllRequests(session, MemberFinder.findBySubject(session, subj), grp);
+			} else {
+				grp.revokePriv(SubjectFinder.findById(subject), Privilege.getInstance(privilege.getValue()));
+			}
+
 		} catch (GroupNotFoundException e) {
 			GroupNotFoundFault fault = new GroupNotFoundFault();
 			fault.setFaultString("The group, " + group.getGroupName() + "was not found.");
@@ -1958,6 +1973,18 @@ public class GridGrouper {
 			session = GrouperSession.start(caller);
 			Group grp = GroupFinder.findByName(session, group.getGroupName());
 			
+			try {
+				if (!"true".equals(grp.getAttribute("allowMembershipRequests"))) {
+					InsufficientPrivilegeFault fault = new InsufficientPrivilegeFault();
+					fault.setFaultString(group.getGroupName() + " does not allow membership requests.");
+					throw fault;
+				}
+			} catch (AttributeNotFoundException e) {
+				InsufficientPrivilegeFault fault = new InsufficientPrivilegeFault();
+				fault.setFaultString(group.getGroupName() + " does not allow membership requests.");
+				throw fault;
+			}
+			
 			if (grp.hasMember(subj)){
 				MemberAddFault fault = new MemberAddFault();
 				fault.setFaultString(subject + " already belongs to group: " + group.getGroupName());
@@ -1991,6 +2018,8 @@ public class GridGrouper {
 //			fault = (InsufficientPrivilegeFault) helper.getFault();
 //			throw fault;
 		} catch (MemberAddFault e) {
+			throw e;
+		} catch (InsufficientPrivilegeFault e) {
 			throw e;
 		} catch (Exception e) {
 			this.log.error(e.getMessage(), e);

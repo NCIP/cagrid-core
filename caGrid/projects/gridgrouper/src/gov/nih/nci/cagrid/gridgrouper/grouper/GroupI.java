@@ -262,14 +262,5 @@ public interface GroupI {
 	// throws AttributeNotFoundException, GroupModifyException,
 	// InsufficientPrivilegeException;
 	//
-//	public Set getPendingMembers() throws GrouperRuntimeException;
-//
-//	public Set getRejectedMembers() throws GrouperRuntimeException;
-//
-//	public void addPendingMember(Subject subj) throws InsufficientPrivilegeException, MemberAddException;
-//
-//	public void approvePendingMember(Subject subj) throws InsufficientPrivilegeException, MemberAddException;
-//
-//	public void rejectPendingMember(Subject subj) throws InsufficientPrivilegeException, MemberAddException;
 
 }

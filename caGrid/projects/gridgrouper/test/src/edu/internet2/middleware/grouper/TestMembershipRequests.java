@@ -2,6 +2,7 @@ package edu.internet2.middleware.grouper;
 
 import gov.nih.nci.cagrid.common.FaultUtil;
 import gov.nih.nci.cagrid.gridgrouper.bean.GroupDescriptor;
+import gov.nih.nci.cagrid.gridgrouper.bean.GroupPrivilegeType;
 import gov.nih.nci.cagrid.gridgrouper.bean.MemberFilter;
 import gov.nih.nci.cagrid.gridgrouper.bean.MembershipRequestDescriptor;
 import gov.nih.nci.cagrid.gridgrouper.bean.MembershipRequestStatus;
@@ -63,11 +64,12 @@ public class TestMembershipRequests extends TestCase {
 	public void testAddMembershipRequests() {
 		try {
 			GroupDescriptor grp = initialGroupAndRequestSetup();
+			grouper.grantGroupPrivilege(SUPER_USER, Utils.getGroupIdentifier(grp), SUPER_USER, GroupPrivilegeType.membershiprequest);
 
-			grouper.addMembershipRequest(SUPER_USER, Utils.getGroupIdentifier(grp), USER_A);
-			grouper.addMembershipRequest(SUPER_USER, Utils.getGroupIdentifier(grp), USER_B);
-			grouper.addMembershipRequest(SUPER_USER, Utils.getGroupIdentifier(grp), USER_C);
-			grouper.addMembershipRequest(SUPER_USER, Utils.getGroupIdentifier(grp), USER_D);
+			grouper.addMembershipRequest(USER_A, Utils.getGroupIdentifier(grp), USER_A);
+			grouper.addMembershipRequest(USER_B, Utils.getGroupIdentifier(grp), USER_B);
+			grouper.addMembershipRequest(USER_C, Utils.getGroupIdentifier(grp), USER_C);
+			grouper.addMembershipRequest(USER_D, Utils.getGroupIdentifier(grp), USER_D);
 
 			MembershipRequestDescriptor[] members = grouper.getMembershipRequests(SUPER_USER, Utils.getGroupIdentifier(grp),
 					MembershipRequestStatus.Pending);
@@ -91,7 +93,7 @@ public class TestMembershipRequests extends TestCase {
 		final String groupDisplayExtension = "My Group";
 
 		GroupDescriptor grp = createAndCheckGroup(test, groupExtension, groupDisplayExtension, 1);
-
+		
 		final String subGroupExtension = "mysubgroup";
 		final String subGroupDisplayExtension = "My Sub Group";
 
@@ -102,11 +104,12 @@ public class TestMembershipRequests extends TestCase {
 	public void testApproveMembershipRequest() {
 		try {
 			GroupDescriptor grp = initialGroupAndRequestSetup();
+			grouper.grantGroupPrivilege(SUPER_USER, Utils.getGroupIdentifier(grp), SUPER_USER, GroupPrivilegeType.membershiprequest);
 
-			grouper.addMembershipRequest(SUPER_USER, Utils.getGroupIdentifier(grp), USER_A);
-			grouper.addMembershipRequest(SUPER_USER, Utils.getGroupIdentifier(grp), USER_B);
-			grouper.addMembershipRequest(SUPER_USER, Utils.getGroupIdentifier(grp), USER_C);
-			grouper.addMembershipRequest(SUPER_USER, Utils.getGroupIdentifier(grp), USER_D);
+			grouper.addMembershipRequest(USER_A, Utils.getGroupIdentifier(grp), USER_A);
+			grouper.addMembershipRequest(USER_B, Utils.getGroupIdentifier(grp), USER_B);
+			grouper.addMembershipRequest(USER_C, Utils.getGroupIdentifier(grp), USER_C);
+			grouper.addMembershipRequest(USER_D, Utils.getGroupIdentifier(grp), USER_D);
 
 			MembershipRequestUpdate update = new MembershipRequestUpdate();
 			update.setStatus(MembershipRequestStatus.Approved);
@@ -129,11 +132,12 @@ public class TestMembershipRequests extends TestCase {
 	public void testRejectMembershipRequest() {
 		try {
 			GroupDescriptor grp = initialGroupAndRequestSetup();
+			grouper.grantGroupPrivilege(SUPER_USER, Utils.getGroupIdentifier(grp), SUPER_USER, GroupPrivilegeType.membershiprequest);
 
-			grouper.addMembershipRequest(SUPER_USER, Utils.getGroupIdentifier(grp), USER_A);
-			grouper.addMembershipRequest(SUPER_USER, Utils.getGroupIdentifier(grp), USER_B);
-			grouper.addMembershipRequest(SUPER_USER, Utils.getGroupIdentifier(grp), USER_C);
-			grouper.addMembershipRequest(SUPER_USER, Utils.getGroupIdentifier(grp), USER_D);
+			grouper.addMembershipRequest(USER_A, Utils.getGroupIdentifier(grp), USER_A);
+			grouper.addMembershipRequest(USER_B, Utils.getGroupIdentifier(grp), USER_B);
+			grouper.addMembershipRequest(USER_C, Utils.getGroupIdentifier(grp), USER_C);
+			grouper.addMembershipRequest(USER_D, Utils.getGroupIdentifier(grp), USER_D);
 
 			MembershipRequestUpdate update = new MembershipRequestUpdate();
 			update.setStatus(MembershipRequestStatus.Rejected);
