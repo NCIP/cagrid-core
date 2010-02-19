@@ -17,6 +17,24 @@ public class GridGrouperProviderImpl {
 		impl = new GridGrouperImpl();
 	}
 
+    public gov.nih.nci.cagrid.gridgrouper.stubs.AddMembershipRequestResponse addMembershipRequest(gov.nih.nci.cagrid.gridgrouper.stubs.AddMembershipRequestRequest params) throws RemoteException {
+    gov.nih.nci.cagrid.gridgrouper.stubs.AddMembershipRequestResponse boxedResult = new gov.nih.nci.cagrid.gridgrouper.stubs.AddMembershipRequestResponse();
+    impl.addMembershipRequest(params.getGroup().getGroupIdentifier(),params.getSubject().getSubjectIdentifier());
+    return boxedResult;
+  }
+
+    public gov.nih.nci.cagrid.gridgrouper.stubs.UpdateMembershipRequestResponse updateMembershipRequest(gov.nih.nci.cagrid.gridgrouper.stubs.UpdateMembershipRequestRequest params) throws RemoteException {
+    gov.nih.nci.cagrid.gridgrouper.stubs.UpdateMembershipRequestResponse boxedResult = new gov.nih.nci.cagrid.gridgrouper.stubs.UpdateMembershipRequestResponse();
+    boxedResult.setMembershipRequestDescriptor(impl.updateMembershipRequest(params.getGroup().getGroupIdentifier(),params.getSubject().getSubjectIdentifier(),params.getUpdate().getMembershipRequestUpdate()));
+    return boxedResult;
+  }
+
+    public gov.nih.nci.cagrid.gridgrouper.stubs.GetMembershipRequestsResponse getMembershipRequests(gov.nih.nci.cagrid.gridgrouper.stubs.GetMembershipRequestsRequest params) throws RemoteException {
+    gov.nih.nci.cagrid.gridgrouper.stubs.GetMembershipRequestsResponse boxedResult = new gov.nih.nci.cagrid.gridgrouper.stubs.GetMembershipRequestsResponse();
+    boxedResult.setMembershipRequestDescriptor(impl.getMembershipRequests(params.getGroup().getGroupIdentifier(),params.getStatus().getMembershipRequestStatus()));
+    return boxedResult;
+  }
+
     public gov.nih.nci.cagrid.gridgrouper.stubs.GetStemResponse getStem(gov.nih.nci.cagrid.gridgrouper.stubs.GetStemRequest params) throws RemoteException, gov.nih.nci.cagrid.gridgrouper.stubs.types.GridGrouperRuntimeFault, gov.nih.nci.cagrid.gridgrouper.stubs.types.StemNotFoundFault {
     gov.nih.nci.cagrid.gridgrouper.stubs.GetStemResponse boxedResult = new gov.nih.nci.cagrid.gridgrouper.stubs.GetStemResponse();
     boxedResult.setStemDescriptor(impl.getStem(params.getStem().getStemIdentifier()));

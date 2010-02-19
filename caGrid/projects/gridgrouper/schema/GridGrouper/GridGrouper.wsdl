@@ -820,6 +820,92 @@
           </sequence>
         </complexType>
       </element>
+      <element name="AddMembershipRequestRequest">
+        <complexType>
+          <sequence>
+            <element name="group">
+              <complexType>
+                <sequence>
+                  <element ref="ns0:GroupIdentifier" minOccurs="1" maxOccurs="1" />
+                </sequence>
+              </complexType>
+            </element>
+            <element name="subject">
+              <complexType>
+                <sequence>
+                  <element ref="ns0:SubjectIdentifier" minOccurs="1" maxOccurs="1" />
+                </sequence>
+              </complexType>
+            </element>
+          </sequence>
+        </complexType>
+      </element>
+      <element name="AddMembershipRequestResponse">
+        <complexType>
+          <sequence />
+        </complexType>
+      </element>
+      <element name="UpdateMembershipRequestRequest">
+        <complexType>
+          <sequence>
+            <element name="group">
+              <complexType>
+                <sequence>
+                  <element ref="ns0:GroupIdentifier" minOccurs="1" maxOccurs="1" />
+                </sequence>
+              </complexType>
+            </element>
+            <element name="subject">
+              <complexType>
+                <sequence>
+                  <element ref="ns0:SubjectIdentifier" minOccurs="1" maxOccurs="1" />
+                </sequence>
+              </complexType>
+            </element>
+            <element name="update">
+              <complexType>
+                <sequence>
+                  <element ref="ns0:MembershipRequestUpdate" minOccurs="1" maxOccurs="1" />
+                </sequence>
+              </complexType>
+            </element>
+          </sequence>
+        </complexType>
+      </element>
+      <element name="UpdateMembershipRequestResponse">
+        <complexType>
+          <sequence>
+            <element ref="ns0:MembershipRequestDescriptor" minOccurs="1" maxOccurs="1" />
+          </sequence>
+        </complexType>
+      </element>
+      <element name="GetMembershipRequestsRequest">
+        <complexType>
+          <sequence>
+            <element name="group">
+              <complexType>
+                <sequence>
+                  <element ref="ns0:GroupIdentifier" minOccurs="1" maxOccurs="1" />
+                </sequence>
+              </complexType>
+            </element>
+            <element name="status">
+              <complexType>
+                <sequence>
+                  <element ref="ns0:MembershipRequestStatus" minOccurs="1" maxOccurs="1" />
+                </sequence>
+              </complexType>
+            </element>
+          </sequence>
+        </complexType>
+      </element>
+      <element name="GetMembershipRequestsResponse">
+        <complexType>
+          <sequence>
+            <element ref="ns0:MembershipRequestDescriptor" minOccurs="1" maxOccurs="unbounded" />
+          </sequence>
+        </complexType>
+      </element>
       <element name="GridGrouperResourceProperties">
         <complexType>
           <sequence>
@@ -1015,6 +1101,24 @@
   </message>
   <message name="GetMembersGroupsResponse">
     <part name="parameters" element="tns:GetMembersGroupsResponse" />
+  </message>
+  <message name="AddMembershipRequestRequest">
+    <part name="parameters" element="tns:AddMembershipRequestRequest" />
+  </message>
+  <message name="AddMembershipRequestResponse">
+    <part name="parameters" element="tns:AddMembershipRequestResponse" />
+  </message>
+  <message name="UpdateMembershipRequestRequest">
+    <part name="parameters" element="tns:UpdateMembershipRequestRequest" />
+  </message>
+  <message name="UpdateMembershipRequestResponse">
+    <part name="parameters" element="tns:UpdateMembershipRequestResponse" />
+  </message>
+  <message name="GetMembershipRequestsRequest">
+    <part name="parameters" element="tns:GetMembershipRequestsRequest" />
+  </message>
+  <message name="GetMembershipRequestsResponse">
+    <part name="parameters" element="tns:GetMembershipRequestsResponse" />
   </message>
   <message name="GridGrouperRuntimeFaultFaultMessage">
     <part name="fault" element="ns3:GridGrouperRuntimeFault" />
@@ -1280,6 +1384,18 @@
       <output message="tns:GetMembersGroupsResponse" wsa:Action="http://cagrid.nci.nih.gov/GridGrouper/GetMembersGroupsResponse" />
       <fault name="GridGrouperRuntimeFault" message="tns:GridGrouperRuntimeFaultFaultMessage" wsa:Action="http://cagrid.nci.nih.gov/GridGrouper/GridGrouperRuntimeFaultFaultMessage" />
       <fault name="InsufficientPrivilegeFault" message="tns:InsufficientPrivilegeFaultFaultMessage" wsa:Action="http://cagrid.nci.nih.gov/GridGrouper/InsufficientPrivilegeFaultFaultMessage" />
+    </operation>
+    <operation name="addMembershipRequest">
+      <input message="tns:AddMembershipRequestRequest" wsa:Action="http://cagrid.nci.nih.gov/GridGrouper/AddMembershipRequestRequest" />
+      <output message="tns:AddMembershipRequestResponse" wsa:Action="http://cagrid.nci.nih.gov/GridGrouper/AddMembershipRequestResponse" />
+    </operation>
+    <operation name="updateMembershipRequest">
+      <input message="tns:UpdateMembershipRequestRequest" wsa:Action="http://cagrid.nci.nih.gov/GridGrouper/UpdateMembershipRequestRequest" />
+      <output message="tns:UpdateMembershipRequestResponse" wsa:Action="http://cagrid.nci.nih.gov/GridGrouper/UpdateMembershipRequestResponse" />
+    </operation>
+    <operation name="getMembershipRequests">
+      <input message="tns:GetMembershipRequestsRequest" wsa:Action="http://cagrid.nci.nih.gov/GridGrouper/GetMembershipRequestsRequest" />
+      <output message="tns:GetMembershipRequestsResponse" wsa:Action="http://cagrid.nci.nih.gov/GridGrouper/GetMembershipRequestsResponse" />
     </operation>
     <operation name="getServiceSecurityMetadata">
       <input message="wns0:GetServiceSecurityMetadataRequest" wsa:Action="http://security.introduce.cagrid.nci.nih.gov/ServiceSecurity/GetServiceSecurityMetadataRequest" />

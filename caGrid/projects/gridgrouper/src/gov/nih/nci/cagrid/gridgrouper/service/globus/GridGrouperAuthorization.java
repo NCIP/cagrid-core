@@ -193,6 +193,18 @@ public class GridGrouperAuthorization implements PDP {
 	public void authorizeQueryResourceProperties(Subject peerSubject, MessageContext context, QName operation) throws AuthorizationException {
 		
 	}
+	   				
+	public void authorizeAddMembershipRequest(Subject peerSubject, MessageContext context, QName operation) throws AuthorizationException {
+		
+	}
+	   				
+	public void authorizeUpdateMembershipRequest(Subject peerSubject, MessageContext context, QName operation) throws AuthorizationException {
+		
+	}
+	   				
+	public void authorizeGetMembershipRequests(Subject peerSubject, MessageContext context, QName operation) throws AuthorizationException {
+		
+	}
 	   
 	
 	public boolean isPermitted(Subject peerSubject, MessageContext context, QName operation)
@@ -305,6 +317,15 @@ public class GridGrouperAuthorization implements PDP {
 			return true;
 		} else if(operation.getLocalPart().equals("queryResourceProperties")){
 			authorizeQueryResourceProperties(peerSubject, context, operation);
+			return true;
+		} else if(operation.getLocalPart().equals("addMembershipRequest")){
+			authorizeAddMembershipRequest(peerSubject, context, operation);
+			return true;
+		} else if(operation.getLocalPart().equals("updateMembershipRequest")){
+			authorizeUpdateMembershipRequest(peerSubject, context, operation);
+			return true;
+		} else if(operation.getLocalPart().equals("getMembershipRequests")){
+			authorizeGetMembershipRequests(peerSubject, context, operation);
 			return true;
 		} 		
 		return false;

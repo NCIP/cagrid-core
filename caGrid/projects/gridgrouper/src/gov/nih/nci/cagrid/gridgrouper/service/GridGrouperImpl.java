@@ -156,4 +156,16 @@ public class GridGrouperImpl {
         return gridGrouper.getMembersGroups(getCallerIdentity(), member, type);
     }
 
+  public void addMembershipRequest(gov.nih.nci.cagrid.gridgrouper.bean.GroupIdentifier group,java.lang.String subject) throws RemoteException {
+      gridGrouper.addMembershipRequest(getCallerIdentity(), group, subject);
+      }
+
+  public gov.nih.nci.cagrid.gridgrouper.bean.MembershipRequestDescriptor updateMembershipRequest(gov.nih.nci.cagrid.gridgrouper.bean.GroupIdentifier group,java.lang.String subject,gov.nih.nci.cagrid.gridgrouper.bean.MembershipRequestUpdate update) throws RemoteException {
+      return gridGrouper.updateMembershipRequest(getCallerIdentity(), group, subject, update);
+      }
+
+  public gov.nih.nci.cagrid.gridgrouper.bean.MembershipRequestDescriptor[] getMembershipRequests(gov.nih.nci.cagrid.gridgrouper.bean.GroupIdentifier group,gov.nih.nci.cagrid.gridgrouper.bean.MembershipRequestStatus status) throws RemoteException {
+      return gridGrouper.getMembershipRequests(getCallerIdentity(), group, status);
+      }
+
 }

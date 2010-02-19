@@ -107,6 +107,22 @@
 	
 	<xsd:element name="SubjectIdentifier" type="xsd:string" />
 
+	<xsd:element name="MembershipRequestIdentifier" type="xsd:string" />
+	
+	<xsd:element name="MembershipRequestDescriptor" type="grouper:MembershipRequestDescriptor" />
+	<xsd:complexType name="MembershipRequestDescriptor">
+		<xsd:sequence>
+			<xsd:element name="UUID" minOccurs="1" maxOccurs="1" type="xsd:string" />
+			<xsd:element name="GroupName" minOccurs="1" maxOccurs="1" type="xsd:string" />
+			<xsd:element name="RequestorId" minOccurs="1" maxOccurs="1" type="xsd:string" />
+			<xsd:element name="RequestTime" minOccurs="1" maxOccurs="1" type="xsd:long" />
+			<xsd:element name="Status" minOccurs="1" maxOccurs="1" type="xsd:string" />
+			<xsd:element name="ReviewerId" minOccurs="1" maxOccurs="1" type="xsd:string" />
+			<xsd:element name="ReviewTime" minOccurs="1" maxOccurs="1" type="xsd:long" />
+			<xsd:element name="ReviewerNote" minOccurs="1" maxOccurs="1" type="xsd:string" />
+		</xsd:sequence>
+	</xsd:complexType>
+
 	<xsd:element name="StemIdentifier" type="grouper:StemIdentifier" />
 	<xsd:complexType name="StemIdentifier">
 		<xsd:sequence>
@@ -156,6 +172,14 @@
 		</xsd:sequence>
 	</xsd:complexType>
 
+	<xsd:element name="MembershipRequestUpdate" type="grouper:MembershipRequestUpdate"/>
+	<xsd:complexType name="MembershipRequestUpdate">
+		<xsd:sequence>
+		    <xsd:element name="Status" minOccurs="0" maxOccurs="1" type="grouper:MembershipRequestStatus" />
+			<xsd:element name="Note" minOccurs="0" maxOccurs="1" type="xsd:string" />
+		</xsd:sequence>
+	</xsd:complexType>
+
 	<xsd:element name="StemPrivilegeType" type="grouper:StemPrivilegeType"/>
 	  <xsd:simpleType name="StemPrivilegeType">
   			<xsd:restriction base="xsd:string">
@@ -191,6 +215,16 @@
    				<xsd:enumeration value="ImmediateMembers"/>	
    				<xsd:enumeration value="EffectiveMembers"/>
    				<xsd:enumeration value="CompositeMembers"/>	
+  			</xsd:restriction>
+ 	 </xsd:simpleType>
+
+ 	 <xsd:element name="MembershipRequestStatus" type="grouper:MembershipRequestStatus"/>
+ 	   <xsd:simpleType name="MembershipRequestStatus">
+  			<xsd:restriction base="xsd:string">
+   				<xsd:enumeration value="All"/>
+   				<xsd:enumeration value="Pending"/>	
+   				<xsd:enumeration value="Approved"/>
+   				<xsd:enumeration value="Rejected"/>	
   			</xsd:restriction>
  	 </xsd:simpleType>
  	 

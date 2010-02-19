@@ -37,6 +37,7 @@ import org.cagrid.gaards.dorian.test.system.steps.UpdateLocalUserStatusStep;
 import org.cagrid.gridgrouper.test.system.steps.DorianAuthenticateStep;
 import org.cagrid.gridgrouper.test.system.steps.GrouperAddAdminStep;
 import org.cagrid.gridgrouper.test.system.steps.GrouperAddMemberStep;
+import org.cagrid.gridgrouper.test.system.steps.GrouperAddMembershipRequestStep;
 import org.cagrid.gridgrouper.test.system.steps.GrouperCheckGroupsStep;
 import org.cagrid.gridgrouper.test.system.steps.GrouperCheckMembersStep;
 import org.cagrid.gridgrouper.test.system.steps.GrouperCheckPrivilegesStep;
@@ -48,6 +49,7 @@ import org.cagrid.gridgrouper.test.system.steps.GrouperDropDbStep;
 import org.cagrid.gridgrouper.test.system.steps.GrouperGrantPrivilegeStep;
 import org.cagrid.gridgrouper.test.system.steps.GrouperInitStep;
 import org.cagrid.gridgrouper.test.system.steps.GrouperRemoveMemberStep;
+import org.cagrid.gridgrouper.test.system.steps.GrouperUpdateMembershipRequestStep;
 import org.springframework.core.io.FileSystemResource;
 
 public class GridGrouperTest extends ServiceStoryBase {
@@ -212,6 +214,9 @@ public class GridGrouperTest extends ServiceStoryBase {
 			steps.add(new GrouperRemoveMemberStep("test:stem1:group1", idp + "subject3", gridGrouperServiceURL));
 			steps.add(new GrouperCheckMembersStep("test:stem1:group1", "All", new String[] { idp + users.get(1).getUserId(),
 					idp + users.get(2).getUserId() }, gridGrouperServiceURL));
+			
+			steps.add(new GrouperAddMembershipRequestStep("test:stem1:group1", idp + "subjectrequest", gridGrouperServiceURL));
+			steps.add(new GrouperUpdateMembershipRequestStep("test:stem1:group1", idp + "subjectrequest", gridGrouperServiceURL));
 
 		} catch (Exception e) {
 			e.printStackTrace();
