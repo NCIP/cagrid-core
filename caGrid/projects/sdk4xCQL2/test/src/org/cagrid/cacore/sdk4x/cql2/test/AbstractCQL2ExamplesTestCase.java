@@ -14,6 +14,7 @@ import junit.framework.TestCase;
 import org.cagrid.cacore.sdk4x.cql2.processor.CQL2ToParameterizedHQL;
 import org.cagrid.cacore.sdk4x.cql2.processor.HibernateConfigTypesInformationResolver;
 import org.cagrid.cacore.sdk4x.cql2.processor.TypesInformationResolver;
+import org.cagrid.cql.utilities.CQL2SerializationUtil;
 import org.cagrid.cql2.CQLQuery;
 import org.hibernate.cfg.Configuration;
 
@@ -132,9 +133,8 @@ public abstract class AbstractCQL2ExamplesTestCase extends TestCase {
         File cqlFile = new File(CQL2_EXAMPLES_LOCATION + File.separator + filename);
         assertTrue("Query file " + cqlFile.getAbsolutePath() + " not found", cqlFile.exists());
         try {
-            FileReader reader = new FileReader(cqlFile);
-            query = Utils.deserializeObject(reader, CQLQuery.class);
-            reader.close();
+            String text = Utils.fileToStringBuffer(cqlFile).toString();
+            query = CQL2SerializationUtil.deserializeCql2Query(text);
         } catch (Exception ex) {
             ex.printStackTrace();
             fail("Error reading CQL2 query: " + ex.getMessage());
