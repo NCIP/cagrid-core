@@ -1957,8 +1957,24 @@ public class GridGrouper {
 			Subject subj = SubjectFinder.findById(subject);
 			session = GrouperSession.start(caller);
 			Group grp = GroupFinder.findByName(session, group.getGroupName());
+			
+			if (grp.hasMember(subj)){
+				MemberAddFault fault = new MemberAddFault();
+				fault.setFaultString(subject + " already belongs to group: " + group.getGroupName());
+				throw fault;
+			} 
+			
+			MembershipRequests request = MembershipRequestsFinder.findRequest(session, grp, subject);
 
-			MembershipRequests.create(grp, subject);
+			if (request == null) {
+				MembershipRequests.create(grp, subject);
+			} else if (MembershipRequestStatus.Rejected.equals(request.getStatus())) {
+				request.pending();
+			} else {
+				MemberAddFault fault = new MemberAddFault();
+				fault.setFaultString(subject + " already has a pending membership request to group: " + group.getGroupName());
+				throw fault;
+			}
 
 		} catch (GroupNotFoundException e) {
 			GroupNotFoundFault fault = new GroupNotFoundFault();
@@ -1974,6 +1990,8 @@ public class GridGrouper {
 //			helper.addFaultCause(e);
 //			fault = (InsufficientPrivilegeFault) helper.getFault();
 //			throw fault;
+		} catch (MemberAddFault e) {
+			throw e;
 		} catch (Exception e) {
 			this.log.error(e.getMessage(), e);
 			GridGrouperRuntimeFault fault = new GridGrouperRuntimeFault();

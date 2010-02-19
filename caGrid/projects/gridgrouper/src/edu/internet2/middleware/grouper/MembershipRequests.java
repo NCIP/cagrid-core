@@ -139,4 +139,16 @@ public class MembershipRequests {
 		
 	}
 
+	public void pending() throws MemberNotFoundException {
+		this.status = "Pending";
+		this.reviewerNote = "Request Resubmitted. " + this.reviewerNote;
+		this.reviewTime = 0;
+		try {
+			GridGrouperHibernateHelper.save(this);
+		} catch (HibernateException eH) {
+			throw new MemberNotFoundException("unable to save membershiprequest: " + eH.getMessage(), eH);
+		}
+		
+	}
+
 }
