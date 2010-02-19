@@ -98,7 +98,6 @@
 				<xsd:complexType>
 					<xsd:attribute name="operator" type="dcql:TransformationOperator" use="required"/>
 					<xsd:attribute name="value" type="xsd:anySimpleType" use="required"/>
-					<xsd:attribute name="operationDirection" type="dcql:TransformationDirection" use="required"/>
 				</xsd:complexType>
 			</xsd:element>
 			<xsd:element name="TransformationExtension" type="cql2:CQLExtension"/>
@@ -122,16 +121,6 @@
 			<xsd:enumeration value="STRLENGTH" id="strlen"/>
 			<xsd:enumeration value="UPPER" id="upper"/>
 			<xsd:enumeration value="LOWER" id="lower"/>
-		</xsd:restriction>
-	</xsd:simpleType>
-	
-	<xsd:simpleType name="TransformationDirection">
-		<xsd:annotation>
-			<xsd:documentation>Direction (or side) of the comparison that the data transformation operation is applied to</xsd:documentation>
-		</xsd:annotation>
-		<xsd:restriction base="xsd:string">
-			<xsd:enumeration value="LOCAL" id="local"/>
-			<xsd:enumeration value="FOREIGN" id="foreign"/>
 		</xsd:restriction>
 	</xsd:simpleType>
 </xsd:schema>
