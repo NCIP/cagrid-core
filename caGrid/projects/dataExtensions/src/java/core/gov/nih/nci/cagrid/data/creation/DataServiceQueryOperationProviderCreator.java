@@ -253,10 +253,11 @@ public class DataServiceQueryOperationProviderCreator implements CreationExtensi
         File[] libs = libDir.listFiles(new FileFilter() {
             public boolean accept(File pathname) {
                 String name = pathname.getName();
-                return (name.endsWith(".jar") && 
-                    ((name.startsWith("caGrid-data-") || name.startsWith("caGrid-CQL-")
+                return name.endsWith(".jar") && 
+                    (name.startsWith("caGrid-data-") || name.startsWith("caGrid-CQL-")
                     || name.startsWith("caGrid-core-") || name.startsWith("caGrid-caDSR-") 
-                    || name.startsWith("caGrid-metadata-") || name.startsWith("caGrid-mms-"))));
+                    || name.startsWith("caGrid-metadata-") || name.startsWith("caGrid-mms-")
+                    || name.startsWith("castor-1.0.2"));
             }
         });
         File[] copiedLibs = new File[libs.length];
