@@ -89,13 +89,15 @@ public class Cql2TransferDataServiceImpl extends BaseDataServiceImpl {
                 OutputStreamWriter writer = new OutputStreamWriter(byteOutput);
                 try {
                     LOG.debug("Serializing CQL 2 results to byte queue for transfer");
-                    // TODO: might have to get the wsdd every time we iterate??? SDK beans, for example
                     InputStream serverConfigWsdd = getServerConfigWsddStream();
                     while (resultIter.hasNext()) {
+                        // mark the stream's beginning so it can be reused on the next iteration
+                        serverConfigWsdd.mark(Integer.MAX_VALUE);
                         CQLResult result = resultIter.next();
                         Utils.serializeObject(result, 
                             CqlSchemaConstants.CQL2_RESULT_QNAME, 
                             writer, serverConfigWsdd);
+                        serverConfigWsdd.reset();
                     }
                     serverConfigWsdd.close();
                 } catch (Exception ex) {
