@@ -1,18 +1,27 @@
 package gov.nih.nci.cagrid.data.codegen;
 
+import java.io.File;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+
+import org.cagrid.cql.utilities.CQL2WsddTypesUtil;
+
 import gov.nih.nci.cagrid.data.extension.Data;
 import gov.nih.nci.cagrid.data.style.ServiceStyleContainer;
 import gov.nih.nci.cagrid.data.style.ServiceStyleLoader;
 import gov.nih.nci.cagrid.data.style.StyleCodegenPostProcessor;
 import gov.nih.nci.cagrid.introduce.beans.extension.ServiceExtensionDescriptionType;
+import gov.nih.nci.cagrid.introduce.beans.service.ServiceType;
+import gov.nih.nci.cagrid.introduce.common.CommonTools;
 import gov.nih.nci.cagrid.introduce.common.ServiceInformation;
 import gov.nih.nci.cagrid.introduce.extension.CodegenExtensionException;
 import gov.nih.nci.cagrid.introduce.extension.CreationExtensionException;
 
 
 /**
- * DataServiceCodegenPostProcessor Post-processor for dataservice code
- * generation
+ * DataServiceCodegenPostProcessor 
+ * Post-processor for dataservice code generation
  * 
  * @author <A HREF="MAILTO:ervin@bmi.osu.edu">David W. Ervin</A>
  * @created Mar 29, 2006
@@ -56,5 +65,31 @@ public class DataServiceOperationProviderCodegenPostProcessor extends BaseCodege
 		            "Error executing style codegen post processor: " + ex.getMessage(), ex);
 		    }
 		}
+		
+		// put the CQL 2 types in the wsdds
+		modifyWsdd(info);
+	}
+	
+	
+	private void modifyWsdd(ServiceInformation info) throws CodegenExtensionException {
+	    List<File> wsdds = new ArrayList<File>();
+	    // add the server wsdd
+	    wsdds.add(new File(info.getBaseDirectory(), "server-config.wsdd"));
+	    // add the client-config.wsdd for every service context
+	    for (ServiceType service : info.getServices().getService()) {
+	        File clientWSDD = new File(info.getBaseDirectory(), "src" + File.separator
+	            + CommonTools.getPackageDir(service) + File.separator + "client" + File.separator
+	            + "client-config.wsdd");
+	        wsdds.add(clientWSDD);
+	    }
+	    
+	    for (File wsdd : wsdds) {
+	        try {
+                CQL2WsddTypesUtil.addCql2TypesMappingToWsdd(wsdd);
+            } catch (IOException ex) {
+                throw new CodegenExtensionException("Error adding CQL 2 types mapping to wsdd " 
+                    + wsdd.getAbsolutePath() + ": " + ex.getMessage(), ex);
+            }
+	    }
 	}
 }
