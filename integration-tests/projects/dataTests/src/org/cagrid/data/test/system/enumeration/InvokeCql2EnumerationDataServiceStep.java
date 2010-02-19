@@ -1,11 +1,6 @@
 package org.cagrid.data.test.system.enumeration;
 
 import gov.nih.nci.cagrid.common.Utils;
-import gov.nih.nci.cagrid.cqlquery.Attribute;
-import gov.nih.nci.cagrid.cqlquery.CQLQuery;
-import gov.nih.nci.cagrid.cqlquery.Group;
-import gov.nih.nci.cagrid.cqlquery.LogicalOperator;
-import gov.nih.nci.cagrid.cqlquery.Predicate;
 import gov.nih.nci.cagrid.data.enumeration.client.EnumerationDataServiceClient;
 import gov.nih.nci.cagrid.data.faults.MalformedQueryExceptionType;
 import gov.nih.nci.cagrid.data.faults.QueryProcessingExceptionType;
@@ -23,11 +18,22 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.NoSuchElementException;
 
+import javax.xml.namespace.QName;
+import javax.xml.soap.Name;
 import javax.xml.soap.SOAPElement;
 
+import org.apache.axis.message.PrefixedQName;
 import org.apache.axis.message.addressing.EndpointReferenceType;
 import org.apache.axis.types.URI;
 import org.apache.axis.utils.ClassUtils;
+import org.cagrid.cql2.AttributeValue;
+import org.cagrid.cql2.BinaryPredicate;
+import org.cagrid.cql2.CQLAttribute;
+import org.cagrid.cql2.CQLGroup;
+import org.cagrid.cql2.CQLQuery;
+import org.cagrid.cql2.CQLTargetObject;
+import org.cagrid.cql2.GroupLogicalOperator;
+import org.cagrid.cql2.UnaryPredicate;
 import org.cagrid.data.test.system.TestQueryResultsGenerator;
 import org.globus.ws.enumeration.ClientEnumIterator;
 import org.projectmobius.bookstore.Book;
@@ -35,19 +41,19 @@ import org.xmlsoap.schemas.ws._2004._09.enumeration.DataSource;
 import org.xmlsoap.schemas.ws._2004._09.enumeration.Release;
 
 /** 
- *  InvokeEnumerationDataServiceStep
- *  Testing step to invoke an enumeration data service
+ *  InvokeCql2EnumerationDataServiceStep
+ *  Testing step to use CQL 2 to invoke an enumeration data service
  * 
  * @author <A HREF="MAILTO:ervin@bmi.osu.edu">David W. Ervin</A>  * 
  * @created Nov 23, 2006 
  * @version $Id: InvokeEnumerationDataServiceStep.java,v 1.3 2009-04-17 19:41:52 dervin Exp $ 
  */
-public class InvokeEnumerationDataServiceStep extends Step {
+public class InvokeCql2EnumerationDataServiceStep extends Step {
 	
     private ServiceContainer container;
 	private String serviceName;
 	
-	public InvokeEnumerationDataServiceStep(ServiceContainer container, String serviceName) {
+	public InvokeCql2EnumerationDataServiceStep(ServiceContainer container, String serviceName) {
         this.container = container;
 		this.serviceName = serviceName;
 	}
@@ -55,7 +61,7 @@ public class InvokeEnumerationDataServiceStep extends Step {
     
     private DataSource createDataSource(EndpointReferenceType epr) throws RemoteException {
         InputStream resourceAsStream = ClassUtils.getResourceAsStream(
-            InvokeEnumerationDataServiceStep.class, "client-config.wsdd");
+            InvokeCql2EnumerationDataServiceStep.class, "client-config.wsdd");
         DataSource port = EnumerationResponseHelper.createDataSource(epr, resourceAsStream);
         return port;
     }
@@ -81,14 +87,17 @@ public class InvokeEnumerationDataServiceStep extends Step {
 	
 	private void queryForInvalidClass(EnumerationDataServiceClient client) throws Exception {
 		CQLQuery query = new CQLQuery();
-		gov.nih.nci.cagrid.cqlquery.Object target = new gov.nih.nci.cagrid.cqlquery.Object();
-		target.setName("non.existant.class");
-		query.setTarget(target);
+		CQLTargetObject target = new CQLTargetObject();
+		target.setClassName("non.existant.class");
+		query.setCQLTargetObject(target);
 		EnumerationResponseContainer enumContainer = null;
 		try {
-			enumContainer = client.enumerationQuery(query);
+			enumContainer = client.executeEnumerationQuery(query);
 		} catch (QueryProcessingExceptionType ex) {
 			assertTrue("Query Processing Exception Type thrown", true);
+		} catch (Exception ex) {
+		    ex.printStackTrace();
+		    fail("Unexpected exception thrown: " + ex.getClass().getName());
 		} finally {
 			if (enumContainer != null && enumContainer.getContext() != null) {
 				Release release = new Release();
@@ -101,21 +110,29 @@ public class InvokeEnumerationDataServiceStep extends Step {
 	
 	private void submitMalformedQuery(EnumerationDataServiceClient client) throws Exception {
 		CQLQuery query = new CQLQuery();
-		gov.nih.nci.cagrid.cqlquery.Object target = new gov.nih.nci.cagrid.cqlquery.Object();
-		target.setName(Book.class.getName());
-		Attribute attrib1 = new Attribute("name", Predicate.LIKE, "E%");
-		target.setAttribute(attrib1);
-		Group group = new Group();
-		group.setLogicRelation(LogicalOperator.AND);
-		group.setAttribute(new Attribute[] {
-			new Attribute("author", Predicate.IS_NOT_NULL, ""),
-			new Attribute("ISBN", Predicate.IS_NULL, "")
-		});
-		target.setGroup(group);
-		query.setTarget(target);
+		CQLTargetObject target = new CQLTargetObject();
+		target.setClassName(Book.class.getName());
+		CQLAttribute attrib = new CQLAttribute();
+		attrib.setName("name");
+		attrib.setBinaryPredicate(BinaryPredicate.LIKE);
+		AttributeValue val1 = new AttributeValue();
+		val1.setStringValue("E%");
+		attrib.setAttributeValue(val1);
+		target.setCQLAttribute(attrib);
+		CQLGroup group = new CQLGroup();
+		group.setLogicalOperation(GroupLogicalOperator.AND);
+		CQLAttribute a1 = new CQLAttribute();
+		a1.setName("author");
+		a1.setUnaryPredicate(UnaryPredicate.IS_NOT_NULL);
+		CQLAttribute a2 = new CQLAttribute();
+		a2.setName("ISBN");
+		a2.setUnaryPredicate(UnaryPredicate.IS_NULL);
+		group.setCQLAttribute(new CQLAttribute[] {a1, a2});
+		target.setCQLGroup(group);
+		query.setCQLTargetObject(target);
 		EnumerationResponseContainer enumContainer = null;
 		try {
-			enumContainer = client.enumerationQuery(query);
+			enumContainer = client.executeEnumerationQuery(query);
 		} catch (MalformedQueryExceptionType ex) {
 			assertTrue("Malformed Query Exception Type thrown", true);
 		} finally {
@@ -129,13 +146,13 @@ public class InvokeEnumerationDataServiceStep extends Step {
 	
 	
 	private EnumerationResponseContainer queryForBooks(EnumerationDataServiceClient client) throws Exception {
-		CQLQuery query = new CQLQuery();
-		gov.nih.nci.cagrid.cqlquery.Object target = new gov.nih.nci.cagrid.cqlquery.Object();
-		target.setName(Book.class.getName());
-		query.setTarget(target);
+	    CQLQuery query = new CQLQuery();
+	    CQLTargetObject target = new CQLTargetObject();
+	    target.setClassName(Book.class.getName());
+	    query.setCQLTargetObject(target);
 		EnumerationResponseContainer enumContainer = null;
 		try {
-			enumContainer = client.enumerationQuery(query);
+			enumContainer = client.executeEnumerationQuery(query);
 		} catch (Exception ex) {
 			ex.printStackTrace();
 			throw ex;
@@ -164,16 +181,26 @@ public class InvokeEnumerationDataServiceStep extends Step {
                 if (bookIndex == -1) {
                     throw new NoSuchElementException("Element returned was not of the type Book!");
                 }
-                Object instance = null;
+                // CQL 2 enumerations return CQLResult instances, so inspect the element to find the Book
+                QName bookQName = new QName("gme://projectmobius.org/1/BookStore", "Book");
+                // Java 6 only... won't compile on 5.  Need a javax.xml.soap.Name impl
+                // Iterator<?> bookElemIter = elem.getChildElements(bookName);
+                PrefixedQName bookName = new PrefixedQName(bookQName);
+                Iterator<?> bookElemIter = elem.getChildElements(bookName);
+                assertTrue("No elements of type " + bookName + 
+                    " found in result", bookElemIter.hasNext());
+                SOAPElement bookElement = (SOAPElement) bookElemIter.next();
+                assertFalse("More than one element of type " + bookName + 
+                    " found in result", bookElemIter.hasNext());
+                String bookText = bookElement.toString();
+                Book book = null;
                 try {
-                    instance = Utils.deserializeObject(new StringReader(elemText), Book.class);
+                    book = Utils.deserializeObject(new StringReader(bookText), Book.class);
                 } catch (Exception ex) {
                     ex.printStackTrace();
                     fail("Error deserializing result from enumeration: " + ex.getMessage());
                 }
-                assertTrue("Deserialized object was not an instance of " 
-                    + Book.class.getName(), instance instanceof Book);
-                returnedObjects.add((Book) instance);
+                returnedObjects.add(book);
             }
         } catch (NoSuchElementException ex) {
             if (returnedObjects.size() == 0) {

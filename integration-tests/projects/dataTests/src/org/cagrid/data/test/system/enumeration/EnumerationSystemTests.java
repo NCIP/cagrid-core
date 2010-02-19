@@ -24,9 +24,13 @@ import org.cagrid.data.test.creation.enumeration.CreateEnumerationTests;
 import org.cagrid.data.test.system.AddBookstoreStep;
 import org.cagrid.data.test.system.AddTestingJarToServiceStep;
 import org.cagrid.data.test.system.BaseSystemTest;
+import org.cagrid.data.test.system.CheckCql2QueryLanguageSupportResourcePropertyStep;
+import org.cagrid.data.test.system.DisableCql1QueryProcessorStep;
 import org.cagrid.data.test.system.ResyncAndBuildStep;
+import org.cagrid.data.test.system.SetCql2QueryProcessorStep;
 import org.cagrid.data.test.system.SetCqlValidationStep;
 import org.cagrid.data.test.system.SetQueryProcessorStep;
+import org.cagrid.data.test.system.TestingCQL2QueryProcessor;
 import org.cagrid.data.test.system.VerifyOperationsStep;
 
 
@@ -102,11 +106,54 @@ public class EnumerationSystemTests extends BaseSystemTest {
 		steps.add(new DeployServiceStep(container, info.getDir(), Collections.singletonList("-Dno.deployment.validation=true")));
 		// start container
 		steps.add(new StartContainerStep(container));
+		// check the CQL 2 support metadata (should not be supported)
+        steps.add(new CheckCql2QueryLanguageSupportResourcePropertyStep(container, info));
 		// verify the operations we expect
 		steps.add(new VerifyOperationsStep(container, info.getName(),
 		    false, true, false));
 		// test data service
 		steps.add(new InvokeEnumerationDataServiceStep(container, info.getName()));
+		// stop the container
+		steps.add(new StopContainerStep(container));
+		
+		// turn on CQL 2
+		steps.add(new SetCql2QueryProcessorStep(info.getDir()));
+		// rebuild again
+        steps.add(new ResyncAndBuildStep(info, getIntroduceBaseDir()));
+        // enable CQL structure validation, disable model validation
+        steps.add(new SetCqlValidationStep(info, true, false));
+        // disable index service registration
+        steps.add(new SetIndexRegistrationStep(info.getDir(), false));
+        // deploy the service again
+        steps.add(new DeployServiceStep(container, info.getDir(), Collections.singletonList("-Dno.deployment.validation=true")));
+        // start the container
+        steps.add(new StartContainerStep(container));
+        // check the CQL 2 support metadata again (should be supported now)
+        steps.add(new CheckCql2QueryLanguageSupportResourcePropertyStep(container, info, 
+            true, TestingCQL2QueryProcessor.getTestingSupportedExtensionsBean()));
+        // invoke CQL and CQL 2 w/ Enumeration, using native query processor for each
+        steps.add(new InvokeCql2EnumerationDataServiceStep(container, info.getName()));
+        steps.add(new InvokeEnumerationDataServiceStep(container, info.getName()));
+        
+        // stop the container
+        steps.add(new StopContainerStep(container));
+        
+        // turn off the CQL 1 query processor
+        steps.add(new DisableCql1QueryProcessorStep(info.getDir()));
+        // rebuild the service
+        steps.add(new ResyncAndBuildStep(info, getIntroduceBaseDir()));
+        // enable CQL structure validation, disable model validation
+        steps.add(new SetCqlValidationStep(info, true, false));
+        // re-deploy the service
+        steps.add(new DeployServiceStep(container, info.getDir(), Collections.singletonList("-Dno.deployment.validation=true")));
+        // start the container up again
+        steps.add(new StartContainerStep(container));
+        // check the CQL 2 support metadata (should still be supported)
+        steps.add(new CheckCql2QueryLanguageSupportResourcePropertyStep(container, info, 
+            true, TestingCQL2QueryProcessor.getTestingSupportedExtensionsBean()));
+        // invoke both CQL and CQL 2 w/ Enumeration methods, letting the data service translate CQL 1 to 2
+        steps.add(new InvokeCql2EnumerationDataServiceStep(container, info.getName()));
+        steps.add(new InvokeEnumerationDataServiceStep(container, info.getName()));
 		return steps;
 	}
 
