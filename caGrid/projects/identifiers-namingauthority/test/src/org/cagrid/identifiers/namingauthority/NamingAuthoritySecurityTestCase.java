@@ -15,18 +15,7 @@ import org.cagrid.identifiers.namingauthority.util.SecurityUtil;
 
 public class NamingAuthoritySecurityTestCase extends NamingAuthorityTestCaseBase {
 
-	private static IdentifierValues globalValues = null;
-	
-	static {
-		globalValues = new IdentifierValues();
-		
-		globalValues.put("URL", new KeyData( null, 
-				new String[]{"http://na.cagrid.org/foo", "http://na.cagrid.org/bar"} ));
-		
-		globalValues.put("CODE", new KeyData( null,
-				new String[]{ "007" }));
-	}
-	
+
 	////////////////////////////////////////////////////////
 	// Resolve system identifier and look for expected keys
 	////////////////////////////////////////////////////////
@@ -53,8 +42,9 @@ public class NamingAuthoritySecurityTestCase extends NamingAuthorityTestCaseBase
 	
 	////////////////////////////////////////////////////////////
 	// createKeys authorization error
+	// (adding key to system identifier)
 	////////////////////////////////////////////////////////////
-	public void testCreateKeys() {
+	public void testCreateKeys1() {
 		boolean gotexpected = false;
 		
 		IdentifierValues newKeys = new IdentifierValues();
@@ -67,6 +57,99 @@ public class NamingAuthoritySecurityTestCase extends NamingAuthorityTestCaseBase
 			fail(e.getMessage());
 		}
 		
+		if (!gotexpected) {
+			fail("Expected NamingAuthoritySecurityException was not raised");
+		}
+	}
+
+	////////////////////////////////////////////////////////////
+	// createKeys authorization error
+	// (adding key to identifier that no one can administer)
+	////////////////////////////////////////////////////////////
+	public void testCreateKeys2() {
+		//
+		// Create identifier with empty list of ADMIN_USERS
+		// 
+		URI id = null;
+		IdentifierValues values = new IdentifierValues();
+		values.put(Keys.ADMIN_USERS, null);
+		try {
+			id = this.NamingAuthority.createIdentifier(null, values);
+		} catch (Exception e) {
+			e.printStackTrace();
+			fail(e.getMessage());
+		} 
+		
+		//
+		// Not attempt to add a key to it
+		//
+		boolean gotexpected = false;
+		IdentifierValues newKeys = new IdentifierValues();
+		newKeys.put("A KEY", new KeyData(null, new String[]{ "A VALUE" }));
+		try {
+			this.NamingAuthority.createKeys(null, id, newKeys);
+		} catch (NamingAuthoritySecurityException e) {
+			gotexpected = true;
+		} catch (Exception e) {
+			fail(e.getMessage());
+		}
+		if (!gotexpected) {
+			fail("Expected NamingAuthoritySecurityException was not raised");
+		}
+	}
+	
+	////////////////////////////////////////////////////////////
+	// deleteKeys authorization error
+	// (deleteKey from system identifier)
+	////////////////////////////////////////////////////////////
+	public void testDeleteKeys() {
+		boolean gotexpected = false;
+		
+		try {
+			this.NamingAuthority.deleteKeys(null, getSystemIdentifier(), 
+					new String[]{ Keys.ADMIN_USERS });
+		} catch (NamingAuthoritySecurityException e) {
+			gotexpected = true;
+		} catch (Exception e) {
+			fail(e.getMessage());
+		}
+		
+		if (!gotexpected) {
+			fail("Expected NamingAuthoritySecurityException was not raised");
+		}
+	}
+	
+	////////////////////////////////////////////////////////////
+	// deleteKeys authorization error
+	// (deleting key to identifier that noone can administer)
+	////////////////////////////////////////////////////////////
+	public void testDeleteKeys2() {
+		//
+		// Create identifier with empty list of ADMIN_USERS
+		// 
+		URI id = null;
+		IdentifierValues values = new IdentifierValues();
+		values.put(Keys.ADMIN_USERS, null);
+		values.put("A KEY", null);
+		try {
+			id = this.NamingAuthority.createIdentifier(null, values);
+		} catch (Exception e) {
+			e.printStackTrace();
+			fail(e.getMessage());
+		} 
+		
+		//
+		// Not attempt to delete a key from it
+		//
+		boolean gotexpected = false;
+		try {
+			this.NamingAuthority.deleteKeys(null, id, 
+					new String[]{"A KEY"});
+		} catch (NamingAuthoritySecurityException e) {
+			gotexpected = true;
+		} catch (Exception e) {
+			fail(e.getMessage());
+		}
 		if (!gotexpected) {
 			fail("Expected NamingAuthoritySecurityException was not raised");
 		}
@@ -88,6 +171,9 @@ public class NamingAuthoritySecurityTestCase extends NamingAuthorityTestCaseBase
 			fail(e.getMessage());
 		} 
 		
+		//
+		// Resolution
+		//
 		boolean gotexpected = false;
 		try {
 			this.NamingAuthority.resolveIdentifier(null, id);
@@ -102,6 +188,9 @@ public class NamingAuthoritySecurityTestCase extends NamingAuthorityTestCaseBase
 			fail("Expected NamingAuthoritySecurityException was not raised");
 		}
 		
+		//
+		// getKeys
+		//
 		gotexpected = false;
 		try {
 			this.NamingAuthority.getKeys(null, id);
@@ -116,6 +205,9 @@ public class NamingAuthoritySecurityTestCase extends NamingAuthorityTestCaseBase
 			fail("Expected NamingAuthoritySecurityException was not raised");
 		}
 		
+		//
+		// getKeyValues
+		//
 		gotexpected = false;
 		try {
 			this.NamingAuthority.getKeyValues(null, id, "CODE");
@@ -161,6 +253,9 @@ public class NamingAuthoritySecurityTestCase extends NamingAuthorityTestCaseBase
 			fail(e.getMessage());
 		}
 		
+		//
+		// Resolution
+		//
 		boolean gotexpected = false;
 		try {
 			this.NamingAuthority.resolveIdentifier(null, id);
@@ -175,6 +270,9 @@ public class NamingAuthoritySecurityTestCase extends NamingAuthorityTestCaseBase
 			fail("Expected NamingAuthoritySecurityException was not raised");
 		}
 		
+		//
+		// getKeys
+		//
 		gotexpected = false;
 		try {
 			this.NamingAuthority.getKeys(null, id);
@@ -189,6 +287,9 @@ public class NamingAuthoritySecurityTestCase extends NamingAuthorityTestCaseBase
 			fail("Expected NamingAuthoritySecurityException was not raised");
 		}
 		
+		//
+		// getKeyValues
+		//
 		gotexpected = false;
 		try {
 			this.NamingAuthority.getKeyValues(null, id, "CODE");
@@ -232,6 +333,9 @@ public class NamingAuthoritySecurityTestCase extends NamingAuthorityTestCaseBase
 			fail(e.getMessage());
 		}
 		
+		//
+		// Resolution
+		//
 		boolean gotexpected = false;
 		try {
 			this.NamingAuthority.resolveIdentifier(null, id);
@@ -246,6 +350,9 @@ public class NamingAuthoritySecurityTestCase extends NamingAuthorityTestCaseBase
 			fail("Expected NamingAuthoritySecurityException was not raised");
 		}	
 		
+		//
+		// getKeys
+		//
 		gotexpected = false;
 		try {
 			this.NamingAuthority.getKeys(null, id);
@@ -260,6 +367,9 @@ public class NamingAuthoritySecurityTestCase extends NamingAuthorityTestCaseBase
 			fail("Expected NamingAuthoritySecurityException was not raised");
 		}
 		
+		//
+		// getKeyValues
+		//
 		gotexpected = false;
 		try {
 			this.NamingAuthority.getKeyValues(null, id, "CODE");
@@ -275,144 +385,153 @@ public class NamingAuthoritySecurityTestCase extends NamingAuthorityTestCaseBase
 		}
 	}
 	
-//	////////////////////////////////////////////////////////////////////////////
-//	// Test deleteKeys interface
-//	////////////////////////////////////////////////////////////////////////////
-//	public void testDeleteKeys() {
-//		URI id = null;
-//		IdentifierValues resolvedValues = null;
-//		boolean gotexpected = false;
-//		
-//		try {
-//			id = this.NamingAuthority.createIdentifier(null, globalValues);
-//		} catch (Exception e) {
-//			e.printStackTrace();
-//			fail("Failed to create identifier");
-//		} 
-//		
-//		////////////////////////////////////////////////////////////////////////////
-//		// InvalidIdentifierValues (null)
-//		//
-//		gotexpected = false;
-//		try {
-//			this.NamingAuthority.deleteKeys(null, id, null);
-//		} catch (InvalidIdentifierValuesException e) {
-//			gotexpected = true;
-//		} catch (Exception e) {
-//			e.printStackTrace();
-//			fail(e.getMessage());
-//		}
-//		if (!gotexpected) {
-//			fail("Expected InvalidIdentifierValuesException was not raised");
-//		}
-//		
-//		////////////////////////////////////////////////////////////////////////////
-//		// InvalidIdentifierValues (key doesn't exist)
-//		//
-//		String[] keyList = new String[]{ "wrongKeyName" };
-//		gotexpected = false;
-//		try {
-//			this.NamingAuthority.deleteKeys(null, id, keyList);
-//		} catch (InvalidIdentifierValuesException e) {
-//			e.printStackTrace();
-//			gotexpected = true;
-//		} catch (Exception e) {
-//			e.printStackTrace();
-//			fail(e.getMessage());
-//		} 
-//		if (!gotexpected) {
-//			fail("Expected InvalidIdentifierValuesException was not raised");
-//		}
-//		
-//		////////////////////////////////////////////////////////////////////////////
-//		// This should be successful
-//		//
-//		keyList = new String[] { "CODE" };
-//		try {
-//			this.NamingAuthority.deleteKeys(null, id, keyList);
-//			resolvedValues = this.NamingAuthority.resolveIdentifier(null, id);
-//		} catch (Exception e) {
-//			e.printStackTrace();
-//			fail(e.getMessage());
-//		}
-//
-//		if (resolvedValues.getValues("CODE") != null) {
-//			fail("CODE still exists");
-//		}
-//		
-//		if (resolvedValues.getValues("URL") == null) {
-//			fail("URL is no longer present");
-//		}
-//	}
-//	
-//	//////////////////////////////////////////////////////////////////////////////
-//	// Test replaceKeys interface
-//	//////////////////////////////////////////////////////////////////////////////
-//	public void testReplaceKeys() {
-//		URI id = null;
-//		IdentifierValues resolvedValues = null;
-//		boolean gotexpected = false;
-//		
-//		try {
-//			id = this.NamingAuthority.createIdentifier(null, globalValues);
-//		} catch (Exception e) {
-//			e.printStackTrace();
-//			fail("Failed to create identifier");
-//		} 
-//		
-//		////////////////////////////////////////////////////////////////////////////
-//		// InvalidIdentifierValues (null)
-//		//
-//		try {
-//			this.NamingAuthority.replaceKeys(null, id, null);
-//		} catch (InvalidIdentifierValuesException e) {
-//			//expected
-//			gotexpected = true;
-//		} catch (Exception e) {
-//			e.printStackTrace();
-//			fail(e.getMessage());
-//		}
-//		if (!gotexpected) {
-//			fail("Expected InvalidIdentifierValuesException was not raised");
-//		}
-//		
-//		////////////////////////////////////////////////////////////////////////////
-//		// InvalidIdentifierValues (key doesn't exist)
-//		//
-//		gotexpected = false;
-//		IdentifierValues values = new IdentifierValues();
-//		values.put("wrongKeyName", null);
-//		try {
-//			this.NamingAuthority.replaceKeys(null, id, values);
-//		} catch (InvalidIdentifierValuesException e) {
-//			gotexpected = true;
-//		} catch (Exception e) {
-//			e.printStackTrace();
-//			fail(e.getMessage());
-//		} 
-//		if (!gotexpected) {
-//			fail("Expected InvalidIdentifierValuesException was not raised");
-//		}
-//		
-//		////////////////////////////////////////////////////////////////////////////
-//		// This should be successful
-//		//
-//		String newCode = "008";
-//		values = new IdentifierValues();
-//		values.put("CODE", new KeyData(null, new String[] {newCode}));
-//		try {
-//			this.NamingAuthority.replaceKeys(null, id, values);
-//			resolvedValues = this.NamingAuthority.resolveIdentifier(null, id);
-//		} catch (Exception e) {
-//			e.printStackTrace();
-//			fail(e.getMessage());
-//		}
-//
-//		if (!resolvedValues.getValues("CODE").getValues().get(0).equals(newCode)) {
-//			fail("Unexpected CODE");
-//		}
-//
-//	}
+	///////////////////////////////////////////////////////////////
+	// replaceKeys authorization error
+	// (trying to replace system identifier key)
+	///////////////////////////////////////////////////////////////
+	public void testReplaceKeys1() {
+		
+		//
+		// Can we tamper with the system identifier?
+		//
+		boolean gotexpected = false;
+		IdentifierValues values = new IdentifierValues();
+		values.put(Keys.ADMIN_USERS, new KeyData(null, new String[] {"A"}));
+		try {
+			this.NamingAuthority.replaceKeys(null, getSystemIdentifier(), values);
+		} catch (NamingAuthoritySecurityException e) {
+			gotexpected = true;
+		} catch (Exception e) {
+			e.printStackTrace();
+			fail(e.getMessage());
+		}
+		if (!gotexpected) {
+			fail("Expected NamingAuthoritySecurityException was not raised");
+		}
+	}
 	
-
+	///////////////////////////////////////////////////////////////
+	// replaceKeys authorization error
+	// (trying to replace key in identifier with empty list of writers)
+	///////////////////////////////////////////////////////////////
+	public void testReplaceKeys2() {
+		
+		URI id = null;
+		IdentifierValues values = new IdentifierValues();
+		values.put("CODE", new KeyData(null, new String[]{"007"}));
+		values.put(Keys.WRITE_USERS, null);
+		try {
+			id = this.NamingAuthority.createIdentifier(null, values);
+		} catch (Exception e) {
+			e.printStackTrace();
+			fail(e.getMessage());
+		} 
+		
+		boolean gotexpected = false;
+		values = new IdentifierValues();
+		values.put("CODE", new KeyData(null, new String[] {"008"}));
+		try {
+			this.NamingAuthority.replaceKeys(null, id, values);
+		} catch (NamingAuthoritySecurityException e) {
+			gotexpected = true;
+		} catch (Exception e) {
+			e.printStackTrace();
+			fail(e.getMessage());
+		}
+		if (!gotexpected) {
+			fail("Expected NamingAuthoritySecurityException was not raised");
+		}
+	}
+	
+	///////////////////////////////////////////////////////////////
+	// replaceKeys authorization error
+	// (trying to replace key in identifier with a security
+	// identifier defined which does not list this user as writer) 
+	///////////////////////////////////////////////////////////////
+	public void testReplaceKeys3() {
+		
+		// Create security identifier
+		URI rwIdentifier = null;
+		IdentifierValues values = new IdentifierValues();
+		values.put(Keys.WRITE_USERS, new KeyData(null, new String[]{"A"}));
+		try {
+			rwIdentifier = this.NamingAuthority.createIdentifier(null, values);
+		} catch (Exception e) {
+			e.printStackTrace();
+			fail(e.getMessage());
+		}
+		
+		// Create identifier with reference to security identifier
+		URI id = null;
+		values = new IdentifierValues();
+		values.put("CODE", null);
+		values.put(Keys.READWRITE_IDENTIFIERS, new KeyData(null, 
+				new String[]{ rwIdentifier.normalize().toString() }));
+		try {
+			id = this.NamingAuthority.createIdentifier(null, values);
+		} catch (Exception e) {
+			e.printStackTrace();
+			fail(e.getMessage());
+		}
+		
+		// Now try to replace a key
+		boolean gotexpected = false;
+		values = new IdentifierValues();
+		values.put("CODE", new KeyData(null, new String[] {"008"}));
+		try {
+			this.NamingAuthority.replaceKeys(null, id, values);
+		} catch (NamingAuthoritySecurityException e) {
+			gotexpected = true;
+		} catch (Exception e) {
+			e.printStackTrace();
+			fail(e.getMessage());
+		}
+		if (!gotexpected) {
+			fail("Expected NamingAuthoritySecurityException was not raised");
+		}
+	}
+	
+	///////////////////////////////////////////////////////////////
+	// replaceKeys authorization error (key security)
+	///////////////////////////////////////////////////////////////
+	public void testReplaceKeys4() {
+		
+		// Create security identifier
+		URI rwIdentifier = null;
+		IdentifierValues values = new IdentifierValues();
+		values.put(Keys.WRITE_USERS, new KeyData(null, new String[]{"A"}));
+		try {
+			rwIdentifier = this.NamingAuthority.createIdentifier(null, values);
+		} catch (Exception e) {
+			e.printStackTrace();
+			fail(e.getMessage());
+		}
+		
+		// Create identifier with reference to security identifier
+		URI id = null;
+		values = new IdentifierValues();
+		values.put("CODE", new KeyData(rwIdentifier, new String[]{"007"}));
+		try {
+			id = this.NamingAuthority.createIdentifier(null, values);
+		} catch (Exception e) {
+			e.printStackTrace();
+			fail(e.getMessage());
+		}
+		
+		// Now try to replace the value
+		boolean gotexpected = false;
+		values = new IdentifierValues();
+		values.put("CODE", new KeyData(null, new String[] {"008"}));
+		try {
+			this.NamingAuthority.replaceKeys(null, id, values);
+		} catch (NamingAuthoritySecurityException e) {
+			gotexpected = true;
+		} catch (Exception e) {
+			e.printStackTrace();
+			fail(e.getMessage());
+		}
+		if (!gotexpected) {
+			fail("Expected NamingAuthoritySecurityException was not raised");
+		}
+	}
 }
