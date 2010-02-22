@@ -1,24 +1,5 @@
 package gov.nih.nci.cagrid.data.enumeration.service;
 
-import java.net.URL;
-import java.util.Iterator;
-
-import org.apache.axis.message.addressing.EndpointReferenceType;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-import org.cagrid.cql2.CQLQuery;
-import org.cagrid.cql2.results.CQLResult;
-import org.globus.ws.enumeration.EnumIterator;
-import org.globus.ws.enumeration.EnumProvider;
-import org.globus.ws.enumeration.EnumResource;
-import org.globus.ws.enumeration.EnumResourceHome;
-import org.globus.ws.enumeration.VisibilityProperties;
-import org.globus.wsrf.ResourceKey;
-import org.globus.wsrf.container.ServiceHost;
-import org.globus.wsrf.utils.AddressingUtils;
-import org.xmlsoap.schemas.ws._2004._09.enumeration.EnumerationContextType;
-
-import gov.nih.nci.cagrid.data.CqlSchemaConstants;
 import gov.nih.nci.cagrid.data.MalformedQueryException;
 import gov.nih.nci.cagrid.data.QueryProcessingException;
 import gov.nih.nci.cagrid.data.faults.MalformedQueryExceptionType;
@@ -30,6 +11,28 @@ import gov.nih.nci.cagrid.wsenum.common.WsEnumConstants;
 import gov.nih.nci.cagrid.wsenum.utils.EnumConfigDiscoveryUtil;
 import gov.nih.nci.cagrid.wsenum.utils.EnumIteratorFactory;
 import gov.nih.nci.cagrid.wsenum.utils.IterImplType;
+
+import java.net.URL;
+import java.util.Iterator;
+
+import javax.xml.namespace.QName;
+
+import org.apache.axis.message.addressing.EndpointReferenceType;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.cagrid.cql.utilities.CQLConstants;
+import org.cagrid.cql2.CQLQuery;
+import org.cagrid.cql2.results.CQLObjectResult;
+import org.cagrid.cql2.results.CQLResult;
+import org.globus.ws.enumeration.EnumIterator;
+import org.globus.ws.enumeration.EnumProvider;
+import org.globus.ws.enumeration.EnumResource;
+import org.globus.ws.enumeration.EnumResourceHome;
+import org.globus.ws.enumeration.VisibilityProperties;
+import org.globus.wsrf.ResourceKey;
+import org.globus.wsrf.container.ServiceHost;
+import org.globus.wsrf.utils.AddressingUtils;
+import org.xmlsoap.schemas.ws._2004._09.enumeration.EnumerationContextType;
 
 /**
  * Cql2EnumerationDataServiceImpl
@@ -65,8 +68,12 @@ public class Cql2EnumerationDataServiceImpl extends BaseDataServiceImpl {
         LOG.debug("Creating EnumIterator for results");
         EnumIterator enumIter = null;
         try {
-            enumIter = EnumIteratorFactory.createIterator(implType, resultsIterator, 
-                CqlSchemaConstants.CQL2_RESULT_QNAME, getServerConfigWsddStream());
+            // need to pass the QName for whatever the result type is (Object, attribute, etc),
+            // so the iterator is wrapped by a supporting tool that can determine that
+            CQL2ResultsTypeDeterminingIterator wrapIter = 
+                new CQL2ResultsTypeDeterminingIterator(resultsIterator);
+            enumIter = EnumIteratorFactory.createIterator(implType, wrapIter, 
+                wrapIter.getResultQName(), getServerConfigWsddStream());
         } catch (Exception ex) {
             throw getTypedException(
                 new QueryProcessingException("Error creating EnumIterator implementation: " + ex.getMessage(), ex),
@@ -104,5 +111,64 @@ public class Cql2EnumerationDataServiceImpl extends BaseDataServiceImpl {
                 new QueryProcessingExceptionType());
         }
         return container;
+    }
+    
+    
+    private class CQL2ResultsTypeDeterminingIterator implements Iterator<CQLResult> {
+        
+        private Iterator<CQLResult> realIterator = null;
+        private CQLResult firstResult = null;
+        boolean triedFirstResult = false;
+        boolean returnedFirstResult = false;
+        
+        public CQL2ResultsTypeDeterminingIterator(Iterator<CQLResult> realIterator) {
+            this.realIterator = realIterator;
+        }
+        
+
+        public boolean hasNext() {
+            return realIterator.hasNext();
+        }
+
+        
+        public CQLResult next() {
+            CQLResult item = null;
+            if (returnedFirstResult) {
+                item = realIterator.next();
+            } else {
+                item = getFirstResult();
+                returnedFirstResult = true;
+            }
+            return item;
+        }
+
+        
+        public void remove() {
+            throw new UnsupportedOperationException("remove() is not supported");
+        }
+        
+        
+        public QName getResultQName() {
+            QName name = null;
+            CQLResult first = getFirstResult();
+            if (first == null) {
+                // default to object results
+                name = CQLConstants.CQL_RESULT_ELEMENT_QNAMES.get(CQLObjectResult.class);
+            } else {
+                name = CQLConstants.CQL_RESULT_ELEMENT_QNAMES.get(first.getClass());
+            }
+            return name;
+        }
+        
+        
+        private CQLResult getFirstResult() {
+            if (!triedFirstResult) {
+                if (realIterator.hasNext()) {
+                    firstResult = realIterator.next();
+                }
+                triedFirstResult = true;
+            }
+            return firstResult;
+        }
     }
 }

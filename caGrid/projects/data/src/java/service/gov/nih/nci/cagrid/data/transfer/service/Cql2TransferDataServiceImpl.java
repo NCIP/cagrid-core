@@ -24,9 +24,12 @@ import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ThreadFactory;
 
+import javax.xml.namespace.QName;
+
 import org.apache.axis.MessageContext;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.cagrid.cql.utilities.CQLConstants;
 import org.cagrid.cql2.CQLQuery;
 import org.cagrid.cql2.results.CQLResult;
 import org.cagrid.transfer.context.service.helper.TransferServiceHelper;
@@ -41,9 +44,9 @@ import org.globus.wsrf.container.ServiceManager.HelperAxisEngine;
  * 
  */
 public class Cql2TransferDataServiceImpl extends BaseDataServiceImpl {
-
-    private static Log LOG = LogFactory.getLog(Cql2TransferDataServiceImpl.class);    
-	
+    
+    private static Log LOG = LogFactory.getLog(Cql2TransferDataServiceImpl.class);
+    
 	public Cql2TransferDataServiceImpl() throws DataServiceInitializationException {
 		super();
 	}
@@ -88,18 +91,24 @@ public class Cql2TransferDataServiceImpl extends BaseDataServiceImpl {
                 OutputStream byteOutput = byteQueue.getByteOutputStream();
                 OutputStreamWriter writer = new OutputStreamWriter(byteOutput);
                 try {
+                    // write the CQLQueryResults opening element into the output stream
+                    writer.write("<cql2res:" + CQLConstants.CQL2_RESULTS_QNAME.getLocalPart() 
+                        + " targetClassname=\"" + query.getCQLTargetObject().getClassName() + "\" "
+                        + " xmlns:cql2res=\"" + CQLConstants.CQL2_RESULTS_NAMESPACE_URI + "\">\n");
+                    // serialize the actual results from the iterator
                     LOG.debug("Serializing CQL 2 results to byte queue for transfer");
                     InputStream serverConfigWsdd = getServerConfigWsddStream();
                     while (resultIter.hasNext()) {
                         // mark the stream's beginning so it can be reused on the next iteration
                         serverConfigWsdd.mark(Integer.MAX_VALUE);
                         CQLResult result = resultIter.next();
-                        Utils.serializeObject(result, 
-                            CqlSchemaConstants.CQL2_RESULT_QNAME, 
-                            writer, serverConfigWsdd);
+                        QName resultName = CQLConstants.CQL_RESULT_ELEMENT_QNAMES.get(result.getClass());
+                        Utils.serializeObject(result, resultName, writer, serverConfigWsdd);
                         serverConfigWsdd.reset();
                     }
                     serverConfigWsdd.close();
+                    // closing tag for CQLQueryResults
+                    writer.write("</cql2res:" + CQLConstants.CQL2_RESULTS_QNAME.getLocalPart() + ">");
                 } catch (Exception ex) {
                     String error = "Error serializing CQL 2 results to byte queue: " 
                         + ex.getMessage();
