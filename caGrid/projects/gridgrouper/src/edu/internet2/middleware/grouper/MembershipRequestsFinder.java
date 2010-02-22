@@ -34,11 +34,11 @@ public class MembershipRequestsFinder {
 
 	private static Log log = LogFactory.getLog(MembershipRequestsFinder.class);
 	
-	public static ArrayList<MembershipRequests> findRequestsByStatus(GrouperSession s, Group group, MembershipRequestStatus status) {
+	public static ArrayList<MembershipRequests> findRequestsByStatus(Group group, MembershipRequestStatus status) {
 		ArrayList<MembershipRequests> requests = new ArrayList<MembershipRequests>();
-		GrouperSessionValidator.validate(s);
+		Session hs = null;
 		try {
-			Session hs = GridGrouperHibernateHelper.getSession();
+			hs = GridGrouperHibernateHelper.getSession();
 			Query qry = null;
 			if (MembershipRequestStatus.All.equals(status)) {
 				qry = hs.createQuery("from MembershipRequests as mr where mr.group = :grp");
@@ -56,14 +56,23 @@ public class MembershipRequestsFinder {
 
 		} catch (HibernateException e) {
 			FaultUtil.logFault(log, e);
+		} finally {
+			if (hs != null) {
+				try {
+					hs.close();
+				} catch (Exception e) {
+					log.error(e.getMessage(), e);
+				}
+			}
 		}
 		return requests;
 	} 
 
-	public static MembershipRequests findRequest(GrouperSession s, Group group, String requestor) throws MemberNotFoundException {
-		GrouperSessionValidator.validate(s);
+	public static MembershipRequests findRequest(Group group, String requestor) throws MemberNotFoundException {
+		Session hs = null;
+
 		try {
-			Session hs = GridGrouperHibernateHelper.getSession();
+			hs = GridGrouperHibernateHelper.getSession();
 			Query qry = hs.createQuery("from MembershipRequests as mr where mr.group = :grp and requestor = :requestor");;
 			qry.setString("requestor", requestor);
 			qry.setEntity("grp", group);
@@ -76,6 +85,14 @@ public class MembershipRequestsFinder {
 
 		} catch (HibernateException e) {
 			FaultUtil.logFault(log, e);
+		} finally {
+			if (hs != null) {
+				try {
+					hs.close();
+				} catch (Exception e) {
+					log.error(e.getMessage(), e);
+				}
+			}
 		}
 		return null;
 	} 

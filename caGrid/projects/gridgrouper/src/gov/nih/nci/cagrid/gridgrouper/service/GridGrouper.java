@@ -17,8 +17,6 @@ import edu.internet2.middleware.grouper.GroupDeleteException;
 import edu.internet2.middleware.grouper.GroupFinder;
 import edu.internet2.middleware.grouper.GroupModifyException;
 import edu.internet2.middleware.grouper.GroupNotFoundException;
-import edu.internet2.middleware.grouper.GroupType;
-import edu.internet2.middleware.grouper.GroupTypeFinder;
 import edu.internet2.middleware.grouper.GrouperSession;
 import edu.internet2.middleware.grouper.GrouperSourceAdapter;
 import edu.internet2.middleware.grouper.InsufficientPrivilegeException;
@@ -1008,16 +1006,16 @@ public class GridGrouper {
 			session = GrouperSession.start(caller);
 			Group target = GroupFinder.findByName(session, group.getGroupName());
 			Set set = null;
-			if (filter.equals(MemberFilter.All)) {
+			if (MemberFilter.All.equals(filter)) {
 				set = target.getMembers();
-			} else if (filter.equals(MemberFilter.EffectiveMembers)) {
+			} else if (MemberFilter.EffectiveMembers.equals(filter)) {
 				set = target.getEffectiveMembers();
-			} else if (filter.equals(MemberFilter.ImmediateMembers)) {
+			} else if (MemberFilter.ImmediateMembers.equals(filter)) {
 				set = target.getImmediateMembers();
-			} else if (filter.equals(MemberFilter.CompositeMembers)) {
+			} else if (MemberFilter.CompositeMembers.equals(filter)) {
 				set = target.getCompositeMembers();
 			} else {
-				throw new Exception("Unsuppoted member filter type!!!");
+				throw new Exception("Unsupported member filter type!!!");
 			}
 
 			MemberDescriptor[] members = new MemberDescriptor[set.size()];
@@ -1515,7 +1513,7 @@ public class GridGrouper {
 			Group grp = GroupFinder.findByName(session, group.getGroupName());
 			if (GroupPrivilegeType.membershiprequest.equals(privilege)) {
 				grp.setAttribute("allowMembershipRequests", "false");
-				MembershipRequests.rejectAllRequests(session, MemberFinder.findBySubject(session, subj), grp);
+				MembershipRequests.rejectAllRequests(MemberFinder.findBySubject(session, subj), grp);
 			} else {
 				grp.revokePriv(SubjectFinder.findById(subject), Privilege.getInstance(privilege.getValue()));
 			}
@@ -1991,7 +1989,7 @@ public class GridGrouper {
 				throw fault;
 			} 
 			
-			MembershipRequests request = MembershipRequestsFinder.findRequest(session, grp, subject);
+			MembershipRequests request = MembershipRequestsFinder.findRequest(grp, subject);
 
 			if (request == null) {
 				MembershipRequests.create(grp, subject);
@@ -2048,7 +2046,7 @@ public class GridGrouper {
 			session = GrouperSession.start(caller);
 			Group grp = GroupFinder.findByName(session, group.getGroupName());
 
-			ArrayList<MembershipRequests> requests = MembershipRequestsFinder.findRequestsByStatus(session, grp, status);
+			ArrayList<MembershipRequests> requests = MembershipRequestsFinder.findRequestsByStatus(grp, status);
 			ArrayList<MembershipRequestDescriptor> membershipRequestDescriptor = new ArrayList<MembershipRequestDescriptor>();
 			for (MembershipRequests request : requests) {
 				if (grp.hasAdmin(caller) || gridIdentity.equals(request.getRequestor()) || (getAdminGroup().hasMember(caller))) {					
@@ -2095,7 +2093,7 @@ public class GridGrouper {
 			Member caller = MemberFinder.findBySubject(session, callerSubject);
 			Subject subj = SubjectFinder.findById(subject);
 
-			MembershipRequests membershipRequest = MembershipRequestsFinder.findRequest(session, grp, subject);
+			MembershipRequests membershipRequest = MembershipRequestsFinder.findRequest(grp, subject);
 			
 			if (MembershipRequestStatus.Approved.equals(update.getStatus())) {
 				membershipRequest.approve(caller, update.getNote());

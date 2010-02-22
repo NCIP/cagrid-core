@@ -143,8 +143,8 @@ public class MembershipRequests {
 		}
 	}
 	
-	public static void rejectAllRequests(GrouperSession session, Member rejector, Group group) throws GridGrouperRuntimeFault {
-		ArrayList<MembershipRequests> requests = MembershipRequestsFinder.findRequestsByStatus(session, group, MembershipRequestStatus.Pending);
+	public static void rejectAllRequests(Member rejector, Group group) throws GridGrouperRuntimeFault {
+		ArrayList<MembershipRequests> requests = MembershipRequestsFinder.findRequestsByStatus(group, MembershipRequestStatus.Pending);
 		for (MembershipRequests membershipRequest : requests) {
 			membershipRequest.reject(rejector, "Mass rejection");
 		}
