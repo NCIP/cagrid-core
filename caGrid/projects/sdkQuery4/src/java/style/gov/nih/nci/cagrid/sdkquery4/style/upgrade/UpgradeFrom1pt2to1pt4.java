@@ -58,8 +58,7 @@ public class UpgradeFrom1pt2to1pt4 implements StyleVersionUpgrader {
             SDK4CQL2QueryProcessor.class.getName(), false);
         
         // add CQL 2 query processor properties
-        SDK4CQL2QueryProcessor processor = (SDK4CQL2QueryProcessor) styleContainer.createClassLoader()
-            .loadClass(SDK4CQL2QueryProcessor.class.getName()).newInstance();
+        SDK4CQL2QueryProcessor processor = new SDK4CQL2QueryProcessor();
         Properties processorProperties = processor.getRequiredParameters();
         Set<String> fromEtc = processor.getParametersFromEtc();
         for (Object key : processorProperties.keySet()) {

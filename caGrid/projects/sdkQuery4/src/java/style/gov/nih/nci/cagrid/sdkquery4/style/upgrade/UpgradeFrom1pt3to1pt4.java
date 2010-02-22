@@ -38,10 +38,18 @@ public class UpgradeFrom1pt3to1pt4 implements StyleVersionUpgrader {
                 LOG.debug("Deleted old library: " + oldExactMatch.getName());
             }
             if (upgradeLib.getName().startsWith("caGrid-")) {
-                int versionIndex = upgradeLib.getName().indexOf("-1.4.jar");
+                int versionIndex = upgradeLib.getName().indexOf(StyleUpgradeConstants.LATEST_JAR_SUFFIX);
                 File oldCagridMatch = new File(serviceLibDir, 
                     upgradeLib.getName().substring(0, versionIndex) + "-1.3.jar");
                 LOG.debug("Looking for old caGrid 1.3 library " + oldCagridMatch.getName());
+                if (oldCagridMatch.exists()) {
+                    oldCagridMatch.delete();
+                    LOG.debug("Deleted old library: " + oldCagridMatch.getName());
+                }
+                // since this upgrader could be called for upgrading 1.2 as well, check those jars
+                oldCagridMatch = new File(serviceLibDir, 
+                    upgradeLib.getName().substring(0, versionIndex) + "-1.2.jar");
+                LOG.debug("Looking for old caGrid 1.2 library " + oldCagridMatch.getName());
                 if (oldCagridMatch.exists()) {
                     oldCagridMatch.delete();
                     LOG.debug("Deleted old library: " + oldCagridMatch.getName());
@@ -58,8 +66,7 @@ public class UpgradeFrom1pt3to1pt4 implements StyleVersionUpgrader {
             SDK4CQL2QueryProcessor.class.getName(), false);
         
         // add CQL 2 query processor properties
-        SDK4CQL2QueryProcessor processor = (SDK4CQL2QueryProcessor) styleContainer.createClassLoader()
-            .loadClass(SDK4CQL2QueryProcessor.class.getName()).newInstance();
+        SDK4CQL2QueryProcessor processor = new SDK4CQL2QueryProcessor();
         Properties processorProperties = processor.getRequiredParameters();
         Set<String> fromEtc = processor.getParametersFromEtc();
         for (Object key : processorProperties.keySet()) {
@@ -69,5 +76,9 @@ public class UpgradeFrom1pt3to1pt4 implements StyleVersionUpgrader {
                 QueryProcessorConstants.CQL2_QUERY_PROCESSOR_CONFIG_PREFIX + propName,
                 def, fromEtc.contains(propName));
         }
+        
+        // copy values from CQL 1 query processor properties
+        
+        // edit data service extension data's "additional jars" to point to the ones we added instead of the old ones
     }
 }
