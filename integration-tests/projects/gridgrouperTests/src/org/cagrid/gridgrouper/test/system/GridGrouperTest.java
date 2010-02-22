@@ -193,6 +193,9 @@ public class GridGrouperTest extends ServiceStoryBase {
 					gridGrouperServiceURL));
 			steps.add(new GrouperGrantPrivilegeStep("test:stem1", idp + users.get(1).getUserId(), "stem", gridGrouperServiceURL));
 
+			steps.add(new GrouperGrantPrivilegeStep("test:stem1:group1", idp + users.get(1).getUserId(), "membershiprequests",
+					gridGrouperServiceURL));
+
 			// check privileges
 			steps.add(new GrouperCheckPrivilegesStep("test:stem1:group1", idp + users.get(1).getUserId(), new String[] { "admin" },
 					gridGrouperServiceURL));
