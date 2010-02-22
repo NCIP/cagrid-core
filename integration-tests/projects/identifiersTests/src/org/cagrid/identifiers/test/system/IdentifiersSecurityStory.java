@@ -18,7 +18,9 @@ import org.cagrid.identifiers.namingauthority.util.SecurityUtil;
 import org.cagrid.identifiers.test.system.steps.ChangePublicIdentifierCreationStep;
 import org.cagrid.identifiers.test.system.steps.CopyNamingAuthorityConfigStep;
 import org.cagrid.identifiers.test.system.steps.CreateDatabasesStep;
+import org.cagrid.identifiers.test.system.steps.CreateIdentifierSecurityStep;
 import org.cagrid.identifiers.test.system.steps.CreateSystemAdminStep;
+import org.cagrid.identifiers.test.system.steps.LoadUserCredentialsStep;
 
 
 public class IdentifiersSecurityStory extends Story {
@@ -92,7 +94,12 @@ public class IdentifiersSecurityStory extends Story {
         steps.add(new CreateDatabasesStep(testInfo));
         
         /////////////////////////////////////////////////////
-        // Add administrator identity
+        // Load proxies
+        /////////////////////////////////////////////////////
+        steps.add(new LoadUserCredentialsStep(testInfo));
+		
+        /////////////////////////////////////////////////////
+        // Set User A as system administrator identity
         /////////////////////////////////////////////////////
         steps.add(new CreateSystemAdminStep(testInfo));
 
@@ -104,7 +111,8 @@ public class IdentifiersSecurityStory extends Story {
         /////////////////////////////////////////////////////
         // Can we test now?
         /////////////////////////////////////////////////////
-        steps.add(new ChangePublicIdentifierCreationStep(testInfo, SecurityUtil.PUBLIC_CREATION_NO));
+        steps.add(new CreateIdentifierSecurityStep(testInfo));
+        
 
         return steps;
     }

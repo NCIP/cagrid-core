@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<project name="caGrid-globalModelExchangeTests" default="all" basedir=".">
+<project name="caGrid-IdentifiersTests" default="all" basedir=".">
 	<property environment="env" />
 	<property file="build.properties" />
 	<property file="project.properties" />

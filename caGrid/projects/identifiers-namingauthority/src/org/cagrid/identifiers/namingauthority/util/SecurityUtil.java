@@ -37,7 +37,7 @@ public class SecurityUtil {
 	public static String securityError(SecurityInfo secInfo, String opErr) {
 		return "User [" 
 			+ secInfo.getUser() 
-			+ "] is not authorized " + opErr + ".";
+			+ "] is not authorized to " + opErr + ".";
 	}
 	
 	public static List<String> getReadUsers(IdentifierMetadata values) {

@@ -12,6 +12,8 @@ import org.cagrid.identifiers.namingauthority.InvalidIdentifierException;
 import org.cagrid.identifiers.namingauthority.InvalidIdentifierValuesException;
 import org.cagrid.identifiers.namingauthority.NamingAuthorityConfigurationException;
 import org.cagrid.identifiers.namingauthority.NamingAuthoritySecurityException;
+import org.cagrid.identifiers.namingauthority.util.IdentifierUtil;
+import org.oasis.wsrf.faults.BaseFaultTypeDescription;
 
 import gov.nih.nci.cagrid.identifiers.stubs.types.InvalidIdentifierFault;
 import gov.nih.nci.cagrid.identifiers.stubs.types.InvalidIdentifierValuesFault;
@@ -89,24 +91,28 @@ public class IdentifiersNAUtil {
 	public static InvalidIdentifierFault map(InvalidIdentifierException e) {
 		InvalidIdentifierFault out = new InvalidIdentifierFault();
 		out.setFaultString(e.getMessage());
+		out.setFaultDetailString(IdentifierUtil.getStackTrace(e));
 		return out;
 	}
 
 	public static NamingAuthorityConfigurationFault map(NamingAuthorityConfigurationException e) {
 		NamingAuthorityConfigurationFault out = new NamingAuthorityConfigurationFault();
 		out.setFaultString(e.getMessage());
+		out.setFaultDetailString(IdentifierUtil.getStackTrace(e));
 		return out;
 	}
 
 	public static InvalidIdentifierValuesFault map(InvalidIdentifierValuesException e) {
 		InvalidIdentifierValuesFault out = new InvalidIdentifierValuesFault();
 		out.setFaultString(e.getMessage());
+		out.setFaultDetailString(IdentifierUtil.getStackTrace(e));
 		return out;
 	}
 	
 	public static NamingAuthoritySecurityFault map(NamingAuthoritySecurityException e) {
 		NamingAuthoritySecurityFault out = new NamingAuthoritySecurityFault();
 		out.setFaultString(e.getMessage());
+		out.setFaultDetailString(IdentifierUtil.getStackTrace(e));
 		return out;
 	}
 	

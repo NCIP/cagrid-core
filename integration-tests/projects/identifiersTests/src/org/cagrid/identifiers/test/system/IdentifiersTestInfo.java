@@ -4,6 +4,7 @@ import gov.nih.nci.cagrid.testing.core.TestingConstants;
 import gov.nih.nci.cagrid.testing.system.deployment.ServiceContainer;
 import gov.nih.nci.cagrid.testing.system.deployment.ServiceContainerFactory;
 import gov.nih.nci.cagrid.testing.system.deployment.ServiceContainerType;
+import gov.nih.nci.cagrid.testing.system.deployment.TomcatSecureServiceContainer;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -21,6 +22,7 @@ import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.cookie.Cookie;
 import org.cagrid.identifiers.namingauthority.util.SecurityUtil;
+import org.globus.gsi.GlobusCredential;
 
 
 public class IdentifiersTestInfo {
@@ -55,6 +57,11 @@ public class IdentifiersTestInfo {
 	private File purlzDirectory = null;
 	private Cookie purlzLoginCookie = null;
 	private Integer purlzPort = null;
+	
+	private GlobusCredential sysAdminUser = null;
+	private GlobusCredential userA = null;
+	private GlobusCredential userB = null;
+	private GlobusCredential userC = null;
 	
 	public IdentifiersTestInfo() throws IOException {
 		this.purlzDirectory = genPurlzTempDirectory();
@@ -168,6 +175,46 @@ public class IdentifiersTestInfo {
 		return responseStr.toString();
 	}
 	
+	public String getGridCertsPath() {
+		if (this.gridSvcContainer instanceof TomcatSecureServiceContainer) {
+			return ((TomcatSecureServiceContainer)this.gridSvcContainer)
+				.getCertificatesDirectory().getAbsolutePath();
+		}
+		
+		return null;
+	}
+	
+	public void setSysAdminUser(GlobusCredential cred) {
+		this.sysAdminUser = cred;	
+	}
+	
+	public GlobusCredential getSysAdminUser() {
+		return this.sysAdminUser;
+	}
+	
+	public void setUserA(GlobusCredential cred) {
+		this.userA = cred;	
+	}
+	
+	public GlobusCredential getUserA() {
+		return this.userA;
+	}
+	
+	public void setUserB(GlobusCredential cred) {
+		this.userB = cred;	
+	}
+	
+	public GlobusCredential getUserB() {
+		return this.userB;
+	}
+	
+	public void setUserC(GlobusCredential cred) {
+		this.userC = cred;	
+	}
+	
+	public GlobusCredential getUserC() {
+		return this.userC;
+	}
 	//
 	// Private Stuff
 	//
@@ -190,4 +237,6 @@ public class IdentifiersTestInfo {
         tempContainerDir.mkdirs();
         return tempContainerDir;
     }
+
+
 }

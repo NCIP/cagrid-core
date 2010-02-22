@@ -34,17 +34,14 @@ public class ChangePublicIdentifierCreationStep extends Step {
     public void runStep() throws Exception {
     	
     	EndpointReferenceType epr = testInfo.getGridSvcEPR();
-        IdentifiersNAServiceClient client = new IdentifiersNAServiceClient( epr );
+        IdentifiersNAServiceClient client = new IdentifiersNAServiceClient( epr, testInfo.getSysAdminUser() );
+        client.setAnonymousPrefered(false);
 
     	KeyValues[] newKeyValues = new KeyValues[1];
     	newKeyValues[0] = new KeyValues();
     	newKeyValues[0].setKey(Keys.PUBLIC_CREATION);
     	newKeyValues[0].setKeyData(new KeyData(null, new String[]{this.publicCreation}));
 
-    	try {
-    		client.replaceKeys(testInfo.getSystemIdentifier(), new IdentifierValues(newKeyValues));
-    	} catch(NamingAuthoritySecurityFault e) {
-    		//expected
-    	}
+   		client.replaceKeys(testInfo.getSystemIdentifier(), new IdentifierValues(newKeyValues));
     }
 }

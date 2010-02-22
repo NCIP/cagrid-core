@@ -153,7 +153,7 @@ public class IdentifierMetadataDao extends AbstractDao<IdentifierMetadata> {
 		URI localIdentifier = IdentifierUtil.getLocalName(prefix, identifier);
 		IdentifierMetadata resolvedValues = loadLocalIdentifier(localIdentifier);
 		
-		writeKeysSecurityChecks(secInfo, "to create keys", resolvedValues);
+		writeKeysSecurityChecks(secInfo, "create keys", resolvedValues);
 		
 		String[] newKeys = values.getKeys();
 		Collection<IdentifierValueKey> valueKeys = resolvedValues.getValues();
@@ -196,7 +196,7 @@ public class IdentifierMetadataDao extends AbstractDao<IdentifierMetadata> {
 					+ identifier + "] has no keys");
 		}
 
-		writeKeysSecurityChecks(secInfo, "to delete keys", resolvedValues);
+		writeKeysSecurityChecks(secInfo, "delete keys", resolvedValues);
 
 		LOG.warn("User [" + secInfo.getUser() + "] deleting some keys for identifier [" 
 				+ identifier.toString() + "]");
@@ -495,7 +495,7 @@ public class IdentifierMetadataDao extends AbstractDao<IdentifierMetadata> {
 		// Is this the only case when we bark?
 		if (newValues.getKeys() == null || newValues.getKeys().length == 0) {
 			throw new NamingAuthoritySecurityException(SecurityUtil.securityError(secInfo, 
-					"to resolve identifier"));
+					"resolve identifier"));
 		}
 		
 		return newValues;
@@ -532,7 +532,7 @@ public class IdentifierMetadataDao extends AbstractDao<IdentifierMetadata> {
 		
 		List<String> authorizedUsers = SecurityUtil.getIdentifierCreationUsers(systemValues);
 		if (authorizedUsers == null || !authorizedUsers.contains(secInfo.getUser())) {
-			throw new NamingAuthoritySecurityException(SecurityUtil.securityError(secInfo, "to create identifiers"));
+			throw new NamingAuthoritySecurityException(SecurityUtil.securityError(secInfo, "create identifiers"));
 		}	
 	}
 	

@@ -1,6 +1,7 @@
 package org.cagrid.identifiers.test.system.steps;
 
 import gov.nih.nci.cagrid.common.StreamGobbler;
+import gov.nih.nci.cagrid.common.security.ProxyUtil;
 import gov.nih.nci.cagrid.testing.system.deployment.ContainerException;
 import gov.nih.nci.cagrid.testing.system.haste.Step;
 
@@ -26,6 +27,7 @@ import org.apache.http.cookie.Cookie;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicNameValuePair;
 import org.cagrid.identifiers.test.system.IdentifiersTestInfo;
+import org.globus.gsi.GlobusCredential;
 
 public class CreateSystemAdminStep extends Step {
     
@@ -39,7 +41,11 @@ public class CreateSystemAdminStep extends Step {
 	
 	@Override
 	public void runStep() throws Exception {
-		runAntTarget(new File(IdentifiersTestInfo.WEBAPP_TMP_DIR), "/calistraca");
+		//
+		// We use User A as the system administrator
+		//
+		runAntTarget(new File(IdentifiersTestInfo.WEBAPP_TMP_DIR), testInfo.getUserA().getIdentity());
+		testInfo.setSysAdminUser(testInfo.getUserA());
 	}
 		
 	protected void runAntTarget(File projectDir, String adminIdentity) throws Exception {
