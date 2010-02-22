@@ -314,7 +314,7 @@ class FederatedQueryProcessor {
      * @return A CQL Group of attributes
      * @throws FederatedQueryProcessingException
      */
-    public static CQLGroup buildGroup(JoinCondition joinCondition, DataTransformation transformation, List<String> values)
+    private CQLGroup buildGroup(JoinCondition joinCondition, DataTransformation transformation, List<String> values)
         throws FederatedQueryProcessingException {
         CQLGroup cqlGroup = new CQLGroup();
         String localAttributeName = joinCondition.getLocalAttributeName();
@@ -329,7 +329,11 @@ class FederatedQueryProcessor {
                 }
             }
         }
+        
+        // set up the transformation processor
+        DataTransformationProcessor transformationProcessor = new DataTransformationProcessor(transformation);
 
+        // build the attributes for the group
         CQLAttribute[] attributes = null;
         // handle the case of no values
         if (values == null || values.size() == 0) {
@@ -346,7 +350,7 @@ class FederatedQueryProcessor {
             // entries and we only got one value.
             cqlGroup.setLogicalOperation(GroupLogicalOperator.OR);
             attributes = new CQLAttribute[2];
-            attributes[0] = createAttributeFromValue(joinCondition, transformation, localAttributeName, values.get(0));
+            attributes[0] = createAttributeFromValue(joinCondition, transformationProcessor, localAttributeName, values.get(0));
             attributes[1] = attributes[0];
         } else {
             // more than 1 value
@@ -355,7 +359,7 @@ class FederatedQueryProcessor {
             for (int i = 0; i < values.size(); i++) {
                 String currRemoteValue = values.get(i);
                 attributes[i] = createAttributeFromValue(
-                    joinCondition, transformation, localAttributeName, currRemoteValue);
+                    joinCondition, transformationProcessor, localAttributeName, currRemoteValue);
             }
         }
         cqlGroup.setCQLAttribute(attributes);
@@ -371,8 +375,9 @@ class FederatedQueryProcessor {
      * @return A CQL Attribute
      * @throws FederatedQueryProcessingException
      */
-    private static CQLAttribute createAttributeFromValue(JoinCondition joinCondition, DataTransformation transformation,
-        String property, String value) throws FederatedQueryProcessingException {
+    private CQLAttribute createAttributeFromValue(JoinCondition joinCondition, 
+        DataTransformationProcessor transformationProcessor, String property, String value) 
+        throws FederatedQueryProcessingException {
         CQLAttribute attr = new CQLAttribute();
         // set the local property name
         attr.setName(property);
@@ -396,25 +401,23 @@ class FederatedQueryProcessor {
             attr.setBinaryPredicate(predicate);
             // set the value to the string representation of 
             // the "foreign result value"
-            // TODO: value types??
-            AttributeValue attrValue = null;
-            if (transformation != null) {
-                attrValue = applyTransformation(transformation, value);
+            // TODO: value types????
+            AttributeValue attrValue = new AttributeValue();
+            if (transformationProcessor != null) {
+                String transformedValue;
+                try {
+                    transformedValue = transformationProcessor.apply(value);
+                } catch (TransformationHandlingException ex) {
+                    throw new FederatedQueryProcessingException(
+                        "Error applying data transformation: " + ex.getMessage(), ex);
+                }
+                attrValue.setStringValue(transformedValue);
             } else {
-                attrValue = new AttributeValue();
                 attrValue.setStringValue(value);
             }
             attr.setAttributeValue(attrValue);
         }
         return attr;
-    }
-    
-    
-    private static AttributeValue applyTransformation(DataTransformation transformation, String value) {
-        // TODO: implement me
-        AttributeValue attrValue = new AttributeValue();
-        attrValue.setStringValue(value);
-        return attrValue;
     }
 
 
@@ -426,7 +429,7 @@ class FederatedQueryProcessor {
      * @return true if the passed result is not null AND contains some type of
      *         result data.
      */
-    private static boolean hasResults(CQLQueryResults cqlResults) {
+    private boolean hasResults(CQLQueryResults cqlResults) {
         return cqlResults != null
             && (cqlResults.getAttributeResult() != null && cqlResults.getAggregationResult() != null
                 || cqlResults.getObjectResult() != null || cqlResults.getExtendedResult() != null);
