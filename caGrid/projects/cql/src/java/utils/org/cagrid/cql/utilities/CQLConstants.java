@@ -9,4 +9,7 @@ public interface CQLConstants {
     
     public static final String CQL2_NAMESPACE_URI = "http://CQL.caBIG/2/org.cagrid.cql2";
     public static final QName CQL2_QUERY_QNAME = new QName(CQL2_NAMESPACE_URI, "CQLQuery");
+    
+    public static final String CQL2_RESULTS_NAMESPACE_URI = "http://CQL.caBIG/2/org.cagrid.cql2.results";
+    public static final QName CQL2_RESULTS_QNAME = new QName(CQL2_RESULTS_NAMESPACE_URI, "CQLQueryResults");
 }
