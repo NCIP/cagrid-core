@@ -65,7 +65,7 @@ public class BeanTypeDiscoveryTestCase extends TestCase {
             File modelFile = new File(DOMAIN_MODEL_FILENAME);
             LOG.debug("Using domain model from " + modelFile.getAbsolutePath());
             FileReader modelReader = new FileReader(modelFile);
-            model = (DomainModel) Utils.deserializeObject(modelReader, DomainModel.class);
+            model = Utils.deserializeObject(modelReader, DomainModel.class);
         } catch (Exception ex) {
             ex.printStackTrace();
             fail("Error loading domain model: " + ex.getMessage());
@@ -88,7 +88,8 @@ public class BeanTypeDiscoveryTestCase extends TestCase {
         BeanTypeDiscoveryMapper mapper = new BeanTypeDiscoveryMapper(beansJar, model);
         mapper.addBeanTypeDiscoveryEventListener(new BeanTypeDiscoveryEventListener() {
             public void typeDiscoveryBegins(BeanTypeDiscoveryEvent e) {
-                LOG.debug("Discovering information for " + e.getBeanClassname() + " (" + e.getCurrentBean() + "/" + e.getTotalBeans() + ")");
+                LOG.debug("Discovering information for " + e.getBeanClassname() 
+                    + " (" + e.getCurrentBean() + "/" + e.getTotalBeans() + ")");
             }
         });
         
@@ -109,7 +110,7 @@ public class BeanTypeDiscoveryTestCase extends TestCase {
         // create a URL classloader for the beans jar
         URLClassLoader beansLoader = null;
         try {
-            beansLoader = new URLClassLoader(new URL[] {beansJar.toURL()});
+            beansLoader = new URLClassLoader(new URL[] {beansJar.toURI().toURL()});
         } catch (Exception ex) {
             ex.printStackTrace();
             fail("Error creating beans classloader: " + ex.getMessage());
@@ -119,7 +120,7 @@ public class BeanTypeDiscoveryTestCase extends TestCase {
         String testClassname = "gov.nih.nci.cacoresdk.domain.manytomany.unidirectional.Book";
         
         // load a class from the beans class loader
-        Class bookClass = null;
+        Class<?> bookClass = null;
         try {
             bookClass = beansLoader.loadClass(testClassname);
         } catch (Exception ex) {
@@ -136,8 +137,10 @@ public class BeanTypeDiscoveryTestCase extends TestCase {
                 String fieldJavaType = field.getType().getName();
                 // ask the domain types info util about the field
                 String infoJavaType = infoUtil.getAttributeJavaType(testClassname, name);
-                assertNotNull("Unable to find field " + name + " of class " + testClassname + " in domain types information", infoJavaType);
-                assertEquals("Java type of field " + name + " of class " + testClassname + " differs in info from actual class",
+                assertNotNull("Unable to find field " + name + " of class " +
+                    testClassname + " in domain types information", infoJavaType);
+                assertEquals("Java type of field " + name + " of class " + 
+                    testClassname + " differs in info from actual class",
                     fieldJavaType, infoJavaType);
             }
         }
@@ -150,10 +153,12 @@ public class BeanTypeDiscoveryTestCase extends TestCase {
         
         List<String> modelSubclasses = getSubclasses(testClassname);
         List<String> infoSubclasses = infoUtil.getSubclasses(testClassname);
-        assertEquals("Unexpected number of subclasses from info utility", modelSubclasses.size(), infoSubclasses.size());
+        assertEquals("Unexpected number of subclasses from info utility", 
+            modelSubclasses.size(), infoSubclasses.size());
         
         for (String expected : modelSubclasses) {
-            assertTrue("Subclasses from info util did not contain expected class " + expected, infoSubclasses.contains(expected));
+            assertTrue("Subclasses from info util did not contain expected class " + expected,
+                infoSubclasses.contains(expected));
         }
     }
     

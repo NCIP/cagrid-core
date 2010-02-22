@@ -48,7 +48,7 @@ public class RoleNameResolverTestCase extends TestCase {
             //    "/test/resources/sdkExampleDomainModel.xml");
             // InputStreamReader reader = new InputStreamReader(modelInStream);
             FileReader reader = new FileReader("test/resources/sdkExampleDomainModel.xml");
-            DomainModel model = (DomainModel) Utils.deserializeObject(reader, DomainModel.class);
+            DomainModel model = Utils.deserializeObject(reader, DomainModel.class);
             reader.close();
             resolver = new RoleNameResolver(model);
         } catch (Exception ex) {

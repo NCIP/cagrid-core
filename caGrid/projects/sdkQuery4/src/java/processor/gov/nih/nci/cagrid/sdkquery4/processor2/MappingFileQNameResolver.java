@@ -44,7 +44,7 @@ public class MappingFileQNameResolver implements QNameResolver {
     
     public static Mappings deserializeMappings(File mappingsFile) throws Exception {
         FileReader reader = new FileReader(mappingsFile);
-        Mappings map = (Mappings) Utils.deserializeObject(reader, Mappings.class);
+        Mappings map = Utils.deserializeObject(reader, Mappings.class);
         return map;
     }
 }
