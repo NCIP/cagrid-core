@@ -66,7 +66,7 @@ public class ServiceStyleLoader {
             for (File styleDir : styleDirs) {
                 File styleXmlFile = new File(styleDir.getAbsolutePath() 
                     + File.separator + DataServiceConstants.SERVICE_STYLE_FILE_NAME);
-                DataServiceStyle style = (DataServiceStyle) Utils.deserializeDocument(
+                DataServiceStyle style = Utils.deserializeDocument(
                     styleXmlFile.getAbsolutePath(), DataServiceStyle.class);
                 boolean okToAdd = true;
                 if (!includeIncompatibleVersions) {
