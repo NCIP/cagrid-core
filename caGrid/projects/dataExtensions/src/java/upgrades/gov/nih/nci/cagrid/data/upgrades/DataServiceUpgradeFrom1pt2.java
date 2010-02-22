@@ -3,6 +3,10 @@ package gov.nih.nci.cagrid.data.upgrades;
 import gov.nih.nci.cagrid.common.Utils;
 import gov.nih.nci.cagrid.data.BdtMethodConstants;
 import gov.nih.nci.cagrid.data.extension.Data;
+import gov.nih.nci.cagrid.data.style.ServiceStyleContainer;
+import gov.nih.nci.cagrid.data.style.ServiceStyleLoader;
+import gov.nih.nci.cagrid.data.style.StyleVersionUpgrader;
+import gov.nih.nci.cagrid.data.style.VersionUpgrade;
 import gov.nih.nci.cagrid.introduce.beans.extension.ExtensionType;
 import gov.nih.nci.cagrid.introduce.beans.method.MethodType;
 import gov.nih.nci.cagrid.introduce.beans.service.ServiceType;
@@ -18,6 +22,8 @@ import java.io.File;
 import java.io.FileFilter;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -51,6 +57,8 @@ public class DataServiceUpgradeFrom1pt2 extends ExtensionUpgraderBase {
 			validateUpgrade();
 			
 			updateLibraries();
+			
+			upgradeStyle();
             
             upgradeWsdls();
             
@@ -156,6 +164,13 @@ public class DataServiceUpgradeFrom1pt2 extends ExtensionUpgraderBase {
         Element serviceFeaturesElement = extDataElement.getChild("ServiceFeatures", extDataElement.getNamespace());
         String useSdkValue = serviceFeaturesElement.getAttributeValue("useSdkDataSource");
         return Boolean.valueOf(useSdkValue).booleanValue();
+    }
+    
+    
+    private String getStyleName(Element extDataElement) {
+        Element serviceFeaturesElement = extDataElement.getChild("ServiceFeatures", extDataElement.getNamespace());
+        String styleName = serviceFeaturesElement.getAttributeValue("serviceStyle");
+        return styleName;
     }
 	
 	
@@ -403,5 +418,71 @@ public class DataServiceUpgradeFrom1pt2 extends ExtensionUpgraderBase {
         extensionDataElement.removeContent(cadsrInfoElement);
         extensionDataElement.addContent(modelInformationElement.detach());
         storeExtensionDataElement(extensionDataElement);
+    }
+    
+    
+    private void upgradeStyle() throws UpgradeException {
+        Element extensionDataElement = getExtensionDataElement();
+        String styleName = getStyleName(extensionDataElement);
+        if (styleName == null) {
+            getStatus().addDescriptionLine("No data service style detected");
+        } else {
+            getStatus().addDescriptionLine("Data service style " + styleName + " detected, looking for upgrader");
+            ServiceStyleContainer styleContainer = null;
+            try {
+                styleContainer = ServiceStyleLoader.getStyle(styleName);
+            } catch (Exception ex) {
+                throw new UpgradeException("Error loading service style: " + ex.getMessage(), ex);
+            }
+            if (styleContainer == null) {
+                String message = "No current version of style " + styleName + " could be loaded!";
+                getStatus().addDescriptionLine("No current version of style " + styleName + " could be loaded!");
+                getStatus().addIssue(message, 
+                    "The style may not support the current version of caGrid.  " +
+                    "Check with the developer of your style for an update");
+            } else {
+                VersionUpgrade[] availableUpgrades = styleContainer.getServiceStyle().getVersionUpgrade();
+                // sort upgrades
+                Comparator<VersionUpgrade> upgradeSorter = new Comparator<VersionUpgrade>() {
+                    public int compare(VersionUpgrade a, VersionUpgrade b) {
+                        // sort by from version first, then by to version
+                        int val = a.getFromVersion().compareTo(b.getFromVersion());
+                        if (val == 0) {
+                            val = a.getToVersion().compareTo(b.getToVersion());
+                        }
+                        return val;
+                    }
+                };
+                Arrays.sort(availableUpgrades, upgradeSorter);
+                VersionUpgrade validUpgrade = null;
+                // doing this will get the upgrade from whatever the oldest version 
+                // of the style (with an available upgrader) is to the 1.4 version
+                for (VersionUpgrade upgrade : availableUpgrades) {
+                    if (upgrade.getToVersion().equals(UpgraderConstants.DATA_CURRENT_VERSION)) {
+                        validUpgrade = upgrade;
+                    }
+                }
+                if (validUpgrade == null) {
+                    getStatus().addIssue("No upgrade was found for the style " + styleName, 
+                        "The style may not support the current version of caGrid.  " +
+                        "Check with the developer of your style for an update");
+                } else {
+                    StyleVersionUpgrader styleUpgrade = null;
+                    try {
+                        styleUpgrade = styleContainer.loadVersionUpgrader(
+                            validUpgrade.getFromVersion(), validUpgrade.getToVersion());
+                    } catch (Exception ex) {
+                        throw new UpgradeException(
+                            "Error loading style version upgrader: " + ex.getMessage(), ex);
+                    }
+                    try {
+                        styleUpgrade.upgradeStyle(getServiceInformation(), getExtensionType().getExtensionData(),
+                            getFromVersion(), getToVersion());
+                    } catch (Exception ex) {
+                        throw new UpgradeException("Error upgrading service style: " + ex.getMessage(), ex);
+                    }
+                }
+            }
+        }
     }
 }

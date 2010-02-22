@@ -361,8 +361,8 @@ public class DataServiceUpgradeFrom1pt3 extends ExtensionUpgraderBase {
                 };
                 Arrays.sort(availableUpgrades, upgradeSorter);
                 VersionUpgrade validUpgrade = null;
-                // doing this will get the upgrade from whatever the 2nd most recent
-                // version of the style is to the 1.4 version
+                // doing this will get the upgrade from whatever the oldest version 
+                // of the style (with an available upgrader) is to the 1.4 version
                 for (VersionUpgrade upgrade : availableUpgrades) {
                     if (upgrade.getToVersion().equals(UpgraderConstants.DATA_CURRENT_VERSION)) {
                         validUpgrade = upgrade;
