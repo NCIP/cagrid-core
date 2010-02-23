@@ -97,10 +97,12 @@ public class UpgradeSDKFrom1pt2Tests extends BaseSystemTest {
 		steps.add(new ResyncAndBuildStep(testServiceInfo, getIntroduceBaseDir()));
 	    // deploy the service, check out the CQL 2 related operations and metadata
         steps.add(new UnpackContainerStep(container));
-        steps.add(new DeployServiceStep(container, testServiceInfo.getDir(), Collections.singletonList("-Dno.deployment.validation=true")));
+        steps.add(new DeployServiceStep(container, testServiceInfo.getDir(), 
+            Collections.singletonList("-Dno.deployment.validation=true")));
         steps.add(new StartContainerStep(container));
+        // caCORE SDK 4.0 style upgrader should add CQL 2 support
         steps.add(new VerifyOperationsStep(container, testServiceInfo.getName(),
-            false, false, false));
+            true, false, false));
 		return steps;
 	}
     
@@ -114,8 +116,8 @@ public class UpgradeSDKFrom1pt2Tests extends BaseSystemTest {
             Step deleteStep = new DestroyContainerStep(container);
             deleteStep.runStep();
         }
-        // Step deleteServiceStep = new DeleteOldServiceStep(testServiceInfo);
-        // deleteServiceStep.runStep();
+        Step deleteServiceStep = new DeleteOldServiceStep(testServiceInfo);
+        deleteServiceStep.runStep();
     }
     
 
