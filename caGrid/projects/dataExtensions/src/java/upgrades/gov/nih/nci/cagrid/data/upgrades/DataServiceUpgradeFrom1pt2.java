@@ -517,8 +517,6 @@ public class DataServiceUpgradeFrom1pt2 extends ExtensionUpgraderBase {
                 String newVersion = style.getServiceStyle().getVersion();
                 styleElem.setAttribute("version", newVersion);
             }
-            String newVersion = style.getServiceStyle().getVersion();
-            styleElem.setAttribute("version", newVersion);
             serviceFeaturesElem.addContent(styleElem);
         }
     }
