@@ -5,6 +5,19 @@ import java.util.Map;
 import org.apache.commons.collections.map.LRUMap;
 
 
+/**
+ * TimeLimitedCache
+ * 
+ * Caches a finite number of objects for a finite amount of time
+ * When the maximum number of items is exceeded, the least recently used
+ * item will be removed from the cache.  Items in the cache older than
+ * the maximum age will not be returned, but discarded when getItem() is called
+ * 
+ * @author David
+ *
+ * @param <K> The key type
+ * @param <T> The cached value type
+ */
 public class TimeLimitedCache<K, T> {
 
     public static final int DEFAULT_MAX_SIZE = 50;
