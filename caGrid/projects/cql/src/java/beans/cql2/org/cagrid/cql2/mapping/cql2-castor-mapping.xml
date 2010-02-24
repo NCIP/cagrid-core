@@ -26,6 +26,9 @@
     <field name="CQLAssociatedObject" type="org.cagrid.cql2.CQLAssociatedObject">
       <bind-xml name="cql2:CQLAssociatedObject" node="element" />
     </field>
+    <field name="CQLExtension" type="org.cagrid.cql2.CQLExtension">
+      <bind-xml name="cql2:CQLExtension" node="element" />
+    </field>
     <field name="_instanceof" type="java.lang.String">
       <bind-xml name="instanceof" node="attribute" />
     </field>
@@ -108,11 +111,11 @@
     <field name="attributeExtension" type="org.cagrid.cql2.CQLExtension">
       <bind-xml name="cql2:AttributeExtension" node="element" />
     </field>
-    <field name="name" type="java.lang.String">
-      <bind-xml name="name" node="attribute" />
-    </field>
     <field name="attributeValue" type="org.cagrid.cql2.AttributeValue">
       <bind-xml name="cql2:AttributeValue" node="element" />
+    </field>
+    <field name="name" type="java.lang.String">
+      <bind-xml name="name" node="attribute" />
     </field>
   </class>
   <class name="org.cagrid.cql2.Aggregation" verify-constructable="false">
