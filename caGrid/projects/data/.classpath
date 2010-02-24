@@ -2,15 +2,15 @@
 <classpath>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="src" path="build/stubs/src"/>
-	<classpathentry kind="src" path="src/java/service"/>
-	<classpathentry kind="src" path="src/java/utilities"/>
 	<classpathentry kind="src" path="build/stubs/test/src"/>
-	<classpathentry kind="src" path="test/src/java"/>
-	<classpathentry kind="src" path="src/java/validation"/>
 	<classpathentry kind="src" path="src/java/common"/>
 	<classpathentry kind="src" path="src/java/cql"/>
-	<classpathentry kind="src" path="test/resources"/>
+	<classpathentry kind="src" path="src/java/service"/>
 	<classpathentry kind="src" path="src/java/tools"/>
+	<classpathentry kind="src" path="src/java/utilities"/>
+	<classpathentry kind="src" path="src/java/validation"/>
+	<classpathentry kind="src" path="test/src/java"/>
+	<classpathentry kind="src" path="test/resources"/>
 	<classpathentry kind="var" path="GT4_LOCATION/lib/addressing-1.0.jar"/>
 	<classpathentry kind="var" path="GT4_LOCATION/lib/axis.jar"/>
 	<classpathentry kind="var" path="GT4_LOCATION/lib/axis-url.jar"/>
