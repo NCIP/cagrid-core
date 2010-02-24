@@ -482,7 +482,7 @@ public class DataServiceUpgradeFrom1pt2 extends ExtensionUpgraderBase {
                     }
                     try {
                         styleUpgrade.upgradeStyle(getServiceInformation(), getExtensionType().getExtensionData(),
-                            getFromVersion(), getToVersion());
+                            getStatus(), getFromVersion(), getToVersion());
                     } catch (Exception ex) {
                         throw new UpgradeException("Error upgrading service style: " + ex.getMessage(), ex);
                     }

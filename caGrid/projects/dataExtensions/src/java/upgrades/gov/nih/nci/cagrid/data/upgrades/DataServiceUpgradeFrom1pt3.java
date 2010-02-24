@@ -232,7 +232,8 @@ public class DataServiceUpgradeFrom1pt3 extends ExtensionUpgraderBase {
                 + File.separator + newLib.getName());
             try {
                 Utils.copyFile(newLib, out);
-                getStatus().addDescriptionLine("caGrid " + UpgraderConstants.DATA_CURRENT_VERSION + " library " + newLib.getName() + " added");
+                getStatus().addDescriptionLine("caGrid " + UpgraderConstants.DATA_CURRENT_VERSION +
+                    " library " + newLib.getName() + " added");
             } catch (IOException ex) {
                 throw new UpgradeException("Error copying new data service library: " 
                     + ex.getMessage(), ex);
@@ -388,7 +389,7 @@ public class DataServiceUpgradeFrom1pt3 extends ExtensionUpgraderBase {
                     }
                     try {
                         styleUpgrade.upgradeStyle(getServiceInformation(), getExtensionType().getExtensionData(),
-                            getFromVersion(), getToVersion());
+                            getStatus(), getFromVersion(), getToVersion());
                     } catch (Exception ex) {
                         throw new UpgradeException("Error upgrading service style: " + ex.getMessage(), ex);
                     }

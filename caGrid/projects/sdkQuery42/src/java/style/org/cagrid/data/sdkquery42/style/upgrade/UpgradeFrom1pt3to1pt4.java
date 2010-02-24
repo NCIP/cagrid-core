@@ -10,6 +10,7 @@ import gov.nih.nci.cagrid.introduce.beans.extension.ExtensionTypeExtensionData;
 import gov.nih.nci.cagrid.introduce.common.CommonTools;
 import gov.nih.nci.cagrid.introduce.common.ServiceInformation;
 import gov.nih.nci.cagrid.introduce.extension.utils.AxisJdomUtils;
+import gov.nih.nci.cagrid.introduce.upgrade.common.ExtensionUpgradeStatus;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -31,7 +32,7 @@ public class UpgradeFrom1pt3to1pt4 implements StyleVersionUpgrader {
     private static Log LOG = LogFactory.getLog(UpgradeFrom1pt3to1pt4.class);
 
     public void upgradeStyle(ServiceInformation serviceInformation, ExtensionTypeExtensionData extensionData,
-        String serviceFromVersion, String serviceToVersion) throws Exception {
+        ExtensionUpgradeStatus status, String serviceFromVersion, String serviceToVersion) throws Exception {
         // load the style
         ServiceStyleContainer styleContainer = ServiceStyleLoader.getStyle("caCORE SDK v 4.2");
         
@@ -47,7 +48,9 @@ public class UpgradeFrom1pt3to1pt4 implements StyleVersionUpgrader {
             if (oldExactMatch.exists()) {
                 oldExactMatch.delete();
                 removedLibs.add(oldExactMatch.getName());
-                LOG.debug("Deleted old library: " + oldExactMatch.getName());
+                String message = "Deleted old library: " + oldExactMatch.getName();
+                LOG.debug(message);
+                status.addDescriptionLine(message);
             }
             if (upgradeLib.getName().startsWith("caGrid-")) {
                 int versionIndex = upgradeLib.getName().indexOf(StyleUpgradeConstants.LATEST_JAR_SUFFIX);
@@ -66,19 +69,25 @@ public class UpgradeFrom1pt3to1pt4 implements StyleVersionUpgrader {
                 if (oldCagridMatch.exists()) {
                     oldCagridMatch.delete();
                     removedLibs.add(oldCagridMatch.getName());
-                    LOG.debug("Deleted old library: " + oldCagridMatch.getName());
+                    String message = "Deleted old library: " + oldCagridMatch.getName();
+                    LOG.debug(message);
+                    status.addDescriptionLine(message);
                 }
             }
             File copyLib = new File(serviceLibDir, upgradeLib.getName());
             Utils.copyFile(upgradeLib, copyLib);
             addedLibs.add(copyLib.getName());
-            LOG.debug("Copied new library: " + upgradeLib.getName());
+            String message = "Copied new library: " + upgradeLib.getName();
+            LOG.debug(message);
+            status.addDescriptionLine(message);
         }
         
         // set CQL 2 query processor classname property
         CommonTools.setServiceProperty(serviceInformation.getServiceDescriptor(),
             QueryProcessorConstants.CQL2_QUERY_PROCESSOR_CLASS_PROPERTY, 
             SDK42CQL2QueryProcessor.class.getName(), false);
+        status.addDescriptionLine("Set CQL 2 query processor class service property to " 
+            + SDK42CQL2QueryProcessor.class.getName());
         
         // add CQL 2 query processor properties
         SDK42CQL2QueryProcessor processor = new SDK42CQL2QueryProcessor();
@@ -107,6 +116,21 @@ public class UpgradeFrom1pt3to1pt4 implements StyleVersionUpgrader {
                     newPrefixedName, copyValue, fromEtc.contains(propName));
             }            
         }
+        status.addDescriptionLine("Copied configuration values for CQL 2 query processor " +
+        		"from existing CQL 1 query processor configuration");
+        
+        // check for the ORM jar in the service's lib dir
+        String applicationName = CommonTools.getServicePropertyValue(
+            serviceInformation.getServiceDescriptor(),
+            QueryProcessorConstants.QUERY_PROCESSOR_CONFIG_PREFIX + SDK42QueryProcessor.PROPERTY_APPLICATION_NAME);
+        File ormJar = new File(serviceInformation.getBaseDirectory(), "lib" + File.separator + applicationName + "-orm.jar");
+        if (!ormJar.exists()) {
+            // the ORM jar contains the required hibernate config files for the CQL 2 HQL translator
+            status.addIssue("The caCORE SDK Application ORM jar was not found at " + ormJar.getAbsolutePath() + ". " 
+                + "This jar contains the required Hibernate configuration information for the new CQL 2 query processor",
+                "Copy the file " + ormJar.getName() + " from your caCORE SDK local-client/lib directory into your " 
+                + "data service's lib directory (" + serviceInformation.getBaseDirectory().getAbsolutePath() + File.separator + "lib)");
+        }
         
         // edit data service extension data's "additional jars" to point to the ones we added instead of the old ones
         Element data = getExtensionDataElement(extensionData);
@@ -129,6 +153,9 @@ public class UpgradeFrom1pt3to1pt4 implements StyleVersionUpgrader {
             }
         }
         storeExtensionDataElement(extensionData, data);
+        status.addDescriptionLine("Reconfigured searchable jars for query processor discovery panel");
+        status.addIssue("A CQL 2 query processor has been added to this grid data service",
+            "You do not need to supply a custom CQL 2 query processor");
     }
     
     
