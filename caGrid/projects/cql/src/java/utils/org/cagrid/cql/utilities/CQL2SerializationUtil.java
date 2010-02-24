@@ -15,7 +15,19 @@ import org.cagrid.cql2.CQLAttribute;
 import org.cagrid.cql2.CQLQuery;
 import org.cagrid.cql2.CQLTargetObject;
 
+/**
+ * CQL2SerializationUtil
+ * Utility to serialize / deserialize CQL 2 queries
+ * using the custom castor serialization
+ * 
+ * @author David
+ */
 public class CQL2SerializationUtil {
+    
+    private CQL2SerializationUtil() {
+        // just static methods
+    }
+    
     
     public static void serializeCql2Query(CQLQuery query, Writer writer) throws Exception {
         InputStream wsddStream = CQL2SerializationUtil.class.getResourceAsStream("/org/cagrid/cql2/mapping/client-config.wsdd");
