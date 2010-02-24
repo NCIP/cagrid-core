@@ -123,6 +123,51 @@ public abstract class BaseDataServiceImpl {
         } else {
             LOG.error("Domain Model NOT FOUND in base resource");
         }
+        // load the class to QName mappings
+        LOG.debug("Loading class to QName mappings information");
+        try {
+            // get the mapping file name
+            String filename = ServiceConfigUtil.getClassToQnameMappingsFile();
+            LOG.debug("Loading class to QName mappings from " + filename);
+            // deserialize the mapping file
+            classToQnameMappings = Utils.deserializeDocument(filename, Mappings.class);
+        } catch (Exception ex) {
+            throw new DataServiceInitializationException("Error loading class to QName mappings: " + ex.getMessage(), ex);
+        }
+        // initialize the query validator
+        LOG.debug("Initializing query validator");
+        queryValidator = new CqlValidationUtil(dataServiceConfig, domainModel);
+        // set up the query conversion tools
+        LOG.debug("Setting up query conversion tools");
+        cql1to2converter = new CQL1toCQL2Converter(domainModel);
+        // load the server-config.wsdd into memory
+        try {
+            String serverConfigLocation = ServiceConfigUtil.getConfigProperty(
+                ServiceParametersConstants.SERVER_CONFIG_LOCATION);
+            LOG.debug("Loading server side wsdd from " + serverConfigLocation);
+            InputStream configStream = new FileInputStream(serverConfigLocation);
+            serverConfigBytes = Utils.inputStreamToStringBuffer(configStream).toString().getBytes();
+        } catch (Exception ex) {
+            throw new DataServiceInitializationException("Error loading server config wsdd: " + ex.getMessage(), ex);
+        }
+        LOG.debug("Initializing data service auditors");
+        auditors = new LinkedList<DataServiceAuditor>();
+        String configFileName = getDataServiceConfig().getProperty(
+            AuditorConstants.DATA_SERVICE_AUDITORS_CONFIG_FILE_PROPERTY);
+        if (configFileName != null) {
+            try {
+                DataServiceAuditors auditorConfig = 
+                    Utils.deserializeDocument(configFileName, DataServiceAuditors.class);
+                if (auditorConfig.getAuditorConfiguration() != null) {
+                    for (AuditorConfiguration config : auditorConfig.getAuditorConfiguration()) {
+                        DataServiceAuditor auditor = createAuditor(config);
+                        auditors.add(auditor);
+                    }
+                }
+            } catch (Exception ex) {
+                throw new DataServiceInitializationException("Error initializing data service auditors: " + ex.getMessage(), ex);
+            }
+        }
         // set the query language support metadata
         LOG.debug("Creating the language support resource property");
         try {
@@ -173,51 +218,6 @@ public abstract class BaseDataServiceImpl {
         } catch (Exception ex) {
             throw new DataServiceInitializationException(
                 "Error setting query language support resource property: " + ex.getMessage(), ex);
-        }
-        // load the class to QName mappings
-        LOG.debug("Loading class to QName mappings information");
-        try {
-            // get the mapping file name
-            String filename = ServiceConfigUtil.getClassToQnameMappingsFile();
-            LOG.debug("Loading class to QName mappings from " + filename);
-            // deserialize the mapping file
-            classToQnameMappings = Utils.deserializeDocument(filename, Mappings.class);
-        } catch (Exception ex) {
-            throw new DataServiceInitializationException("Error loading class to QName mappings: " + ex.getMessage(), ex);
-        }
-        // initialize the query validator
-        LOG.debug("Initializing query validator");
-        queryValidator = new CqlValidationUtil(dataServiceConfig, domainModel);
-        // set up the query conversion tools
-        LOG.debug("Setting up query conversion tools");
-        cql1to2converter = new CQL1toCQL2Converter(domainModel);
-        // load the server-config.wsdd into memory
-        try {
-            String serverConfigLocation = ServiceConfigUtil.getConfigProperty(
-                ServiceParametersConstants.SERVER_CONFIG_LOCATION);
-            LOG.debug("Loading server side wsdd from " + serverConfigLocation);
-            InputStream configStream = new FileInputStream(serverConfigLocation);
-            serverConfigBytes = Utils.inputStreamToStringBuffer(configStream).toString().getBytes();
-        } catch (Exception ex) {
-            throw new DataServiceInitializationException("Error loading server config wsdd: " + ex.getMessage(), ex);
-        }
-        LOG.debug("Initializing data service auditors");
-        auditors = new LinkedList<DataServiceAuditor>();
-        String configFileName = getDataServiceConfig().getProperty(
-            AuditorConstants.DATA_SERVICE_AUDITORS_CONFIG_FILE_PROPERTY);
-        if (configFileName != null) {
-            try {
-                DataServiceAuditors auditorConfig = 
-                    Utils.deserializeDocument(configFileName, DataServiceAuditors.class);
-                if (auditorConfig.getAuditorConfiguration() != null) {
-                    for (AuditorConfiguration config : auditorConfig.getAuditorConfiguration()) {
-                        DataServiceAuditor auditor = createAuditor(config);
-                        auditors.add(auditor);
-                    }
-                }
-            } catch (Exception ex) {
-                throw new DataServiceInitializationException("Error initializing data service auditors: " + ex.getMessage(), ex);
-            }
         }
     }
     
