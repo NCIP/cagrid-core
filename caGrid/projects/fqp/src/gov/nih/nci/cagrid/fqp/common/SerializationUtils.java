@@ -3,7 +3,6 @@ package gov.nih.nci.cagrid.fqp.common;
 import gov.nih.nci.cagrid.common.Utils;
 import gov.nih.nci.cagrid.cqlquery.CQLQuery;
 import gov.nih.nci.cagrid.cqlresultset.CQLQueryResults;
-import gov.nih.nci.cagrid.data.CqlSchemaConstants;
 import gov.nih.nci.cagrid.data.DataServiceConstants;
 import gov.nih.nci.cagrid.dcql.DCQLQuery;
 import gov.nih.nci.cagrid.dcqlresult.DCQLQueryResultsCollection;
@@ -13,6 +12,9 @@ import java.io.InputStreamReader;
 import java.io.Writer;
 
 import org.apache.axis.utils.XMLUtils;
+import org.cagrid.cql.utilities.CQL2SerializationUtil;
+import org.cagrid.cql.utilities.CQLConstants;
+import org.cagrid.cql.utilities.DCQL2SerializationUtil;
 import org.globus.wsrf.encoding.ObjectDeserializer;
 
 
@@ -37,15 +39,23 @@ public class SerializationUtils {
 		if (cqlQuery == null || writer == null) {
 			throw new IllegalArgumentException("Null is not a valid argument");
 		}
-		Utils.serializeObject(cqlQuery, DCQLConstants.CQL_QUERY_QNAME, writer);
+		Utils.serializeObject(cqlQuery, CQLConstants.CQL_QUERY_QNAME, writer);
 	}
 	
 	
+	/**
+	 * Write the XML representation of the specified query to the specified
+	 * writer.  If either are null, an IllegalArgumentException will be thrown
+	 * 
+	 * @param cqlQuery
+	 * @param writer
+	 * @throws Exception
+	 */
 	public static void serializeCQL2Query(org.cagrid.cql2.CQLQuery cqlQuery, Writer writer) throws Exception {
 	    if (cqlQuery == null || writer == null) {
             throw new IllegalArgumentException("Null is not a valid argument");
         }
-	    Utils.serializeObject(cqlQuery, CqlSchemaConstants.CQL2_QUERY_QNAME, writer);
+	    CQL2SerializationUtil.serializeCql2Query(cqlQuery, writer);
 	}
 
 
@@ -85,11 +95,19 @@ public class SerializationUtils {
 	}
 	
 	
-	public static void serializeDCQL2Query(org.cagrid.data.dcql.DCQLQuery dcqlQuery, Writer writer) throws Exception {
+	/**
+     * Write the XML representation of the specified query to the specified
+     * writer. If either are null, an IllegalArgumentException will be thrown.
+     * 
+     * @param dcqlQuery
+     * @param writer
+     * @throws Exception
+     */
+    public static void serializeDCQL2Query(org.cagrid.data.dcql.DCQLQuery dcqlQuery, Writer writer) throws Exception {
 	    if (dcqlQuery == null || writer == null) {
             throw new IllegalArgumentException("Null is not a valid argument");
         }
-        Utils.serializeObject(dcqlQuery, DCQLConstants.DCQL2_QUERY_QNAME, writer);
+	    DCQL2SerializationUtil.serializeDcql2Query(dcqlQuery, writer);
 	}
 
 
