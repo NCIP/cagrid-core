@@ -38,36 +38,26 @@ public class Cql2QueryExecutor {
     protected static TimeLimitedCache<String, Boolean> cql2Support = 
         new TimeLimitedCache<String, Boolean>(CQL2_SUPPORT_CACHE_TIME, MAX_CACHED_CQL2_SUPPORT);
 
-
     /**
      * Executes the specified query against the specified service, properly
      * handling remote exceptions.
      * 
      * @param cqlQuery
+     *      The CQL 2 query to execute
      * @param targetServiceURL
-     * @return The results of querying a the data service
-     * @throws RemoteDataServiceException
-     */
-    public static CQLQueryResults queryDataService(CQLQuery cqlQuery, String targetServiceURL)
-        throws RemoteDataServiceException {
-        return queryDataService(cqlQuery, targetServiceURL, null);
-    }
-
-
-    /**
-     * Executes the specified query against the specified service, properly
-     * handling remote exceptions.
-     * 
-     * @param cqlQuery
-     * @param targetServiceURL
+     *      The target service URL to query
      * @param cred
-     *            The credentials to use to invoke the data service
+     *      The credentials to use to invoke the data service
+     * @param preferTransfer
+     *      If set to <code>true</code>, the service will be invoked
+     *      using caGrid Transfer to retrieve results, if possible
      * @return The results of querying a the data service
      * @throws RemoteDataServiceException
      */
     public static CQLQueryResults queryDataService(CQLQuery cqlQuery, String targetServiceURL, GlobusCredential cred)
         throws RemoteDataServiceException {
 
+        // debug
         if (LOG.isDebugEnabled()) {
             try {
                 StringWriter s = new StringWriter();
@@ -79,7 +69,7 @@ public class Cql2QueryExecutor {
             }
         }
         
-        CQLQueryResults cqlResults = null;
+        // determine feature support
         boolean supportsCql2 = true;
         try {
             supportsCql2 = serviceSupportsCql2(targetServiceURL);
@@ -87,6 +77,20 @@ public class Cql2QueryExecutor {
             throw new RemoteDataServiceException("Error determining support for CQL 2: " + ex.getMessage(), ex);
         }
         
+        // query
+        CQLQueryResults cqlResults = null;
+        if (supportsCql2) {
+            cqlResults = queryStandard(cqlQuery, targetServiceURL, cred);
+        } else {
+            cqlResults = queryStandardCql1(cqlQuery, targetServiceURL, cred);
+        }
+        return cqlResults;
+    }
+    
+    
+    private static CQLQueryResults queryStandard(CQLQuery query, String targetServiceURL, GlobusCredential cred)
+        throws RemoteDataServiceException {
+        LOG.debug("Querying " + targetServiceURL + " with standard CQL 2 query mechanism");
         DataServiceClient client = null;
         try {
             client = new DataServiceClient(targetServiceURL, cred);
@@ -101,43 +105,63 @@ public class Cql2QueryExecutor {
         if (cred != null) {
             client.setAnonymousPrefered(false);
         }
-        
-        if (supportsCql2) {
-            LOG.debug("Service " + targetServiceURL + " natively supports CQL 2");
-            try {
-                cqlResults = client.executeQuery(cqlQuery);
-            } catch (RemoteException e) {
-                LOG.error("Problem querying remote service:" + targetServiceURL, e);
-                throw new RemoteDataServiceException("Problem querying data service at URL:" + targetServiceURL, e);
-            }
-        } else {
-            LOG.debug("Converting CQL 2 to CQL 1 for " + targetServiceURL);
-            gov.nih.nci.cagrid.cqlquery.CQLQuery cql1Query = null;
-            try {
-                cql1Query = CQL2toCQL1Converter.convertToCql1Query(cqlQuery);
-            } catch (QueryConversionException ex) {
-                throw new RemoteDataServiceException("Erroe converting query to CQL 1 for " +
-                    targetServiceURL + ": " + ex.getMessage(), ex);
-            }
-            try {
-                if (LOG.isDebugEnabled()) {
-                    try {
-                        StringWriter s = new StringWriter();
-                        SerializationUtils.serializeCQLQuery(cql1Query, s);
-                        LOG.debug("Sending converted CQL 1 query to service (" + targetServiceURL + "):\n" + s.toString());
-                        s.close();
-                    } catch (Exception e) {
-                        LOG.error("Problem in debug printout of CQL query: " + e.getMessage(), e);
-                    }
-                }
-                gov.nih.nci.cagrid.cqlresultset.CQLQueryResults cql1Results = client.query(cql1Query);
-                cqlResults = CQL1ResultsToCQL2ResultsConverter.convertResults(cql1Results);
-            } catch (RemoteException e) {
-                LOG.error("Problem querying remote service:" + targetServiceURL, e);
-                throw new RemoteDataServiceException("Problem querying data service at URL:" + targetServiceURL, e);
-            }
+        CQLQueryResults results = null;
+        try {
+            results = client.executeQuery(query);
+        } catch (RemoteException e) {
+            String message = "Problem querying remote service " + targetServiceURL + ": " + e.getMessage();
+            LOG.error(message, e);
+            throw new RemoteDataServiceException(message, e);
         }
-        return cqlResults;
+        return results;
+    }
+    
+    
+    private static CQLQueryResults queryStandardCql1(CQLQuery query, String targetServiceURL, GlobusCredential cred) 
+        throws RemoteDataServiceException {
+        LOG.debug("Querying " + targetServiceURL + " with deprecated CQL 1 query mechanism");
+        DataServiceClient client = null;
+        try {
+            client = new DataServiceClient(targetServiceURL, cred);
+        } catch (MalformedURIException ex) {
+            throw new RemoteDataServiceException("Invalid target service URL:" + targetServiceURL, ex);
+        } catch (RemoteException ex) {
+            String message = "Problem creating client for " + targetServiceURL + ": " + ex.getMessage();
+            LOG.error(message, ex);
+            throw new RemoteDataServiceException(message, ex);
+        }
+        // if we have been supplied a credential, make sure we always use it
+        if (cred != null) {
+            client.setAnonymousPrefered(false);
+        }
+        LOG.debug("Converting CQL 2 to CQL 1 for " + targetServiceURL);
+        gov.nih.nci.cagrid.cqlquery.CQLQuery cql1Query = null;
+        try {
+            cql1Query = CQL2toCQL1Converter.convertToCql1Query(query);
+        } catch (QueryConversionException ex) {
+            throw new RemoteDataServiceException("Error converting query to CQL 1 for " +
+                targetServiceURL + ": " + ex.getMessage(), ex);
+        }
+        CQLQueryResults results = null;
+        try {
+            if (LOG.isDebugEnabled()) {
+                try {
+                    StringWriter s = new StringWriter();
+                    SerializationUtils.serializeCQLQuery(cql1Query, s);
+                    LOG.debug("Sending converted CQL 1 query to service (" + targetServiceURL + "):\n" + s.toString());
+                    s.close();
+                } catch (Exception e) {
+                    LOG.error("Problem in debug printout of CQL query: " + e.getMessage(), e);
+                }
+            }
+            gov.nih.nci.cagrid.cqlresultset.CQLQueryResults cql1Results = client.query(cql1Query);
+            results = CQL1ResultsToCQL2ResultsConverter.convertResults(cql1Results);
+        } catch (RemoteException e) {
+            String message = "Problem querying remote service " + targetServiceURL + ": " + e.getMessage();
+            LOG.error(message, e);
+            throw new RemoteDataServiceException(message, e);
+        }
+        return results;
     }
     
     
