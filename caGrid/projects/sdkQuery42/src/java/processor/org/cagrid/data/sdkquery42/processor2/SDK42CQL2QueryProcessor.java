@@ -179,7 +179,7 @@ public class SDK42CQL2QueryProcessor extends CQL2QueryProcessor {// general conf
                 List<Object[]> attributeValues = new LinkedList<Object[]>();
                 // this will happily ignore the last value which is the extra ID attribute
                 cqlResultsIter = wrapAttributeResult(attributeNames, attributeValues);
-            } else if (mods.getCountOnly() != null) {
+            } else if (mods.getCountOnly() != null && mods.getCountOnly().booleanValue()) {
                 LOG.debug("Detected count only aggregate results");
                 Object resultValue = rawResults.size() != 0 ? rawResults.get(0) : null;
                 String valueAsString = attributeValueAsString(resultValue);
