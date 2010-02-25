@@ -29,6 +29,12 @@ public class Cql2WalkerStructureValidationHandler extends Cql2WalkerHandlerAdapt
     public Cql2WalkerStructureValidationHandler() {
         this.childCount = new Stack<BigInteger>();
     }
+    
+    
+    private void incrementCurrentChildCount() {
+        BigInteger current = childCount.peek();
+        childCount.set(childCount.size() - 1, current.add(BigInteger.ONE));
+    }
 
 
     public void endAssociation(CQLAssociatedObject assoc) throws Cql2WalkerException {
@@ -117,7 +123,7 @@ public class Cql2WalkerStructureValidationHandler extends Cql2WalkerHandlerAdapt
 
 
     public void startAssociation(CQLAssociatedObject assoc) throws Cql2WalkerException {
-        childCount.peek().add(BigInteger.ONE);
+        incrementCurrentChildCount();
         childCount.push(BigInteger.valueOf(0));
     }
 
@@ -135,7 +141,7 @@ public class Cql2WalkerStructureValidationHandler extends Cql2WalkerHandlerAdapt
 
 
     public void startAttribute(CQLAttribute attrib) throws Cql2WalkerException {
-        childCount.peek().add(BigInteger.ONE);
+        incrementCurrentChildCount();
         if (attrib.getBinaryPredicate() == null && attrib.getUnaryPredicate() == null) {
             throw new StructureValidationException(
                 "Attributes must have either a binary or unary predicate, found none");
@@ -165,9 +171,6 @@ public class Cql2WalkerStructureValidationHandler extends Cql2WalkerHandlerAdapt
 
 
     public void startDistinctAttribute(DistinctAttribute distinct) throws Cql2WalkerException {
-        if (distinct.getAggregation() == null) {
-            throw new StructureValidationException("Distinct Attributes must have an aggregation");
-        }
         if (distinct.getAttributeName() == null) {
             throw new StructureValidationException("Distinct Attributes must have an attribute name");
         }
@@ -182,7 +185,7 @@ public class Cql2WalkerStructureValidationHandler extends Cql2WalkerHandlerAdapt
 
 
     public void startGroup(CQLGroup group) throws Cql2WalkerException {
-        childCount.peek().add(BigInteger.ONE);
+        incrementCurrentChildCount();
         childCount.push(BigInteger.valueOf(0));
     }
 
