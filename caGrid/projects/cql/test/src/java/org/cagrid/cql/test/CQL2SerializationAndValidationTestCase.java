@@ -15,6 +15,7 @@ import junit.framework.TestSuite;
 import junit.textui.TestRunner;
 
 import org.cagrid.cql.utilities.CQLConstants;
+import org.cagrid.cql2.Aggregation;
 import org.cagrid.cql2.AttributeValue;
 import org.cagrid.cql2.BinaryPredicate;
 import org.cagrid.cql2.CQLAssociatedObject;
@@ -24,10 +25,13 @@ import org.cagrid.cql2.CQLQuery;
 import org.cagrid.cql2.CQLTargetObject;
 import org.cagrid.cql2.GroupLogicalOperator;
 import org.cagrid.cql2.UnaryPredicate;
+import org.cagrid.cql2.results.CQLAggregateResult;
+import org.cagrid.cql2.results.CQLQueryResults;
 
 public class CQL2SerializationAndValidationTestCase extends TestCase {
     
-    private SchemaValidator validator = null;
+    private SchemaValidator queryValidator = null;
+    private SchemaValidator resultsValidator = null;
     private InputStream wsddStream = null;
     
     public CQL2SerializationAndValidationTestCase(String name) {
@@ -37,10 +41,14 @@ public class CQL2SerializationAndValidationTestCase extends TestCase {
     
     public void setUp() {
         File cql2Xsd = new File("schema/cql2.0/CQLQueryComponents.xsd");
+        File resultsXsd = new File("schema/cql2.0/CQLQueryResults.xsd");
         assertTrue(cql2Xsd.exists());
+        assertTrue(resultsXsd.exists());
         try {
-            String path = cql2Xsd.getCanonicalPath();
-            validator = new SchemaValidator(path);
+            String queryPath = cql2Xsd.getCanonicalPath();
+            queryValidator = new SchemaValidator(queryPath);
+            String resultsPath = resultsXsd.getAbsolutePath();
+            resultsValidator = new SchemaValidator(resultsPath);
         } catch (Exception ex) {
             ex.printStackTrace();
             fail("Error setting up schema validator: " + ex.getMessage());
@@ -72,11 +80,32 @@ public class CQL2SerializationAndValidationTestCase extends TestCase {
         String text = writer.getBuffer().toString();
         // validate
         try {
-            validator.validate(text);
+            queryValidator.validate(text);
         } catch (SchemaValidationException ex) {
             ex.printStackTrace();
             System.err.println(text);
             fail("Error validating serialized CQL 2 query: " + ex.getMessage());
+        }
+    }
+    
+    
+    private void validate(CQLQueryResults results) {
+        // serialize
+        StringWriter writer = new StringWriter();
+        try {
+            Utils.serializeObject(results, CQLConstants.CQL2_RESULTS_QNAME, writer, wsddStream);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            fail("Error serializing CQL 2 results: " + ex.getMessage());
+        }
+        String text = writer.getBuffer().toString();
+        // validate
+        try {
+            resultsValidator.validate(text);
+        } catch (SchemaValidationException ex) {
+            ex.printStackTrace();
+            System.err.println(text);
+            fail("Error validating serialized CQL 2 results: " + ex.getMessage());
         }
     }
     
@@ -250,6 +279,19 @@ public class CQL2SerializationAndValidationTestCase extends TestCase {
         query.setCQLTargetObject(target);
         
         validate(query);
+    }
+    
+    
+    public void testAggregationResult() {
+        CQLQueryResults results = new CQLQueryResults();
+        results.setTargetClassname("foo.bar");
+        CQLAggregateResult agg = new CQLAggregateResult();
+        agg.setAggregation(Aggregation.COUNT);
+        agg.setAttributeName("id");
+        agg.setValue("5");
+        results.setAggregationResult(agg);
+        
+        validate(results);
     }
     
 
