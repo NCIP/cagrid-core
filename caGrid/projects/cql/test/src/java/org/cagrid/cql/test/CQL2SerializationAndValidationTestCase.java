@@ -9,11 +9,14 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.StringWriter;
 
+import javax.xml.namespace.QName;
+
 import junit.framework.TestCase;
 import junit.framework.TestResult;
 import junit.framework.TestSuite;
 import junit.textui.TestRunner;
 
+import org.apache.axis.message.MessageElement;
 import org.cagrid.cql.utilities.CQLConstants;
 import org.cagrid.cql2.Aggregation;
 import org.cagrid.cql2.AttributeValue;
@@ -26,6 +29,7 @@ import org.cagrid.cql2.CQLTargetObject;
 import org.cagrid.cql2.GroupLogicalOperator;
 import org.cagrid.cql2.UnaryPredicate;
 import org.cagrid.cql2.results.CQLAggregateResult;
+import org.cagrid.cql2.results.CQLObjectResult;
 import org.cagrid.cql2.results.CQLQueryResults;
 
 public class CQL2SerializationAndValidationTestCase extends TestCase {
@@ -290,6 +294,19 @@ public class CQL2SerializationAndValidationTestCase extends TestCase {
         agg.setAttributeName("id");
         agg.setValue("5");
         results.setAggregationResult(agg);
+        
+        validate(results);
+    }
+    
+    
+    public void testObjectResult() {
+        CQLQueryResults results = new CQLQueryResults();
+        results.setTargetClassname("foo.bar");
+        CQLObjectResult obj = new CQLObjectResult();
+        MessageElement elem = new MessageElement(new QName("http://dummy.namespace", "foo.bar"));
+        elem.setValue("hi there");
+        obj.set_any(new MessageElement[] {elem});
+        results.setObjectResult(new CQLObjectResult[] {obj});
         
         validate(results);
     }
