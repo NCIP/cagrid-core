@@ -11,12 +11,6 @@
   <class name="org.cagrid.cql2.CQLObject">
     <description xmlns="">Default mapping for class org.cagrid.cql2.CQLObject</description>
     <map-to xml="CQLObject" ns-uri="http://CQL.caBIG/2/org.cagrid.cql2" ns-prefix="cql2"/>
-    <field name="CQLExtension" type="org.cagrid.cql2.CQLExtension">
-      <bind-xml name="cql2:CQLExtension" node="element" />
-    </field>
-    <field name="className" type="java.lang.String">
-      <bind-xml name="className" node="attribute" />
-    </field>
     <field name="CQLAttribute" type="org.cagrid.cql2.CQLAttribute">
       <bind-xml name="cql2:CQLAttribute" node="element" />
     </field>
@@ -28,6 +22,9 @@
     </field>
     <field name="CQLExtension" type="org.cagrid.cql2.CQLExtension">
       <bind-xml name="cql2:CQLExtension" node="element" />
+    </field>
+    <field name="className" type="java.lang.String">
+      <bind-xml name="className" node="attribute" />
     </field>
     <field name="_instanceof" type="java.lang.String">
       <bind-xml name="instanceof" node="attribute" />
