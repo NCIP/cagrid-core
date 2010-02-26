@@ -233,6 +233,9 @@
 		<jar jarfile="${build.lib.dir}/${client.jar.name}" basedir="${build.dest}">
 			<include name="**/client/**" />
 		</jar>
+		
+		<copy file="${hbm.dir}/MembershipRequests.hbm.xml" todir="${build.dest}/edu/internet2/middleware/grouper" />
+		
 		<jar jarfile="${build.lib.dir}/${service.jar.name}" basedir="${build.dest}">
 			<include name="**/service/**" />
 		</jar>
