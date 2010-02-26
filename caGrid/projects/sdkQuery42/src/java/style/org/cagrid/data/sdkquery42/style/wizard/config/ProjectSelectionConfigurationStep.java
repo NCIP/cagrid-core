@@ -9,6 +9,7 @@ import gov.nih.nci.cagrid.introduce.common.ServiceInformation;
 
 import java.io.File;
 import java.io.FileFilter;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.Collections;
 import java.util.HashSet;
@@ -139,6 +140,14 @@ public class ProjectSelectionConfigurationStep extends AbstractStyleConfiguratio
                 LOG.debug("SDK library " + sdkLib.getName() + " excluded from service");
             }
         }
+        
+        // CQL 2 query processor requires the -orm jar to read Hibernate configs from
+        File ormJar = new File(getLocalClientDir(), "lib" + File.separator + getApplicationName() + "-orm.jar");
+        if (!ormJar.exists()) {
+            throw new FileNotFoundException("Required ORM jar " + ormJar.getAbsolutePath() + " not found!");
+        }
+        Utils.copyFile(ormJar, new File(serviceLibDir, ormJar.getName()));
+        LOG.debug("Copied SDK ORM jar " + ormJar.getName() + " into service");
     }
     
     

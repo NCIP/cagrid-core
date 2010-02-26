@@ -67,7 +67,6 @@ public class ProjectSelectionPanel extends AbstractWizardPanel {
     private JButton localClientDirBrowseButton = null;
     private JRadioButton localApiRadioButton = null;
     private JRadioButton remoteApiRadioButton = null;
-    private JPanel localApiPanel = null;
     private JPanel remoteApiPanel = null;
     private JPanel applicationNamePanel = null;
     private JLabel hostnameLabel = null;
@@ -75,6 +74,8 @@ public class ProjectSelectionPanel extends AbstractWizardPanel {
     private JLabel portLabel = null;
     private JTextField portTextField = null;
     private JCheckBox useHttpsCheckBox = null;
+    private JPanel apiTypePanel = null;
+    private JPanel clientDirsPanel = null;
     
     public ProjectSelectionPanel(ServiceExtensionDescriptionType extensionDescription, ServiceInformation info) {
         super(extensionDescription, info);
@@ -148,16 +149,17 @@ public class ProjectSelectionPanel extends AbstractWizardPanel {
             result.add(new SimpleValidationMessage(
                 "An application name must be specified", Severity.ERROR, KEY_APPLICATION_NAME));
         }
-        if (getLocalApiRadioButton().isSelected()) {
-            String localClientDir = getLocalClientDirTextField().getText();
-            if (ValidationUtils.isBlank(localClientDir)) {
-                result.add(new SimpleValidationMessage(
-                    "The local-client directory must be specified", Severity.ERROR, KEY_LOCAL_CLIENT_DIR));
-            } else if (!configuration.isLocalClientDirValid()) {
-                result.add(new SimpleValidationMessage(
-                    "The specified local-client directory does not appear to be valid", Severity.ERROR, KEY_LOCAL_CLIENT_DIR));
-            }
-        } else {
+
+        String localClientDir = getLocalClientDirTextField().getText();
+        if (ValidationUtils.isBlank(localClientDir)) {
+            result.add(new SimpleValidationMessage(
+                "The local-client directory must be specified", Severity.ERROR, KEY_LOCAL_CLIENT_DIR));
+        } else if (!configuration.isLocalClientDirValid()) {
+            result.add(new SimpleValidationMessage(
+                "The specified local-client directory does not appear to be valid", Severity.ERROR, KEY_LOCAL_CLIENT_DIR));
+        }
+
+        if (getRemoteApiRadioButton().isSelected()) {
             String remoteClientDir = getRemoteClientDirTextField().getText();
             if (ValidationUtils.isBlank(remoteClientDir)) {
                 result.add(new SimpleValidationMessage(
@@ -166,10 +168,12 @@ public class ProjectSelectionPanel extends AbstractWizardPanel {
                 result.add(new SimpleValidationMessage(
                     "The specified remote-client directory does not appear to be valid", Severity.ERROR, KEY_REMOTE_CLIENT_DIR));
             }
+
             if (ValidationUtils.isBlank(getHostnameTextField().getText())) {
                 result.add(new SimpleValidationMessage(
                     "The host name of the remote application service must be specified", Severity.ERROR, KEY_HOSTNAME));
             }
+
             if (ValidationUtils.isBlank(getPortTextField().getText())) {
                 result.add(new SimpleValidationMessage(
                     "The port number of the remote application service must be specified", Severity.ERROR, KEY_PORT));
@@ -206,30 +210,21 @@ public class ProjectSelectionPanel extends AbstractWizardPanel {
         group.addGroupSelectionListener(new GroupSelectionListener() {
             public void selectionChanged(ButtonModel previousSelection, ButtonModel currentSelection) {
                 configuration.setLocalApi(getLocalApiRadioButton().isSelected());
-                setLocalRemoteComponentsEnabled();
+                boolean enableRemote = getRemoteApiRadioButton().isSelected();
+                getRemoteClientDirLabel().setEnabled(enableRemote);
+                getRemoteClientDirTextField().setEnabled(enableRemote);
+                getRemoteClientDirBrowseButton().setEnabled(enableRemote);
+                getHostnameLabel().setEnabled(enableRemote);
+                getHostnameTextField().setEnabled(enableRemote);
+                getPortLabel().setEnabled(enableRemote);
+                getPortTextField().setEnabled(enableRemote);
+                getUseHttpsCheckBox().setEnabled(enableRemote);
                 validateInput();
             }
         });
         group.add(getLocalApiRadioButton());
         group.add(getRemoteApiRadioButton());
         group.setSelected(getLocalApiRadioButton().getModel(), true);
-    }
-    
-    
-    private void setLocalRemoteComponentsEnabled() {
-        boolean isLocal = getLocalApiRadioButton().isSelected();
-        getLocalClientDirLabel().setEnabled(isLocal);
-        getLocalClientDirTextField().setEnabled(isLocal);
-        getLocalClientDirBrowseButton().setEnabled(isLocal);
-        
-        getRemoteClientDirLabel().setEnabled(!isLocal);
-        getRemoteClientDirTextField().setEnabled(!isLocal);
-        getRemoteClientDirBrowseButton().setEnabled(!isLocal);
-        getHostnameLabel().setEnabled(!isLocal);
-        getHostnameTextField().setEnabled(!isLocal);
-        getPortLabel().setEnabled(!isLocal);
-        getPortTextField().setEnabled(!isLocal);
-        getUseHttpsCheckBox().setEnabled(!isLocal);
     }
     
     
@@ -246,22 +241,26 @@ public class ProjectSelectionPanel extends AbstractWizardPanel {
             GridBagConstraints gridBagConstraints5 = new GridBagConstraints();
             gridBagConstraints5.gridx = 0;
             gridBagConstraints5.fill = GridBagConstraints.HORIZONTAL;
-            gridBagConstraints5.gridy = 2;
-            GridBagConstraints gridBagConstraints17 = new GridBagConstraints();
-            gridBagConstraints17.gridx = 0;
-            gridBagConstraints17.fill = GridBagConstraints.HORIZONTAL;
-            gridBagConstraints17.weightx = 1.0D;
-            gridBagConstraints17.gridy = 1;
+            gridBagConstraints5.gridy = 3;
             GridBagConstraints gridBagConstraints16 = new GridBagConstraints();
             gridBagConstraints16.gridx = 0;
             gridBagConstraints16.fill = GridBagConstraints.HORIZONTAL;
             gridBagConstraints16.weightx = 1.0D;
             gridBagConstraints16.gridy = 0;
+            GridBagConstraints gridBagConstraints20 = new GridBagConstraints();
+            gridBagConstraints20.gridx = 0;
+            gridBagConstraints20.gridy = 1;
+            gridBagConstraints20.fill = GridBagConstraints.HORIZONTAL;
+            GridBagConstraints gridBagConstraints21 = new GridBagConstraints();
+            gridBagConstraints21.gridx = 0;
+            gridBagConstraints21.gridy = 2;
+            gridBagConstraints21.fill = GridBagConstraints.HORIZONTAL;
             mainPanel = new JPanel();
             mainPanel.setLayout(new GridBagLayout());
             mainPanel.setSize(new Dimension(450, 309));
+            mainPanel.add(getApiTypePanel(), gridBagConstraints21);
+            mainPanel.add(getClientDirsPanel(), gridBagConstraints20);
             mainPanel.add(getApplicationNamePanel(), gridBagConstraints16);
-            mainPanel.add(getLocalApiPanel(), gridBagConstraints17);
             mainPanel.add(getRemoteApiPanel(), gridBagConstraints5);
         }
         return mainPanel;
@@ -450,48 +449,6 @@ public class ProjectSelectionPanel extends AbstractWizardPanel {
 
 
     /**
-     * This method initializes localApiPanel	
-     * 	
-     * @return javax.swing.JPanel	
-     */
-    private JPanel getLocalApiPanel() {
-        if (localApiPanel == null) {
-            GridBagConstraints gridBagConstraints9 = new GridBagConstraints();
-            gridBagConstraints9.gridx = 2;
-            gridBagConstraints9.insets = new Insets(2, 2, 2, 2);
-            gridBagConstraints9.gridy = 1;
-            GridBagConstraints gridBagConstraints8 = new GridBagConstraints();
-            gridBagConstraints8.fill = GridBagConstraints.HORIZONTAL;
-            gridBagConstraints8.gridy = 1;
-            gridBagConstraints8.weightx = 1.0;
-            gridBagConstraints8.insets = new Insets(2, 2, 2, 2);
-            gridBagConstraints8.gridx = 1;
-            GridBagConstraints gridBagConstraints7 = new GridBagConstraints();
-            gridBagConstraints7.gridx = 0;
-            gridBagConstraints7.fill = GridBagConstraints.HORIZONTAL;
-            gridBagConstraints7.insets = new Insets(2, 2, 2, 2);
-            gridBagConstraints7.gridy = 1;
-            GridBagConstraints gridBagConstraints6 = new GridBagConstraints();
-            gridBagConstraints6.gridx = 0;
-            gridBagConstraints6.fill = GridBagConstraints.HORIZONTAL;
-            gridBagConstraints6.insets = new Insets(2, 2, 2, 2);
-            gridBagConstraints6.gridwidth = 3;
-            gridBagConstraints6.gridy = 0;
-            localApiPanel = new JPanel();
-            localApiPanel.setLayout(new GridBagLayout());
-            localApiPanel.setBorder(BorderFactory.createTitledBorder(
-                null, "Local API", TitledBorder.DEFAULT_JUSTIFICATION, 
-                TitledBorder.DEFAULT_POSITION, new Font("Dialog", Font.BOLD, 12), new Color(51, 51, 51)));
-            localApiPanel.add(getLocalApiRadioButton(), gridBagConstraints6);
-            localApiPanel.add(getLocalClientDirLabel(), gridBagConstraints7);
-            localApiPanel.add(getLocalClientDirTextField(), gridBagConstraints8);
-            localApiPanel.add(getLocalClientDirBrowseButton(), gridBagConstraints9);
-        }
-        return localApiPanel;
-    }
-
-
-    /**
      * This method initializes remoteApiPanel	
      * 	
      * @return javax.swing.JPanel	
@@ -528,36 +485,11 @@ public class ProjectSelectionPanel extends AbstractWizardPanel {
             gridBagConstraints.fill = GridBagConstraints.HORIZONTAL;
             gridBagConstraints.insets = new Insets(2, 2, 2, 2);
             gridBagConstraints.gridy = 2;
-            GridBagConstraints gridBagConstraints13 = new GridBagConstraints();
-            gridBagConstraints13.gridx = 2;
-            gridBagConstraints13.insets = new Insets(2, 2, 2, 2);
-            gridBagConstraints13.gridy = 1;
-            GridBagConstraints gridBagConstraints12 = new GridBagConstraints();
-            gridBagConstraints12.fill = GridBagConstraints.HORIZONTAL;
-            gridBagConstraints12.gridy = 1;
-            gridBagConstraints12.weightx = 1.0;
-            gridBagConstraints12.insets = new Insets(2, 2, 2, 2);
-            gridBagConstraints12.gridx = 1;
-            GridBagConstraints gridBagConstraints11 = new GridBagConstraints();
-            gridBagConstraints11.gridx = 0;
-            gridBagConstraints11.fill = GridBagConstraints.HORIZONTAL;
-            gridBagConstraints11.insets = new Insets(2, 2, 2, 2);
-            gridBagConstraints11.gridy = 1;
-            GridBagConstraints gridBagConstraints10 = new GridBagConstraints();
-            gridBagConstraints10.gridx = 0;
-            gridBagConstraints10.fill = GridBagConstraints.HORIZONTAL;
-            gridBagConstraints10.gridwidth = 3;
-            gridBagConstraints10.insets = new Insets(2, 2, 2, 2);
-            gridBagConstraints10.gridy = 0;
             remoteApiPanel = new JPanel();
             remoteApiPanel.setLayout(new GridBagLayout());
             remoteApiPanel.setBorder(BorderFactory.createTitledBorder(
                 null, "Remote API", TitledBorder.DEFAULT_JUSTIFICATION, 
                 TitledBorder.DEFAULT_POSITION, new Font("Dialog", Font.BOLD, 12), new Color(51, 51, 51)));
-            remoteApiPanel.add(getRemoteApiRadioButton(), gridBagConstraints10);
-            remoteApiPanel.add(getRemoteClientDirLabel(), gridBagConstraints11);
-            remoteApiPanel.add(getRemoteClientDirTextField(), gridBagConstraints12);
-            remoteApiPanel.add(getRemoteClientDirBrowseButton(), gridBagConstraints13);
             remoteApiPanel.add(getHostnameLabel(), gridBagConstraints);
             remoteApiPanel.add(getHostnameTextField(), gridBagConstraints1);
             remoteApiPanel.add(getPortLabel(), gridBagConstraints2);
@@ -683,5 +615,85 @@ public class ProjectSelectionPanel extends AbstractWizardPanel {
             });
         }
         return useHttpsCheckBox;
+    }
+
+
+    /**
+     * This method initializes apiTypePanel	
+     * 	
+     * @return javax.swing.JPanel	
+     */
+    private JPanel getApiTypePanel() {
+        if (apiTypePanel == null) {
+            GridBagConstraints gridBagConstraints10 = new GridBagConstraints();
+            gridBagConstraints10.fill = GridBagConstraints.HORIZONTAL;
+            gridBagConstraints10.gridwidth = 3;
+            gridBagConstraints10.gridx = 3;
+            gridBagConstraints10.gridy = 0;
+            gridBagConstraints10.insets = new Insets(2, 2, 2, 2);
+            GridBagConstraints gridBagConstraints6 = new GridBagConstraints();
+            gridBagConstraints6.fill = GridBagConstraints.HORIZONTAL;
+            gridBagConstraints6.gridwidth = 3;
+            gridBagConstraints6.gridx = 0;
+            gridBagConstraints6.gridy = 0;
+            gridBagConstraints6.insets = new Insets(2, 2, 2, 2);
+            apiTypePanel = new JPanel();
+            apiTypePanel.setLayout(new GridBagLayout());
+            apiTypePanel.setBorder(BorderFactory.createTitledBorder(null, "API Type", TitledBorder.DEFAULT_JUSTIFICATION, TitledBorder.DEFAULT_POSITION, new Font("Dialog", Font.BOLD, 12), new Color(51, 51, 51)));
+            apiTypePanel.add(getLocalApiRadioButton(), gridBagConstraints6);
+            apiTypePanel.add(getRemoteApiRadioButton(), gridBagConstraints10);
+        }
+        return apiTypePanel;
+    }
+
+
+    /**
+     * This method initializes clientDirsPanel	
+     * 	
+     * @return javax.swing.JPanel	
+     */
+    private JPanel getClientDirsPanel() {
+        if (clientDirsPanel == null) {
+            GridBagConstraints gridBagConstraints13 = new GridBagConstraints();
+            gridBagConstraints13.insets = new Insets(2, 2, 2, 2);
+            gridBagConstraints13.gridy = 1;
+            gridBagConstraints13.gridx = 2;
+            GridBagConstraints gridBagConstraints12 = new GridBagConstraints();
+            gridBagConstraints12.fill = GridBagConstraints.HORIZONTAL;
+            gridBagConstraints12.gridx = 1;
+            gridBagConstraints12.gridy = 1;
+            gridBagConstraints12.weightx = 1.0;
+            gridBagConstraints12.insets = new Insets(2, 2, 2, 2);
+            GridBagConstraints gridBagConstraints11 = new GridBagConstraints();
+            gridBagConstraints11.fill = GridBagConstraints.HORIZONTAL;
+            gridBagConstraints11.gridx = 0;
+            gridBagConstraints11.gridy = 1;
+            gridBagConstraints11.insets = new Insets(2, 2, 2, 2);
+            GridBagConstraints gridBagConstraints9 = new GridBagConstraints();
+            gridBagConstraints9.insets = new Insets(2, 2, 2, 2);
+            gridBagConstraints9.gridy = 0;
+            gridBagConstraints9.gridx = 2;
+            GridBagConstraints gridBagConstraints8 = new GridBagConstraints();
+            gridBagConstraints8.fill = GridBagConstraints.HORIZONTAL;
+            gridBagConstraints8.gridx = 1;
+            gridBagConstraints8.gridy = 0;
+            gridBagConstraints8.weightx = 1.0;
+            gridBagConstraints8.insets = new Insets(2, 2, 2, 2);
+            GridBagConstraints gridBagConstraints7 = new GridBagConstraints();
+            gridBagConstraints7.fill = GridBagConstraints.HORIZONTAL;
+            gridBagConstraints7.gridx = 0;
+            gridBagConstraints7.gridy = 0;
+            gridBagConstraints7.insets = new Insets(2, 2, 2, 2);
+            clientDirsPanel = new JPanel();
+            clientDirsPanel.setLayout(new GridBagLayout());
+            clientDirsPanel.setBorder(BorderFactory.createTitledBorder(null, "Client Packages", TitledBorder.DEFAULT_JUSTIFICATION, TitledBorder.DEFAULT_POSITION, new Font("Dialog", Font.BOLD, 12), new Color(51, 51, 51)));
+            clientDirsPanel.add(getLocalClientDirLabel(), gridBagConstraints7);
+            clientDirsPanel.add(getLocalClientDirTextField(), gridBagConstraints8);
+            clientDirsPanel.add(getLocalClientDirBrowseButton(), gridBagConstraints9);
+            clientDirsPanel.add(getRemoteClientDirLabel(), gridBagConstraints11);
+            clientDirsPanel.add(getRemoteClientDirTextField(), gridBagConstraints12);
+            clientDirsPanel.add(getRemoteClientDirBrowseButton(), gridBagConstraints13);
+        }
+        return clientDirsPanel;
     }
 }
