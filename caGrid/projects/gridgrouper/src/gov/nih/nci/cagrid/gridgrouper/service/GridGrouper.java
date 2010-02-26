@@ -1237,17 +1237,25 @@ public class GridGrouper {
 		des.setUUID(group.getUuid());
 		des.setHasComposite(group.hasComposite());
 		des.setIsComposite(group.isComposite());
+		
+		try {
+			String allowMembershipRequests = group.getAttribute("allowMembershipRequests");
+			des.setHasMembershipRequests(Boolean.valueOf(allowMembershipRequests));			
+		} catch (AttributeNotFoundException e) {
+			des.setHasMembershipRequests(false);
+		}
 		return des;
 	}
 
 	private MembershipRequestDescriptor membershiprequesttoMembershipRequestDescriptor(MembershipRequests membershipRequest) throws Exception {
 		MembershipRequestDescriptor des = new MembershipRequestDescriptor();
+		des.setGroup(grouptoGroupDescriptor(membershipRequest.getGroup()));
 		des.setUUID(membershipRequest.getId());
-		des.setRequestorId(membershipRequest.getRequestor());
+		des.setRequestorId(membershipRequest.getRequestorId());
 		des.setRequestTime(membershipRequest.getRequestTime());
 		des.setStatus(membershipRequest.getStatus());
 		if (membershipRequest.getReviewer() != null) {
-			des.setReviewerId(membershipRequest.getReviewer().getSubjectId());
+			des.setReviewer(memberToMemberDescriptor(membershipRequest.getReviewer()));
 		}
 		des.setReviewTime(membershipRequest.getReviewTime());
 		des.setReviewerNote(membershipRequest.getReviewerNote());
@@ -1288,6 +1296,7 @@ public class GridGrouper {
 			session = GrouperSession.start(caller);
 			Group grp = GroupFinder.findByName(session, group.getGroupName());
 			grp.deleteMember(SubjectFinder.findById(member));
+			MembershipRequestsFinder.deleteRequest(grp, member);
 		} catch (GroupNotFoundException e) {
 			GroupNotFoundFault fault = new GroupNotFoundFault();
 			fault.setFaultString("The group, " + group.getGroupName() + "was not found.");
@@ -1454,12 +1463,8 @@ public class GridGrouper {
 			session = GrouperSession.start(subj);
 			Group grp = GroupFinder.findByName(session, group.getGroupName());
 			
-			if (GroupPrivilegeType.membershiprequest.equals(privilege)) {
-				MembershipRequests.configureGroup(session, grp);
-				grp.setAttribute("allowMembershipRequests", "true");
-			} else {
-				grp.grantPriv(SubjectFinder.findById(subject), Privilege.getInstance(privilege.getValue()));
-			}
+			grp.grantPriv(SubjectFinder.findById(subject), Privilege.getInstance(privilege.getValue()));
+			
 		} catch (GroupNotFoundException e) {
 			GroupNotFoundFault fault = new GroupNotFoundFault();
 			fault.setFaultString("The group, " + group.getGroupName() + "was not found.");
@@ -1511,12 +1516,8 @@ public class GridGrouper {
 			Subject subj = SubjectFinder.findById(gridIdentity);
 			session = GrouperSession.start(subj);
 			Group grp = GroupFinder.findByName(session, group.getGroupName());
-			if (GroupPrivilegeType.membershiprequest.equals(privilege)) {
-				grp.setAttribute("allowMembershipRequests", "false");
-				MembershipRequests.rejectAllRequests(MemberFinder.findBySubject(session, subj), grp);
-			} else {
-				grp.revokePriv(SubjectFinder.findById(subject), Privilege.getInstance(privilege.getValue()));
-			}
+
+			grp.revokePriv(SubjectFinder.findById(subject), Privilege.getInstance(privilege.getValue()));
 
 		} catch (GroupNotFoundException e) {
 			GroupNotFoundFault fault = new GroupNotFoundFault();
@@ -1962,12 +1963,11 @@ public class GridGrouper {
 		return false;
 	}
 	
-	public void addMembershipRequest(String gridIdentity, GroupIdentifier group, String subject) throws GridGrouperRuntimeFault,
+	public void addMembershipRequest(String gridIdentity, GroupIdentifier group) throws GridGrouperRuntimeFault,
 			GroupNotFoundFault, InsufficientPrivilegeFault, MemberAddFault {
 		GrouperSession session = null;
 		try {
 			Subject caller = SubjectFinder.findById(gridIdentity);
-			Subject subj = SubjectFinder.findById(subject);
 			session = GrouperSession.start(caller);
 			Group grp = GroupFinder.findByName(session, group.getGroupName());
 			
@@ -1983,21 +1983,21 @@ public class GridGrouper {
 				throw fault;
 			}
 			
-			if (grp.hasMember(subj)){
+			if (grp.hasMember(caller)){
 				MemberAddFault fault = new MemberAddFault();
-				fault.setFaultString(subject + " already belongs to group: " + group.getGroupName());
+				fault.setFaultString(gridIdentity + " already belongs to group: " + group.getGroupName());
 				throw fault;
 			} 
 			
-			MembershipRequests request = MembershipRequestsFinder.findRequest(grp, subject);
+			MembershipRequests request = MembershipRequestsFinder.findRequest(session, grp, gridIdentity);
 
 			if (request == null) {
-				MembershipRequests.create(grp, subject);
+				MembershipRequests.create(grp, gridIdentity);
 			} else if (MembershipRequestStatus.Rejected.equals(request.getStatus())) {
 				request.pending();
 			} else {
 				MemberAddFault fault = new MemberAddFault();
-				fault.setFaultString(subject + " already has a pending membership request to group: " + group.getGroupName());
+				fault.setFaultString(gridIdentity + " already has a pending membership request to group: " + group.getGroupName());
 				throw fault;
 			}
 
@@ -2046,10 +2046,10 @@ public class GridGrouper {
 			session = GrouperSession.start(caller);
 			Group grp = GroupFinder.findByName(session, group.getGroupName());
 
-			ArrayList<MembershipRequests> requests = MembershipRequestsFinder.findRequestsByStatus(grp, status);
+			ArrayList<MembershipRequests> requests = MembershipRequestsFinder.findRequestsByStatus(session, grp, status);
 			ArrayList<MembershipRequestDescriptor> membershipRequestDescriptor = new ArrayList<MembershipRequestDescriptor>();
 			for (MembershipRequests request : requests) {
-				if (grp.hasAdmin(caller) || gridIdentity.equals(request.getRequestor()) || (getAdminGroup().hasMember(caller))) {					
+				if (grp.hasAdmin(caller) || gridIdentity.equals(request.getRequestorId()) || (getAdminGroup().hasMember(caller))) {
 					membershipRequestDescriptor.add(membershiprequesttoMembershipRequestDescriptor(request));
 				}
 			}
@@ -2066,7 +2066,7 @@ public class GridGrouper {
 		} catch (Exception e) {
 			this.log.error(e.getMessage(), e);
 			GridGrouperRuntimeFault fault = new GridGrouperRuntimeFault();
-			fault.setFaultString("Error occurred adding a member to the group " + group.getGroupName() + ": " + e.getMessage());
+			fault.setFaultString("Error occurred fetching membership requests for group: " + group.getGroupName() + ": " + e.getMessage());
 			FaultHelper helper = new FaultHelper(fault);
 			helper.addFaultCause(e);
 			fault = (GridGrouperRuntimeFault) helper.getFault();
@@ -2093,7 +2093,7 @@ public class GridGrouper {
 			Member caller = MemberFinder.findBySubject(session, callerSubject);
 			Subject subj = SubjectFinder.findById(subject);
 
-			MembershipRequests membershipRequest = MembershipRequestsFinder.findRequest(grp, subject);
+			MembershipRequests membershipRequest = MembershipRequestsFinder.findRequest(session, grp, subject);
 			
 			if (MembershipRequestStatus.Approved.equals(update.getStatus())) {
 				membershipRequest.approve(caller, update.getNote());
@@ -2136,6 +2136,114 @@ public class GridGrouper {
 			}
 		}
 	}
+
+	public void grantMembershipRequests(String gridIdentity, GroupIdentifier group) throws GridGrouperRuntimeFault, GroupNotFoundFault, GrantPrivilegeFault,
+			InsufficientPrivilegeFault {
+			GrouperSession session = null;
+			try {
+				Subject subj = SubjectFinder.findById(gridIdentity);
+				session = GrouperSession.start(subj);
+				Group grp = GroupFinder.findByName(session, group.getGroupName());
+				
+				MembershipRequests.configureGroup(session, grp);
+				grp.setAttribute("allowMembershipRequests", "true");
+
+			} catch (GroupNotFoundException e) {
+				GroupNotFoundFault fault = new GroupNotFoundFault();
+				fault.setFaultString("The group, " + group.getGroupName() + "was not found.");
+				FaultHelper helper = new FaultHelper(fault);
+				helper.addFaultCause(e);
+				fault = (GroupNotFoundFault) helper.getFault();
+				throw fault;
+//			} catch (GrantPrivilegeException e) {
+//				GrantPrivilegeFault fault = new GrantPrivilegeFault();
+//				fault.setFaultString(e.getMessage());
+//				FaultHelper helper = new FaultHelper(fault);
+//				helper.addFaultCause(e);
+//				fault = (GrantPrivilegeFault) helper.getFault();
+//				throw fault;
+			} catch (InsufficientPrivilegeException e) {
+				InsufficientPrivilegeFault fault = new InsufficientPrivilegeFault();
+				fault.setFaultString("You do not have the right to manages privileges on the group " + group.getGroupName()
+					+ ": " + e.getMessage());
+				FaultHelper helper = new FaultHelper(fault);
+				helper.addFaultCause(e);
+				fault = (InsufficientPrivilegeFault) helper.getFault();
+				throw fault;
+			} catch (Exception e) {
+				this.log.error(e.getMessage(), e);
+				GridGrouperRuntimeFault fault = new GridGrouperRuntimeFault();
+				fault.setFaultString("Error occurred granting a membership requests on the group "
+					+ group.getGroupName() + ": " + e.getMessage());
+				FaultHelper helper = new FaultHelper(fault);
+				helper.addFaultCause(e);
+				fault = (GridGrouperRuntimeFault) helper.getFault();
+				throw fault;
+			} finally {
+				if (session != null) {
+					try {
+						session.stop();
+					} catch (Exception e) {
+						this.log.error(e.getMessage(), e);
+					}
+				}
+			}
+		}
+
+
+		public void revokeMembershipRequests(String gridIdentity, GroupIdentifier group) throws RemoteException, GridGrouperRuntimeFault, GroupNotFoundFault,
+			RevokePrivilegeFault, InsufficientPrivilegeFault, SchemaFault {
+			GrouperSession session = null;
+			try {
+				Subject subj = SubjectFinder.findById(gridIdentity);
+				session = GrouperSession.start(subj);
+				Group grp = GroupFinder.findByName(session, group.getGroupName());
+
+				MembershipRequests.configureGroup(session, grp);
+				grp.setAttribute("allowMembershipRequests", "false");
+				MembershipRequests.rejectAllRequests(session, MemberFinder.findBySubject(session, subj), grp);
+
+			} catch (GroupNotFoundException e) {
+				GroupNotFoundFault fault = new GroupNotFoundFault();
+				fault.setFaultString("The group, " + group.getGroupName() + "was not found.");
+				FaultHelper helper = new FaultHelper(fault);
+				helper.addFaultCause(e);
+				fault = (GroupNotFoundFault) helper.getFault();
+				throw fault;
+//			} catch (RevokePrivilegeException e) {
+//				RevokePrivilegeFault fault = new RevokePrivilegeFault();
+//				fault.setFaultString(e.getMessage());
+//				FaultHelper helper = new FaultHelper(fault);
+//				helper.addFaultCause(e);
+//				fault = (RevokePrivilegeFault) helper.getFault();
+//				throw fault;
+			} catch (InsufficientPrivilegeException e) {
+				InsufficientPrivilegeFault fault = new InsufficientPrivilegeFault();
+				fault.setFaultString("You do not have the right to manages privileges on the group " + group.getGroupName()
+					+ ": " + e.getMessage());
+				FaultHelper helper = new FaultHelper(fault);
+				helper.addFaultCause(e);
+				fault = (InsufficientPrivilegeFault) helper.getFault();
+				throw fault;
+			} catch (Exception e) {
+				this.log.error(e.getMessage(), e);
+				GridGrouperRuntimeFault fault = new GridGrouperRuntimeFault();
+				fault.setFaultString("Error occurred revoking membership requests on the group "
+					+ group.getGroupName() + ": " + e.getMessage());
+				FaultHelper helper = new FaultHelper(fault);
+				helper.addFaultCause(e);
+				fault = (GridGrouperRuntimeFault) helper.getFault();
+				throw fault;
+			} finally {
+				if (session != null) {
+					try {
+						session.stop();
+					} catch (Exception e) {
+						this.log.error(e.getMessage(), e);
+					}
+				}
+			}
+		}
 
 
 }

@@ -24,11 +24,14 @@ import gov.nih.nci.cagrid.gridgrouper.bean.GroupUpdate;
 import gov.nih.nci.cagrid.gridgrouper.bean.MemberDescriptor;
 import gov.nih.nci.cagrid.gridgrouper.bean.MemberFilter;
 import gov.nih.nci.cagrid.gridgrouper.bean.MembershipDescriptor;
+import gov.nih.nci.cagrid.gridgrouper.bean.MembershipRequestDescriptor;
+import gov.nih.nci.cagrid.gridgrouper.bean.MembershipRequestStatus;
 import gov.nih.nci.cagrid.gridgrouper.common.SubjectUtils;
 import gov.nih.nci.cagrid.gridgrouper.grouper.AccessPrivilegeI;
 import gov.nih.nci.cagrid.gridgrouper.grouper.GroupI;
 import gov.nih.nci.cagrid.gridgrouper.grouper.MemberI;
 import gov.nih.nci.cagrid.gridgrouper.grouper.MembershipI;
+import gov.nih.nci.cagrid.gridgrouper.grouper.MembershipRequestI;
 import gov.nih.nci.cagrid.gridgrouper.grouper.StemI;
 import gov.nih.nci.cagrid.gridgrouper.stubs.types.GrantPrivilegeFault;
 import gov.nih.nci.cagrid.gridgrouper.stubs.types.GridGrouperRuntimeFault;
@@ -41,6 +44,7 @@ import gov.nih.nci.cagrid.gridgrouper.stubs.types.MemberDeleteFault;
 import gov.nih.nci.cagrid.gridgrouper.stubs.types.RevokePrivilegeFault;
 import gov.nih.nci.cagrid.gridgrouper.stubs.types.SchemaFault;
 
+import java.rmi.RemoteException;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.LinkedHashSet;
@@ -715,4 +719,95 @@ public class Group extends GridGrouperObject implements GroupI {
             throw new GrouperRuntimeException(Utils.getExceptionMessage(e));
         }
     }
+    
+    public Set<MembershipRequestI> getMembershipRequests() {
+    	return getMembershipRequests(MembershipRequestStatus.All);
+    }
+
+    public Set<MembershipRequestI> getApprovedMembershipRequests() {
+    	return getMembershipRequests(MembershipRequestStatus.Approved);
+    }
+
+    public Set<MembershipRequestI> getPendingMembershipRequests() {
+    	return getMembershipRequests(MembershipRequestStatus.Pending);
+    }
+
+    public Set<MembershipRequestI> getRejectedMembershipRequests() {
+    	return getMembershipRequests(MembershipRequestStatus.Rejected);
+    }
+    
+    private Set<MembershipRequestI> getMembershipRequests(MembershipRequestStatus status) {
+        try {
+            MembershipRequestDescriptor[] list = gridGrouper.getClient().getMembershipRequests(getGroupIdentifier(), status);
+            Set<MembershipRequestI> membershipRequests = new LinkedHashSet<MembershipRequestI>();
+            if (list != null) {
+                for (int i = 0; i < list.length; i++) {
+                	membershipRequests.add(new MembershipRequest(gridGrouper, list[i]));
+                }
+            }
+            return membershipRequests;
+        } catch (GridGrouperRuntimeFault e) {
+            getLog().error(e.getMessage(), e);
+            throw new GrouperRuntimeException(e.getFaultString());
+        } catch (Exception e) {
+            getLog().error(e.getMessage(), e);
+            throw new GrouperRuntimeException(Utils.getExceptionMessage(e));
+        }
+
+    }
+
+	public void grantMembershipRequests() throws GrantPrivilegeException, InsufficientPrivilegeException,
+			SchemaException {
+		try {
+			gridGrouper.getClient().grantMembershipRequests(getGroupIdentifier());
+			des.setHasMembershipRequests(true);
+		} catch (InsufficientPrivilegeFault f) {
+			throw new InsufficientPrivilegeException(f.getFaultString());
+		} catch (GrantPrivilegeFault f) {
+			throw new GrantPrivilegeException(f.getFaultString());
+		} catch (SchemaFault f) {
+			throw new SchemaException(f.getFaultString());
+		} catch (GridGrouperRuntimeFault e) {
+			getLog().error(e.getMessage(), e);
+			throw new GrouperRuntimeException(e.getFaultString());
+		} catch (Exception e) {
+			getLog().error(e.getMessage(), e);
+			throw new GrouperRuntimeException(Utils.getExceptionMessage(e));
+		}
+
+	}
+
+	public void revokeMembershipRequests() throws InsufficientPrivilegeException,
+			RevokePrivilegeException, SchemaException {
+		try {
+			gridGrouper.getClient().revokeMembershipRequests(getGroupIdentifier());
+			des.setHasMembershipRequests(false);
+		} catch (InsufficientPrivilegeFault f) {
+			throw new InsufficientPrivilegeException(f.getFaultString());
+		} catch (RevokePrivilegeFault f) {
+			throw new RevokePrivilegeException(f.getFaultString());
+		} catch (SchemaFault f) {
+			throw new SchemaException(f.getFaultString());
+		} catch (GridGrouperRuntimeFault e) {
+			getLog().error(e.getMessage(), e);
+			throw new GrouperRuntimeException(e.getFaultString());
+		} catch (Exception e) {
+			getLog().error(e.getMessage(), e);
+			throw new GrouperRuntimeException(Utils.getExceptionMessage(e));
+		}
+	}
+	
+	public void requestMembership() throws InsufficientPrivilegeException, MemberAddException {
+		try {
+			gridGrouper.getClient().addMembershipRequest(getGroupIdentifier());
+		} catch (RemoteException e) {
+			getLog().error(e.getMessage(), e);
+			throw new GrouperRuntimeException(Utils.getExceptionMessage(e));
+		}
+	}
+	
+	public boolean hasMembershipRequests() {
+		return des.isHasMembershipRequests();
+	}
+
 }

@@ -82,53 +82,6 @@ public class GridGrouperClient extends GridGrouperClientBase implements GridGrou
         }
     }
 
-  public void addMembershipRequest(gov.nih.nci.cagrid.gridgrouper.bean.GroupIdentifier group,java.lang.String subject) throws RemoteException {
-    synchronized(portTypeMutex){
-      configureStubSecurity((Stub)portType,"addMembershipRequest");
-    gov.nih.nci.cagrid.gridgrouper.stubs.AddMembershipRequestRequest params = new gov.nih.nci.cagrid.gridgrouper.stubs.AddMembershipRequestRequest();
-    gov.nih.nci.cagrid.gridgrouper.stubs.AddMembershipRequestRequestGroup groupContainer = new gov.nih.nci.cagrid.gridgrouper.stubs.AddMembershipRequestRequestGroup();
-    groupContainer.setGroupIdentifier(group);
-    params.setGroup(groupContainer);
-    gov.nih.nci.cagrid.gridgrouper.stubs.AddMembershipRequestRequestSubject subjectContainer = new gov.nih.nci.cagrid.gridgrouper.stubs.AddMembershipRequestRequestSubject();
-    subjectContainer.setSubjectIdentifier(subject);
-    params.setSubject(subjectContainer);
-    gov.nih.nci.cagrid.gridgrouper.stubs.AddMembershipRequestResponse boxedResult = portType.addMembershipRequest(params);
-    }
-  }
-
-  public gov.nih.nci.cagrid.gridgrouper.bean.MembershipRequestDescriptor updateMembershipRequest(gov.nih.nci.cagrid.gridgrouper.bean.GroupIdentifier group,java.lang.String subject,gov.nih.nci.cagrid.gridgrouper.bean.MembershipRequestUpdate update) throws RemoteException {
-    synchronized(portTypeMutex){
-      configureStubSecurity((Stub)portType,"updateMembershipRequest");
-    gov.nih.nci.cagrid.gridgrouper.stubs.UpdateMembershipRequestRequest params = new gov.nih.nci.cagrid.gridgrouper.stubs.UpdateMembershipRequestRequest();
-    gov.nih.nci.cagrid.gridgrouper.stubs.UpdateMembershipRequestRequestGroup groupContainer = new gov.nih.nci.cagrid.gridgrouper.stubs.UpdateMembershipRequestRequestGroup();
-    groupContainer.setGroupIdentifier(group);
-    params.setGroup(groupContainer);
-    gov.nih.nci.cagrid.gridgrouper.stubs.UpdateMembershipRequestRequestSubject subjectContainer = new gov.nih.nci.cagrid.gridgrouper.stubs.UpdateMembershipRequestRequestSubject();
-    subjectContainer.setSubjectIdentifier(subject);
-    params.setSubject(subjectContainer);
-    gov.nih.nci.cagrid.gridgrouper.stubs.UpdateMembershipRequestRequestUpdate updateContainer = new gov.nih.nci.cagrid.gridgrouper.stubs.UpdateMembershipRequestRequestUpdate();
-    updateContainer.setMembershipRequestUpdate(update);
-    params.setUpdate(updateContainer);
-    gov.nih.nci.cagrid.gridgrouper.stubs.UpdateMembershipRequestResponse boxedResult = portType.updateMembershipRequest(params);
-    return boxedResult.getMembershipRequestDescriptor();
-    }
-  }
-
-  public gov.nih.nci.cagrid.gridgrouper.bean.MembershipRequestDescriptor[] getMembershipRequests(gov.nih.nci.cagrid.gridgrouper.bean.GroupIdentifier group,gov.nih.nci.cagrid.gridgrouper.bean.MembershipRequestStatus status) throws RemoteException {
-    synchronized(portTypeMutex){
-      configureStubSecurity((Stub)portType,"getMembershipRequests");
-    gov.nih.nci.cagrid.gridgrouper.stubs.GetMembershipRequestsRequest params = new gov.nih.nci.cagrid.gridgrouper.stubs.GetMembershipRequestsRequest();
-    gov.nih.nci.cagrid.gridgrouper.stubs.GetMembershipRequestsRequestGroup groupContainer = new gov.nih.nci.cagrid.gridgrouper.stubs.GetMembershipRequestsRequestGroup();
-    groupContainer.setGroupIdentifier(group);
-    params.setGroup(groupContainer);
-    gov.nih.nci.cagrid.gridgrouper.stubs.GetMembershipRequestsRequestStatus statusContainer = new gov.nih.nci.cagrid.gridgrouper.stubs.GetMembershipRequestsRequestStatus();
-    statusContainer.setMembershipRequestStatus(status);
-    params.setStatus(statusContainer);
-    gov.nih.nci.cagrid.gridgrouper.stubs.GetMembershipRequestsResponse boxedResult = portType.getMembershipRequests(params);
-    return boxedResult.getMembershipRequestDescriptor();
-    }
-  }
-
   public gov.nih.nci.cagrid.gridgrouper.bean.StemDescriptor getStem(gov.nih.nci.cagrid.gridgrouper.bean.StemIdentifier stem) throws RemoteException, gov.nih.nci.cagrid.gridgrouper.stubs.types.GridGrouperRuntimeFault, gov.nih.nci.cagrid.gridgrouper.stubs.types.StemNotFoundFault {
     synchronized(portTypeMutex){
       configureStubSecurity((Stub)portType,"getStem");
@@ -609,6 +562,72 @@ public class GridGrouperClient extends GridGrouperClientBase implements GridGrou
     synchronized(portTypeMutex){
       configureStubSecurity((Stub)portType,"queryResourceProperties");
     return portType.queryResourceProperties(params);
+    }
+  }
+
+  public void addMembershipRequest(gov.nih.nci.cagrid.gridgrouper.bean.GroupIdentifier group) throws RemoteException {
+    synchronized(portTypeMutex){
+      configureStubSecurity((Stub)portType,"addMembershipRequest");
+    gov.nih.nci.cagrid.gridgrouper.stubs.AddMembershipRequestRequest params = new gov.nih.nci.cagrid.gridgrouper.stubs.AddMembershipRequestRequest();
+    gov.nih.nci.cagrid.gridgrouper.stubs.AddMembershipRequestRequestGroup groupContainer = new gov.nih.nci.cagrid.gridgrouper.stubs.AddMembershipRequestRequestGroup();
+    groupContainer.setGroupIdentifier(group);
+    params.setGroup(groupContainer);
+    gov.nih.nci.cagrid.gridgrouper.stubs.AddMembershipRequestResponse boxedResult = portType.addMembershipRequest(params);
+    }
+  }
+
+  public gov.nih.nci.cagrid.gridgrouper.bean.MembershipRequestDescriptor updateMembershipRequest(gov.nih.nci.cagrid.gridgrouper.bean.GroupIdentifier group,java.lang.String subject,gov.nih.nci.cagrid.gridgrouper.bean.MembershipRequestUpdate update) throws RemoteException {
+    synchronized(portTypeMutex){
+      configureStubSecurity((Stub)portType,"updateMembershipRequest");
+    gov.nih.nci.cagrid.gridgrouper.stubs.UpdateMembershipRequestRequest params = new gov.nih.nci.cagrid.gridgrouper.stubs.UpdateMembershipRequestRequest();
+    gov.nih.nci.cagrid.gridgrouper.stubs.UpdateMembershipRequestRequestGroup groupContainer = new gov.nih.nci.cagrid.gridgrouper.stubs.UpdateMembershipRequestRequestGroup();
+    groupContainer.setGroupIdentifier(group);
+    params.setGroup(groupContainer);
+    gov.nih.nci.cagrid.gridgrouper.stubs.UpdateMembershipRequestRequestSubject subjectContainer = new gov.nih.nci.cagrid.gridgrouper.stubs.UpdateMembershipRequestRequestSubject();
+    subjectContainer.setSubjectIdentifier(subject);
+    params.setSubject(subjectContainer);
+    gov.nih.nci.cagrid.gridgrouper.stubs.UpdateMembershipRequestRequestUpdate updateContainer = new gov.nih.nci.cagrid.gridgrouper.stubs.UpdateMembershipRequestRequestUpdate();
+    updateContainer.setMembershipRequestUpdate(update);
+    params.setUpdate(updateContainer);
+    gov.nih.nci.cagrid.gridgrouper.stubs.UpdateMembershipRequestResponse boxedResult = portType.updateMembershipRequest(params);
+    return boxedResult.getMembershipRequestDescriptor();
+    }
+  }
+
+  public gov.nih.nci.cagrid.gridgrouper.bean.MembershipRequestDescriptor[] getMembershipRequests(gov.nih.nci.cagrid.gridgrouper.bean.GroupIdentifier group,gov.nih.nci.cagrid.gridgrouper.bean.MembershipRequestStatus status) throws RemoteException {
+    synchronized(portTypeMutex){
+      configureStubSecurity((Stub)portType,"getMembershipRequests");
+    gov.nih.nci.cagrid.gridgrouper.stubs.GetMembershipRequestsRequest params = new gov.nih.nci.cagrid.gridgrouper.stubs.GetMembershipRequestsRequest();
+    gov.nih.nci.cagrid.gridgrouper.stubs.GetMembershipRequestsRequestGroup groupContainer = new gov.nih.nci.cagrid.gridgrouper.stubs.GetMembershipRequestsRequestGroup();
+    groupContainer.setGroupIdentifier(group);
+    params.setGroup(groupContainer);
+    gov.nih.nci.cagrid.gridgrouper.stubs.GetMembershipRequestsRequestStatus statusContainer = new gov.nih.nci.cagrid.gridgrouper.stubs.GetMembershipRequestsRequestStatus();
+    statusContainer.setMembershipRequestStatus(status);
+    params.setStatus(statusContainer);
+    gov.nih.nci.cagrid.gridgrouper.stubs.GetMembershipRequestsResponse boxedResult = portType.getMembershipRequests(params);
+    return boxedResult.getMembershipRequestDescriptor();
+    }
+  }
+
+  public void grantMembershipRequests(gov.nih.nci.cagrid.gridgrouper.bean.GroupIdentifier group) throws RemoteException {
+    synchronized(portTypeMutex){
+      configureStubSecurity((Stub)portType,"grantMembershipRequests");
+    gov.nih.nci.cagrid.gridgrouper.stubs.GrantMembershipRequestsRequest params = new gov.nih.nci.cagrid.gridgrouper.stubs.GrantMembershipRequestsRequest();
+    gov.nih.nci.cagrid.gridgrouper.stubs.GrantMembershipRequestsRequestGroup groupContainer = new gov.nih.nci.cagrid.gridgrouper.stubs.GrantMembershipRequestsRequestGroup();
+    groupContainer.setGroupIdentifier(group);
+    params.setGroup(groupContainer);
+    gov.nih.nci.cagrid.gridgrouper.stubs.GrantMembershipRequestsResponse boxedResult = portType.grantMembershipRequests(params);
+    }
+  }
+
+  public void revokeMembershipRequests(gov.nih.nci.cagrid.gridgrouper.bean.GroupIdentifier group) throws RemoteException {
+    synchronized(portTypeMutex){
+      configureStubSecurity((Stub)portType,"revokeMembershipRequests");
+    gov.nih.nci.cagrid.gridgrouper.stubs.RevokeMembershipRequestsRequest params = new gov.nih.nci.cagrid.gridgrouper.stubs.RevokeMembershipRequestsRequest();
+    gov.nih.nci.cagrid.gridgrouper.stubs.RevokeMembershipRequestsRequestGroup groupContainer = new gov.nih.nci.cagrid.gridgrouper.stubs.RevokeMembershipRequestsRequestGroup();
+    groupContainer.setGroupIdentifier(group);
+    params.setGroup(groupContainer);
+    gov.nih.nci.cagrid.gridgrouper.stubs.RevokeMembershipRequestsResponse boxedResult = portType.revokeMembershipRequests(params);
     }
   }
 

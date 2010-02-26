@@ -15,9 +15,9 @@ public class MembershipRequests {
 	private String id;
 
 	private Group group;
-	private String requestor;
+	private String requestorId;
 	private long requestTime;
-	private String status;
+	private MembershipRequestStatus status;
 
 	private Member reviewer;
 	private long reviewTime;
@@ -28,13 +28,13 @@ public class MembershipRequests {
 	}
 
 	public MembershipRequests(Group group, String requestor) {
-		this(group, requestor, "Pending");
+		this(group, requestor, MembershipRequestStatus.Pending);
 	}
 
-	private MembershipRequests(Group group, String requestor, String status) {
+	private MembershipRequests(Group group, String requestorId, MembershipRequestStatus status) {
 		super();
 		this.group = group;
-		this.requestor = requestor;
+		this.requestorId = requestorId;
 		this.requestTime = System.currentTimeMillis();
 		this.status = status;
 	}
@@ -47,12 +47,12 @@ public class MembershipRequests {
 		this.group = group;
 	}
 
-	public String getRequestor() {
-		return requestor;
+	public String getRequestorId() {
+		return requestorId;
 	}
 
-	public void setRequestor(String requestor) {
-		this.requestor = requestor;
+	public void setRequestorId(String requestorId) {
+		this.requestorId = requestorId;
 	}
 
 	public Member getReviewer() {
@@ -63,11 +63,11 @@ public class MembershipRequests {
 		this.reviewer = reviewer;
 	}
 
-	public String getStatus() {
+	public MembershipRequestStatus getStatus() {
 		return status;
 	}
 
-	public void setStatus(String status) throws InsufficientPrivilegeException {
+	public void setStatus(MembershipRequestStatus status) throws InsufficientPrivilegeException {
 		StopWatch sw = new StopWatch();
 		sw.start();
 		try {
@@ -78,6 +78,15 @@ public class MembershipRequests {
 			throw new InsufficientPrivilegeException(eH.getMessage(), eH);
 		}
 	}
+	
+	private String getStatusValue() {
+		return status.toString();
+	}
+
+	private void setStatusValue(String value) {
+		this.status = MembershipRequestStatus.fromString(value);
+	}
+
 
 	public String getId() {
 		return this.id;
@@ -143,15 +152,15 @@ public class MembershipRequests {
 		}
 	}
 	
-	public static void rejectAllRequests(Member rejector, Group group) throws GridGrouperRuntimeFault {
-		ArrayList<MembershipRequests> requests = MembershipRequestsFinder.findRequestsByStatus(group, MembershipRequestStatus.Pending);
+	public static void rejectAllRequests(GrouperSession session, Member rejector, Group group) throws GridGrouperRuntimeFault {
+		ArrayList<MembershipRequests> requests = MembershipRequestsFinder.findRequestsByStatus(session, group, MembershipRequestStatus.Pending);
 		for (MembershipRequests membershipRequest : requests) {
 			membershipRequest.reject(rejector, "Mass rejection");
 		}
 	}
 
 	public void approve(Member approver, String note) throws GridGrouperRuntimeFault {
-		this.status = "Approved";
+		this.status = MembershipRequestStatus.Approved;
 		this.reviewer = approver;
 		this.reviewerNote = note;
 		this.reviewTime = System.currentTimeMillis();
@@ -168,7 +177,7 @@ public class MembershipRequests {
 	}
 
 	public void reject(Member rejector, String note) throws GridGrouperRuntimeFault {
-		this.status = "Rejected";
+		this.status = MembershipRequestStatus.Rejected;
 		this.reviewer = rejector;
 		this.reviewerNote = note;
 		this.reviewTime = System.currentTimeMillis();
@@ -186,7 +195,7 @@ public class MembershipRequests {
 	}
 
 	public void pending() throws GridGrouperRuntimeFault {
-		this.status = "Pending";
+		this.status = MembershipRequestStatus.Pending;
 		this.reviewerNote = "Request Resubmitted. " + this.reviewerNote;
 		this.reviewTime = 0;
 		try {

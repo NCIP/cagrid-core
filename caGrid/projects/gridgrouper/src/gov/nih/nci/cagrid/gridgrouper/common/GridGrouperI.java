@@ -29,12 +29,6 @@ public interface GridGrouperI {
 
     public gov.nih.nci.cagrid.metadata.security.ServiceSecurityMetadata getServiceSecurityMetadata() throws RemoteException ;
 
-  public void addMembershipRequest(gov.nih.nci.cagrid.gridgrouper.bean.GroupIdentifier group,java.lang.String subject) throws RemoteException ;
-
-  public gov.nih.nci.cagrid.gridgrouper.bean.MembershipRequestDescriptor updateMembershipRequest(gov.nih.nci.cagrid.gridgrouper.bean.GroupIdentifier group,java.lang.String subject,gov.nih.nci.cagrid.gridgrouper.bean.MembershipRequestUpdate update) throws RemoteException ;
-
-  public gov.nih.nci.cagrid.gridgrouper.bean.MembershipRequestDescriptor[] getMembershipRequests(gov.nih.nci.cagrid.gridgrouper.bean.GroupIdentifier group,gov.nih.nci.cagrid.gridgrouper.bean.MembershipRequestStatus status) throws RemoteException ;
-
   /**
    * Obtains a specified stem.
    *
@@ -460,5 +454,38 @@ public interface GridGrouperI {
   public org.oasis.wsrf.properties.GetResourcePropertyResponse getResourceProperty(javax.xml.namespace.QName params) throws RemoteException ;
 
   public org.oasis.wsrf.properties.QueryResourcePropertiesResponse queryResourceProperties(org.oasis.wsrf.properties.QueryResourceProperties_Element params) throws RemoteException ;
+
+  public void addMembershipRequest(gov.nih.nci.cagrid.gridgrouper.bean.GroupIdentifier group) throws RemoteException ;
+
+  /**
+   * Update the status of the membership request.
+   *
+   * @param group
+   * @param subject
+   * @param update
+   */
+  public gov.nih.nci.cagrid.gridgrouper.bean.MembershipRequestDescriptor updateMembershipRequest(gov.nih.nci.cagrid.gridgrouper.bean.GroupIdentifier group,java.lang.String subject,gov.nih.nci.cagrid.gridgrouper.bean.MembershipRequestUpdate update) throws RemoteException ;
+
+  /**
+   * Retrieve the group's membership requests based on request status.
+   *
+   * @param group
+   * @param status
+   */
+  public gov.nih.nci.cagrid.gridgrouper.bean.MembershipRequestDescriptor[] getMembershipRequests(gov.nih.nci.cagrid.gridgrouper.bean.GroupIdentifier group,gov.nih.nci.cagrid.gridgrouper.bean.MembershipRequestStatus status) throws RemoteException ;
+
+  /**
+   * Enable a group to accept membership requests
+   *
+   * @param group
+   */
+  public void grantMembershipRequests(gov.nih.nci.cagrid.gridgrouper.bean.GroupIdentifier group) throws RemoteException ;
+
+  /**
+   * Removes the ability of a group to accept membership requests
+   *
+   * @param group
+   */
+  public void revokeMembershipRequests(gov.nih.nci.cagrid.gridgrouper.bean.GroupIdentifier group) throws RemoteException ;
 
 }

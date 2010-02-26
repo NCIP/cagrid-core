@@ -42,8 +42,8 @@
     </id>
     <!-- id -->
 
-    <!-- requestor -->
-    <property name="requestor"
+    <!-- requestorId -->
+    <property name="requestorId"
               type="string"
               not-null="true"
     >

@@ -1,21 +1,22 @@
 package gov.nih.nci.cagrid.gridgrouper.service.globus;
 
 
-import java.io.File;
+import java.rmi.RemoteException;
 import java.util.HashMap;
 import java.util.Map;
-
+import java.io.File;
 import javax.security.auth.Subject;
 import javax.xml.namespace.QName;
 import javax.xml.rpc.handler.MessageContext;
 
-import org.globus.wsrf.config.ContainerConfig;
+import gov.nih.nci.cagrid.introduce.servicetools.security.AuthorizationExtension;
 import org.globus.wsrf.impl.security.authorization.exceptions.AuthorizationException;
 import org.globus.wsrf.impl.security.authorization.exceptions.CloseException;
 import org.globus.wsrf.impl.security.authorization.exceptions.InitializeException;
 import org.globus.wsrf.impl.security.authorization.exceptions.InvalidPolicyException;
 import org.globus.wsrf.security.authorization.PDP;
 import org.globus.wsrf.security.authorization.PDPConfig;
+import org.globus.wsrf.config.ContainerConfig;
 import org.w3c.dom.Node;
 
 
@@ -205,6 +206,14 @@ public class GridGrouperAuthorization implements PDP {
 	public void authorizeGetMembershipRequests(Subject peerSubject, MessageContext context, QName operation) throws AuthorizationException {
 		
 	}
+	   				
+	public void authorizeGrantMembershipRequests(Subject peerSubject, MessageContext context, QName operation) throws AuthorizationException {
+		
+	}
+	   				
+	public void authorizeRevokeMembershipRequests(Subject peerSubject, MessageContext context, QName operation) throws AuthorizationException {
+		
+	}
 	   
 	
 	public boolean isPermitted(Subject peerSubject, MessageContext context, QName operation)
@@ -326,6 +335,12 @@ public class GridGrouperAuthorization implements PDP {
 			return true;
 		} else if(operation.getLocalPart().equals("getMembershipRequests")){
 			authorizeGetMembershipRequests(peerSubject, context, operation);
+			return true;
+		} else if(operation.getLocalPart().equals("grantMembershipRequests")){
+			authorizeGrantMembershipRequests(peerSubject, context, operation);
+			return true;
+		} else if(operation.getLocalPart().equals("revokeMembershipRequests")){
+			authorizeRevokeMembershipRequests(peerSubject, context, operation);
 			return true;
 		} 		
 		return false;

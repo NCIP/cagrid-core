@@ -830,13 +830,6 @@
                 </sequence>
               </complexType>
             </element>
-            <element name="subject">
-              <complexType>
-                <sequence>
-                  <element ref="ns0:SubjectIdentifier" minOccurs="1" maxOccurs="1" />
-                </sequence>
-              </complexType>
-            </element>
           </sequence>
         </complexType>
       </element>
@@ -904,6 +897,42 @@
           <sequence>
             <element ref="ns0:MembershipRequestDescriptor" minOccurs="1" maxOccurs="unbounded" />
           </sequence>
+        </complexType>
+      </element>
+      <element name="GrantMembershipRequestsRequest">
+        <complexType>
+          <sequence>
+            <element name="group">
+              <complexType>
+                <sequence>
+                  <element ref="ns0:GroupIdentifier" minOccurs="1" maxOccurs="1" />
+                </sequence>
+              </complexType>
+            </element>
+          </sequence>
+        </complexType>
+      </element>
+      <element name="GrantMembershipRequestsResponse">
+        <complexType>
+          <sequence />
+        </complexType>
+      </element>
+      <element name="RevokeMembershipRequestsRequest">
+        <complexType>
+          <sequence>
+            <element name="group">
+              <complexType>
+                <sequence>
+                  <element ref="ns0:GroupIdentifier" minOccurs="1" maxOccurs="1" />
+                </sequence>
+              </complexType>
+            </element>
+          </sequence>
+        </complexType>
+      </element>
+      <element name="RevokeMembershipRequestsResponse">
+        <complexType>
+          <sequence />
         </complexType>
       </element>
       <element name="GridGrouperResourceProperties">
@@ -1119,6 +1148,18 @@
   </message>
   <message name="GetMembershipRequestsResponse">
     <part name="parameters" element="tns:GetMembershipRequestsResponse" />
+  </message>
+  <message name="GrantMembershipRequestsRequest">
+    <part name="parameters" element="tns:GrantMembershipRequestsRequest" />
+  </message>
+  <message name="GrantMembershipRequestsResponse">
+    <part name="parameters" element="tns:GrantMembershipRequestsResponse" />
+  </message>
+  <message name="RevokeMembershipRequestsRequest">
+    <part name="parameters" element="tns:RevokeMembershipRequestsRequest" />
+  </message>
+  <message name="RevokeMembershipRequestsResponse">
+    <part name="parameters" element="tns:RevokeMembershipRequestsResponse" />
   </message>
   <message name="GridGrouperRuntimeFaultFaultMessage">
     <part name="fault" element="ns3:GridGrouperRuntimeFault" />
@@ -1396,6 +1437,14 @@
     <operation name="getMembershipRequests">
       <input message="tns:GetMembershipRequestsRequest" wsa:Action="http://cagrid.nci.nih.gov/GridGrouper/GetMembershipRequestsRequest" />
       <output message="tns:GetMembershipRequestsResponse" wsa:Action="http://cagrid.nci.nih.gov/GridGrouper/GetMembershipRequestsResponse" />
+    </operation>
+    <operation name="grantMembershipRequests">
+      <input message="tns:GrantMembershipRequestsRequest" wsa:Action="http://cagrid.nci.nih.gov/GridGrouper/GrantMembershipRequestsRequest" />
+      <output message="tns:GrantMembershipRequestsResponse" wsa:Action="http://cagrid.nci.nih.gov/GridGrouper/GrantMembershipRequestsResponse" />
+    </operation>
+    <operation name="revokeMembershipRequests">
+      <input message="tns:RevokeMembershipRequestsRequest" wsa:Action="http://cagrid.nci.nih.gov/GridGrouper/RevokeMembershipRequestsRequest" />
+      <output message="tns:RevokeMembershipRequestsResponse" wsa:Action="http://cagrid.nci.nih.gov/GridGrouper/RevokeMembershipRequestsResponse" />
     </operation>
     <operation name="getServiceSecurityMetadata">
       <input message="wns0:GetServiceSecurityMetadataRequest" wsa:Action="http://security.introduce.cagrid.nci.nih.gov/ServiceSecurity/GetServiceSecurityMetadataRequest" />

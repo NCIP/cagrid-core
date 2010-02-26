@@ -1,6 +1,5 @@
 package gov.nih.nci.cagrid.gridgrouper.service;
 
-import edu.internet2.middleware.grouper.Group;
 import gov.nih.nci.cagrid.common.FaultUtil;
 import gov.nih.nci.cagrid.gridgrouper.bean.GroupCompositeType;
 import gov.nih.nci.cagrid.gridgrouper.bean.GroupDescriptor;
@@ -15,6 +14,8 @@ import gov.nih.nci.cagrid.gridgrouper.testutils.Utils;
 
 import java.util.HashMap;
 import java.util.Map;
+
+import org.oasis.wsrf.faults.BaseFaultType;
 
 
 /**
@@ -410,4 +411,31 @@ public class TestMembers extends GrouperBaseTest {
 			fail(e.getMessage());
 		}
 	}
+	
+	public void testGetMembers() {
+		try {
+			GridGrouperBootstrapper.addAdminMember(SUPER_USER);
+			grouper.getStem(SUPER_USER, Utils.getRootStemIdentifier());
+
+			String testStem = "TestStem";
+			StemDescriptor test = grouper.addChildStem(SUPER_USER, Utils.getRootStemIdentifier(), testStem, testStem);
+			final String groupExtension = "mygroup";
+			final String groupDisplayExtension = "My Group";
+
+			GroupDescriptor grp = createAndCheckGroup(test, groupExtension, groupDisplayExtension, 1);
+
+			try {
+				grouper.getMembers(SUPER_USER, Utils.getGroupIdentifier(grp), null);
+				fail("Should not be able to get member!!!");
+			} catch (BaseFaultType f) {
+				// Expected Fault
+			}
+
+		} catch (Exception e) {
+			FaultUtil.printFault(e);
+			fail(e.getMessage());
+		}
+
+	}
+
 }

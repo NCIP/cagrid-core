@@ -34,7 +34,7 @@ public class MembershipRequestsFinder {
 
 	private static Log log = LogFactory.getLog(MembershipRequestsFinder.class);
 	
-	public static ArrayList<MembershipRequests> findRequestsByStatus(Group group, MembershipRequestStatus status) {
+	public static ArrayList<MembershipRequests> findRequestsByStatus(GrouperSession grouperSession, Group group, MembershipRequestStatus status) {
 		ArrayList<MembershipRequests> requests = new ArrayList<MembershipRequests>();
 		Session hs = null;
 		try {
@@ -43,7 +43,7 @@ public class MembershipRequestsFinder {
 			if (MembershipRequestStatus.All.equals(status)) {
 				qry = hs.createQuery("from MembershipRequests as mr where mr.group = :grp");
 			} else {
-				qry = hs.createQuery("from MembershipRequests as mr where mr.group = :grp and mr.status = :status");
+				qry = hs.createQuery("from MembershipRequests as mr where mr.group = :grp and mr.statusValue = :status");
 				qry.setString("status", status.toString());
 			}
 			qry.setEntity("grp", group);
@@ -51,6 +51,7 @@ public class MembershipRequestsFinder {
 
 			for (Object object : list) {
 				MembershipRequests membershipRequests = (MembershipRequests) object;
+				membershipRequests.getGroup().setSession(grouperSession);
 				requests.add(membershipRequests);
 			}
 
@@ -68,7 +69,7 @@ public class MembershipRequestsFinder {
 		return requests;
 	} 
 
-	public static MembershipRequests findRequest(Group group, String requestor) throws MemberNotFoundException {
+	public static MembershipRequests findRequest(GrouperSession grouperSession, Group group, String requestor) throws MemberNotFoundException {
 		Session hs = null;
 
 		try {
@@ -80,6 +81,7 @@ public class MembershipRequestsFinder {
 
 			for (Object object : list) {
 				MembershipRequests membershipRequests = (MembershipRequests) object;
+				membershipRequests.getGroup().setSession(grouperSession);
 				return membershipRequests;
 			}
 
@@ -96,5 +98,34 @@ public class MembershipRequestsFinder {
 		}
 		return null;
 	} 
+	
+	public static void deleteRequest(Group group, String requestor) throws MemberNotFoundException {
+		Session hs = null;
+
+		try {
+			hs = GridGrouperHibernateHelper.getSession();
+			Query qry = hs.createQuery("from MembershipRequests as mr where mr.group = :grp and requestor = :requestor");;
+			qry.setString("requestor", requestor);
+			qry.setEntity("grp", group);
+			List<?> list = qry.list();
+
+			for (Object object : list) {
+				MembershipRequests membershipRequests = (MembershipRequests) object;
+				GridGrouperHibernateHelper.delete(membershipRequests);
+			}
+
+		} catch (HibernateException e) {
+			FaultUtil.logFault(log, e);
+		} finally {
+			if (hs != null) {
+				try {
+					hs.close();
+				} catch (Exception e) {
+					log.error(e.getMessage(), e);
+				}
+			}
+		}
+	} 
+
 
 }

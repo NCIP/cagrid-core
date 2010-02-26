@@ -64,12 +64,12 @@ public class TestMembershipRequests extends TestCase {
 	public void testAddMembershipRequests() {
 		try {
 			GroupDescriptor grp = initialGroupAndRequestSetup();
-			grouper.grantGroupPrivilege(SUPER_USER, Utils.getGroupIdentifier(grp), SUPER_USER, GroupPrivilegeType.membershiprequest);
+			grouper.grantMembershipRequests(SUPER_USER, Utils.getGroupIdentifier(grp));
 
-			grouper.addMembershipRequest(USER_A, Utils.getGroupIdentifier(grp), USER_A);
-			grouper.addMembershipRequest(USER_B, Utils.getGroupIdentifier(grp), USER_B);
-			grouper.addMembershipRequest(USER_C, Utils.getGroupIdentifier(grp), USER_C);
-			grouper.addMembershipRequest(USER_D, Utils.getGroupIdentifier(grp), USER_D);
+			grouper.addMembershipRequest(USER_A, Utils.getGroupIdentifier(grp));
+			grouper.addMembershipRequest(USER_B, Utils.getGroupIdentifier(grp));
+			grouper.addMembershipRequest(USER_C, Utils.getGroupIdentifier(grp));
+			grouper.addMembershipRequest(USER_D, Utils.getGroupIdentifier(grp));
 
 			MembershipRequestDescriptor[] members = grouper.getMembershipRequests(SUPER_USER, Utils.getGroupIdentifier(grp),
 					MembershipRequestStatus.Pending);
@@ -104,12 +104,12 @@ public class TestMembershipRequests extends TestCase {
 	public void testApproveMembershipRequest() {
 		try {
 			GroupDescriptor grp = initialGroupAndRequestSetup();
-			grouper.grantGroupPrivilege(SUPER_USER, Utils.getGroupIdentifier(grp), SUPER_USER, GroupPrivilegeType.membershiprequest);
+			grouper.grantMembershipRequests(SUPER_USER, Utils.getGroupIdentifier(grp));
 
-			grouper.addMembershipRequest(USER_A, Utils.getGroupIdentifier(grp), USER_A);
-			grouper.addMembershipRequest(USER_B, Utils.getGroupIdentifier(grp), USER_B);
-			grouper.addMembershipRequest(USER_C, Utils.getGroupIdentifier(grp), USER_C);
-			grouper.addMembershipRequest(USER_D, Utils.getGroupIdentifier(grp), USER_D);
+			grouper.addMembershipRequest(USER_A, Utils.getGroupIdentifier(grp));
+			grouper.addMembershipRequest(USER_B, Utils.getGroupIdentifier(grp));
+			grouper.addMembershipRequest(USER_C, Utils.getGroupIdentifier(grp));
+			grouper.addMembershipRequest(USER_D, Utils.getGroupIdentifier(grp));
 
 			MembershipRequestUpdate update = new MembershipRequestUpdate();
 			update.setStatus(MembershipRequestStatus.Approved);
@@ -132,12 +132,12 @@ public class TestMembershipRequests extends TestCase {
 	public void testRejectMembershipRequest() {
 		try {
 			GroupDescriptor grp = initialGroupAndRequestSetup();
-			grouper.grantGroupPrivilege(SUPER_USER, Utils.getGroupIdentifier(grp), SUPER_USER, GroupPrivilegeType.membershiprequest);
+			grouper.grantMembershipRequests(SUPER_USER, Utils.getGroupIdentifier(grp));
 
-			grouper.addMembershipRequest(USER_A, Utils.getGroupIdentifier(grp), USER_A);
-			grouper.addMembershipRequest(USER_B, Utils.getGroupIdentifier(grp), USER_B);
-			grouper.addMembershipRequest(USER_C, Utils.getGroupIdentifier(grp), USER_C);
-			grouper.addMembershipRequest(USER_D, Utils.getGroupIdentifier(grp), USER_D);
+			grouper.addMembershipRequest(USER_A, Utils.getGroupIdentifier(grp));
+			grouper.addMembershipRequest(USER_B, Utils.getGroupIdentifier(grp));
+			grouper.addMembershipRequest(USER_C, Utils.getGroupIdentifier(grp));
+			grouper.addMembershipRequest(USER_D, Utils.getGroupIdentifier(grp));
 
 			MembershipRequestUpdate update = new MembershipRequestUpdate();
 			update.setStatus(MembershipRequestStatus.Rejected);

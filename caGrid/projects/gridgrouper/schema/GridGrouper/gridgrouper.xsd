@@ -85,6 +85,7 @@
 			<xsd:element name="ModifyTime" minOccurs="1" maxOccurs="1" type="xsd:long" />
 			<xsd:element name="HasComposite" minOccurs="1" maxOccurs="1" type="xsd:boolean" />
 			<xsd:element name="IsComposite" minOccurs="1" maxOccurs="1" type="xsd:boolean" />
+			<xsd:element name="hasMembershipRequests" minOccurs="1" maxOccurs="1" type="xsd:boolean" />
 		</xsd:sequence>
 	</xsd:complexType>
 	<xsd:element name="StemDescriptor" type="grouper:StemDescriptor" />
@@ -106,22 +107,23 @@
 	</xsd:complexType>
 	
 	<xsd:element name="SubjectIdentifier" type="xsd:string" />
-
+	
 	<xsd:element name="MembershipRequestIdentifier" type="xsd:string" />
 	
 	<xsd:element name="MembershipRequestDescriptor" type="grouper:MembershipRequestDescriptor" />
 	<xsd:complexType name="MembershipRequestDescriptor">
 		<xsd:sequence>
 			<xsd:element name="UUID" minOccurs="1" maxOccurs="1" type="xsd:string" />
-			<xsd:element name="GroupName" minOccurs="1" maxOccurs="1" type="xsd:string" />
+			<xsd:element name="Group" minOccurs="1" maxOccurs="1" type="grouper:GroupDescriptor" />
 			<xsd:element name="RequestorId" minOccurs="1" maxOccurs="1" type="xsd:string" />
 			<xsd:element name="RequestTime" minOccurs="1" maxOccurs="1" type="xsd:long" />
-			<xsd:element name="Status" minOccurs="1" maxOccurs="1" type="xsd:string" />
-			<xsd:element name="ReviewerId" minOccurs="1" maxOccurs="1" type="xsd:string" />
+			<xsd:element name="Status" minOccurs="1" maxOccurs="1" type="grouper:MembershipRequestStatus" />
+			<xsd:element name="Reviewer" minOccurs="1" maxOccurs="1" type="grouper:MemberDescriptor" />
 			<xsd:element name="ReviewTime" minOccurs="1" maxOccurs="1" type="xsd:long" />
 			<xsd:element name="ReviewerNote" minOccurs="1" maxOccurs="1" type="xsd:string" />
 		</xsd:sequence>
 	</xsd:complexType>
+	
 
 	<xsd:element name="StemIdentifier" type="grouper:StemIdentifier" />
 	<xsd:complexType name="StemIdentifier">
@@ -175,7 +177,7 @@
 	<xsd:element name="MembershipRequestUpdate" type="grouper:MembershipRequestUpdate"/>
 	<xsd:complexType name="MembershipRequestUpdate">
 		<xsd:sequence>
-		    <xsd:element name="Status" minOccurs="0" maxOccurs="1" type="grouper:MembershipRequestStatus" />
+		    <xsd:element name="Status" minOccurs="0" maxOccurs="1" type="xsd:string" />
 			<xsd:element name="Note" minOccurs="0" maxOccurs="1" type="xsd:string" />
 		</xsd:sequence>
 	</xsd:complexType>
@@ -196,8 +198,7 @@
    				<xsd:enumeration value="optout"/>
    				<xsd:enumeration value="read"/>	
    				<xsd:enumeration value="update"/>	
-   				<xsd:enumeration value="view"/>	
-   				<xsd:enumeration value="membershiprequest"/>	
+   				<xsd:enumeration value="view"/>
   			</xsd:restriction>
  	  </xsd:simpleType>
  	  
@@ -228,6 +229,7 @@
    				<xsd:enumeration value="Rejected"/>	
   			</xsd:restriction>
  	 </xsd:simpleType>
+
  	 
  	  <xsd:element name="MembershipType" type="grouper:MembershipType"/>
  	   <xsd:simpleType name="MembershipType">

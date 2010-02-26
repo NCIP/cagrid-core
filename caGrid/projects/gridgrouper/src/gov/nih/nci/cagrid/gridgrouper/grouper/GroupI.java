@@ -16,6 +16,8 @@ import edu.internet2.middleware.grouper.RevokePrivilegeException;
 import edu.internet2.middleware.grouper.SchemaException;
 import edu.internet2.middleware.subject.Subject;
 import edu.internet2.middleware.subject.SubjectNotFoundException;
+import gov.nih.nci.cagrid.gridgrouper.bean.MembershipRequestDescriptor;
+import gov.nih.nci.cagrid.gridgrouper.bean.MembershipRequestStatus;
 
 
 /**
@@ -213,9 +215,27 @@ public interface GroupI {
 	public void grantPriv(Subject subj, Privilege priv) throws GrantPrivilegeException, InsufficientPrivilegeException,
 		SchemaException;
 
-
 	public void revokePriv(Subject subj, Privilege priv) throws InsufficientPrivilegeException,
 		RevokePrivilegeException, SchemaException;
+
+	
+	public Set<?> getMembershipRequests();
+	
+	public Set<?> getApprovedMembershipRequests();
+
+	public Set<?> getRejectedMembershipRequests();
+
+	public Set<?> getPendingMembershipRequests();
+
+	public void grantMembershipRequests() throws GrantPrivilegeException,
+			InsufficientPrivilegeException, SchemaException;
+
+	public void revokeMembershipRequests() throws InsufficientPrivilegeException, RevokePrivilegeException,
+			SchemaException;
+	
+	public void requestMembership() throws InsufficientPrivilegeException, MemberAddException;
+	
+	public boolean hasMembershipRequests();
 
 	//
 	// // Not sure if we will support

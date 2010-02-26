@@ -156,8 +156,8 @@ public class GridGrouperImpl {
         return gridGrouper.getMembersGroups(getCallerIdentity(), member, type);
     }
 
-  public void addMembershipRequest(gov.nih.nci.cagrid.gridgrouper.bean.GroupIdentifier group,java.lang.String subject) throws RemoteException {
-      gridGrouper.addMembershipRequest(getCallerIdentity(), group, subject);
+  public void addMembershipRequest(gov.nih.nci.cagrid.gridgrouper.bean.GroupIdentifier group) throws RemoteException {
+      gridGrouper.addMembershipRequest(getCallerIdentity(), group);
       }
 
   public gov.nih.nci.cagrid.gridgrouper.bean.MembershipRequestDescriptor updateMembershipRequest(gov.nih.nci.cagrid.gridgrouper.bean.GroupIdentifier group,java.lang.String subject,gov.nih.nci.cagrid.gridgrouper.bean.MembershipRequestUpdate update) throws RemoteException {
@@ -167,5 +167,13 @@ public class GridGrouperImpl {
   public gov.nih.nci.cagrid.gridgrouper.bean.MembershipRequestDescriptor[] getMembershipRequests(gov.nih.nci.cagrid.gridgrouper.bean.GroupIdentifier group,gov.nih.nci.cagrid.gridgrouper.bean.MembershipRequestStatus status) throws RemoteException {
       return gridGrouper.getMembershipRequests(getCallerIdentity(), group, status);
       }
+
+  public void grantMembershipRequests(gov.nih.nci.cagrid.gridgrouper.bean.GroupIdentifier group) throws RemoteException {
+	  gridGrouper.grantMembershipRequests(getCallerIdentity(), group);
+  }
+
+  public void revokeMembershipRequests(gov.nih.nci.cagrid.gridgrouper.bean.GroupIdentifier group) throws RemoteException {
+	  gridGrouper.revokeMembershipRequests(getCallerIdentity(), group);
+  }
 
 }
