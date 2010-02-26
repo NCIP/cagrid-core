@@ -8,6 +8,7 @@ import gov.nih.nci.system.client.ApplicationServiceProvider;
 import gov.nih.nci.system.query.hibernate.HQLCriteria;
 
 import java.io.InputStream;
+import java.io.StringWriter;
 import java.text.DateFormat;
 import java.util.Date;
 import java.util.Iterator;
@@ -18,13 +19,13 @@ import java.util.Properties;
 
 import javax.xml.namespace.QName;
 
-import org.apache.axis.message.MessageElement;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.cagrid.cacore.sdk4x.cql2.processor.CQL2ToParameterizedHQL;
 import org.cagrid.cacore.sdk4x.cql2.processor.HibernateConfigTypesInformationResolver;
 import org.cagrid.cacore.sdk4x.cql2.processor.ParameterizedHqlQuery;
 import org.cagrid.cacore.sdk4x.cql2.processor.TypesInformationResolver;
+import org.cagrid.cql.utilities.AnyNodeHelper;
 import org.cagrid.cql.utilities.CQLConstants;
 import org.cagrid.cql2.Aggregation;
 import org.cagrid.cql2.CQLQuery;
@@ -36,6 +37,7 @@ import org.cagrid.cql2.results.CQLObjectResult;
 import org.cagrid.cql2.results.CQLQueryResults;
 import org.cagrid.cql2.results.CQLResult;
 import org.cagrid.cql2.results.TargetAttribute;
+import org.exolab.castor.types.AnyNode;
 import org.globus.wsrf.security.SecurityManager;
 import org.hibernate.cfg.Configuration;
 
@@ -180,7 +182,7 @@ public class SDK4CQL2QueryProcessor extends CQL2QueryProcessor {
                 List<Object[]> attributeValues = new LinkedList<Object[]>();
                 // this will happily ignore the last value which is the extra ID attribute
                 cqlResultsIter = wrapAttributeResult(attributeNames, attributeValues);
-            } else if (mods.getCountOnly() != null) {
+            } else if (mods.getCountOnly() != null && mods.getCountOnly().booleanValue()) {
                 LOG.debug("Detected count only aggregate results");
                 Object resultValue = rawResults.size() != 0 ? rawResults.get(0) : null;
                 String valueAsString = attributeValueAsString(resultValue);
@@ -246,10 +248,24 @@ public class SDK4CQL2QueryProcessor extends CQL2QueryProcessor {
 
             public CQLResult next() {
                 CQLObjectResult obj = new CQLObjectResult();
-                MessageElement[] any = new MessageElement[] {
-                    new MessageElement(targetQName, rawObjectIter.next())
-                };
-                obj.set_any(any);
+                Object rawObject = rawObjectIter.next();
+                InputStream wsdd = getConfiguredWsddStream();
+                StringWriter writer = new StringWriter();
+                AnyNode node = null;
+                try {
+                    wsdd.mark(Integer.MAX_VALUE);
+                    Utils.serializeObject(rawObject, targetQName, writer, wsdd);
+                    wsdd.reset();
+                    node = AnyNodeHelper.convertStringToAnyNode(
+                        writer.getBuffer().toString());
+                } catch (Exception ex) {
+                    String message = "Error creating AnyNode for object results: " + ex.getMessage();
+                    LOG.error(message, ex);
+                    NoSuchElementException nse = new NoSuchElementException(message);
+                    nse.initCause(ex);
+                    throw nse;
+                }
+                obj.set_any(node);
                 return obj;
             }
 
