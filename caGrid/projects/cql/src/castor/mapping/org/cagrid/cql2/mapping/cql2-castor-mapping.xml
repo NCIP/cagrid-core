@@ -285,7 +285,7 @@
       <bind-xml name="_any" node="element" />
     </field>
   </class>
-  <!-- extension support -->
+  <!-- extension support 
   <class name="org.cagrid.cql2.extensionsupport.SupportedExtensions">
     <description >Default mapping for class org.cagrid.cql2.extensionsupport.SupportedExtensions</description>
     <map-to xml="SupportedExtensions" ns-uri="http://CQL.caBIG/2/org.cagrid.cql2.extensionsupport" ns-prefix="ext"/>
@@ -302,5 +302,6 @@
       <bind-xml name="ext:ResultExtension" node="element" />
     </field>
   </class>
+  -->
 </mapping>
 

@@ -1,5 +1,4 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <definitions name="CQL_2.0_Beans" xmlns="http://schemas.xmlsoap.org/wsdl/" >
-	<import location="CQLQueryResults.xsd"/>
 	<import location="CQLSupportedExtensions.xsd"/>
 </definitions>

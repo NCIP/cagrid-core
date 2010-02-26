@@ -35,6 +35,7 @@
 	<!-- build output dirs -->
 	<property name="build.dir" location="build" />
 	<property name="build.cql.1.0.stubs.dest" location="${build.dir}/stubs/cql1.0/classes" />
+	<property name="build.cql.2.0.stubs.dest" location="${build.dir}/stubs/cql2.0/classes" />
 	<property name="build.utils.dest" location="${build.dir}/utils/classes"/>
 	<property name="build.cql2.beans.dest" location="${build.dir}/beans/cql2/classes"/>
 	<property name="build.dcql2.beans.dest" location="${build.dir}/beans/dcql2/classes"/>
@@ -64,6 +65,8 @@
 	<property name="globus.schema.src" location="${globus.dir}/share/schema" />
 	<property name="cql.1.0.schema.dest" location="${build.dir}/schema/cql1.0" />
 	<property name="cql.1.0.stubs.src" location="${build.dir}/stubs/cql1.0/source" />
+	<property name="cql.2.0.schema.dest" location="${build.dir}/schema/cql2.0" />
+	<property name="cql.2.0.stubs.src" location="${build.dir}/stubs/cql2.0/source" />
 	<property name="mapping.src" value="${basedir}/NStoPkg.properties" />
 
 	<import file="test/test.xml" />
@@ -87,6 +90,7 @@
 	<path id="test.classpath">
 		<path refid="build.classpath"/>
 		<pathelement location="${build.cql.1.0.stubs.dest}" />
+		<pathelement location="${build.cql.2.0.stubs.dest}" />
 		<pathelement location="${build.cql2.beans.dest}"/>
 		<pathelement location="${build.dcql2.beans.dest}" />
 		<pathelement location="${build.utils.dest}"/>
@@ -109,6 +113,7 @@
 		<mkdir dir="${build.dir}" />
 		<mkdir dir="${build.jars.dir}" />
 		<mkdir dir="${build.cql.1.0.stubs.dest}"/>
+		<mkdir dir="${build.cql.2.0.stubs.dest}"/>
 		<mkdir dir="${build.cql2.beans.dest}"/>
 		<mkdir dir="${build.dcql2.beans.dest}"/>
 		<mkdir dir="${build.utils.dest}"/>
@@ -120,8 +125,14 @@
 				<include name="**/*.wsdl" />
 			</fileset>
 		</copy>
+		<copy toDir="${cql.2.0.schema.dest}">
+			<fileset dir="schema/cql2.0" casesensitive="yes">
+				<include name="**/CQLSupportedExtensions.xsd" />
+				<include name="**/*.wsdl" />
+			</fileset>
+		</copy>		
 	</target>
-
+	
 
 	<!-- merge namespace mappings with globus -->
 	<target name="mergeNsMappings" depends="init">
@@ -143,12 +154,23 @@
 			<property name="wsdl.file" value="CQL1.0-Beans.wsdl" />
 			<property name="target.stubs.dir" location="${cql.1.0.stubs.src}" />
 		</ant>
+		<!-- generate beans for CQL 1.0 -->
+		<ant antfile="${ant.build.stubs}" target="generateStubs">
+			<property name="source.stubs.dir" location="${cql.2.0.schema.dest}" />
+			<property name="wsdl.file" value="CQL2.0-Beans.wsdl" />
+			<property name="target.stubs.dir" location="${cql.2.0.stubs.src}" />
+			<property name="ns.excludes" value="${GT4.ns.excludes} ${cql.2.0.namespace.excludes}" />
+		</ant>	
 	</target>
 
 
 	<!-- compiles the source stubs for the schema defined types -->
 	<target name="compileStubs" depends="stubs, compileBeans">
 		<javac srcdir="${cql.1.0.stubs.src}" destdir="${build.cql.1.0.stubs.dest}" debug="${java.debug}" source="${java.source}">
+			<include name="**/*.java" />
+			<classpath refid="build.classpath"/>
+		</javac>
+		<javac srcdir="${cql.2.0.stubs.src}" destdir="${build.cql.2.0.stubs.dest}" debug="${java.debug}" source="${java.source}">
 			<include name="**/*.java" />
 			<classpath refid="build.classpath"/>
 		</javac>
@@ -178,6 +200,7 @@
 			<classpath refid="build.classpath"/>
 			<classpath>
 				<pathelement location="${build.cql.1.0.stubs.dest}" />
+				<pathelement location="${build.cql.2.0.stubs.dest}" />
 				<pathelement location="${build.cql2.beans.dest}" />
 				<pathelement location="${build.dcql2.beans.dest}" />
 			</classpath>
@@ -205,6 +228,12 @@
 			</fileset>
 		</jar>
 		<jar destfile="${cql.2.0.jar.file}">
+			<fileset dir="${build.cql.2.0.stubs.dest}">
+				<include name="**/*.class"/>
+			</fileset>
+			<fileset dir="${cql.2.0.stubs.src}">
+				<include name="**/*.java"/>
+			</fileset>
 			<fileset dir="${build.cql2.beans.dest}">
 				<include name="**/*.class"/>
 			</fileset>
