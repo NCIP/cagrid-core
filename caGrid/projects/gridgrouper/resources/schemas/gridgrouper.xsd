@@ -177,7 +177,7 @@
 	<xsd:element name="MembershipRequestUpdate" type="grouper:MembershipRequestUpdate"/>
 	<xsd:complexType name="MembershipRequestUpdate">
 		<xsd:sequence>
-		    <xsd:element name="Status" minOccurs="0" maxOccurs="1" type="xsd:string" />
+		    <xsd:element name="Status" minOccurs="0" maxOccurs="1" type="grouper:MembershipRequestStatus" />
 			<xsd:element name="Note" minOccurs="0" maxOccurs="1" type="xsd:string" />
 		</xsd:sequence>
 	</xsd:complexType>
