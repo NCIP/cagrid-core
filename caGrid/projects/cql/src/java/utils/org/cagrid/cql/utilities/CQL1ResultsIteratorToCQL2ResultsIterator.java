@@ -1,30 +1,52 @@
 package org.cagrid.cql.utilities;
 
+import gov.nih.nci.cagrid.common.Utils;
 import gov.nih.nci.cagrid.cqlquery.QueryModifier;
 
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.StringWriter;
 import java.util.Iterator;
+import java.util.NoSuchElementException;
 
 import javax.xml.namespace.QName;
 
-import org.apache.axis.message.MessageElement;
 import org.cagrid.cql2.Aggregation;
 import org.cagrid.cql2.results.CQLAggregateResult;
 import org.cagrid.cql2.results.CQLAttributeResult;
 import org.cagrid.cql2.results.CQLObjectResult;
 import org.cagrid.cql2.results.CQLResult;
 import org.cagrid.cql2.results.TargetAttribute;
+import org.exolab.castor.types.AnyNode;
 
 public class CQL1ResultsIteratorToCQL2ResultsIterator implements Iterator<CQLResult> {
 
     private Iterator<?> cqlResultsIterator = null;
     private QName targetQName = null;
     private QueryModifier queryModifier = null;
-        
+    private ByteArrayInputStream wsddStream = null;
     
-    public CQL1ResultsIteratorToCQL2ResultsIterator(Iterator<?> resultsIterator, QName targetQName, QueryModifier queryModifier) {
+    public CQL1ResultsIteratorToCQL2ResultsIterator(Iterator<?> resultsIterator, QName targetQName, 
+        QueryModifier queryModifier) {
         this.cqlResultsIterator = resultsIterator;
         this.targetQName = targetQName;
         this.queryModifier = queryModifier;
+    }
+    
+    
+    public CQL1ResultsIteratorToCQL2ResultsIterator(Iterator<?> resultsIterator, QName targetQName, 
+        QueryModifier queryModifier, InputStream wsddStream) throws IOException {
+        this.cqlResultsIterator = resultsIterator;
+        this.targetQName = targetQName;
+        this.queryModifier = queryModifier;
+        this.wsddStream = inputStreamToByteArrayStream(wsddStream);
+    }
+    
+    
+    private ByteArrayInputStream inputStreamToByteArrayStream(InputStream stream) throws IOException {
+        byte[] bytes = Utils.inputStreamToStringBuffer(stream).toString().getBytes();
+        return new ByteArrayInputStream(bytes);
     }
 
 
@@ -37,8 +59,23 @@ public class CQL1ResultsIteratorToCQL2ResultsIterator implements Iterator<CQLRes
         CQLResult result = null;
         if (queryModifier == null) {
             // object result
-            MessageElement elem = new MessageElement(targetQName, cqlResultsIterator.next());
-            result = new CQLObjectResult(new MessageElement[] {elem});            
+            Object instance = cqlResultsIterator.next();
+            try {
+                // serialize the object so it can go into an AnyNode
+                StringWriter xmlWriter = new StringWriter();
+                if (wsddStream == null) {
+                    Utils.serializeObject(instance, targetQName, xmlWriter);
+                } else {
+                    wsddStream.reset();
+                    Utils.serializeObject(instance, targetQName, xmlWriter, wsddStream);
+                }
+                AnyNode node = AnyNodeHelper.convertStringToAnyNode(xmlWriter.toString());
+                result = new CQLObjectResult(node);
+            } catch (Exception ex) {
+                NoSuchElementException nse = new NoSuchElementException("Unable to convert object to AnyNode: " + ex.getMessage());
+                nse.initCause(ex);
+                throw nse;
+            }
         } else {
             if (queryModifier.isCountOnly()) {
                 String value = String.valueOf(cqlResultsIterator.next());

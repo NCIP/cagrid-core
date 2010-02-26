@@ -1,5 +1,10 @@
 package org.cagrid.cql.utilities;
 
+import gov.nih.nci.cagrid.common.Utils;
+
+import java.io.ByteArrayInputStream;
+import java.io.InputStream;
+import java.io.StringWriter;
 import java.text.DateFormat;
 import java.util.Collection;
 import java.util.Date;
@@ -8,13 +13,13 @@ import java.util.List;
 
 import javax.xml.namespace.QName;
 
-import org.apache.axis.message.MessageElement;
 import org.cagrid.cql2.Aggregation;
 import org.cagrid.cql2.results.CQLAggregateResult;
 import org.cagrid.cql2.results.CQLAttributeResult;
 import org.cagrid.cql2.results.CQLObjectResult;
 import org.cagrid.cql2.results.CQLQueryResults;
 import org.cagrid.cql2.results.TargetAttribute;
+import org.exolab.castor.types.AnyNode;
 
 /**
  * CQL2ResultsCreationUtil
@@ -38,9 +43,17 @@ public class CQL2ResultsCreationUtil {
      *      The classname of the target data type which generated these results
      * @param targetQName
      *      The QName of the target data type which generated these results
+     * @param wsddStream
+     *      <b>Optional</b> stream to the client or server config.wsdd for custom serialization
      * @return
      */
-    public static CQLQueryResults createObjectResults(Collection<?> data, String targetClassname, QName targetQName) {
+    public static CQLQueryResults createObjectResults(Collection<?> data, String targetClassname, QName targetQName, 
+        InputStream wsddStream) throws Exception {
+        ByteArrayInputStream reusableWsdd = null;
+        if (wsddStream != null) {
+            reusableWsdd = new ByteArrayInputStream(Utils.inputStreamToStringBuffer(
+                wsddStream).toString().getBytes());
+        }
         CQLQueryResults results = new CQLQueryResults();
         results.setTargetClassname(targetClassname);
         // pushing everything into a list instead of an array to avoid calling .size() on
@@ -49,10 +62,15 @@ public class CQL2ResultsCreationUtil {
         // on some of these implementations causes everything to be loaded at once.
         List<CQLObjectResult> objectResults = new LinkedList<CQLObjectResult>();
         for (Object o : data) {
-            MessageElement[] objectElement = new MessageElement[] {
-                new MessageElement(targetQName, o)
-            };
-            CQLObjectResult object = new CQLObjectResult(objectElement);
+            reusableWsdd.reset();
+            StringWriter writer = new StringWriter();
+            if (reusableWsdd != null) {
+                Utils.serializeObject(o, targetQName, writer, reusableWsdd);
+            } else {
+                Utils.serializeObject(o, targetQName, writer);   
+            }
+            AnyNode node = AnyNodeHelper.convertStringToAnyNode(writer.getBuffer().toString());
+            CQLObjectResult object = new CQLObjectResult(node);
             objectResults.add(object);
         }
         // back to an array

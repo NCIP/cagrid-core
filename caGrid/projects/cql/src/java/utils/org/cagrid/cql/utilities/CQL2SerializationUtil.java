@@ -24,13 +24,16 @@ import org.cagrid.cql2.CQLTargetObject;
  */
 public class CQL2SerializationUtil {
     
+    public static final String CLIENT_CONFIG_LOCATION = "/org/cagrid/cql2/mapping/client-config.wsdd";
+
+
     private CQL2SerializationUtil() {
         // just static methods
     }
     
     
     public static void serializeCql2Query(CQLQuery query, Writer writer) throws Exception {
-        InputStream wsddStream = CQL2SerializationUtil.class.getResourceAsStream("/org/cagrid/cql2/mapping/client-config.wsdd");
+        InputStream wsddStream = CQL2SerializationUtil.class.getResourceAsStream(CLIENT_CONFIG_LOCATION);
         Utils.serializeObject(query, CQLConstants.CQL2_QUERY_QNAME, writer, wsddStream);
         wsddStream.close();
     }
@@ -49,7 +52,7 @@ public class CQL2SerializationUtil {
     
     
     public static CQLQuery deserializeCql2Query(Reader reader) throws Exception {
-        InputStream wsddStream = CQL2SerializationUtil.class.getResourceAsStream("/org/cagrid/cql2/mapping/client-config.wsdd");
+        InputStream wsddStream = CQL2SerializationUtil.class.getResourceAsStream(CLIENT_CONFIG_LOCATION);
         CQLQuery query = Utils.deserializeObject(reader, CQLQuery.class, wsddStream);
         return query;
     }

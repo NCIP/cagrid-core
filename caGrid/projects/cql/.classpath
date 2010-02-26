@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
 	<classpathentry kind="src" path="build/stubs/cql1.0/source"/>
-	<classpathentry kind="src" path="build/stubs/cql2.0/source"/>
-	<classpathentry kind="src" path="build/stubs/dcql2.0/source"/>
 	<classpathentry kind="src" path="src/java/beans/cql2"/>
+	<classpathentry kind="src" path="src/java/beans/dcql2"/>
 	<classpathentry kind="src" path="src/java/utils"/>
 	<classpathentry kind="src" path="test/src/java"/>
+	<classpathentry kind="src" path="src/castor/mapping"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="var" path="GT4_LOCATION/lib/addressing-1.0.jar"/>
 	<classpathentry kind="var" path="GT4_LOCATION/lib/axis.jar"/>
@@ -79,6 +79,6 @@
 	<classpathentry kind="lib" path="ext/dependencies/impl/jars/caGrid-metadata-data-1.4-dev.jar"/>
 	<classpathentry kind="lib" path="ext/dependencies/impl/jars/caGrid-metadatautils-1.4-dev.jar"/>
 	<classpathentry kind="lib" path="ext/dependencies/impl/jars/jdom-1.0.jar"/>
-	<classpathentry kind="lib" path="ext/dependencies/utils/jars/castor-1.0.2.jar"/>
+	<classpathentry kind="lib" path="ext/dependencies/utils/jars/castor-1.0.2.jar" sourcepath="C:/Users/David/Downloads/Castor/castor-1.0.2/src/main/java"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

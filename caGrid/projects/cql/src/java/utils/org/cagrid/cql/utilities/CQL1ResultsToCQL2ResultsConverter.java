@@ -6,6 +6,7 @@ import org.cagrid.cql2.results.CQLAttributeResult;
 import org.cagrid.cql2.results.CQLObjectResult;
 import org.cagrid.cql2.results.CQLQueryResults;
 import org.cagrid.cql2.results.TargetAttribute;
+import org.exolab.castor.types.AnyNode;
 
 /**
  * Utility to convert CQL 1 to CQL 2 query results
@@ -19,7 +20,7 @@ public class CQL1ResultsToCQL2ResultsConverter {
     }
     
     
-    public static CQLQueryResults convertResults(gov.nih.nci.cagrid.cqlresultset.CQLQueryResults cqlResults) {
+    public static CQLQueryResults convertResults(gov.nih.nci.cagrid.cqlresultset.CQLQueryResults cqlResults) throws ResultsConversionException {
         CQLQueryResults newResults = new CQLQueryResults();
         newResults.setTargetClassname(cqlResults.getTargetClassname());
         if (cqlResults.getObjectResult() != null) {
@@ -45,9 +46,16 @@ public class CQL1ResultsToCQL2ResultsConverter {
     }
     
     
-    private static CQLObjectResult convertObjectResult(gov.nih.nci.cagrid.cqlresultset.CQLObjectResult oldObjectResult) {
+    private static CQLObjectResult convertObjectResult(gov.nih.nci.cagrid.cqlresultset.CQLObjectResult oldObjectResult)
+        throws ResultsConversionException {
         CQLObjectResult newObjectResult = new CQLObjectResult();
-        newObjectResult.set_any(oldObjectResult.get_any());
+        AnyNode node = null;
+        try {
+            node = AnyNodeHelper.convertMessageElementToAnyNode(oldObjectResult.get_any()[0]);
+        } catch (Exception ex) {
+            throw new ResultsConversionException("Error converting object result: " + ex.getMessage(), ex);
+        }
+        newObjectResult.set_any(node);
         return newObjectResult;
     }
     

@@ -28,15 +28,16 @@
 	<!-- source dirs -->
 	<property name="utils.src.dir" location="${basedir}/src/java/utils"/>
 	<property name="cql2.beans.src.dir" location="${basedir}/src/java/beans/cql2"/>
+	<property name="dcql2.beans.src.dir" location="${basedir}/src/java/beans/dcql2"/>
+	<property name="castor.mapping.src.dir" location="${basedir}/src/castor/mapping"/>
 	<property name="test.src.dir" location="${basedir}/test/src/java" />
 
 	<!-- build output dirs -->
 	<property name="build.dir" location="build" />
 	<property name="build.cql.1.0.stubs.dest" location="${build.dir}/stubs/cql1.0/classes" />
-	<property name="build.cql.2.0.stubs.dest" location="${build.dir}/stubs/cql2.0/classes" />
-	<property name="build.dcql.2.0.stubs.dest" location="${build.dir}/stubs/dcql2.0/classes"/>
 	<property name="build.utils.dest" location="${build.dir}/utils/classes"/>
 	<property name="build.cql2.beans.dest" location="${build.dir}/beans/cql2/classes"/>
+	<property name="build.dcql2.beans.dest" location="${build.dir}/beans/dcql2/classes"/>
 	<property name="build.test.dest" location="${build.dir}/test/classes" />
 	<property name="build.jars.dir" location="build/lib" />
 
@@ -45,6 +46,7 @@
 	<property name="cql.2.0.jar.name" value="${project.jar.prefix}cql.2.0${project.jar.suffix}" />
 	<property name="dcql.2.0.jar.name" value="${project.jar.prefix}dcql.2.0${project.jar.suffix}" />
 	<property name="utils.jar.name" value="${project.jar.prefix}utils${project.jar.suffix}"/>
+	<property name="castor.mapping.jar.name" value="${project.jar.prefix}mappings${project.jar.suffix}"/>
 	<property name="test.jar.name" value="${project.jar.prefix}tests${project.jar.suffix}" />
 
 	<!-- jar files -->
@@ -52,6 +54,7 @@
 	<property name="cql.2.0.jar.file" value="${build.jars.dir}/${cql.2.0.jar.name}" />
 	<property name="dcql.2.0.jar.file" value="${build.jars.dir}/${dcql.2.0.jar.name}" />
 	<property name="utils.jar.file" value="${build.jars.dir}/${utils.jar.name}"/>
+	<property name="castor.mapping.jar.file" value="${build.jars.dir}/${castor.mapping.jar.name}"/>
 	<property name="test.jar.file" value="${build.jars.dir}/${test.jar.name}" />
 
 	<!-- build file for stub generation -->
@@ -60,11 +63,7 @@
 	<!-- schemas and namespace mappings -->
 	<property name="globus.schema.src" location="${globus.dir}/share/schema" />
 	<property name="cql.1.0.schema.dest" location="${build.dir}/schema/cql1.0" />
-	<property name="cql.2.0.schema.dest" location="${build.dir}/schema/cql2.0" />
-	<property name="dcql.2.0.schema.dest" location="${build.dir}/schema/dcql2.0" />
 	<property name="cql.1.0.stubs.src" location="${build.dir}/stubs/cql1.0/source" />
-	<property name="cql.2.0.stubs.src" location="${build.dir}/stubs/cql2.0/source" />
-	<property name="dcql.2.0.stubs.src" location="${build.dir}/stubs/dcql2.0/source" />
 	<property name="mapping.src" value="${basedir}/NStoPkg.properties" />
 
 	<import file="test/test.xml" />
@@ -88,9 +87,8 @@
 	<path id="test.classpath">
 		<path refid="build.classpath"/>
 		<pathelement location="${build.cql.1.0.stubs.dest}" />
-		<pathelement location="${build.cql.2.0.stubs.dest}" />
 		<pathelement location="${build.cql2.beans.dest}"/>
-		<pathelement location="${build.dcql.2.0.stubs.dest}" />
+		<pathelement location="${build.dcql2.beans.dest}" />
 		<pathelement location="${build.utils.dest}"/>
 	</path>
 
@@ -110,10 +108,9 @@
 	<target name="init">
 		<mkdir dir="${build.dir}" />
 		<mkdir dir="${build.jars.dir}" />
-		<mkdir dir="${build.cql.1.0.stubs.dest}" />
-		<mkdir dir="${build.cql.2.0.stubs.dest}" />
+		<mkdir dir="${build.cql.1.0.stubs.dest}"/>
 		<mkdir dir="${build.cql2.beans.dest}"/>
-		<mkdir dir="${build.dcql.2.0.stubs.dest}" />
+		<mkdir dir="${build.dcql2.beans.dest}"/>
 		<mkdir dir="${build.utils.dest}"/>
 		<mkdir dir="${build.test.dest}" />
 		<!-- copy schemas to the output directory -->
@@ -121,22 +118,6 @@
 			<fileset dir="schema/cql1.0" casesensitive="yes">
 				<include name="**/*.xsd" />
 				<include name="**/*.wsdl" />
-			</fileset>
-		</copy>
-		<copy toDir="${cql.2.0.schema.dest}">
-			<fileset dir="schema/cql2.0" casesensitive="yes">
-				<include name="**/*.xsd" />
-				<include name="**/*.wsdl" />
-			</fileset>
-		</copy>
-		<copy toDir="${dcql.2.0.schema.dest}">
-			<fileset dir="schema/dcql2.0" casesensitive="yes">
-				<include name="**/*.xsd" />
-				<include name="**/*.wsdl" />
-			</fileset>
-			<!-- DCQL depends on CQL, so copy those schemas in too -->
-			<fileset dir="schema/cql2.0" casesensitive="yes">
-				<include name="**/*.xsd"/>
 			</fileset>
 		</copy>
 	</target>
@@ -162,20 +143,6 @@
 			<property name="wsdl.file" value="CQL1.0-Beans.wsdl" />
 			<property name="target.stubs.dir" location="${cql.1.0.stubs.src}" />
 		</ant>
-		<!-- generate beans for CQL 2.0 -->
-		<ant antfile="${ant.build.stubs}" target="generateStubs">
-			<property name="source.stubs.dir" location="${cql.2.0.schema.dest}" />
-			<property name="wsdl.file" value="CQL2.0-Beans.wsdl" />
-			<property name="target.stubs.dir" location="${cql.2.0.stubs.src}" />
-			<property name="ns.excludes" value="-x http://CQL.caBIG/2/org.cagrid.cql2"/>
-		</ant>
-		<!-- generate beans for DCQL 2.0 -->
-		<ant antfile="${ant.build.stubs}" target="generateStubs">
-			<property name="source.stubs.dir" location="${dcql.2.0.schema.dest}" />
-			<property name="wsdl.file" value="DCQL2.0-Beans.wsdl" />
-			<property name="target.stubs.dir" location="${dcql.2.0.stubs.src}" />
-			<property name="ns.excludes" value="${cql.2.0.namespace.excludes}" />
-		</ant>
 	</target>
 
 
@@ -185,21 +152,6 @@
 			<include name="**/*.java" />
 			<classpath refid="build.classpath"/>
 		</javac>
-		<javac srcdir="${cql.2.0.stubs.src}" destdir="${build.cql.2.0.stubs.dest}" debug="${java.debug}" source="${java.source}">
-			<include name="**/*.java" />
-			<classpath refid="build.classpath"/>
-			<classpath>
-				<pathelement location="${build.cql2.beans.dest}"/>
-			</classpath>
-		</javac>
-		<javac srcdir="${dcql.2.0.stubs.src}" destdir="${build.dcql.2.0.stubs.dest}" debug="${java.debug}" source="${java.source}">
-			<include name="**/*.java" />
-			<classpath refid="build.classpath"/>
-			<classpath>
-				<pathelement location="${build.cql2.beans.dest}"/>
-				<pathelement location="${build.cql.2.0.stubs.dest}"/>
-			</classpath>
-		</javac>
 	</target>
 	
 	
@@ -208,6 +160,13 @@
 		<javac srcdir="${cql2.beans.src.dir}" destdir="${build.cql2.beans.dest}" debug="${java.debug}" source="${java.source}">
 			<include name="**/*.java"/>
 			<classpath refid="build.classpath"/>
+		</javac>
+		<javac srcdir="${dcql2.beans.src.dir}" destdir="${build.dcql2.beans.dest}" debug="${java.debug}" source="${java.source}">
+			<include name="**/*.java"/>
+			<classpath refid="build.classpath"/>
+			<classpath>
+				<pathelement path="${build.cql2.beans.dest}"/>
+			</classpath>
 		</javac>
 	</target>
 
@@ -219,9 +178,8 @@
 			<classpath refid="build.classpath"/>
 			<classpath>
 				<pathelement location="${build.cql.1.0.stubs.dest}" />
-				<pathelement location="${build.cql.2.0.stubs.dest}" />
 				<pathelement location="${build.cql2.beans.dest}" />
-				<pathelement location="${build.dcql.2.0.stubs.dest}" />
+				<pathelement location="${build.dcql2.beans.dest}" />
 			</classpath>
 		</javac>
 	</target>
@@ -247,12 +205,6 @@
 			</fileset>
 		</jar>
 		<jar destfile="${cql.2.0.jar.file}">
-			<fileset dir="${build.cql.2.0.stubs.dest}">
-				<include name="**/*.class" />
-			</fileset>
-			<fileset dir="${cql.2.0.stubs.src}">
-				<include name="**/*.java" />
-			</fileset>
 			<fileset dir="${build.cql2.beans.dest}">
 				<include name="**/*.class"/>
 			</fileset>
@@ -261,11 +213,11 @@
 			</fileset>
 		</jar>
 		<jar destfile="${dcql.2.0.jar.file}">
-			<fileset dir="${build.dcql.2.0.stubs.dest}">
+			<fileset dir="${build.dcql2.beans.dest}">
 				<include name="**/*.class" />
 			</fileset>
-			<fileset dir="${dcql.2.0.stubs.src}">
-				<include name="**/*.java" />
+			<fileset dir="${dcql2.beans.src.dir}">
+				<include name="**/*" />
 			</fileset>
 		</jar>
 		<jar destfile="${utils.jar.file}">
@@ -274,6 +226,11 @@
 			</fileset>
 			<fileset dir="${utils.src.dir}">
 				<include name="**/*.java"/>
+			</fileset>
+		</jar>
+		<jar destfile="${castor.mapping.jar.file}">
+			<fileset dir="${castor.mapping.src.dir}">
+				<include name="**/*"/>
 			</fileset>
 		</jar>
 		<jar destfile="${test.jar.file}">

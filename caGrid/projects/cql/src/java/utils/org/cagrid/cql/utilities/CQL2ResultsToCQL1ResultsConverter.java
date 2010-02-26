@@ -1,13 +1,14 @@
 package org.cagrid.cql.utilities;
 
-import org.apache.axis.message.MessageElement;
-import org.cagrid.cql2.Aggregation;
-
 import gov.nih.nci.cagrid.cqlresultset.CQLAttributeResult;
 import gov.nih.nci.cagrid.cqlresultset.CQLCountResult;
 import gov.nih.nci.cagrid.cqlresultset.CQLObjectResult;
 import gov.nih.nci.cagrid.cqlresultset.CQLQueryResults;
 import gov.nih.nci.cagrid.cqlresultset.TargetAttribute;
+
+import org.apache.axis.message.MessageElement;
+import org.cagrid.cql2.Aggregation;
+import org.exolab.castor.types.AnyNode;
 
 public class CQL2ResultsToCQL1ResultsConverter {
 
@@ -46,8 +47,14 @@ public class CQL2ResultsToCQL1ResultsConverter {
     
     private static CQLObjectResult convertObjectResult(org.cagrid.cql2.results.CQLObjectResult newObject) throws ResultsConversionException {
         CQLObjectResult oldObject = new CQLObjectResult();
-        MessageElement elem = newObject.get_any()[0];
+        AnyNode node = (AnyNode) newObject.get_any();
         // TODO: verify no associations populated        
+        MessageElement elem = null;
+        try {
+            elem = AnyNodeHelper.convertAnyNodeToMessageElement(node);
+        } catch (Exception e) {
+            throw new ResultsConversionException("Error converting object result: " + e.getMessage(), e);
+        }
         oldObject.set_any(new MessageElement[] {elem});
         return oldObject;
     }

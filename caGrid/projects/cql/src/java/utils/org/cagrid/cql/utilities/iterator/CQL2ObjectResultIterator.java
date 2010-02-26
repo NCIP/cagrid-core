@@ -8,7 +8,6 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.StringReader;
-import java.io.StringWriter;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
@@ -16,10 +15,9 @@ import org.apache.axis.AxisEngine;
 import org.apache.axis.EngineConfiguration;
 import org.apache.axis.MessageContext;
 import org.apache.axis.configuration.FileProvider;
-import org.apache.axis.encoding.SerializationContext;
-import org.apache.axis.message.MessageElement;
 import org.apache.axis.server.AxisServer;
 import org.cagrid.cql2.results.CQLObjectResult;
+import org.exolab.castor.types.AnyNode;
 import org.xml.sax.InputSource;
 
 
@@ -68,9 +66,9 @@ public class CQL2ObjectResultIterator implements Iterator<Object> {
             throw new NoSuchElementException();
         }
         currentIndex++;
-        MessageElement element = results[currentIndex].get_any()[0];
+        AnyNode node = (AnyNode) results[currentIndex].get_any();
         try {
-            String documentString = serializeMessageElement(element);
+            String documentString = node.getStringValue();
             if (xmlOnly) {
                 return documentString;
             }
@@ -115,19 +113,6 @@ public class CQL2ObjectResultIterator implements Iterator<Object> {
             }
         }
         return objectClass;
-    }
-
-
-    private String serializeMessageElement(MessageElement element) throws Exception {
-        StringWriter writer = new StringWriter();
-        // create a serialization context to use the new message context
-        SerializationContext serializationContext = new SerializationContext(writer, getMessageContext());
-
-        serializationContext.setPretty(false);
-
-        element.output(serializationContext);
-
-        return writer.getBuffer().toString();
     }
 
 

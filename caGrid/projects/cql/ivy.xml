@@ -13,10 +13,11 @@
     <conf name="impl" visibility="private" extends="utils" />
     
     <!-- Jars -->
+    <conf name="mappings" visibility="public"/>
     <conf name="cql" visibility="public"/>
-    <conf name="cql2" visibility="public"/>
-    <conf name="dcql2" visibility="public" extends="cql2"/>
-    <conf name="utils" visibility="public" extends="cql,cql2,dcql2" />
+    <conf name="cql2" visibility="public" extends="mappings"/>
+    <conf name="dcql2" visibility="public" extends="cql2,mappings"/>
+    <conf name="utils" visibility="public" extends="cql,cql2,dcql2,mappings" />
     
     <!-- Schemas-->
     <conf name="schemas" visibility="public" extends="cql-schemas,cql2-schemas,dcql2-schemas"/>
@@ -35,6 +36,9 @@
     <artifact name="caGrid-CQL-cql.1.0" conf="cql" type="jar"/>
     <artifact name="caGrid-CQL-cql.2.0" conf="cql2" type="jar"/>
     <artifact name="caGrid-CQL-dcql.2.0" conf="dcql2" type="jar"/>
+    
+    <!-- mappings jar -->
+    <artifact name="caGrid-CQL-mappings" conf="mappings" type="jar"/>
     
     <!-- utils jar -->
     <artifact name="caGrid-CQL-utils" conf="utils" type="jar"/>

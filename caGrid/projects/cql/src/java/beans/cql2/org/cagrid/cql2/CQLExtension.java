@@ -32,7 +32,7 @@ public class CQLExtension implements java.io.Serializable {
      * 
      * @return _any
      */
-    public AnyNode get_any() {
+    public Object get_any() {
         return _any;
     }
 
@@ -87,12 +87,7 @@ public class CQLExtension implements java.io.Serializable {
     public synchronized int hashCode() {
         int _hashCode = 1;
         if (get_any() != null) {
-            for (int i = 0; i < java.lang.reflect.Array.getLength(get_any()); i++) {
-                java.lang.Object obj = java.lang.reflect.Array.get(get_any(), i);
-                if (obj != null && !obj.getClass().isArray()) {
-                    _hashCode += obj.hashCode();
-                }
-            }
+            _hashCode += get_any().hashCode();
         }
         if (getMustUnderstand() != null) {
             _hashCode += getMustUnderstand().hashCode();

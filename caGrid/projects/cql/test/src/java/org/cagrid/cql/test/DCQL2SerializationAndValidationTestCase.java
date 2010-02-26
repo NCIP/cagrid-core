@@ -14,44 +14,37 @@ import junit.framework.TestResult;
 import junit.framework.TestSuite;
 import junit.textui.TestRunner;
 
-import org.cagrid.cql.utilities.AnyNodeHelper;
-import org.cagrid.cql.utilities.CQLConstants;
-import org.cagrid.cql2.Aggregation;
+import org.cagrid.cql.utilities.DCQL2Constants;
+import org.cagrid.cql.utilities.DCQL2SerializationUtil;
 import org.cagrid.cql2.AttributeValue;
 import org.cagrid.cql2.BinaryPredicate;
-import org.cagrid.cql2.CQLAssociatedObject;
 import org.cagrid.cql2.CQLAttribute;
-import org.cagrid.cql2.CQLGroup;
-import org.cagrid.cql2.CQLQuery;
-import org.cagrid.cql2.CQLTargetObject;
 import org.cagrid.cql2.GroupLogicalOperator;
 import org.cagrid.cql2.UnaryPredicate;
-import org.cagrid.cql2.extensionsupport.SupportedExtensions;
-import org.cagrid.cql2.results.CQLAggregateResult;
-import org.cagrid.cql2.results.CQLAttributeResult;
-import org.cagrid.cql2.results.CQLObjectResult;
-import org.cagrid.cql2.results.CQLQueryResults;
-import org.cagrid.cql2.results.TargetAttribute;
-import org.exolab.castor.types.AnyNode;
+import org.cagrid.data.dcql.DCQLAssociatedObject;
+import org.cagrid.data.dcql.DCQLGroup;
+import org.cagrid.data.dcql.DCQLObject;
+import org.cagrid.data.dcql.DCQLQuery;
+import org.cagrid.data.dcql.results.DCQLQueryResultsCollection;
 
-public class CQL2SerializationAndValidationTestCase extends TestCase {
+public class DCQL2SerializationAndValidationTestCase extends TestCase {
     
     private SchemaValidator queryValidator = null;
     private SchemaValidator resultsValidator = null;
     private InputStream wsddStream = null;
     
-    public CQL2SerializationAndValidationTestCase(String name) {
+    public DCQL2SerializationAndValidationTestCase(String name) {
         super(name);
     }
     
     
     public void setUp() {
-        File cql2Xsd = new File("schema/cql2.0/CQLQueryComponents.xsd");
-        File resultsXsd = new File("schema/cql2.0/CQLQueryResults.xsd");
-        assertTrue(cql2Xsd.exists());
+        File dcql2Xsd = new File("schema/dcql2.0/DCQL_2.0.xsd");
+        File resultsXsd = new File("schema/dcql2.0/DCQLResults_2.0.xsd");
+        assertTrue(dcql2Xsd.exists());
         assertTrue(resultsXsd.exists());
         try {
-            String queryPath = cql2Xsd.getCanonicalPath();
+            String queryPath = dcql2Xsd.getCanonicalPath();
             queryValidator = new SchemaValidator(queryPath);
             String resultsPath = resultsXsd.getAbsolutePath();
             resultsValidator = new SchemaValidator(resultsPath);
@@ -59,8 +52,8 @@ public class CQL2SerializationAndValidationTestCase extends TestCase {
             ex.printStackTrace();
             fail("Error setting up schema validator: " + ex.getMessage());
         }
-        wsddStream = getClass().getResourceAsStream("/org/cagrid/cql2/mapping/client-config.wsdd");
-        assertNotNull("Could not load CQL 2 client config", wsddStream);
+        wsddStream = getClass().getResourceAsStream(DCQL2SerializationUtil.CLIENT_CONFIG_LOCATION);
+        assertNotNull("Could not load DCQL 2 client config", wsddStream);
     }
     
     
@@ -74,14 +67,14 @@ public class CQL2SerializationAndValidationTestCase extends TestCase {
     }
     
     
-    private void validate(CQLQuery query) {
+    private void validate(DCQLQuery query) {
         // serialize
         StringWriter writer = new StringWriter();
         try {
-            Utils.serializeObject(query, CQLConstants.CQL2_QUERY_QNAME, writer, wsddStream);
+            Utils.serializeObject(query, DCQL2Constants.DCQL2_QUERY_QNAME, writer, wsddStream);
         } catch (Exception ex) {
             ex.printStackTrace();
-            fail("Error serializing CQL 2 query: " + ex.getMessage());
+            fail("Error serializing DCQL 2 query: " + ex.getMessage());
         }
         String text = writer.getBuffer().toString();
         // validate
@@ -90,19 +83,19 @@ public class CQL2SerializationAndValidationTestCase extends TestCase {
         } catch (SchemaValidationException ex) {
             ex.printStackTrace();
             System.err.println(text);
-            fail("Error validating serialized CQL 2 query: " + ex.getMessage());
+            fail("Error validating serialized DCQL 2 query: " + ex.getMessage());
         }
     }
     
     
-    private void validate(CQLQueryResults results) {
+    private void validate(DCQLQueryResultsCollection results) {
         // serialize
         StringWriter writer = new StringWriter();
         try {
-            Utils.serializeObject(results, CQLConstants.CQL2_RESULTS_QNAME, writer, wsddStream);
+            Utils.serializeObject(results, DCQL2Constants.DCQL2_RESULTS_QNAME, writer, wsddStream);
         } catch (Exception ex) {
             ex.printStackTrace();
-            fail("Error serializing CQL 2 results: " + ex.getMessage());
+            fail("Error serializing DCQL 2 results: " + ex.getMessage());
         }
         String text = writer.getBuffer().toString();
         // validate
@@ -111,44 +104,49 @@ public class CQL2SerializationAndValidationTestCase extends TestCase {
         } catch (SchemaValidationException ex) {
             ex.printStackTrace();
             System.err.println(text);
-            fail("Error validating serialized CQL 2 results: " + ex.getMessage());
+            fail("Error validating serialized DCQL 2 results: " + ex.getMessage());
         }
     }
     
     
     public void testTargetOnly() {
-        CQLQuery query = new CQLQuery();
-        CQLTargetObject target = new CQLTargetObject();
-        target.setClassName("foo.bar");
-        target.set_instanceof("zor");
-        query.setCQLTargetObject(target);
+        DCQLQuery query = new DCQLQuery();
+        DCQLObject target = new DCQLObject();
+        target.setName("foo.bar");
+        query.setTargetObject(target);
+        query.setTargetServiceURL(new String[] {"http://fake.com"});
         
         validate(query);
     }
     
     
     public void testTargetWithBinaryPredicateAttribute() {
-        CQLQuery query = new CQLQuery();
-        CQLTargetObject target = new CQLTargetObject();
-        target.setClassName("foo.bar");
+        DCQLQuery query = new DCQLQuery();
+        DCQLObject target = new DCQLObject();
+        target.setName("foo.bar");
         target.set_instanceof("zor");
+        query.setTargetObject(target);
+        
         CQLAttribute attribute = new CQLAttribute();
         attribute.setName("word");
         attribute.setBinaryPredicate(BinaryPredicate.EQUAL_TO);
         AttributeValue value = new AttributeValue();
         value.setStringValue("hello");
         attribute.setAttributeValue(value);
-        target.setCQLAttribute(attribute);
-        query.setCQLTargetObject(target);
+        target.setAttribute(attribute);
+        
+        query.setTargetObject(target);
+        
+        query.setTargetServiceURL(new String[] {"http://fake.com"});
         
         validate(query);
     }
     
     
     public void testGroupOfAttributes() {
-        CQLQuery query = new CQLQuery();
-        CQLTargetObject target = new CQLTargetObject();
-        target.setClassName("foo.bar");
+        DCQLQuery query = new DCQLQuery();
+        DCQLObject target = new DCQLObject();
+        target.setName("foo.bar");
         target.set_instanceof("zor");
         
         CQLAttribute a1 = new CQLAttribute();
@@ -165,108 +163,117 @@ public class CQL2SerializationAndValidationTestCase extends TestCase {
         value2.setStringValue("the word");
         a2.setAttributeValue(value2);
         
-        CQLGroup group = new CQLGroup();
+        DCQLGroup group = new DCQLGroup();
         group.setLogicalOperation(GroupLogicalOperator.AND);
-        group.setCQLAttribute(new CQLAttribute[] {a1, a2});
+        group.setAttribute(new CQLAttribute[] {a1, a2});
+        target.setGroup(group);
         
-        target.setCQLGroup(group);
-        query.setCQLTargetObject(target);
+        query.setTargetObject(target);
+        query.setTargetServiceURL(new String[] {"http://fake.com"});
         
         validate(query);
     }
     
     
     public void testAssociation() {
-        CQLQuery query = new CQLQuery();
-        CQLTargetObject target = new CQLTargetObject();
-        target.setClassName("foo.bar");
+        DCQLQuery query = new DCQLQuery();
+        DCQLObject target = new DCQLObject();
+        target.setName("foo.bar");
         target.set_instanceof("zor");
-        CQLAssociatedObject assoc = new CQLAssociatedObject();
-        assoc.setClassName("abc.def");
+        
+        DCQLAssociatedObject assoc = new DCQLAssociatedObject();
+        assoc.setName("abc.def");
         CQLAttribute haveYouHeard = new CQLAttribute();
         haveYouHeard.setName("bird");
         haveYouHeard.setBinaryPredicate(BinaryPredicate.EQUAL_TO);
         AttributeValue value2 = new AttributeValue();
         value2.setStringValue("the word");
         haveYouHeard.setAttributeValue(value2);
-        assoc.setCQLAttribute(haveYouHeard);
-        target.setCQLAssociatedObject(assoc);
-        query.setCQLTargetObject(target);
+        assoc.setAttribute(haveYouHeard);
+        
+        target.setAssociatedObject(assoc);
+        
+        query.setTargetObject(target);
+        query.setTargetServiceURL(new String[] {"http://fake.com"});
         
         validate(query);
     }
     
     
     public void testNestedAssociations() {
-        CQLQuery query = new CQLQuery();
-        CQLTargetObject target = new CQLTargetObject();
-        target.setClassName("foo.bar");
+        DCQLQuery query = new DCQLQuery();
+        DCQLObject target = new DCQLObject();
+        target.setName("foo.bar");
         target.set_instanceof("zor");
         
-        CQLAssociatedObject assoc = new CQLAssociatedObject();
-        assoc.setClassName("abc.def");
+        DCQLAssociatedObject assoc = new DCQLAssociatedObject();
+        assoc.setName("abc.def");
         
-        CQLAssociatedObject nested = new CQLAssociatedObject();
-        nested.setClassName("lol.idk");
+        DCQLAssociatedObject nested = new DCQLAssociatedObject();
+        nested.setName("lol.idk");
         
-        assoc.setCQLAssociatedObject(nested);
-        target.setCQLAssociatedObject(assoc);
-        query.setCQLTargetObject(target);
+        assoc.setAssociatedObject(nested);
+        target.setAssociatedObject(assoc);
+        query.setTargetObject(target);
+        
+        query.setTargetServiceURL(new String[] {"http://fake.com"});
         
         validate(query);
     }
     
     
     public void testGroupedAssociations() {
-        CQLQuery query = new CQLQuery();
-        CQLTargetObject target = new CQLTargetObject();
-        target.setClassName("foo.bar");
+        DCQLQuery query = new DCQLQuery();
+        DCQLObject target = new DCQLObject();
+        target.setName("foo.bar");
         target.set_instanceof("zor");
         
-        CQLAssociatedObject assoc1 = new CQLAssociatedObject();
-        assoc1.setClassName("abc.def");
+        DCQLAssociatedObject assoc1 = new DCQLAssociatedObject();
+        assoc1.setName("abc.def");
         CQLAttribute haveYouHeard = new CQLAttribute();
         haveYouHeard.setName("bird");
         haveYouHeard.setBinaryPredicate(BinaryPredicate.EQUAL_TO);
         AttributeValue value2 = new AttributeValue();
         value2.setStringValue("the word");
         haveYouHeard.setAttributeValue(value2);
-        assoc1.setCQLAttribute(haveYouHeard);
+        assoc1.setAttribute(haveYouHeard);
         
-        CQLAssociatedObject assoc2 = new CQLAssociatedObject();
-        assoc2.setClassName("xyz.abc");
+        DCQLAssociatedObject assoc2 = new DCQLAssociatedObject();
+        assoc2.setName("xyz.abc");
         
-        CQLGroup group = new CQLGroup();
+        DCQLGroup group = new DCQLGroup();
         group.setLogicalOperation(GroupLogicalOperator.AND);
-        group.setCQLAssociatedObject(new CQLAssociatedObject[] {assoc1, assoc2});
+        group.setAssociatedObject(new DCQLAssociatedObject[] {assoc1, assoc2});
         
-        target.setCQLGroup(group);
-        query.setCQLTargetObject(target);
+        target.setGroup(group);
+        query.setTargetObject(target);
+        
+        query.setTargetServiceURL(new String[] {"http://fake.com"});
         
         validate(query);
     }
     
     
     public void testNestedGroups() {
-        CQLQuery query = new CQLQuery();
-        CQLTargetObject target = new CQLTargetObject();
-        target.setClassName("foo.bar");
+        DCQLQuery query = new DCQLQuery();
+        DCQLObject target = new DCQLObject();
+        target.setName("foo.bar");
         target.set_instanceof("zor");
         
-        CQLAssociatedObject assoc1 = new CQLAssociatedObject();
-        assoc1.setClassName("abc.def");
+        DCQLAssociatedObject assoc1 = new DCQLAssociatedObject();
+        assoc1.setName("abc.def");
         CQLAttribute haveYouHeard = new CQLAttribute();
         haveYouHeard.setName("bird");
         haveYouHeard.setBinaryPredicate(BinaryPredicate.EQUAL_TO);
         AttributeValue value2 = new AttributeValue();
         value2.setStringValue("the word");
         haveYouHeard.setAttributeValue(value2);
-        assoc1.setCQLAttribute(haveYouHeard);
+        assoc1.setAttribute(haveYouHeard);
         
-        CQLAssociatedObject assoc2 = new CQLAssociatedObject();
-        assoc2.setClassName("xyz.abc");
+        DCQLAssociatedObject assoc2 = new DCQLAssociatedObject();
+        assoc2.setName("xyz.abc");
         
-        CQLGroup nestedGroup = new CQLGroup();
+        DCQLGroup nestedGroup = new DCQLGroup();
         nestedGroup.setLogicalOperation(GroupLogicalOperator.OR);
         CQLAttribute a1 = new CQLAttribute();
         a1.setName("nested1");
@@ -274,25 +281,22 @@ public class CQL2SerializationAndValidationTestCase extends TestCase {
         CQLAttribute a2 = new CQLAttribute();
         a2.setName("nested2");
         a2.setUnaryPredicate(UnaryPredicate.IS_NULL);
-        nestedGroup.setCQLAttribute(new CQLAttribute[] {a1, a2});
+        nestedGroup.setAttribute(new CQLAttribute[] {a1, a2});
         
-        CQLGroup group = new CQLGroup();
+        DCQLGroup group = new DCQLGroup();
         group.setLogicalOperation(GroupLogicalOperator.AND);
-        group.setCQLAssociatedObject(new CQLAssociatedObject[] {assoc1, assoc2});
-        group.setCQLGroup(new CQLGroup[] {nestedGroup});
+        group.setAssociatedObject(new DCQLAssociatedObject[] {assoc1, assoc2});
+        group.setGroup(new DCQLGroup[] {nestedGroup});
         
-        target.setCQLGroup(group);
-        query.setCQLTargetObject(target);
+        target.setGroup(group);
+        query.setTargetObject(target);
+        query.setTargetServiceURL(new String[] {"http://fake.com"});
         
         validate(query);
     }
     
     
-    public void testEmptySupportedCqlExtensions() {
-        SupportedExtensions ext = new SupportedExtensions();
-    }
-    
-    
+    /*
     public void testAggregationResult() {
         CQLQueryResults results = new CQLQueryResults();
         results.setTargetClassname("foo.bar");
@@ -341,12 +345,13 @@ public class CQL2SerializationAndValidationTestCase extends TestCase {
         
         validate(results);
     }
+    */
     
 
     public static void main(String args[]) {
         TestRunner runner = new TestRunner();
         TestResult result = runner.doRun(
-            new TestSuite(CQL2SerializationAndValidationTestCase.class));
+            new TestSuite(DCQL2SerializationAndValidationTestCase.class));
         System.exit(result.errorCount() + result.failureCount());
     }
 
