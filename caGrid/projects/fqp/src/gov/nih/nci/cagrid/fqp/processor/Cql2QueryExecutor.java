@@ -17,6 +17,7 @@ import org.apache.commons.logging.LogFactory;
 import org.cagrid.cql.utilities.CQL1ResultsToCQL2ResultsConverter;
 import org.cagrid.cql.utilities.CQL2toCQL1Converter;
 import org.cagrid.cql.utilities.QueryConversionException;
+import org.cagrid.cql.utilities.ResultsConversionException;
 import org.cagrid.cql2.CQLQuery;
 import org.cagrid.cql2.results.CQLQueryResults;
 import org.globus.gsi.GlobusCredential;
@@ -158,6 +159,10 @@ public class Cql2QueryExecutor {
             results = CQL1ResultsToCQL2ResultsConverter.convertResults(cql1Results);
         } catch (RemoteException e) {
             String message = "Problem querying remote service " + targetServiceURL + ": " + e.getMessage();
+            LOG.error(message, e);
+            throw new RemoteDataServiceException(message, e);
+        } catch (ResultsConversionException e) {
+            String message = "Problem converting results from remote service " + targetServiceURL + ": " + e.getMessage();
             LOG.error(message, e);
             throw new RemoteDataServiceException(message, e);
         }
