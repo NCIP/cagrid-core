@@ -1,7 +1,5 @@
 package gov.nih.nci.cagrid.data.cql.validation;
 
-import gov.nih.nci.cagrid.data.MalformedQueryException;
-
 import java.text.DateFormat;
 import java.util.Date;
 
@@ -22,7 +20,7 @@ public class DataTypeValidator {
 	private static Log LOG = LogFactory.getLog(DataTypeValidator.class);
 
 
-	public static void validate(String value, String dataType) throws MalformedQueryException {
+	public static void validate(String value, String dataType) throws DomainConformanceException {
 		if (dataType.equals(String.class.getName())) {
 			// this is fairly common, so returning immediately is a slight
 			// performance boost
@@ -43,47 +41,47 @@ public class DataTypeValidator {
 	}
 
 
-	private static void validateInteger(String value) throws MalformedQueryException {
+	private static void validateInteger(String value) throws DomainConformanceException {
 		// parse the integer
 		try {
 			Integer.parseInt(value);
 		} catch (Exception ex) {
-			throw new MalformedQueryException("Value " + value + " does not parse as an Integer");
+			throw new DomainConformanceException("Value " + value + " does not parse as an Integer");
 		}
 	}
 
 
-	private static void validateLong(String value) throws MalformedQueryException {
+	private static void validateLong(String value) throws DomainConformanceException {
 		// parse the long
 		try {
 			Long.parseLong(value);
 		} catch (Exception ex) {
-			throw new MalformedQueryException("Value " + value + " does not parse as a Long");
+			throw new DomainConformanceException("Value " + value + " does not parse as a Long");
 		}
 	}
 
 
-	private static void validateDate(String value) throws MalformedQueryException {
+	private static void validateDate(String value) throws DomainConformanceException {
 		try {
 			DateFormat.getInstance().parse(value);
 		} catch (Exception ex) {
-			throw new MalformedQueryException("Value " + value + " does not parse as a Date");
+			throw new DomainConformanceException("Value " + value + " does not parse as a Date");
 		}
 	}
 
 
-	private static void validateBoolean(String value) throws MalformedQueryException {
+	private static void validateBoolean(String value) throws DomainConformanceException {
 		try {
 			Boolean.valueOf(value);
 		} catch (Exception ex) {
-			throw new MalformedQueryException("Value " + value + " does not parse as a Boolean");
+			throw new DomainConformanceException("Value " + value + " does not parse as a Boolean");
 		}
 	}
 
 
-	private static void validateCharacter(String value) throws MalformedQueryException {
+	private static void validateCharacter(String value) throws DomainConformanceException {
 		if (value.length() > 1) {
-			throw new MalformedQueryException("Value " + value + " is not a single Character or empty");
+			throw new DomainConformanceException("Value " + value + " is not a single Character or empty");
 		}
 	}
 	

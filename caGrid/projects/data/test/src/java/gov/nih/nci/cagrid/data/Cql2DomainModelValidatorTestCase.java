@@ -1,8 +1,8 @@
 package gov.nih.nci.cagrid.data;
 
 import gov.nih.nci.cagrid.common.Utils;
-import gov.nih.nci.cagrid.data.cql2.validation.Cql2DomainValidator;
-import gov.nih.nci.cagrid.data.cql2.validation.DomainModelCql2DomainValidator;
+import gov.nih.nci.cagrid.data.cql2.validation.walker.Cql2Walker;
+import gov.nih.nci.cagrid.data.cql2.validation.walker.Cql2WalkerDomainModelValidationHandler;
 import gov.nih.nci.cagrid.metadata.MetadataUtils;
 import gov.nih.nci.cagrid.metadata.dataservice.DomainModel;
 
@@ -26,7 +26,7 @@ public class Cql2DomainModelValidatorTestCase extends TestCase {
     public static final String CQL2_EXAMPLES_LOCATION = TEST_DOCS_LOCATION + File.separator + "cql2Examples";
     public static final String SDK40_DOMAIN_MODEL_NAME = TEST_DOCS_LOCATION + File.separator + "models" + File.separator + "sdk40example_DomainModel.xml";
     
-    private Cql2DomainValidator validator = null;
+    private Cql2Walker validator = null;
     
     public Cql2DomainModelValidatorTestCase(String name) {
         super(name);
@@ -34,11 +34,12 @@ public class Cql2DomainModelValidatorTestCase extends TestCase {
     
     
     public void setUp() {
+        validator = new Cql2Walker();
         try {
             FileReader reader = new FileReader(SDK40_DOMAIN_MODEL_NAME);
             DomainModel model = MetadataUtils.deserializeDomainModel(reader);
             reader.close();
-            validator = new DomainModelCql2DomainValidator(model);
+            validator.addListener(new Cql2WalkerDomainModelValidationHandler(model));
         } catch (Exception ex) {
             ex.printStackTrace();
             fail("Error setting up validator: " + ex.getMessage());
@@ -64,7 +65,7 @@ public class Cql2DomainModelValidatorTestCase extends TestCase {
             try {
                 String text = Utils.fileToStringBuffer(queryDocument).toString();
                 CQLQuery query = CQL2SerializationUtil.deserializeCql2Query(text);
-                validator.validateAgainstDomainModel(query);
+                validator.walkCql(query);
             } catch (Exception ex) {
                 ex.printStackTrace();
                 fail("Error validating CQL 2 query (" + queryDocument.getName() + "): " + ex.getMessage());

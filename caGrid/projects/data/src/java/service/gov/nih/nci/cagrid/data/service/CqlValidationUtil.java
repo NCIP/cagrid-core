@@ -7,13 +7,15 @@ import gov.nih.nci.cagrid.data.QueryProcessingException;
 import gov.nih.nci.cagrid.data.ValidatorConstants;
 import gov.nih.nci.cagrid.data.cql.validation.CqlDomainValidator;
 import gov.nih.nci.cagrid.data.cql.validation.CqlStructureValidator;
+import gov.nih.nci.cagrid.data.cql.validation.DomainConformanceException;
+import gov.nih.nci.cagrid.data.cql.validation.MalformedStructureException;
 import gov.nih.nci.cagrid.data.cql2.validation.walker.BaseCustomCql2WalkerHandler;
 import gov.nih.nci.cagrid.data.cql2.validation.walker.Cql2Walker;
 import gov.nih.nci.cagrid.data.cql2.validation.walker.Cql2WalkerDomainModelValidationHandler;
-import gov.nih.nci.cagrid.data.cql2.validation.walker.Cql2WalkerException;
 import gov.nih.nci.cagrid.data.cql2.validation.walker.Cql2WalkerExtensionCompatibilityValidationHandler;
 import gov.nih.nci.cagrid.data.cql2.validation.walker.Cql2WalkerHandler;
 import gov.nih.nci.cagrid.data.cql2.validation.walker.Cql2WalkerStructureValidationHandler;
+import gov.nih.nci.cagrid.data.cql2.validation.walker.ExtensionValidationException;
 import gov.nih.nci.cagrid.metadata.dataservice.DomainModel;
 
 import java.lang.reflect.Constructor;
@@ -87,11 +89,20 @@ public class CqlValidationUtil {
     }
     
     
-    public void validateCql2Query(org.cagrid.cql2.CQLQuery query) throws QueryProcessingException, MalformedQueryException {
+    public void validateCql2Query(org.cagrid.cql2.CQLQuery query) 
+        throws DomainConformanceException, MalformedStructureException, ExtensionValidationException, Exception {
         try {
             cql2Walker.walkCql(query);
-        } catch (Cql2WalkerException ex) {
-            throw new MalformedQueryException(ex.getMessage(), ex);
+        } catch (Exception ex) {
+            if (ex instanceof DomainConformanceException) {
+                throw (DomainConformanceException) ex;
+            } else if (ex instanceof MalformedStructureException) {
+                throw (MalformedStructureException) ex;
+            } else if (ex instanceof ExtensionValidationException) {
+                throw (ExtensionValidationException) ex;
+            }
+            // unknown exception
+            throw ex;
         }
     }    
     

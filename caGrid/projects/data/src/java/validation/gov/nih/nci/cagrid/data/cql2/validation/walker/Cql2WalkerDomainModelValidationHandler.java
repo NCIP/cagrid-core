@@ -1,5 +1,6 @@
 package gov.nih.nci.cagrid.data.cql2.validation.walker;
 
+import gov.nih.nci.cagrid.data.cql.validation.DomainConformanceException;
 import gov.nih.nci.cagrid.data.utilities.DomainModelUtils;
 import gov.nih.nci.cagrid.metadata.common.Enumeration;
 import gov.nih.nci.cagrid.metadata.common.UMLAttribute;
@@ -56,44 +57,44 @@ public class Cql2WalkerDomainModelValidationHandler extends Cql2WalkerHandlerAda
     }
     
 
-    public void endAssociation(CQLAssociatedObject assoc) throws Cql2WalkerException {
+    public void endAssociation(CQLAssociatedObject assoc) throws DomainConformanceException {
         objectStack.pop();
     }
 
 
-    public void endAttribute(CQLAttribute attrib) throws Cql2WalkerException {
+    public void endAttribute(CQLAttribute attrib) throws DomainConformanceException {
         currentAttribute = null;
     }
 
 
-    public void endTargetObject(CQLTargetObject obj) throws Cql2WalkerException {
+    public void endTargetObject(CQLTargetObject obj) throws DomainConformanceException {
         objectStack.pop();
         // should be all out of objects now...
         if (objectStack.size() != 0) {
-            throw new Cql2WalkerException(objectStack.size() + " unaccounted for object(s) left on stack!");
+            throw new DomainConformanceException(objectStack.size() + " unaccounted for object(s) left on stack!");
         }
     }
 
 
-    public void startAssociation(CQLAssociatedObject assoc) throws Cql2WalkerException {
+    public void startAssociation(CQLAssociatedObject assoc) throws DomainConformanceException {
         // verify the associated object is valid
         UMLClass classMd = getUmlClass(assoc.getClassName());
         if (classMd == null) {
-            throw new DomainValidationException("No data type " + assoc.getClassName() 
+            throw new DomainConformanceException("No data type " + assoc.getClassName() 
                 + " could be found in the domain model");
         }
         // verify such an association exists
         boolean associationExists = associationExists(
             objectStack.peek().getClassName(), assoc.getClassName(), assoc.getEndName());
         if (!associationExists) {
-            throw new Cql2WalkerException("No association from " + objectStack.peek().getClassName() + " to " 
+            throw new DomainConformanceException("No association from " + objectStack.peek().getClassName() + " to " 
                 + assoc.getClassName() + " with end name " + assoc.getEndName());
         }
         // verify the instanceof attribute is valid
         if (assoc.get_instanceof() != null) {
             boolean validInstanceof = isInstanceof(assoc.getClassName(), assoc.get_instanceof());
             if (!validInstanceof) {
-                throw new DomainValidationException(
+                throw new DomainConformanceException(
                     assoc.get_instanceof() + " is not a subclass of " + assoc.getClassName());
             }
         }
@@ -102,13 +103,13 @@ public class Cql2WalkerDomainModelValidationHandler extends Cql2WalkerHandlerAda
     }
 
 
-    public void startAssociationPopulation(AssociationPopulationSpecification pop) throws Cql2WalkerException {
+    public void startAssociationPopulation(AssociationPopulationSpecification pop) throws DomainConformanceException {
         // TODO Auto-generated method stub
 
     }
 
 
-    public void startAttribute(CQLAttribute attrib) throws Cql2WalkerException {
+    public void startAttribute(CQLAttribute attrib) throws DomainConformanceException {
         // verify the attribute exists
         CQLObject parent = objectStack.peek();
         String parentClassname = parent.get_instanceof() != null ? 
@@ -116,14 +117,14 @@ public class Cql2WalkerDomainModelValidationHandler extends Cql2WalkerHandlerAda
         UMLClass classMd = getUmlClass(parentClassname);
         UMLAttribute attribMd = getUmlAttribute(attrib.getName(), parentClassname);
         if (attribMd == null) {
-            throw new DomainValidationException("Attribute '" + attrib.getName() + "' is not defined for the class "
+            throw new DomainConformanceException("Attribute '" + attrib.getName() + "' is not defined for the class "
                 + classMd.getClassName() + " or any of its parent classes");
         }
         this.currentAttribute = attribMd;
     }
 
 
-    public void startAttributeValue(AttributeValue val) throws Cql2WalkerException {
+    public void startAttributeValue(AttributeValue val) throws DomainConformanceException {
         // verify the data type being used is compatible
         String datatype = currentAttribute.getDataTypeName();
         String valueAsString = null;
@@ -134,42 +135,42 @@ public class Cql2WalkerDomainModelValidationHandler extends Cql2WalkerHandlerAda
             // verify the proper typed value is populated
             if (String.class.getName().equals(datatype)) {
                 if (val.getStringValue() == null) {
-                    throw new DomainValidationException("Attribute " + currentAttribute.getName() 
+                    throw new DomainConformanceException("Attribute " + currentAttribute.getName() 
                         + " was expected to have a value of type " + String.class.getName() + ", but did not");
                 } else {
                     valueAsString = val.getStringValue();
                 }
             } else if (Integer.class.getName().equals(datatype)) {
                 if (val.getIntegerValue() == null) {
-                    throw new DomainValidationException("Attribute " + currentAttribute.getName() 
+                    throw new DomainConformanceException("Attribute " + currentAttribute.getName() 
                         + " was expected to have a value of type " + Integer.class.getName() + ", but did not");
                 } else {
                     valueAsString = val.getIntegerValue().toString();
                 }
             } else if (Long.class.getName().equals(datatype)) {
                 if (val.getLongValue() == null) {
-                    throw new DomainValidationException("Attribute " + currentAttribute.getName() 
+                    throw new DomainConformanceException("Attribute " + currentAttribute.getName() 
                         + " was expected to have a value of type " + Long.class.getName() + ", but did not");
                 } else {
                     valueAsString = val.getLongValue().toString();
                 }
             } else if (Date.class.getName().equals(datatype)) {
                 if (val.getDateValue() == null) {
-                    throw new DomainValidationException("Attribute " + currentAttribute.getName() 
+                    throw new DomainConformanceException("Attribute " + currentAttribute.getName() 
                         + " was expected to have a value of type " + Date.class.getName() + ", but did not");
                 } else {
                     valueAsString = DateFormat.getDateInstance().format(val.getDateValue());                    
                 }
             } else if (Boolean.class.getName().equals(datatype)) {
                 if (val.getBooleanValue() == null) {
-                    throw new DomainValidationException("Attribute " + currentAttribute.getName() 
+                    throw new DomainConformanceException("Attribute " + currentAttribute.getName() 
                         + " was expected to have a value of type " + Boolean.class.getName() + ", but did not");
                 } else {
                     valueAsString = val.getBooleanValue().toString();
                 }
             } else if (Double.class.getName().equals(datatype)) {
                 if (val.getDoubleValue() == null) {
-                    throw new DomainValidationException("Attribute " + currentAttribute.getName() 
+                    throw new DomainConformanceException("Attribute " + currentAttribute.getName() 
                         + " was expected to have a value of type " + Double.class.getName() + ", but did not");
                 } else {
                     valueAsString = val.getDoubleValue().toString();
@@ -188,7 +189,7 @@ public class Cql2WalkerDomainModelValidationHandler extends Cql2WalkerHandlerAda
                         permValues.add(e.getPermissibleValue());
                     }
                     if (!permValues.contains(valueAsString)) {
-                        throw new DomainValidationException("Attribute '" + currentAttribute.getName()
+                        throw new DomainConformanceException("Attribute '" + currentAttribute.getName()
                             + "' defines a permissible value enumeration, and the value'" + valueAsString
                             + "' is not permissible.");
                     }
@@ -198,41 +199,41 @@ public class Cql2WalkerDomainModelValidationHandler extends Cql2WalkerHandlerAda
     }
 
 
-    public void startDistinctAttribute(DistinctAttribute distinct) throws Cql2WalkerException {
+    public void startDistinctAttribute(DistinctAttribute distinct) throws DomainConformanceException {
         String parentClassname = target.get_instanceof() != null ? 
             target.get_instanceof() : target.getClassName();
         UMLAttribute attrib = getUmlAttribute(distinct.getAttributeName(), parentClassname);
         if (attrib == null) {
-            throw new DomainValidationException("Distinct attribute " + distinct.getAttributeName() 
+            throw new DomainConformanceException("Distinct attribute " + distinct.getAttributeName() 
                 + " not found for target class " + parentClassname);
         }
     }
 
 
-    public void startGroup(CQLGroup group) throws Cql2WalkerException {
+    public void startGroup(CQLGroup group) throws DomainConformanceException {
         // check out the logical operation
         GroupLogicalOperator op = group.getLogicalOperation();
         if (op == null) {
-            throw new DomainValidationException("Group logical operator cannot be null");
+            throw new DomainConformanceException("Group logical operator cannot be null");
         }
         if (!GroupLogicalOperator.AND.equals(op) && !GroupLogicalOperator.OR.equals(op)) {
-            throw new DomainValidationException("Group logical operator " + op.getValue() + " is not valid");
+            throw new DomainConformanceException("Group logical operator " + op.getValue() + " is not valid");
         }
     }
 
 
-    public void startNamedAttribute(NamedAttribute named) throws Cql2WalkerException {
+    public void startNamedAttribute(NamedAttribute named) throws DomainConformanceException {
         String parentClassname = target.get_instanceof() != null ? 
             target.get_instanceof() : target.getClassName();
         UMLAttribute attrib = getUmlAttribute(named.getAttributeName(), parentClassname);
         if (attrib == null) {
-            throw new DomainValidationException("Named attribute " + named.getAttributeName() 
+            throw new DomainConformanceException("Named attribute " + named.getAttributeName() 
                 + " not found for target class " + parentClassname);
         }
     }
     
     
-    public void startQuery(CQLQuery query) throws Cql2WalkerException {
+    public void startQuery(CQLQuery query) throws DomainConformanceException {
         // re-initialize all state variables
         this.target = null;
         this.objectStack.clear();
@@ -241,26 +242,26 @@ public class Cql2WalkerDomainModelValidationHandler extends Cql2WalkerHandlerAda
     }
 
 
-    public void startQueryModifier(CQLQueryModifier mods) throws Cql2WalkerException {
+    public void startQueryModifier(CQLQueryModifier mods) throws DomainConformanceException {
         // TODO Auto-generated method stub
 
     }
 
 
-    public void startTargetObject(CQLTargetObject obj) throws Cql2WalkerException {
+    public void startTargetObject(CQLTargetObject obj) throws DomainConformanceException {
         UMLClass targetClass = getUmlClass(obj.getClassName());
         if (targetClass == null) {
-            throw new DomainValidationException("Query target " + obj.getClassName()
+            throw new DomainConformanceException("Query target " + obj.getClassName()
                 + " was not found in the domain model");
         } else if (!targetClass.isAllowableAsTarget()) {
-            throw new DomainValidationException("Query target " + obj.getClassName() 
+            throw new DomainConformanceException("Query target " + obj.getClassName() 
                 + " is not allowed as a target in the domain model");
         }
         // verify the instanceof attribute is valid
         if (obj.get_instanceof() != null) {
             boolean validInstanceof = isInstanceof(obj.getClassName(), obj.get_instanceof());
             if (!validInstanceof) {
-                throw new DomainValidationException(
+                throw new DomainConformanceException(
                     obj.get_instanceof() + " is not a subclass of " + obj.getClassName());
             }
         }
@@ -270,7 +271,7 @@ public class Cql2WalkerDomainModelValidationHandler extends Cql2WalkerHandlerAda
     }
     
     
-    public void startNamedAssociationList(NamedAssociationList list) throws Cql2WalkerException {
+    public void startNamedAssociationList(NamedAssociationList list) throws DomainConformanceException {
         if (populatedAssociationStack.size() == 0) {
             // push the target object on the top of the stack
             String parentClassname = target.get_instanceof() != null ? 
@@ -282,12 +283,12 @@ public class Cql2WalkerDomainModelValidationHandler extends Cql2WalkerHandlerAda
     }
     
     
-    public void endNamedAssociationList(NamedAssociationList list) throws Cql2WalkerException {
+    public void endNamedAssociationList(NamedAssociationList list) throws DomainConformanceException {
         populatedAssociationStack.pop();
     }
     
     
-    public void startNamedAssociation(NamedAssociation assoc) throws Cql2WalkerException {
+    public void startNamedAssociation(NamedAssociation assoc) throws DomainConformanceException {
         UMLClass parentClass = populatedAssociationStack.peek();
         String parentClassName = DomainModelUtils.getQualifiedClassname(parentClass);
         SimplifiedUmlAssociation foundAssociation = null;
@@ -300,14 +301,14 @@ public class Cql2WalkerDomainModelValidationHandler extends Cql2WalkerHandlerAda
         }
         if (foundAssociation == null) {
             // association not found
-            throw new DomainValidationException("Association from " + parentClassName 
+            throw new DomainConformanceException("Association from " + parentClassName 
                 + " via role name " + assoc.getEndName() + " not found");
         }
         String associatedClassname = foundAssociation.getSourceRoleName().equals(assoc.getEndName()) 
             ? foundAssociation.getSourceClass() : foundAssociation.getTargetClass();
         if (assoc.get_instanceof() != null && !(assoc.get_instanceof().equals(associatedClassname))) {
             if (!isInstanceof(associatedClassname, assoc.get_instanceof())) {
-                throw new DomainValidationException(assoc.get_instanceof() + " is not a valid subclass of " + associatedClassname);
+                throw new DomainConformanceException(assoc.get_instanceof() + " is not a valid subclass of " + associatedClassname);
             }
         }
         UMLClass associatedClass = getUmlClass(associatedClassname);
@@ -315,17 +316,17 @@ public class Cql2WalkerDomainModelValidationHandler extends Cql2WalkerHandlerAda
     }
     
     
-    public void endNamedAssociation(NamedAssociation assoc) throws Cql2WalkerException {
+    public void endNamedAssociation(NamedAssociation assoc) throws DomainConformanceException {
         
     }
     
     
-    public void startPopulationDepth(PopulationDepth depth) throws Cql2WalkerException {
+    public void startPopulationDepth(PopulationDepth depth) throws DomainConformanceException {
         
     }
     
     
-    public void endPopulationDepth(PopulationDepth depth) throws Cql2WalkerException {
+    public void endPopulationDepth(PopulationDepth depth) throws DomainConformanceException {
         
     }
     

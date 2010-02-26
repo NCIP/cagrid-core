@@ -17,169 +17,169 @@ import org.cagrid.cql2.PopulationDepth;
 
 public abstract class Cql2WalkerHandlerAdapter implements Cql2WalkerHandler {
 
-    public void endAssociation(CQLAssociatedObject assoc) throws Cql2WalkerException {
+    public void endAssociation(CQLAssociatedObject assoc) throws Exception {
         // TODO Auto-generated method stub
 
     }
 
 
-    public void endAssociationPopulation(AssociationPopulationSpecification pop) throws Cql2WalkerException {
+    public void endAssociationPopulation(AssociationPopulationSpecification pop) throws Exception {
         // TODO Auto-generated method stub
 
     }
 
 
-    public void endAttribute(CQLAttribute attrib) throws Cql2WalkerException {
+    public void endAttribute(CQLAttribute attrib) throws Exception {
         // TODO Auto-generated method stub
 
     }
 
 
-    public void endAttributeValue(AttributeValue val) throws Cql2WalkerException {
+    public void endAttributeValue(AttributeValue val) throws Exception {
         // TODO Auto-generated method stub
 
     }
 
 
-    public void endDistinctAttribute(DistinctAttribute distinct) throws Cql2WalkerException {
+    public void endDistinctAttribute(DistinctAttribute distinct) throws Exception {
         // TODO Auto-generated method stub
 
     }
 
 
-    public void endExtension(CQLExtension ext) throws Cql2WalkerException {
+    public void endExtension(CQLExtension ext) throws Exception {
         // TODO Auto-generated method stub
 
     }
 
 
-    public void endGroup(CQLGroup group) throws Cql2WalkerException {
+    public void endGroup(CQLGroup group) throws Exception {
         // TODO Auto-generated method stub
 
     }
 
 
-    public void endNamedAssociation(NamedAssociation assoc) throws Cql2WalkerException {
+    public void endNamedAssociation(NamedAssociation assoc) throws Exception {
         // TODO Auto-generated method stub
 
     }
 
 
-    public void endNamedAssociationList(NamedAssociationList list) throws Cql2WalkerException {
+    public void endNamedAssociationList(NamedAssociationList list) throws Exception {
         // TODO Auto-generated method stub
 
     }
 
 
-    public void endNamedAttribute(NamedAttribute named) throws Cql2WalkerException {
+    public void endNamedAttribute(NamedAttribute named) throws Exception {
         // TODO Auto-generated method stub
 
     }
 
 
-    public void endPopulationDepth(PopulationDepth depth) throws Cql2WalkerException {
+    public void endPopulationDepth(PopulationDepth depth) throws Exception {
         // TODO Auto-generated method stub
 
     }
 
 
-    public void endQuery(CQLQuery query) throws Cql2WalkerException {
+    public void endQuery(CQLQuery query) throws Exception {
         // TODO Auto-generated method stub
 
     }
 
 
-    public void endQueryModifier(CQLQueryModifier mods) throws Cql2WalkerException {
+    public void endQueryModifier(CQLQueryModifier mods) throws Exception {
         // TODO Auto-generated method stub
 
     }
 
 
-    public void endTargetObject(CQLTargetObject obj) throws Cql2WalkerException {
+    public void endTargetObject(CQLTargetObject obj) throws Exception {
         // TODO Auto-generated method stub
 
     }
 
 
-    public void startAssociation(CQLAssociatedObject assoc) throws Cql2WalkerException {
+    public void startAssociation(CQLAssociatedObject assoc) throws Exception {
         // TODO Auto-generated method stub
 
     }
 
 
-    public void startAssociationPopulation(AssociationPopulationSpecification pop) throws Cql2WalkerException {
+    public void startAssociationPopulation(AssociationPopulationSpecification pop) throws Exception {
         // TODO Auto-generated method stub
 
     }
 
 
-    public void startAttribute(CQLAttribute attrib) throws Cql2WalkerException {
+    public void startAttribute(CQLAttribute attrib) throws Exception {
         // TODO Auto-generated method stub
 
     }
 
 
-    public void startAttributeValue(AttributeValue val) throws Cql2WalkerException {
+    public void startAttributeValue(AttributeValue val) throws Exception {
         // TODO Auto-generated method stub
 
     }
 
 
-    public void startDistinctAttribute(DistinctAttribute distinct) throws Cql2WalkerException {
+    public void startDistinctAttribute(DistinctAttribute distinct) throws Exception {
         // TODO Auto-generated method stub
 
     }
 
 
-    public void startExtension(CQLExtension ext) throws Cql2WalkerException {
+    public void startExtension(CQLExtension ext) throws Exception {
         // TODO Auto-generated method stub
 
     }
 
 
-    public void startGroup(CQLGroup group) throws Cql2WalkerException {
+    public void startGroup(CQLGroup group) throws Exception {
         // TODO Auto-generated method stub
 
     }
 
 
-    public void startNamedAssociation(NamedAssociation assoc) throws Cql2WalkerException {
+    public void startNamedAssociation(NamedAssociation assoc) throws Exception {
         // TODO Auto-generated method stub
 
     }
 
 
-    public void startNamedAssociationList(NamedAssociationList list) throws Cql2WalkerException {
+    public void startNamedAssociationList(NamedAssociationList list) throws Exception {
         // TODO Auto-generated method stub
 
     }
 
 
-    public void startNamedAttribute(NamedAttribute named) throws Cql2WalkerException {
+    public void startNamedAttribute(NamedAttribute named) throws Exception {
         // TODO Auto-generated method stub
 
     }
 
 
-    public void startPopulationDepth(PopulationDepth depth) throws Cql2WalkerException {
+    public void startPopulationDepth(PopulationDepth depth) throws Exception {
         // TODO Auto-generated method stub
 
     }
 
 
-    public void startQuery(CQLQuery query) throws Cql2WalkerException {
+    public void startQuery(CQLQuery query) throws Exception {
         // TODO Auto-generated method stub
 
     }
 
 
-    public void startQueryModifier(CQLQueryModifier mods) throws Cql2WalkerException {
+    public void startQueryModifier(CQLQueryModifier mods) throws Exception {
         // TODO Auto-generated method stub
 
     }
 
 
-    public void startTargetObject(CQLTargetObject obj) throws Cql2WalkerException {
+    public void startTargetObject(CQLTargetObject obj) throws Exception {
         // TODO Auto-generated method stub
 
     }

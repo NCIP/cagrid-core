@@ -32,7 +32,7 @@ public class Cql2Walker {
     }
     
     
-    public void walkCql(CQLQuery query) throws Cql2WalkerException {
+    public void walkCql(CQLQuery query) throws Exception {
         startQuery(query);
         walkObject(query.getCQLTargetObject());
         if (query.getCQLQueryModifier() != null) {
@@ -60,7 +60,7 @@ public class Cql2Walker {
     }
     
     
-    private void walkObject(CQLObject obj) throws Cql2WalkerException {
+    private void walkObject(CQLObject obj) throws Exception {
         boolean isTarget = obj instanceof CQLTargetObject;
         boolean isAssociation = obj instanceof CQLAssociatedObject;
         if (isTarget) {
@@ -89,7 +89,7 @@ public class Cql2Walker {
     }
     
     
-    private void walkAttribute(CQLAttribute attr) throws Cql2WalkerException {
+    private void walkAttribute(CQLAttribute attr) throws Exception {
         startAttribute(attr);
         if (attr.getAttributeValue() != null) {
             startAttribValue(attr.getAttributeValue());
@@ -103,7 +103,7 @@ public class Cql2Walker {
     }
     
     
-    private void walkGroup(CQLGroup group) throws Cql2WalkerException {
+    private void walkGroup(CQLGroup group) throws Exception {
         startGroup(group);
         if (group.getCQLAssociatedObject() != null) {
             for (CQLAssociatedObject a : group.getCQLAssociatedObject()) {
@@ -124,7 +124,7 @@ public class Cql2Walker {
     }
     
     
-    private void walkQueryModifier(CQLQueryModifier mods) throws Cql2WalkerException {
+    private void walkQueryModifier(CQLQueryModifier mods) throws Exception {
         startQueryModifier(mods);
         if (mods.getDistinctAttribute() != null) {
             startDistinctAttribute(mods.getDistinctAttribute());
@@ -140,7 +140,7 @@ public class Cql2Walker {
     }
     
     
-    private void walkAssociationPopulation(AssociationPopulationSpecification pop) throws Cql2WalkerException {
+    private void walkAssociationPopulation(AssociationPopulationSpecification pop) throws Exception {
         startAssociationPopulation(pop);
         // TODO: walk association population stuff
         endAssociationPopulation(pop);
@@ -152,154 +152,154 @@ public class Cql2Walker {
     //----------
     
     
-    protected void startQuery(CQLQuery query) throws Cql2WalkerException {
+    protected void startQuery(CQLQuery query) throws Exception {
         for (Cql2WalkerHandler l : listeners) {
             l.startQuery(query);
         }
     }
     
     
-    protected void endQuery(CQLQuery query) throws Cql2WalkerException {
+    protected void endQuery(CQLQuery query) throws Exception {
         for (Cql2WalkerHandler l : listeners) {
             l.endQuery(query);
         }
     }
     
     
-    protected void startTarget(CQLTargetObject obj) throws Cql2WalkerException {
+    protected void startTarget(CQLTargetObject obj) throws Exception {
         for (Cql2WalkerHandler l : listeners) {
             l.startTargetObject(obj);
         }
     }
     
     
-    protected void endTarget(CQLTargetObject obj) throws Cql2WalkerException {
+    protected void endTarget(CQLTargetObject obj) throws Exception {
         for (Cql2WalkerHandler l : listeners) {
             l.endTargetObject(obj);
         }
     }
     
     
-    protected void startAssociation(CQLAssociatedObject assoc) throws Cql2WalkerException {
+    protected void startAssociation(CQLAssociatedObject assoc) throws Exception {
         for (Cql2WalkerHandler l : listeners) {
             l.startAssociation(assoc);
         }
     }
     
     
-    protected void endAssociation(CQLAssociatedObject assoc) throws Cql2WalkerException {
+    protected void endAssociation(CQLAssociatedObject assoc) throws Exception {
         for (Cql2WalkerHandler l : listeners) {
             l.endAssociation(assoc);
         }
     }
     
     
-    protected void startAttribute(CQLAttribute attrib) throws Cql2WalkerException {
+    protected void startAttribute(CQLAttribute attrib) throws Exception {
         for (Cql2WalkerHandler l : listeners) {
             l.startAttribute(attrib);
         }
     }
     
     
-    protected void endAttribute(CQLAttribute attrib) throws Cql2WalkerException {
+    protected void endAttribute(CQLAttribute attrib) throws Exception {
         for (Cql2WalkerHandler l : listeners) {
             l.endAttribute(attrib);
         }
     }
     
     
-    protected void startAttribValue(AttributeValue val) throws Cql2WalkerException {
+    protected void startAttribValue(AttributeValue val) throws Exception {
         for (Cql2WalkerHandler l : listeners) {
             l.startAttributeValue(val);
         }
     }
     
     
-    protected void endAttribValue(AttributeValue val) throws Cql2WalkerException {
+    protected void endAttribValue(AttributeValue val) throws Exception {
         for (Cql2WalkerHandler l : listeners) {
             l.endAttributeValue(val);
         }
     }
     
     
-    protected void startGroup(CQLGroup group) throws Cql2WalkerException {
+    protected void startGroup(CQLGroup group) throws Exception {
         for (Cql2WalkerHandler l : listeners) {
             l.startGroup(group);
         }
     }
     
     
-    protected void endGroup(CQLGroup group) throws Cql2WalkerException {
+    protected void endGroup(CQLGroup group) throws Exception {
         for (Cql2WalkerHandler l : listeners) {
             l.endGroup(group);
         }
     }
     
     
-    protected void startExtension(CQLExtension ext) throws Cql2WalkerException {
+    protected void startExtension(CQLExtension ext) throws Exception {
         for (Cql2WalkerHandler l : listeners) {
             l.startExtension(ext);
         }
     }
     
     
-    protected void endExtension(CQLExtension ext) throws Cql2WalkerException {
+    protected void endExtension(CQLExtension ext) throws Exception {
         for (Cql2WalkerHandler l : listeners) {
             l.endExtension(ext);
         }
     }
     
     
-    protected void startQueryModifier(CQLQueryModifier mods) throws Cql2WalkerException {
+    protected void startQueryModifier(CQLQueryModifier mods) throws Exception {
         for (Cql2WalkerHandler l : listeners) {
             l.startQueryModifier(mods);
         }
     }
     
     
-    protected void endQueryModifier(CQLQueryModifier mods) throws Cql2WalkerException {
+    protected void endQueryModifier(CQLQueryModifier mods) throws Exception {
         for (Cql2WalkerHandler l : listeners) {
             l.endQueryModifier(mods);
         }
     }
     
     
-    protected void startDistinctAttribute(DistinctAttribute attr) throws Cql2WalkerException {
+    protected void startDistinctAttribute(DistinctAttribute attr) throws Exception {
         for (Cql2WalkerHandler l : listeners) {
             l.startDistinctAttribute(attr);
         }
     }
     
     
-    protected void endDistinctAttribute(DistinctAttribute attr) throws Cql2WalkerException {
+    protected void endDistinctAttribute(DistinctAttribute attr) throws Exception {
         for (Cql2WalkerHandler l : listeners) {
             l.endDistinctAttribute(attr);
         }
     }
     
     
-    protected void startNamedAttribute(NamedAttribute na) throws Cql2WalkerException {
+    protected void startNamedAttribute(NamedAttribute na) throws Exception {
         for (Cql2WalkerHandler l : listeners) {
             l.startNamedAttribute(na);
         }
     }
     
     
-    protected void endNamedAttribute(NamedAttribute na) throws Cql2WalkerException {
+    protected void endNamedAttribute(NamedAttribute na) throws Exception {
         for (Cql2WalkerHandler l : listeners) {
             l.endNamedAttribute(na);
         }
     }
     
     
-    protected void startAssociationPopulation(AssociationPopulationSpecification pop) throws Cql2WalkerException {
+    protected void startAssociationPopulation(AssociationPopulationSpecification pop) throws Exception {
         for (Cql2WalkerHandler l : listeners) {
             l.startAssociationPopulation(pop);
         }
     }
     
     
-    protected void endAssociationPopulation(AssociationPopulationSpecification pop) throws Cql2WalkerException {
+    protected void endAssociationPopulation(AssociationPopulationSpecification pop) throws Exception {
         for (Cql2WalkerHandler l : listeners) {
             l.endAssociationPopulation(pop);
         }

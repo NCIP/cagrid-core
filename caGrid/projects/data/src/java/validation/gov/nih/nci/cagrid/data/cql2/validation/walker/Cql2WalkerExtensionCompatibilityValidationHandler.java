@@ -20,12 +20,12 @@ public class Cql2WalkerExtensionCompatibilityValidationHandler extends Cql2Walke
     }
     
 
-    public void startExtension(CQLExtension ext) throws Cql2WalkerException {
+    public void startExtension(CQLExtension ext) throws Exception {
         AnyNode extension = null;
         if (ext.get_any() == null) {
             throw new ExtensionValidationException("No extension element was defined");
         }
-        extension = ext.get_any();
+        extension = (AnyNode) ext.get_any();
         // must understand defaults to false
         if (ext.getMustUnderstand() == null || !ext.getMustUnderstand().booleanValue()) {
             QName type = new QName(extension.getNamespaceURI(), extension.getLocalName());

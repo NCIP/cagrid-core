@@ -14,9 +14,13 @@ import gov.nih.nci.cagrid.data.auditing.AuditorConfiguration;
 import gov.nih.nci.cagrid.data.auditing.DataServiceAuditors;
 import gov.nih.nci.cagrid.data.cql.CQLQueryProcessor;
 import gov.nih.nci.cagrid.data.cql.LazyCQLQueryProcessor;
+import gov.nih.nci.cagrid.data.cql.validation.DomainConformanceException;
+import gov.nih.nci.cagrid.data.cql.validation.DomainValidationError;
+import gov.nih.nci.cagrid.data.cql.validation.MalformedStructureException;
+import gov.nih.nci.cagrid.data.cql.validation.StructureValidationError;
 import gov.nih.nci.cagrid.data.cql2.CQL2QueryProcessor;
 import gov.nih.nci.cagrid.data.cql2.Cql2ExtensionPoint;
-import gov.nih.nci.cagrid.data.cql2.validation.StructureValidationException;
+import gov.nih.nci.cagrid.data.cql2.validation.walker.ExtensionValidationException;
 import gov.nih.nci.cagrid.data.mapping.ClassToQname;
 import gov.nih.nci.cagrid.data.mapping.Mappings;
 import gov.nih.nci.cagrid.data.service.auditing.DataServiceAuditor;
@@ -374,10 +378,13 @@ public abstract class BaseDataServiceImpl {
             queryValidator.validateCql1Query(query);
         } catch (MalformedQueryException ex) {
             // log the failure and rethrow
-            if (ex instanceof StructureValidationException) {
+            if (ex instanceof StructureValidationError) {
                 fireAuditValidationFailure(query, ex, null);
-            } else {
+            } else if (ex instanceof DomainValidationError){
                 fireAuditValidationFailure(query, null, ex);
+            } else {
+                // unknown, logging as structural
+                fireAuditValidationFailure(query, ex, null);
             }
             throw ex;
         }
@@ -434,12 +441,15 @@ public abstract class BaseDataServiceImpl {
             try {
                 queryValidator.validateCql1Query(query);
             } catch (MalformedQueryException ex) {
-                // log the failure and rethrow
-                if (ex instanceof StructureValidationException) {
+                if (ex instanceof StructureValidationError) {
                     fireAuditValidationFailure(query, ex, null);
-                } else {
+                } else if (ex instanceof DomainValidationError){
                     fireAuditValidationFailure(query, null, ex);
+                } else {
+                    // unknown, logging as structural
+                    fireAuditValidationFailure(query, ex, null);
                 }
+                fireAuditValidationFailure(query, ex, null);
                 throw ex;
             }
             try {
@@ -462,7 +472,18 @@ public abstract class BaseDataServiceImpl {
         // 1. Validate query
         // 2. If can process native, process and return
         // 3. Else, convert, process w/ CQL 1, convert results, return
-        queryValidator.validateCql2Query(query);
+        try {
+            queryValidator.validateCql2Query(query);
+        } catch (DomainConformanceException ex) {
+            throw new MalformedQueryException(ex.getMessage(), ex);
+        } catch (MalformedStructureException ex) {
+            throw new MalformedQueryException(ex.getMessage(), ex);
+        } catch (ExtensionValidationException ex) {
+            throw new MalformedQueryException(ex.getMessage(), ex);
+        } catch (Exception ex) {
+            // unexpected exception
+            throw new QueryProcessingException(ex.getMessage(), ex);
+        }
         org.cagrid.cql2.results.CQLQueryResults results = null;
         boolean processNative = true;
         try {
@@ -485,7 +506,18 @@ public abstract class BaseDataServiceImpl {
     
     
     public Iterator<org.cagrid.cql2.results.CQLResult> processCql2QueryAndIterate(org.cagrid.cql2.CQLQuery query) throws QueryProcessingException, MalformedQueryException {
-        queryValidator.validateCql2Query(query);
+        try {
+            queryValidator.validateCql2Query(query);
+        } catch (DomainConformanceException ex) {
+            throw new MalformedQueryException(ex.getMessage(), ex);
+        } catch (MalformedStructureException ex) {
+            throw new MalformedQueryException(ex.getMessage(), ex);
+        } catch (ExtensionValidationException ex) {
+            throw new MalformedQueryException(ex.getMessage(), ex);
+        } catch (Exception ex) {
+            // unexpected exception
+            throw new QueryProcessingException(ex.getMessage(), ex);
+        }
         Iterator<org.cagrid.cql2.results.CQLResult> resultsIterator = null;
         boolean processNative = true;
         try {
@@ -591,9 +623,7 @@ public abstract class BaseDataServiceImpl {
             // configure the instance
             LOG.debug("Configuring CQL 2 query processor");
             try {
-                String serverConfigLocation = ServiceConfigUtil.getConfigProperty(
-                    ServiceParametersConstants.SERVER_CONFIG_LOCATION);
-                InputStream configStream = new FileInputStream(serverConfigLocation);
+                InputStream configStream = getServerConfigWsddStream();
                 Properties configuredProperties = getCql2QueryProcessorConfig();
                 Properties defaultProperties = cql2QueryProcessor.getRequiredParameters();
                 Properties unionProperties = new Properties();

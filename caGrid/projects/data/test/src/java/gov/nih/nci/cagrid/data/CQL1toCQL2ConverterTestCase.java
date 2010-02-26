@@ -2,12 +2,12 @@ package gov.nih.nci.cagrid.data;
 
 import gov.nih.nci.cagrid.common.Utils;
 import gov.nih.nci.cagrid.cqlquery.CQLQuery;
-import gov.nih.nci.cagrid.data.cql2.validation.Cql2DomainValidator;
-import gov.nih.nci.cagrid.data.cql2.validation.Cql2StructureValidator;
-import gov.nih.nci.cagrid.data.cql2.validation.DomainModelCql2DomainValidator;
-import gov.nih.nci.cagrid.data.cql2.validation.DomainValidationException;
-import gov.nih.nci.cagrid.data.cql2.validation.ObjectWalkingCql2StructureValidator;
-import gov.nih.nci.cagrid.data.cql2.validation.StructureValidationException;
+import gov.nih.nci.cagrid.data.cql.validation.DomainConformanceException;
+import gov.nih.nci.cagrid.data.cql.validation.MalformedStructureException;
+import gov.nih.nci.cagrid.data.cql2.validation.walker.Cql2Walker;
+import gov.nih.nci.cagrid.data.cql2.validation.walker.Cql2WalkerDomainModelValidationHandler;
+import gov.nih.nci.cagrid.data.cql2.validation.walker.Cql2WalkerStructureValidationHandler;
+import gov.nih.nci.cagrid.data.cql2.validation.walker.ExtensionValidationException;
 import gov.nih.nci.cagrid.metadata.MetadataUtils;
 import gov.nih.nci.cagrid.metadata.dataservice.DomainModel;
 
@@ -27,17 +27,17 @@ public class CQL1toCQL2ConverterTestCase extends TestCase {
     public static final String DOMAIN_MODEL_FILE = "test/resources/domainModel.xml";
     
     private CQL1toCQL2Converter converter = null;
-    private Cql2DomainValidator domainValidator = null;
-    private Cql2StructureValidator structureValidator = null;
+    private Cql2Walker queryWalker = null;
     private String cqlDocsDir = null;
     
     public CQL1toCQL2ConverterTestCase() {
         super("CQL1 to CQL2 Converter Test");
-        this.cqlDocsDir = System.getProperty("cql.docs.dir");
+        this.cqlDocsDir = "./docs/cqlExamples";//System.getProperty("cql.docs.dir");
     }
     
     
     public void setUp() {
+        this.queryWalker = new Cql2Walker();
         DomainModel model = null;
         try {
             FileReader reader = new FileReader(DOMAIN_MODEL_FILE);
@@ -48,8 +48,8 @@ public class CQL1toCQL2ConverterTestCase extends TestCase {
             fail("Error deserializing domain model: " + ex.getMessage());
         }
         converter = new CQL1toCQL2Converter(model);
-        domainValidator = new DomainModelCql2DomainValidator(model);
-        structureValidator = new ObjectWalkingCql2StructureValidator();
+        queryWalker.addListener(new Cql2WalkerDomainModelValidationHandler(model));
+        queryWalker.addListener(new Cql2WalkerStructureValidationHandler());
     }
     
     
@@ -78,16 +78,19 @@ public class CQL1toCQL2ConverterTestCase extends TestCase {
             fail("Error converting CQL1 to CQL2 query: " + ex.getMessage());
         }
         try {
-            domainValidator.validateAgainstDomainModel(cql2Query);
-        } catch (DomainValidationException ex) {
+            queryWalker.walkCql(cql2Query);
+        } catch (DomainConformanceException ex) {
             ex.printStackTrace();
             fail("Error validating CQL 2 query against domain model: " + ex.getMessage());
-        }
-        try {
-            structureValidator.validateQuerySyntax(cql2Query);
-        } catch (StructureValidationException ex) {
+        } catch (MalformedStructureException ex) {
             ex.printStackTrace();
             fail("Error validating CQL 2 query syntax: " + ex.getMessage());
+        } catch (ExtensionValidationException ex) {
+            ex.printStackTrace();
+            fail("Error validating CQL 2 query for extensions: " + ex.getMessage());
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            fail("Unknown exception validating CQL 2 query: " + ex.getMessage());
         }
     }
     

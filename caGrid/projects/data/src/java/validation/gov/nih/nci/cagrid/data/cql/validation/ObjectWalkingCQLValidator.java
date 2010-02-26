@@ -31,24 +31,24 @@ public class ObjectWalkingCQLValidator implements CqlStructureValidator {
 			validateQueryMods(query.getQueryModifier());
 		}
 		if (query.getTarget() == null) {
-			throw new MalformedQueryException("Query target cannot be null");
+			throw new MalformedStructureException("Query target cannot be null");
 		}
 		validateObjectStructure(query.getTarget());
 	}
 	
 	
-	private void validateQueryMods(QueryModifier mods) throws MalformedQueryException {
+	private void validateQueryMods(QueryModifier mods) throws MalformedStructureException {
 		if (mods.getAttributeNames() != null && mods.getDistinctAttribute() != null) {
-			throw new MalformedQueryException(
+			throw new MalformedStructureException(
 				"Query Modifier may have EITHER distinct attribute or list of attribute names, not both.");
 		}
 	}
 	
 	
-	private void validateObjectStructure(Object obj) throws MalformedQueryException {
+	private void validateObjectStructure(Object obj) throws MalformedStructureException {
 		// ensure name exists
 		if (obj.getName() == null) {
-			throw new MalformedQueryException("Object does not have a name!");
+			throw new MalformedStructureException("Object does not have a name!");
 		}
 		
 		// count children
@@ -64,7 +64,7 @@ public class ObjectWalkingCQLValidator implements CqlStructureValidator {
 		}
 		
 		if (childCount > 1) {
-			throw new MalformedQueryException("Query for Object " + obj.getName() + " has more than one child");
+			throw new MalformedStructureException("Query for Object " + obj.getName() + " has more than one child");
 		}
 		
 		// validate children AFTER validating count to minimize processing
@@ -83,13 +83,13 @@ public class ObjectWalkingCQLValidator implements CqlStructureValidator {
 	}
 	
 	
-	private void validateAttributeStructure(Attribute attr) throws MalformedQueryException {
+	private void validateAttributeStructure(Attribute attr) throws MalformedStructureException {
 		// attrbutes require name and value
 		if (attr.getName() == null) {
-			throw new MalformedQueryException("Attributes must have a name!");
+			throw new MalformedStructureException("Attributes must have a name!");
 		}
 		if (attr.getValue() == null) {
-			throw new MalformedQueryException("Attributes must have a value!");
+			throw new MalformedStructureException("Attributes must have a value!");
 		}
 		// predicate is optional, defaults to EQUAL_TO
 		if (attr.getPredicate() != null) {
@@ -108,20 +108,20 @@ public class ObjectWalkingCQLValidator implements CqlStructureValidator {
 			}
 			String predicate = attr.getPredicate().getValue();
 			if (!predicateValues.contains(predicate)) {
-				throw new MalformedQueryException("The predicate " + predicate + " is not valid");
+				throw new MalformedStructureException("The predicate " + predicate + " is not valid");
 			}
 		}
 	}
 	
 	
-	private void validateGroupStructure(Group group) throws MalformedQueryException {
+	private void validateGroupStructure(Group group) throws MalformedStructureException {
 		// check the logical operator
 		if (group.getLogicRelation() == null) {
-			throw new MalformedQueryException("Groups must have a logical operator!");
+			throw new MalformedStructureException("Groups must have a logical operator!");
 		}
 		String logic = group.getLogicRelation().getValue();
 		if (!logic.equals(LogicalOperator._AND) && !logic.equals(LogicalOperator._OR)) {
-			throw new MalformedQueryException("Logical operator " + logic + " is not valid");
+			throw new MalformedStructureException("Logical operator " + logic + " is not valid");
 		}
 		
 		// ensure two or more group members
@@ -137,7 +137,7 @@ public class ObjectWalkingCQLValidator implements CqlStructureValidator {
 		}
 		
 		if (groupMembers < 2) {
-			throw new MalformedQueryException("Groups must have two or more members");
+			throw new MalformedStructureException("Groups must have two or more members");
 		}
 		
 		// validate the members of the group
@@ -167,7 +167,7 @@ public class ObjectWalkingCQLValidator implements CqlStructureValidator {
 			// deserialize a CQL Query
 			CQLQuery query = null;
 			try {
-				query = (CQLQuery) Utils.deserializeDocument(args[i], CQLQuery.class);
+				query = Utils.deserializeDocument(args[i], CQLQuery.class);
 			} catch (Exception ex) {
 				System.err.println("Errro deserializing CQL query file " + args[i]);
 				ex.printStackTrace();

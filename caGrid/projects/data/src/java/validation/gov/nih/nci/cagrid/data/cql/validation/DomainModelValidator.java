@@ -47,20 +47,20 @@ public class DomainModelValidator implements CqlDomainValidator {
 	}
 
 
-	private void validateQueryTarget(CQLQuery query, DomainModel model) throws MalformedQueryException {
+	private void validateQueryTarget(CQLQuery query, DomainModel model) throws DomainConformanceException {
 		UMLClass targetClass = getUmlClass(query.getTarget().getName(), model);
 		if (targetClass == null) {
-			throw new MalformedQueryException("Query target " + query.getTarget().getName()
+			throw new DomainConformanceException("Query target " + query.getTarget().getName()
 				+ " is not a valid target in the domain model");
 		}
 	}
 
 
-	private void validateObjectModel(Object obj, DomainModel model) throws MalformedQueryException {
+	private void validateObjectModel(Object obj, DomainModel model) throws DomainConformanceException {
 		// verify the object exists in the project
 		UMLClass classMd = getUmlClass(obj.getName(), model);
 		if (classMd == null) {
-			throw new MalformedQueryException("No object " + obj.getName() + " found in the project");
+			throw new DomainConformanceException("No object " + obj.getName() + " found in the project");
 		}
 
 		if (obj.getAttribute() != null) {
@@ -80,11 +80,11 @@ public class DomainModelValidator implements CqlDomainValidator {
 	}
 
 
-	private void validateAttributeModel(Attribute attrib, UMLClass classMd) throws MalformedQueryException {
+	private void validateAttributeModel(Attribute attrib, UMLClass classMd) throws DomainConformanceException {
 		// verify the attribute exists
 		UMLAttribute attribMd = getUmlAttribute(attrib.getName(), classMd);
 		if (attribMd == null) {
-			throw new MalformedQueryException("Attribute '" + attrib.getName() + "' is not defined for the class "
+			throw new DomainConformanceException("Attribute '" + attrib.getName() + "' is not defined for the class "
 				+ classMd.getClassName());
 		}
 		// verify the data type being used is compatible
@@ -93,7 +93,7 @@ public class DomainModelValidator implements CqlDomainValidator {
 
 
 	private void validateAttributeDataType(Attribute attrib, UMLAttribute attribMetadata)
-		throws MalformedQueryException {
+		throws DomainConformanceException {
 		// if the predicate is a binary operator, verify the value is of the correct type
 		if (attrib.getPredicate() != null
 			&& !(attrib.getPredicate().getValue().equals(Predicate._IS_NOT_NULL) || attrib.getPredicate().getValue()
@@ -115,7 +115,7 @@ public class DomainModelValidator implements CqlDomainValidator {
 						permValues.add(e.getPermissibleValue());
 					}
 					if (!permValues.contains(valueAsString)) {
-						throw new MalformedQueryException("Attribute '" + attrib.getName()
+						throw new DomainConformanceException("Attribute '" + attrib.getName()
 							+ "' defines a permissible value enumeration, and the value'" + valueAsString
 							+ "' is not permissible.");
 					}
@@ -126,7 +126,7 @@ public class DomainModelValidator implements CqlDomainValidator {
 
 
 	private void validateAssociationModel(Object current, Association assoc, DomainModel model)
-		throws MalformedQueryException {
+		throws DomainConformanceException {
 		// determine if an association exists between the current
 		// and association object
 		String roleName = assoc.getRoleName();
@@ -135,7 +135,7 @@ public class DomainModelValidator implements CqlDomainValidator {
         for (SimplifiedUmlAssociation association : associations) {
             if (roleName == null && associationFound) {
                 // no role name, and already found an association of the same type
-                throw new MalformedQueryException("The association from " 
+                throw new DomainConformanceException("The association from " 
                     + current.getName() + " to " + assoc.getName() 
                     + " is ambiguous without a role name");
             }
@@ -159,13 +159,13 @@ public class DomainModelValidator implements CqlDomainValidator {
         
         // fail if the association was never found
 		if (!associationFound) {
-			throw new MalformedQueryException("No association from " + current.getName() + " to " + assoc.getName()
+			throw new DomainConformanceException("No association from " + current.getName() + " to " + assoc.getName()
 				+ " with role name " + assoc.getRoleName());
 		}
 	}
 
 
-	private void validateGroupModel(Object current, Group group, DomainModel model) throws MalformedQueryException {
+	private void validateGroupModel(Object current, Group group, DomainModel model) throws DomainConformanceException {
 		if (group.getAttribute() != null) {
 			UMLClass classMd = getUmlClass(current.getName(), model);
 			for (int i = 0; i < group.getAttribute().length; i++) {

@@ -16,7 +16,7 @@ public class Cql2DataServiceImpl extends BaseDataServiceImpl {
     
     
     public CQLQueryResults executeQuery(CQLQuery query) throws QueryProcessingExceptionType, MalformedQueryExceptionType {
-        CQLQueryResults results;
+        CQLQueryResults results = null;
         try {
             results = processCql2Query(query);
         } catch (QueryProcessingException ex) {
