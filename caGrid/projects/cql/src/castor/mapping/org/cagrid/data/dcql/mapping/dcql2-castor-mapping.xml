@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapping PUBLIC "-//EXOLAB/Castor Mapping DTD Version 1.0//EN" "http://castor.org/mapping.dtd">
+<mapping xmlns:cql2="http://CQL.caBIG/2/org.cagrid.cql2" xmlns:dcql2="http://DCQL.caBIG/2/org.cagrid.data.dcql"
+	xmlns:dcql2res="http://DCQL.caBIG/2/org.cagrid.data.dcql.results">
+  <include href="../../../cql2/mapping/cql2-castor-mapping.xml"/>
+  <description>DCQL 2 Castor mapping file</description>
+  <class name="org.cagrid.data.dcql.DCQLAssociatedObject" extends="org.cagrid.data.dcql.DCQLObject">
+    <description >Default mapping for class org.cagrid.data.dcql.DCQLAssociatedObject</description>
+    <map-to xml="DCQLAssociatedObject" ns-uri="http://DCQL.caBIG/2/org.cagrid.data.dcql" ns-prefix="dcql2"/>
+    <field name="endName" type="java.lang.String">
+      <bind-xml name="endName" node="attribute" />
+    </field>
+  </class>
+  <class name="org.cagrid.data.dcql.DataTransformationOperation">
+    <description >Default mapping for class org.cagrid.data.dcql.DataTransformationOperation</description>
+    <map-to xml="Operation" ns-uri="http://DCQL.caBIG/2/org.cagrid.data.dcql" ns-prefix="dcql2"/>
+    <field name="value" type="java.lang.String">
+      <bind-xml name="value" node="attribute" />
+    </field>
+    <field name="operator" type="org.cagrid.data.dcql.TransformationOperator">
+      <bind-xml name="operator" node="attribute"/>
+    </field>
+  </class>
+  <class name="org.cagrid.data.dcql.ForeignAssociatedObject" extends="org.cagrid.data.dcql.DCQLAssociatedObject">
+    <description >Default mapping for class org.cagrid.data.dcql.ForeignAssociatedObject</description>
+    <map-to xml="ForeignAssociatedObject" ns-uri="http://DCQL.caBIG/2/org.cagrid.data.dcql" ns-prefix="dcql2"/>
+    <field name="joinCondition" type="org.cagrid.data.dcql.JoinCondition">
+      <bind-xml name="dcql2:JoinCondition" node="element" />
+    </field>
+    <field name="dataTransformation" type="org.cagrid.data.dcql.DataTransformation">
+      <bind-xml name="dcql2:DataTransformation" node="element" />
+    </field>
+    <field name="targetServiceURL" type="java.lang.String">
+      <bind-xml name="targetServiceURL" node="attribute" />
+    </field>
+  </class>
+  <class name="org.cagrid.data.dcql.DCQLGroup">
+    <description >Default mapping for class org.cagrid.data.dcql.DCQLGroup</description>
+    <map-to xml="DCQLGroup" ns-uri="http://DCQL.caBIG/2/org.cagrid.data.dcql" ns-prefix="dcql2"/>
+    <field name="attribute" type="org.cagrid.cql2.CQLAttribute" collection="array">
+      <bind-xml name="dcql2:Attribute" node="element" />
+    </field>
+    <field name="associatedObject" type="org.cagrid.data.dcql.DCQLAssociatedObject" collection="array">
+      <bind-xml name="dcql2:AssociatedObject" node="element" />
+    </field>
+    <field name="objectExtension" type="org.cagrid.cql2.CQLExtension" collection="array">
+      <bind-xml name="dcql2:ObjectExtension" node="element" />
+    </field>
+    <field name="group" type="org.cagrid.data.dcql.DCQLGroup" collection="array">
+      <bind-xml name="dcql2:Group" node="element" />
+    </field>
+    <field name="foreignAssociatedObject" type="org.cagrid.data.dcql.ForeignAssociatedObject" collection="array">
+      <bind-xml name="dcql2:ForeignAssociatedObject" node="element" />
+    </field>
+    <field name="logicalOperation" type="org.cagrid.cql2.GroupLogicalOperator">
+    	<bind-xml name="logicalOperation" node="attribute"/>
+    </field>
+  </class>
+  <class name="org.cagrid.data.dcql.DCQLObject">
+    <description >Default mapping for class org.cagrid.data.dcql.DCQLObject</description>
+    <map-to xml="DCQLObject" ns-uri="http://DCQL.caBIG/2/org.cagrid.data.dcql" ns-prefix="dcql2"/>
+    <field name="attribute" type="org.cagrid.cql2.CQLAttribute">
+      <bind-xml name="dcql2:Attribute" node="element" />
+    </field>
+    <field name="associatedObject" type="org.cagrid.data.dcql.DCQLAssociatedObject">
+      <bind-xml name="dcql2:AssociatedObject" node="element" />
+    </field>
+    <field name="objectExtension" type="org.cagrid.cql2.CQLExtension">
+      <bind-xml name="dcql2:ObjectExtension" node="element" />
+    </field>
+    <field name="group" type="org.cagrid.data.dcql.DCQLGroup">
+      <bind-xml name="dcql2:Group" node="element" />
+    </field>
+    <field name="foreignAssociatedObject" type="org.cagrid.data.dcql.ForeignAssociatedObject">
+      <bind-xml name="dcql2:ForeignAssociatedObject" node="element" />
+    </field>
+    <field name="name" type="java.lang.String">
+      <bind-xml name="name" node="attribute" />
+    </field>
+    <field name="_instanceof" type="java.lang.String">
+      <bind-xml name="instanceof" node="attribute" />
+    </field>
+  </class>
+  <class name="org.cagrid.data.dcql.DCQLQuery">
+    <description >Default mapping for class org.cagrid.data.dcql.DCQLQuery</description>
+    <map-to xml="DCQLQuery" ns-uri="http://DCQL.caBIG/2/org.cagrid.data.dcql" ns-prefix="dcql2"/>
+    <field name="targetObject" type="org.cagrid.data.dcql.DCQLObject">
+      <bind-xml name="dcql2:TargetObject" node="element" />
+    </field>
+    <field name="queryModifier" type="org.cagrid.cql2.CQLQueryModifier">
+      <bind-xml name="cql2:QueryModifier" node="element" />
+    </field>
+    <field name="targetServiceURL" type="java.lang.String" collection="array">
+      <bind-xml name="dcql2:TargetServiceURL" node="element" />
+    </field>
+  </class>
+  <class name="org.cagrid.data.dcql.DataTransformation">
+    <description >Default mapping for class org.cagrid.data.dcql.DataTransformation</description>
+    <map-to xml="DataTransformation" ns-uri="http://DCQL.caBIG/2/org.cagrid.data.dcql" ns-prefix="dcql2"/>
+    <field name="operation" type="org.cagrid.data.dcql.DataTransformationOperation">
+      <bind-xml name="dcql2:Operation" node="element" />
+    </field>
+    <field name="transformationExtension" type="org.cagrid.cql2.CQLExtension">
+      <bind-xml name="dcql2:TransformationExtension" node="element" />
+    </field>
+  </class>
+  <class name="org.cagrid.data.dcql.TransformationOperator" verify-constructable="false">
+    <description >Default mapping for class org.cagrid.data.dcql.TransformationOperator</description>
+    <map-to xml="TransformationOperator" ns-uri="http://DCQL.caBIG/2/org.cagrid.data.dcql" ns-prefix="dcql2"/>
+    <field name="value" type="java.lang.String">
+      <bind-xml name="value" node="text" />
+    </field>
+  </class>
+  <class name="org.cagrid.data.dcql.JoinCondition">
+    <description >Default mapping for class org.cagrid.data.dcql.JoinCondition</description>
+    <map-to xml="JoinCondition" ns-uri="http://DCQL.caBIG/2/org.cagrid.data.dcql" ns-prefix="dcql2"/>
+    <field name="localAttributeName" type="java.lang.String">
+      <bind-xml name="localAttributeName" node="attribute" />
+    </field>
+    <field name="foreignAttributeName" type="java.lang.String">
+      <bind-xml name="localAttributeName" node="attribute" />
+    </field>
+    <field name="predicate" type="org.cagrid.cql2.BinaryPredicate">
+      <bind-xml name="cql2:predicate" node="attribute"/>
+    </field>
+  </class>
+  <!-- results -->
+  <class name="org.cagrid.data.dcql.results.DCQLResult">
+    <description >Default mapping for class org.cagrid.data.dcql.results.DCQLResult</description>
+    <map-to xml="DCQLResult" ns-uri="http://DCQL.caBIG/2/org.cagrid.data.dcql.results" ns-prefix="dcql2res"/>
+    <field name="CQLQueryResults" type="org.cagrid.cql2.results.CQLQueryResults">
+      <bind-xml name="cql2:CQLQueryResults" node="element" />
+    </field>
+    <field name="targetServiceURL" type="java.lang.String">
+      <bind-xml name="targetServiceURL" node="attribute" />
+    </field>
+  </class>
+  <class name="org.cagrid.data.dcql.results.DCQLQueryResultsCollection">
+    <description >Default mapping for class org.cagrid.data.dcql.results.DCQLQueryResultsCollection</description>
+    <map-to xml="DCQLQueryResultsCollection" ns-uri="http://DCQL.caBIG/2/org.cagrid.data.dcql" ns-prefix="dcql2"/>
+    <field name="DCQLResult" type="org.cagrid.data.dcql.results.DCQLResult" collection="array">
+      <bind-xml name="dcql2:DCQLResult" node="element" />
+    </field>
+  </class>
+</mapping>
