@@ -14,8 +14,8 @@ public class Cql2SerializerFactory extends BaseSerializerFactory {
 
 	public Cql2SerializerFactory(Class<?> javaType, QName xmlType) {
 		super(Cql2Serializer.class, xmlType, javaType);
-        if (LOG.isDebugEnabled()) {
-            LOG.debug("Initializing " + Cql2Serializer.class.getSimpleName() + 
+        if (LOG.isTraceEnabled()) {
+            LOG.trace("Initializing " + Cql2Serializer.class.getSimpleName() + 
                 " for class:" + javaType + " and QName:" + xmlType);
         }
 	}
