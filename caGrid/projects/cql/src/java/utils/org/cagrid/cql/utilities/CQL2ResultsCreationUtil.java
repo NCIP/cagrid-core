@@ -62,9 +62,9 @@ public class CQL2ResultsCreationUtil {
         // on some of these implementations causes everything to be loaded at once.
         List<CQLObjectResult> objectResults = new LinkedList<CQLObjectResult>();
         for (Object o : data) {
-            reusableWsdd.reset();
             StringWriter writer = new StringWriter();
             if (reusableWsdd != null) {
+                reusableWsdd.reset();
                 Utils.serializeObject(o, targetQName, writer, reusableWsdd);
             } else {
                 Utils.serializeObject(o, targetQName, writer);   
