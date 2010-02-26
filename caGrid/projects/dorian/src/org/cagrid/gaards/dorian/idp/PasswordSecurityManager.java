@@ -12,12 +12,10 @@ import java.sql.ResultSet;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 
+import org.bouncycastle.util.encoders.Base64;
 import org.cagrid.gaards.dorian.common.LoggingObject;
 import org.cagrid.gaards.dorian.stubs.types.DorianInternalFault;
 import org.cagrid.tools.database.Database;
-
-import sun.misc.BASE64Decoder;
-import sun.misc.BASE64Encoder;
 
 
 public class PasswordSecurityManager extends LoggingObject {
@@ -340,14 +338,15 @@ public class PasswordSecurityManager extends LoggingObject {
 
 
     public static byte[] base64ToByte(String data) throws IOException {
-        BASE64Decoder decoder = new BASE64Decoder();
-        return decoder.decodeBuffer(data);
+        Base64 decoder = new Base64();
+        return decoder.decode(data.getBytes());
     }
 
 
     public static String byteToBase64(byte[] data) {
-        BASE64Encoder endecoder = new BASE64Encoder();
-        return endecoder.encode(data);
+        Base64 encoder = new Base64();
+        byte[] result = encoder.encode(data);
+        return new String(result);
     }
 
 

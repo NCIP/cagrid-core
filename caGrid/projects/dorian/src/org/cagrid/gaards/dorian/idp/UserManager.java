@@ -48,7 +48,7 @@ public class UserManager extends LoggingObject {
 
     public static String ADMIN_PASSWORD = "DorianAdmin$1";
 
-    private static final String IDP_USERS_TABLE = "idp_users";
+    public static final String IDP_USERS_TABLE = "idp_users";
 
     private Database db;
 
@@ -623,7 +623,7 @@ public class UserManager extends LoggingObject {
     }
 
 
-    private void buildDatabase() throws DorianInternalFault {
+    public void buildDatabase() throws DorianInternalFault {
         if (!dbBuilt) {
             try {
                 if (!this.db.tableExists(IDP_USERS_TABLE)) {

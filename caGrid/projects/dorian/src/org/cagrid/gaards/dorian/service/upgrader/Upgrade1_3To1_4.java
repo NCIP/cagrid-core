@@ -6,6 +6,7 @@ import java.sql.ResultSet;
 
 import org.cagrid.gaards.dorian.federation.TrustedIdP;
 import org.cagrid.gaards.dorian.federation.TrustedIdPManager;
+import org.cagrid.gaards.dorian.idp.UserManager;
 import org.cagrid.gaards.dorian.service.PropertyManager;
 import org.cagrid.tools.database.Database;
 
@@ -37,6 +38,7 @@ public class Upgrade1_3To1_4 extends Upgrade {
                     + PropertyManager.DORIAN_VERSION_1_4 + ".");
             }
             upgradeTrustedIdentityProviders(trialRun);
+            upgradeLocalUserManager(trialRun);
         } else {
             if (!trialRun) {
                 throw new Exception("Failed to run upgrader " + getClass().getName()
@@ -44,6 +46,36 @@ public class Upgrade1_3To1_4 extends Upgrade {
             }
         }
 
+    }
+
+
+    private void upgradeLocalUserManager(boolean trialRun) throws Exception {
+        Database db = getBeanUtils().getDatabase();
+        UserManager um = new UserManager(db, getBeanUtils().getIdentityProviderProperties());
+        if (!trialRun) {
+            um.buildDatabase();
+
+            Connection c = null;
+            try {
+                c = db.getConnection();
+                PreparedStatement s = c.prepareStatement("select UID, PASSWORD FROM " + UserManager.IDP_USERS_TABLE);
+                ResultSet rs = s.executeQuery();
+                while (rs.next()) {
+                    String uid = rs.getString("UID");
+                    String password = rs.getString("PASSWORD");
+                    password = password.replace("\n", "");
+                    db.update("update " + UserManager.IDP_USERS_TABLE + " SET PASSWORD='" + password + "' where UID='"
+                        + uid + "'");
+                }
+                rs.close();
+                s.close();
+
+            } catch (Exception e) {
+                throw e;
+            } finally {
+                db.releaseConnection(c);
+            }
+        }
     }
 
 
