@@ -91,7 +91,7 @@
 	<classpathentry kind="lib" path="ext/dependencies/jars/caGrid-IdentifiersNAService-client-1.4-dev.jar"/>
 	<classpathentry kind="lib" path="ext/dependencies/jars/caGrid-IdentifiersNAService-common-1.4-dev.jar"/>
 	<classpathentry kind="lib" path="ext/dependencies/jars/caGrid-IdentifiersNAService-service-1.4-dev.jar"/>
-	<classpathentry kind="lib" path="ext/dependencies/jars/caGrid-IdentifiersNAService-stubs-1.4-dev.jar"/>
+	<classpathentry kind="lib" path="ext/dependencies/jars/caGrid-IdentifiersNAService-stubs-1.4-dev.jar" sourcepath="/caGrid-Identifiers-NamingAuthority-GridSvc"/>
 	<classpathentry kind="lib" path="ext/dependencies/jars/caGrid-Introduce-serviceTools-1.4-dev.jar"/>
 	<classpathentry kind="lib" path="ext/dependencies/jars/castor-1.3-core.jar"/>
 	<classpathentry kind="lib" path="ext/dependencies/jars/castor-1.3.jar"/>

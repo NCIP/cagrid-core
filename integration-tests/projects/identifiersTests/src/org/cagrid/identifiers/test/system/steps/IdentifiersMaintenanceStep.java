@@ -74,7 +74,7 @@ public class IdentifiersMaintenanceStep extends Step {
     }
     
     ////////////////////////////////////////////////////////////////////////////
-    // Test createKeys interface
+    // Test replaceKeys interface
     ////////////////////////////////////////////////////////////////////////////
     public void testReplaceKeys(IdentifiersNAServiceClient client, URI identifier) throws InvalidIdentifierFault, NamingAuthorityConfigurationFault, NamingAuthoritySecurityFault, InvalidIdentifierValuesFault, RemoteException {
 

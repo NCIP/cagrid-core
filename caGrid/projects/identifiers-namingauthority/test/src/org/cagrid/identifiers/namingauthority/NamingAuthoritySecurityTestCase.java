@@ -41,14 +41,14 @@ public class NamingAuthoritySecurityTestCase extends NamingAuthorityTestCaseBase
 	}
 	
 	////////////////////////////////////////////////////////////
-	// createKeys authorization error
-	// (adding key to system identifier)
+	// createKeys authorization error (not an admin)
+	// (adding security-type key to system identifier)
 	////////////////////////////////////////////////////////////
 	public void testCreateKeys1() {
 		boolean gotexpected = false;
 		
 		IdentifierValues newKeys = new IdentifierValues();
-		newKeys.put("A KEY", new KeyData(null, new String[]{ "A VALUE" }));
+		newKeys.put(Keys.WRITE_USERS, new KeyData(null, new String[]{}));
 		try {
 			this.NamingAuthority.createKeys(null, getSystemIdentifier(), newKeys);
 		} catch (NamingAuthoritySecurityException e) {
@@ -64,15 +64,15 @@ public class NamingAuthoritySecurityTestCase extends NamingAuthorityTestCaseBase
 
 	////////////////////////////////////////////////////////////
 	// createKeys authorization error
-	// (adding key to identifier that no one can administer)
+	// (adding key to identifier that no one can write)
 	////////////////////////////////////////////////////////////
 	public void testCreateKeys2() {
 		//
-		// Create identifier with empty list of ADMIN_USERS
+		// Create identifier with empty list of WRITE_USERS
 		// 
 		URI id = null;
 		IdentifierValues values = new IdentifierValues();
-		values.put(Keys.ADMIN_USERS, null);
+		values.put(Keys.WRITE_USERS, null);
 		try {
 			id = this.NamingAuthority.createIdentifier(null, values);
 		} catch (Exception e) {
@@ -81,7 +81,7 @@ public class NamingAuthoritySecurityTestCase extends NamingAuthorityTestCaseBase
 		} 
 		
 		//
-		// Not attempt to add a key to it
+		// Now attempt to add a key to it
 		//
 		boolean gotexpected = false;
 		IdentifierValues newKeys = new IdentifierValues();
@@ -121,15 +121,15 @@ public class NamingAuthoritySecurityTestCase extends NamingAuthorityTestCaseBase
 	
 	////////////////////////////////////////////////////////////
 	// deleteKeys authorization error
-	// (deleting key to identifier that noone can administer)
+	// (deleting key to identifier that no one can write)
 	////////////////////////////////////////////////////////////
 	public void testDeleteKeys2() {
 		//
-		// Create identifier with empty list of ADMIN_USERS
+		// Create identifier with empty list of WRITE_USERS
 		// 
 		URI id = null;
 		IdentifierValues values = new IdentifierValues();
-		values.put(Keys.ADMIN_USERS, null);
+		values.put(Keys.WRITE_USERS, null);
 		values.put("A KEY", null);
 		try {
 			id = this.NamingAuthority.createIdentifier(null, values);

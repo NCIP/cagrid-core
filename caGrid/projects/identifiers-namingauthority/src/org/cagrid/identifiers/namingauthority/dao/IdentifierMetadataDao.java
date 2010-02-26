@@ -137,6 +137,20 @@ public class IdentifierMetadataDao extends AbstractDao<IdentifierMetadata> {
     	save(IdentifierUtil.convert(localIdentifier, ivalues));
 	}
 	
+	/* 
+	 * Case 1) Creating security-type keys as defined by Keys.isAdminKey()
+	 * 		A user can create security-type keys if s/he is explicitly
+	 * 		listed as an ADMIN_USER by either the identifier, or the system
+	 * 		(root) identifier.
+	 * 
+	 * Case 2) Creating other keys
+	 * 		A user can create other keys if s/he is listed as a WRITE_USER
+	 * 		by the identifier, or if a WRITE_USERS key is not configured
+	 * 		by the identifier.
+	 *
+	 *		Identifier's ADMIN_USERS can create keys of any type. It is
+	 *		unnecessary to list them as WRITE_USERS.
+	 */
 	public void createKeys(SecurityInfo secInfo, URI identifier, IdentifierValues values) 
 		throws 
 			InvalidIdentifierException, 
@@ -144,6 +158,9 @@ public class IdentifierMetadataDao extends AbstractDao<IdentifierMetadata> {
 			InvalidIdentifierValuesException, 
 			NamingAuthorityConfigurationException {
 
+		Access writerAccess = null;
+		Access adminAccess = null;
+		
 		if (values == null || values.getKeys() == null || values.getKeys().length == 0) {
 			throw new InvalidIdentifierValuesException("No keys were provided");
 		}
@@ -152,13 +169,41 @@ public class IdentifierMetadataDao extends AbstractDao<IdentifierMetadata> {
 		
 		URI localIdentifier = IdentifierUtil.getLocalName(prefix, identifier);
 		IdentifierMetadata resolvedValues = loadLocalIdentifier(localIdentifier);
-		
-		writeKeysSecurityChecks(secInfo, "create keys", resolvedValues);
-		
-		String[] newKeys = values.getKeys();
+
 		Collection<IdentifierValueKey> valueKeys = resolvedValues.getValues();
-		for( String key : newKeys ) {
-			IdentifierValueKey ivk = IdentifierUtil.convert(key, values);
+		for(String key : values.getKeys()) {
+			if (Keys.isAdminKey(key)) {
+				
+				if (adminAccess == null) {
+					adminAccess = getIdentifierAdminUserAccess(secInfo, resolvedValues);
+				}
+				
+				if (adminAccess != Access.GRANTED) {
+					throw new NamingAuthoritySecurityException(SecurityUtil.securityError(secInfo, 
+							"create key [" + key + "]. Not an ADMIN_USER"));
+				}
+			
+			} else {
+				if (writerAccess == null) {
+					writerAccess = getWriteUserAccess(secInfo, resolvedValues);
+				}
+				
+				if (writerAccess == Access.DENIED) {
+					//
+					// Check if user is administrator
+					//
+					if (adminAccess == null) {
+						adminAccess = getIdentifierAdminUserAccess(secInfo, resolvedValues);
+					}
+					
+					if (adminAccess != Access.GRANTED) {
+						throw new NamingAuthoritySecurityException(SecurityUtil.securityError(secInfo, 
+								"create keys. Neither WRITE_USER nor ADMIN_USER"));
+					}
+				}
+			}
+			
+			IdentifierValueKey ivk = IdentifierUtil.convert(key, values.getValues(key));
 			if (valueKeys.contains(ivk)) {
 				throw new InvalidIdentifierValuesException("Key [" + key 
 						+ "] already exists for identifier [" 
@@ -175,6 +220,20 @@ public class IdentifierMetadataDao extends AbstractDao<IdentifierMetadata> {
 		}
 	}
 
+	/* 
+	 * Case 1) Deleting security-type keys as defined by Keys.isAdminKey()
+	 * 		A user can delete security-type keys if s/he is explicitly
+	 * 		listed as an ADMIN_USER by either the identifier, or the system
+	 * 		(root) identifier.
+	 * 
+	 * Case 2) Deleting other keys
+	 * 		A user can delete other keys if s/he is listed as a WRITE_USER
+	 * 		by the identifier, or if a WRITE_USERS key is not configured
+	 * 		by the identifier.
+	 *
+	 *		Identifier's ADMIN_USERS can delete keys of any type. It is
+	 *		unnecessary to list them as WRITE_USERS.
+	 */
 	public void deleteKeys(SecurityInfo secInfo, URI identifier, String[] keyList) 
 		throws 
 			InvalidIdentifierException, 
@@ -188,6 +247,8 @@ public class IdentifierMetadataDao extends AbstractDao<IdentifierMetadata> {
 		
 		secInfo = validateSecurityInfo(secInfo);
 		
+		Access writerAccess = null;
+		Access adminAccess = null;
 		URI localIdentifier = IdentifierUtil.getLocalName(prefix, identifier);
 		IdentifierMetadata resolvedValues = loadLocalIdentifier(localIdentifier);
 	
@@ -196,8 +257,6 @@ public class IdentifierMetadataDao extends AbstractDao<IdentifierMetadata> {
 					+ identifier + "] has no keys");
 		}
 
-		writeKeysSecurityChecks(secInfo, "delete keys", resolvedValues);
-
 		LOG.warn("User [" + secInfo.getUser() + "] deleting some keys for identifier [" 
 				+ identifier.toString() + "]");
 
@@ -205,11 +264,43 @@ public class IdentifierMetadataDao extends AbstractDao<IdentifierMetadata> {
 		ArrayList<String> keyNames = new ArrayList<String>(Arrays.asList(keyList));
 		
 		for(IdentifierValueKey ivk : resolvedValues.getValues()) {
-			
-			if (keyNames.contains(ivk.getKey())) {
-				LOG.debug("Removing key [" + ivk.getKey() + "]");
-				keysToDelete.add(ivk);
+			if (!keyNames.contains(ivk.getKey())) {
+				continue;
 			}
+			
+			if (Keys.isAdminKey(ivk.getKey())) {
+				
+				if (adminAccess == null) {
+					adminAccess = getIdentifierAdminUserAccess(secInfo, resolvedValues);
+				}
+				
+				if (adminAccess != Access.GRANTED) {
+					throw new NamingAuthoritySecurityException(SecurityUtil.securityError(secInfo, 
+							"delete key [" + ivk.getKey() + "]. Not an ADMIN_USER"));
+				}
+				
+			} else {
+				if (writerAccess == null) {
+					writerAccess = getWriteUserAccess(secInfo, resolvedValues);
+				}
+				
+				if (writerAccess == Access.DENIED) {
+					//
+					// Check if user is administrator
+					//
+					if (adminAccess == null) {
+						adminAccess = getIdentifierAdminUserAccess(secInfo, resolvedValues);
+					}
+					
+					if (adminAccess != Access.GRANTED) {
+						throw new NamingAuthoritySecurityException(SecurityUtil.securityError(secInfo, 
+								"delete keys. Neither WRITE_USER nor ADMIN_USER"));
+					}
+				}
+			}
+			
+			LOG.debug("Removing key [" + ivk.getKey() + "]");
+			keysToDelete.add(ivk);
 		}
 
 		if (keysToDelete.size() != keyNames.size()) {
@@ -537,52 +628,6 @@ public class IdentifierMetadataDao extends AbstractDao<IdentifierMetadata> {
 	}
 	
 	//
-	// A user can add keys to an identifier if any one of the below 
-	// conditions are met:
-	//
-	//    (a) User is listed by WRITE_USERS key
-	//    (b) User is listed by WRITE_USERS key in READWRITE_IDENTIFIERS
-	//    (c) User is listed by ADMIN_USERS key
-	//    (d) User is listed by ADMIN_USERS key in ADMIN_IDENTIFIERS
-	//    (e) User is listed by the system root identifier's ADMIN_USERS key
-	//    (f) No security settings are specified
-	//       - No WRITE_USERS key
-	//       - No WRITE_USERS key in READWRITE_IDENTIFIERS
-	//       - No ADMIN_USERS key
-	//       - No ADMIN_USERS key in ADMIN_IDENTIFIERS
-	//       - No ADMIN_USERS key in the system root identifier
-	//
-	private void writeKeysSecurityChecks(SecurityInfo secInfo, String op, IdentifierMetadata resolvedValues) 
-		throws NamingAuthoritySecurityException {
-
-		Access writeKeysAccess;
-		
-		try {
-			//
-			// Check if the user is a writer (WRITE_USERS)
-			//
-			writeKeysAccess = getWriteUserAccess(secInfo, resolvedValues);
-			if (writeKeysAccess != Access.GRANTED) {
-				//
-				// Not listed as writer. Is it an administrator?
-				//
-				Access adminAccess = getIdentifierAdminUserAccess(secInfo, resolvedValues);
-				if (adminAccess != Access.NOSECURITY) {
-					writeKeysAccess = adminAccess;
-				}
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-			throw new NamingAuthoritySecurityException(e.getMessage() 
-					+ " " + IdentifierUtil.getStackTrace(e));
-		} 
-		
-		if (writeKeysAccess == Access.DENIED) {
-			throw new NamingAuthoritySecurityException(SecurityUtil.securityError(secInfo, op));
-		}	
-	}
-	
-	//
 	// Returns any directly specified READ_USERS plus any
 	// included by READWRITE_IDENTIFIERS
 	//
@@ -632,24 +677,15 @@ public class IdentifierMetadataDao extends AbstractDao<IdentifierMetadata> {
 	
 	private Access getIdentifierAdminUserAccess(SecurityInfo secInfo, IdentifierMetadata values) 
 		throws 
-			InvalidIdentifierException, 
-			URISyntaxException, 
+			InvalidIdentifierException,  
 			NamingAuthorityConfigurationException {
 
-		// Check administrators defined by ADMIN_USERS and
-		// ADMIN_IDENTIFIERS
-		Access access = getAdminUserAccess(secInfo, values);
-		if (access == Access.GRANTED) {
-			// No further checks needed
+		if ( getAdminUserAccess(secInfo, values) == Access.GRANTED ||
+				getSystemAdminUserAccess(secInfo) == Access.GRANTED) {
 			return Access.GRANTED;
 		}
 		
-		// Check ADMIN_USERS defined by system (root) identifier
-		if (getSystemAdminUserAccess(secInfo) == Access.GRANTED) {
-			return Access.GRANTED;
-		}
-		
-		return access;
+		return Access.DENIED;
 	}
 	
 	// Checks if user is in ADMIN_USERS in system identifier
@@ -659,14 +695,13 @@ public class IdentifierMetadataDao extends AbstractDao<IdentifierMetadata> {
 	
 	//
 	// Returns:
-	//		NOSECURITY: the identifier has no WRITE_USERS lists
-	//		GRANTED: WRITE_USERS list defined and the user is listed
-	//		DENIED: WRITE_USERS list defined and the user is not listed
+	//		NOSECURITY: the identifier has no ADMIN_USERS lists
+	//		GRANTED: ADMIN_USERS list defined and the user is listed
+	//		DENIED: ADMIN_USERS list defined and the user is not listed
 	//		
 	private Access getAdminUserAccess(SecurityInfo secInfo, IdentifierMetadata values) 
 		throws 
 			InvalidIdentifierException, 
-			URISyntaxException, 
 			NamingAuthorityConfigurationException {
 		
 		// Check locally defined ADMIN_USERS list
@@ -694,7 +729,6 @@ public class IdentifierMetadataDao extends AbstractDao<IdentifierMetadata> {
 	private Access getWriteUserAccess(SecurityInfo secInfo, IdentifierMetadata values) 
 		throws 
 			InvalidIdentifierException, 
-			URISyntaxException, 
 			NamingAuthorityConfigurationException {
 		
 		// Check locally defined WRITE_USERS list
@@ -731,7 +765,6 @@ public class IdentifierMetadataDao extends AbstractDao<IdentifierMetadata> {
 	private List<String> getWriteUsersFromReadWriteIdentifiers( IdentifierMetadata values ) 
 		throws 
 			InvalidIdentifierException, 
-			URISyntaxException, 
 			NamingAuthorityConfigurationException {
 		
 		List<String> writers = null;
@@ -740,7 +773,7 @@ public class IdentifierMetadataDao extends AbstractDao<IdentifierMetadata> {
 		if (rwIdentifiers != null) {
 			for( String identifier : rwIdentifiers) {
 				List<String> writeUsers = SecurityUtil.getWriteUsers(
-						loadIdentifier(new URI(identifier)));
+						loadSecurityIdentifier(identifier));
 				if (writeUsers != null) {
 					if (writers == null) {
 						writers = new ArrayList<String>();
@@ -759,7 +792,6 @@ public class IdentifierMetadataDao extends AbstractDao<IdentifierMetadata> {
 	private List<String> getReadUsersFromReadWriteIdentifiers( IdentifierMetadata values ) 
 		throws 
 			InvalidIdentifierException, 
-			URISyntaxException, 
 			NamingAuthorityConfigurationException {
 		
 		List<String> readers = null;
@@ -768,7 +800,7 @@ public class IdentifierMetadataDao extends AbstractDao<IdentifierMetadata> {
 		if (rwIdentifiers != null) {
 			for( String identifier : rwIdentifiers) {
 				List<String> readUsers = SecurityUtil.getReadUsers(
-						loadIdentifier(new URI(identifier)));
+						loadSecurityIdentifier(identifier));
 				if (readUsers != null) {
 					if (readers == null) {
 						readers = new ArrayList<String>();
@@ -785,7 +817,9 @@ public class IdentifierMetadataDao extends AbstractDao<IdentifierMetadata> {
 	// Returns ADMIN_USERS listed by any ADMIN_IDENTIFIERS
 	//
 	private List<String> getAdminUsersFromAdminIdentifiers( IdentifierMetadata values ) 
-		throws InvalidIdentifierException, URISyntaxException, NamingAuthorityConfigurationException {
+		throws 
+			InvalidIdentifierException, 
+			NamingAuthorityConfigurationException {
 		
 		List<String> allAdmins = null;
 		
@@ -793,7 +827,8 @@ public class IdentifierMetadataDao extends AbstractDao<IdentifierMetadata> {
 		if (adminIdentifiers != null) {
 			for( String identifier : adminIdentifiers) {
 				List<String> admins = SecurityUtil.getAdminUsers(
-						loadIdentifier(new URI(identifier)));
+						loadSecurityIdentifier(identifier));
+	
 				if (admins != null) {
 					if (allAdmins == null) {
 						allAdmins = new ArrayList<String>();
@@ -875,6 +910,20 @@ public class IdentifierMetadataDao extends AbstractDao<IdentifierMetadata> {
 		}
 		
 		return secInfo;
+	}
+	
+	private IdentifierMetadata loadSecurityIdentifier( String identifier ) 
+		throws 
+			InvalidIdentifierException, 
+			NamingAuthorityConfigurationException {
+		
+		try {
+			return loadIdentifier(new URI(identifier));
+		} catch (URISyntaxException e) {
+			LOG.error(IdentifierUtil.getStackTrace(e));
+			throw new NamingAuthorityConfigurationException("Referred security identifier is bad ["
+					+ identifier + "]");
+		}
 	}
 		
 //	Not supported

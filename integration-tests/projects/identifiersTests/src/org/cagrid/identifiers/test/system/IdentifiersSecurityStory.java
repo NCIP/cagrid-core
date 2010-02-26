@@ -14,12 +14,12 @@ import java.io.File;
 import java.util.Arrays;
 import java.util.Vector;
 
-import org.cagrid.identifiers.namingauthority.util.SecurityUtil;
-import org.cagrid.identifiers.test.system.steps.ChangePublicIdentifierCreationStep;
 import org.cagrid.identifiers.test.system.steps.CopyNamingAuthorityConfigStep;
 import org.cagrid.identifiers.test.system.steps.CreateDatabasesStep;
 import org.cagrid.identifiers.test.system.steps.CreateIdentifierSecurityStep;
+import org.cagrid.identifiers.test.system.steps.CreateKeysSecurityStep;
 import org.cagrid.identifiers.test.system.steps.CreateSystemAdminStep;
+import org.cagrid.identifiers.test.system.steps.DeleteKeysSecurityStep;
 import org.cagrid.identifiers.test.system.steps.LoadUserCredentialsStep;
 
 
@@ -112,6 +112,8 @@ public class IdentifiersSecurityStory extends Story {
         // Can we test now?
         /////////////////////////////////////////////////////
         steps.add(new CreateIdentifierSecurityStep(testInfo));
+        steps.add(new CreateKeysSecurityStep(testInfo));
+        steps.add(new DeleteKeysSecurityStep(testInfo));
         
 
         return steps;

@@ -112,12 +112,22 @@ public class IdentifiersTestInfo {
 	}
 	
 	public String getNAPrefix() throws MalformedURIException {
-		String prefix = "http://localhost:" +
-			this.purlzPort + 
-			PURLZ_TESTDOMAIN_ID +
-			"/";
-		
-		return prefix;
+        if (purlzPort != null) {
+        	return "http://localhost:" +
+				purlzPort + 
+				PURLZ_TESTDOMAIN_ID +
+				"/";
+        }
+        
+        if (this.webAppContainer != null) {
+       		return getNamingAuthorityURI();
+        }
+        
+        if (this.gridSvcContainer != null) {
+        	return this.getGridSvcURL() + "/";
+        }
+        
+        return "http://localhost/";
 	}
 	
 	public URI getSystemIdentifier() throws MalformedURIException {
@@ -125,8 +135,20 @@ public class IdentifiersTestInfo {
 	}
 
 	public String getNamingAuthorityURI() throws MalformedURIException {
+		if (this.webAppContainer == null) {
+			return null;
+		}
+		
 		URI baseURI = this.webAppContainer.getContainerBaseURI();
-		return "http://" + baseURI.getHost() + ":" + baseURI.getPort() + WEBAPP_URL_PATH;
+		String scheme = null;
+		if (this.webAppContainer instanceof TomcatSecureServiceContainer) {
+			scheme = "https://";
+		
+		} else {
+			scheme = "http://";
+		}
+		
+		return scheme + baseURI.getHost() + ":" + baseURI.getPort() + WEBAPP_URL_PATH;
 	}
 	
 	public String getGridSvcURL() throws MalformedURIException {

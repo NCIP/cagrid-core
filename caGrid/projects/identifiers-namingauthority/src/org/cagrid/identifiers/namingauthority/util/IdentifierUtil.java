@@ -11,7 +11,6 @@ import java.util.Map;
 
 import org.cagrid.identifiers.namingauthority.InvalidIdentifierException;
 import org.cagrid.identifiers.namingauthority.NamingAuthorityConfigurationException;
-import org.cagrid.identifiers.namingauthority.dao.IdentifierMetadataDao;
 import org.cagrid.identifiers.namingauthority.domain.IdentifierValues;
 import org.cagrid.identifiers.namingauthority.domain.KeyData;
 import org.cagrid.identifiers.namingauthority.hibernate.IdentifierMetadata;
@@ -127,12 +126,11 @@ public class IdentifierUtil {
 		return stringWritter.toString();  
 	}   
 	
-	public static IdentifierValueKey convert(String key, IdentifierValues values) {
+	public static IdentifierValueKey convert(String key, KeyData kd) {
 
 		IdentifierValueKey ivk = new IdentifierValueKey();
 		ivk.setKey(key);
-		
-		KeyData kd = values.getValues(key);
+
 		if (kd != null) {
 			ivk.setReadWriteIdentifier(kd.getReadWriteIdentifier());
 			ivk.setValues(kd.getValues());
@@ -151,7 +149,7 @@ public class IdentifierUtil {
 	    if (ivalues != null) {
 	    	String[] keys = ivalues.getKeys();
 	        for (String key : keys) {
-	        	values.add(IdentifierUtil.convert(key, ivalues));
+	        	values.add(IdentifierUtil.convert(key, ivalues.getValues(key)));
 	        }
 	    }
 	    

@@ -20,12 +20,12 @@ import org.cagrid.identifiers.namingauthority.util.Keys;
 import org.cagrid.identifiers.test.system.IdentifiersTestInfo;
 
 
-public class ChangePublicIdentifierCreationStep extends Step {
+public class ReplaceIdentifierKeyStep extends Step {
 
     private IdentifiersTestInfo testInfo;
     private String publicCreation;
    
-    public ChangePublicIdentifierCreationStep(IdentifiersTestInfo info, String newPublicCreation) {
+    public ReplaceIdentifierKeyStep(IdentifiersTestInfo info, String newPublicCreation) {
         this.testInfo = info;
         this.publicCreation = newPublicCreation;
     }
