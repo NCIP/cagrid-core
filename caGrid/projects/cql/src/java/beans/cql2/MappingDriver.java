@@ -17,7 +17,7 @@ public class MappingDriver {
     public static void main(String[] args) {
         try {
             MappingTool tool = new MappingTool();
-            File srcDir = new File("src/java/beans");
+            File srcDir = new File("src/java/beans/dcql2");
             List<File> files = Utils.recursiveListFiles(srcDir, new FileFilter() {
                 public boolean accept(File pathname) {
                     return pathname.getName().endsWith(".java");
