@@ -1,1 +1,4 @@
 http://cagrid.org/display/dataservices/CQL+2 contains information on CQL 2, use cases, and the tech preview release.
+
+We're using castor for serializing CQL 2 and DCQL 2 since Axis can't properly handle some "complicated" <xsd:choice> cases and attributes from custom-serialized data types in Axis serialized elements.
+The castor source dir exists because all castor mapping files have to live in the same Jar for the castor mapping loader to find them at runtime via <include> in the mapping file (See DCQL 2's mapping file)
