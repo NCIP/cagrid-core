@@ -3,11 +3,13 @@ package org.cagrid.data.test.system;
 import gov.nih.nci.cagrid.common.Utils;
 import gov.nih.nci.cagrid.common.XMLUtilities;
 import gov.nih.nci.cagrid.data.MetadataConstants;
+import gov.nih.nci.cagrid.data.client.DataServiceClient;
 import gov.nih.nci.cagrid.introduce.test.TestCaseInfo;
 import gov.nih.nci.cagrid.metadata.ResourcePropertyHelper;
 import gov.nih.nci.cagrid.testing.system.deployment.ServiceContainer;
 import gov.nih.nci.cagrid.testing.system.haste.Step;
 
+import java.io.InputStream;
 import java.io.StringReader;
 import java.util.Collections;
 import java.util.Comparator;
@@ -19,6 +21,7 @@ import javax.xml.namespace.QName;
 
 import org.apache.axis.message.addressing.EndpointReferenceType;
 import org.apache.axis.types.URI.MalformedURIException;
+import org.apache.axis.utils.ClassUtils;
 import org.cagrid.cql2.extensionsupport.SupportedExtensions;
 import org.cagrid.dataservice.cql.support.Cql2SupportType;
 import org.cagrid.dataservice.cql.support.QueryLanguageSupport;
@@ -136,7 +139,9 @@ public class CheckCql2QueryLanguageSupportResourcePropertyStep extends Step {
             String rpXml = XmlUtils.toString(resourceProperty);
             System.out.println("Resource property:");
             System.out.println(XMLUtilities.formatXML(rpXml));
-            support = Utils.deserializeObject(new StringReader(rpXml), QueryLanguageSupport.class);
+            InputStream clientConfig = DataServiceClient.class.getResourceAsStream("client-config.wsdd");
+            support = Utils.deserializeObject(new StringReader(rpXml), QueryLanguageSupport.class, clientConfig);
+            clientConfig.close();
         } catch (Exception ex) {
             ex.printStackTrace();
             fail("Error deserializing query language support document: " + ex.getMessage());

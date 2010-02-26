@@ -8,7 +8,6 @@ import gov.nih.nci.cagrid.testing.system.haste.Step;
 
 import java.util.Iterator;
 
-import org.apache.axis.message.MessageElement;
 import org.apache.axis.types.URI;
 import org.cagrid.cql.utilities.iterator.CQL2QueryResultsIterator;
 import org.cagrid.cql2.AttributeValue;
@@ -21,6 +20,7 @@ import org.cagrid.cql2.GroupLogicalOperator;
 import org.cagrid.cql2.UnaryPredicate;
 import org.cagrid.cql2.results.CQLObjectResult;
 import org.cagrid.cql2.results.CQLQueryResults;
+import org.exolab.castor.types.AnyNode;
 import org.projectmobius.bookstore.Book;
 
 /** 
@@ -80,14 +80,13 @@ public class InvokeCql2DataServiceStep extends Step {
 			fail("No object results returned");
 		}
 		for (int i = 0; i < objResults.length; i++) {
-			MessageElement[] elements = objResults[i].get_any();
-			if (elements == null) {
+		    Object any = objResults[i].get_any();
+			if (any  == null) {
 				fail("Object result returned with null object contents");
 			}
-			if (elements.length != 1) {
-				fail("Object result returned with number of object contents != 1 (" 
-					+ elements.length + " found!)");
-			}
+			assertTrue("Unknown type returned in object results.  Expected " 
+			    + AnyNode.class.getName() + ", found " + any.getClass().getName(), 
+			    any instanceof AnyNode);
 		}
 	}
 	

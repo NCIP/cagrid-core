@@ -39,7 +39,12 @@ public class TestingCQL2QueryProcessor extends CQL2QueryProcessor {
     public CQLQueryResults processQuery(CQLQuery query) throws QueryProcessingException, MalformedQueryException {
         List<?> results = getResultsList(query);
         String targetName = query.getCQLTargetObject().getClassName();
-        CQLQueryResults queryResults = CQL2ResultsCreationUtil.createObjectResults(results, targetName, getQname(targetName));
+        CQLQueryResults queryResults = null;
+        try {
+            queryResults = CQL2ResultsCreationUtil.createObjectResults(results, targetName, getQname(targetName), null);
+        } catch (Exception e) {
+            throw new QueryProcessingException(e.getMessage(), e);
+        }
         return queryResults;
     }
 
