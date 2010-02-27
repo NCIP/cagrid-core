@@ -37,7 +37,7 @@ public class CreateExampleProjectStory extends Story {
     }
 
 
-    protected Vector steps() {
+    protected Vector<?> steps() {
         Vector<Step> steps = new Vector<Step>();
         steps.add(new ConfigureExampleProjectStep(tempApplicationDir, enableCsm));
         steps.add(new BuildExampleProjectStep());
