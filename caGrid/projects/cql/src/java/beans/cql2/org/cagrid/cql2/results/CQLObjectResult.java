@@ -55,9 +55,7 @@ public class CQLObjectResult extends org.cagrid.cql2.results.CQLResult implement
         if (this == obj)
             return true;
         boolean _equals;
-        _equals = super.equals(obj)
-            && ((this._any == null && other.get_any() == null) || (this._any != null && this._any.equals(other
-                .get_any())));
+        _equals = super.equals(obj) && anysEqual(other);
         return _equals;
     }
 
@@ -68,5 +66,18 @@ public class CQLObjectResult extends org.cagrid.cql2.results.CQLResult implement
             _hashCode += get_any().hashCode();
         }
         return _hashCode;
+    }
+    
+    
+    private boolean anysEqual(CQLObjectResult other) {
+        AnyNode oAny = (AnyNode) other.get_any();
+        if (this._any == null && oAny == null) {
+            return true;
+        } else if ((this._any != null && oAny == null)
+            || (this._any == null && oAny != null)) {
+            return false;
+        } else {
+            return ((AnyNode) this._any).getStringValue().equals(oAny.getStringValue());
+        }
     }
 }

@@ -3,10 +3,12 @@ package org.cagrid.cql.test;
 import gov.nih.nci.cagrid.common.SchemaValidationException;
 import gov.nih.nci.cagrid.common.SchemaValidator;
 import gov.nih.nci.cagrid.common.Utils;
+import gov.nih.nci.cagrid.common.XMLUtilities;
 
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.StringReader;
 import java.io.StringWriter;
 
 import junit.framework.TestCase;
@@ -33,6 +35,8 @@ import org.cagrid.cql2.results.CQLObjectResult;
 import org.cagrid.cql2.results.CQLQueryResults;
 import org.cagrid.cql2.results.TargetAttribute;
 import org.exolab.castor.types.AnyNode;
+import org.globus.wsrf.encoding.DeserializationException;
+import org.xml.sax.SAXException;
 
 public class CQL2SerializationAndValidationTestCase extends TestCase {
     
@@ -312,7 +316,7 @@ public class CQL2SerializationAndValidationTestCase extends TestCase {
         CQLObjectResult obj = new CQLObjectResult();
         AnyNode node = null;
         try {
-            node = AnyNodeHelper.convertStringToAnyNode("<foo/>");
+            node = AnyNodeHelper.convertStringToAnyNode("<foo>text here</foo>");
         } catch (Exception e) {
             e.printStackTrace();
             fail("Error creating node: " + e.getMessage());
@@ -321,6 +325,35 @@ public class CQL2SerializationAndValidationTestCase extends TestCase {
         results.setObjectResult(new CQLObjectResult[] {obj});
         
         validate(results);
+        
+        // serialize
+        StringWriter writer = new StringWriter();
+        try {
+            Utils.serializeObject(results, CQLConstants.CQL2_RESULTS_QNAME, writer,
+                getClass().getResourceAsStream("/org/cagrid/cql2/mapping/client-config.wsdd"));
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            fail("Error serializing CQL 2 results: " + ex.getMessage());
+        }
+        String text = writer.getBuffer().toString();
+        try {
+            System.out.println("Here's what we serialized:");
+            System.out.println(XMLUtilities.formatXML(text));
+        } catch (Exception ex) {
+            // meh
+        }
+        
+        
+        // deserialize
+        CQLQueryResults des = null;
+        try {
+            des = Utils.deserializeObject(new StringReader(text), CQLQueryResults.class, 
+                getClass().getResourceAsStream("/org/cagrid/cql2/mapping/client-config.wsdd"));
+        } catch (Exception e) {
+            e.printStackTrace();
+            fail(e.getMessage());
+        }
+        assertEquals(results, des);
     }
     
     

@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapping PUBLIC "-//EXOLAB/Castor Mapping DTD Version 1.0//EN" "http://castor.org/mapping.dtd">
-<mapping xmlns:cql2="http://CQL.caBIG/2/org.cagrid.cql2" xmlns:res="http://CQL.caBIG/2/org.cagrid.cql2.results" xmlns:ext="http://CQL.caBIG/2/org.cagrid.cql2.extensionsupport">
+<mapping xmlns:cql2="http://CQL.caBIG/2/org.cagrid.cql2" xmlns:res="http://CQL.caBIG/2/org.cagrid.cql2.results" xmlns:ext="http://CQL.caBIG/2/org.cagrid.cql2.extensionsupport"
+	xmlns:xsd="http://www.w3.org/2001/XMLSchema">
   <description >CQL 2 Castor Mapping File</description>
   <class name="org.cagrid.cql2.BinaryPredicate" verify-constructable="false">
     <description >Default mapping for class org.cagrid.cql2.BinaryPredicate</description>
@@ -220,8 +221,8 @@
   <class name="org.cagrid.cql2.results.CQLObjectResult" extends="org.cagrid.cql2.results.CQLResult">
     <description >Default mapping for class org.cagrid.cql2.results.CQLObjectResult</description>
     <map-to xml="CQLObjectResult" ns-uri="http://CQL.caBIG/2/org.cagrid.cql2.results" ns-prefix="res"/>
-    <field name="_any" type="java.lang.Object">
-      <bind-xml name="_any" node="element" />
+    <field name="_any" type="java.lang.Object" handler="org.cagrid.cql.utilities.encoding.AnyNodeHandler" >
+      <bind-xml matches="*" node="element" type="xsd:any"/>
     </field>
   </class>
   <class name="org.cagrid.cql2.results.CQLAggregateResult" extends="org.cagrid.cql2.results.CQLResult">
