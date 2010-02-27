@@ -142,9 +142,9 @@ public class CreateDataServiceStep extends CreationStep {
         ProjectSelectionConfigurationStep config = new ProjectSelectionConfigurationStep(getServiceInformation());
         config.setApplicationName("example");
         // if an SDK application container is available, use the remote API, else local
+        config.setLocalClientDir(getExampleProjectLocalClientDir().getAbsolutePath());
         if (remoteSdkApplicationContainer == null) {
             config.setLocalApi(true);
-            config.setLocalClientDir(getExampleProjectLocalClientDir().getAbsolutePath());
         } else {
             config.setLocalApi(false);
             config.setRemoteClientDir(getExampleProjectRemoteClientDir().getAbsolutePath());
