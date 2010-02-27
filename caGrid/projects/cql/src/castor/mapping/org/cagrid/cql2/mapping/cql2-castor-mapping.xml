@@ -49,8 +49,8 @@
     <field name="mustUnderstand" type="java.lang.Boolean">
       <bind-xml name="mustUnderstand" node="attribute" />
     </field>
-    <field name="_any" type="java.lang.Object">
-      <bind-xml name="_any" node="element" />
+    <field name="_any" type="java.lang.Object" handler="org.cagrid.cql.utilities.encoding.AnyNodeHandler" >
+      <bind-xml matches="*" node="element" type="xsd:any"/>
     </field>
   </class>
   <class name="org.cagrid.cql2.CQLQueryModifier">
@@ -281,9 +281,8 @@
   <class name="org.cagrid.cql2.results.ExtendedCQLResult" extends="org.cagrid.cql2.results.CQLResult">
     <description >Default mapping for class org.cagrid.cql2.results.ExtendedCQLResult</description>
     <map-to xml="ExtendedCQLResult" ns-uri="http://CQL.caBIG/2/org.cagrid.cql2.results" ns-prefix="res"/>
-    <field name="_any" type="java.lang.Object">
-      <!-- just want Castor to drop the value in as a child element without additional processing -->
-      <bind-xml name="_any" node="element" />
+    <field name="_any" type="java.lang.Object" handler="org.cagrid.cql.utilities.encoding.AnyNodeHandler" >
+      <bind-xml matches="*" node="element" type="xsd:any"/>
     </field>
   </class>
   <!-- extension support 

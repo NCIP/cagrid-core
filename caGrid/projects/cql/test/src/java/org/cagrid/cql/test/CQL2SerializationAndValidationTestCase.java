@@ -35,8 +35,6 @@ import org.cagrid.cql2.results.CQLObjectResult;
 import org.cagrid.cql2.results.CQLQueryResults;
 import org.cagrid.cql2.results.TargetAttribute;
 import org.exolab.castor.types.AnyNode;
-import org.globus.wsrf.encoding.DeserializationException;
-import org.xml.sax.SAXException;
 
 public class CQL2SerializationAndValidationTestCase extends TestCase {
     
