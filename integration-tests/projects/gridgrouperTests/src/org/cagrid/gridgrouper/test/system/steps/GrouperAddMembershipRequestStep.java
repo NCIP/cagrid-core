@@ -28,7 +28,7 @@ public class GrouperAddMembershipRequestStep extends Step {
 		GridGrouperClient grouper = new GridGrouperClient(this.endpoint);
 		grouper.setAnonymousPrefered(false);
 		try {
-			grouper.addMembershipRequest(new GroupIdentifier(null, this.group), this.subject);
+			grouper.addMembershipRequest(new GroupIdentifier(null, this.group));
 			if (this.shouldFail) {
 				fail("addMember should fail");
 			}
