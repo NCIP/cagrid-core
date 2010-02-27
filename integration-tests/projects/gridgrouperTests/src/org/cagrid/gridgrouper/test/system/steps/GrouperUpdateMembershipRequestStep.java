@@ -29,7 +29,7 @@ public class GrouperUpdateMembershipRequestStep extends Step {
 	public void runStep() throws Exception {
 		GridGrouperClient grouper = new GridGrouperClient(this.endpoint);
 		grouper.setAnonymousPrefered(false);
-		// add member
+
 		try {
 			MembershipRequestUpdate update = new MembershipRequestUpdate("", MembershipRequestStatus.Approved);
 			grouper.updateMembershipRequest(new GroupIdentifier(null, this.group), this.subject, update);

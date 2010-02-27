@@ -46,6 +46,7 @@ import org.cagrid.gridgrouper.test.system.steps.GrouperCreateDbStep;
 import org.cagrid.gridgrouper.test.system.steps.GrouperCreateGroupStep;
 import org.cagrid.gridgrouper.test.system.steps.GrouperCreateStemStep;
 import org.cagrid.gridgrouper.test.system.steps.GrouperDropDbStep;
+import org.cagrid.gridgrouper.test.system.steps.GrouperGrantMembershipRequestsStep;
 import org.cagrid.gridgrouper.test.system.steps.GrouperGrantPrivilegeStep;
 import org.cagrid.gridgrouper.test.system.steps.GrouperInitStep;
 import org.cagrid.gridgrouper.test.system.steps.GrouperRemoveMemberStep;
@@ -134,7 +135,7 @@ public class GridGrouperTest extends ServiceStoryBase {
 
 			// Create Users
 			List<Application> users = new ArrayList<Application>();
-			for (int i = 0; i < 3; i++) {
+			for (int i = 0; i < 4; i++) {
 				Application a = new Application();
 				a.setUserId("jdoe" + i);
 				a.setPassword("K00lM0N$$" + i);
@@ -193,8 +194,7 @@ public class GridGrouperTest extends ServiceStoryBase {
 					gridGrouperServiceURL));
 			steps.add(new GrouperGrantPrivilegeStep("test:stem1", idp + users.get(1).getUserId(), "stem", gridGrouperServiceURL));
 
-			steps.add(new GrouperGrantPrivilegeStep("test:stem1:group1", idp + users.get(1).getUserId(), "membershiprequest",
-					gridGrouperServiceURL));
+			steps.add(new GrouperGrantMembershipRequestsStep("test:stem1:group1", gridGrouperServiceURL));
 
 			// check privileges
 			steps.add(new GrouperCheckPrivilegesStep("test:stem1:group1", idp + users.get(1).getUserId(), new String[] { "admin" },
@@ -217,9 +217,12 @@ public class GridGrouperTest extends ServiceStoryBase {
 			steps.add(new GrouperRemoveMemberStep("test:stem1:group1", idp + "subject3", gridGrouperServiceURL));
 			steps.add(new GrouperCheckMembersStep("test:stem1:group1", "All", new String[] { idp + users.get(1).getUserId(),
 					idp + users.get(2).getUserId() }, gridGrouperServiceURL));
-			
-			steps.add(new GrouperAddMembershipRequestStep("test:stem1:group1", idp + "subjectrequest", gridGrouperServiceURL));
-			steps.add(new GrouperUpdateMembershipRequestStep("test:stem1:group1", idp + "subjectrequest", gridGrouperServiceURL));
+		
+
+			steps.add(new DorianAuthenticateStep(users.get(3).getUserId(), users.get(3).getPassword(), dorianServiceURL));
+			steps.add(new GrouperAddMembershipRequestStep("test:stem1:group1", gridGrouperServiceURL));
+			steps.add(new DorianAuthenticateStep(users.get(0).getUserId(), users.get(0).getPassword(), dorianServiceURL));
+			steps.add(new GrouperUpdateMembershipRequestStep("test:stem1:group1", idp + users.get(3).getUserId(), gridGrouperServiceURL));
 
 		} catch (Exception e) {
 			e.printStackTrace();

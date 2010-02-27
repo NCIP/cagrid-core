@@ -7,19 +7,17 @@ import gov.nih.nci.cagrid.testing.system.haste.Step;
 public class GrouperAddMembershipRequestStep extends Step {
 	private String endpoint;
 	private String group;
-	private String subject;
 	private boolean shouldFail = false;
 
-	public GrouperAddMembershipRequestStep(String group, String subject, String endpoint) {
-		this(group, subject, false, endpoint);
+	public GrouperAddMembershipRequestStep(String group, String endpoint) {
+		this(group, false, endpoint);
 	}
 
-	public GrouperAddMembershipRequestStep(String group, String subject, boolean shouldFail, String endpoint) {
+	public GrouperAddMembershipRequestStep(String group, boolean shouldFail, String endpoint) {
 		super();
 
 		this.endpoint = endpoint;
 		this.group = group;
-		this.subject = subject;
 		this.shouldFail = shouldFail;
 	}
 
