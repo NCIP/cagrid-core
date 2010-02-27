@@ -24,7 +24,7 @@ public class NukeIvyCacheStory extends Story {
     }
 
 
-    protected Vector steps() {
+    protected Vector<?> steps() {
         Vector<Step> steps = new Vector<Step>();
         steps.add(new NukeIvyCacheStep());
         return steps;
