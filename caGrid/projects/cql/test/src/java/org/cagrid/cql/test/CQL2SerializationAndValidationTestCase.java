@@ -290,11 +290,6 @@ public class CQL2SerializationAndValidationTestCase extends TestCase {
     }
     
     
-    public void testEmptySupportedCqlExtensions() {
-        SupportedExtensions ext = new SupportedExtensions();
-    }
-    
-    
     public void testAggregationResult() {
         CQLQueryResults results = new CQLQueryResults();
         results.setTargetClassname("foo.bar");
