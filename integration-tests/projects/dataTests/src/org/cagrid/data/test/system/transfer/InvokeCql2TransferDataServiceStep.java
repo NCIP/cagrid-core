@@ -18,6 +18,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 import org.apache.axis.types.URI;
+import org.apache.axis.utils.ClassUtils;
 import org.cagrid.cql.utilities.iterator.CQL2QueryResultsIterator;
 import org.cagrid.cql2.AttributeValue;
 import org.cagrid.cql2.BinaryPredicate;
@@ -193,7 +194,8 @@ public class InvokeCql2TransferDataServiceStep extends Step {
         StringReader xmlReader = new StringReader(xml);
         CQLQueryResults results = null;
         try {
-            results = Utils.deserializeObject(xmlReader, CQLQueryResults.class);
+            results = Utils.deserializeObject(xmlReader, CQLQueryResults.class, 
+                ClassUtils.getResourceAsStream(client.getClass(), "client-config.wsdd"));
         } catch (Exception ex) {
             ex.printStackTrace();
             fail("Error deserializing CQL 2 query results: " + ex.getMessage());

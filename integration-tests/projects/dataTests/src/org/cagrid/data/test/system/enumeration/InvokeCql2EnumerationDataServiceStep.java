@@ -60,7 +60,7 @@ public class InvokeCql2EnumerationDataServiceStep extends Step {
     
     private DataSource createDataSource(EndpointReferenceType epr) throws RemoteException {
         InputStream resourceAsStream = ClassUtils.getResourceAsStream(
-            InvokeCql2EnumerationDataServiceStep.class, "client-config.wsdd");
+            EnumerationDataServiceClient.class, "client-config.wsdd");
         DataSource port = EnumerationResponseHelper.createDataSource(epr, resourceAsStream);
         return port;
     }
