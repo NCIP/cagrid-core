@@ -17,7 +17,8 @@ import org.xml.sax.InputSource;
 
 
 public class SDK40EncodingUtils {
-	public static final String CASTOR_MAPPING_DTD = "mapping.dtd";
+    // castor's DTD
+	public static final String CASTOR_MAPPING_DTD = "org/exolab/castor/mapping/mapping.dtd";//"mapping.dtd";
 	public static final String CASTOR_MAPPING_DTD_ENTITY = "-//EXOLAB/Castor Object Mapping DTD Version 1.0//EN";
 	public static final String DEFAULT_MARSHALLER_MAPPING = "/xml-mapping.xml";
     public static final String DEFAULT_UNMARSHALLER_MAPPING = "/unmarshaller-xml-mapping.xml";
