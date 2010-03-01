@@ -57,7 +57,6 @@
 				<include name="**/*.jar" />
                 <exclude name="junit.jar"/>
 			</fileset>
-			<pathelement location="${globus.dir}" />
 		</path>
 		
 		<path id="Introduce.test.classpath">
