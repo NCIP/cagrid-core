@@ -181,10 +181,6 @@ public class DataServiceQueryOperationProviderCreator implements CreationExtensi
             CommonTools.addNamespace(serviceInfo.getServiceDescriptor(),
                 CommonTools.createNamespaceType(schemaDir + File.separator
                     + CqlSchemaConstants.CQL_RESULT_SET_SCHEMA, schemaDirFile));
-            // CQL 2 result namespace
-            CommonTools.addNamespace(serviceInfo.getServiceDescriptor(),
-                CommonTools.createNamespaceType(schemaDir + File.separator
-                    + CqlSchemaConstants.CQL2_RESULTS_SCHEMA_FILENAME, schemaDirFile));
             // results restriction namespace
             NamespaceType restrictionNamespace = CommonTools.createNamespaceType(schemaDir + File.separator
                 + CQLResultTypesGenerator.getResultTypeXSDFileName(

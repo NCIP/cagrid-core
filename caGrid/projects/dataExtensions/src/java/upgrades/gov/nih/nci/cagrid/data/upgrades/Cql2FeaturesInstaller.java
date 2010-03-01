@@ -147,10 +147,6 @@ public class Cql2FeaturesInstaller {
             throw new UpgradeException("Error copying new schemas or wsdl: " + ex.getMessage(), ex);
         }
         try {
-            // CQL 2 result namespace
-            CommonTools.addNamespace(serviceInfo.getServiceDescriptor(),
-                CommonTools.createNamespaceType(schemaDirName + File.separator
-                    + CqlSchemaConstants.CQL2_RESULTS_SCHEMA_FILENAME, schemaDirFile));
             // Query language support metadata namespace
             NamespaceType supportNamespace = CommonTools.createNamespaceType(schemaDirName + File.separator
                 + MetadataConstants.QUERY_LANGUAGE_SUPPORT_XSD, schemaDirFile);

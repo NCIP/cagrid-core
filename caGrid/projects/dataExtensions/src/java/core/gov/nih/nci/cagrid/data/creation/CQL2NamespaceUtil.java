@@ -58,7 +58,7 @@ public class CQL2NamespaceUtil {
             Utils.copyFile(schema, out);
             logMessage("Added CQL 2 support schema: " + schema.getName());
         }
-        // add the namespace type to the service
+        // add the CQL 2 query namespace type to the service
         CommonTools.addNamespace(info.getServiceDescriptor(),
             CommonTools.createNamespaceType(serviceSchemaDir.getAbsolutePath()
                 + File.separator + CqlSchemaConstants.CQL2_SCHEMA_FILENAME, 
@@ -73,6 +73,23 @@ public class CQL2NamespaceUtil {
             elem.setSerializer(Cql2SerializerFactory.class.getName());
             elem.setDeserializer(Cql2DeserializerFactory.class.getName());
             logMessage("Configured custom serialization for CQL 2 type " + elem.getType());
+        }
+        // add the CQL 2 results namespace to the service
+        CommonTools.addNamespace(info.getServiceDescriptor(), 
+            CommonTools.createNamespaceType(serviceSchemaDir.getAbsolutePath()
+                + File.separator + CqlSchemaConstants.CQL2_RESULTS_SCHEMA_FILENAME,
+                serviceSchemaDir));
+        // custom serialization on the CQL 2 results namespace
+        NamespaceType cql2ResultsNamespace = CommonTools.getNamespaceType(
+            info.getServiceDescriptor().getNamespaces(),
+            CQLConstants.CQL2_RESULTS_NAMESPACE_URI);
+        cql2ResultsNamespace.setGenerateStubs(Boolean.FALSE);
+        cql2ResultsNamespace.setPackageName("org.cagrid.cql2.results");
+        for (SchemaElementType elem : cql2ResultsNamespace.getSchemaElement()) {
+            elem.setClassName(elem.getType());
+            elem.setSerializer(Cql2SerializerFactory.class.getName());
+            elem.setDeserializer(Cql2DeserializerFactory.class.getName());
+            logMessage("Configured custom serialization for CQL 2 results type " + elem.getType());
         }
     }
     
