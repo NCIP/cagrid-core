@@ -8,6 +8,7 @@ import gov.nih.nci.system.client.ApplicationServiceProvider;
 import gov.nih.nci.system.query.hibernate.HQLCriteria;
 
 import java.io.InputStream;
+import java.io.StringReader;
 import java.io.StringWriter;
 import java.text.DateFormat;
 import java.util.Date;
@@ -26,7 +27,7 @@ import org.cagrid.cacore.sdk4x.cql2.processor.HibernateConfigTypesInformationRes
 import org.cagrid.cacore.sdk4x.cql2.processor.ParameterizedHqlQuery;
 import org.cagrid.cacore.sdk4x.cql2.processor.TypesInformationResolver;
 import org.cagrid.cql.utilities.AnyNodeHelper;
-import org.cagrid.cql.utilities.CQLConstants;
+import org.cagrid.cql.utilities.CQL2SerializationUtil;
 import org.cagrid.cql2.Aggregation;
 import org.cagrid.cql2.CQLQuery;
 import org.cagrid.cql2.CQLQueryModifier;
@@ -126,7 +127,7 @@ public class SDK42CQL2QueryProcessor extends CQL2QueryProcessor {
             // the id attribute in those tuples to get a 1:1 correspondence with
             // actual data instances in the database
             try {
-                runQuery = (CQLQuery) Utils.cloneBean(query, CQLConstants.CQL2_QUERY_QNAME);
+                runQuery = cloneQueryBean(query);
                 NamedAttribute[] namedAttributes = runQuery.getCQLQueryModifier().getNamedAttribute();
                 NamedAttribute idAttribute = new NamedAttribute("id");
                 namedAttributes = (NamedAttribute[]) Utils.appendToArray(namedAttributes, idAttribute);
@@ -465,5 +466,12 @@ public class SDK42CQL2QueryProcessor extends CQL2QueryProcessor {
             qnameResolver = new MappingFileQNameResolver(getClassToQnameMappings());
         }
         return qnameResolver;
+    }
+    
+    
+    private CQLQuery cloneQueryBean(CQLQuery query) throws Exception {
+        StringWriter writer = new StringWriter();
+        CQL2SerializationUtil.serializeCql2Query(query, writer);
+        return CQL2SerializationUtil.deserializeCql2Query(new StringReader(writer.getBuffer().toString()));
     }
 }
