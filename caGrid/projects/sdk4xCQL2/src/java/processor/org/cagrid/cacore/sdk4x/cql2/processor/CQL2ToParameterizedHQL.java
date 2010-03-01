@@ -543,7 +543,7 @@ public class CQL2ToParameterizedHQL {
     private void processQueryModifiers(CQLQueryModifier mods, StringBuilder hql) {
         StringBuilder modHql = new StringBuilder();
         if (mods.getCountOnly() != null && mods.getCountOnly().booleanValue()) {
-            modHql.append("Select count(id)");
+            modHql.append("Select count(distinct id)");
         } else if (mods.getDistinctAttribute() != null) {
             boolean reallyDistinct = false;
             modHql.append("Select ");
