@@ -20,7 +20,7 @@ import org.xml.sax.InputSource;
 
 public class SDK42EncodingUtils {
     // castor's DTD
-	public static final String CASTOR_MAPPING_DTD = "mapping.dtd";
+	public static final String CASTOR_MAPPING_DTD = "org/exolab/castor/mapping/mapping.dtd";//"mapping.dtd";
 	public static final String CASTOR_MAPPING_DTD_ENTITY = "-//EXOLAB/Castor Object Mapping DTD Version 1.0//EN";
     
     // properties expected to be defined in global section of wsdd
