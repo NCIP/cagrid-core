@@ -9,7 +9,11 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.apache.axis.EngineConfiguration;
 import org.apache.axis.MessageContext;
+import org.apache.axis.WSDDEngineConfiguration;
+import org.apache.axis.deployment.wsdd.WSDDDeployment;
+import org.apache.axis.deployment.wsdd.WSDDService;
 import org.apache.axis.utils.ClassUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -72,9 +76,27 @@ public class SDK42EncodingUtils {
 					mappingLocation = prop;
 					LOG.debug("Loading castor mapping from globalConfiguration property[" + mappingProperty + "]");
 				} else {
-					LOG.warn("Unable to locate castor mapping property[" + mappingProperty
-						+ "], using default mapping location:" + mappingLocation);
-				}
+				    // walk through the WSDD config and find the property in service config options
+				    EngineConfiguration config = context.getAxisEngine().getConfig();
+		            if (config instanceof WSDDEngineConfiguration) {
+		                WSDDDeployment wsdd = ((WSDDEngineConfiguration) config).getDeployment();
+		                WSDDService[] services = wsdd.getServices();
+		                for (WSDDService service : services) {
+		                    prop = service.getParameter(mappingProperty);
+		                    if (prop != null && !prop.trim().equals("")) {
+		                        // found it!
+		                        mappingLocation = prop;
+		                        LOG.debug("Loading castor mapping from service " + service.getQName() 
+		                            + " property [" + prop + "]");
+		                        break;
+		                    }
+		                }
+		            }
+                    if (!(prop != null && !prop.trim().equals(""))) {
+                        LOG.warn("Unable to locate castor mapping property[" + mappingProperty
+                            + "], using default mapping location:" + mappingLocation);
+                    }
+                }
 			}
 		} else {
 			LOG.debug("Unable to determine message context, using default mapping location:" + mappingLocation);
