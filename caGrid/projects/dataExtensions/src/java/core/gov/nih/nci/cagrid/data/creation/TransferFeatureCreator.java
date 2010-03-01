@@ -234,7 +234,7 @@ public class TransferFeatureCreator extends FeatureCreator {
 
 
 	private boolean transferExtensionInstalled() {
-		List extensionDescriptors = ExtensionsLoader.getInstance().getServiceExtensions();
+		List<?> extensionDescriptors = ExtensionsLoader.getInstance().getServiceExtensions();
 		for (int i = 0; i < extensionDescriptors.size(); i++) {
 			ServiceExtensionDescriptionType ex = (ServiceExtensionDescriptionType) extensionDescriptors.get(i);
 			if (ex.getName().equals(TRANSFER_EXTENSION_NAME)) {
