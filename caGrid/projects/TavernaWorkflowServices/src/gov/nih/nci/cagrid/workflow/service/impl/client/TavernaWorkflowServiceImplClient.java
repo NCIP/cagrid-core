@@ -205,4 +205,34 @@ public class TavernaWorkflowServiceImplClient extends TavernaWorkflowServiceImpl
     }
   }
 
+  public void setDelegatedCredential(org.cagrid.gaards.cds.delegated.stubs.types.DelegatedCredentialReference delegatedCredentialReference) throws RemoteException, gov.nih.nci.cagrid.workflow.service.impl.stubs.types.CannotSetCredential {
+    synchronized(portTypeMutex){
+      configureStubSecurity((Stub)portType,"setDelegatedCredential");
+    gov.nih.nci.cagrid.workflow.service.impl.stubs.SetDelegatedCredentialRequest params = new gov.nih.nci.cagrid.workflow.service.impl.stubs.SetDelegatedCredentialRequest();
+    gov.nih.nci.cagrid.workflow.service.impl.stubs.SetDelegatedCredentialRequestDelegatedCredentialReference delegatedCredentialReferenceContainer = new gov.nih.nci.cagrid.workflow.service.impl.stubs.SetDelegatedCredentialRequestDelegatedCredentialReference();
+    delegatedCredentialReferenceContainer.setDelegatedCredentialReference(delegatedCredentialReference);
+    params.setDelegatedCredentialReference(delegatedCredentialReferenceContainer);
+    gov.nih.nci.cagrid.workflow.service.impl.stubs.SetDelegatedCredentialResponse boxedResult = portType.setDelegatedCredential(params);
+    }
+  }
+
+  public org.cagrid.transfer.context.stubs.types.TransferServiceContextReference putInputData(java.lang.String filename) throws RemoteException {
+    synchronized(portTypeMutex){
+      configureStubSecurity((Stub)portType,"putInputData");
+    gov.nih.nci.cagrid.workflow.service.impl.stubs.PutInputDataRequest params = new gov.nih.nci.cagrid.workflow.service.impl.stubs.PutInputDataRequest();
+    params.setFilename(filename);
+    gov.nih.nci.cagrid.workflow.service.impl.stubs.PutInputDataResponse boxedResult = portType.putInputData(params);
+    return boxedResult.getTransferServiceContextReference();
+    }
+  }
+
+  public org.cagrid.transfer.context.stubs.types.TransferServiceContextReference getOutputData() throws RemoteException {
+    synchronized(portTypeMutex){
+      configureStubSecurity((Stub)portType,"getOutputData");
+    gov.nih.nci.cagrid.workflow.service.impl.stubs.GetOutputDataRequest params = new gov.nih.nci.cagrid.workflow.service.impl.stubs.GetOutputDataRequest();
+    gov.nih.nci.cagrid.workflow.service.impl.stubs.GetOutputDataResponse boxedResult = portType.getOutputData(params);
+    return boxedResult.getTransferServiceContextReference();
+    }
+  }
+
 }

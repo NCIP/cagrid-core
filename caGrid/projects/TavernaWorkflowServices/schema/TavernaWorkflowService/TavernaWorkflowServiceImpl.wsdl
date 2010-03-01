@@ -1,10 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<definitions xmlns="http://schemas.xmlsoap.org/wsdl/" xmlns:tns="http://service.workflow.cagrid.nci.nih.gov/TavernaWorkflowService/ServiceImpl" xmlns:wsrp="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ResourceProperties-1.2-draft-01.xsd" xmlns:wsrlw="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ResourceLifetime-1.2-draft-01.wsdl" xmlns:wsdlpp="http://www.globus.org/namespaces/2004/10/WSDLPreprocessor" xmlns:gtwsdl1="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ServiceGroup-1.2-draft-01.wsdl" xmlns:wsa="http://schemas.xmlsoap.org/ws/2004/03/addressing" xmlns:wsntw="http://docs.oasis-open.org/wsn/2004/06/wsn-WS-BaseNotification-1.2-draft-01.wsdl" xmlns:wsrbfw="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-BaseFaults-1.2-draft-01.wsdl" xmlns:wsrpw="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ResourceProperties-1.2-draft-01.wsdl" xmlns:wns1="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ResourceLifetime-1.2-draft-01.wsdl" xmlns:wns2="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ResourceProperties-1.2-draft-01.wsdl" xmlns:wns0="http://security.introduce.cagrid.nci.nih.gov/ServiceSecurity" xmlns:wns3="http://docs.oasis-open.org/wsn/2004/06/wsn-WS-BaseNotification-1.2-draft-01.wsdl" xmlns:ns4="http://service.workflow.cagrid.nci.nih.gov/TavernaWorkflowService/ServiceImpl/types" xmlns:ns2="http://factory.workflow.cagrid.nci.nih.gov/TavernaWorkflowService/types" xmlns:ns7="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.service" xmlns:ns6="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata" xmlns:ns0="http://types.workflow.cagrid.nci.nih.gov/WorkflowManagementFactoryService" xmlns:ns3="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.security" xmlns:ns1="http://schemas.xmlsoap.org/ws/2004/03/addressing" xmlns:ns8="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common" xmlns:ns5="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ResourceLifetime-1.2-draft-01.xsd" name="TavernaWorkflowServiceImpl" targetNamespace="http://service.workflow.cagrid.nci.nih.gov/TavernaWorkflowService/ServiceImpl">
+<definitions xmlns="http://schemas.xmlsoap.org/wsdl/" xmlns:tns="http://service.workflow.cagrid.nci.nih.gov/TavernaWorkflowService/ServiceImpl" xmlns:wsrp="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ResourceProperties-1.2-draft-01.xsd" xmlns:wsa="http://schemas.xmlsoap.org/ws/2004/03/addressing" xmlns:wsrbfw="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-BaseFaults-1.2-draft-01.wsdl" xmlns:wsrpw="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ResourceProperties-1.2-draft-01.wsdl" xmlns:wns1="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ResourceLifetime-1.2-draft-01.wsdl" xmlns:wns2="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ResourceProperties-1.2-draft-01.wsdl" xmlns:wns0="http://security.introduce.cagrid.nci.nih.gov/ServiceSecurity" xmlns:wns3="http://docs.oasis-open.org/wsn/2004/06/wsn-WS-BaseNotification-1.2-draft-01.wsdl" xmlns:ns12="http://transfer.cagrid.org/Transfer" xmlns:ns8="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata" xmlns:ns2="http://types.workflow.cagrid.nci.nih.gov/WorkflowManagementFactoryService" xmlns:ns0="http://cds.gaards.cagrid.org/CredentialDelegationService/DelegatedCredential/types" xmlns:ns5="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.security" xmlns:ns10="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common" xmlns:ns4="http://factory.workflow.cagrid.nci.nih.gov/TavernaWorkflowService/types" xmlns:ns6="http://service.workflow.cagrid.nci.nih.gov/TavernaWorkflowService/ServiceImpl/types" xmlns:ns9="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.service" xmlns:ns11="http://transfer.cagrid.org/TransferService/Context/types" xmlns:ns3="http://schemas.xmlsoap.org/ws/2004/03/addressing" xmlns:ns1="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-BaseFaults-1.2-draft-01.xsd" xmlns:ns7="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ResourceLifetime-1.2-draft-01.xsd" name="TavernaWorkflowServiceImpl" targetNamespace="http://service.workflow.cagrid.nci.nih.gov/TavernaWorkflowService/ServiceImpl">
   <import namespace="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ResourceProperties-1.2-draft-01.wsdl" location="../wsrf/properties/WS-ResourceProperties.wsdl" />
   <import namespace="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-BaseFaults-1.2-draft-01.wsdl" location="../wsrf/faults/WS-BaseFaults.wsdl" />
-  <import namespace="http://docs.oasis-open.org/wsn/2004/06/wsn-WS-BaseNotification-1.2-draft-01.wsdl" location="../wsrf/notification/WS-BaseN.wsdl" />
   <import namespace="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ResourceLifetime-1.2-draft-01.wsdl" location="./../wsrf/lifetime/WS-ResourceLifetime.wsdl" />
-  <import namespace="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ResourceProperties-1.2-draft-01.wsdl" location="./../wsrf/properties/WS-ResourceProperties.wsdl" />
   <import namespace="http://security.introduce.cagrid.nci.nih.gov/ServiceSecurity" location="./ServiceSecurity.wsdl" />
   <import namespace="http://docs.oasis-open.org/wsn/2004/06/wsn-WS-BaseNotification-1.2-draft-01.wsdl" location="./../wsrf/notification/WS-BaseN.wsdl" />
   <!--============================================================
@@ -15,14 +13,18 @@
   <types>
     <schema xmlns="http://www.w3.org/2001/XMLSchema" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:wsrbf="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-BaseFaults-1.2-draft-01.xsd" targetNamespace="http://service.workflow.cagrid.nci.nih.gov/TavernaWorkflowService/ServiceImpl" elementFormDefault="qualified" attributeFormDefault="unqualified">
       <import namespace="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-BaseFaults-1.2-draft-01.xsd" schemaLocation="../wsrf/faults/WS-BaseFaults.xsd" />
-      <import namespace="http://service.workflow.cagrid.nci.nih.gov/TavernaWorkflowService/ServiceImpl/types" schemaLocation="./TavernaWorkflowServiceImplTypes.xsd" />
-      <import namespace="http://factory.workflow.cagrid.nci.nih.gov/TavernaWorkflowService/types" schemaLocation="./TavernaWorkflowServiceTypes.xsd" />
-      <import namespace="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.service" schemaLocation="./xsd/cagrid/types/service/servicemodel.xsd" />
+      <import namespace="http://transfer.cagrid.org/Transfer" schemaLocation="./caGrid_Transfer.xsd" />
       <import namespace="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata" schemaLocation="./xsd/cagrid/types/caGridMetadata.xsd" />
       <import namespace="http://types.workflow.cagrid.nci.nih.gov/WorkflowManagementFactoryService" schemaLocation="./WorkflowManagementFactoryService.xsd" />
+      <import namespace="http://cds.gaards.cagrid.org/CredentialDelegationService/DelegatedCredential/types" schemaLocation="./DelegatedCredentialTypes.xsd" />
       <import namespace="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.security" schemaLocation="./xsd/cagrid/types/security/security.xsd" />
-      <import namespace="http://schemas.xmlsoap.org/ws/2004/03/addressing" schemaLocation="./ws_2004_03_addressing.xsd" />
       <import namespace="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common" schemaLocation="./xsd/cagrid/types/common/common.xsd" />
+      <import namespace="http://factory.workflow.cagrid.nci.nih.gov/TavernaWorkflowService/types" schemaLocation="./TavernaWorkflowServiceTypes.xsd" />
+      <import namespace="http://service.workflow.cagrid.nci.nih.gov/TavernaWorkflowService/ServiceImpl/types" schemaLocation="./TavernaWorkflowServiceImplTypes.xsd" />
+      <import namespace="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.service" schemaLocation="./xsd/cagrid/types/service/servicemodel.xsd" />
+      <import namespace="http://transfer.cagrid.org/TransferService/Context/types" schemaLocation="./TransferServiceContextTypes.xsd" />
+      <import namespace="http://schemas.xmlsoap.org/ws/2004/03/addressing" schemaLocation="./ws_2004_03_addressing.xsd" />
+      <import namespace="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-BaseFaults-1.2-draft-01.xsd" schemaLocation="./WS-BaseFaults.xsd" />
       <import namespace="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ResourceLifetime-1.2-draft-01.xsd" schemaLocation="../wsrf/lifetime/WS-ResourceLifetime.xsd" />
       <element name="CancelRequest">
         <complexType>
@@ -42,7 +44,7 @@
       <element name="GetDetailedStatusResponse">
         <complexType>
           <sequence>
-            <element ref="ns0:DetailedStatusOutputElement" minOccurs="1" maxOccurs="unbounded" />
+            <element ref="ns2:DetailedStatusOutputElement" minOccurs="1" maxOccurs="unbounded" />
           </sequence>
         </complexType>
       </element>
@@ -54,7 +56,7 @@
       <element name="GetStatusResponse">
         <complexType>
           <sequence>
-            <element ref="ns0:WorkflowStatusElement" minOccurs="1" maxOccurs="1" />
+            <element ref="ns2:WorkflowStatusElement" minOccurs="1" maxOccurs="1" />
           </sequence>
         </complexType>
       </element>
@@ -66,7 +68,7 @@
       <element name="GetWorkflowOutputResponse">
         <complexType>
           <sequence>
-            <element ref="ns0:WorkflowOutputElement" minOccurs="1" maxOccurs="1" />
+            <element ref="ns2:WorkflowOutputElement" minOccurs="1" maxOccurs="1" />
           </sequence>
         </complexType>
       </element>
@@ -78,7 +80,7 @@
       <element name="PauseResponse">
         <complexType>
           <sequence>
-            <element ref="ns0:WorkflowStatusElement" minOccurs="1" maxOccurs="1" />
+            <element ref="ns2:WorkflowStatusElement" minOccurs="1" maxOccurs="1" />
           </sequence>
         </complexType>
       </element>
@@ -90,7 +92,7 @@
       <element name="ResumeResponse">
         <complexType>
           <sequence>
-            <element ref="ns0:WorkflowStatusElement" minOccurs="1" maxOccurs="1" />
+            <element ref="ns2:WorkflowStatusElement" minOccurs="1" maxOccurs="1" />
           </sequence>
         </complexType>
       </element>
@@ -100,7 +102,7 @@
             <element name="startInputElement">
               <complexType>
                 <sequence>
-                  <element ref="ns0:StartInputElement" minOccurs="1" maxOccurs="1" />
+                  <element ref="ns2:StartInputElement" minOccurs="1" maxOccurs="1" />
                 </sequence>
               </complexType>
             </element>
@@ -110,16 +112,60 @@
       <element name="StartResponse">
         <complexType>
           <sequence>
-            <element ref="ns0:WorkflowStatusElement" minOccurs="1" maxOccurs="1" />
+            <element ref="ns2:WorkflowStatusElement" minOccurs="1" maxOccurs="1" />
+          </sequence>
+        </complexType>
+      </element>
+      <element name="SetDelegatedCredentialRequest">
+        <complexType>
+          <sequence>
+            <element name="delegatedCredentialReference">
+              <complexType>
+                <sequence>
+                  <element ref="ns0:DelegatedCredentialReference" minOccurs="1" maxOccurs="1" />
+                </sequence>
+              </complexType>
+            </element>
+          </sequence>
+        </complexType>
+      </element>
+      <element name="SetDelegatedCredentialResponse">
+        <complexType>
+          <sequence />
+        </complexType>
+      </element>
+      <element name="PutInputDataRequest">
+        <complexType>
+          <sequence>
+            <element name="filename" type="xs:string" minOccurs="1" maxOccurs="1" />
+          </sequence>
+        </complexType>
+      </element>
+      <element name="PutInputDataResponse">
+        <complexType>
+          <sequence>
+            <element ref="ns11:TransferServiceContextReference" minOccurs="1" maxOccurs="1" />
+          </sequence>
+        </complexType>
+      </element>
+      <element name="GetOutputDataRequest">
+        <complexType>
+          <sequence />
+        </complexType>
+      </element>
+      <element name="GetOutputDataResponse">
+        <complexType>
+          <sequence>
+            <element ref="ns11:TransferServiceContextReference" minOccurs="1" maxOccurs="1" />
           </sequence>
         </complexType>
       </element>
       <element name="TavernaWorkflowServiceImplResourceProperties">
         <complexType>
           <sequence>
-            <element ref="ns5:CurrentTime" />
-            <element ref="ns5:TerminationTime" />
-            <element ref="ns0:WorkflowStatusElement" />
+            <element ref="ns7:CurrentTime" />
+            <element ref="ns7:TerminationTime" />
+            <element ref="ns2:WorkflowStatusElement" />
           </sequence>
         </complexType>
       </element>
@@ -168,20 +214,41 @@
   <message name="StartResponse">
     <part name="parameters" element="tns:StartResponse" />
   </message>
+  <message name="SetDelegatedCredentialRequest">
+    <part name="parameters" element="tns:SetDelegatedCredentialRequest" />
+  </message>
+  <message name="SetDelegatedCredentialResponse">
+    <part name="parameters" element="tns:SetDelegatedCredentialResponse" />
+  </message>
+  <message name="PutInputDataRequest">
+    <part name="parameters" element="tns:PutInputDataRequest" />
+  </message>
+  <message name="PutInputDataResponse">
+    <part name="parameters" element="tns:PutInputDataResponse" />
+  </message>
+  <message name="GetOutputDataRequest">
+    <part name="parameters" element="tns:GetOutputDataRequest" />
+  </message>
+  <message name="GetOutputDataResponse">
+    <part name="parameters" element="tns:GetOutputDataResponse" />
+  </message>
   <message name="CannotCancelWorkflowFaultFaultMessage">
-    <part name="fault" element="ns4:CannotCancelWorkflowFault" />
+    <part name="fault" element="ns6:CannotCancelWorkflowFault" />
   </message>
   <message name="WorkflowExceptionFaultMessage">
-    <part name="fault" element="ns4:WorkflowException" />
+    <part name="fault" element="ns6:WorkflowException" />
   </message>
   <message name="CannotPauseWorkflowFaultFaultMessage">
-    <part name="fault" element="ns4:CannotPauseWorkflowFault" />
+    <part name="fault" element="ns6:CannotPauseWorkflowFault" />
   </message>
   <message name="CannotResumeWorkflowFaultFaultMessage">
-    <part name="fault" element="ns4:CannotResumeWorkflowFault" />
+    <part name="fault" element="ns6:CannotResumeWorkflowFault" />
   </message>
   <message name="CannotStartWorkflowFaultFaultMessage">
-    <part name="fault" element="ns4:CannotStartWorkflowFault" />
+    <part name="fault" element="ns6:CannotStartWorkflowFault" />
+  </message>
+  <message name="CannotSetCredentialFaultMessage">
+    <part name="fault" element="ns6:CannotSetCredential" />
   </message>
   <!--============================================================
 
@@ -226,22 +293,35 @@
       <output message="tns:StartResponse" wsa:Action="http://service.workflow.cagrid.nci.nih.gov/TavernaWorkflowService/ServiceImpl/StartResponse" />
       <fault name="CannotStartWorkflowFault" message="tns:CannotStartWorkflowFaultFaultMessage" wsa:Action="http://service.workflow.cagrid.nci.nih.gov/TavernaWorkflowService/ServiceImpl/CannotStartWorkflowFaultFaultMessage" />
     </operation>
+    <operation name="setDelegatedCredential">
+      <input message="tns:SetDelegatedCredentialRequest" wsa:Action="http://service.workflow.cagrid.nci.nih.gov/TavernaWorkflowService/ServiceImpl/SetDelegatedCredentialRequest" />
+      <output message="tns:SetDelegatedCredentialResponse" wsa:Action="http://service.workflow.cagrid.nci.nih.gov/TavernaWorkflowService/ServiceImpl/SetDelegatedCredentialResponse" />
+      <fault name="CannotSetCredential" message="tns:CannotSetCredentialFaultMessage" wsa:Action="http://service.workflow.cagrid.nci.nih.gov/TavernaWorkflowService/ServiceImpl/CannotSetCredentialFaultMessage" />
+    </operation>
+    <operation name="putInputData">
+      <input message="tns:PutInputDataRequest" wsa:Action="http://service.workflow.cagrid.nci.nih.gov/TavernaWorkflowService/ServiceImpl/PutInputDataRequest" />
+      <output message="tns:PutInputDataResponse" wsa:Action="http://service.workflow.cagrid.nci.nih.gov/TavernaWorkflowService/ServiceImpl/PutInputDataResponse" />
+    </operation>
+    <operation name="getOutputData">
+      <input message="tns:GetOutputDataRequest" wsa:Action="http://service.workflow.cagrid.nci.nih.gov/TavernaWorkflowService/ServiceImpl/GetOutputDataRequest" />
+      <output message="tns:GetOutputDataResponse" wsa:Action="http://service.workflow.cagrid.nci.nih.gov/TavernaWorkflowService/ServiceImpl/GetOutputDataResponse" />
+    </operation>
     <operation name="getServiceSecurityMetadata">
       <input message="wns0:GetServiceSecurityMetadataRequest" wsa:Action="http://security.introduce.cagrid.nci.nih.gov/ServiceSecurity/GetServiceSecurityMetadataRequest" />
       <output message="wns0:GetServiceSecurityMetadataResponse" wsa:Action="http://security.introduce.cagrid.nci.nih.gov/ServiceSecurity/GetServiceSecurityMetadataResponse" />
     </operation>
     <wsdl:operation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" name="Destroy">
-      <wsdl:input message="wsrlw:DestroyRequest" wsa:Action="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ResourceLifetime/Destroy" />
-      <wsdl:output message="wsrlw:DestroyResponse" wsa:Action="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ResourceLifetime/DestroyResponse" />
-      <wsdl:fault message="wsrlw:ResourceNotDestroyedFault" name="ResourceNotDestroyedFault" />
-      <wsdl:fault message="wsrlw:ResourceUnknownFault" name="ResourceUnknownFault" />
+      <wsdl:input message="wns1:DestroyRequest" wsa:Action="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ResourceLifetime/Destroy" />
+      <wsdl:output message="wns1:DestroyResponse" wsa:Action="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ResourceLifetime/DestroyResponse" />
+      <wsdl:fault message="wns1:ResourceNotDestroyedFault" name="ResourceNotDestroyedFault" />
+      <wsdl:fault message="wns1:ResourceUnknownFault" name="ResourceUnknownFault" />
     </wsdl:operation>
     <wsdl:operation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" name="SetTerminationTime">
-      <wsdl:input message="wsrlw:SetTerminationTimeRequest" wsa:Action="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ResourceLifetime/SetTerminationTime" />
-      <wsdl:output message="wsrlw:SetTerminationTimeResponse" wsa:Action="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ResourceLifetime/SetTerminationTimeResponse" />
-      <wsdl:fault message="wsrlw:UnableToSetTerminationTimeFault" name="UnableToSetTerminationTimeFault" />
-      <wsdl:fault message="wsrlw:ResourceUnknownFault" name="ResourceUnknownFault" />
-      <wsdl:fault message="wsrlw:TerminationTimeChangeRejectedFault" name="TerminationTimeChangeRejectedFault" />
+      <wsdl:input message="wns1:SetTerminationTimeRequest" wsa:Action="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ResourceLifetime/SetTerminationTime" />
+      <wsdl:output message="wns1:SetTerminationTimeResponse" wsa:Action="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ResourceLifetime/SetTerminationTimeResponse" />
+      <wsdl:fault message="wns1:UnableToSetTerminationTimeFault" name="UnableToSetTerminationTimeFault" />
+      <wsdl:fault message="wns1:ResourceUnknownFault" name="ResourceUnknownFault" />
+      <wsdl:fault message="wns1:TerminationTimeChangeRejectedFault" name="TerminationTimeChangeRejectedFault" />
     </wsdl:operation>
     <wsdl:operation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" name="GetMultipleResourceProperties">
       <wsdl:input name="GetMultipleResourcePropertiesRequest" message="wsrpw:GetMultipleResourcePropertiesRequest" wsa:Action="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ResourceProperties/GetMultipleResourceProperties" />
@@ -265,13 +345,13 @@
       <wsdl:fault name="QueryEvaluationErrorFault" message="wsrpw:QueryEvaluationErrorFault" />
     </wsdl:operation>
     <wsdl:operation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" name="Subscribe">
-      <wsdl:input message="wsntw:SubscribeRequest" wsa:Action="http://docs.oasis-open.org/wsn/2004/06/wsn-WS-BaseNotification/Subscribe" />
-      <wsdl:output message="wsntw:SubscribeResponse" wsa:Action="http://docs.oasis-open.org/wsn/2004/06/wsn-WS-BaseNotification/SubscribeResponse" />
-      <wsdl:fault name="ResourceUnknownFault" message="wsntw:ResourceUnknownFault" />
-      <wsdl:fault name="SubscribeCreationFailedFault" message="wsntw:SubscribeCreationFailedFault" />
-      <wsdl:fault name="TopicPathDialectUnknownFault" message="wsntw:TopicPathDialectUnknownFault" />
-      <wsdl:fault name="InvalidTopicExpressionFault" message="wsntw:InvalidTopicExpressionFault" />
-      <wsdl:fault name="TopicNotSupportedFault" message="wsntw:TopicNotSupportedFault" />
+      <wsdl:input message="wns3:SubscribeRequest" wsa:Action="http://docs.oasis-open.org/wsn/2004/06/wsn-WS-BaseNotification/Subscribe" />
+      <wsdl:output message="wns3:SubscribeResponse" wsa:Action="http://docs.oasis-open.org/wsn/2004/06/wsn-WS-BaseNotification/SubscribeResponse" />
+      <wsdl:fault name="ResourceUnknownFault" message="wns3:ResourceUnknownFault" />
+      <wsdl:fault name="SubscribeCreationFailedFault" message="wns3:SubscribeCreationFailedFault" />
+      <wsdl:fault name="TopicPathDialectUnknownFault" message="wns3:TopicPathDialectUnknownFault" />
+      <wsdl:fault name="InvalidTopicExpressionFault" message="wns3:InvalidTopicExpressionFault" />
+      <wsdl:fault name="TopicNotSupportedFault" message="wns3:TopicNotSupportedFault" />
     </wsdl:operation>
   </portType>
 </definitions>

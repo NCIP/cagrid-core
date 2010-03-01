@@ -13,21 +13,25 @@
   <Content xsi:type="agg:AggregatorContent" xmlns:agg="http://mds.globus.org/aggregator/types">
     <agg:AggregatorConfig xsi:type="agg:AggregatorConfig">
       <agg:GetMultipleResourcePropertiesPollType
-			xmlns:ns4="http://service.workflow.cagrid.nci.nih.gov/TavernaWorkflowService/ServiceImpl/types"
-			xmlns:ns2="http://factory.workflow.cagrid.nci.nih.gov/TavernaWorkflowService/types"
-			xmlns:ns7="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.service"
-			xmlns:ns6="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata"
-			xmlns:ns0="http://types.workflow.cagrid.nci.nih.gov/WorkflowManagementFactoryService"
+			xmlns:ns12="http://transfer.cagrid.org/Transfer"
+			xmlns:ns8="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata"
+			xmlns:ns2="http://types.workflow.cagrid.nci.nih.gov/WorkflowManagementFactoryService"
 			xmlns:xs="http://www.w3.org/2001/XMLSchema"
-			xmlns:ns3="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.security"
-			xmlns:ns1="http://schemas.xmlsoap.org/ws/2004/03/addressing"
-			xmlns:ns8="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common"
-			xmlns:ns5="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ResourceLifetime-1.2-draft-01.xsd">
+			xmlns:ns0="http://cds.gaards.cagrid.org/CredentialDelegationService/DelegatedCredential/types"
+			xmlns:ns5="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.security"
+			xmlns:ns10="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common"
+			xmlns:ns4="http://factory.workflow.cagrid.nci.nih.gov/TavernaWorkflowService/types"
+			xmlns:ns6="http://service.workflow.cagrid.nci.nih.gov/TavernaWorkflowService/ServiceImpl/types"
+			xmlns:ns9="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.service"
+			xmlns:ns11="http://transfer.cagrid.org/TransferService/Context/types"
+			xmlns:ns3="http://schemas.xmlsoap.org/ws/2004/03/addressing"
+			xmlns:ns1="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-BaseFaults-1.2-draft-01.xsd"
+			xmlns:ns7="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ResourceLifetime-1.2-draft-01.xsd">
         <!-- Specifies that the index should refresh information
             every 300000 milliseconds (once every 5 minutes) -->
         <agg:PollIntervalMillis>INDEX_REFRESH</agg:PollIntervalMillis>
         <!-- specifies all Resource Properties that should be retrieved from the service -->
-		<agg:ResourcePropertyNames>ns6:ServiceMetadata</agg:ResourcePropertyNames>
+		<agg:ResourcePropertyNames>ns8:ServiceMetadata</agg:ResourcePropertyNames>
 	
       </agg:GetMultipleResourcePropertiesPollType>
     </agg:AggregatorConfig>

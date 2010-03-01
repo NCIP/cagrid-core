@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
+	<classpathentry kind="var" path="GT4_LOCATION"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="src" path="build/stubs-TavernaWorkflowService/src"/>
@@ -95,5 +96,10 @@
 	<classpathentry kind="lib" path="ext/dependencies/service/jars/castor-1.0.2.jar"/>
 	<classpathentry kind="lib" path="ext/dependencies/service/jars/commons-codec-1.3.jar"/>
 	<classpathentry kind="lib" path="ext/dependencies/service/jars/jprov.jar"/>
+	<classpathentry kind="lib" path="ext/dependencies/service/jars/caGrid-Transfer-client-1.4-dev.jar"/>
+	<classpathentry kind="lib" path="ext/dependencies/service/jars/caGrid-Transfer-common-1.4-dev.jar"/>
+	<classpathentry kind="lib" path="ext/dependencies/service/jars/caGrid-Transfer-service-1.4-dev.jar"/>
+	<classpathentry kind="lib" path="ext/dependencies/service/jars/caGrid-Transfer-stubs-1.4-dev.jar"/>
+	<classpathentry kind="lib" path="ext/dependencies/service/jars/commons-httpclient-3.0.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

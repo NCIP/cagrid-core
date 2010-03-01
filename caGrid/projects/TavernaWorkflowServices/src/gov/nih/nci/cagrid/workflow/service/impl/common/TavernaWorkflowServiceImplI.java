@@ -85,5 +85,28 @@ public interface TavernaWorkflowServiceImplI {
 
   public org.oasis.wsn.SubscribeResponse subscribe(org.oasis.wsn.Subscribe params) throws RemoteException ;
 
+  /**
+   * Get the delegated credential from CDS using the EPR
+   *
+   * @param delegatedCredentialReference
+   * @throws CannotSetCredential
+   *	Unable to get or set the client's delegated credential
+   */
+  public void setDelegatedCredential(org.cagrid.gaards.cds.delegated.stubs.types.DelegatedCredentialReference delegatedCredentialReference) throws RemoteException, gov.nih.nci.cagrid.workflow.service.impl.stubs.types.CannotSetCredential ;
+
+  /**
+   * Uses caTransfer service to transfer large dataset to the Workflow Service.
+   *
+   * @param filename
+   *	name of the file that the client wants to upload.
+   */
+  public org.cagrid.transfer.context.stubs.types.TransferServiceContextReference putInputData(java.lang.String filename) throws RemoteException ;
+
+  /**
+   * Uses caTransfer to transfer the output back to the client.  Used for large files.
+   *
+   */
+  public org.cagrid.transfer.context.stubs.types.TransferServiceContextReference getOutputData() throws RemoteException ;
+
 }
 

@@ -39,5 +39,11 @@
       <extension base="wsrbf:BaseFaultType" />
     </complexContent>
   </complexType>
+  <element name="CannotSetCredential" type="tns:CannotSetCredential" />
+  <complexType name="CannotSetCredential">
+    <complexContent>
+      <extension base="wsrbf:BaseFaultType" />
+    </complexContent>
+  </complexType>
 </schema>
 

@@ -34,7 +34,7 @@ public class TavernaWorkflowServiceImpl extends TavernaWorkflowServiceImplBase {
 
 	  TavernaWorkflowServiceImplResourceHome home = null;
 		ResourceKey key = null;
-		int TERM_TIME = 120;
+		int TERM_TIME = 180;
 		try {
 			Context ctx = new InitialContext();
 			String lookupString = Constants.JNDI_SERVICES_BASE_NAME +
@@ -43,16 +43,20 @@ public class TavernaWorkflowServiceImpl extends TavernaWorkflowServiceImplBase {
 
 			key = home.createResource();
 
+			//Create a resource on the Impl Service.
 			TavernaWorkflowServiceImplResource workflowResource = home.getResource(key);
 
 			EndpointReferenceType epr = AddressingUtils.createEndpointReference(ServiceHost
 					.getBaseURL() + "cagrid/TavernaWorkflowServiceImpl", key);
-			//System.out.println("EPR :" + epr.getAddress().toString());
 			
+			//If the Client sends a Termination time, use it. Otherwise use the default 180min.
+			Calendar termTime = wMSInputElement.getTerminationTime();
 			
-//			Calendar termTime = Calendar.getInstance();
-//	        termTime.add(Calendar.MINUTE, TERM_TIME);
-//	        workflowResource.setTerminationTime(termTime);
+			if(termTime == null){
+				termTime = Calendar.getInstance();
+		        termTime.add(Calendar.MINUTE, TERM_TIME);
+			}
+			workflowResource.setTerminationTime(termTime);
 	        
 			workflowResource.createWorkflow(wMSInputElement);
 			WMSOutputType wMSOutputElement = new WMSOutputType();

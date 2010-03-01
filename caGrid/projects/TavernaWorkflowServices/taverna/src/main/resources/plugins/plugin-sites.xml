@@ -7,7 +7,7 @@
     <name>caGrid Plugin Site</name>
     <url>http://www.mygrid.org.uk/taverna/cagrid/2.1-beta-2/</url>
   </pluginSite>
-    <pluginSite>
+  <pluginSite>
     <name>caGrid Plugin Site2</name>
     <url>http://www.mcs.anl.gov/~wtan/t2/repository/</url>
   </pluginSite>

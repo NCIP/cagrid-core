@@ -68,4 +68,22 @@ public class TavernaWorkflowServiceImplProviderImpl{
     return boxedResult;
   }
 
+    public gov.nih.nci.cagrid.workflow.service.impl.stubs.SetDelegatedCredentialResponse setDelegatedCredential(gov.nih.nci.cagrid.workflow.service.impl.stubs.SetDelegatedCredentialRequest params) throws RemoteException, gov.nih.nci.cagrid.workflow.service.impl.stubs.types.CannotSetCredential {
+    gov.nih.nci.cagrid.workflow.service.impl.stubs.SetDelegatedCredentialResponse boxedResult = new gov.nih.nci.cagrid.workflow.service.impl.stubs.SetDelegatedCredentialResponse();
+    impl.setDelegatedCredential(params.getDelegatedCredentialReference().getDelegatedCredentialReference());
+    return boxedResult;
+  }
+
+    public gov.nih.nci.cagrid.workflow.service.impl.stubs.PutInputDataResponse putInputData(gov.nih.nci.cagrid.workflow.service.impl.stubs.PutInputDataRequest params) throws RemoteException {
+    gov.nih.nci.cagrid.workflow.service.impl.stubs.PutInputDataResponse boxedResult = new gov.nih.nci.cagrid.workflow.service.impl.stubs.PutInputDataResponse();
+    boxedResult.setTransferServiceContextReference(impl.putInputData(params.getFilename()));
+    return boxedResult;
+  }
+
+    public gov.nih.nci.cagrid.workflow.service.impl.stubs.GetOutputDataResponse getOutputData(gov.nih.nci.cagrid.workflow.service.impl.stubs.GetOutputDataRequest params) throws RemoteException {
+    gov.nih.nci.cagrid.workflow.service.impl.stubs.GetOutputDataResponse boxedResult = new gov.nih.nci.cagrid.workflow.service.impl.stubs.GetOutputDataResponse();
+    boxedResult.setTransferServiceContextReference(impl.getOutputData());
+    return boxedResult;
+  }
+
 }

@@ -2,10 +2,13 @@ package gov.nih.nci.cagrid.workflow.factory.client;
 
 import gov.nih.nci.cagrid.common.Utils;
 
+import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
 
 import org.apache.axis.message.addressing.EndpointReferenceType;
+import org.cagrid.gaards.cds.delegated.stubs.types.DelegatedCredentialReference;
+import org.cagrid.transfer.context.stubs.types.TransferServiceContextReference;
 
 import workflowmanagementfactoryservice.WorkflowOutputType;
 import workflowmanagementfactoryservice.WorkflowStatusType;
@@ -59,13 +62,29 @@ public class TavernaWorkflowServiceClientMain {
 					TavernaWorkflowServiceClient.writeEprToFile(resourceEPR, workflowName);
 
 					//************************************************************************// 
+					// 2. Testing caTransfer.
+					String location = "/Users/sulakhe/Desktop/ttemp.zip";
+					TransferServiceContextReference ref1 = TavernaWorkflowServiceClient.putInputDataHelper(resourceEPR, location);
+					  
+					File outFile = TavernaWorkflowServiceClient.getOutputDataHelper(resourceEPR);
+					System.out.println("caTransfer Output: " + outFile.getAbsolutePath());
+					System.exit(0);
 
-					// 2. Start Workflow Operations Invoked.
+					//************************************************************************//					
+					// 2. Delegate credential.
+/*					DelegatedCredentialReference cdsRef = TavernaWorkflowServiceClient.delegateCredential(
+							"https://cagrid-cds.nci.nih.gov:8443/wsrf/services/cagrid/CredentialDelegationService", 
+							"/O=caBIG/OU=caGrid/OU=LOA1/OU=Services/CN=Sulakhe-2.local", null);
+					
+					TavernaWorkflowServiceClient.setDelegatedCredential(resourceEPR, cdsRef);
 
-					//String[] inputArgs = {"caCore", " and caBig3"}; 
-					String[] inputArgs = {"<ns1:CQLQuery xmlns:ns1=\"http://CQL.caBIG/1/gov.nih.nci.cagrid.CQLQuery\">  <ns1:Target name=\"gov.nih.nci.caarray.domain.project.Experiment\">   <ns1:Group logicRelation=\"AND\">    <ns1:Attribute name=\"id\" predicate=\"EQUAL_TO\" value=\"95\"/>   </ns1:Group>  </ns1:Target> </ns1:CQLQuery>"};
+*/					
+					// 3. Start Workflow Operations Invoked.
+
+					String[] inputArgs = {"Dina", " Sulakhe"}; 
+					//String[] inputArgs = {"<ns1:CQLQuery xmlns:ns1=\"http://CQL.caBIG/1/gov.nih.nci.cagrid.CQLQuery\">  <ns1:Target name=\"gov.nih.nci.caarray.domain.project.Experiment\">   <ns1:Group logicRelation=\"AND\">    <ns1:Attribute name=\"id\" predicate=\"EQUAL_TO\" value=\"95\"/>   </ns1:Group>  </ns1:Target> </ns1:CQLQuery>"};
 					//String[] inputArgs = {"caCore"};
-					System.out.println("\n2. Now starting the workflow ..");
+					System.out.println("\n3. Now starting the workflow ..");
 					System.out.println("Reading EPR from file ..");
 					EndpointReferenceType readEPR = new EndpointReferenceType();
 					try {

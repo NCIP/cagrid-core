@@ -1,11 +1,11 @@
 #Introduce Properties
-#Wed Jan 07 16:21:32 CST 2009
+#Thu Feb 25 13:26:36 CST 2010
 introduce.skeleton.services.list=TavernaWorkflowService,TavernaWorkflowServiceImpl
-introduce.skeleton.extensions=cagrid_metadata
-introduce.skeleton.timestamp=1231365721361
+introduce.skeleton.extensions=cagrid_metadata,caGrid_Transfer
+introduce.skeleton.timestamp=1266448568485
 introduce.skeleton.service.name=TavernaWorkflowService
 introduce.skeleton.resource.options=main,singleton,identifiable,persistent,resourcePropertyManagement
-introduce.skeleton.destination.dir=/Users/sulakhe/cagrid/1.3/trunk/cagrid-1-0/caGrid/projects/TavernaWorkflowServices
+introduce.skeleton.destination.dir=/Users/sulakhe/cagrid/1.3/svn/caGrid/projects/TavernaWorkflowServices
 introduce.skeleton.namespace.domain=http\://factory.workflow.cagrid.nci.nih.gov/TavernaWorkflowService
+introduce.ns.excludes=\ -x gme\://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.service -x http\://transfer.cagrid.org/Transfer -x http\://transfer.cagrid.org/TransferService/Context/types -x gme\://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata -x http\://cds.gaards.cagrid.org/CredentialDelegationService/DelegatedCredential/types -x gme\://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.security -x gme\://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common -x http\://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-BaseFaults-1.2-draft-01.xsd
 introduce.soap.binding.excludes=\ 
-introduce.ns.excludes=\ -x gme\://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.service -x gme\://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata -x gme\://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.security -x gme\://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common

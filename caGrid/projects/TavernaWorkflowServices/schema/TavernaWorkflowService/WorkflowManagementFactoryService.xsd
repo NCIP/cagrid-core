@@ -29,9 +29,8 @@
   
   <xsd:complexType name="StartInputType">
     <xsd:sequence>
-    <!--
-      <xsd:element name="inputArgs" type="tns:WorkflowInputType" maxOccurs="1" />
-    -->
+    
+<!--      <xsd:element name="inputArgs" type="tns:WorkflowInputType" maxOccurs="unbounded " />-->
       <xsd:element name="inputArgs" type="xsd:string" maxOccurs="unbounded" />
     </xsd:sequence>
   </xsd:complexType>
@@ -66,7 +65,8 @@
   
   <xsd:complexType name="WorkflowInputType">
     <xsd:sequence>
-      <xsd:any maxOccurs="1" />
+      <xsd:element name="inputPort" type="xsd:string" maxOccurs="1" />
+      <xsd:element name="inputValue" type="xsd:string" maxOccurs="1" />
     </xsd:sequence>
   </xsd:complexType>
   

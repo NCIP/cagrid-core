@@ -1,12 +1,17 @@
 package gov.nih.nci.cagrid.workflow.service.impl.service.globus.resource;
 
+import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
 import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.FilenameFilter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.OutputStream;
 import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -15,13 +20,30 @@ import java.util.Collections;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Vector;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipInputStream;
+import java.util.zip.ZipOutputStream;
 
 import gov.nih.nci.cagrid.common.Utils;
+import gov.nih.nci.cagrid.common.security.ProxyUtil;
 import gov.nih.nci.cagrid.workflow.factory.common.TavernaWorkflowServiceConstants;
 import gov.nih.nci.cagrid.workflow.factory.service.TavernaWorkflowServiceConfiguration;
 import gov.nih.nci.cagrid.workflow.service.impl.common.TavernaWorkflowServiceImplConstantsBase;
+import gov.nih.nci.cagrid.workflow.service.impl.stubs.types.CannotSetCredential;
 
 import org.apache.axis.message.addressing.EndpointReferenceType;
+import org.cagrid.gaards.cds.client.DelegatedCredentialUserClient;
+import org.cagrid.gaards.cds.delegated.stubs.types.DelegatedCredentialReference;
+import org.cagrid.gaards.cds.stubs.types.CDSInternalFault;
+import org.cagrid.gaards.cds.stubs.types.DelegationFault;
+import org.cagrid.gaards.cds.stubs.types.PermissionDeniedFault;
+import org.cagrid.transfer.context.service.globus.resource.TransferServiceContextResource;
+import org.cagrid.transfer.context.service.helper.DataStagedCallback;
+import org.cagrid.transfer.context.service.helper.TransferServiceHelper;
+import org.cagrid.transfer.context.stubs.types.TransferServiceContextReference;
+import org.cagrid.transfer.descriptor.DataDescriptor;
+import org.globus.gsi.GlobusCredential;
+import org.globus.gsi.GlobusCredentialException;
 import org.globus.wsrf.InvalidResourceKeyException;
 import org.globus.wsrf.NoSuchResourceException;
 import org.globus.wsrf.ResourceException;
@@ -54,22 +76,90 @@ public class TavernaWorkflowServiceImplResource extends TavernaWorkflowServiceIm
 
 	private String tempDir = null;
 	private String workflowName = null;
+	
+	private String TWS_USER_PROXY = null;
+	
+	private String caTransferCwd = null;
 
 	private WorkflowStatusType workflowStatus = WorkflowStatusType.Pending;
 	private static TavernaWorkflowServiceConfiguration config = null;
+
+	public String getWorkflowName() {
+		return workflowName;
+	}
+
+	public void setWorkflowName(String workflowName) {
+		this.workflowName = workflowName;
+	}
+
+	public String getTempDir() {
+		return tempDir;
+	}
+
+	public void setTempDir(String tempDir) {
+		this.tempDir = tempDir;
+	}
+
+	public String getBaseDir() {
+		return baseDir;
+	}
+
+	public void setBaseDir(String baseDir) {
+		this.baseDir = baseDir;
+	}
+
+	public String[] getInputDoc() {
+		return inputDoc;
+	}
+
+	public void setInputDoc(String[] inputDoc) {
+		this.inputDoc = inputDoc;
+	}
+
+	public String[] getOutputDoc() {
+		return outputDoc;
+	}
+
+	public void setOutputDoc(String[] workflowOuput) {
+		outputDoc = workflowOuput;
+	}
+
+	public String getScuflDoc() {
+		return scuflDoc;
+	}
+
+	public void setScuflDoc(String scuflDoc) {
+		this.scuflDoc = scuflDoc;
+	}
+
+	public String getTWS_USER_PROXY() {
+		return TWS_USER_PROXY;
+	}
+
+	public void setTWS_USER_PROXY(String tws_user_proxy) {
+		TWS_USER_PROXY = tws_user_proxy;
+	}
+
+	public String getCaTransferCwd() {
+		return caTransferCwd;
+	}
+
+	public void setCaTransferCwd(String caTransferCwd) {
+		this.caTransferCwd = caTransferCwd;
+	}
 
 	
 	private class WorkflowExecutionThread extends Thread {
 		
 		private String[] args = null;
+		private ArrayList<String> myArgs = null;
 		private ResourcePropertySet propSet;
 		private ResourceProperty statusRP;
 	   // private File tmpFile;
 	    //private FileOutputStream outtemp;
-	    public WorkflowExecutionThread (String[] args,ResourcePropertySet propSet )
+	    public WorkflowExecutionThread (ArrayList<String> args, ResourcePropertySet propSet )
 		{
-
-			this.args = args;
+	    	this.myArgs = args;
 			this.propSet  = propSet;
 			statusRP = this.propSet.get(TavernaWorkflowServiceImplConstantsBase.WORKFLOWSTATUSELEMENT);
 			//statusRP.set(0, workflowStatus);
@@ -79,7 +169,8 @@ public class TavernaWorkflowServiceImplResource extends TavernaWorkflowServiceIm
 			
 			String tavernaDir = config.getTavernaDir();
 			String repository = config.getBaseRepositoryDir();
-			ProcessBuilder builder = new ProcessBuilder(this.args);
+
+			ProcessBuilder builder = new ProcessBuilder(this.myArgs);
 			builder.redirectErrorStream(true);
 			
 			builder.directory(new File(tavernaDir + File.separator + "target" + File.separator + "classes"));
@@ -91,6 +182,11 @@ public class TavernaWorkflowServiceImplResource extends TavernaWorkflowServiceIm
 				// lisfOfJars is a method that returns all the jars from Taverna repository in CLASSPATH format (: seperated). 
 				classpath = classpath + listOfJars(repository);
 				environment.put("CLASSPATH", classpath);
+				if(getTWS_USER_PROXY() != null)
+				{	
+					System.out.println("Setting TWS_USER_PROXY");
+					environment.put("TWS_USER_PROXY", getTWS_USER_PROXY());
+				}
 
 				Process process;
 				process = builder.start();
@@ -100,7 +196,7 @@ public class TavernaWorkflowServiceImplResource extends TavernaWorkflowServiceIm
 				BufferedReader br = new BufferedReader(isr);
 				String line;
 				System.out.printf("Output of running %s is: ", 
-						Arrays.toString(args));
+						Arrays.deepToString(myArgs.toArray()));
 				
 				
 				boolean finished = false;
@@ -189,79 +285,16 @@ public class TavernaWorkflowServiceImplResource extends TavernaWorkflowServiceIm
 				throw new RemoteException("tavernaDir is not set the services.properties file"); 
 			}
 
-			System.out.println("\nTaverna Repository:" + this.getBaseDir());
-
-		/*	if (this.getBaseDir().equals("null"))
-			{
-				if(System.getProperty("os.type").startsWith("Windows"))
-				{
-					this.setBaseDir(System.getProperty("user.home")+ "\\Application Data" + "\\Taverna-1.7.1\\");
-				}
-				else
-				{	
-					this.setBaseDir(System.getProperty("user.home")+ "\\Application Data" + "\\Taverna-1.7.1\\");
-				}
-			}*/
-
+			System.out.println("\nTaverna Repository:" + this.getBaseDir());						
 			System.out.println("\nTaverna Basedir: " + config.getTavernaDir());
 			System.out.println("NOTE: Please set the Taverna base directly correctly. This can be set in the service.properties file of service code.\n\n");
 
-			this.setTempDir(System.getProperty("java.io.tmpdir"));
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 
 	}
-
-	public String getWorkflowName() {
-		return workflowName;
-	}
-
-	public void setWorkflowName(String workflowName) {
-		this.workflowName = workflowName;
-	}
-
-	public String getTempDir() {
-		return tempDir;
-	}
-
-	public void setTempDir(String tempDir) {
-		this.tempDir = tempDir;
-	}
-
-	public String getBaseDir() {
-		return baseDir;
-	}
-
-	public void setBaseDir(String baseDir) {
-		this.baseDir = baseDir;
-	}
-
-	public String[] getInputDoc() {
-		return inputDoc;
-	}
-
-	public void setInputDoc(String[] inputDoc) {
-		this.inputDoc = inputDoc;
-	}
-
-	public String[] getOutputDoc() {
-		return outputDoc;
-	}
-
-	public void setOutputDoc(String[] workflowOuput) {
-		outputDoc = workflowOuput;
-	}
-
-	public String getScuflDoc() {
-		return scuflDoc;
-	}
-
-	public void setScuflDoc(String scuflDoc) {
-		this.scuflDoc = scuflDoc;
-	}
-
 
 
 	public void createWorkflow(WMSInputType wMSInputElement)
@@ -271,9 +304,15 @@ public class TavernaWorkflowServiceImplResource extends TavernaWorkflowServiceIm
 
 			String [] keys = this.getResourceKey().toString().trim().split("TavernaWorkflowServiceImplResultsKey=");
 			System.out.println("\nWorkflow NAME :" + wMSInputElement.getWorkflowName());
+			
+			//Set the workflow name.
 			this.setWorkflowName(wMSInputElement.getWorkflowName());
+			
+			//Create a temporary directory that stores the required files for this execution.
+			this.setTempDir(System.getProperty("java.io.tmpdir") + File.separator + keys[1]);
+			new File(this.getTempDir()).mkdir();
 
-			String scuflDocTemp = this.getTempDir() + File.separator + keys[1] + "--workflow.xml";
+			String scuflDocTemp = this.getTempDir() + File.separator + this.getWorkflowName() + "--workflow.xml";
 			Utils.stringBufferToFile(new StringBuffer(wMSInputElement.getScuflDoc()), scuflDocTemp);
 			this.setScuflDoc(scuflDocTemp);
 
@@ -287,7 +326,6 @@ public class TavernaWorkflowServiceImplResource extends TavernaWorkflowServiceIm
 
 	public WorkflowStatusType start (StartInputType startInput) {
 
-		String [] keys = this.getResourceKey().toString().trim().split("TavernaWorkflowServiceImplResultsKey=");
 		try {
 			
 			int inputPorts = 0;
@@ -298,7 +336,7 @@ public class TavernaWorkflowServiceImplResource extends TavernaWorkflowServiceIm
 				String[] inputs = startInput.getInputArgs();
 				for (int i=0; i < inputs.length; i++)
 				{
-					String inputFile = this.getTempDir() + File.separator + keys[1] + "-input-" + i + ".xml";					
+					String inputFile = this.getTempDir() + File.separator + "input-" + i + ".xml";					
 					Utils.stringBufferToFile(new StringBuffer(inputs[i]), inputFile);
 					System.out.println("Input file " + i + " : " + inputFile);
 				}
@@ -306,35 +344,29 @@ public class TavernaWorkflowServiceImplResource extends TavernaWorkflowServiceIm
 				inputPorts = this.getInputDoc().length;
 			}
 
-			/*		String [] args = { "-workflow", this.getScuflDoc(), 
-					"-outputdoc", this.getOutputDoc(),
-					"-basedir", this.getBaseDir(),
-					"-inputdoc", this.getInputDoc()	};*/
-
-
-			//The first argument is the scuflDoc string, and remaining are the input strings.
-			//String [] args = { this.getScuflDoc(), "blah", "and blah"	};
-			String [] args = new String[inputPorts + 5];
-
-			args[0] = "java";
-			args[1] = "-Xms256m";
-			args[2] = "-Xmx1g";
-			//args[3] = "gov.nih.nci.cagrid.workflow.factory.taverna.ExecuteWorkflow";
-			args[3] = "net.sf.taverna.raven.prelauncher.PreLauncher";
-			args[4] = this.getScuflDoc();
+			//Create a ArrayList that holds all the args sent to the ProcessBuilder(in a new thread).
+			ArrayList<String> myArgs = new ArrayList<String>();
+			myArgs.addAll(Arrays.asList("java", 
+							"-Xms256m", 
+							"-Xmx1g",
+							"net.sf.taverna.raven.prelauncher.PreLauncher",
+							this.getScuflDoc()));
+			
 			for(int i = 0; i < inputPorts; i++)
 			{
-				args[i+5] = this.getInputDoc()[i];
-			}
-
-			workflowStatus = WorkflowStatusType.Active;
-			WorkflowExecutionThread executor = new WorkflowExecutionThread(args,this.getResourcePropertySet());
-			executor.start();
-
-			//ResourceProperty testRp = this.getResourcePropertySet().get(TavernaWorkflowServiceImplConstantsBase.WORKFLOWSTATUSELEMENT);			
-			//WorkflowStatusType testStatus = (WorkflowStatusType) testRp.get(0);
-			//System.out.println("4. After Sleep Call:" + testStatus.getValue() + "\n\n");
+				myArgs.add(this.getInputDoc()[i]);
+			}			
 			
+			//if caTransfer is used, add the working diretory as the last argument of the ArrayList.
+			if(this.getCaTransferCwd() != null){
+				myArgs.add(this.getCaTransferCwd());
+			}
+				
+			workflowStatus = WorkflowStatusType.Active;
+			super.setWorkflowStatusElement(workflowStatus);
+			
+			WorkflowExecutionThread executor = new WorkflowExecutionThread(myArgs, this.getResourcePropertySet());
+			executor.start();			
 
 		} catch (Exception e) {
 			this.workflowStatus = WorkflowStatusType.Failed;
@@ -376,6 +408,136 @@ public class TavernaWorkflowServiceImplResource extends TavernaWorkflowServiceIm
 		return this.workflowStatus;
 	}
 	
+
+	public void setDelegatedCredential(DelegatedCredentialReference delegatedCredentialReference){
+		// The default credential of the user on the service side that is currently logged in.
+		//GlobusCredential credential = ProxyUtil.getDefaultProxy();
+		
+		try {
+			GlobusCredential credential;
+			credential = new GlobusCredential("/Users/sulakhe/.cagrid/certificates/Sulakhe-2.local-cert.pem", "/Users/sulakhe/.cagrid/certificates/Sulakhe-2.local-key.pem");		
+
+			DelegatedCredentialUserClient client;
+			client = new DelegatedCredentialUserClient(delegatedCredentialReference, credential);
+
+		//	DelegatedCredentialUserClient client = new DelegatedCredentialUserClient(delegatedCredentialReference);
+
+		// The get credential method obtains a signed delegated credential from the CDS.
+			GlobusCredential delegatedCredential;
+
+			delegatedCredential = client.getDelegatedCredential();
+			//Save the delegated credential in a custom location.
+			String proxyPath = this.getTempDir() + File.separator + "delegatedProxy";
+			System.out.println("ProxyPath : " + proxyPath);
+			ProxyUtil.saveProxy(delegatedCredential, proxyPath);
+			
+			//Sets the TWS_USER_PROXY variable that indicates a user has delegated his proxy.
+			this.setTWS_USER_PROXY(proxyPath);
+
+			
+		} catch (CDSInternalFault e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (DelegationFault e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (PermissionDeniedFault e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (RemoteException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		
+	}
+
+	/*
+	 * This operation is called by the client to upload large files using catransfer.
+	 */
+	
+	//This holds the list of files uploaded by the client as input to the workflow (using caTransfer).
+	private Collection<? extends File> listOfFilesUploadedByClient = null;
+	public TransferServiceContextReference putInputData(String filename) throws RemoteException {
+		
+		final String tmpDir = this.getTempDir();
+		
+        // create a data descriptor for the upload for thed ata to be uploaded
+        DataDescriptor dd = new DataDescriptor(null, filename);
+        
+        // create a callback that will handle the data once it is uploaded
+        DataStagedCallback callback = new DataStagedCallback() {
+            public void dataStaged(TransferServiceContextResource resource) {
+            	
+            	//Create a Working directory insde the Temp directory.
+            	String workDir = tmpDir + File.separator + "transferWorkDir";
+            	new File(workDir).mkdir();
+            	
+            	//Set the caTransferCwd if its not already set.
+            	if (getCaTransferCwd() == null){
+            		setCaTransferCwd(workDir); 
+            	}
+            	
+            	
+                File dataFileUserSentMe = new File(resource.getDataStorageDescriptor().getLocation());
+                File fileInTmpDir = new File(workDir+ File.separator + 
+                		resource.getDataStorageDescriptor().getDataDescriptor().getName());
+                
+                try {
+					copy(dataFileUserSentMe, fileInTmpDir);
+					unzipFile(fileInTmpDir);
+    			} catch (IOException e) {
+					e.printStackTrace();
+				}
+				
+    			//Get the list of files that are uploaded by the client.
+    			listOfFilesUploadedByClient = listFiles(new File(getCaTransferCwd()), null, true);
+				
+                System.out.println("Location of the file: " + dataFileUserSentMe.getAbsolutePath());
+                System.out.println("Temp Dir: " + tmpDir);
+                System.out.println("New File Location: " + fileInTmpDir.getAbsolutePath());
+                System.out.println("DataDescriptor: " + resource.getDataStorageDescriptor().getDataDescriptor().getName());
+                
+            }
+
+        };
+
+        // create the transfer resource that will handle receiving the data and
+        // return the reference to the user
+        return TransferServiceHelper.createTransferContext(dd, callback);
+	}
+
+	private Collection<? extends File> listOfFilesAfterComplete = null;
+	public TransferServiceContextReference getOutputData() throws RemoteException {
+		//remove this line after testing
+		this.workflowStatus = WorkflowStatusType.Done;
+
+		if(this.workflowStatus.equals(WorkflowStatusType.Done))
+		{
+			listOfFilesAfterComplete = listFiles(new File(getCaTransferCwd()), null, true);
+			listOfFilesAfterComplete.removeAll(this.listOfFilesUploadedByClient);
+			if(!listOfFilesAfterComplete.isEmpty())
+			{
+				File outputFile = this.createZipFile(listOfFilesAfterComplete);
+			    // create a descriptor for that data with filename as the Name of the Descriptor.
+			    DataDescriptor dd = new DataDescriptor(null, outputFile.getName());
+			    // create the transfer resource that will handle delivering the data and
+			    // return the reference to the user
+			    return TransferServiceHelper.createTransferContext(outputFile, dd, true);	
+			}
+			else{
+				System.out.println("No output files to transfer.");
+				throw new RemoteException("No output files to transfer.");
+			}
+				
+		}
+		else
+			throw new RemoteException("Workflow execution is not complete.");
+	}
+
 	//****** Following two methods is get a list of all the jars from the Taverna repository******
 	//******  These jars are used to add to the classpath in process builder.				******
 	//****** Methods: listFilesAsArray() and listFiles
@@ -440,6 +602,102 @@ public class TavernaWorkflowServiceImplResource extends TavernaWorkflowServiceIm
 		}
 		return files;		
 		// Return collection of files
+	}
+
+	void copy(File src, File dst) throws IOException 
+	{ 
+		InputStream in = new FileInputStream(src); 
+		OutputStream out = new FileOutputStream(dst); 
+		// Transfer bytes from in to out 
+		byte[] buf = new byte[1024]; 
+		int len; 
+		while ((len = in.read(buf)) > 0) 
+		{ 
+			out.write(buf, 0, len); 
+		} 
+		in.close(); 
+		out.close(); 
+		 
+	}
+	
+	private File createZipFile(Collection<? extends File> files)
+	{
+		
+		String outFilename = this.getTempDir() + File.separator + "outfile.zip"; 
+		byte[] buf = new byte[1024];
+		try { // Create the ZIP file 
+			ZipOutputStream out = new ZipOutputStream(new FileOutputStream(outFilename));
+			for (File file : files) {
+				if(!file.isDirectory())
+				{
+					
+					FileInputStream in = new FileInputStream(file);
+					out.putNextEntry(new ZipEntry(file.getAbsolutePath().replaceFirst(getCaTransferCwd() + File.separator, "")));
+					int len;
+					while ((len = in.read(buf)) > 0) 
+					{ 
+						out.write(buf, 0, len); 
+					}
+					out.closeEntry(); 
+					in.close();
+				}
+			}
+			out.close(); 
+			} 
+		catch (IOException e) {
+			e.getStackTrace();
+		}
+		return new File(outFilename);
+	}
+	
+	private void unzipFile(File fileInTmpDir) throws FileNotFoundException, IOException
+	{
+		if(fileInTmpDir.getName().endsWith(".zip"))
+		{
+			String destinationname = this.getCaTransferCwd() + File.separator;
+		    FileInputStream fis = new FileInputStream(fileInTmpDir.getAbsolutePath());
+            byte[] buf = new byte[1024];
+            ZipInputStream zipinputstream = new ZipInputStream(new BufferedInputStream(fis));
+            ZipEntry zipentry;
+            
+            while ((zipentry = zipinputstream.getNextEntry()) != null) 
+            { 
+                //for each entry to be extracted
+                String entryName = zipentry.getName();
+                System.out.println("Extracting: "+ entryName);
+
+                File newFile = new File(entryName);
+                String directory = newFile.getParent();
+                
+//                if(directory == null)
+//                {
+//                    if(newFile.isDirectory())
+//                        break;
+//                }
+                directory = (directory == null) ? "" : directory;
+                new File(destinationname + directory).mkdirs();
+
+                if(entryName.endsWith("/")){
+                	new File(destinationname + entryName).mkdir();
+                	continue;
+                }
+                FileOutputStream fileoutputstream = new FileOutputStream(
+                        destinationname+entryName);
+                BufferedOutputStream dest = new BufferedOutputStream(fileoutputstream, 1024);
+
+                int n;
+                while ((n = zipinputstream.read(buf, 0, 1024)) > -1)
+                    dest.write(buf, 0, n);
+
+                dest.flush();
+                dest.close(); 
+                zipinputstream.closeEntry();
+                
+            }//while
+
+            zipinputstream.close();
+          }
+		
 	}
 
 

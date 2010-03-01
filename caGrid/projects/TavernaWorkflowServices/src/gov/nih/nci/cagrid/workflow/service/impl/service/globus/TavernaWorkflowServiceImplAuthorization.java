@@ -25,11 +25,11 @@ import org.w3c.dom.Node;
  *
  * This is a PDP for use with the globus authorization callout.
  * This class will have a authorize method for each method on this grid service.
- * The method is responsibe for making any authorization callouts required to satisfy the 
+ * The method is responsible for making any authorization callouts required to satisfy the 
  * authorization requirements placed on each method call.  Each method will either return
- * apon a successful authorization or will throw an exception apon a failed authorization.
+ * upon a successful authorization or will throw an exception upon a failed authorization.
  * 
- * @created by Introduce Toolkit version 1.3
+ * @created by Introduce Toolkit version 1.4
  * 
  */
 public class TavernaWorkflowServiceImplAuthorization implements PDP {
@@ -110,6 +110,18 @@ public class TavernaWorkflowServiceImplAuthorization implements PDP {
 	public void authorizeSubscribe(Subject peerSubject, MessageContext context, QName operation) throws AuthorizationException {
 		
 	}
+	   				
+	public void authorizeSetDelegatedCredential(Subject peerSubject, MessageContext context, QName operation) throws AuthorizationException {
+		
+	}
+	   				
+	public void authorizePutInputData(Subject peerSubject, MessageContext context, QName operation) throws AuthorizationException {
+		
+	}
+	   				
+	public void authorizeGetOutputData(Subject peerSubject, MessageContext context, QName operation) throws AuthorizationException {
+		
+	}
 	   
 	
 	public boolean isPermitted(Subject peerSubject, MessageContext context, QName operation)
@@ -159,6 +171,15 @@ public class TavernaWorkflowServiceImplAuthorization implements PDP {
 			return true;
 		} else if(operation.getLocalPart().equals("subscribe")){
 			authorizeSubscribe(peerSubject, context, operation);
+			return true;
+		} else if(operation.getLocalPart().equals("setDelegatedCredential")){
+			authorizeSetDelegatedCredential(peerSubject, context, operation);
+			return true;
+		} else if(operation.getLocalPart().equals("putInputData")){
+			authorizePutInputData(peerSubject, context, operation);
+			return true;
+		} else if(operation.getLocalPart().equals("getOutputData")){
+			authorizeGetOutputData(peerSubject, context, operation);
 			return true;
 		} 		
 		return false;

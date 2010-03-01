@@ -5,10 +5,17 @@ import gov.nih.nci.cagrid.common.security.ProxyUtil;
 import gov.nih.nci.cagrid.workflow.factory.common.TavernaWorkflowServiceI;
 import gov.nih.nci.cagrid.workflow.service.impl.client.TavernaWorkflowServiceImplClient;
 import gov.nih.nci.cagrid.workflow.service.impl.common.TavernaWorkflowServiceImplConstantsBase;
+import gov.nih.nci.cagrid.workflow.service.impl.stubs.types.CannotSetCredential;
 
+import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
+import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.FileWriter;
+import java.io.IOException;
+import java.io.InputStream;
 import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.List;
@@ -26,6 +33,12 @@ import org.cagrid.gaards.cds.client.DelegationUserClient;
 import org.cagrid.gaards.cds.common.IdentityDelegationPolicy;
 import org.cagrid.gaards.cds.common.ProxyLifetime;
 import org.cagrid.gaards.cds.delegated.stubs.types.DelegatedCredentialReference;
+import org.cagrid.transfer.context.client.TransferServiceContextClient;
+import org.cagrid.transfer.context.client.helper.TransferClientHelper;
+import org.cagrid.transfer.context.stubs.types.TransferServiceContextReference;
+import org.cagrid.transfer.descriptor.DataDescriptor;
+import org.cagrid.transfer.descriptor.DataTransferDescriptor;
+import org.cagrid.transfer.descriptor.Status;
 import org.globus.gsi.GlobusCredential;
 import org.globus.wsrf.container.ContainerException;
 import org.globus.wsrf.encoding.ObjectDeserializer;
@@ -52,6 +65,14 @@ import workflowmanagementfactoryservice.WorkflowStatusType;
  * the Stub specifically for each method call.
  * 
  * @created by Introduce Toolkit version 1.3
+ */
+
+/**
+ * Has helper methods along with the Introduce generated  GRID SERVICE ACCESS METHODS.
+ * 
+ * @author sulakhe
+ * @version caGrid 1.4
+ * @date 02/26/10
  */
 public class TavernaWorkflowServiceClient extends
 TavernaWorkflowServiceClientBase implements TavernaWorkflowServiceI {
@@ -93,6 +114,17 @@ TavernaWorkflowServiceClientBase implements TavernaWorkflowServiceI {
 				+ "\n -ouputDoc <path_for_output_file(Optional)>");
 	}
 
+	/**
+	 * First method to be invoked on the Workflow service that handles the workflow execution.
+	 * Takes the workflow definition file (t2flow) as an input and creates a resource on the Context service.
+
+	 * 
+	 * @param url			Url to the WorkflowService
+	 * @param scuflDoc		The workflow definition file (t2flow) created using Taverna 2.1.x
+	 * @return EPR			The epr representing the resource created on the context service that hanldes the workflow execution.
+	 * @throws MalformedURIException, RemoteException
+	 */
+
 	public static EndpointReferenceType setupWorkflow(String url,
 			String scuflDoc, String workflowName) throws MalformedURIException,
 			RemoteException, Exception {
@@ -102,6 +134,24 @@ TavernaWorkflowServiceClientBase implements TavernaWorkflowServiceI {
 		client.setWorkflowEPR(wMSOutputElement.getWorkflowEPR());
 		return wMSOutputElement.getWorkflowEPR();
 
+	}
+
+
+	/**
+	 * This method is to be used to set the delegated credential on the WorkflowService.
+	 * Call this method before starting the workflow, and it will automatically use the delegated
+	 * credentials when executing the workflow.
+	 * 
+	 * @param epr			Epr pointing the the WorkflowService resource ( on context service) that will handle a workflow execution.
+	 * @param ref			reference to the delegated credential received from CDS.
+	 * @return
+	 * @throws CannotSetCredential, MalformedURIException
+	 */
+
+	public static void setDelegatedCredential(EndpointReferenceType epr, DelegatedCredentialReference ref) throws MalformedURIException, RemoteException, CannotSetCredential
+	{
+		TavernaWorkflowServiceImplClient serviceClient = new TavernaWorkflowServiceImplClient(epr);
+		serviceClient.setDelegatedCredential(ref);
 	}
 
 	public static WorkflowStatusType startWorkflow(String[] inputString, EndpointReferenceType epr) throws MalformedURIException, RemoteException, Exception
@@ -123,6 +173,14 @@ TavernaWorkflowServiceClientBase implements TavernaWorkflowServiceI {
 
 	}
 
+	/**
+	 * Returns the status of the worklow submited
+	 * 
+	 * @param epr					Epr pointing the the WorkflowService resource ( on context service) that will handle a workflow execution.
+	 * @return WorkflowStatusType	Status of the workflow.
+	 * @throws MalformedURIException, RemoteException
+	 */
+
 	public static WorkflowStatusType getStatus(EndpointReferenceType epr)
 	throws MalformedURIException, RemoteException {
 		TavernaWorkflowServiceImplClient serviceClient = new TavernaWorkflowServiceImplClient(epr);
@@ -131,24 +189,157 @@ TavernaWorkflowServiceClientBase implements TavernaWorkflowServiceI {
 
 	}
 
+	/**
+	 * Get the Output of the workflow execution. This method only returns the outputs on the output ports 
+	 * of the workflow. This doesn't return any files. Use {@link #getOutputDataHelper(EndpointReferenceType)}getOutputDataHelper 
+	 * to get files using caTransfer.
+	 * 
+	 * 
+	 * @param epr					Epr pointing the the WorkflowService resource ( on context service) that will handle a workflow execution.
+	 * @return WorkflowOutputType	The output type that holds outputs from the output ports (Currents only Strings).
+	 * @throws MalformedURIException, RemoteException
+	 */
+
 	public static WorkflowOutputType getOutput(EndpointReferenceType epr)
 	throws MalformedURIException, RemoteException {
 		TavernaWorkflowServiceImplClient serviceClient = new TavernaWorkflowServiceImplClient(epr);
 		WorkflowOutputType workflowOutputElement = serviceClient.getWorkflowOutput();
 		return workflowOutputElement;
-
 	}
 
+
+	/**
+	 * This method allows a client to subscribe to the WORKFLOWSTATUSELEMENT resource property of an 
+	 * executing workflow 
+	 * 
+	 * @param epr					Epr pointing the the WorkflowService resource ( on context service) that will handle a workflow execution.
+	 * @param TimeInSeconds			Time interval after which the subscription expires. 
+	 * @return
+	 * @throws MalformedURIException, RemoteException, ContainerException, InterruptedException
+	 */
 	public static void subscribeRP(EndpointReferenceType epr, int TimeInSeconds) throws MalformedURIException, 
-		RemoteException, ContainerException, InterruptedException
+	RemoteException, ContainerException, InterruptedException
 	{
 		CountDownLatch doneSignal = new CountDownLatch(1);
 		TavernaWorkflowServiceImplClient serviceClient = new TavernaWorkflowServiceImplClient(epr, doneSignal, null);
 		serviceClient.subscribe(TavernaWorkflowServiceImplConstantsBase.WORKFLOWSTATUSELEMENT);
-        doneSignal.await(TimeInSeconds, TimeUnit.SECONDS);
+		doneSignal.await(TimeInSeconds, TimeUnit.SECONDS);
 	}
 
 
+	//Method that returns an EPR from the Credential Delegation Service. It automatically picks the Clients
+	// credentials from /tmp/x509... file and if CDS is able to authenticate with it, it then retuns an epr representing the CD
+
+	public static DelegatedCredentialReference delegateCredential(String cdsURL, String delegateTo, String currentProxyFile) throws Exception {
+
+		// The default credential of the user that is currently logged in.
+		GlobusCredential credential = getLocalCredential(currentProxyFile);
+
+		// Specifies how long the delegation service can delegate this credential to other parties.
+
+		ProxyLifetime delegationLifetime = new ProxyLifetime();
+		delegationLifetime.setHours(4);
+		delegationLifetime.setMinutes(0);
+		delegationLifetime.setSeconds(0);
+
+		// Specifies the path length of the credential being delegate the minumum is 1.
+		int delegationPathLength = 1;
+
+		// Specifies the how long credentials issued to allowed parties will be valid for.
+		ProxyLifetime issuedCredentialLifetime = new ProxyLifetime();
+		issuedCredentialLifetime.setHours(4);
+		issuedCredentialLifetime.setMinutes(0);
+		issuedCredentialLifetime.setSeconds(0);
+
+		// Specifies the path length of the credentials issued to allowed
+		// parties. A path length of 0 means that the requesting party cannot further delegate the credential.
+		int issuedCredentialPathLength = 0;
+
+		// Specifies the key length of the delegated credential
+		int keySize = ClientConstants.DEFAULT_KEY_SIZE;
+
+		// The policy stating which parties will be allowed to obtain a
+		// delegated credential. The CDS will only sissue credentials to parties listed in this policy.
+		List<String> parties = new ArrayList<String>();
+		//parties.add("/O=caBIG/OU=caGrid/OU=Training/OU=Dorian/CN=jdoe");
+		parties.add(delegateTo);
+
+		IdentityDelegationPolicy policy = org.cagrid.gaards.cds.common.Utils.createIdentityDelegationPolicy(parties);
+
+		// Create an instance of the delegation client, specifies the CDS
+		// Service URL and the credential to be delegated.
+		DelegationUserClient client = new DelegationUserClient(cdsURL, credential);
+
+		// Delegates the credential and returns a reference which can later
+		// be used by allowed parties to obtain a credential.
+		DelegatedCredentialReference ref = client.delegateCredential(delegationLifetime, delegationPathLength, policy, issuedCredentialLifetime, issuedCredentialPathLength, keySize);
+		return ref;
+	} 
+
+	public static GlobusCredential getLocalCredential(String currentProxyFile) throws Exception 
+	{
+		GlobusCredential credential = null;
+		if(currentProxyFile!=null)
+		{
+			credential = ProxyUtil.loadProxy(currentProxyFile);			
+		}
+		else
+		{
+			credential = ProxyUtil.getDefaultProxy();
+		}
+		if(credential == null)
+		{
+			throw new Exception("Unable to get the local credential. \nPlease creat a valid proxy in the default location \nor give a path to the proxy file.");
+		}
+		return credential;
+	}
+
+	public static TransferServiceContextReference putInputDataHelper(EndpointReferenceType epr, String location) throws Exception {
+
+		TavernaWorkflowServiceImplClient serviceClient = new TavernaWorkflowServiceImplClient(epr);
+		TransferServiceContextReference ref = serviceClient.putInputData(new File (location).getName());
+
+		TransferServiceContextClient tclient1 = new TransferServiceContextClient(ref.getEndpointReference());
+
+		//Client can't set the dataDescriptor :(
+		//DataDescriptor dd = new DataDescriptor(null, "My Data");
+
+		System.out.println("DD " + tclient1.getDataTransferDescriptor().getDataDescriptor().getName());
+
+		BufferedInputStream isFile = null;
+		File file = new File(location);
+		long size = file.length();
+		isFile = new BufferedInputStream(new FileInputStream(file));
+		TransferClientHelper.putData(isFile, size, tclient1.getDataTransferDescriptor());
+
+
+		// tell the resource that the data has been uploaded.
+		tclient1.setStatus(Status.Staged);
+		return ref;
+	}
+
+
+	public static File getOutputDataHelper(EndpointReferenceType epr) throws MalformedURIException, RemoteException, IOException, Exception {
+		TavernaWorkflowServiceImplClient serviceClient = new TavernaWorkflowServiceImplClient(epr);
+		TransferServiceContextReference ref = serviceClient.getOutputData();
+		TransferServiceContextClient tclient = new TransferServiceContextClient(ref.getEndpointReference());
+
+		//File name of the output file set by the Service using DataDescriptor
+		String fileName = tclient.getDataTransferDescriptor().getDataDescriptor().getName();
+		File outputFile = new File(fileName);
+
+		//Get the data from the caTransfer service context using the Helper class.
+		InputStream stream = TransferClientHelper.getData(tclient.getDataTransferDescriptor());
+
+		FileOutputStream fileoutputstream = new FileOutputStream(outputFile);
+		int n;
+		byte buf[]=new byte[1024];
+		while ((n = stream.read(buf, 0, 1024)) > -1)
+			fileoutputstream.write(buf, 0, n);
+
+		fileoutputstream.close(); 
+		return outputFile;
+	}
 
 	public static void writeEprToFile(EndpointReferenceType epr,
 			String workflowName) throws Exception {
@@ -209,6 +400,7 @@ TavernaWorkflowServiceClientBase implements TavernaWorkflowServiceI {
 
 	}
 
+
 	public workflowmanagementfactoryservice.WMSOutputType createWorkflow(workflowmanagementfactoryservice.WMSInputType wMSInputElement) throws RemoteException, gov.nih.nci.cagrid.workflow.factory.stubs.types.WorkflowException {
 		synchronized(portTypeMutex){
 			configureStubSecurity((Stub)portType,"createWorkflow");
@@ -220,72 +412,6 @@ TavernaWorkflowServiceClientBase implements TavernaWorkflowServiceI {
 			return boxedResult.getWMSOutputElement();
 		}
 	}
-
-
-	//Method that returns an EPR from the Credential Delegation Service. It automatically picks the Clients
-	// credentials from /tmp/x509... file and if CDS is able to authenticate with it, it then retuns an epr representing the CD
-
-	public static DelegatedCredentialReference delegateCredential(String cdsURL) throws Exception {
-
-		// The default credential or the user that is currently logged in.
-
-		GlobusCredential credential = ProxyUtil.getDefaultProxy();
-
-		// Specifies how long the delegation service can delegated this
-		// credential to other parties.
-
-		ProxyLifetime delegationLifetime = new ProxyLifetime();
-		delegationLifetime.setHours(4);
-		delegationLifetime.setMinutes(0);
-		delegationLifetime.setSeconds(0);
-
-		// Specifies the path length of the credential being delegate the
-		// minumum is 1.
-
-		int delegationPathLength = 1;
-
-		// Specifies the how long credentials issued to allowed parties will
-		// be
-		// valid for.
-
-		ProxyLifetime issuedCredentialLifetime = new ProxyLifetime();
-		issuedCredentialLifetime.setHours(1);
-		issuedCredentialLifetime.setMinutes(0);
-		issuedCredentialLifetime.setSeconds(0);
-
-		// Specifies the path length of the credentials issued to allowed
-		// parties. A path length of 0 means that
-		// the requesting party cannot further delegate the credential.
-
-		int issuedCredentialPathLength = 0;
-
-		// Specifies the key length of the delegated credential
-
-		int keySize = ClientConstants.DEFAULT_KEY_SIZE;
-
-		// The policy stating which parties will be allowed to obtain a
-		// delegated credential. The CDS will only
-		// issue credentials to parties listed in this policy.
-
-		List<String> parties = new ArrayList<String>();
-		parties.add("/O=caBIG/OU=caGrid/OU=Training/OU=Dorian/CN=jdoe");
-		IdentityDelegationPolicy policy = org.cagrid.gaards.cds.common.Utils.createIdentityDelegationPolicy(parties);
-
-		// Create an instance of the delegation client, specifies the CDS
-		// Service URL and the credential
-		// to be delegated.
-
-		DelegationUserClient client = new DelegationUserClient(cdsURL, credential);
-
-		// Delegates the credential and returns a reference which can later
-		// be
-		// used by allowed parties to
-		// obtain a credential.
-
-		DelegatedCredentialReference ref = client.delegateCredential(delegationLifetime, delegationPathLength, policy, issuedCredentialLifetime, issuedCredentialPathLength, keySize);
-		return ref;
-	} 
-
 
 	public org.oasis.wsrf.properties.GetMultipleResourcePropertiesResponse getMultipleResourceProperties(org.oasis.wsrf.properties.GetMultipleResourceProperties_Element params) throws RemoteException {
 		synchronized(portTypeMutex){
@@ -307,5 +433,6 @@ TavernaWorkflowServiceClientBase implements TavernaWorkflowServiceI {
 			return portType.queryResourceProperties(params);
 		}
 	}
+
 
 }

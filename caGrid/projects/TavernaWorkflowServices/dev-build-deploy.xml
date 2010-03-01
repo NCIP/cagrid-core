@@ -11,6 +11,11 @@
 	<!-- Pre Deploy Tomcat                                              -->
 	<!-- ============================================================== -->
 	<target name="preDeployTomcat">
+                <copy todir="${build.lib.dir}">
+                        <fileset dir="${ext.lib.dir}">
+                                <include name="*.jar" />
+                        </fileset>
+                </copy>
 
 	</target>
 

@@ -16,12 +16,15 @@ http\://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ResourceProperties-1.2-draft-01
 http\://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ResourceProperties-1.2-draft-01.wsdl=org.oasis.wsrf.properties
 http\://docs.oasis-open.org/wsn/2004/06/wsn-WS-BaseNotification-1.2-draft-01.wsdl=org.oasis.wsn
 
-http\://service.workflow.cagrid.nci.nih.gov/TavernaWorkflowService/ServiceImpl/types=gov.nih.nci.cagrid.workflow.service.impl.stubs.types
-http\://factory.workflow.cagrid.nci.nih.gov/TavernaWorkflowService/types=gov.nih.nci.cagrid.workflow.factory.stubs.types
-gme\://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.service=gov.nih.nci.cagrid.metadata.service
+http\://transfer.cagrid.org/Transfer=org.cagrid.transfer.descriptor
 gme\://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata=gov.nih.nci.cagrid.metadata
 http\://types.workflow.cagrid.nci.nih.gov/WorkflowManagementFactoryService=workflowmanagementfactoryservice
+http\://cds.gaards.cagrid.org/CredentialDelegationService/DelegatedCredential/types=org.cagrid.gaards.cds.delegated.stubs.types
 gme\://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.security=gov.nih.nci.cagrid.metadata.security
 gme\://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common=gov.nih.nci.cagrid.metadata.common
+http\://factory.workflow.cagrid.nci.nih.gov/TavernaWorkflowService/types=gov.nih.nci.cagrid.workflow.factory.stubs.types
+http\://service.workflow.cagrid.nci.nih.gov/TavernaWorkflowService/ServiceImpl/types=gov.nih.nci.cagrid.workflow.service.impl.stubs.types
+gme\://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.service=gov.nih.nci.cagrid.metadata.service
+http\://transfer.cagrid.org/TransferService/Context/types=org.cagrid.transfer.context.stubs.types
 
 
