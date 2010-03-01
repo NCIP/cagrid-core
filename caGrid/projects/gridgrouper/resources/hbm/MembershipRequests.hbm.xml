@@ -99,7 +99,6 @@
     <property name="reviewTime"
               type="long"
               not-null="true"
-              update="false"
     >
       <column name="review_time"         
       />
