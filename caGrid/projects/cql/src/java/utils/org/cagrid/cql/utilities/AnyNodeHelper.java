@@ -54,6 +54,6 @@ public class AnyNodeHelper {
         // will have XML declaration that we need to throw away
         int start = raw.indexOf("<?");
         int end = raw.indexOf("?>", start);
-        return raw.substring(end + 2);
+        return raw.substring(end + 2).trim();
     }
 }

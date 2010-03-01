@@ -16,6 +16,7 @@ import org.apache.axis.EngineConfiguration;
 import org.apache.axis.MessageContext;
 import org.apache.axis.configuration.FileProvider;
 import org.apache.axis.server.AxisServer;
+import org.cagrid.cql.utilities.AnyNodeHelper;
 import org.cagrid.cql2.results.CQLObjectResult;
 import org.exolab.castor.types.AnyNode;
 import org.xml.sax.InputSource;
@@ -68,7 +69,7 @@ public class CQL2ObjectResultIterator implements Iterator<Object> {
         currentIndex++;
         AnyNode node = (AnyNode) results[currentIndex].get_any();
         try {
-            String documentString = node.getStringValue();
+            String documentString = AnyNodeHelper.convertAnyNodeToString(node);
             if (xmlOnly) {
                 return documentString;
             }
