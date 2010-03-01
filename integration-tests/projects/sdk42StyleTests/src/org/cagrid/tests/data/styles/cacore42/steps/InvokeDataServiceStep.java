@@ -11,6 +11,7 @@ import gov.nih.nci.cagrid.testing.system.deployment.ServiceContainer;
 import gov.nih.nci.cagrid.testing.system.haste.Step;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.lang.reflect.Method;
@@ -33,6 +34,7 @@ public class InvokeDataServiceStep extends Step {
     // credential filename
     public static final String PROXY_FILENAME = "user.proxy";
 
+    // public static final String TEST_RESOURCES_DIR = "../../../integration-tests/projects/sdk42StyleTests/resources/";
     public static final String TEST_RESOURCES_DIR = "/resources/";
     public static final String TEST_QUERIES_DIR = TEST_RESOURCES_DIR + "testQueries/";
     public static final String TEST_RESULTS_DIR = TEST_RESOURCES_DIR + "testGoldResults/";
@@ -276,16 +278,22 @@ public class InvokeDataServiceStep extends Step {
      *      The gold results set
      */
     private void invokeValidQueryValidResults(CQLQuery query, CQLQueryResults goldResults) {
+        CQLQueryResults queryResults = invokeValidQuery(query);
+        compareResults(goldResults, queryResults);
+    }
+    
+    
+    protected CQLQueryResults invokeValidQuery(CQLQuery query) {
         DataServiceClient client = getServiceClient();
         CQLQueryResults queryResults = null;
         try {
             queryResults = client.query(query);
-            // If this fails, we need to still be able to exit the jvm
+            // If this fails, we need to still be able to cleanly exit
         } catch (Exception ex) {
             ex.printStackTrace();
             fail("Query failed to execute: " + ex.getMessage());
         }
-        compareResults(goldResults, queryResults);
+        return queryResults;
     }
     
     
@@ -294,7 +302,7 @@ public class InvokeDataServiceStep extends Step {
      * @param query
      *      The expected invalid query
      */
-    private void invokeInvalidQuery(CQLQuery query) {
+    protected void invokeInvalidQuery(CQLQuery query) {
         DataServiceClient client = getServiceClient();
         try {
             client.query(query);
@@ -305,7 +313,7 @@ public class InvokeDataServiceStep extends Step {
     }
     
     
-    private DataServiceClient getServiceClient() {
+    protected DataServiceClient getServiceClient() {
         DataServiceClient client = null;
         try {
             if (container instanceof SecureContainer) {
@@ -341,34 +349,42 @@ public class InvokeDataServiceStep extends Step {
         List<Object> testObjects = new ArrayList<Object>();
         
         boolean goldIsAttributes = false;
+        boolean goldIsCount = false;
         CQLQueryResultsIterator goldIter = new CQLQueryResultsIterator(gold, getClientConfigStream());
         while (goldIter.hasNext()) {
             Object o = goldIter.next();
             if (o instanceof TargetAttribute[]) {
                 goldIsAttributes = true;
+            } else if (o instanceof Long) {
+                goldIsCount = true;
             }
             goldObjects.add(o);
         }
         
         boolean testIsAttributes = false;
+        boolean testIsCount = false;
         CQLQueryResultsIterator testIter = new CQLQueryResultsIterator(test, getClientConfigStream());
         while (testIter.hasNext()) {
             Object o = testIter.next();
             if (o instanceof TargetAttribute[]) {
                 testIsAttributes = true;
+            } else if (o instanceof Long) {
+                testIsCount = true;
             }
             testObjects.add(o);
         }
         
         assertEquals("Number of results differed from expected", goldObjects.size(), testObjects.size());
         assertEquals("Test results as attributes differed from expected", goldIsAttributes, testIsAttributes);
+        assertEquals("Test results as count differed from expected", goldIsCount, testIsCount);
         
         if (goldIsAttributes) {
             List<TargetAttribute[]> goldAttributes = recastList(goldObjects);
             List<TargetAttribute[]> testAttributes = recastList(testObjects);
             compareTargetAttributes(goldAttributes, testAttributes);
+        } else if (goldIsCount) {
+            assertEquals("Count value differed from expected", goldObjects.get(0), testObjects.get(0));
         } else {
-            // assertTrue("Gold and Test contained different objects", goldObjects.containsAll(testObjects));
             compareObjects(goldObjects, testObjects);
         }
     }
@@ -491,7 +507,7 @@ public class InvokeDataServiceStep extends Step {
     
     private InputStream getClientConfigStream() {
         InputStream is = null;
-        String resourceName = TEST_RESOURCES_DIR + "wsdd/client-config.wsdd";
+        String resourceName = TEST_RESOURCES_DIR + "wsdd/sdk-datatypes-client-config.wsdd";
         try {
             is = InvokeDataServiceStep.class.getResourceAsStream(resourceName);
         } catch (Exception ex) {

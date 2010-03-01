@@ -24,6 +24,7 @@ import org.apache.axis.types.URI;
 import org.apache.axis.types.URI.MalformedURIException;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.cagrid.cql2.CQLTargetObject;
 import org.cagrid.data.test.creation.DataTestCaseInfo;
 import org.globus.gsi.GlobusCredential;
 
@@ -50,6 +51,12 @@ public class InvokeCsmDataServiceStep extends Step {
     public void runStep() throws Throwable {
         List<String> domainClasses = getDomainClassList();
         List<String> expectedDenied = getExpectedAccessDenied();
+        testCql1(domainClasses, expectedDenied);
+        testCql2(domainClasses, expectedDenied);
+    }
+    
+    
+    private void testCql1(List<String> domainClasses, List<String> expectedDenied) {
         DataServiceClient client = getServiceClient();
         for (String clazz : domainClasses) {
             CQLQuery query = new CQLQuery();
@@ -59,6 +66,37 @@ public class InvokeCsmDataServiceStep extends Step {
             try {
                 LOG.debug("Querying for " + clazz);
                 client.query(query);
+                if (expectedDenied.contains(clazz)) {
+                    fail("CSM should have denied access to " + clazz + " but was allowed");
+                }
+            } catch (Exception ex) {
+                if (isAccessDenied(ex)) {
+                    if (expectedDenied.contains(clazz)) {
+                        LOG.debug("Access correctly denied to " + clazz);
+                    } else {
+                        ex.printStackTrace();
+                        fail("Access incorrectly denied to " + clazz);
+                    }
+                } else {
+                    ex.printStackTrace();
+                    fail("Unexpected error querying data service for class " 
+                        + clazz + ": " + ex.getMessage());
+                }
+            }
+        }
+    }
+    
+    
+    private void testCql2(List<String> domainClasses, List<String> expectedDenied) {
+        DataServiceClient client = getServiceClient();
+        for (String clazz : domainClasses) {
+            org.cagrid.cql2.CQLQuery query = new org.cagrid.cql2.CQLQuery();
+            CQLTargetObject target = new CQLTargetObject();
+            target.setClassName(clazz);
+            query.setCQLTargetObject(target);
+            try {
+                LOG.debug("Querying for " + clazz);
+                client.executeQuery(query);
                 if (expectedDenied.contains(clazz)) {
                     fail("CSM should have denied access to " + clazz + " but was allowed");
                 }

@@ -22,6 +22,7 @@ import org.cagrid.data.test.creation.DataTestCaseInfo;
 import org.cagrid.tests.data.styles.cacore42.SDK42ServiceStyleSystemTestConstants;
 import org.cagrid.tests.data.styles.cacore42.steps.CreateDataServiceStep;
 import org.cagrid.tests.data.styles.cacore42.steps.DeployExampleProjectStep;
+import org.cagrid.tests.data.styles.cacore42.steps.InvokeCql2DataServiceUsingConversionStep;
 import org.cagrid.tests.data.styles.cacore42.steps.InvokeDataServiceStep;
 
 public class SDK42StyleRemoteApiStory extends Story {
@@ -63,7 +64,7 @@ public class SDK42StyleRemoteApiStory extends Story {
     }
 
 
-    protected Vector steps() {
+    protected Vector<?> steps() {
         Vector<Step> steps = new Vector<Step>();
         steps.add(new UnpackContainerStep(sdkApplicationServiceContainer));
         steps.add(new DeployExampleProjectStep(sdkApplicationServiceContainer));
@@ -75,6 +76,7 @@ public class SDK42StyleRemoteApiStory extends Story {
         steps.add(new StartContainerStep(sdkApplicationServiceContainer));
         steps.add(new StartContainerStep(dataServiceContainer));
         steps.add(new InvokeDataServiceStep(testInfo, dataServiceContainer));
+        steps.add(new InvokeCql2DataServiceUsingConversionStep(testInfo, dataServiceContainer));
         return steps;
     }
     

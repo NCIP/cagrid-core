@@ -28,11 +28,13 @@ public class SDK42DataServiceSystemTests {
         tempApplicationDir.mkdirs();
         LOG.debug("Created temp application base dir: " + tempApplicationDir.getAbsolutePath());
         
+        /*
         // throw out the ivy cache dirs used by the SDK
         splitTime();
         LOG.debug("Destroying SDK ivy cache");
         NukeIvyCacheStory nukeStory = new NukeIvyCacheStory();
         nukeStory.runBare();
+        */
         
         // create the caCORE SDK example project
         splitTime();
@@ -46,6 +48,7 @@ public class SDK42DataServiceSystemTests {
         SDK42StyleLocalApiStory localApiStory = new SDK42StyleLocalApiStory(false, false);
         localApiStory.runBare();
         
+        /*
         // create and run a secure caGrid Data Service using the SDK's local API
         splitTime();
         LOG.debug("Running secure data service using local API story");
@@ -74,6 +77,7 @@ public class SDK42DataServiceSystemTests {
         LOG.debug("Running secure data service using local API and CSM story");
         SDK42StyleLocalApiStory localApiWithCsmStory = new SDK42StyleLocalApiStory(true, true);
         localApiWithCsmStory.runBare();
+        */
     }
     
     
@@ -81,8 +85,8 @@ public class SDK42DataServiceSystemTests {
     public void cleanUp() {
         LOG.debug("Cleaning up after tests");
         // throw away the temp sdk dir
-        LOG.debug("Deleting temp application base dir: " + tempApplicationDir.getAbsolutePath());
-        Utils.deleteDir(tempApplicationDir);
+        // LOG.debug("Deleting temp application base dir: " + tempApplicationDir.getAbsolutePath());
+        // Utils.deleteDir(tempApplicationDir);
     }
     
     
