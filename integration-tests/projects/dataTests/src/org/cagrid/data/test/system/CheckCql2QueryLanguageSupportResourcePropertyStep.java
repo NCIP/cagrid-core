@@ -3,12 +3,14 @@ package org.cagrid.data.test.system;
 import gov.nih.nci.cagrid.common.Utils;
 import gov.nih.nci.cagrid.common.XMLUtilities;
 import gov.nih.nci.cagrid.data.MetadataConstants;
-import gov.nih.nci.cagrid.data.client.DataServiceClient;
 import gov.nih.nci.cagrid.introduce.test.TestCaseInfo;
 import gov.nih.nci.cagrid.metadata.ResourcePropertyHelper;
 import gov.nih.nci.cagrid.testing.system.deployment.ServiceContainer;
 import gov.nih.nci.cagrid.testing.system.haste.Step;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.io.StringReader;
 import java.util.Collections;
@@ -21,7 +23,6 @@ import javax.xml.namespace.QName;
 
 import org.apache.axis.message.addressing.EndpointReferenceType;
 import org.apache.axis.types.URI.MalformedURIException;
-import org.apache.axis.utils.ClassUtils;
 import org.cagrid.cql2.extensionsupport.SupportedExtensions;
 import org.cagrid.dataservice.cql.support.Cql2SupportType;
 import org.cagrid.dataservice.cql.support.QueryLanguageSupport;
@@ -133,19 +134,34 @@ public class CheckCql2QueryLanguageSupportResourcePropertyStep extends Step {
             ex.printStackTrace();
             fail("Error reading resource property: " + ex.getMessage());
         }
-        // deserialize the resource property
         QueryLanguageSupport support = null;
         try {
-            String rpXml = XmlUtils.toString(resourceProperty);
-            System.out.println("Resource property:");
-            System.out.println(XMLUtilities.formatXML(rpXml));
-            InputStream clientConfig = DataServiceClient.class.getResourceAsStream("client-config.wsdd");
-            support = Utils.deserializeObject(new StringReader(rpXml), QueryLanguageSupport.class, clientConfig);
-            clientConfig.close();
+            resourceProperty = ResourcePropertyHelper.getResourceProperty(
+                epr, MetadataConstants.QUERY_LANGUAGE_SUPPORT_QNAME);
+            assertNotNull("CQL 2 query support resource property was null", resourceProperty);
+            // deserialize the resource property
+            String propertyAsString = XmlUtils.toString(resourceProperty);
+            System.out.println(XMLUtilities.formatXML(propertyAsString));
+            InputStream wsddStream = getClientConfigWsdd();
+            support = Utils.deserializeObject(
+                new StringReader(propertyAsString), 
+                QueryLanguageSupport.class, wsddStream);
+            wsddStream.close();
         } catch (Exception ex) {
             ex.printStackTrace();
             fail("Error deserializing query language support document: " + ex.getMessage());
         }
         return support;
+    }
+    
+    
+    private InputStream getClientConfigWsdd() throws FileNotFoundException {
+        File clientConfig = new File(dataServiceInfo.getDir() 
+            + File.separator + "src" 
+            + File.separator + dataServiceInfo.getPackageDir() 
+            + File.separator + "client" + File.separator + "client-config.wsdd");
+        assertTrue("Client config " + clientConfig.getAbsolutePath() 
+            + " does not exist", clientConfig.exists());
+        return new FileInputStream(clientConfig);
     }
 }
