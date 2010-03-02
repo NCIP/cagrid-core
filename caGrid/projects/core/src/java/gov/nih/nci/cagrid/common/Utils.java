@@ -48,6 +48,7 @@ import org.globus.gsi.proxy.ProxyPathValidatorException;
 import org.globus.wsrf.encoding.DeserializationException;
 import org.globus.wsrf.encoding.ObjectDeserializer;
 import org.globus.wsrf.encoding.ObjectSerializer;
+import org.xml.sax.Attributes;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 
@@ -342,16 +343,22 @@ public class Utils {
      *            A writer to place XML into (eg: FileWriter, StringWriter). If
      *            a file writer is used, be sure to close it!
      * @param wsdd
-     *            A stream containing the WSDD configuration
+     *            A stream containing the WSDD configuration.  This may be null.
      * @throws Exception
      */
     public static void serializeObject(Object obj, QName qname, Writer writer, InputStream wsdd) throws Exception {
         // derive a message element for the object
         MessageElement element = (MessageElement) ObjectSerializer.toSOAPElement(obj, qname);
-        // configure the axis engine to use the supplied wsdd file
-        EngineConfiguration engineConfig = new FileProvider(wsdd);
-        AxisEngine axisClient = new AxisServer(engineConfig);
-        MessageContext messageContext = new MessageContext(axisClient);
+        AxisEngine axisEngine = null;
+        if (wsdd != null) {
+            // configure the axis engine to use the supplied wsdd file
+            EngineConfiguration engineConfig = new FileProvider(wsdd);
+            axisEngine = new AxisServer(engineConfig);
+        } else {
+            // no wsdd, do the default
+            axisEngine = new AxisServer();
+        }
+        MessageContext messageContext = new MessageContext(axisEngine);
         messageContext.setEncodingStyle("");
         messageContext.setProperty(AxisEngine.PROP_DOMULTIREFS, Boolean.FALSE);
         // the following two properties prevent xsd types from appearing in
@@ -360,38 +367,35 @@ public class Utils {
         messageContext.setProperty(AxisEngine.PROP_SEND_XSI, Boolean.FALSE);
 
         // create a serialization context to use the new message context
-        SerializationContext serializationContext = new SerializationContext(writer, messageContext);
+        SerializationContext serializationContext = new SerializationContext(writer, messageContext) {
+            public void serialize(QName elemQName, Attributes attributes, Object value)
+                throws IOException {
+                serialize(elemQName, attributes, value, null, Boolean.FALSE, null);
+            }
+        };
         serializationContext.setPretty(true);
 
         // output the message element through the serialization context
         element.output(serializationContext);
         writer.write("\n");
-        // writer.close();
         writer.flush();
     }
 
 
+    /**
+     * Serialize an Object to XML
+     * 
+     * @param obj
+     *            The object to be serialized
+     * @param qname
+     *            The QName of the object
+     * @param writer
+     *            A writer to place XML into (eg: FileWriter, StringWriter). If
+     *            a file writer is used, be sure to close it!
+     * @throws Exception
+     */
     public static void serializeObject(Object obj, QName qname, Writer writer) throws Exception {
-        // derive a message element for the object
-        MessageElement element = (MessageElement) ObjectSerializer.toSOAPElement(obj, qname);
-        // create a message context
-        MessageContext messageContext = new MessageContext(new AxisServer());
-        messageContext.setEncodingStyle("");
-        messageContext.setProperty(AxisEngine.PROP_DOMULTIREFS, Boolean.FALSE);
-        // the following two properties prevent xsd types from appearing in
-        // every single element in the serialized XML
-        messageContext.setProperty(AxisEngine.PROP_EMIT_ALL_TYPES, Boolean.FALSE);
-        messageContext.setProperty(AxisEngine.PROP_SEND_XSI, Boolean.FALSE);
-
-        // create a serialization context to use the new message context
-        SerializationContext serializationContext = new SerializationContext(writer, messageContext);
-        serializationContext.setPretty(true);
-
-        // output the message element through the serialization context
-        element.output(serializationContext);
-        writer.write("\n");
-        // writer.close();
-        writer.flush();
+        serializeObject(obj, qname, writer, null);
     }
 
 
@@ -444,6 +448,7 @@ public class Utils {
     public static void stringBufferToFile(StringBuffer string, String fileName) throws IOException {
     	stringBufferToFile(string, new File(fileName));
     }
+    
 
     public static void stringBufferToFile(StringBuffer string, File file) throws IOException {
         FileWriter fw = new FileWriter(file);
