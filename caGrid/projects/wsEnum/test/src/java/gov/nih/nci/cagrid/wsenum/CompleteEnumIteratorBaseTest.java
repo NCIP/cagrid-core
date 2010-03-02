@@ -189,7 +189,9 @@ public abstract class CompleteEnumIteratorBaseTest extends TestCase {
         try {
             Utils.serializeObject(objectList.get(0), 
                 TestingConstants.BOOK_QNAME, writer);
-            charCount = (writer.getBuffer().length() * 2) - 1;
+            // trim() because serializeObject() appends a newline to the writer
+            String text = writer.getBuffer().toString().trim();
+            charCount = (text.length() * 2) - 1;
         } catch (Exception ex) {
             ex.printStackTrace();
             fail("Error determining object char count: " + ex.getMessage());
