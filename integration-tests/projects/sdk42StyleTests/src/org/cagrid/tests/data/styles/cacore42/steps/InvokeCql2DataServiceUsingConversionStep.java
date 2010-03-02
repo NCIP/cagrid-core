@@ -1,7 +1,5 @@
 package org.cagrid.tests.data.styles.cacore42.steps;
 
-import java.io.PrintWriter;
-
 import gov.nih.nci.cagrid.cqlquery.CQLQuery;
 import gov.nih.nci.cagrid.cqlresultset.CQLQueryResults;
 import gov.nih.nci.cagrid.data.client.DataServiceClient;
@@ -29,12 +27,12 @@ public class InvokeCql2DataServiceUsingConversionStep extends InvokeDataServiceS
     
     protected CQLQueryResults invokeValidQuery(CQLQuery query) {
         // convert to CQL 2
-        org.cagrid.cql2.CQLQuery cql2 = convertToCql2(query);
+        org.cagrid.cql2.CQLQuery cql2 = null;
         try {
-            System.out.println("Converted CQL 1 to this CQL 2:");
-            CQL2SerializationUtil.serializeCql2Query(cql2, new PrintWriter(System.out));
-        } catch (Exception ex) {
-            LOG.error("Error serializing CQL 2 for debug: " + ex.getMessage(), ex);
+            cql2 = convertToCql2(query);
+        } catch (QueryConversionException ex) {
+            ex.printStackTrace();
+            fail("Error converting CQL 2 to CQL 1: " + ex.getMessage());
         }
         DataServiceClient client = getServiceClient();
         org.cagrid.cql2.results.CQLQueryResults queryResults = null;
@@ -59,32 +57,34 @@ public class InvokeCql2DataServiceUsingConversionStep extends InvokeDataServiceS
     
     protected void invokeInvalidQuery(CQLQuery query) {
         // convert the query to CQL 2
-        org.cagrid.cql2.CQLQuery cql2 = convertToCql2(query);
+        org.cagrid.cql2.CQLQuery cql2 = null;
         try {
-            System.out.println("Converted CQL 1 to this CQL 2:");
-            CQL2SerializationUtil.serializeCql2Query(cql2, new PrintWriter(System.out));
-        } catch (Exception ex) {
-            LOG.error("Error serializing CQL 2 for debug: " + ex.getMessage(), ex);
+            cql2 = convertToCql2(query);
+        } catch (QueryConversionException ex) {
+            // since this is an invalid query, it's possible the query doesn't convert
+            LOG.debug("Caught query conversion exception when converting invalid query; this might be expected", ex);
         }
-        if (LOG.isDebugEnabled()) {
-            try {
-                LOG.debug("Converted CQL 1 to CQL 2: " + CQL2SerializationUtil.serializeCql2Query(cql2));
-            } catch (Exception ex) {
-                LOG.error("Error serializing CQL 2 for debug: " + ex.getMessage(), ex);
+        if (cql2 != null) {
+            if (LOG.isDebugEnabled()) {
+                try {
+                    LOG.debug("Converted CQL 1 to CQL 2: " + CQL2SerializationUtil.serializeCql2Query(cql2));
+                } catch (Exception ex) {
+                    LOG.error("Error serializing CQL 2 for debug: " + ex.getMessage(), ex);
+                }
             }
-        }
-        // run the query, expect an exception
-        DataServiceClient client = getServiceClient();
-        try {
-            client.executeQuery(cql2);
-            fail("Query returned results, should have failed");
-        } catch (Exception ex) {
-            // expected
+            // run the query, expect an exception
+            DataServiceClient client = getServiceClient();
+            try {
+                client.executeQuery(cql2);
+                fail("Query returned results, should have failed");
+            } catch (Exception ex) {
+                // expected
+            }
         }
     }
     
     
-    private org.cagrid.cql2.CQLQuery convertToCql2(CQLQuery query) {
+    private org.cagrid.cql2.CQLQuery convertToCql2(CQLQuery query) throws QueryConversionException {
         DomainModel model = null;
         try {
             model = MetadataUtils.getDomainModel(getServiceClient().getEndpointReference());
@@ -93,13 +93,7 @@ public class InvokeCql2DataServiceUsingConversionStep extends InvokeDataServiceS
             fail("Error retrieving domain model: " + ex.getMessage());
         }
         CQL1toCQL2Converter converter = new CQL1toCQL2Converter(model);
-        org.cagrid.cql2.CQLQuery cql2Query = null;
-        try {
-            cql2Query = converter.convertToCql2Query(query);
-        } catch (QueryConversionException ex) {
-            ex.printStackTrace();
-            fail("Error converting CQL 1 to CQL 2 query: " + ex.getMessage());
-        }
+        org.cagrid.cql2.CQLQuery cql2Query = converter.convertToCql2Query(query);
         return cql2Query;
     }
 }
