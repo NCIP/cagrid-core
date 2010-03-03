@@ -184,12 +184,30 @@ public class DCQLConverter {
                 }
                 val.setDateValue(date);
             } else if (Integer.class.getName().equals(datatypeName)) {
-                val.setIntegerValue(Integer.valueOf(rawValue));
+                try {
+                    val.setIntegerValue(Integer.valueOf(rawValue));
+                } catch (NumberFormatException ex) {
+                    throw new DCQLConversionException(
+                        "Error converting value " + rawValue + " to integer: " + ex.getMessage(), ex);
+                }
             } else if (Long.class.getName().equals(datatypeName)) {
-                val.setLongValue(Long.valueOf(rawValue));
+                try {
+                    val.setLongValue(Long.valueOf(rawValue));
+                } catch (NumberFormatException ex) {
+                    throw new DCQLConversionException(
+                        "Error converting value " + rawValue + " to long: " + ex.getMessage(), ex);
+                }
             } else if (Double.class.getName().equals(datatypeName)) {
-                val.setDoubleValue(Double.valueOf(rawValue));
+                try {
+                    val.setDoubleValue(Double.valueOf(rawValue));
+                } catch (NumberFormatException ex) {
+                    throw new DCQLConversionException(
+                        "Error converting value " + rawValue + " to double: " + ex.getMessage(), ex);
+                }
             }
+        } else {
+            throw new DCQLConversionException("No data type could be determined for attribute " 
+                + attributeName + " of class " + className);
         }
         return val;
     }
