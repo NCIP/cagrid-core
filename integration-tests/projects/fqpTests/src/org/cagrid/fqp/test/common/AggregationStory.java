@@ -4,10 +4,10 @@ import gov.nih.nci.cagrid.testing.system.deployment.ServiceContainer;
 import gov.nih.nci.cagrid.testing.system.haste.Step;
 import gov.nih.nci.cagrid.testing.system.haste.Story;
 
-import java.io.File;
 import java.util.Vector;
 
 import org.cagrid.fqp.test.common.steps.AggregationStep;
+import org.cagrid.fqp.test.common.steps.dcql2.Dcql2AggregationStep;
 
 /** 
  *  AggregationStory
@@ -57,14 +57,26 @@ public class AggregationStory extends Story {
             }
         }
         
+        // DCQL 1 (gets converted in the query processor to DCQL 2 before execution)
         steps.add(new AggregationStep(FQPTestingConstants.QUERIES_LOCATION + "exampleAggregation1.xml",
-            FQPTestingConstants.GOLD_LOCATION + "aggregation" + File.separator + "exampleAggregation1_gold.xml",
+            FQPTestingConstants.GOLD_LOCATION + "exampleAggregation1_gold.xml",
             queryHelper, serviceUrls));
         steps.add(new AggregationStep(FQPTestingConstants.QUERIES_LOCATION + "exampleAggregation2.xml",
-            FQPTestingConstants.GOLD_LOCATION + "aggregation" + File.separator + "exampleAggregation2_gold.xml",
+            FQPTestingConstants.GOLD_LOCATION + "exampleAggregation2_gold.xml",
             queryHelper, serviceUrls));
         steps.add(new AggregationStep(FQPTestingConstants.QUERIES_LOCATION + "emptyResultsAggregation.xml",
-            FQPTestingConstants.GOLD_LOCATION + "aggregation" + File.separator + "emptyResultsAggregation_gold.xml",
+            FQPTestingConstants.GOLD_LOCATION + "emptyResultsAggregation_gold.xml",
+            queryHelper, serviceUrls));
+        
+        // DCQL 2
+        steps.add(new Dcql2AggregationStep(FQPTestingConstants.DCQL2_QUERIES_LOCATION + "exampleAggregation1.xml",
+            FQPTestingConstants.DCQL2_GOLD_LOCATION + "exampleAggregation1_gold.xml",
+            queryHelper, serviceUrls));
+        steps.add(new Dcql2AggregationStep(FQPTestingConstants.DCQL2_QUERIES_LOCATION + "exampleAggregation2.xml",
+            FQPTestingConstants.DCQL2_GOLD_LOCATION + "exampleAggregation2_gold.xml",
+            queryHelper, serviceUrls));
+        steps.add(new Dcql2AggregationStep(FQPTestingConstants.DCQL2_QUERIES_LOCATION + "emptyResultsAggregation.xml",
+            FQPTestingConstants.DCQL2_GOLD_LOCATION + "emptyResultsAggregation_gold.xml",
             queryHelper, serviceUrls));
         return steps;
     }

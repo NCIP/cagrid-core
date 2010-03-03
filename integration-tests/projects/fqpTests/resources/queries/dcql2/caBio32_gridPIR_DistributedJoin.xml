@@ -1,0 +1,22 @@
+<ns1:DCQLQuery xmlns:ns1="http://caGrid.caBIG/1.0/gov.nih.nci.cagrid.dcql">
+ <ns1:TargetObject name="gov.nih.nci.cabio.domain.NucleicAcidSequence">
+  <ns1:Association name="gov.nih.nci.cabio.domain.Gene" roleName="geneCollection">
+   <ns1:Association name="gov.nih.nci.cabio.domain.Protein" roleName="proteinCollection">
+    <ns1:ForeignAssociation targetServiceURL="http://141.161.25.20:8080/wsrf/services/cagrid/GridPIR">
+     <ns1:JoinCondition foreignAttributeName="uniprotkbEntryName" localAttributeName="uniProtCode" predicate="EQUAL_TO"/>
+     <ns1:ForeignObject name="edu.georgetown.pir.domain.Protein">
+      <ns1:Group logicRelation="AND">
+       <ns1:Association name="edu.georgetown.pir.domain.Gene" roleName="geneCollection">
+        <ns1:Attribute name="name" predicate="EQUAL_TO" value="brca1"/>
+       </ns1:Association>
+       <ns1:Association name="edu.georgetown.pir.domain.Organism" roleName="organismCollection">
+        <ns1:Attribute name="scientificName" predicate="EQUAL_TO" value="homo sapiens"/>
+       </ns1:Association>
+      </ns1:Group>
+     </ns1:ForeignObject>
+    </ns1:ForeignAssociation>
+   </ns1:Association>
+  </ns1:Association>
+ </ns1:TargetObject>
+ <ns1:targetServiceURL>http://cabiogrid32.nci.nih.gov:80/wsrf/services/cagrid/CaBIO32GridSvc</ns1:targetServiceURL>
+</ns1:DCQLQuery>
