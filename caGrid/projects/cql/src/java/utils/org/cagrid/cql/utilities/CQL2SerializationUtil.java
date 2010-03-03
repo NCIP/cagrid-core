@@ -14,6 +14,7 @@ import org.cagrid.cql2.BinaryPredicate;
 import org.cagrid.cql2.CQLAttribute;
 import org.cagrid.cql2.CQLQuery;
 import org.cagrid.cql2.CQLTargetObject;
+import org.cagrid.cql2.results.CQLQueryResults;
 
 /**
  * CQL2SerializationUtil
@@ -54,7 +55,23 @@ public class CQL2SerializationUtil {
     public static CQLQuery deserializeCql2Query(Reader reader) throws Exception {
         InputStream wsddStream = CQL2SerializationUtil.class.getResourceAsStream(CLIENT_CONFIG_LOCATION);
         CQLQuery query = Utils.deserializeObject(reader, CQLQuery.class, wsddStream);
+        wsddStream.close();
         return query;
+    }
+    
+    
+    public static void serializeCql2QueryResults(CQLQueryResults results, Writer writer) throws Exception {
+        InputStream wsddStream = CQL2SerializationUtil.class.getResourceAsStream(CLIENT_CONFIG_LOCATION);
+        Utils.serializeObject(results, CQLConstants.CQL2_RESULTS_QNAME, writer, wsddStream);
+        wsddStream.close();
+    }
+    
+    
+    public static CQLQueryResults deserializeCql2QueryResults(Reader reader) throws Exception {
+        InputStream wsddStream = CQL2SerializationUtil.class.getResourceAsStream(CLIENT_CONFIG_LOCATION);
+        CQLQueryResults results = Utils.deserializeObject(reader, CQLQueryResults.class, wsddStream);
+        wsddStream.close();
+        return results;
     }
     
     

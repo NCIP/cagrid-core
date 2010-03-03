@@ -9,6 +9,7 @@ import java.io.StringWriter;
 import java.io.Writer;
 
 import org.cagrid.data.dcql.DCQLQuery;
+import org.cagrid.data.dcql.results.DCQLQueryResultsCollection;
 
 /**
  * DCQL2SerializationUtil
@@ -49,6 +50,22 @@ public class DCQL2SerializationUtil {
     public static DCQLQuery deserializeDcql2Query(Reader reader) throws Exception {
         InputStream wsddStream = DCQL2SerializationUtil.class.getResourceAsStream(CLIENT_CONFIG_LOCATION);
         DCQLQuery query = Utils.deserializeObject(reader, DCQLQuery.class, wsddStream);
+        wsddStream.close();
         return query;
+    }
+    
+    
+    public static void serializeDcql2QueryResults(DCQLQueryResultsCollection results, Writer writer) throws Exception {
+        InputStream wsddStream = DCQL2SerializationUtil.class.getResourceAsStream(CLIENT_CONFIG_LOCATION);
+        Utils.serializeObject(results, DCQL2Constants.DCQL2_RESULTS_QNAME, writer, wsddStream);
+        wsddStream.close();
+    }
+    
+    
+    public static DCQLQueryResultsCollection deserializeDcql2QueryResults(Reader reader) throws Exception {
+        InputStream wsddStream = DCQL2SerializationUtil.class.getResourceAsStream(CLIENT_CONFIG_LOCATION);
+        DCQLQueryResultsCollection results = Utils.deserializeObject(reader, DCQLQueryResultsCollection.class, wsddStream);
+        wsddStream.close();
+        return results;
     }
 }
