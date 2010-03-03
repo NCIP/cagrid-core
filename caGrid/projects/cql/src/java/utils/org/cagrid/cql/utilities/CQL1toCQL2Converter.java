@@ -231,6 +231,9 @@ public class CQL1toCQL2Converter {
                         "Error converting value " + rawValue + " to double: " + ex.getMessage(), ex);
                 }
             }
+        } else {
+            throw new QueryConversionException("No data type could be determined for attribute " 
+                + attributeName + " of class " + className);
         }
         return val;
     }
