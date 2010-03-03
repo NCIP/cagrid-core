@@ -189,7 +189,7 @@ public class InvokeCsmDataServiceStep extends Step {
     
     
     private boolean isAccessDenied(Exception ex) {
-        return ex.getMessage().contains(ACCESS_DENIED_MESSAGE);
+        return ex.getMessage() != null && ex.getMessage().contains(ACCESS_DENIED_MESSAGE);
     }
     
     
