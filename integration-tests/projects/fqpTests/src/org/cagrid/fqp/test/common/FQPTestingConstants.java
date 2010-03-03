@@ -4,14 +4,38 @@ import java.io.File;
 
 public interface FQPTestingConstants {
 
+    /**
+     * A wsdd file with the types used in the test data services configured
+     */
     public static final String CLIENT_WSDD = "/resources/wsdd/client-config.wsdd";
-    public static final String QUERIES_LOCATION = 
-        "resources" + File.separator + "queries" + File.separator;
-    public static final String GOLD_LOCATION = 
-        "resources" + File.separator + "gold" + File.separator;
     
     /**
-     * Controled by a property in jndi-config.xml
+     * The location of testing DCQL 1 queries
+     */
+    public static final String QUERIES_LOCATION = 
+        "resources" + File.separator + "queries" + File.separator + "dcql1" + File.separator;
+    
+    /**
+     * The location of expected query results for the DCQL 1 queries
+     */
+    public static final String GOLD_LOCATION = 
+        "resources" + File.separator + "gold" + File.separator + "dcql1" + File.separator;
+    
+    /**
+     * The location of testing DCQL 2 queries
+     */
+    public static final String DCQL2_QUERIES_LOCATION =
+        "resources" + File.separator + "queries" + File.separator + "dcql2" + File.separator;
+    
+    
+    /**
+     * The location of expected query results for the DCQL 2 queries
+     */
+    public static final String DCQL2_GOLD_LOCATION = 
+        "resources" + File.separator + "gold" + File.separator + "dcql2" + File.separator;
+    
+    /**
+     * Controlled by a property in jndi-config.xml
      */
     public static final long RESOURCE_SWEEPER_DELAY = 2000;
     
@@ -42,7 +66,7 @@ public interface FQPTestingConstants {
     public static final String DEFAULT_FQP_DIR = DEFAULT_CAGRID_PROJECTS_DIR + File.separator + "fqp";
     
     /**
-     * System property which points to the Trnsfer service directory
+     * System property which points to the Transfer service directory
      */
     public static final String TRANSFER_SERVICE_DIR_PROPERTY = "transfer.service.dir";
     
