@@ -3,15 +3,19 @@ package gov.nih.nci.cagrid.fqp.processor;
 import gov.nih.nci.cagrid.fqp.processor.exceptions.FederatedQueryProcessingException;
 
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Set;
 
 import org.cagrid.cql2.Aggregation;
+import org.cagrid.cql2.CQLQueryModifier;
 import org.cagrid.cql2.results.CQLAggregateResult;
 import org.cagrid.cql2.results.CQLAttributeResult;
 import org.cagrid.cql2.results.CQLObjectResult;
 import org.cagrid.cql2.results.CQLQueryResults;
 import org.cagrid.cql2.results.ExtendedCQLResult;
+import org.cagrid.cql2.results.TargetAttribute;
 import org.cagrid.data.dcql.results.DCQLQueryResultsCollection;
 import org.cagrid.data.dcql.results.DCQLResult;
 
@@ -29,7 +33,8 @@ public class DCQL2Aggregator {
     
     
     public static CQLQueryResults aggregateDCQLResults(
-        DCQLQueryResultsCollection dcqlResults, String targetClassname) throws FederatedQueryProcessingException {
+        DCQLQueryResultsCollection dcqlResults, String targetClassname, CQLQueryModifier modifier)
+        throws FederatedQueryProcessingException {
         // may have either object, attribute, aggregation, or extension results.  Not some combination of those.
         // if Aggregation results, must perform a final aggregation ourselves here
         List<CQLObjectResult> objectResults = new LinkedList<CQLObjectResult>();
@@ -66,7 +71,11 @@ public class DCQL2Aggregator {
             if (resultsFound) {
                 throw new FederatedQueryProcessingException("Found more than one type of results during aggregation!");
             }
-            aggregate.setAttributeResult(attributeResults.toArray(new CQLAttributeResult[0]));
+            if (modifier.getDistinctAttribute() != null) {
+                aggregate.setAttributeResult(distinctifyAttributes(attributeResults));
+            } else {
+                aggregate.setAttributeResult(attributeResults.toArray(new CQLAttributeResult[0]));
+            }
             resultsFound = true;
         }
         if (aggregateResults.size() != 0) {
@@ -88,6 +97,25 @@ public class DCQL2Aggregator {
         }
         
         return aggregate;
+    }
+    
+    
+    private static CQLAttributeResult[] distinctifyAttributes(List<CQLAttributeResult> raw) throws FederatedQueryProcessingException {
+        Set<String> distinctValues = new HashSet<String>();
+        List<CQLAttributeResult> distinctAttributes = new LinkedList<CQLAttributeResult>();
+        for (CQLAttributeResult attributeResult : raw) {
+            TargetAttribute[] attribValues = attributeResult.getAttribute();
+            if (attribValues == null || attribValues.length != 1) {
+                throw new FederatedQueryProcessingException("Unexpected number of attributes " +
+                    "found in results when querying for distinct attribute values (" + 
+                    (attribValues != null ? attribValues.length : 0));
+            }
+            if (!distinctValues.contains(attribValues[0].getValue())) {
+                distinctAttributes.add(attributeResult);
+            }
+            distinctValues.add(attribValues[0].getValue());
+        }
+        return distinctAttributes.toArray(new CQLAttributeResult[0]);
     }
     
     

@@ -159,6 +159,11 @@ public class FederatedQueryEngine {
         LOG.debug("Processing DCQL to single CQL query");
         CQLQuery cqlQuery = processor.processDCQLQuery(dcqlQuery.getTargetObject());
         
+        // if the DCQL query has a modifier, append it to the CQL query
+        if (dcqlQuery.getQueryModifier() != null) {
+            cqlQuery.setCQLQueryModifier(dcqlQuery.getQueryModifier());
+        }
+        
         fireProcessingStatusChanged(ProcessingStatus.Processing, "Broadcasting final CQL to target data services");
         
         // create tasks for each target data service
@@ -275,7 +280,7 @@ public class FederatedQueryEngine {
         
         LOG.debug("Aggregating DCQL results");
         String targetClassname = dcqlQuery.getTargetObject().getName();
-        CQLQueryResults aggregate = DCQL2Aggregator.aggregateDCQLResults(dcqlResults, targetClassname);
+        CQLQueryResults aggregate = DCQL2Aggregator.aggregateDCQLResults(dcqlResults, targetClassname, dcqlQuery.getQueryModifier());
         
         return aggregate;
     }
