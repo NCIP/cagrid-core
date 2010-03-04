@@ -16,9 +16,12 @@ import junit.textui.TestRunner;
 
 import org.cagrid.cql.utilities.DCQL2Constants;
 import org.cagrid.cql.utilities.DCQL2SerializationUtil;
+import org.cagrid.cql2.Aggregation;
 import org.cagrid.cql2.AttributeValue;
 import org.cagrid.cql2.BinaryPredicate;
 import org.cagrid.cql2.CQLAttribute;
+import org.cagrid.cql2.CQLQueryModifier;
+import org.cagrid.cql2.DistinctAttribute;
 import org.cagrid.cql2.GroupLogicalOperator;
 import org.cagrid.cql2.UnaryPredicate;
 import org.cagrid.data.dcql.DCQLAssociatedObject;
@@ -290,6 +293,43 @@ public class DCQL2SerializationAndValidationTestCase extends TestCase {
         
         target.setGroup(group);
         query.setTargetObject(target);
+        query.setTargetServiceURL(new String[] {"http://fake.com"});
+        
+        validate(query);
+    }
+    
+    
+    public void testQueryModifierCountOnly() {
+        DCQLQuery query = new DCQLQuery();
+        DCQLObject target = new DCQLObject();
+        target.setName("foo.bar");
+        target.set_instanceof("zor");
+        
+        CQLQueryModifier mods = new CQLQueryModifier();
+        mods.setCountOnly(Boolean.TRUE);
+        
+        query.setTargetObject(target);
+        query.setQueryModifier(mods);
+        query.setTargetServiceURL(new String[] {"http://fake.com"});
+        
+        validate(query);
+    }
+    
+    
+    public void testQueryModifierDistinctAttribute() {
+        DCQLQuery query = new DCQLQuery();
+        DCQLObject target = new DCQLObject();
+        target.setName("foo.bar");
+        target.set_instanceof("zor");
+        
+        CQLQueryModifier mods = new CQLQueryModifier();
+        DistinctAttribute da = new DistinctAttribute();
+        da.setAttributeName("id");
+        da.setAggregation(Aggregation.MAX);
+        mods.setDistinctAttribute(da);
+        
+        query.setTargetObject(target);
+        query.setQueryModifier(mods);
         query.setTargetServiceURL(new String[] {"http://fake.com"});
         
         validate(query);

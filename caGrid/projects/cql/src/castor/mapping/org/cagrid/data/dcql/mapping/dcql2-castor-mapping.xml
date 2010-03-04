@@ -65,14 +65,14 @@
     <field name="associatedObject" type="org.cagrid.data.dcql.DCQLAssociatedObject">
       <bind-xml name="dcql2:AssociatedObject" node="element" />
     </field>
-    <field name="objectExtension" type="org.cagrid.cql2.CQLExtension">
-      <bind-xml name="dcql2:ObjectExtension" node="element" />
+    <field name="foreignAssociatedObject" type="org.cagrid.data.dcql.ForeignAssociatedObject">
+      <bind-xml name="dcql2:ForeignAssociatedObject" node="element" />
     </field>
     <field name="group" type="org.cagrid.data.dcql.DCQLGroup">
       <bind-xml name="dcql2:Group" node="element" />
     </field>
-    <field name="foreignAssociatedObject" type="org.cagrid.data.dcql.ForeignAssociatedObject">
-      <bind-xml name="dcql2:ForeignAssociatedObject" node="element" />
+    <field name="objectExtension" type="org.cagrid.cql2.CQLExtension">
+      <bind-xml name="dcql2:ObjectExtension" node="element" />
     </field>
     <field name="name" type="java.lang.String">
       <bind-xml name="name" node="attribute" />
@@ -87,11 +87,11 @@
     <field name="targetObject" type="org.cagrid.data.dcql.DCQLObject">
       <bind-xml name="dcql2:TargetObject" node="element" />
     </field>
-    <field name="queryModifier" type="org.cagrid.cql2.CQLQueryModifier">
-      <bind-xml name="cql2:QueryModifier" node="element" />
-    </field>
     <field name="targetServiceURL" type="java.lang.String" collection="array">
       <bind-xml name="dcql2:TargetServiceURL" node="element" />
+    </field>
+    <field name="queryModifier" type="org.cagrid.cql2.CQLQueryModifier">
+      <bind-xml name="dcql2:QueryModifier" node="element" />
     </field>
   </class>
   <class name="org.cagrid.data.dcql.DataTransformation">
