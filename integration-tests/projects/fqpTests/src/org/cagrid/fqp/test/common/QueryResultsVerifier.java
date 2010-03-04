@@ -133,7 +133,7 @@ public class QueryResultsVerifier extends Assert {
         org.cagrid.cql2.results.CQLQueryResults aggregated = null;
         try {
             aggregated = DCQL2Aggregator.aggregateDCQLResults(
-                results, results.getDCQLResult(0).getCQLQueryResults().getTargetClassname());
+                results, results.getDCQLResult(0).getCQLQueryResults().getTargetClassname(), null);
         } catch (FederatedQueryProcessingException ex) {
             ex.printStackTrace();
             fail("Error aggregating DCQL 2 query results: " + ex.getMessage());
