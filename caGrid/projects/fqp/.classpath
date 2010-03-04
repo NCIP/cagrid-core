@@ -104,5 +104,6 @@
 	<classpathentry kind="lib" path="ext/dependencies/service/jars/caGrid-CQL-dcql.2.0-1.4-dev.jar"/>
 	<classpathentry kind="lib" path="ext/dependencies/service/jars/caGrid-CQL-utils-1.4-dev.jar"/>
 	<classpathentry kind="lib" path="ext/dependencies/service/jars/commons-collections-3.2.jar"/>
+	<classpathentry kind="lib" path="ext/dependencies/service/jars/caGrid-CQL-mappings-1.4-dev.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
