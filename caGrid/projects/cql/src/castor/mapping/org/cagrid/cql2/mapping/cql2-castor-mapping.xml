@@ -13,14 +13,14 @@
   <class name="org.cagrid.cql2.CQLObject">
     <description >Default mapping for class org.cagrid.cql2.CQLObject</description>
     <map-to xml="CQLObject" ns-uri="http://CQL.caBIG/2/org.cagrid.cql2" ns-prefix="cql2"/>
-    <field name="CQLAttribute" type="org.cagrid.cql2.CQLAttribute">
-      <bind-xml name="cql2:CQLAttribute" node="element" />
+    <field name="CQLAssociatedObject" type="org.cagrid.cql2.CQLAssociatedObject">
+      <bind-xml name="cql2:CQLAssociatedObject" node="element" />
     </field>
     <field name="CQLGroup" type="org.cagrid.cql2.CQLGroup">
       <bind-xml name="cql2:CQLGroup" node="element" />
     </field>
-    <field name="CQLAssociatedObject" type="org.cagrid.cql2.CQLAssociatedObject">
-      <bind-xml name="cql2:CQLAssociatedObject" node="element" />
+    <field name="CQLAttribute" type="org.cagrid.cql2.CQLAttribute">
+      <bind-xml name="cql2:CQLAttribute" node="element" />
     </field>
     <field name="CQLExtension" type="org.cagrid.cql2.CQLExtension">
       <bind-xml name="cql2:CQLExtension" node="element" />
@@ -56,27 +56,27 @@
   <class name="org.cagrid.cql2.CQLQueryModifier">
     <description >Default mapping for class org.cagrid.cql2.CQLQueryModifier</description>
     <map-to xml="CQLQueryModifier" ns-uri="http://CQL.caBIG/2/org.cagrid.cql2" ns-prefix="cql2"/>
+    <field name="namedAttribute" type="org.cagrid.cql2.NamedAttribute" collection="array">
+      <bind-xml name="cql2:NamedAttribute" node="element" />
+    </field>
     <field name="distinctAttribute" type="org.cagrid.cql2.DistinctAttribute">
       <bind-xml name="cql2:DistinctAttribute" node="element" />
-    </field>
-    <field name="modifierExtension" type="org.cagrid.cql2.CQLExtension">
-      <bind-xml name="cql2:ModifierExtension" node="element" />
     </field>
     <field name="countOnly" type="java.lang.Boolean">
       <bind-xml name="cql2:CountOnly" node="element" />
     </field>
-    <field name="namedAttribute" type="org.cagrid.cql2.NamedAttribute" collection="array">
-      <bind-xml name="cql2:NamedAttribute" node="element" />
+    <field name="modifierExtension" type="org.cagrid.cql2.CQLExtension">
+      <bind-xml name="cql2:ModifierExtension" node="element" />
     </field>
   </class>
   <class name="org.cagrid.cql2.CQLQuery">
     <description >Default mapping for class org.cagrid.cql2.CQLQuery</description>
     <map-to xml="CQLQuery" ns-uri="http://CQL.caBIG/2/org.cagrid.cql2" ns-prefix="cql2"/>
-    <field name="CQLQueryModifier" type="org.cagrid.cql2.CQLQueryModifier">
-      <bind-xml name="cql2:CQLQueryModifier" node="element" />
-    </field>
     <field name="CQLTargetObject" type="org.cagrid.cql2.CQLTargetObject">
       <bind-xml name="cql2:CQLTargetObject" node="element" />
+    </field>
+    <field name="CQLQueryModifier" type="org.cagrid.cql2.CQLQueryModifier">
+      <bind-xml name="cql2:CQLQueryModifier" node="element" />
     </field>
     <field name="associationPopulationSpecification" type="org.cagrid.cql2.AssociationPopulationSpecification">
       <bind-xml name="cql2:AssociationPopulationSpecification" node="element" />
@@ -85,17 +85,17 @@
   <class name="org.cagrid.cql2.CQLGroup">
     <description >Default mapping for class org.cagrid.cql2.CQLGroup</description>
     <map-to xml="CQLGroup" ns-uri="http://CQL.caBIG/2/org.cagrid.cql2" ns-prefix="cql2"/>
-    <field name="CQLExtension" type="org.cagrid.cql2.CQLExtension" collection="array">
-      <bind-xml name="cql2:CQLExtension" node="element" />
-    </field>
-    <field name="CQLAttribute" type="org.cagrid.cql2.CQLAttribute" collection="array">
-      <bind-xml name="cql2:CQLAttribute" node="element" />
+    <field name="CQLAssociatedObject" type="org.cagrid.cql2.CQLAssociatedObject" collection="array">
+      <bind-xml name="cql2:CQLAssociatedObject" node="element" />
     </field>
     <field name="CQLGroup" type="org.cagrid.cql2.CQLGroup" collection="array">
       <bind-xml name="cql2:CQLGroup" node="element" />
     </field>
-    <field name="CQLAssociatedObject" type="org.cagrid.cql2.CQLAssociatedObject" collection="array">
-      <bind-xml name="cql2:CQLAssociatedObject" node="element" />
+    <field name="CQLAttribute" type="org.cagrid.cql2.CQLAttribute" collection="array">
+      <bind-xml name="cql2:CQLAttribute" node="element" />
+    </field>
+    <field name="CQLExtension" type="org.cagrid.cql2.CQLExtension" collection="array">
+      <bind-xml name="cql2:CQLExtension" node="element" />
     </field>
     <field name="logicalOperation" type="org.cagrid.cql2.GroupLogicalOperator">
       <bind-xml name="logicalOperation" node="attribute" />
@@ -151,7 +151,7 @@
       <bind-xml name="cql2:NamedAssociationList" node="element" />
     </field>
     <field name="endName" type="java.lang.String">
-      <bind-xml name="endNname" node="attribute" />
+      <bind-xml name="endName" node="attribute" />
     </field>
     <field name="_instanceof" type="java.lang.String">
       <bind-xml name="instanceof" node="attribute" />
@@ -285,23 +285,5 @@
       <bind-xml matches="*" node="element" type="xsd:any"/>
     </field>
   </class>
-  <!-- extension support 
-  <class name="org.cagrid.cql2.extensionsupport.SupportedExtensions">
-    <description >Default mapping for class org.cagrid.cql2.extensionsupport.SupportedExtensions</description>
-    <map-to xml="SupportedExtensions" ns-uri="http://CQL.caBIG/2/org.cagrid.cql2.extensionsupport" ns-prefix="ext"/>
-    <field name="attributeExtension" type="javax.xml.namespace.QName" collection="array" handler="org.cagrid.cql.utilities.encoding.QNameFieldHandler">
-      <bind-xml name="ext:AttributeExtension" node="element" />
-    </field>
-    <field name="modifierExtension" type="javax.xml.namespace.QName" collection="array" handler="org.cagrid.cql.utilities.encoding.QNameFieldHandler">
-      <bind-xml name="ext:ModifierExtension" node="element" />
-    </field>
-    <field name="objectExtension" type="javax.xml.namespace.QName" collection="array" handler="org.cagrid.cql.utilities.encoding.QNameFieldHandler">
-      <bind-xml name="ext:ObjectExtension" node="element" />
-    </field>
-    <field name="resultExtension" type="javax.xml.namespace.QName" collection="array" handler="org.cagrid.cql.utilities.encoding.QNameFieldHandler">
-      <bind-xml name="ext:ResultExtension" node="element" />
-    </field>
-  </class>
-  -->
 </mapping>
 

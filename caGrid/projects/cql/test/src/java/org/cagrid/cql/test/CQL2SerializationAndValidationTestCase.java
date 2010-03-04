@@ -19,16 +19,20 @@ import junit.textui.TestRunner;
 import org.cagrid.cql.utilities.AnyNodeHelper;
 import org.cagrid.cql.utilities.CQLConstants;
 import org.cagrid.cql2.Aggregation;
+import org.cagrid.cql2.AssociationPopulationSpecification;
 import org.cagrid.cql2.AttributeValue;
 import org.cagrid.cql2.BinaryPredicate;
 import org.cagrid.cql2.CQLAssociatedObject;
 import org.cagrid.cql2.CQLAttribute;
 import org.cagrid.cql2.CQLGroup;
 import org.cagrid.cql2.CQLQuery;
+import org.cagrid.cql2.CQLQueryModifier;
 import org.cagrid.cql2.CQLTargetObject;
+import org.cagrid.cql2.DistinctAttribute;
 import org.cagrid.cql2.GroupLogicalOperator;
+import org.cagrid.cql2.NamedAssociation;
+import org.cagrid.cql2.NamedAssociationList;
 import org.cagrid.cql2.UnaryPredicate;
-import org.cagrid.cql2.extensionsupport.SupportedExtensions;
 import org.cagrid.cql2.results.CQLAggregateResult;
 import org.cagrid.cql2.results.CQLAttributeResult;
 import org.cagrid.cql2.results.CQLObjectResult;
@@ -290,6 +294,64 @@ public class CQL2SerializationAndValidationTestCase extends TestCase {
     }
     
     
+    public void testQueryModifierCountOnly() {
+        CQLQuery query = new CQLQuery();
+        CQLTargetObject target = new CQLTargetObject();
+        target.setClassName("foo.bar");
+        target.set_instanceof("zor");
+        
+        CQLQueryModifier mods = new CQLQueryModifier();
+        mods.setCountOnly(Boolean.TRUE);
+        
+        query.setCQLTargetObject(target);
+        query.setCQLQueryModifier(mods);
+        
+        validate(query);
+    }
+    
+    
+    public void testQueryModifierDistinctAttribute() {
+        CQLQuery query = new CQLQuery();
+        CQLTargetObject target = new CQLTargetObject();
+        target.setClassName("foo.bar");
+        target.set_instanceof("zor");
+        
+        CQLQueryModifier mods = new CQLQueryModifier();
+        DistinctAttribute da = new DistinctAttribute();
+        da.setAttributeName("id");
+        da.setAggregation(Aggregation.MAX);
+        mods.setDistinctAttribute(da);
+        
+        query.setCQLTargetObject(target);
+        query.setCQLQueryModifier(mods);
+        
+        validate(query);
+    }
+    
+    
+    public void testAssociationPopulationNamedAssociations() {
+        CQLQuery query = new CQLQuery();
+        CQLTargetObject target = new CQLTargetObject();
+        target.setClassName("foo.bar");
+        target.set_instanceof("zor");
+        query.setCQLTargetObject(target);
+        
+        AssociationPopulationSpecification spec = new AssociationPopulationSpecification();
+        NamedAssociationList list = new NamedAssociationList();
+        NamedAssociation na1 = new NamedAssociation();
+        na1.setEndName("test");
+        na1.set_instanceof("some.other.class");
+        NamedAssociation na2 = new NamedAssociation();
+        na2.setEndName("wow");
+        na1.setNamedAssociationList(new NamedAssociationList(new NamedAssociation[] {na2}));
+        list.setNamedAssociation(new NamedAssociation[] {na1});
+        spec.setNamedAssociationList(list);
+        query.setAssociationPopulationSpecification(spec);
+                
+        validate(query);
+    }
+    
+    
     public void testAggregationResult() {
         CQLQueryResults results = new CQLQueryResults();
         results.setTargetClassname("foo.bar");
@@ -375,5 +437,4 @@ public class CQL2SerializationAndValidationTestCase extends TestCase {
             new TestSuite(CQL2SerializationAndValidationTestCase.class));
         System.exit(result.errorCount() + result.failureCount());
     }
-
 }
