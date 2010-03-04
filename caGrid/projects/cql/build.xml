@@ -127,7 +127,7 @@
 		</copy>
 		<copy toDir="${cql.2.0.schema.dest}">
 			<fileset dir="schema/cql2.0" casesensitive="yes">
-				<include name="**/CQLSupportedExtensions.xsd" />
+				<include name="**/*.xsd" />
 				<include name="**/*.wsdl" />
 			</fileset>
 		</copy>		
