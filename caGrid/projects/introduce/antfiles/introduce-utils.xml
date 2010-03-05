@@ -20,11 +20,70 @@
 	</target>
 	<target name="setGlobus" if="env.GLOBUS_LOCATION">
 		<property name="ext.globus.dir" value="${env.GLOBUS_LOCATION}" />
+		<property name="GLOBUS_LOCATION" value="${env.GLOBUS_LOCATION}" />
 		<property name="build.stubs" location="${ext.globus.dir}/share/globus_wsrf_tools/build-stubs.xml" />
 		<property name="schema.src" location="${ext.globus.dir}/share/schema" />
 	</target>
 	
-	<target name="introduce" depends="checkGlobus" description="Execute the Introduce GDE">
+	<!-- Ant Http proxy related targets and properties -->
+	<propertyset id="system.properties">
+		<propertyref prefix="java.net.useSystemProxies"/>
+		<propertyref prefix="http."/>
+		<propertyref prefix="https."/>
+	</propertyset>
+	
+	<target name="checkAntArgs" if="env.ANT_ARGS">
+		<condition property="autoproxy.set" else="false">
+		  	<contains string="${env.ANT_ARGS}"
+		  		substring="-autoproxy" />
+		</condition>
+		<echo message="autoproxy.set = ${autoproxy.set}" />
+	</target>
+	
+	<target name="checkAntOpts" depends="checkAntArgs" if="env.ANT_OPTS">
+		<property name="ant.opts" value="${env.ANT_OPTS}" />
+		
+		<if>
+			<equals arg1="${autoproxy.set}" arg2="false" />
+			<then>
+				<property name="use.proxy" value="false" />
+			</then>
+			<else>
+				<condition property="contains.proxyHost" else="false">
+		  			<contains string="${env.ANT_OPTS}"
+		  				substring="-Dhttp.proxyHost="  />
+			  	</condition>
+				<echo message="ANT_OPTS contains.proxyHost = ${contains.proxyHost}" />
+				
+				<condition property="contains.proxyPort" else="false">
+			  		<contains string="${env.ANT_OPTS}"
+			  			substring="-Dhttp.proxyPort=" />
+			  	</condition>
+				<echo message="ANT_OPTS contains.proxyHost = ${contains.proxyHost}" />
+				
+				<condition property="use.proxy" else="false">
+					<and>
+						<equals arg1="${autoproxy.set}" arg2="true" />
+						<equals arg1="${contains.proxyHost}" arg2="true" />
+						<equals arg1="${contains.proxyPort}" arg2="true" />
+					</and>	
+			  	</condition>
+				<echo message="use.proxy: ${use.proxy}" />
+				
+				<if>
+					<equals arg1="${use.proxy}" arg2="false"/>
+					<then>			
+						<echo message="ANT_ARGS contains '-autoproxy': ${autoproxy.set}" />
+						<echo message="ANT_OPTS contains '-Dhttp.proxyHost': ${contains.proxyHost}" />
+						<echo message="ANT_OPTS contains '-Dhttp.proxyHost': ${contains.proxyPort}" />
+						<fail message="Proxy configuration using ANT_ARGS and ANT_OPTS is incorrect." />
+					</then>
+				</if>
+			</else>
+		</if>
+	</target>
+	
+	<target name="introduce" depends="checkGlobus, checkAntOpts" description="Execute the Introduce GDE">
 		<runPortal/>
 		<runUpdater/>
 		<antcall target="reRunIntroduce" />
@@ -36,13 +95,28 @@
 	
 	<macrodef name="runPortal">
 		<sequential>
-			<echo message="Running portal"/>
-			<java classname="gov.nih.nci.cagrid.introduce.portal.Introduce" fork="true">
-				<jvmarg value="-Djava.endorsed.dirs=extensions/endorsed" />
-				<sysproperty key="GLOBUS_LOCATION" value="${ext.globus.dir}"/>
-				<classpath refid="Portal.run.classpath"/>
-				
-			</java>
+			<if>
+				<equals arg1="${use.proxy}" arg2="true"/>
+				<then>
+					<echo message="Running portal with proxy"/>
+					<java classname="gov.nih.nci.cagrid.introduce.portal.Introduce" fork="true">
+						<jvmarg value="-Djava.endorsed.dirs=extensions/endorsed" />
+						<sysproperty key="GLOBUS_LOCATION" value="${ext.globus.dir}"/>
+						<sysproperty key="ANT_OPTS" value="${ant.opts}"/>
+						<syspropertyset refId="system.properties" />
+						<classpath refid="Portal.run.classpath"/>
+					</java>
+				</then>
+				<else>
+					<echo message="Running portal"/>
+					<java classname="gov.nih.nci.cagrid.introduce.portal.Introduce" fork="true">
+						<jvmarg value="-Djava.endorsed.dirs=extensions/endorsed" />
+						<sysproperty key="GLOBUS_LOCATION" value="${ext.globus.dir}"/>
+						<sysproperty key="ANT_OPTS" value="${ant.opts}"/>
+						<classpath refid="Portal.run.classpath"/>
+					</java>
+				</else>
+			</if>
 		</sequential>
 	</macrodef>
 	
@@ -51,13 +125,29 @@
 	</target>
 	<macrodef name="runUpdater">
 		<sequential>
-			<echo message="Running Software Updater"/>
-			<java classname="gov.nih.nci.cagrid.introduce.updater.UpdateManager" resultproperty="updater.ran" fork="true">
-				<classpath refid="UpdateManager.run.classpath"/>
-			</java>
-			<condition property="introduce.restart">
-				<equals arg1="${updater.ran}" arg2="1" />
-			</condition>
+			<if>
+				<equals arg1="${use.proxy}" arg2="true"/>
+				<then>
+					<echo message="Running Software Updater"/>
+					<java classname="gov.nih.nci.cagrid.introduce.updater.UpdateManager" resultproperty="updater.ran" fork="true">
+						<sysproperty key="ANT_OPTS" value="${ant.opts}"/>
+						<syspropertyset refId="system.properties" />
+						<classpath refid="UpdateManager.run.classpath"/>
+					</java>
+					<condition property="introduce.restart">
+						<equals arg1="${updater.ran}" arg2="1" />
+					</condition>
+				</then>
+				<else>
+					<echo message="Running Software Updater"/>
+					<java classname="gov.nih.nci.cagrid.introduce.updater.UpdateManager" resultproperty="updater.ran" fork="true">
+						<classpath refid="UpdateManager.run.classpath"/>
+					</java>
+					<condition property="introduce.restart">
+						<equals arg1="${updater.ran}" arg2="1" />
+					</condition>
+				</else>
+			</if>
 		</sequential>
 	</macrodef>
 	

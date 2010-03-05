@@ -31,6 +31,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.StringTokenizer;
 
@@ -106,8 +107,11 @@ public final class CommonTools {
     @Deprecated
     public static Process createAndOutputProcess(String cmd) throws Exception {
         final Process p;
+        
+        // obtain current env, repackage for Ant call
+        String[] envp = getEnvironment();
 
-        p = Runtime.getRuntime().exec(cmd);
+        p = Runtime.getRuntime().exec(cmd, envp);
         StreamGobbler errGobbler = new StreamGobbler(p.getErrorStream(), "ERR", logger, Priority.ERROR);
         StreamGobbler outGobbler = new StreamGobbler(p.getInputStream(), "OUT", logger, Priority.DEBUG);
         errGobbler.start();
@@ -119,8 +123,17 @@ public final class CommonTools {
 
     public static Process createAndOutputProcess(List<String> cmd) throws Exception {
         final Process p;
+        
+        // obtain current env, repackage for Ant call
+        String[] envp = getEnvironment();
+        
+        if (null == envp) {
+            p = Runtime.getRuntime().exec(cmd.toArray(new String[cmd.size()]));
+        }
+        else {
+            p = Runtime.getRuntime().exec(cmd.toArray(new String[cmd.size()]), envp);
+        }
 
-        p = Runtime.getRuntime().exec(cmd.toArray(new String[cmd.size()]));
         StreamGobbler errGobbler = new StreamGobbler(p.getErrorStream(), "ERR", logger, Priority.ERROR);
         StreamGobbler outGobbler = new StreamGobbler(p.getInputStream(), "OUT", logger, Priority.DEBUG);
         errGobbler.start();
@@ -130,6 +143,24 @@ public final class CommonTools {
     }
 
 
+    private static String[] getEnvironment() {
+        // obtain current env, repackage for Ant call
+        String[] envp = new String[System.getenv().size()];
+        int pos = 0;
+        
+        Map <String, String> env = System.getenv();
+        for (Map.Entry<String, String> entry : env.entrySet())  
+        {  
+            String name = entry.getKey();  
+            String value = entry.getValue();  
+            String envpEntry = name + "=" + value;
+            envp[pos] = envpEntry;
+            pos++;
+        }
+        
+        return envp;
+    }
+    
     public static List getProvidedNamespaces(File startDir) {
         List globusNamespaces = new ArrayList();
         File schemasDir = new File(startDir.getAbsolutePath() + File.separator + "share" + File.separator + "schema");
