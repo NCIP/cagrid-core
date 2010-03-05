@@ -15,14 +15,11 @@ import gov.nih.nci.cagrid.wsenum.utils.IterImplType;
 import java.net.URL;
 import java.util.Iterator;
 
-import javax.xml.namespace.QName;
 
 import org.apache.axis.message.addressing.EndpointReferenceType;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.cagrid.cql.utilities.CQLConstants;
 import org.cagrid.cql2.CQLQuery;
-import org.cagrid.cql2.results.CQLObjectResult;
 import org.cagrid.cql2.results.CQLResult;
 import org.globus.ws.enumeration.EnumIterator;
 import org.globus.ws.enumeration.EnumProvider;
@@ -111,64 +108,5 @@ public class Cql2EnumerationDataServiceImpl extends BaseDataServiceImpl {
                 new QueryProcessingExceptionType());
         }
         return container;
-    }
-    
-    
-    private class CQL2ResultsTypeDeterminingIterator implements Iterator<CQLResult> {
-        
-        private Iterator<CQLResult> realIterator = null;
-        private CQLResult firstResult = null;
-        boolean triedFirstResult = false;
-        boolean returnedFirstResult = false;
-        
-        public CQL2ResultsTypeDeterminingIterator(Iterator<CQLResult> realIterator) {
-            this.realIterator = realIterator;
-        }
-        
-
-        public boolean hasNext() {
-            return realIterator.hasNext();
-        }
-
-        
-        public CQLResult next() {
-            CQLResult item = null;
-            if (returnedFirstResult) {
-                item = realIterator.next();
-            } else {
-                item = getFirstResult();
-                returnedFirstResult = true;
-            }
-            return item;
-        }
-
-        
-        public void remove() {
-            throw new UnsupportedOperationException("remove() is not supported");
-        }
-        
-        
-        public QName getResultQName() {
-            QName name = null;
-            CQLResult first = getFirstResult();
-            if (first == null) {
-                // default to object results
-                name = CQLConstants.CQL_RESULT_ELEMENT_QNAMES.get(CQLObjectResult.class);
-            } else {
-                name = CQLConstants.CQL_RESULT_ELEMENT_QNAMES.get(first.getClass());
-            }
-            return name;
-        }
-        
-        
-        private CQLResult getFirstResult() {
-            if (!triedFirstResult) {
-                if (realIterator.hasNext()) {
-                    firstResult = realIterator.next();
-                }
-                triedFirstResult = true;
-            }
-            return firstResult;
-        }
     }
 }
