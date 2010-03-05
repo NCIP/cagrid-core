@@ -305,6 +305,7 @@ public class DCQL2SerializationAndValidationTestCase extends TestCase {
         DCQLQuery query = new DCQLQuery();
         DCQLObject target = new DCQLObject();
         target.setName("foo.bar");
+        
         ForeignAssociatedObject fa = new ForeignAssociatedObject();
         fa.setName("foo.bar.foreign");
         fa.setTargetServiceURL("http://also-fake.com");
@@ -313,6 +314,18 @@ public class DCQL2SerializationAndValidationTestCase extends TestCase {
         join.setLocalAttributeName("id");
         join.setPredicate(BinaryPredicate.EQUAL_TO);
         fa.setJoinCondition(join);
+        
+        DCQLAssociatedObject assoc1 = new DCQLAssociatedObject();
+        assoc1.setName("abc.def");
+        CQLAttribute haveYouHeard = new CQLAttribute();
+        haveYouHeard.setName("bird");
+        haveYouHeard.setBinaryPredicate(BinaryPredicate.EQUAL_TO);
+        AttributeValue value2 = new AttributeValue();
+        value2.setStringValue("the word");
+        haveYouHeard.setAttributeValue(value2);
+        assoc1.setAttribute(haveYouHeard);
+        fa.setAssociatedObject(assoc1);
+        
         target.setForeignAssociatedObject(fa);
         query.setTargetObject(target);
         
