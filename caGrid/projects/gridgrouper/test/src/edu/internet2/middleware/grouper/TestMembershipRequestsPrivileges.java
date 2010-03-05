@@ -109,6 +109,7 @@ public class TestMembershipRequestsPrivileges extends TestCase {
 			grouper.addMember(SUPER_USER, Utils.getGroupIdentifier(grp), USER_Aadmin);
 			grouper.addMember(SUPER_USER, Utils.getGroupIdentifier(grp), USER_Badmin);
 			grouper.grantGroupPrivilege(SUPER_USER, Utils.getGroupIdentifier(grp), USER_Aadmin, GroupPrivilegeType.admin);
+			
 
 			MembershipRequestUpdate update = new MembershipRequestUpdate("", MembershipRequestStatus.Approved);
 			try {
@@ -162,6 +163,169 @@ public class TestMembershipRequestsPrivileges extends TestCase {
 			fail("Should not be able to self approve membership");
 		} catch (InsufficientPrivilegeFault e) {
 			// Expected Fault
+		} catch (Exception e) {
+			FaultUtil.printFault(e);
+			fail(e.getMessage());
+		}
+
+	}
+	
+	public void testUserGrantMembershipRequests() {
+		try {
+			GridGrouperBootstrapper.addAdminMember(SUPER_USER);
+			grouper.getStem(SUPER_USER, Utils.getRootStemIdentifier());
+
+			String testStem = "TestStem";
+			StemDescriptor test = grouper.addChildStem(SUPER_USER, Utils.getRootStemIdentifier(), testStem, testStem);
+			final String groupExtension = "mygroup";
+			final String groupDisplayExtension = "My Group";
+
+			GroupDescriptor grp = createAndCheckGroup(test, groupExtension, groupDisplayExtension, 1);
+			grouper.addMember(SUPER_USER, Utils.getGroupIdentifier(grp), USER_A);
+			grouper.grantMembershipRequests(USER_A, Utils.getGroupIdentifier(grp));
+
+			fail("Should not be able to grant membership requests");
+		} catch (InsufficientPrivilegeFault e) {
+			// Expected Fault
+		} catch (Exception e) {
+			FaultUtil.printFault(e);
+			fail(e.getMessage());
+		}
+
+	}
+
+	public void testUserRevokeMembershipRequests() {
+		try {
+			GridGrouperBootstrapper.addAdminMember(SUPER_USER);
+			grouper.getStem(SUPER_USER, Utils.getRootStemIdentifier());
+
+			String testStem = "TestStem";
+			StemDescriptor test = grouper.addChildStem(SUPER_USER, Utils.getRootStemIdentifier(), testStem, testStem);
+			final String groupExtension = "mygroup";
+			final String groupDisplayExtension = "My Group";
+
+			GroupDescriptor grp = createAndCheckGroup(test, groupExtension, groupDisplayExtension, 1);
+			grouper.addMember(SUPER_USER, Utils.getGroupIdentifier(grp), USER_A);
+			grouper.grantMembershipRequests(SUPER_USER, Utils.getGroupIdentifier(grp));
+			grouper.revokeMembershipRequests(USER_A, Utils.getGroupIdentifier(grp));
+			fail("Should not be able to revoke membership requests");
+		} catch (InsufficientPrivilegeFault e) {
+			// Expected Fault
+		} catch (Exception e) {
+			FaultUtil.printFault(e);
+			fail(e.getMessage());
+		}
+
+	}
+
+	public void testAdminGrantMembershipRequests() {
+		try {
+			GridGrouperBootstrapper.addAdminMember(SUPER_USER);
+			grouper.getStem(SUPER_USER, Utils.getRootStemIdentifier());
+
+			String testStem = "TestStem";
+			StemDescriptor test = grouper.addChildStem(SUPER_USER, Utils.getRootStemIdentifier(), testStem, testStem);
+			String groupExtension = "mygroup";
+			String groupDisplayExtension = "My Group";
+
+			GroupDescriptor grp = createAndCheckGroup(test, groupExtension, groupDisplayExtension, 1);
+			grouper.addMember(SUPER_USER, Utils.getGroupIdentifier(grp), USER_A);
+			grouper.grantGroupPrivilege(SUPER_USER, Utils.getGroupIdentifier(grp), USER_A, GroupPrivilegeType.admin);
+			grouper.grantMembershipRequests(USER_A, Utils.getGroupIdentifier(grp));
+
+			groupExtension = "mygroup2";
+			groupDisplayExtension = "My Group 2";
+
+			GroupDescriptor grp2 = createAndCheckGroup(test, groupExtension, groupDisplayExtension, 1);
+			grouper.addMember(SUPER_USER, Utils.getGroupIdentifier(grp2), USER_B);
+			grouper.grantGroupPrivilege(SUPER_USER, Utils.getGroupIdentifier(grp2), USER_B, GroupPrivilegeType.admin);
+			try {
+				grouper.grantMembershipRequests(USER_A, Utils.getGroupIdentifier(grp2));
+				fail("Should not be able to grant membership requests");
+			} catch (InsufficientPrivilegeFault e) {
+				// Expected Fault
+			}
+		} catch (Exception e) {
+			FaultUtil.printFault(e);
+			fail(e.getMessage());
+		}
+
+	}
+
+	public void testAdminRevokeMembershipRequests() {
+		try {
+			GridGrouperBootstrapper.addAdminMember(SUPER_USER);
+			grouper.getStem(SUPER_USER, Utils.getRootStemIdentifier());
+
+			String testStem = "TestStem";
+			StemDescriptor test = grouper.addChildStem(SUPER_USER, Utils.getRootStemIdentifier(), testStem, testStem);
+			String groupExtension = "mygroup";
+			String groupDisplayExtension = "My Group";
+
+			GroupDescriptor grp = createAndCheckGroup(test, groupExtension, groupDisplayExtension, 1);
+			grouper.addMember(SUPER_USER, Utils.getGroupIdentifier(grp), USER_A);
+			grouper.grantGroupPrivilege(SUPER_USER, Utils.getGroupIdentifier(grp), USER_A, GroupPrivilegeType.admin);
+			grouper.grantMembershipRequests(USER_A, Utils.getGroupIdentifier(grp));
+			grouper.revokeMembershipRequests(USER_A, Utils.getGroupIdentifier(grp));
+
+			groupExtension = "mygroup2";
+			groupDisplayExtension = "My Group 2";
+
+			GroupDescriptor grp2 = createAndCheckGroup(test, groupExtension, groupDisplayExtension, 1);
+			grouper.addMember(SUPER_USER, Utils.getGroupIdentifier(grp2), USER_B);
+			grouper.grantGroupPrivilege(SUPER_USER, Utils.getGroupIdentifier(grp2), USER_B, GroupPrivilegeType.admin);
+			grouper.grantMembershipRequests(USER_B, Utils.getGroupIdentifier(grp2));
+			try {
+				grouper.revokeMembershipRequests(USER_A, Utils.getGroupIdentifier(grp2));
+				fail("Should not be able to revoke membership requests");
+			} catch (InsufficientPrivilegeFault e) {
+				// Expected Fault
+			}
+		} catch (Exception e) {
+			FaultUtil.printFault(e);
+			fail(e.getMessage());
+		}
+
+	}
+
+	public void testWheelGrantMembershipRequests() {
+		try {
+			GridGrouperBootstrapper.addAdminMember(SUPER_USER);
+			grouper.getStem(SUPER_USER, Utils.getRootStemIdentifier());
+
+			String testStem = "TestStem";
+			StemDescriptor test = grouper.addChildStem(SUPER_USER, Utils.getRootStemIdentifier(), testStem, testStem);
+			String groupExtension = "mygroup";
+			String groupDisplayExtension = "My Group";
+
+			GroupDescriptor grp = createAndCheckGroup(test, groupExtension, groupDisplayExtension, 1);
+			grouper.addMember(SUPER_USER, Utils.getGroupIdentifier(grp), USER_A);
+			grouper.grantGroupPrivilege(SUPER_USER, Utils.getGroupIdentifier(grp), USER_A, GroupPrivilegeType.admin);
+			grouper.grantMembershipRequests(SUPER_USER, Utils.getGroupIdentifier(grp));
+
+		} catch (Exception e) {
+			FaultUtil.printFault(e);
+			fail(e.getMessage());
+		}
+
+	}
+
+	public void testWheelRevokeMembershipRequests() {
+		try {
+			GridGrouperBootstrapper.addAdminMember(SUPER_USER);
+			grouper.getStem(SUPER_USER, Utils.getRootStemIdentifier());
+
+			String testStem = "TestStem";
+			StemDescriptor test = grouper.addChildStem(SUPER_USER, Utils.getRootStemIdentifier(), testStem, testStem);
+			String groupExtension = "mygroup";
+			String groupDisplayExtension = "My Group";
+
+			GroupDescriptor grp = createAndCheckGroup(test, groupExtension, groupDisplayExtension, 1);
+			grouper.addMember(SUPER_USER, Utils.getGroupIdentifier(grp), USER_A);
+			grouper.grantGroupPrivilege(SUPER_USER, Utils.getGroupIdentifier(grp), USER_A, GroupPrivilegeType.admin);
+			grouper.grantMembershipRequests(SUPER_USER, Utils.getGroupIdentifier(grp));
+			grouper.revokeMembershipRequests(SUPER_USER, Utils.getGroupIdentifier(grp));
+
 		} catch (Exception e) {
 			FaultUtil.printFault(e);
 			fail(e.getMessage());

@@ -1,6 +1,8 @@
 package edu.internet2.middleware.grouper;
 
 import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.Set;
 
 import net.sf.hibernate.HibernateException;
@@ -131,21 +133,16 @@ public class MembershipRequests {
 	}
 
 	public static void configureGroup(GrouperSession session, Group grp) throws InsufficientPrivilegeException,
-			SchemaException, GroupModifyException {
+			SchemaException, GroupModifyException, GridGrouperRuntimeFault {
 
 		GroupType membershipRequestGroupType = null;
 
 		try {
 			membershipRequestGroupType = GroupTypeFinder.find("MembershipRequests");
 		} catch (SchemaException eS) {
-			// Type not found. This is what we want.
+			membershipRequestGroupType = createType();
 		}
 
-		if (membershipRequestGroupType == null) {
-			membershipRequestGroupType = GroupType.createType(session, "MembershipRequests");
-			membershipRequestGroupType.addAttribute(session, "allowMembershipRequests", Privilege.getInstance("view"), Privilege
-					.getInstance("admin"), false);
-		}
 		Set<?> groupTypes = grp.getTypes();
 		if (!groupTypes.contains(membershipRequestGroupType)) {
 			grp.addType(membershipRequestGroupType);
@@ -209,6 +206,24 @@ public class MembershipRequests {
 			throw fault;
 		}
 
+	}
+	
+	private static GroupType createType() throws GridGrouperRuntimeFault {
+		Set set = new LinkedHashSet();
+		Field field = new Field("allowMembershipRequests", FieldType.ATTRIBUTE, Privilege.getInstance("view"), Privilege.getInstance("admin"), false);
+		set.add(field);
+		GroupType gt = new GroupType("MembershipRequests", set, true, false);
+		try { 
+			GridGrouperHibernateHelper.save(gt);
+		} catch (HibernateException eH) {
+			GridGrouperRuntimeFault fault = new GridGrouperRuntimeFault();
+			fault.setFaultString("Unable to create membershiprequest group type.");
+			FaultHelper helper = new FaultHelper(fault);
+			helper.addFaultCause(eH);
+			fault = (GridGrouperRuntimeFault) helper.getFault();
+			throw fault;
+		}
+		return gt;
 	}
 
 }
