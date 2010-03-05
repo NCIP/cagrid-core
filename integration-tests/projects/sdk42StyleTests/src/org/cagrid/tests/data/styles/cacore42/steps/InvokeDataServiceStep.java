@@ -34,7 +34,6 @@ public class InvokeDataServiceStep extends Step {
     // credential filename
     public static final String PROXY_FILENAME = "user.proxy";
 
-    // public static final String TEST_RESOURCES_DIR = "../../../integration-tests/projects/sdk42StyleTests/resources/";
     public static final String TEST_RESOURCES_DIR = "/resources/";
     public static final String TEST_QUERIES_DIR = TEST_RESOURCES_DIR + "testQueries/";
     public static final String TEST_RESULTS_DIR = TEST_RESOURCES_DIR + "testGoldResults/";
