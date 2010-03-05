@@ -57,7 +57,7 @@ GSBT - Globus Service Build Tools
 	<property name="java.debug" value="on" />
 
 	<!-- Sets up the build directory structure -->
-	<target name="init">
+	<target name="init" depends="checkContribTasksDefined, defineContribTasks">
 		<mkdir dir="${build.dir}" />
 		<mkdir dir="${build.dest}" />
 		<mkdir dir="${build.lib.dir}" />
@@ -80,6 +80,76 @@ GSBT - Globus Service Build Tools
 			<pathelement location="${configuration.dir}" />
 			<path refid="base.classpath" />
 		</path>
+	</target>
+
+	<target name="checkContribTasksDefined">
+		<condition property="contrib.tasks.defined">
+			<typefound name="for" />
+		</condition>
+	</target>
+
+
+	<target name="defineContribTasks" unless="contrib.tasks.defined">
+		<property name="ant.contrib.location" value="${ext.lib.dir}/ant-contrib-1.0b3.jar" />
+		<!-- using ant contrib for contidionals, looping , and runtarget -->
+		<taskdef resource="net/sf/antcontrib/antlib.xml">
+			<classpath>
+				<pathelement location="${ant.contrib.location}" />
+			</classpath>
+		</taskdef>
+	</target>
+
+	<!-- Http proxy related targets and properties -->
+	<propertyset id="system.properties">
+		<propertyref prefix="java.net.useSystemProxies" />
+		<propertyref prefix="http." />
+		<propertyref prefix="https." />
+	</propertyset>
+
+	<target name="checkAntArgs" if="env.ANT_ARGS">
+		<condition property="autoproxy.set" else="false">
+			<contains string="${env.ANT_ARGS}" substring="-autoproxy" />
+		</condition>
+		<echo message="autoproxy.set = ${autoproxy.set}" />
+	</target>
+
+	<target name="checkAntOpts" depends="checkAntArgs" if="env.ANT_OPTS">
+		<property name="ant.opts" value="${env.ANT_OPTS}" />
+
+		<if>
+			<equals arg1="${autoproxy.set}" arg2="false" />
+			<then>
+				<property name="use.proxy" value="false" />
+			</then>
+			<else>
+				<condition property="contains.proxyHost" else="false">
+					<contains string="${env.ANT_OPTS}" substring="-Dhttp.proxyHost=" />
+				</condition>
+
+				<condition property="contains.proxyPort" else="false">
+					<contains string="${env.ANT_OPTS}" substring="-Dhttp.proxyPort=" />
+				</condition>
+
+				<condition property="use.proxy" else="false">
+					<and>
+						<equals arg1="${autoproxy.set}" arg2="true" />
+						<equals arg1="${contains.proxyHost}" arg2="true" />
+						<equals arg1="${contains.proxyPort}" arg2="true" />
+					</and>
+				</condition>
+				<echo message="use.proxy: ${use.proxy}" />
+
+				<if>
+					<equals arg1="${use.proxy}" arg2="false" />
+					<then>
+						<echo message="ANT_ARGS contains '-autoproxy': ${autoproxy.set}" />
+						<echo message="ANT_OPTS contains '-Dhttp.proxyHost': ${contains.proxyHost}" />
+						<echo message="ANT_OPTS contains '-Dhttp.proxyHost': ${contains.proxyPort}" />
+						<fail message="Proxy configuration using ANT_ARGS and ANT_OPTS is incorrect." />
+					</then>
+				</if>
+			</else>
+		</if>
 	</target>
 
 
@@ -162,10 +232,23 @@ GSBT - Globus Service Build Tools
 	<target name="all" depends="jar" />
 
 	<!-- Post Introduce Edit-->
-	<target name="ui" description="Run the Security UI" depends="defineClasspaths">
-		<java classname="${runtime.mainclass}" classpathref="run.classpath" fork="yes">
-			<jvmarg value="-Djava.endorsed.dirs=${endorsed.lib.dir}" />
-		</java>
+	<target name="ui" description="Run the Security UI" depends="init, defineClasspaths, checkAntOpts">
+
+		<if>
+			<equals arg1="${use.proxy}" arg2="true" />
+			<then>
+				<echo message="Configured for Proxy" />
+				<java classname="${runtime.mainclass}" classpathref="run.classpath" fork="yes">
+					<jvmarg value="-Djava.endorsed.dirs=${endorsed.lib.dir}" />
+					<syspropertyset refId="system.properties" />
+				</java>
+			</then>
+			<else>
+				<java classname="${runtime.mainclass}" classpathref="run.classpath" fork="yes">
+					<jvmarg value="-Djava.endorsed.dirs=${endorsed.lib.dir}" />
+				</java>
+			</else>
+		</if>
 	</target>
 
 
