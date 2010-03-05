@@ -379,6 +379,73 @@ public class DCQL2SerializationAndValidationTestCase extends TestCase {
     }
     
     
+    public void testEverything() {
+        DCQLQuery query = new DCQLQuery();
+        DCQLObject target = new DCQLObject();
+        target.setName("gov.nih.nci.cabio.domain.NucleicAcidSequence");
+        
+        DCQLAssociatedObject assoc1 = new DCQLAssociatedObject();
+        assoc1.setName("gov.nih.nci.cabio.domain.Gene");
+        assoc1.setEndName("geneCollection");
+        
+        ForeignAssociatedObject fa = new ForeignAssociatedObject();
+        fa.setName("edu.georgetown.pir.domain.Protein");
+        fa.setTargetServiceURL("http://141.161.25.20:8080/wsrf/services/cagrid/GridPIR");
+        JoinCondition join = new JoinCondition();
+        join.setForeignAttributeName("uniprotkbEntryName");
+        join.setLocalAttributeName("uniProtCode");
+        join.setPredicate(BinaryPredicate.EQUAL_TO);
+        fa.setJoinCondition(join);
+        
+        DCQLGroup group = new DCQLGroup();
+        group.setLogicalOperation(GroupLogicalOperator.AND);
+        
+        DCQLAssociatedObject assoc2 = new DCQLAssociatedObject();
+        assoc2.setName("edu.georgetown.pir.domain.Protein");
+        assoc2.setEndName("geneCollection");
+        CQLAttribute attr1 = new CQLAttribute();
+        attr1.setName("name");
+        attr1.setBinaryPredicate(BinaryPredicate.EQUAL_TO);
+        AttributeValue val1 = new AttributeValue();
+        val1.setStringValue("brca1");
+        attr1.setAttributeValue(val1);
+        assoc2.setAttribute(attr1);
+        
+        DCQLAssociatedObject assoc3 = new DCQLAssociatedObject();
+        assoc3.setName("edu.georgetown.pir.domain.Organism");
+        assoc3.setEndName("organismCollection");
+        CQLAttribute attr2 = new CQLAttribute();
+        attr2.setName("scientificName");
+        attr2.setBinaryPredicate(BinaryPredicate.EQUAL_TO);
+        AttributeValue val2 = new AttributeValue();
+        val2.setStringValue("homo sapiens");
+        attr2.setAttributeValue(val2);
+        assoc3.setAttribute(attr2);
+        
+        group.setAssociatedObject(new DCQLAssociatedObject[] {assoc2, assoc3});
+        
+        fa.setGroup(group);
+        
+        assoc1.setForeignAssociatedObject(fa);
+        
+        target.setAssociatedObject(assoc1);
+        
+        query.setTargetObject(target);
+        
+        query.setTargetServiceURL(new String[] {"http://cabiogrid32.nci.nih.gov:80/wsrf/services/cagrid/CaBIO32GridSvc"});
+        
+        CQLQueryModifier mods = new CQLQueryModifier();
+        DistinctAttribute da = new DistinctAttribute();
+        da.setAttributeName("id");
+        da.setAggregation(Aggregation.MAX);
+        mods.setDistinctAttribute(da);
+        
+        query.setQueryModifier(mods);
+        
+        validate(query);
+    }
+    
+    
     public void testObjectResult() {
         CQLQueryResults cqlResults = new CQLQueryResults();
         cqlResults.setTargetClassname("foo.bar");
