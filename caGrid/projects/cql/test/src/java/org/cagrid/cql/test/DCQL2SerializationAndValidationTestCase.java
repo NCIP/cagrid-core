@@ -401,7 +401,6 @@ public class DCQL2SerializationAndValidationTestCase extends TestCase {
     }
     
     
-    /*
     public void testAttributeResults() {
         CQLQueryResults results = new CQLQueryResults();
         results.setTargetClassname("foo.bar");
@@ -417,9 +416,12 @@ public class DCQL2SerializationAndValidationTestCase extends TestCase {
         }
         results.setAttributeResult(attribResults);
         
-        validate(results);
+        DCQLResult dcqlResult = new DCQLResult(results, "http://fake.com");
+        
+        DCQLQueryResultsCollection collection = new DCQLQueryResultsCollection(new DCQLResult[] {dcqlResult});
+        
+        validate(collection);
     }
-    */
     
 
     public static void main(String args[]) {
