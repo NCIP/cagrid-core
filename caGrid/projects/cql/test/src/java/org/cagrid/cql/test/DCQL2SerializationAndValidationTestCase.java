@@ -28,6 +28,8 @@ import org.cagrid.data.dcql.DCQLAssociatedObject;
 import org.cagrid.data.dcql.DCQLGroup;
 import org.cagrid.data.dcql.DCQLObject;
 import org.cagrid.data.dcql.DCQLQuery;
+import org.cagrid.data.dcql.ForeignAssociatedObject;
+import org.cagrid.data.dcql.JoinCondition;
 import org.cagrid.data.dcql.results.DCQLQueryResultsCollection;
 
 public class DCQL2SerializationAndValidationTestCase extends TestCase {
@@ -293,6 +295,27 @@ public class DCQL2SerializationAndValidationTestCase extends TestCase {
         
         target.setGroup(group);
         query.setTargetObject(target);
+        query.setTargetServiceURL(new String[] {"http://fake.com"});
+        
+        validate(query);
+    }
+    
+    
+    public void testForeignAssociation() {
+        DCQLQuery query = new DCQLQuery();
+        DCQLObject target = new DCQLObject();
+        target.setName("foo.bar");
+        ForeignAssociatedObject fa = new ForeignAssociatedObject();
+        fa.setName("foo.bar.foreign");
+        fa.setTargetServiceURL("http://also-fake.com");
+        JoinCondition join = new JoinCondition();
+        join.setForeignAttributeName("id");
+        join.setLocalAttributeName("id");
+        join.setPredicate(BinaryPredicate.EQUAL_TO);
+        fa.setJoinCondition(join);
+        target.setForeignAssociatedObject(fa);
+        query.setTargetObject(target);
+        
         query.setTargetServiceURL(new String[] {"http://fake.com"});
         
         validate(query);

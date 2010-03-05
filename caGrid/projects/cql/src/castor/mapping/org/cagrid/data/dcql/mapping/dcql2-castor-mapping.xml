@@ -118,10 +118,10 @@
       <bind-xml name="localAttributeName" node="attribute" />
     </field>
     <field name="foreignAttributeName" type="java.lang.String">
-      <bind-xml name="localAttributeName" node="attribute" />
+      <bind-xml name="foreignAttributeName" node="attribute" />
     </field>
     <field name="predicate" type="org.cagrid.cql2.BinaryPredicate">
-      <bind-xml name="cql2:predicate" node="attribute"/>
+      <bind-xml name="predicate" node="attribute"/>
     </field>
   </class>
   <!-- results -->
