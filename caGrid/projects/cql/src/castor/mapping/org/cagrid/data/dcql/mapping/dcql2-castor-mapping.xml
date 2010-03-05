@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapping PUBLIC "-//EXOLAB/Castor Mapping DTD Version 1.0//EN" "http://castor.org/mapping.dtd">
 <mapping xmlns:cql2="http://CQL.caBIG/2/org.cagrid.cql2" xmlns:dcql2="http://DCQL.caBIG/2/org.cagrid.data.dcql"
-	xmlns:dcql2res="http://DCQL.caBIG/2/org.cagrid.data.dcql.results">
+	xmlns:cql2res="http://CQL.caBIG/2/org.cagrid.cql2.results" xmlns:dcql2res="http://DCQL.caBIG/2/org.cagrid.data.dcql.results">
   <include href="../../../cql2/mapping/cql2-castor-mapping.xml"/>
   <description>DCQL 2 Castor mapping file</description>
   <class name="org.cagrid.data.dcql.DCQLAssociatedObject" extends="org.cagrid.data.dcql.DCQLObject">
@@ -129,7 +129,7 @@
     <description >Default mapping for class org.cagrid.data.dcql.results.DCQLResult</description>
     <map-to xml="DCQLResult" ns-uri="http://DCQL.caBIG/2/org.cagrid.data.dcql.results" ns-prefix="dcql2res"/>
     <field name="CQLQueryResults" type="org.cagrid.cql2.results.CQLQueryResults">
-      <bind-xml name="cql2:CQLQueryResults" node="element" />
+      <bind-xml name="cql2res:CQLQueryResults" node="element" />
     </field>
     <field name="targetServiceURL" type="java.lang.String">
       <bind-xml name="targetServiceURL" node="attribute" />
@@ -137,9 +137,9 @@
   </class>
   <class name="org.cagrid.data.dcql.results.DCQLQueryResultsCollection">
     <description >Default mapping for class org.cagrid.data.dcql.results.DCQLQueryResultsCollection</description>
-    <map-to xml="DCQLQueryResultsCollection" ns-uri="http://DCQL.caBIG/2/org.cagrid.data.dcql" ns-prefix="dcql2"/>
+    <map-to xml="DCQLQueryResultsCollection" ns-uri="http://DCQL.caBIG/2/org.cagrid.data.dcql.results" ns-prefix="dcql2res"/>
     <field name="DCQLResult" type="org.cagrid.data.dcql.results.DCQLResult" collection="array">
-      <bind-xml name="dcql2:DCQLResult" node="element" />
+      <bind-xml name="dcql2res:DCQLResult" node="element" />
     </field>
   </class>
 </mapping>

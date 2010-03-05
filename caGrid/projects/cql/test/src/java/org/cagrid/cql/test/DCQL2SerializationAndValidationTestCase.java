@@ -14,6 +14,7 @@ import junit.framework.TestResult;
 import junit.framework.TestSuite;
 import junit.textui.TestRunner;
 
+import org.cagrid.cql.utilities.AnyNodeHelper;
 import org.cagrid.cql.utilities.DCQL2Constants;
 import org.cagrid.cql.utilities.DCQL2SerializationUtil;
 import org.cagrid.cql2.Aggregation;
@@ -24,6 +25,10 @@ import org.cagrid.cql2.CQLQueryModifier;
 import org.cagrid.cql2.DistinctAttribute;
 import org.cagrid.cql2.GroupLogicalOperator;
 import org.cagrid.cql2.UnaryPredicate;
+import org.cagrid.cql2.results.CQLAttributeResult;
+import org.cagrid.cql2.results.CQLObjectResult;
+import org.cagrid.cql2.results.CQLQueryResults;
+import org.cagrid.cql2.results.TargetAttribute;
 import org.cagrid.data.dcql.DCQLAssociatedObject;
 import org.cagrid.data.dcql.DCQLGroup;
 import org.cagrid.data.dcql.DCQLObject;
@@ -31,6 +36,8 @@ import org.cagrid.data.dcql.DCQLQuery;
 import org.cagrid.data.dcql.ForeignAssociatedObject;
 import org.cagrid.data.dcql.JoinCondition;
 import org.cagrid.data.dcql.results.DCQLQueryResultsCollection;
+import org.cagrid.data.dcql.results.DCQLResult;
+import org.exolab.castor.types.AnyNode;
 
 public class DCQL2SerializationAndValidationTestCase extends TestCase {
     
@@ -372,38 +379,29 @@ public class DCQL2SerializationAndValidationTestCase extends TestCase {
     }
     
     
-    /*
-    public void testAggregationResult() {
-        CQLQueryResults results = new CQLQueryResults();
-        results.setTargetClassname("foo.bar");
-        CQLAggregateResult agg = new CQLAggregateResult();
-        agg.setAggregation(Aggregation.COUNT);
-        agg.setAttributeName("id");
-        agg.setValue("5");
-        results.setAggregationResult(agg);
-        
-        validate(results);
-    }
-    
-    
     public void testObjectResult() {
-        CQLQueryResults results = new CQLQueryResults();
-        results.setTargetClassname("foo.bar");
+        CQLQueryResults cqlResults = new CQLQueryResults();
+        cqlResults.setTargetClassname("foo.bar");
         CQLObjectResult obj = new CQLObjectResult();
         AnyNode node = null;
         try {
-            node = AnyNodeHelper.convertStringToAnyNode("<foo/>");
+            node = AnyNodeHelper.convertStringToAnyNode("<foo>here's some text</foo>");
         } catch (Exception e) {
             e.printStackTrace();
             fail("Error creating node: " + e.getMessage());
         }
         obj.set_any(node);
-        results.setObjectResult(new CQLObjectResult[] {obj});
+        cqlResults.setObjectResult(new CQLObjectResult[] {obj});
         
-        validate(results);
+        DCQLResult dcqlResult = new DCQLResult(cqlResults, "http://fake.com");
+        
+        DCQLQueryResultsCollection collection = new DCQLQueryResultsCollection(new DCQLResult[] {dcqlResult});
+        
+        validate(collection);
     }
     
     
+    /*
     public void testAttributeResults() {
         CQLQueryResults results = new CQLQueryResults();
         results.setTargetClassname("foo.bar");
