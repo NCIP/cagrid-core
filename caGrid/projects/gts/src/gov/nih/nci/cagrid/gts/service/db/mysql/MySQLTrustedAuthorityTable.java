@@ -20,7 +20,7 @@ public class MySQLTrustedAuthorityTable extends TrustedAuthorityTable {
 			+ TrustedAuthorityTable.SOURCE_GTS + " VARCHAR(255) NOT NULL," + TrustedAuthorityTable.EXPIRES
 			+ " BIGINT NOT NULL," + TrustedAuthorityTable.LAST_UPDATED + " BIGINT NOT NULL,"
 			+ TrustedAuthorityTable.CERTIFICATE + " TEXT NOT NULL," + TrustedAuthorityTable.CRL
-			+ " TEXT, INDEX document_index (" + TrustedAuthorityTable.NAME + ")) ENGINE=InnoDB;";
+			+ " LONGTEXT, INDEX document_index (" + TrustedAuthorityTable.NAME + ")) ENGINE=InnoDB;";
 		return sql;
 	}
 }

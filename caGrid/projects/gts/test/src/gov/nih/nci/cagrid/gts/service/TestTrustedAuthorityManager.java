@@ -16,6 +16,8 @@ import gov.nih.nci.cagrid.gts.stubs.types.InvalidTrustedAuthorityFault;
 import gov.nih.nci.cagrid.gts.test.CA;
 import gov.nih.nci.cagrid.gts.test.Utils;
 
+import java.io.File;
+import java.io.FileWriter;
 import java.math.BigInteger;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
@@ -25,6 +27,7 @@ import junit.framework.TestCase;
 import org.bouncycastle.asn1.x509.CRLReason;
 import org.cagrid.gaards.pki.CRLEntry;
 import org.cagrid.gaards.pki.CertUtil;
+import org.cagrid.gaards.pki.PEMWriter;
 
 
 /**
@@ -291,6 +294,38 @@ public class TestTrustedAuthorityManager extends TestCase implements TrustLevelL
 			BigInteger sn = new BigInteger(String.valueOf(System.currentTimeMillis()));
 			CRLEntry entry = new CRLEntry(sn, CRLReason.PRIVILEGE_WITHDRAWN);
 			ca.updateCRL(entry);
+			TrustedAuthority ta = new TrustedAuthority();
+			ta.setName(ca.getCertificate().getSubjectDN().toString());
+			ta.setCertificate(new X509Certificate(CertUtil.writeCertificate(ca.getCertificate())));
+			ta.setCRL(new X509CRL(CertUtil.writeCRL(ca.getCRL())));
+			ta.setStatus(Status.Trusted);
+			ta.setTrustLevels(toTrustLevels(LEVEL_ONE));
+			trust.addTrustedAuthority(ta);
+			assertEquals(ta, trust.getTrustedAuthority(ta.getName()));
+		} catch (Exception e) {
+			FaultUtil.printFault(e);
+			fail(e.getMessage());
+		} finally {
+			try {
+				trust.clearDatabase();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+	}
+
+	public void testAddTrustedAuthorityWithLargeCRL() {
+		int numOfCRLS = 10000;
+		TrustedAuthorityManager trust = new TrustedAuthorityManager("localhost", this, db);
+		try {
+			trust.clearDatabase();
+			CRLEntry[] entries = new CRLEntry[numOfCRLS];
+			CA ca = new CA();
+			for (int i = 0; i < numOfCRLS; i++) {
+				BigInteger sn = new BigInteger(String.valueOf(System.currentTimeMillis()));
+				entries[i] = new CRLEntry(sn, CRLReason.PRIVILEGE_WITHDRAWN);
+			}
+			ca.updateCRL(entries);			
 			TrustedAuthority ta = new TrustedAuthority();
 			ta.setName(ca.getCertificate().getSubjectDN().toString());
 			ta.setCertificate(new X509Certificate(CertUtil.writeCertificate(ca.getCertificate())));
