@@ -1,9 +1,8 @@
-<ns1:DCQLQuery xmlns:ns1="http://caGrid.caBIG/1.0/gov.nih.nci.cagrid.dcql">
+<ns1:DCQLQuery xmlns:ns1="http://DCQL.caBIG/2/org.cagrid.data.dcql">
  <ns1:TargetObject name="gov.nih.nci.cacoresdk.domain.onetoone.unidirectional.Address">
-  <ns1:ForeignAssociation targetServiceURL="DATA_SERVICE_2">
-   <ns1:JoinCondition foreignAttributeName="id" localAttributeName="id" predicate="EQUAL_TO"/>
-   <ns1:ForeignObject name="gov.nih.nci.cacoresdk.domain.onetoone.unidirectional.Person"/>
-  </ns1:ForeignAssociation>
+  <ns1:ForeignAssociatedObject name="gov.nih.nci.cacoresdk.domain.onetoone.unidirectional.Person" targetServiceURL="DATA_SERVICE_2">
+   <ns1:JoinCondition localAttributeName="id" foreignAttributeName="id" predicate="EQUAL_TO"/>
+  </ns1:ForeignAssociatedObject>
  </ns1:TargetObject>
- <ns1:targetServiceURL>DATA_SERVICE_1</ns1:targetServiceURL>
+ <ns1:TargetServiceURL>DATA_SERVICE_1</ns1:TargetServiceURL>
 </ns1:DCQLQuery>

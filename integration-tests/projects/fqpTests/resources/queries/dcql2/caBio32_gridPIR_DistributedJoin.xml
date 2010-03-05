@@ -1,22 +1,28 @@
-<ns1:DCQLQuery xmlns:ns1="http://caGrid.caBIG/1.0/gov.nih.nci.cagrid.dcql">
+<ns1:DCQLQuery xmlns:ns1="http://DCQL.caBIG/2/org.cagrid.data.dcql">
  <ns1:TargetObject name="gov.nih.nci.cabio.domain.NucleicAcidSequence">
-  <ns1:Association name="gov.nih.nci.cabio.domain.Gene" roleName="geneCollection">
-   <ns1:Association name="gov.nih.nci.cabio.domain.Protein" roleName="proteinCollection">
-    <ns1:ForeignAssociation targetServiceURL="http://141.161.25.20:8080/wsrf/services/cagrid/GridPIR">
-     <ns1:JoinCondition foreignAttributeName="uniprotkbEntryName" localAttributeName="uniProtCode" predicate="EQUAL_TO"/>
-     <ns1:ForeignObject name="edu.georgetown.pir.domain.Protein">
-      <ns1:Group logicRelation="AND">
-       <ns1:Association name="edu.georgetown.pir.domain.Gene" roleName="geneCollection">
-        <ns1:Attribute name="name" predicate="EQUAL_TO" value="brca1"/>
-       </ns1:Association>
-       <ns1:Association name="edu.georgetown.pir.domain.Organism" roleName="organismCollection">
-        <ns1:Attribute name="scientificName" predicate="EQUAL_TO" value="homo sapiens"/>
-       </ns1:Association>
-      </ns1:Group>
-     </ns1:ForeignObject>
-    </ns1:ForeignAssociation>
-   </ns1:Association>
-  </ns1:Association>
+  <ns1:AssociatedObject name="gov.nih.nci.cabio.domain.Gene" endName="geneCollection">
+   <ns1:ForeignAssociatedObject name="edu.georgetown.pir.domain.Protein" targetServiceURL="http://141.161.25.20:8080/wsrf/services/cagrid/GridPIR">
+    <ns1:Group logicalOperation="AND">
+     <ns1:AssociatedObject name="edu.georgetown.pir.domain.Protein" endName="geneCollection">
+      <ns1:Attribute name="name">
+       <ns2:BinaryPredicate xmlns:ns2="http://CQL.caBIG/2/org.cagrid.cql2">EQUAL_TO</ns2:BinaryPredicate>
+       <ns3:AttributeValue xmlns:ns3="http://CQL.caBIG/2/org.cagrid.cql2">
+        <ns3:StringValue>brca1</ns3:StringValue>
+       </ns3:AttributeValue>
+      </ns1:Attribute>
+     </ns1:AssociatedObject>
+     <ns1:AssociatedObject name="edu.georgetown.pir.domain.Organism" endName="organismCollection">
+      <ns1:Attribute name="scientificName">
+       <ns4:BinaryPredicate xmlns:ns4="http://CQL.caBIG/2/org.cagrid.cql2">EQUAL_TO</ns4:BinaryPredicate>
+       <ns5:AttributeValue xmlns:ns5="http://CQL.caBIG/2/org.cagrid.cql2">
+        <ns5:StringValue>homo sapiens</ns5:StringValue>
+       </ns5:AttributeValue>
+      </ns1:Attribute>
+     </ns1:AssociatedObject>
+    </ns1:Group>
+    <ns1:JoinCondition localAttributeName="uniProtCode" foreignAttributeName="uniprotkbEntryName" predicate="EQUAL_TO"/>
+   </ns1:ForeignAssociatedObject>
+  </ns1:AssociatedObject>
  </ns1:TargetObject>
- <ns1:targetServiceURL>http://cabiogrid32.nci.nih.gov:80/wsrf/services/cagrid/CaBIO32GridSvc</ns1:targetServiceURL>
+ <ns1:TargetServiceURL>http://cabiogrid32.nci.nih.gov:80/wsrf/services/cagrid/CaBIO32GridSvc</ns1:TargetServiceURL>
 </ns1:DCQLQuery>
