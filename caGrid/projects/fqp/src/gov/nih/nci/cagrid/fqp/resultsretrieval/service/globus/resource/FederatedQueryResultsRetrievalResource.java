@@ -169,6 +169,11 @@ public class FederatedQueryResultsRetrievalResource extends FederatedQueryResult
     }
     
     
+    public DCQLQuery getQuery() {
+        return this.query;
+    }
+    
+    
     /**
      * Indicates if processing of the query is complete
      */
