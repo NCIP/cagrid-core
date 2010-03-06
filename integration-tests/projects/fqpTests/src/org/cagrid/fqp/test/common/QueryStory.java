@@ -7,6 +7,7 @@ import gov.nih.nci.cagrid.testing.system.haste.Story;
 import java.util.Vector;
 
 import org.cagrid.fqp.test.common.steps.StandardQueryStep;
+import org.cagrid.fqp.test.common.steps.dcql2.Dcql2StandardQueryStep;
 
 public class QueryStory extends Story {
     public static final String SERVICE_NAME_BASE = "cagrid/ExampleSdkService";
@@ -46,8 +47,14 @@ public class QueryStory extends Story {
             }
         }
         
+        // DCQL 1 queries
         steps.add(new StandardQueryStep(FQPTestingConstants.QUERIES_LOCATION + "exampleDistributedJoin1.xml",
             FQPTestingConstants.GOLD_LOCATION + "exampleDistributedJoin1_gold.xml",
+            queryHelper, serviceUrls));
+        
+        // DCQL 2 queries
+        steps.add(new Dcql2StandardQueryStep(FQPTestingConstants.DCQL2_QUERIES_LOCATION + "exampleDistributedJoin1.xml",
+            FQPTestingConstants.DCQL2_GOLD_LOCATION + "exampleDistributedJoin1_gold.xml",
             queryHelper, serviceUrls));
         return steps;
     }

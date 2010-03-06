@@ -18,6 +18,10 @@ import org.cagrid.fqp.test.remote.steps.MaxRetriesStep;
 import org.cagrid.fqp.test.remote.steps.MaxRetryTimeoutStep;
 import org.cagrid.fqp.test.remote.steps.MaxTargetServicesStep;
 import org.cagrid.fqp.test.remote.steps.ResourceTimeoutQueryStep;
+import org.cagrid.fqp.test.remote.steps.dcql2.Dcql2MaxRetriesStep;
+import org.cagrid.fqp.test.remote.steps.dcql2.Dcql2MaxRetryTimeoutStep;
+import org.cagrid.fqp.test.remote.steps.dcql2.Dcql2MaxTargetServicesStep;
+import org.cagrid.fqp.test.remote.steps.dcql2.Dcql2ResourceTimeoutQueryStep;
 
 /**
  * QueryConstraintsStory
@@ -107,6 +111,9 @@ public class QueryConstraintsStory extends Story {
         steps.add(new ResourceTimeoutQueryStep(FQPTestingConstants.QUERIES_LOCATION + "exampleDistributedJoin1.xml",
             FQPTestingConstants.GOLD_LOCATION + "exampleDistributedJoin1_gold.xml",
             fqpClient, serviceUrls, expirationSleepTime));
+        steps.add(new Dcql2ResourceTimeoutQueryStep(FQPTestingConstants.DCQL2_QUERIES_LOCATION + "exampleDistributedJoin1.xml",
+            FQPTestingConstants.DCQL2_GOLD_LOCATION + "exampleDistributedJoin1_gold.xml",
+            fqpClient, serviceUrls, expirationSleepTime));
         
         // get max target services
         int maxServices = Integer.parseInt(
@@ -115,6 +122,9 @@ public class QueryConstraintsStory extends Story {
         // test max target services
         steps.add(new MaxTargetServicesStep(FQPTestingConstants.QUERIES_LOCATION + "exampleDistributedJoin1.xml",
             FQPTestingConstants.GOLD_LOCATION + "exampleDistributedJoin1_gold.xml",
+            fqpClient, serviceUrls, maxServices + 1));
+        steps.add(new Dcql2MaxTargetServicesStep(FQPTestingConstants.DCQL2_QUERIES_LOCATION + "exampleDistributedJoin1.xml",
+            FQPTestingConstants.DCQL2_GOLD_LOCATION + "exampleDistributedJoin1_gold.xml",
             fqpClient, serviceUrls, maxServices + 1));
         
         // get max retry timeout
@@ -125,6 +135,9 @@ public class QueryConstraintsStory extends Story {
         steps.add(new MaxRetryTimeoutStep(FQPTestingConstants.QUERIES_LOCATION + "exampleDistributedJoin1.xml",
             FQPTestingConstants.GOLD_LOCATION + "exampleDistributedJoin1_gold.xml",
             fqpClient, serviceUrls, maxRetryTimeout + 1));
+        steps.add(new Dcql2MaxRetryTimeoutStep(FQPTestingConstants.DCQL2_QUERIES_LOCATION + "exampleDistributedJoin1.xml",
+            FQPTestingConstants.DCQL2_GOLD_LOCATION + "exampleDistributedJoin1_gold.xml",
+            fqpClient, serviceUrls, maxRetryTimeout + 1));
         
         // get max retries
         int maxRetries = Integer.parseInt(
@@ -133,6 +146,9 @@ public class QueryConstraintsStory extends Story {
         // test max retries
         steps.add(new MaxRetriesStep(FQPTestingConstants.QUERIES_LOCATION + "exampleDistributedJoin1.xml",
             FQPTestingConstants.GOLD_LOCATION + "exampleDistributedJoin1_gold.xml",
+            fqpClient, serviceUrls, maxRetries + 1));
+        steps.add(new Dcql2MaxRetriesStep(FQPTestingConstants.DCQL2_QUERIES_LOCATION + "exampleDistributedJoin1.xml",
+            FQPTestingConstants.DCQL2_GOLD_LOCATION + "exampleDistributedJoin1_gold.xml",
             fqpClient, serviceUrls, maxRetries + 1));
         
         return steps;

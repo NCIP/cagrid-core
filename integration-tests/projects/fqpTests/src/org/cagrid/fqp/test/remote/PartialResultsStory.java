@@ -21,6 +21,7 @@ import org.cagrid.fqp.results.metadata.TargetServiceStatus;
 import org.cagrid.fqp.test.common.FQPTestingConstants;
 import org.cagrid.fqp.test.common.ServiceContainerSource;
 import org.cagrid.fqp.test.remote.steps.PartialResultsQueryStep;
+import org.cagrid.fqp.test.remote.steps.dcql2.Dcql2PartialResultsQueryStep;
 
 /**
  * PartialResultsStory
@@ -105,6 +106,10 @@ public class PartialResultsStory extends Story {
         
         steps.add(new PartialResultsQueryStep(FQPTestingConstants.QUERIES_LOCATION + File.separator + "exampleDistributedJoin1_partial.xml",
             FQPTestingConstants.GOLD_LOCATION + File.separator + "exampleDistributedJoin1_gold.xml", 
+            fqpClient, serviceUrlsNonConnect, targetUrlsNonConnect,
+            ProcessingStatus.Complete_With_Error, new TargetServiceStatus[] {okStatus, nonConnectStatus}));
+        steps.add(new Dcql2PartialResultsQueryStep(FQPTestingConstants.DCQL2_QUERIES_LOCATION + File.separator + "exampleDistributedJoin1_partial.xml",
+            FQPTestingConstants.DCQL2_GOLD_LOCATION + File.separator + "exampleDistributedJoin1_gold.xml", 
             fqpClient, serviceUrlsNonConnect, targetUrlsNonConnect,
             ProcessingStatus.Complete_With_Error, new TargetServiceStatus[] {okStatus, nonConnectStatus}));
         

@@ -19,7 +19,7 @@ public class AsynchronousQueryExecutionFailsStep extends Step {
     
     private static Log LOG = LogFactory.getLog(AsynchronousQueryExecutionFailsStep.class);
     
-    public static final int FAILURE_TIMEOUT = 20; // secconds before failure waiting... fails...
+    public static final int FAILURE_TIMEOUT = 20; // seconds before failure waiting... fails...
         
     private FederatedQueryProcessorClient fqpClient = null;
     private String queryFilename = null;

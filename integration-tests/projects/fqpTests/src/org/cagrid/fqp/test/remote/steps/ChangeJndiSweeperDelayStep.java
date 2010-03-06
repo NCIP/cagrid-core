@@ -15,8 +15,10 @@ import org.jdom.filter.Filter;
 
 public class ChangeJndiSweeperDelayStep extends Step {
     
-    public static final String RESOURCE_HOME_TYPE_NAME = 
+    public static final String RESOURCE_HOME_TYPE_NAME_A = 
         "gov.nih.nci.cagrid.fqp.results.service.globus.resource.FederatedQueryResultsResourceHome";
+    public static final String RESOURCE_HOME_TYPE_NAME_B = 
+        "gov.nih.nci.cagrid.fqp.resultsretrieval.service.globus.resource.FederatedQueryResultsRetrievalResourceHome";
     
     /*
      *   <!-- Sweeper delay defaults to 60 seconds, system tests change this -->
@@ -56,7 +58,9 @@ public class ChangeJndiSweeperDelayStep extends Step {
                         Attribute nameAttr = elem.getAttribute("name");
                         if (nameAttr != null && nameAttr.getValue().equals("home")) {
                             Attribute typeAttr = elem.getAttribute("type");
-                            if (typeAttr != null && typeAttr.getValue().equals(RESOURCE_HOME_TYPE_NAME)) {
+                            if (typeAttr != null && 
+                                (typeAttr.getValue().equals(RESOURCE_HOME_TYPE_NAME_A) || 
+                                    typeAttr.getValue().equals(RESOURCE_HOME_TYPE_NAME_B))) {
                                 return true;
                             }
                         }
@@ -65,25 +69,27 @@ public class ChangeJndiSweeperDelayStep extends Step {
                 return false;
             }
         });
-        assertTrue("No resource home for " + RESOURCE_HOME_TYPE_NAME + " found in JNDI!", fqpResultResourceElements.hasNext());
-        Element resourceHomeElement = (Element) fqpResultResourceElements.next();
-        assertFalse("More than one resource home for " + RESOURCE_HOME_TYPE_NAME + " found in JNDI!", fqpResultResourceElements.hasNext());
-        // find and change the sweeper delay value
-        Element resourceParamsElement = resourceHomeElement.getChild("resourceParams", resourceHomeElement.getNamespace());
-        // create the sweeper delay parameter element
-        Element delayParameter = createSweeperDelayElement(resourceParamsElement.getNamespace());
-        // throw out the old sweeper delay
-        Iterator<?> paramElementIter = resourceParamsElement.getChildren("parameter", resourceParamsElement.getNamespace()).iterator();
-        while (paramElementIter.hasNext()) {
-            Element paramElement = (Element) paramElementIter.next();
-            Element nameElement = paramElement.getChild("name", paramElement.getNamespace());
-            if (nameElement != null && nameElement.getText().equals("sweeperDelay")) {
-                resourceParamsElement.removeContent(paramElement);
-                break;
+        assertTrue("No appropriate resource homes found in JNDI!", fqpResultResourceElements.hasNext());
+        while (fqpResultResourceElements.hasNext()) {
+            Element resourceHomeElement = (Element) fqpResultResourceElements.next();
+            // find and change the sweeper delay value
+            Element resourceParamsElement = resourceHomeElement.getChild("resourceParams", resourceHomeElement.getNamespace());
+            // create the sweeper delay parameter element
+            Element delayParameter = createSweeperDelayElement(resourceParamsElement.getNamespace());
+            // throw out the old sweeper delay
+            Iterator<?> paramElementIter = resourceParamsElement.getChildren("parameter", resourceParamsElement.getNamespace()).iterator();
+            while (paramElementIter.hasNext()) {
+                Element paramElement = (Element) paramElementIter.next();
+                Element nameElement = paramElement.getChild("name", paramElement.getNamespace());
+                if (nameElement != null && nameElement.getText().equals("sweeperDelay")) {
+                    resourceParamsElement.removeContent(paramElement);
+                    break;
+                }
             }
+            // insert the delay parameter
+            resourceParamsElement.addContent(delayParameter);
         }
-        // insert the delay parameter
-        resourceParamsElement.addContent(delayParameter);
+        
         // write the JNDI back to disk
         try {
             String jndiText = XMLUtilities.documentToString(jndiDocument);

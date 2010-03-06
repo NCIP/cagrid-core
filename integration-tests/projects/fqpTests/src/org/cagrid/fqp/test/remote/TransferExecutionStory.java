@@ -11,6 +11,7 @@ import org.cagrid.fqp.test.common.FQPTestingConstants;
 import org.cagrid.fqp.test.common.ServiceContainerSource;
 import org.cagrid.fqp.test.remote.steps.NotificationClientSetupStep;
 import org.cagrid.fqp.test.remote.steps.TransferQueryExecutionStep;
+import org.cagrid.fqp.test.remote.steps.dcql2.Dcql2TransferQueryExecutionStep;
 
 /**
  * TransferExecutionStory
@@ -72,6 +73,9 @@ public class TransferExecutionStory extends Story {
         
         steps.add(new TransferQueryExecutionStep(FQPTestingConstants.QUERIES_LOCATION + "exampleDistributedJoin1.xml",
             FQPTestingConstants.GOLD_LOCATION + "exampleDistributedJoin1_gold.xml",
+            fqpClient, serviceUrls));
+        steps.add(new Dcql2TransferQueryExecutionStep(FQPTestingConstants.DCQL2_QUERIES_LOCATION + "exampleDistributedJoin1.xml",
+            FQPTestingConstants.DCQL2_GOLD_LOCATION + "exampleDistributedJoin1_gold.xml",
             fqpClient, serviceUrls));
         
         return steps;

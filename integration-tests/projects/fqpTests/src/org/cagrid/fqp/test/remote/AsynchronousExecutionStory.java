@@ -12,6 +12,8 @@ import org.cagrid.fqp.test.common.FQPTestingConstants;
 import org.cagrid.fqp.test.common.ServiceContainerSource;
 import org.cagrid.fqp.test.remote.steps.AsynchronousQueryExecutionFailsStep;
 import org.cagrid.fqp.test.remote.steps.AsynchronousQueryExecutionStep;
+import org.cagrid.fqp.test.remote.steps.dcql2.Dcql2AsynchronousQueryExecutionFailsStep;
+import org.cagrid.fqp.test.remote.steps.dcql2.Dcql2AsynchronousQueryExecutionStep;
 
 /** 
  *  AsynchronousExecutionStory
@@ -75,8 +77,12 @@ public class AsynchronousExecutionStory extends Story {
         steps.add(new AsynchronousQueryExecutionStep(FQPTestingConstants.QUERIES_LOCATION + File.separator + "exampleDistributedJoin1.xml",
             FQPTestingConstants.GOLD_LOCATION + File.separator + "exampleDistributedJoin1_gold.xml", 
             fqpClient, serviceUrls));
+        steps.add(new Dcql2AsynchronousQueryExecutionStep(FQPTestingConstants.DCQL2_QUERIES_LOCATION + File.separator + "exampleDistributedJoin1.xml",
+            FQPTestingConstants.DCQL2_GOLD_LOCATION + File.separator + "exampleDistributedJoin1_gold.xml", 
+            fqpClient, serviceUrls));
         
         // asynchronous execution with a missing (default) foreign join predicate
+        // only for DCQL 1, DCQL 2 requires a join predicate
         steps.add(new AsynchronousQueryExecutionStep(FQPTestingConstants.QUERIES_LOCATION + File.separator + "exampleDistributedJoin1_NoPredicate.xml",
             FQPTestingConstants.GOLD_LOCATION + File.separator + "exampleDistributedJoin1_gold.xml", 
             fqpClient, serviceUrls));
@@ -84,6 +90,8 @@ public class AsynchronousExecutionStory extends Story {
         // asynchronous execution which fails
         steps.add(new AsynchronousQueryExecutionFailsStep(
             fqpClient, FQPTestingConstants.QUERIES_LOCATION + File.separator + "exampleDistributedJoin1.xml"));
+        steps.add(new Dcql2AsynchronousQueryExecutionFailsStep(
+            fqpClient, FQPTestingConstants.DCQL2_QUERIES_LOCATION + File.separator + "exampleDistributedJoin1.xml"));
         return steps;
     }
 }
