@@ -9,7 +9,7 @@ package org.cagrid.data.dcql;
 
 public class TransformationOperator implements java.io.Serializable {
     private java.lang.String _value_;
-    private static java.util.HashMap _table_ = new java.util.HashMap();
+    private static java.util.HashMap<String, TransformationOperator> _table_ = new java.util.HashMap<String, TransformationOperator>();
 
 
     // Constructor
@@ -51,7 +51,7 @@ public class TransformationOperator implements java.io.Serializable {
 
 
     public static TransformationOperator fromValue(java.lang.String value) throws java.lang.IllegalArgumentException {
-        TransformationOperator enumeration = (TransformationOperator) _table_.get(value);
+        TransformationOperator enumeration = _table_.get(value);
         if (enumeration == null)
             throw new java.lang.IllegalArgumentException();
         return enumeration;
