@@ -99,7 +99,7 @@ public class MembershipRequestsFinder {
 		return null;
 	} 
 	
-	public static void deleteRequest(Group group, String requestor) throws MemberNotFoundException {
+	public static void removeRequest(Group group, String requestor) throws MemberNotFoundException, InsufficientPrivilegeException {
 		Session hs = null;
 
 		try {
@@ -111,7 +111,7 @@ public class MembershipRequestsFinder {
 
 			for (Object object : list) {
 				MembershipRequests membershipRequests = (MembershipRequests) object;
-				GridGrouperHibernateHelper.delete(membershipRequests);
+				membershipRequests.setStatus(MembershipRequestStatus.Removed);			
 			}
 
 		} catch (HibernateException e) {

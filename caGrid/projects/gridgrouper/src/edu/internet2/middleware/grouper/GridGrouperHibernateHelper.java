@@ -73,14 +73,6 @@ class GridGrouperHibernateHelper {
 
   // PROTECTED CLASS METHODS //
 
-  protected static void delete(Object o) 
-    throws HibernateException
-  {
-    Set objects = new LinkedHashSet();
-    objects.add(o);
-    GridGrouperHibernateHelper.delete(objects);
-  } // protected static void delete(o)
-
   // Delete multiple objects in one transaction
   // @throws  HibernateException
   protected static void delete(Set objects)

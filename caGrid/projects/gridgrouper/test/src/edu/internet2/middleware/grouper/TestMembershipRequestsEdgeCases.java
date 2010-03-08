@@ -2,9 +2,9 @@ package edu.internet2.middleware.grouper;
 
 import gov.nih.nci.cagrid.common.FaultUtil;
 import gov.nih.nci.cagrid.gridgrouper.bean.GroupDescriptor;
-import gov.nih.nci.cagrid.gridgrouper.bean.GroupPrivilegeType;
 import gov.nih.nci.cagrid.gridgrouper.bean.MembershipRequestDescriptor;
 import gov.nih.nci.cagrid.gridgrouper.bean.MembershipRequestStatus;
+import gov.nih.nci.cagrid.gridgrouper.bean.MembershipRequestUpdate;
 import gov.nih.nci.cagrid.gridgrouper.bean.StemDescriptor;
 import gov.nih.nci.cagrid.gridgrouper.service.GridGrouper;
 import gov.nih.nci.cagrid.gridgrouper.service.tools.GridGrouperBootstrapper;
@@ -14,6 +14,9 @@ import gov.nih.nci.cagrid.gridgrouper.stubs.types.MemberAddFault;
 import gov.nih.nci.cagrid.gridgrouper.stubs.types.StemAddFault;
 import gov.nih.nci.cagrid.gridgrouper.stubs.types.StemNotFoundFault;
 import gov.nih.nci.cagrid.gridgrouper.testutils.Utils;
+
+import java.util.Date;
+
 import junit.framework.TestCase;
 import net.sf.hibernate.HibernateException;
 import net.sf.hibernate.Session;
@@ -82,6 +85,34 @@ public class TestMembershipRequestsEdgeCases extends TestCase {
 		}
 
 	}
+
+	public void testMembershipRetrieveal() {
+		try {
+			GroupDescriptor grp = initialGroupAndRequestSetup();
+			grouper.grantMembershipRequests(SUPER_USER, Utils.getGroupIdentifier(grp));
+
+			grouper.addMembershipRequest(USER_A, Utils.getGroupIdentifier(grp));
+			
+			MembershipRequestDescriptor[] members = grouper.getMembershipRequests(SUPER_USER, Utils.getGroupIdentifier(grp),
+					MembershipRequestStatus.Pending);
+			
+			MembershipRequestUpdate update = new MembershipRequestUpdate("A note", MembershipRequestStatus.Rejected);
+			grouper.updateMembershipRequest(SUPER_USER, Utils.getGroupIdentifier(grp), USER_A, update);
+
+			members = grouper.getMembershipRequests(SUPER_USER, Utils.getGroupIdentifier(grp),
+					MembershipRequestStatus.Rejected);
+
+			assertEquals("Only one membership request should be generated.", 1, members.length);
+						
+		} catch (MemberAddFault e) {
+			// Expected fault
+		} catch (Exception e) {
+			FaultUtil.printFault(e);
+			fail(e.getMessage());
+		}
+
+	}
+
 	
 	public void testAddMembershipRequestsForExistingMember() {
 		try {
@@ -105,6 +136,58 @@ public class TestMembershipRequestsEdgeCases extends TestCase {
 
 	}
 
+	public void testAddMembershipRequestsForRejectedMember() {
+		try {
+			GroupDescriptor grp = initialGroupAndRequestSetup();
+			grouper.grantMembershipRequests(SUPER_USER, Utils.getGroupIdentifier(grp));
+
+			grouper.addMembershipRequest(USER_A, Utils.getGroupIdentifier(grp));
+			
+			MembershipRequestUpdate update = new MembershipRequestUpdate(null, MembershipRequestStatus.Rejected);
+			grouper.updateMembershipRequest(SUPER_USER, Utils.getGroupIdentifier(grp), USER_A, update);
+			
+			try {
+				grouper.addMembershipRequest(USER_A, Utils.getGroupIdentifier(grp));
+				fail("Should not be able to add a membership request if a previous request has been rejected");
+			} catch (MemberAddFault e) {
+				// Expected fault				
+			}
+
+			MembershipRequestDescriptor[] members = grouper.getMembershipRequests(SUPER_USER, Utils.getGroupIdentifier(grp),
+					MembershipRequestStatus.Rejected);
+
+			assertEquals("Membership request should still be rejected", 1, members.length);
+		} catch (Exception e) {
+			FaultUtil.printFault(e);
+			fail(e.getMessage());
+		}
+
+	}
+
+	public void testAddMembershipRequestsForRemovedMember() {
+		try {
+			GroupDescriptor grp = initialGroupAndRequestSetup();
+			grouper.grantMembershipRequests(SUPER_USER, Utils.getGroupIdentifier(grp));
+
+			grouper.addMembershipRequest(USER_A, Utils.getGroupIdentifier(grp));
+			
+			MembershipRequestUpdate update = new MembershipRequestUpdate(null, MembershipRequestStatus.Approved);
+			grouper.updateMembershipRequest(SUPER_USER, Utils.getGroupIdentifier(grp), USER_A, update);
+			
+			grouper.deleteMember(SUPER_USER, Utils.getGroupIdentifier(grp), USER_A);
+
+			grouper.addMembershipRequest(USER_A, Utils.getGroupIdentifier(grp));
+
+			MembershipRequestDescriptor[] members = grouper.getMembershipRequests(SUPER_USER, Utils.getGroupIdentifier(grp),
+					MembershipRequestStatus.Pending);
+
+			assertEquals("Should be able to request membership", 1, members.length);
+		} catch (Exception e) {
+			FaultUtil.printFault(e);
+			fail(e.getMessage());
+		}
+
+	}
 
 	private GroupDescriptor initialGroupAndRequestSetup() throws GridGrouperRuntimeFault, StemNotFoundFault,
 			InsufficientPrivilegeFault, StemAddFault, Exception {

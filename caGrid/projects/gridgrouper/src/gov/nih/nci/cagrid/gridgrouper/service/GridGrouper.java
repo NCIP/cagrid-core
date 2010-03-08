@@ -1296,7 +1296,7 @@ public class GridGrouper {
 			session = GrouperSession.start(caller);
 			Group grp = GroupFinder.findByName(session, group.getGroupName());
 			grp.deleteMember(SubjectFinder.findById(member));
-			MembershipRequestsFinder.deleteRequest(grp, member);
+			MembershipRequestsFinder.removeRequest(grp, member);
 		} catch (GroupNotFoundException e) {
 			GroupNotFoundFault fault = new GroupNotFoundFault();
 			fault.setFaultString("The group, " + group.getGroupName() + "was not found.");
@@ -1993,11 +1993,11 @@ public class GridGrouper {
 
 			if (request == null) {
 				MembershipRequests.create(grp, gridIdentity);
-			} else if (MembershipRequestStatus.Rejected.equals(request.getStatus())) {
+			} else if (MembershipRequestStatus.Removed.equals(request.getStatus())) {
 				request.pending();
 			} else {
 				MemberAddFault fault = new MemberAddFault();
-				fault.setFaultString(gridIdentity + " already has a pending membership request to group: " + group.getGroupName());
+				fault.setFaultString(gridIdentity + " has an existing " + request.getStatus().getValue().toLowerCase() + " membership request to group: " + group.getGroupName());
 				throw fault;
 			}
 

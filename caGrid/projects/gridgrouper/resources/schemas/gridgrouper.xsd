@@ -227,6 +227,7 @@
    				<xsd:enumeration value="Pending"/>	
    				<xsd:enumeration value="Approved"/>
    				<xsd:enumeration value="Rejected"/>	
+   				<xsd:enumeration value="Removed"/>	
   			</xsd:restriction>
  	 </xsd:simpleType>
 

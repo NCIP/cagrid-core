@@ -1,7 +1,6 @@
 package edu.internet2.middleware.grouper;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
@@ -173,24 +172,6 @@ public class MembershipRequests {
 		}
 	}
 
-	public void reject(Member rejector, String note) throws GridGrouperRuntimeFault {
-		this.status = MembershipRequestStatus.Rejected;
-		this.reviewer = rejector;
-		this.reviewerNote = note;
-		this.reviewTime = System.currentTimeMillis();
-		try {
-			GridGrouperHibernateHelper.save(this);
-		} catch (HibernateException eH) {
-			GridGrouperRuntimeFault fault = new GridGrouperRuntimeFault();
-			fault.setFaultString("Unable to reject membershiprequest.");
-			FaultHelper helper = new FaultHelper(fault);
-			helper.addFaultCause(eH);
-			fault = (GridGrouperRuntimeFault) helper.getFault();
-			throw fault;
-		}
-
-	}
-
 	public void pending() throws GridGrouperRuntimeFault {
 		this.status = MembershipRequestStatus.Pending;
 		this.reviewerNote = "Request Resubmitted. " + this.reviewerNote;
@@ -208,6 +189,42 @@ public class MembershipRequests {
 
 	}
 	
+	public void reject(Member rejector, String note) throws GridGrouperRuntimeFault {
+		this.status = MembershipRequestStatus.Rejected;
+		this.reviewer = rejector;
+		this.reviewerNote = note;
+		this.reviewTime = System.currentTimeMillis();
+		try {
+			GridGrouperHibernateHelper.save(this);
+		} catch (HibernateException eH) {
+			GridGrouperRuntimeFault fault = new GridGrouperRuntimeFault();
+			fault.setFaultString("Unable to reject membershiprequest.");
+			FaultHelper helper = new FaultHelper(fault);
+			helper.addFaultCause(eH);
+			fault = (GridGrouperRuntimeFault) helper.getFault();
+			throw fault;
+		}
+
+	}
+	
+	public void remove(Member approver, String note) throws GridGrouperRuntimeFault {
+		this.status = MembershipRequestStatus.Removed;
+		this.reviewer = approver;
+		this.reviewerNote = note;
+		this.reviewTime = System.currentTimeMillis();
+		try {
+			GridGrouperHibernateHelper.save(this);
+		} catch (HibernateException eH) {
+			GridGrouperRuntimeFault fault = new GridGrouperRuntimeFault();
+			fault.setFaultString("Unable to make membershiprequest removed.");
+			FaultHelper helper = new FaultHelper(fault);
+			helper.addFaultCause(eH);
+			fault = (GridGrouperRuntimeFault) helper.getFault();
+			throw fault;
+		}
+	}
+
+
 	private static GroupType createType() throws GridGrouperRuntimeFault {
 		Set set = new LinkedHashSet();
 		Field field = new Field("allowMembershipRequests", FieldType.ATTRIBUTE, Privilege.getInstance("view"), Privilege.getInstance("admin"), false);
