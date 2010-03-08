@@ -12,6 +12,7 @@ import javax.swing.JDialog;
 import javax.swing.JInternalFrame;
 import javax.swing.JScrollPane;
 import javax.swing.JViewport;
+import javax.swing.SwingUtilities;
 import javax.swing.border.Border;
 
 import org.cagrid.grape.model.Dimensions;
@@ -74,7 +75,7 @@ public class MDIDesktopPane extends JDesktopPane {
     }
 
 
-    public Component add(JInternalFrame frame, Dimensions dim, RenderOptions options) {
+    public Component add(final JInternalFrame frame, Dimensions dim, RenderOptions options) {
         JInternalFrame[] array = getAllFrames();
         Point p;
         int w;
@@ -101,8 +102,12 @@ public class MDIDesktopPane extends JDesktopPane {
         if (dim != null) {
             frame.setSize(dim.getWidth(), dim.getHeight());
         }
-        setRenderOptions(frame, options);;
-        frame.show();
+        setRenderOptions(frame, options);
+        SwingUtilities.invokeLater(new Runnable() {
+            public void run() {
+                frame.show();
+            }
+        });
         return retval;
     }
     
