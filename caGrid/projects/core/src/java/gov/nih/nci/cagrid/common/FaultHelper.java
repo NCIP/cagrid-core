@@ -225,7 +225,7 @@ public class FaultHelper {
         addFaultCause(createStackFault(message, stackTrace));
     }
 
-    private void addStackTraceFault(Throwable exception) {
+    protected void addStackTraceFault(Throwable exception) {
         String message = exception.getClass().getName();
         String stackTrace = JavaUtils.stackToString(exception);
 
