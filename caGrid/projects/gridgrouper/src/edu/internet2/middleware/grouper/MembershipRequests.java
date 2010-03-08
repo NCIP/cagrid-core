@@ -8,6 +8,8 @@ import net.sf.hibernate.HibernateException;
 
 import org.apache.commons.lang.time.StopWatch;
 
+import edu.internet2.middleware.subject.SubjectNotFoundException;
+
 import gov.nih.nci.cagrid.common.FaultHelper;
 import gov.nih.nci.cagrid.gridgrouper.bean.MembershipRequestStatus;
 import gov.nih.nci.cagrid.gridgrouper.stubs.types.GridGrouperRuntimeFault;
@@ -148,14 +150,18 @@ public class MembershipRequests {
 		}
 	}
 	
-	public static void rejectAllRequests(GrouperSession session, Member rejector, Group group) throws GridGrouperRuntimeFault {
+	public static void rejectAllRequests(GrouperSession session, Member rejector, Group group) throws GridGrouperRuntimeFault, InsufficientPrivilegeException, SubjectNotFoundException {
+		MembershipRequestsValidator.canUpdateRequest(group, rejector.getSubject());
+
 		ArrayList<MembershipRequests> requests = MembershipRequestsFinder.findRequestsByStatus(session, group, MembershipRequestStatus.Pending);
 		for (MembershipRequests membershipRequest : requests) {
 			membershipRequest.reject(rejector, "Mass rejection");
 		}
 	}
 
-	public void approve(Member approver, String note) throws GridGrouperRuntimeFault {
+	public void approve(Member approver, String note) throws GridGrouperRuntimeFault, InsufficientPrivilegeException, SubjectNotFoundException {
+		MembershipRequestsValidator.canUpdateRequest(this.group, approver.getSubject());
+		
 		this.status = MembershipRequestStatus.Approved;
 		this.reviewer = approver;
 		this.reviewerNote = note;
@@ -173,6 +179,7 @@ public class MembershipRequests {
 	}
 
 	public void pending() throws GridGrouperRuntimeFault {
+
 		this.status = MembershipRequestStatus.Pending;
 		this.reviewerNote = "Request Resubmitted. " + this.reviewerNote;
 		this.reviewTime = 0;
@@ -189,7 +196,9 @@ public class MembershipRequests {
 
 	}
 	
-	public void reject(Member rejector, String note) throws GridGrouperRuntimeFault {
+	public void reject(Member rejector, String note) throws GridGrouperRuntimeFault, InsufficientPrivilegeException, SubjectNotFoundException {
+		MembershipRequestsValidator.canUpdateRequest(this.group, rejector.getSubject());
+
 		this.status = MembershipRequestStatus.Rejected;
 		this.reviewer = rejector;
 		this.reviewerNote = note;
@@ -207,7 +216,9 @@ public class MembershipRequests {
 
 	}
 	
-	public void remove(Member approver, String note) throws GridGrouperRuntimeFault {
+	public void remove(Member approver, String note) throws GridGrouperRuntimeFault, InsufficientPrivilegeException, SubjectNotFoundException {
+		MembershipRequestsValidator.canUpdateRequest(this.group, approver.getSubject());
+
 		this.status = MembershipRequestStatus.Removed;
 		this.reviewer = approver;
 		this.reviewerNote = note;

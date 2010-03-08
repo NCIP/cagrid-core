@@ -2008,13 +2008,6 @@ public class GridGrouper {
 			helper.addFaultCause(e);
 			fault = (GroupNotFoundFault) helper.getFault();
 			throw fault;
-//		} catch (InsufficientPrivilegeException e) {
-//			InsufficientPrivilegeFault fault = new InsufficientPrivilegeFault();
-//			fault.setFaultString(e.getMessage());
-//			FaultHelper helper = new FaultHelper(fault);
-//			helper.addFaultCause(e);
-//			fault = (InsufficientPrivilegeFault) helper.getFault();
-//			throw fault;
 		} catch (MemberAddFault e) {
 			throw e;
 		} catch (InsufficientPrivilegeFault e) {
