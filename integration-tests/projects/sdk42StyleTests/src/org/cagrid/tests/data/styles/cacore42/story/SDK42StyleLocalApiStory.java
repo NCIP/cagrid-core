@@ -7,6 +7,7 @@ import gov.nih.nci.cagrid.testing.system.deployment.ServiceContainerFactory;
 import gov.nih.nci.cagrid.testing.system.deployment.ServiceContainerType;
 import gov.nih.nci.cagrid.testing.system.deployment.steps.DeployServiceStep;
 import gov.nih.nci.cagrid.testing.system.deployment.steps.DestroyContainerStep;
+import gov.nih.nci.cagrid.testing.system.deployment.steps.SetIndexRegistrationStep;
 import gov.nih.nci.cagrid.testing.system.deployment.steps.StartContainerStep;
 import gov.nih.nci.cagrid.testing.system.deployment.steps.StopContainerStep;
 import gov.nih.nci.cagrid.testing.system.deployment.steps.UnpackContainerStep;
@@ -78,6 +79,7 @@ public class SDK42StyleLocalApiStory extends Story {
         }
         List<String> deploymentArgs = 
             Arrays.asList(new String[] {"-Dno.deployment.validation=true"});
+        steps.add(new SetIndexRegistrationStep(testInfo.getDir(), false));
         steps.add(new DeployServiceStep(container, testInfo.getDir(), deploymentArgs));
         steps.add(new StartContainerStep(container));
         if (useCsmSecurity) {
