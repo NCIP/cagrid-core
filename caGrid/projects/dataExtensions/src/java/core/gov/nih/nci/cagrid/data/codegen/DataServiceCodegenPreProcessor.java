@@ -70,7 +70,7 @@ public class DataServiceCodegenPreProcessor implements CodegenExtensionPreProces
                 ServiceStyleContainer container = ServiceStyleLoader.getStyle(features.getServiceStyle().getName());
                 if (container == null) {
                     throw new CodegenExtensionException(
-                        "Could not load service style " + features.getServiceStyle());
+                        "Could not load service style " + features.getServiceStyle().getName());
                 }
                 StyleCodegenPreProcessor preProcessor = container.loadCodegenPreProcessor();
                 if (preProcessor != null) {
