@@ -85,7 +85,6 @@ public class QueryProcessorConfigurationPanel extends AbstractWizardPanel {
     private JTextField hostNameTextField = null;
     private JLabel portLabel = null;
     private JTextField portTextField = null;
-    private JPanel localApiPanel = null;
     private JPanel remoteApiPanel = null;
     private JPanel apiConfigPanel = null;
     private JPanel mainPanel = null;
@@ -375,6 +374,21 @@ public class QueryProcessorConfigurationPanel extends AbstractWizardPanel {
      */
     private JPanel getBasicConfigPanel() {
         if (basicConfigPanel == null) {
+            GridBagConstraints gridBagConstraints32 = new GridBagConstraints();
+            gridBagConstraints32.insets = new Insets(2, 2, 2, 2);
+            gridBagConstraints32.gridy = 2;
+            gridBagConstraints32.gridx = 2;
+            GridBagConstraints gridBagConstraints29 = new GridBagConstraints();
+            gridBagConstraints29.fill = GridBagConstraints.HORIZONTAL;
+            gridBagConstraints29.gridx = 1;
+            gridBagConstraints29.gridy = 2;
+            gridBagConstraints29.weightx = 1.0;
+            gridBagConstraints29.insets = new Insets(2, 2, 2, 2);
+            GridBagConstraints gridBagConstraints17 = new GridBagConstraints();
+            gridBagConstraints17.fill = GridBagConstraints.HORIZONTAL;
+            gridBagConstraints17.gridx = 0;
+            gridBagConstraints17.gridy = 2;
+            gridBagConstraints17.insets = new Insets(2, 2, 2, 2);
             GridBagConstraints gridBagConstraints31 = new GridBagConstraints();
             gridBagConstraints31.gridx = 2;
             gridBagConstraints31.insets = new Insets(2, 2, 2, 2);
@@ -452,6 +466,9 @@ public class QueryProcessorConfigurationPanel extends AbstractWizardPanel {
             basicConfigPanel.add(getRemoteConfigDirLabel(), gridBagConstraints111);
             basicConfigPanel.add(getRemoteConfigDirTextField(), gridBagConstraints28);
             basicConfigPanel.add(getRemoteConfigBrowseButton(), gridBagConstraints31);
+            basicConfigPanel.add(getOrmJarLabel(), gridBagConstraints17);
+            basicConfigPanel.add(getOrmJarTextField(), gridBagConstraints29);
+            basicConfigPanel.add(getOrmJarBrowseButton(), gridBagConstraints32);
         }
         return basicConfigPanel;
     }
@@ -547,8 +564,8 @@ public class QueryProcessorConfigurationPanel extends AbstractWizardPanel {
                         QueryProcessorConfigurationPanel.class, KEY_ORM_JAR, message);
                     try {
                         String filename = ResourceManager.promptFile(null, FileFilters.JAR_FILTER);
+                        // if there is an "old" orm jar selected, remove it from the service' lib dir
                         if (getOrmJarTextField().getText().length() != 0) {
-                            // TODO: remove old orm jar text field from service lib dir
                             File oldJar = new File(getOrmJarTextField().getText());
                             File copiedOldJar = new File(getServiceInformation().getBaseDirectory(),
                                 "lib" + File.separator + oldJar.getName());
@@ -556,6 +573,7 @@ public class QueryProcessorConfigurationPanel extends AbstractWizardPanel {
                                 copiedOldJar.delete();
                             }
                         }
+                        // set the new one
                         getOrmJarTextField().setText(filename);
                         configurationStep.setOrmJarLocation(filename);
                         validateInput();
@@ -663,38 +681,6 @@ public class QueryProcessorConfigurationPanel extends AbstractWizardPanel {
 
 
     /**
-     * This method initializes localApiPanel	
-     * 	
-     * @return javax.swing.JPanel	
-     */
-    private JPanel getLocalApiPanel() {
-        if (localApiPanel == null) {
-            GridBagConstraints gridBagConstraints10 = new GridBagConstraints();
-            gridBagConstraints10.gridx = 2;
-            gridBagConstraints10.insets = new Insets(2, 2, 2, 2);
-            gridBagConstraints10.gridy = 0;
-            GridBagConstraints gridBagConstraints9 = new GridBagConstraints();
-            gridBagConstraints9.fill = GridBagConstraints.HORIZONTAL;
-            gridBagConstraints9.gridy = 0;
-            gridBagConstraints9.weightx = 1.0;
-            gridBagConstraints9.insets = new Insets(2, 2, 2, 2);
-            gridBagConstraints9.gridx = 1;
-            GridBagConstraints gridBagConstraints8 = new GridBagConstraints();
-            gridBagConstraints8.gridx = 0;
-            gridBagConstraints8.fill = GridBagConstraints.HORIZONTAL;
-            gridBagConstraints8.insets = new Insets(2, 2, 2, 2);
-            gridBagConstraints8.gridy = 0;
-            localApiPanel = new JPanel();
-            localApiPanel.setLayout(new GridBagLayout());
-            localApiPanel.add(getOrmJarLabel(), gridBagConstraints8);
-            localApiPanel.add(getOrmJarTextField(), gridBagConstraints9);
-            localApiPanel.add(getOrmJarBrowseButton(), gridBagConstraints10);
-        }
-        return localApiPanel;
-    }
-
-
-    /**
      * This method initializes remoteApiPanel	
      * 	
      * @return javax.swing.JPanel	
@@ -745,12 +731,8 @@ public class QueryProcessorConfigurationPanel extends AbstractWizardPanel {
             gridBagConstraints18.gridx = 1;
             gridBagConstraints18.fill = GridBagConstraints.HORIZONTAL;
             gridBagConstraints18.weightx = 1.0D;
-            gridBagConstraints18.gridy = 1;
-            GridBagConstraints gridBagConstraints17 = new GridBagConstraints();
-            gridBagConstraints17.gridx = 1;
-            gridBagConstraints17.fill = GridBagConstraints.HORIZONTAL;
-            gridBagConstraints17.weightx = 1.0D;
-            gridBagConstraints17.gridy = 0;
+            gridBagConstraints18.gridheight = 2;
+            gridBagConstraints18.gridy = 0;
             GridBagConstraints gridBagConstraints16 = new GridBagConstraints();
             gridBagConstraints16.gridx = 0;
             gridBagConstraints16.anchor = GridBagConstraints.NORTH;
@@ -767,7 +749,6 @@ public class QueryProcessorConfigurationPanel extends AbstractWizardPanel {
             apiConfigPanel.setLayout(new GridBagLayout());
             apiConfigPanel.add(getLocalApiRadioButton(), gridBagConstraints15);
             apiConfigPanel.add(getRemoteApiRadioButton(), gridBagConstraints16);
-            apiConfigPanel.add(getLocalApiPanel(), gridBagConstraints17);
             apiConfigPanel.add(getRemoteApiPanel(), gridBagConstraints18);
         }
         return apiConfigPanel;
@@ -1080,14 +1061,14 @@ public class QueryProcessorConfigurationPanel extends AbstractWizardPanel {
             // TODO: validate the remote configuration directory
         }
         
-        if (getLocalApiRadioButton().isSelected()) {
-            if (ValidationUtils.isBlank(getOrmJarTextField().getText())) {
-                result.add(new SimpleValidationMessage(
-                    KEY_ORM_JAR + " cannot be blank", Severity.ERROR, KEY_ORM_JAR));
-            } else {
-                // TODO: validate the ORM jar
-            }
-        } else { // remote API
+        if (ValidationUtils.isBlank(getOrmJarTextField().getText())) {
+            result.add(new SimpleValidationMessage(
+                KEY_ORM_JAR + " cannot be blank", Severity.ERROR, KEY_ORM_JAR));
+        } else {
+            // TODO: validate the ORM jar
+        }
+        
+        if (getRemoteApiRadioButton().isSelected()) {
             if (ValidationUtils.isBlank(getHostNameTextField().getText())) {
                 result.add(new SimpleValidationMessage(
                     KEY_HOST_NAME + " cannot be blank", Severity.ERROR, KEY_HOST_NAME));
@@ -1140,9 +1121,6 @@ public class QueryProcessorConfigurationPanel extends AbstractWizardPanel {
     private void setLocalRemoteComponentsEnabled() {
         boolean local = getLocalApiRadioButton().isSelected();
         
-        getOrmJarLabel().setEnabled(local);
-        getOrmJarTextField().setEnabled(local);
-        getOrmJarBrowseButton().setEnabled(local);
         getHostNameLabel().setEnabled(!local);
         getHostNameTextField().setEnabled(!local);
         getPortLabel().setEnabled(!local);
