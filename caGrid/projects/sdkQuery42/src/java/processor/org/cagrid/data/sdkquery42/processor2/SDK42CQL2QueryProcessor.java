@@ -165,7 +165,9 @@ public class SDK42CQL2QueryProcessor extends CQL2QueryProcessor {
         try {
             rawResults = sdkService.query(criteria);
         } catch (Exception ex) {
-            throw new QueryProcessingException("Error querying caCORE service: " + ex.getMessage(), ex);
+            String message = "Error querying caCORE service: " + ex.getMessage();
+            LOG.error(message, ex);
+            throw new QueryProcessingException(message, ex);
         }
         LOG.debug("Results obtained from application service");
         
