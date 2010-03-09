@@ -2,6 +2,8 @@ package gov.nih.nci.cagrid.fqp.processor;
 
 import gov.nih.nci.cagrid.fqp.common.DCQLConversionException;
 import gov.nih.nci.cagrid.fqp.common.DCQLConverter;
+import gov.nih.nci.cagrid.fqp.common.DefaultDomainModelLocator;
+import gov.nih.nci.cagrid.fqp.common.DomainModelLocator;
 import gov.nih.nci.cagrid.fqp.common.FQPConstants;
 import gov.nih.nci.cagrid.fqp.common.SerializationUtils;
 import gov.nih.nci.cagrid.fqp.processor.exceptions.FederatedQueryProcessingException;
@@ -52,7 +54,7 @@ public class FederatedQueryEngine {
     private QueryExecutionParameters executionParameters = null;
     private ExecutorService workExecutor = null;
     private List<FQPProcessingStatusListener> statusListeners = null;
-    
+    private DomainModelLocator domainModelLocator = null;
     private DCQLConverter dcqlConverter = null;
 
     /**
@@ -66,7 +68,7 @@ public class FederatedQueryEngine {
      *      The query execution parameters (may be null)
      */
     public FederatedQueryEngine(GlobusCredential credential, QueryExecutionParameters executionParameters) {
-        this(credential, executionParameters, null);
+        this(credential, executionParameters, null, null);
     }
     
     
@@ -81,6 +83,25 @@ public class FederatedQueryEngine {
      *      The executor instance which will handle scheduling and execution of query processing tasks
      */
     public FederatedQueryEngine(GlobusCredential credential, QueryExecutionParameters executionParameters, ExecutorService workExecutor) {
+        this(credential, executionParameters, workExecutor, null);
+    }
+    
+    
+    /**
+     * Creates a new federated query engine instance.
+     * 
+     * @param credential
+     *      The globus credential to be used when making queries against data services (may be null)
+     * @param executionParameters
+     *      The query execution parameters (may be null)
+     * @param workExecutor
+     *      The executor instance which will handle scheduling and execution of query processing tasks
+     * @param modelLocator
+     *      The domain model locator which will be used in operations where query processing
+     *      requires information from a service's domain model
+     */
+    public FederatedQueryEngine(GlobusCredential credential, QueryExecutionParameters executionParameters, 
+        ExecutorService workExecutor, DomainModelLocator modelLocator) {
         this.credential = credential;
         if (executionParameters == null) {
             this.executionParameters = FQPConstants.DEFAULT_QUERY_EXECUTION_PARAMETERS;
@@ -93,8 +114,13 @@ public class FederatedQueryEngine {
         } else {
             this.workExecutor = workExecutor;
         }
+        if (modelLocator != null) {
+            this.domainModelLocator = modelLocator;
+        } else {
+            this.domainModelLocator = new DefaultDomainModelLocator();
+        }
+        this.dcqlConverter = new DCQLConverter(this.domainModelLocator);
         this.statusListeners = new LinkedList<FQPProcessingStatusListener>();
-        this.dcqlConverter = new DCQLConverter();
     }
     
     
@@ -152,12 +178,12 @@ public class FederatedQueryEngine {
         fireProcessingStatusChanged(ProcessingStatus.Processing, "Begining query processing");
         
         // create a new processor instance and debug the query
-        FederatedQueryProcessor processor = new FederatedQueryProcessor(credential);
+        FederatedQueryProcessor processor = new FederatedQueryProcessor(credential, domainModelLocator);
         debugDCQLQuery("Beginning processing of DCQL", dcqlQuery);
 
         // allow the processor to convert the DCQL into a CQL query
         LOG.debug("Processing DCQL to single CQL query");
-        CQLQuery cqlQuery = processor.processDCQLQuery(dcqlQuery.getTargetObject());
+        CQLQuery cqlQuery = processor.processDCQLQuery(dcqlQuery.getTargetObject(), dcqlQuery.getTargetServiceURL(0));
         
         // if the DCQL query has a modifier, append it to the CQL query
         if (dcqlQuery.getQueryModifier() != null) {

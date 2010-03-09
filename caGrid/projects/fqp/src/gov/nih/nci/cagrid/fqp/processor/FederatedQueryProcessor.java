@@ -1,11 +1,22 @@
 package gov.nih.nci.cagrid.fqp.processor;
 
 import gov.nih.nci.cagrid.common.Utils;
+import gov.nih.nci.cagrid.data.utilities.DomainModelUtils;
+import gov.nih.nci.cagrid.fqp.common.DefaultDomainModelLocator;
+import gov.nih.nci.cagrid.fqp.common.DomainModelLocator;
 import gov.nih.nci.cagrid.fqp.processor.exceptions.FederatedQueryProcessingException;
 import gov.nih.nci.cagrid.fqp.processor.exceptions.RemoteDataServiceException;
+import gov.nih.nci.cagrid.metadata.common.UMLAttribute;
+import gov.nih.nci.cagrid.metadata.dataservice.DomainModel;
+import gov.nih.nci.cagrid.metadata.dataservice.UMLClass;
 
+import java.text.DateFormat;
+import java.text.ParseException;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Date;
 import java.util.Iterator;
+import java.util.LinkedList;
 import java.util.List;
 
 import org.apache.commons.logging.Log;
@@ -48,15 +59,22 @@ import org.globus.gsi.GlobusCredential;
 class FederatedQueryProcessor {
     protected static Log LOG = LogFactory.getLog(FederatedQueryProcessor.class.getName());
 
-    protected GlobusCredential cred;
+    protected GlobusCredential cred = null;
+    protected DomainModelLocator modelLocator = null;
 
 
     public FederatedQueryProcessor() {
+        this(null, null);
     }
 
 
-    public FederatedQueryProcessor(GlobusCredential cred) {
+    public FederatedQueryProcessor(GlobusCredential cred, DomainModelLocator modelLocator) {
         this.cred = cred;
+        if (modelLocator == null) {
+            this.modelLocator = new DefaultDomainModelLocator();
+        } else {
+            this.modelLocator = modelLocator;
+        }
     }
 
 
@@ -68,7 +86,7 @@ class FederatedQueryProcessor {
      * @return The CQL query required to process the target
      * @throws FederatedQueryProcessingException
      */
-    public CQLQuery processDCQLQuery(DCQLObject targetObject) throws FederatedQueryProcessingException {
+    public CQLQuery processDCQLQuery(DCQLObject targetObject, String sourceServiceURL) throws FederatedQueryProcessingException {
         CQLQuery cqlQuery = new CQLQuery();
 
         // Create a new CQL 2 target object.
@@ -79,7 +97,7 @@ class FederatedQueryProcessor {
         cqlObject.set_instanceof(targetObject.get_instanceof());
 
         // process the DCQL 2 object, building up the CQL 2 target
-        populateObjectFromDCQLObject(targetObject, cqlObject);
+        populateObjectFromDCQLObject(sourceServiceURL, targetObject, cqlObject);
         // this CQL Object is our target
         cqlQuery.setCQLTargetObject(cqlObject);
 
@@ -98,8 +116,14 @@ class FederatedQueryProcessor {
      * @throws FederatedQueryProcessingException
      */
 
-    private void populateObjectFromDCQLObject(DCQLObject dcqlObject, CQLObject cqlObject)
+    private void populateObjectFromDCQLObject(String sourceServiceURL,
+        DCQLObject dcqlObject, CQLObject cqlObject)
         throws FederatedQueryProcessingException {
+        ProcessingState state = new ProcessingState();
+        state.sourceClassName = dcqlObject.getName();
+        state.sourceInstanceof = dcqlObject.get_instanceof();
+        state.sourceServiceURL = sourceServiceURL;
+        
         boolean foundChild = false;
         // attributes can be passed through directly
         if (dcqlObject.getAttribute() != null) {
@@ -115,7 +139,7 @@ class FederatedQueryProcessor {
                 throw new FederatedQueryProcessingException("Error in DCQL 2 query: multiple children of a DCQL object found!");
             }
             // convert group and attach group to CQL object
-            CQLGroup cqlGroup = processGroup(dcqlObject.getGroup());
+            CQLGroup cqlGroup = processGroup(state, dcqlObject.getGroup());
             cqlObject.setCQLGroup(cqlGroup);
             foundChild = true;
         }
@@ -127,7 +151,8 @@ class FederatedQueryProcessor {
                 throw new FederatedQueryProcessingException("Error in DCQL 2 query: multiple children of a DCQL object found!");
             }
             // Convert into CQLAssociatedObject
-            CQLAssociatedObject cqlAssociation = processAssociation(dcqlObject.getAssociatedObject());
+            CQLAssociatedObject cqlAssociation = processAssociation(
+                state, dcqlObject.getAssociatedObject());
             cqlObject.setCQLAssociatedObject(cqlAssociation);
             foundChild = true;
         }
@@ -139,7 +164,7 @@ class FederatedQueryProcessor {
                 throw new FederatedQueryProcessingException("Error in DCQL 2 query: multiple children of a DCQL object found!");
             }
             CQLGroup foreignAttributeGroup = processForeignAssociation(
-                dcqlObject.getForeignAssociatedObject());
+                state, dcqlObject.getForeignAssociatedObject());
             cqlObject.setCQLGroup(foreignAttributeGroup);
         }
     }
@@ -155,7 +180,8 @@ class FederatedQueryProcessor {
      * @return The CQL group
      * @throws FederatedQueryProcessingException
      */
-    private CQLGroup processGroup(DCQLGroup dcqlGroup) throws FederatedQueryProcessingException {
+    private CQLGroup processGroup(ProcessingState state, DCQLGroup dcqlGroup) 
+        throws FederatedQueryProcessingException {
         // convert basic group information and attach group to CQL 2 object
         CQLGroup cqlGroup = new CQLGroup();
         
@@ -174,7 +200,8 @@ class FederatedQueryProcessor {
             DCQLAssociatedObject dcqlAssociationArray[] = dcqlGroup.getAssociatedObject();
             CQLAssociatedObject[] cqlAssociationArray = new CQLAssociatedObject[dcqlAssociationArray.length];
             for (int i = 0; i < dcqlAssociationArray.length; i++) {
-                cqlAssociationArray[i] = processAssociation(dcqlAssociationArray[i]);
+                cqlAssociationArray[i] = processAssociation(
+                    state, dcqlAssociationArray[i]);
             }
             cqlGroup.setCQLAssociatedObject(cqlAssociationArray);
         }
@@ -185,7 +212,7 @@ class FederatedQueryProcessor {
             DCQLGroup dcqlGroupArray[] = dcqlGroup.getGroup();
             CQLGroup[] cqlGroupArray = new CQLGroup[dcqlGroupArray.length];
             for (int i = 0; i < dcqlGroupArray.length; i++) {
-                CQLGroup cqlNestedGroup = processGroup(dcqlGroupArray[i]);
+                CQLGroup cqlNestedGroup = processGroup(state, dcqlGroupArray[i]);
                 cqlGroupArray[i] = cqlNestedGroup;
             }
             cqlGroup.setCQLGroup(cqlGroupArray);
@@ -198,7 +225,8 @@ class FederatedQueryProcessor {
             CQLGroup[] cqlGroupArray = new CQLGroup[foreignAssociationArray.length];
             for (int i = 0; i < foreignAssociationArray.length; i++) {
                 // need to attach the results as criteria ...
-                CQLGroup resultedGroup = processForeignAssociation(foreignAssociationArray[i]);
+                CQLGroup resultedGroup = processForeignAssociation(
+                    state, foreignAssociationArray[i]);
                 cqlGroupArray[i] = resultedGroup;
             }
             // merge in these groups with any that already exist
@@ -218,7 +246,8 @@ class FederatedQueryProcessor {
      * @return The CQL Association
      * @throws QueryExecutionException
      */
-    private CQLAssociatedObject processAssociation(DCQLAssociatedObject dcqlAssociation)
+    private CQLAssociatedObject processAssociation(
+        ProcessingState state, DCQLAssociatedObject dcqlAssociation)
         throws FederatedQueryProcessingException {
 
         // create a new CQL 2 Association from the DCQL 2 Association
@@ -227,7 +256,8 @@ class FederatedQueryProcessor {
         cqlAssociation.setClassName(dcqlAssociation.getName());
 
         // process the association's Object
-        populateObjectFromDCQLObject(dcqlAssociation, cqlAssociation);
+        populateObjectFromDCQLObject(
+            state.sourceServiceURL, dcqlAssociation, cqlAssociation);
 
         return cqlAssociation;
     }
@@ -244,7 +274,8 @@ class FederatedQueryProcessor {
      * @return The CQL 2 Group of attributes resulting from processing the foreign associated object
      * @throws FederatedQueryProcessingException
      */
-    private CQLGroup processForeignAssociation(ForeignAssociatedObject foreignAssociation)
+    private CQLGroup processForeignAssociation(
+        ProcessingState state, ForeignAssociatedObject foreignAssociation)
         throws FederatedQueryProcessingException {
         
         // make a new query with the CQL Target Object created by processing the
@@ -255,7 +286,8 @@ class FederatedQueryProcessor {
         if (foreignAssociation.get_instanceof() != null) {
             cqlTargetObject.set_instanceof(foreignAssociation.get_instanceof());
         }
-        populateObjectFromDCQLObject(foreignAssociation, cqlTargetObject);
+        populateObjectFromDCQLObject(foreignAssociation.getTargetServiceURL(), 
+            foreignAssociation, cqlTargetObject);
         cqlQuery.setCQLTargetObject(cqlTargetObject);
 
         // build up a query result modifier to only return distinct values of
@@ -296,7 +328,7 @@ class FederatedQueryProcessor {
             }
         }
 
-        CQLGroup criteriaGroup = buildGroup(
+        CQLGroup criteriaGroup = buildGroup(state,
             foreignAssociation.getJoinCondition(), foreignAssociation.getDataTransformation(), remoteAttributeValues);
         return criteriaGroup;
     }
@@ -314,10 +346,9 @@ class FederatedQueryProcessor {
      * @return A CQL Group of attributes
      * @throws FederatedQueryProcessingException
      */
-    private CQLGroup buildGroup(JoinCondition joinCondition, DataTransformation transformation, List<String> values)
-        throws FederatedQueryProcessingException {
+    private CQLGroup buildGroup(ProcessingState state, JoinCondition joinCondition, 
+        DataTransformation transformation, List<String> values) throws FederatedQueryProcessingException {
         CQLGroup cqlGroup = new CQLGroup();
-        String localAttributeName = joinCondition.getLocalAttributeName();
         
         // if the predicate is something other than EQUAL_TO or NOT_EQUAL_TO, throw away any null values
         BinaryPredicate joinPredicate = joinCondition.getPredicate();
@@ -340,17 +371,18 @@ class FederatedQueryProcessor {
             cqlGroup.setLogicalOperation(GroupLogicalOperator.AND);
             attributes = new CQLAttribute[2];
             attributes[0] = new CQLAttribute();
-            attributes[0].setName(localAttributeName);
+            attributes[0].setName(joinCondition.getLocalAttributeName());
             attributes[0].setUnaryPredicate(UnaryPredicate.IS_NULL);
             attributes[1] = new CQLAttribute();
-            attributes[1].setName(localAttributeName);
+            attributes[1].setName(joinCondition.getLocalAttributeName());
             attributes[1].setUnaryPredicate(UnaryPredicate.IS_NOT_NULL);
         } else if (values.size() == 1) {
             // create the property and apply twice because a group needs two
             // entries and we only got one value.
             cqlGroup.setLogicalOperation(GroupLogicalOperator.OR);
             attributes = new CQLAttribute[2];
-            attributes[0] = createAttributeFromValue(joinCondition, transformationProcessor, localAttributeName, values.get(0));
+            attributes[0] = createAttributeFromValue(state, 
+                joinCondition, transformationProcessor, values.get(0));
             attributes[1] = attributes[0];
         } else {
             // more than 1 value
@@ -358,8 +390,8 @@ class FederatedQueryProcessor {
             cqlGroup.setLogicalOperation(GroupLogicalOperator.OR);
             for (int i = 0; i < values.size(); i++) {
                 String currRemoteValue = values.get(i);
-                attributes[i] = createAttributeFromValue(
-                    joinCondition, transformationProcessor, localAttributeName, currRemoteValue);
+                attributes[i] = createAttributeFromValue(state, 
+                    joinCondition, transformationProcessor, currRemoteValue);
             }
         }
         cqlGroup.setCQLAttribute(attributes);
@@ -369,18 +401,23 @@ class FederatedQueryProcessor {
 
 
     /**
+     * @param sourceDataServiceURL
+     *      The URL of the "source" data service (i.e. the service the generated attribute will be sent to in a query)
+     * @param sourceClassName
+     *      The class name to which the attribute belongs
      * @param joinCondition
-     * @param property
+     *      The join condition
      * @param value
+     *      The text value to convert into the attribute value
      * @return A CQL Attribute
      * @throws FederatedQueryProcessingException
      */
-    private CQLAttribute createAttributeFromValue(JoinCondition joinCondition, 
-        DataTransformationProcessor transformationProcessor, String property, String value) 
+    private CQLAttribute createAttributeFromValue(ProcessingState state, 
+        JoinCondition joinCondition, DataTransformationProcessor transformationProcessor, String value) 
         throws FederatedQueryProcessingException {
         CQLAttribute attr = new CQLAttribute();
         // set the local property name
-        attr.setName(property);
+        attr.setName(joinCondition.getLocalAttributeName());
         BinaryPredicate predicate = joinCondition.getPredicate();
         if (value == null) {
             if (BinaryPredicate.EQUAL_TO.equals(predicate)) {
@@ -399,21 +436,40 @@ class FederatedQueryProcessor {
         } else {
             // copy the join predicate into the attribute
             attr.setBinaryPredicate(predicate);
-            // set the value to the string representation of 
-            // the "foreign result value"
-            // TODO: value types????
-            AttributeValue attrValue = new AttributeValue();
+            // figure out the datatype of this attribute
+            String datatypeName = getAttributeDatatype(state, joinCondition.getLocalAttributeName());
+            String assignedValue = value;
+            // if there's a transformation to be done, the assigned value will (probably) change
             if (transformationProcessor != null) {
-                String transformedValue;
                 try {
-                    transformedValue = transformationProcessor.apply(value);
+                    assignedValue = transformationProcessor.apply(value);
                 } catch (TransformationHandlingException ex) {
                     throw new FederatedQueryProcessingException(
                         "Error applying data transformation: " + ex.getMessage(), ex);
                 }
-                attrValue.setStringValue(transformedValue);
+            }
+            // convert the raw string to the appropriate datatype
+            AttributeValue attrValue = new AttributeValue();
+            if (datatypeName.equals(String.class.getName())) {
+                attrValue.setStringValue(assignedValue);
+            } else if (datatypeName.equals(Integer.class.getName())) {
+                attrValue.setIntegerValue(Integer.valueOf(assignedValue));
+            } else if (datatypeName.equals(Long.class.getName())) {
+                attrValue.setLongValue(Long.valueOf(assignedValue));
+            } else if (datatypeName.equals(Date.class.getName())) {
+                try {
+                    attrValue.setDateValue(DateFormat.getDateInstance().parse(assignedValue));
+                } catch (ParseException ex) {
+                    throw new FederatedQueryProcessingException("Error converting attribute value " + assignedValue
+                         + " to a date: " + ex.getMessage(), ex);
+                }
+            } else if (datatypeName.equals(Boolean.class.getName())) {
+                attrValue.setBooleanValue(Boolean.valueOf(assignedValue));
+            } else if (datatypeName.equals(Double.class.getName())) {
+                attrValue.setDoubleValue(Double.valueOf(assignedValue));
             } else {
-                attrValue.setStringValue(value);
+                // wut?
+                throw new FederatedQueryProcessingException("Could not convert to unknown datatype " + datatypeName);
             }
             attr.setAttributeValue(attrValue);
         }
@@ -433,5 +489,68 @@ class FederatedQueryProcessor {
         return cqlResults != null
             && (cqlResults.getAttributeResult() != null && cqlResults.getAggregationResult() != null
                 || cqlResults.getObjectResult() != null || cqlResults.getExtendedResult() != null);
+    }
+    
+    
+    private String getAttributeDatatype(ProcessingState state, String attribName) 
+        throws FederatedQueryProcessingException {
+        DomainModel model = null;
+        try {
+            model = modelLocator.getDomainModel(state.sourceServiceURL);
+        } catch (Exception ex) {
+            String message = "Error locating domain model for " 
+                + state.sourceServiceURL + ": " + ex.getMessage();
+            LOG.error(message, ex);
+            throw new FederatedQueryProcessingException(message, ex);
+        }
+        // determine the class name to search for
+        String searchForClass = state.sourceInstanceof != null ?
+            state.sourceInstanceof : state.sourceClassName;
+        LOG.debug("Searching for class " + searchForClass 
+            + " in domain model of " + state.sourceServiceURL);
+        UMLClass[] classes = model.getExposedUMLClassCollection().getUMLClass();
+        List<UMLClass> classHierarchy = new LinkedList<UMLClass>();
+        for (UMLClass clazz : classes) {
+            if (DomainModelUtils.getQualifiedClassname(clazz).equals(searchForClass)) {
+                classHierarchy.add(clazz);
+                break;
+            }
+        }
+        // get the class hierarchy so we can find inherited attributes
+        Collections.addAll(classHierarchy, 
+            DomainModelUtils.getAllSuperclasses(model, searchForClass));
+        // find the attribute
+        UMLAttribute attrib = null;
+        for (UMLClass clazz : classHierarchy) {
+            if (clazz.getUmlAttributeCollection() != null && 
+                clazz.getUmlAttributeCollection().getUMLAttribute() != null) {
+                for (UMLAttribute attr : clazz.getUmlAttributeCollection().getUMLAttribute()) {
+                    if (attr.getName().equals(attribName)) {
+                        attrib = attr;
+                        break;
+                    }
+                }
+            }
+        }
+        // return the datatype
+        String datatype = null;
+        if (attrib != null) {
+            datatype = attrib.getDataTypeName();
+        } else {
+            throw new FederatedQueryProcessingException(
+                "Could not find attribute " + attribName + " on class " + searchForClass);
+        }
+        if (datatype == null) {
+            throw new FederatedQueryProcessingException(
+                "No datatype defined for attribute " + attribName + " on class " + searchForClass);
+        }
+        return datatype;
+    }
+    
+    
+    private class ProcessingState {
+        public String sourceClassName;
+        public String sourceInstanceof;
+        public String sourceServiceURL;
     }
 }
