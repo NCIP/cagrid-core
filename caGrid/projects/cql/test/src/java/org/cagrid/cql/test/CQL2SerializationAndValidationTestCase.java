@@ -10,6 +10,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.StringReader;
 import java.io.StringWriter;
+import java.text.ParseException;
+import java.util.Date;
 
 import junit.framework.TestCase;
 import junit.framework.TestResult;
@@ -17,6 +19,8 @@ import junit.framework.TestSuite;
 import junit.textui.TestRunner;
 
 import org.cagrid.cql.utilities.AnyNodeHelper;
+import org.cagrid.cql.utilities.AttributeFactory;
+import org.cagrid.cql.utilities.CQL2SerializationUtil;
 import org.cagrid.cql.utilities.CQLConstants;
 import org.cagrid.cql2.Aggregation;
 import org.cagrid.cql2.AssociationPopulationSpecification;
@@ -39,6 +43,7 @@ import org.cagrid.cql2.results.CQLObjectResult;
 import org.cagrid.cql2.results.CQLQueryResults;
 import org.cagrid.cql2.results.TargetAttribute;
 import org.exolab.castor.types.AnyNode;
+import org.exolab.castor.types.Time;
 
 public class CQL2SerializationAndValidationTestCase extends TestCase {
     
@@ -146,6 +151,102 @@ public class CQL2SerializationAndValidationTestCase extends TestCase {
         attribute.setAttributeValue(value);
         target.setCQLAttribute(attribute);
         query.setCQLTargetObject(target);
+        
+        validate(query);
+    }
+    
+    
+    public void testStringValueAttribute() {
+        CQLQuery query = new CQLQuery();
+        CQLTargetObject target = new CQLTargetObject();
+        target.setClassName("foo.bar");
+        target.set_instanceof("zor");
+        target.setCQLAttribute(AttributeFactory.createAttribute("word", BinaryPredicate.EQUAL_TO, "hello"));
+        query.setCQLTargetObject(target);
+        
+        validate(query);
+    }
+    
+    
+    public void testIntegerValueAttribute() {
+        CQLQuery query = new CQLQuery();
+        CQLTargetObject target = new CQLTargetObject();
+        target.setClassName("foo.bar");
+        target.set_instanceof("zor");
+        target.setCQLAttribute(AttributeFactory.createAttribute("word", BinaryPredicate.EQUAL_TO, Integer.valueOf(0)));
+        query.setCQLTargetObject(target);
+        
+        validate(query);
+    }
+    
+    
+    public void testLongValueAttribute() {
+        CQLQuery query = new CQLQuery();
+        CQLTargetObject target = new CQLTargetObject();
+        target.setClassName("foo.bar");
+        target.set_instanceof("zor");
+        target.setCQLAttribute(AttributeFactory.createAttribute("word", BinaryPredicate.EQUAL_TO, Long.valueOf(0)));
+        query.setCQLTargetObject(target);
+        
+        validate(query);
+    }
+    
+    
+    public void testBooleanValueAttribute() {
+        CQLQuery query = new CQLQuery();
+        CQLTargetObject target = new CQLTargetObject();
+        target.setClassName("foo.bar");
+        target.set_instanceof("zor");
+        target.setCQLAttribute(AttributeFactory.createAttribute("word", BinaryPredicate.EQUAL_TO, Boolean.TRUE));
+        query.setCQLTargetObject(target);
+        
+        validate(query);
+    }
+    
+    
+    public void testDateValueAttribute() {
+        CQLQuery query = new CQLQuery();
+        CQLTargetObject target = new CQLTargetObject();
+        target.setClassName("foo.bar");
+        target.set_instanceof("zor");
+        Date date = new Date(System.currentTimeMillis());
+        target.setCQLAttribute(AttributeFactory.createAttribute("word", BinaryPredicate.EQUAL_TO, date));
+        query.setCQLTargetObject(target);
+        
+        validate(query);
+    }
+    
+    
+    public void testTimeValueAttribute() {
+        String timeString = "01:02:03.040";
+        CQLQuery query = new CQLQuery();
+        CQLTargetObject target = new CQLTargetObject();
+        target.setClassName("foo.bar");
+        target.set_instanceof("zor");
+        try {
+            Time t = Time.parseTime(timeString);
+            target.setCQLAttribute(AttributeFactory.createAttribute("word", BinaryPredicate.EQUAL_TO, t));
+        } catch (ParseException e1) {
+            e1.printStackTrace();
+            fail(e1.getMessage());
+        }
+        query.setCQLTargetObject(target);
+        
+        try {
+            String text = CQL2SerializationUtil.serializeCql2Query(query);
+            CQLQuery des = CQL2SerializationUtil.deserializeCql2Query(text);
+            CQLTargetObject desTarget = des.getCQLTargetObject();
+            assertNotNull("No target object!", desTarget);
+            CQLAttribute desAttr = desTarget.getCQLAttribute();
+            assertNotNull("No attribute!", desAttr);
+            AttributeValue desVal = desAttr.getAttributeValue();
+            assertNotNull("No value!", desVal);
+            Time t = desVal.getTimeValue();
+            assertNotNull("No time!", t);
+            assertEquals("Time value not as expected", timeString, t.toString());
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
         
         validate(query);
     }
