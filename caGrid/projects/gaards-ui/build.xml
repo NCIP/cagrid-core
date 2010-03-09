@@ -105,23 +105,20 @@ GSBT - Globus Service Build Tools
 		<propertyref prefix="http." />
 		<propertyref prefix="https." />
 	</propertyset>
-
-	<target name="checkAntArgs" if="env.ANT_ARGS">
-		<condition property="autoproxy.set" else="false">
-			<contains string="${env.ANT_ARGS}" substring="-autoproxy" />
+	
+	<target name="checkProxyFlag">
+		<condition property="use.proxy" else="false">
+			<equals arg1="${proxy}" arg2="true" />
 		</condition>
-		<echo message="autoproxy.set = ${autoproxy.set}" />
+		<echo message="use.proxy = ${use.proxy}" />
 	</target>
 
-	<target name="checkAntOpts" depends="checkAntArgs" if="env.ANT_OPTS">
+	<target name="checkAntOpts" depends="checkProxyFlag" if="env.ANT_OPTS">
 		<property name="ant.opts" value="${env.ANT_OPTS}" />
 
 		<if>
-			<equals arg1="${autoproxy.set}" arg2="false" />
+			<equals arg1="${use.proxy}" arg2="true" />
 			<then>
-				<property name="use.proxy" value="false" />
-			</then>
-			<else>
 				<condition property="contains.proxyHost" else="false">
 					<contains string="${env.ANT_OPTS}" substring="-Dhttp.proxyHost=" />
 				</condition>
@@ -130,25 +127,23 @@ GSBT - Globus Service Build Tools
 					<contains string="${env.ANT_OPTS}" substring="-Dhttp.proxyPort=" />
 				</condition>
 
-				<condition property="use.proxy" else="false">
+				<condition property="proxy.configured" else="false">
 					<and>
-						<equals arg1="${autoproxy.set}" arg2="true" />
 						<equals arg1="${contains.proxyHost}" arg2="true" />
 						<equals arg1="${contains.proxyPort}" arg2="true" />
 					</and>
 				</condition>
-				<echo message="use.proxy: ${use.proxy}" />
+				<echo message="proxy.configured = ${proxy.configured}" />
 
 				<if>
-					<equals arg1="${use.proxy}" arg2="false" />
+					<equals arg1="${proxy.configured}" arg2="false" />
 					<then>
-						<echo message="ANT_ARGS contains '-autoproxy': ${autoproxy.set}" />
 						<echo message="ANT_OPTS contains '-Dhttp.proxyHost': ${contains.proxyHost}" />
 						<echo message="ANT_OPTS contains '-Dhttp.proxyHost': ${contains.proxyPort}" />
-						<fail message="Proxy configuration using ANT_ARGS and ANT_OPTS is incorrect." />
+						<fail message="Proxy configuration using -Dproxy and ANT_OPTS is incorrect." />
 					</then>
 				</if>
-			</else>
+			</then>
 		</if>
 	</target>
 
