@@ -207,6 +207,9 @@
     <field name="dateValue" type="java.util.Date">
       <bind-xml name="cql2:DateValue" node="element" />
     </field>
+    <field name="timeValue" type="org.exolab.castor.types.Time">
+      <bind-xml name="cql2:TimeValue" node="element" />
+    </field>
     <field name="booleanValue" type="java.lang.Boolean">
       <bind-xml name="cql2:BooleanValue" node="element" />
     </field>

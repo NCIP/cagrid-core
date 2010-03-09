@@ -150,33 +150,12 @@ public class CQL2toCQL1Converter {
             string = value.getLongValue().toString();
         } else if (value.getTimeValue() != null) {
             string = DateFormat.getTimeInstance().format(
-                value.getTimeValue().getAsCalendar().getTime());
+                value.getTimeValue());
         } else {
             // no value???
             throw new QueryConversionException("No attribute value found to convert!");
         }
         return string;
-        /*
-        Document valueDoc = null;
-        try {
-            StringWriter writer = new StringWriter();
-            Utils.serializeObject(value, new QName("http://CQL.caBIG/2/org.cagrid.cql2", "AttributeValue"), writer);
-            valueDoc = XMLUtilities.stringToDocument(writer.getBuffer().toString());
-        } catch (Exception ex) {
-            throw new QueryConversionException("Error serializing attribute value: " + ex.getMessage(), ex);
-        }
-        String string = null;
-        List<?> valueHolderElements = valueDoc.getRootElement().getChildren();
-        Iterator<?> valueHolderIter = valueHolderElements.iterator();
-        while (valueHolderIter.hasNext()) {
-            Element holderElem = (Element) valueHolderIter.next();
-            if (holderElem.getText() != null && holderElem.getText().length() != 0) {
-                string = holderElem.getText();
-                break;
-            }
-        }
-        return string;
-        */
     }
     
     

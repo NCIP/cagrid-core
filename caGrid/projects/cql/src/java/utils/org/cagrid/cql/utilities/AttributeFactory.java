@@ -1,11 +1,11 @@
 package org.cagrid.cql.utilities;
 
-import java.util.Calendar;
 import java.util.Date;
 
 import org.cagrid.cql2.AttributeValue;
 import org.cagrid.cql2.BinaryPredicate;
 import org.cagrid.cql2.CQLAttribute;
+import org.exolab.castor.types.Time;
 
 public class AttributeFactory {
 
@@ -74,19 +74,18 @@ public class AttributeFactory {
         attrib.setName(name);
         attrib.setBinaryPredicate(predicate);
         AttributeValue val = new AttributeValue();
-        // date or time?
-        Calendar cal = Calendar.getInstance();
-        cal.setTime(value);
-        int year = cal.get(Calendar.YEAR);
-        int month = cal.get(Calendar.MONTH);
-        int day = cal.get(Calendar.DAY_OF_MONTH);
-        if (year == 0 || month == 0 || day == 0) {
-            // time, since there's no date associated with it
-            val.setTimeValue(value);
-        } else {
-            // must be date
-            val.setDateValue(value);
-        }
+        val.setDateValue(value);
+        attrib.setAttributeValue(val);
+        return attrib;
+    }
+    
+    
+    public static CQLAttribute createAttribute(String name, BinaryPredicate predicate, Time value) {
+        CQLAttribute attrib = new CQLAttribute();
+        attrib.setName(name);
+        attrib.setBinaryPredicate(predicate);
+        AttributeValue val = new AttributeValue();
+        val.setTimeValue(value);
         attrib.setAttributeValue(val);
         return attrib;
     }

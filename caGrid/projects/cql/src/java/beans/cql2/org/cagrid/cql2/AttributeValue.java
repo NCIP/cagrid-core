@@ -7,10 +7,12 @@
 
 package org.cagrid.cql2;
 
+import org.exolab.castor.types.Time;
+
 public class AttributeValue implements java.io.Serializable {
     private java.lang.String stringValue;
     private java.util.Date dateValue;
-    private org.apache.axis.types.Time timeValue;
+    private Time timeValue;
     private java.lang.Long longValue;
     private java.lang.Integer integerValue;
     private java.lang.Boolean booleanValue;
@@ -23,7 +25,7 @@ public class AttributeValue implements java.io.Serializable {
 
     public AttributeValue(java.lang.Boolean booleanValue, java.util.Date dateValue, java.lang.Double doubleValue,
         java.lang.Integer integerValue, java.lang.Long longValue, java.lang.String stringValue,
-        org.apache.axis.types.Time timeValue) {
+        Time timeValue) {
         this.stringValue = stringValue;
         this.dateValue = dateValue;
         this.timeValue = timeValue;
@@ -79,7 +81,7 @@ public class AttributeValue implements java.io.Serializable {
      * 
      * @return timeValue
      */
-    public org.apache.axis.types.Time getTimeValue() {
+    public Time getTimeValue() {
         return timeValue;
     }
 
@@ -89,7 +91,7 @@ public class AttributeValue implements java.io.Serializable {
      * 
      * @param timeValue
      */
-    public void setTimeValue(org.apache.axis.types.Time timeValue) {
+    public void setTimeValue(Time timeValue) {
         this.timeValue = timeValue;
     }
 
