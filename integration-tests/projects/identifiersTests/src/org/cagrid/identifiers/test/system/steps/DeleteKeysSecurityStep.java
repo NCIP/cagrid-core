@@ -168,8 +168,10 @@ public class DeleteKeysSecurityStep extends Step {
         ////////////////////////////////////////////////////////////////
         // Add User B as identifier's writer
         ////////////////////////////////////////////////////////////////
-        IdentifiersTestUtil.replaceKey(client, testInfo.getSysAdminUser(), identifier, 
-        		Keys.WRITE_USERS, new String[]{testInfo.getUserB().getIdentity()});
+        IdentifiersTestUtil.replaceKeyValues(client, 
+        		testInfo.getSysAdminUser(), identifier, 
+        		Keys.WRITE_USERS, 
+        		new String[]{testInfo.getUserB().getIdentity()});
         
         ////////////////////////////////////////////////////////////////
         // User B can delete keys now

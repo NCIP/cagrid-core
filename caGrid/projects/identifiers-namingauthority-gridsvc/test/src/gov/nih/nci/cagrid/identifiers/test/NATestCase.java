@@ -1,65 +1,72 @@
 package gov.nih.nci.cagrid.identifiers.test;
 
+import gov.nih.nci.cagrid.identifiers.common.IdentifiersNAUtil;
+
 import java.net.URISyntaxException;
 
-import gov.nih.nci.cagrid.identifiers.common.IdentifiersNAUtil;
-import namingauthority.IdentifierValues;
+import junit.framework.TestCase;
+import namingauthority.IdentifierData;
 import namingauthority.KeyData;
-import namingauthority.KeyValues;
+import namingauthority.KeyNameData;
 
 import org.apache.axis.types.URI.MalformedURIException;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-import junit.framework.TestCase;
-
 public class NATestCase extends TestCase {
 	private static Log log = LogFactory.getLog(NATestCase.class);
 
-	private static final KeyValues[] keyValues1, keyValues2;
+	private static final KeyNameData[] knd1, knd2;
 
 	static {
 		//
-		// keyValues1
+		// KeyNameData1
 		//
-		keyValues1 = new KeyValues[2];
-		keyValues1[0] = new KeyValues();
-		keyValues1[0].setKey("URL");
-		keyValues1[0].setKeyData(new KeyData(null, new String[] { "http://www.google.com" }));
+		KeyData kd = new KeyData();
+		
+		kd.setValue(new String[] { "http://www.google.com" });
+		knd1 = new KeyNameData[2];
+		knd1[0] = new KeyNameData();
+		knd1[0].setKeyName("URL");
+		knd1[0].setKeyData(kd);
 
-		keyValues1[1] = new KeyValues();
-		keyValues1[1].setKey("EPR");
-		keyValues1[1].setKeyData(new KeyData(null, new String[] { "end point reference 1", "end point reference 2" }));
+		kd.setValue(new String[] { "end point reference 1", "end point reference 2" });
+		knd1[1] = new KeyNameData();
+		knd1[1].setKeyName("EPR");
+		knd1[1].setKeyData(kd);
 		
 		//
-		// keyValues2 (same as keyvalues1)
+		// KeyNameData2 (same as KeyNameData1)
 		//
-		keyValues2 = new KeyValues[2];
-		keyValues2[0] = new KeyValues();
-		keyValues2[0].setKey("URL");
-		keyValues2[0].setKeyData(new KeyData(null, new String[] { "http://www.google.com" }));
+		knd2 = new KeyNameData[2];
+		
+		kd.setValue(new String[] { "http://www.google.com" });
+		knd2[0] = new KeyNameData();
+		knd2[0].setKeyName("URL");
+		knd2[0].setKeyData(kd);
 
-		keyValues2[1] = new KeyValues();
-		keyValues2[1].setKey("EPR");
-		keyValues2[1].setKeyData(new KeyData(null, new String[] { "end point reference 1", "end point reference 2" }));
+		kd.setValue(new String[] { "end point reference 1", "end point reference 2" });
+		knd2[1] = new KeyNameData();
+		knd2[1].setKeyName("EPR");
+		knd2[1].setKeyData(kd);
 	}
 	
 	public void testUtil() {
-		IdentifierValues gridValues1 = new IdentifierValues(keyValues1);
+		IdentifierData gridValues1 = new IdentifierData(knd1);
 		
 		// convert to domain values
-		org.cagrid.identifiers.namingauthority.domain.IdentifierValues domainValues1;
+		org.cagrid.identifiers.namingauthority.domain.IdentifierData domainValues1;
 		try {
 			domainValues1 = IdentifiersNAUtil.map(gridValues1);
 			
 			// convert back to grid values
-			IdentifierValues gridValues2;
+			IdentifierData gridValues2;
 			gridValues2 = IdentifiersNAUtil.map(domainValues1);
 			
 			// must be the same
 			IdentifiersNAUtil.assertEquals(gridValues1, gridValues2);
-			IdentifiersNAUtil.assertEquals(gridValues1, new IdentifierValues(keyValues2));
-			IdentifiersNAUtil.assertEquals(keyValues1, keyValues2);
+			IdentifiersNAUtil.assertEquals(gridValues1, new IdentifierData(knd2));
+			IdentifiersNAUtil.assertEquals(knd1, knd2);
 			
 		} catch (URISyntaxException e) {
 			e.printStackTrace();
@@ -74,8 +81,8 @@ public class NATestCase extends TestCase {
 //	public void testNamingAuthorityGridService() throws Exception {
 //		IdentifiersNAServiceClient client = new IdentifiersNAServiceClient( gridSvcUrl );
 //
-//		IdentifierValues values1 = new IdentifierValues(keyValues);
-//		IdentifierValues values2 = null;
+//		IdentifierKeyData values1 = new IdentifierKeyData(KeyData);
+//		IdentifierKeyData values2 = null;
 //		
 //		try {
 //			org.apache.axis.types.URI identifier = client.createIdentifier(values1);

@@ -8,8 +8,13 @@ import gov.nih.nci.cagrid.identifiers.stubs.types.NamingAuthoritySecurityFault;
 
 import java.rmi.RemoteException;
 
+import junit.framework.Assert;
+
+import namingauthority.IdentifierData;
 import namingauthority.IdentifierValues;
 import namingauthority.KeyData;
+import namingauthority.KeyNameData;
+import namingauthority.KeyNameValues;
 import namingauthority.KeyValues;
 
 import org.apache.axis.message.addressing.EndpointReferenceType;
@@ -36,7 +41,7 @@ public class IdentifiersTestUtil {
 	// Replaces keyName's values with the new keyValues in
 	// the given identifier
 	////////////////////////////////////////////////////////
-	public static void replaceKey(IdentifiersNAServiceClient client,
+	public static void replaceKeyValues(IdentifiersNAServiceClient client,
 			GlobusCredential creds, URI identifier, String keyName, 
 			String[] keyValues ) 
 		throws 
@@ -48,12 +53,12 @@ public class IdentifiersTestUtil {
 		
     	setProxy(client, creds);
     	
-		KeyValues[] newKeyValues = new KeyValues[1];
-    	newKeyValues[0] = new KeyValues();
-    	newKeyValues[0].setKey(keyName);
-    	newKeyValues[0].setKeyData(new KeyData(null, keyValues));
+		KeyNameValues[] newKeyValues = new KeyNameValues[1];
+    	newKeyValues[0] = new KeyNameValues();
+    	newKeyValues[0].setKeyName(keyName);
+    	newKeyValues[0].setKeyValues(new KeyValues(keyValues));
 
-   		client.replaceKeys(identifier, new IdentifierValues(newKeyValues));
+   		client.replaceKeyValues(identifier, new IdentifierValues(newKeyValues));
 	}
 	
 	////////////////////////////////////////////////////////
@@ -69,14 +74,24 @@ public class IdentifiersTestUtil {
 			InvalidIdentifierValuesFault, 
 			RemoteException {
 		
-		setProxy(client, creds);
+		createKey(client, creds, identifier, keyName, null, keyValues);
+	}
+	
+	public static void createKey(IdentifiersNAServiceClient client, 
+			GlobusCredential creds, URI identifier, String keyName, 
+			URI policyIdentifier, String[] keyValues ) 
+		throws 
+			InvalidIdentifierFault, 
+			NamingAuthorityConfigurationFault, 
+			NamingAuthoritySecurityFault, 
+			InvalidIdentifierValuesFault, 
+			RemoteException {
 		
-    	KeyValues[] newKeyValues = new KeyValues[1];
-    	newKeyValues[0] = new KeyValues();
-    	newKeyValues[0].setKey(keyName);
-    	newKeyValues[0].setKeyData(new KeyData(null, keyValues));
+		setProxy(client, creds);
 
-   		client.createKeys(identifier, new IdentifierValues(newKeyValues));
+   		client.createKeys(identifier, new IdentifierData(
+			new KeyNameData[]{createKeyNameData(keyName, policyIdentifier, 
+					keyValues)})); 
 	}
 	
 	////////////////////////////////////////////////////////
@@ -108,14 +123,43 @@ public class IdentifiersTestUtil {
 		
 		setProxy(client, creds);
 		
-		KeyValues[] kvs = new KeyValues[ keys.length ];
+		KeyNameData[] kvs = new KeyNameData[ keys.length ];
 		for( int i=0; i < keys.length; i++) {
-			kvs[i] = new KeyValues();
-			kvs[i].setKey(keys[i]);
-			kvs[i].setKeyData(new KeyData(null, keysValues[i]));
+			kvs[i] = createKeyNameData(keys[i], keysValues[i]);
 		}
 		
-		return client.createIdentifier(new IdentifierValues(kvs));
+		return client.createIdentifier(new IdentifierData(kvs));
+	}
+	
+	public static KeyNameData[] resolveIdentifier(IdentifiersNAServiceClient client, 
+			GlobusCredential creds, URI identifier) 
+		throws 
+			NamingAuthorityConfigurationFault, 
+			InvalidIdentifierFault, 
+			NamingAuthoritySecurityFault, 
+			RemoteException {
+	
+		setProxy(client, creds);
+		
+		IdentifierData values = client.resolveIdentifier(identifier);
+		if (values == null) {
+			return null;
+		}
+		
+		return values.getKeyNameData();	
+	}
+	
+	public static KeyNameData getKeyData(IdentifiersNAServiceClient client, 
+			GlobusCredential creds, URI identifier, String keyName) 
+		throws 
+			NamingAuthorityConfigurationFault, 
+			InvalidIdentifierFault, 
+			NamingAuthoritySecurityFault, 
+			RemoteException {
+	
+		setProxy(client, creds);
+		
+		return client.getKeyData(identifier, keyName);
 	}
 	
 	///////////////////////////////////////////////////
@@ -128,7 +172,7 @@ public class IdentifiersTestUtil {
 		EndpointReferenceType epr = testInfo.getGridSvcEPR();
         IdentifiersNAServiceClient client = new IdentifiersNAServiceClient( epr );
           
-        IdentifiersTestUtil.replaceKey(client, testInfo.getSysAdminUser(),
+        IdentifiersTestUtil.replaceKeyValues(client, testInfo.getSysAdminUser(),
         		testInfo.getSystemIdentifier(), Keys.PUBLIC_CREATION, new String[]{publicCreation});
 	}
 	
@@ -145,5 +189,38 @@ public class IdentifiersTestUtil {
         IdentifiersTestUtil.createKey(client, testInfo.getSysAdminUser(), 
         		testInfo.getSystemIdentifier(), 
         		Keys.IDENTIFIER_CREATION_USERS, identifierCreationUsers);
+	}
+
+	public static KeyNameData createKeyNameData( String keyName,
+			URI policyIdentifier, String[] values ) {
+		KeyData kd = new KeyData();
+		kd.setValue(values);
+		kd.setPolicyIdentifier(policyIdentifier);
+		return new KeyNameData(kd, keyName);
+	}
+	
+	public static KeyNameData createKeyNameData( String keyName,
+			String[] values ) {
+		return createKeyNameData(keyName, null, values);
+	}
+	
+	public static void assertKey(String keyName, KeyNameValues[] keyValues) {
+		for( KeyNameValues kvs : keyValues ) {
+			if (kvs.getKeyName().equals(keyName)) {
+				return;
+			}
+		}
+		
+		Assert.fail("Key [" + keyName + "] not found in result set");
+	}
+	
+	public static void assertKey(String keyName, KeyNameData[] knd) {
+		for( KeyNameData kvs : knd ) {
+			if (kvs.getKeyName().equals(keyName)) {
+				return;
+			}
+		}
+		
+		Assert.fail("Key [" + keyName + "] not found in result set");
 	}
 }

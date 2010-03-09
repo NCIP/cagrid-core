@@ -3,32 +3,28 @@ package org.cagrid.identifiers.namingauthority.domain;
 import java.util.HashMap;
 import java.util.Map;
 
-public class IdentifierValues implements java.io.Serializable {
-    private Map<String, KeyValues> values = new HashMap<String, KeyValues>();
+public class IdentifierData implements java.io.Serializable {
+    
+	private Map<String, KeyData> data = new HashMap<String, KeyData>();
 
-
-    public Map<String, KeyValues> getValues() {
-        return this.values;
+    public Map<String, KeyData> getData() {
+        return this.data;
     }
 
-
-    public KeyValues getValues(String key) {
-        return values.get(key);
+    public KeyData getValues(String key) {
+        return data.get(key);
     }
 
-
-    public void setValues(Map<String, KeyValues> values) {
-        this.values = values;
+    public void setValues(Map<String, KeyData> data) {
+        this.data = data;
     }
-
 
     public String[] getKeys() {
-        return values.keySet().toArray(new String[values.keySet().size()]);
+    	return data.keySet().toArray(new String[data.keySet().size()]);
     }
 
-
-    public void put(String keyName, KeyValues data) {
-    	this.values.put(keyName, data);
+    public void put(String keyName, KeyData data) {
+    	this.data.put(keyName, data);
     }
     
     public boolean equals(Object obj) { 
@@ -38,9 +34,9 @@ public class IdentifierValues implements java.io.Serializable {
             return false;
         if (getClass() != obj.getClass())
             return false;
-        IdentifierValues other = (IdentifierValues) obj;
+        IdentifierData other = (IdentifierData) obj;
         
-        if (!this.values.keySet().equals(other.getValues().keySet())) {
+        if (!this.data.keySet().equals(other.getData().keySet())) {
             return false;
         }
 
@@ -57,13 +53,16 @@ public class IdentifierValues implements java.io.Serializable {
 
     public String toString() {
         StringBuffer sb = new StringBuffer();
-
+        
         for (String key : getKeys()) {
-        	KeyValues data = getValues(key);
+        	KeyData data = getValues(key);
             sb.append("=====================================================================\n");
             sb.append("KEY [" + key + "]\n");
-            for (String value : data.getValues()) {
-                sb.append("      VALUE [" + value + "]\n");
+            sb.append("      POLICY IDENTIFIER [" + data.getPolicyIdentifier() + "]\n");
+            if (data.getValues() != null) {
+            	for (String value : data.getValues()) {
+            		sb.append("      VALUE [" + value + "]\n");
+            	}
             }
         }
         sb.append("\n");

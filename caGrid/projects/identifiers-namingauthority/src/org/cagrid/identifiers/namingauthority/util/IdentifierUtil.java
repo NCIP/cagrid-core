@@ -11,7 +11,7 @@ import java.util.Map;
 
 import org.cagrid.identifiers.namingauthority.InvalidIdentifierException;
 import org.cagrid.identifiers.namingauthority.NamingAuthorityConfigurationException;
-import org.cagrid.identifiers.namingauthority.domain.IdentifierValues;
+import org.cagrid.identifiers.namingauthority.domain.IdentifierData;
 import org.cagrid.identifiers.namingauthority.domain.KeyData;
 import org.cagrid.identifiers.namingauthority.hibernate.IdentifierMetadata;
 import org.cagrid.identifiers.namingauthority.hibernate.IdentifierValueKey;
@@ -73,23 +73,6 @@ public class IdentifierUtil {
         }
     }
 	
-	public static List<String> getKeyValues( IdentifierValues values, String keyName ) {
-		
-		if (values == null) {
-			return null;
-		}
-		
-		KeyData kd = values.getValues(keyName);
-		if (kd != null) {
-			List<String> keyValues = kd.getValues();
-			if (keyValues == null) {
-				return new ArrayList<String>();
-			}
-		}
-		
-		return null;
-	}
-	
 	// Returns list of values associated with the key
 	// Returns null if the key does not exist in values
 	// Returns an empty list if they key exists but have no values
@@ -132,14 +115,14 @@ public class IdentifierUtil {
 		ivk.setKey(key);
 
 		if (kd != null) {
-			ivk.setReadWriteIdentifier(kd.getReadWriteIdentifier());
+			ivk.setPolicyIdentifier(kd.getPolicyIdentifier());
 			ivk.setValues(kd.getValues());
 		}
 		
 		return ivk;
 	}
 	
-	public static IdentifierMetadata convert(URI localIdentifier, IdentifierValues ivalues) {
+	public static IdentifierMetadata convert(URI localIdentifier, IdentifierData ivalues) {
 		
 		IdentifierMetadata md = new IdentifierMetadata();
 	    md.setLocalIdentifier(localIdentifier);
@@ -156,22 +139,23 @@ public class IdentifierUtil {
 	    return md;
 	}
 	
-	public static IdentifierValues convert(Collection<IdentifierValueKey> valueCollection) {
-		IdentifierValues result = null;
+	public static IdentifierData convert(Collection<IdentifierValueKey> valueCollection) {
+		IdentifierData result = null;
    
     	if (valueCollection != null && valueCollection.size() > 0) {
-    		result = new IdentifierValues();
+    		result = new IdentifierData();
     		Map<String, KeyData> values = new HashMap<String, KeyData>();
     		result.setValues(values);
 
     		for (IdentifierValueKey vk : valueCollection) {
-    			KeyData kd = new KeyData();
-    			kd.setReadWriteIdentifier(vk.getReadWriteIdentifier());
-    			kd.setValues(vk.getValues());
-    			values.put(vk.getKey(), kd);
+     			values.put(vk.getKey(), convert(vk));
     		}
     	}
     	
     	return result;
+	}
+	
+	public static KeyData convert(IdentifierValueKey ivk) {
+		return new KeyData(ivk.getPolicyIdentifier(), ivk.getValues());
 	}
 }

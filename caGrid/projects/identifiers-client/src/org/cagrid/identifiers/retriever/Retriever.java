@@ -1,7 +1,7 @@
 package org.cagrid.identifiers.retriever;
 
-import org.cagrid.identifiers.namingauthority.domain.IdentifierValues;
+import org.cagrid.identifiers.namingauthority.domain.IdentifierData;
 
 public interface Retriever {
-	public Object retrieve(IdentifierValues ivs) throws Exception;
+	public Object retrieve(IdentifierData ivs) throws Exception;
 }

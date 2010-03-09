@@ -13,6 +13,7 @@ import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
 
+import namingauthority.IdentifierData;
 import namingauthority.IdentifierValues;
 
 import org.apache.axis.message.addressing.EndpointReferenceType;
@@ -50,7 +51,7 @@ public class IdentifiersTestInfo {
     public static final String PURLZ_TRANSPORT_FILE = "/modules/mod-fulcrum-frontend/etc/TransportJettyConfig.xml";
         
 	private List<URI> identifiers = null;
-	private List<IdentifierValues> identifierValues = null;
+	private List<IdentifierData> identifiersData = null;
 	private ServiceContainer webAppContainer = null;
 	private ServiceContainer gridSvcContainer = null;
 	public Process purlzProcess = null;
@@ -71,18 +72,18 @@ public class IdentifiersTestInfo {
 		return this.identifiers; 
 	}
 	
-	public List<IdentifierValues> getIdentifierValues() {
-		return this.identifierValues;
+	public List<IdentifierData> getIdentifierData() {
+		return this.identifiersData;
 	}
 	
-	public void addIdentifier(URI identifier, IdentifierValues values) {
+	public void addIdentifier(URI identifier, IdentifierData values) {
 		if (this.identifiers == null) {
 			this.identifiers = new ArrayList<URI>();
-			this.identifierValues = new ArrayList<IdentifierValues>();
+			this.identifiersData = new ArrayList<IdentifierData>();
 		}
 		
 		this.identifiers.add(identifier);
-		this.identifierValues.add(values);
+		this.identifiersData.add(values);
 	}
 	
 	public ServiceContainer createWebAppContainer() throws IOException {

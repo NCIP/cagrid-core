@@ -8,7 +8,7 @@ public class NamingAuthorityConfigImpl implements NamingAuthorityConfig {
 
 	private URI prefix = null;
 	private Integer httpServerPort = null;
-	private String gridSvcUrl = null;
+	private URI gridSvcUrl = null;
 	
 	public void setPrefix( URI prefix ) {
 		this.prefix = prefix;
@@ -26,11 +26,11 @@ public class NamingAuthorityConfigImpl implements NamingAuthorityConfig {
 		return this.httpServerPort;
 	}
 
-	public void setGridSvcUrl(String gridSvcUrl) {
+	public void setGridSvcUrl(URI gridSvcUrl) {
 		this.gridSvcUrl = gridSvcUrl;
 	}
 	
-	public String getGridSvcUrl() {
+	public URI getGridSvcUrl() {
 		return this.gridSvcUrl;
 	}
 }

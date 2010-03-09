@@ -2,7 +2,6 @@ package org.cagrid.identifiers.resolver;
 
 import gov.nih.nci.cagrid.identifiers.client.IdentifiersNAServiceClient;
 import gov.nih.nci.cagrid.identifiers.stubs.types.InvalidIdentifierFault;
-import gov.nih.nci.cagrid.identifiers.stubs.types.InvalidIdentifierValuesFault;
 import gov.nih.nci.cagrid.identifiers.stubs.types.NamingAuthorityConfigurationFault;
 import gov.nih.nci.cagrid.identifiers.stubs.types.NamingAuthoritySecurityFault;
 
@@ -12,9 +11,7 @@ import java.io.InputStreamReader;
 import java.io.StringReader;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.rmi.RemoteException;
 
-import org.apache.axis.types.URI.MalformedURIException;
 import org.apache.http.Header;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpException;
@@ -29,16 +26,15 @@ import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.protocol.HttpContext;
 import org.cagrid.identifiers.client.Util;
 import org.cagrid.identifiers.namingauthority.InvalidIdentifierException;
-import org.cagrid.identifiers.namingauthority.InvalidIdentifierValuesException;
 import org.cagrid.identifiers.namingauthority.NamingAuthorityConfigurationException;
 import org.cagrid.identifiers.namingauthority.NamingAuthoritySecurityException;
 import org.cagrid.identifiers.namingauthority.UnexpectedIdentifiersException;
-import org.cagrid.identifiers.namingauthority.domain.IdentifierValues;
+import org.cagrid.identifiers.namingauthority.domain.IdentifierData;
 import org.cagrid.identifiers.namingauthority.domain.NamingAuthorityConfig;
 import org.exolab.castor.mapping.MappingException;
 import org.exolab.castor.xml.MarshalException;
-import org.exolab.castor.xml.ValidationException;
 import org.exolab.castor.xml.Unmarshaller;
+import org.exolab.castor.xml.ValidationException;
 import org.exolab.castor.xml.XMLContext;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
@@ -150,7 +146,7 @@ public class Resolver {
 			unmarshaller.unmarshal(new StringReader(naConfigStr));
 	}
 	
-	public IdentifierValues resolveGrid( URI identifier ) 
+	public IdentifierData resolveGrid( URI identifier ) 
 		throws 
 			NamingAuthorityConfigurationException, 
 			InvalidIdentifierException, 
@@ -160,7 +156,7 @@ public class Resolver {
 		try {
 			NamingAuthorityConfig config = retrieveNamingAuthorityConfig( identifier );
 
-			IdentifiersNAServiceClient client = new IdentifiersNAServiceClient( config.getGridSvcUrl() );
+			IdentifiersNAServiceClient client = new IdentifiersNAServiceClient( config.getGridSvcUrl().normalize().toString() );
 
 			return gov.nih.nci.cagrid.identifiers.common.IdentifiersNAUtil.map(
 					client.resolveIdentifier(new org.apache.axis.types.URI(identifier.toString())) );
@@ -176,7 +172,7 @@ public class Resolver {
 		}
 	}
 	
-	public IdentifierValues resolveHttp( URI identifier ) 
+	public IdentifierData resolveHttp( URI identifier ) 
 		throws HttpException, IOException, MarshalException, MappingException, ValidationException {
 		
 		//
@@ -186,8 +182,8 @@ public class Resolver {
 		
 		//Deserialize the response
 		Unmarshaller unmarshaller = xmlContext.createUnmarshaller();
-		unmarshaller.setClass(IdentifierValues.class);
-		
-		return (IdentifierValues) unmarshaller.unmarshal(new StringReader(iValuesStr));
+		unmarshaller.setClass(IdentifierData.class);
+
+		return (IdentifierData) unmarshaller.unmarshal(new StringReader(iValuesStr));
 	}
 }

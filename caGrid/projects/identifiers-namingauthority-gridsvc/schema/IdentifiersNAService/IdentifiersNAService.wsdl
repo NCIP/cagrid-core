@@ -17,10 +17,10 @@
       <element name="CreateIdentifierRequest">
         <complexType>
           <sequence>
-            <element name="identifierValues">
+            <element name="identifierData">
               <complexType>
                 <sequence>
-                  <element ref="ns0:IdentifierValues" minOccurs="1" maxOccurs="1" />
+                  <element ref="ns0:IdentifierData" minOccurs="1" maxOccurs="1" />
                 </sequence>
               </complexType>
             </element>
@@ -50,7 +50,7 @@
       <element name="ResolveIdentifierResponse">
         <complexType>
           <sequence>
-            <element ref="ns0:IdentifierValues" minOccurs="1" maxOccurs="1" />
+            <element ref="ns0:IdentifierData" minOccurs="1" maxOccurs="1" />
           </sequence>
         </complexType>
       </element>
@@ -64,7 +64,13 @@
                 </sequence>
               </complexType>
             </element>
-            <element name="keyList" type="xs:string" minOccurs="1" maxOccurs="unbounded" />
+            <element name="keyNames">
+              <complexType>
+                <sequence>
+                  <element ref="ns0:KeyName" minOccurs="1" maxOccurs="unbounded" />
+                </sequence>
+              </complexType>
+            </element>
           </sequence>
         </complexType>
       </element>
@@ -83,10 +89,10 @@
                 </sequence>
               </complexType>
             </element>
-            <element name="identifierValues">
+            <element name="identifierData">
               <complexType>
                 <sequence>
-                  <element ref="ns0:IdentifierValues" minOccurs="1" maxOccurs="1" />
+                  <element ref="ns0:IdentifierData" minOccurs="1" maxOccurs="1" />
                 </sequence>
               </complexType>
             </element>
@@ -98,7 +104,7 @@
           <sequence />
         </complexType>
       </element>
-      <element name="ReplaceKeysRequest">
+      <element name="ReplaceKeyValuesRequest">
         <complexType>
           <sequence>
             <element name="identifier">
@@ -118,12 +124,12 @@
           </sequence>
         </complexType>
       </element>
-      <element name="ReplaceKeysResponse">
+      <element name="ReplaceKeyValuesResponse">
         <complexType>
           <sequence />
         </complexType>
       </element>
-      <element name="GetKeysRequest">
+      <element name="GetKeyNamesRequest">
         <complexType>
           <sequence>
             <element name="identifier">
@@ -136,14 +142,14 @@
           </sequence>
         </complexType>
       </element>
-      <element name="GetKeysResponse">
+      <element name="GetKeyNamesResponse">
         <complexType>
           <sequence>
-            <element name="response" type="xs:string" minOccurs="1" maxOccurs="unbounded" />
+            <element ref="ns0:KeyName" minOccurs="1" maxOccurs="unbounded" />
           </sequence>
         </complexType>
       </element>
-      <element name="GetKeyValuesRequest">
+      <element name="GetKeyDataRequest">
         <complexType>
           <sequence>
             <element name="identifier">
@@ -153,14 +159,20 @@
                 </sequence>
               </complexType>
             </element>
-            <element name="keyName" type="xs:string" minOccurs="1" maxOccurs="1" />
+            <element name="keyName">
+              <complexType>
+                <sequence>
+                  <element ref="ns0:KeyName" minOccurs="1" maxOccurs="1" />
+                </sequence>
+              </complexType>
+            </element>
           </sequence>
         </complexType>
       </element>
-      <element name="GetKeyValuesResponse">
+      <element name="GetKeyDataResponse">
         <complexType>
           <sequence>
-            <element name="response" type="xs:string" minOccurs="1" maxOccurs="unbounded" />
+            <element ref="ns0:KeyNameData" minOccurs="1" maxOccurs="1" />
           </sequence>
         </complexType>
       </element>
@@ -196,23 +208,23 @@
   <message name="CreateKeysResponse">
     <part name="parameters" element="tns:CreateKeysResponse" />
   </message>
-  <message name="ReplaceKeysRequest">
-    <part name="parameters" element="tns:ReplaceKeysRequest" />
+  <message name="ReplaceKeyValuesRequest">
+    <part name="parameters" element="tns:ReplaceKeyValuesRequest" />
   </message>
-  <message name="ReplaceKeysResponse">
-    <part name="parameters" element="tns:ReplaceKeysResponse" />
+  <message name="ReplaceKeyValuesResponse">
+    <part name="parameters" element="tns:ReplaceKeyValuesResponse" />
   </message>
-  <message name="GetKeysRequest">
-    <part name="parameters" element="tns:GetKeysRequest" />
+  <message name="GetKeyNamesRequest">
+    <part name="parameters" element="tns:GetKeyNamesRequest" />
   </message>
-  <message name="GetKeysResponse">
-    <part name="parameters" element="tns:GetKeysResponse" />
+  <message name="GetKeyNamesResponse">
+    <part name="parameters" element="tns:GetKeyNamesResponse" />
   </message>
-  <message name="GetKeyValuesRequest">
-    <part name="parameters" element="tns:GetKeyValuesRequest" />
+  <message name="GetKeyDataRequest">
+    <part name="parameters" element="tns:GetKeyDataRequest" />
   </message>
-  <message name="GetKeyValuesResponse">
-    <part name="parameters" element="tns:GetKeyValuesResponse" />
+  <message name="GetKeyDataResponse">
+    <part name="parameters" element="tns:GetKeyDataResponse" />
   </message>
   <message name="NamingAuthorityConfigurationFaultFaultMessage">
     <part name="fault" element="ns1:NamingAuthorityConfigurationFault" />
@@ -263,24 +275,24 @@
       <fault name="NamingAuthoritySecurityFault" message="tns:NamingAuthoritySecurityFaultFaultMessage" wsa:Action="http://identifiers.cagrid.nci.nih.gov/IdentifiersNAService/NamingAuthoritySecurityFaultFaultMessage" />
       <fault name="InvalidIdentifierValuesFault" message="tns:InvalidIdentifierValuesFaultFaultMessage" wsa:Action="http://identifiers.cagrid.nci.nih.gov/IdentifiersNAService/InvalidIdentifierValuesFaultFaultMessage" />
     </operation>
-    <operation name="replaceKeys">
-      <input message="tns:ReplaceKeysRequest" wsa:Action="http://identifiers.cagrid.nci.nih.gov/IdentifiersNAService/ReplaceKeysRequest" />
-      <output message="tns:ReplaceKeysResponse" wsa:Action="http://identifiers.cagrid.nci.nih.gov/IdentifiersNAService/ReplaceKeysResponse" />
+    <operation name="replaceKeyValues">
+      <input message="tns:ReplaceKeyValuesRequest" wsa:Action="http://identifiers.cagrid.nci.nih.gov/IdentifiersNAService/ReplaceKeyValuesRequest" />
+      <output message="tns:ReplaceKeyValuesResponse" wsa:Action="http://identifiers.cagrid.nci.nih.gov/IdentifiersNAService/ReplaceKeyValuesResponse" />
       <fault name="InvalidIdentifierFault" message="tns:InvalidIdentifierFaultFaultMessage" wsa:Action="http://identifiers.cagrid.nci.nih.gov/IdentifiersNAService/InvalidIdentifierFaultFaultMessage" />
       <fault name="NamingAuthorityConfigurationFault" message="tns:NamingAuthorityConfigurationFaultFaultMessage" wsa:Action="http://identifiers.cagrid.nci.nih.gov/IdentifiersNAService/NamingAuthorityConfigurationFaultFaultMessage" />
       <fault name="NamingAuthoritySecurityFault" message="tns:NamingAuthoritySecurityFaultFaultMessage" wsa:Action="http://identifiers.cagrid.nci.nih.gov/IdentifiersNAService/NamingAuthoritySecurityFaultFaultMessage" />
       <fault name="InvalidIdentifierValuesFault" message="tns:InvalidIdentifierValuesFaultFaultMessage" wsa:Action="http://identifiers.cagrid.nci.nih.gov/IdentifiersNAService/InvalidIdentifierValuesFaultFaultMessage" />
     </operation>
-    <operation name="getKeys">
-      <input message="tns:GetKeysRequest" wsa:Action="http://identifiers.cagrid.nci.nih.gov/IdentifiersNAService/GetKeysRequest" />
-      <output message="tns:GetKeysResponse" wsa:Action="http://identifiers.cagrid.nci.nih.gov/IdentifiersNAService/GetKeysResponse" />
+    <operation name="getKeyNames">
+      <input message="tns:GetKeyNamesRequest" wsa:Action="http://identifiers.cagrid.nci.nih.gov/IdentifiersNAService/GetKeyNamesRequest" />
+      <output message="tns:GetKeyNamesResponse" wsa:Action="http://identifiers.cagrid.nci.nih.gov/IdentifiersNAService/GetKeyNamesResponse" />
       <fault name="InvalidIdentifierFault" message="tns:InvalidIdentifierFaultFaultMessage" wsa:Action="http://identifiers.cagrid.nci.nih.gov/IdentifiersNAService/InvalidIdentifierFaultFaultMessage" />
       <fault name="NamingAuthorityConfigurationFault" message="tns:NamingAuthorityConfigurationFaultFaultMessage" wsa:Action="http://identifiers.cagrid.nci.nih.gov/IdentifiersNAService/NamingAuthorityConfigurationFaultFaultMessage" />
       <fault name="NamingAuthoritySecurityFault" message="tns:NamingAuthoritySecurityFaultFaultMessage" wsa:Action="http://identifiers.cagrid.nci.nih.gov/IdentifiersNAService/NamingAuthoritySecurityFaultFaultMessage" />
     </operation>
-    <operation name="getKeyValues">
-      <input message="tns:GetKeyValuesRequest" wsa:Action="http://identifiers.cagrid.nci.nih.gov/IdentifiersNAService/GetKeyValuesRequest" />
-      <output message="tns:GetKeyValuesResponse" wsa:Action="http://identifiers.cagrid.nci.nih.gov/IdentifiersNAService/GetKeyValuesResponse" />
+    <operation name="getKeyData">
+      <input message="tns:GetKeyDataRequest" wsa:Action="http://identifiers.cagrid.nci.nih.gov/IdentifiersNAService/GetKeyDataRequest" />
+      <output message="tns:GetKeyDataResponse" wsa:Action="http://identifiers.cagrid.nci.nih.gov/IdentifiersNAService/GetKeyDataResponse" />
       <fault name="InvalidIdentifierFault" message="tns:InvalidIdentifierFaultFaultMessage" wsa:Action="http://identifiers.cagrid.nci.nih.gov/IdentifiersNAService/InvalidIdentifierFaultFaultMessage" />
       <fault name="NamingAuthoritySecurityFault" message="tns:NamingAuthoritySecurityFaultFaultMessage" wsa:Action="http://identifiers.cagrid.nci.nih.gov/IdentifiersNAService/NamingAuthoritySecurityFaultFaultMessage" />
       <fault name="NamingAuthorityConfigurationFault" message="tns:NamingAuthorityConfigurationFaultFaultMessage" wsa:Action="http://identifiers.cagrid.nci.nih.gov/IdentifiersNAService/NamingAuthorityConfigurationFaultFaultMessage" />

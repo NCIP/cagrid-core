@@ -3,8 +3,10 @@ package org.cagrid.identifiers.namingauthority;
 import java.net.URI;
 import java.util.ArrayList;
 
+import org.cagrid.identifiers.namingauthority.domain.IdentifierData;
 import org.cagrid.identifiers.namingauthority.domain.IdentifierValues;
 import org.cagrid.identifiers.namingauthority.domain.KeyData;
+import org.cagrid.identifiers.namingauthority.domain.KeyValues;
 import org.cagrid.identifiers.namingauthority.test.NamingAuthorityTestCaseBase;
 import org.cagrid.identifiers.namingauthority.util.Keys;
 
@@ -12,10 +14,10 @@ import org.cagrid.identifiers.namingauthority.util.Keys;
 
 public class NamingAuthorityTestCase extends NamingAuthorityTestCaseBase {
 
-	private static IdentifierValues globalValues = null;
+	private static IdentifierData globalValues = null;
 	
 	static {
-		globalValues = new IdentifierValues();
+		globalValues = new IdentifierData();
 		
 		globalValues.put("URL", new KeyData( null, 
 				new String[]{"http://na.cagrid.org/foo", "http://na.cagrid.org/bar"} ));
@@ -66,7 +68,7 @@ public class NamingAuthorityTestCase extends NamingAuthorityTestCaseBase {
 	//////////////////////////////////////////////////////////////////////
 	public void testMissingKeyName() {
 		boolean gotexpected = false;
-		IdentifierValues values = new IdentifierValues();
+		IdentifierData values = new IdentifierData();
 		values.put("", null);
 		try {
 			URI id = this.NamingAuthority.createIdentifier(null, values);
@@ -94,9 +96,9 @@ public class NamingAuthorityTestCase extends NamingAuthorityTestCaseBase {
   
         ////////////////////////////////////////////////////////////////////////
         // Empty IdentifierValues
-        IdentifierValues values = null;
+        IdentifierData values = null;
         try {
-			URI id = this.NamingAuthority.createIdentifier(null, new IdentifierValues());
+			URI id = this.NamingAuthority.createIdentifier(null, new IdentifierData());
 			values = this.NamingAuthority.resolveIdentifier(null, id); 
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -112,7 +114,7 @@ public class NamingAuthorityTestCase extends NamingAuthorityTestCaseBase {
 	// Create Identifier with keys that have no data
 	////////////////////////////////////////////////////////////////////////////
 	public void testCreateIdentifierKeysNoData() {
-		IdentifierValues values = new IdentifierValues();
+		IdentifierData values = new IdentifierData();
 		values.put("KEY1", null);
 		values.put("KEY2", new KeyData());
 		values.put("KEY3", new KeyData(null, (ArrayList<String>)null));
@@ -155,7 +157,7 @@ public class NamingAuthorityTestCase extends NamingAuthorityTestCaseBase {
 	////////////////////////////////////////////////////////////////////////////
 	public void testCreateKeys() {
 		URI id = null;
-		IdentifierValues resolvedValues = null;
+		IdentifierData resolvedValues = null;
 		boolean gotexpected = false;
 		
 		try {
@@ -185,7 +187,7 @@ public class NamingAuthorityTestCase extends NamingAuthorityTestCaseBase {
 		// InvalidIdentifierValues (bad key's rwidentifier)
 		//
 		gotexpected = false;
-		IdentifierValues newKeys = new IdentifierValues();
+		IdentifierData newKeys = new IdentifierData();
 		newKeys.put("BAD RWINDENTIFIER", 
 				new KeyData(URI.create("http://badurl"), new ArrayList<String>()));
 		try {
@@ -204,7 +206,7 @@ public class NamingAuthorityTestCase extends NamingAuthorityTestCaseBase {
 		// InvalidIdentifierValues (bad ADMIN_IDENTIFIER)
 		//
 		gotexpected = false;
-		newKeys = new IdentifierValues();
+		newKeys = new IdentifierData();
 		newKeys.put(Keys.ADMIN_IDENTIFIERS, new KeyData(null, new String[] { "http://bad" } ));
 		try {
 			this.NamingAuthority.createKeys(null, id, newKeys);
@@ -221,7 +223,7 @@ public class NamingAuthorityTestCase extends NamingAuthorityTestCaseBase {
 		// InvalidIdentifierValues (bad READWRITE_IDENTIFIERS)
 		//
 		gotexpected = false;
-		newKeys = new IdentifierValues();
+		newKeys = new IdentifierData();
 		newKeys.put(Keys.READWRITE_IDENTIFIERS, new KeyData(null, new String[] { "http://bad" } ));
 		try {
 			this.NamingAuthority.createKeys(null, id, newKeys);
@@ -237,7 +239,7 @@ public class NamingAuthorityTestCase extends NamingAuthorityTestCaseBase {
 		////////////////////////////////////////////////////////////////////////////
 		// This should be successful
 		//
-		newKeys = new IdentifierValues();
+		newKeys = new IdentifierData();
 		newKeys.put("ADD KEY1", new KeyData(null, new String[]{"key1 value1", "key1 value2"}));
 		newKeys.put("ADD KEY2", new KeyData(null, new String[]{"key2 value"}));
 		try {
@@ -253,7 +255,7 @@ public class NamingAuthorityTestCase extends NamingAuthorityTestCaseBase {
 		// Key already exists
 		//
 		gotexpected = false;
-		newKeys = new IdentifierValues();
+		newKeys = new IdentifierData();
 		newKeys.put("CODE", new KeyData(null, new String[]{"code value"}));
 		try {
 			this.NamingAuthority.createKeys(null, id, newKeys);
@@ -274,7 +276,7 @@ public class NamingAuthorityTestCase extends NamingAuthorityTestCaseBase {
 	////////////////////////////////////////////////////////////////////////////
 	public void testDeleteKeys() {
 		URI id = null;
-		IdentifierValues resolvedValues = null;
+		IdentifierData resolvedValues = null;
 		boolean gotexpected = false;
 		
 		try {
@@ -344,7 +346,7 @@ public class NamingAuthorityTestCase extends NamingAuthorityTestCaseBase {
 	//////////////////////////////////////////////////////////////////////////////
 	public void testReplaceKeys() {
 		URI id = null;
-		IdentifierValues resolvedValues = null;
+		IdentifierData resolvedValues = null;
 		boolean gotexpected = false;
 		
 		try {
@@ -358,7 +360,7 @@ public class NamingAuthorityTestCase extends NamingAuthorityTestCaseBase {
 		// InvalidIdentifierValues (null)
 		//
 		try {
-			this.NamingAuthority.replaceKeys(null, id, null);
+			this.NamingAuthority.replaceKeyValues(null, id, null);
 		} catch (InvalidIdentifierValuesException e) {
 			//expected
 			gotexpected = true;
@@ -377,7 +379,7 @@ public class NamingAuthorityTestCase extends NamingAuthorityTestCaseBase {
 		IdentifierValues values = new IdentifierValues();
 		values.put("wrongKeyName", null);
 		try {
-			this.NamingAuthority.replaceKeys(null, id, values);
+			this.NamingAuthority.replaceKeyValues(null, id, values);
 		} catch (InvalidIdentifierValuesException e) {
 			gotexpected = true;
 		} catch (Exception e) {
@@ -393,9 +395,9 @@ public class NamingAuthorityTestCase extends NamingAuthorityTestCaseBase {
 		//
 		String newCode = "008";
 		values = new IdentifierValues();
-		values.put("CODE", new KeyData(null, new String[] {newCode}));
+		values.put("CODE", new KeyValues(new String[] {newCode}));
 		try {
-			this.NamingAuthority.replaceKeys(null, id, values);
+			this.NamingAuthority.replaceKeyValues(null, id, values);
 			resolvedValues = this.NamingAuthority.resolveIdentifier(null, id);
 		} catch (Exception e) {
 			e.printStackTrace();

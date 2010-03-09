@@ -39,18 +39,18 @@ public class IdentifierValueKey {
 
     @Column(nullable = true, unique = false)
     @Type(type = "org.cagrid.identifiers.namingauthority.hibernate.URIUserType")
-    private URI readWriteIdentifier;
+    private URI policyIdentifier;
 
     public IdentifierValueKey() {}
     
     public IdentifierValueKey(IdentifierValueKey ivk) {
-    	setReadWriteIdentifier(ivk.getReadWriteIdentifier());
+    	setPolicyIdentifier(ivk.getPolicyIdentifier());
     	setKey(ivk.getKey());
     	setValues(ivk.getValues());
     }
     
     public IdentifierValueKey(String key, List<String> values, URI rwIdentifier) {
-    	setReadWriteIdentifier(rwIdentifier);
+    	setPolicyIdentifier(rwIdentifier);
     	setKey(key);
     	setValues(values);
     }
@@ -59,12 +59,12 @@ public class IdentifierValueKey {
     	this(key, Arrays.asList(values), rwIdentifier);
     }
     
-    public URI getReadWriteIdentifier() {
-    	return this.readWriteIdentifier;
+    public URI getPolicyIdentifier() {
+    	return this.policyIdentifier;
     }
     
-    public void setReadWriteIdentifier(URI identifier) {
-    	this.readWriteIdentifier = identifier;
+    public void setPolicyIdentifier(URI identifier) {
+    	this.policyIdentifier = identifier;
     }
     
     public List<String> getValues() {

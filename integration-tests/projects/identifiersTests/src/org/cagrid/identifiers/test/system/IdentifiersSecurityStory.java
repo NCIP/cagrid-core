@@ -21,6 +21,8 @@ import org.cagrid.identifiers.test.system.steps.CreateKeysSecurityStep;
 import org.cagrid.identifiers.test.system.steps.CreateSystemAdminStep;
 import org.cagrid.identifiers.test.system.steps.DeleteKeysSecurityStep;
 import org.cagrid.identifiers.test.system.steps.LoadUserCredentialsStep;
+import org.cagrid.identifiers.test.system.steps.ReplaceKeysSecurityStep;
+import org.cagrid.identifiers.test.system.steps.ResolveIdentifierSecurityStep;
 
 
 public class IdentifiersSecurityStory extends Story {
@@ -114,8 +116,9 @@ public class IdentifiersSecurityStory extends Story {
         steps.add(new CreateIdentifierSecurityStep(testInfo));
         steps.add(new CreateKeysSecurityStep(testInfo));
         steps.add(new DeleteKeysSecurityStep(testInfo));
-        
-
+        steps.add(new ReplaceKeysSecurityStep(testInfo));
+        steps.add(new ResolveIdentifierSecurityStep(testInfo));
+       
         return steps;
     }
 

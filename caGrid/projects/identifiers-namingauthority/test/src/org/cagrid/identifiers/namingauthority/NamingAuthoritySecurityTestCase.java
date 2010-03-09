@@ -1,15 +1,13 @@
 package org.cagrid.identifiers.namingauthority;
 
 import java.net.URI;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 
+import org.cagrid.identifiers.namingauthority.domain.IdentifierData;
 import org.cagrid.identifiers.namingauthority.domain.IdentifierValues;
 import org.cagrid.identifiers.namingauthority.domain.KeyData;
+import org.cagrid.identifiers.namingauthority.domain.KeyValues;
 import org.cagrid.identifiers.namingauthority.test.NamingAuthorityTestCaseBase;
 import org.cagrid.identifiers.namingauthority.util.Keys;
-import org.cagrid.identifiers.namingauthority.util.SecurityUtil;
 
 
 
@@ -21,7 +19,7 @@ public class NamingAuthoritySecurityTestCase extends NamingAuthorityTestCaseBase
 	////////////////////////////////////////////////////////
 	public void testResolveSystemIdentifier() {
 		
-		IdentifierValues values = null;
+		IdentifierData values = null;
 		try {
 			values = this.NamingAuthority.resolveIdentifier(null, getSystemIdentifier());
 		} catch (Exception e) {
@@ -30,7 +28,8 @@ public class NamingAuthoritySecurityTestCase extends NamingAuthorityTestCaseBase
 		} 
 		
 		KeyData kd = values.getValues(Keys.PUBLIC_CREATION);
-		if (kd == null || kd.getValues() == null || kd.getValues().size() != 1) {
+		if (kd == null || kd.getValues() == null 
+				|| kd.getValues().size() != 1) {
 			fail("No PUBLIC_CREATION flag defined under system identifier");
 		}
 		
@@ -47,7 +46,7 @@ public class NamingAuthoritySecurityTestCase extends NamingAuthorityTestCaseBase
 	public void testCreateKeys1() {
 		boolean gotexpected = false;
 		
-		IdentifierValues newKeys = new IdentifierValues();
+		IdentifierData newKeys = new IdentifierData();
 		newKeys.put(Keys.WRITE_USERS, new KeyData(null, new String[]{}));
 		try {
 			this.NamingAuthority.createKeys(null, getSystemIdentifier(), newKeys);
@@ -71,7 +70,7 @@ public class NamingAuthoritySecurityTestCase extends NamingAuthorityTestCaseBase
 		// Create identifier with empty list of WRITE_USERS
 		// 
 		URI id = null;
-		IdentifierValues values = new IdentifierValues();
+		IdentifierData values = new IdentifierData();
 		values.put(Keys.WRITE_USERS, null);
 		try {
 			id = this.NamingAuthority.createIdentifier(null, values);
@@ -84,7 +83,7 @@ public class NamingAuthoritySecurityTestCase extends NamingAuthorityTestCaseBase
 		// Now attempt to add a key to it
 		//
 		boolean gotexpected = false;
-		IdentifierValues newKeys = new IdentifierValues();
+		IdentifierData newKeys = new IdentifierData();
 		newKeys.put("A KEY", new KeyData(null, new String[]{ "A VALUE" }));
 		try {
 			this.NamingAuthority.createKeys(null, id, newKeys);
@@ -128,7 +127,7 @@ public class NamingAuthoritySecurityTestCase extends NamingAuthorityTestCaseBase
 		// Create identifier with empty list of WRITE_USERS
 		// 
 		URI id = null;
-		IdentifierValues values = new IdentifierValues();
+		IdentifierData values = new IdentifierData();
 		values.put(Keys.WRITE_USERS, null);
 		values.put("A KEY", null);
 		try {
@@ -161,7 +160,7 @@ public class NamingAuthoritySecurityTestCase extends NamingAuthorityTestCaseBase
 	///////////////////////////////////////////////////////////////
 	public void testResolveIdentifier1() {
 		URI id = null;
-		IdentifierValues values = new IdentifierValues();
+		IdentifierData values = new IdentifierData();
 		values.put("CODE", new KeyData(null, new String[]{"007"}));
 		values.put(Keys.READ_USERS, null);
 		try {
@@ -193,7 +192,7 @@ public class NamingAuthoritySecurityTestCase extends NamingAuthorityTestCaseBase
 		//
 		gotexpected = false;
 		try {
-			this.NamingAuthority.getKeys(null, id);
+			this.NamingAuthority.getKeyNames(null, id);
 		} catch (NamingAuthoritySecurityException e) {
 			e.printStackTrace();
 			gotexpected = true;
@@ -206,11 +205,11 @@ public class NamingAuthoritySecurityTestCase extends NamingAuthorityTestCaseBase
 		}
 		
 		//
-		// getKeyValues
+		// getKeyData
 		//
 		gotexpected = false;
 		try {
-			this.NamingAuthority.getKeyValues(null, id, "CODE");
+			this.NamingAuthority.getKeyData(null, id, "CODE");
 		} catch (NamingAuthoritySecurityException e) {
 			e.printStackTrace();
 			gotexpected = true;
@@ -231,7 +230,7 @@ public class NamingAuthoritySecurityTestCase extends NamingAuthorityTestCaseBase
 		
 		// Create security identifier
 		URI rwIdentifier = null;
-		IdentifierValues values = new IdentifierValues();
+		IdentifierData values = new IdentifierData();
 		values.put(Keys.READ_USERS, new KeyData(null, new String[]{"A"}));
 		try {
 			rwIdentifier = this.NamingAuthority.createIdentifier(null, values);
@@ -242,7 +241,7 @@ public class NamingAuthoritySecurityTestCase extends NamingAuthorityTestCaseBase
 		
 		// Create reference to security identifier
 		URI id = null;
-		values = new IdentifierValues();
+		values = new IdentifierData();
 		values.put("CODE", null);
 		values.put(Keys.READWRITE_IDENTIFIERS, new KeyData(null, 
 				new String[]{ rwIdentifier.normalize().toString() }));
@@ -275,7 +274,7 @@ public class NamingAuthoritySecurityTestCase extends NamingAuthorityTestCaseBase
 		//
 		gotexpected = false;
 		try {
-			this.NamingAuthority.getKeys(null, id);
+			this.NamingAuthority.getKeyNames(null, id);
 		} catch (NamingAuthoritySecurityException e) {
 			e.printStackTrace();
 			gotexpected = true;
@@ -292,7 +291,7 @@ public class NamingAuthoritySecurityTestCase extends NamingAuthorityTestCaseBase
 		//
 		gotexpected = false;
 		try {
-			this.NamingAuthority.getKeyValues(null, id, "CODE");
+			this.NamingAuthority.getKeyData(null, id, "CODE");
 		} catch (NamingAuthoritySecurityException e) {
 			e.printStackTrace();
 			gotexpected = true;
@@ -313,7 +312,7 @@ public class NamingAuthoritySecurityTestCase extends NamingAuthorityTestCaseBase
 		
 		// Create security identifier
 		URI rwIdentifier = null;
-		IdentifierValues values = new IdentifierValues();
+		IdentifierData values = new IdentifierData();
 		values.put(Keys.READ_USERS, new KeyData(null, new String[]{"A"}));
 		try {
 			rwIdentifier = this.NamingAuthority.createIdentifier(null, values);
@@ -324,7 +323,7 @@ public class NamingAuthoritySecurityTestCase extends NamingAuthorityTestCaseBase
 		
 		// Create reference to security identifier
 		URI id = null;
-		values = new IdentifierValues();
+		values = new IdentifierData();
 		values.put("CODE", new KeyData(rwIdentifier, new String[]{"008"}));
 		try {
 			id = this.NamingAuthority.createIdentifier(null, values);
@@ -355,7 +354,7 @@ public class NamingAuthoritySecurityTestCase extends NamingAuthorityTestCaseBase
 		//
 		gotexpected = false;
 		try {
-			this.NamingAuthority.getKeys(null, id);
+			this.NamingAuthority.getKeyNames(null, id);
 		} catch (NamingAuthoritySecurityException e) {
 			e.printStackTrace();
 			gotexpected = true;
@@ -372,7 +371,7 @@ public class NamingAuthoritySecurityTestCase extends NamingAuthorityTestCaseBase
 		//
 		gotexpected = false;
 		try {
-			this.NamingAuthority.getKeyValues(null, id, "CODE");
+			this.NamingAuthority.getKeyData(null, id, "CODE");
 		} catch (NamingAuthoritySecurityException e) {
 			e.printStackTrace();
 			gotexpected = true;
@@ -396,9 +395,9 @@ public class NamingAuthoritySecurityTestCase extends NamingAuthorityTestCaseBase
 		//
 		boolean gotexpected = false;
 		IdentifierValues values = new IdentifierValues();
-		values.put(Keys.ADMIN_USERS, new KeyData(null, new String[] {"A"}));
+		values.put(Keys.ADMIN_USERS, new KeyValues(new String[] {"A"}));
 		try {
-			this.NamingAuthority.replaceKeys(null, getSystemIdentifier(), values);
+			this.NamingAuthority.replaceKeyValues(null, getSystemIdentifier(), values);
 		} catch (NamingAuthoritySecurityException e) {
 			gotexpected = true;
 		} catch (Exception e) {
@@ -417,7 +416,7 @@ public class NamingAuthoritySecurityTestCase extends NamingAuthorityTestCaseBase
 	public void testReplaceKeys2() {
 		
 		URI id = null;
-		IdentifierValues values = new IdentifierValues();
+		IdentifierData values = new IdentifierData();
 		values.put("CODE", new KeyData(null, new String[]{"007"}));
 		values.put(Keys.WRITE_USERS, null);
 		try {
@@ -428,10 +427,10 @@ public class NamingAuthoritySecurityTestCase extends NamingAuthorityTestCaseBase
 		} 
 		
 		boolean gotexpected = false;
-		values = new IdentifierValues();
-		values.put("CODE", new KeyData(null, new String[] {"008"}));
+		IdentifierValues values2 = new IdentifierValues();
+		values2.put("CODE", new KeyValues(new String[] {"008"}));
 		try {
-			this.NamingAuthority.replaceKeys(null, id, values);
+			this.NamingAuthority.replaceKeyValues(null, id, values2);
 		} catch (NamingAuthoritySecurityException e) {
 			gotexpected = true;
 		} catch (Exception e) {
@@ -452,7 +451,7 @@ public class NamingAuthoritySecurityTestCase extends NamingAuthorityTestCaseBase
 		
 		// Create security identifier
 		URI rwIdentifier = null;
-		IdentifierValues values = new IdentifierValues();
+		IdentifierData values = new IdentifierData();
 		values.put(Keys.WRITE_USERS, new KeyData(null, new String[]{"A"}));
 		try {
 			rwIdentifier = this.NamingAuthority.createIdentifier(null, values);
@@ -463,7 +462,7 @@ public class NamingAuthoritySecurityTestCase extends NamingAuthorityTestCaseBase
 		
 		// Create identifier with reference to security identifier
 		URI id = null;
-		values = new IdentifierValues();
+		values = new IdentifierData();
 		values.put("CODE", null);
 		values.put(Keys.READWRITE_IDENTIFIERS, new KeyData(null, 
 				new String[]{ rwIdentifier.normalize().toString() }));
@@ -476,10 +475,10 @@ public class NamingAuthoritySecurityTestCase extends NamingAuthorityTestCaseBase
 		
 		// Now try to replace a key
 		boolean gotexpected = false;
-		values = new IdentifierValues();
-		values.put("CODE", new KeyData(null, new String[] {"008"}));
+		IdentifierValues values2 = new IdentifierValues();
+		values2.put("CODE", new KeyValues(new String[] {"008"}));
 		try {
-			this.NamingAuthority.replaceKeys(null, id, values);
+			this.NamingAuthority.replaceKeyValues(null, id, values2);
 		} catch (NamingAuthoritySecurityException e) {
 			gotexpected = true;
 		} catch (Exception e) {
@@ -498,7 +497,7 @@ public class NamingAuthoritySecurityTestCase extends NamingAuthorityTestCaseBase
 		
 		// Create security identifier
 		URI rwIdentifier = null;
-		IdentifierValues values = new IdentifierValues();
+		IdentifierData values = new IdentifierData();
 		values.put(Keys.WRITE_USERS, new KeyData(null, new String[]{"A"}));
 		try {
 			rwIdentifier = this.NamingAuthority.createIdentifier(null, values);
@@ -509,7 +508,7 @@ public class NamingAuthoritySecurityTestCase extends NamingAuthorityTestCaseBase
 		
 		// Create identifier with reference to security identifier
 		URI id = null;
-		values = new IdentifierValues();
+		values = new IdentifierData();
 		values.put("CODE", new KeyData(rwIdentifier, new String[]{"007"}));
 		try {
 			id = this.NamingAuthority.createIdentifier(null, values);
@@ -520,10 +519,10 @@ public class NamingAuthoritySecurityTestCase extends NamingAuthorityTestCaseBase
 		
 		// Now try to replace the value
 		boolean gotexpected = false;
-		values = new IdentifierValues();
-		values.put("CODE", new KeyData(null, new String[] {"008"}));
+		IdentifierValues values2 = new IdentifierValues();
+		values2.put("CODE", new KeyValues(new String[] {"008"}));
 		try {
-			this.NamingAuthority.replaceKeys(null, id, values);
+			this.NamingAuthority.replaceKeyValues(null, id, values2);
 		} catch (NamingAuthoritySecurityException e) {
 			gotexpected = true;
 		} catch (Exception e) {

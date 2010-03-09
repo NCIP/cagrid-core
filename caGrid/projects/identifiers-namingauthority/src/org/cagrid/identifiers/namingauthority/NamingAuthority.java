@@ -1,7 +1,7 @@
 package org.cagrid.identifiers.namingauthority;
 
 import java.net.URI;
-import org.cagrid.identifiers.namingauthority.domain.IdentifierValues;
+import org.cagrid.identifiers.namingauthority.domain.IdentifierData;
 import org.cagrid.identifiers.namingauthority.domain.KeyData;
 
 public interface NamingAuthority {
@@ -19,7 +19,7 @@ public interface NamingAuthority {
     //
     // Returns only keys associated with a given identifier
     //
-	public String[] getKeys(SecurityInfo secInfo, URI identifier) 
+	public String[] getKeyNames(SecurityInfo secInfo, URI identifier) 
 		throws 
 			NamingAuthorityConfigurationException, 
 			InvalidIdentifierException, 
@@ -28,7 +28,7 @@ public interface NamingAuthority {
 	//
 	// Returns values associated with a given key
 	//
-	public String[] getKeyValues(SecurityInfo secInfo, URI identifier, String key) 
+	public KeyData getKeyData(SecurityInfo secInfo, URI identifier, String key) 
 		throws 
 			InvalidIdentifierException, 
 			NamingAuthoritySecurityException, 
@@ -37,7 +37,7 @@ public interface NamingAuthority {
 	//
 	// Returns all metadata (keys/values) associated with a given identifier
 	//
-    public IdentifierValues resolveIdentifier(SecurityInfo secInfo, URI identifier) 
+    public IdentifierData resolveIdentifier(SecurityInfo secInfo, URI identifier) 
     	throws 
         	InvalidIdentifierException, 
         	NamingAuthorityConfigurationException, 

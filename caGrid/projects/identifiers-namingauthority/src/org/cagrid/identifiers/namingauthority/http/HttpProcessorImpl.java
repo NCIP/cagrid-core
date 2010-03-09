@@ -5,26 +5,24 @@ import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.io.Writer;
 import java.net.URI;
-import java.net.URISyntaxException;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import org.cagrid.identifiers.namingauthority.HttpProcessor;
 import org.cagrid.identifiers.namingauthority.InvalidIdentifierException;
 import org.cagrid.identifiers.namingauthority.NamingAuthority;
 import org.cagrid.identifiers.namingauthority.NamingAuthorityConfigurationException;
 import org.cagrid.identifiers.namingauthority.NamingAuthoritySecurityException;
-import org.cagrid.identifiers.namingauthority.SecurityInfo;
-import org.cagrid.identifiers.namingauthority.domain.IdentifierValues;
+import org.cagrid.identifiers.namingauthority.domain.IdentifierData;
 import org.cagrid.identifiers.namingauthority.domain.KeyData;
 import org.cagrid.identifiers.namingauthority.domain.NamingAuthorityConfig;
 import org.cagrid.identifiers.namingauthority.impl.SecurityInfoImpl;
 import org.cagrid.identifiers.namingauthority.util.IdentifierUtil;
-import org.cagrid.identifiers.namingauthority.HttpProcessor;
 import org.exolab.castor.xml.MarshalException;
 import org.exolab.castor.xml.Marshaller;
 import org.exolab.castor.xml.ValidationException;
 import org.globus.axis.gsi.GSIConstants;
-
-
-import javax.servlet.http.*;
 
 
 public class HttpProcessorImpl implements HttpProcessor {
@@ -94,7 +92,7 @@ public class HttpProcessorImpl implements HttpProcessor {
     }
 
 
-    public String htmlResponse(URI uri, IdentifierValues ivs) throws NamingAuthorityConfigurationException {
+    public String htmlResponse(URI uri, IdentifierData ivs) throws NamingAuthorityConfigurationException {
         StringBuffer msg = new StringBuffer();
 
         if (ivs == null) {
@@ -106,14 +104,16 @@ public class HttpProcessorImpl implements HttpProcessor {
             for (String key : ivs.getKeys()) {
                 msg.append("<b>Key: &nbsp;</b>" + key + "<br>\n");
                 KeyData kd = ivs.getValues(key);
-                msg.append("<b>Security Identifier: &nbsp;</b>");
-                if (kd.getReadWriteIdentifier() != null) {
-                	msg.append(kd.getReadWriteIdentifier().normalize().toString());
+                msg.append("<b>Policy Identifier: &nbsp;</b>");
+                if (kd.getPolicyIdentifier() != null) {
+                	msg.append(kd.getPolicyIdentifier().normalize().toString());
                 }
                 msg.append("<br>\n");
                 
-                for (String value : kd.getValues()) {
-                    msg.append("<b>Key Data: &nbsp;</b>" + escape(value) + "<br>\n");
+                if (kd.getValues() != null) {
+                	for (String value : kd.getValues()) {
+                		msg.append("<b>Key Data: &nbsp;</b>" + escape(value) + "<br>\n");
+                	}
                 }
                 msg.append("<hr>\n");
             }
@@ -225,9 +225,9 @@ public class HttpProcessorImpl implements HttpProcessor {
                 responseStatus = HttpServletResponse.SC_BAD_REQUEST;
             } else {
 
-                IdentifierValues ivs = null;
+                IdentifierData ivs = null;
                 try {
-                    ivs = (IdentifierValues) namingAuthority.resolveIdentifier(secInfo, IdentifierUtil.build(namingAuthority
+                    ivs = (IdentifierData) namingAuthority.resolveIdentifier(secInfo, IdentifierUtil.build(namingAuthority
                         .getConfiguration().getPrefix(), uri));
                     
                     if (xmlResponse) {

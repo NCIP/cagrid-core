@@ -8,7 +8,8 @@ import org.cagrid.identifiers.namingauthority.InvalidIdentifierException;
 import org.cagrid.identifiers.namingauthority.InvalidIdentifierValuesException;
 import org.cagrid.identifiers.namingauthority.MaintainerNamingAuthority;
 import org.cagrid.identifiers.namingauthority.NamingAuthorityConfigurationException;
-import org.cagrid.identifiers.namingauthority.domain.IdentifierValues;
+import org.cagrid.identifiers.namingauthority.domain.IdentifierData;
+import org.cagrid.identifiers.namingauthority.domain.KeyData;
 import org.cagrid.identifiers.namingauthority.util.SecurityUtil;
 
 
@@ -22,7 +23,7 @@ public abstract class NamingAuthorityTestCaseBase extends NamingAuthorityIntegra
         assertNotNull(this.NamingAuthority);
     }
 
-	protected void checkKeysWithValues(IdentifierValues resolvedValues, String[] keyNames) {
+	protected void checkKeysWithValues(IdentifierData resolvedValues, String[] keyNames) {
 
         for(String key : keyNames) {
         	List<String> values = null;
@@ -39,7 +40,7 @@ public abstract class NamingAuthorityTestCaseBase extends NamingAuthorityIntegra
         }
     }
 	
-	protected void assertKeyValues(IdentifierValues values, String[] keyNames) {
+	protected void assertKeyValues(IdentifierData values, String[] keyNames) {
         URI id = null;
         try {
             id = this.NamingAuthority.createIdentifier(null, values);
@@ -54,11 +55,11 @@ public abstract class NamingAuthorityTestCaseBase extends NamingAuthorityIntegra
             fail("test configuration error");
         }
 
-        String[] resolvedValues = null;
+        KeyData resolvedValues = null;
 
         for(String key : keyNames) {
         	try {
-        		resolvedValues = this.NamingAuthority.getKeyValues(null, id, key);
+        		resolvedValues = this.NamingAuthority.getKeyData(null, id, key);
         	} catch (NamingAuthorityConfigurationException e) {
         		e.printStackTrace();
         		fail("test configuration error");
@@ -69,11 +70,11 @@ public abstract class NamingAuthorityTestCaseBase extends NamingAuthorityIntegra
         		fail("test configuration error");
         	}
         	List<String> inValues = values.getValues(key).getValues();
-        	assertEquals(inValues.toArray(new String[inValues.size()]), resolvedValues);
+        	assertEquals(inValues.toArray(new String[inValues.size()]), resolvedValues.getValuesAsArray());
         }
     }
 	
-	protected void assertKeys(IdentifierValues values) {
+	protected void assertKeys(IdentifierData values) {
         URI id = null;
         try {
             id = this.NamingAuthority.createIdentifier(null, values);
@@ -91,7 +92,7 @@ public abstract class NamingAuthorityTestCaseBase extends NamingAuthorityIntegra
         String[] resolvedKeys = null;
 
         try {
-            resolvedKeys = this.NamingAuthority.getKeys(null, id);
+            resolvedKeys = this.NamingAuthority.getKeyNames(null, id);
         } catch (NamingAuthorityConfigurationException e) {
             e.printStackTrace();
             fail("test configuration error");
@@ -104,7 +105,7 @@ public abstract class NamingAuthorityTestCaseBase extends NamingAuthorityIntegra
         assertEquals(values.getKeys(), resolvedKeys);
     }
 
-	protected void assertResolvedValues(IdentifierValues values) {
+	protected void assertResolvedValues(IdentifierData values) {
         URI id = null;
         try {
             id = this.NamingAuthority.createIdentifier(null, values);
@@ -119,7 +120,7 @@ public abstract class NamingAuthorityTestCaseBase extends NamingAuthorityIntegra
             fail("test configuration error");
         }
 
-        IdentifierValues resolvedValues = null;
+        IdentifierData resolvedValues = null;
 
         try {
             resolvedValues = this.NamingAuthority.resolveIdentifier(null, id);

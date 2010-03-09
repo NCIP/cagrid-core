@@ -1,34 +1,62 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xs:schema targetNamespace="http://na.cagrid.org/1.0/NamingAuthority"
-	xmlns="http://na.cagrid.org/1.0/NamingAuthority"
-	xmlns:xs="http://www.w3.org/2001/XMLSchema"
+	xmlns="http://na.cagrid.org/1.0/NamingAuthority" xmlns:xs="http://www.w3.org/2001/XMLSchema"
 	elementFormDefault="qualified" attributeFormDefault="unqualified">
 
 	<xs:element name="Identifier" type="xs:anyURI"/>
+
+	<xs:element name="PolicyIdentifier" type="xs:anyURI"/>
+
+	<xs:element name="KeyName" type="xs:string"/>
 	
-	<xs:element name="IdentifierValues" type="IdentifierValues" />
-	<xs:complexType name="IdentifierValues">
+	<xs:element name="KeyValues" type="KeyValues"/>
+	<xs:complexType name="KeyValues">
 		<xs:sequence>
-			<xs:element ref="KeyValues" minOccurs="0" maxOccurs="unbounded"/>
+			<xs:element name="value" type="xs:string" minOccurs="0" maxOccurs="unbounded"/>
 		</xs:sequence>
 	</xs:complexType>
 	
 	<xs:element name="KeyData" type="KeyData"/>
 	<xs:complexType name="KeyData">
-		<xs:sequence>
-			<xs:element name="value" type="xs:string" minOccurs="1" maxOccurs="unbounded"/>
-			<xs:element name="readWriteIdentifier" type="xs:anyURI" minOccurs="0" />
-		</xs:sequence>
+		<xs:complexContent>
+			<xs:extension base="KeyValues">
+				<xs:sequence>
+					<xs:element ref="PolicyIdentifier"/>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
 	</xs:complexType>
 	
-	<xs:element name="KeyValues" type="KeyValues"/>
-	<xs:complexType name="KeyValues">
+	<xs:element name="KeyNameValues" type="KeyNameValues"/>
+	<xs:complexType name="KeyNameValues">
 		<xs:sequence>
-			<xs:element name="key" type="xs:string"/>
+			<xs:element ref="KeyName"/>
+			<xs:element ref="KeyValues"/>
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:element name="KeyNameData" type="KeyNameData"/>
+	<xs:complexType name="KeyNameData">
+		<xs:sequence>
+			<xs:element ref="KeyName"/>
 			<xs:element ref="KeyData"/>
 		</xs:sequence>
 	</xs:complexType>
+		
+	<xs:element name="IdentifierData" type="IdentifierData"/>
+	<xs:complexType name="IdentifierData">
+		<xs:sequence>
+			<xs:element ref="KeyNameData" minOccurs="0" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
 	
+	<xs:element name="IdentifierValues" type="IdentifierValues"/>
+	<xs:complexType name="IdentifierValues">
+		<xs:sequence>
+			<xs:element ref="KeyNameValues" minOccurs="0" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+
 	<xs:element name="Configuration" type="Configuration"/>
 	<xs:complexType name="Configuration">
 		<xs:sequence>

@@ -4,5 +4,5 @@ import java.net.URI;
 
 public interface NamingAuthorityConfig {
 	public URI getPrefix();
-	public String getGridSvcUrl();
+	public URI getGridSvcUrl();
 }

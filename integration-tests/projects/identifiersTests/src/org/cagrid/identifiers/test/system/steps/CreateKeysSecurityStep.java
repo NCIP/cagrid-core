@@ -145,7 +145,8 @@ public class CreateKeysSecurityStep extends Step {
         ////////////////////////////////////////////////////////////////
         expected = false;
         try {
-        	IdentifiersTestUtil.createKey(client, testInfo.getUserB(), identifier, "CODE", null);
+        	IdentifiersTestUtil.createKey(client, testInfo.getUserB(), 
+        			identifier, "CODE", null);
         
         } catch( NamingAuthoritySecurityFault e) {
         	System.err.println(e.getFaultString());
@@ -164,8 +165,10 @@ public class CreateKeysSecurityStep extends Step {
         ////////////////////////////////////////////////////////////////
         // Add User B as identifier's writer
         ////////////////////////////////////////////////////////////////
-        IdentifiersTestUtil.replaceKey(client, testInfo.getSysAdminUser(), identifier, 
-        		Keys.WRITE_USERS, new String[]{testInfo.getUserB().getIdentity()});
+        IdentifiersTestUtil.replaceKeyValues(client, 
+        		testInfo.getSysAdminUser(), identifier, 
+        		Keys.WRITE_USERS, 
+        		new String[]{testInfo.getUserB().getIdentity()});
         
         ////////////////////////////////////////////////////////////////
         // User B can create keys now

@@ -4,14 +4,18 @@ import gov.nih.nci.cagrid.identifiers.client.IdentifiersNAServiceClient;
 import gov.nih.nci.cagrid.testing.system.haste.Step;
 
 import java.rmi.RemoteException;
+
+import namingauthority.IdentifierData;
 import namingauthority.IdentifierValues;
 import namingauthority.KeyData;
+import namingauthority.KeyNameData;
 import namingauthority.KeyValues;
 
 import org.apache.axis.message.addressing.EndpointReferenceType;
 import org.apache.axis.types.URI;
 import org.apache.axis.types.URI.MalformedURIException;
 import org.cagrid.identifiers.test.system.IdentifiersTestInfo;
+import org.cagrid.identifiers.test.system.IdentifiersTestUtil;
 
 public class GridServiceIdentifierCreationStep extends Step {
 
@@ -33,30 +37,21 @@ public class GridServiceIdentifierCreationStep extends Step {
             fail("Error constructing client:" + e.getMessage());
         }
         
-        KeyValues[] keyValues = new KeyValues[2];
-		keyValues[0] = new KeyValues();
-		keyValues[0].setKey("URL");
-		keyValues[0].setKeyData(new KeyData(null, 
-				new String[] {"http://na.cagrid.org/foo", "http://na.cagrid.org/bar" }));
-
-		keyValues[1] = new KeyValues();
-		keyValues[1].setKey("CODE");
-		keyValues[1].setKeyData(new KeyData(null, new String[] { "007" }));
+        String[] keys = new String[] { "CODES", "URLS" };
+        String[][] values = new String[][]{
+        		{"007"},
+        		{"http://na.cagrid.org/foo", "http://na.cagrid.org/bar" }
+        };
+        
+        KeyNameData[] kvs = new KeyNameData[ keys.length ];
+		for( int i=0; i < keys.length; i++) {
+			kvs[i] = IdentifiersTestUtil.createKeyNameData(keys[i], values[i]);
+		}
 		
-		IdentifierValues values = new IdentifierValues(keyValues);
+		IdentifierData id = new IdentifierData(kvs);
 		
         IdentifiersNAServiceClient client = new IdentifiersNAServiceClient( epr );
-        URI identifier = null;
-        try {
-			identifier = 
-				client.createIdentifier(new IdentifierValues(keyValues));
-			System.out.println("Identifier: " + identifier.toString());
-		}
-		catch(Exception e) {
-			e.printStackTrace();
-			fail(e.toString());
-		}
-		
-        this.testInfo.addIdentifier(identifier, values);
+        URI identifier = client.createIdentifier(id);
+        this.testInfo.addIdentifier(identifier, id);
     }
 }

@@ -6,17 +6,18 @@ import gov.nih.nci.cagrid.identifiers.stubs.types.InvalidIdentifierValuesFault;
 import gov.nih.nci.cagrid.identifiers.stubs.types.NamingAuthorityConfigurationFault;
 import gov.nih.nci.cagrid.identifiers.stubs.types.NamingAuthoritySecurityFault;
 import gov.nih.nci.cagrid.testing.system.haste.Step;
-import java.rmi.RemoteException;
-import java.util.ArrayList;
 
+import java.rmi.RemoteException;
+
+import namingauthority.IdentifierData;
 import namingauthority.IdentifierValues;
-import namingauthority.KeyData;
-import namingauthority.KeyValues;
+import namingauthority.KeyNameData;
 
 import org.apache.axis.message.addressing.EndpointReferenceType;
 import org.apache.axis.types.URI;
 import org.apache.axis.types.URI.MalformedURIException;
 import org.cagrid.identifiers.test.system.IdentifiersTestInfo;
+import org.cagrid.identifiers.test.system.IdentifiersTestUtil;
 
 
 public class IdentifiersMaintenanceStep extends Step {
@@ -31,11 +32,11 @@ public class IdentifiersMaintenanceStep extends Step {
     public void runStep() throws RemoteException, MalformedURIException {
     	
     	assertNotNull("Null identifier list", testInfo.getIdentifiers());
-    	assertNotNull("Null identifier values list", testInfo.getIdentifierValues());
+    	assertNotNull("Null identifier values list", testInfo.getIdentifierData());
     	
     	// Just pick one
     	URI identifier = testInfo.getIdentifiers().get(0);
-    	IdentifierValues values = testInfo.getIdentifierValues().get(0);
+    	IdentifierData values = testInfo.getIdentifierData().get(0);
     	
     	assertNotNull("Null identifier", identifier);
     	assertNotNull("Null values", values);
@@ -57,53 +58,76 @@ public class IdentifiersMaintenanceStep extends Step {
     ////////////////////////////////////////////////////////////////////////////
     // Test createKeys interface
     ////////////////////////////////////////////////////////////////////////////
-    public void testCreateKeys(IdentifiersNAServiceClient client, URI identifier) throws InvalidIdentifierFault, NamingAuthorityConfigurationFault, NamingAuthoritySecurityFault, InvalidIdentifierValuesFault, RemoteException {
+    public void testCreateKeys(IdentifiersNAServiceClient client, URI identifier) 
+    	throws 
+    		InvalidIdentifierFault, 
+    		NamingAuthorityConfigurationFault, 
+    		NamingAuthoritySecurityFault, 
+    		InvalidIdentifierValuesFault, 
+    		RemoteException {
 
-    	KeyValues[] newKeyValues = new KeyValues[1];
-    	newKeyValues[0] = new KeyValues();
-    	newKeyValues[0].setKey("KEY3");
-    	newKeyValues[0].setKeyData(new KeyData(null, new String[]{"KEY3 VALUE"}));
+    	String keyName = "KEY3";
+    	String[] keyValues = new String[]{"KEY3 VALUE"};
 
-    	client.createKeys(identifier, new IdentifierValues(newKeyValues));
+    	IdentifiersTestUtil.createKey(client, null, identifier, keyName, keyValues);
 
-    	String[] values = client.getKeyValues(identifier, "KEY3");
-    	if (values == null || values.length != 1
-    			|| !values[0].equals("KEY3 VALUE")) {
-    		fail("Unexpected results");
+    	KeyNameData values = client.getKeyData(identifier, keyName);
+    	for(String value : values.getKeyData().getValue()) {
+    		if (value.equals(keyValues[0])) {
+    			// got it
+    			return;
+    		}
     	}
+   		fail("Unexpected results");
     }
     
     ////////////////////////////////////////////////////////////////////////////
     // Test replaceKeys interface
     ////////////////////////////////////////////////////////////////////////////
-    public void testReplaceKeys(IdentifiersNAServiceClient client, URI identifier) throws InvalidIdentifierFault, NamingAuthorityConfigurationFault, NamingAuthoritySecurityFault, InvalidIdentifierValuesFault, RemoteException {
+    public void testReplaceKeys(IdentifiersNAServiceClient client, URI identifier) 
+    	throws 
+    		InvalidIdentifierFault, 
+    		NamingAuthorityConfigurationFault, 
+    		NamingAuthoritySecurityFault, 
+    		InvalidIdentifierValuesFault, 
+    		RemoteException {
 
-    	KeyValues[] newKeyValues = new KeyValues[1];
-    	newKeyValues[0] = new KeyValues();
-    	newKeyValues[0].setKey("KEY3");
-    	newKeyValues[0].setKeyData(new KeyData(null, new String[]{"KEY3 NEW VALUE"}));
+    	String keyName = "KEY3";
+    	String[] keyValues = new String[]{"KEY3 NEW VALUE"};
+    	
+    	IdentifiersTestUtil.replaceKeyValues(client, null, identifier, keyName, keyValues);
 
-    	client.replaceKeys(identifier, new IdentifierValues(newKeyValues));
-
-    	String[] values = client.getKeyValues(identifier, "KEY3");
-    	if (values == null || values.length != 1
-    			|| !values[0].equals("KEY3 NEW VALUE")) {
-    		fail("Unexpected results");
+    	KeyNameData values = IdentifiersTestUtil.getKeyData(client, null, identifier, keyName);
+    	for(String value : values.getKeyData().getValue()) {
+    		if (value.equals(keyValues[0])) {
+    			// got it
+    			return;
+    		}
     	}
+   		fail("Unexpected results");
     }
     
     ////////////////////////////////////////////////////////////////////////////
     // Test deleteKeys interface
     ////////////////////////////////////////////////////////////////////////////
-    public void testDeleteKeys(IdentifiersNAServiceClient client, URI identifier) throws InvalidIdentifierFault, NamingAuthorityConfigurationFault, NamingAuthoritySecurityFault, InvalidIdentifierValuesFault, RemoteException {
+    public void testDeleteKeys(IdentifiersNAServiceClient client, URI identifier) 
+    	throws 
+    		InvalidIdentifierFault, 
+    		NamingAuthorityConfigurationFault, 
+    		NamingAuthoritySecurityFault, 
+    		InvalidIdentifierValuesFault, 
+    		RemoteException {
 
     	String[] keyList = new String[] { "KEY3" };
     	
-    	client.deleteKeys(identifier, keyList);
-
-    	String[] values = client.getKeyValues(identifier, keyList[0]);
-    	if (values != null) {
-    		fail("Unexpected results");
+    	IdentifiersTestUtil.deleteKeys(client, null, identifier, keyList);
+    	
+    	KeyNameData kd = 
+    		IdentifiersTestUtil.getKeyData(client, null, identifier, keyList[0]);
+    	
+    	if (kd != null) {
+    		fail("Key [" + keyList[0] + "] on identifier [" 
+    				+ identifier.toString() + "] was supposed to be deleted");
     	}
     }
 }
