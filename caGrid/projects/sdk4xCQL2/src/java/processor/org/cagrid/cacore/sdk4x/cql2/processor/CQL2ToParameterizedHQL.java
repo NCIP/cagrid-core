@@ -431,7 +431,7 @@ public class CQL2ToParameterizedHQL {
         } else if (value.getLongValue() != null) {
             return value.getLongValue();
         } else if (value.getTimeValue() != null) {
-            return value.getTimeValue().getAsCalendar().getTime();
+            return value.getTimeValue().toString();
         }
         return null;
     }
