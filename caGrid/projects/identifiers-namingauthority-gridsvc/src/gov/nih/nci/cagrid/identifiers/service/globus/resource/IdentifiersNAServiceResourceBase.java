@@ -127,6 +127,17 @@ public abstract class IdentifiersNAServiceResourceBase extends ReflectionResourc
 	
 
 
+	    //Getters/Setters for ResourceProperties
+	
+	
+	public gov.nih.nci.cagrid.metadata.ServiceMetadata getServiceMetadata(){
+		return ((IdentifiersNAServiceResourceProperties) getResourceBean()).getServiceMetadata();
+	}
+	
+	public void setServiceMetadata(gov.nih.nci.cagrid.metadata.ServiceMetadata serviceMetadata ) throws ResourceException {
+        ResourceProperty prop = getResourcePropertySet().get(IdentifiersNAServiceConstants.SERVICEMETADATA);
+		prop.set(0, serviceMetadata);
+	}
 	
 
 
@@ -321,10 +332,26 @@ public abstract class IdentifiersNAServiceResourceBase extends ReflectionResourc
     
     	protected void populateResourceProperties() {
 	
+		loadServiceMetadataFromFile();
+	
 	}
 
 
-			
+		
+	private void loadServiceMetadataFromFile() {
+      if(getServiceMetadata()==null){
+		try {
+			File dataFile = new File(ContainerConfig.getBaseDirectory() + File.separator
+					+ getConfiguration().getServiceMetadataFile());
+			((IdentifiersNAServiceResourceProperties) this.getResourceBean()).setServiceMetadata((gov.nih.nci.cagrid.metadata.ServiceMetadata) Utils.deserializeDocument(dataFile.getAbsolutePath(),
+				gov.nih.nci.cagrid.metadata.ServiceMetadata.class));
+		} catch (Exception e) {
+			logger.error("ERROR: problem populating metadata from file: " + e.getMessage(), e);
+		}
+	  }
+	}		
+	
+		
 
 
 

@@ -17,6 +17,11 @@
           <!-- Set this to the relative path (from the container root, e.g GLOBUS_LOCATION for globus container) of the registration parameters template file (ignored if performRegistration is false) -->
           <value>ETC-PATH/IdentifiersNAService_registration.xml</value>
         </parameter>
+        <parameter>
+          <name>serviceMetadataFile</name>
+          <!-- Set this to the relative path (from the container root, e.g GLOBUS_LOCATION for globus container) of the serviceMetadata extract -->
+          <value>ETC-PATH/serviceMetadata.xml</value>
+        </parameter>
       </resourceParams>
     </resource>
     <resource name="serviceconfiguration" type="gov.nih.nci.cagrid.identifiers.service.IdentifiersNAServiceConfiguration">
