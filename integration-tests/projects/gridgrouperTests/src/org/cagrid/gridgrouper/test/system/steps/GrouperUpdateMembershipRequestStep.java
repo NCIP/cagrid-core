@@ -31,7 +31,7 @@ public class GrouperUpdateMembershipRequestStep extends Step {
 		grouper.setAnonymousPrefered(false);
 
 		try {
-			MembershipRequestUpdate update = new MembershipRequestUpdate("", MembershipRequestStatus.Approved);
+			MembershipRequestUpdate update = new MembershipRequestUpdate("An admin note", "A public note", MembershipRequestStatus.Approved);
 			grouper.updateMembershipRequest(new GroupIdentifier(null, this.group), this.subject, update);
 			if (this.shouldFail) {
 				fail("updateMembershipRequest should fail");
