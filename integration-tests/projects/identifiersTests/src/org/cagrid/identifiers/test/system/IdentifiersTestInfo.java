@@ -86,8 +86,12 @@ public class IdentifiersTestInfo {
 		this.identifiersData.add(values);
 	}
 	
-	public ServiceContainer createWebAppContainer() throws IOException {
-		webAppContainer = createContainer();
+	public ServiceContainer createWebAppContainer(boolean isSecure) throws IOException {
+		if (isSecure) {
+			webAppContainer = createSecureContainer();
+		} else {
+			webAppContainer = createContainer();
+		}
 		return webAppContainer;
 	}
 	

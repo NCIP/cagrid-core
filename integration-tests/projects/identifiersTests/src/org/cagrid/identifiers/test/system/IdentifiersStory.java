@@ -47,7 +47,7 @@ public class IdentifiersStory extends Story {
 		try {
 			testInfo = new IdentifiersTestInfo();
 			testInfo.createGridSvcContainer(false);
-			testInfo.createWebAppContainer();
+			testInfo.createWebAppContainer(false);
 
 		} catch (Throwable ex) {
 			String message = "Error creating naming authority containers: "

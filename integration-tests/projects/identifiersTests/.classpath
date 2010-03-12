@@ -7,7 +7,7 @@
 	<classpathentry kind="var" path="GT4_LOCATION/lib/axis.jar" sourcepath="/GT4_LOCATION/ws-axis-src.zip"/>
 	<classpathentry kind="var" path="GT4_LOCATION/lib/bootstrap.jar"/>
 	<classpathentry kind="var" path="GT4_LOCATION/lib/cog-axis.jar"/>
-	<classpathentry kind="var" path="GT4_LOCATION/lib/cog-jglobus.jar"/>
+	<classpathentry kind="var" path="GT4_LOCATION/lib/cog-jglobus.jar" sourcepath="/COG"/>
 	<classpathentry kind="var" path="GT4_LOCATION/lib/cog-tomcat.jar"/>
 	<classpathentry kind="var" path="GT4_LOCATION/lib/cog-url.jar"/>
 	<classpathentry kind="var" path="GT4_LOCATION/lib/commonj.jar"/>

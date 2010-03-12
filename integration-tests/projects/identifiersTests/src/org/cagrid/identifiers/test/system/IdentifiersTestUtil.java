@@ -214,6 +214,16 @@ public class IdentifiersTestUtil {
 		Assert.fail("Key [" + keyName + "] not found in result set");
 	}
 	
+	public static void assertKey(String keyName, String[] keys) {
+		for( String key : keys ) {
+			if (key.equals(keyName)) {
+				return;
+			}
+		}
+		
+		Assert.fail("Key [" + keyName + "] not found in result set");
+	}
+	
 	public static void assertKey(String keyName, KeyNameData[] knd) {
 		for( KeyNameData kvs : knd ) {
 			if (kvs.getKeyName().equals(keyName)) {

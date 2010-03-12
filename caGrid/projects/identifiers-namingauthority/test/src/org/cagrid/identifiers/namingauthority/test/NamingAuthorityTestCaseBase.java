@@ -145,7 +145,8 @@ public abstract class NamingAuthorityTestCaseBase extends NamingAuthorityIntegra
     }
     
 	protected URI getSystemIdentifier() {
-    	return URI.create(this.NamingAuthority.getConfiguration().getPrefix().normalize().toString()
+    	return URI.create(this.NamingAuthority.getConfiguration()
+    			.getNaPrefixURI().normalize().toString()
 				+ SecurityUtil.LOCAL_SYSTEM_IDENTIFIER);
     }
 }

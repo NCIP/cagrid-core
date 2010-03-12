@@ -4,38 +4,32 @@ import gov.nih.nci.cagrid.identifiers.client.IdentifiersNAServiceClient;
 import gov.nih.nci.cagrid.identifiers.stubs.types.NamingAuthoritySecurityFault;
 import gov.nih.nci.cagrid.testing.system.haste.Step;
 
-import namingauthority.IdentifierValues;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+
 import namingauthority.KeyNameData;
-import namingauthority.KeyValues;
 
 import org.apache.axis.message.addressing.EndpointReferenceType;
 import org.apache.axis.types.URI;
+import org.cagrid.identifiers.namingauthority.NamingAuthoritySecurityException;
+import org.cagrid.identifiers.namingauthority.domain.IdentifierData;
 import org.cagrid.identifiers.namingauthority.util.Keys;
+import org.cagrid.identifiers.resolver.Resolver;
 import org.cagrid.identifiers.test.system.IdentifiersTestInfo;
 import org.cagrid.identifiers.test.system.IdentifiersTestUtil;
+import org.globus.axis.gsi.GSIConstants;
+import org.globus.gsi.gssapi.GlobusGSSCredentialImpl;
+import org.globus.net.GSIHttpURLConnection;
+import org.ietf.jgss.GSSCredential;
 
-/*
- * A user can read a key from an identifier if any one of the below 
- * conditions are met:
- *
- *    (a) User is identifier's administrator
- *       - User is listed by ADMIN_USERS key, or
- *       - User is listed by ADMIN_IDENTIFIERS's ADMIN_USERS key, or
- *       - User is listed by root identifier's ADMIN_USERS key
- *
- *    (b) User is listed by the key's policy identifier (READ_USERS list)
- *    (c) Key has no policy identifier's READ_USERS and user is listed by identifier's READ_USERS
- *    (d) Key has no policy identifier's READ_USERS and user is listed by identifier's READWRITE_IDENTIFIERS.READ_USERS
- *    (e) No READ_USERS keys at any level (key & identifier)
- *
- * A security exception is thrown if the identifier has keys and none are returned due to
- * permission checks.
- */
-public class ResolveIdentifierSecurityStep extends Step {
+
+public class HttpGSIResolutionStep extends Step {
 
     private IdentifiersTestInfo testInfo;
    
-    public ResolveIdentifierSecurityStep(IdentifiersTestInfo info) {
+    public HttpGSIResolutionStep(IdentifiersTestInfo info) {
         this.testInfo = info;
     }
     
@@ -69,36 +63,53 @@ public class ResolveIdentifierSecurityStep extends Step {
     	boolean expected;
     	EndpointReferenceType epr = testInfo.getGridSvcEPR();
         IdentifiersNAServiceClient client = new IdentifiersNAServiceClient( epr );
+        Resolver resolver = new Resolver();
         
         /***************************************************************
          * Create identifier to test with
          ***************************************************************/
-        URI identifier = IdentifiersTestUtil.createIdentifier(client, null, 
+        URI identifierURI = IdentifiersTestUtil.createIdentifier(client, null, 
         		new String[] { "AGENT1", "AGENT2", Keys.WRITE_USERS },
         		new String[][] { {"001"}, {"002"}, {} });
+        java.net.URI identifier = java.net.URI.create(identifierURI.toString());
         System.out.println(identifier.toString());
         
         /***************************************************************
          *  By default, any one can retrieve all keys 
          ***************************************************************/
-        KeyNameData[] keyValues = IdentifiersTestUtil.resolveIdentifier(client, 
-        		null, identifier); 
-        IdentifiersTestUtil.assertKey("AGENT1", keyValues);
-        IdentifiersTestUtil.assertKey("AGENT2", keyValues);
-        IdentifiersTestUtil.assertKey(Keys.WRITE_USERS, keyValues);
+        IdentifierData data = resolver.resolveHttp(identifier);
+        IdentifiersTestUtil.assertKey("AGENT1", data.getKeys());
+        IdentifiersTestUtil.assertKey("AGENT2", data.getKeys());
+        IdentifiersTestUtil.assertKey(Keys.WRITE_USERS, data.getKeys());
         
         /***************************************************************
          * Block read access to anonymous and regular users
          ***************************************************************/
         IdentifiersTestUtil.createKey(client, testInfo.getSysAdminUser(), 
-        		identifier, Keys.READ_USERS, new String[]{});
+        		identifierURI, Keys.READ_USERS, new String[]{});
         
         expected = false;
         try {
-        	IdentifiersTestUtil.resolveIdentifier(client, 
-        			testInfo.getUserB(), identifier);
-        } catch( NamingAuthoritySecurityFault e) {
-        	System.err.println(e.getFaultString());
+        	/* anonymous */
+        	resolver.resolveHttp(identifier); 
+        } catch( NamingAuthoritySecurityException e) {
+        	System.err.println(e.toString());
+        	expected = true;
+        }
+        catch(Exception e) {
+        	e.printStackTrace();
+        	System.err.println("Caugth unexpected exception: " + e);
+        }
+        if (!expected) {
+        	fail("Expected NamingAuthoritySecurity fault was not raised");
+        }
+        
+        expected = false;
+        try {
+        	/* User B */
+        	resolver.resolveHttp(identifier, testInfo.getUserB()); 
+        } catch( NamingAuthoritySecurityException e) {
+        	System.err.println(e.toString());
         	expected = true;
         }
         if (!expected) {
@@ -109,24 +120,22 @@ public class ResolveIdentifierSecurityStep extends Step {
          * Add User B as identifier administrator
          ****************************************************************/
         IdentifiersTestUtil.createKey(client, testInfo.getSysAdminUser(), 
-        		identifier, Keys.ADMIN_USERS, 
+        		identifierURI, Keys.ADMIN_USERS, 
         		new String[]{testInfo.getUserB().getIdentity()});
         
         /****************************************************************
          * User B can now resolve
          ****************************************************************/
-        IdentifiersTestUtil.resolveIdentifier(client, testInfo.getUserB(), 
-        		identifier);
+        resolver.resolveHttp(identifier, testInfo.getUserB());
         
         /****************************************************************
          * But User C can't
          ****************************************************************/
         expected = false;
         try {
-        	IdentifiersTestUtil.resolveIdentifier(client, 
-        			testInfo.getUserC(), identifier);
-        } catch( NamingAuthoritySecurityFault e) {
-        	System.err.println(e.getFaultString());
+        	resolver.resolveHttp(identifier, testInfo.getUserC());
+        } catch( NamingAuthoritySecurityException e) {
+        	System.err.println(e.toString());
         	expected = true;
         }
         if (!expected) {
@@ -142,20 +151,19 @@ public class ResolveIdentifierSecurityStep extends Step {
         
         // Add policy identifier reference to key AGENT1
         IdentifiersTestUtil.deleteKeys(client, testInfo.getUserB(), 
-        		identifier, new String[]{"AGENT1"});
+        		identifierURI, new String[]{"AGENT1"});
         IdentifiersTestUtil.createKey(client, testInfo.getUserB(), 
-        		identifier, "AGENT1", policyIdentifier, 
+        		identifierURI, "AGENT1", policyIdentifier, 
         		new String[]{"001"});  
         
         /****************************************************************
          * User C can now resolve (AGENT1 only)
          ****************************************************************/
-        KeyNameData[] knd = IdentifiersTestUtil.resolveIdentifier(client, 
-        		testInfo.getUserC(), identifier);
-        if (knd.length != 1) {
+        data = resolver.resolveHttp(identifier, testInfo.getUserC());
+        if (data.getKeys().length != 1) {
         	fail("Unexpected number of keys returned");
         }
-        IdentifiersTestUtil.assertKey("AGENT1", knd);
+        IdentifiersTestUtil.assertKey("AGENT1", data.getKeys());
         
         /****************************************************************
          * Add User C as identifier administrator using an 
@@ -168,16 +176,14 @@ public class ResolveIdentifierSecurityStep extends Step {
         
         // Add admin identifier reference to our test identifier
         IdentifiersTestUtil.createKey(client, testInfo.getUserB(), 
-        		identifier, Keys.ADMIN_IDENTIFIERS, 
+        		identifierURI, Keys.ADMIN_IDENTIFIERS, 
         		new String[]{adminIdentifier.toString()});
         
         /****************************************************************
          * User C can now fully resolve the identifier
          ****************************************************************/
-        knd = IdentifiersTestUtil.resolveIdentifier(client, 
-        		testInfo.getUserC(), identifier);
-        System.err.println("FINAL NUM KEYS=" + knd.length);
-        if (knd.length != 6) {
+        data = resolver.resolveHttp(identifier, testInfo.getUserC());
+        if (data.getKeys().length != 6) {
         	fail("Unexpected number of keys returned");
         }        
     }

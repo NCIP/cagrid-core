@@ -48,9 +48,17 @@
 		<map-to xml="Configuration"
 			ns-uri="http://na.cagrid.org/1.0/NamingAuthority"
          	ns-prefix="na" />
-		<field name="gridSvcUrl" type="java.lang.String"
+		<field name="naGridSvcURI" type="java.lang.String"
 			handler="org.cagrid.identifiers.namingauthority.serialization.URIFieldHandler" >
-			<bind-xml name="gridSvcUrl"/>
+			<bind-xml name="naGridSvcURI"/>
+		</field>
+		<field name="naPrefixURI" type="java.lang.String"
+			handler="org.cagrid.identifiers.namingauthority.serialization.URIFieldHandler" >
+			<bind-xml name="naPrefixURI"/>
+		</field>
+		<field name="naBaseURI" type="java.lang.String"
+			handler="org.cagrid.identifiers.namingauthority.serialization.URIFieldHandler" >
+			<bind-xml name="naBaseURI"/>
 		</field>
 	</class>
 </mapping>

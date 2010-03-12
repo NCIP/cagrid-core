@@ -3,7 +3,7 @@ package org.cagrid.identifiers.namingauthority.impl;
 import java.net.URI;
 
 import org.cagrid.identifiers.namingauthority.IdentifierGenerator;
-import org.cagrid.identifiers.namingauthority.NamingAuthorityConfig;
+import org.cagrid.identifiers.namingauthority.domain.NamingAuthorityConfig;
 
 public class IdentifierGeneratorImpl implements IdentifierGenerator {
 

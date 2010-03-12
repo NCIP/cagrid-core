@@ -70,9 +70,9 @@
 
   <bean id="NamingAuthority" class="org.cagrid.identifiers.namingauthority.impl.NamingAuthorityImpl" init-method="initialize">
     <property name="configuration">
-      <bean class="org.cagrid.identifiers.namingauthority.impl.NamingAuthorityConfigImpl">
-        <property name="prefix" value="${cagrid.na.prefix}" />
-        <property name="gridSvcUrl" value="${cagrid.na.grid.url}" />
+      <bean class="org.cagrid.identifiers.namingauthority.domain.NamingAuthorityConfig">
+        <property name="naPrefixURI" value="${cagrid.na.prefix}" />
+        <property name="naGridSvcURI" value="${cagrid.na.grid.url}" />
       </bean>
     </property>
 

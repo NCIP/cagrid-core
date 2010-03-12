@@ -48,7 +48,7 @@ public class NamingAuthorityTestCase extends NamingAuthorityTestCaseBase {
         //
         // Identifier does not exist
         //
-        prefix = URI.create(this.NamingAuthority.getConfiguration().getPrefix() 
+        prefix = URI.create(this.NamingAuthority.getConfiguration().getNaPrefixURI() 
         		+ "BADIDENTIFIER");
 
         try {

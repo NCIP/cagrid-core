@@ -5,10 +5,13 @@ import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.io.Writer;
 import java.net.URI;
+import java.net.URISyntaxException;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.cagrid.identifiers.namingauthority.HttpProcessor;
 import org.cagrid.identifiers.namingauthority.InvalidIdentifierException;
 import org.cagrid.identifiers.namingauthority.NamingAuthority;
@@ -16,7 +19,6 @@ import org.cagrid.identifiers.namingauthority.NamingAuthorityConfigurationExcept
 import org.cagrid.identifiers.namingauthority.NamingAuthoritySecurityException;
 import org.cagrid.identifiers.namingauthority.domain.IdentifierData;
 import org.cagrid.identifiers.namingauthority.domain.KeyData;
-import org.cagrid.identifiers.namingauthority.domain.NamingAuthorityConfig;
 import org.cagrid.identifiers.namingauthority.impl.SecurityInfoImpl;
 import org.cagrid.identifiers.namingauthority.util.IdentifierUtil;
 import org.exolab.castor.xml.MarshalException;
@@ -27,9 +29,12 @@ import org.globus.axis.gsi.GSIConstants;
 
 public class HttpProcessorImpl implements HttpProcessor {
 
+	protected static Log LOG = LogFactory.getLog(HttpProcessorImpl.class.getName());
     private NamingAuthority namingAuthority;
     private Marshaller serializer;
 
+    public static String ERR_HDR = "There was an error processing your request.";
+    
     public static String HTTP_ACCEPT_HDR = "Accept";
     public static String HTTP_ACCEPT_HTML = "text/html";
     public static String HTTP_ACCEPT_XML = "application/xml";
@@ -37,6 +42,10 @@ public class HttpProcessorImpl implements HttpProcessor {
 
     public void setNamingAuthority(NamingAuthority na) {
         this.namingAuthority = na;
+    }
+    
+    public NamingAuthority getNamingAuthority() {
+    	return namingAuthority;
     }
     
     public void setSerializer( Marshaller aSerializer ) {
@@ -98,14 +107,14 @@ public class HttpProcessorImpl implements HttpProcessor {
         if (ivs == null) {
             msg.append("<h2>Local identifier [" + uri + "] could not be found</h2>\n");
         } else {
-            msg.append("<h3>" + IdentifierUtil.build(namingAuthority.getConfiguration().getPrefix(), uri)
+            msg.append("<h3>" + IdentifierUtil.build(namingAuthority.getConfiguration().getNaPrefixURI(), uri)
                 + "</h3>\n<hr>\n");
 
             for (String key : ivs.getKeys()) {
                 msg.append("<b>Key: &nbsp;</b>" + key + "<br>\n");
                 KeyData kd = ivs.getValues(key);
-                msg.append("<b>Policy Identifier: &nbsp;</b>");
                 if (kd.getPolicyIdentifier() != null) {
+                	msg.append("<b>Policy Identifier: &nbsp;</b>");
                 	msg.append(kd.getPolicyIdentifier().normalize().toString());
                 }
                 msg.append("<br>\n");
@@ -122,28 +131,50 @@ public class HttpProcessorImpl implements HttpProcessor {
         return msg.toString();
     }
 
-    protected String prepHtmlError( String msg, Exception e) {
-    	StringBuffer sb = new StringBuffer( "<h2>There was an error processing your request</h2>");
-    	sb.append("<h3>")
-    		.append(msg)
-    		.append("</h3>");
+    protected String makeErrStr(String msg, Throwable t) {
+    	StringBuffer sb = new StringBuffer();
     	
-    	if (e != null) {
-    		StringWriter sw = new StringWriter();
-    		e.printStackTrace(new PrintWriter(sw));
+    	sb.append(ERR_HDR);
+    	
+    	if (t != null) {
+    		sb.append("\n")
+    			.append(IdentifierUtil.getStackTrace(t))
+    			.append("\n");
+    	}
+    	
+    	return sb.toString();
+    }
+    
+    protected String makeHtmlErrStr(String msg, Throwable t) {
+    	StringBuffer sb = new StringBuffer();
+    	
+    	sb.append("<H2>").append(ERR_HDR).append("</H2>")
+    		.append("<H3>").append(msg).append("</H3>");
+    	
+    	if (t != null) {
     		sb.append("<hr>")
     			.append("<br>")
-    			.append(e.toString())
+    			.append(t.toString())
     			.append("<br>")
-    			.append(sw.toString());
+    			.append(IdentifierUtil.getStackTrace(t));
     	}
     	
     	String outStr = sb.toString().replace("\n", "<br>");
     	return outStr;
     }
     
-    protected String prepHtmlError( String msg ) {
-    	return prepHtmlError( msg, null );
+    protected String makeErrStr( boolean xml, String msg, Throwable t ) {
+    	if (xml) {
+    		return makeErrStr(msg, t);
+    	}
+    	return makeHtmlErrStr(msg, t);
+    }
+    
+    protected String makeErrStr( boolean xml, String msg ) {
+    	if (xml) {
+    		return makeErrStr(msg, null);
+    	}
+    	return makeHtmlErrStr(msg, null);
     }
     
     protected String serialize( Object ivs ) throws IOException, MarshalException, ValidationException {
@@ -154,10 +185,20 @@ public class HttpProcessorImpl implements HttpProcessor {
         return out.toString();
 	}
 
-    protected String serializeNAConfiguration() throws MarshalException, ValidationException, IOException {
-    	NamingAuthorityConfig config = new NamingAuthorityConfig();
-    	config.setGridSvcUrl(namingAuthority.getConfiguration().getGridSvcUrl());
-    	return serialize(config);
+    protected URI getServletURI(HttpServletRequest req) throws URISyntaxException {
+    	String servletURL = req.getRequestURL().toString();
+    	String servletPath = req.getServletPath();
+    	
+    	return new URI(servletURL.substring(0, 
+    			servletURL.indexOf(servletPath) + servletPath.length()) 
+    			+ "/");
+    }
+    
+    protected String serializeNAConfiguration(URI servletURI) 
+    	throws MarshalException, ValidationException, IOException {
+    	
+    	namingAuthority.getConfiguration().setNaBaseURI(servletURI);
+    	return serialize(namingAuthority.getConfiguration());
     }
     
     public void process(HttpServletRequest request, HttpServletResponse response) throws IOException {
@@ -167,30 +208,6 @@ public class HttpProcessorImpl implements HttpProcessor {
         SecurityInfoImpl secInfo = new SecurityInfoImpl(
         		(String) request.getAttribute(GSIConstants.GSI_USER_DN));
         
-//        TODO: Authentication/Authorization checks
-//        There are a bunch of 403.x codes that relate to authentication stuff... 
-//        we should just use 403 for everything, rather than trying to use 401 
-//        with a custom www-authenticate method. 
-//        403 Substatus Error Codes for IIS 
-//
-//        * 403.1 - Execute access forbidden. 
-//        * 403.2 - Read access forbidden. 
-//        * 403.3 - Write access forbidden. 
-//        * 403.4 - SSL required. 
-//        * 403.5 - SSL 128 required. 
-//        * 403.6 - IP address rejected. 
-//        * 403.7 - Client certificate required. 
-//        * 403.8 - Site access denied. 
-//        * 403.9 - Too many users. 
-//        * 403.10 - Invalid configuration. 
-//        * 403.11 - Password change. 
-//        * 403.12 - Mapper denied access. 
-//        * 403.13 - Client certificate revoked. 
-//        * 403.14 - Directory listing denied. 
-//        * 403.15 - Client Access Licenses exceeded. 
-//        * 403.16 - Client certificate is untrusted or invalid. 
-//        * 403.17 - Client certificate has expired or is not yet valid. 
-
         //
         // ?config causes to ignore resolution and
         // return naming authority configuration
@@ -199,10 +216,10 @@ public class HttpProcessorImpl implements HttpProcessor {
         String config = request.getParameter("config");
         if (config != null) {
         	try {
-        		msg.append(serializeNAConfiguration());
+        		msg.append(serializeNAConfiguration(getServletURI(request)));
         		response.setContentType(HTTP_ACCEPT_XML);
         	} catch( Exception e ) {
-        		msg.append(prepHtmlError("Server error while serializing naming authority's configuration", e));
+        		msg.append(makeErrStr("Server error while serializing naming authority's configuration", e));
         		responseStatus = HttpServletResponse.SC_INTERNAL_SERVER_ERROR;
         	}
         } else {
@@ -221,14 +238,14 @@ public class HttpProcessorImpl implements HttpProcessor {
             URI uri = URI.create(request.getPathInfo());
 
             if (uri == null || uri.getPath().length() <= 1 || !uri.getPath().startsWith("/")) {
-                msg.append(prepHtmlError("No identifier provided"));
+                msg.append(makeErrStr(xmlResponse, "No identifier provided"));
                 responseStatus = HttpServletResponse.SC_BAD_REQUEST;
             } else {
 
                 IdentifierData ivs = null;
                 try {
                     ivs = (IdentifierData) namingAuthority.resolveIdentifier(secInfo, IdentifierUtil.build(namingAuthority
-                        .getConfiguration().getPrefix(), uri));
+                        .getConfiguration().getNaPrefixURI(), uri));
                     
                     if (xmlResponse) {
                         msg.append(serialize(ivs));
@@ -238,21 +255,29 @@ public class HttpProcessorImpl implements HttpProcessor {
                         response.setContentType(HTTP_ACCEPT_HTML);
                     }
                 } catch (InvalidIdentifierException e) {
-                    e.printStackTrace();
-                    msg.append(prepHtmlError("Invalid Identifier Exception", e));
-                    responseStatus = HttpServletResponse.SC_NOT_FOUND;
+                	responseStatus = HttpServletResponse.SC_NOT_FOUND;
+                	String error = makeErrStr(xmlResponse, "Invalid Identifier Exception", e);
+                    LOG.error(error);
+                    msg.append(error);
+                    
                 } catch (NamingAuthorityConfigurationException e) {
-                    e.printStackTrace();
-                    msg.append(prepHtmlError("Naming Authority Configuration Exception", e));
-                    responseStatus = HttpServletResponse.SC_INTERNAL_SERVER_ERROR;
-                } catch (NamingAuthoritySecurityException e) {
-                    e.printStackTrace();
-                    msg.append(prepHtmlError("Naming Authority Security Exception", e));
-                    responseStatus = HttpServletResponse.SC_FORBIDDEN;
-                } catch (Exception e) {
-                	e.printStackTrace();
-                	msg.append(prepHtmlError("Unexpected system error", e));
                 	responseStatus = HttpServletResponse.SC_INTERNAL_SERVER_ERROR;
+                	String error = makeErrStr(xmlResponse, "Naming Authority Configuration Exception", e);
+                	LOG.error(error);
+                    msg.append(error);
+                    
+                } catch (NamingAuthoritySecurityException e) {
+                	responseStatus = HttpServletResponse.SC_FORBIDDEN;
+                	String error = makeErrStr(xmlResponse, "Naming Authority Security Exception", e);
+                	LOG.error(error);
+                    msg.append(error);
+                    
+                } catch (Exception e) {
+                	responseStatus = HttpServletResponse.SC_INTERNAL_SERVER_ERROR;
+                	String error = makeErrStr(xmlResponse, "Unexpected system error", e);
+                	LOG.error(error);
+                	msg.append(error);
+                	
                 }
             }
         }

@@ -9,13 +9,15 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.cagrid.identifiers.namingauthority.HttpProcessor;
-import org.cagrid.identifiers.namingauthority.NamingAuthority;
+import org.cagrid.identifiers.namingauthority.dao.IdentifierMetadataDao;
 import org.globus.axis.gsi.GSIConstants;
-import org.springframework.beans.factory.xml.XmlBeanFactory;
 
 
 public class NamingAuthorityService extends HttpServlet {
+	protected static Log LOG = LogFactory.getLog(NamingAuthorityService.class.getName());
     private static final long serialVersionUID = 1L;
     private HttpProcessor processor;
 
@@ -35,10 +37,11 @@ public class NamingAuthorityService extends HttpServlet {
         super.init(config);
         
         org.springframework.web.context.WebApplicationContext context = 
-        	org.springframework.web.context.support.WebApplicationContextUtils.getRequiredWebApplicationContext(/*request.getSession().*/getServletContext() );
+        	org.springframework.web.context.support.WebApplicationContextUtils
+        		.getRequiredWebApplicationContext(getServletContext());
         
-
-        this.processor = (HttpProcessor) context.getBean("httpProcessor", HttpProcessor.class);
+        this.processor = (HttpProcessor) context.getBean("httpProcessor", 
+        		HttpProcessor.class);
     }
 
 
@@ -47,16 +50,15 @@ public class NamingAuthorityService extends HttpServlet {
      *      response)
      */
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        System.out.println("getPathInfo[" + request.getPathInfo() + "]");
-        System.out.println("getQueryString[" + request.getQueryString() + "]");
-        System.out.println("getRequestURI[" + request.getRequestURI() + "]");
-        System.out.println("getRequestURL[" + request.getRequestURL() + "]");
-        System.out.println("getServerName[" + request.getServerName() + "]");
-        System.out.println("getServerPort[" + request.getServerPort() + "]");
-        System.out.println("getServletPath[" + request.getServletPath() + "]");
         
-        String userDN = (String) request.getAttribute(GSIConstants.GSI_USER_DN);
-        System.out.println("UserDN=" + userDN);
+    	LOG.debug("getPathInfo[" + request.getPathInfo() + "]");
+        LOG.debug("getQueryString[" + request.getQueryString() + "]");
+        LOG.debug("getRequestURI[" + request.getRequestURI() + "]");
+        LOG.debug("getRequestURL[" + request.getRequestURL() + "]");
+        LOG.debug("getServerName[" + request.getServerName() + "]");
+        LOG.debug("getServerPort[" + request.getServerPort() + "]");
+        LOG.debug("getServletPath[" + request.getServletPath() + "]");
+        LOG.debug("User Identity[" + request.getAttribute(GSIConstants.GSI_USER_DN));
 
         processor.process(request, response);
     }

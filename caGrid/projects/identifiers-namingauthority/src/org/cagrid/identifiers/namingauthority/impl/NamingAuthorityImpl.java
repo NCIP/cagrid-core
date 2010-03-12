@@ -7,7 +7,7 @@ import org.cagrid.identifiers.namingauthority.IdentifierGenerator;
 import org.cagrid.identifiers.namingauthority.InvalidIdentifierException;
 import org.cagrid.identifiers.namingauthority.InvalidIdentifierValuesException;
 import org.cagrid.identifiers.namingauthority.MaintainerNamingAuthority;
-import org.cagrid.identifiers.namingauthority.NamingAuthorityConfig;
+import org.cagrid.identifiers.namingauthority.domain.NamingAuthorityConfig;
 import org.cagrid.identifiers.namingauthority.NamingAuthorityConfigurationException;
 import org.cagrid.identifiers.namingauthority.NamingAuthoritySecurityException;
 import org.cagrid.identifiers.namingauthority.SecurityInfo;
@@ -60,7 +60,7 @@ public class NamingAuthorityImpl implements MaintainerNamingAuthority {
 	//
 
 	public void initialize() throws NamingAuthorityConfigurationException {
-		this.identifierDao.initialize(getConfiguration().getPrefix());
+		this.identifierDao.initialize(configuration.getNaPrefixURI());
 	}
 	
 	public URI createIdentifier(SecurityInfo secInfo, IdentifierData ivalues) 
@@ -74,7 +74,7 @@ public class NamingAuthorityImpl implements MaintainerNamingAuthority {
 		
 		URI identifier = generateIdentifier();
         this.identifierDao.createIdentifier( secInfo, identifier, ivalues );
-        return IdentifierUtil.build(getConfiguration().getPrefix(), identifier);
+        return IdentifierUtil.build(configuration.getNaPrefixURI(), identifier);
     }
 
     public IdentifierData resolveIdentifier(SecurityInfo secInfo, URI identifier) 
@@ -141,7 +141,7 @@ public class NamingAuthorityImpl implements MaintainerNamingAuthority {
 	//
 	
 	public URI getSystemIdentifier() {
-		return URI.create(getConfiguration().getPrefix().normalize().toString() +
+		return URI.create(configuration.getNaPrefixURI().normalize().toString() +
 				SecurityUtil.LOCAL_SYSTEM_IDENTIFIER.normalize().toString());
 	}
 
@@ -193,7 +193,7 @@ public class NamingAuthorityImpl implements MaintainerNamingAuthority {
 			for(String identifier : values) {
 				// make sure it's local to prefix
 				try {
-					IdentifierUtil.getLocalName(getConfiguration().getPrefix(), 
+					IdentifierUtil.getLocalName(configuration.getNaPrefixURI(), 
 							URI.create(identifier));
 				} catch (InvalidIdentifierException e) {
 					throw new InvalidIdentifierValuesException(e.getMessage());
@@ -224,7 +224,7 @@ public class NamingAuthorityImpl implements MaintainerNamingAuthority {
 			if (kd.getPolicyIdentifier() != null) {
 				// make sure it's local to prefix
 				try {
-					IdentifierUtil.getLocalName(getConfiguration().getPrefix(), 
+					IdentifierUtil.getLocalName(configuration.getNaPrefixURI(), 
 							kd.getPolicyIdentifier());
 				} catch (InvalidIdentifierException e) {
 					throw new InvalidIdentifierValuesException(e.getMessage());

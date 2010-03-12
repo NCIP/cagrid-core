@@ -3,6 +3,7 @@ package org.cagrid.identifiers.namingauthority;
 import java.net.URI;
 import org.cagrid.identifiers.namingauthority.domain.IdentifierData;
 import org.cagrid.identifiers.namingauthority.domain.KeyData;
+import org.cagrid.identifiers.namingauthority.domain.NamingAuthorityConfig;
 
 public interface NamingAuthority {
 	

@@ -127,6 +127,7 @@
 			<sysproperty key="build.dir" value="${test.core.classes.dir}" />
 			<sysproperty key="testing.port.assignment.mode" value="${testing.port.assignment.mode}" />
 			<sysproperty key="testing.containers.dir" value="${testing.containers.dir}" />
+			<jvmarg value="-Djavax.net.ssl.trustStore=resources/keystore" />
 			<classpath refid="test.run.classpath" />
 			<formatter type="xml" />
 			<test if="testcase" name="${testcase}" fork="no" todir="${junit.results.dir}" />
