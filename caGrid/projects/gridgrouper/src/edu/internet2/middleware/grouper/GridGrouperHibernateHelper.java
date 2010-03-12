@@ -16,10 +16,17 @@
 */
 
 package edu.internet2.middleware.grouper;
-import  java.io.*;
-import  java.util.*;
-import  net.sf.hibernate.*;
-import  net.sf.hibernate.cfg.*;
+import java.io.InputStream;
+import java.util.Iterator;
+import java.util.LinkedHashSet;
+import java.util.Properties;
+import java.util.Set;
+
+import net.sf.hibernate.HibernateException;
+import net.sf.hibernate.Session;
+import net.sf.hibernate.SessionFactory;
+import net.sf.hibernate.Transaction;
+import net.sf.hibernate.cfg.Configuration;
 
 /**
  * Hibernate utility helper class.
@@ -57,7 +64,8 @@ class GridGrouperHibernateHelper {
         .addClass(Membership.class)
         .addClass(Owner.class)
         .addClass(Settings.class)
-        .addClass(MembershipRequests.class)
+        .addClass(MembershipRequest.class)
+        .addClass(MembershipRequestHistory.class)
         ;
       // And finally create our session factory
       FACTORY = CFG.buildSessionFactory();

@@ -1,0 +1,90 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping
+    PUBLIC "-//Hibernate/Hibernate Mapping DTD//EN"
+    "http://hibernate.sourceforge.net/hibernate-mapping-2.0.dtd">
+
+<hibernate-mapping package="edu.internet2.middleware.grouper">
+  <class name="MembershipRequestHistory" table="gridgrouper_membershiprequest_history">
+
+    <meta attribute="class-description">
+    </meta>
+    <meta attribute="implement-equals">true</meta>
+    <meta attribute="session-method">HibernateHelper.getSession();</meta>
+
+    <cache usage="read-write"/>
+
+    <!-- id -->
+    <id name="id" 
+        type="string"
+        unsaved-value="null"
+        length="128"
+    >
+      <generator class="uuid.hex"/>
+    </id>
+    <!-- id -->
+
+    <!-- MembershipRequests_id -->
+    <many-to-one
+      name="membershipRequest"
+      class="edu.internet2.middleware.grouper.MembershipRequest" 
+      cascade="none"
+    >
+      <column name="membershiprequests_id" 
+              not-null="true"
+      />
+    </many-to-one>
+    <!-- group_id -->
+
+    <!-- status -->
+    <property name="statusValue"
+              type="string"
+              not-null="true"
+    >
+      <column name="status"         
+      />
+    </property>
+    <!-- status -->
+
+    <!-- reviewer_id -->
+    <many-to-one  name="reviewer"
+                  class="edu.internet2.middleware.grouper.Member" 
+    >
+      <column name="reviewer_id" 
+      />
+    </many-to-one>
+    <!-- reviewer_id -->
+
+    <!-- review_time -->
+    <property name="reviewTime"
+              type="long"
+              not-null="true"
+    >
+      <column name="review_time"         
+      />
+    </property>
+    <!-- review_time -->
+
+    <!-- public_note -->
+    <property name="publicNote"
+              type="string"
+              not-null="true"
+    >
+      <column name="public_note"         
+      />
+    </property>
+    <!-- public_note -->
+
+    <!-- admin_note -->
+    <property name="adminNote"
+              type="string"
+              not-null="true"
+    >
+      <column name="admin_note"         
+      />
+    </property>
+    <!-- admin_note -->
+
+  </class>
+
+</hibernate-mapping>
+

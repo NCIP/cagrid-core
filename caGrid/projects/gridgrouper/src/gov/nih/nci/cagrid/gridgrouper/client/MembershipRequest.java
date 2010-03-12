@@ -35,8 +35,12 @@ public class MembershipRequest extends GridGrouperObject implements MembershipRe
     	return des.getGroup().getDisplayName();
     }
 
-    public String getNote() {
-    	return des.getReviewerNote();
+    public String getPublicNote() {
+    	return des.getPublicNote();
+    }
+
+    public String getAdminNote() {
+    	return des.getAdminNote();
     }
 
     public long getReviewTime() {
@@ -55,18 +59,19 @@ public class MembershipRequest extends GridGrouperObject implements MembershipRe
 		return des.getStatus();
 	}
 	
-	public void approve(String note) throws InsufficientPrivilegeException, SchemaException {
-		updateMembershipRequest(note, MembershipRequestStatus.Approved);
+	public void approve(String publicNote, String adminNote) throws InsufficientPrivilegeException, SchemaException {
+		updateMembershipRequest(publicNote, adminNote, MembershipRequestStatus.Approved);
 	}
 	
-	public void reject(String note) throws InsufficientPrivilegeException, SchemaException {
-		updateMembershipRequest(note, MembershipRequestStatus.Rejected);
+	public void reject(String publicNote, String adminNote) throws InsufficientPrivilegeException, SchemaException {
+		updateMembershipRequest(publicNote, adminNote, MembershipRequestStatus.Rejected);
 	}
 	
-	private void updateMembershipRequest(String note, MembershipRequestStatus status) throws InsufficientPrivilegeException, SchemaException {
+	private void updateMembershipRequest(String publicNote, String adminNote, MembershipRequestStatus status) throws InsufficientPrivilegeException, SchemaException {
 		MembershipRequestUpdate update = new MembershipRequestUpdate();
 		update.setStatus(status);
-		update.setNote(note);
+		update.setPublicNote(publicNote);
+		update.setAdminNote(adminNote);
 		try {
 			gridGrouper.getClient().updateMembershipRequest(getGroupIdentifier(des.getGroup()), des.getRequestorId(), update);
         } catch (InsufficientPrivilegeFault f) {

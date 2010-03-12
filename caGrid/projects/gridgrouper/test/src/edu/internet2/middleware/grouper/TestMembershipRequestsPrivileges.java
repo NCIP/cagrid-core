@@ -54,7 +54,8 @@ public class TestMembershipRequestsPrivileges extends TestCase {
 		Session hs = GridGrouperHibernateHelper.getSession();
 		Transaction tx = hs.beginTransaction();
 
-		hs.delete("from MembershipRequests");
+		hs.delete("from MembershipRequestHistory");
+		hs.delete("from MembershipRequest");
 
 		tx.commit();
 		hs.close();
@@ -111,7 +112,7 @@ public class TestMembershipRequestsPrivileges extends TestCase {
 			grouper.grantGroupPrivilege(SUPER_USER, Utils.getGroupIdentifier(grp), USER_Aadmin, GroupPrivilegeType.admin);
 			
 
-			MembershipRequestUpdate update = new MembershipRequestUpdate("", MembershipRequestStatus.Approved);
+			MembershipRequestUpdate update = new MembershipRequestUpdate("", "A note", MembershipRequestStatus.Approved);
 			try {
 				grouper.updateMembershipRequest(USER_Aadmin, Utils.getGroupIdentifier(grp), USER_A, update);
 			} catch (InsufficientPrivilegeFault e) {
@@ -157,7 +158,7 @@ public class TestMembershipRequestsPrivileges extends TestCase {
 		try {
 			GroupDescriptor grp = initialGroupAndRequestSetup();
 
-			MembershipRequestUpdate update = new MembershipRequestUpdate("", MembershipRequestStatus.Approved);
+			MembershipRequestUpdate update = new MembershipRequestUpdate("", "A note", MembershipRequestStatus.Approved);
 			grouper.updateMembershipRequest(USER_A, Utils.getGroupIdentifier(grp), USER_A, update);
 
 			fail("Should not be able to self approve membership");

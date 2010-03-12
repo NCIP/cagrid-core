@@ -3,27 +3,8 @@
     PUBLIC "-//Hibernate/Hibernate Mapping DTD//EN"
     "http://hibernate.sourceforge.net/hibernate-mapping-2.0.dtd">
 
-<!--
-  Copyright 2004-2006 University Corporation for Advanced Internet Development, Inc.
-  Copyright 2004-2006 The University Of Chicago
-
-  Licensed under the Apache License, Version 2.0 (the "License");
-  you may not use this file except in compliance with the License.
-  You may obtain a copy of the License at
-
-    http://www.apache.org/licenses/LICENSE-2.0 
-
-  Unless required by applicable law or agreed to in writing, software
-  distributed under the License is distributed on an "AS IS" BASIS,
-  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-  See the License for the specific language governing permissions and
-  limitations under the License.
--->
-
-<!-- $Id: Member.hbm.xml,v 1.2 2006-11-09 15:55:25 langella Exp $ -->
-
 <hibernate-mapping package="edu.internet2.middleware.grouper">
-  <class name="MembershipRequests" table="gridgrouper_membershiprequests">
+  <class name="MembershipRequest" table="gridgrouper_membershiprequest">
 
     <meta attribute="class-description">
     </meta>
@@ -105,15 +86,25 @@
     </property>
     <!-- review_time -->
 
-    <!-- reviewer_note -->
-    <property name="reviewerNote"
+    <!-- public_note -->
+    <property name="publicNote"
               type="string"
               not-null="true"
     >
-      <column name="reviewer_note"         
+      <column name="public_note"         
       />
     </property>
-    <!-- reviewer_note -->
+    <!-- public_note -->
+
+    <!-- admin_note -->
+    <property name="adminNote"
+              type="string"
+              not-null="true"
+    >
+      <column name="admin_note"         
+      />
+    </property>
+    <!-- admin_note -->
 
   </class>
 

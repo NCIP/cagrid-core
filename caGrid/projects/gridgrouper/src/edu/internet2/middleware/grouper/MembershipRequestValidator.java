@@ -2,7 +2,7 @@ package edu.internet2.middleware.grouper;
 
 import edu.internet2.middleware.subject.Subject;
 
-class MembershipRequestsValidator {
+class MembershipRequestValidator {
 	
 	  protected static void canUpdateRequest(Group group, Subject subj)
 	    throws  InsufficientPrivilegeException

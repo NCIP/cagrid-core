@@ -49,7 +49,8 @@ public class TestMembershipRequests extends TestCase {
 		Session hs = GridGrouperHibernateHelper.getSession();
 		Transaction tx = hs.beginTransaction();
 
-		hs.delete("from MembershipRequests");
+		hs.delete("from MembershipRequestHistory");
+		hs.delete("from MembershipRequest");
 
 		tx.commit();
 		hs.close();
@@ -113,7 +114,7 @@ public class TestMembershipRequests extends TestCase {
 
 			MembershipRequestUpdate update = new MembershipRequestUpdate();
 			update.setStatus(MembershipRequestStatus.Approved);
-			update.setNote("I approve of this approval.");
+			update.setPublicNote("I approve of this approval.");
 
 			grouper.updateMembershipRequest(SUPER_USER, Utils.getGroupIdentifier(grp), USER_A, update);
 
@@ -141,7 +142,7 @@ public class TestMembershipRequests extends TestCase {
 
 			MembershipRequestUpdate update = new MembershipRequestUpdate();
 			update.setStatus(MembershipRequestStatus.Rejected);
-			update.setNote("I reject this rejection.");
+			update.setPublicNote("I reject this rejection.");
 
 			grouper.updateMembershipRequest(SUPER_USER, Utils.getGroupIdentifier(grp), USER_A, update);
 

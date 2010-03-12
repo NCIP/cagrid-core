@@ -25,8 +25,9 @@ import edu.internet2.middleware.grouper.MemberAddException;
 import edu.internet2.middleware.grouper.MemberDeleteException;
 import edu.internet2.middleware.grouper.MemberFinder;
 import edu.internet2.middleware.grouper.Membership;
-import edu.internet2.middleware.grouper.MembershipRequests;
-import edu.internet2.middleware.grouper.MembershipRequestsFinder;
+import edu.internet2.middleware.grouper.MembershipRequest;
+import edu.internet2.middleware.grouper.MembershipRequestFinder;
+import edu.internet2.middleware.grouper.MembershipRequestHistory;
 import edu.internet2.middleware.grouper.NamingPrivilege;
 import edu.internet2.middleware.grouper.Privilege;
 import edu.internet2.middleware.grouper.RevokePrivilegeException;
@@ -56,6 +57,7 @@ import gov.nih.nci.cagrid.gridgrouper.bean.MembershipDescriptor;
 import gov.nih.nci.cagrid.gridgrouper.bean.MembershipExpression;
 import gov.nih.nci.cagrid.gridgrouper.bean.MembershipQuery;
 import gov.nih.nci.cagrid.gridgrouper.bean.MembershipRequestDescriptor;
+import gov.nih.nci.cagrid.gridgrouper.bean.MembershipRequestHistoryDescriptor;
 import gov.nih.nci.cagrid.gridgrouper.bean.MembershipRequestStatus;
 import gov.nih.nci.cagrid.gridgrouper.bean.MembershipRequestUpdate;
 import gov.nih.nci.cagrid.gridgrouper.bean.MembershipStatus;
@@ -1247,7 +1249,7 @@ public class GridGrouper {
 		return des;
 	}
 
-	private MembershipRequestDescriptor membershiprequesttoMembershipRequestDescriptor(MembershipRequests membershipRequest) throws Exception {
+	private MembershipRequestDescriptor membershiprequesttoMembershipRequestDescriptor(MembershipRequest membershipRequest) throws Exception {
 		MembershipRequestDescriptor des = new MembershipRequestDescriptor();
 		des.setGroup(grouptoGroupDescriptor(membershipRequest.getGroup()));
 		des.setUUID(membershipRequest.getId());
@@ -1258,9 +1260,35 @@ public class GridGrouper {
 			des.setReviewer(memberToMemberDescriptor(membershipRequest.getReviewer()));
 		}
 		des.setReviewTime(membershipRequest.getReviewTime());
-		des.setReviewerNote(membershipRequest.getReviewerNote());
+		des.setPublicNote(membershipRequest.getPublicNote());
+		des.setAdminNote(membershipRequest.getAdminNote());
+		
+		ArrayList<MembershipRequestHistory> history = membershipRequest.getHistory();
+		if (history != null && history.size() != 0) {
+			MembershipRequestHistoryDescriptor[] historyDes = new MembershipRequestHistoryDescriptor[history.size()];
+		
+			for (int i = 0; i < history.size(); i++) {
+				historyDes[i] = membershiprequesthistorytoMembershipRequestHistoryDescriptor(history.get(i));
+			}
+			
+			des.setHistory(historyDes);
+		}
 		return des;
 	}
+	
+	private MembershipRequestHistoryDescriptor membershiprequesthistorytoMembershipRequestHistoryDescriptor(MembershipRequestHistory membershipRequestHistory) throws Exception {
+		MembershipRequestHistoryDescriptor des = new MembershipRequestHistoryDescriptor();
+		des.setUUID(membershipRequestHistory.getId());
+		des.setStatus(membershipRequestHistory.getStatus());
+		if (membershipRequestHistory.getReviewer() != null) {
+			des.setReviewer(memberToMemberDescriptor(membershipRequestHistory.getReviewer()));
+		}
+		des.setReviewTime(membershipRequestHistory.getReviewTime());
+		des.setPublicNote(membershipRequestHistory.getPublicNote());
+		des.setAdminNote(membershipRequestHistory.getAdminNote());
+		return des;
+	}
+
 
 	private StemDescriptor stemtoStemDescriptor(Stem stem) throws Exception {
 		StemDescriptor des = new StemDescriptor();
@@ -1296,7 +1324,7 @@ public class GridGrouper {
 			session = GrouperSession.start(caller);
 			Group grp = GroupFinder.findByName(session, group.getGroupName());
 			grp.deleteMember(SubjectFinder.findById(member));
-			MembershipRequestsFinder.removeRequest(grp, member);
+			MembershipRequestFinder.removeRequest(caller, grp, member);
 		} catch (GroupNotFoundException e) {
 			GroupNotFoundFault fault = new GroupNotFoundFault();
 			fault.setFaultString("The group, " + group.getGroupName() + "was not found.");
@@ -1989,10 +2017,10 @@ public class GridGrouper {
 				throw fault;
 			} 
 			
-			MembershipRequests request = MembershipRequestsFinder.findRequest(session, grp, gridIdentity);
+			MembershipRequest request = MembershipRequestFinder.findRequest(session, grp, gridIdentity);
 
 			if (request == null) {
-				MembershipRequests.create(grp, gridIdentity);
+				MembershipRequest.create(grp, gridIdentity);
 			} else if (MembershipRequestStatus.Removed.equals(request.getStatus())) {
 				request.pending();
 			} else {
@@ -2039,11 +2067,14 @@ public class GridGrouper {
 			session = GrouperSession.start(caller);
 			Group grp = GroupFinder.findByName(session, group.getGroupName());
 
-			ArrayList<MembershipRequests> requests = MembershipRequestsFinder.findRequestsByStatus(session, grp, status);
+			ArrayList<MembershipRequest> requests = MembershipRequestFinder.findRequestsByStatus(session, grp, status);
 			ArrayList<MembershipRequestDescriptor> membershipRequestDescriptor = new ArrayList<MembershipRequestDescriptor>();
-			for (MembershipRequests request : requests) {
+			for (MembershipRequest request : requests) {
 				if (grp.hasAdmin(caller) || gridIdentity.equals(request.getRequestorId()) || (getAdminGroup().hasMember(caller))) {
 					membershipRequestDescriptor.add(membershiprequesttoMembershipRequestDescriptor(request));
+				}
+				if (!grp.hasAdmin(caller) && !getAdminGroup().hasMember(caller)) {
+					clearAdminNotes(membershipRequestDescriptor);
 				}
 			}
 			
@@ -2075,6 +2106,18 @@ public class GridGrouper {
 		}
 	}
 	
+	private void clearAdminNotes(ArrayList<MembershipRequestDescriptor> membershipRequestDescriptor) {
+		for (MembershipRequestDescriptor des : membershipRequestDescriptor) {
+			des.setAdminNote(null);
+			MembershipRequestHistoryDescriptor[] histDes = des.getHistory();
+			for (MembershipRequestHistoryDescriptor membershipRequestHistoryDescriptor : histDes) {
+				membershipRequestHistoryDescriptor.setAdminNote(null);
+			}
+			
+		}
+	}
+
+
 	public MembershipRequestDescriptor updateMembershipRequest(String gridIdentity, GroupIdentifier group, String subject, MembershipRequestUpdate update) throws GridGrouperRuntimeFault,
 			GroupNotFoundFault, InsufficientPrivilegeFault, MemberAddFault {
 		GrouperSession session = null;
@@ -2086,13 +2129,13 @@ public class GridGrouper {
 			Member caller = MemberFinder.findBySubject(session, callerSubject);
 			Subject subj = SubjectFinder.findById(subject);
 
-			MembershipRequests membershipRequest = MembershipRequestsFinder.findRequest(session, grp, subject);
+			MembershipRequest membershipRequest = MembershipRequestFinder.findRequest(session, grp, subject);
 			
 			if (MembershipRequestStatus.Approved.equals(update.getStatus())) {
-				membershipRequest.approve(caller, update.getNote());
+				membershipRequest.approve(caller, update.getPublicNote(), update.getAdminNote());
 				grp.addMember(subj);
 			} else {
-				membershipRequest.reject(caller, update.getNote());
+				membershipRequest.reject(caller, update.getPublicNote(), update.getAdminNote());
 			}
 			
 			return membershiprequesttoMembershipRequestDescriptor(membershipRequest);
@@ -2138,7 +2181,7 @@ public class GridGrouper {
 				session = GrouperSession.start(subj);
 				Group grp = GroupFinder.findByName(session, group.getGroupName());
 				
-				MembershipRequests.configureGroup(session, grp);
+				MembershipRequest.configureGroup(session, grp);
 				grp.setAttribute("allowMembershipRequests", "true");
 
 			} catch (GroupNotFoundException e) {
@@ -2192,9 +2235,9 @@ public class GridGrouper {
 				session = GrouperSession.start(subj);
 				Group grp = GroupFinder.findByName(session, group.getGroupName());
 
-				MembershipRequests.configureGroup(session, grp);
+				MembershipRequest.configureGroup(session, grp);
 				grp.setAttribute("allowMembershipRequests", "false");
-				MembershipRequests.rejectAllRequests(session, MemberFinder.findBySubject(session, subj), grp);
+				MembershipRequest.rejectAllRequests(session, MemberFinder.findBySubject(session, subj), grp);
 
 			} catch (GroupNotFoundException e) {
 				GroupNotFoundFault fault = new GroupNotFoundFault();

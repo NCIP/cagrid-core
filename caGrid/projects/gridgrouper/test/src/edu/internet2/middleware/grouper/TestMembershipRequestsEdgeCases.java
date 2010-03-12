@@ -51,7 +51,8 @@ public class TestMembershipRequestsEdgeCases extends TestCase {
 		Session hs = GridGrouperHibernateHelper.getSession();
 		Transaction tx = hs.beginTransaction();
 
-		hs.delete("from MembershipRequests");
+		hs.delete("from MembershipRequestHistory");
+		hs.delete("from MembershipRequest");
 
 		tx.commit();
 		hs.close();
@@ -96,7 +97,7 @@ public class TestMembershipRequestsEdgeCases extends TestCase {
 			MembershipRequestDescriptor[] members = grouper.getMembershipRequests(SUPER_USER, Utils.getGroupIdentifier(grp),
 					MembershipRequestStatus.Pending);
 			
-			MembershipRequestUpdate update = new MembershipRequestUpdate("A note", MembershipRequestStatus.Rejected);
+			MembershipRequestUpdate update = new MembershipRequestUpdate("A note", "A note",MembershipRequestStatus.Rejected);
 			grouper.updateMembershipRequest(SUPER_USER, Utils.getGroupIdentifier(grp), USER_A, update);
 
 			members = grouper.getMembershipRequests(SUPER_USER, Utils.getGroupIdentifier(grp),
@@ -143,7 +144,7 @@ public class TestMembershipRequestsEdgeCases extends TestCase {
 
 			grouper.addMembershipRequest(USER_A, Utils.getGroupIdentifier(grp));
 			
-			MembershipRequestUpdate update = new MembershipRequestUpdate(null, MembershipRequestStatus.Rejected);
+			MembershipRequestUpdate update = new MembershipRequestUpdate(null, "A note", MembershipRequestStatus.Rejected);
 			grouper.updateMembershipRequest(SUPER_USER, Utils.getGroupIdentifier(grp), USER_A, update);
 			
 			try {
@@ -171,7 +172,7 @@ public class TestMembershipRequestsEdgeCases extends TestCase {
 
 			grouper.addMembershipRequest(USER_A, Utils.getGroupIdentifier(grp));
 			
-			MembershipRequestUpdate update = new MembershipRequestUpdate(null, MembershipRequestStatus.Approved);
+			MembershipRequestUpdate update = new MembershipRequestUpdate(null, "A note", MembershipRequestStatus.Approved);
 			grouper.updateMembershipRequest(SUPER_USER, Utils.getGroupIdentifier(grp), USER_A, update);
 			
 			grouper.deleteMember(SUPER_USER, Utils.getGroupIdentifier(grp), USER_A);
@@ -182,6 +183,8 @@ public class TestMembershipRequestsEdgeCases extends TestCase {
 					MembershipRequestStatus.Pending);
 
 			assertEquals("Should be able to request membership", 1, members.length);
+			
+			assertEquals("Should have membership request history", 4, members[0].getHistory().length);
 		} catch (Exception e) {
 			FaultUtil.printFault(e);
 			fail(e.getMessage());
@@ -189,6 +192,42 @@ public class TestMembershipRequestsEdgeCases extends TestCase {
 
 	}
 
+	public void testNotePrivieges() {
+		try {
+			GroupDescriptor grp = initialGroupAndRequestSetup();
+			grouper.grantMembershipRequests(SUPER_USER, Utils.getGroupIdentifier(grp));
+
+			grouper.addMembershipRequest(USER_A, Utils.getGroupIdentifier(grp));
+			
+			MembershipRequestUpdate update = new MembershipRequestUpdate("An Approved Admin Note", "An Approved Public Note", MembershipRequestStatus.Approved);
+			grouper.updateMembershipRequest(SUPER_USER, Utils.getGroupIdentifier(grp), USER_A, update);
+			
+			MembershipRequestDescriptor[] members = grouper.getMembershipRequests(SUPER_USER, Utils.getGroupIdentifier(grp),
+					MembershipRequestStatus.Approved);
+
+			assertEquals("Should be able to request membership", 1, members.length);
+			
+			assertEquals("Should have membership request history", 2, members[0].getHistory().length);
+			
+			if (members[0].getHistory(0).getAdminNote() != null) {
+				assertEquals("Admin should be able to see see the admin note", "An Approved Admin Note", members[0].getHistory(0).getAdminNote());
+			} else {
+				assertEquals("Admin should be able to see see the admin note", "An Approved Admin Note", members[0].getHistory(1).getAdminNote());				
+			}
+			
+			members = grouper.getMembershipRequests(USER_A, Utils.getGroupIdentifier(grp),
+					MembershipRequestStatus.Approved);
+
+			assertEquals("Should have membership request history", 2, members[0].getHistory().length);
+			assertNull("User should not see the admin not", members[0].getHistory(0).getAdminNote());
+			assertNull("User should not see the admin not", members[0].getHistory(1).getAdminNote());
+		} catch (Exception e) {
+			FaultUtil.printFault(e);
+			fail(e.getMessage());
+		}
+
+	}
+	
 	private GroupDescriptor initialGroupAndRequestSetup() throws GridGrouperRuntimeFault, StemNotFoundFault,
 			InsufficientPrivilegeFault, StemAddFault, Exception {
 		GridGrouperBootstrapper.addAdminMember(SUPER_USER);
