@@ -1,15 +1,14 @@
 package gov.nih.nci.cagrid.workflow.test.system.steps;
 
-import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileOutputStream;
-import java.io.FileWriter;
 import java.rmi.RemoteException;
 
 import org.apache.axis.message.addressing.EndpointReferenceType;
 import org.apache.axis.types.URI.MalformedURIException;
 
 import workflowmanagementfactoryservice.WorkflowOutputType;
+import workflowmanagementfactoryservice.WorkflowPortType;
 import workflowmanagementfactoryservice.WorkflowStatusType;
 
 import gov.nih.nci.cagrid.testing.system.haste.Step;
@@ -22,8 +21,9 @@ public class CheckTavernaWorkflowServiceStep extends Step {
 	//private static final String OUTPUT_FILE = "resources/output/output.xml";
 	private static final String OUTPUT_FILE = System.getProperty("java.io.tmpdir") 
 		+ System.getProperty("file.separator") + "output.xml";
-	private static final String[] INPUTS = {"TavernaWorkflowService", " Test Successful"};
-	
+	private static final WorkflowPortType[] INPUTS = {
+		new WorkflowPortType("fish","TavernaWorkflowService"),
+		new WorkflowPortType("soup", " Test Successful")};
 	
 	public CheckTavernaWorkflowServiceStep(EndpointReferenceType twsEPR) {
 		this.twsEPR = twsEPR;
@@ -43,7 +43,7 @@ public class CheckTavernaWorkflowServiceStep extends Step {
 		EndpointReferenceType serviceEPR;
 		try {
 			serviceEPR = TavernaWorkflowServiceClient.setupWorkflow(
-					twsEPR.getAddress().toString(), scuflDoc.getAbsolutePath(), "TEST");
+					twsEPR.getAddress().toString(), scuflDoc.getAbsolutePath(), "TEST", null);
 			assertNotNull("ERROR : The resource EPR is null.", serviceEPR);
 
 			// Start the workflow with the input parameters.
@@ -77,15 +77,15 @@ public class CheckTavernaWorkflowServiceStep extends Step {
 			WorkflowOutputType output = TavernaWorkflowServiceClient.getOutput(serviceEPR);
 
 			FileOutputStream out = new FileOutputStream(new File(OUTPUT_FILE));
-			out.write((output.getOutputFile(0)).getBytes());
+			out.write((output.getOutput(0).getValue()).getBytes());
 			out.flush();
 			out.close();
 			System.out.println(" >> Output File located at:" + (new File(OUTPUT_FILE)).getAbsolutePath() + "\n");
-			System.out.println("\n\n >> Output : " + output.getOutputFile(0) + "\n");
+			System.out.println("\n\n >> Output : " + output.getOutput(0).getValue() + "\n");
 			
 			//System.out.println("result: " + output.getOutputFile()[0]);
 			assertNotNull("The output of the workflow is null.", output);
-			assertNotNull("The output of the workflow is null.",output.getOutputFile()[0]);
+			assertNotNull("The output of the workflow is null.",output.getOutput(0).getValue());
 
 		} catch (MalformedURIException e) {
 			// TODO Auto-generated catch block
