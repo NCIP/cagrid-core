@@ -1,11 +1,11 @@
 <ns1:ServiceMetadata xmlns:ns1="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata">
  <ns1:serviceDescription>
-  <ns2:Service description="" name="IdentifiersNAService" version="1.4" xmlns:ns2="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.service">
+  <ns2:Service description="The Naming Authority service provides a resolution and administration interface to caGrid's Identifiers Framework" name="IdentifiersNAService" version="1.4" xmlns:ns2="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.service">
    <ns2:pointOfContactCollection>
-    <ns3:PointOfContact affiliation="" email="" firstName="" lastName="" phoneNumber="" role="" xmlns:ns3="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common"/>
+    <ns3:PointOfContact affiliation="Ohio State University" email="knowledge@cagrid.org" firstName="Calixto" lastName="Melean" role="Developer" xmlns:ns3="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common"/>
    </ns2:pointOfContactCollection>
    <ns2:serviceContextCollection>
-    <ns2:ServiceContext description="" name="IdentifiersNAService">
+    <ns2:ServiceContext description="The Naming Authority service enables users to maintain and resolve identifiers in the grid" name="IdentifiersNAService">
      <ns2:operationCollection>
       <ns2:Operation description="" name="GetMultipleResourceProperties">
        <ns2:inputParameterCollection/>
@@ -22,7 +22,7 @@
       <ns2:Operation description="" name="getServiceSecurityMetadata">
        <ns2:inputParameterCollection/>
        <ns2:Output qName="ns4:ServiceSecurityMetadata" dimensionality="1" isArray="false" xmlns:ns4="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.security">
-        <ns5:UMLClass className="ServiceSecurityMetadata" description="An instance of the Security Service Metadata." id="815BD3BF-90AB-2BEA-E040-BB89AD4318B3" packageName="gov.nih.nci.cagrid.metadata.security" projectName="caGrid_Metadata_Models" projectVersion="1" xmlns:ns5="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common">
+        <ns5:UMLClass className="ServiceSecurityMetadata" description="An instance of the Security Service Metadata." id="81D3B04A-867D-57A1-E040-BB89AD436841" packageName="gov.nih.nci.cagrid.metadata.security" projectName="caGrid_Metadata_Models" projectVersion="1" xmlns:ns5="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common">
          <ns5:umlAttributeCollection/>
          <ns5:SemanticMetadata conceptCode="C80736" conceptDefinition="A software system providing a public need." conceptName="Software Service" order="2"/>
          <ns5:SemanticMetadata conceptCode="C25669" conceptDefinition="Security; freedom from anxiety or fear." conceptName="Security" order="1"/>
@@ -37,21 +37,21 @@
        </ns2:inputParameterCollection>
        <ns2:Output qName="ns7:Identifier" dimensionality="1" isArray="false" xmlns:ns7="http://na.cagrid.org/1.0/NamingAuthority"/>
        <ns2:faultCollection>
-        <ns2:Fault description="" name="NamingAuthorityConfigurationFault"/>
-        <ns2:Fault description="" name="InvalidIdentifierFault"/>
-        <ns2:Fault description="" name="NamingAuthoritySecurityFault"/>
-        <ns2:Fault description="" name="InvalidIdentifierValuesFault"/>
+        <ns2:Fault description="A configuration error was detected by the naming authority" name="NamingAuthorityConfigurationFault"/>
+        <ns2:Fault description="The provided identifier is invalid, or does not exist" name="InvalidIdentifierFault"/>
+        <ns2:Fault description="User is not authorized to perform the operation" name="NamingAuthoritySecurityFault"/>
+        <ns2:Fault description="Invalid identifier values (metadata) were provided by the user" name="InvalidIdentifierValuesFault"/>
        </ns2:faultCollection>
       </ns2:Operation>
-      <ns2:Operation description="Returns metadata (IdentifierValues) associated with the provided identifier" name="resolveIdentifier">
+      <ns2:Operation description="Returns metadata associated with the provided identifier" name="resolveIdentifier">
        <ns2:inputParameterCollection>
         <ns2:InputParameter qName="ns8:Identifier" dimensionality="1" index="0" isArray="false" isRequired="false" name="identifier" xmlns:ns8="http://na.cagrid.org/1.0/NamingAuthority"/>
        </ns2:inputParameterCollection>
        <ns2:Output qName="ns9:IdentifierData" dimensionality="1" isArray="false" xmlns:ns9="http://na.cagrid.org/1.0/NamingAuthority"/>
        <ns2:faultCollection>
-        <ns2:Fault description="" name="NamingAuthorityConfigurationFault"/>
-        <ns2:Fault description="" name="InvalidIdentifierFault"/>
-        <ns2:Fault description="" name="NamingAuthoritySecurityFault"/>
+        <ns2:Fault description="A configuration error has been detected" name="NamingAuthorityConfigurationFault"/>
+        <ns2:Fault description="The provided identifier does not exist" name="InvalidIdentifierFault"/>
+        <ns2:Fault description="User is not authorized to perform the operation" name="NamingAuthoritySecurityFault"/>
        </ns2:faultCollection>
       </ns2:Operation>
       <ns2:Operation description="Deletes keys from an identifier" name="deleteKeys">
@@ -60,10 +60,10 @@
         <ns2:InputParameter qName="ns11:KeyName" dimensionality="1" index="1" isArray="true" isRequired="false" name="keyNames" xmlns:ns11="http://na.cagrid.org/1.0/NamingAuthority"/>
        </ns2:inputParameterCollection>
        <ns2:faultCollection>
-        <ns2:Fault description="" name="InvalidIdentifierFault"/>
-        <ns2:Fault description="" name="NamingAuthorityConfigurationFault"/>
-        <ns2:Fault description="" name="NamingAuthoritySecurityFault"/>
-        <ns2:Fault description="" name="InvalidIdentifierValuesFault"/>
+        <ns2:Fault description="The provided identifier does not exist" name="InvalidIdentifierFault"/>
+        <ns2:Fault description="A configuration error has been detected" name="NamingAuthorityConfigurationFault"/>
+        <ns2:Fault description="User is not authorized to perform the operation" name="NamingAuthoritySecurityFault"/>
+        <ns2:Fault description="Invalid identifier metadata was provided" name="InvalidIdentifierValuesFault"/>
        </ns2:faultCollection>
       </ns2:Operation>
       <ns2:Operation description="Creates new keys on an existing identifier" name="createKeys">
@@ -72,10 +72,10 @@
         <ns2:InputParameter qName="ns13:IdentifierData" dimensionality="1" index="1" isArray="false" isRequired="false" name="identifierData" xmlns:ns13="http://na.cagrid.org/1.0/NamingAuthority"/>
        </ns2:inputParameterCollection>
        <ns2:faultCollection>
-        <ns2:Fault description="" name="InvalidIdentifierFault"/>
-        <ns2:Fault description="" name="NamingAuthorityConfigurationFault"/>
-        <ns2:Fault description="" name="NamingAuthoritySecurityFault"/>
-        <ns2:Fault description="" name="InvalidIdentifierValuesFault"/>
+        <ns2:Fault description="The input identifier does not exist" name="InvalidIdentifierFault"/>
+        <ns2:Fault description="A configuration error has been detected" name="NamingAuthorityConfigurationFault"/>
+        <ns2:Fault description="User is not authorized to perform the operation" name="NamingAuthoritySecurityFault"/>
+        <ns2:Fault description="Invalid identifier metadata was provided" name="InvalidIdentifierValuesFault"/>
        </ns2:faultCollection>
       </ns2:Operation>
       <ns2:Operation description="Replaces the values associated with the specified keys on an existing identifier" name="replaceKeyValues">
@@ -84,10 +84,10 @@
         <ns2:InputParameter qName="ns15:IdentifierValues" dimensionality="1" index="1" isArray="false" isRequired="false" name="identifierValues" xmlns:ns15="http://na.cagrid.org/1.0/NamingAuthority"/>
        </ns2:inputParameterCollection>
        <ns2:faultCollection>
-        <ns2:Fault description="" name="InvalidIdentifierFault"/>
-        <ns2:Fault description="" name="NamingAuthorityConfigurationFault"/>
-        <ns2:Fault description="" name="NamingAuthoritySecurityFault"/>
-        <ns2:Fault description="" name="InvalidIdentifierValuesFault"/>
+        <ns2:Fault description="The provided identifier does not exist" name="InvalidIdentifierFault"/>
+        <ns2:Fault description="A configuration error has been detected" name="NamingAuthorityConfigurationFault"/>
+        <ns2:Fault description="User is not authorized to perform the operation" name="NamingAuthoritySecurityFault"/>
+        <ns2:Fault description="The provided identifier metadata does not exist" name="InvalidIdentifierValuesFault"/>
        </ns2:faultCollection>
       </ns2:Operation>
       <ns2:Operation description="Gets key names associated with an existing identifier" name="getKeyNames">
@@ -96,9 +96,9 @@
        </ns2:inputParameterCollection>
        <ns2:Output qName="ns17:KeyName" dimensionality="1" isArray="true" xmlns:ns17="http://na.cagrid.org/1.0/NamingAuthority"/>
        <ns2:faultCollection>
-        <ns2:Fault description="" name="InvalidIdentifierFault"/>
-        <ns2:Fault description="" name="NamingAuthorityConfigurationFault"/>
-        <ns2:Fault description="" name="NamingAuthoritySecurityFault"/>
+        <ns2:Fault description="The provided identifier does not exist" name="InvalidIdentifierFault"/>
+        <ns2:Fault description="A configuration error has been detected" name="NamingAuthorityConfigurationFault"/>
+        <ns2:Fault description="User is not authorized to perform the operation" name="NamingAuthoritySecurityFault"/>
        </ns2:faultCollection>
       </ns2:Operation>
       <ns2:Operation description="Gets data associated with the given key" name="getKeyData">
@@ -108,14 +108,14 @@
        </ns2:inputParameterCollection>
        <ns2:Output qName="ns20:KeyNameData" dimensionality="1" isArray="false" xmlns:ns20="http://na.cagrid.org/1.0/NamingAuthority"/>
        <ns2:faultCollection>
-        <ns2:Fault description="" name="InvalidIdentifierFault"/>
-        <ns2:Fault description="" name="NamingAuthoritySecurityFault"/>
-        <ns2:Fault description="" name="NamingAuthorityConfigurationFault"/>
+        <ns2:Fault description="The provided identifier does not exist" name="InvalidIdentifierFault"/>
+        <ns2:Fault description="User is not authorized to perform the operation" name="NamingAuthoritySecurityFault"/>
+        <ns2:Fault description="A configuration error has been detected" name="NamingAuthorityConfigurationFault"/>
        </ns2:faultCollection>
       </ns2:Operation>
      </ns2:operationCollection>
      <ns2:contextPropertyCollection>
-      <ns2:ContextProperty description="" name="{gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata}ServiceMetadata"/>
+      <ns2:ContextProperty description="caGrid standard Service Metadata" name="{gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata}ServiceMetadata"/>
      </ns2:contextPropertyCollection>
     </ns2:ServiceContext>
    </ns2:serviceContextCollection>
