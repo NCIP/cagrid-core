@@ -1,18 +1,25 @@
 package gov.nih.nci.cagrid.sdkquery4.processor;
 
+import gov.nih.nci.cagrid.common.Utils;
 import gov.nih.nci.cagrid.common.XMLUtilities;
 import gov.nih.nci.cagrid.data.utilities.DomainModelUtils;
 import gov.nih.nci.cagrid.metadata.dataservice.DomainModel;
 import gov.nih.nci.cagrid.metadata.dataservice.UMLClass;
+import gov.nih.nci.cagrid.sdkquery4.encoding.SDK40EncodingUtils;
 
+import java.io.IOException;
 import java.io.InputStream;
+import java.io.StringReader;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
+import org.apache.axis.utils.ClassUtils;
 import org.jdom.Element;
 import org.jdom.filter.ElementFilter;
 import org.jdom.filter.Filter;
+import org.xml.sax.EntityResolver;
+import org.xml.sax.InputSource;
 
 /**
  * Implementation of the class discriminator resolver which makes use
@@ -24,11 +31,15 @@ import org.jdom.filter.Filter;
  * @author David
  */
 public class HBMClassDiscriminatorResolver implements ClassDiscriminatorResolver {
+    // HBM DTD
+    public static final String HBM_DTD = "org/hibernate/hibernate-mapping-3.0.dtd";
+    public static final String HBM_DTD_ENTITY = "-//Hibernate/Hibernate Mapping DTD 3.0//EN";
     
     private DomainModel model = null;
     private Map<String, Object> discriminators = null;
     private Filter discriminatorFilter = null;
     private Filter joinedSubclassFilter = null;
+    private EntityResolver dtdResolver = null;
     
     public HBMClassDiscriminatorResolver(DomainModel model) {
         this.model = model;
@@ -100,7 +111,7 @@ public class HBMClassDiscriminatorResolver implements ClassDiscriminatorResolver
         String hbmResourceName = getHbmResourceName(className);
         InputStream hbmStream = Thread.currentThread().getContextClassLoader()
             .getResourceAsStream(hbmResourceName);
-        Element hbmElem = XMLUtilities.streamToDocument(hbmStream).getRootElement();
+        Element hbmElem = XMLUtilities.streamToDocument(hbmStream, getDtdResolver()).getRootElement();
         hbmStream.close();
         return hbmElem;
     }
@@ -124,5 +135,25 @@ public class HBMClassDiscriminatorResolver implements ClassDiscriminatorResolver
             name = clazz.getPackageName() + "." + name;
         }
         return name;
+    }
+    
+   
+    protected EntityResolver getDtdResolver() {
+        if (dtdResolver == null) {
+            // simple entity resolver to load the castor dtd from the class
+            // loader
+            dtdResolver = new EntityResolver() {
+                public InputSource resolveEntity(String publicId, String systemId) throws IOException {
+                    if (publicId.equals(HBM_DTD_ENTITY)) {
+                        InputStream stream = ClassUtils.getResourceAsStream(SDK40EncodingUtils.class, HBM_DTD);
+                        String text = Utils.inputStreamToStringBuffer(stream).toString();
+                        stream.close();
+                        return new InputSource(new StringReader(text));
+                    }
+                    return null;
+                }
+            };
+        }
+        return dtdResolver;
     }
 }
