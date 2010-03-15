@@ -16,8 +16,6 @@ import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.Collections;
-import java.util.Iterator;
 import java.util.Map;
 import java.util.Vector;
 import java.util.zip.ZipEntry;
@@ -26,36 +24,23 @@ import java.util.zip.ZipOutputStream;
 
 import gov.nih.nci.cagrid.common.Utils;
 import gov.nih.nci.cagrid.common.security.ProxyUtil;
-import gov.nih.nci.cagrid.workflow.factory.common.TavernaWorkflowServiceConstants;
 import gov.nih.nci.cagrid.workflow.factory.service.TavernaWorkflowServiceConfiguration;
-import gov.nih.nci.cagrid.workflow.service.impl.common.TavernaWorkflowServiceImplConstantsBase;
-import gov.nih.nci.cagrid.workflow.service.impl.stubs.types.CannotSetCredential;
 
-import org.apache.axis.message.addressing.EndpointReferenceType;
 import org.cagrid.gaards.cds.client.DelegatedCredentialUserClient;
 import org.cagrid.gaards.cds.delegated.stubs.types.DelegatedCredentialReference;
-import org.cagrid.gaards.cds.stubs.types.CDSInternalFault;
-import org.cagrid.gaards.cds.stubs.types.DelegationFault;
-import org.cagrid.gaards.cds.stubs.types.PermissionDeniedFault;
 import org.cagrid.transfer.context.service.globus.resource.TransferServiceContextResource;
 import org.cagrid.transfer.context.service.helper.DataStagedCallback;
 import org.cagrid.transfer.context.service.helper.TransferServiceHelper;
 import org.cagrid.transfer.context.stubs.types.TransferServiceContextReference;
 import org.cagrid.transfer.descriptor.DataDescriptor;
 import org.globus.gsi.GlobusCredential;
-import org.globus.gsi.GlobusCredentialException;
-import org.globus.wsrf.InvalidResourceKeyException;
-import org.globus.wsrf.NoSuchResourceException;
 import org.globus.wsrf.ResourceException;
-import org.globus.wsrf.ResourceKey;
-import org.globus.wsrf.ResourceProperty;
 import org.globus.wsrf.ResourcePropertySet;
-import org.globus.wsrf.impl.SimpleResourcePropertySet;
 
 import workflowmanagementfactoryservice.StartInputType;
 import workflowmanagementfactoryservice.WMSInputType;
-import workflowmanagementfactoryservice.WMSOutputType;
 import workflowmanagementfactoryservice.WorkflowOutputType;
+import workflowmanagementfactoryservice.WorkflowPortType;
 import workflowmanagementfactoryservice.WorkflowStatusType;
 
 
@@ -70,8 +55,8 @@ import workflowmanagementfactoryservice.WorkflowStatusType;
 public class TavernaWorkflowServiceImplResource extends TavernaWorkflowServiceImplResourceBase {
 
 	private String scuflDoc = null;
-	private String[] outputDoc = null;
-	private String[] inputDoc = null;
+	private WorkflowPortType[] outputDoc = null;
+	private WorkflowPortType[] inputDoc = null;
 	private String baseDir = null;
 
 	private String tempDir = null;
@@ -82,7 +67,28 @@ public class TavernaWorkflowServiceImplResource extends TavernaWorkflowServiceIm
 	private String caTransferCwd = null;
 
 	private WorkflowStatusType workflowStatus = WorkflowStatusType.Pending;
+	
 	private static TavernaWorkflowServiceConfiguration config = null;
+
+	private TransferServiceContextReference transferRefForOutput = null;
+	
+	public TransferServiceContextReference getTransferRefForOutput() {
+		return transferRefForOutput;
+	}
+
+	public void setTransferRefForOutput(TransferServiceContextReference transferRefForOutput) {
+		this.transferRefForOutput = transferRefForOutput;
+	}
+
+	public WorkflowStatusType getWorkflowStatus() {
+		return workflowStatus;
+	}
+
+	public void setWorkflowStatus(WorkflowStatusType workflowStatus) throws ResourceException {
+		this.workflowStatus = workflowStatus;
+		super.setWorkflowStatusElement(this.getWorkflowStatus());
+	}
+
 
 	public String getWorkflowName() {
 		return workflowName;
@@ -108,19 +114,19 @@ public class TavernaWorkflowServiceImplResource extends TavernaWorkflowServiceIm
 		this.baseDir = baseDir;
 	}
 
-	public String[] getInputDoc() {
+	public WorkflowPortType[] getInputDoc() {
 		return inputDoc;
 	}
 
-	public void setInputDoc(String[] inputDoc) {
+	public void setInputDoc(WorkflowPortType[] inputDoc) {
 		this.inputDoc = inputDoc;
 	}
 
-	public String[] getOutputDoc() {
+	public WorkflowPortType[] getOutputDoc() {
 		return outputDoc;
 	}
 
-	public void setOutputDoc(String[] workflowOuput) {
+	public void setOutputDoc(WorkflowPortType[] workflowOuput) {
 		outputDoc = workflowOuput;
 	}
 
@@ -151,17 +157,15 @@ public class TavernaWorkflowServiceImplResource extends TavernaWorkflowServiceIm
 	
 	private class WorkflowExecutionThread extends Thread {
 		
-		private String[] args = null;
 		private ArrayList<String> myArgs = null;
-		private ResourcePropertySet propSet;
-		private ResourceProperty statusRP;
-	   // private File tmpFile;
-	    //private FileOutputStream outtemp;
+//		private ResourcePropertySet propSet;
+//		private ResourceProperty statusRP;
+
 	    public WorkflowExecutionThread (ArrayList<String> args, ResourcePropertySet propSet )
 		{
 	    	this.myArgs = args;
-			this.propSet  = propSet;
-			statusRP = this.propSet.get(TavernaWorkflowServiceImplConstantsBase.WORKFLOWSTATUSELEMENT);
+//			this.propSet  = propSet;
+//			statusRP = this.propSet.get(TavernaWorkflowServiceImplConstantsBase.WORKFLOWSTATUSELEMENT);
 			//statusRP.set(0, workflowStatus);
 		}
 		public void run()
@@ -170,8 +174,44 @@ public class TavernaWorkflowServiceImplResource extends TavernaWorkflowServiceIm
 			String tavernaDir = config.getTavernaDir();
 			String repository = config.getBaseRepositoryDir();
 
+			// Add the Workflow scufl file to the input arguments list.
+			if(getScuflDoc() != null){
+				
+				myArgs.add("-scuflFile");
+				myArgs.add(getScuflDoc());
+			}
+			
+			//If the inputs are sent as key-value pairs, then add them into the ArrayList. 
+			//ArrayList is a FIFO, so I should be able to match them when I pull out.
+			if(getInputDoc() != null)
+			{
+				for(WorkflowPortType input : getInputDoc())
+				{
+					/*
+					 * If the workflow submitted uses caTransfer service, then a input port with portname
+					 * "workingDir" should be present in the Workflow. The value of this inputport is not added, 
+					 * because it is replaced with the value of the workingDir that is set on the service side.
+					 */
+					// If the client uploaded some file, then caTransferCwd shoudn't be null.
+					// if the client didn't upload any file using caTransfer, but still uses a port called "workingDir"
+					// then create an empty caTransferCwd using the helper method createTransferDir().
+					
+					if(input.getPort().equals("-workingDir")){
+						this.myArgs.add("-input:" + input.getPort());
+						String workingDir = (getCaTransferCwd() == null) ? createTransferDir() : getCaTransferCwd();
+						this.myArgs.add(workingDir);						
+						continue;
+					}
+					
+					this.myArgs.add("-input:"+input.getPort());
+					this.myArgs.add(input.getValue());
+				}
+			}
+			
+			//Create a processbilder with the prepared argument list.
 			ProcessBuilder builder = new ProcessBuilder(this.myArgs);
 			builder.redirectErrorStream(true);
+			
 			
 			builder.directory(new File(tavernaDir + File.separator + "target" + File.separator + "classes"));
 			try {
@@ -202,10 +242,11 @@ public class TavernaWorkflowServiceImplResource extends TavernaWorkflowServiceIm
 				boolean finished = false;
 				boolean firstLine = true;
 				
-				//Currently multiple outputs are stored in array. Eventually the return type should be changed to a Map
-				// with output port names as keys.
-				
-				String[] outputs = new String[1];
+				/*
+				 * Starting caGrid release 1.4, the TWS supports multiple outputs. It captures all the
+				 * ouputs with port-value pairs in a list of WorkflowPortType. 
+				 */
+				WorkflowPortType[] outputs = null;
 				int portsCounter = -1;
 
 				while ((line = br.readLine()) != null) {
@@ -216,16 +257,18 @@ public class TavernaWorkflowServiceImplResource extends TavernaWorkflowServiceIm
 						{
 							String[] portsLine = line.split(":::");
 							int ports = Integer.parseInt(portsLine[1]);
-							outputs = new String[ports];
+							outputs = new WorkflowPortType[ports];
 							firstLine = false;
 							
 						}else{						
 							if(line.indexOf(":::TWS:::") > 0){ //if String contains :::TWS::: anywhere
 								String[] temp = line.split(":::TWS:::");
 								portsCounter++;
-								outputs[portsCounter] = temp[1];
+								outputs[portsCounter] = new WorkflowPortType();
+								outputs[portsCounter].setPort(temp[0]);
+								outputs[portsCounter].setValue(temp[1]);
 							} else {
-								outputs[portsCounter] = outputs[portsCounter] + "\n" + line;
+								outputs[portsCounter].setValue(outputs[portsCounter].getValue() + "\n" + line);
 							}
 						}
 					}
@@ -243,30 +286,43 @@ public class TavernaWorkflowServiceImplResource extends TavernaWorkflowServiceIm
 				for(int i =0; i < outputs.length; i++)
                 {
                     System.out.format("Output-%d:%n", i+1);
-                    outputs[i] = outputs[i].replaceAll("^\\[+\\n|\\]+$", "");
-                    outputs[i] = outputs[i].replaceAll("^\\[+|\\]+$", "");
-                    System.out.println(outputs[i]);
+                    outputs[i].setValue(outputs[i].getValue().replaceAll("^\\[+\\n|\\]+$", ""));
+                    outputs[i].setValue(outputs[i].getValue().replaceAll("^\\[+|\\]+$", ""));
+                    System.out.println(outputs[i].getPort() +" : " + outputs[i].getValue());
                 }
 				setOutputDoc(outputs);
-				workflowStatus = WorkflowStatusType.Done;
-				this.statusRP.set(0, workflowStatus);
+				//workflowStatus = WorkflowStatusType.Done;
+				setWorkflowStatus(WorkflowStatusType.Done);
+				//this.statusRP.set(0, workflowStatus);
 
 				System.out.println("Final Status: " + workflowStatus.getValue());
 				
 			} catch (IOException e) {
-				System.err.println("IOException : Erorr in running the Workflow");
-				workflowStatus = WorkflowStatusType.Failed;
-				this.statusRP.set(0, workflowStatus);
+				System.err.println("IOException : Error in running the Workflow");
+				try {
+					setWorkflowStatus(WorkflowStatusType.Failed);
+				} catch (ResourceException e1) {
+					System.err.println("Unable to set workflowstatus!");
+					e1.printStackTrace();
+				}
 				e.printStackTrace();
 			} catch (InterruptedException e) {
-				workflowStatus = WorkflowStatusType.Failed;
-				this.statusRP.set(0, workflowStatus);
 				System.err.println("InterruptedException: Process Interrupted");
+				try {
+					setWorkflowStatus(WorkflowStatusType.Failed);
+				} catch (ResourceException e1) {
+					System.err.println("Unable to set workflowstatus!");
+					e1.printStackTrace();
+				}				
 				e.printStackTrace();
 			} catch (Exception e) {
-				workflowStatus = WorkflowStatusType.Failed;
-				this.statusRP.set(0, workflowStatus);
-				System.err.println("Exception : Erorr in running the Workflow");
+				System.err.println("Exception : Error in running the Workflow");
+				try {
+					setWorkflowStatus(WorkflowStatusType.Failed);
+				} catch (ResourceException e1) {
+					System.err.println("Unable to set workflowstatus!");
+					e1.printStackTrace();
+				}
 				e.printStackTrace();
 			} 
 
@@ -284,13 +340,15 @@ public class TavernaWorkflowServiceImplResource extends TavernaWorkflowServiceIm
 			{
 				throw new RemoteException("tavernaDir is not set the services.properties file"); 
 			}
+			if(!new File(config.getBaseRepositoryDir()).exists()){
+				throw new RemoteException("tavernaDir or baseRepositoryDir doesn't exist as per the services.properties file"); 
+			}
 
 			System.out.println("\nTaverna Repository:" + this.getBaseDir());						
 			System.out.println("\nTaverna Basedir: " + config.getTavernaDir());
 			System.out.println("NOTE: Please set the Taverna base directly correctly. This can be set in the service.properties file of service code.\n\n");
 
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
+		} catch (Exception e) {			
 			e.printStackTrace();
 		}
 
@@ -312,7 +370,7 @@ public class TavernaWorkflowServiceImplResource extends TavernaWorkflowServiceIm
 			this.setTempDir(System.getProperty("java.io.tmpdir") + File.separator + keys[1]);
 			new File(this.getTempDir()).mkdir();
 
-			String scuflDocTemp = this.getTempDir() + File.separator + this.getWorkflowName() + "--workflow.xml";
+			String scuflDocTemp = this.getTempDir() + File.separator + this.getWorkflowName() + "--workflow.t2flow";
 			Utils.stringBufferToFile(new StringBuffer(wMSInputElement.getScuflDoc()), scuflDocTemp);
 			this.setScuflDoc(scuflDocTemp);
 
@@ -328,40 +386,27 @@ public class TavernaWorkflowServiceImplResource extends TavernaWorkflowServiceIm
 
 		try {
 			
-			int inputPorts = 0;
-			
 			if(startInput != null)
 			{
 				System.out.println("InputFile provided for the workflow.");
-				String[] inputs = startInput.getInputArgs();
+				WorkflowPortType[] inputs = startInput.getInputArgs();
 				for (int i=0; i < inputs.length; i++)
 				{
 					String inputFile = this.getTempDir() + File.separator + "input-" + i + ".xml";					
-					Utils.stringBufferToFile(new StringBuffer(inputs[i]), inputFile);
+					Utils.stringBufferToFile(
+							new StringBuffer(inputs[i].getPort() +" : "+inputs[i].getValue()), inputFile);
 					System.out.println("Input file " + i + " : " + inputFile);
 				}
 				this.setInputDoc(inputs);
-				inputPorts = this.getInputDoc().length;
 			}
-
+			
 			//Create a ArrayList that holds all the args sent to the ProcessBuilder(in a new thread).
 			ArrayList<String> myArgs = new ArrayList<String>();
 			myArgs.addAll(Arrays.asList("java", 
 							"-Xms256m", 
 							"-Xmx1g",
-							"net.sf.taverna.raven.prelauncher.PreLauncher",
-							this.getScuflDoc()));
-			
-			for(int i = 0; i < inputPorts; i++)
-			{
-				myArgs.add(this.getInputDoc()[i]);
-			}			
-			
-			//if caTransfer is used, add the working diretory as the last argument of the ArrayList.
-			if(this.getCaTransferCwd() != null){
-				myArgs.add(this.getCaTransferCwd());
-			}
-				
+							"net.sf.taverna.raven.prelauncher.PreLauncher"));
+							
 			workflowStatus = WorkflowStatusType.Active;
 			super.setWorkflowStatusElement(workflowStatus);
 			
@@ -370,26 +415,25 @@ public class TavernaWorkflowServiceImplResource extends TavernaWorkflowServiceIm
 
 		} catch (Exception e) {
 			this.workflowStatus = WorkflowStatusType.Failed;
+			try {
+				super.setWorkflowStatusElement(workflowStatus);
+			} catch (ResourceException e1) {
+				e1.printStackTrace();
+			}
 			e.printStackTrace();
 		}
 		return this.workflowStatus;
 	}
 
+	
+	
 	public WorkflowOutputType getWorkflowOutput()
 	{
 		WorkflowOutputType workflowOuputElement = new WorkflowOutputType();
 		try {
-			//if( (new File(this.getOutputDoc()).exists()) && (this.workflowStatus.equals(WorkflowStatusType.Done)))
 			if( this.workflowStatus.equals(WorkflowStatusType.Done) )
 			{
-				//workflowOuputElement.setOutputFile(Utils.fileToStringBuffer( new File(this.getOutputDoc())).toString());
-				// Currently, the results are stored as array of string holding the outputs.
-				// Ideally, the output files should be created for each output in the "start" operation,
-				//	 and then access those files here, convert them into string buffers and then store them below.
-				// Will add it once we have some examples of multiple outout workflows.
-				//UPDATE: SEE COMMENT IN THE PROCEEBUILDER CODE(NEED MAP).
-
-				workflowOuputElement.setOutputFile(this.getOutputDoc());
+				workflowOuputElement.setOutput(this.getOutputDoc());
 			}
 			else
 			{
@@ -409,20 +453,23 @@ public class TavernaWorkflowServiceImplResource extends TavernaWorkflowServiceIm
 	}
 	
 
-	public void setDelegatedCredential(DelegatedCredentialReference delegatedCredentialReference){
+
+	
+	public void setDelegatedCredential(DelegatedCredentialReference delegatedCredentialReference) throws RemoteException, gov.nih.nci.cagrid.workflow.service.impl.stubs.types.CannotSetCredential {
 		// The default credential of the user on the service side that is currently logged in.
 		//GlobusCredential credential = ProxyUtil.getDefaultProxy();
 		
 		try {
-			GlobusCredential credential;
-			credential = new GlobusCredential("/Users/sulakhe/.cagrid/certificates/Sulakhe-2.local-cert.pem", "/Users/sulakhe/.cagrid/certificates/Sulakhe-2.local-key.pem");		
+			GlobusCredential credential = new GlobusCredential("/Users/sulakhe/.cagrid/certificates/Sulakhe-2.local-cert.pem", "/Users/sulakhe/.cagrid/certificates/Sulakhe-2.local-key.pem");		
+
+			//DelegatedCredentialUserClient client;
+			//client = new DelegatedCredentialUserClient(delegatedCredentialReference, credential);
 
 			DelegatedCredentialUserClient client;
-			client = new DelegatedCredentialUserClient(delegatedCredentialReference, credential);
+				client = new DelegatedCredentialUserClient(delegatedCredentialReference);
 
-		//	DelegatedCredentialUserClient client = new DelegatedCredentialUserClient(delegatedCredentialReference);
 
-		// The get credential method obtains a signed delegated credential from the CDS.
+			// The get credential method obtains a signed delegated credential from the CDS.
 			GlobusCredential delegatedCredential;
 
 			delegatedCredential = client.getDelegatedCredential();
@@ -433,25 +480,10 @@ public class TavernaWorkflowServiceImplResource extends TavernaWorkflowServiceIm
 			
 			//Sets the TWS_USER_PROXY variable that indicates a user has delegated his proxy.
 			this.setTWS_USER_PROXY(proxyPath);
-
-			
-		} catch (CDSInternalFault e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (DelegationFault e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (PermissionDeniedFault e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (RemoteException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
+			throw new RemoteException("Failed to setup the Delegated Credential on the Server.");
 		}
-
 		
 	}
 
@@ -472,16 +504,9 @@ public class TavernaWorkflowServiceImplResource extends TavernaWorkflowServiceIm
         DataStagedCallback callback = new DataStagedCallback() {
             public void dataStaged(TransferServiceContextResource resource) {
             	
-            	//Create a Working directory insde the Temp directory.
-            	String workDir = tmpDir + File.separator + "transferWorkDir";
-            	new File(workDir).mkdir();
+            	//Create a TransferDir.
             	
-            	//Set the caTransferCwd if its not already set.
-            	if (getCaTransferCwd() == null){
-            		setCaTransferCwd(workDir); 
-            	}
-            	
-            	
+            	String workDir = createTransferDir();
                 File dataFileUserSentMe = new File(resource.getDataStorageDescriptor().getLocation());
                 File fileInTmpDir = new File(workDir+ File.separator + 
                 		resource.getDataStorageDescriptor().getDataDescriptor().getName());
@@ -509,11 +534,23 @@ public class TavernaWorkflowServiceImplResource extends TavernaWorkflowServiceIm
         // return the reference to the user
         return TransferServiceHelper.createTransferContext(dd, callback);
 	}
+	
+	private String createTransferDir(){
+    	//Create a Working directory insde the Temp directory.
+    	String transferWorkDir = this.getTempDir() + File.separator + "transferWorkDir";
+    	new File(transferWorkDir).mkdir();
+    	
+    	//Set the caTransferCwd if its not already set.
+    	if (getCaTransferCwd() == null){
+    		this.setCaTransferCwd(transferWorkDir); 
+    	}    	
+    	return transferWorkDir;
+	}
 
 	private Collection<? extends File> listOfFilesAfterComplete = null;
 	public TransferServiceContextReference getOutputData() throws RemoteException {
 		//remove this line after testing
-		this.workflowStatus = WorkflowStatusType.Done;
+		//this.workflowStatus = WorkflowStatusType.Done;
 
 		if(this.workflowStatus.equals(WorkflowStatusType.Done))
 		{
@@ -532,13 +569,12 @@ public class TavernaWorkflowServiceImplResource extends TavernaWorkflowServiceIm
 				System.out.println("No output files to transfer.");
 				throw new RemoteException("No output files to transfer.");
 			}
-				
 		}
 		else
 			throw new RemoteException("Workflow execution is not complete.");
 	}
 
-	//****** Following two methods is get a list of all the jars from the Taverna repository******
+	//****** Following two methods are to get a list of all the jars from the Taverna repository******
 	//******  These jars are used to add to the classpath in process builder.				******
 	//****** Methods: listFilesAsArray() and listFiles
 	

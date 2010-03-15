@@ -18,6 +18,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.rmi.RemoteException;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
@@ -51,6 +52,7 @@ import workflowmanagementfactoryservice.WMSInputType;
 import workflowmanagementfactoryservice.WMSOutputType;
 import workflowmanagementfactoryservice.WSDLReferences;
 import workflowmanagementfactoryservice.WorkflowOutputType;
+import workflowmanagementfactoryservice.WorkflowPortType;
 import workflowmanagementfactoryservice.WorkflowStatusType;
 
 /**
@@ -121,15 +123,17 @@ TavernaWorkflowServiceClientBase implements TavernaWorkflowServiceI {
 	 * 
 	 * @param url			Url to the WorkflowService
 	 * @param scuflDoc		The workflow definition file (t2flow) created using Taverna 2.1.x
+	 * @param workflowName	The name for the workflow execution.
+	 * @param terminationTime User can give a termination time for the resource created for a workflow execution.
 	 * @return EPR			The epr representing the resource created on the context service that hanldes the workflow execution.
 	 * @throws MalformedURIException, RemoteException
 	 */
 
-	public static EndpointReferenceType setupWorkflow(String url,
-			String scuflDoc, String workflowName) throws MalformedURIException,
-			RemoteException, Exception {
+	public static EndpointReferenceType setupWorkflow(String url, String scuflDoc, 
+			String workflowName, Calendar terminationTime) throws MalformedURIException, RemoteException, Exception {
+		
 		TavernaWorkflowServiceClient client = new TavernaWorkflowServiceClient(url);
-		WMSInputType input = createInput(scuflDoc, workflowName, null);
+		WMSInputType input = createInput(scuflDoc, workflowName, null, terminationTime);
 		WMSOutputType wMSOutputElement = client.createWorkflow(input);
 		client.setWorkflowEPR(wMSOutputElement.getWorkflowEPR());
 		return wMSOutputElement.getWorkflowEPR();
@@ -154,21 +158,19 @@ TavernaWorkflowServiceClientBase implements TavernaWorkflowServiceI {
 		serviceClient.setDelegatedCredential(ref);
 	}
 
-	public static WorkflowStatusType startWorkflow(String[] inputString, EndpointReferenceType epr) throws MalformedURIException, RemoteException, Exception
-	{
+	public static WorkflowStatusType startWorkflow(WorkflowPortType[] inputArgs, EndpointReferenceType epr) throws MalformedURIException, RemoteException, Exception
+	{		
 		TavernaWorkflowServiceImplClient serviceClient = new TavernaWorkflowServiceImplClient(epr);
 		StartInputType startInputElement = null;
-		if(!(inputString == null))
+		if(!(inputArgs == null))
 		{
-			if(inputString.length > 0)
+			if(inputArgs.length > 0)
 			{
 				startInputElement = new StartInputType();
-				startInputElement.setInputArgs(inputString);
+				startInputElement.setInputArgs(inputArgs);
 			}			
 		}
-		//startInputElement.setInputArgs(inputString);
 		WorkflowStatusType workflowStatusElement =  serviceClient.start(startInputElement);
-
 		return workflowStatusElement;
 
 	}
@@ -381,23 +383,20 @@ TavernaWorkflowServiceClientBase implements TavernaWorkflowServiceI {
 		return ref;
 	}
 
-	public static WMSInputType createInput(String scuflFile, String name,
-			WSDLReferences[] wsdlRefArray) throws Exception {
+	public static WMSInputType createInput(String scuflFile, String name, 
+			EndpointReferenceType cdsEpr, Calendar terminationTime) throws Exception {
+		
 		WMSInputType input = new WMSInputType();
 		String scuflProcess = Utils.fileToStringBuffer(new File(scuflFile)).toString();
-
 		input.setScuflDoc(scuflProcess);
 		input.setWorkflowName(name);
-		if (wsdlRefArray == null) {
-			wsdlRefArray = new WSDLReferences[1];
-			wsdlRefArray[0] = new WSDLReferences();
-			wsdlRefArray[0].setServiceUrl(new URI("http://localhost:8080/wsrf/services/cagrid/WorkflowTestService1"));
-			wsdlRefArray[0].setWsdlLocation("http://localhost:8080/wsrf/share/schema/WorkflowTestService1/WorkflowTestService1.wsdl");
-			wsdlRefArray[0].setWsdlNamespace(new URI("http://sample1.tests.workflow.cagrid.nci.nih.gov/WorkflowTestService1"));
+		if(cdsEpr != null){
+			input.setDelegationEPR(cdsEpr);			
 		}
-		input.setWsdlReferences(wsdlRefArray);
+		if(terminationTime !=null){
+			input.setTerminationTime(terminationTime);
+		}
 		return input;
-
 	}
 
 

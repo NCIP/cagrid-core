@@ -3,6 +3,7 @@ package gov.nih.nci.cagrid.workflow.factory.client;
 import gov.nih.nci.cagrid.common.Utils;
 
 import java.io.File;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -11,6 +12,7 @@ import org.cagrid.gaards.cds.delegated.stubs.types.DelegatedCredentialReference;
 import org.cagrid.transfer.context.stubs.types.TransferServiceContextReference;
 
 import workflowmanagementfactoryservice.WorkflowOutputType;
+import workflowmanagementfactoryservice.WorkflowPortType;
 import workflowmanagementfactoryservice.WorkflowStatusType;
 
 
@@ -54,8 +56,12 @@ public class TavernaWorkflowServiceClientMain {
 
 					System.out.println("\n1. Running createWorkflow ..");
 
-					//WMSOutputType wMSOutputElement =  client.createWorkflow(input);
-					EndpointReferenceType resourceEPR = TavernaWorkflowServiceClient.setupWorkflow(url, scuflDoc, workflowName);
+					//Setup a termination time of 1hour (60 Mins) from current time for this resource.
+					// If not setup, the default value of 180Mins from current time will be used.
+					Calendar terminationTime = Calendar.getInstance();
+					terminationTime.add(Calendar.MINUTE, 60);
+					EndpointReferenceType resourceEPR = 
+						TavernaWorkflowServiceClient.setupWorkflow(url, scuflDoc, workflowName, terminationTime);
 
 					System.out.println("Created a resource with EPR ..");
 					System.out.println("Writing EPR to file ..");
@@ -63,13 +69,13 @@ public class TavernaWorkflowServiceClientMain {
 
 					//************************************************************************// 
 					// 2. Testing caTransfer.
-					String location = "/Users/sulakhe/Desktop/ttemp.zip";
+/*					String location = "/Users/sulakhe/Desktop/ttemp.zip";
 					TransferServiceContextReference ref1 = TavernaWorkflowServiceClient.putInputDataHelper(resourceEPR, location);
 					  
 					File outFile = TavernaWorkflowServiceClient.getOutputDataHelper(resourceEPR);
 					System.out.println("caTransfer Output: " + outFile.getAbsolutePath());
 					System.exit(0);
-
+*/
 					//************************************************************************//					
 					// 2. Delegate credential.
 /*					DelegatedCredentialReference cdsRef = TavernaWorkflowServiceClient.delegateCredential(
@@ -80,10 +86,15 @@ public class TavernaWorkflowServiceClientMain {
 
 */					
 					// 3. Start Workflow Operations Invoked.
-
-					String[] inputArgs = {"Dina", " Sulakhe"}; 
+					WorkflowPortType [] inputArgs = { 
+							new WorkflowPortType("fish", "Saina"),
+							new WorkflowPortType("soup", "Sulakhe")
+					};
+					
+					//String[] inputArgs = {"Dina", " Sulakhe"}; 
 					//String[] inputArgs = {"<ns1:CQLQuery xmlns:ns1=\"http://CQL.caBIG/1/gov.nih.nci.cagrid.CQLQuery\">  <ns1:Target name=\"gov.nih.nci.caarray.domain.project.Experiment\">   <ns1:Group logicRelation=\"AND\">    <ns1:Attribute name=\"id\" predicate=\"EQUAL_TO\" value=\"95\"/>   </ns1:Group>  </ns1:Target> </ns1:CQLQuery>"};
 					//String[] inputArgs = {"caCore"};
+					
 					System.out.println("\n3. Now starting the workflow ..");
 					System.out.println("Reading EPR from file ..");
 					EndpointReferenceType readEPR = new EndpointReferenceType();
@@ -131,24 +142,29 @@ public class TavernaWorkflowServiceClientMain {
 					}
 					
 					//Subscribe to the Resource property:
-					TavernaWorkflowServiceClient.subscribeRP(readEPR, 3600);
-					workflowStatus = TavernaWorkflowServiceClient.getStatus(readEPR);
-
+					//TavernaWorkflowServiceClient.subscribeRP(readEPR, 3600);
+					//workflowStatus = TavernaWorkflowServiceClient.getStatus(readEPR);
+					while(!TavernaWorkflowServiceClient.getStatus(readEPR).equals(WorkflowStatusType.Done) 
+							&& !TavernaWorkflowServiceClient.getStatus(readEPR).equals(WorkflowStatusType.Failed))
+					{
+						Thread.sleep(5000);
+						System.out.println("Waiting for workflow to complete..");
+					}
 
 					//4. Get output of workflow.
 					
-					if(workflowStatus.equals(WorkflowStatusType.Done))
+					if(TavernaWorkflowServiceClient.getStatus(readEPR).equals(WorkflowStatusType.Done))
 					{
 						System.out.println("Workflow Executions is Completed.");
 					
 						System.out.println("\n4. Getting back the output file..");
 						WorkflowOutputType workflowOutput = TavernaWorkflowServiceClient.getOutput(readEPR);
 						
-						String[] outputs = workflowOutput.getOutputFile();
+						WorkflowPortType[] outputs = workflowOutput.getOutput();
 						for (int i=0; i < outputs.length; i++)
 						{
-							String outputFile = System.getProperty("user.dir") + "/" + workflowName +"-output-" + i + ".xml";
-							Utils.stringBufferToFile(new StringBuffer(outputs[i]), outputFile);
+							String outputFile = System.getProperty("user.dir") + "/" + workflowName +"-output-" + outputs[i].getPort() + "-" + i + ".xml";
+							Utils.stringBufferToFile(new StringBuffer(outputs[i].getValue()), outputFile);
 							System.out.println("Output file " + i + " : " + outputFile);
 						}
 					}

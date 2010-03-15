@@ -2,10 +2,13 @@
 <xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" 
 	xmlns:tns="http://types.workflow.cagrid.nci.nih.gov/WorkflowManagementFactoryService" 
 	xmlns:wsa="http://schemas.xmlsoap.org/ws/2004/03/addressing" 
+	xmlns:cds="http://cds.gaards.cagrid.org/CredentialDelegationService/DelegatedCredential/types"
 	targetNamespace="http://types.workflow.cagrid.nci.nih.gov/WorkflowManagementFactoryService" 
 	attributeFormDefault="unqualified" elementFormDefault="qualified">
 	
   <xsd:import namespace="http://schemas.xmlsoap.org/ws/2004/03/addressing" schemaLocation="ws_2004_03_addressing.xsd" />
+  <xsd:import namespace="http://cds.gaards.cagrid.org/CredentialDelegationService/DelegatedCredential/types" schemaLocation="DelegatedCredentialTypes.xsd" />
+
   <xsd:element name="WMSInputElement" type="tns:WMSInputType" />
   <xsd:element name="WMSOutputElement" type="tns:WMSOutputType" />
   <xsd:element name="WorkflowStatusElement" type="tns:WorkflowStatusType" />
@@ -21,8 +24,7 @@
     <xsd:sequence>  
       <xsd:element name="workflowName" type="xsd:string" minOccurs="1" maxOccurs="1" />
       <xsd:element name="scuflDoc" type="xsd:string" maxOccurs="1" />
-      <xsd:element name="delegationEPR" type="wsa:EndpointReferenceType" minOccurs="0" maxOccurs="1"/> 
-      <xsd:element name="wsdlReferences" type="tns:WSDLReferences" maxOccurs="unbounded" />
+      <xsd:element name="delegationEPR" type="wsa:EndpointReferenceType" minOccurs="0" maxOccurs="1"/>
       <xsd:element name="terminationTime" type="xsd:dateTime" minOccurs="0" maxOccurs="1"/>    
     </xsd:sequence>
   </xsd:complexType>
@@ -30,8 +32,8 @@
   <xsd:complexType name="StartInputType">
     <xsd:sequence>
     
-<!--      <xsd:element name="inputArgs" type="tns:WorkflowInputType" maxOccurs="unbounded " />-->
-      <xsd:element name="inputArgs" type="xsd:string" maxOccurs="unbounded" />
+      <xsd:element name="inputArgs" type="tns:WorkflowPortType" maxOccurs="unbounded " />
+<!--      <xsd:element name="inputArgs" type="xsd:string" maxOccurs="unbounded" />-->
     </xsd:sequence>
   </xsd:complexType>
   
@@ -63,10 +65,10 @@
     </xsd:sequence>
   </xsd:complexType>
   
-  <xsd:complexType name="WorkflowInputType">
+  <xsd:complexType name="WorkflowPortType">
     <xsd:sequence>
-      <xsd:element name="inputPort" type="xsd:string" maxOccurs="1" />
-      <xsd:element name="inputValue" type="xsd:string" maxOccurs="1" />
+      <xsd:element name="port" type="xsd:string" maxOccurs="1" />
+      <xsd:element name="value" type="xsd:string" maxOccurs="1" />
     </xsd:sequence>
   </xsd:complexType>
   
@@ -75,7 +77,7 @@
     <!--
       <xsd:any maxOccurs="1" />
     -->
-      <xsd:element name="outputFile" type="xsd:string" maxOccurs="unbounded" />    
+      <xsd:element name="output" type="tns:WorkflowPortType" maxOccurs="unbounded" />    
     </xsd:sequence>
   </xsd:complexType>
   

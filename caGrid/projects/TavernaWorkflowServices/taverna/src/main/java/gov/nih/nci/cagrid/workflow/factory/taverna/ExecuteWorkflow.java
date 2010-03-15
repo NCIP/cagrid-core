@@ -125,7 +125,7 @@ public class ExecuteWorkflow extends java.lang.Object
 	protected static void help() {
 		System.err.println("Execute workflow");
 		System.err.println("Usage:");
-		System.err.println("executeworkflow <workflowFile> [portInput] ..");
+		System.err.println("executeworkflow -scuflFile <workflowFile> -input:<portname> <inputValue> -input:<portname> <invputvalue>.....");
 	}
 
 //	public static void main(String[] args) throws Exception {
@@ -200,32 +200,38 @@ public class ExecuteWorkflow extends java.lang.Object
 		return dataflow;
 	}
 
-	protected void run(String[] args) throws Exception {
-
-		
-		logger.info("Entering the Run method .... #####");
-		if (args.length == 0 || args[0].equalsIgnoreCase("-h")
-				|| args[0].equalsIgnoreCase("--help")) {
+	//protected void run(String[] args) throws Exception {
+	protected void run(String scuflFile, Map<String, String> inputArgs) throws Exception {
+			
+//		if (args.length == 0 || args[0].equalsIgnoreCase("-h")
+//				|| args[0].equalsIgnoreCase("--help")) {
+		if(scuflFile == null){
 			help();
 			System.exit(Exit.HELP.ordinal());
 		}
 
-		File workflowFile = new File(args[0]);
+		File workflowFile = new File(scuflFile);
 		if (!workflowFile.isFile()) {
 			System.err.println("Not a workflow file: " + workflowFile);
 			System.exit(Exit.WORKFLOW_FILE.ordinal());
 		}
 		
+		
 		createContext();
 		Dataflow dataflow = loadDataflow(workflowFile);
 		List<? extends DataflowInputPort> ports = dataflow.getInputPorts();
-		if (args.length != ports.size() + 1) {
-			helpPorts(args[0], ports);
+		
+		System.out.println("Ports:" + ports.size() + "::" + "InputArgs:" + inputArgs.size());
+		if (inputArgs.size() != ports.size()) {
+			//helpPorts(args[0], ports);
 			System.exit(Exit.PORTS.ordinal());
 		}
+		
 		// Skip the workflow name
-		List<String> inputList = Arrays.asList(args).subList(1, args.length);
-		Map<String, T2Reference> inputs = registerInputs(ports, inputList);
+		//List<String> inputList = Arrays.asList(args).subList(1, args.length);
+		
+		Map<String, T2Reference> inputs = registerInputs(ports, inputArgs);
+		
 
 		String owningProcess = "executeWorkflow" + UUID.randomUUID();
 		WorkflowInstanceFacade facade = new WorkflowInstanceFacadeImpl(
@@ -237,7 +243,7 @@ public class ExecuteWorkflow extends java.lang.Object
 		//facade.addFailureListener(simpleFailure);
 
 		
-		long until = System.currentTimeMillis() + TIMEOUT * 1000;
+		long until = System.currentTimeMillis() + 3600 * 1000;
 		System.out.println("Executing workflow " + workflowFile);
 		
 		facade.fire();
@@ -274,59 +280,76 @@ public class ExecuteWorkflow extends java.lang.Object
 		
 	}
 
-
 	protected Map<String, T2Reference> registerInputs(
 			Iterable<? extends DataflowInputPort> ports,
-			Iterable<String> inputValues) {
-		
-
-		
+			Map<String, String> inputMap) {
+				
 		HashMap<String, T2Reference> inputs = new HashMap<String, T2Reference>();
 		Iterator<? extends DataflowInputPort> portIterator = ports.iterator();
-		Iterator<String> inputsIterator = inputValues.iterator();
-		while (portIterator.hasNext() && inputsIterator.hasNext()) {
-			String string = inputsIterator.next();
+		while (portIterator.hasNext()) {
 			DataflowInputPort inputPort = portIterator.next();
-			
 			System.out.println("Input Port : " + inputPort.getName());
 			
-			T2Reference inputRef = referenceService.register(string, 0, true,
+			T2Reference inputRef = referenceService.register(inputMap.get(inputPort.getName()), 0, true,
 					invocationContext);
 			inputs.put(inputPort.getName(), inputRef);
 		}
 		return inputs;
 	}
 
-	public int launch(String[] arg0) throws Exception {
+	public int launch(String[] args) throws Exception {
 		
 		String[] inputs;
-		if(arg0.length > 0)
+		String workflow = null;
+		
+		Map<String, String> inputArgs = new HashMap<String, String>();
+		
+		if(args.length > 0)
 		{
-			inputs = arg0;
+			for(int i=0; i<args.length; i++){
+				if(args[i].startsWith("-input:"))
+				{
+					String[] temp = args[i].split(":");
+					inputArgs.put(temp[1], args[i+1]);
+				}
+				if(args[i].startsWith("-scuflFile"))
+				{
+					workflow = args[i+1];
+				}
+				
+			}
+			if(workflow == null){
+				help();
+			}
 		}
 		else{
 			
+			//help();
+			
+			
 			//	String workflow = System.getProperty("user.dir") + System.getProperty("file.separator") + "workflows/" + "caINT2_PCA_CMS_090826.t2flow";
-			String workflow = System.getProperty("user.dir") + System.getProperty("file.separator") + "workflows/" + "PCA_transfer_plugin.t2flow";
+//			String workflow = System.getProperty("user.dir") + System.getProperty("file.separator") + "workflows/" + "PCA_transfer_plugin.t2flow";
 			//String[] inputArgs = {"/Users/sulakhe/Desktop/dina/workingdir", "/Users/sulakhe/Desktop/dina/all_aml_train.gct"};
 			String input1 = "/Users/sulakhe/taverna/10000";
 			String input = "/Users/sulakhe/Desktop/dina/all_aml_train.gct";
-
+			
 			//String input1 = System.getProperty("user.dir");
 			//String input = System.getProperty("user.dir") + System.getProperty("file.separator") + "workflows/all_aml_train.gct";
 
-
-//			String input1 = "Hello ";
-//			String input = "World!";
-		
 //			String workflow = System.getProperty("user.dir") + System.getProperty("file.separator") + "workflows/PCA_transfer_plugin.t2flow";
-//			String workflow = System.getProperty("user.dir") + System.getProperty("file.separator") + "workflows/fishsoup.t2flow";
-			System.out.println("Workflow Path: " + workflow);
+
+		//	String input1 = "Hello ";
+		//	String input = "World!";
+		
+			
+			workflow = System.getProperty("user.dir") + System.getProperty("file.separator") + "workflows/fishsoup.t2flow";
+//			System.out.println("Workflow Path: " + workflow);
 			String[] temp = {workflow, input1, input};
+
 		
 			inputs = temp;
 		}
-		new ExecuteWorkflow().run(inputs);	
+		new ExecuteWorkflow().run(workflow, inputArgs);	
 		return 0;
 	}
 }
