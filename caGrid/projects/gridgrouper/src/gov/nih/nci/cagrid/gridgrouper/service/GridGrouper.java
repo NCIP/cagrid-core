@@ -2237,7 +2237,7 @@ public class GridGrouper {
 
 				MembershipRequest.configureGroup(session, grp);
 				grp.setAttribute("allowMembershipRequests", "false");
-				MembershipRequest.rejectAllRequests(session, MemberFinder.findBySubject(session, subj), grp);
+				MembershipRequest.markAllRequestsRemoved(session, MemberFinder.findBySubject(session, subj), grp, "Membership requests to this group were disabled.  All pending requests have been marked removed.");
 
 			} catch (GroupNotFoundException e) {
 				GroupNotFoundFault fault = new GroupNotFoundFault();
@@ -2246,13 +2246,6 @@ public class GridGrouper {
 				helper.addFaultCause(e);
 				fault = (GroupNotFoundFault) helper.getFault();
 				throw fault;
-//			} catch (RevokePrivilegeException e) {
-//				RevokePrivilegeFault fault = new RevokePrivilegeFault();
-//				fault.setFaultString(e.getMessage());
-//				FaultHelper helper = new FaultHelper(fault);
-//				helper.addFaultCause(e);
-//				fault = (RevokePrivilegeFault) helper.getFault();
-//				throw fault;
 			} catch (InsufficientPrivilegeException e) {
 				InsufficientPrivilegeFault fault = new InsufficientPrivilegeFault();
 				fault.setFaultString("You do not have the right to manages privileges on the group " + group.getGroupName()

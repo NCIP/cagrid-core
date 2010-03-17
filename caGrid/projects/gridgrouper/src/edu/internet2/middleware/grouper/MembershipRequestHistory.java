@@ -1,9 +1,6 @@
 package edu.internet2.middleware.grouper;
 
 import gov.nih.nci.cagrid.gridgrouper.bean.MembershipRequestStatus;
-import net.sf.hibernate.HibernateException;
-
-import org.apache.commons.lang.time.StopWatch;
 
 public class MembershipRequestHistory {
 	private String id;
@@ -23,11 +20,16 @@ public class MembershipRequestHistory {
 
 	public MembershipRequestHistory(MembershipRequest membershipRequest) {
 		super();
-		status = membershipRequest.getStatus();
-		reviewer = membershipRequest.getReviewer();
-		publicNote = membershipRequest.getPublicNote();
-		adminNote = membershipRequest.getAdminNote();
+		this.status = membershipRequest.getStatus();
+		this.reviewer = membershipRequest.getReviewer();
+		this.publicNote = membershipRequest.getPublicNote();
+		this.adminNote = membershipRequest.getAdminNote();
 		this.membershipRequest = membershipRequest;
+		if (MembershipRequestStatus.Pending.equals(this.status)) {
+			this.reviewTime = membershipRequest.getRequestTime();
+		} else {
+			this.reviewTime = membershipRequest.getReviewTime();
+		}
 	}
 
 	public Member getReviewer() {

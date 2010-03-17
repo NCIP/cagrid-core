@@ -50,7 +50,6 @@
     <property name="requestTime"
               type="long"
               not-null="true"
-              update="false"
     >
       <column name="request_time"         
       />
@@ -62,7 +61,7 @@
               type="string"
               not-null="true"
     >
-      <column name="status"         
+      <column name="status" not-null="true"         
       />
     </property>
     <!-- status -->

@@ -182,7 +182,7 @@ public class MembershipRequest {
 		}
 	}
 	
-	public static void rejectAllRequests(GrouperSession session, Member rejector, Group group) throws MembershipRequestUpdateException, InsufficientPrivilegeException, SubjectNotFoundException, GrouperException {
+	public static void markAllRequestsRemoved(GrouperSession session, Member rejector, Group group, String note) throws MembershipRequestUpdateException, InsufficientPrivilegeException, SubjectNotFoundException, GrouperException {
 		MembershipRequestValidator.canUpdateRequest(group, rejector.getSubject());
 
 		ArrayList<MembershipRequest> requests;
@@ -192,7 +192,7 @@ public class MembershipRequest {
 			throw new MembershipRequestUpdateException("Unable to approve membershiprequest: " + e.getMessage(), e);
 		}
 		for (MembershipRequest membershipRequest : requests) {
-			membershipRequest.reject(rejector, "Mass rejection", "Mass rejection");
+			membershipRequest.remove(rejector, note, null);
 		}
 	}
 

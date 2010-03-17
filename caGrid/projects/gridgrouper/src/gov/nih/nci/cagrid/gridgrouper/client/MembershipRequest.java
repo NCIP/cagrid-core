@@ -8,13 +8,19 @@ import gov.nih.nci.cagrid.common.Utils;
 import gov.nih.nci.cagrid.gridgrouper.bean.GroupDescriptor;
 import gov.nih.nci.cagrid.gridgrouper.bean.GroupIdentifier;
 import gov.nih.nci.cagrid.gridgrouper.bean.MembershipRequestDescriptor;
+import gov.nih.nci.cagrid.gridgrouper.bean.MembershipRequestHistoryDescriptor;
 import gov.nih.nci.cagrid.gridgrouper.bean.MembershipRequestStatus;
 import gov.nih.nci.cagrid.gridgrouper.bean.MembershipRequestUpdate;
 import gov.nih.nci.cagrid.gridgrouper.grouper.MemberI;
+import gov.nih.nci.cagrid.gridgrouper.grouper.MembershipRequestHistoryI;
 import gov.nih.nci.cagrid.gridgrouper.grouper.MembershipRequestI;
 import gov.nih.nci.cagrid.gridgrouper.stubs.types.GridGrouperRuntimeFault;
 import gov.nih.nci.cagrid.gridgrouper.stubs.types.InsufficientPrivilegeFault;
 import gov.nih.nci.cagrid.gridgrouper.stubs.types.SchemaFault;
+
+import java.util.ArrayList;
+import java.util.LinkedHashSet;
+import java.util.Set;
 
 public class MembershipRequest extends GridGrouperObject implements MembershipRequestI {
     private MembershipRequestDescriptor des;
@@ -22,13 +28,14 @@ public class MembershipRequest extends GridGrouperObject implements MembershipRe
     private GridGrouper gridGrouper;
     
     private MemberI reviewer;
-	
+    
     public MembershipRequest(GridGrouper gridGrouper, MembershipRequestDescriptor des) throws SubjectNotFoundException {
         this.gridGrouper = gridGrouper;
         this.des = des;
         if (des.getReviewer() != null) {
         	this.reviewer = new Member(gridGrouper, des.getReviewer());
         }
+        
     }
     
     public String getGroupName() {
@@ -59,6 +66,20 @@ public class MembershipRequest extends GridGrouperObject implements MembershipRe
 		return des.getStatus();
 	}
 	
+	public Set<MembershipRequestHistoryI> getHistory() {
+		try {
+			Set<MembershipRequestHistoryI> history = new LinkedHashSet<MembershipRequestHistoryI>();
+			for (MembershipRequestHistoryDescriptor histDes : des.getHistory()) {
+				history.add(new MembershipRequestHistory(gridGrouper, histDes));
+			}
+			return history;
+		} catch (Exception e) {
+			getLog().error(e.getMessage(), e);
+			throw new GrouperRuntimeException(Utils.getExceptionMessage(e));
+		}
+
+	}
+		
 	public void approve(String publicNote, String adminNote) throws InsufficientPrivilegeException, SchemaException {
 		updateMembershipRequest(publicNote, adminNote, MembershipRequestStatus.Approved);
 	}
