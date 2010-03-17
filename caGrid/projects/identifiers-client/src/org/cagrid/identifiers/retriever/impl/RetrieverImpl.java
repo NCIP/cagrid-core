@@ -17,6 +17,9 @@ public abstract class RetrieverImpl implements Retriever {
     }
     
     public String[] getRequiredKeys() {
+    	if (requiredKeys == null) {
+    		return new String[]{};
+    	}
     	return this.requiredKeys;
     }
 
