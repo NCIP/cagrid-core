@@ -4,6 +4,7 @@ import edu.internet2.middleware.subject.Subject;
 import gov.nih.nci.cagrid.common.FaultUtil;
 import gov.nih.nci.cagrid.common.Runner;
 import gov.nih.nci.cagrid.gridgrouper.client.Membership;
+import gov.nih.nci.cagrid.gridgrouper.client.MembershipRequest;
 import gov.nih.nci.cagrid.gridgrouper.grouper.GroupI;
 
 import java.awt.BorderLayout;
@@ -48,7 +49,7 @@ public class GroupBrowser extends BaseBrowserPanel {
 
     private static final String IMMEDIATE_MEMBERS = "Immediate Members";
 
-    private static final String EFFECTIVE_MEMBERS = "Effective Members";
+    private static final String EFFECTIVE_MEMBERS = "Effective Members";  //  @jve:decl-index=0:
 
     private static final String COMPOSITE_MEMBERS = "Composite Members"; // @jve:decl-index=0:
 
@@ -65,6 +66,8 @@ public class GroupBrowser extends BaseBrowserPanel {
     private JPanel privileges = null;
 
     private JPanel members = null;
+    
+    private JPanel membershipRequestsPanel = null;
 
     private JPanel detailsPanel = null;
 
@@ -114,13 +117,23 @@ public class GroupBrowser extends BaseBrowserPanel {
 
     private JPanel memberSearchPanel = null;
 
+    private JPanel membershipRequestsSearchPanel = null;
+
     private JScrollPane jScrollPane1 = null;
+
+    private JScrollPane membershipRequestsJScrollPane = null;
 
     private MembersTable membersTable = null;
 
+    private MembershipRequestsTable membershipRequestsTable = null;
+
     private JComboBox memberFilter = null;
 
+    private JComboBox membershipRequestsFilter = null;
+
     private JButton listMembers = null;
+
+    private JButton listMembershipRequests = null;
 
     private JLabel jLabel8 = null;
 
@@ -132,7 +145,15 @@ public class GroupBrowser extends BaseBrowserPanel {
 
     private JPanel buttonPanel = null;
 
-    private JButton addMember = null;
+    private JPanel membershipRequestsButtonPanel = null;
+
+    private JButton joinMemberButton = null;
+
+    private JButton updateMembershipRequestButton = null;
+
+    private JButton rejectMemberButton = null;
+
+    private JButton addMemberButton = null;
 
     private JButton removeMemberButton = null;
 
@@ -157,6 +178,10 @@ public class GroupBrowser extends BaseBrowserPanel {
     private JTextField serviceURL = null;
 
     private JPanel searchPanel = null;
+
+	private JButton allowMembershipRequestsButton = null;
+
+	private JPanel upperPanel = null;
 
     /**
      * This is the default constructor
@@ -232,7 +257,8 @@ public class GroupBrowser extends BaseBrowserPanel {
             groupDetails = new JTabbedPane();
             groupDetails.addTab("Details", null, getDetails(), null);
             groupDetails.addTab("Privileges", null, getPrivileges(), null);
-            groupDetails.addTab("Members", null, getMembers(), null);
+            groupDetails.addTab("Members", null, getMembers(), null);       
+            groupDetails.addTab("Membership Requests", null, getMembershipRequestsPanel(), null);
         }
         return groupDetails;
     }
@@ -989,11 +1015,11 @@ public class GroupBrowser extends BaseBrowserPanel {
      * @return javax.swing.JButton
      */
     private JButton getAddMember() {
-        if (addMember == null) {
-            addMember = new JButton();
-            addMember.setText("Add");
+        if (addMemberButton == null) {
+            addMemberButton = new JButton();
+            addMemberButton.setText("Add");
             final GroupBrowser gp = this;
-            addMember.addActionListener(new java.awt.event.ActionListener() {
+            addMemberButton.addActionListener(new java.awt.event.ActionListener() {
                 public void actionPerformed(java.awt.event.ActionEvent e) {
                     Runner runner = new Runner() {
                         public void execute() {
@@ -1014,7 +1040,7 @@ public class GroupBrowser extends BaseBrowserPanel {
 
             });
         }
-        return addMember;
+        return addMemberButton;
     }
 
 
@@ -1365,5 +1391,307 @@ public class GroupBrowser extends BaseBrowserPanel {
         }
         return searchPanel;
     }
+    
+    private JPanel getMembershipRequestsPanel() {
+        if (membershipRequestsPanel == null) {
+            GridBagConstraints gridBagConstraints4 = new GridBagConstraints();
+            gridBagConstraints4.gridx = 0;
+            gridBagConstraints4.gridy = 0;
+            GridBagConstraints gridBagConstraints29 = new GridBagConstraints();
+            gridBagConstraints29.gridx = 0;
+            gridBagConstraints29.insets = new Insets(2, 2, 2, 2);
+            gridBagConstraints29.gridy = 2;
+            GridBagConstraints gridBagConstraints22 = new GridBagConstraints();
+            gridBagConstraints22.fill = GridBagConstraints.BOTH;
+            gridBagConstraints22.weighty = 1.0;
+            gridBagConstraints22.gridx = 0;
+            gridBagConstraints22.gridy = 1;
+            gridBagConstraints22.insets = new Insets(2, 2, 2, 2);
+            gridBagConstraints22.weightx = 1.0;
+            membershipRequestsPanel = new JPanel();
+            membershipRequestsPanel.setLayout(new GridBagLayout());
+            membershipRequestsPanel.setBorder(BorderFactory.createTitledBorder(null, "Group Membership Requests",
+                javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION,
+                javax.swing.border.TitledBorder.DEFAULT_POSITION, null, LookAndFeel.getPanelLabelColor()));
+            membershipRequestsPanel.add(getMembershipRequestsJScrollPane(), gridBagConstraints22);
+            membershipRequestsPanel.add(getMembershipRequestsButtonPanel(), gridBagConstraints29);
+            membershipRequestsPanel.add(getUpperPanel(), gridBagConstraints4);
+        }
+        return membershipRequestsPanel;
+    }
+
+    private JPanel getMembershipRequestSearchPanel() {
+        if (membershipRequestsSearchPanel == null) {
+            GridBagConstraints gridBagConstraints24 = new GridBagConstraints();
+            gridBagConstraints24.gridx = 1;
+            gridBagConstraints24.insets = new Insets(2, 2, 2, 2);
+            gridBagConstraints24.gridy = 0;
+            GridBagConstraints gridBagConstraints23 = new GridBagConstraints();
+            gridBagConstraints23.fill = GridBagConstraints.NONE;
+            gridBagConstraints23.gridx = 0;
+            gridBagConstraints23.gridy = 0;
+            gridBagConstraints23.insets = new Insets(2, 2, 2, 2);
+            gridBagConstraints23.weightx = 1.0;
+            membershipRequestsSearchPanel = new JPanel();
+            membershipRequestsSearchPanel.setLayout(new GridBagLayout());
+            membershipRequestsSearchPanel.setBorder(BorderFactory.createTitledBorder(null, "Request Search",
+                javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION,
+                javax.swing.border.TitledBorder.DEFAULT_POSITION, null, LookAndFeel.getPanelLabelColor()));
+            membershipRequestsSearchPanel.add(getMembershipRequestsFilter(), gridBagConstraints23);
+            membershipRequestsSearchPanel.add(getListMembershipRequests(), gridBagConstraints24);
+        }
+        return membershipRequestsSearchPanel;
+    }
+ 
+    private JComboBox getMembershipRequestsFilter() {
+        if (membershipRequestsFilter == null) {
+        	membershipRequestsFilter = new JComboBox();
+        	membershipRequestsFilter.addItem("Pending");
+        	membershipRequestsFilter.addItem("Approved");
+        	membershipRequestsFilter.addItem("Rejected");
+        	membershipRequestsFilter.addItem("Removed");
+        }
+        return membershipRequestsFilter;
+    }
+
+    private JButton getListMembershipRequests() {
+        if (listMembershipRequests == null) {
+        	listMembershipRequests = new JButton();
+        	listMembershipRequests.setText("Search");
+        	listMembershipRequests.addActionListener(new java.awt.event.ActionListener() {
+                public void actionPerformed(java.awt.event.ActionEvent e) {
+                    Runner runner = new Runner() {
+                        public void execute() {
+                            listMembershipRequests();
+                        }
+                    };
+                    try {
+                        GridApplication.getContext().executeInBackground(runner);
+                    } catch (Exception t) {
+                        t.getMessage();
+                    }
+                }
+
+            });
+        }
+
+        return listMembershipRequests;
+    }
+
+    protected void listMembershipRequests() {
+
+        getListMembershipRequests().setEnabled(false);
+        getMembershipRequestsFilter().setEnabled(false);
+
+        int eid = node.getTree().startEvent("Listing membership requests....");
+        try {
+            getMembershipRequestsTable().clearTable();
+            String type = (String) getMembershipRequestsFilter().getSelectedItem();
+            Set<?> s = null;
+            
+            if ("Pending".equals(type)) {
+            	s = group.getPendingMembershipRequests();
+            } else if ("Rejected".equals(type)) {
+            	s = group.getRejectedMembershipRequests();
+            } else {
+            	s = group.getApprovedMembershipRequests();
+            }
+
+            Iterator<?> itr = s.iterator();
+            while (itr.hasNext()) {
+                MembershipRequest m = (MembershipRequest) itr.next();
+                getMembershipRequestsTable().addMembershipRequests(m);
+            }
+            hasListedMembers = true;
+            stopEvent(eid, "Successfully listed membership requests!!!");
+        } catch (Exception e) {
+            stopEvent(eid, "Error listing membership requests!!!");
+            ErrorDialog.showError(e);
+            node.refresh();
+            FaultUtil.logFault(log, e);
+        } finally {
+            getListMembershipRequests().setEnabled(true);
+            getMembershipRequestsFilter().setEnabled(true);
+
+        }
+    }
+    
+    private MembershipRequestsTable getMembershipRequestsTable() {
+        if (membershipRequestsTable == null) {
+            membershipRequestsTable = new MembershipRequestsTable();
+        }
+        return membershipRequestsTable;
+    }
+    
+    private JScrollPane getMembershipRequestsJScrollPane() {
+        if (membershipRequestsJScrollPane == null) {
+        	membershipRequestsJScrollPane = new JScrollPane();
+        	membershipRequestsJScrollPane.setViewportView(getMembershipRequestsTable());
+        }
+        return membershipRequestsJScrollPane;
+    }
+    
+    private JPanel getMembershipRequestsButtonPanel() {
+        if (membershipRequestsButtonPanel == null) {
+        	membershipRequestsButtonPanel = new JPanel();
+        	membershipRequestsButtonPanel.setLayout(new FlowLayout());
+        	membershipRequestsButtonPanel.add(getUpdateMembershipRequestButton(), null);
+        	membershipRequestsButtonPanel.add(getRequestMembershipButton(), null);
+        }
+        return membershipRequestsButtonPanel;
+    }
+
+    private JButton getUpdateMembershipRequestButton() {
+        if (updateMembershipRequestButton == null) {
+        	updateMembershipRequestButton = new JButton();
+        	updateMembershipRequestButton.setText("Review Request");
+        	updateMembershipRequestButton.setEnabled(group.hasMembershipRequests());
+            updateMembershipRequestButton.addActionListener(new java.awt.event.ActionListener() {
+                public void actionPerformed(java.awt.event.ActionEvent e) {
+                    Runner runner = new Runner() {
+                        public void execute() {
+                            try {
+                            	MembershipRequestWindow window = new MembershipRequestWindow(getMembershipRequestsTable().getSelectedMembershipRequest());
+                                GridApplication.getContext().addApplicationComponent(window, 650, 400);
+                            } catch (Exception ex) {
+                                ErrorDialog.showError(ex);
+                                FaultUtil.logFault(log, ex);
+                            }
+                        }
+                    };
+                    try {
+                        GridApplication.getContext().executeInBackground(runner);
+                    } catch (Exception t) {
+                        t.getMessage();
+                    }
+                }
+
+            });
+        }
+        return updateMembershipRequestButton;
+    }
+
+    private JButton getRequestMembershipButton() {
+        if (joinMemberButton == null) {
+        	joinMemberButton = new JButton();
+        	joinMemberButton.setText("Request Membership");
+        	joinMemberButton.setEnabled(group.hasMembershipRequests());
+            final GroupBrowser gp = this;
+            joinMemberButton.addActionListener(new java.awt.event.ActionListener() {
+                public void actionPerformed(java.awt.event.ActionEvent e) {
+                    Runner runner = new Runner() {
+                        public void execute() {
+                        	try {
+								group.requestMembership();
+							} catch (Exception e) {
+								ErrorDialog.showError(e);
+							} 
+                        }
+                    };
+                    try {
+                        GridApplication.getContext().executeInBackground(runner);
+                    } catch (Exception t) {
+                        t.getMessage();
+                    }
+                }
+
+            });
+        }
+        return joinMemberButton;
+    }
+
+
+	/**
+	 * This method initializes allowMembershipRequestsButton	
+	 * 	
+	 * @return javax.swing.JButton	
+	 */
+	private JButton getAllowMembershipRequestsButton() {
+		if (allowMembershipRequestsButton == null) {
+			allowMembershipRequestsButton = new JButton();
+			if (group.hasMembershipRequests()) {
+				allowMembershipRequestsButton.setText("Turn OFF Membership Requests");
+			} else {
+				allowMembershipRequestsButton.setText("Turn ON Membership Requests");
+			}
+			allowMembershipRequestsButton.addActionListener(new java.awt.event.ActionListener() {
+                public void actionPerformed(java.awt.event.ActionEvent e) {
+                    Runner runner = new Runner() {
+                        public void execute() {
+                            allowMembershipRequests();
+                        }
+                    };
+                    try {
+                        GridApplication.getContext().executeInBackground(runner);
+                    } catch (Exception t) {
+                        t.getMessage();
+                    }
+                }
+
+            });
+        }
+			
+
+		return allowMembershipRequestsButton;
+	}
+
+
+	/**
+	 * This method initializes upperPanel	
+	 * 	
+	 * @return javax.swing.JPanel	
+	 */
+	private JPanel getUpperPanel() {
+		if (upperPanel == null) {
+			upperPanel = new JPanel();
+			upperPanel.setLayout(new GridBagLayout());
+
+            GridBagConstraints gridBagConstraints21 = new GridBagConstraints();
+            gridBagConstraints21.fill = GridBagConstraints.NONE;
+            gridBagConstraints21.gridy = 0;
+            gridBagConstraints21.insets = new Insets(2, 2, 2, 2);
+            gridBagConstraints21.gridx = 0;
+            
+            GridBagConstraints gridBagConstraints3 = new GridBagConstraints();
+            gridBagConstraints3.gridx = 1;
+            gridBagConstraints3.gridy = 0;
+
+			upperPanel.add(getMembershipRequestSearchPanel(), gridBagConstraints21);
+			upperPanel.add(getAllowMembershipRequestsButton(), gridBagConstraints3);
+
+		}
+		return upperPanel;
+	}
+	
+	protected void allowMembershipRequests() {
+		int eid = node.getTree().startEvent("");
+
+		try {
+			if (group.hasMembershipRequests()) {
+				group.revokeMembershipRequests();
+				getAllowMembershipRequestsButton().setText("Turn ON Membership Requests");
+				stopEvent(eid, "Membership Requests disabled");
+			} else {
+				group.grantMembershipRequests();
+				getAllowMembershipRequestsButton().setText("Turn OFF Membership Requests");
+				stopEvent(eid, "Membership Requests enabled");
+			}
+		} catch (Exception e) {
+			stopEvent(eid, "Error with membership requests!!!");
+			ErrorDialog.showError(e);
+			node.refresh();
+			FaultUtil.logFault(log, e);
+		} finally {
+			changeMembershipRequestsButtonStatus(group.hasMembershipRequests());
+		}
+
+	}
+	
+	private void changeMembershipRequestsButtonStatus(boolean enable) {
+		getListMembershipRequests().setEnabled(enable);
+		getMembershipRequestsFilter().setEnabled(enable);
+		getUpdateMembershipRequestButton().setEnabled(enable);
+		getRequestMembershipButton().setEnabled(enable);		
+	}
 
 }
