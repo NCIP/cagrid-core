@@ -560,7 +560,11 @@ public class TavernaWorkflowServiceImplResource extends TavernaWorkflowServiceIm
 		if(super.getWorkflowStatusElement().equals(WorkflowStatusType.Done))
 		{
 			listOfFilesAfterComplete = listFiles(new File(getCaTransferCwd()), null, true);
-			listOfFilesAfterComplete.removeAll(this.listOfFilesUploadedByClient);
+
+			//If no files were uploaded, then don't get a diff.
+			if(this.listOfFilesUploadedByClient != null){
+				listOfFilesAfterComplete.removeAll(this.listOfFilesUploadedByClient);
+			}
 			if(!listOfFilesAfterComplete.isEmpty())
 			{
 				File outputFile = this.createZipFile(listOfFilesAfterComplete);
