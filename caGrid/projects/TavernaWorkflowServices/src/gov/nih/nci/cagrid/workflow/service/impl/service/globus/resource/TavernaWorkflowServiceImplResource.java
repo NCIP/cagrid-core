@@ -196,7 +196,7 @@ public class TavernaWorkflowServiceImplResource extends TavernaWorkflowServiceIm
 					// if the client didn't upload any file using caTransfer, but still uses a port called "workingDir"
 					// then create an empty caTransferCwd using the helper method createTransferDir().
 					
-					if(input.getPort().equals("-workingDir")){
+					if(input.getPort().equals("workingDir")){
 						this.myArgs.add("-input:" + input.getPort());
 						String workingDir = (getCaTransferCwd() == null) ? createTransferDir() : getCaTransferCwd();
 						this.myArgs.add(workingDir);						
@@ -214,6 +214,9 @@ public class TavernaWorkflowServiceImplResource extends TavernaWorkflowServiceIm
 			
 			
 			builder.directory(new File(tavernaDir + File.separator + "target" + File.separator + "classes"));
+			
+			
+			String completeOutStream = "";
 			try {
 				
 				Map<String, String> environment = builder.environment();
@@ -250,7 +253,8 @@ public class TavernaWorkflowServiceImplResource extends TavernaWorkflowServiceIm
 				int portsCounter = -1;
 
 				while ((line = br.readLine()) != null) {
-					System.out.println(line);
+					//System.out.println(line);
+					completeOutStream += line + "\n";
 					if(finished == true)
 					{
 						if((firstLine == true) && (line.startsWith("TotalOutputPorts")))
@@ -317,12 +321,14 @@ public class TavernaWorkflowServiceImplResource extends TavernaWorkflowServiceIm
 				e.printStackTrace();
 			} catch (Exception e) {
 				System.err.println("Exception : Error in running the Workflow");
+				System.err.println(completeOutStream);
 				try {
 					setWorkflowStatus(WorkflowStatusType.Failed);
 				} catch (ResourceException e1) {
 					System.err.println("Unable to set workflowstatus!");
 					e1.printStackTrace();
 				}
+				
 				e.printStackTrace();
 			} 
 
@@ -330,7 +336,7 @@ public class TavernaWorkflowServiceImplResource extends TavernaWorkflowServiceIm
 		}
 	}
 
-	public TavernaWorkflowServiceImplResource() {
+	public TavernaWorkflowServiceImplResource() throws RemoteException {
 		
 		try {
 			config = TavernaWorkflowServiceConfiguration.getConfiguration();
@@ -338,7 +344,7 @@ public class TavernaWorkflowServiceImplResource extends TavernaWorkflowServiceIm
 
 			if((config.getTavernaDir().equals(null)) || config.getBaseRepositoryDir().equals(null))
 			{
-				throw new RemoteException("tavernaDir is not set the services.properties file"); 
+				throw new RemoteException("tavernaDir is not set in the services.properties file"); 
 			}
 			if(!new File(config.getBaseRepositoryDir()).exists()){
 				throw new RemoteException("tavernaDir or baseRepositoryDir doesn't exist as per the services.properties file"); 
@@ -346,16 +352,18 @@ public class TavernaWorkflowServiceImplResource extends TavernaWorkflowServiceIm
 
 			System.out.println("\nTaverna Repository:" + this.getBaseDir());						
 			System.out.println("\nTaverna Basedir: " + config.getTavernaDir());
-			System.out.println("NOTE: Please set the Taverna base directly correctly. This can be set in the service.properties file of service code.\n\n");
+			System.out.println("NOTE: Please set the Taverna base directly correctly. " +
+					"This can be set in the service.properties file of service code.\n\n");			
 
 		} catch (Exception e) {			
 			e.printStackTrace();
+			throw new RemoteException("Error: Unable to get Taverna configuration on the server.");
 		}
 
 	}
 
 
-	public void createWorkflow(WMSInputType wMSInputElement)
+	public void createWorkflow(WMSInputType wMSInputElement) throws RemoteException
 	{
 		
 		try {
@@ -373,16 +381,17 @@ public class TavernaWorkflowServiceImplResource extends TavernaWorkflowServiceIm
 			String scuflDocTemp = this.getTempDir() + File.separator + this.getWorkflowName() + "--workflow.t2flow";
 			Utils.stringBufferToFile(new StringBuffer(wMSInputElement.getScuflDoc()), scuflDocTemp);
 			this.setScuflDoc(scuflDocTemp);
+			this.setWorkflowStatus(WorkflowStatusType.Pending);
 
 		} catch (Exception e){
-			this.workflowStatus = WorkflowStatusType.Failed;
+			setWorkflowStatus(WorkflowStatusType.Failed);
 			e.printStackTrace();
-			System.exit(1);
+			throw new RemoteException("Error: Unable to setup the workflow on the server.");
 		}
 
 	}
 
-	public WorkflowStatusType start (StartInputType startInput) {
+	public WorkflowStatusType start (StartInputType startInput) throws RemoteException {
 
 		try {
 			
@@ -414,13 +423,9 @@ public class TavernaWorkflowServiceImplResource extends TavernaWorkflowServiceIm
 			executor.start();			
 
 		} catch (Exception e) {
-			this.workflowStatus = WorkflowStatusType.Failed;
-			try {
-				super.setWorkflowStatusElement(workflowStatus);
-			} catch (ResourceException e1) {
-				e1.printStackTrace();
-			}
+			setWorkflowStatus(WorkflowStatusType.Failed);
 			e.printStackTrace();
+			throw new RemoteException("Error: Unable to start the workflow.");
 		}
 		return this.workflowStatus;
 	}
@@ -431,7 +436,7 @@ public class TavernaWorkflowServiceImplResource extends TavernaWorkflowServiceIm
 	{
 		WorkflowOutputType workflowOuputElement = new WorkflowOutputType();
 		try {
-			if( this.workflowStatus.equals(WorkflowStatusType.Done) )
+			if( super.getWorkflowStatusElement().equals(WorkflowStatusType.Done) )
 			{
 				workflowOuputElement.setOutput(this.getOutputDoc());
 			}
@@ -449,7 +454,7 @@ public class TavernaWorkflowServiceImplResource extends TavernaWorkflowServiceIm
 
 	public WorkflowStatusType getStatus()
 	{
-		return this.workflowStatus;
+		return super.getWorkflowStatusElement();
 	}
 	
 
@@ -482,7 +487,7 @@ public class TavernaWorkflowServiceImplResource extends TavernaWorkflowServiceIm
 			this.setTWS_USER_PROXY(proxyPath);
 		} catch (Exception e) {
 			e.printStackTrace();
-			throw new RemoteException("Failed to setup the Delegated Credential on the Server.");
+			throw new RemoteException("Error: Failed to setup the Delegated Credential on the Server.");
 		}
 		
 	}
@@ -552,7 +557,7 @@ public class TavernaWorkflowServiceImplResource extends TavernaWorkflowServiceIm
 		//remove this line after testing
 		//this.workflowStatus = WorkflowStatusType.Done;
 
-		if(this.workflowStatus.equals(WorkflowStatusType.Done))
+		if(super.getWorkflowStatusElement().equals(WorkflowStatusType.Done))
 		{
 			listOfFilesAfterComplete = listFiles(new File(getCaTransferCwd()), null, true);
 			listOfFilesAfterComplete.removeAll(this.listOfFilesUploadedByClient);

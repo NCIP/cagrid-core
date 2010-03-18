@@ -22,9 +22,9 @@ import workflowmanagementfactoryservice.WorkflowOutputType;
 import workflowmanagementfactoryservice.WorkflowStatusType;
 
 /** 
- * TODO:I am the service side implementation class.  IMPLEMENT AND DOCUMENT ME
  * 
- * @created by Introduce Toolkit version 1.2
+ * 
+ * @created Sulakhe
  * 
  */
 public class TavernaWorkflowServiceImplImpl extends TavernaWorkflowServiceImplImplBase {

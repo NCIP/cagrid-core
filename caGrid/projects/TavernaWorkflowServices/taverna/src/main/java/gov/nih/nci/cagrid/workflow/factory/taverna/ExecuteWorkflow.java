@@ -207,13 +207,11 @@ public class ExecuteWorkflow extends java.lang.Object
 //				|| args[0].equalsIgnoreCase("--help")) {
 		if(scuflFile == null){
 			help();
-			System.exit(Exit.HELP.ordinal());
 		}
 
 		File workflowFile = new File(scuflFile);
 		if (!workflowFile.isFile()) {
-			System.err.println("Not a workflow file: " + workflowFile);
-			System.exit(Exit.WORKFLOW_FILE.ordinal());
+			throw new Exception("Error: Not a workflow file: " + workflowFile);
 		}
 		
 		
@@ -221,15 +219,12 @@ public class ExecuteWorkflow extends java.lang.Object
 		Dataflow dataflow = loadDataflow(workflowFile);
 		List<? extends DataflowInputPort> ports = dataflow.getInputPorts();
 		
-		System.out.println("Ports:" + ports.size() + "::" + "InputArgs:" + inputArgs.size());
+		//System.out.println("Ports:" + ports.size() + "::" + "InputArgs:" + inputArgs.size());
 		if (inputArgs.size() != ports.size()) {
-			//helpPorts(args[0], ports);
-			System.exit(Exit.PORTS.ordinal());
+			throw new Exception("Error: Invalid number of input ports: " + workflowFile);
 		}
-		
-		// Skip the workflow name
-		//List<String> inputList = Arrays.asList(args).subList(1, args.length);
-		
+
+		//Regsiter the inputs with Taverna Reference service.
 		Map<String, T2Reference> inputs = registerInputs(ports, inputArgs);
 		
 
@@ -323,31 +318,8 @@ public class ExecuteWorkflow extends java.lang.Object
 			}
 		}
 		else{
-			
-			//help();
-			
-			
-			//	String workflow = System.getProperty("user.dir") + System.getProperty("file.separator") + "workflows/" + "caINT2_PCA_CMS_090826.t2flow";
-//			String workflow = System.getProperty("user.dir") + System.getProperty("file.separator") + "workflows/" + "PCA_transfer_plugin.t2flow";
-			//String[] inputArgs = {"/Users/sulakhe/Desktop/dina/workingdir", "/Users/sulakhe/Desktop/dina/all_aml_train.gct"};
-			String input1 = "/Users/sulakhe/taverna/10000";
-			String input = "/Users/sulakhe/Desktop/dina/all_aml_train.gct";
-			
-			//String input1 = System.getProperty("user.dir");
-			//String input = System.getProperty("user.dir") + System.getProperty("file.separator") + "workflows/all_aml_train.gct";
-
-//			String workflow = System.getProperty("user.dir") + System.getProperty("file.separator") + "workflows/PCA_transfer_plugin.t2flow";
-
-		//	String input1 = "Hello ";
-		//	String input = "World!";
-		
-			
-			workflow = System.getProperty("user.dir") + System.getProperty("file.separator") + "workflows/fishsoup.t2flow";
-//			System.out.println("Workflow Path: " + workflow);
-			String[] temp = {workflow, input1, input};
-
-		
-			inputs = temp;
+			help();
+			throw new Exception("Error: The workflow needs atleast one input argument (scufl file).");
 		}
 		new ExecuteWorkflow().run(workflow, inputArgs);	
 		return 0;

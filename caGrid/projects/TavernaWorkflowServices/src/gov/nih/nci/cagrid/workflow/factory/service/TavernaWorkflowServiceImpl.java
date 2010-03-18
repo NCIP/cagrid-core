@@ -1,6 +1,7 @@
 package gov.nih.nci.cagrid.workflow.factory.service;
 
 import gov.nih.nci.cagrid.common.Utils;
+import gov.nih.nci.cagrid.workflow.factory.stubs.types.WorkflowException;
 import gov.nih.nci.cagrid.workflow.service.impl.service.globus.resource.TavernaWorkflowServiceImplResource;
 import gov.nih.nci.cagrid.workflow.service.impl.service.globus.resource.TavernaWorkflowServiceImplResourceHome;
 
@@ -10,6 +11,7 @@ import org.globus.wsrf.ResourceKey;
 import org.globus.wsrf.container.ServiceHost;
 import org.globus.wsrf.utils.AddressingUtils;
 
+import workflowmanagementfactoryservice.WMSInputType;
 import workflowmanagementfactoryservice.WMSOutputType;
 
 import java.rmi.RemoteException;
@@ -30,7 +32,8 @@ public class TavernaWorkflowServiceImpl extends TavernaWorkflowServiceImplBase {
 		super();
 	}
 
-  public workflowmanagementfactoryservice.WMSOutputType createWorkflow(workflowmanagementfactoryservice.WMSInputType wMSInputElement) throws RemoteException, gov.nih.nci.cagrid.workflow.factory.stubs.types.WorkflowException {
+  public WMSOutputType createWorkflow(WMSInputType wMSInputElement) 
+  		throws RemoteException, WorkflowException {
 
 	  TavernaWorkflowServiceImplResourceHome home = null;
 		ResourceKey key = null;
@@ -64,10 +67,11 @@ public class TavernaWorkflowServiceImpl extends TavernaWorkflowServiceImplBase {
 			return wMSOutputElement;
 			
 		} catch (Exception e1) {
-
+			
 			e1.printStackTrace();
+			throw new RemoteException(e1.getLocalizedMessage());
 		}
-		return null;  }
+	}
 
 }
 
