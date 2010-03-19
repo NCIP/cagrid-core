@@ -4,12 +4,14 @@
 package org.cagrid.installer.tasks.installer;
 
 import java.io.File;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
 
 import org.cagrid.installer.model.CaGridInstallerModel;
 import org.cagrid.installer.steps.Constants;
 import org.cagrid.installer.tasks.AntExecutionTask;
+import org.cagrid.installer.util.InstallerUtils;
 
 /**
  * @author <a href="joshua.phillips@semanticbits.com">Joshua Phillips</a>
@@ -33,6 +35,10 @@ public class ConfigureJBossTask extends CaGridInstallerAntTask {
 	protected Object runAntTask(CaGridInstallerModel model, String buildFile, String target, Map<String,String> env,
 			Properties sysProps) throws Exception {
 
+	    Properties proxyProps = InstallerUtils.getProxyProperties();
+        Map<String, String> map = new HashMap<String, String>((Map) proxyProps);
+        sysProps.putAll(map);
+	    
 		boolean secure = model.isTrue(Constants.USE_SECURE_CONTAINER);
 
 		if (!secure) {

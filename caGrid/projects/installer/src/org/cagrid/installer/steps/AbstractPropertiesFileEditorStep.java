@@ -155,7 +155,6 @@ public abstract class AbstractPropertiesFileEditorStep extends PanelWizardStep
 		File f = new File(getPropertyFilePath());
 		if (f.exists()) {
 			try {
-				props = new Properties();
 				props.load(new FileInputStream(f));
 				logger.info("file contains " + props.size() + " properties");
 				

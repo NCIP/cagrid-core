@@ -24,7 +24,9 @@ public class DeployGlobusToJBossTask extends CaGridInstallerAntTask {
 			Properties sysProps) throws Exception {
 
 		boolean secure = model.isTrue(Constants.USE_SECURE_CONTAINER);
-		sysProps.put("jboss.dir", model.getProperty(Constants.JBOSS_HOME));
+		if ( model.isSet(Constants.JBOSS_HOME) ) {
+		    sysProps.put("jboss.dir", model.getProperty(Constants.JBOSS_HOME));
+		}
 		
 		setStepCount(1);
 		if (!secure) {

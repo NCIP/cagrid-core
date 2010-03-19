@@ -32,6 +32,10 @@ public class DeployGlobusToTomcatTask extends CaGridInstallerAntTask {
 
     protected Object runAntTask(CaGridInstallerModel model, String buildFile, String target, Map<String, String> env,
         Properties sysProps) throws Exception {
+        
+        if ( model.isSet(Constants.TOMCAT_HOME) ) {
+            sysProps.put("tomcat.home", model.getProperty(Constants.TOMCAT_HOME));
+        }
 
         boolean secure = model.isTrue(Constants.USE_SECURE_CONTAINER);
 

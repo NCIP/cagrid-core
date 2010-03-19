@@ -132,7 +132,12 @@ public class Installer {
                 defaultState.put(propName, downloadedProps.getProperty(propName));
             }
             incrementProgress();
-
+            
+            // get proxy properties
+            Properties proxyProps = InstallerUtils.getProxyProperties();
+            Map<String, String> map = new HashMap<String, String>((Map) proxyProps);
+            defaultState.putAll(map);
+            
             // Set up temp dir
             String installerDir = InstallerUtils.buildInstallerDirPath(defaultState.get(Constants.CAGRID_VERSION));
             logger.info("installer dir: " + installerDir);

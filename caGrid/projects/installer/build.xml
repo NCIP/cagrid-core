@@ -149,6 +149,15 @@
 			</fileset>
 		</copy>
 
+		<copy todir="build/installer/${project.artificat.name}">
+			<fileset dir="resources">
+				<include name="**" />
+			</fileset>
+			<filterset>
+				<filter token="CAGRID_VERSION" value="${cagrid.version}" />
+			</filterset>
+		</copy>
+		
 		<zip destfile="build/${project.zip.name}" basedir="build/installer" />
 
 		<copy file="cagrid.installer.properties" todir="build" overwrite="true">

@@ -51,6 +51,10 @@ public abstract class Constants {
     public static final long CONNECT_TIMEOUT = 30000;
 
     public static final String CONTAINER_TYPE = "container.type";
+    
+    public static final String CONTAINER_TYPE_JBOSS = "container.type.jboss";
+    
+    public static final String CONTAINER_TYPE_TOMCAT = "container.type.tomcat";
 
     public static final String DOWNLOAD_URL = "download.url";
 
@@ -147,5 +151,7 @@ public abstract class Constants {
     public static final String TRUE = "true";
 
     public static final String USE_SECURE_CONTAINER = "use.secure.container";
+    
+    public static final String ANT_OPTS = "ANT_OPTS";
 
 }

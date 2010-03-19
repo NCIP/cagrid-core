@@ -15,7 +15,11 @@ import java.io.StringWriter;
 import java.lang.reflect.Method;
 import java.net.URL;
 import java.net.URLClassLoader;
+import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Map;
+import java.util.Properties;
+import java.util.Set;
 
 import javax.swing.BorderFactory;
 import javax.swing.JLabel;
@@ -32,6 +36,7 @@ import javax.xml.transform.stream.StreamResult;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.cagrid.installer.model.CaGridInstallerModel;
 import org.cagrid.installer.steps.Constants;
 import org.w3c.dom.Node;
 
@@ -414,6 +419,77 @@ public class InstallerUtils {
                 + "Set the JAVA_HOME environment variable to"
                 + " point to where you have installed the correct version of" + " Java before running the installer.");
         }
+    }
+    
+    public static Map<String, String> getEnvironment (CaGridInstallerModel model) {
+        
+        // this Map is immutable
+        Map<String, String> env = System.getenv();
+        
+        Map<String, String> newEnv = new HashMap<String, String> ();
+        for (Map.Entry<String, String> entry : env.entrySet())  
+        {  
+           String name = entry.getKey();  
+           String value = entry.getValue();  
+           
+           if (name.equals("JBOSS_HOME") &&
+               ! value.equals(Constants.JBOSS_HOME)) {
+               newEnv.put("JBOSS_HOME", model.getProperty(Constants.JBOSS_HOME));
+               continue;
+           }
+           if (name.equals("GLOBUS_LOCATION") &&
+               ! value.equals(Constants.GLOBUS_HOME)) {
+               newEnv.put("GLOBUS_LOCATION", model.getProperty(Constants.GLOBUS_HOME));
+               continue;
+           }
+           if (name.equals("CATALINA_HOME") &&
+               ! value.equals(Constants.TOMCAT_HOME)) {
+               newEnv.put("CATALINA_HOME", model.getProperty(Constants.TOMCAT_HOME));
+               continue;
+           }
+           
+           // copy all other entries
+           newEnv.put(name,value);
+        }
+        
+        return newEnv;
+    }
+    
+    public static Properties getProxyProperties () {
+        Properties props = new Properties();
+        
+        Properties sysProps = System.getProperties();
+        Set<Object> keys = sysProps.keySet();
+        Iterator<Object> iter = keys.iterator();
+        while (iter.hasNext()) {
+            String key = (String) iter.next();
+            
+            //http
+            if (key.startsWith("http.proxy")) {
+                props.put(key, System.getProperty(key));
+            }
+            if (key.equals("http.nonProxyHosts")) {
+                props.put(key, System.getProperty(key));
+            }
+            
+            // https
+            if (key.startsWith("https.proxy")) {
+                props.put(key, System.getProperty(key));
+            }
+            if (key.equals("https.nonProxyHosts")) {
+                props.put(key, System.getProperty(key));
+            }
+            
+            // ftp
+            if (key.startsWith("ftp.proxy")) {
+                props.put(key, System.getProperty(key));
+            }
+            if (key.equals("ftp.nonProxyHosts")) {
+                props.put(key, System.getProperty(key));
+            }
+        }
+        
+        return props;
     }
 
 }

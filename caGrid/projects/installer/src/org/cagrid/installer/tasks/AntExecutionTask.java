@@ -72,30 +72,13 @@ public class AntExecutionTask extends BasicTask {
 						+ buildFilePath);
 			}
 			File baseDir = buildFile.getParentFile();
-			Map<String, String> env = new HashMap<String, String>(System
-					.getenv());
-
-			if(this.environment == null){
-				this.environment = new HashMap<String,String>();
-			}
-			if(!this.environment.containsKey("JAVA_HOME")){
-				this.environment.put("JAVA_HOME", InstallerUtils.getJavaHomePath());
-			}
 			
-			for (Iterator i = this.environment.entrySet().iterator(); i
-					.hasNext();) {
-				Entry entry = (Entry) i.next();
-				if (entry.getKey() instanceof String
-						&& entry.getValue() instanceof String) {
-					env.put((String) entry.getKey(), (String) entry.getValue());
-				}
-			}
+			Map<String, String> env = InstallerUtils.getEnvironment(model);
 			
-			Map<String, String> myEnv = new HashMap<String, String>(env);
-			String[] envp = new String[myEnv.size()];
+			String[] envp = new String[env.size()];
 			int i = 0;
-			for (String key : myEnv.keySet()) {
-				envp[i++] = key + "=" + myEnv.get(key);
+			for (String key : env.keySet()) {
+				envp[i++] = key + "=" + env.get(key);
 			}
 
 			runAnt(model, baseDir, buildFilePath, this.target,
@@ -125,11 +108,11 @@ public class AntExecutionTask extends BasicTask {
 
 		// Check it tools.jar is available
 		File toolsJar = new File(this.environment.get("JAVA_HOME")
-				+ "/lib/tools.jar");
+				+ File.separator + "lib" + File.separator + "tools.jar");
 		if (!toolsJar.exists()) {
 			logger.info("tools.jar not found at '" + toolsJar.getAbsolutePath()
 					+ "'. Using packaged tools.jar");
-			toolsJar = new File("lib/tools.jar");
+			toolsJar = new File("lib" + File.separator + "tools.jar");
 		}
 
 		// build command
@@ -140,7 +123,7 @@ public class AntExecutionTask extends BasicTask {
 		if (InstallerUtils.isWindows()) {
 			java += ".exe";
 		}
-		cmd.add(InstallerUtils.getJavaHomePath() + "/bin/" + java);
+		cmd.add(InstallerUtils.getJavaHomePath() + File.separator + "bin" + File.separator + java);
 		cmd.add("-classpath");
 		
 
@@ -169,11 +152,17 @@ public class AntExecutionTask extends BasicTask {
 		// add build file
 		if (buildFile != null) {
 			cmd.add("-buildfile");
+			if (buildFile.contains(" ")) {
+			    buildFile = "\"" + buildFile + "\"";
+			}
 			cmd.add(buildFile);
 		}
 
 		if (propertiesFile != null) {
 			cmd.add("-propertyfile");
+			if (propertiesFile.contains(" ")) {
+			    propertiesFile = "\"" + propertiesFile + "\"";
+            }
 			cmd.add(propertiesFile);
 		}
 

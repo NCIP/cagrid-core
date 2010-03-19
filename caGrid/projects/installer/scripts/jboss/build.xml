@@ -25,13 +25,13 @@
 	<xmlcatalog id="installer.catalog">
 		<dtd 
 			publicId="-//Sun Microsystems, Inc.//DTD Web Application 2.3//EN"
-			location="./resources/web-app_2_3.dtd"/>
+			location="../resources/web-app_2_3.dtd"/>
 		<dtd 
 			publicId="-//Sun Microsystems, Inc.//DTD JavaServer Faces Config 1.1//EN"
-			location="./resources/web-facesconfig_1_1.dtd"/>
+			location="../resources/web-facesconfig_1_1.dtd"/>
 		<dtd 
 			publicId="-//SPRING//DTD BEAN//EN"
-			location="./resources/spring-beans.dtd"/>
+			location="../resources/spring-beans.dtd"/>
 	</xmlcatalog>
 	
 	<target name="fix-permissions">

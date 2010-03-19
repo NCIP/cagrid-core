@@ -3,7 +3,6 @@
  */
 package org.cagrid.installer.tasks.installer;
 
-import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
 
@@ -11,6 +10,7 @@ import org.cagrid.installer.model.CaGridInstallerModel;
 import org.cagrid.installer.steps.Constants;
 import org.cagrid.installer.tasks.AntExecutionTask;
 import org.cagrid.installer.tasks.BasicTask;
+import org.cagrid.installer.util.InstallerUtils;
 
 
 /**
@@ -38,11 +38,9 @@ public class CaGridInstallerAntTask extends BasicTask {
      */
     @Override
     protected Object internalExecute(CaGridInstallerModel model) throws Exception {
-        Map<String, String> env = new HashMap<String, String>();
-        env.put("GLOBUS_LOCATION", model.getProperty(Constants.GLOBUS_HOME));
-        env.put("CATALINA_HOME", model.getProperty(Constants.TOMCAT_HOME));
-        env.put("JBOSS_HOME", model.getProperty(Constants.JBOSS_HOME));
-        Properties sysProps = new Properties();
+        Map<String, String> env = InstallerUtils.getEnvironment(model);
+        
+        Properties sysProps = InstallerUtils.getProxyProperties();
         if (model.getProperty(Constants.GLOBUS_HOME) != null) {
             sysProps.setProperty("env.GLOBUS_LOCATION", model.getProperty(Constants.GLOBUS_HOME));
         }
