@@ -5,6 +5,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -199,12 +200,9 @@ public class ExecuteWorkflow extends java.lang.Object
 		Dataflow dataflow = deserializer.deserializeDataflow(element);
 		return dataflow;
 	}
-
-	//protected void run(String[] args) throws Exception {
-	protected void run(String scuflFile, Map<String, String> inputArgs) throws Exception {
+//	protected void run(String scuflFile, Map<String, String> inputArgs) throws Exception {
+	protected void run(String scuflFile, Map<String, String> inputArgs, ArrayList<String> inputStringArgs) throws Exception {
 			
-//		if (args.length == 0 || args[0].equalsIgnoreCase("-h")
-//				|| args[0].equalsIgnoreCase("--help")) {
 		if(scuflFile == null){
 			help();
 		}
@@ -220,12 +218,23 @@ public class ExecuteWorkflow extends java.lang.Object
 		List<? extends DataflowInputPort> ports = dataflow.getInputPorts();
 		
 		//System.out.println("Ports:" + ports.size() + "::" + "InputArgs:" + inputArgs.size());
-		if (inputArgs.size() != ports.size()) {
+		if (inputArgs != null && inputArgs.size() != ports.size()) {
+			throw new Exception("Error: Invalid number of input ports: " + workflowFile);
+		}
+		if (inputStringArgs != null && inputStringArgs.size() != ports.size()) {
 			throw new Exception("Error: Invalid number of input ports: " + workflowFile);
 		}
 
 		//Regsiter the inputs with Taverna Reference service.
-		Map<String, T2Reference> inputs = registerInputs(ports, inputArgs);
+		//Map<String, T2Reference> inputs = registerInputs(ports, inputArgs);
+		
+		Map<String, T2Reference> inputs;
+		if(inputStringArgs != null){
+			inputs = registerInputs(ports, inputStringArgs);
+		}
+		else{ 
+			inputs = registerInputs(ports, inputArgs);
+		}
 		
 
 		String owningProcess = "executeWorkflow" + UUID.randomUUID();
@@ -291,16 +300,53 @@ public class ExecuteWorkflow extends java.lang.Object
 		}
 		return inputs;
 	}
+	
+	/*
+	 * This registerInputs method registers inputs given as a list of Strings [in a sequence] this is to support
+	 * backward compabilit of cagrid 1.4 release. An input with Map <port, value> will be used in future.
+	 */
+	protected Map<String, T2Reference> registerInputs(
+			Iterable<? extends DataflowInputPort> ports,
+			ArrayList<String> inputMap) {
+				
+		HashMap<String, T2Reference> inputs = new HashMap<String, T2Reference>();
+		Iterator<? extends DataflowInputPort> portIterator = ports.iterator();
+		int count = 0;
+		while (portIterator.hasNext()) {
+			DataflowInputPort inputPort = portIterator.next();
+			System.out.println("Input Port : " + inputPort.getName());
+			
+			T2Reference inputRef = referenceService.register(inputMap.get(count++), 0, true,
+					invocationContext);
+			inputs.put(inputPort.getName(), inputRef);
+		}
+		return inputs;
+	}
 
 	public int launch(String[] args) throws Exception {
 		
-		String[] inputs;
 		String workflow = null;
 		
-		Map<String, String> inputArgs = new HashMap<String, String>();
-		
-		if(args.length > 0)
+		Map<String, String> inputArgs = null;
+		ArrayList<String> inputStrings = null;
+
+		/// FOR BACKWARD COMPABILITY
+		/// This If needs to removed after String[] as inputs is deprecated in future.
+		if(args.length > 2 && !args[2].startsWith("-input"))
+		{	
+			System.err.println("Workflow is using old interface (With String[] inputs)");
+			inputStrings = new ArrayList<String>();
+			workflow = args[1];
+			for(int i =2; i<args.length; i++){
+				inputStrings.add(args[i]);
+			}
+		}
+		/// ******* To be removed in the next release after deprecating String[] inputs ******* ///
+		else if(args.length > 0)
+		//if(args.length > 0)
 		{
+			inputArgs = new HashMap<String, String>();
+		
 			for(int i=0; i<args.length; i++){
 				if(args[i].startsWith("-input:"))
 				{
@@ -321,7 +367,8 @@ public class ExecuteWorkflow extends java.lang.Object
 			help();
 			throw new Exception("Error: The workflow needs atleast one input argument (scufl file).");
 		}
-		new ExecuteWorkflow().run(workflow, inputArgs);	
+		//new ExecuteWorkflow().run(workflow, inputArgs );	
+		new ExecuteWorkflow().run(workflow, inputArgs, inputStrings );	
 		return 0;
 	}
 }

@@ -71,10 +71,12 @@ public class TavernaWorkflowServiceImplImpl extends TavernaWorkflowServiceImplIm
 	}
 
   public workflowmanagementfactoryservice.WorkflowStatusType start(workflowmanagementfactoryservice.StartInputType startInputElement) throws RemoteException, gov.nih.nci.cagrid.workflow.service.impl.stubs.types.CannotStartWorkflowFault {
-
 		return this.getWorkflowResource().start(startInputElement);
-
 	}
+
+  public workflowmanagementfactoryservice.WorkflowStatusType startWorkflow(workflowmanagementfactoryservice.StartInputType startInputElement) throws RemoteException, gov.nih.nci.cagrid.workflow.service.impl.stubs.types.CannotStartWorkflowFault {
+		return this.getWorkflowResource().start(startInputElement);
+	  }
 
   public void setDelegatedCredential(org.cagrid.gaards.cds.delegated.stubs.types.DelegatedCredentialReference delegatedCredentialReference) throws RemoteException, gov.nih.nci.cagrid.workflow.service.impl.stubs.types.CannotSetCredential {
 		this.getWorkflowResource().setDelegatedCredential(delegatedCredentialReference);
@@ -123,6 +125,7 @@ public class TavernaWorkflowServiceImplImpl extends TavernaWorkflowServiceImplIm
 		return true;	
 
 	}
+
 
 }
 

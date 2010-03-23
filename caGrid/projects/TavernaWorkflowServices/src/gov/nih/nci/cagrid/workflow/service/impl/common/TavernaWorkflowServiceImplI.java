@@ -12,6 +12,15 @@ import java.rmi.RemoteException;
  */
 public interface TavernaWorkflowServiceImplI {
 
+  /**
+   * starts the workflow
+   *
+   * @param startInputElement
+   * @throws CannotStartWorkflowFault
+   *	
+   */
+  public workflowmanagementfactoryservice.WorkflowStatusType startWorkflow(workflowmanagementfactoryservice.StartInputType startInputElement) throws RemoteException, gov.nih.nci.cagrid.workflow.service.impl.stubs.types.CannotStartWorkflowFault ;
+
   public org.oasis.wsrf.lifetime.DestroyResponse destroy(org.oasis.wsrf.lifetime.Destroy params) throws RemoteException ;
 
   public org.oasis.wsrf.lifetime.SetTerminationTimeResponse setTerminationTime(org.oasis.wsrf.lifetime.SetTerminationTime params) throws RemoteException ;
@@ -69,7 +78,7 @@ public interface TavernaWorkflowServiceImplI {
   public workflowmanagementfactoryservice.WorkflowStatusType resume() throws RemoteException, gov.nih.nci.cagrid.workflow.service.impl.stubs.types.WorkflowException, gov.nih.nci.cagrid.workflow.service.impl.stubs.types.CannotResumeWorkflowFault ;
 
   /**
-   * starts the workflow
+   * starts the workflow (This will be deprecated in future releases. A new operations startWorkflow will supersede this operation)
    *
    * @param startInputElement
    * @throws CannotStartWorkflowFault

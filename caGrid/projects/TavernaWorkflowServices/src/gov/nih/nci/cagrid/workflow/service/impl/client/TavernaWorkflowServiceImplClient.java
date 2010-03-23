@@ -98,6 +98,18 @@ public class TavernaWorkflowServiceImplClient extends TavernaWorkflowServiceImpl
 
 	}
 
+  public workflowmanagementfactoryservice.WorkflowStatusType startWorkflow(workflowmanagementfactoryservice.StartInputType startInputElement) throws RemoteException, gov.nih.nci.cagrid.workflow.service.impl.stubs.types.CannotStartWorkflowFault {
+    synchronized(portTypeMutex){
+      configureStubSecurity((Stub)portType,"startWorkflow");
+    gov.nih.nci.cagrid.workflow.service.impl.stubs.StartWorkflowRequest params = new gov.nih.nci.cagrid.workflow.service.impl.stubs.StartWorkflowRequest();
+    gov.nih.nci.cagrid.workflow.service.impl.stubs.StartWorkflowRequestStartInputElement startInputElementContainer = new gov.nih.nci.cagrid.workflow.service.impl.stubs.StartWorkflowRequestStartInputElement();
+    startInputElementContainer.setStartInputElement(startInputElement);
+    params.setStartInputElement(startInputElementContainer);
+    gov.nih.nci.cagrid.workflow.service.impl.stubs.StartWorkflowResponse boxedResult = portType.startWorkflow(params);
+    return boxedResult.getWorkflowStatusElement();
+    }
+  }
+
   public org.oasis.wsrf.lifetime.DestroyResponse destroy(org.oasis.wsrf.lifetime.Destroy params) throws RemoteException {
     synchronized(portTypeMutex){
       configureStubSecurity((Stub)portType,"destroy");

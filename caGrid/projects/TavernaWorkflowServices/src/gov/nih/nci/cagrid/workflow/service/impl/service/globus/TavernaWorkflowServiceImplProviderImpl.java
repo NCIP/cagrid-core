@@ -26,6 +26,12 @@ public class TavernaWorkflowServiceImplProviderImpl{
 	}
 	
 
+    public gov.nih.nci.cagrid.workflow.service.impl.stubs.StartWorkflowResponse startWorkflow(gov.nih.nci.cagrid.workflow.service.impl.stubs.StartWorkflowRequest params) throws RemoteException, gov.nih.nci.cagrid.workflow.service.impl.stubs.types.CannotStartWorkflowFault {
+    gov.nih.nci.cagrid.workflow.service.impl.stubs.StartWorkflowResponse boxedResult = new gov.nih.nci.cagrid.workflow.service.impl.stubs.StartWorkflowResponse();
+    boxedResult.setWorkflowStatusElement(impl.startWorkflow(params.getStartInputElement().getStartInputElement()));
+    return boxedResult;
+  }
+
     public gov.nih.nci.cagrid.workflow.service.impl.stubs.CancelResponse cancel(gov.nih.nci.cagrid.workflow.service.impl.stubs.CancelRequest params) throws RemoteException, gov.nih.nci.cagrid.workflow.service.impl.stubs.types.CannotCancelWorkflowFault {
     gov.nih.nci.cagrid.workflow.service.impl.stubs.CancelResponse boxedResult = new gov.nih.nci.cagrid.workflow.service.impl.stubs.CancelResponse();
     impl.cancel();

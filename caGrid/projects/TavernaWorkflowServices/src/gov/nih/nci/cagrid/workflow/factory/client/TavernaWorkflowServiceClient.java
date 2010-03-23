@@ -140,7 +140,6 @@ TavernaWorkflowServiceClientBase implements TavernaWorkflowServiceI {
 
 	}
 
-
 	/**
 	 * This method is to be used to set the delegated credential on the WorkflowService.
 	 * Call this method before starting the workflow, and it will automatically use the delegated
@@ -158,23 +157,44 @@ TavernaWorkflowServiceClientBase implements TavernaWorkflowServiceI {
 		serviceClient.setDelegatedCredential(ref);
 	}
 
-	public static WorkflowStatusType startWorkflow(WorkflowPortType[] inputArgs, EndpointReferenceType epr) throws MalformedURIException, RemoteException, Exception
+	
+	public static WorkflowStatusType startWorkflow(WorkflowPortType[] inputParams, EndpointReferenceType epr) throws MalformedURIException, RemoteException, Exception
 	{		
 		TavernaWorkflowServiceImplClient serviceClient = new TavernaWorkflowServiceImplClient(epr);
 		StartInputType startInputElement = null;
-		if(!(inputArgs == null))
+		if(!(inputParams == null))
 		{
-			if(inputArgs.length > 0)
+			if(inputParams.length > 0)
 			{
 				startInputElement = new StartInputType();
-				startInputElement.setInputArgs(inputArgs);
+				startInputElement.setInputParams(inputParams);
 			}			
 		}
-		WorkflowStatusType workflowStatusElement =  serviceClient.start(startInputElement);
+		WorkflowStatusType workflowStatusElement =  serviceClient.startWorkflow(startInputElement);
 		return workflowStatusElement;
 
 	}
 
+	public static WorkflowStatusType startWorkflow(String[] inputString, EndpointReferenceType epr) throws MalformedURIException, RemoteException, Exception
+	{
+		
+		TavernaWorkflowServiceImplClient serviceClient = new TavernaWorkflowServiceImplClient(epr);
+		StartInputType startInputElement = null;
+		if(!(inputString == null))
+		{
+			if(inputString.length > 0)
+			{
+				startInputElement = new StartInputType();
+				startInputElement.setInputArgs(inputString);
+			}			
+		}
+		//startInputElement.setInputArgs(inputString);
+		WorkflowStatusType workflowStatusElement =  serviceClient.start(startInputElement);
+
+		return workflowStatusElement;
+
+	}
+	
 	/**
 	 * Returns the status of the worklow submited
 	 * 
@@ -209,7 +229,6 @@ TavernaWorkflowServiceClientBase implements TavernaWorkflowServiceI {
 		return workflowOutputElement;
 	}
 
-
 	/**
 	 * This method allows a client to subscribe to the WORKFLOWSTATUSELEMENT resource property of an 
 	 * executing workflow 
@@ -227,7 +246,6 @@ TavernaWorkflowServiceClientBase implements TavernaWorkflowServiceI {
 		serviceClient.subscribe(TavernaWorkflowServiceImplConstantsBase.WORKFLOWSTATUSELEMENT);
 		doneSignal.await(TimeInSeconds, TimeUnit.SECONDS);
 	}
-
 
 	//Method that returns an EPR from the Credential Delegation Service. It automatically picks the Clients
 	// credentials from /tmp/x509... file and if CDS is able to authenticate with it, it then retuns an epr representing the CD
@@ -314,12 +332,10 @@ TavernaWorkflowServiceClientBase implements TavernaWorkflowServiceI {
 		isFile = new BufferedInputStream(new FileInputStream(file));
 		TransferClientHelper.putData(isFile, size, tclient1.getDataTransferDescriptor());
 
-
 		// tell the resource that the data has been uploaded.
 		tclient1.setStatus(Status.Staged);
 		return ref;
 	}
-
 
 	public static File getOutputDataHelper(EndpointReferenceType epr) throws MalformedURIException, RemoteException, IOException, Exception {
 		TavernaWorkflowServiceImplClient serviceClient = new TavernaWorkflowServiceImplClient(epr);
@@ -399,39 +415,37 @@ TavernaWorkflowServiceClientBase implements TavernaWorkflowServiceI {
 		return input;
 	}
 
+  public workflowmanagementfactoryservice.WMSOutputType createWorkflow(workflowmanagementfactoryservice.WMSInputType wMSInputElement) throws RemoteException, gov.nih.nci.cagrid.workflow.factory.stubs.types.WorkflowException {
+    synchronized(portTypeMutex){
+      configureStubSecurity((Stub)portType,"createWorkflow");
+    gov.nih.nci.cagrid.workflow.factory.stubs.CreateWorkflowRequest params = new gov.nih.nci.cagrid.workflow.factory.stubs.CreateWorkflowRequest();
+    gov.nih.nci.cagrid.workflow.factory.stubs.CreateWorkflowRequestWMSInputElement wMSInputElementContainer = new gov.nih.nci.cagrid.workflow.factory.stubs.CreateWorkflowRequestWMSInputElement();
+    wMSInputElementContainer.setWMSInputElement(wMSInputElement);
+    params.setWMSInputElement(wMSInputElementContainer);
+    gov.nih.nci.cagrid.workflow.factory.stubs.CreateWorkflowResponse boxedResult = portType.createWorkflow(params);
+    return boxedResult.getWMSOutputElement();
+    }
+  }
 
-	public workflowmanagementfactoryservice.WMSOutputType createWorkflow(workflowmanagementfactoryservice.WMSInputType wMSInputElement) throws RemoteException, gov.nih.nci.cagrid.workflow.factory.stubs.types.WorkflowException {
-		synchronized(portTypeMutex){
-			configureStubSecurity((Stub)portType,"createWorkflow");
-			gov.nih.nci.cagrid.workflow.factory.stubs.CreateWorkflowRequest params = new gov.nih.nci.cagrid.workflow.factory.stubs.CreateWorkflowRequest();
-			gov.nih.nci.cagrid.workflow.factory.stubs.CreateWorkflowRequestWMSInputElement wMSInputElementContainer = new gov.nih.nci.cagrid.workflow.factory.stubs.CreateWorkflowRequestWMSInputElement();
-			wMSInputElementContainer.setWMSInputElement(wMSInputElement);
-			params.setWMSInputElement(wMSInputElementContainer);
-			gov.nih.nci.cagrid.workflow.factory.stubs.CreateWorkflowResponse boxedResult = portType.createWorkflow(params);
-			return boxedResult.getWMSOutputElement();
-		}
-	}
+  public org.oasis.wsrf.properties.GetMultipleResourcePropertiesResponse getMultipleResourceProperties(org.oasis.wsrf.properties.GetMultipleResourceProperties_Element params) throws RemoteException {
+    synchronized(portTypeMutex){
+      configureStubSecurity((Stub)portType,"getMultipleResourceProperties");
+    return portType.getMultipleResourceProperties(params);
+    }
+  }
 
-	public org.oasis.wsrf.properties.GetMultipleResourcePropertiesResponse getMultipleResourceProperties(org.oasis.wsrf.properties.GetMultipleResourceProperties_Element params) throws RemoteException {
-		synchronized(portTypeMutex){
-			configureStubSecurity((Stub)portType,"getMultipleResourceProperties");
-			return portType.getMultipleResourceProperties(params);
-		}
-	}
+  public org.oasis.wsrf.properties.GetResourcePropertyResponse getResourceProperty(javax.xml.namespace.QName params) throws RemoteException {
+    synchronized(portTypeMutex){
+      configureStubSecurity((Stub)portType,"getResourceProperty");
+    return portType.getResourceProperty(params);
+    }
+  }
 
-	public org.oasis.wsrf.properties.GetResourcePropertyResponse getResourceProperty(javax.xml.namespace.QName params) throws RemoteException {
-		synchronized(portTypeMutex){
-			configureStubSecurity((Stub)portType,"getResourceProperty");
-			return portType.getResourceProperty(params);
-		}
-	}
-
-	public org.oasis.wsrf.properties.QueryResourcePropertiesResponse queryResourceProperties(org.oasis.wsrf.properties.QueryResourceProperties_Element params) throws RemoteException {
-		synchronized(portTypeMutex){
-			configureStubSecurity((Stub)portType,"queryResourceProperties");
-			return portType.queryResourceProperties(params);
-		}
-	}
-
+  public org.oasis.wsrf.properties.QueryResourcePropertiesResponse queryResourceProperties(org.oasis.wsrf.properties.QueryResourceProperties_Element params) throws RemoteException {
+    synchronized(portTypeMutex){
+      configureStubSecurity((Stub)portType,"queryResourceProperties");
+    return portType.queryResourceProperties(params);
+    }
+  }
 
 }

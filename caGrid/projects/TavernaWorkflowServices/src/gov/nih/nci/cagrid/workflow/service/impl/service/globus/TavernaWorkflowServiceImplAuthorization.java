@@ -122,6 +122,10 @@ public class TavernaWorkflowServiceImplAuthorization implements PDP {
 	public void authorizeGetOutputData(Subject peerSubject, MessageContext context, QName operation) throws AuthorizationException {
 		
 	}
+	   				
+	public void authorizeStartWorkflow(Subject peerSubject, MessageContext context, QName operation) throws AuthorizationException {
+		
+	}
 	   
 	
 	public boolean isPermitted(Subject peerSubject, MessageContext context, QName operation)
@@ -180,6 +184,9 @@ public class TavernaWorkflowServiceImplAuthorization implements PDP {
 			return true;
 		} else if(operation.getLocalPart().equals("getOutputData")){
 			authorizeGetOutputData(peerSubject, context, operation);
+			return true;
+		} else if(operation.getLocalPart().equals("startWorkflow")){
+			authorizeStartWorkflow(peerSubject, context, operation);
 			return true;
 		} 		
 		return false;

@@ -160,6 +160,26 @@
           </sequence>
         </complexType>
       </element>
+      <element name="StartWorkflowRequest">
+        <complexType>
+          <sequence>
+            <element name="startInputElement">
+              <complexType>
+                <sequence>
+                  <element ref="ns2:StartInputElement" minOccurs="1" maxOccurs="1" />
+                </sequence>
+              </complexType>
+            </element>
+          </sequence>
+        </complexType>
+      </element>
+      <element name="StartWorkflowResponse">
+        <complexType>
+          <sequence>
+            <element ref="ns2:WorkflowStatusElement" minOccurs="1" maxOccurs="1" />
+          </sequence>
+        </complexType>
+      </element>
       <element name="TavernaWorkflowServiceImplResourceProperties">
         <complexType>
           <sequence>
@@ -231,6 +251,12 @@
   </message>
   <message name="GetOutputDataResponse">
     <part name="parameters" element="tns:GetOutputDataResponse" />
+  </message>
+  <message name="StartWorkflowRequest">
+    <part name="parameters" element="tns:StartWorkflowRequest" />
+  </message>
+  <message name="StartWorkflowResponse">
+    <part name="parameters" element="tns:StartWorkflowResponse" />
   </message>
   <message name="CannotCancelWorkflowFaultFaultMessage">
     <part name="fault" element="ns6:CannotCancelWorkflowFault" />
@@ -305,6 +331,11 @@
     <operation name="getOutputData">
       <input message="tns:GetOutputDataRequest" wsa:Action="http://service.workflow.cagrid.nci.nih.gov/TavernaWorkflowService/ServiceImpl/GetOutputDataRequest" />
       <output message="tns:GetOutputDataResponse" wsa:Action="http://service.workflow.cagrid.nci.nih.gov/TavernaWorkflowService/ServiceImpl/GetOutputDataResponse" />
+    </operation>
+    <operation name="startWorkflow">
+      <input message="tns:StartWorkflowRequest" wsa:Action="http://service.workflow.cagrid.nci.nih.gov/TavernaWorkflowService/ServiceImpl/StartWorkflowRequest" />
+      <output message="tns:StartWorkflowResponse" wsa:Action="http://service.workflow.cagrid.nci.nih.gov/TavernaWorkflowService/ServiceImpl/StartWorkflowResponse" />
+      <fault name="CannotStartWorkflowFault" message="tns:CannotStartWorkflowFaultFaultMessage" wsa:Action="http://service.workflow.cagrid.nci.nih.gov/TavernaWorkflowService/ServiceImpl/CannotStartWorkflowFaultFaultMessage" />
     </operation>
     <operation name="getServiceSecurityMetadata">
       <input message="wns0:GetServiceSecurityMetadataRequest" wsa:Action="http://security.introduce.cagrid.nci.nih.gov/ServiceSecurity/GetServiceSecurityMetadataRequest" />
