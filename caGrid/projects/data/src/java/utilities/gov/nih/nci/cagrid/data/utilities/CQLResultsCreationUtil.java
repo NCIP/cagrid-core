@@ -8,7 +8,9 @@ import gov.nih.nci.cagrid.cqlresultset.TargetAttribute;
 import gov.nih.nci.cagrid.data.mapping.Mappings;
 
 import java.lang.reflect.Array;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Iterator;
 import java.util.List;
 
 import javax.xml.namespace.QName;
@@ -42,16 +44,18 @@ public class CQLResultsCreationUtil {
 	 * @throws ResultsCreationException
 	 */
 	public static CQLQueryResults createObjectResults(List objects, String targetName, Mappings classToQname) throws ResultsCreationException {
-		CQLQueryResults results = new CQLQueryResults();
-		results.setTargetClassname(targetName);
-		QName targetQName = getQname(targetName, classToQname);
-		CQLObjectResult[] objectResults = new CQLObjectResult[objects.size()];
-		for (int i = 0; i < objects.size(); i++) {
-			MessageElement elem = new MessageElement(targetQName, objects.get(i));
-			objectResults[i] = new CQLObjectResult(new MessageElement[] {elem});
-		}
-		results.setObjectResult(objectResults);
-		return results;
+	    CQLQueryResults results = new CQLQueryResults();
+        results.setTargetClassname(targetName);
+        QName targetQName = getQname(targetName, classToQname);
+        List objectResults = new ArrayList();
+        for (Iterator iter = objects.iterator(); iter.hasNext();) {
+            MessageElement elem = new MessageElement(targetQName, iter.next());
+            objectResults.add(new CQLObjectResult(new MessageElement[] {elem}));
+        }
+        CQLObjectResult[] objectResultArray = new CQLObjectResult[objectResults.size()];
+        objectResults.toArray(objectResultArray);
+        results.setObjectResult(objectResultArray);
+        return results;
 	}
 	
 	
