@@ -3,6 +3,7 @@ package gov.nih.nci.cagrid.data;
 import gov.nih.nci.cagrid.data.cql.validation.DataTypeValidator;
 import gov.nih.nci.cagrid.data.cql.validation.DomainConformanceException;
 
+import java.math.BigDecimal;
 import java.util.Date;
 
 import junit.framework.TestCase;
@@ -33,6 +34,10 @@ public class DataTypeValidatorTestCase extends TestCase {
             fail("Value " + value + " should not have passed validation as " + datatype);
         } catch (DomainConformanceException ex) {
             // expected
+        } catch (Exception ex) {
+            // not expected
+            ex.printStackTrace();
+            fail("Unexpected exception caught: " + ex.getMessage());
         }
     }
     
@@ -87,6 +92,54 @@ public class DataTypeValidatorTestCase extends TestCase {
         for (String b : bad) {
             checkInvalid(b, Date.class.getName());
         }
+    }
+    
+    
+    public void testValidateBoolean() {
+        // the way Boolean.valueOf() works means anything not null is "valid"
+        String[] good = new String[] {
+            "true", "True", "TRUE", "TrUe",
+            "false", "False", "FALSE", "FaLsE"
+        };
+        for (String s : good) {
+            checkValid(s, Boolean.class.getName());
+        }
+    }
+    
+    
+    public void testValidateCharacter() {
+        String[] good = new String[] {
+            "1", "a", "A", "@"
+        };
+        String[] bad = new String[] {
+            "!@#", "hello", "123"
+        };
+        for (String s : good) {
+            checkValid(s, Character.class.getName());
+        }
+        for (String s : bad) {
+            checkInvalid(s, Character.class.getName());
+        }
+    }
+    
+    
+    public void testValidateDouble() {
+        String goodVal = BigDecimal.valueOf(Double.MAX_VALUE).toPlainString();
+        // String badVal1 = goodVal + "00"; // overflow -> "Infinity", not a failure
+        String badVal2 = "abcd";
+        checkValid(goodVal, Double.class.getName());
+        // checkInvalid(badVal1, Double.class.getName());
+        checkInvalid(badVal2, Double.class.getName());
+    }
+    
+    
+    public void testValidateFloat() {
+        String goodVal = BigDecimal.valueOf(Float.MAX_VALUE).toPlainString();
+        // String badVal1 = goodVal + "00"; // overflow -> "Infinity", not a failure
+        String badVal2 = "abcd";
+        checkValid(goodVal, Float.class.getName());
+        // checkInvalid(badVal1, Float.class.getName());
+        checkInvalid(badVal2, Float.class.getName());
     }
     
 
