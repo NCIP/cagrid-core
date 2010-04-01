@@ -62,7 +62,7 @@ public class IdentifiersNAServiceProviderImpl{
     return boxedResult;
   }
 
-    public gov.nih.nci.cagrid.identifiers.stubs.GetKeyDataResponse getKeyData(gov.nih.nci.cagrid.identifiers.stubs.GetKeyDataRequest params) throws RemoteException, gov.nih.nci.cagrid.identifiers.stubs.types.InvalidIdentifierFault, gov.nih.nci.cagrid.identifiers.stubs.types.NamingAuthoritySecurityFault, gov.nih.nci.cagrid.identifiers.stubs.types.NamingAuthorityConfigurationFault {
+    public gov.nih.nci.cagrid.identifiers.stubs.GetKeyDataResponse getKeyData(gov.nih.nci.cagrid.identifiers.stubs.GetKeyDataRequest params) throws RemoteException, gov.nih.nci.cagrid.identifiers.stubs.types.InvalidIdentifierFault, gov.nih.nci.cagrid.identifiers.stubs.types.NamingAuthoritySecurityFault, gov.nih.nci.cagrid.identifiers.stubs.types.NamingAuthorityConfigurationFault, gov.nih.nci.cagrid.identifiers.stubs.types.InvalidIdentifierValuesFault {
     gov.nih.nci.cagrid.identifiers.stubs.GetKeyDataResponse boxedResult = new gov.nih.nci.cagrid.identifiers.stubs.GetKeyDataResponse();
     boxedResult.setKeyNameData(impl.getKeyData(params.getIdentifier().getIdentifier(),params.getKeyName().getKeyName()));
     return boxedResult;

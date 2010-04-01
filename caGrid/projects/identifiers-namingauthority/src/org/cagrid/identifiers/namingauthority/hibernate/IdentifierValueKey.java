@@ -99,6 +99,11 @@ public class IdentifierValueKey {
 
     @Override
     public boolean equals(Object obj) {
+    	// DEFINITION, DEFINITION, READ THIS BEFORE YOU MAKE
+    	// A CHANGE HERE. Two IdentifierValueKey objects are
+    	// considered equal if the keys match. Nothing else
+    	// matters. Lots of code depends on this. Do not
+    	// change unless you know what you are doing.
         if (this == obj)
             return true;
         if (obj == null)
@@ -111,14 +116,6 @@ public class IdentifierValueKey {
                 return false;
         } else if (!this.key.equals(other.key))
             return false;
-        
-        /* I NEED THE ABOVE ONLY, DOES ANYONE HAVE A PROBLEM WITH THAT?
-        if (values == null) {
-            if (other.values != null)
-                return false;
-        } else if (!values.equals(other.values))
-            return false;
-         */
         
         return true;
     }

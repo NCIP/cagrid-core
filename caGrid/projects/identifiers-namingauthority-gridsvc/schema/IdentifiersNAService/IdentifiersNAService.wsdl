@@ -301,6 +301,7 @@
       <fault name="InvalidIdentifierFault" message="tns:InvalidIdentifierFaultFaultMessage" wsa:Action="http://identifiers.cagrid.nci.nih.gov/IdentifiersNAService/InvalidIdentifierFaultFaultMessage" />
       <fault name="NamingAuthoritySecurityFault" message="tns:NamingAuthoritySecurityFaultFaultMessage" wsa:Action="http://identifiers.cagrid.nci.nih.gov/IdentifiersNAService/NamingAuthoritySecurityFaultFaultMessage" />
       <fault name="NamingAuthorityConfigurationFault" message="tns:NamingAuthorityConfigurationFaultFaultMessage" wsa:Action="http://identifiers.cagrid.nci.nih.gov/IdentifiersNAService/NamingAuthorityConfigurationFaultFaultMessage" />
+      <fault name="InvalidIdentifierValuesFault" message="tns:InvalidIdentifierValuesFaultFaultMessage" wsa:Action="http://identifiers.cagrid.nci.nih.gov/IdentifiersNAService/InvalidIdentifierValuesFaultFaultMessage" />
     </operation>
     <wsdl:operation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" name="GetMultipleResourceProperties">
       <wsdl:input name="GetMultipleResourcePropertiesRequest" message="wsrpw:GetMultipleResourcePropertiesRequest" wsa:Action="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ResourceProperties/GetMultipleResourceProperties" />

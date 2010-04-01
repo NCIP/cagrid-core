@@ -279,7 +279,7 @@ public class IdentifiersNAServiceClient extends IdentifiersNAServiceClientBase i
     }
   }
 
-  public namingauthority.KeyNameData getKeyData(org.apache.axis.types.URI identifier,java.lang.String keyName) throws RemoteException, gov.nih.nci.cagrid.identifiers.stubs.types.InvalidIdentifierFault, gov.nih.nci.cagrid.identifiers.stubs.types.NamingAuthoritySecurityFault, gov.nih.nci.cagrid.identifiers.stubs.types.NamingAuthorityConfigurationFault {
+  public namingauthority.KeyNameData getKeyData(org.apache.axis.types.URI identifier,java.lang.String keyName) throws RemoteException, gov.nih.nci.cagrid.identifiers.stubs.types.InvalidIdentifierFault, gov.nih.nci.cagrid.identifiers.stubs.types.NamingAuthoritySecurityFault, gov.nih.nci.cagrid.identifiers.stubs.types.NamingAuthorityConfigurationFault, gov.nih.nci.cagrid.identifiers.stubs.types.InvalidIdentifierValuesFault {
     synchronized(portTypeMutex){
       configureStubSecurity((Stub)portType,"getKeyData");
     gov.nih.nci.cagrid.identifiers.stubs.GetKeyDataRequest params = new gov.nih.nci.cagrid.identifiers.stubs.GetKeyDataRequest();

@@ -110,7 +110,8 @@ public class NamingAuthorityImpl implements MaintainerNamingAuthority {
 		throws 
 			InvalidIdentifierException, 
 			NamingAuthoritySecurityException, 
-			NamingAuthorityConfigurationException {
+			NamingAuthorityConfigurationException, 
+			InvalidIdentifierValuesException {
 		
 		return this.identifierDao.getKeyData(secInfo, identifier, key);
 	}

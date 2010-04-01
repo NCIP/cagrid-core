@@ -33,7 +33,8 @@ public interface NamingAuthority {
 		throws 
 			InvalidIdentifierException, 
 			NamingAuthoritySecurityException, 
-			NamingAuthorityConfigurationException;
+			NamingAuthorityConfigurationException, 
+			InvalidIdentifierValuesException;
 	
 	//
 	// Returns all metadata (keys/values) associated with a given identifier

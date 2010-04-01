@@ -223,12 +223,13 @@
       <ns4:Exception description="The provided identifier does not exist" name="InvalidIdentifierFault" qname="ns50:InvalidIdentifierFault" xmlns:ns50="http://identifiers.cagrid.nci.nih.gov/IdentifiersNAService/types"/>
       <ns4:Exception description="User is not authorized to perform the operation" name="NamingAuthoritySecurityFault" qname="ns51:NamingAuthoritySecurityFault" xmlns:ns51="http://identifiers.cagrid.nci.nih.gov/IdentifiersNAService/types"/>
       <ns4:Exception description="A configuration error has been detected" name="NamingAuthorityConfigurationFault" qname="ns52:NamingAuthorityConfigurationFault" xmlns:ns52="http://identifiers.cagrid.nci.nih.gov/IdentifiersNAService/types"/>
+      <ns4:Exception description="" name="InvalidIdentifierValuesFault" qname="ns53:InvalidIdentifierValuesFault" xmlns:ns53="http://identifiers.cagrid.nci.nih.gov/IdentifiersNAService/types"/>
      </ns4:Exceptions>
     </ns4:Method>
    </ns4:Methods>
-   <ns53:ResourcePropertiesList xsi:type="ns53:ResourcePropertiesListType" xmlns:ns53="gme://gov.nih.nci.cagrid.introduce/1/Resources">
-    <ns53:ResourceProperty qName="ns54:ServiceMetadata" description="caGrid standard Service Metadata" fileLocation="serviceMetadata.xml" populateFromFile="true" register="true" xsi:type="ns53:ResourcePropertyType" xmlns:ns54="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata"/>
-   </ns53:ResourcePropertiesList>
+   <ns54:ResourcePropertiesList xsi:type="ns54:ResourcePropertiesListType" xmlns:ns54="gme://gov.nih.nci.cagrid.introduce/1/Resources">
+    <ns54:ResourceProperty qName="ns55:ServiceMetadata" description="caGrid standard Service Metadata" fileLocation="serviceMetadata.xml" populateFromFile="true" register="true" xsi:type="ns54:ResourcePropertyType" xmlns:ns55="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata"/>
+   </ns54:ResourcePropertiesList>
    <ns3:description xsi:type="xsd:string" xmlns:xsd="http://www.w3.org/2001/XMLSchema">The Naming Authority service enables users to maintain and resolve identifiers in the grid</ns3:description>
    <ns3:ResourceFrameworkOptions xsi:type="ns3:ResourceFrameworkOptions">
     <ns3:Main xsi:type="ns3:Main"/>
@@ -238,11 +239,11 @@
    </ns3:ResourceFrameworkOptions>
   </ns3:Service>
  </ns3:Services>
- <ns55:Extensions xsi:type="ns55:ExtensionsType" xmlns:ns55="gme://gov.nih.nci.cagrid.introduce/1/Extension" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
-  <ns55:Extension name="cagrid_metadata" version="1.4" xsi:type="ns55:ExtensionType"/>
- </ns55:Extensions>
- <ns56:ServiceProperties xmlns:ns56="gme://gov.nih.nci.cagrid.introduce/1/Property">
-  <ns56:Property description="The location (relative to the service's ETC location) of the XML configuration file" isFromETC="true" key="naConfigurationFile" value="applicationContext-na.xml"/>
-  <ns56:Property description="The location (relative to the service's ETC location) of the properties file containing information about the naming authority" isFromETC="true" key="naPropertiesFile" value="na.properties"/>
- </ns56:ServiceProperties>
+ <ns56:Extensions xsi:type="ns56:ExtensionsType" xmlns:ns56="gme://gov.nih.nci.cagrid.introduce/1/Extension" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <ns56:Extension name="cagrid_metadata" version="1.4" xsi:type="ns56:ExtensionType"/>
+ </ns56:Extensions>
+ <ns57:ServiceProperties xmlns:ns57="gme://gov.nih.nci.cagrid.introduce/1/Property">
+  <ns57:Property description="The location (relative to the service's ETC location) of the XML configuration file" isFromETC="true" key="naConfigurationFile" value="applicationContext-na.xml"/>
+  <ns57:Property description="The location (relative to the service's ETC location) of the properties file containing information about the naming authority" isFromETC="true" key="naPropertiesFile" value="na.properties"/>
+ </ns57:ServiceProperties>
 </ns1:ServiceDescription>

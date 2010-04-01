@@ -122,12 +122,12 @@ public class IdentifiersMaintenanceStep extends Step {
     	
     	IdentifiersTestUtil.deleteKeys(client, null, identifier, keyList);
     	
-    	KeyNameData kd = 
+    	try {
     		IdentifiersTestUtil.getKeyData(client, null, identifier, keyList[0]);
-    	
-    	if (kd != null) {
-    		fail("Key [" + keyList[0] + "] on identifier [" 
-    				+ identifier.toString() + "] was supposed to be deleted");
+    		fail("getKeyData was expected to fail");
+    		
+    	} catch (InvalidIdentifierValuesFault e) {
+    		//expected
     	}
     }
 }

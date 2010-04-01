@@ -64,6 +64,9 @@
 		<path id="run.extended.classpath">
 		</path>
 		<path id="tasks.run.extended.classpath">
+         <fileset dir="${ext.lib.dir}">
+            <include name="**/*.jar" />
+         </fileset>
 			<fileset dir="${ext.tools.lib.dir}">
             <include name="*.jar" />
          </fileset>

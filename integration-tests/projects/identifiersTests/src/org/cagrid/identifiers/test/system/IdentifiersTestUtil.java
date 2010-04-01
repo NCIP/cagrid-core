@@ -154,7 +154,8 @@ public class IdentifiersTestUtil {
 		throws 
 			NamingAuthorityConfigurationFault, 
 			InvalidIdentifierFault, 
-			NamingAuthoritySecurityFault, 
+			NamingAuthoritySecurityFault,
+			InvalidIdentifierValuesFault,
 			RemoteException {
 	
 		setProxy(client, creds);

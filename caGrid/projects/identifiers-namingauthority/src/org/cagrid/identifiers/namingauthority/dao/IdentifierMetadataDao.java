@@ -89,7 +89,14 @@ public class IdentifierMetadataDao extends AbstractDao<IdentifierMetadata> {
 			NamingAuthoritySecurityException, 
 			NamingAuthorityConfigurationException {
     	
-    	IdentifierData values = resolveIdentifier( secInfo, identifier );
+    	IdentifierData values = null;
+    	
+		try {
+			values = getIdentifierData( secInfo, identifier, null );
+		} catch (InvalidIdentifierValuesException e) {
+			throw new NamingAuthorityConfigurationException(e);
+		}
+		
     	if (values != null) {
     		return values.getKeys();
     	}
@@ -104,13 +111,30 @@ public class IdentifierMetadataDao extends AbstractDao<IdentifierMetadata> {
     	throws 
     		InvalidIdentifierException, 
     		NamingAuthoritySecurityException, 
-    		NamingAuthorityConfigurationException {
+    		NamingAuthorityConfigurationException, 
+    		InvalidIdentifierValuesException {
     	
-    	IdentifierData values = resolveIdentifier(secInfo, identifier);
+    	IdentifierData values = getIdentifierData(secInfo, identifier, key);
     	if (values != null && values.getValues(key) != null) {
     		return values.getValues(key);
     	}
     	return null;
+    }
+    
+    /*
+     * Resolves an identifier to its associated meta-data
+     */
+    public IdentifierData resolveIdentifier( SecurityInfo secInfo, java.net.URI identifier )
+	throws 
+		InvalidIdentifierException, 
+		NamingAuthoritySecurityException, 
+		NamingAuthorityConfigurationException {
+    	
+    	try {
+			return getIdentifierData( secInfo, identifier, null);
+		} catch (InvalidIdentifierValuesException e) {
+			throw new NamingAuthorityConfigurationException(e);
+		}
     }
     
 	/*
@@ -129,23 +153,19 @@ public class IdentifierMetadataDao extends AbstractDao<IdentifierMetadata> {
 	 *
 	 * A security exception is thrown if the identifier has keys and none are returned due to
 	 * permission checks.
-	 */
-    public IdentifierData resolveIdentifier( SecurityInfo secInfo, java.net.URI identifier ) 
+	 */ 
+    public IdentifierData getIdentifierData( SecurityInfo secInfo, java.net.URI identifier, String keyName )
     	throws 
     		InvalidIdentifierException, 
     		NamingAuthoritySecurityException, 
-    		NamingAuthorityConfigurationException {
+    		NamingAuthorityConfigurationException, 
+    		InvalidIdentifierValuesException {
 
     	secInfo = validateSecurityInfo(secInfo);
 
     	IdentifierMetadata tmpValues = loadIdentifier( identifier );  
 
     	if (tmpValues == null) {
-			return null;
-		}
-		
-		Collection<IdentifierValueKey> valueCol = tmpValues.getValues();
-		if (valueCol == null || valueCol.size() == 0) {
 			return null;
 		}
 		
@@ -156,10 +176,28 @@ public class IdentifierMetadataDao extends AbstractDao<IdentifierMetadata> {
 			return IdentifierUtil.convert(tmpValues.getValues());
 		}
 		
+		Collection<IdentifierValueKey> valueCol = tmpValues.getValues();
+		if (valueCol == null || valueCol.size() == 0) {
+			return null;
+		}
+		
+		if (keyName != null) {
+			IdentifierValueKey searchKey = new IdentifierValueKey();
+			searchKey.setKey(keyName);
+			if (!valueCol.contains(searchKey)) {
+				throw new InvalidIdentifierValuesException("Key [" + keyName 
+						+ "] does not exist");
+			}
+		}
+		
 		Access identifierReadAccess = null;
 		IdentifierData newValues = new IdentifierData();
 		
 		for(IdentifierValueKey ivk : valueCol) {
+			
+			if (keyName != null && !keyName.equals(ivk.getKey())) {
+				continue;
+			}
 						
 			Access keyAccess = getKeyReadAccess(secInfo, ivk.getPolicyIdentifier());
 			if (keyAccess == Access.GRANTED) {
@@ -192,8 +230,16 @@ public class IdentifierMetadataDao extends AbstractDao<IdentifierMetadata> {
 		
 		// Is this the only case when we bark?
 		if (newValues.getKeys() == null || newValues.getKeys().length == 0) {
+			String msg;
+			if (keyName != null) {
+				msg = "resolve identifier key [" + keyName + "]";
+			
+			} else {
+				msg = "resolve identifier";
+			}
+			
 			throw new NamingAuthoritySecurityException(SecurityUtil.securityError(secInfo, 
-					"resolve identifier"));
+					msg));
 		}
 		
 		return newValues;
