@@ -8,7 +8,7 @@ public class MembershipRequestHistory {
 	private MembershipRequestStatus status;
 
 	private Member reviewer;
-	private long reviewTime;
+	private long updateDate;
 	private String publicNote;
 	private String adminNote;
 	
@@ -25,11 +25,7 @@ public class MembershipRequestHistory {
 		this.publicNote = membershipRequest.getPublicNote();
 		this.adminNote = membershipRequest.getAdminNote();
 		this.membershipRequest = membershipRequest;
-		if (MembershipRequestStatus.Pending.equals(this.status)) {
-			this.reviewTime = membershipRequest.getRequestTime();
-		} else {
-			this.reviewTime = membershipRequest.getReviewTime();
-		}
+		this.updateDate = System.currentTimeMillis();
 	}
 
 	public Member getReviewer() {
@@ -61,12 +57,12 @@ public class MembershipRequestHistory {
 		this.id = id;
 	}
 
-	public long getReviewTime() {
-		return this.reviewTime;
+	public long getUpdateDate() {
+		return this.updateDate;
 	}
 
-	private void setReviewTime(long time) {
-		this.reviewTime = time;
+	private void setUpdateDate(long time) {
+		this.updateDate = time;
 	}
 
 	public String getPublicNote() {

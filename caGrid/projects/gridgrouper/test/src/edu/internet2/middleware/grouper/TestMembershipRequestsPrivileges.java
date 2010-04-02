@@ -24,6 +24,7 @@ import net.sf.hibernate.Transaction;
 public class TestMembershipRequestsPrivileges extends TestCase {
 
 	public static final String SUPER_USER = "/O=OSU/OU=BMI/OU=caGrid/OU=Dorian/OU=cagrid05/OU=IdP [1]/CN=super admin";
+	public static final String SUPER_USER2 = "/O=OSU/OU=BMI/OU=caGrid/OU=Dorian/OU=cagrid05/OU=IdP [1]/CN=super admin2";
 
 	public GridGrouper grouper = null;
 
@@ -74,7 +75,13 @@ public class TestMembershipRequestsPrivileges extends TestCase {
 			MembershipRequestDescriptor[] members = grouper.getMembershipRequests(SUPER_USER, Utils.getGroupIdentifier(grp),
 					MembershipRequestStatus.Pending);
 
-			assertEquals("Do not retrieve the expected pending membership requests", 4, members.length);
+			assertEquals("Did not retrieve the expected pending membership requests", 4, members.length);
+
+			members = grouper.getMembershipRequests(SUPER_USER2, Utils.getGroupIdentifier(grp),
+					MembershipRequestStatus.Pending);
+
+			assertEquals("Did not retrieve the expected pending membership requests", 4, members.length);
+
 		} catch (Exception e) {
 			FaultUtil.printFault(e);
 			fail(e.getMessage());
@@ -292,6 +299,7 @@ public class TestMembershipRequestsPrivileges extends TestCase {
 	public void testWheelGrantMembershipRequests() {
 		try {
 			GridGrouperBootstrapper.addAdminMember(SUPER_USER);
+			GridGrouperBootstrapper.addAdminMember(SUPER_USER2);
 			grouper.getStem(SUPER_USER, Utils.getRootStemIdentifier());
 
 			String testStem = "TestStem";
@@ -300,9 +308,9 @@ public class TestMembershipRequestsPrivileges extends TestCase {
 			String groupDisplayExtension = "My Group";
 
 			GroupDescriptor grp = createAndCheckGroup(test, groupExtension, groupDisplayExtension, 1);
-			grouper.addMember(SUPER_USER, Utils.getGroupIdentifier(grp), USER_A);
-			grouper.grantGroupPrivilege(SUPER_USER, Utils.getGroupIdentifier(grp), USER_A, GroupPrivilegeType.admin);
-			grouper.grantMembershipRequests(SUPER_USER, Utils.getGroupIdentifier(grp));
+			grouper.addMember(SUPER_USER2, Utils.getGroupIdentifier(grp), USER_A);
+			grouper.grantGroupPrivilege(SUPER_USER2, Utils.getGroupIdentifier(grp), USER_A, GroupPrivilegeType.admin);
+			grouper.grantMembershipRequests(SUPER_USER2, Utils.getGroupIdentifier(grp));
 
 		} catch (Exception e) {
 			FaultUtil.printFault(e);
@@ -314,6 +322,7 @@ public class TestMembershipRequestsPrivileges extends TestCase {
 	public void testWheelRevokeMembershipRequests() {
 		try {
 			GridGrouperBootstrapper.addAdminMember(SUPER_USER);
+			GridGrouperBootstrapper.addAdminMember(SUPER_USER2);
 			grouper.getStem(SUPER_USER, Utils.getRootStemIdentifier());
 
 			String testStem = "TestStem";
@@ -322,10 +331,10 @@ public class TestMembershipRequestsPrivileges extends TestCase {
 			String groupDisplayExtension = "My Group";
 
 			GroupDescriptor grp = createAndCheckGroup(test, groupExtension, groupDisplayExtension, 1);
-			grouper.addMember(SUPER_USER, Utils.getGroupIdentifier(grp), USER_A);
-			grouper.grantGroupPrivilege(SUPER_USER, Utils.getGroupIdentifier(grp), USER_A, GroupPrivilegeType.admin);
-			grouper.grantMembershipRequests(SUPER_USER, Utils.getGroupIdentifier(grp));
-			grouper.revokeMembershipRequests(SUPER_USER, Utils.getGroupIdentifier(grp));
+			grouper.addMember(SUPER_USER2, Utils.getGroupIdentifier(grp), USER_A);
+			grouper.grantGroupPrivilege(SUPER_USER2, Utils.getGroupIdentifier(grp), USER_A, GroupPrivilegeType.admin);
+			grouper.grantMembershipRequests(SUPER_USER2, Utils.getGroupIdentifier(grp));
+			grouper.revokeMembershipRequests(SUPER_USER2, Utils.getGroupIdentifier(grp));
 
 		} catch (Exception e) {
 			FaultUtil.printFault(e);
@@ -337,6 +346,7 @@ public class TestMembershipRequestsPrivileges extends TestCase {
 	private GroupDescriptor initialGroupAndRequestSetup() throws GridGrouperRuntimeFault, StemNotFoundFault,
 			InsufficientPrivilegeFault, StemAddFault, Exception, GroupNotFoundFault, MemberAddFault {
 		GridGrouperBootstrapper.addAdminMember(SUPER_USER);
+		GridGrouperBootstrapper.addAdminMember(SUPER_USER2);
 		grouper.getStem(SUPER_USER, Utils.getRootStemIdentifier());
 
 		String testStem = "TestStem";
@@ -351,7 +361,7 @@ public class TestMembershipRequestsPrivileges extends TestCase {
 
 		createAndCheckGroup(test, subGroupExtension, subGroupDisplayExtension, 2);
 
-		grouper.grantMembershipRequests(SUPER_USER, Utils.getGroupIdentifier(grp));
+		grouper.grantMembershipRequests(SUPER_USER2, Utils.getGroupIdentifier(grp));
 
 		grouper.addMembershipRequest(USER_A, Utils.getGroupIdentifier(grp));
 		grouper.addMembershipRequest(USER_B, Utils.getGroupIdentifier(grp));

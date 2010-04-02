@@ -55,10 +55,10 @@
     <!-- reviewer_id -->
 
     <!-- review_time -->
-    <property name="reviewTime"
+    <property name="updateDate"
               type="long"
     >
-      <column name="review_time"  
+      <column name="update_date"  
       />
     </property>
     <!-- review_time -->

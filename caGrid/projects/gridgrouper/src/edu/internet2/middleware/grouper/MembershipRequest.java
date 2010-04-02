@@ -236,6 +236,10 @@ public class MembershipRequest {
 	public void reject(Member rejector, String publicNote, String adminNote) throws MembershipRequestUpdateException, InsufficientPrivilegeException, GrouperException {
 		try {
 			MembershipRequestValidator.canUpdateRequest(this.group, rejector.getSubject());
+			
+			if (!MembershipRequestStatus.Pending.equals(this.status)) {
+				throw new MembershipRequestUpdateException("Only pending membership requests can be rejected");				
+			}
 
 			this.status = MembershipRequestStatus.Rejected;
 			this.reviewer = rejector;

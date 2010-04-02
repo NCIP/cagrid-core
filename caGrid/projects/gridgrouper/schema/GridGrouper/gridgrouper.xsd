@@ -122,10 +122,10 @@
 			<xsd:element name="ReviewTime" minOccurs="1" maxOccurs="1" type="xsd:long" />
 			<xsd:element name="PublicNote" minOccurs="1" maxOccurs="1" type="xsd:string" />
 			<xsd:element name="AdminNote" minOccurs="1" maxOccurs="1" type="xsd:string" />
-             		<xsd:element name='history'
+            		<xsd:element name='history'
                       type='grouper:MembershipRequestHistoryDescriptor'
                       maxOccurs='unbounded'/>
- 		</xsd:sequence>
+		</xsd:sequence>
 	</xsd:complexType>
 
 	<xsd:element name="MembershipRequestHistoryDescriptor" type="grouper:MembershipRequestHistoryDescriptor" />
@@ -134,7 +134,7 @@
 			<xsd:element name="UUID" minOccurs="1" maxOccurs="1" type="xsd:string" />
 			<xsd:element name="Status" minOccurs="1" maxOccurs="1" type="grouper:MembershipRequestStatus" />
 			<xsd:element name="Reviewer" minOccurs="1" maxOccurs="1" type="grouper:MemberDescriptor" />
-			<xsd:element name="ReviewTime" minOccurs="1" maxOccurs="1" type="xsd:long" />
+			<xsd:element name="UpdateDate" minOccurs="1" maxOccurs="1" type="xsd:long" />
 			<xsd:element name="PublicNote" minOccurs="1" maxOccurs="1" type="xsd:string" />
 			<xsd:element name="AdminNote" minOccurs="1" maxOccurs="1" type="xsd:string" />
 		</xsd:sequence>

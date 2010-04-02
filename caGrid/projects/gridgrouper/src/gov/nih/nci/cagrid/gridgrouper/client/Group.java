@@ -736,6 +736,10 @@ public class Group extends GridGrouperObject implements GroupI {
     	return getMembershipRequests(MembershipRequestStatus.Rejected);
     }
     
+    public Set<MembershipRequestI> getRemovedMembershipRequests() {
+    	return getMembershipRequests(MembershipRequestStatus.Removed);
+    }
+
     private Set<MembershipRequestI> getMembershipRequests(MembershipRequestStatus status) {
         try {
             MembershipRequestDescriptor[] list = gridGrouper.getClient().getMembershipRequests(getGroupIdentifier(), status);

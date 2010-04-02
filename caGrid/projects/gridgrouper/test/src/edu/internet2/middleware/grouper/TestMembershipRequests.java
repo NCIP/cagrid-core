@@ -2,7 +2,6 @@ package edu.internet2.middleware.grouper;
 
 import gov.nih.nci.cagrid.common.FaultUtil;
 import gov.nih.nci.cagrid.gridgrouper.bean.GroupDescriptor;
-import gov.nih.nci.cagrid.gridgrouper.bean.GroupPrivilegeType;
 import gov.nih.nci.cagrid.gridgrouper.bean.MemberFilter;
 import gov.nih.nci.cagrid.gridgrouper.bean.MembershipRequestDescriptor;
 import gov.nih.nci.cagrid.gridgrouper.bean.MembershipRequestStatus;

@@ -29,8 +29,8 @@ public class MembershipRequestHistory extends GridGrouperObject implements Membe
     	return des.getAdminNote();
     }
 
-    public long getReviewTime() {
-    	return des.getReviewTime();
+    public long getUpdateDate() {
+    	return des.getUpdateDate();
     }
 
 	public MemberI getReviewer() {
