@@ -25,6 +25,7 @@ import javax.swing.JTextField;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.cagrid.gaards.ui.common.TitlePanel;
 import org.cagrid.gaards.ui.gridgrouper.GridGrouperLookAndFeel;
 import org.cagrid.grape.ApplicationComponent;
 import org.cagrid.grape.GridApplication;
@@ -78,6 +79,8 @@ public class MembershipRequestWindow extends ApplicationComponent {
 	private JLabel currentStatusLabel = null;
 
 	private JTextField currentStatus = null;
+	
+    private JPanel titlePanel = null;
 
 	/**
 	 * This is the default constructor
@@ -197,19 +200,26 @@ public class MembershipRequestWindow extends ApplicationComponent {
 	 */
 	private JPanel getMainPanel() {
 		if (mainPanel == null) {
+            GridBagConstraints gridBagConstraints10 = new GridBagConstraints();
+            gridBagConstraints10.gridx = 0;
+            gridBagConstraints10.fill = GridBagConstraints.HORIZONTAL;
+            gridBagConstraints10.insets = new Insets(2, 2, 2, 2);
+            gridBagConstraints10.weightx = 1.0D;
+            gridBagConstraints10.gridy = 0;
+
 			GridBagConstraints gridBagConstraints31 = new GridBagConstraints();
 			gridBagConstraints31.gridx = 0;
-			gridBagConstraints31.gridy = 2;
+			gridBagConstraints31.gridy = 3;
 			gridBagConstraints31.fill = GridBagConstraints.BOTH;
 			GridBagConstraints gridBagConstraints = new GridBagConstraints();
 			gridBagConstraints.fill = GridBagConstraints.BOTH;
-			gridBagConstraints.gridy = 1;
+			gridBagConstraints.gridy = 2;
 			gridBagConstraints.weightx = 1.0;
 			gridBagConstraints.weighty = 1.0;
 			gridBagConstraints.gridx = 0;
 			GridBagConstraints gridBagConstraints9 = new GridBagConstraints();
 			gridBagConstraints9.fill = GridBagConstraints.HORIZONTAL;
-			gridBagConstraints9.gridy = 3;
+			gridBagConstraints9.gridy = 4;
 			gridBagConstraints9.insets = new Insets(2, 2, 2, 2);
 			gridBagConstraints9.gridx = 0;
 			GridBagConstraints gridBagConstraints4 = new GridBagConstraints();
@@ -218,9 +228,10 @@ public class MembershipRequestWindow extends ApplicationComponent {
 			gridBagConstraints4.insets = new Insets(2, 2, 2, 2);
 			gridBagConstraints4.weightx = 1.0D;
 			gridBagConstraints4.weighty = 1.0D;
-			gridBagConstraints4.gridy = 0;
+			gridBagConstraints4.gridy = 1;
 			mainPanel = new JPanel();
 			mainPanel.setLayout(new GridBagLayout());
+			mainPanel.add(getTitlePanel(), gridBagConstraints10);
 			mainPanel.add(getDetailsPanel(), gridBagConstraints4);
 			mainPanel.add(getButtonPanel(), gridBagConstraints9);
 			mainPanel.add(getNotePanel(), gridBagConstraints);
@@ -485,5 +496,13 @@ public class MembershipRequestWindow extends ApplicationComponent {
 		}
 		return currentStatus;
 	}
+	
+    private JPanel getTitlePanel() {
+        if (titlePanel == null) {
+            titlePanel = new TitlePanel("Review Membership Requests Browser", "Browse and administrate membership requests.");
+        }
+        return titlePanel;
+    }
+
 
 }  //  @jve:decl-index=0:visual-constraint="10,10"

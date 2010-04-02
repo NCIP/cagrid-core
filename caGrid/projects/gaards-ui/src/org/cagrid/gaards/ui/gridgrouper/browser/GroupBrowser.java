@@ -1493,6 +1493,8 @@ public class GroupBrowser extends BaseBrowserPanel {
             	s = group.getPendingMembershipRequests();
             } else if ("Rejected".equals(type)) {
             	s = group.getRejectedMembershipRequests();
+            } else if ("Removed".equals(type)) {
+            	s = group.getRemovedMembershipRequests();
             } else {
             	s = group.getApprovedMembershipRequests();
             }
