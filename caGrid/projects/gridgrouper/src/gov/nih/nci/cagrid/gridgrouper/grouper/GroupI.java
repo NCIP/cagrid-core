@@ -227,6 +227,8 @@ public interface GroupI {
 
 	public Set<?> getPendingMembershipRequests();
 
+	public Set<?> getRemovedMembershipRequests();
+
 	public void grantMembershipRequests() throws GrantPrivilegeException,
 			InsufficientPrivilegeException, SchemaException;
 

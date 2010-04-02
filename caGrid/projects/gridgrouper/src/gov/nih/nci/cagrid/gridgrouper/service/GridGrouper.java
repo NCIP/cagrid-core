@@ -1283,7 +1283,7 @@ public class GridGrouper {
 		if (membershipRequestHistory.getReviewer() != null) {
 			des.setReviewer(memberToMemberDescriptor(membershipRequestHistory.getReviewer()));
 		}
-		des.setReviewTime(membershipRequestHistory.getReviewTime());
+		des.setUpdateDate(membershipRequestHistory.getUpdateDate());
 		des.setPublicNote(membershipRequestHistory.getPublicNote());
 		des.setAdminNote(membershipRequestHistory.getAdminNote());
 		return des;
