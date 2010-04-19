@@ -92,7 +92,7 @@ public class TestKeyUtil extends TestCase {
 		try {
 			InputStream keyLocation = TestCase.class
 					.getResourceAsStream(Constants.SIMPLECA_CAKEY);
-			PrivateKey key = KeyUtil.loadPrivateKey(keyLocation, "gomets123");
+			PrivateKey key = KeyUtil.loadPrivateKey(keyLocation, "simpleca");
 			assertNotNull(key);
 		} catch (Exception e) {
 			FaultUtil.printFault(e);
