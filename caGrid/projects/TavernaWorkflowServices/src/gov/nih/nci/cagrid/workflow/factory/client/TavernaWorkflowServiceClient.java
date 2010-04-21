@@ -41,6 +41,7 @@ import org.cagrid.transfer.descriptor.DataDescriptor;
 import org.cagrid.transfer.descriptor.DataTransferDescriptor;
 import org.cagrid.transfer.descriptor.Status;
 import org.globus.gsi.GlobusCredential;
+import org.globus.gsi.GlobusCredentialException;
 import org.globus.wsrf.container.ContainerException;
 import org.globus.wsrf.encoding.ObjectDeserializer;
 import org.globus.wsrf.encoding.ObjectSerializer;
@@ -154,6 +155,9 @@ TavernaWorkflowServiceClientBase implements TavernaWorkflowServiceI {
 	public static void setDelegatedCredential(EndpointReferenceType epr, DelegatedCredentialReference ref) throws MalformedURIException, RemoteException, CannotSetCredential
 	{
 		TavernaWorkflowServiceImplClient serviceClient = new TavernaWorkflowServiceImplClient(epr);
+		//This will force the client to send its credentials (to verify if it is the same credential
+		// that has been delegated.
+		//serviceClient.setAnonymousPrefered(false);
 		serviceClient.setDelegatedCredential(ref);
 	}
 
@@ -175,6 +179,7 @@ TavernaWorkflowServiceClientBase implements TavernaWorkflowServiceI {
 
 	}
 
+	@Deprecated
 	public static WorkflowStatusType startWorkflow(String[] inputString, EndpointReferenceType epr) throws MalformedURIException, RemoteException, Exception
 	{
 		

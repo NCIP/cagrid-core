@@ -1,7 +1,7 @@
 <pluginSites>
   <pluginSite>
     <name>myGrid</name>
-    <url>http://www.mygrid.org.uk/taverna/updates/2.1.0/plugins/</url>
+    <url>http://www.mygrid.org.uk/taverna/updates/2.1.2/plugins/</url>
   </pluginSite>
   <pluginSite>
     <name>caGrid Plugin Site</name>

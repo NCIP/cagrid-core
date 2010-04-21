@@ -32,8 +32,7 @@ public class TavernaWorkflowServiceImpl extends TavernaWorkflowServiceImplBase {
 		super();
 	}
 
-  public WMSOutputType createWorkflow(WMSInputType wMSInputElement) 
-  		throws RemoteException, WorkflowException {
+  public workflowmanagementfactoryservice.WMSOutputType createWorkflow(workflowmanagementfactoryservice.WMSInputType wMSInputElement) throws RemoteException, gov.nih.nci.cagrid.workflow.factory.stubs.types.WorkflowException {
 
 	  TavernaWorkflowServiceImplResourceHome home = null;
 		ResourceKey key = null;

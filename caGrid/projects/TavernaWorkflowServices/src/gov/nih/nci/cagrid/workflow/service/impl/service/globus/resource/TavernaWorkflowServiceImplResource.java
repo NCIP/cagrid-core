@@ -22,10 +22,16 @@ import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 import java.util.zip.ZipOutputStream;
 
+import gov.nih.nci.cagrid.common.FaultHelper;
 import gov.nih.nci.cagrid.common.Utils;
 import gov.nih.nci.cagrid.common.security.ProxyUtil;
+import gov.nih.nci.cagrid.introduce.servicetools.security.SecurityUtils;
 import gov.nih.nci.cagrid.workflow.factory.service.TavernaWorkflowServiceConfiguration;
+import gov.nih.nci.cagrid.workflow.service.impl.stubs.types.CannotSetCredential;
+//import org.globus.wsrf.security.SecurityManager;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.cagrid.gaards.cds.client.DelegatedCredentialUserClient;
 import org.cagrid.gaards.cds.delegated.stubs.types.DelegatedCredentialReference;
 import org.cagrid.transfer.context.service.globus.resource.TransferServiceContextResource;
@@ -34,6 +40,7 @@ import org.cagrid.transfer.context.service.helper.TransferServiceHelper;
 import org.cagrid.transfer.context.stubs.types.TransferServiceContextReference;
 import org.cagrid.transfer.descriptor.DataDescriptor;
 import org.globus.gsi.GlobusCredential;
+import org.globus.gsi.GlobusCredentialException;
 import org.globus.wsrf.ResourceException;
 
 import workflowmanagementfactoryservice.StartInputType;
@@ -53,6 +60,7 @@ import workflowmanagementfactoryservice.WorkflowStatusType;
 
 public class TavernaWorkflowServiceImplResource extends TavernaWorkflowServiceImplResourceBase {
 
+    private static Log LOG = LogFactory.getLog(TavernaWorkflowServiceImplResource.class);
 	private String scuflDoc = null;
 	private WorkflowPortType[] outputDoc = null;
 	private WorkflowPortType[] inputDoc = null;
@@ -254,6 +262,7 @@ public class TavernaWorkflowServiceImplResource extends TavernaWorkflowServiceIm
 					System.out.println("Setting TWS_USER_PROXY");
 					environment.put("TWS_USER_PROXY", getTWS_USER_PROXY());
 				}
+				System.out.println("TWS_USER_PROXY=" + environment.get("TWS_USER_PROXY"));
 
 				Process process;
 				process = builder.start();
@@ -500,26 +509,15 @@ public class TavernaWorkflowServiceImplResource extends TavernaWorkflowServiceIm
 
 	
 	public void setDelegatedCredential(DelegatedCredentialReference delegatedCredentialReference) throws RemoteException, gov.nih.nci.cagrid.workflow.service.impl.stubs.types.CannotSetCredential {
-		// The default credential of the user on the service side that is currently logged in.
-		//GlobusCredential credential = ProxyUtil.getDefaultProxy();
 		
 		try {
-			GlobusCredential credential = new GlobusCredential("/Users/sulakhe/.cagrid/certificates/Sulakhe-2.local-cert.pem", "/Users/sulakhe/.cagrid/certificates/Sulakhe-2.local-key.pem");		
-
-			//DelegatedCredentialUserClient client;
-			//client = new DelegatedCredentialUserClient(delegatedCredentialReference, credential);
-
-			DelegatedCredentialUserClient client;
-				client = new DelegatedCredentialUserClient(delegatedCredentialReference);
-
-
-			// The get credential method obtains a signed delegated credential from the CDS.
-			GlobusCredential delegatedCredential;
-
-			delegatedCredential = client.getDelegatedCredential();
+			
+			GlobusCredential delegatedCredential = 
+				validateAndRetrieveDelegatedCredential(delegatedCredentialReference);
+	        
 			//Save the delegated credential in a custom location.
 			String proxyPath = this.getTempDir() + File.separator + "delegatedProxy";
-			System.out.println("ProxyPath : " + proxyPath);
+			LOG.info("ProxyPath : " + proxyPath);
 			ProxyUtil.saveProxy(delegatedCredential, proxyPath);
 			
 			//Sets the TWS_USER_PROXY variable that indicates a user has delegated his proxy.
@@ -528,8 +526,69 @@ public class TavernaWorkflowServiceImplResource extends TavernaWorkflowServiceIm
 			e.printStackTrace();
 			throw new RemoteException("Error: Failed to setup the Delegated Credential on the Server.");
 		}
-		
+				
 	}
+	
+    private synchronized GlobusCredential validateAndRetrieveDelegatedCredential(DelegatedCredentialReference reference) throws GlobusCredentialException, RemoteException {
+        // get the caller's ID
+        String callerID = null;
+        try {
+            callerID = SecurityUtils.getCallerIdentity();
+        } catch (Exception ex) {
+            LOG.error("Error obtaining caller identity: " + ex.getMessage(), ex);
+            FaultHelper helper = new FaultHelper(new CannotSetCredential());
+            helper.addDescription("Error obtaining caller identity");
+            helper.addDescription(ex.getMessage());
+            helper.addFaultCause(ex);
+            throw (CannotSetCredential) helper.getFault();
+        }
+        if (callerID == null) {
+            // no null IDs with delegated credentials!
+            FaultHelper helper = new FaultHelper(new CannotSetCredential());
+            helper.setDescription("Caller identity found to be null while using a delegated credential!");
+            throw (RemoteException) helper.getFault();
+        }
+
+
+        GlobusCredential clientCredential = getDelegatedCredential(reference);
+        // validate the caller's ID is the same as the credential they've delegated
+        boolean valid = clientCredential.getIdentity().equals(callerID);
+        if (!valid) {
+            FaultHelper helper = new FaultHelper(new CannotSetCredential());
+            helper.addDescription("Caller's identity and delegated credential identity did not match");
+            throw (CannotSetCredential) helper.getFault();
+        }
+        return clientCredential;
+    }
+    
+    private GlobusCredential getDelegatedCredential(DelegatedCredentialReference reference) throws CannotSetCredential {
+        
+
+    	GlobusCredential userCredential = null;
+        LOG.info("Retrieving delegated credential");
+        try {
+            GlobusCredential credential = new GlobusCredential(
+            		"/Users/sulakhe/.cagrid/certificates/Sulakhe-2.local-cert.pem", 
+            		"/Users/sulakhe/.cagrid/certificates/Sulakhe-2.local-key.pem");
+    		DelegatedCredentialUserClient credentialClient =
+    			new DelegatedCredentialUserClient(reference, credential);        	
+        	
+//            DelegatedCredentialUserClient credentialClient = 
+//                new DelegatedCredentialUserClient(reference);
+            userCredential = credentialClient.getDelegatedCredential();
+        } catch (Exception ex) {
+            String message = "Error obtaining delegated credential from CDS";
+            LOG.error(message, ex);
+            FaultHelper helper = new FaultHelper(new CannotSetCredential());
+            helper.addDescription(message);
+            helper.addDescription(ex.getMessage());
+            helper.addFaultCause(ex);
+            throw (CannotSetCredential) helper.getFault();
+        }
+        return userCredential;
+    }
+    
+
 
 	/*
 	 * This operation is called by the client to upload large files using catransfer.

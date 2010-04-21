@@ -310,34 +310,46 @@
      <ns18:Exceptions>
       <ns18:Exception description="Unable to get or set the client's delegated credential" name="CannotSetCredential" qname="ns47:CannotSetCredential" xmlns:ns47="http://service.workflow.cagrid.nci.nih.gov/TavernaWorkflowService/ServiceImpl/types"/>
      </ns18:Exceptions>
+     <ns48:MethodSecurity xsi:type="ns48:MethodSecurity" xmlns:ns48="gme://gov.nih.nci.cagrid.introduce/1/Security">
+      <ns48:SecuritySetting xsi:type="ns48:SecuritySetting">Custom</ns48:SecuritySetting>
+      <ns48:TransportLevelSecurity xsi:type="ns48:TransportLevelSecurity">
+       <ns48:CommunicationMethod xsi:type="ns48:CommunicationMethod">Privacy</ns48:CommunicationMethod>
+      </ns48:TransportLevelSecurity>
+      <ns48:RunAsMode xsi:type="ns48:RunAsMode">System</ns48:RunAsMode>
+      <ns48:AnonymousClients xsi:type="ns48:AnonymousCommunication">No</ns48:AnonymousClients>
+      <ns48:MethodAuthorization xsi:type="ns48:MethodAuthorization">
+       <ns48:InheritServiceAuthorization xsi:type="ns48:InheritServiceAuthorization"/>
+      </ns48:MethodAuthorization>
+     </ns48:MethodSecurity>
+     <ns49:Extensions xsi:type="ns49:ExtensionsType" xmlns:ns49="gme://gov.nih.nci.cagrid.introduce/1/Extension"/>
     </ns18:Method>
     <ns18:Method description="Uses caTransfer service to transfer large dataset to the Workflow Service." isImported="false" isProvided="false" name="putInputData" xsi:type="ns18:MethodType">
      <ns18:Inputs>
       <ns18:Input qName="xsd:string" description="name of the file that the client wants to upload." isArray="false" name="filename" xmlns:xsd="http://www.w3.org/2001/XMLSchema"/>
      </ns18:Inputs>
-     <ns18:Output qName="ns48:TransferServiceContextReference" description="" isArray="false" xmlns:ns48="http://transfer.cagrid.org/TransferService/Context/types"/>
+     <ns18:Output qName="ns50:TransferServiceContextReference" description="" isArray="false" xmlns:ns50="http://transfer.cagrid.org/TransferService/Context/types"/>
      <ns18:Exceptions/>
     </ns18:Method>
     <ns18:Method description="Uses caTransfer to transfer the output back to the client.  Used for large files." isImported="false" isProvided="false" name="getOutputData" xsi:type="ns18:MethodType">
      <ns18:Inputs/>
-     <ns18:Output qName="ns49:TransferServiceContextReference" description="" isArray="false" xmlns:ns49="http://transfer.cagrid.org/TransferService/Context/types"/>
+     <ns18:Output qName="ns51:TransferServiceContextReference" description="" isArray="false" xmlns:ns51="http://transfer.cagrid.org/TransferService/Context/types"/>
      <ns18:Exceptions/>
     </ns18:Method>
     <ns18:Method description="starts the workflow" isImported="false" isProvided="false" name="startWorkflow" xsi:type="ns18:MethodType">
      <ns18:Inputs>
-      <ns18:Input qName="ns50:StartInputElement" description="" isArray="false" name="startInputElement" xmlns:ns50="http://types.workflow.cagrid.nci.nih.gov/WorkflowManagementFactoryService"/>
+      <ns18:Input qName="ns52:StartInputElement" description="" isArray="false" name="startInputElement" xmlns:ns52="http://types.workflow.cagrid.nci.nih.gov/WorkflowManagementFactoryService"/>
      </ns18:Inputs>
-     <ns18:Output qName="ns51:WorkflowStatusElement" description="" isArray="false" xmlns:ns51="http://types.workflow.cagrid.nci.nih.gov/WorkflowManagementFactoryService"/>
+     <ns18:Output qName="ns53:WorkflowStatusElement" description="" isArray="false" xmlns:ns53="http://types.workflow.cagrid.nci.nih.gov/WorkflowManagementFactoryService"/>
      <ns18:Exceptions>
-      <ns18:Exception description="" name="CannotStartWorkflowFault" qname="ns52:CannotStartWorkflowFault" xmlns:ns52="http://service.workflow.cagrid.nci.nih.gov/TavernaWorkflowService/ServiceImpl/types"/>
+      <ns18:Exception description="" name="CannotStartWorkflowFault" qname="ns54:CannotStartWorkflowFault" xmlns:ns54="http://service.workflow.cagrid.nci.nih.gov/TavernaWorkflowService/ServiceImpl/types"/>
      </ns18:Exceptions>
     </ns18:Method>
    </ns18:Methods>
-   <ns53:ResourcePropertiesList xsi:type="ns53:ResourcePropertiesListType" xmlns:ns53="gme://gov.nih.nci.cagrid.introduce/1/Resources">
-    <ns53:ResourceProperty qName="ns54:CurrentTime" description="" populateFromFile="false" register="false" xsi:type="ns53:ResourcePropertyType" xmlns:ns54="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ResourceLifetime-1.2-draft-01.xsd"/>
-    <ns53:ResourceProperty qName="ns55:TerminationTime" description="" populateFromFile="false" register="false" xsi:type="ns53:ResourcePropertyType" xmlns:ns55="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ResourceLifetime-1.2-draft-01.xsd"/>
-    <ns53:ResourceProperty qName="ns56:WorkflowStatusElement" description="" fileLocation="TavernaWorkflowServiceImpl_workflowStatusElement.xml" populateFromFile="false" register="false" xsi:type="ns53:ResourcePropertyType" xmlns:ns56="http://types.workflow.cagrid.nci.nih.gov/WorkflowManagementFactoryService"/>
-   </ns53:ResourcePropertiesList>
+   <ns55:ResourcePropertiesList xsi:type="ns55:ResourcePropertiesListType" xmlns:ns55="gme://gov.nih.nci.cagrid.introduce/1/Resources">
+    <ns55:ResourceProperty qName="ns56:CurrentTime" description="" populateFromFile="false" register="false" xsi:type="ns55:ResourcePropertyType" xmlns:ns56="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ResourceLifetime-1.2-draft-01.xsd"/>
+    <ns55:ResourceProperty qName="ns57:TerminationTime" description="" populateFromFile="false" register="false" xsi:type="ns55:ResourcePropertyType" xmlns:ns57="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ResourceLifetime-1.2-draft-01.xsd"/>
+    <ns55:ResourceProperty qName="ns58:WorkflowStatusElement" description="" fileLocation="TavernaWorkflowServiceImpl_workflowStatusElement.xml" populateFromFile="false" register="false" xsi:type="ns55:ResourcePropertyType" xmlns:ns58="http://types.workflow.cagrid.nci.nih.gov/WorkflowManagementFactoryService"/>
+   </ns55:ResourcePropertiesList>
    <ns3:description xsi:type="xsd:string" xmlns:xsd="http://www.w3.org/2001/XMLSchema"></ns3:description>
    <ns3:ResourceFrameworkOptions xsi:type="ns3:ResourceFrameworkOptions">
     <ns3:Lifetime xsi:type="ns3:Lifetime"/>
@@ -348,12 +360,12 @@
    </ns3:ResourceFrameworkOptions>
   </ns3:Service>
  </ns3:Services>
- <ns57:Extensions xsi:type="ns57:ExtensionsType" xmlns:ns57="gme://gov.nih.nci.cagrid.introduce/1/Extension" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
-  <ns57:Extension name="cagrid_metadata" version="1.4" xsi:type="ns57:ExtensionType"/>
-  <ns57:Extension name="caGrid_Transfer" version="1.4" xsi:type="ns57:ExtensionType"/>
- </ns57:Extensions>
- <ns58:ServiceProperties xmlns:ns58="gme://gov.nih.nci.cagrid.introduce/1/Property">
-  <ns58:Property description="This points to the Taverna repository." isFromETC="false" key="baseRepositoryDir" value="$home/Library/Application Support/Taverna-1.7.1/repository/"/>
-  <ns58:Property description="This points to the Taverna installation directory containing a lib directory within. This will be used to add the classpath variable for ProcessBuilder to launch the workflow." isFromETC="false" key="tavernaDir" value="null"/>
- </ns58:ServiceProperties>
+ <ns59:Extensions xsi:type="ns59:ExtensionsType" xmlns:ns59="gme://gov.nih.nci.cagrid.introduce/1/Extension" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <ns59:Extension name="cagrid_metadata" version="1.4" xsi:type="ns59:ExtensionType"/>
+  <ns59:Extension name="caGrid_Transfer" version="1.4" xsi:type="ns59:ExtensionType"/>
+ </ns59:Extensions>
+ <ns60:ServiceProperties xmlns:ns60="gme://gov.nih.nci.cagrid.introduce/1/Property">
+  <ns60:Property description="This points to the Taverna repository." isFromETC="false" key="baseRepositoryDir" value="$home/Library/Application Support/Taverna-1.7.1/repository/"/>
+  <ns60:Property description="This points to the Taverna installation directory containing a lib directory within. This will be used to add the classpath variable for ProcessBuilder to launch the workflow." isFromETC="false" key="tavernaDir" value="null"/>
+ </ns60:ServiceProperties>
 </ns1:ServiceDescription>

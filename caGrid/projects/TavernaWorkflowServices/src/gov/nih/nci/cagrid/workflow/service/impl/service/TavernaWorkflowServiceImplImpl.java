@@ -126,6 +126,5 @@ public class TavernaWorkflowServiceImplImpl extends TavernaWorkflowServiceImplIm
 
 	}
 
-
 }
 
