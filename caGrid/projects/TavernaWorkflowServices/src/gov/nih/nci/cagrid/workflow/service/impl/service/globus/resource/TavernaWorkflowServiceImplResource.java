@@ -567,14 +567,14 @@ public class TavernaWorkflowServiceImplResource extends TavernaWorkflowServiceIm
     	GlobusCredential userCredential = null;
         LOG.info("Retrieving delegated credential");
         try {
-            GlobusCredential credential = new GlobusCredential(
+           /* GlobusCredential credential = new GlobusCredential(
             		"/Users/sulakhe/.cagrid/certificates/Sulakhe-2.local-cert.pem", 
             		"/Users/sulakhe/.cagrid/certificates/Sulakhe-2.local-key.pem");
     		DelegatedCredentialUserClient credentialClient =
     			new DelegatedCredentialUserClient(reference, credential);        	
-        	
-//            DelegatedCredentialUserClient credentialClient = 
-//                new DelegatedCredentialUserClient(reference);
+        	*/
+            DelegatedCredentialUserClient credentialClient = 
+                new DelegatedCredentialUserClient(reference);
             userCredential = credentialClient.getDelegatedCredential();
         } catch (Exception ex) {
             String message = "Error obtaining delegated credential from CDS";
