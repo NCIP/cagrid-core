@@ -35,7 +35,7 @@ public class MyMasterPasswordProvider implements CredentialProviderSPI {
 	}
 
 	public String getMasterPassword(boolean arg0) {
-		return "somePass";
+		return "somePas";
 	}
 
 	public int getProviderPriority() {
