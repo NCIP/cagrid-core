@@ -152,13 +152,18 @@ TavernaWorkflowServiceClientBase implements TavernaWorkflowServiceI {
 	 * @throws CannotSetCredential, MalformedURIException
 	 */
 
-	public static void setDelegatedCredential(EndpointReferenceType epr, DelegatedCredentialReference ref) throws MalformedURIException, RemoteException, CannotSetCredential
+	public static void setDelegatedCredential(EndpointReferenceType epr, DelegatedCredentialReference ref, GlobusCredential credential) throws MalformedURIException, RemoteException, CannotSetCredential
 	{
-		TavernaWorkflowServiceImplClient serviceClient = new TavernaWorkflowServiceImplClient(epr);
+		TavernaWorkflowServiceImplClient serviceClient = new TavernaWorkflowServiceImplClient(epr, credential);
 		//This will force the client to send its credentials (to verify if it is the same credential
 		// that has been delegated.
 		//serviceClient.setAnonymousPrefered(false);
 		serviceClient.setDelegatedCredential(ref);
+	}
+
+	public static void setDelegatedCredential(EndpointReferenceType epr, DelegatedCredentialReference ref) throws MalformedURIException, RemoteException, CannotSetCredential
+	{
+		setDelegatedCredential(epr, ref, null);
 	}
 
 	
@@ -319,7 +324,7 @@ TavernaWorkflowServiceClientBase implements TavernaWorkflowServiceI {
 		return credential;
 	}
 
-	public static TransferServiceContextReference putInputDataHelper(EndpointReferenceType epr, String location) throws Exception {
+	public static TransferServiceContextReference putInputDataHelper(EndpointReferenceType epr, String location, GlobusCredential credential) throws Exception {
 
 		TavernaWorkflowServiceImplClient serviceClient = new TavernaWorkflowServiceImplClient(epr);
 		TransferServiceContextReference ref = serviceClient.putInputData(new File (location).getName());
@@ -335,14 +340,18 @@ TavernaWorkflowServiceClientBase implements TavernaWorkflowServiceI {
 		File file = new File(location);
 		long size = file.length();
 		isFile = new BufferedInputStream(new FileInputStream(file));
-		TransferClientHelper.putData(isFile, size, tclient1.getDataTransferDescriptor());
+		TransferClientHelper.putData(isFile, size, tclient1.getDataTransferDescriptor(), credential);
 
 		// tell the resource that the data has been uploaded.
 		tclient1.setStatus(Status.Staged);
 		return ref;
 	}
-
-	public static File getOutputDataHelper(EndpointReferenceType epr) throws MalformedURIException, RemoteException, IOException, Exception {
+	
+	public static TransferServiceContextReference putInputDataHelper(EndpointReferenceType epr, String location) throws Exception {
+		return putInputDataHelper(epr, location, null);
+	}
+	
+	public static File getOutputDataHelper(EndpointReferenceType epr, GlobusCredential credential) throws MalformedURIException, RemoteException, IOException, Exception {
 		TavernaWorkflowServiceImplClient serviceClient = new TavernaWorkflowServiceImplClient(epr);
 		TransferServiceContextReference ref = serviceClient.getOutputData();
 		TransferServiceContextClient tclient = new TransferServiceContextClient(ref.getEndpointReference());
@@ -352,7 +361,7 @@ TavernaWorkflowServiceClientBase implements TavernaWorkflowServiceI {
 		File outputFile = new File(fileName);
 
 		//Get the data from the caTransfer service context using the Helper class.
-		InputStream stream = TransferClientHelper.getData(tclient.getDataTransferDescriptor());
+		InputStream stream = TransferClientHelper.getData(tclient.getDataTransferDescriptor(), credential);
 
 		FileOutputStream fileoutputstream = new FileOutputStream(outputFile);
 		int n;
@@ -363,7 +372,10 @@ TavernaWorkflowServiceClientBase implements TavernaWorkflowServiceI {
 		fileoutputstream.close(); 
 		return outputFile;
 	}
-
+	
+	public static File getOutputDataHelper(EndpointReferenceType epr) throws MalformedURIException, RemoteException, IOException, Exception {
+		return getOutputDataHelper(epr, null);
+	}
 	public static void writeEprToFile(EndpointReferenceType epr,
 			String workflowName) throws Exception {
 		FileWriter writer = null;
