@@ -59,8 +59,8 @@ public class TavernaWorkflowServiceClientMain {
 			String workflowName = "Test";
 			String url = "https://bridled.ci.uchicago.edu:5000/wsrf/services/cagrid/TavernaWorkflowService";					
 			//String scuflDoc = System.getProperty("user.dir") + "/secure-hellodina.t2flow";
-			String scuflDoc = "/Users/sulakhe/Desktop/caintgrator2-folder/cms-transfer-broadinstitute.org.t2flow";	
-			//String scuflDoc = "/Users/sulakhe/Desktop/caintgrator2-folder/testingTransferWithNoInputs.t2flow";
+			//String scuflDoc = "/Users/sulakhe/Desktop/caintgrator2-folder/cms-transfer-broadinstitute.org.t2flow";	
+			String scuflDoc = "/Users/sulakhe/Desktop/caintgrator2-folder/testingTransferWithNoInputs.t2flow";
 			GlobusCredential credential = new GlobusCredential("/tmp/x509up_u501");
 			
 			
@@ -82,10 +82,10 @@ public class TavernaWorkflowServiceClientMain {
 
 			//************************************************************************// 
 			// 2. Testing caTransfer.
-			String location = "/Users/sulakhe/Desktop/caintgrator2-folder/cms_test.cls";
-			TransferServiceContextReference ref1 = TavernaWorkflowServiceClient.putInputDataHelper(resourceEPR, location, credential);
-			location = "/Users/sulakhe/Desktop/caintgrator2-folder/cms_test.gct";
-			TransferServiceContextReference ref2 = TavernaWorkflowServiceClient.putInputDataHelper(resourceEPR, location, credential);
+//			String location = "/Users/sulakhe/Desktop/caintgrator2-folder/cms_test.cls";
+//			TransferServiceContextReference ref1 = TavernaWorkflowServiceClient.putInputDataHelper(resourceEPR, location, credential);
+//			location = "/Users/sulakhe/Desktop/caintgrator2-folder/cms_test.gct";
+//			TransferServiceContextReference ref2 = TavernaWorkflowServiceClient.putInputDataHelper(resourceEPR, location, credential);
 
 
 			//File outFile = TavernaWorkflowServiceClient.getOutputDataHelper(resourceEPR);
@@ -108,12 +108,12 @@ public class TavernaWorkflowServiceClientMain {
 			WorkflowPortType [] inputArgs = {
 					//new WorkflowPortType("fish", "Hello"),
 					//new WorkflowPortType("soup", "Saina")
-						new WorkflowPortType("clsFileName", "cms_test.cls"),
-						new WorkflowPortType("cmsResultFileName", "CMSResult.zip"),
-						new WorkflowPortType("gctFileName", "cms_test.gct"),
-						new WorkflowPortType("workingDir", "some-working-dir")
-					//new WorkflowPortType("fileName", "myOwnOutput.txt"),
-					//new WorkflowPortType("workingDir", "some-working-dir")
+//						new WorkflowPortType("clsFileName", "cms_test.cls"),
+//						new WorkflowPortType("cmsResultFileName", "CMSResult.zip"),
+//						new WorkflowPortType("gctFileName", "cms_test.gct"),
+//						new WorkflowPortType("workingDir", "some-working-dir")
+					new WorkflowPortType("fileName", "myOwnOutput.txt"),
+					new WorkflowPortType("workingDir", "some-working-dir")
 
 			};
 			
@@ -203,7 +203,7 @@ public class TavernaWorkflowServiceClientMain {
 
 			//EndpointReferenceType eprt = TavernaWorkflowServiceClient.readEprFromFile("Test.epr");
 			System.out.println(TavernaWorkflowServiceClient.getStatus(resourceEPR));
-			File outFile = TavernaWorkflowServiceClient.getOutputDataHelper(resourceEPR, credential);
+			File outFile = TavernaWorkflowServiceClient.getOutputDataHelper(resourceEPR, credential, "/Users/sulakhe/Desktop");
 
 			System.out.println(outFile.getAbsolutePath());
 
