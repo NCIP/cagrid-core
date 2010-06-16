@@ -71,14 +71,16 @@ public abstract class BaseSerializedObjectIterator implements EnumIterator {
     protected static void writeOutObjects(Iterator objIter, QName name, String filename, StringBuffer wsddContents)
         throws Exception {
         BufferedWriter fileWriter = new BufferedWriter(new FileWriter(filename));
-        byte[] configBytes = null;
+        ByteArrayInputStream wsddStream = null;
         if (wsddContents != null) {
-            configBytes = wsddContents.toString().getBytes();
+            byte[] configBytes = wsddContents.toString().getBytes();
+            wsddStream = new ByteArrayInputStream(configBytes);
         }
         while (objIter.hasNext()) {
             StringWriter writer = new StringWriter();
-            if (configBytes != null) {
-                Utils.serializeObject(objIter.next(), name, writer, new ByteArrayInputStream(configBytes));
+            if (wsddStream != null) {
+                wsddStream.reset();
+                Utils.serializeObject(objIter.next(), name, writer, wsddStream);
             } else {
                 Utils.serializeObject(objIter.next(), name, writer);
             }
