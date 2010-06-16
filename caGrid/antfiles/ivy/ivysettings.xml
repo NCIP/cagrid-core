@@ -6,7 +6,9 @@
     The cache was correct, but it was not copying artifacts to projects if the previous date was newer than the new date
     It should retrieve the necessary version regardless of the date... not sure why it does that.   
   -->
-  <caches checkUpToDate="false" defaultCacheDir="${user.dir}/.cache" useOrigin="true"/>
+  <caches checkUpToDate="false" defaultCacheDir="${user.dir}/.cache" useOrigin="true">
+   <cache name="remote" basedir="${user.dir}/.cache-remote" useOrigin="false" />
+  </caches>
 
   <macrodef name="cagrid-fs-resolver">
     <attribute name="repo.dir"/>
@@ -20,8 +22,18 @@
     <chain name="caGrid-ivy-resolver" returnFirst="true">
       <!-- First, try developer's local integration repository-->
       <cagrid-fs-resolver repo.dir="${integration.repository.dir}" name="caGrid-local"/>
+
       <!-- Then, use the external repository -->
       <cagrid-fs-resolver repo.dir="${repository.dir}" name="caGrid-external"/>
+
+      <!-- And finally, the CBIIT BDA / commonlibrary repository -->
+      <url name="remote-cbiit-bda-commonlibrary-resolver" cache="remote">
+	<ivy pattern="http://gforge.nci.nih.gov/svnroot/commonlibrary/trunk/ivy-repo/[organisation]/[module]/[revision]/ivy.xml"/>
+	<artifact
+	   pattern="http://gforge.nci.nih.gov/svnroot/commonlibrary/trunk/ivy-repo/[organisation]/[module]/[revision]/[artifact]-[revision].[ext]"/>
+	<artifact
+	   pattern="http://gforge.nci.nih.gov/svnroot/commonlibrary/trunk/ivy-repo/[organisation]/[module]/[revision]/[artifact].[ext]"/>
+      </url>
     </chain>
   </resolvers>
 </ivysettings>
