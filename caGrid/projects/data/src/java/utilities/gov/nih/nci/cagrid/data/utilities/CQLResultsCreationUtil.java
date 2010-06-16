@@ -76,10 +76,10 @@ public class CQLResultsCreationUtil {
 	public static CQLQueryResults createAttributeResults(List attribArrays, String targetClassname, String[] attribNames) {
 		CQLQueryResults results = new CQLQueryResults();
 		results.setTargetClassname(targetClassname);
-		CQLAttributeResult[] attribResults = new CQLAttributeResult[attribArrays.size()];
-		for (int i = 0; i < attribArrays.size(); i++) {
+		List<CQLAttributeResult> attribResults = new ArrayList<CQLAttributeResult>();
+		for (Iterator iter = attribArrays.iterator(); iter.hasNext();) {
 			TargetAttribute[] attribs = new TargetAttribute[attribNames.length];
-			Object valueArray = attribArrays.get(i);
+			Object valueArray = iter.next();
 			String[] attribValues = new String[attribNames.length];
 			if (valueArray == null) {
 				Arrays.fill(attribValues, null);
@@ -95,9 +95,11 @@ public class CQLResultsCreationUtil {
 			for (int j = 0; j < attribNames.length; j++) {
 				attribs[j] = new TargetAttribute(attribNames[j], attribValues[j]);
 			}
-			attribResults[i] = new CQLAttributeResult(attribs);
+			attribResults.add(new CQLAttributeResult(attribs));
 		}
-		results.setAttributeResult(attribResults);
+		CQLAttributeResult[] attribResultArray = new CQLAttributeResult[attribResults.size()];
+		attribResults.toArray(attribResultArray);
+		results.setAttributeResult(attribResultArray);
 		return results;
 	}
 	
