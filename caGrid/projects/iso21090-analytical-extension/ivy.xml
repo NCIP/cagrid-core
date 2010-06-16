@@ -1,0 +1,49 @@
+<?xml version="1.0"?>
+
+<ivy-module version="2.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:noNamespaceSchemaLocation="http://incubator.apache.org/ivy/schemas/ivy.xsd">
+
+  <info organisation="caGrid" module="iso21090-analytical-extension" revision="${project.version}">
+    <license name="caGrid" url="http://cagrid.org/wiki/CaGrid:LICENSE-1.3" />
+    <description>Introduce Extensions for using the iso21090 datatypes</description>
+  </info>
+
+  <configurations>
+    <!-- Private Configurations-->
+    <conf name="target_grid" visibility="private" />
+
+    <conf name="impl" visibility="private" extends="default" />
+    <conf name="impl-test" visibility="private" />
+
+    <!-- Public Configurations-->
+
+    <conf name="default" visibility="public" description="minimal" />
+    <conf name="test" visibility="public" extends="default,impl-test" />
+  </configurations>
+
+
+  <publications>
+    <artifact name="caGrid-${ivy.module}" conf="default" type="jar" />
+    <artifact name="caGrid-${ivy.module}-tests" conf="test" type="jar" />
+  </publications>
+
+  <dependencies>
+
+    <!-- Standard caGrid Service Dependencies -->
+    <dependency rev="latest.integration" org="caGrid" name="core"
+      conf="default->default;impl-test->test" />
+
+    <!-- Specific caGrid Service Dependencies -->
+    <dependency rev="latest.integration" org="caGrid" name="introduce" conf="default->ui" />
+    
+    <!-- jaxb from NCICB's BDA repo -->
+    <dependency org="javax.xml.bind" name="jaxb-api" rev="2.1" conf="default->*"/>
+	<dependency org="javax.xml.bind" name="jaxb-impl" rev="2.1.4" conf="default->*"/>
+	<dependency org="javax.activation" name="activation" rev="1.1" conf="default->*"/>
+    
+    <!-- dependency on the ISO data types -->
+    <dependency rev="2.1" org="ncicb" name="iso-datatypes" conf="default->default" transitive="false"/>
+    <dependency rev="2.1" org="ncicb" name="iso-datatypes-extensions" conf="default->default,standards-xsd" transitive="false"/>
+    
+  </dependencies>
+</ivy-module>

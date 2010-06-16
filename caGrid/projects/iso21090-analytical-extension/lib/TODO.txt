@@ -1,0 +1,1 @@
+Figure out where the jsr jar comes from and Ivy-ify that dependency.
