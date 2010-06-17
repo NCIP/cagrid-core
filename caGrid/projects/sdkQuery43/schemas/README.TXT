@@ -1,0 +1,1 @@
+Copied from ISO 21090 common project because it doesn't publish XSDs via Ivy... yet

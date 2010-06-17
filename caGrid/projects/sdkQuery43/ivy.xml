@@ -1,0 +1,51 @@
+<?xml version="1.0"?>
+
+<ivy-module version="2.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:noNamespaceSchemaLocation="http://incubator.apache.org/ivy/schemas/ivy.xsd">
+
+  <info organisation="caGrid" module="sdkQuery43" revision="${project.version}">
+    <license name="caGrid" url="http://cagrid.org/wiki/CaGrid:LICENSE-1.3" />
+    <description>CQL query processor for caCORE SDK version 4.3 using the iso21090 datatypes</description>
+  </info>
+
+  <configurations>
+    <!-- Private Configurations-->
+    <conf name="impl" visibility="private" extends="translator,queryProcessor,style" />
+    
+    <!-- Public Configurations-->
+    <conf name="translator" visibility="public"/>
+    <conf name="queryProcessor" visibility="public" extends="translator" />
+    <conf name="style" visibility="public" extends="queryProcessor,translator"/>
+  </configurations>
+
+
+  <publications>
+    <artifact name="caGrid-${ivy.module}-translator" conf="translator" type="jar" />
+    <artifact name="caGrid-${ivy.module}-processor" conf="queryProcessor" type="jar" />
+    <artifact name="caGrid-${ivy.module}-style" conf="style" type="jar" />
+  </publications>
+
+
+  <dependencies>
+  	<!--  caGrid dependencies -->
+    <dependency rev="latest.integration" org="caGrid" name="core"
+      conf="translator->default" />
+    <dependency rev="latest.integration" org="caGrid" name="cql" conf="translator->cql"/>
+    <dependency rev="latest.integration" org="caGrid" name="data" conf="queryProcessor->processors,utils,tools,service"/>
+    <dependency rev="latest.integration" org="caGrid" name="dataExtensions" conf="style->styleRequirements"/>
+    
+    <!-- depend on the iso21090 domain model tools project -->
+    <dependency org="caGrid" name="iso21090-domain-model-tools" rev="latest.integration" conf="style->default"/>
+    
+    <!-- Third party dependencies -->
+    <!-- using the modified hibernate jar from the SDK
+    <dependency rev="3.2.0.ga" org="hibernate" name="hibernate" conf="translator->*"/>
+     -->
+    <dependency rev="1.1" org="apache" name="commons-logging" conf="translator->*"/>
+    <dependency org="javax.xml.bind" name="jaxb-api" rev="2.1" conf="translator->*"/>
+    <dependency org="javax.xml.bind" name="jaxb-impl" rev="2.1.4" conf="translator->*"/>
+    <dependency org="javax.xml.bind" name="jaxb-xjc" rev="2.1.4" conf="translator->*"/>
+    <dependency rev="3.2" org="apache" name="commons-collections" conf="translator->default" />
+    <dependency rev="2.0.0" org="jgoodies" name="validation" conf="style->default"/>
+  </dependencies>
+</ivy-module>
