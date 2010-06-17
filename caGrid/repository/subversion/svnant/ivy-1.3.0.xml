@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<ivy-module version="2.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://incubator.apache.org/ivy/schemas/ivy.xsd">
+
+  <info organisation="subversion" module="svnant" revision="1.3.0">
+    <license name="Apache" url="http://www.apache.org/licenses/LICENSE-2.0.txt"/>
+    <description>Ant task plugin for SVN</description>
+  </info>
+
+  <configurations>
+    <!-- Public Configurations-->
+    <conf name="default" visibility="public" description="default tools"/>
+  </configurations>
+
+
+  <publications>
+    <artifact name="ganymed" conf="default" type="jar"/>
+    <artifact name="svnClientAdapter" conf="default" type="jar"/>
+    <artifact name="svnant" conf="default" type="jar"/>
+    <artifact name="svnjavahl" conf="default" type="jar"/>
+    <artifact name="svnkit" conf="default" type="jar"/>
+  </publications>
+
+</ivy-module>
