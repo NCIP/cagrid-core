@@ -1,0 +1,158 @@
+<project name="caGrid-sdk43_data_tests_harness" basedir=".">
+
+	<property name="junit.results.dir" location="${test.dir}/logs" />
+	<property name="testing.port.assignment.mode" value="true"/>
+	<property name="testing.containers.dir" location="${ext.dir}/dependencies/test/zips"/>
+	<property name="sdk.checkout.dir" value="sdk/checkout"/>
+	<property name="sdk.temp.dir" location="${basedir}/sdk/temp"/>
+	<property file="${test.dir}/resources/sdk43.test.database.properties"/>
+	
+	<target name="defineSvnantTask" depends="prepare">
+		<typedef resource="org/tigris/subversion/svnant/svnantlib.xml">
+			<classpath>
+				<fileset dir="${svnant.lib.dir}">
+					<include name="*.jar"/>
+				</fileset>
+			</classpath>
+		</typedef>
+	</target>
+	
+
+	<!-- ============================================================== -->
+	<!-- Call any tests.                                                -->
+	<!-- ============================================================== -->
+	<target name="test" depends="unitTests, integrationTests" description="Runs the unit and integration tests"/>
+
+	<target name="unitTests" depends="prepare" description="Runs the project's unit tests.">
+		<echo message="Test results dir: ${junit.results.dir}" />
+		<mkdir dir="${junit.results.dir}" />
+		<junit dir="${basedir}" printsummary="yes" errorproperty="test.failed" failureproperty="test.failed" showoutput="true" forkmode="once">
+			<classpath refid="unit.test.run.classpath" />
+			<sysproperty key="build.dir" value="${classes.dir}" />
+			<jvmarg value="-Xmx512M" />
+			<jvmarg value="-Dbuild.dirs.list=${translator.classes.dir},${processor.classes.dir},${style.classes.dir}" />
+			<formatter type="xml" />
+			<batchtest fork="yes" todir="${junit.results.dir}">
+				<fileset dir="${test.src.dir}">
+					<include name="**/Test*.java" />
+					<include name="**/*TestCase.java" />
+					<exclude name="**/*SystemTests.java"/>
+					<exclude name="**/IsoQueriesTestCase.java"/>
+					<exclude name="**/CQLInvocationTestCase.java"/>
+				</fileset>
+			</batchtest>
+		</junit>
+		<fail message="Tests failed! Check test reports." if="test.failed" />
+	</target>
+
+
+	<target name="integrationTests" depends="createSdkIsoExampleApplication" description="Runs the SDK integration tests">
+		<echo message="Test results dir: ${junit.results.dir}"/>
+		<mkdir dir="${junit.results.dir}"/>
+		<property name="sdk43.tests.base.dir" location="${basedir}"/>
+		<property name="created.sdk.client.dir" value="${sdk.checkout.dir}/sdk-toolkit/iso-example-project/target/dist/exploded/output/isoExample/package/local-client"/>
+		<junit dir="${basedir}" printsummary="yes" errorproperty="test.failed" failureproperty="test.failed" showoutput="true" forkmode="once">
+			<!-- is this needed any more? -->
+			<sysproperty key="introduce.base.dir" value="${introduce.dir}" />
+			<sysproperty key="sdk43.tests.base.dir" value="${sdk43.tests.base.dir}"/>
+			<sysproperty key="sdk.unpack.dir" value="${sdk.checkout.dir}"/>
+			<sysproperty key="testing.port.assignment.mode" value="${testing.port.assignment.mode}"/>
+			<sysproperty key="testing.containers.dir" value="${testing.containers.dir}"/>
+			<classpath refid="integration.test.run.classpath"/>
+			<classpath>
+				<fileset dir="${created.sdk.client.dir}/lib">
+					<include name="*.jar"/>
+				</fileset>
+				<pathelement location="${created.sdk.client.dir}/conf"/>
+			</classpath>
+			<formatter type="xml" />
+			<batchtest fork="yes" todir="${junit.results.dir}">
+				<fileset dir="${test.src.dir}">
+					<include name="**/*SDK43CqlTranslationAndExecutionSystemTests.java" />
+				</fileset>
+			</batchtest>
+		</junit>
+		<!-- delete the SDK dir -->
+		<delete dir="${sdk.checkout.dir}"/>
+		<delete dir="${sdk.temp.dir}"/>
+		<!-- did the tests fail?? -->
+		<fail if="test.failed" message="Tests failed! Check the test reports."/>
+	</target>
+
+
+	<target name="createSdkIsoExampleApplication" depends="prepare, checkOutCacoreFromSvn, sdkDbSetup, modDbPropertiesFileForCagrid10" description="Runs the caCORE SDK to create the ISO example project">
+		<echo message="Test results dir: ${junit.results.dir}"/>
+		<mkdir dir="${junit.results.dir}"/>
+		<mkdir dir="${sdk.temp.dir}"/>
+		<property name="sdk43.tests.base.dir" location="${basedir}"/>
+		<junit dir="${basedir}" printsummary="yes" errorproperty="test.failed" failureproperty="test.failed" showoutput="true" forkmode="once">
+			<!-- is this needed any more? -->
+			<sysproperty key="introduce.base.dir" value="${introduce.dir}" />
+			<sysproperty key="sdk43.tests.base.dir" value="${sdk43.tests.base.dir}"/>
+			<sysproperty key="sdk.unpack.dir" value="${sdk.checkout.dir}"/>
+			<sysproperty key="sdk.temp.dir" value="${sdk.temp.dir}"/>
+			<sysproperty key="testing.port.assignment.mode" value="${testing.port.assignment.mode}"/>
+			<sysproperty key="testing.containers.dir" value="${testing.containers.dir}"/>
+			<classpath refid="unit.test.run.classpath"/>
+			<formatter type="xml" />
+			<batchtest fork="yes" todir="${junit.results.dir}">
+				<fileset dir="${test.src.dir}">
+					<include name="**/*CreateExampleProjectStory.java" />
+				</fileset>
+			</batchtest>
+		</junit>
+		<!-- did the tests fail?? -->
+		<fail if="test.failed" message="Tests failed! Check the test reports."/>
+	</target>
+
+
+	<target name="sdkDbSetup" depends="checkOutCacoreFromSvn" description="Sets up the caCORE SDK 4.3 test database">
+		<property name="db.script.dir" location="${sdk.checkout.dir}/sdk-toolkit/iso-example-project/db/db-install/mysql"/>
+		<sql driver="${db.driver}" url="jdbc:mysql://${db.server}:${db.port}/" userid="${db.username}" password="${db.password}">
+			<classpath refid="test.build.classpath"/>
+			DROP DATABASE IF EXISTS ${db.schema.name};
+			CREATE DATABASE ${db.schema.name};
+		</sql>
+		<sql driver="${db.driver}" url="jdbc:mysql://${db.server}:${db.port}/${db.schema.name}" userid="${db.username}" password="${db.password}">
+			<classpath refid="test.build.classpath"/>
+			<transaction src="${db.script.dir}/SDKTestSchema-mysql.sql"/>
+			<transaction src="${db.script.dir}/SDKTestISOSchema-mysql.sql"/>
+		</sql>
+	</target>
+	
+	
+	<!-- grabs a checkout of the cacore SDK -->
+	<target name="checkOutCacoreFromSvn" depends="defineSvnantTask">
+		<delete dir="${sdk.checkout.dir}"/>
+		<svn>
+			<export srcUrl="${sdk.svn.url}" destPath="${sdk.checkout.dir}"/>
+		</svn>
+	</target>
+	
+	
+	<!-- complete hack, remove once SDK GF #28847 is fixed -->
+	<target name="modDbPropertiesFileForCagrid10" depends="gethostname">
+		<condition property="something" value="3307" else="${db.port}">
+			<equals arg1="${hostname}" arg2="cagrid10.bmi.ohio-state.edu" casesensitive="false"/>
+		</condition>
+		<echo message="${something}"/>
+		<propertyfile file="${test.dir}/resources/sdk43.test.database.properties">
+			<entry key="db.port" value="${something}" operation="="/>
+		</propertyfile>
+	</target>
+
+	
+	<!-- irritating hack to get the hostname -->
+	<target name="gethostname" description="Stores the current machines hostname in a property named 'hostname'">
+		<property environment="env"/>
+		<condition property="hostname" value="${env.HOST}">
+			<os family="unix"/>
+		</condition>
+		<condition property="hostname" value="${env.COMPUTERNAME}">
+			<os family="windows"/>
+		</condition>
+		<!-- what to do on Mac or other os??? -->
+		<echo message="host = ${hostname}"/>
+	</target>
+
+</project>

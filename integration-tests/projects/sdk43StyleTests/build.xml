@@ -1,0 +1,127 @@
+<?xml version="1.0"?>
+<!-- ================================================================= -->
+<!-- caGrid sdkQuery43 build file                       			   -->
+<!-- ================================================================= -->
+
+<project name="caGrid-sdkQuery43" default="all" basedir=".">
+	<!-- Environment -->
+	<property environment="env" />
+	<property file="${basedir}/project.properties" />
+	<property file="${basedir}/build.properties" />
+	<property name="globus.dir" location="${env.GLOBUS_LOCATION}" />
+
+	<!-- Information -->
+	<property name="project.name" value="${ant.project.name}" />
+	<property name="java.source" value="1.5" />
+
+	<property name="build.dir" value="${basedir}/build" />
+	<property name="javadoc.dir" value="${build.dir}/javadoc" />
+	<property name="jar.dir" value="${build.dir}/jars" />
+	<property name="ext.dir" value="${basedir}/ext" />
+	<property name="ext.test.lib.dir" location="${ext.dir}/dependencies/test/jars"/>
+	<property name="svnant.lib.dir" location="${ext.dir}/dependencies/svnant/jars"/>
+	<property name="sdk.client.dir" location="${basedir}/sdk/local-client"/>
+	<property name="sdk.lib.dir" location="${sdk.client.dir}/lib"/>
+	<property name="sdk.conf.dir" location="${sdk.client.dir}/conf"/>
+
+	<!-- testing stuff -->
+	<property name="test.dir" location="${basedir}/test" />
+	<property name="test.src.dir" location="${test.dir}/src" />
+	<property name="test.classes.dir" location="${build.dir}/test/classes" />
+	<property name="test.lib.dir" location="${test.dir}/lib" />
+	<property name="test.logs.dir" location="${test.dir}/logs" />
+	<property name="test.project.jar" location="${jar.dir}/${project.name}-tests-${project.version}.jar" />
+	
+	<!-- style related stuff -->
+	<property name="introduce.dir" location="${basedir}/../../../caGrid/projects/introduce" />
+	
+	<import file="test.xml"/>
+	
+
+	<!-- =============================================================== -->
+	<!-- The Build Classpath                                             -->
+	<!-- =============================================================== -->
+	<path id="build.classpath">
+		<fileset dir="${sdk.lib.dir}">
+			<include name="**/*.jar"/>
+			<exclude name="**/caGrid-*.jar"/>
+		</fileset>
+		<fileset dir="${ext.test.lib.dir}">
+			<include name="**/*.jar" />
+		</fileset>
+		<fileset dir="${globus.dir}/lib">
+			<include name="**/*.jar" />
+			<exclude name="junit.jar" />
+		</fileset>
+	</path>
+	
+
+	<!-- =============================================================== -->
+	<!-- The Test Classpath                                              -->
+	<!-- =============================================================== -->
+	<path id="test.build.classpath">
+		<path refid="build.classpath"/>
+	</path>
+	
+	
+	<path id="integration.test.run.classpath">
+		<pathelement path="${test.classes.dir}" />
+		<fileset dir="${ext.test.lib.dir}">
+			<include name="*.jar" />
+		</fileset>
+		<fileset dir="${globus.dir}/lib">
+			<include name="*.jar" />
+			<exclude name="junit.jar" />
+		</fileset>
+	</path>
+
+
+	<!-- =============================================================== -->
+	<!-- Prepares the build directory                                    -->
+	<!-- =============================================================== -->
+	<target name="prepare">
+		<tstamp />
+		<mkdir dir="${build.dir}" />
+	</target>
+
+	
+	<!-- =============================================================== -->
+	<!-- Compiles the test source code                                   -->
+	<!-- =============================================================== -->
+	<target name="compile-tests" depends="prepare" description="compiles tests.">
+		<mkdir dir="${test.classes.dir}" />
+		<javac srcdir="${test.src.dir}" destdir="${test.classes.dir}" source="${java.source}" debug="on" deprecation="off" optimize="off">
+			<classpath refid="test.build.classpath" />
+		</javac>
+	</target>
+
+
+	<!-- ============================================================== -->
+	<!-- Cleans up generated stuff                                      -->
+	<!-- ============================================================== -->
+	<target name="clean" depends="" description="Removes generated files.">
+		<delete dir="${build.dir}" />
+	</target>
+
+
+	<!-- ============================================================== -->
+	<!-- Creates the test jar files                                     -->
+	<!-- ============================================================== -->
+	<target name="jar-tests" depends="compile-tests" description="Builds the test Jar Files">
+		<mkdir dir="${jar.dir}" />
+		<jar jarfile="${test.project.jar}" basedir="${test.classes.dir}">
+			<manifest>
+				<attribute name="Built-By" value="${user.name}" />
+				<attribute name="Specification-Version" value="${project.version}" />
+				<attribute name="Implementation-Version" value="${project.version}" />
+			</manifest>
+		</jar>
+	</target>
+
+
+	<!-- ============================================================== -->
+	<!-- Builds from scratch                                            -->
+	<!-- ============================================================== -->
+	<target name="all" description="Builds the entire application" depends="jar-tests" />
+</project>
+

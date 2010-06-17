@@ -1,0 +1,60 @@
+<?xml version="1.0"?>
+
+<ivy-module version="2.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:noNamespaceSchemaLocation="http://incubator.apache.org/ivy/schemas/ivy.xsd">
+
+  <info organisation="caGrid" module="sdk43StyleTest" revision="${project.version}">
+    <license name="caGrid" url="http://cagrid.org/wiki/CaGrid:LICENSE-1.3" />
+    <description>testing for the SDK query 43 project</description>
+  </info>
+
+  <configurations>
+    <!-- Private Configurations-->
+    <conf name="impl-test" visibility="private" />
+    
+    <!-- svn ant task config -->
+    <conf name="svnant" visibility="private"/>
+
+    <!-- Public Configurations-->
+    <conf name="test" visibility="public" extends="impl-test"/>
+  </configurations>
+
+
+  <publications>
+    <artifact name="caGrid-${ivy.module}-tests" conf="test" type="jar"/>
+  </publications>
+
+
+  <dependencies>
+  	<!--  caGrid dependencies -->
+    <dependency rev="latest.integration" org="caGrid" name="core"
+      conf="impl-test->test" />
+    <dependency rev="latest.integration" org="caGrid" name="cql" conf="test->cql"/>
+    <dependency rev="latest.integration" org="caGrid" name="data" conf="test->utils,tools"/>
+    
+    <!-- sdkQuery43 project -->
+    <dependency rev="latest.integration" org="caGrid" name="sdkQuery43" conf="impl-test->*"/>
+    
+    <!-- Basic Testing stuff and containers -->
+    <dependency rev="latest.integration" org="caGrid" name="testing" conf="impl-test->system"/>
+    <dependency rev="latest.integration" org="caGrid" name="testUtils" conf="impl-test->default,containers"/>
+    
+    <!-- Introduce testing -->
+    <dependency rev="latest.integration" org="caGrid" name="introduce" conf="impl-test->extension-test"/>
+    
+    <!-- Data Tests -->
+    <dependency rev="latest.integration" org="caGrid" name="dataTests" conf="impl-test->default"/>
+    
+    <!-- service tools for DB management -->
+    <dependency rev="latest.integration" org="caGrid" name="service-tools" conf="impl-test->db"/>
+    
+    <!-- Third party dependencies -->
+    <!-- using the modified hibernate jar from the SDK
+    <dependency rev="3.2.0.ga" org="hibernate" name="hibernate" conf="translator->*"/>
+     -->
+    <dependency rev="1.1" org="apache" name="commons-logging" conf="impl-test->*"/>
+    
+    <!-- SVN ant task -->
+    <dependency org="subversion" name="svnant" rev="1.3.0" conf="svnant->default"/>
+  </dependencies>
+</ivy-module>
