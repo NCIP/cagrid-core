@@ -31,14 +31,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 
-/**
- * CaGridAuthenticationManager
- * 
- * @author oster
- * @created Oct 2, 2007 12:40:18 PM
- * @version $Id: multiscaleEclipseCodeTemplates.xml,v 1.1 2007/03/02 14:35:01
- *          dervin Exp $
- */
 @Service
 public class CaGridAuthenticationManager implements AuthenticationManager {
 	private WebSSOProperties webSSOProperties = null;
@@ -90,7 +82,7 @@ public class CaGridAuthenticationManager implements AuthenticationManager {
 		SAMLAssertion samlAssertion = authenticationServiceHelper.authenticate(
 				userNameCredentials.getAuthenticationServiceURL(),userNameCredentials.getCredential());
 
-		DorianInformation dorianInformation = this.getDorianInformation(userNameCredentials.getAuthenticationServiceURL());
+		DorianInformation dorianInformation = this.getDorianInformation(userNameCredentials.getDorianName());
 		GlobusCredential globusCredential = dorianHelper.obtainProxy(samlAssertion, dorianInformation);
 		proxyValidator.validate(globusCredential);
 		String serializedDelegatedCredentialReference = gridCredentialDelegator
@@ -108,19 +100,19 @@ public class CaGridAuthenticationManager implements AuthenticationManager {
 	}
 	
 	private DorianInformation getDorianInformation(
-			String dorianServiceURL) throws AuthenticationConfigurationException {
-		Assert.notNull(dorianServiceURL,"dorian service URL cannot be empty");
+			String dorianName) throws AuthenticationConfigurationException {
+		Assert.notNull(dorianName,"dorian service Name cannot be empty");
 		List<DorianInformation> dorians = webSSOProperties.getDoriansInformation();
 
 		DorianInformation dorianInformation = null;
 		for (DorianInformation tempDorianInformation : dorians) {
-			if (dorianServiceURL.equals(tempDorianInformation.getDorianServiceURL())) {
+			if (dorianName.equals(tempDorianInformation.getDisplayName())) {
 				dorianInformation = tempDorianInformation;
 				break;
 			}
 		}
-		if(dorianInformation==null){
-			throw new AuthenticationConfigurationException("no matching dorian service url "+dorianServiceURL+" found in websso-properties.xml");
+		if(dorianName==null){
+			throw new AuthenticationConfigurationException("no matching dorian name "+dorianName+" found in websso-properties.xml");
 		}
 		return dorianInformation;
 	}

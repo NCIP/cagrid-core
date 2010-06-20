@@ -3,6 +3,8 @@
  */
 package org.cagrid.gaards.websso.authentication.helper.impl;
 
+import gov.nih.nci.cagrid.common.FaultUtil;
+
 import java.security.cert.X509Certificate;
 
 import org.cagrid.gaards.websso.authentication.helper.ProxyValidator;
@@ -13,15 +15,13 @@ import org.globus.gsi.GlobusCredentialException;
 import org.globus.gsi.TrustedCertificates;
 import org.globus.gsi.proxy.ProxyPathValidator;
 import org.globus.gsi.proxy.ProxyPathValidatorException;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
-/**
- * @author MODI
- * 
- */
 public class ProxyValidatorImpl implements ProxyValidator {
 
+	private final Log log = LogFactory.getLog(getClass());
 	private String trustStorePath = null;
-
 	private String certificateRevocationListPath = null;
 
 	public ProxyValidatorImpl() {
@@ -53,9 +53,9 @@ public class ProxyValidatorImpl implements ProxyValidator {
 		try {
 			globusCredential.verify();
 		} catch (GlobusCredentialException e) {
+			log.error(FaultUtil.printFaultToString(e));
 			throw new AuthenticationConfigurationException(
-					"Error verifying the proxy certificate : " + e.getMessage(),
-					e);
+					"Error verifying the proxy certificate : "+FaultUtil.printFaultToString(e));
 		}
 
 		X509Certificate[] proxyChain = globusCredential.getCertificateChain();
@@ -85,9 +85,9 @@ public class ProxyValidatorImpl implements ProxyValidator {
 		try {
 			proxyPathValidator.validate(proxyChain, trustedCerts, crls);
 		} catch (ProxyPathValidatorException e) {
+			log.error(FaultUtil.printFaultToString(e));
 			throw new AuthenticationConfigurationException(
-					"Error validating the Proxy Certificate : "
-							+ e.getMessage(), e);
+					"Error validating the Proxy Certificate : "+FaultUtil.printFaultToString(e));
 		}
 
 		return true;

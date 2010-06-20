@@ -1,8 +1,10 @@
 package org.cagrid.gaards.websso.utils;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
 
 import org.cagrid.gaards.websso.beans.CredentialDelegationServiceInformation;
 import org.cagrid.gaards.websso.beans.DelegatedApplicationInformation;
@@ -12,9 +14,10 @@ import org.cagrid.gaards.websso.exception.AuthenticationConfigurationException;
 
 import org.jdom.Document;
 import org.jdom.Element;
+import org.springframework.beans.factory.InitializingBean;
 import org.springframework.core.io.Resource;
 
-public class WebSSOProperties {
+public class WebSSOProperties implements InitializingBean{
 	private Document propertiesFile = null;
 	private List<DorianInformation> doriansInformation = null;
 	private List<DelegatedApplicationInformation> delegatedApplicationInformationList = null;
@@ -238,5 +241,18 @@ public class WebSSOProperties {
 		Element hostCredentialKeyFilePath = webSSOServerInformationElement
 				.getChild("host-credential-key-file-path");
 		return hostCredentialKeyFilePath.getText().trim();
+	}
+	
+	// validate duplicate Dorian dislay names.
+	public void afterPropertiesSet() throws Exception {
+		Set<String> duplicateCheck = new HashSet<String>();
+		for (DorianInformation dorianInformation : doriansInformation) {
+			String dorianName = dorianInformation.getDisplayName();
+			boolean val = duplicateCheck.add(dorianName);
+			if (val == false) {
+				throw new RuntimeException(
+						"Duplicate Dorian Display Name: <dorian-services-information>/<dorian-service-descriptor>/<display-name> in websso-properties.xml");
+			}
+		}
 	}
 }

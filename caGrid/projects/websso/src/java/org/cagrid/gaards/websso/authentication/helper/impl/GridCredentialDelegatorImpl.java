@@ -10,6 +10,8 @@ import java.util.List;
 import javax.xml.namespace.QName;
 
 import org.apache.axis.types.URI.MalformedURIException;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.cagrid.gaards.cds.client.ClientConstants;
 import org.cagrid.gaards.cds.client.DelegationUserClient;
 import org.cagrid.gaards.cds.common.AllowedParties;
@@ -26,7 +28,7 @@ import org.globus.gsi.GlobusCredential;
 import org.globus.wsrf.impl.security.authorization.IdentityAuthorization;
 
 public class GridCredentialDelegatorImpl implements GridCredentialDelegator {
-
+	private final Log log = LogFactory.getLog(getClass());
 	private CredentialDelegationServiceInformation credentialDelegationServiceInformation = null;
 
 	public GridCredentialDelegatorImpl(
@@ -69,6 +71,7 @@ public class GridCredentialDelegatorImpl implements GridCredentialDelegator {
 				client.setAuthorization(auth);
 			}			
 		} catch (Exception e) {
+			log.error(FaultUtil.printFaultToString(e));
 			throw new AuthenticationConfigurationException("Error accessing the Delegation Service : "+FaultUtil.printFaultToString(e));
 		}
 
@@ -81,10 +84,12 @@ public class GridCredentialDelegatorImpl implements GridCredentialDelegator {
 					issueCredentialsCDSLifeTime, issuedCredentialPathLength,
 					ClientConstants.DEFAULT_KEY_SIZE);
 		} catch (CDSInternalFault e) {
+			log.error(FaultUtil.printFaultToString(e));
 			throw new AuthenticationConfigurationException(
 					"Internal Error in the Delegation Service : "
 							+ FaultUtil.printFaultToString(e));
 		} catch (DelegationFault e) {
+			log.error(FaultUtil.printFaultToString(e));
 			throw new AuthenticationConfigurationException(
 					"Error accessing the Delegation Service, Unable to delegate credentials : "
 							+ FaultUtil.printFaultToString(e));
@@ -93,9 +98,11 @@ public class GridCredentialDelegatorImpl implements GridCredentialDelegator {
 					"Error accessing the Delegation Service, Permission Denied : "
 							+ FaultUtil.printFaultToString(e));
 		} catch (RemoteException e) {
+			log.error(FaultUtil.printFaultToString(e));
 			throw new AuthenticationConfigurationException(
 					"Error accessing the Delegation Service : "+FaultUtil.printFaultToString(e));
 		} catch (MalformedURIException e) {
+			log.error(FaultUtil.printFaultToString(e));
 			throw new AuthenticationConfigurationException(
 					"Error accessing the Delegation Service, Please check the URL for Delegation Service : "+FaultUtil.printFaultToString(e));
 		}
@@ -112,6 +119,7 @@ public class GridCredentialDelegatorImpl implements GridCredentialDelegator {
 							stringWriter, DelegationUserClient.class.getResourceAsStream("client-config.wsdd"));
 			serializedDelegatedCredentialReference = stringWriter.toString();
 		} catch (Exception e) {
+			log.error(FaultUtil.printFaultToString(e));
 			throw new AuthenticationConfigurationException(
 					"Unable to serialize the message Delegated Credentials : "+FaultUtil.printFaultToString(e));
 		}
