@@ -1,0 +1,23 @@
+<!-- ======================================================================= -->
+<!-- caGrid SDK (4.3) Data Service Style test build file                     -->
+<!-- ======================================================================= -->
+<project name="caGrid-sdkQuery43_tests_harness" basedir=".">
+	<property name="junit.results.dir" location="${test.logs.dir}/junit" />
+	
+	<!-- call the test target for each project and aggregates the log resutls  -->
+	<target name="test" description="Runs the tests.">
+		<mkdir dir="${junit.results.dir}"/>
+		<junit dir="${basedir}" printsummary="yes" errorproperty="tests.failed" failureproperty="tests.failed" showoutput="true" fork="yes" forkmode="once">
+			<!-- sysproperty needed for cycle test to know where to look for classes -->
+			<sysproperty key="build.dirs.list" value="${build.dirs.list}" />
+			<classpath refid="unit.test.run.classpath" />
+			<formatter type="xml" />
+			<batchtest fork="yes" todir="${junit.results.dir}">
+				<fileset dir="${test.src.dir}">
+					<include name="**/*TestCase.java" />
+				</fileset>
+			</batchtest>
+		</junit>
+		<fail if="tests.failed" message="Tests failed.  Check the logs for details"/>
+	</target>
+</project>
