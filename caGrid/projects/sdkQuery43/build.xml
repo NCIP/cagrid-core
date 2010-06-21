@@ -22,6 +22,7 @@
 	<property name="style.classes.dir" value="${build.dir}/style/classes"/>
 	<property name="processor.classes.dir" value="${build.dir}/processor/classes" />
 	<property name="translator.classes.dir" value="${build.dir}/translator/classes" />
+	<property name="build.dirs.list" value="${style.classes.dir},${processor.classes.dir},${translator.classes.dir}"/>
 	<property name="jar.dir" value="${build.dir}/jars" />
 	<property name="style.jarfile" value="${jar.dir}/${project.name}-style-${project.version}.jar"/>
 	<property name="processor.jarfile" value="${jar.dir}/${project.name}-processor-${project.version}.jar" />
@@ -35,6 +36,7 @@
 	
 	<!-- test stuff -->
 	<property name="test.dir" location="${basedir}/test"/>
+	<property name="test.logs.dir" location="${test.dir}/logs"/>
 	<property name="test.src.dir" location="${test.dir}/src/java"/>
 	<property name="test.classes.dir" location="${build.dir}/test/classes"/>
 	<property name="test.jarfile" value="${jar.dir}/${project.name}-test-${project.version}.jar"/>
@@ -45,7 +47,9 @@
 	<property name="style.info.dir" location="${basedir}/style"/>
 	<property name="style.dest.dir" value="data/styles/cacore43" />
 	<property name="zip.dir" location="${build.dir}/zipdir"/>
-	<property name="style.zip.file" location="${build.dir}/${project.name}-package-${project.version}.zip"/>	
+	<property name="style.zip.file" location="${build.dir}/${project.name}-package-${project.version}.zip"/>
+	
+	<import file="test/test.xml"/>
 
 	<!-- =============================================================== -->
 	<!-- The Build Classpath                                             -->
