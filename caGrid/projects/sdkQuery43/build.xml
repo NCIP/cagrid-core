@@ -37,7 +37,7 @@
 	<property name="test.dir" location="${basedir}/test"/>
 	<property name="test.src.dir" location="${test.dir}/src/java"/>
 	<property name="test.classes.dir" location="${build.dir}/test/classes"/>
-	<property name="test.jarfile" value="${jar.dir}/${project.name}-test-${project.name}.jar"/>
+	<property name="test.jarfile" value="${jar.dir}/${project.name}-test-${project.version}.jar"/>
 	<property name="ext.test.lib.dir" location="${ext.dir}/dependencies/test/jars"/> 
 	
 	<!-- style related stuff -->
@@ -191,6 +191,19 @@
 				<attribute name="Specification-Version" value="${project.version}" />
 				<attribute name="Implementation-Version" value="${project.version}" />
 			</manifest>			
+		</jar>
+		<jar jarfile="${test.jarfile}">
+			<fileset dir="${test.classes.dir}">
+				<include name="**/*"/>
+			</fileset>
+			<fileset dir="${test.src.dir}">
+				<include name="**/*"/>
+			</fileset>
+			<manifest>
+				<attribute name="Built-By" value="${user.name}" />
+				<attribute name="Specification-Version" value="${project.version}" />
+				<attribute name="Implementation-Version" value="${project.version}" />
+			</manifest>	
 		</jar>
 	</target>
 	
