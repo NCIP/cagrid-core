@@ -63,6 +63,24 @@
 		<path refid="build.classpath"/>
 	</path>
 	
+	<path id="unit.test.run.classpath">
+		<fileset dir="${jar.dir}">
+			<include name="**/*.jar"/>
+		</fileset>
+		<fileset dir="${ext.test.lib.dir}">
+			<include name="**/*.jar"/>
+		</fileset>
+		<fileset dir="${sdk.lib.dir}">
+			<include name="**/*.jar"/>
+			<exclude name="**/caGrid-iso*.jar"/>
+		</fileset>
+		<fileset dir="${globus.dir}/lib">
+			<include name="**/*.jar" />
+			<exclude name="junit.jar" />
+		</fileset>
+		<pathelement path="${sdk.conf.dir}"/>
+		<pathelement path="${test.classes.dir}" />
+	</path>
 	
 	<path id="integration.test.run.classpath">
 		<pathelement path="${test.classes.dir}" />

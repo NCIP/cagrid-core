@@ -21,29 +21,7 @@
 	<!-- ============================================================== -->
 	<!-- Call any tests.                                                -->
 	<!-- ============================================================== -->
-	<target name="test" depends="unitTests, integrationTests" description="Runs the unit and integration tests"/>
-
-	<target name="unitTests" depends="prepare" description="Runs the project's unit tests.">
-		<echo message="Test results dir: ${junit.results.dir}" />
-		<mkdir dir="${junit.results.dir}" />
-		<junit dir="${basedir}" printsummary="yes" errorproperty="test.failed" failureproperty="test.failed" showoutput="true" forkmode="once">
-			<classpath refid="unit.test.run.classpath" />
-			<sysproperty key="build.dir" value="${classes.dir}" />
-			<jvmarg value="-Xmx512M" />
-			<jvmarg value="-Dbuild.dirs.list=${translator.classes.dir},${processor.classes.dir},${style.classes.dir}" />
-			<formatter type="xml" />
-			<batchtest fork="yes" todir="${junit.results.dir}">
-				<fileset dir="${test.src.dir}">
-					<include name="**/Test*.java" />
-					<include name="**/*TestCase.java" />
-					<exclude name="**/*SystemTests.java"/>
-					<exclude name="**/IsoQueriesTestCase.java"/>
-					<exclude name="**/CQLInvocationTestCase.java"/>
-				</fileset>
-			</batchtest>
-		</junit>
-		<fail message="Tests failed! Check test reports." if="test.failed" />
-	</target>
+	<target name="test" depends="integrationTests" description="Runs the unit and integration tests"/>
 
 
 	<target name="integrationTests" depends="createSdkIsoExampleApplication" description="Runs the SDK integration tests">
