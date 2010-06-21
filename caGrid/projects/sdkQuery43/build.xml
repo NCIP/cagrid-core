@@ -28,12 +28,17 @@
 	<property name="tranaslator.jarfile" value="${jar.dir}/${project.name}-translator-${project.version}.jar" />
 	<property name="ext.dir" value="${basedir}/ext" />
 	<property name="ext.lib.dir" value="${ext.dir}/dependencies/jars" />
-	<property name="ext.test.lib.dir" location="${ext.dir}/dependencies/test/jars"/>
-	<property name="svnant.lib.dir" location="${ext.dir}/dependencies/svnant/jars"/>
 	<property name="lib.dir" location="${basedir}/lib"/>
 	<property name="sdk.client.dir" location="${basedir}/sdk/local-client"/>
 	<property name="sdk.lib.dir" location="${sdk.client.dir}/lib"/>
 	<property name="sdk.conf.dir" location="${sdk.client.dir}/conf"/>
+	
+	<!-- test stuff -->
+	<property name="test.dir" location="${basedir}/test"/>
+	<property name="test.src.dir" location="${test.dir}/src/java"/>
+	<property name="test.classes.dir" location="${build.dir}/test/classes"/>
+	<property name="test.jarfile" value="${jar.dir}/${project.name}-test-${project.name}.jar"/>
+	<property name="ext.test.lib.dir" location="${ext.dir}/dependencies/test/jars"/> 
 	
 	<!-- style related stuff -->
 	<property name="introduce.dir" location="${basedir}/../introduce"/>
@@ -51,7 +56,7 @@
 		</fileset>
 		<fileset dir="${sdk.lib.dir}">
 			<include name="**/*.jar"/>
-			<exclude name="**/${project.name}*.jar"/>
+			<exclude name="**/caGrid-iso*.jar"/>
 		</fileset>
 		<fileset dir="${ext.lib.dir}">
 			<include name="**/*.jar" />
@@ -60,6 +65,35 @@
 			<include name="**/*.jar" />
 			<exclude name="junit.jar" />
 		</fileset>
+	</path>
+	
+	<path id="test.build.classpath">
+		<path refid="build.classpath"/>
+		<fileset dir="${ext.test.lib.dir}">
+			<include name="*.jar"/>
+		</fileset>
+	</path>
+		
+	<path id="unit.test.run.classpath">
+		<fileset dir="${jar.dir}">
+			<include name="**/*.jar"/>
+		</fileset>
+		<fileset dir="${ext.lib.dir}">
+			<include name="*.jar"/>
+		</fileset>
+		<fileset dir="${ext.test.lib.dir}">
+			<include name="**/*.jar"/>
+		</fileset>
+		<fileset dir="${sdk.lib.dir}">
+			<include name="**/*.jar"/>
+			<exclude name="**/caGrid-iso*.jar"/>
+		</fileset>
+		<fileset dir="${globus.dir}/lib">
+			<include name="**/*.jar" />
+			<exclude name="junit.jar" />
+		</fileset>
+		<pathelement path="${sdk.conf.dir}"/>
+		<pathelement path="${test.classes.dir}" />
 	</path>
 
 	<!-- =============================================================== -->
@@ -92,6 +126,15 @@
 			<classpath>
 				<pathelement location="${translator.classes.dir}"/>
 				<pathelement location="${processor.classes.dir}"/>
+			</classpath>
+		</javac>
+		<mkdir dir="${test.classes.dir}"/>
+		<javac srcdir="${test.src.dir}" destdir="${style.classes.dir}" source="${java.source}" debug="on" deprecation="on" optimize="on">
+			<classpath refid="test.build.classpath"/>
+			<classpath>
+				<pathelement location="${translator.classes.dir}"/>
+				<pathelement location="${processor.classes.dir}"/>
+				<pathelement location="${style.classes.dir}"/>
 			</classpath>
 		</javac>
 	</target>
