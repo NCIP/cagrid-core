@@ -3,7 +3,7 @@
 <!-- caGrid sdkQuery43 build file                       			   -->
 <!-- ================================================================= -->
 
-<project name="caGrid-sdkQuery43" default="all" basedir=".">
+<project name="caGrid-sdkQuery43StyleTests" default="all" basedir=".">
 	<!-- Environment -->
 	<property environment="env" />
 	<property file="${basedir}/project.properties" />
@@ -30,7 +30,7 @@
 	<property name="test.classes.dir" location="${build.dir}/test/classes" />
 	<property name="test.lib.dir" location="${test.dir}/lib" />
 	<property name="test.logs.dir" location="${test.dir}/logs" />
-	<property name="test.project.jar" location="${jar.dir}/${project.name}-tests-${project.version}.jar" />
+	<property name="test.project.jar" location="${jar.dir}/${project.name}-${project.version}.jar" />
 	
 	<!-- style related stuff -->
 	<property name="introduce.dir" location="${basedir}/../../../caGrid/projects/introduce" />
