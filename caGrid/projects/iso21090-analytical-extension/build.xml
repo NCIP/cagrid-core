@@ -26,8 +26,11 @@
 	<property name="ext.lib.dir" value="${ext.dir}/dependencies/jars" />
 	<property name="ext.targetgrid.dir" location="${ext.dir}/target_grid" />
 	<property name="ext.test.lib.dir" location="${ext.dir}/dependencies/test/jars" />
-
 	<property name="ext.iso.xsd.dir" location="${ext.dir}/dependencies/xsds" />
+	
+	<!-- introduce dir for extension installation -->
+	<property name="introduce.dir" value="../introduce"/>
+	<property name="introduce.extensions.dir" value="${introduce.dir}/extensions" />	
 
 	<!-- testing stuff -->
 	<property name="test.dir" location="${basedir}/test" />
@@ -53,7 +56,7 @@
 
 
 	<!-- =============================================================== -->
-	<!-- The Run Classpath                                                   -->
+	<!-- The Run Classpath                                               -->
 	<!-- =============================================================== -->
 	<path id="run.classpath">
 		<path refid="build.classpath" />
@@ -63,7 +66,7 @@
 	</path>
 
 	<!-- =============================================================== -->
-	<!-- The Test Classpath                                                   -->
+	<!-- The Test Classpath                                              -->
 	<!-- =============================================================== -->
 	<path id="test.classpath">
 		<pathelement path="${classes.dir}" />
@@ -103,7 +106,7 @@
 	</target>
 
 	<!-- =============================================================== -->
-	<!-- Compiles the test source code                                        -->
+	<!-- Compiles the test source code                                   -->
 	<!-- =============================================================== -->
 	<target name="compile-tests" depends="prepare" description="compiles.">
 		<mkdir dir="${test.classes.dir}" />
@@ -137,7 +140,7 @@
 
 
 	<!-- ============================================================== -->
-	<!-- Creates the test jar files                                          -->
+	<!-- Creates the test jar files                                     -->
 	<!-- ============================================================== -->
 	<target name="jar-tests" depends="compile-tests" description="Builds the test Jar Files">
 		<mkdir dir="${jar.dir}" />
@@ -190,12 +193,8 @@
 		</junit>
 		<fail message="Tests failed! Check test reports." if="test.failed" />
 	</target>
-
-
-	<property name="introduce.dir" value="${env.CAGRID_HOME}/projects/introduce"/>
-	<property name="introduce.extensions.dir" value="${introduce.dir}/extensions" />
-	<!--<property name="introduce.extensions.dir" location="../introduce/extensions" />-->
-
+	
+	
 	<target name="createZip" description="Creates extension zip file that can be uploaded to software update site" depends="all">
 		<delete dir="${zip.dir}"/>
 		<copy todir="${zip.dir}/ISO21090-discovery" file="extension.xml" />
