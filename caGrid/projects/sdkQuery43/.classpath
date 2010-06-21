@@ -3,6 +3,7 @@
 	<classpathentry kind="src" path="src/java/processor"/>
 	<classpathentry kind="src" path="src/java/translator"/>
 	<classpathentry kind="src" path="src/java/style"/>
+	<classpathentry kind="src" path="test/src/java"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="lib" path="ext/dependencies/jars/caGrid-core-1.4-dev.jar"/>
 	<classpathentry kind="lib" path="ext/dependencies/jars/caGrid-CQL-cql.1.0-1.4-dev.jar"/>
@@ -153,5 +154,7 @@
 	<classpathentry kind="lib" path="sdk/local-client/lib/iso-datatypes-extensions-2.1.jar"/>
 	<classpathentry kind="lib" path="ext/dependencies/jars/caGrid-iso21090-domain-model-tools-1.4.jar"/>
 	<classpathentry kind="lib" path="ext/dependencies/jars/caGrid-mms-stubs-1.4-dev.jar"/>
+	<classpathentry kind="lib" path="ext/dependencies/test/jars/caGrid-core-tests-1.4-dev.jar"/>
+	<classpathentry kind="lib" path="ext/dependencies/test/jars/jdepend-2.7.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

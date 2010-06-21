@@ -11,11 +11,13 @@
   <configurations>
     <!-- Private Configurations-->
     <conf name="impl" visibility="private" extends="translator,queryProcessor,style" />
-    
-    <!-- Public Configurations-->
+    <conf name="impl-test" visibility="private"/>
+        
+    <!-- Public Configurations -->
     <conf name="translator" visibility="public"/>
     <conf name="queryProcessor" visibility="public" extends="translator" />
     <conf name="style" visibility="public" extends="queryProcessor,translator"/>
+    <conf name="test" visibility="public" extends="impl-test"/>
   </configurations>
 
 
@@ -23,13 +25,14 @@
     <artifact name="caGrid-${ivy.module}-translator" conf="translator" type="jar" />
     <artifact name="caGrid-${ivy.module}-processor" conf="queryProcessor" type="jar" />
     <artifact name="caGrid-${ivy.module}-style" conf="style" type="jar" />
+    <artifact name="caGrid-${ivy.module}-test" conf="test" type="jar" />
   </publications>
 
 
   <dependencies>
   	<!--  caGrid dependencies -->
     <dependency rev="latest.integration" org="caGrid" name="core"
-      conf="translator->default" />
+      conf="impl-test->test;translator->default" />
     <dependency rev="latest.integration" org="caGrid" name="cql" conf="translator->cql"/>
     <dependency rev="latest.integration" org="caGrid" name="data" conf="queryProcessor->processors,utils,tools,service"/>
     <dependency rev="latest.integration" org="caGrid" name="dataExtensions" conf="style->styleRequirements"/>
