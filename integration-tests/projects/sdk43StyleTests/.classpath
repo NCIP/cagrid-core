@@ -66,7 +66,7 @@
 	<classpathentry kind="var" path="GT4_LOCATION/lib/axis.jar" sourcepath="/GT4_LOCATION/java/lib-src/ws-axis/ws-axis/java/src"/>
 	<classpathentry kind="var" path="GT4_LOCATION/lib/bootstrap.jar"/>
 	<classpathentry kind="var" path="GT4_LOCATION/lib/cog-axis.jar"/>
-	<classpathentry kind="var" path="GT4_LOCATION/lib/cog-jglobus.jar" sourcepath="/COG_SOURCE"/>
+	<classpathentry kind="var" path="GT4_LOCATION/lib/cog-jglobus.jar"/>
 	<classpathentry kind="var" path="GT4_LOCATION/lib/cog-tomcat.jar"/>
 	<classpathentry kind="var" path="GT4_LOCATION/lib/cog-url.jar"/>
 	<classpathentry kind="var" path="GT4_LOCATION/lib/commonj.jar"/>
@@ -128,10 +128,9 @@
 	<classpathentry kind="var" path="GT4_LOCATION/lib/xml-apis.jar"/>
 	<classpathentry kind="var" path="GT4_LOCATION/lib/xmlsec.jar"/>
 	<classpathentry kind="lib" path="ext/dependencies/test/jars/caGrid-data-tools-1.4-dev.jar"/>
-	<classpathentry kind="lib" path="ext/dependencies/test/jars/caGrid-iso21090-domain-model-tools-1.4.jar"/>
-	<classpathentry kind="lib" path="ext/dependencies/test/jars/caGrid-sdkQuery43-processor-1.4.jar"/>
-	<classpathentry kind="lib" path="ext/dependencies/test/jars/caGrid-sdkQuery43-style-1.4.jar"/>
-	<classpathentry kind="lib" path="ext/dependencies/test/jars/caGrid-sdkQuery43-translator-1.4.jar"/>
+	<classpathentry kind="lib" path="ext/dependencies/test/jars/caGrid-sdkQuery43-processor-1.4-dev.jar"/>
+	<classpathentry kind="lib" path="ext/dependencies/test/jars/caGrid-sdkQuery43-style-1.4-dev.jar"/>
+	<classpathentry kind="lib" path="ext/dependencies/test/jars/caGrid-sdkQuery43-translator-1.4-dev.jar"/>
 	<classpathentry kind="lib" path="sdk/local-client/lib/hibernate-3.2.0.ga-modified.jar"/>
 	<classpathentry kind="lib" path="sdk/local-client/lib/iso-datatypes-2.1.jar"/>
 	<classpathentry kind="lib" path="sdk/local-client/lib/iso-datatypes-extensions-2.1.jar"/>
