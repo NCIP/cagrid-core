@@ -81,7 +81,6 @@
 	<classpathentry kind="lib" path="ext/dependencies/jars/jdom-1.0.jar"/>
 	<classpathentry kind="lib" path="ext/dependencies/jars/relaxngDatatype.jar"/>
 	<classpathentry kind="lib" path="ext/dependencies/jars/xsom14.jar"/>
-	<classpathentry kind="con" path="org.eclipse.jdt.junit.JUNIT_CONTAINER/4"/>
 	<classpathentry kind="lib" path="ext/dependencies/jars/caGrid-Transfer-client-1.4-dev.jar"/>
 	<classpathentry kind="lib" path="ext/dependencies/jars/caGrid-Transfer-common-1.4-dev.jar"/>
 	<classpathentry kind="lib" path="ext/dependencies/jars/caGrid-Transfer-service-1.4-dev.jar"/>
@@ -92,5 +91,6 @@
 	<classpathentry kind="lib" path="ext/dependencies/jars/caGrid-CQL-utils-1.4-dev.jar"/>
 	<classpathentry kind="lib" path="ext/dependencies/jars/castor-1.0.2.jar"/>
 	<classpathentry kind="lib" path="ext/dependencies/jars/caGrid-CQL-mappings-1.4-dev.jar"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.junit.JUNIT_CONTAINER/4"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
