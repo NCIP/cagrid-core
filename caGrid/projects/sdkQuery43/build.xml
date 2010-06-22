@@ -232,7 +232,7 @@
 				<include name="commons-*.jar"/>
 				<include name="jaxb*.jar"/>
 				<include name="xmi.in.out*.jar"/>
-				<include name="caGrid-iso21090DomainModelTools*.jar"/>
+				<include name="caGrid-iso21090-domain-model-tools*.jar"/>
 			</fileset>
 			<fileset dir="${sdk.lib.dir}" >
 				<include name="sdk-client-framework-4.3.jar"/>
