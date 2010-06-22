@@ -2,6 +2,7 @@ package gov.nih.nci.cagrid.introduce.upgrade;
 
 import gov.nih.nci.cagrid.introduce.IntroduceConstants;
 import gov.nih.nci.cagrid.introduce.codegen.SyncTools;
+import gov.nih.nci.cagrid.introduce.common.IntroducePropertiesManager;
 import gov.nih.nci.cagrid.introduce.common.ResourceManager;
 import gov.nih.nci.cagrid.introduce.common.ServiceInformation;
 import gov.nih.nci.cagrid.introduce.upgrade.common.IntroduceUpgradeStatus;
@@ -9,6 +10,7 @@ import gov.nih.nci.cagrid.introduce.upgrade.common.UpgradeStatus;
 import gov.nih.nci.cagrid.introduce.upgrade.common.UpgradeUtilities;
 
 import java.io.File;
+import java.io.FileWriter;
 
 import org.apache.log4j.Logger;
 
@@ -111,7 +113,6 @@ public class UpgradeManager {
                     "and then click save.");
                 e.printStackTrace();
             }
-            return status;
         } else if (extensionsNeedUpgraded()) {
             status.addIntroduceUpgradeStatus(upgradeExtensionsOnly());
             try {
@@ -127,10 +128,20 @@ public class UpgradeManager {
                     "this service for modification and then click save.");
                 e.printStackTrace();
             }
-            return status;
-        } else {
-            return status;
         }
+        
+        // send the status to a log file
+        try {
+            File upgradeLog = new File(pathToService, "introduce-upgrade-" 
+                + IntroducePropertiesManager.getIntroduceVersion() + ".log");
+            FileWriter writer = new FileWriter(upgradeLog);
+            writer.write(status.toString());
+            writer.close();
+        } catch (Exception ex) {
+            logger.warn("Error writing upgrade log to file: " + ex.getMessage(), ex);
+        }
+        
+        return status;
     }
 
 
