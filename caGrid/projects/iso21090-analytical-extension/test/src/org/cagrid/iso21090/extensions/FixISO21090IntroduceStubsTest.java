@@ -3,7 +3,6 @@ package org.cagrid.iso21090.extensions;
 import java.io.File;
 
 import org.cagrid.iso21090.portal.discovery.FixISO21090IntroduceStubs;
-import org.cagrid.iso21090.portal.discovery.ISO21090TypeSelectionComponent;
 
 public class FixISO21090IntroduceStubsTest {
 
@@ -24,10 +23,6 @@ public class FixISO21090IntroduceStubsTest {
 		}
 		
 		FixISO21090IntroduceStubs fix = new FixISO21090IntroduceStubs();
-		
-//		File serviceDir = new File("/Users/jpermar/cagrid_services/ISOTest29");
-
 		fix.modifyDevBuildFileWithOperationStubsFixes(serviceDir);
 	}
-
 }

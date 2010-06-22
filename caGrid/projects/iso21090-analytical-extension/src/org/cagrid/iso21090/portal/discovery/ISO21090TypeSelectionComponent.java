@@ -65,6 +65,7 @@ public class ISO21090TypeSelectionComponent extends NamespaceTypeDiscoveryCompon
 		initialize();
 	}
 
+	
 	public ISO21090TypeSelectionComponent() {
 		super(null, null);
 	}
@@ -227,6 +228,7 @@ public class ISO21090TypeSelectionComponent extends NamespaceTypeDiscoveryCompon
 
 		return createdTypes;
 	}
+	
 
 	static class ModificationException extends Exception {
 		public ModificationException(String msg) {
@@ -280,6 +282,7 @@ public class ISO21090TypeSelectionComponent extends NamespaceTypeDiscoveryCompon
 		Utils.copyFile(schemaFile, outputFile);
 		return outputFile;
 	}
+	
 
 	protected void copyIntroduceSchemasFromExtensionDir(String[] schemaNames, File outputDir) throws IOException {
 		for (String schemaName : schemaNames) {
@@ -331,6 +334,7 @@ public class ISO21090TypeSelectionComponent extends NamespaceTypeDiscoveryCompon
 		ExtensionUtilities.syncEclipseClasspath(classpathFile, libs);
 	}
 
+	
 	protected Element createReplaceElement(String oldValue, String newValue,
 			String dir, String includes) {
 
@@ -354,6 +358,7 @@ public class ISO21090TypeSelectionComponent extends NamespaceTypeDiscoveryCompon
 		return replaceEl;
 	}
 
+	
 	protected Element createJavaCallElement() {
 
 //    <java failonerror="true" classname="org.cagrid.iso21090.extensions.FixISO21090IntroduceStubsTest" classpathref="run.classpath" fork="yes">
@@ -379,11 +384,13 @@ public class ISO21090TypeSelectionComponent extends NamespaceTypeDiscoveryCompon
 		return javaEl;
 	}
 
+	
 	protected Element createStubReplaceElement(String oldValue, String newValue) {
 		return createReplaceElement(oldValue, newValue, 
 				"${stubs.src}", "**/stubs/*.java");
 	}
 
+	
 	protected void rewritePostStubs(File copiedISOExtensionsXSDFilename,
 			String devBuild, Element root, 
 			Element psTarget, String pkgName, 
@@ -434,6 +441,7 @@ public class ISO21090TypeSelectionComponent extends NamespaceTypeDiscoveryCompon
 		writer.close();
 	}
 
+	
 	protected void modifyDevBuildFile(File copiedISOExtensionsXSDFilename, 
 			File svcDir, String packageName, Map<String, String> typeClassMap) {
 		try {
@@ -461,6 +469,7 @@ public class ISO21090TypeSelectionComponent extends NamespaceTypeDiscoveryCompon
 		}
 	}
 
+	
 	/**
 	 * This method initializes mainjPanel
 	 * 
@@ -468,7 +477,6 @@ public class ISO21090TypeSelectionComponent extends NamespaceTypeDiscoveryCompon
 	 */
 	private JPanel getMainjPanel() {
 		if (mainjPanel == null) {
-
 			TitledBorder centerBorder = BorderFactory.createTitledBorder("ISO 21090 Datatypes and NCI Localizations");
 			centerBorder.setTitleFont(centerBorder.getTitleFont().deriveFont(Font.BOLD));
 
@@ -492,8 +500,6 @@ public class ISO21090TypeSelectionComponent extends NamespaceTypeDiscoveryCompon
 			gridBagConstraints1.ipadx = 70;
 			gridBagConstraints1.ipady = 70;      
 			mainjPanel.add(getInfoPanel(), gridBagConstraints1);
-
-
 		}
 		return mainjPanel;
 	}
@@ -526,7 +532,6 @@ public class ISO21090TypeSelectionComponent extends NamespaceTypeDiscoveryCompon
 	 */
 	private JPanel getInfoPanel() {
 		if (infoPanel == null) {
-
 			infoPanel = new JPanel();
 			TitledBorder border = BorderFactory.createTitledBorder("Type information");
 			infoPanel.setBorder(border);
