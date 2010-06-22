@@ -254,6 +254,7 @@
             <arg value="-O"/>
             <arg value="${stubs.timeout}"/>
             <arg file="${source.stubs.dir}/${wsdl.file}"/>
+        	<jvmarg value="-Xmx512m"/>
         </java>
         <delete
             file="${target.stubs.dir}/org/oasis/wsn/TopicExpressionType.java"
