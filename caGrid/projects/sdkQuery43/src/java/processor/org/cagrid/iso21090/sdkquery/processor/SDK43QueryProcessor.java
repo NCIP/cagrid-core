@@ -31,6 +31,12 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.globus.wsrf.security.SecurityManager;
 
+/**
+ * SDK43QueryProcessor
+ * CQL Query processor for caCORE SDK 4.3 with ISO 21090 data types 
+ * 
+ * @author David W. Ervin
+ */
 public class SDK43QueryProcessor extends CQLQueryProcessor {
     
     private static Log LOG = LogFactory.getLog(SDK43QueryProcessor.class);
