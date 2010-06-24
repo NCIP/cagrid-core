@@ -3,6 +3,7 @@ package org.cagrid.iso21090.sdkquery.style.wizard.config;
 import gov.nih.nci.cagrid.common.JarUtilities;
 import gov.nih.nci.cagrid.common.Utils;
 import gov.nih.nci.cagrid.data.DataServiceConstants;
+import gov.nih.nci.cagrid.data.QueryProcessorConstants;
 import gov.nih.nci.cagrid.data.common.CastorMappingUtil;
 import gov.nih.nci.cagrid.introduce.common.CommonTools;
 import gov.nih.nci.cagrid.introduce.common.ServiceInformation;
@@ -21,6 +22,7 @@ import org.apache.commons.logging.LogFactory;
 import org.cagrid.grape.utils.CompositeErrorDialog;
 import org.cagrid.iso21090.model.validator.ISODomainModelValidator;
 import org.cagrid.iso21090.sdkquery.processor.SDK43QueryProcessor;
+import org.cagrid.iso21090.sdkquery.processor.cql2.SDK43CQL2QueryProcessor;
 
 /**
  * ProjectSelectionConfigurationStep
@@ -39,7 +41,10 @@ public class ProjectSelectionConfigurationStep extends AbstractStyleConfiguratio
         "caGrid-data-cql-1.3.jar", "caGrid-data-service-1.3.jar", "caGrid-data-stubs-1.3.jar", "caGrid-data-utils-1.3.jar",
         "caGrid-data-validation-1.3.jar", "caGrid-metadata-common-1.3.jar", "caGrid-metadata-data-1.3.jar",
         "caGrid-metadata-security-1.3.jar", "caGrid-metadatautils-1.3.jar", "caGrid-wsEnum-1.3.jar", "caGrid-wsEnum-stubs-1.3.jar",
-        "cog-jglobus-1.2.jar"
+        "cog-jglobus-1.2.jar", "caGrid-iso21090DomainModelTools-1.3.jar", "caGrid-iso21090SdkQueryProcessor-processor-1.3.jar",
+        "caGrid-iso21090SdkQueryProcessor-translator-1.3.jar", "caGrid-iso21090IntroduceExtensions-1.3.jar", 
+        "caGrid-iso21090SdkQueryProcessor-style-1.3.jar", "caGrid-iso21090IntroduceExtensions-tests-1.3.jar",
+        "caGrid-iso21090SdkQueryProcessor-tests-1.3.jar"
     };
     
     private static Log LOG = LogFactory.getLog(ProjectSelectionConfigurationStep.class);
@@ -61,14 +66,16 @@ public class ProjectSelectionConfigurationStep extends AbstractStyleConfiguratio
     public void applyConfiguration() throws Exception {
         // set the query processor class name for the data service
         CommonTools.setServiceProperty(getServiceInformation().getServiceDescriptor(),
-            DataServiceConstants.QUERY_PROCESSOR_CLASS_PROPERTY, SDK43QueryProcessor.class.getName(), false);
+            QueryProcessorConstants.QUERY_PROCESSOR_CLASS_PROPERTY, SDK43QueryProcessor.class.getName(), false);
+        CommonTools.setServiceProperty(getServiceInformation().getServiceDescriptor(),
+            QueryProcessorConstants.CQL2_QUERY_PROCESSOR_CLASS_PROPERTY, SDK43CQL2QueryProcessor.class.getName(), false);
         
         // change out the domain model validator class
         CommonTools.setServiceProperty(getServiceInformation().getServiceDescriptor(), 
             DataServiceConstants.DOMAIN_MODEL_VALIDATOR_CLASS, 
             ISODomainModelValidator.class.getName(), false);
         
-        // set service properties required by the query processor
+        // set service properties required by the CQL 1 query processor
         setCql1ProcessorProperty(SDK43QueryProcessor.PROPERTY_APPLICATION_NAME, getApplicationName(), false);
         setCql1ProcessorProperty(SDK43QueryProcessor.PROPERTY_USE_LOCAL_API, String.valueOf(isLocalApi()), false);
         setCql1ProcessorProperty(SDK43QueryProcessor.PROPERTY_HOST_NAME, 
@@ -76,6 +83,15 @@ public class ProjectSelectionConfigurationStep extends AbstractStyleConfiguratio
         setCql1ProcessorProperty(SDK43QueryProcessor.PROPERTY_HOST_PORT, 
             getApplicationPort() != null ? String.valueOf(getApplicationPort()) : "", false);
         setCql1ProcessorProperty(SDK43QueryProcessor.PROPERTY_HOST_HTTPS, String.valueOf(isUseHttps()), false);
+        
+        // set the service properties required by the CQL 2 query processor
+        setCql2ProcessorProperty(SDK43CQL2QueryProcessor.PROPERTY_APPLICATION_NAME, getApplicationName(), false);
+        setCql2ProcessorProperty(SDK43CQL2QueryProcessor.PROPERTY_USE_LOCAL_API, String.valueOf(isLocalApi()), false);
+        setCql2ProcessorProperty(SDK43CQL2QueryProcessor.PROPERTY_HOST_NAME, 
+            getApplicationHostname() != null ? getApplicationHostname() : "", false);
+        setCql2ProcessorProperty(SDK43CQL2QueryProcessor.PROPERTY_HOST_PORT, 
+            getApplicationPort() != null ? String.valueOf(getApplicationPort()) : "", false);
+        setCql2ProcessorProperty(SDK43CQL2QueryProcessor.PROPERTY_HOST_HTTPS, String.valueOf(isUseHttps()), false);
         
         // store the information about the local and remote client dirs
         setStyleProperty(StyleProperties.SDK_REMOTE_CLIENT_DIR, getRemoteClientDir() != null ? getRemoteClientDir() : "");

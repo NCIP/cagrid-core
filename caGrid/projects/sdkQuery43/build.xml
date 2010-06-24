@@ -233,6 +233,7 @@
 				<include name="jaxb*.jar"/>
 				<include name="xmi.in.out*.jar"/>
 				<include name="caGrid-iso21090-domain-model-tools*.jar"/>
+				<include name="iso-datatypes*-2.1.jar"/>
 			</fileset>
 			<fileset dir="${sdk.lib.dir}" >
 				<include name="sdk-client-framework-4.3.jar"/>
