@@ -13,6 +13,7 @@ import org.cagrid.iso21090.sdkquery.translator.ConstantValueResolver;
 import org.cagrid.iso21090.sdkquery.translator.HibernateConfigTypesInformationResolver;
 import org.cagrid.iso21090.sdkquery.translator.IsoDatatypesConstantValueResolver;
 import org.cagrid.iso21090.sdkquery.translator.TypesInformationResolver;
+import org.cagrid.iso21090.sdkquery.translator.cql2.CQL2ToParameterizedHQL;
 import org.hibernate.cfg.Configuration;
 
 public class QueryTestsHelper {
@@ -23,6 +24,7 @@ public class QueryTestsHelper {
     private static TypesInformationResolver typesInfoResolver = null;
     private static ConstantValueResolver constantResolver = null;
     private static CQL2ParameterizedHQL queryTranslator = null;
+    private static CQL2ToParameterizedHQL cql2QueryTranslator = null;
     
     private QueryTestsHelper() {
         // this is not the constructor you were looking for
@@ -75,6 +77,14 @@ public class QueryTestsHelper {
             queryTranslator = new CQL2ParameterizedHQL(getTypesInformationResolver(), getConstantValueResolver(), false);
         }
         return queryTranslator;
+    }
+    
+    
+    public static synchronized CQL2ToParameterizedHQL getCql2Translator() throws IOException {
+        if (cql2QueryTranslator == null) {
+            cql2QueryTranslator = new CQL2ToParameterizedHQL(getTypesInformationResolver(), getConstantValueResolver(), false);
+        }
+        return cql2QueryTranslator;
     }
 
 }

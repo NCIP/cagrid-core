@@ -56,11 +56,11 @@
 	<classpathentry kind="lib" path="ext/dependencies/test/jars/jaxen-1.1.jar"/>
 	<classpathentry kind="lib" path="ext/dependencies/test/jars/jaxmejs-0.5.2.jar"/>
 	<classpathentry kind="lib" path="ext/dependencies/test/jars/jdepend-2.7.jar"/>
-	<classpathentry kind="lib" path="ext/dependencies/test/jars/jdom-1.0.jar"/>
-	<classpathentry kind="lib" path="ext/dependencies/test/jars/junit-4.4.jar"/>
 	<classpathentry kind="lib" path="ext/dependencies/test/jars/mysql-connector-java-3.0.16-ga-bin.jar"/>
 	<classpathentry kind="lib" path="ext/dependencies/test/jars/relaxngDatatype.jar"/>
 	<classpathentry kind="lib" path="ext/dependencies/test/jars/xsom14.jar"/>
+	<classpathentry kind="lib" path="ext/dependencies/test/jars/xmi.in.out-1.0.jar"/>
+	<classpathentry kind="lib" path="sdk/local-client/conf"/>
 	<classpathentry kind="var" path="GT4_LOCATION/lib/addressing-1.0.jar" sourcepath="/GT4_LOCATION/ws-core-4.0.3-src.zip"/>
 	<classpathentry kind="var" path="GT4_LOCATION/lib/axis-url.jar"/>
 	<classpathentry kind="var" path="GT4_LOCATION/lib/axis.jar" sourcepath="/GT4_LOCATION/java/lib-src/ws-axis/ws-axis/java/src"/>
@@ -143,6 +143,28 @@
 	<classpathentry kind="lib" path="sdk/local-client/lib/sdk-system-client-4.3.jar"/>
 	<classpathentry kind="lib" path="sdk/local-client/lib/sdk-system-core-4.3.jar"/>
 	<classpathentry kind="lib" path="sdk/local-client/lib/spring-2.0.2.jar"/>
-	<classpathentry kind="lib" path="ext/dependencies/test/jars/xmi.in.out-1.0.jar"/>
+	<classpathentry kind="lib" path="sdk/local-client/lib/acegi-security-1.0.4.jar"/>
+	<classpathentry kind="lib" path="sdk/local-client/lib/activation-1.0.2.jar"/>
+	<classpathentry kind="lib" path="sdk/local-client/lib/c3p0-0.9.0.jar"/>
+	<classpathentry kind="lib" path="sdk/local-client/lib/asm-1.5.3.jar"/>
+	<classpathentry kind="lib" path="sdk/local-client/lib/cglib-2.1_3.jar"/>
+	<classpathentry kind="lib" path="sdk/local-client/lib/clm-4.2.beta.jar"/>
+	<classpathentry kind="lib" path="sdk/local-client/lib/stax-api-1.0-2.jar"/>
+	<classpathentry kind="lib" path="sdk/local-client/lib/csmapi-4.2.jar"/>
+	<classpathentry kind="lib" path="sdk/local-client/lib/commons-beanutils-1.6.jar"/>
+	<classpathentry kind="lib" path="sdk/local-client/lib/commons-collections-3.2.jar"/>
+	<classpathentry kind="lib" path="sdk/local-client/lib/commons-discovery-0.2.jar"/>
+	<classpathentry kind="lib" path="sdk/local-client/lib/commons-lang-2.4.jar"/>
+	<classpathentry kind="lib" path="sdk/local-client/lib/dom4j-1.4.jar"/>
+	<classpathentry kind="lib" path="sdk/local-client/lib/ehcache-1.2.4.jar"/>
+	<classpathentry kind="lib" path="sdk/local-client/lib/jta-1.0.1B.jar"/>
+	<classpathentry kind="lib" path="sdk/local-client/lib/xercesImpl-2.7.1.jar"/>
+	<classpathentry kind="lib" path="sdk/local-client/lib/jdom-1.1.jar"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.junit.JUNIT_CONTAINER/4"/>
+	<classpathentry kind="lib" path="sdk/local-client/lib/jaxb-api-2.1.jar"/>
+	<classpathentry kind="lib" path="sdk/local-client/lib/jaxb-impl-2.1.4.jar"/>
+	<classpathentry kind="lib" path="sdk/local-client/lib/jaxb-xjc-2.1.4.jar"/>
+	<classpathentry kind="lib" path="sdk/local-client/lib/jaxen-1.1.1.jar"/>
+	<classpathentry kind="lib" path="sdk/local-client/lib/jaxrpc-1.1.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
