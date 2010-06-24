@@ -375,19 +375,25 @@ public class Cql2WalkerDomainModelValidationHandler extends Cql2WalkerHandlerAda
     private boolean associationExists(String sourceClassName, String targetClassName, String endName) {
         Set<SimplifiedUmlAssociation> associations = getAllAssociationsInvolvingClass(sourceClassName);
         boolean associationFound = false;
+        String[] possibleSourceClassNames = getSuperclassNames(sourceClassName);
         for (SimplifiedUmlAssociation association : associations) {
-            // verify both ends of the association are right
-            // starting with source to target
-            if (sourceClassName.equals(association.getSourceClass()) &&
-                targetClassName.equals(association.getTargetClass())) {
-                // ensure the role name matches
-                associationFound = association.getTargetRoleName().equals(endName);
-            }
-            if (association.isBidirectional() && !associationFound) {
-                // if bidirectional and we've not already found the association, try the reverse
-                if (targetClassName.equals(association.getSourceClass()) &&
-                    sourceClassName.equals(association.getTargetClass())) {
-                    associationFound = association.getSourceRoleName().equals(endName);
+            for (String source : possibleSourceClassNames) {
+                // verify both ends of the association are right
+                // starting with source to target
+                if (source.equals(association.getSourceClass()) &&
+                    targetClassName.equals(association.getTargetClass())) {
+                    // ensure the role name matches
+                    associationFound = association.getTargetRoleName().equals(endName);
+                }
+                if (association.isBidirectional() && !associationFound) {
+                    // if bidirectional and we've not already found the association, try the reverse
+                    if (targetClassName.equals(association.getSourceClass()) &&
+                        source.equals(association.getTargetClass())) {
+                        associationFound = association.getSourceRoleName().equals(endName);
+                    }
+                }
+                if (associationFound) {
+                    break;
                 }
             }
             if (associationFound) {
