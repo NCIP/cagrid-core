@@ -353,7 +353,7 @@ public class CQL2ToParameterizedHQL {
 		if (DatatypeFlavor.STANDARD.equals(flavor)) {
 		    // flag indicates the query is only verifying the association is populated
 		    boolean simpleNullCheck = true;
-		    if (association.getCQLAssociatedObject() != null) {
+		    if (association.getCQLAttribute() != null) {
                 simpleNullCheck = false;
                 hql.append(sourceAlias).append('.').append(roleName);
                 hql.append(".id in (select ").append(alias).append(".id from ");
