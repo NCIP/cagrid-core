@@ -46,6 +46,7 @@
 			<formatter type="xml" />
 			<batchtest fork="yes" todir="${junit.results.dir}">
 				<fileset dir="${test.src.dir}">
+					<include name="**/Cql2DomainModelValidatorTestCase.java"/>
 					<include name="**/*SDK43CqlTranslationAndExecutionSystemTests.java" />
 				</fileset>
 			</batchtest>
