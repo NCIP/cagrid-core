@@ -37,6 +37,8 @@ import org.cagrid.iso21090.sdkquery.processor.SDK43QueryProcessor;
 
 public class SchemaMappingConfigStep extends AbstractStyleConfigurationStep {
     
+    public static final String ISO21090_DISCOVERY = "ISO21090-discovery";
+
     private static Log LOG = LogFactory.getLog(SchemaMappingConfigStep.class);
     
     private ExtensionDataManager dataManager = null;
@@ -145,7 +147,10 @@ public class SchemaMappingConfigStep extends AbstractStyleConfigurationStep {
         if (isoPackagePresent) {
             // map the ISO package to the ISO schema
             // start by loading up and runing the ISO types discovery extension
-            DiscoveryExtensionDescriptionType isoDiscoveryDescriptor = ExtensionsLoader.getInstance().getDiscoveryExtension("ISO21090-discovery");
+            DiscoveryExtensionDescriptionType isoDiscoveryDescriptor = ExtensionsLoader.getInstance().getDiscoveryExtension(ISO21090_DISCOVERY);
+            if (isoDiscoveryDescriptor == null) {
+                throw new IllegalStateException("The required extension " + ISO21090_DISCOVERY + " was not found");
+            }
             String discoveryClassName = isoDiscoveryDescriptor.getDiscoveryPanelExtension();
             Class<?> discoveryClass = Class.forName(discoveryClassName);
             Constructor<?> discoveryComponentCons = discoveryClass.getConstructor(
