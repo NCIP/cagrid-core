@@ -9,10 +9,15 @@ import gov.nih.nci.cagrid.cqlquery.Predicate;
 import gov.nih.nci.cagrid.cqlquery.QueryModifier;
 import gov.nih.nci.cagrid.metadata.common.UMLAttribute;
 import gov.nih.nci.cagrid.metadata.common.UMLClass;
+import gov.nih.nci.cagrid.metadata.common.UMLClassUmlAttributeCollection;
 import gov.nih.nci.cagrid.metadata.dataservice.DomainModel;
+import gov.nih.nci.cagrid.metadata.dataservice.UMLClassReference;
+import gov.nih.nci.cagrid.metadata.dataservice.UMLGeneralization;
 
 import java.text.DateFormat;
 import java.text.ParseException;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -186,7 +191,8 @@ public class CQL1toCQL2Converter {
                 fqName = c.getPackageName() + "." + c.getClassName();
             }
             if (className.equals(fqName)) {
-                for (UMLAttribute att : c.getUmlAttributeCollection().getUMLAttribute()) {
+                List<UMLAttribute> attribs = getAttributesThroughHierarchy(c);
+                for (UMLAttribute att : attribs) {
                     if (attributeName.equals(att.getName())) {
                         datatypeName = att.getDataTypeName();
                         break;
@@ -260,5 +266,55 @@ public class CQL1toCQL2Converter {
             mods.setNamedAttribute(named);
         }
         return mods;
+    }
+    
+    
+    private List<UMLAttribute> getAttributesThroughHierarchy(UMLClass clazz) {
+        List<UMLClass> classHierarchy = getSuperclasses(
+            clazz.getPackageName() + "." + clazz.getClassName());
+        classHierarchy.add(0, clazz);
+        List<UMLAttribute> attribs = new ArrayList<UMLAttribute>();
+        for (UMLClass c : classHierarchy) {
+            UMLClassUmlAttributeCollection attribCollection = c.getUmlAttributeCollection();
+            if (attribCollection != null && attribCollection.getUMLAttribute() != null) {
+                Collections.addAll(attribs, attribCollection.getUMLAttribute());
+            }
+        }
+        return attribs;
+    }
+    
+    
+    private List<UMLClass> getSuperclasses(String className) {
+        UMLGeneralization[] generalizations = model.getUmlGeneralizationCollection().getUMLGeneralization();
+        List<UMLClass> superclasses = new ArrayList<UMLClass>();
+        // find all generalizations where subclass is the class in question,
+        // then get the superclasses from each
+        for (int i = 0; generalizations != null && i < generalizations.length; i++) {
+            UMLClassReference subClassRef = generalizations[i].getSubClassReference();
+            UMLClassReference superClassRef = generalizations[i].getSuperClassReference();
+            if (subClassRef != null && superClassRef != null) {
+                UMLClass subclass = getReferencedUMLClass(subClassRef.getRefid());
+                if ((subclass.getPackageName() + "." + subclass.getClassName()).equals(className)) {
+                    UMLClass superclass = getReferencedUMLClass(superClassRef.getRefid());
+                    superclasses.add(superclass);
+                    // get superclasses of the superclass
+                    superclasses.addAll(getSuperclasses(superclass.getPackageName() + "."
+                        + superclass.getClassName()));
+                }
+            }
+        }
+        return superclasses;
+    }
+    
+    
+    private UMLClass getReferencedUMLClass(String refid) {
+        UMLClass c = null;
+        for (UMLClass clazz : model.getExposedUMLClassCollection().getUMLClass()) {
+            if (refid.equals(clazz.getId())) {
+                c = clazz;
+                break;
+            }
+        }
+        return c;
     }
 }
