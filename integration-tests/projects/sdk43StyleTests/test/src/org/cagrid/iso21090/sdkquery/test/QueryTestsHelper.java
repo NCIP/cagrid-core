@@ -14,6 +14,8 @@ import org.cagrid.iso21090.sdkquery.translator.HibernateConfigTypesInformationRe
 import org.cagrid.iso21090.sdkquery.translator.IsoDatatypesConstantValueResolver;
 import org.cagrid.iso21090.sdkquery.translator.TypesInformationResolver;
 import org.cagrid.iso21090.sdkquery.translator.cql2.CQL2ToParameterizedHQL;
+import org.cagrid.iso21090.sdkquery.translator.cql2.Cql2TypesInformationResolver;
+import org.cagrid.iso21090.sdkquery.translator.cql2.HibernateConfigCql2TypesInformationResolver;
 import org.hibernate.cfg.Configuration;
 
 public class QueryTestsHelper {
@@ -22,6 +24,7 @@ public class QueryTestsHelper {
     
     private static ApplicationService sdkService = null;
     private static TypesInformationResolver typesInfoResolver = null;
+    private static Cql2TypesInformationResolver cql2TypesInfoResolver = null;
     private static ConstantValueResolver constantResolver = null;
     private static CQL2ParameterizedHQL queryTranslator = null;
     private static CQL2ToParameterizedHQL cql2QueryTranslator = null;
@@ -60,6 +63,23 @@ public class QueryTestsHelper {
     }
     
     
+    public static synchronized Cql2TypesInformationResolver getCql2TypesInformationResolver() throws IOException {
+        if (cql2TypesInfoResolver == null) {
+            long start = System.currentTimeMillis();
+            InputStream is = QueryTestsHelper.class.getResourceAsStream("/hibernate.cfg.xml");
+            Configuration config = new Configuration();
+            config.addInputStream(is);
+            config.buildMappings();
+            config.configure();
+            cql2TypesInfoResolver = new HibernateConfigCql2TypesInformationResolver(config, true);
+            is.close();
+            LOG.info("Types information resolver initialized in " + (System.currentTimeMillis() - start));
+            System.out.println("Types information resolver initialized in " + (System.currentTimeMillis() - start));
+        }
+        return cql2TypesInfoResolver;
+    }
+    
+    
     public static synchronized ConstantValueResolver getConstantValueResolver() {
         if (constantResolver == null) {
             long start = System.currentTimeMillis();
@@ -82,7 +102,8 @@ public class QueryTestsHelper {
     
     public static synchronized CQL2ToParameterizedHQL getCql2Translator() throws IOException {
         if (cql2QueryTranslator == null) {
-            cql2QueryTranslator = new CQL2ToParameterizedHQL(getTypesInformationResolver(), getConstantValueResolver(), false);
+            cql2QueryTranslator = new CQL2ToParameterizedHQL(
+                getCql2TypesInformationResolver(), getConstantValueResolver(), false);
         }
         return cql2QueryTranslator;
     }
