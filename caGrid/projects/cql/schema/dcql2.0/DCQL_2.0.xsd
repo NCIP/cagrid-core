@@ -19,7 +19,7 @@
 						<xsd:documentation>The URL of a data service which should be sent the resulting CQL query</xsd:documentation>
 					</xsd:annotation>
 				</xsd:element>
-				<xsd:element name="QueryModifier" type="cql2:CQLQueryModifier" minOccurs="0"/>
+				<xsd:element name="QueryModifier" type="cql2:CQLQueryModifier" minOccurs="0" maxOccurs="1"/>
 			</xsd:sequence>
 		</xsd:complexType>
 	</xsd:element>
