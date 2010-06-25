@@ -980,17 +980,22 @@ public class CQL2ToParameterizedHQL {
             throw new QueryTranslationException("Error determining associations: " + ex.getMessage(), ex);
         }
         for (ClassAssociation ca : associations) {
-            String fetchName = ca.getClassName() + "." + ca.getEndName();
-            if (!joinedAssociations.contains(fetchName)) {
-                joinedAssociations.add(fetchName);
-                String myAlias = "fetchAlias" + aliasIndex;
-                aliasIndex++;
-                buff.append("left join fetch ").append(parentAlias).append('.')
+            if (!isAssociationToIsoType(ca)) {
+                String fetchName = ca.getClassName() + "." + ca.getEndName();
+                if (!joinedAssociations.contains(fetchName)) {
+                    joinedAssociations.add(fetchName);
+                    String myAlias = "fetchAlias" + aliasIndex;
+                    aliasIndex++;
+                    buff.append("left join fetch ").append(parentAlias).append('.')
                     .append(ca.getEndName()).append(" as ").append(myAlias).append(' ');
-                int newMaxDepth = maxDepth;
-                int newCurrentDepth = currentDepth;
-                appendJoinsByDepth(buff, ca.getClassName(), myAlias, aliasIndex, 
-                    newCurrentDepth, newMaxDepth, joinedAssociations);
+                    int newMaxDepth = maxDepth;
+                    int newCurrentDepth = currentDepth;
+                    appendJoinsByDepth(buff, ca.getClassName(), myAlias, aliasIndex, 
+                        newCurrentDepth, newMaxDepth, joinedAssociations);
+                }
+            } else {
+                LOG.debug("Discovered association population of an ISO type.  " +
+                    "These are already populated.  No further processing to perform.");
             }
         }
     }
@@ -999,43 +1004,61 @@ public class CQL2ToParameterizedHQL {
     private void appendNamedJoins(NamedAssociation na, String parentClassName, 
         String parentAlias, int aliasIndex, StringBuilder buff, List<Object> parameters)
         throws QueryTranslationException {
-        LOG.debug("Populating named associations");
+        LOG.debug("Populating named association");
         String myAlias = "fetchAlias" + aliasIndex;
         // get associations from the parent class, determine associated class goes with the named association's end name
         List<ClassAssociation> associations = null;
         try {
             associations = typesInformationResolver.getAssociationsFromClass(parentClassName);
         } catch (TypesInformationException ex) {
-            throw new QueryTranslationException("Error determining associations: " + ex.getMessage(), ex);
+            throw new QueryTranslationException("Error determining available associations: " + ex.getMessage(), ex);
         }
-        String associationClassName = null;
+        ClassAssociation associationIdent = null;
         for (ClassAssociation assoc : associations) {
             if (assoc.getEndName().equals(na.getEndName())) {
-                associationClassName = assoc.getClassName();
+                associationIdent = assoc;
                 break;
             }
         }
-        aliasIndex++;
-        buff.append("left join fetch ").append(parentAlias).append('.').append(na.getEndName())
-            .append(" as ").append(myAlias).append(' ');
-        if (na.get_instanceof() != null) {
-            buff.append("where ").append(myAlias).append(".class = ?");
-            Object classDiscriminator = null;
-            try {
-                classDiscriminator = typesInformationResolver.getClassDiscriminatorValue(na.get_instanceof());
-                parameters.add(classDiscriminator);
-            } catch (TypesInformationException ex) {
-                throw new QueryTranslationException("Error determining class discriminator: " + ex.getMessage(), ex);
+        // if the association is to an ISO type, we're done processing
+        if (isAssociationToIsoType(associationIdent)) {
+            LOG.debug("Discovered association population of an ISO type.  " +
+            		"These are already populated.  No further processing to perform.");
+        } else {
+            aliasIndex++;
+            buff.append("left join fetch ").append(parentAlias).append('.').append(na.getEndName())
+                .append(" as ").append(myAlias).append(' ');
+            if (na.get_instanceof() != null) {
+                buff.append("where ").append(myAlias).append(".class = ?");
+                Object classDiscriminator = null;
+                try {
+                    classDiscriminator = typesInformationResolver.getClassDiscriminatorValue(na.get_instanceof());
+                    parameters.add(classDiscriminator);
+                } catch (TypesInformationException ex) {
+                    throw new QueryTranslationException("Error determining class discriminator: " + ex.getMessage(), ex);
+                }
+            }
+            if (na.getNamedAssociationList() != null && na.getNamedAssociationList().getNamedAssociation() != null) {
+                for (NamedAssociation subAssociation : na.getNamedAssociationList().getNamedAssociation()) {
+                    appendNamedJoins(subAssociation, associationIdent.getClassName(), myAlias, aliasIndex, buff, parameters);
+                }
+            } else if (na.getPopulationDepth() != null) {
+                int depth = na.getPopulationDepth().getDepth();
+                Set<String> joinedAssociations = new HashSet<String>();
+                appendJoinsByDepth(buff, associationIdent.getClassName(), myAlias, aliasIndex, 0, depth, joinedAssociations);
             }
         }
-        if (na.getNamedAssociationList() != null && na.getNamedAssociationList().getNamedAssociation() != null) {
-            for (NamedAssociation subAssociation : na.getNamedAssociationList().getNamedAssociation()) {
-                appendNamedJoins(subAssociation, associationClassName, myAlias, aliasIndex, buff, parameters);
-            }
-        } else if (na.getPopulationDepth() != null) {
-            int depth = na.getPopulationDepth().getDepth();
-            Set<String> joinedAssociations = new HashSet<String>();
-            appendJoinsByDepth(buff, associationClassName, myAlias, aliasIndex, 0, depth, joinedAssociations);
+    }
+    
+    
+    private boolean isAssociationToIsoType(ClassAssociation ca) throws QueryTranslationException {
+        Class<?> clazz = null;
+        try {
+            clazz = Class.forName(ca.getClassName());
+        } catch (ClassNotFoundException ex) {
+            throw new QueryTranslationException("Error loading class " + ca.getClassName());
         }
+        DatatypeFlavor flavor = DatatypeFlavor.getFlavorOfClass(clazz);
+        return !flavor.equals(DatatypeFlavor.STANDARD);
     }
 }
