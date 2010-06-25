@@ -6,14 +6,17 @@ import java.lang.reflect.Method;
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.Stack;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.cagrid.cql2.AssociationPopulationSpecification;
 import org.cagrid.cql2.AttributeValue;
 import org.cagrid.cql2.BinaryPredicate;
 import org.cagrid.cql2.CQLAssociatedObject;
@@ -22,7 +25,9 @@ import org.cagrid.cql2.CQLGroup;
 import org.cagrid.cql2.CQLObject;
 import org.cagrid.cql2.CQLQuery;
 import org.cagrid.cql2.CQLQueryModifier;
+import org.cagrid.cql2.CQLTargetObject;
 import org.cagrid.cql2.GroupLogicalOperator;
+import org.cagrid.cql2.NamedAssociation;
 import org.cagrid.cql2.UnaryPredicate;
 import org.cagrid.iso21090.sdkquery.translator.ConstantValueResolver;
 import org.cagrid.iso21090.sdkquery.translator.CqlDataBucket;
@@ -30,7 +35,6 @@ import org.cagrid.iso21090.sdkquery.translator.DatatypeFlavor;
 import org.cagrid.iso21090.sdkquery.translator.ParameterizedHqlQuery;
 import org.cagrid.iso21090.sdkquery.translator.QueryTranslationException;
 import org.cagrid.iso21090.sdkquery.translator.TypesInformationException;
-import org.cagrid.iso21090.sdkquery.translator.TypesInformationResolver;
 
 
 /** 
@@ -65,12 +69,12 @@ public class CQL2ToParameterizedHQL {
         predicateValues.put(UnaryPredicate.IS_NULL, "is null");
     }
     
-    private TypesInformationResolver typesInformationResolver = null;
+    private Cql2TypesInformationResolver typesInformationResolver = null;
     private ConstantValueResolver constantValueResolver = null;
     private boolean caseInsensitive;
     
     
-    public CQL2ToParameterizedHQL(TypesInformationResolver typesInfoResolver, 
+    public CQL2ToParameterizedHQL(Cql2TypesInformationResolver typesInfoResolver, 
         ConstantValueResolver constantValueResolver, boolean caseInsensitive) {
         this.typesInformationResolver = typesInfoResolver;
         this.constantValueResolver = constantValueResolver;
@@ -107,7 +111,8 @@ public class CQL2ToParameterizedHQL {
             + (hasSubclasses ? " has subclasses" : " has no subclasse"));
         
         // begin processing at the target level
-		processTarget(query.getCQLTargetObject(), rawHql, parameters, hasSubclasses);
+		processTarget(query.getCQLTargetObject(), query.getAssociationPopulationSpecification(), 
+		    rawHql, parameters, hasSubclasses);
         
         // apply query modifiers
 		if (query.getCQLQueryModifier() != null) {
@@ -175,8 +180,8 @@ public class CQL2ToParameterizedHQL {
 	 * 		A flag to indicate the target has subclasses, which we should not return
 	 * @throws QueryTranslationException
 	 */
-	private void processTarget(CQLObject target, StringBuilder hql, 
-	    List<java.lang.Object> parameters, boolean avoidSubclasses) throws QueryTranslationException {
+	private void processTarget(CQLTargetObject target, AssociationPopulationSpecification associationPopulation,
+	    StringBuilder hql, List<java.lang.Object> parameters, boolean avoidSubclasses) throws QueryTranslationException {
 		LOG.debug("Processing target " + target.getClassName());
         
         // the stack of associations processed at the current depth of the query
@@ -187,6 +192,11 @@ public class CQL2ToParameterizedHQL {
 		hql.append("From ").append(target.getClassName()).append(" as ").append(TARGET_ALIAS).append(' ');
 		// keep track of where we are in processing
 		addTypeProcessingInformation(typesProcessingList, target.getClassName(), TARGET_ALIAS);
+		
+		// deal with populating associations
+		if (associationPopulation != null) {
+            processAssociationFetchClause(target.getClassName(), associationPopulation, hql, parameters);
+        }
 		
 		if (target.getCQLAttribute() != null) {
             hql.append("where ");
@@ -936,5 +946,96 @@ public class CQL2ToParameterizedHQL {
         LOG.debug("Removing last where statement from HQL");
         int index = hql.lastIndexOf("where ");
         hql.delete(index, index + "where ".length());
+    }
+    
+    
+    private void processAssociationFetchClause(String targetClassName, 
+        AssociationPopulationSpecification spec, StringBuilder hql, List<Object> parameters) throws QueryTranslationException { 
+        if (spec.getPopulationDepth() != null) {
+            int maxDepth = spec.getPopulationDepth().getDepth();
+            Set<String> joinedAssociations = new HashSet<String>();
+            appendJoinsByDepth(hql, targetClassName, TARGET_ALIAS, 0, 0, maxDepth, joinedAssociations);
+        } else {
+            int aliasIndex = 0;
+            NamedAssociation[] namedAssociations = spec.getNamedAssociationList().getNamedAssociation();
+            for (NamedAssociation na : namedAssociations) {
+                appendNamedJoins(na, targetClassName, TARGET_ALIAS, aliasIndex, hql, parameters);
+            }
+        }
+    }
+
+
+    private void appendJoinsByDepth(StringBuilder buff, String parentClassName, String parentAlias, int aliasIndex,
+        int currentDepth, int maxDepth, Set<String> joinedAssociations) throws QueryTranslationException {
+        LOG.debug("Populating associations of " + parentClassName + " to depth" + maxDepth 
+            + "(currently at level " + currentDepth + ")");
+        currentDepth++;
+        if (currentDepth > maxDepth) {
+            return;
+        }
+        List<ClassAssociation> associations = null;
+        try {
+            associations = typesInformationResolver.getAssociationsFromClass(parentClassName);
+        } catch (TypesInformationException ex) {
+            throw new QueryTranslationException("Error determining associations: " + ex.getMessage(), ex);
+        }
+        for (ClassAssociation ca : associations) {
+            String fetchName = ca.getClassName() + "." + ca.getEndName();
+            if (!joinedAssociations.contains(fetchName)) {
+                joinedAssociations.add(fetchName);
+                String myAlias = "fetchAlias" + aliasIndex;
+                aliasIndex++;
+                buff.append("left join fetch ").append(parentAlias).append('.')
+                    .append(ca.getEndName()).append(" as ").append(myAlias).append(' ');
+                int newMaxDepth = maxDepth;
+                int newCurrentDepth = currentDepth;
+                appendJoinsByDepth(buff, ca.getClassName(), myAlias, aliasIndex, 
+                    newCurrentDepth, newMaxDepth, joinedAssociations);
+            }
+        }
+    }
+
+
+    private void appendNamedJoins(NamedAssociation na, String parentClassName, 
+        String parentAlias, int aliasIndex, StringBuilder buff, List<Object> parameters)
+        throws QueryTranslationException {
+        LOG.debug("Populating named associations");
+        String myAlias = "fetchAlias" + aliasIndex;
+        // get associations from the parent class, determine associated class goes with the named association's end name
+        List<ClassAssociation> associations = null;
+        try {
+            associations = typesInformationResolver.getAssociationsFromClass(parentClassName);
+        } catch (TypesInformationException ex) {
+            throw new QueryTranslationException("Error determining associations: " + ex.getMessage(), ex);
+        }
+        String associationClassName = null;
+        for (ClassAssociation assoc : associations) {
+            if (assoc.getEndName().equals(na.getEndName())) {
+                associationClassName = assoc.getClassName();
+                break;
+            }
+        }
+        aliasIndex++;
+        buff.append("left join fetch ").append(parentAlias).append('.').append(na.getEndName())
+            .append(" as ").append(myAlias).append(' ');
+        if (na.get_instanceof() != null) {
+            buff.append("where ").append(myAlias).append(".class = ?");
+            Object classDiscriminator = null;
+            try {
+                classDiscriminator = typesInformationResolver.getClassDiscriminatorValue(na.get_instanceof());
+                parameters.add(classDiscriminator);
+            } catch (TypesInformationException ex) {
+                throw new QueryTranslationException("Error determining class discriminator: " + ex.getMessage(), ex);
+            }
+        }
+        if (na.getNamedAssociationList() != null && na.getNamedAssociationList().getNamedAssociation() != null) {
+            for (NamedAssociation subAssociation : na.getNamedAssociationList().getNamedAssociation()) {
+                appendNamedJoins(subAssociation, associationClassName, myAlias, aliasIndex, buff, parameters);
+            }
+        } else if (na.getPopulationDepth() != null) {
+            int depth = na.getPopulationDepth().getDepth();
+            Set<String> joinedAssociations = new HashSet<String>();
+            appendJoinsByDepth(buff, associationClassName, myAlias, aliasIndex, 0, depth, joinedAssociations);
+        }
     }
 }

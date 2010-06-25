@@ -17,7 +17,6 @@ import java.io.StringWriter;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.text.DateFormat;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.LinkedList;
@@ -42,11 +41,11 @@ import org.cagrid.cql2.results.CQLQueryResults;
 import org.cagrid.cql2.results.CQLResult;
 import org.cagrid.cql2.results.TargetAttribute;
 import org.cagrid.iso21090.sdkquery.translator.ConstantValueResolver;
-import org.cagrid.iso21090.sdkquery.translator.HibernateConfigTypesInformationResolver;
 import org.cagrid.iso21090.sdkquery.translator.IsoDatatypesConstantValueResolver;
 import org.cagrid.iso21090.sdkquery.translator.ParameterizedHqlQuery;
-import org.cagrid.iso21090.sdkquery.translator.TypesInformationResolver;
 import org.cagrid.iso21090.sdkquery.translator.cql2.CQL2ToParameterizedHQL;
+import org.cagrid.iso21090.sdkquery.translator.cql2.Cql2TypesInformationResolver;
+import org.cagrid.iso21090.sdkquery.translator.cql2.HibernateConfigCql2TypesInformationResolver;
 import org.exolab.castor.types.AnyNode;
 import org.globus.wsrf.security.SecurityManager;
 import org.hibernate.cfg.Configuration;
@@ -264,6 +263,14 @@ public class SDK43CQL2QueryProcessor extends CQL2QueryProcessor {
             public CQLResult next() {
                 CQLObjectResult obj = new CQLObjectResult();
                 Object rawObject = rawObjectIter.next();
+                LOG.debug("Stripping proxy impl from result instance");
+                try {
+                    // TODO: should the association flag be false / true?
+                    rawObject = XMLUtility.convertFromProxy(rawObject, false);
+                } catch (XMLUtilityException ex) {
+                    LOG.error("Error stripping proxy from result instance: " + ex.getMessage(), ex);
+                    throw new NoSuchElementException("Error stripping proxy from result instance: " + ex.getMessage());
+                }
                 InputStream wsdd = getConfiguredWsddStream();
                 StringWriter writer = new StringWriter();
                 AnyNode node = null;
@@ -386,30 +393,13 @@ public class SDK43CQL2QueryProcessor extends CQL2QueryProcessor {
             config.configure();
             configStream.close();
             LOG.debug("Initializing types information resolver");
-            TypesInformationResolver typesInfoResolver = new HibernateConfigTypesInformationResolver(config, true);
+            Cql2TypesInformationResolver typesInfoResolver = new HibernateConfigCql2TypesInformationResolver(config, true);
             LOG.debug("Loading ISO constant resolver");
             ConstantValueResolver constantResolver = new IsoDatatypesConstantValueResolver();
             LOG.debug("Initializing CQL 2 to HQL translator");
             cqlTranslator = new CQL2ToParameterizedHQL(typesInfoResolver, constantResolver, false);
         }
         return cqlTranslator;
-    }
-    
-    
-    private List<Object> deproxifyResultsList(List<?> rawResults) throws QueryProcessingException {
-        List<Object> nonProxied = new ArrayList<Object>();
-        Iterator<?> rawIter = rawResults.iterator();
-        while (rawIter.hasNext()) {
-            Object converted;
-            try {
-                converted = XMLUtility.convertFromProxy(rawIter.next(), false);
-            } catch (XMLUtilityException ex) {
-                throw new QueryProcessingException(
-                    "Error converting proxied datatype instance: " + ex.getMessage(), ex);
-            }
-            nonProxied.add(converted);
-        }
-        return nonProxied;
     }
     
     
