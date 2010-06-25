@@ -97,6 +97,13 @@ public class DCQL2SerializationAndValidationTestCase extends TestCase {
             System.err.println(text);
             fail("Error validating serialized DCQL 2 query: " + ex.getMessage());
         }
+        // deserialize
+        try {
+            DCQL2SerializationUtil.deserializeDcql2Query(text);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            fail("Error deserializing serialized XML! " + ex.getMessage());
+        }
     }
     
     
