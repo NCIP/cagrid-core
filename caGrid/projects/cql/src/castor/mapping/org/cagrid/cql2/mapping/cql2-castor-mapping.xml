@@ -134,11 +134,11 @@
       <bind-xml name="value" node="text" />
     </field>
   </class>
-  <class name="org.cagrid.cql2.DistinctAttribute">
+  <class name="org.cagrid.cql2.DistinctAttribute" extends="org.cagrid.cql2.NamedAttribute">
     <description >Default mapping for class org.cagrid.cql2.DistinctAttribute</description>
     <map-to xml="DistinctAttribute" ns-uri="http://CQL.caBIG/2/org.cagrid.cql2" ns-prefix="cql2"/>
-    <field name="attributeName" type="java.lang.String">
-      <bind-xml name="attributeName" node="attribute" />
+    <field name="aggregation" type="org.cagrid.cql2.Aggregation">
+      <bind-xml name="aggregation" node="attribute" />
     </field>
   </class>
   <class name="org.cagrid.cql2.NamedAssociation">

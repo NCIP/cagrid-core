@@ -98,12 +98,14 @@ public class DCQL2SerializationAndValidationTestCase extends TestCase {
             fail("Error validating serialized DCQL 2 query: " + ex.getMessage());
         }
         // deserialize
+        DCQLQuery deserializedQuery = null;
         try {
-            DCQL2SerializationUtil.deserializeDcql2Query(text);
+            deserializedQuery = DCQL2SerializationUtil.deserializeDcql2Query(text);
         } catch (Exception ex) {
             ex.printStackTrace();
             fail("Error deserializing serialized XML! " + ex.getMessage());
         }
+        assertEquals("Deserialized query didn't match the input", query, deserializedQuery);
     }
     
     
@@ -366,7 +368,7 @@ public class DCQL2SerializationAndValidationTestCase extends TestCase {
     }
     
     
-    public void testQueryModifierDistinctAttribute() {
+    public void testQueryModifierDistinctAttributeWithAggregation() {
         DCQLQuery query = new DCQLQuery();
         DCQLObject target = new DCQLObject();
         target.setName("foo.bar");
@@ -376,6 +378,25 @@ public class DCQL2SerializationAndValidationTestCase extends TestCase {
         DistinctAttribute da = new DistinctAttribute();
         da.setAttributeName("id");
         da.setAggregation(Aggregation.MAX);
+        mods.setDistinctAttribute(da);
+        
+        query.setTargetObject(target);
+        query.setQueryModifier(mods);
+        query.setTargetServiceURL(new String[] {"http://fake.com"});
+        
+        validate(query);
+    }
+    
+    
+    public void testQueryModifierDistinctAttribute() {
+        DCQLQuery query = new DCQLQuery();
+        DCQLObject target = new DCQLObject();
+        target.setName("foo.bar");
+        target.set_instanceof("zor");
+        
+        CQLQueryModifier mods = new CQLQueryModifier();
+        DistinctAttribute da = new DistinctAttribute();
+        da.setAttributeName("id");
         mods.setDistinctAttribute(da);
         
         query.setTargetObject(target);
