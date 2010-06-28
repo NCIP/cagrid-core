@@ -71,13 +71,19 @@ public class AggregationStory extends Story {
         // DCQL 2
         steps.add(new Dcql2AggregationStep(FQPTestingConstants.DCQL2_QUERIES_LOCATION + "exampleAggregation1.xml",
             FQPTestingConstants.DCQL2_GOLD_LOCATION + "exampleAggregation1_gold.xml",
-            queryHelper, serviceUrls));
+            queryHelper, serviceUrls, false));
         steps.add(new Dcql2AggregationStep(FQPTestingConstants.DCQL2_QUERIES_LOCATION + "exampleAggregation2.xml",
             FQPTestingConstants.DCQL2_GOLD_LOCATION + "exampleAggregation2_gold.xml",
-            queryHelper, serviceUrls));
+            queryHelper, serviceUrls, false));
         steps.add(new Dcql2AggregationStep(FQPTestingConstants.DCQL2_QUERIES_LOCATION + "emptyResultsAggregation.xml",
             FQPTestingConstants.DCQL2_GOLD_LOCATION + "emptyResultsAggregation_gold.xml",
-            queryHelper, serviceUrls));
+            queryHelper, serviceUrls, false));
+        steps.add(new Dcql2AggregationStep(FQPTestingConstants.DCQL2_QUERIES_LOCATION + "exampleAggregation1_modifier_maxZip.xml",
+            FQPTestingConstants.DCQL2_GOLD_LOCATION + "exampleAggregation1_modifier_maxZip_gold.xml",
+            queryHelper, serviceUrls, true));
+        steps.add(new Dcql2AggregationStep(FQPTestingConstants.DCQL2_QUERIES_LOCATION + "exampleAggregation1_modifier_minZip.xml",
+            FQPTestingConstants.DCQL2_GOLD_LOCATION + "exampleAggregation1_modifier_minZip_gold.xml",
+            queryHelper, serviceUrls, true));
         return steps;
     }
 }
