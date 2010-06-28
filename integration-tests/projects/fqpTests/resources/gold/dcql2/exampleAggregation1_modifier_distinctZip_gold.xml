@@ -1,0 +1,29 @@
+<ns1:CQLQueryResults targetClassname="gov.nih.nci.cacoresdk.domain.onetoone.unidirectional.Address" xmlns:ns1="http://CQL.caBIG/2/org.cagrid.cql2.results">
+ <ns1:AttributeResult>
+  <ns1:Attribute name="zip" value="Zip1"/>
+ </ns1:AttributeResult>
+ <ns1:AttributeResult>
+  <ns1:Attribute name="zip" value="Zip2"/>
+ </ns1:AttributeResult>
+ <ns1:AttributeResult>
+  <ns1:Attribute name="zip" value="Zip3"/>
+ </ns1:AttributeResult>
+ <ns1:AttributeResult>
+  <ns1:Attribute name="zip" value="Zip4"/>
+ </ns1:AttributeResult>
+ <ns1:AttributeResult>
+  <ns1:Attribute name="zip" value="Zip5"/>
+ </ns1:AttributeResult>
+ <ns1:AttributeResult>
+  <ns1:Attribute name="zip" value="Zip6"/>
+ </ns1:AttributeResult>
+ <ns1:AttributeResult>
+  <ns1:Attribute name="zip" value="Zip7"/>
+ </ns1:AttributeResult>
+ <ns1:AttributeResult>
+  <ns1:Attribute name="zip" value="Zip8"/>
+ </ns1:AttributeResult>
+ <ns1:AttributeResult>
+  <ns1:Attribute name="zip" value="Zip9"/>
+ </ns1:AttributeResult>
+</ns1:CQLQueryResults>

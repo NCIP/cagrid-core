@@ -58,7 +58,7 @@ public class Dcql2AggregationStep extends BaseDcql2QueryExecutionStep {
             CQLQueryResults goldResults = loadGoldCqlResults();
             writer.write("\nGoldResults:\n");
             CQL2SerializationUtil.serializeCql2QueryResults(goldResults, writer);
-            LOG.debug(writer.getBuffer().toString());
+            System.out.println(writer.getBuffer().toString());
             QueryResultsVerifier.verifyCql2Results(testResults, goldResults);
         }
     }

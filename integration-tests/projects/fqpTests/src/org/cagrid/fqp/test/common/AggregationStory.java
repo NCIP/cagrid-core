@@ -87,6 +87,10 @@ public class AggregationStory extends Story {
         steps.add(new Dcql2AggregationStep(FQPTestingConstants.DCQL2_QUERIES_LOCATION + "exampleAggregation1_modifier_countZip.xml",
             FQPTestingConstants.DCQL2_GOLD_LOCATION + "exampleAggregation1_modifier_countZip_gold.xml",
             queryHelper, serviceUrls, false));
+        steps.add(new Dcql2AggregationStep(FQPTestingConstants.DCQL2_QUERIES_LOCATION + "exampleAggregation1_modifier_distinctZip.xml",
+            FQPTestingConstants.DCQL2_GOLD_LOCATION + "exampleAggregation1_modifier_distinctZip_gold.xml",
+            queryHelper, serviceUrls, false));
+        // TODO: add non-distinct (named) attribute test
         return steps;
     }
 }

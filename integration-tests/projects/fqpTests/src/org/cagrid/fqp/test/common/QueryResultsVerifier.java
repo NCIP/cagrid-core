@@ -8,8 +8,9 @@ import gov.nih.nci.cagrid.dcqlresult.DCQLResult;
 import gov.nih.nci.cagrid.fqp.processor.DCQL2Aggregator;
 import gov.nih.nci.cagrid.fqp.processor.exceptions.FederatedQueryProcessingException;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
-import java.util.LinkedList;
 import java.util.List;
 
 import org.cagrid.cql.utilities.iterator.CQL2QueryResultsIterator;
@@ -51,8 +52,8 @@ public class QueryResultsVerifier extends Assert {
             gold, QueryResultsVerifier.class.getResourceAsStream(FQPTestingConstants.CLIENT_WSDD));
         
         // turn results into lists
-        List<Object> testItems = new LinkedList<Object>();
-        List<Object> goldItems = new LinkedList<Object>();
+        List<Object> testItems = new ArrayTestingList<Object>();
+        List<Object> goldItems = new ArrayTestingList<Object>();
         while (testIter.hasNext()) {
             testItems.add(testIter.next());
         }
@@ -81,8 +82,8 @@ public class QueryResultsVerifier extends Assert {
             QueryResultsVerifier.class.getResourceAsStream(FQPTestingConstants.CLIENT_WSDD));
         
         // turn results into lists
-        List<Object> testItems = new LinkedList<Object>();
-        List<Object> goldItems = new LinkedList<Object>();
+        List<Object> testItems = new ArrayTestingList<Object>();
+        List<Object> goldItems = new ArrayTestingList<Object>();
         while (testIter.hasNext()) {
             testItems.add(testIter.next());
         }
@@ -105,7 +106,7 @@ public class QueryResultsVerifier extends Assert {
     
     private static CQLQueryResults aggregateDcqlResults(DCQLQueryResultsCollection results) {
         CQLQueryResults cqlResults = new CQLQueryResults();
-        List<CQLObjectResult> allObjectResults = new LinkedList<CQLObjectResult>();
+        List<CQLObjectResult> allObjectResults = new ArrayList<CQLObjectResult>();
         String targetName = null;
         for (DCQLResult result : results.getDCQLResult()) {
             CQLQueryResults singleCqlResult = result.getCQLQueryResultCollection();
@@ -139,5 +140,35 @@ public class QueryResultsVerifier extends Assert {
             fail("Error aggregating DCQL 2 query results: " + ex.getMessage());
         }
         return aggregated;
+    }
+    
+    
+    private static class ArrayTestingList<E> extends ArrayList<E> {
+        
+        @Override
+        public int indexOf(Object o) {
+            if (o == null) {
+                for (int i = 0; i < size(); i++) {
+                    if (get(i) == null) {
+                        return i;
+                    }
+                }
+            } else {
+                for (int i = 0; i < size(); i++) {
+                    Object test = get(i);
+                    if (o.getClass().isArray()) {
+                        if (test != null && test.getClass().isArray()) {
+                            if (Arrays.deepEquals((Object[]) o, (Object[]) test)) {
+                                return i;
+                            }
+
+                        }
+                    } else if (o.equals(test)) {
+                        return i;
+                    }
+                }
+            }
+            return -1;
+        }
     }
 }
