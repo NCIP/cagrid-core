@@ -51,6 +51,8 @@ import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -124,8 +126,6 @@ public class ModificationViewer extends ApplicationComponent {
     private JButton undoButton = null;
 
     private JButton reloadButton = null;
-
-    private boolean dirty = false;
 
     private JTabbedPane contentTabbedPane = null;
 
@@ -309,10 +309,13 @@ public class ModificationViewer extends ApplicationComponent {
      */
     private void initialize(BusyDialogRunnable dialog) throws Exception {
         if (this.methodsDirectory != null) {
+        	Properties    introduceServiceProperties = null;
             try {
-
-                this.info = new ServiceInformation(this.methodsDirectory);
-                Properties introduceServiceProperties = this.info.getIntroduceServiceProperties();
+            	
+                String introduceXML = this.methodsDirectory + File.separator + IntroduceConstants.INTRODUCE_XML_FILE;
+                File servicePropertiesFile = new File(this.methodsDirectory.getAbsolutePath() + File.separator
+                        + IntroduceConstants.INTRODUCE_PROPERTIES_FILE);
+                introduceServiceProperties = loadProperties(servicePropertiesFile);
 
                 String extensionsProp = introduceServiceProperties
                     .getProperty(IntroduceConstants.INTRODUCE_SKELETON_EXTENSIONS);
@@ -375,8 +378,7 @@ public class ModificationViewer extends ApplicationComponent {
                             }
 
                             // check extensions for deprecation or removal.
-                            String extensionsProp = info.getIntroduceServiceProperties().getProperty(
-                                IntroduceConstants.INTRODUCE_SKELETON_EXTENSIONS);
+                            String extensionsProp = introduceServiceProperties.getProperty(IntroduceConstants.INTRODUCE_SKELETON_EXTENSIONS);
                             StringTokenizer strtok = new StringTokenizer(extensionsProp, ",", false);
                             strtok = new StringTokenizer(extensionsProp, ",", false);
                             String newExtension = "";
@@ -450,11 +452,12 @@ public class ModificationViewer extends ApplicationComponent {
 
                             }
 
-                            info.getIntroduceServiceProperties().setProperty(
-                                IntroduceConstants.INTRODUCE_SKELETON_EXTENSIONS, newExtension);
-                            info.persistInformation();
-                            info = null;
+                            introduceServiceProperties.setProperty(IntroduceConstants.INTRODUCE_SKELETON_EXTENSIONS, newExtension);
+                            File servicePropertiesFile = new File(this.methodsDirectory.getAbsolutePath() + File.separator
+                                    + IntroduceConstants.INTRODUCE_PROPERTIES_FILE);
+                            storeProperties(introduceServiceProperties, servicePropertiesFile, "Introduce Properties");
 
+                            
                             UpgradeStatus status = upgrader.upgrade();
                             logger.info("SERVICE UPGRADE STATUS:\n" + status);
                             int answer = UpgradeStatusView.showUpgradeStatusView(status);
@@ -1449,7 +1452,7 @@ public class ModificationViewer extends ApplicationComponent {
 
                             info.createArchive();
                         }
-                        ModificationViewer.this.dirty = false;
+
                         this.setProgressText("");
 
                         for (int i = 0; i < newExtsNames.size(); i++) {
@@ -2155,5 +2158,21 @@ public class ModificationViewer extends ApplicationComponent {
         }
         return namespaceManageTabbedPane;
     }
+
+    
+    private Properties loadProperties(File propsFile) throws IOException {
+        Properties props = new Properties();
+        FileInputStream fis = new FileInputStream(propsFile);
+        props.load(fis);
+        fis.close();
+        return props;
+    }
+    
+    private void storeProperties(Properties props, File propsFile, String comments) throws IOException {
+        FileOutputStream fos = new FileOutputStream(propsFile);
+        props.store(fos, comments);
+        fos.close();
+    }
+
 
 }
