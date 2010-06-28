@@ -1,9 +1,0 @@
-<ns1:ClassMappings xmlns:ns1="http://gov.nih.nci.cagrid.data">
- <ns2:mapping className="gov.nih.nci.cabio.domain.Gene" qname="{gme://caCORE.caCORE/3.2/gov.nih.nci.cabio.domain}Gene" xsi:type="ns2:classToQname" xmlns:ns2="http://gov.nih.nci.cagrid.data/ClassMappings" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"/>
- <ns3:mapping className="gov.nih.nci.cabio.domain.Chromosome" qname="{gme://caCORE.caCORE/3.2/gov.nih.nci.cabio.domain}Chromosome" xsi:type="ns3:classToQname" xmlns:ns3="http://gov.nih.nci.cagrid.data/ClassMappings" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"/>
- <ns4:mapping className="gov.nih.nci.cabio.domain.Taxon" qname="{gme://caCORE.caCORE/3.2/gov.nih.nci.cabio.domain}Taxon" xsi:type="ns4:classToQname" xmlns:ns4="http://gov.nih.nci.cagrid.data/ClassMappings" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"/>
- <ns5:mapping className="gov.nih.nci.cabio.domain.Library" qname="{gme://caCORE.caCORE/3.2/gov.nih.nci.cabio.domain}Library" xsi:type="ns5:classToQname" xmlns:ns5="http://gov.nih.nci.cagrid.data/ClassMappings" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"/>
- <ns6:mapping className="gov.nih.nci.cabio.domain.Clone" qname="{gme://caCORE.caCORE/3.2/gov.nih.nci.cabio.domain}Clone" xsi:type="ns6:classToQname" xmlns:ns6="http://gov.nih.nci.cagrid.data/ClassMappings" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"/>
- <ns7:mapping className="gov.nih.nci.cabio.domain.Sequence" qname="{gme://caCORE.caCORE/3.2/gov.nih.nci.cabio.domain}Sequence" xsi:type="ns7:classToQname" xmlns:ns7="http://gov.nih.nci.cagrid.data/ClassMappings" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"/>
- <ns8:mapping className="gov.nih.nci.cabio.domain.Target" qname="{gme://caCORE.caCORE/3.2/gov.nih.nci.cabio.domain}Target" xsi:type="ns8:classToQname" xmlns:ns8="http://gov.nih.nci.cagrid.data/ClassMappings" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"/>
-</ns1:ClassMappings>

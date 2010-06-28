@@ -1,6 +1,0 @@
-Custom castor mappings for SDK data services:
-
-1) copy the castor mapping file to the source root of your service
-2) rename the service to prefix it with your service name (eg if your service is "Foo", call it "Foo-xml-mapping.xml")
-3) edit the client-config.wsdd to add a global parameter named "castorMapping" with a value of the xml mapping file name
-4) edit the server-config.wsdd to add a service parameter named "castorMapping" with a value of the xml mapping file name
