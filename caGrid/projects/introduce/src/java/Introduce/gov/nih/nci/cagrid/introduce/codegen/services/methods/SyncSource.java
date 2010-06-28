@@ -312,7 +312,7 @@ public class SyncSource {
                         }
                     } else {
                         methodString += "return boxedResult.get"
-                            + CommonTools.fixPortTypeMethodName(info.getType().getType()) + "();\n";
+                            + CommonTools.fixPortTypeMethodName(JavaUtils.xmlNameToJava(info.getType().getType())) + "();\n";
                     }
                 }
             }
@@ -492,7 +492,7 @@ public class SyncSource {
                     methodString += "boxedResult.setResponse(" + var + "." + methodName + "(" + params + "));\n";
                 } else {
                     methodString += "boxedResult.set"
-                        + CommonTools.fixPortTypeMethodName(outputNamespace.getType().getType()) + "(" + var + "."
+                        + CommonTools.fixPortTypeMethodName(JavaUtils.xmlNameToJava(outputNamespace.getType().getType())) + "(" + var + "."
                         + methodName + "(" + params + "));\n";
                 }
             }
