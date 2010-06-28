@@ -1,0 +1,3 @@
+<ns1:CQLQueryResults targetClassname="gov.nih.nci.cacoresdk.domain.onetoone.unidirectional.Address" xmlns:ns1="http://CQL.caBIG/2/org.cagrid.cql2.results">
+ <ns1:AggregationResult attributeName="zip" value="Zip9" aggregation="MAX"/>
+</ns1:CQLQueryResults>
