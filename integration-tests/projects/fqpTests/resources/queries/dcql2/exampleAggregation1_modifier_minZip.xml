@@ -5,6 +5,6 @@
  <ns1:TargetServiceURL>http://localhost:8888/wsrf/services/cagrid/ExampleSdkService1</ns1:TargetServiceURL>
  <ns1:TargetServiceURL>http://localhost:8888/wsrf/services/cagrid/ExampleSdkService2</ns1:TargetServiceURL>
  <ns1:QueryModifier>
-  <ns1:DistinctAttribute attributeName="zip" aggregation="MIN"/>
+  <ns2:DistinctAttribute attributeName="zip" aggregation="MIN" xmlns:ns2="http://CQL.caBIG/2/org.cagrid.cql2"/>
  </ns1:QueryModifier>
 </ns1:DCQLQuery>
