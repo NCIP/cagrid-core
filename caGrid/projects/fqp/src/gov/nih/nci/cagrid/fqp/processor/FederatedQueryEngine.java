@@ -187,6 +187,7 @@ public class FederatedQueryEngine {
         
         // if the DCQL query has a modifier, append it to the CQL query
         if (dcqlQuery.getQueryModifier() != null) {
+            LOG.debug("DCQL containes a query modifier, applying it to final CQL");
             cqlQuery.setCQLQueryModifier(dcqlQuery.getQueryModifier());
         }
         
