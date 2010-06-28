@@ -3,12 +3,14 @@ package org.cagrid.fqp.test.common.steps.dcql2;
 import gov.nih.nci.cagrid.fqp.processor.exceptions.FederatedQueryProcessingException;
 import gov.nih.nci.cagrid.fqp.stubs.types.FederatedQueryProcessingFault;
 
+import java.io.StringWriter;
 import java.rmi.RemoteException;
 import java.util.HashSet;
 import java.util.Set;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.cagrid.cql.utilities.CQL2SerializationUtil;
 import org.cagrid.cql.utilities.QueryConversionException;
 import org.cagrid.cql2.results.CQLQueryResults;
 import org.cagrid.data.dcql.DCQLQuery;
@@ -50,7 +52,13 @@ public class Dcql2AggregationStep extends BaseDcql2QueryExecutionStep {
         CQLQueryResults testResults = performAggregation(query);
         if (testResults != null) {
             LOG.debug("Verifying against " + getGoldFilenname());
+            StringWriter writer = new StringWriter();
+            writer.write("Test Results:\n");
+            CQL2SerializationUtil.serializeCql2QueryResults(testResults, writer);
             CQLQueryResults goldResults = loadGoldCqlResults();
+            writer.write("\nGoldResults:\n");
+            CQL2SerializationUtil.serializeCql2QueryResults(goldResults, writer);
+            LOG.debug(writer.getBuffer().toString());
             QueryResultsVerifier.verifyCql2Results(testResults, goldResults);
         }
     }
