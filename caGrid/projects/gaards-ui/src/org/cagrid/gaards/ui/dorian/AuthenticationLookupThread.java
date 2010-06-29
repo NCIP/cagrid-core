@@ -76,7 +76,7 @@ public class AuthenticationLookupThread extends Runner {
 							this.authenticationServices.get(i)));
 				}
 				GridApplication.getContext().getApplication()
-						.getThreadManager().executeGroup(grp);
+						.getThreadManager().executeGroupInBackground(grp);
 			}
 
 		} catch (Throwable e) {
