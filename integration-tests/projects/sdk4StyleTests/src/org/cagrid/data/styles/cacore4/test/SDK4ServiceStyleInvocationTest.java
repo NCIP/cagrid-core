@@ -64,7 +64,7 @@ public class SDK4ServiceStyleInvocationTest extends Story {
     }
 
 
-    protected Vector steps() {
+    protected Vector<Step> steps() {
         Vector<Step> steps = new Vector<Step>();
         steps.add(new SDK4StyleCreationStep(serviceTestInfo, getIntroduceBaseDir()));
         steps.add(new UnpackContainerStep(container));
