@@ -605,48 +605,58 @@ public class DomainModelConfigPanel extends DataServiceModificationSubPanel {
         proj.setShortName(model.getProjectShortName());
         proj.setVersion(model.getProjectVersion());
 
-        // walk classes from the model, grouping classes by package
-        Map<String, List<String>> packageToClass = new HashMap<String, List<String>>();
+        // walk classes from the model, grouping classes by package, create ModelPackages and ModelClasses
+        Map<String, ModelPackage> packagesByName = new HashMap<String, ModelPackage>();
         if (model.getExposedUMLClassCollection() != null && model.getExposedUMLClassCollection().getUMLClass() != null) {
             for (UMLClass umlClass : model.getExposedUMLClassCollection().getUMLClass()) {
                 String packName = umlClass.getPackageName();
-                List<String> classList = packageToClass.get(packName);
-                if (classList == null) {
-                    classList = new LinkedList<String>();
-                    packageToClass.put(packName, classList);
+                ModelPackage modelPack = packagesByName.get(packName);
+                if (modelPack == null) {
+                    // create a new model package
+                    modelPack = new ModelPackage();
+                    modelPack.setPackageName(packName);
+                    packagesByName.put(packName, modelPack);
+                    // get the namespace type for the package
+                    NamespaceType packageNamespace = getNamespaceForPackage(
+                        proj.getShortName(), proj.getVersion(), packName);
+                    // map the package's namespace
+                    modelInfoUtil.setMappedNamespace(packName, packageNamespace.getNamespace());
                 }
-                classList.add(umlClass.getClassName());
+                ModelClass modelClass = new ModelClass();
+                modelClass.setSelected(true);
+                modelClass.setTargetable(umlClass.isAllowableAsTarget());
+                modelClass.setShortClassName(umlClass.getClassName());
+                ModelClass[] classes = modelPack.getModelClass();
+                if (classes == null) {
+                    classes = new ModelClass[] {modelClass};
+                } else {
+                    classes = (ModelClass[]) Utils.appendToArray(classes, modelClass);
+                }
+                modelPack.setModelClass(classes);
             }
         }
-
-        // walk packages names --> class lists, create ModelPackages
-        List<ModelPackage> modelPackages = new ArrayList<ModelPackage>(packageToClass.keySet().size());
+        
+        // walk the packages and set up the tree
         List<UMLClassTreeNode> addedClassNodes = new LinkedList<UMLClassTreeNode>();
-        for (String packName : packageToClass.keySet()) {
-            // get the namespace type for the package
+        for (String packName : packagesByName.keySet()) {
+            // get the namespace type for this package
             NamespaceType packageNamespace = getNamespaceForPackage(
                 proj.getShortName(), proj.getVersion(), packName);
-            // create the cadsr package
-            ModelPackage pack = new ModelPackage();
-            pack.setPackageName(packName);
-            // map it's namespace
-            modelInfoUtil.setMappedNamespace(packName, packageNamespace.getNamespace());
-            // create class mappings
-            List<String> classNames = packageToClass.get(packName);
-            ModelClass[] modelClasses = createModelClasses(packName, packageNamespace, classNames);
-            pack.setModelClass(modelClasses);
-            // queue up the package for addition later
-            modelPackages.add(pack);
-            // add the package and classes to the UML tree
+            // map that into the model information
+            packageNamespace.setPackageName(packName);
+            
+            // create the tree nodes
             getUmlTree().addUmlPackage(packName);
-            for (ModelClass clazz : modelClasses) {
+            
+            for (ModelClass clazz : packagesByName.get(packName).getModelClass()) {
                 addedClassNodes.add(getUmlTree().addUmlClass(
                     packName, clazz.getShortClassName()));
             }
         }
+        
         // convert package list to an array
-        ModelPackage[] packageArray = new ModelPackage[modelPackages.size()];
-        modelPackages.toArray(packageArray);
+        ModelPackage[] packageArray = new ModelPackage[packagesByName.size()];
+        packagesByName.values().toArray(packageArray);
 
         // keep this LAST in the order of operation, since errors can cause
         // the installation to fail part way through
@@ -664,8 +674,7 @@ public class DomainModelConfigPanel extends DataServiceModificationSubPanel {
         }
 
         // walk through the newly added class nodes, and check them off 
-        // in the tree,
-        // by definition, they are part of the domain model
+        // in the tree. By definition, they are part of the domain model
         for (UMLClassTreeNode node : addedClassNodes) {
             // selecting the node causes the selection event to fire
             node.getCheckBox().setSelected(true);
@@ -687,6 +696,7 @@ public class DomainModelConfigPanel extends DataServiceModificationSubPanel {
         for (String className : classNames) {
             ModelClass clazz = new ModelClass();
             clazz.setShortClassName(className);
+            // TODO: if the class isn't targetable, it doesn't need a mapped element name
             modelInfoUtil.setMappedElementName(packageName, className, classToElement.get(className));
             // TODO: determine if these should be true or false by default
             clazz.setSelected(true);
