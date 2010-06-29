@@ -1,0 +1,6 @@
+<ns1:CQLQueryResults targetClassname="gov.nih.nci.cacoresdk.domain.inheritance.twolevelinheritance.LCDMonitor" xmlns:ns1="http://CQL.caBIG/2/org.cagrid.cql2.results">
+ <ns1:ObjectResult>
+  <ns2:LCDMonitor height="2" width="2" id="2" brand="B" dpiSupported="2323" xmlns:ns2="gme://caCORE.caCORE/4.0/gov.nih.nci.cacoresdk.domain.inheritance.twolevelinheritance"/>
+  <ns2:LCDMonitor height="3" width="3" id="3" brand="C" dpiSupported="1212" xmlns:ns2="gme://caCORE.caCORE/4.0/gov.nih.nci.cacoresdk.domain.inheritance.twolevelinheritance"/>
+ </ns1:ObjectResult>
+</ns1:CQLQueryResults>
