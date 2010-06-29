@@ -44,9 +44,9 @@ public class NotifyingButtonGroup extends ButtonGroup {
 	
 	
 	protected void fireGroupSelectionChanged() {
-		Iterator iter = listeners.iterator();
+		Iterator<GroupSelectionListener> iter = listeners.iterator();
 		while (iter.hasNext()) {
-			((GroupSelectionListener) iter.next()).selectionChanged(previousSelection, getSelection());
+			iter.next().selectionChanged(previousSelection, getSelection());
 		}
 		previousSelection = getSelection();
 	}
