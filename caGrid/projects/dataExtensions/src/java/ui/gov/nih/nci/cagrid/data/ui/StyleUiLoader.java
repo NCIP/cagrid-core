@@ -43,8 +43,8 @@ public class StyleUiLoader {
             ClassLoader classLoader = container.createClassLoader();
             for (CreationWizardPanel panelDescription : panelDescriptions.getCreationWizardPanel()) {
                 String panelClassname = panelDescription.getClassname();
-                Class panelClass = classLoader.loadClass(panelClassname);
-                Constructor panelConstructor = panelClass.getConstructor(
+                Class<?> panelClass = classLoader.loadClass(panelClassname);
+                Constructor<?> panelConstructor = panelClass.getConstructor(
                     new Class[] {ServiceExtensionDescriptionType.class, ServiceInformation.class});
                 AbstractWizardPanel panel = (AbstractWizardPanel) panelConstructor.newInstance(
                     new Object[] {extensionDescription, serviceInfo});
@@ -69,9 +69,9 @@ public class StyleUiLoader {
         ServiceInformation serviceInfo, ExtensionDataManager dataManager) throws Exception {
         if (container.getServiceStyle().getModificationUiPanel() != null) {
             ClassLoader loader = container.createClassLoader();
-            Class panelClass = loader.loadClass(
+            Class<?> panelClass = loader.loadClass(
                 container.getServiceStyle().getModificationUiPanel().getClassname());
-            Constructor panelConstructor = panelClass.getConstructor(
+            Constructor<?> panelConstructor = panelClass.getConstructor(
                 new Class[] {ServiceInformation.class, ExtensionDataManager.class});
             DataServiceModificationSubPanel panel = (DataServiceModificationSubPanel)
                 panelConstructor.newInstance(new Object[] {serviceInfo, dataManager});
