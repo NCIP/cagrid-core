@@ -6,14 +6,17 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.Properties;
 
-import org.apache.log4j.Logger;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
 
 public final class IntroducePropertiesManager {
-    
-    private static final Logger logger = Logger.getLogger(IntroducePropertiesManager.class);
-    
-    private IntroducePropertiesManager(){
-        
+
+    private static final Log logger = LogFactory.getLog(IntroducePropertiesManager.class);
+
+
+    private IntroducePropertiesManager() {
+
     }
 
 
@@ -26,9 +29,11 @@ public final class IntroducePropertiesManager {
         return getIntroducePropertyValue(IntroduceConstants.INTRODUCE_PATCH_VERSION_PROPERTY);
     }
 
+
     public static String getIntroduceConfigurationFile() {
         return getIntroducePropertyValue(IntroduceConstants.INTRODUCE_CONFIGURATION_FILE);
     }
+
 
     public static String getIntroducePropertyValue(String propertyKey) {
         Properties engineProps = new Properties();
@@ -42,6 +47,4 @@ public final class IntroducePropertiesManager {
             return null;
         }
     }
-
-    
 }

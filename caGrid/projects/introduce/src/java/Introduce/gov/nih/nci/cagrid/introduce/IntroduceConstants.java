@@ -24,8 +24,7 @@ public abstract class IntroduceConstants {
 
 	public static final String JBOSS = "JBOSS_HOME";
 
-	// introduce specific constants
-	
+	// introduce specific constants	
 	public static final String INTRODUCE_CONFIGURATION_FILE = "introduce.grape.configuration.file";
 	
 	public static final String INTRODUCE_VERSION_PROPERTY = "introduce.version";
@@ -37,6 +36,8 @@ public abstract class IntroduceConstants {
 	public static final String GLOBUS_LOCATION = "Globus Location";
 
 	public static final String SERVICE_SECURITY_METADATA_METHOD = "getServiceSecurityMetadata";
+	
+	public static final String INTRODUCE_WSDL_2_JAVA_TIMEOUT_PRPOERTY = "introduce.wsdl2java.timeout.ms";
 
 	// service skeleton properties
 	public static final String INTRODUCE_PROPERTIES_FILE = "introduce.properties";

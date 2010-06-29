@@ -179,6 +179,20 @@ public class SyncTools {
                     parser.setOutputDir(SyncTools.this.baseDirectory.getAbsolutePath() + File.separator + "tmp");
                     parser.setNStoPkg(SyncTools.this.baseDirectory.getAbsolutePath() + File.separator + "build"
                         + File.separator + IntroduceConstants.NAMESPACE2PACKAGE_MAPPINGS_FILE);
+                    // allow configuration of the WSDL2Java parsing timeout.  values < 0 == never timeout
+                    String timeoutString = IntroducePropertiesManager.getIntroducePropertyValue(
+                        IntroduceConstants.INTRODUCE_WSDL_2_JAVA_TIMEOUT_PRPOERTY);
+                    if (timeoutString != null) {
+                        try {
+                            long timeout = Long.parseLong(timeoutString);
+                            parser.setTimeout(timeout);
+                            logger.debug("Set WSDL 2 Java parser timeout to " + timeout + " ms");
+                        } catch (Exception ex) {
+                            logger.warn("Error reading introduce property " 
+                                + IntroduceConstants.INTRODUCE_WSDL_2_JAVA_TIMEOUT_PRPOERTY 
+                                + " with value " + timeoutString);
+                        }
+                    }
                     try {
                         parser.run(new File(SyncTools.this.baseDirectory.getAbsolutePath()
                             + File.separator

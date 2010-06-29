@@ -2,6 +2,7 @@
 introduce.version=1.4
 introduce.patch.version=0
 introduce.grape.configuration.file=conf/introduce-grape-conf.xml
+introduce.wsdl2java.timeout.ms=90000
 
 # Information on Dependent Services
 #Grid Grouper
