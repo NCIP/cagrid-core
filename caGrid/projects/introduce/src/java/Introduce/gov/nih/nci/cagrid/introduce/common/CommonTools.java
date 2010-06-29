@@ -1416,7 +1416,10 @@ public final class CommonTools {
      * @return the input string with the first character converted to uppercase
      */
     public static String upperCaseFirstCharacter(String variableName) {
-        return variableName.substring(0, 1).toUpperCase() + variableName.substring(1);
+        if (variableName.length() > 1) {
+            return variableName.substring(0, 1).toUpperCase() + variableName.substring(1);
+        }
+        return variableName.toUpperCase();
     }
 
 
