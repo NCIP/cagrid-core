@@ -166,6 +166,7 @@ public class Cql2WalkerStructureValidationHandler extends Cql2WalkerHandlerAdapt
         populatedValues += val.getLongValue() != null ? 1 : 0;
         populatedValues += val.getStringValue() != null ? 1 : 0;
         populatedValues += val.getTimeValue() != null ? 1 : 0;
+        populatedValues += val.getFloatValue() != null ? 1 : 0;
         if (populatedValues != 1) {
             throw new MalformedStructureException("Expected to find one populated attribute value, found " + populatedValues);
         }
