@@ -12,6 +12,8 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.exolab.castor.mapping.Mapping;
 import org.exolab.castor.mapping.MappingException;
+import org.exolab.castor.mapping.xml.ClassMapping;
+import org.exolab.castor.mapping.xml.FieldMapping;
 import org.exolab.castor.xml.MarshalException;
 import org.exolab.castor.xml.Unmarshaller;
 import org.exolab.castor.xml.ValidationException;
@@ -61,6 +63,21 @@ public class Cql2Deserializer extends DeserializerImpl implements Deserializer {
         Unmarshaller unmarshall = new Unmarshaller(javaType);
         try {
             unmarshall.setMapping(map);
+            if (LOG.isTraceEnabled()) {
+                ClassMapping[] maps = map.getRoot().getClassMapping();
+                for (ClassMapping m : maps) {
+                    LOG.trace("Class mapping for " + m.getName());
+                    if (m.getExtends() != null) {
+                        LOG.trace("\t\tExtends " + ((ClassMapping) m.getExtends()).getName());
+                    }
+                    if (m.getClassChoice() != null && m.getClassChoice().getFieldMapping() != null) {
+                        FieldMapping[] fields = m.getClassChoice().getFieldMapping();
+                        for (FieldMapping f : fields) {
+                            LOG.trace("\tField " + f.getName() + " is mapped");
+                        }
+                    }
+                }
+            }
         } catch (MappingException ex) {
             String error = "Error setting CQL 2 castor mapping: " + ex.getMessage();
             LOG.error(error, ex);
@@ -74,6 +91,7 @@ public class Cql2Deserializer extends DeserializerImpl implements Deserializer {
         } catch (Exception ex) {
             String error = "Problem extracting message type! Result will be null! " + ex.getMessage();
             LOG.error(error, ex);
+            throw new SAXException(error, ex);
         }
         if (asDOM != null) {
             try {
