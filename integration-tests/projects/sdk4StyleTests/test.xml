@@ -24,8 +24,6 @@
 	
 	<target name="prepareClasspaths">
 		<path id="all.test.classpath">
-			<pathelement path="${classes.dir}" />
-			<pathelement path="${stubs.dest}" />
 			<path refid="test.run.classpath" />
 			<fileset dir="${jar.dir}">
 				<include name="**/*.jar"/>
@@ -45,15 +43,11 @@
 		<junit dir="${introduce.dir}" printsummary="yes" errorproperty="test.failed" failureproperty="test.failed" showoutput="true" fork="yes" forkmode="once">
 			<!-- is this needed any more? -->
 			<sysproperty key="build.dirs" value="${test.classes.dir}" />
-			<sysproperty key="build.dir" value="${test.classes.dir}" />
 			<sysproperty key="introduce.base.dir" value="${introduce.dir}" />
 			<sysproperty key="remote.sdk.host.name" value="${remote.sdk.host.name}" />
 			<sysproperty key="remote.sdk.host.port" value="${remote.sdk.host.port}" />
 			<sysproperty key="sdk4.tests.base.dir" value="${sdk4.tests.base.dir}"/>
 			<classpath refid="all.test.classpath" />
-			<classpath>
-				<pathelement path="${classes.dir}" />
-			</classpath>
 			<formatter type="xml" />
 			<batchtest fork="yes" todir="${junit.results.dir}">
 				<fileset dir="${src.dir}">
@@ -69,16 +63,12 @@
 		<mkdir dir="${junit.results.dir}" />
 		<junit dir="${introduce.dir}" printsummary="yes" errorproperty="test.failed" failureproperty="test.failed" showoutput="true" fork="yes" forkmode="once">
 			<sysproperty key="build.dirs" value="${classes.dir}" />
-			<sysproperty key="build.dir" value="${classes.dir}" />
 			<sysproperty key="introduce.base.dir" value="${introduce.dir}" />
 			<sysproperty key="remote.sdk.host.name" value="${remote.sdk.host.name}" />
 			<sysproperty key="remote.sdk.host.port" value="${remote.sdk.host.port}" />
 			<sysproperty key="sdk4.tests.base.dir" value="${sdk4.tests.base.dir}"/>
 			<sysproperty key="testing.containers.dir" value="${testing.containers.dir}"/>
 			<classpath refid="all.test.classpath" />
-			<classpath>
-				<pathelement path="${classes.dir}" />
-			</classpath>
 			<formatter type="xml" />
 			<batchtest fork="yes" todir="${junit.results.dir}">
 				<fileset dir="${src.dir}">
