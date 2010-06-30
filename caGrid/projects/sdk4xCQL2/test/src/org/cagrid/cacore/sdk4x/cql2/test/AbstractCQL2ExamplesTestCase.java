@@ -111,8 +111,13 @@ public abstract class AbstractCQL2ExamplesTestCase extends TestCase {
     }
     
     
-    public void testDateTypeAttribute() {
-        testQuery("dateTypeAttribute.xml");
+    public void testDoubleTypeAttribute() {
+        testQuery("doubleTypeAttribute.xml");
+    }
+    
+    
+    public void testFloatTypeAttribute() {
+        testQuery("floatTypeAttribute.xml");
     }
     
     
