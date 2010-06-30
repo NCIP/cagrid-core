@@ -17,6 +17,7 @@ public class AttributeValue implements java.io.Serializable {
     private java.lang.Integer integerValue;
     private java.lang.Boolean booleanValue;
     private java.lang.Double doubleValue;
+    private java.lang.Float floatValue;
 
 
     public AttributeValue() {
@@ -174,6 +175,16 @@ public class AttributeValue implements java.io.Serializable {
     public void setDoubleValue(java.lang.Double doubleValue) {
         this.doubleValue = doubleValue;
     }
+    
+    
+    public java.lang.Float getFloatValue() {
+        return floatValue;
+    }
+    
+    
+    public void setFloatValue(java.lang.Float floatValue) {
+        this.floatValue = floatValue;
+    }
 
 
     public synchronized boolean equals(java.lang.Object obj) {
@@ -199,7 +210,9 @@ public class AttributeValue implements java.io.Serializable {
             && ((this.booleanValue == null && other.getBooleanValue() == null) || (this.booleanValue != null && this.booleanValue
                 .equals(other.getBooleanValue())))
             && ((this.doubleValue == null && other.getDoubleValue() == null) || (this.doubleValue != null && this.doubleValue
-                .equals(other.getDoubleValue())));
+                .equals(other.getDoubleValue())))
+            && (this.floatValue == null && other.getFloatValue() == null || (this.floatValue != null && this.floatValue
+                .equals(other.getFloatValue())));
         return _equals;
     }
 
@@ -226,6 +239,9 @@ public class AttributeValue implements java.io.Serializable {
         }
         if (getDoubleValue() != null) {
             _hashCode += getDoubleValue().hashCode();
+        }
+        if (getFloatValue() != null) {
+            _hashCode += getFloatValue().hashCode();
         }
         return _hashCode;
     }

@@ -219,6 +219,9 @@
     <field name="longValue" type="java.lang.Long">
       <bind-xml name="cql2:LongValue" node="element" />
     </field>
+    <field name="floatValue" type="java.lang.Float">
+      <bind-xml name="cql2:FloatValue" node="element" />
+    </field>
   </class>
   <!--  results -->
   <class name="org.cagrid.cql2.results.CQLObjectResult" extends="org.cagrid.cql2.results.CQLResult">

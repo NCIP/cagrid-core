@@ -31,6 +31,7 @@
 			<xsd:element name="IntegerValue" type="xsd:int"/>
 			<xsd:element name="BooleanValue" type="xsd:boolean"/>
 			<xsd:element name="DoubleValue" type="xsd:double"/>
+			<xsd:element name="FloatValue" type="xsd:float"/>
 		</xsd:choice>
 	</xsd:complexType>
 </xsd:schema>

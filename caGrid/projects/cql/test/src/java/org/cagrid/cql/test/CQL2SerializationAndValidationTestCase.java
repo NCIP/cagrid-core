@@ -213,6 +213,30 @@ public class CQL2SerializationAndValidationTestCase extends TestCase {
     }
     
     
+    public void testDoubleValueAttribute() {
+        CQLQuery query = new CQLQuery();
+        CQLTargetObject target = new CQLTargetObject();
+        target.setClassName("foo.bar");
+        target.set_instanceof("zor");
+        target.setCQLAttribute(AttributeFactory.createAttribute("word", BinaryPredicate.EQUAL_TO, Double.valueOf(1.1)));
+        query.setCQLTargetObject(target);
+        
+        validate(query);
+    }
+    
+    
+    public void testFloatValueAttribute() {
+        CQLQuery query = new CQLQuery();
+        CQLTargetObject target = new CQLTargetObject();
+        target.setClassName("foo.bar");
+        target.set_instanceof("zor");
+        target.setCQLAttribute(AttributeFactory.createAttribute("word", BinaryPredicate.EQUAL_TO, Float.valueOf(1.2f)));
+        query.setCQLTargetObject(target);
+        
+        validate(query);
+    }
+    
+    
     public void testDateValueAttribute() {
         CQLQuery query = new CQLQuery();
         CQLTargetObject target = new CQLTargetObject();

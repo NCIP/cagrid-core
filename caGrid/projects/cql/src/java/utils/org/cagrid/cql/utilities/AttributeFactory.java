@@ -58,6 +58,17 @@ public class AttributeFactory {
     }
     
     
+    public static CQLAttribute createAttribute(String name, BinaryPredicate predicate, Float value) {
+        CQLAttribute attrib = new CQLAttribute();
+        attrib.setName(name);
+        attrib.setBinaryPredicate(predicate);
+        AttributeValue val = new AttributeValue();
+        val.setFloatValue(value);
+        attrib.setAttributeValue(val);
+        return attrib;
+    }
+    
+    
     public static CQLAttribute createAttribute(String name, BinaryPredicate predicate, Boolean value) {
         CQLAttribute attrib = new CQLAttribute();
         attrib.setName(name);
