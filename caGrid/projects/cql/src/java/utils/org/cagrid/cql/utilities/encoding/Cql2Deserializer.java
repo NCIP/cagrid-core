@@ -17,10 +17,15 @@ import org.exolab.castor.xml.Unmarshaller;
 import org.exolab.castor.xml.ValidationException;
 import org.w3c.dom.Element;
 import org.xml.sax.InputSource;
+import org.xml.sax.Locator;
+import org.xml.sax.SAXException;
+import org.xml.sax.SAXParseException;
 
 public class Cql2Deserializer extends DeserializerImpl implements Deserializer {
     public QName xmlType;
     public Class<?> javaType;
+    
+    private Locator locator = null;
     
     protected static Log LOG = LogFactory.getLog(Cql2Deserializer.class.getName());
 
@@ -32,7 +37,15 @@ public class Cql2Deserializer extends DeserializerImpl implements Deserializer {
     }
     
     
-    public void onEndElement(String namespace, String localName, DeserializationContext context) {
+    /**
+     * If the SAX parser supports a Locator, this will get invoked before startDocument()
+     */
+    public void setDocumentLocator(Locator locator) {
+        this.locator = locator;
+    }
+    
+    
+    public void onEndElement(String namespace, String localName, DeserializationContext context) throws SAXException {
         long start = System.currentTimeMillis();
         
         // load the mapping
@@ -42,14 +55,16 @@ public class Cql2Deserializer extends DeserializerImpl implements Deserializer {
         } catch (IOException ex) {
             String error = "Error loading CQL 2 castor mapping: " + ex.getMessage();
             LOG.error(error, ex);
+            throw new SAXException(error, ex);
         }
-        
+                
         Unmarshaller unmarshall = new Unmarshaller(javaType);
         try {
             unmarshall.setMapping(map);
         } catch (MappingException ex) {
             String error = "Error setting CQL 2 castor mapping: " + ex.getMessage();
             LOG.error(error, ex);
+            throw new SAXException(error, ex);
         }
 
         MessageElement msgElem = context.getCurElement();
@@ -64,9 +79,13 @@ public class Cql2Deserializer extends DeserializerImpl implements Deserializer {
             try {
                 value = unmarshall.unmarshal(asDOM);
             } catch (MarshalException e) {
-                LOG.error("Problem with CQL 2 castor unmarshalling!", e);
+                String message = "Problem with CQL 2 castor unmarshalling! " + e.getMessage();
+                LOG.error(message, e);
+                throw new SAXParseException(message, locator, e);
             } catch (ValidationException e) {
-                LOG.error("CQL 2 XML does not match schema!", e);
+                String message = "CQL 2 XML does not match schema! " + e.getMessage();
+                LOG.error(message, e);
+                throw new SAXParseException(message, locator, e);
             }
         }
         LOG.trace("Derialized " + localName + " in " + (System.currentTimeMillis() - start) + " ms");
