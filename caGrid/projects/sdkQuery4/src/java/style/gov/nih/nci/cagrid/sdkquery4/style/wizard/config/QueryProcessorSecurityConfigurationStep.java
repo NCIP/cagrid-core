@@ -1,6 +1,6 @@
 package gov.nih.nci.cagrid.sdkquery4.style.wizard.config;
 
-import gov.nih.nci.cagrid.data.DataServiceConstants;
+import gov.nih.nci.cagrid.data.QueryProcessorConstants;
 import gov.nih.nci.cagrid.introduce.beans.ServiceDescription;
 import gov.nih.nci.cagrid.introduce.common.CommonTools;
 import gov.nih.nci.cagrid.introduce.common.ServiceInformation;
@@ -64,7 +64,9 @@ public class QueryProcessorSecurityConfigurationStep extends AbstractStyleConfig
     
     private void setConfigurationProperty(String rawKey, String value) {
         ServiceDescription desc = getServiceInformation().getServiceDescriptor();
-        String paddedKey = DataServiceConstants.QUERY_PROCESSOR_CONFIG_PREFIX + rawKey;
+        String paddedKey = QueryProcessorConstants.QUERY_PROCESSOR_CONFIG_PREFIX + rawKey;
         CommonTools.setServiceProperty(desc, paddedKey, value, false);
+        String cql2Key = QueryProcessorConstants.CQL2_QUERY_PROCESSOR_CLASS_PROPERTY + rawKey;
+        CommonTools.setServiceProperty(desc, cql2Key, value, false);
     }
 }

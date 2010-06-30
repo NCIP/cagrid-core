@@ -8,6 +8,7 @@ import gov.nih.nci.cagrid.introduce.beans.ServiceDescription;
 import gov.nih.nci.cagrid.introduce.common.CommonTools;
 import gov.nih.nci.cagrid.introduce.common.ServiceInformation;
 import gov.nih.nci.cagrid.sdkquery4.processor.SDK4QueryProcessor;
+import gov.nih.nci.cagrid.sdkquery4.processor2.SDK4CQL2QueryProcessor;
 import gov.nih.nci.cagrid.sdkquery4.style.common.SDK4StyleConstants;
 
 import java.io.File;
@@ -58,20 +59,38 @@ public class QueryProcessorBaseConfigurationStep extends AbstractStyleConfigurat
         CommonTools.setServiceProperty(desc, 
             QueryProcessorConstants.QUERY_PROCESSOR_CONFIG_PREFIX + SDK4QueryProcessor.PROPERTY_APPLICATION_NAME, 
             applicationName, false);
+        CommonTools.setServiceProperty(desc,
+            QueryProcessorConstants.CQL2_QUERY_PROCESSOR_CONFIG_PREFIX + SDK4CQL2QueryProcessor.PROPERTY_APPLICATION_NAME,
+            applicationName, false);
         CommonTools.setServiceProperty(desc, 
             QueryProcessorConstants.QUERY_PROCESSOR_CONFIG_PREFIX + SDK4QueryProcessor.PROPERTY_CASE_INSENSITIVE_QUERYING,
+            String.valueOf(caseInsensitiveQueries), false);
+        CommonTools.setServiceProperty(desc,
+            QueryProcessorConstants.CQL2_QUERY_PROCESSOR_CONFIG_PREFIX + SDK4CQL2QueryProcessor.PROPERTY_CASE_INSENSITIVE_QUERYING,
             String.valueOf(caseInsensitiveQueries), false);
         CommonTools.setServiceProperty(desc, 
             QueryProcessorConstants.QUERY_PROCESSOR_CONFIG_PREFIX + SDK4QueryProcessor.PROPERTY_USE_LOCAL_API,
             String.valueOf(useLocalApi), false);
         CommonTools.setServiceProperty(desc, 
+            QueryProcessorConstants.CQL2_QUERY_PROCESSOR_CONFIG_PREFIX + SDK4CQL2QueryProcessor.PROPERTY_USE_LOCAL_API,
+            String.valueOf(useLocalApi), false);
+        CommonTools.setServiceProperty(desc, 
             QueryProcessorConstants.QUERY_PROCESSOR_CONFIG_PREFIX + SDK4QueryProcessor.PROPERTY_ORM_JAR_NAME,
+            useLocalApi ? new File(ormJarLocation).getName() : "", false);
+        CommonTools.setServiceProperty(desc, 
+            QueryProcessorConstants.CQL2_QUERY_PROCESSOR_CONFIG_PREFIX + SDK4CQL2QueryProcessor.PROPERTY_ORM_JAR_NAME,
             useLocalApi ? new File(ormJarLocation).getName() : "", false);
         CommonTools.setServiceProperty(desc, 
             QueryProcessorConstants.QUERY_PROCESSOR_CONFIG_PREFIX + SDK4QueryProcessor.PROPERTY_HOST_NAME,
             useLocalApi ? "" : hostName, false);
         CommonTools.setServiceProperty(desc, 
+            QueryProcessorConstants.CQL2_QUERY_PROCESSOR_CONFIG_PREFIX + SDK4CQL2QueryProcessor.PROPERTY_HOST_NAME,
+            useLocalApi ? "" : hostName, false);
+        CommonTools.setServiceProperty(desc, 
             QueryProcessorConstants.QUERY_PROCESSOR_CONFIG_PREFIX + SDK4QueryProcessor.PROPERTY_HOST_PORT,
+            useLocalApi ? "" : hostPort.toString(), false);
+        CommonTools.setServiceProperty(desc, 
+            QueryProcessorConstants.CQL2_QUERY_PROCESSOR_CONFIG_PREFIX + SDK4CQL2QueryProcessor.PROPERTY_HOST_PORT,
             useLocalApi ? "" : hostPort.toString(), false);
     }
     
