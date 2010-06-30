@@ -103,6 +103,15 @@ public class CQL2SerializationAndValidationTestCase extends TestCase {
             System.err.println(text);
             fail("Error validating serialized CQL 2 query: " + ex.getMessage());
         }
+        // deserialize
+        CQLQuery deserializedQuery = null;
+        try {
+            deserializedQuery = CQL2SerializationUtil.deserializeCql2Query(text);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            fail("Error deserializing serialized CQL 2 query: " + ex.getMessage());
+        }
+        assertEquals("Deserialized query didn't match original", query, deserializedQuery);
     }
     
     
