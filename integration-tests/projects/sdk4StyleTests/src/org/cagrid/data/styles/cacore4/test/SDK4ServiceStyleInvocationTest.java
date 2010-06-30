@@ -18,6 +18,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Vector;
 
+import org.cagrid.data.styles.cacore4.test.steps.InvokeSDK4CQL2DataServiceStep;
 import org.cagrid.data.styles.cacore4.test.steps.InvokeSDK4DataServiceStep;
 import org.cagrid.data.styles.cacore4.test.steps.SDK4StyleCreationStep;
 import org.cagrid.data.test.creation.DataTestCaseInfo;
@@ -54,8 +55,7 @@ public class SDK4ServiceStyleInvocationTest extends Story {
     public boolean storySetUp() throws Throwable {
         serviceTestInfo = SDK4ServiceStyleSystemTestConstants.SERVICE_TEST_CASE_INFO;
         
-        // TODO: use "container of the day"
-        container = ServiceContainerFactory.createContainer(ServiceContainerType.GLOBUS_CONTAINER);
+        container = ServiceContainerFactory.createContainer(ServiceContainerType.TOMCAT_CONTAINER);
         
         File serviceDir = new File(serviceTestInfo.getDir());
         serviceDir.mkdirs();
@@ -73,6 +73,7 @@ public class SDK4ServiceStyleInvocationTest extends Story {
         steps.add(new DeployServiceStep(container, serviceTestInfo.getDir(), deploymentArgs));
         steps.add(new StartContainerStep(container));
         steps.add(new InvokeSDK4DataServiceStep(container, serviceTestInfo));
+        steps.add(new InvokeSDK4CQL2DataServiceStep(container, serviceTestInfo));
         return steps;
     }
     
@@ -91,6 +92,7 @@ public class SDK4ServiceStyleInvocationTest extends Story {
         }
         try {
             Utils.deleteDir(new File(serviceTestInfo.getDir()));
+            // System.out.println("Service in " + serviceTestInfo.getDir());
         } catch (Throwable th) {
             errors.add(th);
         }

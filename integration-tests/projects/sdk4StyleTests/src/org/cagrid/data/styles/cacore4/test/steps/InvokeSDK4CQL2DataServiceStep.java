@@ -1,6 +1,5 @@
 package org.cagrid.data.styles.cacore4.test.steps;
 
-import gov.nih.nci.cagrid.common.Utils;
 import gov.nih.nci.cagrid.data.client.DataServiceClient;
 import gov.nih.nci.cagrid.testing.system.deployment.ServiceContainer;
 import gov.nih.nci.cagrid.testing.system.haste.Step;
@@ -38,8 +37,8 @@ import org.cagrid.data.test.creation.DataTestCaseInfo;
  */
 public class InvokeSDK4CQL2DataServiceStep extends Step {
     public static final String TEST_RESOURCES_DIR = "/resources/";
-    public static final String TEST_QUERIES_DIR = TEST_RESOURCES_DIR + "testQueries/cql2";
-    public static final String TEST_RESULTS_DIR = TEST_RESOURCES_DIR + "testGoldResults/cql2";
+    public static final String TEST_QUERIES_DIR = TEST_RESOURCES_DIR + "testQueries/cql2/";
+    public static final String TEST_RESULTS_DIR = TEST_RESOURCES_DIR + "testGoldResults/cql2/";
     
     private static Log LOG = LogFactory.getLog(InvokeSDK4CQL2DataServiceStep.class);
     
@@ -55,6 +54,10 @@ public class InvokeSDK4CQL2DataServiceStep extends Step {
     public void runStep() throws Throwable {
         // valid queries
         testAllDisplaysInstanceofLCDMonitor();
+        testCountHumans();
+        testMaxIdFromHumans();
+        testMinIdFromHumans();
+        testNamedAttributeFromHumans();
         
         // invalid queries
         testInvalidWrongInheritanceDirectionInstanceof();
@@ -76,6 +79,38 @@ public class InvokeSDK4CQL2DataServiceStep extends Step {
     }
     
     
+    private void testCountHumans() {
+        LOG.debug("testCountHumans");
+        CQLQuery query = loadQuery("countHumans.xml");
+        CQLQueryResults results = loadQueryResults("goldCountHumans.xml");
+        invokeValidQueryValidResults(query, results);
+    }
+    
+    
+    private void testMaxIdFromHumans() {
+        LOG.debug("testMaxIdFromHumans");
+        CQLQuery query = loadQuery("maxIdFromHumans.xml");
+        CQLQueryResults results = loadQueryResults("goldMaxIdFromHumans.xml");
+        invokeValidQueryValidResults(query, results);
+    }
+    
+    
+    private void testMinIdFromHumans() {
+        LOG.debug("testMinIdFromHumans");
+        CQLQuery query = loadQuery("minIdFromHumans.xml");
+        CQLQueryResults results = loadQueryResults("goldMinIdFromHumans.xml");
+        invokeValidQueryValidResults(query, results);
+    }
+    
+    
+    private void testNamedAttributeFromHumans() {
+        LOG.debug("testNamedAttributeFromHumans");
+        CQLQuery query = loadQuery("namedAttributeFromHumans.xml");
+        CQLQueryResults results = loadQueryResults("goldNamedAttributeFromHumans.xml");
+        invokeValidQueryValidResults(query, results);
+    }
+    
+    
     private CQLQuery loadQuery(String filename) {
         String fullFilename = TEST_QUERIES_DIR + filename;
         CQLQuery query = null;
@@ -89,6 +124,7 @@ public class InvokeSDK4CQL2DataServiceStep extends Step {
             ex.printStackTrace();
             fail("Error deserializing query (" + fullFilename + "): " + ex.getMessage());
         }
+        assertNotNull("Query was null", query);
         return query;
     }
     
@@ -106,6 +142,7 @@ public class InvokeSDK4CQL2DataServiceStep extends Step {
             ex.printStackTrace();
             fail("Error deserializing query results (" + fullFilename + "): " + ex.getMessage());
         }
+        assertNotNull("Results were null", results);
         return results;
     }
     
@@ -122,6 +159,11 @@ public class InvokeSDK4CQL2DataServiceStep extends Step {
         DataServiceClient client = getServiceClient();
         CQLQueryResults queryResults = null;
         try {
+            if (query.getCQLTargetObject() != null) {
+                System.out.println("Targeting " + query.getCQLTargetObject().getClassName());
+            } else {
+                System.out.println("No target!");
+            }
             queryResults = client.executeQuery(query);
             // If this fails, we need to still be able to exit the jvm
         } catch (Exception ex) {
