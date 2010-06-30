@@ -111,6 +111,11 @@ public abstract class AbstractCQL2ExamplesTestCase extends TestCase {
     }
     
     
+    public void testDateTypeAttribute() {
+        testQuery("dateTypeAttribute.xml");
+    }
+    
+    
     protected void createTranslator() {
         Configuration config = new Configuration();
         InputStream configStream = getClass().getResourceAsStream("/hibernate.cfg.xml");

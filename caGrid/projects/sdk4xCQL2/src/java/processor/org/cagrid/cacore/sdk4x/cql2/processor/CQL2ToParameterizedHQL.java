@@ -422,6 +422,8 @@ public class CQL2ToParameterizedHQL {
     private Object getAttributeValueObject(AttributeValue value) {
         if (value.getStringValue() != null) {
             return value.getStringValue();
+        } else if (value.getDoubleValue() != null) {
+            return value.getDoubleValue();
         } else if (value.getBooleanValue() != null) {
             return value.getBooleanValue();
         } else if (value.getDateValue() != null) {
