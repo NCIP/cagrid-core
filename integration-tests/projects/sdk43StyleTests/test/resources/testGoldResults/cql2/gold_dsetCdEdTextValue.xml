@@ -1,0 +1,82 @@
+<ns1:CQLQueryResults targetClassname="gov.nih.nci.cacoresdk.domain.other.datatype.DsetCdDataType" xmlns:ns1="http://CQL.caBIG/2/org.cagrid.cql2.results">
+ <ns1:ObjectResult>
+  <ns2:DsetCdDataType id="16" xmlns:ns2="gme://caCORE.caCORE/3.2/gov.nih.nci.cacoresdk.domain.other.datatype">
+   <ns2:value1 nullFlavor="NI" type="ns2:DSET_CD"/>
+   <ns2:value2 nullFlavor="NI" type="ns3:DSET_CD"/>
+   <ns2:value3 nullFlavor="NI" type="ns4:DSET_CD"/>
+   <ns2:value4 type="ns5:DSET_CD">
+    <ns3:item code="CODE1" codeSystem="CODE_SYSTEM1" codeSystemName="CODE_SYSTEM_NAME1" codeSystemVersion="CODE_SYSTEM_VERSION1" xmlns:ns3="uri:iso.org:21090">
+     <ns3:displayName value="CODE1"/>
+     <ns3:originalText mediaType="text/plain" value="OrgTextVal1"/>
+    </ns3:item>
+   </ns2:value4>
+   <ns2:value5 nullFlavor="NI" type="ns6:DSET_CD"/>
+   <ns2:value6 nullFlavor="NI" type="ns7:DSET_CD"/>
+   <ns2:value7 nullFlavor="NI" type="ns8:DSET_CD"/>
+  </ns2:DsetCdDataType>
+ </ns1:ObjectResult>
+ <ns1:ObjectResult>
+  <ns4:DsetCdDataType id="17" xmlns:ns4="gme://caCORE.caCORE/3.2/gov.nih.nci.cacoresdk.domain.other.datatype">
+   <ns4:value1 nullFlavor="NI" type="ns2:DSET_CD"/>
+   <ns4:value2 nullFlavor="NI" type="ns3:DSET_CD"/>
+   <ns4:value3 nullFlavor="NI" type="ns4:DSET_CD"/>
+   <ns4:value4 type="ns5:DSET_CD">
+    <ns5:item code="CODE2" codeSystem="CODE_SYSTEM2" codeSystemName="CODE_SYSTEM_NAME2" codeSystemVersion="CODE_SYSTEM_VERSION2" xmlns:ns5="uri:iso.org:21090">
+     <ns5:displayName value="CODE2"/>
+     <ns5:originalText mediaType="text/plain" value="OrgTextVal2"/>
+    </ns5:item>
+   </ns4:value4>
+   <ns4:value5 nullFlavor="NI" type="ns6:DSET_CD"/>
+   <ns4:value6 nullFlavor="NI" type="ns7:DSET_CD"/>
+   <ns4:value7 nullFlavor="NI" type="ns8:DSET_CD"/>
+  </ns4:DsetCdDataType>
+ </ns1:ObjectResult>
+ <ns1:ObjectResult>
+  <ns6:DsetCdDataType id="18" xmlns:ns6="gme://caCORE.caCORE/3.2/gov.nih.nci.cacoresdk.domain.other.datatype">
+   <ns6:value1 nullFlavor="NI" type="ns2:DSET_CD"/>
+   <ns6:value2 nullFlavor="NI" type="ns3:DSET_CD"/>
+   <ns6:value3 nullFlavor="NI" type="ns4:DSET_CD"/>
+   <ns6:value4 type="ns5:DSET_CD">
+    <ns7:item code="CODE3" codeSystem="CODE_SYSTEM3" codeSystemName="CODE_SYSTEM_NAME3" codeSystemVersion="CODE_SYSTEM_VERSION3" xmlns:ns7="uri:iso.org:21090">
+     <ns7:displayName value="CODE3"/>
+     <ns7:originalText mediaType="text/plain" value="OrgTextVal3"/>
+    </ns7:item>
+   </ns6:value4>
+   <ns6:value5 nullFlavor="NI" type="ns6:DSET_CD"/>
+   <ns6:value6 nullFlavor="NI" type="ns7:DSET_CD"/>
+   <ns6:value7 nullFlavor="NI" type="ns8:DSET_CD"/>
+  </ns6:DsetCdDataType>
+ </ns1:ObjectResult>
+ <ns1:ObjectResult>
+  <ns8:DsetCdDataType id="19" xmlns:ns8="gme://caCORE.caCORE/3.2/gov.nih.nci.cacoresdk.domain.other.datatype">
+   <ns8:value1 nullFlavor="NI" type="ns2:DSET_CD"/>
+   <ns8:value2 nullFlavor="NI" type="ns3:DSET_CD"/>
+   <ns8:value3 nullFlavor="NI" type="ns4:DSET_CD"/>
+   <ns8:value4 type="ns5:DSET_CD">
+    <ns9:item code="CODE4" codeSystem="CODE_SYSTEM4" codeSystemName="CODE_SYSTEM_NAME4" codeSystemVersion="CODE_SYSTEM_VERSION4" xmlns:ns9="uri:iso.org:21090">
+     <ns9:displayName value="CODE4"/>
+     <ns9:originalText mediaType="text/plain" value="OrgTextVal4"/>
+    </ns9:item>
+   </ns8:value4>
+   <ns8:value5 nullFlavor="NI" type="ns6:DSET_CD"/>
+   <ns8:value6 nullFlavor="NI" type="ns7:DSET_CD"/>
+   <ns8:value7 nullFlavor="NI" type="ns8:DSET_CD"/>
+  </ns8:DsetCdDataType>
+ </ns1:ObjectResult>
+ <ns1:ObjectResult>
+  <ns10:DsetCdDataType id="20" xmlns:ns10="gme://caCORE.caCORE/3.2/gov.nih.nci.cacoresdk.domain.other.datatype">
+   <ns10:value1 nullFlavor="NI" type="ns2:DSET_CD"/>
+   <ns10:value2 nullFlavor="NI" type="ns3:DSET_CD"/>
+   <ns10:value3 nullFlavor="NI" type="ns4:DSET_CD"/>
+   <ns10:value4 type="ns5:DSET_CD">
+    <ns11:item code="CODE5" codeSystem="CODE_SYSTEM5" codeSystemName="CODE_SYSTEM_NAME5" codeSystemVersion="CODE_SYSTEM_VERSION5" xmlns:ns11="uri:iso.org:21090">
+     <ns11:displayName value="CODE5"/>
+     <ns11:originalText mediaType="text/plain" value="OrgTextVal5"/>
+    </ns11:item>
+   </ns10:value4>
+   <ns10:value5 nullFlavor="NI" type="ns6:DSET_CD"/>
+   <ns10:value6 nullFlavor="NI" type="ns7:DSET_CD"/>
+   <ns10:value7 nullFlavor="NI" type="ns8:DSET_CD"/>
+  </ns10:DsetCdDataType>
+ </ns1:ObjectResult>
+</ns1:CQLQueryResults>

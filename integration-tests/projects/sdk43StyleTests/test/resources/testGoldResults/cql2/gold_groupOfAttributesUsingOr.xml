@@ -1,0 +1,30 @@
+<ns1:CQLQueryResults targetClassname="gov.nih.nci.cacoresdk.domain.inheritance.onechild.Human" xmlns:ns1="http://CQL.caBIG/2/org.cagrid.cql2.results">
+ <ns1:ObjectResult>
+  <ns2:Human xmlns:ns2="gme://caCORE.caCORE/3.2/gov.nih.nci.cacoresdk.domain.inheritance.onechild">
+   <ns2:hairColor value="Hair_Color1" type="ns2:ST"/>
+   <ns2:id displayable="true" extension="1" reliability="ISS" root="2.16.12.123.456.1" scope="OBJ" type="ns3:II"/>
+   <ns2:diet value="DIET1" type="ns4:ST"/>
+  </ns2:Human>
+ </ns1:ObjectResult>
+ <ns1:ObjectResult>
+  <ns3:Human xmlns:ns3="gme://caCORE.caCORE/3.2/gov.nih.nci.cacoresdk.domain.inheritance.onechild">
+   <ns3:hairColor value="Hair_Color2" type="ns2:ST"/>
+   <ns3:id displayable="true" extension="2" reliability="ISS" root="2.16.12.123.456.1" scope="OBJ" type="ns3:II"/>
+   <ns3:diet value="DIET2" type="ns4:ST"/>
+  </ns3:Human>
+ </ns1:ObjectResult>
+ <ns1:ObjectResult>
+  <ns4:Human xmlns:ns4="gme://caCORE.caCORE/3.2/gov.nih.nci.cacoresdk.domain.inheritance.onechild">
+   <ns4:hairColor value="Hair_Color3" type="ns2:ST"/>
+   <ns4:id displayable="true" extension="3" reliability="ISS" root="2.16.12.123.456.1" scope="OBJ" type="ns3:II"/>
+   <ns4:diet value="DIET3" type="ns4:ST"/>
+  </ns4:Human>
+ </ns1:ObjectResult>
+ <ns1:ObjectResult>
+  <ns5:Human xmlns:ns5="gme://caCORE.caCORE/3.2/gov.nih.nci.cacoresdk.domain.inheritance.onechild">
+   <ns5:hairColor value="Hair_Color4" type="ns2:ST"/>
+   <ns5:id displayable="true" extension="4" reliability="ISS" root="2.16.12.123.456.1" scope="OBJ" type="ns3:II"/>
+   <ns5:diet value="DIET4" type="ns4:ST"/>
+  </ns5:Human>
+ </ns1:ObjectResult>
+</ns1:CQLQueryResults>

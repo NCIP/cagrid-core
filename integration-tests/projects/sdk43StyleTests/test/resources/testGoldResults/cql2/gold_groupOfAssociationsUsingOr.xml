@@ -1,0 +1,26 @@
+<ns1:CQLQueryResults targetClassname="gov.nih.nci.cacoresdk.domain.onetoone.multipleassociation.Child" xmlns:ns1="http://CQL.caBIG/2/org.cagrid.cql2.results">
+ <ns1:ObjectResult>
+  <ns2:Child xmlns:ns2="gme://caCORE.caCORE/3.2/gov.nih.nci.cacoresdk.domain.onetoone.multipleassociation">
+   <ns2:id displayable="true" extension="1" reliability="ISS" root="2.16.12.123.456.1" scope="OBJ" type="ns2:II"/>
+   <ns2:name value="Child_Name1" type="ns3:ST"/>
+  </ns2:Child>
+ </ns1:ObjectResult>
+ <ns1:ObjectResult>
+  <ns3:Child xmlns:ns3="gme://caCORE.caCORE/3.2/gov.nih.nci.cacoresdk.domain.onetoone.multipleassociation">
+   <ns3:id displayable="true" extension="2" reliability="ISS" root="2.16.12.123.456.1" scope="OBJ" type="ns2:II"/>
+   <ns3:name value="Child_Name2" type="ns3:ST"/>
+  </ns3:Child>
+ </ns1:ObjectResult>
+ <ns1:ObjectResult>
+  <ns4:Child xmlns:ns4="gme://caCORE.caCORE/3.2/gov.nih.nci.cacoresdk.domain.onetoone.multipleassociation">
+   <ns4:id displayable="true" extension="3" reliability="ISS" root="2.16.12.123.456.1" scope="OBJ" type="ns2:II"/>
+   <ns4:name value="Child_Name3" type="ns3:ST"/>
+  </ns4:Child>
+ </ns1:ObjectResult>
+ <ns1:ObjectResult>
+  <ns5:Child xmlns:ns5="gme://caCORE.caCORE/3.2/gov.nih.nci.cacoresdk.domain.onetoone.multipleassociation">
+   <ns5:id displayable="true" extension="4" reliability="ISS" root="2.16.12.123.456.1" scope="OBJ" type="ns2:II"/>
+   <ns5:name value="Child_Name4" type="ns3:ST"/>
+  </ns5:Child>
+ </ns1:ObjectResult>
+</ns1:CQLQueryResults>

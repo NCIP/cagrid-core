@@ -1,0 +1,11 @@
+<ns1:CQLQueryResults targetClassname="gov.nih.nci.cacoresdk.domain.other.datatype.DsetTelDataType" xmlns:ns1="http://CQL.caBIG/2/org.cagrid.cql2.results">
+ <ns1:ObjectResult>
+  <ns2:DsetTelDataType id="0" xmlns:ns2="gme://caCORE.caCORE/3.2/gov.nih.nci.cacoresdk.domain.other.datatype">
+   <ns2:value1 type="ns2:DSET_TEL">
+    <ns3:item value="tel://123-456-7891" xmlns:ns3="uri:iso.org:21090"/>
+   </ns2:value1>
+   <ns2:value2 nullFlavor="NI" type="ns3:DSET_TEL"/>
+   <ns2:value3 nullFlavor="NI" type="ns4:DSET_TEL"/>
+  </ns2:DsetTelDataType>
+ </ns1:ObjectResult>
+</ns1:CQLQueryResults>

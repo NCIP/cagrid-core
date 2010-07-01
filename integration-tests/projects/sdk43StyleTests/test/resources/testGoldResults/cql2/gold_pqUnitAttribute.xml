@@ -1,0 +1,37 @@
+<ns1:CQLQueryResults targetClassname="gov.nih.nci.cacoresdk.domain.other.datatype.PqDataType" xmlns:ns1="http://CQL.caBIG/2/org.cagrid.cql2.results">
+ <ns1:ObjectResult>
+  <ns2:PqDataType id="7" xmlns:ns2="gme://caCORE.caCORE/3.2/gov.nih.nci.cacoresdk.domain.other.datatype">
+   <ns2:value1 precision="0" unit="GALLON" value="1.12" type="ns2:PQ"/>
+   <ns2:value2 nullFlavor="NI" precision="0" type="ns3:PQ"/>
+   <ns2:value3 nullFlavor="NI" precision="0" type="ns4:PQ"/>
+  </ns2:PqDataType>
+ </ns1:ObjectResult>
+ <ns1:ObjectResult>
+  <ns3:PqDataType id="8" xmlns:ns3="gme://caCORE.caCORE/3.2/gov.nih.nci.cacoresdk.domain.other.datatype">
+   <ns3:value1 precision="0" unit="GALLON" value="2.12" type="ns2:PQ"/>
+   <ns3:value2 nullFlavor="NI" precision="0" type="ns3:PQ"/>
+   <ns3:value3 nullFlavor="NI" precision="0" type="ns4:PQ"/>
+  </ns3:PqDataType>
+ </ns1:ObjectResult>
+ <ns1:ObjectResult>
+  <ns4:PqDataType id="9" xmlns:ns4="gme://caCORE.caCORE/3.2/gov.nih.nci.cacoresdk.domain.other.datatype">
+   <ns4:value1 precision="0" unit="GALLON" value="3.12" type="ns2:PQ"/>
+   <ns4:value2 nullFlavor="NI" precision="0" type="ns3:PQ"/>
+   <ns4:value3 nullFlavor="NI" precision="0" type="ns4:PQ"/>
+  </ns4:PqDataType>
+ </ns1:ObjectResult>
+ <ns1:ObjectResult>
+  <ns5:PqDataType id="10" xmlns:ns5="gme://caCORE.caCORE/3.2/gov.nih.nci.cacoresdk.domain.other.datatype">
+   <ns5:value1 precision="0" unit="GALLON" value="4.12" type="ns2:PQ"/>
+   <ns5:value2 nullFlavor="NI" precision="0" type="ns3:PQ"/>
+   <ns5:value3 nullFlavor="NI" precision="0" type="ns4:PQ"/>
+  </ns5:PqDataType>
+ </ns1:ObjectResult>
+ <ns1:ObjectResult>
+  <ns6:PqDataType id="11" xmlns:ns6="gme://caCORE.caCORE/3.2/gov.nih.nci.cacoresdk.domain.other.datatype">
+   <ns6:value1 precision="0" unit="GALLON" value="5.12" type="ns2:PQ"/>
+   <ns6:value2 nullFlavor="NI" precision="0" type="ns3:PQ"/>
+   <ns6:value3 nullFlavor="NI" precision="0" type="ns4:PQ"/>
+  </ns6:PqDataType>
+ </ns1:ObjectResult>
+</ns1:CQLQueryResults>

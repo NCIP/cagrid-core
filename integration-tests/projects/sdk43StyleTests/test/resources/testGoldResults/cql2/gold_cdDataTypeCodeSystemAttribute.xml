@@ -1,0 +1,50 @@
+<ns1:CQLQueryResults targetClassname="gov.nih.nci.cacoresdk.domain.other.datatype.ScDataType" xmlns:ns1="http://CQL.caBIG/2/org.cagrid.cql2.results">
+ <ns1:ObjectResult>
+  <ns2:ScDataType id="9" xmlns:ns2="gme://caCORE.caCORE/3.2/gov.nih.nci.cacoresdk.domain.other.datatype">
+   <ns2:value1 nullFlavor="NA" type="ns2:SC"/>
+   <ns2:value2 value="VALUE2_VALUE2" type="ns3:SC">
+    <ns3:code code="VALUE2_CODE_CODE2" codeSystem="VALUE2_CODE_CODE_SYSTEM1" xmlns:ns3="uri:iso.org:21090">
+     <ns3:displayName nullFlavor="NI"/>
+     <ns3:originalText mediaType="text/plain" nullFlavor="NI"/>
+    </ns3:code>
+   </ns2:value2>
+   <ns2:value3 nullFlavor="NI" type="ns4:SC"/>
+  </ns2:ScDataType>
+ </ns1:ObjectResult>
+ <ns1:ObjectResult>
+  <ns4:ScDataType id="10" xmlns:ns4="gme://caCORE.caCORE/3.2/gov.nih.nci.cacoresdk.domain.other.datatype">
+   <ns4:value1 nullFlavor="NA" type="ns2:SC"/>
+   <ns4:value2 value="VALUE2_VALUE3" type="ns3:SC">
+    <ns5:code code="VALUE2_CODE_CODE3" codeSystem="VALUE2_CODE_CODE_SYSTEM2" codeSystemName="VALUE2_CODE_CODE_SYSTEM_NAME1" xmlns:ns5="uri:iso.org:21090">
+     <ns5:displayName nullFlavor="NI"/>
+     <ns5:originalText mediaType="text/plain" nullFlavor="NI"/>
+    </ns5:code>
+   </ns4:value2>
+   <ns4:value3 nullFlavor="NI" type="ns4:SC"/>
+  </ns4:ScDataType>
+ </ns1:ObjectResult>
+ <ns1:ObjectResult>
+  <ns6:ScDataType id="11" xmlns:ns6="gme://caCORE.caCORE/3.2/gov.nih.nci.cacoresdk.domain.other.datatype">
+   <ns6:value1 nullFlavor="NA" type="ns2:SC"/>
+   <ns6:value2 value="VALUE2_VALUE4" type="ns3:SC">
+    <ns7:code code="VALUE2_CODE_CODE4" codeSystem="VALUE2_CODE_CODE_SYSTEM3" codeSystemName="VALUE2_CODE_CODE_SYSTEM_NAME2" codeSystemVersion="1.1" xmlns:ns7="uri:iso.org:21090">
+     <ns7:displayName nullFlavor="NI"/>
+     <ns7:originalText mediaType="text/plain" nullFlavor="NI"/>
+    </ns7:code>
+   </ns6:value2>
+   <ns6:value3 nullFlavor="NI" type="ns4:SC"/>
+  </ns6:ScDataType>
+ </ns1:ObjectResult>
+ <ns1:ObjectResult>
+  <ns8:ScDataType id="12" xmlns:ns8="gme://caCORE.caCORE/3.2/gov.nih.nci.cacoresdk.domain.other.datatype">
+   <ns8:value1 nullFlavor="NA" type="ns2:SC"/>
+   <ns8:value2 value="VALUE2_VALUE5" type="ns3:SC">
+    <ns9:code code="VALUE2_CODE_CODE5" codeSystem="VALUE2_CODE_CODE_SYSTEM4" codeSystemName="VALUE2_CODE_CODE_SYSTEM_NAME3" codeSystemVersion="1.1" xmlns:ns9="uri:iso.org:21090">
+     <ns9:displayName nullFlavor="NI"/>
+     <ns9:originalText mediaType="text/plain" nullFlavor="NI"/>
+    </ns9:code>
+   </ns8:value2>
+   <ns8:value3 nullFlavor="NI" type="ns4:SC"/>
+  </ns8:ScDataType>
+ </ns1:ObjectResult>
+</ns1:CQLQueryResults>

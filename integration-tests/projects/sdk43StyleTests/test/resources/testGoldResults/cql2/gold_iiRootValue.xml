@@ -1,0 +1,18 @@
+<ns1:CQLQueryResults targetClassname="gov.nih.nci.cacoresdk.domain.other.datatype.IiDataType" xmlns:ns1="http://CQL.caBIG/2/org.cagrid.cql2.results">
+ <ns1:ObjectResult>
+  <ns2:IiDataType id="5" xmlns:ns2="gme://caCORE.caCORE/3.2/gov.nih.nci.cacoresdk.domain.other.datatype">
+   <ns2:value1 nullFlavor="NI" type="ns2:II"/>
+   <ns2:value2 displayable="true" reliability="ISS" root="II_VALUE2_ROOT" scope="OBJ" type="ns3:II"/>
+   <ns2:value3 nullFlavor="NI" type="ns4:II"/>
+   <ns2:value4 nullFlavor="NI" type="ns5:II"/>
+  </ns2:IiDataType>
+ </ns1:ObjectResult>
+ <ns1:ObjectResult>
+  <ns3:IiDataType id="6" xmlns:ns3="gme://caCORE.caCORE/3.2/gov.nih.nci.cacoresdk.domain.other.datatype">
+   <ns3:value1 nullFlavor="NI" type="ns2:II"/>
+   <ns3:value2 displayable="true" extension="II_VALUE2_EXTENSION" reliability="ISS" root="II_VALUE2_ROOT" scope="OBJ" type="ns3:II"/>
+   <ns3:value3 nullFlavor="NI" type="ns4:II"/>
+   <ns3:value4 nullFlavor="NI" type="ns5:II"/>
+  </ns3:IiDataType>
+ </ns1:ObjectResult>
+</ns1:CQLQueryResults>

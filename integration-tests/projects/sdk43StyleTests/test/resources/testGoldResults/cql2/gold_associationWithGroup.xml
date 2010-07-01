@@ -1,0 +1,8 @@
+<ns1:CQLQueryResults targetClassname="gov.nih.nci.cacoresdk.domain.other.levelassociation.Suit" xmlns:ns1="http://CQL.caBIG/2/org.cagrid.cql2.results">
+ <ns1:ObjectResult>
+  <ns2:Suit xmlns:ns2="gme://caCORE.caCORE/3.2/gov.nih.nci.cacoresdk.domain.other.levelassociation">
+   <ns2:id displayable="true" extension="1" reliability="ISS" root="2.16.12.123.456.1" scope="OBJ" type="ns2:II"/>
+   <ns2:name value="Spade" type="ns3:ST"/>
+  </ns2:Suit>
+ </ns1:ObjectResult>
+</ns1:CQLQueryResults>

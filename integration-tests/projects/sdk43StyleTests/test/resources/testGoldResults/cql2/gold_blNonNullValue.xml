@@ -1,0 +1,7 @@
+<ns1:CQLQueryResults targetClassname="gov.nih.nci.cacoresdk.domain.other.datatype.BlNonNullDataType" xmlns:ns1="http://CQL.caBIG/2/org.cagrid.cql2.results">
+ <ns1:ObjectResult>
+  <ns2:BlNonNullDataType id="1" xmlns:ns2="gme://caCORE.caCORE/3.2/gov.nih.nci.cacoresdk.domain.other.datatype">
+   <ns2:value1 value="false" type="ns2:BL.NonNull"/>
+  </ns2:BlNonNullDataType>
+ </ns1:ObjectResult>
+</ns1:CQLQueryResults>

@@ -1,0 +1,35 @@
+<ns1:CQLQueryResults targetClassname="gov.nih.nci.cacoresdk.domain.other.datatype.IvlIntDataType" xmlns:ns1="http://CQL.caBIG/2/org.cagrid.cql2.results">
+ <ns1:ObjectResult>
+  <ns2:IvlIntDataType id="8" xmlns:ns2="gme://caCORE.caCORE/3.2/gov.nih.nci.cacoresdk.domain.other.datatype">
+   <ns2:value1 nullFlavor="NI" type="ns2:IVL_INT"/>
+   <ns2:value2 lowClosed="true" type="ns3:IVL_INT">
+    <ns3:low nullFlavor="NI" xmlns:ns3="uri:iso.org:21090"/>
+    <ns4:high nullFlavor="NI" xmlns:ns4="uri:iso.org:21090"/>
+    <ns5:width nullFlavor="NI" type="ns3:INT" xmlns:ns5="uri:iso.org:21090"/>
+   </ns2:value2>
+   <ns2:value3 nullFlavor="NI" type="ns4:IVL_INT"/>
+  </ns2:IvlIntDataType>
+ </ns1:ObjectResult>
+ <ns1:ObjectResult>
+  <ns6:IvlIntDataType id="9" xmlns:ns6="gme://caCORE.caCORE/3.2/gov.nih.nci.cacoresdk.domain.other.datatype">
+   <ns6:value1 nullFlavor="NI" type="ns2:IVL_INT"/>
+   <ns6:value2 lowClosed="true" type="ns3:IVL_INT">
+    <ns7:low nullFlavor="NI" xmlns:ns7="uri:iso.org:21090"/>
+    <ns8:high value="10" xmlns:ns8="uri:iso.org:21090"/>
+    <ns9:width nullFlavor="NI" type="ns3:INT" xmlns:ns9="uri:iso.org:21090"/>
+   </ns6:value2>
+   <ns6:value3 nullFlavor="NI" type="ns4:IVL_INT"/>
+  </ns6:IvlIntDataType>
+ </ns1:ObjectResult>
+ <ns1:ObjectResult>
+  <ns10:IvlIntDataType id="11" xmlns:ns10="gme://caCORE.caCORE/3.2/gov.nih.nci.cacoresdk.domain.other.datatype">
+   <ns10:value1 nullFlavor="NI" type="ns2:IVL_INT"/>
+   <ns10:value2 lowClosed="true" type="ns3:IVL_INT">
+    <ns11:low nullFlavor="NI" xmlns:ns11="uri:iso.org:21090"/>
+    <ns12:high value="1" xmlns:ns12="uri:iso.org:21090"/>
+    <ns13:width nullFlavor="NI" type="ns3:INT" xmlns:ns13="uri:iso.org:21090"/>
+   </ns10:value2>
+   <ns10:value3 nullFlavor="NI" type="ns4:IVL_INT"/>
+  </ns10:IvlIntDataType>
+ </ns1:ObjectResult>
+</ns1:CQLQueryResults>
