@@ -17,7 +17,8 @@ public class ConfigureExampleProjectStep extends Step {
     
     // codegen properties
     public static final String NAMESPACE_PREFIX_PROPERTY = "NAMESPACE_PREFIX";
-    public static final String NAMESPACE_PREFIX_VALUE = "gme://caCORE.caCORE/4.3";
+    public static final String NAMESPACE_PREFIX_VALUE = "gme://caCORE.caCORE/3.2/";
+    public static final String PROJECT_NAME_PROPERTY = "PROJECT_NAME";
     
     // install properties
     public static final String APPLICATION_BASE_PATH_LINUX = "application.base.path.linux";
@@ -57,6 +58,7 @@ public class ConfigureExampleProjectStep extends Step {
             codegenProps.load(codegenIn);
             codegenIn.close();
             codegenProps.setProperty(NAMESPACE_PREFIX_PROPERTY , NAMESPACE_PREFIX_VALUE);
+            codegenProps.setProperty(PROJECT_NAME_PROPERTY, ExampleProjectInfo.EXAMPLE_PROJECT_NAME);
             FileOutputStream codegenOut = new FileOutputStream(ExampleProjectInfo.getCodegenPropertiesFile());
             codegenProps.store(codegenOut, "Edited by " + getClass().getName());
         } catch (IOException ex) {

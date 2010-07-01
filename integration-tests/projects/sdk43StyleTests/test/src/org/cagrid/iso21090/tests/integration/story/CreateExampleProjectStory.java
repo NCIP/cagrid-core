@@ -7,6 +7,7 @@ import java.util.Vector;
 
 import org.cagrid.iso21090.tests.integration.steps.BuildExampleProjectStep;
 import org.cagrid.iso21090.tests.integration.steps.ConfigureExampleProjectStep;
+import org.cagrid.iso21090.tests.integration.steps.NukeIvyCacheStep;
 
 /**
  * Story that configures and builds 
@@ -33,7 +34,7 @@ public class CreateExampleProjectStory extends Story {
 
     protected Vector<?> steps() {
         Vector<Step> steps = new Vector<Step>();
-        // steps.add(new NukeIvyCacheStep());
+        steps.add(new NukeIvyCacheStep());
         steps.add(new ConfigureExampleProjectStep());
         steps.add(new BuildExampleProjectStep());
         return steps;

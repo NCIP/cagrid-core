@@ -9,8 +9,11 @@ import gov.nih.nci.cagrid.data.utilities.CQLQueryResultsIterator;
 import gov.nih.nci.cagrid.testing.system.deployment.ServiceContainer;
 import gov.nih.nci.cagrid.testing.system.haste.Step;
 
+import java.io.File;
+import java.io.FileFilter;
+import java.io.FileInputStream;
+import java.io.FileReader;
 import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -24,10 +27,11 @@ import org.apache.axis.types.URI.MalformedURIException;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.cagrid.data.test.creation.DataTestCaseInfo;
+import org.cagrid.iso21090.tests.integration.SDK43ServiceStyleSystemTestConstants;
 
 public class InvokeDataServiceStep extends Step {
     
-    public static final String TEST_RESOURCES_DIR = "/resources/";
+    public static final String TEST_RESOURCES_DIR = "test/resources/";
     public static final String TEST_QUERIES_DIR = TEST_RESOURCES_DIR + "testQueries/";
     public static final String TEST_RESULTS_DIR = TEST_RESOURCES_DIR + "testGoldResults/";
     
@@ -41,221 +45,64 @@ public class InvokeDataServiceStep extends Step {
         this.testInfo = testInfo;
         this.container = container;
     }
-
     
-    public void runStep() throws Throwable {        
-        // valid queries
-        testUndergraduateStudentWithName();
-        testAllPayments();
-        testDistinctAttributeFromCash();
-        testAssociationNotNull();
-        testCountAssociationNotNull();
-        testAssociationWithAttributeEqual();
-        testGroupOfAttributesUsingAnd();
-        testGroupOfAttributesUsingOr();
-        testGroupOfAssociationsUsingAnd();
-        testGroupOfAssociationsUsingOr();
-        testNestedAssociations();
-        testNestedAssociationsNoRoleNames();
-        testAssociationWithGroup();
-        testNestedGroups();
-        testSingleAttributeFromCash();
-        testAllSuperclass();
+    
+    public void runStep() throws Throwable {
+        String baseDirName = System.getProperty(SDK43ServiceStyleSystemTestConstants.TESTS_BASEDIR_PROPERTY);
+        assertNotNull("Property " + SDK43ServiceStyleSystemTestConstants.TESTS_BASEDIR_PROPERTY + " must be set!");
+        File basedir = new File(baseDirName);
+        assertTrue("Base dir did not exist or wasn't a directory", basedir.exists() && basedir.isDirectory());
+        File[] queryFiles = new File(basedir, TEST_QUERIES_DIR).listFiles(new FileFilter() {
+            
+            public boolean accept(File pathname) {
+                return pathname.getName().endsWith(".xml");
+            }
+        });
+        assertTrue("Didn't find any query files to test", queryFiles.length > 0);
         
-        // invalid queries
-        testNonExistantTarget();
-        testNonExistantAssociation();
-        testNonExistantAttribute();
-        testAssociationWithWrongAttributeDatatype();
-    }
-    
-    
-    private void testUndergraduateStudentWithName() {
-        LOG.debug("testUndergraduateStudentWithName");
-        CQLQuery query = loadQuery("undergraduateStudentWithName.xml");
-        CQLQueryResults results = loadQueryResults("goldUndergraduateStudentWithName.xml");
-        invokeValidQueryValidResults(query, results);
-    }
-    
-    
-    private void testAllPayments() {
-        LOG.debug("testAllPayments");
-        CQLQuery query = loadQuery("allPayments.xml");
-        CQLQueryResults results = loadQueryResults("goldAllPayments.xml");
-        invokeValidQueryValidResults(query, results);
-    }
-    
-    
-    private void testDistinctAttributeFromCash() {
-        LOG.debug("testDistinctAttributeFromCash");
-        CQLQuery query = loadQuery("distinctAttributeFromCash.xml");
-        CQLQueryResults results = loadQueryResults("goldDistinctAttributeFromCash.xml");
-        invokeValidQueryValidResults(query, results);
-    }
-    
-    
-    private void testAssociationNotNull() {
-        LOG.debug("testAssociationNotNull");
-        CQLQuery query = loadQuery("associationNotNull.xml");
-        CQLQueryResults results = loadQueryResults("goldAssociationNotNull.xml");
-        invokeValidQueryValidResults(query, results);
-    }
-    
-    
-    private void testAssociationWithAttributeEqual() {
-        LOG.debug("testAssociationWithAttributeEqual");
-        CQLQuery query = loadQuery("associationWithAttributeEqual.xml");
-        CQLQueryResults results = loadQueryResults("goldAssociationWithAttributeEqual.xml");
-        invokeValidQueryValidResults(query, results);
-    }
-    
-    
-    private void testGroupOfAttributesUsingAnd() {
-        LOG.debug("testGroupOfAttributesUsingAnd");
-        CQLQuery query = loadQuery("groupOfAttributesUsingAnd.xml");
-        CQLQueryResults results = loadQueryResults("goldGroupOfAttributesUsingAnd.xml");
-        invokeValidQueryValidResults(query, results);
-    }
-    
-    
-    private void testGroupOfAttributesUsingOr() {
-        LOG.debug("testGroupOfAttributesUsingOr");
-        CQLQuery query = loadQuery("groupOfAttributesUsingOr.xml");
-        CQLQueryResults results = loadQueryResults("goldGroupOfAttributesUsingOr.xml");
-        invokeValidQueryValidResults(query, results);
-    }
-    
-    
-    private void testGroupOfAssociationsUsingAnd() {
-        LOG.debug("testGroupOfAssociationsUsingAnd");
-        CQLQuery query = loadQuery("groupOfAssociationsUsingAnd.xml");
-        CQLQueryResults results = loadQueryResults("goldGroupOfAssociationsUsingAnd.xml");
-        invokeValidQueryValidResults(query, results);
-    }
-    
-    
-    private void testGroupOfAssociationsUsingOr() {
-        LOG.debug("testGroupOfAssociationsUsingOr");
-        CQLQuery query = loadQuery("groupOfAssociationsUsingOr.xml");
-        CQLQueryResults results = loadQueryResults("goldGroupOfAssociationsUsingOr.xml");
-        invokeValidQueryValidResults(query, results);
-    }
-    
-    
-    private void testNestedAssociations() {
-        LOG.debug("testNestedAssociations");
-        CQLQuery query = loadQuery("nestedAssociations.xml");
-        CQLQueryResults results = loadQueryResults("goldNestedAssociations.xml");
-        invokeValidQueryValidResults(query, results);
-    }
-    
-    
-    private void testNestedAssociationsNoRoleNames() {
-        LOG.debug("testNestedAssociationsNoRoleNames");
-        CQLQuery query = loadQuery("nestedAssociationsNoRoleNames.xml");
-        // should have same results as with role names
-        CQLQueryResults results = loadQueryResults("goldNestedAssociations.xml");
-        invokeValidQueryValidResults(query, results);
-    }
-    
-    
-    private void testAssociationWithGroup() {
-        LOG.debug("testAssociationWithGroup");
-        CQLQuery query = loadQuery("associationWithGroup.xml");
-        CQLQueryResults results = loadQueryResults("goldAssociationWithGroup.xml");
-        invokeValidQueryValidResults(query, results);
-    }
-    
-    
-    private void testCountAssociationNotNull() {
-        LOG.debug("testCountAssociationNotNull");
-        CQLQuery query = loadQuery("countAssociationNotNull.xml");
-        CQLQueryResults results = loadQueryResults("goldCountAssociationNotNull.xml");
-        invokeValidQueryValidResults(query, results);
-    }
-    
-    
-    private void testNestedGroups() {
-        LOG.debug("testNestedGroups");
-        CQLQuery query = loadQuery("nestedGroups.xml");
-        CQLQueryResults results = loadQueryResults("goldNestedGroups.xml");
-        invokeValidQueryValidResults(query, results);
-    }
-    
-    
-    private void testSingleAttributeFromCash() {
-        LOG.debug("testSingleAttributeFromCash");
-        CQLQuery query = loadQuery("singleAttributeFromCash.xml");
-        CQLQueryResults results = loadQueryResults("goldSingleAttributeFromCash.xml");
-        invokeValidQueryValidResults(query, results);
-    }
-    
-    
-    private void testAllSuperclass() {
-        LOG.debug("testAllSuperclass");
-        CQLQuery query = loadQuery("allSuperclass.xml");
-        CQLQueryResults results = loadQueryResults("goldAllSuperclass.xml");
-        invokeValidQueryValidResults(query, results);
-    }
-    
-    
-    private void testNonExistantTarget() {
-        LOG.debug("testNonExistantTarget");
-        CQLQuery query = loadQuery("invalid_nonExistantTarget.xml");
-        invokeInvalidQuery(query);
-    }
-    
-    
-    private void testNonExistantAssociation() {
-        LOG.debug("testNonExistantAssociation");
-        CQLQuery query = loadQuery("invalid_nonExistantAssociation.xml");
-        invokeInvalidQuery(query);
-    }
-    
-    
-    private void testNonExistantAttribute() {
-        LOG.debug("testNonExistantAttribute");
-        CQLQuery query = loadQuery("invalid_nonExistantAttribute.xml");
-        invokeInvalidQuery(query);
-    }
-    
-    
-    private void testAssociationWithWrongAttributeDatatype() {
-        LOG.debug("testAssociationWithWrongAttributeDatatype");
-        CQLQuery query = loadQuery("invalid_associationWithWrongAttributeDatatype.xml");
-        invokeInvalidQuery(query);
+        // sort for sanity
+        Arrays.sort(queryFiles, new Comparator<File>() {
+            public int compare(File o1, File o2) {
+                return o1.getName().compareTo(o2.getName());
+            }
+        });
+        
+        File goldDir = new File(basedir, TEST_RESULTS_DIR);
+        for (File f : queryFiles) {
+            System.out.println("Testing query file " + f.getName());
+            File goldFile = new File(goldDir, "gold_" + f.getName());
+            System.out.println("\tGold results file is " + goldFile.getName());
+            
+            CQLQuery query = loadQuery(f.getAbsolutePath());
+            CQLQueryResults goldResults = loadQueryResults(goldFile.getAbsolutePath());
+            invokeValidQueryValidResults(query, goldResults);
+        }
     }
     
     
     private CQLQuery loadQuery(String filename) {
-        String fullFilename = TEST_QUERIES_DIR + filename;
         CQLQuery query = null;
         try {
-            InputStream queryInputStream = InvokeDataServiceStep.class.getResourceAsStream(fullFilename);
-            InputStreamReader reader = new InputStreamReader(queryInputStream);
-            query = (CQLQuery) Utils.deserializeObject(reader, CQLQuery.class);
+            FileReader reader = new FileReader(filename);
+            query = Utils.deserializeObject(reader, CQLQuery.class);
             reader.close();
-            queryInputStream.close();
         } catch (Exception ex) {
             ex.printStackTrace();
-            fail("Error deserializing query (" + fullFilename + "): " + ex.getMessage());
+            fail("Error deserializing query (" + filename + "): " + ex.getMessage());
         }
         return query;
     }
     
     
     private CQLQueryResults loadQueryResults(String filename)  {
-        String fullFilename = TEST_RESULTS_DIR + filename;
         CQLQueryResults results = null;
         try {
-            InputStream resultInputStream = InvokeDataServiceStep.class.getResourceAsStream(fullFilename);
-            InputStreamReader reader = new InputStreamReader(resultInputStream);
-            results = (CQLQueryResults) Utils.deserializeObject(reader, CQLQueryResults.class);
+            FileReader reader = new FileReader(filename);
+            results = Utils.deserializeObject(reader, CQLQueryResults.class);
             reader.close();
-            resultInputStream.close();
         } catch (Exception ex) {
             ex.printStackTrace();
-            fail("Error deserializing query results (" + fullFilename + "): " + ex.getMessage());
+            fail("Error deserializing query results (" + filename + "): " + ex.getMessage());
         }
         return results;
     }
@@ -480,9 +327,11 @@ public class InvokeDataServiceStep extends Step {
     
     private InputStream getClientConfigStream() {
         InputStream is = null;
+        String base = System.getProperty(SDK43ServiceStyleSystemTestConstants.TESTS_BASEDIR_PROPERTY);
         String resourceName = TEST_RESOURCES_DIR + "wsdd/client-config.wsdd";
         try {
-            is = InvokeDataServiceStep.class.getResourceAsStream(resourceName);
+            is = new FileInputStream(new File(base, resourceName));
+            assertNotNull("Could not locate client config wsdd resource", is);
         } catch (Exception ex) {
             ex.printStackTrace();
             fail("Error obtaining client config input stream: " + ex.getMessage());

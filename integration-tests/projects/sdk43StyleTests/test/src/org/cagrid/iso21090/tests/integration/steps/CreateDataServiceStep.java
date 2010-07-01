@@ -33,7 +33,8 @@ public class CreateDataServiceStep extends CreationStep {
     
     public static final String OUTPUT_PACKAGE_PATH = "target" + File.separator + "dist" 
         + File.separator + "exploded" + File.separator + "output" 
-        + File.separator + "example" + File.separator + "package";
+        + File.separator + ExampleProjectInfo.EXAMPLE_PROJECT_NAME
+        + File.separator + "package";
     public static final String REMOTE_CLIENT_PATH = OUTPUT_PACKAGE_PATH + File.separator + "remote-client";
     public static final String LOCAL_CLIENT_PATH = OUTPUT_PACKAGE_PATH + File.separator + "local-client";
 
@@ -54,7 +55,7 @@ public class CreateDataServiceStep extends CreationStep {
     
     
     /**
-     * Extended to turn on and configure the caCORE SDK 4.2 style in the service model
+     * Extended to turn on and configure the caCORE SDK 4.3 style in the service model
      */
     protected void postSkeletonCreation() throws Throwable {
         setServiceStyle();
@@ -97,12 +98,16 @@ public class CreateDataServiceStep extends CreationStep {
     
     private AbstractStyleConfigurationStep getProjectSelectionConfiguration() throws Exception {
         ProjectSelectionConfigurationStep config = new ProjectSelectionConfigurationStep(getServiceInformation());
-        config.setApplicationName("example");
+        config.setApplicationName(ExampleProjectInfo.EXAMPLE_PROJECT_NAME);
         // if an SDK application container is available, use the remote API, else local
         if (remoteSdkApplicationContainer == null) {
+            System.out.println("Using local API");
+            System.out.println("I think the local client dir is " + getExampleProjectLocalClientDir().getAbsolutePath());
             config.setLocalApi(true);
             config.setLocalClientDir(getExampleProjectLocalClientDir().getAbsolutePath());
         } else {
+            System.out.println("Using remote API");
+            System.out.println("I think the remote client dir is " + getExampleProjectRemoteClientDir().getAbsolutePath());
             config.setLocalApi(false);
             config.setRemoteClientDir(getExampleProjectRemoteClientDir().getAbsolutePath());
             config.setApplicationHostname(
@@ -110,6 +115,7 @@ public class CreateDataServiceStep extends CreationStep {
             config.setApplicationPort(
                 Integer.valueOf(remoteSdkApplicationContainer.getContainerBaseURI().getPort()));
         }
+        config.setUseJaxB(true);
         return config;
     }
     

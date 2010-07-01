@@ -1,9 +1,5 @@
 package org.cagrid.iso21090.tests.integration.story;
 
-import gov.nih.nci.cagrid.common.Utils;
-
-import java.io.File;
-
 import junit.framework.TestResult;
 import junit.framework.TestSuite;
 import junit.textui.TestRunner;

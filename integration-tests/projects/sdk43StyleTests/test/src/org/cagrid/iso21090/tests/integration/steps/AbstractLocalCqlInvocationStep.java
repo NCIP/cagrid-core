@@ -10,6 +10,8 @@ import java.io.File;
 import java.io.FileFilter;
 import java.util.List;
 
+import org.cagrid.iso21090.tests.integration.ExampleProjectInfo;
+
 public abstract class AbstractLocalCqlInvocationStep extends Step {
 
     public static final String TESTS_BASEDIR_PROPERTY = "sdk43.tests.base.dir";
@@ -19,7 +21,7 @@ public abstract class AbstractLocalCqlInvocationStep extends Step {
         "sdk" + File.separator + "checkout" + File.separator + "sdk-toolkit" + 
         File.separator + "iso-example-project" + File.separator + "target" + 
         File.separator + "dist" + File.separator + "exploded" + File.separator +
-        "output" + File.separator + "isoExample" + File.separator + "package" + 
+        "output" + File.separator + ExampleProjectInfo.EXAMPLE_PROJECT_NAME + File.separator + "package" + 
         File.separator + "local-client";
     
     private ApplicationService service = null;

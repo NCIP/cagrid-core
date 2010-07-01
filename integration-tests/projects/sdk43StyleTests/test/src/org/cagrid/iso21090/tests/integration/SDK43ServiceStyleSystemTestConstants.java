@@ -24,6 +24,9 @@ public class SDK43ServiceStyleSystemTestConstants {
     public static final String SERVICE_NAME = "TestSDK43WithIsoTypesStyleDataService";
     public static final String SERVICE_NAMESPACE = "http://" + SERVICE_PACKAGE + "/" + SERVICE_NAME;
     
+    // dirs
+    public static final String TESTS_BASEDIR_PROPERTY = "sdk43.tests.base.dir";
+    
     public static SDK43TestServiceInfo getTestServiceInfo() {
         String suffix = String.valueOf(System.currentTimeMillis());
         return new SDK43TestServiceInfo(suffix);

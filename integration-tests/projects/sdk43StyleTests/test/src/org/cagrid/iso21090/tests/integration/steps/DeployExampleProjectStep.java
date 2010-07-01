@@ -25,9 +25,9 @@ public class DeployExampleProjectStep extends Step {
         File exampleProjectWar = new File(ExampleProjectInfo.getExampleProjectDir(),
             "target" + File.separator + "dist" + File.separator +
             "exploded" + File.separator + "output" + File.separator +
-            "example" + File.separator + "package" + File.separator +
+            ExampleProjectInfo.EXAMPLE_PROJECT_NAME + File.separator + "package" + File.separator +
             "server" + File.separator + "tomcat" + File.separator +
-            "webapps" + File.separator + "example.war");
+            "webapps" + File.separator + ExampleProjectInfo.EXAMPLE_PROJECT_NAME + ".war");
         assertTrue("Project WAR file not found (" + exampleProjectWar.getAbsolutePath() + ")", exampleProjectWar.exists());
         Utils.copyFile(exampleProjectWar, new File(webappsDir, exampleProjectWar.getName()));
     }

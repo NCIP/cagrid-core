@@ -59,7 +59,7 @@ public class SDK43StyleRemoteApiStory extends Story {
 
     protected Vector<?> steps() {
         Vector<Step> steps = new Vector<Step>();
-        steps.add(new InstallStyleStep());
+        // steps.add(new InstallStyleStep());
         steps.add(new UnpackContainerStep(sdkApplicationServiceContainer));
         steps.add(new DeployExampleProjectStep(sdkApplicationServiceContainer));
         steps.add(new CreateDataServiceStep(testInfo, getIntroduceBaseDir(), sdkApplicationServiceContainer));

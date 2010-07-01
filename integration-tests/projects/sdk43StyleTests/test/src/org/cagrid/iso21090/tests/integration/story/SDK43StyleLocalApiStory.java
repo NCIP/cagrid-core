@@ -56,7 +56,7 @@ public class SDK43StyleLocalApiStory extends Story {
 
     protected Vector<?> steps() {
         Vector<Step> steps = new Vector<Step>();
-        steps.add(new InstallStyleStep());
+        // steps.add(new InstallStyleStep());
         steps.add(new CreateDataServiceStep(testInfo, getIntroduceBaseDir()));
         steps.add(new UnpackContainerStep(container));
         List<String> deploymentArgs = 
@@ -81,7 +81,8 @@ public class SDK43StyleLocalApiStory extends Story {
             errors.add(th);
         }
         try {
-            Utils.deleteDir(new File(testInfo.getDir()));
+            System.out.println("Data Service in " + testInfo.getDir());
+            // Utils.deleteDir(new File(testInfo.getDir()));
         } catch (Throwable th) {
             errors.add(th);
         }

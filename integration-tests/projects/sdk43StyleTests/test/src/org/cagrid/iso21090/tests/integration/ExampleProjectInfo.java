@@ -9,7 +9,7 @@ public class ExampleProjectInfo {
     public static final String PROPERTY_SDK_BASE = "sdk.unpack.dir";
     
     public static final String EXAMPLE_PROJECT_DIR = "sdk-toolkit" + File.separator + "iso-example-project";
-    public static final String EXAMPLE_PROJECT_NAME = "example";
+    public static final String EXAMPLE_PROJECT_NAME = "isoExample";
     public static final String EXAMPLE_PROJECT_VERSION = "4.3";
 
 
