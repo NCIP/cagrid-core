@@ -21,7 +21,6 @@ import java.util.Vector;
 import org.cagrid.data.test.creation.DataTestCaseInfo;
 import org.cagrid.iso21090.tests.integration.SDK43ServiceStyleSystemTestConstants;
 import org.cagrid.iso21090.tests.integration.steps.CreateDataServiceStep;
-import org.cagrid.iso21090.tests.integration.steps.InstallStyleStep;
 import org.cagrid.iso21090.tests.integration.steps.InvokeDataServiceStep;
 
 public class SDK43StyleLocalApiStory extends Story {
@@ -81,8 +80,8 @@ public class SDK43StyleLocalApiStory extends Story {
             errors.add(th);
         }
         try {
-            System.out.println("Data Service in " + testInfo.getDir());
-            // Utils.deleteDir(new File(testInfo.getDir()));
+            // System.out.println("Data Service in " + testInfo.getDir());
+            Utils.deleteDir(new File(testInfo.getDir()));
         } catch (Throwable th) {
             errors.add(th);
         }
