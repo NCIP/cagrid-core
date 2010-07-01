@@ -22,6 +22,7 @@ import org.cagrid.data.test.creation.DataTestCaseInfo;
 import org.cagrid.iso21090.tests.integration.SDK43ServiceStyleSystemTestConstants;
 import org.cagrid.iso21090.tests.integration.steps.CreateDataServiceStep;
 import org.cagrid.iso21090.tests.integration.steps.DeployExampleProjectStep;
+import org.cagrid.iso21090.tests.integration.steps.InvokeCql2DataServiceStep;
 import org.cagrid.iso21090.tests.integration.steps.InvokeDataServiceStep;
 
 public class SDK43StyleRemoteApiStory extends Story {
@@ -69,6 +70,7 @@ public class SDK43StyleRemoteApiStory extends Story {
         steps.add(new StartContainerStep(sdkApplicationServiceContainer));
         steps.add(new StartContainerStep(dataServiceContainer));
         steps.add(new InvokeDataServiceStep(testInfo, dataServiceContainer));
+        steps.add(new InvokeCql2DataServiceStep(testInfo, dataServiceContainer));
         return steps;
     }
     

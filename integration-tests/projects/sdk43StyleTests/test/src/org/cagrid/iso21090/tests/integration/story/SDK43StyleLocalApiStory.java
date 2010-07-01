@@ -21,6 +21,7 @@ import java.util.Vector;
 import org.cagrid.data.test.creation.DataTestCaseInfo;
 import org.cagrid.iso21090.tests.integration.SDK43ServiceStyleSystemTestConstants;
 import org.cagrid.iso21090.tests.integration.steps.CreateDataServiceStep;
+import org.cagrid.iso21090.tests.integration.steps.InvokeCql2DataServiceStep;
 import org.cagrid.iso21090.tests.integration.steps.InvokeDataServiceStep;
 
 public class SDK43StyleLocalApiStory extends Story {
@@ -63,6 +64,7 @@ public class SDK43StyleLocalApiStory extends Story {
         steps.add(new DeployServiceStep(container, testInfo.getDir(), deploymentArgs));
         steps.add(new StartContainerStep(container));
         steps.add(new InvokeDataServiceStep(testInfo, container));
+        steps.add(new InvokeCql2DataServiceStep(testInfo, container));
         return steps;
     }
     
