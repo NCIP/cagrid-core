@@ -22,7 +22,6 @@ import org.cagrid.data.test.creation.DataTestCaseInfo;
 import org.cagrid.iso21090.tests.integration.SDK43ServiceStyleSystemTestConstants;
 import org.cagrid.iso21090.tests.integration.steps.CreateDataServiceStep;
 import org.cagrid.iso21090.tests.integration.steps.DeployExampleProjectStep;
-import org.cagrid.iso21090.tests.integration.steps.InstallStyleStep;
 import org.cagrid.iso21090.tests.integration.steps.InvokeDataServiceStep;
 
 public class SDK43StyleRemoteApiStory extends Story {
