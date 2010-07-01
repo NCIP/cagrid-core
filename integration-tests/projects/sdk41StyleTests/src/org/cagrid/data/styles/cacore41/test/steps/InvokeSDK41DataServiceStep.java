@@ -307,7 +307,7 @@ public class InvokeSDK41DataServiceStep extends Step {
     }
     
     
-    private DataServiceClient getServiceClient() {
+    protected DataServiceClient getServiceClient() {
         DataServiceClient client = null;
         try {
             client = new DataServiceClient(getServiceUrl()); 
@@ -319,7 +319,7 @@ public class InvokeSDK41DataServiceStep extends Step {
     }
     
     
-    private String getServiceUrl() {
+    protected String getServiceUrl() {
         String url = null;
         try {
             URI baseUri = container.getContainerBaseURI();
@@ -485,7 +485,7 @@ public class InvokeSDK41DataServiceStep extends Step {
     }
     
     
-    private InputStream getClientConfigStream() {
+    protected InputStream getClientConfigStream() {
         InputStream is = null;
         String resourceName = TEST_RESOURCES_DIR + "wsdd/client-config.wsdd";
         try {
