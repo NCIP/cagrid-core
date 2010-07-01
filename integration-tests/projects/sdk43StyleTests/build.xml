@@ -31,6 +31,7 @@
 	<property name="test.lib.dir" location="${test.dir}/lib" />
 	<property name="test.logs.dir" location="${test.dir}/logs" />
 	<property name="test.project.jar" location="${jar.dir}/${project.name}-${project.version}.jar" />
+	<property name="test.resources.jar" location="${jar.dir}/${project.name}-resources-${project.version}.jar"/>
 	
 	<!-- style related stuff -->
 	<property name="introduce.dir" location="${basedir}/../../../caGrid/projects/introduce" />
@@ -84,12 +85,20 @@
 	
 	<path id="integration.test.run.classpath">
 		<pathelement path="${test.classes.dir}" />
+		<pathelement path="${test.dir}"/>
 		<fileset dir="${ext.test.lib.dir}">
 			<include name="*.jar" />
 		</fileset>
 		<fileset dir="${globus.dir}/lib">
 			<include name="*.jar" />
 			<exclude name="junit.jar" />
+		</fileset>
+		<fileset dir="${sdk.lib.dir}">
+			<include name="**/*-beans.jar"/>
+			<exclude name="**/caGrid-iso*.jar"/>
+		</fileset>
+		<fileset dir="${introduce.dir}/extensions/lib">
+			<include name="**/*iso*.jar"/>
 		</fileset>
 	</path>
 
@@ -133,6 +142,11 @@
 				<attribute name="Specification-Version" value="${project.version}" />
 				<attribute name="Implementation-Version" value="${project.version}" />
 			</manifest>
+		</jar>
+		<jar jarfile="${test.resources.jar}">
+			<fileset dir="${test.dir}">
+				<include name="resources/**"/>
+			</fileset>
 		</jar>
 	</target>
 
