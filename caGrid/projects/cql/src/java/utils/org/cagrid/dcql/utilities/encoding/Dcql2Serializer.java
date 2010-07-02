@@ -12,6 +12,7 @@ import org.apache.axis.encoding.Serializer;
 import org.apache.axis.wsdl.fromJava.Types;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.cagrid.cql.utilities.encoding.Cql2SerialzationHelper;
 import org.exolab.castor.mapping.Mapping;
 import org.exolab.castor.mapping.MappingException;
 import org.exolab.castor.xml.MarshalException;
@@ -31,6 +32,7 @@ public class Dcql2Serializer implements Serializer {
         // load the mapping
         Mapping map = new Mapping();
         try {
+            map.setEntityResolver(Cql2SerialzationHelper.getDtdResolver());
             map.loadMapping(Dcql2SerialzationHelper.getMapping());
         } catch (MappingException ex) {
             ex.printStackTrace();

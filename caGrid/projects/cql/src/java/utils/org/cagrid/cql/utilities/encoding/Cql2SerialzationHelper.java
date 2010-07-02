@@ -46,7 +46,7 @@ public class Cql2SerialzationHelper {
     }
     
     
-    static EntityResolver getDtdResolver() {
+    public static EntityResolver getDtdResolver() {
         if (dtdResolver == null) {
             // simple entity resolver to load the castor dtd from the class loader
             dtdResolver = new EntityResolver() {
