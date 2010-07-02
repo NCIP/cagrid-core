@@ -31,6 +31,7 @@ public class Cql2Serializer implements Serializer {
         
         // load the mapping
         Mapping map = new Mapping();
+        map.setEntityResolver(Cql2SerialzationHelper.getDtdResolver());
         map.loadMapping(new InputSource(Cql2SerialzationHelper.getMappingStream()));
         
         AxisContentHandler hand = new AxisContentHandler(context);

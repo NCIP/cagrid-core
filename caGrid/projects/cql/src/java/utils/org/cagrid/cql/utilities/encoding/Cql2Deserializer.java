@@ -24,6 +24,7 @@ import org.xml.sax.SAXException;
 import org.xml.sax.SAXParseException;
 
 public class Cql2Deserializer extends DeserializerImpl implements Deserializer {
+    
     public QName xmlType;
     public Class<?> javaType;
     
@@ -52,6 +53,7 @@ public class Cql2Deserializer extends DeserializerImpl implements Deserializer {
         
         // load the mapping
         Mapping map = new Mapping();
+        map.setEntityResolver(Cql2SerialzationHelper.getDtdResolver());
         try {
             map.loadMapping(new InputSource(Cql2SerialzationHelper.getMappingStream()));
         } catch (IOException ex) {
