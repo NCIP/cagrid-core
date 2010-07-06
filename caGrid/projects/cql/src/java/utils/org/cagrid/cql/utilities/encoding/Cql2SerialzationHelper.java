@@ -8,8 +8,10 @@ import java.io.InputStream;
 import org.apache.axis.utils.ClassUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.exolab.castor.util.DTDResolver;
 import org.xml.sax.EntityResolver;
 import org.xml.sax.InputSource;
+import org.xml.sax.SAXException;
 
 public class Cql2SerialzationHelper {
     // castor's DTD
@@ -49,13 +51,14 @@ public class Cql2SerialzationHelper {
     public static EntityResolver getDtdResolver() {
         if (dtdResolver == null) {
             // simple entity resolver to load the castor dtd from the class loader
-            dtdResolver = new EntityResolver() {
-                public InputSource resolveEntity(String publicId, String systemId) throws IOException {
-                    if (publicId.equals(CASTOR_MAPPING_DTD_ENTITY)) {
+            dtdResolver = new DTDResolver() {
+                public InputSource resolveEntity(String publicId, String systemId) throws IOException, SAXException {
+                    LOG.trace("RESOLVING ENTITY " + publicId + ", " + systemId);
+                    if (CASTOR_MAPPING_DTD_ENTITY.equals(publicId)) {
                         InputStream stream = ClassUtils.getResourceAsStream(Cql2Deserializer.class, CASTOR_MAPPING_DTD);
                         return new InputSource(stream);
                     }
-                    return null;
+                    return super.resolveEntity(publicId, systemId);
                 }
             };
         }
