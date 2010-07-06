@@ -2,6 +2,7 @@ package org.cagrid.gaards.websso.authentication;
 
 import gov.nih.nci.cagrid.common.Runner;
 import gov.nih.nci.cagrid.common.ThreadManager;
+import gov.nih.nci.cagrid.metadata.exceptions.RemoteResourcePropertyRetrievalException;
 import gov.nih.nci.cagrid.metadata.exceptions.ResourcePropertyRetrievalException;
 
 import java.net.MalformedURLException;
@@ -134,11 +135,12 @@ public class AuthenticationProfileServiceManager extends Runner implements Initi
 				AuthenticationClient authenticationClient;
 				try {
 					authenticationClient = ashandle.getAuthenticationClient();
-					ashandle.getAuthenticationServiceInformation().setAuthenticationServiceProfiles(authenticationClient.getSupportedAuthenticationProfiles());
+					Set<QName> supportedAuthenticationProfiles = authenticationClient.getSupportedAuthenticationProfiles();
+					ashandle.getAuthenticationServiceInformation().setAuthenticationServiceProfiles(supportedAuthenticationProfiles);
+					authenticationServices.add(ashandle);
 				}catch (Exception e) {
 					handleException(e);
-				}
-	            authenticationServices.add(ashandle);
+				}	            
             }
         }
         handle.setAuthenticationServices(authenticationServices);
@@ -185,7 +187,9 @@ public class AuthenticationProfileServiceManager extends Runner implements Initi
 	}
 	
 	private void handleException(Exception e) throws InvalidResourceException,GenericException{
-		if (e instanceof MalformedURLException) {
+		if(e instanceof RemoteResourcePropertyRetrievalException){
+			log.info(e.getMessage());			
+		}else if (e instanceof MalformedURLException) {
 			throw new InvalidResourceException("malformed URL has occurred", e);
 		} else if (e instanceof ResourcePropertyRetrievalException) {
 			throw new InvalidResourceException("error occured retrieving resource property", e);
