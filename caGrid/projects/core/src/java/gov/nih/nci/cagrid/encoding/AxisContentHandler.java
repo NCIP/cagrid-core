@@ -36,6 +36,8 @@ package gov.nih.nci.cagrid.encoding;
  */
 
 import org.apache.axis.encoding.SerializationContext;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
@@ -51,7 +53,10 @@ import java.io.IOException;
  * @author <a href="mailto:fabien.nisol@advalvas.be">Fabien Nisol</a>
  */
 public class AxisContentHandler extends DefaultHandler {
-	/**
+    
+    private static Log LOG = LogFactory.getLog(AxisContentHandler.class);
+    
+    /**
 	 * serialization context to delegate to
 	 */
 	private SerializationContext context;
@@ -111,6 +116,19 @@ public class AxisContentHandler extends DefaultHandler {
 		} catch (IOException ioe) {
 			throw new SAXException(ioe);
 		}
+	}
+		
+	
+	/**
+	 * Delegates to the serialization context.  This will cause a new namespace
+	 * and prefix mapping to be stored, using the specified URI as a default
+	 * if it is available, and assigning an arbitrary one otherwise
+	 */
+	public void startPrefixMapping (String prefix, String uri) throws SAXException {
+	    String chosenPrefix = context.getPrefixForURI(uri, prefix);
+	    if (LOG.isDebugEnabled()) {
+	        LOG.debug("Requested prefix " + prefix + ", got prefix " + chosenPrefix + " for uri " + uri);
+	    }
 	}
 
 
