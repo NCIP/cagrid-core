@@ -8,9 +8,6 @@ import org.apache.axis.encoding.DeserializerImpl;
 import org.apache.axis.message.MessageElement;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.cagrid.cql.utilities.encoding.Cql2SerialzationHelper;
-import org.exolab.castor.mapping.Mapping;
-import org.exolab.castor.mapping.MappingException;
 import org.exolab.castor.xml.MarshalException;
 import org.exolab.castor.xml.Unmarshaller;
 import org.exolab.castor.xml.ValidationException;
@@ -46,21 +43,11 @@ public class Dcql2Deserializer extends DeserializerImpl implements Deserializer 
     public void onEndElement(String namespace, String localName, DeserializationContext context) throws SAXException {
         long start = System.currentTimeMillis();
         
-        // load the mapping
-        Mapping map = new Mapping();
-        map.setEntityResolver(Cql2SerialzationHelper.getDtdResolver());
-        try {
-            map.loadMapping(Dcql2SerialzationHelper.getMapping());
-        } catch (Exception ex) {
-            String error = "Error loading DCQL 2 castor mapping: " + ex.getMessage();
-            LOG.error(error, ex);
-            throw new SAXException(error, ex);
-        }
         
         Unmarshaller unmarshall = new Unmarshaller(javaType);
         try {
-            unmarshall.setMapping(map);
-        } catch (MappingException ex) {
+            unmarshall.setResolver(Dcql2SerialzationHelper.getResolver());
+        } catch (Exception ex) {
             String error = "Error setting DCQL 2 castor mapping: " + ex.getMessage();
             LOG.error(error, ex);
             throw new SAXException(error, ex);

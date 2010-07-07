@@ -73,7 +73,7 @@ public class Cql2SerialzationHelper {
     }
     
     
-    public static Mapping getMapping() throws Exception {
+    private static Mapping getMapping() throws Exception {
         // load the mapping
         Mapping map = new Mapping();
         map.setEntityResolver(Cql2SerialzationHelper.getDtdResolver());
