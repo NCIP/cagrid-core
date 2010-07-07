@@ -13,7 +13,7 @@
 	<target name="test" depends="integrationTests" description="Runs the unit and integration tests"/>
 
 
-	<target name="integrationTests" depends="prepare, createSdkIsoExampleApplication, unpackSdkZip" description="Runs the SDK integration tests">
+	<target name="integrationTests" depends="prepare, createSdkIsoExampleApplication" description="Runs the SDK integration tests">
 		<echo message="Test results dir: ${junit.results.dir}"/>
 		<mkdir dir="${junit.results.dir}"/>
 		<property name="sdk43.tests.base.dir" location="${basedir}"/>

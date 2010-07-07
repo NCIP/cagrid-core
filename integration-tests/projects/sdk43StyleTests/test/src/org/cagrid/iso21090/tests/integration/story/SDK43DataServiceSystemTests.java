@@ -18,11 +18,13 @@ public class SDK43DataServiceSystemTests {
     
     @Test
     public void sdk43DataServiceSystemTests() throws Throwable {
+        /*
         // create the caCORE SDK example project
         splitTime();
         LOG.debug("Running caCORE SDK example project creation story");
         CreateExampleProjectStory createExampleStory = new CreateExampleProjectStory();
         createExampleStory.runBare();
+        */
         
         // create and run a caGrid Data Service using the SDK's local API
         splitTime();
