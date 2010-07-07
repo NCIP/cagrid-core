@@ -273,11 +273,22 @@ public class SDK43CQL2QueryProcessor extends CQL2QueryProcessor {
                 }
                 InputStream wsdd = getConfiguredWsddStream();
                 StringWriter writer = new StringWriter();
+                synchronized (wsdd) {
+                    try {
+                        wsdd.reset();
+                        wsdd.mark(Integer.MAX_VALUE);
+                        Utils.serializeObject(rawObject, targetQName, writer, wsdd);
+                        wsdd.reset();
+                    } catch (Exception ex) {
+                        String message = "Error pre-serializing object result: " + ex.getMessage();
+                        LOG.error(message, ex);
+                        NoSuchElementException nse = new NoSuchElementException(message);
+                        nse.initCause(ex);
+                        throw nse;
+                    }
+                }
                 AnyNode node = null;
                 try {
-                    wsdd.mark(Integer.MAX_VALUE);
-                    Utils.serializeObject(rawObject, targetQName, writer, wsdd);
-                    wsdd.reset();
                     node = AnyNodeHelper.convertStringToAnyNode(
                         writer.getBuffer().toString());
                 } catch (Exception ex) {
