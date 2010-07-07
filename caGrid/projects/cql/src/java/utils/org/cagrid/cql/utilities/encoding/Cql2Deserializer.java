@@ -1,7 +1,5 @@
 package org.cagrid.cql.utilities.encoding;
 
-import java.io.IOException;
-
 import javax.xml.namespace.QName;
 
 import org.apache.axis.encoding.DeserializationContext;
@@ -10,15 +8,10 @@ import org.apache.axis.encoding.DeserializerImpl;
 import org.apache.axis.message.MessageElement;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.exolab.castor.mapping.Mapping;
-import org.exolab.castor.mapping.MappingException;
-import org.exolab.castor.mapping.xml.ClassMapping;
-import org.exolab.castor.mapping.xml.FieldMapping;
 import org.exolab.castor.xml.MarshalException;
 import org.exolab.castor.xml.Unmarshaller;
 import org.exolab.castor.xml.ValidationException;
 import org.w3c.dom.Element;
-import org.xml.sax.InputSource;
 import org.xml.sax.Locator;
 import org.xml.sax.SAXException;
 import org.xml.sax.SAXParseException;
@@ -48,39 +41,13 @@ public class Cql2Deserializer extends DeserializerImpl implements Deserializer {
     }
     
     
-    public void onEndElement(String namespace, String localName, DeserializationContext context) throws SAXException {
+    public synchronized void onEndElement(String namespace, String localName, DeserializationContext context) throws SAXException {
         long start = System.currentTimeMillis();
         
-        // load the mapping
-        Mapping map = new Mapping();
-        map.setEntityResolver(Cql2SerialzationHelper.getDtdResolver());
-        try {
-            map.loadMapping(new InputSource(Cql2SerialzationHelper.getMappingStream()));
-        } catch (IOException ex) {
-            String error = "Error loading CQL 2 castor mapping: " + ex.getMessage();
-            LOG.error(error, ex);
-            throw new SAXException(error, ex);
-        }
-                
         Unmarshaller unmarshall = new Unmarshaller(javaType);
         try {
-            unmarshall.setMapping(map);
-            if (LOG.isTraceEnabled()) {
-                ClassMapping[] maps = map.getRoot().getClassMapping();
-                for (ClassMapping m : maps) {
-                    LOG.trace("Class mapping for " + m.getName());
-                    if (m.getExtends() != null) {
-                        LOG.trace("\t\tExtends " + ((ClassMapping) m.getExtends()).getName());
-                    }
-                    if (m.getClassChoice() != null && m.getClassChoice().getFieldMapping() != null) {
-                        FieldMapping[] fields = m.getClassChoice().getFieldMapping();
-                        for (FieldMapping f : fields) {
-                            LOG.trace("\tField " + f.getName() + " is mapped");
-                        }
-                    }
-                }
-            }
-        } catch (MappingException ex) {
+            unmarshall.setResolver(Cql2SerialzationHelper.getResolver());
+        } catch (Exception ex) {
             String error = "Error setting CQL 2 castor mapping: " + ex.getMessage();
             LOG.error(error, ex);
             throw new SAXException(error, ex);

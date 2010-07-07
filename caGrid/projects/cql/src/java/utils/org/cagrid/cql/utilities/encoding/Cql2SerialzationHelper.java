@@ -8,7 +8,13 @@ import java.io.InputStream;
 import org.apache.axis.utils.ClassUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.castor.mapping.BindingType;
+import org.castor.mapping.MappingUnmarshaller;
+import org.exolab.castor.mapping.Mapping;
+import org.exolab.castor.mapping.MappingLoader;
 import org.exolab.castor.util.DTDResolver;
+import org.exolab.castor.xml.ClassDescriptorResolverFactory;
+import org.exolab.castor.xml.XMLClassDescriptorResolver;
 import org.xml.sax.EntityResolver;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
@@ -25,6 +31,7 @@ public class Cql2SerialzationHelper {
     
     private static byte[] mappingBytes = null;
     private static EntityResolver dtdResolver = null;
+    private static XMLClassDescriptorResolver xmlDescriptorResovler = null;
     
     static synchronized ByteArrayInputStream getMappingStream() throws IOException {
         if (mappingBytes == null) {
@@ -63,5 +70,31 @@ public class Cql2SerialzationHelper {
             };
         }
         return dtdResolver;
+    }
+    
+    
+    public static Mapping getMapping() throws Exception {
+        // load the mapping
+        Mapping map = new Mapping();
+        map.setEntityResolver(Cql2SerialzationHelper.getDtdResolver());
+        try {
+            map.loadMapping(new InputSource(Cql2SerialzationHelper.getMappingStream()));
+        } catch (IOException ex) {
+            String error = "Error loading CQL 2 castor mapping: " + ex.getMessage();
+            LOG.error(error, ex);
+            throw new SAXException(error, ex);
+        }
+        return map;
+    }
+    
+    
+    public static synchronized XMLClassDescriptorResolver getResolver() throws Exception {
+        if (xmlDescriptorResovler == null) {
+            xmlDescriptorResovler = (XMLClassDescriptorResolver) ClassDescriptorResolverFactory.createClassDescriptorResolver(BindingType.XML);
+            MappingUnmarshaller mappingUnmarshaller = new MappingUnmarshaller();
+            MappingLoader mappingLoader = mappingUnmarshaller.getMappingLoader(getMapping(), BindingType.XML);
+            xmlDescriptorResovler.setMappingLoader(mappingLoader);
+        }
+        return xmlDescriptorResovler;
     }
 }

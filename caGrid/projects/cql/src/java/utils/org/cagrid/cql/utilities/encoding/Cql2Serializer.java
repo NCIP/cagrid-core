@@ -12,14 +12,11 @@ import org.apache.axis.encoding.Serializer;
 import org.apache.axis.wsdl.fromJava.Types;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.exolab.castor.mapping.Mapping;
-import org.exolab.castor.mapping.MappingException;
 import org.exolab.castor.xml.MarshalException;
 import org.exolab.castor.xml.Marshaller;
 import org.exolab.castor.xml.ValidationException;
 import org.w3c.dom.Element;
 import org.xml.sax.Attributes;
-import org.xml.sax.InputSource;
 
 public class Cql2Serializer implements Serializer {
     
@@ -29,16 +26,12 @@ public class Cql2Serializer implements Serializer {
         throws IOException {
         long start = System.currentTimeMillis();
         
-        // load the mapping
-        Mapping map = new Mapping();
-        map.setEntityResolver(Cql2SerialzationHelper.getDtdResolver());
-        map.loadMapping(new InputSource(Cql2SerialzationHelper.getMappingStream()));
-        
         AxisContentHandler hand = new AxisContentHandler(context);
         Marshaller marshaller = new Marshaller(hand);
         try {
-            marshaller.setMapping(map);
-        } catch (MappingException ex) {
+            // marshaller.setMapping(map);
+            marshaller.setResolver(Cql2SerialzationHelper.getResolver());
+        } catch (Exception ex) {
             String error = "Error setting CQL 2 castor mapping: " + ex.getMessage();
             LOG.error(error, ex);
             IOException ioe = new IOException(error);
