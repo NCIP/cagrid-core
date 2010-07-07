@@ -38,7 +38,52 @@
 
 	<!-- overide the introduce location of this which is suposed to be in tools/lib -->
 	<property name="ant.contrib.location" value="${ext.tools.lib.dir}/ant-contrib-1.0b3.jar" />
+	
+	<!-- Ant Http proxy related targets and properties --> 
+		<propertyset id="system.properties"> 
+			<propertyref prefix="java.net.useSystemProxies"/> 
+			<propertyref prefix="http."/> 
+			<propertyref prefix="https."/> 
+		</propertyset> 
 
+		<target name="checkProxyFlag"> 
+			<condition property="use.proxy" else="false"> 
+				<equals arg1="${proxy}" arg2="true" /> 
+			</condition> 
+			<echo message="use.proxy = ${use.proxy}" /> 
+		</target> 
+
+	<target name="checkAntOpts" depends="checkProxyFlag" if="env.ANT_OPTS"> 
+		<property name="ant.opts" value="${env.ANT_OPTS}" /> 
+		<if> 
+			<equals arg1="${use.proxy}" arg2="true" /> 
+		<then> 
+			<condition property="contains.proxyHost" else="false"> 
+				<contains string="${env.ANT_OPTS}" substring="-Dhttp.proxyHost=" /> 
+			</condition> 
+			<condition property="contains.proxyPort" else="false"> 
+				<contains string="${env.ANT_OPTS}" substring="-Dhttp.proxyPort=" /> 
+			</condition> 
+			<condition property="proxy.configured" else="false"> 
+				<and> 
+					<equals arg1="${contains.proxyHost}" arg2="true" /> 
+					<equals arg1="${contains.proxyPort}" arg2="true" /> 
+				</and> 
+			</condition> 
+
+			<echo message="proxy.configured = ${proxy.configured}" /> 
+			<if> 
+				<equals arg1="${proxy.configured}" arg2="false" /> 
+			<then> 
+				<echo message="ANT_OPTS contains '-Dhttp.proxyHost': ${contains.proxyHost}" /> 
+				<echo message="ANT_OPTS contains '-Dhttp.proxyHost': ${contains.proxyPort}" /> 
+				<fail message="Proxy configuration using -Dproxy and ANT_OPTS is incorrect." /> 
+			</then> 
+			</if> 
+		</then> 
+		</if> 
+	</target> 
+	
 	<target name="defineClasspaths" depends="checkGlobus">
 		<path id="tasks.run.extended.classpath" />
 		<runtarget target="defineExtendedClasspaths" />
@@ -327,14 +372,30 @@
 		</java>
 	</target>
 
-	<target name="syncWithTrustFabric" description="Sync with the GTS Once" depends="init,deployTrustedCerts">
-		<java classpathref="service.run.classpath" classname="gov.nih.nci.cagrid.syncgts.tools.SyncGTSCommand" fork="yes" failonerror="true">
-			<jvmarg value="-Dlog4j.configuration=sync-gts-log4j.properties" />
-			<jvmarg value="-Dlog4j.debug" />
-			<arg value="-d" />
-			<arg value="${sync.description.file}" />
-			<arg value="-o" />
-		</java>
+	<target name="syncWithTrustFabric" description="Sync with the GTS Once" depends="init,deployTrustedCerts,checkAntOpts">
+		<if> 
+			<equals arg1="${use.proxy}" arg2="false"/> 
+		<then>
+			<java classpathref="service.run.classpath" classname="gov.nih.nci.cagrid.syncgts.tools.SyncGTSCommand" fork="yes" failonerror="true">
+				<jvmarg value="-Dlog4j.configuration=sync-gts-log4j.properties" />
+				<jvmarg value="-Dlog4j.debug" />
+				<arg value="-d" />
+				<arg value="${sync.description.file}" />
+				<arg value="-o" />
+			</java>
+		</then>
+		<else>
+			<java classpathref="service.run.classpath" classname="gov.nih.nci.cagrid.syncgts.tools.SyncGTSCommand" fork="yes" failonerror="true">
+			    <jvmarg value="-Dlog4j.configuration=sync-gts-log4j.properties" />
+			    <jvmarg value="-Dlog4j.debug" />
+			    <sysproperty key="ANT_OPTS" value="${ant.opts}"/> 
+				<syspropertyset refId="system.properties" /> 
+				<arg value="-d" />
+			    <arg value="${sync.description.file}" />
+			    <arg value="-o" />
+			 </java>
+		</else>
+		</if>
 	</target>
 
 
