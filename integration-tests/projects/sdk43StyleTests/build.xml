@@ -19,10 +19,10 @@
 	<property name="jar.dir" value="${build.dir}/jars" />
 	<property name="ext.dir" value="${basedir}/ext" />
 	<property name="ext.test.lib.dir" location="${ext.dir}/dependencies/test/jars"/>
-	<property name="svnant.lib.dir" location="${ext.dir}/dependencies/svnant/jars"/>
 	<property name="sdk.client.dir" location="${basedir}/sdk/local-client"/>
 	<property name="sdk.lib.dir" location="${sdk.client.dir}/lib"/>
 	<property name="sdk.conf.dir" location="${sdk.client.dir}/conf"/>
+	<property name="sdk.zip.file" location="${ext.dir}/dependencies/cacore/zips/caCORE_SDK_43.zip"/>
 
 	<!-- testing stuff -->
 	<property name="test.dir" location="${basedir}/test" />

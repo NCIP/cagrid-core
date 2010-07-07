@@ -6,17 +6,6 @@
 	<property name="sdk.checkout.dir" location="${basedir}/sdk/checkout"/>
 	<property name="sdk.temp.dir" location="${basedir}/sdk/temp"/>
 	<property file="${test.dir}/resources/sdk43.test.database.properties"/>
-	
-	<target name="defineSvnantTask" depends="prepare">
-		<typedef resource="org/tigris/subversion/svnant/svnantlib.xml">
-			<classpath>
-				<fileset dir="${svnant.lib.dir}">
-					<include name="*.jar"/>
-				</fileset>
-			</classpath>
-		</typedef>
-	</target>
-	
 
 	<!-- ============================================================== -->
 	<!-- Call any tests.                                                -->
@@ -24,7 +13,7 @@
 	<target name="test" depends="integrationTests" description="Runs the unit and integration tests"/>
 
 
-	<target name="integrationTests" depends="prepare, sdkDbSetup, checkOutCacoreFromSvn" description="Runs the SDK integration tests">
+	<target name="integrationTests" depends="prepare, createSdkIsoExampleApplication, unpackSdkZip" description="Runs the SDK integration tests">
 		<echo message="Test results dir: ${junit.results.dir}"/>
 		<mkdir dir="${junit.results.dir}"/>
 		<property name="sdk43.tests.base.dir" location="${basedir}"/>
@@ -65,7 +54,7 @@
 	</target>
 
 
-	<target name="createSdkIsoExampleApplication" depends="prepare, checkOutCacoreFromSvn, sdkDbSetup" description="Runs the caCORE SDK to create the ISO example project">
+	<target name="createSdkIsoExampleApplication" depends="prepare, unpackSdkZip, sdkDbSetup" description="Runs the caCORE SDK to create the ISO example project">
 		<echo message="Test results dir: ${junit.results.dir}"/>
 		<mkdir dir="${junit.results.dir}"/>
 		<mkdir dir="${sdk.temp.dir}"/>
@@ -91,7 +80,7 @@
 	</target>
 
 
-	<target name="sdkDbSetup" depends="checkOutCacoreFromSvn" description="Sets up the caCORE SDK 4.3 test database">
+	<target name="sdkDbSetup" depends="unpackSdkZip" description="Sets up the caCORE SDK 4.3 test database">
 		<property name="db.script.dir" location="${sdk.checkout.dir}/sdk-toolkit/iso-example-project/db/db-install/mysql"/>
 		<sql driver="${db.driver}" url="jdbc:mysql://${db.server}:${db.port}/" userid="${db.username}" password="${db.password}">
 			<classpath refid="test.build.classpath"/>
@@ -106,12 +95,9 @@
 	</target>
 	
 	
-	<!-- grabs a checkout of the cacore SDK -->
-	<target name="checkOutCacoreFromSvn" depends="defineSvnantTask" unless="${checkout.complete}">
+	<!-- unpacks the caCORE SDK 4.3 zip -->
+	<target name="unpackSdkZip">
 		<delete dir="${sdk.checkout.dir}"/>
-		<svn>
-			<export srcUrl="${sdk.svn.url}" destPath="${sdk.checkout.dir}"/>
-		</svn>
-		<property name="checkout.complete" value="true"/>
+		<unzip src="${sdk.zip.file}" dest="${sdk.checkout.dir}"/>
 	</target>
 </project>

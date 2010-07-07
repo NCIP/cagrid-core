@@ -11,6 +11,6 @@
 
 	<target name="do.resolve-dependencies" depends="pre.resolve-dependencies">
 		<ivy:retrieve conf="impl-test" pattern="${ivy.resolved.artifacts.dir}/dependencies/test/[type]s/[originalname](.[ext])" sync="true" type="*" />
-		<ivy:retrieve conf="svnant" pattern="${ivy.resolved.artifacts.dir}/dependencies/svnant/[type]s/[originalname](.[ext])" sync="true" type="jar"/>
+		<ivy:retrieve conf="cacore" pattern="${ivy.resolved.artifacts.dir}/dependencies/cacore/[type]s/[originalname](.[ext])" sync="true" type="zip"/>
 	</target>
 </project>

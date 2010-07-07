@@ -12,8 +12,8 @@
     <!-- Private Configurations-->
     <conf name="impl-test" visibility="private" />
     
-    <!-- svn ant task config -->
-    <conf name="svnant" visibility="private"/>
+    <!-- cacore sdk 4.3 -->
+    <conf name="cacore" visibility="private"/>
 
     <!-- Public Configurations-->
     <conf name="test" visibility="public" extends="impl-test"/>
@@ -54,7 +54,7 @@
      -->
     <dependency rev="1.1" org="apache" name="commons-logging" conf="impl-test->*"/>
     
-    <!-- SVN ant task -->
-    <dependency org="subversion" name="svnant" rev="1.3.0" conf="svnant->default"/>
+    <!-- cacore sdk -->
+    <dependency org="cacore" name="sdk" rev="4.3" conf="cacore->sdk"/>
   </dependencies>
 </ivy-module>
