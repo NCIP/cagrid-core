@@ -12,7 +12,6 @@ import java.rmi.RemoteException;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.cagrid.cql.utilities.CQLConstants;
 import org.cagrid.fqp.test.common.FQPTestingConstants;
 import org.cagrid.fqp.test.common.FederatedQueryProcessorHelper;
 import org.cagrid.fqp.test.common.QueryResultsVerifier;
