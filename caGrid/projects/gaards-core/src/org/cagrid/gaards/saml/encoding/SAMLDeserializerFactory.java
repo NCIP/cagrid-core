@@ -14,6 +14,6 @@ public class SAMLDeserializerFactory extends BaseDeserializerFactory {
 
 	public SAMLDeserializerFactory(Class javaType, QName xmlType) {
 		super(SAMLDeserializer.class, xmlType, javaType);
-		LOG.debug("Initializing SDKDeserializerFactory for class:" + javaType + " and QName:" + xmlType);
+		LOG.debug("Initializing SAMLDeserializer for class:" + javaType + " and QName:" + xmlType);
 	}
 }
