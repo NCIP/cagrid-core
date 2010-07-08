@@ -27,6 +27,7 @@ import gov.nih.nci.cagrid.introduce.beans.service.ServicesType;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
@@ -112,10 +113,7 @@ public final class CommonTools {
         String[] envp = getEnvironment();
 
         p = Runtime.getRuntime().exec(cmd, envp);
-        StreamGobbler errGobbler = new StreamGobbler(p.getErrorStream(), "ERR", logger, Priority.ERROR);
-        StreamGobbler outGobbler = new StreamGobbler(p.getInputStream(), "OUT", logger, Priority.DEBUG);
-        errGobbler.start();
-        outGobbler.start();
+        gobbleProcess(p);
 
         return p;
     }
@@ -134,12 +132,44 @@ public final class CommonTools {
             p = Runtime.getRuntime().exec(cmd.toArray(new String[cmd.size()]), envp);
         }
 
+        gobbleProcess(p);
+
+        return p;
+    }
+    
+    
+    public static Process createAndOutputProcess(List<String> cmd, OutputStream out, OutputStream err) throws Exception {
+        final Process p;
+        
+        // obtain current env, repackage for Ant call
+        String[] envp = getEnvironment();
+        
+        if (null == envp) {
+            p = Runtime.getRuntime().exec(cmd.toArray(new String[cmd.size()]));
+        }
+        else {
+            p = Runtime.getRuntime().exec(cmd.toArray(new String[cmd.size()]), envp);
+        }
+
+        gobbleProcess(p, out, err);
+        
+        return p;
+    }
+    
+    
+    private static void gobbleProcess(Process p) {
         StreamGobbler errGobbler = new StreamGobbler(p.getErrorStream(), "ERR", logger, Priority.ERROR);
         StreamGobbler outGobbler = new StreamGobbler(p.getInputStream(), "OUT", logger, Priority.DEBUG);
         errGobbler.start();
         outGobbler.start();
-
-        return p;
+    }
+    
+    
+    private static void gobbleProcess(Process p, OutputStream out, OutputStream err) {
+        StreamGobbler errGobbler = new StreamGobbler(p.getErrorStream(), "ERR", err);
+        StreamGobbler outGobbler = new StreamGobbler(p.getInputStream(), "OUT", out);
+        errGobbler.start();
+        outGobbler.start();
     }
 
 
