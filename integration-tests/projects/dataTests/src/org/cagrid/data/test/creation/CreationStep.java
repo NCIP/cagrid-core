@@ -46,7 +46,7 @@ public class CreationStep extends Step {
             serviceInfo.getNamespace(), serviceInfo.getResourceFrameworkType(), serviceInfo.getExtensions());
         debugCommand(cmd);
 
-        Process p = CommonTools.createAndOutputProcess(cmd);
+        Process p = CommonTools.createAndOutputProcess(cmd, System.out, System.err);
         p.waitFor();
         assertEquals("Creation process exited abnormally", 0, p.exitValue());
         p.destroy();
@@ -60,7 +60,7 @@ public class CreationStep extends Step {
             serviceInfo.getPackageName(), serviceInfo.getNamespace(), getCurrentServiceExtensions());
         debugCommand(cmd);
 
-        p = CommonTools.createAndOutputProcess(cmd);
+        p = CommonTools.createAndOutputProcess(cmd, System.out, System.err);
         p.waitFor();
         assertEquals("Post creation process exited abnormally", 0, p.exitValue());
         p.destroy();
@@ -72,7 +72,7 @@ public class CreationStep extends Step {
         cmd = AntTools.getAntAllCommand(serviceInfo.getDir());
         debugCommand(cmd);
 
-        p = CommonTools.createAndOutputProcess(cmd);
+        p = CommonTools.createAndOutputProcess(cmd, System.out, System.err);
         p.waitFor();
         assertEquals("Build process exited abnormally", 0, p.exitValue());
         p.destroy();
