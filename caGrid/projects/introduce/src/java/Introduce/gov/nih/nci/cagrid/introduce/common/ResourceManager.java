@@ -172,27 +172,31 @@ public class ResourceManager {
 
     public static synchronized void restoreSpecific(String currentId, String serviceName, String baseDir)
         throws FileNotFoundException, IOException {
+        File baseDirFile = new File(baseDir);
+        // locate the archived version of the service
+        File introduceCache = new File(getServiceCachePath());
+        introduceCache.mkdir();
+        File cachedFile = new File(introduceCache, 
+            serviceName + "_" + currentId + CACHE_POSTFIX);
+        if (!cachedFile.exists()) {
+            throw new FileNotFoundException("Could not locate archive of service (" + cachedFile.getAbsolutePath() + ")");
+        }
 
-        // remove the directory first
-        boolean deleted = Utils.deleteDir(new File(baseDir));
+        // remove the existing service directory
+        boolean deleted = Utils.deleteDir(baseDirFile);
         if (!deleted) {
             logger.warn("Was not able to completely remove the service before restoring the new one. "
                 + "May be unused new files leftover.");
         }
-
-        File introduceCache = new File(getServiceCachePath());
-        introduceCache.mkdir();
-        File cachedFile = new File(introduceCache.getAbsolutePath() + File.separator + serviceName + "_" + currentId
-            + CACHE_POSTFIX);
-
         logger.debug("Restoring service from archive:" + cachedFile.getAbsolutePath());
-
-        ZipUtilities.unzip(cachedFile, new File(baseDir));
+        // restore from archive
+        logger.debug("The service base dir is " + baseDir);
+        logger.debug("Unzipping...");
+        ZipUtilities.unzip(cachedFile, baseDirFile);
     }
     
     
-    public static String[] getBackups(String serviceName){
-    	
+    public static String[] getBackups(String serviceName) {
     	File introduceCache = new File(getServiceCachePath());
         final String finalServiceName = serviceName;
         FilenameFilter f = new FilenameFilter() {
@@ -224,8 +228,8 @@ public class ResourceManager {
             }
         }
 
-        File cachedFile = new File(introduceCache.getAbsolutePath() + File.separator + serviceName + "_"
-            + String.valueOf(lastTime) + CACHE_POSTFIX);
+        File cachedFile = new File(introduceCache.getAbsolutePath(),
+            serviceName + "_" + String.valueOf(lastTime) + CACHE_POSTFIX);
 
         if (cachedFile.exists() && cachedFile.canRead()) {
             // remove the directory
@@ -239,8 +243,6 @@ public class ResourceManager {
         } else {
             throw new Exception("Cache file does not exist or is not readable : " + cachedFile.getAbsolutePath());
         }
-
-       
     }
 
 

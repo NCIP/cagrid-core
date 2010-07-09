@@ -208,21 +208,19 @@ public class ExtensionsUpgradeManager {
 
 					// run the upgraders that we put together in order
 					for (int i = 0; i < upgrades.size(); i++) {
-						UpgradeDescriptionType upgrade = (UpgradeDescriptionType) upgrades
-								.get(i);
+						UpgradeDescriptionType upgrade = (UpgradeDescriptionType) upgrades.get(i);
 						Class clazz = Class.forName(upgrade.getUpgradeClass());
 						Constructor con = clazz.getConstructor(new Class[] {
 								ExtensionType.class, ServiceInformation.class,
 								String.class, String.class, String.class });
-						ExtensionUpgraderI upgrader = (ExtensionUpgraderI) con
-								.newInstance(new Object[] { extension,
+						ExtensionUpgraderI upgrader = (ExtensionUpgraderI) con.newInstance(
+						        new Object[] { extension,
 										serviceInformation, pathToService,
 										upgrade.getFromVersion(),
 										upgrade.getToVersion() });
 						upgrader.execute();
 						status.addExtensionUpgradeStatus(upgrader.getStatus());
 					}
-
 				}
 			} else {
 				error
@@ -232,6 +230,8 @@ public class ExtensionsUpgradeManager {
 		}
 
 		if (error.size() > 0) {
+		    // at least one error happened during the upgrade process.
+		    // turn that into a string and throw an exception
 			String errorString = "";
 			for (int errorI = 0; errorI < error.size(); errorI++) {
 				errorString += (String) error.get(errorI) + "\n";

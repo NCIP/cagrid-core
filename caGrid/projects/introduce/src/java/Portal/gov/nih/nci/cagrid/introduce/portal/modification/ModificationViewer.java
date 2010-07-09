@@ -248,7 +248,6 @@ public class ModificationViewer extends ApplicationComponent {
         this.discoveryPanels = new ArrayList();
         this.methodsDirectory = methodsDirectory;
         try {
-
             BusyDialogRunnable br = new BusyDialogRunnable((JFrame) GridApplication.getContext().getApplication(),
                 "Modification Viewer Initializing") {
 
@@ -265,7 +264,6 @@ public class ModificationViewer extends ApplicationComponent {
             Thread th = new Thread(br);
             th.start();
             th.join();
-
         } catch (Exception e) {
             logger.error(e);
         }
@@ -309,31 +307,30 @@ public class ModificationViewer extends ApplicationComponent {
      */
     private void initialize(BusyDialogRunnable dialog) throws Exception {
         if (this.methodsDirectory != null) {
-        	Properties    introduceServiceProperties = null;
+        	Properties introduceServiceProperties = null;
             try {
-            	
-                String introduceXML = this.methodsDirectory + File.separator + IntroduceConstants.INTRODUCE_XML_FILE;
-                File servicePropertiesFile = new File(this.methodsDirectory.getAbsolutePath() + File.separator
-                        + IntroduceConstants.INTRODUCE_PROPERTIES_FILE);
+                // load the properties file
+                File servicePropertiesFile = new File(methodsDirectory, IntroduceConstants.INTRODUCE_PROPERTIES_FILE);
                 introduceServiceProperties = loadProperties(servicePropertiesFile);
-
-                String extensionsProp = introduceServiceProperties
-                    .getProperty(IntroduceConstants.INTRODUCE_SKELETON_EXTENSIONS);
+                
+                // get the list of extensions
+                String extensionsProp = introduceServiceProperties.getProperty(
+                    IntroduceConstants.INTRODUCE_SKELETON_EXTENSIONS);
                 StringTokenizer strtok = new StringTokenizer(extensionsProp, ",", false);
-
                 while (strtok.hasMoreElements()) {
                     String extensionName = strtok.nextToken();
                     extensionName = extensionName.trim();
-                    ServiceExtensionDescriptionType extDtype = ExtensionsLoader.getInstance().getServiceExtension(
-                        extensionName);
+                    // load the extension description
+                    ServiceExtensionDescriptionType extDtype = ExtensionsLoader.getInstance()
+                        .getServiceExtension(extensionName);
                     if (extDtype == null) {
+                        // the extension isn't installed!
                         JOptionPane.showMessageDialog(GridApplication.getContext().getApplication(),
                             "ERROR: This service requires the " + extensionName + " extension to be installed.");
                         ModificationViewer.this.dispose();
                         this.beenDisposed = true;
                     }
                 }
-
             } catch (Exception e1) {
                 e1.printStackTrace();
                 ModificationViewer.this.dispose();
@@ -341,7 +338,6 @@ public class ModificationViewer extends ApplicationComponent {
             }
 
             if (!beenDisposed) {
-
                 // check the service for upgrades
                 if (dialog != null) {
                     dialog.setProgressText("Checking introduce version of service");
@@ -349,38 +345,37 @@ public class ModificationViewer extends ApplicationComponent {
 
                 UpgradeManager upgrader = new UpgradeManager(this.methodsDirectory.getAbsolutePath());
                 if (upgrader.introduceNeedsUpgraded() && !upgrader.canIntroduceBeUpgraded()) {
-
                     JOptionPane.showMessageDialog(GridApplication.getContext().getApplication(),
                         "Service was built with another version of Introduce and no upgrader currently exists");
                     ModificationViewer.this.dispose();
                     this.beenDisposed = true;
-
                 } else if (upgrader.canIntroduceBeUpgraded() || upgrader.extensionsNeedUpgraded()) {
+                    // ask the user if he wants to upgrade
                     PromptButtonDialog diag = new PromptButtonDialog(
                         GridApplication.getContext().getApplication(),
                         "Upgrade?",
                         new String[]{
                                 "",
-                                "This service is from an older of version of Introduce or uses an older version of an extension.",
+                                "This service was generated with an older of version of Introduce or uses an older version of an extension.",
                                 "Would you like to try to upgrade this service to work with the current version of Introduce and installed extensions?\n",
                                 "",
                                 "Upgrade: Yes I would like to upgrade my service to be able to work with the currently installed tools.",
-                                "Open: Introduce will attempt to open and work with this service.  This is very dangerous.",
-                                "Close: Do nothing and close the modification viewer.", ""}, new String[]{"Upgrade",
-                                "Open", "Close"}, "Close");
+                                "Open: Introduce will attempt to open and work with this service.  This is potentially very dangerous.",
+                                "Close: Do nothing and close the modification viewer.", ""}, 
+                                new String[]{"Upgrade", "Open", "Close"}, 
+                                "Close");
                     GridApplication.getContext().showDialog(diag);
                     String result = diag.getSelection();
-
                     if (result != null && result.equals("Upgrade")) {
+                        // user selected Upgrade
                         try {
                             if (dialog != null) {
                                 dialog.setProgressText("Upgrading service");
                             }
 
-                            // check extensions for deprecation or removal.
+                            // check extensions for deprecation or removal
                             String extensionsProp = introduceServiceProperties.getProperty(IntroduceConstants.INTRODUCE_SKELETON_EXTENSIONS);
                             StringTokenizer strtok = new StringTokenizer(extensionsProp, ",", false);
-                            strtok = new StringTokenizer(extensionsProp, ",", false);
                             String newExtension = "";
                             while (strtok.hasMoreElements()) {
                                 String extensionName = strtok.nextToken();
@@ -388,7 +383,8 @@ public class ModificationViewer extends ApplicationComponent {
                                 ServiceExtensionDescriptionType extDtype = ExtensionsLoader.getInstance()
                                     .getServiceExtension(extensionName);
 
-                                if (extDtype.getShouldBeRemoved()!=null && extDtype.getShouldBeRemoved().booleanValue()) {
+                                if (extDtype.getShouldBeRemoved() != null && extDtype.getShouldBeRemoved().booleanValue()) {
+                                    // the extension is scheduled for removal
                                     if (extDtype.getServiceExtensionRemover() != null) {
                                         PromptButtonDialog diag2 = new PromptButtonDialog(
                                             GridApplication.getContext().getApplication(),
@@ -404,8 +400,7 @@ public class ModificationViewer extends ApplicationComponent {
                                         GridApplication.getContext().showDialog(diag2);
                                         String result2 = diag2.getSelection();
                                         if (result2.equals("Ignore")) {
-                                            // need to remove this extension
-                                            // from
+                                            // need to remove this extension from
                                             // the extensions list
                                             ExtensionType[] modifiedExtensionsArray = new ExtensionType[info
                                                 .getExtensions().getExtension().length - 1];
@@ -449,7 +444,6 @@ public class ModificationViewer extends ApplicationComponent {
                                                 + extensionName
                                                 + "  and this extension is deprecated and may not be supported by future versions of Introduce.");
                                 }
-
                             }
 
                             introduceServiceProperties.setProperty(IntroduceConstants.INTRODUCE_SKELETON_EXTENSIONS, newExtension);
@@ -457,17 +451,18 @@ public class ModificationViewer extends ApplicationComponent {
                                     + IntroduceConstants.INTRODUCE_PROPERTIES_FILE);
                             storeProperties(introduceServiceProperties, servicePropertiesFile, "Introduce Properties");
 
-                            
                             UpgradeStatus status = upgrader.upgrade();
                             logger.info("SERVICE UPGRADE STATUS:\n" + status);
                             int answer = UpgradeStatusView.showUpgradeStatusView(status);
                             if (answer == UpgradeStatusView.PROCEED) {
-
+                                // NO-OP, the modification viewer will load up normally
                             } else if (answer == UpgradeStatusView.ROLL_BACK) {
+                                // restore the service from the backup
                                 upgrader.recover();
                                 ModificationViewer.this.dispose();
                                 this.beenDisposed = true;
                             } else if (answer == UpgradeStatusView.CANCEL) {
+                                // close out the modification viewer
                                 ModificationViewer.this.dispose();
                                 this.beenDisposed = true;
                             }
@@ -485,7 +480,9 @@ public class ModificationViewer extends ApplicationComponent {
                                         dialog.setProgressText("Rolling back upgrade changes");
                                     }
                                     upgrader.recover();
+                                    System.out.println("RECOVERED YOUR SERVICE");
                                 } catch (Exception ex) {
+                                    ex.printStackTrace();
                                     ErrorDialog.showError(e);
                                 }
                                 ModificationViewer.this.dispose();
@@ -502,7 +499,7 @@ public class ModificationViewer extends ApplicationComponent {
                 }
 
                 if (!beenDisposed) {
-                    // reload the info incase it has changed during
+                    // reload the info in case it has changed during
                     // upgrading.....
                     try {
                         if (dialog != null) {
@@ -520,11 +517,8 @@ public class ModificationViewer extends ApplicationComponent {
                     setFrameIcon(IntroduceLookAndFeel.getModifyServiceIcon());
 
                     initServicePropertyValidation();
-
                 }
-
             }
-
         }
     }
 
@@ -778,8 +772,8 @@ public class ModificationViewer extends ApplicationComponent {
             this.undoButton.setToolTipText("restore back to last save state");
             this.undoButton.addActionListener(new java.awt.event.ActionListener() {
                 public void actionPerformed(java.awt.event.ActionEvent e) {
-                    RestoreDialog dialog = new RestoreDialog(info.getServices().getService(0).getName(), info
-                        .getBaseDirectory().getAbsolutePath());
+                    RestoreDialog dialog = new RestoreDialog(info.getServices().getService(0).getName(), 
+                        info.getBaseDirectory().getAbsolutePath());
                     dialog.setVisible(true);
                     if (!dialog.wasCanceled()) {
                         BusyDialogRunnable r = new BusyDialogRunnable(GridApplication.getContext().getApplication(),
