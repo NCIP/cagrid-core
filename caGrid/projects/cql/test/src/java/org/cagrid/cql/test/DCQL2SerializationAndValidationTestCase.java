@@ -24,6 +24,7 @@ import org.cagrid.cql2.CQLAttribute;
 import org.cagrid.cql2.CQLQueryModifier;
 import org.cagrid.cql2.DistinctAttribute;
 import org.cagrid.cql2.GroupLogicalOperator;
+import org.cagrid.cql2.NamedAttribute;
 import org.cagrid.cql2.UnaryPredicate;
 import org.cagrid.cql2.results.CQLAttributeResult;
 import org.cagrid.cql2.results.CQLObjectResult;
@@ -398,6 +399,47 @@ public class DCQL2SerializationAndValidationTestCase extends TestCase {
         DistinctAttribute da = new DistinctAttribute();
         da.setAttributeName("id");
         mods.setDistinctAttribute(da);
+        
+        query.setTargetObject(target);
+        query.setQueryModifier(mods);
+        query.setTargetServiceURL(new String[] {"http://fake.com"});
+        
+        validate(query);
+    }
+    
+    
+    public void testQueryModifierNamedAttribute() {
+        DCQLQuery query = new DCQLQuery();
+        DCQLObject target = new DCQLObject();
+        target.setName("foo.bar");
+        target.set_instanceof("zor");
+        
+        CQLQueryModifier mods = new CQLQueryModifier();
+        NamedAttribute na = new NamedAttribute();
+        na.setAttributeName("id");
+        mods.setNamedAttribute(new NamedAttribute[] {na});
+        
+        query.setTargetObject(target);
+        query.setQueryModifier(mods);
+        query.setTargetServiceURL(new String[] {"http://fake.com"});
+        
+        validate(query);
+    }
+    
+    
+    public void testQueryModifierMultipleNamedAttribute() {
+        DCQLQuery query = new DCQLQuery();
+        DCQLObject target = new DCQLObject();
+        target.setName("foo.bar");
+        target.set_instanceof("zor");
+        
+        CQLQueryModifier mods = new CQLQueryModifier();
+        NamedAttribute[] nas = new NamedAttribute[4];
+        for (int i = 0; i < nas.length; i++) {
+            nas[i] = new NamedAttribute();
+            nas[i].setAttributeName("att" + i);
+        }
+        mods.setNamedAttribute(nas);
         
         query.setTargetObject(target);
         query.setQueryModifier(mods);
