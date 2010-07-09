@@ -176,11 +176,12 @@ public class SDK4CQL2QueryProcessor extends CQL2QueryProcessor {
             if (mods.getNamedAttribute() != null) {
                 LOG.debug("Detected named attribute results");
                 // trim off the extra id attribute we added earlier
-                String[] attributeNames = new String[mods.getNamedAttribute().length];
-                attributeNames = (String[]) Utils.trimArray(attributeNames, 0, attributeNames.length);
-                List<Object[]> attributeValues = new LinkedList<Object[]>();
+                String[] attributeNames = new String[mods.getNamedAttribute().length - 1];
+                for (int i = 0; i < mods.getNamedAttribute().length - 1; i++) {
+                    attributeNames[i] = mods.getNamedAttribute(i).getAttributeName();
+                }
                 // this will happily ignore the last value which is the extra ID attribute
-                cqlResultsIter = wrapAttributeResult(attributeNames, attributeValues);
+                cqlResultsIter = wrapAttributeResult(attributeNames, rawResults);
             } else if (mods.getCountOnly() != null && mods.getCountOnly().booleanValue()) {
                 LOG.debug("Detected count only aggregate results");
                 Object resultValue = rawResults.size() != 0 ? rawResults.get(0) : null;
@@ -196,16 +197,9 @@ public class SDK4CQL2QueryProcessor extends CQL2QueryProcessor {
                     cqlResultsIter = wrapAggregateResult(agg, mods.getDistinctAttribute().getAttributeName(), valueAsString);
                 } else {
                     // standard attribute name / value pairs
-                    // using a list since .size() on the SDK's list-proxy is
-                    // expensive
-                    List<Object[]> attributeValues = new LinkedList<Object[]>();
-                    Iterator<?> rawResultIter = rawResults.iterator();
-                    while (rawResultIter.hasNext()) {
-                        attributeValues.add(new Object[]{rawResultIter.next()});
-                    }
                     cqlResultsIter = wrapAttributeResult(
                         new String[]{mods.getDistinctAttribute().getAttributeName()},
-                        attributeValues);
+                        rawResults);
                 }
             }
         } else {
@@ -309,8 +303,8 @@ public class SDK4CQL2QueryProcessor extends CQL2QueryProcessor {
     }
 
 
-    private Iterator<CQLResult> wrapAttributeResult(final String[] attributeNames, List<Object[]> attributeValues) {
-        final Iterator<Object[]> rawValueIter = attributeValues.iterator();
+    private Iterator<CQLResult> wrapAttributeResult(final String[] attributeNames, List<Object> attributeValues) {
+        final Iterator<Object> rawValueIter = attributeValues.iterator();
         Iterator<CQLResult> iter = new Iterator<CQLResult>() {
             public boolean hasNext() {
                 return rawValueIter.hasNext();
@@ -318,7 +312,13 @@ public class SDK4CQL2QueryProcessor extends CQL2QueryProcessor {
 
             
             public synchronized CQLResult next() {
-                Object[] values = rawValueIter.next();
+                Object tuple = rawValueIter.next();
+                Object[] values = null;
+                if (tuple != null && tuple.getClass().isArray()) {
+                    values = (Object[]) tuple;
+                } else {
+                    values = new Object[] {tuple};
+                }
                 CQLAttributeResult result = new CQLAttributeResult();
                 TargetAttribute[] ta = new TargetAttribute[attributeNames.length];
                 for (int i = 0; i < attributeNames.length; i++) {
