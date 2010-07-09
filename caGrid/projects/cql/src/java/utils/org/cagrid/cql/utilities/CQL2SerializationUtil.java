@@ -75,6 +75,13 @@ public class CQL2SerializationUtil {
     }
     
     
+    public static CQLQuery cloneQueryBean(CQLQuery query) throws Exception {
+        StringWriter writer = new StringWriter();
+        serializeCql2Query(query, writer);
+        return deserializeCql2Query(new StringReader(writer.getBuffer().toString()));
+    }
+    
+    
     public static void main(String[] args) {
         try {
             CQLQuery query = new CQLQuery();

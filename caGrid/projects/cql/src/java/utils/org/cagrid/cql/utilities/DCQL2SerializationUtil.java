@@ -68,4 +68,11 @@ public class DCQL2SerializationUtil {
         wsddStream.close();
         return results;
     }
+    
+    
+    public static DCQLQuery cloneQueryBean(DCQLQuery query) throws Exception {
+        StringWriter writer = new StringWriter();
+        serializeDcql2Query(query, writer);
+        return deserializeDcql2Query(new StringReader(writer.getBuffer().toString()));
+    }
 }
