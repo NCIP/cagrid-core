@@ -12,7 +12,6 @@ import gov.nih.nci.system.client.util.xml.XMLUtilityException;
 import gov.nih.nci.system.query.hibernate.HQLCriteria;
 
 import java.io.InputStream;
-import java.io.StringReader;
 import java.io.StringWriter;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -160,7 +159,7 @@ public class SDK43CQL2QueryProcessor extends CQL2QueryProcessor {
             // the id attribute in those tuples to get a 1:1 correspondence with
             // actual data instances in the database
             try {
-                runQuery = cloneQueryBean(query);
+                runQuery = CQL2SerializationUtil.cloneQueryBean(query);
                 NamedAttribute[] namedAttributes = runQuery.getCQLQueryModifier().getNamedAttribute();
                 NamedAttribute idAttribute = new NamedAttribute("id");
                 namedAttributes = (NamedAttribute[]) Utils.appendToArray(namedAttributes, idAttribute);
@@ -533,12 +532,5 @@ public class SDK43CQL2QueryProcessor extends CQL2QueryProcessor {
             qnameResolver = new MappingFileQNameResolver(getClassToQnameMappings());
         }
         return qnameResolver;
-    }
-    
-    
-    private CQLQuery cloneQueryBean(CQLQuery query) throws Exception {
-        StringWriter writer = new StringWriter();
-        CQL2SerializationUtil.serializeCql2Query(query, writer);
-        return CQL2SerializationUtil.deserializeCql2Query(new StringReader(writer.getBuffer().toString()));
     }
 }
