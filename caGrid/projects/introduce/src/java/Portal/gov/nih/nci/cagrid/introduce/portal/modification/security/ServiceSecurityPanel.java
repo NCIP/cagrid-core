@@ -35,6 +35,7 @@ import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
+import java.beans.PropertyVetoException;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -985,14 +986,10 @@ public class ServiceSecurityPanel extends JPanel implements PanelSynchronizer {
     private void loadCredentials() {
         String method = (String) credentialLoadMethod.getSelectedItem();
         if (method.equals(FILE_SYSTEM_CERT_KEY)) {
-            GridApplication.getContext().getApplication().addApplicationComponent(
-                new LoadCredentialsFromFileSystemWindow(this), 500, 200);
+            GridApplication.getContext().showDialog(new LoadCredentialsFromFileSystemWindow(this));
+        } else if (method.equals(FILE_SYSTEM_PROXY)) {
+            GridApplication.getContext().showDialog(new LoadProxyFromFileSystemWindow(this));
         }
-        if (method.equals(FILE_SYSTEM_PROXY)) {
-            GridApplication.getContext().getApplication().addApplicationComponent(
-                new LoadProxyFromFileSystemWindow(this), 500, 200);
-        }
-
     }
 
 

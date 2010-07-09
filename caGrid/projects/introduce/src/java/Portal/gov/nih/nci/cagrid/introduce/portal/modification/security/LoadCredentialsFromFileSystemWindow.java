@@ -6,9 +6,11 @@ import gov.nih.nci.cagrid.introduce.portal.common.IntroduceLookAndFeel;
 
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
+import java.beans.PropertyVetoException;
 import java.io.File;
 
 import javax.swing.JButton;
+import javax.swing.JDialog;
 import javax.swing.JFileChooser;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -29,7 +31,7 @@ import org.globus.gsi.CertUtil;
  *          Exp $
  */
 
-public class LoadCredentialsFromFileSystemWindow extends ApplicationComponent {
+public class LoadCredentialsFromFileSystemWindow extends JDialog {
 
 	private JPanel jContentPane = null;
 	private JPanel mainPanel = null;
@@ -62,7 +64,8 @@ public class LoadCredentialsFromFileSystemWindow extends ApplicationComponent {
 	private void initialize() {
 		this.setContentPane(getJContentPane());
 		this.setTitle("Load Credentials");
-		this.setFrameIcon(IntroduceLookAndFeel.getLoadCredentialsIcon());
+		this.setModal(true);
+		this.setSize(500, 200);
 	}
 
 

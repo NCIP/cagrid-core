@@ -9,6 +9,7 @@ import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 
 import javax.swing.JButton;
+import javax.swing.JDialog;
 import javax.swing.JFileChooser;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -27,7 +28,7 @@ import org.cagrid.grape.utils.CompositeErrorDialog;
  *          Exp $
  */
 
-public class LoadProxyFromFileSystemWindow extends ApplicationComponent {
+public class LoadProxyFromFileSystemWindow extends JDialog {
 
 	private JPanel jContentPane = null;
 	private JPanel mainPanel = null;
@@ -57,7 +58,8 @@ public class LoadProxyFromFileSystemWindow extends ApplicationComponent {
 	private void initialize() {
 		this.setContentPane(getJContentPane());
 		this.setTitle("Load Proxy");
-		this.setFrameIcon(IntroduceLookAndFeel.getLoadCredentialsIcon());
+		this.setModal(true);
+		this.setSize(500, 200);
 	}
 
 
