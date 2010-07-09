@@ -26,7 +26,7 @@ import org.cagrid.cacore.sdk4x.cql2.processor.HibernateConfigTypesInformationRes
 import org.cagrid.cacore.sdk4x.cql2.processor.ParameterizedHqlQuery;
 import org.cagrid.cacore.sdk4x.cql2.processor.TypesInformationResolver;
 import org.cagrid.cql.utilities.AnyNodeHelper;
-import org.cagrid.cql.utilities.CQLConstants;
+import org.cagrid.cql.utilities.CQL2SerializationUtil;
 import org.cagrid.cql2.Aggregation;
 import org.cagrid.cql2.CQLQuery;
 import org.cagrid.cql2.CQLQueryModifier;
@@ -128,7 +128,7 @@ public class SDK41CQL2QueryProcessor extends CQL2QueryProcessor {
             // the id attribute in those tuples to get a 1:1 correspondence with
             // actual data instances in the database
             try {
-                runQuery = (CQLQuery) Utils.cloneBean(query, CQLConstants.CQL2_QUERY_QNAME);
+                runQuery = CQL2SerializationUtil.cloneQueryBean(query);
                 NamedAttribute[] namedAttributes = runQuery.getCQLQueryModifier().getNamedAttribute();
                 NamedAttribute idAttribute = new NamedAttribute("id");
                 namedAttributes = (NamedAttribute[]) Utils.appendToArray(namedAttributes, idAttribute);
