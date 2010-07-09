@@ -19,12 +19,6 @@
 	<!-- debugging stuff -->
 	<property name="debug.packages" value="gov.nih.nci.cagrid.fqp"/>
 	
-	<target name="prepareClasspaths">
-		<path id="all.test.classpath">
-			<path refid="test.run.classpath" />
-		</path>
-	</target>
-	
 	
 	<target name="test" description="Runs style tests">
 		<mkdir dir="${junit.results.dir}"/>
@@ -36,15 +30,17 @@
 			<sysproperty key="transfer.service.dir" value="${transfer.service.dir}"/>
 			<sysproperty key="cds.service.dir" value="${cds.service.dir}"/>
 			<sysproperty key="testing.container.debug.packages" value="${debug.packages}"/>
-			<classpath refid="all.test.classpath" />
+			<classpath refid="test.run.classpath" />
 			<formatter type="xml" />
 			<test if="testcase" name="${testcase}" fork="no" todir="${junit.results.dir}" />
 			<batchtest unless="testcase" fork="yes" todir="${junit.results.dir}">
 				<fileset dir="${src.dir}">
 					<include name="**/LocalFqpSystemTests.java" />
+					<!--
 					<include name="**/RemoteFqpSystemTests.java" />
 					<include name="**/SecureRemoteFqpSystemTests.java" />
 					<include name="**/SecureLocalFQPSystemTests.java"/>
+					-->
 				</fileset>
 			</batchtest>
 		</junit>

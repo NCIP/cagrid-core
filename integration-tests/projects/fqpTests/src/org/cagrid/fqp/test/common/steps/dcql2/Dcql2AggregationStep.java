@@ -4,6 +4,8 @@ import gov.nih.nci.cagrid.fqp.processor.exceptions.FederatedQueryProcessingExcep
 import gov.nih.nci.cagrid.fqp.stubs.types.FederatedQueryProcessingFault;
 
 import java.io.StringWriter;
+import java.net.URL;
+import java.net.URLClassLoader;
 import java.rmi.RemoteException;
 import java.util.HashSet;
 import java.util.Set;
@@ -46,6 +48,13 @@ public class Dcql2AggregationStep extends BaseDcql2QueryExecutionStep {
     
 
     public void runStep() throws Throwable {
+        if (LOG.isTraceEnabled()) {
+            URL[] classpath = ((URLClassLoader) getClass().getClassLoader()).getURLs();
+            LOG.trace("Your classpath:\n");
+            for (URL u : classpath) {
+                LOG.trace(u.getPath());
+            }
+        }
         LOG.debug("Testing with query " + getQueryFilename());
         DCQLQuery query = deserializeQuery();
         query.setTargetServiceURL(testServiceUrls);
