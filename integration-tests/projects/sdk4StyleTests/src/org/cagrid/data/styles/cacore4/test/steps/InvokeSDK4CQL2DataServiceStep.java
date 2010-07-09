@@ -6,6 +6,7 @@ import gov.nih.nci.cagrid.testing.system.haste.Step;
 
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.StringWriter;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -113,6 +114,7 @@ public class InvokeSDK4CQL2DataServiceStep extends Step {
     
     private CQLQuery loadQuery(String filename) {
         String fullFilename = TEST_QUERIES_DIR + filename;
+        System.out.println("Loading query from " + fullFilename);
         CQLQuery query = null;
         try {
             InputStream queryInputStream = InvokeSDK4CQL2DataServiceStep.class.getResourceAsStream(fullFilename);
@@ -131,6 +133,7 @@ public class InvokeSDK4CQL2DataServiceStep extends Step {
     
     private CQLQueryResults loadQueryResults(String filename)  {
         String fullFilename = TEST_RESULTS_DIR + filename;
+        System.out.println("Loading query results from " + fullFilename);
         CQLQueryResults results = null;
         try {
             InputStream resultInputStream = InvokeSDK4CQL2DataServiceStep.class.getResourceAsStream(fullFilename);
@@ -219,6 +222,19 @@ public class InvokeSDK4CQL2DataServiceStep extends Step {
     private void compareResults(CQLQueryResults gold, CQLQueryResults test) {
         List<Object> goldObjects = new ArrayList<Object>();
         List<Object> testObjects = new ArrayList<Object>();
+        
+        if (LOG.isDebugEnabled()) {
+            try {
+                StringWriter writer = new StringWriter();
+                writer.write("Expected results:\n");
+                CQL2SerializationUtil.serializeCql2QueryResults(gold, writer);
+                writer.write("\nTest results:\n");
+                CQL2SerializationUtil.serializeCql2QueryResults(test, writer);
+                LOG.debug(writer.getBuffer().toString());
+            } catch (Exception ex) {
+                ex.printStackTrace();
+            }
+        }
         
         boolean goldIsAttributes = false;
         CQL2QueryResultsIterator goldIter = new CQL2QueryResultsIterator(gold, getClientConfigStream());
@@ -322,7 +338,7 @@ public class InvokeSDK4CQL2DataServiceStep extends Step {
                 // sort them out
                 Arrays.sort(testAttributes, attributeSorter);
                 
-                // veriy the same number of attributes.  This should be true for every array
+                // verify the same number of attributes.  This should be true for every array
                 assertEquals("Number of attributes differed from expected", goldAttributes.length, testAttributes.length);
                 
                 // check that the current goldAttribute[] matches the test[]
