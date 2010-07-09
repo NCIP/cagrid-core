@@ -8,12 +8,16 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.apache.ivy.Ivy;
+import org.apache.ivy.core.LogOptions;
 import org.apache.ivy.core.cache.DefaultResolutionCacheManager;
 import org.apache.ivy.core.module.descriptor.ModuleDescriptor;
 import org.apache.ivy.core.module.id.ModuleRevisionId;
 import org.apache.ivy.core.report.ResolveReport;
 import org.apache.ivy.core.resolve.IvyNode;
+import org.apache.ivy.core.resolve.ResolveOptions;
 import org.apache.ivy.core.resolve.ResolvedModuleRevision;
 import org.apache.ivy.core.retrieve.RetrieveOptions;
 import org.apache.ivy.plugins.matcher.PatternMatcher;
@@ -22,6 +26,8 @@ import org.apache.ivy.util.Message;
 import org.cagrid.grape.configuration.Grid;
 
 public class Retrieve {
+	private static Log log = LogFactory.getLog(Retrieve.class);
+	
 	URL ivySettings = null;
 	String cacheDir = null;
 	
@@ -33,12 +39,14 @@ public class Retrieve {
 		
 		ivy = Ivy.newInstance();
 		ivy.setVariable("cache", cacheDir);
-		ivy.setVariable("log", "quiet");
 		
-		ivy.getLoggerEngine().setDefaultLogger(new DefaultMessageLogger(Message.MSG_ERR));
+		if (!log.isDebugEnabled()) {
+			ivy.setVariable("log", "quiet");
+			ivy.getLoggerEngine().setDefaultLogger(new DefaultMessageLogger(Message.MSG_ERR));
+		} 
 		
 		ivy.configure(ivySettings);
-
+		
 	}
 
 	public int execute(URL ivyDependencies, String baseDownloadDir, String organisation, String module, Grid grid) throws Exception {
@@ -54,7 +62,11 @@ public class Retrieve {
 				
 		ResolveReport report = null;
 		try {
-			report = ivy.resolve(ivyDependencies);
+			ResolveOptions options = new ResolveOptions();
+			if (!log.isDebugEnabled()) {
+				options.setLog(LogOptions.LOG_QUIET);
+			}
+			report = ivy.resolve(ivyDependencies, options);
 		} catch (Exception e) {
 			throw new Exception("Unable to resolve the ivy dependencies", e);
 		}

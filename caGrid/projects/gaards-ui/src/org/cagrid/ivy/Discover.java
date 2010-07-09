@@ -6,6 +6,8 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.axis.utils.StringUtils;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.apache.ivy.Ivy;
 import org.apache.ivy.core.module.id.ModuleRevisionId;
 import org.apache.ivy.core.resolve.ResolvedModuleRevision;
@@ -15,6 +17,8 @@ import org.apache.ivy.util.DefaultMessageLogger;
 import org.apache.ivy.util.Message;
 
 public class Discover {
+	private static Log log = LogFactory.getLog(Discover.class);
+
 	URL ivySettings = null;
 	String cacheDir = null;
 	
@@ -26,9 +30,11 @@ public class Discover {
 	
 		ivy = Ivy.newInstance();
 		ivy.setVariable("cache", cacheDir);
-		ivy.setVariable("log", "quiet");
 
-		ivy.getLoggerEngine().setDefaultLogger(new DefaultMessageLogger(Message.MSG_ERR));
+		if (!log.isDebugEnabled()) {
+			ivy.setVariable("log", "quiet");
+			ivy.getLoggerEngine().setDefaultLogger(new DefaultMessageLogger(Message.MSG_ERR));
+		}
 		
 		ivy.configure(ivySettings);
 	}
