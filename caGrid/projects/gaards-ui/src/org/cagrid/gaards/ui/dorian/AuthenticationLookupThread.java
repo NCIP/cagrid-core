@@ -51,23 +51,21 @@ public class AuthenticationLookupThread extends Runner {
 						authenticationServices.add(as);
 					}
 				}
-			} else {
-				ServiceConfiguration conf = (ServiceConfiguration) GAARDSApplication
-						.getContext().getConfigurationManager()
-						.getActiveConfigurationObject(
-								DorianUIConstants.AUTHENTICATION_SERVICE_CONF);
-				Services s = conf.getServices();
-				if (s != null) {
-					ServiceDescriptor[] list = s.getServiceDescriptor();
-					if (list != null) {
-						for (int i = 0; i < list.length; i++) {
-							authenticationServices
-									.add(new AuthenticationServiceHandle(
-											list[i]));
-						}
+			}
+				
+			ServiceConfiguration conf = (ServiceConfiguration) GAARDSApplication
+				.getContext().getConfigurationManager()
+				.getActiveConfigurationObject(DorianUIConstants.AUTHENTICATION_SERVICE_CONF);
+			Services s = conf.getServices();
+			if (s != null) {
+				ServiceDescriptor[] list = s.getServiceDescriptor();
+				if (list != null) {
+					for (int i = 0; i < list.length; i++) {
+						authenticationServices.add(new AuthenticationServiceHandle(list[i]));
 					}
 				}
 			}
+			
 			if ((authenticationServices != null)
 					&& (authenticationServices.size() > 0)) {
 				RunnerGroup grp = new RunnerGroup();
