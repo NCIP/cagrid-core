@@ -116,11 +116,14 @@ public class GeneralConfigurationStep extends AbstractStyleConfigurationStep {
         File[] localLibs = localLibDir.listFiles();
         for (File lib : localLibs) {
             String name = lib.getName();
+            // is the jar one of the orm, sdk-core, dom4j, or the sdkQuery4 jars that are required?
             boolean ok = name.equals(applicationName + "-orm.jar") || name.equals("sdk-core.jar")
-                || name.startsWith("caGrid-sdkQuery4-");
+                || name.startsWith("caGrid-sdkQuery4-") || name.equals("dom4j-1.4.jar");
+            // is the jar already copied into the service
             if (ok && serviceJarNames.contains(name)) {
                 ok = false;
             }
+            // is the jar one of the caGrid 1.2 jars?
             if (ok && name.startsWith("caGrid-") && name.endsWith("-1.2.jar")) {
                 String trimmedName = name.substring(name.length() - 8);
                 for (String inService : serviceJarNames) {
@@ -130,6 +133,7 @@ public class GeneralConfigurationStep extends AbstractStyleConfigurationStep {
                     }
                 }
             }
+            // is the jar in the globus lib dir?
             if (ok && !globusJarNames.contains(name)) {
                 File libOutput = new File(libOutDir, name);
                 Utils.copyFile(lib, libOutput);
