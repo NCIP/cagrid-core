@@ -18,6 +18,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Vector;
 
+import org.cagrid.data.styles.cacore41.test.steps.InvokeSDK41CQL2DataServiceStep;
 import org.cagrid.data.styles.cacore41.test.steps.InvokeSDK41DataServiceStep;
 import org.cagrid.data.styles.cacore41.test.steps.SDK41StyleCreationStep;
 import org.cagrid.data.test.creation.DataTestCaseInfo;
@@ -54,7 +55,6 @@ public class SDK41ServiceStyleInvocationTest extends Story {
     public boolean storySetUp() throws Throwable {
         serviceTestInfo = SDK41ServiceStyleSystemTestConstants.getTestServiceInfo();
         
-        // TODO: use "container of the day"
         container = ServiceContainerFactory.createContainer(ServiceContainerType.GLOBUS_CONTAINER);
         
         File serviceDir = new File(serviceTestInfo.getDir());
@@ -73,6 +73,7 @@ public class SDK41ServiceStyleInvocationTest extends Story {
         steps.add(new DeployServiceStep(container, serviceTestInfo.getDir(), deploymentArgs));
         steps.add(new StartContainerStep(container));
         steps.add(new InvokeSDK41DataServiceStep(container, serviceTestInfo));
+        steps.add(new InvokeSDK41CQL2DataServiceStep(container, serviceTestInfo));
         return steps;
     }
     
