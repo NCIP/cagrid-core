@@ -404,16 +404,21 @@ public class SDK41CQL2QueryProcessor extends CQL2QueryProcessor {
     }
 
 
-    private String getRemoteApplicationUrl() {
-        String hostname = getConfiguredParameters().getProperty(PROPERTY_HOST_NAME);
-        String port = getConfiguredParameters().getProperty(PROPERTY_HOST_PORT);
-        while (hostname.endsWith("/")) {
-            hostname = hostname.substring(0, hostname.length() - 1);
+    private String getRemoteApplicationUrl() throws QueryProcessingException {
+        StringBuffer url = new StringBuffer();
+        if (useHttpsUrl()) {
+            url.append("https://");
+        } else {
+            url.append("http://");
         }
-        String urlPart = hostname + ":" + port;
-        urlPart += "/";
-        urlPart += getConfiguredParameters().getProperty(PROPERTY_APPLICATION_NAME);
-        return urlPart;
+        url.append(getConfiguredParameters().getProperty(PROPERTY_HOST_NAME));
+        url.append(":");
+        url.append(getConfiguredParameters().getProperty(PROPERTY_HOST_PORT));
+        url.append("/");
+        url.append(getConfiguredParameters().getProperty(PROPERTY_APPLICATION_NAME));
+        String completedUrl = url.toString();
+        LOG.debug("Application Service remote URL determined to be: " + completedUrl);
+        return completedUrl;
     }
 
 
@@ -424,6 +429,16 @@ public class SDK41CQL2QueryProcessor extends CQL2QueryProcessor {
         } catch (Exception ex) {
             throw new QueryProcessingException("Error determining local application service use: " + ex.getMessage(),
                 ex);
+        }
+    }
+    
+    
+    private boolean useHttpsUrl() throws QueryProcessingException {
+        String useHttpsValue = getConfiguredParameters().getProperty(PROPERTY_HOST_HTTPS);
+        try {
+            return Boolean.parseBoolean(useHttpsValue);
+        } catch (Exception ex) {
+            throw new QueryProcessingException("Error determining HTTPS use: " + ex.getMessage(), ex);
         }
     }
 
