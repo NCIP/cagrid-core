@@ -1,0 +1,14 @@
+<ns1:CQLQueryResults targetClassname="gov.nih.nci.cacoresdk.domain.inheritance.onechild.Human" xmlns:ns1="http://CQL.caBIG/2/org.cagrid.cql2.results">
+ <ns1:AttributeResult>
+  <ns1:Attribute name="id" value="1"/>
+ </ns1:AttributeResult>
+ <ns1:AttributeResult>
+  <ns1:Attribute name="id" value="2"/>
+ </ns1:AttributeResult>
+ <ns1:AttributeResult>
+  <ns1:Attribute name="id" value="3"/>
+ </ns1:AttributeResult>
+ <ns1:AttributeResult>
+  <ns1:Attribute name="id" value="4"/>
+ </ns1:AttributeResult>
+</ns1:CQLQueryResults>

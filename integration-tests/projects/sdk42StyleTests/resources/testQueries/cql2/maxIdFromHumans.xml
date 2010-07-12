@@ -1,0 +1,6 @@
+<ns1:CQLQuery xmlns:ns1="http://CQL.caBIG/2/org.cagrid.cql2">
+ <ns1:CQLTargetObject className="gov.nih.nci.cacoresdk.domain.inheritance.onechild.Human"/>
+ <ns1:CQLQueryModifier>
+  <ns1:DistinctAttribute attributeName="id" aggregation="MAX"/>
+ </ns1:CQLQueryModifier>
+</ns1:CQLQuery>

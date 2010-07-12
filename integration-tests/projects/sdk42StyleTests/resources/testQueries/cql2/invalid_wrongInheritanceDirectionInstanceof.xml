@@ -1,0 +1,3 @@
+<ns1:CQLQuery xmlns:ns1="http://CQL.caBIG/2/org.cagrid.cql2">
+ <ns1:CQLTargetObject className="gov.nih.nci.cacoresdk.domain.inheritance.twolevelinheritance.LCDMonitor" instanceof="gov.nih.nci.cacoresdk.domain.inheritance.twolevelinheritance.Display"/>
+</ns1:CQLQuery>
