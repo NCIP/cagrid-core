@@ -241,7 +241,7 @@ public class InvokeSDK41DataServiceStep extends Step {
         try {
             InputStream queryInputStream = InvokeSDK41DataServiceStep.class.getResourceAsStream(fullFilename);
             InputStreamReader reader = new InputStreamReader(queryInputStream);
-            query = (CQLQuery) Utils.deserializeObject(reader, CQLQuery.class);
+            query = Utils.deserializeObject(reader, CQLQuery.class);
             reader.close();
             queryInputStream.close();
         } catch (Exception ex) {
@@ -258,7 +258,7 @@ public class InvokeSDK41DataServiceStep extends Step {
         try {
             InputStream resultInputStream = InvokeSDK41DataServiceStep.class.getResourceAsStream(fullFilename);
             InputStreamReader reader = new InputStreamReader(resultInputStream);
-            results = (CQLQueryResults) Utils.deserializeObject(reader, CQLQueryResults.class);
+            results = Utils.deserializeObject(reader, CQLQueryResults.class);
             reader.close();
             resultInputStream.close();
         } catch (Exception ex) {
