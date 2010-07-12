@@ -26,14 +26,12 @@
 	
 	<target name="prepareClasspaths">
 		<path id="all.test.classpath">
-			<pathelement path="${classes.dir}" />
-			<pathelement path="${stubs.dest}" />
 			<path refid="test.run.classpath" />
 			<fileset dir="${jar.dir}">
 				<include name="**/*.jar"/>
 			</fileset>
 			<fileset dir="${sdk.remote.client.lib.dir}">
-				<include name="**/*.jar"/>
+				<include name="**/*beans.jar"/>
 			</fileset>
 		</path>
 	</target>
@@ -45,18 +43,12 @@
 	<target name="testCreation" depends="jar, prepareClasspaths" description="Runs the creation tests.">
 		<mkdir dir="${junit.results.dir}" />
 		<junit dir="${introduce.dir}" printsummary="yes" errorproperty="test.failed" failureproperty="test.failed" showoutput="true" fork="yes" forkmode="once">
-			<!-- is this needed any more? -->
-			<sysproperty key="build.dirs" value="${test.classes.dir}" />
-			<sysproperty key="build.dir" value="${test.classes.dir}" />
 			<sysproperty key="introduce.base.dir" value="${introduce.dir}" />
 			<sysproperty key="remote.sdk.host.name" value="${remote.sdk.host.name}" />
 			<sysproperty key="remote.sdk.host.port" value="${remote.sdk.host.port}" />
 			<sysproperty key="sdk41.tests.base.dir" value="${sdk41.tests.base.dir}"/>
 			<sysproperty key="sdk.unpack.dir" value="${sdk.unpack.dir}"/>
 			<classpath refid="all.test.classpath" />
-			<classpath>
-				<pathelement path="${classes.dir}" />
-			</classpath>
 			<formatter type="xml" />
 			<batchtest fork="yes" todir="${junit.results.dir}">
 				<fileset dir="${src.dir}">
@@ -71,8 +63,6 @@
 	<target name="testInvocation" depends="jar, prepareClasspaths" description="Runs the system tests.">
 		<mkdir dir="${junit.results.dir}" />
 		<junit dir="${introduce.dir}" printsummary="yes" errorproperty="test.failed" failureproperty="test.failed" showoutput="true" fork="yes" forkmode="once">
-			<sysproperty key="build.dirs" value="${classes.dir}" />
-			<sysproperty key="build.dir" value="${classes.dir}" />
 			<sysproperty key="introduce.base.dir" value="${introduce.dir}" />
 			<sysproperty key="remote.sdk.host.name" value="${remote.sdk.host.name}" />
 			<sysproperty key="remote.sdk.host.port" value="${remote.sdk.host.port}" />
@@ -80,9 +70,6 @@
 			<sysproperty key="testing.containers.dir" value="${testing.containers.dir}"/>
 			<sysproperty key="sdk.unpack.dir" value="${sdk.unpack.dir}"/>
 			<classpath refid="all.test.classpath" />
-			<classpath>
-				<pathelement path="${classes.dir}" />
-			</classpath>
 			<formatter type="xml" />
 			<batchtest fork="yes" todir="${junit.results.dir}">
 				<fileset dir="${src.dir}">
