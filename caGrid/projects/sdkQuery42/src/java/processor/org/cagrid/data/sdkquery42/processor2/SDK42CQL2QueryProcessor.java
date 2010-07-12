@@ -180,7 +180,7 @@ public class SDK42CQL2QueryProcessor extends CQL2QueryProcessor {
                 LOG.debug("Detected named attribute results");
                 // trim off the extra id attribute we added earlier
                 String[] attributeNames = new String[mods.getNamedAttribute().length - 1];
-                for (int i = 0; i < attributeNames.length - 1; i++) {
+                for (int i = 0; i < attributeNames.length; i++) {
                     attributeNames[i] = mods.getNamedAttribute(i).getAttributeName();
                 }
                 // this will happily ignore the last value which is the extra ID attribute
