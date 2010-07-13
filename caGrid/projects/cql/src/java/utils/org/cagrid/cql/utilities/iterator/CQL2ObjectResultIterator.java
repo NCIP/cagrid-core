@@ -1,6 +1,6 @@
 package org.cagrid.cql.utilities.iterator;
 
-import gov.nih.nci.cagrid.common.ConfigurableObjectDeserializationContext;
+import gov.nih.nci.cagrid.common.Utils;
 
 import java.io.BufferedInputStream;
 import java.io.ByteArrayInputStream;
@@ -11,15 +11,9 @@ import java.io.StringReader;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
-import org.apache.axis.AxisEngine;
-import org.apache.axis.EngineConfiguration;
-import org.apache.axis.MessageContext;
-import org.apache.axis.configuration.FileProvider;
-import org.apache.axis.server.AxisServer;
 import org.cagrid.cql.utilities.AnyNodeHelper;
 import org.cagrid.cql2.results.CQLObjectResult;
 import org.exolab.castor.types.AnyNode;
-import org.xml.sax.InputSource;
 
 
 /**
@@ -39,7 +33,6 @@ public class CQL2ObjectResultIterator implements Iterator<Object> {
     private boolean xmlOnly;
     private InputStream wsddInputStream;
     private byte[] wsddBytes;
-    private MessageContext messageContext;
 
 
     CQL2ObjectResultIterator(CQLObjectResult[] results, String targetName, boolean xmlOnly, InputStream wsdd) {
@@ -67,16 +60,15 @@ public class CQL2ObjectResultIterator implements Iterator<Object> {
             throw new NoSuchElementException();
         }
         currentIndex++;
-        AnyNode node = (AnyNode) results[currentIndex].get_any();
+        AnyNode node = results[currentIndex].get_any();
         try {
             String documentString = AnyNodeHelper.convertAnyNodeToString(node);
             if (xmlOnly) {
                 return documentString;
             }
-            InputSource objectSource = new InputSource(new StringReader(documentString));
-            ConfigurableObjectDeserializationContext desContext = new ConfigurableObjectDeserializationContext(
-                getMessageContext(), objectSource, getTargetClass());
-            return desContext.getValue();
+            Object value = Utils.deserializeObject(
+                new StringReader(documentString), getTargetClass(), getConsumableInputStream());
+            return value;
         } catch (Exception ex) {
             ex.printStackTrace();
             throw new RuntimeException(ex);
@@ -114,29 +106,5 @@ public class CQL2ObjectResultIterator implements Iterator<Object> {
             }
         }
         return objectClass;
-    }
-
-
-    private MessageContext getMessageContext() throws IOException {
-        if (messageContext == null) {
-            AxisEngine engine = null;
-            InputStream configStream = getConsumableInputStream();
-            if (configStream != null) {
-                // configure the axis engine to use the supplied wsdd file
-                EngineConfiguration engineConfig = new FileProvider(configStream);
-                engine = new AxisServer(engineConfig);
-            } else {
-                engine = new AxisServer();
-            }
-
-            messageContext = new MessageContext(engine);
-            messageContext.setEncodingStyle("");
-            messageContext.setProperty(AxisEngine.PROP_DOMULTIREFS, Boolean.FALSE);
-            // the following two properties prevent xsd types from appearing in
-            // every single element in the serialized XML
-            messageContext.setProperty(AxisEngine.PROP_EMIT_ALL_TYPES, Boolean.FALSE);
-            messageContext.setProperty(AxisEngine.PROP_SEND_XSI, Boolean.FALSE);
-        }
-        return messageContext;
     }
 }
