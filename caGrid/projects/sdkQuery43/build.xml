@@ -77,7 +77,7 @@
 			<include name="*.jar"/>
 		</fileset>
 	</path>
-		
+	
 	<path id="unit.test.run.classpath">
 		<fileset dir="${jar.dir}">
 			<include name="**/*.jar"/>
@@ -97,7 +97,6 @@
 			<exclude name="junit.jar" />
 		</fileset>
 		<pathelement path="${sdk.conf.dir}"/>
-		<pathelement path="${test.classes.dir}" />
 	</path>
 
 	<!-- =============================================================== -->
@@ -133,7 +132,7 @@
 			</classpath>
 		</javac>
 		<mkdir dir="${test.classes.dir}"/>
-		<javac srcdir="${test.src.dir}" destdir="${style.classes.dir}" source="${java.source}" debug="on" deprecation="on" optimize="on">
+		<javac srcdir="${test.src.dir}" destdir="${test.classes.dir}" source="${java.source}" debug="on" deprecation="on" optimize="on">
 			<classpath refid="test.build.classpath"/>
 			<classpath>
 				<pathelement location="${translator.classes.dir}"/>
