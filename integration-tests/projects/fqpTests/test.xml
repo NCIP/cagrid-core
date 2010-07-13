@@ -36,11 +36,9 @@
 			<batchtest unless="testcase" fork="yes" todir="${junit.results.dir}">
 				<fileset dir="${src.dir}">
 					<include name="**/LocalFqpSystemTests.java" />
-					<!--
 					<include name="**/RemoteFqpSystemTests.java" />
 					<include name="**/SecureRemoteFqpSystemTests.java" />
 					<include name="**/SecureLocalFQPSystemTests.java"/>
-					-->
 				</fileset>
 			</batchtest>
 		</junit>
