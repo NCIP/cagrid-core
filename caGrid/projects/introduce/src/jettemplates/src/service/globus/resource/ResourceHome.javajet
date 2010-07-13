@@ -67,6 +67,13 @@ public class <%=info.getService().getName()%>ResourceHome extends ResourceHomeIm
 	public <%=info.getService().getPackageName()%>.stubs.types.<%=info.getService().getName()%>Reference getResourceReference(ResourceKey key) throws Exception {
 		MessageContext ctx = MessageContext.getCurrentContext();
 		String transportURL = (String) ctx.getProperty(org.apache.axis.MessageContext.TRANS_URL);
+		org.apache.axis.message.addressing.AttributedURI uri = new org.apache.axis.message.addressing.AttributedURI(transportURL);
+		java.net.URL baseURL = org.globus.wsrf.container.ServiceHost.getBaseURL();
+		String correctHost = baseURL.getHost();
+		uri.setHost(correctHost);
+		int correctPort = baseURL.getPort();
+		uri.setPort(correctPort);
+		transportURL = uri.toString();
 		transportURL = transportURL.substring(0,transportURL.lastIndexOf('/') +1 );
 		transportURL += "<%=info.getService().getName()%>";
 		EndpointReferenceType epr = AddressingUtils.createEndpointReference(transportURL,key);
