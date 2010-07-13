@@ -56,7 +56,6 @@ public class SDK43StyleLocalApiStory extends Story {
 
     protected Vector<?> steps() {
         Vector<Step> steps = new Vector<Step>();
-        // steps.add(new InstallStyleStep());
         steps.add(new CreateDataServiceStep(testInfo, getIntroduceBaseDir()));
         steps.add(new UnpackContainerStep(container));
         List<String> deploymentArgs = 
