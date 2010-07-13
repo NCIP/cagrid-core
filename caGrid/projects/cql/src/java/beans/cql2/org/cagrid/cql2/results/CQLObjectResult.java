@@ -14,7 +14,7 @@ import org.exolab.castor.types.AnyNode;
  * Result object
  */
 public class CQLObjectResult extends org.cagrid.cql2.results.CQLResult implements java.io.Serializable {
-    private Object _any;
+    private AnyNode _any;
 
 
     public CQLObjectResult() {
@@ -31,7 +31,7 @@ public class CQLObjectResult extends org.cagrid.cql2.results.CQLResult implement
      * 
      * @return _any
      */
-    public Object get_any() {
+    public AnyNode get_any() {
         return _any;
     }
 
@@ -70,14 +70,14 @@ public class CQLObjectResult extends org.cagrid.cql2.results.CQLResult implement
     
     
     private boolean anysEqual(CQLObjectResult other) {
-        AnyNode oAny = (AnyNode) other.get_any();
+        AnyNode oAny = other.get_any();
         if (this._any == null && oAny == null) {
             return true;
         } else if ((this._any != null && oAny == null)
             || (this._any == null && oAny != null)) {
             return false;
         } else {
-            return ((AnyNode) this._any).getStringValue().equals(oAny.getStringValue());
+            return this._any.getStringValue().equals(oAny.getStringValue());
         }
     }
 }
