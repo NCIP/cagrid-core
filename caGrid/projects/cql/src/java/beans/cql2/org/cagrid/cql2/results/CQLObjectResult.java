@@ -7,6 +7,8 @@
 
 package org.cagrid.cql2.results;
 
+import org.apache.axis.message.MessageElement;
+import org.cagrid.cql.utilities.AnyNodeHelper;
 import org.exolab.castor.types.AnyNode;
 
 
@@ -77,7 +79,14 @@ public class CQLObjectResult extends org.cagrid.cql2.results.CQLResult implement
             || (this._any == null && oAny != null)) {
             return false;
         } else {
-            return this._any.getStringValue().equals(oAny.getStringValue());
+            try {
+                MessageElement myAnyElement = AnyNodeHelper.convertAnyNodeToMessageElement(_any);
+                MessageElement theirAnyElement = AnyNodeHelper.convertAnyNodeToMessageElement(oAny);
+                return myAnyElement.equals(theirAnyElement);
+            } catch (Exception ex) {
+                ex.printStackTrace();
+                return false;
+            }
         }
     }
 }
