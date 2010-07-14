@@ -1,0 +1,12 @@
+236c236,244
+<                 tempNode = new AnyNode(AnyNode.ATTRIBUTE, getLocalPart(qName), null, null, value);
+---
+> 		String attrPrefix = null;
+> 		String attrUri = null;
+> 		int prefixIndex = qName.indexOf(':');
+> 		if (prefixIndex > 0) {
+> 		    attrPrefix = qName.substring(0, prefixIndex);
+> 		    if (attrPrefix!=null)
+>             		attrUri = _context.getNamespaceURI(attrPrefix);
+> 		}
+>                 tempNode = new AnyNode(AnyNode.ATTRIBUTE, getLocalPart(qName), attrPrefix, attrUri, value);
