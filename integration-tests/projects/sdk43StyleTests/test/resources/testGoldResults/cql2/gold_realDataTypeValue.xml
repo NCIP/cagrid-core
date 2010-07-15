@@ -1,32 +1,32 @@
-<ns1:CQLQueryResults targetClassname="gov.nih.nci.cacoresdk.domain.other.datatype.RealDataType" xmlns:ns1="http://CQL.caBIG/2/org.cagrid.cql2.results">
- <ns1:ObjectResult>
-  <ns2:RealDataType id="2" xmlns:ns2="gme://caCORE.caCORE/3.2/gov.nih.nci.cacoresdk.domain.other.datatype">
-   <ns2:value1 value="1001.15" type="ns2:REAL"/>
-   <ns2:value2 nullFlavor="NI" type="ns3:REAL"/>
-  </ns2:RealDataType>
- </ns1:ObjectResult>
- <ns1:ObjectResult>
-  <ns3:RealDataType id="3" xmlns:ns3="gme://caCORE.caCORE/3.2/gov.nih.nci.cacoresdk.domain.other.datatype">
-   <ns3:value1 value="1002.15" type="ns2:REAL"/>
-   <ns3:value2 nullFlavor="NI" type="ns3:REAL"/>
-  </ns3:RealDataType>
- </ns1:ObjectResult>
- <ns1:ObjectResult>
-  <ns4:RealDataType id="4" xmlns:ns4="gme://caCORE.caCORE/3.2/gov.nih.nci.cacoresdk.domain.other.datatype">
-   <ns4:value1 value="-1003.0" type="ns2:REAL"/>
-   <ns4:value2 nullFlavor="NI" type="ns3:REAL"/>
-  </ns4:RealDataType>
- </ns1:ObjectResult>
- <ns1:ObjectResult>
-  <ns5:RealDataType id="5" xmlns:ns5="gme://caCORE.caCORE/3.2/gov.nih.nci.cacoresdk.domain.other.datatype">
-   <ns5:value1 value="1004.0" type="ns2:REAL"/>
-   <ns5:value2 nullFlavor="NI" type="ns3:REAL"/>
-  </ns5:RealDataType>
- </ns1:ObjectResult>
- <ns1:ObjectResult>
-  <ns6:RealDataType id="6" xmlns:ns6="gme://caCORE.caCORE/3.2/gov.nih.nci.cacoresdk.domain.other.datatype">
-   <ns6:value1 value="1005.15" type="ns2:REAL"/>
-   <ns6:value2 nullFlavor="NI" type="ns3:REAL"/>
-  </ns6:RealDataType>
- </ns1:ObjectResult>
-</ns1:CQLQueryResults>
+<res:CQLQueryResults targetClassname="gov.nih.nci.cacoresdk.domain.other.datatype.RealDataType" xmlns:res="http://CQL.caBIG/2/org.cagrid.cql2.results">
+ <res:ObjectResult>
+  <ns1:RealDataType id="2" xmlns:ns1="gme://caCORE.caCORE/3.2/gov.nih.nci.cacoresdk.domain.other.datatype">
+   <ns1:value1 value="1001.15" xsi:type="ns2:REAL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ns2="uri:iso.org:21090"/>
+   <ns1:value2 nullFlavor="NI" xsi:type="ns3:REAL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ns3="uri:iso.org:21090"/>
+  </ns1:RealDataType>
+ </res:ObjectResult>
+ <res:ObjectResult>
+  <ns1:RealDataType id="3" xmlns:ns1="gme://caCORE.caCORE/3.2/gov.nih.nci.cacoresdk.domain.other.datatype">
+   <ns1:value1 value="1002.15" xsi:type="ns2:REAL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ns2="uri:iso.org:21090"/>
+   <ns1:value2 nullFlavor="NI" xsi:type="ns3:REAL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ns3="uri:iso.org:21090"/>
+  </ns1:RealDataType>
+ </res:ObjectResult>
+ <res:ObjectResult>
+  <ns1:RealDataType id="4" xmlns:ns1="gme://caCORE.caCORE/3.2/gov.nih.nci.cacoresdk.domain.other.datatype">
+   <ns1:value1 value="-1003.0" xsi:type="ns2:REAL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ns2="uri:iso.org:21090"/>
+   <ns1:value2 nullFlavor="NI" xsi:type="ns3:REAL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ns3="uri:iso.org:21090"/>
+  </ns1:RealDataType>
+ </res:ObjectResult>
+ <res:ObjectResult>
+  <ns1:RealDataType id="5" xmlns:ns1="gme://caCORE.caCORE/3.2/gov.nih.nci.cacoresdk.domain.other.datatype">
+   <ns1:value1 value="1004.0" xsi:type="ns2:REAL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ns2="uri:iso.org:21090"/>
+   <ns1:value2 nullFlavor="NI" xsi:type="ns3:REAL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ns3="uri:iso.org:21090"/>
+  </ns1:RealDataType>
+ </res:ObjectResult>
+ <res:ObjectResult>
+  <ns1:RealDataType id="6" xmlns:ns1="gme://caCORE.caCORE/3.2/gov.nih.nci.cacoresdk.domain.other.datatype">
+   <ns1:value1 value="1005.15" xsi:type="ns2:REAL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ns2="uri:iso.org:21090"/>
+   <ns1:value2 nullFlavor="NI" xsi:type="ns3:REAL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ns3="uri:iso.org:21090"/>
+  </ns1:RealDataType>
+ </res:ObjectResult>
+</res:CQLQueryResults>

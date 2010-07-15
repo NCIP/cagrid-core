@@ -1,26 +1,26 @@
-<ns1:CQLQueryResults targetClassname="gov.nih.nci.cacoresdk.domain.other.datatype.IvlPqDataType" xmlns:ns1="http://CQL.caBIG/2/org.cagrid.cql2.results">
- <ns1:ObjectResult>
-  <ns2:IvlPqDataType id="18" xmlns:ns2="gme://caCORE.caCORE/3.2/gov.nih.nci.cacoresdk.domain.other.datatype">
-   <ns2:value1 nullFlavor="NA" type="ns2:IVL_PQ"/>
-   <ns2:value2 nullFlavor="NI" type="ns3:IVL_PQ"/>
-   <ns2:value3 nullFlavor="NI" type="ns4:IVL_PQ"/>
-   <ns2:value4 highClosed="true" lowClosed="true" type="ns5:IVL_PQ">
-    <ns3:low precision="2" unit="VALUE4_LOW_UNIT" value="1.1" xmlns:ns3="uri:iso.org:21090"/>
-    <ns4:high precision="2" unit="VALUE4_HIGH_UNIT1" value="5.1" xmlns:ns4="uri:iso.org:21090"/>
-    <ns5:width precision="2" unit="VALUE4_WIDTH_UNIT1" value="5.1" type="ns5:PQ" xmlns:ns5="uri:iso.org:21090"/>
-   </ns2:value4>
-  </ns2:IvlPqDataType>
- </ns1:ObjectResult>
- <ns1:ObjectResult>
-  <ns6:IvlPqDataType id="19" xmlns:ns6="gme://caCORE.caCORE/3.2/gov.nih.nci.cacoresdk.domain.other.datatype">
-   <ns6:value1 nullFlavor="NA" type="ns2:IVL_PQ"/>
-   <ns6:value2 nullFlavor="NI" type="ns3:IVL_PQ"/>
-   <ns6:value3 nullFlavor="NI" type="ns4:IVL_PQ"/>
-   <ns6:value4 highClosed="true" lowClosed="true" type="ns5:IVL_PQ">
-    <ns7:low precision="2" unit="VALUE4_LOW_UNIT" value="1.1" xmlns:ns7="uri:iso.org:21090"/>
-    <ns8:high precision="2" unit="VALUE4_HIGH_UNIT2" value="6.1" xmlns:ns8="uri:iso.org:21090"/>
-    <ns9:width precision="2" unit="VALUE4_WIDTH_UNIT2" value="5.1" type="ns5:PQ" xmlns:ns9="uri:iso.org:21090"/>
-   </ns6:value4>
-  </ns6:IvlPqDataType>
- </ns1:ObjectResult>
-</ns1:CQLQueryResults>
+<res:CQLQueryResults targetClassname="gov.nih.nci.cacoresdk.domain.other.datatype.IvlPqDataType" xmlns:res="http://CQL.caBIG/2/org.cagrid.cql2.results">
+ <res:ObjectResult>
+  <ns1:IvlPqDataType id="18" xmlns:ns1="gme://caCORE.caCORE/3.2/gov.nih.nci.cacoresdk.domain.other.datatype">
+   <ns1:value1 nullFlavor="NA" xsi:type="ns2:IVL_PQ" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ns2="uri:iso.org:21090"/>
+   <ns1:value2 nullFlavor="NI" xsi:type="ns3:IVL_PQ" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ns3="uri:iso.org:21090"/>
+   <ns1:value3 nullFlavor="NI" xsi:type="ns4:IVL_PQ" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ns4="uri:iso.org:21090"/>
+   <ns1:value4 highClosed="true" lowClosed="true" xsi:type="ns5:IVL_PQ" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ns5="uri:iso.org:21090">
+    <ns5:low precision="2" unit="VALUE4_LOW_UNIT" value="1.1"/>
+    <ns5:high precision="2" unit="VALUE4_HIGH_UNIT1" value="5.1"/>
+    <ns5:width precision="2" unit="VALUE4_WIDTH_UNIT1" value="5.1" xsi:type="ns5:PQ"/>
+   </ns1:value4>
+  </ns1:IvlPqDataType>
+ </res:ObjectResult>
+ <res:ObjectResult>
+  <ns1:IvlPqDataType id="19" xmlns:ns1="gme://caCORE.caCORE/3.2/gov.nih.nci.cacoresdk.domain.other.datatype">
+   <ns1:value1 nullFlavor="NA" xsi:type="ns2:IVL_PQ" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ns2="uri:iso.org:21090"/>
+   <ns1:value2 nullFlavor="NI" xsi:type="ns3:IVL_PQ" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ns3="uri:iso.org:21090"/>
+   <ns1:value3 nullFlavor="NI" xsi:type="ns4:IVL_PQ" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ns4="uri:iso.org:21090"/>
+   <ns1:value4 highClosed="true" lowClosed="true" xsi:type="ns5:IVL_PQ" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ns5="uri:iso.org:21090">
+    <ns5:low precision="2" unit="VALUE4_LOW_UNIT" value="1.1"/>
+    <ns5:high precision="2" unit="VALUE4_HIGH_UNIT2" value="6.1"/>
+    <ns5:width precision="2" unit="VALUE4_WIDTH_UNIT2" value="5.1" xsi:type="ns5:PQ"/>
+   </ns1:value4>
+  </ns1:IvlPqDataType>
+ </res:ObjectResult>
+</res:CQLQueryResults>

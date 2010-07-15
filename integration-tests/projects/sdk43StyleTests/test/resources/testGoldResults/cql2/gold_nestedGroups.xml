@@ -1,9 +1,9 @@
-<ns1:CQLQueryResults targetClassname="gov.nih.nci.cacoresdk.domain.inheritance.childwithassociation.Credit" xmlns:ns1="http://CQL.caBIG/2/org.cagrid.cql2.results">
- <ns1:ObjectResult>
-  <ns2:Credit xmlns:ns2="gme://caCORE.caCORE/3.2/gov.nih.nci.cacoresdk.domain.inheritance.childwithassociation">
-   <ns2:amount value="3" type="ns2:INT"/>
-   <ns2:id displayable="true" extension="3" reliability="ISS" root="2.16.12.123.456.1" scope="OBJ" type="ns3:II"/>
-   <ns2:cardNumber value="3" type="ns4:ST"/>
-  </ns2:Credit>
- </ns1:ObjectResult>
-</ns1:CQLQueryResults>
+<res:CQLQueryResults targetClassname="gov.nih.nci.cacoresdk.domain.inheritance.childwithassociation.Credit" xmlns:res="http://CQL.caBIG/2/org.cagrid.cql2.results">
+ <res:ObjectResult>
+  <ns1:Credit xmlns:ns1="gme://caCORE.caCORE/3.2/gov.nih.nci.cacoresdk.domain.inheritance.childwithassociation">
+   <ns1:amount value="3" xsi:type="ns2:INT" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ns2="uri:iso.org:21090"/>
+   <ns1:id displayable="true" extension="3" reliability="ISS" root="2.16.12.123.456.1" scope="OBJ" xsi:type="ns3:II" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ns3="uri:iso.org:21090"/>
+   <ns1:cardNumber value="3" xsi:type="ns4:ST" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ns4="uri:iso.org:21090"/>
+  </ns1:Credit>
+ </res:ObjectResult>
+</res:CQLQueryResults>

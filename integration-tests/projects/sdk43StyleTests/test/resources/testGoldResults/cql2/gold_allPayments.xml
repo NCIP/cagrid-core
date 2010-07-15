@@ -1,8 +1,8 @@
-<ns1:CQLQueryResults targetClassname="gov.nih.nci.cacoresdk.domain.inheritance.childwithassociation.Payment" xmlns:ns1="http://CQL.caBIG/2/org.cagrid.cql2.results">
- <ns1:ObjectResult>
-  <ns2:Payment xmlns:ns2="gme://caCORE.caCORE/3.2/gov.nih.nci.cacoresdk.domain.inheritance.childwithassociation">
-   <ns2:amount value="5" type="ns2:INT"/>
-   <ns2:id displayable="true" extension="5" reliability="ISS" root="2.16.12.123.456.1" scope="OBJ" type="ns3:II"/>
-  </ns2:Payment>
- </ns1:ObjectResult>
-</ns1:CQLQueryResults>
+<res:CQLQueryResults targetClassname="gov.nih.nci.cacoresdk.domain.inheritance.childwithassociation.Payment" xmlns:res="http://CQL.caBIG/2/org.cagrid.cql2.results">
+ <res:ObjectResult>
+  <ns1:Payment xmlns:ns1="gme://caCORE.caCORE/3.2/gov.nih.nci.cacoresdk.domain.inheritance.childwithassociation">
+   <ns1:amount value="5" xsi:type="ns2:INT" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ns2="uri:iso.org:21090"/>
+   <ns1:id displayable="true" extension="5" reliability="ISS" root="2.16.12.123.456.1" scope="OBJ" xsi:type="ns3:II" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ns3="uri:iso.org:21090"/>
+  </ns1:Payment>
+ </res:ObjectResult>
+</res:CQLQueryResults>
