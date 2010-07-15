@@ -30,6 +30,8 @@
 			<classpath>
 				<fileset dir="${created.sdk.client.dir}/lib">
 					<include name="*.jar"/>
+					<exclude name="castor*.jar"/>
+					<exclude name="caGrid-iso*.jar"/>
 				</fileset>
 				<pathelement location="${created.sdk.client.dir}/conf"/>
 			</classpath>

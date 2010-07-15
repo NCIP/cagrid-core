@@ -45,6 +45,7 @@
 	<path id="build.classpath">
 		<fileset dir="${sdk.lib.dir}">
 			<include name="**/*.jar"/>
+			<exclude name="castor*.jar"/>
 			<exclude name="**/caGrid-*.jar"/>
 		</fileset>
 		<fileset dir="${ext.test.lib.dir}">
@@ -73,6 +74,7 @@
 		</fileset>
 		<fileset dir="${sdk.lib.dir}">
 			<include name="**/*.jar"/>
+			<exclude name="castor*.jar"/>
 			<exclude name="**/caGrid-iso*.jar"/>
 		</fileset>
 		<fileset dir="${globus.dir}/lib">
@@ -93,10 +95,12 @@
 			<include name="*.jar" />
 			<exclude name="junit.jar" />
 		</fileset>
+		<!--
 		<fileset dir="${sdk.lib.dir}">
 			<include name="**/*-beans.jar"/>
 			<exclude name="**/caGrid-iso*.jar"/>
 		</fileset>
+		-->
 		<fileset dir="${introduce.dir}/extensions/lib">
 			<include name="**/*iso*.jar"/>
 		</fileset>
