@@ -201,6 +201,23 @@ public class HttpProcessorImpl implements HttpProcessor {
     	return serialize(namingAuthority.getConfiguration());
     }
     
+    protected String htmlNAConfiguration(URI servletURI) 
+		throws MarshalException, ValidationException, IOException {
+	
+    	namingAuthority.getConfiguration().setNaBaseURI(servletURI);
+    	
+    	StringBuilder sb = new StringBuilder("<DL>");
+    	sb.append("<DT><STRONG>Naming Authority</STRONG></DT>\n<DD>")
+    		.append(namingAuthority.getConfiguration().getNaBaseURI())
+    		.append("</DD><BR>\n<DT><STRONG>Naming Authority Grid Service</STRONG></DT>\n<DD>" )
+    		.append(namingAuthority.getConfiguration().getNaGridSvcURI().toString())
+    		.append("</DD><BR>\n<DT><STRONG>Naming Authority Prefix</STRONG></DT>\n<DD>" )
+    		.append(namingAuthority.getConfiguration().getNaPrefixURI().toString())
+    		.append("</DD></DL>");
+    				
+    	return sb.toString();
+    }
+    
     public void process(HttpServletRequest request, HttpServletResponse response) throws IOException {
         StringBuffer msg = new StringBuffer();
         int responseStatus = HttpServletResponse.SC_OK;
@@ -216,8 +233,13 @@ public class HttpProcessorImpl implements HttpProcessor {
         String config = request.getParameter("config");
         if (config != null) {
         	try {
-        		msg.append(serializeNAConfiguration(getServletURI(request)));
-        		response.setContentType(HTTP_ACCEPT_XML);
+        		if (xmlResponseRequired(request)) {
+        			msg.append(serializeNAConfiguration(getServletURI(request)));
+        			response.setContentType(HTTP_ACCEPT_XML);
+        		} else {
+        			msg.append(htmlNAConfiguration(getServletURI(request)));
+        			response.setContentType(HTTP_ACCEPT_HTML);
+        		}
         	} catch( Exception e ) {
         		msg.append(makeErrStr("Server error while serializing naming authority's configuration", e));
         		responseStatus = HttpServletResponse.SC_INTERNAL_SERVER_ERROR;
