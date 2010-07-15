@@ -4,6 +4,10 @@ import gov.nih.nci.cagrid.identifiers.common.IdentifiersNAServiceI;
 
 import java.rmi.RemoteException;
 
+import namingauthority.IdentifierData;
+import namingauthority.KeyData;
+import namingauthority.KeyNameData;
+
 import org.apache.axis.client.Stub;
 import org.apache.axis.message.addressing.EndpointReferenceType;
 import org.apache.axis.types.URI.MalformedURIException;
@@ -52,20 +56,25 @@ public class IdentifiersNAServiceClient extends IdentifiersNAServiceClientBase i
 			  
 			  // place client calls here if you want to use this main as a
 			  // test....
-//			  KeyData[] keyValues1 = new KeyData[2];
-//			  keyValues1[0] = new KeyData();
-//			  keyValues1[0].setKeyName("URL");
-//			  keyValues1[0].setValues(new Values(new String[] { "http://www.google.com" }));
-//
-//			  keyValues1[1] = new KeyData();
-//			  keyValues1[1].setKeyName("CODE");
-//			  keyValues1[1].setValues(new Values(new String[] { "end point reference 1", "end point reference 2" }));
-//	
-//			  IdentifierKeyData values1 = new IdentifierKeyData(keyValues1);
-//			  IdentifierKeyData values2 = null;
-//
-//			  org.apache.axis.types.URI identifier = client.createIdentifier(values1);
-//			  System.out.println("Identifier: " + identifier.toString());
+
+
+			  String[] keys = new String[] { "URLS" };
+			  String[][] values = new String[][]{
+					  {"http://www.google.com"},
+			  };
+
+			  KeyNameData[] kvs = new KeyNameData[ keys.length ];
+			  for( int i=0; i < keys.length; i++) {
+
+				  KeyData kd = new KeyData();
+				  kd.setValue(values[i]);
+				  kvs[i] = new KeyNameData(kd, keys[i]);
+			  }
+
+			  IdentifierData id = new IdentifierData(kvs);
+
+			  org.apache.axis.types.URI identifier = client.createIdentifier(id);
+			  System.out.println("Identifier: " + identifier.toString());
 			  
 			  //////////////////////////////////////////////////////////////////////
 			  // Test identifier keys with no values are supported
