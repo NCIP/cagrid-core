@@ -1,0 +1,781 @@
+/* empty */
+/* empty */
+
+/* avoid titlecontent growing too large */
+
+.atb-titlecontent {
+    height:10px;
+}
+
+/* unlicensed */
+
+div.unlicensed {
+    text-align:center;
+    background-color:#FFF3F3;
+    border:9px solid #DD3333;
+    margin:50px;
+    padding:20px 50px 50px 50px;
+}
+div.unlicensed h1, div.unlicensed h1 a {
+    font-size:xx-large;
+    font-weight:bold;
+    color:#BB0000;
+}
+div.unlicensed p, div.unlicensed a {
+    color:#990000;
+    font-size:medium;
+    font-weight:normal;
+}
+
+
+/* search input */
+.search-query-text-input {
+    height:20px;
+    width:70%;
+    float:left;
+    margin-right:3px !important;
+}
+
+.search-filters-panel {
+    margin-top:3px;
+}
+
+/* mail css */
+.mailLabel {
+    color: #666666; font-weight: bold;
+}
+
+.mailthread {
+}
+
+.unparented {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.parented {
+    list-style-image: url("/images/icons/link_out_bot.gif");
+}
+
+.mailthread ul {
+    list-style-image: url("/images/icons/link_out_bot.gif");
+}
+
+.selectedMail {
+  background-color: #ffffcc;
+  padding: 2px;
+  border: 1px solid #ddd;
+}
+
+.excerpt {
+  margin-top: 0px;
+  margin-bottom: 0px;
+}
+
+/* blog-list macro */
+.bloglist.default .permalink {
+    float:right;
+    font-size:x-small;
+}
+.bloglist.default .title {
+    font-size:x-large;
+}
+.bloglist.default .date {
+    font-size:x-large;
+}
+.bloglist.default .postedby, .bloglist.default .postedbydate {
+    font-size:x-small;
+}
+
+
+
+/* extracted-default theme.css */
+.tabnav .tabs a {
+    padding: 0px 3px 0px 3px;
+    margin: 0px 3px 0 0;
+    border-bottom: none;
+    text-decoration: none;
+    display: block;
+    float: left;
+}
+
+
+/* list page navigational tabs */
+.tabnav, .comment .tabnav {
+    padding: 0;
+    margin: 0;
+    border-bottom-width: 1px;
+    border-bottom-style: solid;
+    float: left;
+    display: inline;
+    list-style-position: outside;
+    width: 100%;
+    font-weight: normal;
+    font-size: 9pt;
+}
+
+
+/* comments in IE in 2.8 */
+.comment, .comment-body, .comment-header { height:auto; }
+
+/* support recently-updated display */
+.recentlyUpdatedItem {
+	border-bottom: #f0f0f0 1px solid;
+	border-top: #f0f0f0 1px solid;
+	margin: 10px 0 0 0;
+	padding: 0px;
+	border-spacing: 0px;
+	width: 100%;
+    text-decoration: none;
+    border-collapse: collapse;
+}
+
+.recentlyUpdatedItem td {
+    padding: 10px;
+    border-bottom: #f0f0f0 1px solid;
+    vertical-align: top;
+}
+
+.recentlyUpdatedItem .authorAndDate {
+	background-color: #f0f0f0;
+	width: 25%;
+}
+
+.recentlyUpdatedItem .date {
+    margin-top: 4px;
+    font-size: 90%;
+    color: #666;
+}
+
+.recentlyUpdatedItem .profilePic {
+    float: right;
+    background-color: #f0f0f0;
+    margin: 0 2px;
+}
+
+.recentlyUpdatedItem .twixie {
+    padding: 10px 0 0 4px;
+}
+
+.recentlyUpdatedItem .icon {
+    padding: 8px 0 0 1px;
+}
+
+.recentlyUpdatedItem .details {
+    padding-left: 7px;
+}
+
+.recentlyUpdatedItem .summary, .recentlyUpdatedItem .thumbnail {
+    margin-top: 3px;
+    color: #666666;
+}
+
+.moreRecentlyUpdatedItems {
+    text-align: right;
+    margin-top: 10px;
+    font-size: 10pt;
+}
+
+/* ensure titlecontent cell is correctly aligned */
+.atb-titlecontent {vertical-align:top;}
+
+/* support for page versions */
+.hidden {
+    display: none;
+}
+
+/* menus in opera */
+.menubar {
+    position: static;
+}
+
+/* pagetree2 */
+.pagetree2 .cell1, .pagetree2 .cell2, .pagetree2 .cell3, .pagetree2 .cell4, .pagetree2 .cell5 {
+    white-space:nowrap;
+}
+
+/* access keys */
+#atb-accessKeys { margin: 0; padding: 0; }
+#atb-accessKeys dt { margin: 0; padding: 0; position: absolute; top: -9999px; left: 0; }
+#atb-accessKeys dd { margin: 0; padding: 0; }
+#atb-accessKeys dd a { position: absolute; top: -9999px; left: 0; }
+#atb-accessKeys dd a:focus, #accessKeys dd a:active { background-color: #3556a2 !important; color: #fff !important; top: 0; font-size: 1.2em; padding: .5em; }
+
+/* make headings less ugly */
+.atb-page h1, .atb-page h2, .atb-page h3, .atb-page h4, .atb-page h5, .atb-page h6 {
+ background-color: transparent;
+ border-style: none;
+ padding: 0px;
+}
+.atb-title h1 {
+ font-size: 18px;
+ line-height: 1.0em;
+ margin-top: 0px;
+}
+
+/* make breadcrumbs less rancid */
+.breadcrumbs {
+ background-color: transparent;
+ border: 1px none transparent;
+}
+ol.breadcrumbs {
+    padding:0px;
+    margin:0px;
+}
+ol.breadcrumbs li.breadcrumb {
+    float:left;
+    list-style-type:none;
+    padding-right:3px;
+}
+
+ol.ellipsis li.breadcrumbsExpansion, ol.expanded li.breadcrumbsEllipsis { display:none; }
+ol.expanded li.breadcrumbsExpansion, ol.ellipsis li.breadcrumbsEllipsis { display:block; }
+
+/* labels in menus */
+div.dynarch-horiz-menu .label, div.dynarch-popup-menu .label {
+ font-weight: normal;
+}
+
+/* allow panel css to set design of menus in .atb-menu */
+.atb-menu div.dynarch-horiz-menu {
+ background-color: transparent;
+ background-image: none;
+ border-style: none;
+}
+
+/* remove margins from forms */
+.marginlessForm {
+ margin: 0px;
+}
+
+/* don't force search box to be 100% width */
+.confluence-searchbox {
+ width: auto;
+ white-space: nowrap;
+}
+
+/* remove padding from PageContent */
+.PageContent, .pagecontent {
+ padding: 0px;
+}
+
+/* ui table (e.g. attachments list) */
+.tableview th, .tabletitle, .pageSectionHeader {
+ border-bottom-width: 1px;
+}
+.tableview th, div.tabletitle {
+ font-weight: bold;
+}
+.mode-view-attachments .tableview td {
+ border-top: 1px solid #fff;
+ vertical-align: middle;
+}
+.tableview td {
+ border-bottom: 1px dotted #ccc;
+}
+.tableview tr:hover td {
+ border-bottom: 1px solid #000;
+}
+.rowAlternate {
+ background-color: #f7f7f7;
+}
+
+/* activity screens */
+.context-space-activity .pagebody {
+ padding: 0px;
+}
+
+/* no image borders */
+a img {
+ border-style: none;
+}
+
+/* hide accessibility features by default */
+.accessibility {
+ display: none;
+}
+
+/* left slider */
+.atb-leftslider {
+ cursor: w-resize !important;
+}
+
+/* right slider */
+.atb-rightslider {
+ cursor: e-resize !important;
+}
+
+/* allow special effects on tables, etc. */
+.layout {
+ direction:ltr;
+}
+
+/* inhibit selection where possible */
+.noselect {
+ -moz-user-select: none;
+ cursor: default;
+}
+
+/* line spacing */
+body, p, li, ul {
+ line-height:1.6em;
+}
+
+/* citation */
+cite:before { content: "\""; }
+cite:after { content: "\""; }
+cite, cite:before, cite:after {
+ font-family: Georgia, "Times New Roman", serif;
+ font-style: italic;
+}
+
+/* insertions and deletions */
+ins {
+ background-color: #DBFFDB;
+}
+del {
+ background-color: #FFE5E5;
+}
+
+/* make italics more readable */
+i, em {
+ letter-spacing: 1px;
+}
+
+/* tables */
+.confluenceTable {
+ border: 1px solid #B2B2B2;
+ border-collapse: collapse;
+}
+.confluenceTable th.confluenceTh {
+ background-color: #F5F5F5;
+ border: 1px dotted #B2B2B2;
+ font-weight: bold;
+ font-size: small;
+ padding: 3px 4px 3px 4px;
+}
+.confluenceTable .confluenceTd {
+ border: 1px dotted #B2B2B2;
+ padding: 3px 4px 3px 4px;
+}
+
+/* ExtJS unselectable panels */
+.x-unselectable { cursor: default; }
+
+/* skip navigation */
+@media screen, print, handheld, projection, tv {
+ .non-visual {display: none; visibility: hidden;}
+}
+
+/* sliders */
+.atb-slider .atb-slider-img {
+ width: 9px;
+ height: 20px;
+}
+.atb-leftslider .atb-leftslider-img {
+ background-position: top right;
+}
+.atb-rightslider .atb-rightslider-img {
+ background-position: top left;
+}
+
+.quicklinks {
+ overflow: auto;
+}
+.quicklinks div {
+ clear: none;
+ float: left;
+ margin-bottom: 4px;
+ width: 49%;
+}
+
+/* Stop menu items wrapping */
+div.dynarch-horiz-menu table tr td {
+ white-space: nowrap;
+}
+
+/* Provide support for menu spacers */
+div.dynarch-horiz-menu table tr td.spacer {
+ width: 100%;
+}
+div.dynarch-horiz-menu table tr td.spacer div {
+ display:none;
+}
+
+/* poweredBy */
+.poweredBy, .poweredBy a {
+ color:#909090;
+ font-size:small;
+}
+
+/* fixes comments squashing */
+?#comments-section .comment {
+    height: auto;
+}
+
+.atb-body {border-color:transparent;padding:0px;margin:0px;text-align:center;min-height:100%;height:auto !important;background-color:#2E3257;}
+.atb-body, .atb-body p, .atb-body td, .atb-body th, .atb-body div, .atb-body span, .atb-body div.dynarch-horiz-menu, .atb-body div.dynarch-horiz-menu table, .atb-body div.dynarch-horiz-menu table, .atb-body input, .atb-body ul li, .atb-body ol li, .atb-body select {font-family:sans-serif;font-size:12px;line-height:1.6em;}
+.atb-page {border-style:none;border-color:#585fa6;overflow:scroll;text-align:center;min-height:100%;background-color:#2E3257;}
+.atb-header {min-width:50px;background-color:#FFFFFF;}
+.atb-menu {border-style:solid;border-width:0px;border-color:#F3F4EC;background-color:#FFFFFF;}
+.atb-menu, .atb-menu p, .atb-menu td, .atb-menu th, .atb-menu div, .atb-menu span, .atb-menu div.dynarch-horiz-menu, .atb-menu div.dynarch-horiz-menu table, .atb-menu div.dynarch-horiz-menu table, .atb-menu input, .atb-menu ul li, .atb-menu ol li, .atb-menu select {color:#000000;}
+.atb-titlecontent {background-color:#FFFFFF;}
+.atb-content {border-style:none;border-width:1px;border-color:#2E3257;padding:10px;overflow:visible;vertical-align:top;min-height:800px;height:auto !important;background-color:#FFFFFF;}
+.atb-content, .atb-content p, .atb-content td, .atb-content th, .atb-content div, .atb-content span, .atb-content div.dynarch-horiz-menu, .atb-content div.dynarch-horiz-menu table, .atb-content div.dynarch-horiz-menu table, .atb-content input, .atb-content ul li, .atb-content ol li, .atb-content select {font-size:medium;}
+.atb-footnote {padding:5px;overflow:visible;vertical-align:top;height:10px !important;background-color:#FFFFFF;}
+
+/* empty */
+/* top buttons search bar background */
+td.searchbackground {
+background-image: url(http://wiki.cagrid.org/download/attachments/2064403/CAGridbuttons_07.gif);
+background-repeat: no-repeat;
+background-position: 0px 0px;
+}
+
+.search-query {
+  width: 136px;
+}
+
+table, tr, td, th, img {
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+
+table.atb-shell {
+  margin-left: auto;
+  margin-right: auto;
+}
+
+table {
+  border-spacing: 0;
+  border-collapse: collapse;
+}
+
+.tabletitle, .pageSectionHeader
+{
+border-bottom-color: #2E3257;
+}
+
+hr {
+color: #2E3257;
+height: 1px;
+}
+
+body {
+height: 100%;
+}
+
+.cagrid div.dynarch-popup-menu { color: #2E3257;  background-color: #FFFFFF; border: none; }
+
+div.dynarch-horiz-menu  {
+ background-color: #ffffff;
+ background-image: none;
+ border: none;
+ color: #2E3257;
+}
+
+div.dynarch-horiz-menu table tr td.item  {
+ background-color: #ffffff;
+ background-image: none;
+ border: none;
+ color: #2E3257;
+}
+
+div.dynarch-horiz-menu table tr td.item.hover { 
+ background-image: none;
+ background-color: #2E3257;
+ color: #FFFFFF; 
+}
+
+div.dynarch-horiz-menu table tr td.item.active { 
+ background-image: none;
+ background-color: #2E3257;
+ color: #FFFFFF; 
+}
+
+div.dynarch-horiz-menu table tr td.active div, div.dynarch-horiz-menu table tr td.hover div, div.dynarch-horiz-menu table tr td.pressed div {
+ background-image: none;
+ background-color: #2E3257;
+ color: #FFFFFF; 
+}
+
+div.dynarch-horiz-menu table tr td.explicit-action {
+ cursor:pointer;
+}
+
+div.dynarch-horiz-menu table tr td.explicit-action.hover .label {
+ cursor:pointer;
+ color: #FFFFFF;
+}
+
+div.dynarch-popup-menu tr.item td { color: #2E3257; text-align: left; }
+
+div.dynarch-popup-menu { color: #2E3257; background-color: #f5f5f5; padding: 0; }
+
+div.dynarch-popup-menu tr.item.hover, div.dynarch-popup-menu tr.item.active { 
+     background-color: #2E3257;
+   color: #FFFFFF; 
+}
+div.dynarch-popup-menu tr.item.hover td, div.dynarch-popup-menu tr.item.active td {
+     background-color: #2E3257;
+   color: #FFFFFF; 
+}
+
+div.dynarch-popup-menu tr.item.active {
+ background-color: #2E3257;
+ color: #FFFFFF; 
+}
+
+div.dynarch-popup-menu tr.item{
+ color: #2E3257;
+ background-image: none;
+}
+
+div.dynarch-popup-menu tr.item.hover {
+ background-color: #2E3257;
+ color: #FFFFFF; 
+ background-image: none;
+}
+
+
+
+.wiki-content h1, .wiki-content h2, .wiki-content h3, .wiki-content h4, .wiki-content h5, .wiki-content h6 {
+font-family: trebuchet ms, arial, verdana, lucida grande, sans-serif;
+line-height: normal;
+font-weight: bold;
+margin-top: 10px;
+background-color: transparent;
+border-bottom: none;
+color: #2E3257;
+}
+
+/* for TOC auto-generated menus */
+.wiki-content ul, .wiki-content li, .wiki-content ul li {
+margin-top: 0px;
+/* line-height: normal; */
+margin-bottom: 0px;
+}
+
+h1, h2, h3, h4, h5, h6 {
+font-family: trebuchet ms, arial, verdana, lucida grande, sans-serif;
+line-height: normal;
+margin-top: 0px;
+font-weight: bold;
+background-color: transparent;
+border-bottom: none;
+color: #2E3257;
+}
+
+.wiki-content a {
+/* color: #d62ed4; */
+color: #2E3257;
+font-weight: bold;
+border-bottom: dotted 1px #2E3257;
+}
+
+.wiki-content a:hover {
+cursor: pointer;
+background-color: #CFCFCF;
+border-bottom: dotted 1px #2E3257;
+}
+
+.wiki-content h1 a, .wiki-content h2 a, .wiki-content h3 a, .wiki-content h4 a, .wiki-content h5 a, .wiki-content h6 a {
+color: #2E3257;
+border-bottom: dotted 1px #2E3257;
+}
+
+h1 a:hover, h2 a:hover, h3 a:hover, h4 a:hover, h5 a:hover, h6 a:hover {
+border-bottom: none;
+text-decoration: none;
+border-bottom: dotted 1px #2E3257;
+background-color: #CFCFCF;
+cursor: pointer;
+color: #2E3257;
+}
+
+h1 a, h2 a, h3 a, h4 a, h5 a, h6 a {
+border-bottom: none;
+text-decoration: none;
+border-bottom: dotted 1px #2E3257;
+color: #2E3257;
+}
+
+.wiki-content h1 a:hover, .wiki-content h2 a:hover, .wiki-content h3 a:hover, .wiki-content h4 a:hover, .wiki-content h5 a:hover, .wiki-content h6 a:hover {
+border-bottom: dotted 1px #2E3257;
+text-decoration: none;
+background-color: #CFCFCF;
+cursor: pointer;
+}
+
+
+/* CAGRID LEFT NAV CSS */
+
+.cagridheaderfont {
+font-size: 16px;
+color: #2E3257;
+font-family: trebuchet ms, arial, verdana, lucida grande, sans-serif;
+line-height: normal;
+font-weight: bold;
+}
+
+a:link, a:visited, a:active { color: #2E3257; text-decoration: none; }
+
+a:hover { color: #2E3257; background-color: #CFCFCF; cursor: pointer; } /* match rollover color */
+
+.cagridindent a, .cagridindent p, .cagridindent td {
+margin: 5px;
+}
+
+
+.cagridindentindent a, .cagridindentindent p {
+margin: 10px;
+}
+
+.wiki-content ul li, .wiki-content ul {
+margin-top: 0px;
+margin-bottom: 0px;
+}
+
+ul li, li {
+margin-top: 0px;
+margin-bottom: 0px;
+margin-left: 0px;
+}
+
+
+td.cagridtopmid {
+background-image: url(http://wiki.cagrid.org/download/attachments/2064403/top_mid.gif);
+background-repeat: x-repeat;
+background-position: 0px 0px;
+}
+td.cagridbotmid {
+background-image: url(http://wiki.cagrid.org/download/attachments/2064403/bot_mid.gif);
+background-repeat: x-repeat;
+background-position: 0px 0px;
+}
+
+td.cagridcenlef {
+background-image: url(http://wiki.cagrid.org/download/attachments/2064403/cen_lef.gif);
+background-repeat: x-repeat;
+background-position: 0px 0px;
+}
+
+td.cagridcenrig {
+background-image: url(http://wiki.cagrid.org/download/attachments/2064403/cen_rig.gif);
+background-repeat: x-repeat;
+background-position: 0px 0px;
+}
+
+/* this CSS is for auto-generated {pagetree} macros */
+.tableview table {
+    margin: 0;
+}
+
+.tableview th {
+    text-align: left;
+    font-size: 12px;
+    padding: 0px 0 0 0px;
+    border-bottom: 1px solid;
+}
+.tableview td {
+    text-align: left;
+    border-color: #ccc;
+    border-width: 0 0 1px 0;
+    border-style: solid;
+    margin: 0;
+    padding: 0px 0px 0px 0px;
+}
+
+/* this class is used for auto-generated tables and lists, e.g., pagetree inside our nav bar */
+
+.cagridnavdynamic ul {
+padding: 0px 0px;
+margin: 0px 0px 0px 0px;
+}
+.cagridnavdynamic li {
+padding: 0px 0px;
+margin: 0px 0px 0px 5px;
+}
+
+.cagridnavdynamic table {
+    margin: 0px 0px 0px 0px;
+}
+
+.cagridnavdynamic th {
+    text-align: left;
+    font-size: 12px;
+    padding: 0px 0px;
+    border-bottom: 0px solid;
+    margin: 0px 0px 0px 0px;
+}
+
+.cagridnavdynamic td {
+    text-align: left;
+    border-color: #ccc;
+    border-width: 0 0 0px 0;
+    border-style: solid;
+    margin: 0px 0px 0px 0px;
+    padding: 0px 0px;
+}
+
+.cagridnavdynamic a:hover {
+text-decoration: none;
+background-color: #CFCFCF;
+cursor: pointer;
+}
+
+/* Fix problems when code and images are too big for our content panel */
+.wiki-content img, a img, div.horizscroll {
+max-width: 700px;
+}
+
+
+.code, div.panelMacro, div.preformatted, div.codeContent, div.code {
+overflow: visible;
+text-wrap: normal;
+max-width: 670px;
+}
+
+pre.code-java, pre.code-xml {
+text-wrap: normal;
+width: 600px;
+}
+
+div.horizscroll {
+overflow: auto;
+}
+
+/* blog posts */
+.atb-body, .atb-body p, .atb-body td, .atb-body th, .atb-body div, .atb-body span, .atb-body div.dynarch-horiz-menu, .atb-body div.dynarch-horiz-menu table, .atb-body div.dynarch-horiz-menu table, .atb-body input, .atb-body ul li, .atb-body ol li, .atb-body select
+{
+font-family: sans-serif;
+font-size: 12px;
+line-height: 1.6em;
+}
+
+.bloglist.default .title
+{
+font-size: 14px;;
+}
+
+
+/* HOME PAGE CSS */
+span.cagridhometext p, span.cagridhometext p b {
+font-family: sans-serif;
+font-size: 13px;
+line-height: normal;
+}
+
+th.confluenceTh {
+margin-left: auto;
+margin-right: auto;
+}
+
+td.confluenceTd, table.confluenceTable td.confluenceTd, table.admin td {
+margin: 0px;
+padding: 0px; 
+}
+
+

@@ -1,0 +1,75 @@
+a.content-type-page span {
+    background-image: url(../../../images/icons/docs_16.gif);
+}
+
+a.content-type-blogpost span {
+    background-image: url(../../../images/icons/blogentry_16.gif);
+}
+
+a.content-type-comment span {
+    background-image: url(../../../images/icons/comment_16.gif);
+}
+
+a.content-type-spacedesc span {
+    background-image: url(../../../images/icons/web_16.gif);
+}
+
+a.content-type-personalspacedesc span {
+    background-image: url(../../../images/icons/personal_space_16.gif);
+}
+
+a.content-type-mail span {
+    background-image: url(../../../images/icons/mail_content_16.gif);
+}
+
+a.content-type-attachment span {
+    background-image: url(../../../images/icons/attachments/file.gif);
+}
+
+a.content-type-file span {
+    background-image: url(../../../images/icons/attachments/file.gif);
+}
+
+a.content-type-attachment-application-pdf span {
+    background-image: url(../../../images/icons/attachments/pdf.gif);
+}
+
+a.content-type-attachment-image span {
+    background-image: url(../../../images/icons/attachments/image.gif);
+}
+
+a.content-type-attachment-text-xml span {
+    background-image: url(../../../images/icons/attachments/xml.gif);
+}
+
+a.content-type-attachment-text-html span {
+    background-image: url(../../../images/icons/attachments/html.gif);
+}
+
+a.content-type-attachment-text span {
+    background-image: url(../../../images/icons/attachments/text.gif);
+}
+
+a.content-type-attachment-application-zip span {
+    background-image: url(../../../images/icons/attachments/zip.gif);
+}
+
+a.content-type-attachment-application-excel span {
+    background-image: url(../../../images/icons/attachments/excel.gif);
+}
+
+a.content-type-attachment-application-powerpoint span {
+    background-image: url(../../../images/icons/attachments/powerpoint.gif);
+}
+
+a.content-type-attachment-application-word span {
+    background-image: url(../../../images/icons/attachments/word.gif);
+}
+
+a.content-type-attachment-java span {
+    background-image: url(../../../images/icons/attachments/java.gif);
+}
+
+a.content-type-attachment-file span {
+    background-image: url(../../../images/icons/attachments/file.gif);
+}
