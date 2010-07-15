@@ -14,8 +14,10 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.lang.reflect.Modifier;
 import java.util.Enumeration;
+import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Set;
 import java.util.StringTokenizer;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
@@ -189,7 +191,18 @@ public class InvokeCsmDataServiceStep extends Step {
     
     
     private boolean isAccessDenied(Exception ex) {
-        return ex.getMessage() != null && ex.getMessage().contains(ACCESS_DENIED_MESSAGE);
+        Throwable cause = ex;
+        Set<Throwable> seenCauses = new HashSet<Throwable>();
+        boolean isDenied = false;
+        while (cause != null && !seenCauses.contains(cause) && !isDenied) {
+            String message = cause.getMessage();
+            if (message.contains(ACCESS_DENIED_MESSAGE)) {
+                isDenied = true;
+            }
+            seenCauses.add(cause);
+            cause = cause.getCause();
+        }
+        return isDenied;
     }
     
     
