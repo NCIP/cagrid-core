@@ -24,6 +24,7 @@ import org.cagrid.data.test.creation.DataTestCaseInfo;
 import org.cagrid.tests.data.styles.cacore42.SDK42ServiceStyleSystemTestConstants;
 import org.cagrid.tests.data.styles.cacore42.steps.ChangeCsmUserInDatabaseStep;
 import org.cagrid.tests.data.styles.cacore42.steps.CreateDataServiceStep;
+import org.cagrid.tests.data.styles.cacore42.steps.InvokeCQL2DataServiceStep;
 import org.cagrid.tests.data.styles.cacore42.steps.InvokeCql2DataServiceUsingConversionStep;
 import org.cagrid.tests.data.styles.cacore42.steps.InvokeCsmDataServiceStep;
 import org.cagrid.tests.data.styles.cacore42.steps.InvokeDataServiceStep;
@@ -87,6 +88,7 @@ public class SDK42StyleLocalApiStory extends Story {
         } else {
             steps.add(new InvokeDataServiceStep(testInfo, container));
             steps.add(new InvokeCql2DataServiceUsingConversionStep(testInfo, container));
+            steps.add(new InvokeCQL2DataServiceStep(container, testInfo));
         }
         return steps;
     }

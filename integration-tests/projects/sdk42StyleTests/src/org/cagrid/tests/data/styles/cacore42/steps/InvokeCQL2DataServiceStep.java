@@ -385,7 +385,7 @@ public class InvokeCQL2DataServiceStep extends Step {
     
     private InputStream getClientConfigStream() {
         InputStream is = null;
-        String resourceName = TEST_RESOURCES_DIR + "wsdd/client-config.wsdd";
+        String resourceName = TEST_RESOURCES_DIR + "wsdd/sdk-datatypes-client-config.wsdd";
         try {
             is = InvokeCQL2DataServiceStep.class.getResourceAsStream(resourceName);
         } catch (Exception ex) {
