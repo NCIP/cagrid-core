@@ -64,7 +64,7 @@ public class SDK43StyleRemoteApiStory extends Story {
         steps.add(new CreateDataServiceStep(testInfo, getIntroduceBaseDir(), sdkApplicationServiceContainer));
         steps.add(new UnpackContainerStep(dataServiceContainer));
         List<String> deploymentArgs = 
-            Arrays.asList(new String[] {"-Dno.deployment.validation=true"});
+            Arrays.asList(new String[] {"-Dno.deployment.validation=true", "-Dperform.index.service.registration=false"});
         steps.add(new DeployServiceStep(dataServiceContainer, testInfo.getDir(), deploymentArgs));
         steps.add(new StartContainerStep(sdkApplicationServiceContainer));
         steps.add(new StartContainerStep(dataServiceContainer));
