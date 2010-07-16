@@ -299,6 +299,11 @@ public class Resolver {
 					new InputStreamReader(connection.getInputStream()));
 			
 		} catch (IOException e) {
+			if (e.getMessage() == null) {
+				throw new HttpException("Unexpected error[" + e.toString() + 
+						"] resolving identifier [" + identifier.toString() + "]", e);
+			}
+			
 			if (e.getMessage().equals(GSI_FORBIDDEN)) {
 				throw new NamingAuthoritySecurityException(
 					SecurityUtil.securityError(new SecurityInfoImpl(user.getIdentity()), 
