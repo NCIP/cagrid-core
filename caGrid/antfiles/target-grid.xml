@@ -58,12 +58,23 @@
 	<target name="configureHelp" depends="prepare" description="Displays help information on configuring the environment to target a specific grid.">
 		<property file="${current.grid.property.file}" />
 
+		<property file="${basedir}/repository/caGrid/target_grid/${target.grid}/service_urls.properties" />
+		
 		<ivy:listmodules organisation="caGrid" module="target_grid" revision="*" property="target.grid.names.[revision]" value="found" />
 		<propertyselector property="target.grid.list" delimiter="," match="target\.grid\.names\.(.*)" select="\1" />
 		<sortlist property="sorted.target.grid.list" value="${target.grid.list}" delimiter="," />
-
+		
 		<echo message="=====================================================================================" />
 		<echo message="|    CONFIGURED TO USE GRID: ${target.grid} AT: ${target.grid.configure.time}" />
+		<echo message="|" />
+		<echo message="|   ${target.grid} Service URLs:" />
+		<echo message="|       Index  : ${cagrid.master.index.service.url}" />
+		<echo message="|       Dorian : ${cagrid.master.dorian.service.url}" />
+		<echo message="|       CDS    : ${cagrid.master.cds.service.url}" />
+		<echo message="|       Grid Grouper : ${cagrid.master.gridgrouper.service.url}" />
+		<echo message="|       GME    : ${cagrid.master.gme.service.url}" />	
+		<echo message="|       MMS    : ${cagrid.master.mms.service.url}" />	
+		<echo message="|       caDSR  : ${cagrid.master.cadsr.data.service.url}" />	
 		<echo message="|" />
 		<echo message="|    THE VALID TARGET GRIDS ARE:" />
 		<for list="${sorted.target.grid.list}" param="grid.name">
