@@ -77,7 +77,7 @@ public class EnumerationDataServiceClient extends ServiceSecurityClient implemen
 
         EnumerationDataServiceAddressingLocator locator = new EnumerationDataServiceAddressingLocator();
         // attempt to load our context sensitive wsdd file
-        InputStream resourceAsStream = ClassUtils.getResourceAsStream(getClass(), "client-config.wsdd");
+        InputStream resourceAsStream = getClass().getResourceAsStream("client-config.wsdd");
         if (resourceAsStream != null) {
             // we found it, so tell axis to configure an engine to use it
             EngineConfiguration engineConfig = new FileProvider(resourceAsStream);
@@ -98,7 +98,7 @@ public class EnumerationDataServiceClient extends ServiceSecurityClient implemen
     private Cql2EnumerationDataServicePortType createCql2PortType() throws RemoteException {
         Cql2EnumerationDataServiceAddressingLocator locator = new Cql2EnumerationDataServiceAddressingLocator();
         // attempt to load our context sensitive wsdd file
-        InputStream resourceAsStream = ClassUtils.getResourceAsStream(getClass(), "client-config.wsdd");
+        InputStream resourceAsStream = getClass().getResourceAsStream("client-config.wsdd");
         if (resourceAsStream != null) {
             // we found it, so tell axis to configure an engine to use it
             EngineConfiguration engineConfig = new FileProvider(resourceAsStream);

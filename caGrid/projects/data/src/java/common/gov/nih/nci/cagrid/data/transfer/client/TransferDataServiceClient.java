@@ -75,7 +75,7 @@ public class TransferDataServiceClient extends ServiceSecurityClient implements 
 
         TransferDataServiceAddressingLocator locator = new TransferDataServiceAddressingLocator();
         // attempt to load our context sensitive wsdd file
-        InputStream resourceAsStream = ClassUtils.getResourceAsStream(getClass(), "client-config.wsdd");
+        InputStream resourceAsStream = getClass().getResourceAsStream("client-config.wsdd");
         if (resourceAsStream != null) {
             // we found it, so tell axis to configure an engine to use it
             EngineConfiguration engineConfig = new FileProvider(resourceAsStream);
@@ -97,7 +97,7 @@ public class TransferDataServiceClient extends ServiceSecurityClient implements 
 
         org.cagrid.dataservice.transfer.stubs.service.TransferDataServiceAddressingLocator locator = new org.cagrid.dataservice.transfer.stubs.service.TransferDataServiceAddressingLocator();
         // attempt to load our context sensitive wsdd file
-        InputStream resourceAsStream = ClassUtils.getResourceAsStream(getClass(), "client-config.wsdd");
+        InputStream resourceAsStream = getClass().getResourceAsStream("client-config.wsdd");
         if (resourceAsStream != null) {
             // we found it, so tell axis to configure an engine to use it
             EngineConfiguration engineConfig = new FileProvider(resourceAsStream);

@@ -18,7 +18,6 @@ import org.apache.axis.client.Stub;
 import org.apache.axis.configuration.FileProvider;
 import org.apache.axis.message.addressing.EndpointReferenceType;
 import org.apache.axis.types.URI.MalformedURIException;
-import org.apache.axis.utils.ClassUtils;
 import org.cagrid.dataservice.stubs.Cql2DataServicePortType;
 import org.globus.gsi.GlobusCredential;
 import org.oasis.wsrf.properties.GetResourcePropertyResponse;
@@ -76,7 +75,7 @@ public class DataServiceClient extends ServiceSecurityClient implements DataServ
 
         DataServiceAddressingLocator locator = new DataServiceAddressingLocator();
         // attempt to load our context sensitive wsdd file
-        InputStream resourceAsStream = ClassUtils.getResourceAsStream(getClass(), "client-config.wsdd");
+        InputStream resourceAsStream = getClass().getResourceAsStream("client-config.wsdd");
         if (resourceAsStream != null) {
             // we found it, so tell axis to configure an engine to use it
             EngineConfiguration engineConfig = new FileProvider(resourceAsStream);
@@ -98,7 +97,7 @@ public class DataServiceClient extends ServiceSecurityClient implements DataServ
         org.cagrid.dataservice.stubs.service.DataServiceAddressingLocator cql2Locator = 
             new org.cagrid.dataservice.stubs.service.DataServiceAddressingLocator();
         // attempt to load our context sensitive wsdd file
-        InputStream resourceAsStream = ClassUtils.getResourceAsStream(getClass(), "client-config.wsdd");
+        InputStream resourceAsStream = getClass().getResourceAsStream("client-config.wsdd");
         if (resourceAsStream != null) {
             // we found it, so tell axis to configure an engine to use it
             EngineConfiguration engineConfig = new FileProvider(resourceAsStream);
