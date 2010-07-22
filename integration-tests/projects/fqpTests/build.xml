@@ -56,6 +56,8 @@
 			<fileset dir="${lib.dir}">
 				<include name="**/*.jar"/>
 			</fileset>
+			<!-- the base client-config.wsdd is needed for secure services -->
+			<pathelement location="${globus.dir}"/>
 		</path>
 	</target>
 
