@@ -385,6 +385,7 @@
 			</java>
 		</then>
 		<else>
+			<echo message="Configured for Proxy"/>
 			<java classpathref="service.run.classpath" classname="gov.nih.nci.cagrid.syncgts.tools.SyncGTSCommand" fork="yes" failonerror="true">
 			    <jvmarg value="-Dlog4j.configuration=sync-gts-log4j.properties" />
 			    <jvmarg value="-Dlog4j.debug" />

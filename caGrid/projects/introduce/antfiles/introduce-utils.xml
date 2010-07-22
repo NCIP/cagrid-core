@@ -88,7 +88,7 @@
 			<if>
 				<equals arg1="${use.proxy}" arg2="true"/>
 				<then>
-					<echo message="Running portal with proxy"/>
+					<echo message="Configured for Proxy"/>
 					<java classname="gov.nih.nci.cagrid.introduce.portal.Introduce" fork="true">
 						<jvmarg value="-Djava.endorsed.dirs=extensions/endorsed" />
 						<sysproperty key="GLOBUS_LOCATION" value="${ext.globus.dir}"/>
