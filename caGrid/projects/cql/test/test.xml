@@ -18,6 +18,7 @@
 		<fileset dir="${build.jars.dir}">
 			<include name="*.jar"/>
 		</fileset>
+		<pathelement location="${globus.dir}"/>
 	</path>
 
 	<!-- call the test target for each project and aggregates the log resutls  -->
