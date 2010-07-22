@@ -59,20 +59,27 @@ public class CQL2ObjectResultIterator implements Iterator<Object> {
             // works because on first call, currentIndex == -1
             throw new NoSuchElementException();
         }
+        Object value = null;
         currentIndex++;
         AnyNode node = results[currentIndex].get_any();
         try {
             String documentString = AnyNodeHelper.convertAnyNodeToString(node);
             if (xmlOnly) {
-                return documentString;
+                value = documentString;
+            } else {
+                InputStream configStream = getConsumableInputStream();
+                if (configStream == null) {
+                    value = Utils.deserializeObject(new StringReader(documentString), getTargetClass());
+                } else {
+                    value = Utils.deserializeObject(
+                        new StringReader(documentString), getTargetClass(), configStream);
+                }
             }
-            Object value = Utils.deserializeObject(
-                new StringReader(documentString), getTargetClass(), getConsumableInputStream());
-            return value;
         } catch (Exception ex) {
             ex.printStackTrace();
             throw new RuntimeException(ex);
         }
+        return value;
     }
 
 
