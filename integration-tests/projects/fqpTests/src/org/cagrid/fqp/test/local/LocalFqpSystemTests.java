@@ -64,7 +64,6 @@ public class LocalFqpSystemTests {
         // run local standard queries
         QueryStory queryTests = new QueryStory(containerSources, queryHelper);
         queryTests.runBare();
-
     }
 
 
