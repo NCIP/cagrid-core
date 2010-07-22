@@ -1,9 +1,11 @@
 package org.cagrid.tests.data.styles.cacore42.steps;
 
 import gov.nih.nci.cagrid.data.client.DataServiceClient;
+import gov.nih.nci.cagrid.testing.system.deployment.SecureContainer;
 import gov.nih.nci.cagrid.testing.system.deployment.ServiceContainer;
 import gov.nih.nci.cagrid.testing.system.haste.Step;
 
+import java.io.File;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.StringWriter;
@@ -25,6 +27,7 @@ import org.cagrid.cql2.CQLQuery;
 import org.cagrid.cql2.results.CQLQueryResults;
 import org.cagrid.cql2.results.TargetAttribute;
 import org.cagrid.data.test.creation.DataTestCaseInfo;
+import org.globus.gsi.GlobusCredential;
 
 /** 
  *  InvokeSDK4CQL2DataServiceStep
@@ -37,6 +40,10 @@ import org.cagrid.data.test.creation.DataTestCaseInfo;
  * @version $Id: InvokeSDK4DataServiceStep.java,v 1.5 2009-01-05 17:54:41 dervin Exp $ 
  */
 public class InvokeCQL2DataServiceStep extends Step {
+    
+    // credential filename
+    public static final String PROXY_FILENAME = "user.proxy";
+    
     public static final String TEST_RESOURCES_DIR = "/resources/";
     public static final String TEST_QUERIES_DIR = TEST_RESOURCES_DIR + "testQueries/cql2/";
     public static final String TEST_RESULTS_DIR = TEST_RESOURCES_DIR + "testGoldResults/cql2/";
@@ -193,10 +200,15 @@ public class InvokeCQL2DataServiceStep extends Step {
     }
     
     
-    private DataServiceClient getServiceClient() {
+    protected DataServiceClient getServiceClient() {
         DataServiceClient client = null;
         try {
-            client = new DataServiceClient(getServiceUrl()); 
+            if (container instanceof SecureContainer) {
+                client = new DataServiceClient(getServiceUrl(), loadGlobusCredential());
+                client.setAnonymousPrefered(false);
+            } else {
+                client = new DataServiceClient(getServiceUrl());
+            }
         } catch (Exception ex) {
             ex.printStackTrace();
             fail("Error creating data service client: " + ex.getMessage());
@@ -216,6 +228,20 @@ public class InvokeCQL2DataServiceStep extends Step {
         }
         LOG.debug("Data service url: " + url);
         return url;
+    }
+    
+    
+    private GlobusCredential loadGlobusCredential() {
+        // Load the testing proxy cert
+        GlobusCredential proxyCredential = null;
+        try {
+            File proxyFile = new File(((SecureContainer) container).getCertificatesDirectory(), PROXY_FILENAME);
+            proxyCredential = new GlobusCredential(proxyFile.getAbsolutePath());
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            fail("Error obtaining client proxy: " + ex.getMessage());
+        }
+        return proxyCredential;
     }
     
     
