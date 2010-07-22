@@ -26,6 +26,7 @@
 				<include name="**/*.jar"/>
 			</fileset>
 			<pathelement path="${basedir}/ext/dependencies/resources/"/>
+			<pathelement path="${ext.globus.dir}"/>
 		</path>
 	</target>
 
