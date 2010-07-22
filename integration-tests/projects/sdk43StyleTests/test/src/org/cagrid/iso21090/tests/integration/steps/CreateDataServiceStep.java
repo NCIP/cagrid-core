@@ -108,7 +108,9 @@ public class CreateDataServiceStep extends CreationStep {
         } else {
             System.out.println("Using remote API");
             System.out.println("I think the remote client dir is " + getExampleProjectRemoteClientDir().getAbsolutePath());
+            System.out.println("I think the local client dir is " + getExampleProjectLocalClientDir().getAbsolutePath());
             config.setLocalApi(false);
+            config.setLocalClientDir(getExampleProjectLocalClientDir().getAbsolutePath());
             config.setRemoteClientDir(getExampleProjectRemoteClientDir().getAbsolutePath());
             config.setApplicationHostname(
                 remoteSdkApplicationContainer.getContainerBaseURI().getHost());
