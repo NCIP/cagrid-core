@@ -177,10 +177,6 @@ public final class CommonTools {
         // obtain current env, repackage for Ant call
         int envSize = System.getenv().size();
         
-        if (System.getenv().containsKey("JAVA_HOME")) {
-            envSize--;
-        }
-        
         String[] envp = new String[envSize];
         int pos = 0;
         
@@ -188,12 +184,6 @@ public final class CommonTools {
         for (Map.Entry<String, String> entry : env.entrySet())  
         {   
             String name = entry.getKey();  
-            
-            // skip JAVA_HOME to use Java configured on the Path
-            if (name.equalsIgnoreCase("JAVA_HOME")) {
-                continue;
-            }
-            
             String value = entry.getValue();  
             String envpEntry = name + "=" + value;
             envp[pos] = envpEntry;

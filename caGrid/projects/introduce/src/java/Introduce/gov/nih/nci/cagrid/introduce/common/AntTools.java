@@ -165,10 +165,11 @@ public class AntTools {
 
     static List<String> getAntCommandCall(String buildFileDir, boolean debug) throws Exception {
         List<String> command = new ArrayList<String>();
+        
         if (isWindowsOS()) {
-            command.add("java.exe");
+            command.add(getJavaHomePath() + "/bin/java.exe");
         } else {
-            command.add("java");
+            command.add(getJavaHomePath() + "/bin/java");
         }
 
         if (debug) {
@@ -183,6 +184,19 @@ public class AntTools {
 
         return command;
     }
+    
+    static String getJavaHomePath() {
+        String javaHome = System.getenv("JAVA_HOME");
+        if (isEmpty(javaHome)) {
+            javaHome = System.getProperty("java.home");
+        }
+        return javaHome;
+    }
+    
+    static boolean isEmpty(String value) {
+        return value == null || value.trim().length() == 0;
+    }
+
 
 
     static String getAntLauncherJarLocation(String path) throws Exception {
