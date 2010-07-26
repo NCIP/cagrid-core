@@ -3,6 +3,7 @@ package gov.nih.nci.cagrid.common;
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.io.BufferedReader;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileFilter;
 import java.io.FileInputStream;
@@ -631,5 +632,17 @@ public class Utils {
             url = url.replace(String.valueOf(badChars[i]), replace[i]);
         }
         return url;
+    }
+    
+    
+    public static byte[] inputStreamToByteArray(InputStream is) throws IOException {
+        ByteArrayOutputStream out = new ByteArrayOutputStream();
+        byte[] temp = new byte[8192];
+        int len = -1;
+        while ((len = is.read(temp)) != -1) {
+            out.write(temp, 0, len);
+        }
+        out.close();
+        return out.toByteArray();
     }
 }
