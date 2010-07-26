@@ -10,6 +10,7 @@ import gov.nih.nci.cagrid.introduce.common.ServiceInformation;
 
 import java.io.File;
 import java.io.FileFilter;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.Collections;
@@ -98,20 +99,26 @@ public class ProjectSelectionConfigurationStep extends AbstractStyleConfiguratio
         setStyleProperty(StyleProperties.SDK_LOCAL_CLIENT_DIR, getLocalClientDir() != null ? getLocalClientDir() : "");
         
         // roll up the local or remote configs as a jar file
-        File sdkConfigDir = null;
-        File sdkLibDir = null;
-        if (isLocalApi()) {
-            sdkConfigDir = new File(getLocalClientDir(), "conf");
-            sdkLibDir = new File(getLocalClientDir(), "lib");
-        } else {
-            sdkConfigDir = new File(getRemoteClientDir(), "conf");
-            sdkLibDir = new File(getRemoteClientDir(), "lib");
-        }
         File serviceLibDir = new File(getServiceInformation().getBaseDirectory(), "lib");
         File configJarFile = new File(serviceLibDir, getApplicationName() + "-config.jar");
-        JarUtilities.jarDirectory(sdkConfigDir, configJarFile);
-        LOG.debug("Packaged " + sdkConfigDir.getAbsolutePath() + " as " + configJarFile.getAbsolutePath());
+        File localConfigDir = new File(getLocalClientDir(), "conf");
+        File sdkLibDir = null;
+        if (isLocalApi()) {
+            JarUtilities.jarDirectory(localConfigDir, configJarFile);
+            sdkLibDir = new File(getLocalClientDir(), "lib");
+        } else {
+            File remoteConfigDir = new File(getRemoteClientDir(), "conf");
+            JarUtilities.jarDirectory(remoteConfigDir, configJarFile);
+            // add the IsoConstants from localConfigDir to the jar
+            FileInputStream isoConstantsStream = 
+                new FileInputStream(new File(localConfigDir, "IsoConstants.xml"));
+            byte[] isoConfigBytes = Utils.inputStreamToByteArray(isoConstantsStream);
+            isoConstantsStream.close();
+            JarUtilities.insertEntry(configJarFile, "IsoConstants.xml", isoConfigBytes);
+            sdkLibDir = new File(getRemoteClientDir(), "lib");
+        }
         
+        // are us using JaxB?
         setStyleProperty(StyleProperties.USE_JAXB_SERIALIZERS, String.valueOf(isUseJaxB()));
         if (!isUseJaxB()) {
             // grab the castor marshaling and unmarshaling xml mapping files
@@ -157,13 +164,19 @@ public class ProjectSelectionConfigurationStep extends AbstractStyleConfiguratio
             }
         }
         
-        // CQL 2 query processor requires the -orm jar to read Hibernate configs from
+        // CQL 2 query processor requires the -orm jar and the ISO-hibernate jar to read Hibernate configs
         File ormJar = new File(getLocalClientDir(), "lib" + File.separator + getApplicationName() + "-orm.jar");
         if (!ormJar.exists()) {
             throw new FileNotFoundException("Required ORM jar " + ormJar.getAbsolutePath() + " not found!");
         }
         Utils.copyFile(ormJar, new File(serviceLibDir, ormJar.getName()));
         LOG.debug("Copied SDK ORM jar " + ormJar.getName() + " into service");
+        File isoHibernateJar = new File(getLocalClientDir(), "lib" + File.separator + "iso-datatypes-hibernate-2.1.jar");
+        if (!isoHibernateJar.exists()) {
+            throw new FileNotFoundException("Require jar " + isoHibernateJar.getAbsolutePath() + " not found!");
+        }
+        Utils.copyFile(isoHibernateJar, new File(serviceLibDir, isoHibernateJar.getName()));
+        LOG.debug("Copied ISO-Hibernate jar " + isoHibernateJar.getName() + " into service");
     }
     
     
