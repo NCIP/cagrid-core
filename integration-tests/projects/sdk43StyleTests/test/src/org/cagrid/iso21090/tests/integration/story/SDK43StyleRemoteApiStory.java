@@ -22,6 +22,7 @@ import org.cagrid.data.test.creation.DataTestCaseInfo;
 import org.cagrid.iso21090.tests.integration.SDK43ServiceStyleSystemTestConstants;
 import org.cagrid.iso21090.tests.integration.steps.CreateDataServiceStep;
 import org.cagrid.iso21090.tests.integration.steps.DeployExampleProjectStep;
+import org.cagrid.iso21090.tests.integration.steps.FixSdkWarStep;
 import org.cagrid.iso21090.tests.integration.steps.InvokeCql2DataServiceStep;
 import org.cagrid.iso21090.tests.integration.steps.InvokeDataServiceStep;
 
@@ -60,6 +61,7 @@ public class SDK43StyleRemoteApiStory extends Story {
     protected Vector<?> steps() {
         Vector<Step> steps = new Vector<Step>();
         steps.add(new UnpackContainerStep(sdkApplicationServiceContainer));
+        steps.add(new FixSdkWarStep());
         steps.add(new DeployExampleProjectStep(sdkApplicationServiceContainer));
         steps.add(new CreateDataServiceStep(testInfo, getIntroduceBaseDir(), sdkApplicationServiceContainer));
         steps.add(new UnpackContainerStep(dataServiceContainer));
