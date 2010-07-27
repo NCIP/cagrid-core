@@ -4,10 +4,10 @@
   xsi:noNamespaceSchemaLocation="http://incubator.apache.org/ivy/schemas/ivy.xsd"
   xmlns:grid="http://ant.apache.org/ivy/extra" >
 
-  <info organisation="caGrid" module="target_grid" revision="training-1.3">
-    <description>Training Grid for caGrid 1.3</description>
-    <grid:displayName>Training Grid for caGrid 1.3</grid:displayName>
-    <grid:systemName>training-1.3</grid:systemName>
+  <info organisation="caGrid" module="target_grid" revision="nci_dev-1.4">
+    <description>NCI Development Grid for caGrid 1.4</description>
+    <grid:displayName>NCI Development Grid for caGrid 1.4</grid:displayName>
+    <grid:systemName>nci_dev-1.4</grid:systemName>
   </info>
 
   <configurations>
@@ -39,17 +39,16 @@
 
   <publications>
     <!--  certificates -->
-    <artifact name="certificates/68907d53" type="certificate" ext="0" conf="certs"/>
-    <artifact name="certificates/68907d53" type="certificate" ext="signing_policy" conf="certs"/>
+    <artifact name="certificates/GTS_CA_CERT" type="certificate" ext="0" conf="certs"/>
 
     <!--  grape UI configurations-->
-    <artifact name="authentication-services-configuration" type="xml" conf="authentication-services"/>
+   <artifact name="authentication-services-configuration" type="xml" conf="authentication-services"/>
     <artifact name="dorian-services-configuration" type="xml" conf="dorian-services"/>
     <artifact name="gridgrouper-services-configuration" type="xml" conf="gridgrouper-services"/>
     <artifact name="gts-services-configuration" type="xml" conf="gts-services"/>
     <artifact name="workflow-ui-configuration" type="xml" conf="workflow-ui"/>
     <artifact name="cds-services-configuration" type="xml" conf="cds-services"/>
-    
+
     <!--  properties-->
     <artifact name="introduce" type="properties" conf="introduce"/>
     <artifact name="service_urls" type="properties" conf="urls"/>
@@ -59,6 +58,6 @@
 	
 	<!-- websso configurations -->
 	<artifact name="websso-properties" type="xml" conf="websso"/>
-  </publications>
 
+  </publications>
 </ivy-module>
