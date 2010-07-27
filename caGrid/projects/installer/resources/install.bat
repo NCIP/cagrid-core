@@ -32,7 +32,7 @@ REM The installer uses ftp for one file.
 REM set JAVA_OPTS=%JAVA_OPTS% -Dftp.proxyHost= -Dftp.proxyPort= -Dftp.nonProxyHosts=\"\"
 
 :Execute
-java.exe %JAVA_OPTS% -jar caGrid-installer-1.4-dev.jar
+java.exe %JAVA_OPTS% -jar caGrid-installer-1.4.jar
 GOTO End
 
 :Usage
