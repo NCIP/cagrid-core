@@ -306,7 +306,7 @@ GSBT - Globus Service Build Tools
 			<replacetoken>@project.version@</replacetoken>
 		</replace>
 
-		<zip destfile="${build.dir}/gaards.zip" basedir="${build.dir}/gaards" >
+		<zip destfile="${build.dir}/gaards-${project.version}.zip" basedir="${build.dir}/gaards" >
 		</zip>
 		
 	</target>
