@@ -67,8 +67,6 @@
 		<ivy:buildlist reference="ivy.projects.list" ivyfilepath="ivy.xml" onMissingDescriptor="skip">
 			<fileset dir="${projects.dir}">
 				<include name="*/dependencies-build.xml" />
-				<!-- can put additional patterns for others like workflow -->
-				<include name="workflow/*/dependencies-build.xml" />
 			</fileset>
 		</ivy:buildlist>
 	</target>
@@ -81,16 +79,9 @@
 		<condition property="single.project.name.invalid">
 			<or>
 				<equals arg1="${single.project.name}" arg2="" trim="true" />
-				<and>
-					<not>
-						<available file="${projects.dir}/${single.project.name}" type="dir" />
-					</not>
-					<not>
-						<!-- special case -->
-						<available file="${projects.dir}/workflow/${single.project.name}" type="dir" />
-					</not>
-
-				</and>
+				<not>
+					<available file="${projects.dir}/${single.project.name}" type="dir" />
+				</not>
 			</or>
 		</condition>
 		<fail if="single.project.name.invalid" message="The expected property, 'single.project.name' was not defined as a valid project name!  The value was: [${single.project.name}]" />
@@ -103,8 +94,6 @@
 		<ivy:buildlist reference="single.ivy.project.list" root="${single.project.name}" onMissingDescriptor="skip" ivyfilepath="ivy.xml">
 			<fileset dir="${projects.dir}">
 				<include name="*/dependencies-build.xml" />
-				<!-- can put additional patterns for others like workflow -->
-				<include name="workflow/*/dependencies-build.xml" />
 			</fileset>
 		</ivy:buildlist>
 
@@ -123,8 +112,6 @@
 		<ivy:buildlist reference="depending.on.single.ivy.project.list" leaf="${single.project.name}" onMissingDescriptor="skip" ivyfilepath="ivy.xml">
 			<fileset dir="${projects.dir}">
 				<include name="*/dependencies-build.xml" />
-				<!-- can put additional patterns for others like workflow -->
-				<include name="workflow/*/dependencies-build.xml" />
 			</fileset>
 		</ivy:buildlist>
 
@@ -145,8 +132,6 @@
 		<ivy:buildlist reference="ivy.project.properties.list" onMissingDescriptor="skip" ivyfilepath="ivy.xml">
 			<fileset dir="${projects.dir}">
 				<include name="*/project.properties" />
-				<!-- can put additional patterns for others like workflow -->
-				<include name="workflow/*/project.properties" />
 			</fileset>
 		</ivy:buildlist>
 
