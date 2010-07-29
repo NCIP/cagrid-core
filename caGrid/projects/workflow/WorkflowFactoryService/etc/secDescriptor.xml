@@ -1,7 +1,0 @@
-<securityConfig xmlns="http://www.globus.org">
-<authz value="none"/>
-<GSISecureConversation>         
-    <integrity/>         
-    <delegation value="none"/>     
-</GSISecureConversation> 
-</securityConfig>

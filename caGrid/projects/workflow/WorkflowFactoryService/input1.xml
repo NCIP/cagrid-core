@@ -1,2 +1,0 @@
-<ns1:invoke xmlns:ns1="http://workflow.cagrid.nci.nih.gov/SampleService1">
-<ns1:param xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="xsd:string">Test</ns1:param></ns1:invoke>
