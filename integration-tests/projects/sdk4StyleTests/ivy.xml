@@ -57,7 +57,5 @@
     <!-- SDK Query 4 -->
     <dependency rev="latest.integration" org="caGrid" name="sdkQuery4" conf="default->style;default->processor"/>
     
-    <!-- authz -->
-    <dependency rev="latest.integration" org="caGrid" name="authz" conf="default->default"/>
   </dependencies>
 </ivy-module>
