@@ -1,1 +1,0 @@
-<ns1:InvokeRequest xmlns:ns1="http://sample1.tests.workflow.cagrid.nci.nih.gov/WorkflowTestService1"><ns1:invokeInput>Test</ns1:invokeInput></ns1:InvokeRequest>
