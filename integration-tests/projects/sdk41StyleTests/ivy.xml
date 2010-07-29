@@ -58,10 +58,7 @@
     
     <!-- SDK Query 4.1 -->
     <dependency rev="latest.integration" org="caGrid" name="sdkQuery41" conf="default->style;default->processor"/>
-    
-    <!-- authz -->
-    <dependency rev="latest.integration" org="caGrid" name="authz" conf="default->default"/>
-    
+        
     <!-- caCORE SDK 4.1 example zip -->
     <dependency rev="4.1" org="cacore" name="sdk" conf="sdk->example-trimmed"/>
   </dependencies>
