@@ -1,0 +1,9 @@
+<dcql2res:DCQLQueryResultsCollection xmlns:dcql2res="http://DCQL.caBIG/2/org.cagrid.data.dcql.results">
+ <dcql2res:DCQLResult targetServiceURL="http://localhost:8080/wsrf/services/cagrid/ExampleSdkService1">
+  <res:CQLQueryResults targetClassname="gov.nih.nci.cacoresdk.domain.onetoone.unidirectional.Address" xmlns:res="http://CQL.caBIG/2/org.cagrid.cql2.results">
+   <res:ObjectResult>
+    <Address id="5" zip="Zip5"/>
+   </res:ObjectResult>
+  </res:CQLQueryResults>
+ </dcql2res:DCQLResult>
+</dcql2res:DCQLQueryResultsCollection>
