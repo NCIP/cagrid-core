@@ -1,0 +1,11 @@
+<dcql2:DCQLQuery xmlns:dcql2="http://DCQL.caBIG/2/org.cagrid.data.dcql">
+ <dcql2:TargetObject name="gov.nih.nci.cacoresdk.domain.onetoone.unidirectional.Address">
+  <dcql2:ForeignAssociatedObject name="gov.nih.nci.cacoresdk.domain.onetoone.unidirectional.Address" targetServiceURL="http://localhost:8080/wsrf/services/cagrid/ExampleSdkService2">
+   <dcql2:JoinCondition localAttributeName="id" foreignAttributeName="id" predicate="EQUAL_TO"/>
+   <dcql2:DataTransformation>
+    <dcql2:Operation value="5" operator="SUBTRACT"/>
+   </dcql2:DataTransformation>
+  </dcql2:ForeignAssociatedObject>
+ </dcql2:TargetObject>
+ <dcql2:TargetServiceURL>http://localhost:8080/wsrf/services/cagrid/ExampleSdkService1</dcql2:TargetServiceURL>
+</dcql2:DCQLQuery>
