@@ -56,6 +56,12 @@ public class QueryStory extends Story {
         steps.add(new Dcql2StandardQueryStep(FQPTestingConstants.DCQL2_QUERIES_LOCATION + "exampleDistributedJoin1.xml",
             FQPTestingConstants.DCQL2_GOLD_LOCATION + "exampleDistributedJoin1_gold.xml",
             queryHelper, serviceUrls));
+        steps.add(new Dcql2StandardQueryStep(FQPTestingConstants.DCQL2_QUERIES_LOCATION + "exampleJoinWithDataTransformationSubtract.xml",
+            FQPTestingConstants.DCQL2_GOLD_LOCATION + "exampleJoinWithDataTransformationSubtract_gold.xml",
+            queryHelper, serviceUrls));
+        steps.add(new Dcql2StandardQueryStep(FQPTestingConstants.DCQL2_QUERIES_LOCATION + "exampleJoinWithDataTransformationPrepend.xml",
+            FQPTestingConstants.DCQL2_GOLD_LOCATION + "exampleJoinWithDataTransformationPrepend_gold.xml",
+            queryHelper, serviceUrls));
         return steps;
     }
 }
