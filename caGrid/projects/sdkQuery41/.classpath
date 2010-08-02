@@ -4,7 +4,6 @@
 	<classpathentry kind="src" path="build/beans/src"/>
 	<classpathentry kind="src" path="src/java/processor"/>
 	<classpathentry kind="src" path="test/src/java"/>
-	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="var" path="GT4_LOCATION/lib/addressing-1.0.jar"/>
 	<classpathentry kind="var" path="GT4_LOCATION/lib/axis.jar"/>
 	<classpathentry kind="var" path="GT4_LOCATION/lib/axis-url.jar"/>
@@ -133,5 +132,6 @@
 	<classpathentry kind="lib" path="ext/dependencies/jars/caGrid-sdk4xCQL2-processor-1.4-dev.jar"/>
 	<classpathentry kind="lib" path="ext/dependencies/jars/caGrid-CQL-utils-1.4-dev.jar"/>
 	<classpathentry kind="lib" path="build/sdk/SDK4/output/example41/package/local-client/lib/sdk-core.jar"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
