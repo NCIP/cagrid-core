@@ -20,14 +20,6 @@ import gov.nih.nci.cagrid.gridgrouper.bean.MembershipRequestDescriptor;
 import gov.nih.nci.cagrid.gridgrouper.bean.MembershipRequestStatus;
 
 
-/**
- * @author <A HREF="MAILTO:langella@bmi.osu.edu">Stephen Langella</A>
- * @author <A HREF="MAILTO:oster@bmi.osu.edu">Scott Oster</A>
- * @author <A HREF="MAILTO:hastings@bmi.osu.edu">Shannon Hastings</A>
- * @author <A HREF="MAILTO:ervin@bmi.osu.edu">David W. Ervin</A>
- * @version $Id: GridGrouperBaseTreeNode.java,v 1.1 2006/08/04 03:49:26 langella
- *          Exp $
- */
 public interface GroupI {
 
 	// Property Methods
@@ -229,15 +221,15 @@ public interface GroupI {
 
 	public Set<?> getRemovedMembershipRequests();
 
-	public void grantMembershipRequests() throws GrantPrivilegeException,
+	public void enableMembershipRequests() throws GrantPrivilegeException,
 			InsufficientPrivilegeException, SchemaException;
 
-	public void revokeMembershipRequests() throws InsufficientPrivilegeException, RevokePrivilegeException,
+	public void disableMembershipRequests() throws InsufficientPrivilegeException, RevokePrivilegeException,
 			SchemaException;
 	
 	public void requestMembership() throws InsufficientPrivilegeException, MemberAddException;
 	
-	public boolean hasMembershipRequests();
+	public boolean isMembershipRequestEnabled() throws InsufficientPrivilegeException, SchemaException;
 
 	//
 	// // Not sure if we will support

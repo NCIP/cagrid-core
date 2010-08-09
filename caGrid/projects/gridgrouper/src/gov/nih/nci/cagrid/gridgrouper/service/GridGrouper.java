@@ -1240,12 +1240,6 @@ public class GridGrouper {
 		des.setHasComposite(group.hasComposite());
 		des.setIsComposite(group.isComposite());
 		
-		try {
-			String allowMembershipRequests = group.getAttribute("allowMembershipRequests");
-			des.setHasMembershipRequests(Boolean.valueOf(allowMembershipRequests));			
-		} catch (AttributeNotFoundException e) {
-			des.setHasMembershipRequests(false);
-		}
 		return des;
 	}
 
@@ -2173,7 +2167,7 @@ public class GridGrouper {
 		}
 	}
 
-	public void grantMembershipRequests(String gridIdentity, GroupIdentifier group) throws GridGrouperRuntimeFault, GroupNotFoundFault, GrantPrivilegeFault,
+	public void enableMembershipRequests(String gridIdentity, GroupIdentifier group) throws GridGrouperRuntimeFault, GroupNotFoundFault, GrantPrivilegeFault,
 			InsufficientPrivilegeFault {
 			GrouperSession session = null;
 			try {
@@ -2191,13 +2185,6 @@ public class GridGrouper {
 				helper.addFaultCause(e);
 				fault = (GroupNotFoundFault) helper.getFault();
 				throw fault;
-//			} catch (GrantPrivilegeException e) {
-//				GrantPrivilegeFault fault = new GrantPrivilegeFault();
-//				fault.setFaultString(e.getMessage());
-//				FaultHelper helper = new FaultHelper(fault);
-//				helper.addFaultCause(e);
-//				fault = (GrantPrivilegeFault) helper.getFault();
-//				throw fault;
 			} catch (InsufficientPrivilegeException e) {
 				InsufficientPrivilegeFault fault = new InsufficientPrivilegeFault();
 				fault.setFaultString("You do not have the right to manages privileges on the group " + group.getGroupName()
@@ -2227,7 +2214,7 @@ public class GridGrouper {
 		}
 
 
-		public void revokeMembershipRequests(String gridIdentity, GroupIdentifier group) throws RemoteException, GridGrouperRuntimeFault, GroupNotFoundFault,
+		public void disableMembershipRequests(String gridIdentity, GroupIdentifier group) throws RemoteException, GridGrouperRuntimeFault, GroupNotFoundFault,
 			RevokePrivilegeFault, InsufficientPrivilegeFault, SchemaFault {
 			GrouperSession session = null;
 			try {
@@ -2274,5 +2261,56 @@ public class GridGrouper {
 			}
 		}
 
+		public boolean isMembershipRequestEnabled(String gridIdentity, GroupIdentifier group) throws GridGrouperRuntimeFault, GroupNotFoundFault, GrantPrivilegeFault,
+		InsufficientPrivilegeFault {
+		GrouperSession session = null;
+		try {
+			Subject subj = SubjectFinder.findById(gridIdentity);
+			session = GrouperSession.start(subj);
+			Group grp = GroupFinder.findByName(session, group.getGroupName());
+			
+			MembershipRequest.configureGroup(session, grp);
+			String isEnabled = grp.getAttribute("allowMembershipRequests");
+			
+			if ("true".equalsIgnoreCase(isEnabled)) {
+				return true;
+			} else {
+				return false;
+			}
+
+		} catch (GroupNotFoundException e) {
+			GroupNotFoundFault fault = new GroupNotFoundFault();
+			fault.setFaultString("The group, " + group.getGroupName() + "was not found.");
+			FaultHelper helper = new FaultHelper(fault);
+			helper.addFaultCause(e);
+			fault = (GroupNotFoundFault) helper.getFault();
+			throw fault;
+		} catch (InsufficientPrivilegeException e) {
+			InsufficientPrivilegeFault fault = new InsufficientPrivilegeFault();
+			fault.setFaultString("You do not have the right to manages privileges on the group " + group.getGroupName()
+				+ ": " + e.getMessage());
+			FaultHelper helper = new FaultHelper(fault);
+			helper.addFaultCause(e);
+			fault = (InsufficientPrivilegeFault) helper.getFault();
+			throw fault;
+		} catch (Exception e) {
+			this.log.error(e.getMessage(), e);
+			GridGrouperRuntimeFault fault = new GridGrouperRuntimeFault();
+			fault.setFaultString("Error occurred granting a membership requests on the group "
+				+ group.getGroupName() + ": " + e.getMessage());
+			FaultHelper helper = new FaultHelper(fault);
+			helper.addFaultCause(e);
+			fault = (GridGrouperRuntimeFault) helper.getFault();
+			throw fault;
+		} finally {
+			if (session != null) {
+				try {
+					session.stop();
+				} catch (Exception e) {
+					this.log.error(e.getMessage(), e);
+				}
+			}
+		}
+	}
 
 }

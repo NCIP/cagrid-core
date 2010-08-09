@@ -207,11 +207,15 @@ public class GridGrouperAuthorization implements PDP {
 		
 	}
 	   				
-	public void authorizeGrantMembershipRequests(Subject peerSubject, MessageContext context, QName operation) throws AuthorizationException {
+	public void authorizeEnableMembershipRequests(Subject peerSubject, MessageContext context, QName operation) throws AuthorizationException {
 		
 	}
 	   				
-	public void authorizeRevokeMembershipRequests(Subject peerSubject, MessageContext context, QName operation) throws AuthorizationException {
+	public void authorizeDisableMembershipRequests(Subject peerSubject, MessageContext context, QName operation) throws AuthorizationException {
+		
+	}
+	   				
+	public void authorizeIsMembershipRequestEnabled(Subject peerSubject, MessageContext context, QName operation) throws AuthorizationException {
 		
 	}
 	   
@@ -336,11 +340,14 @@ public class GridGrouperAuthorization implements PDP {
 		} else if(operation.getLocalPart().equals("getMembershipRequests")){
 			authorizeGetMembershipRequests(peerSubject, context, operation);
 			return true;
-		} else if(operation.getLocalPart().equals("grantMembershipRequests")){
-			authorizeGrantMembershipRequests(peerSubject, context, operation);
+		} else if(operation.getLocalPart().equals("enableMembershipRequests")){
+			authorizeEnableMembershipRequests(peerSubject, context, operation);
 			return true;
-		} else if(operation.getLocalPart().equals("revokeMembershipRequests")){
-			authorizeRevokeMembershipRequests(peerSubject, context, operation);
+		} else if(operation.getLocalPart().equals("disableMembershipRequests")){
+			authorizeDisableMembershipRequests(peerSubject, context, operation);
+			return true;
+		} else if(operation.getLocalPart().equals("isMembershipRequestEnabled")){
+			authorizeIsMembershipRequestEnabled(peerSubject, context, operation);
 			return true;
 		} 		
 		return false;

@@ -67,8 +67,8 @@ public class TestMembershipRequestsEdgeCases extends TestCase {
 	public void testAddMembershipRequestsTwice() {
 		try {
 			GroupDescriptor grp = initialGroupAndRequestSetup();
-			grouper.grantMembershipRequests(SUPER_USER, Utils.getGroupIdentifier(grp));
-			grouper.grantMembershipRequests(SUPER_USER, Utils.getGroupIdentifier(grp));
+			grouper.enableMembershipRequests(SUPER_USER, Utils.getGroupIdentifier(grp));
+			grouper.enableMembershipRequests(SUPER_USER, Utils.getGroupIdentifier(grp));
 
 
 			grouper.addMembershipRequest(USER_A, Utils.getGroupIdentifier(grp));
@@ -90,7 +90,7 @@ public class TestMembershipRequestsEdgeCases extends TestCase {
 	public void testMembershipRetrieveal() {
 		try {
 			GroupDescriptor grp = initialGroupAndRequestSetup();
-			grouper.grantMembershipRequests(SUPER_USER, Utils.getGroupIdentifier(grp));
+			grouper.enableMembershipRequests(SUPER_USER, Utils.getGroupIdentifier(grp));
 
 			grouper.addMembershipRequest(USER_A, Utils.getGroupIdentifier(grp));
 			
@@ -118,7 +118,7 @@ public class TestMembershipRequestsEdgeCases extends TestCase {
 	public void testAddMembershipRequestsForExistingMember() {
 		try {
 			GroupDescriptor grp = initialGroupAndRequestSetup();
-			grouper.grantMembershipRequests(SUPER_USER, Utils.getGroupIdentifier(grp));
+			grouper.enableMembershipRequests(SUPER_USER, Utils.getGroupIdentifier(grp));
 
 
 			grouper.addMember(SUPER_USER, Utils.getGroupIdentifier(grp), USER_A);
@@ -140,7 +140,7 @@ public class TestMembershipRequestsEdgeCases extends TestCase {
 	public void testAddMembershipRequestsForRejectedMember() {
 		try {
 			GroupDescriptor grp = initialGroupAndRequestSetup();
-			grouper.grantMembershipRequests(SUPER_USER, Utils.getGroupIdentifier(grp));
+			grouper.enableMembershipRequests(SUPER_USER, Utils.getGroupIdentifier(grp));
 
 			grouper.addMembershipRequest(USER_A, Utils.getGroupIdentifier(grp));
 			
@@ -168,7 +168,7 @@ public class TestMembershipRequestsEdgeCases extends TestCase {
 	public void testAddMembershipRequestsForRemovedMember() {
 		try {
 			GroupDescriptor grp = initialGroupAndRequestSetup();
-			grouper.grantMembershipRequests(SUPER_USER, Utils.getGroupIdentifier(grp));
+			grouper.enableMembershipRequests(SUPER_USER, Utils.getGroupIdentifier(grp));
 
 			grouper.addMembershipRequest(USER_A, Utils.getGroupIdentifier(grp));
 			
@@ -195,7 +195,7 @@ public class TestMembershipRequestsEdgeCases extends TestCase {
 	public void testNotePrivieges() {
 		try {
 			GroupDescriptor grp = initialGroupAndRequestSetup();
-			grouper.grantMembershipRequests(SUPER_USER, Utils.getGroupIdentifier(grp));
+			grouper.enableMembershipRequests(SUPER_USER, Utils.getGroupIdentifier(grp));
 
 			grouper.addMembershipRequest(USER_A, Utils.getGroupIdentifier(grp));
 			

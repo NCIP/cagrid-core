@@ -64,7 +64,7 @@ public class TestMembershipRequests extends TestCase {
 	public void testAddMembershipRequests() {
 		try {
 			GroupDescriptor grp = initialGroupAndRequestSetup();
-			grouper.grantMembershipRequests(SUPER_USER, Utils.getGroupIdentifier(grp));
+			grouper.enableMembershipRequests(SUPER_USER, Utils.getGroupIdentifier(grp));
 
 			grouper.addMembershipRequest(USER_A, Utils.getGroupIdentifier(grp));
 			grouper.addMembershipRequest(USER_B, Utils.getGroupIdentifier(grp));
@@ -104,7 +104,7 @@ public class TestMembershipRequests extends TestCase {
 	public void testApproveMembershipRequest() {
 		try {
 			GroupDescriptor grp = initialGroupAndRequestSetup();
-			grouper.grantMembershipRequests(SUPER_USER, Utils.getGroupIdentifier(grp));
+			grouper.enableMembershipRequests(SUPER_USER, Utils.getGroupIdentifier(grp));
 
 			grouper.addMembershipRequest(USER_A, Utils.getGroupIdentifier(grp));
 			grouper.addMembershipRequest(USER_B, Utils.getGroupIdentifier(grp));
@@ -132,7 +132,7 @@ public class TestMembershipRequests extends TestCase {
 	public void testRejectMembershipRequest() {
 		try {
 			GroupDescriptor grp = initialGroupAndRequestSetup();
-			grouper.grantMembershipRequests(SUPER_USER, Utils.getGroupIdentifier(grp));
+			grouper.enableMembershipRequests(SUPER_USER, Utils.getGroupIdentifier(grp));
 
 			grouper.addMembershipRequest(USER_A, Utils.getGroupIdentifier(grp));
 			grouper.addMembershipRequest(USER_B, Utils.getGroupIdentifier(grp));

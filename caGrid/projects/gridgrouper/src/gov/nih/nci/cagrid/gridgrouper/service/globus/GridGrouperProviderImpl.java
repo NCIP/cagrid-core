@@ -221,15 +221,21 @@ public class GridGrouperProviderImpl {
     return boxedResult;
   }
 
-    public gov.nih.nci.cagrid.gridgrouper.stubs.GrantMembershipRequestsResponse grantMembershipRequests(gov.nih.nci.cagrid.gridgrouper.stubs.GrantMembershipRequestsRequest params) throws RemoteException {
-    gov.nih.nci.cagrid.gridgrouper.stubs.GrantMembershipRequestsResponse boxedResult = new gov.nih.nci.cagrid.gridgrouper.stubs.GrantMembershipRequestsResponse();
-    impl.grantMembershipRequests(params.getGroup().getGroupIdentifier());
+    public gov.nih.nci.cagrid.gridgrouper.stubs.EnableMembershipRequestsResponse enableMembershipRequests(gov.nih.nci.cagrid.gridgrouper.stubs.EnableMembershipRequestsRequest params) throws RemoteException {
+    gov.nih.nci.cagrid.gridgrouper.stubs.EnableMembershipRequestsResponse boxedResult = new gov.nih.nci.cagrid.gridgrouper.stubs.EnableMembershipRequestsResponse();
+    impl.enableMembershipRequests(params.getGroup().getGroupIdentifier());
     return boxedResult;
   }
 
-    public gov.nih.nci.cagrid.gridgrouper.stubs.RevokeMembershipRequestsResponse revokeMembershipRequests(gov.nih.nci.cagrid.gridgrouper.stubs.RevokeMembershipRequestsRequest params) throws RemoteException {
-    gov.nih.nci.cagrid.gridgrouper.stubs.RevokeMembershipRequestsResponse boxedResult = new gov.nih.nci.cagrid.gridgrouper.stubs.RevokeMembershipRequestsResponse();
-    impl.revokeMembershipRequests(params.getGroup().getGroupIdentifier());
+    public gov.nih.nci.cagrid.gridgrouper.stubs.DisableMembershipRequestsResponse disableMembershipRequests(gov.nih.nci.cagrid.gridgrouper.stubs.DisableMembershipRequestsRequest params) throws RemoteException {
+    gov.nih.nci.cagrid.gridgrouper.stubs.DisableMembershipRequestsResponse boxedResult = new gov.nih.nci.cagrid.gridgrouper.stubs.DisableMembershipRequestsResponse();
+    impl.disableMembershipRequests(params.getGroup().getGroupIdentifier());
+    return boxedResult;
+  }
+
+    public gov.nih.nci.cagrid.gridgrouper.stubs.IsMembershipRequestEnabledResponse isMembershipRequestEnabled(gov.nih.nci.cagrid.gridgrouper.stubs.IsMembershipRequestEnabledRequest params) throws RemoteException {
+    gov.nih.nci.cagrid.gridgrouper.stubs.IsMembershipRequestEnabledResponse boxedResult = new gov.nih.nci.cagrid.gridgrouper.stubs.IsMembershipRequestEnabledResponse();
+    boxedResult.setResponse(impl.isMembershipRequestEnabled(params.getGroup().getGroupIdentifier()));
     return boxedResult;
   }
 

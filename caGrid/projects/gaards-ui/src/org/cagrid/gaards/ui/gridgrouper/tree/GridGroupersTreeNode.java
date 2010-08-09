@@ -6,6 +6,10 @@ import gov.nih.nci.cagrid.common.Runner;
 import gov.nih.nci.cagrid.gridgrouper.client.GridGrouper;
 import gov.nih.nci.cagrid.gridgrouper.client.Stem;
 import gov.nih.nci.cagrid.gridgrouper.grouper.StemI;
+import gov.nih.nci.cagrid.metadata.MetadataUtils;
+import gov.nih.nci.cagrid.metadata.ServiceMetadata;
+import gov.nih.nci.cagrid.metadata.ServiceMetadataServiceDescription;
+import gov.nih.nci.cagrid.metadata.service.Service;
 
 import java.util.HashMap;
 import java.util.Iterator;
@@ -13,11 +17,13 @@ import java.util.Map;
 
 import javax.swing.ImageIcon;
 
+import org.apache.axis.message.addressing.EndpointReferenceType;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.cagrid.gaards.ui.gridgrouper.GridGrouperLookAndFeel;
 import org.cagrid.grape.GridApplication;
 import org.cagrid.grape.utils.ErrorDialog;
+import org.globus.wsrf.utils.AddressingUtils;
 
 /**
  * @author <A HREF="MAILTO:langella@bmi.osu.edu">Stephen Langella</A>
@@ -52,6 +58,17 @@ public class GridGroupersTreeNode extends GridGrouperBaseTreeNode {
 					getTree().reload(this);
 				}
 				node.loadStem(0);
+				
+				try {
+					EndpointReferenceType endPoint  = AddressingUtils.createEndpointReference(grouper.getName(), null);
+					ServiceMetadata commonMetadata = MetadataUtils.getServiceMetadata(endPoint);
+					ServiceMetadataServiceDescription desc = commonMetadata.getServiceDescription();
+					Service service = desc.getService();
+					node.setGridGrouperVersion(service.getVersion());
+				} catch (Exception e) {
+					e.getMessage();
+				}
+
 				getTree().stopEvent(id,
 						"Grid Grouper Service Successfully Loaded!!!");
 				this.groupers.put(grouper.getName(), node);
@@ -64,6 +81,10 @@ public class GridGroupersTreeNode extends GridGrouperBaseTreeNode {
 
 		}
 
+	}
+	
+	public StemTreeNode getStemTreeNode(GridGrouper grouper) {
+		return (StemTreeNode) groupers.get(grouper.getName());
 	}
 
 	public synchronized void removeAllGridGroupers() {

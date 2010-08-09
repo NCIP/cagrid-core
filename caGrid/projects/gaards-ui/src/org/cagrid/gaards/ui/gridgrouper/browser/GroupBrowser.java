@@ -31,6 +31,7 @@ import javax.swing.JTextField;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.cagrid.gaards.ui.gridgrouper.tree.GroupTreeNode;
+import org.cagrid.gaards.ui.gridgrouper.tree.StemTreeNode;
 import org.cagrid.grape.GridApplication;
 import org.cagrid.grape.LookAndFeel;
 import org.cagrid.grape.utils.ErrorDialog;
@@ -182,6 +183,8 @@ public class GroupBrowser extends BaseBrowserPanel {
 	private JButton allowMembershipRequestsButton = null;
 
 	private JPanel upperPanel = null;
+	
+	private boolean membershipRequestsEnabled = false;
 
     /**
      * This is the default constructor
@@ -224,6 +227,17 @@ public class GroupBrowser extends BaseBrowserPanel {
         this.getHasComposite().setText(String.valueOf(group.hasComposite()));
         this.getIsComposite().setText(String.valueOf(group.isComposite()));
         this.getRemoveCompositeButton().setEnabled(group.hasComposite());
+
+		StemTreeNode stemTreeNode = node.getTree().getRootNode().getStemTreeNode(node.getGridGrouper());
+		String gridGrouperVersion = stemTreeNode.getGridGrouperVersion();
+		try {
+			if (doesGridGrouperSupportMembershipRequests(gridGrouperVersion)) {
+				this.membershipRequestsEnabled = group.isMembershipRequestEnabled();
+			}
+		} catch (Exception e) {
+			membershipRequestsEnabled = false;
+		}
+
     }
 
 
@@ -257,8 +271,13 @@ public class GroupBrowser extends BaseBrowserPanel {
             groupDetails = new JTabbedPane();
             groupDetails.addTab("Details", null, getDetails(), null);
             groupDetails.addTab("Privileges", null, getPrivileges(), null);
-            groupDetails.addTab("Members", null, getMembers(), null);       
-            groupDetails.addTab("Membership Requests", null, getMembershipRequestsPanel(), null);
+            groupDetails.addTab("Members", null, getMembers(), null);
+            
+    		StemTreeNode stemTreeNode = node.getTree().getRootNode().getStemTreeNode(node.getGridGrouper());
+    		String gridGrouperVersion = stemTreeNode.getGridGrouperVersion();
+            if (doesGridGrouperSupportMembershipRequests(gridGrouperVersion)) {
+            	groupDetails.addTab("Membership Requests", null, getMembershipRequestsPanel(), null);
+            }
         }
         return groupDetails;
     }
@@ -1547,7 +1566,7 @@ public class GroupBrowser extends BaseBrowserPanel {
         if (updateMembershipRequestButton == null) {
         	updateMembershipRequestButton = new JButton();
         	updateMembershipRequestButton.setText("Review Request");
-        	updateMembershipRequestButton.setEnabled(group.hasMembershipRequests());
+        	updateMembershipRequestButton.setEnabled(membershipRequestsEnabled);
             updateMembershipRequestButton.addActionListener(new java.awt.event.ActionListener() {
                 public void actionPerformed(java.awt.event.ActionEvent e) {
                     Runner runner = new Runner() {
@@ -1577,7 +1596,7 @@ public class GroupBrowser extends BaseBrowserPanel {
         if (joinMemberButton == null) {
         	joinMemberButton = new JButton();
         	joinMemberButton.setText("Request Membership");
-        	joinMemberButton.setEnabled(group.hasMembershipRequests());
+        	joinMemberButton.setEnabled(membershipRequestsEnabled);
             final GroupBrowser gp = this;
             joinMemberButton.addActionListener(new java.awt.event.ActionListener() {
                 public void actionPerformed(java.awt.event.ActionEvent e) {
@@ -1611,10 +1630,10 @@ public class GroupBrowser extends BaseBrowserPanel {
 	private JButton getAllowMembershipRequestsButton() {
 		if (allowMembershipRequestsButton == null) {
 			allowMembershipRequestsButton = new JButton();
-			if (group.hasMembershipRequests()) {
-				allowMembershipRequestsButton.setText("Turn OFF Membership Requests");
+			if (membershipRequestsEnabled) {
+				allowMembershipRequestsButton.setText("Disable Membership Requests");
 			} else {
-				allowMembershipRequestsButton.setText("Turn ON Membership Requests");
+				allowMembershipRequestsButton.setText("Enable Membership Requests");
 			}
 			allowMembershipRequestsButton.addActionListener(new java.awt.event.ActionListener() {
                 public void actionPerformed(java.awt.event.ActionEvent e) {
@@ -1669,22 +1688,23 @@ public class GroupBrowser extends BaseBrowserPanel {
 		int eid = node.getTree().startEvent("");
 
 		try {
-			if (group.hasMembershipRequests()) {
-				group.revokeMembershipRequests();
-				getAllowMembershipRequestsButton().setText("Turn ON Membership Requests");
+			if (membershipRequestsEnabled) {
+				group.disableMembershipRequests();
+				getAllowMembershipRequestsButton().setText("Enable Membership Requests");
 				stopEvent(eid, "Membership Requests disabled");
 			} else {
-				group.grantMembershipRequests();
-				getAllowMembershipRequestsButton().setText("Turn OFF Membership Requests");
+				group.enableMembershipRequests();
+				getAllowMembershipRequestsButton().setText("Disable Membership Requests");
 				stopEvent(eid, "Membership Requests enabled");
 			}
+			membershipRequestsEnabled = !membershipRequestsEnabled;
 		} catch (Exception e) {
 			stopEvent(eid, "Error with membership requests!!!");
 			ErrorDialog.showError(e);
 			node.refresh();
 			FaultUtil.logFault(log, e);
 		} finally {
-			changeMembershipRequestsButtonStatus(group.hasMembershipRequests());
+			changeMembershipRequestsButtonStatus(membershipRequestsEnabled);
 		}
 
 	}
@@ -1695,5 +1715,16 @@ public class GroupBrowser extends BaseBrowserPanel {
 		getUpdateMembershipRequestButton().setEnabled(enable);
 		getRequestMembershipButton().setEnabled(enable);		
 	}
+	
+    private boolean doesGridGrouperSupportMembershipRequests(String gridGrouperVersion) {
+    	try {
+			if (Double.parseDouble(gridGrouperVersion) < 1.4) {
+				return false;
+			}
+		} catch (Exception e) {
+		}
+		return true;
+    }
+
 
 }

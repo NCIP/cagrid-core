@@ -1,5 +1,5 @@
 #Introduce Properties
-#Thu Feb 25 10:11:09 EST 2010
+#Mon Aug 09 10:15:41 EDT 2010
 introduce.skeleton.services.list=GridGrouper
 introduce.skeleton.extensions=cagrid_metadata
 introduce.skeleton.destination.dir=/Users/jgeorge/Documents/Workspaces/cagrid-trunk/core/caGrid/projects/gridgrouper

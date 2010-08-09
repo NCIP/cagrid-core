@@ -36,6 +36,8 @@ public class StemTreeNode extends GridGrouperBaseTreeNode {
 	
 	private boolean loadedChildStems = false;
 
+	private String gridGrouperVersion;
+	
 	public StemTreeNode(GridGrouperTree tree, Stem stem, boolean root) {
 		super(tree);
 		this.rootStem = root;
@@ -143,6 +145,14 @@ public class StemTreeNode extends GridGrouperBaseTreeNode {
 
 	public void setLoadedChildStems(boolean loadedChildStems) {
 		this.loadedChildStems = loadedChildStems;
+	}
+
+	public String getGridGrouperVersion() {
+		return gridGrouperVersion;
+	}
+
+	public void setGridGrouperVersion(String gridGrouperVersion) {
+		this.gridGrouperVersion = gridGrouperVersion;
 	}
 
 
