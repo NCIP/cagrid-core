@@ -53,14 +53,6 @@ import java.util.Set;
 import org.apache.commons.lang.builder.ToStringBuilder;
 
 
-/**
- * @author <A HREF="MAILTO:langella@bmi.osu.edu">Stephen Langella</A>
- * @author <A HREF="MAILTO:oster@bmi.osu.edu">Scott Oster</A>
- * @author <A HREF="MAILTO:hastings@bmi.osu.edu">Shannon Hastings</A>
- * @author <A HREF="MAILTO:ervin@bmi.osu.edu">David W. Ervin</A>
- * @version $Id: GridGrouperBaseTreeNode.java,v 1.1 2006/08/04 03:49:26 langella
- *          Exp $
- */
 public class Group extends GridGrouperObject implements GroupI {
 
     private GroupDescriptor des;
@@ -760,11 +752,10 @@ public class Group extends GridGrouperObject implements GroupI {
 
     }
 
-	public void grantMembershipRequests() throws GrantPrivilegeException, InsufficientPrivilegeException,
+	public void enableMembershipRequests() throws GrantPrivilegeException, InsufficientPrivilegeException,
 			SchemaException {
 		try {
-			gridGrouper.getClient().grantMembershipRequests(getGroupIdentifier());
-			des.setHasMembershipRequests(true);
+			gridGrouper.getClient().enableMembershipRequests(getGroupIdentifier());
 		} catch (InsufficientPrivilegeFault f) {
 			throw new InsufficientPrivilegeException(f.getFaultString());
 		} catch (GrantPrivilegeFault f) {
@@ -781,11 +772,10 @@ public class Group extends GridGrouperObject implements GroupI {
 
 	}
 
-	public void revokeMembershipRequests() throws InsufficientPrivilegeException,
+	public void disableMembershipRequests() throws InsufficientPrivilegeException,
 			RevokePrivilegeException, SchemaException {
 		try {
-			gridGrouper.getClient().revokeMembershipRequests(getGroupIdentifier());
-			des.setHasMembershipRequests(false);
+			gridGrouper.getClient().disableMembershipRequests(getGroupIdentifier());
 		} catch (InsufficientPrivilegeFault f) {
 			throw new InsufficientPrivilegeException(f.getFaultString());
 		} catch (RevokePrivilegeFault f) {
@@ -810,8 +800,20 @@ public class Group extends GridGrouperObject implements GroupI {
 		}
 	}
 	
-	public boolean hasMembershipRequests() {
-		return des.isHasMembershipRequests();
+	public boolean isMembershipRequestEnabled() throws InsufficientPrivilegeException, SchemaException {
+		try {
+			return gridGrouper.getClient().isMembershipRequestEnabled(getGroupIdentifier());
+		} catch (InsufficientPrivilegeFault f) {
+			throw new InsufficientPrivilegeException(f.getFaultString());
+		} catch (SchemaFault f) {
+			throw new SchemaException(f.getFaultString());
+		} catch (GridGrouperRuntimeFault e) {
+			getLog().error(e.getMessage(), e);
+			throw new GrouperRuntimeException(e.getFaultString());
+		} catch (Exception e) {
+			getLog().error(e.getMessage(), e);
+			throw new GrouperRuntimeException(Utils.getExceptionMessage(e));
+		}
 	}
 
 }

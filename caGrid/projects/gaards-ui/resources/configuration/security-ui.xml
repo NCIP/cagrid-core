@@ -265,6 +265,15 @@
 					</components>
 				</menu>
 			</submenus>
+			<components>
+				<component>
+					<title>User and Host Search</title>
+					<description>Community Search</description>
+					<classname>org.cagrid.gaards.ui.dorian.federation.CommunitySearchDialog</classname>
+					<icon>/users.png</icon>
+					<showOnToolBar>false</showOnToolBar>
+				</component>
+			</components>
 		</menu>
 		<menu>
 			<title>Trust Fabric</title>

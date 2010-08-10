@@ -190,7 +190,7 @@ public class TestMembershipRequestsPrivileges extends TestCase {
 
 			GroupDescriptor grp = createAndCheckGroup(test, groupExtension, groupDisplayExtension, 1);
 			grouper.addMember(SUPER_USER, Utils.getGroupIdentifier(grp), USER_A);
-			grouper.grantMembershipRequests(USER_A, Utils.getGroupIdentifier(grp));
+			grouper.enableMembershipRequests(USER_A, Utils.getGroupIdentifier(grp));
 
 			fail("Should not be able to grant membership requests");
 		} catch (InsufficientPrivilegeFault e) {
@@ -214,8 +214,8 @@ public class TestMembershipRequestsPrivileges extends TestCase {
 
 			GroupDescriptor grp = createAndCheckGroup(test, groupExtension, groupDisplayExtension, 1);
 			grouper.addMember(SUPER_USER, Utils.getGroupIdentifier(grp), USER_A);
-			grouper.grantMembershipRequests(SUPER_USER, Utils.getGroupIdentifier(grp));
-			grouper.revokeMembershipRequests(USER_A, Utils.getGroupIdentifier(grp));
+			grouper.enableMembershipRequests(SUPER_USER, Utils.getGroupIdentifier(grp));
+			grouper.disableMembershipRequests(USER_A, Utils.getGroupIdentifier(grp));
 			fail("Should not be able to revoke membership requests");
 		} catch (InsufficientPrivilegeFault e) {
 			// Expected Fault
@@ -239,7 +239,7 @@ public class TestMembershipRequestsPrivileges extends TestCase {
 			GroupDescriptor grp = createAndCheckGroup(test, groupExtension, groupDisplayExtension, 1);
 			grouper.addMember(SUPER_USER, Utils.getGroupIdentifier(grp), USER_A);
 			grouper.grantGroupPrivilege(SUPER_USER, Utils.getGroupIdentifier(grp), USER_A, GroupPrivilegeType.admin);
-			grouper.grantMembershipRequests(USER_A, Utils.getGroupIdentifier(grp));
+			grouper.enableMembershipRequests(USER_A, Utils.getGroupIdentifier(grp));
 
 			groupExtension = "mygroup2";
 			groupDisplayExtension = "My Group 2";
@@ -248,7 +248,7 @@ public class TestMembershipRequestsPrivileges extends TestCase {
 			grouper.addMember(SUPER_USER, Utils.getGroupIdentifier(grp2), USER_B);
 			grouper.grantGroupPrivilege(SUPER_USER, Utils.getGroupIdentifier(grp2), USER_B, GroupPrivilegeType.admin);
 			try {
-				grouper.grantMembershipRequests(USER_A, Utils.getGroupIdentifier(grp2));
+				grouper.enableMembershipRequests(USER_A, Utils.getGroupIdentifier(grp2));
 				fail("Should not be able to grant membership requests");
 			} catch (InsufficientPrivilegeFault e) {
 				// Expected Fault
@@ -273,8 +273,8 @@ public class TestMembershipRequestsPrivileges extends TestCase {
 			GroupDescriptor grp = createAndCheckGroup(test, groupExtension, groupDisplayExtension, 1);
 			grouper.addMember(SUPER_USER, Utils.getGroupIdentifier(grp), USER_A);
 			grouper.grantGroupPrivilege(SUPER_USER, Utils.getGroupIdentifier(grp), USER_A, GroupPrivilegeType.admin);
-			grouper.grantMembershipRequests(USER_A, Utils.getGroupIdentifier(grp));
-			grouper.revokeMembershipRequests(USER_A, Utils.getGroupIdentifier(grp));
+			grouper.enableMembershipRequests(USER_A, Utils.getGroupIdentifier(grp));
+			grouper.disableMembershipRequests(USER_A, Utils.getGroupIdentifier(grp));
 
 			groupExtension = "mygroup2";
 			groupDisplayExtension = "My Group 2";
@@ -282,9 +282,9 @@ public class TestMembershipRequestsPrivileges extends TestCase {
 			GroupDescriptor grp2 = createAndCheckGroup(test, groupExtension, groupDisplayExtension, 1);
 			grouper.addMember(SUPER_USER, Utils.getGroupIdentifier(grp2), USER_B);
 			grouper.grantGroupPrivilege(SUPER_USER, Utils.getGroupIdentifier(grp2), USER_B, GroupPrivilegeType.admin);
-			grouper.grantMembershipRequests(USER_B, Utils.getGroupIdentifier(grp2));
+			grouper.enableMembershipRequests(USER_B, Utils.getGroupIdentifier(grp2));
 			try {
-				grouper.revokeMembershipRequests(USER_A, Utils.getGroupIdentifier(grp2));
+				grouper.disableMembershipRequests(USER_A, Utils.getGroupIdentifier(grp2));
 				fail("Should not be able to revoke membership requests");
 			} catch (InsufficientPrivilegeFault e) {
 				// Expected Fault
@@ -310,7 +310,7 @@ public class TestMembershipRequestsPrivileges extends TestCase {
 			GroupDescriptor grp = createAndCheckGroup(test, groupExtension, groupDisplayExtension, 1);
 			grouper.addMember(SUPER_USER2, Utils.getGroupIdentifier(grp), USER_A);
 			grouper.grantGroupPrivilege(SUPER_USER2, Utils.getGroupIdentifier(grp), USER_A, GroupPrivilegeType.admin);
-			grouper.grantMembershipRequests(SUPER_USER2, Utils.getGroupIdentifier(grp));
+			grouper.enableMembershipRequests(SUPER_USER2, Utils.getGroupIdentifier(grp));
 
 		} catch (Exception e) {
 			FaultUtil.printFault(e);
@@ -333,8 +333,8 @@ public class TestMembershipRequestsPrivileges extends TestCase {
 			GroupDescriptor grp = createAndCheckGroup(test, groupExtension, groupDisplayExtension, 1);
 			grouper.addMember(SUPER_USER2, Utils.getGroupIdentifier(grp), USER_A);
 			grouper.grantGroupPrivilege(SUPER_USER2, Utils.getGroupIdentifier(grp), USER_A, GroupPrivilegeType.admin);
-			grouper.grantMembershipRequests(SUPER_USER2, Utils.getGroupIdentifier(grp));
-			grouper.revokeMembershipRequests(SUPER_USER2, Utils.getGroupIdentifier(grp));
+			grouper.enableMembershipRequests(SUPER_USER2, Utils.getGroupIdentifier(grp));
+			grouper.disableMembershipRequests(SUPER_USER2, Utils.getGroupIdentifier(grp));
 
 		} catch (Exception e) {
 			FaultUtil.printFault(e);
@@ -361,7 +361,7 @@ public class TestMembershipRequestsPrivileges extends TestCase {
 
 		createAndCheckGroup(test, subGroupExtension, subGroupDisplayExtension, 2);
 
-		grouper.grantMembershipRequests(SUPER_USER2, Utils.getGroupIdentifier(grp));
+		grouper.enableMembershipRequests(SUPER_USER2, Utils.getGroupIdentifier(grp));
 
 		grouper.addMembershipRequest(USER_A, Utils.getGroupIdentifier(grp));
 		grouper.addMembershipRequest(USER_B, Utils.getGroupIdentifier(grp));

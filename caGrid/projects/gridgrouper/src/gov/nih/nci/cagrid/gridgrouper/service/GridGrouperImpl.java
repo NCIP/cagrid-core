@@ -168,12 +168,16 @@ public class GridGrouperImpl {
       return gridGrouper.getMembershipRequests(getCallerIdentity(), group, status);
       }
 
-  public void grantMembershipRequests(gov.nih.nci.cagrid.gridgrouper.bean.GroupIdentifier group) throws RemoteException {
-	  gridGrouper.grantMembershipRequests(getCallerIdentity(), group);
+  public void enableMembershipRequests(gov.nih.nci.cagrid.gridgrouper.bean.GroupIdentifier group) throws RemoteException {
+	  gridGrouper.enableMembershipRequests(getCallerIdentity(), group);
   }
 
-  public void revokeMembershipRequests(gov.nih.nci.cagrid.gridgrouper.bean.GroupIdentifier group) throws RemoteException {
-	  gridGrouper.revokeMembershipRequests(getCallerIdentity(), group);
+  public void disableMembershipRequests(gov.nih.nci.cagrid.gridgrouper.bean.GroupIdentifier group) throws RemoteException {
+	  gridGrouper.disableMembershipRequests(getCallerIdentity(), group);
+  }
+
+  public boolean isMembershipRequestEnabled(gov.nih.nci.cagrid.gridgrouper.bean.GroupIdentifier group) throws RemoteException {
+	  return gridGrouper.isMembershipRequestEnabled(getCallerIdentity(), group);
   }
 
 }

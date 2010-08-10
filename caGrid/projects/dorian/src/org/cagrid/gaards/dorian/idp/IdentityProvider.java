@@ -547,7 +547,8 @@ public class IdentityProvider extends LoggingObject {
                 f.setFaultString("You do not have permission to update the account profile for " + profile.getUserId()
                     + ".");
                 throw f;
-            } else {
+            } else if (conf.getAccountInformationModificationPolicy().equals(
+                    AccountInformationModificationPolicy.User.getValue())) {
                 LocalUser beforeUpdate = this.userManager.getUser(requestor.getUserId());
                 requestor.setPassword(null);
                 requestor.setAddress(profile.getAddress());
@@ -565,6 +566,10 @@ public class IdentityProvider extends LoggingObject {
                 this.eventManager.logEvent(requestor.getUserId(), requestorUID,
                     IdentityProviderAudit.LocalAccountUpdated.getValue(), ReportUtils.generateReport(beforeUpdate,
                         this.userManager.getUser(requestor.getUserId())));
+            } else {
+                DorianInternalFault f = new DorianInternalFault();
+                f.setFaultString("Unknown account information modification policy: " + conf.getAccountInformationModificationPolicy());
+                throw f;
             }
         } catch (DorianInternalFault e) {
             String message = "An unexpected error occurred while trying to get the account profile for the user "

@@ -372,14 +372,7 @@
       </ns2:Operation>
       <ns2:Operation description="" name="getServiceSecurityMetadata">
        <ns2:inputParameterCollection/>
-       <ns2:Output qName="ns82:ServiceSecurityMetadata" dimensionality="1" isArray="false" xmlns:ns82="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.security">
-        <ns83:UMLClass className="ServiceSecurityMetadata" description="An instance of the Security Service Metadata." id="806DA29C-017B-6FE9-E040-BB89AD435088" packageName="gov.nih.nci.cagrid.metadata.security" projectName="caGrid_Metadata_Models" projectVersion="1" xmlns:ns83="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common">
-         <ns83:umlAttributeCollection/>
-         <ns83:SemanticMetadata conceptCode="C80736" conceptDefinition="A software system providing a public need." conceptName="Software Service" order="2"/>
-         <ns83:SemanticMetadata conceptCode="C25669" conceptDefinition="Security; freedom from anxiety or fear." conceptName="Security" order="1"/>
-         <ns83:SemanticMetadata conceptCode="C52095" conceptDefinition="Data about data; information that describes another set of data." conceptName="Metadata" order="0"/>
-        </ns83:UMLClass>
-       </ns2:Output>
+       <ns2:Output qName="ns82:ServiceSecurityMetadata" dimensionality="1" isArray="false" xmlns:ns82="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.security"/>
        <ns2:faultCollection/>
       </ns2:Operation>
       <ns2:Operation description="" name="GetMultipleResourceProperties">
@@ -396,37 +389,44 @@
       </ns2:Operation>
       <ns2:Operation description="" name="addMembershipRequest">
        <ns2:inputParameterCollection>
-        <ns2:InputParameter qName="ns84:GroupIdentifier" dimensionality="1" index="0" isArray="false" isRequired="false" name="group" xmlns:ns84="http://cagrid.nci.nih.gov/1/GridGrouper"/>
+        <ns2:InputParameter qName="ns83:GroupIdentifier" dimensionality="1" index="0" isArray="false" isRequired="false" name="group" xmlns:ns83="http://cagrid.nci.nih.gov/1/GridGrouper"/>
        </ns2:inputParameterCollection>
        <ns2:faultCollection/>
       </ns2:Operation>
       <ns2:Operation description="Update the status of the membership request." name="updateMembershipRequest">
        <ns2:inputParameterCollection>
-        <ns2:InputParameter qName="ns85:GroupIdentifier" dimensionality="1" index="0" isArray="false" isRequired="false" name="group" xmlns:ns85="http://cagrid.nci.nih.gov/1/GridGrouper"/>
-        <ns2:InputParameter qName="ns86:SubjectIdentifier" dimensionality="1" index="1" isArray="false" isRequired="false" name="subject" xmlns:ns86="http://cagrid.nci.nih.gov/1/GridGrouper"/>
-        <ns2:InputParameter qName="ns87:MembershipRequestUpdate" dimensionality="1" index="2" isArray="false" isRequired="false" name="update" xmlns:ns87="http://cagrid.nci.nih.gov/1/GridGrouper"/>
+        <ns2:InputParameter qName="ns84:GroupIdentifier" dimensionality="1" index="0" isArray="false" isRequired="false" name="group" xmlns:ns84="http://cagrid.nci.nih.gov/1/GridGrouper"/>
+        <ns2:InputParameter qName="ns85:SubjectIdentifier" dimensionality="1" index="1" isArray="false" isRequired="false" name="subject" xmlns:ns85="http://cagrid.nci.nih.gov/1/GridGrouper"/>
+        <ns2:InputParameter qName="ns86:MembershipRequestUpdate" dimensionality="1" index="2" isArray="false" isRequired="false" name="update" xmlns:ns86="http://cagrid.nci.nih.gov/1/GridGrouper"/>
        </ns2:inputParameterCollection>
-       <ns2:Output qName="ns88:MembershipRequestDescriptor" dimensionality="1" isArray="false" xmlns:ns88="http://cagrid.nci.nih.gov/1/GridGrouper"/>
+       <ns2:Output qName="ns87:MembershipRequestDescriptor" dimensionality="1" isArray="false" xmlns:ns87="http://cagrid.nci.nih.gov/1/GridGrouper"/>
        <ns2:faultCollection/>
       </ns2:Operation>
       <ns2:Operation description="Retrieve the group's membership requests based on request status." name="getMembershipRequests">
        <ns2:inputParameterCollection>
-        <ns2:InputParameter qName="ns89:GroupIdentifier" dimensionality="1" index="0" isArray="false" isRequired="false" name="group" xmlns:ns89="http://cagrid.nci.nih.gov/1/GridGrouper"/>
-        <ns2:InputParameter qName="ns90:MembershipRequestStatus" dimensionality="1" index="1" isArray="false" isRequired="false" name="status" xmlns:ns90="http://cagrid.nci.nih.gov/1/GridGrouper"/>
+        <ns2:InputParameter qName="ns88:GroupIdentifier" dimensionality="1" index="0" isArray="false" isRequired="false" name="group" xmlns:ns88="http://cagrid.nci.nih.gov/1/GridGrouper"/>
+        <ns2:InputParameter qName="ns89:MembershipRequestStatus" dimensionality="1" index="1" isArray="false" isRequired="false" name="status" xmlns:ns89="http://cagrid.nci.nih.gov/1/GridGrouper"/>
        </ns2:inputParameterCollection>
-       <ns2:Output qName="ns91:MembershipRequestDescriptor" dimensionality="1" isArray="true" xmlns:ns91="http://cagrid.nci.nih.gov/1/GridGrouper"/>
+       <ns2:Output qName="ns90:MembershipRequestDescriptor" dimensionality="1" isArray="true" xmlns:ns90="http://cagrid.nci.nih.gov/1/GridGrouper"/>
        <ns2:faultCollection/>
       </ns2:Operation>
-      <ns2:Operation description="Enable a group to accept membership requests" name="grantMembershipRequests">
+      <ns2:Operation description="Enable a group to accept membership requests" name="enableMembershipRequests">
+       <ns2:inputParameterCollection>
+        <ns2:InputParameter qName="ns91:GroupIdentifier" dimensionality="1" index="0" isArray="false" isRequired="false" name="group" xmlns:ns91="http://cagrid.nci.nih.gov/1/GridGrouper"/>
+       </ns2:inputParameterCollection>
+       <ns2:faultCollection/>
+      </ns2:Operation>
+      <ns2:Operation description="Removes the ability of a group to accept membership requests" name="disableMembershipRequests">
        <ns2:inputParameterCollection>
         <ns2:InputParameter qName="ns92:GroupIdentifier" dimensionality="1" index="0" isArray="false" isRequired="false" name="group" xmlns:ns92="http://cagrid.nci.nih.gov/1/GridGrouper"/>
        </ns2:inputParameterCollection>
        <ns2:faultCollection/>
       </ns2:Operation>
-      <ns2:Operation description="Removes the ability of a group to accept membership requests" name="revokeMembershipRequests">
+      <ns2:Operation description="Returns whether or not the group allows membership requests" name="isMembershipRequestEnabled">
        <ns2:inputParameterCollection>
         <ns2:InputParameter qName="ns93:GroupIdentifier" dimensionality="1" index="0" isArray="false" isRequired="false" name="group" xmlns:ns93="http://cagrid.nci.nih.gov/1/GridGrouper"/>
        </ns2:inputParameterCollection>
+       <ns2:Output qName="xsd:boolean" dimensionality="1" isArray="false" xmlns:xsd="http://www.w3.org/2001/XMLSchema"/>
        <ns2:faultCollection/>
       </ns2:Operation>
      </ns2:operationCollection>

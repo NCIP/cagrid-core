@@ -479,13 +479,20 @@ public interface GridGrouperI {
    *
    * @param group
    */
-  public void grantMembershipRequests(gov.nih.nci.cagrid.gridgrouper.bean.GroupIdentifier group) throws RemoteException ;
+  public void enableMembershipRequests(gov.nih.nci.cagrid.gridgrouper.bean.GroupIdentifier group) throws RemoteException ;
 
   /**
    * Removes the ability of a group to accept membership requests
    *
    * @param group
    */
-  public void revokeMembershipRequests(gov.nih.nci.cagrid.gridgrouper.bean.GroupIdentifier group) throws RemoteException ;
+  public void disableMembershipRequests(gov.nih.nci.cagrid.gridgrouper.bean.GroupIdentifier group) throws RemoteException ;
+
+  /**
+   * Returns whether or not the group allows membership requests
+   *
+   * @param group
+   */
+  public boolean isMembershipRequestEnabled(gov.nih.nci.cagrid.gridgrouper.bean.GroupIdentifier group) throws RemoteException ;
 
 }

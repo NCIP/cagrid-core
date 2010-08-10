@@ -899,7 +899,7 @@
           </sequence>
         </complexType>
       </element>
-      <element name="GrantMembershipRequestsRequest">
+      <element name="EnableMembershipRequestsRequest">
         <complexType>
           <sequence>
             <element name="group">
@@ -912,12 +912,12 @@
           </sequence>
         </complexType>
       </element>
-      <element name="GrantMembershipRequestsResponse">
+      <element name="EnableMembershipRequestsResponse">
         <complexType>
           <sequence />
         </complexType>
       </element>
-      <element name="RevokeMembershipRequestsRequest">
+      <element name="DisableMembershipRequestsRequest">
         <complexType>
           <sequence>
             <element name="group">
@@ -930,9 +930,29 @@
           </sequence>
         </complexType>
       </element>
-      <element name="RevokeMembershipRequestsResponse">
+      <element name="DisableMembershipRequestsResponse">
         <complexType>
           <sequence />
+        </complexType>
+      </element>
+      <element name="IsMembershipRequestEnabledRequest">
+        <complexType>
+          <sequence>
+            <element name="group">
+              <complexType>
+                <sequence>
+                  <element ref="ns0:GroupIdentifier" minOccurs="1" maxOccurs="1" />
+                </sequence>
+              </complexType>
+            </element>
+          </sequence>
+        </complexType>
+      </element>
+      <element name="IsMembershipRequestEnabledResponse">
+        <complexType>
+          <sequence>
+            <element name="response" type="xs:boolean" minOccurs="1" maxOccurs="1" />
+          </sequence>
         </complexType>
       </element>
       <element name="GridGrouperResourceProperties">
@@ -1149,17 +1169,23 @@
   <message name="GetMembershipRequestsResponse">
     <part name="parameters" element="tns:GetMembershipRequestsResponse" />
   </message>
-  <message name="GrantMembershipRequestsRequest">
-    <part name="parameters" element="tns:GrantMembershipRequestsRequest" />
+  <message name="EnableMembershipRequestsRequest">
+    <part name="parameters" element="tns:EnableMembershipRequestsRequest" />
   </message>
-  <message name="GrantMembershipRequestsResponse">
-    <part name="parameters" element="tns:GrantMembershipRequestsResponse" />
+  <message name="EnableMembershipRequestsResponse">
+    <part name="parameters" element="tns:EnableMembershipRequestsResponse" />
   </message>
-  <message name="RevokeMembershipRequestsRequest">
-    <part name="parameters" element="tns:RevokeMembershipRequestsRequest" />
+  <message name="DisableMembershipRequestsRequest">
+    <part name="parameters" element="tns:DisableMembershipRequestsRequest" />
   </message>
-  <message name="RevokeMembershipRequestsResponse">
-    <part name="parameters" element="tns:RevokeMembershipRequestsResponse" />
+  <message name="DisableMembershipRequestsResponse">
+    <part name="parameters" element="tns:DisableMembershipRequestsResponse" />
+  </message>
+  <message name="IsMembershipRequestEnabledRequest">
+    <part name="parameters" element="tns:IsMembershipRequestEnabledRequest" />
+  </message>
+  <message name="IsMembershipRequestEnabledResponse">
+    <part name="parameters" element="tns:IsMembershipRequestEnabledResponse" />
   </message>
   <message name="GridGrouperRuntimeFaultFaultMessage">
     <part name="fault" element="ns3:GridGrouperRuntimeFault" />
@@ -1438,13 +1464,17 @@
       <input message="tns:GetMembershipRequestsRequest" wsa:Action="http://cagrid.nci.nih.gov/GridGrouper/GetMembershipRequestsRequest" />
       <output message="tns:GetMembershipRequestsResponse" wsa:Action="http://cagrid.nci.nih.gov/GridGrouper/GetMembershipRequestsResponse" />
     </operation>
-    <operation name="grantMembershipRequests">
-      <input message="tns:GrantMembershipRequestsRequest" wsa:Action="http://cagrid.nci.nih.gov/GridGrouper/GrantMembershipRequestsRequest" />
-      <output message="tns:GrantMembershipRequestsResponse" wsa:Action="http://cagrid.nci.nih.gov/GridGrouper/GrantMembershipRequestsResponse" />
+    <operation name="enableMembershipRequests">
+      <input message="tns:EnableMembershipRequestsRequest" wsa:Action="http://cagrid.nci.nih.gov/GridGrouper/EnableMembershipRequestsRequest" />
+      <output message="tns:EnableMembershipRequestsResponse" wsa:Action="http://cagrid.nci.nih.gov/GridGrouper/EnableMembershipRequestsResponse" />
     </operation>
-    <operation name="revokeMembershipRequests">
-      <input message="tns:RevokeMembershipRequestsRequest" wsa:Action="http://cagrid.nci.nih.gov/GridGrouper/RevokeMembershipRequestsRequest" />
-      <output message="tns:RevokeMembershipRequestsResponse" wsa:Action="http://cagrid.nci.nih.gov/GridGrouper/RevokeMembershipRequestsResponse" />
+    <operation name="disableMembershipRequests">
+      <input message="tns:DisableMembershipRequestsRequest" wsa:Action="http://cagrid.nci.nih.gov/GridGrouper/DisableMembershipRequestsRequest" />
+      <output message="tns:DisableMembershipRequestsResponse" wsa:Action="http://cagrid.nci.nih.gov/GridGrouper/DisableMembershipRequestsResponse" />
+    </operation>
+    <operation name="isMembershipRequestEnabled">
+      <input message="tns:IsMembershipRequestEnabledRequest" wsa:Action="http://cagrid.nci.nih.gov/GridGrouper/IsMembershipRequestEnabledRequest" />
+      <output message="tns:IsMembershipRequestEnabledResponse" wsa:Action="http://cagrid.nci.nih.gov/GridGrouper/IsMembershipRequestEnabledResponse" />
     </operation>
     <operation name="getServiceSecurityMetadata">
       <input message="wns0:GetServiceSecurityMetadataRequest" wsa:Action="http://security.introduce.cagrid.nci.nih.gov/ServiceSecurity/GetServiceSecurityMetadataRequest" />

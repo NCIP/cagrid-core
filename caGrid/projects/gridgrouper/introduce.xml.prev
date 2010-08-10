@@ -883,7 +883,7 @@
      <ns4:Exceptions/>
      <ns224:Extensions xsi:type="ns224:ExtensionsType" xmlns:ns224="gme://gov.nih.nci.cagrid.introduce/1/Extension"/>
     </ns4:Method>
-    <ns4:Method description="Enable a group to accept membership requests" isImported="false" isProvided="false" name="grantMembershipRequests" xsi:type="ns4:MethodType">
+    <ns4:Method description="Enable a group to accept membership requests" isImported="false" isProvided="false" name="enableMembershipRequests" xsi:type="ns4:MethodType">
      <ns4:Inputs>
       <ns4:Input qName="ns225:GroupIdentifier" description="" isArray="false" name="group" xmlns:ns225="http://cagrid.nci.nih.gov/1/GridGrouper"/>
      </ns4:Inputs>
@@ -891,7 +891,7 @@
      <ns4:Exceptions/>
      <ns226:Extensions xsi:type="ns226:ExtensionsType" xmlns:ns226="gme://gov.nih.nci.cagrid.introduce/1/Extension"/>
     </ns4:Method>
-    <ns4:Method description="Removes the ability of a group to accept membership requests" isImported="false" isProvided="false" name="revokeMembershipRequests" xsi:type="ns4:MethodType">
+    <ns4:Method description="Removes the ability of a group to accept membership requests" isImported="false" isProvided="false" name="disableMembershipRequests" xsi:type="ns4:MethodType">
      <ns4:Inputs>
       <ns4:Input qName="ns227:GroupIdentifier" description="" isArray="false" name="group" xmlns:ns227="http://cagrid.nci.nih.gov/1/GridGrouper"/>
      </ns4:Inputs>
@@ -899,21 +899,29 @@
      <ns4:Exceptions/>
      <ns228:Extensions xsi:type="ns228:ExtensionsType" xmlns:ns228="gme://gov.nih.nci.cagrid.introduce/1/Extension"/>
     </ns4:Method>
+    <ns4:Method description="Returns whether or not the group allows membership requests" isImported="false" isProvided="false" name="isMembershipRequestEnabled" xsi:type="ns4:MethodType">
+     <ns4:Inputs>
+      <ns4:Input qName="ns229:GroupIdentifier" description="" isArray="false" name="group" xmlns:ns229="http://cagrid.nci.nih.gov/1/GridGrouper"/>
+     </ns4:Inputs>
+     <ns4:Output qName="xsd:boolean" description="" isArray="false" xmlns:xsd="http://www.w3.org/2001/XMLSchema"/>
+     <ns4:Exceptions/>
+     <ns230:Extensions xsi:type="ns230:ExtensionsType" xmlns:ns230="gme://gov.nih.nci.cagrid.introduce/1/Extension"/>
+    </ns4:Method>
    </ns4:Methods>
-   <ns229:ResourcePropertiesList xsi:type="ns229:ResourcePropertiesListType" xmlns:ns229="gme://gov.nih.nci.cagrid.introduce/1/Resources">
-    <ns229:ResourceProperty qName="ns230:ServiceMetadata" description="Grid Grouper Service Metadata." fileLocation="GridGrouper_serviceMetadata.xml" populateFromFile="true" register="true" xsi:type="ns229:ResourcePropertyType" xmlns:ns230="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata"/>
-   </ns229:ResourcePropertiesList>
-   <ns231:ServiceSecurity xsi:type="ns231:ServiceSecurity" xmlns:ns231="gme://gov.nih.nci.cagrid.introduce/1/Security">
-    <ns231:SecuritySetting xsi:type="ns231:SecuritySetting">Custom</ns231:SecuritySetting>
-    <ns231:TransportLevelSecurity xsi:type="ns231:TransportLevelSecurity">
-     <ns231:CommunicationMethod xsi:type="ns231:CommunicationMethod">Privacy</ns231:CommunicationMethod>
-    </ns231:TransportLevelSecurity>
-    <ns231:RunAsMode xsi:type="ns231:RunAsMode">System</ns231:RunAsMode>
-    <ns231:AnonymousClients xsi:type="ns231:AnonymousCommunication">No</ns231:AnonymousClients>
-    <ns231:ServiceAuthorization xsi:type="ns231:ServiceAuthorization">
-     <ns231:NoAuthorization xsi:type="ns231:NoAuthorization"/>
-    </ns231:ServiceAuthorization>
-   </ns231:ServiceSecurity>
+   <ns231:ResourcePropertiesList xsi:type="ns231:ResourcePropertiesListType" xmlns:ns231="gme://gov.nih.nci.cagrid.introduce/1/Resources">
+    <ns231:ResourceProperty qName="ns232:ServiceMetadata" description="Grid Grouper Service Metadata." fileLocation="GridGrouper_serviceMetadata.xml" populateFromFile="true" register="true" xsi:type="ns231:ResourcePropertyType" xmlns:ns232="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata"/>
+   </ns231:ResourcePropertiesList>
+   <ns233:ServiceSecurity xsi:type="ns233:ServiceSecurity" xmlns:ns233="gme://gov.nih.nci.cagrid.introduce/1/Security">
+    <ns233:SecuritySetting xsi:type="ns233:SecuritySetting">Custom</ns233:SecuritySetting>
+    <ns233:TransportLevelSecurity xsi:type="ns233:TransportLevelSecurity">
+     <ns233:CommunicationMethod xsi:type="ns233:CommunicationMethod">Privacy</ns233:CommunicationMethod>
+    </ns233:TransportLevelSecurity>
+    <ns233:RunAsMode xsi:type="ns233:RunAsMode">System</ns233:RunAsMode>
+    <ns233:AnonymousClients xsi:type="ns233:AnonymousCommunication">No</ns233:AnonymousClients>
+    <ns233:ServiceAuthorization xsi:type="ns233:ServiceAuthorization">
+     <ns233:NoAuthorization xsi:type="ns233:NoAuthorization"/>
+    </ns233:ServiceAuthorization>
+   </ns233:ServiceSecurity>
    <ns3:description xsi:type="xsd:string" xmlns:xsd="http://www.w3.org/2001/XMLSchema">GridGrouper Service</ns3:description>
    <ns3:ResourceFrameworkOptions xsi:type="ns3:ResourceFrameworkOptions">
     <ns3:Main xsi:type="ns3:Main"/>
@@ -924,7 +932,7 @@
    </ns3:ResourceFrameworkOptions>
   </ns3:Service>
  </ns3:Services>
- <ns232:Extensions xsi:type="ns232:ExtensionsType" xmlns:ns232="gme://gov.nih.nci.cagrid.introduce/1/Extension" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
-  <ns232:Extension name="cagrid_metadata" version="1.4" xsi:type="ns232:ExtensionType"/>
- </ns232:Extensions>
+ <ns234:Extensions xsi:type="ns234:ExtensionsType" xmlns:ns234="gme://gov.nih.nci.cagrid.introduce/1/Extension" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <ns234:Extension name="cagrid_metadata" version="1.4" xsi:type="ns234:ExtensionType"/>
+ </ns234:Extensions>
 </ns1:ServiceDescription>
