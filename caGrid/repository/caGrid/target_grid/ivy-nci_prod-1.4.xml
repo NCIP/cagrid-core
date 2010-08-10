@@ -4,10 +4,10 @@
   xsi:noNamespaceSchemaLocation="http://incubator.apache.org/ivy/schemas/ivy.xsd"
   xmlns:grid="http://ant.apache.org/ivy/extra" >
 
-  <info organisation="caGrid" module="target_grid" revision="nci_dev-1.3">
-    <description>NCI Development Grid for caGrid 1.3</description>
-    <grid:displayName>NCI Development Grid for caGrid 1.3</grid:displayName>
-    <grid:systemName>nci_dev-1.3</grid:systemName>
+  <info organisation="caGrid" module="target_grid" revision="nci_prod-1.4">
+    <description>NCI Production Grid for caGrid 1.4</description>
+    <grid:displayName>NCI Production Grid for caGrid 1.4</grid:displayName>
+    <grid:systemName>nci_prod-1.4</grid:systemName>
   </info>
 
   <configurations>
@@ -39,7 +39,8 @@
 
   <publications>
     <!--  certificates -->
-    <artifact name="certificates/GTS_CA_CERT" type="certificate" ext="0" conf="certs"/>
+    <artifact name="certificates/62f4fd66" type="certificate" ext="0" conf="certs"/>
+    <artifact name="certificates/62f4fd66" type="certificate" ext="signing_policy" conf="certs"/>
 
     <!--  grape UI configurations-->
    <artifact name="authentication-services-configuration" type="xml" conf="authentication-services"/>
@@ -55,9 +56,10 @@
 
     <!--  syncgts configurations-->
     <artifact name="sync-description" type="xml" conf="syncdesc"/>
-	
+		
 	<!-- websso configurations -->
 	<artifact name="websso-properties" type="xml" conf="websso"/>
-
   </publications>
+
+
 </ivy-module>

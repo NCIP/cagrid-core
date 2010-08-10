@@ -4,10 +4,10 @@
   xsi:noNamespaceSchemaLocation="http://incubator.apache.org/ivy/schemas/ivy.xsd"
   xmlns:grid="http://ant.apache.org/ivy/extra" >
 
-  <info organisation="caGrid" module="target_grid" revision="nci_stage-1.3">
-    <description>NCI Staging Grid for caGrid 1.3</description>
-    <grid:displayName>NCI Staging Grid for caGrid 1.3</grid:displayName>
-    <grid:systemName>nci_stage-1.3</grid:systemName>
+  <info organisation="caGrid" module="target_grid" revision="nci_qa-1.4">
+    <description>NCI QA Grid for caGrid 1.4</description>
+    <grid:displayName>NCI QA Grid for caGrid 1.4</grid:displayName>
+    <grid:systemName>nci_qa-1.4</grid:systemName>
   </info>
 
   <configurations>
@@ -24,7 +24,7 @@
     <conf name="urls" visibility="public" extends="default"/>
 
     <!--  grape UI configurations-->
-   <conf name="ui" visibility="public" extends="authentication-services,dorian-services,gridgrouper-services,gts-services,cds-services,workflow-ui"/>
+    <conf name="ui" visibility="public" extends="authentication-services,dorian-services,gridgrouper-services,gts-services,cds-services,workflow-ui"/>
     <conf name="cds-services" visibility="public" extends="default"/>
     <conf name="authentication-services" visibility="public" extends="default"/>
     <conf name="dorian-services" visibility="public" extends="default"/>
@@ -39,8 +39,8 @@
 
   <publications>
     <!--  certificates -->
-    <artifact name="certificates/17e36bb5" type="certificate" ext="0" conf="certs"/>
-    <artifact name="certificates/17e36bb5" type="certificate" ext="signing_policy" conf="certs"/>
+    <artifact name="certificates/0ad31d10" type="certificate" ext="0" conf="certs"/>
+    <artifact name="certificates/0ad31d10" type="certificate" ext="signing_policy" conf="certs"/>
 
     <!--  grape UI configurations-->
    <artifact name="authentication-services-configuration" type="xml" conf="authentication-services"/>
