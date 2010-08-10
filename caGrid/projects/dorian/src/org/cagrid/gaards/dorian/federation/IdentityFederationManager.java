@@ -63,14 +63,6 @@ import org.cagrid.tools.groups.Group;
 import org.cagrid.tools.groups.GroupException;
 import org.cagrid.tools.groups.GroupManager;
 
-
-/**
- * @author <A href="mailto:langella@bmi.osu.edu">Stephen Langella </A>
- * @author <A href="mailto:oster@bmi.osu.edu">Scott Oster </A>
- * @author <A href="mailto:hastings@bmi.osu.edu">Shannon Hastings </A>
- * @version $Id: ArgumentManagerTable.java,v 1.2 2004/10/15 16:35:16 langella
- *          Exp $
- */
 public class IdentityFederationManager extends LoggingObject implements Publisher {
 
     private final int CERTIFICATE_START_OFFSET_SECONDS = -10;
@@ -1709,6 +1701,12 @@ public class IdentityFederationManager extends LoggingObject implements Publishe
                     fault.setFaultString("Authentication Required!!!");
                     throw fault;
                 }
+            } else if (conf.getHostSearchPolicy().equals(SearchPolicyType.Public.getValue())) {
+            	// No security checks needed if public searches are allowed
+            } else {
+            	DorianInternalFault fault = new DorianInternalFault();
+            	fault.setFaultString("Unknown Search Policy Type: " +  conf.getHostSearchPolicy());
+            	throw fault;
             }
             List<HostRecord> records = this.hostManager.getHostRecords(criteria);
             for (int i = 0; i < records.size(); i++) {
@@ -1748,6 +1746,12 @@ public class IdentityFederationManager extends LoggingObject implements Publishe
                     fault.setFaultString("Authentication Required!!!");
                     throw fault;
                 }
+            } else if (conf.getUserSearchPolicy().equals(SearchPolicyType.Public.getValue())) {
+            	// No security checks needed if public searches are allowed
+            } else {
+            	DorianInternalFault fault = new DorianInternalFault();
+            	fault.setFaultString("Unknown Search Policy Type: " +  conf.getUserSearchPolicy());
+            	throw fault;
             }
             return um.getUsers(criteria);
         } catch (DorianInternalFault e) {
