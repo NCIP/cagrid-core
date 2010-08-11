@@ -10,7 +10,7 @@
       <ns2:Operation description="Gets the Service Security Metadata" name="getServiceSecurityMetadata">
        <ns2:inputParameterCollection/>
        <ns2:Output qName="ns4:ServiceSecurityMetadata" dimensionality="1" isArray="false" xmlns:ns4="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.security">
-        <ns5:UMLClass className="ServiceSecurityMetadata" description="An instance of the Security Service Metadata." id="7E230C2C-3E39-F166-E040-BB89AD436187" packageName="gov.nih.nci.cagrid.metadata.security" projectName="caGrid_Metadata_Models" projectVersion="1" xmlns:ns5="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common">
+        <ns5:UMLClass className="ServiceSecurityMetadata" description="An instance of the Security Service Metadata." id="8D891120-D508-3640-E040-BB89AD4311FD" packageName="gov.nih.nci.cagrid.metadata.security" projectName="caGrid_Metadata_Models" projectVersion="1" xmlns:ns5="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common">
          <ns5:umlAttributeCollection/>
          <ns5:SemanticMetadata conceptCode="C80736" conceptDefinition="A software system providing a public need." conceptName="Software Service" order="2"/>
          <ns5:SemanticMetadata conceptCode="C25669" conceptDefinition="Security; freedom from anxiety or fear." conceptName="Security" order="1"/>
@@ -426,6 +426,28 @@
         <ns2:Fault description="" name="NoSuchUserFault"/>
        </ns2:faultCollection>
       </ns2:Operation>
+      <ns2:Operation description="Sets the Publish flag for the give Trusted IdP" name="setPublish">
+       <ns2:inputParameterCollection>
+        <ns2:InputParameter qName="ns58:TrustedIdP" dimensionality="1" index="0" isArray="false" isRequired="false" name="trustedIdP" xmlns:ns58="http://cagrid.nci.nih.gov/1/dorian-ifs"/>
+        <ns2:InputParameter qName="xsd:boolean" dimensionality="1" index="1" isArray="false" isRequired="false" name="publish" xmlns:xsd="http://www.w3.org/2001/XMLSchema"/>
+       </ns2:inputParameterCollection>
+       <ns2:faultCollection>
+        <ns2:Fault description="An unexpected internal Dorian error." name="DorianInternalFault"/>
+        <ns2:Fault description="Invalid Trusted Identity Provider specified." name="InvalidTrustedIdPFault"/>
+        <ns2:Fault description="Client does not have permission to perform the request." name="PermissionDeniedFault"/>
+       </ns2:faultCollection>
+      </ns2:Operation>
+      <ns2:Operation description="Gets the Publish flag of the Trusted IdP " name="getPublish">
+       <ns2:inputParameterCollection>
+        <ns2:InputParameter qName="ns59:TrustedIdP" dimensionality="1" index="0" isArray="false" isRequired="false" name="trustedIdP" xmlns:ns59="http://cagrid.nci.nih.gov/1/dorian-ifs"/>
+       </ns2:inputParameterCollection>
+       <ns2:Output qName="xsd:boolean" dimensionality="1" isArray="false" xmlns:xsd="http://www.w3.org/2001/XMLSchema"/>
+       <ns2:faultCollection>
+        <ns2:Fault description="An unexpected internal Dorian error." name="DorianInternalFault"/>
+        <ns2:Fault description="Invalid Trusted Identity Provider specified." name="InvalidTrustedIdPFault"/>
+        <ns2:Fault description="Client does not have permission to perform the request." name="PermissionDeniedFault"/>
+       </ns2:faultCollection>
+      </ns2:Operation>
      </ns2:operationCollection>
      <ns2:contextPropertyCollection>
       <ns2:ContextProperty description="" name="{gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata}ServiceMetadata"/>
@@ -435,16 +457,16 @@
      </ns2:contextPropertyCollection>
     </ns2:ServiceContext>
    </ns2:serviceContextCollection>
-   <ns58:SemanticMetadata conceptCode="C63541" conceptDefinition="A service available on a system that coordinates resources that are not subject to central control, using open, general purpose protocols and interfaces to deliver nontrivial qualities of services." conceptName="Grid Service" order="0" xmlns:ns58="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common"/>
-   <ns59:SemanticMetadata conceptCode="C63543" conceptDefinition="A published API which receives data in the form of objects, performs computations based upon the input data, and returns information to a client via caGrid in the form of one or more objects." conceptName="Analytical Grid Service" order="1" xmlns:ns59="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common"/>
+   <ns60:SemanticMetadata conceptCode="C63541" conceptDefinition="A service available on a system that coordinates resources that are not subject to central control, using open, general purpose protocols and interfaces to deliver nontrivial qualities of services." conceptName="Grid Service" order="0" xmlns:ns60="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common"/>
+   <ns61:SemanticMetadata conceptCode="C63543" conceptDefinition="A published API which receives data in the form of objects, performs computations based upon the input data, and returns information to a client via caGrid in the form of one or more objects." conceptName="Analytical Grid Service" order="1" xmlns:ns61="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common"/>
   </ns2:Service>
  </ns1:serviceDescription>
  <ns1:hostingResearchCenter>
-  <ns60:ResearchCenter displayName="" shortName="" xmlns:ns60="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common">
-   <ns60:Address country="" locality="" postalCode="" stateProvince="" street1="" street2=""/>
-   <ns60:pointOfContactCollection>
-    <ns60:PointOfContact affiliation="" email="" firstName="" lastName="" phoneNumber="" role=""/>
-   </ns60:pointOfContactCollection>
-  </ns60:ResearchCenter>
+  <ns62:ResearchCenter displayName="" shortName="" xmlns:ns62="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common">
+   <ns62:Address country="" locality="" postalCode="" stateProvince="" street1="" street2=""/>
+   <ns62:pointOfContactCollection>
+    <ns62:PointOfContact affiliation="" email="" firstName="" lastName="" phoneNumber="" role=""/>
+   </ns62:pointOfContactCollection>
+  </ns62:ResearchCenter>
  </ns1:hostingResearchCenter>
 </ns1:ServiceMetadata>

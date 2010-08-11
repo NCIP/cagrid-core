@@ -389,4 +389,11 @@ public class DorianImpl extends DorianImplBase {
         this.dorian.updateAccountProfile(getCallerIdentity(), profile);
     }
 
+  public void setPublish(org.cagrid.gaards.dorian.federation.TrustedIdP trustedIdP,boolean publish) throws RemoteException, org.cagrid.gaards.dorian.stubs.types.DorianInternalFault, org.cagrid.gaards.dorian.stubs.types.InvalidTrustedIdPFault, org.cagrid.gaards.dorian.stubs.types.PermissionDeniedFault {
+	  dorian.setPublish(getCallerIdentity(), trustedIdP, publish);  }
+
+  public boolean getPublish(org.cagrid.gaards.dorian.federation.TrustedIdP trustedIdP) throws RemoteException, org.cagrid.gaards.dorian.stubs.types.DorianInternalFault, org.cagrid.gaards.dorian.stubs.types.InvalidTrustedIdPFault, org.cagrid.gaards.dorian.stubs.types.PermissionDeniedFault {
+      return dorian.getPublish(getCallerIdentityEnforceAuthentication(), trustedIdP);
+  }
+
 }

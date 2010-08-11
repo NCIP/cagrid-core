@@ -37,8 +37,8 @@ public class UpdateTrustedIdPStatusStep extends Step {
             if (idp.getName().endsWith(this.name)) {
                 found = true;
                idp.setStatus(status);
-               idp.setPublish(publish);
                client.updateTrustedIdP(idp);
+               client.setPublish(idp, publish);
             }
         }
         if (!found) {

@@ -293,18 +293,6 @@ public class TrustedIdPManager extends LoggingObject {
             needsUpdate = true;
             authenticationServiceIdentity = validateAndGetAuthenticationServiceIdentity(idp);
         }
-        String publish = "Y";
-        if (!curr.isPublish()) {
-            publish = "N";
-        }
-        if ((idp.isPublish() != curr.isPublish())) {
-            needsUpdate = true;
-            if (idp.isPublish()) {
-                publish = "Y";
-            } else {
-                publish = "N";
-            }
-        }
 
         String uidNS = curr.getUserIdAttributeDescriptor().getNamespaceURI();
         String uidName = curr.getUserIdAttributeDescriptor().getName();
@@ -356,7 +344,7 @@ public class TrustedIdPManager extends LoggingObject {
                 PreparedStatement s = c.prepareStatement("UPDATE " + TRUST_MANAGER_TABLE + " SET " + NAME_FIELD
                     + "= ?, " + DISPLAY_NAME_FIELD + "= ?, " + IDP_SUBJECT_FIELD + "= ?, " + STATUS_FIELD + "= ?, "
                     + POLICY_CLASS_FIELD + "= ?, " + IDP_CERTIFICATE_FIELD + "= ?, " + AUTHENTICATION_SERVICE_URL_FIELD
-                    + "= ?, " + AUTHENTICATION_SERVICE_IDENTITY_FIELD + "= ?, " + PUBLISH_FIELD + "= ?, "
+                    + "= ?, " + AUTHENTICATION_SERVICE_IDENTITY_FIELD + "= ?, " 
                     + USER_ID_ATT_NS_FIELD + " = ?, " + USER_ID_ATT_NAME_FIELD + " = ?, " + FIRST_NAME_ATT_NS_FIELD
                     + " = ?, " + FIRST_NAME_ATT_NAME_FIELD + " = ?, " + LAST_NAME_ATT_NS_FIELD + " = ?, "
                     + LAST_NAME_ATT_NAME_FIELD + " = ?, " + EMAIL_ATT_NS_FIELD + " = ?, " + EMAIL_ATT_NAME_FIELD
@@ -370,16 +358,15 @@ public class TrustedIdPManager extends LoggingObject {
                 s.setString(6, certEncoded);
                 s.setString(7, authenticationServiceURL);
                 s.setString(8, authenticationServiceIdentity);
-                s.setString(9, publish);
-                s.setString(10, uidNS);
-                s.setString(11, uidName);
-                s.setString(12, firstNS);
-                s.setString(13, firstName);
-                s.setString(14, lastNS);
-                s.setString(15, lastName);
-                s.setString(16, emailNS);
-                s.setString(17, emailName);
-                s.setLong(18, curr.getId());
+                s.setString(9, uidNS);
+                s.setString(10, uidName);
+                s.setString(11, firstNS);
+                s.setString(12, firstName);
+                s.setString(13, lastNS);
+                s.setString(14, lastName);
+                s.setString(15, emailNS);
+                s.setString(16, emailName);
+                s.setLong(17, curr.getId());
                 s.execute();
                 s.close();
             }
@@ -470,12 +457,6 @@ public class TrustedIdPManager extends LoggingObject {
                 idp.setUserPolicyClass(rs.getString(POLICY_CLASS_FIELD));
                 idp.setAuthenticationServiceURL(Utils.clean(rs.getString(AUTHENTICATION_SERVICE_URL_FIELD)));
                 idp.setAuthenticationServiceIdentity(Utils.clean(rs.getString(AUTHENTICATION_SERVICE_IDENTITY_FIELD)));
-                String publish = rs.getString(PUBLISH_FIELD);
-                if ((publish != null) && (publish.equalsIgnoreCase("Y"))) {
-                    idp.setPublish(true);
-                } else {
-                    idp.setPublish(false);
-                }
 
                 SAMLAttributeDescriptor uid = new SAMLAttributeDescriptor();
                 uid.setNamespaceURI(rs.getString(USER_ID_ATT_NS_FIELD));
@@ -542,12 +523,6 @@ public class TrustedIdPManager extends LoggingObject {
                 idp.setUserPolicyClass(rs.getString(POLICY_CLASS_FIELD));
                 idp.setAuthenticationServiceURL(Utils.clean(rs.getString(AUTHENTICATION_SERVICE_URL_FIELD)));
                 idp.setAuthenticationServiceIdentity(Utils.clean(rs.getString(AUTHENTICATION_SERVICE_IDENTITY_FIELD)));
-                String publish = rs.getString(PUBLISH_FIELD);
-                if ((publish != null) && (publish.equalsIgnoreCase("Y"))) {
-                    idp.setPublish(true);
-                } else {
-                    idp.setPublish(false);
-                }
 
                 SAMLAttributeDescriptor uid = new SAMLAttributeDescriptor();
                 uid.setNamespaceURI(rs.getString(USER_ID_ATT_NS_FIELD));
@@ -614,12 +589,6 @@ public class TrustedIdPManager extends LoggingObject {
                 idp.setUserPolicyClass(rs.getString(POLICY_CLASS_FIELD));
                 idp.setAuthenticationServiceURL(Utils.clean(rs.getString(AUTHENTICATION_SERVICE_URL_FIELD)));
                 idp.setAuthenticationServiceIdentity(Utils.clean(rs.getString(AUTHENTICATION_SERVICE_IDENTITY_FIELD)));
-                String publish = rs.getString(PUBLISH_FIELD);
-                if ((publish != null) && (publish.equalsIgnoreCase("Y"))) {
-                    idp.setPublish(true);
-                } else {
-                    idp.setPublish(false);
-                }
 
                 SAMLAttributeDescriptor uid = new SAMLAttributeDescriptor();
                 uid.setNamespaceURI(rs.getString(USER_ID_ATT_NS_FIELD));
@@ -684,12 +653,7 @@ public class TrustedIdPManager extends LoggingObject {
                 idp.setUserPolicyClass(rs.getString(POLICY_CLASS_FIELD));
                 idp.setAuthenticationServiceURL(Utils.clean(rs.getString(AUTHENTICATION_SERVICE_URL_FIELD)));
                 idp.setAuthenticationServiceIdentity(Utils.clean(rs.getString(AUTHENTICATION_SERVICE_IDENTITY_FIELD)));
-                String publish = rs.getString(PUBLISH_FIELD);
-                if ((publish != null) && (publish.equalsIgnoreCase("Y"))) {
-                    idp.setPublish(true);
-                } else {
-                    idp.setPublish(false);
-                }
+
                 SAMLAttributeDescriptor uid = new SAMLAttributeDescriptor();
                 uid.setNamespaceURI(rs.getString(USER_ID_ATT_NS_FIELD));
                 uid.setName(rs.getString(USER_ID_ATT_NAME_FIELD));
@@ -753,12 +717,7 @@ public class TrustedIdPManager extends LoggingObject {
                 idp.setUserPolicyClass(rs.getString(POLICY_CLASS_FIELD));
                 idp.setAuthenticationServiceURL(Utils.clean(rs.getString(AUTHENTICATION_SERVICE_URL_FIELD)));
                 idp.setAuthenticationServiceIdentity(Utils.clean(rs.getString(AUTHENTICATION_SERVICE_IDENTITY_FIELD)));
-                String publish = rs.getString(PUBLISH_FIELD);
-                if ((publish != null) && (publish.equalsIgnoreCase("Y"))) {
-                    idp.setPublish(true);
-                } else {
-                    idp.setPublish(false);
-                }
+
                 SAMLAttributeDescriptor uid = new SAMLAttributeDescriptor();
                 uid.setNamespaceURI(rs.getString(USER_ID_ATT_NS_FIELD));
                 uid.setName(rs.getString(USER_ID_ATT_NAME_FIELD));
@@ -977,10 +936,7 @@ public class TrustedIdPManager extends LoggingObject {
             verifyLastNameAttributeDescriptor(idp.getLastNameAttributeDescriptor());
             verifyEmailAttributeDescriptor(idp.getEmailAttributeDescriptor());
 
-            String publish = "N";
-            if (idp.isPublish()) {
-                publish = "Y";
-            }
+            String publish = "Y";
 
             if (!isCertificateUnique(idp.getIdPCertificate())) {
                 InvalidTrustedIdPFault fault = new InvalidTrustedIdPFault();
@@ -1164,5 +1120,92 @@ public class TrustedIdPManager extends LoggingObject {
             throw fault;
         }
     }
+
+
+	public void setPublish(TrustedIdP idp, boolean publish) throws DorianInternalFault, InvalidTrustedIdPFault {
+        TrustedIdP curr = this.getTrustedIdPById(idp.getId());
+
+        boolean currentPublish = this.getPublish(idp);
+        boolean needsUpdate = false;
+
+        String setpublish = "Y";
+        if (publish != currentPublish) {
+            needsUpdate = true;
+            if (publish) {
+                setpublish = "Y";
+            } else {
+                setpublish = "N";
+            }
+        }
+
+        Connection c = null;
+        try {
+
+            if (needsUpdate) {
+                c = db.getConnection();
+                PreparedStatement s = c.prepareStatement("UPDATE " + TRUST_MANAGER_TABLE + " SET "
+                    + PUBLISH_FIELD + "= ? " 
+                    + "WHERE " + ID_FIELD + "= ?");
+
+                s.setString(1, setpublish);
+                s.setLong(2, curr.getId());
+                s.execute();
+                s.close();
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            logError(e.getMessage(), e);
+            DorianInternalFault fault = new DorianInternalFault();
+            fault.setFaultString("Error updating the Trusted IdP " + idp.getName()
+                + ", an unexpected database error occurred.");
+            FaultHelper helper = new FaultHelper(fault);
+            helper.addFaultCause(e);
+            fault = (DorianInternalFault) helper.getFault();
+            throw fault;
+        } finally {
+            db.releaseConnection(c);
+        }
+	}
+
+
+	public boolean getPublish(TrustedIdP idp) throws DorianInternalFault, InvalidTrustedIdPFault {
+        buildDatabase();
+        Connection c = null;
+
+        try {
+            c = db.getConnection();
+            PreparedStatement s = c.prepareStatement("select " + PUBLISH_FIELD + " from " + TRUST_MANAGER_TABLE + " WHERE ID= ?");
+            s.setLong(1, idp.getId());
+            ResultSet rs = s.executeQuery();
+            boolean publish = true;
+            if (rs.next()) {
+                String publishStr = rs.getString(PUBLISH_FIELD);
+                if ((publishStr != null) && (publishStr.equalsIgnoreCase("Y"))) {
+                	publish = true;
+                } else {
+                	publish = false;
+                }
+            } else {
+                InvalidTrustedIdPFault fault = new InvalidTrustedIdPFault();
+                fault.setFaultString("The Trusted IdP " + idp.getId() + " does not exist.");
+                throw fault;
+            }
+            rs.close();
+            s.close();
+            return publish;
+        } catch (InvalidTrustedIdPFault f) {
+            throw f;
+        } catch (Exception e) {
+            DorianInternalFault fault = new DorianInternalFault();
+            fault.setFaultString("Error obtaining the Trusted IdP " + idp.getId() + ", unexpected database error");
+            FaultHelper helper = new FaultHelper(fault);
+            helper.addFaultCause(e);
+            fault = (DorianInternalFault) helper.getFault();
+            throw fault;
+        } finally {
+            db.releaseConnection(c);
+        }
+	}
 
 }

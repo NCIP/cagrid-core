@@ -501,5 +501,32 @@ public interface DorianI {
    */
   public void updateAccountProfile(org.cagrid.gaards.dorian.idp.AccountProfile profile) throws RemoteException, org.cagrid.gaards.dorian.stubs.types.DorianInternalFault, org.cagrid.gaards.dorian.stubs.types.InvalidUserPropertyFault, org.cagrid.gaards.dorian.stubs.types.PermissionDeniedFault, org.cagrid.gaards.dorian.stubs.types.NoSuchUserFault ;
 
+  /**
+   * Sets the Publish flag for the give Trusted IdP
+   *
+   * @param trustedIdP
+   * @param publish
+   * @throws DorianInternalFault
+   *	An unexpected internal Dorian error.
+   * @throws InvalidTrustedIdPFault
+   *	Invalid Trusted Identity Provider specified.
+   * @throws PermissionDeniedFault
+   *	Client does not have permission to perform the request.
+   */
+  public void setPublish(org.cagrid.gaards.dorian.federation.TrustedIdP trustedIdP,boolean publish) throws RemoteException, org.cagrid.gaards.dorian.stubs.types.DorianInternalFault, org.cagrid.gaards.dorian.stubs.types.InvalidTrustedIdPFault, org.cagrid.gaards.dorian.stubs.types.PermissionDeniedFault ;
+
+  /**
+   * Gets the Publish flag of the Trusted IdP 
+   *
+   * @param trustedIdP
+   * @throws DorianInternalFault
+   *	An unexpected internal Dorian error.
+   * @throws InvalidTrustedIdPFault
+   *	Invalid Trusted Identity Provider specified.
+   * @throws PermissionDeniedFault
+   *	Client does not have permission to perform the request.
+   */
+  public boolean getPublish(org.cagrid.gaards.dorian.federation.TrustedIdP trustedIdP) throws RemoteException, org.cagrid.gaards.dorian.stubs.types.DorianInternalFault, org.cagrid.gaards.dorian.stubs.types.InvalidTrustedIdPFault, org.cagrid.gaards.dorian.stubs.types.PermissionDeniedFault ;
+
 }
 

@@ -191,7 +191,6 @@ public class DorianRemoteIdentityProviderTest extends ServiceStoryBase {
             SAMLAuthenticationMethod[] methods = new SAMLAuthenticationMethod[1];
             methods[0] = SAMLAuthenticationMethod.fromValue("urn:oasis:names:tc:SAML:1.0:am:unspecified");
             idp.setAuthenticationMethod(methods);
-            idp.setPublish(true);
 
             steps.add(new AddTrustedIdPStep(dorianURL, admin, idp));
 

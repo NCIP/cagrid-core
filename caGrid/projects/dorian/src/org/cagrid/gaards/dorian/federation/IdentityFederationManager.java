@@ -1510,7 +1510,7 @@ public class IdentityFederationManager extends LoggingObject implements Publishe
             if (list1 != null) {
                 List<TrustedIdentityProvider> list2 = new ArrayList<TrustedIdentityProvider>();
                 for (int i = 0; i < list1.length; i++) {
-                    if ((list1[i].getStatus().equals(TrustedIdPStatus.Active) && (list1[i].isPublish()))) {
+                    if ((list1[i].getStatus().equals(TrustedIdPStatus.Active))&&tm.getPublish(list1[i])) {
                         TrustedIdentityProvider idp = new TrustedIdentityProvider();
                         idp.setName(list1[i].getName());
                         idp.setDisplayName(list1[i].getDisplayName());
@@ -1533,7 +1533,14 @@ public class IdentityFederationManager extends LoggingObject implements Publishe
             this.eventManager.logEvent(AuditConstants.SYSTEM_ID, AuditConstants.SYSTEM_ID,
                 FederationAudit.InternalError.getValue(), mess + "\n\n" + FaultUtil.printFaultToString(e));
             throw e;
-        }
+        } catch (InvalidTrustedIdPFault e) {
+            String mess = "An unexpected error occurred in obtaining a trusted identity provider :";
+            this.eventManager.logEvent(AuditConstants.SYSTEM_ID, AuditConstants.SYSTEM_ID,
+                FederationAudit.InternalError.getValue(), mess + "\n\n" + FaultUtil.printFaultToString(e));
+            DorianInternalFault fault = new DorianInternalFault();
+            fault.setFaultString(e.getFaultString());
+            throw fault;
+		}
     }
 
 
@@ -1804,4 +1811,46 @@ public class IdentityFederationManager extends LoggingObject implements Publishe
         policy.setSearchPolicy(search);
         return policy;
     }
+
+
+	public void setPublish(String callerGridIdentity, TrustedIdP idp, boolean publish) throws DorianInternalFault,
+    	InvalidTrustedIdPFault, PermissionDeniedFault {
+        try {
+            GridUser caller = getUser(callerGridIdentity);
+            verifyActiveUser(caller);
+            verifyAdminUser(caller);
+            tm.setPublish(idp, publish);
+        } catch (DorianInternalFault e) {
+            String mess = "An unexpected error occurred in updating the identity provider " + idp.getName() + " ("
+                + idp.getId() + "):";
+            this.eventManager.logEvent(AuditConstants.SYSTEM_ID, AuditConstants.SYSTEM_ID,
+                FederationAudit.InternalError.getValue(), mess + "\n\n" + FaultUtil.printFaultToString(e));
+            throw e;
+        } catch (PermissionDeniedFault e) {
+            String mess = "Caller not permitted to update a trusted identity provider:";
+            this.eventManager.logEvent(callerGridIdentity, AuditConstants.SYSTEM_ID, FederationAudit.AccessDenied
+                .getValue(), mess + "\n\n" + Utils.getExceptionMessage(e));
+            throw e;
+        }
+	}
+
+
+	public boolean getPublish(String callerGridIdentity, TrustedIdP idp) throws DorianInternalFault, InvalidTrustedIdPFault, PermissionDeniedFault {
+        try {
+            GridUser caller = getUser(callerGridIdentity);
+            verifyActiveUser(caller);
+            verifyAdminUser(caller);
+            return tm.getPublish(idp);
+        } catch (DorianInternalFault e) {
+            String mess = "An unexpected error occurred in listing the trusted identity providers.";
+            this.eventManager.logEvent(AuditConstants.SYSTEM_ID, AuditConstants.SYSTEM_ID,
+                FederationAudit.InternalError.getValue(), mess + "\n\n" + FaultUtil.printFaultToString(e));
+            throw e;
+        } catch (PermissionDeniedFault e) {
+            String mess = "Caller not permitted to list trusted identity providers:";
+            this.eventManager.logEvent(callerGridIdentity, AuditConstants.SYSTEM_ID, FederationAudit.AccessDenied
+                .getValue(), mess + "\n\n" + Utils.getExceptionMessage(e));
+            throw e;
+        }
+	}
 }
