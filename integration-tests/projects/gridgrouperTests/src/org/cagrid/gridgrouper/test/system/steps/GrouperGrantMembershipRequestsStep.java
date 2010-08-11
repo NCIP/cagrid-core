@@ -20,6 +20,6 @@ public class GrouperGrantMembershipRequestsStep extends Step {
 		GridGrouperClient grouper = new GridGrouperClient(this.endpoint);
 		grouper.setAnonymousPrefered(false);
 
-		grouper.grantMembershipRequests(new GroupIdentifier(null, this.group));
+		grouper.enableMembershipRequests(new GroupIdentifier(null, this.group));
 	}
 }
