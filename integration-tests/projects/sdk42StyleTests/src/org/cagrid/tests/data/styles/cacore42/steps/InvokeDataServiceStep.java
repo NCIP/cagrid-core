@@ -11,7 +11,6 @@ import gov.nih.nci.cagrid.testing.system.deployment.ServiceContainer;
 import gov.nih.nci.cagrid.testing.system.haste.Step;
 
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.lang.reflect.Method;
@@ -289,8 +288,16 @@ public class InvokeDataServiceStep extends Step {
             queryResults = client.query(query);
             // If this fails, we need to still be able to cleanly exit
         } catch (Exception ex) {
-            ex.printStackTrace();
-            fail("Query failed to execute: " + ex.getMessage());
+            if (isJava6()) {
+                // some of the datatypes don't play nice with JDK 6
+                if (isSpringJava6Error(ex)) {
+                    LOG.debug("Query failed due to caCORE SDK incompatibility with JDK 6", ex);
+                }
+            } else {
+                // that's a real failure
+                ex.printStackTrace();
+                fail("Query failed to execute: " + ex.getMessage());
+            }
         }
         return queryResults;
     }
@@ -528,5 +535,28 @@ public class InvokeDataServiceStep extends Step {
             fail("Error obtaining client proxy: " + ex.getMessage());
         }
         return proxyCredential;
+    }
+    
+    
+    private boolean isJava6() {
+        boolean is6 = false;
+        String val = System.getProperty("java.version");
+        if (val != null && val.startsWith("1.6")) {
+            is6 = true;
+        }
+        return is6;
+    }
+    
+    
+    private boolean isSpringJava6Error(Exception ex) {
+        String findme = "cannot assign instance of org.hibernate.proxy.pojo.cglib.SerializableProxy to field ";
+        Throwable cause = ex;
+        while (cause != null) {
+            if (cause.getMessage().contains(findme)) {
+                return true;
+            }
+            cause = cause.getCause();
+        }
+        return false;
     }
 }
