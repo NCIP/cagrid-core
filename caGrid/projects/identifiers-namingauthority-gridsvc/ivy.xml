@@ -11,6 +11,7 @@
 
 	<configurations>
 		<!-- Private Configurations -->
+		<conf name="target_grid" visibility="private" />
 		<conf name="impl" visibility="private" extends="service" />
 		<conf name="impl-test" visibility="private" />
 		<conf name="serviceTools" visibility="private" />
@@ -53,6 +54,9 @@
 			name="metadata-validator" conf="serviceTools->default" transitive="false" />
 		<dependency rev="latest.integration" org="caGrid" name="identifiers-namingauthority"
          conf="service->default" />
+         
+         <dependency rev="${target.grid}" org="caGrid" name="target_grid" conf="target_grid->urls" />
+         
 		<dependency rev="4.4" org="junit" name="junit" conf="impl-test->default" />
       <dependency rev="1.1" org="apache" name="commons-logging" conf="impl-test->default" />
 

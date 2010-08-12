@@ -26,6 +26,7 @@
 
 	<property name="ext.dir" location="${basedir}/ext" />
    <property name="ext.dependencies.dir" location="${ext.dir}/dependencies" />
+	<property name="ext.targetgrid.dir" location="${ext.dir}/target_grid" />
    <property name="ext.lib.dir" location="${ext.dependencies.dir}/service/jars" />
 	<property name="ext.test.lib.dir" value="${ext.dependencies.dir}/test/jars" />
    <property name="ext.tools.lib.dir" location="${ext.dependencies.dir}/tools/jars" />
@@ -78,7 +79,7 @@
 	<!-- Pre Init Target                                                -->
 	<!-- ============================================================== -->
 	<target name="preInit">
-
+		<runtarget target="configure" />
 	</target>
 
 	<!-- ============================================================== -->
@@ -201,7 +202,18 @@
 
 	</target>
 
+	<target name="configure" description="Configures the project based on settings.">
+		<!-- These are the template files we are copying from -->
+		<fileset id="templates.fileset" dir="${basedir}">
+			<include name="*.template" />
+		</fileset>
 
+		<copy todir="${basedir}" overwrite="true">
+			<fileset refid="templates.fileset" />
+			<mapper type="glob" from="*.template" to="*" />
+			<filterset filtersfile="${ext.targetgrid.dir}/service_urls.properties" />
+		</copy>
+	</target>
 	
 
 
