@@ -16,6 +16,8 @@ import workflowmanagementfactoryservice.WMSOutputType;
 
 import java.rmi.RemoteException;
 import java.util.Calendar;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 import javax.naming.Context;
 import javax.naming.InitialContext;
@@ -28,6 +30,7 @@ import javax.naming.InitialContext;
  */
 public class TavernaWorkflowServiceImpl extends TavernaWorkflowServiceImplBase {
 
+	ExecutorService threadExecutor = Executors.newFixedThreadPool(2);
 	public TavernaWorkflowServiceImpl() throws RemoteException {
 		super();
 	}
@@ -60,7 +63,7 @@ public class TavernaWorkflowServiceImpl extends TavernaWorkflowServiceImplBase {
 			}
 			workflowResource.setTerminationTime(termTime);
 	        
-			workflowResource.createWorkflow(wMSInputElement);
+			workflowResource.createWorkflow(wMSInputElement, threadExecutor);
 			WMSOutputType wMSOutputElement = new WMSOutputType();
 			wMSOutputElement.setWorkflowEPR(epr);
 			return wMSOutputElement;

@@ -4,6 +4,8 @@ import gov.nih.nci.cagrid.workflow.service.impl.service.globus.resource.TavernaW
 
 import java.rmi.RemoteException;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.globus.wsrf.InvalidResourceKeyException;
 import org.globus.wsrf.NoResourceHomeException;
 import org.globus.wsrf.NoSuchResourceException;
@@ -28,6 +30,8 @@ import workflowmanagementfactoryservice.WorkflowStatusType;
  * 
  */
 public class TavernaWorkflowServiceImplImpl extends TavernaWorkflowServiceImplImplBase {
+
+    private static Log LOG = LogFactory.getLog(TavernaWorkflowServiceImplResource.class);
 
 	public TavernaWorkflowServiceImplImpl() throws RemoteException {
 		super();
@@ -71,11 +75,15 @@ public class TavernaWorkflowServiceImplImpl extends TavernaWorkflowServiceImplIm
 	}
 
   public workflowmanagementfactoryservice.WorkflowStatusType start(workflowmanagementfactoryservice.StartInputType startInputElement) throws RemoteException, gov.nih.nci.cagrid.workflow.service.impl.stubs.types.CannotStartWorkflowFault {
-		return this.getWorkflowResource().start(startInputElement);
+	  return this.getWorkflowResource().start(startInputElement);
 	}
 
   public workflowmanagementfactoryservice.WorkflowStatusType startWorkflow(workflowmanagementfactoryservice.StartInputType startInputElement) throws RemoteException, gov.nih.nci.cagrid.workflow.service.impl.stubs.types.CannotStartWorkflowFault {
-		return this.getWorkflowResource().start(startInputElement);
+	  if(!this.getWorkflowResource().getStatus().equals(WorkflowStatusType.Pending)){		  
+		  LOG.info("Status is: " + this.getStatus().getValue());
+		  throw new RemoteException("The workflow was already started and the status is: " + this.getStatus());
+	  }
+	  return this.getWorkflowResource().start(startInputElement);
 	  }
 
   public void setDelegatedCredential(org.cagrid.gaards.cds.delegated.stubs.types.DelegatedCredentialReference delegatedCredentialReference) throws RemoteException, gov.nih.nci.cagrid.workflow.service.impl.stubs.types.CannotSetCredential {
@@ -93,7 +101,8 @@ public class TavernaWorkflowServiceImplImpl extends TavernaWorkflowServiceImplIm
 	// Currently, setTerminationTime can be used to destroy it.
 	public boolean remove() {
 		try {
-
+			
+			this.getWorkflowResource().remove();
 			ResourceContext.getResourceContext().getResourceHome().remove( ResourceContext.getResourceContext().getResourceKey());
 
 		} catch (NoSuchResourceException e) {

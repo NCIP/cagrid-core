@@ -129,30 +129,6 @@ public class ExecuteWorkflow extends java.lang.Object
 		System.err.println("executeworkflow -scuflFile <workflowFile> -input:<portname> <inputValue> -input:<portname> <invputvalue>.....");
 	}
 
-//	public static void main(String[] args) throws Exception {
-//		String[] inputs;
-//		if(args.length > 0)
-//		{
-//			inputs = args;
-//		}
-//		else{
-//			
-//			//	String workflow = System.getProperty("user.dir") + System.getProperty("file.separator") + "workflows/" + "caINT2_PCA_CMS_090826.t2flow";
-//			//String workflow = System.getProperty("user.dir") + System.getProperty("file.separator") + "workflows/" + "PCA_transfer_plugin.t2flow";
-//			//	String[] inputArgs = {"/Users/sulakhe/Desktop/dina/workingdir", "/Users/sulakhe/Desktop/dina/all_aml_train.gct"};
-//
-//			String input1 = System.getProperty("user.dir");
-//			String input = System.getProperty("user.dir") + System.getProperty("file.separator") + "workflows/all_aml_train.gct";
-//		
-////			String workflow = System.getProperty("user.dir") + System.getProperty("file.separator") + "workflows/PCA_transfer_plugin.t2flow";
-//			String workflow = System.getProperty("user.dir") + System.getProperty("file.separator") + "workflows/fishsoup.t2flow";
-//			String[] temp = {workflow, input1, input};
-//		
-//			inputs = temp;
-//		}
-//		new ExecuteWorkflow().run(inputs);		
-//	}
-
 	protected ApplicationContext appContext;
 
 	protected InvocationContext invocationContext;
