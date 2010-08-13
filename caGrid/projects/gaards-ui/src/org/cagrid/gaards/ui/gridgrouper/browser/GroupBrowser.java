@@ -183,7 +183,8 @@ public class GroupBrowser extends BaseBrowserPanel {
 	private JButton allowMembershipRequestsButton = null;
 
 	private JPanel upperPanel = null;
-	
+
+	private boolean membershipRequestsSupported = false;
 	private boolean membershipRequestsEnabled = false;
 
     /**
@@ -192,7 +193,8 @@ public class GroupBrowser extends BaseBrowserPanel {
     public GroupBrowser(GroupTreeNode node) {
         super();
         this.node = node;
-        this.group = node.getGroup();
+        this.group = node.getGroup();	
+        checkMembershipRequestsSupport();
         initialize();
         this.setGroup();
 
@@ -228,16 +230,6 @@ public class GroupBrowser extends BaseBrowserPanel {
         this.getIsComposite().setText(String.valueOf(group.isComposite()));
         this.getRemoveCompositeButton().setEnabled(group.hasComposite());
 
-		StemTreeNode stemTreeNode = node.getTree().getRootNode().getStemTreeNode(node.getGridGrouper());
-		String gridGrouperVersion = stemTreeNode.getGridGrouperVersion();
-		try {
-			if (doesGridGrouperSupportMembershipRequests(gridGrouperVersion)) {
-				this.membershipRequestsEnabled = group.isMembershipRequestEnabled();
-			}
-		} catch (Exception e) {
-			membershipRequestsEnabled = false;
-		}
-
     }
 
 
@@ -259,8 +251,6 @@ public class GroupBrowser extends BaseBrowserPanel {
     }
 
 
-
-
     /**
      * This method initializes groupDetails
      * 
@@ -273,9 +263,7 @@ public class GroupBrowser extends BaseBrowserPanel {
             groupDetails.addTab("Privileges", null, getPrivileges(), null);
             groupDetails.addTab("Members", null, getMembers(), null);
             
-    		StemTreeNode stemTreeNode = node.getTree().getRootNode().getStemTreeNode(node.getGridGrouper());
-    		String gridGrouperVersion = stemTreeNode.getGridGrouperVersion();
-            if (doesGridGrouperSupportMembershipRequests(gridGrouperVersion)) {
+            if (membershipRequestsSupported) {
             	groupDetails.addTab("Membership Requests", null, getMembershipRequestsPanel(), null);
             }
         }
@@ -1469,6 +1457,7 @@ public class GroupBrowser extends BaseBrowserPanel {
         	membershipRequestsFilter.addItem("Approved");
         	membershipRequestsFilter.addItem("Rejected");
         	membershipRequestsFilter.addItem("Removed");
+        	membershipRequestsFilter.setEnabled(membershipRequestsEnabled);
         }
         return membershipRequestsFilter;
     }
@@ -1477,6 +1466,7 @@ public class GroupBrowser extends BaseBrowserPanel {
         if (listMembershipRequests == null) {
         	listMembershipRequests = new JButton();
         	listMembershipRequests.setText("Search");
+        	listMembershipRequests.setEnabled(membershipRequestsEnabled);
         	listMembershipRequests.addActionListener(new java.awt.event.ActionListener() {
                 public void actionPerformed(java.awt.event.ActionEvent e) {
                     Runner runner = new Runner() {
@@ -1716,6 +1706,19 @@ public class GroupBrowser extends BaseBrowserPanel {
 		getRequestMembershipButton().setEnabled(enable);		
 	}
 	
+	private void checkMembershipRequestsSupport() {
+		StemTreeNode stemTreeNode = node.getTree().getRootNode().getStemTreeNode(node.getGridGrouper());
+		String gridGrouperVersion = stemTreeNode.getGridGrouperVersion();
+		try {
+			membershipRequestsSupported = doesGridGrouperSupportMembershipRequests(gridGrouperVersion);
+			if (membershipRequestsSupported) {
+				this.membershipRequestsEnabled = group.isMembershipRequestEnabled();
+			} 
+		} catch (Exception e) {
+			membershipRequestsEnabled = false;
+		}
+	}
+
     private boolean doesGridGrouperSupportMembershipRequests(String gridGrouperVersion) {
     	try {
 			if (Double.parseDouble(gridGrouperVersion) < 1.4) {
