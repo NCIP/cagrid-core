@@ -756,4 +756,67 @@ public class GridAdministrationClient extends DorianBaseClient {
         }
 
     }
+    
+    /**
+     * This method allows a client to update a trusted identity provider's publish status.
+     * 
+     * @param idp
+     * @param publish
+     * @throws DorianFault
+     * @throws PermissionDeniedFault
+     * @throws InvalidTrustedIdPFault
+     * @throws DorianInternalFault
+     */
+    public void setPublish(TrustedIdP idp, boolean publish) throws DorianFault, PermissionDeniedFault, InvalidTrustedIdPFault,
+        DorianInternalFault {
+        try {
+            getClient().setPublish(idp, publish);
+        } catch (DorianInternalFault gie) {
+            throw gie;
+        } catch (PermissionDeniedFault f) {
+            throw f;
+        } catch (InvalidTrustedIdPFault f) {
+            throw f;
+        } catch (Exception e) {
+            FaultUtil.printFault(e);
+            DorianFault fault = new DorianFault();
+            fault.setFaultString(Utils.getExceptionMessage(e));
+            FaultHelper helper = new FaultHelper(fault);
+            helper.addFaultCause(e);
+            fault = (DorianFault) helper.getFault();
+            throw fault;
+        }
+    }
+    
+    /**
+     * This method allows a client to retrieve a trusted identity provider's publish status.
+     * 
+     * @param idp
+     * @return the idp's publish status
+     * @throws DorianFault
+     * @throws PermissionDeniedFault
+     * @throws InvalidTrustedIdPFault
+     * @throws DorianInternalFault
+     */
+    public boolean getPublish(TrustedIdP idp) throws DorianFault, PermissionDeniedFault, InvalidTrustedIdPFault,
+        DorianInternalFault {
+        try {
+            return getClient().getPublish(idp);
+        } catch (DorianInternalFault gie) {
+            throw gie;
+        } catch (PermissionDeniedFault f) {
+            throw f;
+        } catch (InvalidTrustedIdPFault f) {
+            throw f;
+        } catch (Exception e) {
+            FaultUtil.printFault(e);
+            DorianFault fault = new DorianFault();
+            fault.setFaultString(Utils.getExceptionMessage(e));
+            FaultHelper helper = new FaultHelper(fault);
+            helper.addFaultCause(e);
+            fault = (DorianFault) helper.getFault();
+            throw fault;
+        }
+    }
+
 }

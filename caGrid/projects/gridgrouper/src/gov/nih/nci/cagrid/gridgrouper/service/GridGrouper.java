@@ -2269,7 +2269,6 @@ public class GridGrouper {
 			session = GrouperSession.start(subj);
 			Group grp = GroupFinder.findByName(session, group.getGroupName());
 			
-			MembershipRequest.configureGroup(session, grp);
 			String isEnabled = grp.getAttribute("allowMembershipRequests");
 			
 			if ("true".equalsIgnoreCase(isEnabled)) {
@@ -2285,14 +2284,9 @@ public class GridGrouper {
 			helper.addFaultCause(e);
 			fault = (GroupNotFoundFault) helper.getFault();
 			throw fault;
-		} catch (InsufficientPrivilegeException e) {
-			InsufficientPrivilegeFault fault = new InsufficientPrivilegeFault();
-			fault.setFaultString("You do not have the right to manages privileges on the group " + group.getGroupName()
-				+ ": " + e.getMessage());
-			FaultHelper helper = new FaultHelper(fault);
-			helper.addFaultCause(e);
-			fault = (InsufficientPrivilegeFault) helper.getFault();
-			throw fault;
+		} catch (AttributeNotFoundException e) {
+			this.log.debug(e.getMessage(), e);
+			return false;
 		} catch (Exception e) {
 			this.log.error(e.getMessage(), e);
 			GridGrouperRuntimeFault fault = new GridGrouperRuntimeFault();

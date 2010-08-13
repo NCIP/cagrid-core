@@ -532,4 +532,28 @@ public class DorianClient extends DorianClientBase implements DorianI {
     }
   }
 
+  public void setPublish(org.cagrid.gaards.dorian.federation.TrustedIdP trustedIdP,boolean publish) throws RemoteException, org.cagrid.gaards.dorian.stubs.types.DorianInternalFault, org.cagrid.gaards.dorian.stubs.types.InvalidTrustedIdPFault, org.cagrid.gaards.dorian.stubs.types.PermissionDeniedFault {
+    synchronized(portTypeMutex){
+      configureStubSecurity((Stub)portType,"setPublish");
+    org.cagrid.gaards.dorian.stubs.SetPublishRequest params = new org.cagrid.gaards.dorian.stubs.SetPublishRequest();
+    org.cagrid.gaards.dorian.stubs.SetPublishRequestTrustedIdP trustedIdPContainer = new org.cagrid.gaards.dorian.stubs.SetPublishRequestTrustedIdP();
+    trustedIdPContainer.setTrustedIdP(trustedIdP);
+    params.setTrustedIdP(trustedIdPContainer);
+    params.setPublish(publish);
+    org.cagrid.gaards.dorian.stubs.SetPublishResponse boxedResult = portType.setPublish(params);
+    }
+  }
+
+  public boolean getPublish(org.cagrid.gaards.dorian.federation.TrustedIdP trustedIdP) throws RemoteException, org.cagrid.gaards.dorian.stubs.types.DorianInternalFault, org.cagrid.gaards.dorian.stubs.types.InvalidTrustedIdPFault, org.cagrid.gaards.dorian.stubs.types.PermissionDeniedFault {
+    synchronized(portTypeMutex){
+      configureStubSecurity((Stub)portType,"getPublish");
+    org.cagrid.gaards.dorian.stubs.GetPublishRequest params = new org.cagrid.gaards.dorian.stubs.GetPublishRequest();
+    org.cagrid.gaards.dorian.stubs.GetPublishRequestTrustedIdP trustedIdPContainer = new org.cagrid.gaards.dorian.stubs.GetPublishRequestTrustedIdP();
+    trustedIdPContainer.setTrustedIdP(trustedIdP);
+    params.setTrustedIdP(trustedIdPContainer);
+    org.cagrid.gaards.dorian.stubs.GetPublishResponse boxedResult = portType.getPublish(params);
+    return boxedResult.isResponse();
+    }
+  }
+
 }

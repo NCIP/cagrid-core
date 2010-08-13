@@ -225,6 +225,14 @@ public class DorianAuthorization implements PDP {
 	public void authorizeUpdateAccountProfile(Subject peerSubject, MessageContext context, QName operation) throws AuthorizationException {
 		
 	}
+	   				
+	public void authorizeSetPublish(Subject peerSubject, MessageContext context, QName operation) throws AuthorizationException {
+		
+	}
+	   				
+	public void authorizeGetPublish(Subject peerSubject, MessageContext context, QName operation) throws AuthorizationException {
+		
+	}
 	   
 	
 	public boolean isPermitted(Subject peerSubject, MessageContext context, QName operation)
@@ -361,6 +369,12 @@ public class DorianAuthorization implements PDP {
 			return true;
 		} else if(operation.getLocalPart().equals("updateAccountProfile")){
 			authorizeUpdateAccountProfile(peerSubject, context, operation);
+			return true;
+		} else if(operation.getLocalPart().equals("setPublish")){
+			authorizeSetPublish(peerSubject, context, operation);
+			return true;
+		} else if(operation.getLocalPart().equals("getPublish")){
+			authorizeGetPublish(peerSubject, context, operation);
 			return true;
 		} 		
 		return false;

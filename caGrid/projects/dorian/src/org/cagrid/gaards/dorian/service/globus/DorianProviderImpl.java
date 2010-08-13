@@ -251,4 +251,16 @@ public class DorianProviderImpl {
     return boxedResult;
   }
 
+    public org.cagrid.gaards.dorian.stubs.SetPublishResponse setPublish(org.cagrid.gaards.dorian.stubs.SetPublishRequest params) throws RemoteException, org.cagrid.gaards.dorian.stubs.types.DorianInternalFault, org.cagrid.gaards.dorian.stubs.types.InvalidTrustedIdPFault, org.cagrid.gaards.dorian.stubs.types.PermissionDeniedFault {
+    org.cagrid.gaards.dorian.stubs.SetPublishResponse boxedResult = new org.cagrid.gaards.dorian.stubs.SetPublishResponse();
+    impl.setPublish(params.getTrustedIdP().getTrustedIdP(),params.isPublish());
+    return boxedResult;
+  }
+
+    public org.cagrid.gaards.dorian.stubs.GetPublishResponse getPublish(org.cagrid.gaards.dorian.stubs.GetPublishRequest params) throws RemoteException, org.cagrid.gaards.dorian.stubs.types.DorianInternalFault, org.cagrid.gaards.dorian.stubs.types.InvalidTrustedIdPFault, org.cagrid.gaards.dorian.stubs.types.PermissionDeniedFault {
+    org.cagrid.gaards.dorian.stubs.GetPublishResponse boxedResult = new org.cagrid.gaards.dorian.stubs.GetPublishResponse();
+    boxedResult.setResponse(impl.getPublish(params.getTrustedIdP().getTrustedIdP()));
+    return boxedResult;
+  }
+
 }

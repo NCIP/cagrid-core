@@ -686,6 +686,45 @@
           <sequence />
         </complexType>
       </element>
+      <element name="SetPublishRequest">
+        <complexType>
+          <sequence>
+            <element name="trustedIdP">
+              <complexType>
+                <sequence>
+                  <element ref="ns2:TrustedIdP" minOccurs="1" maxOccurs="1" />
+                </sequence>
+              </complexType>
+            </element>
+            <element name="publish" type="xs:boolean" minOccurs="1" maxOccurs="1" />
+          </sequence>
+        </complexType>
+      </element>
+      <element name="SetPublishResponse">
+        <complexType>
+          <sequence />
+        </complexType>
+      </element>
+      <element name="GetPublishRequest">
+        <complexType>
+          <sequence>
+            <element name="trustedIdP">
+              <complexType>
+                <sequence>
+                  <element ref="ns2:TrustedIdP" minOccurs="1" maxOccurs="1" />
+                </sequence>
+              </complexType>
+            </element>
+          </sequence>
+        </complexType>
+      </element>
+      <element name="GetPublishResponse">
+        <complexType>
+          <sequence>
+            <element name="response" type="xs:boolean" minOccurs="1" maxOccurs="1" />
+          </sequence>
+        </complexType>
+      </element>
       <element name="DorianResourceProperties">
         <complexType>
           <sequence>
@@ -920,6 +959,18 @@
   </message>
   <message name="UpdateAccountProfileResponse">
     <part name="parameters" element="tns:UpdateAccountProfileResponse" />
+  </message>
+  <message name="SetPublishRequest">
+    <part name="parameters" element="tns:SetPublishRequest" />
+  </message>
+  <message name="SetPublishResponse">
+    <part name="parameters" element="tns:SetPublishResponse" />
+  </message>
+  <message name="GetPublishRequest">
+    <part name="parameters" element="tns:GetPublishRequest" />
+  </message>
+  <message name="GetPublishResponse">
+    <part name="parameters" element="tns:GetPublishResponse" />
   </message>
   <message name="DorianInternalFaultFaultMessage">
     <part name="fault" element="ns12:DorianInternalFault" />
@@ -1205,6 +1256,20 @@
       <fault name="InvalidUserPropertyFault" message="tns:InvalidUserPropertyFaultFaultMessage" wsa:Action="http://cagrid.nci.nih.gov/Dorian/InvalidUserPropertyFaultFaultMessage" />
       <fault name="PermissionDeniedFault" message="tns:PermissionDeniedFaultFaultMessage" wsa:Action="http://cagrid.nci.nih.gov/Dorian/PermissionDeniedFaultFaultMessage" />
       <fault name="NoSuchUserFault" message="tns:NoSuchUserFaultFaultMessage" wsa:Action="http://cagrid.nci.nih.gov/Dorian/NoSuchUserFaultFaultMessage" />
+    </operation>
+    <operation name="setPublish">
+      <input message="tns:SetPublishRequest" wsa:Action="http://cagrid.nci.nih.gov/Dorian/SetPublishRequest" />
+      <output message="tns:SetPublishResponse" wsa:Action="http://cagrid.nci.nih.gov/Dorian/SetPublishResponse" />
+      <fault name="DorianInternalFault" message="tns:DorianInternalFaultFaultMessage" wsa:Action="http://cagrid.nci.nih.gov/Dorian/DorianInternalFaultFaultMessage" />
+      <fault name="InvalidTrustedIdPFault" message="tns:InvalidTrustedIdPFaultFaultMessage" wsa:Action="http://cagrid.nci.nih.gov/Dorian/InvalidTrustedIdPFaultFaultMessage" />
+      <fault name="PermissionDeniedFault" message="tns:PermissionDeniedFaultFaultMessage" wsa:Action="http://cagrid.nci.nih.gov/Dorian/PermissionDeniedFaultFaultMessage" />
+    </operation>
+    <operation name="getPublish">
+      <input message="tns:GetPublishRequest" wsa:Action="http://cagrid.nci.nih.gov/Dorian/GetPublishRequest" />
+      <output message="tns:GetPublishResponse" wsa:Action="http://cagrid.nci.nih.gov/Dorian/GetPublishResponse" />
+      <fault name="DorianInternalFault" message="tns:DorianInternalFaultFaultMessage" wsa:Action="http://cagrid.nci.nih.gov/Dorian/DorianInternalFaultFaultMessage" />
+      <fault name="InvalidTrustedIdPFault" message="tns:InvalidTrustedIdPFaultFaultMessage" wsa:Action="http://cagrid.nci.nih.gov/Dorian/InvalidTrustedIdPFaultFaultMessage" />
+      <fault name="PermissionDeniedFault" message="tns:PermissionDeniedFaultFaultMessage" wsa:Action="http://cagrid.nci.nih.gov/Dorian/PermissionDeniedFaultFaultMessage" />
     </operation>
     <operation name="getServiceSecurityMetadata">
       <input message="wns0:GetServiceSecurityMetadataRequest" wsa:Action="http://security.introduce.cagrid.nci.nih.gov/ServiceSecurity/GetServiceSecurityMetadataRequest" />

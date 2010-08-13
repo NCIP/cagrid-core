@@ -121,8 +121,7 @@ public class Upgrade1_3To1_4 extends Upgrade {
                 TrustedIdP[] list = idp.getTrustedIdPs();
                 if (list != null) {
                     for (int i = 0; i < list.length; i++) {
-                        list[i].setPublish(true);
-                        idp.updateIdP(list[i]);
+                        idp.setPublish(list[i], true);
                     }
                 }
             }

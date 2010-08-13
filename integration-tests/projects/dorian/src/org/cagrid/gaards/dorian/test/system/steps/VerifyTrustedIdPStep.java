@@ -73,7 +73,7 @@ public class VerifyTrustedIdPStep extends Step {
                 if (getUserPolicyClass() != null) {
                     assertEquals(getUserPolicyClass(), idp.getUserPolicyClass());
                 }
-                assertEquals(isPublish(), idp.isPublish());
+                assertEquals(isPublish(), client.getPublish(idp));
             }
         }
         if (!found) {

@@ -246,7 +246,7 @@ public class TrustedIdPWindow extends ApplicationComponent implements DorianSess
     private JComboBox publish = null;
 
 
-    public TrustedIdPWindow(DorianSession session, TrustedIdPsWindow window, List<GridUserPolicy> policies) {
+    public TrustedIdPWindow(DorianSession session, TrustedIdPsWindow window, List<GridUserPolicy> policies) throws Exception {
         super();
         this.window = window;
         this.session = session;
@@ -320,8 +320,9 @@ public class TrustedIdPWindow extends ApplicationComponent implements DorianSess
 
     /**
      * This method initializes this
+     * @throws Exception 
      */
-    private void initialize() {
+    private void initialize() throws Exception {
         this.setContentPane(getJContentPane());
         if (this.newTrustedIdP) {
             this.setTitle("Add Trusted IdP");
@@ -338,8 +339,9 @@ public class TrustedIdPWindow extends ApplicationComponent implements DorianSess
      * This method initializes jContentPane
      * 
      * @return javax.swing.JPanel
+     * @throws Exception 
      */
-    private javax.swing.JPanel getJContentPane() {
+    private javax.swing.JPanel getJContentPane() throws Exception {
         if (jContentPane == null) {
             jContentPane = new javax.swing.JPanel();
             jContentPane.setLayout(new java.awt.BorderLayout());
@@ -353,8 +355,9 @@ public class TrustedIdPWindow extends ApplicationComponent implements DorianSess
      * This method initializes jPanel
      * 
      * @return javax.swing.JPanel
+     * @throws Exception 
      */
-    private JPanel getMainPanel() {
+    private JPanel getMainPanel() throws Exception {
         if (mainPanel == null) {
             GridBagConstraints gridBagConstraints27 = new GridBagConstraints();
             gridBagConstraints27.gridx = 0;
@@ -461,12 +464,6 @@ public class TrustedIdPWindow extends ApplicationComponent implements DorianSess
             idp.setStatus(getStatus().getSelectedStatus());
             idp.setUserPolicyClass(((UserPolicyCaddy) getUserPolicy().getSelectedItem()).getPolicy().getClassName());
 
-            if (getPublish().getSelectedItem().equals(PUBLISH_YES)) {
-                idp.setPublish(true);
-            } else {
-                idp.setPublish(false);
-            }
-
             List<SAMLAuthenticationMethod> authMethod = new ArrayList<SAMLAuthenticationMethod>();
             if (getPasswordMethod().isSelected()) {
                 authMethod.add(SAMLAuthenticationMethod.fromValue(PASSWORD));
@@ -537,13 +534,29 @@ public class TrustedIdPWindow extends ApplicationComponent implements DorianSess
 
             GridAdministrationClient client = this.session.getAdminClient();
             if (newTrustedIdP) {
-                window.addTrustedIdP(client.addTrustedIdP(idp));
+            	TrustedIdP returnedIdP = client.addTrustedIdP(idp);
+                window.addTrustedIdP(returnedIdP);
+				if (doesDorianSupportPublish()) {
+					if (getPublish().getSelectedItem().equals(PUBLISH_YES)) {
+						client.setPublish(returnedIdP, true);
+					} else {
+						client.setPublish(returnedIdP, false);
+					}
+				}
                 getProgressPanel().stopProgress("Successfully added IdP.");
                 dispose();
             } else {
                 client.updateTrustedIdP(idp);
+				if (doesDorianSupportPublish()) {
+					if (getPublish().getSelectedItem().equals(PUBLISH_YES)) {
+						client.setPublish(idp, true);
+					} else {
+						client.setPublish(idp, false);
+					}
+				}
                 getProgressPanel().stopProgress("Successfully updated IdP.");
             }
+            
         } catch (PermissionDeniedFault pdf) {
             FaultUtil.logFault(log, pdf);
             getProgressPanel().stopProgress("Error");
@@ -563,8 +576,9 @@ public class TrustedIdPWindow extends ApplicationComponent implements DorianSess
      * This method initializes jTabbedPane
      * 
      * @return javax.swing.JTabbedPane
+     * @throws Exception 
      */
-    private JTabbedPane getJTabbedPane() {
+    private JTabbedPane getJTabbedPane() throws Exception {
         if (jTabbedPane == null) {
             jTabbedPane = new JTabbedPane();
             jTabbedPane.addTab(INFO_PANEL, null, getInfoPanel());
@@ -1494,8 +1508,9 @@ public class TrustedIdPWindow extends ApplicationComponent implements DorianSess
      * This method initializes authenticationServicePanel
      * 
      * @return javax.swing.JPanel
+     * @throws Exception 
      */
-    private JPanel getAuthenticationServicePanel() {
+    private JPanel getAuthenticationServicePanel() throws Exception {
         if (authenticationServicePanel == null) {
             authenticationServicePanel = new JPanel();
             authenticationServicePanel.setLayout(new BorderLayout());
@@ -1525,8 +1540,9 @@ public class TrustedIdPWindow extends ApplicationComponent implements DorianSess
      * This method initializes jPanel3
      * 
      * @return javax.swing.JPanel
+     * @throws Exception 
      */
-    private JPanel getJPanel3() {
+    private JPanel getJPanel3() throws Exception {
         if (jPanel3 == null) {
             GridBagConstraints gridBagConstraints3 = new GridBagConstraints();
             gridBagConstraints3.fill = GridBagConstraints.HORIZONTAL;
@@ -1577,7 +1593,10 @@ public class TrustedIdPWindow extends ApplicationComponent implements DorianSess
             jPanel3.add(jLabel10, gridBagConstraints61);
             jPanel3.add(getAuthenticationServiceIdentity(), gridBagConstraints62);
             jPanel3.add(jLabel11, gridBagConstraints1);
-            jPanel3.add(getPublish(), gridBagConstraints3);
+            
+            if (doesDorianSupportPublish()) {
+            	jPanel3.add(getPublish(), gridBagConstraints3);
+            }
         }
         return jPanel3;
     }
@@ -1659,14 +1678,17 @@ public class TrustedIdPWindow extends ApplicationComponent implements DorianSess
      * This method initializes publish
      * 
      * @return javax.swing.JComboBox
+     * @throws Exception 
      */
-    private JComboBox getPublish() {
+    private JComboBox getPublish() throws Exception {
         if (publish == null) {
+        	GridAdministrationClient client = this.session.getAdminClient();
+        	
             publish = new JComboBox();
             publish.addItem(PUBLISH_YES);
             publish.addItem(PUBLISH_NO);
             if (!newTrustedIdP) {
-                if (idp.isPublish()) {
+                if (client.getPublish(idp)) {
                     publish.setSelectedItem(PUBLISH_YES);
                 } else {
                     publish.setSelectedItem(PUBLISH_NO);
@@ -1677,5 +1699,16 @@ public class TrustedIdPWindow extends ApplicationComponent implements DorianSess
         }
         return publish;
     }
+    
+    private boolean doesDorianSupportPublish() {
+    	try {
+			if (Double.parseDouble(session.getHandle().getServiceVersion()) < 1.4) {
+				return false;
+			}
+		} catch (Exception e) {
+		}
+		return true;
+    }
+
 
 }

@@ -141,7 +141,6 @@ public class Dorian extends LoggingObject {
             idp.setIdPCertificate(CertUtil.writeCertificate(this.identityProvider.getIdPCertificate()));
             idp.setStatus(TrustedIdPStatus.Active);
             idp.setAuthenticationServiceURL(serviceId);
-            idp.setPublish(true);
             SAMLAttributeDescriptor uid = new SAMLAttributeDescriptor();
             uid.setNamespaceURI(SAMLConstants.UID_ATTRIBUTE_NAMESPACE);
             uid.setName(SAMLConstants.UID_ATTRIBUTE);
@@ -528,5 +527,16 @@ public class Dorian extends LoggingObject {
         p.setFederationPolicy(this.ifm.getFederationPolicy());
         return p;
     }
+
+
+	public void setPublish(String callerGridIdentity, TrustedIdP idp, boolean publish) throws DorianInternalFault,
+    	InvalidTrustedIdPFault, PermissionDeniedFault {
+        ifm.setPublish(callerGridIdentity, idp, publish);
+	}
+
+
+	public boolean getPublish(String callerGridIdentity, TrustedIdP idp) throws DorianInternalFault, InvalidTrustedIdPFault, PermissionDeniedFault {
+		return ifm.getPublish(callerGridIdentity, idp);
+	}
 
 }
