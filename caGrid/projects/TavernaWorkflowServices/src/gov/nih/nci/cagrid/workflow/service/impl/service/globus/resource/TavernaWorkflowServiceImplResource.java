@@ -11,6 +11,8 @@ import java.io.FilenameFilter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.io.OutputStream;
 import java.rmi.RemoteException;
 import java.util.ArrayList;
@@ -18,6 +20,7 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.Map;
 import java.util.Vector;
+import java.util.concurrent.ExecutorService;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 import java.util.zip.ZipOutputStream;
@@ -41,7 +44,9 @@ import org.cagrid.transfer.context.stubs.types.TransferServiceContextReference;
 import org.cagrid.transfer.descriptor.DataDescriptor;
 import org.globus.gsi.GlobusCredential;
 import org.globus.gsi.GlobusCredentialException;
+import org.globus.wsrf.ResourceContext;
 import org.globus.wsrf.ResourceException;
+import org.globus.wsrf.ResourceKey;
 
 import workflowmanagementfactoryservice.StartInputType;
 import workflowmanagementfactoryservice.WMSInputType;
@@ -99,8 +104,18 @@ public class TavernaWorkflowServiceImplResource extends TavernaWorkflowServiceIm
 	
 	private static TavernaWorkflowServiceConfiguration config = null;
 
+	ExecutorService threadExecutor = null;
+
 	private TransferServiceContextReference transferRefForOutput = null;
 	
+	public ExecutorService getThreadExecutor() {
+		return threadExecutor;
+	}
+
+	public void setThreadExecutor(ExecutorService threadExecutor) {
+		this.threadExecutor = threadExecutor;
+	}
+
 	public TransferServiceContextReference getTransferRefForOutput() {
 		return transferRefForOutput;
 	}
@@ -110,7 +125,8 @@ public class TavernaWorkflowServiceImplResource extends TavernaWorkflowServiceIm
 	}
 
 	public WorkflowStatusType getWorkflowStatus() {
-		return this.workflowStatus;//super.getWorkflowStatusElement();
+		return this.workflowStatus;
+		//return super.getWorkflowStatusElement();
 	}
 
 	public void setWorkflowStatus(WorkflowStatusType workflowStatus) throws ResourceException {
@@ -184,7 +200,7 @@ public class TavernaWorkflowServiceImplResource extends TavernaWorkflowServiceIm
 	}
 
 	
-	private class WorkflowExecutionThread extends Thread {
+	private class WorkflowExecutionThread implements Runnable {
 		
 		private ArrayList<String> myArgs = null;
 
@@ -396,9 +412,10 @@ public class TavernaWorkflowServiceImplResource extends TavernaWorkflowServiceIm
 	}
 
 
-	public void createWorkflow(WMSInputType wMSInputElement) throws RemoteException
+	public void createWorkflow(WMSInputType wMSInputElement, ExecutorService threadExecutor) throws RemoteException
 	{
-		
+		this.setThreadExecutor(threadExecutor);
+
 		try {
 
 			String [] keys = this.getResourceKey().toString().trim().split("TavernaWorkflowServiceImplResultsKey=");
@@ -463,7 +480,8 @@ public class TavernaWorkflowServiceImplResource extends TavernaWorkflowServiceIm
 							
 			this.setWorkflowStatus(WorkflowStatusType.Active);
 			WorkflowExecutionThread executor = new WorkflowExecutionThread(myArgs);
-			executor.start();			
+			//executor.start();
+			this.getThreadExecutor().execute(executor);
 
 		} catch (Exception e) {
 			setWorkflowStatus(WorkflowStatusType.Failed);
@@ -567,9 +585,11 @@ public class TavernaWorkflowServiceImplResource extends TavernaWorkflowServiceIm
     	GlobusCredential userCredential = null;
         LOG.info("Retrieving delegated credential");
         try {
+        	
+        	//If there is no host credential, then use the following GlobusCredential.
            /* GlobusCredential credential = new GlobusCredential(
-            		"/Users/sulakhe/.cagrid/certificates/Sulakhe-2.local-cert.pem", 
-            		"/Users/sulakhe/.cagrid/certificates/Sulakhe-2.local-key.pem");
+            		"<path-to-cert.pem-file>", 
+            		"<path-to-key.pem-file>");
     		DelegatedCredentialUserClient credentialClient =
     			new DelegatedCredentialUserClient(reference, credential);        	
         	*/
@@ -687,6 +707,45 @@ public class TavernaWorkflowServiceImplResource extends TavernaWorkflowServiceIm
 		else
 			throw new RemoteException("ACTIVE: Workflow execution is not complete.");
 	}
+	
+	/**
+	 * This is the callback to destroy this resource. If anything needs to be cleaned up
+	 * when this resource is destroyed it should be done here.
+	 */
+	 	
+	public void remove() throws ResourceException {
+		
+
+		if(new File(this.getTempDir()).exists()){
+			boolean success = deleteDir(new File(this.getTempDir()));
+			if(!success){
+				LOG.error("ERROR: Failed to delete the Temp directory created by the resource.");
+			}
+			else{
+				LOG.info("Deleted the Temp directory created by the resource.");
+				super.remove();
+			}
+		}
+	}
+
+	/**
+	 * Helper method to recursively delete all the files in the Temp directory.
+	 * @param dir
+	 * @return boolean
+	 */
+	public static boolean deleteDir(File dir) { 
+		if (dir.isDirectory()) { 
+			String[] children = dir.list(); 
+			for (int i=0; i<children.length; i++) { 
+				boolean success = deleteDir(new File(dir, children[i])); 
+				if (!success) { 
+					return false; 
+				} 
+			} 
+		} // The directory is now empty so delete it 
+		return dir.delete(); 
+	} 
+	
 
 	//****** Following two methods are to get a list of all the jars from the Taverna repository******
 	//******  These jars are used to add to the classpath in process builder.				******
@@ -859,6 +918,36 @@ public class TavernaWorkflowServiceImplResource extends TavernaWorkflowServiceIm
 		}
 		this.setOutputDocOld(outputStrings);
 	}
+	
+	//This method should allow to save my objects. Its overloaded from the base class.
+    public void storeResource(ObjectOutputStream oos) throws ResourceException {
+    	if(this.getWorkflowStatus().equals(WorkflowStatusType.Done)){
+    		try {
+				oos.writeObject(this.getOutputDoc());
+				LOG.info("storeResource was called..");
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+    	}
+
+    }
+    
+	//This method should allow to load back my objects. Its overloaded from the base class.    
+    public void loadResource(ResourceKey resourceKey, ObjectInputStream ois) throws Exception {
+    	if(super.getWorkflowStatusElement().equals(WorkflowStatusType.Done)){
+    		try {
+				this.setOutputDoc((WorkflowPortType[]) ois.readObject());
+				this.setWorkflowStatus(super.getWorkflowStatusElement());
+				System.out.println("loadResource was called..");
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+    	}
+
+    }
+
 
 
 }
