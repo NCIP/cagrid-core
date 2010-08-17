@@ -356,6 +356,7 @@
 		<junit dir="${basedir}" printsummary="yes" showoutput="true">
 			<classpath refid="test.run.classpath" />
 			<formatter type="xml" />
+			<sysproperty key="build.dirs.list" value="${build.dest}, ${test.build.dest}, ${stubs.dest}"/>
 			<batchtest fork="yes" todir="${junit.results.dir}">
 				<fileset dir="${test.src.dir}">
 					<include name="**/Test*.java" />
