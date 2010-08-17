@@ -387,30 +387,6 @@ public class HistoryManager {
                 }
             }
         }
-        /*
-        int maxHistory = getMaxReports();
-        // get the number of reports down to the acceptable max
-        boolean deletedSomething = true;
-        while ((countXmlDocs(historyFiles) > maxHistory) && deletedSomething) {
-            deletedSomething = false;
-            // TOO MANY!
-            for (File f : historyFiles) {
-                if (f.isFile() && f.getName().endsWith(".xml")) {
-                    // see if the file is older than the requested cache size
-                    
-                    f.delete();
-                    deletedSomething = true;
-                    break;
-                }
-            }
-        }
-        // clean up any empty directories
-        for (File f : historyFiles) {
-            if (f.isDirectory()) {
-                deleteIfEmpty(f);
-            }
-        }
-        */
     }
 	
 	
