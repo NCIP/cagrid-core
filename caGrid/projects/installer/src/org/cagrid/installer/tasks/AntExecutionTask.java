@@ -171,8 +171,6 @@ public class AntExecutionTask extends BasicTask {
             }
 			cmd.add(propertiesFile);
 		}
-
-		cmd.add("-debug");
 		
 		// add target
 		if (target != null) {
