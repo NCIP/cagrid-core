@@ -39,6 +39,9 @@ public class CaGridInstallerAntTask extends BasicTask {
     @Override
     protected Object internalExecute(CaGridInstallerModel model) throws Exception {
         Map<String, String> env = InstallerUtils.getEnvironment(model);
+        env.put("GLOBUS_LOCATION", model.getProperty(Constants.GLOBUS_HOME));
+        env.put("CATALINA_HOME", model.getProperty(Constants.TOMCAT_HOME));
+        env.put("JBOSS_HOME", model.getProperty(Constants.JBOSS_HOME));
         
         Properties sysProps = InstallerUtils.getProxyProperties();
         if (model.getProperty(Constants.GLOBUS_HOME) != null) {

@@ -21,9 +21,6 @@ REM Java Proxy Configuration Details: http://java.sun.com/javase/6/docs/technote
 REM HTTP proxy settings
 REM set JAVA_OPTS=%JAVA_OPTS% -Dhttp.proxyHost= -Dhttp.proxyPort= -Dhttp.nonProxyHosts=\"\"
 
-REM HTTPS proxy settings
-REM set JAVA_OPTS=%JAVA_OPTS% -Dhttps.proxyHost= -Dhttps.proxyPort= -Dhttps.nonProxyHosts=\"\"
-
 REM Set username and password for HTTP proxies that require authentication
 REM set JAVA_OPTS=%JAVA_OPTS% -Dhttp.proxyPassword= -Dhttp.proxyUser=
 
