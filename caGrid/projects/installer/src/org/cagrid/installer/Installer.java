@@ -409,12 +409,11 @@ public class Installer {
 
         PropertyConfigurationStep selectHostCertConfigurationStep = new PropertyConfigurationStep(this.model
             .getMessage("configure.host.creds.title"), this.model.getMessage("configure.host.creds.desc"));
-        LabelValuePair[] values = new LabelValuePair[4];
+        LabelValuePair[] values = new LabelValuePair[3];
         values[0] = new LabelValuePair("Use GAARDS to obtain host credentials", Constants.HOST_CREDS_FROM_GAARDS);
         values[1] = new LabelValuePair("Browse to host credentials on the file system.",
             Constants.HOST_CREDS_FROM_BROWSE);
-        values[2] = new LabelValuePair("Copy in host credentials manually.", Constants.HOST_CREDS_FROM_MANUAL);
-        values[3] = new LabelValuePair("Host credentials are already installed.",
+        values[2] = new LabelValuePair("Host credentials are already installed.",
             Constants.HOST_CREDS_ALREADY_INSTALLED);
         selectHostCertConfigurationStep.getOptions().add(
             new ListPropertyConfigurationOption(Constants.HOST_CREDS_SELECTION_TYPE, "Obtain host credentials method",
