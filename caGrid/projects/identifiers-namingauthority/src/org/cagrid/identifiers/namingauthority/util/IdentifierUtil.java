@@ -39,6 +39,12 @@ public class IdentifierUtil {
             localName = URI.create(localName.getPath().substring(1));
         }
 
+        // request.getPathInfo() strips required "/" from identifier URL, replace it
+        String scheme = localName.getScheme();
+        String path = localName.getPath();
+        String url = scheme + ":/" + path;
+        localName = URI.create(url);
+
         return prefix.resolve(localName);
     }
 
