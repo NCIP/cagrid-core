@@ -38,15 +38,11 @@ public class DeployServiceTask extends BasicTask {
     @Override
     protected Object internalExecute(CaGridInstallerModel model) throws Exception {
         Map<String, String> env = InstallerUtils.getEnvironment(model);
+        env.put("GLOBUS_LOCATION", model.getProperty(Constants.GLOBUS_HOME));
+        env.put("CATALINA_HOME", model.getProperty(Constants.TOMCAT_HOME));
+        env.put("JBOSS_HOME", model.getProperty(Constants.JBOSS_HOME));
+        
         Properties sysProps = InstallerUtils.getProxyProperties();
-        if (model.isSet(Constants.JBOSS_HOME) &&
-            model.getProperty(Constants.CONTAINER_TYPE).equals(Constants.CONTAINER_TYPE_JBOSS) ) {
-            sysProps.put("env.JBOSS_HOME", model.getProperty(Constants.JBOSS_HOME) );
-        }
-        if (model.isSet(Constants.TOMCAT_HOME) &&
-            model.getProperty(Constants.CONTAINER_TYPE).equals(Constants.CONTAINER_TYPE_TOMCAT) ) {
-            sysProps.put("env.CATALINA_HOME", model.getProperty(Constants.TOMCAT_HOME) );
-        }
 
         return runAntTask(model, env, sysProps);
 

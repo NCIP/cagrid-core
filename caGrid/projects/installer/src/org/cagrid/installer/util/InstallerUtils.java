@@ -448,18 +448,6 @@ public class InstallerUtils {
                continue;
            }
            
-           // Add variables to support build of caGrid on clean system
-           if (! newEnv.containsKey("GLOBUS_LOCATION")) {
-               newEnv.put("GLOBUS_LOCATION", model.getProperty(Constants.GLOBUS_HOME));
-           }
-           if (! newEnv.containsKey("CATALINA_HOME")) {
-               newEnv.put("CATALINA_HOME", model.getProperty(Constants.TOMCAT_HOME));
-           }
-           if (! newEnv.containsKey("JBOSS_HOME")) {
-        	   newEnv.put("JBOSS_HOME", model.getProperty(Constants.JBOSS_HOME));
-           }
-           
-           
            // copy all other entries
            newEnv.put(name,value);
         }

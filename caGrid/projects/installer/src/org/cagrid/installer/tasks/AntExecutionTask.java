@@ -73,12 +73,18 @@ public class AntExecutionTask extends BasicTask {
 			}
 			File baseDir = buildFile.getParentFile();
 			
-			Map<String, String> env = InstallerUtils.getEnvironment(model);
+			if(this.environment == null){
+                this.environment = InstallerUtils.getEnvironment(model);
+	        }
 			
-			String[] envp = new String[env.size()];
+	        if(!this.environment.containsKey("JAVA_HOME")){
+	                this.environment.put("JAVA_HOME", InstallerUtils.getJavaHomePath());
+	        }
+			
+			String[] envp = new String[this.environment.size()];
 			int i = 0;
-			for (String key : env.keySet()) {
-				envp[i++] = key + "=" + env.get(key);
+			for (String key : this.environment.keySet()) {
+				envp[i++] = key + "=" + this.environment.get(key);
 			}
 
 			runAnt(model, baseDir, buildFilePath, this.target,
@@ -166,6 +172,8 @@ public class AntExecutionTask extends BasicTask {
 			cmd.add(propertiesFile);
 		}
 
+		cmd.add("-debug");
+		
 		// add target
 		if (target != null) {
 			cmd.add(target);
@@ -175,6 +183,7 @@ public class AntExecutionTask extends BasicTask {
 		for (String s : cmd) {
 			sb.append(s).append(" ");
 		}
+
 		logger.info("Executing Ant: " + sb);
 
 		// run ant
