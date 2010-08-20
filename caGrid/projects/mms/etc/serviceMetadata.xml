@@ -258,11 +258,11 @@
   </ns2:Service>
  </ns1:serviceDescription>
  <ns1:hostingResearchCenter>
-  <ns25:ResearchCenter displayName="OSU" shortName="OSU" xmlns:ns25="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common">
-   <ns25:Address country="US" locality="Columbus" postalCode="43210" stateProvince="OH" street1="333 W 10th Ave" street2=""/>
+  <ns25:ResearchCenter displayName="" shortName="" xmlns:ns25="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common">
+   <ns25:Address country="" locality="" postalCode="" stateProvince="" street1="" street2=""/>
    <ns25:ResearchCenterDescription description="" homepageURL="" imageURL="" rssNewsURL=""/>
    <ns25:pointOfContactCollection>
-    <ns25:PointOfContact affiliation="OSU" email="CAGRID_USERS-L@LIST.NIH.GOV" firstName="Scott" lastName="Oster" phoneNumber="" role="Maintainer"/>
+    <ns25:PointOfContact affiliation="" email="" firstName="" lastName="" phoneNumber="" role=""/>
    </ns25:pointOfContactCollection>
   </ns25:ResearchCenter>
  </ns1:hostingResearchCenter>
