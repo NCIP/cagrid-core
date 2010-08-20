@@ -32,17 +32,19 @@ public class IdentifierUtil {
             throw new IllegalArgumentException("Localname must be a relative URI.");
 
         }
-
-        // trim off any leading / so the URI resolving doesn't treat it as an
-        // absolute path
-        if (localName.getPath().startsWith("/")) {
-            localName = URI.create(localName.getPath().substring(1));
-        }
-
+        
         // request.getPathInfo() strips required "/" from identifier URL, replace it
         String scheme = localName.getScheme();
         String path = localName.getPath();
-        String url = scheme + ":/" + path;
+        // trim off any leading / so the URI resolving doesn't treat it as an
+        // absolute path
+        if (path.startsWith("/")) {
+            path = path.substring(1);
+        }
+        String url = path;
+        if (scheme != null) {
+            url = scheme + ":/" + path;
+        }
         localName = URI.create(url);
 
         return prefix.resolve(localName);
