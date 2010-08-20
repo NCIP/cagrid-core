@@ -60,7 +60,9 @@
 	<xs:element name="Configuration" type="Configuration"/>
 	<xs:complexType name="Configuration">
 		<xs:sequence>
-			<xs:element name="gridSvcUrl" type="xs:string" minOccurs="1" maxOccurs="1"/>
+			<xs:element name="naGridSvcURI" type="xs:string"/>
+			<xs:element name="naPrefixURI" type="xs:string"/>
+			<xs:element name="naBaseURI" type="xs:string"/>
 		</xs:sequence>
 	</xs:complexType>
 </xs:schema>
