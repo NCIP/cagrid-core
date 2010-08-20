@@ -173,52 +173,40 @@ public class NamingAuthoritySecurityTestCase extends NamingAuthorityTestCaseBase
 		//
 		// Resolution
 		//
-		boolean gotexpected = false;
 		try {
 			this.NamingAuthority.resolveIdentifier(null, id);
+			fail("Expected NamingAuthoritySecurityException was not raised");
 		} catch (NamingAuthoritySecurityException e) {
-			e.printStackTrace();
-			gotexpected = true;
+			// expected
 		} catch (Exception e) {
 			e.printStackTrace();
 			fail(e.getMessage());
-		}
-		if (!gotexpected) {
-			fail("Expected NamingAuthoritySecurityException was not raised");
 		}
 		
 		//
 		// getKeys
 		//
-		gotexpected = false;
 		try {
 			this.NamingAuthority.getKeyNames(null, id);
+			fail("Expected NamingAuthoritySecurityException was not raised");
 		} catch (NamingAuthoritySecurityException e) {
-			e.printStackTrace();
-			gotexpected = true;
+			// expected
 		} catch (Exception e) {
 			e.printStackTrace();
 			fail(e.getMessage());
-		}
-		if (!gotexpected) {
-			fail("Expected NamingAuthoritySecurityException was not raised");
 		}
 		
 		//
 		// getKeyData
 		//
-		gotexpected = false;
 		try {
 			this.NamingAuthority.getKeyData(null, id, "CODE");
+			fail("Expected NamingAuthoritySecurityException was not raised");
 		} catch (NamingAuthoritySecurityException e) {
-			e.printStackTrace();
-			gotexpected = true;
+			// expected
 		} catch (Exception e) {
 			e.printStackTrace();
 			fail(e.getMessage());
-		}
-		if (!gotexpected) {
-			fail("Expected NamingAuthoritySecurityException was not raised");
 		}
 	}
 	
@@ -227,7 +215,6 @@ public class NamingAuthoritySecurityTestCase extends NamingAuthorityTestCaseBase
 	// (identifier security - READWRITE_IDENTIFIERS.READ_USERS)
 	///////////////////////////////////////////////////////////////
 	public void testResolveIdentifier2() {
-		
 		// Create security identifier
 		URI rwIdentifier = null;
 		IdentifierData values = new IdentifierData();
@@ -255,52 +242,40 @@ public class NamingAuthoritySecurityTestCase extends NamingAuthorityTestCaseBase
 		//
 		// Resolution
 		//
-		boolean gotexpected = false;
 		try {
 			this.NamingAuthority.resolveIdentifier(null, id);
+			fail("Expected NamingAuthoritySecurityException was not raised");
 		} catch (NamingAuthoritySecurityException e) {
-			e.printStackTrace();
-			gotexpected = true;
+			// expected
 		} catch (Exception e) {
 			e.printStackTrace();
 			fail(e.getMessage());
-		}
-		if (!gotexpected) {
-			fail("Expected NamingAuthoritySecurityException was not raised");
 		}
 		
 		//
 		// getKeys
 		//
-		gotexpected = false;
 		try {
 			this.NamingAuthority.getKeyNames(null, id);
+			fail("Expected NamingAuthoritySecurityException was not raised");
 		} catch (NamingAuthoritySecurityException e) {
-			e.printStackTrace();
-			gotexpected = true;
+			// expected
 		} catch (Exception e) {
 			e.printStackTrace();
 			fail(e.getMessage());
-		}
-		if (!gotexpected) {
-			fail("Expected NamingAuthoritySecurityException was not raised");
 		}
 		
 		//
 		// getKeyValues
 		//
-		gotexpected = false;
 		try {
 			this.NamingAuthority.getKeyData(null, id, "CODE");
+			fail("Expected NamingAuthoritySecurityException was not raised");
 		} catch (NamingAuthoritySecurityException e) {
-			e.printStackTrace();
-			gotexpected = true;
+			// expected
 		} catch (Exception e) {
 			e.printStackTrace();
 			fail(e.getMessage());
-		}
-		if (!gotexpected) {
-			fail("Expected NamingAuthoritySecurityException was not raised");
 		}
 	}
 	
@@ -309,7 +284,6 @@ public class NamingAuthoritySecurityTestCase extends NamingAuthorityTestCaseBase
 	// (key security)
 	///////////////////////////////////////////////////////////////
 	public void testResolveIdentifier3() {
-		
 		// Create security identifier
 		URI rwIdentifier = null;
 		IdentifierData values = new IdentifierData();
@@ -335,52 +309,40 @@ public class NamingAuthoritySecurityTestCase extends NamingAuthorityTestCaseBase
 		//
 		// Resolution
 		//
-		boolean gotexpected = false;
 		try {
 			this.NamingAuthority.resolveIdentifier(null, id);
+			fail("Expected NamingAuthoritySecurityException was not raised");
 		} catch (NamingAuthoritySecurityException e) {
-			e.printStackTrace();
-			gotexpected = true;
+			// expected
 		} catch (Exception e) {
 			e.printStackTrace();
 			fail(e.getMessage());
 		}
-		if (!gotexpected) {
-			fail("Expected NamingAuthoritySecurityException was not raised");
-		}	
 		
 		//
 		// getKeys
 		//
-		gotexpected = false;
 		try {
 			this.NamingAuthority.getKeyNames(null, id);
+			fail("Expected NamingAuthoritySecurityException was not raised");
 		} catch (NamingAuthoritySecurityException e) {
-			e.printStackTrace();
-			gotexpected = true;
+			// expected
 		} catch (Exception e) {
 			e.printStackTrace();
 			fail(e.getMessage());
-		}
-		if (!gotexpected) {
-			fail("Expected NamingAuthoritySecurityException was not raised");
 		}
 		
 		//
 		// getKeyValues
 		//
-		gotexpected = false;
 		try {
 			this.NamingAuthority.getKeyData(null, id, "CODE");
+			fail("Expected NamingAuthoritySecurityException was not raised");
 		} catch (NamingAuthoritySecurityException e) {
-			e.printStackTrace();
-			gotexpected = true;
+			// expected
 		} catch (Exception e) {
 			e.printStackTrace();
 			fail(e.getMessage());
-		}
-		if (!gotexpected) {
-			fail("Expected NamingAuthoritySecurityException was not raised");
 		}
 	}
 	
@@ -389,23 +351,19 @@ public class NamingAuthoritySecurityTestCase extends NamingAuthorityTestCaseBase
 	// (trying to replace system identifier key)
 	///////////////////////////////////////////////////////////////
 	public void testReplaceKeys1() {
-		
 		//
 		// Can we tamper with the system identifier?
 		//
-		boolean gotexpected = false;
 		IdentifierValues values = new IdentifierValues();
 		values.put(Keys.ADMIN_USERS, new KeyValues(new String[] {"A"}));
 		try {
 			this.NamingAuthority.replaceKeyValues(null, getSystemIdentifier(), values);
+			fail("Expected NamingAuthoritySecurityException was not raised");
 		} catch (NamingAuthoritySecurityException e) {
-			gotexpected = true;
+			// expected
 		} catch (Exception e) {
 			e.printStackTrace();
 			fail(e.getMessage());
-		}
-		if (!gotexpected) {
-			fail("Expected NamingAuthoritySecurityException was not raised");
 		}
 	}
 	
@@ -414,7 +372,6 @@ public class NamingAuthoritySecurityTestCase extends NamingAuthorityTestCaseBase
 	// (trying to replace key in identifier with empty list of writers)
 	///////////////////////////////////////////////////////////////
 	public void testReplaceKeys2() {
-		
 		URI id = null;
 		IdentifierData values = new IdentifierData();
 		values.put("CODE", new KeyData(null, new String[]{"007"}));
@@ -426,19 +383,16 @@ public class NamingAuthoritySecurityTestCase extends NamingAuthorityTestCaseBase
 			fail(e.getMessage());
 		} 
 		
-		boolean gotexpected = false;
 		IdentifierValues values2 = new IdentifierValues();
 		values2.put("CODE", new KeyValues(new String[] {"008"}));
 		try {
 			this.NamingAuthority.replaceKeyValues(null, id, values2);
+			fail("Expected NamingAuthoritySecurityException was not raised");
 		} catch (NamingAuthoritySecurityException e) {
-			gotexpected = true;
+			// expected
 		} catch (Exception e) {
 			e.printStackTrace();
 			fail(e.getMessage());
-		}
-		if (!gotexpected) {
-			fail("Expected NamingAuthoritySecurityException was not raised");
 		}
 	}
 	
@@ -448,7 +402,6 @@ public class NamingAuthoritySecurityTestCase extends NamingAuthorityTestCaseBase
 	// identifier defined which does not list this user as writer) 
 	///////////////////////////////////////////////////////////////
 	public void testReplaceKeys3() {
-		
 		// Create security identifier
 		URI rwIdentifier = null;
 		IdentifierData values = new IdentifierData();
@@ -474,19 +427,16 @@ public class NamingAuthoritySecurityTestCase extends NamingAuthorityTestCaseBase
 		}
 		
 		// Now try to replace a key
-		boolean gotexpected = false;
 		IdentifierValues values2 = new IdentifierValues();
 		values2.put("CODE", new KeyValues(new String[] {"008"}));
 		try {
 			this.NamingAuthority.replaceKeyValues(null, id, values2);
+			fail("Expected NamingAuthoritySecurityException was not raised");
 		} catch (NamingAuthoritySecurityException e) {
-			gotexpected = true;
+			// expected
 		} catch (Exception e) {
 			e.printStackTrace();
 			fail(e.getMessage());
-		}
-		if (!gotexpected) {
-			fail("Expected NamingAuthoritySecurityException was not raised");
 		}
 	}
 	
@@ -494,7 +444,6 @@ public class NamingAuthoritySecurityTestCase extends NamingAuthorityTestCaseBase
 	// replaceKeys authorization error (key security)
 	///////////////////////////////////////////////////////////////
 	public void testReplaceKeys4() {
-		
 		// Create security identifier
 		URI rwIdentifier = null;
 		IdentifierData values = new IdentifierData();
@@ -518,19 +467,16 @@ public class NamingAuthoritySecurityTestCase extends NamingAuthorityTestCaseBase
 		}
 		
 		// Now try to replace the value
-		boolean gotexpected = false;
 		IdentifierValues values2 = new IdentifierValues();
 		values2.put("CODE", new KeyValues(new String[] {"008"}));
 		try {
 			this.NamingAuthority.replaceKeyValues(null, id, values2);
+			fail("Expected NamingAuthoritySecurityException was not raised");
 		} catch (NamingAuthoritySecurityException e) {
-			gotexpected = true;
+			// expected
 		} catch (Exception e) {
 			e.printStackTrace();
 			fail(e.getMessage());
-		}
-		if (!gotexpected) {
-			fail("Expected NamingAuthoritySecurityException was not raised");
 		}
 	}
 }
