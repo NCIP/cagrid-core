@@ -186,17 +186,22 @@ public class AuthenticationProfileServiceManager extends Runner implements Initi
 		return authenticationServiceProfiles;
 	}
 	
-	private void handleException(Exception e) throws InvalidResourceException,GenericException{
-		if(e instanceof RemoteResourcePropertyRetrievalException){
-			log.info(e.getMessage());			
-		}else if (e instanceof MalformedURLException) {
-			throw new InvalidResourceException("malformed URL has occurred", e);
+	private void handleException(Exception e) throws InvalidResourceException,
+			GenericException {
+		log.error(e);
+		if (e instanceof RemoteResourcePropertyRetrievalException) {
+		} else if (e instanceof MalformedURLException) {
+			throw new InvalidResourceException("malformed URL has occurred "
+					+ e.getMessage());
 		} else if (e instanceof ResourcePropertyRetrievalException) {
-			throw new InvalidResourceException("error occured retrieving resource property", e);
+			throw new InvalidResourceException(
+					"error occured retrieving resource property "
+							+ e.getMessage());
 		} else if (e instanceof RemoteException) {
-			throw new GenericException("communication-related exception occured", e);
+			throw new GenericException(
+					"communication-related exception occured " + e.getMessage());
 		} else {
-			throw new GenericException("error occured", e);
+			throw new GenericException("error occured " + e.getMessage());
 		}
 	}
 

@@ -43,38 +43,54 @@ public class GridCredentialDelegatorImpl implements GridCredentialDelegator {
 
 		String[] hostIdentities = new String[hostIdentityList.size()];
 		hostIdentityList.toArray(hostIdentities);
-
 		AllowedParties allowedParties = new AllowedParties();
 		allowedParties.setGridIdentity(hostIdentities);
-
 		IdentityDelegationPolicy identityDelegationPolicy = new IdentityDelegationPolicy();
 		identityDelegationPolicy.setAllowedParties(allowedParties);
-
 		ProxyLifetime issueCredentialsCDSLifeTime = new ProxyLifetime();
-		issueCredentialsCDSLifeTime
-				.setHours(this.credentialDelegationServiceInformation
-						.getDelegationLifetimeHours());
-		issueCredentialsCDSLifeTime
-				.setMinutes(this.credentialDelegationServiceInformation
-						.getDelegationLifetimeMinutes());
-		issueCredentialsCDSLifeTime
-				.setSeconds(this.credentialDelegationServiceInformation
-						.getDelegationLifetimeMinutes());
+		int delegationLifetimeHours = this.credentialDelegationServiceInformation
+				.getDelegationLifetimeHours();
+		issueCredentialsCDSLifeTime.setHours(delegationLifetimeHours);
+		int delegationLifetimeMinutes = this.credentialDelegationServiceInformation
+				.getDelegationLifetimeMinutes();
+		issueCredentialsCDSLifeTime.setMinutes(delegationLifetimeMinutes);
+		issueCredentialsCDSLifeTime.setSeconds(delegationLifetimeMinutes);
 
-		DelegationUserClient client = null;
+		DelegationUserClient client = getDelegationUserClient(globusCredential);
+		DelegatedCredentialReference delegatedCredentialReference = delegationCredentialReference(
+				identityDelegationPolicy, issueCredentialsCDSLifeTime, client);
+		String serializedDelegatedCredentialReference = getSerializedCredentialRef(delegatedCredentialReference);
+		return serializedDelegatedCredentialReference;
+	}
+
+	private String getSerializedCredentialRef(
+			DelegatedCredentialReference delegatedCredentialReference)
+			throws AuthenticationConfigurationException {
+		String serializedDelegatedCredentialReference = null;
 		try {
-			client = new DelegationUserClient(
-					this.credentialDelegationServiceInformation.getServiceURL(),globusCredential);			
-
-			if (Utils.clean(credentialDelegationServiceInformation.getServiceIdentity()) != null) {
-				IdentityAuthorization auth = new IdentityAuthorization(credentialDelegationServiceInformation.getServiceIdentity());
-				client.setAuthorization(auth);
-			}			
+			StringWriter stringWriter = new StringWriter();
+			Utils.serializeObject(
+					delegatedCredentialReference,
+					new QName(
+							"http://cds.gaards.cagrid.org/CredentialDelegationService/DelegatedCredential/types",
+							"DelegatedCredentialReference"), stringWriter,
+					DelegationUserClient.class
+							.getResourceAsStream("client-config.wsdd"));
+			serializedDelegatedCredentialReference = stringWriter.toString();
 		} catch (Exception e) {
 			log.error(FaultUtil.printFaultToString(e));
-			throw new AuthenticationConfigurationException("Error accessing the Delegation Service : "+FaultUtil.printFaultToString(e));
+			throw new AuthenticationConfigurationException(
+					"Unable to serialize the message Delegated Credentials : "
+							+ FaultUtil.printFaultToString(e));
 		}
+		return serializedDelegatedCredentialReference;
+	}
 
+	private DelegatedCredentialReference delegationCredentialReference(
+			IdentityDelegationPolicy identityDelegationPolicy,
+			ProxyLifetime issueCredentialsCDSLifeTime,
+			DelegationUserClient client)
+			throws AuthenticationConfigurationException {
 		DelegatedCredentialReference delegatedCredentialReference = null;
 		try {
 			int issuedCredentialPathLength = this.credentialDelegationServiceInformation
@@ -84,45 +100,52 @@ public class GridCredentialDelegatorImpl implements GridCredentialDelegator {
 					issueCredentialsCDSLifeTime, issuedCredentialPathLength,
 					ClientConstants.DEFAULT_KEY_SIZE);
 		} catch (CDSInternalFault e) {
+			String faultString = ((CDSInternalFault) e).getFaultString();
 			log.error(FaultUtil.printFaultToString(e));
-			throw new AuthenticationConfigurationException(
-					"Internal Error in the Delegation Service : "
-							+ FaultUtil.printFaultToString(e));
+			throw new AuthenticationConfigurationException(faultString);
 		} catch (DelegationFault e) {
+			String faultString = ((DelegationFault) e).getFaultString();
 			log.error(FaultUtil.printFaultToString(e));
-			throw new AuthenticationConfigurationException(
-					"Error accessing the Delegation Service, Unable to delegate credentials : "
-							+ FaultUtil.printFaultToString(e));
+			throw new AuthenticationConfigurationException(faultString);
 		} catch (PermissionDeniedFault e) {
-			throw new AuthenticationConfigurationException(
-					"Error accessing the Delegation Service, Permission Denied : "
-							+ FaultUtil.printFaultToString(e));
+			String faultString = ((PermissionDeniedFault) e).getFaultString();
+			throw new AuthenticationConfigurationException(faultString);
 		} catch (RemoteException e) {
-			log.error(FaultUtil.printFaultToString(e));
+			log.error(e);
 			throw new AuthenticationConfigurationException(
-					"Error accessing the Delegation Service : "+FaultUtil.printFaultToString(e));
+					"Error accessing the Delegation Service : "
+							+ e.getMessage());
 		} catch (MalformedURIException e) {
-			log.error(FaultUtil.printFaultToString(e));
+			log.error(e);
 			throw new AuthenticationConfigurationException(
-					"Error accessing the Delegation Service, Please check the URL for Delegation Service : "+FaultUtil.printFaultToString(e));
+					"Error accessing the Delegation Service, Please check the URL for Delegation Service : "
+							+ e.getMessage());
 		}
+		return delegatedCredentialReference;
+	}
 
-		String serializedDelegatedCredentialReference = null;
+	private DelegationUserClient getDelegationUserClient(
+			GlobusCredential globusCredential)
+			throws AuthenticationConfigurationException {
+		DelegationUserClient client = null;
 		try {
-			StringWriter stringWriter = new StringWriter();
-			Utils
-					.serializeObject(
-							delegatedCredentialReference,
-							new QName(
-									"http://cds.gaards.cagrid.org/CredentialDelegationService/DelegatedCredential/types",
-									"DelegatedCredentialReference"),
-							stringWriter, DelegationUserClient.class.getResourceAsStream("client-config.wsdd"));
-			serializedDelegatedCredentialReference = stringWriter.toString();
+			client = new DelegationUserClient(
+					this.credentialDelegationServiceInformation.getServiceURL(),
+					globusCredential);
+
+			if (Utils.clean(credentialDelegationServiceInformation
+					.getServiceIdentity()) != null) {
+				IdentityAuthorization auth = new IdentityAuthorization(
+						credentialDelegationServiceInformation
+								.getServiceIdentity());
+				client.setAuthorization(auth);
+			}
 		} catch (Exception e) {
 			log.error(FaultUtil.printFaultToString(e));
 			throw new AuthenticationConfigurationException(
-					"Unable to serialize the message Delegated Credentials : "+FaultUtil.printFaultToString(e));
+					"Error accessing the Delegation Service : "
+							+ e.getMessage());
 		}
-		return serializedDelegatedCredentialReference;
+		return client;
 	}
 }

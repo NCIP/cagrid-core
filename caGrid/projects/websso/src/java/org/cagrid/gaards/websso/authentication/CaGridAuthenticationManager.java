@@ -7,6 +7,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.cagrid.gaards.websso.authentication.helper.AuthenticationServiceHelper;
 import org.cagrid.gaards.websso.authentication.helper.DorianHelper;
 import org.cagrid.gaards.websso.authentication.helper.GridCredentialDelegator;
@@ -33,6 +35,7 @@ import org.springframework.util.Assert;
 
 @Service
 public class CaGridAuthenticationManager implements AuthenticationManager {
+	private final Log log = LogFactory.getLog(getClass());
 	private WebSSOProperties webSSOProperties = null;
 	private AuthenticationServiceHelper authenticationServiceHelper;
 	private DorianHelper dorianHelper = null;
@@ -155,12 +158,15 @@ public class CaGridAuthenticationManager implements AuthenticationManager {
 			throws AuthenticationConfigurationException {
 		try {
 			GlobusCredential globusCredential = new GlobusCredential(
-					webSSOServerInformation.getHostCredentialCertificateFilePath(),
+					webSSOServerInformation
+							.getHostCredentialCertificateFilePath(),
 					webSSOServerInformation.getHostCredentialKeyFilePath());
 			hostIdentities.add(globusCredential.getIdentity());
 		} catch (GlobusCredentialException e) {
+			log.error(e);
 			throw new AuthenticationConfigurationException(
-					"Unable to create the WebSSO Host Credentials using the configuration provided",e);
+					"Unable to create the WebSSO Host Credentials using the configuration provided "
+							+ e.getMessage());
 		}
 		return hostIdentities;
 	}

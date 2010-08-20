@@ -13,7 +13,7 @@ import org.springframework.validation.Validator;
  */
 public final class UsernamePasswordAuthenticationServiceURLCredentialsValidator implements Validator {
 
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings("rawtypes")
 	public boolean supports(final Class clazz) {
         return UsernamePasswordAuthenticationServiceURLCredentials.class.isAssignableFrom(clazz);
     }

@@ -1,61 +1,78 @@
 package org.cagrid.gaards.websso.authentication.helper.impl;
 
-import gov.nih.nci.cagrid.authentication.stubs.types.AuthenticationProviderFault;
-import gov.nih.nci.cagrid.authentication.stubs.types.InsufficientAttributeFault;
-import gov.nih.nci.cagrid.authentication.stubs.types.InvalidCredentialFault;
+import org.cagrid.gaards.authentication.faults.AuthenticationProviderFault;
+import org.cagrid.gaards.authentication.faults.InsufficientAttributeFault;
+import org.cagrid.gaards.authentication.faults.InvalidCredentialFault;
 import gov.nih.nci.cagrid.common.FaultUtil;
+
 import gov.nih.nci.cagrid.opensaml.SAMLAssertion;
 
 import java.rmi.RemoteException;
 
 import org.apache.axis.types.URI.MalformedURIException;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.cagrid.gaards.authentication.Credential;
 import org.cagrid.gaards.authentication.client.AuthenticationClient;
 import org.cagrid.gaards.websso.authentication.helper.AuthenticationServiceHelper;
 import org.cagrid.gaards.websso.exception.AuthenticationErrorException;
 import org.cagrid.gaards.websso.exception.AuthenticationConfigurationException;
 
-public class AuthenticationServiceHelperImpl implements
-		AuthenticationServiceHelper {
-
+public class AuthenticationServiceHelperImpl
+		implements
+			AuthenticationServiceHelper {
+	
+	private final Log log = LogFactory.getLog(getClass());
+	
 	public AuthenticationServiceHelperImpl() {
 		super();
 	}
 
 	public SAMLAssertion authenticate(String authenticationServiceURL,
-			Credential credential)
+			Credential credential) throws AuthenticationErrorException,
+			AuthenticationConfigurationException {
+
+		try {
+			AuthenticationClient authenticationClient = new AuthenticationClient(
+					authenticationServiceURL);
+			SAMLAssertion samlAssertion = authenticationClient
+					.authenticate(credential);
+			log.debug("authentication successful url"
+					+ authenticationServiceURL);
+			return samlAssertion;
+		} catch (Exception e) {
+			handleException(e);
+		}
+		return null;
+	}
+
+	private void handleException(Exception e)
 			throws AuthenticationErrorException,
 			AuthenticationConfigurationException {
-		SAMLAssertion samlAssertion = null;
-
-		AuthenticationClient authenticationClient;
-		try {
-			authenticationClient = new AuthenticationClient(authenticationServiceURL);
-		} catch (MalformedURIException e) {
+		if (e instanceof MalformedURIException) {
+			log.error(e);
 			throw new AuthenticationConfigurationException(
-					"Invalid Authentication Service URL",e);
-		} catch (RemoteException e) {
-			throw new AuthenticationConfigurationException(
-					"Error accessing the Authentication Service",e);
+					"Invalid Authentication Service URL");
 		}
-		try {
-			samlAssertion = authenticationClient.authenticate(credential);
-		} catch (InvalidCredentialFault e) {
-			throw new AuthenticationErrorException("Invalid Credentials : "
-					+ FaultUtil.printFaultToString(e));
-		} catch (InsufficientAttributeFault e) {
-			throw new AuthenticationConfigurationException(
-					"Insufficient Attribute configured for the Authentication Service : "
-							+ FaultUtil.printFaultToString(e));
-		} catch (AuthenticationProviderFault e) {
-			throw new AuthenticationConfigurationException(
-					"Error accessing the Authentication Provider : "
-							+ FaultUtil.printFaultToString(e));
-		} catch (RemoteException e) {
-			throw new AuthenticationConfigurationException(
-					"Error accessing the Authentication Service : "
-							+ FaultUtil.printFaultToString(e));
+		log.error(FaultUtil.printFaultToString(e));
+		if (e instanceof InvalidCredentialFault) {
+			String faultString = ((InvalidCredentialFault) e).getFaultString();
+			throw new AuthenticationErrorException(faultString);
 		}
-		return samlAssertion;
+		if (e instanceof InsufficientAttributeFault) {
+			String faultString = ((InsufficientAttributeFault) e)
+					.getFaultString();
+			throw new AuthenticationConfigurationException(faultString);
+		}
+		if (e instanceof AuthenticationProviderFault) {
+			String faultString = ((AuthenticationProviderFault) e)
+					.getFaultString();
+			throw new AuthenticationConfigurationException(faultString);
+		}
+		if (e instanceof RemoteException) {
+			log.error(e);
+			throw new AuthenticationConfigurationException(
+					"Error accessing the Authentication Service");
+		}
 	}
 }
