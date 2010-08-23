@@ -20,13 +20,6 @@
 		<version>nci_prod-1.4</version>
 	</grid>
 	<grid>
-		<DisplayName>NCI Development Grid for caGrid 1.4</DisplayName>
-		<SystemName>nci_dev-1.4</SystemName>
-		<IvySettings>ivy-default.xml</IvySettings>
-		<publicationDate>2010-08-01</publicationDate>
-		<version>nci_dev-1.4</version>
-	</grid>
-	<grid>
 		<DisplayName>NCI QA Grid for caGrid 1.4</DisplayName>
 		<SystemName>nci_qa-1.4</SystemName>
 		<IvySettings>ivy-default.xml</IvySettings>
@@ -39,13 +32,5 @@
 		<IvySettings>ivy-default.xml</IvySettings>
 		<publicationDate>2010-08-01</publicationDate>
 		<version>nci_stage-1.4</version>
-	</grid>
-	<grid>
-		<DisplayName>OSU Development Grid for caGrid 1.4</DisplayName>
-		<SystemName>osu_dev-1.4</SystemName>
-		<IvySettings>ivy-default.xml</IvySettings>
-		<publicationDate>2010-08-01</publicationDate>
-		<version>osu_dev-1.4</version>
-	</grid>
-	
+	</grid>	
 </TargetGridsConfiguration>
