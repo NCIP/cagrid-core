@@ -1,3 +1,0 @@
-access_id_CA X509 'O=OSU,OU=BMI,OU=caGrid,OU=Trust Fabric,CN=caGrid Trust Fabric CA'
-pos_rights globus CA:sign
-cond_subjects globus '"*"'
