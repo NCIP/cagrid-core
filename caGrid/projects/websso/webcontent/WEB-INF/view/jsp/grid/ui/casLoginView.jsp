@@ -84,7 +84,7 @@
 					</c:when>
 		
 					<c:when test="${fn:length(authenticationServiceProfileInformationList)==0}">
-						<img height="100" width="1">
+						<img height="100" width="1" style="visibility:hidden;">
 					</c:when>	
 		
 					<c:otherwise>
@@ -177,7 +177,7 @@
 							</div>
 						</c:when>
 						<c:otherwise>
-							<img height="152" width="0"/>
+							<img height="152" width="0" style="visibility:hidden;"/>
 						</c:otherwise>
 					</c:choose>
 					<div class="row">
