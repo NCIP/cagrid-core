@@ -53,23 +53,21 @@ public class AuthenticationServiceHelperImpl
 			log.error(e);
 			throw new AuthenticationConfigurationException(
 					"Invalid Authentication Service URL");
-		}
-		log.error(FaultUtil.printFaultToString(e));
-		if (e instanceof InvalidCredentialFault) {
+		} else if (e instanceof InvalidCredentialFault) {
+			log.error(FaultUtil.printFaultToString(e));
 			String faultString = ((InvalidCredentialFault) e).getFaultString();
 			throw new AuthenticationErrorException(faultString);
-		}
-		if (e instanceof InsufficientAttributeFault) {
+		} else if (e instanceof InsufficientAttributeFault) {
+			log.error(FaultUtil.printFaultToString(e));
 			String faultString = ((InsufficientAttributeFault) e)
 					.getFaultString();
 			throw new AuthenticationConfigurationException(faultString);
-		}
-		if (e instanceof AuthenticationProviderFault) {
+		} else if (e instanceof AuthenticationProviderFault) {
+			log.error(FaultUtil.printFaultToString(e));
 			String faultString = ((AuthenticationProviderFault) e)
 					.getFaultString();
 			throw new AuthenticationConfigurationException(faultString);
-		}
-		if (e instanceof RemoteException) {
+		} else if (e instanceof RemoteException) {
 			log.error(e);
 			throw new AuthenticationConfigurationException(
 					"Error accessing the Authentication Service");
