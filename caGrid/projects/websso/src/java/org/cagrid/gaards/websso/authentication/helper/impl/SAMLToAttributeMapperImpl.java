@@ -14,6 +14,8 @@ import javax.xml.xpath.XPathConstants;
 import javax.xml.xpath.XPathExpressionException;
 import javax.xml.xpath.XPathFactory;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.cagrid.gaards.websso.authentication.helper.SAMLToAttributeMapper;
 import org.cagrid.gaards.websso.exception.AuthenticationConfigurationException;
 import org.cagrid.gaards.websso.utils.WebSSOConstants;
@@ -22,6 +24,7 @@ import org.xml.sax.SAXException;
 
 public class SAMLToAttributeMapperImpl implements SAMLToAttributeMapper {
 
+	private final Log log = LogFactory.getLog(getClass());
 	private static final String EMAIL_EXP = "/*[local-name()='Assertion']/*[local-name()='AttributeStatement']/*[local-name()='Attribute' and @AttributeName='urn:mace:dir:attribute-def:mail']/*[local-name()='AttributeValue']/text()";
 	private static final String FIRST_NAME_EXP = "/*[local-name()='Assertion']/*[local-name()='AttributeStatement']/*[local-name()='Attribute' and @AttributeName='urn:mace:dir:attribute-def:givenName']/*[local-name()='AttributeValue']/text()";
 	private static final String LAST_NAME_EXP = "/*[local-name()='Assertion']/*[local-name()='AttributeStatement']/*[local-name()='Attribute' and @AttributeName='urn:mace:dir:attribute-def:sn']/*[local-name()='AttributeValue']/text()";
@@ -31,29 +34,15 @@ public class SAMLToAttributeMapperImpl implements SAMLToAttributeMapper {
 			throws AuthenticationConfigurationException {
 
 		HashMap<String, String> attributesMap = new HashMap<String, String>();
+		try {
+			DocumentBuilderFactory newInstance = DocumentBuilderFactory
+					.newInstance();
+			DocumentBuilder documentBuilder = newInstance.newDocumentBuilder();
+			ByteArrayInputStream is = new ByteArrayInputStream(samlAssertion
+					.toString().getBytes());
+			Document document = documentBuilder.parse(is);
 
-		DocumentBuilder documentBuilder = null;
-		try {
-			documentBuilder = DocumentBuilderFactory.newInstance()
-					.newDocumentBuilder();
-		} catch (ParserConfigurationException e) {
-			throw new AuthenticationConfigurationException(
-					"Error processing the SAML Document : " + e.getMessage(), e);
-		}
-		Document document = null;
-		try {
-			document = documentBuilder.parse(new ByteArrayInputStream(
-					samlAssertion.toString().getBytes()));
-		} catch (SAXException e) {
-			throw new AuthenticationConfigurationException(
-					"Error processing the SAML Document : " + e.getMessage(), e);
-		} catch (IOException e) {
-			throw new AuthenticationConfigurationException(
-					"Error processing the SAML Document : " + e.getMessage(), e);
-		}
-
-		XPath xpathEngine = XPathFactory.newInstance().newXPath();
-		try {
+			XPath xpathEngine = XPathFactory.newInstance().newXPath();
 			String emailId = (String) xpathEngine.evaluate(EMAIL_EXP, document,
 					XPathConstants.STRING);
 			String firstName = (String) xpathEngine.evaluate(FIRST_NAME_EXP,
@@ -63,10 +52,31 @@ public class SAMLToAttributeMapperImpl implements SAMLToAttributeMapper {
 			attributesMap.put(WebSSOConstants.CAGRID_SSO_EMAIL_ID, emailId);
 			attributesMap.put(WebSSOConstants.CAGRID_SSO_FIRST_NAME, firstName);
 			attributesMap.put(WebSSOConstants.CAGRID_SSO_LAST_NAME, lastName);
-		} catch (XPathExpressionException e) {
-			throw new AuthenticationConfigurationException(
-					"Error retrieving user attributes from the SAML : "+ e.getMessage(), e);
+		} catch (Exception e) {
+			handleException(e);
 		}
 		return attributesMap;
+	}
+
+	private void handleException(Exception e)
+			throws AuthenticationConfigurationException {
+		log.error(e);
+		if (e instanceof ParserConfigurationException) {
+			throw new AuthenticationConfigurationException(
+					"Error processing the SAML Document : " + e.getMessage());
+		}
+		if (e instanceof SAXException) {
+			throw new AuthenticationConfigurationException(
+					"Error processing the SAML Document : " + e.getMessage());
+		}
+		if (e instanceof XPathExpressionException) {
+			throw new AuthenticationConfigurationException(
+					"Error retrieving user attributes from the SAML : "
+							+ e.getMessage());
+		}
+		if (e instanceof IOException) {
+			throw new AuthenticationConfigurationException(
+					"Error processing the SAML Document : " + e.getMessage());
+		}
 	}
 }

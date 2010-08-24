@@ -6,6 +6,8 @@ import gov.nih.nci.cagrid.opensaml.SAMLAssertion;
 import java.rmi.RemoteException;
 
 import org.apache.axis.types.URI.MalformedURIException;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.cagrid.gaards.dorian.client.GridUserClient;
 import org.cagrid.gaards.dorian.common.DorianFault;
 import org.cagrid.gaards.dorian.stubs.types.DorianInternalFault;
@@ -20,6 +22,8 @@ import org.globus.gsi.GlobusCredential;
 
 public class DorianHelperImpl implements DorianHelper {
 
+	private final Log log = LogFactory.getLog(getClass());
+	
 	public DorianHelperImpl() {
 		super();
 	}
@@ -32,40 +36,47 @@ public class DorianHelperImpl implements DorianHelper {
 
 		GridUserClient ifsUserClient = null;
 		try {
-			ifsUserClient = new GridUserClient(dorianInformation
-					.getDorianServiceURL());
-		} catch (MalformedURIException e) {
-			throw new AuthenticationConfigurationException(
-					"Invalid Dorian Service URL : " + FaultUtil.printFaultToString(e));
-		} catch (RemoteException e) {
-			throw new AuthenticationConfigurationException(
-					"Error accessing the Dorian Service : "+ FaultUtil.printFaultToString(e));
-		}
-		try {
+			ifsUserClient = new GridUserClient(
+					dorianInformation.getDorianServiceURL());
 			globusCredential = ifsUserClient.requestUserCertificate(
 					samlAssertion, dorianInformation.getProxyLifeTime());
-		} catch (DorianFault e) {
-			throw new AuthenticationConfigurationException(
-					"Error accessing the Dorian Service : "
-							+ FaultUtil.printFaultToString(e));
-		} catch (DorianInternalFault e) {
-			throw new AuthenticationConfigurationException(
-					"Error accessing the Dorian Service : "
-							+ FaultUtil.printFaultToString(e));
-		} catch (InvalidAssertionFault e) {
-			throw new AuthenticationConfigurationException(
-					"Invalid SAML Assertion obtained from Authentication Service : "
-							+ FaultUtil.printFaultToString(e));
-		} catch (UserPolicyFault e) {
-			throw new AuthenticationConfigurationException(
-					"Policy Error occured obtaining Proxy from Dorian : "
-							+ FaultUtil.printFaultToString(e));
-		} catch (PermissionDeniedFault e) {
-			throw new AuthenticationErrorException(
-					"Permission denied while obtaining Proxy from Dorian : "
-							+ FaultUtil.printFaultToString(e));
+		} catch (Exception e) {
+			handleException(e);
 		}
-
 		return globusCredential;
+	}
+
+	private void handleException(Exception e)
+			throws AuthenticationErrorException,
+			AuthenticationConfigurationException {
+		if (e instanceof MalformedURIException) {
+			log.error(e);
+			throw new AuthenticationConfigurationException(
+					"Invalid Dorian Service URL");
+		} else if (e instanceof DorianFault) {
+			log.error(FaultUtil.printFaultToString(e));
+			String faultString = ((DorianFault) e).getFaultString();
+			throw new AuthenticationConfigurationException(faultString);
+		} else if (e instanceof DorianInternalFault) {
+			log.error(FaultUtil.printFaultToString(e));
+			String faultString = ((DorianInternalFault) e).getFaultString();
+			throw new AuthenticationConfigurationException(faultString);
+		} else if (e instanceof InvalidAssertionFault) {
+			log.error(FaultUtil.printFaultToString(e));
+			String faultString = ((InvalidAssertionFault) e).getFaultString();
+			throw new AuthenticationConfigurationException(faultString);
+		} else if (e instanceof UserPolicyFault) {
+			log.error(FaultUtil.printFaultToString(e));
+			String faultString = ((UserPolicyFault) e).getFaultString();
+			throw new AuthenticationConfigurationException(faultString);
+		} else if (e instanceof PermissionDeniedFault) {
+			log.error(FaultUtil.printFaultToString(e));
+			String faultString = ((PermissionDeniedFault) e).getFaultString();
+			throw new AuthenticationErrorException(faultString);
+		} else if (e instanceof RemoteException) {
+			log.error(e);
+			throw new AuthenticationConfigurationException(
+					"Error accessing the Dorian Service :  " + e.getMessage());
+		}
 	}
 }
