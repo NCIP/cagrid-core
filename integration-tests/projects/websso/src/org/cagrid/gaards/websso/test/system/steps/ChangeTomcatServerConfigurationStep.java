@@ -83,7 +83,7 @@ public class ChangeTomcatServerConfigurationStep extends Step{
         coyoteJk2Element.setAttribute(new Attribute("redirectPort",""+httpsPortNumber));
 	}
 	
-	@SuppressWarnings({ "unchecked", "serial" })
+	@SuppressWarnings({ "unchecked", "serial", "rawtypes" })
 	private void addHttpsConnector(String keyStorePassword,
 			File keyStoreLocation, Element serverElement) throws IOException,
 			ContainerException {
