@@ -1,6 +1,5 @@
 package org.cagrid.gaards.websso.logout;
 
-import gov.nih.nci.cagrid.common.FaultUtil;
 import gov.nih.nci.cagrid.common.Utils;
 
 import java.io.StringReader;
@@ -19,7 +18,6 @@ import org.cagrid.gaards.cds.delegated.stubs.types.DelegatedCredentialReference;
 import org.cagrid.gaards.cds.stubs.types.CDSInternalFault;
 import org.cagrid.gaards.cds.stubs.types.DelegationFault;
 import org.cagrid.gaards.cds.stubs.types.PermissionDeniedFault;
-import org.cagrid.gaards.dorian.stubs.types.InvalidAssertionFault;
 import org.cagrid.gaards.websso.beans.WebSSOServerInformation;
 import org.cagrid.gaards.websso.utils.WebSSOConstants;
 import org.cagrid.gaards.websso.utils.WebSSOProperties;
