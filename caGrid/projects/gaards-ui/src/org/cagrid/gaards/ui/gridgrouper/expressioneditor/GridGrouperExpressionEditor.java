@@ -29,18 +29,17 @@ import javax.swing.border.TitledBorder;
 import javax.swing.tree.DefaultMutableTreeNode;
 
 import org.cagrid.gaards.ui.gridgrouper.GridGrouperLookAndFeel;
+import org.cagrid.gaards.ui.gridgrouper.browser.GridGrouperTreeExpansionListener;
 import org.cagrid.gaards.ui.gridgrouper.tree.GridGrouperTree;
 import org.cagrid.gaards.ui.gridgrouper.tree.GroupTreeNode;
 import org.cagrid.grape.utils.MultiEventProgressBar;
 import org.globus.gsi.GlobusCredential;
 
 /**
- * @author <A HREF="MAILTO:langella@bmi.osu.edu">Stephen Langella</A>
- * @author <A HREF="MAILTO:oster@bmi.osu.edu">Scott Oster</A>
- * @author <A HREF="MAILTO:hastings@bmi.osu.edu">Shannon Hastings</A>
- * @author <A HREF="MAILTO:ervin@bmi.osu.edu">David W. Ervin</A>
- * @version $Id: GridGrouperBaseTreeNode.java,v 1.1 2006/08/04 03:49:26 langella
- *          Exp $
+ * @author Stephen Langella</A>
+ * @author Scott Oster</A>
+ * @author Shannon Hastings</A>
+ * @author David W. Ervin</A>
  */
 public class GridGrouperExpressionEditor extends JPanel {
 
@@ -291,9 +290,9 @@ public class GridGrouperExpressionEditor extends JPanel {
 			grouperTree = new GridGrouperTree();
             grouperTree.setVisibleRowCount(5);
 			grouperTree.setProgress(getProgress());
-			grouperTree
-					.addMouseListener(new GrouperTreeExpressionEventListener(
-							grouperTree, this));
+			grouperTree.addMouseListener(new GrouperTreeExpressionEventListener(grouperTree, this));
+			grouperTree.addTreeExpansionListener(new GridGrouperTreeExpansionListener(grouperTree));
+
 		}
 		return grouperTree;
 	}
