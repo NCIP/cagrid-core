@@ -142,4 +142,16 @@ public class PEMWriter extends BufferedWriter {
 		this.newLine();
 	}
 
+	
+	/**
+	 * Writes a newline, which is NOT like the base class's use of 
+	 * the system property <tt>line.separator</tt>, 
+	 * and is not necessarily a single
+     * newline ('\n') character.
+     *
+     * @exception  IOException  If an I/O error occurs
+     */
+    public void newLine() throws IOException {
+        write("\n");
+    }
 }

@@ -91,8 +91,14 @@ public class KeyUtil {
 		}
 		StringWriter sw = new StringWriter();
 		ssl.writeTo(sw);
-		String s = sw.toString();
 		sw.close();
+		StringBuffer buf = sw.getBuffer();
+		// strip out any windows-specific carriage return chars
+		int winNlChar = -1;
+		while ((winNlChar = buf.indexOf("\r")) != -1) {
+		    buf.deleteCharAt(winNlChar);
+		}
+		String s = buf.toString();
 		return s;
 	}
 
