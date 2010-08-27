@@ -4,6 +4,8 @@ import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.io.File;
+import java.util.Map;
+import java.util.Properties;
 
 import javax.swing.JButton;
 import javax.swing.JOptionPane;
@@ -11,6 +13,7 @@ import javax.swing.JTextArea;
 
 import org.cagrid.installer.model.CaGridInstallerModel;
 import org.cagrid.installer.tasks.AntExecutionTask;
+import org.cagrid.installer.util.InstallerUtils;
 import org.pietschy.wizard.PanelWizardStep;
 import org.pietschy.wizard.WizardModel;
 
@@ -51,8 +54,16 @@ public class LaunchGAARDSforHostCredentialsStep extends PanelWizardStep {
 
 
     private void launchGAARDS() {
+        Map<String, String> env = InstallerUtils.getEnvironment(model);
+        env.put("GLOBUS_LOCATION", model.getProperty(Constants.GLOBUS_HOME));
+        env.put("CATALINA_HOME", model.getProperty(Constants.TOMCAT_HOME));
+        env.put("JBOSS_HOME", model.getProperty(Constants.JBOSS_HOME));
+        
+        Properties sysProps = InstallerUtils.getProxyProperties();
+    	
+    	
         final AntExecutionTask task = new AntExecutionTask("", "", model.getProperty(Constants.CAGRID_HOME)
-            + File.separator + "build.xml", "security");
+            + File.separator + "build.xml", "security", env, sysProps);
         Thread th = new Thread(new Runnable() {
             public void run() {
                 try {
