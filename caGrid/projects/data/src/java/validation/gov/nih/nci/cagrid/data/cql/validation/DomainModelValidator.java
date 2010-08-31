@@ -127,41 +127,56 @@ public class DomainModelValidator implements CqlDomainValidator {
 
 	private void validateAssociationModel(Object current, Association assoc, DomainModel model)
 		throws DomainConformanceException {
-		// determine if an association exists between the current
-		// and association object
-		String roleName = assoc.getRoleName();
-		Set<SimplifiedUmlAssociation> associations = getAllAssociationsInvolvingClass(current.getName(), model);
-		boolean associationFound = false;
-        for (SimplifiedUmlAssociation association : associations) {
-            if (roleName == null && associationFound) {
-                // no role name, and already found an association of the same type
+        // determine if an association exists between current and assoc
+        List<String> searchClasses = new ArrayList<String>();
+        for (UMLClass c : DomainModelUtils.getAllSuperclasses(model, current.getName())) {
+            searchClasses.add(c.getPackageName() + "." + c.getClassName());
+        }
+        searchClasses.add(current.getName());
+        
+        Set<SimplifiedUmlAssociation> candidates = new HashSet<SimplifiedUmlAssociation>();
+        for (String name : searchClasses) {
+            Set<SimplifiedUmlAssociation> associationsWithCurrent = 
+                getAllAssociationsInvolvingClass(name, model);
+            for (SimplifiedUmlAssociation a : associationsWithCurrent) {
+                if (a.getSourceClass().equals(name) &&
+                    a.getTargetClass().equals(assoc.getName())) {
+                    candidates.add(a);
+                }
+                if (a.isBidirectional() &&
+                    a.getTargetClass().equals(name) &&
+                    a.getSourceClass().equals(assoc.getName())) {
+                    candidates.add(a);
+                }
+            }
+        }
+        if (candidates.size() == 0) {
+            throw new DomainConformanceException("No association from "
+                + current.getName() + " to " + assoc.getName()
+                + " was found in the domain model");
+        }
+        if (assoc.getRoleName() == null && candidates.size() > 1) {
                 throw new DomainConformanceException("The association from " 
                     + current.getName() + " to " + assoc.getName() 
                     + " is ambiguous without a role name");
             }
-            
-            // verify both ends of the association are right
-            // starting with source to target
-            if (current.getName().equals(association.getSourceClass()) &&
-                assoc.getName().equals(association.getTargetClass()) && 
-                !associationFound) {
-                // ensure either the role name matches, or there wasn't one to match anyway
-                associationFound = association.getTargetRoleName().equals(roleName) || roleName == null;
-            } else if (association.isBidirectional() && !associationFound) {
-                // if bidirectional and we've not already found the association, try the reverse
-                if (assoc.getName().equals(association.getSourceClass()) &&
-                    current.getName().equals(association.getTargetClass()) &&
-                    !associationFound) {
-                    associationFound = association.getSourceRoleName().equals(roleName) || roleName == null;
+        if (assoc.getRoleName() != null) {
+            boolean found = false;
+            for (SimplifiedUmlAssociation a : candidates) {
+                if (a.getTargetRoleName().equals(assoc.getRoleName())) {
+                    found = true;
+                }
+                if (a.isBidirectional() && a.getSourceRoleName().equals(assoc.getRoleName())) {
+                    found = true;
                 }
             }
+            if (!found) {
+                throw new DomainConformanceException("No association from "
+                    + current.getName() + " to " + assoc.getName()
+                    + " with role name " + assoc.getRoleName()
+                    + " was found in the domain model");
+            }
         }
-        
-        // fail if the association was never found
-		if (!associationFound) {
-			throw new DomainConformanceException("No association from " + current.getName() + " to " + assoc.getName()
-				+ " with role name " + assoc.getRoleName());
-		}
 	}
 
 
