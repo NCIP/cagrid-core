@@ -36,187 +36,202 @@ import java.util.Set;
  */
 public class DomainModelValidator implements CqlDomainValidator {
 
-	public DomainModelValidator() {
+    public DomainModelValidator() {
 
-	}
-
-
-	public void validateDomainModel(CQLQuery query, DomainModel model) throws MalformedQueryException {
-		validateQueryTarget(query, model);
-		validateObjectModel(query.getTarget(), model);
-	}
+    }
 
 
-	private void validateQueryTarget(CQLQuery query, DomainModel model) throws DomainConformanceException {
-		UMLClass targetClass = getUmlClass(query.getTarget().getName(), model);
-		if (targetClass == null) {
-			throw new DomainConformanceException("Query target " + query.getTarget().getName()
-				+ " is not a valid target in the domain model");
-		}
-	}
+    public void validateDomainModel(CQLQuery query, DomainModel model) throws MalformedQueryException {
+        validateQueryTarget(query, model);
+        validateObjectModel(query.getTarget(), model);
+    }
 
 
-	private void validateObjectModel(Object obj, DomainModel model) throws DomainConformanceException {
-		// verify the object exists in the project
-		UMLClass classMd = getUmlClass(obj.getName(), model);
-		if (classMd == null) {
-			throw new DomainConformanceException("No object " + obj.getName() + " found in the project");
-		}
-
-		if (obj.getAttribute() != null) {
-			validateAttributeModel(obj.getAttribute(), classMd);
-		}
-
-		if (obj.getAssociation() != null) {
-			// ensure the association is valid
-			validateAssociationModel(obj, obj.getAssociation(), model);
-			// step through the association's submodel
-			validateObjectModel(obj.getAssociation(), model);
-		}
-
-		if (obj.getGroup() != null) {
-			validateGroupModel(obj, obj.getGroup(), model);
-		}
-	}
+    private void validateQueryTarget(CQLQuery query, DomainModel model) throws DomainConformanceException {
+        UMLClass targetClass = getUmlClass(query.getTarget().getName(), model);
+        if (targetClass == null) {
+            throw new DomainConformanceException("Query target " + query.getTarget().getName()
+                + " is not a valid target in the domain model");
+        }
+    }
 
 
-	private void validateAttributeModel(Attribute attrib, UMLClass classMd) throws DomainConformanceException {
-		// verify the attribute exists
-		UMLAttribute attribMd = getUmlAttribute(attrib.getName(), classMd);
-		if (attribMd == null) {
-			throw new DomainConformanceException("Attribute '" + attrib.getName() + "' is not defined for the class "
-				+ classMd.getClassName());
-		}
-		// verify the data type being used is compatible
-		validateAttributeDataType(attrib, attribMd);
-	}
+    private void validateObjectModel(Object obj, DomainModel model) throws DomainConformanceException {
+        // verify the object exists in the project
+        UMLClass classMd = getUmlClass(obj.getName(), model);
+        if (classMd == null) {
+            throw new DomainConformanceException("No object " + obj.getName() + " found in the project");
+        }
+
+        if (obj.getAttribute() != null) {
+            validateAttributeModel(obj.getAttribute(), classMd);
+        }
+
+        if (obj.getAssociation() != null) {
+            // ensure the association is valid
+            validateAssociationModel(obj, obj.getAssociation(), model);
+            // step through the association's submodel
+            validateObjectModel(obj.getAssociation(), model);
+        }
+
+        if (obj.getGroup() != null) {
+            validateGroupModel(obj, obj.getGroup(), model);
+        }
+    }
 
 
-	private void validateAttributeDataType(Attribute attrib, UMLAttribute attribMetadata)
-		throws DomainConformanceException {
-		// if the predicate is a binary operator, verify the value is of the correct type
-		if (attrib.getPredicate() != null
-			&& !(attrib.getPredicate().getValue().equals(Predicate._IS_NOT_NULL) || attrib.getPredicate().getValue()
-				.equals(Predicate._IS_NULL))) {
-			String valueAsString = attrib.getValue().toString();
-			//check datatype name
-			String datatype = attribMetadata.getDataTypeName();
-			DataTypeValidator.validate(valueAsString, datatype);
-			//check enumeration values
-			ValueDomain valueDomain = attribMetadata.getValueDomain();
-			if (valueDomain != null) {
-				ValueDomainEnumerationCollection enumerationCollection = valueDomain.getEnumerationCollection();
-				if (enumerationCollection != null && enumerationCollection.getEnumeration() != null
-					&& enumerationCollection.getEnumeration().length > 0) {
-					Enumeration[] enumeration = enumerationCollection.getEnumeration();
-					Set<String> permValues = new HashSet<String>();
-					for (int i = 0; i < enumeration.length; i++) {
-						Enumeration e = enumeration[i];
-						permValues.add(e.getPermissibleValue());
-					}
-					if (!permValues.contains(valueAsString)) {
-						throw new DomainConformanceException("Attribute '" + attrib.getName()
-							+ "' defines a permissible value enumeration, and the value'" + valueAsString
-							+ "' is not permissible.");
-					}
-				}
-			}
-		}
-	}
+    private void validateAttributeModel(Attribute attrib, UMLClass classMd) throws DomainConformanceException {
+        // verify the attribute exists
+        UMLAttribute attribMd = getUmlAttribute(attrib.getName(), classMd);
+        if (attribMd == null) {
+            throw new DomainConformanceException("Attribute '" + attrib.getName() + "' is not defined for the class "
+                + classMd.getClassName());
+        }
+        // verify the data type being used is compatible
+        validateAttributeDataType(attrib, attribMd);
+    }
 
 
-	private void validateAssociationModel(Object current, Association assoc, DomainModel model)
-		throws DomainConformanceException {
-		// determine if an association exists between the current
-		// and association object
-		String roleName = assoc.getRoleName();
-		Set<SimplifiedUmlAssociation> associations = getAllAssociationsInvolvingClass(current.getName(), model);
-		boolean associationFound = false;
-        for (SimplifiedUmlAssociation association : associations) {
-            if (roleName == null && associationFound) {
-                // no role name, and already found an association of the same type
+    private void validateAttributeDataType(Attribute attrib, UMLAttribute attribMetadata)
+        throws DomainConformanceException {
+        // if the predicate is a binary operator, verify the value is of the correct type
+        if (attrib.getPredicate() != null
+            && !(attrib.getPredicate().getValue().equals(Predicate._IS_NOT_NULL) || attrib.getPredicate().getValue()
+                .equals(Predicate._IS_NULL))) {
+            String valueAsString = attrib.getValue().toString();
+            //check datatype name
+            String datatype = attribMetadata.getDataTypeName();
+            DataTypeValidator.validate(valueAsString, datatype);
+            //check enumeration values
+            ValueDomain valueDomain = attribMetadata.getValueDomain();
+            if (valueDomain != null) {
+                ValueDomainEnumerationCollection enumerationCollection = valueDomain.getEnumerationCollection();
+                if (enumerationCollection != null && enumerationCollection.getEnumeration() != null
+                    && enumerationCollection.getEnumeration().length > 0) {
+                    Enumeration[] enumeration = enumerationCollection.getEnumeration();
+                    Set<String> permValues = new HashSet<String>();
+                    for (int i = 0; i < enumeration.length; i++) {
+                        Enumeration e = enumeration[i];
+                        permValues.add(e.getPermissibleValue());
+                    }
+                    if (!permValues.contains(valueAsString)) {
+                        throw new DomainConformanceException("Attribute '" + attrib.getName()
+                            + "' defines a permissible value enumeration, and the value'" + valueAsString
+                            + "' is not permissible.");
+                    }
+                }
+            }
+        }
+    }
+
+
+    private void validateAssociationModel(Object current, Association assoc, DomainModel model)
+        throws DomainConformanceException {
+        // determine if an association exists between current and assoc
+        List<String> searchClasses = new ArrayList<String>();
+        for (UMLClass c : DomainModelUtils.getAllSuperclasses(model, current.getName())) {
+            searchClasses.add(c.getPackageName() + "." + c.getClassName());
+        }
+        searchClasses.add(current.getName());
+        
+        Set<SimplifiedUmlAssociation> candidates = new HashSet<SimplifiedUmlAssociation>();
+        for (String name : searchClasses) {
+            Set<SimplifiedUmlAssociation> associationsWithCurrent = 
+                getAllAssociationsInvolvingClass(name, model);
+            for (SimplifiedUmlAssociation a : associationsWithCurrent) {
+                if (a.getSourceClass().equals(name) &&
+                    a.getTargetClass().equals(assoc.getName())) {
+                    candidates.add(a);
+                }
+                if (a.isBidirectional() &&
+                    a.getTargetClass().equals(name) &&
+                    a.getSourceClass().equals(assoc.getName())) {
+                    candidates.add(a);
+                }
+            }
+        }
+        if (candidates.size() == 0) {
+            throw new DomainConformanceException("No association from "
+                + current.getName() + " to " + assoc.getName()
+                + " was found in the domain model");
+        }
+        if (assoc.getRoleName() == null && candidates.size() > 1) {
                 throw new DomainConformanceException("The association from " 
                     + current.getName() + " to " + assoc.getName() 
                     + " is ambiguous without a role name");
             }
-            
-            // verify both ends of the association are right
-            // starting with source to target
-            if (current.getName().equals(association.getSourceClass()) &&
-                assoc.getName().equals(association.getTargetClass()) && 
-                !associationFound) {
-                // ensure either the role name matches, or there wasn't one to match anyway
-                associationFound = association.getTargetRoleName().equals(roleName) || roleName == null;
-            } else if (association.isBidirectional() && !associationFound) {
-                // if bidirectional and we've not already found the association, try the reverse
-                if (assoc.getName().equals(association.getSourceClass()) &&
-                    current.getName().equals(association.getTargetClass()) &&
-                    !associationFound) {
-                    associationFound = association.getSourceRoleName().equals(roleName) || roleName == null;
+        if (assoc.getRoleName() != null) {
+            boolean found = false;
+            for (SimplifiedUmlAssociation a : candidates) {
+                if (a.getTargetRoleName().equals(assoc.getRoleName())) {
+                    found = true;
+                }
+                if (a.isBidirectional() && a.getSourceRoleName().equals(assoc.getRoleName())) {
+                    found = true;
                 }
             }
+            if (!found) {
+                throw new DomainConformanceException("No association from "
+                    + current.getName() + " to " + assoc.getName()
+                    + " with role name " + assoc.getRoleName()
+                    + " was found in the domain model");
+            }
         }
-        
-        // fail if the association was never found
-		if (!associationFound) {
-			throw new DomainConformanceException("No association from " + current.getName() + " to " + assoc.getName()
-				+ " with role name " + assoc.getRoleName());
-		}
-	}
+    }
 
 
-	private void validateGroupModel(Object current, Group group, DomainModel model) throws DomainConformanceException {
-		if (group.getAttribute() != null) {
-			UMLClass classMd = getUmlClass(current.getName(), model);
-			for (int i = 0; i < group.getAttribute().length; i++) {
-				validateAttributeModel(group.getAttribute(i), classMd);
-			}
-		}
+    private void validateGroupModel(Object current, Group group, DomainModel model) throws DomainConformanceException {
+        if (group.getAttribute() != null) {
+            UMLClass classMd = getUmlClass(current.getName(), model);
+            for (int i = 0; i < group.getAttribute().length; i++) {
+                validateAttributeModel(group.getAttribute(i), classMd);
+            }
+        }
 
-		if (group.getAssociation() != null) {
-			for (int i = 0; i < group.getAssociation().length; i++) {
-				validateAssociationModel(current, group.getAssociation(i), model);
-			}
-		}
+        if (group.getAssociation() != null) {
+            for (int i = 0; i < group.getAssociation().length; i++) {
+                validateAssociationModel(current, group.getAssociation(i), model);
+            }
+        }
 
-		if (group.getGroup() != null) {
-			for (int i = 0; i < group.getGroup().length; i++) {
-				validateGroupModel(current, group.getGroup(i), model);
-			}
-		}
-	}
-
-
-	private UMLClass getUmlClass(String className, DomainModel model) {
-		UMLClass[] allClasses = model.getExposedUMLClassCollection().getUMLClass();
-
-		for (int i = 0; allClasses != null && i < allClasses.length; i++) {
-			String fqn = allClasses[i].getPackageName().trim();
-			if (!fqn.equals("")) {
-				fqn += "." + allClasses[i].getClassName();
-			}
-
-			if (fqn.equals(className)) {
-				return allClasses[i];
-			}
-		}
-		return null;
-	}
+        if (group.getGroup() != null) {
+            for (int i = 0; i < group.getGroup().length; i++) {
+                validateGroupModel(current, group.getGroup(i), model);
+            }
+        }
+    }
 
 
-	private UMLAttribute getUmlAttribute(String attribName, UMLClass classMd) {
-		UMLAttribute[] attribs = classMd.getUmlAttributeCollection().getUMLAttribute();
-		for (int i = 0; attribs != null && i < attribs.length; i++) {
-			UMLAttribute attrib = attribs[i];
-			String fullAttribName = attrib.getName();
-			int shortIndex = fullAttribName.indexOf(':');
-			String shortAttribName = fullAttribName.substring(shortIndex + 1);
-			if (shortAttribName.equals(attribName)) {
-				return attrib;
-			}
-		}
-		return null;
-	}
+    private UMLClass getUmlClass(String className, DomainModel model) {
+        UMLClass[] allClasses = model.getExposedUMLClassCollection().getUMLClass();
+
+        for (int i = 0; allClasses != null && i < allClasses.length; i++) {
+            String fqn = allClasses[i].getPackageName().trim();
+            if (!fqn.equals("")) {
+                fqn += "." + allClasses[i].getClassName();
+            }
+
+            if (fqn.equals(className)) {
+                return allClasses[i];
+            }
+        }
+        return null;
+    }
+
+
+    private UMLAttribute getUmlAttribute(String attribName, UMLClass classMd) {
+        UMLAttribute[] attribs = classMd.getUmlAttributeCollection().getUMLAttribute();
+        for (int i = 0; attribs != null && i < attribs.length; i++) {
+            UMLAttribute attrib = attribs[i];
+            String fullAttribName = attrib.getName();
+            int shortIndex = fullAttribName.indexOf(':');
+            String shortAttribName = fullAttribName.substring(shortIndex + 1);
+            if (shortAttribName.equals(attribName)) {
+                return attrib;
+            }
+        }
+        return null;
+    }
     
     
     private Set<SimplifiedUmlAssociation> getAllAssociationsInvolvingClass(String involvedClass, DomainModel model) {
@@ -229,29 +244,29 @@ public class DomainModelValidator implements CqlDomainValidator {
     }
 
 
-	private String[] getClassHierarchy(String className, DomainModel model) {
-		UMLClass[] superclasses = DomainModelUtils.getAllSuperclasses(model, className);
-		String[] names = new String[superclasses.length + 1];
-		for (int i = 0; i < superclasses.length; i++) {
-			names[i] = superclasses[i].getPackageName() + "." + superclasses[i].getClassName();
-		}
-		names[names.length - 1] = className;
-		return names;
-	}
+    private String[] getClassHierarchy(String className, DomainModel model) {
+        UMLClass[] superclasses = DomainModelUtils.getAllSuperclasses(model, className);
+        String[] names = new String[superclasses.length + 1];
+        for (int i = 0; i < superclasses.length; i++) {
+            names[i] = superclasses[i].getPackageName() + "." + superclasses[i].getClassName();
+        }
+        names[names.length - 1] = className;
+        return names;
+    }
 
 
-	private List<SimplifiedUmlAssociation> getUmlAssociations(String testClass, DomainModel model) {
-		List<SimplifiedUmlAssociation> associations = new ArrayList<SimplifiedUmlAssociation>();
-		if (model.getExposedUMLAssociationCollection() != null
-			&& model.getExposedUMLAssociationCollection().getUMLAssociation() != null) {
+    private List<SimplifiedUmlAssociation> getUmlAssociations(String testClass, DomainModel model) {
+        List<SimplifiedUmlAssociation> associations = new ArrayList<SimplifiedUmlAssociation>();
+        if (model.getExposedUMLAssociationCollection() != null
+            && model.getExposedUMLAssociationCollection().getUMLAssociation() != null) {
             for (UMLAssociation assoc : model.getExposedUMLAssociationCollection().getUMLAssociation()) {
-				UMLClass sourceClassReference = DomainModelUtils.getReferencedUMLClass(model, 
+                UMLClass sourceClassReference = DomainModelUtils.getReferencedUMLClass(model, 
                     assoc.getSourceUMLAssociationEdge().getUMLAssociationEdge().getUMLClassReference());
                 UMLClass targetClassReference = DomainModelUtils.getReferencedUMLClass(model, 
                     assoc.getTargetUMLAssociationEdge().getUMLAssociationEdge().getUMLClassReference());
                 if (sourceClassReference != null && targetClassReference != null) {
-					String sourceClassName = sourceClassReference.getPackageName() + "." + sourceClassReference.getClassName();
-					String targetClassName = targetClassReference.getPackageName() + "." + targetClassReference.getClassName();
+                    String sourceClassName = sourceClassReference.getPackageName() + "." + sourceClassReference.getClassName();
+                    String targetClassName = targetClassReference.getPackageName() + "." + targetClassReference.getClassName();
                     if (testClass.equals(sourceClassName) || testClass.equals(targetClassName)) {
                         SimplifiedUmlAssociation simple = new SimplifiedUmlAssociation(
                             sourceClassName, targetClassName, 
@@ -260,11 +275,11 @@ public class DomainModelValidator implements CqlDomainValidator {
                             assoc.isBidirectional());
                         associations.add(simple);
                     }
-				}
-			}
-		}
+                }
+            }
+        }
         return associations;
-	}
+    }
     
     
     private static class SimplifiedUmlAssociation {
@@ -331,37 +346,37 @@ public class DomainModelValidator implements CqlDomainValidator {
             return false;
         }
     }
-	
-	
-	public static void main(String[] args) {
-		DomainModelValidator validator = new DomainModelValidator();
-		if (args.length < 2) {
-			System.err.println("USAGE: domainModel.xml cqlQuery1.xml [cqlQuery2.xml .. cqlQueryN.xml]");
-			System.exit(1);
-		}
-		DomainModel model = null;
-		try {
-			model = MetadataUtils.deserializeDomainModel(new FileReader(args[0]));
-		} catch (Exception ex) {
-			System.err.println("Error deserializing domain model file: " + args[0]);
-			System.exit(1);
-		}
-		for (int i = 1; i < args.length; i++) {
-			CQLQuery query = null;
-			try {
-				
-			} catch (Exception ex) {
-				System.err.println("Error deserializign CQL query file: " + args[i]);
-				ex.printStackTrace();
-				System.exit(1);
-			}
-			try {
-				validator.validateDomainModel(query, model);
-			} catch (MalformedQueryException ex) {
-				System.err.println("Query " + args[i] + " is not valid");
-				ex.printStackTrace();
-				System.exit(1);
-			}
-		}
-	}
+    
+    
+    public static void main(String[] args) {
+        DomainModelValidator validator = new DomainModelValidator();
+        if (args.length < 2) {
+            System.err.println("USAGE: domainModel.xml cqlQuery1.xml [cqlQuery2.xml .. cqlQueryN.xml]");
+            System.exit(1);
+        }
+        DomainModel model = null;
+        try {
+            model = MetadataUtils.deserializeDomainModel(new FileReader(args[0]));
+        } catch (Exception ex) {
+            System.err.println("Error deserializing domain model file: " + args[0]);
+            System.exit(1);
+        }
+        for (int i = 1; i < args.length; i++) {
+            CQLQuery query = null;
+            try {
+                
+            } catch (Exception ex) {
+                System.err.println("Error deserializign CQL query file: " + args[i]);
+                ex.printStackTrace();
+                System.exit(1);
+            }
+            try {
+                validator.validateDomainModel(query, model);
+            } catch (MalformedQueryException ex) {
+                System.err.println("Query " + args[i] + " is not valid");
+                ex.printStackTrace();
+                System.exit(1);
+            }
+        }
+    }
 }
