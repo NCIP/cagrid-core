@@ -46,6 +46,7 @@ public class CQL1toCQL2Converter {
     static {
         binaryPredicateConversion = new HashMap<Predicate, BinaryPredicate>();
         unaryPredicateConversion = new HashMap<Predicate, UnaryPredicate>();
+        binaryPredicateConversion.put(null, BinaryPredicate.EQUAL_TO); // default to EQUAL_TO
         binaryPredicateConversion.put(Predicate.EQUAL_TO, BinaryPredicate.EQUAL_TO);
         binaryPredicateConversion.put(Predicate.GREATER_THAN, BinaryPredicate.GREATER_THAN);
         binaryPredicateConversion.put(Predicate.GREATER_THAN_EQUAL_TO, BinaryPredicate.GREATER_THAN_EQUAL_TO);
