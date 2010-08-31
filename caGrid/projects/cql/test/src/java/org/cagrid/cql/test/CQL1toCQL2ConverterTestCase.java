@@ -17,6 +17,7 @@ import junit.textui.TestRunner;
 
 import org.cagrid.cql.utilities.CQL1toCQL2Converter;
 import org.cagrid.cql.utilities.QueryConversionException;
+import org.cagrid.cql2.BinaryPredicate;
 
 public class CQL1toCQL2ConverterTestCase extends TestCase {
     
@@ -74,6 +75,21 @@ public class CQL1toCQL2ConverterTestCase extends TestCase {
         query.setTarget(target);
         
         translateQuery(query);
+    }
+    
+    
+    public void testConvertAttributeWithNullPredicate() {
+        CQLQuery query = new CQLQuery();
+        Object target = new Object();
+        target.setName("gov.nih.nci.cacoresdk.domain.other.primarykey.FloatPrimitiveKey");
+        Attribute attr = new Attribute("name", null, "123");
+        target.setAttribute(attr);
+        query.setTarget(target);
+        
+        org.cagrid.cql2.CQLQuery cql2 = translateQuery(query);
+        assertEquals("Predicate did not get defaulted to EQUAL_TO!", 
+            cql2.getCQLTargetObject().getCQLAttribute().getBinaryPredicate(), 
+            BinaryPredicate.EQUAL_TO);
     }
     
     
