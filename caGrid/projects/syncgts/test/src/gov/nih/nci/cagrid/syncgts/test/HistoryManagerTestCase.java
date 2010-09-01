@@ -85,7 +85,7 @@ public class HistoryManagerTestCase extends TestCase {
         // create a month's worth of fake reports
         createFakeReports(historyDocs, getYear(), getMonth(), getDay());
         // create a month's worth for last month
-        createFakeReports(historyDocs, getYear(), getMonth() - 1, getDay() - 1);
+        createFakeReports(historyDocs, getYear(), getMonth() - 1, getDay());
         
         // simple 1 month filter
         DateFilter oneMonth = new DateFilter(0, 1, 0);
@@ -118,32 +118,32 @@ public class HistoryManagerTestCase extends TestCase {
     
     
     private void createFakeReports(int number, int year, int month, int day) {
-        // ensure we've got reasonable dates
-        if (day <= 0) {
-            month--;
-            day = 25;
-        }
-        if (month <= 0) {
-            month = 12;
-            year--;
-        }
+        Calendar cal = Calendar.getInstance();
+        cal.setLenient(true);
+        cal.set(Calendar.YEAR, year);
+        cal.set(Calendar.MONTH, month - 1);
+        cal.set(Calendar.DAY_OF_MONTH, day);
         
-        File yearDir = new File(tempHistoryDir, String.valueOf(year));
+        int reportYear = cal.get(Calendar.YEAR);
+        int reportMonth = cal.get(Calendar.MONTH) + 1;
+        int reportDay = cal.get(Calendar.DAY_OF_MONTH);
+        
+        File yearDir = new File(tempHistoryDir, String.valueOf(reportYear));
         File monthDir = null;
         if (month < 10) {
-            monthDir = new File(yearDir, "0" + String.valueOf(month));
+            monthDir = new File(yearDir, "0" + String.valueOf(reportMonth));
         } else {
-            new File(yearDir, String.valueOf(month));
+            new File(yearDir, String.valueOf(reportMonth));
         }
         File dayDir = null;
         if (day < 10) {
-            dayDir = new File(monthDir, "0" + String.valueOf(day));
+            dayDir = new File(monthDir, "0" + String.valueOf(reportDay));
         } else {
-            dayDir = new File(monthDir, String.valueOf(day));
+            dayDir = new File(monthDir, String.valueOf(reportDay));
         }
         
         dayDir.mkdirs();
-        String text = "this is a test file " + year + month + day;
+        String text = "this is a test file " + reportYear + reportMonth + reportDay;
         for (int i = 0; i < number; i++) {
             StringBuffer data = new StringBuffer();
             data.append(text).append(i);
