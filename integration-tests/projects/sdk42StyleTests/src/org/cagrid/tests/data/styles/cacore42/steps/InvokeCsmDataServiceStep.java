@@ -1,5 +1,6 @@
 package org.cagrid.tests.data.styles.cacore42.steps;
 
+import gov.nih.nci.cagrid.common.FaultHelper;
 import gov.nih.nci.cagrid.common.Utils;
 import gov.nih.nci.cagrid.cqlquery.CQLQuery;
 import gov.nih.nci.cagrid.cqlquery.Object;
@@ -29,6 +30,7 @@ import org.apache.commons.logging.LogFactory;
 import org.cagrid.cql2.CQLTargetObject;
 import org.cagrid.data.test.creation.DataTestCaseInfo;
 import org.globus.gsi.GlobusCredential;
+import org.oasis.wsrf.faults.BaseFaultType;
 
 public class InvokeCsmDataServiceStep extends Step {
     
@@ -196,6 +198,9 @@ public class InvokeCsmDataServiceStep extends Step {
         boolean isDenied = false;
         while (cause != null && !seenCauses.contains(cause) && !isDenied) {
             String message = cause.getMessage();
+            if (cause instanceof BaseFaultType) {
+                message = FaultHelper.getMessage(cause);
+            }
             if (message.contains(ACCESS_DENIED_MESSAGE)) {
                 isDenied = true;
             }

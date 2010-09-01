@@ -31,8 +31,8 @@ public class SDK42DataServiceSystemTests {
         // throw out the ivy cache dirs used by the SDK
         splitTime();
         LOG.debug("Destroying SDK ivy cache");
-        NukeIvyCacheStory nukeStory = new NukeIvyCacheStory();
-        nukeStory.runBare();
+        // NukeIvyCacheStory nukeStory = new NukeIvyCacheStory();
+        // nukeStory.runBare();
         
         // create the caCORE SDK example project
         splitTime();
