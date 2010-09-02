@@ -9,10 +9,8 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.Map;
 import java.util.Properties;
-import java.util.Map.Entry;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -59,8 +57,7 @@ public class AntExecutionTask extends BasicTask {
 		try {
 			File tempDir = new File(tempDirPath);
 			tempDir.mkdirs();
-			File propsFile = new File(tempDir.getAbsolutePath() + "/"
-					+ Math.random() + ".properties");
+			File propsFile = new File(tempDir, String.valueOf(Math.random()) + ".properties");
 			Properties props = new Properties();
 			props.putAll(model.getStateMap());
 			props.store(new FileOutputStream(propsFile),
@@ -134,7 +131,7 @@ public class AntExecutionTask extends BasicTask {
 		
 
 		String cp = createClasspath(toolsJar.getAbsolutePath(), antHome
-				+ "/lib/ant-launcher.jar");
+				+ File.separator + "lib" + File.separator + "ant-launcher.jar");
 		
 		cmd.add(cp);
 

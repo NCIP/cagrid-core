@@ -3,6 +3,7 @@
  */
 package org.cagrid.installer.tasks.service;
 
+import java.io.File;
 import java.util.Map;
 import java.util.Properties;
 
@@ -65,9 +66,10 @@ public class DeployServiceTask extends BasicTask {
         } else if (model.isJBossContainer()) {
             antTarget = getDeployJBossTarget();
         }
-        new AntExecutionTask("", "", getBuildFilePath(model), antTarget, env, sysProps).execute(model);
+        AntExecutionTask antTask = new AntExecutionTask("", "", getBuildFilePath(model), antTarget, env, sysProps);
+        Object result = antTask.execute(model);
 
-        return null;
+        return result;
     }
 
 
@@ -81,7 +83,9 @@ public class DeployServiceTask extends BasicTask {
 
 
     protected String getBuildFilePath(CaGridInstallerModel model) {
-        return model.getProperty(Constants.CAGRID_HOME)+ "/projects/" + this.serviceName + "/build.xml";
+        return model.getProperty(Constants.CAGRID_HOME) + File.separator 
+            + "projects" + File.separator + this.serviceName 
+            + File.separator + "build.xml";
     }
 
 }
