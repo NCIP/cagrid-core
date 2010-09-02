@@ -26,11 +26,6 @@ public class InvokeCql2DataServiceUsingConversionStep extends InvokeDataServiceS
     
     
     protected CQLQueryResults invokeValidQuery(CQLQuery query) {
-        System.out.println();
-        System.out.println();
-        System.out.println();
-        System.out.println();
-        System.out.flush();
         // convert to CQL 2
         org.cagrid.cql2.CQLQuery cql2 = null;
         try {
