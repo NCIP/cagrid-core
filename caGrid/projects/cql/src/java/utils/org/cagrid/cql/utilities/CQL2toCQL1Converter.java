@@ -10,6 +10,7 @@ import gov.nih.nci.cagrid.cqlquery.Predicate;
 import gov.nih.nci.cagrid.cqlquery.QueryModifier;
 
 import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -140,8 +141,9 @@ public class CQL2toCQL1Converter {
         } else if (value.getBooleanValue() != null) {
             string = value.getBooleanValue().toString();
         } else if (value.getDateValue() != null) {
-            // TODO: check this against XSD date
-            string = DateFormat.getDateInstance().format(value.getDateValue());
+            // conforms to xsd:date per http://www.w3schools.com/schema/schema_dtypes_date.asp
+            SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+            string = format.format(value.getDateValue());
         } else if (value.getDoubleValue() != null) {
             string = value.getDoubleValue().toString();
         } else if (value.getIntegerValue() != null) {
