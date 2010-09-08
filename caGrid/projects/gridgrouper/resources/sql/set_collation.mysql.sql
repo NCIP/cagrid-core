@@ -1,0 +1,1 @@
+ALTER TABLE `grouper_members` CHANGE `subject_id` `subject_id` VARCHAR( 255 ) CHARACTER SET latin1 COLLATE latin1_general_cs NOT NULL 
