@@ -89,6 +89,9 @@ public class CQL2toCQL1Converter {
         if (cql2Object.get_instanceof() != null) {
             throw new QueryConversionException("CQL 1 does not support \"instanceof\" operations");
         }
+        if (cql2Object.getCQLExtension() != null) {
+            throw new QueryConversionException("CQL 1 does not support query extensions");
+        }
         Object o = new Object();
         o.setName(cql2Object.getClassName());
         if (cql2Object.getCQLAssociatedObject() != null) {
@@ -120,6 +123,9 @@ public class CQL2toCQL1Converter {
     
     
     private static Attribute convertAttribute(CQLAttribute cql2Attribute) throws QueryConversionException {
+        if (cql2Attribute.getAttributeExtension() != null) {
+            throw new QueryConversionException("CQL 1 does not support query extensions");
+        }
         Attribute attr = new Attribute();
         attr.setName(cql2Attribute.getName());
         Predicate pred = null;
@@ -162,6 +168,9 @@ public class CQL2toCQL1Converter {
     
     
     private static Group convertGroup(CQLGroup cql2Group) throws QueryConversionException {
+        if (cql2Group.getCQLExtension() != null) {
+            throw new QueryConversionException("CQL 1 does not support query extensions");
+        }
         Group group = new Group();
         group.setLogicRelation(cql2Group.getLogicalOperation() == GroupLogicalOperator.AND 
             ? LogicalOperator.AND : LogicalOperator.OR);
