@@ -186,6 +186,7 @@ public class DCQLConverter {
                 formats.add(new SimpleDateFormat("HH:mm:ss"));
                 formats.add(new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss"));
                 formats.add(new SimpleDateFormat("yyyy-MM-dd"));
+                formats.add((SimpleDateFormat) DateFormat.getDateInstance());
                 formats.add((SimpleDateFormat) DateFormat.getInstance());
 
                 Iterator<SimpleDateFormat> formatIter = formats.iterator();
