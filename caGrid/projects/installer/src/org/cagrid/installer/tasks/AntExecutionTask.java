@@ -89,20 +89,48 @@ public class AntExecutionTask extends BasicTask {
         return null;
     }
 
+	private String createClasspath(String ... elements){
+		StringBuilder sb = new StringBuilder();
+		for(int i = 0; i < elements.length; i++){
+			sb.append(elements[i]);
+			if(i + 1 < elements.length){
+				sb.append(InstallerUtils.isWindows() ? ";" : ":");
+			}
+		}
+		return sb.toString();
+	}
 
-    protected void runAnt(CaGridInstallerModel model, File dir, String buildFile, String target, Properties sysProps,
-        String[] envp, String propertiesFile) throws IOException, InterruptedException {
+	protected void runAnt(CaGridInstallerModel model, File dir, String buildFile,
+			String target, Properties sysProps, String[] envp,
+			String propertiesFile) throws IOException, InterruptedException {
+
+		// Check it tools.jar is available
+		File toolsJar = new File(this.environment.get("JAVA_HOME")
+				+ File.separator + "lib" + File.separator + "tools.jar");
+		if (!toolsJar.exists()) {
+			logger.info("tools.jar not found at '" + toolsJar.getAbsolutePath()
+					+ "'. Using packaged tools.jar");
+			toolsJar = new File("lib" + File.separator + "tools.jar");
+		}
 
         // build command
         ArrayList<String> cmd = new ArrayList<String>();
         String antHome = model.getProperty(Constants.ANT_HOME);
         
-        String ant = "ant";
+		String java = "java";
         if (InstallerUtils.isWindows()) {
-            ant += ".bat";
+			java += ".exe";
         }
+		cmd.add(InstallerUtils.getJavaHomePath() + File.separator + "bin" + File.separator + java);
+		cmd.add("-classpath");
+		
         
-        cmd.add(antHome + File.separator + "bin" + File.separator + ant);
+		String cp = createClasspath(toolsJar.getAbsolutePath(), antHome
+				+ "/lib/ant-launcher.jar");
+		
+		cmd.add(cp);
+
+		cmd.add("-Dant.home=" + antHome);
 
         // add system properties
         if (sysProps != null) {
@@ -119,7 +147,7 @@ public class AntExecutionTask extends BasicTask {
 
         // add build file
         if (buildFile != null) {
-            cmd.add("-f");
+			cmd.add("-buildfile");
             if (buildFile.contains(" ")) {
                 buildFile = "\"" + buildFile + "\"";
             }
