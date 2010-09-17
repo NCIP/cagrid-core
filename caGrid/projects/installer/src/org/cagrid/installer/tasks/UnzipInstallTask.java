@@ -16,115 +16,104 @@ import org.apache.commons.logging.LogFactory;
 import org.cagrid.installer.model.CaGridInstallerModel;
 import org.cagrid.installer.steps.Constants;
 
+
 /**
  * @author <a href="mailto:joshua.phillips@semanticbits.com">Joshua Phillips</a>
  * 
  */
 public class UnzipInstallTask extends BasicTask {
 
-	private static final int BUFFER_SIZE = 1024;
+    private static final int BUFFER_SIZE = 8192;
 
-	private String tempFileNameProp;
+    private String tempFileNameProp;
 
-	private String installDirPathProp;
+    private String installDirPathProp;
 
-	private String dirNameProp;
+    private String dirNameProp;
 
-	private String homeProp;
+    private String homeProp;
 
-	private static final Log logger = LogFactory.getLog(UnzipInstallTask.class);
-
-	public UnzipInstallTask(String name, String description,
-			String tempFileNameProp, String installDirPathProp,
-			String dirNameProp, String homeProp) {
-		super(name, description);
-		this.tempFileNameProp = tempFileNameProp;
-		this.installDirPathProp = installDirPathProp;
-		this.dirNameProp = dirNameProp;
-		this.homeProp = homeProp;
-	}
-
-	protected Object internalExecute(CaGridInstallerModel model) throws Exception {
-
-		String path = model.getProperty(Constants.TEMP_DIR_PATH) + "/"
-		+ model.getProperty(this.tempFileNameProp);
-		ZipFile zipFile = null;
-		try {
-			logger.info("Trying to open ZipFile for " + path);
-			zipFile = new ZipFile(new File(path));
-		} catch (Exception ex) {
-			
-			logger.warn("Failed first attempt to open zip file. Trying again.");
-			try{
-				//Wait 3 seconds
-				Thread.sleep(3000);
-			}catch(InterruptedException ex2){
-				logger.warn("Sleep interrupted");
-			}
-			try{
-				zipFile = new ZipFile(new File(path));				
-			}catch(Exception ex2){
-				logger.error("Failed second attempt to open zip file. Aborting.", ex2);
-				throw new RuntimeException("Error instantiating zip file: "
-						+ ex.getMessage(), ex);
-			}
-		}
-
-		File installDir = new File(model.getProperty(this.installDirPathProp));
-		File home = new File(installDir.getAbsolutePath() + "/"
-				+ model.getProperty(this.dirNameProp));
+    private static final Log logger = LogFactory.getLog(UnzipInstallTask.class);
 
 
-		model.setProperty(this.homeProp, home.getAbsolutePath());
+    public UnzipInstallTask(String name, String description, String tempFileNameProp, String installDirPathProp,
+        String dirNameProp, String homeProp) {
+        super(name, description);
+        this.tempFileNameProp = tempFileNameProp;
+        this.installDirPathProp = installDirPathProp;
+        this.dirNameProp = dirNameProp;
+        this.homeProp = homeProp;
+    }
 
-		String baseOut = installDir.getAbsolutePath() + "/";
-		Enumeration entries = zipFile.entries();
-		int logAfterSize = 100;
-		int nextLog = -1;
-		int numFiles = 0;
-		while (entries.hasMoreElements()) {
-			ZipEntry entry = (ZipEntry) entries.nextElement();
-			String fileName = baseOut + entry.getName();
-			File file = new File(fileName);
 
-			if (entry.isDirectory()) {
-				file.mkdirs();
-			} else {
-				numFiles++;
-				if (numFiles > nextLog) {
-					nextLog += logAfterSize;
-					System.out.println("Extracting: " + fileName);
-				}
-				BufferedOutputStream out = null;
-				InputStream in = zipFile.getInputStream(entry);
-				try {
+    protected Object internalExecute(CaGridInstallerModel model) throws Exception {
+        String path = model.getProperty(Constants.TEMP_DIR_PATH) + "/" + model.getProperty(this.tempFileNameProp);
+        ZipFile zipFile = null;
+        try {
+            logger.info("Trying to open ZipFile for " + path);
+            zipFile = new ZipFile(new File(path));
+        } catch (Exception ex) {
+            logger.warn("Failed first attempt to open zip file. Trying again.");
+            try {
+                // Wait 3 seconds
+                Thread.sleep(3000);
+            } catch (InterruptedException ex2) {
+                logger.warn("Sleep interrupted");
+            }
+            try {
+                zipFile = new ZipFile(new File(path));
+            } catch (Exception ex2) {
+                logger.error("Failed second attempt to open zip file. Aborting.", ex2);
+                throw new RuntimeException("Error instantiating zip file: " + ex.getMessage(), ex);
+            }
+        }
 
-					if (!file.getParentFile().exists()) {
-						file.getParentFile().mkdirs();
-					}
-					file.createNewFile();
-					out = new BufferedOutputStream(new FileOutputStream(file));
+        File installDir = new File(model.getProperty(this.installDirPathProp));
+        File home = new File(installDir, model.getProperty(this.dirNameProp));
 
-				} catch (Exception ex) {
-					String msg = "Error creating output stream for '"
-							+ file.getAbsolutePath() + "': " + ex.getMessage();
-					logger.error(msg, ex);
-					throw new RuntimeException(msg, ex);
-				}
-				byte[] buffer = new byte[BUFFER_SIZE];
-				int len = -1;
-				while ((len = in.read(buffer)) > 0) {
-					out.write(buffer, 0, len);
-					buffer = new byte[BUFFER_SIZE];
-				}
-				out.flush();
-				out.close();
-				in.close();
-			}
+        model.setProperty(this.homeProp, home.getAbsolutePath());
 
-		}
-		zipFile.close();
+        Enumeration entries = zipFile.entries();
+        while (entries.hasMoreElements()) {
+            ZipEntry entry = (ZipEntry) entries.nextElement();
+            File file = new File(installDir, entry.getName());
+            
+            if (entry.isDirectory()) {
+                String message = "Creating directory " + file.getAbsolutePath();
+                System.out.println(message);
+                logger.debug(message);
+                file.mkdirs();
+            } else {
+                BufferedOutputStream out = null;
+                InputStream in = zipFile.getInputStream(entry);
+                try {
+                    if (!file.getParentFile().exists()) {
+                        file.getParentFile().mkdirs();
+                    }
+                    String message = "Extracting entry " + file.getName()
+                         + " to " + file.getAbsolutePath();
+                    System.out.println(message);
+                    logger.debug(message);
+                    file.createNewFile();
+                    out = new BufferedOutputStream(new FileOutputStream(file));
+                } catch (Exception ex) {
+                    String msg = "Error creating output stream for '" + file.getAbsolutePath() + "': "
+                        + ex.getMessage();
+                    logger.error(msg, ex);
+                    throw new RuntimeException(msg, ex);
+                }
+                byte[] buffer = new byte[BUFFER_SIZE];
+                int len = -1;
+                while ((len = in.read(buffer)) != -1) {
+                    out.write(buffer, 0, len);
+                }
+                out.flush();
+                out.close();
+                in.close();
+            }
+        }
+        zipFile.close();
 
-		return null;
-	}
+        return null;
+    }
 }
