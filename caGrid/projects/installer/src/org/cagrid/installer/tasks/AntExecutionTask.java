@@ -141,9 +141,11 @@ public class AntExecutionTask extends BasicTask {
                 if (!InstallerUtils.isWindows()) {
                     value = value.replaceAll(" ", "\\\\ ");
                 }
-                cmd.add("-D" + name + "=" + value);
+				cmd.add("-D" + name + "=" + value);
             }
         }
+
+		cmd.add("org.apache.tools.ant.launch.Launcher");
 
         // add build file
         if (buildFile != null) {
