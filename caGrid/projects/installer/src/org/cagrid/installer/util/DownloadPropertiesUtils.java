@@ -3,6 +3,7 @@ package org.cagrid.installer.util;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStream;
+import java.util.Enumeration;
 import java.util.Properties;
 
 import org.apache.commons.logging.Log;
@@ -20,13 +21,16 @@ public class DownloadPropertiesUtils {
         InputStream propsIn = null;
         String downloadPropsFileName = System.getProperty("download.properties");
         if (downloadPropsFileName != null) {
+            logger.info("Found download.properties system property set to " + downloadPropsFileName);
             try {
                 propsIn = new FileInputStream(downloadPropsFileName);
+                logger.info("Loaded download.properties from " + downloadPropsFileName);
             } catch (Exception ex) {
                 InstallerUtils.handleException("Couldn't load download.properties file '" + downloadPropsFileName + "': "
                     + ex.getMessage(), ex);
             }
         } else {
+            logger.info("Loading download.properties from classpath resource");
             try {
                 propsIn = Thread.currentThread().getContextClassLoader().getResourceAsStream("download.properties");
             } catch (Exception ex) {
@@ -42,6 +46,7 @@ public class DownloadPropertiesUtils {
         try {
             downloadProps.load(propsIn);
             downloadUrl = downloadProps.getProperty(Constants.DOWNLOAD_URL);
+            propsIn.close();
         } catch (Exception ex) {
             InstallerUtils.handleException("Error loading download.properties", ex);
         }
@@ -78,11 +83,17 @@ public class DownloadPropertiesUtils {
         try {
             defaultProps = new Properties();
             defaultProps.load(new FileInputStream(toFile));
+            if (logger.isInfoEnabled()) { // TODO: make this isDebugEnabled()
+                Enumeration<?> names = defaultProps.propertyNames();
+                while (names.hasMoreElements()) {
+                    String name = (String) names.nextElement();
+                    logger.info("Property " + name + " = " + defaultProps.getProperty(name));
+                }
+            }
         } catch (Exception ex) {
             InstallerUtils.handleException("Error loading default properties: " + ex.getMessage(), ex);
         }
 
         return defaultProps;
     }
-
 }
