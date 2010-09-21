@@ -19,6 +19,9 @@ then
     # HTTP proxy settings. nonProxyHosts= pipe (|) delimited list of hosts that must not be proxied
     #JAVA_OPTS="-DproxySet= -Dhttp.proxyHost= -Dhttp.proxyPort=8080 -Dhttp.nonProxyHosts=\"localhost\" $JAVA_OPTS"
     
+    # HTTPS proxy settings
+    #JAVA_OPTS="-Dhttps.proxyHost= -Dhttps.proxyPort= -Dhttps.nonProxyHosts=\"\" $JAVA_OPTS"
+    
     # Set username and password for HTTP proxies that require authentication
     #JAVA_OPTS="-Dhttp.proxyPassword= -Dhttp.proxyUser= $JAVA_OPTS"
     
