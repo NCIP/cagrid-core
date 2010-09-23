@@ -16,7 +16,7 @@ For more information, refer to the Documentation module of the repository.  Spec
 Please also consult http://cagrid.org, specifically the HOW-TO and FAQ sections.
 
 
-CVS TAGS
+CVS / SVN TAGS
 ========================================
 caGrid_Annual_Meeting_06 = Code used to demonstrate at caBIG Annual Meeting April 10th, 2006
 caGrid-1_0_beta_final = Code released for 1.0 Beta
@@ -25,4 +25,5 @@ caGrid-1_0_release_pointrelease_portal_r1 = First point release of 1.0 branch fo
 caGrid-1_1_release_final = Code released for 1.1
 caGrid-1_2_release_final = Code released for 1.2
 caGrid-1_3_release_final = Code released for 1.3
+caGrid-1_4_release_final = Code released for 1.4
 
