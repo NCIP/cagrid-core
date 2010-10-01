@@ -133,7 +133,7 @@ public class HistoryManagerTestCase extends TestCase {
         if (month < 10) {
             monthDir = new File(yearDir, "0" + String.valueOf(reportMonth));
         } else {
-            new File(yearDir, String.valueOf(reportMonth));
+            monthDir = new File(yearDir, String.valueOf(reportMonth));
         }
         File dayDir = null;
         if (day < 10) {
