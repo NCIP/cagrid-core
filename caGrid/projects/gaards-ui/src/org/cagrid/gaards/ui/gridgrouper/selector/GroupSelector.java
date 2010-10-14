@@ -17,6 +17,8 @@ import javax.swing.JScrollPane;
 import org.cagrid.gaards.ui.common.TitlePanel;
 import org.cagrid.gaards.ui.gridgrouper.GridGrouperHandle;
 import org.cagrid.gaards.ui.gridgrouper.GridGrouperServiceList;
+import org.cagrid.gaards.ui.gridgrouper.browser.GridGrouperTreeExpansionListener;
+import org.cagrid.gaards.ui.gridgrouper.expressioneditor.GrouperTreeExpressionEventListener;
 import org.cagrid.gaards.ui.gridgrouper.tree.GridGrouperTree;
 import org.cagrid.gaards.ui.gridgrouper.tree.GroupTreeNode;
 import org.cagrid.grape.GridApplication;
@@ -184,6 +186,7 @@ public class GroupSelector extends JDialog {
 		if (groupTree == null) {
 			groupTree = new GridGrouperTree();
 			groupTree.setProgress(getProgress());
+			groupTree.addTreeExpansionListener(new GridGrouperTreeExpansionListener(groupTree));
 		}
 		return groupTree;
 	}
