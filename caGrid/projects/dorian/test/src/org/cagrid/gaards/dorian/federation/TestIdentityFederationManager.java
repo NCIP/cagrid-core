@@ -1092,7 +1092,7 @@ public class TestIdentityFederationManager extends TestCase {
             }
 
             X509CRL crl = ifs.getCRL();
-            assertEquals(null, crl.getRevokedCertificates());
+            assertTrue(crl.getRevokedCertificates().isEmpty());
 
             // Suspend IDP
             idp2.getIdp().setStatus(TrustedIdPStatus.Suspended);
@@ -1123,7 +1123,7 @@ public class TestIdentityFederationManager extends TestCase {
             ifs.updateTrustedIdP(adminGridId, idp2.getIdp());
 
             crl = ifs.getCRL();
-            assertEquals(null, crl.getRevokedCertificates());
+            assertTrue(crl.getRevokedCertificates().isEmpty());
             for (int i = 0; i < list.size(); i++) {
                 UserCertificateFilter f = new UserCertificateFilter();
                 f.setGridIdentity(list.get(i).getUser().getGridId());
@@ -2220,7 +2220,7 @@ public class TestIdentityFederationManager extends TestCase {
             SAMLAssertion saml = new SAMLAssertion(issuer, start, end, null, null, l);
             List a = new ArrayList();
             a.add(cert);
-            saml.sign(XMLSignature.ALGO_ID_SIGNATURE_RSA_SHA1, key, a);
+            saml.sign(XMLSignature.ALGO_ID_SIGNATURE_RSA_SHA256, key, a);
 
             return saml;
         } catch (Exception e) {
@@ -2308,7 +2308,7 @@ public class TestIdentityFederationManager extends TestCase {
             usr.setUserStatus(GridUserStatus.Active);
             ifs.updateUser(adminGridId, usr);
         }
-        assertEquals(null, ifs.getCRL().getRevokedCertificates());
+        assertTrue(ifs.getCRL().getRevokedCertificates().isEmpty());
     }
 
 
@@ -2365,7 +2365,7 @@ public class TestIdentityFederationManager extends TestCase {
             if (alreadyRevokedCerts > 0) {
                 assertEquals(alreadyRevokedCerts, ifs.getCRL().getRevokedCertificates().size());
             } else {
-                assertEquals(null, ifs.getCRL().getRevokedCertificates());
+                assertTrue(ifs.getCRL().getRevokedCertificates().isEmpty());
             }
             return alreadyRevokedCerts;
         } else {
