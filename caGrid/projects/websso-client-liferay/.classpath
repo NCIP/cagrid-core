@@ -11,7 +11,7 @@
   <classpathentry kind="var" path="GT4_LOCATION/lib/cryptix32.jar" />
   <classpathentry kind="var" path="GT4_LOCATION/lib/cryptix-asn1.jar" />
   <classpathentry kind="var" path="GT4_LOCATION/lib/jaxrpc.jar" />
-  <classpathentry kind="var" path="GT4_LOCATION/lib/jce-jdk13-125.jar" />
+  <classpathentry kind="var" path="GT4_LOCATION/lib/jce-jdk13-145.jar" />
   <classpathentry kind="var" path="GT4_LOCATION/lib/puretls.jar" />
   <classpathentry kind="var" path="GT4_LOCATION/lib/saaj.jar" />
   <classpathentry kind="var" path="GT4_LOCATION/lib/wsdl4j.jar" />

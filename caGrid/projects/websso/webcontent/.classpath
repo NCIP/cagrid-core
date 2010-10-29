@@ -26,7 +26,6 @@
   <classpathentry kind="lib" path="WEB-INF/lib/xmlsec-1.4.0.jar" />
   <classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER" />
   <classpathentry kind="src" path="src/java" />
-  <classpathentry kind="lib" path="C:/apache-tomcat-5.5.20-client1/common/lib/servlet-api.jar" />
   <classpathentry kind="lib" path="WEB-INF/lib/addressing-1.0.jar" />
   <classpathentry kind="lib" path="WEB-INF/lib/axis.jar" />
   <classpathentry kind="lib" path="WEB-INF/lib/caGrid-authentication-service-client-1.4.jar" />
@@ -70,7 +69,7 @@
   <classpathentry kind="lib" path="WEB-INF/lib/jakarta-oro-2.0.8.jar" />
   <classpathentry kind="lib" path="WEB-INF/lib/jasciidammit-1.1.jar" />
   <classpathentry kind="lib" path="WEB-INF/lib/jaxrpc.jar" />
-  <classpathentry kind="lib" path="WEB-INF/lib/jce-jdk13-125.jar" />
+  <classpathentry kind="lib" path="WEB-INF/lib/jce-jdk13-145.jar" />
   <classpathentry kind="lib" path="WEB-INF/lib/jprov.jar" />
   <classpathentry kind="lib" path="WEB-INF/lib/ldapbp-1.0.jar" />
   <classpathentry kind="lib" path="WEB-INF/lib/mobius_common_client-1.1.jar" />

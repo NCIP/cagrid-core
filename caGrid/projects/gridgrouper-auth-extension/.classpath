@@ -54,7 +54,7 @@
   <classpathentry kind="var" path="GT4_LOCATION/lib/globus_usage_packets_common.jar" />
   <classpathentry kind="var" path="GT4_LOCATION/lib/globus_wsrf_tools_test.jar" />
   <classpathentry kind="var" path="GT4_LOCATION/lib/jaxrpc.jar" />
-  <classpathentry kind="var" path="GT4_LOCATION/lib/jce-jdk13-125.jar" />
+  <classpathentry kind="var" path="GT4_LOCATION/lib/jce-jdk13-145.jar" />
   <classpathentry kind="var" path="GT4_LOCATION/lib/jgss.jar" />
   <classpathentry kind="var" path="GT4_LOCATION/lib/junit.jar" />
   <classpathentry kind="var" path="GT4_LOCATION/lib/log4j-1.2.8.jar" />
