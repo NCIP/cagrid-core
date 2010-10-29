@@ -107,7 +107,7 @@ public class HostAgreement {
 
 
     public void sign(List<X509Certificate> certs, PrivateKey key) throws Exception {
-        sign(certs, key, XMLSignature.ALGO_ID_SIGNATURE_RSA_SHA1, MessageDigestAlgorithm.ALGO_ID_DIGEST_SHA1);
+        sign(certs, key, XMLSignature.ALGO_ID_SIGNATURE_RSA_SHA256, MessageDigestAlgorithm.ALGO_ID_DIGEST_SHA256);
     }
 
 
@@ -127,7 +127,7 @@ public class HostAgreement {
             transforms.item(1).getElement().appendChild(
                 new InclusiveNamespaces(this.doc, PolicyConstants.INCLUSIVE_NAMESPACES).getElement());
 
-            sig.addDocument("", transforms, (digalg != null) ? digalg : MessageDigestAlgorithm.ALGO_ID_DIGEST_SHA1);
+            sig.addDocument("", transforms, (digalg != null) ? digalg : MessageDigestAlgorithm.ALGO_ID_DIGEST_SHA256);
             // Add any X.509 certificates provided.
             X509Data x509 = new X509Data(root.getOwnerDocument());
             if (certs != null) {

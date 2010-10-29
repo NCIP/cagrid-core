@@ -660,7 +660,7 @@ public class TestTrustedIdPManager extends TestCase {
         SAMLAssertion saml = new SAMLAssertion(issuer, start2, end2, null, null, l);
         List a = new ArrayList();
         a.add(cert);
-        saml.sign(XMLSignature.ALGO_ID_SIGNATURE_RSA_SHA1, cred.getPrivateKey(), a);
+        saml.sign(XMLSignature.ALGO_ID_SIGNATURE_RSA_SHA256, cred.getPrivateKey(), a);
         return new IdPContainer(idp, cert, saml);
     }
 

@@ -54,7 +54,7 @@ public class AntGenerateEracomCA {
 			date.add(Calendar.DAY_OF_MONTH, days);
 			Date end = new Date(date.getTimeInMillis());
 			X509Certificate cert = CertUtil.generateCACertificate(provider.getName(), new X509Name(dn), start, end,
-				root, "SHA1WithRSA");
+				root, "SHA256WithRSA");
 
 			keyStore.setKeyEntry(alias, root.getPrivate(), null, new X509Certificate[]{cert});
 			String hash = CertUtil.getHashCode(cert);

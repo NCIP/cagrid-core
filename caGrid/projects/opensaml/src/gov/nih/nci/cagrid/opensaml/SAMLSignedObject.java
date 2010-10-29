@@ -188,9 +188,9 @@ public abstract class SAMLSignedObject extends SAMLObject implements Cloneable
                     );
 
             if (config.getBooleanProperty("gov.nih.nci.cagrid.opensaml.compatibility-mode"))
-                sig.addDocument("",transforms,(digalg!=null) ? digalg : MessageDigestAlgorithm.ALGO_ID_DIGEST_SHA1);
+                sig.addDocument("",transforms,(digalg!=null) ? digalg : MessageDigestAlgorithm.ALGO_ID_DIGEST_SHA256);
             else
-                sig.addDocument("#" + getId(),transforms,(digalg!=null) ? digalg : MessageDigestAlgorithm.ALGO_ID_DIGEST_SHA1);
+                sig.addDocument("#" + getId(),transforms,(digalg!=null) ? digalg : MessageDigestAlgorithm.ALGO_ID_DIGEST_SHA256);
 
             // Add any X.509 certificates provided.
             X509Data x509 = new X509Data(root.getOwnerDocument());

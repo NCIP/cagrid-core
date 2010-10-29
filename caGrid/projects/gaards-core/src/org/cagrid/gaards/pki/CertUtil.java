@@ -26,8 +26,8 @@ import java.security.cert.X509CRL;
 import java.security.cert.X509Certificate;
 import java.util.Date;
 
+import org.bouncycastle.asn1.ASN1InputStream;
 import org.bouncycastle.asn1.ASN1Sequence;
-import org.bouncycastle.asn1.DERInputStream;
 import org.bouncycastle.asn1.DERObjectIdentifier;
 import org.bouncycastle.asn1.DERSequence;
 import org.bouncycastle.asn1.x509.AuthorityKeyIdentifier;
@@ -41,9 +41,9 @@ import org.bouncycastle.asn1.x509.X509Extensions;
 import org.bouncycastle.asn1.x509.X509Name;
 import org.bouncycastle.jce.PKCS10CertificationRequest;
 import org.bouncycastle.jce.X509Principal;
-import org.bouncycastle.jce.X509V2CRLGenerator;
-import org.bouncycastle.jce.X509V3CertificateGenerator;
 import org.bouncycastle.openssl.PEMReader;
+import org.bouncycastle.x509.X509V2CRLGenerator;
+import org.bouncycastle.x509.X509V3CertificateGenerator;
 import org.globus.util.Base64;
 
 
@@ -56,7 +56,7 @@ import org.globus.util.Base64;
  */
 public class CertUtil {
 
-    public static final String SIGNATURE_ALGORITHM = "SHA1WithRSAEncryption";
+    public static final String SIGNATURE_ALGORITHM = "SHA256WithRSAEncryption";
 
 
     public static String getHashCode(X509Certificate cert) throws Exception {
@@ -169,11 +169,11 @@ public class CertUtil {
         certGen.addExtension(X509Extensions.KeyUsage, true, new KeyUsage(KeyUsage.digitalSignature
             | KeyUsage.keyEncipherment | KeyUsage.keyCertSign));
 
-        SubjectPublicKeyInfo spki = new SubjectPublicKeyInfo((ASN1Sequence) new DERInputStream(
+        SubjectPublicKeyInfo spki = new SubjectPublicKeyInfo((ASN1Sequence) new ASN1InputStream(
             new ByteArrayInputStream(publicKey.getEncoded())).readObject());
         certGen.addExtension(X509Extensions.SubjectKeyIdentifier, false, new SubjectKeyIdentifier(spki));
 
-        SubjectPublicKeyInfo apki = new SubjectPublicKeyInfo((ASN1Sequence) new DERInputStream(
+        SubjectPublicKeyInfo apki = new SubjectPublicKeyInfo((ASN1Sequence) new ASN1InputStream(
             new ByteArrayInputStream(cacert.getPublicKey().getEncoded())).readObject());
         certGen.addExtension(X509Extensions.AuthorityKeyIdentifier, false, new AuthorityKeyIdentifier(apki));
         return certGen.generateX509Certificate(signerKey, provider);
@@ -203,11 +203,11 @@ public class CertUtil {
         certGen.addExtension(X509Extensions.KeyUsage, true, new KeyUsage(KeyUsage.digitalSignature
             | KeyUsage.keyCertSign | KeyUsage.cRLSign));
 
-        SubjectPublicKeyInfo spki = new SubjectPublicKeyInfo((ASN1Sequence) new DERInputStream(
+        SubjectPublicKeyInfo spki = new SubjectPublicKeyInfo((ASN1Sequence) new ASN1InputStream(
             new ByteArrayInputStream(pair.getPublic().getEncoded())).readObject());
         certGen.addExtension(X509Extensions.SubjectKeyIdentifier, false, new SubjectKeyIdentifier(spki));
 
-        SubjectPublicKeyInfo apki = new SubjectPublicKeyInfo((ASN1Sequence) new DERInputStream(
+        SubjectPublicKeyInfo apki = new SubjectPublicKeyInfo((ASN1Sequence) new ASN1InputStream(
             new ByteArrayInputStream(pair.getPublic().getEncoded())).readObject());
         certGen.addExtension(X509Extensions.AuthorityKeyIdentifier, false, new AuthorityKeyIdentifier(apki));
         return certGen.generateX509Certificate(pair.getPrivate(), provider);
@@ -240,11 +240,11 @@ public class CertUtil {
         certGen.addExtension(X509Extensions.KeyUsage, true, new KeyUsage(KeyUsage.digitalSignature
             | KeyUsage.keyEncipherment | KeyUsage.dataEncipherment | KeyUsage.nonRepudiation));
 
-        SubjectPublicKeyInfo spki = new SubjectPublicKeyInfo((ASN1Sequence) new DERInputStream(
+        SubjectPublicKeyInfo spki = new SubjectPublicKeyInfo((ASN1Sequence) new ASN1InputStream(
             new ByteArrayInputStream(publicKey.getEncoded())).readObject());
         certGen.addExtension(X509Extensions.SubjectKeyIdentifier, false, new SubjectKeyIdentifier(spki));
 
-        SubjectPublicKeyInfo apki = new SubjectPublicKeyInfo((ASN1Sequence) new DERInputStream(
+        SubjectPublicKeyInfo apki = new SubjectPublicKeyInfo((ASN1Sequence) new ASN1InputStream(
             new ByteArrayInputStream(cacert.getPublicKey().getEncoded())).readObject());
         certGen.addExtension(X509Extensions.AuthorityKeyIdentifier, false, new AuthorityKeyIdentifier(apki));
         if (policyId != null) {
@@ -435,7 +435,7 @@ public class CertUtil {
         for (int i = 0; i < entries.length; i++) {
             crlGen.addCRLEntry(entries[i].getCertificateSerialNumber(), now, entries[i].getReason());
         }
-        SubjectPublicKeyInfo apki = new SubjectPublicKeyInfo((ASN1Sequence) new DERInputStream(
+        SubjectPublicKeyInfo apki = new SubjectPublicKeyInfo((ASN1Sequence) new ASN1InputStream(
             new ByteArrayInputStream(caCert.getPublicKey().getEncoded())).readObject());
         crlGen.addExtension(X509Extensions.AuthorityKeyIdentifier, false, new AuthorityKeyIdentifier(apki));
         crlGen.addExtension(X509Extensions.CRLNumber, false, new CRLNumber(BigInteger.valueOf(System

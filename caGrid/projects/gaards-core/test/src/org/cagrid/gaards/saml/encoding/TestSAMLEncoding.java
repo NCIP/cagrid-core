@@ -120,7 +120,7 @@ public class TestSAMLEncoding extends TestCase {
 			saml = new SAMLAssertion(issuer, start, end, null, null, l);
 			List<X509Certificate> a = new ArrayList<X509Certificate>();
 			a.add(cert);
-			saml.sign(XMLSignature.ALGO_ID_SIGNATURE_RSA_SHA1, key, a);
+			saml.sign(XMLSignature.ALGO_ID_SIGNATURE_RSA_SHA256, key, a);
 
 			saml.verify();
 			saml.verify(cert);

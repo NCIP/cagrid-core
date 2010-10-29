@@ -22,7 +22,7 @@ import org.cagrid.gaards.pki.KeyUtil;
 public abstract class BaseEracomCertificateAuthority extends CertificateAuthority {
 
     public static final String WRAPPER_KEY_ALIAS = "dorian-wrapper-key";
-    public static final String SIGNATURE_ALGORITHM = "SHA1WithRSA";
+    public static final String SIGNATURE_ALGORITHM = "SHA256WithRSA";
     public static final String SLOT_PROPERTY = "slot";
     private Provider provider;
     private KeyStore keyStore;

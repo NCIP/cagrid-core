@@ -210,7 +210,7 @@ public class DefaultSAMLProvider implements
 		    null, l);
 	    List a = new ArrayList();
 	    a.add(this.certificate);
-	    saml.sign(XMLSignature.ALGO_ID_SIGNATURE_RSA_SHA1,
+	    saml.sign(XMLSignature.ALGO_ID_SIGNATURE_RSA_SHA256,
 		    this.privateKey, a);
 
 	} catch (Exception e) {

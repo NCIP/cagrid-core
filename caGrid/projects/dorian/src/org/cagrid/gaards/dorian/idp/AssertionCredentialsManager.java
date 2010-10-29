@@ -287,7 +287,7 @@ public class AssertionCredentialsManager extends LoggingObject {
             SAMLAssertion saml = new SAMLAssertion(issuer, start, end, null, null, l);
             List<X509Certificate> a = new ArrayList<X509Certificate>();
             a.add(cert);
-            saml.sign(XMLSignature.ALGO_ID_SIGNATURE_RSA_SHA1, key, a);
+            saml.sign(XMLSignature.ALGO_ID_SIGNATURE_RSA_SHA256, key, a);
 
             return saml;
         } catch (Exception e) {

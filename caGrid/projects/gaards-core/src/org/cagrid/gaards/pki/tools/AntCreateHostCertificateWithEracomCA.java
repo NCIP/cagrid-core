@@ -84,7 +84,7 @@ public class AntCreateHostCertificateWithEracomCA {
 			}
 			X509Certificate userCert = convert(CertUtil.generateCertificate(provider
 					.getName(), new X509Name(subject), start, end, pair
-					.getPublic(), cacert, cakey, "SHA1WithRSA", null));
+					.getPublic(), cacert, cakey, "SHA256WithRSA", null));
 
 			KeyUtil.writePrivateKey(pair.getPrivate(), new File(keyOut));
 			CertUtil.writeCertificate(userCert, new File(certOut));
