@@ -54,7 +54,7 @@
 		<dependency rev="2.6.2" org="apache" name="xerces2-j" />
 		<dependency rev="1.3.4" org="oswego" name="concurrent" />
 
-		<dependency rev="125" org="bouncycastle" name="jce-jdk13" />
+		<dependency rev="145" org="bouncycastle" name="jce-jdk13" />
 		<dependency rev="1.1" org="commonj" name="commonj" />
  
 		<dependency rev="patched-4.0.3" org="globus" name="addressing" />
