@@ -112,20 +112,16 @@ public class GenerateTrustReport {
 							report("CRL:                       " + ca.getCRL().getAbsolutePath());
 							X509CRL crl = CertUtil.loadCRL(ca.getCRL());
 							Set s = crl.getRevokedCertificates();
-							if (s == null) {
-								report("Certificates Revoked:      0");
-							} else {
-								report("Certificates Revoked:      " + s.size());
-								Iterator curr = s.iterator();
-								report("Revoked Ceritficates:");
-								int count = 1;
-								while (curr.hasNext()) {
-									X509CRLEntry entry = (X509CRLEntry) curr.next();
-									report("	" + count + ") " + entry.getSerialNumber());
-									count++;
-								}
+							// Bouncycastle 145 always returns a set, but it might be empty
+							report("Certificates Revoked:      " + s.size());
+							Iterator curr = s.iterator();
+							report("Revoked Ceritficates:");
+							int count = 1;
+							while (curr.hasNext()) {
+							    X509CRLEntry entry = (X509CRLEntry) curr.next();
+							    report("	" + count + ") " + entry.getSerialNumber());
+							    count++;
 							}
-
 						}
 						report("");
 					} catch (Exception e) {
@@ -135,9 +131,7 @@ public class GenerateTrustReport {
 						report("");
 					}
 				}
-
 			}
-
 		} catch (Exception e) {
 			e.printStackTrace();
 			System.exit(1);
@@ -146,7 +140,6 @@ public class GenerateTrustReport {
 				pw.close();
 			}
 		}
-
 	}
 
 
