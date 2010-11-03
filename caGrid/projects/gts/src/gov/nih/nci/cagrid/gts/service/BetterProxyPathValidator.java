@@ -1,6 +1,10 @@
 package gov.nih.nci.cagrid.gts.service;
 
 import java.io.ByteArrayInputStream;
+import java.security.NoSuchAlgorithmException;
+import java.security.NoSuchProviderException;
+import java.security.PublicKey;
+import java.security.Signature;
 import java.security.cert.CRL;
 import java.security.cert.CertPath;
 import java.security.cert.Certificate;
@@ -8,9 +12,13 @@ import java.security.cert.CertificateEncodingException;
 import java.security.cert.CertificateExpiredException;
 import java.security.cert.CertificateNotYetValidException;
 import java.security.cert.X509Certificate;
+import java.security.interfaces.RSAPublicKey;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Hashtable;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -19,13 +27,39 @@ import org.globus.gsi.TrustedCertificates;
 import org.globus.gsi.proxy.ProxyPathValidatorException;
 import org.globus.gsi.ptls.PureTLSUtil;
 
+import COM.claymoresystems.cert.CertificateVerifyException;
 import COM.claymoresystems.ptls.SSLDebug;
 import COM.claymoresystems.sslg.CertVerifyPolicyInt;
 import cryptix.util.core.ArrayUtil;
 
 public class BetterProxyPathValidator {
 
+    public static final String CRYPTO_PROVIDER = "SunRsaSign";
+
     private static Log LOG = LogFactory.getLog(BetterProxyPathValidator.class);
+    
+    private static Map<String, String> oid2NameMap;
+
+    static {
+        oid2NameMap = new HashMap<String, String>();
+
+        oid2NameMap.put("1.2.840.10040.4.3", "DSA");
+        oid2NameMap.put("1.2.840.113549.1.1.2", "MD2/RSA");
+        oid2NameMap.put("1.2.840.113549.1.1.3", "MD4/RSA");
+        oid2NameMap.put("1.2.840.113549.1.1.4", "MD5/RSA");
+        oid2NameMap.put("1.2.840.113549.1.1.5", "SHA-1/RSA/PKCS#1");
+        // added OIDs for a variety of algorithms
+        // OIDs from http://www.oid-info.com/index.htm
+        // oid2NameMap.put("1.2.840.113549.1.1.11", "SHA256/RSA/PKCS#1");
+        // oid2NameMap.put("1.2.840.113549.1.1.12", "SHA384/RSA/PKCS#1");
+        // oid2NameMap.put("1.2.840.113549.1.1.13", "SHA512/RSA/PKCS#1");
+        oid2NameMap.put("1.2.840.113549.1.1.11", "SHA256withRSA");
+        oid2NameMap.put("1.2.840.113549.1.1.12", "SHA384withRSA");
+        oid2NameMap.put("1.2.840.113549.1.1.13", "SHA512withRSA");
+        // SHA256withRSA
+        // SHA384withRSA
+        // SHA512withRSA
+    }
     
     public void validate(CertPath proxyCertPath, X509Certificate[] trustedCerts, CRL revocationList) 
         throws ProxyPathValidatorException, CertificateEncodingException {
@@ -135,7 +169,7 @@ public class BetterProxyPathValidator {
             }
             
             // Ok, now we have to verify this certificate
-            // TODO: implement me
+            verifyCert(cert, last.getPublicKey());
             
             // if we're checking dates, do it now
             if (policy.checkDatesP()) {
@@ -217,4 +251,71 @@ public class BetterProxyPathValidator {
         throws CertificateNotYetValidException, CertificateExpiredException {
         cert.checkValidity(date);
     }
+    
+    
+    /**
+     * Ensures the certificate is signed by the issuer
+     * 
+     * @param cert
+     * @param signerKey
+     */
+    private boolean verifyCert(X509Certificate cert, PublicKey signerKey) throws ProxyPathValidatorException {
+        // Lookup the algorithm
+        String certAlgorithmOid = cert.getSigAlgOID();
+        String algorithmName = oid2NameMap.get(certAlgorithmOid);
+        if (algorithmName == null) {
+            throw new ProxyPathValidatorException(ProxyPathValidatorException.FAILURE, 
+                "Unknown certificate signature algorithm OID: " + certAlgorithmOid, null);
+        }
+        LOG.debug("Certificate has signing algorithm OID " + certAlgorithmOid + ", which maps to " + algorithmName);
+        try {
+            checkSignatureKey(signerKey, algorithmName);
+        } catch (CertificateVerifyException e1) {
+            throw new ProxyPathValidatorException(ProxyPathValidatorException.FAILURE, e1.getMessage(), e1);
+        }
+
+        // Security.addProvider(new Cryptix());
+        // Signature sig = Signature.getInstance(alg != null ? alg : signatureAlgorithm, "Cryptix");
+        // Signature sig = Signature.getInstance(alg != null ? alg : signatureAlgorithm);
+        Signature sig;
+        try {
+            sig = Signature.getInstance(algorithmName, CRYPTO_PROVIDER);
+        } catch (NoSuchAlgorithmException e) {
+            throw new ProxyPathValidatorException(ProxyPathValidatorException.FAILURE,
+                e.getMessage(), e);
+        } catch (NoSuchProviderException e) {
+            throw new ProxyPathValidatorException(ProxyPathValidatorException.FAILURE,
+                e.getMessage(), e);
+        }
+        
+        boolean verified = false;
+        try {
+            sig.initVerify(signerKey);
+            byte[] tbsCertDER = cert.getTBSCertificate();
+            sig.update(tbsCertDER);
+            verified = sig.verify(cert.getSignature());
+        } catch (Exception ex) {
+            throw new ProxyPathValidatorException(ProxyPathValidatorException.FAILURE,
+                "Unable to verify signature: " + ex.getMessage(), ex);
+        }
+        return verified;
+    }
+    
+    
+    private void checkSignatureKey(PublicKey key, String alg) throws CertificateVerifyException {
+        if (alg.equals("SHA-1/RSA/PKCS#1") || alg.equals("SHA256withRSA") || 
+            alg.equals("SHA384withRSA") || alg.equals("SHA512withRSA")) {
+            key.getAlgorithm();
+            if (!(key instanceof RSAPublicKey)) {
+                throw new CertificateVerifyException("Public key doesn't match algorithm " + alg);
+            }
+        } else if (alg.equals("DSA")) {
+            if (!(key instanceof java.security.interfaces.DSAPublicKey)) {
+                throw new CertificateVerifyException("Public key doesn't match algorithm " + alg);
+            }
+        } else {
+            throw new CertificateVerifyException("Unknown algorithm " + alg);
+        }
+    }
+
 }
