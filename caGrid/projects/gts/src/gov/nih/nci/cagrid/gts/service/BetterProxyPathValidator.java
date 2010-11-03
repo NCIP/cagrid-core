@@ -16,9 +16,10 @@ import java.security.interfaces.RSAPublicKey;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.Hashtable;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -59,6 +60,15 @@ public class BetterProxyPathValidator {
         // SHA256withRSA
         // SHA384withRSA
         // SHA512withRSA
+    }
+    
+    private static Set<String> RSA_ALGORITHMS;
+    static {
+        RSA_ALGORITHMS = new HashSet<String>();
+        RSA_ALGORITHMS.add("SHA-1/RSA/PKCS#1");
+        RSA_ALGORITHMS.add("SHA256withRSA");
+        RSA_ALGORITHMS.add("SHA384withRSA");
+        RSA_ALGORITHMS.add("SHA512withRSA");
     }
     
     public void validate(CertPath proxyCertPath, X509Certificate[] trustedCerts, CRL revocationList) 
@@ -303,9 +313,7 @@ public class BetterProxyPathValidator {
     
     
     private void checkSignatureKey(PublicKey key, String alg) throws CertificateVerifyException {
-        if (alg.equals("SHA-1/RSA/PKCS#1") || alg.equals("SHA256withRSA") || 
-            alg.equals("SHA384withRSA") || alg.equals("SHA512withRSA")) {
-            key.getAlgorithm();
+        if (RSA_ALGORITHMS.contains(alg)) {
             if (!(key instanceof RSAPublicKey)) {
                 throw new CertificateVerifyException("Public key doesn't match algorithm " + alg);
             }
