@@ -33,6 +33,9 @@ import cryptix.provider.Cryptix;
  */
 
 public class TestBetterProxyPathValidator extends TestCase {
+    
+    public static final String CRL_ERROR = "is on a CRL";
+    public static final String UNKNOWN_CA = "Unknown CA";
 
     private CertificateFactory factory = null;
     private CA caX = null;
@@ -121,8 +124,9 @@ public class TestBetterProxyPathValidator extends TestCase {
             validator.validate(pathX2, trusted1, crl);
             fail("Should not be able to validate certificate on the CRL!!!");
         } catch (ProxyPathValidatorException ex) {
-            System.out.println(ex.getMessage());
-            // expected
+            // expected, but verify the message
+            assertTrue("Validation message was not as expected! " +
+            	"(Found " + ex.getMessage() + ")", ex.getMessage().endsWith(CRL_ERROR));
         } catch (CertificateEncodingException ex) {
             ex.printStackTrace();
             fail("Error encoding certificates");
@@ -146,8 +150,9 @@ public class TestBetterProxyPathValidator extends TestCase {
             validator.validate(pathY1, trusted1, crl);
             fail("Should not be able to validate certificate signed by an untrusted CA!!!");
         } catch (ProxyPathValidatorException ex) {
-            System.out.println(ex.getMessage());
-            // expected
+            // expected, but verify the message
+            assertTrue("Unexpected validation error message (Found " + ex.getMessage() + ")", 
+                ex.getMessage().contains(UNKNOWN_CA));
         } catch (CertificateEncodingException ex) {
             ex.printStackTrace();
             fail("Error encoding certificates");
@@ -192,8 +197,9 @@ public class TestBetterProxyPathValidator extends TestCase {
             validator.validate(proxyPathX2, trusted1, crl);
             fail("Should not be able to validate certificate!!!");
         } catch (ProxyPathValidatorException ex) {
-            System.out.println(ex.getMessage());
-            // expected
+            // expected, but verify the message
+            assertTrue("Validation message was not as expected! " +
+                "(Found " + ex.getMessage() + ")", ex.getMessage().endsWith(CRL_ERROR));
         } catch (CertificateEncodingException ex) {
             ex.printStackTrace();
             fail("Error encoding credentials: " + ex.getMessage());
@@ -220,8 +226,9 @@ public class TestBetterProxyPathValidator extends TestCase {
             validator.validate(proxyPathY1, trusted1, crl);
             fail("Should not be able to validate certificate!!!");
         } catch (ProxyPathValidatorException ex) {
-            System.out.println(ex.getMessage());
-            // expected
+            // expected, but verify the message
+            assertTrue("Unexpected validation error message (Found " + ex.getMessage() + ")", 
+                ex.getMessage().contains(UNKNOWN_CA));
         } catch (CertificateEncodingException ex) {
             ex.printStackTrace();
             fail("Error encoding credentials: " + ex.getMessage());
