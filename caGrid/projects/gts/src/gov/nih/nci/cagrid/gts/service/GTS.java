@@ -133,7 +133,6 @@ public class GTS implements TrustedAuthorityLevelRemover, TrustLevelLookup {
 		CertificateValidationFault {
 		boolean isValidated = false;
 		TrustedAuthority[] list = trust.findTrustAuthorities(filter);
-		ProxyPathValidator validator = new ProxyPathValidator();
 		if ((list == null) || (list.length == 0)) {
 			CertificateValidationFault fault = new CertificateValidationFault();
 			fault.setFaultString("Could not validate chain, no trusted roots found!!!");
@@ -182,6 +181,7 @@ public class GTS implements TrustedAuthorityLevelRemover, TrustLevelLookup {
 				}
 			}
 			try {
+			    BetterProxyPathValidator validator = new BetterProxyPathValidator();
 				validator.validate(certChain, trustedCerts, CertificateRevocationLists
 					.getCertificateRevocationLists(crls));
 				isValidated = true;
