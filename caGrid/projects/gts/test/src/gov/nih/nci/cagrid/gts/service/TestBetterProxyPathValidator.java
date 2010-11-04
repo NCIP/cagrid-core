@@ -88,7 +88,12 @@ public class TestBetterProxyPathValidator extends TestCase {
             fail("Error setting up certificates for testing: " + ex.getMessage());
         }
 
-        validator = new BetterProxyPathValidator();
+        try {
+            validator = new BetterProxyPathValidator();
+        } catch (CertificateException e) {
+            e.printStackTrace();
+            fail("Unable to set up proxy path validator");
+        }
     }
 
 

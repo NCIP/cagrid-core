@@ -51,7 +51,11 @@ import cryptix.util.core.ArrayUtil;
 
 public class BetterProxyPathValidator {
 
-    public static final String CRYPTO_PROVIDER = "SunRsaSign";
+    private static final int MAX_PATH_LENGTH = 255;
+
+    // public static final String CRYPTO_PROVIDER = "SunRsaSign";
+    // use the BouncyCastle crypto provider
+    public static final String CRYPTO_PROVIDER = "BC";
 
     private static Log LOG = LogFactory.getLog(BetterProxyPathValidator.class);
 
@@ -67,15 +71,9 @@ public class BetterProxyPathValidator {
         OID_TO_NAME.put("1.2.840.113549.1.1.5", "SHA-1/RSA/PKCS#1");
         // added OIDs for a variety of algorithms
         // OIDs from http://www.oid-info.com/index.htm
-        // oid2NameMap.put("1.2.840.113549.1.1.11", "SHA256/RSA/PKCS#1");
-        // oid2NameMap.put("1.2.840.113549.1.1.12", "SHA384/RSA/PKCS#1");
-        // oid2NameMap.put("1.2.840.113549.1.1.13", "SHA512/RSA/PKCS#1");
         OID_TO_NAME.put("1.2.840.113549.1.1.11", "SHA256withRSA");
         OID_TO_NAME.put("1.2.840.113549.1.1.12", "SHA384withRSA");
         OID_TO_NAME.put("1.2.840.113549.1.1.13", "SHA512withRSA");
-        // SHA256withRSA
-        // SHA384withRSA
-        // SHA512withRSA
     }
 
     private static Set<String> RSA_ALGORITHMS;
@@ -91,9 +89,45 @@ public class BetterProxyPathValidator {
     }
     
     private Map<String, ProxyPolicyHandler> proxyPolicyHandlers = null;
+    private CertificateFactory certFactory = null;
+    private X509Certificate identityCert = null;
+    private boolean limited = false;
+    private boolean rejectLimitedProxyCheck = false;
     
-    public BetterProxyPathValidator() {
+    public BetterProxyPathValidator() throws CertificateException {
         this.proxyPolicyHandlers = new HashMap<String, ProxyPolicyHandler>();
+        certFactory = CertificateFactory.getInstance("X.509");
+    }
+    
+    
+    /**
+     * Returns if the validated proxy path is limited. A proxy path is limited
+     * when a limited proxy is present anywhere after the first
+     * non-impersonation proxy certificate.
+     * 
+     * @return true if the validated path is limited
+     */
+    public boolean isLimited() {
+        return this.limited;
+    }
+    
+    
+    /**
+     * Resets the internal state. Useful for reusing the same instance for
+     * validating multiple certificate paths.
+     */
+    public void reset() {
+        this.rejectLimitedProxyCheck = false;
+        this.limited = false;
+        this.identityCert = null;
+    }
+
+
+    /**
+     * If set, the validate rejects certificate chain if limited proxy if found
+     */
+    public void setRejectLimitedProxyCheck(boolean rejectLimProxy) {
+        this.rejectLimitedProxyCheck = rejectLimProxy;
     }
     
     
@@ -151,36 +185,6 @@ public class BetterProxyPathValidator {
         throws ProxyPathValidatorException, CertificateEncodingException {
         CertificateRevocationLists crls = CertificateRevocationLists
             .getCertificateRevocationLists(new X509CRL[]{revocationList});
-        /*
-         * Ignore this, I was trying something with the Java built-in cert path validator,
-         * but it doesn't know anything about the bouncycastle provider
-        CertPathValidator pathValidator = null;
-        KeyStore store = null;
-        try {
-            pathValidator = CertPathValidator.getInstance("PKIX");
-            store = KeyStore.getInstance("jks");
-            store.load(null);
-            for (X509Certificate trusted : trustedCerts) {
-                store.setCertificateEntry(trusted.getSubjectX500Principal().getName(), trusted);
-            }
-        } catch (Exception ex) {
-            ex.printStackTrace();   
-        }        
-        
-        try {
-            CertPathParameters params = new PKIXParameters(store);
-            pathValidator.validate(certificatePath, params);
-        } catch (CertPathValidatorException e) {
-            e.printStackTrace();
-            throw new ProxyPathValidatorException(ProxyPathValidatorException.FAILURE, e.getMessage(), e);
-        } catch (InvalidAlgorithmParameterException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        } catch (KeyStoreException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
-        */
         validate(certificatePath, trustedCerts, crls);
     }
 
@@ -192,31 +196,27 @@ public class BetterProxyPathValidator {
             throw new IllegalArgumentException("Proxy Certificate Path was null");
         }
 
-        // TODO: make sure this plays nice with SHA256 certs! (it seems to)
+        // this seems to play well with certs regardless of algorithm
         TrustedCertificates trustedCertificates = null;
         if (trustedCerts != null) {
             trustedCertificates = new TrustedCertificates(trustedCerts);
         }
 
-        // can use the verification policy from PureTLS so we don't need new
-        // config magic
+        // can use the verification policy from PureTLS so we don't need new config magic
         CertVerifyPolicyInt policy = PureTLSUtil.getDefaultCertVerifyPolicy();
 
-        List<X509Certificate> validatedChain = validatePath(proxyCertPath, trustedCertificates, policy);
+        // create the validated certificate chain
+        List<X509Certificate> validatedChain = createValidatedChain(proxyCertPath, trustedCertificates, policy);
 
+        // no validated chain, or it's not of the right length
         if (validatedChain == null || validatedChain.size() < proxyCertPath.getCertificates().size()) {
             throw new ProxyPathValidatorException(ProxyPathValidatorException.UNKNOWN_CA, null, "Unknown CA");
         }
 
-        /**
-         * The chain returned by PureTSL code contains the CA certificates we
-         * need to insert those certificates into the new certPath if the sizes
-         * are different
-         */
         // if the size of the validation chain != size of the cert path, we
         // need to insert certificates into the cert path for more validation.
         if (proxyCertPath.getCertificates().size() != validatedChain.size()) {
-            // since the cert path certificates list is immutable, copy it
+            // since the CertPath certificates list is immutable, copy it
             List<Certificate> newCertPath = new ArrayList<Certificate>();
             newCertPath.addAll(proxyCertPath.getCertificates());
             for (int i = 0; i < validatedChain.size() - proxyCertPath.getCertificates().size(); i++) {
@@ -225,35 +225,17 @@ public class BetterProxyPathValidator {
             }
             // make the new cert path
             try {
-                CertificateFactory factory = CertificateFactory.getInstance("X.509");
-                proxyCertPath = factory.generateCertPath(newCertPath);
+                proxyCertPath = certFactory.generateCertPath(newCertPath);
             } catch (CertificateException ex) {
                 throw new ProxyPathValidatorException(ProxyPathValidatorException.FAILURE, ex.getMessage(), ex);
             }
-            /*
-            int initialValidatedSize = validatedChain.size();
-            int copyFromLocation = 0;
-            while (validatedChain.size() < proxyCertPath.getCertificates().size()) {
-                X509Certificate copyMe = validatedChain.get(copyFromLocation);
-                byte[] encodedCert = copyMe.getEncoded();
-                X509Certificate copy = null;
-                try {
-                    copy = CertUtil.loadCertificate(new ByteArrayInputStream(encodedCert));
-                } catch (Exception ex) {
-                    throw new ProxyPathValidatorException(ProxyPathValidatorException.FAILURE, ex);
-                }
-                validatedChain.add(copy);
-                copyFromLocation++;
-                copyFromLocation %= initialValidatedSize;
-            }
-            */
         }
 
         deepValidate(proxyCertPath, trustedCertificates, revocationLists);
     }
 
 
-    private List<X509Certificate> validatePath(CertPath certPath, TrustedCertificates trustedCerts,
+    private List<X509Certificate> createValidatedChain(CertPath certPath, TrustedCertificates trustedCerts,
         CertVerifyPolicyInt policy) throws ProxyPathValidatorException, CertificateEncodingException {
         List<X509Certificate> chain = new ArrayList<X509Certificate>();
         boolean foundRoot = false;
@@ -261,7 +243,8 @@ public class BetterProxyPathValidator {
         int pathLength = 0;
 
         // iterate the proxy cert path in reverse, since CertPath puts the most
-        // specific cert (i.e. the proxy) up front
+        // specific cert (i.e. the proxy) up front, and this algorithm
+        // wants the most significant (i.e. the CA cert) up front
         List<Certificate> certs = new ArrayList<Certificate>();
         certs.addAll(certPath.getCertificates());
         Collections.reverse(certs);
@@ -287,7 +270,6 @@ public class BetterProxyPathValidator {
                 } else {
                     // not a root, but maybe it's signed by one?
                     LOG.debug("Trying to find the trusted root of this cert");
-                    // last = getSigningRoot(cert, trustedCerts);
                     last = getSigningRoot(cert, trustedCerts);
                     if (last == null) {
                         LOG.debug("Did not find a trusted root for this cert");
@@ -295,10 +277,9 @@ public class BetterProxyPathValidator {
                     }
                     LOG.debug("The trusted root was found");
                 }
-                // to get here, we must have found a trusted root cert ('last')
-                // that
-                // signed our user cert. Add it to the chain, mark found_root ==
-                // true
+                // to get here, we must have found a trusted root cert ('last') 
+                // that signed our user cert. Add it to the chain, mark 
+                // found_root == true
                 chain.add(last);
                 foundRoot = true;
             }
@@ -317,7 +298,8 @@ public class BetterProxyPathValidator {
                         + "' certificate. Subject and issuer names do not match", null);
             }
 
-            // Ok, now we have to verify this certificate
+            // now we have to verify this certificate was signed
+            // by the issuer we think it was signed by
             verifyCert(cert, last.getPublicKey());
 
             // if we're checking dates, do it now
@@ -334,10 +316,12 @@ public class BetterProxyPathValidator {
                 }
             }
 
+            // increment the path length
             pathLength++;
-            if (pathLength > 255) {
+            // path length capped at 255
+            if (pathLength > MAX_PATH_LENGTH) {
                 throw new ProxyPathValidatorException(ProxyPathValidatorException.PATH_LENGTH_EXCEEDED,
-                    "Path length greater than 255", null);
+                    "Path length greater than " + MAX_PATH_LENGTH, null);
             }
 
             last = cert;
@@ -392,7 +376,7 @@ public class BetterProxyPathValidator {
             checkUnsupportedCriticalExtensions(tbsCert, certType, cert);
             checkIdentity(cert, certType);
             checkCRL(cert, crlLists, trustedCerts);
-            if (org.globus.gsi.CertUtil.isProxy(certType)) {
+            if (CertUtil.isProxy(certType)) {
                 proxyDepth++;
             }
 
@@ -408,23 +392,12 @@ public class BetterProxyPathValidator {
 
                 if (issuerCertType == GSIConstants.CA) {
                     // PC can only be signed by EEC or PC
-                    if (org.globus.gsi.CertUtil.isProxy(certType)) {
+                    if (CertUtil.isProxy(certType)) {
                         throw new ProxyPathValidatorException(ProxyPathValidatorException.FAILURE, issuerCert,
                             "CA certificate cannot sign Proxy Certificate");
                     }
                     int pathLen = getCAPathConstraint(issuerTbsCert);
-                    if (pathLen < 0) {
-                        /*
-                         * This is now possible since the certType can be set to
-                         * CA if the given certificate is in the trusted
-                         * certificate list.
-                         */
-                        /*
-                         * throw new ProxyPathValidatorException(
-                         * ProxyPathValidatorException.FAILURE, issuerCert, "Bad
-                         * path length constraint for CA certificate");
-                         */
-                    } else if (pathLen < Integer.MAX_VALUE && (i - proxyDepth - 1) > pathLen) {
+                    if (pathLen >= 0 && pathLen < Integer.MAX_VALUE && (i - proxyDepth - 1) > pathLen) {
                         throw new ProxyPathValidatorException(ProxyPathValidatorException.PATH_LENGTH_EXCEEDED,
                             issuerCert, "CA Certificate does not allow path length > " + pathLen
                                 + " and path length is " + (i - proxyDepth - 1));
@@ -487,7 +460,6 @@ public class BetterProxyPathValidator {
                 }
 
                 checkValidDates(issuerCert, new Date());
-                // check for unsupported critical extensions
                 checkUnsupportedCriticalExtensions(issuerTbsCert, issuerCertType, issuerCert);
                 checkIdentity(issuerCert, issuerCertType);
                 checkCRL(cert, crlLists, trustedCerts);
@@ -500,16 +472,29 @@ public class BetterProxyPathValidator {
         } catch (CertificateEncodingException e) {
             throw new ProxyPathValidatorException(ProxyPathValidatorException.FAILURE, e);
         } catch (ProxyPathValidatorException e) {
-            // XXX: just a hack for now - needed by below
+            // prevents wrapping and re-throwing one of these
             throw e;
         } catch (Exception e) {
-            // XXX: just a hack for now
+            // whatever happened, it was bad and fails the validation
             throw new ProxyPathValidatorException(ProxyPathValidatorException.FAILURE, e);
         }
     }
 
 
-    private boolean isRoot(X509Certificate cert, TrustedCertificates trustedRoots) throws CertificateEncodingException {
+    /**
+     * Walks through the trusted roots looking for one which
+     * matches the cert
+     * 
+     * @param cert
+     *      The cert to test
+     * @param trustedRoots
+     *      The trusted root certs
+     * @return
+     *      True if the cert is a trusted root cert
+     * @throws CertificateEncodingException
+     */
+    private boolean isRoot(X509Certificate cert, TrustedCertificates trustedRoots) 
+        throws CertificateEncodingException {
         byte[] certEnc = cert.getEncoded();
         for (X509Certificate root : trustedRoots.getCertificates()) {
             byte[] rootEnc = root.getEncoded();
@@ -522,27 +507,27 @@ public class BetterProxyPathValidator {
     }
     
     
+    /**
+     * Gets the signing root cert of the tested cert
+     * 
+     * @param cert
+     *      The cert to test and find a signing root for
+     * @param trustedRoots
+     *      The trusted root certs
+     * @return
+     *      The trusted root cert which signed the cert in question, or null if none is found
+     * @throws CertificateEncodingException
+     * @throws ProxyPathValidatorException
+     */
     private X509Certificate getSigningRoot(X509Certificate cert, TrustedCertificates trustedRoots) 
         throws CertificateEncodingException, ProxyPathValidatorException {
         X509Certificate signedBy = null;
-        // get the portion of the cert To Be Signed (TBS)
-        byte[] certBytes = cert.getTBSCertificate();
-        try {
-            for (X509Certificate root : trustedRoots.getCertificates()) {
-                // see if the cert was signed by this root
-                String rootAlgorithm = OID_TO_NAME.get(root.getSigAlgOID());
-                Signature sig = Signature.getInstance(rootAlgorithm);
-                sig.initVerify(root.getPublicKey());
-                sig.update(certBytes);
-                boolean signed = sig.verify(cert.getSignature());
-                if (signed) {
-                    signedBy = root;
-                    break;
-                }
+        for (X509Certificate root : trustedRoots.getCertificates()) {
+            // see if the cert was signed by this root
+            if (verifyCert(cert, root.getPublicKey())) {
+                signedBy = root;
+                break;
             }
-        } catch (Exception ex) {
-            throw new ProxyPathValidatorException(
-                ProxyPathValidatorException.FAILURE, ex.getMessage(), ex);            
         }
         return signedBy;
     }
@@ -583,13 +568,9 @@ public class BetterProxyPathValidator {
         }
 
         // Security.addProvider(new Cryptix());
-        // Signature sig = Signature.getInstance(alg != null ? alg :
-        // signatureAlgorithm, "Cryptix");
-        // Signature sig = Signature.getInstance(alg != null ? alg :
-        // signatureAlgorithm);
         Signature sig;
         try {
-            sig = Signature.getInstance(algorithmName, "BC");
+            sig = Signature.getInstance(algorithmName, CRYPTO_PROVIDER);
         } catch (NoSuchAlgorithmException e) {
             throw new ProxyPathValidatorException(ProxyPathValidatorException.FAILURE, e.getMessage(), e);
         } catch (NoSuchProviderException e) {
@@ -610,6 +591,15 @@ public class BetterProxyPathValidator {
     }
 
 
+    /**
+     * Verifies the public key and associated algorithm are something we
+     * can reasonably expect to handle, specifically any of the RSA key
+     * algorithms, or DSA
+     * 
+     * @param key
+     * @param alg
+     * @throws CertificateVerifyException
+     */
     private void checkSignatureKey(PublicKey key, String alg) throws CertificateVerifyException {
         if (RSA_ALGORITHMS.contains(alg)) {
             if (!(key instanceof RSAPublicKey)) {
@@ -648,26 +638,22 @@ public class BetterProxyPathValidator {
 
 
     protected void checkIdentity(X509Certificate cert, int certType) throws ProxyPathValidatorException {
-        /**
-         * In the old ProxyPathValidator, there was an identityCert field of
-         * X509Certificate type. NOTHING could ever set it, but there were
-         * getters for it, and a getIdentity() method that would figure out the
-         * grid identity of that cert. *shrug* This is here as a placeholder if
-         * I figure out what's going on and we actually need it
-         */
-        /*
-         * if (this.identityCert == null) { // check if limited if
-         * (CertUtil.isLimitedProxy(certType)) { this.limited = true;
-         * 
-         * if (this.rejectLimitedProxyCheck) { throw new
-         * ProxyPathValidatorException
-         * (ProxyPathValidatorException.LIMITED_PROXY_ERROR, cert,
-         * "Limited Proxies not accepted"); } }
-         * 
-         * // set the identity cert if
-         * (!CertUtil.isImpersonationProxy(certType)) { this.identityCert =
-         * cert; } }
-         */
+        if (this.identityCert == null) {
+            // check if limited
+            if (CertUtil.isLimitedProxy(certType)) {
+                this.limited = true;
+
+                if (this.rejectLimitedProxyCheck) {
+                    throw new ProxyPathValidatorException(ProxyPathValidatorException.LIMITED_PROXY_ERROR, cert,
+                        "Limited Proxies not accepted");
+                }
+            }
+
+            // set the identity cert
+            if (!CertUtil.isImpersonationProxy(certType)) {
+                this.identityCert = cert;
+            }
+        }
     }
 
 
