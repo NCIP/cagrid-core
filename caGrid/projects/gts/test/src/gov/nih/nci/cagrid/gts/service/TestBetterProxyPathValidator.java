@@ -69,13 +69,19 @@ public class TestBetterProxyPathValidator extends TestCase {
         userA = "User A";
         userB = "User B";
         try {
+            // cert factory
             factory = CertificateFactory.getInstance("X.509");
+            // create two CAs, X and Y
             caX = new CA();
             caY = new CA();
+            // create user identity certs for user A and B from CA X
             credX1 = caX.createIdentityCertificate(userA);
             credX2 = caX.createIdentityCertificate(userB);
+            // create user identity cert for user A from CA Y
             credY1 = caY.createIdentityCertificate(userA);
-            CRLEntry credX2CRL = new CRLEntry(credX2.getCertificate().getSerialNumber(), CRLReason.PRIVILEGE_WITHDRAWN);
+            // revoke userB's cert on CA X
+            CRLEntry credX2CRL = new CRLEntry(credX2.getCertificate().getSerialNumber(), 
+                CRLReason.PRIVILEGE_WITHDRAWN);
             caX.updateCRL(credX2CRL);
         } catch (Exception ex) {
             ex.printStackTrace();
@@ -135,18 +141,19 @@ public class TestBetterProxyPathValidator extends TestCase {
     
     
     public void testUnknownCaCert() {
+        // trust the cert from CA X
         X509Certificate[] trusted1 = new X509Certificate[1];
         trusted1[0] = caX.getCertificate();
 
+        // get CA X's CRL
         X509CRL crl = caX.getCRL();
-
-        X509Certificate[] chainX1 = new X509Certificate[1];
-        chainX1[0] = credX1.getCertificate();
         
         try {
+            // create the cert chain for user A, signed by CA Y
             X509Certificate[] chainY1 = new X509Certificate[1];
             chainY1[0] = credY1.getCertificate();
             CertPath pathY1 = getCertPath(chainY1);
+            // try to validate chain for Y1, but only trust CA X's cert
             validator.validate(pathY1, trusted1, crl);
             fail("Should not be able to validate certificate signed by an untrusted CA!!!");
         } catch (ProxyPathValidatorException ex) {
@@ -210,7 +217,7 @@ public class TestBetterProxyPathValidator extends TestCase {
     }
 
 
-    public void testWrongCaProxy() {
+    public void testUnknownCaProxy() {
         X509Certificate[] trusted1 = new X509Certificate[1];
         trusted1[0] = caX.getCertificate();
 

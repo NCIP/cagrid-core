@@ -146,6 +146,36 @@ public class BetterProxyPathValidator {
         throws ProxyPathValidatorException, CertificateEncodingException {
         CertificateRevocationLists crls = CertificateRevocationLists
             .getCertificateRevocationLists(new X509CRL[]{revocationList});
+        /*
+         * Ignore this, I was trying something with the Java built-in cert path validator,
+         * but it doesn't know anything about the bouncycastle provider
+        CertPathValidator pathValidator = null;
+        KeyStore store = null;
+        try {
+            pathValidator = CertPathValidator.getInstance("PKIX");
+            store = KeyStore.getInstance("jks");
+            store.load(null);
+            for (X509Certificate trusted : trustedCerts) {
+                store.setCertificateEntry(trusted.getSubjectX500Principal().getName(), trusted);
+            }
+        } catch (Exception ex) {
+            ex.printStackTrace();   
+        }        
+        
+        try {
+            CertPathParameters params = new PKIXParameters(store);
+            pathValidator.validate(certificatePath, params);
+        } catch (CertPathValidatorException e) {
+            e.printStackTrace();
+            throw new ProxyPathValidatorException(ProxyPathValidatorException.FAILURE, e.getMessage(), e);
+        } catch (InvalidAlgorithmParameterException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        } catch (KeyStoreException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        */
         validate(certificatePath, trustedCerts, crls);
     }
 
@@ -228,11 +258,13 @@ public class BetterProxyPathValidator {
                     LOG.debug("Cert is root");
                     last = cert;
                     foundRoot = true;
+                    chain.add(last);
                     // TODO: I hate continues, how can I clean this up?
                     continue;
                 } else {
                     // not a root, but maybe it's signed by one?
                     LOG.debug("Trying to find the trusted root of this cert");
+                    // last = getSigningRoot(cert, trustedCerts);
                     last = getSigningRoot(cert, trustedCerts);
                     if (last == null) {
                         LOG.debug("Did not find a trusted root for this cert");
@@ -286,6 +318,8 @@ public class BetterProxyPathValidator {
             }
 
             last = cert;
+            
+            chain.add(cert);
         }
 
         if (last != null) {
@@ -463,29 +497,31 @@ public class BetterProxyPathValidator {
         }
         return false;
     }
-
-
-    /**
-     * Returns the Trusted Signing Root for the certificate if the certificate's
-     * issuer == a trusted root's subject, otherwise returns null.
-     * 
-     * @param cert
-     * @param trustedRoots
-     * @return
-     */
-    private X509Certificate getSigningRoot(X509Certificate cert, TrustedCertificates trustedRoots) {
-        X509Certificate signedByRoot = null;
-        // TODO: verify this is what I really want
-        byte[] certIssuer = cert.getIssuerX500Principal().getEncoded();
-        for (X509Certificate root : trustedRoots.getCertificates()) {
-            // TODO: also that this is what I really want
-            byte[] rootSig = root.getSubjectX500Principal().getEncoded();
-            if (ArrayUtil.areEqual(certIssuer, rootSig)) {
-                signedByRoot = root;
-                break;
+    
+    
+    private X509Certificate getSigningRoot(X509Certificate cert, TrustedCertificates trustedRoots) 
+        throws CertificateEncodingException, ProxyPathValidatorException {
+        X509Certificate signedBy = null;
+        // get the portion of the cert To Be Signed (TBS)
+        byte[] certBytes = cert.getTBSCertificate();
+        try {
+            for (X509Certificate root : trustedRoots.getCertificates()) {
+                // see if the cert was signed by this root
+                String rootAlgorithm = OID_TO_NAME.get(root.getSigAlgOID());
+                Signature sig = Signature.getInstance(rootAlgorithm);
+                sig.initVerify(root.getPublicKey());
+                sig.update(certBytes);
+                boolean signed = sig.verify(cert.getSignature());
+                if (signed) {
+                    signedBy = root;
+                    break;
+                }
             }
+        } catch (Exception ex) {
+            throw new ProxyPathValidatorException(
+                ProxyPathValidatorException.FAILURE, ex.getMessage(), ex);            
         }
-        return signedByRoot;
+        return signedBy;
     }
 
 
