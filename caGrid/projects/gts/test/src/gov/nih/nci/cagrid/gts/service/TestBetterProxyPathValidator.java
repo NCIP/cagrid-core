@@ -193,16 +193,12 @@ public class TestBetterProxyPathValidator extends TestCase {
         trusted1[0] = caX.getCertificate();
 
         X509CRL crl = caX.getCRL();
-
-        X509Certificate[] chainX1 = new X509Certificate[1];
-        chainX1[0] = credX1.getCertificate();
-
         try {
             X509Certificate[] proxyChainX2 = ProxyCreator.createImpersonationProxyCertificate(credX2.getCertificate(),
                 credX2.getPrivateKey(), KeyUtil.generateRSAKeyPair512().getPublic(), 12, 0, 0);
             CertPath proxyPathX2 = getCertPath(proxyChainX2);
             validator.validate(proxyPathX2, trusted1, crl);
-            fail("Should not be able to validate certificate!!!");
+            fail("Should not be able to validate revoked proxy certificate!!!");
         } catch (ProxyPathValidatorException ex) {
             // expected, but verify the message
             assertTrue("Validation message was not as expected! " +

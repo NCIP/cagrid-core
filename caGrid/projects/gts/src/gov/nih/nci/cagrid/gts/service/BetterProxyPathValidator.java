@@ -1,6 +1,5 @@
 package gov.nih.nci.cagrid.gts.service;
 
-import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.math.BigInteger;
 import java.security.NoSuchAlgorithmException;
@@ -10,12 +9,15 @@ import java.security.Signature;
 import java.security.cert.CertPath;
 import java.security.cert.Certificate;
 import java.security.cert.CertificateEncodingException;
+import java.security.cert.CertificateException;
 import java.security.cert.CertificateExpiredException;
+import java.security.cert.CertificateFactory;
 import java.security.cert.CertificateNotYetValidException;
 import java.security.cert.X509CRL;
 import java.security.cert.X509Certificate;
 import java.security.interfaces.RSAPublicKey;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.Enumeration;
 import java.util.HashMap;
@@ -79,6 +81,9 @@ public class BetterProxyPathValidator {
     private static Set<String> RSA_ALGORITHMS;
     static {
         RSA_ALGORITHMS = new HashSet<String>();
+        RSA_ALGORITHMS.add("MD2/RSA");
+        RSA_ALGORITHMS.add("MD2/RSA");
+        RSA_ALGORITHMS.add("MD5/RSA");
         RSA_ALGORITHMS.add("SHA-1/RSA/PKCS#1");
         RSA_ALGORITHMS.add("SHA256withRSA");
         RSA_ALGORITHMS.add("SHA384withRSA");
@@ -209,10 +214,23 @@ public class BetterProxyPathValidator {
          * are different
          */
         // if the size of the validation chain != size of the cert path, we
-        // need to insert certificates. We'll do this by copying the
-        // validation chain's certs over and over again until we reach
-        // the required size
+        // need to insert certificates into the cert path for more validation.
         if (proxyCertPath.getCertificates().size() != validatedChain.size()) {
+            // since the cert path certificates list is immutable, copy it
+            List<Certificate> newCertPath = new ArrayList<Certificate>();
+            newCertPath.addAll(proxyCertPath.getCertificates());
+            for (int i = 0; i < validatedChain.size() - proxyCertPath.getCertificates().size(); i++) {
+                // copy from the beginning of the validated chain to the new path
+                newCertPath.add(validatedChain.get(i));
+            }
+            // make the new cert path
+            try {
+                CertificateFactory factory = CertificateFactory.getInstance("X.509");
+                proxyCertPath = factory.generateCertPath(newCertPath);
+            } catch (CertificateException ex) {
+                throw new ProxyPathValidatorException(ProxyPathValidatorException.FAILURE, ex.getMessage(), ex);
+            }
+            /*
             int initialValidatedSize = validatedChain.size();
             int copyFromLocation = 0;
             while (validatedChain.size() < proxyCertPath.getCertificates().size()) {
@@ -228,6 +246,7 @@ public class BetterProxyPathValidator {
                 copyFromLocation++;
                 copyFromLocation %= initialValidatedSize;
             }
+            */
         }
 
         deepValidate(proxyCertPath, trustedCertificates, revocationLists);
@@ -241,8 +260,12 @@ public class BetterProxyPathValidator {
         X509Certificate last = null;
         int pathLength = 0;
 
-        // iterate the proxy cert path
-        for (Certificate c : certPath.getCertificates()) {
+        // iterate the proxy cert path in reverse, since CertPath puts the most
+        // specific cert (i.e. the proxy) up front
+        List<Certificate> certs = new ArrayList<Certificate>();
+        certs.addAll(certPath.getCertificates());
+        Collections.reverse(certs);
+        for (Certificate c : certs) {
             if (!(c instanceof X509Certificate)) {
                 throw new ProxyPathValidatorException(ProxyPathValidatorException.FAILURE,
                     "Certificate on path was not an X509Certificate!", null);
@@ -566,7 +589,7 @@ public class BetterProxyPathValidator {
         // signatureAlgorithm);
         Signature sig;
         try {
-            sig = Signature.getInstance(algorithmName, CRYPTO_PROVIDER);
+            sig = Signature.getInstance(algorithmName, "BC");
         } catch (NoSuchAlgorithmException e) {
             throw new ProxyPathValidatorException(ProxyPathValidatorException.FAILURE, e.getMessage(), e);
         } catch (NoSuchProviderException e) {
