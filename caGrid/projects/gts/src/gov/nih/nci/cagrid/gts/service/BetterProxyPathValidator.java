@@ -17,6 +17,7 @@ import java.security.cert.X509CRL;
 import java.security.cert.X509Certificate;
 import java.security.interfaces.RSAPublicKey;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.Date;
 import java.util.Enumeration;
@@ -186,6 +187,19 @@ public class BetterProxyPathValidator {
         CertificateRevocationLists crls = CertificateRevocationLists
             .getCertificateRevocationLists(new X509CRL[]{revocationList});
         validate(certificatePath, trustedCerts, crls);
+    }
+    
+    
+    public void validate(X509Certificate[] certPath, X509Certificate[] trustedCerts, CertificateRevocationLists revocationLists) 
+        throws ProxyPathValidatorException, CertificateEncodingException {
+        CertPath path = null;
+        try {
+            path = certFactory.generateCertPath(Arrays.asList(certPath));
+        } catch (CertificateException e) {
+            throw new ProxyPathValidatorException(ProxyPathValidatorException.FAILURE, 
+                "Error creating CertPath instance: " + e.getMessage(), e);
+        }
+        validate(path, trustedCerts, revocationLists);
     }
 
 
