@@ -44,11 +44,8 @@ import org.globus.gsi.proxy.ext.ProxyCertInfo;
 import org.globus.gsi.proxy.ext.ProxyPolicy;
 import org.globus.gsi.ptls.PureTLSUtil;
 
-import COM.claymoresystems.cert.CertificateVerifyException;
 import COM.claymoresystems.ptls.SSLDebug;
 import COM.claymoresystems.sslg.CertVerifyPolicyInt;
-import cryptix.util.core.ArrayUtil;
-
 
 public class BetterProxyPathValidator {
 
@@ -512,7 +509,7 @@ public class BetterProxyPathValidator {
         byte[] certEnc = cert.getEncoded();
         for (X509Certificate root : trustedRoots.getCertificates()) {
             byte[] rootEnc = root.getEncoded();
-            boolean equal = ArrayUtil.areEqual(certEnc, rootEnc);
+            boolean equal = Arrays.equals(certEnc, rootEnc);
             if (equal) {
                 return true;
             }
@@ -550,7 +547,7 @@ public class BetterProxyPathValidator {
     private boolean subjectMatchesIssuer(X509Certificate cert, X509Certificate trusted) {
         byte[] trustedSubject = trusted.getSubjectX500Principal().getEncoded();
         byte[] testIssuer = cert.getIssuerX500Principal().getEncoded();
-        return ArrayUtil.areEqual(trustedSubject, testIssuer);
+        return Arrays.equals(trustedSubject, testIssuer);
     }
 
 
@@ -577,8 +574,8 @@ public class BetterProxyPathValidator {
         LOG.debug("Certificate has signing algorithm OID " + certAlgorithmOid + ", which maps to " + algorithmName);
         try {
             checkSignatureKey(signerKey, algorithmName);
-        } catch (CertificateVerifyException e1) {
-            throw new ProxyPathValidatorException(ProxyPathValidatorException.FAILURE, e1.getMessage(), e1);
+        } catch (CertificateVerifyException ex) {
+            throw new ProxyPathValidatorException(ProxyPathValidatorException.FAILURE, ex.getMessage(), ex);
         }
 
         // Security.addProvider(new Cryptix());
