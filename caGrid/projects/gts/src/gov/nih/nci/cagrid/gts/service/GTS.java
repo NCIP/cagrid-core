@@ -42,6 +42,8 @@ import org.apache.axis.message.addressing.EndpointReferenceType;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.cagrid.gaards.pki.CertUtil;
+import org.cagrid.proxy.BetterProxyPathValidator;
+import org.cagrid.proxy.CertificateRevocationLists;
 import org.globus.wsrf.impl.security.authorization.IdentityAuthorization;
 import org.projectmobius.common.MobiusRunnable;
 
