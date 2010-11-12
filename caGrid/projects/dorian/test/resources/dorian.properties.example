@@ -54,6 +54,7 @@ gaards.dorian.federation.crl.publish=
 gaards.dorian.ca.password=admin
 gaards.dorian.ca.policy.oid=
 gaards.dorian.ca.issued.cert.key.size=1024
+gaards.dorian.ca.signature.algorithm=SHA256WithRSAEncryption
 gaards.dorian.ca.auto.create=true
 gaards.dorian.ca.auto.create.subject=C=US,O=abc,OU=xyz,OU=caGrid,CN=caGrid Dorian CA
 gaards.dorian.ca.auto.create.key.size=2048

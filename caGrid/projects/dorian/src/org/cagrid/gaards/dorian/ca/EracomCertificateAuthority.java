@@ -23,7 +23,6 @@ public class EracomCertificateAuthority extends CertificateAuthority implements 
 
     public static final String CA_ALIAS = "dorianca";
     public static final String WRAPPER_KEY_ALIAS = "dorian-wrapper-key";
-    public static final String SIGNATURE_ALGORITHM = "SHA256WithRSA";
     public static final String SLOT_PROPERTY = "slot";
     private Provider provider;
     private KeyStore keyStore;
@@ -54,7 +53,7 @@ public class EracomCertificateAuthority extends CertificateAuthority implements 
 
 
     public String getSignatureAlgorithm() {
-        return SIGNATURE_ALGORITHM;
+        return getProperties().getSignatureAlgorithm();
     }
 
 

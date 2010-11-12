@@ -17,9 +17,6 @@ import org.cagrid.tools.database.Database;
  *          Exp $
  */
 public class DBCertificateAuthority extends CertificateAuthority {
-
-    public static final String SIGNATURE_ALGORITHM = "SHA256WithRSAEncryption";
-
     public static final String CA_ALIAS = "dorianca";
 
     private CredentialsManager manager;
@@ -44,11 +41,6 @@ public class DBCertificateAuthority extends CertificateAuthority {
 
     public String getProvider() {
         return "BC";
-    }
-
-
-    public String getSignatureAlgorithm() {
-        return SIGNATURE_ALGORITHM;
     }
 
 

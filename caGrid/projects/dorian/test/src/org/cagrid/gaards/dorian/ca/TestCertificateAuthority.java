@@ -494,8 +494,9 @@ public class TestCertificateAuthority extends TestCase {
         lifetime.setDays(0);
         CertificateAuthorityCreationPolicy creation = new CertificateAuthorityCreationPolicy(SUBJECT_PREFIX
             + "Temp Certificate Authority", 2048, lifetime);
-        CertificateAuthorityProperties conf = new CertificateAuthorityProperties("password", null, 1024, false, null,
-            true, lifetime);
+        CertificateAuthorityProperties conf = new CertificateAuthorityProperties("password", null, 
+            CertificateAuthorityProperties.DEFAULT_SIGNATURE_ALGORITHM, 1024, false, 
+            null, true, lifetime);
         return conf;
     }
 
@@ -507,8 +508,8 @@ public class TestCertificateAuthority extends TestCase {
         lifetime.setDays(0);
         CertificateAuthorityCreationPolicy creation = new CertificateAuthorityCreationPolicy(SUBJECT_PREFIX
             + "Temp Certificate Authority", 2048, lifetime);
-        CertificateAuthorityProperties conf = new CertificateAuthorityProperties("password", null, 1024, true,
-            creation, true, lifetime);
+        CertificateAuthorityProperties conf = new CertificateAuthorityProperties("password", null, CertificateAuthorityProperties.DEFAULT_SIGNATURE_ALGORITHM,
+            1024, true, creation, true, lifetime);
         return conf;
     }
 

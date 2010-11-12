@@ -115,14 +115,16 @@
 		<constructor-arg index="0" value="${gaards.dorian.ca.password}" />
 		<constructor-arg index="1"
 			value="${gaards.dorian.ca.policy.oid}" />
-		<constructor-arg index="2"
-			value="${gaards.dorian.ca.issued.cert.key.size}" />
+		<constructor-arg index="2" 
+			value="${gaards.dorian.ca.signature.algorithm}"/>
 		<constructor-arg index="3"
+			value="${gaards.dorian.ca.issued.cert.key.size}" />
+		<constructor-arg index="4"
 			value="${gaards.dorian.ca.auto.create}" />
-		<constructor-arg index="4" ref="caCreationPolicy" />
-		<constructor-arg index="5"
+		<constructor-arg index="5" ref="caCreationPolicy" />
+		<constructor-arg index="6"
 			value="${gaards.dorian.ca.auto.renew}" />
-		<constructor-arg index="6" ref="caRenewalLifetime" />
+		<constructor-arg index="7" ref="caRenewalLifetime" />
 	</bean>
 	<!--
 		<bean id="certificateAuthority"

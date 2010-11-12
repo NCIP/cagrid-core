@@ -44,7 +44,9 @@ public abstract class CertificateAuthority extends LoggingObject {
     public abstract String getCACredentialsProvider();
 
 
-    public abstract String getSignatureAlgorithm();
+    public String getSignatureAlgorithm() {
+        return properties.getSignatureAlgorithm();
+    }
 
 
     public abstract boolean hasCACredentials() throws CertificateAuthorityFault;

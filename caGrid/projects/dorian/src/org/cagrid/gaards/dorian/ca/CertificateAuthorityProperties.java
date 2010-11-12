@@ -6,30 +6,41 @@ import org.cagrid.gaards.dorian.common.Lifetime;
 import org.cagrid.gaards.dorian.stubs.types.DorianInternalFault;
 
 
+/**
+ * CertificateAuthorityProperties
+ * Configuration properties for the Certificate Authority.  This gets
+ * loaded by Spring when the Dorian instance comes up
+ * 
+ * @author David
+ */
 public class CertificateAuthorityProperties {
+    public static final String DEFAULT_SIGNATURE_ALGORITHM = "SHA256WithRSAEncryption";
+    
     private String policyOID;
     private int issuedCertificateKeySize;
     private Lifetime renewalLifetime;
     private boolean autoRenewCA;
     private boolean autoCreateCA;
     private String certificateAuthorityPassword;
+    private String signatureAlgorithm;
     private CertificateAuthorityCreationPolicy creationPolicy;
 
 
     public CertificateAuthorityProperties(String certificateAuthorityPassword, int issuedCertificateKeySize)
         throws DorianInternalFault {
-        this(certificateAuthorityPassword, null, issuedCertificateKeySize, false, null, false, null);
+        this(certificateAuthorityPassword, null, DEFAULT_SIGNATURE_ALGORITHM, issuedCertificateKeySize, false, null, false, null);
     }
 
 
     public CertificateAuthorityProperties(String certificateAuthorityPassword, String policyOID,
         int issuedCertificateKeySize) throws DorianInternalFault {
-        this(certificateAuthorityPassword, policyOID, issuedCertificateKeySize, false, null, false, null);
+        this(certificateAuthorityPassword, policyOID, DEFAULT_SIGNATURE_ALGORITHM, issuedCertificateKeySize, false, null, false, null);
     }
 
 
     public CertificateAuthorityProperties(String certificateAuthorityPassword, String policyOID,
-        int issuedCertificateKeySize, boolean autoCreate, CertificateAuthorityCreationPolicy creationPolicy,
+        String signatureAlgorithm, int issuedCertificateKeySize, boolean autoCreate, 
+        CertificateAuthorityCreationPolicy creationPolicy,
         boolean autoRenew, Lifetime renewalLifetime) throws DorianInternalFault {
         this.certificateAuthorityPassword = certificateAuthorityPassword;
         this.policyOID = Utils.clean(policyOID);
@@ -46,8 +57,8 @@ public class CertificateAuthorityProperties {
 
         if ((this.autoCreateCA) && (creationPolicy == null)) {
             DorianInternalFault f = new DorianInternalFault();
-            f
-                .setFaultString("Could not initialize CA, auto creation is enabled however no creation policy was specified.");
+            f.setFaultString(
+                "Could not initialize CA, auto creation is enabled however no creation policy was specified.");
             throw f;
         } else {
             this.creationPolicy = creationPolicy;
@@ -57,12 +68,14 @@ public class CertificateAuthorityProperties {
 
         if ((this.autoRenewCA) && (renewalLifetime == null)) {
             DorianInternalFault f = new DorianInternalFault();
-            f
-                .setFaultString("Could not initialize CA, auto renewal is enabled however no renewal lifetime was specified.");
+            f.setFaultString(
+                "Could not initialize CA, auto renewal is enabled however no renewal lifetime was specified.");
             throw f;
         } else {
             this.renewalLifetime = renewalLifetime;
         }
+        
+        this.signatureAlgorithm = signatureAlgorithm;
     }
 
 
@@ -98,6 +111,11 @@ public class CertificateAuthorityProperties {
 
     public String getCertificateAuthorityPassword() {
         return certificateAuthorityPassword;
+    }
+    
+    
+    public String getSignatureAlgorithm() {
+        return signatureAlgorithm;
     }
 
 
