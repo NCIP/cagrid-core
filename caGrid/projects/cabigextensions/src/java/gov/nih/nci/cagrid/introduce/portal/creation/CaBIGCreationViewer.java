@@ -51,86 +51,52 @@ import com.jgoodies.validation.view.ValidationComponentUtils;
  * @author <A HREF="MAILTO:hastings@bmi.osu.edu">Shannon Hastings </A>
  * @author <A HREF="MAILTO:oster@bmi.osu.edu">Scott Oster </A>
  * @author <A HREF="MAILTO:langella@bmi.osu.edu">Stephen Langella </A>
+ * @author <A HREF="MAILTO:david.ervin@osumc.edu">David W. Ervin</A>
  * @created Jun 22, 2005
- * @version $Id: mobiusEclipseCodeTemplates.xml,v 1.2 2005/04/19 14:58:02 oster
- *          Exp $
  */
 public class CaBIGCreationViewer extends CreationViewerBaseComponent {
 
     // keys for validation of input components
     public static final String SERVICE_DIR = "Service directory";
-
     public static final String SERVICE_NAME = "Service name";
-
     public static final String SERVICE_PACKAGE = "Service package name";
-
     public static final String SERVICE_NAMESPACE = "Service namespace";
 
     // extension names
     private static final String DATA_EXTSION_NAME = "data";
-
     private static final String METADATA_EXTSION_NAME = MetadataConstants.EXTENSION_NAME;
 
     private JPanel inputPanel = null;
-
     private JPanel mainPanel = null;
-
     private JPanel buttonPanel = null;
-
     private JButton createButton = null;
-
     private JLabel serviceLabel = null;
-
     private JTextField service = null;
-
     private JLabel destinationLabel = null;
-
     private JTextField dir = null;
-
     private JButton dirButton = null;
-
     private JLabel packageLabel = null;
-
     private JTextField servicePackage = null;
-
     private JLabel namespaceLabel = null;
-
     private JTextField namespaceDomain = null;
-
     private JButton closeButton = null;
-
     private JComboBox serviceStyleSeletor = null;
-
     private JPanel extensionsPanel = null;
-
     private JButton addExtensionButton = null;
-
     private JButton removeExtensionButton = null;
-
     private JScrollPane extensionsScrollPane = null;
-
     private ExtensionsTable extensionsTable = null;
-
     private JPanel extensionsTablePanel = null;
-
     private JLabel upExtensionLabel = null;
-
     private JLabel downExtensionLabel = null;
-
     private JPanel extSelectionPanel = null;
-
     private JPanel serviceStylePanel = null;
-
-    private JTabbedPane jTabbedPane = null;
-
-    private JPanel serviceTyeSelectionPanel = null;
-
+    private JTabbedPane standardAdvancedTabbedPane = null;
+    private JPanel serviceTypeSelectionPanel = null;
     private JRadioButton dataRadioButton = null;
-
     private JRadioButton analyticalRadioButton = null;
-
     private ButtonGroup serviceStyleButtonGroup = null;
-
+    
     private ValidationResultModel validationModel = new DefaultValidationResultModel();
 
 
@@ -858,35 +824,35 @@ public class CaBIGCreationViewer extends CreationViewerBaseComponent {
             serviceStylePanel.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Customize the service",
                 javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION,
                 javax.swing.border.TitledBorder.DEFAULT_POSITION, null, PortalLookAndFeel.getPanelLabelColor()));
-            serviceStylePanel.add(getJTabbedPane(), gridBagConstraints17);
+            serviceStylePanel.add(getStandardAdvancedTabbedPane(), gridBagConstraints17);
         }
         return serviceStylePanel;
     }
 
 
     /**
-     * This method initializes jTabbedPane
+     * This method initializes standardAdvancedTabbedPane
      * 
      * @return javax.swing.JTabbedPane
      */
-    private JTabbedPane getJTabbedPane() {
-        if (jTabbedPane == null) {
-            jTabbedPane = new JTabbedPane();
-            jTabbedPane.addTab("Standard", null, getServiceTyeSelectionPanel(), "Standard configuration options.");
-            jTabbedPane.addTab("Advanced", null, getExtensionsPanel(),
+    private JTabbedPane getStandardAdvancedTabbedPane() {
+        if (standardAdvancedTabbedPane == null) {
+            standardAdvancedTabbedPane = new JTabbedPane();
+            standardAdvancedTabbedPane.addTab("Standard", null, getServiceTypeSelectionPanel(), "Standard configuration options.");
+            standardAdvancedTabbedPane.addTab("Advanced", null, getExtensionsPanel(),
                 "Provides access to configuration of specific Introduce extensions.");
         }
-        return jTabbedPane;
+        return standardAdvancedTabbedPane;
     }
 
 
     /**
-     * This method initializes serviceTyeSelectionPanel
+     * This method initializes serviceTypeSelectionPanel
      * 
      * @return javax.swing.JPanel
      */
-    private JPanel getServiceTyeSelectionPanel() {
-        if (serviceTyeSelectionPanel == null) {
+    private JPanel getServiceTypeSelectionPanel() {
+        if (serviceTypeSelectionPanel == null) {
             GridBagConstraints gridBagConstraints24 = new GridBagConstraints();
             gridBagConstraints24.gridy = 0;
             gridBagConstraints24.ipady = 1;
@@ -896,12 +862,12 @@ public class CaBIGCreationViewer extends CreationViewerBaseComponent {
             gridBagConstraints23.gridy = 1;
             gridBagConstraints23.anchor = java.awt.GridBagConstraints.WEST;
             gridBagConstraints23.gridx = 0;
-            serviceTyeSelectionPanel = new JPanel();
-            serviceTyeSelectionPanel.setLayout(new GridBagLayout());
-            serviceTyeSelectionPanel.add(getDataRadioButton(), gridBagConstraints23);
-            serviceTyeSelectionPanel.add(getAnalyticalRadioButton(), gridBagConstraints24);
+            serviceTypeSelectionPanel = new JPanel();
+            serviceTypeSelectionPanel.setLayout(new GridBagLayout());
+            serviceTypeSelectionPanel.add(getDataRadioButton(), gridBagConstraints23);
+            serviceTypeSelectionPanel.add(getAnalyticalRadioButton(), gridBagConstraints24);
         }
-        return serviceTyeSelectionPanel;
+        return serviceTypeSelectionPanel;
     }
 
 
@@ -928,6 +894,15 @@ public class CaBIGCreationViewer extends CreationViewerBaseComponent {
                     addAnalyticalExtensions();
                 }
             });
+            // does the extension exist?
+            ServiceExtensionDescriptionType dataExtensionDescriptor = 
+                ExtensionsLoader.getInstance().getServiceExtension(DATA_EXTSION_NAME);
+            if (dataExtensionDescriptor == null) {
+                // extension not found, disable this button
+                dataRadioButton.setEnabled(false);
+                dataRadioButton.setToolTipText("The data service extension has not been installed");
+            }
+            
         }
         return dataRadioButton;
     }
