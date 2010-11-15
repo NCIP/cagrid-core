@@ -15,6 +15,8 @@ import javax.crypto.Cipher;
 import javax.crypto.KeyGenerator;
 import javax.crypto.spec.IvParameterSpec;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.cagrid.gaards.pki.CertUtil;
 import org.cagrid.gaards.pki.KeyUtil;
 
@@ -24,6 +26,9 @@ public class EracomCertificateAuthority extends CertificateAuthority implements 
     public static final String CA_ALIAS = "dorianca";
     public static final String WRAPPER_KEY_ALIAS = "dorian-wrapper-key";
     public static final String SLOT_PROPERTY = "slot";
+    
+    public static Log LOG = LogFactory.getLog(EracomCertificateAuthority.class);
+    
     private Provider provider;
     private KeyStore keyStore;
     private Key wrapper;
@@ -40,7 +45,7 @@ public class EracomCertificateAuthority extends CertificateAuthority implements 
             keyStore = KeyStore.getInstance("CRYPTOKI", provider.getName());
             keyStore.load(null, properties.getCertificateAuthorityPassword().toCharArray());
         } catch (Exception e) {
-            logError(e.getMessage(), e);
+            LOG.error(e.getMessage(), e);
             CertificateAuthorityFault fault = new CertificateAuthorityFault();
             fault.setFaultString("Error initializing the Dorian Certificate Authority.");
             FaultHelper helper = new FaultHelper(fault);
@@ -82,7 +87,7 @@ public class EracomCertificateAuthority extends CertificateAuthority implements 
         try {
             getKeyStore().deleteEntry(CA_ALIAS);
         } catch (Exception e) {
-            logError(e.getMessage(), e);
+            LOG.error(e.getMessage(), e);
             CertificateAuthorityFault fault = new CertificateAuthorityFault();
             fault.setFaultString("Unexpected Error, could not delete the CA credentials.");
             FaultHelper helper = new FaultHelper(fault);
@@ -106,7 +111,7 @@ public class EracomCertificateAuthority extends CertificateAuthority implements 
         } catch (CertificateAuthorityFault f) {
             throw f;
         } catch (Exception e) {
-            logError(e.getMessage(), e);
+            LOG.error(e.getMessage(), e);
             CertificateAuthorityFault fault = new CertificateAuthorityFault();
             fault.setFaultString("Unexpected Error, could not obtain the certificate.");
             FaultHelper helper = new FaultHelper(fault);
@@ -130,7 +135,7 @@ public class EracomCertificateAuthority extends CertificateAuthority implements 
         } catch (CertificateAuthorityFault f) {
             throw f;
         } catch (Exception e) {
-            logError(e.getMessage(), e);
+            LOG.error(e.getMessage(), e);
             CertificateAuthorityFault fault = new CertificateAuthorityFault();
             fault.setFaultString("Unexpected Error, could not obtain the private key.");
             FaultHelper helper = new FaultHelper(fault);
@@ -150,7 +155,7 @@ public class EracomCertificateAuthority extends CertificateAuthority implements 
         try {
             return getKeyStore().containsAlias(CA_ALIAS);
         } catch (Exception e) {
-            logError(e.getMessage(), e);
+            LOG.error(e.getMessage(), e);
             CertificateAuthorityFault fault = new CertificateAuthorityFault();
             fault.setFaultString("An unexpected error occurred, could determin if credentials exist.");
             FaultHelper helper = new FaultHelper(fault);
@@ -166,7 +171,7 @@ public class EracomCertificateAuthority extends CertificateAuthority implements 
         try {
             getKeyStore().setKeyEntry(CA_ALIAS, key, null, new X509Certificate[]{cert});
         } catch (Exception e) {
-            logError(e.getMessage(), e);
+            LOG.error(e.getMessage(), e);
             CertificateAuthorityFault fault = new CertificateAuthorityFault();
             fault.setFaultString("Unexpected Error, could not store CA credentials.");
             FaultHelper helper = new FaultHelper(fault);
@@ -191,7 +196,7 @@ public class EracomCertificateAuthority extends CertificateAuthority implements 
                 isInit = true;
             }
         } catch (Exception e) {
-            logError(e.getMessage(), e);
+            LOG.error(e.getMessage(), e);
             CertificateAuthorityFault fault = new CertificateAuthorityFault();
             fault.setFaultString("An unexpected error occurred, could not add certificate.");
             FaultHelper helper = new FaultHelper(fault);
@@ -211,7 +216,7 @@ public class EracomCertificateAuthority extends CertificateAuthority implements 
             byte[] output = cipher.doFinal(key.getWrappedKeyData());
             return KeyUtil.loadPrivateKey(new ByteArrayInputStream(output), null);
         } catch (Exception e) {
-            logError(e.getMessage(), e);
+            LOG.error(e.getMessage(), e);
             CertificateAuthorityFault fault = new CertificateAuthorityFault();
             fault.setFaultString("An unexpected error occurred unwrapping a key.");
             FaultHelper helper = new FaultHelper(fault);
@@ -232,7 +237,7 @@ public class EracomCertificateAuthority extends CertificateAuthority implements 
             byte[] iv = cipher.getIV();
             return new WrappedKey(wrappedKey, iv);
         } catch (Exception e) {
-            logError(e.getMessage(), e);
+            LOG.error(e.getMessage(), e);
             CertificateAuthorityFault fault = new CertificateAuthorityFault();
             fault.setFaultString("An unexpected error occurred wrapping a  key.");
             FaultHelper helper = new FaultHelper(fault);

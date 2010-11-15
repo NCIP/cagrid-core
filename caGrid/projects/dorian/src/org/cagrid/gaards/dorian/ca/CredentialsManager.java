@@ -9,7 +9,8 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 
-import org.cagrid.gaards.dorian.common.LoggingObject;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.cagrid.gaards.dorian.stubs.types.DorianInternalFault;
 import org.cagrid.gaards.pki.CertUtil;
 import org.cagrid.gaards.pki.KeyUtil;
@@ -23,12 +24,13 @@ import org.cagrid.tools.database.Database;
  * @version $Id: ArgumentManagerTable.java,v 1.2 2004/10/15 16:35:16 langella
  *          Exp $
  */
-public class CredentialsManager extends LoggingObject {
+public class CredentialsManager {
 
     public static String CREDENTIALS_TABLE = "certificate_authority";
+    
+    private static Log LOG = LogFactory.getLog(CredentialsManager.class);
 
     private Database db;
-
     private boolean dbBuilt = false;
 
 
@@ -55,7 +57,7 @@ public class CredentialsManager extends LoggingObject {
             rs.close();
             s.close();
         } catch (Exception e) {
-            logError(e.getMessage(), e);
+            LOG.error(e.getMessage(), e);
             DorianInternalFault fault = new DorianInternalFault();
             fault.setFaultString("Unexpected Database Error, Error determining if the user " + alias
                 + " has credentials.");
@@ -80,7 +82,7 @@ public class CredentialsManager extends LoggingObject {
             s.execute();
             s.close();
         } catch (Exception e) {
-            logError(e.getMessage(), e);
+            LOG.error(e.getMessage(), e);
             DorianInternalFault fault = new DorianInternalFault();
             fault.setFaultString("Unexpected Database Error, Error removing the credentials for the user " + alias
                 + "!!!");
@@ -114,7 +116,7 @@ public class CredentialsManager extends LoggingObject {
                 s.close();
             }
         } catch (Exception e) {
-            logError(e.getMessage(), e);
+            LOG.error(e.getMessage(), e);
             DorianInternalFault fault = new DorianInternalFault();
             fault.setFaultString("Unexpected Error, could not add credentials to the credentials database.");
             FaultHelper helper = new FaultHelper(fault);
@@ -146,7 +148,7 @@ public class CredentialsManager extends LoggingObject {
                 s.close();
             }
         } catch (Exception e) {
-            logError(e.getMessage(), e);
+            LOG.error(e.getMessage(), e);
             DorianInternalFault fault = new DorianInternalFault();
             fault.setFaultString("Unexpected Error, could not add certificate to the credentials database.");
             FaultHelper helper = new FaultHelper(fault);
@@ -176,7 +178,7 @@ public class CredentialsManager extends LoggingObject {
             rs.close();
             s.close();
         } catch (Exception e) {
-            logError(e.getMessage(), e);
+            LOG.error(e.getMessage(), e);
             DorianInternalFault fault = new DorianInternalFault();
             fault.setFaultString("Unexpected Database Error, Error obtaining the private key for the user " + alias
                 + ".");
@@ -220,7 +222,7 @@ public class CredentialsManager extends LoggingObject {
             rs.close();
             s.close();
         } catch (Exception e) {
-            logError(e.getMessage(), e);
+            LOG.error(e.getMessage(), e);
             DorianInternalFault fault = new DorianInternalFault();
             fault.setFaultString("Unexpected Database Error, Error obtaining the certificate for the user " + alias
                 + ".");
@@ -256,7 +258,7 @@ public class CredentialsManager extends LoggingObject {
             rs.close();
             s.close();
         } catch (Exception e) {
-            logError(e.getMessage(), e);
+            LOG.error(e.getMessage(), e);
             DorianInternalFault fault = new DorianInternalFault();
             fault
                 .setFaultString("Unexpected Database Error, Error obtaining the certificate serial number for the user "
@@ -290,7 +292,7 @@ public class CredentialsManager extends LoggingObject {
                 this.dbBuilt = true;
             }
         } catch (Exception e) {
-            logError(e.getMessage(), e);
+            LOG.error(e.getMessage(), e);
             DorianInternalFault fault = new DorianInternalFault();
             fault.setFaultString("An unexpected database error occurred.");
             FaultHelper helper = new FaultHelper(fault);
@@ -306,7 +308,7 @@ public class CredentialsManager extends LoggingObject {
         try {
             db.update("delete from " + CREDENTIALS_TABLE);
         } catch (Exception e) {
-            logError(e.getMessage(), e);
+            LOG.error(e.getMessage(), e);
             DorianInternalFault fault = new DorianInternalFault();
             fault.setFaultString("An unexpected database error occurred.");
             FaultHelper helper = new FaultHelper(fault);

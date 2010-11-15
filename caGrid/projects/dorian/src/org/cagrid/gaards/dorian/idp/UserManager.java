@@ -11,12 +11,13 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.cagrid.gaards.authentication.BasicAuthentication;
 import org.cagrid.gaards.authentication.Credential;
 import org.cagrid.gaards.authentication.faults.CredentialNotSupportedFault;
 import org.cagrid.gaards.authentication.faults.InvalidCredentialFault;
 import org.cagrid.gaards.dorian.common.AuditConstants;
-import org.cagrid.gaards.dorian.common.LoggingObject;
 import org.cagrid.gaards.dorian.service.util.AddressValidator;
 import org.cagrid.gaards.dorian.service.util.Crypt;
 import org.cagrid.gaards.dorian.stubs.types.DorianInternalFault;
@@ -34,7 +35,7 @@ import org.cagrid.tools.events.EventManager;
  * @version $Id: ArgumentManagerTable.java,v 1.2 2004/10/15 16:35:16 langella
  *          Exp $
  */
-public class UserManager extends LoggingObject {
+public class UserManager {
 
     public final static String PASSWORD_ERROR_MESSAGE = "The uid or password is incorrect.";
 
@@ -49,6 +50,8 @@ public class UserManager extends LoggingObject {
     public static String ADMIN_PASSWORD = "DorianAdmin$1";
 
     public static final String IDP_USERS_TABLE = "idp_users";
+    
+    public static Log LOG = LogFactory.getLog(UserManager.class);
 
     private Database db;
 
@@ -93,7 +96,7 @@ public class UserManager extends LoggingObject {
                         try {
                             digest = PasswordSecurityManager.encrypt(suppliedPassword, entry.getDigestSalt());
                         } catch (Exception e) {
-                            log.error(e);
+                            LOG.error(e);
                             DorianInternalFault fault = new DorianInternalFault();
                             fault.setFaultString("Unexpected error calculating password digest!!!");
                             throw fault;
@@ -145,7 +148,7 @@ public class UserManager extends LoggingObject {
                                             + PasswordSecurityManager.PASSWORD_DIGEST_ALGORITHM + ".");
                                 }
                             } catch (Exception e) {
-                                log.error(e);
+                                LOG.error(e);
                                 DorianInternalFault fault = new DorianInternalFault();
                                 fault.setFaultString("Unexpected error upgrading password digest.");
                                 throw fault;
@@ -180,7 +183,7 @@ public class UserManager extends LoggingObject {
                 fault.setFaultString("User Id or password is incorrect");
                 throw fault;
             } catch (DorianInternalFault e) {
-                logError(e.getMessage(), e);
+                LOG.error(e.getMessage(), e);
                 DorianInternalFault fault = new DorianInternalFault();
                 fault.setFaultString("An unexpected database error occurred.");
                 FaultHelper helper = new FaultHelper(fault);
@@ -269,7 +272,7 @@ public class UserManager extends LoggingObject {
             try {
                 hasDictionaryWord = DictionaryCheck.doesStringContainDictionaryWord(password);
             } catch (IOException e) {
-                logError(e.getMessage(), e);
+                LOG.error(e.getMessage(), e);
                 DorianInternalFault fault = new DorianInternalFault();
                 fault
                     .setFaultString("Unexpected error validating the user's password, please contact an administrator.");
@@ -367,7 +370,7 @@ public class UserManager extends LoggingObject {
             } catch (Exception ex) {
 
             }
-            logError(e.getMessage(), e);
+            LOG.error(e.getMessage(), e);
             DorianInternalFault fault = new DorianInternalFault();
             fault.setFaultString("Unexpected Error, Could not add user!!!");
             FaultHelper helper = new FaultHelper(fault);
@@ -391,7 +394,7 @@ public class UserManager extends LoggingObject {
             ps.close();
             this.passwordSecurityManager.deleteEntry(uid);
         } catch (Exception e) {
-            logError(e.getMessage(), e);
+            LOG.error(e.getMessage(), e);
             DorianInternalFault fault = new DorianInternalFault();
             fault.setFaultString("Unexpected Error, Could not delete user!!!");
             FaultHelper helper = new FaultHelper(fault);
@@ -547,7 +550,7 @@ public class UserManager extends LoggingObject {
             return list;
 
         } catch (Exception e) {
-            logError(e.getMessage(), e);
+            LOG.error(e.getMessage(), e);
             DorianInternalFault fault = new DorianInternalFault();
             fault.setFaultString("Unexpected Error, could not obtain a list of users");
             FaultHelper helper = new FaultHelper(fault);
@@ -609,7 +612,7 @@ public class UserManager extends LoggingObject {
             throw f;
         } catch (Exception e) {
 
-            logError(e.getMessage(), e);
+            LOG.error(e.getMessage(), e);
             DorianInternalFault fault = new DorianInternalFault();
             fault.setFaultString("Unexpected Error, could not obtain the user " + uid + ".");
             FaultHelper helper = new FaultHelper(fault);
@@ -656,7 +659,7 @@ public class UserManager extends LoggingObject {
                         u.setRole(LocalUserRole.Administrator);
                         this.addUser(u);
                     } catch (Exception e) {
-                        logError(e.getMessage(), e);
+                        LOG.error(e.getMessage(), e);
                         DorianInternalFault fault = new DorianInternalFault();
                         fault.setFaultString("Unexpected Error, Could not add initial IdP user!!!");
                         FaultHelper helper = new FaultHelper(fault);
@@ -670,7 +673,7 @@ public class UserManager extends LoggingObject {
             } catch (DorianInternalFault e) {
                 throw e;
             } catch (Exception e) {
-                logError(e.getMessage(), e);
+                LOG.error(e.getMessage(), e);
                 DorianInternalFault fault = new DorianInternalFault();
                 fault.setFaultString("An unexpected database error occurred.");
                 FaultHelper helper = new FaultHelper(fault);
@@ -707,7 +710,7 @@ public class UserManager extends LoggingObject {
                         newPasswordDigest = PasswordSecurityManager.encrypt(u.getPassword(), curr.getPasswordSecurity()
                             .getDigestSalt());
                     } catch (Exception e) {
-                        log.error(e);
+                        LOG.error(e);
                         DorianInternalFault fault = new DorianInternalFault();
                         fault.setFaultString("Unexpected error calculating password digest!!!");
                         throw fault;
@@ -726,7 +729,7 @@ public class UserManager extends LoggingObject {
                         passwordSalt = PasswordSecurityManager.getRandomSalt();
                         newPass = PasswordSecurityManager.encrypt(u.getPassword(), passwordSalt);
                     } catch (Exception e) {
-                        log.error(e);
+                        LOG.error(e);
                         DorianInternalFault fault = new DorianInternalFault();
                         fault
                             .setFaultString("Could not update user, unexpected error calculating the password digest.");
@@ -840,7 +843,7 @@ public class UserManager extends LoggingObject {
                     u.setPasswordSecurity(this.passwordSecurityManager.getEntry(curr.getUserId(), false));
                 }
             } catch (Exception e) {
-                logError(e.getMessage(), e);
+                LOG.error(e.getMessage(), e);
                 DorianInternalFault fault = new DorianInternalFault();
                 fault.setFaultString("Unexpected Error, Could not update user!!!");
                 FaultHelper helper = new FaultHelper(fault);
@@ -889,7 +892,7 @@ public class UserManager extends LoggingObject {
             s.close();
 
         } catch (Exception e) {
-            logError(e.getMessage(), e);
+            LOG.error(e.getMessage(), e);
             DorianInternalFault fault = new DorianInternalFault();
             fault.setFaultString("Unexpected Database Error, could not determine if the user " + uid + " exists.");
             FaultHelper helper = new FaultHelper(fault);
@@ -909,7 +912,7 @@ public class UserManager extends LoggingObject {
             db.update("drop TABLE " + IDP_USERS_TABLE);
             this.passwordSecurityManager.clearDatabase();
         } catch (Exception e) {
-            logError(e.getMessage(), e);
+            LOG.error(e.getMessage(), e);
             DorianInternalFault fault = new DorianInternalFault();
             fault.setFaultString("An unexpected database error occurred.");
             FaultHelper helper = new FaultHelper(fault);

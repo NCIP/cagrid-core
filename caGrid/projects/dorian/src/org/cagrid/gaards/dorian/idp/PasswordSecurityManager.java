@@ -12,13 +12,14 @@ import java.sql.ResultSet;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.bouncycastle.util.encoders.Base64;
-import org.cagrid.gaards.dorian.common.LoggingObject;
 import org.cagrid.gaards.dorian.stubs.types.DorianInternalFault;
 import org.cagrid.tools.database.Database;
 
 
-public class PasswordSecurityManager extends LoggingObject {
+public class PasswordSecurityManager {
 
     public static final String CRYPT_DIGEST_ALGORITHM = "CRYPT";
     public static final String SHA_512_DIGEST_ALGORITHM = "SHA-512";
@@ -32,6 +33,8 @@ public class PasswordSecurityManager extends LoggingObject {
 
     public static final String DIGEST_SALT = "DIGEST_SALT";
     public static final String DIGEST_ALGORITHM = "DIGEST_ALGORITHM";
+    
+    private static Log LOG = LogFactory.getLog(PasswordSecurityManager.class);
 
     private Database db;
 
@@ -63,7 +66,7 @@ public class PasswordSecurityManager extends LoggingObject {
             rs.close();
             s.close();
         } catch (Exception e) {
-            logError(e.getMessage(), e);
+            LOG.error(e.getMessage(), e);
             DorianInternalFault fault = new DorianInternalFault();
             fault.setFaultString("An unexpected database error occurred.");
             FaultHelper helper = new FaultHelper(fault);
@@ -94,7 +97,7 @@ public class PasswordSecurityManager extends LoggingObject {
             ps.executeUpdate();
             ps.close();
         } catch (Exception e) {
-            logError(e.getMessage(), e);
+            LOG.error(e.getMessage(), e);
             DorianInternalFault fault = new DorianInternalFault();
             fault.setFaultString("An unexpected database error occurred.");
             FaultHelper helper = new FaultHelper(fault);
@@ -182,7 +185,7 @@ public class PasswordSecurityManager extends LoggingObject {
             rs.close();
             s.close();
         } catch (Exception e) {
-            logError(e.getMessage(), e);
+            LOG.error(e.getMessage(), e);
             DorianInternalFault fault = new DorianInternalFault();
             fault.setFaultString("An unexpected database error occurred.");
             FaultHelper helper = new FaultHelper(fault);
@@ -245,7 +248,7 @@ public class PasswordSecurityManager extends LoggingObject {
             ps.executeUpdate();
             ps.close();
         } catch (Exception e) {
-            logError(e.getMessage(), e);
+            LOG.error(e.getMessage(), e);
             DorianInternalFault fault = new DorianInternalFault();
             fault.setFaultString("An unexpected database error occurred.");
             FaultHelper helper = new FaultHelper(fault);
@@ -269,7 +272,7 @@ public class PasswordSecurityManager extends LoggingObject {
             ps.executeUpdate();
             ps.close();
         } catch (Exception e) {
-            logError(e.getMessage(), e);
+            LOG.error(e.getMessage(), e);
             DorianInternalFault fault = new DorianInternalFault();
             fault.setFaultString("An unexpected database error occurred.");
             FaultHelper helper = new FaultHelper(fault);
@@ -295,7 +298,7 @@ public class PasswordSecurityManager extends LoggingObject {
                 }
                 this.dbBuilt = true;
             } catch (Exception e) {
-                logError(e.getMessage(), e);
+                LOG.error(e.getMessage(), e);
                 DorianInternalFault fault = new DorianInternalFault();
                 fault.setFaultString("An unexpected database error occurred.");
                 FaultHelper helper = new FaultHelper(fault);
@@ -312,7 +315,7 @@ public class PasswordSecurityManager extends LoggingObject {
         try {
             db.update("drop TABLE " + TABLE);
         } catch (Exception e) {
-            logError(e.getMessage(), e);
+            LOG.error(e.getMessage(), e);
             DorianInternalFault fault = new DorianInternalFault();
             fault.setFaultString("An unexpected database error occurred.");
             FaultHelper helper = new FaultHelper(fault);

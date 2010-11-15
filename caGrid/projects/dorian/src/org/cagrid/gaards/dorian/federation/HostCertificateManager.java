@@ -14,10 +14,11 @@ import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.cagrid.gaards.dorian.X509Certificate;
 import org.cagrid.gaards.dorian.ca.CertificateAuthority;
 import org.cagrid.gaards.dorian.common.Lifetime;
-import org.cagrid.gaards.dorian.common.LoggingObject;
 import org.cagrid.gaards.dorian.service.util.PreparedStatementBuilder;
 import org.cagrid.gaards.dorian.stubs.types.DorianInternalFault;
 import org.cagrid.gaards.dorian.stubs.types.InvalidHostCertificateFault;
@@ -27,7 +28,7 @@ import org.cagrid.gaards.pki.KeyUtil;
 import org.cagrid.tools.database.Database;
 
 
-public class HostCertificateManager extends LoggingObject {
+public class HostCertificateManager {
 
     public static final String TABLE = "host_certificates";
     public static final String ID = "ID";
@@ -39,6 +40,8 @@ public class HostCertificateManager extends LoggingObject {
     public static final String CERTIFICATE = "CERTIFICATE";
     public static final String PUBLIC_KEY = "PUBLIC_KEY";
     public static final String EXPIRATION = "EXPIRATION";
+    
+    private static Log LOG = LogFactory.getLog(HostCertificateManager.class);
 
     private boolean dbBuilt = false;
     private Database db;
@@ -46,7 +49,6 @@ public class HostCertificateManager extends LoggingObject {
     private IdentityFederationProperties conf;
     private Publisher publisher;
     private CertificateBlacklistManager blackList;
-
 
     public HostCertificateManager(Database db, IdentityFederationProperties conf, CertificateAuthority ca,
         Publisher publisher, CertificateBlacklistManager blackList) {
@@ -109,7 +111,7 @@ public class HostCertificateManager extends LoggingObject {
             s.execute();
             return record;
         } catch (Exception e) {
-            logError(e.getMessage(), e);
+            LOG.error(e.getMessage(), e);
             DorianInternalFault fault = new DorianInternalFault();
             fault.setFaultString("An unexpected error occurred.");
             FaultHelper helper = new FaultHelper(fault);
@@ -163,7 +165,7 @@ public class HostCertificateManager extends LoggingObject {
             s.setLong(6, record.getId());
             s.execute();
         } catch (Exception e) {
-            logError(e.getMessage(), e);
+            LOG.error(e.getMessage(), e);
             DorianInternalFault fault = new DorianInternalFault();
             fault.setFaultString("An unexpected error occurred.");
             FaultHelper helper = new FaultHelper(fault);
@@ -233,7 +235,7 @@ public class HostCertificateManager extends LoggingObject {
             try {
                 oldKey = KeyUtil.loadPublicKey(records.get(i).getPublicKey().getKeyAsString());
             } catch (Exception e) {
-                logError(e.getMessage(), e);
+                LOG.error(e.getMessage(), e);
                 DorianInternalFault fault = new DorianInternalFault();
                 fault.setFaultString("An unexpected error occurred validating the public key.");
                 throw fault;
@@ -270,7 +272,7 @@ public class HostCertificateManager extends LoggingObject {
             s.execute();
             id = db.getLastAutoId(c);
         } catch (Exception e) {
-            logError(e.getMessage(), e);
+            LOG.error(e.getMessage(), e);
             DorianInternalFault fault = new DorianInternalFault();
             fault.setFaultString("An unexpected error occurred.");
             FaultHelper helper = new FaultHelper(fault);
@@ -364,9 +366,8 @@ public class HostCertificateManager extends LoggingObject {
             }
             rs.close();
             s.close();
-
         } catch (Exception e) {
-            logError(e.getMessage(), e);
+            LOG.error(e.getMessage(), e);
             DorianInternalFault fault = new DorianInternalFault();
             fault.setFaultString("An unexpected error occurred.");
             FaultHelper helper = new FaultHelper(fault);
@@ -423,9 +424,8 @@ public class HostCertificateManager extends LoggingObject {
             }
             rs.close();
             s.close();
-
         } catch (Exception e) {
-            logError(e.getMessage(), e);
+            LOG.error(e.getMessage(), e);
             DorianInternalFault fault = new DorianInternalFault();
             fault.setFaultString("An unexpected error occurred.");
             FaultHelper helper = new FaultHelper(fault);
@@ -454,7 +454,7 @@ public class HostCertificateManager extends LoggingObject {
             rs.close();
             s.close();
         } catch (Exception e) {
-            logError(e.getMessage(), e);
+            LOG.error(e.getMessage(), e);
             DorianInternalFault fault = new DorianInternalFault();
             fault.setFaultString("An unexpected error occurred.");
             FaultHelper helper = new FaultHelper(fault);
@@ -486,7 +486,7 @@ public class HostCertificateManager extends LoggingObject {
             rs.close();
             s.close();
         } catch (Exception e) {
-            logError(e.getMessage(), e);
+            LOG.error(e.getMessage(), e);
             DorianInternalFault fault = new DorianInternalFault();
             fault.setFaultString("An unexpected error occurred.");
             FaultHelper helper = new FaultHelper(fault);
@@ -518,7 +518,7 @@ public class HostCertificateManager extends LoggingObject {
             rs.close();
             s.close();
         } catch (Exception e) {
-            logError(e.getMessage(), e);
+            LOG.error(e.getMessage(), e);
             DorianInternalFault fault = new DorianInternalFault();
             fault.setFaultString("An unexpected error occurred.");
             FaultHelper helper = new FaultHelper(fault);
@@ -670,7 +670,7 @@ public class HostCertificateManager extends LoggingObject {
                     publishCRLIfNeeded(record.getStatus(), update.getStatus());
                 }
             } catch (Exception e) {
-                logError(e.getMessage(), e);
+                LOG.error(e.getMessage(), e);
                 DorianInternalFault fault = new DorianInternalFault();
                 fault.setFaultString("An unexpected error occurred.");
                 FaultHelper helper = new FaultHelper(fault);
@@ -762,7 +762,7 @@ public class HostCertificateManager extends LoggingObject {
 
                 }
             } catch (Exception e) {
-                logError(e.getMessage(), e);
+                LOG.error(e.getMessage(), e);
                 DorianInternalFault fault = new DorianInternalFault();
                 fault.setFaultString("An unexpected database error occurred.");
                 FaultHelper helper = new FaultHelper(fault);
@@ -780,7 +780,7 @@ public class HostCertificateManager extends LoggingObject {
         try {
             db.update("delete from " + TABLE);
         } catch (Exception e) {
-            logError(e.getMessage(), e);
+            LOG.error(e.getMessage(), e);
             DorianInternalFault fault = new DorianInternalFault();
             fault.setFaultString("An unexpected database error occurred.");
             FaultHelper helper = new FaultHelper(fault);
@@ -789,5 +789,4 @@ public class HostCertificateManager extends LoggingObject {
             throw fault;
         }
     }
-
 }

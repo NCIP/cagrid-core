@@ -13,6 +13,8 @@ import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.cagrid.gaards.authentication.BasicAuthentication;
 import org.cagrid.gaards.authentication.Credential;
 import org.cagrid.gaards.authentication.faults.AuthenticationProviderFault;
@@ -20,7 +22,6 @@ import org.cagrid.gaards.authentication.faults.CredentialNotSupportedFault;
 import org.cagrid.gaards.authentication.faults.InvalidCredentialFault;
 import org.cagrid.gaards.dorian.ca.CertificateAuthority;
 import org.cagrid.gaards.dorian.common.AuditConstants;
-import org.cagrid.gaards.dorian.common.LoggingObject;
 import org.cagrid.gaards.dorian.federation.FederationAudit;
 import org.cagrid.gaards.dorian.policy.AccountInformationModificationPolicy;
 import org.cagrid.gaards.dorian.policy.IdentityProviderPolicy;
@@ -46,7 +47,9 @@ import org.cagrid.tools.events.EventToHandlerMapping;
  *          Exp $
  */
 
-public class IdentityProvider extends LoggingObject {
+public class IdentityProvider {
+    
+    private static Log LOG = LogFactory.getLog(IdentityProvider.class);
 
     private UserManager userManager;
 
@@ -74,7 +77,7 @@ public class IdentityProvider extends LoggingObject {
             this.userManager = new UserManager(db, conf);
             this.assertionManager = new AssertionCredentialsManager(conf, ca, db);
         } catch (Exception e) {
-            logError(e.getMessage(), e);
+            LOG.error(e.getMessage(), e);
             String message = "Error initializing the Identity Manager Provider.";
             this.eventManager.logEvent(AuditConstants.SYSTEM_ID, AuditConstants.SYSTEM_ID,
                 FederationAudit.InternalError.getValue(), message + "\n\n" + FaultUtil.printFaultToString(e));
@@ -118,7 +121,7 @@ public class IdentityProvider extends LoggingObject {
             this.eventManager.registerEventWithHandler(new EventToHandlerMapping(IdentityProviderAudit.SuccessfulLogin
                 .getValue(), AuditingConstants.IDENTITY_PROVIDER_AUDITOR));
         } catch (Exception e) {
-            logError(Utils.getExceptionMessage(e), e);
+            LOG.error(Utils.getExceptionMessage(e), e);
             String mess = "An unexpected error occurred initializing the auditing system:\n"
                 + Utils.getExceptionMessage(e);
             DorianInternalFault fault = new DorianInternalFault();
@@ -156,7 +159,7 @@ public class IdentityProvider extends LoggingObject {
                 "Authentication Failed:\n\n" + FaultUtil.printFaultToString(e));
             throw e;
         } catch (DorianInternalFault e) {
-            logError(e.getMessage(), e);
+            LOG.error(e.getMessage(), e);
             String message = "An unexpected error occurred while trying to authenticate.";
             this.eventManager.logEvent(AuditConstants.SYSTEM_ID, AuditConstants.SYSTEM_ID,
                 FederationAudit.InternalError.getValue(), message + "\n\n" + FaultUtil.printFaultToString(e));
@@ -187,7 +190,7 @@ public class IdentityProvider extends LoggingObject {
             } catch (InvalidUserPropertyFault e) {
                 throw e;
             } catch (Exception e) {
-                logError(e.getMessage(), e);
+                LOG.error(e.getMessage(), e);
                 String message = "Could not changed password and unexpected error occurred calculating the password digest";
                 this.eventManager.logEvent(AuditConstants.SYSTEM_ID, AuditConstants.SYSTEM_ID,
                     FederationAudit.InternalError.getValue(), message + "\n\n" + FaultUtil.printFaultToString(e));
@@ -202,7 +205,7 @@ public class IdentityProvider extends LoggingObject {
                 this.eventManager.logEvent(requestor.getUserId(), AuditConstants.SYSTEM_ID,
                     IdentityProviderAudit.PasswordChanged.getValue(), "Password changed by user.");
             } catch (NoSuchUserFault e) {
-                logError(e.getMessage(), e);
+                LOG.error(e.getMessage(), e);
                 String message = "An unexpected error occurred in trying to changing the password for the user "
                     + requestor.getUserId() + ":";
                 this.eventManager.logEvent(AuditConstants.SYSTEM_ID, AuditConstants.SYSTEM_ID,
@@ -400,7 +403,7 @@ public class IdentityProvider extends LoggingObject {
         try {
             this.identityProviderAuditor.clear();
         } catch (Exception e) {
-            logError(e.getMessage(), e);
+            LOG.error(e.getMessage(), e);
             DorianInternalFault fault = new DorianInternalFault();
             fault.setFaultString("An unexpected error occurred in deleting the auditing logs.");
             FaultHelper helper = new FaultHelper(fault);
@@ -460,7 +463,7 @@ public class IdentityProvider extends LoggingObject {
                         list.add(r);
                     }
                 } catch (Exception e) {
-                    logError(e.getMessage(), e);
+                    LOG.error(e.getMessage(), e);
                     String msg = "An unexpected error occurred in searching the auditing logs.";
                     this.eventManager.logEvent(AuditConstants.SYSTEM_ID, AuditConstants.SYSTEM_ID,
                         FederationAudit.InternalError.getValue(), msg + "\n" + Utils.getExceptionMessage(e) + "\n\n"

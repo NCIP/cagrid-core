@@ -24,11 +24,12 @@ import java.util.List;
 
 import javax.xml.namespace.QName;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.apache.xml.security.signature.XMLSignature;
 import org.cagrid.gaards.dorian.ca.CertificateAuthority;
 import org.cagrid.gaards.dorian.ca.WrappedKey;
 import org.cagrid.gaards.dorian.ca.WrappingCertificateAuthority;
-import org.cagrid.gaards.dorian.common.LoggingObject;
 import org.cagrid.gaards.dorian.common.SAMLConstants;
 import org.cagrid.gaards.dorian.stubs.types.DorianInternalFault;
 import org.cagrid.gaards.pki.CertUtil;
@@ -43,11 +44,13 @@ import org.cagrid.tools.database.Database;
  * @version $Id: ArgumentManagerTable.java,v 1.2 2004/10/15 16:35:16 langella
  *          Exp $
  */
-public class AssertionCredentialsManager extends LoggingObject {
+public class AssertionCredentialsManager {
 
     public static String CREDENTIALS_TABLE = "idp_asserter";
 
     public final static String CERT_DN = "Dorian IdP Authentication Asserter";
+    
+    private static Log LOG = LogFactory.getLog(AssertionCredentialsManager.class);
 
     private CertificateAuthority ca;
 
@@ -69,7 +72,7 @@ public class AssertionCredentialsManager extends LoggingObject {
                 createNewCredentials();
             }
         } catch (Exception e) {
-            logError(e.getMessage(), e);
+            LOG.error(e.getMessage(), e);
             DorianInternalFault fault = new DorianInternalFault();
             fault.setFaultString("Error initializing the IDP Asserting Manager.");
             FaultHelper helper = new FaultHelper(fault);
@@ -98,7 +101,7 @@ public class AssertionCredentialsManager extends LoggingObject {
             rs.close();
             s.close();
         } catch (Exception e) {
-            logError(e.getMessage(), e);
+            LOG.error(e.getMessage(), e);
             DorianInternalFault fault = new DorianInternalFault();
             fault.setFaultString("Unexpected error determining if the Dorian IdP has asserting credentials");
             FaultHelper helper = new FaultHelper(fault);
@@ -145,7 +148,7 @@ public class AssertionCredentialsManager extends LoggingObject {
                 }
             }
         } catch (Exception e) {
-            logError(e.getMessage(), e);
+            LOG.error(e.getMessage(), e);
             DorianInternalFault fault = new DorianInternalFault();
             fault.setFaultString("Could not store IdP asserting credentials.");
             FaultHelper helper = new FaultHelper(fault);
@@ -201,7 +204,7 @@ public class AssertionCredentialsManager extends LoggingObject {
             rs.close();
             s.close();
         } catch (Exception e) {
-            logError(e.getMessage(), e);
+            LOG.error(e.getMessage(), e);
             DorianInternalFault fault = new DorianInternalFault();
             fault.setFaultString("Error obtaining the IDP Asserting Key.");
             FaultHelper helper = new FaultHelper(fault);
@@ -291,7 +294,7 @@ public class AssertionCredentialsManager extends LoggingObject {
 
             return saml;
         } catch (Exception e) {
-            logError(e.getMessage(), e);
+            LOG.error(e.getMessage(), e);
             DorianInternalFault fault = new DorianInternalFault();
             fault.setFaultString("Error creating SAML Assertion.");
             FaultHelper helper = new FaultHelper(fault);
@@ -321,7 +324,7 @@ public class AssertionCredentialsManager extends LoggingObject {
             rs.close();
             s.close();
         } catch (Exception e) {
-            logError(e.getMessage(), e);
+            LOG.error(e.getMessage(), e);
             DorianInternalFault fault = new DorianInternalFault();
             fault.setFaultString("Unexpected error obtaining the Dorian IdP asserting credentials certificate.");
             FaultHelper helper = new FaultHelper(fault);
@@ -376,7 +379,7 @@ public class AssertionCredentialsManager extends LoggingObject {
             s.execute();
             s.close();
         } catch (Exception e) {
-            logError(e.getMessage(), e);
+            LOG.error(e.getMessage(), e);
             DorianInternalFault fault = new DorianInternalFault();
             fault.setFaultString("Unexpected error deleting the Dorian IdP asserting credentials.");
             FaultHelper helper = new FaultHelper(fault);
@@ -400,7 +403,7 @@ public class AssertionCredentialsManager extends LoggingObject {
                 }
                 this.dbBuilt = true;
             } catch (Exception e) {
-                logError(e.getMessage(), e);
+                LOG.error(e.getMessage(), e);
                 DorianInternalFault fault = new DorianInternalFault();
                 fault.setFaultString("Unexpected error creating the CA database");
                 FaultHelper helper = new FaultHelper(fault);
@@ -417,7 +420,7 @@ public class AssertionCredentialsManager extends LoggingObject {
         try {
             db.update("delete from " + CREDENTIALS_TABLE);
         } catch (Exception e) {
-            logError(e.getMessage(), e);
+            LOG.error(e.getMessage(), e);
             DorianInternalFault fault = new DorianInternalFault();
             fault.setFaultString("An unexpected database error occurred.");
             FaultHelper helper = new FaultHelper(fault);

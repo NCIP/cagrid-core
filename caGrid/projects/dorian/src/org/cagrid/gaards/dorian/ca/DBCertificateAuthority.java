@@ -5,6 +5,8 @@ import gov.nih.nci.cagrid.common.FaultHelper;
 import java.security.PrivateKey;
 import java.security.cert.X509Certificate;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.cagrid.gaards.pki.SecurityUtil;
 import org.cagrid.tools.database.Database;
 
@@ -18,6 +20,8 @@ import org.cagrid.tools.database.Database;
  */
 public class DBCertificateAuthority extends CertificateAuthority {
     public static final String CA_ALIAS = "dorianca";
+    
+    private static Log LOG = LogFactory.getLog(DBCertificateAuthority.class);
 
     private CredentialsManager manager;
 
@@ -48,7 +52,7 @@ public class DBCertificateAuthority extends CertificateAuthority {
         try {
             manager.deleteCredentials(CA_ALIAS);
         } catch (Exception e) {
-            logError(e.getMessage(), e);
+            LOG.error(e.getMessage(), e);
             CertificateAuthorityFault fault = new CertificateAuthorityFault();
             fault.setFaultString("An unexpected error occurred, could not delete the CA credentials.");
             FaultHelper helper = new FaultHelper(fault);
@@ -72,7 +76,7 @@ public class DBCertificateAuthority extends CertificateAuthority {
         } catch (CertificateAuthorityFault f) {
             throw f;
         } catch (Exception e) {
-            logError(e.getMessage(), e);
+            LOG.error(e.getMessage(), e);
             CertificateAuthorityFault fault = new CertificateAuthorityFault();
             fault.setFaultString("Unexpected Error, could not obtain the certificate.");
             FaultHelper helper = new FaultHelper(fault);
@@ -96,7 +100,7 @@ public class DBCertificateAuthority extends CertificateAuthority {
         } catch (CertificateAuthorityFault f) {
             throw f;
         } catch (Exception e) {
-            logError(e.getMessage(), e);
+            LOG.error(e.getMessage(), e);
             CertificateAuthorityFault fault = new CertificateAuthorityFault();
             fault.setFaultString("Unexpected Error, could not obtain the private key.");
             FaultHelper helper = new FaultHelper(fault);
@@ -111,7 +115,7 @@ public class DBCertificateAuthority extends CertificateAuthority {
         try {
             return this.manager.hasCredentials(CA_ALIAS);
         } catch (Exception e) {
-            logError(e.getMessage(), e);
+            LOG.error(e.getMessage(), e);
             CertificateAuthorityFault fault = new CertificateAuthorityFault();
             fault.setFaultString("An unexpected error occurred, could not determine if credentials exist.");
             FaultHelper helper = new FaultHelper(fault);
@@ -133,7 +137,7 @@ public class DBCertificateAuthority extends CertificateAuthority {
             }
             manager.addCredentials(CA_ALIAS, password, cert, key);
         } catch (Exception e) {
-            logError(e.getMessage(), e);
+            LOG.error(e.getMessage(), e);
             CertificateAuthorityFault fault = new CertificateAuthorityFault();
             fault.setFaultString("An unexpected error occurred, could not add CA credentials.");
             FaultHelper helper = new FaultHelper(fault);

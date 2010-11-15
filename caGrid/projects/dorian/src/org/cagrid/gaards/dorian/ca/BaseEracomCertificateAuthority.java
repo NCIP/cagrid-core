@@ -15,6 +15,8 @@ import javax.crypto.Cipher;
 import javax.crypto.KeyGenerator;
 import javax.crypto.spec.IvParameterSpec;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.cagrid.gaards.pki.CertUtil;
 import org.cagrid.gaards.pki.KeyUtil;
 
@@ -23,6 +25,9 @@ public abstract class BaseEracomCertificateAuthority extends CertificateAuthorit
 
     public static final String WRAPPER_KEY_ALIAS = "dorian-wrapper-key";
     public static final String SLOT_PROPERTY = "slot";
+    
+    private static Log LOG = LogFactory.getLog(BaseEracomCertificateAuthority.class);
+    
     private Provider provider;
     private KeyStore keyStore;
     private Key wrapper;
@@ -41,7 +46,7 @@ public abstract class BaseEracomCertificateAuthority extends CertificateAuthorit
             keyStore = KeyStore.getInstance("CRYPTOKI", provider.getName());
             keyStore.load(null, properties.getCertificateAuthorityPassword().toCharArray());
         } catch (Exception e) {
-            logError(e.getMessage(), e);
+            LOG.error(e.getMessage(), e);
             CertificateAuthorityFault fault = new CertificateAuthorityFault();
             fault.setFaultString("Error initializing the Dorian Certificate Authority.");
             FaultHelper helper = new FaultHelper(fault);
@@ -97,7 +102,7 @@ public abstract class BaseEracomCertificateAuthority extends CertificateAuthorit
                 isInit = true;
             }
         } catch (Exception e) {
-            logError(e.getMessage(), e);
+            LOG.error(e.getMessage(), e);
             CertificateAuthorityFault fault = new CertificateAuthorityFault();
             fault.setFaultString("An unexpected error occurred, could not add certificate.");
             FaultHelper helper = new FaultHelper(fault);
@@ -117,7 +122,7 @@ public abstract class BaseEracomCertificateAuthority extends CertificateAuthorit
             byte[] output = cipher.doFinal(key.getWrappedKeyData());
             return KeyUtil.loadPrivateKey(new ByteArrayInputStream(output), null);
         } catch (Exception e) {
-            logError(e.getMessage(), e);
+            LOG.error(e.getMessage(), e);
             CertificateAuthorityFault fault = new CertificateAuthorityFault();
             fault.setFaultString("An unexpected error occurred unwrapping a key.");
             FaultHelper helper = new FaultHelper(fault);
@@ -138,7 +143,7 @@ public abstract class BaseEracomCertificateAuthority extends CertificateAuthorit
             byte[] iv = cipher.getIV();
             return new WrappedKey(wrappedKey, iv);
         } catch (Exception e) {
-            logError(e.getMessage(), e);
+            LOG.error(e.getMessage(), e);
             CertificateAuthorityFault fault = new CertificateAuthorityFault();
             fault.setFaultString("An unexpected error occurred wrapping a  key.");
             FaultHelper helper = new FaultHelper(fault);

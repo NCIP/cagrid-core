@@ -38,7 +38,6 @@ public class CertificateAuthorityCreationPolicy {
         }
 
         this.lifetime = lifetime;
-
     }
 
 

@@ -16,7 +16,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import org.cagrid.gaards.dorian.common.LoggingObject;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.cagrid.gaards.dorian.stubs.types.DorianInternalFault;
 import org.cagrid.gaards.dorian.stubs.types.InvalidAssertionFault;
 import org.cagrid.gaards.dorian.stubs.types.InvalidTrustedIdPFault;
@@ -31,9 +32,7 @@ import org.cagrid.tools.database.Database;
  * @version $Id: ArgumentManagerTable.java,v 1.2 2004/10/15 16:35:16 langella
  *          Exp $
  */
-public class TrustedIdPManager extends LoggingObject {
-
-    private Database db;
+public class TrustedIdPManager {
 
     public final static String TRUST_MANAGER_TABLE = "trust_manager";
 
@@ -61,6 +60,10 @@ public class TrustedIdPManager extends LoggingObject {
     public final static String METHOD_ID_FIELD = "ID";
     public final static String IDP_ID_FIELD = "IDP_ID";
     public final static String METHOD_FIELD = "METHOD";
+    
+    private static Log LOG = LogFactory.getLog(TrustedIdPManager.class);
+    
+    private Database db;
 
     private boolean dbBuilt = false;
 
@@ -95,7 +98,7 @@ public class TrustedIdPManager extends LoggingObject {
             db.update("DROP TABLE IF EXISTS " + AUTH_METHODS_TABLE);
             dbBuilt = false;
         } catch (Exception e) {
-            logError(e.getMessage(), e);
+            LOG.error(e.getMessage(), e);
             DorianInternalFault fault = new DorianInternalFault();
             fault.setFaultString("An unexpected database error occurred.");
             FaultHelper helper = new FaultHelper(fault);
@@ -130,7 +133,7 @@ public class TrustedIdPManager extends LoggingObject {
                 }
 
             } catch (Exception e) {
-                logError(e.getMessage(), e);
+                LOG.error(e.getMessage(), e);
                 DorianInternalFault fault = new DorianInternalFault();
                 fault.setFaultString("An unexpected database error occurred.");
                 FaultHelper helper = new FaultHelper(fault);
@@ -154,7 +157,7 @@ public class TrustedIdPManager extends LoggingObject {
             s.execute();
             s.close();
         } catch (Exception e) {
-            log.error(e);
+            LOG.error(e);
             DorianInternalFault fault = new DorianInternalFault();
             fault.setFaultString("Unexpected Database Error");
             FaultHelper helper = new FaultHelper(fault);
@@ -179,6 +182,7 @@ public class TrustedIdPManager extends LoggingObject {
             s.execute();
             s.close();
         } catch (Exception e) {
+            LOG.error(e);
             DorianInternalFault fault = new DorianInternalFault();
             fault.setFaultString("Unexpected Database Error");
             FaultHelper helper = new FaultHelper(fault);
@@ -218,6 +222,7 @@ public class TrustedIdPManager extends LoggingObject {
             }
 
         } catch (Exception e) {
+            LOG.error(e);
             DorianInternalFault fault = new DorianInternalFault();
             fault.setFaultString("Unexpected Database Error");
             FaultHelper helper = new FaultHelper(fault);
@@ -381,7 +386,7 @@ public class TrustedIdPManager extends LoggingObject {
             }
         } catch (Exception e) {
             e.printStackTrace();
-            logError(e.getMessage(), e);
+            LOG.error(e.getMessage(), e);
             DorianInternalFault fault = new DorianInternalFault();
             fault.setFaultString("Error updating the Trusted IdP " + idp.getName()
                 + ", an unexpected database error occurred.");
@@ -412,7 +417,7 @@ public class TrustedIdPManager extends LoggingObject {
             } catch (SAMLException se) {
 
             } catch (Exception e) {
-                logError(e.getMessage(), e);
+                LOG.error(e.getMessage(), e);
             }
         }
         InvalidAssertionFault fault = new InvalidAssertionFault();
@@ -430,7 +435,7 @@ public class TrustedIdPManager extends LoggingObject {
                     return idps[i];
                 }
             } catch (Exception e) {
-                logError(e.getMessage(), e);
+                LOG.error(e.getMessage(), e);
             }
         }
         InvalidAssertionFault fault = new InvalidAssertionFault();
@@ -491,6 +496,7 @@ public class TrustedIdPManager extends LoggingObject {
 
         } catch (Exception e) {
             e.printStackTrace();
+            LOG.error(e);
             DorianInternalFault fault = new DorianInternalFault();
             fault.setFaultString("Error obtaining a list of trusted IdPs, unexpected database error");
             FaultHelper helper = new FaultHelper(fault);
@@ -556,6 +562,7 @@ public class TrustedIdPManager extends LoggingObject {
             return list;
 
         } catch (Exception e) {
+            LOG.error(e);
             DorianInternalFault fault = new DorianInternalFault();
             fault.setFaultString("Error obtaining a list of trusted IdPs, unexpected database error");
             FaultHelper helper = new FaultHelper(fault);
@@ -621,6 +628,7 @@ public class TrustedIdPManager extends LoggingObject {
         } catch (InvalidTrustedIdPFault f) {
             throw f;
         } catch (Exception e) {
+            LOG.error(e);
             DorianInternalFault fault = new DorianInternalFault();
             fault.setFaultString("Error obtaining the Trusted IdP " + id + ", unexpected database error");
             FaultHelper helper = new FaultHelper(fault);
@@ -685,6 +693,7 @@ public class TrustedIdPManager extends LoggingObject {
         } catch (InvalidTrustedIdPFault f) {
             throw f;
         } catch (Exception e) {
+            LOG.error(e);
             DorianInternalFault fault = new DorianInternalFault();
             fault.setFaultString("Error obtaining the Trusted IdP " + name + ", unexpected database error");
             FaultHelper helper = new FaultHelper(fault);
@@ -749,6 +758,7 @@ public class TrustedIdPManager extends LoggingObject {
         } catch (InvalidTrustedIdPFault f) {
             throw f;
         } catch (Exception e) {
+            LOG.error(e);
             DorianInternalFault fault = new DorianInternalFault();
             fault.setFaultString("Error obtaining the Trusted IdP " + dn + ", unexpected database error");
             FaultHelper helper = new FaultHelper(fault);
@@ -840,7 +850,7 @@ public class TrustedIdPManager extends LoggingObject {
         try {
             cert = CertUtil.loadCertificate(reader);
         } catch (Exception e) {
-            logError(e.getMessage(), e);
+            LOG.error(e.getMessage(), e);
             InvalidTrustedIdPFault fault = new InvalidTrustedIdPFault();
             fault.setFaultString("Invalid IdP Certificate specified.");
             FaultHelper helper = new FaultHelper(fault);
@@ -985,9 +995,9 @@ public class TrustedIdPManager extends LoggingObject {
                 try {
                     this.removeTrustedIdP(idp.getId());
                 } catch (Exception ex) {
-                    logError(ex.getMessage(), ex);
+                    LOG.error(ex.getMessage(), ex);
                 }
-                logError(e.getMessage(), e);
+                LOG.error(e.getMessage(), e);
                 DorianInternalFault fault = new DorianInternalFault();
                 fault.setFaultString("Error adding the Trusted IdP " + name
                     + ", an unexpected database error occurred.");
@@ -1023,7 +1033,7 @@ public class TrustedIdPManager extends LoggingObject {
             s.execute();
             s.close();
         } catch (Exception e) {
-            logError(e.getMessage(), e);
+            LOG.error(e.getMessage(), e);
             DorianInternalFault fault = new DorianInternalFault();
             fault.setFaultString("Error adding the authentication method " + method.getValue()
                 + " for the  Trusted IdP " + id + ", an unexpected database error occurred.");
@@ -1057,8 +1067,8 @@ public class TrustedIdPManager extends LoggingObject {
             }
             rs.close();
             s.close();
-
         } catch (Exception e) {
+            LOG.error(e);
             DorianInternalFault fault = new DorianInternalFault();
             fault.setFaultString("Unexpected Database Error");
             FaultHelper helper = new FaultHelper(fault);
@@ -1090,8 +1100,8 @@ public class TrustedIdPManager extends LoggingObject {
             }
             rs.close();
             s.close();
-
         } catch (Exception e) {
+            LOG.error(e);
             DorianInternalFault fault = new DorianInternalFault();
             fault.setFaultString("Unexpected Database Error");
             FaultHelper helper = new FaultHelper(fault);
@@ -1111,7 +1121,7 @@ public class TrustedIdPManager extends LoggingObject {
             db.update("delete from " + TRUST_MANAGER_TABLE);
             db.update("delete from " + AUTH_METHODS_TABLE);
         } catch (Exception e) {
-            logError(e.getMessage(), e);
+            LOG.error(e.getMessage(), e);
             DorianInternalFault fault = new DorianInternalFault();
             fault.setFaultString("An unexpected database error occurred.");
             FaultHelper helper = new FaultHelper(fault);
@@ -1155,7 +1165,7 @@ public class TrustedIdPManager extends LoggingObject {
 
         } catch (Exception e) {
             e.printStackTrace();
-            logError(e.getMessage(), e);
+            LOG.error(e.getMessage(), e);
             DorianInternalFault fault = new DorianInternalFault();
             fault.setFaultString("Error updating the Trusted IdP " + idp.getName()
                 + ", an unexpected database error occurred.");
@@ -1197,6 +1207,7 @@ public class TrustedIdPManager extends LoggingObject {
         } catch (InvalidTrustedIdPFault f) {
             throw f;
         } catch (Exception e) {
+            LOG.error(e);
             DorianInternalFault fault = new DorianInternalFault();
             fault.setFaultString("Error obtaining the Trusted IdP " + idp.getId() + ", unexpected database error");
             FaultHelper helper = new FaultHelper(fault);

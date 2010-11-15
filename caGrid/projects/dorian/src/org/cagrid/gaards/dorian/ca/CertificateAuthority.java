@@ -10,9 +10,10 @@ import java.security.cert.X509Certificate;
 import java.security.interfaces.RSAPublicKey;
 import java.util.Date;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.bouncycastle.asn1.x509.X509Name;
 import org.cagrid.gaards.dorian.common.Lifetime;
-import org.cagrid.gaards.dorian.common.LoggingObject;
 import org.cagrid.gaards.dorian.service.util.Utils;
 import org.cagrid.gaards.pki.CRLEntry;
 import org.cagrid.gaards.pki.CertUtil;
@@ -26,10 +27,11 @@ import org.cagrid.gaards.pki.KeyUtil;
  * @version $Id: ArgumentManagerTable.java,v 1.2 2004/10/15 16:35:16 langella
  *          Exp $
  */
-public abstract class CertificateAuthority extends LoggingObject {
+public abstract class CertificateAuthority {
+    
+    private static Log LOG = LogFactory.getLog(CertificateAuthority.class);
 
     private boolean initialized = false;
-
     private CertificateAuthorityProperties properties;
 
 
@@ -84,7 +86,7 @@ public abstract class CertificateAuthority extends LoggingObject {
                 initialized = true;
             }
         } catch (Exception e) {
-            logError(e.getMessage(), e);
+            LOG.error(e.getMessage(), e);
             CertificateAuthorityFault fault = new CertificateAuthorityFault();
             fault.setFaultString("Unexpected Error, could not initialize the Dorian Certificate Authority.");
             FaultHelper helper = new FaultHelper(fault);
@@ -104,7 +106,7 @@ public abstract class CertificateAuthority extends LoggingObject {
             deleteCACredentials();
             this.setCACredentials(cacert, pair.getPrivate(), properties.getCertificateAuthorityPassword());
         } catch (Exception e) {
-            logError(e.getMessage(), e);
+            LOG.error(e.getMessage(), e);
             CertificateAuthorityFault fault = new CertificateAuthorityFault();
             fault.setFaultString("Unexpected Error, could not create the CA credentials.");
             FaultHelper helper = new FaultHelper(fault);
@@ -135,7 +137,7 @@ public abstract class CertificateAuthority extends LoggingObject {
         } catch (NoCACredentialsFault f) {
             throw f;
         } catch (Exception e) {
-            logError(e.getMessage(), e);
+            LOG.error(e.getMessage(), e);
             CertificateAuthorityFault fault = new CertificateAuthorityFault();
             fault.setFaultString("Unexpected Error, Error obtaining the CA private key.");
             FaultHelper helper = new FaultHelper(fault);
@@ -197,7 +199,7 @@ public abstract class CertificateAuthority extends LoggingObject {
         } catch (CertificateAuthorityFault e) {
             throw e;
         } catch (Exception e) {
-            logError(e.getMessage(), e);
+            LOG.error(e.getMessage(), e);
             CertificateAuthorityFault fault = new CertificateAuthorityFault();
             fault.setFaultString("Unexpected Error, could not sign certificate.");
             FaultHelper helper = new FaultHelper(fault);
@@ -216,7 +218,7 @@ public abstract class CertificateAuthority extends LoggingObject {
             String subject = Utils.getHostCertificateSubject(cacert, host);
             return signCertificate(subject, publicKey, start, expiration);
         } catch (Exception e) {
-            logError(e.getMessage(), e);
+            LOG.error(e.getMessage(), e);
             CertificateAuthorityFault fault = new CertificateAuthorityFault();
             fault.setFaultString("Unexpected Error, could not sign host certificate.");
             FaultHelper helper = new FaultHelper(fault);
@@ -240,7 +242,7 @@ public abstract class CertificateAuthority extends LoggingObject {
             this.setCACredentials(cacert, pair.getPrivate(), properties.getCertificateAuthorityPassword());
             return cacert;
         } catch (Exception e) {
-            logError(e.getMessage(), e);
+            LOG.error(e.getMessage(), e);
             CertificateAuthorityFault fault = new CertificateAuthorityFault();
             fault.setFaultString("Unexpected Error, could renew the CA credentials.");
             FaultHelper helper = new FaultHelper(fault);
@@ -257,7 +259,7 @@ public abstract class CertificateAuthority extends LoggingObject {
             return CertUtil.createCRL(getCACredentialsProvider(), getCACertificate(), getPrivateKey(), entries,
                 getCACertificate().getNotAfter(), getSignatureAlgorithm());
         } catch (Exception e) {
-            logError(e.getMessage(), e);
+            LOG.error(e.getMessage(), e);
             CertificateAuthorityFault fault = new CertificateAuthorityFault();
             fault.setFaultString("Unexpected Error, could not create the CRL.");
             FaultHelper helper = new FaultHelper(fault);
@@ -281,7 +283,7 @@ public abstract class CertificateAuthority extends LoggingObject {
         } catch (NoCACredentialsFault f) {
             throw f;
         } catch (Exception e) {
-            logError(e.getMessage(), e);
+            LOG.error(e.getMessage(), e);
             CertificateAuthorityFault fault = new CertificateAuthorityFault();
             fault.setFaultString("Unexpected Error, Error obtaining the CA private key.");
             FaultHelper helper = new FaultHelper(fault);

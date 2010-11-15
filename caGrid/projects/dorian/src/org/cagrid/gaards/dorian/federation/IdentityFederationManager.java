@@ -27,11 +27,12 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.bouncycastle.asn1.x509.CRLReason;
 import org.cagrid.gaards.dorian.ca.CertificateAuthority;
 import org.cagrid.gaards.dorian.ca.CertificateAuthorityFault;
 import org.cagrid.gaards.dorian.common.AuditConstants;
-import org.cagrid.gaards.dorian.common.LoggingObject;
 import org.cagrid.gaards.dorian.policy.FederationPolicy;
 import org.cagrid.gaards.dorian.policy.HostCertificateLifetime;
 import org.cagrid.gaards.dorian.policy.HostCertificateRenewalPolicy;
@@ -63,9 +64,11 @@ import org.cagrid.tools.groups.Group;
 import org.cagrid.tools.groups.GroupException;
 import org.cagrid.tools.groups.GroupManager;
 
-public class IdentityFederationManager extends LoggingObject implements Publisher {
+public class IdentityFederationManager implements Publisher {
 
     private final int CERTIFICATE_START_OFFSET_SECONDS = -10;
+    
+    public static Log LOG = LogFactory.getLog(IdentityFederationManager.class);
 
     private UserManager um;
 
@@ -133,7 +136,7 @@ public class IdentityFederationManager extends LoggingObject implements Publishe
                     this.administrators.addMember(defaults.getDefaultUser().getGridId());
                 } else {
                     String mess = "COULD NOT ADD DEFAULT USER TO ADMINISTRATORS GROUP, NO DEFAULT USER WAS FOUND!!!";
-                    logWarning(mess);
+                    LOG.warn(mess);
                     this.eventManager.logEvent(AuditConstants.SYSTEM_ID, AuditConstants.SYSTEM_ID,
                         FederationAudit.InternalError.getValue(), mess);
                 }
@@ -141,7 +144,7 @@ public class IdentityFederationManager extends LoggingObject implements Publishe
                 this.administrators = this.groupManager.getGroup(ADMINISTRATORS);
             }
         } catch (GroupException e) {
-            logError(e.getMessage(), e);
+            LOG.error(e.getMessage(), e);
             String mess = "An unexpected error occurred in setting up the administrators group.";
             this.eventManager.logEvent(AuditConstants.SYSTEM_ID, AuditConstants.SYSTEM_ID,
                 FederationAudit.InternalError.getValue(), mess + "\n\n" + FaultUtil.printFaultToString(e));
@@ -166,7 +169,7 @@ public class IdentityFederationManager extends LoggingObject implements Publishe
                 tm.updateIdP(idp);
             }
         } catch (Exception e) {
-            logError(e.getMessage(), e);
+            LOG.error(e.getMessage(), e);
             String mess = "An unexpected error occurred in ensuring the integrity of the Dorian IdP.";
             this.eventManager.logEvent(AuditConstants.SYSTEM_ID, AuditConstants.SYSTEM_ID,
                 FederationAudit.InternalError.getValue(), mess + "\n\n" + FaultUtil.printFaultToString(e));
@@ -264,7 +267,7 @@ public class IdentityFederationManager extends LoggingObject implements Publishe
             this.eventManager.registerEventWithHandler(new EventToHandlerMapping(FederationAudit.UserCertificateRemoved
                 .getValue(), AuditingConstants.USER_CERTIFICATE_AUDITOR));
         } catch (Exception e) {
-            logError(Utils.getExceptionMessage(e), e);
+            LOG.error(Utils.getExceptionMessage(e), e);
             String mess = "An unexpected error occurred initializing the auditing system:\n"
                 + Utils.getExceptionMessage(e);
             DorianInternalFault fault = new DorianInternalFault();
@@ -401,7 +404,7 @@ public class IdentityFederationManager extends LoggingObject implements Publishe
                         + "'s account was removed because the IdP " + idp.getName() + " (" + idp.getId()
                         + ") was removed by " + callerGridIdentity + " was removed as a Trusted IdP.");
                 } catch (Exception e) {
-                    logError(e.getMessage(), e);
+                    LOG.error(e.getMessage(), e);
                     this.eventManager
                         .logEvent(
                             AuditConstants.SYSTEM_ID,
@@ -531,7 +534,7 @@ public class IdentityFederationManager extends LoggingObject implements Publishe
         } catch (InvalidUserFault e) {
 
         } catch (InvalidTrustedIdPFault f) {
-            logError(f.getFaultString(), f);
+            LOG.error(f.getFaultString(), f);
             DorianInternalFault fault = new DorianInternalFault();
             fault.setFaultString("An unexpected error occurred removing the grid user, the IdP "
                 + idpCert.getSubjectDN().getName() + " could not be resolved!!!");
@@ -590,7 +593,7 @@ public class IdentityFederationManager extends LoggingObject implements Publishe
         } catch (InvalidUserFault e) {
             throw e;
         } catch (GroupException e) {
-            logError(e.getMessage(), e);
+            LOG.error(e.getMessage(), e);
             DorianInternalFault fault = new DorianInternalFault();
             fault.setFaultString("An unexpected error occurred in removing the user from all groups.");
             FaultHelper helper = new FaultHelper(fault);
@@ -598,7 +601,7 @@ public class IdentityFederationManager extends LoggingObject implements Publishe
             fault = (DorianInternalFault) helper.getFault();
             throw fault;
         } catch (InvalidHostCertificateFault e) {
-            logError(e.getMessage(), e);
+            LOG.error(e.getMessage(), e);
             DorianInternalFault fault = new DorianInternalFault();
             fault.setFaultString("An unexpected error occurred.");
             FaultHelper helper = new FaultHelper(fault);
@@ -649,7 +652,7 @@ public class IdentityFederationManager extends LoggingObject implements Publishe
                             + ".");
                 }
             } catch (GroupException e) {
-                logError(e.getMessage(), e);
+                LOG.error(e.getMessage(), e);
                 DorianInternalFault fault = new DorianInternalFault();
                 fault.setFaultString("An unexpected error occurred in adding the user to the administrators group.");
                 FaultHelper helper = new FaultHelper(fault);
@@ -684,7 +687,7 @@ public class IdentityFederationManager extends LoggingObject implements Publishe
                     "The administrative privileges for the user, " + gridIdentity + " were revoked by "
                         + callerGridIdentity + ".");
             } catch (GroupException e) {
-                logError(e.getMessage(), e);
+                LOG.error(e.getMessage(), e);
                 DorianInternalFault fault = new DorianInternalFault();
                 fault
                     .setFaultString("An unexpected error occurred in removing the user from the administrators group.");
@@ -723,7 +726,7 @@ public class IdentityFederationManager extends LoggingObject implements Publishe
                 }
                 return admins;
             } catch (GroupException e) {
-                logError(e.getMessage(), e);
+                LOG.error(e.getMessage(), e);
                 DorianInternalFault fault = new DorianInternalFault();
                 fault
                     .setFaultString("An unexpected error occurred determining the members of the administrators group.");
@@ -852,7 +855,7 @@ public class IdentityFederationManager extends LoggingObject implements Publishe
                 this.eventManager.logEvent(gid, AuditConstants.SYSTEM_ID, FederationAudit.AccountCreated.getValue(),
                     "User Account Created!!!");
             } catch (Exception e) {
-                logError(e.getMessage(), e);
+                LOG.error(e.getMessage(), e);
                 String msg = "An unexpected error occurred in adding the user " + usr.getUID() + " from the IdP "
                     + idp.getName() + ".";
                 this.eventManager.logEvent(gid, AuditConstants.SYSTEM_ID, FederationAudit.InvalidUserCertificateRequest
@@ -892,7 +895,7 @@ public class IdentityFederationManager extends LoggingObject implements Publishe
                 }
 
             } catch (Exception e) {
-                logError(e.getMessage(), e);
+                LOG.error(e.getMessage(), e);
                 String msg = "An unexpected error occurred in obtaining/updating the user " + usr.getUID()
                     + " from the IdP " + idp.getName() + ".";
                 this.eventManager.logEvent(gid, AuditConstants.SYSTEM_ID, FederationAudit.InvalidUserCertificateRequest
@@ -1214,16 +1217,16 @@ public class IdentityFederationManager extends LoggingObject implements Publishe
                                 for (int i = 0; i < services.size(); i++) {
                                     String uri = services.get(i);
                                     try {
-                                        debug("Publishing CRL to the GTS " + uri);
+                                        LOG.debug("Publishing CRL to the GTS " + uri);
                                         GTSAdminClient client = new GTSAdminClient(uri, null);
                                         client.updateCRL(authName, x509);
-                                        debug("Published CRL to the GTS " + uri);
+                                        LOG.debug("Published CRL to the GTS " + uri);
                                         eventManager.logEvent(AuditConstants.SYSTEM_ID, AuditConstants.SYSTEM_ID,
                                             FederationAudit.CRLPublished.getValue(), "Published CRL to the GTS " + uri
                                                 + ".");
                                     } catch (Exception ex) {
                                         String msg = "Error publishing the CRL to the GTS " + uri + "!!!";
-                                        getLog().error(msg, ex);
+                                        LOG.error(msg, ex);
                                         eventManager.logEvent(AuditConstants.SYSTEM_ID, AuditConstants.SYSTEM_ID,
                                             FederationAudit.InternalError.getValue(), msg + "\n"
                                                 + FaultUtil.printFaultToString(ex) + "\n\n"
@@ -1234,7 +1237,7 @@ public class IdentityFederationManager extends LoggingObject implements Publishe
 
                             } catch (Exception e) {
                                 String msg = "Unexpected Error publishing the CRL!!!";
-                                getLog().error(msg, e);
+                                LOG.error(msg, e);
                                 eventManager.logEvent(AuditConstants.SYSTEM_ID, AuditConstants.SYSTEM_ID,
                                     FederationAudit.InternalError.getValue(), msg + "\n"
                                         + FaultUtil.printFaultToString(e) + "\n\n" + FaultUtil.printFaultToString(e));
@@ -1350,7 +1353,7 @@ public class IdentityFederationManager extends LoggingObject implements Publishe
             }
 
         } catch (GroupException e) {
-            logError(e.getMessage(), e);
+            LOG.error(e.getMessage(), e);
             DorianInternalFault fault = new DorianInternalFault();
             fault
                 .setFaultString("An unexpected error occurred in determining if the user is a member of the administrators group.");
@@ -1465,7 +1468,7 @@ public class IdentityFederationManager extends LoggingObject implements Publishe
         try {
             this.groupManager.clearDatabase();
         } catch (GroupException e) {
-            logError(e.getMessage(), e);
+            LOG.error(e.getMessage(), e);
             DorianInternalFault fault = new DorianInternalFault();
             fault.setFaultString("An unexpected error occurred in deleting the groups database.");
             FaultHelper helper = new FaultHelper(fault);
@@ -1492,7 +1495,7 @@ public class IdentityFederationManager extends LoggingObject implements Publishe
             this.hostAuditor.clear();
             this.userCertificateAuditor.clear();
         } catch (Exception e) {
-            logError(e.getMessage(), e);
+            LOG.error(e.getMessage(), e);
             DorianInternalFault fault = new DorianInternalFault();
             fault.setFaultString("An unexpected error occurred in deleting the auditing logs.");
             FaultHelper helper = new FaultHelper(fault);
@@ -1665,7 +1668,7 @@ public class IdentityFederationManager extends LoggingObject implements Publishe
                         list.add(r);
                     }
                 } catch (Exception e) {
-                    logError(e.getMessage(), e);
+                    LOG.error(e.getMessage(), e);
                     String msg = "An unexpected error occurred in searching the auditing logs.";
                     this.eventManager.logEvent(AuditConstants.SYSTEM_ID, AuditConstants.SYSTEM_ID,
                         FederationAudit.InternalError.getValue(), msg + "\n" + Utils.getExceptionMessage(e) + "\n\n"
