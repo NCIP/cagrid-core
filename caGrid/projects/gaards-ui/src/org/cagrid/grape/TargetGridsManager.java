@@ -53,12 +53,10 @@ public class TargetGridsManager {
 				if ("local".equals(grid.getIvySettings())) {
 					continue;
 				}
-				String repositoryName = "default";
 				URL settingsURL = null;
 				File settingsFile = new File(configurationDirectory, grid.getIvySettings());
 				if (settingsFile.exists()) {
 					settingsURL = settingsFile.toURI().toURL();
-					repositoryName = settingsFile.getName().substring(13, settingsFile.getName().length()-4);
 				} else {
 					settingsURL = ivySettingsURL;
 				}

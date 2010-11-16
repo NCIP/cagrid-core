@@ -13,6 +13,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Set;
 
@@ -55,11 +56,11 @@ public class TargetGridBaseEditor extends ConfigurationBasePanel {
 
 	private JButton removeButton = null;
 
-	private JPanel priorityPanel = null;
+	private JPanel repositoryPanel = null;
 
-	private JScrollPane jScrollPane1 = null;
+	private JScrollPane addRepositoryPanel = null;
 
-	private GridTable grids = null;
+	private RepositoryTable repositories = null;
 
 	private JPanel buttonPanel = null;
 
@@ -85,7 +86,7 @@ public class TargetGridBaseEditor extends ConfigurationBasePanel {
 		this.treeNode = treeNode;
 		
 		loadGridTree();
-		loadValues();
+		loadRepositories();
 	}
 
 	private void loadGridTree() throws Exception {
@@ -173,14 +174,24 @@ public class TargetGridBaseEditor extends ConfigurationBasePanel {
 		return titlePanel;
 	}
 
-	private void loadValues() {
-		this.grids.clearTable();
+	private void loadRepositories() {
+		this.repositories.clearTable();
 		TargetGridsConfiguration conf = getTargetGridsConfiguration();
+		HashMap<String, String> repositoryList = new HashMap<String, String>();
 		if (conf != null) {
 			Grid[] list = conf.getGrid();
 			if (list != null) {
 				for (int i = 0; i < list.length; i++) {
-					getGrids().addGrid(list[i]);
+					if (repositoryList.containsKey(list[i].getIvySettings())) {
+						repositoryList.put(list[i].getIvySettings(), repositoryList.get(list[i].getIvySettings()) + ", " + list[i].getSystemName());
+					} else {
+						repositoryList.put(list[i].getIvySettings(), list[i].getSystemName());						
+					}
+				}
+				Set<String> repositoryNames = repositoryList.keySet();
+				for (String repositoryName : repositoryNames) {
+					getRepositories().addRepository(repositoryName, repositoryList.get(repositoryName));
+					
 				}
 			}
 		}
@@ -209,12 +220,12 @@ public class TargetGridBaseEditor extends ConfigurationBasePanel {
 			valuesPanel = new JPanel();
 			valuesPanel.setLayout(new GridBagLayout());
 			valuesPanel.setBorder(javax.swing.BorderFactory.createTitledBorder(
-					null, "Target Grids",
+					null, "Repositories",
 					javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION,
 					javax.swing.border.TitledBorder.DEFAULT_POSITION, null,
 					LookAndFeel.getPanelLabelColor()));
-			valuesPanel.add(getPriorityPanel(), gridBagConstraints6);
-			valuesPanel.add(getJScrollPane1(), gridBagConstraints3);
+			valuesPanel.add(getRepositoryPanel(), gridBagConstraints6);
+			valuesPanel.add(getAddRepositoryPanel(), gridBagConstraints3);
 		}
 		return valuesPanel;
 	}
@@ -302,7 +313,7 @@ public class TargetGridBaseEditor extends ConfigurationBasePanel {
 			addButton.setIcon(LookAndFeel.getAddIcon());
 			addButton.addActionListener(new java.awt.event.ActionListener() {
 				public void actionPerformed(java.awt.event.ActionEvent e) {
-					addValue();
+					addRepository();
 				}
 			});
 		}
@@ -321,15 +332,22 @@ public class TargetGridBaseEditor extends ConfigurationBasePanel {
 			removeButton.setIcon(LookAndFeel.getRemoveIcon());
 			removeButton.addActionListener(new java.awt.event.ActionListener() {
 				public void actionPerformed(java.awt.event.ActionEvent e) {
-					try {						
-						if (removingRepositoryWithActiveGrid(getGrids().getSelectedGrid())) {
-							ErrorDialog.showError("Cannot remove a repository if it contains the target grid.");
+					try {			
+						int response = JOptionPane.showConfirmDialog(null, "Remove the \"" + getRepositories().getSelectedRepository() + "\" repository and all of its grid configurations?", "Remove Respository", JOptionPane.YES_NO_OPTION);
+						if (response != JOptionPane.YES_OPTION) {
+							return;
+						}
+
+						if (removingRepositoryWithActiveGrid(getRepositories().getSelectedRepository())) {
+							ErrorDialog.showError("Cannot remove the \"" + getRepositories().getSelectedRepository() + "\" repository.  It contains the configuration for the grid currently being used.");
 							log.error("Cannot remove a repository if it contains the target grid.");
 							return;
 						}
 					
-						removeValue();
+						removeRepository();
 						GridApplication.getContext().getConfigurationManager().saveAll();
+						GridApplication.getContext().getConfigurationManager().save("target-grid", false);
+
 						window.dispose();
 						
 					} catch (Exception ex) {
@@ -345,13 +363,13 @@ public class TargetGridBaseEditor extends ConfigurationBasePanel {
 		return removeButton;
 	}
 	
-	private boolean removingRepositoryWithActiveGrid(Grid selectedGrid) {
+	private boolean removingRepositoryWithActiveGrid(String repositoryName) {
 		TargetGridsConfiguration conf = getTargetGridsConfiguration();
 		Grid[] grids = conf.getGrid();
 		if (grids != null) {
 			for (int i = 0; i < grids.length; i++) {
 				if (GAARDSApplication.getTargetGrid().equals(grids[i].getSystemName())) {
-					if (grids[i].getIvySettings().equals(selectedGrid.getIvySettings())) {
+					if (grids[i].getIvySettings().equals(repositoryName)) {
 						return true;
 					}
 				}
@@ -361,7 +379,7 @@ public class TargetGridBaseEditor extends ConfigurationBasePanel {
 		return false;
 	}
 
-	private void addValue() {
+	private void addRepository() {
 		String repositoryName = Utils.clean(getRepositoryName().getText());
 		String ivySettings = Utils.clean(getIvySettings().getText());
 
@@ -402,45 +420,46 @@ public class TargetGridBaseEditor extends ConfigurationBasePanel {
 			log.error("Encountered an error while trying to obtain target grids from the repository.", e);
 		}
 		
-		loadValues();
+		loadRepositories();
 		getRepositoryName().setText("");
 		getIvySettings().setText("");
 
 	}
 	
-	private Configuration loadConfiguration() throws Exception {
-		InputStream inputStream = this.getClass().getResourceAsStream("/configuration.xml");
-		
-        org.w3c.dom.Document doc = XMLUtils.newDocument(inputStream);
-        Object obj = ObjectDeserializer.toObject(doc.getDocumentElement(), Configuration.class);
-        inputStream.close();
-        return Configuration.class.cast(obj);
-
-	}
-
-	private void removeValue() {
+	private void removeRepository() {
 		try {
-			Grid grid = getGrids().getSelectedGrid();
+			String repositoryName = getRepositories().getSelectedRepository();
 			TargetGridsConfiguration conf = getTargetGridsConfiguration();
 			if (conf != null) {
 				Grid[] grids = conf.getGrid();
 				if (grids != null) {
 					List<Grid> newList = new ArrayList<Grid>();
 					for (int i = 0; i < grids.length; i++) {
-						if (!grid.getIvySettings().equals(grids[i].getIvySettings())) {
+						if (!repositoryName.equals(grids[i].getIvySettings())) {
 							newList.add(grids[i]);
 						}
 					}
-					File settingsFile = new File(GAARDSApplication.getGAARDSConfigurationDirectory(), grid.getIvySettings());
+					File settingsFile = new File(GAARDSApplication.getGAARDSConfigurationDirectory(), repositoryName);
 					settingsFile.delete();
-					getGrids().clearTable();
+					getRepositories().clearTable();
 					Grid[] des = new Grid[newList.size()];
+					HashMap<String, String> repositoryList = new HashMap<String, String>();
 					for (int i = 0; i < newList.size(); i++) {
 						des[i] = newList.get(i);
-						getGrids().addGrid(des[i]);
+						if (repositoryList.containsKey(des[i].getIvySettings())) {
+							repositoryList.put(des[i].getIvySettings(), repositoryList.get(des[i].getIvySettings()) + ", " + des[i].getSystemName());
+						} else {
+							repositoryList.put(des[i].getIvySettings(), des[i].getSystemName());						
+						}
 					}
+					Set<String> repositoryNames = repositoryList.keySet();
+					for (String reposName : repositoryNames) {
+						getRepositories().addRepository(reposName, repositoryList.get(reposName));
+						
+					}
+
 					conf.setGrid(des);
-					loadValues();
+					loadRepositories();
 				}				
 			}
 
@@ -465,13 +484,13 @@ public class TargetGridBaseEditor extends ConfigurationBasePanel {
 	 * 
 	 * @return javax.swing.JPanel
 	 */
-	private JPanel getPriorityPanel() {
-		if (priorityPanel == null) {
-			priorityPanel = new JPanel();
-			priorityPanel.setLayout(new FlowLayout());
-			priorityPanel.add(getRemoveButton(), null);
+	private JPanel getRepositoryPanel() {
+		if (repositoryPanel == null) {
+			repositoryPanel = new JPanel();
+			repositoryPanel.setLayout(new FlowLayout());
+			repositoryPanel.add(getRemoveButton(), null);
 		}
-		return priorityPanel;
+		return repositoryPanel;
 	}
 
 	/**
@@ -479,12 +498,12 @@ public class TargetGridBaseEditor extends ConfigurationBasePanel {
 	 * 
 	 * @return javax.swing.JScrollPane
 	 */
-	private JScrollPane getJScrollPane1() {
-		if (jScrollPane1 == null) {
-			jScrollPane1 = new JScrollPane();
-			jScrollPane1.setViewportView(getGrids());
+	private JScrollPane getAddRepositoryPanel() {
+		if (addRepositoryPanel == null) {
+			addRepositoryPanel = new JScrollPane();
+			addRepositoryPanel.setViewportView(getRepositories());
 		}
-		return jScrollPane1;
+		return addRepositoryPanel;
 	}
 
 	/**
@@ -492,11 +511,11 @@ public class TargetGridBaseEditor extends ConfigurationBasePanel {
 	 * 
 	 * @return javax.swing.JTable
 	 */
-	private GridTable getGrids() {
-		if (grids == null) {
-			grids = new GridTable();
+	private RepositoryTable getRepositories() {
+		if (repositories == null) {
+			repositories = new RepositoryTable();
 		}
-		return grids;
+		return repositories;
 	}
 
 	/**
