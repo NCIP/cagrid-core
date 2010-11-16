@@ -263,6 +263,13 @@ public abstract class TavernaWorkflowServiceImplResourceBase extends ReflectionR
             EndpointReferenceType epr;
             try {
                String transportURL = (String) ctx.getProperty(org.apache.axis.MessageContext.TRANS_URL);
+               org.apache.axis.message.addressing.AttributedURI uri = new org.apache.axis.message.addressing.AttributedURI(transportURL);
+               java.net.URL baseURL = org.globus.wsrf.container.ServiceHost.getBaseURL();
+               String correctHost = baseURL.getHost();
+               uri.setHost(correctHost);
+               int correctPort = baseURL.getPort();
+               uri.setPort(correctPort);
+               transportURL = uri.toString();
 	           transportURL = transportURL.substring(0,transportURL.lastIndexOf('/') +1 );
 	           transportURL += "TavernaWorkflowServiceImpl";
 			   epr = AddressingUtils.createEndpointReference(transportURL, getResourceKey());

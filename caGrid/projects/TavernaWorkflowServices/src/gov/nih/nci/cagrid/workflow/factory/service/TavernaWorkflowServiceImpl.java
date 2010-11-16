@@ -30,9 +30,24 @@ import javax.naming.InitialContext;
  */
 public class TavernaWorkflowServiceImpl extends TavernaWorkflowServiceImplBase {
 
-	ExecutorService threadExecutor = Executors.newFixedThreadPool(2);
-	public TavernaWorkflowServiceImpl() throws RemoteException {
+	
+	private static TavernaWorkflowServiceConfiguration config = null;
+	ExecutorService threadExecutor = null;
+	private int concurrent = 2;
+	
+	public TavernaWorkflowServiceImpl() throws RemoteException {		
 		super();
+		try{
+			config = TavernaWorkflowServiceConfiguration.getConfiguration();
+			concurrent = Integer.parseInt(config.getConcurrentWorkflows());
+			threadExecutor = Executors.newFixedThreadPool(concurrent);
+			System.out.println("Concurrent workflows allowed: " + concurrent);
+
+		}catch (Exception e1) {
+			
+			e1.printStackTrace();
+			throw new RemoteException(e1.getLocalizedMessage());
+		}
 	}
 
   public workflowmanagementfactoryservice.WMSOutputType createWorkflow(workflowmanagementfactoryservice.WMSInputType wMSInputElement) throws RemoteException, gov.nih.nci.cagrid.workflow.factory.stubs.types.WorkflowException {
@@ -41,6 +56,7 @@ public class TavernaWorkflowServiceImpl extends TavernaWorkflowServiceImplBase {
 		ResourceKey key = null;
 		int TERM_TIME = 180;
 		try {
+			System.out.println("Creating a resource for the workflow..");
 			Context ctx = new InitialContext();
 			String lookupString = Constants.JNDI_SERVICES_BASE_NAME +
 			"cagrid/TavernaWorkflowServiceImpl"+ "/home";

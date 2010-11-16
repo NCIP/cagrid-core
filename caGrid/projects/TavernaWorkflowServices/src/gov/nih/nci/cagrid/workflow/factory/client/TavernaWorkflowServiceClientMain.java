@@ -143,6 +143,14 @@ public class TavernaWorkflowServiceClientMain {
 						if(count % 2 == 0){
 							System.out.println("If you think the workflow is taking too long, cancel (Ctrl-C) the test and check the status on the server..");
 						}
+						if(count == 1){
+							System.out.println("" +
+									"\n== NOTE: If this is the first workflow being submitted to the Workflow Service,\n" +
+									"==       it will take longer for your workflow to complete, as it dowonloads\n" +
+									"==       (one time) all the required artifacts (approximately: 10-15mins depending\n" +
+									"==       on the network speed). Subsequent workflow submissions will take less time.\n"									
+									);
+						}
 					}
 					
 					workflowStatus = TavernaWorkflowServiceClient.getStatus(readEPR);
