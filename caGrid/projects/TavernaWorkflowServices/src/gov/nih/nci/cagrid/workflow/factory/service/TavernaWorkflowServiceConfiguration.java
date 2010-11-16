@@ -49,6 +49,8 @@ public class TavernaWorkflowServiceConfiguration implements ServiceConfiguration
 	
 	private String tavernaDir;
 	
+	private String concurrentWorkflows;
+	
 	
     public String getEtcDirectoryPath() {
 		return ContainerConfig.getBaseDirectory() + File.separator + etcDirectoryPath;
@@ -77,6 +79,16 @@ public class TavernaWorkflowServiceConfiguration implements ServiceConfiguration
 	
 	public void setTavernaDir(String tavernaDir) {
 		this.tavernaDir = tavernaDir;
+	}
+
+	
+	public String getConcurrentWorkflows() {
+		return concurrentWorkflows;
+	}
+	
+	
+	public void setConcurrentWorkflows(String concurrentWorkflows) {
+		this.concurrentWorkflows = concurrentWorkflows;
 	}
 
 	

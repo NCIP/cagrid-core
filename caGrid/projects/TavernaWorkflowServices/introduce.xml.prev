@@ -367,5 +367,6 @@
  <ns60:ServiceProperties xmlns:ns60="gme://gov.nih.nci.cagrid.introduce/1/Property">
   <ns60:Property description="This points to the Taverna repository." isFromETC="false" key="baseRepositoryDir" value="$home/Library/Application Support/Taverna-1.7.1/repository/"/>
   <ns60:Property description="This points to the Taverna installation directory containing a lib directory within. This will be used to add the classpath variable for ProcessBuilder to launch the workflow." isFromETC="false" key="tavernaDir" value="null"/>
+  <ns60:Property description="This is the number of concurrent workflows allowed within the workflow service." isFromETC="false" key="concurrentWorkflows" value="4"/>
  </ns60:ServiceProperties>
 </ns1:ServiceDescription>

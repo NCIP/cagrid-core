@@ -84,6 +84,10 @@
           <name>tavernaDir</name>
           <value>@tavernaDir@</value>
         </parameter>
+        <parameter>
+          <name>concurrentWorkflows</name>
+          <value>@concurrentWorkflows@</value>
+        </parameter>
       </resourceParams>
     </resource>
     <resource name="home" type="gov.nih.nci.cagrid.workflow.factory.service.globus.resource.TavernaWorkflowServiceResourceHome">

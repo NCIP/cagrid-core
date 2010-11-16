@@ -214,6 +214,18 @@ public class TavernaWorkflowServiceImplResource extends TavernaWorkflowServiceIm
 			String tavernaDir = config.getTavernaDir();
 			String repository = config.getBaseRepositoryDir();
 
+			/*
+			 * Adding following lines to support log4j.properties
+			 */
+			System.out.println("************ Adding log4j properites... **********");
+			String classpath = tavernaDir + File.separator + "target" + File.separator + "classes";
+			classpath = classpath + listOfJars(repository);
+			myArgs.add(1, "-Dtaverna.startup="+ tavernaDir);
+			myArgs.add(2, "-cp");
+			myArgs.add(3, classpath);
+			
+			/***************************************************************/
+
 			// Add the Workflow scufl file to the input arguments list.
 			if(getScuflDoc() != null){
 				
@@ -268,10 +280,6 @@ public class TavernaWorkflowServiceImplResource extends TavernaWorkflowServiceIm
 			try {
 				
 				Map<String, String> environment = builder.environment();
-				String classpath = tavernaDir + File.separator + "target" + File.separator + "classes";
-
-				// lisfOfJars is a method that returns all the jars from Taverna repository in CLASSPATH format (: seperated). 
-				classpath = classpath + listOfJars(repository);
 				environment.put("CLASSPATH", classpath);
 				if(getTWS_USER_PROXY() != null)
 				{	
@@ -319,7 +327,14 @@ public class TavernaWorkflowServiceImplResource extends TavernaWorkflowServiceIm
 								portsCounter++;
 								outputs[portsCounter] = new WorkflowPortType();
 								outputs[portsCounter].setPort(temp[0]);
-								outputs[portsCounter].setValue(temp[1]);
+								//outputs[portsCounter].setValue(temp[1]);
+								if(temp.length < 2){
+									outputs[portsCounter].setValue("");
+								}
+								else{
+									outputs[portsCounter].setValue(temp[1]);
+								}
+								
 							} else {
 								outputs[portsCounter].setValue(outputs[portsCounter].getValue() + "\n" + line);
 							}
