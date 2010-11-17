@@ -46,6 +46,6 @@
     <dependency rev="3.0" org="backport-util-concurrent" name="backport-util-concurrent" conf="default->default"/>
     <dependency rev="0.7.0" org="inspektr" name="inspektr" conf="default->default"/>
     <dependency rev="1.0" org="jsr107cache" name="jsr107cache" conf="default->default"/>
-    <dependency rev="4.4" org="junit" name="junit" conf="impl-test->default"/>
+    <dependency rev="4.8.2" org="junit" name="junit" conf="impl-test->default"/>
   </dependencies>
 </ivy-module>

@@ -34,6 +34,6 @@
     <!-- External Dependencies -->
     <dependency rev="2.5.5" org="springframework" name="spring" conf="default->full"/>
     <dependency rev="syncgts-patched-4.0.3" org="globus" name="jcog" conf="default->default"/>
-    <dependency rev="4.4" org="junit" name="junit" conf="impl-test->default"/>
+    <dependency rev="4.8.2" org="junit" name="junit" conf="impl-test->default"/>
   </dependencies>
 </ivy-module>
