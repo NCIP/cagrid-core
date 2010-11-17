@@ -26,7 +26,7 @@
     <dependency rev="latest.integration" org="caGrid" name="introduce" conf="default->extension" />
     <dependency rev="latest.integration" org="caGrid" name="grape" conf="default->default" />
     <dependency rev="2.0.0" org="jgoodies" name="validation" conf="default->default" />
-    <dependency rev="4.4" org="junit" name="junit" conf="impl-test->default"/>
+    <dependency rev="4.8.2" org="junit" name="junit" conf="impl-test->default"/>
     
   </dependencies>
 </ivy-module>
