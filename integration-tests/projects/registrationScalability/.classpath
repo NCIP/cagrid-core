@@ -21,7 +21,7 @@
 	<classpathentry kind="lib" path="ext/dependencies/jars/jasciidammit-1.1.jar"/>
 	<classpathentry kind="lib" path="ext/dependencies/jars/jdepend-2.7.jar"/>
 	<classpathentry kind="lib" path="ext/dependencies/jars/jdom-1.0.jar"/>
-	<classpathentry kind="lib" path="ext/dependencies/jars/junit-4.4.jar"/>
+	<classpathentry kind="lib" path="ext/dependencies/jars/junit-4.8.2.jar"/>
 	<classpathentry kind="var" path="GT4_LOCATION/lib/addressing-1.0.jar"/>
 	<classpathentry kind="var" path="GT4_LOCATION/lib/axis-url.jar"/>
 	<classpathentry kind="var" path="GT4_LOCATION/lib/axis.jar"/>
@@ -47,7 +47,6 @@
 	<classpathentry kind="var" path="GT4_LOCATION/lib/jaxrpc.jar"/>
 	<classpathentry kind="var" path="GT4_LOCATION/lib/jce-jdk13-125.jar"/>
 	<classpathentry kind="var" path="GT4_LOCATION/lib/jgss.jar"/>
-	<classpathentry kind="var" path="GT4_LOCATION/lib/junit.jar"/>
 	<classpathentry kind="var" path="GT4_LOCATION/lib/log4j-1.2.8.jar"/>
 	<classpathentry kind="var" path="GT4_LOCATION/lib/naming-common.jar"/>
 	<classpathentry kind="var" path="GT4_LOCATION/lib/naming-factory.jar"/>
