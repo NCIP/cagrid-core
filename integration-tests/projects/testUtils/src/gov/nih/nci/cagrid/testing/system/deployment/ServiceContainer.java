@@ -5,6 +5,7 @@ import gov.nih.nci.cagrid.common.ZipUtilities;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.List;
 
 import org.apache.axis.message.addressing.Address;
@@ -123,7 +124,13 @@ public abstract class ServiceContainer {
 
         return epr;
     }
-
+    
+    
+    public abstract StringBuffer getOutLogs();
+    
+    
+    public abstract StringBuffer getErrorLogs();
+    
 
     protected abstract void startup() throws ContainerException;
 

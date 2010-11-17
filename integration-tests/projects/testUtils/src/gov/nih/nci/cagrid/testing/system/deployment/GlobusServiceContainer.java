@@ -399,4 +399,18 @@ public class GlobusServiceContainer extends ServiceContainer {
             throw new IOException("Problem writting out config:" + coreWSDD.getAbsolutePath());
         }
     }
+
+
+    public StringBuffer getErrorLogs() {
+        StringBuffer buff = new StringBuffer();
+        buff.append("Globus container writes all messages to the console.");
+        return buff;
+    }
+
+
+    public StringBuffer getOutLogs() {
+        StringBuffer buff = new StringBuffer();
+        buff.append("Globus container writes all messages to the console.");
+        return buff;
+    }
 }
