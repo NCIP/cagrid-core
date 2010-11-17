@@ -17,7 +17,7 @@
   
   <dependencies>               
 	  <dependency org="jaxen" name="jaxen-core" rev="1.0" force="true" conf="runtime->runtime"/>
-	  <dependency org="jdom" name="jdom" rev="1.1" force="true" conf="runtime->runtime"/>
+	  <dependency org="jdom" name="jdom" rev="1.1" force="true" />
   </dependencies>
   
 </ivy-module>

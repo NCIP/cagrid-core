@@ -39,7 +39,7 @@
     <!-- jaxb from NCICB's BDA repo -->
     <dependency org="javax.xml.bind" name="jaxb-api" rev="2.1" conf="default->*"/>
 	<dependency org="javax.xml.bind" name="jaxb-impl" rev="2.1.4" conf="default->*"/>
-	<dependency org="javax.activation" name="activation" rev="1.1" conf="default->*"/>
+	<dependency org="javax" name="activation" rev="1.1" conf="default->*"/>
     
     <!-- dependency on the ISO data types -->
     <dependency rev="2.1" org="ncicb" name="iso-datatypes" conf="default->default" transitive="false"/>
