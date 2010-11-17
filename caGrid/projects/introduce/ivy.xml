@@ -74,6 +74,6 @@
     <dependency rev="0.1.12" org="wizard-framework" name="wizard-framework" conf="ui->*"/>
     <dependency rev="2.0.0" org="jgoodies" name="validation" conf="ui->*"/>
     <dependency rev="2.0_02" org="sun" name="jhall" conf="ui->*"/>
-    <dependency rev="4.4" org="junit" name="junit" conf="impl-test->default"/>
+    <dependency rev="4.8.2" org="junit" name="junit" conf="impl-test->default"/>
   </dependencies>
 </ivy-module>
