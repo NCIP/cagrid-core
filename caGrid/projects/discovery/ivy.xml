@@ -29,6 +29,6 @@
     <dependency rev="latest.integration" org="caGrid" name="metadata" conf="impl-test->schemas"/>
 
     <dependency rev="${target.grid}" org="caGrid" name="target_grid" conf="target_grid->urls"/>
-    <dependency rev="4.4" org="junit" name="junit" conf="impl-test->default"/>
+    <dependency rev="4.8.2" org="junit" name="junit" conf="impl-test->default"/>
   </dependencies>
 </ivy-module>

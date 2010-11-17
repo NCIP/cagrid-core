@@ -36,6 +36,6 @@
     <dependency rev="latest.integration" org="caGrid" name="introduce"
       conf="csmauth->extension,serviceTools"/> 
     <dependency rev="4.0.1" org="cacore" name="csm" conf="csmauth->*"/>
-    <dependency rev="4.4" org="junit" name="junit" conf="impl-test->default"/>
+    <dependency rev="4.8.2" org="junit" name="junit" conf="impl-test->default"/>
   </dependencies>
 </ivy-module>
