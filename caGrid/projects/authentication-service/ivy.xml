@@ -71,7 +71,7 @@
     <dependency rev="1.2.+" org="springframework" name="spring" conf="service->beans"/>
     <dependency rev="3.0" org="apache" name="jarkarta-commons-httpclient" conf="service->default"/>
     <dependency rev="3.2" org="cacore" name="csm" conf="service->auth"/>
-    <dependency rev="4.4" org="junit" name="junit" conf="impl-test->default"/>
+    <dependency rev="4.8.2" org="junit" name="junit" conf="impl-test->default"/>
 
   </dependencies>
 </ivy-module>
