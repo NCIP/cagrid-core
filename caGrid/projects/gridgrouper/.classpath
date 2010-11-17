@@ -85,7 +85,7 @@
 	<classpathentry kind="lib" path="ext/dependencies/service/jars/subject-0.2.1.jar"/>
 	<classpathentry kind="lib" path="ext/dependencies/test/jars/caGrid-core-tests-1.4-dev.jar"/>
 	<classpathentry kind="lib" path="ext/dependencies/service/jars/caGrid-gaards-core-1.4-dev.jar"/>
-	<classpathentry kind="lib" path="ext/dependencies/test/jars/junit-4.4.jar"/>
+	<classpathentry kind="lib" path="ext/dependencies/test/jars/junit-4.8.2.jar"/>
 	<classpathentry kind="lib" path="ext/dependencies/service/jars/castor-1.0.2.jar"/>
 	<classpathentry kind="lib" path="ext/dependencies/service/jars/caGrid-Introduce-serviceTools-1.4-dev.jar"/>
 	<classpathentry kind="lib" path="ext/dependencies/service/jars/caGrid-opensaml-1.4-dev.jar"/>
