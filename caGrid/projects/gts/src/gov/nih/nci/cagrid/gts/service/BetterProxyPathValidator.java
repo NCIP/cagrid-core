@@ -1,5 +1,7 @@
 package gov.nih.nci.cagrid.gts.service;
 
+import gov.nih.nci.cagrid.common.SSLDebug;
+
 import java.io.IOException;
 import java.math.BigInteger;
 import java.security.NoSuchAlgorithmException;
@@ -42,17 +44,13 @@ import org.globus.gsi.proxy.ProxyPathValidatorException;
 import org.globus.gsi.proxy.ProxyPolicyHandler;
 import org.globus.gsi.proxy.ext.ProxyCertInfo;
 import org.globus.gsi.proxy.ext.ProxyPolicy;
-import org.globus.gsi.ptls.PureTLSUtil;
-
-import COM.claymoresystems.ptls.SSLDebug;
-import COM.claymoresystems.sslg.CertVerifyPolicyInt;
 
 public class BetterProxyPathValidator {
 
     private static final int MAX_PATH_LENGTH = 255;
 
-    // public static final String CRYPTO_PROVIDER = "SunRsaSign";
     // use the BouncyCastle crypto provider
+    // XXX: Get rid of this and use the Java provided one
     public static final String CRYPTO_PROVIDER = "BC";
 
     private static Log LOG = LogFactory.getLog(BetterProxyPathValidator.class);
@@ -212,12 +210,9 @@ public class BetterProxyPathValidator {
         if (trustedCerts != null) {
             trustedCertificates = new TrustedCertificates(trustedCerts);
         }
-
-        // can use the verification policy from PureTLS so we don't need new config magic
-        CertVerifyPolicyInt policy = PureTLSUtil.getDefaultCertVerifyPolicy();
-
+        
         // create the validated certificate chain
-        List<X509Certificate> validatedChain = createValidatedChain(proxyCertPath, trustedCertificates, policy);
+        List<X509Certificate> validatedChain = createValidatedChain(proxyCertPath, trustedCertificates);
 
         // no validated chain, or it's not of the right length
         if (validatedChain == null || validatedChain.size() < proxyCertPath.getCertificates().size()) {
@@ -246,8 +241,8 @@ public class BetterProxyPathValidator {
     }
 
 
-    private List<X509Certificate> createValidatedChain(CertPath certPath, TrustedCertificates trustedCerts,
-        CertVerifyPolicyInt policy) throws ProxyPathValidatorException, CertificateEncodingException {
+    private List<X509Certificate> createValidatedChain(CertPath certPath, TrustedCertificates trustedCerts) 
+        throws ProxyPathValidatorException, CertificateEncodingException {
         List<X509Certificate> chain = new ArrayList<X509Certificate>();
         boolean foundRoot = false;
         X509Certificate last = null;
@@ -267,7 +262,7 @@ public class BetterProxyPathValidator {
             X509Certificate cert = (X509Certificate) c;
 
             // some basic debugging
-            SSLDebug.debug(SSLDebug.DEBUG_CERT, "Trying to validate", cert.getEncoded());
+            LOG.debug(SSLDebug.debugSSL("Trying to validate", cert.getEncoded()));
 
             if (!foundRoot) {
                 // no root found yet, let's see if this cert is a root
@@ -312,19 +307,17 @@ public class BetterProxyPathValidator {
             // now we have to verify this certificate was signed
             // by the issuer we think it was signed by
             verifyCert(cert, last.getPublicKey());
-
-            // if we're checking dates, do it now
-            if (policy.checkDatesP()) {
-                try {
-                    // checking vs now
-                    checkValidDates(cert, new Date());
-                } catch (CertificateNotYetValidException ex) {
-                    throw new ProxyPathValidatorException(ProxyPathValidatorException.FAILURE,
-                        "The certificate is not yet valid", ex);
-                } catch (CertificateExpiredException ex) {
-                    throw new ProxyPathValidatorException(ProxyPathValidatorException.FAILURE,
-                        "The certificate is expired", ex);
-                }
+            
+            // we'll check the valid dates now                
+            try {
+                // checking vs now
+                checkValidDates(cert, new Date());
+            } catch (CertificateNotYetValidException ex) {
+                throw new ProxyPathValidatorException(ProxyPathValidatorException.FAILURE,
+                    "The certificate is not yet valid", ex);
+            } catch (CertificateExpiredException ex) {
+                throw new ProxyPathValidatorException(ProxyPathValidatorException.FAILURE,
+                    "The certificate is expired", ex);
             }
 
             // increment the path length
