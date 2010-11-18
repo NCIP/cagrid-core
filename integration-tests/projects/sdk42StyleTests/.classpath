@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
 	<classpathentry kind="src" path="src"/>
-	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/jdk1.5.0_16"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="lib" path="ext/dependencies/jars/antlr-2.7.6.jar"/>
 	<classpathentry kind="lib" path="ext/dependencies/jars/cadsrapi40-beans.jar"/>
 	<classpathentry kind="lib" path="ext/dependencies/jars/caGrid-advertisement-1.4-dev.jar"/>
@@ -89,7 +89,7 @@
 	<classpathentry kind="lib" path="ext/dependencies/jars/jetc-task.jar"/>
 	<classpathentry kind="lib" path="ext/dependencies/jars/jhall.jar"/>
 	<classpathentry kind="lib" path="ext/dependencies/jars/jprov.jar"/>
-	<classpathentry kind="lib" path="ext/dependencies/jars/junit-4.4.jar"/>
+	<classpathentry kind="lib" path="ext/dependencies/jars/junit-4.8.2.jar"/>
 	<classpathentry kind="lib" path="ext/dependencies/jars/mysql-connector-java-3.0.16-ga-bin.jar"/>
 	<classpathentry kind="lib" path="ext/dependencies/jars/osgi.jar"/>
 	<classpathentry kind="lib" path="ext/dependencies/jars/relaxngDatatype.jar"/>

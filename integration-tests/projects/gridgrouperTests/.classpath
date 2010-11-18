@@ -75,7 +75,7 @@
 	<classpathentry kind="lib" path="ext/dependencies/jars/jprov.jar"/>
 	<classpathentry kind="lib" path="ext/dependencies/jars/jta-1.0.1B.jar"/>
 	<classpathentry kind="lib" path="ext/dependencies/jars/jug-1.1.1.jar"/>
-	<classpathentry kind="lib" path="ext/dependencies/jars/junit-4.4.jar"/>
+	<classpathentry kind="lib" path="ext/dependencies/jars/junit-4.8.2.jar"/>
 	<classpathentry kind="lib" path="ext/dependencies/jars/kmu.jar"/>
 	<classpathentry kind="lib" path="ext/dependencies/jars/mail-1.4.jar"/>
 	<classpathentry kind="lib" path="ext/dependencies/jars/mobius_common_client-1.1.jar"/>
@@ -152,5 +152,7 @@
 	<classpathentry kind="var" path="GT4_LOCATION/lib/xercesImpl.jar" sourcepath="/GT4_LOCATION/Xerces-J-src.2.6.2.zip"/>
 	<classpathentry kind="var" path="GT4_LOCATION/lib/xml-apis.jar"/>
 	<classpathentry kind="var" path="GT4_LOCATION/lib/xmlsec.jar"/>
+	<classpathentry kind="lib" path="ext/dependencies/jars/caGrid-Introduce-core-1.4-dev.jar"/>
+	<classpathentry kind="lib" path="ext/dependencies/jars/caGrid-Introduce-portal-1.4-dev.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
