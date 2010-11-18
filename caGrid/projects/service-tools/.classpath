@@ -23,6 +23,6 @@
 	<classpathentry kind="lib" path="ext/dependencies/jars/spring-beans.jar"/>
 	<classpathentry kind="lib" path="ext/dependencies/jars/spring-core.jar"/>
 	<classpathentry kind="lib" path="ext/dependencies/test/jars/caGrid-core-tests-1.4-dev.jar"/>
-	<classpathentry kind="lib" path="ext/dependencies/test/jars/junit-4.4.jar"/>
+	<classpathentry kind="lib" path="ext/dependencies/test/jars/junit-4.8.2.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

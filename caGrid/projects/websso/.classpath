@@ -139,7 +139,7 @@
 	<classpathentry kind="lib" path="ext/dependencies/default/jars/caGrid-syncgts-client-1.4-dev.jar"/>
 	<classpathentry kind="lib" path="ext/dependencies/default/jars/caGrid-syncgts-common-1.4-dev.jar"/>
 	<classpathentry kind="lib" path="ext/dependencies/default/jars/caGrid-syncgts-stubs-1.4-dev.jar"/>
-	<classpathentry kind="lib" path="ext/dependencies/test/jars/junit-4.4.jar"/>
 	<classpathentry kind="var" path="GT4_LOCATION"/>
+	<classpathentry kind="lib" path="ext/dependencies/test/jars/junit-4.8.2.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

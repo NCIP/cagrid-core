@@ -78,11 +78,11 @@
 	<classpathentry kind="lib" path="ext/dependencies/jars/xsom14.jar"/>
 	<classpathentry kind="lib" path="ext/dependencies/test/jars/caGrid-core-tests-1.4-dev.jar"/>
 	<classpathentry kind="lib" path="ext/dependencies/test/jars/jdepend-2.7.jar"/>
-	<classpathentry kind="lib" path="ext/dependencies/test/jars/junit-4.4.jar"/>
 	<classpathentry kind="lib" path="ext/dependencies/jars/jaxb-api-2.1.jar"/>
 	<classpathentry kind="lib" path="ext/dependencies/jars/iso-datatypes-2.1.jar"/>
 	<classpathentry kind="lib" path="ext/dependencies/jars/iso-datatypes-extensions-2.1.jar"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.junit.JUNIT_CONTAINER/4"/>
 	<classpathentry kind="lib" path="ext/dependencies/jars/antlr-2.7.6.jar"/>
+	<classpathentry kind="lib" path="ext/dependencies/test/jars/junit-4.8.2.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

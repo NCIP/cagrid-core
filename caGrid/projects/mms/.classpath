@@ -33,7 +33,7 @@
   <classpathentry kind="lib" path="ext/dependencies/service/jars/sdk-client-framework.jar" />
   <classpathentry kind="lib" path="ext/dependencies/test/jars/caGrid-core-tests-1.4-dev.jar" />
   <classpathentry kind="lib" path="ext/dependencies/test/jars/jdepend-2.7.jar" />
-  <classpathentry kind="lib" path="ext/dependencies/test/jars/junit-4.4.jar" />
+  <classpathentry kind="lib" path="ext/dependencies/test/jars/junit-4.8.2.jar" />
   <classpathentry kind="lib" path="ext/dependencies/service/jars/caGrid-metadatautils-1.4-dev.jar" />
   <classpathentry kind="lib" path="ext/dependencies/service/jars/jasciidammit-1.1.jar" />
   <classpathentry kind="lib" path="ext/dependencies/service/jars/spring-2.0.6.jar" />
