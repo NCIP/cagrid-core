@@ -1,6 +1,7 @@
 package org.cagrid.proxy;
 
 import gov.nih.nci.cagrid.common.SSLDebug;
+import gov.nih.nci.cagrid.common.security.SecurityConstants;
 
 import java.io.IOException;
 import java.math.BigInteger;
@@ -47,43 +48,8 @@ import org.globus.gsi.proxy.ext.ProxyPolicy;
 
 public class BetterProxyPathValidator {
 
-    private static final int MAX_PATH_LENGTH = 255;
-
-    // use the java provided crypto libraries
-    public static final String CRYPTO_PROVIDER = "SunRsaSign";
-
     private static Log LOG = LogFactory.getLog(BetterProxyPathValidator.class);
 
-    private static Map<String, String> OID_TO_NAME;
-
-    static {
-        OID_TO_NAME = new HashMap<String, String>();
-
-        // these names are the ones used by the java provided libraries
-        // and don't match what was in the BouncyCastle libs
-        OID_TO_NAME.put("1.2.840.10040.4.3", "DSA");
-        OID_TO_NAME.put("1.2.840.113549.1.1.2", "MD2withRSA");
-        OID_TO_NAME.put("1.2.840.113549.1.1.3", "MD4withRSA");
-        OID_TO_NAME.put("1.2.840.113549.1.1.4", "MD5withRSA");
-        OID_TO_NAME.put("1.2.840.113549.1.1.5", "SHA1withRSA");
-        // added OIDs for a variety of algorithms
-        // OIDs from http://www.oid-info.com/index.htm
-        OID_TO_NAME.put("1.2.840.113549.1.1.11", "SHA256withRSA");
-        OID_TO_NAME.put("1.2.840.113549.1.1.12", "SHA384withRSA");
-        OID_TO_NAME.put("1.2.840.113549.1.1.13", "SHA512withRSA");
-    }
-
-    private static Set<String> RSA_ALGORITHMS;
-    static {
-        RSA_ALGORITHMS = new HashSet<String>();
-        RSA_ALGORITHMS.add("MD2withRSA");
-        RSA_ALGORITHMS.add("MD2withRSA");
-        RSA_ALGORITHMS.add("MD5withRSA");
-        RSA_ALGORITHMS.add("SHA1withRSA");
-        RSA_ALGORITHMS.add("SHA256withRSA");
-        RSA_ALGORITHMS.add("SHA384withRSA");
-        RSA_ALGORITHMS.add("SHA512withRSA");
-    }
     
     private Map<String, ProxyPolicyHandler> proxyPolicyHandlers = null;
     private CertificateFactory certFactory = null;
@@ -324,9 +290,9 @@ public class BetterProxyPathValidator {
             // increment the path length
             pathLength++;
             // path length capped at 255
-            if (pathLength > MAX_PATH_LENGTH) {
+            if (pathLength > SecurityConstants.getMaxProxyPathLength()) {
                 throw new ProxyPathValidatorException(ProxyPathValidatorException.PATH_LENGTH_EXCEEDED,
-                    "Path length greater than " + MAX_PATH_LENGTH, null);
+                    "Path length greater than " + SecurityConstants.getMaxProxyPathLength(), null);
             }
 
             last = cert;
@@ -560,7 +526,7 @@ public class BetterProxyPathValidator {
     private boolean verifyCert(X509Certificate cert, PublicKey signerKey) throws ProxyPathValidatorException {
         // Lookup the algorithm
         String certAlgorithmOid = cert.getSigAlgOID();
-        String algorithmName = OID_TO_NAME.get(certAlgorithmOid);
+        String algorithmName = SecurityConstants.getAlgorithmNameForOid(certAlgorithmOid);
         if (algorithmName == null) {
             throw new ProxyPathValidatorException(ProxyPathValidatorException.FAILURE,
                 "Unknown certificate signature algorithm OID: " + certAlgorithmOid, null);
@@ -574,7 +540,7 @@ public class BetterProxyPathValidator {
 
         Signature sig = null;
         try {
-            sig = Signature.getInstance(algorithmName, CRYPTO_PROVIDER);
+            sig = Signature.getInstance(algorithmName, SecurityConstants.getDefaultCryptoProvider());
         } catch (NoSuchAlgorithmException e) {
             throw new ProxyPathValidatorException(ProxyPathValidatorException.FAILURE, e.getMessage(), e);
         } catch (NoSuchProviderException e) {
@@ -605,7 +571,7 @@ public class BetterProxyPathValidator {
      * @throws CertificateVerifyException
      */
     private void checkSignatureKey(PublicKey key, String alg) throws CertificateVerifyException {
-        if (RSA_ALGORITHMS.contains(alg)) {
+        if (SecurityConstants.isKnownRsaAlgorithm(alg)) {
             if (!(key instanceof RSAPublicKey)) {
                 throw new CertificateVerifyException("Public key doesn't match algorithm " + alg);
             }
