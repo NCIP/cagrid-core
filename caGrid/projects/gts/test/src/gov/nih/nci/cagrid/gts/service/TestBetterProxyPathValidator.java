@@ -11,8 +11,11 @@ import java.security.cert.CertificateException;
 import java.security.cert.CertificateFactory;
 import java.security.cert.X509CRL;
 import java.security.cert.X509Certificate;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.Enumeration;
+import java.util.List;
 
 import junit.framework.TestCase;
 
@@ -20,10 +23,8 @@ import org.bouncycastle.asn1.x509.CRLReason;
 import org.cagrid.gaards.pki.CRLEntry;
 import org.cagrid.gaards.pki.KeyUtil;
 import org.cagrid.gaards.pki.ProxyCreator;
+import org.cagrid.proxy.BetterProxyPathValidator;
 import org.globus.gsi.proxy.ProxyPathValidatorException;
-
-import cryptix.provider.Cryptix;
-
 
 /**
  * @author <A href="mailto:langella@bmi.osu.edu">Stephen Langella </A>
@@ -248,17 +249,25 @@ public class TestBetterProxyPathValidator extends TestCase {
 
 
     private static void dumpProviders() {
-
-        Security.addProvider(new Cryptix());
         try {
             Provider p[] = Security.getProviders();
             for (int i = 0; i < p.length; i++) {
                 System.out.println(p[i]);
+                List<String> vals = new ArrayList<String>();
                 for (Enumeration e = p[i].keys(); e.hasMoreElements();)
-                    System.out.println("\t" + e.nextElement());
+                    vals.add("\t" + e.nextElement());
+                Collections.sort(vals);
+                for (String s: vals) {
+                    System.out.println("\t" + s);
+                }
             }
         } catch (Exception e) {
             System.out.println(e);
         }
+    }
+    
+    
+    public static void main(String[] args) {
+        TestBetterProxyPathValidator.dumpProviders();
     }
 }

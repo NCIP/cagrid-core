@@ -49,9 +49,8 @@ public class BetterProxyPathValidator {
 
     private static final int MAX_PATH_LENGTH = 255;
 
-    // use the BouncyCastle crypto provider
-    // XXX: Get rid of this and use the Java provided one
-    public static final String CRYPTO_PROVIDER = "BC";
+    // use the java provided crypto libraries
+    public static final String CRYPTO_PROVIDER = "SunRsaSign";
 
     private static Log LOG = LogFactory.getLog(BetterProxyPathValidator.class);
 
@@ -60,11 +59,13 @@ public class BetterProxyPathValidator {
     static {
         OID_TO_NAME = new HashMap<String, String>();
 
+        // these names are the ones used by the java provided libraries
+        // and don't match what was in the BouncyCastle libs
         OID_TO_NAME.put("1.2.840.10040.4.3", "DSA");
-        OID_TO_NAME.put("1.2.840.113549.1.1.2", "MD2/RSA");
-        OID_TO_NAME.put("1.2.840.113549.1.1.3", "MD4/RSA");
-        OID_TO_NAME.put("1.2.840.113549.1.1.4", "MD5/RSA");
-        OID_TO_NAME.put("1.2.840.113549.1.1.5", "SHA-1/RSA/PKCS#1");
+        OID_TO_NAME.put("1.2.840.113549.1.1.2", "MD2withRSA");
+        OID_TO_NAME.put("1.2.840.113549.1.1.3", "MD4withRSA");
+        OID_TO_NAME.put("1.2.840.113549.1.1.4", "MD5withRSA");
+        OID_TO_NAME.put("1.2.840.113549.1.1.5", "SHA1withRSA");
         // added OIDs for a variety of algorithms
         // OIDs from http://www.oid-info.com/index.htm
         OID_TO_NAME.put("1.2.840.113549.1.1.11", "SHA256withRSA");
@@ -75,10 +76,10 @@ public class BetterProxyPathValidator {
     private static Set<String> RSA_ALGORITHMS;
     static {
         RSA_ALGORITHMS = new HashSet<String>();
-        RSA_ALGORITHMS.add("MD2/RSA");
-        RSA_ALGORITHMS.add("MD2/RSA");
-        RSA_ALGORITHMS.add("MD5/RSA");
-        RSA_ALGORITHMS.add("SHA-1/RSA/PKCS#1");
+        RSA_ALGORITHMS.add("MD2withRSA");
+        RSA_ALGORITHMS.add("MD2withRSA");
+        RSA_ALGORITHMS.add("MD5withRSA");
+        RSA_ALGORITHMS.add("SHA1withRSA");
         RSA_ALGORITHMS.add("SHA256withRSA");
         RSA_ALGORITHMS.add("SHA384withRSA");
         RSA_ALGORITHMS.add("SHA512withRSA");
@@ -262,7 +263,7 @@ public class BetterProxyPathValidator {
             X509Certificate cert = (X509Certificate) c;
 
             // some basic debugging
-            LOG.debug(SSLDebug.debugSSL("Trying to validate", cert.getEncoded()));
+            System.out.println(SSLDebug.debugSSL("Trying to validate", cert.getEncoded()));
 
             if (!foundRoot) {
                 // no root found yet, let's see if this cert is a root
@@ -571,8 +572,7 @@ public class BetterProxyPathValidator {
             throw new ProxyPathValidatorException(ProxyPathValidatorException.FAILURE, ex.getMessage(), ex);
         }
 
-        // Security.addProvider(new Cryptix());
-        Signature sig;
+        Signature sig = null;
         try {
             sig = Signature.getInstance(algorithmName, CRYPTO_PROVIDER);
         } catch (NoSuchAlgorithmException e) {
