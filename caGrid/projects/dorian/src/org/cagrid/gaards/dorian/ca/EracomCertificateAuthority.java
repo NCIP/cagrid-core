@@ -17,6 +17,7 @@ import javax.crypto.spec.IvParameterSpec;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.cagrid.gaards.core.EracomUtils;
 import org.cagrid.gaards.pki.CertUtil;
 import org.cagrid.gaards.pki.KeyUtil;
 
@@ -39,10 +40,9 @@ public class EracomCertificateAuthority extends CertificateAuthority implements 
         super(properties);
         try {
             int slot = properties.getSlot();
-            provider = (Provider) Class.forName("au.com.eracom.crypto.provider.slot" + slot + ".ERACOMProvider")
-                .newInstance();
+            provider = EracomUtils.getEracomProvider(slot);
             Security.addProvider(provider);
-            keyStore = KeyStore.getInstance("CRYPTOKI", provider.getName());
+            keyStore = KeyStore.getInstance(EracomUtils.KEYSTORE_TYPE, provider.getName());
             keyStore.load(null, properties.getCertificateAuthorityPassword().toCharArray());
         } catch (Exception e) {
             LOG.error(e.getMessage(), e);
@@ -53,7 +53,6 @@ public class EracomCertificateAuthority extends CertificateAuthority implements 
             fault = (CertificateAuthorityFault) helper.getFault();
             throw fault;
         }
-
     }
 
 

@@ -1,6 +1,7 @@
 package org.cagrid.gaards.dorian.ca;
 
 import gov.nih.nci.cagrid.common.FaultHelper;
+import gov.nih.nci.cagrid.common.security.SecurityConstants;
 
 import java.security.PrivateKey;
 import java.security.cert.X509Certificate;
@@ -26,7 +27,8 @@ public class DBCertificateAuthority extends CertificateAuthority {
     private CredentialsManager manager;
 
 
-    public DBCertificateAuthority(Database db, CertificateAuthorityProperties properties) {
+    public DBCertificateAuthority(Database db, CertificateAuthorityProperties properties) 
+        throws CertificateAuthorityFault {
         super(properties);
         SecurityUtil.init();
         this.manager = new CredentialsManager(db);
@@ -43,8 +45,9 @@ public class DBCertificateAuthority extends CertificateAuthority {
     }
 
 
+    // Gets the SecurityConstants.CRYPTO_PROVIDER default
     public String getProvider() {
-        return "BC";
+        return SecurityConstants.CRYPTO_PROVIDER;
     }
 
 
@@ -60,7 +63,6 @@ public class DBCertificateAuthority extends CertificateAuthority {
             fault = (CertificateAuthorityFault) helper.getFault();
             throw fault;
         }
-
     }
 
 
@@ -129,7 +131,6 @@ public class DBCertificateAuthority extends CertificateAuthority {
     public void setCACredentials(X509Certificate cert, PrivateKey key, String password)
         throws CertificateAuthorityFault {
         try {
-
             if (hasCACredentials()) {
                 CertificateAuthorityFault fault = new CertificateAuthorityFault();
                 fault.setFaultString("Credentials already exist for the CA.");
@@ -146,5 +147,4 @@ public class DBCertificateAuthority extends CertificateAuthority {
             throw fault;
         }
     }
-
 }
