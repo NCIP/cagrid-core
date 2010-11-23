@@ -34,13 +34,13 @@ public class CredentialsManager {
     private boolean dbBuilt = false;
 
 
-    public CredentialsManager(Database db) {
+    public CredentialsManager(Database db) throws DorianInternalFault {
         this.db = db;
+        buildDatabase();
     }
 
 
     public boolean hasCredentials(String alias) throws DorianInternalFault {
-        this.buildDatabase();
         Connection c = null;
         boolean exists = false;
         try {
@@ -73,7 +73,6 @@ public class CredentialsManager {
 
 
     public void deleteCredentials(String alias) throws DorianInternalFault {
-        this.buildDatabase();
         Connection c = null;
         try {
             c = db.getConnection();
@@ -98,7 +97,6 @@ public class CredentialsManager {
 
     public void addCredentials(String alias, String password, X509Certificate cert, PrivateKey key)
         throws DorianInternalFault {
-        this.buildDatabase();
         Connection c = null;
         try {
             if (!hasCredentials(alias)) {
@@ -130,7 +128,6 @@ public class CredentialsManager {
 
 
     public void addCertificate(String alias, X509Certificate cert) throws DorianInternalFault {
-        this.buildDatabase();
         Connection c = null;
         try {
             if (!hasCredentials(alias)) {
@@ -162,7 +159,6 @@ public class CredentialsManager {
 
 
     public PrivateKey getPrivateKey(String alias, String password) throws DorianInternalFault, InvalidPasswordFault {
-        this.buildDatabase();
         Connection c = null;
         PrivateKey key = null;
         String keyStr = null;
@@ -206,7 +202,6 @@ public class CredentialsManager {
 
 
     public X509Certificate getCertificate(String alias) throws DorianInternalFault {
-        this.buildDatabase();
         Connection c = null;
         X509Certificate cert = null;
         try {
@@ -243,7 +238,6 @@ public class CredentialsManager {
 
 
     public long getCertificateSerialNumber(String alias) throws DorianInternalFault {
-        this.buildDatabase();
         Connection c = null;
         long sn = -1;
         try {

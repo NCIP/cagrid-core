@@ -98,53 +98,6 @@ public class EracomCertificateAuthority extends CertificateAuthority implements 
     }
 
 
-    protected X509Certificate getCertificate() throws CertificateAuthorityFault {
-        try {
-            if (!hasCACredentials()) {
-                CertificateAuthorityFault fault = new CertificateAuthorityFault();
-                fault.setFaultString("The CA certificate does not exist.");
-                throw fault;
-            } else {
-                return convert((X509Certificate) getKeyStore().getCertificate(CA_ALIAS));
-            }
-        } catch (CertificateAuthorityFault f) {
-            throw f;
-        } catch (Exception e) {
-            LOG.error(e.getMessage(), e);
-            CertificateAuthorityFault fault = new CertificateAuthorityFault();
-            fault.setFaultString("Unexpected Error, could not obtain the certificate.");
-            FaultHelper helper = new FaultHelper(fault);
-            helper.addFaultCause(e);
-            fault = (CertificateAuthorityFault) helper.getFault();
-            throw fault;
-        }
-
-    }
-
-
-    public PrivateKey getPrivateKey(String password) throws CertificateAuthorityFault, NoCACredentialsFault {
-        try {
-            if (!hasCACredentials()) {
-                CertificateAuthorityFault fault = new CertificateAuthorityFault();
-                fault.setFaultString("The CA private key does not exist.");
-                throw fault;
-            } else {
-                return (PrivateKey) getKeyStore().getKey(CA_ALIAS, null);
-            }
-        } catch (CertificateAuthorityFault f) {
-            throw f;
-        } catch (Exception e) {
-            LOG.error(e.getMessage(), e);
-            CertificateAuthorityFault fault = new CertificateAuthorityFault();
-            fault.setFaultString("Unexpected Error, could not obtain the private key.");
-            FaultHelper helper = new FaultHelper(fault);
-            helper.addFaultCause(e);
-            fault = (CertificateAuthorityFault) helper.getFault();
-            throw fault;
-        }
-    }
-
-
     public String getUserCredentialsProvider() {
         return getProvider().getName();
     }
@@ -239,6 +192,52 @@ public class EracomCertificateAuthority extends CertificateAuthority implements 
             LOG.error(e.getMessage(), e);
             CertificateAuthorityFault fault = new CertificateAuthorityFault();
             fault.setFaultString("An unexpected error occurred wrapping a  key.");
+            FaultHelper helper = new FaultHelper(fault);
+            helper.addFaultCause(e);
+            fault = (CertificateAuthorityFault) helper.getFault();
+            throw fault;
+        }
+    }
+
+
+    protected X509Certificate internalGetCertificate() throws CertificateAuthorityFault {
+        try {
+            if (!hasCACredentials()) {
+                CertificateAuthorityFault fault = new CertificateAuthorityFault();
+                fault.setFaultString("The CA certificate does not exist.");
+                throw fault;
+            } else {
+                return convert((X509Certificate) getKeyStore().getCertificate(CA_ALIAS));
+            }
+        } catch (CertificateAuthorityFault f) {
+            throw f;
+        } catch (Exception e) {
+            LOG.error(e.getMessage(), e);
+            CertificateAuthorityFault fault = new CertificateAuthorityFault();
+            fault.setFaultString("Unexpected Error, could not obtain the certificate.");
+            FaultHelper helper = new FaultHelper(fault);
+            helper.addFaultCause(e);
+            fault = (CertificateAuthorityFault) helper.getFault();
+            throw fault;
+        }
+    }
+
+
+    protected PrivateKey internalGetPrivateKey(String password) throws CertificateAuthorityFault, NoCACredentialsFault {
+        try {
+            if (!hasCACredentials()) {
+                CertificateAuthorityFault fault = new CertificateAuthorityFault();
+                fault.setFaultString("The CA private key does not exist.");
+                throw fault;
+            } else {
+                return (PrivateKey) getKeyStore().getKey(CA_ALIAS, null);
+            }
+        } catch (CertificateAuthorityFault f) {
+            throw f;
+        } catch (Exception e) {
+            LOG.error(e.getMessage(), e);
+            CertificateAuthorityFault fault = new CertificateAuthorityFault();
+            fault.setFaultString("Unexpected Error, could not obtain the private key.");
             FaultHelper helper = new FaultHelper(fault);
             helper.addFaultCause(e);
             fault = (CertificateAuthorityFault) helper.getFault();

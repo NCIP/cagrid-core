@@ -109,6 +109,7 @@ public class CreateCACertificate {
                 String sub = null;
                 int days = 0;
                 if (interactive) {
+                    // FIXME: move away from Bouncycastle to Java-provided libraries
                     Security.addProvider(new org.bouncycastle.jce.provider.BouncyCastleProvider());
                     StringBuffer sb = new StringBuffer();
                     String o = IOUtils.readLine("Enter Organization (O)", true);

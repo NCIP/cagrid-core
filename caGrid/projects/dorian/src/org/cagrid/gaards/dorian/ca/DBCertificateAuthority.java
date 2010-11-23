@@ -8,6 +8,7 @@ import java.security.cert.X509Certificate;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.cagrid.gaards.dorian.stubs.types.DorianInternalFault;
 import org.cagrid.gaards.pki.SecurityUtil;
 import org.cagrid.tools.database.Database;
 
@@ -25,19 +26,29 @@ public class DBCertificateAuthority extends CertificateAuthority {
     private static Log LOG = LogFactory.getLog(DBCertificateAuthority.class);
 
     private CredentialsManager manager = null;
-    private Database db = null;
+    private Database database = null;
 
     public DBCertificateAuthority(Database db, CertificateAuthorityProperties properties) 
         throws CertificateAuthorityFault {
         super(properties);
         SecurityUtil.init();
-        this.db = db;
+        this.database = db;
     }
     
     
-    protected CredentialsManager getCredentialsManager() {
+    protected CredentialsManager getCredentialsManager() throws CertificateAuthorityFault {
         if (manager == null) {
-            manager = new CredentialsManager(db);
+            try {
+                manager = new CredentialsManager(database);
+            } catch (DorianInternalFault e) {
+                LOG.error(e.getMessage(), e);
+                CertificateAuthorityFault fault = new CertificateAuthorityFault();
+                fault.setFaultString("Could not create the credentials manager instance.");
+                FaultHelper helper = new FaultHelper(fault);
+                helper.addFaultCause(e);
+                fault = (CertificateAuthorityFault) helper.getFault();
+                throw fault;
+            }
         }
         return manager;
     }
@@ -72,54 +83,7 @@ public class DBCertificateAuthority extends CertificateAuthority {
             throw fault;
         }
     }
-
-
-    public X509Certificate getCertificate() throws CertificateAuthorityFault {
-        try {
-            if (!hasCACredentials()) {
-                CertificateAuthorityFault fault = new CertificateAuthorityFault();
-                fault.setFaultString("The CA certificate does not exist.");
-                throw fault;
-            } else {
-                return getCredentialsManager().getCertificate(CA_ALIAS);
-            }
-        } catch (CertificateAuthorityFault f) {
-            throw f;
-        } catch (Exception e) {
-            LOG.error(e.getMessage(), e);
-            CertificateAuthorityFault fault = new CertificateAuthorityFault();
-            fault.setFaultString("Unexpected Error, could not obtain the certificate.");
-            FaultHelper helper = new FaultHelper(fault);
-            helper.addFaultCause(e);
-            fault = (CertificateAuthorityFault) helper.getFault();
-            throw fault;
-        }
-
-    }
-
-
-    public PrivateKey getPrivateKey(String password) throws CertificateAuthorityFault {
-        try {
-            if (!hasCACredentials()) {
-                CertificateAuthorityFault fault = new CertificateAuthorityFault();
-                fault.setFaultString("The CA private key does not exist.");
-                throw fault;
-            } else {
-                return getCredentialsManager().getPrivateKey(CA_ALIAS, password);
-            }
-        } catch (CertificateAuthorityFault f) {
-            throw f;
-        } catch (Exception e) {
-            LOG.error(e.getMessage(), e);
-            CertificateAuthorityFault fault = new CertificateAuthorityFault();
-            fault.setFaultString("Unexpected Error, could not obtain the private key.");
-            FaultHelper helper = new FaultHelper(fault);
-            helper.addFaultCause(e);
-            fault = (CertificateAuthorityFault) helper.getFault();
-            throw fault;
-        }
-    }
-
+    
 
     public boolean hasCACredentials() throws CertificateAuthorityFault {
         try {
@@ -149,6 +113,52 @@ public class DBCertificateAuthority extends CertificateAuthority {
             LOG.error(e.getMessage(), e);
             CertificateAuthorityFault fault = new CertificateAuthorityFault();
             fault.setFaultString("An unexpected error occurred, could not add CA credentials.");
+            FaultHelper helper = new FaultHelper(fault);
+            helper.addFaultCause(e);
+            fault = (CertificateAuthorityFault) helper.getFault();
+            throw fault;
+        }
+    }
+
+
+    protected X509Certificate internalGetCertificate() throws CertificateAuthorityFault {
+        try {
+            if (!hasCACredentials()) {
+                CertificateAuthorityFault fault = new CertificateAuthorityFault();
+                fault.setFaultString("The CA certificate does not exist.");
+                throw fault;
+            } else {
+                return getCredentialsManager().getCertificate(CA_ALIAS);
+            }
+        } catch (CertificateAuthorityFault f) {
+            throw f;
+        } catch (Exception e) {
+            LOG.error(e.getMessage(), e);
+            CertificateAuthorityFault fault = new CertificateAuthorityFault();
+            fault.setFaultString("Unexpected Error, could not obtain the certificate.");
+            FaultHelper helper = new FaultHelper(fault);
+            helper.addFaultCause(e);
+            fault = (CertificateAuthorityFault) helper.getFault();
+            throw fault;
+        }
+    }
+
+
+    protected PrivateKey internalGetPrivateKey(String password) throws CertificateAuthorityFault, NoCACredentialsFault {
+        try {
+            if (!hasCACredentials()) {
+                CertificateAuthorityFault fault = new CertificateAuthorityFault();
+                fault.setFaultString("The CA private key does not exist.");
+                throw fault;
+            } else {
+                return getCredentialsManager().getPrivateKey(CA_ALIAS, password);
+            }
+        } catch (CertificateAuthorityFault f) {
+            throw f;
+        } catch (Exception e) {
+            LOG.error(e.getMessage(), e);
+            CertificateAuthorityFault fault = new CertificateAuthorityFault();
+            fault.setFaultString("Unexpected Error, could not obtain the private key.");
             FaultHelper helper = new FaultHelper(fault);
             helper.addFaultCause(e);
             fault = (CertificateAuthorityFault) helper.getFault();

@@ -35,24 +35,23 @@ public abstract class CertificateAuthority {
     private static Log LOG = LogFactory.getLog(CertificateAuthority.class);
 
     private boolean initialized = false;
-    private CertificateAuthorityProperties properties;
+    private CertificateAuthorityProperties properties = null;
 
 
     public CertificateAuthority(CertificateAuthorityProperties properties) throws CertificateAuthorityFault {
         this.properties = properties;
-        init();
     }
     
     
     private synchronized void init() throws CertificateAuthorityFault {
         try {
             if (!initialized) {
-                if (!hasCACredentials()) {
-                    if (properties.isAutoCreateCAEnabled()) {
-                        Lifetime lifetime = properties.getCreationPolicy().getLifetime();
-                        this.createCertifcateAuthorityCredentials(properties.getCreationPolicy().getSubject(), Utils
-                            .getExpiredDate(lifetime), properties.getCreationPolicy().getKeySize());
-                    }
+                // if we don't already have CA credentials and the config says we should 
+                // auto-create them, do it now
+                if (!hasCACredentials() && properties.isAutoCreateCAEnabled()) {
+                    Lifetime lifetime = properties.getCreationPolicy().getLifetime();
+                    this.createCertifcateAuthorityCredentials(properties.getCreationPolicy().getSubject(), Utils
+                        .getExpiredDate(lifetime), properties.getCreationPolicy().getKeySize());
                 }
                 initialized = true;
             }
@@ -74,25 +73,38 @@ public abstract class CertificateAuthority {
     public abstract String getCACredentialsProvider();
 
 
-    public String getSignatureAlgorithm() {
-        return properties.getSignatureAlgorithm();
-    }
-
-
     public abstract boolean hasCACredentials() throws CertificateAuthorityFault;
+    
+    
+    public abstract void deleteCACredentials() throws CertificateAuthorityFault;
 
 
     public abstract void setCACredentials(X509Certificate cert, PrivateKey key, String password)
         throws CertificateAuthorityFault;
+    
+    
+    public synchronized PrivateKey getPrivateKey(String password) throws CertificateAuthorityFault, NoCACredentialsFault {
+        init();
+        return internalGetPrivateKey(password);
+    }
+    
+    
+    protected abstract PrivateKey internalGetPrivateKey(String password) throws CertificateAuthorityFault, NoCACredentialsFault;
 
 
-    public abstract void deleteCACredentials() throws CertificateAuthorityFault;
-
-
-    public abstract PrivateKey getPrivateKey(String password) throws CertificateAuthorityFault, NoCACredentialsFault;
-
-
-    protected abstract java.security.cert.X509Certificate getCertificate() throws CertificateAuthorityFault;
+    protected X509Certificate getCertificate() throws CertificateAuthorityFault {
+        init();
+        return internalGetCertificate();
+    }
+    
+    
+    protected abstract X509Certificate internalGetCertificate() throws CertificateAuthorityFault; 
+    
+    
+    
+    public String getSignatureAlgorithm() {
+        return properties.getSignatureAlgorithm();
+    }
 
 
     public void clearCertificateAuthority() throws CertificateAuthorityFault {
@@ -128,8 +140,8 @@ public abstract class CertificateAuthority {
 
     private java.security.cert.X509Certificate getCACertificate(boolean errorOnExpiredCredentials)
         throws CertificateAuthorityFault, NoCACredentialsFault {
-        X509Certificate cert = null;
         init();
+        X509Certificate cert = null;
         try {
             if (!hasCACredentials()) {
                 NoCACredentialsFault fault = new NoCACredentialsFault();
@@ -172,7 +184,6 @@ public abstract class CertificateAuthority {
         throws CertificateAuthorityFault, NoCACredentialsFault {
         init();
         X509Certificate cacert = getCACertificate();
-
         Date caDate = cacert.getNotAfter();
         if (start.after(caDate)) {
             CertificateAuthorityFault fault = new CertificateAuthorityFault();
