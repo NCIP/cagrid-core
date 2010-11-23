@@ -13,6 +13,7 @@ import java.util.GregorianCalendar;
 import java.util.TimeZone;
 
 import org.bouncycastle.asn1.x509.X509Name;
+import org.cagrid.gaards.core.EracomUtils;
 import org.cagrid.gaards.pki.CertUtil;
 import org.cagrid.gaards.pki.KeyUtil;
 
@@ -34,10 +35,9 @@ public class AntGenerateEracomCA {
 			int slot = Integer.valueOf(args[3]).intValue();
 			String password = args[4];
 			String dir = args[5];
-			Provider provider = (Provider) Class.forName(
-				"au.com.eracom.crypto.provider.slot" + slot + ".ERACOMProvider").newInstance();
+			Provider provider = EracomUtils.getEracomProvider(slot);
 			Security.addProvider(provider);
-			KeyStore keyStore = KeyStore.getInstance("CRYPTOKI", provider.getName());
+			KeyStore keyStore = KeyStore.getInstance(EracomUtils.KEYSTORE_TYPE, provider.getName());
 			keyStore.load(null, password.toCharArray());
 			KeyPair root = KeyUtil.generateRSAKeyPair2048(provider.getName());
 			int days = Integer.valueOf(daysValid).intValue();
@@ -54,7 +54,7 @@ public class AntGenerateEracomCA {
 			date.add(Calendar.DAY_OF_MONTH, days);
 			Date end = new Date(date.getTimeInMillis());
 			X509Certificate cert = CertUtil.generateCACertificate(provider.getName(), new X509Name(dn), start, end,
-				root, "SHA256WithRSA");
+				root, EracomUtils.getEracomCryptoAlgorithm());
 
 			keyStore.setKeyEntry(alias, root.getPrivate(), null, new X509Certificate[]{cert});
 			String hash = CertUtil.getHashCode(cert);
@@ -73,7 +73,5 @@ public class AntGenerateEracomCA {
 			e.printStackTrace();
 			System.exit(1);
 		}
-
 	}
-
 }

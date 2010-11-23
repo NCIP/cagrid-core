@@ -15,6 +15,7 @@ import java.util.GregorianCalendar;
 import java.util.TimeZone;
 
 import org.bouncycastle.asn1.x509.X509Name;
+import org.cagrid.gaards.core.EracomUtils;
 import org.cagrid.gaards.pki.CertUtil;
 import org.cagrid.gaards.pki.KeyUtil;
 
@@ -29,8 +30,8 @@ public class AntCreateHostCertificateWithEracomCA {
 
 	public static void main(String[] args) {
 		try {
-			Security
-					.addProvider(new org.bouncycastle.jce.provider.BouncyCastleProvider());
+		    // FIXME: get rid of "BC" here to move away from Bouncycastle and use SunRsaSign or similar
+			Security.addProvider(new org.bouncycastle.jce.provider.BouncyCastleProvider());
 
 			String alias = args[0];
 			int slot = Integer.valueOf(args[1]).intValue();
@@ -45,18 +46,14 @@ public class AntCreateHostCertificateWithEracomCA {
 				System.err.println("Days Valid must be >0");
 				System.exit(1);
 			}
-			Provider provider = (Provider) Class.forName(
-					"au.com.eracom.crypto.provider.slot" + slot
-							+ ".ERACOMProvider").newInstance();
+			Provider provider = EracomUtils.getEracomProvider(slot);
 			Security.addProvider(provider);
-			KeyStore keyStore = KeyStore.getInstance("CRYPTOKI", provider
-					.getName());
+			KeyStore keyStore = KeyStore.getInstance(EracomUtils.KEYSTORE_TYPE, provider.getName());
 			keyStore.load(null, password.toCharArray());
 			PrivateKey cakey = (PrivateKey) keyStore.getKey(alias, null);
-			X509Certificate cacert = convert((X509Certificate) keyStore
-					.getCertificate(alias));
-			
+			X509Certificate cacert = convert((X509Certificate) keyStore.getCertificate(alias));			
 
+			// FIXME: get rid of "BC" here to move away from Bouncycastle and use SunRsaSign or similar
 			KeyPair pair = KeyUtil.generateRSAKeyPair1024("BC");
 			String rootSub = cacert.getSubjectDN().toString();
 			int index = rootSub.lastIndexOf(",");
@@ -84,7 +81,7 @@ public class AntCreateHostCertificateWithEracomCA {
 			}
 			X509Certificate userCert = convert(CertUtil.generateCertificate(provider
 					.getName(), new X509Name(subject), start, end, pair
-					.getPublic(), cacert, cakey, "SHA256WithRSA", null));
+					.getPublic(), cacert, cakey, EracomUtils.getEracomCryptoAlgorithm(), null));
 
 			KeyUtil.writePrivateKey(pair.getPrivate(), new File(keyOut));
 			CertUtil.writeCertificate(userCert, new File(certOut));
@@ -98,17 +95,15 @@ public class AntCreateHostCertificateWithEracomCA {
 			System.out.println(keyOut);
 			System.out.println("Host certificate written to:");
 			System.out.println(certOut);
-
 		} catch (Exception e) {
 			e.printStackTrace();
 			System.exit(1);
 		}
-
 	}
+	
 	
 	protected static X509Certificate convert(X509Certificate cert) throws Exception {
 		String str = CertUtil.writeCertificate(cert);
 		return CertUtil.loadCertificate(str);
 	}
-
 }
