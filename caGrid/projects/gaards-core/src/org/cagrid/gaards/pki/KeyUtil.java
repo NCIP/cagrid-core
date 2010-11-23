@@ -27,9 +27,12 @@ import org.globus.gsi.bc.BouncyCastleOpenSSLKey;
  */
 public class KeyUtil {
 
-	public static KeyPair generateRSAKeyPair2048() throws Exception {
+    // FIXME: we're moving away from bouncycastle, turn this into SunRsaSign or similar
+	public static final String DEFAULT_PROVIDER = "BC";
+
+    public static KeyPair generateRSAKeyPair2048() throws Exception {
 		SecurityUtil.init();
-		return generateRSAKeyPair2048("BC");
+		return generateRSAKeyPair2048(DEFAULT_PROVIDER);
 	}
 
 	public static KeyPair generateRSAKeyPair2048(String provider)
@@ -39,7 +42,7 @@ public class KeyUtil {
 
 	public static KeyPair generateRSAKeyPair1024() throws Exception {
 		SecurityUtil.init();
-		return generateRSAKeyPair1024("BC");
+		return generateRSAKeyPair1024(DEFAULT_PROVIDER);
 	}
 
 	public static KeyPair generateRSAKeyPair1024(String provider)
@@ -49,7 +52,7 @@ public class KeyUtil {
 
 	public static KeyPair generateRSAKeyPair512() throws Exception {
 		SecurityUtil.init();
-		return generateRSAKeyPair512("BC");
+		return generateRSAKeyPair512(DEFAULT_PROVIDER);
 	}
 
 	public static KeyPair generateRSAKeyPair512(String provider)
@@ -59,7 +62,7 @@ public class KeyUtil {
 
 	public static KeyPair generateRSAKeyPair(int size) throws Exception {
 		SecurityUtil.init();
-		return generateRSAKeyPair("BC", size);
+		return generateRSAKeyPair(DEFAULT_PROVIDER, size);
 	}
 
 	public static KeyPair generateRSAKeyPair(String provider, int size)
@@ -130,7 +133,7 @@ public class KeyUtil {
 	public static PublicKey loadPublicKey(String key) throws IOException,
 			GeneralSecurityException {
 		SecurityUtil.init();
-		return loadPublicKey("BC", key);
+		return loadPublicKey(DEFAULT_PROVIDER, key);
 	}
 
 	public static PublicKey loadPublicKey(String provider, String key)
@@ -145,7 +148,7 @@ public class KeyUtil {
 	public static PublicKey loadPublicKey(File location) throws IOException,
 			GeneralSecurityException {
 		SecurityUtil.init();
-		return loadPublicKey("BC", location);
+		return loadPublicKey(DEFAULT_PROVIDER, location);
 	}
 
 	public static PublicKey loadPublicKey(String provider, File location)
