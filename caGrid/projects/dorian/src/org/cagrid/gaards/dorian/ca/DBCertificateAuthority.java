@@ -24,14 +24,22 @@ public class DBCertificateAuthority extends CertificateAuthority {
     
     private static Log LOG = LogFactory.getLog(DBCertificateAuthority.class);
 
-    private CredentialsManager manager;
-
+    private CredentialsManager manager = null;
+    private Database db = null;
 
     public DBCertificateAuthority(Database db, CertificateAuthorityProperties properties) 
         throws CertificateAuthorityFault {
         super(properties);
         SecurityUtil.init();
-        this.manager = new CredentialsManager(db);
+        this.db = db;
+    }
+    
+    
+    protected CredentialsManager getCredentialsManager() {
+        if (manager == null) {
+            manager = new CredentialsManager(db);
+        }
+        return manager;
     }
 
 
@@ -53,7 +61,7 @@ public class DBCertificateAuthority extends CertificateAuthority {
 
     public void deleteCACredentials() throws CertificateAuthorityFault {
         try {
-            manager.deleteCredentials(CA_ALIAS);
+            getCredentialsManager().deleteCredentials(CA_ALIAS);
         } catch (Exception e) {
             LOG.error(e.getMessage(), e);
             CertificateAuthorityFault fault = new CertificateAuthorityFault();
@@ -73,7 +81,7 @@ public class DBCertificateAuthority extends CertificateAuthority {
                 fault.setFaultString("The CA certificate does not exist.");
                 throw fault;
             } else {
-                return manager.getCertificate(CA_ALIAS);
+                return getCredentialsManager().getCertificate(CA_ALIAS);
             }
         } catch (CertificateAuthorityFault f) {
             throw f;
@@ -97,7 +105,7 @@ public class DBCertificateAuthority extends CertificateAuthority {
                 fault.setFaultString("The CA private key does not exist.");
                 throw fault;
             } else {
-                return manager.getPrivateKey(CA_ALIAS, password);
+                return getCredentialsManager().getPrivateKey(CA_ALIAS, password);
             }
         } catch (CertificateAuthorityFault f) {
             throw f;
@@ -115,7 +123,7 @@ public class DBCertificateAuthority extends CertificateAuthority {
 
     public boolean hasCACredentials() throws CertificateAuthorityFault {
         try {
-            return this.manager.hasCredentials(CA_ALIAS);
+            return getCredentialsManager().hasCredentials(CA_ALIAS);
         } catch (Exception e) {
             LOG.error(e.getMessage(), e);
             CertificateAuthorityFault fault = new CertificateAuthorityFault();
@@ -136,7 +144,7 @@ public class DBCertificateAuthority extends CertificateAuthority {
                 fault.setFaultString("Credentials already exist for the CA.");
                 throw fault;
             }
-            manager.addCredentials(CA_ALIAS, password, cert, key);
+            getCredentialsManager().addCredentials(CA_ALIAS, password, cert, key);
         } catch (Exception e) {
             LOG.error(e.getMessage(), e);
             CertificateAuthorityFault fault = new CertificateAuthorityFault();
