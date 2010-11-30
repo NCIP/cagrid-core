@@ -1,5 +1,7 @@
 package org.cagrid.gaards.pki;
 
+import gov.nih.nci.cagrid.common.security.SecurityConstants;
+
 import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
 import java.io.File;
@@ -25,6 +27,8 @@ import java.security.SignatureException;
 import java.security.cert.X509CRL;
 import java.security.cert.X509Certificate;
 import java.util.Date;
+import java.util.Stack;
+import java.util.StringTokenizer;
 
 import org.bouncycastle.asn1.ASN1InputStream;
 import org.bouncycastle.asn1.ASN1Sequence;
@@ -55,9 +59,6 @@ import org.globus.util.Base64;
  *          Exp $
  */
 public class CertUtil {
-
-    public static final String SIGNATURE_ALGORITHM = "SHA256WithRSAEncryption";
-
 
     public static String getHashCode(X509Certificate cert) throws Exception {
         X509Principal x509 = (X509Principal) cert.getSubjectDN();
@@ -92,7 +93,8 @@ public class CertUtil {
 
     public static PKCS10CertificationRequest generateCertficateRequest(String subject, KeyPair pair) throws Exception {
         SecurityUtil.init();
-        return generateCertficateRequest("BC", subject, pair, SIGNATURE_ALGORITHM);
+        return generateCertficateRequest(
+            SecurityConstants.CRYPTO_PROVIDER, subject, pair, SecurityConstants.DEFAULT_SIGNING_ALGORITHM);
 
     }
 
@@ -108,7 +110,8 @@ public class CertUtil {
         X509Certificate cacert, PrivateKey signerKey, String policyId) throws InvalidKeyException,
         NoSuchProviderException, SignatureException, NoSuchAlgorithmException, IOException {
         SecurityUtil.init();
-        return signCertificateRequest("BC", request, start, expired, cacert, signerKey, SIGNATURE_ALGORITHM, policyId);
+        return signCertificateRequest(
+            SecurityConstants.CRYPTO_PROVIDER, request, start, expired, cacert, signerKey, SecurityConstants.DEFAULT_SIGNING_ALGORITHM, policyId);
     }
 
 
@@ -123,8 +126,8 @@ public class CertUtil {
 
     public static X509Certificate generateCACertificate(X509Name subject, Date start, Date expired, KeyPair pair)
         throws InvalidKeyException, NoSuchProviderException, SignatureException, IOException {
-        SecurityUtil.init();
-        return generateCACertificate("BC", subject, start, expired, pair, 1, SIGNATURE_ALGORITHM);
+        return generateCACertificate(
+            SecurityConstants.CRYPTO_PROVIDER, subject, start, expired, pair, 1, SecurityConstants.DEFAULT_SIGNING_ALGORITHM);
     }
 
 
@@ -138,9 +141,9 @@ public class CertUtil {
     public static X509Certificate generateIntermediateCACertificate(X509Certificate cacert, PrivateKey signerKey,
         X509Name subject, Date start, Date expired, PublicKey publicKey) throws InvalidKeyException,
         NoSuchProviderException, SignatureException, IOException {
-        SecurityUtil.init();
-        return generateIntermediateCACertificate("BC", cacert, signerKey, subject, start, expired, publicKey,
-            SIGNATURE_ALGORITHM);
+        return generateIntermediateCACertificate(
+            SecurityConstants.CRYPTO_PROVIDER, cacert, signerKey, subject, start, expired, publicKey,
+            SecurityConstants.DEFAULT_SIGNING_ALGORITHM);
     }
 
 
@@ -182,8 +185,9 @@ public class CertUtil {
 
     public static X509Certificate generateCACertificate(X509Name subject, Date start, Date expired, KeyPair pair,
         int numberOfCAs) throws InvalidKeyException, NoSuchProviderException, SignatureException, IOException {
-        SecurityUtil.init();
-        return generateCACertificate("BC", subject, start, expired, pair, numberOfCAs, SIGNATURE_ALGORITHM);
+        return generateCACertificate(
+            SecurityConstants.CRYPTO_PROVIDER, subject, start, expired, 
+            pair, numberOfCAs, SecurityConstants.DEFAULT_SIGNING_ALGORITHM);
     }
 
 
@@ -217,9 +221,9 @@ public class CertUtil {
     public static X509Certificate generateCertificate(X509Name subject, Date start, Date expired, PublicKey publicKey,
         X509Certificate cacert, PrivateKey signerKey, String policyId) throws InvalidKeyException,
         NoSuchProviderException, SignatureException, IOException {
-        SecurityUtil.init();
-        return generateCertificate("BC", subject, start, expired, publicKey, cacert, signerKey, SIGNATURE_ALGORITHM,
-            policyId);
+        return generateCertificate(
+            SecurityConstants.CRYPTO_PROVIDER, subject, start, expired, publicKey, cacert, signerKey, 
+            SecurityConstants.DEFAULT_SIGNING_ALGORITHM, policyId);
     }
 
 
@@ -281,55 +285,101 @@ public class CertUtil {
     }
 
 
-    public static X509Certificate loadCertificate(File certLocation) throws IOException, GeneralSecurityException {
-        SecurityUtil.init();
-        return loadCertificate("BC", new FileReader(certLocation));
+    /**
+     * Just a facade to loadCertificate(Reader)
+     * 
+     * @param certLocation
+     * @return
+     * @throws IOException
+     */
+    public static X509Certificate loadCertificate(File certLocation) throws IOException {
+        return loadCertificate(new FileReader(certLocation));
     }
 
 
-    public static X509Certificate loadCertificate(InputStream certLocation) throws IOException,
-        GeneralSecurityException {
-        SecurityUtil.init();
-        return loadCertificate("BC", certLocation);
+    /**
+     * Just a facade to loadCertificate(Reader)
+     * 
+     * @param certLocation
+     * @return
+     * @throws IOException
+     */
+    public static X509Certificate loadCertificate(InputStream certLocation) throws IOException {
+        return loadCertificate(new InputStreamReader(certLocation));
     }
 
 
-    public static X509Certificate loadCertificate(String str) throws IOException, GeneralSecurityException {
-        SecurityUtil.init();
-        return CertUtil.loadCertificate("BC", str);
-
+    /**
+     * Just a facade to loadCertificate(Reader)
+     * 
+     * @param certLocation
+     * @return
+     * @throws IOException
+     */
+    public static X509Certificate loadCertificate(String str) throws IOException {
+        return CertUtil.loadCertificate(str);
+    }
+    
+    
+    /**
+     * Loads a certificate from the reader using any available crypto provider
+     * 
+     * @param in
+     * @return
+     * @throws IOException
+     */
+    public static X509Certificate loadCertificate(Reader in) throws IOException {
+        // call the load certificate w/ null provider defined so the certificate 
+        // factory will do the default thing and find one for the algorithm
+        return CertUtil.loadCertificate(null, in);
     }
 
 
-    public static X509Certificate loadCertificate(String provider, File certLocation) throws IOException,
-        GeneralSecurityException {
+    /**
+     * Just a facade to loadCertificate(String, Reader)
+     * 
+     * @param provider
+     * @param certLocation
+     * @return
+     * @throws IOException
+     */
+    public static X509Certificate loadCertificate(String provider, File certLocation) throws IOException {
         return loadCertificate(provider, new FileReader(certLocation));
     }
 
 
-    public static X509Certificate loadCertificate(String provider, InputStream certLocation) throws IOException,
-        GeneralSecurityException {
+    /**
+     * Just a facade to loadCertificate(String, Reader)
+     * 
+     * @param provider
+     * @param certLocation
+     * @return
+     * @throws IOException
+     */
+    public static X509Certificate loadCertificate(String provider, InputStream certLocation) throws IOException {
         return loadCertificate(provider, new InputStreamReader(certLocation));
     }
 
 
-    public static X509Certificate loadCertificate(String provider, String str) throws IOException,
-        GeneralSecurityException {
-        StringReader reader = new StringReader(str);
-        return CertUtil.loadCertificate(provider, reader);
-
+    /**
+     * Just a facade to loadCertificate(String, Reader)
+     * 
+     * @param provider
+     * @param certLocation
+     * @return
+     * @throws IOException
+     */
+    public static X509Certificate loadCertificate(String provider, String str) throws IOException {
+        return CertUtil.loadCertificate(provider, new StringReader(str));
     }
 
 
-    public static X509Certificate loadCertificate(Reader in) throws IOException, GeneralSecurityException {
-        SecurityUtil.init();
-        return CertUtil.loadCertificate("BC", in);
-
-    }
-
-
-    public static X509Certificate loadCertificate(String provider, Reader in) throws IOException,
-        GeneralSecurityException {
+    public static X509Certificate loadCertificate(String provider, Reader in) throws IOException {
+        // there is a PEMReader(Reader, PasswordFinder), but it defaults the provider to "BC"
+        if (provider == null) {
+            // Default the provider to the CERT_PROVIDER
+            provider = SecurityConstants.CERT_PROVIDER;
+        }
         PEMReader reader = new PEMReader(in, null, provider);
         X509Certificate cert = (X509Certificate) reader.readObject();
         reader.close();
@@ -339,23 +389,19 @@ public class CertUtil {
 
     public static PKCS10CertificationRequest loadCertificateRequest(File certLocation) throws IOException,
         GeneralSecurityException {
-        SecurityUtil.init();
-        return loadCertificateRequest("BC", new FileReader(certLocation));
+        return loadCertificateRequest(SecurityConstants.CRYPTO_PROVIDER, new FileReader(certLocation));
     }
 
 
     public static PKCS10CertificationRequest loadCertificateRequest(InputStream certLocation) throws IOException,
         GeneralSecurityException {
-        SecurityUtil.init();
-        return loadCertificateRequest("BC", certLocation);
+        return loadCertificateRequest(SecurityConstants.CRYPTO_PROVIDER, certLocation);
     }
 
 
     public static PKCS10CertificationRequest loadCertificateRequest(String str) throws IOException,
         GeneralSecurityException {
-        SecurityUtil.init();
-        return CertUtil.loadCertificateRequest("BC", str);
-
+        return CertUtil.loadCertificateRequest(SecurityConstants.CRYPTO_PROVIDER, str);
     }
 
 
@@ -375,21 +421,17 @@ public class CertUtil {
         GeneralSecurityException {
         StringReader reader = new StringReader(str);
         return CertUtil.loadCertificateRequest(provider, reader);
-
     }
 
 
     public static PKCS10CertificationRequest loadCertificateRequest(Reader in) throws IOException,
         GeneralSecurityException {
-        SecurityUtil.init();
-        return CertUtil.loadCertificateRequest("BC", in);
-
+        return CertUtil.loadCertificateRequest(SecurityConstants.CRYPTO_PROVIDER, in);
     }
 
 
     public static PKCS10CertificationRequest loadCertificateRequest(String provider, Reader in) throws IOException,
         GeneralSecurityException {
-
         String line = null;
         StringBuffer stringBuffer = new StringBuffer();
         final BufferedReader bufferReader = new BufferedReader(in);
@@ -419,8 +461,9 @@ public class CertUtil {
 
     public static X509CRL createCRL(X509Certificate caCert, PrivateKey caKey, CRLEntry[] entries, Date expires)
         throws Exception {
-        SecurityUtil.init();
-        return createCRL("BC", caCert, caKey, entries, expires, SIGNATURE_ALGORITHM);
+        return createCRL(
+            SecurityConstants.CRYPTO_PROVIDER, caCert, caKey, 
+            entries, expires, SecurityConstants.DEFAULT_SIGNING_ALGORITHM);
     }
 
 
@@ -460,45 +503,94 @@ public class CertUtil {
     }
 
 
-    public static X509CRL loadCRL(File crlLocation) throws IOException, GeneralSecurityException {
-        SecurityUtil.init();
-        return loadCRL("BC", new FileReader(crlLocation));
+    /**
+     * Just a facade to loadCRL(Reader)
+     * 
+     * @param crlLocation
+     * @return
+     * @throws IOException
+     */
+    public static X509CRL loadCRL(File crlLocation) throws IOException {
+        return loadCRL(new FileReader(crlLocation));
     }
 
 
-    public static X509CRL loadCRL(InputStream crlLocation) throws IOException, GeneralSecurityException {
-        SecurityUtil.init();
-        return loadCRL("BC", new InputStreamReader(crlLocation));
+    /**
+     * Just a facade to loadCRL(Reader)
+     * 
+     * @param crlLocation
+     * @return
+     * @throws IOException
+     */
+    public static X509CRL loadCRL(InputStream crlLocation) throws IOException {
+        return loadCRL(new InputStreamReader(crlLocation));
+    }
+
+    
+    /**
+     * Just a facade to loadCRL(Reader)
+     * 
+     * @param crlLocation
+     * @return
+     * @throws IOException
+     */
+    public static X509CRL loadCRL(String str) throws IOException {
+        return CertUtil.loadCRL(new StringReader(str));
+    }
+        
+    
+    /**
+     * Just a facade to loadCRL(String, Reader)
+     * 
+     * @param crlLocation
+     * @return
+     * @throws IOException
+     */
+    public static X509CRL loadCRL(Reader reader) throws IOException {
+        return loadCRL(null, reader);
     }
 
 
-    public static X509CRL loadCRL(String str) throws IOException, GeneralSecurityException {
-        SecurityUtil.init();
-        StringReader reader = new StringReader(str);
-        return CertUtil.loadCRL("BC", reader);
-
-    }
-
-
-    public static X509CRL loadCRL(String provider, File crlLocation) throws IOException, GeneralSecurityException {
+    /**
+     * Just a facade to loadCRL(String, Reader)
+     * 
+     * @param crlLocation
+     * @return
+     * @throws IOException
+     */
+    public static X509CRL loadCRL(String provider, File crlLocation) throws IOException {
         return loadCRL(provider, new FileReader(crlLocation));
     }
 
-
-    public static X509CRL loadCRL(String provider, InputStream crlLocation) throws IOException,
-        GeneralSecurityException {
+    
+    /**
+     * Just a facade to loadCRL(String, Reader)
+     * 
+     * @param crlLocation
+     * @return
+     * @throws IOException
+     */
+    public static X509CRL loadCRL(String provider, InputStream crlLocation) throws IOException {
         return loadCRL(provider, new InputStreamReader(crlLocation));
     }
 
 
-    public static X509CRL loadCRL(String provider, String str) throws IOException, GeneralSecurityException {
-        StringReader reader = new StringReader(str);
-        return CertUtil.loadCRL(provider, reader);
-
+    /**
+     * Just a facade to loadCRL(String, Reader)
+     * 
+     * @param crlLocation
+     * @return
+     * @throws IOException
+     */
+    public static X509CRL loadCRL(String provider, String str) throws IOException {
+        return CertUtil.loadCRL(provider, new StringReader(str));
     }
 
 
-    public static X509CRL loadCRL(String provider, Reader in) throws IOException, GeneralSecurityException {
+    public static X509CRL loadCRL(String provider, Reader in) throws IOException {
+        if (provider == null) {
+            provider = SecurityConstants.CERT_PROVIDER;
+        }
         CRLReader reader = new CRLReader(in, provider);
         X509CRL crl = reader.readCRL();
         reader.close();
@@ -514,5 +606,61 @@ public class CertUtil {
             return false;
         }
     }
-
+    
+    
+    /**
+     * Gets the certificate's subject DN in "reverse" format -- most significant
+     * part first.  This is exactly the opposite of what RFC 2253 says to do,
+     * but apparently it's the format which BouncyCastle and the rest of the
+     * older Globus code expect and work with.
+     * 
+     * <a href="http://www.ietf.org/rfc/rfc2253.txt">RFC 2253</a>
+     * 
+     * @param cert
+     * @return
+     */
+    public static String getSubjectDN(X509Certificate cert) {
+        String dn = cert.getSubjectDN().toString();
+        if (dn != null && dn.startsWith("CN=")) {
+            dn = reverseDN(dn);
+        }
+        return dn;
+    }
+    
+    
+    /**
+     * Gets the certificate's issuer DN in "reverse" format -- most significant
+     * part first.  This is exactly the opposite of what RFC 2253 says to do,
+     * but apparently it's the format which BouncyCastle and the rest of the
+     * older Globus code expect and work with.
+     * 
+     * <a href="http://www.ietf.org/rfc/rfc2253.txt">RFC 2253</a>
+     * 
+     * @param cert
+     * @return
+     */
+    public static String getIssuerDN(X509Certificate cert) {
+        String dn = cert.getIssuerDN().toString();
+        if (dn != null && dn.startsWith("CN=")) {
+            dn = reverseDN(dn);
+        }
+        return dn;
+    }
+    
+    
+    private static String reverseDN(String dn) {
+        StringBuffer reverse = new StringBuffer();
+        StringTokenizer tok = new StringTokenizer(dn, ",");
+        Stack<String> stack = new Stack<String>();
+        while (tok.hasMoreTokens()) {
+            stack.push(tok.nextToken());
+        }
+        while (!stack.isEmpty()) {
+            reverse.append(stack.pop().trim());
+            if (!stack.isEmpty()) {
+                reverse.append(",");
+            }
+        }
+        return reverse.toString();
+    }
 }

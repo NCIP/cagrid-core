@@ -6,11 +6,7 @@ import java.io.File;
 import java.io.InputStream;
 import java.security.KeyPair;
 import java.security.PrivateKey;
-import java.security.Provider;
 import java.security.PublicKey;
-import java.security.Security;
-
-import org.cagrid.gaards.pki.KeyUtil;
 
 import junit.framework.TestCase;
 
@@ -23,55 +19,46 @@ import junit.framework.TestCase;
  */
 public class TestKeyUtil extends TestCase {
 	
-	public static final Provider PROVIDER = new org.bouncycastle.jce.provider.BouncyCastleProvider();
-
 	public void testCreateWriteLoadEncryptedPrivateKey() {
 		try {
 			String keyFile = "test-key.pem";
-			KeyPair pair = KeyUtil.generateRSAKeyPair1024(PROVIDER
-					.getName());
+			KeyPair pair = KeyUtil.generateRSAKeyPair1024();
 			assertNotNull(pair);
 			PrivateKey pkey = pair.getPrivate();
 			assertNotNull(pkey);
 			KeyUtil.writePrivateKey(pkey, new File(keyFile), "password");
-			PrivateKey key = KeyUtil.loadPrivateKey(new File(keyFile),
-					"password");
+			PrivateKey key = KeyUtil.loadPrivateKey(new File(keyFile), "password");
 			assertNotNull(key);
 			assertEquals(key, pkey);
 			File f = new File(keyFile);
 			f.delete();
 		} catch (Exception e) {
 			FaultUtil.printFault(e);
-			;
-			assertTrue(false);
+			fail();
 		}
 	}
 
 	public void testReadWritePublicKeyToString() {
 		try {
-			KeyPair pair = KeyUtil.generateRSAKeyPair1024(PROVIDER
-					.getName());
+			KeyPair pair = KeyUtil.generateRSAKeyPair1024();
 			assertNotNull(pair);
 			PublicKey pkey = pair.getPublic();
 			assertNotNull(pkey);
 			String str = KeyUtil.writePublicKey(pkey);
 			assertNotNull(str);
-			PublicKey key = KeyUtil.loadPublicKey(PROVIDER.getName(),
-					str);
+			PublicKey key = KeyUtil.loadPublicKey(str);
 			assertNotNull(key);
 			assertEquals(key, pkey);
 		} catch (Exception e) {
 			FaultUtil.printFault(e);
-			;
-			assertTrue(false);
+			fail();
 		}
 	}
 
 	public void testCreateWriteLoadPrivateKey() {
 		try {
 			String keyFile = "test-key.pem";
-			KeyPair pair = KeyUtil.generateRSAKeyPair1024(PROVIDER
-					.getName());
+			KeyPair pair = KeyUtil.generateRSAKeyPair1024();
 			assertNotNull(pair);
 			PrivateKey pkey = pair.getPrivate();
 			assertNotNull(pkey);
@@ -83,8 +70,7 @@ public class TestKeyUtil extends TestCase {
 			f.delete();
 		} catch (Exception e) {
 			FaultUtil.printFault(e);
-			;
-			assertTrue(false);
+			fail();
 		}
 	}
 
@@ -96,8 +82,7 @@ public class TestKeyUtil extends TestCase {
 			assertNotNull(key);
 		} catch (Exception e) {
 			FaultUtil.printFault(e);
-			;
-			assertTrue(false);
+			fail();
 		}
 	}
 
@@ -109,7 +94,7 @@ public class TestKeyUtil extends TestCase {
 			assertNotNull(key);
 		} catch (Exception e) {
 			FaultUtil.printFault(e);
-			assertTrue(false);
+			fail();
 		}
 
 		try {
@@ -119,7 +104,7 @@ public class TestKeyUtil extends TestCase {
 			assertNotNull(key);
 		} catch (Exception e) {
 			FaultUtil.printFault(e);
-			assertTrue(false);
+			fail();
 		}
 	}
 
@@ -128,9 +113,9 @@ public class TestKeyUtil extends TestCase {
 			InputStream keyLocation = TestCase.class
 					.getResourceAsStream(Constants.BAD_KEY);
 			KeyUtil.loadPrivateKey(keyLocation, "");
-			assertTrue(false);
+			fail("Should not have been able to load bad key");
 		} catch (Exception e) {
-
+		    // expected
 		}
 	}
 
@@ -139,21 +124,9 @@ public class TestKeyUtil extends TestCase {
 			InputStream keyLocation = TestCase.class
 					.getResourceAsStream(Constants.SIMPLECA_CAKEY);
 			KeyUtil.loadPrivateKey(keyLocation, "badpassword");
-			assertTrue(false);
+			fail("Should not have been able to load key with bad password");
 		} catch (Exception e) {
-
-		}
-
-	}
-
-	protected void setUp() throws Exception {
-		super.setUp();
-		try {
-			Security.addProvider(PROVIDER);
-		} catch (Exception e) {
-			FaultUtil.printFault(e);
-			assertTrue(false);
+		    // expected
 		}
 	}
-
 }
