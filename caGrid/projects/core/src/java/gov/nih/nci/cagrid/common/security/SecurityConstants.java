@@ -14,6 +14,9 @@ public class SecurityConstants {
     // use the java provided crypto libraries
     public static final String CRYPTO_PROVIDER = "SunRsaSign";
     
+    // the default signing algorithm
+    public static final String DEFAULT_SIGNING_ALGORITHM = "SHA256withRSA";
+    
     // convert the signing algorithm OID to a string we can use
     // these names are the ones used by the java provided libraries
     // and don't match what was in the BouncyCastle libs
