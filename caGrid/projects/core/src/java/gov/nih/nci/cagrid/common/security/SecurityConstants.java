@@ -18,6 +18,8 @@ public class SecurityConstants {
     // the default signing algorithm
     public static final String DEFAULT_SIGNING_ALGORITHM = "SHA256withRSA";
     
+    public static final String DEFAULT_PROXY_SIGNING_ALGORITHM = "MD5withRSA";
+    
     // convert the signing algorithm OID to a string we can use
     // these names are the ones used by the java provided libraries
     // and don't match what was in the BouncyCastle libs
