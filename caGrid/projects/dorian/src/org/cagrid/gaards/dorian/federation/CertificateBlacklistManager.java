@@ -3,7 +3,6 @@ package org.cagrid.gaards.dorian.federation;
 import gov.nih.nci.cagrid.common.FaultHelper;
 
 import java.io.IOException;
-import java.security.GeneralSecurityException;
 import java.security.cert.X509Certificate;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -44,13 +43,6 @@ public class CertificateBlacklistManager {
         throws DorianInternalFault {
         try {
             addCertificateToBlackList(CertUtil.loadCertificate(cert.getCertificateAsString()), reason);
-        } catch (GeneralSecurityException e) {
-            DorianInternalFault fault = new DorianInternalFault();
-            fault.setFaultString("Unexpected Error");
-            FaultHelper helper = new FaultHelper(fault);
-            helper.addFaultCause(e);
-            fault = (DorianInternalFault) helper.getFault();
-            throw fault;
         } catch (IOException e) {
             DorianInternalFault fault = new DorianInternalFault();
             fault.setFaultString("Unexpected Error");
@@ -59,7 +51,6 @@ public class CertificateBlacklistManager {
             fault = (DorianInternalFault) helper.getFault();
             throw fault;
         }
-
     }
 
 
