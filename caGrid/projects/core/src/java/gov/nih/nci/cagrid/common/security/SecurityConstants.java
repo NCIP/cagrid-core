@@ -13,6 +13,7 @@ public class SecurityConstants {
     
     // use the java provided crypto libraries
     public static final String CRYPTO_PROVIDER = "SunRsaSign";
+    public static final String CERT_PROVIDER = "SUN";
     
     // the default signing algorithm
     public static final String DEFAULT_SIGNING_ALGORITHM = "SHA256withRSA";
