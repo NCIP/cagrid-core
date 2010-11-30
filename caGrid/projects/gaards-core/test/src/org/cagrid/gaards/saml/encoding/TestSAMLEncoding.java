@@ -26,6 +26,7 @@ import org.apache.xml.security.signature.XMLSignature;
 import org.bouncycastle.jce.provider.BouncyCastleProvider;
 import org.cagrid.gaards.core.Utils;
 import org.cagrid.gaards.pki.CA;
+import org.cagrid.gaards.pki.CertUtil;
 import org.cagrid.gaards.pki.Credential;
 
 /**
@@ -57,8 +58,8 @@ public class TestSAMLEncoding extends TestCase {
 			Date start = cal.getTime();
 			cal.add(Calendar.MINUTE, 2);
 			Date end = cal.getTime();
-			String issuer = cert.getSubjectDN().toString();
-			String federation = cert.getSubjectDN().toString();
+			String issuer = CertUtil.getSubjectDN(cert);
+			String federation = CertUtil.getSubjectDN(cert);
 			String ipAddress = null;
 			String subjectDNS = null;
 
