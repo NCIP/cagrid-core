@@ -968,7 +968,7 @@ public class TrustedIdPManager {
 
                 s.setString(1, name);
                 s.setString(2, displayName);
-                s.setString(3, cert.getSubjectDN().toString());
+                s.setString(3, CertUtil.getSubjectDN(cert));
                 s.setString(4, idp.getStatus().getValue());
                 s.setString(5, policyClass);
                 s.setString(6, idp.getIdPCertificate());

@@ -238,8 +238,8 @@ public class AssertionCredentialsManager {
             Date start = cal.getTime();
             cal.add(Calendar.MINUTE, 2);
             Date end = cal.getTime();
-            String issuer = cert.getSubjectDN().toString();
-            String federation = cert.getSubjectDN().toString();
+            String issuer = CertUtil.getSubjectDN(cert);
+            String federation = CertUtil.getSubjectDN(cert);
             String ipAddress = null;
             String subjectDNS = null;
 
