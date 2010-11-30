@@ -317,7 +317,7 @@ public class CertUtil {
      * @throws IOException
      */
     public static X509Certificate loadCertificate(String str) throws IOException {
-        return CertUtil.loadCertificate(str);
+        return CertUtil.loadCertificate(new StringReader(str));
     }
     
     
