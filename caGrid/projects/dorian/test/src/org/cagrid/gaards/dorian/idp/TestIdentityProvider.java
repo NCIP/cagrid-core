@@ -22,6 +22,7 @@ import org.cagrid.gaards.dorian.policy.AccountInformationModificationPolicy;
 import org.cagrid.gaards.dorian.stubs.types.InvalidUserPropertyFault;
 import org.cagrid.gaards.dorian.stubs.types.PermissionDeniedFault;
 import org.cagrid.gaards.dorian.test.Utils;
+import org.cagrid.gaards.pki.CertUtil;
 import org.cagrid.tools.database.Database;
 import org.cagrid.tools.events.EventManager;
 
@@ -1094,7 +1095,7 @@ public class TestIdentityProvider extends TestCase {
         assertNotNull(saml);
         saml.verify(idp.getIdPCertificate());
 
-        assertEquals(idp.getIdPCertificate().getSubjectDN().toString(), saml.getIssuer());
+        assertEquals(CertUtil.getSubjectDN(idp.getIdPCertificate()), saml.getIssuer());
         Iterator itr = saml.getStatements();
         int statementCount = 0;
         boolean authFound = false;

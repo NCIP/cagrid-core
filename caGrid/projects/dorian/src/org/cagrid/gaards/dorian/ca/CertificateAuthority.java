@@ -38,7 +38,7 @@ public abstract class CertificateAuthority {
     private CertificateAuthorityProperties properties = null;
 
 
-    public CertificateAuthority(CertificateAuthorityProperties properties) throws CertificateAuthorityFault {
+    public CertificateAuthority(CertificateAuthorityProperties properties) {
         this.properties = properties;
     }
     
@@ -165,11 +165,15 @@ public abstract class CertificateAuthority {
         if (errorOnExpiredCredentials) {
             Date now = new Date();
             if (now.before(cert.getNotBefore()) || (now.after(cert.getNotAfter()))) {
+                LOG.debug("The CA credentials were not yet valid or expired");
+                // our current cert is either expired, or not yet valid
+                // are we supposed to auto-renew it?
                 if (properties.isAutoRenewCAEnabled()) {
+                    LOG.debug("Automatically renewing the CA cert");
                     Lifetime lifetime = properties.getRenewalLifetime();
-                    return renewCertifcateAuthorityCredentials(Utils.getExpiredDate(lifetime));
-
+                    cert = renewCertifcateAuthorityCredentials(Utils.getExpiredDate(lifetime));
                 } else {
+                    // no auto-renewal, throw an exception
                     NoCACredentialsFault fault = new NoCACredentialsFault();
                     fault.setFaultString("The CA certificate had expired or is not valid at this time.");
                     throw fault;
@@ -198,7 +202,7 @@ public abstract class CertificateAuthority {
 
         try {
             // VALIDATE DN
-            String caSubject = cacert.getSubjectDN().getName();
+            String caSubject = CertUtil.getSubjectDN(cacert);
             int caindex = caSubject.lastIndexOf(",");
             String caPreSub = caSubject.substring(0, caindex);
 
@@ -251,8 +255,8 @@ public abstract class CertificateAuthority {
             X509Certificate oldcert = getCACertificate(false);
             int size = ((RSAPublicKey) oldcert.getPublicKey()).getModulus().bitLength();
             KeyPair pair = KeyUtil.generateRSAKeyPair(getCACredentialsProvider(), size);
-            X509Certificate cacert = CertUtil.generateCACertificate(getCACredentialsProvider(), new X509Name(oldcert
-                .getSubjectDN().getName()), new Date(), expirationDate, pair, getSignatureAlgorithm());
+            X509Certificate cacert = CertUtil.generateCACertificate(getCACredentialsProvider(), 
+                new X509Name(CertUtil.getSubjectDN(oldcert)), new Date(), expirationDate, pair, getSignatureAlgorithm());
             deleteCACredentials();
             this.setCACredentials(cacert, pair.getPrivate(), properties.getCertificateAuthorityPassword());
             return cacert;

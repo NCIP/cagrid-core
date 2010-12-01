@@ -122,7 +122,9 @@ public class TestIdentityFederationManager extends TestCase {
             fail("Exception occured:" + e.getMessage());
         } finally {
             try {
-                ifs.clearDatabase();
+                if (ifs != null) {
+                    ifs.clearDatabase();
+                }
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -1343,7 +1345,6 @@ public class TestIdentityFederationManager extends TestCase {
     public void testRequestCertificate() {
         IdentityFederationManager ifs = null;
         try {
-
             IdPContainer idp = this.getTrustedIdpAutoApprove("My IdP");
             IdentityFederationProperties conf = getConf();
             FederationDefaults defaults = getDefaults();
@@ -1357,9 +1358,8 @@ public class TestIdentityFederationManager extends TestCase {
             CertificateLifetime lifetime = getLifetime();
             String uid = "user";
             X509Certificate cert = ifs.requestUserCertificate(getSAMLAssertion(uid, idp), publicKey, lifetime);
-            String expectedIdentity = CommonUtils.subjectToIdentity(UserManager.getUserSubject(ifs
-                .getIdentityAssignmentPolicy(), ca.getCACertificate().getSubjectDN().getName(), idp.getIdp(), uid));
-
+            String expectedIdentity = CommonUtils.subjectToIdentity(UserManager.getUserSubject(
+                ifs.getIdentityAssignmentPolicy(), ca.getCACertificate().getSubjectDN().getName(), idp.getIdp(), uid));
             checkCertificate(expectedIdentity, lifetime, pair.getPrivate(), cert);
             performAndValidateSingleAudit(ifs, adminGridId, expectedIdentity, AuditConstants.SYSTEM_ID,
                 FederationAudit.AccountCreated);
@@ -1375,7 +1375,6 @@ public class TestIdentityFederationManager extends TestCase {
                 e.printStackTrace();
             }
         }
-
     }
 
 
@@ -1847,7 +1846,7 @@ public class TestIdentityFederationManager extends TestCase {
             performAndValidateSingleAudit(ifs, adminGridId, expectedIdentity, AuditConstants.SYSTEM_ID,
                 FederationAudit.SuccessfulUserCertificateRequest);
 
-            String userId = CommonUtils.subjectToIdentity(cert.getSubjectDN().toString());
+            String userId = CommonUtils.subjectToIdentity(CertUtil.getSubjectDN(cert));
             // Check that the user cannot call any admin methods
             int count = validateAccessControl(ifs, adminGridId, userId, 0);
             ifs.addAdmin(defaults.getDefaultUser().getGridId(), userId);
@@ -2170,8 +2169,8 @@ public class TestIdentityFederationManager extends TestCase {
             String lastName = "first" + id;
             String email = id + "@test.com";
 
-            String issuer = cert.getSubjectDN().toString();
-            String federation = cert.getSubjectDN().toString();
+            String issuer = CertUtil.getSubjectDN(cert);
+            String federation = CertUtil.getSubjectDN(cert);
             String ipAddress = null;
             String subjectDNS = null;
             SAMLNameIdentifier ni = new SAMLNameIdentifier(id, federation,
@@ -2565,7 +2564,7 @@ public class TestIdentityFederationManager extends TestCase {
         assertTrue(min <= timeLeft);
         assertTrue(timeLeft <= max);
         assertEquals(expectedIdentity, cred.getIdentity());
-        assertEquals(cert.getSubjectDN().toString(), identityToSubject(cred.getIdentity()));
+        assertEquals(CertUtil.getSubjectDN(cert), identityToSubject(cred.getIdentity()));
         assertEquals(cred.getIssuer(), ca.getCACertificate().getSubjectDN().getName());
         cred.verify();
     }

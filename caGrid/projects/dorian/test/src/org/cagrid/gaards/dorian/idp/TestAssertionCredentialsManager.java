@@ -63,8 +63,8 @@ public class TestAssertionCredentialsManager extends TestCase {
 		} catch (InvalidCryptoException ex) {
 
 		}
-		assertEquals(cm.getIdPCertificate().getSubjectDN().toString(), saml
-				.getIssuer());
+		assertEquals(CertUtil.getSubjectDN(cm.getIdPCertificate()),
+		    saml.getIssuer());
 		Iterator itr = saml.getStatements();
 		int count = 0;
 		boolean authFound = false;
@@ -124,7 +124,7 @@ public class TestAssertionCredentialsManager extends TestCase {
 			assertNotNull(cm.getIdPKey());
 			String expectedSub = Utils.CA_SUBJECT_PREFIX + ",CN="
 					+ AssertionCredentialsManager.CERT_DN;
-			assertEquals(expectedSub, cert.getSubjectDN().toString());
+			assertEquals(expectedSub, CertUtil.getSubjectDN(cert));
 			SAMLAssertion saml = cm.getAuthenticationAssertion(TEST_UID,
 					TEST_FIRST_NAME, TEST_LAST_NAME, TEST_EMAIL);
 			verifySAMLAssertion(saml, cm);
@@ -152,17 +152,17 @@ public class TestAssertionCredentialsManager extends TestCase {
 			assertNotNull(cm.getIdPKey());
 			String expectedSub = Utils.CA_SUBJECT_PREFIX + ",CN="
 					+ AssertionCredentialsManager.CERT_DN;
-			assertEquals(expectedSub, cert.getSubjectDN().toString());
+			assertEquals(expectedSub, CertUtil.getSubjectDN(cert));
 
-			String subject = cert.getSubjectDN().toString();
+			String subject = CertUtil.getSubjectDN(cert);
 			KeyPair pair = KeyUtil.generateRSAKeyPair1024();
 			GregorianCalendar cal = new GregorianCalendar();
 			Date start = cal.getTime();
 			cal.add(Calendar.SECOND, 6);
 			Date end = cal.getTime();
 			cm.deleteAssertingCredentials();
-			X509Certificate shortCert = ca.signCertificate(subject, pair
-							.getPublic(), start, end);
+			X509Certificate shortCert = ca.signCertificate(subject, 
+			    pair.getPublic(), start, end);
 
 			cm.storeCredentials(shortCert, pair.getPrivate());
 
@@ -223,17 +223,17 @@ public class TestAssertionCredentialsManager extends TestCase {
 			assertNotNull(cm.getIdPKey());
 			String expectedSub = Utils.CA_SUBJECT_PREFIX + ",CN="
 					+ AssertionCredentialsManager.CERT_DN;
-			assertEquals(expectedSub, cert.getSubjectDN().toString());
+			assertEquals(expectedSub, CertUtil.getSubjectDN(cert));
 
-			String subject = cert.getSubjectDN().toString();
+			String subject = CertUtil.getSubjectDN(cert);
 			KeyPair pair = KeyUtil.generateRSAKeyPair1024();
 			GregorianCalendar cal = new GregorianCalendar();
 			Date start = cal.getTime();
 			cal.add(Calendar.SECOND, 2);
 			Date end = cal.getTime();
 			cm.deleteAssertingCredentials();
-			X509Certificate shortCert = ca.signCertificate(subject, pair
-							.getPublic(), start, end);
+			X509Certificate shortCert = ca.signCertificate(subject, 
+			    pair.getPublic(), start, end);
 			cm.storeCredentials(shortCert, pair.getPrivate());
 			if (cert.equals(shortCert)) {
 				assertTrue(false);

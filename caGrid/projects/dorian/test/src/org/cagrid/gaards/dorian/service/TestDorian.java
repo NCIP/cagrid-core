@@ -752,7 +752,7 @@ public class TestDorian extends TestCase {
 
         saml.verify(idpCert);
 
-        assertEquals(idpCert.getSubjectDN().toString(), saml.getIssuer());
+        assertEquals(CertUtil.getSubjectDN(idpCert), saml.getIssuer());
         Iterator itr = saml.getStatements();
         int statementCount = 0;
         boolean authFound = false;
@@ -816,8 +816,8 @@ public class TestDorian extends TestCase {
             String lastName = "first" + id;
             String email = id + "@test.com";
 
-            String issuer = cert.getSubjectDN().toString();
-            String federation = cert.getSubjectDN().toString();
+            String issuer = CertUtil.getSubjectDN(cert);
+            String federation = CertUtil.getSubjectDN(cert);
             String ipAddress = null;
             String subjectDNS = null;
             SAMLNameIdentifier ni = new SAMLNameIdentifier(id, federation,
@@ -913,7 +913,7 @@ public class TestDorian extends TestCase {
         if ((min > timeLeft) || (timeLeft > max)) {
             assertTrue(false);
         }
-        assertEquals(cert.getSubjectDN().toString(), identityToSubject(cred.getIdentity()));
+        assertEquals(CertUtil.getSubjectDN(cert), identityToSubject(cred.getIdentity()));
         assertEquals(expectedIdentity, cred.getIdentity());
         assertEquals(getCA().getCACertificate().getSubjectDN(), cert.getIssuerDN());
         cred.verify();

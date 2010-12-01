@@ -3,6 +3,8 @@ package org.cagrid.gaards.dorian.federation;
 import gov.nih.nci.cagrid.common.FaultHelper;
 
 import java.io.IOException;
+import java.security.NoSuchProviderException;
+import java.security.cert.CertificateException;
 import java.security.cert.X509Certificate;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -44,6 +46,20 @@ public class CertificateBlacklistManager {
         try {
             addCertificateToBlackList(CertUtil.loadCertificate(cert.getCertificateAsString()), reason);
         } catch (IOException e) {
+            DorianInternalFault fault = new DorianInternalFault();
+            fault.setFaultString("Unexpected Error");
+            FaultHelper helper = new FaultHelper(fault);
+            helper.addFaultCause(e);
+            fault = (DorianInternalFault) helper.getFault();
+            throw fault;
+        } catch (CertificateException e) {
+            DorianInternalFault fault = new DorianInternalFault();
+            fault.setFaultString("Unexpected Error");
+            FaultHelper helper = new FaultHelper(fault);
+            helper.addFaultCause(e);
+            fault = (DorianInternalFault) helper.getFault();
+            throw fault;
+        } catch (NoSuchProviderException e) {
             DorianInternalFault fault = new DorianInternalFault();
             fault.setFaultString("Unexpected Error");
             FaultHelper helper = new FaultHelper(fault);

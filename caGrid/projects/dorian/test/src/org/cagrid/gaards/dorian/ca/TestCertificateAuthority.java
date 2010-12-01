@@ -43,7 +43,6 @@ public class TestCertificateAuthority extends TestCase {
 
 
     public void testWrappingCertificateAuthority() {
-
         CertificateAuthority ca = null;
         try {
             CertificateAuthorityProperties conf = this.getDorianCAConfAutoCreateAutoRenewalLong();
@@ -73,7 +72,6 @@ public class TestCertificateAuthority extends TestCase {
                 e.printStackTrace();
             }
         }
-
     }
 
 
@@ -104,10 +102,9 @@ public class TestCertificateAuthority extends TestCase {
         String s = identity.substring(1);
         return s.replace('/', ',');
     }
-
-
+    
+    
     public void testRequestCertificateBadSubject() {
-
         CertificateAuthority ca = null;
         try {
             CertificateAuthorityProperties conf = this.getDorianCAConfAutoCreateAutoRenewalLong();
@@ -139,7 +136,6 @@ public class TestCertificateAuthority extends TestCase {
 
 
     public void testCreateCertificate() {
-
         CertificateAuthority ca = null;
         try {
             int hours = 12;
@@ -161,9 +157,9 @@ public class TestCertificateAuthority extends TestCase {
             GlobusCredential cred = new GlobusCredential(pair.getPrivate(), new X509Certificate[]{cert});
             assertNotNull(cred);
             long timeLeft = cred.getTimeLeft();
-            assertEquals(user, cert.getSubjectDN().getName());
+            assertEquals(user, CertUtil.getSubjectDN(cert));
             assertEquals(user, identityToSubject(cred.getIdentity()));
-            assertEquals(cert.getIssuerDN(), ca.getCACertificate().getSubjectDN());
+            assertEquals(CertUtil.getIssuerDN(cert), CertUtil.getSubjectDN(ca.getCACertificate()));
 
             long okMax = hours * 60 * 60;
             // Allow some Buffer
@@ -173,16 +169,14 @@ public class TestCertificateAuthority extends TestCase {
             assertTrue(timeLeft <= okMax);
             // must have more time left than the minimum
             assertTrue(timeLeft >= okMin);
-
         } catch (Exception e) {
             FaultUtil.printFault(e);
-            assertTrue(false);
+            fail(e.getMessage());
         }
     }
 
 
     public void testCertificateTimeToGreat() {
-
         CertificateAuthority ca = null;
         try {
             CertificateAuthorityProperties conf = this.getDorianCAConfAutoCreateAutoRenewalLong();
@@ -208,7 +202,6 @@ public class TestCertificateAuthority extends TestCase {
 
 
     public void testNoCACredentials() {
-
         CertificateAuthority ca = null;
         try {
             CertificateAuthorityProperties conf = this.getDorianCAConfNoAutoRenewalLong();
@@ -234,7 +227,7 @@ public class TestCertificateAuthority extends TestCase {
             }
         } catch (Exception e) {
             FaultUtil.printFault(e);
-            assertTrue(false);
+            fail(e.getMessage());
         } finally {
             try {
                 ca.clearCertificateAuthority();
@@ -246,7 +239,6 @@ public class TestCertificateAuthority extends TestCase {
 
 
     public void testNoCACredentialsWithAutoRenew() {
-
         CertificateAuthority ca = null;
         try {
             CertificateAuthorityProperties conf = this.getDorianCAConfAutoRenewalLong();
@@ -255,7 +247,7 @@ public class TestCertificateAuthority extends TestCase {
 
             try {
                 ca.getCACertificate();
-                assertTrue(false);
+                fail("Should have failed to get the ca certificate");
             } catch (NoCACredentialsFault f) {
 
             }
@@ -265,13 +257,13 @@ public class TestCertificateAuthority extends TestCase {
                 cal.add(Calendar.DAY_OF_MONTH, 5);
                 Date end = cal.getTime();
                 submitCertificateRequest(ca, SUBJECT_PREFIX, start, end);
-                assertTrue(false);
+                fail("Should have failed to create certificate");
             } catch (NoCACredentialsFault f) {
 
             }
         } catch (Exception e) {
             FaultUtil.printFault(e);
-            assertTrue(false);
+            fail(e.getMessage());
         } finally {
             try {
                 ca.clearCertificateAuthority();
@@ -283,7 +275,6 @@ public class TestCertificateAuthority extends TestCase {
 
 
     public void testSetCACredentials() {
-
         CertificateAuthority ca = null;
         try {
             CertificateAuthorityProperties conf = this.getDorianCAConfAutoRenewalLong();
@@ -293,7 +284,7 @@ public class TestCertificateAuthority extends TestCase {
             createAndStoreCA(ca);
         } catch (Exception e) {
             FaultUtil.printFault(e);
-            assertTrue(false);
+            fail(e.getMessage());
         } finally {
             try {
                 ca.clearCertificateAuthority();
@@ -305,7 +296,6 @@ public class TestCertificateAuthority extends TestCase {
 
 
     public void testAutoCreateCA() {
-
         CertificateAuthority ca = null;
         try {
             CertificateAuthorityProperties conf = this.getDorianCAConfAutoCreateAutoRenewalLong();
@@ -314,10 +304,10 @@ public class TestCertificateAuthority extends TestCase {
             assertFalse(ca.hasCACredentials());
             X509Certificate cert = ca.getCACertificate();
             assertTrue(ca.hasCACredentials());
-            assertEquals(conf.getCreationPolicy().getSubject(), cert.getSubjectDN().getName());
+            assertEquals(conf.getCreationPolicy().getSubject(), CertUtil.getSubjectDN(cert));
         } catch (Exception e) {
             FaultUtil.printFault(e);
-            assertTrue(false);
+            fail(e.getMessage());
         } finally {
             try {
                 ca.clearCertificateAuthority();
@@ -329,7 +319,6 @@ public class TestCertificateAuthority extends TestCase {
 
 
     public void testRequestCertificate() {
-
         CertificateAuthority ca = null;
         try {
             CertificateAuthorityProperties conf = this.getDorianCAConfAutoRenewalLong();
@@ -355,7 +344,6 @@ public class TestCertificateAuthority extends TestCase {
 
 
     public void testRequestCertificateBadDate() {
-
         CertificateAuthority ca = null;
         try {
             CertificateAuthorityProperties conf = this.getDorianCAConfAutoRenewalLong();
@@ -367,10 +355,9 @@ public class TestCertificateAuthority extends TestCase {
             cal.add(Calendar.YEAR, 5);
             Date end = cal.getTime();
             submitCertificateRequest(ca, SUBJECT_PREFIX, start, end);
-            assertTrue(false);
+            fail("Should have failed with bad date");
         } catch (CertificateAuthorityFault f) {
             if (f.getFaultString().indexOf("Certificate expiration date is after the CA certificates expiration date") == -1) {
-
                 FaultUtil.printFault(f);
                 fail(f.getMessage());
             }
@@ -388,11 +375,12 @@ public class TestCertificateAuthority extends TestCase {
 
 
     public void testExpiredCACredentialsWithRenewal() {
-
         CertificateAuthority ca = null;
         try {
             CertificateAuthorityProperties conf = this.getDorianCAConfAutoRenewalLong();
+            // create the CA instance
             ca = getCertificateAuthority(conf);
+            // clean out any existing root cert
             ca.clearCertificateAuthority();
             // give a chance for others to run right before we enter timing
             // sensitive code
@@ -403,26 +391,36 @@ public class TestCertificateAuthority extends TestCase {
             boolean completed = false;
             int count = 0;
             int seconds = 5000;
+            // try to create a new root CA good for a short time (seconds / 1000) - yeah, I know...
             while ((!completed) && (count < MAX_COUNT)) {
                 try {
                     origRoot = createAndStoreCAShort(ca, seconds);
+                    // yay! it worked!
                     completed = true;
                 } catch (Exception f) {
+                    System.out.println("" + count + ": Error creating new root CA: " + f.getMessage());
+                    // darn, try again and extend the valid period by a factor of 2
                     count = count + 1;
                     seconds = seconds * TIME_MULTIPLIER;
                 }
             }
+            // sleep until the cert is expired
             Thread.sleep(seconds + 500);
 
+            // ask for a new cert good for five days from the present
             GregorianCalendar cal = new GregorianCalendar();
             Date start = cal.getTime();
             cal.add(Calendar.DAY_OF_MONTH, 5);
             Date end = cal.getTime();
+            
+            // the ca should notice it's cert is expired and renew it
             assertNotSame(origRoot, ca.getCACertificate());
+            
+            // and we should be able to get a user cert from it
             submitCertificateRequest(ca, SUBJECT_PREFIX, start, end);
         } catch (Exception e) {
             FaultUtil.printFault(e);
-            assertTrue(false);
+            fail(e.getMessage());
         } finally {
             try {
                 ca.clearCertificateAuthority();
@@ -434,7 +432,6 @@ public class TestCertificateAuthority extends TestCase {
 
 
     public void testExpiredCACredentialsNoRenewal() {
-
         CertificateAuthority ca = null;
         try {
             CertificateAuthorityProperties conf = getDorianCAConfNoAutoRenewalLong();
@@ -460,7 +457,7 @@ public class TestCertificateAuthority extends TestCase {
             Thread.sleep(seconds + 500);
             try {
                 ca.getCACertificate();
-                assertTrue(false);
+                fail("Should have failed to get ca certificate");
             } catch (NoCACredentialsFault f) {
 
             }
@@ -476,7 +473,7 @@ public class TestCertificateAuthority extends TestCase {
             }
         } catch (Exception e) {
             FaultUtil.printFault(e);
-            assertTrue(false);
+            fail(e.getMessage());
         } finally {
             try {
                 ca.clearCertificateAuthority();
@@ -492,8 +489,6 @@ public class TestCertificateAuthority extends TestCase {
         lifetime.setYears(5);
         lifetime.setMonths(0);
         lifetime.setDays(0);
-        CertificateAuthorityCreationPolicy creation = new CertificateAuthorityCreationPolicy(SUBJECT_PREFIX
-            + "Temp Certificate Authority", 2048, lifetime);
         CertificateAuthorityProperties conf = new CertificateAuthorityProperties("password", null, 
             CertificateAuthorityProperties.DEFAULT_SIGNATURE_ALGORITHM, 1024, false, 
             null, true, lifetime);
@@ -540,6 +535,7 @@ public class TestCertificateAuthority extends TestCase {
 
 
     private X509Certificate createAndStoreCAShort(CertificateAuthority ca, int seconds) throws Exception {
+        // TODO: why is this 2048 when the other one is 1024?
         KeyPair rootPair = KeyUtil.generateRSAKeyPair2048(ca.getCACredentialsProvider());
         assertNotNull(rootPair);
         String rootSub = SUBJECT_PREFIX + "Temp Certificate Authority";
@@ -573,26 +569,23 @@ public class TestCertificateAuthority extends TestCase {
 
 
     protected void setUp() throws Exception {
-        super.setUp();
         try {
             db = Utils.getDB();
             assertEquals(0, db.getUsedConnectionCount());
             CredentialsManager.CREDENTIALS_TABLE = TABLE;
         } catch (Exception e) {
             FaultUtil.printFault(e);
-            assertTrue(false);
+            fail(e.getMessage());
         }
     }
 
 
     protected void tearDown() throws Exception {
-        super.setUp();
         try {
             assertEquals(0, db.getUsedConnectionCount());
         } catch (Exception e) {
             FaultUtil.printFault(e);
-            assertTrue(false);
+            fail(e.getMessage());
         }
     }
-
 }

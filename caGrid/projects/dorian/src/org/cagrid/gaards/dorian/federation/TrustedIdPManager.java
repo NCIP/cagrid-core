@@ -5,7 +5,6 @@ import gov.nih.nci.cagrid.common.Utils;
 import gov.nih.nci.cagrid.opensaml.SAMLAssertion;
 import gov.nih.nci.cagrid.opensaml.SAMLException;
 
-import java.io.StringReader;
 import java.net.URL;
 import java.security.cert.X509Certificate;
 import java.sql.Connection;
@@ -845,10 +844,10 @@ public class TrustedIdPManager {
             fault.setFaultString("Invalid Trusted IdP, no IdP certificate specified.");
             throw fault;
         }
-        StringReader reader = new StringReader(idp.getIdPCertificate());
+        String certStr = idp.getIdPCertificate();
         X509Certificate cert = null;
         try {
-            cert = CertUtil.loadCertificate(reader);
+            cert = CertUtil.loadCertificate(certStr);
         } catch (Exception e) {
             LOG.error(e.getMessage(), e);
             InvalidTrustedIdPFault fault = new InvalidTrustedIdPFault();
@@ -864,9 +863,7 @@ public class TrustedIdPManager {
             fault.setFaultString("The IdP Certificate specified is expired.");
             throw fault;
         }
-
         return cert;
-
     }
 
 
