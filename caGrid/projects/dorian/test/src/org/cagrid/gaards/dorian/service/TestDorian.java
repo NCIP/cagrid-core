@@ -915,7 +915,7 @@ public class TestDorian extends TestCase {
         }
         assertEquals(CertUtil.getSubjectDN(cert), identityToSubject(cred.getIdentity()));
         assertEquals(expectedIdentity, cred.getIdentity());
-        assertEquals(getCA().getCACertificate().getSubjectDN(), cert.getIssuerDN());
+        assertEquals(CertUtil.getSubjectDN(getCA().getCACertificate()), CertUtil.getIssuerDN(cert));
         cred.verify();
     }
 
