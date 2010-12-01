@@ -48,7 +48,6 @@ import org.bouncycastle.asn1.x509.X509Extensions;
 import org.bouncycastle.asn1.x509.X509Name;
 import org.bouncycastle.jce.PKCS10CertificationRequest;
 import org.bouncycastle.jce.X509Principal;
-import org.bouncycastle.openssl.PEMReader;
 import org.bouncycastle.x509.X509V2CRLGenerator;
 import org.bouncycastle.x509.X509V3CertificateGenerator;
 import org.globus.util.Base64;
@@ -608,10 +607,7 @@ public class CertUtil {
      */
     public static String getSubjectDN(X509Certificate cert) {
         String dn = cert.getSubjectDN().toString();
-        if (dn != null && dn.startsWith("CN=")) {
-            dn = reverseDN(dn);
-        }
-        return dn;
+        return globusFormatDN(dn);
     }
     
     
@@ -628,6 +624,11 @@ public class CertUtil {
      */
     public static String getIssuerDN(X509Certificate cert) {
         String dn = cert.getIssuerDN().toString();
+        return globusFormatDN(dn);
+    }
+    
+    
+    public static String globusFormatDN(String dn) {
         if (dn != null && dn.startsWith("CN=")) {
             dn = reverseDN(dn);
         }
