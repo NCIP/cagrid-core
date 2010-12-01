@@ -61,7 +61,7 @@ public class TestGTS extends TestCase {
 			assertEquals(0, gts.getDatabase().getUsedConnectionCount());
 		} catch (Exception e) {
 			FaultUtil.printFault(e);
-			assertTrue(false);
+			fail();
 		}
 	}
 
@@ -128,7 +128,7 @@ public class TestGTS extends TestCase {
 
 		} catch (Exception e) {
 			FaultUtil.printFault(e);
-			assertTrue(false);
+			fail();
 		} finally {
 			try {
 				gts.clearDatabase();
@@ -165,7 +165,7 @@ public class TestGTS extends TestCase {
 			addTrustLevels(gts, ADMIN_USER);
 			CA ca = new CA();
 			TrustedAuthority ta = new TrustedAuthority();
-			ta.setName(ca.getCertificate().getSubjectDN().toString());
+			ta.setName(CertUtil.getSubjectDN(ca.getCertificate()));
 			ta.setCertificate(new X509Certificate(CertUtil.writeCertificate(ca.getCertificate())));
 			ta.setStatus(Status.Trusted);
 			ta.setTrustLevels(toTrustLevels(LEVEL_ONE));
@@ -229,7 +229,7 @@ public class TestGTS extends TestCase {
 				gts.addPermission(p, user);
 				fail("Non trust service administrators should not be able to add a permission!!!");
 			} catch (PermissionDeniedFault f) {
-
+			    
 			}
 
 			try {
@@ -321,7 +321,7 @@ public class TestGTS extends TestCase {
 
 		} catch (Exception e) {
 			FaultUtil.printFault(e);
-			assertTrue(false);
+			fail();
 		} finally {
 			if (gts != null) {
 				try {
@@ -358,7 +358,7 @@ public class TestGTS extends TestCase {
             addTrustLevels(gts, ADMIN_USER);
             CA ca = new CA();
             TrustedAuthority ta = new TrustedAuthority();
-            ta.setName(ca.getCertificate().getSubjectDN().toString());
+            ta.setName(CertUtil.getSubjectDN(ca.getCertificate()));
             ta.setCertificate(new X509Certificate(CertUtil.writeCertificate(ca.getCertificate())));
             ta.setStatus(Status.Trusted);
             ta.setTrustLevels(toTrustLevels(LEVEL_ONE));
@@ -397,7 +397,7 @@ public class TestGTS extends TestCase {
            
         } catch (Exception e) {
             FaultUtil.printFault(e);
-            assertTrue(false);
+            fail();
         } finally {
             if (gts != null) {
                 try {
@@ -428,7 +428,7 @@ public class TestGTS extends TestCase {
 			CRLEntry entry = new CRLEntry(sn, CRLReason.PRIVILEGE_WITHDRAWN);
 			ca.updateCRL(entry);
 			TrustedAuthority ta = new TrustedAuthority();
-			ta.setName(ca.getCertificate().getSubjectDN().toString());
+			ta.setName(CertUtil.getSubjectDN(ca.getCertificate()));
 			ta.setCertificate(new X509Certificate(CertUtil.writeCertificate(ca.getCertificate())));
 			ta.setCRL(new X509CRL(CertUtil.writeCRL(ca.getCRL())));
 			ta.setStatus(Status.Trusted);
@@ -445,7 +445,7 @@ public class TestGTS extends TestCase {
 			gts.clearDatabase();
 		} catch (Exception e) {
 			FaultUtil.printFault(e);
-			assertTrue(false);
+			fail();
 		} finally {
 			if (gts != null) {
 				try {
@@ -480,7 +480,7 @@ public class TestGTS extends TestCase {
 			CRLEntry entry = new CRLEntry(sn, CRLReason.PRIVILEGE_WITHDRAWN);
 			ca.updateCRL(entry);
 			TrustedAuthority ta = new TrustedAuthority();
-			ta.setName(ca.getCertificate().getSubjectDN().toString());
+			ta.setName(CertUtil.getSubjectDN(ca.getCertificate()));
 			ta.setCertificate(new X509Certificate(CertUtil.writeCertificate(ca.getCertificate())));
 			ta.setCRL(new X509CRL(CertUtil.writeCRL(ca.getCRL())));
 			ta.setStatus(Status.Trusted);
@@ -549,7 +549,7 @@ public class TestGTS extends TestCase {
 			// Now Create a new Trust Authority
 			CA ca2 = new CA();
 			TrustedAuthority ta2 = new TrustedAuthority();
-			ta2.setName(ca2.getCertificate().getSubjectDN().toString());
+			ta2.setName(CertUtil.getSubjectDN(ca2.getCertificate()));
 			ta2.setCertificate(new X509Certificate(CertUtil.writeCertificate(ca2.getCertificate())));
 			ta2.setStatus(Status.Trusted);
 			ta2.setTrustLevels(toTrustLevels(LEVEL_ONE));
@@ -566,7 +566,7 @@ public class TestGTS extends TestCase {
 			gts.clearDatabase();
 		} catch (Exception e) {
 			FaultUtil.printFault(e);
-			assertTrue(false);
+			fail();
 		} finally {
 			if (gts != null) {
 				try {
@@ -604,7 +604,7 @@ public class TestGTS extends TestCase {
 			X509Certificate userCert = new X509Certificate(CertUtil.writeCertificate(ca.createIdentityCertificate(
 				"User Y").getCertificate()));
 			TrustedAuthority ta = new TrustedAuthority();
-			ta.setName(ca.getCertificate().getSubjectDN().toString());
+			ta.setName(CertUtil.getSubjectDN(ca.getCertificate()));
 			ta.setCertificate(new X509Certificate(CertUtil.writeCertificate(ca.getCertificate())));
 			ta.setCRL(new X509CRL(CertUtil.writeCRL(ca.getCRL())));
 			ta.setStatus(Status.Trusted);
@@ -633,7 +633,7 @@ public class TestGTS extends TestCase {
 
 		} catch (Exception e) {
 			FaultUtil.printFault(e);
-			assertTrue(false);
+			fail();
 		} finally {
 			if (gts != null) {
 				try {
@@ -776,7 +776,7 @@ public class TestGTS extends TestCase {
 			X509Certificate userCert = new X509Certificate(CertUtil.writeCertificate(ca.createIdentityCertificate(
 				"User Y").getCertificate()));
 			TrustedAuthority ta = new TrustedAuthority();
-			ta.setName(ca.getCertificate().getSubjectDN().toString());
+			ta.setName(CertUtil.getSubjectDN(ca.getCertificate()));
 			ta.setCertificate(new X509Certificate(CertUtil.writeCertificate(ca.getCertificate())));
 			ta.setCRL(new X509CRL(CertUtil.writeCRL(ca.getCRL())));
 			ta.setStatus(Status.Trusted);
@@ -888,7 +888,7 @@ public class TestGTS extends TestCase {
 			assertTrue(gts.validate(userCert, new TrustedAuthorityFilter()));
 		} catch (Exception e) {
 			FaultUtil.printFault(e);
-			assertTrue(false);
+			fail();
 		} finally {
 			if (gts != null) {
 				try {
@@ -922,7 +922,7 @@ public class TestGTS extends TestCase {
 			CRLEntry entry = new CRLEntry(sn, CRLReason.PRIVILEGE_WITHDRAWN);
 			ca.updateCRL(entry);
 			TrustedAuthority ta = new TrustedAuthority();
-			ta.setName(ca.getCertificate().getSubjectDN().toString());
+			ta.setName(CertUtil.getSubjectDN(ca.getCertificate()));
 			ta.setCertificate(new X509Certificate(CertUtil.writeCertificate(ca.getCertificate())));
 			ta.setCRL(new X509CRL(CertUtil.writeCRL(ca.getCRL())));
 			ta.setStatus(Status.Trusted);
@@ -1006,7 +1006,7 @@ public class TestGTS extends TestCase {
 			}
 		} catch (Exception e) {
 			FaultUtil.printFault(e);
-			assertTrue(false);
+			fail();
 		} finally {
 			if (gts != null) {
 				try {
@@ -1120,7 +1120,7 @@ public class TestGTS extends TestCase {
 
 		} catch (Exception e) {
 			FaultUtil.printFault(e);
-			assertTrue(false);
+			fail();
 		} finally {
 			if (gts != null) {
 				try {
@@ -1289,7 +1289,7 @@ public class TestGTS extends TestCase {
 
 		} catch (Exception e) {
 			FaultUtil.printFault(e);
-			assertTrue(false);
+			fail();
 		} finally {
 			if (gts != null) {
 				try {
@@ -1408,7 +1408,7 @@ public class TestGTS extends TestCase {
 			// after we sync to nothing
 			TrustedAuthority ta = new TrustedAuthority();
 			CA ca = new CA();
-			ta.setName(ca.getCertificate().getSubjectDN().toString());
+			ta.setName(CertUtil.getSubjectDN(ca.getCertificate()));
 			ta.setCertificate(new X509Certificate(CertUtil.writeCertificate(ca.getCertificate())));
 			ta.setStatus(Status.Trusted);
 			ta.setTrustLevels(toTrustLevels(remote1[1].getName()));
@@ -1443,7 +1443,7 @@ public class TestGTS extends TestCase {
 
 		} catch (Exception e) {
 			FaultUtil.printFault(e);
-			assertTrue(false);
+			fail();
 		} finally {
 			if (gts != null) {
 				try {
@@ -1478,7 +1478,7 @@ public class TestGTS extends TestCase {
 		CA ca = new CA(dn);
 		Calendar c = new GregorianCalendar();
 		c.add(Calendar.HOUR, 1);
-		String name = ca.getCertificate().getSubjectDN().toString();
+		String name = CertUtil.getSubjectDN(ca.getCertificate());
 		BigInteger sn = new BigInteger(String.valueOf(System.currentTimeMillis()));
 		CRLEntry entry = new CRLEntry(sn, CRLReason.PRIVILEGE_WITHDRAWN);
 		ca.updateCRL(entry);

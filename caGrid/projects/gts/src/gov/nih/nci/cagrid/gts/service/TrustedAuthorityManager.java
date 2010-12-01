@@ -62,10 +62,9 @@ public class TrustedAuthorityManager {
 
 
 	public synchronized TrustedAuthority[] findTrustAuthorities(TrustedAuthorityFilter filter) throws GTSInternalFault {
-
 		this.buildDatabase();
 		Connection c = null;
-		List authorities = new ArrayList();
+		List<TrustedAuthority> authorities = new ArrayList<TrustedAuthority>();
 		TrustedAuthoritySelectStatement select = new TrustedAuthoritySelectStatement();
 		select.addSelectField("*");
 		try {
@@ -156,10 +155,9 @@ public class TrustedAuthorityManager {
 
 			TrustedAuthority[] list = new TrustedAuthority[authorities.size()];
 			for (int i = 0; i < authorities.size(); i++) {
-				list[i] = (TrustedAuthority) authorities.get(i);
+				list[i] = authorities.get(i);
 			}
 			return list;
-
 		} catch (Exception e) {
 			this.log.error("Unexpected database error incurred in finding trusted authorities: " + e.getMessage(), e);
 			GTSInternalFault fault = new GTSInternalFault();
@@ -179,7 +177,6 @@ public class TrustedAuthorityManager {
 
 	public synchronized void updateTrustedAuthority(TrustedAuthority ta, boolean internal) throws GTSInternalFault,
 		IllegalTrustedAuthorityFault, InvalidTrustedAuthorityFault {
-
 		TrustedAuthority curr = this.getTrustedAuthority(ta.getName());
 		StringBuffer sql = new StringBuffer();
 		boolean needsUpdate = false;
@@ -212,9 +209,7 @@ public class TrustedAuthorityManager {
 				fault.setFaultString("The source trust service for a Trusted Authority cannot be changed");
 				throw fault;
 			}
-
 		} else {
-
 			if ((curr.getIsAuthority().booleanValue()) && (!ta.getAuthorityGTS().equals(gtsURI))) {
 				IllegalTrustedAuthorityFault fault = new IllegalTrustedAuthorityFault();
 				fault.setFaultString("The Trusted Authority " + ta.getName()
@@ -233,15 +228,15 @@ public class TrustedAuthorityManager {
 				if ((clean(ta.getCertificate().getCertificateEncodedString()) != null)
 					&& (!ta.getCertificate().equals(curr.getCertificate()))) {
 					X509Certificate cert = checkAndExtractCertificate(ta);
-					if ((!ta.getName().equals(cert.getSubjectDN().toString()))) {
+					if ((!ta.getName().equals(CertUtil.getSubjectDN(cert)))) {
 						IllegalTrustedAuthorityFault fault = new IllegalTrustedAuthorityFault();
-						fault
-							.setFaultString("The Trusted Authority Name must match the subject of the Trusted Authority's certificate");
+						fault.setFaultString(
+						    "The Trusted Authority Name must match the subject of the Trusted Authority's certificate");
 						throw fault;
 					}
 
-					update.addField(TrustedAuthorityTable.CERTIFICATE, ta.getCertificate()
-						.getCertificateEncodedString());
+					update.addField(TrustedAuthorityTable.CERTIFICATE, 
+					    ta.getCertificate().getCertificateEncodedString());
 					needsUpdate = true;
 				}
 			}
@@ -255,7 +250,6 @@ public class TrustedAuthorityManager {
 				update.addField(TrustedAuthorityTable.EXPIRES, Long.valueOf(ta.getExpires()));
 				needsUpdate = true;
 			}
-
 		}
 
 		if ((ta.getIsAuthority() != null) && (!ta.getIsAuthority().equals(curr.getIsAuthority()))) {
@@ -263,8 +257,6 @@ public class TrustedAuthorityManager {
 			fault.setFaultString("The authority trust service for a Trusted Authority cannot be changed");
 			throw fault;
 		}
-		
-		
 
 		if (ta.getCRL() != null) {
 			if ((clean(ta.getCRL().getCrlEncodedString()) != null) && (!ta.getCRL().equals(curr.getCRL()))) {
@@ -277,9 +269,9 @@ public class TrustedAuthorityManager {
 				update.addField(TrustedAuthorityTable.CRL, ta.getCRL().getCrlEncodedString());
 				needsUpdate = true;
 			}
-		}else{
-			if(!internal){
-				if(curr.getCRL()!=null){
+		} else {
+			if (!internal) {
+				if (curr.getCRL() != null) {
 					update.addField(TrustedAuthorityTable.CRL, "");
 					needsUpdate = true;
 				}
@@ -326,7 +318,6 @@ public class TrustedAuthorityManager {
 				}
 			}
 		}
-
 	}
 
 
@@ -485,7 +476,7 @@ public class TrustedAuthorityManager {
 			c = db.getConnection();
 			PreparedStatement s = c.prepareStatement(insert.toString());
 			s.setString(1, ta.getName());
-			s.setString(2, cert.getSubjectDN().toString());
+			s.setString(2, CertUtil.getSubjectDN(cert));
 			s.setString(3, ta.getStatus().getValue());
 			s.setString(4, String.valueOf(ta.getIsAuthority().booleanValue()));
 			s.setString(5, ta.getAuthorityGTS());
@@ -526,13 +517,13 @@ public class TrustedAuthorityManager {
 		throws GTSInternalFault, IllegalTrustedAuthorityFault {
 		this.buildDatabase();
 		X509Certificate cert = checkAndExtractCertificate(ta);
-		if ((ta.getName() != null) && (!ta.getName().equals(cert.getSubjectDN().toString()))) {
+		if ((ta.getName() != null) && (!ta.getName().equals(CertUtil.getSubjectDN(cert)))) {
 			IllegalTrustedAuthorityFault fault = new IllegalTrustedAuthorityFault();
-			fault
-				.setFaultString("The Trusted Authority Name must match the subject of the Trusted Authority's certificate");
+			fault.setFaultString(
+			    "The Trusted Authority Name must match the subject of the Trusted Authority's certificate");
 			throw fault;
 		} else {
-			ta.setName(cert.getSubjectDN().toString());
+			ta.setName(CertUtil.getSubjectDN(cert));
 		}
 
 		if (this.doesTrustedAuthorityExist(ta.getName())) {
@@ -621,7 +612,7 @@ public class TrustedAuthorityManager {
 		} else if (levels1.length != levels2.length) {
 			return false;
 		} else {
-			Set s = new HashSet();
+			Set<String> s = new HashSet<String>();
 			for (int i = 0; i < levels1.length; i++) {
 				s.add(levels1[i]);
 			}
@@ -637,7 +628,7 @@ public class TrustedAuthorityManager {
 	}
 
 
-	public boolean hasTrustLevels(String name, String level) throws GTSInternalFault, InvalidTrustedAuthorityFault {
+	public boolean hasTrustLevels(String name, String level) throws GTSInternalFault {
 		Connection c = null;
 		try {
 			boolean hasLevel = false;
@@ -670,10 +661,10 @@ public class TrustedAuthorityManager {
 	}
 
 
-	public synchronized TrustLevels getTrustLevels(String name) throws GTSInternalFault, InvalidTrustedAuthorityFault {
+	public synchronized TrustLevels getTrustLevels(String name) throws GTSInternalFault {
 		Connection c = null;
 		try {
-			List list = new ArrayList();
+			List<String> list = new ArrayList<String>();
 			c = db.getConnection();
 			PreparedStatement s = c.prepareStatement("select * from " + TrustedAuthorityTrustLevelsTable.TABLE_NAME
 				+ " where " + TrustedAuthorityTrustLevelsTable.NAME + "= ?");
@@ -687,7 +678,7 @@ public class TrustedAuthorityManager {
 			TrustLevels tl = new TrustLevels();
 			String[] levels = new String[list.size()];
 			for (int i = 0; i < levels.length; i++) {
-				levels[i] = (String) list.get(i);
+				levels[i] = list.get(i);
 			}
 			tl.setTrustLevel(levels);
 			return tl;
@@ -695,8 +686,7 @@ public class TrustedAuthorityManager {
 			this.log.error("Unexpected database error incurred in getting the trust levels for the Trusted Authority, "
 				+ name + ":\n", e);
 			GTSInternalFault fault = new GTSInternalFault();
-			fault
-				.setFaultString("Unexpected database error incurred in getting the trust levels for the Trusted Authority, "
+			fault.setFaultString("Unexpected database error incurred in getting the trust levels for the Trusted Authority, "
 					+ name + "!!!");
 			throw fault;
 		} finally {
@@ -706,7 +696,7 @@ public class TrustedAuthorityManager {
 
 
 	public synchronized void addTrustLevels(String name, TrustLevels tl) throws GTSInternalFault,
-		InvalidTrustedAuthorityFault, IllegalTrustedAuthorityFault {
+		IllegalTrustedAuthorityFault {
 		if (tl != null) {
 			String[] levels = tl.getTrustLevel();
 			if ((levels != null) && (levels.length > 0)) {
@@ -721,7 +711,6 @@ public class TrustedAuthorityManager {
 			}
 			removeTrustedAuthoritysTrustLevels(name);
 			if ((levels != null) && (levels.length > 0)) {
-
 				Connection c = null;
 				try {
 					c = db.getConnection();
@@ -755,8 +744,7 @@ public class TrustedAuthorityManager {
 	}
 
 
-	public synchronized void removeTrustedAuthoritysTrustLevels(String name) throws GTSInternalFault,
-		InvalidTrustedAuthorityFault {
+	public synchronized void removeTrustedAuthoritysTrustLevels(String name) throws GTSInternalFault {
 		Connection c = null;
 		try {
 			c = db.getConnection();
@@ -804,7 +792,6 @@ public class TrustedAuthorityManager {
 	private X509CRL checkAndExtractCRL(TrustedAuthority ta, X509Certificate signer) throws IllegalTrustedAuthorityFault {
 		X509CRL crl = null;
 		if (ta.getCRL() != null) {
-
 			if (ta.getCRL().getCrlEncodedString() != null) {
 				try {
 					crl = CertUtil.loadCRL(ta.getCRL().getCrlEncodedString());
@@ -820,10 +807,8 @@ public class TrustedAuthorityManager {
 					fault.setFaultString("The CRL provided is not signed by the Trusted Authority!!!");
 					throw fault;
 				}
-
 			}
 		}
-
 		return crl;
 	}
 
