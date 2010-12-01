@@ -65,7 +65,7 @@ public class TestProxyCreator extends TestCase {
 			assertNotNull(cred);
 			long timeLeft = cred.getTimeLeft();
 			assertEquals(CertUtil.getSubjectDN(cert), identityToSubject(cred.getIdentity()));
-			assertEquals(cred.getIssuer(), identityToSubject(cred.getIdentity()));
+			assertEquals(CertUtil.globusFormatDN(cred.getIssuer()), identityToSubject(cred.getIdentity()));
 			assertEquals(length, CertificateExtensionsUtil.getDelegationPathLength(certs[0]));
 
 			long okMax = hours * 60 * 60;
