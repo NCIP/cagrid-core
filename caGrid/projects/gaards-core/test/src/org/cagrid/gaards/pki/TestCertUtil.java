@@ -6,7 +6,6 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStream;
 import java.security.KeyPair;
-import java.security.Principal;
 import java.security.PrivateKey;
 import java.security.cert.X509CRL;
 import java.security.cert.X509Certificate;
@@ -14,15 +13,11 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 
-import javax.security.auth.x500.X500Principal;
-
 import junit.framework.TestCase;
 
 import org.bouncycastle.asn1.x509.CRLReason;
 import org.bouncycastle.asn1.x509.X509Name;
 import org.bouncycastle.jce.PKCS10CertificationRequest;
-
-import sun.security.x509.X500Name;
 
 /**
  * @author <A href="mailto:langella@bmi.osu.edu">Stephen Langella </A>
