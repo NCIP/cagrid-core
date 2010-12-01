@@ -17,8 +17,6 @@ import gov.nih.nci.security.authentication.principal.LastNamePrincipal;
 import gov.nih.nci.security.authentication.principal.LoginIdPrincipal;
 
 import java.io.File;
-import java.io.FileReader;
-import java.io.Reader;
 import java.security.Principal;
 import java.security.PrivateKey;
 import java.security.cert.X509Certificate;
@@ -59,8 +57,7 @@ public class DefaultSAMLProvider implements
 	    if(!certFile.exists()){
 		throw new Exception("Certificate file not found at: " + certFile.getAbsolutePath());
 	    }
-	    Reader certReader = new FileReader(certFile);
-	    X509Certificate cert = CertUtil.loadCertificate(certReader);
+	    X509Certificate cert = CertUtil.loadCertificate(certFile);
 	    if(cert == null){
 		throw new Exception("Failed to load certificate.");
 	    }
