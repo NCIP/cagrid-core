@@ -5,6 +5,7 @@ import gov.nih.nci.cagrid.common.security.SecurityConstants;
 import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -24,6 +25,8 @@ import java.security.NoSuchProviderException;
 import java.security.PrivateKey;
 import java.security.PublicKey;
 import java.security.SignatureException;
+import java.security.cert.CertificateException;
+import java.security.cert.CertificateFactory;
 import java.security.cert.X509CRL;
 import java.security.cert.X509Certificate;
 import java.util.Date;
@@ -286,103 +289,87 @@ public class CertUtil {
 
 
     /**
-     * Just a facade to loadCertificate(Reader)
+     * Just a facade to loadCertificate(InputStream)
      * 
      * @param certLocation
      * @return
      * @throws IOException
+     * @throws NoSuchProviderException 
+     * @throws CertificateException 
      */
-    public static X509Certificate loadCertificate(File certLocation) throws IOException {
-        return loadCertificate(new FileReader(certLocation));
+    public static X509Certificate loadCertificate(File certLocation) throws IOException, CertificateException, NoSuchProviderException {
+        return loadCertificate(null, certLocation);
     }
 
 
     /**
-     * Just a facade to loadCertificate(Reader)
+     * Just a facade to loadCertificate(InputStream)
      * 
      * @param certLocation
      * @return
      * @throws IOException
+     * @throws NoSuchProviderException 
+     * @throws CertificateException 
      */
-    public static X509Certificate loadCertificate(InputStream certLocation) throws IOException {
-        return loadCertificate(new InputStreamReader(certLocation));
-    }
-
-
-    /**
-     * Just a facade to loadCertificate(Reader)
-     * 
-     * @param certLocation
-     * @return
-     * @throws IOException
-     */
-    public static X509Certificate loadCertificate(String str) throws IOException {
-        return CertUtil.loadCertificate(new StringReader(str));
+    public static X509Certificate loadCertificate(String str) throws IOException, CertificateException, NoSuchProviderException {
+        return CertUtil.loadCertificate(new ByteArrayInputStream(str.getBytes()));
     }
     
     
     /**
-     * Loads a certificate from the reader using any available crypto provider
+     * Just a facade to loadCertificate(String, InputStream)
      * 
-     * @param in
+     * @param certLocation
      * @return
      * @throws IOException
+     * @throws NoSuchProviderException 
+     * @throws CertificateException 
      */
-    public static X509Certificate loadCertificate(Reader in) throws IOException {
-        // call the load certificate w/ null provider defined so the certificate 
-        // factory will do the default thing and find one for the algorithm
-        return CertUtil.loadCertificate(null, in);
+    public static X509Certificate loadCertificate(InputStream certLocation) throws IOException, CertificateException, NoSuchProviderException {
+        return loadCertificate(null, certLocation);
     }
 
 
     /**
-     * Just a facade to loadCertificate(String, Reader)
+     * Just a facade to loadCertificate(String, InputStream)
      * 
      * @param provider
      * @param certLocation
      * @return
      * @throws IOException
+     * @throws NoSuchProviderException 
+     * @throws CertificateException 
      */
-    public static X509Certificate loadCertificate(String provider, File certLocation) throws IOException {
-        return loadCertificate(provider, new FileReader(certLocation));
+    public static X509Certificate loadCertificate(String provider, File certLocation) throws IOException, CertificateException, NoSuchProviderException {
+        FileInputStream fis = new FileInputStream(certLocation);
+        X509Certificate cert = loadCertificate(provider, fis);
+        fis.close();
+        return cert;
     }
 
 
     /**
-     * Just a facade to loadCertificate(String, Reader)
+     * Just a facade to loadCertificate(String, InputStream)
      * 
      * @param provider
      * @param certLocation
      * @return
      * @throws IOException
+     * @throws NoSuchProviderException 
+     * @throws CertificateException 
      */
-    public static X509Certificate loadCertificate(String provider, InputStream certLocation) throws IOException {
-        return loadCertificate(provider, new InputStreamReader(certLocation));
+    public static X509Certificate loadCertificate(String provider, String str) throws IOException, CertificateException, NoSuchProviderException {
+        return CertUtil.loadCertificate(provider, new ByteArrayInputStream(str.getBytes()));
     }
 
 
-    /**
-     * Just a facade to loadCertificate(String, Reader)
-     * 
-     * @param provider
-     * @param certLocation
-     * @return
-     * @throws IOException
-     */
-    public static X509Certificate loadCertificate(String provider, String str) throws IOException {
-        return CertUtil.loadCertificate(provider, new StringReader(str));
-    }
-
-
-    public static X509Certificate loadCertificate(String provider, Reader in) throws IOException {
-        // there is a PEMReader(Reader, PasswordFinder), but it defaults the provider to "BC"
+    public static X509Certificate loadCertificate(String provider, InputStream in) throws IOException, CertificateException, NoSuchProviderException {
         if (provider == null) {
             // Default the provider to the CERT_PROVIDER
             provider = SecurityConstants.CERT_PROVIDER;
         }
-        PEMReader reader = new PEMReader(in, null, provider);
-        X509Certificate cert = (X509Certificate) reader.readObject();
-        reader.close();
+        CertificateFactory certFactory = CertificateFactory.getInstance("X.509", provider);
+        X509Certificate cert = (X509Certificate) certFactory.generateCertificate(in);
         return cert;
     }
 
