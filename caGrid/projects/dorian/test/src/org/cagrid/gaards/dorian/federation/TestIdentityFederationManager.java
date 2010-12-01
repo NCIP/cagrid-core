@@ -21,6 +21,8 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
+import java.util.Stack;
+import java.util.StringTokenizer;
 
 import javax.xml.namespace.QName;
 
@@ -2559,7 +2561,7 @@ public class TestIdentityFederationManager extends TestCase {
         assertTrue(timeLeft <= max);
         assertEquals(expectedIdentity, cred.getIdentity());
         assertEquals(CertUtil.getSubjectDN(cert), identityToSubject(cred.getIdentity()));
-        assertEquals(cred.getIssuer(), CertUtil.getSubjectDN(ca.getCACertificate()));
+        assertEquals(CertUtil.globusFormatDN(cred.getIssuer()), CertUtil.getSubjectDN(ca.getCACertificate()));
         cred.verify();
     }
 
@@ -2644,7 +2646,5 @@ public class TestIdentityFederationManager extends TestCase {
         public List<X509Certificate> getUserCerts() {
             return userCerts;
         }
-
     }
-
 }
