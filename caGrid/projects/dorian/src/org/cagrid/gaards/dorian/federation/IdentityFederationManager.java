@@ -313,7 +313,7 @@ public class IdentityFederationManager implements Publisher {
             fault.setFaultString("No credentials specified.");
             throw fault;
         }
-        TrustedIdP idp = tm.getTrustedIdPByDN(idpCert.getSubjectDN().getName());
+        TrustedIdP idp = tm.getTrustedIdPByDN(CertUtil.getSubjectDN(idpCert));
         GridUser usr = um.getUser(identity);
         if (usr.getIdPId() != idp.getId()) {
             PermissionDeniedFault fault = new PermissionDeniedFault();
@@ -524,7 +524,7 @@ public class IdentityFederationManager implements Publisher {
 
     public void removeUserByLocalIdIfExists(X509Certificate idpCert, String localId) throws DorianInternalFault {
         try {
-            TrustedIdP idp = tm.getTrustedIdPByDN(idpCert.getSubjectDN().getName());
+            TrustedIdP idp = tm.getTrustedIdPByDN(CertUtil.getSubjectDN(idpCert));
             GridUser usr = um.getUser(idp.getId(), localId);
             removeUser(usr);
             this.eventManager.logEvent(usr.getGridId(), AuditConstants.SYSTEM_ID, FederationAudit.AccountRemoved
@@ -537,7 +537,7 @@ public class IdentityFederationManager implements Publisher {
             LOG.error(f.getFaultString(), f);
             DorianInternalFault fault = new DorianInternalFault();
             fault.setFaultString("An unexpected error occurred removing the grid user, the IdP "
-                + idpCert.getSubjectDN().getName() + " could not be resolved!!!");
+                + CertUtil.getSubjectDN(idpCert) + " could not be resolved!!!");
             throw fault;
         }
     }
@@ -773,8 +773,8 @@ public class IdentityFederationManager implements Publisher {
         String gid = null;
 
         try {
-            gid = CommonUtils.subjectToIdentity(UserManager.getUserSubject(this.conf.getIdentityAssignmentPolicy(), ca
-                .getCACertificate().getSubjectDN().getName(), idp, uid));
+            gid = CommonUtils.subjectToIdentity(UserManager.getUserSubject(this.conf.getIdentityAssignmentPolicy(), 
+                CertUtil.getSubjectDN(ca.getCACertificate()), idp, uid));
         } catch (Exception e) {
             String msg = "An unexpected error occurred in determining the grid identity for the user.";
             this.eventManager.logEvent(AuditConstants.SYSTEM_ID, AuditConstants.SYSTEM_ID,
@@ -961,7 +961,7 @@ public class IdentityFederationManager implements Publisher {
 
         // create user certificate
         try {
-            String caSubject = ca.getCACertificate().getSubjectDN().getName();
+            String caSubject = CertUtil.getSubjectDN(ca.getCACertificate());
             String sub = um.getUserSubject(caSubject, idp, usr.getUID());
             Calendar c1 = new GregorianCalendar();
             c1.add(Calendar.SECOND, CERTIFICATE_START_OFFSET_SECONDS);
@@ -1213,7 +1213,7 @@ public class IdentityFederationManager implements Publisher {
                                 X509CRL crl = getCRL();
                                 gov.nih.nci.cagrid.gts.bean.X509CRL x509 = new gov.nih.nci.cagrid.gts.bean.X509CRL();
                                 x509.setCrlEncodedString(CertUtil.writeCRL(crl));
-                                String authName = ca.getCACertificate().getSubjectDN().getName();
+                                String authName = CertUtil.getSubjectDN(ca.getCACertificate());
                                 for (int i = 0; i < services.size(); i++) {
                                     String uri = services.get(i);
                                     try {
@@ -1232,9 +1232,7 @@ public class IdentityFederationManager implements Publisher {
                                                 + FaultUtil.printFaultToString(ex) + "\n\n"
                                                 + FaultUtil.printFaultToString(ex));
                                     }
-
                                 }
-
                             } catch (Exception e) {
                                 String msg = "Unexpected Error publishing the CRL!!!";
                                 LOG.error(msg, e);

@@ -16,6 +16,7 @@ import org.cagrid.gaards.dorian.common.Lifetime;
 import org.cagrid.gaards.dorian.stubs.types.InvalidHostCertificateFault;
 import org.cagrid.gaards.dorian.stubs.types.InvalidHostCertificateRequestFault;
 import org.cagrid.gaards.dorian.test.Utils;
+import org.cagrid.gaards.pki.CertUtil;
 import org.cagrid.gaards.pki.KeyUtil;
 import org.cagrid.tools.database.Database;
 
@@ -415,7 +416,7 @@ public class TestHostCertificateManager extends TestCase implements Publisher {
                 HostCertificateFilter f = new HostCertificateFilter();
                 f.setSubject("foobar");
                 assertEquals(0, hcm.findHostCertificates(f).size());
-                String caSubject = ca.getCACertificate().getSubjectDN().getName();
+                String caSubject = CertUtil.getSubjectDN(ca.getCACertificate());
                 int caindex = caSubject.lastIndexOf(",");
                 String caPreSub = caSubject.substring(0, caindex);
                 f.setSubject(caPreSub);
@@ -428,7 +429,7 @@ public class TestHostCertificateManager extends TestCase implements Publisher {
             // Test Find by Multiple
             try {
                 HostCertificateFilter f = new HostCertificateFilter();
-                String caSubject = ca.getCACertificate().getSubjectDN().getName();
+                String caSubject = CertUtil.getSubjectDN(ca.getCACertificate());
                 int caindex = caSubject.lastIndexOf(",");
                 String caPreSub = caSubject.substring(0, caindex);
                 f.setStatus(HostCertificateStatus.Active);

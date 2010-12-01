@@ -160,7 +160,7 @@ public class CreateCACertificate {
                 X509Certificate cert = CertUtil.generateCACertificate(new X509Name(sub), start, end, root);
                 ca.setCACredentials(cert, root.getPrivate(), null);
                 System.out.println("Successfully created the CA cerrtificate:");
-                System.out.println("Subject: " + cert.getSubjectDN());
+                System.out.println("Subject: " + CertUtil.getSubjectDN(cert));
                 System.out.println("Created: " + cert.getNotBefore());
                 System.out.println("Expires: " + cert.getNotAfter());
             }

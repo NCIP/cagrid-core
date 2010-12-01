@@ -20,6 +20,7 @@ import org.cagrid.gaards.dorian.service.PropertyManager;
 import org.cagrid.gaards.dorian.service.util.AddressValidator;
 import org.cagrid.gaards.dorian.stubs.types.DorianInternalFault;
 import org.cagrid.gaards.dorian.stubs.types.InvalidUserFault;
+import org.cagrid.gaards.pki.CertUtil;
 import org.cagrid.tools.database.Database;
 import org.cagrid.tools.database.DatabaseException;
 
@@ -490,7 +491,7 @@ public class UserManager {
             Connection c = null;
             try {
 
-                String caSubject = ca.getCACertificate().getSubjectDN().getName();
+                String caSubject = CertUtil.getSubjectDN(ca.getCACertificate());
                 user.setGridId(CommonUtils.subjectToIdentity(getUserSubject(caSubject, idp, user.getUID())));
                 user.setUserStatus(GridUserStatus.Pending);
                 try {

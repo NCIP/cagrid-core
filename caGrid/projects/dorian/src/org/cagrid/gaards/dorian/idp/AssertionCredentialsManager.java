@@ -164,7 +164,7 @@ public class AssertionCredentialsManager {
     private synchronized void createNewCredentials() throws Exception {
         // VALIDATE DN
         X509Certificate cacert = ca.getCACertificate();
-        String caSubject = cacert.getSubjectDN().getName();
+        String caSubject = CertUtil.getSubjectDN(cacert);
         int caindex = caSubject.lastIndexOf(",");
         String caPreSub = caSubject.substring(0, caindex);
 

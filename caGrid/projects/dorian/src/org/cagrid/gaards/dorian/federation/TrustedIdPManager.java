@@ -265,7 +265,7 @@ public class TrustedIdPManager {
             status = idp.getStatus().getValue();
         }
         X509Certificate currcert = validateAndGetCertificate(curr);
-        String certSubject = currcert.getSubjectDN().getName();
+        String certSubject = CertUtil.getSubjectDN(currcert);
         String certEncoded = curr.getIdPCertificate();
         if ((Utils.clean(idp.getIdPCertificate()) != null)
             && (!idp.getIdPCertificate().equals(curr.getIdPCertificate()))) {
@@ -277,7 +277,7 @@ public class TrustedIdPManager {
             }
 
             X509Certificate cert = validateAndGetCertificate(idp);
-            certSubject = cert.getSubjectDN().getName();
+            certSubject = CertUtil.getSubjectDN(cert);
             certEncoded = idp.getIdPCertificate();
             needsUpdate = true;
         }

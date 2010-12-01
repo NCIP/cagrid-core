@@ -127,7 +127,7 @@ public class CreateHostCertificate {
 
                 KeyPair pair = KeyUtil.generateRSAKeyPair(caProperties.getIssuedCertificateKeySize());
                 X509Certificate cacert = dorian.getCACertificate();
-                String caSubject = cacert.getSubjectDN().getName();
+                String caSubject = CertUtil.getSubjectDN(cacert);
                 int index = caSubject.lastIndexOf(",");
                 String subjectPrefix = caSubject.substring(0, index);
                 String gridId = null;
@@ -147,7 +147,7 @@ public class CreateHostCertificate {
                 HostCertificateRecord record = dorian.requestHostCertificate(gridId, req);
                 X509Certificate cert = CertUtil.loadCertificate(record.getCertificate().getCertificateAsString());
                 System.out.println("Successfully created the host certificate:");
-                System.out.println("Subject: " + cert.getSubjectDN());
+                System.out.println("Subject: " + CertUtil.getSubjectDN(cert));
                 System.out.println("Created: " + cert.getNotBefore());
                 System.out.println("Expires: " + cert.getNotAfter());
                 File f = new File(dir);

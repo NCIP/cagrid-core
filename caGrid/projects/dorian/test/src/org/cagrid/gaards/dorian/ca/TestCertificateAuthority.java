@@ -564,7 +564,7 @@ public class TestCertificateAuthority extends TestCase {
         KeyPair pair = KeyUtil.generateRSAKeyPair1024();
         X509Certificate cert = ca.signCertificate(subject, pair.getPublic(), start, end);
         assertNotNull(cert);
-        assertEquals(cert.getSubjectDN().getName(), subject);
+        assertEquals(CertUtil.getSubjectDN(cert), subject);
     }
 
 

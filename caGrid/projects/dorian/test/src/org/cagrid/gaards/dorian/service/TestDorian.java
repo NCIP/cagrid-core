@@ -988,7 +988,7 @@ public class TestDorian extends TestCase {
         Credential cred = memoryCA.createIdentityCertificate(name);
         X509Certificate cert = cred.getCertificate();
         assertNotNull(cert);
-        assertEquals(cert.getSubjectDN().getName(), subject);
+        assertEquals(CertUtil.getSubjectDN(cert), subject);
         idp.setIdPCertificate(CertUtil.writeCertificate(cert));
         return new IdPContainer(idp, cert, cred.getPrivateKey());
     }
@@ -1044,7 +1044,7 @@ public class TestDorian extends TestCase {
 
 
     private String getDorianIdPUserId(DorianProperties conf, Dorian d, String uid) throws Exception {
-        String caSubject = d.getCACertificate().getSubjectDN().getName();
+        String caSubject = CertUtil.getSubjectDN(d.getCACertificate());
         String policy = conf.getIdentityFederationProperties().getIdentityAssignmentPolicy();
         TrustedIdP idp = new TrustedIdP();
         idp.setId(1);
@@ -1054,7 +1054,7 @@ public class TestDorian extends TestCase {
 
 
     private String getGridIdentity(DorianProperties conf, Dorian d, TrustedIdP idp, String uid) throws Exception {
-        String caSubject = d.getCACertificate().getSubjectDN().getName();
+        String caSubject = CertUtil.getSubjectDN(d.getCACertificate());
         String policy = conf.getIdentityFederationProperties().getIdentityAssignmentPolicy();
         return UserManager.getUserSubject(policy, caSubject, idp, uid);
     }

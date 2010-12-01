@@ -85,7 +85,7 @@ public class CA {
 
 
     public Credential createIdentityCertificate(String id) throws Exception {
-        String dn = getCertificate().getSubjectDN().getName();
+        String dn = CertUtil.getSubjectDN(getCertificate());
         int index = dn.indexOf("CN=");
         dn = dn.substring(0, index + 3) + id;
         KeyPair pair = KeyUtil.generateRSAKeyPair512(PROVIDER.getName());

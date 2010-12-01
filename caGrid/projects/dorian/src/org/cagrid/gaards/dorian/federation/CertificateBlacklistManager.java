@@ -79,7 +79,7 @@ public class CertificateBlacklistManager {
                 PreparedStatement s = c.prepareStatement("INSERT INTO " + TABLE + " SET " + SERIAL + "= ?," + SUBJECT
                     + "= ?," + REASON + "= ?," + CERTIFICATE + "= ?");
                 s.setLong(1, cert.getSerialNumber().longValue());
-                s.setString(2, cert.getSubjectDN().getName());
+                s.setString(2, CertUtil.getSubjectDN(cert));
                 s.setString(3, reason);
                 s.setString(4, CertUtil.writeCertificate(cert));
                 s.executeUpdate();

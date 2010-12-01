@@ -8,6 +8,7 @@ import java.util.GregorianCalendar;
 import org.cagrid.gaards.authentication.BasicAuthentication;
 import org.cagrid.gaards.dorian.common.Lifetime;
 import org.cagrid.gaards.dorian.idp.BasicAuthCredential;
+import org.cagrid.gaards.pki.CertUtil;
 
 
 public class Utils {
@@ -25,7 +26,7 @@ public class Utils {
 
 
     public static String getHostCertificateSubjectPrefix(X509Certificate cacert) {
-        String caSubject = cacert.getSubjectDN().getName();
+        String caSubject = CertUtil.getSubjectDN(cacert);
         int caindex = caSubject.lastIndexOf(",");
         String caPreSub = caSubject.substring(0, caindex);
         return caPreSub + ",OU=Services,CN=";
