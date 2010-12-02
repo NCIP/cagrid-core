@@ -44,7 +44,7 @@ public class X509CredentialEntry {
 
 
     public String getIdentity() {
-        return this.getCredential().getIdentity();
+        return CertUtil.getIdentity(this.getCredential());
     }
 
 
