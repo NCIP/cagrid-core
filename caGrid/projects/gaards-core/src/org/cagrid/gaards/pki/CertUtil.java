@@ -644,7 +644,8 @@ public class CertUtil {
         try {
             X509Certificate idCert = BouncyCastleUtil.getIdentityCertificate(chain);
             if (idCert != null) {
-                identity = getSubjectDN(idCert);
+                String dn = getSubjectDN(idCert);
+                identity = dnToIdentity(dn);
             }
         } catch (CertificateException ex) {
             // GlobusCredential.getIdentity() just logs the exception and returns null, 
@@ -652,6 +653,20 @@ public class CertUtil {
             LOG.debug("Error getting identity certificate: " + ex.getMessage(), ex);
         }
         return identity;
+    }
+    
+    
+    public static String dnToIdentity(String dn) {
+        StringBuffer identity = new StringBuffer();
+        StringTokenizer tok = new StringTokenizer(dn, ",");
+        identity.append("/");
+        while (tok.hasMoreTokens()) {
+            identity.append(tok.nextToken());
+            if (tok.hasMoreTokens()) {
+                identity.append("/");
+            }
+        }
+        return identity.toString();
     }
     
     
