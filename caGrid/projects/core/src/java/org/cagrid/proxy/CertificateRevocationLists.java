@@ -222,6 +222,11 @@ public class CertificateRevocationLists {
 		defaultCrl.refresh();
 		return defaultCrl;
 	}
+	
+	
+	public static synchronized CertificateRevocationLists getFromGlobusCrls(org.globus.gsi.CertificateRevocationLists globusCrls) {
+	    return getCertificateRevocationLists(globusCrls.getCrls());
+	}
 
 
 	public String toString() {
