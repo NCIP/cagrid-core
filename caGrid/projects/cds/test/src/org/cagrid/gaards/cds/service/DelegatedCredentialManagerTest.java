@@ -41,6 +41,7 @@ import org.cagrid.gaards.cds.testutils.Constants;
 import org.cagrid.gaards.cds.testutils.Utils;
 import org.cagrid.gaards.pki.CertUtil;
 import org.cagrid.gaards.pki.KeyUtil;
+import org.cagrid.proxy.BetterProxyPathValidator;
 import org.globus.gsi.CertificateRevocationLists;
 import org.globus.gsi.GlobusCredential;
 import org.globus.gsi.TrustedCertificates;
@@ -1106,11 +1107,10 @@ public class DelegatedCredentialManagerTest extends TestCase {
 			assertEquals(signingChain[i], delegatedProxy[i + 1]);
 		}
 
-		ProxyPathValidator validator = new ProxyPathValidator();
-		validator.validate(delegatedProxy, TrustedCertificates
-				.getDefaultTrustedCertificates().getCertificates(),
-				CertificateRevocationLists
-						.getDefaultCertificateRevocationLists());
+		BetterProxyPathValidator validator = new BetterProxyPathValidator();
+		validator.validate(delegatedProxy, 
+		    TrustedCertificates.getDefaultTrustedCertificates().getCertificates(),
+			org.cagrid.proxy.CertificateRevocationLists.getFromGlobusCrls(CertificateRevocationLists.getDefaultCertificateRevocationLists()));
 
 		DelegatedCredentialAuditRecord[] ar = dcm.searchAuditLog(Utils
 				.getIssuedAuditFilter(id));
