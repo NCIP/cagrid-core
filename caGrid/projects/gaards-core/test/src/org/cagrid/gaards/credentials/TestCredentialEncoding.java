@@ -30,7 +30,7 @@ public class TestCredentialEncoding extends TestCase {
             X509CredentialDescriptor des2 = EncodingUtil.deserialize(xml);
             assertEquals(des, des2);
             GlobusCredential cred2 = getGlobusCredential(des2);
-            assertEquals(cred.getIdentity(), cred2.getIdentity());
+            assertEquals(CertUtil.getIdentity(cred), CertUtil.getIdentity(cred2));
             assertEquals(cred.getPrivateKey(), cred2.getPrivateKey());
             assertEquals(cred.getCertificateChain().length, cred2.getCertificateChain().length);
             assertEquals(cred.getCertificateChain()[0], cred2.getCertificateChain()[0]);
@@ -61,7 +61,7 @@ public class TestCredentialEncoding extends TestCase {
             DorianUserCredentialDescriptor des2 = (DorianUserCredentialDescriptor) EncodingUtil.deserialize(xml);
             assertEquals(des, des2);
             GlobusCredential cred2 = getGlobusCredential(des2);
-            assertEquals(cred.getIdentity(), cred2.getIdentity());
+            assertEquals(CertUtil.getIdentity(cred), CertUtil.getIdentity(cred2));
             assertEquals(cred.getPrivateKey(), cred2.getPrivateKey());
             assertEquals(cred.getCertificateChain().length, cred2.getCertificateChain().length);
             assertEquals(cred.getCertificateChain()[0], cred2.getCertificateChain()[0]);
@@ -69,7 +69,7 @@ public class TestCredentialEncoding extends TestCase {
             DorianUserCredentialDescriptor des3 = (DorianUserCredentialDescriptor) EncodingUtil.deserialize(f);
             assertEquals(des, des3);
             GlobusCredential cred3 = getGlobusCredential(des2);
-            assertEquals(cred.getIdentity(), cred3.getIdentity());
+            assertEquals(CertUtil.getIdentity(cred), CertUtil.getIdentity(cred3));
             assertEquals(cred.getPrivateKey(), cred3.getPrivateKey());
             assertEquals(cred.getCertificateChain().length, cred3.getCertificateChain().length);
             assertEquals(cred.getCertificateChain()[0], cred3.getCertificateChain()[0]);
@@ -115,5 +115,4 @@ public class TestCredentialEncoding extends TestCase {
         list.setEncodedCertificate(certs);
         return list;
     }
-
 }

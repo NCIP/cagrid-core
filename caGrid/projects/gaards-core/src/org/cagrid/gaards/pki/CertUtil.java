@@ -50,6 +50,8 @@ import org.bouncycastle.jce.PKCS10CertificationRequest;
 import org.bouncycastle.jce.X509Principal;
 import org.bouncycastle.x509.X509V2CRLGenerator;
 import org.bouncycastle.x509.X509V3CertificateGenerator;
+import org.globus.gsi.GlobusCredential;
+import org.globus.gsi.bc.BouncyCastleUtil;
 import org.globus.util.Base64;
 
 
@@ -362,7 +364,7 @@ public class CertUtil {
     }
 
 
-    public static X509Certificate loadCertificate(String provider, InputStream in) throws IOException, CertificateException, NoSuchProviderException {
+    public static X509Certificate loadCertificate(String provider, InputStream in) throws CertificateException, NoSuchProviderException {
         if (provider == null) {
             // Default the provider to the CERT_PROVIDER
             provider = SecurityConstants.CERT_PROVIDER;
@@ -633,6 +635,17 @@ public class CertUtil {
             dn = reverseDN(dn);
         }
         return dn;
+    }
+    
+    
+    public static String getIdentity(GlobusCredential cred) throws CertificateException {
+        X509Certificate[] chain = cred.getCertificateChain();
+        X509Certificate idCert = BouncyCastleUtil.getIdentityCertificate(chain);
+        String identity = null;
+        if (idCert != null) {
+            identity = getSubjectDN(idCert);
+        }
+        return identity;
     }
     
     
