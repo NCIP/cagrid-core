@@ -697,11 +697,10 @@ public class DelegatedCredentialManager {
 				}
 
 				X509Certificate[] proxy = ProxyCreator
-						.createImpersonationProxyCertificate(certs,
-								this.keyManager.getPrivateKey(String.valueOf(id
-										.getDelegationId())), pkey, hours,
-								minutes, seconds, r
-										.getIssuedCredentialPathLength());
+					.createImpersonationProxyCertificate(certs,
+						this.keyManager.getPrivateKey(
+						    String.valueOf(id.getDelegationId())), pkey, hours,
+							minutes, seconds, r.getIssuedCredentialPathLength());
 				logEvent(id.getDelegationId(), gridIdentity,
 						DelegatedCredentialEvent.DelegatedCredentialIssued,
 						"A credential was issued to " + gridIdentity
