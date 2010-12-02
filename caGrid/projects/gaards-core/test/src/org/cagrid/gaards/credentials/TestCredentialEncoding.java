@@ -23,7 +23,7 @@ public class TestCredentialEncoding extends TestCase {
             Credential c = ca.createIdentityCertificate("Test");
             GlobusCredential cred = getGlobusCredential(c);
             X509CredentialDescriptor des = new X509CredentialDescriptor();
-            des.setIdentity(cred.getIdentity());
+            des.setIdentity(CertUtil.getIdentity(cred));
             des.setEncodedCertificates(getCertificates(c));
             des.setEncodedKey(KeyUtil.writePrivateKey(c.getPrivateKey(), (String) null));
             String xml = EncodingUtil.serialize(des);
@@ -54,7 +54,7 @@ public class TestCredentialEncoding extends TestCase {
             des.setFirstName("Grid");
             des.setLastName("User");
             des.setOrganization("caGrid University");
-            des.setIdentity(cred.getIdentity());
+            des.setIdentity(CertUtil.getIdentity(cred));
             des.setEncodedCertificates(getCertificates(c));
             des.setEncodedKey(KeyUtil.writePrivateKey(c.getPrivateKey(), (String) null));
             String xml = EncodingUtil.serialize(des);

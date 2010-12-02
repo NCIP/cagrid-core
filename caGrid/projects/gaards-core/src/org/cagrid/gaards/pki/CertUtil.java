@@ -33,6 +33,8 @@ import java.util.Date;
 import java.util.Stack;
 import java.util.StringTokenizer;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.bouncycastle.asn1.ASN1InputStream;
 import org.bouncycastle.asn1.ASN1Sequence;
 import org.bouncycastle.asn1.DERObjectIdentifier;
@@ -59,10 +61,11 @@ import org.globus.util.Base64;
  * @author <A href="mailto:langella@bmi.osu.edu">Stephen Langella </A>
  * @author <A href="mailto:oster@bmi.osu.edu">Scott Oster </A>
  * @author <A href="mailto:hastings@bmi.osu.edu">Shannon Hastings </A>
- * @version $Id: ArgumentManagerTable.java,v 1.2 2004/10/15 16:35:16 langella
- *          Exp $
+ * @author <A href="mailto:David.Ervin@osumc.edu">David W. Ervin<A>
  */
 public class CertUtil {
+    
+    private static Log LOG = LogFactory.getLog(CertUtil.class);
 
     public static String getHashCode(X509Certificate cert) throws Exception {
         X509Principal x509 = (X509Principal) cert.getSubjectDN();
@@ -96,26 +99,23 @@ public class CertUtil {
 
 
     public static PKCS10CertificationRequest generateCertficateRequest(String subject, KeyPair pair) throws Exception {
-        SecurityUtil.init();
         return generateCertficateRequest(
             SecurityConstants.CRYPTO_PROVIDER, subject, pair, SecurityConstants.DEFAULT_SIGNING_ALGORITHM);
-
     }
 
 
     public static PKCS10CertificationRequest generateCertficateRequest(String provider, String subject, KeyPair pair,
         String algorithm) throws Exception {
-        return new PKCS10CertificationRequest(algorithm, new X509Principal(subject), pair.getPublic(), null, pair
-            .getPrivate(), provider);
+        return new PKCS10CertificationRequest(algorithm, new X509Principal(subject), pair.getPublic(), null, 
+            pair.getPrivate(), provider);
     }
 
 
     public static X509Certificate signCertificateRequest(PKCS10CertificationRequest request, Date start, Date expired,
         X509Certificate cacert, PrivateKey signerKey, String policyId) throws InvalidKeyException,
         NoSuchProviderException, SignatureException, NoSuchAlgorithmException, IOException {
-        SecurityUtil.init();
-        return signCertificateRequest(
-            SecurityConstants.CRYPTO_PROVIDER, request, start, expired, cacert, signerKey, SecurityConstants.DEFAULT_SIGNING_ALGORITHM, policyId);
+        return signCertificateRequest(SecurityConstants.CRYPTO_PROVIDER, request, start, expired, 
+            cacert, signerKey, SecurityConstants.DEFAULT_SIGNING_ALGORITHM, policyId);
     }
 
 
@@ -130,8 +130,8 @@ public class CertUtil {
 
     public static X509Certificate generateCACertificate(X509Name subject, Date start, Date expired, KeyPair pair)
         throws InvalidKeyException, NoSuchProviderException, SignatureException, IOException {
-        return generateCACertificate(
-            SecurityConstants.CRYPTO_PROVIDER, subject, start, expired, pair, 1, SecurityConstants.DEFAULT_SIGNING_ALGORITHM);
+        return generateCACertificate(SecurityConstants.CRYPTO_PROVIDER, subject, start, expired, 
+            pair, 1, SecurityConstants.DEFAULT_SIGNING_ALGORITHM);
     }
 
 
@@ -638,12 +638,18 @@ public class CertUtil {
     }
     
     
-    public static String getIdentity(GlobusCredential cred) throws CertificateException {
-        X509Certificate[] chain = cred.getCertificateChain();
-        X509Certificate idCert = BouncyCastleUtil.getIdentityCertificate(chain);
+    public static String getIdentity(GlobusCredential cred) {
         String identity = null;
-        if (idCert != null) {
-            identity = getSubjectDN(idCert);
+        X509Certificate[] chain = cred.getCertificateChain();
+        try {
+            X509Certificate idCert = BouncyCastleUtil.getIdentityCertificate(chain);
+            if (idCert != null) {
+                identity = getSubjectDN(idCert);
+            }
+        } catch (CertificateException ex) {
+            // GlobusCredential.getIdentity() just logs the exception and returns null, 
+            // so we're emulating that behavior
+            LOG.debug("Error getting identity certificate: " + ex.getMessage(), ex);
         }
         return identity;
     }
