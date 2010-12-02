@@ -491,31 +491,25 @@ public class DelegatedCredentialManager {
 
 				// Check to make sure the Identity of the proxy cert matches the
 				// Identity of the initiator.
-
 				try {
-					if (!BouncyCastleUtil.getIdentity(certs).equals(
-							r.getGridIdentity())) {
-						throw Errors
-								.getDelegationFault(Errors.IDENTITY_DOES_NOT_MATCH_INITIATOR);
+				    X509Certificate identityCert = BouncyCastleUtil.getIdentityCertificate(certs);
+				    String identity = org.cagrid.gaards.pki.CertUtil.dnToIdentity(
+				        org.cagrid.gaards.pki.CertUtil.getSubjectDN(identityCert));
+				    if (!identity.equals(r.getGridIdentity())) {
+						throw Errors.getDelegationFault(Errors.IDENTITY_DOES_NOT_MATCH_INITIATOR);
 					}
 				} catch (CertificateException e) {
 					log.error(e.getMessage(), e);
-					throw Errors
-							.getInternalFault(
-									Errors.UNEXPECTED_ERROR_EXTRACTING_IDENTITY_FROM_CERTIFICATE_CHAIN,
-									e);
+					throw Errors.getInternalFault(
+					    Errors.UNEXPECTED_ERROR_EXTRACTING_IDENTITY_FROM_CERTIFICATE_CHAIN, e);
 				}
-
 			} catch (CDSInternalFault e) {
 				throw e;
 			} catch (DelegationFault e) {
 				throw e;
 			} catch (Exception e) {
 				log.error(e.getMessage(), e);
-				throw Errors
-						.getInternalFault(
-								Errors.UNEXPECTED_ERROR_DETERMINING_DELEGATION_PATH_LENGTH,
-								e);
+				throw Errors.getInternalFault(Errors.UNEXPECTED_ERROR_DETERMINING_DELEGATION_PATH_LENGTH, e);
 			}
 
 			this.keyManager.storeCertificates(String.valueOf(id
