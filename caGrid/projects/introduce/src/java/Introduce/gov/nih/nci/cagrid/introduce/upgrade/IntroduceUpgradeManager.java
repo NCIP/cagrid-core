@@ -49,6 +49,10 @@ public class IntroduceUpgradeManager {
     }
 
 
+    /**
+     * Return true if the if the service was created by a different or unknown
+     * version of introduce.
+     */
     protected boolean needsUpgrading() {
         try {
             String serviceVersion = UpgradeUtilities.getCurrentServiceVersion(pathToService + File.separator
@@ -63,7 +67,13 @@ public class IntroduceUpgradeManager {
         }
     }
 
-
+    /**
+     * Return true if there is an upgrader class for the specified version of
+     * Introduce.
+     * 
+     * @param version
+     *            an Introduce version string.
+     */
     protected boolean canBeUpgraded(String version) {
         if (getIntroduceUpgradeClass(version) != null) {
             return true;
@@ -98,8 +108,8 @@ public class IntroduceUpgradeManager {
                     status.addIntroduceUpgradeStatus(iStatus);
 
                     // upgrade the introduce service
-                    Class clazz = Class.forName(className);
-                    Constructor con = clazz.getConstructor(new Class[]{IntroduceUpgradeStatus.class, String.class});
+                    Class<?> clazz = Class.forName(className);
+                    Constructor<?> con = clazz.getConstructor(new Class[]{IntroduceUpgradeStatus.class, String.class});
                     ModelUpgraderI modelupgrader = (ModelUpgraderI) con
                         .newInstance(new Object[]{iStatus, pathToService});
                     modelupgrader.execute();

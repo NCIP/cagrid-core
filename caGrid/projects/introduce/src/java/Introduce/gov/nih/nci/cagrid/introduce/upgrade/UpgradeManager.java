@@ -24,6 +24,12 @@ public class UpgradeManager {
     private static final Logger logger = Logger.getLogger(UpgradeManager.class);
 
 
+    /**
+     * Constructor
+     * 
+     * @param pathToService
+     *            Path to the root directory for the service.
+     */
     public UpgradeManager(String pathToService) {
         this.pathToService = pathToService;
         iUpgrader = new IntroduceUpgradeManager(pathToService);
@@ -46,6 +52,10 @@ public class UpgradeManager {
 
     }
     
+    /**
+     * Return true if the if the service was created by a different or unknown
+     * version of introduce.
+     */
     public boolean introduceNeedsUpgraded() {
             return iUpgrader.needsUpgrading();
     }
