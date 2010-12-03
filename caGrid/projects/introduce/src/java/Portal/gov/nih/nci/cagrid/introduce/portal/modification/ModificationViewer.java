@@ -111,6 +111,11 @@ import com.jgoodies.validation.view.ValidationComponentUtils;
  * @author <A HREF="MAILTO:oster@bmi.osu.edu">Scott Oster </A>
  */
 public class ModificationViewer extends ApplicationComponent {
+    /**
+     * 
+     */
+    private static final long serialVersionUID = 6535827394074790286L;
+
     private static final Logger logger = Logger.getLogger(ModificationViewer.class);
 
     private JPanel mainPanel = null;
@@ -203,9 +208,9 @@ public class ModificationViewer extends ApplicationComponent {
 
     private JSplitPane typesSplitPane = null;
 
-    private List extensionPanels = null;
+    private List<ServiceModificationUIPanel> extensionPanels = null;
 
-    private List discoveryPanels = null;
+    private List<NamespaceTypeDiscoveryComponent> discoveryPanels = null;
 
     private JCheckBox propertyIsFromETCCheckBox = null;
 
@@ -232,8 +237,8 @@ public class ModificationViewer extends ApplicationComponent {
 
     public ModificationViewer(File methodsDirectory, BusyDialogRunnable br) throws Exception {
         super();
-        this.extensionPanels = new ArrayList();
-        this.discoveryPanels = new ArrayList();
+        this.extensionPanels = new ArrayList<ServiceModificationUIPanel>();
+        this.discoveryPanels = new ArrayList<NamespaceTypeDiscoveryComponent>();
         this.methodsDirectory = methodsDirectory;
         initialize(br);
         if (beenDisposed) {
@@ -244,8 +249,8 @@ public class ModificationViewer extends ApplicationComponent {
 
     public ModificationViewer(File methodsDirectory) throws Exception {
         super();
-        this.extensionPanels = new ArrayList();
-        this.discoveryPanels = new ArrayList();
+        this.extensionPanels = new ArrayList<ServiceModificationUIPanel>();
+        this.discoveryPanels = new ArrayList<NamespaceTypeDiscoveryComponent>();
         this.methodsDirectory = methodsDirectory;
         try {
             BusyDialogRunnable br = new BusyDialogRunnable((JFrame) GridApplication.getContext().getApplication(),
@@ -289,7 +294,7 @@ public class ModificationViewer extends ApplicationComponent {
         getExtensionsPanel().reInitialize(this.info);
         getServicePropertiesTable().setServiceInformation(this.info);
         for (int i = 0; i < this.extensionPanels.size(); i++) {
-            ServiceModificationUIPanel panel = (ServiceModificationUIPanel) this.extensionPanels.get(i);
+            ServiceModificationUIPanel panel = this.extensionPanels.get(i);
             panel.setServiceInfo(this.info);
         }
         for (int i = 0; i < this.discoveryPanels.size(); i++) {
@@ -864,8 +869,7 @@ public class ModificationViewer extends ApplicationComponent {
                                 break;
                             default :
                                 for (int i = 0; i < extensionPanels.size(); i++) {
-                                    ServiceModificationUIPanel panel = (ServiceModificationUIPanel) extensionPanels
-                                        .get(i);
+                                    ServiceModificationUIPanel panel = extensionPanels.get(i);
                                     panel.setServiceInfo(info);
                                 }
                                 break;
@@ -1289,7 +1293,7 @@ public class ModificationViewer extends ApplicationComponent {
                                             type.getClassName(), type.getSerializer(), type.getDeserializer());
                                         if (result.getErrors() != null && !result.getErrors().isEmpty()) {
                                             errors = true;
-                                            Iterator it = result.getErrors().iterator();
+                                            Iterator<ValidationMessage> it = result.getErrors().iterator();
                                             while (it.hasNext()) {
                                                 em += type.getType() + " : "
                                                     + ((ValidationMessage) it.next()).formattedText() + "\n";
@@ -1311,7 +1315,7 @@ public class ModificationViewer extends ApplicationComponent {
                             for (int serviceI = 0; serviceI < ModificationViewer.this.info.getServices().getService().length; serviceI++) {
                                 ServiceType service = ModificationViewer.this.info.getServices().getService(serviceI);
                                 if ((service.getMethods() != null) && (service.getMethods().getMethod() != null)) {
-                                    List methodNames = new ArrayList();
+                                    List<String> methodNames = new ArrayList<String>();
                                     if ((service.getMethods() != null) && (service.getMethods().getMethod() != null)) {
                                         for (int methodI = 0; methodI < service.getMethods().getMethod().length; methodI++) {
                                             MethodType method = service.getMethods().getMethod(methodI);
@@ -1346,7 +1350,7 @@ public class ModificationViewer extends ApplicationComponent {
                             // do nothing this might be right after creation,
                             // therefore no prev file exists
                         }
-                        List newExtsNames = new ArrayList<String>();
+                        List<String> newExtsNames = new ArrayList<String>();
                         if (oldProps.size() >= 0
                             && oldProps.getProperty(IntroduceConstants.INTRODUCE_SKELETON_EXTENSIONS) != null) {
                             String oldExtensions = oldProps
@@ -1354,7 +1358,7 @@ public class ModificationViewer extends ApplicationComponent {
                             String currentExtensions = info.getIntroduceServiceProperties().getProperty(
                                 IntroduceConstants.INTRODUCE_SKELETON_EXTENSIONS);
                             StringTokenizer strtok = new StringTokenizer(oldExtensions, ",", false);
-                            List oldExts = new ArrayList<String>();
+                            List<String> oldExts = new ArrayList<String>();
                             while (strtok.hasMoreElements()) {
                                 String next = strtok.nextToken();
                                 oldExts.add(next);
@@ -1362,7 +1366,7 @@ public class ModificationViewer extends ApplicationComponent {
 
                             // process the new ones and compare them to the old
                             // ones
-                            List newExtsTypes = new ArrayList<ExtensionDescription>();
+                            List<ExtensionType> newExtsTypes = new ArrayList<ExtensionType>();
                             strtok = new StringTokenizer(currentExtensions, ",", false);
                             while (strtok.hasMoreElements()) {
                                 String next = strtok.nextToken();
@@ -1407,7 +1411,7 @@ public class ModificationViewer extends ApplicationComponent {
                             }
 
                             // process the old ones and compare to the new ones
-                            Iterator it = oldExts.iterator();
+                            Iterator<String> it = oldExts.iterator();
                             while (it.hasNext()) {
                                 String next = (String) it.next();
                                 if (!newExtsNames.contains(next)) {
@@ -1968,12 +1972,12 @@ public class ModificationViewer extends ApplicationComponent {
 
 
     private NamespaceType[] mergeNamespaceArrays(NamespaceType[] current, NamespaceType[] additional) {
-        Set additionalNamespaces = new HashSet();
+        Set<String> additionalNamespaces = new HashSet<String>();
         for (NamespaceType element : additional) {
             additionalNamespaces.add(element.getNamespace());
         }
-        List merged = new ArrayList();
-        Collections.addAll(merged, (Object[]) additional);
+        List<NamespaceType> merged = new ArrayList<NamespaceType>();
+        Collections.addAll(merged, additional);
         if (current.length != 0) {
             for (NamespaceType element : current) {
                 String currentNamespace = element.getNamespace();
