@@ -139,7 +139,7 @@ public class ExtensionsUpgradeManager {
 	public void upgrade(IntroduceUpgradeStatus status) throws Exception {
 		remove(status);
 
-		List error = new ArrayList();
+		List<String> error = new ArrayList<String>();
 
 		ExtensionType[] extensions = serviceInformation.getServiceDescriptor()
 				.getExtensions().getExtension();
@@ -150,7 +150,7 @@ public class ExtensionsUpgradeManager {
 					.getInstance().getExtension(extension.getName());
 			if (extDescription != null) {
 				if ((extDescription.getVersion() != null)) {
-					List upgrades = new ArrayList();
+					List<UpgradeDescriptionType> upgrades = new ArrayList<UpgradeDescriptionType>();
 					if (((serviceExtensionVersion == null) && (extDescription
 							.getVersion() != null))
 							|| !extDescription.getVersion().equals(
@@ -189,8 +189,7 @@ public class ExtensionsUpgradeManager {
 									currentVersion = extensionUpgrades[i]
 											.getToVersion();
 								} else {
-									error
-											.add(extension.getName()
+									error.add(extension.getName()
 													+ " extension used on service is older than currently installed "
 													+ "and does not appear to have correct upgrade.");
 									break;
@@ -198,8 +197,7 @@ public class ExtensionsUpgradeManager {
 							}
 
 						} else {
-							error
-									.add(extension.getName()
+							error.add(extension.getName()
 											+ " extension used on service is older than currently "
 											+ "installed and does not appear to have any upgrades.");
 						}
@@ -209,8 +207,8 @@ public class ExtensionsUpgradeManager {
 					// run the upgraders that we put together in order
 					for (int i = 0; i < upgrades.size(); i++) {
 						UpgradeDescriptionType upgrade = (UpgradeDescriptionType) upgrades.get(i);
-						Class clazz = Class.forName(upgrade.getUpgradeClass());
-						Constructor con = clazz.getConstructor(new Class[] {
+						Class<?> clazz = Class.forName(upgrade.getUpgradeClass());
+						Constructor<?> con = clazz.getConstructor(new Class[] {
 								ExtensionType.class, ServiceInformation.class,
 								String.class, String.class, String.class });
 						ExtensionUpgraderI upgrader = (ExtensionUpgraderI) con.newInstance(

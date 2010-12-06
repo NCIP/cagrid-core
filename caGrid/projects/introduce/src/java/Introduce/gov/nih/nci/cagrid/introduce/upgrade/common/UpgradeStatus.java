@@ -7,11 +7,11 @@ import java.util.List;
 
 public class UpgradeStatus extends StatusBase {
 
-    List introduceUpgradesStatus;
+    List<IntroduceUpgradeStatus> introduceUpgradesStatus;
 
 
     public UpgradeStatus() {
-        introduceUpgradesStatus = new ArrayList();
+        introduceUpgradesStatus = new ArrayList<IntroduceUpgradeStatus>();
     }
 
 
@@ -20,13 +20,13 @@ public class UpgradeStatus extends StatusBase {
     }
 
 
-    public List getIntroduceUpgradesStatus() {
+    public List<IntroduceUpgradeStatus> getIntroduceUpgradesStatus() {
         return this.introduceUpgradesStatus;
     }
     
     public String toString(){
         StringBuffer sb = new StringBuffer();
-        Iterator iStatusI = introduceUpgradesStatus.iterator();
+        Iterator<IntroduceUpgradeStatus> iStatusI = introduceUpgradesStatus.iterator();
         while(iStatusI.hasNext()){
             IntroduceUpgradeStatus iStatus = (IntroduceUpgradeStatus)iStatusI.next();
             sb.append("Name: " + iStatus.getName() + "\n");
@@ -35,8 +35,8 @@ public class UpgradeStatus extends StatusBase {
             sb.append("To Version: " + iStatus.getToVersion() + "\n");
             sb.append("Status: " + iStatus.getStatus() + "\n\n");
             sb.append("Description: \n" + iStatus.getDescription() + "\n");
-            List issues = iStatus.getIssues();
-            Iterator issuesI = issues.iterator();
+            List<Issue> issues = iStatus.getIssues();
+            Iterator<Issue> issuesI = issues.iterator();
             while(issuesI.hasNext()){
                 Issue issue = (Issue)issuesI.next();
                 sb.append("\tIssue: " + issue.getIssue() + "\n");
@@ -44,7 +44,7 @@ public class UpgradeStatus extends StatusBase {
             }
             sb.append("\n\n");
             
-            Iterator eStatusI = iStatus.getExtensionUgradesStatus().iterator();
+            Iterator<ExtensionUpgradeStatus> eStatusI = iStatus.getExtensionUgradesStatus().iterator();
             while(eStatusI.hasNext()){
                 ExtensionUpgradeStatus eStatus = (ExtensionUpgradeStatus)eStatusI.next();
                 sb.append("  Name: " + eStatus.getName() + "\n");

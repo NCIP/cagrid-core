@@ -1,7 +1,5 @@
 package gov.nih.nci.cagrid.introduce.upgrade.common;
 
-import gov.nih.nci.cagrid.introduce.codegen.SyncTools;
-
 import org.apache.log4j.Logger;
 
 

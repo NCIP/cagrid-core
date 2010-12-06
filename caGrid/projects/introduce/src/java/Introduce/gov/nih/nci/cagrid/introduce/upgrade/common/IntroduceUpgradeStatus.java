@@ -5,17 +5,17 @@ import java.util.List;
 
 public class IntroduceUpgradeStatus extends StatusBase {
 
-    private List extensionUpgradesStatus = null;
+    private List<ExtensionUpgradeStatus> extensionUpgradesStatus = null;
 
     public IntroduceUpgradeStatus() {
-        extensionUpgradesStatus = new ArrayList();
+        extensionUpgradesStatus = new ArrayList<ExtensionUpgradeStatus>();
     }
     
     public void addExtensionUpgradeStatus(ExtensionUpgradeStatus extensionStatus){
         this.extensionUpgradesStatus.add(extensionStatus);
     }
     
-    public List getExtensionUgradesStatus(){
+    public List<ExtensionUpgradeStatus> getExtensionUgradesStatus(){
         return this.extensionUpgradesStatus;
     }
 }

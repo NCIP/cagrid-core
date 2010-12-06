@@ -86,6 +86,7 @@ import javax.swing.event.DocumentListener;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.tree.DefaultMutableTreeNode;
+import javax.xml.namespace.QName;
 
 import org.apache.log4j.Logger;
 import org.cagrid.grape.ApplicationComponent;
@@ -1207,7 +1208,7 @@ public class ModificationViewer extends ApplicationComponent {
     private JTabbedPane getDiscoveryTabbedPane() {
         if (this.discoveryTabbedPane == null) {
             this.discoveryTabbedPane = new JTabbedPane();
-            List discoveryTypes = ExtensionsLoader.getInstance().getDiscoveryExtensions();
+            List<DiscoveryExtensionDescriptionType> discoveryTypes = ExtensionsLoader.getInstance().getDiscoveryExtensions();
             if (discoveryTypes != null) {
                 for (int i = 0; i < discoveryTypes.size(); i++) {
                     DiscoveryExtensionDescriptionType dd = (DiscoveryExtensionDescriptionType) discoveryTypes.get(i);
@@ -1235,14 +1236,14 @@ public class ModificationViewer extends ApplicationComponent {
         if (confirmed == JOptionPane.OK_OPTION) {
             // verify no needed namespace types have been removed or modified
             if (!CommonTools.usedTypesAvailable(this.info.getServiceDescriptor())) {
-                Set unavailable = CommonTools.getUnavailableUsedTypes(this.info.getServiceDescriptor());
+                Set<QName> unavailable = CommonTools.getUnavailableUsedTypes(this.info.getServiceDescriptor());
                 String[] message = {"The following schema element types used in the service",
                         "are not available in the specified namespace types!", "Please add schemas as appropriate.",
                         "\n"};
                 String[] err = new String[unavailable.size() + message.length];
                 System.arraycopy(message, 0, err, 0, message.length);
                 int index = message.length;
-                Iterator unavailableIter = unavailable.iterator();
+                Iterator<QName> unavailableIter = unavailable.iterator();
                 while (unavailableIter.hasNext()) {
                     err[index] = unavailableIter.next().toString();
                     index++;

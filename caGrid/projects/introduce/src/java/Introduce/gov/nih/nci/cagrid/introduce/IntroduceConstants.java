@@ -129,7 +129,7 @@ public abstract class IntroduceConstants {
 			+ "ws" + File.separator + "addressing" + File.separator
 			+ "WS-Addressing.xsd";
 
-	public static final List GLOBUS_NAMESPACES = new ArrayList(
+	public static final List<String> GLOBUS_NAMESPACES = new ArrayList<String>(
 			Arrays
 					.asList(new String[] {
 							WSADDRESING_NAMESPACE,
