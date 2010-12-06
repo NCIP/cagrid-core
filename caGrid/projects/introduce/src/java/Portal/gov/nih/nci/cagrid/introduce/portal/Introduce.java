@@ -130,6 +130,12 @@ public final class Introduce {
 
             if (confFile == null) {
                 confFile = IntroducePropertiesManager.getIntroduceConfigurationFile();
+                if (confFile == null || confFile.trim().length() == 0) {
+                    String msg = "No value is configured for " + IntroduceConstants.INTRODUCE_CONFIGURATION_FILE + " in "
+                            + IntroduceConstants.INTRODUCE_PROPERTIES;
+                    logger.fatal(msg);
+                    throw new RuntimeException(msg);
+                }
             }
 
             Application app = (Application) Utils.deserializeDocument(confFile, Application.class);
@@ -149,7 +155,8 @@ public final class Introduce {
             applicationInstance.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
         } catch (Exception e) {
-            // TODO Auto-generated catch block
+            String msg = "Introduce UI failed to launch";
+            logger.fatal(msg, e);
             e.printStackTrace();
         }
     }
