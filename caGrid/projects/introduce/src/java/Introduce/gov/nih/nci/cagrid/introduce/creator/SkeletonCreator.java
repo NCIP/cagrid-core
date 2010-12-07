@@ -53,8 +53,7 @@ public class SkeletonCreator extends Task {
 
         Thread.currentThread().setContextClassLoader(this.getClass().getClassLoader());
 
-        Properties properties = new Properties();
-        properties.putAll(this.getProject().getProperties());
+        Properties properties = (Properties)this.getProject().getProperties().clone();
 
         File baseDirectory = new File(properties.getProperty(IntroduceConstants.INTRODUCE_SKELETON_DESTINATION_DIR));
 

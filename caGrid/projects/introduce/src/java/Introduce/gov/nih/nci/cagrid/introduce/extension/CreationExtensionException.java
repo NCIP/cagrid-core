@@ -9,7 +9,13 @@ package gov.nih.nci.cagrid.introduce.extension;
  */
 public class CreationExtensionException extends Exception {
 
-	public CreationExtensionException(String message) {
+	/**
+     * Hash code for serialization
+     */
+    private static final long serialVersionUID = -1136300888627839211L;
+
+
+    public CreationExtensionException(String message) {
 		super(message);
 	}
 	

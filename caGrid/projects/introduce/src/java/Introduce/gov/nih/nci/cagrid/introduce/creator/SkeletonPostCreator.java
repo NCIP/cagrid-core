@@ -5,7 +5,6 @@ import gov.nih.nci.cagrid.introduce.IntroduceConstants;
 import gov.nih.nci.cagrid.introduce.beans.ServiceDescription;
 import gov.nih.nci.cagrid.introduce.beans.extension.ExtensionType;
 import gov.nih.nci.cagrid.introduce.beans.extension.ServiceExtensionDescriptionType;
-import gov.nih.nci.cagrid.introduce.codegen.SyncTools;
 import gov.nih.nci.cagrid.introduce.common.ServiceInformation;
 import gov.nih.nci.cagrid.introduce.extension.CreationExtensionException;
 import gov.nih.nci.cagrid.introduce.extension.CreationExtensionPostProcessor;
@@ -41,8 +40,7 @@ public class SkeletonPostCreator extends Task {
 
         Thread.currentThread().setContextClassLoader(this.getClass().getClassLoader());
 
-        Properties properties = new Properties();
-        properties.putAll(this.getProject().getProperties());
+        Properties properties = (Properties)this.getProject().getProperties().clone();
 
 
         File baseDirectory = new File(properties.getProperty(IntroduceConstants.INTRODUCE_SKELETON_DESTINATION_DIR));

@@ -41,18 +41,18 @@ import org.jdom.Element;
  */
 public class SyncMethods extends SyncTool {
     private static final Logger logger = Logger.getLogger(SyncMethods.class);
-    private List additions;
-    private List removals;
-    private List modifications;
+    private List<MethodType> additions;
+    private List<JavaMethod> removals;
+    private List<Modification> modifications;
     private ServiceType service;
 
 
     public SyncMethods(File baseDirectory, ServiceInformation info, ServiceType service) {
         super(baseDirectory, info);
         this.service = service;
-        this.additions = new ArrayList();
-        this.removals = new ArrayList();
-        this.modifications = new ArrayList();
+        this.additions = new ArrayList<MethodType>();
+        this.removals = new ArrayList<JavaMethod>();
+        this.modifications = new ArrayList<Modification>();
     }
 
 
@@ -106,9 +106,9 @@ public class SyncMethods extends SyncTool {
         } catch (Exception e) {
             throw new SynchronizationException("Error parsing service interface:" + e.getMessage(), e);
         }
-        Iterator it = jsf.getJavaSources();
+        Iterator<JavaSource> it = getJavaSources(jsf);
         while (it.hasNext()) {
-            JavaSource source = (JavaSource) it.next();
+            JavaSource source = it.next();
             if (source.getQName().getClassName().endsWith("I")) {
                 sourceI = source;
                 
@@ -195,6 +195,17 @@ public class SyncMethods extends SyncTool {
     }
 
 
+    /**
+     * @param jsf
+     * @return
+     */
+    @SuppressWarnings("unchecked")
+    private Iterator<JavaSource> getJavaSources(JavaSourceFactory jsf) {
+        Iterator<JavaSource> it = jsf.getJavaSources();
+        return it;
+    }
+
+
     private void syncServiceDeploymentDescriptor(SpecificServiceInformation ssi) throws Exception {
 
         // need to add in any new services into the service.wsdd
@@ -204,7 +215,7 @@ public class SyncMethods extends SyncTool {
 
         // we need to now find the "service" element so that we can update any
         // parameters we need to update
-        List serviceEls = serverConfigDoc.getRootElement().getChildren("service",
+        List<?> serviceEls = serverConfigDoc.getRootElement().getChildren("service",
             serverConfigDoc.getRootElement().getNamespace());
         Element serviceConfigEl = null;
         for (int serviceElI = 0; serviceElI < serviceEls.size(); serviceElI++) {
@@ -217,7 +228,7 @@ public class SyncMethods extends SyncTool {
 
         Element parameterEl = null;
         if (serviceConfigEl != null) {
-            List parameters = serviceConfigEl.getChildren("parameter", serviceConfigEl.getNamespace());
+            List<?> parameters = serviceConfigEl.getChildren("parameter", serviceConfigEl.getNamespace());
             for (int parameterI = 0; parameterI < parameters.size(); parameterI++) {
                 Element tparameterEl = (Element) parameters.get(parameterI);
                 if (tparameterEl.getAttributeValue("name").equals("providers")) {
@@ -234,7 +245,7 @@ public class SyncMethods extends SyncTool {
         if (parameterEl != null) {
             providerParamString = parameterEl.getAttributeValue("value");
             StringTokenizer strtok = new StringTokenizer(providerParamString, " ", false);
-            List providers = new ArrayList();
+            List<String> providers = new ArrayList<String>();
             while (strtok.hasMoreTokens()) {
                 providers.add(strtok.nextToken());
             }

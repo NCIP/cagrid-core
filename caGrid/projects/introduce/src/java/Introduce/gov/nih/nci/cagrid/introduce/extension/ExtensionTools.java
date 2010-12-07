@@ -47,7 +47,7 @@ public class ExtensionTools {
             extensionName);
         if (extensionDesc != null && extensionDesc.getCreationPostProcessor() != null
             && !extensionDesc.getCreationPostProcessor().equals("")) {
-            Class c = Class.forName(extensionDesc.getCreationPostProcessor());
+            Class<?> c = Class.forName(extensionDesc.getCreationPostProcessor());
             Object obj = c.newInstance();
             return (CreationExtensionPostProcessor) obj;
         }
@@ -69,7 +69,7 @@ public class ExtensionTools {
             extensionName);
         if (extensionDesc != null && extensionDesc.getCodegenPostProcessor() != null
             && !extensionDesc.getCodegenPostProcessor().equals("")) {
-            Class c = Class.forName(extensionDesc.getCodegenPostProcessor());
+            Class<?> c = Class.forName(extensionDesc.getCodegenPostProcessor());
             Object obj = c.newInstance();
             return (CodegenExtensionPostProcessor) obj;
         }
@@ -92,7 +92,7 @@ public class ExtensionTools {
             extensionName);
         if (extensionDesc != null && extensionDesc.getAuthorizationExtensionManager() != null
             && !extensionDesc.getAuthorizationExtensionManager().equals("")) {
-            Class c = Class.forName(extensionDesc.getAuthorizationExtensionManager());
+            Class<?> c = Class.forName(extensionDesc.getAuthorizationExtensionManager());
             Object obj = c.newInstance();
             return (AuthorizationExtensionManager) obj;
         }
@@ -114,7 +114,7 @@ public class ExtensionTools {
             extensionName);
         if (extensionDesc != null && extensionDesc.getCodegenPreProcessor() != null
             && !extensionDesc.getCodegenPreProcessor().equals("")) {
-            Class c = Class.forName(extensionDesc.getCodegenPreProcessor());
+            Class<?> c = Class.forName(extensionDesc.getCodegenPreProcessor());
             Object obj = c.newInstance();
             return (CodegenExtensionPreProcessor) obj;
         }
@@ -136,7 +136,7 @@ public class ExtensionTools {
             extensionName);
         if (extensionDesc != null && extensionDesc.getServiceExtensionRemover() != null
             && !extensionDesc.getServiceExtensionRemover().equals("")) {
-            Class c = Class.forName(extensionDesc.getServiceExtensionRemover());
+            Class<?> c = Class.forName(extensionDesc.getServiceExtensionRemover());
             Object obj = c.newInstance();
             return (ServiceExtensionRemover) obj;
         }
@@ -320,7 +320,7 @@ public class ExtensionTools {
     public static void removeExtensionDataElement(ExtensionTypeExtensionData data, String dataElementName) {
         MessageElement[] dataEntries = data.get_any();
         if (dataEntries != null) {
-            List cleanedEntries = new ArrayList(dataEntries.length);
+            List<MessageElement> cleanedEntries = new ArrayList<MessageElement>(dataEntries.length);
             for (int i = 0; i < dataEntries.length; i++) {
                 if (!dataEntries[i].getName().equals(dataElementName)) {
                     cleanedEntries.add(dataEntries[i]);

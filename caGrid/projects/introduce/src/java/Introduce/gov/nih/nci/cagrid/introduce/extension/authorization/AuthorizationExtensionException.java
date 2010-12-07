@@ -9,7 +9,13 @@ package gov.nih.nci.cagrid.introduce.extension.authorization;
  */
 public class AuthorizationExtensionException extends Exception {
 
-	public AuthorizationExtensionException(String message) {
+	/**
+     * Hash code for serialization.
+     */
+    private static final long serialVersionUID = -4343954700815512841L;
+
+
+    public AuthorizationExtensionException(String message) {
 		super(message);
 	}
 	

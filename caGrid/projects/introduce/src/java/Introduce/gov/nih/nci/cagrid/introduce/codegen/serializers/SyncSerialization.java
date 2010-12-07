@@ -1,7 +1,6 @@
 package gov.nih.nci.cagrid.introduce.codegen.serializers;
 
 import gov.nih.nci.cagrid.common.Utils;
-import gov.nih.nci.cagrid.common.XMLUtilities;
 import gov.nih.nci.cagrid.introduce.beans.namespace.NamespaceType;
 import gov.nih.nci.cagrid.introduce.beans.namespace.SchemaElementType;
 import gov.nih.nci.cagrid.introduce.beans.service.ServiceType;
@@ -68,11 +67,11 @@ public class SyncSerialization extends SyncTool {
 		File clientWSDD;
 		File serverWSDD;
 
-		List mappingList = buildTypeMappings(getServiceInformation().getNamespaces().getNamespace());
+		List<WSDDTypeMapping> mappingList = buildTypeMappings(getServiceInformation().getNamespaces().getNamespace());
 		String replacement = "";
 		if (mappingList.size() > 0) {
 			StringBuffer mappingReplacement = new StringBuffer();
-			Iterator iter = mappingList.iterator();
+			Iterator<WSDDTypeMapping> iter = mappingList.iterator();
 			while (iter.hasNext()) {
 				WSDDTypeMapping mapping = (WSDDTypeMapping) iter.next();
 				mappingReplacement.append(mappingToString(mapping) + "\n");
@@ -156,8 +155,8 @@ public class SyncSerialization extends SyncTool {
 	}
 
 
-	public static List buildTypeMappings(NamespaceType[] namespaces) throws SynchronizationException {
-		List mappings = new ArrayList();
+	public static List<WSDDTypeMapping> buildTypeMappings(NamespaceType[] namespaces) throws SynchronizationException {
+		List<WSDDTypeMapping> mappings = new ArrayList<WSDDTypeMapping>();
 
 		if (namespaces != null) {
 			for (int i = 0; i < namespaces.length; i++) {

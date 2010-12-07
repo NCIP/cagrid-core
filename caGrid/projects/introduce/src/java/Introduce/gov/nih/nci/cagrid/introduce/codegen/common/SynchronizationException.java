@@ -2,7 +2,13 @@ package gov.nih.nci.cagrid.introduce.codegen.common;
 
 public class SynchronizationException extends Exception {
 
-	public SynchronizationException(String message) {
+	/**
+     * Hash code for serialization.
+     */
+    private static final long serialVersionUID = -6640132366031695789L;
+
+
+    public SynchronizationException(String message) {
 		super(message);
 	}
 

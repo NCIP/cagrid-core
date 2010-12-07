@@ -68,10 +68,10 @@ public class SyncSource {
     }
 
 
-    public void addMethods(List additions) throws SynchronizationException {
+    public void addMethods(List<MethodType> additions) throws SynchronizationException {
         for (int i = 0; i < additions.size(); i++) {
             // add it to the interface
-            MethodType method = (MethodType) additions.get(i);
+            MethodType method = additions.get(i);
             if (!method.getName().equals(IntroduceConstants.SERVICE_SECURITY_METADATA_METHOD)) {
                 StringBuffer fileContent = null;
                 try {
@@ -118,10 +118,10 @@ public class SyncSource {
     }
 
 
-    public void modifyMethods(List modifiedMethods) throws SynchronizationException {
+    public void modifyMethods(List<Modification> modifiedMethods) throws SynchronizationException {
         for (int i = 0; i < modifiedMethods.size(); i++) {
             // add it to the interface
-            Modification mod = (Modification) modifiedMethods.get(i);
+            Modification mod = modifiedMethods.get(i);
   
             MethodType method = mod.getMethodType();
             if (!method.getName().equals(IntroduceConstants.SERVICE_SECURITY_METADATA_METHOD)) {
@@ -531,9 +531,9 @@ public class SyncSource {
     }
 
 
-    public void removeMethods(List removals) throws SynchronizationException {
+    public void removeMethods(List<JavaMethod> removals) throws SynchronizationException {
         for (int i = 0; i < removals.size(); i++) {
-            JavaMethod method = (JavaMethod) removals.get(i);
+            JavaMethod method = removals.get(i);
 
             StringBuffer fileContent = null;
             try {

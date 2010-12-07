@@ -1,8 +1,6 @@
 package gov.nih.nci.cagrid.introduce.extension.authorization;
 
 import gov.nih.nci.cagrid.introduce.beans.extension.AuthorizationExtensionDescriptionType;
-import gov.nih.nci.cagrid.introduce.beans.extension.ServiceExtensionDescriptionType;
-import gov.nih.nci.cagrid.introduce.common.ServiceInformation;
 import gov.nih.nci.cagrid.introduce.common.SpecificServiceInformation;
 
 /**

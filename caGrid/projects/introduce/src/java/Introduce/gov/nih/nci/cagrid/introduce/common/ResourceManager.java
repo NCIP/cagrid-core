@@ -113,7 +113,7 @@ public class ResourceManager {
 
         File introduceCacheFile = new File(introduceCache);
         String[] cacheFiles = introduceCacheFile.list(f);
-        List cacheFilesList = Arrays.asList(cacheFiles);
+        List<String> cacheFilesList = Arrays.asList(cacheFiles);
         Collections.sort(cacheFilesList, String.CASE_INSENSITIVE_ORDER);
         Collections.reverse(cacheFilesList);
 
@@ -155,7 +155,7 @@ public class ResourceManager {
 
         File introduceCacheFile = new File(introduceCache);
         String[] cacheFiles = introduceCacheFile.list(f);
-        List cacheFilesList = Arrays.asList(cacheFiles);
+        List<String> cacheFilesList = Arrays.asList(cacheFiles);
         Collections.sort(cacheFilesList, String.CASE_INSENSITIVE_ORDER);
         Collections.reverse(cacheFilesList);
 

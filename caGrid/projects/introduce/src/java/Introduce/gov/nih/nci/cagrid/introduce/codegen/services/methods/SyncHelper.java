@@ -41,7 +41,7 @@ public class SyncHelper {
      * @param serviceInfo
      *            The service information
      * @return A string containing exceptions thrown by the method, delimited by
-     *         commans
+     *         commas
      */
     public static String createExceptions(MethodType method, ServiceInformation serviceInfo) {
         StringBuffer exceptions = new StringBuffer();
@@ -136,8 +136,8 @@ public class SyncHelper {
      *            The service information
      * @return A List of Strings of java client class names
      */
-    public static List buildServicesClientHandleClassNameList(ServiceInformation serviceInfo) {
-        List list = new ArrayList();
+    public static List<String> buildServicesClientHandleClassNameList(ServiceInformation serviceInfo) {
+        List<String> list = new ArrayList<String>();
         if (serviceInfo.getServices() != null && serviceInfo.getServices().getService() != null) {
             for (int i = 0; i < serviceInfo.getServices().getService().length; i++) {
                 ServiceType thisservice = serviceInfo.getServices().getService(i);
@@ -538,7 +538,7 @@ public class SyncHelper {
      */
     public static int startOfJavaDoc(StringBuffer sb, int startOfMethod) {
         BufferedReader br = new BufferedReader(new StringReader(sb.toString()));
-        List backwardsBuffer = new ArrayList();
+        List<String> backwardsBuffer = new ArrayList<String>();
         try {
             String line = br.readLine() + "\n";
             int totalRead = 0;
