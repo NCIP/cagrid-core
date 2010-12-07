@@ -15,7 +15,8 @@ import junit.framework.TestCase;
 public class SoftwareUpdateTestCase extends TestCase {
 
 	public void testUpdaterNullUpdates() {
-		UpdateManager manager = null;
+		@SuppressWarnings("unused")
+        UpdateManager manager = null;
 		try {
 			manager = new UpdateManager(null);
 		} catch (Exception e) {
@@ -39,7 +40,8 @@ public class SoftwareUpdateTestCase extends TestCase {
 			e.printStackTrace();
 			fail();
 		}
-		UpdateManager manager = null;
+		@SuppressWarnings("unused")
+        UpdateManager manager = null;
 		try {
 			manager = new UpdateManager(software);
 		} catch (Exception e) {

@@ -45,7 +45,7 @@ public class Model_1_2__1_4_Upgrader extends ModelUpgraderBase {
 
         Element servicesEl = doc.getRootElement().getChild("Services",
             Namespace.getNamespace("gme://gov.nih.nci.cagrid.introduce/1/Services"));
-        List serviceEls = servicesEl.getChildren();
+        List<?> serviceEls = servicesEl.getChildren();
         for (int i = 0; i < serviceEls.size(); i++) {
             Element service = (Element) serviceEls.get(i);
             Element serviceSecurity = service.getChild("ServiceSecurity", Namespace
@@ -102,7 +102,7 @@ public class Model_1_2__1_4_Upgrader extends ModelUpgraderBase {
 
             Element methodsEl = service.getChild("Methods", Namespace
                 .getNamespace("gme://gov.nih.nci.cagrid.introduce/1/Methods"));
-            List methods = methodsEl.getChildren("Method", Namespace
+            List<?> methods = methodsEl.getChildren("Method", Namespace
                 .getNamespace("gme://gov.nih.nci.cagrid.introduce/1/Methods"));
             for (int methodI = 0; methodI < methods.size(); methodI++) {
                 Element method = (Element) methods.get(methodI);

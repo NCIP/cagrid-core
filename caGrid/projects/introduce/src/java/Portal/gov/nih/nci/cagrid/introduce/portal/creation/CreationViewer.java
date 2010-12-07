@@ -58,6 +58,11 @@ import com.jgoodies.validation.view.ValidationComponentUtils;
  */
 public class CreationViewer extends CreationViewerBaseComponent {
 
+    /**
+     * hash code for serialization.
+     */
+    private static final long serialVersionUID = 8865164459297506939L;
+
     public static final String SCHEMA_DIR = "schema";
 
     public static final String SERVICE_DIR = "Service directory";
@@ -413,7 +418,7 @@ public class CreationViewer extends CreationViewerBaseComponent {
             createButton.addActionListener(new java.awt.event.ActionListener() {
                 public void actionPerformed(java.awt.event.ActionEvent e) {
 
-                    List resourceOptions = new ArrayList();
+                    List<String> resourceOptions = new ArrayList<String>();
                     resourceOptions.add(IntroduceConstants.INTRODUCE_MAIN_RESOURCE);
                     resourceOptions.add(IntroduceConstants.INTRODUCE_SINGLETON_RESOURCE);
                     resourceOptions.add(IntroduceConstants.INTRODUCE_IDENTIFIABLE_RESOURCE);
@@ -458,7 +463,7 @@ public class CreationViewer extends CreationViewerBaseComponent {
             serviceStyleSeletor = new JComboBox();
             serviceStyleSeletor.addItem("NONE");
 
-            List extensionDescriptors = ExtensionsLoader.getInstance().getServiceExtensions();
+            List<ServiceExtensionDescriptionType> extensionDescriptors = ExtensionsLoader.getInstance().getServiceExtensions();
             for (int i = 0; i < extensionDescriptors.size(); i++) {
                 ServiceExtensionDescriptionType ex = (ServiceExtensionDescriptionType) extensionDescriptors.get(i);
                 if (ex.getShouldBeRemoved()==null || !ex.getShouldBeRemoved().booleanValue()) {

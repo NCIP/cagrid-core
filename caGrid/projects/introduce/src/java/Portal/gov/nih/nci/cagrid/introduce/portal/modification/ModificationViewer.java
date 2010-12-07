@@ -106,7 +106,6 @@ import com.jgoodies.validation.util.DefaultValidationResultModel;
 import com.jgoodies.validation.util.ValidationUtils;
 import com.jgoodies.validation.view.ValidationComponentUtils;
 
-
 /**
  * @author <A HREF="MAILTO:hastings@bmi.osu.edu">Shannon Hastings </A>
  * @author <A HREF="MAILTO:oster@bmi.osu.edu">Scott Oster </A>
@@ -125,6 +124,9 @@ public class ModificationViewer extends ApplicationComponent {
 
     private JPanel selectPanel = null;
 
+    /**
+     * Root directory for service.
+     */
     private File methodsDirectory = null;
 
     private JButton saveButton = null;
@@ -235,7 +237,16 @@ public class ModificationViewer extends ApplicationComponent {
 
     private JTabbedPane namespaceManageTabbedPane = null;
 
-
+    /**
+     * Constructor
+     * 
+     * @param methodsDirectory
+     *            Root directory for service
+     * @param br
+     *            Progress display dialog
+     * @throws Exception
+     *             if there is a problem
+     */
     public ModificationViewer(File methodsDirectory, BusyDialogRunnable br) throws Exception {
         super();
         this.extensionPanels = new ArrayList<ServiceModificationUIPanel>();
@@ -247,7 +258,14 @@ public class ModificationViewer extends ApplicationComponent {
         }
     }
 
-
+    /**
+     * Constructor
+     * 
+     * @param methodsDirectory
+     *            Root directory for service
+     * @throws Exception
+     *             if there is a problem
+     */
     public ModificationViewer(File methodsDirectory) throws Exception {
         super();
         this.extensionPanels = new ArrayList<ServiceModificationUIPanel>();
@@ -255,7 +273,7 @@ public class ModificationViewer extends ApplicationComponent {
         this.methodsDirectory = methodsDirectory;
         try {
             BusyDialogRunnable br = new BusyDialogRunnable((JFrame) GridApplication.getContext().getApplication(),
-                "Modification Viewer Initializing") {
+                    "Modification Viewer Initializing") {
 
                 @Override
                 public void process() {
@@ -275,10 +293,9 @@ public class ModificationViewer extends ApplicationComponent {
         }
         if (beenDisposed) {
             throw new Exception("Unable to modify service or service modification exited on service at "
-                + this.methodsDirectory.getAbsolutePath());
+                    + this.methodsDirectory.getAbsolutePath());
         }
     }
-
 
     public void reInitialize(File serviceDir) throws Exception {
         this.methodsDirectory = serviceDir;
@@ -286,10 +303,8 @@ public class ModificationViewer extends ApplicationComponent {
         this.reInitializeGUI();
     }
 
-
     private void reInitializeGUI() throws Exception {
-        setLastSaved(this.info.getIntroduceServiceProperties().getProperty(
-            IntroduceConstants.INTRODUCE_SKELETON_TIMESTAMP));
+        setLastSaved(this.info.getIntroduceServiceProperties().getProperty(IntroduceConstants.INTRODUCE_SKELETON_TIMESTAMP));
         getNamespaceJTree().setNamespaces(this.info.getNamespaces());
         getResourcesJTree().setServices(info);
         getExtensionsPanel().reInitialize(this.info);
@@ -307,41 +322,15 @@ public class ModificationViewer extends ApplicationComponent {
         this.repaint();
     }
 
-
     /**
      * This method initializes this viewer component
+     * 
+     * @param dialog
+     *            a Progress display dialog.
      */
     private void initialize(BusyDialogRunnable dialog) throws Exception {
         if (this.methodsDirectory != null) {
-        	Properties introduceServiceProperties = null;
-            try {
-                // load the properties file
-                File servicePropertiesFile = new File(methodsDirectory, IntroduceConstants.INTRODUCE_PROPERTIES_FILE);
-                introduceServiceProperties = loadProperties(servicePropertiesFile);
-                
-                // get the list of extensions
-                String extensionsProp = introduceServiceProperties.getProperty(
-                    IntroduceConstants.INTRODUCE_SKELETON_EXTENSIONS);
-                StringTokenizer strtok = new StringTokenizer(extensionsProp, ",", false);
-                while (strtok.hasMoreElements()) {
-                    String extensionName = strtok.nextToken();
-                    extensionName = extensionName.trim();
-                    // load the extension description
-                    ServiceExtensionDescriptionType extDtype = ExtensionsLoader.getInstance()
-                        .getServiceExtension(extensionName);
-                    if (extDtype == null) {
-                        // the extension isn't installed!
-                        JOptionPane.showMessageDialog(GridApplication.getContext().getApplication(),
-                            "ERROR: This service requires the " + extensionName + " extension to be installed.");
-                        ModificationViewer.this.dispose();
-                        this.beenDisposed = true;
-                    }
-                }
-            } catch (Exception e1) {
-                e1.printStackTrace();
-                ModificationViewer.this.dispose();
-                this.beenDisposed = true;
-            }
+            Properties introduceServiceProperties = loadPropertiesAndExtensions();
 
             if (!beenDisposed) {
                 // check the service for upgrades
@@ -351,25 +340,21 @@ public class ModificationViewer extends ApplicationComponent {
 
                 UpgradeManager upgrader = new UpgradeManager(this.methodsDirectory.getAbsolutePath());
                 if (upgrader.introduceNeedsUpgraded() && !upgrader.canIntroduceBeUpgraded()) {
-                    JOptionPane.showMessageDialog(GridApplication.getContext().getApplication(),
-                        "Service was built with another version of Introduce and no upgrader currently exists");
-                    ModificationViewer.this.dispose();
-                    this.beenDisposed = true;
+                    noUpgradeExists(upgrader);
                 } else if (upgrader.canIntroduceBeUpgraded() || upgrader.extensionsNeedUpgraded()) {
                     // ask the user if he wants to upgrade
                     PromptButtonDialog diag = new PromptButtonDialog(
-                        GridApplication.getContext().getApplication(),
-                        "Upgrade?",
-                        new String[]{
-                                "",
-                                "This service was generated with an older of version of Introduce or uses an older version of an extension.",
-                                "Would you like to try to upgrade this service to work with the current version of Introduce and installed extensions?\n",
-                                "",
-                                "Upgrade: Yes I would like to upgrade my service to be able to work with the currently installed tools.",
-                                "Open: Introduce will attempt to open and work with this service.  This is potentially very dangerous.",
-                                "Close: Do nothing and close the modification viewer.", ""}, 
-                                new String[]{"Upgrade", "Open", "Close"}, 
-                                "Close");
+                            GridApplication.getContext().getApplication(),
+                            "Upgrade?",
+                            new String[] {
+                                    "",
+                                    "This service was generated with an older of version of Introduce or uses an older version of an extension.",
+                                    "Would you like to try to upgrade this service to work with the current version of Introduce and installed extensions?\n",
+                                    "",
+                                    "Upgrade: Yes I would like to upgrade my service to be able to work with the currently installed tools.",
+                                    "Open: Introduce will attempt to open and work with this service.  This is potentially very dangerous.",
+                                    "Close: Do nothing and close the modification viewer.", "" },
+                            new String[] { "Upgrade", "Open", "Close" }, "Close");
                     GridApplication.getContext().showDialog(diag);
                     String result = diag.getSelection();
                     if (result != null && result.equals("Upgrade")) {
@@ -380,36 +365,37 @@ public class ModificationViewer extends ApplicationComponent {
                             }
 
                             // check extensions for deprecation or removal
-                            String extensionsProp = introduceServiceProperties.getProperty(IntroduceConstants.INTRODUCE_SKELETON_EXTENSIONS);
+                            String extensionsProp = introduceServiceProperties
+                                    .getProperty(IntroduceConstants.INTRODUCE_SKELETON_EXTENSIONS);
                             StringTokenizer strtok = new StringTokenizer(extensionsProp, ",", false);
                             String newExtension = "";
                             while (strtok.hasMoreElements()) {
                                 String extensionName = strtok.nextToken();
                                 extensionName = extensionName.trim();
                                 ServiceExtensionDescriptionType extDtype = ExtensionsLoader.getInstance()
-                                    .getServiceExtension(extensionName);
+                                        .getServiceExtension(extensionName);
 
                                 if (extDtype.getShouldBeRemoved() != null && extDtype.getShouldBeRemoved().booleanValue()) {
                                     // the extension is scheduled for removal
                                     if (extDtype.getServiceExtensionRemover() != null) {
                                         PromptButtonDialog diag2 = new PromptButtonDialog(
-                                            GridApplication.getContext().getApplication(),
-                                            "Ignore?",
-                                            new String[]{
-                                                    "",
-                                                    "WARNING: This service uses the "
-                                                        + extensionName
-                                                        + "  and this extension is no longer supported and is scheduled to be removed.",
-                                                    "Ignore: Ignore this extension in the future but do not remove it.",
-                                                    "Remove: Let this extension remove itself from the service if it can.",
-                                                    ""}, new String[]{"Ignore", "Remove"}, "Remove");
+                                                GridApplication.getContext().getApplication(),
+                                                "Ignore?",
+                                                new String[] {
+                                                        "",
+                                                        "WARNING: This service uses the "
+                                                                + extensionName
+                                                                + "  and this extension is no longer supported and is scheduled to be removed.",
+                                                        "Ignore: Ignore this extension in the future but do not remove it.",
+                                                        "Remove: Let this extension remove itself from the service if it can.", "" },
+                                                new String[] { "Ignore", "Remove" }, "Remove");
                                         GridApplication.getContext().showDialog(diag2);
                                         String result2 = diag2.getSelection();
                                         if (result2.equals("Ignore")) {
-                                            // need to remove this extension from
+                                            // need to remove this extension
+                                            // from
                                             // the extensions list
-                                            ExtensionType[] modifiedExtensionsArray = new ExtensionType[info
-                                                .getExtensions().getExtension().length - 1];
+                                            ExtensionType[] modifiedExtensionsArray = new ExtensionType[info.getExtensions().getExtension().length - 1];
                                             int kept = 0;
                                             for (int i = 0; i < info.getExtensions().getExtension().length; i++) {
                                                 ExtensionType extType = info.getExtensions().getExtension(i);
@@ -417,17 +403,15 @@ public class ModificationViewer extends ApplicationComponent {
                                                     modifiedExtensionsArray[kept++] = extType;
                                                 }
                                             }
-                                        } // do nothing for remove -- the Extensions Upgrade Manager will find and remove it
+                                        } // do nothing for remove -- the
+                                        // Extensions Upgrade Manager will
+                                        // find and remove it
                                     } else {
-                                        JOptionPane
-                                            .showMessageDialog(
-                                                GridApplication.getContext().getApplication(),
-                                                "WARNING: This service uses the "
-                                                    + extensionName
-                                                    + "  and this extension is no longer supported and will no longer be processed");
+                                        JOptionPane.showMessageDialog(GridApplication.getContext().getApplication(),
+                                                "WARNING: This service uses the " + extensionName
+                                                        + "  and this extension is no longer supported and will no longer be processed");
 
-                                        ExtensionType[] modifiedExtensionsArray = new ExtensionType[info
-                                            .getExtensions().getExtension().length - 1];
+                                        ExtensionType[] modifiedExtensionsArray = new ExtensionType[info.getExtensions().getExtension().length - 1];
                                         int kept = 0;
                                         for (int i = 0; i < info.getExtensions().getExtension().length; i++) {
                                             ExtensionType extType = info.getExtensions().getExtension(i);
@@ -444,11 +428,11 @@ public class ModificationViewer extends ApplicationComponent {
 
                                 } else if (extDtype.getIsDeprecated() != null && extDtype.getIsDeprecated().booleanValue()) {
                                     JOptionPane
-                                        .showMessageDialog(
-                                            GridApplication.getContext().getApplication(),
-                                            "WARNING: This service uses the "
-                                                + extensionName
-                                                + "  and this extension is deprecated and may not be supported by future versions of Introduce.");
+                                            .showMessageDialog(
+                                                    GridApplication.getContext().getApplication(),
+                                                    "WARNING: This service uses the "
+                                                            + extensionName
+                                                            + "  and this extension is deprecated and may not be supported by future versions of Introduce.");
                                 }
                             }
 
@@ -461,7 +445,8 @@ public class ModificationViewer extends ApplicationComponent {
                             logger.info("SERVICE UPGRADE STATUS:\n" + status);
                             int answer = UpgradeStatusView.showUpgradeStatusView(status);
                             if (answer == UpgradeStatusView.PROCEED) {
-                                // NO-OP, the modification viewer will load up normally
+                                // NO-OP, the modification viewer will load up
+                                // normally
                             } else if (answer == UpgradeStatusView.ROLL_BACK) {
                                 // restore the service from the backup
                                 upgrader.recover();
@@ -475,11 +460,9 @@ public class ModificationViewer extends ApplicationComponent {
                         } catch (Exception e) {
                             e.printStackTrace();
                             int answer = JOptionPane.showConfirmDialog(GridApplication.getContext().getApplication(),
-                                "The service had the following fatal error during the upgrade process:\n"
-                                    + e.getMessage()
-                                    + "\nIf you select OK, Introduce will roll your service back to its previous\n"
-                                    + "state before the upgrade attempt", "Error upgrading service",
-                                JOptionPane.OK_CANCEL_OPTION);
+                                    "The service had the following fatal error during the upgrade process:\n" + e.getMessage()
+                                            + "\nIf you select OK, Introduce will roll your service back to its previous\n"
+                                            + "state before the upgrade attempt", "Error upgrading service", JOptionPane.OK_CANCEL_OPTION);
                             if (answer == JOptionPane.OK_OPTION) {
                                 try {
                                     if (dialog != null) {
@@ -507,16 +490,7 @@ public class ModificationViewer extends ApplicationComponent {
                 if (!beenDisposed) {
                     // reload the info in case it has changed during
                     // upgrading.....
-                    try {
-                        if (dialog != null) {
-                            dialog.setProgressText("loading service description");
-                        }
-                        this.info = new ServiceInformation(this.methodsDirectory);
-                    } catch (Exception e) {
-                        CompositeErrorDialog.showErrorDialog(e);
-                        ModificationViewer.this.dispose();
-                        this.beenDisposed = true;
-                    }
+                    loadServiceInformation(dialog);
 
                     setContentPane(getMainPanel());
                     setTitle("Modify Service Interface");
@@ -528,6 +502,73 @@ public class ModificationViewer extends ApplicationComponent {
         }
     }
 
+    /**
+     * @param dialog
+     */
+    private void loadServiceInformation(BusyDialogRunnable dialog) {
+        try {
+            if (dialog != null) {
+                dialog.setProgressText("loading service description");
+            }
+            this.info = new ServiceInformation(this.methodsDirectory);
+        } catch (Exception e) {
+            logger.error("Error loading service information",e);
+            CompositeErrorDialog.showErrorDialog(e);
+            ModificationViewer.this.dispose();
+            this.beenDisposed = true;
+        }
+    }
+
+    /**
+     * Issue an error stating that no upgrade is available for the version of
+     * introduce that created the service.
+     * 
+     * @param upgrader
+     *            The upgrade manager we are using.
+     * @throws Exception
+     *             If there is a problem
+     */
+    private void noUpgradeExists(UpgradeManager upgrader) throws Exception {
+        String msg = "Service was built with version " + upgrader.getServiceVersion() + "of Introduce and no upgrader currently exists";
+        logger.error(msg);
+        JOptionPane.showMessageDialog(GridApplication.getContext().getApplication(), msg);
+        ModificationViewer.this.dispose();
+        this.beenDisposed = true;
+    }
+
+    /**
+     * @return
+     */
+    private Properties loadPropertiesAndExtensions() {
+        Properties introduceServiceProperties = null;
+        try {
+            // load the properties file
+            File servicePropertiesFile = new File(methodsDirectory, IntroduceConstants.INTRODUCE_PROPERTIES_FILE);
+            introduceServiceProperties = loadProperties(servicePropertiesFile);
+
+            // get the list of extensions
+            String extensionsProp = introduceServiceProperties.getProperty(IntroduceConstants.INTRODUCE_SKELETON_EXTENSIONS);
+            StringTokenizer strtok = new StringTokenizer(extensionsProp, ",", false);
+            while (strtok.hasMoreElements()) {
+                String extensionName = strtok.nextToken();
+                extensionName = extensionName.trim();
+                // load the extension description
+                ServiceExtensionDescriptionType extDtype = ExtensionsLoader.getInstance().getServiceExtension(extensionName);
+                if (extDtype == null) {
+                    // the extension isn't installed!
+                    JOptionPane.showMessageDialog(GridApplication.getContext().getApplication(), "ERROR: This service requires the "
+                            + extensionName + " extension to be installed.");
+                    ModificationViewer.this.dispose();
+                    this.beenDisposed = true;
+                }
+            }
+        } catch (Exception e1) {
+            e1.printStackTrace();
+            ModificationViewer.this.dispose();
+            this.beenDisposed = true;
+        }
+        return introduceServiceProperties;
+    }
 
     private void initServicePropertyValidation() {
         ValidationComponentUtils.setMessageKey(getServicePropertyKeyTextField(), SERVICE_PROPERTY_KEY);
@@ -538,13 +579,10 @@ public class ModificationViewer extends ApplicationComponent {
         updateServicePropertyComponentTreeSeverity();
     }
 
-
     private void updateServicePropertyComponentTreeSeverity() {
         ValidationComponentUtils.updateComponentTreeMandatoryAndBlankBackground(this);
-        ValidationComponentUtils.updateComponentTreeSeverityBackground(this, this.servicePropertiesValidation
-            .getResult());
+        ValidationComponentUtils.updateComponentTreeSeverityBackground(this, this.servicePropertiesValidation.getResult());
     }
-
 
     /**
      * This method initializes jPanel
@@ -590,7 +628,6 @@ public class ModificationViewer extends ApplicationComponent {
         return this.mainPanel;
     }
 
-
     /**
      * This method initializes jPanel
      * 
@@ -619,7 +656,6 @@ public class ModificationViewer extends ApplicationComponent {
         return this.buttonPanel;
     }
 
-
     private JButton getReloadButton() {
         if (this.reloadButton == null) {
             this.reloadButton = new JButton(IntroduceLookAndFeel.getResyncIcon());
@@ -627,14 +663,14 @@ public class ModificationViewer extends ApplicationComponent {
             this.reloadButton.setToolTipText("reload the service and throw away the current modifications");
             this.reloadButton.addActionListener(new java.awt.event.ActionListener() {
                 public void actionPerformed(java.awt.event.ActionEvent e) {
-                    int decision = JOptionPane.showConfirmDialog(ModificationViewer.this,
-                        "Are you sure you wish to reload?\n" + "All current modifactions will be lost!\n"
-                            + "This will simply reload the modification viewer with the\n"
-                            + "service without saving the current changes since the last save.", "Are you sure?",
-                        JOptionPane.YES_NO_OPTION);
+                    int decision = JOptionPane
+                            .showConfirmDialog(ModificationViewer.this, "Are you sure you wish to reload?\n"
+                                    + "All current modifactions will be lost!\n"
+                                    + "This will simply reload the modification viewer with the\n"
+                                    + "service without saving the current changes since the last save.", "Are you sure?",
+                                    JOptionPane.YES_NO_OPTION);
                     if (decision == JOptionPane.OK_OPTION) {
-                        BusyDialogRunnable r = new BusyDialogRunnable(GridApplication.getContext().getApplication(),
-                            "Reload") {
+                        BusyDialogRunnable r = new BusyDialogRunnable(GridApplication.getContext().getApplication(), "Reload") {
                             @Override
                             public void process() {
                                 logger.info("Reloading service");
@@ -644,7 +680,7 @@ public class ModificationViewer extends ApplicationComponent {
                                 ro.setMaximized(true);
                                 try {
                                     GridApplication.getContext().getApplication().addApplicationComponent(
-                                        new ModificationViewer(ModificationViewer.this.methodsDirectory), null, ro);
+                                            new ModificationViewer(ModificationViewer.this.methodsDirectory), null, ro);
                                 } catch (Exception e) {
                                     // TODO Auto-generated catch block
                                     beenDisposed = true;
@@ -660,7 +696,6 @@ public class ModificationViewer extends ApplicationComponent {
         }
         return this.reloadButton;
     }
-
 
     /**
      * This method initializes jPanel
@@ -731,8 +766,8 @@ public class ModificationViewer extends ApplicationComponent {
             this.selectPanel = new JPanel();
             this.selectPanel.setLayout(new GridBagLayout());
             this.selectPanel.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Properties",
-                javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION,
-                javax.swing.border.TitledBorder.DEFAULT_POSITION, null, PortalLookAndFeel.getPanelLabelColor()));
+                    javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, null,
+                    PortalLookAndFeel.getPanelLabelColor()));
             this.selectPanel.add(this.serviceNameLabel, gridBagConstraints18);
             this.selectPanel.add(getServiceName(), gridBagConstraints17);
             this.selectPanel.add(this.namespaceLable, gridBagConstraints19);
@@ -744,7 +779,6 @@ public class ModificationViewer extends ApplicationComponent {
         }
         return this.selectPanel;
     }
-
 
     /**
      * This method initializes jButton
@@ -765,7 +799,6 @@ public class ModificationViewer extends ApplicationComponent {
         return this.saveButton;
     }
 
-
     /**
      * This method initializes undoButton
      * 
@@ -778,12 +811,11 @@ public class ModificationViewer extends ApplicationComponent {
             this.undoButton.setToolTipText("restore back to last save state");
             this.undoButton.addActionListener(new java.awt.event.ActionListener() {
                 public void actionPerformed(java.awt.event.ActionEvent e) {
-                    RestoreDialog dialog = new RestoreDialog(info.getServices().getService(0).getName(), 
-                        info.getBaseDirectory().getAbsolutePath());
+                    RestoreDialog dialog = new RestoreDialog(info.getServices().getService(0).getName(), info.getBaseDirectory()
+                            .getAbsolutePath());
                     dialog.setVisible(true);
                     if (!dialog.wasCanceled()) {
-                        BusyDialogRunnable r = new BusyDialogRunnable(GridApplication.getContext().getApplication(),
-                            "Reloading") {
+                        BusyDialogRunnable r = new BusyDialogRunnable(GridApplication.getContext().getApplication(), "Reloading") {
                             @Override
                             public void process() {
 
@@ -791,11 +823,10 @@ public class ModificationViewer extends ApplicationComponent {
                                     setProgressText("re-initializing modification viewer");
                                     dispose();
                                     GridApplication.getContext().getApplication().addApplicationComponent(
-                                        new ModificationViewer(ModificationViewer.this.methodsDirectory));
+                                            new ModificationViewer(ModificationViewer.this.methodsDirectory));
                                 } catch (Exception e1) {
                                     // e1.printStackTrace();
-                                    ErrorDialog
-                                        .showError("Unable to roll back, there may be no older versions available");
+                                    ErrorDialog.showError("Unable to roll back, there may be no older versions available");
                                     return;
                                 }
                             }
@@ -810,7 +841,6 @@ public class ModificationViewer extends ApplicationComponent {
         return this.undoButton;
     }
 
-
     /**
      * This method initializes contentTabbedPane
      * 
@@ -821,29 +851,23 @@ public class ModificationViewer extends ApplicationComponent {
             this.contentTabbedPane = new JTabbedPane();
             // this.contentTabbedPane.setTabPlacement(SwingConstants.LEFT);
             this.contentTabbedPane.setTabLayoutPolicy(JTabbedPane.SCROLL_TAB_LAYOUT);
-            this.contentTabbedPane.addTab("Types", IntroduceLookAndFeel.getDiscoveryToolsIcon(), getTypesSplitPane(),
-                null);
-            this.contentTabbedPane.addTab("Services", IntroduceLookAndFeel.getServiceIcon(),
-                getResourceesTabbedPanel(), null);
+            this.contentTabbedPane.addTab("Types", IntroduceLookAndFeel.getDiscoveryToolsIcon(), getTypesSplitPane(), null);
+            this.contentTabbedPane.addTab("Services", IntroduceLookAndFeel.getServiceIcon(), getResourceesTabbedPanel(), null);
             this.contentTabbedPane.addTab("Service Properties", IntroduceLookAndFeel.getServicePropertiesIcon(),
-                getServicePropertiesPanel(), null);
-            this.contentTabbedPane.addTab("Extensions", IntroduceLookAndFeel.getExtensionIcon(), getExtensionsPanel(),
-                null);
+                    getServicePropertiesPanel(), null);
+            this.contentTabbedPane.addTab("Extensions", IntroduceLookAndFeel.getExtensionIcon(), getExtensionsPanel(), null);
             // add a tab for each extension...
             ExtensionsType exts = this.info.getExtensions();
             if ((exts != null) && (exts.getExtension() != null)) {
                 ExtensionType[] extsTypes = exts.getExtension();
                 for (ExtensionType element : extsTypes) {
-                    ServiceExtensionDescriptionType extDtype = ExtensionsLoader.getInstance().getServiceExtension(
-                        element.getName());
+                    ServiceExtensionDescriptionType extDtype = ExtensionsLoader.getInstance().getServiceExtension(element.getName());
                     try {
-                        if ((extDtype.getServiceModificationUIPanel() != null)
-                            && !extDtype.getServiceModificationUIPanel().equals("")) {
+                        if ((extDtype.getServiceModificationUIPanel() != null) && !extDtype.getServiceModificationUIPanel().equals("")) {
                             ServiceModificationUIPanel extPanel = gov.nih.nci.cagrid.introduce.portal.extension.tools.ExtensionTools
-                                .getServiceModificationUIPanel(extDtype.getName(), this.info);
+                                    .getServiceModificationUIPanel(extDtype.getName(), this.info);
                             this.extensionPanels.add(extPanel);
-                            this.contentTabbedPane
-                                .addTab(extDtype.getDisplayName(), extPanel.getIcon(), extPanel, null);
+                            this.contentTabbedPane.addTab(extDtype.getDisplayName(), extPanel.getIcon(), extPanel, null);
                         }
                     } catch (Exception e) {
                         CompositeErrorDialog.showErrorDialog("Cannot load extension: " + extDtype.getDisplayName(), e);
@@ -857,23 +881,23 @@ public class ModificationViewer extends ApplicationComponent {
                     try {
 
                         switch (contentTabbedPane.getSelectedIndex()) {
-                            case 0 :
-                                getNamespaceJTree().setNamespaces(info.getNamespaces());
-                                break;
-                            case 1 :
-                                getResourcesJTree().setServices(info);
-                                break;
-                            case 2 :
-                                getServicePropertiesTable().setServiceInformation(info);
-                                break;
-                            case 3 :
-                                break;
-                            default :
-                                for (int i = 0; i < extensionPanels.size(); i++) {
-                                    ServiceModificationUIPanel panel = extensionPanels.get(i);
-                                    panel.setServiceInfo(info);
-                                }
-                                break;
+                        case 0:
+                            getNamespaceJTree().setNamespaces(info.getNamespaces());
+                            break;
+                        case 1:
+                            getResourcesJTree().setServices(info);
+                            break;
+                        case 2:
+                            getServicePropertiesTable().setServiceInformation(info);
+                            break;
+                        case 3:
+                            break;
+                        default:
+                            for (int i = 0; i < extensionPanels.size(); i++) {
+                                ServiceModificationUIPanel panel = extensionPanels.get(i);
+                                panel.setServiceInfo(info);
+                            }
+                            break;
                         }
 
                         // reInitializeGUI();
@@ -885,7 +909,6 @@ public class ModificationViewer extends ApplicationComponent {
         }
         return this.contentTabbedPane;
     }
-
 
     /**
      * This method initializes serviceName
@@ -899,11 +922,10 @@ public class ModificationViewer extends ApplicationComponent {
             // java.awt.Font.ITALIC, 12));
             this.serviceName.setForeground(IntroduceLookAndFeel.getPanelLabelColor());
             this.serviceName.setText(this.info.getIntroduceServiceProperties().getProperty(
-                IntroduceConstants.INTRODUCE_SKELETON_SERVICE_NAME));
+                    IntroduceConstants.INTRODUCE_SKELETON_SERVICE_NAME));
         }
         return this.serviceName;
     }
-
 
     /**
      * This method initializes packageName
@@ -914,14 +936,13 @@ public class ModificationViewer extends ApplicationComponent {
         if (this.namespace == null) {
             this.namespace = new JLabel();
             this.namespace.setText(this.info.getIntroduceServiceProperties().getProperty(
-                IntroduceConstants.INTRODUCE_SKELETON_NAMESPACE_DOMAIN));
+                    IntroduceConstants.INTRODUCE_SKELETON_NAMESPACE_DOMAIN));
             // this.namespace.setFont(new java.awt.Font("Dialog",
             // java.awt.Font.ITALIC, 12));
             this.namespace.setForeground(IntroduceLookAndFeel.getPanelLabelColor());
         }
         return this.namespace;
     }
-
 
     /**
      * This method initializes lastSaved
@@ -934,12 +955,10 @@ public class ModificationViewer extends ApplicationComponent {
             // this.lastSaved.setFont(new java.awt.Font("Dialog",
             // java.awt.Font.ITALIC, 12));
             this.lastSaved.setForeground(IntroduceLookAndFeel.getPanelLabelColor());
-            setLastSaved(this.info.getIntroduceServiceProperties().getProperty(
-                IntroduceConstants.INTRODUCE_SKELETON_TIMESTAMP));
+            setLastSaved(this.info.getIntroduceServiceProperties().getProperty(IntroduceConstants.INTRODUCE_SKELETON_TIMESTAMP));
         }
         return this.lastSaved;
     }
-
 
     private void setLastSaved(String savedDate) {
         Date date;
@@ -951,7 +970,6 @@ public class ModificationViewer extends ApplicationComponent {
         SimpleDateFormat formatter = new SimpleDateFormat("MM/dd/yyyy HH:mm:ss");
         this.lastSaved.setText(formatter.format(date));
     }
-
 
     /**
      * This method initializes location
@@ -968,7 +986,6 @@ public class ModificationViewer extends ApplicationComponent {
         }
         return this.saveLocation;
     }
-
 
     /**
      * This method initializes discoveryPanel
@@ -992,16 +1009,14 @@ public class ModificationViewer extends ApplicationComponent {
             this.discoveryPanel = new JPanel();
             this.discoveryPanel.setLayout(new GridBagLayout());
             this.discoveryPanel.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Import Data Types",
-                javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION,
-                javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Dialog", java.awt.Font.BOLD, 12),
-                PortalLookAndFeel.getPanelLabelColor()));
+                    javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION,
+                    new java.awt.Font("Dialog", java.awt.Font.BOLD, 12), PortalLookAndFeel.getPanelLabelColor()));
             this.discoveryPanel.add(getDiscoveryTabbedPane(), gridBagConstraints16);
             this.discoveryPanel.add(getDiscoveryButtonPanel(), gridBagConstraints27);
 
         }
         return this.discoveryPanel;
     }
-
 
     /**
      * This method initializes discoveryButtonPanel
@@ -1026,7 +1041,6 @@ public class ModificationViewer extends ApplicationComponent {
         return this.discoveryButtonPanel;
     }
 
-
     /**
      * This method initializes namespaceAddButton
      * 
@@ -1043,8 +1057,8 @@ public class ModificationViewer extends ApplicationComponent {
                     ModificationViewer.this.namespaceAddButton.setEnabled(false);
 
                     final MultiEventProgressBar progBar = new MultiEventProgressBar(false);
-                    BusyDialog dialog = new BusyDialog((JFrame) SwingUtilities.getRoot(ModificationViewer.this),
-                        "Adding types to service", progBar);
+                    BusyDialog dialog = new BusyDialog((JFrame) SwingUtilities.getRoot(ModificationViewer.this), "Adding types to service",
+                            progBar);
                     BusyDialogRunnable runner = new BusyDialogRunnable(dialog) {
 
                         @Override
@@ -1063,7 +1077,6 @@ public class ModificationViewer extends ApplicationComponent {
         }
         return this.namespaceAddButton;
     }
-
 
     /**
      * This method initializes namespaceRemoveButton
@@ -1084,7 +1097,6 @@ public class ModificationViewer extends ApplicationComponent {
         return this.namespaceRemoveButton;
     }
 
-
     /**
      * This method initializes namespaceTableScrollPane
      * 
@@ -1094,13 +1106,12 @@ public class ModificationViewer extends ApplicationComponent {
         if (this.namespaceTableScrollPane == null) {
             this.namespaceTableScrollPane = new JScrollPane();
             namespaceTableScrollPane.setBorder(BorderFactory.createTitledBorder(null, "Imported Data Types",
-                TitledBorder.DEFAULT_JUSTIFICATION, TitledBorder.DEFAULT_POSITION, new Font("Dialog", Font.BOLD, 12),
-                IntroduceLookAndFeel.getPanelLabelColor()));
+                    TitledBorder.DEFAULT_JUSTIFICATION, TitledBorder.DEFAULT_POSITION, new Font("Dialog", Font.BOLD, 12),
+                    IntroduceLookAndFeel.getPanelLabelColor()));
             this.namespaceTableScrollPane.setViewportView(getNamespaceJTree());
         }
         return this.namespaceTableScrollPane;
     }
-
 
     /**
      * This method initializes namespaceJTree
@@ -1123,16 +1134,15 @@ public class ModificationViewer extends ApplicationComponent {
                         NamespaceType nsType = (NamespaceType) parentNode.getUserObject();
                         if (nsType.getNamespace().equals(IntroduceConstants.W3CNAMESPACE)) {
                             getSchemaElementTypeConfigurationPanel().setHide(true);
-                            getSchemaElementTypeConfigurationPanel().setSchemaElementType(
-                                (SchemaElementType) node.getUserObject(), false);
+                            getSchemaElementTypeConfigurationPanel().setSchemaElementType((SchemaElementType) node.getUserObject(), false);
                         } else {
-                            getSchemaElementTypeConfigurationPanel().setHide(
-                                (((NamespaceType) ((NamespaceTypeTreeNode) node.getParent()).getUserObject())
-                                    .getGenerateStubs() == null)
-                                    || (((NamespaceType) ((NamespaceTypeTreeNode) node.getParent()).getUserObject())
-                                        .getGenerateStubs().booleanValue()));
-                            getSchemaElementTypeConfigurationPanel().setSchemaElementType(
-                                (SchemaElementType) node.getUserObject(), true);
+                            getSchemaElementTypeConfigurationPanel()
+                                    .setHide(
+                                            (((NamespaceType) ((NamespaceTypeTreeNode) node.getParent()).getUserObject())
+                                                    .getGenerateStubs() == null)
+                                                    || (((NamespaceType) ((NamespaceTypeTreeNode) node.getParent()).getUserObject())
+                                                            .getGenerateStubs().booleanValue()));
+                            getSchemaElementTypeConfigurationPanel().setSchemaElementType((SchemaElementType) node.getUserObject(), true);
                         }
                         getNamespaceTypeConfigurationPanel().setNamespaceType(nsType);
                     } else {
@@ -1144,7 +1154,6 @@ public class ModificationViewer extends ApplicationComponent {
         }
         return this.namespaceJTree;
     }
-
 
     /**
      * This method initializes namespaceTypePropertiesPanel
@@ -1171,7 +1180,6 @@ public class ModificationViewer extends ApplicationComponent {
         return this.namespaceTypePropertiesPanel;
     }
 
-
     /**
      * This method initializes namespaceTypeCconfigurationPanel
      * 
@@ -1179,13 +1187,11 @@ public class ModificationViewer extends ApplicationComponent {
      */
     private NamespaceTypeConfigurePanel getNamespaceTypeConfigurationPanel() {
         if (this.namespaceTypeConfigurationPanel == null) {
-            this.namespaceTypeConfigurationPanel = new NamespaceTypeConfigurePanel(
-                getSchemaElementTypeConfigurationPanel());
+            this.namespaceTypeConfigurationPanel = new NamespaceTypeConfigurePanel(getSchemaElementTypeConfigurationPanel());
             this.namespaceTypeConfigurationPanel.setName("namespaceTypeConfigurationPanel");
         }
         return this.namespaceTypeConfigurationPanel;
     }
-
 
     /**
      * This method initializes schemaElementTypeConfigurationPanel
@@ -1198,7 +1204,6 @@ public class ModificationViewer extends ApplicationComponent {
         }
         return this.schemaElementTypeConfigurationPanel;
     }
-
 
     /**
      * This method initializes discoveryTabbedPane
@@ -1214,7 +1219,7 @@ public class ModificationViewer extends ApplicationComponent {
                     DiscoveryExtensionDescriptionType dd = (DiscoveryExtensionDescriptionType) discoveryTypes.get(i);
                     try {
                         NamespaceTypeDiscoveryComponent comp = gov.nih.nci.cagrid.introduce.portal.extension.tools.ExtensionTools
-                            .getNamespaceTypeDiscoveryComponent(dd.getName(), this.info.getNamespaces());
+                                .getNamespaceTypeDiscoveryComponent(dd.getName(), this.info.getNamespaces());
                         if (comp != null) {
                             this.discoveryTabbedPane.addTab(dd.getDisplayName(), comp);
                             this.discoveryPanels.add(comp);
@@ -1229,17 +1234,15 @@ public class ModificationViewer extends ApplicationComponent {
         return this.discoveryTabbedPane;
     }
 
-
     private void saveModifications() {
-        int confirmed = JOptionPane.showConfirmDialog(ModificationViewer.this, "Are you sure you want to save?",
-            "Confirm Save", JOptionPane.YES_NO_OPTION);
+        int confirmed = JOptionPane.showConfirmDialog(ModificationViewer.this, "Are you sure you want to save?", "Confirm Save",
+                JOptionPane.YES_NO_OPTION);
         if (confirmed == JOptionPane.OK_OPTION) {
             // verify no needed namespace types have been removed or modified
             if (!CommonTools.usedTypesAvailable(this.info.getServiceDescriptor())) {
                 Set<QName> unavailable = CommonTools.getUnavailableUsedTypes(this.info.getServiceDescriptor());
-                String[] message = {"The following schema element types used in the service",
-                        "are not available in the specified namespace types!", "Please add schemas as appropriate.",
-                        "\n"};
+                String[] message = { "The following schema element types used in the service",
+                        "are not available in the specified namespace types!", "Please add schemas as appropriate.", "\n" };
                 String[] err = new String[unavailable.size() + message.length];
                 System.arraycopy(message, 0, err, 0, message.length);
                 int index = message.length;
@@ -1248,8 +1251,7 @@ public class ModificationViewer extends ApplicationComponent {
                     err[index] = unavailableIter.next().toString();
                     index++;
                 }
-                JOptionPane.showMessageDialog(ModificationViewer.this, err, "Unavailable types found",
-                    JOptionPane.WARNING_MESSAGE);
+                JOptionPane.showMessageDialog(ModificationViewer.this, err, "Unavailable types found", JOptionPane.WARNING_MESSAGE);
                 return;
             }
 
@@ -1265,15 +1267,14 @@ public class ModificationViewer extends ApplicationComponent {
                             for (int i = 0; i < namespaces.getNamespace().length; i++) {
                                 NamespaceType currentNs = namespaces.getNamespace(i);
                                 if (currentNs.getPackageName() != null) {
-                                    if ((currentNs.getGenerateStubs() == null)
-                                        || (!currentNs.getGenerateStubs().booleanValue())) {
+                                    if ((currentNs.getGenerateStubs() == null) || (!currentNs.getGenerateStubs().booleanValue())) {
                                         if (!CommonTools.isValidNoStubPackageName(currentNs.getPackageName())) {
-                                            setErrorMessage("Error: Invalid package name for namespace "
-                                                + currentNs.getNamespace() + " : " + currentNs.getPackageName());
+                                            setErrorMessage("Error: Invalid package name for namespace " + currentNs.getNamespace() + " : "
+                                                    + currentNs.getPackageName());
                                             return;
                                         } else if (!CommonTools.isValidPackageName(currentNs.getPackageName())) {
-                                            setErrorMessage("Error: Invalid package name for namespace "
-                                                + currentNs.getNamespace() + " : " + currentNs.getPackageName());
+                                            setErrorMessage("Error: Invalid package name for namespace " + currentNs.getNamespace() + " : "
+                                                    + currentNs.getPackageName());
                                             return;
                                         }
                                     }
@@ -1281,23 +1282,21 @@ public class ModificationViewer extends ApplicationComponent {
 
                                 boolean errors = false;
                                 String em = "The following data type configurations in the " + currentNs.getNamespace()
-                                    + " namespacece have the following errors: \n";
+                                        + " namespacece have the following errors: \n";
 
                                 // walk through all the types and make sure they
                                 // have valid serialization configurations
-                                if (currentNs.getGenerateStubs() != null
-                                    && !currentNs.getGenerateStubs().booleanValue()
-                                    && currentNs.getSchemaElement() != null) {
+                                if (currentNs.getGenerateStubs() != null && !currentNs.getGenerateStubs().booleanValue()
+                                        && currentNs.getSchemaElement() != null) {
                                     for (int schemaElementI = 0; schemaElementI < currentNs.getSchemaElement().length; schemaElementI++) {
                                         SchemaElementType type = currentNs.getSchemaElement(schemaElementI);
-                                        ValidationResult result = SchemaElementTypeValidator.validateSchemaElementType(
-                                            type.getClassName(), type.getSerializer(), type.getDeserializer());
+                                        ValidationResult result = SchemaElementTypeValidator.validateSchemaElementType(type.getClassName(),
+                                                type.getSerializer(), type.getDeserializer());
                                         if (result.getErrors() != null && !result.getErrors().isEmpty()) {
                                             errors = true;
                                             Iterator<ValidationMessage> it = result.getErrors().iterator();
                                             while (it.hasNext()) {
-                                                em += type.getType() + " : "
-                                                    + ((ValidationMessage) it.next()).formattedText() + "\n";
+                                                em += type.getType() + " : " + ((ValidationMessage) it.next()).formattedText() + "\n";
                                             }
                                         }
                                     }
@@ -1312,7 +1311,7 @@ public class ModificationViewer extends ApplicationComponent {
 
                         // check the methods to make sure they are valid.......
                         if ((ModificationViewer.this.info.getServices() != null)
-                            && (ModificationViewer.this.info.getServices().getService() != null)) {
+                                && (ModificationViewer.this.info.getServices().getService() != null)) {
                             for (int serviceI = 0; serviceI < ModificationViewer.this.info.getServices().getService().length; serviceI++) {
                                 ServiceType service = ModificationViewer.this.info.getServices().getService(serviceI);
                                 if ((service.getMethods() != null) && (service.getMethods().getMethod() != null)) {
@@ -1321,14 +1320,13 @@ public class ModificationViewer extends ApplicationComponent {
                                         for (int methodI = 0; methodI < service.getMethods().getMethod().length; methodI++) {
                                             MethodType method = service.getMethods().getMethod(methodI);
                                             if (method.getName().length() == 0) {
-                                                setErrorMessage("The service " + service.getName()
-                                                    + " has a method with no name");
+                                                setErrorMessage("The service " + service.getName() + " has a method with no name");
                                                 return;
                                             } else if (!(methodNames.contains(method.getName()))) {
                                                 methodNames.add(method.getName());
                                             } else {
-                                                setErrorMessage("The service " + service.getName()
-                                                    + " has duplicate methods " + method.getName());
+                                                setErrorMessage("The service " + service.getName() + " has duplicate methods "
+                                                        + method.getName());
                                                 return;
                                             }
                                         }
@@ -1344,7 +1342,7 @@ public class ModificationViewer extends ApplicationComponent {
                         Properties oldProps = new Properties();
                         try {
                             FileInputStream fis = new FileInputStream(new File(info.getBaseDirectory(),
-                                IntroduceConstants.INTRODUCE_PROPERTIES_FILE + ".prev"));
+                                    IntroduceConstants.INTRODUCE_PROPERTIES_FILE + ".prev"));
                             oldProps.load(fis);
                             fis.close();
                         } catch (Exception e) {
@@ -1352,12 +1350,10 @@ public class ModificationViewer extends ApplicationComponent {
                             // therefore no prev file exists
                         }
                         List<String> newExtsNames = new ArrayList<String>();
-                        if (oldProps.size() >= 0
-                            && oldProps.getProperty(IntroduceConstants.INTRODUCE_SKELETON_EXTENSIONS) != null) {
-                            String oldExtensions = oldProps
-                                .getProperty(IntroduceConstants.INTRODUCE_SKELETON_EXTENSIONS);
+                        if (oldProps.size() >= 0 && oldProps.getProperty(IntroduceConstants.INTRODUCE_SKELETON_EXTENSIONS) != null) {
+                            String oldExtensions = oldProps.getProperty(IntroduceConstants.INTRODUCE_SKELETON_EXTENSIONS);
                             String currentExtensions = info.getIntroduceServiceProperties().getProperty(
-                                IntroduceConstants.INTRODUCE_SKELETON_EXTENSIONS);
+                                    IntroduceConstants.INTRODUCE_SKELETON_EXTENSIONS);
                             StringTokenizer strtok = new StringTokenizer(oldExtensions, ",", false);
                             List<String> oldExts = new ArrayList<String>();
                             while (strtok.hasMoreElements()) {
@@ -1383,28 +1379,25 @@ public class ModificationViewer extends ApplicationComponent {
                             }
                             ExtensionType[] newExtensionTypeArray = null;
                             if (info.getExtensions() != null && info.getExtensions().getExtension() != null
-                                && info.getExtensions().getExtension().length > 0) {
-                                newExtensionTypeArray = new ExtensionType[info.getExtensions().getExtension().length
-                                    + newExtsTypes.size()];
-                                System.arraycopy(info.getExtensions().getExtension(), 0, newExtensionTypeArray, 0, info
-                                    .getExtensions().getExtension().length);
-                                System.arraycopy(newExtsTypes.toArray(), 0, newExtensionTypeArray, info.getExtensions()
-                                    .getExtension().length, newExtsTypes.size());
+                                    && info.getExtensions().getExtension().length > 0) {
+                                newExtensionTypeArray = new ExtensionType[info.getExtensions().getExtension().length + newExtsTypes.size()];
+                                System.arraycopy(info.getExtensions().getExtension(), 0, newExtensionTypeArray, 0, info.getExtensions()
+                                        .getExtension().length);
+                                System.arraycopy(newExtsTypes.toArray(), 0, newExtensionTypeArray,
+                                        info.getExtensions().getExtension().length, newExtsTypes.size());
                             } else {
                                 newExtensionTypeArray = new ExtensionType[newExtsTypes.size()];
-                                System.arraycopy(newExtsTypes.toArray(), 0, newExtensionTypeArray, 0, newExtsTypes
-                                    .size());
+                                System.arraycopy(newExtsTypes.toArray(), 0, newExtensionTypeArray, 0, newExtsTypes.size());
                             }
                             ExtensionsType extType = new ExtensionsType(newExtensionTypeArray);
                             info.setExtensions(extType);
 
                             setProgressText("Invoking extension viewers...");
                             for (int i = 0; i < newExtsNames.size(); i++) {
-                                ServiceExtensionDescriptionType edt = ExtensionsLoader.getInstance()
-                                    .getServiceExtension((String) newExtsNames.get(i));
-                                JDialog extDialog = gov.nih.nci.cagrid.introduce.portal.extension.tools.ExtensionTools
-                                    .getCreationUIDialog(GridApplication.getContext().getApplication(), edt.getName(),
-                                        info);
+                                ServiceExtensionDescriptionType edt = ExtensionsLoader.getInstance().getServiceExtension(
+                                        (String) newExtsNames.get(i));
+                                JDialog extDialog = gov.nih.nci.cagrid.introduce.portal.extension.tools.ExtensionTools.getCreationUIDialog(
+                                        GridApplication.getContext().getApplication(), edt.getName(), info);
                                 if (extDialog != null) {
                                     GridApplication.getContext().centerDialog(extDialog);
                                     extDialog.setVisible(true);
@@ -1434,13 +1427,12 @@ public class ModificationViewer extends ApplicationComponent {
                             sync.sync();
                         } catch (Exception e) {
                             throw new Exception("FATAL ERROR: Service was unable to be re-synced: \n" + e.getMessage()
-                                + "\nPlease either roll back to previous save state or re-create the service.", e);
+                                    + "\nPlease either roll back to previous save state or re-create the service.", e);
                         }
 
                         // build the synchronized service
                         setProgressText("rebuilding skeleton");
-                        List<String> cmd = AntTools.getAntCommand("clean all", ModificationViewer.this.methodsDirectory
-                            .getAbsolutePath());
+                        List<String> cmd = AntTools.getAntCommand("clean all", ModificationViewer.this.methodsDirectory.getAbsolutePath());
                         Process p = CommonTools.createAndOutputProcess(cmd);
                         p.waitFor();
 
@@ -1456,9 +1448,9 @@ public class ModificationViewer extends ApplicationComponent {
 
                         for (int i = 0; i < newExtsNames.size(); i++) {
                             ServiceExtensionDescriptionType edt = ExtensionsLoader.getInstance().getServiceExtension(
-                                (String) newExtsNames.get(i));
+                                    (String) newExtsNames.get(i));
                             ServiceModificationUIPanel extPanel = gov.nih.nci.cagrid.introduce.portal.extension.tools.ExtensionTools
-                                .getServiceModificationUIPanel((String) newExtsNames.get(i), info);
+                                    .getServiceModificationUIPanel((String) newExtsNames.get(i), info);
                             if (extPanel != null) {
                                 extensionPanels.add(extPanel);
                                 contentTabbedPane.addTab(edt.getDisplayName(), null, extPanel, null);
@@ -1485,7 +1477,6 @@ public class ModificationViewer extends ApplicationComponent {
         }
     }
 
-
     /**
      * This method initializes namespaceConfPanel
      * 
@@ -1499,7 +1490,6 @@ public class ModificationViewer extends ApplicationComponent {
         }
         return this.namespaceConfPanel;
     }
-
 
     /**
      * This method initializes servicePropertiesPanel
@@ -1521,12 +1511,11 @@ public class ModificationViewer extends ApplicationComponent {
             this.servicePropertiesPanel = new JPanel();
             this.servicePropertiesPanel.setLayout(new GridBagLayout());
             this.servicePropertiesPanel.add(getServicePropertiesTableContainerPanel(), gridBagConstraints26);
-            this.servicePropertiesPanel.add(new IconFeedbackPanel(this.servicePropertiesValidation,
-                getServicePropertiesControlPanel()), gridBagConstraints25);
+            this.servicePropertiesPanel.add(new IconFeedbackPanel(this.servicePropertiesValidation, getServicePropertiesControlPanel()),
+                    gridBagConstraints25);
         }
         return this.servicePropertiesPanel;
     }
-
 
     /**
      * This method initializes servicePropertiesTableContainerPanel
@@ -1545,13 +1534,12 @@ public class ModificationViewer extends ApplicationComponent {
             this.servicePropertiesTableContainerPanel = new JPanel();
             this.servicePropertiesTableContainerPanel.setLayout(new GridBagLayout());
             servicePropertiesTableContainerPanel.setBorder(BorderFactory.createTitledBorder(null, "Service Properties",
-                TitledBorder.DEFAULT_JUSTIFICATION, TitledBorder.DEFAULT_POSITION, new Font("Dialog", Font.BOLD, 12),
-                IntroduceLookAndFeel.getPanelLabelColor()));
+                    TitledBorder.DEFAULT_JUSTIFICATION, TitledBorder.DEFAULT_POSITION, new Font("Dialog", Font.BOLD, 12),
+                    IntroduceLookAndFeel.getPanelLabelColor()));
             servicePropertiesTableContainerPanel.add(getServicePropertiesTableScrollPane(), gridBagConstraints28);
         }
         return this.servicePropertiesTableContainerPanel;
     }
-
 
     /**
      * This method initializes servicePropertiesTableScrollPane
@@ -1566,7 +1554,6 @@ public class ModificationViewer extends ApplicationComponent {
         }
         return this.servicePropertiesTableScrollPane;
     }
-
 
     /**
      * This method initializes servicePropertiesTable
@@ -1591,7 +1578,6 @@ public class ModificationViewer extends ApplicationComponent {
         }
         return this.servicePropertiesTable;
     }
-
 
     /**
      * This method initializes servicePropertiesControlPanel
@@ -1654,8 +1640,8 @@ public class ModificationViewer extends ApplicationComponent {
             this.servicePropertiesControlPanel = new JPanel();
             this.servicePropertiesControlPanel.setLayout(new GridBagLayout());
             servicePropertiesControlPanel.setBorder(BorderFactory.createTitledBorder(null, "Add New Service Property",
-                TitledBorder.DEFAULT_JUSTIFICATION, TitledBorder.DEFAULT_POSITION, new Font("Dialog", Font.BOLD, 12),
-                IntroduceLookAndFeel.getPanelLabelColor()));
+                    TitledBorder.DEFAULT_JUSTIFICATION, TitledBorder.DEFAULT_POSITION, new Font("Dialog", Font.BOLD, 12),
+                    IntroduceLookAndFeel.getPanelLabelColor()));
             this.servicePropertiesControlPanel.add(getServicePropertyKeyTextField(), gridBagConstraints38);
             this.servicePropertiesControlPanel.add(getServicePropertyValueTextField(), gridBagConstraints39);
             this.servicePropertiesControlPanel.add(this.servicePropertiesKeyLabel, gridBagConstraints40);
@@ -1668,7 +1654,6 @@ public class ModificationViewer extends ApplicationComponent {
         return this.servicePropertiesControlPanel;
     }
 
-
     private void validateServicePropertiesInput() {
 
         ValidationResult result = new ValidationResult();
@@ -1676,15 +1661,15 @@ public class ModificationViewer extends ApplicationComponent {
         if (ValidationUtils.isNotBlank(this.getServicePropertyKeyTextField().getText())) {
             if (!CommonTools.isValidJavaField(getServicePropertyKeyTextField().getText())) {
                 result.add(new SimpleValidationMessage(SERVICE_PROPERTY_KEY + " must be a valid java field. ( "
-                    + CommonTools.ALLOWED_JAVA_FIELD_REGEX + " )", Severity.ERROR, SERVICE_PROPERTY_KEY));
+                        + CommonTools.ALLOWED_JAVA_FIELD_REGEX + " )", Severity.ERROR, SERVICE_PROPERTY_KEY));
             }
             if (ValidationUtils.isBlank(this.getServicePropertyValueTextField().getText())) {
                 result.add(new SimpleValidationMessage(SERVICE_PROPERTY_VALUE + " is not provided.", Severity.WARNING,
-                    SERVICE_PROPERTY_VALUE));
+                        SERVICE_PROPERTY_VALUE));
             }
             if (ValidationUtils.isBlank(this.getServicePropertyDescriptionTextField().getText())) {
-                result.add(new SimpleValidationMessage(SERVICE_PROPERTY_DESCRIPTION + " is not provided.",
-                    Severity.WARNING, SERVICE_PROPERTY_DESCRIPTION));
+                result.add(new SimpleValidationMessage(SERVICE_PROPERTY_DESCRIPTION + " is not provided.", Severity.WARNING,
+                        SERVICE_PROPERTY_DESCRIPTION));
             }
         }
 
@@ -1693,16 +1678,13 @@ public class ModificationViewer extends ApplicationComponent {
         updateServicePropertyComponentTreeSeverity();
     }
 
-
     private void updateAddServicePropertiesButton() {
-        if (this.servicePropertiesValidation.hasErrors()
-            || this.getServicePropertyKeyTextField().getText().trim().length() <= 0) {
+        if (this.servicePropertiesValidation.hasErrors() || this.getServicePropertyKeyTextField().getText().trim().length() <= 0) {
             getAddServiceProperyButton().setEnabled(false);
         } else {
             getAddServiceProperyButton().setEnabled(true);
         }
     }
-
 
     /**
      * This method initializes addServiceProperyButton
@@ -1734,7 +1716,6 @@ public class ModificationViewer extends ApplicationComponent {
         return this.addServiceProperyButton;
     }
 
-
     /**
      * This method initializes removeServicePropertyButton
      * 
@@ -1759,7 +1740,6 @@ public class ModificationViewer extends ApplicationComponent {
         return this.removeServicePropertyButton;
     }
 
-
     /**
      * This method initializes servicePropertyKeyTextField
      * 
@@ -1774,11 +1754,9 @@ public class ModificationViewer extends ApplicationComponent {
                     validateServicePropertiesInput();
                 }
 
-
                 public void insertUpdate(DocumentEvent e) {
                     validateServicePropertiesInput();
                 }
-
 
                 public void changedUpdate(DocumentEvent e) {
                     validateServicePropertiesInput();
@@ -1788,7 +1766,6 @@ public class ModificationViewer extends ApplicationComponent {
         }
         return this.servicePropertyKeyTextField;
     }
-
 
     /**
      * This method initializes servicePropertyValueTextField
@@ -1804,11 +1781,9 @@ public class ModificationViewer extends ApplicationComponent {
                     validateServicePropertiesInput();
                 }
 
-
                 public void insertUpdate(DocumentEvent e) {
                     validateServicePropertiesInput();
                 }
-
 
                 public void changedUpdate(DocumentEvent e) {
                     validateServicePropertiesInput();
@@ -1818,7 +1793,6 @@ public class ModificationViewer extends ApplicationComponent {
         }
         return this.servicePropertyValueTextField;
     }
-
 
     /**
      * This method initializes servicePropertiesButtonPanel
@@ -1844,7 +1818,6 @@ public class ModificationViewer extends ApplicationComponent {
         }
         return this.servicePropertiesButtonPanel;
     }
-
 
     /**
      * This method initializes servicesTabbedPanel
@@ -1873,7 +1846,6 @@ public class ModificationViewer extends ApplicationComponent {
         return this.resourceesTabbedPanel;
     }
 
-
     /**
      * This method initializes resourcesPanel
      * 
@@ -1890,14 +1862,12 @@ public class ModificationViewer extends ApplicationComponent {
             gridBagConstraints46.insets = new java.awt.Insets(2, 2, 2, 2);
             this.resourcesPanel = new JPanel();
             this.resourcesPanel.setLayout(new GridBagLayout());
-            resourcesPanel.setBorder(BorderFactory.createTitledBorder(null, "Services",
-                TitledBorder.DEFAULT_JUSTIFICATION, TitledBorder.DEFAULT_POSITION, new Font("Dialog", Font.BOLD, 12),
-                IntroduceLookAndFeel.getPanelLabelColor()));
+            resourcesPanel.setBorder(BorderFactory.createTitledBorder(null, "Services", TitledBorder.DEFAULT_JUSTIFICATION,
+                    TitledBorder.DEFAULT_POSITION, new Font("Dialog", Font.BOLD, 12), IntroduceLookAndFeel.getPanelLabelColor()));
             this.resourcesPanel.add(getResourcesScrollPane(), gridBagConstraints46);
         }
         return this.resourcesPanel;
     }
-
 
     /**
      * This method initializes resourcesScrollPane
@@ -1911,7 +1881,6 @@ public class ModificationViewer extends ApplicationComponent {
         }
         return this.resourcesScrollPane;
     }
-
 
     /**
      * This method initializes resourcesJTree
@@ -1934,7 +1903,6 @@ public class ModificationViewer extends ApplicationComponent {
         return this.resourcesJTree;
     }
 
-
     /**
      * This method initializes jSplitPane
      * 
@@ -1952,7 +1920,6 @@ public class ModificationViewer extends ApplicationComponent {
         return this.typesSplitPane;
     }
 
-
     /**
      * This method initializes propertyIsFromETCCheckBox
      * 
@@ -1961,8 +1928,7 @@ public class ModificationViewer extends ApplicationComponent {
     private JCheckBox getServicePropertiesIsFromETCCheckBox() {
         if (this.propertyIsFromETCCheckBox == null) {
             this.propertyIsFromETCCheckBox = new JCheckBox();
-            this.propertyIsFromETCCheckBox
-                .setToolTipText("Checking this box will let introduce that the value of this property will be a "
+            this.propertyIsFromETCCheckBox.setToolTipText("Checking this box will let introduce that the value of this property will be a "
                     + "file location which is meant to be relative from the service's etc location in "
                     + "the service container.  The value that is set at deploy time will be replaced "
                     + "with the absolute path to the etc directory pluss the value of the variable.");
@@ -1970,7 +1936,6 @@ public class ModificationViewer extends ApplicationComponent {
         }
         return this.propertyIsFromETCCheckBox;
     }
-
 
     private NamespaceType[] mergeNamespaceArrays(NamespaceType[] current, NamespaceType[] additional) {
         Set<String> additionalNamespaces = new HashSet<String>();
@@ -1992,7 +1957,6 @@ public class ModificationViewer extends ApplicationComponent {
         return mergedArray;
     }
 
-
     /**
      * This method initializes resourcesOptionsPanel
      * 
@@ -2001,14 +1965,12 @@ public class ModificationViewer extends ApplicationComponent {
     private JPanel getResourcesOptionsPanel() {
         if (this.resourcesOptionsPanel == null) {
             this.resourcesOptionsPanel = new JPanel(new CardLayout());
-            this.resourcesOptionsPanel.setBorder(javax.swing.BorderFactory.createTitledBorder(null,
-                "Information and Options", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION,
-                javax.swing.border.TitledBorder.DEFAULT_POSITION, new Font("Dialog", Font.BOLD, 12), PortalLookAndFeel
-                    .getPanelLabelColor()));
+            this.resourcesOptionsPanel.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Information and Options",
+                    javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new Font(
+                            "Dialog", Font.BOLD, 12), PortalLookAndFeel.getPanelLabelColor()));
         }
         return this.resourcesOptionsPanel;
     }
-
 
     /**
      * This method initializes servicePropertyDescriptionTextField
@@ -2024,11 +1986,9 @@ public class ModificationViewer extends ApplicationComponent {
                     validateServicePropertiesInput();
                 }
 
-
                 public void insertUpdate(DocumentEvent e) {
                     validateServicePropertiesInput();
                 }
-
 
                 public void changedUpdate(DocumentEvent e) {
                     validateServicePropertiesInput();
@@ -2039,28 +1999,26 @@ public class ModificationViewer extends ApplicationComponent {
         return this.servicePropertyDescriptionTextField;
     }
 
-
     /**
      * @param progBar
      */
     private void addNamespace(MultiEventProgressBar progBar) {
         File schemaDir = new File(ModificationViewer.this.methodsDirectory
-            + File.separator
-            + "schema"
-            + File.separator
-            + ModificationViewer.this.info.getIntroduceServiceProperties().getProperty(
-                IntroduceConstants.INTRODUCE_SKELETON_SERVICE_NAME));
+                + File.separator
+                + "schema"
+                + File.separator
+                + ModificationViewer.this.info.getIntroduceServiceProperties().getProperty(
+                        IntroduceConstants.INTRODUCE_SKELETON_SERVICE_NAME));
         NamespaceTypeDiscoveryComponent discoveryComponent = (NamespaceTypeDiscoveryComponent) getDiscoveryTabbedPane()
-            .getSelectedComponent();
+                .getSelectedComponent();
 
-        NamespaceType[] types = discoveryComponent.createNamespaceType(schemaDir, ConfigurationUtil
-            .getIntroducePortalConfiguration().getNamespaceReplacementPolicy(), progBar);
+        NamespaceType[] types = discoveryComponent.createNamespaceType(schemaDir, ConfigurationUtil.getIntroducePortalConfiguration()
+                .getNamespaceReplacementPolicy(), progBar);
 
         List<String> messages = new ArrayList<String>();
         if (types != null) {
             for (NamespaceType currentType : types) {
-                if (CommonTools.getNamespaceType(ModificationViewer.this.info.getNamespaces(), currentType
-                    .getNamespace()) != null) {
+                if (CommonTools.getNamespaceType(ModificationViewer.this.info.getNamespaces(), currentType.getNamespace()) != null) {
                     // namespace type already exists in
                     // service
                     messages.add("The namespace " + currentType.getNamespace() + " already exists, it was reloaded");
@@ -2087,11 +2045,10 @@ public class ModificationViewer extends ApplicationComponent {
         } else {
             String[] errorMessages = discoveryComponent.getErrorMessage();
             if (errorMessages != null && errorMessages.length > 0) {
-                CompositeErrorDialog.showErrorDialog("Problem adding types, see details for more information.",
-                    errorMessages, discoveryComponent.getErrorCauseThrowable());
+                CompositeErrorDialog.showErrorDialog("Problem adding types, see details for more information.", errorMessages,
+                        discoveryComponent.getErrorCauseThrowable());
             } else {
-                CompositeErrorDialog.showErrorDialog("Unspecified problem adding types.", discoveryComponent
-                    .getErrorCauseThrowable());
+                CompositeErrorDialog.showErrorDialog("Unspecified problem adding types.", discoveryComponent.getErrorCauseThrowable());
             }
         }
         if (messages.size() != 0) {
@@ -2100,7 +2057,6 @@ public class ModificationViewer extends ApplicationComponent {
             JOptionPane.showMessageDialog(ModificationViewer.this, msg);
         }
     }
-
 
     /**
      * 
@@ -2111,8 +2067,7 @@ public class ModificationViewer extends ApplicationComponent {
                 NamespaceType type = (NamespaceType) getNamespaceJTree().getCurrentNode().getUserObject();
                 if (!type.getNamespace().equals(IntroduceConstants.W3CNAMESPACE)) {
                     if (CommonTools.isNamespaceTypeInUse(type, ModificationViewer.this.info.getServiceDescriptor())) {
-                        String[] message = {"The namespace " + type.getNamespace(),
-                                "contains types in use by this service."};
+                        String[] message = { "The namespace " + type.getNamespace(), "contains types in use by this service." };
                         JOptionPane.showMessageDialog(ModificationViewer.this, message);
                     } else {
                         getNamespaceJTree().removeSelectedNode();
@@ -2129,7 +2084,6 @@ public class ModificationViewer extends ApplicationComponent {
         }
     }
 
-
     /**
      * This method initializes ExtensionsPanel
      * 
@@ -2142,7 +2096,6 @@ public class ModificationViewer extends ApplicationComponent {
         }
         return extensionsPanel;
     }
-
 
     /**
      * This method initializes namespaceManageTabbedPane
@@ -2158,7 +2111,6 @@ public class ModificationViewer extends ApplicationComponent {
         return namespaceManageTabbedPane;
     }
 
-    
     private Properties loadProperties(File propsFile) throws IOException {
         Properties props = new Properties();
         FileInputStream fis = new FileInputStream(propsFile);
@@ -2166,12 +2118,11 @@ public class ModificationViewer extends ApplicationComponent {
         fis.close();
         return props;
     }
-    
+
     private void storeProperties(Properties props, File propsFile, String comments) throws IOException {
         FileOutputStream fos = new FileOutputStream(propsFile);
         props.store(fos, comments);
         fos.close();
     }
-
 
 }

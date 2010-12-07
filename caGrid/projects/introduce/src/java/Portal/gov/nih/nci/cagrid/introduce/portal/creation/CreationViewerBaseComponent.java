@@ -38,6 +38,11 @@ import org.cagrid.grape.utils.BusyDialogRunnable;
 public abstract class CreationViewerBaseComponent extends ApplicationComponent {
 
     /**
+     * Hash code for serialization
+     */
+    private static final long serialVersionUID = -5584619000239817690L;
+
+    /**
      * Will call the create service engine component to create the base
      * framework for the grid service
      * 
@@ -54,7 +59,7 @@ public abstract class CreationViewerBaseComponent extends ApplicationComponent {
      *            to be added
      */
     public void createService(final String dir, final String service, final String servicePackage,
-        final String serviceNamespace, final List resourceOptions, final List extensions) {
+        final String serviceNamespace, final List<String> resourceOptions, final List<String> extensions) {
         int doIdeleteResult = JOptionPane.OK_OPTION;
         final File dirFile = new File(dir);
         if (dirFile.exists() && dirFile.list().length != 0) {

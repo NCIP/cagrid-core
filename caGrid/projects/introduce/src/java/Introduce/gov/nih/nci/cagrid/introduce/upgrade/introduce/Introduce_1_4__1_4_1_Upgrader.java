@@ -32,7 +32,7 @@ public class Introduce_1_4__1_4_1_Upgrader extends IntroduceUpgraderBase {
     @Override
     protected void upgrade() throws Exception {
         // TODO Auto-generated method stub
-
+        Thread.dumpStack();
     }
 
 }

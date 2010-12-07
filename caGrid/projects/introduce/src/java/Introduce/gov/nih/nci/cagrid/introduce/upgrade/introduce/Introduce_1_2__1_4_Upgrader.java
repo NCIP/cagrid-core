@@ -211,7 +211,8 @@ public class Introduce_1_2__1_4_Upgrader extends IntroduceUpgraderBase {
      */
     @SuppressWarnings("unchecked")
     private List<Element> getServiceChildren(Document doc) {
-        return doc.getRootElement().getChildren("service", Namespace.getNamespace("http://xml.apache.org/axis/wsdd/"));
+        List<Element> c = doc.getRootElement().getChildren("service", Namespace.getNamespace("http://xml.apache.org/axis/wsdd/"));
+        return c;
     }
 
     private void upgradeJars() throws Exception {
