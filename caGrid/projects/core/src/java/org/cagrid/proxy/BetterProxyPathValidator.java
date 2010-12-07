@@ -7,6 +7,7 @@ import java.io.IOException;
 import java.math.BigInteger;
 import java.security.NoSuchAlgorithmException;
 import java.security.NoSuchProviderException;
+import java.security.Principal;
 import java.security.PublicKey;
 import java.security.Signature;
 import java.security.cert.CertPath;
@@ -25,10 +26,8 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.Enumeration;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -505,9 +504,14 @@ public class BetterProxyPathValidator {
 
 
     private boolean subjectMatchesIssuer(X509Certificate cert, X509Certificate trusted) {
+        Principal trustedPrincipal = trusted.getSubjectX500Principal();
+        Principal testPrincipal = cert.getIssuerX500Principal();
+        return trustedPrincipal.equals(testPrincipal);
+        /*
         byte[] trustedSubject = trusted.getSubjectX500Principal().getEncoded();
         byte[] testIssuer = cert.getIssuerX500Principal().getEncoded();
         return Arrays.equals(trustedSubject, testIssuer);
+        */
     }
 
 
