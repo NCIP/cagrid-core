@@ -594,22 +594,20 @@ public class DelegatedCredentialManager {
 						gridIdentity,
 						DelegatedCredentialEvent.DelegatedCredentialAccessDenied,
 						Errors.CANNOT_GET_INVALID_STATUS);
-				throw Errors
-						.getDelegationFault(Errors.CANNOT_GET_INVALID_STATUS);
+				throw Errors.getDelegationFault(Errors.CANNOT_GET_INVALID_STATUS);
 			}
 
 			PolicyHandler handler = null;
 			try {
-				handler = this.findHandler(r.getDelegationPolicy().getClass()
-						.getName());
+				handler = this.findHandler(
+				    r.getDelegationPolicy().getClass().getName());
 			} catch (Exception e) {
 				logEvent(
 						id.getDelegationId(),
 						gridIdentity,
 						DelegatedCredentialEvent.DelegatedCredentialAccessDenied,
 						Errors.POLICY_HANDLER_NOT_FOUND);
-				throw Errors.getInternalFault(Errors.POLICY_HANDLER_NOT_FOUND,
-						e);
+				throw Errors.getInternalFault(Errors.POLICY_HANDLER_NOT_FOUND, e);
 			}
 			if (!handler.isAuthorized(id, gridIdentity)) {
 				logEvent(
@@ -617,8 +615,7 @@ public class DelegatedCredentialManager {
 						gridIdentity,
 						DelegatedCredentialEvent.DelegatedCredentialAccessDenied,
 						Errors.PERMISSION_DENIED_TO_DELEGATED_CREDENTIAL);
-				throw Errors
-						.getPermissionDeniedFault(Errors.PERMISSION_DENIED_TO_DELEGATED_CREDENTIAL);
+				throw Errors.getPermissionDeniedFault(Errors.PERMISSION_DENIED_TO_DELEGATED_CREDENTIAL);
 			}
 			Date now = new Date();
 			Date expiration = new Date(r.getExpiration());
@@ -628,14 +625,12 @@ public class DelegatedCredentialManager {
 						gridIdentity,
 						DelegatedCredentialEvent.DelegatedCredentialAccessDenied,
 						Errors.SIGNING_CREDENTIAL_EXPIRED);
-				throw Errors
-						.getDelegationFault(Errors.SIGNING_CREDENTIAL_EXPIRED);
+				throw Errors.getDelegationFault(Errors.SIGNING_CREDENTIAL_EXPIRED);
 			}
 
 			X509Certificate[] certs = null;
 			try {
 				certs = Utils.toCertificateArray(r.getCertificateChain());
-
 			} catch (Exception e) {
 				log.error(e.getMessage(), e);
 				logEvent(
@@ -648,9 +643,7 @@ public class DelegatedCredentialManager {
 			}
 
 			try {
-
-				java.security.PublicKey pkey = KeyUtil.loadPublicKey(publicKey
-						.getKeyAsString());
+				java.security.PublicKey pkey = KeyUtil.loadPublicKey(publicKey.getKeyAsString());
 				int length = ((RSAPublicKey) pkey).getModulus().bitLength();
 				if (!this.proxyPolicy.isKeySizeSupported(length)) {
 					logEvent(
@@ -658,27 +651,22 @@ public class DelegatedCredentialManager {
 							gridIdentity,
 							DelegatedCredentialEvent.DelegatedCredentialAccessDenied,
 							Errors.INVALID_KEY_LENGTH_SPECIFIED);
-					throw Errors
-							.getDelegationFault(Errors.INVALID_KEY_LENGTH_SPECIFIED);
+					throw Errors.getDelegationFault(Errors.INVALID_KEY_LENGTH_SPECIFIED);
 				}
 
 				int hours = 0;
 				int minutes = 0;
 				int seconds = 0;
 				Calendar c = new GregorianCalendar();
-				c.add(Calendar.HOUR_OF_DAY, r.getIssuedCredentialLifetime()
-						.getHours());
-				c.add(Calendar.MINUTE, r.getIssuedCredentialLifetime()
-						.getMinutes());
-				c.add(Calendar.SECOND, r.getIssuedCredentialLifetime()
-						.getSeconds()
+				c.add(Calendar.HOUR_OF_DAY, r.getIssuedCredentialLifetime().getHours());
+				c.add(Calendar.MINUTE, r.getIssuedCredentialLifetime().getMinutes());
+				c.add(Calendar.SECOND, r.getIssuedCredentialLifetime().getSeconds()
 						+ PROXY_EXPIRATION_BUFFER_SECONDS);
 
 				if (c.getTime().after(certs[0].getNotAfter())) {
 					Calendar expires = new GregorianCalendar();
 					expires.setTimeInMillis(certs[0].getNotAfter().getTime());
-					long diff = (certs[0].getNotAfter().getTime() - System
-							.currentTimeMillis()) / 1000;
+					long diff = (certs[0].getNotAfter().getTime() - System.currentTimeMillis()) / 1000;
 					if (diff > PROXY_EXPIRATION_BUFFER_SECONDS) {
 						seconds = (int) diff - PROXY_EXPIRATION_BUFFER_SECONDS;
 					} else {
@@ -687,8 +675,7 @@ public class DelegatedCredentialManager {
 								gridIdentity,
 								DelegatedCredentialEvent.DelegatedCredentialAccessDenied,
 								Errors.SIGNING_CREDENTIAL_ABOUT_EXPIRE);
-						throw Errors
-								.getDelegationFault(Errors.SIGNING_CREDENTIAL_ABOUT_EXPIRE);
+						throw Errors.getDelegationFault(Errors.SIGNING_CREDENTIAL_ABOUT_EXPIRE);
 					}
 				} else {
 					hours = r.getIssuedCredentialLifetime().getHours();
@@ -696,8 +683,7 @@ public class DelegatedCredentialManager {
 					seconds = r.getIssuedCredentialLifetime().getSeconds();
 				}
 
-				X509Certificate[] proxy = ProxyCreator
-					.createImpersonationProxyCertificate(certs,
+				X509Certificate[] proxy = ProxyCreator.createImpersonationProxyCertificate(certs,
 						this.keyManager.getPrivateKey(
 						    String.valueOf(id.getDelegationId())), pkey, hours,
 							minutes, seconds, r.getIssuedCredentialPathLength());
@@ -713,12 +699,11 @@ public class DelegatedCredentialManager {
 				throw Errors.getInternalFault(
 						Errors.UNEXPECTED_ERROR_CREATING_PROXY, e);
 			}
-
 		} else {
-			throw Errors
-					.getDelegationFault(Errors.DELEGATION_RECORD_DOES_NOT_EXIST);
+			throw Errors.getDelegationFault(Errors.DELEGATION_RECORD_DOES_NOT_EXIST);
 		}
 	}
+	
 
 	public DelegationRecord[] findDelegatedCredentials(DelegationRecordFilter f)
 			throws CDSInternalFault {

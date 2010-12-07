@@ -23,7 +23,9 @@ import org.cagrid.tools.database.Database;
 
 public abstract class AbstractDBKeyManager implements KeyManager {
 
+    // FIXME: Use Java-provided crypto, NOT bouncycastle
 	private final static String PROVIDER = "BC";
+	
 	private final static String TABLE = "key_manager";
 	private final static String ALIAS = "ALIAS";
 	private final static String PUBLIC_KEY = "PUBLIC_KEY";

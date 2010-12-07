@@ -45,7 +45,6 @@ import org.cagrid.proxy.BetterProxyPathValidator;
 import org.globus.gsi.CertificateRevocationLists;
 import org.globus.gsi.GlobusCredential;
 import org.globus.gsi.TrustedCertificates;
-import org.globus.gsi.proxy.ProxyPathValidator;
 
 public class DelegatedCredentialManagerTest extends TestCase {
 
@@ -64,7 +63,6 @@ public class DelegatedCredentialManagerTest extends TestCase {
 	private int PROXY_BUFFER_TIME_MULTIPLIER = 2;
 	
 	
-
 	public void testDelegatedCredentialCreateDestroy() {
 		try {
 			DelegatedCredentialManager dcm = Utils
@@ -934,9 +932,6 @@ public class DelegatedCredentialManagerTest extends TestCase {
 
 	}
 
-	// ///////////////////////////////////////////////////////////////////////////////
-	/* LEFT OFF HERE */
-	// ///////////////////////////////////////////////////////////////////////////////
 	public void testGetDelegatedCredentialInvalidKeyLength() {
 
 		DelegatedCredentialManager dcm = null;
@@ -1030,6 +1025,7 @@ public class DelegatedCredentialManagerTest extends TestCase {
 			}
 		}
 	}
+	
 
 	public void testGetDelegatedCredential() {
 
@@ -1099,8 +1095,7 @@ public class DelegatedCredentialManagerTest extends TestCase {
 		org.cagrid.gaards.cds.common.PublicKey pKey = new org.cagrid.gaards.cds.common.PublicKey();
 		pKey.setKeyAsString(KeyUtil.writePublicKey(pair.getPublic()));
 		X509Certificate[] delegatedProxy = org.cagrid.gaards.cds.common.Utils
-				.toCertificateArray(dcm.getDelegatedCredential(GRID_IDENTITY,
-						id, pKey));
+				.toCertificateArray(dcm.getDelegatedCredential(GRID_IDENTITY, id, pKey));
 		assertNotNull(delegatedProxy);
 		assertEquals(delegatedProxy.length, (signingChain.length + 1));
 		for (int i = 0; i < signingChain.length; i++) {
