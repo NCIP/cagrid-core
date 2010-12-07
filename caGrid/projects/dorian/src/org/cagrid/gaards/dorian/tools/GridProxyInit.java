@@ -23,6 +23,7 @@ import org.apache.commons.cli.ParseException;
 import org.apache.commons.cli.PosixParser;
 import org.cagrid.gaards.dorian.client.GridUserClient;
 import org.cagrid.gaards.dorian.federation.CertificateLifetime;
+import org.cagrid.gaards.pki.CertUtil;
 import org.globus.gsi.GlobusCredential;
 import org.globus.util.ConfigUtil;
 
@@ -205,7 +206,7 @@ public class GridProxyInit {
             System.out.println("Grid Proxy Certificate Summary");
             System.out.println("==============================");
             System.out.println("Grid Identity: " + proxy.getIdentity());
-            System.out.println("Issuer: " + proxy.getIssuer());
+            System.out.println("Issuer: " + CertUtil.globusFormatDN(proxy.getIssuer()));
             Calendar c = new GregorianCalendar();
             c.add(Calendar.SECOND, (int) proxy.getTimeLeft());
             System.out.println("Expires: " + c.getTime().toString());
