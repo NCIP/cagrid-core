@@ -48,12 +48,13 @@ public class ConfigurationUtil {
     }
 
     public static synchronized  void saveConfiguration() throws Exception {
-        configurationManager.saveAll();
+        getInstance().configurationManager.saveAll();
     }
 
     public static synchronized IntroducePortalConfiguration getIntroducePortalConfiguration() {
         try {
-            return (IntroducePortalConfiguration) configurationManager.getConfigurationObject("introducePortal");
+            return (IntroducePortalConfiguration) getInstance().configurationManager
+                .getConfigurationObject("introducePortal");
         } catch (Exception e) {
             e.printStackTrace();
             return null;
@@ -63,7 +64,8 @@ public class ConfigurationUtil {
 
     public static synchronized IntroduceServiceDefaults getIntroduceServiceDefaults() {
         try {
-            return (IntroduceServiceDefaults) configurationManager.getConfigurationObject("introduceServiceDefaults");
+            return (IntroduceServiceDefaults) getInstance().configurationManager
+                .getConfigurationObject("introduceServiceDefaults");
         } catch (Exception e) {
             e.printStackTrace();
             return null;
@@ -73,7 +75,8 @@ public class ConfigurationUtil {
 
     public static synchronized Properties getGlobalExtensionProperties() {
         try {
-            return (Properties) configurationManager.getConfigurationObject("introduceGlobalExtensionProperties");
+            return (Properties) getInstance().configurationManager
+                .getConfigurationObject("introduceGlobalExtensionProperties");
         } catch (Exception e) {
             e.printStackTrace();
             return null;
