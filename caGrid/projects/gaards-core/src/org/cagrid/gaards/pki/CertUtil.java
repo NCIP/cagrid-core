@@ -33,6 +33,8 @@ import java.util.Date;
 import java.util.Stack;
 import java.util.StringTokenizer;
 
+import javax.security.auth.x500.X500Principal;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.bouncycastle.asn1.ASN1InputStream;
@@ -68,9 +70,10 @@ public class CertUtil {
     private static Log LOG = LogFactory.getLog(CertUtil.class);
 
     public static String getHashCode(X509Certificate cert) throws Exception {
-        X509Principal x509 = (X509Principal) cert.getSubjectDN();
+        X500Principal principal = cert.getSubjectX500Principal();
+        byte[] encoded = principal.getEncoded();
         MessageDigest digest = MessageDigest.getInstance("MD5");
-        byte[] bytes = digest.digest(x509.getEncoded());
+        byte[] bytes = digest.digest(encoded);
         StringBuffer hexString = new StringBuffer();
         for (int i = 0; i < 4; i++) {
             String hex = Integer.toHexString(0xFF & bytes[i]);
