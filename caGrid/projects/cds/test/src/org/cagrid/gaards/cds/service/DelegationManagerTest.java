@@ -59,8 +59,8 @@ public class DelegationManagerTest extends TestCase {
 			GlobusCredential admin = addInitialAdmin();
 			cds = Utils.getCDS();
 			List<String> admins = new ArrayList<String>();
-			admins.add(admin.getIdentity());
-			checkAdminList(admin.getIdentity(), cds, admins);
+			admins.add(CertUtil.getIdentity(admin));
+			checkAdminList(CertUtil.getIdentity(admin), cds, admins);
 			String userPrefix = "/O=XYZ/OU=ABC/CN=user";
 			int count = 3;
 			for (int i = 0; i < count; i++) {
@@ -91,14 +91,14 @@ public class DelegationManagerTest extends TestCase {
 						fail("Should not be able to execute admin operation.");
 					}
 				}
-				cds.addAdmin(admin.getIdentity(), user);
+				cds.addAdmin(CertUtil.getIdentity(admin), user);
 				admins.add(user);
 				this.checkAdminList(user, cds, admins);
 			}
 
 			for (int i = 0; i < count; i++) {
 				String user = userPrefix + i;
-				cds.removeAdmin(admin.getIdentity(), user);
+				cds.removeAdmin(CertUtil.getIdentity(admin), user);
 				admins.remove(user);
 				try {
 					cds.getAdmins(user);
@@ -108,7 +108,7 @@ public class DelegationManagerTest extends TestCase {
 						fail("Should not be able to execute admin operation.");
 					}
 				}
-				this.checkAdminList(admin.getIdentity(), cds, admins);
+				this.checkAdminList(CertUtil.getIdentity(admin), cds, admins);
 			}
 		} catch (Exception e) {
 			FaultUtil.printFault(e);
@@ -155,8 +155,8 @@ public class DelegationManagerTest extends TestCase {
 		} else {
 			admins = gm.getGroup(DelegationManager.ADMINISTRATORS);
 		}
-		admins.addMember(admin.getIdentity());
-		assertTrue(admins.isMember(admin.getIdentity()));
+		admins.addMember(CertUtil.getIdentity(admin));
+		assertTrue(admins.isMember(CertUtil.getIdentity(admin)));
 		return admin;
 	}
 
@@ -171,11 +171,11 @@ public class DelegationManagerTest extends TestCase {
 			GlobusCredential donatelloCred = ca
 					.createCredential(donatelloAlias);
 
-			DelegationPolicy policy = getSimplePolicy(donatelloCred
-					.getIdentity());
+			DelegationPolicy policy = getSimplePolicy(
+			    CertUtil.getIdentity(donatelloCred));
 
 			DelegationSigningRequest leonardoReq = cds.initiateDelegation(
-					leonardoCred.getIdentity(),
+					CertUtil.getIdentity(leonardoCred),
 					getSimpleDelegationRequest(policy));
 			DelegationSigningResponse leonardoRes = new DelegationSigningResponse();
 			leonardoRes.setDelegationIdentifier(leonardoReq
@@ -184,11 +184,11 @@ public class DelegationManagerTest extends TestCase {
 					.toCertificateChain(ca.createProxyCertifcates(
 							leonardoAlias, KeyUtil.loadPublicKey(leonardoReq
 									.getPublicKey().getKeyAsString()), 2)));
-			cds.approveDelegation(leonardoCred.getIdentity(), leonardoRes);
+			cds.approveDelegation(CertUtil.getIdentity(leonardoCred), leonardoRes);
 			DelegationIdentifier id = leonardoReq.getDelegationIdentifier();
 			try {
 				cds.updateDelegatedCredentialStatus(
-						donatelloCred.getIdentity(), id,
+						CertUtil.getIdentity(donatelloCred), id,
 						DelegationStatus.Suspended);
 				fail("Should not be able to update the status of the delegated credential.");
 			} catch (PermissionDeniedFault e) {
@@ -196,7 +196,7 @@ public class DelegationManagerTest extends TestCase {
 			}
 
 			try {
-				cds.updateDelegatedCredentialStatus(leonardoCred.getIdentity(),
+				cds.updateDelegatedCredentialStatus(CertUtil.getIdentity(leonardoCred),
 						id, DelegationStatus.Approved);
 				fail("Should not be able to update the status of the delegated credential.");
 			} catch (PermissionDeniedFault e) {
@@ -204,27 +204,27 @@ public class DelegationManagerTest extends TestCase {
 			}
 
 			try {
-				cds.updateDelegatedCredentialStatus(leonardoCred.getIdentity(),
+				cds.updateDelegatedCredentialStatus(CertUtil.getIdentity(leonardoCred),
 						id, DelegationStatus.Pending);
 				fail("Should not be able to update the status of the delegated credential.");
 			} catch (PermissionDeniedFault e) {
 
 			}
 
-			cds.updateDelegatedCredentialStatus(leonardoCred.getIdentity(), id,
+			cds.updateDelegatedCredentialStatus(CertUtil.getIdentity(leonardoCred), id,
 					DelegationStatus.Suspended);
 
 			DelegationRecordFilter f = new DelegationRecordFilter();
 			f.setDelegationIdentifier(id);
 			DelegationRecord[] records = cds.findDelegatedCredentials(
-					leonardoCred.getIdentity(), f);
+					CertUtil.getIdentity(leonardoCred), f);
 			assertNotNull(records);
 			assertEquals(1, records.length);
 			assertEquals(DelegationStatus.Suspended, records[0]
 					.getDelegationStatus());
 
 			try {
-				cds.updateDelegatedCredentialStatus(leonardoCred.getIdentity(),
+				cds.updateDelegatedCredentialStatus(CertUtil.getIdentity(leonardoCred),
 						id, DelegationStatus.Suspended);
 				fail("Should not be able to update the status of the delegated credential.");
 			} catch (PermissionDeniedFault e) {
@@ -232,7 +232,7 @@ public class DelegationManagerTest extends TestCase {
 			}
 
 			try {
-				cds.updateDelegatedCredentialStatus(leonardoCred.getIdentity(),
+				cds.updateDelegatedCredentialStatus(CertUtil.getIdentity(leonardoCred),
 						id, DelegationStatus.Approved);
 				fail("Should not be able to update the status of the delegated credential.");
 			} catch (PermissionDeniedFault e) {
@@ -240,7 +240,7 @@ public class DelegationManagerTest extends TestCase {
 			}
 
 			try {
-				cds.updateDelegatedCredentialStatus(leonardoCred.getIdentity(),
+				cds.updateDelegatedCredentialStatus(CertUtil.getIdentity(leonardoCred),
 						id, DelegationStatus.Pending);
 				fail("Should not be able to update the status of the delegated credential.");
 			} catch (PermissionDeniedFault e) {
@@ -272,11 +272,11 @@ public class DelegationManagerTest extends TestCase {
 			GlobusCredential donatelloCred = ca
 					.createCredential(donatelloAlias);
 
-			DelegationPolicy policy = getSimplePolicy(donatelloCred
-					.getIdentity());
+			DelegationPolicy policy = getSimplePolicy(
+			    CertUtil.getIdentity(donatelloCred));
 
 			DelegationSigningRequest leonardoReq = cds.initiateDelegation(
-					leonardoCred.getIdentity(),
+					CertUtil.getIdentity(leonardoCred),
 					getSimpleDelegationRequest(policy));
 			DelegationSigningResponse leonardoRes = new DelegationSigningResponse();
 			leonardoRes.setDelegationIdentifier(leonardoReq
@@ -285,11 +285,11 @@ public class DelegationManagerTest extends TestCase {
 					.toCertificateChain(ca.createProxyCertifcates(
 							leonardoAlias, KeyUtil.loadPublicKey(leonardoReq
 									.getPublicKey().getKeyAsString()), 2)));
-			cds.approveDelegation(leonardoCred.getIdentity(), leonardoRes);
+			cds.approveDelegation(CertUtil.getIdentity(leonardoCred), leonardoRes);
 			DelegationIdentifier id = leonardoReq.getDelegationIdentifier();
 
 			try {
-				cds.updateDelegatedCredentialStatus(admin.getIdentity(), id,
+				cds.updateDelegatedCredentialStatus(CertUtil.getIdentity(admin), id,
 						DelegationStatus.Pending);
 				fail("Should not be able to update the status of the delegated credential.");
 			} catch (DelegationFault e) {
@@ -299,22 +299,22 @@ public class DelegationManagerTest extends TestCase {
 				}
 			}
 
-			cds.updateDelegatedCredentialStatus(admin.getIdentity(), id,
+			cds.updateDelegatedCredentialStatus(CertUtil.getIdentity(admin), id,
 					DelegationStatus.Suspended);
 
 			DelegationRecordFilter f = new DelegationRecordFilter();
 			f.setDelegationIdentifier(id);
 			DelegationRecord[] records = cds.findDelegatedCredentials(
-					leonardoCred.getIdentity(), f);
+					CertUtil.getIdentity(leonardoCred), f);
 			assertNotNull(records);
 			assertEquals(1, records.length);
 			assertEquals(DelegationStatus.Suspended, records[0]
 					.getDelegationStatus());
 
-			cds.updateDelegatedCredentialStatus(admin.getIdentity(), id,
+			cds.updateDelegatedCredentialStatus(CertUtil.getIdentity(admin), id,
 					DelegationStatus.Approved);
 
-			records = cds.findDelegatedCredentials(leonardoCred.getIdentity(),
+			records = cds.findDelegatedCredentials(CertUtil.getIdentity(leonardoCred),
 					f);
 			assertNotNull(records);
 			assertEquals(1, records.length);
@@ -343,32 +343,31 @@ public class DelegationManagerTest extends TestCase {
 			String donatelloAlias = "donatello";
 
 			GlobusCredential leonardoCred = ca.createCredential(leonardoAlias);
-			GlobusCredential donatelloCred = ca
-					.createCredential(donatelloAlias);
+			GlobusCredential donatelloCred = ca.createCredential(donatelloAlias);
 
-			DelegationPolicy policy = getSimplePolicy(donatelloCred
-					.getIdentity());
+			DelegationPolicy policy = getSimplePolicy(
+			    CertUtil.getIdentity(donatelloCred));
 
 			DelegationSigningRequest leonardoReq = cds.initiateDelegation(
-					leonardoCred.getIdentity(),
+					CertUtil.getIdentity(leonardoCred),
 					getSimpleDelegationRequest(policy));
 			DelegationSigningResponse leonardoRes = new DelegationSigningResponse();
 			leonardoRes.setDelegationIdentifier(leonardoReq
 					.getDelegationIdentifier());
 			leonardoRes.setCertificateChain(org.cagrid.gaards.cds.common.Utils
 					.toCertificateChain(ca.createProxyCertifcates(
-							leonardoAlias, KeyUtil.loadPublicKey(leonardoReq
-									.getPublicKey().getKeyAsString()), 2)));
-			cds.approveDelegation(leonardoCred.getIdentity(), leonardoRes);
+							leonardoAlias, KeyUtil.loadPublicKey(
+							    leonardoReq.getPublicKey().getKeyAsString()), 2)));
+			cds.approveDelegation(CertUtil.getIdentity(leonardoCred), leonardoRes);
 			DelegationIdentifier id = leonardoReq.getDelegationIdentifier();
 			DelegationRecordFilter f = new DelegationRecordFilter();
 			f.setDelegationIdentifier(id);
-			assertEquals(1, cds.findDelegatedCredentials(admin.getIdentity(), f).length);
+			assertEquals(1, cds.findDelegatedCredentials(CertUtil.getIdentity(admin), f).length);
 
 
 			try {
-				cds.deleteDelegatedCredential(leonardoCred
-						.getIdentity(), id);
+				cds.deleteDelegatedCredential(
+				    CertUtil.getIdentity(leonardoCred), id);
 				fail("Should not be able to delete the delegate credentail.");
 			} catch (PermissionDeniedFault e) {
 				if (!e
@@ -380,8 +379,8 @@ public class DelegationManagerTest extends TestCase {
 			}
 			
 			try {
-				cds.deleteDelegatedCredential(donatelloCred
-						.getIdentity(), id);
+				cds.deleteDelegatedCredential(
+				    CertUtil.getIdentity(donatelloCred), id);
 				fail("Should not be able to delete the delegate credentail.");
 			} catch (PermissionDeniedFault e) {
 				if (!e
@@ -391,8 +390,8 @@ public class DelegationManagerTest extends TestCase {
 					fail("Should not be able to delete the delegate credentail.");
 				}
 			}
-			cds.deleteDelegatedCredential(admin.getIdentity(), id);
-			assertEquals(0, cds.findDelegatedCredentials(admin.getIdentity(), f).length);
+			cds.deleteDelegatedCredential(CertUtil.getIdentity(admin), id);
+			assertEquals(0, cds.findDelegatedCredentials(CertUtil.getIdentity(admin), f).length);
 		} catch (Exception e) {
 			FaultUtil.printFault(e);
 			fail(e.getMessage());
@@ -416,30 +415,28 @@ public class DelegationManagerTest extends TestCase {
 			String donatelloAlias = "donatello";
 
 			GlobusCredential leonardoCred = ca.createCredential(leonardoAlias);
-			GlobusCredential donatelloCred = ca
-					.createCredential(donatelloAlias);
+			GlobusCredential donatelloCred = ca.createCredential(donatelloAlias);
 
-			DelegationPolicy policy = getSimplePolicy(donatelloCred
-					.getIdentity());
+			DelegationPolicy policy = getSimplePolicy(
+			    CertUtil.getIdentity(donatelloCred));
 
 			DelegationSigningRequest leonardoReq = cds.initiateDelegation(
-					leonardoCred.getIdentity(),
+					CertUtil.getIdentity(leonardoCred),
 					getSimpleDelegationRequest(policy));
 			DelegationSigningResponse leonardoRes = new DelegationSigningResponse();
-			leonardoRes.setDelegationIdentifier(leonardoReq
-					.getDelegationIdentifier());
+			leonardoRes.setDelegationIdentifier(
+			    leonardoReq.getDelegationIdentifier());
 			leonardoRes.setCertificateChain(org.cagrid.gaards.cds.common.Utils
 					.toCertificateChain(ca.createProxyCertifcates(
-							leonardoAlias, KeyUtil.loadPublicKey(leonardoReq
-									.getPublicKey().getKeyAsString()), 2)));
-			cds.approveDelegation(leonardoCred.getIdentity(), leonardoRes);
+							leonardoAlias, KeyUtil.loadPublicKey(
+							    leonardoReq.getPublicKey().getKeyAsString()), 2)));
+			cds.approveDelegation(CertUtil.getIdentity(leonardoCred), leonardoRes);
 			DelegationIdentifier id = leonardoReq.getDelegationIdentifier();
 
 			DelegatedCredentialAuditFilter f = null;
 
 			try {
-				cds.searchDelegatedCredentialAuditLog(leonardoCred
-						.getIdentity(), f);
+				cds.searchDelegatedCredentialAuditLog(CertUtil.getIdentity(leonardoCred), f);
 				fail("Should not be able to search the audit log.");
 			} catch (PermissionDeniedFault e) {
 				if (!e
@@ -451,17 +448,14 @@ public class DelegationManagerTest extends TestCase {
 			}
 			f = new DelegatedCredentialAuditFilter();
 
-			cds.searchDelegatedCredentialAuditLog(admin.getIdentity(), f);
-			assertEquals(2, cds.searchDelegatedCredentialAuditLog(admin
-					.getIdentity(), f).length);
+			cds.searchDelegatedCredentialAuditLog(CertUtil.getIdentity(admin), f);
+			assertEquals(2, cds.searchDelegatedCredentialAuditLog(CertUtil.getIdentity(admin), f).length);
 
 			f.setDelegationIdentifier(id);
-			assertEquals(2, cds.searchDelegatedCredentialAuditLog(admin
-					.getIdentity(), f).length);
+			assertEquals(2, cds.searchDelegatedCredentialAuditLog(CertUtil.getIdentity(admin), f).length);
 
 			try {
-				cds.searchDelegatedCredentialAuditLog(donatelloCred
-						.getIdentity(), f);
+				cds.searchDelegatedCredentialAuditLog(CertUtil.getIdentity(donatelloCred), f);
 				fail("Should not be able to search the audit log.");
 			} catch (PermissionDeniedFault e) {
 				if (!e.getFaultString().equals(
@@ -494,11 +488,10 @@ public class DelegationManagerTest extends TestCase {
 			GlobusCredential donatelloCred = ca
 					.createCredential(donatelloAlias);
 
-			DelegationPolicy policy = getSimplePolicy(donatelloCred
-					.getIdentity());
+			DelegationPolicy policy = getSimplePolicy(CertUtil.getIdentity(donatelloCred));
 
 			DelegationSigningRequest leonardoReq = cds.initiateDelegation(
-					leonardoCred.getIdentity(),
+					CertUtil.getIdentity(leonardoCred),
 					getSimpleDelegationRequest(policy));
 			DelegationSigningResponse leonardoRes = new DelegationSigningResponse();
 			leonardoRes.setDelegationIdentifier(leonardoReq
@@ -507,14 +500,13 @@ public class DelegationManagerTest extends TestCase {
 					.toCertificateChain(ca.createProxyCertifcates(
 							leonardoAlias, KeyUtil.loadPublicKey(leonardoReq
 									.getPublicKey().getKeyAsString()), 2)));
-			cds.approveDelegation(leonardoCred.getIdentity(), leonardoRes);
+			cds.approveDelegation(CertUtil.getIdentity(leonardoCred), leonardoRes);
 			DelegationIdentifier id = leonardoReq.getDelegationIdentifier();
 
 			DelegatedCredentialAuditFilter f = null;
 
 			try {
-				cds.searchDelegatedCredentialAuditLog(leonardoCred
-						.getIdentity(), f);
+				cds.searchDelegatedCredentialAuditLog(CertUtil.getIdentity(leonardoCred), f);
 				fail("Should not be able to search the audit log.");
 			} catch (PermissionDeniedFault e) {
 				if (!e
@@ -526,8 +518,7 @@ public class DelegationManagerTest extends TestCase {
 			}
 			f = new DelegatedCredentialAuditFilter();
 			try {
-				cds.searchDelegatedCredentialAuditLog(leonardoCred
-						.getIdentity(), f);
+				cds.searchDelegatedCredentialAuditLog(CertUtil.getIdentity(leonardoCred), f);
 				fail("Should not be able to search the audit log.");
 			} catch (PermissionDeniedFault e) {
 				if (!e
@@ -539,12 +530,10 @@ public class DelegationManagerTest extends TestCase {
 			}
 
 			f.setDelegationIdentifier(id);
-			assertEquals(2, cds.searchDelegatedCredentialAuditLog(leonardoCred
-					.getIdentity(), f).length);
+			assertEquals(2, cds.searchDelegatedCredentialAuditLog(CertUtil.getIdentity(leonardoCred), f).length);
 
 			try {
-				cds.searchDelegatedCredentialAuditLog(donatelloCred
-						.getIdentity(), f);
+				cds.searchDelegatedCredentialAuditLog(CertUtil.getIdentity(donatelloCred), f);
 				fail("Should not be able to search the audit log.");
 			} catch (PermissionDeniedFault e) {
 				if (!e.getFaultString().equals(
@@ -581,11 +570,10 @@ public class DelegationManagerTest extends TestCase {
 			GlobusCredential michelangeloCred = ca
 					.createCredential(michelangeloAlias);
 
-			DelegationPolicy policy = getSimplePolicy(michelangeloCred
-					.getIdentity());
+			DelegationPolicy policy = getSimplePolicy(CertUtil.getIdentity(michelangeloCred));
 
 			DelegationSigningRequest leonardoReq = cds.initiateDelegation(
-					leonardoCred.getIdentity(),
+					CertUtil.getIdentity(leonardoCred),
 					getSimpleDelegationRequest(policy));
 			DelegationSigningResponse leonardoRes = new DelegationSigningResponse();
 			leonardoRes.setDelegationIdentifier(leonardoReq
@@ -594,10 +582,10 @@ public class DelegationManagerTest extends TestCase {
 					.toCertificateChain(ca.createProxyCertifcates(
 							leonardoAlias, KeyUtil.loadPublicKey(leonardoReq
 									.getPublicKey().getKeyAsString()), 2)));
-			cds.approveDelegation(leonardoCred.getIdentity(), leonardoRes);
+			cds.approveDelegation(CertUtil.getIdentity(leonardoCred), leonardoRes);
 
 			DelegationSigningRequest donatelloReq = cds.initiateDelegation(
-					donatelloCred.getIdentity(),
+					CertUtil.getIdentity(donatelloCred),
 					getSimpleDelegationRequest(policy));
 			DelegationSigningResponse donatelloRes = new DelegationSigningResponse();
 			donatelloRes.setDelegationIdentifier(donatelloReq
@@ -606,79 +594,79 @@ public class DelegationManagerTest extends TestCase {
 					.toCertificateChain(ca.createProxyCertifcates(
 							donatelloAlias, KeyUtil.loadPublicKey(donatelloReq
 									.getPublicKey().getKeyAsString()), 2)));
-			cds.approveDelegation(donatelloCred.getIdentity(), donatelloRes);
+			cds.approveDelegation(CertUtil.getIdentity(donatelloCred), donatelloRes);
 
-			cds.initiateDelegation(donatelloCred.getIdentity(),
+			cds.initiateDelegation(CertUtil.getIdentity(donatelloCred),
 					getSimpleDelegationRequest(policy));
 
 			DelegationRecordFilter f = new DelegationRecordFilter();
-			validateFind(cds, admin.getIdentity(), f, 3,false);
-			validateFindMy(cds, leonardoCred.getIdentity(), f, 1);
-			validateFindMy(cds, donatelloCred.getIdentity(), f, 2);
-			validateFindMy(cds, michelangeloCred.getIdentity(), f, 0);
+			validateFind(cds, CertUtil.getIdentity(admin), f, 3,false);
+			validateFindMy(cds, CertUtil.getIdentity(leonardoCred), f, 1);
+			validateFindMy(cds, CertUtil.getIdentity(donatelloCred), f, 2);
+			validateFindMy(cds, CertUtil.getIdentity(michelangeloCred), f, 0);
 
 			resetFilter(f);
 			f.setDelegationIdentifier(leonardoReq.getDelegationIdentifier());
-			validateFind(cds, admin.getIdentity(), f, 1,false);
-			validateFindMy(cds, leonardoCred.getIdentity(), f, 1);
-			validateFindMy(cds, donatelloCred.getIdentity(), f, 0);
-			validateFindMy(cds, michelangeloCred.getIdentity(), f, 0);
+			validateFind(cds, CertUtil.getIdentity(admin), f, 1,false);
+			validateFindMy(cds, CertUtil.getIdentity(leonardoCred), f, 1);
+			validateFindMy(cds, CertUtil.getIdentity(donatelloCred), f, 0);
+			validateFindMy(cds, CertUtil.getIdentity(michelangeloCred), f, 0);
 
 			resetFilter(f);
 			f.setDelegationIdentifier(donatelloReq.getDelegationIdentifier());
-			validateFind(cds, admin.getIdentity(), f, 1,false);
-			validateFindMy(cds, leonardoCred.getIdentity(), f, 0);
-			validateFindMy(cds, donatelloCred.getIdentity(), f, 1);
-			validateFindMy(cds, michelangeloCred.getIdentity(), f, 0);
+			validateFind(cds, CertUtil.getIdentity(admin), f, 1,false);
+			validateFindMy(cds, CertUtil.getIdentity(leonardoCred), f, 0);
+			validateFindMy(cds, CertUtil.getIdentity(donatelloCred), f, 1);
+			validateFindMy(cds, CertUtil.getIdentity(michelangeloCred), f, 0);
 
 			resetFilter(f);
-			f.setGridIdentity(leonardoCred.getIdentity());
-			validateFind(cds, admin.getIdentity(), f, 1,false);
-			validateFindMy(cds, leonardoCred.getIdentity(), f, 1);
-			validateFindMy(cds, donatelloCred.getIdentity(), f, 2);
-			validateFindMy(cds, michelangeloCred.getIdentity(), f, 0);
+			f.setGridIdentity(CertUtil.getIdentity(leonardoCred));
+			validateFind(cds, CertUtil.getIdentity(admin), f, 1,false);
+			validateFindMy(cds, CertUtil.getIdentity(leonardoCred), f, 1);
+			validateFindMy(cds, CertUtil.getIdentity(donatelloCred), f, 2);
+			validateFindMy(cds, CertUtil.getIdentity(michelangeloCred), f, 0);
 
 			resetFilter(f);
-			f.setGridIdentity(donatelloCred.getIdentity());
-			validateFind(cds, admin.getIdentity(), f, 2,false);
-			validateFindMy(cds, leonardoCred.getIdentity(), f, 1);
-			validateFindMy(cds, donatelloCred.getIdentity(), f, 2);
-			validateFindMy(cds, michelangeloCred.getIdentity(), f, 0);
+			f.setGridIdentity(CertUtil.getIdentity(donatelloCred));
+			validateFind(cds, CertUtil.getIdentity(admin), f, 2,false);
+			validateFindMy(cds, CertUtil.getIdentity(leonardoCred), f, 1);
+			validateFindMy(cds, CertUtil.getIdentity(donatelloCred), f, 2);
+			validateFindMy(cds, CertUtil.getIdentity(michelangeloCred), f, 0);
 
 			resetFilter(f);
-			f.setGridIdentity(michelangeloCred.getIdentity());
-			validateFind(cds, admin.getIdentity(), f, 0,false);
-			validateFindMy(cds, leonardoCred.getIdentity(), f, 1);
-			validateFindMy(cds, donatelloCred.getIdentity(), f, 2);
-			validateFindMy(cds, michelangeloCred.getIdentity(), f, 0);
+			f.setGridIdentity(CertUtil.getIdentity(michelangeloCred));
+			validateFind(cds, CertUtil.getIdentity(admin), f, 0,false);
+			validateFindMy(cds, CertUtil.getIdentity(leonardoCred), f, 1);
+			validateFindMy(cds, CertUtil.getIdentity(donatelloCred), f, 2);
+			validateFindMy(cds, CertUtil.getIdentity(michelangeloCred), f, 0);
 
 			resetFilter(f);
 			f.setExpirationStatus(ExpirationStatus.Valid);
-			validateFind(cds, admin.getIdentity(), f, 2,false);
-			validateFindMy(cds, leonardoCred.getIdentity(), f, 1);
-			validateFindMy(cds, donatelloCred.getIdentity(), f, 1);
-			validateFindMy(cds, michelangeloCred.getIdentity(), f, 0);
+			validateFind(cds, CertUtil.getIdentity(admin), f, 2,false);
+			validateFindMy(cds, CertUtil.getIdentity(leonardoCred), f, 1);
+			validateFindMy(cds, CertUtil.getIdentity(donatelloCred), f, 1);
+			validateFindMy(cds, CertUtil.getIdentity(michelangeloCred), f, 0);
 
 			resetFilter(f);
 			f.setExpirationStatus(ExpirationStatus.Expired);
-			validateFind(cds, admin.getIdentity(), f, 0,false);
-			validateFindMy(cds, leonardoCred.getIdentity(), f, 0);
-			validateFindMy(cds, donatelloCred.getIdentity(), f, 0);
-			validateFindMy(cds, michelangeloCred.getIdentity(), f, 0);
+			validateFind(cds, CertUtil.getIdentity(admin), f, 0,false);
+			validateFindMy(cds, CertUtil.getIdentity(leonardoCred), f, 0);
+			validateFindMy(cds, CertUtil.getIdentity(donatelloCred), f, 0);
+			validateFindMy(cds, CertUtil.getIdentity(michelangeloCred), f, 0);
 
 			resetFilter(f);
 			f.setDelegationStatus(DelegationStatus.Approved);
-			validateFind(cds, admin.getIdentity(), f, 2,false);
-			validateFindMy(cds, leonardoCred.getIdentity(), f, 1);
-			validateFindMy(cds, donatelloCred.getIdentity(), f, 1);
-			validateFindMy(cds, michelangeloCred.getIdentity(), f, 0);
+			validateFind(cds, CertUtil.getIdentity(admin), f, 2,false);
+			validateFindMy(cds, CertUtil.getIdentity(leonardoCred), f, 1);
+			validateFindMy(cds, CertUtil.getIdentity(donatelloCred), f, 1);
+			validateFindMy(cds, CertUtil.getIdentity(michelangeloCred), f, 0);
 
 			resetFilter(f);
 			f.setDelegationStatus(DelegationStatus.Pending);
-			validateFind(cds, admin.getIdentity(), f, 1,false);
-			validateFindMy(cds, leonardoCred.getIdentity(), f, 0);
-			validateFindMy(cds, donatelloCred.getIdentity(), f, 1);
-			validateFindMy(cds, michelangeloCred.getIdentity(), f, 0);
+			validateFind(cds, CertUtil.getIdentity(admin), f, 1,false);
+			validateFindMy(cds, CertUtil.getIdentity(leonardoCred), f, 0);
+			validateFindMy(cds, CertUtil.getIdentity(donatelloCred), f, 1);
+			validateFindMy(cds, CertUtil.getIdentity(michelangeloCred), f, 0);
 
 		} catch (Exception e) {
 			FaultUtil.printFault(e);
