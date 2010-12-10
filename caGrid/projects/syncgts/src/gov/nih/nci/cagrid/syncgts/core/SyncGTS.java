@@ -51,10 +51,10 @@ import org.projectmobius.common.MobiusRunnable;
  */
 public class SyncGTS {
 	private final static QName TRUSTED_CA_QN = new QName(SyncGTSDefault.SYNC_GTS_NAMESPACE, "TrustedCA");
-	private Map caListings;
-	private Map listingsById;
+	private Map<String,TrustedCAFileListing> caListings;
+	private Map<Integer, TrustedCAFileListing> listingsById;
 	 private Log logger;
-	private List messages;
+	private List<Message> messages;
 	private HistoryManager history;
 	private static SyncGTS instance;
 	private boolean lock = false;
@@ -78,7 +78,7 @@ public class SyncGTS {
 		this.caListings = null;
 		this.listingsById = null;
 
-		messages = new ArrayList();
+		messages = new ArrayList<Message>();
 	}
 
 
@@ -159,11 +159,11 @@ public class SyncGTS {
 		SyncReport report = new SyncReport();
 		try {
 			reset();
-			Set unableToSync = new HashSet();
+			Set<String> unableToSync = new HashSet<String>();
 			String dt = MobiusDate.getCurrentDateTimeAsString();
 			report.setSyncDescription(description);
 			report.setTimestamp(dt);
-			Map master = new HashMap();
+			Map<String, TrustedCAListing> master = new HashMap<String, TrustedCAListing>();
 			String error = null;
 			SyncDescriptor[] des = description.getSyncDescriptor();
 			int dcount = 0;
@@ -173,7 +173,7 @@ public class SyncGTS {
 			for (int i = 0; i < dcount; i++) {
 				String uri = des[i].getGtsServiceURI();
 				this.logger.info("Syncing with the GTS " + uri);
-				Map taMap = new HashMap();
+				Map<String, TrustedAuthority> taMap = new HashMap<String, TrustedAuthority>();
 				TrustedAuthorityFilter[] f = des[i].getTrustedAuthorityFilter();
 				int fcount = 0;
 				if (f != null) {
@@ -217,12 +217,12 @@ public class SyncGTS {
 
 				// Write all to the master list;
 
-				Iterator itr = taMap.values().iterator();
+				Iterator<TrustedAuthority> itr = taMap.values().iterator();
 				while (itr.hasNext()) {
-					TrustedAuthority ta = (TrustedAuthority) itr.next();
+					TrustedAuthority ta = itr.next();
 
 					if (master.containsValue(ta.getName())) {
-						TrustedCAListing gta = (TrustedCAListing) master.get(ta.getName());
+						TrustedCAListing gta = master.get(ta.getName());
 						String msg = "Conflict Detected: The Trusted Authority " + ta.getName()
 							+ " was determined to be trusted by both " + gta.getService() + " and " + uri + ".";
 						Message mess = new Message();
@@ -243,7 +243,7 @@ public class SyncGTS {
 
 			// Create a list of exclude certificate authorites and remove
 			// all excluded certificates from the master list.
-			Set excluded = new HashSet();
+			Set<String> excluded = new HashSet<String>();
 			ExcludedCAs ex = description.getExcludedCAs();
 			if (ex != null) {
 				String[] caSubjects = ex.getCASubject();
@@ -269,18 +269,18 @@ public class SyncGTS {
 				// Write the master list out and generate signing policy
 
 				this.readInCurrentCADirectory(description);
-				Set completeCASetByName = new HashSet();
-				Set completeCASetByHash = new HashSet();
+				Set<String> completeCASetByName = new HashSet<String>();
+				Set<String> completeCASetByHash = new HashSet<String>();
 				// Remove all CAs from the ca directory and COMPLETE list that
 				// except the following:
 				// Any CA in the exclude list.
 				// Any CA in the unable to sync list that is not in the master
 				// list.
 				int removeCount = 0;
-				List removedList = new ArrayList();
-				Iterator del = caListings.values().iterator();
+				List<TrustedCA> removedList = new ArrayList<TrustedCA>();
+				Iterator<TrustedCAFileListing> del = caListings.values().iterator();
 				while (del.hasNext()) {
-					TrustedCAFileListing fl = (TrustedCAFileListing) del.next();
+					TrustedCAFileListing fl = del.next();
 					TrustedCA ca = new TrustedCA();
 
 					X509Certificate cert = null;
@@ -313,7 +313,7 @@ public class SyncGTS {
 
 					if (fl.getMetadata() != null) {
 						try {
-							TrustedCA tca = (TrustedCA) Utils.deserializeDocument(fl.getMetadata().getAbsolutePath(),
+							TrustedCA tca = Utils.deserializeDocument(fl.getMetadata().getAbsolutePath(),
 								TrustedCA.class);
 							ca.setDiscovered(tca.getDiscovered());
 							ca.setExpiration(tca.getExpiration());
@@ -401,7 +401,7 @@ public class SyncGTS {
 				}
 				TrustedCA[] removedCAs = new TrustedCA[removedList.size()];
 				for (int i = 0; i < removedList.size(); i++) {
-					removedCAs[i] = (TrustedCA) removedList.get(i);
+					removedCAs[i] = removedList.get(i);
 				}
 				RemovedTrustedCAs rtc = new RemovedTrustedCAs();
 				rtc.setTrustedCA(removedCAs);
@@ -414,8 +414,8 @@ public class SyncGTS {
 				logger.info(mess2.getValue());
 
 				int taCount = 0;
-				Iterator itr = master.values().iterator();
-				List addedList = new ArrayList();
+				Iterator<TrustedCAListing> itr = master.values().iterator();
+				List<TrustedCA> addedList = new ArrayList<TrustedCA>();
 
 				while (itr.hasNext()) {
 					taCount = taCount + 1;
@@ -426,7 +426,7 @@ public class SyncGTS {
 					String caHash = null;
 					String subject = null;
 					try {
-						TrustedCAListing listing = (TrustedCAListing) itr.next();
+						TrustedCAListing listing = itr.next();
 						TrustedAuthority ta = listing.getTrustedAuthority();
 						X509Certificate cert = CertUtil.loadCertificate(ta.getCertificate()
 							.getCertificateEncodedString());
@@ -534,7 +534,7 @@ public class SyncGTS {
 
 				TrustedCA[] addedCAs = new TrustedCA[taCount];
 				for (int i = 0; i < addedList.size(); i++) {
-					addedCAs[i] = (TrustedCA) addedList.get(i);
+					addedCAs[i] = addedList.get(i);
 				}
 				AddedTrustedCAs atc = new AddedTrustedCAs();
 				atc.setTrustedCA(addedCAs);
@@ -551,7 +551,7 @@ public class SyncGTS {
 		// Add messages to the report
 		Message[] list = new Message[messages.size()];
 		for (int i = 0; i < messages.size(); i++) {
-			list[i] = (Message) messages.get(i);
+			list[i] = messages.get(i);
 		}
 		Messages reportMessages = new Messages();
 		reportMessages.setMessage(list);
@@ -572,8 +572,8 @@ public class SyncGTS {
 
 
 	private void readInCurrentCADirectory(SyncDescription description) throws Exception {
-		caListings = new HashMap();
-		this.listingsById = new HashMap();
+		caListings = new HashMap<String, TrustedCAFileListing>();
+		this.listingsById = new HashMap<Integer, TrustedCAFileListing>();
 		File dir = Utils.getTrustedCerificatesDirectory();
 		logger.info("Taking Snapshot of Trusted CA Directory (" + dir.getAbsolutePath() + ")....");
 		if (dir.exists()) {
@@ -607,7 +607,7 @@ public class SyncGTS {
 			String name = fn.substring(0, index);
 			String extension = fn.substring(index + 1);
 
-			TrustedCAFileListing ca = (TrustedCAFileListing) this.caListings.get(name);
+			TrustedCAFileListing ca = this.caListings.get(name);
 			if (ca == null) {
 				ca = new TrustedCAFileListing(name);
 				caListings.put(name, ca);
@@ -628,10 +628,10 @@ public class SyncGTS {
 			}
 
 		}
-		Iterator itr = this.caListings.values().iterator();
+		Iterator<TrustedCAFileListing> itr = this.caListings.values().iterator();
 		logger.debug("Found " + caListings.size() + " Trusted CAs found!!!");
 		while (itr.hasNext()) {
-			TrustedCAFileListing ca = (TrustedCAFileListing) itr.next();
+			TrustedCAFileListing ca = itr.next();
 			this.listingsById.put(ca.getFileId(), ca);
 			logger.debug(ca.toPrintText());
 		}
