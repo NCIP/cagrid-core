@@ -15,8 +15,6 @@
 	<ns1:UpgradesDescription>
 		<ns1:UpgradeDescription upgradeClass="gov.nih.nci.cagrid.data.upgrades.DataServiceUpgradeFrom1pt2" fromVersion="1.2" toVersion="1.4.1"/>
 		<ns1:UpgradeDescription upgradeClass="gov.nih.nci.cagrid.data.upgrades.DataServiceUpgradeFrom1pt3" fromVersion="1.3" toVersion="1.4.1"/>	
-		<!--
-		<ns1:UpgradeDescription upgradeClass="gov.nih.nci.cagrid.data.upgrades.DataServiceUpgradeFrom1pt3" fromVersion="1.4" toVersion="1.4.1"/>
-		-->
+		<ns1:UpgradeDescription upgradeClass="gov.nih.nci.cagrid.data.upgrades.DataServiceUpgradeFrom1pt4" fromVersion="1.4" toVersion="1.4.1"/>
 	</ns1:UpgradesDescription>
 </ns1:ExtensionDescription>
