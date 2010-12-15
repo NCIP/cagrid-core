@@ -27,9 +27,9 @@ import org.cagrid.data.sdkquery42.processor2.SDK42CQL2QueryProcessor;
 import org.jdom.Element;
 import org.jdom.JDOMException;
 
-public class UpgradeFrom1pt3to1pt4 implements StyleVersionUpgrader {
-    
-    private static Log LOG = LogFactory.getLog(UpgradeFrom1pt3to1pt4.class);
+public class UpgradeFrom1pt2to1pt41 implements StyleVersionUpgrader {
+
+    private static Log LOG = LogFactory.getLog(UpgradeFrom1pt2to1pt41.class);
 
     public void upgradeStyle(ServiceInformation serviceInformation, ExtensionTypeExtensionData extensionData,
         ExtensionUpgradeStatus status, String serviceFromVersion, String serviceToVersion) throws Exception {
@@ -55,15 +55,6 @@ public class UpgradeFrom1pt3to1pt4 implements StyleVersionUpgrader {
             if (upgradeLib.getName().startsWith("caGrid-")) {
                 int versionIndex = upgradeLib.getName().indexOf(StyleUpgradeConstants.LATEST_JAR_SUFFIX);
                 File oldCagridMatch = new File(serviceLibDir, 
-                    upgradeLib.getName().substring(0, versionIndex) + "-1.3.jar");
-                LOG.debug("Looking for old caGrid 1.3 library " + oldCagridMatch.getName());
-                if (oldCagridMatch.exists()) {
-                    oldCagridMatch.delete();
-                    removedLibs.add(oldCagridMatch.getName());
-                    LOG.debug("Deleted old library: " + oldCagridMatch.getName());
-                }
-                // since this upgrader could be called for upgrading 1.2 as well, check those jars
-                oldCagridMatch = new File(serviceLibDir, 
                     upgradeLib.getName().substring(0, versionIndex) + "-1.2.jar");
                 LOG.debug("Looking for old caGrid 1.2 library " + oldCagridMatch.getName());
                 if (oldCagridMatch.exists()) {
@@ -100,7 +91,7 @@ public class UpgradeFrom1pt3to1pt4 implements StyleVersionUpgrader {
                 QueryProcessorConstants.CQL2_QUERY_PROCESSOR_CONFIG_PREFIX + propName,
                 def, fromEtc.contains(propName));
         }
-        
+
         // copy values from CQL 1 query processor properties
         SDK42QueryProcessor cql1processor = new SDK42QueryProcessor();
         Properties oldProperties = cql1processor.getRequiredParameters();
