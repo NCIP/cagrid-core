@@ -6,6 +6,7 @@ import gov.nih.nci.cagrid.data.extension.Data;
 import gov.nih.nci.cagrid.data.style.ServiceStyleContainer;
 import gov.nih.nci.cagrid.data.style.ServiceStyleLoader;
 import gov.nih.nci.cagrid.data.style.StyleVersionUpgrader;
+import gov.nih.nci.cagrid.introduce.beans.ServiceDescription;
 import gov.nih.nci.cagrid.introduce.beans.extension.ExtensionTypeExtensionData;
 import gov.nih.nci.cagrid.introduce.common.CommonTools;
 import gov.nih.nci.cagrid.introduce.common.ServiceInformation;
@@ -27,9 +28,9 @@ import org.cagrid.data.sdkquery41.processor2.SDK41CQL2QueryProcessor;
 import org.jdom.Element;
 import org.jdom.JDOMException;
 
-public class UpgradeFrom1pt3to1pt4 implements StyleVersionUpgrader {
+public class UpgradeFrom1pt4to1pt41 implements StyleVersionUpgrader {
     
-    private static Log LOG = LogFactory.getLog(UpgradeFrom1pt3to1pt4.class);
+    private static Log LOG = LogFactory.getLog(UpgradeFrom1pt4to1pt41.class);
 
     public void upgradeStyle(ServiceInformation serviceInformation, ExtensionTypeExtensionData extensionData,
         ExtensionUpgradeStatus status, String serviceFromVersion, String serviceToVersion) throws Exception {
@@ -55,6 +56,14 @@ public class UpgradeFrom1pt3to1pt4 implements StyleVersionUpgrader {
             if (upgradeLib.getName().startsWith("caGrid-")) {
                 int versionIndex = upgradeLib.getName().indexOf(StyleUpgradeConstants.LATEST_JAR_SUFFIX);
                 File oldCagridMatch = new File(serviceLibDir, 
+                    upgradeLib.getName().substring(0, versionIndex) + "-1.4.jar");
+                LOG.debug("Looking for old caGrid 1.4 library " + oldCagridMatch.getName());
+                if (oldCagridMatch.exists()) {
+                    oldCagridMatch.delete();
+                    removedLibs.add(oldCagridMatch.getName());
+                    LOG.debug("Deleted old library: " + oldCagridMatch.getName());
+                }
+                oldCagridMatch = new File(serviceLibDir, 
                     upgradeLib.getName().substring(0, versionIndex) + "-1.3.jar");
                 LOG.debug("Looking for old caGrid 1.3 library " + oldCagridMatch.getName());
                 if (oldCagridMatch.exists()) {
@@ -83,42 +92,46 @@ public class UpgradeFrom1pt3to1pt4 implements StyleVersionUpgrader {
         }
         
         // set CQL 2 query processor classname property
-        CommonTools.setServiceProperty(serviceInformation.getServiceDescriptor(),
-            QueryProcessorConstants.CQL2_QUERY_PROCESSOR_CLASS_PROPERTY, 
-            SDK41CQL2QueryProcessor.class.getName(), false);
-        status.addDescriptionLine("Set CQL 2 query processor class service property to " 
-            + SDK41CQL2QueryProcessor.class.getName());
-        
-        // add CQL 2 query processor properties
-        SDK41CQL2QueryProcessor processor = new SDK41CQL2QueryProcessor();
-        Properties processorProperties = processor.getRequiredParameters();
-        Set<String> fromEtc = processor.getParametersFromEtc();
-        for (Object key : processorProperties.keySet()) {
-            String propName = (String) key;
-            String def = processorProperties.getProperty(propName);
+        if (!CommonTools.servicePropertyExists(serviceInformation.getServiceDescriptor(), QueryProcessorConstants.CQL2_QUERY_PROCESSOR_CLASS_PROPERTY)) {
             CommonTools.setServiceProperty(serviceInformation.getServiceDescriptor(),
-                QueryProcessorConstants.CQL2_QUERY_PROCESSOR_CONFIG_PREFIX + propName,
-                def, fromEtc.contains(propName));
+                QueryProcessorConstants.CQL2_QUERY_PROCESSOR_CLASS_PROPERTY, 
+                SDK41CQL2QueryProcessor.class.getName(), false);
+            status.addDescriptionLine("Set CQL 2 query processor class service property to " 
+                + SDK41CQL2QueryProcessor.class.getName());
+
+            // add CQL 2 query processor properties
+            SDK41CQL2QueryProcessor processor = new SDK41CQL2QueryProcessor();
+            Properties processorProperties = processor.getRequiredParameters();
+            Set<String> fromEtc = processor.getParametersFromEtc();
+            for (Object key : processorProperties.keySet()) {
+                String propName = (String) key;
+                String def = processorProperties.getProperty(propName);
+                CommonTools.setServiceProperty(serviceInformation.getServiceDescriptor(),
+                    QueryProcessorConstants.CQL2_QUERY_PROCESSOR_CONFIG_PREFIX + propName,
+                    def, fromEtc.contains(propName));
+            }
+
+            // copy values from CQL 1 query processor properties
+            SDK41QueryProcessor cql1processor = new SDK41QueryProcessor();
+            Properties oldProperties = cql1processor.getRequiredParameters();
+            for (Object key : oldProperties.keySet()) {
+                String propName = (String) key;
+                String oldPrefixedName = QueryProcessorConstants.QUERY_PROCESSOR_CONFIG_PREFIX + propName;
+                String newPrefixedName = QueryProcessorConstants.CQL2_QUERY_PROCESSOR_CONFIG_PREFIX + propName;
+                if (processorProperties.containsKey(key) &&
+                    CommonTools.servicePropertyExists(serviceInformation.getServiceDescriptor(), oldPrefixedName)) {
+                    String copyValue = CommonTools.getServicePropertyValue(
+                        serviceInformation.getServiceDescriptor(), oldPrefixedName);
+                    CommonTools.setServiceProperty(serviceInformation.getServiceDescriptor(), 
+                        newPrefixedName, copyValue, fromEtc.contains(propName));
+                }            
+            }
+            status.addIssue("A CQL 2 query processor has been added to this grid data service",
+            "You do not need to supply a custom CQL 2 query processor");
+            status.addDescriptionLine("Copied configuration values for CQL 2 query processor " +
+            "from existing CQL 1 query processor configuration");
         }
-        
-        // copy values from CQL 1 query processor properties
-        SDK41QueryProcessor cql1processor = new SDK41QueryProcessor();
-        Properties oldProperties = cql1processor.getRequiredParameters();
-        for (Object key : oldProperties.keySet()) {
-            String propName = (String) key;
-            String oldPrefixedName = QueryProcessorConstants.QUERY_PROCESSOR_CONFIG_PREFIX + propName;
-            String newPrefixedName = QueryProcessorConstants.CQL2_QUERY_PROCESSOR_CONFIG_PREFIX + propName;
-            if (processorProperties.containsKey(key) &&
-                CommonTools.servicePropertyExists(serviceInformation.getServiceDescriptor(), oldPrefixedName)) {
-                String copyValue = CommonTools.getServicePropertyValue(
-                    serviceInformation.getServiceDescriptor(), oldPrefixedName);
-                CommonTools.setServiceProperty(serviceInformation.getServiceDescriptor(), 
-                    newPrefixedName, copyValue, fromEtc.contains(propName));
-            }            
-        }
-        status.addDescriptionLine("Copied configuration values for CQL 2 query processor " +
-        		"from existing CQL 1 query processor configuration");
-        
+
         // check for the ORM jar in the service's lib dir
         String applicationName = CommonTools.getServicePropertyValue(
             serviceInformation.getServiceDescriptor(),
@@ -154,8 +167,6 @@ public class UpgradeFrom1pt3to1pt4 implements StyleVersionUpgrader {
         }
         storeExtensionDataElement(extensionData, data);
         status.addDescriptionLine("Reconfigured searchable jars for query processor discovery panel");
-        status.addIssue("A CQL 2 query processor has been added to this grid data service",
-            "You do not need to supply a custom CQL 2 query processor");
     }
     
     
