@@ -92,6 +92,7 @@ public class UpgradeFrom1pt4to1pt41 implements StyleVersionUpgrader {
         }
                 
         // set CQL 2 query processor classname property
+        if (!CommonTools.servicePropertyExists(serviceInformation.getServiceDescriptor(), QueryProcessorConstants.CQL2_QUERY_PROCESSOR_CLASS_PROPERTY)) {
         CommonTools.setServiceProperty(serviceInformation.getServiceDescriptor(),
             QueryProcessorConstants.CQL2_QUERY_PROCESSOR_CLASS_PROPERTY, 
             SDK4CQL2QueryProcessor.class.getName(), false);
@@ -125,8 +126,11 @@ public class UpgradeFrom1pt4to1pt41 implements StyleVersionUpgrader {
                     newPrefixedName, copyValue, fromEtc.contains(propName));
             }            
         }
+            status.addIssue("A CQL 2 query processor has been added to this grid data service",
+            "You do not need to supply a custom CQL 2 query processor");
         status.addDescriptionLine("Copied configuration values for CQL 2 query processor " +
         		"from existing CQL 1 query processor configuration");
+        }
         
         // check for the ORM jar in the service's lib dir
         String applicationName = CommonTools.getServicePropertyValue(
@@ -163,8 +167,6 @@ public class UpgradeFrom1pt4to1pt41 implements StyleVersionUpgrader {
         }
         storeExtensionDataElement(extensionData, data);
         status.addDescriptionLine("Reconfigured searchable jars for query processor discovery panel");
-        status.addIssue("A CQL 2 query processor has been added to this grid data service",
-            "You do not need to supply a custom CQL 2 query processor");
     }
     
     
