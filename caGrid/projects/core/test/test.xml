@@ -14,9 +14,11 @@
 	</path>
 	
 	<!-- define the cobertura ant tasks -->
-	<taskdef classpathref="cobertura.classpath" resource="tasks.properties" />
+	<target name="defineCoberturaTasks">
+		<taskdef classpathref="cobertura.classpath" resource="tasks.properties" />
+	</target>
 	
-	<target name="instrument">
+	<target name="instrument" depends="defineCoberturaTasks">
 		<!--
 			Remove the coverage data file and any old instrumentation.
 		-->
@@ -38,7 +40,7 @@
 	</target>
 
 	<!-- call the test target for each project and aggregates the log resutls  -->
-	<target name="test" depends="instrument" description="Runs the tests.">
+	<target name="test" depends="defineCoberturaTasks, instrument" description="Runs the tests.">
 		<mkdir dir="${junit.results.dir}" />
 		<junit dir="${basedir}" printsummary="yes" errorproperty="test.failed" failureproperty="test.failed" showoutput="true" fork="yes" forkmode="once">
 			<sysproperty key="build.dir" value="${classes.dir}" />
