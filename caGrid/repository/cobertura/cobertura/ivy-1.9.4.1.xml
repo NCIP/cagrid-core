@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<ivy-module version="2.0">
+    <info organisation="cobertura" module="cobertura" revision="1.9.4.1" status="release">
+        <license name="Apache" url="http://cobertura.sourceforge.net/license.html"/>
+        <description homepage="http://cobertura.sourceforge.net">Cobertura is a free Java tool that calculates the percentage of code accessed by tests. It can be used to identify which parts of your Java program are lacking test coverage. It is based on jcoverage.</description>
+    </info>
+    <configurations>
+      <conf name="default" visibility="public"/>
+    </configurations>
+    <publications>
+      <artifact name="cobertura" conf="default" type="jar"/>
+    </publications>
+    <dependencies>
+      <dependency org="objectweb" name="asm" rev="3.0" conf="default->*"/>
+      <dependency org="apache" name="jakarta-oro" rev="2.0.8" conf="default->*"/>
+      <dependency org="apache" name="log4j" rev="1.2.14" conf="default->*"/>
+    </dependencies>
+</ivy-module>
