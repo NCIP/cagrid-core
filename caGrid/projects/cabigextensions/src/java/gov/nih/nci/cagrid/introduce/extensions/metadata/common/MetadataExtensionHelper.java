@@ -20,9 +20,6 @@ import org.apache.commons.logging.LogFactory;
  * MetadataExtensionBase
  * 
  * @author oster
- * @created Apr 9, 2007 11:59:14 AM
- * @version $Id: multiscaleEclipseCodeTemplates.xml,v 1.1 2007/03/02 14:35:01
- *          dervin Exp $
  */
 public class MetadataExtensionHelper {
     protected static Log LOG = LogFactory.getLog(MetadataExtensionHelper.class.getName());
@@ -130,5 +127,4 @@ public class MetadataExtensionHelper {
         MetadataUtils.serializeServiceMetadata(md, writer);
         writer.close();
     }
-
 }
