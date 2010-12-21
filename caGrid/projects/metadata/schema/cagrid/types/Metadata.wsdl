@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <definitions name="Metadata" xmlns="http://schemas.xmlsoap.org/wsdl/" >
 	<import location="caGridMetadata.xsd"/>
+	<import location="caGridVersion.xsd"/>
 </definitions>
 
