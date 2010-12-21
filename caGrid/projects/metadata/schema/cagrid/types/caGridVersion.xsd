@@ -1,0 +1,7 @@
+<xsd:schema targetNamespace="gme://caGrid.caBIG/1.0/org.cagrid.version"
+    xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+    <xsd:element name="CaGridVersion" type="CaGridVersion"/>
+    <xsd:complexType name="CaGridVersion">
+    	<xsd:attribute name="version" use="required" type="xsd:string"/>
+    </xsd:complexType>
+ </xsd:schema>
