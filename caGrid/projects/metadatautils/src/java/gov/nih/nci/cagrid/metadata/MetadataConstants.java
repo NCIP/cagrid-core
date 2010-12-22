@@ -13,11 +13,13 @@ public class MetadataConstants {
 	public static final String CADSR_NAMESPACE = "gme://caCORE.caBIG/3.0/gov.nih.nci.cadsr.domain";
 	public static final String CADSR_UML_NAMESPACE = "gme://caCORE.caBIG/3.0/gov.nih.nci.cadsr.umlproject.domain";
 	public static final String AGGREGATOR_NAMESPACE = "http://mds.globus.org/aggregator/types";
-
+	public static final String CAGRID_VERSION_NAMESPACE = "gme://caGrid.caBIG/1.0/org.cagrid.metadata.version";
+	
 	// exposed resource properties
 	public static final String CAGRID_MD_NAME = "ServiceMetadata";
 	public static final QName CAGRID_MD_QNAME = new QName(CAGRID_MD_NAMESPACE, CAGRID_MD_NAME);
 	public static final String CAGRID_DATA_MD_NAME = "DomainModel";
 	public static final QName CAGRID_DATA_MD_QNAME = new QName(CAGRID_DATA_MD_NAMESPACE, CAGRID_DATA_MD_NAME);
-
+	public static final String CAGRID_VERSION_NAME = "CaGridVersion";
+	public static final QName CAGRID_VERSION_QNAME = new QName(CAGRID_VERSION_NAMESPACE, CAGRID_VERSION_NAME);
 }

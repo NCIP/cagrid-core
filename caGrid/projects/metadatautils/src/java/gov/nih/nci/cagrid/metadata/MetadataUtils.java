@@ -11,11 +11,17 @@ import java.io.StringReader;
 import java.io.Writer;
 
 import org.apache.axis.message.addressing.EndpointReferenceType;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.cagrid.metadata.version.CaGridVersion;
 import org.globus.wsrf.utils.XmlUtils;
 import org.w3c.dom.Element;
 
 
 public class MetadataUtils {
+    
+    private static Log LOG = LogFactory.getLog(MetadataUtils.class);
+    
     /**
      * Obtain the service metadata from the specified service.
      * 
@@ -59,6 +65,26 @@ public class MetadataUtils {
             result = deserializeDomainModel(new StringReader(XmlUtils.toString(resourceProperty)));
         } catch (Exception e) {
             throw new ResourcePropertyRetrievalException("Unable to deserailize DomainModel: " + e.getMessage(), e);
+        }
+        return result;
+    }
+    
+    
+    public static CaGridVersion getCaGridVersion(EndpointReferenceType serviceEPR) throws InvalidResourcePropertyException, 
+        RemoteResourcePropertyRetrievalException, ResourcePropertyRetrievalException {
+        CaGridVersion result = null;
+        try {
+            Element resourceProperty = ResourcePropertyHelper.getResourceProperty(serviceEPR,
+                MetadataConstants.CAGRID_VERSION_QNAME);
+            result = deserializeCaGridVersion(new StringReader(XmlUtils.toString(resourceProperty)));
+        } catch (InvalidResourcePropertyException e) {
+            if (LOG.isDebugEnabled()) {
+                LOG.debug("Resource property for CaGridVersion not found on " + serviceEPR.getAddress().toString());
+                LOG.debug("Assuming the service is from an older version of caGrid which doesn' have this property");
+                LOG.debug(e);
+            }
+        } catch (Exception ex) {
+            throw new ResourcePropertyRetrievalException("Unable to deserailize CaGridVersion: " + ex.getMessage(), ex);
         }
         return result;
     }
@@ -188,5 +214,21 @@ public class MetadataUtils {
             throw new IllegalArgumentException("Null is not a valid argument");
         }
         return  Utils.deserializeObject(xmlReader, DomainModel.class);
+    }
+    
+    
+    public static void serializeCaGridVersion(CaGridVersion version, Writer writer) throws Exception {
+        if (version == null || writer == null) {
+            throw new IllegalArgumentException("Null is not a valid argument");
+        }
+        Utils.serializeObject(version, MetadataConstants.CAGRID_VERSION_QNAME, writer);
+    }
+    
+    
+    public static CaGridVersion deserializeCaGridVersion(Reader xmlReader) throws Exception {
+        if (xmlReader == null) {
+            throw new IllegalArgumentException("Null is not a valid argument");
+        }
+        return Utils.deserializeObject(xmlReader, CaGridVersion.class);
     }
 }
