@@ -3,7 +3,7 @@
 <!-- caGrid 1.0 core build file                                        -->
 <!-- ================================================================= -->
 
-<project name="caGrid-core" default="compile" basedir=".">
+<project name="caGrid-core" default="all" basedir=".">
 	<!-- Environment -->
 	<property environment="env" />
 	<property file="${basedir}/project.properties" />
@@ -15,9 +15,11 @@
 	<property name="java.source" value="1.5" />
 
 	<property name="src.dir" value="${basedir}/src/java" />
+	<property name="version.src.dir" value="${basedir}/src/version"/>
 	<property name="build.dir" value="${basedir}/build" />
 	<property name="javadoc.dir" value="${build.dir}/javadoc" />
 	<property name="classes.dir" value="${build.dir}/classes" />
+	<property name="version.classes.dir" value="${build.dir}/version/classes"/>
 	<property name="jar.dir" value="${build.dir}/jars" />
 	<property name="project.jarfile" value="${jar.dir}/${project.name}-${project.version}.jar" />
 	<property name="ext.lib.dir" value="${basedir}/ext/dependencies/jars" />
@@ -82,19 +84,20 @@
 	<!-- =============================================================== -->
 	<!-- Compiles the source code                                        -->
 	<!-- =============================================================== -->
-	<target name="compile" depends="prepare" description="compiles.">
+	<target name="compile" depends="prepare, compileVersion" description="compiles the source code">
 		<mkdir dir="${classes.dir}" />
 		<javac srcdir="${src.dir}" destdir="${classes.dir}" source="${java.source}" debug="on" deprecation="off" optimize="off">
 			<classpath refid="build.classpath" />
 		</javac>
-		<!-- Copy the source code, wsdd, properties, etc to the build dir for include in the jar -->
-		<copy toDir="${classes.dir}">
-			<fileset dir="${src.dir}">
-				<include name="**/*" />
-			</fileset>
-		</copy>
+	</target>
+	
+	
+	<target name="compileVersion">
+		<mkdir dir="${version.classes.dir}"/>
+		<javac srcdir="${version.src.dir}" destdir="${version.classes.dir}" source="${java.source}" debug="on" deprecation="off" optimize="off"/>
 	</target>
 
+	
 	<!-- =============================================================== -->
 	<!-- Compiles the test source code                                        -->
 	<!-- =============================================================== -->
@@ -119,17 +122,22 @@
 	<!-- ============================================================== -->
 	<target name="jar" depends="compile" description="Builds the main Jar Files">
 		<mkdir dir="${jar.dir}" />
-		<jar jarfile="${project.jarfile}" basedir="${classes.dir}">
+		<jar jarfile="${project.jarfile}">
 			<manifest>
 				<attribute name="Built-By" value="${user.name}" />
 				<attribute name="Specification-Version" value="${project.version}" />
 				<attribute name="Implementation-Version" value="${project.version}" />
 			</manifest>
+			<fileset dir="${classes.dir}"/>
+			<fileset dir="${src.dir}"/>
+			<fileset dir="${version.classes.dir}"/>
+			<fileset dir="${version.src.dir}"/>
 		</jar>
 	</target>
+	
 
 	<!-- ============================================================== -->
-	<!-- Creates the resources jar files                                          -->
+	<!-- Creates the resources jar files                                -->
 	<!-- ============================================================== -->
 	<target name="jar-resources" depends="prepare" description="Builds the resources Jar Files">
 		<mkdir dir="${jar.dir}" />
@@ -141,21 +149,25 @@
 			</manifest>
 		</jar>
 	</target>
+	
 
 	<!-- ============================================================== -->
-	<!-- Creates the test jar files                                          -->
+	<!-- Creates the test jar files                                     -->
 	<!-- ============================================================== -->
 	<target name="jar-tests" depends="compile-tests" description="Builds the test Jar Files">
 		<mkdir dir="${jar.dir}" />
-		<jar jarfile="${test.project.jar}" basedir="${test.classes.dir}">
+		<jar jarfile="${test.project.jar}">
 			<manifest>
 				<attribute name="Built-By" value="${user.name}" />
 				<attribute name="Specification-Version" value="${project.version}" />
 				<attribute name="Implementation-Version" value="${project.version}" />
 			</manifest>
+			<fileset dir="${test.classes.dir}"/>
+			<fileset dir="${test.src.dir}"/>
 		</jar>
 	</target>
 
+	
 	<!-- =================================================================== -->
 	<!-- Builds Code Docuementation                                          -->
 	<!-- =================================================================== -->
@@ -173,10 +185,19 @@
 			<tag name="created" scope="all" description="Created On:" />
 		</javadoc>
 	</target>
+	
+	<!-- prints the caGrid version -->
+	<target name="showCaGridVersion" depends="compileVersion" description="Prints the caGrid Version">
+		<java classname="gov.nih.nci.cagrid.Version">
+			<classpath>
+				<pathelement location="${version.classes.dir}"/>
+			</classpath>
+		</java>
+	</target>
 
 
 	<!-- ============================================================== -->
-	<!-- Builds from scratch                                                -->
+	<!-- Builds from scratch                                            -->
 	<!-- ============================================================== -->
 	<target name="all" description="Builds the entire application" depends="jar,jar-tests,jar-resources" />
 </project>
