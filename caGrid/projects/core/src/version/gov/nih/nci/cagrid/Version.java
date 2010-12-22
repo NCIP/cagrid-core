@@ -55,4 +55,9 @@ public class Version {
         return "" + getStreamVersion() + "." + getMajorReleaseVersion() + "." 
             + getMinorReleaseVersion() + "." + getPointReleaseVersion();
     }
+    
+    
+    public static void main(String[] args) {
+        System.out.println("The caGrid Version is " + getVersionString());
+    }
 }
