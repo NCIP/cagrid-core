@@ -18,11 +18,15 @@
         <ant dir="${basedir}/projects/gaards-ui" antfile="build.xml" target="ui" inheritall="false" />
     </target>
 	
-	<target name="security" description="Run the Security Administrative GUI">
-	        <ant dir="${basedir}/projects/gaards-ui" antfile="build.xml" target="ui" inheritall="false" />
-	</target>
+    <target name="security" description="Run the Security Administrative GUI">
+	<ant dir="${basedir}/projects/gaards-ui" antfile="build.xml" target="ui" inheritall="false" />
+    </target>
 
     <target name="syncWithTrustFabric" description="Syncs With Trust Fabric">
         <ant dir="${basedir}/projects/syncgts" antfile="build.xml" target="syncWithTrustFabric" inheritall="false" />
+    </target>
+
+    <target name="showCaGridVersion" description="Shows the caGrid version">
+        <ant dir="${basedir}/projects/core" antfile="build.xml" target="showCaGridVersion" inheritall="false"/>
     </target>
 </project>
