@@ -51,7 +51,10 @@ public class ServiceMetadataCreationPostProcessor implements CreationExtensionPo
 
             // add the service metadata
             addServiceMetadata(serviceDescription);
-
+            
+            // caGridVersion.xsd already copied in to the service by copyMetadataSchemas
+            // namespace type added by addNamespaces
+            // resource property added by metadata codegen post processor
         } catch (Exception ex) {
             ex.printStackTrace();
             throw new CreationExtensionException("Error adding service metadata components to template!", ex);
@@ -81,24 +84,33 @@ public class ServiceMetadataCreationPostProcessor implements CreationExtensionPo
             namespaces = new NamespacesType();
         }
 
-        // add some namespaces to the service
+        // add namespaces to the service, keeping the existing ones intact
         List<NamespaceType> newNamespaces = new ArrayList<NamespaceType>(Arrays.asList(namespaces.getNamespace()));
+        
         // caGrid metadata namespace
         NamespaceType cagridMdNamespace = CommonTools.createNamespaceType(schemaDir + File.separator + "xsd"
             + File.separator + MetadataConstants.CAGRID_METADATA_SCHEMA, new File(schemaDir));
         cagridMdNamespace.setGenerateStubs(Boolean.FALSE);
         newNamespaces.add(cagridMdNamespace);
+        
         //add service metadata namespace
         NamespaceType serviceMdNamespace = CommonTools.createNamespaceType(schemaDir + File.separator + "xsd"
             + File.separator + MetadataConstants.SERVICE_METADATA_SCHEMA, new File(schemaDir));
         serviceMdNamespace.setGenerateStubs(Boolean.FALSE);
         newNamespaces.add(serviceMdNamespace);
+        
         //add common metadata namespace
         NamespaceType commonMdNamespace = CommonTools.createNamespaceType(schemaDir + File.separator + "xsd"
             + File.separator + MetadataConstants.COMMON_METADATA_SCHEMA, new File(schemaDir));
         commonMdNamespace.setGenerateStubs(Boolean.FALSE);
         newNamespaces.add(commonMdNamespace);
-
+        
+        // the caGrid version namespace
+        NamespaceType versionNamespace = CommonTools.createNamespaceType(schemaDir + File.separator + "xsd"
+            + File.separator + MetadataConstants.CAGRID_VERSION_SCHEMA, new File(schemaDir)); 
+        versionNamespace.setGenerateStubs(Boolean.FALSE);
+        newNamespaces.add(versionNamespace);
+        
         // add those new namespaces to the list of namespace types
         NamespaceType[] nsArray = new NamespaceType[newNamespaces.size()];
         newNamespaces.toArray(nsArray);

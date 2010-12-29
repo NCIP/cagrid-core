@@ -20,17 +20,19 @@ public interface MetadataConstants {
         + File.separator + "servicemodel.xsd";
     public static final String CAGRID_METADATA_SCHEMA = METADATA_SCHEMA_LOCATION + File.separator
         + "caGridMetadata.xsd";
+    public static final String CAGRID_VERSION_SCHEMA = METADATA_SCHEMA_LOCATION + File.separator + "caGridVersion.xsd";
 
     // service metadata QName
-    public static final QName SERVICE_METADATA_QNAME = new QName("gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata",
-        "ServiceMetadata");
+    public static final QName SERVICE_METADATA_QNAME = new QName("gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata", "ServiceMetadata");
+    
+    // cagrid version QName
+    public static final QName CAGRID_VERSION_QNAME = new QName("gme://caGrid.caBIG/1.0/org.cagrid.metadata.version", "CaGridVersion");
 
     public static final String COMMON_METADATA_NAMESPACE = "gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common";
 
     public static final String SERVICE_METADATA_NAMESPACE = "gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.service";
 
-    public static final QName SERVICE_QNAME = new QName("gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.service",
-        "Service");
+    public static final QName SERVICE_QNAME = new QName("gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.service","Service");
 
     public static final String MMS_URL_PROPERTY = "MMS_URL";
 }

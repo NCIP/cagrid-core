@@ -1,5 +1,6 @@
 package gov.nih.nci.cagrid.introduce.extensions.metadata.codegen;
 
+import gov.nih.nci.cagrid.Version;
 import gov.nih.nci.cagrid.common.Utils;
 import gov.nih.nci.cagrid.data.DataServiceConstants;
 import gov.nih.nci.cagrid.introduce.beans.extension.ExtensionType;
@@ -57,6 +58,7 @@ import javax.xml.namespace.QName;
 import org.apache.axis.utils.ClassUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.cagrid.metadata.version.CaGridVersion;
 import org.cagrid.mms.client.MetadataModelServiceClient;
 import org.cagrid.mms.common.MetadataModelServiceConstants;
 import org.cagrid.mms.common.MetadataModelServiceI;
@@ -76,9 +78,38 @@ public class MetadataCodegenPostProcessor implements CodegenExtensionPostProcess
     private static final String SEMANTIC_METADATA_DEFAULTS_ANALYTICAL_SERVICE = "default-Service-SemanticMetadata-analytical.xml";
 
     protected static Log LOG = LogFactory.getLog(MetadataCodegenPostProcessor.class.getName());
+    
+    
+    public void postCodegen(ServiceExtensionDescriptionType desc, ServiceInformation info) throws CodegenExtensionException {
+        processServiceMetadata(desc, info);
+        processCaGridVersion(desc, info);
+    }
+    
+    
+    private void processCaGridVersion(ServiceExtensionDescriptionType desc, ServiceInformation info) throws CodegenExtensionException {
+        MetadataExtensionHelper helper = new MetadataExtensionHelper(info);
+        if (!helper.shouldCreateVersion()) {
+            LOG.error("Unable to locate caGrid Version resource property, skipping instance creation.");
+            return;
+        }
+        
+        CaGridVersion version = helper.getExistingVersion();
+        // if there isn't a version already, create it
+        if (version == null) {
+            version = getDefaultCaGridVersion();
+            LOG.debug("No caGrid Version defined, using default");
+        }
+        
+        // serialize the version
+        try {
+            helper.writeCaGridVersion(version);
+        } catch (Exception e) {
+            throw new CodegenExtensionException("Error serializing version document.", e);
+        }
+    }
 
 
-    public void postCodegen(ServiceExtensionDescriptionType desc, ServiceInformation info)
+    private void processServiceMetadata(ServiceExtensionDescriptionType desc, ServiceInformation info)
         throws CodegenExtensionException {
         MetadataExtensionHelper helper = new MetadataExtensionHelper(info);
         if (!helper.shouldCreateMetadata()) {
@@ -156,7 +187,13 @@ public class MetadataCodegenPostProcessor implements CodegenExtensionPostProcess
         } catch (Exception e) {
             throw new CodegenExtensionException("Error serializing metadata document.", e);
         }
-
+    }
+    
+    
+    private CaGridVersion getDefaultCaGridVersion() {
+        CaGridVersion version = new CaGridVersion();
+        version.setVersion(Version.getVersionString());
+        return version;
     }
 
 
@@ -571,7 +608,7 @@ public class MetadataCodegenPostProcessor implements CodegenExtensionPostProcess
      * 
      * @param metadata
      */
-    private static void initializeModel(ServiceMetadata metadata) {
+    private void initializeModel(ServiceMetadata metadata) {
         // every model needs a service desc
         ServiceMetadataServiceDescription desc = metadata.getServiceDescription();
         if (desc == null) {
@@ -623,7 +660,7 @@ public class MetadataCodegenPostProcessor implements CodegenExtensionPostProcess
     }
 
 
-    private static PointOfContact createEmptyPointOfContact() {
+    private PointOfContact createEmptyPointOfContact() {
         return new PointOfContact("", "", "", "", "", "");
     }
 }

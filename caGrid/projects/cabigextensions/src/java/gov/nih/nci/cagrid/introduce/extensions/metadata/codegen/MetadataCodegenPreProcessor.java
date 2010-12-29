@@ -11,7 +11,7 @@ import org.apache.commons.logging.LogFactory;
 
 
 /**
- * Just sets the metadata filelocation if its not set.
+ * Just sets the metadata file location if its not set.
  * 
  * @author oster
  */
@@ -30,6 +30,13 @@ public class MetadataCodegenPreProcessor implements CodegenExtensionPreProcessor
         } else {
             LOG.debug("Set service metadata file location to:" + filename);
         }
+        
+        String versionFilename = helper.setVersionFilenameProperty();
+        if (versionFilename == null) {
+            LOG.error("Unable to locate caGrid Version resource property.");
+            return;
+        } else {
+            LOG.debug("Set service metadata file location to:" + versionFilename);
+        }
     }
-
 }

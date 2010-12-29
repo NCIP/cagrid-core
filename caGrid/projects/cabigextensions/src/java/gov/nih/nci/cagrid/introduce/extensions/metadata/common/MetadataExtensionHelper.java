@@ -14,6 +14,7 @@ import java.io.FileWriter;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.cagrid.metadata.version.CaGridVersion;
 
 
 /**
@@ -27,7 +28,8 @@ import org.apache.commons.logging.LogFactory;
 public class MetadataExtensionHelper {
     protected static Log LOG = LogFactory.getLog(MetadataExtensionHelper.class.getName());
 
-    protected static final String DEFAULT_FILENAME = "serviceMetadata.xml";
+    protected static final String DEFAULT_METADATA_FILENAME = "serviceMetadata.xml";
+    protected static final String DEFAULT_VERSION_FILENAME = "caGridVersion.xml";
     protected ServiceInformation info = null;
 
 
@@ -45,7 +47,22 @@ public class MetadataExtensionHelper {
         if (rp != null) {
             String fileLocation = rp.getFileLocation();
             if (fileLocation == null || fileLocation.trim().equals("")) {
-                rp.setFileLocation(DEFAULT_FILENAME);
+                rp.setFileLocation(DEFAULT_METADATA_FILENAME);
+            }
+
+            return rp.getFileLocation();
+        }
+
+        return null;
+    }
+    
+    
+    public String getVersionFilenameProperty() {
+        ResourcePropertyType rp = getVersionResourceProperty();
+        if (rp != null) {
+            String fileLocation = rp.getFileLocation();
+            if (fileLocation == null || fileLocation.trim().equals("")) {
+                rp.setFileLocation(DEFAULT_VERSION_FILENAME);
             }
 
             return rp.getFileLocation();
@@ -69,6 +86,22 @@ public class MetadataExtensionHelper {
 
         return null;
     }
+    
+    
+    public ResourcePropertyType getVersionResourceProperty() {
+        ServiceType mainServ = this.info.getServiceDescriptor().getServices().getService()[0];
+        ResourcePropertiesListType resourcePropertiesList = mainServ.getResourcePropertiesList();
+        if (resourcePropertiesList != null && resourcePropertiesList.getResourceProperty() != null) {
+            ResourcePropertyType[] resourceProperty = resourcePropertiesList.getResourceProperty();
+            for (ResourcePropertyType rp : resourceProperty) {
+                if (rp.getQName().equals(MetadataConstants.CAGRID_VERSION_QNAME)) {
+                    return rp;
+                }
+            }
+        }
+
+        return null;
+    }
 
 
     public String setMetadataFilenameProperty() {
@@ -76,7 +109,22 @@ public class MetadataExtensionHelper {
         if (rp != null) {
             String fileLocation = rp.getFileLocation();
             if (fileLocation == null || fileLocation.trim().equals("")) {
-                rp.setFileLocation(DEFAULT_FILENAME);
+                rp.setFileLocation(DEFAULT_METADATA_FILENAME);
+            }
+
+            return rp.getFileLocation();
+        }
+
+        return null;
+    }
+    
+    
+    public String setVersionFilenameProperty() {
+        ResourcePropertyType rp = getVersionResourceProperty();
+        if (rp != null) {
+            String fileLocation = rp.getFileLocation();
+            if (fileLocation == null || fileLocation.trim().equals("")) {
+                rp.setFileLocation(DEFAULT_VERSION_FILENAME);
             }
 
             return rp.getFileLocation();
@@ -94,12 +142,27 @@ public class MetadataExtensionHelper {
         } else {
             return new File(this.info.getBaseDirectory() + File.separator + "etc" + File.separator, fileProp);
         }
-
+    }
+    
+    
+    public File getVersionAbsoluteFile() {
+        String fileProp = getVersionFilenameProperty();
+        File localFile = new File(fileProp);
+        if (localFile.isAbsolute()) {
+            return localFile;
+        } else {
+            return new File(this.info.getBaseDirectory() + File.separator + "etc" + File.separator, fileProp);
+        }
     }
 
 
     public boolean shouldCreateMetadata() {
         return getMetadataFilenameProperty() != null;
+    }
+    
+    
+    public boolean shouldCreateVersion() {
+        return getVersionFilenameProperty() != null;
     }
 
 
@@ -123,6 +186,27 @@ public class MetadataExtensionHelper {
         }
         return metadata;
     }
+    
+    
+    public CaGridVersion getExistingVersion() {
+        if (!shouldCreateVersion()) {
+            return null;
+        }
+        
+        CaGridVersion version = null;
+        // if the file already exists, load it
+        File f = getVersionAbsoluteFile();
+        if (f.exists() && f.canRead()) {
+            try {
+                FileReader reader = new FileReader(f);
+                
+                reader.close();
+            } catch (Exception ex) {
+                LOG.error("Failed to deserialize existing version document!  A new one will be created.", ex);
+            }
+        }
+        return version;
+    }
 
 
     public void writeServiceMetadata(ServiceMetadata md) throws Exception {
@@ -130,5 +214,11 @@ public class MetadataExtensionHelper {
         MetadataUtils.serializeServiceMetadata(md, writer);
         writer.close();
     }
-
+    
+    
+    public void writeCaGridVersion(CaGridVersion version) throws Exception {
+        FileWriter writer = new FileWriter(getVersionAbsoluteFile());
+        MetadataUtils.serializeCaGridVersion(version, writer);
+        writer.close();
+    }
 }
