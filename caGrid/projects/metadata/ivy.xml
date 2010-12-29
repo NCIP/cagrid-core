@@ -32,6 +32,7 @@
     <artifact name="caGrid-metadata-security" conf="security.jars" type="jar"/>
 
     <artifact name="cagrid/types/caGridMetadata" conf="schemas" type="xsd"/>
+    <artifact name="cagrid/types/caGridVersion" conf="schemas" type="xsd"/>
     <artifact name="cagrid/types/common/common" conf="schemas" type="xsd"/>
     <artifact name="cagrid/types/data/data" conf="schemas" type="xsd"/>
     <artifact name="cagrid/types/service/servicemodel" conf="schemas" type="xsd"/>
