@@ -3,7 +3,7 @@
 <!-- caGrid 1.0 caBIG Introduce Extensions build file                  -->
 <!-- ================================================================= -->
 
-<project name="caGrid-cabigextensions" default="compile" basedir=".">
+<project name="caGrid-cabigextensions" default="all" basedir=".">
 	<!-- Environment -->
 	<property environment="env" />
 	<property file="${basedir}/project.properties" />
@@ -204,11 +204,6 @@
 		<javac srcdir="${src.dir}" destdir="${classes.dir}" source="1.5" debug="on" deprecation="off" optimize="off">
 			<classpath refid="build.classpath" />
 		</javac>
-		<copy toDir="${classes.dir}">
-			<fileset dir="${src.dir}">
-				<include name="**/*" />
-			</fileset>
-		</copy>
 	</target>
 
 
@@ -222,6 +217,7 @@
 		</javac>
 	</target>
 
+	
 	<!-- =============================================================== -->
 	<!-- Compiles the test source code                                        -->
 	<!-- =============================================================== -->
@@ -246,11 +242,13 @@
 	<!-- ============================================================== -->
 	<target name="jar" depends="compile" description="Builds the Jar Files">
 		<mkdir dir="${jar.dir}" />
-		<jar jarfile="${project.jarfile}" basedir="${classes.dir}">
+		<jar jarfile="${project.jarfile}">
 			<manifest>
 				<attribute name="Built-By" value="${user.name}" />
 				<attribute name="Main-Class" value="${main.class}" />
 			</manifest>
+			<fileset dir="${classes.dir}"/>
+			<fileset dir="${src.dir}"/>
 		</jar>
 		<jar jarfile="${project.validator.jarfile}" basedir="${classes.dir}" includes="gov/nih/nci/cagrid/introduce/extensions/metadata/deployment/validator/**/*" defaultExcludes="false" update="no">
 			<manifest>
@@ -265,10 +263,12 @@
 	<!-- ============================================================== -->
 	<target name="jarStubs" depends="compileStubs" description="Builds the Stubs Jar Files">
 		<mkdir dir="${jar.dir}" />
-		<jar jarfile="${stubs.jarfile}" basedir="${stubs.classes.dir}">
+		<jar jarfile="${stubs.jarfile}">
 			<manifest>
 				<attribute name="Built-By" value="${user.name}" />
 			</manifest>
+			<fileset dir="${stubs.classes.dir}"/>
+			<fileset dir="${stubs.src}"/>
 		</jar>
 	</target>
 
@@ -278,10 +278,12 @@
 	<!-- ============================================================== -->
 	<target name="jar-tests" depends="compile-tests" description="Builds the Jar Files">
 		<mkdir dir="${jar.dir}" />
-		<jar jarfile="${test.project.jar}" basedir="${test.classes.dir}">
+		<jar jarfile="${test.project.jar}">
 			<manifest>
 				<attribute name="Built-By" value="${user.name}" />
 			</manifest>
+			<fileset dir="${test.classes.dir}"/>
+			<fileset dir="${test.src.dir}"/>
 		</jar>
 	</target>
 
