@@ -1,5 +1,6 @@
 package gov.nih.nci.cagrid.introduce.extensions.metadata.creation;
 
+import gov.nih.nci.cagrid.Version;
 import gov.nih.nci.cagrid.common.Utils;
 import gov.nih.nci.cagrid.introduce.IntroduceConstants;
 import gov.nih.nci.cagrid.introduce.beans.ServiceDescription;
@@ -26,6 +27,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Properties;
+
+import org.cagrid.metadata.version.CaGridVersion;
 
 
 /**
@@ -54,7 +57,7 @@ public class ServiceMetadataCreationPostProcessor implements CreationExtensionPo
             
             // caGridVersion.xsd already copied in to the service by copyMetadataSchemas
             // namespace type added by addNamespaces
-            // resource property added by metadata codegen post processor
+            addCaGridVersion(serviceDescription);
         } catch (Exception ex) {
             ex.printStackTrace();
             throw new CreationExtensionException("Error adding service metadata components to template!", ex);
@@ -66,9 +69,9 @@ public class ServiceMetadataCreationPostProcessor implements CreationExtensionPo
         System.out.println("Copying schemas to " + schemaDir);
         File extensionSchemaDir = new File(ExtensionsLoader.EXTENSIONS_DIRECTORY + File.separator
             + MetadataConstants.EXTENSION_NAME + File.separator + "schema");
-        List schemaFiles = Utils.recursiveListFiles(extensionSchemaDir, new FileFilters.XSDFileFilter());
+        List<File> schemaFiles = Utils.recursiveListFiles(extensionSchemaDir, new FileFilters.XSDFileFilter());
         for (int i = 0; i < schemaFiles.size(); i++) {
-            File schemaFile = (File) schemaFiles.get(i);
+            File schemaFile = schemaFiles.get(i);
             String subname = schemaFile.getCanonicalPath().substring(
                 extensionSchemaDir.getCanonicalPath().length() + File.separator.length());
             copySchema(subname, schemaDir);
@@ -84,7 +87,7 @@ public class ServiceMetadataCreationPostProcessor implements CreationExtensionPo
             namespaces = new NamespacesType();
         }
 
-        // add namespaces to the service, keeping the existing ones intact
+        // add some namespaces to the service
         List<NamespaceType> newNamespaces = new ArrayList<NamespaceType>(Arrays.asList(namespaces.getNamespace()));
         
         // caGrid metadata namespace
@@ -137,11 +140,35 @@ public class ServiceMetadataCreationPostProcessor implements CreationExtensionPo
         ResourcePropertyType[] metadataArray = propsList.getResourceProperty();
         if (metadataArray == null || metadataArray.length == 0) {
             metadataArray = new ResourcePropertyType[]{serviceMetadata};
-            
         } else {
             ResourcePropertyType[] tmpArray = new ResourcePropertyType[metadataArray.length + 1];
             System.arraycopy(metadataArray, 0, tmpArray, 0, metadataArray.length);
             tmpArray[metadataArray.length] = serviceMetadata;
+            metadataArray = tmpArray;
+        }
+        propsList.setResourceProperty(metadataArray);
+    }
+
+
+    private void addCaGridVersion(ServiceDescription desc) {
+        ResourcePropertyType caGridVersionMetadata = new ResourcePropertyType();
+        caGridVersionMetadata.setPopulateFromFile(true);
+        caGridVersionMetadata.setRegister(true);
+        caGridVersionMetadata.setQName(MetadataConstants.CAGRID_VERSION_QNAME);
+        CaGridVersion version = new CaGridVersion();
+        version.setVersion(Version.getVersionString());
+        ResourcePropertiesListType propsList = desc.getServices().getService()[0].getResourcePropertiesList();
+        if (propsList == null) {
+            propsList = new ResourcePropertiesListType();
+            desc.getServices().getService()[0].setResourcePropertiesList(propsList);
+        }
+        ResourcePropertyType[] metadataArray = propsList.getResourceProperty();
+        if (metadataArray == null || metadataArray.length == 0) {
+            metadataArray = new ResourcePropertyType[]{caGridVersionMetadata};
+        } else {
+            ResourcePropertyType[] tmpArray = new ResourcePropertyType[metadataArray.length + 1];
+            System.arraycopy(metadataArray, 0, tmpArray, 0, metadataArray.length);
+            tmpArray[metadataArray.length] = caGridVersionMetadata;
             metadataArray = tmpArray;
         }
         propsList.setResourceProperty(metadataArray);
