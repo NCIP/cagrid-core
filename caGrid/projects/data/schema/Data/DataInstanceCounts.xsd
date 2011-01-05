@@ -1,0 +1,14 @@
+<xsd:schema xmlns:tns="gme://org.cagrid.dataservice.metadata/InstanceCount" xmlns:xsd="http://www.w3.org/2001/XMLSchema" targetNamespace="gme://org.cagrid.dataservice.metadata/InstanceCount">
+	<xsd:element name="InstanceCount" type="tns:InstanceCount"/>
+	<xsd:complexType name="InstanceCount">
+		<xsd:attribute name="domainClassName" type="xsd:string" use="required"/>
+		<xsd:attribute name="instances" type="xsd:long" use="required"/>
+	</xsd:complexType>
+	
+	<xsd:element name="DataServiceInstanceCounts" type="tns:DataServiceInstanceCounts"/>
+	<xsd:complexType name="DataServiceInstanceCounts">
+		<xsd:sequence>
+			<xsd:element ref="tns:InstanceCount" minOccurs="0" maxOccurs="unbounded"/>
+		</xsd:sequence>
+	</xsd:complexType>
+</xsd:schema>

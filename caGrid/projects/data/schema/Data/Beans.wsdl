@@ -5,4 +5,5 @@
 	<import location="DataServiceExtensionData.xsd"/>
 	<import location="DataServiceStyle.xsd"/>
 	<import location="QueryLanguageSupportMetadata.xsd"/>
+	<import location="DataInstanceCounts.xsd"/>
 </definitions>
