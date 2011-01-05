@@ -56,6 +56,7 @@
     <artifact name="Cql2DataService" conf="service-schemas" type="wsdl"/>
     <artifact name="Cql2DataServiceTypes" conf="service-schemas" type="xsd"/>
     <artifact name="QueryLanguageSupportMetadata" conf="service-schemas" type="xsd"/>
+    <artifact name="DataInstanceCounts" conf="service-schemas" type="xsd"/>
     
     <artifact name="EnumerationDataService" conf="enum-schemas" type="wsdl"/>
     <artifact name="EnumerationDataServiceTypes" conf="enum-schemas" type="xsd"/>
