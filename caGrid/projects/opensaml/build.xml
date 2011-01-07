@@ -70,9 +70,9 @@
 			<include name="cryptix.jar" />
 			<include name="cryptix32.jar" />
 			<include name="cryptix-asn1.jar" />
-			<include name="jce-jdk13-125.jar" />
+			<include name="jce-jdk13-145.jar" />
 			<include name="jgss.jar"/>
-			<include name="log4j-1.2.8.jar" />
+			<include name="log4j-1.2.14.jar" />
 			<include name="servlet.jar" />
 			<include name="xalan.jar" />
 			<include name="xmlsec.jar" />
