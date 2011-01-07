@@ -208,7 +208,7 @@
 				<include name="xercesImpl.jar" />
 				<include name="jaxrpc.jar" />
 				<include name="wsrf_core.jar" />
-				<include name="cog-jglobus.jar" />
+				<include name="log4j-1.2.14.jar" />
 				<include name="saaj.jar" />
 				<include name="commons-discovery.jar" />
 				<include name="wsrf_core_stubs.jar" />
