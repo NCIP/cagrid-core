@@ -5,6 +5,7 @@ import org.apache.axis.client.Stub;
 import org.globus.axis.util.Util;
 import org.globus.gsi.GSIConstants;
 import org.globus.gsi.GlobusCredential;
+import org.globus.gsi.X509Credential;
 import org.globus.gsi.gssapi.GlobusGSSCredentialImpl;
 import org.ietf.jgss.GSSCredential;
 /**
@@ -30,7 +31,7 @@ public class SecureTransportWithEncryption implements CommunicationStyle{
 			Util.registerTransport();
 		stub._setProperty(GSIConstants.GSI_TRANSPORT, GSIConstants.ENCRYPTION);
 		if (credential != null) {
-			GSSCredential gss = new GlobusGSSCredentialImpl(credential, GSSCredential.INITIATE_AND_ACCEPT);
+			GSSCredential gss = new GlobusGSSCredentialImpl(new X509Credential(credential.getPrivateKey(), credential.getCertificateChain()), GSSCredential.INITIATE_AND_ACCEPT);
 			stub._setProperty(org.globus.axis.gsi.GSIConstants.GSI_CREDENTIALS, gss);
 		}
 		}catch(Exception e){

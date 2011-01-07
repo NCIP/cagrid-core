@@ -24,6 +24,7 @@ import org.cagrid.grape.GridApplication;
 import org.cagrid.grape.utils.ErrorDialog;
 import org.globus.gsi.GlobusCredential;
 import org.globus.gsi.bc.BouncyCastleUtil;
+import org.globus.gsi.util.ProxyCertificateUtil;
 
 
 /**
@@ -431,7 +432,7 @@ public class DelegateProxyWindowStep1 extends ApplicationComponent implements Pr
 
 
     public int getDelegationPathLength(X509Certificate cert) throws Exception {
-        if (org.globus.gsi.CertUtil.isProxy(BouncyCastleUtil.getCertificateType(cert))) {
+        if (ProxyCertificateUtil.isProxy(BouncyCastleUtil.getCertificateType(cert))) {
             int delegationPathLength = CertificateExtensionsUtil.getDelegationPathLength(cert);
             int maxLength = delegationPathLength - 1;
             return maxLength;

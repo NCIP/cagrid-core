@@ -11,6 +11,7 @@ import org.apache.axis.client.Stub;
 import org.apache.axis.configuration.FileProvider;
 import org.apache.axis.message.addressing.EndpointReferenceType;
 import org.globus.gsi.GlobusCredential;
+import org.globus.gsi.X509Credential;
 import org.globus.ws.enumeration.ClientEnumIterator;
 import org.ietf.jgss.GSSException;
 import org.xmlsoap.schemas.ws._2004._09.enumeration.DataSource;
@@ -227,7 +228,7 @@ public class EnumerationResponseHelper {
         if (credential != null) {
             try {
                 org.ietf.jgss.GSSCredential gss = new org.globus.gsi.gssapi.GlobusGSSCredentialImpl(
-                    credential, org.ietf.jgss.GSSCredential.INITIATE_AND_ACCEPT);
+                		new X509Credential(credential.getPrivateKey(), credential.getCertificateChain()), org.ietf.jgss.GSSCredential.INITIATE_AND_ACCEPT);
                 ((Stub)port)._setProperty(org.globus.axis.gsi.GSIConstants.GSI_CREDENTIALS, gss);
             } catch (GSSException ex) {
                 throw new RemoteException("Error setting credential: " + ex.getMessage(), ex);

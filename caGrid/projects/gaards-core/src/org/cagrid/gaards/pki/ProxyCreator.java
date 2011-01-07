@@ -91,12 +91,12 @@ public class ProxyCreator {
 		X509ExtensionSet extSet = new X509ExtensionSet();
 		extSet.add(x509Ext);
 		return createProxyCertificate(provider, certs, privateKey, proxyPublicKey, lifetimeHours, lifetimeMinutes,
-			lifetimeSeconds, GSIConstants.GSI_4_IMPERSONATION_PROXY, extSet, signatureAlgorithm);
+			lifetimeSeconds, GSIConstants.CertificateType.GSI_4_IMPERSONATION_PROXY, extSet, signatureAlgorithm);
 	}
 
 
 	public static X509Certificate[] createProxyCertificate(X509Certificate[] certs, PrivateKey privateKey,
-		PublicKey proxyPublicKey, int lifetimeHours, int lifetimeMinutes, int lifetimeSeconds, int proxyType,
+		PublicKey proxyPublicKey, int lifetimeHours, int lifetimeMinutes, int lifetimeSeconds, GSIConstants.CertificateType proxyType,
 		X509ExtensionSet extSet) throws GeneralSecurityException {
 		return createProxyCertificate(SecurityConstants.CRYPTO_PROVIDER, certs, privateKey, proxyPublicKey, lifetimeHours, lifetimeMinutes,
 			lifetimeSeconds, proxyType, extSet, SecurityConstants.DEFAULT_PROXY_SIGNING_ALGORITHM);
@@ -105,7 +105,7 @@ public class ProxyCreator {
 
 	public static X509Certificate[] createProxyCertificate(String provider, X509Certificate[] certs,
 		PrivateKey privateKey, PublicKey proxyPublicKey, int lifetimeHours, int lifetimeMinutes, int lifetimeSeconds,
-		int proxyType, X509ExtensionSet extSet, String signatureAlgorithm) throws GeneralSecurityException {
+		GSIConstants.CertificateType proxyType, X509ExtensionSet extSet, String signatureAlgorithm) throws GeneralSecurityException {
 		X509Certificate newCert = createProxyCertificate(provider, certs[0], privateKey, proxyPublicKey, lifetimeHours,
 			lifetimeMinutes, lifetimeSeconds, proxyType, extSet, signatureAlgorithm);
 		X509Certificate[] newCerts = new X509Certificate[certs.length + 1];
@@ -117,7 +117,7 @@ public class ProxyCreator {
 
 	protected static X509Certificate createProxyCertificate(String provider, X509Certificate issuerCert,
 		PrivateKey issuerKey, PublicKey publicKey, int lifetimeHours, int lifetimeMinutes, int lifetimeSeconds,
-		int proxyType, X509ExtensionSet extSet, String signatureAlgorithm) throws GeneralSecurityException {
+		GSIConstants.CertificateType proxyType, X509ExtensionSet extSet, String signatureAlgorithm) throws GeneralSecurityException {
 		Date d = getProxyValid(lifetimeHours, lifetimeMinutes, lifetimeSeconds);
 		if (issuerCert.getNotAfter().before(d)) {
 			throw new GeneralSecurityException("Cannot create a proxy that expires after issuing certificate.");

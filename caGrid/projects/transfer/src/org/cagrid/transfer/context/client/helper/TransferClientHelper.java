@@ -10,6 +10,7 @@ import org.apache.commons.httpclient.methods.PostMethod;
 import org.cagrid.transfer.descriptor.DataTransferDescriptor;
 import org.globus.axis.gsi.GSIConstants;
 import org.globus.gsi.GlobusCredential;
+import org.globus.gsi.X509Credential;
 import org.globus.gsi.gssapi.GlobusGSSCredentialImpl;
 import org.globus.net.GSIHttpURLConnection;
 import org.ietf.jgss.GSSCredential;
@@ -37,7 +38,7 @@ public class TransferClientHelper {
             return conn.getInputStream();
         } else if (url.getProtocol().equals("https")) {
             if(creds!=null){
-            GlobusGSSCredentialImpl cred = new GlobusGSSCredentialImpl(creds, GSSCredential.INITIATE_AND_ACCEPT);
+            GlobusGSSCredentialImpl cred = new GlobusGSSCredentialImpl(new X509Credential(creds.getPrivateKey(), creds.getCertificateChain()), GSSCredential.INITIATE_AND_ACCEPT);
             GSIHttpURLConnection connection = new GSIHttpURLConnection(url);
             connection.setGSSMode(GSIConstants.MODE_SSL);
             connection.setCredentials(cred);
@@ -88,7 +89,7 @@ public class TransferClientHelper {
             return;
         } else if (url.getProtocol().equals("https")) {
             if(creds!=null){
-            GlobusGSSCredentialImpl cred = new GlobusGSSCredentialImpl(creds, GSSCredential.INITIATE_AND_ACCEPT);
+            GlobusGSSCredentialImpl cred = new GlobusGSSCredentialImpl(new X509Credential(creds.getPrivateKey(), creds.getCertificateChain()), GSSCredential.INITIATE_AND_ACCEPT);
             GSIHttpURLConnection connection = new GSIHttpURLConnection(url);
             connection.setGSSMode(GSIConstants.MODE_SSL);
             connection.setCredentials(cred);

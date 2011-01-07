@@ -11,6 +11,7 @@ import java.security.Principal;
 import java.security.PublicKey;
 import java.security.Signature;
 import java.security.cert.CertPath;
+import java.security.cert.CertPathValidatorException;
 import java.security.cert.Certificate;
 import java.security.cert.CertificateEncodingException;
 import java.security.cert.CertificateException;
@@ -44,6 +45,7 @@ import org.globus.gsi.proxy.ProxyPathValidatorException;
 import org.globus.gsi.proxy.ProxyPolicyHandler;
 import org.globus.gsi.proxy.ext.ProxyCertInfo;
 import org.globus.gsi.proxy.ext.ProxyPolicy;
+import org.globus.gsi.util.ProxyCertificateUtil;
 
 public class BetterProxyPathValidator {
 
@@ -325,7 +327,7 @@ public class BetterProxyPathValidator {
 
         X509Certificate cert;
         TBSCertificateStructure tbsCert;
-        int certType;
+        GSIConstants.CertificateType certType;
 
         int proxyDepth = 0;
 
@@ -346,23 +348,23 @@ public class BetterProxyPathValidator {
             checkUnsupportedCriticalExtensions(tbsCert, certType, cert);
             checkIdentity(cert, certType);
             checkCRL(cert, crlLists, trustedCerts);
-            if (CertUtil.isProxy(certType)) {
+            if (ProxyCertificateUtil.isProxy(certType)) {
                 proxyDepth++;
             }
 
             for (int i = 1; i < certPath.getCertificates().size(); i++) {
                 X509Certificate issuerCert = (X509Certificate) certPath.getCertificates().get(i);
                 TBSCertificateStructure issuerTbsCert = BouncyCastleUtil.getTBSCertificateStructure(issuerCert);
-                int issuerCertType = BouncyCastleUtil.getCertificateType(issuerTbsCert, trustedCerts);
+                GSIConstants.CertificateType issuerCertType = BouncyCastleUtil.getCertificateType(issuerTbsCert, trustedCerts);
 
                 LOG.debug("Found issuer cert of type " + issuerCertType);
                 if (LOG.isTraceEnabled()) {
                     LOG.trace(issuerCert);
                 }
 
-                if (issuerCertType == GSIConstants.CA) {
+                if (issuerCertType == GSIConstants.CertificateType.CA) {
                     // PC can only be signed by EEC or PC
-                    if (CertUtil.isProxy(certType)) {
+                    if (ProxyCertificateUtil.isProxy(certType)) {
                         throw new ProxyPathValidatorException(ProxyPathValidatorException.FAILURE, issuerCert,
                             "CA certificate cannot sign Proxy Certificate");
                     }
@@ -372,17 +374,17 @@ public class BetterProxyPathValidator {
                             issuerCert, "CA Certificate does not allow path length > " + pathLen
                                 + " and path length is " + (i - proxyDepth - 1));
                     }
-                } else if (CertUtil.isGsi3Proxy(issuerCertType)
-                    || CertUtil.isGsi4Proxy(issuerCertType)) {
+                } else if (ProxyCertificateUtil.isGsi3Proxy(issuerCertType)
+                    || ProxyCertificateUtil.isGsi4Proxy(issuerCertType)) {
                     // PC can sign EEC or another PC only.
                     String errMsg = "Proxy Certificate can only sign another proxy of the same type";
-                    if (CertUtil.isGsi3Proxy(issuerCertType)) {
-                        if (!CertUtil.isGsi3Proxy(certType)) {
+                    if (ProxyCertificateUtil.isGsi3Proxy(issuerCertType)) {
+                        if (!ProxyCertificateUtil.isGsi3Proxy(certType)) {
                             throw new ProxyPathValidatorException(ProxyPathValidatorException.FAILURE, issuerCert,
                                 errMsg);
                         }
-                    } else if (CertUtil.isGsi4Proxy(issuerCertType)) {
-                        if (!CertUtil.isGsi4Proxy(certType)) {
+                    } else if (ProxyCertificateUtil.isGsi4Proxy(issuerCertType)) {
+                        if (!ProxyCertificateUtil.isGsi4Proxy(certType)) {
                             throw new ProxyPathValidatorException(ProxyPathValidatorException.FAILURE, issuerCert,
                                 errMsg);
                         }
@@ -398,15 +400,15 @@ public class BetterProxyPathValidator {
                                 + " and path length is " + proxyDepth);
                     }
                     proxyDepth++;
-                } else if (CertUtil.isGsi2Proxy(issuerCertType)) {
+                } else if (ProxyCertificateUtil.isGsi2Proxy(issuerCertType)) {
                     // PC can sign EEC or another PC only
-                    if (!CertUtil.isGsi2Proxy(certType)) {
+                    if (!ProxyCertificateUtil.isGsi2Proxy(certType)) {
                         throw new ProxyPathValidatorException(ProxyPathValidatorException.FAILURE, issuerCert,
                             "Proxy Certificate can only sign another proxy of the same type");
                     }
                     proxyDepth++;
-                } else if (issuerCertType == GSIConstants.EEC) {
-                    if (!CertUtil.isProxy(certType)) {
+                } else if (issuerCertType == GSIConstants.CertificateType.EEC) {
+                    if (!ProxyCertificateUtil.isProxy(certType)) {
                         throw new ProxyPathValidatorException(ProxyPathValidatorException.FAILURE, issuerCert,
                             "End Entity Certificate can only sign Proxy Certificates");
                     }
@@ -416,12 +418,12 @@ public class BetterProxyPathValidator {
                         "Unknown cert type: " + issuerCertType);
                 }
 
-                if (CertUtil.isProxy(certType)) {
+                if (ProxyCertificateUtil.isProxy(certType)) {
                     // check all the proxy & issuer constraints
-                    if (CertUtil.isGsi3Proxy(certType) || CertUtil.isGsi4Proxy(certType)) {
+                    if (ProxyCertificateUtil.isGsi3Proxy(certType) || ProxyCertificateUtil.isGsi4Proxy(certType)) {
                         checkProxyConstraints(tbsCert, issuerTbsCert, cert);
-                        if ((certType == GSIConstants.GSI_3_RESTRICTED_PROXY)
-                            || (certType == GSIConstants.GSI_4_RESTRICTED_PROXY)) {
+                        if ((certType == GSIConstants.CertificateType.GSI_3_RESTRICTED_PROXY)
+                            || (certType == GSIConstants.CertificateType.GSI_4_RESTRICTED_PROXY)) {
                             checkRestrictedProxy(tbsCert, certPath, i - 1);
                         }
                     }
@@ -589,7 +591,7 @@ public class BetterProxyPathValidator {
     }
 
 
-    protected void checkUnsupportedCriticalExtensions(TBSCertificateStructure crt, int certType,
+    protected void checkUnsupportedCriticalExtensions(TBSCertificateStructure crt, GSIConstants.CertificateType certType,
         X509Certificate checkedProxy) throws ProxyPathValidatorException {
         X509Extensions extensions = crt.getExtensions();
         if (extensions != null) {
@@ -599,8 +601,8 @@ public class BetterProxyPathValidator {
                 X509Extension ext = extensions.getExtension(oid);
                 if (ext.isCritical()) {
                     if (oid.equals(X509Extensions.BasicConstraints) || oid.equals(X509Extensions.KeyUsage)
-                        || (oid.equals(ProxyCertInfo.OID) && CertUtil.isGsi4Proxy(certType))
-                        || (oid.equals(ProxyCertInfo.OLD_OID) && CertUtil.isGsi3Proxy(certType))) {
+                        || (oid.equals(ProxyCertInfo.OID) && ProxyCertificateUtil.isGsi4Proxy(certType))
+                        || (oid.equals(ProxyCertInfo.OLD_OID) && ProxyCertificateUtil.isGsi3Proxy(certType))) {
                     } else {
                         throw new ProxyPathValidatorException(ProxyPathValidatorException.UNSUPPORTED_EXTENSION,
                             checkedProxy, "Unsuppored critical exception : " + oid.getId());
@@ -611,10 +613,10 @@ public class BetterProxyPathValidator {
     }
 
 
-    protected void checkIdentity(X509Certificate cert, int certType) throws ProxyPathValidatorException {
+    protected void checkIdentity(X509Certificate cert, GSIConstants.CertificateType certType) throws ProxyPathValidatorException {
         if (this.identityCert == null) {
             // check if limited
-            if (CertUtil.isLimitedProxy(certType)) {
+            if (ProxyCertificateUtil.isLimitedProxy(certType)) {
                 this.limited = true;
 
                 if (this.rejectLimitedProxyCheck) {
@@ -624,7 +626,7 @@ public class BetterProxyPathValidator {
             }
 
             // set the identity cert
-            if (!CertUtil.isImpersonationProxy(certType)) {
+            if (!ProxyCertificateUtil.isImpersonationProxy(certType)) {
                 this.identityCert = cert;
             }
         }
@@ -833,7 +835,11 @@ public class BetterProxyPathValidator {
             certPathArray[i] = (X509Certificate) certPath.getCertificates().get(i);
         }
 
-        handler.validate(info, certPathArray, index);
+        try {
+			handler.validate(info, certPath, index);
+		} catch (CertPathValidatorException e) {
+			throw new ProxyPathValidatorException(-1, e);
+		}
     }
     
     

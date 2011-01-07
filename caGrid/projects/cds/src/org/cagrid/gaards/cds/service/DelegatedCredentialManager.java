@@ -46,11 +46,11 @@ import org.cagrid.tools.events.Event;
 import org.cagrid.tools.events.EventAuditor;
 import org.cagrid.tools.events.EventManager;
 import org.cagrid.tools.events.InvalidHandlerException;
-import org.globus.gsi.CertUtil;
 import org.globus.gsi.CertificateRevocationLists;
 import org.globus.gsi.TrustedCertificates;
 import org.globus.gsi.bc.BouncyCastleUtil;
 import org.globus.gsi.proxy.ProxyPathValidator;
+import org.globus.gsi.util.ProxyCertificateUtil;
 
 public class DelegatedCredentialManager {
 
@@ -456,11 +456,11 @@ public class DelegatedCredentialManager {
 
 			// Check delegation path length
 			try {
-				if (CertUtil.isProxy(BouncyCastleUtil
+				if (ProxyCertificateUtil.isProxy(BouncyCastleUtil
 						.getCertificateType(certs[0]))) {
 					int currLength = r.getIssuedCredentialPathLength();
 					for (int i = 0; i < certs.length; i++) {
-						if (CertUtil.isProxy(BouncyCastleUtil
+						if (ProxyCertificateUtil.isProxy(BouncyCastleUtil
 								.getCertificateType(certs[i]))) {
 							int delegationPathLength = CertificateExtensionsUtil
 									.getDelegationPathLength(certs[i]);
