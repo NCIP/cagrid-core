@@ -339,10 +339,16 @@ public class HistoryManager {
 	    // filter tells us how old of a history file we can keep
 	    // create a calendar of the current date
 	    Calendar startCal = Calendar.getInstance();
+	    startCal.setLenient(true);
 	    // roll it BACK by the ammount in the filter
+	    startCal.set(Calendar.YEAR, startCal.get(Calendar.YEAR) - filter.getYear());
+	    startCal.set(Calendar.MONDAY, startCal.get(Calendar.MONTH) - filter.getMonth());
+	    startCal.set(Calendar.DAY_OF_MONTH, startCal.get(Calendar.DAY_OF_MONTH) - filter.getDay());
+	    /*
 	    startCal.roll(Calendar.YEAR, -filter.getYear());
 	    startCal.roll(Calendar.MONTH, -filter.getMonth());
 	    startCal.roll(Calendar.DAY_OF_MONTH, -filter.getDay());
+	    */
 	    // create the cuttoff date
 	    DateFilter cuttoff = new DateFilter(
 	        startCal.get(Calendar.DAY_OF_MONTH),
