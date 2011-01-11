@@ -34,7 +34,12 @@
 		<dependency rev="1.0" org="sun" name="persistence-api"/>
 		<dependency rev="1.0" org="sun" name="xmldsig"/>
 
-		<dependency rev="2.5.5" org="springframework" name="spring" conf="default->full;default->webmvc"/>
+		<dependency rev="3.0.1.RELEASE-A" org="springframework" name="spring" conf="default->default"/>
+		<dependency rev="2.5.5" org="springframework" name="spring-web" conf="default->default"/>
+<!--
+		<dependency rev="2.5.5" org="springframework" name="spring-tx" conf="default->default"/>
+		<dependency rev="2.5.5" org="springframework" name="spring-beans" conf="default->default"/>
+-->
 		<dependency rev="1.0.5" org="springframework" name="webflow"/>
 		<dependency rev="1.2.1" org="springframework" name="ldap"/>
 		<dependency rev="2.0.1" org="springframework" name="security"/>

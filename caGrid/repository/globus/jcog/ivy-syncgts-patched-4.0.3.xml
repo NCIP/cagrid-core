@@ -20,5 +20,7 @@
 		<artifact name="cog-jglobus" type="jar"/>
 	</publications>
 
-	<dependencies/>
+	<dependencies>
+		<dependency org="springframework" name="spring" rev="3.0.1.RELEASE-A" conf="default->core" />
+	</dependencies>
 </ivy-module>

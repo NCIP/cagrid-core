@@ -28,6 +28,11 @@
 		<dependency rev="3.0.1" org="apache" name="jarkarta-commons-httpclient"/>
 		<dependency rev="3.0" org="apache" name="jarkarta-commons-httpclient-contrib"/>
 		<dependency rev="1.1" org="apache" name="commons-logging"/>
-		<dependency rev="2.5.5" org="springframework" name="spring" conf="default->full"/>
+		<dependency rev="3.0.1.RELEASE-A" org="springframework" name="spring" conf="default->default"/>
+<!--
+		<dependency rev="2.5.5" org="springframework" name="spring-web" conf="default->default"/>
+		<dependency rev="2.5.5" org="springframework" name="spring-tx" conf="default->default"/>
+		<dependency rev="2.5.5" org="springframework" name="spring-beans" conf="default->default"/>
+-->
 	</dependencies>
 </ivy-module>

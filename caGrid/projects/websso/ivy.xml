@@ -47,5 +47,10 @@
     <dependency rev="0.7.0" org="inspektr" name="inspektr" conf="default->default"/>
     <dependency rev="1.0" org="jsr107cache" name="jsr107cache" conf="default->default"/>
     <dependency rev="4.4" org="junit" name="junit" conf="impl-test->default"/>
+    <dependency rev="2.5.5" org="springframework" name="spring-beans" conf="default->default"/>
+    <dependency rev="2.5.5" org="springframework" name="spring-web" conf="default->default"/>
+    <dependency rev="2.5.5" org="springframework" name="spring-tx" conf="default->default"/>
+    <dependency rev="2.5.5" org="springframework" name="spring-context" conf="default->default"/>
+    <dependency rev="2.5.5" org="springframework" name="spring-webmvc" conf="default->default"/>
   </dependencies>
 </ivy-module>
