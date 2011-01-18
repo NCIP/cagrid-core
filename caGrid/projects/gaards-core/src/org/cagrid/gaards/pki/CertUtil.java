@@ -89,15 +89,10 @@ public class CertUtil {
 
     public static void writeSigningPolicy(X509Certificate cert, File f) throws Exception {
         PrintWriter out = new PrintWriter(f);
-        out.println("access_id_CA X509 '" + subjectToIdentity(cert.getSubjectDN().getName()) + "'");
+        out.println("access_id_CA X509 '" + dnToIdentity(cert.getSubjectDN().getName()) + "'");
         out.println("pos_rights globus CA:sign");
         out.println("cond_subjects globus '\"*\"'");
         out.close();
-    }
-
-
-    public static String subjectToIdentity(String subject) {
-        return "/" + subject.replace(',', '/');
     }
 
 
@@ -611,7 +606,7 @@ public class CertUtil {
      * @return
      */
     public static String getSubjectDN(X509Certificate cert) {
-        String dn = cert.getSubjectDN().toString();
+        String dn = cert.getSubjectX500Principal().getName(X500Principal.RFC2253);
         return globusFormatDN(dn);
     }
     
@@ -628,7 +623,7 @@ public class CertUtil {
      * @return
      */
     public static String getIssuerDN(X509Certificate cert) {
-        String dn = cert.getIssuerDN().toString();
+        String dn = cert.getIssuerX500Principal().getName(X500Principal.RFC2253);
         return globusFormatDN(dn);
     }
     

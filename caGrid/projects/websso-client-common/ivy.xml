@@ -32,11 +32,11 @@
 	<dependency rev="${target.grid}" org="caGrid" name="target_grid" conf="target_grid->urls,trust,syncdesc" />
 
     <!-- External Dependencies -->
-    <dependency rev="3.0.1.RELEASE-A" org="springframework" name="spring" conf="default->default"/>
+    <dependency rev="3.0.1.RELEASE-A" org="springframework" name="spring" conf="default->core"/>
     <dependency rev="2.5.5" org="springframework" name="spring-web" conf="default->default"/>
     <dependency rev="2.5.5" org="springframework" name="spring-tx" conf="default->default"/>
     <dependency rev="2.5.5" org="springframework" name="spring-beans" conf="default->default"/>
-    <dependency rev="syncgts-patched-4.0.3" org="globus" name="jcog" conf="default->default"/>
+    <dependency rev="4.0.3-sha2" org="globus" name="cog" conf="default->default"/>
     <dependency rev="4.4" org="junit" name="junit" conf="impl-test->default"/>
   </dependencies>
 </ivy-module>

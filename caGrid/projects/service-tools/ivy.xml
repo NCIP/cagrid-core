@@ -38,7 +38,8 @@
     <dependency org="apache" name="commons-pool" rev="1.2" conf="db->*"/>
     <dependency org="apache" name="commons-dbcp" rev="1.2.2" conf="db->*"/>
     <dependency org="mysql" name="connector-java" rev="3.0.+" conf="db->*"/>
-    <dependency rev="1.2.8" org="springframework" name="spring" conf="events->beans"/>
+    <dependency rev="3.0.+" org="springframework" name="spring" conf="events->beans"/>
+    <dependency rev="3.0.+" org="springframework" name="spring" conf="events->core"/>
     <dependency rev="4.4" org="junit" name="junit" conf="impl-test->default"/>
   </dependencies>
 </ivy-module>

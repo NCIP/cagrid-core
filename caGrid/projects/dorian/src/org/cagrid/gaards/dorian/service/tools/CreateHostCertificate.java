@@ -133,10 +133,10 @@ public class CreateHostCertificate {
                 String gridId = null;
                 if (c.getIdentityFederationProperties().getIdentityAssignmentPolicy().equals(
                     org.cagrid.gaards.dorian.federation.IdentityAssignmentPolicy.NAME)) {
-                    gridId = CertUtil.subjectToIdentity(subjectPrefix + ",OU="
+                    gridId = CertUtil.dnToIdentity(subjectPrefix + ",OU="
                         + c.getIdentityProviderProperties().getName() + "/CN=dorian");
                 } else {
-                    gridId = CertUtil.subjectToIdentity(subjectPrefix + ",OU=IdP [1]/CN=dorian");
+                    gridId = CertUtil.dnToIdentity(subjectPrefix + ",OU=IdP [1]/CN=dorian");
                 }
                 System.out.println(gridId);
                 HostCertificateRequest req = new HostCertificateRequest();

@@ -175,7 +175,7 @@ public class HostCertificateWindow extends ApplicationComponent implements Doria
             if ((record.getCertificate() != null)
                 && (Utils.clean(record.getCertificate().getCertificateAsString()) != null)) {
                 cert = CertUtil.loadCertificate(record.getCertificate().getCertificateAsString());
-                hostGridIdentity.setText(CertUtil.subjectToIdentity(cert.getSubjectDN().getName()));
+                hostGridIdentity.setText(CertUtil.dnToIdentity(cert.getSubjectDN().getName()));
                 hostIdentity.setText(hostGridIdentity.getText());
                 getSubject().setText(cert.getSubjectDN().getName());
                 notBefore.setText(cert.getNotBefore().toString());
@@ -894,7 +894,7 @@ public class HostCertificateWindow extends ApplicationComponent implements Doria
             gridBagConstraints19.gridy = 1;
             hostIdentity = new JLabel();
             if (this.record != null) {
-                hostIdentity.setText(CertUtil.subjectToIdentity(this.record.getSubject()));
+                hostIdentity.setText(CertUtil.dnToIdentity(this.record.getSubject()));
             } else {
                 hostIdentity.setText("");
             }
