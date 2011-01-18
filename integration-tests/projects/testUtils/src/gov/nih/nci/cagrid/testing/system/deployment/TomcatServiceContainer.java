@@ -87,15 +87,11 @@ public class TomcatServiceContainer extends ServiceContainer {
 		    List<String> command = new ArrayList<String>();
 		    command.add("chmod");
 		    command.add("a+rwx");
-		    command.add("catalina.50.sh");
 		    command.add("digest.sh");
 		    command.add("catalina.sh");
 		    command.add("setclasspath.sh");
-		    command.add("shutdown-using-launcher.sh");
 		    command.add("shutdown.sh");
-		    command.add("startup-using-launcher.sh");
 		    command.add("startup.sh");
-		    command.add("tool-wrapper-using-launcher.sh");
 		    command.add("tool-wrapper.sh");
 		    command.add("version.sh");
 
@@ -516,9 +512,8 @@ public class TomcatServiceContainer extends ServiceContainer {
 						if (connectorElement.getAttributeValue("port").equals(
 								"8443")
 								&& connectorElement
-										.getAttributeValue("className")
-										.equals(
-												"org.globus.tomcat.coyote.net.HTTPSConnector")) {
+										.getAttributeValue("socketFactory")
+										.equals("org.globus.tomcat.catalina.net.BaseHTTPSServerSocketFactory")) {
 							connectorFound = true;
 						}
 					} else {

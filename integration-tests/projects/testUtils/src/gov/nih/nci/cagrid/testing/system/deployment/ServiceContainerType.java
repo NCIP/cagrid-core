@@ -22,13 +22,13 @@ public enum ServiceContainerType {
         String base = getContainerBaseDir();
         switch (this) {
             case GLOBUS_CONTAINER:
-                return base + "/minimal-ws-core-enum-4.0.3.zip";
+                throw new AssertionError("Container type " + this + " is no longer supported");
             case TOMCAT_CONTAINER:
                 return base + "/minimal-tomcat-5.0.28-with-globus-4.0.3.zip";
             case JBOSS_CONTAINER:
                 throw new AssertionError("Container type " + this + " is not yet supported");
             case SECURE_TOMCAT_CONTAINER:
-                return base + "/minimal-secure-tomcat-5.0.28-with-globus-4.0.3.zip";
+                return base + "/minimal-secure-tomcat-5.5.27-with-globus-4.0.3.zip";
         }
         throw new AssertionError("Unknown service container type: " + this);
     }
@@ -57,24 +57,4 @@ public enum ServiceContainerType {
         return baseDir;
     }
     
-    
-    /**
-     * Utility method for testing to get a service container
-     * based on which day of the year it is.
-     * @return
-     *      A service container type
-     */
-    public static ServiceContainerType getTypeOfTheDay() {
-        Calendar today = new GregorianCalendar();
-        int dayOfYear = today.get(Calendar.DAY_OF_YEAR);
-        int type = dayOfYear % 2; // TODO: when JBoss works, do % 3
-        ServiceContainerType container = null;
-        switch (type) {
-            case 0:
-                container = GLOBUS_CONTAINER;
-            case 1:
-                container = TOMCAT_CONTAINER;
-        }
-        return container;
-    }
 }

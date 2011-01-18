@@ -98,9 +98,8 @@ public class TomcatSecureServiceContainer extends TomcatServiceContainer impleme
                 if (o instanceof Element) {
                     Element e = (Element) o;
                     if (e.getName().equals("Connector")) {
-                        // className="org.globus.tomcat.coyote.net.HTTPSConnector"
-                        String classNameValue = e.getAttributeValue("className");
-                        if ("org.globus.tomcat.coyote.net.HTTPSConnector".equals(classNameValue)) {
+                        String classNameValue = e.getAttributeValue("socketFactory");
+                        if ("org.globus.tomcat.catalina.net.BaseHTTPSServerSocketFactory".equals(classNameValue)) {
                             return true;
                         }
                     }
@@ -120,7 +119,7 @@ public class TomcatSecureServiceContainer extends TomcatServiceContainer impleme
         try {
             connector.setAttribute("cert", hostCert.getCanonicalPath().replace(File.separatorChar, '/'));
             connector.setAttribute("key", hostKey.getCanonicalPath().replace(File.separatorChar, '/'));
-            connector.setAttribute("cacertdir", caCertDir.getCanonicalPath().replace(File.separatorChar, '/'));
+            //connector.setAttribute("cacertdir", caCertDir.getCanonicalPath().replace(File.separatorChar, '/'));
         } catch (IOException ex) {
             throw new ContainerException("Error configuring HTTPS connector: " + ex.getMessage(), ex);
         }
