@@ -470,9 +470,15 @@ public class Installer {
 
             public boolean evaluate(WizardModel model) {
                 CaGridInstallerModel cagridmodel = (CaGridInstallerModel) model;
-                return ((CaGridInstallerModel) model).isConfigureContainerSelected()
-                    && (cagridmodel.getProperty(Constants.TARGET_GRID) != null)
+		if (!((CaGridInstallerModel) model).isConfigureContainerSelected()) {
+		    return false; // We are not configuring a container
+		}
+                boolean targetGridSelected =  (cagridmodel.getProperty(Constants.TARGET_GRID) != null)
                     && !cagridmodel.getProperty(Constants.TARGET_GRID).equals(Constants.NO_TARGET_GRID);
+		if (!targetGridSelected) {
+		    logger.info("Configuring a container with no target grid specified.");
+		}
+		return targetGridSelected;
             }
         }));
 
