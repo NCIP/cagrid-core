@@ -4,10 +4,10 @@
   <classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER" />
   <classpathentry kind="lib" path="ext/dependencies/default/jars/caGrid-wizard-1.4.1.jar" />
   <classpathentry kind="lib" path="ext/dependencies/default/jars/xmltask-v1.14.jar" />
-  <classpathentry kind="var" path="GT4_LOCATION/lib/cog-jglobus.jar" />
+  <classpathentry kind="var" path="GT4_LOCATION/lib/gss-2.0-SNAPSHOT.jar" />
   <classpathentry kind="var" path="GT4_LOCATION/lib/commons-logging.jar" />
   <classpathentry kind="var" path="GT4_LOCATION/lib/jce-jdk13-145.jar" />
-  <classpathentry kind="var" path="GT4_LOCATION/lib/log4j-1.2.8.jar" />
+  <classpathentry kind="var" path="GT4_LOCATION/lib/log4j-1.2.14.jar" />
   <classpathentry kind="output" path="bin" />
 </classpath>
 
