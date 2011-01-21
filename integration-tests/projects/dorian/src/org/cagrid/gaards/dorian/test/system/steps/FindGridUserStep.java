@@ -60,11 +60,10 @@ public class FindGridUserStep extends Step {
 		filter.setGridId(this.gridCredential.getGridCredential().getIdentity());
 		List<GridUser> users = client.findUsers(filter);
 		assertNotNull(users);
-		assertEquals(1, users.size());
+		assertEquals("Did not find user: " + this.gridCredential.getGridCredential().getIdentity(), 1, users.size());
 		GridUser u = users.get(0);
 
-		assertEquals(gridCredential.getGridCredential().getIdentity(), u
-				.getGridId());
+		assertEquals(gridCredential.getGridCredential().getIdentity(), u.getGridId());
 
 		if (localUserId != null) {
 			assertEquals(localUserId, u.getUID());

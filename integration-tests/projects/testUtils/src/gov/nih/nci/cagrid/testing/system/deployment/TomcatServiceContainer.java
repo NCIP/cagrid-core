@@ -311,8 +311,9 @@ public class TomcatServiceContainer extends ServiceContainer {
             try {
                 File certsDir = ((SecureContainer) this).getCertificatesDirectory();
                 String caCertsDir = new File(certsDir, "ca").getCanonicalPath();
-                String x509CertsEnv = ENV_JAVA_OPTS + "=-D" + CACERTS_DIR_PROPERTY + "=" + caCertsDir;
+                String x509CertsEnv = ENV_JAVA_OPTS + "=-D" + CACERTS_DIR_PROPERTY + "=" + caCertsDir; // + " -Djavax.net.debug=ssl";
                 additionalEnvironment.add(x509CertsEnv);
+                additionalEnvironment.add(CACERTS_DIR_PROPERTY + "=" + caCertsDir);
             } catch (Exception ex) {
                 throw new ContainerException("Error setting ca certificates directory!");
             }
