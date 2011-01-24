@@ -30,8 +30,6 @@ import java.security.cert.CertificateFactory;
 import java.security.cert.X509CRL;
 import java.security.cert.X509Certificate;
 import java.util.Date;
-import java.util.Stack;
-import java.util.StringTokenizer;
 
 import javax.security.auth.x500.X500Principal;
 
@@ -89,7 +87,7 @@ public class CertUtil {
 
     public static void writeSigningPolicy(X509Certificate cert, File f) throws Exception {
         PrintWriter out = new PrintWriter(f);
-        out.println("access_id_CA X509 '" + dnToIdentity(cert.getSubjectDN().getName()) + "'");
+        out.println("access_id_CA X509 '" + BouncyCastleUtil.getIdentity(cert) + "'");
         out.println("pos_rights globus CA:sign");
         out.println("cond_subjects globus '\"*\"'");
         out.close();
@@ -640,47 +638,17 @@ public class CertUtil {
         String identity = null;
         X509Certificate[] chain = cred.getCertificateChain();
         try {
-            X509Certificate idCert = BouncyCastleUtil.getIdentityCertificate(chain);
-            if (idCert != null) {
-                String dn = getSubjectDN(idCert);
-                identity = dnToIdentity(dn);
-            }
+        	identity = BouncyCastleUtil.getIdentity(chain);
         } catch (CertificateException ex) {
             // GlobusCredential.getIdentity() just logs the exception and returns null, 
             // so we're emulating that behavior
             LOG.debug("Error getting identity certificate: " + ex.getMessage(), ex);
         }
         return identity;
-    }
-    
-    
-    public static String dnToIdentity(String dn) {
-        StringBuffer identity = new StringBuffer();
-        StringTokenizer tok = new StringTokenizer(dn, ",");
-        identity.append("/");
-        while (tok.hasMoreTokens()) {
-            identity.append(tok.nextToken());
-            if (tok.hasMoreTokens()) {
-                identity.append("/");
-            }
-        }
-        return identity.toString();
-    }
-    
+    }   
     
     private static String reverseDN(String dn) {
-        StringBuffer reverse = new StringBuffer();
-        StringTokenizer tok = new StringTokenizer(dn, ",");
-        Stack<String> stack = new Stack<String>();
-        while (tok.hasMoreTokens()) {
-            stack.push(tok.nextToken());
-        }
-        while (!stack.isEmpty()) {
-            reverse.append(stack.pop().trim());
-            if (!stack.isEmpty()) {
-                reverse.append(",");
-            }
-        }
-        return reverse.toString();
+    	X509Name name = new X509Name(true, dn);
+        return name.toString();
     }
 }

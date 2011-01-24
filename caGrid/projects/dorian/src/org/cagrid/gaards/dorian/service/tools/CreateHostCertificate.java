@@ -22,6 +22,7 @@ import org.cagrid.gaards.dorian.service.Dorian;
 import org.cagrid.gaards.dorian.service.DorianProperties;
 import org.cagrid.gaards.pki.CertUtil;
 import org.cagrid.gaards.pki.KeyUtil;
+import org.globus.gsi.bc.BouncyCastleUtil;
 import org.springframework.core.io.FileSystemResource;
 
 
@@ -127,16 +128,15 @@ public class CreateHostCertificate {
 
                 KeyPair pair = KeyUtil.generateRSAKeyPair(caProperties.getIssuedCertificateKeySize());
                 X509Certificate cacert = dorian.getCACertificate();
-                String caSubject = CertUtil.getSubjectDN(cacert);
-                int index = caSubject.lastIndexOf(",");
-                String subjectPrefix = caSubject.substring(0, index);
+                String caIdentity = BouncyCastleUtil.getIdentity(cacert);
+                int index = caIdentity.lastIndexOf("/");
+                String subjectPrefix = caIdentity.substring(0, index);
                 String gridId = null;
                 if (c.getIdentityFederationProperties().getIdentityAssignmentPolicy().equals(
                     org.cagrid.gaards.dorian.federation.IdentityAssignmentPolicy.NAME)) {
-                    gridId = CertUtil.dnToIdentity(subjectPrefix + ",OU="
-                        + c.getIdentityProviderProperties().getName() + "/CN=dorian");
+                    gridId = subjectPrefix + "/OU=" + c.getIdentityProviderProperties().getName() + "/CN=dorian";
                 } else {
-                    gridId = CertUtil.dnToIdentity(subjectPrefix + ",OU=IdP [1]/CN=dorian");
+                    gridId = subjectPrefix + "/OU=IdP [1]/CN=dorian";
                 }
                 System.out.println(gridId);
                 HostCertificateRequest req = new HostCertificateRequest();

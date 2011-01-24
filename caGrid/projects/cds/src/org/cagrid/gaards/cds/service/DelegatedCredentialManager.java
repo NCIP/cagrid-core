@@ -492,9 +492,7 @@ public class DelegatedCredentialManager {
 				// Check to make sure the Identity of the proxy cert matches the
 				// Identity of the initiator.
 				try {
-				    X509Certificate identityCert = BouncyCastleUtil.getIdentityCertificate(certs);
-				    String identity = org.cagrid.gaards.pki.CertUtil.dnToIdentity(
-				        org.cagrid.gaards.pki.CertUtil.getSubjectDN(identityCert));
+					String identity = BouncyCastleUtil.getIdentity(certs);
 				    if (!identity.equals(r.getGridIdentity())) {
 						throw Errors.getDelegationFault(Errors.IDENTITY_DOES_NOT_MATCH_INITIATOR);
 					}

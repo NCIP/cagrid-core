@@ -23,6 +23,7 @@ import javax.swing.JTextField;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.bouncycastle.asn1.x509.X509Name;
 import org.cagrid.gaards.dorian.client.GridAdministrationClient;
 import org.cagrid.gaards.dorian.federation.HostCertificateRecord;
 import org.cagrid.gaards.dorian.federation.HostCertificateStatus;
@@ -40,6 +41,8 @@ import org.cagrid.gaards.ui.dorian.DorianSessionProvider;
 import org.cagrid.grape.ApplicationComponent;
 import org.cagrid.grape.GridApplication;
 import org.cagrid.grape.utils.ErrorDialog;
+import org.globus.gsi.bc.BouncyCastleUtil;
+import org.globus.gsi.bc.X509NameHelper;
 
 
 /**
@@ -175,7 +178,7 @@ public class HostCertificateWindow extends ApplicationComponent implements Doria
             if ((record.getCertificate() != null)
                 && (Utils.clean(record.getCertificate().getCertificateAsString()) != null)) {
                 cert = CertUtil.loadCertificate(record.getCertificate().getCertificateAsString());
-                hostGridIdentity.setText(CertUtil.dnToIdentity(cert.getSubjectDN().getName()));
+                hostGridIdentity.setText(BouncyCastleUtil.getIdentity(cert));
                 hostIdentity.setText(hostGridIdentity.getText());
                 getSubject().setText(cert.getSubjectDN().getName());
                 notBefore.setText(cert.getNotBefore().toString());
@@ -894,7 +897,8 @@ public class HostCertificateWindow extends ApplicationComponent implements Doria
             gridBagConstraints19.gridy = 1;
             hostIdentity = new JLabel();
             if (this.record != null) {
-                hostIdentity.setText(CertUtil.dnToIdentity(this.record.getSubject()));
+        		X509Name name = new X509Name(false, this.record.getSubject());
+                hostIdentity.setText(X509NameHelper.toString(name));
             } else {
                 hostIdentity.setText("");
             }

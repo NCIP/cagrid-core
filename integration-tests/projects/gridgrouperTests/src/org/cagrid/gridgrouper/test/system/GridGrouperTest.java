@@ -18,6 +18,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Vector;
 
+import org.bouncycastle.asn1.x509.X509Name;
 import org.cagrid.gaards.authentication.BasicAuthentication;
 import org.cagrid.gaards.authentication.test.system.steps.AuthenticationStep;
 import org.cagrid.gaards.authentication.test.system.steps.SuccessfullAuthentication;
@@ -51,6 +52,7 @@ import org.cagrid.gridgrouper.test.system.steps.GrouperGrantPrivilegeStep;
 import org.cagrid.gridgrouper.test.system.steps.GrouperInitStep;
 import org.cagrid.gridgrouper.test.system.steps.GrouperRemoveMemberStep;
 import org.cagrid.gridgrouper.test.system.steps.GrouperUpdateMembershipRequestStep;
+import org.globus.gsi.bc.X509NameHelper;
 import org.springframework.core.io.FileSystemResource;
 
 public class GridGrouperTest extends ServiceStoryBase {
@@ -299,8 +301,8 @@ public class GridGrouperTest extends ServiceStoryBase {
 		DorianProperties c = utils.getDorianProperties();
 		String subject = c.getCertificateAuthority().getProperties().getCreationPolicy().getSubject();
 		subject = subject.substring(0, subject.lastIndexOf("CN="))+"OU=Dorian,CN=";
-		subject = "/" + subject.replaceAll(",", "/");
-		return subject;
+		X509Name name = new X509Name(false, subject);
+		return X509NameHelper.toString(name);
 	}
 
 }
