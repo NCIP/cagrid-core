@@ -17,6 +17,7 @@
 		<artifact name="gss-2.0-SNAPSHOT" type="jar"/>
 		<artifact name="jsse-2.0-SNAPSHOT" type="jar"/>
 		<artifact name="ssl-proxies-2.0-SNAPSHOT" type="jar"/>
+		<artifact name="cog-tomcat-compat-0.0.1-SNAPSHOT" type="jar"/>
 	</publications>
 
 	<dependencies/>
