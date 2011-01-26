@@ -482,7 +482,8 @@ public class DelegatedCredentialManager {
 					validator.validate(certs, TrustedCertificates
 							.getDefaultTrustedCertificates().getCertificates(),
 							CertificateRevocationLists
-									.getDefaultCertificateRevocationLists());
+									.getDefaultCertificateRevocationLists(), TrustedCertificates
+									.getDefaultTrustedCertificates().getSigningPolicies());
 
 				} catch (Exception e) {
 					throw Errors.getDelegationFault(
