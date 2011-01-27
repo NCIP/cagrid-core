@@ -8,6 +8,7 @@
 	<!-- Give user the chance to override properties -->
 	<property environment="env" />
 	<property file="build.properties" />
+
 	<!-- Load in project listings -->
 	<property file="${caGrid-Master.basedir}/project.properties" />
 
@@ -23,6 +24,8 @@
 	<property name="test.lib.dir" location="${test.dir}/lib" />
 
 	<property name="introduce.extensions.dir" value="${projects.dir}/introduce/extensions" />
+
+	<property name="javadoc.out.dir" value="javadoc"/>
 
 	<condition property="isJDK1.5" value="true">
 		<or>
@@ -69,6 +72,7 @@
 				<include name="*/dependencies-build.xml" />
 			</fileset>
 		</ivy:buildlist>
+		
 	</target>
 
 	<target name="input-project-name">
@@ -146,7 +150,6 @@
 	</target>
 
 
-
 	<target name="createIvyRepository" depends="define-ant-tasks">
 		<!-- OVERRIDE AS NECESSARY -->
 		<property name="ivy.repository.url" value="http://software.cagrid.org/repository-nightly" />
@@ -218,5 +221,42 @@
 				</ant>
 			</sequential>
 		</for>
+	</target>
+
+	
+	<!-- ============================================================== -->
+	<!-- Javadocs what it can                                           -->
+	<!-- ============================================================== -->
+	<target name="javadoc" depends="prepare" description="Generates the javadoc for any projects which have that target.">
+	  <delete dir="${javadoc.out.dir}"/>
+	  <mkdir dir="${javadoc.out.dir}"/>
+	  <!-- keepgoing=true since some projects don't yet have a javadoc task and will error out -->
+	  <for param="project.antfile" keepgoing="true" trim="true" parallel="false">
+	    <path refid="ivy.projects.list"/>
+	    <sequential>
+	      <!-- notice property names use @{project.antfile} suffix.  This is because ant doesn't have variables, and properties
+		   are immutable once set.  To make javadocs go in the dirs they're supposed to, we need some trickery -->
+	      <dirname file="@{project.antfile}" property="project.dir.@{project.antfile}"/>
+	      <basename file="${project.dir.@{project.antfile}}" property="project.base.name.@{project.antfile}"/>
+	      <property name="project.javadoc.out.dir.@{project.antfile}" value="${javadoc.out.dir}/${project.base.name.@{project.antfile}}"/>
+	      <mkdir dir="${project.javadoc.out.dir.@{project.antfile}}"/>
+	      <echo message="=================================="/>
+	      <echo message="  generating javadoc for project"/>
+	      <echo message="  ${project.base.name.@{project.antfile}}"/>
+	      <echo message="  into dir ${project.javadoc.out.dir.@{project.antfile}}"/>
+	      <echo message="=================================="/>
+	      <!-- trycatch ant contrib task so the projects with no javadoc capability don't fail the master build -->
+	      <trycatch>
+		<try>
+		  <ant antfile="build.xml" dir="${project.dir.@{project.antfile}}" target="javadoc" inheritAll="false">
+		    <property name="javadoc.dir" location="${project.javadoc.out.dir.@{project.antfile}}"/>
+		  </ant>
+		</try>
+		<catch>
+		  <echo message="${project.base.name.@{project.antfile}} didn't complete javadoc"/>
+		</catch>
+	      </trycatch>
+	    </sequential>
+	  </for>
 	</target>
 </project>
