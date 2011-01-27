@@ -10,5 +10,6 @@
 		<xsd:sequence>
 			<xsd:element ref="tns:InstanceCount" minOccurs="0" maxOccurs="unbounded"/>
 		</xsd:sequence>
+		<xsd:attribute name="lastUpdated" type="xsd:dateTime" use="required"/>
 	</xsd:complexType>
 </xsd:schema>
