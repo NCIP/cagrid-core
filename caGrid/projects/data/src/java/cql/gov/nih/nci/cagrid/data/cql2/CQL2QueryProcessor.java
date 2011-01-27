@@ -16,7 +16,10 @@ import java.util.Set;
 
 import javax.xml.namespace.QName;
 
+import org.cagrid.cql2.Aggregation;
 import org.cagrid.cql2.CQLQuery;
+import org.cagrid.cql2.CQLQueryModifier;
+import org.cagrid.cql2.CQLTargetObject;
 import org.cagrid.cql2.results.CQLAggregateResult;
 import org.cagrid.cql2.results.CQLQueryResults;
 import org.cagrid.cql2.results.CQLResult;
@@ -230,6 +233,52 @@ public abstract class CQL2QueryProcessor {
     public Iterator<CQLResult> processQueryAndIterate(CQLQuery query) throws QueryProcessingException, MalformedQueryException {
         CQLQueryResults results = processQuery(query);
         return new ResultsIterator(results);
+    }
+    
+    
+    /**
+     * Returns a count of the number of instances of a given data type.
+     * 
+     * This special purpose method gets the count of the number of data types,
+     * and will only ever be called by the data service infrastructure itself for the purpose
+     * of maintaining the instance count resource property. 
+     * 
+     * This method exists separately from the processQuery method so that implementers
+     * know to provide an accurate count and not worry about the security / user permissions, 
+     * and possibly provide a fast and specialized count operation against their back-end data store.
+     *  
+     * @param datatype
+     * @return The number of instances of the specified data type available
+     * @throws QueryProcessingException
+     */
+    public long getInstanceCount(String datatype) throws QueryProcessingException {
+        CQLQuery query = new CQLQuery();
+        CQLTargetObject target = new CQLTargetObject();
+        target.setClassName(datatype);
+        CQLQueryModifier mods = new CQLQueryModifier();
+        mods.setCountOnly(Boolean.TRUE);
+        query.setCQLQueryModifier(mods);
+        
+        CQLQueryResults results = null;
+        try {
+            results = processQuery(query);
+        } catch (MalformedQueryException ex) {
+            throw new QueryProcessingException("Error obtaining instance count: " + ex.getMessage(), ex);
+        }
+        CQLAggregateResult aggResult = results.getAggregationResult();
+        if (aggResult == null) {
+            throw new QueryProcessingException("Query Processor did not return an aggregate result when counting instances!");
+        }
+        if (!Aggregation.COUNT.equals(aggResult.getAggregation())) {
+            throw new QueryProcessingException("Query Processor did not return aggregation result of the type " + Aggregation.COUNT.getValue());
+        }
+        long count = -1;
+        try {
+            count = Long.parseLong(results.getAggregationResult().getValue());
+        } catch (NumberFormatException ex) {
+            throw new QueryProcessingException("Query Processor returned something not parsable as a long for the count: " + ex.getMessage(), ex);
+        }
+        return count;
     }
     
     
