@@ -24,4 +24,10 @@ public interface MetadataConstants {
     public static final String QUERY_LANGUAGE_SUPPORT_RESOURCE_GETTER_METHOD_NAME = "setQueryLanguageSupport";
     public static final String QUERY_LANGUAGE_SUPPORT_PACKAGE = "org.cagrid.dataservice.cql.support";
     public static final String QUERY_LANGUAGE_SUPPORT_DESCRIPTION = "Describes the level of support for CQL versions";
+    
+    // data instance metadata
+    public static final String DATA_INSTANCE_XSD = "DataInstanceCounts.xsd";
+    public static final QName DATA_INSTANCE_QNAME = new QName("gme://org.cagrid.dataservice.metadata/InstanceCount", "DataServiceInstanceCounts");
+    public static final String DATA_INSTANCE_PACKAGE = "org.cagrid.dataservice.metadata.instancecount";
+    public static final String DATA_INSTANCE_DESCRIPTION = "Lists the data types and the number of instances of each";
 }
