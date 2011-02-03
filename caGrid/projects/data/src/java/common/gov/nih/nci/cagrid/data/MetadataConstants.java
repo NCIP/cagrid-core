@@ -21,13 +21,15 @@ public interface MetadataConstants {
     // query language support
     public static final String QUERY_LANGUAGE_SUPPORT_XSD = "QueryLanguageSupportMetadata.xsd";
     public static final QName QUERY_LANGUAGE_SUPPORT_QNAME = new QName("http://org.cagrid.dataservice.cql/QueryLanguageSupport", "QueryLanguageSupport");
-    public static final String QUERY_LANGUAGE_SUPPORT_RESOURCE_GETTER_METHOD_NAME = "setQueryLanguageSupport";
+    public static final String QUERY_LANGUAGE_SUPPORT_RESOURCE_SETTER_METHOD_NAME = "setQueryLanguageSupport";
     public static final String QUERY_LANGUAGE_SUPPORT_PACKAGE = "org.cagrid.dataservice.cql.support";
     public static final String QUERY_LANGUAGE_SUPPORT_DESCRIPTION = "Describes the level of support for CQL versions";
     
     // data instance metadata
     public static final String DATA_INSTANCE_XSD = "DataInstanceCounts.xsd";
     public static final QName DATA_INSTANCE_QNAME = new QName("gme://org.cagrid.dataservice.metadata/InstanceCount", "DataServiceInstanceCounts");
+    // TODO: verify this is right
+    public static final String DATA_INSTANCE_RESOURCE_SETTER_METHOD_NAME = "setDataInstanceCount";
     public static final String DATA_INSTANCE_PACKAGE = "org.cagrid.dataservice.metadata.instancecount";
     public static final String DATA_INSTANCE_DESCRIPTION = "Lists the data types and the number of instances of each";
 }
