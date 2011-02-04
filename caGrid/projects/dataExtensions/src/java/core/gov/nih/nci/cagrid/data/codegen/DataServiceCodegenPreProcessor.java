@@ -56,6 +56,8 @@ public class DataServiceCodegenPreProcessor implements CodegenExtensionPreProces
         
 		addQueryLanguageSupportResourceProperty(info);
 		
+		addInstanceCountResourceProperty(info);
+		
         // execute the service style's pre codegen processor
         ExtensionTypeExtensionData extData = ExtensionTools.getExtensionData(desc, info);
         Data data = null;
@@ -268,5 +270,18 @@ public class DataServiceCodegenPreProcessor implements CodegenExtensionPreProces
 	        supportRp.setQName(MetadataConstants.QUERY_LANGUAGE_SUPPORT_QNAME);
 	        CommonTools.addResourcePropety(baseService, supportRp);
 	    }
+	}
+	
+	
+	private void addInstanceCountResourceProperty(ServiceInformation info) {
+	    ServiceType baseService = info.getServices().getService(0);
+	    
+	    if (CommonTools.getResourcePropertiesOfType(baseService, MetadataConstants.DATA_INSTANCE_QNAME).length == 0) {
+            ResourcePropertyType countRp = new ResourcePropertyType();
+            countRp.setRegister(true);
+            countRp.setDescription(MetadataConstants.DATA_INSTANCE_DESCRIPTION);
+            countRp.setQName(MetadataConstants.DATA_INSTANCE_QNAME);
+            CommonTools.addResourcePropety(baseService, countRp);
+        }
 	}
 }

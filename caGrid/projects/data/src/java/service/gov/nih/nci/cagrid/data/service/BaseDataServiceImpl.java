@@ -206,7 +206,7 @@ public abstract class BaseDataServiceImpl {
             // locate the setter method on the base resource
             boolean foundMethod = false;
             for (Method method : resourceMethods) {
-                if (method.getName().equals(MetadataConstants.QUERY_LANGUAGE_SUPPORT_RESOURCE_GETTER_METHOD_NAME)) {
+                if (method.getName().equals(MetadataConstants.QUERY_LANGUAGE_SUPPORT_RESOURCE_SETTER_METHOD_NAME)) {
                     method.invoke(serviceBaseResource, languageSupport);
                     LOG.debug("Set the query language support resource property");
                     foundMethod = true;
@@ -215,13 +215,33 @@ public abstract class BaseDataServiceImpl {
             }
             if (!foundMethod) {
                 LOG.error("Could not locate '" + 
-                    MetadataConstants.QUERY_LANGUAGE_SUPPORT_RESOURCE_GETTER_METHOD_NAME + 
+                    MetadataConstants.QUERY_LANGUAGE_SUPPORT_RESOURCE_SETTER_METHOD_NAME + 
                     "()' method on service base resource.  " +
                     "Query language support resource property WAS NOT SET");
             }
         } catch (Exception ex) {
             throw new DataServiceInitializationException(
                 "Error setting query language support resource property: " + ex.getMessage(), ex);
+        }
+        LOG.debug("Setting up data instance count daemon");
+        Method dataInstanceSetterMethod = null;
+        for (Method method : resourceMethods) {
+            if (method.getName().equals(MetadataConstants.DATA_INSTANCE_RESOURCE_SETTER_METHOD_NAME)) {
+                dataInstanceSetterMethod = method;
+                break;
+            }
+        }
+        if (dataInstanceSetterMethod == null) {
+            LOG.error("Count not locate '" + MetadataConstants.DATA_INSTANCE_RESOURCE_SETTER_METHOD_NAME + 
+                "()' method on service base resource.  " +
+                "Data instance count resource property WILL NOT BE SET OR UPDATED");
+        } else {
+            try {
+                InstanceCountUpdater.startCountUpdateTask(getDomainModel(), getCql2QueryProcessor(), 
+                    serviceBaseResource, dataInstanceSetterMethod);
+            } catch (QueryProcessingException ex) {
+                LOG.error("Count not get query processor for instance count task: " + ex.getMessage(), ex);
+            }
         }
     }
     

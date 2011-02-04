@@ -205,6 +205,12 @@ public class DataServiceQueryOperationProviderCreator implements CreationExtensi
             supportNamespace.setPackageName(MetadataConstants.QUERY_LANGUAGE_SUPPORT_PACKAGE);
             supportNamespace.setGenerateStubs(Boolean.FALSE);
             CommonTools.addNamespace(serviceInfo.getServiceDescriptor(), supportNamespace);
+            // Data instance count metadata namespace
+            NamespaceType countNamespace = CommonTools.createNamespaceType(schemaDir + File.separator
+                + MetadataConstants.DATA_INSTANCE_XSD, schemaDirFile);
+            countNamespace.setPackageName(MetadataConstants.DATA_INSTANCE_PACKAGE);
+            countNamespace.setGenerateStubs(Boolean.FALSE);
+            CommonTools.addNamespace(serviceInfo.getServiceDescriptor(), countNamespace);
             // ds exceptions namespace
             NamespaceType exceptionsNamespace = CommonTools.createNamespaceType(schemaDir + File.separator
                 + QueryMethodConstants.DATA_SERVICE_EXCEPTIONS_SCHEMA, schemaDirFile);
