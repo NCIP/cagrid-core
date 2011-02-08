@@ -101,6 +101,9 @@
 			<exclude name="**/caGrid-iso*.jar"/>
 		</fileset>
 		-->
+		<!-- TODO: this is probably OK, but generally we're getting
+			away from the use of the Introduce extensions lib
+			on the classpath -->
 		<fileset dir="${introduce.dir}/extensions/lib">
 			<include name="**/*iso*.jar"/>
 		</fileset>
