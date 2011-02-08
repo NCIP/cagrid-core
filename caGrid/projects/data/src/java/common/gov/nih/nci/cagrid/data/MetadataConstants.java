@@ -29,7 +29,7 @@ public interface MetadataConstants {
     public static final String DATA_INSTANCE_XSD = "DataInstanceCounts.xsd";
     public static final QName DATA_INSTANCE_QNAME = new QName("gme://org.cagrid.dataservice.metadata/InstanceCount", "DataServiceInstanceCounts");
     // TODO: verify this is right
-    public static final String DATA_INSTANCE_RESOURCE_SETTER_METHOD_NAME = "setDataInstanceCount";
+    public static final String DATA_INSTANCE_RESOURCE_SETTER_METHOD_NAME = "setDataServiceInstanceCounts";
     public static final String DATA_INSTANCE_PACKAGE = "org.cagrid.dataservice.metadata.instancecount";
     public static final String DATA_INSTANCE_DESCRIPTION = "Lists the data types and the number of instances of each";
 }
