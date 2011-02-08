@@ -200,12 +200,7 @@ public class AntTools {
 
 
     static String getAntLauncherJarLocation(String path) throws Exception {
-        return getAntLauncherJarLocation(path, isWindowsOS());
-    }
-
-
-    static String getAntLauncherJarLocation(String path, boolean isWindows) throws Exception {
-        String separator = isWindows ? ";" : ":";
+        String separator = isWindowsOS() ? ";" : ":";
         StringTokenizer pathTokenizer = new StringTokenizer(path, separator);
         while (pathTokenizer.hasMoreTokens()) {
             String pathElement = pathTokenizer.nextToken();
@@ -215,7 +210,7 @@ public class AntTools {
         }
         throw new Exception("Unable to locate ant-launcher in classpath");
     }
-
+    
 
     static String escapeIfNecessary(String s) {
         if (isWindowsOS() && needsQuoting(s)) {
