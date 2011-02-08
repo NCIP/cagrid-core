@@ -257,6 +257,7 @@ public abstract class CQL2QueryProcessor {
         target.setClassName(datatype);
         CQLQueryModifier mods = new CQLQueryModifier();
         mods.setCountOnly(Boolean.TRUE);
+        query.setCQLTargetObject(target);
         query.setCQLQueryModifier(mods);
         
         CQLQueryResults results = null;
