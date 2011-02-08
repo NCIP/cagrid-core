@@ -90,6 +90,8 @@ public class PlainDataServiceSystemTests extends BaseSystemTest {
         steps.add(new AddFileSystemAuditorStep(info.getDir(), auditorLogFile.getAbsolutePath()));
         // Add the bookstore schema to the data service
         steps.add(new AddBookstoreStep(info));
+        // set the domain model
+        steps.add(new SetDomainModelStep(info));
         // copy the testing jars into the service
         steps.add(new AddTestingJarToServiceStep(info));
         // set the CQL 1 query processor
@@ -150,6 +152,8 @@ public class PlainDataServiceSystemTests extends BaseSystemTest {
         // invoke both CQL and CQL 2 query methods, letting the data service translate CQL 1 to 2
         steps.add(new InvokeCql2DataServiceStep(container, info.getName()));
         steps.add(new InvokeDataServiceStep(container, info.getName()));
+        // check out the data instance count resource property
+        steps.add(new DataInstanceCountVerificationStep(container, info.getName()));
         return steps;
     }
     

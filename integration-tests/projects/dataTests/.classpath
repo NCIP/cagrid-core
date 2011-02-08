@@ -110,5 +110,6 @@
 	<classpathentry kind="lib" path="ext/dependencies/jars/caGrid-data-common-1.4-dev.jar"/>
 	<classpathentry kind="lib" path="ext/dependencies/jars/caGrid-CQL-mappings-1.4-dev.jar"/>
 	<classpathentry kind="lib" path="ext/dependencies/jars/castor-1.0.2.jar"/>
+	<classpathentry kind="lib" path="ext/dependencies/jars/caGrid-mms-stubs-1.4-dev.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

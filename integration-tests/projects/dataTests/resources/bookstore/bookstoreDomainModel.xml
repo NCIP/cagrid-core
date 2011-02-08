@@ -1,0 +1,6 @@
+<ns1:DomainModel xmlns:ns1="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.dataservice">
+ <ns1:exposedUMLClassCollection>
+  <ns1:UMLClass allowableAsTarget="true" className="Book" packageName="org.projectmobius.bookstore"/>
+  <ns1:UMLClass allowableAsTarget="true" className="BookStore" packageName="org.projectmobius.bookstore"/>
+ </ns1:exposedUMLClassCollection>
+</ns1:DomainModel>

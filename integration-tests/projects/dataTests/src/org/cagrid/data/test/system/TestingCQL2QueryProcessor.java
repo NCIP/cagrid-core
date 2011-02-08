@@ -16,6 +16,7 @@ import javax.xml.namespace.QName;
 
 import org.cagrid.cql.utilities.CQL2ResultsCreationUtil;
 import org.cagrid.cql2.CQLQuery;
+import org.cagrid.cql2.CQLQueryModifier;
 import org.cagrid.cql2.extensionsupport.SupportedExtensions;
 import org.cagrid.cql2.results.CQLQueryResults;
 import org.projectmobius.bookstore.Book;
@@ -38,10 +39,19 @@ public class TestingCQL2QueryProcessor extends CQL2QueryProcessor {
 
     public CQLQueryResults processQuery(CQLQuery query) throws QueryProcessingException, MalformedQueryException {
         List<?> results = getResultsList(query);
+        boolean countResults = false;
         String targetName = query.getCQLTargetObject().getClassName();
+        CQLQueryModifier mods = query.getCQLQueryModifier();
+        if (mods != null) {
+            countResults = (mods.getCountOnly() != null && mods.getCountOnly().booleanValue());
+        }
         CQLQueryResults queryResults = null;
         try {
-            queryResults = CQL2ResultsCreationUtil.createObjectResults(results, targetName, getQname(targetName), null);
+            if (countResults) {
+                queryResults = CQL2ResultsCreationUtil.createCountResults(results.size(), targetName);
+            } else {
+                queryResults = CQL2ResultsCreationUtil.createObjectResults(results, targetName, getQname(targetName), null);
+            }
         } catch (Exception e) {
             throw new QueryProcessingException(e.getMessage(), e);
         }
