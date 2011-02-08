@@ -139,10 +139,12 @@
 			<fileset dir="${ant.library.dir}">
 				<include name="*.jar" />
 			</fileset>
+			<!--
 			<fileset dir="${basedir}/extensions/lib">
 				<include name="*.jar" />
 				<exclude name="${jars.prefixname}*" />
 			</fileset>
+			-->
 			<pathelement location="${basedir}/resources/portal/introduce" />
 			<pathelement location="${basedir}/extensions" />
 			<pathelement location="${basedir}/doc/help" />
@@ -157,10 +159,12 @@
 			<fileset dir="${ext.lib.dir}">
 				<include name="*.jar" />
 			</fileset>
+			<!--
 			<fileset dir="${extensions.lib.dir}">
 				<include name="*.jar" />
 				<exclude name="${jars.prefixname}*" />
 			</fileset>
+			-->
 			<fileset dir="${ext.globus.dir}/lib">
 				<include name="addressing*.jar" />
 				<include name="axis-*.jar" />

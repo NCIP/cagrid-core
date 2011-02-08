@@ -98,8 +98,8 @@ public class IntroduceUpgradeManager {
                     status.addIntroduceUpgradeStatus(iStatus);
 
                     // upgrade the introduce service
-                    Class clazz = Class.forName(className);
-                    Constructor con = clazz.getConstructor(new Class[]{IntroduceUpgradeStatus.class, String.class});
+                    Class<?> clazz = Class.forName(className);
+                    Constructor<?> con = clazz.getConstructor(new Class[]{IntroduceUpgradeStatus.class, String.class});
                     ModelUpgraderI modelupgrader = (ModelUpgraderI) con
                         .newInstance(new Object[]{iStatus, pathToService});
                     modelupgrader.execute();

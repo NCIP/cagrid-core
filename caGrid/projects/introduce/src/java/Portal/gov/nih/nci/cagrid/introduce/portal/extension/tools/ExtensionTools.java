@@ -47,8 +47,8 @@ public class ExtensionTools {
             extensionName);
         if ((extensionDesc != null) && (extensionDesc.getCreationUIDialog() != null)
             && !extensionDesc.getCreationUIDialog().equals("")) {
-            Class c = Class.forName(extensionDesc.getCreationUIDialog());
-            Constructor con = c.getConstructor(new Class[]{Frame.class, ServiceExtensionDescriptionType.class,
+            Class<?> c = gov.nih.nci.cagrid.introduce.extension.ExtensionTools.loadExtensionClass(extensionDesc.getCreationUIDialog());
+            Constructor<?> con = c.getConstructor(new Class[]{Frame.class, ServiceExtensionDescriptionType.class,
                     ServiceInformation.class});
             Object obj = con.newInstance(new Object[]{owner, extensionDesc, info});
             return (CreationExtensionUIDialog) obj;
@@ -63,8 +63,8 @@ public class ExtensionTools {
             extensionName);
         if ((extensionDesc != null) && (extensionDesc.getServiceModificationUIPanel() != null)
             && !extensionDesc.getServiceModificationUIPanel().equals("")) {
-            Class c = Class.forName(extensionDesc.getServiceModificationUIPanel());
-            Constructor con = c.getConstructor(new Class[]{ServiceExtensionDescriptionType.class,
+            Class<?> c = gov.nih.nci.cagrid.introduce.extension.ExtensionTools.loadExtensionClass(extensionDesc.getServiceModificationUIPanel());
+            Constructor<?> con = c.getConstructor(new Class[]{ServiceExtensionDescriptionType.class,
                     ServiceInformation.class});
             Object obj = con.newInstance(new Object[]{extensionDesc, info});
             return (ServiceModificationUIPanel) obj;
@@ -79,8 +79,8 @@ public class ExtensionTools {
             extensionName);
         if ((extensionDesc != null) && (extensionDesc.getServiceDeploymentUIPanel() != null)
             && !extensionDesc.getServiceDeploymentUIPanel().equals("")) {
-            Class c = Class.forName(extensionDesc.getServiceDeploymentUIPanel());
-            Constructor con = c.getConstructor(new Class[]{ServiceExtensionDescriptionType.class,
+            Class<?> c = gov.nih.nci.cagrid.introduce.extension.ExtensionTools.loadExtensionClass(extensionDesc.getServiceDeploymentUIPanel());
+            Constructor<?> con = c.getConstructor(new Class[]{ServiceExtensionDescriptionType.class,
                     ServiceInformation.class});
             Object obj = con.newInstance(new Object[]{extensionDesc, info});
             return (ServiceDeploymentUIPanel) obj;
@@ -95,8 +95,8 @@ public class ExtensionTools {
             extensionName);
         if ((extensionDesc != null) && (extensionDesc.getDeploymentUIPanel() != null)
             && !extensionDesc.getDeploymentUIPanel().equals("")) {
-            Class c = Class.forName(extensionDesc.getDeploymentUIPanel());
-            Constructor con = c.getConstructor(new Class[]{DeploymentExtensionDescriptionType.class,
+            Class<?> c = gov.nih.nci.cagrid.introduce.extension.ExtensionTools.loadExtensionClass(extensionDesc.getDeploymentUIPanel());
+            Constructor<?> con = c.getConstructor(new Class[]{DeploymentExtensionDescriptionType.class,
                     ServiceInformation.class});
             Object obj = con.newInstance(new Object[]{extensionDesc, info});
             return (DeploymentUIPanel) obj;
@@ -111,8 +111,8 @@ public class ExtensionTools {
             extensionName);
         if ((extensionDesc != null) && (extensionDesc.getServiceAuthorizationPanel() != null)
             && !extensionDesc.getServiceAuthorizationPanel().equals("")) {
-            Class c = Class.forName(extensionDesc.getServiceAuthorizationPanel());
-            Constructor con = c.getConstructor(new Class[]{AuthorizationExtensionDescriptionType.class,
+            Class<?> c = gov.nih.nci.cagrid.introduce.extension.ExtensionTools.loadExtensionClass(extensionDesc.getServiceAuthorizationPanel());
+            Constructor<?> con = c.getConstructor(new Class[]{AuthorizationExtensionDescriptionType.class,
                     ServiceInformation.class, ServiceType.class});
             Object obj = con.newInstance(new Object[]{extensionDesc, info, service});
             return (AbstractServiceAuthorizationPanel) obj;
@@ -127,8 +127,8 @@ public class ExtensionTools {
             extensionName);
         if ((extensionDesc != null) && (extensionDesc.getMethodAuthorizationPanel() != null)
             && !extensionDesc.getMethodAuthorizationPanel().equals("")) {
-            Class c = Class.forName(extensionDesc.getMethodAuthorizationPanel());
-            Constructor con = c.getConstructor(new Class[]{AuthorizationExtensionDescriptionType.class,
+            Class<?> c = gov.nih.nci.cagrid.introduce.extension.ExtensionTools.loadExtensionClass(extensionDesc.getMethodAuthorizationPanel());
+            Constructor<?> con = c.getConstructor(new Class[]{AuthorizationExtensionDescriptionType.class,
                     ServiceInformation.class, ServiceType.class, MethodType.class});
             Object obj = con.newInstance(new Object[]{extensionDesc, info, service, method});
             return (AbstractMethodAuthorizationPanel) obj;
@@ -143,8 +143,8 @@ public class ExtensionTools {
             .getResourcePropertyEditorExtension(extensionName);
         if ((extensionDesc != null) && (extensionDesc.getResourcePropertyEditorPanel() != null)
             && !extensionDesc.getResourcePropertyEditorPanel().equals("")) {
-            Class c = Class.forName(extensionDesc.getResourcePropertyEditorPanel());
-            Constructor con = c.getConstructor(new Class[]{ResourcePropertyType.class, String.class, File.class, File.class});
+            Class<?> c = gov.nih.nci.cagrid.introduce.extension.ExtensionTools.loadExtensionClass(extensionDesc.getResourcePropertyEditorPanel());
+            Constructor<?> con = c.getConstructor(new Class[]{ResourcePropertyType.class, String.class, File.class, File.class});
             Object obj = con.newInstance(new Object[]{prop, rpData, schemaFile, schemaDir});
 
             return (ResourcePropertyEditorPanel) obj;
@@ -158,8 +158,8 @@ public class ExtensionTools {
             extensionName);
         if ((extensionD != null) && (extensionD.getDiscoveryToolsPanelExtension() != null)
             && !extensionD.getDiscoveryToolsPanelExtension().equals("")) {
-            Class c = Class.forName(extensionD.getDiscoveryToolsPanelExtension());
-            Constructor con = c.getConstructor(new Class[]{DiscoveryExtensionDescriptionType.class});
+            Class<?> c = gov.nih.nci.cagrid.introduce.extension.ExtensionTools.loadExtensionClass(extensionD.getDiscoveryToolsPanelExtension());
+            Constructor<?> con = c.getConstructor(new Class[]{DiscoveryExtensionDescriptionType.class});
             Object obj = con.newInstance(new Object[]{extensionD});
             return (NamespaceTypeToolsComponent) obj;
         }
@@ -173,8 +173,8 @@ public class ExtensionTools {
             extensionName);
         if ((extensionD != null) && (extensionD.getDiscoveryPanelExtension() != null)
             && !extensionD.getDiscoveryPanelExtension().equals("")) {
-            Class c = Class.forName(extensionD.getDiscoveryPanelExtension());
-            Constructor con = c.getConstructor(new Class[]{DiscoveryExtensionDescriptionType.class,
+            Class<?> c = gov.nih.nci.cagrid.introduce.extension.ExtensionTools.loadExtensionClass(extensionD.getDiscoveryPanelExtension());
+            Constructor<?> con = c.getConstructor(new Class[]{DiscoveryExtensionDescriptionType.class,
                     NamespacesType.class});
             Object obj = con.newInstance(new Object[]{extensionD, currentNamespaces});
             return (NamespaceTypeDiscoveryComponent) obj;
