@@ -18,8 +18,9 @@ import org.cagrid.grape.model.Application;
  */
 public class ConfigurationUtil {
 
-    private static ConfigurationUtil util = null;
-    private static ConfigurationManager configurationManager = null;
+    private static ConfigurationUtil instance = null;
+    
+    private ConfigurationManager configurationManager = null;
 
 
     private ConfigurationUtil() throws Exception {
@@ -27,29 +28,25 @@ public class ConfigurationUtil {
             configurationManager = GridApplication.getContext().getConfigurationManager();
         } else {
             Application app = null;
-            app = (Application) Utils.deserializeDocument(IntroducePropertiesManager.getIntroduceConfigurationFile(),
+            app = Utils.deserializeDocument(IntroducePropertiesManager.getIntroduceConfigurationFile(),
                 Application.class);
-            configurationManager = new ConfigurationManager(app.getConfiguration(),null);
-        }
-
-    }
-
-
-    private static synchronized void load() throws Exception {
-        if (util == null) {
-            util = new ConfigurationUtil();
+            configurationManager = new ConfigurationManager(app.getConfiguration(), null);
         }
     }
 
 
-    public static synchronized  ConfigurationUtil getInstance() throws Exception {
-        load();
-        return util;
+    public static synchronized ConfigurationUtil getInstance() throws Exception {
+        if (instance == null) {
+            instance = new ConfigurationUtil();
+        }
+        return instance;
     }
 
-    public static synchronized  void saveConfiguration() throws Exception {
+
+    public static synchronized void saveConfiguration() throws Exception {
         getInstance().configurationManager.saveAll();
     }
+
 
     public static synchronized IntroducePortalConfiguration getIntroducePortalConfiguration() {
         try {
