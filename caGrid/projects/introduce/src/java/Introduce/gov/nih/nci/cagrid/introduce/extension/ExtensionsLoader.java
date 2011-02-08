@@ -27,45 +27,33 @@ public class ExtensionsLoader {
     private static ExtensionsLoader loader = null;
 
     public static final String EXTENSIONS_DIRECTORY = "." + File.separator + "extensions";
-
     public static final String DISCOVERY_EXTENSION = "DISCOVERY";
-
     public static final String SERVICE_EXTENSION = "SERVICE";
-
     public static final String DEPLOYMENT_EXTENSION = "DEPLOYMENT";
-
     public static final String RESOURCE_PROPERTY_EDITOR_EXTENSION = "RESOURCE_PROPERTY_EDITOR";
-
     public static final String AUTHORIZATION_EXTENSION = "AUTHORIZATION";
-
     public static final String INTRODUCE_GDE_EXTENSION = "INTRODUCE_GDE";
 
-    private List serviceExtensionDescriptors;
-
-    private List discoveryExtensionDescriptors;
-
-    private List deploymentExtensionDescriptors;
-
-    private List resourcePropertyEditorExtensionDescriptors;
-
-    private List authorizationExtensionDescriptors;
-
-    private List introduceGDEExtensionDescriptors;
-
-    private List extensions;
+    private List<ServiceExtensionDescriptionType> serviceExtensionDescriptors;
+    private List<DiscoveryExtensionDescriptionType> discoveryExtensionDescriptors;
+    private List<DeploymentExtensionDescriptionType> deploymentExtensionDescriptors;
+    private List<ResourcePropertyEditorExtensionDescriptionType> resourcePropertyEditorExtensionDescriptors;
+    private List<AuthorizationExtensionDescriptionType> authorizationExtensionDescriptors;
+    private List<IntroduceGDEExtensionDescriptionType> introduceGDEExtensionDescriptors;
+    private List<ExtensionDescription> extensions;
 
     private File extensionsDir;
 
 
     private ExtensionsLoader() {
         this.extensionsDir = new File(EXTENSIONS_DIRECTORY);
-        serviceExtensionDescriptors = new ArrayList();
-        discoveryExtensionDescriptors = new ArrayList();
-        resourcePropertyEditorExtensionDescriptors = new ArrayList();
-        authorizationExtensionDescriptors = new ArrayList();
-        deploymentExtensionDescriptors = new ArrayList();
-        introduceGDEExtensionDescriptors = new ArrayList();
-        extensions = new ArrayList();
+        serviceExtensionDescriptors = new ArrayList<ServiceExtensionDescriptionType>();
+        discoveryExtensionDescriptors = new ArrayList<DiscoveryExtensionDescriptionType>();
+        resourcePropertyEditorExtensionDescriptors = new ArrayList<ResourcePropertyEditorExtensionDescriptionType>();
+        authorizationExtensionDescriptors = new ArrayList<AuthorizationExtensionDescriptionType>();
+        deploymentExtensionDescriptors = new ArrayList<DeploymentExtensionDescriptionType>();
+        introduceGDEExtensionDescriptors = new ArrayList<IntroduceGDEExtensionDescriptionType>();
+        extensions = new ArrayList<ExtensionDescription>();
         try {
             this.load();
         } catch (Exception e) {
@@ -92,7 +80,8 @@ public class ExtensionsLoader {
             // rest of Introduce.
 
             Application app = null;
-            app = (Application) Utils.deserializeDocument(IntroducePropertiesManager.getIntroduceConfigurationFile(),
+            app = Utils.deserializeDocument(
+                IntroducePropertiesManager.getIntroduceConfigurationFile(),
                 Application.class);
             ConfigurationManager configurationManager = new ConfigurationManager(app.getConfiguration(), null);
 
@@ -107,11 +96,10 @@ public class ExtensionsLoader {
                         ExtensionDescription extDesc = null;
 
                         try {
-                            extDesc = (ExtensionDescription) Utils.deserializeDocument(new File(dirs[count]
-                                .getAbsolutePath()
+                            extDesc = Utils.deserializeDocument(new File(dirs[count].getAbsolutePath()
                                 + File.separator + "extension.xml").getAbsolutePath(), ExtensionDescription.class);
 
-                            // proces the extension properties and add the ones
+                            // process the extension properties and add the ones
                             // that are desired to be made global if they do not
                             // exist yet
 
@@ -144,25 +132,20 @@ public class ExtensionsLoader {
                                     .getProperties(), configurationManager);
                             } else {
                                 logger.warn("Unsupported Extension Type: " + extDesc.getExtensionType());
-                            }// TODO Auto-generated method stub
+                            }
                         } catch (Exception e) {
                             logger.error(e);
                         }
-
                     }
-
                 }
             }
         }
-
     }
 
 
     private void processExtensionProperties(Properties properties, ConfigurationManager configurationManager)
         throws Exception {
-
         if (properties != null && properties.getProperty() != null) {
-
             for (int i = 0; i < properties.getProperty().length; i++) {
                 PropertiesProperty prop = properties.getProperty(i);
                 try {
@@ -201,29 +184,29 @@ public class ExtensionsLoader {
     }
 
 
-    public List getAuthorizationExtensions() {
+    public List<AuthorizationExtensionDescriptionType> getAuthorizationExtensions() {
         return this.authorizationExtensionDescriptors;
     }
 
 
-    public List getServiceExtensions() {
+    public List<ServiceExtensionDescriptionType> getServiceExtensions() {
         return this.serviceExtensionDescriptors;
     }
 
 
-    public List getIntroduceGDEExtensions() {
+    public List<IntroduceGDEExtensionDescriptionType> getIntroduceGDEExtensions() {
         return this.introduceGDEExtensionDescriptors;
     }
 
 
-    public List getResourcePropertyEditorExtensions() {
+    public List<ResourcePropertyEditorExtensionDescriptionType> getResourcePropertyEditorExtensions() {
         return this.resourcePropertyEditorExtensionDescriptors;
     }
 
 
     public ExtensionDescription getExtension(String name) {
         for (int i = 0; i < extensions.size(); i++) {
-            ExtensionDescription ex = (ExtensionDescription) extensions.get(i);
+            ExtensionDescription ex = extensions.get(i);
             if (ex.getDiscoveryExtensionDescription() != null
                 && ex.getDiscoveryExtensionDescription().getName().equals(name)) {
                 return ex;
@@ -250,7 +233,7 @@ public class ExtensionsLoader {
 
     public ServiceExtensionDescriptionType getServiceExtension(String name) {
         for (int i = 0; i < serviceExtensionDescriptors.size(); i++) {
-            ServiceExtensionDescriptionType ex = (ServiceExtensionDescriptionType) serviceExtensionDescriptors.get(i);
+            ServiceExtensionDescriptionType ex = serviceExtensionDescriptors.get(i);
             if (ex.getName().equals(name)) {
                 return ex;
             }
@@ -261,8 +244,7 @@ public class ExtensionsLoader {
 
     public DeploymentExtensionDescriptionType getDeploymentExtension(String name) {
         for (int i = 0; i < deploymentExtensionDescriptors.size(); i++) {
-            DeploymentExtensionDescriptionType ex = (DeploymentExtensionDescriptionType) deploymentExtensionDescriptors
-                .get(i);
+            DeploymentExtensionDescriptionType ex = deploymentExtensionDescriptors.get(i);
             if (ex.getName().equals(name)) {
                 return ex;
             }
@@ -273,8 +255,7 @@ public class ExtensionsLoader {
 
     public AuthorizationExtensionDescriptionType getAuthorizationExtension(String name) {
         for (int i = 0; i < authorizationExtensionDescriptors.size(); i++) {
-            AuthorizationExtensionDescriptionType ex = (AuthorizationExtensionDescriptionType) authorizationExtensionDescriptors
-                .get(i);
+            AuthorizationExtensionDescriptionType ex = authorizationExtensionDescriptors.get(i);
             if (ex.getName().equals(name)) {
                 return ex;
             }
@@ -285,8 +266,7 @@ public class ExtensionsLoader {
 
     public ResourcePropertyEditorExtensionDescriptionType getResourcePropertyEditorExtension(String name) {
         for (int i = 0; i < resourcePropertyEditorExtensionDescriptors.size(); i++) {
-            ResourcePropertyEditorExtensionDescriptionType ex = (ResourcePropertyEditorExtensionDescriptionType) resourcePropertyEditorExtensionDescriptors
-                .get(i);
+            ResourcePropertyEditorExtensionDescriptionType ex = resourcePropertyEditorExtensionDescriptors.get(i);
             if (ex.getName().equals(name)) {
                 return ex;
             }
@@ -297,8 +277,7 @@ public class ExtensionsLoader {
 
     public IntroduceGDEExtensionDescriptionType getIntroduceGDEExtension(String name) {
         for (int i = 0; i < introduceGDEExtensionDescriptors.size(); i++) {
-            IntroduceGDEExtensionDescriptionType ex = (IntroduceGDEExtensionDescriptionType) introduceGDEExtensionDescriptors
-                .get(i);
+            IntroduceGDEExtensionDescriptionType ex = introduceGDEExtensionDescriptors.get(i);
             if (ex.getName().equals(name)) {
                 return ex;
             }
@@ -309,7 +288,7 @@ public class ExtensionsLoader {
 
     public ServiceExtensionDescriptionType getServiceExtensionByDisplayName(String displayName) {
         for (int i = 0; i < serviceExtensionDescriptors.size(); i++) {
-            ServiceExtensionDescriptionType ex = (ServiceExtensionDescriptionType) serviceExtensionDescriptors.get(i);
+            ServiceExtensionDescriptionType ex = serviceExtensionDescriptors.get(i);
             if (ex.getDisplayName().equals(displayName)) {
                 return ex;
             }
@@ -320,8 +299,7 @@ public class ExtensionsLoader {
 
     public DiscoveryExtensionDescriptionType getDiscoveryExtension(String name) {
         for (int i = 0; i < discoveryExtensionDescriptors.size(); i++) {
-            DiscoveryExtensionDescriptionType ex = (DiscoveryExtensionDescriptionType) discoveryExtensionDescriptors
-                .get(i);
+            DiscoveryExtensionDescriptionType ex = discoveryExtensionDescriptors.get(i);
             if (ex.getName().equals(name)) {
                 return ex;
             }
@@ -332,8 +310,7 @@ public class ExtensionsLoader {
 
     public DiscoveryExtensionDescriptionType getDiscoveryExtensionByDisplayName(String displayName) {
         for (int i = 0; i < discoveryExtensionDescriptors.size(); i++) {
-            DiscoveryExtensionDescriptionType ex = (DiscoveryExtensionDescriptionType) discoveryExtensionDescriptors
-                .get(i);
+            DiscoveryExtensionDescriptionType ex = discoveryExtensionDescriptors.get(i);
             if (ex.getDisplayName().equals(displayName)) {
                 return ex;
             }
@@ -344,8 +321,7 @@ public class ExtensionsLoader {
 
     public AuthorizationExtensionDescriptionType getAuthorizationExtensionByDisplayName(String displayName) {
         for (int i = 0; i < authorizationExtensionDescriptors.size(); i++) {
-            AuthorizationExtensionDescriptionType ex = (AuthorizationExtensionDescriptionType) authorizationExtensionDescriptors
-                .get(i);
+            AuthorizationExtensionDescriptionType ex = authorizationExtensionDescriptors.get(i);
             if (ex.getDisplayName().equals(displayName)) {
                 return ex;
             }
@@ -354,12 +330,12 @@ public class ExtensionsLoader {
     }
 
 
-    public List getDiscoveryExtensions() {
+    public List<DiscoveryExtensionDescriptionType> getDiscoveryExtensions() {
         return this.discoveryExtensionDescriptors;
     }
 
 
-    public List getDeploymentExtensions() {
+    public List<DeploymentExtensionDescriptionType> getDeploymentExtensions() {
         return this.deploymentExtensionDescriptors;
     }
 
