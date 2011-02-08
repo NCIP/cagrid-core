@@ -9,6 +9,7 @@ import gov.nih.nci.cagrid.metadata.ResourcePropertyHelper;
 import gov.nih.nci.cagrid.metadata.exceptions.InvalidResourcePropertyException;
 
 import java.io.StringReader;
+import java.io.StringWriter;
 import java.util.Iterator;
 
 import javax.wsdl.Definition;
@@ -25,6 +26,8 @@ import org.apache.axis.message.addressing.EndpointReferenceType;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.cagrid.dataservice.cql.support.QueryLanguageSupport;
+import org.cagrid.dataservice.metadata.instancecount.DataServiceInstanceCounts;
+import org.cagrid.dataservice.metadata.instancecount.InstanceCount;
 import org.globus.wsrf.utils.XmlUtils;
 import org.w3c.dom.Element;
 
@@ -41,6 +44,48 @@ public class DataServiceFeatureDiscoveryUtil {
 
     private DataServiceFeatureDiscoveryUtil() {
         
+    }
+    
+    
+    public static DataServiceInstanceCounts getInstanceCounts(EndpointReferenceType epr) throws Exception {
+        DataServiceInstanceCounts counts = null;
+        Element resourceProperty = null;
+        try {
+            resourceProperty = ResourcePropertyHelper.getResourceProperty(epr, 
+                MetadataConstants.DATA_INSTANCE_QNAME);
+            if (resourceProperty != null) {
+                counts = Utils.deserializeObject(
+                    new StringReader(XmlUtils.toString(resourceProperty)), DataServiceInstanceCounts.class);
+            }
+        } catch (InvalidResourcePropertyException ex) {
+            // expected for caGrid 1.4 and earlier data services
+            if (LOG.isTraceEnabled()) {
+                LOG.trace("Resource property not found - service "
+                    + epr.getAddress().toString() + " is probably older than caGrid 1.4");
+                LOG.trace(ex);
+            }
+        }
+        return counts;
+    }
+    
+    
+    public static long getDataInstanceCount(EndpointReferenceType epr, String classname) throws Exception {
+        long count = -1;
+        DataServiceInstanceCounts counts = getInstanceCounts(epr);
+        if (counts == null) {
+            throw new Exception("Could not obtain count information from the service "
+                + epr.getAddress().toString());
+        }
+        InstanceCount[] countArray = counts.getInstanceCount();
+        if (countArray != null) {
+            for (InstanceCount ic : countArray) {
+                if (ic.getDomainClassName().equals(classname)) {
+                    count = ic.getInstances();
+                    break;
+                }
+            }
+        }
+        return count;
     }
     
     
@@ -143,6 +188,12 @@ public class DataServiceFeatureDiscoveryUtil {
                 "http://localhost:8080/wsrf/services/cagrid/HelloWorld"));
             System.out.println("Has cql2? " + serviceSupportsCql2(epr));
             System.out.println("Has enum? " + serviceHasCql2EnumerationOperation(epr));
+            String classname = "my.awsome.classes.name2";
+            System.out.println("Instance counts: " + getDataInstanceCount(epr, classname));
+            DataServiceInstanceCounts counts = getInstanceCounts(epr);
+            StringWriter writer = new StringWriter();
+            Utils.serializeObject(counts, MetadataConstants.DATA_INSTANCE_QNAME, writer);
+            System.out.println(writer.getBuffer().toString());
         } catch (Exception ex) {
             ex.printStackTrace();
         }
