@@ -156,9 +156,9 @@ public class ServiceStyleContainer {
                 for (int i = 0; i < libs.length; i++) {
                     urls[i] = libs[i].toURI().toURL();
                 }
-                classLoader = new URLClassLoader(urls, Thread.currentThread().getContextClassLoader());
+                classLoader = new URLClassLoader(urls, getClass().getClassLoader());
             } else {
-                classLoader = Thread.currentThread().getContextClassLoader();
+                classLoader = getClass().getClassLoader();
             }
         }
         return classLoader;
