@@ -51,16 +51,16 @@
   <classpathentry kind="lib" path="ext/dependencies/jars/kmu.jar" />
   <classpathentry kind="lib" path="ext/dependencies/jars/mysql-connector-java-3.0.16-ga-bin.jar" />
   <classpathentry kind="lib" path="ext/dependencies/jars/servlet.jar" />
-  <classpathentry kind="lib" path="ext/dependencies/jars/spring-beans.jar" />
-  <classpathentry kind="lib" path="ext/dependencies/jars/spring-core.jar" />
+  <classpathentry kind="lib" path="ext/dependencies/jars/org.springframework.beans-3.0.1.RELEASE-A.jar" />
+  <classpathentry kind="lib" path="ext/dependencies/jars/org.springframework.core-3.0.1.RELEASE-A.jar" />
   <classpathentry kind="var" path="GT4_LOCATION/lib/addressing-1.0.jar" />
   <classpathentry kind="var" path="GT4_LOCATION/lib/axis.jar" />
   <classpathentry kind="var" path="GT4_LOCATION/lib/axis-url.jar" />
   <classpathentry kind="var" path="GT4_LOCATION/lib/bootstrap.jar" />
-  <classpathentry kind="var" path="GT4_LOCATION/lib/cog-axis.jar" />
-  <classpathentry kind="var" path="GT4_LOCATION/lib/cog-jglobus.jar" sourcepath="/GT4_SOURCE" />
-  <classpathentry kind="var" path="GT4_LOCATION/lib/cog-tomcat.jar" />
-  <classpathentry kind="var" path="GT4_LOCATION/lib/cog-url.jar" />
+  <classpathentry kind="var" path="GT4_LOCATION/lib/jsse-2.0-SNAPSHOT.jar" />
+  <classpathentry kind="var" path="GT4_LOCATION/lib/gss-2.0-SNAPSHOT.jar" sourcepath="/GT4_SOURCE" />
+  <classpathentry kind="var" path="GT4_LOCATION/lib/cog-jglobus-compat-0.0.1-SNAPSHOT.jar" />
+  <classpathentry kind="var" path="GT4_LOCATION/lib/ssl-proxies-2.0-SNAPSHOT.jar" />
   <classpathentry kind="var" path="GT4_LOCATION/lib/commonj.jar" />
   <classpathentry kind="var" path="GT4_LOCATION/lib/commons-beanutils.jar" />
   <classpathentry kind="var" path="GT4_LOCATION/lib/commons-cli-2.0.jar" />
@@ -84,7 +84,7 @@
   <classpathentry kind="var" path="GT4_LOCATION/lib/jaxrpc.jar" />
   <classpathentry kind="var" path="GT4_LOCATION/lib/jce-jdk13-145.jar" />
   <classpathentry kind="var" path="GT4_LOCATION/lib/jgss.jar" />
-  <classpathentry kind="var" path="GT4_LOCATION/lib/log4j-1.2.8.jar" />
+  <classpathentry kind="var" path="GT4_LOCATION/lib/log4j-1.2.14.jar" />
   <classpathentry kind="var" path="GT4_LOCATION/lib/naming-common.jar" />
   <classpathentry kind="var" path="GT4_LOCATION/lib/naming-factory.jar" />
   <classpathentry kind="var" path="GT4_LOCATION/lib/naming-java.jar" />
