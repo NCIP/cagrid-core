@@ -6,6 +6,8 @@ import gov.nih.nci.cagrid.opensaml.SAMLAttributeStatement;
 
 import java.util.Iterator;
 
+import javax.naming.ldap.LdapName;
+
 import org.cagrid.gaards.dorian.ca.CertificateAuthority;
 import org.cagrid.gaards.dorian.ca.CertificateAuthorityProperties;
 import org.cagrid.gaards.dorian.federation.AutoApprovalPolicy;
@@ -27,11 +29,11 @@ import org.springframework.core.io.ClassPathResource;
 
 public class Utils {
 
-    public static String CA_SUBJECT_PREFIX = null;
+    public static LdapName CA_SUBJECT_PREFIX = null;
 
-    public static String CA_SUBJECT_DN = null;
+//    public static String CA_SUBJECT_DN = null;
 
-    public static String CA_SUBJECT = null;
+    public static LdapName CA_SUBJECT = null;
 
     private static Database db = null;
 
@@ -120,7 +122,7 @@ public class Utils {
     }
 
 
-    public static String getCASubject() throws Exception {
+    public static LdapName getCASubject() throws Exception {
         if (CA_SUBJECT == null) {
             return getCASubject(getCAProperties());
         }
@@ -128,13 +130,10 @@ public class Utils {
     }
 
 
-    public static String getCASubject(CertificateAuthorityProperties conf) throws Exception {
+    public static LdapName getCASubject(CertificateAuthorityProperties conf) throws Exception {
         if (CA_SUBJECT == null) {
-            CA_SUBJECT = conf.getCreationPolicy().getSubject();
-            int index = CA_SUBJECT.lastIndexOf(",");
-            CA_SUBJECT_PREFIX = CA_SUBJECT.substring(0, index);
-            index = CA_SUBJECT.indexOf("CN=");
-            CA_SUBJECT_DN = CA_SUBJECT.substring(index + 3);
+        	CA_SUBJECT = new LdapName(conf.getCreationPolicy().getSubject());
+            CA_SUBJECT_PREFIX = (LdapName) CA_SUBJECT.getPrefix(CA_SUBJECT.size() - 1);
         }
         return CA_SUBJECT;
     }

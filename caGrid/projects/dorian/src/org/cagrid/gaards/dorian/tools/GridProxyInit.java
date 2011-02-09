@@ -206,7 +206,7 @@ public class GridProxyInit {
             System.out.println("Grid Proxy Certificate Summary");
             System.out.println("==============================");
             System.out.println("Grid Identity: " + proxy.getIdentity());
-            System.out.println("Issuer: " + CertUtil.globusFormatDN(proxy.getIssuer()));
+//            System.out.println("Issuer: " + CertUtil.globusFormatDN(proxy.getIssuer()));
             Calendar c = new GregorianCalendar();
             c.add(Calendar.SECOND, (int) proxy.getTimeLeft());
             System.out.println("Expires: " + c.getTime().toString());

@@ -22,6 +22,7 @@ import java.util.GregorianCalendar;
 import java.util.Iterator;
 import java.util.List;
 
+import javax.naming.ldap.LdapName;
 import javax.xml.namespace.QName;
 
 import junit.framework.TestCase;
@@ -61,14 +62,6 @@ import org.cagrid.gaards.pki.KeyUtil;
 import org.cagrid.gaards.saml.encoding.SAMLConstants;
 import org.globus.gsi.GlobusCredential;
 
-
-/**
- * @author <A href="mailto:langella@bmi.osu.edu">Stephen Langella </A>
- * @author <A href="mailto:oster@bmi.osu.edu">Scott Oster </A>
- * @author <A href="mailto:hastings@bmi.osu.edu">Shannon Hastings </A>
- * @version $Id: ArgumentManagerTable.java,v 1.2 2004/10/15 16:35:16 langella
- *          Exp $
- */
 
 public class TestDorian extends TestCase {
 
@@ -911,18 +904,12 @@ public class TestDorian extends TestCase {
         long min = max - 3;
         long timeLeft = cred.getTimeLeft();
         if ((min > timeLeft) || (timeLeft > max)) {
-            assertTrue(false);
+            fail("The credential has expired.");
         }
-        assertEquals(CertUtil.getSubjectDN(cert), identityToSubject(cred.getIdentity()));
+        assertEquals(CertUtil.getSubjectDN(cert), CommonUtils.identityToSubject(cred.getIdentity()));
         assertEquals(expectedIdentity, cred.getIdentity());
-        assertEquals(CertUtil.getSubjectDN(getCA().getCACertificate()), CertUtil.getIssuerDN(cert));
+        assertEquals("The credential was not signed by the CA.", CertUtil.getSubjectDN(getCA().getCACertificate()), cert.getIssuerX500Principal().getName());
         cred.verify();
-    }
-
-
-    private String identityToSubject(String identity) {
-        String s = identity.substring(1);
-        return s.replace('/', ',');
     }
 
 
@@ -984,11 +971,12 @@ public class TestDorian extends TestCase {
         methods[0] = SAMLAuthenticationMethod.fromString("urn:oasis:names:tc:SAML:1.0:am:password");
         idp.setAuthenticationMethod(methods);
 
-        String subject = Utils.CA_SUBJECT_PREFIX + ",CN=" + name;
+        LdapName subject = (LdapName) Utils.CA_SUBJECT_PREFIX.clone();
+        subject.add("CN=" + name);
         Credential cred = memoryCA.createIdentityCertificate(name);
         X509Certificate cert = cred.getCertificate();
         assertNotNull(cert);
-        assertEquals(CertUtil.getSubjectDN(cert), subject);
+        assertEquals(CertUtil.getSubjectDN(cert), subject.toString());
         idp.setIdPCertificate(CertUtil.writeCertificate(cert));
         return new IdPContainer(idp, cert, cred.getPrivateKey());
     }
@@ -1030,7 +1018,7 @@ public class TestDorian extends TestCase {
         super.setUp();
         try {
             count = 0;
-            memoryCA = new CA(Utils.getCASubject());
+            memoryCA = new CA(Utils.getCASubject().toString());
         } catch (Exception e) {
             FaultUtil.printFault(e);
             assertTrue(false);

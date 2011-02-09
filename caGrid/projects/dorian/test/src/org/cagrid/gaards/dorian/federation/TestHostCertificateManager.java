@@ -8,6 +8,8 @@ import java.security.KeyPair;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.naming.ldap.LdapName;
+
 import junit.framework.TestCase;
 
 import org.cagrid.gaards.dorian.X509Certificate;
@@ -416,9 +418,9 @@ public class TestHostCertificateManager extends TestCase implements Publisher {
                 HostCertificateFilter f = new HostCertificateFilter();
                 f.setSubject("foobar");
                 assertEquals(0, hcm.findHostCertificates(f).size());
-                String caSubject = CertUtil.getSubjectDN(ca.getCACertificate());
-                int caindex = caSubject.lastIndexOf(",");
-                String caPreSub = caSubject.substring(0, caindex);
+                LdapName caSubject = new LdapName(CertUtil.getSubjectDN(ca.getCACertificate()));
+                caSubject.remove(caSubject.size() - 1);
+                String caPreSub = caSubject.toString();
                 f.setSubject(caPreSub);
                 assertEquals(5, hcm.findHostCertificates(f).size());
             } catch (Exception e) {
@@ -429,9 +431,9 @@ public class TestHostCertificateManager extends TestCase implements Publisher {
             // Test Find by Multiple
             try {
                 HostCertificateFilter f = new HostCertificateFilter();
-                String caSubject = CertUtil.getSubjectDN(ca.getCACertificate());
-                int caindex = caSubject.lastIndexOf(",");
-                String caPreSub = caSubject.substring(0, caindex);
+                LdapName caSubject = new LdapName(CertUtil.getSubjectDN(ca.getCACertificate()));
+                caSubject.remove(caSubject.size() - 1);
+                String caPreSub = caSubject.toString();
                 f.setStatus(HostCertificateStatus.Active);
                 f.setHost(hostPrefix);
                 f.setOwner(OWNER);

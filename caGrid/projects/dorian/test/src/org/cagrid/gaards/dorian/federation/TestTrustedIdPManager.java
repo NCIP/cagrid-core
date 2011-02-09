@@ -14,6 +14,8 @@ import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
 
+import javax.naming.ldap.LdapName;
+
 import junit.framework.TestCase;
 
 import org.apache.xml.security.signature.XMLSignature;
@@ -27,13 +29,6 @@ import org.cagrid.gaards.saml.encoding.SAMLConstants;
 import org.cagrid.tools.database.Database;
 
 
-/**
- * @author <A href="mailto:langella@bmi.osu.edu">Stephen Langella </A>
- * @author <A href="mailto:oster@bmi.osu.edu">Scott Oster </A>
- * @author <A href="mailto:hastings@bmi.osu.edu">Shannon Hastings </A>
- * @version $Id: ArgumentManagerTable.java,v 1.2 2004/10/15 16:35:16 langella
- *          Exp $
- */
 public class TestTrustedIdPManager extends TestCase {
 
     private static final int MIN_NAME_LENGTH = 4;
@@ -625,18 +620,19 @@ public class TestTrustedIdPManager extends TestCase {
         email.setName(SAMLConstants.EMAIL_ATTRIBUTE);
         idp.setEmailAttributeDescriptor(email);
         String id = null;
-        String subject = null;
         if (nonStandartCert) {
             id = "Non Standard" + name;
         } else {
             id = name;
         }
 
-        subject = Utils.CA_SUBJECT_PREFIX + ",CN=" + id;
+        LdapName subject = (LdapName) Utils.CA_SUBJECT_PREFIX.clone();
+        subject.add("CN=" + id);
+        
         Credential cred = ca.createIdentityCertificate(id);
         X509Certificate cert = cred.getCertificate();
         assertNotNull(cert);
-        assertEquals(CertUtil.getSubjectDN(cert), subject);
+        assertEquals(CertUtil.getSubjectDN(cert), subject.toString());
         idp.setIdPCertificate(CertUtil.writeCertificate(cert));
 
         GregorianCalendar cal2 = new GregorianCalendar();
@@ -672,7 +668,7 @@ public class TestTrustedIdPManager extends TestCase {
             IdentityFederationProperties conf = Utils.getIdentityFederationProperties();
             conf.setMinIdPNameLength(MIN_NAME_LENGTH);
             conf.setMaxIdPNameLength(MAX_NAME_LENGTH);
-            ca = new CA(Utils.getCASubject());
+            ca = new CA(Utils.getCASubject().toString());
             tm = new TrustedIdPManager(conf, db);
             tm.clearDatabase();
         } catch (Exception e) {

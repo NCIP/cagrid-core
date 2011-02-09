@@ -29,13 +29,6 @@ import org.cagrid.gaards.pki.CA;
 import org.cagrid.gaards.pki.CertUtil;
 import org.cagrid.gaards.pki.Credential;
 
-/**
- * @author <A href="mailto:langella@bmi.osu.edu">Stephen Langella </A>
- * @author <A href="mailto:oster@bmi.osu.edu">Scott Oster </A>
- * @author <A href="mailto:hastings@bmi.osu.edu">Shannon Hastings </A>
- * @version $Id: ArgumentManagerTable.java,v 1.2 2004/10/15 16:35:16 langella
- *          Exp $
- */
 public class TestSAMLEncoding extends TestCase {
 
 	public void testSAMLEncoding() {
@@ -58,8 +51,8 @@ public class TestSAMLEncoding extends TestCase {
 			Date start = cal.getTime();
 			cal.add(Calendar.MINUTE, 2);
 			Date end = cal.getTime();
-			String issuer = CertUtil.getSubjectDN(cert);
-			String federation = CertUtil.getSubjectDN(cert);
+			String issuer = cert.getSubjectX500Principal().getName();
+			String federation = cert.getSubjectX500Principal().getName();
 			String ipAddress = null;
 			String subjectDNS = null;
 

@@ -13,6 +13,9 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 
+import javax.naming.ldap.LdapName;
+import javax.security.auth.x500.X500Principal;
+
 import junit.framework.TestCase;
 
 import org.bouncycastle.asn1.x509.CRLReason;
@@ -38,8 +41,8 @@ public class TestCertUtil extends TestCase {
 			X509Certificate[] certs = createCertificateSpecifyRootCA(
 					certLocation, keyLocation, keyPassword, "John Doe");
 			assertEquals(2, certs.length);
-			String rootSub = "O=caBIG,OU=Ohio State University,OU=Department of Biomedical Informatics,CN=caBIG Certificate Authority";
-			String issuedSub = "O=caBIG,OU=Ohio State University,OU=Department of Biomedical Informatics,CN=John Doe";
+			String rootSub = "CN=caBIG Certificate Authority,OU=Ohio State University,O=caBIG,C=US";
+			String issuedSub = "CN=John Doe,OU=Ohio State University,O=caBIG,C=US";
 			X509Certificate rootCert = certs[1];
 			X509Certificate issuedCert = certs[0];
 			checkCert(rootCert, rootSub, rootSub);
@@ -64,8 +67,8 @@ public class TestCertUtil extends TestCase {
 			X509Certificate[] certs = createCertificateSpecifyRootCA(
 					certLocation, keyLocation, keyPassword, "John Doe");
 			assertEquals(2, certs.length);
-			String rootSub = "O=Ohio State University,OU=BMI,OU=MSCL,CN=BMI Certificate Authority";
-			String issuedSub = "O=Ohio State University,OU=BMI,OU=MSCL,CN=John Doe";
+			String rootSub = "CN=BMI Certificate Authority,OU=MSCL,OU=BMI,O=Ohio State University";
+			String issuedSub = "CN=John Doe,OU=MSCL,OU=BMI,O=Ohio State University";
 			X509Certificate rootCert = certs[1];
 			X509Certificate issuedCert = certs[0];
 			checkCert(rootCert, rootSub, rootSub);
@@ -83,8 +86,8 @@ public class TestCertUtil extends TestCase {
 		try {
 			KeyPair rootPair = KeyUtil.generateRSAKeyPair1024();
 			assertNotNull(rootPair);
-			String rootSub = "O=Ohio State University,OU=BMI,OU=MSCL,CN=Temp Certificate Authority";
-			X509Name rootSubject = new X509Name(rootSub);
+			String rootSub = "CN=Temp Certificate Authority,OU=MSCL,OU=BMI,O=Ohio State University";
+			X509Name rootSubject = new X509Name(true, rootSub);
 			X509Certificate root = CertUtil.generateCACertificate(rootSubject,
 					new Date(System.currentTimeMillis()), new Date(System
 							.currentTimeMillis() + 500000000), rootPair);
@@ -103,7 +106,7 @@ public class TestCertUtil extends TestCase {
 			File f2 = new File(keyLocation);
 			f2.delete();
 			assertEquals(2, certs.length);
-			String issuedSub = "O=Ohio State University,OU=BMI,OU=MSCL,CN=John Doe";
+			String issuedSub = "CN=John Doe,OU=MSCL,OU=BMI,O=Ohio State University";
 			X509Certificate rootCert = certs[1];
 			X509Certificate issuedCert = certs[0];
 			checkCert(rootCert, rootSub, rootSub);
@@ -121,8 +124,8 @@ public class TestCertUtil extends TestCase {
 		try {
 			KeyPair rootPair = KeyUtil.generateRSAKeyPair1024();
 			assertNotNull(rootPair);
-			String rootSub = "O=Ohio State University,OU=BMI,OU=MSCL,CN=Temp Certificate Authority";
-			X509Name rootSubject = new X509Name(rootSub);
+			String rootSub = "CN=Temp Certificate Authority,OU=MSCL,OU=BMI,O=Ohio State University";
+			X509Name rootSubject = new X509Name(true, rootSub);
 			X509Certificate root = CertUtil.generateCACertificate(rootSubject,
 					new Date(System.currentTimeMillis()), new Date(System
 							.currentTimeMillis()), rootPair);
@@ -159,7 +162,7 @@ public class TestCertUtil extends TestCase {
 		try {
 			KeyPair rootPair = KeyUtil.generateRSAKeyPair1024();
 			assertNotNull(rootPair);
-			String rootSub = "O=Ohio State University,OU=BMI,OU=MSCL,CN=Temp Certificate Authority";
+			String rootSub = "CN=Temp Certificate Authority,OU=MSCL,OU=BMI,O=Ohio State University";
 			X509Name rootSubject = new X509Name(rootSub);
 			X509Certificate root = CertUtil.generateCACertificate(rootSubject,
 					new Date(System.currentTimeMillis() + 50000), new Date(
@@ -204,8 +207,12 @@ public class TestCertUtil extends TestCase {
 	
 
 	private void checkCert(X509Certificate cert, String issuer, String subject) {
-	    assertEquals(subject, CertUtil.getSubjectDN(cert));
-		assertEquals(issuer, CertUtil.getIssuerDN(cert));
+		X500Principal x500s = cert.getSubjectX500Principal();
+		String subj = cert.getSubjectX500Principal().getName(X500Principal.RFC2253);
+		X500Principal x500 = cert.getIssuerX500Principal();		
+		String iss = cert.getIssuerX500Principal().getName(X500Principal.RFC2253);
+	    assertEquals(subject, cert.getSubjectX500Principal().getName(X500Principal.RFC2253));
+		assertEquals(issuer, cert.getIssuerX500Principal().getName());
 	}
 
 	
@@ -225,7 +232,7 @@ public class TestCertUtil extends TestCase {
 		assertNotNull(rootKey);
 		X509Certificate rootCert = CertUtil.loadCertificate(certLocation);
 		assertNotNull(rootCert);
-		String rootSub = CertUtil.getSubjectDN(rootCert);
+		LdapName rootSub = new LdapName(rootCert.getSubjectX500Principal().getName());
 
 		Date now = new Date(System.currentTimeMillis());
 
@@ -240,10 +247,11 @@ public class TestCertUtil extends TestCase {
 		// create the certification request
 		KeyPair pair = KeyUtil.generateRSAKeyPair1024();
 		assertNotNull(pair);
-		int index = rootSub.lastIndexOf(",");
-		String sub = rootSub.substring(0, index) + ",CN=" + cn;
+		LdapName sub = (LdapName) rootSub.clone();
+		sub.remove(sub.size() - 1);
+		sub.add("CN=" + cn);
 		PKCS10CertificationRequest request = CertUtil
-				.generateCertficateRequest(sub, pair);
+				.generateCertficateRequest(sub.toString(), pair);
 
 		// validate the certification request
 		if (!request.verify()) {
@@ -262,10 +270,11 @@ public class TestCertUtil extends TestCase {
 	
 	public void testCRL() {
 		try {
-			String rootSub = "O=Ohio State University,OU=BMI,OU=MSCL,CN=TestCA";
-			String user1Sub = "O=Ohio State University,OU=BMI,OU=MSCL,CN=John Doe";
-			String user2Sub = "O=Ohio State University,OU=BMI,OU=MSCL,CN=Jane Doe";
-			String user3Sub = "O=Ohio State University,OU=BMI,OU=MSCL,CN=Tom Doe";
+			String root = "OU=MSCL,OU=BMI,O=Ohio State University";
+			String rootSub = "CN=TestCA," + root;
+			String user1Sub = "CN=John Doe," + root;
+			String user2Sub = "CN=Jane Doe," + root;
+			String user3Sub = "CN=Tom Doe," + root;
 
 			KeyPair rootKeys = KeyUtil.generateRSAKeyPair512();
 			assertNotNull(rootKeys);

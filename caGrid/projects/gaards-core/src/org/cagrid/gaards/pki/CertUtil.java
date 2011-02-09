@@ -25,6 +25,7 @@ import java.security.NoSuchProviderException;
 import java.security.PrivateKey;
 import java.security.PublicKey;
 import java.security.SignatureException;
+import java.security.cert.CertificateEncodingException;
 import java.security.cert.CertificateException;
 import java.security.cert.CertificateFactory;
 import java.security.cert.X509CRL;
@@ -102,14 +103,14 @@ public class CertUtil {
 
     public static PKCS10CertificationRequest generateCertficateRequest(String provider, String subject, KeyPair pair,
         String algorithm) throws Exception {
-        return new PKCS10CertificationRequest(algorithm, new X509Principal(subject), pair.getPublic(), null, 
+        return new PKCS10CertificationRequest(algorithm, new X509Name(true, subject), pair.getPublic(), null, 
             pair.getPrivate(), provider);
     }
 
 
     public static X509Certificate signCertificateRequest(PKCS10CertificationRequest request, Date start, Date expired,
         X509Certificate cacert, PrivateKey signerKey, String policyId) throws InvalidKeyException,
-        NoSuchProviderException, SignatureException, NoSuchAlgorithmException, IOException {
+        NoSuchProviderException, SignatureException, NoSuchAlgorithmException, IOException, CertificateEncodingException, IllegalStateException {
         return signCertificateRequest(SecurityConstants.CRYPTO_PROVIDER, request, start, expired, 
             cacert, signerKey, SecurityConstants.DEFAULT_SIGNING_ALGORITHM, policyId);
     }
@@ -118,14 +119,14 @@ public class CertUtil {
     public static X509Certificate signCertificateRequest(String provider, PKCS10CertificationRequest request,
         Date start, Date expired, X509Certificate cacert, PrivateKey signerKey, String signatureAlgorithm,
         String policyId) throws InvalidKeyException, NoSuchProviderException, SignatureException,
-        NoSuchAlgorithmException, IOException {
+        NoSuchAlgorithmException, IOException, CertificateEncodingException, IllegalStateException {
         return generateCertificate(provider, request.getCertificationRequestInfo().getSubject(), start, expired,
             request.getPublicKey(provider), cacert, signerKey, signatureAlgorithm, policyId);
     }
 
 
     public static X509Certificate generateCACertificate(X509Name subject, Date start, Date expired, KeyPair pair)
-        throws InvalidKeyException, NoSuchProviderException, SignatureException, IOException {
+        throws InvalidKeyException, NoSuchProviderException, SignatureException, IOException, CertificateEncodingException, IllegalStateException, NoSuchAlgorithmException {
         return generateCACertificate(SecurityConstants.CRYPTO_PROVIDER, subject, start, expired, 
             pair, 1, SecurityConstants.DEFAULT_SIGNING_ALGORITHM);
     }
@@ -133,7 +134,7 @@ public class CertUtil {
 
     public static X509Certificate generateCACertificate(String provider, X509Name subject, Date start, Date expired,
         KeyPair pair, String signatureAlgorithm) throws InvalidKeyException, NoSuchProviderException,
-        SignatureException, IOException {
+        SignatureException, IOException, CertificateEncodingException, IllegalStateException, NoSuchAlgorithmException {
         return generateCACertificate(provider, subject, start, expired, pair, 1, signatureAlgorithm);
     }
 
@@ -162,10 +163,10 @@ public class CertUtil {
         X509V3CertificateGenerator certGen = new X509V3CertificateGenerator();
 
         certGen.setSerialNumber(BigInteger.valueOf(System.currentTimeMillis()));
-        certGen.setIssuerDN(new X509Name(cacert.getSubjectDN().toString()));
+        certGen.setIssuerDN(bouncyCastleDNSort(cacert.getSubjectX500Principal().getName(X500Principal.RFC2253)));
         certGen.setNotBefore(start);
         certGen.setNotAfter(expired);
-        certGen.setSubjectDN(subject);
+        certGen.setSubjectDN(bouncyCastleDNSort(subject));
         certGen.setPublicKey(publicKey);
         certGen.setSignatureAlgorithm(signatureAlgorithm);
         certGen.addExtension(X509Extensions.BasicConstraints, true, new BasicConstraints(constraints));
@@ -184,7 +185,7 @@ public class CertUtil {
 
 
     public static X509Certificate generateCACertificate(X509Name subject, Date start, Date expired, KeyPair pair,
-        int numberOfCAs) throws InvalidKeyException, NoSuchProviderException, SignatureException, IOException {
+        int numberOfCAs) throws InvalidKeyException, NoSuchProviderException, SignatureException, IOException, CertificateEncodingException, IllegalStateException, NoSuchAlgorithmException {
         return generateCACertificate(
             SecurityConstants.CRYPTO_PROVIDER, subject, start, expired, 
             pair, numberOfCAs, SecurityConstants.DEFAULT_SIGNING_ALGORITHM);
@@ -193,14 +194,15 @@ public class CertUtil {
 
     public static X509Certificate generateCACertificate(String provider, X509Name subject, Date start, Date expired,
         KeyPair pair, int numberOfCAs, String signartureAlgorthm) throws InvalidKeyException, NoSuchProviderException,
-        SignatureException, IOException {
+        SignatureException, IOException, CertificateEncodingException, IllegalStateException, NoSuchAlgorithmException {
         // generate the certificate
         X509V3CertificateGenerator certGen = new X509V3CertificateGenerator();
+        X509Name dn = bouncyCastleDNSort(subject);
         certGen.setSerialNumber(BigInteger.valueOf(System.currentTimeMillis()));
-        certGen.setIssuerDN(subject);
+        certGen.setIssuerDN(dn);
         certGen.setNotBefore(start);
         certGen.setNotAfter(expired);
-        certGen.setSubjectDN(subject);
+        certGen.setSubjectDN(dn);
         certGen.setPublicKey(pair.getPublic());
         certGen.setSignatureAlgorithm(signartureAlgorthm);
         certGen.addExtension(X509Extensions.BasicConstraints, true, new BasicConstraints(numberOfCAs));
@@ -214,13 +216,13 @@ public class CertUtil {
         SubjectPublicKeyInfo apki = new SubjectPublicKeyInfo((ASN1Sequence) new ASN1InputStream(
             new ByteArrayInputStream(pair.getPublic().getEncoded())).readObject());
         certGen.addExtension(X509Extensions.AuthorityKeyIdentifier, false, new AuthorityKeyIdentifier(apki));
-        return certGen.generateX509Certificate(pair.getPrivate(), provider);
+        return certGen.generate(pair.getPrivate(), provider);
     }
 
 
     public static X509Certificate generateCertificate(X509Name subject, Date start, Date expired, PublicKey publicKey,
         X509Certificate cacert, PrivateKey signerKey, String policyId) throws InvalidKeyException,
-        NoSuchProviderException, SignatureException, IOException {
+        NoSuchProviderException, SignatureException, IOException, CertificateEncodingException, IllegalStateException, NoSuchAlgorithmException {
         return generateCertificate(
             SecurityConstants.CRYPTO_PROVIDER, subject, start, expired, publicKey, cacert, signerKey, 
             SecurityConstants.DEFAULT_SIGNING_ALGORITHM, policyId);
@@ -229,15 +231,15 @@ public class CertUtil {
 
     public static X509Certificate generateCertificate(String provider, X509Name subject, Date start, Date expired,
         PublicKey publicKey, X509Certificate cacert, PrivateKey signerKey, String signatureAlgorithm, String policyId)
-        throws InvalidKeyException, NoSuchProviderException, SignatureException, IOException {
+        throws InvalidKeyException, NoSuchProviderException, SignatureException, IOException, CertificateEncodingException, IllegalStateException, NoSuchAlgorithmException {
         // create the certificate using the information in the request
         X509V3CertificateGenerator certGen = new X509V3CertificateGenerator();
 
         certGen.setSerialNumber(BigInteger.valueOf(System.currentTimeMillis()));
-        certGen.setIssuerDN(new X509Name(cacert.getSubjectDN().getName()));
+        certGen.setIssuerDN(bouncyCastleDNSort(cacert.getSubjectX500Principal().getName()));
         certGen.setNotBefore(start);
         certGen.setNotAfter(expired);
-        certGen.setSubjectDN(subject);
+        certGen.setSubjectDN(bouncyCastleDNSort(subject));
         certGen.setPublicKey(publicKey);
         certGen.setSignatureAlgorithm(signatureAlgorithm);
         certGen.addExtension(X509Extensions.BasicConstraints, true, new BasicConstraints(false));
@@ -257,7 +259,7 @@ public class CertUtil {
             certGen.addExtension(X509Extensions.CertificatePolicies.getId(), false, seq);
         }
 
-        X509Certificate issuedCert = certGen.generateX509Certificate(signerKey, provider);
+        X509Certificate issuedCert = certGen.generate(signerKey, provider);
         return issuedCert;
     }
 
@@ -455,7 +457,7 @@ public class CertUtil {
         Date expires, String signatureAlgorithm) throws Exception {
         X509V2CRLGenerator crlGen = new X509V2CRLGenerator();
         Date now = new Date();
-        crlGen.setIssuerDN(new X509Name(caCert.getSubjectDN().getName()));
+        crlGen.setIssuerDN(new X509Name(true, caCert.getSubjectX500Principal().getName(X500Principal.RFC2253)));
         crlGen.setThisUpdate(now);
         crlGen.setNextUpdate(expires);
         crlGen.setSignatureAlgorithm(signatureAlgorithm);
@@ -605,7 +607,7 @@ public class CertUtil {
      */
     public static String getSubjectDN(X509Certificate cert) {
         String dn = cert.getSubjectX500Principal().getName(X500Principal.RFC2253);
-        return globusFormatDN(dn);
+        return dn;
     }
     
     
@@ -620,20 +622,20 @@ public class CertUtil {
      * @param cert
      * @return
      */
-    public static String getIssuerDN(X509Certificate cert) {
-        String dn = cert.getIssuerX500Principal().getName(X500Principal.RFC2253);
-        return globusFormatDN(dn);
-    }
-    
-    
-    public static String globusFormatDN(String dn) {
-        if (dn != null && dn.startsWith("CN=")) {
-            dn = reverseDN(dn);
-        }
-        return dn;
-    }
-    
-    
+//    public static String getIssuerDN(X509Certificate cert) {
+//        String dn = cert.getIssuerX500Principal().getName(X500Principal.RFC2253);
+//        return globusFormatDN(dn);
+//    }
+//    
+//    
+//    public static String globusFormatDN(String dn) {
+//        if (dn != null && dn.startsWith("CN=")) {
+//            dn = reverseDN(dn);
+//        }
+//        return dn;
+//    }
+//    
+//    
     public static String getIdentity(GlobusCredential cred) {
         String identity = null;
         X509Certificate[] chain = cred.getCertificateChain();
@@ -647,8 +649,17 @@ public class CertUtil {
         return identity;
     }   
     
-    private static String reverseDN(String dn) {
-    	X509Name name = new X509Name(true, dn);
-        return name.toString();
+    public static X509Name bouncyCastleDNSort(X509Name name) {
+		return bouncyCastleDNSort(name.toString());
     }
+    
+    public static X509Name bouncyCastleDNSort(String name) {
+		return new X509Name(name.startsWith("CN="), name);    	
+    }
+
+//    
+//    private static String reverseDN(String dn) {
+//    	X509Name name = new X509Name(true, dn);
+//        return name.toString();
+//    }
 }

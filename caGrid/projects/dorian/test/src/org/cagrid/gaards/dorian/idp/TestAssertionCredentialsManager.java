@@ -16,6 +16,8 @@ import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.Iterator;
 
+import javax.naming.ldap.LdapName;
+
 import junit.framework.TestCase;
 
 import org.cagrid.gaards.dorian.ca.CertificateAuthority;
@@ -28,13 +30,6 @@ import org.cagrid.gaards.pki.KeyUtil;
 import org.cagrid.gaards.saml.encoding.SAMLUtils;
 import org.cagrid.tools.database.Database;
 
-/**
- * @author <A href="mailto:langella@bmi.osu.edu">Stephen Langella </A>
- * @author <A href="mailto:oster@bmi.osu.edu">Scott Oster </A>
- * @author <A href="mailto:hastings@bmi.osu.edu">Shannon Hastings </A>
- * @version $Id: ArgumentManagerTable.java,v 1.2 2004/10/15 16:35:16 langella
- *          Exp $
- */
 public class TestAssertionCredentialsManager extends TestCase {
 
 	private Database db;
@@ -122,9 +117,9 @@ public class TestAssertionCredentialsManager extends TestCase {
 			X509Certificate cert = cm.getIdPCertificate();
 			assertNotNull(cert);
 			assertNotNull(cm.getIdPKey());
-			String expectedSub = Utils.CA_SUBJECT_PREFIX + ",CN="
-					+ AssertionCredentialsManager.CERT_DN;
-			assertEquals(expectedSub, CertUtil.getSubjectDN(cert));
+			LdapName expectedSub = (LdapName) Utils.CA_SUBJECT_PREFIX.clone();
+			expectedSub.add("CN=" + AssertionCredentialsManager.CERT_DN);
+			assertEquals(expectedSub.toString(), CertUtil.getSubjectDN(cert));
 			SAMLAssertion saml = cm.getAuthenticationAssertion(TEST_UID,
 					TEST_FIRST_NAME, TEST_LAST_NAME, TEST_EMAIL);
 			verifySAMLAssertion(saml, cm);
@@ -133,7 +128,7 @@ public class TestAssertionCredentialsManager extends TestCase {
 			verifySAMLAssertion(saml2, cm);
 		} catch (Exception e) {
 			FaultUtil.printFault(e);
-			assertTrue(false);
+			fail();
 		} finally {
 			try {
 				cm.clearDatabase();
@@ -150,9 +145,9 @@ public class TestAssertionCredentialsManager extends TestCase {
 			X509Certificate cert = cm.getIdPCertificate();
 			assertNotNull(cert);
 			assertNotNull(cm.getIdPKey());
-			String expectedSub = Utils.CA_SUBJECT_PREFIX + ",CN="
-					+ AssertionCredentialsManager.CERT_DN;
-			assertEquals(expectedSub, CertUtil.getSubjectDN(cert));
+			LdapName expectedSub = (LdapName) Utils.CA_SUBJECT_PREFIX.clone();
+			expectedSub.add("CN=" + AssertionCredentialsManager.CERT_DN);
+			assertEquals(expectedSub.toString(), CertUtil.getSubjectDN(cert));
 
 			String subject = CertUtil.getSubjectDN(cert);
 			KeyPair pair = KeyUtil.generateRSAKeyPair1024();
@@ -200,7 +195,7 @@ public class TestAssertionCredentialsManager extends TestCase {
 
 		} catch (Exception e) {
 			FaultUtil.printFault(e);
-			assertTrue(false);
+			fail();
 		} finally {
 			try {
 				cm.clearDatabase();
@@ -221,9 +216,9 @@ public class TestAssertionCredentialsManager extends TestCase {
 			X509Certificate cert = cm.getIdPCertificate();
 			assertNotNull(cert);
 			assertNotNull(cm.getIdPKey());
-			String expectedSub = Utils.CA_SUBJECT_PREFIX + ",CN="
-					+ AssertionCredentialsManager.CERT_DN;
-			assertEquals(expectedSub, CertUtil.getSubjectDN(cert));
+			LdapName expectedSub = (LdapName) Utils.CA_SUBJECT_PREFIX.clone();
+			expectedSub.add("CN=" + AssertionCredentialsManager.CERT_DN);
+			assertEquals(expectedSub.toString(), CertUtil.getSubjectDN(cert));
 
 			String subject = CertUtil.getSubjectDN(cert);
 			KeyPair pair = KeyUtil.generateRSAKeyPair1024();
@@ -244,14 +239,14 @@ public class TestAssertionCredentialsManager extends TestCase {
 
 			try {
 				cm.getIdPCertificate();
-				assertTrue(false);
+				fail();
 			} catch (DorianInternalFault fault) {
 
 			}
 
 		} catch (Exception e) {
 			FaultUtil.printFault(e);
-			assertTrue(false);
+			fail();
 		} finally {
 			try {
 				cm.clearDatabase();
@@ -270,7 +265,7 @@ public class TestAssertionCredentialsManager extends TestCase {
 
 		} catch (Exception e) {
 			FaultUtil.printFault(e);
-			assertTrue(false);
+			fail();
 		}
 	}
 
@@ -280,7 +275,7 @@ public class TestAssertionCredentialsManager extends TestCase {
 			assertEquals(0, db.getUsedConnectionCount());
 		} catch (Exception e) {
 			FaultUtil.printFault(e);
-			assertTrue(false);
+			fail();
 		}
 	}
 }

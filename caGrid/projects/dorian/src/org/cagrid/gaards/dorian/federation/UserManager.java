@@ -13,6 +13,10 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import javax.naming.InvalidNameException;
+import javax.naming.Name;
+import javax.naming.ldap.LdapName;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.cagrid.gaards.dorian.ca.CertificateAuthority;
@@ -134,13 +138,41 @@ public class UserManager {
 
 
     public static String getUserSubject(String policy, String caSubject, TrustedIdP idp, String uid) {
-        int caindex = caSubject.lastIndexOf(",");
-        String caPreSub = caSubject.substring(0, caindex);
+    	LdapName name = null;
+    	try {
+			name = new LdapName(caSubject);
+		} catch (InvalidNameException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+        try {
+			name.remove(name.size() - 1);
+		} catch (InvalidNameException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
         if (policy.equals(IdentityAssignmentPolicy.ID)) {
-            return caPreSub + ",OU=IdP [" + idp.getId() + "],CN=" + uid;
+        	try {
+        		name.add("OU=IdP [" + idp.getId() + "]");
+			} catch (InvalidNameException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
         } else {
-            return caPreSub + ",OU=" + idp.getName() + ",CN=" + uid;
+        	try {
+        		name.add("OU=" + idp.getName());
+			} catch (InvalidNameException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
         }
+        try {
+        	name.add("CN=" + uid);
+		} catch (InvalidNameException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+        return name.toString();
     }
 
 
@@ -491,7 +523,7 @@ public class UserManager {
             Connection c = null;
             try {
 
-                String caSubject = CertUtil.getSubjectDN(ca.getCACertificate());
+                String caSubject = ca.getCACertificate().getSubjectX500Principal().getName();
                 user.setGridId(CommonUtils.subjectToIdentity(getUserSubject(caSubject, idp, user.getUID())));
                 user.setUserStatus(GridUserStatus.Pending);
                 try {

@@ -10,6 +10,8 @@ import java.security.cert.X509Certificate;
 import java.security.interfaces.RSAPublicKey;
 import java.util.Date;
 
+import javax.naming.ldap.LdapName;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.bouncycastle.asn1.x509.X509Name;
@@ -202,13 +204,13 @@ public abstract class CertificateAuthority {
 
         try {
             // VALIDATE DN
-            String caSubject = CertUtil.getSubjectDN(cacert);
-            int caindex = caSubject.lastIndexOf(",");
-            String caPreSub = caSubject.substring(0, caindex);
+            LdapName caSubject = new LdapName(cacert.getSubjectX500Principal().getName());
+            caSubject.remove(caSubject.size() - 1);
+            LdapName ldapSubject = new LdapName(subject);
 
-            if (!subject.startsWith(caPreSub)) {
+            if (!ldapSubject.startsWith(caSubject)) {
                 CertificateAuthorityFault fault = new CertificateAuthorityFault();
-                fault.setFaultString("Invalid certificate subject, the subject must start with, " + caPreSub);
+                fault.setFaultString("Invalid certificate subject: " + ldapSubject.toString() + ", the subject must start with, " + caSubject.toString());
                 throw fault;
             }
             X509Certificate cert = CertUtil.generateCertificate(getCACredentialsProvider(), new X509Name(subject),
@@ -256,7 +258,7 @@ public abstract class CertificateAuthority {
             int size = ((RSAPublicKey) oldcert.getPublicKey()).getModulus().bitLength();
             KeyPair pair = KeyUtil.generateRSAKeyPair(getCACredentialsProvider(), size);
             X509Certificate cacert = CertUtil.generateCACertificate(getCACredentialsProvider(), 
-                new X509Name(CertUtil.getSubjectDN(oldcert)), new Date(), expirationDate, pair, getSignatureAlgorithm());
+                new X509Name(oldcert.getSubjectX500Principal().getName()), new Date(), expirationDate, pair, getSignatureAlgorithm());
             deleteCACredentials();
             this.setCACredentials(cacert, pair.getPrivate(), properties.getCertificateAuthorityPassword());
             return cacert;

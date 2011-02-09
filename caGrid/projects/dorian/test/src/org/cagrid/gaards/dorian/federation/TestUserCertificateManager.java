@@ -14,6 +14,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.naming.InvalidNameException;
+import javax.naming.ldap.LdapName;
+
 import junit.framework.TestCase;
 
 import org.cagrid.gaards.dorian.ca.CertificateAuthority;
@@ -30,7 +33,7 @@ public class TestUserCertificateManager extends TestCase implements Publisher {
     private static final int DEFAULT_SECONDS_OFFSET = 300;
     private Database db;
     private CertificateAuthority ca;
-    private String caSubject;
+    private LdapName caSubject;
     private int crlPublishCount;
     private List<BigInteger> crl;
     private UserCertificateManager man;
@@ -987,9 +990,15 @@ public class TestUserCertificateManager extends TestCase implements Publisher {
 
 
     private String getUserSubject(String uid) {
-        int caindex = caSubject.lastIndexOf(",");
-        String caPreSub = caSubject.substring(0, caindex);
-        return caPreSub + ",OU=" + 123 + ",CN=" + uid;
+        LdapName userDN = (LdapName) caSubject.clone();
+        try {
+			userDN.add("OU=123");
+	        userDN.add("CN=" + uid);
+		} catch (InvalidNameException e) {
+			e.printStackTrace();
+			fail("Unable to generate user DN");
+		}
+        return userDN.toString();
     }
 
 
@@ -1021,7 +1030,7 @@ public class TestUserCertificateManager extends TestCase implements Publisher {
             db = Utils.getDB();
             assertEquals(0, db.getUsedConnectionCount());
             ca = Utils.getCA();
-            caSubject = CertUtil.getSubjectDN(ca.getCACertificate());
+            caSubject = new LdapName(CertUtil.getSubjectDN(ca.getCACertificate()));
             blackList = new CertificateBlacklistManager(db);
             blackList.clearDatabase();
             man = new UserCertificateManager(db, this, blackList);

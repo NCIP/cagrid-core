@@ -95,7 +95,7 @@ public class HostCertificateManager {
             }
             java.security.cert.X509Certificate cert = ca.signHostCertificate(record.getHost(), key, start, end);
             record.setSerialNumber(cert.getSerialNumber().longValue());
-            record.setSubject(CertUtil.getSubjectDN(cert));
+            record.setSubject(cert.getSubjectX500Principal().getName());
             X509Certificate x509 = new X509Certificate();
             x509.setCertificateAsString(CertUtil.writeCertificate(cert));
             record.setCertificate(x509);
@@ -149,7 +149,7 @@ public class HostCertificateManager {
             java.security.cert.X509Certificate cert = ca.signHostCertificate(host, key, start, end);
 
             record.setSerialNumber(cert.getSerialNumber().longValue());
-            record.setSubject(CertUtil.getSubjectDN(cert));
+            record.setSubject(cert.getSubjectX500Principal().getName());
             record.setStatus(HostCertificateStatus.Active);
             X509Certificate x509 = new X509Certificate();
             x509.setCertificateAsString(CertUtil.writeCertificate(cert));

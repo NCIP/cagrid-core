@@ -70,7 +70,7 @@ public class IdentityFederationManager implements Publisher {
     
     public static Log LOG = LogFactory.getLog(IdentityFederationManager.class);
 
-    private UserManager um;
+    private UserManager userManager;
 
     private TrustedIdPManager tm;
 
@@ -125,8 +125,8 @@ public class IdentityFederationManager implements Publisher {
         this.blackList = new CertificateBlacklistManager(db);
         this.userCertificateManager = new UserCertificateManager(db, this, this.blackList);
         tm = new TrustedIdPManager(conf, db);
-        um = new UserManager(db, conf, properties, ca, tm, this, defaults);
-        um.buildDatabase();
+        userManager = new UserManager(db, conf, properties, ca, tm, this, defaults);
+        userManager.buildDatabase();
         this.groupManager = new GroupManager(db);
         try {
             if (!this.groupManager.groupExists(ADMINISTRATORS)) {
@@ -281,7 +281,7 @@ public class IdentityFederationManager implements Publisher {
 
 
     public String getIdentityAssignmentPolicy() {
-        return um.getIdentityAssignmentPolicy();
+        return userManager.getIdentityAssignmentPolicy();
     }
 
 
@@ -313,8 +313,8 @@ public class IdentityFederationManager implements Publisher {
             fault.setFaultString("No credentials specified.");
             throw fault;
         }
-        TrustedIdP idp = tm.getTrustedIdPByDN(CertUtil.getSubjectDN(idpCert));
-        GridUser usr = um.getUser(identity);
+        TrustedIdP idp = tm.getTrustedIdPByDN(idpCert.getSubjectX500Principal().getName());
+        GridUser usr = userManager.getUser(identity);
         if (usr.getIdPId() != idp.getId()) {
             PermissionDeniedFault fault = new PermissionDeniedFault();
             fault.setFaultString("Not a valid user of the IdP " + idp.getName());
@@ -395,7 +395,7 @@ public class IdentityFederationManager implements Publisher {
                     + callerGridIdentity + ".");
             GridUserFilter uf = new GridUserFilter();
             uf.setIdPId(idpId);
-            GridUser[] users = um.getUsers(uf);
+            GridUser[] users = userManager.getUsers(uf);
             for (int i = 0; i < users.length; i++) {
                 try {
                     removeUser(users[i]);
@@ -458,10 +458,10 @@ public class IdentityFederationManager implements Publisher {
     public GridUser getUser(String callerGridIdentity, long idpId, String uid) throws DorianInternalFault,
         InvalidUserFault, PermissionDeniedFault {
         try {
-            GridUser caller = um.getUser(callerGridIdentity);
+            GridUser caller = userManager.getUser(callerGridIdentity);
             verifyActiveUser(caller);
             verifyAdminUser(caller);
-            return um.getUser(idpId, uid);
+            return userManager.getUser(idpId, uid);
         } catch (DorianInternalFault e) {
             String mess = "An unexpected error occurred in loading a user account.";
             this.eventManager.logEvent(AuditConstants.SYSTEM_ID, AuditConstants.SYSTEM_ID,
@@ -482,7 +482,7 @@ public class IdentityFederationManager implements Publisher {
             GridUser caller = getUser(callerGridIdentity);
             verifyActiveUser(caller);
             verifyAdminUser(caller);
-            return um.getUsers(filter);
+            return userManager.getUsers(filter);
 
         } catch (DorianInternalFault e) {
             String mess = "An unexpected error occurred in searching for grid user accounts.";
@@ -501,11 +501,11 @@ public class IdentityFederationManager implements Publisher {
     public void updateUser(String callerGridIdentity, GridUser usr) throws DorianInternalFault, InvalidUserFault,
         PermissionDeniedFault {
         try {
-            GridUser caller = um.getUser(callerGridIdentity);
+            GridUser caller = userManager.getUser(callerGridIdentity);
             verifyActiveUser(caller);
             verifyAdminUser(caller);
-            GridUser curr = um.getUser(usr.getIdPId(), usr.getUID());
-            um.updateUser(usr);
+            GridUser curr = userManager.getUser(usr.getIdPId(), usr.getUID());
+            userManager.updateUser(usr);
             this.eventManager.logEvent(curr.getGridId(), callerGridIdentity, FederationAudit.AccountUpdated.getValue(),
                 ReportUtils.generateReport(curr, usr));
         } catch (DorianInternalFault e) {
@@ -524,8 +524,8 @@ public class IdentityFederationManager implements Publisher {
 
     public void removeUserByLocalIdIfExists(X509Certificate idpCert, String localId) throws DorianInternalFault {
         try {
-            TrustedIdP idp = tm.getTrustedIdPByDN(CertUtil.getSubjectDN(idpCert));
-            GridUser usr = um.getUser(idp.getId(), localId);
+            TrustedIdP idp = tm.getTrustedIdPByDN(idpCert.getSubjectX500Principal().getName());
+            GridUser usr = userManager.getUser(idp.getId(), localId);
             removeUser(usr);
             this.eventManager.logEvent(usr.getGridId(), AuditConstants.SYSTEM_ID, FederationAudit.AccountRemoved
                 .getValue(), usr.getFirstName() + " " + usr.getLastName()
@@ -537,7 +537,7 @@ public class IdentityFederationManager implements Publisher {
             LOG.error(f.getFaultString(), f);
             DorianInternalFault fault = new DorianInternalFault();
             fault.setFaultString("An unexpected error occurred removing the grid user, the IdP "
-                + CertUtil.getSubjectDN(idpCert) + " could not be resolved!!!");
+                + idpCert.getSubjectX500Principal().getName() + " could not be resolved!!!");
             throw fault;
         }
     }
@@ -545,7 +545,7 @@ public class IdentityFederationManager implements Publisher {
 
     private void removeUser(GridUser usr) throws DorianInternalFault, InvalidUserFault {
         try {
-            um.removeUser(usr);
+            userManager.removeUser(usr);
             this.userCertificateManager.removeCertificates(usr.getGridId());
 
             List<HostCertificateRecord> records = this.hostManager.getHostCertificateRecords(usr.getGridId());
@@ -615,7 +615,7 @@ public class IdentityFederationManager implements Publisher {
     public void removeUser(String callerGridIdentity, GridUser usr) throws DorianInternalFault, InvalidUserFault,
         PermissionDeniedFault {
         try {
-            GridUser caller = um.getUser(callerGridIdentity);
+            GridUser caller = userManager.getUser(callerGridIdentity);
             verifyActiveUser(caller);
             verifyAdminUser(caller);
             removeUser(usr);
@@ -774,7 +774,7 @@ public class IdentityFederationManager implements Publisher {
 
         try {
             gid = CommonUtils.subjectToIdentity(UserManager.getUserSubject(this.conf.getIdentityAssignmentPolicy(), 
-                CertUtil.getSubjectDN(ca.getCACertificate()), idp, uid));
+                ca.getCACertificate().getSubjectX500Principal().getName(), idp, uid));
         } catch (Exception e) {
             String msg = "An unexpected error occurred in determining the grid identity for the user.";
             this.eventManager.logEvent(AuditConstants.SYSTEM_ID, AuditConstants.SYSTEM_ID,
@@ -842,7 +842,7 @@ public class IdentityFederationManager implements Publisher {
 
         // If the user does not exist, add them
         GridUser usr = null;
-        if (!um.determineIfUserExists(idp.getId(), uid)) {
+        if (!userManager.determineIfUserExists(idp.getId(), uid)) {
             try {
                 usr = new GridUser();
                 usr.setIdPId(idp.getId());
@@ -851,7 +851,7 @@ public class IdentityFederationManager implements Publisher {
                 usr.setLastName(lastName);
                 usr.setEmail(email);
                 usr.setUserStatus(GridUserStatus.Pending);
-                usr = um.addUser(idp, usr);
+                usr = userManager.addUser(idp, usr);
                 this.eventManager.logEvent(gid, AuditConstants.SYSTEM_ID, FederationAudit.AccountCreated.getValue(),
                     "User Account Created!!!");
             } catch (Exception e) {
@@ -872,7 +872,7 @@ public class IdentityFederationManager implements Publisher {
             }
         } else {
             try {
-                usr = um.getUser(idp.getId(), uid);
+                usr = userManager.getUser(idp.getId(), uid);
                 boolean performUpdate = false;
 
                 if ((usr.getFirstName() == null) || (!usr.getFirstName().equals(firstName))) {
@@ -888,8 +888,8 @@ public class IdentityFederationManager implements Publisher {
                     performUpdate = true;
                 }
                 if (performUpdate) {
-                    GridUser orig = um.getUser(idp.getId(), uid);
-                    um.updateUser(usr);
+                    GridUser orig = userManager.getUser(idp.getId(), uid);
+                    userManager.updateUser(usr);
                     this.eventManager.logEvent(usr.getGridId(), AuditConstants.SYSTEM_ID,
                         FederationAudit.AccountUpdated.getValue(), ReportUtils.generateReport(orig, usr));
                 }
@@ -931,7 +931,7 @@ public class IdentityFederationManager implements Publisher {
         try {
             Class c = Class.forName(idp.getUserPolicyClass());
             policy = (AccountPolicy) c.newInstance();
-            policy.configure(conf, um);
+            policy.configure(conf, userManager);
 
         } catch (Exception e) {
             String msg = "An unexpected error occurred in creating an instance of the user policy "
@@ -961,8 +961,8 @@ public class IdentityFederationManager implements Publisher {
 
         // create user certificate
         try {
-            String caSubject = CertUtil.getSubjectDN(ca.getCACertificate());
-            String sub = um.getUserSubject(caSubject, idp, usr.getUID());
+            String caSubject = ca.getCACertificate().getSubjectX500Principal().getName();
+            String sub = userManager.getUserSubject(caSubject, idp, usr.getUID());
             Calendar c1 = new GregorianCalendar();
             c1.add(Calendar.SECOND, CERTIFICATE_START_OFFSET_SECONDS);
             Date start = c1.getTime();
@@ -1213,7 +1213,7 @@ public class IdentityFederationManager implements Publisher {
                                 X509CRL crl = getCRL();
                                 gov.nih.nci.cagrid.gts.bean.X509CRL x509 = new gov.nih.nci.cagrid.gts.bean.X509CRL();
                                 x509.setCrlEncodedString(CertUtil.writeCRL(crl));
-                                String authName = CertUtil.getSubjectDN(ca.getCACertificate());
+                                String authName = ca.getCACertificate().getSubjectX500Principal().getName();
                                 for (int i = 0; i < services.size(); i++) {
                                     String uri = services.get(i);
                                     try {
@@ -1256,7 +1256,7 @@ public class IdentityFederationManager implements Publisher {
     public X509CRL getCRL() throws DorianInternalFault {
         Map<Long, CRLEntry> list = new HashMap<Long, CRLEntry>();
 
-        Set<String> users = this.um.getDisabledUsers();
+        Set<String> users = this.userManager.getDisabledUsers();
         Iterator<String> itr = users.iterator();
         while (itr.hasNext()) {
             String gid = itr.next();
@@ -1331,7 +1331,7 @@ public class IdentityFederationManager implements Publisher {
 
     private GridUser getUser(String gridId) throws DorianInternalFault, PermissionDeniedFault {
         try {
-            return um.getUser(gridId);
+            return userManager.getUser(gridId);
         } catch (InvalidUserFault f) {
             PermissionDeniedFault fault = new PermissionDeniedFault();
             fault.setFaultString("You are not a valid user!!!");
@@ -1405,7 +1405,7 @@ public class IdentityFederationManager implements Publisher {
 
 
     protected UserManager getUserManager() {
-        return um;
+        return userManager;
     }
 
 
@@ -1461,7 +1461,7 @@ public class IdentityFederationManager implements Publisher {
 
 
     public void clearDatabase() throws DorianInternalFault {
-        this.um.clearDatabase();
+        this.userManager.clearDatabase();
         this.tm.clearDatabase();
         try {
             this.groupManager.clearDatabase();
@@ -1719,7 +1719,7 @@ public class IdentityFederationManager implements Publisher {
             List<HostRecord> records = this.hostManager.getHostRecords(criteria);
             for (int i = 0; i < records.size(); i++) {
                 HostRecord r = records.get(i);
-                GridUserRecord g = this.um.getUserRecord(r.getOwner());
+                GridUserRecord g = this.userManager.getUserRecord(r.getOwner());
                 r.setOwnerEmail(g.getEmail());
                 r.setOwnerFirstName(g.getFirstName());
                 r.setOwnerLastName(g.getLastName());
@@ -1761,7 +1761,7 @@ public class IdentityFederationManager implements Publisher {
             	fault.setFaultString("Unknown Search Policy Type: " +  conf.getUserSearchPolicy());
             	throw fault;
             }
-            return um.getUsers(criteria);
+            return userManager.getUsers(criteria);
         } catch (DorianInternalFault e) {
             String mess = "An unexpected error occurred in performing user search:";
             this.eventManager.logEvent(AuditConstants.SYSTEM_ID, AuditConstants.SYSTEM_ID,

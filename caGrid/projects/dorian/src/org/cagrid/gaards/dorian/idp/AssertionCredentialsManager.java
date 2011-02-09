@@ -22,6 +22,7 @@ import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
 
+import javax.naming.ldap.LdapName;
 import javax.xml.namespace.QName;
 
 import org.apache.commons.logging.Log;
@@ -164,15 +165,13 @@ public class AssertionCredentialsManager {
     private synchronized void createNewCredentials() throws Exception {
         // VALIDATE DN
         X509Certificate cacert = ca.getCACertificate();
-        String caSubject = CertUtil.getSubjectDN(cacert);
-        int caindex = caSubject.lastIndexOf(",");
-        String caPreSub = caSubject.substring(0, caindex);
-
-        String subject = caPreSub + ",CN=" + CERT_DN;
+        LdapName caSubject = new LdapName(cacert.getSubjectX500Principal().getName());
+        caSubject.remove(caSubject.size() - 1);
+        caSubject.add("CN=" + CERT_DN);
         KeyPair pair = KeyUtil.generateRSAKeyPair1024();
         GregorianCalendar cal = new GregorianCalendar();
         Date start = cal.getTime();
-        X509Certificate cert = ca.signCertificate(subject, pair.getPublic(), start, cacert.getNotAfter());
+        X509Certificate cert = ca.signCertificate(caSubject.toString(), pair.getPublic(), start, cacert.getNotAfter());
         storeCredentials(cert, pair.getPrivate());
     }
 
@@ -238,8 +237,8 @@ public class AssertionCredentialsManager {
             Date start = cal.getTime();
             cal.add(Calendar.MINUTE, 2);
             Date end = cal.getTime();
-            String issuer = CertUtil.getSubjectDN(cert);
-            String federation = CertUtil.getSubjectDN(cert);
+            String issuer = cert.getSubjectX500Principal().getName();
+            String federation = cert.getSubjectX500Principal().getName();
             String ipAddress = null;
             String subjectDNS = null;
 

@@ -299,8 +299,8 @@ public class BouncyCastleCertProcessingFactory {
 	 *                if security error occurs.
 	 */
 	public byte[] createCertificateRequest(X509Certificate cert, KeyPair keyPair) throws GeneralSecurityException {
-		String issuer = org.cagrid.gaards.pki.CertUtil.getSubjectDN(cert);
-		X509Name subjectDN = new X509Name(issuer + ",CN=proxy");
+		String issuer = cert.getSubjectX500Principal().getName();
+		X509Name subjectDN = new X509Name("CN=proxy," + issuer);
 		String sigAlgName = cert.getSigAlgName();
 		return createCertificateRequest(subjectDN, sigAlgName, keyPair);
 	}
@@ -545,7 +545,7 @@ public class BouncyCastleCertProcessingFactory {
 			}
 		}
 
-		X509Name issuerDN = new X509Name(org.cagrid.gaards.pki.CertUtil.getSubjectDN(issuerCert));
+		X509Name issuerDN = new X509Name(issuerCert.getSubjectX500Principal().getName());
 
 		X509NameHelper issuer = new X509NameHelper(issuerDN);
 

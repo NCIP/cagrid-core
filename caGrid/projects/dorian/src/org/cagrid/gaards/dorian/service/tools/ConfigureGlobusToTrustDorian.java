@@ -76,7 +76,7 @@ public class ConfigureGlobusToTrustDorian {
                 CertUtil.writeCertificate(cacert, caFile);
                 CertUtil.writeSigningPolicy(cacert, policyFile);
                 System.out.println("Succesfully configured Globus to trust the Dorian CA: "
-                    + CertUtil.getSubjectDN(cacert));
+                    + cacert.getSubjectX500Principal().getName());
                 System.out.println("Succesfully wrote CA certificate to " + caFile.getAbsolutePath());
                 System.out.println("Succesfully wrote CA signing policy to " + policyFile.getAbsolutePath());
             }
