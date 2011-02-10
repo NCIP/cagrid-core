@@ -746,7 +746,7 @@ public class DelegationManagerTest extends TestCase {
 		Utils.getDatabase().createDatabaseIfNeeded();
 		try {
 			Date now = new Date();	
-			this.caDN = "O=Delegation Credential Manager,OU="+now.getTime()+",CN=Certificate Authority";
+			this.caDN = "CN=Certificate Authority,OU=" + now.getTime() + ",O=Delegation Credential Manager";
 			this.ca = new CA(this.caDN);
 			File f = gov.nih.nci.cagrid.common.Utils
 					.getTrustedCerificatesDirectory();

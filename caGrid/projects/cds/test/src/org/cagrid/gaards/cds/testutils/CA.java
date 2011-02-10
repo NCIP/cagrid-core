@@ -12,26 +12,21 @@ import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.Map;
 
+import javax.naming.ldap.LdapName;
+
 import org.bouncycastle.asn1.x509.X509Name;
 import org.cagrid.gaards.pki.CertUtil;
 import org.cagrid.gaards.pki.KeyUtil;
 import org.cagrid.gaards.pki.ProxyCreator;
 import org.globus.gsi.GlobusCredential;
 
-/**
- * @author <A href="mailto:langella@bmi.osu.edu">Stephen Langella </A>
- * @author <A href="mailto:oster@bmi.osu.edu">Scott Oster </A>
- * @author <A href="mailto:hastings@bmi.osu.edu">Shannon Hastings </A>
- * @version $Id: ArgumentManagerTable.java,v 1.2 2004/10/15 16:35:16 langella
- *          Exp $
- */
 public class CA {
 	private X509Certificate cert;
 	private PrivateKey key;
 	public static final Provider PROVIDER = new org.bouncycastle.jce.provider.BouncyCastleProvider();
 	public static final String SIGNATURE_ALGORITHM = "MD5WithRSAEncryption";
 	public static final String PASSWORD = "password";
-	public static final String DEFAULT_CA_DN = "O=Organization ABC,OU=Unit XYZ,CN=Certificate Authority";
+	public static final String DEFAULT_CA_DN = "CN=Certificate Authority,OU=Unit XYZ,O=Organization ABC";
 
 	private Map<String, GlobusCredential> creds = new HashMap<String, GlobusCredential>();
 
@@ -107,13 +102,13 @@ public class CA {
 
 	public GlobusCredential createCredential(String alias, PublicKey publicKey,
 			PrivateKey privateKey) throws Exception {
-		String dn = getCertificate().getSubjectDN().getName();
-		int index = dn.indexOf("CN=");
-		dn = dn.substring(0, index + 3) + alias;
+		LdapName dn = new LdapName(getCertificate().getSubjectX500Principal().getName());
+		dn.remove(dn.size() - 1);
+		dn.add("CN=" + alias);
 		Date now = new Date();
 		Date end = getCertificate().getNotAfter();
 		X509Certificate cert = CertUtil.generateCertificate(PROVIDER.getName(),
-				new X509Name(dn), now, end, publicKey, getCertificate(),
+				new X509Name(dn.toString()), now, end, publicKey, getCertificate(),
 				getPrivateKey(), SIGNATURE_ALGORITHM, null);
 		GlobusCredential cred = new GlobusCredential(privateKey,
 				new X509Certificate[] { cert });
