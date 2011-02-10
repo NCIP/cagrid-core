@@ -2,6 +2,7 @@ package gov.nih.nci.cagrid.data.upgrades;
 
 import gov.nih.nci.cagrid.common.Utils;
 import gov.nih.nci.cagrid.data.BdtMethodConstants;
+import gov.nih.nci.cagrid.data.MetadataConstants;
 import gov.nih.nci.cagrid.data.extension.Data;
 import gov.nih.nci.cagrid.data.style.ServiceStyleContainer;
 import gov.nih.nci.cagrid.data.style.ServiceStyleLoader;
@@ -9,6 +10,7 @@ import gov.nih.nci.cagrid.data.style.StyleVersionUpgrader;
 import gov.nih.nci.cagrid.data.style.VersionUpgrade;
 import gov.nih.nci.cagrid.introduce.beans.extension.ExtensionType;
 import gov.nih.nci.cagrid.introduce.beans.method.MethodType;
+import gov.nih.nci.cagrid.introduce.beans.namespace.NamespaceType;
 import gov.nih.nci.cagrid.introduce.beans.service.ServiceType;
 import gov.nih.nci.cagrid.introduce.common.CommonTools;
 import gov.nih.nci.cagrid.introduce.common.IntroducePropertiesManager;
@@ -62,6 +64,8 @@ public class DataServiceUpgradeFrom1pt2 extends ExtensionUpgraderBase {
 			upgradeStyle();
             
             upgradeWsdls();
+            
+            addInstanceCountSchema();
             
             removeBdt();
             
@@ -407,6 +411,40 @@ public class DataServiceUpgradeFrom1pt2 extends ExtensionUpgraderBase {
                 }
             }
         }
+    }
+    
+    
+    private void addInstanceCountSchema() throws UpgradeException {
+        // get the service's schema dir where the xsd files live
+        String serviceName = getServiceInformation().getServiceDescriptor()
+            .getServices().getService(0).getName();
+        
+        File serviceSchemasDir = new File(getServicePath(), "schema" + File.separator + serviceName);
+        // get schemas for data services
+        File baseSchemaDir = new File(ExtensionsLoader.getInstance().getExtensionsDir(),
+            "data" + File.separator + "schema");
+        File dataSchemaDir = new File(baseSchemaDir, "Data");
+        File instanceCountXsd = new File(dataSchemaDir, MetadataConstants.DATA_INSTANCE_XSD);
+        try {
+            Utils.copyFile(instanceCountXsd, new File(serviceSchemasDir, MetadataConstants.DATA_INSTANCE_XSD));
+        } catch (Exception ex) {
+            throw new UpgradeException("Error copying instance count schema into the service: " + ex.getMessage(), ex);
+        }
+        
+        // Data instance count metadata namespace
+        NamespaceType countNamespace = null;
+        try {
+            countNamespace = CommonTools.createNamespaceType(serviceSchemasDir + File.separator
+                + MetadataConstants.DATA_INSTANCE_XSD, serviceSchemasDir);
+        } catch (Exception ex) {
+            throw new UpgradeException("Error creating namespace type: " + ex.getMessage(), ex);
+        }
+            
+        countNamespace.setPackageName(MetadataConstants.DATA_INSTANCE_PACKAGE);
+        countNamespace.setGenerateStubs(Boolean.FALSE);
+        CommonTools.addNamespace(getServiceInformation().getServiceDescriptor(), countNamespace);
+        
+        getStatus().addDescriptionLine("Added the data instance count schema and resource property to the data service");
     }
     
     
