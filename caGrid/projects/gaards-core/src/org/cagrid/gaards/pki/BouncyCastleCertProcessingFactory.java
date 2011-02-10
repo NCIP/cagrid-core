@@ -24,6 +24,9 @@ import java.util.Iterator;
 import java.util.Random;
 import java.util.TimeZone;
 
+import javax.naming.InvalidNameException;
+import javax.naming.ldap.LdapName;
+
 import org.bouncycastle.asn1.ASN1Sequence;
 import org.bouncycastle.asn1.DERBitString;
 import org.bouncycastle.asn1.DERConstructedSet;
@@ -36,7 +39,7 @@ import org.bouncycastle.asn1.x509.X509Extension;
 import org.bouncycastle.asn1.x509.X509Extensions;
 import org.bouncycastle.asn1.x509.X509Name;
 import org.bouncycastle.jce.PKCS10CertificationRequest;
-import org.bouncycastle.jce.X509V3CertificateGenerator;
+import org.bouncycastle.x509.X509V3CertificateGenerator;
 import org.bouncycastle.jce.provider.X509CertificateObject;
 import org.globus.gsi.GSIConstants;
 import org.globus.gsi.GlobusCredential;
@@ -545,15 +548,20 @@ public class BouncyCastleCertProcessingFactory {
 			}
 		}
 
-		X509Name issuerDN = new X509Name(issuerCert.getSubjectX500Principal().getName());
+		LdapName issuerDN = null;
+		LdapName subject = null;
+		try {
+			issuerDN = new LdapName(issuerCert.getSubjectX500Principal().getName());
+			subject = (LdapName) issuerDN.clone();
+			subject.remove(subject.size() - 1);
+			String cn = (cnValue == null) ? delegDN : cnValue;
+			subject.add("CN=" + cn);
+		} catch (InvalidNameException e) {
+			throw new IllegalArgumentException("Unable to generate DN");
+		}
 
-		X509NameHelper issuer = new X509NameHelper(issuerDN);
-
-		X509NameHelper subject = new X509NameHelper(issuerDN);
-		subject.add(X509Name.CN, (cnValue == null) ? delegDN : cnValue);
-
-		certGen.setSubjectDN(subject.getAsName());
-		certGen.setIssuerDN(issuer.getAsName());
+		certGen.setSubjectDN(CertUtil.bouncyCastleDNSort(subject.toString()));
+		certGen.setIssuerDN(CertUtil.bouncyCastleDNSort(issuerDN.toString()));
 
 		certGen.setSerialNumber(serialNum);
 		certGen.setPublicKey(publicKey);
@@ -578,7 +586,7 @@ public class BouncyCastleCertProcessingFactory {
 		 * last time we talked to Doug E. This should investigated more.
 		 */
 
-		return certGen.generateX509Certificate(issuerKey, provider);
+		return certGen.generate(issuerKey, provider);
 	}
 
 

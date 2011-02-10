@@ -114,7 +114,7 @@ public class TestTrustedAuthorityManager extends TestCase implements TrustLevelL
 		try {
 			trust.clearDatabase();
 			int count = 12;
-			String dnPrefix = "O=Organization ABC,OU=Unit XYZ,CN=Certificate Authority";
+			String dnSuffix = "OU=Unit XYZ,O=Organization ABC";
 			String[] authorityGTS = new String[4];
 			authorityGTS[0] = "Authority 1";
 			authorityGTS[1] = "Authority 2";
@@ -129,7 +129,7 @@ public class TestTrustedAuthorityManager extends TestCase implements TrustLevelL
 
 			TrustedAuthority[] auths = new TrustedAuthority[count];
 			for (int i = 0; i < count; i++) {
-				String dn = dnPrefix + i;
+				String dn = "CN=Certificate Authority" + i + dnSuffix;
 				int authIndex = i % 2;
 				int sourceIndex = i % 4;
 				int authCount = (i / 2) + 1;
@@ -196,7 +196,7 @@ public class TestTrustedAuthorityManager extends TestCase implements TrustLevelL
 			int validCount = count / 2;
 			int expiresCount = count / 2;
 			for (int i = 0; i < count; i++) {
-				String dn = dnPrefix + i;
+				String dn = "CN=Certificate Authority" + i + dnSuffix;
 				int authIndex = i % 2;
 				int sourceIndex = i % 4;
 				int authCount = (i / 2) + 1;
@@ -859,10 +859,10 @@ public class TestTrustedAuthorityManager extends TestCase implements TrustLevelL
 		try {
 			trust.clearDatabase();
 			int count = 5;
-			String dnPrefix = "O=Organization ABC,OU=Unit XYZ,CN=Certificate Authority";
+			String dnSuffix = ",OU=Unit XYZ,O=Organization ABC";
 			TrustedAuthority[] auths = new TrustedAuthority[count];
 			for (int i = 0; i < count; i++) {
-				String dn = dnPrefix + i;
+				String dn = "CN=Certificate Authority" + i + dnSuffix;
 				CA ca = new CA(dn);
 				String name = CertUtil.getSubjectDN(ca.getCertificate());
 
@@ -985,7 +985,7 @@ public class TestTrustedAuthorityManager extends TestCase implements TrustLevelL
 		try {
 			trust.clearDatabase();
 			int count = 4;
-			String dnPrefix = "O=Organization ABC,OU=Unit XYZ,CN=Certificate Authority";
+			String dnSuffix = "OU=Unit XYZ,O=Organization ABC";
 
 			String[] levels = new String[3];
 			levels[0] = LEVEL_ONE;
@@ -997,7 +997,7 @@ public class TestTrustedAuthorityManager extends TestCase implements TrustLevelL
 
 			TrustedAuthority[] auths = new TrustedAuthority[count];
 			for (int i = 0; i < count; i++) {
-				String dn = dnPrefix + i;
+				String dn = "CN=Certificate Authority" + i + dnSuffix;
 				CA ca = new CA(dn);
 				String name = CertUtil.getSubjectDN(ca.getCertificate());
 
@@ -1119,10 +1119,10 @@ public class TestTrustedAuthorityManager extends TestCase implements TrustLevelL
 		try {
 			trust.clearDatabase();
 			int count = 5;
-			String dnPrefix = "O=Organization ABC,OU=Unit XYZ,CN=Certificate Authority";
+			String dnSuffix = "OU=Unit XYZ,O=Organization ABC";
 			TrustedAuthority[] auths = new TrustedAuthority[count];
 			for (int i = 0; i < count; i++) {
-				String dn = dnPrefix + i;
+				String dn = "CN=Certificate Authority" + i + dnSuffix;
 				CA ca = new CA(dn);
 				String name = CertUtil.getSubjectDN(ca.getCertificate());
 

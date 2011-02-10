@@ -35,22 +35,16 @@ import org.cagrid.gaards.pki.CRLEntry;
 import org.cagrid.gaards.pki.CertUtil;
 
 
-/**
- * @author <A href="mailto:langella@bmi.osu.edu">Stephen Langella </A>
- * @author <A href="mailto:oster@bmi.osu.edu">Scott Oster </A>
- * @author <A href="mailto:hastings@bmi.osu.edu">Shannon Hastings </A>
- * @version $Id: ArgumentManagerTable.java,v 1.2 2004/10/15 16:35:16 langella
- *          Exp $
- */
 public class TestGTS extends TestCase {
 
-	private final static String ADMIN_USER = "O=Test Organization,OU=Test Unit,CN=GTS Admin";
+	private final static String ADMIN_USER = "CN=GTS Admin,OU=Test Unit,O=Test Organization";
 
 	private final static String LEVEL_ONE = "ONE";
 	private final static String LEVEL_TWO = "TWO";
 
 	private int cacount = 0;
-	private final String dnPrefix = "O=Organization ABC,OU=Unit XYZ,CN=Certificate Authority";
+	private final String dnPrefix = "CN=Certificate Authority";
+	private final String dnSuffix = ",OU=Unit XYZ,O=Organization ABC";
 	private final String GTS_URI = "localhost";
 
 
@@ -1469,7 +1463,7 @@ public class TestGTS extends TestCase {
 
 	private TrustedAuthority getTrustedAuthority() throws Exception {
 		cacount = cacount + 1;
-		String dn = dnPrefix + cacount;
+		String dn = dnPrefix + cacount + "," + dnSuffix;
 		return getTrustedAuthority(dn);
 	}
 
