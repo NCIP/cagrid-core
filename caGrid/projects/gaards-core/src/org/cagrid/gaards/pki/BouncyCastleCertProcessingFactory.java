@@ -553,7 +553,6 @@ public class BouncyCastleCertProcessingFactory {
 		try {
 			issuerDN = new LdapName(issuerCert.getSubjectX500Principal().getName());
 			subject = (LdapName) issuerDN.clone();
-			subject.remove(subject.size() - 1);
 			String cn = (cnValue == null) ? delegDN : cnValue;
 			subject.add("CN=" + cn);
 		} catch (InvalidNameException e) {
