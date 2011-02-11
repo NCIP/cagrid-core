@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+<!-- ================================================================= -->
+<!-- Ant script for upgrading caGrid 1.2-1.4 projects to use SHA2      -->
+<!-- ================================================================= -->
+<project name="caGrid-sha2-upgrade" basedir="." default="upgradeHelp" xmlns:ivy="antlib:org.apache.ivy.ant">
+	<condition property="isJDK1.5or1.6" value="true">
+		<or>
+			<equals arg1="${ant.java.version}" arg2="1.5" />
+			<equals arg1="${ant.java.version}" arg2="1.6" />
+		</or>
+	</condition>
+	<!-- Require Java 1.5 or 1.6-->
+	<fail message="JDK 1.5 (or 1.6) is currently required to build this project!" unless="isJDK1.5or1.6" />
+
+	<target name="upgradeHelp" description="Prints description of how to use this script" >
+		<echo>To upgrade a project, invoke this script like this:</echo>
+		<echo>    ant ${ant.file} -Dproject_dir=projectDirectory toSha2</echo>
+	</target>
+</project>
