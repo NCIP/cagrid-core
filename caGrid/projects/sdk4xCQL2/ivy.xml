@@ -36,6 +36,8 @@
     <artifact conf="cql2-examples" type="xml" name="cql2Examples/targetWithNestedAssociationWithAttribute"/>
     <artifact conf="cql2-examples" type="xml" name="cql2Examples/targetWithSubclassedAssociation"/>
     <artifact conf="cql2-examples" type="xml" name="cql2Examples/topLevelStringAttribute"/>
+    <artifact conf="cql2-examples" type="xml" name="cql2Examples/targetWithAssociationPopulationDepth.xml"/>
+    <artifact conf="cql2-examples" type="xml" name="cql2Examples/targetWithAssociationPopulationNamed.xml"/>
     <artifact conf="cql2-examples" type="xml" name="models/sdk40example_DomainModel"/>
     <artifact conf="cql2-examples" type="xml" name="models/sdk411example_DomainModel"/>
   </publications>
