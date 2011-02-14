@@ -96,7 +96,7 @@
   <classpathentry kind="lib" path="ext/dependencies/jars/jdepend-2.7.jar" />
   <classpathentry kind="lib" path="ext/dependencies/jars/jdom-1.0.jar" />
   <classpathentry kind="lib" path="ext/dependencies/jars/jprov.jar" />
-  <classpathentry kind="lib" path="ext/dependencies/jars/junit-4.4.jar" />
+  <classpathentry kind="lib" path="ext/dependencies/jars/junit-4.8.2.jar" />
   <classpathentry kind="lib" path="ext/dependencies/jars/mobius_common_client-1.1.jar" />
   <classpathentry kind="lib" path="ext/dependencies/jars/mobius_tools-1.1.jar" />
   <classpathentry kind="lib" path="ext/dependencies/jars/mysql-connector-java-3.0.16-ga-bin.jar" />

@@ -134,7 +134,7 @@
 	<classpathentry kind="lib" path="ext/dependencies/default/jars/caGrid-syncgts-client-1.4.1.jar"/>
 	<classpathentry kind="lib" path="ext/dependencies/default/jars/caGrid-syncgts-common-1.4.1.jar"/>
 	<classpathentry kind="lib" path="ext/dependencies/default/jars/caGrid-syncgts-stubs-1.4.1.jar"/>
-	<classpathentry kind="lib" path="ext/dependencies/test/jars/junit-4.4.jar"/>
+	<classpathentry kind="lib" path="ext/dependencies/test/jars/junit-4.8.2.jar"/>
 	<classpathentry kind="lib" path="ext/dependencies/default/jars/spring-web-2.5.5.jar"/>
 	<classpathentry kind="lib" path="ext/dependencies/default/jars/spring-context-2.5.5.jar"/>
 	<classpathentry kind="lib" path="ext/dependencies/default/jars/spring-tx-2.5.5.jar"/>

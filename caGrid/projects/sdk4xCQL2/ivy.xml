@@ -57,7 +57,7 @@
     <dependency rev="latest.integration" org="caGrid" name="testing" conf="impl-test->system"/>
 
 	<!-- external dependencies -->
-    <dependency rev="4.4" org="junit" name="junit" conf="impl-test->default"/>
+    <dependency rev="4.+" org="junit" name="junit" conf="impl-test->default"/>
     
   </dependencies>
 </ivy-module>

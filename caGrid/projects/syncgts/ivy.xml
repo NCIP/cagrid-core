@@ -74,7 +74,7 @@
 <!--   
     <dependency rev="syncgts-patched-4.0.3" org="globus" name="jcog" conf="globus-patches->*"/>
 -->
-    <dependency rev="4.4" org="junit" name="junit" conf="impl-test->default"/>
+    <dependency rev="4.+" org="junit" name="junit" conf="impl-test->default"/>
     <dependency rev="4.0.3-sha2" org="globus" name="cog"/>
     
 

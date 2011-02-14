@@ -104,7 +104,7 @@
 	<classpathentry kind="lib" path="ext/dependencies/jars/servlet.jar"/>
 	<classpathentry kind="lib" path="ext/dependencies/jars/caGrid-authentication-service-tests-1.4.1.jar" sourcepath="/caGrid-AuthenticationService"/>
 	<classpathentry kind="lib" path="ext/dependencies/jars/caGrid-gaards-core-tests-1.4.1.jar"/>
-	<classpathentry kind="lib" path="ext/dependencies/jars/junit-4.4.jar"/>
+	<classpathentry kind="lib" path="ext/dependencies/jars/junit-4.8.2.jar"/>
 	<classpathentry kind="lib" path="ext/dependencies/jars/org.springframework.beans-3.0.1.RELEASE-A.jar"/>
 	<classpathentry kind="lib" path="ext/dependencies/jars/org.springframework.core-3.0.1.RELEASE-A.jar"/>
 	<classpathentry kind="output" path="bin"/>

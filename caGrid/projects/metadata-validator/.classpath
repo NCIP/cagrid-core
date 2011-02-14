@@ -56,7 +56,7 @@
   <classpathentry kind="lib" path="ext/dependencies/jars/caGrid-metadatautils-1.4.1.jar" />
   <classpathentry kind="lib" path="ext/dependencies/jars/jasciidammit-1.1.jar" />
   <classpathentry kind="lib" path="ext/dependencies/jars/jdom-1.0.jar" />
-  <classpathentry kind="lib" path="ext/dependencies/test/jars/junit-4.4.jar" />
+  <classpathentry kind="lib" path="ext/dependencies/test/jars/junit-4.8.2.jar" />
   <classpathentry kind="lib" path="ext/dependencies/jars/caGrid-Introduce-buildTools-1.4.1.jar" />
   <classpathentry kind="output" path="bin" />
 </classpath>

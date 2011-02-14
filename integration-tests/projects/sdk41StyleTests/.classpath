@@ -162,7 +162,7 @@
 	<classpathentry kind="lib" path="ext/dependencies/jars/jhall.jar"/>
 	<classpathentry kind="lib" path="ext/dependencies/jars/jprov.jar"/>
 	<classpathentry kind="lib" path="ext/dependencies/jars/jta-1.0.1B.jar"/>
-	<classpathentry kind="lib" path="ext/dependencies/jars/junit-4.4.jar"/>
+	<classpathentry kind="lib" path="ext/dependencies/jars/junit-4.8.2.jar"/>
 	<classpathentry kind="lib" path="ext/dependencies/jars/osgi.jar"/>
 	<classpathentry kind="lib" path="ext/dependencies/jars/relaxngDatatype.jar"/>
 	<classpathentry kind="lib" path="ext/dependencies/jars/resources.jar"/>

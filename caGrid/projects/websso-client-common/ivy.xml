@@ -37,6 +37,6 @@
     <dependency rev="2.5.5" org="springframework" name="spring-tx" conf="default->default"/>
     <dependency rev="2.5.5" org="springframework" name="spring-beans" conf="default->default"/>
     <dependency rev="4.0.3-sha2" org="globus" name="cog" conf="default->default"/>
-    <dependency rev="4.4" org="junit" name="junit" conf="impl-test->default"/>
+    <dependency rev="4.+" org="junit" name="junit" conf="impl-test->default"/>
   </dependencies>
 </ivy-module>

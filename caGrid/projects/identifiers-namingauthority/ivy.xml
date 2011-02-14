@@ -28,7 +28,7 @@
 
     <dependency org="caGrid" name="testing" rev="latest.integration" conf="impl-test->system" />
 
-    <dependency rev="4.4" org="junit" name="junit" conf="impl-test->default" />
+    <dependency rev="4.+" org="junit" name="junit" conf="impl-test->default" />
     <dependency rev="1.1" org="apache" name="commons-logging" conf="default->default" />
 
     <!-- External Dependencies -->

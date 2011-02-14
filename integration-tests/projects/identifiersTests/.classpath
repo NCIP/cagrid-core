@@ -100,7 +100,7 @@
 	<classpathentry kind="lib" path="ext/dependencies/jars/jasciidammit-1.1.jar"/>
 	<classpathentry kind="lib" path="ext/dependencies/jars/jetty-6.1.18.jar"/>
 	<classpathentry kind="lib" path="ext/dependencies/jars/jetty-util-6.1.18.jar"/>
-	<classpathentry kind="lib" path="ext/dependencies/jars/junit-4.4.jar"/>
+	<classpathentry kind="lib" path="ext/dependencies/jars/junit-4.8.2.jar"/>
 	<classpathentry kind="lib" path="ext/dependencies/jars/servlet.jar"/>
 	<classpathentry kind="lib" path="ext/dependencies/jars/spring-test.jar"/>
 	<classpathentry kind="lib" path="ext/dependencies/jars/spring-xml-1.2.1.jar"/>

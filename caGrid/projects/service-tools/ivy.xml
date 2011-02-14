@@ -40,6 +40,6 @@
     <dependency org="mysql" name="connector-java" rev="3.0.+" conf="db->*"/>
     <dependency rev="3.0.+" org="springframework" name="spring" conf="events->beans"/>
     <dependency rev="3.0.+" org="springframework" name="spring" conf="events->core"/>
-    <dependency rev="4.4" org="junit" name="junit" conf="impl-test->default"/>
+    <dependency rev="4.+" org="junit" name="junit" conf="impl-test->default"/>
   </dependencies>
 </ivy-module>

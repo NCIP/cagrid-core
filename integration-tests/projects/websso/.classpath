@@ -123,7 +123,7 @@
   <classpathentry kind="lib" path="ext/dependencies/jars/caGrid-authentication-service-tests-1.4.1.jar" />
   <classpathentry kind="lib" path="ext/dependencies/jars/clm.jar" />
   <classpathentry kind="lib" path="ext/dependencies/jars/csmapi.jar" />
-  <classpathentry kind="lib" path="ext/dependencies/jars/junit-4.4.jar" />
+  <classpathentry kind="lib" path="ext/dependencies/jars/junit-4.8.2.jar" />
   <classpathentry kind="lib" path="ext/dependencies/jars/caGrid-DorianSystemTests-1.4.1.jar" />
   <classpathentry kind="lib" path="ext/dependencies/jars/httpunit-1.7.jar" />
   <classpathentry kind="lib" path="ext/dependencies/jars/js-1.6R5.jar" />

@@ -107,7 +107,7 @@
   <classpathentry kind="lib" path="ext/dependencies/jars/wizard-0.1.12.jar" />
   <classpathentry kind="lib" path="ext/dependencies/jars/xsom14.jar" />
   <classpathentry kind="lib" path="ext/dependencies/test/jars/caGrid-core-tests-1.4.1.jar" />
-  <classpathentry kind="lib" path="ext/dependencies/test/jars/junit-4.4.jar" />
+  <classpathentry kind="lib" path="ext/dependencies/test/jars/junit-4.8.2.jar" />
   <classpathentry kind="lib" path="ext/dependencies/jars/caGrid-dorian-stubs-1.2.jar" />
   <classpathentry kind="lib" path="ext/dependencies/jars/caGrid-gaards-core-1.4.1.jar" />
   <classpathentry kind="lib" path="ext/dependencies/jars/caGrid-Introduce-buildTools-1.4.1.jar" />

@@ -71,6 +71,6 @@
     <dependency rev="3.0.+" org="springframework" name="spring" conf="service->full" />
     <dependency rev="1.0" org="aopalliance" name="aopalliance" />
     <dependency rev="1.2.2" org="apache" name="commons-dbcp" conf="service->default" />
-    <dependency rev="4.4" org="junit" name="junit" conf="impl-test->default" />
+    <dependency rev="4.+" org="junit" name="junit" conf="impl-test->default" />
   </dependencies>
 </ivy-module>

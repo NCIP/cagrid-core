@@ -54,7 +54,7 @@
     <!-- External Dependencies -->
     <dependency rev="1.0" org="wannheden" name="jetc-task" conf="core->*" />
     <dependency rev="2.0.0" org="jgoodies" name="validation" conf="ui->default" />
-    <dependency rev="4.4" org="junit" name="junit" conf="impl-test->default" />
+    <dependency rev="4.+" org="junit" name="junit" conf="impl-test->default" />
 
   </dependencies>
 </ivy-module>

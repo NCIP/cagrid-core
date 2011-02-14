@@ -28,6 +28,6 @@
 
     <dependency org="jasciidammit" name="jasciidammit" rev="1.1" conf="default->default"/>
     <dependency rev="3.2.1" org="cacore" name="sdk" conf="impl-test->default"/>
-    <dependency rev="4.4" org="junit" name="junit" conf="impl-test->default"/>
+    <dependency rev="4.+" org="junit" name="junit" conf="impl-test->default"/>
   </dependencies>
 </ivy-module>
