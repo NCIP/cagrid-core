@@ -1,0 +1,12 @@
+<CQLQuery xmlns="http://CQL.caBIG/2/org.cagrid.cql2">
+	<CQLTargetObject className="gov.nih.nci.cacoresdk.domain.other.levelassociation.Deck">
+		<CQLAssociatedObject className="gov.nih.nci.cacoresdk.domain.other.levelassociation.Suit" endName="suitCollection">
+			<CQLAssociatedObject className="gov.nih.nci.cacoresdk.domain.other.levelassociation.Card" endName="cardCollection"/>
+		</CQLAssociatedObject>
+	</CQLTargetObject>
+	<AssociationPopulationSpecification>
+    	<NamedAssociationList>
+    		<NamedAssociation endName="suitCollection"/>
+    	</NamedAssociationList>
+  	</AssociationPopulationSpecification>
+</CQLQuery>
