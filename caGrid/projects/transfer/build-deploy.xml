@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<project name="build-deploy file" basedir="." default="deploy">
+<project name="build-deploy file" basedir="." default="deployTomcat">
 	<!-- ============================================================== -->
 	<!-- MASTER DEPLOY FILE DO NOT EDIT OR INTRODUCE MAY OVERWRITE      -->
 	<!-- In order to customize the deployment process please edit the   -->
@@ -33,7 +33,7 @@
 	</target>
 	
 	
-	<target name="setDeploymentProperties">
+	<target name="setDeploymentProperties" depends="init">
 		<property file="deploy.properties" />
 		<property name="globus.webapp" value="wsrf" />
 		<property name="service.deployment.path" value="${service.deployment.prefix}/${introduce.skeleton.service.name}" />
@@ -178,6 +178,82 @@
 				<include name="**\*" />
 			</fileset>
 		</copy>
+		<!-- Delete files that may have been needed for compile but duplicate common .jar files and cause classloader conflicts -->
+		<delete verbose="true">
+			<fileset dir="${webapp.deploy.lib.dir}">
+				<include name="ssl-proxies-2.*.jar" />
+			</fileset>
+		</delete>
+	</target>
+
+	<!-- make deployment configured gar -->
+	<target name="createDeploymentGar" depends="setDeploymentProperties" description="creates a gar file that can be deployed or moved around">
+
+		<!-- prepare the server-config file -->
+		<mkdir dir="tmp" />
+
+		<echo message="Creating a gar for service ${gar.name}" />
+
+		<runtarget target="preDeployGlobus" />
+
+		<runtarget target="prepareDeploymentTmp" />
+		<createDeploymentFile/>
+
+		<!-- make the gar file -->
+		<ant antfile="${build.packages}" target="makeGar">
+			<property name="garserverdeployment.file" value="${basedir}/tmp/server-config.wsdd" />
+			<property name="garjndiconfigdeployment.file" value="${basedir}/tmp/jndi-config.xml" />
+			<property name="garclientdeployment.file" value="${basedir}/client-config.wsdd" />
+			<property name="garclientserverdeployment.file" value="${basedir}/client-server.wsdd" />
+			<reference refid="${garjars.id}" />
+			<reference refid="${garschema.id}" />
+			<reference refid="${garetc.id}" />
+		</ant>
+		<delete dir="tmp" />
+	</target>
+
+
+	<!-- deploy a gar to globus -->
+	<target name="deployGlobus" depends="all, createDeploymentGar, deploymentValidator" description="Deploys a gar to GLOBUS_LOCATION (to set the services properties file set the ant command line variable -Dservice.properties.file)">
+
+		<echo message="Deploying server to Globus Container" />
+
+		<java classname="org.globus.bootstrap.AntBootstrap" fork="yes" failonerror="true">
+			<jvmarg value="-DGLOBUS_LOCATION=${ext.globus.dir}" />
+			<jvmarg value="-Djava.endorsed.dirs=${ext.globus.dir}/endorsed" />
+			<sysproperty key="GLOBUS_LOCATION" value="${ext.globus.dir}" />
+			<sysproperty key="ANT_HOME" value="${ant.home}" />
+			<arg value="org.globus.tools.gar.DeployGar" />
+			<arg value="${gar.name}" />
+			<classpath>
+				<fileset dir="${ext.globus.dir}/lib">
+					<include name="*.jar" />
+				</fileset>
+				<fileset dir="${ant.library.dir}">
+					<include name="*.jar" />
+				</fileset>
+			</classpath>
+		</java>
+
+		<delete dir="${gar.name}" />
+		<!-- deploy the gar -->
+	</target>
+	
+	
+	<target name="undeployGlobus" depends="checkGlobus,setDeploymentProperties" description="undeploy a service from a globus container (to set the services properties file set the ant command line variable -Dservice.properties.file)">
+		
+		<property name="webapp.deploy.dir" value="${ext.globus.dir}" />
+		<property name="webapp.deploy.lib.dir" value="${webapp.deploy.dir}/lib" />
+		<property name="webapp.deploy.schema.dir" value="${webapp.deploy.dir}/share/schema" />
+		<property name="webapp.deploy.etc.dir" value="${webapp.deploy.dir}/etc" />
+
+		<echo message="Undeploying service ${service.deployment.path} under Globus at ${webapp.deploy.dir}" />
+
+		<property name="service.deployment.dir" value="${webapp.deploy.etc.dir}/${service.deployment.dir.name}" />
+		
+		<taskdef name="undeployTool" classname="gov.nih.nci.cagrid.introduce.servicetasks.undeployment.UndeployServiceTask" classpathref="tasks.run.classpath" />
+		<undeployTool/>	
+		<runtarget target="postUndeployGlobus" />
 	</target>
 	
 	<target name="undeployTomcat" depends="checkGlobus,setDeploymentProperties" description="undeploy a service from a tomcat container (to set the services properties file set the ant command line variable -Dservice.properties.file)">
