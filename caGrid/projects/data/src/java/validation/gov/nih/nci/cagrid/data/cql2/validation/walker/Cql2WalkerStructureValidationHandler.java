@@ -131,11 +131,11 @@ public class Cql2WalkerStructureValidationHandler extends Cql2WalkerHandlerAdapt
 
 
     public void startAssociationPopulation(AssociationPopulationSpecification pop) throws MalformedStructureException {
-        if (pop.getNamedAssociationList() == null || pop.getPopulationDepth() == null) {
+        if (pop.getNamedAssociationList() == null && pop.getPopulationDepth() == null) {
             throw new MalformedStructureException(
                 "Association Population spec must have either a named association list or a population depth.  Found none");
         }
-        if (pop.getNamedAssociationList() != null || pop.getPopulationDepth() != null) {
+        if (pop.getNamedAssociationList() != null && pop.getPopulationDepth() != null) {
             throw new MalformedStructureException(
                 "Association Population spec must have either a named association list or a population depth.  Found both");
         }
