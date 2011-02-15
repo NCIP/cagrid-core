@@ -1463,7 +1463,7 @@ public class TestGTS extends TestCase {
 
 	private TrustedAuthority getTrustedAuthority() throws Exception {
 		cacount = cacount + 1;
-		String dn = dnPrefix + cacount + "," + dnSuffix;
+		String dn = dnPrefix + cacount + dnSuffix;
 		return getTrustedAuthority(dn);
 	}
 
