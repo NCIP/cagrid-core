@@ -41,6 +41,7 @@ public class DelegationManagerTest extends TestCase {
 
 	private CA ca;
 	private File caCert;
+	private File caCertSigning;
 	private String caDN;
 
 	public void testDelegatedCredentialCreateDestroy() {
@@ -753,7 +754,10 @@ public class DelegationManagerTest extends TestCase {
 			f.mkdirs();
 			caCert = new File(f.getAbsoluteFile() + File.separator
 					+ now.getTime()+".0");
+			caCertSigning = new File(f.getAbsoluteFile() + File.separator
+					+ now.getTime()+".signing_policy");
 			CertUtil.writeCertificate(this.ca.getCertificate(), caCert);
+			CertUtil.writeSigningPolicy(this.ca.getCertificate(), caCertSigning);
 		} catch (Exception e) {
 			e.printStackTrace();
 			fail(e.getMessage());
@@ -763,6 +767,7 @@ public class DelegationManagerTest extends TestCase {
 	protected void tearDown() throws Exception {
 		super.setUp();
 		caCert.delete();
+		caCertSigning.delete();
 	}
 
 }

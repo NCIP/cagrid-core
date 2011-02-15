@@ -53,6 +53,7 @@ public class DelegatedCredentialManagerTest extends TestCase {
 	private CA ca;
 
 	private File caCert;
+	private File caCertSigning;
 	
 	private String caDN;
 
@@ -1338,14 +1339,17 @@ public class DelegatedCredentialManagerTest extends TestCase {
 		Utils.getDatabase().createDatabaseIfNeeded();
 		try {
 			Date now = new Date();	
-			this.caDN = "O=Delegation Credential Manager,OU="+now.getTime()+",CN=Certificate Authority";
+			this.caDN = "CN=Certificate Authority,OU=" + now.getTime() + ",O=Delegation Credential Manager";
 			this.ca = new CA(this.caDN);
 			File f = gov.nih.nci.cagrid.common.Utils
 					.getTrustedCerificatesDirectory();
 			f.mkdirs();
 			caCert = new File(f.getAbsoluteFile() + File.separator
 					+ now.getTime()+".0");
+			caCertSigning = new File(f.getAbsoluteFile() + File.separator
+					+ now.getTime()+".signing_policy");
 			CertUtil.writeCertificate(this.ca.getCertificate(), caCert);
+			CertUtil.writeSigningPolicy(this.ca.getCertificate(), caCertSigning);
 		} catch (Exception e) {
 			e.printStackTrace();
 			fail(e.getMessage());
@@ -1355,6 +1359,7 @@ public class DelegatedCredentialManagerTest extends TestCase {
 	protected void tearDown() throws Exception {
 		super.setUp();
 		caCert.delete();
+		caCertSigning.delete();
 	}
 
 	public class InvalidKeyManager implements KeyManager {
