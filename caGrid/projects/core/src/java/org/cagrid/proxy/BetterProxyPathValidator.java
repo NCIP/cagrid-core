@@ -670,7 +670,7 @@ public class BetterProxyPathValidator {
         if ((crl.getThisUpdate().before(now)) || ((crl.getNextUpdate() != null) && (crl.getNextUpdate().after(now)))) {
             if (crl.isRevoked(cert)) {
                 throw new ProxyPathValidatorException(ProxyPathValidatorException.REVOKED, cert, "This cert "
-                    + cert.getSubjectDN().getName() + " is on a CRL");
+                    + cert.getSubjectX500Principal().getName() + " is on a CRL");
             }
         }
     }
