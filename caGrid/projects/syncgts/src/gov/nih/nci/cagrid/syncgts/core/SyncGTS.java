@@ -287,7 +287,7 @@ public class SyncGTS {
 					if (fl.getCertificate() != null) {
 						try {
 							cert = CertUtil.loadCertificate(fl.getCertificate());
-							ca.setName(cert.getSubjectDN().getName());
+							ca.setName(cert.getSubjectX500Principal().getName());
 							ca.setCertificateFile(fl.getCertificate().getAbsolutePath());
 							if (excluded.contains(ca.getName())) {
 								Message m = new Message();
@@ -296,7 +296,7 @@ public class SyncGTS {
 									+ " was not removed because it is the exclude list.");
 								this.messages.add(m);
 								logger.info(m.getValue());
-								completeCASetByName.add(cert.getSubjectDN().getName());
+								completeCASetByName.add(cert.getSubjectX500Principal().getName());
 								completeCASetByHash.add(fl.getName());
 								continue;
 							}
@@ -327,7 +327,7 @@ public class SyncGTS {
 										+ " because it was not expired.");
 									this.messages.add(m);
 									logger.warn(m.getValue());
-									completeCASetByName.add(cert.getSubjectDN().getName());
+									completeCASetByName.add(cert.getSubjectX500Principal().getName());
 									completeCASetByHash.add(fl.getName());
 									continue;
 								}
@@ -432,12 +432,12 @@ public class SyncGTS {
 							.getCertificateEncodedString());
 						caHash = CertUtil.getHashCode(cert);
 						TrustedCA ca = new TrustedCA();
-						subject = cert.getSubjectDN().getName();
+						subject = cert.getSubjectX500Principal().getName();
 						ca.setName(subject);
 						ca.setGts(listing.getService());
 
-						if ((completeCASetByName.contains(cert.getSubjectDN()))
-							&& (excluded.contains(cert.getSubjectDN()))) {
+						if ((completeCASetByName.contains(cert.getSubjectX500Principal()))
+							&& (excluded.contains(cert.getSubjectX500Principal()))) {
 							Message m = new Message();
 							m.setType(MessageType.Warning);
 							m.setValue("Ignoring the CA " + ca.getName() + " obtained from the GTS " + ca.getGts()
@@ -445,8 +445,8 @@ public class SyncGTS {
 							this.messages.add(m);
 							logger.warn(m.getValue());
 
-						} else if ((completeCASetByName.contains(cert.getSubjectDN()))
-							&& (!excluded.contains(cert.getSubjectDN()))) {
+						} else if ((completeCASetByName.contains(cert.getSubjectX500Principal()))
+							&& (!excluded.contains(cert.getSubjectX500Principal()))) {
 							Message m = new Message();
 							m.setType(MessageType.Warning);
 							m.setValue("Ignoring the CA " + ca.getName() + " obtained from the GTS " + ca.getGts()
