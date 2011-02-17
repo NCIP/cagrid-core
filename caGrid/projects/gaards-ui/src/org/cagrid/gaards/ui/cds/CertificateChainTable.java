@@ -60,7 +60,7 @@ public class CertificateChainTable extends GrapeBaseTable {
 				for (int i = 0; i < certs.length; i++) {
 					Vector v = new Vector();
 					v.add(certs[i]);
-					v.add(certs[i].getSubjectDN().toString());
+					v.add(certs[i].getSubjectX500Principal().getName());
 					addRow(v);
 				}
 			}

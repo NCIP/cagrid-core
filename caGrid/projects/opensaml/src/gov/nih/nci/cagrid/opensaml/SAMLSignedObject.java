@@ -204,7 +204,7 @@ public abstract class SAMLSignedObject extends SAMLObject implements Cloneable
                     if (cert instanceof X509Certificate) {
                         if (!i.hasNext() && count > 0) {
                         	// Last (but not only) cert in chain. Only add if it's not self-signed.
-                            if (((X509Certificate)cert).getSubjectDN().equals(((X509Certificate)cert).getIssuerDN()))
+                            if (((X509Certificate)cert).getSubjectX500Principal().equals(((X509Certificate)cert).getIssuerX500Principal()))
                                 break;
                         }
                         x509.addCertificate((X509Certificate)cert);

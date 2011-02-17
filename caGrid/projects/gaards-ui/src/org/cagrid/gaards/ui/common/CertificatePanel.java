@@ -86,7 +86,7 @@ public class CertificatePanel extends JPanel {
 			this.getCertificateIssuer().setText(cert.getIssuerDN().getName());
 			this.getCertificateSerialNumber().setText(
 					cert.getSerialNumber().toString());
-			this.getCertificateSubject().setText(cert.getSubjectDN().getName());
+			this.getCertificateSubject().setText(cert.getSubjectX500Principal().getName());
 			this.getCertificateSignatureAlgorithm().setText(
 					cert.getSigAlgName());
 			this.getCertificateType().setText(cert.getType());

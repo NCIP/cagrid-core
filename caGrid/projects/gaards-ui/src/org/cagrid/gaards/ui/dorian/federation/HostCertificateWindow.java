@@ -180,7 +180,7 @@ public class HostCertificateWindow extends ApplicationComponent implements Doria
                 cert = CertUtil.loadCertificate(record.getCertificate().getCertificateAsString());
                 hostGridIdentity.setText(BouncyCastleUtil.getIdentity(cert));
                 hostIdentity.setText(hostGridIdentity.getText());
-                getSubject().setText(cert.getSubjectDN().getName());
+                getSubject().setText(cert.getSubjectX500Principal().getName());
                 notBefore.setText(cert.getNotBefore().toString());
                 notAfter.setText(cert.getNotAfter().toString());
                 getSave().setEnabled(true);
