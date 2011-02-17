@@ -70,14 +70,14 @@
     <dependency rev="latest.integration" org="caGrid" name="gaards-core" conf="service->default"/>
 
     <!-- Extenernal Dependencies -->
-    <dependency rev="1.0" org="jdom" name="jdom" conf="service->*"/>
+    <dependency rev="1.1" org="jdom" name="jdom" conf="service->*"/>
     <dependency rev="1.1" org="mobius" name="mobius" conf="service->common-client,tools"/>        
     <dependency rev="1.1.0.1" org="internet2" name="grouper" conf="service->default;client->minimal"/>
     <dependency rev="4.+" org="junit" name="junit" conf="impl-test->default"/>
     <!-- OVERRIDE NOTE: these are overrides from grouper's dependencies, to newer backwards compatible
       versions, more similar to what other project's are using-->
-    <dependency rev="2.1" org="apache" name="commons-lang" conf="service->*"/>
-    <dependency rev="1.2.2" org="apache" name="commons-dbcp" conf="service->*"/>
+    <dependency rev="2.2" org="apache" name="commons-lang" conf="service->*"/>
+    <dependency rev="1.2.+" org="apache" name="commons-dbcp" conf="service->*"/>
     <!-- END OVERRIDE NOTE: -->
 
   </dependencies>

@@ -48,7 +48,7 @@
       conf="default->security.schemas,security.jars;schemas->security.schemas"/>
 
     <!-- Extenernal Dependencies -->
-    <dependency rev="1.0" org="jdom" name="jdom" conf="default->*"/>
+    <dependency rev="1.1" org="jdom" name="jdom" conf="default->*"/>
     <dependency rev="4.+" org="junit" name="junit" conf="impl-test->default"/>
 
   </dependencies>

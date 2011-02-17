@@ -64,7 +64,7 @@
     <dependency rev="latest.integration" org="caGrid" name="advertisement" conf="skeleton->default"/>
 
     <!-- External Dependencies -->
-    <dependency rev="1.0" org="jdom" name="jdom" conf="skeleton,extension->*"/>
+    <dependency rev="1.1" org="jdom" name="jdom" conf="skeleton,extension->*"/>
     <dependency rev="1.0b3" org="ant-contrib" name="ant-contrib" conf="skeletonTools->*"/>
     <dependency rev="1.0" org="wannheden" name="jetc-task" conf="impl->*"/>
 

@@ -38,7 +38,7 @@
 
     <!-- External Dependencies -->
     <dependency rev="3.2.2" org="jasig" name="cas-server" conf="default->default"/>
-    <dependency rev="syncgts-patched-4.0.3" org="globus" name="jcog" conf="default->default"/>
+    <dependency rev="4.0.3-sha2" org="globus" name="cog" conf="default->default"/>
     
     <dependency rev="3.1.3" org="jasig" name="cas-client-core" conf="default"/>
     <dependency rev="1.5.3" org="aspectj" name="aspectjrt" conf="default->default"/>
@@ -47,10 +47,7 @@
     <dependency rev="0.7.0" org="inspektr" name="inspektr" conf="default->default"/>
     <dependency rev="1.0" org="jsr107cache" name="jsr107cache" conf="default->default"/>
     <dependency rev="4.+" org="junit" name="junit" conf="impl-test->default"/>
-    <dependency rev="2.5.5" org="springframework" name="spring-beans" conf="default->default"/>
-    <dependency rev="2.5.5" org="springframework" name="spring-web" conf="default->default"/>
-    <dependency rev="2.5.5" org="springframework" name="spring-tx" conf="default->default"/>
-    <dependency rev="2.5.5" org="springframework" name="spring-context" conf="default->default"/>
-    <dependency rev="2.5.5" org="springframework" name="spring-webmvc" conf="default->default"/>
+    <dependency rev="3.0.1.RELEASE-A" org="springframework" name="spring" conf="default->full"/>
+    <dependency rev="1.0.+" org="springframework" name="webflow" conf="default->*"/>
   </dependencies>
 </ivy-module>

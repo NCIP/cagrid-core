@@ -68,10 +68,10 @@
 
 
     <!-- External Dependencies -->
-    <dependency rev="1.0" org="jdom" name="jdom" conf="service->*" />
+    <dependency rev="1.1" org="jdom" name="jdom" conf="service->*" />
     <dependency rev="4.+" org="junit" name="junit" conf="impl-test->default" />
     <!-- TODO: change to newer version? and don't use full -->
-    <dependency rev="2.0.+" org="springframework" name="spring" conf="service->full;impl-test->mock" />
+    <dependency rev="3.0.+" org="springframework" name="spring" conf="service->full;impl-test->full" />
     <!--  Used for the caDSR Implementation -->
     <dependency rev="4.0" org="cacore" name="cadsr-api" conf="service->*" />
 
