@@ -12,6 +12,6 @@
 			access to single, and multi-valued configuration parameters </description>
 	</info>
 	<dependencies>
-		<dependency rev="2.1" org="apache" name="commons-lang" conf="*->*"/>
+		<dependency rev="2.+" org="apache" name="commons-lang" conf="*->*"/>
 	</dependencies>
 </ivy-module>
