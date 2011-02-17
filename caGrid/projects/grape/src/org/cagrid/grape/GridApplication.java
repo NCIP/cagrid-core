@@ -72,6 +72,8 @@ public class GridApplication extends JFrame {
 	private ApplicationComponent lastComp = null;
 
 	protected Application app;
+	
+	protected ClassLoader componentClassLoader;
 
 	protected ThreadManager threadManager;
 
@@ -85,10 +87,11 @@ public class GridApplication extends JFrame {
 		super();
 	}
 
-	protected GridApplication(Application app) throws Exception {
+	protected GridApplication(Application app, ClassLoader componentClassLoader) throws Exception {
 		super();
 		ErrorDialog.setOwnerFrame(this);
 		this.app = app;
+		this.componentClassLoader = componentClassLoader;
 		LookAndFeel.setApplicationLogo(this.app.getApplicationLogo());
 		this.threadManager = new ThreadManager();
 		this.context = new ApplicationContext(this);
@@ -100,14 +103,21 @@ public class GridApplication extends JFrame {
 	}
 
 	public static GridApplication getInstance(Application app) throws Exception {
-		if (application == null) {
-			application = new GridApplication(app);
-			application.startPostInitializer();
-			return application;
-		} else {
-			throw new Exception(
-					"An instance of the Grid Application has already been created.");
-		}
+		return getInstance(app, null);
+	}
+	
+	public static GridApplication getInstance(Application app, ClassLoader componentClassLoader) throws Exception {
+	    if (componentClassLoader == null) {
+	        componentClassLoader = GridApplication.class.getClassLoader();
+	    }
+	    if (application == null) {
+            application = new GridApplication(app, componentClassLoader);
+            application.startPostInitializer();
+            return application;
+        } else {
+            throw new Exception(
+                    "An instance of the Grid Application has already been created.");
+        }
 	}
 
 	public static ApplicationContext getContext() {
@@ -198,16 +208,18 @@ public class GridApplication extends JFrame {
 
 	protected void startPostInitializer() throws Exception {
 		if (this.app.getPostInitializerClass() != null) {
-			ApplicationInitializer appInit = (ApplicationInitializer) Class
-					.forName(this.app.getPostInitializerClass()).newInstance();
+			ApplicationInitializer appInit = 
+			    (ApplicationInitializer) Class.forName(
+			        this.app.getPostInitializerClass()).newInstance();
 			appInit.intialize(app);
 		}
 	}
 
 	protected void startPreInitializer() throws Exception {
 		if (this.app.getPreInitializerClass() != null) {
-			ApplicationInitializer appInit = (ApplicationInitializer) Class
-					.forName(this.app.getPreInitializerClass()).newInstance();
+			ApplicationInitializer appInit = 
+			    (ApplicationInitializer) Class.forName(
+			        this.app.getPreInitializerClass()).newInstance();
 			appInit.intialize(app);
 		}
 	}
@@ -223,8 +235,7 @@ public class GridApplication extends JFrame {
 
 		ConfigurationSynchronizer cs = null;
 		if (syncClass != null) {
-			cs = (ConfigurationSynchronizer) Class.forName(syncClass)
-					.newInstance();
+			cs = (ConfigurationSynchronizer) Class.forName(syncClass).newInstance();
 		}
 		configurationManager = createConfigurationManager(app
 				.getConfiguration(), cs);
@@ -629,8 +640,8 @@ public class GridApplication extends JFrame {
 
 		public void execute() {
 			try {
-				Object obj = Class.forName(component.getClassname())
-						.newInstance();
+				Object obj = app.componentClassLoader.loadClass(
+				    component.getClassname()).newInstance();
 				if (obj instanceof ApplicationComponent) {
 					ApplicationComponent comp = (ApplicationComponent) obj;
 					comp.setTitle(this.component.getTitle());

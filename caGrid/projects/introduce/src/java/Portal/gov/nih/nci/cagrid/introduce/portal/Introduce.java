@@ -4,6 +4,7 @@ import gov.nih.nci.cagrid.common.Utils;
 import gov.nih.nci.cagrid.common.portal.SplashScreen;
 import gov.nih.nci.cagrid.introduce.IntroduceConstants;
 import gov.nih.nci.cagrid.introduce.common.IntroducePropertiesManager;
+import gov.nih.nci.cagrid.introduce.extension.ExtensionTools;
 
 import java.awt.Dimension;
 import java.awt.EventQueue;
@@ -132,10 +133,11 @@ public final class Introduce {
                 confFile = IntroducePropertiesManager.getIntroduceConfigurationFile();
             }
 
-            Application app = (Application) Utils.deserializeDocument(confFile, Application.class);
+            Application app = Utils.deserializeDocument(confFile, Application.class);
 
             // launch the portal with the passed config
-            GridApplication applicationInstance = GridApplication.getInstance(app);
+            GridApplication applicationInstance = GridApplication.getInstance(
+                app, ExtensionTools.getExtensionClassLoader());
             Dimension d = new Dimension(app.getDimensions().getWidth(), app.getDimensions().getHeight());
 
             try {
@@ -147,7 +149,6 @@ public final class Introduce {
             applicationInstance.setSize(d);
             applicationInstance.setVisible(true);
             applicationInstance.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-
         } catch (Exception e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
