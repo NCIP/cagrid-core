@@ -45,16 +45,16 @@
 		<dependency rev="1.5.3" org="objectweb" name="asm" conf="core->default"/>
         <dependency rev="1.6.1" org="dom4j" name="dom4j" conf="core->default"/>
 		<dependency rev="1.0.1B" org="sun" name="jta" conf="core->default"/>
-		<dependency rev="2.7.6rc1" org="antlr" name="antlr" conf="core->default"/>
+		<dependency rev="2.7.6" org="antlr" name="antlr" conf="core->default"/>
 		<dependency rev="2.1_3" org="cglib" name="cglib" conf="default,cglib->default"/>
 		<!--
 		<dependency org="javassist" name="javassist" rev="3.4" conf="javassist->default"/>
 		-->
-		<dependency org="c3p0" name="c3p0" rev="0.9.1+" conf="c3p0->default"/> 
+		<dependency org="c3p0" name="c3p0" rev="0.9.+" /> 
 		<!--
 		<dependency org="proxool" name="proxool" rev="0.8.3" conf="proxool->default"/>
 		-->
-		<dependency rev="1.2.3" org="ehcache" name="ehcache" conf="default,ehcache->default"/>
+		<dependency rev="1.2.+" org="ehcache" name="ehcache" conf="default,ehcache->default"/>
 		<!--			
 		<dependency org="opensymphony" name="oscache" rev="2.1" conf="oscache->default"/>
 		<dependency org="swarmcache" name="swarmcache" rev="1.0rc2" conf="swarmcache->default"/>

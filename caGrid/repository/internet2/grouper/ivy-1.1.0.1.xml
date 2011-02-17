@@ -24,10 +24,10 @@
         <dependency rev="0.1" org="internet2" name="common" conf="default->default"/>
         <dependency rev="0.2.1" org="internet2" name="subject" conf="default,minimal->*"/>
 
-        <dependency rev="2.0" org="apache" name="commons-lang" conf="default->*"/>
+        <dependency rev="2.+" org="apache" name="commons-lang" conf="default->*"/>
         <dependency rev="1.1" org="apache" name="commons-math" conf="default->*"/>
-        <dependency rev="0.9" org="ehcache" name="ehcache" conf="default->*"/>
-        <dependency rev="2.1.8" org="hibernate" name="hibernate" conf="default->*"/>
+        <dependency rev="1.2.+" org="ehcache" name="ehcache" conf="default->*"/>
+        <dependency rev="2.1.+" org="hibernate" name="hibernate" conf="default->*"/>
         <dependency rev="1.7.2.+" org="hsqldb" name="hsqldb" conf="default->*"/>
         <dependency rev="1.0.1B" org="sun" name="jta" conf="default->*"/>
         <dependency rev="1.1.1" org="safehaus" name="jug" conf="default->*"/>

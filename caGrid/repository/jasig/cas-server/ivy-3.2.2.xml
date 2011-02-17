@@ -31,22 +31,14 @@
 
 		<dependency rev="1.1.2" org="sun" name="jstl"/>
 		<dependency rev="1.0" org="sun" name="ldapbp"/>
-		<dependency rev="1.0" org="sun" name="persistence-api"/>
+		<dependency rev="1.0.+" org="sun" name="persistence-api"/>
 		<dependency rev="1.0" org="sun" name="xmldsig"/>
 
 		<dependency rev="3.0.1.RELEASE-A" org="springframework" name="spring" conf="default->default"/>
-		<dependency rev="2.5.5" org="springframework" name="spring-web" conf="default->default"/>
-<!--
-		<dependency rev="2.5.5" org="springframework" name="spring-tx" conf="default->default"/>
-		<dependency rev="2.5.5" org="springframework" name="spring-beans" conf="default->default"/>
--->
-		<dependency rev="1.0.5" org="springframework" name="webflow"/>
-		<dependency rev="1.2.1" org="springframework" name="ldap"/>
-		<dependency rev="2.0.1" org="springframework" name="security"/>
 		<dependency rev="1.0.7" org="acegisecurity" name="acegisecurity"/>		
 
 		<dependency rev="1.2.4" org="ehcache" name="ehcache"/>
-		<dependency rev="1.0" org="jdom" name="jdom"/>
+		<dependency rev="1.1" org="jdom" name="jdom"/>
 		<dependency rev="2.6.9" org="ognl" name="ognl"/>
 		<dependency rev="1.1b" org="internet2" name="opensaml"/>
 		<dependency rev="1.5.2" org="opensymphony" name="quartz"/>
