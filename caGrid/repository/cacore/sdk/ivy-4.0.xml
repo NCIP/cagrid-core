@@ -20,10 +20,10 @@
   </publications>
 
   <dependencies>
-    <dependency rev="1.0.4" org="acegisecurity" name="acegisecurity" conf="client->default" />
+    <dependency rev="1.0.7" org="acegisecurity" name="acegisecurity" conf="client->default" />
     <dependency rev="1.0.2" org="castor" name="castor" conf="client->default" />
     <dependency rev="3.2.0.ga" org="hibernate" name="hibernate" conf="client->cglib" />
-    <dependency rev="2.0.3" org="springframework" name="spring" conf="client->full" />
+    <dependency rev="3.0.+" org="springframework" name="spring" conf="client->full" />
     <!--  From Globus -->
     <!--
       <dependency rev="?" org="apache" name="xercesImpl" conf="client->default"/> <dependency
