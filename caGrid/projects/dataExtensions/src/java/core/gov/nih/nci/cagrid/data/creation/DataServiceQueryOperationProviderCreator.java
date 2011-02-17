@@ -4,6 +4,7 @@ import gov.nih.nci.cagrid.common.Utils;
 import gov.nih.nci.cagrid.data.CqlSchemaConstants;
 import gov.nih.nci.cagrid.data.DataServiceConstants;
 import gov.nih.nci.cagrid.data.ExtensionDataUtils;
+import gov.nih.nci.cagrid.data.InstanceCountConstants;
 import gov.nih.nci.cagrid.data.MetadataConstants;
 import gov.nih.nci.cagrid.data.QueryMethodConstants;
 import gov.nih.nci.cagrid.data.QueryProcessorConstants;
@@ -371,6 +372,11 @@ public class DataServiceQueryOperationProviderCreator implements CreationExtensi
         CommonTools.setServiceProperty(desc, ServiceParametersConstants.CLASS_MAPPINGS_FILENAME,
             DataServiceConstants.CLASS_TO_QNAME_XML, true,
             "The name of the file containing the class name to QName mapping");
+        // instance count frequency property
+        if (!CommonTools.servicePropertyExists(desc, InstanceCountConstants.COUNT_UPDATE_FREQUENCY)) {
+            CommonTools.setServiceProperty(desc, InstanceCountConstants.COUNT_UPDATE_FREQUENCY, InstanceCountConstants.COUNT_UPDATE_FREQUENCY_DEFAULT,
+                true, InstanceCountConstants.COUNT_UPDATE_FREQUENCY_DESCRIPTION);
+        }
     }
 
 
