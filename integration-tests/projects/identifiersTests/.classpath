@@ -31,7 +31,7 @@
 	<classpathentry kind="var" path="GT4_LOCATION/lib/globus_usage_packets_common.jar"/>
 	<classpathentry kind="var" path="GT4_LOCATION/lib/globus_wsrf_tools_test.jar"/>
 	<classpathentry kind="var" path="GT4_LOCATION/lib/jaxrpc.jar"/>
-	<classpathentry kind="var" path="GT4_LOCATION/lib/jce-jdk13-145.jar"/>
+	<classpathentry kind="var" path="GT4_LOCATION/lib/bcprov-jdk15-145.jar"/>
 	<classpathentry kind="var" path="GT4_LOCATION/lib/jgss.jar"/>
 	<classpathentry kind="var" path="GT4_LOCATION/lib/log4j-1.2.14.jar"/>
 	<classpathentry kind="var" path="GT4_LOCATION/lib/naming-common.jar"/>
@@ -67,14 +67,14 @@
 	<classpathentry kind="var" path="GT4_LOCATION/lib/xercesImpl.jar" sourcepath="/GT4_LOCATION/Xerces-J-src.2.6.2.zip"/>
 	<classpathentry kind="var" path="GT4_LOCATION/lib/xml-apis.jar"/>
 	<classpathentry kind="var" path="GT4_LOCATION/lib/xmlsec.jar"/>
-	<classpathentry kind="lib" path="ext/dependencies/jars/antlr-2.7.6rc1.jar"/>
+	<classpathentry kind="lib" path="ext/dependencies/jars/antlr-2.7.6.jar"/>
 	<classpathentry kind="lib" path="ext/dependencies/jars/asm.jar"/>
 	<classpathentry kind="lib" path="ext/dependencies/jars/caGrid-advertisement-1.4.1.jar"/>
 	<classpathentry kind="lib" path="ext/dependencies/jars/cglib-2.1_3.jar"/>
 	<classpathentry kind="lib" path="ext/dependencies/jars/commons-dbcp-1.2.2.jar"/>
-	<classpathentry kind="lib" path="ext/dependencies/jars/commons-pool-1.2.jar"/>
+	<classpathentry kind="lib" path="ext/dependencies/jars/commons-pool-1.3.jar"/>
 	<classpathentry kind="lib" path="ext/dependencies/jars/dom4j-1.6.1.jar"/>
-	<classpathentry kind="lib" path="ext/dependencies/jars/ehcache-1.2.3.jar"/>
+	<classpathentry kind="lib" path="ext/dependencies/jars/ehcache-1.2.4.jar"/>
 	<classpathentry kind="lib" path="ext/dependencies/jars/ejb3-persistence.jar"/>
 	<classpathentry kind="lib" path="ext/dependencies/jars/globus_wsrf_mds_aggregator_stubs.jar"/>
 	<classpathentry kind="lib" path="ext/dependencies/jars/globus_wsrf_mds_aggregator.jar"/>
@@ -102,9 +102,7 @@
 	<classpathentry kind="lib" path="ext/dependencies/jars/jetty-util-6.1.18.jar"/>
 	<classpathentry kind="lib" path="ext/dependencies/jars/junit-4.8.2.jar"/>
 	<classpathentry kind="lib" path="ext/dependencies/jars/servlet.jar"/>
-	<classpathentry kind="lib" path="ext/dependencies/jars/spring-test.jar"/>
 	<classpathentry kind="lib" path="ext/dependencies/jars/spring-xml-1.2.1.jar"/>
-	<classpathentry kind="lib" path="ext/dependencies/jars/spring.jar"/>
 	<classpathentry kind="lib" path="ext/dependencies/jars/caGrid-IdentifiersNAService-tests-1.4.1.jar"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="lib" path="ext/dependencies/jars/caGrid-core-1.4.1.jar"/>
@@ -119,7 +117,7 @@
 	<classpathentry kind="lib" path="ext/dependencies/jars/caGrid-testing-system-1.4.1.jar"/>
 	<classpathentry kind="lib" path="ext/dependencies/jars/caGrid-testUtils-1.4.1.jar"/>
 	<classpathentry kind="lib" path="ext/dependencies/jars/jdepend-2.7.jar"/>
-	<classpathentry kind="lib" path="ext/dependencies/jars/jdom-1.0.jar"/>
+	<classpathentry kind="lib" path="ext/dependencies/jars/jdom-1.1.jar"/>
 	<classpathentry kind="lib" path="ext/dependencies/jars/caGrid-identifiers-client-1.4.1.jar"/>
 	<classpathentry kind="lib" path="ext/dependencies/jars/commons-codec-1.3.jar"/>
 	<classpathentry kind="lib" path="ext/dependencies/jars/httpclient-4.0.jar"/>
