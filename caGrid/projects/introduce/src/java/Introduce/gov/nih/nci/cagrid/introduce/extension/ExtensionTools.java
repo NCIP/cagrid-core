@@ -37,6 +37,8 @@ import org.apache.log4j.Logger;
 public class ExtensionTools {
 
     private static final Logger logger = Logger.getLogger(ExtensionTools.class);
+    
+    private static URLClassLoader extensionClassLoader = null;
 
 
     /**
@@ -392,16 +394,18 @@ public class ExtensionTools {
     }
     
     
-    private static ClassLoader getExtensionClassLoader() throws Exception {
-        File extDir = ExtensionsLoader.getInstance().getExtensionsDir();
-        File libDir = new File(extDir, "lib");
-        File[] jars = libDir.listFiles(new FileFilters.JarFileFilter());
-        URL[] jarUrls = new URL[jars.length];
-        for (int i = 0; i < jars.length; i++) {
-            jarUrls[i] = jars[i].toURI().toURL();
+    public static ClassLoader getExtensionClassLoader() throws Exception {
+        if (extensionClassLoader == null) {
+            File extDir = ExtensionsLoader.getInstance().getExtensionsDir();
+            File libDir = new File(extDir, "lib");
+            File[] jars = libDir.listFiles(new FileFilters.JarFileFilter());
+            URL[] jarUrls = new URL[jars.length];
+            for (int i = 0; i < jars.length; i++) {
+                jarUrls[i] = jars[i].toURI().toURL();
+            }
+            extensionClassLoader = new URLClassLoader(jarUrls, Thread.currentThread().getContextClassLoader());
         }
-        URLClassLoader loader = new URLClassLoader(jarUrls, Thread.currentThread().getContextClassLoader());
-        return loader;
+        return extensionClassLoader;
     }
     
     
