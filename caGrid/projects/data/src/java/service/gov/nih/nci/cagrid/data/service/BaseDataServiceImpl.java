@@ -5,6 +5,7 @@ import gov.nih.nci.cagrid.common.Utils;
 import gov.nih.nci.cagrid.cqlquery.CQLQuery;
 import gov.nih.nci.cagrid.cqlresultset.CQLQueryResults;
 import gov.nih.nci.cagrid.data.AuditorConstants;
+import gov.nih.nci.cagrid.data.InstanceCountConstants;
 import gov.nih.nci.cagrid.data.MalformedQueryException;
 import gov.nih.nci.cagrid.data.MetadataConstants;
 import gov.nih.nci.cagrid.data.QueryProcessingException;
@@ -238,9 +239,11 @@ public abstract class BaseDataServiceImpl {
         } else {
             try {
                 InstanceCountUpdater.startCountUpdateTask(getDomainModel(), getCql2QueryProcessor(), 
-                    serviceBaseResource, dataInstanceSetterMethod);
+                    serviceBaseResource, dataInstanceSetterMethod, getInstanceCountUpdateFrequency());
             } catch (QueryProcessingException ex) {
                 LOG.error("Count not get query processor for instance count task: " + ex.getMessage(), ex);
+            } catch (Exception ex) {
+                LOG.error("Unexpected error setting up instance count task: " + ex.getMessage(), ex);
             }
         }
     }
@@ -684,6 +687,16 @@ public abstract class BaseDataServiceImpl {
             hasProcessor = processorClassname != null && processorClassname.length() != 0;
         }
         return hasProcessor;
+    }
+    
+    
+    private int getInstanceCountUpdateFrequency() throws Exception {
+        int instanceCount = Integer.valueOf(InstanceCountConstants.COUNT_UPDATE_FREQUENCY_DEFAULT).intValue();
+        if (ServiceConfigUtil.hasConfigProperty(InstanceCountConstants.COUNT_UPDATE_FREQUENCY)) {
+            String frequencyStr = ServiceConfigUtil.getInstanceCountUpdateFrequency();
+            instanceCount = Integer.valueOf(frequencyStr).intValue();
+        }
+        return instanceCount;
     }
     
     

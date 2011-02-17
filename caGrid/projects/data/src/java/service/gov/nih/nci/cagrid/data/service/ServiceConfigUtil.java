@@ -1,6 +1,6 @@
 package gov.nih.nci.cagrid.data.service;
 
-import gov.nih.nci.cagrid.data.DataServiceConstants;
+import gov.nih.nci.cagrid.data.InstanceCountConstants;
 import gov.nih.nci.cagrid.data.QueryProcessorConstants;
 import gov.nih.nci.cagrid.data.ServiceParametersConstants;
 
@@ -83,6 +83,18 @@ public class ServiceConfigUtil {
                 + ex.getMessage(), ex);
         }
         return className;
+	}
+	
+	
+	public static String getInstanceCountUpdateFrequency() throws Exception {
+	    String frequency = null;
+	    try {
+	        frequency = getConfigProperty(InstanceCountConstants.COUNT_UPDATE_FREQUENCY);
+	    } catch (Exception ex) {
+	        throw new Exception("Unable to extract instance count update frequency from config: " 
+	            + ex.getMessage(), ex);
+	    }
+	    return frequency;
 	}
 	
 	

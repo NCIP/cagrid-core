@@ -32,13 +32,26 @@ public class InstanceCountUpdater {
     
     private static Log LOG = LogFactory.getLog(InstanceCountUpdater.class);
     
-    public static final long UPDATE_FREQUENCY = 600 * 1000; // seconds. 600 = 10 minutes
     // TODO: Evaluate if this is even needed
     public static final long SLEEP_BETWEEN_QUERIES = 1000; // milliseconds.  The amount of time to pause between count queries.
         
     
+    /**
+     * Starts up the instance count update task
+     * 
+     * @param model
+     *      The domain model to look for classes that should be counted in
+     * @param processor
+     *      The CQL 2 query processor which will handle the counting
+     * @param baseResource
+     *      The WSRF resource which must be updated
+     * @param setterMethod
+     *      The setter method to the resource which takes the instance count
+     * @param updateFrequency
+     *      How often, in seconds, to update the instance count
+     */
     public static void startCountUpdateTask(final DomainModel model, final CQL2QueryProcessor processor, 
-        final Resource baseResource, final Method setterMethod) {
+        final Resource baseResource, final Method setterMethod, int updateFrequency) {
         TimerTask task = new TimerTask() {
             public void run() {
                 LOG.debug("Starting instance count update");
@@ -93,6 +106,6 @@ public class InstanceCountUpdater {
         
         // TODO: may have to make the timer use a daemon thread
         Timer t = new Timer(InstanceCountUpdater.class.getName() + " task");
-        t.schedule(task, 0, UPDATE_FREQUENCY);
+        t.schedule(task, 0, updateFrequency * 1000);
     }
 }
