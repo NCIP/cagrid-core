@@ -32,7 +32,7 @@
   <classpathentry kind="var" path="GT4_LOCATION/lib/globus_usage_packets_common.jar" />
   <classpathentry kind="var" path="GT4_LOCATION/lib/globus_wsrf_tools_test.jar" />
   <classpathentry kind="var" path="GT4_LOCATION/lib/jaxrpc.jar" />
-  <classpathentry kind="var" path="GT4_LOCATION/lib/jce-jdk13-145.jar" />
+  <classpathentry kind="var" path="GT4_LOCATION/lib/bcprov-jdk15-145.jar" />
   <classpathentry kind="var" path="GT4_LOCATION/lib/jgss.jar" />
   <classpathentry kind="var" path="GT4_LOCATION/lib/log4j-1.2.14.jar" />
   <classpathentry kind="var" path="GT4_LOCATION/lib/naming-common.jar" />
@@ -69,7 +69,7 @@
   <classpathentry kind="var" path="GT4_LOCATION/lib/xml-apis.jar" />
   <classpathentry kind="var" path="GT4_LOCATION/lib/xmlsec.jar" />
   <classpathentry kind="lib" path="ext/dependencies/jars/caGrid-core-1.4.1.jar" />
-  <classpathentry kind="lib" path="ext/dependencies/jars/jdom-1.0.jar" />
+  <classpathentry kind="lib" path="ext/dependencies/jars/jdom-1.1.jar" />
   <classpathentry kind="lib" path="ext/dependencies/test/jars/caGrid-core-tests-1.4.1.jar" />
   <classpathentry kind="lib" path="ext/dependencies/test/jars/jdepend-2.7.jar" />
   <classpathentry kind="lib" path="ext/dependencies/jars/junit-4.8.2.jar" />

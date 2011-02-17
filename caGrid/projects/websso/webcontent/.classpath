@@ -9,7 +9,7 @@
   <classpathentry kind="lib" path="WEB-INF/lib/commons-lang-2.2.jar" />
   <classpathentry kind="lib" path="WEB-INF/lib/commons-logging-1.1.jar" />
   <classpathentry kind="lib" path="WEB-INF/lib/ehcache-1.4.0-beta2.jar" />
-  <classpathentry kind="lib" path="WEB-INF/lib/jdom-1.0.jar" />
+  <classpathentry kind="lib" path="WEB-INF/lib/jdom-1.1.jar" />
   <classpathentry kind="lib" path="WEB-INF/lib/jsr107cache-1.0.jar" />
   <classpathentry kind="lib" path="WEB-INF/lib/jstl-1.1.2.jar" />
   <classpathentry kind="lib" path="WEB-INF/lib/log4j-1.2.15.jar" />
@@ -69,7 +69,7 @@
   <classpathentry kind="lib" path="WEB-INF/lib/jakarta-oro-2.0.8.jar" />
   <classpathentry kind="lib" path="WEB-INF/lib/jasciidammit-1.1.jar" />
   <classpathentry kind="lib" path="WEB-INF/lib/jaxrpc.jar" />
-  <classpathentry kind="lib" path="WEB-INF/lib/jce-jdk13-145.jar" />
+  <classpathentry kind="lib" path="WEB-INF/lib/bcprov-jdk15-145.jar" />
   <classpathentry kind="lib" path="WEB-INF/lib/jprov.jar" />
   <classpathentry kind="lib" path="WEB-INF/lib/ldapbp-1.0.jar" />
   <classpathentry kind="lib" path="WEB-INF/lib/mobius_common_client-1.1.jar" />

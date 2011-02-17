@@ -24,7 +24,7 @@
 	<classpathentry kind="var" path="GT4_LOCATION/lib/globus_usage_core.jar"/>
 	<classpathentry kind="var" path="GT4_LOCATION/lib/globus_usage_packets_common.jar"/>
 	<classpathentry kind="var" path="GT4_LOCATION/lib/jaxrpc.jar"/>
-	<classpathentry kind="var" path="GT4_LOCATION/lib/jce-jdk13-145.jar"/>
+	<classpathentry kind="var" path="GT4_LOCATION/lib/bcprov-jdk15-145.jar"/>
 	<classpathentry kind="var" path="GT4_LOCATION/lib/jgss.jar"/>
 	<classpathentry kind="var" path="GT4_LOCATION/lib/log4j-1.2.14.jar"/>
 	<classpathentry kind="var" path="GT4_LOCATION/lib/naming-common.jar"/>
@@ -65,14 +65,13 @@
 	<classpathentry kind="lib" path="ext/dependencies/service/jars/globus_wsrf_mds_aggregator.jar"/>
 	<classpathentry kind="lib" path="ext/dependencies/service/jars/globus_wsrf_servicegroup_stubs.jar"/>
 	<classpathentry kind="lib" path="ext/dependencies/service/jars/globus_wsrf_servicegroup.jar"/>
-	<classpathentry kind="lib" path="ext/dependencies/service/jars/jdom-1.0.jar"/>
+	<classpathentry kind="lib" path="ext/dependencies/service/jars/jdom-1.1.jar"/>
 	<classpathentry kind="lib" path="ext/dependencies/service/jars/jprov.jar"/>
 	<classpathentry kind="lib" path="ext/dependencies/service/jars/mobius_common_client-1.1.jar"/>
 	<classpathentry kind="lib" path="ext/dependencies/service/jars/mobius_tools-1.1.jar"/>
 	<classpathentry kind="lib" path="ext/dependencies/service/jars/mysql-connector-java-3.0.16-ga-bin.jar"/>
 	<classpathentry kind="lib" path="ext/dependencies/test/jars/caGrid-core-tests-1.4.1.jar"/>
 	<classpathentry kind="lib" path="ext/dependencies/service/jars/caGrid-gaards-core-1.4.1.jar"/>
-	<classpathentry kind="lib" path="ext/dependencies/service/jars/castor-1.0.2.jar"/>
 	<classpathentry kind="lib" path="ext/dependencies/service/jars/caGrid-Introduce-serviceTools-1.4.1.jar"/>
 	<classpathentry kind="lib" path="ext/dependencies/service/jars/caGrid-opensaml-1.4.1.jar"/>
 	<classpathentry kind="lib" path="ext/dependencies/service/jars/commons-codec-1.3.jar"/>

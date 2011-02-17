@@ -3,6 +3,7 @@
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="src" path="test/src"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.junit.JUNIT_CONTAINER/4"/>
 	<classpathentry kind="lib" path="ext/dependencies/jars/caGrid-core-1.4.1.jar"/>
 	<classpathentry kind="lib" path="ext/dependencies/jars/caGrid-metadata-common-1.4.1.jar"/>
 	<classpathentry kind="lib" path="ext/dependencies/jars/caGrid-metadata-data-1.4.1.jar"/>
@@ -15,7 +16,6 @@
 	<classpathentry kind="lib" path="ext/dependencies/jars/jasciidammit-1.1.jar"/>
 	<classpathentry kind="lib" path="ext/dependencies/jars/xmi.in.out-1.0.jar"/>
 	<classpathentry kind="lib" path="ext/dependencies/jars/jaxen-core-1.0.jar"/>
-	<classpathentry kind="lib" path="ext/dependencies/jars/jaxen-jdom-1.0.jar"/>
 	<classpathentry kind="lib" path="ext/dependencies/jars/jdom-1.1.jar"/>
 	<classpathentry kind="lib" path="ext/dependencies/jars/saxpath-1.0.jar"/>
 	<classpathentry kind="var" path="GT4_LOCATION/lib/addressing-1.0.jar" sourcepath="/GT4_LOCATION/ws-core-4.0.3-src.zip"/>
@@ -47,9 +47,8 @@
 	<classpathentry kind="var" path="GT4_LOCATION/lib/globus_usage_packets_common.jar"/>
 	<classpathentry kind="var" path="GT4_LOCATION/lib/globus_wsrf_tools_test.jar"/>
 	<classpathentry kind="var" path="GT4_LOCATION/lib/jaxrpc.jar"/>
-	<classpathentry kind="var" path="GT4_LOCATION/lib/jce-jdk13-145.jar"/>
+	<classpathentry kind="var" path="GT4_LOCATION/lib/bcprov-jdk15-145.jar"/>
 	<classpathentry kind="var" path="GT4_LOCATION/lib/jgss.jar"/>
-	<classpathentry kind="var" path="GT4_LOCATION/lib/junit.jar" sourcepath="/JUNIT_SRC_HOME/junitsrc.zip"/>
 	<classpathentry kind="var" path="GT4_LOCATION/lib/log4j-1.2.14.jar"/>
 	<classpathentry kind="var" path="GT4_LOCATION/lib/naming-common.jar"/>
 	<classpathentry kind="var" path="GT4_LOCATION/lib/naming-factory.jar"/>

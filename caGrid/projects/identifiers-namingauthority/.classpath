@@ -35,9 +35,8 @@
 	<classpathentry kind="var" path="GT4_LOCATION/lib/globus_usage_packets_common.jar"/>
 	<classpathentry kind="var" path="GT4_LOCATION/lib/globus_wsrf_tools_test.jar"/>
 	<classpathentry kind="var" path="GT4_LOCATION/lib/jaxrpc.jar"/>
-	<classpathentry kind="var" path="GT4_LOCATION/lib/jce-jdk13-145.jar"/>
+	<classpathentry kind="var" path="GT4_LOCATION/lib/bcprov-jdk15-145.jar"/>
 	<classpathentry kind="var" path="GT4_LOCATION/lib/jgss.jar"/>
-	<classpathentry kind="var" path="GT4_LOCATION/lib/junit.jar"/>
 	<classpathentry kind="var" path="GT4_LOCATION/lib/log4j-1.2.14.jar"/>
 	<classpathentry kind="var" path="GT4_LOCATION/lib/naming-common.jar"/>
 	<classpathentry kind="var" path="GT4_LOCATION/lib/naming-factory.jar"/>
@@ -72,15 +71,15 @@
 	<classpathentry kind="var" path="GT4_LOCATION/lib/xercesImpl.jar"/>
 	<classpathentry kind="var" path="GT4_LOCATION/lib/xml-apis.jar"/>
 	<classpathentry kind="var" path="GT4_LOCATION/lib/xmlsec.jar"/>
-	<classpathentry kind="lib" path="ext/dependencies/impl/jars/antlr-2.7.6rc1.jar"/>
+	<classpathentry kind="lib" path="ext/dependencies/impl/jars/antlr-2.7.6.jar"/>
 	<classpathentry kind="lib" path="ext/dependencies/impl/jars/asm.jar"/>
 	<classpathentry kind="lib" path="ext/dependencies/impl/jars/cglib-2.1_3.jar"/>
 	<classpathentry kind="lib" path="ext/dependencies/impl/jars/commons-collections-3.2.jar"/>
 	<classpathentry kind="lib" path="ext/dependencies/impl/jars/commons-dbcp-1.2.2.jar"/>
 	<classpathentry kind="lib" path="ext/dependencies/impl/jars/commons-logging-1.1.jar"/>
-	<classpathentry kind="lib" path="ext/dependencies/impl/jars/commons-pool-1.2.jar"/>
+	<classpathentry kind="lib" path="ext/dependencies/impl/jars/commons-pool-1.3.jar"/>
 	<classpathentry kind="lib" path="ext/dependencies/impl/jars/dom4j-1.6.1.jar"/>
-	<classpathentry kind="lib" path="ext/dependencies/impl/jars/ehcache-1.2.3.jar"/>
+	<classpathentry kind="lib" path="ext/dependencies/impl/jars/ehcache-1.2.4.jar"/>
 	<classpathentry kind="lib" path="ext/dependencies/impl/jars/ejb3-persistence.jar"/>
 	<classpathentry kind="lib" path="ext/dependencies/impl/jars/hibernate-annotations.jar"/>
 	<classpathentry kind="lib" path="ext/dependencies/impl/jars/hibernate-commons-annotations.jar"/>
@@ -90,11 +89,29 @@
 	<classpathentry kind="lib" path="ext/dependencies/impl/jars/jta-1.0.1B.jar"/>
 	<classpathentry kind="lib" path="ext/dependencies/impl/jars/mysql-connector-java-3.0.16-ga-bin.jar"/>
 	<classpathentry kind="lib" path="ext/dependencies/impl/jars/servlet.jar"/>
-	<classpathentry kind="lib" path="ext/dependencies/impl/jars/spring-test.jar"/>
-	<classpathentry kind="lib" path="ext/dependencies/impl/jars/spring.jar"/>
 	<classpathentry kind="lib" path="ext/dependencies/impl/jars/castor-1.3.jar"/>
 	<classpathentry kind="lib" path="ext/dependencies/impl/jars/castor-1.3-core.jar"/>
 	<classpathentry kind="lib" path="ext/dependencies/impl/jars/spring-xml-1.2.1.jar"/>
+	<classpathentry kind="lib" path="ext/dependencies/impl/jars/org.springframework.aop-3.0.1.RELEASE-A.jar"/>
+	<classpathentry kind="lib" path="ext/dependencies/impl/jars/org.springframework.asm-3.0.1.RELEASE-A.jar"/>
+	<classpathentry kind="lib" path="ext/dependencies/impl/jars/org.springframework.aspects-3.0.1.RELEASE-A.jar"/>
+	<classpathentry kind="lib" path="ext/dependencies/impl/jars/org.springframework.beans-3.0.1.RELEASE-A.jar"/>
+	<classpathentry kind="lib" path="ext/dependencies/impl/jars/org.springframework.context-3.0.1.RELEASE-A.jar"/>
+	<classpathentry kind="lib" path="ext/dependencies/impl/jars/org.springframework.context.support-3.0.1.RELEASE-A.jar"/>
+	<classpathentry kind="lib" path="ext/dependencies/impl/jars/org.springframework.core-3.0.1.RELEASE-A.jar"/>
+	<classpathentry kind="lib" path="ext/dependencies/impl/jars/org.springframework.expression-3.0.1.RELEASE-A.jar"/>
+	<classpathentry kind="lib" path="ext/dependencies/impl/jars/org.springframework.instrument-3.0.1.RELEASE-A.jar"/>
+	<classpathentry kind="lib" path="ext/dependencies/impl/jars/org.springframework.instrument.tomcat-3.0.1.RELEASE-A.jar"/>
+	<classpathentry kind="lib" path="ext/dependencies/impl/jars/org.springframework.jdbc-3.0.1.RELEASE-A.jar"/>
+	<classpathentry kind="lib" path="ext/dependencies/impl/jars/org.springframework.jms-3.0.1.RELEASE-A.jar"/>
+	<classpathentry kind="lib" path="ext/dependencies/impl/jars/org.springframework.orm-3.0.1.RELEASE-A.jar"/>
+	<classpathentry kind="lib" path="ext/dependencies/impl/jars/org.springframework.oxm-3.0.1.RELEASE-A.jar"/>
+	<classpathentry kind="lib" path="ext/dependencies/impl/jars/org.springframework.test-3.0.1.RELEASE-A.jar"/>
+	<classpathentry kind="lib" path="ext/dependencies/impl/jars/org.springframework.transaction-3.0.1.RELEASE-A.jar"/>
+	<classpathentry kind="lib" path="ext/dependencies/impl/jars/org.springframework.web-3.0.1.RELEASE-A.jar"/>
+	<classpathentry kind="lib" path="ext/dependencies/impl/jars/org.springframework.web.portlet-3.0.1.RELEASE-A.jar"/>
+	<classpathentry kind="lib" path="ext/dependencies/impl/jars/org.springframework.web.servlet-3.0.1.RELEASE-A.jar"/>
+	<classpathentry kind="lib" path="ext/dependencies/impl/jars/org.springframework.web.struts-3.0.1.RELEASE-A.jar"/>
 	<classpathentry kind="var" path="GT4_LOCATION/lib/cog-axis-compat-0.0.1-SNAPSHOT.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

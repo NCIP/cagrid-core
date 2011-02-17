@@ -23,7 +23,7 @@
 	<classpathentry kind="var" path="GT4_LOCATION/lib/globus_usage_core.jar"/>
 	<classpathentry kind="var" path="GT4_LOCATION/lib/globus_usage_packets_common.jar"/>
 	<classpathentry kind="var" path="GT4_LOCATION/lib/jaxrpc.jar"/>
-	<classpathentry kind="var" path="GT4_LOCATION/lib/jce-jdk13-145.jar"/>
+	<classpathentry kind="var" path="GT4_LOCATION/lib/bcprov-jdk15-145.jar"/>
 	<classpathentry kind="var" path="GT4_LOCATION/lib/jgss.jar"/>
 	<classpathentry kind="var" path="GT4_LOCATION/lib/log4j-1.2.14.jar"/>
 	<classpathentry kind="var" path="GT4_LOCATION/lib/naming-common.jar"/>
@@ -47,11 +47,11 @@
 	<classpathentry kind="var" path="GT4_LOCATION/lib/xercesImpl.jar"/>
 	<classpathentry kind="var" path="GT4_LOCATION/lib/xml-apis.jar"/>
 	<classpathentry kind="var" path="GT4_LOCATION/lib/xmlsec.jar"/>
-	<classpathentry kind="lib" path="ext/dependencies/jars/jdom-1.0.jar"/>
+	<classpathentry kind="lib" path="ext/dependencies/jars/jdom-1.1.jar"/>
 	<classpathentry kind="lib" path="ext/dependencies/jars/validation-2.0.0.jar"/>
 	<classpathentry kind="lib" path="ext/dependencies/test/jars/jdepend-2.7.jar"/>
-	<classpathentry kind="con" path="org.eclipse.jdt.junit.JUNIT_CONTAINER/4"/>
 	<classpathentry kind="lib" path="ext/dependencies/jars/castor-1.0.2.jar"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.junit.JUNIT_CONTAINER/4"/>
 	<classpathentry kind="var" path="GT4_LOCATION/lib/cog-axis-compat-0.0.1-SNAPSHOT.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

@@ -28,7 +28,7 @@
 	<classpathentry kind="var" path="GT4_LOCATION/lib/globus_usage_core.jar"/>
 	<classpathentry kind="var" path="GT4_LOCATION/lib/globus_usage_packets_common.jar"/>
 	<classpathentry kind="var" path="GT4_LOCATION/lib/jaxrpc.jar"/>
-	<classpathentry kind="var" path="GT4_LOCATION/lib/jce-jdk13-145.jar"/>
+	<classpathentry kind="var" path="GT4_LOCATION/lib/bcprov-jdk15-145.jar"/>
 	<classpathentry kind="var" path="GT4_LOCATION/lib/jgss.jar"/>
 	<classpathentry kind="var" path="GT4_LOCATION/lib/log4j-1.2.14.jar"/>
 	<classpathentry kind="var" path="GT4_LOCATION/lib/naming-common.jar"/>
@@ -76,16 +76,16 @@
 	<classpathentry kind="lib" path="ext/dependencies/service/jars/caGrid-service-tools-groups-1.4.1.jar" sourcepath="/caGrid-service-tools-1.4"/>
 	<classpathentry kind="lib" path="ext/dependencies/service/jars/commons-codec-1.3.jar"/>
 	<classpathentry kind="lib" path="ext/dependencies/service/jars/commons-dbcp-1.2.2.jar"/>
-	<classpathentry kind="lib" path="ext/dependencies/service/jars/commons-httpclient-3.0.jar"/>
-	<classpathentry kind="lib" path="ext/dependencies/service/jars/commons-lang-2.0.jar"/>
-	<classpathentry kind="lib" path="ext/dependencies/service/jars/commons-pool-1.2.jar"/>
+	<classpathentry kind="lib" path="ext/dependencies/service/jars/commons-httpclient-3.0.1.jar"/>
+	<classpathentry kind="lib" path="ext/dependencies/service/jars/commons-lang-2.2.jar"/>
+	<classpathentry kind="lib" path="ext/dependencies/service/jars/commons-pool-1.3.jar"/>
 	<classpathentry kind="lib" path="ext/dependencies/service/jars/gctadmin.jar"/>
 	<classpathentry kind="lib" path="ext/dependencies/service/jars/globus_wsrf_mds_aggregator_stubs.jar"/>
 	<classpathentry kind="lib" path="ext/dependencies/service/jars/globus_wsrf_mds_aggregator.jar"/>
 	<classpathentry kind="lib" path="ext/dependencies/service/jars/globus_wsrf_servicegroup_stubs.jar"/>
 	<classpathentry kind="lib" path="ext/dependencies/service/jars/globus_wsrf_servicegroup.jar"/>
 	<classpathentry kind="lib" path="ext/dependencies/service/jars/jasciidammit-1.1.jar"/>
-	<classpathentry kind="lib" path="ext/dependencies/service/jars/jdom-1.0.jar"/>
+	<classpathentry kind="lib" path="ext/dependencies/service/jars/jdom-1.1.jar"/>
 	<classpathentry kind="lib" path="ext/dependencies/service/jars/jprov.jar"/>
 	<classpathentry kind="lib" path="ext/dependencies/service/jars/kmu.jar"/>
 	<classpathentry kind="lib" path="ext/dependencies/service/jars/mysql-connector-java-3.0.16-ga-bin.jar"/>
@@ -98,7 +98,6 @@
 	<classpathentry kind="lib" path="ext/dependencies/test/jars/caGrid-gaards-core-tests-1.4.1.jar" sourcepath="/caGrid-gaards-core"/>
 	<classpathentry kind="lib" path="ext/dependencies/test/jars/junit-4.8.2.jar"/>
 	<classpathentry kind="lib" path="ext/dependencies/service/jars/caGrid-Introduce-serviceTools-1.4.1.jar"/>
-	<classpathentry kind="lib" path="ext/dependencies/service/jars/castor-1.0.2.jar"/>
 	<classpathentry kind="lib" path="ext/dependencies/service/jars/activation-1.1.jar"/>
 	<classpathentry kind="lib" path="ext/dependencies/service/jars/mail-1.4.jar"/>
 	<classpathentry kind="output" path="bin"/>

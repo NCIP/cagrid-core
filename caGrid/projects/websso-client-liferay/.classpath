@@ -11,7 +11,7 @@
 	<classpathentry kind="var" path="GT4_LOCATION/lib/cryptix32.jar"/>
 	<classpathentry kind="var" path="GT4_LOCATION/lib/cryptix-asn1.jar"/>
 	<classpathentry kind="var" path="GT4_LOCATION/lib/jaxrpc.jar"/>
-	<classpathentry kind="var" path="GT4_LOCATION/lib/jce-jdk13-145.jar"/>
+	<classpathentry kind="var" path="GT4_LOCATION/lib/bcprov-jdk15-145.jar"/>
 	<classpathentry kind="var" path="GT4_LOCATION/lib/puretls.jar"/>
 	<classpathentry kind="var" path="GT4_LOCATION/lib/saaj.jar"/>
 	<classpathentry kind="var" path="GT4_LOCATION/lib/wsdl4j.jar"/>
@@ -60,22 +60,16 @@
 	<classpathentry kind="lib" path="ext/dependencies/default/jars/ehcache-1.2.4.jar"/>
 	<classpathentry kind="lib" path="ext/dependencies/default/jars/inspektr-0.7.0.jar"/>
 	<classpathentry kind="lib" path="ext/dependencies/default/jars/jakarta-oro-2.0.8.jar"/>
-	<classpathentry kind="lib" path="ext/dependencies/default/jars/jdom-1.0.jar"/>
+	<classpathentry kind="lib" path="ext/dependencies/default/jars/jdom-1.1.jar"/>
 	<classpathentry kind="lib" path="ext/dependencies/default/jars/jprov.jar"/>
 	<classpathentry kind="lib" path="ext/dependencies/default/jars/jstl-1.1.2.jar"/>
 	<classpathentry kind="lib" path="ext/dependencies/default/jars/ldapbp-1.0.jar"/>
 	<classpathentry kind="lib" path="ext/dependencies/default/jars/mobius_common_client-1.1.jar"/>
 	<classpathentry kind="lib" path="ext/dependencies/default/jars/ognl-2.6.9.jar"/>
 	<classpathentry kind="lib" path="ext/dependencies/default/jars/opensaml-1.1b.jar"/>
-	<classpathentry kind="lib" path="ext/dependencies/default/jars/persistence-api-1.0.jar"/>
 	<classpathentry kind="lib" path="ext/dependencies/default/jars/person-directory-1.1.2.jar"/>
 	<classpathentry kind="lib" path="ext/dependencies/default/jars/person-directory-api-1.1.2.jar"/>
 	<classpathentry kind="lib" path="ext/dependencies/default/jars/quartz-1.5.2.jar"/>
-	<classpathentry kind="lib" path="ext/dependencies/default/jars/spring-binding-1.0.5.jar"/>
-	<classpathentry kind="lib" path="ext/dependencies/default/jars/spring-ldap-1.2.1.jar"/>
-	<classpathentry kind="lib" path="ext/dependencies/default/jars/spring-security-2.0.1.jar"/>
-	<classpathentry kind="lib" path="ext/dependencies/default/jars/spring-security-cas-client-2.0.1.jar"/>
-	<classpathentry kind="lib" path="ext/dependencies/default/jars/spring-webflow-1.0.5.jar"/>
 	<classpathentry kind="lib" path="ext/dependencies/default/jars/standard-1.1.2.jar"/>
 	<classpathentry kind="lib" path="ext/dependencies/default/jars/xmldsig-1.0.jar"/>
 	<classpathentry kind="lib" path="ext/dependencies/default/jars/xmlsec-1.4.0.jar"/>
