@@ -2,12 +2,14 @@ package gov.nih.nci.cagrid.data.upgrades;
 
 import gov.nih.nci.cagrid.common.Utils;
 import gov.nih.nci.cagrid.data.BdtMethodConstants;
+import gov.nih.nci.cagrid.data.InstanceCountConstants;
 import gov.nih.nci.cagrid.data.MetadataConstants;
 import gov.nih.nci.cagrid.data.extension.Data;
 import gov.nih.nci.cagrid.data.style.ServiceStyleContainer;
 import gov.nih.nci.cagrid.data.style.ServiceStyleLoader;
 import gov.nih.nci.cagrid.data.style.StyleVersionUpgrader;
 import gov.nih.nci.cagrid.data.style.VersionUpgrade;
+import gov.nih.nci.cagrid.introduce.beans.ServiceDescription;
 import gov.nih.nci.cagrid.introduce.beans.extension.ExtensionType;
 import gov.nih.nci.cagrid.introduce.beans.method.MethodType;
 import gov.nih.nci.cagrid.introduce.beans.namespace.NamespaceType;
@@ -67,6 +69,8 @@ public class DataServiceUpgradeFrom1pt2 extends ExtensionUpgraderBase {
             
             addInstanceCountSchema();
             
+            addInstanceCountFrequencyProperty();
+            
             removeBdt();
             
             Cql2FeaturesInstaller cql2Installer = 
@@ -86,7 +90,7 @@ public class DataServiceUpgradeFrom1pt2 extends ExtensionUpgraderBase {
 		}
 	}
 	
-
+	
 	private void validateUpgrade() throws UpgradeException {
 		if (!"1.2".equals(getFromVersion())) {
 			throw new UpgradeException(getClass().getName()
@@ -445,6 +449,17 @@ public class DataServiceUpgradeFrom1pt2 extends ExtensionUpgraderBase {
         CommonTools.addNamespace(getServiceInformation().getServiceDescriptor(), countNamespace);
         
         getStatus().addDescriptionLine("Added the data instance count schema and resource property to the data service");
+    }
+    
+    
+    private void addInstanceCountFrequencyProperty() {
+        ServiceDescription desc = getServiceInformation().getServiceDescriptor();
+        // instance count frequency property
+        if (!CommonTools.servicePropertyExists(desc, InstanceCountConstants.COUNT_UPDATE_FREQUENCY)) {
+            CommonTools.setServiceProperty(desc, InstanceCountConstants.COUNT_UPDATE_FREQUENCY, InstanceCountConstants.COUNT_UPDATE_FREQUENCY_DEFAULT,
+                true, InstanceCountConstants.COUNT_UPDATE_FREQUENCY_DESCRIPTION);
+        }
+        getStatus().addDescriptionLine("Added service property to set the instance count update frequency");
     }
     
     
