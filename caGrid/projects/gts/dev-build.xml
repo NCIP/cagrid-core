@@ -299,8 +299,8 @@
 		<input message="Please enter the DN for the new CA (ex. O=osu,OU=bmi,CN=Some CA):" addproperty="dn.input" />
 		<input message="Please enter the number of days the new CA will be valid for:" addproperty="days.input" />
 		<input message="Please enter a password for the new CA:" addproperty="password.input" />
-		<input message="Please enter a location to write the new CA's private key:" addproperty="key.input" />
-		<input message="Please enter a location to write the new CA's certificate:" addproperty="cert.input" />
+		<input message="Please enter directory path and base name for CA file:" addproperty="base_path.input"
+		       defaultvalue="${user.home}/certificates/trustca" />
 		<java classname="org.cagrid.gaards.pki.tools.CreateCertificateAuthority" fork="true" newenvironment="true" failonerror="true">
 			<arg value="-dn" />
 			<arg value="${dn.input}" />
@@ -308,10 +308,8 @@
 			<arg value="${days.input}" />
 			<arg value="-password" />
 			<arg value="${password.input}" />
-			<arg value="-key" />
-			<arg value="${key.input}" />
-			<arg value="-cert" />
-			<arg value="${cert.input}" />
+			<arg value="-basepath" />
+			<arg value="${base_path.input}" />
 			<classpath refid="run.classpath" />
 		</java>
 	</target>

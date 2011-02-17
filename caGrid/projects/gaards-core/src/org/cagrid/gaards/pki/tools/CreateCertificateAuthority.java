@@ -22,6 +22,13 @@ import org.cagrid.gaards.pki.CertUtil;
 import org.cagrid.gaards.pki.KeyUtil;
 
 /**
+ * This class is used as a command-line program to create files for a certificate authority.
+ * It creates a key, certificate and signing policy file.
+ *
+ * Given a path foo/bar, it will create foo/bar-cert.pem, foo/bar-key.pem and
+ * foo/bar.signing_policy.
+ *
+ * @author <A href="mailto:mgrand@emory.edu">Mark Grand </A>
  * @author <A href="mailto:langella@bmi.osu.edu">Stephen Langella </A>
  * @author <A href="mailto:oster@bmi.osu.edu">Scott Oster </A>
  * @author <A href="mailto:hastings@bmi.osu.edu">Shannon Hastings </A>
@@ -41,15 +48,14 @@ public class CreateCertificateAuthority {
 
 	public static final String PASSWORD = "password";
 
-	public static final String PASSWORD_DESCRIPTION = "The password to be used to encrypt the CA's private key.";
+	public static final String PASSWORD_DESCRIPTION = "The password to be used to encrypt the CA's private key. This must be no longer than 13 characters";
 
-	public static final String KEY = "key";
+	public static final String BASE_PATH = "basepath";
 
-	public static final String KEY_DESCRIPTION = "The location to write the CA's private key to.";
-
-	public static final String CERT = "cert";
-
-	public static final String CERT_DESCRIPTION = "The location to write the CA's certificate to.";
+	public static final String BASE_PATH_DESCRIPTION
+		= "The directory path and base name for the files to be written. If this is /foo/bar then"
+		+ " the names of the files that will be written are foo/bar-cert.pem, foo/bar-key.pem and"
+		+ " foo/bar.signing_policy";
 
 	public static final String HELP_OPT = "h";
 
@@ -57,12 +63,10 @@ public class CreateCertificateAuthority {
 
 	public static void main(String[] args) {
 		try {
-			Security
-					.addProvider(new org.bouncycastle.jce.provider.BouncyCastleProvider());
+			Security.addProvider(new org.bouncycastle.jce.provider.BouncyCastleProvider());
 
 			Options options = new Options();
-			Option help = new Option(HELP_OPT, HELP_OPT_FULL, false,
-					"Prints this message.");
+			Option help = new Option(HELP_OPT, HELP_OPT_FULL, false, "Prints this message.");
 			options.addOption(help);
 
 			Option dnOpt = new Option(DN,  true, DN_DESCRIPTION);
@@ -78,28 +82,27 @@ public class CreateCertificateAuthority {
 					PASSWORD_DESCRIPTION);
 			options.addOption(passwordOpt);
 
-			Option certOpt = new Option(CERT, true, CERT_DESCRIPTION);
-			certOpt.setRequired(true);
-			options.addOption(certOpt);
-
-			Option keyOpt = new Option(KEY, true, KEY_DESCRIPTION);
-			keyOpt.setRequired(true);
-			options.addOption(keyOpt);
+			Option basePathOpt = new Option(BASE_PATH, true, BASE_PATH_DESCRIPTION);
+			basePathOpt.setRequired(true);
+			options.addOption(basePathOpt);
 
 			CommandLineParser parser = new PosixParser();
 			CommandLine line = parser.parse(options, args);
 
 			if (line.hasOption(HELP_OPT)) {
 				HelpFormatter formatter = new HelpFormatter();
-				formatter.printHelp(GenerateTrustReport.class.getName(),
+				formatter.printHelp(CreateCertificateAuthority.class.getName(),
 						options);
 				System.exit(0);
 			} else {
 				String dn = dnOpt.getValue();
 				String daysValid = lifetimeOpt.getValue();
 				String password = Utils.clean(passwordOpt.getValue());
-				String keyOut = keyOpt.getValue();
-				String caOut =  certOpt.getValue();
+				String basePathOut = Utils.clean(basePathOpt.getValue());
+				(new File(basePathOut)).getAbsoluteFile().getParentFile().mkdirs();
+				String keyOut = basePathOut + "-key.pem";
+				String certOut =  basePathOut + "-cert.pem";
+				String signingOut = basePathOut + ".signing_policy";
 
 				KeyPair root = KeyUtil.generateRSAKeyPair2048("BC");
 				int days = Integer.valueOf(daysValid).intValue();
@@ -120,17 +123,23 @@ public class CreateCertificateAuthority {
 						new X509Name(dn), start, end, root);
 
 				password = Utils.clean(password);
-				KeyUtil.writePrivateKey(root.getPrivate(), new File(keyOut),
-						password);
-				CertUtil.writeCertificate(cert, new File(caOut));
+				if (password.length() < 1 || password.length() > 13) {
+					System.err.println("Password length must be at least one and no greater than 13.");
+					System.exit(1);
+				}
+				KeyUtil.writePrivateKey(root.getPrivate(), new File(keyOut), password);
+				CertUtil.writeCertificate(cert, new File(certOut));
+				CertUtil.writeSigningPolicy(cert, new File(signingOut));
 				System.out.println("Successfully created the CA certificate:");
 				System.out.println(dn);
-				System.out.println("CA certificate valid till:");
+				System.out.print("CA certificate valid till: ");
 				System.out.println(cert.getNotAfter());
-				System.out.println("CA private key written to:");
+				System.out.print("CA private key written to: ");
 				System.out.println(keyOut);
-				System.out.println("CA certificate written to:");
-				System.out.println(caOut);
+				System.out.print("CA certificate written to: ");
+				System.out.println(certOut);
+				System.out.print("CA signing policy file written to: ");
+				System.out.println(signingOut);
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
