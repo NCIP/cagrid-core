@@ -98,7 +98,7 @@ public class InstallCert {
 		MessageDigest md5 = MessageDigest.getInstance("MD5");
 		for (int i = 0; i < chain.length; i++) {
 			X509Certificate cert = chain[i];
-			System.out.println(" " + (i + 1) + " Subject "+ cert.getSubjectDN());
+			System.out.println(" " + (i + 1) + " Subject "+ cert.getSubjectX500Principal());
 			System.out.println("   Issuer  " + cert.getIssuerDN());
 			sha256.update(cert.getEncoded());
 			System.out.println("   sha256    " + toHexString(sha256.digest()));
