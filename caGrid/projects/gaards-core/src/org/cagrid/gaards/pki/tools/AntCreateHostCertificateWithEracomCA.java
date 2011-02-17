@@ -14,18 +14,13 @@ import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.TimeZone;
 
+import javax.naming.ldap.LdapName;
+
 import org.bouncycastle.asn1.x509.X509Name;
 import org.cagrid.gaards.core.EracomUtils;
 import org.cagrid.gaards.pki.CertUtil;
 import org.cagrid.gaards.pki.KeyUtil;
 
-/**
- * @author <A href="mailto:langella@bmi.osu.edu">Stephen Langella </A>
- * @author <A href="mailto:oster@bmi.osu.edu">Scott Oster </A>
- * @author <A href="mailto:hastings@bmi.osu.edu">Shannon Hastings </A>
- * @version $Id: ArgumentManagerTable.java,v 1.2 2004/10/15 16:35:16 langella
- *          Exp $
- */
 public class AntCreateHostCertificateWithEracomCA {
 
 	public static void main(String[] args) {
@@ -55,10 +50,9 @@ public class AntCreateHostCertificateWithEracomCA {
 
 			// FIXME: get rid of "BC" here to move away from Bouncycastle and use SunRsaSign or similar
 			KeyPair pair = KeyUtil.generateRSAKeyPair1024("BC");
-			String rootSub = cacert.getSubjectDN().toString();
-			int index = rootSub.lastIndexOf(",");
-			String subject = rootSub.substring(0, index)
-					+ ",CN=host/" + host;
+			LdapName rootSub = new LdapName(cacert.getSubjectX500Principal().getName());
+			rootSub.remove(rootSub.size() - 1);
+			rootSub.add("CN=host/" + host);
 
 			GregorianCalendar date = new GregorianCalendar(TimeZone
 					.getTimeZone("GMT"));
@@ -80,7 +74,7 @@ public class AntCreateHostCertificateWithEracomCA {
 				end = d;
 			}
 			X509Certificate userCert = convert(CertUtil.generateCertificate(provider
-					.getName(), new X509Name(subject), start, end, pair
+					.getName(), new X509Name(rootSub.toString()), start, end, pair
 					.getPublic(), cacert, cakey, EracomUtils.getEracomCryptoAlgorithm(), null));
 
 			KeyUtil.writePrivateKey(pair.getPrivate(), new File(keyOut));

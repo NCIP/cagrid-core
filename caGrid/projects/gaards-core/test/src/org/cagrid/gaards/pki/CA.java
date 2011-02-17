@@ -11,10 +11,9 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 
+import javax.naming.ldap.LdapName;
+
 import org.bouncycastle.asn1.x509.X509Name;
-import org.cagrid.gaards.pki.CRLEntry;
-import org.cagrid.gaards.pki.CertUtil;
-import org.cagrid.gaards.pki.KeyUtil;
 
 
 /**
@@ -86,13 +85,13 @@ public class CA {
 
 
 	public Credential createIdentityCertificate(String id) throws Exception {
-		String dn = getCertificate().getSubjectDN().getName();
-		int index = dn.indexOf("CN=");
-		dn = dn.substring(0, index + 3) + id;
+		LdapName dn = new LdapName(getCertificate().getSubjectX500Principal().getName());
+		dn.remove(dn.size() - 1);
+		dn.add("CN=" + id);
 		KeyPair pair = KeyUtil.generateRSAKeyPair512(PROVIDER.getName());
 		Date now = new Date();
 		Date end = getCertificate().getNotAfter();
-		Credential cred = new Credential(CertUtil.generateCertificate(PROVIDER.getName(), new X509Name(dn), now, end,
+		Credential cred = new Credential(CertUtil.generateCertificate(PROVIDER.getName(), new X509Name(dn.toString()), now, end,
 			pair.getPublic(), getCertificate(), getPrivateKey(), SIGNATURE_ALGORITHM, null), pair.getPrivate());
 
 		if (PROVIDER.getName().equals("ERACOM")) {
