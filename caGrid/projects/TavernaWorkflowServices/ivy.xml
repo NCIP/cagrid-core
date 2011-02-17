@@ -55,7 +55,7 @@
     <!-- Specific caGrid Service Dependencies -->
 
     <!-- Extenernal Dependencies -->
-    <dependency rev="1.0" org="jdom" name="jdom" conf="service->*" />
+    <dependency rev="1.1" org="jdom" name="jdom" conf="service->*" />
     <dependency rev="4.+" org="junit" name="junit" conf="impl-test->default" />
 
     <!-- Build file dependencies -->
