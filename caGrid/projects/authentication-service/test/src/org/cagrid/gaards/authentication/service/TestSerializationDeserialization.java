@@ -54,8 +54,8 @@ public class TestSerializationDeserialization extends TestCase {
             Date start = cal.getTime();
             cal.add(Calendar.MINUTE, 2);
             Date end = cal.getTime();
-            String issuer = cert.getSubjectDN().toString();
-            String federation = cert.getSubjectDN().toString();
+            String issuer = cert.getSubjectX500Principal().getName();
+            String federation = cert.getSubjectX500Principal().getName();
             String ipAddress = null;
             String subjectDNS = null;
 

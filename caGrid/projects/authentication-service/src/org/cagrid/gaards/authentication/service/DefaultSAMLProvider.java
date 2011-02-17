@@ -143,8 +143,8 @@ public class DefaultSAMLProvider implements
 	    Date start = cal.getTime();
 	    cal.add(Calendar.MINUTE, 2);
 	    Date end = cal.getTime();
-	    String issuer = this.certificate.getSubjectDN().toString();
-	    String federation = this.certificate.getSubjectDN().toString();
+	    String issuer = this.certificate.getSubjectX500Principal().getName();
+	    String federation = this.certificate.getSubjectX500Principal().getName();
 	    String ipAddress = null;
 	    String subjectDNS = null;
 
