@@ -17,6 +17,7 @@ import java.util.Properties;
 
 import javax.swing.JFrame;
 
+import org.apache.axis.utils.ClassUtils;
 import org.apache.log4j.Logger;
 import org.cagrid.grape.GridApplication;
 import org.cagrid.grape.model.Application;
@@ -47,7 +48,6 @@ public final class Introduce {
 
 
     private static void checkForUpdatePatchBugFix() {
-
         File patchPropertiesFile = new File("patch.properties");
         if (patchPropertiesFile.exists()) {
             FileInputStream fis = null;
@@ -119,7 +119,6 @@ public final class Introduce {
             }
         }
         patchPropertiesFile.delete();
-
     }
 
 
@@ -138,6 +137,7 @@ public final class Introduce {
             // launch the portal with the passed config
             GridApplication applicationInstance = GridApplication.getInstance(
                 app, ExtensionTools.getExtensionClassLoader());
+            ClassUtils.setDefaultClassLoader(ExtensionTools.getExtensionClassLoader());
             Dimension d = new Dimension(app.getDimensions().getWidth(), app.getDimensions().getHeight());
 
             try {
