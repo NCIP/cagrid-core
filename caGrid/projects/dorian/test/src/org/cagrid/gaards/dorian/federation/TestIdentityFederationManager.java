@@ -16,12 +16,14 @@ import java.security.KeyPair;
 import java.security.PrivateKey;
 import java.security.PublicKey;
 import java.security.cert.X509CRL;
+import java.security.cert.X509CRLEntry;
 import java.security.cert.X509Certificate;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
+import java.util.Set;
 
 import javax.naming.ldap.LdapName;
 import javax.xml.namespace.QName;
@@ -1100,7 +1102,8 @@ public class TestIdentityFederationManager extends TestCase {
             }
 
             X509CRL crl = ifs.getCRL();
-            assertTrue(crl.getRevokedCertificates().isEmpty());
+            Set<? extends X509CRLEntry> revokedCerts = crl.getRevokedCertificates();
+            assertTrue("Shouldn't have any revoked certs yet.", (revokedCerts == null || revokedCerts.isEmpty()));
 
             // Suspend IDP
             idp2.getIdp().setStatus(TrustedIdPStatus.Suspended);
@@ -1131,7 +1134,9 @@ public class TestIdentityFederationManager extends TestCase {
             ifs.updateTrustedIdP(adminGridId, idp2.getIdp());
 
             crl = ifs.getCRL();
-            assertTrue(crl.getRevokedCertificates().isEmpty());
+            revokedCerts = crl.getRevokedCertificates();
+            assertTrue("Shouldn't have any revoked certs yet.", (revokedCerts == null || revokedCerts.isEmpty()));
+            
             for (int i = 0; i < list.size(); i++) {
                 UserCertificateFilter f = new UserCertificateFilter();
                 f.setGridIdentity(list.get(i).getUser().getGridId());
@@ -2304,7 +2309,8 @@ public class TestIdentityFederationManager extends TestCase {
             usr.setUserStatus(GridUserStatus.Active);
             ifs.updateUser(adminGridId, usr);
         }
-        assertTrue(ifs.getCRL().getRevokedCertificates().isEmpty());
+        Set<? extends X509CRLEntry> revokedCerts = ifs.getCRL().getRevokedCertificates();
+        assertTrue("Shouldn't have any revoked certs.", (revokedCerts == null || revokedCerts.isEmpty()));
     }
 
 
