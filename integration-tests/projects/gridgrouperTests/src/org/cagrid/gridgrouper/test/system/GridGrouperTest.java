@@ -305,7 +305,7 @@ public class GridGrouperTest extends ServiceStoryBase {
 		LdapName ldapname = new LdapName(subject);
 		ldapname.remove(ldapname.size() - 1);
 		ldapname.add("OU=Dorian");
-		X509Name name = new X509Name(false, ldapname.toString());
+		X509Name name = new X509Name(true, ldapname.toString());
 		return X509NameHelper.toString(name) + "/CN=";
 	}
 
