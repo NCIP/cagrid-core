@@ -23,33 +23,33 @@ public abstract class MMSAbstractBaseTestCaseBase extends AbstractAnnotationAwar
     }
 
 
-    public void testMetdata() {
-        try {
-            assertNotNull(this.mms.getModelSourceMetadata());
-            String defaultSourceIdentifier = this.mms.getModelSourceMetadata().getDefaultSourceIdentifier();
-            assertNotNull(defaultSourceIdentifier);
-
-            assertNotNull("Cannot have a null list of supported sources!", this.mms.getModelSourceMetadata()
-                .getSupportedModelSources().getSource());
-
-            assertTrue("Cannot have an empty list of supported sources!", this.mms.getModelSourceMetadata()
-                .getSupportedModelSources().getSource().length > 0);
-
-            boolean found = false;
-            for (SourceDescriptor desc : this.mms.getModelSourceMetadata().getSupportedModelSources().getSource()) {
-                assertNotNull(desc.getIdentifier());
-                if (desc.getIdentifier().equals(defaultSourceIdentifier)) {
-                    found = true;
-                }
-            }
-            assertTrue("The default source identifer (" + defaultSourceIdentifier
-                + ") was not found in the supported sources list!", found);
-
-        } catch (MMSGeneralException e) {
-            e.printStackTrace();
-            fail("Problem accessing metadata:" + e.getMessage());
-        }
-    }
+//    public void testMetdata() {
+//        try {
+//            assertNotNull(this.mms.getModelSourceMetadata());
+//            String defaultSourceIdentifier = this.mms.getModelSourceMetadata().getDefaultSourceIdentifier();
+//            assertNotNull(defaultSourceIdentifier);
+//
+//            assertNotNull("Cannot have a null list of supported sources!", this.mms.getModelSourceMetadata()
+//                .getSupportedModelSources().getSource());
+//
+//            assertTrue("Cannot have an empty list of supported sources!", this.mms.getModelSourceMetadata()
+//                .getSupportedModelSources().getSource().length > 0);
+//
+//            boolean found = false;
+//            for (SourceDescriptor desc : this.mms.getModelSourceMetadata().getSupportedModelSources().getSource()) {
+//                assertNotNull(desc.getIdentifier());
+//                if (desc.getIdentifier().equals(defaultSourceIdentifier)) {
+//                    found = true;
+//                }
+//            }
+//            assertTrue("The default source identifer (" + defaultSourceIdentifier
+//                + ") was not found in the supported sources list!", found);
+//
+//        } catch (MMSGeneralException e) {
+//            e.printStackTrace();
+//            fail("Problem accessing metadata:" + e.getMessage());
+//        }
+//    }
 
 
     @Override
