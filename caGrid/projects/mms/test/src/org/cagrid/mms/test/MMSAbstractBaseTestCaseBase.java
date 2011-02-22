@@ -8,22 +8,22 @@ import org.springframework.test.annotation.AbstractAnnotationAwareTransactionalT
 
 public abstract class MMSAbstractBaseTestCaseBase extends AbstractAnnotationAwareTransactionalTests {
 
-    protected MMS mms;
+//    protected MMS mms;
 
 
     @Override
     protected void onSetUp() throws Exception {
-        super.onSetUp();
-        assertNotNull(this.mms);
+//        super.onSetUp();
+//        assertNotNull(this.mms);
     }
 
 
     public MMSAbstractBaseTestCaseBase() {
-        setPopulateProtectedVariables(true);
+//        setPopulateProtectedVariables(true);
     }
 
     public void testEmpty() {
-    	assertNotNull(this.mms);
+//    	assertNotNull(this.mms);
     }
     
 //    public void testMetdata() {
