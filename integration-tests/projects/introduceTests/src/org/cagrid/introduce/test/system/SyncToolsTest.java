@@ -117,7 +117,7 @@ public class SyncToolsTest extends Story {
     protected boolean storySetUp() throws Throwable {
         // init the container
         try {
-            container = ServiceContainerFactory.createContainer(ServiceContainerType.GLOBUS_CONTAINER);
+            container = ServiceContainerFactory.createContainer(ServiceContainerType.TOMCAT_CONTAINER);
         } catch (Exception ex) {
             ex.printStackTrace();
             fail("Failed to create container: " + ex.getMessage());

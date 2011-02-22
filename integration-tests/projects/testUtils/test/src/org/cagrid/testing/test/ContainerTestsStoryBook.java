@@ -14,15 +14,10 @@ public class ContainerTestsStoryBook {
         try {
         	
         	Story s = new ContainerTest(ServiceContainerFactory
-                .createContainer(ServiceContainerType.GLOBUS_CONTAINER));
-        	
-        	s.runBare();
-        	
-        	Story s2 = new ContainerTest(ServiceContainerFactory
                 .createContainer(ServiceContainerType.TOMCAT_CONTAINER));
         	
-        	s2.runBare();
-        	
+        	s.runBare();
+        	       	
         	Story s3 = new ContainerTest(ServiceContainerFactory
                 .createContainer(ServiceContainerType.SECURE_TOMCAT_CONTAINER));
         	

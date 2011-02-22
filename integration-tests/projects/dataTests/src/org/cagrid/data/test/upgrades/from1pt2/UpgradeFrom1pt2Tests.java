@@ -79,7 +79,7 @@ public class UpgradeFrom1pt2Tests extends BaseSystemTest {
             }
         };
         try {
-            this.container = ServiceContainerFactory.createContainer(ServiceContainerType.GLOBUS_CONTAINER);
+            this.container = ServiceContainerFactory.createContainer(ServiceContainerType.TOMCAT_CONTAINER);
         } catch (IOException ex) {
             ex.printStackTrace();
             fail("Error creating service container: " + ex.getMessage());

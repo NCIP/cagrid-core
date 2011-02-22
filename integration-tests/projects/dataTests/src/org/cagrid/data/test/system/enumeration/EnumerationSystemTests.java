@@ -68,7 +68,7 @@ public class EnumerationSystemTests extends BaseSystemTest {
         info = new CreateEnumerationTests.TestEnumerationDataServiceInfo();
         // obtain a new container instance
         try {
-            container = ServiceContainerFactory.createContainer(ServiceContainerType.GLOBUS_CONTAINER);
+            container = ServiceContainerFactory.createContainer(ServiceContainerType.TOMCAT_CONTAINER);
         } catch (Exception ex) {
             ex.printStackTrace();
             fail("Failed to create container: " + ex.getMessage());
