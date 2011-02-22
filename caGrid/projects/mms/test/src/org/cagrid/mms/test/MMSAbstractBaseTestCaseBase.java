@@ -22,7 +22,10 @@ public abstract class MMSAbstractBaseTestCaseBase extends AbstractAnnotationAwar
         setPopulateProtectedVariables(true);
     }
 
-
+    public void testEmpty() {
+    	assertNotNull(this.mms);
+    }
+    
 //    public void testMetdata() {
 //        try {
 //            assertNotNull(this.mms.getModelSourceMetadata());
