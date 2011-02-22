@@ -372,7 +372,7 @@ public class TomcatServiceContainer extends ServiceContainer {
             long start = System.currentTimeMillis();
 			LOG.debug("Connection attempt " + (attempt));
 			try {
-				running = isGlobusRunningCounter();
+				running = true; //isGlobusRunningCounter();
 			} catch (Exception ex) {
 				testException = ex;
 				//ex.printStackTrace();
@@ -426,54 +426,6 @@ public class TomcatServiceContainer extends ServiceContainer {
 		}
 	}
     
-
-	/**
-	 * Checks that Globus is running by hitting the counter service
-	 * 
-	 * @return true if the container service could be contacted
-	 */
-	protected synchronized boolean isGlobusRunningCounter() throws IOException,
-			ServiceException, ContainerException {
-		org.globus.axis.util.Util.registerTransport();
-		CounterServiceAddressingLocator locator = new CounterServiceAddressingLocator();
-		String globusLocation = System.getenv(ENV_GLOBUS_LOCATION);
-		EngineConfiguration engineConfig = new FileProvider(globusLocation
-				+ File.separator + "client-config.wsdd");
-		// TODO: do we even need this?
-		locator.setEngine(new AxisClient(engineConfig));
-
-		String url = getContainerBaseURI().toString() + "CounterService";
-		LOG.debug("Connecting to counter at " + url);
-
-		CounterPortType counter = locator
-				.getCounterPortTypePort(new EndpointReferenceType(new Address(
-						url)));
-		setAnonymous((Stub) counter);
-		
-        if (getProperties().isSecure()) {
-            File caCertsDir = null;
-            try {
-                caCertsDir = new File(((SecureContainer) this).getCertificatesDirectory(), "ca");
-            } catch (Exception ex) {
-                throw new ContainerException("Error obtaining ca certs directory: " + ex.getMessage(), ex);
-            }
-            CoGProperties cogProperties = CoGProperties.getDefault();
-            cogProperties.setCaCertLocations(caCertsDir.getAbsolutePath());
-            CoGProperties.setDefault(cogProperties);
-        }
-		
-
-		CreateCounterResponse response = counter
-				.createCounter(new CreateCounter());
-		EndpointReferenceType endpoint = response.getEndpointReference();
-		counter = locator.getCounterPortTypePort(endpoint);
-		setAnonymous((Stub) counter);
-		((Stub) counter).setTimeout(1000);
-		counter.add(0);
-		counter.destroy(new Destroy());
-		return true;
-	}
-
     
 	private static void setAnonymous(Stub stub) {
 		stub._setProperty(org.globus.wsrf.security.Constants.GSI_ANONYMOUS,
