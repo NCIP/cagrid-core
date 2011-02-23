@@ -32,5 +32,6 @@
     <dependency rev="2.7" org="clarkware" name="jdepend" conf="impl-test->*" />
     <dependency rev="2.0.0" org="jgoodies" name="validation" conf="ui->*" />
     <dependency rev="4.+" org="junit" name="junit" conf="impl-test->default" />
+    <dependency rev="3.2" org="apache" name="commons-collections" />
   </dependencies>
 </ivy-module>
