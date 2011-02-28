@@ -101,6 +101,9 @@ public class DomainModelPanel extends AbstractWizardPanel {
                     if (selectedSource == source) {
                         setNextEnabled(valid);
                     }
+                } else {
+                    // no source selected
+                    setNextEnabled(false);
                 }
             }
         };
