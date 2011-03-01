@@ -375,7 +375,7 @@ public class DataServiceQueryOperationProviderCreator implements CreationExtensi
         // instance count frequency property
         if (!CommonTools.servicePropertyExists(desc, InstanceCountConstants.COUNT_UPDATE_FREQUENCY)) {
             CommonTools.setServiceProperty(desc, InstanceCountConstants.COUNT_UPDATE_FREQUENCY, InstanceCountConstants.COUNT_UPDATE_FREQUENCY_DEFAULT,
-                true, InstanceCountConstants.COUNT_UPDATE_FREQUENCY_DESCRIPTION);
+                false, InstanceCountConstants.COUNT_UPDATE_FREQUENCY_DESCRIPTION);
         }
     }
 
