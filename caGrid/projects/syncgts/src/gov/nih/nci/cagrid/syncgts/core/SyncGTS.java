@@ -1,6 +1,7 @@
 package gov.nih.nci.cagrid.syncgts.core;
 
 import gov.nih.nci.cagrid.common.Utils;
+import gov.nih.nci.cagrid.common.security.OrderInsensitiveDN;
 import gov.nih.nci.cagrid.gts.bean.TrustedAuthority;
 import gov.nih.nci.cagrid.gts.bean.TrustedAuthorityFilter;
 import gov.nih.nci.cagrid.gts.client.GTSClient;
@@ -31,6 +32,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import javax.naming.InvalidNameException;
 import javax.xml.namespace.QName;
 
 import org.apache.axis.message.addressing.Address;
@@ -54,9 +56,11 @@ import org.projectmobius.common.MobiusRunnable;
  */
 public class SyncGTS {
     private final static QName TRUSTED_CA_QN = new QName(SyncGTSDefault.SYNC_GTS_NAMESPACE, "TrustedCA");
+    private final static HashMap<String, OrderInsensitiveDN> orderInsensitiveDNCache = new HashMap<String, OrderInsensitiveDN>();
+
     private Map<String, TrustedCAFileListing> caListings;
     private Map<Integer, TrustedCAFileListing> listingsById;
-    private Log logger;
+    private static final Log logger = LogFactory.getLog(SyncGTS.class.getName());
     private List<Message> messages;
     private HistoryManager history;
     private static SyncGTS instance;
@@ -64,7 +68,6 @@ public class SyncGTS {
 
     private SyncGTS() {
         this.history = new HistoryManager();
-        logger = LogFactory.getLog(this.getClass().getName());
     }
 
     public synchronized static SyncGTS getInstance() {
@@ -175,7 +178,8 @@ public class SyncGTS {
                 int removeCount = 0;
                 List<TrustedCA> removedList = new ArrayList<TrustedCA>();
                 Iterator<TrustedCAFileListing> del = caListings.values().iterator();
-                while (del.hasNext()) {
+              whileDelHasNext:
+		while (del.hasNext()) {
                     TrustedCAFileListing fl = del.next();
                     TrustedCA ca = new TrustedCA();
 
@@ -187,9 +191,14 @@ public class SyncGTS {
                             cert = CertUtil.loadCertificate(fl.getCertificate());
                             ca.setName(cert.getSubjectDN().getName());
                             ca.setCertificateFile(fl.getCertificate().getAbsolutePath());
-                            if (excluded.contains(ca.getName())) {
-                                processExcludedCA(cert, ca, fl, completeCASetByName, completeCASetByHash);
-                                continue;
+			    OrderInsensitiveDN thisOidn = getOrderInsensitiveDN(ca.getName());
+			    Iterator<String> excludedIterator = excluded.iterator();
+			    while (excludedIterator.hasNext()) {
+				OrderInsensitiveDN excludedOidn = getOrderInsensitiveDN(excludedIterator.next());
+				if (thisOidn.equalsIgnoringOrder(excludedOidn)) {
+                                    processExcludedCA(cert, ca, fl, completeCASetByName, completeCASetByHash);
+                                    continue whileDelHasNext;
+				}
                             }
                         } catch (Exception exception) {
                             ca.setCertificateFile(fl.getCertificate().getAbsolutePath());
@@ -757,5 +766,20 @@ public class SyncGTS {
             messages.add(mess);
             logger.warn(mess.getValue());
         }
+    }
+
+    private static OrderInsensitiveDN getOrderInsensitiveDN(String dn) {
+                OrderInsensitiveDN oidn = orderInsensitiveDNCache.get(dn);
+                if (oidn == null) {
+		    try {
+                        oidn = new OrderInsensitiveDN(dn);
+		    } catch (InvalidNameException e) {
+			String msg = "distinguished name is not well-formed: " + dn;
+			logger.error(msg, e);
+			throw new RuntimeException(msg, e);
+		    }
+                    orderInsensitiveDNCache.put(dn, oidn);
+                }
+                return oidn;
     }
 }
