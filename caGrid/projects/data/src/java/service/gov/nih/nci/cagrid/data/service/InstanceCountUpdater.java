@@ -122,8 +122,8 @@ public class InstanceCountUpdater {
                     }
                 }
             };
-            // TODO: may have to make the timer use a daemon thread
-            Timer t = new Timer(InstanceCountUpdater.class.getName() + " task");
+            // TODO: verify this has to be a daemon thread
+            Timer t = new Timer(InstanceCountUpdater.class.getName() + " task", true);
             t.schedule(task, 0, updateFrequency * 1000);
         } else {
             LOG.info("Instance count task will not be started");
