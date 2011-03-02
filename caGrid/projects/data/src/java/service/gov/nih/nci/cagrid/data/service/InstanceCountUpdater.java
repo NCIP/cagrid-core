@@ -52,7 +52,7 @@ public class InstanceCountUpdater {
      */
     public static void startCountUpdateTask(final DomainModel model, final CQL2QueryProcessor processor, 
         final Resource baseResource, final Method setterMethod, int updateFrequency) {
-        boolean shouldStart = false;
+        boolean shouldStart = true;
         // verify we have everything we need before setting up the task
         if (model == null) {
             LOG.warn("Refusing to start up instance count task with no domain model.");
