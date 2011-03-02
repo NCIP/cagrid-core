@@ -114,6 +114,8 @@ public class InvokeCsmDataServiceStep extends Step {
                         ex.printStackTrace();
                         fail("Access incorrectly denied to " + clazz);
                     }
+                } else if (isJava6CSMError(ex)) {
+                    LOG.info("CSM isn't compatible with Java 6, so it threw this error", ex);
                 } else {
                     ex.printStackTrace();
                     fail("Unexpected error querying data service for class " 
