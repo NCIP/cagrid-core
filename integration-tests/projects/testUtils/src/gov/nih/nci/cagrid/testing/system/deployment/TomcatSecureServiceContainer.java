@@ -50,6 +50,8 @@ public class TomcatSecureServiceContainer extends TomcatServiceContainer impleme
         File hostKey = new File(getCertificatesDirectory(), "localhost_key.pem");
         File hostCert = new File(getCertificatesDirectory(), "localhost_cert.pem");
         File caCertDir = new File(getCertificatesDirectory(), "ca");
+        System.setProperty("X509_CERT_DIR", caCertDir.getAbsolutePath());
+        
         // fix the security configuration
         Element securityConfigElement = descriptorDocument.getRootElement();
         Element credentialElement = securityConfigElement.getChild("credential", securityConfigElement.getNamespace());
