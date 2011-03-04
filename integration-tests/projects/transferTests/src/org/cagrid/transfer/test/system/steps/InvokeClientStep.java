@@ -1,5 +1,6 @@
 package org.cagrid.transfer.test.system.steps;
 
+import java.io.File;
 import java.util.List;
 
 import gov.nih.nci.cagrid.introduce.common.AntTools;
@@ -31,6 +32,8 @@ public class InvokeClientStep extends BaseStep {
         String urlArg = "-Dservice.url=";
         if (container.getProperties().isSecure()) {
             urlArg += "https://";
+            String certdir = "-DX509_CERT_DIR=" + container.getProperties().getContainerDirectory().getAbsolutePath() + File.separator + "certificates" + File.separator + "ca";
+            cmd.add(certdir);
         } else {
             urlArg += "http://";
         }
@@ -41,7 +44,7 @@ public class InvokeClientStep extends BaseStep {
         Process p = CommonTools.createAndOutputProcess(cmd);
         p.waitFor();
 
-        assertTrue(p.exitValue() == 0);
+        assertTrue("ant runClient did not successfully complete!", p.exitValue() == 0);
 
         buildStep();
     }
