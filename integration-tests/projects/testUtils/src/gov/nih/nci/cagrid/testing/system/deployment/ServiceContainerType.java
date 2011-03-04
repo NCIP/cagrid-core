@@ -24,7 +24,7 @@ public enum ServiceContainerType {
             case GLOBUS_CONTAINER:
                 throw new AssertionError("Container type " + this + " is no longer supported");
             case TOMCAT_CONTAINER:
-                return base + "/minimal-tomcat-5.0.28-with-globus-4.0.3.zip";
+                return base + "/minimal-tomcat-5.5.27-with-globus-4.0.3.zip";
             case JBOSS_CONTAINER:
                 throw new AssertionError("Container type " + this + " is not yet supported");
             case SECURE_TOMCAT_CONTAINER:
