@@ -10,6 +10,7 @@ import javax.xml.namespace.QName;
 import org.apache.tools.ant.BuildException;
 import org.apache.tools.ant.Task;
 import org.jdom.Element;
+import org.jdom.Namespace;
 
 /**
  * DeploymentFileGeneratorTask
@@ -25,6 +26,7 @@ public class DeploymentFileGeneratorTask extends Task {
     public static final String DEPLOYMENT_PERSISTENCE_FILE = "introduceDeployment.xml";
     public static final QName DEPLOYMENT_PERSISTENCE_QNAME = new QName(
         "gme://gov.nih.nci.cagrid.introduce/1/Deployment", "Deployment");
+    public static final String XSI_NAMESPACE = "http://www.w3.org/2001/XMLSchema-instance";
     
     public void execute() throws BuildException {
         super.execute();
@@ -33,7 +35,12 @@ public class DeploymentFileGeneratorTask extends Task {
         String baseDir =  this.getProject().getBaseDir().getAbsolutePath();
         
         // create the Deployment element
-        Element deployment = new Element("Deployment", DEPLOYMENT_PERSISTENCE_QNAME.getNamespaceURI());
+        Namespace xsiNamespace = Namespace.getNamespace("xsi", XSI_NAMESPACE);
+        Namespace depNamespace = Namespace.getNamespace("ns1", DEPLOYMENT_PERSISTENCE_QNAME.getNamespaceURI());
+        Element deployment = new Element("Deployment");
+        deployment.addNamespaceDeclaration(xsiNamespace);
+        deployment.setNamespace(depNamespace);
+        deployment.setAttribute("type", depNamespace.getPrefix() + ":Deployment", xsiNamespace);
         deployment.setAttribute("serviceName", getProject().getProperty("introduce.skeleton.service.name"));
         deployment.setAttribute("deploymentPrefix", getProject().getProperty("service.deployment.prefix"));
         deployment.setAttribute("serviceDeploymentDirName", getProject().getProperty("service.deployment.dir.name"));
@@ -44,10 +51,14 @@ public class DeploymentFileGeneratorTask extends Task {
         String[] jars = libDir.list();
         
         // create the Jars element
-        Element deployedJars = new Element("Jars", DEPLOYMENT_PERSISTENCE_QNAME.getNamespaceURI());
+        Element deployedJars = new Element("Jars");
+        //deployedJars.setNamespace(depNamespace);
+        deployedJars.setAttribute("type", depNamespace.getPrefix() + ":Jars", xsiNamespace);
         for (int i = 0; i < jars.length; i++) {
             String jarFile = jars[i];
-            Element newJar = new Element("Jar", DEPLOYMENT_PERSISTENCE_QNAME.getNamespaceURI());
+            Element newJar = new Element("Jar");
+            //newJar.setNamespace(depNamespace);
+            newJar.setAttribute("type", depNamespace.getPrefix() + ":Jar", xsiNamespace);
             newJar.setAttribute("name", jarFile);
             newJar.setAttribute("location", ".");
             deployedJars.addContent(newJar);
@@ -63,6 +74,7 @@ public class DeploymentFileGeneratorTask extends Task {
             fw = new FileWriter(out);
             String xml = XMLUtilities.elementToString(deployment);
             xml = XMLUtilities.formatXML(xml);
+            System.out.println(xml);
             fw.write(xml);
             fw.close();
         } catch (Exception e) {
