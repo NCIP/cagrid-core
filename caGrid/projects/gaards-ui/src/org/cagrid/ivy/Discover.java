@@ -73,14 +73,18 @@ public class Discover {
 	}
 	
 	public String getDisplayName(ModuleRevisionId moduleRevisionId) {		
+		String displayName = moduleRevisionId.getRevision();
         ResolvedModuleRevision resolvedModuleRevision = ivy.findModule(moduleRevisionId);
-        Map extraInfo = resolvedModuleRevision.getDescriptor().getExtraInfo();
-        String displayName = (String) extraInfo.get("grid:displayName");
-        if (StringUtils.isEmpty(displayName)) {
-        	displayName = moduleRevisionId.getRevision();
-        }
-        return displayName;
-
+		if (resolvedModuleRevision != null) {
+			if (resolvedModuleRevision.getDescriptor() != null) {
+				Map extraInfo = resolvedModuleRevision.getDescriptor().getExtraInfo();
+				displayName = (String) extraInfo.get("grid:displayName");
+				if (StringUtils.isEmpty(displayName)) {
+					displayName = moduleRevisionId.getRevision();
+				}
+			}   
+		}
+		return displayName;
 	}
 	
 }
