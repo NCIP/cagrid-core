@@ -75,5 +75,9 @@
     <dependency rev="2.0.0" org="jgoodies" name="validation" conf="ui->*"/>
     <dependency rev="2.0_02" org="sun" name="jhall" conf="ui->*"/>
     <dependency rev="4.+" org="junit" name="junit" conf="impl-test->default"/>
+
+    <dependency rev="1.0" org="aopalliance" name="aopalliance" conf="skeleton,extension->*"/>
+    <dependency rev="3.0.1.RELEASE-A" org="springframework" name="spring" conf="skeleton,extension->*"/>
+
   </dependencies>
 </ivy-module>
