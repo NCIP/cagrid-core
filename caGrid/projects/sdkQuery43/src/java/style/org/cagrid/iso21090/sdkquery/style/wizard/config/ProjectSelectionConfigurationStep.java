@@ -45,7 +45,7 @@ public class ProjectSelectionConfigurationStep extends AbstractStyleConfiguratio
         "cog-jglobus-1.2.jar", "caGrid-iso21090DomainModelTools-1.3.jar", "caGrid-iso21090SdkQueryProcessor-processor-1.3.jar",
         "caGrid-iso21090SdkQueryProcessor-translator-1.3.jar", "caGrid-iso21090IntroduceExtensions-1.3.jar", 
         "caGrid-iso21090SdkQueryProcessor-style-1.3.jar", "caGrid-iso21090IntroduceExtensions-tests-1.3.jar",
-        "caGrid-iso21090SdkQueryProcessor-tests-1.3.jar"
+        "caGrid-iso21090SdkQueryProcessor-tests-1.3.jar", "log4j-1.2.13.jar", "spring-2.0.2.jar", "cog-axis-noversion.jar"
     };
     
     private static Log LOG = LogFactory.getLog(ProjectSelectionConfigurationStep.class);
