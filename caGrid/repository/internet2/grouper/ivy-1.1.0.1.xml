@@ -26,7 +26,7 @@
 
         <dependency rev="2.+" org="apache" name="commons-lang" conf="default->*"/>
         <dependency rev="1.1" org="apache" name="commons-math" conf="default->*"/>
-        <dependency rev="1.2.+" org="ehcache" name="ehcache" conf="default->*"/>
+        <dependency rev="1.6.+" org="ehcache" name="ehcache" conf="default->*"/>
         <dependency rev="2.1.+" org="hibernate" name="hibernate" conf="default->*"/>
         <dependency rev="1.7.2.+" org="hsqldb" name="hsqldb" conf="default->*"/>
         <dependency rev="1.0.1B" org="sun" name="jta" conf="default->*"/>

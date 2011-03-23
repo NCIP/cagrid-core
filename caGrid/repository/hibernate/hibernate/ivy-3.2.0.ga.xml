@@ -54,7 +54,7 @@
 		<!--
 		<dependency org="proxool" name="proxool" rev="0.8.3" conf="proxool->default"/>
 		-->
-		<dependency rev="1.2.+" org="ehcache" name="ehcache" conf="default,ehcache->default"/>
+		<dependency rev="1.6.+" org="ehcache" name="ehcache" conf="default,ehcache->default"/>
 		<!--			
 		<dependency org="opensymphony" name="oscache" rev="2.1" conf="oscache->default"/>
 		<dependency org="swarmcache" name="swarmcache" rev="1.0rc2" conf="swarmcache->default"/>

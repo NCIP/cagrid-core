@@ -39,7 +39,7 @@
 		<dependency rev="1.2.+" org="apache" name="commons-dbcp" conf="default->*"/>
 		<dependency rev="2.+" org="apache" name="commons-lang" conf="default->*"/>
 		<dependency rev="1.6.1" org="dom4j" name="dom4j" conf="default->*"/>
-		<dependency rev="1.2.4" org="ehcache" name="ehcache" conf="default->*"/>
+		<dependency rev="1.6.2" org="ehcache" name="ehcache" conf="default->*"/>
 		<dependency rev="3.2.0.ga" org="hibernate" name="hibernate" conf="default->*"/>
 		<dependency rev="1.1" org="jdom" name="jdom" conf="auth->*"/>
 		<dependency rev="1.0.1B" org="sun" name="jta" conf="default->*"/>
