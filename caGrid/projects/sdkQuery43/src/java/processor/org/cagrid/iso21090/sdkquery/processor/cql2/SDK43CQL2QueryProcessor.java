@@ -11,6 +11,8 @@ import gov.nih.nci.system.client.util.xml.XMLUtility;
 import gov.nih.nci.system.client.util.xml.XMLUtilityException;
 import gov.nih.nci.system.query.hibernate.HQLCriteria;
 
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.StringWriter;
 import java.net.MalformedURLException;
@@ -83,6 +85,7 @@ public class SDK43CQL2QueryProcessor extends CQL2QueryProcessor {
     
     private CQL2ToParameterizedHQL cqlTranslator = null;
     private QNameResolver qnameResolver = null;
+    private byte[] wsddBytes = null;
     
     public SDK43CQL2QueryProcessor() {
         super();
@@ -270,21 +273,16 @@ public class SDK43CQL2QueryProcessor extends CQL2QueryProcessor {
                     LOG.error("Error stripping proxy from result instance: " + ex.getMessage(), ex);
                     throw new NoSuchElementException("Error stripping proxy from result instance: " + ex.getMessage());
                 }
-                InputStream wsdd = getConfiguredWsddStream();
                 StringWriter writer = new StringWriter();
-                synchronized (wsdd) {
-                    try {
-                        wsdd.reset();
-                        wsdd.mark(Integer.MAX_VALUE);
-                        Utils.serializeObject(rawObject, targetQName, writer, wsdd);
-                        wsdd.reset();
-                    } catch (Exception ex) {
-                        String message = "Error pre-serializing object result: " + ex.getMessage();
-                        LOG.error(message, ex);
-                        NoSuchElementException nse = new NoSuchElementException(message);
-                        nse.initCause(ex);
-                        throw nse;
-                    }
+                try {
+                    InputStream wsdd = getDisposableWsdd();
+                    Utils.serializeObject(rawObject, targetQName, writer, wsdd);
+                } catch (Exception ex) {
+                    String message = "Error pre-serializing object result: " + ex.getMessage();
+                    LOG.error(message, ex);
+                    NoSuchElementException nse = new NoSuchElementException(message);
+                    nse.initCause(ex);
+                    throw nse;
                 }
                 AnyNode node = null;
                 try {
@@ -532,5 +530,13 @@ public class SDK43CQL2QueryProcessor extends CQL2QueryProcessor {
             qnameResolver = new MappingFileQNameResolver(getClassToQnameMappings());
         }
         return qnameResolver;
+    }
+    
+    
+    private InputStream getDisposableWsdd() throws IOException {
+        if (wsddBytes == null) {
+            wsddBytes = Utils.inputStreamToByteArray(getConfiguredWsddStream());
+        }
+        return new ByteArrayInputStream(wsddBytes);
     }
 }

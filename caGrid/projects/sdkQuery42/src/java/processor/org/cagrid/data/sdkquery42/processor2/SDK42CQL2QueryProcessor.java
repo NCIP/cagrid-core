@@ -7,6 +7,8 @@ import gov.nih.nci.system.applicationservice.ApplicationService;
 import gov.nih.nci.system.client.ApplicationServiceProvider;
 import gov.nih.nci.system.query.hibernate.HQLCriteria;
 
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.StringWriter;
 import java.text.DateFormat;
@@ -68,7 +70,7 @@ public class SDK42CQL2QueryProcessor extends CQL2QueryProcessor {
 
     private QNameResolver qnameResolver = null;
     private CQL2ToParameterizedHQL cqlTranslator = null;
-
+    private byte[] wsddBytes = null;
 
     public SDK42CQL2QueryProcessor() {
         super();
@@ -244,13 +246,11 @@ public class SDK42CQL2QueryProcessor extends CQL2QueryProcessor {
             public CQLResult next() {
                 CQLObjectResult obj = new CQLObjectResult();
                 Object rawObject = rawObjectIter.next();
-                InputStream wsdd = getConfiguredWsddStream();
                 StringWriter writer = new StringWriter();
                 AnyNode node = null;
                 try {
-                    wsdd.mark(Integer.MAX_VALUE);
+                    InputStream wsdd = getDisposableWsdd();
                     Utils.serializeObject(rawObject, targetQName, writer, wsdd);
-                    wsdd.reset();
                     node = AnyNodeHelper.convertStringToAnyNode(
                         writer.getBuffer().toString());
                 } catch (Exception ex) {
@@ -469,5 +469,13 @@ public class SDK42CQL2QueryProcessor extends CQL2QueryProcessor {
             qnameResolver = new MappingFileQNameResolver(getClassToQnameMappings());
         }
         return qnameResolver;
+    }
+    
+    
+    private InputStream getDisposableWsdd() throws IOException {
+        if (wsddBytes == null) {
+            wsddBytes = Utils.inputStreamToByteArray(getConfiguredWsddStream());
+        }
+        return new ByteArrayInputStream(wsddBytes);
     }
 }
