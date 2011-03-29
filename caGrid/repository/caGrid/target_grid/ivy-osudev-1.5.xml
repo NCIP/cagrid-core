@@ -4,7 +4,7 @@
   xsi:noNamespaceSchemaLocation="http://incubator.apache.org/ivy/schemas/ivy.xsd"
   xmlns:grid="http://ant.apache.org/ivy/extra" >
 
-  <info organisation="caGrid" module="target_grid" revision="training-1.4">
+  <info organisation="caGrid" module="target_grid" revision="osudev-1.5">
     <description>Development Grid for caGrid 1.5</description>
     <grid:displayName>Development Grid for caGrid 1.5</grid:displayName>
     <grid:systemName>osudev-1.5</grid:systemName>
@@ -39,8 +39,8 @@
 
   <publications>
     <!--  certificates -->
-    <artifact name="certificates/68907d53" type="certificate" ext="0" conf="certs"/>
-    <artifact name="certificates/68907d53" type="certificate" ext="signing_policy" conf="certs"/>
+    <artifact name="certificates/development-ca-cert" type="certificate" ext="0" conf="certs"/>
+    <artifact name="certificates/development-ca-cert" type="certificate" ext="signing_policy" conf="certs"/>
 
     <!--  grape UI configurations-->
     <artifact name="authentication-services-configuration" type="xml" conf="authentication-services"/>
