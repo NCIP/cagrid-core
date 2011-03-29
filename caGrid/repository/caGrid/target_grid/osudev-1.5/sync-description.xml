@@ -10,7 +10,8 @@
 		<ns1:GTSIdentity>/O=tOSU/OU=CITIH/OU=Development Trust Fabric/CN=host/slavegts-dev.citih.osumc.edu</ns1:GTSIdentity>	
 	</ns1:SyncDescriptor>
 	<ns1:ExcludedCAs>
-		<ns1:CASubject>/O=tOSU/OU=CITIH/OU=Development Trust Fabric,CN=Development Trust Fabric CA</ns1:CASubject>
+		<ns1:CASubject>CN=Development Trust Fabric CA, OU=Development Trust Fabric, OU=CITIH, O=tOSU</ns1:CASubject>
+		<ns1:CASubject>CN=Development CA, OU=Development, OU=CITIH, O=tOSU</ns1:CASubject>
 	</ns1:ExcludedCAs>
 	<ns1:DeleteInvalidFiles>false</ns1:DeleteInvalidFiles>
 	<ns1:CacheSize>
