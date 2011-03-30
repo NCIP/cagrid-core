@@ -5,6 +5,7 @@ import gov.nih.nci.cagrid.gridgrouper.client.GridGrouper;
 import org.globus.gsi.GlobusCredential;
 
 
+@SuppressWarnings("deprecation")
 public class GridGrouperSession {
 
     private GridGrouperHandle handle;

@@ -33,7 +33,7 @@ public class AdminsTable extends GrapeBaseTable {
 	}
 
 	public void addAdmin(final String admin) {
-		Vector v = new Vector();
+		Vector<String> v = new Vector<String>();
 		v.add(admin);
 		addRow(v);
 	}

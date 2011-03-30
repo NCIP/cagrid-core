@@ -7,6 +7,7 @@ import org.cagrid.gaards.dorian.client.LocalUserClient;
 import org.globus.gsi.GlobusCredential;
 
 
+@SuppressWarnings("deprecation")
 public class DorianSession {
     private DorianHandle handle;
 

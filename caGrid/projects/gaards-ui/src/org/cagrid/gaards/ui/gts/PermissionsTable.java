@@ -2,6 +2,7 @@ package org.cagrid.gaards.ui.gts;
 
 import gov.nih.nci.cagrid.gts.bean.Permission;
 
+import java.io.Serializable;
 import java.util.Vector;
 
 import javax.swing.table.DefaultTableModel;
@@ -63,7 +64,7 @@ public class PermissionsTable extends GrapeBaseTable {
 
 
 	public void addPermission(final Permission perm) {
-		Vector v = new Vector();
+		Vector<Serializable> v = new Vector<Serializable>();
 		v.add(perm);
 		v.add(perm.getGridIdentity());
 		v.add(perm.getTrustedAuthorityName());

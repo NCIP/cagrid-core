@@ -1,5 +1,6 @@
 package org.cagrid.gaards.ui.dorian.federation;
 
+import java.io.Serializable;
 import java.util.Vector;
 
 import javax.swing.table.DefaultTableModel;
@@ -60,7 +61,7 @@ public class HostCertificatesTable extends GrapeBaseTable {
 	}
 
 	public void addHostCertificate(final HostCertificateRecord record) {
-		Vector v = new Vector();
+		Vector<Serializable> v = new Vector<Serializable>();
 		v.add(record);
 		v.add(new Integer(record.getId()));
 		v.add(record.getHost());

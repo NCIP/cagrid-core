@@ -10,6 +10,7 @@ import org.globus.gsi.GlobusCredential;
 import org.globus.wsrf.impl.security.authorization.IdentityAuthorization;
 
 
+@SuppressWarnings("deprecation")
 public class GTSHandle extends ServiceHandle {
 
     public GTSHandle(ServiceDescriptor des) {

@@ -32,7 +32,7 @@ public class MembershipRequestHistoryTable extends GrapeBaseTable {
 
 
 	public void addMembershipRequestHistory(final MembershipRequestHistory m) throws Exception {
-		Vector v = new Vector();
+		Vector<String> v = new Vector<String>();
 		v.add(DateFormat.getDateTimeInstance(DateFormat.SHORT, DateFormat.SHORT).format(new Date(m.getUpdateDate())));
 		if (m.getReviewer() == null) {
 			v.add("");

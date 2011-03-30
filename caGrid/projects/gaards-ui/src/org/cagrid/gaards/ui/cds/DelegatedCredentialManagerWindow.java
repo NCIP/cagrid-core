@@ -367,7 +367,7 @@ public class DelegatedCredentialManagerWindow extends ApplicationComponent {
 				f.setGridIdentity(Utils.clean(getGridIdentity().getText()));
 
 			} else {
-				f.setGridIdentity(getSession().getCredential().getIdentity());
+				f.setGridIdentity(getIdentity());
 			}
 
 			f.setDelegationStatus(getDelegationStatus().getDelegationStatus());
@@ -407,6 +407,15 @@ public class DelegatedCredentialManagerWindow extends ApplicationComponent {
 		}
 
 	}
+
+    /**
+     * @return
+     * @throws Exception
+     */
+    @SuppressWarnings("deprecation")
+    private String getIdentity() throws Exception {
+        return getSession().getCredential().getIdentity();
+    }
 
 	/**
 	 * This method initializes progressPanel

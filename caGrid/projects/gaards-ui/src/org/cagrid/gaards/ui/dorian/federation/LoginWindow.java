@@ -48,6 +48,7 @@ import org.cagrid.grape.utils.ErrorDialog;
 import org.globus.gsi.GlobusCredential;
 
 
+@SuppressWarnings("deprecation")
 public class LoginWindow extends ApplicationComponent {
 	private static Log log = LogFactory.getLog(LoginWindow.class);
 	

@@ -5,7 +5,6 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.Arrays;
 import java.util.Comparator;
-import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.logging.Log;
@@ -13,10 +12,7 @@ import org.apache.commons.logging.LogFactory;
 import org.apache.ivy.Ivy;
 import org.apache.ivy.core.LogOptions;
 import org.apache.ivy.core.cache.DefaultResolutionCacheManager;
-import org.apache.ivy.core.module.descriptor.ModuleDescriptor;
 import org.apache.ivy.core.module.id.ModuleRevisionId;
-import org.apache.ivy.core.report.ResolveReport;
-import org.apache.ivy.core.resolve.IvyNode;
 import org.apache.ivy.core.resolve.ResolveOptions;
 import org.apache.ivy.core.resolve.ResolvedModuleRevision;
 import org.apache.ivy.core.retrieve.RetrieveOptions;
@@ -60,13 +56,14 @@ public class Retrieve {
 		DefaultResolutionCacheManager resolveEngine = (DefaultResolutionCacheManager) ivy.getResolutionCacheManager();
 		resolveEngine.setResolvedIvyPattern("[organisation]/[module]/ivy-[revision].xml");
 				
-		ResolveReport report = null;
+		//ResolveReport report = null;
 		try {
 			ResolveOptions options = new ResolveOptions();
 			if (!log.isDebugEnabled()) {
 				options.setLog(LogOptions.LOG_QUIET);
 			}
-			report = ivy.resolve(ivyDependencies, options);
+			//report = 
+			ivy.resolve(ivyDependencies, options);
 		} catch (Exception e) {
 			throw new Exception("Unable to resolve the ivy dependencies", e);
 		}
@@ -107,7 +104,7 @@ public class Retrieve {
 				grid.setVersion(resolved.getDescriptor().getRevision());
 				grid.setPublicationDate(resolved.getPublicationDate());
 
-				Map extraInfo = resolved.getDescriptor().getExtraInfo();
+				Map<String,String> extraInfo = getExtraInfo(resolved);
 				String displayName = (String) extraInfo.get("grid:displayName");
 
 				if (displayName == null || (displayName.length() == 0)) {
@@ -120,21 +117,30 @@ public class Retrieve {
 		
 		return retrieved;
 	}
-	
-	private String getSystemName(ResolveReport report) {
-		List dependencies = report.getDependencies();
-		IvyNode ivyNode = (IvyNode) dependencies.get(0);
-		ModuleDescriptor descriptor = ivyNode.getDescriptor();
-		Map map = descriptor.getExtraInfo();
-		return (String) map.get("grid:systemName");
-	}
 
-	private String getDisplayName(ResolveReport report) {
-		List dependencies = report.getDependencies();
-		IvyNode ivyNode = (IvyNode) dependencies.get(0);
-		ModuleDescriptor descriptor = ivyNode.getDescriptor();
-		Map map = descriptor.getExtraInfo();
-		return (String) map.get("grid:displayName");
-	}
+    /**
+     * @param resolved
+     * @return
+     */
+    @SuppressWarnings("unchecked")
+    private Map<String,String> getExtraInfo(ResolvedModuleRevision resolved) {
+        return resolved.getDescriptor().getExtraInfo();
+    }
+	
+//	private String getSystemName(ResolveReport report) {
+//		List dependencies = report.getDependencies();
+//		IvyNode ivyNode = (IvyNode) dependencies.get(0);
+//		ModuleDescriptor descriptor = ivyNode.getDescriptor();
+//		Map map = descriptor.getExtraInfo();
+//		return (String) map.get("grid:systemName");
+//	}
+
+//	private String getDisplayName(ResolveReport report) {
+//		List dependencies = report.getDependencies();
+//		IvyNode ivyNode = (IvyNode) dependencies.get(0);
+//		ModuleDescriptor descriptor = ivyNode.getDescriptor();
+//		Map map = descriptor.getExtraInfo();
+//		return (String) map.get("grid:displayName");
+//	}
 
 }

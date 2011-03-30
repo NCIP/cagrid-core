@@ -35,6 +35,7 @@ import org.globus.gsi.GlobusCredential;
  * @author <A HREF="MAILTO:hastings@bmi.osu.edu">Shannon Hastings</A>
  * @author <A HREF="MAILTO:ervin@bmi.osu.edu">David W. Ervin</A>
  */
+@SuppressWarnings("deprecation")
 public class MyGroupsWindow extends ApplicationComponent {
 	private static Log log = LogFactory.getLog(MyGroupsWindow.class);
 	

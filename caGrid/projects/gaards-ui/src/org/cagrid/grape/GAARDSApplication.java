@@ -43,7 +43,12 @@ import org.globus.wsrf.encoding.ObjectDeserializer;
 
 public class GAARDSApplication extends GridApplication{
 	
-	private static File gaardsConfigurationDirectory = new File(Utils.getCaGridUserHome(), "gaards");
+	/**
+     * 
+     */
+    private static final long serialVersionUID = 3166508662104284545L;
+
+    private static File gaardsConfigurationDirectory = new File(Utils.getCaGridUserHome(), "gaards");
 	
 	private static String targetGrid = null;
 	

@@ -6,6 +6,7 @@ import gov.nih.nci.cagrid.gts.client.GTSPublicClient;
 import org.globus.gsi.GlobusCredential;
 
 
+@SuppressWarnings("deprecation")
 public class GTSSession {
 
     private GTSHandle gts;

@@ -29,6 +29,7 @@ import org.globus.gsi.GlobusCredential;
  * @author <A HREF="MAILTO:hastings@bmi.osu.edu">Shannon Hastings</A>
  * @author <A HREF="MAILTO:ervin@bmi.osu.edu">David W. Ervin</A>
  */
+@SuppressWarnings("deprecation")
 public class GridGrouperTree extends JTree {
 	private static Log log = LogFactory.getLog(GridGrouperTree.class);
 	
@@ -75,7 +76,7 @@ public class GridGrouperTree extends JTree {
 	}
 
 	public GridGrouperBaseTreeNode getSelectedNode() {
-		List list = getSelectedNodes();
+		List<DefaultMutableTreeNode> list = getSelectedNodes();
 		if (list == null) {
 			return null;
 		} else {
@@ -129,13 +130,13 @@ public class GridGrouperTree extends JTree {
 		return this.rootNode;
 	}
 
-	public List getGroupNodes() {
-		List nodes = new ArrayList();
+	public List<GridGrouperBaseTreeNode> getGroupNodes() {
+		List<GridGrouperBaseTreeNode> nodes = new ArrayList<GridGrouperBaseTreeNode>();
 		this.getGroupNodes(getRootNode(), nodes);
 		return nodes;
 	}
 
-	private void getGroupNodes(GridGrouperBaseTreeNode node, List nodes) {
+	private void getGroupNodes(GridGrouperBaseTreeNode node, List<GridGrouperBaseTreeNode> nodes) {
 		int count = node.getChildCount();
 		for (int i = 0; i < count; i++) {
 			GridGrouperBaseTreeNode child = (GridGrouperBaseTreeNode) node
@@ -163,8 +164,8 @@ public class GridGrouperTree extends JTree {
 	 * 
 	 * @return A List of GridServiceTreeNodes
 	 */
-	public List getSelectedNodes() {
-		List selected = new LinkedList();
+	public List<DefaultMutableTreeNode> getSelectedNodes() {
+		List<DefaultMutableTreeNode> selected = new LinkedList<DefaultMutableTreeNode>();
 		TreePath[] currentSelection = this.getSelectionPaths();
 		if (currentSelection != null) {
 			for (int i = 0; i < currentSelection.length; i++) {

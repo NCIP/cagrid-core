@@ -1,5 +1,6 @@
 package org.cagrid.gaards.ui.dorian.federation;
 
+import java.io.Serializable;
 import java.util.Vector;
 
 import javax.swing.table.DefaultTableModel;
@@ -63,7 +64,7 @@ public class TrustedIdPTable extends GrapeBaseTable {
 	}
 
 	public void addTrustedIdP(final TrustedIdP idp) {
-		Vector v = new Vector();
+		Vector<Serializable> v = new Vector<Serializable>();
 		v.add(idp);
 		v.add(String.valueOf(idp.getId()));
 		v.add(idp.getName());

@@ -1,5 +1,6 @@
 package org.cagrid.gaards.ui.dorian.idp;
 
+import java.io.Serializable;
 import java.util.Vector;
 
 import javax.swing.table.DefaultTableModel;
@@ -69,7 +70,7 @@ public class UsersTable extends GrapeBaseTable {
 
 
     public void addUser(final LocalUser u) {
-        Vector v = new Vector();
+        Vector<Serializable> v = new Vector<Serializable>();
         v.add(u);
         v.add(u.getUserId());
         v.add(u.getFirstName());

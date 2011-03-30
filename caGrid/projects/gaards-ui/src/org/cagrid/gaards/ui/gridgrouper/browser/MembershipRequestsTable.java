@@ -40,7 +40,7 @@ public class MembershipRequestsTable extends GrapeBaseTable {
 
 
 	public void addMembershipRequests(final MembershipRequest m) throws Exception {
-		Vector v = new Vector();
+		Vector<Object> v = new Vector<Object>();
 		v.add(m);
 		v.add(m.getRequestorId());
 		addRow(v);

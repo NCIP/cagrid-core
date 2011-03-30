@@ -11,7 +11,6 @@ import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.io.File;
 import java.io.IOException;
-import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
@@ -25,14 +24,11 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 import javax.swing.filechooser.FileFilter;
 
-import org.apache.axis.utils.XMLUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.cagrid.grape.configuration.Grid;
 import org.cagrid.grape.configuration.TargetGridsConfiguration;
-import org.cagrid.grape.model.Configuration;
 import org.cagrid.grape.utils.ErrorDialog;
-import org.globus.wsrf.encoding.ObjectDeserializer;
 
 public class TargetGridBaseEditor extends ConfigurationBasePanel {
 	private static Log log = LogFactory.getLog(TargetGridBaseEditor.class);
@@ -408,15 +404,15 @@ public class TargetGridBaseEditor extends ConfigurationBasePanel {
 
 	}
 	
-	private Configuration loadConfiguration() throws Exception {
-		InputStream inputStream = this.getClass().getResourceAsStream("/configuration.xml");
-		
-        org.w3c.dom.Document doc = XMLUtils.newDocument(inputStream);
-        Object obj = ObjectDeserializer.toObject(doc.getDocumentElement(), Configuration.class);
-        inputStream.close();
-        return Configuration.class.cast(obj);
-
-	}
+//	private Configuration loadConfiguration() throws Exception {
+//		InputStream inputStream = this.getClass().getResourceAsStream("/configuration.xml");
+//		
+//        org.w3c.dom.Document doc = XMLUtils.newDocument(inputStream);
+//        Object obj = ObjectDeserializer.toObject(doc.getDocumentElement(), Configuration.class);
+//        inputStream.close();
+//        return Configuration.class.cast(obj);
+//
+//	}
 
 	private void removeValue() {
 		try {

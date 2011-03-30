@@ -1,5 +1,6 @@
 package org.cagrid.gaards.ui.dorian.idp;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Vector;
@@ -71,7 +72,7 @@ public class IdentityProviderAuditRecordTable extends GrapeBaseTable {
 		}
 		for (int i = 0; i < sorted.size(); i++) {
 		    IdentityProviderAuditRecord r = sorted.get(i);
-			Vector v = new Vector();
+			Vector<Serializable> v = new Vector<Serializable>();
 			v.add(r);
 			v.add(r.getTargetId());
 			v.add(r.getReportingPartyId());

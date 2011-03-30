@@ -25,6 +25,7 @@ import org.globus.gsi.GlobusCredential;
  * @author <A href="mailto:oster@bmi.osu.edu">Scott Oster </A>
  * @author <A href="mailto:hastings@bmi.osu.edu">Shannon Hastings </A>
  */
+@SuppressWarnings("deprecation")
 public class CredentialManager {
 	private static Log log = LogFactory.getLog(CredentialManager.class);
 	

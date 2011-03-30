@@ -840,9 +840,9 @@ public class StemBrowser extends BaseBrowserPanel {
                     try {
 
                         getPrivs().clearTable();
-                        Map map = new HashMap();
-                        Set s1 = stem.getStemmers();
-                        Iterator itr1 = s1.iterator();
+                        Map<String, StemPrivilegeCaddy> map = new HashMap<String, StemPrivilegeCaddy>();
+                        Set<Subject> s1 = getStemmers();
+                        Iterator<Subject> itr1 = s1.iterator();
                         while (itr1.hasNext()) {
                             Subject sub = (Subject) itr1.next();
                             StemPrivilegeCaddy caddy = new StemPrivilegeCaddy(sub.getId());
@@ -850,13 +850,13 @@ public class StemBrowser extends BaseBrowserPanel {
                             map.put(caddy.getIdentity(), caddy);
                         }
 
-                        Set s2 = stem.getCreators();
-                        Iterator itr2 = s2.iterator();
+                        Set<Subject> s2 = getCreators();
+                        Iterator<Subject> itr2 = s2.iterator();
                         while (itr2.hasNext()) {
                             Subject sub = (Subject) itr2.next();
                             StemPrivilegeCaddy caddy = null;
                             if (map.containsKey(sub.getId())) {
-                                caddy = (StemPrivilegeCaddy) map.get(sub.getId());
+                                caddy = map.get(sub.getId());
                             } else {
                                 caddy = new StemPrivilegeCaddy(sub.getId());
                                 map.put(caddy.getIdentity(), caddy);
@@ -864,9 +864,9 @@ public class StemBrowser extends BaseBrowserPanel {
                             caddy.setCreate(true);
                         }
 
-                        Iterator itr3 = map.values().iterator();
+                        Iterator<StemPrivilegeCaddy> itr3 = map.values().iterator();
                         while (itr3.hasNext()) {
-                            getPrivs().addPrivilege((StemPrivilegeCaddy) itr3.next());
+                            getPrivs().addPrivilege(itr3.next());
                         }
 
                         stopEvent(eid, "Loaded the privileges for " + stem.getDisplayExtension() + "!!!");
@@ -876,6 +876,22 @@ public class StemBrowser extends BaseBrowserPanel {
                         FaultUtil.logFault(log, e);
                     }
                 }
+            }
+
+            /**
+             * @return
+             */
+            @SuppressWarnings("unchecked")
+            private Set<Subject> getCreators() {
+                return stem.getCreators();
+            }
+
+            /**
+             * @return
+             */
+            @SuppressWarnings("unchecked")
+            private Set<Subject> getStemmers() {
+                return stem.getStemmers();
             }
         };
         try {

@@ -84,7 +84,7 @@ public class GroupPrivilegesTable extends GrapeBaseTable {
 
 
 	public void addPrivilege(final GroupPrivilegeCaddy priv) {
-		Vector v = new Vector();
+		Vector<Object> v = new Vector<Object>();
 		v.add(priv);
 		v.add(priv.getIdentity());
 		v.add(getDisplayText(priv.hasAdmin()));

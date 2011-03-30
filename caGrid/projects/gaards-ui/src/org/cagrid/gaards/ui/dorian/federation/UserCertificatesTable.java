@@ -2,6 +2,7 @@ package org.cagrid.gaards.ui.dorian.federation;
 
 import gov.nih.nci.cagrid.common.FaultUtil;
 
+import java.io.Serializable;
 import java.security.cert.X509Certificate;
 import java.util.ArrayList;
 import java.util.Date;
@@ -68,7 +69,7 @@ public class UserCertificatesTable extends GrapeBaseTable {
 	public void addUserCertificates(List<UserCertificateRecord> records)
 			throws Exception {
 
-		List<Vector> sorted = new ArrayList<Vector>();
+		List<Vector<Serializable>> sorted = new ArrayList<Vector<Serializable>>();
 
 		for (int i = 0; i < records.size(); i++) {
 			UserCertificateRecord r = records.get(i);
@@ -76,14 +77,14 @@ public class UserCertificatesTable extends GrapeBaseTable {
 					.getCertificateAsString());
 			int index = -1;
 			for (int j = 0; j < sorted.size(); j++) {
-				Vector temp = sorted.get(j);
+				Vector<Serializable> temp = sorted.get(j);
 				Date start = (Date) temp.get(3);
 				if (start.before(cert.getNotBefore())) {
 					index = j;
 					break;
 				}
 			}
-			Vector v = new Vector();
+			Vector<Serializable> v = new Vector<Serializable>();
 			v.add(r);
 			v.add(String.valueOf(r.getSerialNumber()));
 			v.add(r.getStatus().getValue());

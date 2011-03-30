@@ -13,6 +13,7 @@ import org.cagrid.gaards.saml.encoding.SAMLUtils;
 import org.globus.gsi.GlobusCredential;
 
 
+@SuppressWarnings("deprecation")
 public class CredentialUtils {
     private static List<QName> COMMON_FIRST_NAMES = null;
     private static List<QName> COMMON_LAST_NAMES = null;

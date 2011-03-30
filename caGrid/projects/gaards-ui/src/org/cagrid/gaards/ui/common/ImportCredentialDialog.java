@@ -12,6 +12,7 @@ import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.security.PrivateKey;
 import java.security.cert.X509Certificate;
 
@@ -33,7 +34,9 @@ import org.cagrid.gaards.pki.KeyUtil;
 import org.cagrid.grape.GridApplication;
 import org.cagrid.grape.LookAndFeel;
 import org.globus.gsi.GlobusCredential;
+import org.globus.gsi.GlobusCredentialException;
 
+@SuppressWarnings("deprecation")
 public class ImportCredentialDialog extends JDialog {
 	private static Log log = LogFactory.getLog(ImportCredentialDialog.class);
 	
@@ -252,8 +255,7 @@ public class ImportCredentialDialog extends JDialog {
 
 				X509Certificate cert = CertUtil.loadCertificate(certFile);
 				PrivateKey key = KeyUtil.loadPrivateKey(keyFile, password);
-				importedCredential = new GlobusCredential(key,
-						new X509Certificate[] { cert });
+				importedCredential = createGlobusCredential(cert, key);
 				dispose();
 				return;
 			} catch (Exception ex) {
@@ -277,8 +279,7 @@ public class ImportCredentialDialog extends JDialog {
 							"The proxy you specified does not exist!!!");
 					return;
 				}
-				importedCredential = new GlobusCredential(new FileInputStream(
-						proxyFile));
+				importedCredential = createGlobusCredential(proxyFile);
 				dispose();
 				return;
 			} catch (Exception ex) {
@@ -291,6 +292,25 @@ public class ImportCredentialDialog extends JDialog {
 		}
 
 	}
+
+    /**
+     * @param cert
+     * @param key
+     * @return
+     */
+    private GlobusCredential createGlobusCredential(X509Certificate cert, PrivateKey key) {
+        return new GlobusCredential(key, new X509Certificate[] { cert });
+    }
+
+    /**
+     * @param proxyFile
+     * @return
+     * @throws GlobusCredentialException
+     * @throws FileNotFoundException
+     */
+    private GlobusCredential createGlobusCredential(File proxyFile) throws GlobusCredentialException, FileNotFoundException {
+        return new GlobusCredential(new FileInputStream(proxyFile));
+    }
 
 	/**
 	 * This method initializes importButton

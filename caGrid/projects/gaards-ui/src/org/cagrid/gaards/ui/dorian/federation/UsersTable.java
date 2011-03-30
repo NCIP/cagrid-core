@@ -3,6 +3,7 @@ package org.cagrid.gaards.ui.dorian.federation;
 import gov.nih.nci.cagrid.common.FaultUtil;
 import gov.nih.nci.cagrid.common.Runner;
 
+import java.io.Serializable;
 import java.util.List;
 import java.util.Vector;
 
@@ -85,7 +86,7 @@ public class UsersTable extends GrapeBaseTable {
 	}
 
 	public void addUser(final GridUser u) {
-		Vector v = new Vector();
+		Vector<Serializable> v = new Vector<Serializable>();
 		v.add(u);
 		v.add(String.valueOf(u.getIdPId()));
 		v.add(String.valueOf(u.getUID()));

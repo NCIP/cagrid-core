@@ -25,6 +25,7 @@ import org.globus.gsi.GlobusCredential;
  * @version $Id: ProxyInformationComponent.java,v 1.3 2005/12/03 07:18:56
  *          langella Exp $
  */
+@SuppressWarnings("deprecation")
 public class CredentialPanel extends JPanel {
 	
 	private static final long serialVersionUID = 1L;

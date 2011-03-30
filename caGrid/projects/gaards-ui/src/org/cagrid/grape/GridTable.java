@@ -1,5 +1,6 @@
 package org.cagrid.grape;
 
+import java.io.Serializable;
 import java.util.Vector;
 
 import javax.swing.table.DefaultTableModel;
@@ -16,7 +17,12 @@ import org.cagrid.grape.table.GrapeBaseTable;
  * @version $Id: ServiceTable.java,v 1.1 2008-08-04 19:38:22 langella Exp $
  */
 public class GridTable extends GrapeBaseTable {
-	public final static String SERVICE = "Service";
+	/**
+     * 
+     */
+    private static final long serialVersionUID = -6762541462148087971L;
+
+    public final static String SERVICE = "Service";
 
 	public final static String DISPLAY_NAME = "Display Name";
 
@@ -48,7 +54,7 @@ public class GridTable extends GrapeBaseTable {
 
 
 	public void addGrid(Grid grid) {
-		Vector v = new Vector();
+		Vector<Serializable> v = new Vector<Serializable>();
 		v.add(grid);
 		v.add(grid.getDisplayName());
 		v.add(grid.getSystemName());

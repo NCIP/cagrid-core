@@ -40,9 +40,9 @@ public class ContentManager extends JTabbedPane implements StemActionListener,
 
 	private JLabel gridGrouperImage = null;
 
-	private Map stems = new HashMap(); // @jve:decl-index=0:
+	private Map<String, StemBrowser> stems = new HashMap<String, StemBrowser>(); // @jve:decl-index=0:
 
-	private Map groups = new HashMap(); // @jve:decl-index=0:
+	private Map<String, GroupBrowser> groups = new HashMap<String, GroupBrowser>(); // @jve:decl-index=0:
 
 	private MultiEventProgressBar progress;
 
@@ -92,7 +92,7 @@ public class ContentManager extends JTabbedPane implements StemActionListener,
 	public void refreshStem(StemTreeNode node) {
 		String stemId = node.getStem().getUuid();
 		if (stems.containsKey(stemId)) {
-			StemBrowser browse = (StemBrowser) stems.get(stemId);
+			StemBrowser browse = stems.get(stemId);
 			for (int i = 0; i < getTabCount(); i++) {
 				if (getComponentAt(i) == browse) {
 					this.setTitleAt(i, node.getStem().getDisplayExtension());
@@ -105,7 +105,7 @@ public class ContentManager extends JTabbedPane implements StemActionListener,
 	public void refreshGroup(GroupTreeNode node) {
 		String groupId = node.getGroup().getUuid();
 		if (groups.containsKey(groupId)) {
-			GroupBrowser browse = (GroupBrowser) groups.get(groupId);
+			GroupBrowser browse = groups.get(groupId);
 			for (int i = 0; i < getTabCount(); i++) {
 				if (getComponentAt(i) == browse) {
 					this.setTitleAt(i, node.getGroup().getDisplayExtension());
@@ -166,7 +166,7 @@ public class ContentManager extends JTabbedPane implements StemActionListener,
 	private void removeGroup(GroupTreeNode node, boolean internal) {
 		String groupId = node.getGroup().getUuid();
 		if (groups.containsKey(groupId)) {
-			GroupBrowser sb = (GroupBrowser) groups.remove(groupId);
+			GroupBrowser sb = groups.remove(groupId);
 			this.remove(sb);
 		}
 		if (!internal) {
@@ -185,7 +185,7 @@ public class ContentManager extends JTabbedPane implements StemActionListener,
 	private void removeStem(StemTreeNode node, boolean internal) {
 		String stemId = node.getStem().getUuid();
 		if (stems.containsKey(stemId)) {
-			StemBrowser sb = (StemBrowser) stems.remove(stemId);
+			StemBrowser sb = stems.remove(stemId);
 			this.remove(sb);
 		}
 		if (!internal) {
@@ -198,19 +198,19 @@ public class ContentManager extends JTabbedPane implements StemActionListener,
 	}
 
 	public void removeAllNodes(String gridGrouper) {
-		Iterator stemItr = stems.values().iterator();
-		List nodesToRemove = new ArrayList();
+		Iterator<StemBrowser> stemItr = stems.values().iterator();
+		List<GridGrouperBaseTreeNode> nodesToRemove = new ArrayList<GridGrouperBaseTreeNode>();
 		while (stemItr.hasNext()) {
-			StemBrowser sb = (StemBrowser) stemItr.next();
+			StemBrowser sb = stemItr.next();
 			if (gridGrouper.equals(sb.getStemNode().getStem().getGridGrouper()
 					.getName())) {
 				nodesToRemove.add(sb.getStemNode());
 			}
 		}
 
-		Iterator groupItr = groups.values().iterator();
+		Iterator<GroupBrowser> groupItr = groups.values().iterator();
 		while (groupItr.hasNext()) {
-			GroupBrowser sb = (GroupBrowser) groupItr.next();
+			GroupBrowser sb = groupItr.next();
 			if (gridGrouper.equals(sb.getGroupNode().getGroup()
 					.getGridGrouper().getName())) {
 				nodesToRemove.add(sb.getGroupNode());
@@ -218,7 +218,7 @@ public class ContentManager extends JTabbedPane implements StemActionListener,
 		}
 
 		for (int i = 0; i < nodesToRemove.size(); i++) {
-			GridGrouperBaseTreeNode node = (GridGrouperBaseTreeNode) nodesToRemove
+			GridGrouperBaseTreeNode node = nodesToRemove
 					.get(i);
 			this.removeNode(node);
 		}

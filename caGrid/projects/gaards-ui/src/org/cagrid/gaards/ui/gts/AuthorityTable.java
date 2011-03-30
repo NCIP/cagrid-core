@@ -59,7 +59,7 @@ public class AuthorityTable extends GrapeBaseTable {
 
 
 	public void addAuthority(final AuthorityGTS gts) {
-		Vector v = new Vector();
+		Vector<Object> v = new Vector<Object>();
 		v.add(gts);
 		v.add(gts.getServiceURI());
 		v.add(String.valueOf(gts.getPriority()));

@@ -34,12 +34,12 @@ public class HostRecordsTable extends GrapeBaseTable {
 
     public final static String OWNER = "Owner";
 
-    private HostCertificateLauncher launcher;
+//    private HostCertificateLauncher launcher;
 
 
     public HostRecordsTable() {
         super(createTableModel());
-        this.launcher = launcher;
+        //this.launcher = launcher;
         TableColumn c = this.getColumn(HOST_RECORD);
         c.setMaxWidth(0);
         c.setMinWidth(0);
@@ -65,7 +65,7 @@ public class HostRecordsTable extends GrapeBaseTable {
 
 
     public void addHost(final HostRecord record) {
-        Vector v = new Vector();
+        Vector<Object> v = new Vector<Object>();
         v.add(record);
         v.add(record.getIdentity());
         v.add(record.getHostname());

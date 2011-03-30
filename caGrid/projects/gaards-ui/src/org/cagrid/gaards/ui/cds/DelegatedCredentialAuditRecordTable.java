@@ -1,5 +1,6 @@
 package org.cagrid.gaards.ui.cds;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -73,7 +74,7 @@ public class DelegatedCredentialAuditRecordTable extends GrapeBaseTable {
 		}
 		for (int i = 0; i < sorted.size(); i++) {
 			DelegatedCredentialAuditRecord r = sorted.get(i);
-			Vector v = new Vector();
+			Vector<Serializable> v = new Vector<Serializable>();
 			v.add(r);
 			v.add(r.getSourceGridIdentity());
 			v.add(r.getEvent().getValue());

@@ -44,13 +44,13 @@ public class CRLTable extends GrapeBaseTable {
 
 	public synchronized void addCRL(final X509CRL crl) {
 		this.clearTable();
-		Set s = crl.getRevokedCertificates();
+		Set<? extends X509CRLEntry> s = crl.getRevokedCertificates();
 		if (s != null) {
-			Iterator itr = s.iterator();
+			Iterator<? extends X509CRLEntry> itr = s.iterator();
 			while (itr.hasNext()) {
 				X509CRLEntry entry = (X509CRLEntry) itr.next();
 
-				Vector v = new Vector();
+				Vector<Comparable<?>> v = new Vector<Comparable<?>>();
 				v.add(entry.getSerialNumber());
 				v.add(entry.getRevocationDate().toString());
 				addRow(v);

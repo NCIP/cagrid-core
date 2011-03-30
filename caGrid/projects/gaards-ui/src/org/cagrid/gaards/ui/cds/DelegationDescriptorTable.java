@@ -1,5 +1,6 @@
 package org.cagrid.gaards.ui.cds;
 
+import java.io.Serializable;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.List;
@@ -65,7 +66,7 @@ public class DelegationDescriptorTable extends GrapeBaseTable {
 	}
 
 	public synchronized void addDelegationDescriptor(DelegationDescriptor des) {
-		Vector v = new Vector();
+		Vector<Serializable> v = new Vector<Serializable>();
 		v.add(des);
 		v.add(des.getGridIdentity());
 		Calendar d = new GregorianCalendar();

@@ -28,7 +28,7 @@ public class FederationAuditComboBox extends JComboBox {
 
 	public FederationAuditComboBox() {
 		list = new ArrayList<FederationAudit>();
-		Class c = FederationAudit.class;
+		//Class c = FederationAudit.class;
 
 		Field[] fields = FederationAudit.class.getFields();
 

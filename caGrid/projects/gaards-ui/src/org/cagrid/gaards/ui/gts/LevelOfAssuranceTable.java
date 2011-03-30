@@ -2,6 +2,7 @@ package org.cagrid.gaards.ui.gts;
 
 import gov.nih.nci.cagrid.gts.bean.TrustLevel;
 
+import java.io.Serializable;
 import java.util.Vector;
 
 import javax.swing.table.DefaultTableModel;
@@ -57,7 +58,7 @@ public class LevelOfAssuranceTable extends GrapeBaseTable {
 
 
 	public void addTrustLevel(final TrustLevel level) {
-		Vector v = new Vector();
+		Vector<Serializable> v = new Vector<Serializable>();
 		v.add(level);
 		v.add(level.getName());
 		v.add(level.getDescription());

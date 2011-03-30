@@ -18,6 +18,7 @@ import org.cagrid.grape.LookAndFeel;
 import org.globus.gsi.GlobusCredential;
 
 
+@SuppressWarnings("deprecation")
 public class SessionPanel extends JPanel implements DorianSessionProvider {
 
     private static final long serialVersionUID = 1L;

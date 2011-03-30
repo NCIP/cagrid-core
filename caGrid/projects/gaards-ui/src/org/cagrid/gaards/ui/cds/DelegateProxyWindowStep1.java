@@ -32,6 +32,7 @@ import org.globus.gsi.util.ProxyCertificateUtil;
  * @author <A href="mailto:oster@bmi.osu.edu">Scott Oster </A>
  * @author <A href="mailto:hastings@bmi.osu.edu">Shannon Hastings </A>
  */
+@SuppressWarnings("deprecation")
 public class DelegateProxyWindowStep1 extends ApplicationComponent implements ProxyLifetimeListener {
 	private static Log log = LogFactory.getLog(DelegateProxyWindowStep1.class);
 

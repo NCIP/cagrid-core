@@ -3,6 +3,7 @@ package org.cagrid.gaards.ui.cds;
 import gov.nih.nci.cagrid.common.FaultUtil;
 import gov.nih.nci.cagrid.common.Runner;
 
+import java.io.Serializable;
 import java.security.cert.X509Certificate;
 import java.util.Vector;
 
@@ -58,7 +59,7 @@ public class CertificateChainTable extends GrapeBaseTable {
 			X509Certificate[] certs = Utils.toCertificateArray(chain);
 			if (certs != null) {
 				for (int i = 0; i < certs.length; i++) {
-					Vector v = new Vector();
+					Vector<Serializable> v = new Vector<Serializable>();
 					v.add(certs[i]);
 					v.add(certs[i].getSubjectX500Principal().getName());
 					addRow(v);
