@@ -17,7 +17,7 @@
 		<conf name="spring-asm" extends="default" visibility="public"/>
 		<conf name="spring-beans" extends="spring-core" visibility="public"/>
 		<conf name="spring-core" extends="spring-asm" visibility="public"/>
-		<conf name="spring-expression" extends="spring-core" visibility="public"/>
+		<conf name="spring-expression" extends="spring-context" visibility="public"/>
 		<conf name="spring-context" extends="spring-beans" visibility="public"/>
 		<conf name="spring-tx" extends="spring-aop" visibility="public"/>
 		
