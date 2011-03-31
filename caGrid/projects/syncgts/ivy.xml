@@ -71,12 +71,10 @@
     <!-- External Dependencies -->
     <dependency rev="1.1" org="jdom" name="jdom" conf="service->*"/>
     <dependency rev="1.1" org="mobius" name="mobius" conf="common->common-client"/>  
-<!--   
-    <dependency rev="syncgts-patched-4.0.3" org="globus" name="jcog" conf="globus-patches->*"/>
--->
     <dependency rev="4.+" org="junit" name="junit" conf="impl-test->default"/>
     <dependency rev="4.0.3-sha2" org="globus" name="cog"/>
-    
+    <dependency rev="145" org="bouncycastle" name="bcprov-jdk15"/>
+    <dependency rev="3.0.+" org="springframework" name="spring" conf="client->spring-core" />
 
   </dependencies>
 </ivy-module>
