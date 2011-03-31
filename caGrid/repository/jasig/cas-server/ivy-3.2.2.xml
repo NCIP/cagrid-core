@@ -37,7 +37,7 @@
 		<dependency rev="3.0.1.RELEASE-A" org="springframework" name="spring" conf="default->default"/>
 		<dependency rev="1.0.7" org="acegisecurity" name="acegisecurity"/>		
 
-		<dependency rev="1.2.4" org="ehcache" name="ehcache"/>
+		<dependency rev="1.6.2" org="ehcache" name="ehcache"/>
 		<dependency rev="1.1" org="jdom" name="jdom"/>
 		<dependency rev="2.6.9" org="ognl" name="ognl"/>
 		<dependency rev="1.1b" org="internet2" name="opensaml"/>
