@@ -32,8 +32,8 @@
 		<include name="commons-logging*.jar" />
 		<include name="log4j*.jar" />
 		<include name="tools.jar" />
-		<include name="cog-jglobus.jar" />
-		<include name="jce-jdk13-125.jar" />
+		<include name="cog-jglobus-compat-0.0.1-SNAPSHOT.jar" />
+		<include name="bcprov-jdk15-145.jar" />
 	</fileset>
 
 	<path id="build.classpath">
