@@ -10,7 +10,7 @@
         </ServiceDescriptor>
         <ServiceDescriptor>
             <DisplayName>Development Slave</DisplayName>
-            <ServiceURL>https://slavegts.training.cagrid.org:8443/wsrf/services/cagrid/GTS</ServiceURL>
+            <ServiceURL>https://slavegts-dev.citih.osumc.edu:8443/wsrf/services/cagrid/GTS</ServiceURL>
             <ServiceIdentity>/O=tOSU/OU=CITIH/OU=Development Trust Fabric/CN=host/slavegts-dev.citih.osumc.edu</ServiceIdentity>
         </ServiceDescriptor>
     </Services>
