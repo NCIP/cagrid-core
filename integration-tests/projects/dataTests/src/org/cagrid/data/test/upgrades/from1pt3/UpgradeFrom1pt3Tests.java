@@ -11,7 +11,9 @@ import gov.nih.nci.cagrid.testing.system.deployment.steps.UnpackContainerStep;
 import gov.nih.nci.cagrid.testing.system.haste.Step;
 
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.Collections;
+import java.util.List;
 import java.util.Vector;
 
 import junit.framework.TestResult;
@@ -97,7 +99,9 @@ public class UpgradeFrom1pt3Tests extends BaseSystemTest {
 		steps.add(new ResyncAndBuildStep(testServiceInfo, getIntroduceBaseDir()));
 	    // deploy the service, check out the CQL 2 related operations and metadata
         steps.add(new UnpackContainerStep(container));
-        steps.add(new DeployServiceStep(container, testServiceInfo.getDir(), Collections.singletonList("-Dno.deployment.validation=true")));
+		List<String> args = Arrays.asList(new String[] {
+	            "-Dno.deployment.validation=true", "-Dperform.index.service.registration=false"});
+        steps.add(new DeployServiceStep(container, testServiceInfo.getDir(), args));
         steps.add(new StartContainerStep(container));
         steps.add(new VerifyOperationsStep(container, testServiceInfo.getName(),
             false, false, false));

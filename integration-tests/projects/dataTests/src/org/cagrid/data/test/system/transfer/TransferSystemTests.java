@@ -14,7 +14,9 @@ import gov.nih.nci.cagrid.testing.system.deployment.steps.UnpackContainerStep;
 import gov.nih.nci.cagrid.testing.system.haste.Step;
 
 import java.io.File;
+import java.util.Arrays;
 import java.util.Collections;
+import java.util.List;
 import java.util.Vector;
 
 import junit.framework.TestResult;
@@ -121,11 +123,13 @@ public class TransferSystemTests extends BaseSystemTest {
         // disable index service registration
         steps.add(new SetIndexRegistrationStep(info.getDir(), false));
         // deploy the data service
-        steps.add(new DeployServiceStep(container, info.getDir(), Collections.singletonList("-Dno.deployment.validation=true")));
+		List<String> args = Arrays.asList(new String[] {
+	            "-Dno.deployment.validation=true", "-Dperform.index.service.registration=false"});
+        steps.add(new DeployServiceStep(container, info.getDir(), args));
         // disable index service registration for the transfer service
         steps.add(new SetIndexRegistrationStep(tempTransferDir.getAbsolutePath(), false));
         // deploy the transfer service
-        steps.add(new DeployServiceStep(container, tempTransferDir.getAbsolutePath(), Collections.singletonList("-Dno.deployment.validation=true")));
+        steps.add(new DeployServiceStep(container, tempTransferDir.getAbsolutePath(), args));
 		// start container
 		steps.add(new StartContainerStep(container));
 		// verify the operations we expect
@@ -145,7 +149,7 @@ public class TransferSystemTests extends BaseSystemTest {
         // disable index service registration
         steps.add(new SetIndexRegistrationStep(info.getDir(), false));
         // deploy the service again
-        steps.add(new DeployServiceStep(container, info.getDir(), Collections.singletonList("-Dno.deployment.validation=true")));
+        steps.add(new DeployServiceStep(container, info.getDir(), args));
         // start the container
         steps.add(new StartContainerStep(container));
         // check the CQL 2 support metadata again (should be supported now)
@@ -164,7 +168,7 @@ public class TransferSystemTests extends BaseSystemTest {
         // enable CQL structure validation, disable model validation
         steps.add(new SetCqlValidationStep(info, true, false));
         // re-deploy the service
-        steps.add(new DeployServiceStep(container, info.getDir(), Collections.singletonList("-Dno.deployment.validation=true")));
+        steps.add(new DeployServiceStep(container, info.getDir(), args));
         // start the container up again
         steps.add(new StartContainerStep(container));
         // check the CQL 2 support metadata (should still be supported)
