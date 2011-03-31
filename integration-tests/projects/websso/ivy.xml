@@ -21,5 +21,9 @@
 		<dependency rev="1.7" org="httpunit" name="httpunit" conf="default"/>
 		<dependency rev="0.9.5" org="nekohtml" name="nekohtml" conf="default"/>
 		<dependency rev="1.6R5" org="rhino" name="js" conf="default"/>
-		<dependency rev="1.1" org="codehaus" name="jaxen" conf="default"/>	</dependencies>
+		<dependency rev="1.1" org="codehaus" name="jaxen" conf="default"/>
+		
+		<dependency rev="1.0" org="aopalliance" name="aopalliance" />
+		<dependency rev="3.0.1.RELEASE-A" org="springframework" name="spring" conf="default->full"/>		<dependency rev="3.0.1.RELEASE" org="springframework" name="security" conf="default->spring-security-config"/>
+	</dependencies>
 </ivy-module>
