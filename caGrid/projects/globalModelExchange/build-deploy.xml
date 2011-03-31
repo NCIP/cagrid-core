@@ -178,9 +178,12 @@
 				<include name="**\*" />
 			</fileset>
 		</copy>
-		<!-- Delete files that may have been needed for compile but duplicate common .jar files and cause classloader conflicts -->
+		<!-- Delete files that have already been installed to common/lib to prevent classloader conflicts -->
 		<delete verbose="true">
 			<fileset dir="${webapp.deploy.lib.dir}">
+				<include name="bcprov-jdk15-145.jar" />
+				<include name="gss-2.*.jar" />
+				<include name="jsse-2.*.jar" />
 				<include name="ssl-proxies-2.*.jar" />
 			</fileset>
 		</delete>

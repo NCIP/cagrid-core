@@ -178,14 +178,7 @@
 				<include name="**\*" />
 			</fileset>
 		</copy>
-		<!-- Delete files that may have been needed for compile but duplicate common .jar files and cause classloader conflicts -->
-		<!--
-		<delete verbose="true">
-			<fileset dir="${webapp.deploy.lib.dir}">
-				<include name="ssl-proxies-2.*.jar" />
-			</fileset>
-		</delete>
-		-->
+
 	</target>
 
 	<!-- make deployment configured gar -->
