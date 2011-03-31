@@ -48,6 +48,7 @@
     <dependency rev="1.0" org="jsr107cache" name="jsr107cache" conf="default->default"/>
     <dependency rev="4.+" org="junit" name="junit" conf="impl-test->default"/>
     <dependency rev="3.0.1.RELEASE-A" org="springframework" name="spring" conf="default->full"/>
+	<dependency rev="3.0.1.RELEASE" org="springframework" name="security" conf="default->spring-security-config"/>
     <dependency rev="1.0.+" org="springframework" name="webflow" conf="default->*"/>
   </dependencies>
 </ivy-module>
