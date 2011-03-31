@@ -6,9 +6,6 @@ import java.io.File;
 import java.security.KeyPair;
 import java.security.cert.X509Certificate;
 
-import javax.naming.ldap.LdapName;
-import javax.security.auth.x500.X500Principal;
-
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.CommandLineParser;
 import org.apache.commons.cli.HelpFormatter;

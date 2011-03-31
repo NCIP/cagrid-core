@@ -34,6 +34,7 @@ import org.globus.gsi.GlobusCredential;
  * @version $Id: ArgumentManagerTable.java,v 1.2 2004/10/15 16:35:16 langella
  *          Exp $
  */
+@SuppressWarnings("deprecation")
 public class TestCertificateAuthority extends TestCase {
     private static final String TABLE = "test_dorian_ca";
 
@@ -80,7 +81,7 @@ public class TestCertificateAuthority extends TestCase {
 
 
     private CertificateAuthority getCertificateAuthority(CertificateAuthorityProperties conf) throws Exception {
-        Class type = Utils.getCA().getClass();
+        Class<? extends CertificateAuthority> type = Utils.getCA().getClass();
         CertificateAuthorityProperties props = Utils.getCAProperties();
         props.setAutoCreateCA(conf.isAutoCreateCAEnabled());
         props.setAutoRenewCA(conf.isAutoRenewCAEnabled());
@@ -383,7 +384,7 @@ public class TestCertificateAuthority extends TestCase {
             // give a chance for others to run right before we enter timing
             // sensitive code
             Thread.currentThread().setPriority(Thread.MAX_PRIORITY);
-            Thread.currentThread().yield();
+            Thread.yield();
             X509Certificate origRoot = null;
 
             boolean completed = false;
@@ -439,7 +440,7 @@ public class TestCertificateAuthority extends TestCase {
             // give a chance for others to run right before we enter timing
             // sensitive code
             Thread.currentThread().setPriority(Thread.MAX_PRIORITY);
-            Thread.currentThread().yield();
+            Thread.yield();
             boolean completed = false;
             int count = 0;
             int seconds = 5000;

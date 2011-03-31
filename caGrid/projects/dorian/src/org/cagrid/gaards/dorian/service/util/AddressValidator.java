@@ -18,7 +18,7 @@ public class AddressValidator {
     public static void validateEmail(String email) throws IllegalArgumentException {
         validateField("Email", email);
         try {
-            InternetAddress emailAddr = new InternetAddress(email);
+            new InternetAddress(email);
             if (!hasNameAndDomain(email)) {
                 throw new IllegalArgumentException("Invalid email address specified.");
             }

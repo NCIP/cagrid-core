@@ -8,25 +8,25 @@ import java.util.List;
 
 
 public class PreparedStatementBuilder {
-    private List fields;
+    private List<String> fields;
 
-    private List whereFields;
+    private List<String> whereFields;
 
-    private List whereValues;
+    private List<Object> whereValues;
 
-    private List whereOperators;
+    private List<String> whereOperators;
 
-    private List clauses;
+    private List<String> clauses;
 
     private String table;
 
 
     public PreparedStatementBuilder(String table) {
-        this.fields = new ArrayList();
-        this.whereFields = new ArrayList();
-        this.whereValues = new ArrayList();
-        this.whereOperators = new ArrayList();
-        this.clauses = new ArrayList();
+        this.fields = new ArrayList<String>();
+        this.whereFields = new ArrayList<String>();
+        this.whereValues = new ArrayList<Object>();
+        this.whereOperators = new ArrayList<String>();
+        this.clauses = new ArrayList<String>();
         this.table = table;
     }
 

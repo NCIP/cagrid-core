@@ -649,10 +649,10 @@ public class TestTrustedIdPManager extends TestCase {
         SAMLAuthenticationStatement auth = new SAMLAuthenticationStatement(sub,
             "urn:oasis:names:tc:SAML:1.0:am:password", new Date(), ipAddress, subjectDNS, null);
 
-        List l = new ArrayList();
+        List<SAMLAuthenticationStatement> l = new ArrayList<SAMLAuthenticationStatement>();
         l.add(auth);
         SAMLAssertion saml = new SAMLAssertion(issuer, start2, end2, null, null, l);
-        List a = new ArrayList();
+        List<X509Certificate> a = new ArrayList<X509Certificate>();
         a.add(cert);
         saml.sign(XMLSignature.ALGO_ID_SIGNATURE_RSA_SHA256, cred.getPrivateKey(), a);
         return new IdPContainer(idp, cert, saml);
@@ -691,7 +691,7 @@ public class TestTrustedIdPManager extends TestCase {
 
     public SAMLAuthenticationMethod[] getAuthenticationMethods() {
         if (methods == null) {
-            List list = new ArrayList();
+            List<Object> list = new ArrayList<Object>();
 
             Field[] fields = SAMLAuthenticationMethod.class.getFields();
 

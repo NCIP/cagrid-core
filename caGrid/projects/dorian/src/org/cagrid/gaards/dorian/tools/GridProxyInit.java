@@ -23,11 +23,11 @@ import org.apache.commons.cli.ParseException;
 import org.apache.commons.cli.PosixParser;
 import org.cagrid.gaards.dorian.client.GridUserClient;
 import org.cagrid.gaards.dorian.federation.CertificateLifetime;
-import org.cagrid.gaards.pki.CertUtil;
 import org.globus.gsi.GlobusCredential;
 import org.globus.util.ConfigUtil;
 
 
+@SuppressWarnings("deprecation")
 public class GridProxyInit {
 
     public static final int DEFAULT_LIFETIME_HOURS = 12;

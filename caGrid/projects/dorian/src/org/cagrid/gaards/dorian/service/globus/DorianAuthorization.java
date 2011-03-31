@@ -33,6 +33,11 @@ import org.w3c.dom.Node;
  */
 public class DorianAuthorization implements PDP {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
 	public static final String SERVICE_NAMESPACE = "http://cagrid.nci.nih.gov/Dorian";
 	
 	Map authorizationClassMap = new HashMap();

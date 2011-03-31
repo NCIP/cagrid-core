@@ -341,7 +341,7 @@ public class TestUserManager extends TestCase {
             LocalUser u1 = makeActiveUser();
             um.addUser(u1);
             assertTrue(um.userExists(u1.getUserId()));
-            String password = u1.getPassword();
+//            String password = u1.getPassword();
             u1.setPassword(null);
             u1.setFirstName("changedfirst");
             u1.setLastName("changedlast");

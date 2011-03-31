@@ -8,6 +8,7 @@ import gov.nih.nci.cagrid.opensaml.SAMLAttributeStatement;
 import gov.nih.nci.cagrid.opensaml.SAMLAuthenticationStatement;
 import gov.nih.nci.cagrid.opensaml.SAMLNameIdentifier;
 import gov.nih.nci.cagrid.opensaml.SAMLSubject;
+import gov.nih.nci.cagrid.opensaml.SAMLSubjectStatement;
 
 import java.security.KeyPair;
 import java.security.PrivateKey;
@@ -104,7 +105,7 @@ public class TestSerializationDeserialization extends TestCase {
 
             SAMLAttributeStatement attState = new SAMLAttributeStatement(sub2, atts);
 
-            List l = new ArrayList();
+            List<SAMLSubjectStatement> l = new ArrayList<SAMLSubjectStatement>();
             l.add(auth);
             l.add(attState);
 

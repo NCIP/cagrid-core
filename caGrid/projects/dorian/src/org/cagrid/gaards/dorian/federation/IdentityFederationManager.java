@@ -719,10 +719,11 @@ public class IdentityFederationManager implements Publisher {
             verifyActiveUser(caller);
             verifyAdminUser(caller);
             try {
-                List<String> members = this.administrators.getMembers();
+                @SuppressWarnings("unchecked")
+				List<String> members = this.administrators.getMembers();
                 String[] admins = new String[members.size()];
                 for (int i = 0; i < members.size(); i++) {
-                    admins[i] = (String) members.get(i);
+                    admins[i] = members.get(i);
                 }
                 return admins;
             } catch (GroupException e) {
@@ -929,7 +930,7 @@ public class IdentityFederationManager implements Publisher {
         // Run the policy
         AccountPolicy policy = null;
         try {
-            Class c = Class.forName(idp.getUserPolicyClass());
+            Class<?> c = Class.forName(idp.getUserPolicyClass());
             policy = (AccountPolicy) c.newInstance();
             policy.configure(conf, userManager);
 
@@ -1253,7 +1254,8 @@ public class IdentityFederationManager implements Publisher {
     }
 
 
-    public X509CRL getCRL() throws DorianInternalFault {
+    @SuppressWarnings("deprecation")
+	public X509CRL getCRL() throws DorianInternalFault {
         Map<Long, CRLEntry> list = new HashMap<Long, CRLEntry>();
 
         Set<String> users = this.userManager.getDisabledUsers();
@@ -1410,16 +1412,19 @@ public class IdentityFederationManager implements Publisher {
 
 
     private String getAttribute(SAMLAssertion saml, String namespace, String name) throws InvalidAssertionFault {
-        Iterator itr = saml.getStatements();
+        @SuppressWarnings("rawtypes")
+		Iterator itr = saml.getStatements();
         while (itr.hasNext()) {
             Object o = itr.next();
             if (o instanceof SAMLAttributeStatement) {
                 SAMLAttributeStatement att = (SAMLAttributeStatement) o;
-                Iterator attItr = att.getAttributes();
+                @SuppressWarnings("unchecked")
+				Iterator<SAMLAttribute> attItr = att.getAttributes();
                 while (attItr.hasNext()) {
                     SAMLAttribute a = (SAMLAttribute) attItr.next();
                     if ((a.getNamespace().equals(namespace)) && (a.getName().equals(name))) {
-                        Iterator vals = a.getValues();
+                        @SuppressWarnings("unchecked")
+						Iterator<String> vals = a.getValues();
                         while (vals.hasNext()) {
 
                             String val = Utils.clean((String) vals.next());
@@ -1438,7 +1443,7 @@ public class IdentityFederationManager implements Publisher {
 
 
     private SAMLAuthenticationStatement getAuthenticationStatement(SAMLAssertion saml) throws InvalidAssertionFault {
-        Iterator itr = saml.getStatements();
+        Iterator<?> itr = saml.getStatements();
         SAMLAuthenticationStatement auth = null;
         while (itr.hasNext()) {
             Object o = itr.next();

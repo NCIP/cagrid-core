@@ -60,7 +60,8 @@ public class TestAssertionCredentialsManager extends TestCase {
 		}
 		assertEquals(CertUtil.getSubjectDN(cm.getIdPCertificate()),
 		    saml.getIssuer());
-		Iterator itr = saml.getStatements();
+		@SuppressWarnings("unchecked")
+		Iterator<SAMLStatement> itr = saml.getStatements();
 		int count = 0;
 		boolean authFound = false;
 		while (itr.hasNext()) {

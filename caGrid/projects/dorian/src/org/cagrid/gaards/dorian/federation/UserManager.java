@@ -14,7 +14,6 @@ import java.util.List;
 import java.util.Set;
 
 import javax.naming.InvalidNameException;
-import javax.naming.Name;
 import javax.naming.ldap.LdapName;
 
 import org.apache.commons.logging.Log;
@@ -24,7 +23,6 @@ import org.cagrid.gaards.dorian.service.PropertyManager;
 import org.cagrid.gaards.dorian.service.util.AddressValidator;
 import org.cagrid.gaards.dorian.stubs.types.DorianInternalFault;
 import org.cagrid.gaards.dorian.stubs.types.InvalidUserFault;
-import org.cagrid.gaards.pki.CertUtil;
 import org.cagrid.tools.database.Database;
 import org.cagrid.tools.database.DatabaseException;
 

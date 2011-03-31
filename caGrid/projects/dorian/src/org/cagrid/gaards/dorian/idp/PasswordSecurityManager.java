@@ -341,14 +341,12 @@ public class PasswordSecurityManager {
 
 
     public static byte[] base64ToByte(String data) throws IOException {
-        Base64 decoder = new Base64();
-        return decoder.decode(data.getBytes());
+        return Base64.decode(data.getBytes());
     }
 
 
     public static String byteToBase64(byte[] data) {
-        Base64 encoder = new Base64();
-        byte[] result = encoder.encode(data);
+        byte[] result = Base64.encode(data);
         return new String(result);
     }
 

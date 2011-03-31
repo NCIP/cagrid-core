@@ -47,6 +47,7 @@ import org.globus.wsrf.utils.XmlUtils;
 import org.w3c.dom.Element;
 
 
+@SuppressWarnings("deprecation")
 public class GridUserClient extends DorianBaseClient {
 
     public static final QName TRUSTED_IDPS_METADATA = new QName("http://cagrid.nci.nih.gov/1/dorian-ifs",

@@ -32,13 +32,13 @@ import org.xml.sax.SAXParseException;
 public class ParserPool implements ErrorHandler, EntityResolver {
 
     // Stacks of DocumentBuilder parsers keyed by the Schema they support
-    private Map /* <Schema,Stack> */pools = new HashMap();
+    private Map /* <Schema,Stack> */<Schema, Stack<DocumentBuilder>> pools = new HashMap<Schema, Stack<DocumentBuilder>>();
 
     // The stack of non-schema-validating parsers
-    private Stack unparsedpool = new Stack();
+    private Stack<DocumentBuilder> unparsedpool = new Stack<DocumentBuilder>();
 
     // Resolution of extension schemas keyed by XML namespace
-    private Map /* <String,EntityResolver> */extensions = new HashMap();
+    private Map<String,EntityResolver> extensions = new HashMap<String,EntityResolver>();
 
     private Schema defaultSchema = null;
 
@@ -85,7 +85,7 @@ public class ParserPool implements ErrorHandler, EntityResolver {
     }
 
 
-    public synchronized void registerSchemas(Map /* <String,EntityResolver> */exts) {
+    public synchronized void registerSchemas(Map /* <String,EntityResolver> */<String,EntityResolver> exts) {
         // First merge the new set into the maintained set.
         if (exts != null)
             extensions.putAll(exts);
@@ -98,7 +98,7 @@ public class ParserPool implements ErrorHandler, EntityResolver {
          * that depends on (imports) it.
          */
         SchemaFactory factory = SchemaFactory.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);
-        ArrayList sources = new ArrayList();
+        ArrayList<Source> sources = new ArrayList<Source>();
         sources.add(new StreamSource(PolicyConstants.class.getResourceAsStream("/ws/" + PolicyConstants.XML_SCHEMA_ID),
             PolicyConstants.XML_SCHEMA_ID));
         sources.add(new StreamSource(PolicyConstants.class.getResourceAsStream("/Dorian/" + PolicyConstants.XMLSIG_SCHEMA_ID),
@@ -106,8 +106,8 @@ public class ParserPool implements ErrorHandler, EntityResolver {
         sources.add(new StreamSource(PolicyConstants.class.getResourceAsStream("/Dorian/" + PolicyConstants.HOST_AGREEMENT_ID),
             PolicyConstants.HOST_AGREEMENT_ID));
             
-        for (Iterator i = extensions.entrySet().iterator(); i.hasNext();) {
-            Entry entry = (Entry) i.next();
+        for (Iterator<?> i = extensions.entrySet().iterator(); i.hasNext();) {
+            Entry<?, ?> entry = (Entry<?, ?>) i.next();
             try {
                 sources.add(new SAXSource(((EntityResolver) entry.getValue()).resolveEntity(null, (String) entry
                     .getKey())));
@@ -138,11 +138,11 @@ public class ParserPool implements ErrorHandler, EntityResolver {
     public synchronized DocumentBuilder get(Schema schema) throws Exception {
         DocumentBuilder p = null;
 
-        Stack pool;
+        Stack<DocumentBuilder> pool;
         if (schema != null) {
-            pool = (Stack) pools.get(schema);
+            pool = (Stack<DocumentBuilder>) pools.get(schema);
             if (pool == null) {
-                pool = new Stack();
+                pool = new Stack<DocumentBuilder>();
                 pools.put(schema, pool);
             }
         } else {
@@ -307,7 +307,7 @@ public class ParserPool implements ErrorHandler, EntityResolver {
         if (schema == null) {
             unparsedpool.push(p);
         } else {
-            Stack pool = (Stack) pools.get(schema);
+            Stack<DocumentBuilder> pool = (Stack<DocumentBuilder>) pools.get(schema);
             pool.push(p);
         }
     }

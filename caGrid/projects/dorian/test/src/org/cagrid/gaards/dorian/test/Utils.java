@@ -153,16 +153,18 @@ public class Utils {
 
 
     public static String getAttribute(SAMLAssertion saml, String namespace, String name) {
-        Iterator itr = saml.getStatements();
+        Iterator<?> itr = saml.getStatements();
         while (itr.hasNext()) {
             Object o = itr.next();
             if (o instanceof SAMLAttributeStatement) {
                 SAMLAttributeStatement att = (SAMLAttributeStatement) o;
-                Iterator attItr = att.getAttributes();
+                @SuppressWarnings("unchecked")
+				Iterator<SAMLAttribute> attItr = att.getAttributes();
                 while (attItr.hasNext()) {
-                    SAMLAttribute a = (SAMLAttribute) attItr.next();
+                    SAMLAttribute a = attItr.next();
                     if ((a.getNamespace().equals(namespace)) && (a.getName().equals(name))) {
-                        Iterator vals = a.getValues();
+                        @SuppressWarnings("unchecked")
+						Iterator<String> vals = a.getValues();
                         while (vals.hasNext()) {
                             String val = gov.nih.nci.cagrid.common.Utils.clean((String) vals.next());
                             if (val != null) {
