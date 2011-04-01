@@ -83,8 +83,9 @@ public class MetadataModelServiceStory extends ServiceStoryBase {
         // steps.add(new SetDatabasePropertiesStep(tempMMSServiceDir));
         // steps.add(new CreateDatabaseStep(tempMMSServiceDir));
 
-        DeployServiceStep deployStep = new DeployServiceStep(getContainer(), tempMMSServiceDir.getAbsolutePath(),
-            Arrays.asList(new String[]{"-Dno.deployment.validation=true"}));
+		List<String> args = Arrays.asList(new String[] {
+	            "-Dno.deployment.validation=true", "-Dperform.index.service.registration=false"});
+        DeployServiceStep deployStep = new DeployServiceStep(getContainer(), tempMMSServiceDir.getAbsolutePath(), args);
         steps.add(deployStep);
         steps.add(new StartContainerStep(getContainer()));
 
@@ -111,12 +112,6 @@ public class MetadataModelServiceStory extends ServiceStoryBase {
         StopContainerStep step2 = new StopContainerStep(getContainer());
         try {
             step2.runStep();
-        } catch (Throwable e) {
-            e.printStackTrace();
-        }
-        DestroyContainerStep step3 = new DestroyContainerStep(getContainer());
-        try {
-            step3.runStep();
         } catch (Throwable e) {
             e.printStackTrace();
         }
