@@ -71,6 +71,7 @@
     <dependency rev="3.0.+" org="springframework" name="spring" conf="service->spring-orm" />
     <dependency rev="3.0.+" org="springframework" name="spring" conf="service->spring-aop" />
     <dependency rev="3.0.+" org="springframework" name="spring" conf="service->spring-transaction" />
+    <dependency rev="3.0.+" org="springframework" name="spring" conf="service->spring-test" />
     <dependency rev="1.0" org="aopalliance" name="aopalliance" />
     <dependency rev="1.2.+" org="apache" name="commons-dbcp" conf="service->default" />
     <dependency rev="4.+" org="junit" name="junit" conf="impl-test->default" />
