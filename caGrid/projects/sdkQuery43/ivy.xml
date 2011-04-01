@@ -55,5 +55,6 @@
     <dependency rev="2.0.0" org="jgoodies" name="validation" conf="style->default"/>
     <dependency rev="4.+" org="junit" name="junit" conf="impl-test->default" />
     <dependency rev="3.0.+" org="springframework" name="spring" conf="translator->spring-expression" />
+    <dependency rev="3.0.+" org="springframework" name="spring" conf="translator->spring-orm" />
   </dependencies>
 </ivy-module>
