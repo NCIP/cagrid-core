@@ -16,6 +16,7 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.List;
 import java.util.Vector;
 
 import org.apache.axis.message.addressing.EndpointReferenceType;
@@ -97,8 +98,9 @@ public class GlobalModelExchangeStory extends ServiceStoryBase {
         steps.add(new SetDatabasePropertiesStep(tempGMEServiceDir));
         steps.add(new CreateDatabaseStep(tempGMEServiceDir));
 
-        DeployServiceStep deployStep = new DeployServiceStep(getContainer(), tempGMEServiceDir.getAbsolutePath(),
-            Arrays.asList(new String[]{"-Dno.deployment.validation=true"}));
+		List<String> args = Arrays.asList(new String[] {
+	            "-Dno.deployment.validation=true", "-Dperform.index.service.registration=false"});
+        DeployServiceStep deployStep = new DeployServiceStep(getContainer(), tempGMEServiceDir.getAbsolutePath(), args);
         steps.add(deployStep);
         steps.add(new StartContainerStep(getContainer()));
 
