@@ -20,9 +20,6 @@
 	<classpathentry kind="var" path="GT4_LOCATION/lib/commons-discovery.jar"/>
 	<classpathentry kind="var" path="GT4_LOCATION/lib/commons-logging.jar"/>
 	<classpathentry kind="var" path="GT4_LOCATION/lib/concurrent.jar"/>
-	<classpathentry kind="var" path="GT4_LOCATION/lib/cryptix.jar"/>
-	<classpathentry kind="var" path="GT4_LOCATION/lib/cryptix32.jar"/>
-	<classpathentry kind="var" path="GT4_LOCATION/lib/cryptix-asn1.jar"/>
 	<classpathentry kind="var" path="GT4_LOCATION/lib/globus_resolution_service.jar"/>
 	<classpathentry kind="var" path="GT4_LOCATION/lib/globus_resolution_stubs_java.jar"/>
 	<classpathentry kind="var" path="GT4_LOCATION/lib/globus_resolution_test.jar"/>
@@ -40,7 +37,6 @@
 	<classpathentry kind="var" path="GT4_LOCATION/lib/naming-java.jar"/>
 	<classpathentry kind="var" path="GT4_LOCATION/lib/naming-resources.jar"/>
 	<classpathentry kind="var" path="GT4_LOCATION/lib/opensaml.jar"/>
-	<classpathentry kind="var" path="GT4_LOCATION/lib/puretls.jar"/>
 	<classpathentry kind="var" path="GT4_LOCATION/lib/resolver.jar"/>
 	<classpathentry kind="var" path="GT4_LOCATION/lib/saaj.jar"/>
 	<classpathentry kind="var" path="GT4_LOCATION/lib/servlet.jar"/>
@@ -98,7 +94,6 @@
 	<classpathentry kind="lib" path="ext/dependencies/default/jars/standard-1.1.2.jar"/>
 	<classpathentry kind="lib" path="ext/dependencies/default/jars/xmldsig-1.0.jar"/>
 	<classpathentry kind="lib" path="ext/dependencies/default/jars/xmlsec-1.4.0.jar"/>
-	<classpathentry kind="lib" path="ext/dependencies/default/jars/ehcache-1.2.4.jar"/>
 	<classpathentry kind="lib" path="ext/dependencies/default/jars/acegi-security-1.0.7.jar"/>
 	<classpathentry kind="lib" path="ext/dependencies/default/jars/caGrid-authentication-service-client-1.4.1.jar"/>
 	<classpathentry kind="lib" path="ext/dependencies/default/jars/caGrid-authentication-service-common-1.4.1.jar"/>
