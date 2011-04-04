@@ -20,9 +20,9 @@
   <classpathentry kind="var" path="GT4_LOCATION/lib/commons-discovery.jar" />
   <classpathentry kind="var" path="GT4_LOCATION/lib/commons-logging.jar" />
   <classpathentry kind="var" path="GT4_LOCATION/lib/concurrent.jar" />
-  <classpathentry kind="var" path="GT4_LOCATION/lib/cryptix.jar" />
-  <classpathentry kind="var" path="GT4_LOCATION/lib/cryptix32.jar" />
-  <classpathentry kind="var" path="GT4_LOCATION/lib/cryptix-asn1.jar" />
+  
+  
+  
   <classpathentry kind="var" path="GT4_LOCATION/lib/globus_usage_core.jar" />
   <classpathentry kind="var" path="GT4_LOCATION/lib/globus_usage_packets_common.jar" />
   <classpathentry kind="var" path="GT4_LOCATION/lib/globus_wsrf_tools_test.jar" />
@@ -36,7 +36,7 @@
   <classpathentry kind="var" path="GT4_LOCATION/lib/naming-java.jar" />
   <classpathentry kind="var" path="GT4_LOCATION/lib/naming-resources.jar" />
   <classpathentry kind="var" path="GT4_LOCATION/lib/opensaml.jar" />
-  <classpathentry kind="var" path="GT4_LOCATION/lib/puretls.jar" />
+  
   <classpathentry kind="var" path="GT4_LOCATION/lib/resolver.jar" />
   <classpathentry kind="var" path="GT4_LOCATION/lib/saaj.jar" />
   <classpathentry kind="var" path="GT4_LOCATION/lib/wsdl4j.jar" />
