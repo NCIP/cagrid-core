@@ -4,9 +4,9 @@
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="var" path="GT4_LOCATION/lib/resolver.jar"/>
 	<classpathentry kind="var" path="GT4_LOCATION/lib/xmlsec.jar"/>
-	<classpathentry kind="var" path="GT4_LOCATION/lib/cryptix.jar"/>
-	<classpathentry kind="var" path="GT4_LOCATION/lib/cryptix32.jar"/>
-	<classpathentry kind="var" path="GT4_LOCATION/lib/cryptix-asn1.jar"/>
+	
+	
+	
 	<classpathentry kind="var" path="GT4_LOCATION/lib/jgss.jar"/>
 	<classpathentry kind="var" path="GT4_LOCATION/lib/commons-logging.jar"/>
 	<classpathentry kind="var" path="GT4_LOCATION/lib/log4j-1.2.14.jar"/>
