@@ -182,6 +182,7 @@
 		<delete verbose="true">
 			<fileset dir="${webapp.deploy.lib.dir}">
 				<include name="ssl-proxies-2.*.jar" />
+				<include name="bcprov-jdk*.jar" />
 			</fileset>
 		</delete>
 	</target>
