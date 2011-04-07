@@ -97,6 +97,14 @@ public abstract class <%=info.getService().getName()%>ClientBase extends Service
 		return port;
 	}
 	
+	public void setConnectionTimeout(int timeout) {
+    	((Stub) this.portType).setTimeout(timeout);
+    }
+    
+    public int getConnectionTimeout() {
+    	return ((Stub) this.portType).getTimeout();
+    }
+	
 <%
     if(info.getService().getResourceFrameworkOptions().getLifetime()!=null){
 %>
