@@ -31,6 +31,7 @@ import javax.xml.namespace.QName;
 
 import junit.framework.TestCase;
 
+import org.apache.commons.io.FileUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.xml.security.signature.XMLSignature;
@@ -80,7 +81,8 @@ public class TestIdentityFederationManager extends TestCase {
     private PropertyManager props;
 
     private EventManager eventManager;
-
+    
+    private File tempCertDir;
 
     public void testUserSearchAdmin() {
         IdentityFederationManager ifs = null;
@@ -2493,6 +2495,17 @@ public class TestIdentityFederationManager extends TestCase {
             props = new PropertyManager(db);
             eventManager = Utils.getEventManager();
             eventManager.clearHandlers();
+            
+            tempCertDir = File.createTempFile("cagridunittest", "certs");
+            tempCertDir.delete();
+            tempCertDir.mkdir();
+            CoGProperties.getDefault().setCaCertLocations(tempCertDir.getAbsolutePath());
+            File caFile = new File(tempCertDir.getAbsolutePath() + File.separator + CertUtil.getHashCode(ca.getCACertificate()) + ".0");
+            File policyFile = new File(tempCertDir.getAbsolutePath() + File.separator + CertUtil.getHashCode(ca.getCACertificate())
+                + ".signing_policy");
+            CertUtil.writeCertificate(ca.getCACertificate(), caFile);
+            CertUtil.writeSigningPolicy(ca.getCACertificate(), policyFile);
+
         } catch (Exception e) {
             FaultUtil.printFault(e);
             fail("Exception occured:" + e.getMessage());
@@ -2506,6 +2519,7 @@ public class TestIdentityFederationManager extends TestCase {
             eventManager.clearHandlers();
             assertEquals(0, db.getUsedConnectionCount());
             assertEquals(0, db.getRootUsedConnectionCount());
+            FileUtils.deleteDirectory(tempCertDir);
         } catch (Exception e) {
             FaultUtil.printFault(e);
             fail("Exception occured:" + e.getMessage());

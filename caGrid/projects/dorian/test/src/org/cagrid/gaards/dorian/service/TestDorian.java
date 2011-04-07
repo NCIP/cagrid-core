@@ -12,6 +12,7 @@ import gov.nih.nci.cagrid.opensaml.SAMLStatement;
 import gov.nih.nci.cagrid.opensaml.SAMLSubject;
 import gov.nih.nci.cagrid.opensaml.SAMLSubjectStatement;
 
+import java.io.File;
 import java.security.KeyPair;
 import java.security.PrivateKey;
 import java.security.PublicKey;
@@ -28,6 +29,7 @@ import javax.xml.namespace.QName;
 
 import junit.framework.TestCase;
 
+import org.apache.commons.io.FileUtils;
 import org.apache.xml.security.signature.XMLSignature;
 import org.cagrid.gaards.authentication.BasicAuthentication;
 import org.cagrid.gaards.authentication.faults.InvalidCredentialFault;
@@ -61,6 +63,8 @@ import org.cagrid.gaards.pki.CertUtil;
 import org.cagrid.gaards.pki.Credential;
 import org.cagrid.gaards.pki.KeyUtil;
 import org.cagrid.gaards.saml.encoding.SAMLConstants;
+import org.cagrid.tools.database.Database;
+import org.globus.common.CoGProperties;
 import org.globus.gsi.GlobusCredential;
 
 
@@ -73,7 +77,11 @@ public class TestDorian extends TestCase {
 
     private static final int SHORT_PROXY_VALID = 2;
 
+    private CertificateAuthority ca;
     private CA memoryCA;
+    private Database db;
+    
+    private File tempCertDir;
 
 
     /** *************** IdP TEST FUNCTIONS ********************** */
@@ -911,7 +919,7 @@ public class TestDorian extends TestCase {
         }
         assertEquals(CertUtil.getSubjectDN(cert), CommonUtils.identityToSubject(cred.getIdentity()));
         assertEquals(expectedIdentity, cred.getIdentity());
-        assertEquals("The credential was not signed by the CA.", CertUtil.getSubjectDN(getCA().getCACertificate()), cert.getIssuerX500Principal().getName());
+        assertEquals("The credential was not signed by the CA.", CertUtil.getSubjectDN(ca.getCACertificate()), cert.getIssuerX500Principal().getName());
         cred.verify();
     }
 
@@ -1021,7 +1029,21 @@ public class TestDorian extends TestCase {
         super.setUp();
         try {
             count = 0;
+            db = Utils.getDB();
+            assertEquals(0, db.getUsedConnectionCount());
+            ca = Utils.getCA();
             memoryCA = new CA(Utils.getCASubject().toString());
+            
+            tempCertDir = File.createTempFile("cagridunittest", "certs");
+            tempCertDir.delete();
+            tempCertDir.mkdir();
+            CoGProperties.getDefault().setCaCertLocations(tempCertDir.getAbsolutePath());
+            File caFile = new File(tempCertDir.getAbsolutePath() + File.separator + CertUtil.getHashCode(ca.getCACertificate()) + ".0");
+            File policyFile = new File(tempCertDir.getAbsolutePath() + File.separator + CertUtil.getHashCode(ca.getCACertificate())
+                + ".signing_policy");
+            CertUtil.writeCertificate(ca.getCACertificate(), caFile);
+            CertUtil.writeSigningPolicy(ca.getCACertificate(), policyFile);
+
         } catch (Exception e) {
             FaultUtil.printFault(e);
             assertTrue(false);
@@ -1031,6 +1053,9 @@ public class TestDorian extends TestCase {
 
     protected void tearDown() throws Exception {
         super.tearDown();
+        FileUtils.deleteDirectory(tempCertDir);
+        assertEquals(0, db.getUsedConnectionCount());
+        assertEquals(0, db.getRootUsedConnectionCount());
     }
 
 
@@ -1048,10 +1073,5 @@ public class TestDorian extends TestCase {
         String caSubject = CertUtil.getSubjectDN(d.getCACertificate());
         String policy = conf.getIdentityFederationProperties().getIdentityAssignmentPolicy();
         return UserManager.getUserSubject(policy, caSubject, idp, uid);
-    }
-
-
-    public CertificateAuthority getCA() throws Exception {
-        return Utils.getCA();
     }
 }
