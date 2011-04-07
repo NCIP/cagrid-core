@@ -1,12 +1,11 @@
 package gov.nih.nci.cagrid.introduce.upgrade.one.x;
 
-import org.apache.log4j.Logger;
-
 import gov.nih.nci.cagrid.introduce.beans.extension.ExtensionType;
-import gov.nih.nci.cagrid.introduce.codegen.SyncTools;
 import gov.nih.nci.cagrid.introduce.common.ServiceInformation;
 import gov.nih.nci.cagrid.introduce.upgrade.common.ExtensionUpgradeStatus;
 import gov.nih.nci.cagrid.introduce.upgrade.common.ExtensionUpgraderI;
+
+import org.apache.log4j.Logger;
 
 /**
  * Class must be extended to provide an extension upgrader. An extension
