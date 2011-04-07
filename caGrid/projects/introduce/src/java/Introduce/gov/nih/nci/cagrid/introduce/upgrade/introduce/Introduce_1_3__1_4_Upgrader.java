@@ -1,9 +1,12 @@
 package gov.nih.nci.cagrid.introduce.upgrade.introduce;
 
 import gov.nih.nci.cagrid.common.Utils;
+import gov.nih.nci.cagrid.introduce.beans.service.ServiceType;
+import gov.nih.nci.cagrid.introduce.common.CommonTools;
 import gov.nih.nci.cagrid.introduce.common.ServiceInformation;
 import gov.nih.nci.cagrid.introduce.common.SpecificServiceInformation;
 import gov.nih.nci.cagrid.introduce.templates.RunToolsTemplate;
+import gov.nih.nci.cagrid.introduce.templates.client.ServiceClientBaseTemplate;
 import gov.nih.nci.cagrid.introduce.upgrade.common.IntroduceUpgradeStatus;
 import gov.nih.nci.cagrid.introduce.upgrade.common.StatusBase;
 import gov.nih.nci.cagrid.introduce.upgrade.one.x.IntroduceUpgraderBase;
@@ -92,7 +95,20 @@ public class Introduce_1_3__1_4_Upgrader extends IntroduceUpgraderBase {
 
 
     protected void fixSource() throws Exception {
+    	File srcDir = new File(getServiceInformation().getBaseDirectory().getAbsolutePath() + File.separator + "src");
+        for (int serviceI = 0; serviceI < getServiceInformation().getServices().getService().length; serviceI++) {
+            ServiceType service = getServiceInformation().getServices().getService(serviceI);
+            
+            // re-generate the base client class
+            ServiceClientBaseTemplate clientBaseT = new ServiceClientBaseTemplate();
+            String clientBaseS = clientBaseT.generate(new SpecificServiceInformation(getServiceInformation(), service));
+            File clientBaseF = new File(srcDir.getAbsolutePath() + File.separator + CommonTools.getPackageDir(service)
+                + File.separator + "client" + File.separator + service.getName() + "ClientBase.java");
 
+            FileWriter clientBaseFW = new FileWriter(clientBaseF);
+            clientBaseFW.write(clientBaseS);
+            clientBaseFW.close();
+        }
     }
 
 

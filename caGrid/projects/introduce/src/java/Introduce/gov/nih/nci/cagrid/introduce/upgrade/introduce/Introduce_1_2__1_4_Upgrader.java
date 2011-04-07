@@ -133,6 +133,7 @@ public class Introduce_1_2__1_4_Upgrader extends IntroduceUpgraderBase {
         for (int serviceI = 0; serviceI < getServiceInformation().getServices().getService().length; serviceI++) {
             ServiceType service = getServiceInformation().getServices().getService(serviceI);
 
+            // re-generate the client for each service
             ServiceClientTemplate clientT = new ServiceClientTemplate();
             String clientS = clientT.generate(new SpecificServiceInformation(getServiceInformation(), service));
             File clientF = new File(srcDir.getAbsolutePath() + File.separator + CommonTools.getPackageDir(service)
@@ -142,6 +143,7 @@ public class Introduce_1_2__1_4_Upgrader extends IntroduceUpgraderBase {
             clientFW.write(clientS);
             clientFW.close();
 
+            // re-generate the base client class
             ServiceClientBaseTemplate clientBaseT = new ServiceClientBaseTemplate();
             String clientBaseS = clientBaseT.generate(new SpecificServiceInformation(getServiceInformation(), service));
             File clientBaseF = new File(srcDir.getAbsolutePath() + File.separator + CommonTools.getPackageDir(service)
@@ -151,6 +153,7 @@ public class Introduce_1_2__1_4_Upgrader extends IntroduceUpgraderBase {
             clientBaseFW.write(clientBaseS);
             clientBaseFW.close();
 
+            // regenerate the client-config
             ClientConfigTemplate clientConfigT = new ClientConfigTemplate();
             String clientConfigS = clientConfigT.generate(new SpecificServiceInformation(getServiceInformation(),
                 service));
