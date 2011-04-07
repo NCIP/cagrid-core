@@ -139,7 +139,7 @@ public class ExtensionsUpgradeManager {
 	public void upgrade(IntroduceUpgradeStatus status) throws Exception {
 		remove(status);
 
-		List error = new ArrayList();
+		List<String> error = new ArrayList<String>();
 
 		ExtensionType[] extensions = serviceInformation.getServiceDescriptor()
 				.getExtensions().getExtension();
@@ -150,7 +150,7 @@ public class ExtensionsUpgradeManager {
 					.getInstance().getExtension(extension.getName());
 			if (extDescription != null) {
 				if ((extDescription.getVersion() != null)) {
-					List upgrades = new ArrayList();
+					List<UpgradeDescriptionType> upgrades = new ArrayList<UpgradeDescriptionType>();
 					if (((serviceExtensionVersion == null) && (extDescription
 							.getVersion() != null))
 							|| !extDescription.getVersion().equals(
@@ -189,10 +189,9 @@ public class ExtensionsUpgradeManager {
 									currentVersion = extensionUpgrades[i]
 											.getToVersion();
 								} else {
-									error
-											.add(extension.getName()
-													+ " extension used on service is older than currently installed "
-													+ "and does not appear to have correct upgrade.");
+									error.add(extension.getName()
+											+ " extension used on service is older than currently installed "
+											+ "and does not appear to have correct upgrade.");
 									break;
 								}
 							}
