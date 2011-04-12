@@ -125,8 +125,10 @@
 
 	<!-- deploy service to jboss -->
 	<target name="deployJBoss" depends="checkJbossHomeEnv,all,deploymentValidator,setDeploymentProperties" description="Deploys to JBOSS_HOME (to set the services properties file set the ant command line variable -Dservice.properties.file)">
-
-		<property name="webapp.deploy.dir" value="${jboss.dir}/server/default/deploy/${globus.webapp}.war" />
+		<!-- this property can be overridden from a properties file or with a -D flag passed to ant -->
+		<property name="jboss.node.name" value="default"/>
+		
+		<property name="webapp.deploy.dir" value="${jboss.dir}/server/${jboss.node.name}/deploy/${globus.webapp}.war" />
 		<property name="webapp.deploy.lib.dir" value="${webapp.deploy.dir}/WEB-INF/lib" />
 		<property name="webapp.deploy.schema.dir" value="${webapp.deploy.dir}/share/schema" />
         <property name="webapp.deploy.etc.dir" value="${webapp.deploy.dir}/WEB-INF/etc" />
