@@ -897,8 +897,13 @@ public class HostCertificateWindow extends ApplicationComponent implements Doria
             gridBagConstraints19.gridy = 1;
             hostIdentity = new JLabel();
             if (this.record != null) {
-        		X509Name name = new X509Name(false, this.record.getSubject());
-                hostIdentity.setText(X509NameHelper.toString(name));
+		try {
+                    X509Name name = new X509Name(false, this.record.getSubject());
+                    hostIdentity.setText(X509NameHelper.toString(name));
+		} catch (Exception e) {
+		    log.error("There is a problem with the host certificate's subject", e);
+		    hostIdentity.setText("**** <<<<< Invalid Subject Identity in Host Certificate >>>>> ****");
+		}
             } else {
                 hostIdentity.setText("");
             }
