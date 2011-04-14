@@ -33,6 +33,7 @@ import org.globus.gsi.GlobusCredential;
 public class InvokeCsmDataServiceStep extends Step {
     
     public static final String ACCESS_DENIED_MESSAGE = "Access is denied";
+    public static final String BAD_CSM_TABLE_MESSAGE = "Table 'sdkexample42.csm_protection_group' doesn't exist";
 
     public static final String TESTS_BASE_DIR_PROPERTY = "sdk42.tests.base.dir";
     public static final String ACCESS_DENIED_LIST_FILE = "resources" + File.separator + "access.denied.expected.list";
@@ -79,6 +80,8 @@ public class InvokeCsmDataServiceStep extends Step {
                         ex.printStackTrace();
                         fail("Access incorrectly denied to " + clazz);
                     }
+                } else if (isBadCsmTableName(ex)) {
+                	LOG.debug("CSM Tables created with a different casing than CSM api queries them with (" + ex.getMessage() + ")");
                 } else {
                     ex.printStackTrace();
                     fail("Unexpected error querying data service for class " 
@@ -203,6 +206,22 @@ public class InvokeCsmDataServiceStep extends Step {
             cause = cause.getCause();
         }
         return isDenied;
+    }
+    
+    
+    private boolean isBadCsmTableName(Exception ex) {
+    	Throwable cause = ex;
+    	Set<Throwable> seenCauses = new HashSet<Throwable>();
+        boolean isBadTableName = false;
+        while (cause != null && !seenCauses.contains(cause) && !isBadTableName) {
+            String message = cause.getMessage();
+            if (message.contains(BAD_CSM_TABLE_MESSAGE)) {
+            	isBadTableName = true;
+            }
+            seenCauses.add(cause);
+            cause = cause.getCause();
+        }
+        return isBadTableName;
     }
     
     
