@@ -113,6 +113,8 @@ public class InvokeCsmDataServiceStep extends Step {
                         ex.printStackTrace();
                         fail("Access incorrectly denied to " + clazz);
                     }
+                } else if (isBadCsmTableName(ex)) {
+                	LOG.debug("CSM Tables created with a different casing than CSM api queries them with (" + ex.getMessage() + ")");
                 } else {
                     ex.printStackTrace();
                     fail("Unexpected error querying data service for class " 
