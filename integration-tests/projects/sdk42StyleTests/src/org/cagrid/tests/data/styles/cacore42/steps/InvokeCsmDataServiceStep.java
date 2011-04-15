@@ -226,7 +226,7 @@ public class InvokeCsmDataServiceStep extends Step {
         boolean isBadTableName = false;
         while (cause != null && !seenCauses.contains(cause) && !isBadTableName) {
             String message = cause.getMessage();
-            if (message.contains(BAD_CSM_TABLE_MESSAGE)) {
+            if (message != null && message.contains(BAD_CSM_TABLE_MESSAGE)) {
             	isBadTableName = true;
             }
             seenCauses.add(cause);
