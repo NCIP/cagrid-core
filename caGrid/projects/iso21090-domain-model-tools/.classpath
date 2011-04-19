@@ -14,7 +14,6 @@
 	<classpathentry kind="lib" path="ext/dependencies/jars/caGrid-data-common-1.4-dev.jar"/>
 	<classpathentry kind="lib" path="ext/dependencies/jars/jasciidammit-1.1.jar"/>
 	<classpathentry kind="lib" path="ext/dependencies/jars/xmi.in.out-1.0.jar"/>
-	<classpathentry kind="lib" path="ext/dependencies/jars/log4j-1.2.8.jar"/>
 	<classpathentry kind="lib" path="ext/dependencies/jars/jaxen-core-1.0.jar"/>
 	<classpathentry kind="lib" path="ext/dependencies/jars/jaxen-jdom-1.0.jar"/>
 	<classpathentry kind="lib" path="ext/dependencies/jars/jdom-1.1.jar"/>
@@ -85,5 +84,6 @@
 	<classpathentry kind="var" path="GT4_LOCATION/lib/xercesImpl.jar" sourcepath="/GT4_LOCATION/Xerces-J-src.2.6.2.zip"/>
 	<classpathentry kind="var" path="GT4_LOCATION/lib/xml-apis.jar"/>
 	<classpathentry kind="var" path="GT4_LOCATION/lib/xmlsec.jar"/>
+	<classpathentry kind="lib" path="ext/dependencies/jars/log4j-1.2.14.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
