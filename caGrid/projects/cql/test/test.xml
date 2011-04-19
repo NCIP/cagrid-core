@@ -4,6 +4,42 @@
 <project name="caGrid-cql_tests_harness" basedir=".">
 	<property name="test.logs.dir" value="test/logs"/>
     <property name="junit.results.dir" value="${test.logs.dir}/junit" />
+	<property name="coverage.results.dir" value="${test.logs.dir}/coverage"/>
+	<property name="instrumented.classes.dir" value="${build.dir}/instrumented/classes"/>
+	<property name="test.cobertura.datafile" value="${coverage.results.dir}/cobertura.ser" />
+		
+	<path id="cobertura.classpath">
+		<fileset dir="${basedir}/ext/dependencies/coverage/jars">
+			<include name="**/*.jar"/>
+		</fileset>
+	</path>
+	
+	<!-- define the cobertura ant tasks -->
+	<target name="defineCoberturaTasks">
+		<taskdef classpathref="cobertura.classpath" resource="tasks.properties" />
+	</target>
+		
+	<target name="instrument" depends="defineCoberturaTasks">
+		<!--
+			Remove the coverage data file and any old instrumentation.
+		-->
+		<delete file="${test.cobertura.datafile}" />
+		<delete dir="${instrumented.classes.dir}" />
+		<!--
+			Instrument the application classes, writing the
+			instrumented classes into ${build.instrumented.dir}.
+		-->
+		<cobertura-instrument todir="${instrumented.classes.dir}" datafile="${test.cobertura.datafile}">
+			<!-- optionally ignore a set of packages
+			<ignore regex="org.apache.log4j.*" />
+			-->
+			<!-- just doing the utils -->
+			<fileset dir="${build.utils.dest}">
+				<!-- instrument the main API classes -->
+				<include name="**/*.class" />
+			</fileset>
+		</cobertura-instrument>
+	</target>
 	
 	<path id="test.run.classpath">
 		<fileset dir="${globus.dir}/lib">
@@ -22,11 +58,14 @@
 	</path>
 
 	<!-- call the test target for each project and aggregates the log resutls  -->
-    <target name="test" description="Runs the tests.">
+    <target name="test" depends="instrument" description="Runs the tests.">
         <mkdir dir="${junit.results.dir}" />
         <junit dir="${basedir}" printsummary="yes" errorproperty="test.failed" failureproperty="test.failed" showoutput="true" fork="yes" forkmode="once">        	
             <sysproperty key="build.dir" value="${build.dir}" />
+        	<sysproperty key="net.sourceforge.cobertura.datafile" file="${test.cobertura.datafile}" />
+        	<classpath location="${instrumented.classes.dir}"/>
             <classpath refid="test.run.classpath" />
+        	<classpath refid="cobertura.classpath"/>
             <formatter type="xml" />
             <batchtest fork="yes" todir="${junit.results.dir}">
                 <fileset dir="${test.src.dir}">
@@ -34,6 +73,9 @@
                 </fileset>
             </batchtest>
         </junit>
+    	
+    	<cobertura-report datafile="${test.cobertura.datafile}" destdir="${coverage.results.dir}/html" srcdir="${utils.src.dir}" />
+    	
         <fail message="Tests failed! Check test reports." if="test.failed" />
     </target>
 </project>
