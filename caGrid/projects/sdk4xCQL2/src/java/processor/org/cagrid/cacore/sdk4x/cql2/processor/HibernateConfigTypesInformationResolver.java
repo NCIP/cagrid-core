@@ -6,6 +6,8 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.mapping.Collection;
 import org.hibernate.mapping.OneToMany;
@@ -24,6 +26,8 @@ import org.hibernate.mapping.Value;
  * @author David Ervin
  */
 public class HibernateConfigTypesInformationResolver implements TypesInformationResolver {
+	
+	private static Log LOG = LogFactory.getLog(HibernateConfigTypesInformationResolver.class);
 
     private Configuration configuration = null;
     private Map<String, Boolean> subclasses = null;
@@ -43,18 +47,22 @@ public class HibernateConfigTypesInformationResolver implements TypesInformation
 
 
     public Object getClassDiscriminatorValue(String classname) throws TypesInformationException {
+    	LOG.debug("Getting class discriminator value for " + classname);
         Object identifier = discriminators.get(classname);
         if (identifier == null) {
             PersistentClass clazz = configuration.getClassMapping(classname);
             if (clazz != null) {
                 if (clazz instanceof Subclass) {
-                    Subclass sub = (Subclass) clazz;
+                	Subclass sub = (Subclass) clazz;
                     if (sub.isJoinedSubclass()) {
+                    	LOG.debug("\t" + classname + " is a joined subclass");
                         identifier = Integer.valueOf(sub.getSubclassId());
                     } else {
+                    	LOG.debug("\t" + classname + " is a named subclass");
                         identifier = getShortClassName(classname);
                     }
                 } else if (clazz instanceof RootClass) {
+                	LOG.debug("\t" + classname + " is a root class");
                     RootClass root = (RootClass) clazz;
                     if (root.getDiscriminator() == null) {
                         identifier = Integer.valueOf(root.getSubclassId());
@@ -72,9 +80,10 @@ public class HibernateConfigTypesInformationResolver implements TypesInformation
 
 
     public boolean classHasSubclasses(String classname) throws TypesInformationException {
+    	LOG.debug("Checking if " + classname + " has subclasses");
         Boolean hasSubclasses = subclasses.get(classname);
         if (hasSubclasses == null) {
-            PersistentClass clazz = configuration.getClassMapping(classname);
+        	PersistentClass clazz = findPersistentClass(classname);
             if (clazz != null) {
                 hasSubclasses = Boolean.valueOf(clazz.hasSubclasses());
                 subclasses.put(classname, hasSubclasses);
@@ -87,10 +96,11 @@ public class HibernateConfigTypesInformationResolver implements TypesInformation
 
 
     public Class<?> getJavaDataType(String classname, String field) throws TypesInformationException {
+    	LOG.debug("Getting java type of " + classname + "." + field);
         String fqName = classname + "." + field;
         Class<?> type = fieldDataTypes.get(fqName);
         if (type == null) {
-            PersistentClass clazz = configuration.getClassMapping(classname);
+            PersistentClass clazz = findPersistentClass(classname);
             if (clazz != null) {
                 // TODO: test that this barks up the inheritance tree for properties
                 Property property = clazz.getRecursiveProperty(field);
@@ -109,17 +119,18 @@ public class HibernateConfigTypesInformationResolver implements TypesInformation
 
 
     public String getEndName(String parentClassname, String childClassname) throws TypesInformationException {
+    	LOG.debug("Getting the association end name for " + parentClassname + " to " + childClassname);
         String identifier = getAssociationIdentifier(parentClassname, childClassname);
         String roleName = roleNames.get(identifier);
         if (roleName == null) {
-            PersistentClass clazz = configuration.getClassMapping(parentClassname);
+            PersistentClass clazz = findPersistentClass(parentClassname);
             Iterator<?> propertyIter = clazz.getPropertyIterator();
             while (propertyIter.hasNext()) {
                 Property prop = (Property) propertyIter.next();
                 Value value = prop.getValue();
                 String referencedEntity = null;
                 if (value instanceof Collection) {
-                    Value element = ((Collection) value).getElement();
+                	Value element = ((Collection) value).getElement();
                     if (element instanceof OneToMany) {
                         referencedEntity = ((OneToMany) element).getReferencedEntityName();
                     } else if (element instanceof ToOne) {
@@ -143,10 +154,11 @@ public class HibernateConfigTypesInformationResolver implements TypesInformation
     
     
     public List<ClassAssociation> getAssociationsFromClass(String parentClassname) throws TypesInformationException {
+    	LOG.debug("Getting associations from class " + parentClassname);
         List<ClassAssociation> associations = classAssociations.get(parentClassname);
         if (associations == null) {
             associations = new ArrayList<ClassAssociation>();
-            PersistentClass clazz = configuration.getClassMapping(parentClassname);
+            PersistentClass clazz = findPersistentClass(parentClassname);
             Iterator<?> propertyIter = clazz.getPropertyIterator();
             while (propertyIter.hasNext()) {
                 Property property = (Property) propertyIter.next();
@@ -170,5 +182,27 @@ public class HibernateConfigTypesInformationResolver implements TypesInformation
     
     private String getAssociationIdentifier(String parentClassname, String childClassname) {
         return parentClassname + "-->" + childClassname;
+    }
+    
+    
+    private PersistentClass findPersistentClass(String className) {
+    	PersistentClass pc = configuration.getClassMapping(className);
+    	if (pc == null) {
+    		pc = getImplicitClass(className);
+    	}
+    	return pc;
+    }
+    
+    
+    private PersistentClass getImplicitClass(String className) {
+    	PersistentClass implicit = null;
+    	Iterator classIter = configuration.getClassMappings();
+    	while (classIter.hasNext() && implicit == null) {
+    		PersistentClass pc = (PersistentClass) classIter.next();
+    		if (pc.getSuperclass() != null && pc.getSuperclass().getClassName().equals(className)) {
+    			implicit = pc.getSuperclass();
+    		}
+    	}
+    	return implicit;
     }
 }
