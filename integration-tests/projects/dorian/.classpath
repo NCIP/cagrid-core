@@ -123,9 +123,6 @@
 	<classpathentry kind="lib" path="ext/dependencies/jars/caGrid-authentication-service-tests-1.4-dev.jar"/>
 	<classpathentry kind="lib" path="ext/dependencies/jars/clm.jar"/>
 	<classpathentry kind="lib" path="ext/dependencies/jars/csmapi.jar"/>
-	<classpathentry kind="lib" path="ext/dependencies/endorsed/jars/resolver.jar"/>
-	<classpathentry kind="lib" path="ext/dependencies/endorsed/jars/xercesImpl.jar"/>
-	<classpathentry kind="lib" path="ext/dependencies/endorsed/jars/xml-apis.jar"/>
 	<classpathentry kind="lib" path="ext/dependencies/jars/junit-4.8.2.jar"/>
 	<classpathentry kind="lib" path="ext/dependencies/jars/castor-1.0.2.jar"/>
 	<classpathentry kind="lib" path="ext/dependencies/jars/activation-1.1.jar"/>
