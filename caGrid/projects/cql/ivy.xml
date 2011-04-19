@@ -11,6 +11,7 @@
   <configurations>
     <conf name="impl-test" visibility="private"/>
     <conf name="impl" visibility="private" extends="utils" />
+    <conf name="coverage" visibility="private"/>
     
     <!-- Jars -->
     <conf name="mappings" visibility="public"/>
@@ -67,6 +68,7 @@
   </publications>
 
   <dependencies>
+  	<dependency org="cobertura" name="cobertura" rev="1.9.4.1" conf="coverage->*"/>
   	<dependency org="castor" name="castor" rev="1.0.2" conf="cql2->*"/>
   	<dependency org="caGrid" name="metadatautils" rev="latest.integration" conf="utils->default"/>
     <dependency org="caGrid" name="core" rev="latest.integration" conf="impl-test->test"/>
