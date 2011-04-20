@@ -24,6 +24,7 @@
 		<conf name="spring-jdbc" extends="spring-core" visibility="public"/>
 		<conf name="spring-transaction" extends="spring-context" visibility="public"/>
 		<conf name="spring-test" extends="default" visibility="public"/>
+		<conf name="spring-web" extends="default" visibility="public"/>
 		
     </configurations>
 
@@ -44,7 +45,7 @@
         <artifact name="org.springframework.oxm-3.0.1.RELEASE-A" conf="full" type="jar"/>
         <artifact name="org.springframework.test-3.0.1.RELEASE-A" conf="spring-test,full" type="jar"/>
         <artifact name="org.springframework.transaction-3.0.1.RELEASE-A" conf="spring-transaction,full" type="jar"/>
-        <artifact name="org.springframework.web-3.0.1.RELEASE-A" conf="full" type="jar"/>
+        <artifact name="org.springframework.web-3.0.1.RELEASE-A" conf="spring-web,full" type="jar"/>
         <artifact name="org.springframework.web.portlet-3.0.1.RELEASE-A" conf="full" type="jar"/>
         <artifact name="org.springframework.web.servlet-3.0.1.RELEASE-A" conf="full" type="jar"/>
         <artifact name="org.springframework.web.struts-3.0.1.RELEASE-A" conf="full" type="jar"/>
