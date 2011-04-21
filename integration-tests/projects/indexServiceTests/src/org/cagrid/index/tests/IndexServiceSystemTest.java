@@ -5,6 +5,7 @@ import gov.nih.nci.cagrid.introduce.IntroduceConstants;
 import gov.nih.nci.cagrid.introduce.test.TestCaseInfo;
 import gov.nih.nci.cagrid.introduce.test.steps.CreateSkeletonStep;
 import gov.nih.nci.cagrid.introduce.test.steps.RemoveSkeletonStep;
+import gov.nih.nci.cagrid.testing.system.deployment.ContainerPorts;
 import gov.nih.nci.cagrid.testing.system.deployment.ServiceContainer;
 import gov.nih.nci.cagrid.testing.system.deployment.ServiceContainerFactory;
 import gov.nih.nci.cagrid.testing.system.deployment.ServiceContainerType;
@@ -33,10 +34,6 @@ import org.cagrid.index.tests.steps.FillInMetadataStep;
 import org.cagrid.index.tests.steps.ServiceDiscoveryStep;
 import org.cagrid.index.tests.steps.SetAdvertisementUrlStep;
 import org.cagrid.index.tests.steps.SetMetadataHostingResearchCenterStep;
-import org.junit.Test;
-import org.junit.internal.runners.JUnit38ClassRunner;
-import org.junit.internal.runners.JUnit4ClassRunner;
-import org.junit.runner.RunWith;
 
 
 public class IndexServiceSystemTest extends Story {
@@ -90,7 +87,7 @@ public class IndexServiceSystemTest extends Story {
         // set up a testing service container
         try {
             log.debug("Creating container for testing service");
-            testServiceContainer = ServiceContainerFactory.createContainer(ServiceContainerType.TOMCAT_CONTAINER);
+            testServiceContainer = ServiceContainerFactory.createContainer(ServiceContainerType.TOMCAT_CONTAINER, new ContainerPorts(new Integer(8080), new Integer(8010)));
             new UnpackContainerStep(testServiceContainer).runStep();
         } catch (Throwable ex) {
             String message = "Error creating container for testing service: " + ex.getMessage();
