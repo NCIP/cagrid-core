@@ -1,0 +1,161 @@
+<?xml version="1.0"?>
+<!-- ================================================================= -->
+<!-- Ant script for upgrading caGrid 1.2-1.4 projects to use SHA2      -->
+<!-- ================================================================= -->
+<project name="caGrid-sha2-upgrade" basedir="." default="upgradeHelp" xmlns:ivy="antlib:org.apache.ivy.ant">
+	<!-- ======================== -->
+	<!-- Require Java 1.6  -->
+	<!-- ======================== -->
+	<condition property="isJDK1.6" value="true">
+		<equals arg1="${ant.java.version}" arg2="1.6" />
+	</condition>
+	<fail message="JDK 1.6 is currently required to build this project!" unless="isJDK1.6" />
+
+	<!-- ================= -->
+	<!-- Require ant 1.7.0 -->
+	<!-- ================= -->
+	<condition property="ant-is-exact-7">
+		<antversion exactly="1.7.0"/>
+	</condition>
+	<fail message="Ant version 1.7.0 (exactly) is required" unless="ant-is-exact-7" />
+
+	<property name="target.version" value="1.4.1" />
+
+	<property name="build-deploy.new" location="build-deploy.xml.new" />
+	<property name="build-deploy.old" location="build-deploy.xml.old" />
+	<property name="build-deploy.xml" location="${project.dir}/build-deploy.xml" />
+
+	<target name="upgradeHelp" description="Prints description of how to use this script" >
+		<echo>This script takes a caGrid 1.3 service that has been deployed into a tomcat</echo>
+		<echo>container and copies it into a new tomcat container that was created by the</echo>
+		<echo>caGrid 1.5 installer.  It replaces jars and may do some other things so that the</echo>
+		<echo>caGrid service will function in a 1.5 environment.</echo>
+		<echo></echo>
+		<echo>No guarantee is made that the service will work correctly in its new</echo>
+		<echo>environment, though that is the goal.</echo>
+		<echo></echo>
+		<echo>To run this script to move a deployed caGrid 1.3 service into a caGrid 1.5</echo>
+		<echo>environment, first copy the caGrid 1.3 tomcat container directory (it will</echo>
+		<echo>usually be named apache-tomcat-5.5.27) to a location on the VM that will host</echo>
+		<echo>the caGrid 1.5 version of the service.</echo>
+		<echo></echo>
+		<echo>Next, install caGrid 1.5 and use the installer to create a tomcat container</echo>
+		<echo>for the service. Be sure not to put it under the same directory is the caGrid 1.3</echo>
+		<echo>container.</echo>
+		<echo></echo>
+		<echo>After you have done the things described above, assuming that the environment</echo>
+		<echo>variable CONTAINER_1.3 is defined at the path of the caGrid 1.3 tomcat container</echo>
+		<echo>and CATALINA_HOME is the path of the newly created caGrid 1.5 tomcat container,</echo>
+		<echo>invoke this script like this:</echo>
+		<echo>  ant -f $CAGRID_HOME/upgrade/sha2_containerUpgrade/build.xml -Dcontainer_1.3=$CONTAINER_1.3 -newContainer=$CATALINA_HOME move</echo>
+	</target>
+
+	<target name="_init" >
+		<echo>Upgrading project in ${project.dir} to caGrid version ${target.version} using ant script in ${ant.file}</echo>
+		<tstamp/>
+	</target>
+
+	<target name="_verifyProjectDirectory" >
+		<fail unless="project.dir">The ant property project.dir is not defined. It must have a value that is the path of the root directory of a project. This can be set from the command line by passing ant this switch: -Dproject.dir=projectDirectory</fail>
+
+		<condition property="isIntroduceGenerated" >
+			<and>
+				<available file="${build-deploy.xml}" type="file" />
+				<available file="${project.dir}/build.xml" type="file" />
+				<available file="${project.dir}/deploy.properties" type="file" />
+				<available file="${project.dir}/dev-build-deploy.xml" type="file" />
+				<available file="${project.dir}/dev-build.xml" type="file" />
+				<available file="${project.dir}/etc" type="dir" />
+				<available file="${project.dir}/ext" type="dir" />
+				<available file="${project.dir}/introduce.properties" type="file" />
+				<available file="${project.dir}/introduce.xml" type="file" />
+				<available file="${project.dir}/ivy.xml" type="file" />
+				<available file="${project.dir}/jndi-config.xml" type="file" />
+				<available file="${project.dir}/project.properties" type="file" />
+				<available file="${project.dir}/schema" type="dir" />
+				<available file="${project.dir}/server-config.wsdd" type="file" />
+				<available file="${project.dir}/service.properties" type="file" />
+				<available file="${project.dir}/src" type="dir" />
+				<available file="${project.dir}/tools" type="dir" />
+			</and>
+		</condition>
+		<fail unless="isIntroduceGenerated">
+		The directory ${project.dir} does not contain everything that an introduce-created project directory is expected to create. One of the following is missing:
+				${build-deploy.xml}
+				build.xml
+				deploy.properties
+				dev-build-deploy.xml
+				dev-build.xm
+				etc/
+				ext/
+				introduce.properties
+				introduce.xml
+				ivy.xml
+				jndi-config.xml
+				project.properties
+				schema/
+				server-config.wsdd
+				service.properties
+				src/
+				tools/
+		</fail>
+	</target>
+
+	<target name="_checkFiles">
+		<condition property="build-deploy.new.exists" >
+			<available file="${build-deploy.new}" />
+		</condition>
+		<fail unless="build-deploy.new.exists">Unable to read file ${build-deploy.new}, which should be in the same directory as this ant script.</fail>
+		<condition property="build-deploy.old.exists" >
+			<available file="${build-deploy.old}" />
+		</condition>
+		<fail unless="build-deploy.old.exists">Unable to read file ${build-deploy.old}, which should be in the same directory as this ant script.</fail>
+
+		<condition property="build-deploy.isOld">
+			<filesmatch file1="${build-deploy.old}" file2="${build-deploy.xml}" textfile="true" />
+		</condition>
+
+		<condition property="build-deploy.isNew">
+			<filesmatch file1="${build-deploy.new}" file2="${build-deploy.xml}" textfile="true" />
+		</condition>
+
+
+		<condition property="build-deploy.isEdited">
+			<and>
+				<not>
+					<isset property="build-deploy.isOld" />
+				</not>
+				<not>
+					<isset property="build-deploy.isNew" />
+				</not>	
+			</and>
+		</condition>
+	</target>
+
+	<target name="_replaceBuildDeployXml" if="build-deploy.isOld">
+		<echo>The content of file ${build-deploy.xml} matches older versions of caGrid.  Replacing with new version of file.</echo>
+		<move file="${build-deploy.xml}" tofile="${project.dir}/build-deploy.xml.original"
+		      preservelastmodified="true" verbose="true" />
+		<copy file="${build-deploy.new}" tofile="${build-deploy.xml}" verbose="true" />
+	</target>
+
+	<target name="_okBuildDeployXml" if="build-deploy.isNew" >
+		<echo>The content of file ${build-deploy.xml} matches the new version of caGrid.</echo>
+	</target>
+
+	<target name="_handleEditedBuildDeployXml" if="build-deploy.isEdited" >
+		<fail>The file ${build-deploy.xml} has been edited. Automated migration with an edited version of this file is not supported.</fail>
+	</target>
+
+	<target name="_updateBuildDeployXml" depends="_checkFiles,_replaceBuildDeployXml,_okBuildDeployXml" >
+	</target>
+
+	<target name="_updateFiles" depends="_checkFiles,_updateBuildDeployXml" />
+
+	<target name="_handleEditedFiles" depends="_checkFiles,_handleEditedBuildDeployXml" >
+	</target>
+
+	<target name="toSha2" description="Convert a project created by introduce from an older version of caGrid.  The root directory of the project must be specified as the value of the ant attribute project.dir.  You can invoke it using a command line like this: ant -Dproject.dir=projectDirectory toSha2"
+	        depends="_verifyProjectDirectory,_init,_handleEditedFiles,_updateFiles" >
+	</target>
+</project>
