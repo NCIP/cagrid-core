@@ -47,11 +47,11 @@
 		<echo>variable CONTAINER_1.3 is defined at the path of the caGrid 1.3 tomcat container</echo>
 		<echo>and CATALINA_HOME is the path of the newly created caGrid 1.5 tomcat container,</echo>
 		<echo>invoke this script like this:</echo>
-		<echo>  ant -f $CAGRID_HOME/upgrade/sha2_containerUpgrade/build.xml -Dcontainer_1.3=$CONTAINER_1.3 -newContainer=$CATALINA_HOME move</echo>
+		<echo>  ant -f $CAGRID_HOME/upgrade/sha2_containerUpgrade/build.xml -Dcontainer_1.3=$CONTAINER_1.3 -newContainer=$CATALINA_HOME copy</echo>
 	</target>
 
 	<target name="_init" >
-		<echo>Upgrading project in ${project.dir} to caGrid version ${target.version} using ant script in ${ant.file}</echo>
+		<echo>Copying  in ${project.dir} to caGrid version ${target.version} using ant script in ${ant.file}</echo>
 		<tstamp/>
 	</target>
 
@@ -102,34 +102,6 @@
 	</target>
 
 	<target name="_checkFiles">
-		<condition property="build-deploy.new.exists" >
-			<available file="${build-deploy.new}" />
-		</condition>
-		<fail unless="build-deploy.new.exists">Unable to read file ${build-deploy.new}, which should be in the same directory as this ant script.</fail>
-		<condition property="build-deploy.old.exists" >
-			<available file="${build-deploy.old}" />
-		</condition>
-		<fail unless="build-deploy.old.exists">Unable to read file ${build-deploy.old}, which should be in the same directory as this ant script.</fail>
-
-		<condition property="build-deploy.isOld">
-			<filesmatch file1="${build-deploy.old}" file2="${build-deploy.xml}" textfile="true" />
-		</condition>
-
-		<condition property="build-deploy.isNew">
-			<filesmatch file1="${build-deploy.new}" file2="${build-deploy.xml}" textfile="true" />
-		</condition>
-
-
-		<condition property="build-deploy.isEdited">
-			<and>
-				<not>
-					<isset property="build-deploy.isOld" />
-				</not>
-				<not>
-					<isset property="build-deploy.isNew" />
-				</not>	
-			</and>
-		</condition>
 	</target>
 
 	<target name="_replaceBuildDeployXml" if="build-deploy.isOld">
@@ -155,7 +127,7 @@
 	<target name="_handleEditedFiles" depends="_checkFiles,_handleEditedBuildDeployXml" >
 	</target>
 
-	<target name="toSha2" description="Convert a project created by introduce from an older version of caGrid.  The root directory of the project must be specified as the value of the ant attribute project.dir.  You can invoke it using a command line like this: ant -Dproject.dir=projectDirectory toSha2"
+	<target name="move" description=".  You can invoke it using a command line like this: ant -Dproject.dir=projectDirectory toSha2"
 	        depends="_verifyProjectDirectory,_init,_handleEditedFiles,_updateFiles" >
 	</target>
 </project>
