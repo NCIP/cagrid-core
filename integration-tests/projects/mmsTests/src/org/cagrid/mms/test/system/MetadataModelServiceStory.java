@@ -1,11 +1,9 @@
 package org.cagrid.mms.test.system;
 
-import gov.nih.nci.cagrid.testing.system.deployment.ServiceContainer;
 import gov.nih.nci.cagrid.testing.system.deployment.ServiceContainerFactory;
 import gov.nih.nci.cagrid.testing.system.deployment.ServiceContainerType;
 import gov.nih.nci.cagrid.testing.system.deployment.steps.CopyServiceStep;
 import gov.nih.nci.cagrid.testing.system.deployment.steps.DeployServiceStep;
-import gov.nih.nci.cagrid.testing.system.deployment.steps.DestroyContainerStep;
 import gov.nih.nci.cagrid.testing.system.deployment.steps.StartContainerStep;
 import gov.nih.nci.cagrid.testing.system.deployment.steps.StopContainerStep;
 import gov.nih.nci.cagrid.testing.system.deployment.steps.UnpackContainerStep;
@@ -13,9 +11,7 @@ import gov.nih.nci.cagrid.testing.system.deployment.story.ServiceStoryBase;
 import gov.nih.nci.cagrid.testing.system.haste.Step;
 
 import java.io.File;
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collection;
 import java.util.List;
 import java.util.Vector;
 
@@ -27,20 +23,11 @@ import org.cagrid.mms.test.system.steps.CheckMetadataStep;
 public class MetadataModelServiceStory extends ServiceStoryBase {
 
     private static final String SERVICE_TEMP_PATH = "tmp/TempMMS";
-    private static final String RESULTS_TEMP_PATH = "tmp/results";
     private static final String MMS_URL_PATH = "cagrid/MetadataModelService";
     private static final String PATH_TO_MMS_PROJECT = "../../../caGrid/projects/mms";
     public static final String MMS_DIR_PROPERTY = "mms.service.dir";
 
-
-    public MetadataModelServiceStory(ServiceContainer container) {
-        super(container);
-    }
-
-
     public MetadataModelServiceStory() {
-
-        // init the container
         try {
             this.setContainer(ServiceContainerFactory.createContainer(ServiceContainerType.TOMCAT_CONTAINER));
         } catch (Exception ex) {
