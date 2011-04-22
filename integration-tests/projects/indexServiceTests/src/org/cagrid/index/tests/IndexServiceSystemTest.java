@@ -87,7 +87,7 @@ public class IndexServiceSystemTest extends Story {
         // set up a testing service container
         try {
             log.debug("Creating container for testing service");
-            testServiceContainer = ServiceContainerFactory.createContainer(ServiceContainerType.TOMCAT_CONTAINER, new ContainerPorts(new Integer(8080), new Integer(8010)));
+            testServiceContainer = ServiceContainerFactory.createContainer(ServiceContainerType.TOMCAT_CONTAINER, new ContainerPorts(new Integer(8080), new Integer(8005)));
             new UnpackContainerStep(testServiceContainer).runStep();
         } catch (Throwable ex) {
             String message = "Error creating container for testing service: " + ex.getMessage();
