@@ -33,7 +33,7 @@ import org.globus.gsi.GlobusCredential;
 public class InvokeCsmDataServiceStep extends Step {
     
     public static final String ACCESS_DENIED_MESSAGE = "Access is denied";
-    public static final String BAD_CSM_TABLE_MESSAGE = "Table 'sdkexample42.csm_protection_group' doesn't exist";
+    public static final String BAD_CSM_TABLE_MESSAGE = "Table 'sdkexample42.csm_protection_group'";
 
     public static final String TESTS_BASE_DIR_PROPERTY = "sdk42.tests.base.dir";
     public static final String ACCESS_DENIED_LIST_FILE = "resources" + File.separator + "access.denied.expected.list";
