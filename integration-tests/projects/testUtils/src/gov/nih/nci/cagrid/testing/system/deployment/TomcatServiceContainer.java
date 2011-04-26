@@ -1,9 +1,9 @@
 package gov.nih.nci.cagrid.testing.system.deployment;
 
 import gov.nih.nci.cagrid.common.StreamGobbler;
+import gov.nih.nci.cagrid.common.StreamGobbler.LogPriority;
 import gov.nih.nci.cagrid.common.Utils;
 import gov.nih.nci.cagrid.common.XMLUtilities;
-import gov.nih.nci.cagrid.common.StreamGobbler.LogPriority;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -21,29 +21,16 @@ import java.util.concurrent.FutureTask;
 import java.util.concurrent.ThreadFactory;
 import java.util.concurrent.TimeUnit;
 
-import javax.xml.rpc.ServiceException;
-
-import org.apache.axis.EngineConfiguration;
-import org.apache.axis.client.AxisClient;
 import org.apache.axis.client.Stub;
-import org.apache.axis.configuration.FileProvider;
-import org.apache.axis.message.addressing.Address;
-import org.apache.axis.message.addressing.EndpointReferenceType;
+import org.apache.axis.utils.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.globus.axis.gsi.GSIConstants;
-import org.globus.common.CoGProperties;
 import org.globus.wsrf.impl.security.authorization.NoAuthorization;
 import org.jdom.Element;
-import org.oasis.wsrf.lifetime.Destroy;
 import org.xml.sax.EntityResolver;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
-
-import com.counter.CounterPortType;
-import com.counter.CreateCounter;
-import com.counter.CreateCounterResponse;
-import com.counter.service.CounterServiceAddressingLocator;
 
 /**
  * TomcatServiceContainer Service container implementation for tomcat
@@ -299,9 +286,13 @@ public class TomcatServiceContainer extends ServiceContainer {
 			command.add("cmd");
 			command.add("/c");
 			command.add(startup + ".bat");
+			if (this.debugContainer)
+				command.add("jpda");
 			command.add("run");
 		} else {
 			command.add(startup + ".sh");
+			if (this.debugContainer)
+				command.add("jpda");
 			command.add("run");
 		}
         
@@ -311,7 +302,10 @@ public class TomcatServiceContainer extends ServiceContainer {
             try {
                 File certsDir = ((SecureContainer) this).getCertificatesDirectory();
                 String caCertsDir = new File(certsDir, "ca").getCanonicalPath();
-                String x509CertsEnv = ENV_JAVA_OPTS + "=-D" + CACERTS_DIR_PROPERTY + "=" + caCertsDir; // + " -Djavax.net.debug=ssl";
+                String x509CertsEnv = ENV_JAVA_OPTS + "=-D" + CACERTS_DIR_PROPERTY + "=" + caCertsDir;
+                if (!StringUtils.isEmpty(javaxNetDebugValue)) {
+                	x509CertsEnv += " -Djavax.net.debug=" + javaxNetDebugValue;
+                }
                 additionalEnvironment.add(x509CertsEnv);
                 additionalEnvironment.add(CACERTS_DIR_PROPERTY + "=" + caCertsDir);
             } catch (Exception ex) {
