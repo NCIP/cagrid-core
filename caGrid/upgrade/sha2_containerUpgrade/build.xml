@@ -148,6 +148,8 @@
 				</not>
 			</condition>
 		</fail>
+		
+		<property name="newEtc.dir" location="${newContainer}/webapps/wsrf/WEB-INF/etc"/>
 	</target>
 
 
@@ -159,12 +161,12 @@
 			<dirset dir="${container_1.3}/webapps/wsrf/WEB-INF/etc">
 				<include name="cagrid_*" />
 				<exclude name="cagrid_SyncGTS" />
-				<exclude name="cagrid_TransferService" /> 
+				<exclude name="cagrid_TransferService" />
 			</dirset>
 		</pathconvert>
 		<fail message="There are multiple service directories in the old tomcat container.  Re-run this script, adding to the command line &quot;-Dservice.dir=&quot; followed by one of the following paths:${line.separator}${service.dir}">
 			<condition>
-				<contains string="${service.dir}" substring="${line.separator}"/>
+				<contains string="${service.dir}" substring="${line.separator}" />
 			</condition>
 		</fail>
 		<echo>Service directory is ${service.dir}</echo>
@@ -174,16 +176,26 @@
           target: deployTransferService                      
          - - - - - - - - - - - - - - - - - -->
 	<target name="deployTransferService" if="usesTranserService">
-		<fail>This is a place-holder task.  Deployment of transfer service is not yet implemented.</fail>
+		<ant dir="${cagrid.home}/projects/transfer" antfile="build.xml" target="deployTomcat" inheritall="true">
+			<property name="tomcat.dir" location="${newContainer}"/>
+		</ant>
 	</target>
 
 
 	<target name="move" description="Move a caGrid service from a caGrid 1.3 tomcat container to a newly created caGrid ${targetVersion} container (run upgradeHelp target for details)." depends="init,_verifyContainer_1.3,_verifyNewContainer,_identifyServiceDirectory,deployTransferService">
 		<!-- copy .xsd files -->
 		<copy todir="${newContainer}/webapps/wsrf/lib">
-			<fileset dir="${container_1.3}webapps/wsrf/lib">
+			<fileset dir="${container_1.3}/webapps/wsrf/WEB-INF/lib">
 				<include name="*.xsd" />
 			</fileset>
+		</copy>
+		
+		<!-- Copy service directory -->
+		<basename file="${service.dir}" property="service.dir.name"/>
+		<property name="newService.dir" location="${newEtc.dir}/${service.dir.name}"/>
+
+		<copy todir="${newService.dir}">
+			<fileset dir="${service.dir}"/>
 		</copy>
 	</target>
 </project>
