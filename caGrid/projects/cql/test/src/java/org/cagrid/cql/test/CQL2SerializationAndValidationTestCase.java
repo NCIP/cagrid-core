@@ -36,6 +36,7 @@ import org.cagrid.cql2.DistinctAttribute;
 import org.cagrid.cql2.GroupLogicalOperator;
 import org.cagrid.cql2.NamedAssociation;
 import org.cagrid.cql2.NamedAssociationList;
+import org.cagrid.cql2.PopulationDepth;
 import org.cagrid.cql2.UnaryPredicate;
 import org.cagrid.cql2.results.CQLAggregateResult;
 import org.cagrid.cql2.results.CQLAttributeResult;
@@ -482,6 +483,22 @@ public class CQL2SerializationAndValidationTestCase extends TestCase {
         spec.setNamedAssociationList(list);
         query.setAssociationPopulationSpecification(spec);
                 
+        validate(query);
+    }
+    
+    
+    public void testAssociationPopulationDepth() {
+        CQLQuery query = new CQLQuery();
+        CQLTargetObject target = new CQLTargetObject();
+        target.setClassName("foo.bar");
+        target.set_instanceof("zor");
+        query.setCQLTargetObject(target);
+        
+        AssociationPopulationSpecification spec = new AssociationPopulationSpecification();
+        PopulationDepth depth = new PopulationDepth(2);
+        spec.setPopulationDepth(depth);
+        query.setAssociationPopulationSpecification(spec);
+        
         validate(query);
     }
     
