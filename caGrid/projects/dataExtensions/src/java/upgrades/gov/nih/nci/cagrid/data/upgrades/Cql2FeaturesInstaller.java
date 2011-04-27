@@ -1,7 +1,6 @@
 package gov.nih.nci.cagrid.data.upgrades;
 
 import gov.nih.nci.cagrid.common.Utils;
-import gov.nih.nci.cagrid.data.CqlSchemaConstants;
 import gov.nih.nci.cagrid.data.MetadataConstants;
 import gov.nih.nci.cagrid.data.QueryProcessorConstants;
 import gov.nih.nci.cagrid.data.creation.CQL2NamespaceUtil;
