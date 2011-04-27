@@ -1,5 +1,6 @@
 package org.cagrid.tests.data.styles.cacore42.steps;
 
+import gov.nih.nci.cagrid.common.FaultHelper;
 import gov.nih.nci.cagrid.common.Utils;
 import gov.nih.nci.cagrid.cqlquery.CQLQuery;
 import gov.nih.nci.cagrid.cqlquery.Object;
@@ -29,6 +30,7 @@ import org.apache.commons.logging.LogFactory;
 import org.cagrid.cql2.CQLTargetObject;
 import org.cagrid.data.test.creation.DataTestCaseInfo;
 import org.globus.gsi.GlobusCredential;
+import org.oasis.wsrf.faults.BaseFaultType;
 
 public class InvokeCsmDataServiceStep extends Step {
     
@@ -37,6 +39,7 @@ public class InvokeCsmDataServiceStep extends Step {
 
     public static final String TESTS_BASE_DIR_PROPERTY = "sdk42.tests.base.dir";
     public static final String ACCESS_DENIED_LIST_FILE = "resources" + File.separator + "access.denied.expected.list";
+    public static final String IMPLICIT_INHERITANCE_LIST_FILE = "resources" + File.separator + "implicit.inheritance.superclass.list";
     public static final String PROXY_FILENAME = "user.proxy";
     
     private static Log LOG = LogFactory.getLog(InvokeCsmDataServiceStep.class);
@@ -54,8 +57,9 @@ public class InvokeCsmDataServiceStep extends Step {
     public void runStep() throws Throwable {
         List<String> domainClasses = getDomainClassList();
         List<String> expectedDenied = getExpectedAccessDenied();
+        List<String> expectedImplicitError = getImplicitInheritanceSuperclassList();
         testCql1(domainClasses, expectedDenied);
-        testCql2(domainClasses, expectedDenied);
+        testCql2(domainClasses, expectedDenied, expectedImplicitError);
     }
     
     
@@ -82,6 +86,8 @@ public class InvokeCsmDataServiceStep extends Step {
                     }
                 } else if (isBadCsmTableName(ex)) {
                 	LOG.debug("CSM Tables created with a different casing than CSM api queries them with (" + ex.getMessage() + ")");
+                } else if (isJava6CSMError(ex)) {
+                    LOG.info("CSM isn't compatible with Java 6, so it threw this error", ex);
                 } else {
                     ex.printStackTrace();
                     fail("Unexpected error querying data service for class " 
@@ -92,7 +98,7 @@ public class InvokeCsmDataServiceStep extends Step {
     }
     
     
-    private void testCql2(List<String> domainClasses, List<String> expectedDenied) {
+    private void testCql2(List<String> domainClasses, List<String> expectedDenied, List<String> expectedImplicitErrors) {
         DataServiceClient client = getServiceClient();
         for (String clazz : domainClasses) {
             org.cagrid.cql2.CQLQuery query = new org.cagrid.cql2.CQLQuery();
@@ -113,8 +119,12 @@ public class InvokeCsmDataServiceStep extends Step {
                         ex.printStackTrace();
                         fail("Access incorrectly denied to " + clazz);
                     }
+                } else if (expectedImplicitErrors.contains(clazz)) {
+                	LOG.debug("Implicit inheritance error for superclass " + clazz + " happened as expected");
                 } else if (isBadCsmTableName(ex)) {
                 	LOG.debug("CSM Tables created with a different casing than CSM api queries them with (" + ex.getMessage() + ")");
+                } else if (isJava6CSMError(ex)) {
+                    LOG.info("CSM isn't compatible with Java 6, so it threw this error", ex);
                 } else {
                     ex.printStackTrace();
                     fail("Unexpected error querying data service for class " 
@@ -195,12 +205,40 @@ public class InvokeCsmDataServiceStep extends Step {
     }
     
     
+    private List<String> getImplicitInheritanceSuperclassList() {
+    	FileInputStream in = null;
+        try {
+            String baseDir = System.getProperty(TESTS_BASE_DIR_PROPERTY);
+            in = new FileInputStream(new File(baseDir, IMPLICIT_INHERITANCE_LIST_FILE));
+        } catch (IOException ex) {
+            ex.printStackTrace();
+            fail("Could not open implicit inheritance superclass list file: " + ex.getMessage());
+        }
+        List<String> list = new LinkedList<String>();
+        try {
+            StringBuffer contents = Utils.inputStreamToStringBuffer(in);
+            in.close();
+            StringTokenizer tok = new StringTokenizer(contents.toString());
+            while (tok.hasMoreTokens()) {
+                list.add(tok.nextToken());
+            }
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            fail("Error loading implicit inheritance superclass list: " + ex.getMessage());
+        }
+        return list;
+    }
+    
+    
     private boolean isAccessDenied(Exception ex) {
         Throwable cause = ex;
         Set<Throwable> seenCauses = new HashSet<Throwable>();
         boolean isDenied = false;
         while (cause != null && !seenCauses.contains(cause) && !isDenied) {
             String message = cause.getMessage();
+            if (cause instanceof BaseFaultType) {
+                message = FaultHelper.getMessage(cause);
+            }
             if (message.contains(ACCESS_DENIED_MESSAGE)) {
                 isDenied = true;
             }
@@ -224,6 +262,26 @@ public class InvokeCsmDataServiceStep extends Step {
             cause = cause.getCause();
         }
         return isBadTableName;
+    }
+    
+    
+    private boolean isJava6CSMError(Exception ex) {
+        boolean yep = false;
+        if (isJava6()) {
+            String message = FaultHelper.getMessage(ex);
+            yep = message.contains("CSException occured");
+        }
+        return yep;
+    }
+    
+    
+    protected boolean isJava6() {
+        boolean is6 = false;
+        String val = System.getProperty("java.version");
+        if (val != null && val.startsWith("1.6")) {
+            is6 = true;
+        }
+        return is6;
     }
     
     

@@ -431,6 +431,7 @@ public class InvokeCQL2DataServiceStep extends Step {
         return is;
     }
     
+    
     protected boolean isJava6() {
         boolean is6 = false;
         String val = System.getProperty("java.version");
