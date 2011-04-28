@@ -40,7 +40,7 @@
    		conf="default->*"/>
    		
    	<!-- log4j is needed for xmi.in.out, but it isn't included in that ivy -->
-   	<dependency rev="1.2.8" org="apache" name="log4j" conf="default->*"/>
+   	<dependency rev="1.2.14" org="apache" name="log4j" conf="default->*"/>
    	<!-- same for jaxen-jdom -->
    	<dependency rev="1.0" org="jaxen" name="jaxen-jdom" conf="default->runtime"/>
   </dependencies>
