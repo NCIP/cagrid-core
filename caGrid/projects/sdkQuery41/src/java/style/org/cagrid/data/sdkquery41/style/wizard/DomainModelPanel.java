@@ -97,11 +97,9 @@ public class DomainModelPanel extends AbstractWizardPanel {
             public void domainModelSourceValid(DomainModelSourcePanel source, boolean valid) {
                 String selectedSourceName = (String) getModelSourceComboBox().getSelectedItem();
                 if (selectedSourceName != null) {
-                    if (selectedSourceName != null) {
-                        DomainModelSourcePanel selectedSource = domainModelSources.get(selectedSourceName);
-                        if (selectedSource == source) {
-                            setNextEnabled(valid);
-                        }
+                    DomainModelSourcePanel selectedSource = domainModelSources.get(selectedSourceName);
+                    if (selectedSource == source) {
+                        setNextEnabled(valid);
                     }
                 } else {
                     // no source selected
