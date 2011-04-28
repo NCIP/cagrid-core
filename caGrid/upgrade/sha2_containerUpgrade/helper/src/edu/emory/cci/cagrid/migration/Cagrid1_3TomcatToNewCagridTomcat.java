@@ -5,6 +5,9 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.io.PushbackInputStream;
+import java.util.HashMap;
+import java.util.Map;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
@@ -20,8 +23,16 @@ import org.apache.commons.io.IOUtils;
 public class Cagrid1_3TomcatToNewCagridTomcat {
 	private static final String NEW_CAGRID_VERSION = "1.4.1";
 
+	private static final Map<String, File> supersededJarFileMap = new HashMap<String, File>();
+	
+	// initialize map from jar file names to superseding files.
+	static{
+		//TODO
+	}
+	
 	private File newServiceDir;
 	private File newLibDir;
+	private File oldLibDir;
 
 	/**
 	 * Constructor
@@ -32,12 +43,16 @@ public class Cagrid1_3TomcatToNewCagridTomcat {
 	public Cagrid1_3TomcatToNewCagridTomcat(File oldServiceDir,
 			File newTomcatDir) {
 		super();
+		File oldEtcDir = oldServiceDir.getParentFile();
+		File oldWebinfDir = oldEtcDir.getParentFile();
+		oldLibDir = new File(oldWebinfDir, "lib");
+
 		String serviceDirName = oldServiceDir.getName();
-		File webappsDir = new File(newTomcatDir, "webapps");
-		File wsrfDir = new File(webappsDir, "wsrf");
-		File webinfDir = new File(wsrfDir, "WEB-INF");
-		newLibDir = new File(webinfDir, "lib");
-		File etcDir = new File(wsrfDir, "etc");
+		File newWebappsDir = new File(newTomcatDir, "webapps");
+		File newWsrfDir = new File(newWebappsDir, "wsrf");
+		File newWebinfDir = new File(newWsrfDir, "WEB-INF");
+		newLibDir = new File(newWebinfDir, "lib");
+		File etcDir = new File(newWsrfDir, "etc");
 		newServiceDir = new File(etcDir, serviceDirName);
 	}
 
@@ -98,9 +113,10 @@ public class Cagrid1_3TomcatToNewCagridTomcat {
 		try {
 			in = FileUtils.openInputStream(introduceDeployment);
 			in = IOUtils.toBufferedInputStream(in);
+			PushbackInputStream pin = new PushbackInputStream(in);
 			out = new BufferedOutputStream(
 					FileUtils.openOutputStream(newIntroduceDeployment));
-			copyIntroduceJarStream(in, out);
+			copyIntroduceJarStream(pin, out);
 		} catch (Exception e) {
 			FileUtils.deleteQuietly(newIntroduceDeployment);
 			throw e;
@@ -130,26 +146,57 @@ public class Cagrid1_3TomcatToNewCagridTomcat {
 	 * copied from the old container's lib directory to the new container's lib
 	 * directory. The original name is kept in the introduceDeployment.xml file.
 	 * 
-	 * @param in
+	 * @param pin
 	 *            The input stream to read from.
 	 * @param out
 	 *            The output stream to write to.
 	 * @throws IOException
 	 *             If there is a problem
 	 */
-	private void copyIntroduceJarStream(InputStream in, OutputStream out)
-			throws IOException {
-		while (readPast(in, out, "name=\"")) {
-			String jarFileName = readUpto(in, '"');
-			// TODO Auto-generated method stub
+	private void copyIntroduceJarStream(PushbackInputStream pin,
+			OutputStream out) throws IOException {
+		while (readPast(pin, out, "name=\"")) {
+			String oldJarFileName = readUpto(pin, '"');
+			String newJarFileName = processJarFile(oldJarFileName);
+			IOUtils.write(newJarFileName, out);
 		}
 	}
 
 	/**
-	 * Read characters from the input stream up to, but not inlcuding the next
+	 * Determine if the named jar file is superseded in the new version of
+	 * caGrid.
+	 * <p>
+	 * If the named jar file has not been superseded, then copy it from
+	 * oldLibDir to newLibDir and return its name.
+	 * <p>
+	 * If the named jar file has been superseded, then copy the superseding jar
+	 * file from the caGrid repository to newLibDir and return the name of the
+	 * superseding jar file.
+	 * 
+	 * @param oldJarFileName
+	 *            The name of the jar file in question.
+	 * @return the original jar file name if not superseded; otherwise the name
+	 *         of the superseding jar file.
+	 * @throws IOException
+	 *             If there is a problem
+	 */
+	private String processJarFile(String oldJarFileName) throws IOException {
+		File supersedingFile = supersededJarFileMap.get(oldJarFileName);
+		if (supersedingFile == null) {
+			File jarFile = new File(oldLibDir, oldJarFileName);
+			FileUtils.copyFileToDirectory(jarFile, newLibDir, true);
+			return oldJarFileName;
+		} else {
+			FileUtils.copyFileToDirectory(supersedingFile, newLibDir, true);
+			return supersedingFile.getName();
+		}
+	}
+
+	/**
+	 * Read characters from the input stream up to, but not including the next
 	 * instance of the given character.
 	 * 
-	 * @param in
+	 * @param pin
 	 *            the input stream to read from.
 	 * @param target
 	 *            the character to read up to.
@@ -157,17 +204,20 @@ public class Cagrid1_3TomcatToNewCagridTomcat {
 	 * @throws IOException
 	 *             if there is a problem.
 	 */
-	private String readUpto(InputStream in, char target) throws IOException {
+	private String readUpto(PushbackInputStream pin, char target)
+			throws IOException {
 		StringBuffer buffer = new StringBuffer();
 		while (true) {
-			int c = in.read();
+			int c = pin.read();
 			if (c == -1) {
-				throw new IOException("Encountered end-of-file while reading a jar file name.");
+				throw new IOException(
+						"Encountered end-of-file while reading a jar file name.");
 			}
 			if (c == target) {
 				break;
 			}
 			buffer.append(target);
+			pin.unread(target);
 		}
 		return buffer.toString();
 	}
