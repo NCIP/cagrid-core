@@ -31,7 +31,7 @@
         defining that target in your build file. 
     -->
 	<property name="ivy.publish.version" value="${project.version}"/>
-	<property name="ivy.publish.status" value="integration"/>
+	<property name="ivy.publish.status" value="release"/>
 	
 	<property name="ivy.resolved.artifacts.dir" location="${basedir}/ext" description="The directoy in which resolved dependencies should be placed" />
 	<property name="ivy.resolved.artifacts.pattern" value="${ivy.resolved.artifacts.dir}/dependencies/[conf]/[type]s/[originalname](.[ext])" description="The Ivy pattern used to determine how resolved dependencies should be copied into the project" />
