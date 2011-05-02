@@ -186,7 +186,12 @@
 		<!-- copy .xsd files -->
 		<copy todir="${newContainer}/webapps/wsrf/lib">
 			<fileset dir="${container_1.3}/webapps/wsrf/WEB-INF/lib">
+				<include name="*.wsdl" />
+				<include name="*.wsdl.*" />
+				<include name="*.xml" />
+				<include name="*.xml.*" />
 				<include name="*.xsd" />
+				<include name="*.xsd.*" />
 			</fileset>
 		</copy>
 		
