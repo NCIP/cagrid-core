@@ -205,5 +205,10 @@
 			<pathelement location="${basedir}/extensions" />
 			<pathelement location="${basedir}/doc/help" />
 		</path>
+		<path id="Bootstrap.run.classpath">
+			<fileset dir="${build.lib.dir}">
+				<include name="*bootstrap*.jar"/>
+			</fileset>
+		</path>
 	</target>
 </project>
