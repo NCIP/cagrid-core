@@ -37,6 +37,7 @@
 		<mkdir dir="${build.dir}" />
 		<mkdir dir="${log.dir}" />
 		<mkdir dir="${classes.dir}" />
+		<mkdir dir="${bootstrap.classes.dir}"/>
 		<mkdir dir="${introduce.classes.dir}" />
 		<mkdir dir="${portal.classes.dir}" />
 		<mkdir dir="${updater.classes.dir}" />
@@ -176,6 +177,7 @@
 	<!-- =================================================================== -->
 	<target name="compile" depends="prepare, generateJETClasses" description="Compiles all the
 		source files.">
+		<compileSubproject name="Bootstrap"/>
 		<compileSubproject name="Introduce" />
 		<compileSubproject name="Portal" />
 		<compileSubproject name="UpdateManager" />
@@ -216,6 +218,11 @@
 	<!-- Create Jars                                                         -->
 	<!-- =================================================================== -->
 	<target name="jar" depends="compile" description="Builds the Jar Files">
+		<jar jarfile="${jars.prefix}bootstrap${jars.suffix}" basedir="${bootstrap.classes.dir}">
+			<manifest>
+				<attribute name="Created-By" value="${user.name}"/>
+			</manifest>
+		</jar>
 		<jar jarfile="${jars.prefix}core${jars.suffix}" basedir="${introduce.classes.dir}" excludes="gov/nih/nci/cagrid/introduce/servicetasks/**/* gov/nih/nci/cagrid/introduce/servicetools/**/*" defaultExcludes="false" update="no">
 			<manifest>
 				<attribute name="Created-By" value="${user.name}" />

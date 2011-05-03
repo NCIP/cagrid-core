@@ -7,6 +7,7 @@
 	<classpathentry kind="src" path="src/java/Portal"/>
 	<classpathentry kind="src" path="test/src/java/Introduce"/>
 	<classpathentry kind="src" path="resources/portal/introduce"/>
+	<classpathentry kind="src" path="src/java/Bootstrap"/>
 	<classpathentry kind="var" path="GT4_LOCATION/lib/addressing-1.0.jar"/>
 	<classpathentry kind="var" path="GT4_LOCATION/lib/axis-url.jar"/>
 	<classpathentry kind="var" path="GT4_LOCATION/lib/axis.jar" sourcepath="/GT4_LOCATION/java/lib-src/ws-axis/ws-axis/java/src"/>
