@@ -31,7 +31,7 @@ public abstract class IntroduceConstants {
 
 	public static final String INTRODUCE_PATCH_VERSION_PROPERTY = "introduce.patch.version";
 
-	public static final String INTRODUCE_PROPERTIES = "conf/introduce.properties";
+	public static final String INTRODUCE_PROPERTIES = "conf" + File.separator + "introduce.properties";
 
 	public static final String GLOBUS_LOCATION = "Globus Location";
 
