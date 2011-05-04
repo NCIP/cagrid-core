@@ -639,7 +639,7 @@ public class Cagrid1_3TomcatToNewCagridTomcat {
 		mapBuilder.put("cas-server-3.1.jar", //
 				new File(casServer3_2_2, "cas-server-core-3.2.2.jar"));
 
-		// Unsure if swapping the older person-direcotory-1.0.1.jar out for the
+		// Unsure if swapping the older person-directory-1.0.1.jar out for the
 		// newer person-directory-1.1.2.jar would necessitate also including
 		// person-directory-api-1.1.2.jar. Substituting 2 files for one is a
 		// bigger code change than I want to make without first knowing if it is
@@ -651,6 +651,32 @@ public class Cagrid1_3TomcatToNewCagridTomcat {
 		mapBuilder.put("junit-4.4.jar", //
 				new File(junit4_8_2, "junit-4.8.2.jar"));
 
+		// Unsure if swapping the older asm-1.3.4.jar out for the
+		// newer version 1.5.3 asm.jar would necessitate also dropping
+		// asm-util-1.3.4.jar.
+
+		File springframework = new File(repository, "springframework");
+		File binding = new File(springframework, "binding");
+		File springBinding1_0_5 = new File(binding, "1.0.5");
+		mapBuilder.put("spring-binding-1.0.3.jar", //
+				new File(springBinding1_0_5, "spring-binding-1.0.5.jar"));
+
+		// Spring-ldap.*.jar has been dropped for 1.4+
+		
+		// 1.3 uses a variety of spring 2 jars. 1.4+ uses spring 3.0. 
+		// I am not sure how compatible these are.
+		
+		File webflow = new File(springframework, "webflow");
+		File springWebflow1_0_5 = new File(webflow, "1.0.5");
+		mapBuilder.put("spring-webflow-1.0.3.jar", //
+				new File(springWebflow1_0_5, "spring-webflow-1.0.5.jar"));
+
+		File sun = new File(repository, "sun");
+		File persistenceApi = new File(sun, "persistence-api");
+		File persistenceApi1_0_1_GA = new File(persistenceApi, "1.0.1.GA");
+		mapBuilder.put("persistence-api-1.0.jar", //
+				new File(persistenceApi1_0_1_GA, "ejb3-persistence.jar"));
+		
 		// TODO
 		supersededJarFileMap = mapBuilder.build();
 	}
