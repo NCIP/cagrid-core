@@ -89,20 +89,20 @@
 				<equals arg1="${use.proxy}" arg2="true"/>
 				<then>
 					<echo message="Configured for Proxy"/>
-					<java classname="gov.nih.nci.cagrid.introduce.portal.Introduce" fork="true">
+					<java classname="gov.nih.nci.cagrid.introduce.portal.IntroduceBootstrapper" fork="true">
 						<jvmarg value="-Djava.endorsed.dirs=extensions/endorsed" />
 						<sysproperty key="GLOBUS_LOCATION" value="${ext.globus.dir}"/>
 						<sysproperty key="ANT_OPTS" value="${ant.opts}"/>
 						<syspropertyset refId="system.properties" />
-						<classpath refid="Portal.run.classpath"/>
+						<classpath refid="Bootstrap.run.classpath"/>
 					</java>
 				</then>
 				<else>
 					<echo message="Running portal"/>
-					<java classname="gov.nih.nci.cagrid.introduce.portal.Introduce" fork="true">
+					<java classname="gov.nih.nci.cagrid.introduce.portal.IntroduceBootstrapper" fork="true">
 						<jvmarg value="-Djava.endorsed.dirs=extensions/endorsed" />
 						<sysproperty key="GLOBUS_LOCATION" value="${ext.globus.dir}"/>
-						<classpath refid="Portal.run.classpath"/>
+						<classpath refid="Bootstrap.run.classpath"/>
 					</java>
 				</else>
 			</if>

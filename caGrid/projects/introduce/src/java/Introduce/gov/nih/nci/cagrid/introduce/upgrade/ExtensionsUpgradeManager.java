@@ -26,6 +26,7 @@ public class ExtensionsUpgradeManager {
 		this.pathToService = pathToService;
 	}
 
+	
 	public boolean needsUpgrading() {
 		if (needsRemoving()) {
 			return true;
@@ -36,8 +37,8 @@ public class ExtensionsUpgradeManager {
 			for (int extensionI = 0; extensionI < extensions.length; extensionI++) {
 				ExtensionType extension = extensions[extensionI];
 				String serviceExtensionVersion = extension.getVersion();
-				ExtensionDescription extDescription = ExtensionsLoader
-						.getInstance().getExtension(extension.getName());
+				ExtensionDescription extDescription = 
+				    ExtensionsLoader.getInstance().getExtension(extension.getName());
 				if ((extDescription != null)
 						&& (extDescription.getVersion() != null)) {
 					if ((serviceExtensionVersion == null)
@@ -63,10 +64,9 @@ public class ExtensionsUpgradeManager {
 						.getInstance().getExtension(extension.getName());
 				if (extDescription != null
 						&& extDescription.getServiceExtensionDescription() != null) {
-					if (extDescription.getServiceExtensionDescription()
-							.getShouldBeRemoved() != null
+					if (extDescription.getServiceExtensionDescription().getShouldBeRemoved() != null
 							&& extDescription.getServiceExtensionDescription()
-									.getShouldBeRemoved().booleanValue()) {
+							    .getShouldBeRemoved().booleanValue()) {
 						return true;
 					}
 				}
@@ -76,6 +76,7 @@ public class ExtensionsUpgradeManager {
 		return false;
 	}
 
+	
 	private void remove(IntroduceUpgradeStatus status) {
 		List<String> toBeRemoved = new ArrayList<String>();
 
@@ -90,25 +91,19 @@ public class ExtensionsUpgradeManager {
 						.getInstance().getExtension(extension.getName());
 				if (extDescription != null
 						&& extDescription.getServiceExtensionDescription() != null
-
-						&& extDescription.getServiceExtensionDescription()
-								.getShouldBeRemoved() != null
-						&& extDescription.getServiceExtensionDescription()
-								.getShouldBeRemoved().booleanValue()) {
+						&& extDescription.getServiceExtensionDescription().getShouldBeRemoved() != null
+						&& extDescription.getServiceExtensionDescription().getShouldBeRemoved().booleanValue()) {
 					toBeRemoved.add(extension.getName());
-					if (extDescription.getServiceExtensionDescription()
-							.getServiceExtensionRemover() != null) {
+					if (extDescription.getServiceExtensionDescription().getServiceExtensionRemover() != null) {
 						try {
-							ServiceExtensionRemover remover = ExtensionTools
-									.getServiceExtensionRemover(extension
-											.getName());
+							ServiceExtensionRemover remover =
+							    ExtensionTools.getServiceExtensionRemover(
+							        extension.getName());
 							if (remover != null) {
 								remover.remove(ExtensionsLoader.getInstance()
-										.getServiceExtension(
-												extension.getName()),
+										.getServiceExtension(extension.getName()),
 										serviceInformation);
-								status.addDescriptionLine("Removed extension "
-										+ extension.getName());
+								status.addDescriptionLine("Removed extension " + extension.getName());
 							}
 						} catch (ExtensionRemovalException e) {
 							e.printStackTrace();
@@ -124,18 +119,17 @@ public class ExtensionsUpgradeManager {
 					extensionsPropertyString += extension.getName();
 				}
 			}
-			ExtensionType[] newExtensionsArr = new ExtensionType[newExtensions
-					.size()];
-			System.arraycopy(newExtensions.toArray(), 0, newExtensionsArr, 0,
-					newExtensionsArr.length);
-			serviceInformation.getServiceDescriptor().getExtensions()
-					.setExtension(newExtensionsArr);
+			ExtensionType[] newExtensionsArr = 
+			    new ExtensionType[newExtensions.size()];
+			System.arraycopy(newExtensions.toArray(), 0, newExtensionsArr, 0, newExtensionsArr.length);
+			serviceInformation.getServiceDescriptor().getExtensions().setExtension(newExtensionsArr);
 			serviceInformation.getIntroduceServiceProperties().setProperty(
-					IntroduceConstants.INTRODUCE_SKELETON_EXTENSIONS,
-					extensionsPropertyString);
+				IntroduceConstants.INTRODUCE_SKELETON_EXTENSIONS,
+				extensionsPropertyString);
 		}
 	}
 
+	
 	public void upgrade(IntroduceUpgradeStatus status) throws Exception {
 		remove(status);
 
@@ -146,28 +140,25 @@ public class ExtensionsUpgradeManager {
 		for (int extensionI = 0; extensionI < extensions.length; extensionI++) {
 			ExtensionType extension = extensions[extensionI];
 			String serviceExtensionVersion = extension.getVersion();
-			ExtensionDescription extDescription = ExtensionsLoader
-					.getInstance().getExtension(extension.getName());
+			ExtensionDescription extDescription = 
+			    ExtensionsLoader.getInstance().getExtension(extension.getName());
 			if (extDescription != null) {
 				if ((extDescription.getVersion() != null)) {
 					List<UpgradeDescriptionType> upgrades = new ArrayList<UpgradeDescriptionType>();
-					if (((serviceExtensionVersion == null) && (extDescription
-							.getVersion() != null))
-							|| !extDescription.getVersion().equals(
-									serviceExtensionVersion)) {
+					if (((serviceExtensionVersion == null) && 
+					    (extDescription.getVersion() != null)) || 
+					    !extDescription.getVersion().equals(serviceExtensionVersion)) {
 						// service needs to be upgraded
 						// put together a list of upgrades to run
 						UpgradeDescriptionType[] extensionUpgrades = null;
 						if ((extDescription.getUpgradesDescription() != null)
 								&& (extDescription.getUpgradesDescription()
 										.getUpgradeDescription() != null)) {
-							extensionUpgrades = extDescription
-									.getUpgradesDescription()
-									.getUpgradeDescription();
+							extensionUpgrades = extDescription.getUpgradesDescription().getUpgradeDescription();
 
 							String currentVersion = serviceExtensionVersion;
-							while (((currentVersion == null) || !currentVersion
-									.equals(extDescription.getVersion()))) {
+							while (((currentVersion == null) || 
+							    !currentVersion.equals(extDescription.getVersion()))) {
 								boolean found = false;
 								int i = 0;
 								for (i = 0; i < extensionUpgrades.length; i++) {
@@ -175,40 +166,33 @@ public class ExtensionsUpgradeManager {
 											&& (currentVersion == null)) {
 										found = true;
 										break;
-									} else if (extensionUpgrades[i]
-											.getFromVersion() != null
-											&& extensionUpgrades[i]
-													.getFromVersion().equals(
-															currentVersion)) {
+									} else if (extensionUpgrades[i].getFromVersion() != null
+											&& extensionUpgrades[i].getFromVersion().equals(currentVersion)) {
 										found = true;
 										break;
 									}
 								}
 								if (found) {
 									upgrades.add(extensionUpgrades[i]);
-									currentVersion = extensionUpgrades[i]
-											.getToVersion();
+									currentVersion = extensionUpgrades[i].getToVersion();
 								} else {
 									error.add(extension.getName()
-											+ " extension used on service is older than currently installed "
-											+ "and does not appear to have correct upgrade.");
+										+ " extension used on service is older than currently installed "
+										+ "and does not appear to have correct upgrade.");
 									break;
 								}
 							}
-
 						} else {
-							error
-									.add(extension.getName()
-											+ " extension used on service is older than currently "
-											+ "installed and does not appear to have any upgrades.");
+							error.add(extension.getName()
+								+ " extension used on service is older than currently "
+								+ "installed and does not appear to have any upgrades.");
 						}
-
 					}
 
 					// run the upgraders that we put together in order
 					for (int i = 0; i < upgrades.size(); i++) {
-						UpgradeDescriptionType upgrade = (UpgradeDescriptionType) upgrades.get(i);
-						Class<?> clazz = ExtensionTools.loadExtensionClass(upgrade.getUpgradeClass());
+						UpgradeDescriptionType upgrade = upgrades.get(i);
+						Class<?> clazz = Class.forName(upgrade.getUpgradeClass());
 						Constructor<?> con = clazz.getConstructor(new Class[] {
 								ExtensionType.class, ServiceInformation.class,
 								String.class, String.class, String.class });
@@ -222,9 +206,8 @@ public class ExtensionsUpgradeManager {
 					}
 				}
 			} else {
-				error
-						.add(extension.getName()
-								+ " extension used on service is not available in this instance of Introduce.");
+				error.add(extension.getName()
+					+ " extension used on service is not available in this instance of Introduce.");
 			}
 		}
 
@@ -233,7 +216,7 @@ public class ExtensionsUpgradeManager {
 		    // turn that into a string and throw an exception
 			String errorString = "";
 			for (int errorI = 0; errorI < error.size(); errorI++) {
-				errorString += (String) error.get(errorI) + "\n";
+				errorString += error.get(errorI) + "\n";
 			}
 			throw new Exception(errorString);
 		}

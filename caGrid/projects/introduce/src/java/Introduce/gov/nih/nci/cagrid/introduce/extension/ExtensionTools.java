@@ -55,7 +55,7 @@ public class ExtensionTools {
             ExtensionsLoader.getInstance().getServiceExtension(extensionName);
         if (extensionDesc != null && extensionDesc.getCreationPostProcessor() != null
             && !extensionDesc.getCreationPostProcessor().equals("")) {
-            Class<?> c = loadExtensionClass(extensionDesc.getCreationPostProcessor());
+            Class<?> c = Class.forName(extensionDesc.getCreationPostProcessor());
             Object obj = c.newInstance();
             return (CreationExtensionPostProcessor) obj;
         }
@@ -77,7 +77,7 @@ public class ExtensionTools {
             ExtensionsLoader.getInstance().getServiceExtension(extensionName);
         if (extensionDesc != null && extensionDesc.getCodegenPostProcessor() != null
             && !extensionDesc.getCodegenPostProcessor().equals("")) {
-            Class<?> c = loadExtensionClass(extensionDesc.getCodegenPostProcessor());
+            Class<?> c = Class.forName(extensionDesc.getCodegenPostProcessor());
             Object obj = c.newInstance();
             return (CodegenExtensionPostProcessor) obj;
         }
@@ -100,7 +100,7 @@ public class ExtensionTools {
             ExtensionsLoader.getInstance().getAuthorizationExtension(extensionName);
         if (extensionDesc != null && extensionDesc.getAuthorizationExtensionManager() != null
             && !extensionDesc.getAuthorizationExtensionManager().equals("")) {
-            Class<?> c = loadExtensionClass(extensionDesc.getAuthorizationExtensionManager());
+            Class<?> c = Class.forName(extensionDesc.getAuthorizationExtensionManager());
             Object obj = c.newInstance();
             return (AuthorizationExtensionManager) obj;
         }
@@ -122,7 +122,7 @@ public class ExtensionTools {
             extensionName);
         if (extensionDesc != null && extensionDesc.getCodegenPreProcessor() != null
             && !extensionDesc.getCodegenPreProcessor().equals("")) {
-            Class<?> c = loadExtensionClass(extensionDesc.getCodegenPreProcessor());
+            Class<?> c = Class.forName(extensionDesc.getCodegenPreProcessor());
             Object obj = c.newInstance();
             return (CodegenExtensionPreProcessor) obj;
         }
@@ -144,7 +144,7 @@ public class ExtensionTools {
             extensionName);
         if (extensionDesc != null && extensionDesc.getServiceExtensionRemover() != null
             && !extensionDesc.getServiceExtensionRemover().equals("")) {
-            Class<?> c = loadExtensionClass(extensionDesc.getServiceExtensionRemover());
+            Class<?> c = Class.forName(extensionDesc.getServiceExtensionRemover());
             Object obj = c.newInstance();
             return (ServiceExtensionRemover) obj;
         }
@@ -391,27 +391,5 @@ public class ExtensionTools {
             logger.info("Invoking extension creation post processor");
             creationPostProcessor.postCreate(serviceExtensionDescription, service);
         }
-    }
-    
-    
-    public static ClassLoader getExtensionClassLoader() throws Exception {
-        if (extensionClassLoader == null) {
-            File extDir = ExtensionsLoader.getInstance().getExtensionsDir();
-            File libDir = new File(extDir, "lib");
-            File[] jars = libDir.listFiles(new FileFilters.JarFileFilter());
-            URL[] jarUrls = new URL[jars.length];
-            for (int i = 0; i < jars.length; i++) {
-                jarUrls[i] = jars[i].toURI().toURL();
-            }
-            extensionClassLoader = new URLClassLoader(jarUrls, Thread.currentThread().getContextClassLoader());
-        }
-        return extensionClassLoader;
-    }
-    
-    
-    public static Class<?> loadExtensionClass(String className) throws Exception {
-        ClassLoader loader = getExtensionClassLoader();
-        Class<?> c = loader.loadClass(className);
-        return c;
     }
 }

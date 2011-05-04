@@ -135,8 +135,7 @@ public final class Introduce {
 
             // launch the portal with the passed config
             GridApplication applicationInstance = GridApplication.getInstance(
-                app, ExtensionTools.getExtensionClassLoader());
-            ClassUtils.setDefaultClassLoader(ExtensionTools.getExtensionClassLoader());
+                app, Introduce.class.getClassLoader());
             Dimension d = new Dimension(app.getDimensions().getWidth(), app.getDimensions().getHeight());
 
             try {
