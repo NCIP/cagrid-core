@@ -30,9 +30,9 @@ public class IntroduceBootstrapper {
     public static final String ANT_HOME_ENV = "ANT_HOME";
     
     public static final String[] DIR_LOCATIONS = new String[] {
-        "resources/portal/introduce",
+        "resources" + File.separator + "portal" + File.separator + "introduce",
         "extensions",
-        "doc/help"
+        "doc" + File.separator + "help"
     };
     
     public static final String[] LIB_LOCATIONS = new String[] {
@@ -71,7 +71,10 @@ public class IntroduceBootstrapper {
             ex.printStackTrace();
             System.exit(-1);
         }
+        // spin up the class loader
         URLClassLoader loader = new URLClassLoader(urls, IntroduceBootstrapper.class.getClassLoader());
+        // dumpClasspath(loader);
+        // invoke the Introduce main method
         try {
             Class<?> introduce = loader.loadClass(INTRODUCE_CLASSNAME);
             Method introduceMain = introduce.getMethod("main", String[].class);
@@ -80,5 +83,19 @@ public class IntroduceBootstrapper {
             ex.printStackTrace();
             System.exit(-1);
         }
+    }
+    
+    
+    public static void dumpClasspath(ClassLoader loader) {
+        System.out.println("On the classpath:");
+        ClassLoader l = loader;
+        while (l != null && l instanceof URLClassLoader) {
+            System.out.println(l.toString());
+            URL[] urls = ((URLClassLoader) l).getURLs();
+            for (URL u : urls) {
+                System.out.println("\t" + u.toString());
+            }
+            l = l.getParent();
+        }        
     }
 }
