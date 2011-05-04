@@ -677,7 +677,6 @@ public class Cagrid1_3TomcatToNewCagridTomcat {
 		mapBuilder.put("persistence-api-1.0.jar", //
 				new File(persistenceApi1_0_1_GA, "ejb3-persistence.jar"));
 		
-		// TODO
 		supersededJarFileMap = mapBuilder.build();
 	}
 

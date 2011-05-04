@@ -9,6 +9,7 @@
 	<property name="dotCaGrid.dir" location="${user.home}/.cagrid" />
 	<property name="installer.dir" location="${dotCaGrid.dir}/installer-${targetVersion}" />
 	<property name="installer.properties" location="${installer.dir}/cagrid.installer.properties" />
+	<property name="helper.dir" location="${basedir}/helper"/>
 
 	<!-- ======================== -->
 	<!-- Require Java 1.6  -->
@@ -52,7 +53,7 @@
 		<echo>variable CONTAINER_1.3 is defined at the path of the caGrid 1.3 tomcat container</echo>
 		<echo>and CATALINA_HOME is the path of the newly created caGrid ${targetVersion} tomcat container,</echo>
 		<echo>invoke this script like this:</echo>
-		<echo>  ant -f $CAGRID_HOME/upgrade/sha2_containerUpgrade/build.xml -Dcontainer_1.3=$CONTAINER_1.3 -DnewContainer=$CATALINA_HOME copy</echo>
+		<echo>  ant -f $CAGRID_HOME/upgrade/sha2_containerUpgrade/build.xml -Dcontainer_1.3=$CONTAINER_1.3 -DnewContainer=$CATALINA_HOME move</echo>
 	</target>
 
 	<target name="init">
@@ -206,5 +207,12 @@
 		<copy todir="${newService.dir}">
 			<fileset dir="${service.dir}"/>
 		</copy>
+		
+		<!-- copy .jar file from appropriate places while updating introduceDeployment.xml -->
+		<ant antfile="build.xml" dir="${helper.dir}" target="run" inheritall="false">
+			<property name="cagrid.home" value="${cagrid.home"/>
+			<property name="service.dir" location="${service.dir}"/>
+			<property name="newContainer" location="${newContainer}"/>
+		</ant>
 	</target>
 </project>

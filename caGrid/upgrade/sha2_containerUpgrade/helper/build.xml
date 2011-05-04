@@ -1,0 +1,79 @@
+<?xml version="1.0"?>
+<!-- ================================================================= -->
+<!-- Ant script for building and running the helper program for        -->
+<!-- migrating deployed caGrid 1.3 services from a tomcat container    -->
+<!-- to a caGrid 1.5 tomcat container.                                 -->
+<!-- The helper program is responsible for mapping old .jar files to   -->
+<!-- new .jar files.                                                   -->
+<!-- ================================================================= -->
+<project name="caGrid-sha2-upgrade-helper" basedir="." default="compile">
+	<property name="build.dir" location="${basedir}/build" />
+	<property name="classes.dir" location="${build.dir}/classes" />
+	<property name="lib.dir" location="${basedir}/lib" />
+	<property name="src.dir" location="${basedir}/src" />
+
+	<path id="library.path">
+		<fileset dir="lib">
+			<include name="**/*.jar" />
+		</fileset>
+	</path>
+
+	<!-- ======================== -->
+	<!-- Require Java 1.6  -->
+	<!-- ======================== -->
+	<condition property="isJDK1.6" value="true">
+		<equals arg1="${ant.java.version}" arg2="1.6" />
+	</condition>
+	<fail message="JDK 1.6 is currently required to build this project!" unless="isJDK1.6" />
+
+	<!-- ================= -->
+	<!-- Require ant 1.7.0 -->
+	<!-- ================= -->
+	<condition property="ant-is-exact-7">
+		<antversion exactly="1.7.0" />
+	</condition>
+	<fail message="Ant version 1.7.0 (exactly) is required" unless="ant-is-exact-7" />
+
+	<!-- - - - - - - - - - - - - - - - - - 
+          target: init                      
+         - - - - - - - - - - - - - - - - - -->
+	<target name="init">
+	</target>
+
+	<!-- ================================= 
+          target: compile              
+         ================================= -->
+	<target name="compile" depends="init" description="Compile the helper program">
+		<delete dir="${build.dir}" />
+		<mkdir dir="${build.dir}" />
+		<mkdir dir="${classes.dir}" />
+		<javac srcdir="${src.dir}" destdir="${classes.dir}" classpathref="library.path" debug="on" />
+	</target>
+
+	<!-- ================================= 
+          target: run              
+         ================================= -->
+	<target name="run" depends="compile" description="Run the helper program. Requires that cagrid.home be set to the installation directory for the new caGrid; that service.dir be set to the service directory (under etc) in the 1.3 container; and that newContainer be the tomcat directory created by the new caGrid installer.">
+		<condition property="allPropertiesSet">
+			<and>
+				<isset property="cagrid.home" />
+				<isset property="service.dir" />
+				<isset property="newContainer" />
+			</and>
+		</condition>
+		<fail unless="allPropertiesSet">
+The following properties must be set to run the helper program:
+* cagrid.home must be set to the path of the installation directory for the new caGrid
+* service.dir must be set to the path of the service directory (under etc) in the 1.3 container
+* newContainer be set to the path of the tomcat directory created by the new caGrid installer</fail>
+		<java classname="edu.emory.cci.cagrid.migration.Cagrid1_3TomcatToNewCagridTomcat" newenvironment="false">
+			<classpath>
+				<dirset dir="${classes.dir}" />
+				<filelist refid="library.path"/>
+			</classpath>
+			<arg file="${cagrid.home}"/>
+			<arg file="${service.dir}" />
+			<arg file="${newContainer}"/>
+		</java>
+	</target>
+</project>
