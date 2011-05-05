@@ -17,7 +17,13 @@ import java.util.List;
  * Axis can find the classes it needs to know about for serialization
  * and extensions load up the way they should, all without making the initial
  * classpath on the ant command so long that Windows truncates it and
- * refuses to launch the process
+ * refuses to launch the process.
+ * 
+ * <note>
+ * This class can't have any references to anything that won't be on
+ * the Bootstrapper classpath (i.e. the rest of Introduce) since it's only
+ * here to create the big classpath Introduce needs before kicking it off
+ * </note>
  * 
  * @author David
  *
