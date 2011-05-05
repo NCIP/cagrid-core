@@ -204,13 +204,14 @@
 		<basename file="${service.dir}" property="service.dir.name"/>
 		<property name="newService.dir" location="${newEtc.dir}/${service.dir.name}"/>
 
+		<echo>Copying contents of old service directory (${service.dir}) to directory ${newService.dir}</echo>
 		<copy todir="${newService.dir}">
 			<fileset dir="${service.dir}"/>
 		</copy>
 		
 		<!-- copy .jar file from appropriate places while updating introduceDeployment.xml -->
-		<ant antfile="build.xml" dir="${helper.dir}" target="run" inheritall="false">
-			<property name="cagrid.home" value="${cagrid.home"/>
+		<ant antfile="build.xml" dir="${helper.dir}" target="run" inheritall="false" >
+			<property name="cagrid.home" value="${cagrid.home}"/>
 			<property name="service.dir" location="${service.dir}"/>
 			<property name="newContainer" location="${newContainer}"/>
 		</ant>

@@ -66,10 +66,10 @@ The following properties must be set to run the helper program:
 * cagrid.home must be set to the path of the installation directory for the new caGrid
 * service.dir must be set to the path of the service directory (under etc) in the 1.3 container
 * newContainer be set to the path of the tomcat directory created by the new caGrid installer</fail>
-		<java classname="edu.emory.cci.cagrid.migration.Cagrid1_3TomcatToNewCagridTomcat" newenvironment="false">
+		<java classname="edu.emory.cci.cagrid.migration.Cagrid1_3TomcatToNewCagridTomcat" newenvironment="false" failonerror="true" fork="true">
 			<classpath>
 				<dirset dir="${classes.dir}" />
-				<filelist refid="library.path"/>
+				<path refid="library.path"/>
 			</classpath>
 			<arg file="${cagrid.home}"/>
 			<arg file="${service.dir}" />

@@ -1,6 +1,7 @@
 package edu.emory.cci.cagrid.migration;
 
 import java.io.BufferedOutputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -398,13 +399,13 @@ public class Cagrid1_3TomcatToNewCagridTomcat {
 
 		File serviceSecurityProvider = new File(cagridIntegrationRepository, "service-security-provider");
 		File serviceSecurityProviderLib = new File(serviceSecurityProvider, NEW_CAGRID_VERSION);
-		mapBuilder.put("caGrid-mms-client-1.3.jar", //
+		mapBuilder.put("caGrid-ServiceSecurityProvider-client-1.3.jar", //
 				new File(serviceSecurityProviderLib, "caGrid-ServiceSecurityProvider-client-" + NEW_CAGRID_VERSION + ".jar"));
-		mapBuilder.put("caGrid-mms-common-1.3.jar", //
+		mapBuilder.put("caGrid-ServiceSecurityProvider-common-1.3.jar", //
 				new File(serviceSecurityProviderLib, "caGrid-ServiceSecurityProvider-common-" + NEW_CAGRID_VERSION + ".jar"));
-		mapBuilder.put("caGrid-mms-service-1.3.jar", //
+		mapBuilder.put("caGrid-ServiceSecurityProvider-service-1.3.jar", //
 				new File(serviceSecurityProviderLib, "caGrid-ServiceSecurityProvider-service-" + NEW_CAGRID_VERSION + ".jar"));
-		mapBuilder.put("caGrid-mms-stubs-1.3.jar", //
+		mapBuilder.put("caGrid-ServiceSecurityProvider-stubs-1.3.jar", //
 				new File(serviceSecurityProviderLib, "caGrid-ServiceSecurityProvider-stubs-" + NEW_CAGRID_VERSION + ".jar"));
 
 		File serviceTools = new File(cagridIntegrationRepository, "service-tools");
@@ -414,7 +415,7 @@ public class Cagrid1_3TomcatToNewCagridTomcat {
 		mapBuilder.put("caGrid-service-tools-events-1.3.jar", //
 				new File(serviceToolsLib, "caGrid-service-tools-events-" + NEW_CAGRID_VERSION + ".jar"));
 		mapBuilder.put("caGrid-service-tools-groups-1.3.jar", //
-				new File(serviceToolsLib, "caGrid-service-groups-style-" + NEW_CAGRID_VERSION + ".jar"));
+				new File(serviceToolsLib, "caGrid-service-tools-groups-" + NEW_CAGRID_VERSION + ".jar"));
 		mapBuilder.put("caGrid-service-tools-tests-1.3.jar", //
 				new File(serviceToolsLib, "caGrid-service-tools-tests-" + NEW_CAGRID_VERSION + ".jar"));
 
@@ -471,7 +472,7 @@ public class Cagrid1_3TomcatToNewCagridTomcat {
 
 		File websso = new File(cagridIntegrationRepository, "websso");
 		File webssoLib = new File(websso, NEW_CAGRID_VERSION);
-		mapBuilder.put("caGrid-testing-core-1.3.jar", //
+		mapBuilder.put("caGrid-websso-core-1.3.jar", //
 				new File(webssoLib, "caGrid-websso-core-" + NEW_CAGRID_VERSION + ".jar"));
 
 		File webssoClient = new File(cagridIntegrationRepository, "websso-client");
@@ -506,11 +507,11 @@ public class Cagrid1_3TomcatToNewCagridTomcat {
 		mapBuilder.put("caGrid-wsEnum-1.3.jar", //
 				new File(wsEnumLib, "caGrid-wsEnum-" + NEW_CAGRID_VERSION + ".jar"));
 		mapBuilder.put("caGrid-wsEnum-tests-1.3.jar", //
-				new File(wsEnumLib, "caGrid-wsEnum-tests" + NEW_CAGRID_VERSION + ".jar"));
+				new File(wsEnumLib, "caGrid-wsEnum-tests-" + NEW_CAGRID_VERSION + ".jar"));
 		mapBuilder.put("caGrid-wsEnum-stubs-1.3.jar", //
-				new File(wsEnumLib, "caGrid-wsEnum-stubs" + NEW_CAGRID_VERSION + ".jar"));
+				new File(wsEnumLib, "caGrid-wsEnum-stubs-" + NEW_CAGRID_VERSION + ".jar"));
 		mapBuilder.put("caGrid-wsEnum-test-stubs-1.3.jar", //
-				new File(wsEnumLib, "caGrid-wsEnum-test-stubs" + NEW_CAGRID_VERSION + ".jar"));
+				new File(wsEnumLib, "caGrid-wsEnum-test-stubs-" + NEW_CAGRID_VERSION + ".jar"));
 
 		File repository = new File(cagridHome, "repository");
 
@@ -662,10 +663,10 @@ public class Cagrid1_3TomcatToNewCagridTomcat {
 				new File(springBinding1_0_5, "spring-binding-1.0.5.jar"));
 
 		// Spring-ldap.*.jar has been dropped for 1.4+
-		
-		// 1.3 uses a variety of spring 2 jars. 1.4+ uses spring 3.0. 
+
+		// 1.3 uses a variety of spring 2 jars. 1.4+ uses spring 3.0.
 		// I am not sure how compatible these are.
-		
+
 		File webflow = new File(springframework, "webflow");
 		File springWebflow1_0_5 = new File(webflow, "1.0.5");
 		mapBuilder.put("spring-webflow-1.0.3.jar", //
@@ -676,7 +677,7 @@ public class Cagrid1_3TomcatToNewCagridTomcat {
 		File persistenceApi1_0_1_GA = new File(persistenceApi, "1.0.1.GA");
 		mapBuilder.put("persistence-api-1.0.jar", //
 				new File(persistenceApi1_0_1_GA, "ejb3-persistence.jar"));
-		
+
 		supersededJarFileMap = mapBuilder.build();
 	}
 
@@ -701,7 +702,7 @@ public class Cagrid1_3TomcatToNewCagridTomcat {
 		File newWsrfDir = new File(newWebappsDir, "wsrf");
 		File newWebinfDir = new File(newWsrfDir, "WEB-INF");
 		newLibDir = new File(newWebinfDir, "lib");
-		File etcDir = new File(newWsrfDir, "etc");
+		File etcDir = new File(newWebinfDir, "etc");
 		newServiceDir = new File(etcDir, serviceDirName);
 	}
 
@@ -750,6 +751,7 @@ public class Cagrid1_3TomcatToNewCagridTomcat {
 	 *             if there is a problem
 	 */
 	private void copyIntroduceJarFile() throws Exception {
+		System.out.println("Begining to process .jar files.");
 		File introduceDeployment = new File(newServiceDir, "introduceDeployment.xml");
 		ensureIsFile(introduceDeployment);
 		makeBackupCopy(introduceDeployment, ".original");
@@ -767,6 +769,7 @@ public class Cagrid1_3TomcatToNewCagridTomcat {
 			throw e;
 		}
 		Files.move(newIntroduceDeployment, introduceDeployment);
+		System.out.println(".jar file processing done.");
 	}
 
 	/**
@@ -798,33 +801,54 @@ public class Cagrid1_3TomcatToNewCagridTomcat {
 		DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
 		DocumentBuilder builder = factory.newDocumentBuilder();
 		Document document = builder.parse(in);
-		Element deploymentElement = findDeploymentElement(document);
-		NodeList jarsList = deploymentElement.getElementsByTagNameNS("*", "Jars");
-		int jarsListLength = jarsList.getLength();
-		for (int jarsIndex = 0; jarsIndex < jarsListLength; jarsIndex++) {
-			Element jarsElement = (Element) jarsList.item(jarsIndex);
-			NodeList jarList = jarsElement.getElementsByTagNameNS("*", "Jar");
-			int jarListLength = jarList.getLength();
-			for (int jarListIndex = 0; jarListIndex < jarListLength; jarListIndex++) {
-				Element jarElement = (Element) jarList.item(jarListIndex);
-				Attr nameAttr = findNameAttribute(jarElement);
-				String oldName = nameAttr.getValue();
-				String newName = processJarFile(oldName);
-				if (newName == null) { // if obsolete
-					jarsElement.removeChild(jarElement);
-				} else {
-					nameAttr.setValue(newName);
+		try {
+			Element deploymentElement = findDeploymentElement(document);
+			NodeList jarsList = deploymentElement.getElementsByTagName("Jars");
+			int jarsListLength = jarsList.getLength();
+			System.out.println("Found " + jarsListLength + " lists of .jar files to process.");
+			for (int jarsIndex = 0; jarsIndex < jarsListLength; jarsIndex++) {
+				Element jarsElement = (Element) jarsList.item(jarsIndex);
+				NodeList jarList = jarsElement.getElementsByTagName("Jar");
+				int jarListLength = jarList.getLength();
+				System.out.println("Found list of " + jarListLength + " .jar files to process.");
+				for (int jarListIndex = 0; jarListIndex < jarListLength; jarListIndex++) {
+					Element jarElement = (Element) jarList.item(jarListIndex);
+					Attr nameAttr = findNameAttribute(jarElement);
+					String oldName = nameAttr.getValue();
+					String newName = processJarFile(oldName);
+					if (newName == null) { // if obsolete
+						jarsElement.removeChild(jarElement);
+					} else {
+						nameAttr.setValue(newName);
+					}
 				}
 			}
+		} catch (Exception e) {
+			ByteArrayOutputStream baos = new ByteArrayOutputStream();
+			String msg;
+			try {
+				writeXML(baos, document);
+				msg = "An error occurred while trying to process this XML from " + in.getAbsolutePath() + ":\n" + baos.toString();
+			} catch (Exception ee) {
+				ee.printStackTrace();
+				msg = "An error occurred while trying to process XML from " + in.getAbsolutePath()
+						+ " A separate error has prevented the in-memory version of the XML from being serialized into this message.";
+			}
+			throw new Exception(msg, e);
 		}
 		writeXML(out, document);
 	}
 
 	private void writeXML(File out, Document document) throws FileNotFoundException, IOException {
 		OutputStream outputStream = new BufferedOutputStream(new FileOutputStream(out));
+		writeXML(outputStream, document);
+	}
+
+	private void writeXML(OutputStream outputStream, Document document) throws FileNotFoundException, IOException {
 		OutputFormat format = new OutputFormat("XML", "ISO-8859-1", true);
 		format.setIndent(2);
 		format.setIndenting(true);
+		format.setLineWidth(140);
 		XMLSerializer serializer = new XMLSerializer(outputStream, format);
 		serializer.asDOMSerializer();
 		serializer.serialize(document);
@@ -839,12 +863,20 @@ public class Cagrid1_3TomcatToNewCagridTomcat {
 	}
 
 	private Element findDeploymentElement(Document document) throws XMLParseException {
-		Node rootNode = document.getFirstChild();
+		NodeList rootNodeList = document.getElementsByTagName("ns1:Deployment");
+		if (rootNodeList.getLength() != 1) {
+			throw new XMLParseException("Document contains " + rootNodeList.getLength() + " \"Deployment\" elements, but should contain exactly one.");
+		}
+		Node rootNode = rootNodeList.item(0);
 		if (!(rootNode instanceof Element)) {
 			throw new XMLParseException("Root of document is not an element");
 		}
 		Element deploymentElement = (Element) rootNode;
-		if (!(deploymentElement.getTagName().equals("Deployment"))) {
+		String tagName = deploymentElement.getTagName();
+		if (tagName == null) {
+			throw new XMLParseException("Tag name of root element is null.");
+		}
+		if (!(tagName.equals("ns1:Deployment"))) {
 			throw new XMLParseException("Expected tag of root element to be \"Deployment\" but it is " + deploymentElement.getTagName());
 		}
 		return deploymentElement;
@@ -874,14 +906,14 @@ public class Cagrid1_3TomcatToNewCagridTomcat {
 		if (supersedingFile == null) {
 			File jarFile = new File(oldLibDir, oldJarFileName);
 			copyFileToDirectory(jarFile, newLibDir);
-			System.out.println("Keeping " + oldJarFileName + " from old container.");
+			System.out.println("Keeping " + oldJarFileName + " from old container.");System.out.flush();
 			return oldJarFileName;
 		} else if (supersedingFile == OBSOLETE) {
-			System.out.println(oldJarFileName + " is obsolete and will not be copied.");
+			System.out.println(oldJarFileName + " is obsolete and will not be copied.");System.out.flush();
 			return null;
 		} else {
 			copyFileToDirectory(supersedingFile, newLibDir);
-			System.out.println("Replacing " + oldJarFileName + " with " + supersedingFile.getAbsolutePath());
+			System.out.println("Replacing " + oldJarFileName + " with " + supersedingFile.getAbsolutePath());System.out.flush();
 			return supersedingFile.getName();
 		}
 	}
@@ -903,85 +935,10 @@ public class Cagrid1_3TomcatToNewCagridTomcat {
 		Files.copy(sourceFile, destinationFile);
 	}
 
-	// /**
-	// * Read characters from the input stream up to, but not including the next
-	// * instance of the given character.
-	// *
-	// * @param pin
-	// * the input stream to read from.
-	// * @param target
-	// * the character to read up to.
-	// * @return the read characters as a string.
-	// * @throws IOException
-	// * if there is a problem.
-	// */
-	// private String readUpto(PushbackInputStream pin, char target) throws
-	// IOException {
-	// StringBuffer buffer = new StringBuffer();
-	// while (true) {
-	// int c = pin.read();
-	// if (c == -1) {
-	// throw new
-	// IOException("Encountered end-of-file while reading a jar file name.");
-	// }
-	// if (c == target) {
-	// break;
-	// }
-	// buffer.append(target);
-	// pin.unread(target);
-	// }
-	// return buffer.toString();
-	// }
-	//
-	// /**
-	// * Read character from then input stream and write the characters to the
-	// * output stream until the most recently read characters match the target
-	// * string.
-	// *
-	// * @param in
-	// * The character stream to read from.
-	// * @param out
-	// * The character stream to write to.
-	// * @param target
-	// * the string to look for in the stream.
-	// * @return true if this method returned because the most recently read
-	// * characters matched the target string. If this method stops
-	// * because the inputStream has seen end of file.
-	// * @throws IOException
-	// * if there is a problem.
-	// */
-	// private boolean readPast(InputStream in, OutputStream out, String target)
-	// throws IOException {
-	// int length = target.length();
-	// int[] buffer = new int[length];
-	// int firstBuffered = 0;
-	// int firstUnbuffered = 0;
-	//
-	// while (true) {
-	// int c = in.read();
-	// if (c == -1) {
-	// return false;
-	// }
-	// out.write(c);
-	// buffer[firstUnbuffered % length] = c;
-	// firstUnbuffered += 1;
-	// if (firstUnbuffered - firstBuffered > length) {
-	// firstBuffered = firstUnbuffered - length;
-	// }
-	// window: do {
-	// for (int i = 0; i < length; i++) {
-	// if (buffer[(firstBuffered + i) % length] != target.charAt(i)) {
-	// break window;
-	// }
-	// }
-	// return true;
-	// } while (false);
-	// }
-	// }
-
 	private void ensureIsFile(File f) {
 		if (!f.isFile()) {
 			System.err.println(f.getAbsolutePath() + " does not exist or is not a regular file.");
+			Thread.dumpStack();
 			System.exit(3);
 		}
 	}
@@ -1006,6 +963,7 @@ public class Cagrid1_3TomcatToNewCagridTomcat {
 		if (!dir.isDirectory()) {
 			String msg = dir.getAbsolutePath() + " does not exist or is not a directory";
 			System.err.println(msg);
+			Thread.dumpStack();
 			System.exit(2);
 		}
 	}
