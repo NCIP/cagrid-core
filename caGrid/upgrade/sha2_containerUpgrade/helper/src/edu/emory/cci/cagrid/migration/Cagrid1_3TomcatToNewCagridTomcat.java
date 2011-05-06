@@ -7,7 +7,7 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
-import java.util.Map;
+import java.util.List;
 
 import javax.management.modelmbean.XMLParseException;
 import javax.xml.parsers.DocumentBuilder;
@@ -21,7 +21,9 @@ import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
-import com.google.common.collect.ImmutableMap;
+import com.google.common.collect.ImmutableList;
+import com.google.common.collect.ImmutableListMultimap;
+import com.google.common.collect.ListMultimap;
 import com.google.common.io.Files;
 
 /**
@@ -38,7 +40,7 @@ public class Cagrid1_3TomcatToNewCagridTomcat {
 
 	private static final File OBSOLETE = new File("");
 
-	private static Map<String, File> supersededJarFileMap;
+	private static ListMultimap<String, File> supersededJarFileMultimap;
 
 	// initialize map from jar file names to superseding files.
 	private static void init(String cagrid_home) throws IOException {
@@ -53,10 +55,7 @@ public class Cagrid1_3TomcatToNewCagridTomcat {
 		File tavernaWorkflowService = new File(cagridIntegrationRepository, "TavernaWorkflowService");
 		File tavernaWorkflowServiceLib = new File(tavernaWorkflowService, NEW_CAGRID_VERSION);
 
-		// Build the map of superseded .jar file names to superseding .jar files
-		// using Google's ImmutableMap to catch to possible bug of having
-		// multiple values for the same key.
-		ImmutableMap.Builder<String, File> mapBuilder = ImmutableMap.builder();
+		ImmutableListMultimap.Builder<String, File> mapBuilder = ImmutableListMultimap.builder();
 
 		mapBuilder.put("caGrid-TavernaWorkflowService-client-1.3.jar", //
 				new File(tavernaWorkflowServiceLib, "caGrid-TavernaWorkflowService-client-" + NEW_CAGRID_VERSION + ".jar"));
@@ -678,7 +677,7 @@ public class Cagrid1_3TomcatToNewCagridTomcat {
 		mapBuilder.put("persistence-api-1.0.jar", //
 				new File(persistenceApi1_0_1_GA, "ejb3-persistence.jar"));
 
-		supersededJarFileMap = mapBuilder.build();
+		supersededJarFileMultimap = mapBuilder.build();
 	}
 
 	private File newServiceDir;
@@ -808,35 +807,78 @@ public class Cagrid1_3TomcatToNewCagridTomcat {
 			System.out.println("Found " + jarsListLength + " lists of .jar files to process.");
 			for (int jarsIndex = 0; jarsIndex < jarsListLength; jarsIndex++) {
 				Element jarsElement = (Element) jarsList.item(jarsIndex);
-				NodeList jarList = jarsElement.getElementsByTagName("Jar");
-				int jarListLength = jarList.getLength();
-				System.out.println("Found list of " + jarListLength + " .jar files to process.");
-				for (int jarListIndex = 0; jarListIndex < jarListLength; jarListIndex++) {
-					Element jarElement = (Element) jarList.item(jarListIndex);
-					Attr nameAttr = findNameAttribute(jarElement);
-					String oldName = nameAttr.getValue();
-					String newName = processJarFile(oldName);
-					if (newName == null) { // if obsolete
-						jarsElement.removeChild(jarElement);
-					} else {
-						nameAttr.setValue(newName);
-					}
-				}
+				processJarList(jarsElement);
 			}
 		} catch (Exception e) {
-			ByteArrayOutputStream baos = new ByteArrayOutputStream();
-			String msg;
-			try {
-				writeXML(baos, document);
-				msg = "An error occurred while trying to process this XML from " + in.getAbsolutePath() + ":\n" + baos.toString();
-			} catch (Exception ee) {
-				ee.printStackTrace();
-				msg = "An error occurred while trying to process XML from " + in.getAbsolutePath()
-						+ " A separate error has prevented the in-memory version of the XML from being serialized into this message.";
-			}
-			throw new Exception(msg, e);
+			handleXmlProcessingException(in, document, e);
 		}
 		writeXML(out, document);
+	}
+
+	/**
+	 * Process a list of XML jar elements that are in the given jars element.
+	 * <p>
+	 * If the .jar file described by a Jar element is obsolete, then it is
+	 * removed from the Jars element. In this case, no .jar files are copied to
+	 * the new container.
+	 * <p>
+	 * If the .jar file described by a Jar element is superseded by exactly one
+	 * file then the value of the Jar element's name attribute is updated with
+	 * the name of the new .jar file. 
+	 * <p>
+	 * If the .jar file is superseded by multiple
+	 * .jar files, then the corresponding Jar element is removed for the Jars
+	 * element and Jar elements describing the superseding .jar files are added
+	 * to the Jar element.
+	 * 
+	 * @param jarsElement
+	 *            A Jars element that contains Jar elements that each describe a
+	 *            .jar file deployed into a container to support a caGrid
+	 *            service.
+	 * @throws XMLParseException
+	 *             if there is a structural problem with the XML
+	 * @throws IOException
+	 *             if there is a problem copying .jar files.
+	 */
+	private void processJarList(Element jarsElement) throws XMLParseException, IOException {
+		NodeList jarList = jarsElement.getElementsByTagName("Jar");
+		int jarListLength = jarList.getLength();
+		System.out.println("Found list of " + jarListLength + " .jar files to process.");
+		for (int jarListIndex = 0; jarListIndex < jarListLength; jarListIndex++) {
+			Element jarElement = (Element) jarList.item(jarListIndex);
+			Attr nameAttr = findNameAttribute(jarElement);
+			String oldName = nameAttr.getValue();
+			List<String> newNames = processJarFile(oldName);
+			if (newNames.isEmpty()) { // if obsolete
+				jarsElement.removeChild(jarElement);
+			} else if (newNames.size() == 1) {
+				nameAttr.setValue(newNames.get(0));
+			} else {
+				// One replaced by many
+				jarsElement.removeChild(jarElement);
+				for (String name : newNames) {
+					Element newJarElement = jarsElement.getOwnerDocument().createElement("Jar");
+					newJarElement.setAttribute("location", ".");
+					newJarElement.setAttribute("name", name);
+					newJarElement.setAttribute("xsi:type", "ns1:Jar");
+					jarsElement.appendChild(newJarElement);
+				}
+			}
+		}
+	}
+
+	private void handleXmlProcessingException(File in, Document document, Exception e) throws Exception {
+		ByteArrayOutputStream baos = new ByteArrayOutputStream();
+		String msg;
+		try {
+			writeXML(baos, document);
+			msg = "An error occurred while trying to process this XML from " + in.getAbsolutePath() + ":\n" + baos.toString();
+		} catch (Exception ee) {
+			ee.printStackTrace();
+			msg = "An error occurred while trying to process XML from " + in.getAbsolutePath()
+					+ " A separate error has prevented the in-memory version of the XML from being serialized into this message.";
+		}
+		throw new Exception(msg, e);
 	}
 
 	private void writeXML(File out, Document document) throws FileNotFoundException, IOException {
@@ -890,32 +932,51 @@ public class Cagrid1_3TomcatToNewCagridTomcat {
 	 * oldLibDir to newLibDir and return its name.
 	 * <p>
 	 * If the named jar file has been superseded, then copy the superseding jar
-	 * file from the caGrid repository to newLibDir and return the name of the
-	 * superseding jar file.
+	 * file(s) from the caGrid repository to newLibDir and return the name(s) of
+	 * the superseding jar file(s).
 	 * 
 	 * @param oldJarFileName
 	 *            The name of the jar file in question.
-	 * @return null of the original jar is obsolete; the original jar file name
-	 *         if not superseded; otherwise the name of the superseding jar
-	 *         file.
+	 * @return a list of file names that are either the name of the original
+	 *         .jar file or the name(s) of the superseding file(s). The list
+	 *         will be empty if the file is obsolete.
 	 * @throws IOException
 	 *             If there is a problem
 	 */
-	private String processJarFile(String oldJarFileName) throws IOException {
-		File supersedingFile = supersededJarFileMap.get(oldJarFileName);
-		if (supersedingFile == null) {
+	private ImmutableList<String> processJarFile(String oldJarFileName) throws IOException {
+		List<File> supersedingFiles = supersededJarFileMultimap.get(oldJarFileName);
+		int supersedingFileCount = supersedingFiles.size();
+		if (supersedingFileCount == 0) {
 			File jarFile = new File(oldLibDir, oldJarFileName);
 			copyFileToDirectory(jarFile, newLibDir);
-			System.out.println("Keeping " + oldJarFileName + " from old container.");System.out.flush();
-			return oldJarFileName;
-		} else if (supersedingFile == OBSOLETE) {
-			System.out.println(oldJarFileName + " is obsolete and will not be copied.");System.out.flush();
-			return null;
+			System.out.println("Keeping " + oldJarFileName + " from old container.");
+			return ImmutableList.of(oldJarFileName);
+		} else if (supersedingFileCount == 1 && supersedingFiles.get(0) == OBSOLETE) {
+			System.out.println(oldJarFileName + " is obsolete and will not be copied.");
+			return ImmutableList.of();
 		} else {
-			copyFileToDirectory(supersedingFile, newLibDir);
-			System.out.println("Replacing " + oldJarFileName + " with " + supersedingFile.getAbsolutePath());System.out.flush();
-			return supersedingFile.getName();
+			ImmutableList.Builder<String> builder = ImmutableList.builder();
+			for (File file : supersedingFiles) {
+				copyFileToDirectory(file, newLibDir);
+				builder.add(file.getName());
+			}
+			logJarReplacement(oldJarFileName, supersedingFiles, supersedingFileCount);
+
+			return builder.build();
 		}
+	}
+
+	private void logJarReplacement(String oldJarFileName, List<File> supersedingFiles, int supersedingFileCount) {
+		System.out.print("Replacing " + oldJarFileName + " with ");
+		for (int i = 0; i < supersedingFileCount - 2; i++) {
+			System.out.print(supersedingFiles.get(i).getAbsolutePath());
+			System.out.print(", ");
+		}
+		if (supersedingFileCount > 1) {
+			System.out.print(supersedingFiles.get(supersedingFileCount - 2).getAbsolutePath());
+			System.out.print(" and ");
+		}
+		System.out.print(supersedingFiles.get(supersedingFileCount - 1).getAbsolutePath());
 	}
 
 	/**
