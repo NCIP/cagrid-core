@@ -381,8 +381,9 @@ public final class CommonTools {
      */
     public static String getPackageName(String fullNamespace) {
         try {
-            // TODO: where should this mapperClassname preference be set
+            // TODO: where should this mapperClassname preference be set?
             String mapperClassname = CABIG_NS2_PKG_MAPPER;
+            // TODO: where should this class be loaded from? ExtensionTools.loadExtensionClass()?
             Class<?> clazz = Class.forName(mapperClassname);
             NamespaceToPackageMapper mapper = (NamespaceToPackageMapper) clazz.newInstance();
             return mapper.getPackageName(fullNamespace);
