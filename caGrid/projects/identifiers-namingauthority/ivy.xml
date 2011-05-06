@@ -10,6 +10,7 @@
 
   <configurations>
 	 <!-- Private Configurations -->
+	<conf name="target_grid" visibility="private" />
     <conf name="impl" visibility="private" extends="default" />
     <conf name="annotations" visibility="private" />
     <conf name="impl-test" visibility="private" />
@@ -25,8 +26,9 @@
   </publications>
 
   <dependencies>
-
     <dependency org="caGrid" name="testing" rev="latest.integration" conf="impl-test->system" />
+    
+    <dependency rev="${target.grid}" org="caGrid" name="target_grid" conf="target_grid->urls" />
 
     <dependency rev="4.8.2" org="junit" name="junit" conf="impl-test->default" />
     <dependency rev="1.1" org="apache" name="commons-logging" conf="default->default" />

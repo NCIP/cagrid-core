@@ -11,6 +11,8 @@
 	
     <!-- Information -->
 	<property name="project.name" value="${ant.project.name}" />
+	
+	<property name="na.properties.file" value="WebContent/WEB-INF/na.properties"/>
     
     <property name="src.dir" value="${basedir}/src" />
 	<property name="domain.dir" value="${basedir}/domain/src" />
@@ -21,7 +23,8 @@
     <property name="namingauthority.jarfile" value="${jar.dir}/${project.name}-namingauthority-${project.version}.jar" />
     <property name="lib.dir" value="${basedir}/lib" />
     <property name="ext.lib.dir" value="${basedir}/ext/dependencies/impl/jars" />
-    <property name="ext.test.lib.dir" location="${basedir}/ext/dependencies/test/jars" />
+	<property name="ext.test.lib.dir" location="${basedir}/ext/dependencies/test/jars" />
+	<property name="ext.targetgrid.dir" location="${basedir}/ext/target_grid"/>
 	
 	<!-- javac options -->
 	<property name="java.source" value="1.5"/>
@@ -106,8 +109,23 @@
                 <include name="**/*.jar" />
             </fileset>
         </path>
-
     </target>
+	
+	
+	<target name="configure" description="Configures the service URLs based on the target grid configuration">
+		<!-- define the list of template files -->
+		<dirname file="${na.properties.file}" property="propfile.out.dir"/>
+		<fileset id="templates.fileset" dir="${propfile.out.dir}">
+			<include name="na.properties.template"/>
+		</fileset>
+		
+		<!-- find and replace in the template files -->
+		<copy tofile="${na.properties.file}" overwrite="true">
+			<fileset refid="templates.fileset" />
+			<mapper type="glob" from="*.template" to="*" />
+			<filterset filtersfile="${ext.targetgrid.dir}/service_urls.properties" />
+		</copy>
+	</target>
 
 
     <!-- =============================================================== -->
@@ -217,7 +235,7 @@
 	<target name="addAdmin" description="Adds administrator to root identifier" depends="all,inputAdminUser">
 		<java classname="org.cagrid.identifiers.namingauthority.util.SecurityUtil" fork="yes" failonerror="true">
 			<arg value="WebContent/WEB-INF/applicationContext-na.xml" />
-		    <arg value="WebContent/WEB-INF/na.properties" />
+		    <arg value="${na.properties.file}" />
 			<arg value="addAdmin" />
 			<arg value="${adminuser.input}" />
 		    <classpath refid="run.classpath" />
