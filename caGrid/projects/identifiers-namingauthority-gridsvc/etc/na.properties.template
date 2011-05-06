@@ -1,0 +1,9 @@
+cagrid.na.prefix=@cagrid.master.na.prefix@
+cagrid.na.grid.url=@cagrid.master.na.grid.url@
+
+cagrid.na.db.dialect=org.hibernate.dialect.MySQL5InnoDBDialect
+cagrid.na.db.driver=com.mysql.jdbc.Driver
+cagrid.na.db.name=nadb
+cagrid.na.db.url=jdbc:mysql://localhost:3306/${cagrid.na.db.name}
+cagrid.na.db.username=root
+cagrid.na.db.password=

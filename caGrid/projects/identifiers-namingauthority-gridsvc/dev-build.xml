@@ -12,35 +12,37 @@
 	<!-- ============================================================== -->
 
 	<property environment="env" />
-   <property file="${basedir}/project.properties" />
-   <property file="${basedir}/build.properties" />
+	<property file="${basedir}/project.properties" />
+	<property file="${basedir}/build.properties" />
 
 	<property name="jar.prefix" value="caGrid-${service.name}" />
-   <property name="jar.suffix" value="${project.version}.jar" />
+	<property name="jar.suffix" value="${project.version}.jar" />
 
-   <property name="common.jar.name" value="${jar.prefix}-common-${jar.suffix}" />
-   <property name="client.jar.name" value="${jar.prefix}-client-${jar.suffix}" />
-   <property name="service.jar.name" value="${jar.prefix}-service-${jar.suffix}" />
-   <property name="stubs.jar.name" value="${jar.prefix}-stubs-${jar.suffix}" />
-   <property name="test.jar.name" value="${jar.prefix}-tests-${jar.suffix}" />
+	<property name="common.jar.name" value="${jar.prefix}-common-${jar.suffix}" />
+	<property name="client.jar.name" value="${jar.prefix}-client-${jar.suffix}" />
+	<property name="service.jar.name" value="${jar.prefix}-service-${jar.suffix}" />
+	<property name="stubs.jar.name" value="${jar.prefix}-stubs-${jar.suffix}" />
+	<property name="test.jar.name" value="${jar.prefix}-tests-${jar.suffix}" />
 
 	<property name="ext.dir" location="${basedir}/ext" />
-   <property name="ext.dependencies.dir" location="${ext.dir}/dependencies" />
+	<property name="ext.dependencies.dir" location="${ext.dir}/dependencies" />
 	<property name="ext.targetgrid.dir" location="${ext.dir}/target_grid" />
-   <property name="ext.lib.dir" location="${ext.dependencies.dir}/service/jars" />
+	<property name="ext.lib.dir" location="${ext.dependencies.dir}/service/jars" />
 	<property name="ext.test.lib.dir" value="${ext.dependencies.dir}/test/jars" />
-   <property name="ext.tools.lib.dir" location="${ext.dependencies.dir}/tools/jars" />
+	<property name="ext.tools.lib.dir" location="${ext.dependencies.dir}/tools/jars" />
+	
+	<property name="na.properties.file" value="etc/na.properties"/>
 
-   <!-- overide the introduce location of this which is suposed to be in tools/lib -->
-   <property name="ant.contrib.location" value="${ext.tools.lib.dir}/ant-contrib-1.0b3.jar" />
-	
-    <property name="test.dir" value="test" />
-    <property name="test.src.dir" value="${test.dir}/src" />
-    <property name="test.lib.dir" value="${test.dir}/lib" />
-    <property name="test.log.dir" value="test/logs" />
-    <property name="junit.results.dir" value="${test.log.dir}/junit" />
-	
-    <import file="${test.dir}/test.xml" />
+	<!-- overide the introduce location of this which is suposed to be in tools/lib -->
+	<property name="ant.contrib.location" value="${ext.tools.lib.dir}/ant-contrib-1.0b3.jar" />
+
+	<property name="test.dir" value="test" />
+	<property name="test.src.dir" value="${test.dir}/src" />
+	<property name="test.lib.dir" value="${test.dir}/lib" />
+	<property name="test.log.dir" value="test/logs" />
+	<property name="junit.results.dir" value="${test.log.dir}/junit" />
+
+	<import file="${test.dir}/test.xml" />
 
 	<!-- ============================================================== -->
 	<!-- Create any extended Classpaths here                            -->
@@ -48,8 +50,8 @@
 	<target name="defineExtendedClasspaths">
 		<path id="base.extended.classpath">
 			<fileset dir="${ext.lib.dir}">
-            <include name="**/*" />
-         </fileset>
+				<include name="**/*" />
+			</fileset>
 		</path>
 		<path id="service.build.extended.classpath">
 		</path>
@@ -57,20 +59,20 @@
 		</path>
 		<path id="test.build.extended.classpath">
 			<fileset dir="${ext.test.lib.dir}">
-            <include name="**/*" />
-         </fileset>
+				<include name="**/*" />
+			</fileset>
 		</path>
 		<path id="test.run.extended.classpath">
 		</path>
 		<path id="run.extended.classpath">
 		</path>
 		<path id="tasks.run.extended.classpath">
-         <fileset dir="${ext.lib.dir}">
-            <include name="**/*.jar" />
-         </fileset>
+			<fileset dir="${ext.lib.dir}">
+				<include name="**/*.jar" />
+			</fileset>
 			<fileset dir="${ext.tools.lib.dir}">
-            <include name="*.jar" />
-         </fileset>
+				<include name="*.jar" />
+			</fileset>
 		</path>
 	</target>
 
@@ -213,8 +215,16 @@
 			<mapper type="glob" from="*.template" to="*" />
 			<filterset filtersfile="${ext.targetgrid.dir}/service_urls.properties" />
 		</copy>
+		
+		<copy tofile="${na.properties.file}" overwrite="true">
+			<fileset dir="${basedir}">
+				<include name="${na.properties.file}.template"/>
+			</fileset>
+			<mapper type="glob" from="*.template" to="*"/>
+			<filterset filtersfile="${ext.targetgrid.dir}/service_urls.properties"/>
+		</copy>
 	</target>
-	
+
 
 
 </project>
