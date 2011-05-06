@@ -192,7 +192,7 @@ public class ExtensionsUpgradeManager {
 					// run the upgraders that we put together in order
 					for (int i = 0; i < upgrades.size(); i++) {
 						UpgradeDescriptionType upgrade = upgrades.get(i);
-						Class<?> clazz = Class.forName(upgrade.getUpgradeClass());
+						Class<?> clazz = ExtensionTools.loadExtensionClass(upgrade.getUpgradeClass());
 						Constructor<?> con = clazz.getConstructor(new Class[] {
 								ExtensionType.class, ServiceInformation.class,
 								String.class, String.class, String.class });
