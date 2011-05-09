@@ -207,11 +207,11 @@
 		<basename file="${service.dir}" property="service.dir.name" />
 		<property name="newService.dir" location="${newEtc.dir}/${service.dir.name}" />
 
-		<pathconvert property="service.name" >
+		<pathconvert property="service.name">
 			<map from="${basedir}/cagrid_" to='' />
 			<path location="${service.dir.name}" />
 		</pathconvert>
-		
+
 		<echo>Service name is ${service.name}</echo>
 
 		<!-- Copy wsdl and schemas -->

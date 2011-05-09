@@ -7,6 +7,7 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.management.modelmbean.XMLParseException;
@@ -137,8 +138,14 @@ public class Cagrid1_3TomcatToNewCagridTomcat {
 		File cqlLib = new File(cql, NEW_CAGRID_VERSION);
 		mapBuilder.put("caGrid-CQL-cql.1.0-1.3.jar", //
 				new File(cqlLib, "caGrid-CQL-cql.1.0-" + NEW_CAGRID_VERSION + ".jar"));
+		mapBuilder.put("caGrid-CQL-cql.1.0-1.3.jar", //
+				new File(cqlLib, "caGrid-CQL-utils-" + NEW_CAGRID_VERSION + ".jar"));
+		mapBuilder.put("caGrid-CQL-cql.1.0-1.3.jar", //
+				new File(cqlLib, "caGrid-CQL-cql.2.0-" + NEW_CAGRID_VERSION + ".jar"));
 		mapBuilder.put("caGrid-CQL-cql.2.0-1.3.jar", //
 				new File(cqlLib, "caGrid-CQL-cql.2.0-" + NEW_CAGRID_VERSION + ".jar"));
+		mapBuilder.put("caGrid-CQL-cql.2.0-1.3.jar", //
+				new File(cqlLib, "caGrid-CQL-utils-" + NEW_CAGRID_VERSION + ".jar"));
 		mapBuilder.put("caGrid-CQL-tests-1.3.jar", //
 				new File(cqlLib, "caGrid-CQL-tests-" + NEW_CAGRID_VERSION + ".jar"));
 
@@ -824,12 +831,12 @@ public class Cagrid1_3TomcatToNewCagridTomcat {
 	 * <p>
 	 * If the .jar file described by a Jar element is superseded by exactly one
 	 * file then the value of the Jar element's name attribute is updated with
-	 * the name of the new .jar file. 
+	 * the name of the new .jar file.
 	 * <p>
-	 * If the .jar file is superseded by multiple
-	 * .jar files, then the corresponding Jar element is removed for the Jars
-	 * element and Jar elements describing the superseding .jar files are added
-	 * to the Jar element.
+	 * If the .jar file is superseded by multiple .jar files, then the
+	 * corresponding Jar element is removed for the Jars element and Jar
+	 * elements describing the superseding .jar files are added to the Jar
+	 * element.
 	 * 
 	 * @param jarsElement
 	 *            A Jars element that contains Jar elements that each describe a
@@ -841,11 +848,17 @@ public class Cagrid1_3TomcatToNewCagridTomcat {
 	 *             if there is a problem copying .jar files.
 	 */
 	private void processJarList(Element jarsElement) throws XMLParseException, IOException {
-		NodeList jarList = jarsElement.getElementsByTagName("Jar");
-		int jarListLength = jarList.getLength();
-		System.out.println("Found list of " + jarListLength + " .jar files to process.");
-		for (int jarListIndex = 0; jarListIndex < jarListLength; jarListIndex++) {
-			Element jarElement = (Element) jarList.item(jarListIndex);
+		NodeList nodeList = jarsElement.getElementsByTagName("Jar");
+		int nodeListLength = nodeList.getLength();
+		System.out.println("Found list of " + nodeListLength + " .jar files to process.");
+
+		// Copy nodeList to an ArrayList so that changes to the contents of the
+		// Jars element will not confuse the node list
+		List<Element> jarList = new ArrayList<Element>();
+		for (int i = 0; i < nodeListLength; i++) {
+			jarList.add((Element)nodeList.item(i));
+		}
+		for (Element jarElement : jarList) {
 			Attr nameAttr = findNameAttribute(jarElement);
 			String oldName = nameAttr.getValue();
 			List<String> newNames = processJarFile(oldName);
@@ -976,7 +989,7 @@ public class Cagrid1_3TomcatToNewCagridTomcat {
 			System.out.print(supersedingFiles.get(supersedingFileCount - 2).getAbsolutePath());
 			System.out.print(" and ");
 		}
-		System.out.print(supersedingFiles.get(supersedingFileCount - 1).getAbsolutePath());
+		System.out.println(supersedingFiles.get(supersedingFileCount - 1).getAbsolutePath());
 	}
 
 	/**
