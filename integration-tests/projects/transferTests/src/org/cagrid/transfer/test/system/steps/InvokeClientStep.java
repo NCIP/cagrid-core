@@ -13,7 +13,6 @@ import gov.nih.nci.cagrid.testing.system.deployment.ServiceContainer;
 
 
 public class InvokeClientStep extends BaseStep {
-    public static final String TEST_URL_SUFFIX = "/wsrf/services/cagrid/";
 
     private TestCaseInfo tci;
     private ServiceContainer container;
