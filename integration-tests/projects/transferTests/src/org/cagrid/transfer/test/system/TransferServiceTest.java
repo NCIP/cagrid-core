@@ -95,6 +95,7 @@ public class TransferServiceTest extends ServiceStoryBase {
                 steps.add(new CopyProxyStep((SecureContainer) getContainer(), tci));
                 steps.add(new CopyCAStep((SecureContainer)getContainer(), tci));
             }
+            steps.add(new SetIndexRegistrationStep(tci.getDir(), false));
             // deploy the service we just created into the container
             steps.add(new DeployServiceStep(getContainer(), tci.getDir()));
             // start up the container
