@@ -403,7 +403,7 @@ public class ExtensionTools {
             for (int i = 0; i < jars.length; i++) {
                 jarUrls[i] = jars[i].toURI().toURL();
             }
-            extensionClassLoader = new URLClassLoader(jarUrls, Thread.currentThread().getContextClassLoader());
+            extensionClassLoader = new URLClassLoader(jarUrls, ExtensionTools.class.getClassLoader());
         }
         return extensionClassLoader;
     }
@@ -412,7 +412,7 @@ public class ExtensionTools {
     public static Class<?> loadExtensionClass(String className) throws Exception {
         Class<?> c = null;
         try {
-            c = Thread.currentThread().getContextClassLoader().loadClass(className);
+            c = ExtensionTools.class.getClassLoader().loadClass(className);
         } catch (ClassNotFoundException ex) {
             logger.info("Class " + className + " not found in current context class loader; trying the extended classloader");
         }

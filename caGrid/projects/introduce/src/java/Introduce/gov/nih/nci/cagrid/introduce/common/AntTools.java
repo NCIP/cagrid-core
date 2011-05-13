@@ -3,6 +3,8 @@ package gov.nih.nci.cagrid.introduce.common;
 import gov.nih.nci.cagrid.introduce.IntroduceConstants;
 
 import java.io.File;
+import java.net.URL;
+import java.net.URLClassLoader;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -177,7 +179,7 @@ public class AntTools {
         }
 
         command.add("-classpath");
-        command.add(escapeIfNecessary(getAntLauncherJarLocation(System.getProperty("java.class.path"))));
+        command.add(escapeIfNecessary(getAntLauncherJarLocation(getClasspath())));
         command.add("org.apache.tools.ant.launch.Launcher");
         command.add("-buildfile");
         command.add(escapeIfNecessary(buildFileDir + File.separator + "build.xml"));
@@ -200,8 +202,7 @@ public class AntTools {
 
 
     static String getAntLauncherJarLocation(String path) throws Exception {
-        String separator = isWindowsOS() ? ";" : ":";
-        StringTokenizer pathTokenizer = new StringTokenizer(path, separator);
+        StringTokenizer pathTokenizer = new StringTokenizer(path, File.pathSeparator);
         while (pathTokenizer.hasMoreTokens()) {
             String pathElement = pathTokenizer.nextToken();
             if ((pathElement.indexOf("ant-launcher") != -1) && pathElement.endsWith(".jar")) {
@@ -254,5 +255,20 @@ public class AntTools {
         s = s.replaceAll("([\\\\]*)\\z", "$1$1");
         return "\"" + s + "\"";
     }
-
+    
+    
+    static String getClasspath() {
+        StringBuffer path = new StringBuffer();
+        ClassLoader l = AntTools.class.getClassLoader();
+        while (l != null && l instanceof URLClassLoader) {
+            URL[] urls = ((URLClassLoader) l).getURLs();
+            for (URL u : urls) {
+                path.append(u.getPath()).append(File.pathSeparator);
+            }
+            l = l.getParent();
+        }
+        // throw out the closing path separator, even though it probably doesn't hurt anything
+        path.deleteCharAt(path.length() - 1);
+        return path.toString();
+    }
 }

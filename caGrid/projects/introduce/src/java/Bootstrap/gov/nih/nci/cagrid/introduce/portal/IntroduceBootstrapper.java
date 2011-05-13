@@ -55,7 +55,7 @@ public class IntroduceBootstrapper {
         locations.add(System.getenv(GLOBUS_LOCATION_ENV) + File.separator + "lib");
         locations.add(System.getenv(ANT_HOME_ENV) + File.separator + "lib");
         Collections.addAll(locations, LIB_LOCATIONS);
-        for (String location : LIB_LOCATIONS) {
+        for (String location : locations) {
             File baseDir = new File(location);
             File[] jars = baseDir.listFiles(new FileFilter() {
                 public boolean accept(File pathname) {
@@ -99,7 +99,7 @@ public class IntroduceBootstrapper {
             System.out.println(l.toString());
             URL[] urls = ((URLClassLoader) l).getURLs();
             for (URL u : urls) {
-                System.out.println("\t" + u.toString());
+                System.out.println("\t" + u.getPath());
             }
             l = l.getParent();
         }        
