@@ -79,7 +79,7 @@ public class UpgradeSDKFrom1pt2Tests extends BaseSystemTest {
             }
         };
         try {
-            this.container = ServiceContainerFactory.createContainer(ServiceContainerType.GLOBUS_CONTAINER);
+            this.container = ServiceContainerFactory.createContainer(ServiceContainerType.TOMCAT_6_CONTAINER);
         } catch (IOException ex) {
             ex.printStackTrace();
             fail("Error setting up service container: " + ex.getMessage());

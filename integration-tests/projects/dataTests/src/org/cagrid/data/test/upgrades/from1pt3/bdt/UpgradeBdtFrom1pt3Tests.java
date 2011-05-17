@@ -80,7 +80,7 @@ public class UpgradeBdtFrom1pt3Tests extends BaseSystemTest {
             }
         };
         try {
-            this.container = ServiceContainerFactory.createContainer(ServiceContainerType.GLOBUS_CONTAINER);
+            this.container = ServiceContainerFactory.createContainer(ServiceContainerType.TOMCAT_6_CONTAINER);
         } catch (IOException ex) {
             ex.printStackTrace();
             fail("Error creating service container: " + ex.getMessage());
