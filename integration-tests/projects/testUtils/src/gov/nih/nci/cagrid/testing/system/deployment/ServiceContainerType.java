@@ -11,7 +11,9 @@ package gov.nih.nci.cagrid.testing.system.deployment;
  * @version $Id: ServiceContainerType.java,v 1.2 2008-10-13 20:42:35 oster Exp $ 
  */
 public enum ServiceContainerType {
-    GLOBUS_CONTAINER, TOMCAT_CONTAINER, TOMCAT_5_CONTAINER, TOMCAT_6_CONTAINER, JBOSS_CONTAINER, SECURE_TOMCAT_CONTAINER, SECURE_TOMCAT_5_CONTAINER, SECURE_TOMCAT_6_CONTAINER;
+    /**@deprecated**/GLOBUS_CONTAINER, 
+    TOMCAT_CONTAINER, TOMCAT_5_CONTAINER, TOMCAT_6_CONTAINER, 
+    JBOSS_CONTAINER, SECURE_TOMCAT_CONTAINER, SECURE_TOMCAT_5_CONTAINER, SECURE_TOMCAT_6_CONTAINER;
     
     public static final String CONTAINER_DIR_PROPERTY = "testing.containers.dir";
     public static final String DEFAULT_CONTAINER_DIR = "../testUtils/containers";
