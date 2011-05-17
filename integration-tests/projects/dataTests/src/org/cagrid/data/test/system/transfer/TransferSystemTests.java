@@ -76,7 +76,7 @@ public class TransferSystemTests extends BaseSystemTest {
         // obtain a new container instance
         try {
             // must be tomcat for transfer to work right
-            container = ServiceContainerFactory.createContainer(ServiceContainerType.TOMCAT_CONTAINER);
+            container = ServiceContainerFactory.createContainer(ServiceContainerType.TOMCAT_6_CONTAINER);
         } catch (Exception ex) {
             ex.printStackTrace();
             fail("Failed to create container: " + ex.getMessage());
