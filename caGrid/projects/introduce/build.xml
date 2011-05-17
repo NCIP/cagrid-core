@@ -218,17 +218,39 @@
 	<!-- Create Jars                                                         -->
 	<!-- =================================================================== -->
 	<target name="jar" depends="compile" description="Builds the Jar Files">
-		<jar jarfile="${jars.prefix}bootstrap${jars.suffix}" basedir="${bootstrap.classes.dir}">
+		<jar jarfile="${jars.prefix}bootstrap${jars.suffix}">
+			<fileset dir="${bootstrap.classes.dir}">
+				<include name="**/*"/>
+			</fileset>
+			<fileset dir="${src.dir}/Bootstrap">
+				<include name="**/*.java"/>
+			</fileset>
 			<manifest>
 				<attribute name="Created-By" value="${user.name}"/>
 			</manifest>
 		</jar>
-		<jar jarfile="${jars.prefix}core${jars.suffix}" basedir="${introduce.classes.dir}" excludes="gov/nih/nci/cagrid/introduce/servicetasks/**/* gov/nih/nci/cagrid/introduce/servicetools/**/*" defaultExcludes="false" update="no">
+		<jar jarfile="${jars.prefix}core${jars.suffix}" defaultExcludes="false" update="no">
+			<fileset dir="${introduce.classes.dir}">
+				<include name="**/*"/>
+				<exclude name="gov/nih/nci/cagrid/introduce/servicetasks/**/*"/>
+				<exclude name="gov/nih/nci/cagrid/introduce/servicetools/**/*"/>
+			</fileset>
+			<fileset dir="${src.dir}/Introduce">
+				<include name="**/*"/>
+				<exclude name="gov/nih/nci/cagrid/introduce/servicetasks/**/*"/>
+				<exclude name="gov/nih/nci/cagrid/introduce/servicetools/**/*"/>
+			</fileset>
 			<manifest>
 				<attribute name="Created-By" value="${user.name}" />
 			</manifest>
 		</jar>
-		<jar jarfile="${jars.prefix}portal${jars.suffix}" basedir="${portal.classes.dir}" defaultExcludes="false" update="no">
+		<jar jarfile="${jars.prefix}portal${jars.suffix}" defaultExcludes="false" update="no">
+			<fileset dir="${portal.classes.dir}">
+				<include name="**/*"/>
+			</fileset>
+			<fileset dir="${src.dir}/Portal">
+				<include name="**/*.java"/>
+			</fileset>
 			<manifest>
 				<attribute name="Created-By" value="${user.name}" />
 			</manifest>
@@ -236,7 +258,13 @@
 		<copy todir="${updater.classes.dir}">
 			<fileset dir="${introduce.classes.dir}" includes="gov/nih/nci/cagrid/introduce/beans/software/*.class" />
 		</copy>
-		<jar jarfile="${jars.prefix}updater${jars.suffix}" basedir="${updater.classes.dir}" defaultExcludes="false" update="no">
+		<jar jarfile="${jars.prefix}updater${jars.suffix}" defaultExcludes="false" update="no">
+			<fileset dir="${updater.classes.dir}">
+				<include name="**/*"/>
+			</fileset>
+			<fileset dir="${src.dir}/UpdateManager">
+				<include name="**/*.java"/>
+			</fileset>
 			<manifest>
 				<attribute name="Created-By" value="${user.name}" />
 			</manifest>
