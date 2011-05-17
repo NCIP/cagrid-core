@@ -106,7 +106,7 @@ public class ContainerLogConfigUtil {
         File configFile = null;
         if (container instanceof GlobusServiceContainer) {
             configFile = new File(container.getProperties().getContainerDirectory(), LOG_FILE_NAME);
-        } else if (container instanceof TomcatServiceContainer) {
+        } else if (container instanceof TomcatServiceContainer || container instanceof Tomcat6ServiceContainer) {
             configFile = new File(container.getProperties().getContainerDirectory(), 
                 "webapps/wsrf/WEB-INF/classes/" + LOG_FILE_NAME);
         }

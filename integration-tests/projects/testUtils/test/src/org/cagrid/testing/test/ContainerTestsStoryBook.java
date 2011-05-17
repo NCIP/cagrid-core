@@ -28,6 +28,16 @@ public class ContainerTestsStoryBook {
         	
         	s3.runBare();
         	
+        	Story s4 = new ContainerTest(ServiceContainerFactory
+        	    .createContainer(ServiceContainerType.TOMCAT_6_CONTAINER));
+        	
+        	s4.runBare();
+        	
+        	Story s5 = new ContainerTest(ServiceContainerFactory
+        	    .createContainer(ServiceContainerType.SECURE_TOMCAT_6_CONTAINER));
+        	
+        	s5.runBare();
+        	
         } catch (IOException e) {
             e.printStackTrace();
         }

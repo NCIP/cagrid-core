@@ -35,6 +35,7 @@ public class ServiceContainerFactory {
 
     /**
      * Creates a new service container, with all options configured by the caller.
+     * <note>For now, the TOMCAT_CONTAINER returns the same as TOMCAT_5_CONTAINER</note>
      * 
      * @param type
      *      The type of container
@@ -59,11 +60,20 @@ public class ServiceContainerFactory {
                 container = new GlobusServiceContainer(props);
                 break;
             case TOMCAT_CONTAINER:
+            case TOMCAT_5_CONTAINER:
                 container = new TomcatServiceContainer(props);
                 break;
+            case TOMCAT_6_CONTAINER:
+                container = new Tomcat6ServiceContainer(props);
+                break;
             case SECURE_TOMCAT_CONTAINER:
+            case SECURE_TOMCAT_5_CONTAINER:
                 props.setSecure(true);
                 container = new TomcatSecureServiceContainer(props);
+                break;
+            case SECURE_TOMCAT_6_CONTAINER:
+                props.setSecure(true);
+                container = new Tomcat6SecureServiceContainer(props);
                 break;
             case JBOSS_CONTAINER:
                 throw new UnsupportedOperationException(ServiceContainerType.JBOSS_CONTAINER + " is not yet supported");

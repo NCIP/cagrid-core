@@ -36,8 +36,10 @@ import com.counter.service.CounterServiceAddressingLocator;
 
 
 /**
- * GlobusServiceContainer Service container implementation for globus 4.0.3
+ * GlobusServiceContainer 
+ * Service container implementation for globus 4.0.3
  * 
+ * @deprecated Support for this container is weak and will be removed in the future
  * @author David Ervin
  * @created Oct 12, 2007 12:01:17 PM
  * @version $Id: GlobusServiceContainer.java,v 1.4 2007/11/05 16:19:58 dervin

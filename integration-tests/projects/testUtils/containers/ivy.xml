@@ -14,19 +14,21 @@
     <!-- Containers-->
     <conf name="containers" visibility="public" description="All containers" extends="globus.container,tomcat.container,secure.tomcat.container"/>
     <conf name="globus.container" visibility="public" description="The globus container"/>
-      <conf name="tomcat.container" visibility="public" description="The tomcat container"/>
-      <conf name="secure.tomcat.container" visibility="public" description="The secure tomcat container"/>
+    <conf name="tomcat.container" visibility="public" description="The tomcat container"/>
+    <conf name="secure.tomcat.container" visibility="public" description="The secure tomcat container"/>
   </configurations>
 
 
   <publications>
     <artifact name="minimal-ws-core-enum-4.0.3" conf="globus.container" type="zip"/>
     <artifact name="minimal-tomcat-5.0.28-with-globus-4.0.3" conf="tomcat.container" type="zip"/>
+    <artifact name="apache-tomcat-6.0.32-testing" conf="tomcat.container" type="zip"/>
     <artifact name="minimal-secure-tomcat-5.0.28-with-globus-4.0.3" conf="secure.tomcat.container" type="zip"/>
+    <artifact name="apache-tomcat-6.0.32-secure-testing" conf="secure.tomcat.container" type="zip"/>
   </publications>
 
   <dependencies>
- 	<dependency org="caGrid" name="core" rev="latest.integration" conf="impl->default;impl->test"/>
+    <dependency org="caGrid" name="core" rev="latest.integration" conf="impl->default;impl->test"/>
 
     <dependency rev="1.0" org="jdom" name="jdom" conf="impl->*"/>
   </dependencies>
