@@ -48,7 +48,6 @@
 	<classpathentry kind="lib" path="ext/dependencies/jars/caGrid-mms-stubs-1.4.1.jar"/>
 	<classpathentry kind="var" path="GT4_LOCATION/lib/axis.jar" sourcepath="/GT4_LOCATION/ws-axis-src.zip"/>
 	<classpathentry kind="var" path="GT4_LOCATION/lib/addressing-1.0.jar" sourcepath="/GT4_LOCATION/ws-core-4.0.3-src.zip"/>
-	<classpathentry kind="var" path="GT4_LOCATION/lib/apply.sh"/>
 	<classpathentry kind="var" path="GT4_LOCATION/lib/axis-url.jar"/>
 	<classpathentry kind="var" path="GT4_LOCATION/lib/bcprov-jdk15-145.jar" sourcepath="/BOUNCYCASTLE_SRC"/>
 	<classpathentry kind="var" path="GT4_LOCATION/lib/bootstrap.jar"/>
@@ -106,8 +105,6 @@
 	<classpathentry kind="var" path="GT4_LOCATION/lib/servlet-api.jar"/>
 	<classpathentry kind="var" path="GT4_LOCATION/lib/servlet.jar"/>
 	<classpathentry kind="var" path="GT4_LOCATION/lib/ssl-proxies-2.0-SNAPSHOT.jar" sourcepath="/GLOBUS_SRC"/>
-	<classpathentry kind="var" path="GT4_LOCATION/lib/switchToLinks.sh"/>
-	<classpathentry kind="var" path="GT4_LOCATION/lib/switchToReal.sh"/>
 	<classpathentry kind="var" path="GT4_LOCATION/lib/wsdl4j.jar"/>
 	<classpathentry kind="var" path="GT4_LOCATION/lib/wsrf_common.jar"/>
 	<classpathentry kind="var" path="GT4_LOCATION/lib/wsrf_core_registry_stubs.jar"/>
