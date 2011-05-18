@@ -11,16 +11,32 @@
 	<!-- Pre Deploy Tomcat                                              -->
 	<!-- ============================================================== -->
 	<target name="preDeployTomcat">
-		 <copy todir="${tomcat.dir}/common/endorsed" overwrite="true">
-			            <fileset dir="${ext.endorsed.dir}">
-			                <include name="*.jar" />
-			            </fileset>
-			        </copy>
-				<copy todir="${build.lib.dir}">
-					<fileset dir="${ext.lib.dir}">
-						<include name="*.jar" />
-					</fileset>
-				</copy>
+		<available property="is.tomcat.5" file="${tomcat.dir}/common/endorsed" />
+		<available property="is.tomcat.6" file="${tomcat.dir}/endorsed" />
+		<copy todir="${build.lib.dir}">
+			<fileset dir="${ext.lib.dir}">
+				<include name="*.jar" />
+			</fileset>
+		</copy>
+		<antcall target="copyEndorsedForTomcat5" />
+		<antcall target="copyEndorsedForTomcat6" />
+	</target>
+
+
+	<target name="copyEndorsedForTomcat5" if="is.tomcat.5">
+		<copy todir="${tomcat.dir}/common/endorsed" overwrite="true">
+			<fileset dir="${ext.endorsed.dir}">
+				<include name="*.jar" />
+			</fileset>
+		</copy>
+	</target>
+
+	<target name="copyEndorsedForTomcat6" if="is.tomcat.6">
+		<copy todir="${tomcat.dir}/endorsed" overwrite="true">
+			<fileset dir="${ext.endorsed.dir}">
+				<include name="*.jar" />
+			</fileset>
+		</copy>
 	</target>
 
 
@@ -29,34 +45,34 @@
 	<!-- ============================================================== -->
 	<target name="preDeployGlobus">
 		<copy todir="${ext.globus.dir}/endorsed" overwrite="true">
-			            <fileset dir="${ext.endorsed.dir}">
-			                <include name="*.jar" />
-			            </fileset>
-			        </copy>
-				<copy todir="${build.lib.dir}">
-					<fileset dir="${ext.lib.dir}">
-						<include name="*.jar" />
-					</fileset>
-				</copy>
+			<fileset dir="${ext.endorsed.dir}">
+				<include name="*.jar" />
+			</fileset>
+		</copy>
+		<copy todir="${build.lib.dir}">
+			<fileset dir="${ext.lib.dir}">
+				<include name="*.jar" />
+			</fileset>
+		</copy>
 	</target>
-	
+
 	<!-- ============================================================== -->
 	<!-- Pre Deploy JBOSS                                               -->
 	<!-- ============================================================== -->
 	<target name="preDeployJBoss">
 		<copy todir="${jboss.dir}/lib/endorsed" overwrite="true">
-					<fileset dir="${ext.endorsed.dir}">
-						<include name="*.jar" />
-					</fileset>
-				</copy>
-				<copy todir="${build.lib.dir}" overwrite="true">
-					<fileset dir="${ext.lib.dir}">
-						<include name="*.jar" />
-					</fileset>
-				</copy>
+			<fileset dir="${ext.endorsed.dir}">
+				<include name="*.jar" />
+			</fileset>
+		</copy>
+		<copy todir="${build.lib.dir}" overwrite="true">
+			<fileset dir="${ext.lib.dir}">
+				<include name="*.jar" />
+			</fileset>
+		</copy>
 
 	</target>
-	
+
 	<!-- ============================================================== -->
 	<!-- Post UnDDeploy Tomcat                                              -->
 	<!-- ============================================================== -->
@@ -71,7 +87,7 @@
 	<target name="postUndeployGlobus">
 
 	</target>
-	
+
 	<!-- ============================================================== -->
 	<!-- Post UnDeploy JBOSS                                               -->
 	<!-- ============================================================== -->
