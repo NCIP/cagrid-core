@@ -3,7 +3,6 @@ package org.cagrid.gaards.authentication.test.system.steps;
 import gov.nih.nci.cagrid.authentication.bean.Credential;
 import gov.nih.nci.cagrid.authentication.client.AuthenticationClient;
 import gov.nih.nci.cagrid.opensaml.SAMLAssertion;
-import gov.nih.nci.cagrid.testing.system.deployment.ServiceContainer;
 
 public class DeprecatedAuthenticationStep extends BaseAuthenticationStep {
 

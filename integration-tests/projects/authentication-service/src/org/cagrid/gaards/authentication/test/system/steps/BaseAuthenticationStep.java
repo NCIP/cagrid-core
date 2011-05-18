@@ -1,7 +1,6 @@
 package org.cagrid.gaards.authentication.test.system.steps;
 
 import gov.nih.nci.cagrid.opensaml.SAMLAssertion;
-import gov.nih.nci.cagrid.testing.system.deployment.ServiceContainer;
 import gov.nih.nci.cagrid.testing.system.haste.Step;
 
 public abstract class BaseAuthenticationStep extends Step {

@@ -1,6 +1,5 @@
 package org.cagrid.gaards.authentication.test.system.steps;
 
-import gov.nih.nci.cagrid.testing.system.deployment.ServiceContainer;
 import gov.nih.nci.cagrid.testing.system.haste.Step;
 
 import java.util.Iterator;

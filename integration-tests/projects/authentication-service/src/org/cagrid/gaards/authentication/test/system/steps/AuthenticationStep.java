@@ -1,7 +1,6 @@
 package org.cagrid.gaards.authentication.test.system.steps;
 
 import gov.nih.nci.cagrid.opensaml.SAMLAssertion;
-import gov.nih.nci.cagrid.testing.system.deployment.ServiceContainer;
 
 import org.cagrid.gaards.authentication.Credential;
 import org.cagrid.gaards.authentication.client.AuthenticationClient;
