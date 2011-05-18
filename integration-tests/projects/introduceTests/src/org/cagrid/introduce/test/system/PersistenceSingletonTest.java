@@ -18,6 +18,7 @@ import gov.nih.nci.cagrid.testing.system.deployment.steps.DestroyContainerStep;
 import gov.nih.nci.cagrid.testing.system.deployment.steps.StartContainerStep;
 import gov.nih.nci.cagrid.testing.system.deployment.steps.StopContainerStep;
 import gov.nih.nci.cagrid.testing.system.deployment.steps.UnpackContainerStep;
+import gov.nih.nci.cagrid.testing.system.haste.Step;
 import gov.nih.nci.cagrid.testing.system.haste.Story;
 
 import java.util.Vector;
@@ -46,9 +47,8 @@ public class PersistenceSingletonTest extends Story {
 
 
     @Override
-    protected Vector steps() {
-
-        Vector steps = new Vector();
+    protected Vector<Step> steps() {
+        Vector<Step> steps = new Vector<Step>();
         try {
             steps.add(new UnpackContainerStep(container));
             steps.add(new CreateSkeletonStep(tci, false));
@@ -68,8 +68,6 @@ public class PersistenceSingletonTest extends Story {
             steps.add(new ModifyPersistenceClientStep(tci,true));
             steps.add(new StartContainerStep(container));
             steps.add(new InvokeClientStep(container,tci));
-            
-            
         } catch (Exception e) {
             e.printStackTrace();
             fail(e.getMessage());
@@ -82,7 +80,7 @@ public class PersistenceSingletonTest extends Story {
         // init the container
         try {
             container = ServiceContainerFactory.createContainer(
-                ServiceContainerType.GLOBUS_CONTAINER);
+                ServiceContainerType.TOMCAT_6_CONTAINER);
         } catch (Exception ex) {
             ex.printStackTrace();
             fail("Failed to create container: " + ex.getMessage());
@@ -124,5 +122,4 @@ public class PersistenceSingletonTest extends Story {
             e.printStackTrace();
         }
     }
-
 }

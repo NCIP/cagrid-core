@@ -56,7 +56,7 @@ public class ResourceCreationTest extends Story {
     }
 
 
-    protected Vector steps() {
+    protected Vector<Step> steps() {
         Vector<Step> steps = new Vector<Step>();
 
         try {
@@ -88,7 +88,7 @@ public class ResourceCreationTest extends Story {
         // init the service container
         try {
             container = ServiceContainerFactory.createContainer(
-                ServiceContainerType.GLOBUS_CONTAINER);
+                ServiceContainerType.TOMCAT_6_CONTAINER);
         } catch (Exception ex) {
             ex.printStackTrace();
             fail("Failed to create container: " + ex.getMessage());
@@ -98,8 +98,7 @@ public class ResourceCreationTest extends Story {
         tci3 = new TestCaseInfoBaseResource();
         tci4 = new TestCaseInfoSingletonResource();
         tci5 = new TestCaseInfoNotificationResource();
-        tci6 = new TestCaseInfoPersistentResource();
-        
+        tci6 = new TestCaseInfoPersistentResource();        
 
         Step step2 = new UnpackContainerStep(container);
         try {

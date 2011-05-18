@@ -73,7 +73,7 @@ public class Upgrade_1_2_Test extends Story {
     protected boolean storySetUp() throws Throwable {
         // init the container
         try {
-            container = ServiceContainerFactory.createContainer(ServiceContainerType.SECURE_TOMCAT_CONTAINER);
+            container = ServiceContainerFactory.createContainer(ServiceContainerType.SECURE_TOMCAT_6_CONTAINER);
         } catch (Exception ex) {
             ex.printStackTrace();
             fail("Failed to create container: " + ex.getMessage());
@@ -85,7 +85,6 @@ public class Upgrade_1_2_Test extends Story {
 
 
     protected void storyTearDown() throws Throwable {
-
         RemoveSkeletonStep step1 = new RemoveSkeletonStep(this.tci1);
         try {
             step1.runStep();
@@ -115,5 +114,4 @@ public class Upgrade_1_2_Test extends Story {
         TestResult result = runner.doRun(new TestSuite(Upgrade_1_2_Test.class));
         System.exit(result.errorCount() + result.failureCount());
     }
-
 }

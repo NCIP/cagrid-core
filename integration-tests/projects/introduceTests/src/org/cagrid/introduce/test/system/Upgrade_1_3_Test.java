@@ -14,6 +14,7 @@ import gov.nih.nci.cagrid.testing.system.deployment.steps.DestroyContainerStep;
 import gov.nih.nci.cagrid.testing.system.deployment.steps.StartContainerStep;
 import gov.nih.nci.cagrid.testing.system.deployment.steps.StopContainerStep;
 import gov.nih.nci.cagrid.testing.system.deployment.steps.UnpackContainerStep;
+import gov.nih.nci.cagrid.testing.system.haste.Step;
 import gov.nih.nci.cagrid.testing.system.haste.Story;
 
 import java.io.File;
@@ -50,12 +51,13 @@ public class Upgrade_1_3_Test extends Story {
     }
 
 
-    protected Vector steps() {
-        Vector steps = new Vector();
+    protected Vector<Step> steps() {
+        Vector<Step> steps = new Vector<Step>();
 
         try {
             steps.add(new UnpackContainerStep(container));
-            steps.add(new UnzipOldServiceStep(this.getClass().getResource("/gold/serviceVersions/" + "IntroduceTestService-1_3.zip").getFile(), this.tci1));
+            steps.add(new UnzipOldServiceStep(this.getClass()
+                .getResource("/gold/serviceVersions/" + "IntroduceTestService-1_3.zip").getFile(), this.tci1));
             steps.add(new UpgradesStep(this.tci1, true));
             steps.add(new ValidateWSDLStep(this.tci1, false));
             steps.add(new DeployServiceStep(container, this.tci1.getDir()));
@@ -73,7 +75,7 @@ public class Upgrade_1_3_Test extends Story {
         // init the container
         try {
             container = ServiceContainerFactory.createContainer(
-                ServiceContainerType.GLOBUS_CONTAINER);
+                ServiceContainerType.TOMCAT_6_CONTAINER);
         } catch (Exception ex) {
             ex.printStackTrace();
             fail("Failed to create container: " + ex.getMessage());
@@ -100,7 +102,6 @@ public class Upgrade_1_3_Test extends Story {
 
 
     protected void storyTearDown() throws Throwable {
-
         RemoveSkeletonStep step1 = new RemoveSkeletonStep(this.tci1);
         try {
             step1.runStep();
@@ -129,5 +130,4 @@ public class Upgrade_1_3_Test extends Story {
         TestResult result = runner.doRun(new TestSuite(Upgrade_1_3_Test.class));
         System.exit(result.errorCount() + result.failureCount());
     }
-
 }

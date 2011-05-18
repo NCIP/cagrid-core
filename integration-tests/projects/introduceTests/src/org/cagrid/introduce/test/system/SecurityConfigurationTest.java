@@ -1,6 +1,5 @@
 package org.cagrid.introduce.test.system;
 
-import gov.nih.nci.cagrid.introduce.test.NotificationTestCaseInfo;
 import gov.nih.nci.cagrid.introduce.test.TestCaseInfo;
 import gov.nih.nci.cagrid.introduce.test.steps.CreateSkeletonStep;
 import gov.nih.nci.cagrid.introduce.test.steps.RemoveSkeletonStep;
@@ -14,6 +13,7 @@ import gov.nih.nci.cagrid.testing.system.deployment.steps.DestroyContainerStep;
 import gov.nih.nci.cagrid.testing.system.deployment.steps.StartContainerStep;
 import gov.nih.nci.cagrid.testing.system.deployment.steps.StopContainerStep;
 import gov.nih.nci.cagrid.testing.system.deployment.steps.UnpackContainerStep;
+import gov.nih.nci.cagrid.testing.system.haste.Step;
 import gov.nih.nci.cagrid.testing.system.haste.Story;
 
 import java.io.File;
@@ -32,7 +32,7 @@ public class SecurityConfigurationTest extends Story {
     
     private ServiceContainer container;
     private TestCaseInfo tci;
-
+    
     public SecurityConfigurationTest() {
         this.setName("Introduce Security System Test");
         PropertyConfigurator.configure("." + File.separator + "conf" + File.separator
@@ -51,9 +51,8 @@ public class SecurityConfigurationTest extends Story {
 
 
     @Override
-    protected Vector steps() {
-
-        Vector steps = new Vector();
+    protected Vector<Step> steps() {
+        Vector<Step> steps = new Vector<Step>();
         try {
             steps.add(new UnpackContainerStep(container));
             steps.add(new CreateSkeletonStep(new SecurityTestCaseInfo(),false));
@@ -81,7 +80,7 @@ public class SecurityConfigurationTest extends Story {
         try {
             tci = new SecurityTestCaseInfo();
             container = ServiceContainerFactory.createContainer(
-                ServiceContainerType.SECURE_TOMCAT_CONTAINER);
+                ServiceContainerType.SECURE_TOMCAT_6_CONTAINER);
         } catch (Exception ex) {
             ex.printStackTrace();
             fail("Failed to create container: " + ex.getMessage());
@@ -121,5 +120,4 @@ public class SecurityConfigurationTest extends Story {
             e.printStackTrace();
         }
     }
-
 }

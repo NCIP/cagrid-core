@@ -67,7 +67,7 @@ public class SyncToolsTest extends Story {
     }
 
 
-    protected Vector steps() {
+    protected Vector<Step> steps() {
         Vector<Step> steps = new Vector<Step>();
 
         try {
@@ -75,8 +75,8 @@ public class SyncToolsTest extends Story {
             steps.add(new CreateSkeletonStep(tci1, true));
             steps.add(new AddServiceContextStep(tci2, true));
             steps.add(new AddMethodReturningClientHandleMethodStep(tci1, tci2, "testClientReturn", false, true));
-            steps
-                .add(new AddMethodReturningClientHandleMethodStep(tci1, tci2, "testClientReturnWithArray", true, true));
+            steps.add(new AddMethodReturningClientHandleMethodStep(
+                tci1, tci2, "testClientReturnWithArray", true, true));
             steps.add(new AddMetadataStep(tci1, true));
             steps.add(new AddServicePropertiesStep(tci1, true));
             steps.add(new AddSimpleMethodStep(tci1, "newMethod", false));
@@ -99,8 +99,8 @@ public class SyncToolsTest extends Story {
             steps.add(new AddSimpleMethodWithArraysStep(tci1, "newMethodWithArrays", true));
             steps.add(new AddBookstoreSchemaStep(tci1, false));
             steps.add(new AddComplexMethodWithFaultStep(tci1, "newComplexMethodWithFault", false));
-            steps
-                .add(new AddComplexMethodWithFaulsAndArraysStep(tci1, "newComplexMethodWithFaultStepsAndArrays", true));
+            steps.add(new AddComplexMethodWithFaulsAndArraysStep(
+                tci1, "newComplexMethodWithFaultStepsAndArrays", true));
             steps.add(new AddMetadatatWithLoadFromFileStep(tci1, true));
             steps.add(new ValidateWSDLStep(tci1,false));
             steps.add(new RemoveAllMetadataStep(tci1, true));
@@ -117,7 +117,7 @@ public class SyncToolsTest extends Story {
     protected boolean storySetUp() throws Throwable {
         // init the container
         try {
-            container = ServiceContainerFactory.createContainer(ServiceContainerType.GLOBUS_CONTAINER);
+            container = ServiceContainerFactory.createContainer(ServiceContainerType.TOMCAT_6_CONTAINER);
         } catch (Exception ex) {
             ex.printStackTrace();
             fail("Failed to create container: " + ex.getMessage());
@@ -159,6 +159,7 @@ public class SyncToolsTest extends Story {
             e.printStackTrace();
         }
     }
+    
 
     /**
      * Convenience method for running all the Steps in this Story.

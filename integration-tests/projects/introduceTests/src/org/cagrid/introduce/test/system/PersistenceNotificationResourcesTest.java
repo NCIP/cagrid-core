@@ -20,6 +20,7 @@ import gov.nih.nci.cagrid.testing.system.deployment.steps.DestroyContainerStep;
 import gov.nih.nci.cagrid.testing.system.deployment.steps.StartContainerStep;
 import gov.nih.nci.cagrid.testing.system.deployment.steps.StopContainerStep;
 import gov.nih.nci.cagrid.testing.system.deployment.steps.UnpackContainerStep;
+import gov.nih.nci.cagrid.testing.system.haste.Step;
 import gov.nih.nci.cagrid.testing.system.haste.Story;
 
 import java.io.File;
@@ -54,9 +55,8 @@ public class PersistenceNotificationResourcesTest extends Story {
 
 
     @Override
-    protected Vector steps() {
-
-        Vector steps = new Vector();
+    protected Vector<Step> steps() {
+        Vector<Step> steps = new Vector<Step>();
         try {
             steps.add(new UnpackContainerStep(container));
             steps.add(new CreateSkeletonStep(tci, false));
@@ -75,11 +75,6 @@ public class PersistenceNotificationResourcesTest extends Story {
             steps.add(new InvokeClientStep(container, tci));
 
             steps.add(new StopContainerStep(container));
-
-//            steps.add(new AddGetPersistenceNotificationResourceMethodImplStep(tci, pntci, true));
-//            steps.add(new StartContainerStep(container));
-//            steps.add(new InvokeClientStep(container, tci));
-
         } catch (Exception e) {
             e.printStackTrace();
             fail(e.getMessage());
@@ -91,7 +86,7 @@ public class PersistenceNotificationResourcesTest extends Story {
     protected boolean storySetUp() throws Throwable {
         // init the container
         try {
-            container = ServiceContainerFactory.createContainer(ServiceContainerType.GLOBUS_CONTAINER);
+            container = ServiceContainerFactory.createContainer(ServiceContainerType.TOMCAT_6_CONTAINER);
         } catch (Exception ex) {
             ex.printStackTrace();
             fail("Failed to create container: " + ex.getMessage());
@@ -134,5 +129,4 @@ public class PersistenceNotificationResourcesTest extends Story {
             e.printStackTrace();
         }
     }
-
 }

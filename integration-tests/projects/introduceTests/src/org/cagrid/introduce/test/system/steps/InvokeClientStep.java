@@ -10,10 +10,8 @@ import gov.nih.nci.cagrid.testing.system.deployment.ServiceContainer;
 
 
 public class InvokeClientStep extends BaseStep {
-    public static final String TEST_URL_SUFFIX = "/wsrf/services/cagrid/";
-
+    
     private TestCaseInfo tci;
-    private String methodName;
     private ServiceContainer container;
 
 
@@ -28,21 +26,20 @@ public class InvokeClientStep extends BaseStep {
         System.out.println("Invoking a simple methods implementation.");
 
         List<String> command = AntTools.getAntCommand("runClient", tci.getDir());
-        String urlArg = "-Dservice.url=";
-        if (container.getProperties().isSecure()) {
-            urlArg += "https://";
-        } else {
-            urlArg += "http://";
-        }
-        urlArg += "localhost:" + container.getProperties().getPortPreference().getPort() + TEST_URL_SUFFIX
-            + tci.getName();
+        String url = container.getServiceEPR("cagrid/" + tci.getName()).getAddress().toString();
+        command.add("-Dservice.url=" + url);
 
-        command.add(urlArg);
-
-        Process p = CommonTools.createAndOutputProcess(command);
+        Process p = CommonTools.createAndOutputProcess(command, System.out, System.err);
         p.waitFor();
-
-        assertTrue(p.exitValue() == 0);
+        
+        int exitCode = p.exitValue();
+        if (exitCode != 0) {
+            System.err.println("The error logs:\n");
+            System.err.println(container.getErrorLogs().toString());
+            System.err.println("The output logs:\n");
+            System.err.println(container.getOutLogs().toString());
+        }
+        
+        assertEquals("Run Client did not complete successfully ", 0, p.exitValue());
     }
-
 }
