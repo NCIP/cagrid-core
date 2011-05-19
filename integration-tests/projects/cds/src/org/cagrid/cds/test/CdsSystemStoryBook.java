@@ -11,8 +11,7 @@ public class CdsSystemStoryBook {
 	@Test
     public void cdsTest() throws Throwable {
     	Story test = new DelegateCredentialTest(ServiceContainerFactory
-                .createContainer(ServiceContainerType.SECURE_TOMCAT_CONTAINER));
+                .createContainer(ServiceContainerType.SECURE_TOMCAT_6_CONTAINER));
     	test.runBare();
-
     }
 }
