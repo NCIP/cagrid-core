@@ -27,14 +27,12 @@ public class CheckMetadataStep extends Step {
 
         // check standard metadata
         checkStandardMetadata("GTS");
-
     }
 
 
     private void checkStandardMetadata(String serviceName) {
         ServiceMetadata serviceMetadata = null;
         try {
-
             serviceMetadata = MetadataUtils.getServiceMetadata(mmsEPR);
         } catch (InvalidResourcePropertyException e) {
             fail("MMS didn't expose the standard ServiceMetadata:" + e.getMessage());

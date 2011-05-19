@@ -36,10 +36,9 @@ public class GridTrustServiceStory extends ServiceStoryBase {
 
 
     public GridTrustServiceStory() {
-
         // init the container
         try {
-            this.setContainer(ServiceContainerFactory.createContainer(ServiceContainerType.SECURE_TOMCAT_CONTAINER));
+            this.setContainer(ServiceContainerFactory.createContainer(ServiceContainerType.SECURE_TOMCAT_6_CONTAINER));
         } catch (Exception ex) {
             ex.printStackTrace();
             fail("Failed to create container: " + ex.getMessage());
@@ -104,7 +103,6 @@ public class GridTrustServiceStory extends ServiceStoryBase {
 
     @Override
     protected void storyTearDown() throws Throwable {
-
         StopContainerStep step2 = new StopContainerStep(getContainer());
         try {
             step2.runStep();
@@ -118,5 +116,4 @@ public class GridTrustServiceStory extends ServiceStoryBase {
             e.printStackTrace();
         }
     }
-
 }
