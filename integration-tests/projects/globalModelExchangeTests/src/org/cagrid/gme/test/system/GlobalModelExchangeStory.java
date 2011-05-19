@@ -53,10 +53,9 @@ public class GlobalModelExchangeStory extends ServiceStoryBase {
 
 
     public GlobalModelExchangeStory() {
-
         // init the container
         try {
-            this.setContainer(ServiceContainerFactory.createContainer(ServiceContainerType.TOMCAT_CONTAINER));
+            this.setContainer(ServiceContainerFactory.createContainer(ServiceContainerType.TOMCAT_6_CONTAINER));
         } catch (Exception ex) {
             ex.printStackTrace();
             fail("Failed to create container: " + ex.getMessage());

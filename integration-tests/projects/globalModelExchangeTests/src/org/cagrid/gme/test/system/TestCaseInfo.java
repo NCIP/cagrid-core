@@ -3,7 +3,6 @@ package org.cagrid.gme.test.system;
 import java.io.File;
 import java.io.FileReader;
 import java.io.FilenameFilter;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -42,12 +41,12 @@ public class TestCaseInfo {
     }
 
 
-    public Collection<XMLSchema> getSchemas() throws IOException {
+    public Collection<XMLSchema> getSchemas() {
         return this.schemaFilenameToSchemaMap.values();
     }
 
 
-    public Collection<XMLSchemaNamespace> getNamespaces() throws IOException {
+    public Collection<XMLSchemaNamespace> getNamespaces() {
         Collection<XMLSchemaNamespace> result = new ArrayList<XMLSchemaNamespace>();
         Collection<XMLSchema> schemas = getSchemas();
         for (XMLSchema s : schemas) {
@@ -57,7 +56,7 @@ public class TestCaseInfo {
     }
 
 
-    public Collection<XMLSchemaImportInformation> getImportInformation() throws IOException {
+    public Collection<XMLSchemaImportInformation> getImportInformation() {
         return this.schemaFilenameToSchemaImportInformationMap.values();
     }
 
@@ -130,5 +129,4 @@ public class TestCaseInfo {
     public String getDescription() {
         return this.description;
     }
-
 }
