@@ -2,7 +2,7 @@ package org.cagrid.fqp.test.common.steps;
 
 import gov.nih.nci.cagrid.common.Utils;
 import gov.nih.nci.cagrid.cqlresultset.CQLQueryResults;
-import gov.nih.nci.cagrid.data.DataServiceConstants;
+import gov.nih.nci.cagrid.data.CqlSchemaConstants;
 import gov.nih.nci.cagrid.dcql.DCQLQuery;
 import gov.nih.nci.cagrid.fqp.processor.exceptions.FederatedQueryProcessingException;
 import gov.nih.nci.cagrid.fqp.stubs.types.FederatedQueryProcessingFault;
@@ -58,10 +58,10 @@ public class AggregationStep extends BaseQueryExecutionStep {
         CQLQueryResults goldResults = loadGoldCqlResults();
         StringWriter writer = new StringWriter();
         writer.write("Test results:\n");
-        Utils.serializeObject(testResults, DataServiceConstants.CQL_RESULT_SET_QNAME, writer, 
+        Utils.serializeObject(testResults, CqlSchemaConstants.CQL_RESULT_SET_QNAME, writer, 
             QueryResultsVerifier.class.getResourceAsStream(FQPTestingConstants.CLIENT_WSDD));
         writer.write("\nGoldResults:\n");
-        Utils.serializeObject(goldResults, DataServiceConstants.CQL_RESULT_SET_QNAME, writer, 
+        Utils.serializeObject(goldResults, CqlSchemaConstants.CQL_RESULT_SET_QNAME, writer, 
             QueryResultsVerifier.class.getResourceAsStream(FQPTestingConstants.CLIENT_WSDD));
         System.out.println(writer.getBuffer().toString());
         QueryResultsVerifier.verifyCqlResults(testResults, goldResults);
