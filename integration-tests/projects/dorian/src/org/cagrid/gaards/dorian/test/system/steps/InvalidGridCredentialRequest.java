@@ -8,9 +8,9 @@ public class InvalidGridCredentialRequest implements
 		GridCredentialRequestOutcome {
 
 	private String errorMessage;
-	private Class error;
+	private Class<?> error;
 
-	public InvalidGridCredentialRequest(String errorMessage, Class error) {
+	public InvalidGridCredentialRequest(String errorMessage, Class<?> error) {
 		super();
 		this.errorMessage = errorMessage;
 		this.error = error;
