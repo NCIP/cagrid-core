@@ -62,14 +62,12 @@ public class CheckMetadataStep extends Step {
             fail("Default source identifier (" + sourceMD.getDefaultSourceIdentifier() + ") not found in source list ("
                 + sourceList + ")");
         }
-
     }
 
 
     private void checkStandardMetadata(String serviceName) {
         ServiceMetadata serviceMetadata = null;
         try {
-
             serviceMetadata = MetadataUtils.getServiceMetadata(mmsEPR);
         } catch (InvalidResourcePropertyException e) {
             fail("MMS didn't expose the standard ServiceMetadata:" + e.getMessage());

@@ -13,10 +13,7 @@ import gov.nih.nci.cagrid.testing.system.deployment.story.ServiceStoryBase;
 import gov.nih.nci.cagrid.testing.system.haste.Step;
 
 import java.io.File;
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collection;
-import java.util.List;
 import java.util.Vector;
 
 import org.apache.axis.message.addressing.EndpointReferenceType;
@@ -27,7 +24,6 @@ import org.cagrid.mms.test.system.steps.CheckMetadataStep;
 public class MetadataModelServiceStory extends ServiceStoryBase {
 
     private static final String SERVICE_TEMP_PATH = "tmp/TempMMS";
-    private static final String RESULTS_TEMP_PATH = "tmp/results";
     private static final String MMS_URL_PATH = "cagrid/MetadataModelService";
     private static final String PATH_TO_MMS_PROJECT = "../../../caGrid/projects/mms";
     public static final String MMS_DIR_PROPERTY = "mms.service.dir";
@@ -39,10 +35,9 @@ public class MetadataModelServiceStory extends ServiceStoryBase {
 
 
     public MetadataModelServiceStory() {
-
         // init the container
         try {
-            this.setContainer(ServiceContainerFactory.createContainer(ServiceContainerType.TOMCAT_CONTAINER));
+            this.setContainer(ServiceContainerFactory.createContainer(ServiceContainerType.TOMCAT_6_CONTAINER));
         } catch (Exception ex) {
             ex.printStackTrace();
             fail("Failed to create container: " + ex.getMessage());
@@ -107,7 +102,6 @@ public class MetadataModelServiceStory extends ServiceStoryBase {
 
     @Override
     protected void storyTearDown() throws Throwable {
-
         StopContainerStep step2 = new StopContainerStep(getContainer());
         try {
             step2.runStep();
@@ -121,5 +115,4 @@ public class MetadataModelServiceStory extends ServiceStoryBase {
             e.printStackTrace();
         }
     }
-
 }
