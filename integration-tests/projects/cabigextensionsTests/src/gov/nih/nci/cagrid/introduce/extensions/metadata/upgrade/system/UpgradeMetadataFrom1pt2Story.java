@@ -68,7 +68,7 @@ public class UpgradeMetadataFrom1pt2Story extends Story {
 
 
     @Override
-    protected Vector steps() {
+    protected Vector<Step> steps() {
         Vector<Step> steps = new Vector<Step>();
 
         TestCaseInfo tci = new IntroduceTestCaseInfo("EVSGridService", TEST_DIR.getPath(),

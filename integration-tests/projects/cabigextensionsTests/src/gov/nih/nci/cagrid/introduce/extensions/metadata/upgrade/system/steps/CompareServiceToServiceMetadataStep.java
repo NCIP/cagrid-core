@@ -66,25 +66,6 @@ public class CompareServiceToServiceMetadataStep extends XPathValidatingStep {
             createIterator(metadataService,
                 "/serviceContextCollection/serviceContext/operationCollection/operation/@description"));
 
-        // TODO: doesn't work because EVS model name change and anotation fails
-        // System.out.println("Comparing method input descriptions:");
-        // // check the method descriptions
-        // assertStringIteratorsEqual(
-        // createIterator(duceServices,
-        // "/service/methods/method/inputs/input/@description"),
-        // createIterator(
-        // metadataService,
-        // "/serviceContextCollection/serviceContext/operationCollection/operation/inputParameterCollection/inputParameter/uMLClass/@description"));
-
-        // System.out.println("Comparing method output descriptions:");
-        // // check the method descriptions
-        // assertStringIteratorsEqual(
-        // createIterator(duceServices,
-        // "/service/methods/method/output/@description"),
-        // createIterator(
-        // metadataService,
-        // "/serviceContextCollection/serviceContext/operationCollection/operation/output/uMLClass/@description"));
-
         System.out.println("Comparing method fault descriptions:");
         assertStringIteratorsEqual(
             createIterator(duceServices, "/service/methods/method/exceptions/exception/@description"),
@@ -96,7 +77,4 @@ public class CompareServiceToServiceMetadataStep extends XPathValidatingStep {
             "/service/resourcePropertiesList/resourceProperty/@description"), createIterator(metadataService,
             "/serviceContextCollection/serviceContext/contextPropertyCollection/contextProperty/@description"));
     }
-
-
-
 }

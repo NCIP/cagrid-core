@@ -26,7 +26,6 @@ public abstract class XPathValidatingStep extends Step {
 
 
     protected void assertStringIteratorsEqual(Iterator iter1, Iterator iter2) {
-
         assertTrue("Nothing found in first iterator!", iter1.hasNext());
 
         // iterate orig and fail if new doesn't have the same entry

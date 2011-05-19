@@ -8,7 +8,8 @@ import java.io.FileReader;
 
 
 /**
- * CompareServiceMetadataStep Compares every description tag is the same between
+ * CompareServiceMetadataStep 
+ * Compares every description tag is the same between
  * two metadata documents (this implicitly also verifies things such as the
  * number of services, operations, inputs, outputs, and faults are the same)
  * 
@@ -45,6 +46,5 @@ public class CompareServiceMetadataStep extends XPathValidatingStep {
 
         System.out.println("Comparing all descriptions:");
         assertStringIteratorsEqual(createIterator(origMD, DESCRIPTION_XPATH), createIterator(newMD, DESCRIPTION_XPATH));
-
     }
 }

@@ -14,12 +14,9 @@ import java.util.Vector;
 
 
 /**
- * MetadataUpgradeTestCase NOTE:Need to be run from Introduce directory
+ * MetadataUpgradeTestCase
  * 
- * @author oster
- * @created Apr 9, 2007 3:19:51 PM
- * @version $Id: multiscaleEclipseCodeTemplates.xml,v 1.1 2007/03/02 14:35:01
- *          dervin Exp $
+ * NOTE: Needs to be run from Introduce directory
  */
 public class UpgradeMetadataFrom1pt3Story extends Story {
 
@@ -68,7 +65,7 @@ public class UpgradeMetadataFrom1pt3Story extends Story {
 
 
     @Override
-    protected Vector steps() {
+    protected Vector<Step> steps() {
         Vector<Step> steps = new Vector<Step>();
 
         TestCaseInfo tci = new IntroduceTestCaseInfo("EVSGridService", TEST_DIR.getPath(),
