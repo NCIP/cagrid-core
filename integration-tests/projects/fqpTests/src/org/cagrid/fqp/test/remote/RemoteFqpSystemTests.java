@@ -42,9 +42,9 @@ public class RemoteFqpSystemTests {
     public void remoteFqpSystemTests() throws Throwable {
         // deploy two example SDK data services which pull from slightly different data
         DataServiceDeploymentStory exampleService1Deployment = 
-            new DataServiceDeploymentStory(new File("resources/services/ExampleSdkService1.zip"), false);
+            new DataServiceDeploymentStory(new File("resources/services/ExampleSdkService1.zip"), false, false);
         DataServiceDeploymentStory exampleService2Deployment =
-            new DataServiceDeploymentStory(new File("resources/services/ExampleSdkService2.zip"), false);
+            new DataServiceDeploymentStory(new File("resources/services/ExampleSdkService2.zip"), false, false);
         dataServiceDeployments = new DataServiceDeploymentStory[] {
             exampleService1Deployment, exampleService2Deployment
         };

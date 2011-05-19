@@ -78,14 +78,12 @@ public class AggregationStory extends Story {
         steps.add(new Dcql2AggregationStep(FQPTestingConstants.DCQL2_QUERIES_LOCATION + "emptyResultsAggregation.xml",
             FQPTestingConstants.DCQL2_GOLD_LOCATION + "emptyResultsAggregation_gold.xml",
             queryHelper, serviceUrls, false));
-        /* FIXME: turning these off until I get some CQL2 supporting services built for FQP to use
         steps.add(new Dcql2AggregationStep(FQPTestingConstants.DCQL2_QUERIES_LOCATION + "exampleAggregation1_modifier_maxZip.xml",
             FQPTestingConstants.DCQL2_GOLD_LOCATION + "exampleAggregation1_modifier_maxZip_gold.xml",
             queryHelper, serviceUrls, true));
         steps.add(new Dcql2AggregationStep(FQPTestingConstants.DCQL2_QUERIES_LOCATION + "exampleAggregation1_modifier_minZip.xml",
             FQPTestingConstants.DCQL2_GOLD_LOCATION + "exampleAggregation1_modifier_minZip_gold.xml",
             queryHelper, serviceUrls, true));
-        */
         steps.add(new Dcql2AggregationStep(FQPTestingConstants.DCQL2_QUERIES_LOCATION + "exampleAggregation1_modifier_countZip.xml",
             FQPTestingConstants.DCQL2_GOLD_LOCATION + "exampleAggregation1_modifier_countZip_gold.xml",
             queryHelper, serviceUrls, false));

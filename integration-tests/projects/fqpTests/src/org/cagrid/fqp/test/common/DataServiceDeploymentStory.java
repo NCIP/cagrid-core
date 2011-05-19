@@ -16,6 +16,7 @@ import java.util.List;
 import java.util.Vector;
 
 import org.cagrid.fqp.test.common.steps.DeleteDirectoryStep;
+import org.cagrid.fqp.test.common.steps.DisableCql2QueryProcessorStep;
 import org.cagrid.fqp.test.common.steps.UnzipServiceStep;
 
 /** 
@@ -34,6 +35,7 @@ public class DataServiceDeploymentStory extends Story implements ServiceContaine
     
     private ServiceContainer dataServiceContainer;
     private boolean secureDeployment;
+    private boolean disableCql2;
     private boolean complete;
     
     /**
@@ -41,29 +43,34 @@ public class DataServiceDeploymentStory extends Story implements ServiceContaine
      *      The zip file containing the data service to be deployed
      * @param secureDeployment
      *      Flag indicates if the service should be deployed to a secure container
+     * @param disableCql2
+     *      Flag indicates that CQL 2 should be disabled on the service
      */
-    public DataServiceDeploymentStory(File dataServiceZip, boolean secureDeployment) {
+    public DataServiceDeploymentStory(File dataServiceZip, boolean secureDeployment, boolean disableCql2) {
         this.dataServiceZip = dataServiceZip;
         this.secureDeployment = secureDeployment;
+        this.disableCql2 = disableCql2;
         this.complete = false;
     }
     
     
     public String getName() {
-        return (secureDeployment ? "Secure " : "") + "Data Service Deployment";
+        return (secureDeployment ? "Secure " : "") + "Data Service " + (disableCql2 ? "Without CQL 2 " : "") + "Deployment";
+        
     }
     
 
     public String getDescription() {
         return "Deploys a " + (secureDeployment ? "secure " : "") 
-            + "data service to a local service container and starts it up";
+            + "data service " + (disableCql2 ? " without CQL 2 " : "") 
+            + "to a local service container and starts it up";
     }
     
     
     public boolean storySetUp() {
         try {
             ServiceContainerType containerType = secureDeployment ?
-                ServiceContainerType.SECURE_TOMCAT_CONTAINER : ServiceContainerType.TOMCAT_CONTAINER;
+                ServiceContainerType.SECURE_TOMCAT_6_CONTAINER : ServiceContainerType.TOMCAT_6_CONTAINER;
             dataServiceContainer = ServiceContainerFactory.createContainer(containerType);
         } catch (Exception ex) {
             ex.printStackTrace();
@@ -100,6 +107,9 @@ public class DataServiceDeploymentStory extends Story implements ServiceContaine
         Vector<Step> steps = new Vector<Step>();
         steps.add(new UnpackContainerStep(dataServiceContainer));
         steps.add(new UnzipServiceStep(dataServiceZip, temp));
+        if (disableCql2) {
+            steps.add(new DisableCql2QueryProcessorStep(temp.getAbsolutePath()));
+        }
         List<String> args = Arrays.asList(new String[] {
             "-Dno.deployment.validation=true", "-Dperform.index.service.registration=false"
         });

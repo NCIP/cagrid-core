@@ -36,9 +36,9 @@ public class SecureRemoteFqpSystemTests {
         // deploy two example SDK data services with security enabled
         // which pull from slightly different data
         DataServiceDeploymentStory exampleService1Deployment = 
-            new DataServiceDeploymentStory(new File("resources/services/ExampleSdkService1.zip"), true);
+            new DataServiceDeploymentStory(new File("resources/services/ExampleSdkService1.zip"), true, false);
         DataServiceDeploymentStory exampleService2Deployment =
-            new DataServiceDeploymentStory(new File("resources/services/ExampleSdkService2.zip"), true);
+            new DataServiceDeploymentStory(new File("resources/services/ExampleSdkService2.zip"), true, false);
         // sources of data service containers.  This allows stories to grab
         // service containers after they've been created in the order of execution
         dataServiceDeployments = new DataServiceDeploymentStory[] {

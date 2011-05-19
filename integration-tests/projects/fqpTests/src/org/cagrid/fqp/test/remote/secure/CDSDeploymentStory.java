@@ -59,7 +59,7 @@ public class CDSDeploymentStory extends Story implements ServiceContainerSource 
     public boolean storySetUp() {
         try {
             // must be tomcat container for transfer to work
-            ServiceContainerType containerType = ServiceContainerType.SECURE_TOMCAT_CONTAINER;
+            ServiceContainerType containerType = ServiceContainerType.SECURE_TOMCAT_6_CONTAINER;
             serviceContainer = ServiceContainerFactory.createContainer(containerType);
         } catch (Exception ex) {
             ex.printStackTrace();

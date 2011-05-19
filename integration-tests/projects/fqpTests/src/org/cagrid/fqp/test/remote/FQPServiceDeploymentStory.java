@@ -66,7 +66,7 @@ public class FQPServiceDeploymentStory extends Story implements ServiceContainer
         try {
             // must be tomcat container for transfer to work
             ServiceContainerType containerType = 
-                secureDeployment ? ServiceContainerType.SECURE_TOMCAT_CONTAINER : ServiceContainerType.TOMCAT_CONTAINER;
+                secureDeployment ? ServiceContainerType.SECURE_TOMCAT_6_CONTAINER : ServiceContainerType.TOMCAT_6_CONTAINER;
             fqpServiceContainer = ServiceContainerFactory.createContainer(containerType);
         } catch (Exception ex) {
             ex.printStackTrace();
