@@ -11,17 +11,21 @@
 	<!-- Pre Deploy Tomcat                                              -->
 	<!-- ============================================================== -->
 	<target name="preDeployTomcat">
-		<available property="is.tomcat.5" file="${tomcat.dir}/common/endorsed" />
-		<available property="is.tomcat.6" file="${tomcat.dir}/endorsed" />
+		<available property="have.endorsed.jars" file="${ext.endorsed.dir}"/>
 		<copy todir="${build.lib.dir}">
 			<fileset dir="${ext.lib.dir}">
 				<include name="*.jar" />
 			</fileset>
 		</copy>
+		<antcall target="deployEndorsedJars"/>
+	</target>
+
+	<target name="deployEndorsedJars" if="have.endorsed.jars">
+		<available property="is.tomcat.5" file="${tomcat.dir}/common/endorsed" />
+		<available property="is.tomcat.6" file="${tomcat.dir}/endorsed" />
 		<antcall target="copyEndorsedForTomcat5" />
 		<antcall target="copyEndorsedForTomcat6" />
 	</target>
-
 
 	<target name="copyEndorsedForTomcat5" if="is.tomcat.5">
 		<copy todir="${tomcat.dir}/common/endorsed" overwrite="true">
