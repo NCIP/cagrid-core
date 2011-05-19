@@ -55,7 +55,7 @@ public class SDK41ServiceStyleInvocationTest extends Story {
     public boolean storySetUp() throws Throwable {
         serviceTestInfo = SDK41ServiceStyleSystemTestConstants.getTestServiceInfo();
         
-        container = ServiceContainerFactory.createContainer(ServiceContainerType.GLOBUS_CONTAINER);
+        container = ServiceContainerFactory.createContainer(ServiceContainerType.TOMCAT_6_CONTAINER);
         
         File serviceDir = new File(serviceTestInfo.getDir());
         serviceDir.mkdirs();
