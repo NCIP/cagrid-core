@@ -93,7 +93,7 @@ public class ServiceDiscoveryStep extends Step {
         ServiceMetadata metadata = null;
         try {
             FileReader reader = new FileReader(metadataDocument);
-            metadata = (ServiceMetadata) Utils.deserializeObject(reader, ServiceMetadata.class);
+            metadata = Utils.deserializeObject(reader, ServiceMetadata.class);
             reader.close();
         } catch (Exception ex) {
             ex.printStackTrace();

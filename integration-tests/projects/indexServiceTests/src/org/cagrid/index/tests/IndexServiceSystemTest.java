@@ -33,10 +33,6 @@ import org.cagrid.index.tests.steps.FillInMetadataStep;
 import org.cagrid.index.tests.steps.ServiceDiscoveryStep;
 import org.cagrid.index.tests.steps.SetAdvertisementUrlStep;
 import org.cagrid.index.tests.steps.SetMetadataHostingResearchCenterStep;
-import org.junit.Test;
-import org.junit.internal.runners.JUnit38ClassRunner;
-import org.junit.internal.runners.JUnit4ClassRunner;
-import org.junit.runner.RunWith;
 
 
 public class IndexServiceSystemTest extends Story {
@@ -79,7 +75,7 @@ public class IndexServiceSystemTest extends Story {
         // set up the index service container
         try {
             log.debug("Creating container for index service");
-            indexServiceContainer = ServiceContainerFactory.createContainer(ServiceContainerType.TOMCAT_CONTAINER);
+            indexServiceContainer = ServiceContainerFactory.createContainer(ServiceContainerType.TOMCAT_6_CONTAINER);
             new UnpackContainerStep(indexServiceContainer).runStep();
         } catch (Throwable ex) {
             String message = "Error creating container for index service: " + ex.getMessage();
@@ -90,7 +86,7 @@ public class IndexServiceSystemTest extends Story {
         // set up a testing service container
         try {
             log.debug("Creating container for testing service");
-            testServiceContainer = ServiceContainerFactory.createContainer(ServiceContainerType.TOMCAT_CONTAINER);
+            testServiceContainer = ServiceContainerFactory.createContainer(ServiceContainerType.TOMCAT_6_CONTAINER);
             new UnpackContainerStep(testServiceContainer).runStep();
         } catch (Throwable ex) {
             String message = "Error creating container for testing service: " + ex.getMessage();
@@ -101,7 +97,7 @@ public class IndexServiceSystemTest extends Story {
     }
 
 
-    protected Vector steps() {
+    protected Vector<Step> steps() {
         Vector<Step> steps = new Vector<Step>();
         // the directory of the testing data service
         File testServiceDir = new File(testServiceInfo.getDir());
@@ -195,7 +191,6 @@ public class IndexServiceSystemTest extends Story {
 
 
     public void storyTearDown() throws Throwable {
-
         if (testServiceContainer != null) {
             if (testServiceContainer.isStarted()) {
                 new StopContainerStep(testServiceContainer).runStep();

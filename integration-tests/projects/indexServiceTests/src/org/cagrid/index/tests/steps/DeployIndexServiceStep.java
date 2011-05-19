@@ -3,7 +3,7 @@ package org.cagrid.index.tests.steps;
 import gov.nih.nci.cagrid.common.StreamGobbler;
 import gov.nih.nci.cagrid.testing.system.deployment.ContainerException;
 import gov.nih.nci.cagrid.testing.system.deployment.ServiceContainer;
-import gov.nih.nci.cagrid.testing.system.deployment.TomcatSecureServiceContainer;
+import gov.nih.nci.cagrid.testing.system.deployment.Tomcat6ServiceContainer;
 import gov.nih.nci.cagrid.testing.system.haste.Step;
 
 import java.io.File;
@@ -32,10 +32,9 @@ public class DeployIndexServiceStep extends Step {
     
 
     public void runStep() throws Throwable {
-        // assertTrue("Testing Index service can only be deployed to secure tomcat", container instanceof TomcatSecureServiceContainer);
-        String antHome = System.getenv(TomcatSecureServiceContainer.ENV_ANT_HOME);
+        String antHome = System.getenv(Tomcat6ServiceContainer.ENV_ANT_HOME);
         if (antHome == null || antHome.equals("")) {
-            throw new ContainerException(TomcatSecureServiceContainer.ENV_ANT_HOME + " not set");
+            throw new ContainerException(Tomcat6ServiceContainer.ENV_ANT_HOME + " not set");
         }
         File ant = new File(antHome, "bin" + File.separator + "ant");
 
@@ -57,7 +56,7 @@ public class DeployIndexServiceStep extends Step {
         List<String> additionalEnvironment = new ArrayList<String>();
         
         // set catalina home
-        additionalEnvironment.add(TomcatSecureServiceContainer.ENV_CATALINA_HOME + "="
+        additionalEnvironment.add(Tomcat6ServiceContainer.ENV_CATALINA_HOME + "="
             + container.getProperties().getContainerDirectory().getAbsolutePath());
         String[] editedEnvironment = editEnvironment(additionalEnvironment);        
 

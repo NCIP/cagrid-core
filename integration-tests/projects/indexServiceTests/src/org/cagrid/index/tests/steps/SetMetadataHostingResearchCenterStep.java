@@ -37,7 +37,7 @@ public class SetMetadataHostingResearchCenterStep extends Step {
         ServiceMetadata serviceMetadata = null;
         try {
             FileReader metadataReader = new FileReader(serviceMetadataFile);
-            serviceMetadata = (ServiceMetadata) Utils.deserializeObject(metadataReader, ServiceMetadata.class);
+            serviceMetadata = Utils.deserializeObject(metadataReader, ServiceMetadata.class);
             metadataReader.close();
         } catch (Exception ex) {
             ex.printStackTrace();
@@ -46,7 +46,7 @@ public class SetMetadataHostingResearchCenterStep extends Step {
         
         ServiceMetadataHostingResearchCenter researchCenter = null;
         try {
-            researchCenter = (ServiceMetadataHostingResearchCenter) Utils.deserializeObject(
+            researchCenter = Utils.deserializeObject(
                 new StringReader(researchCenterDocument.toString()), ServiceMetadataHostingResearchCenter.class);
         } catch (Exception ex) {
             ex.printStackTrace();
