@@ -25,13 +25,12 @@ public class VerifyTrustedIdPStep extends Step {
     private boolean publish;
 
 
-  
-
     public VerifyTrustedIdPStep(String serviceURL, GridCredentialRequestStep admin, String name) {
         this.serviceURL = serviceURL;
         this.admin = admin;
         this.name = name;
     }
+
 
     public void setPublish(boolean publish) {
         this.publish = publish;
@@ -55,23 +54,23 @@ public class VerifyTrustedIdPStep extends Step {
                     assertEquals(getDisplayName(), idp.getDisplayName());
                 }
                 if (getCertificate() != null) {
-                    assertEquals(getCertificate(), CertUtil.loadCertificate(idp.getIdPCertificate()));
+                    assertEquals("IdP Certificate did not match expected", getCertificate(), CertUtil.loadCertificate(idp.getIdPCertificate()));
                 }
 
                 if (getStatus() != null) {
-                    assertEquals(getStatus(), idp.getStatus());
+                    assertEquals("IdP Status did not match expectec", getStatus(), idp.getStatus());
                 }
 
                 if (getAuthenticationServiceURL() != null) {
-                    assertEquals(getAuthenticationServiceURL(), idp.getAuthenticationServiceURL());
+                    assertEquals("IdP URL did not match expected", getAuthenticationServiceURL(), idp.getAuthenticationServiceURL());
                 }
 
                 if (getAuthenticationServiceIdentity() != null) {
-                    assertEquals(getAuthenticationServiceIdentity(), idp.getAuthenticationServiceIdentity());
+                    assertEquals("IdP Identity did not match expected", getAuthenticationServiceIdentity(), idp.getAuthenticationServiceIdentity());
                 }
 
                 if (getUserPolicyClass() != null) {
-                    assertEquals(getUserPolicyClass(), idp.getUserPolicyClass());
+                    assertEquals("IdP Policy class did not match expected", getUserPolicyClass(), idp.getUserPolicyClass());
                 }
                 assertEquals(isPublish(), client.getPublish(idp));
             }
@@ -141,5 +140,4 @@ public class VerifyTrustedIdPStep extends Step {
     public void setUserPolicyClass(String userPolicyClass) {
         this.userPolicyClass = userPolicyClass;
     }
-
 }
