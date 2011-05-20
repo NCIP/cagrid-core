@@ -12,6 +12,7 @@ public class ContainerTestsStoryBook {
     @org.junit.Test
     public void testAllContainers() throws Throwable {
         try {
+            ServiceContainerFactory.setMaxContainerHeapSizeMB(Integer.valueOf(256));
         	
         	Story s = new ContainerTest(ServiceContainerFactory
                 .createContainer(ServiceContainerType.GLOBUS_CONTAINER));

@@ -15,6 +15,40 @@ import java.io.IOException;
  * @version $Id: ServiceContainerFactory.java,v 1.4 2008-11-07 19:13:02 dervin Exp $ 
  */
 public class ServiceContainerFactory {
+    
+    private static Integer maxContainerHeapSize = null;
+    
+    private ServiceContainerFactory() {
+        // prevent instantiation
+    }
+    
+    
+    /**
+     * Sets the max heap size for the created container 
+     * processes. This is equivalent to starting the 
+     * process with -Xmx#m set to some value
+     * 
+     * The provided value may be <code>null</code> to allow 
+     * the system default to take precedence.
+     * 
+     * @param heapMB
+     */
+    public static void setMaxContainerHeapSizeMB(Integer heapMB) {
+        maxContainerHeapSize = heapMB;
+    }
+    
+    
+    /**
+     * Gets the max heap size for the created container
+     * processes.  This may be <code>null</code> if
+     * no value has been set, which indicates the system
+     * default will take precedence.
+     * 
+     * @return
+     */
+    public static Integer getMaxContainerHeapSizeMB() {
+        return maxContainerHeapSize;
+    }
 
     /**
      * Creates a new service container of the specified type.
@@ -52,7 +86,7 @@ public class ServiceContainerFactory {
         File containerZip = new File(zipLocation);
         ContainerProperties props = new ContainerProperties(containerTempDir,
         	containerZip, ports, false,
-        	null, null, null);
+        	null, null, getMaxContainerHeapSizeMB());
         
         ServiceContainer container = null;
         switch (type) {
