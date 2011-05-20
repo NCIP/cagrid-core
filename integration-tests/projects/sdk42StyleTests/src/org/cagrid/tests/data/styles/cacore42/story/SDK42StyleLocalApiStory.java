@@ -62,7 +62,7 @@ public class SDK42StyleLocalApiStory extends Story {
     public boolean storySetUp() throws Throwable {
         testInfo = SDK42ServiceStyleSystemTestConstants.getTestServiceInfo();
         ServiceContainerType containerType = useSecureContainer ? 
-            ServiceContainerType.SECURE_TOMCAT_CONTAINER : ServiceContainerType.TOMCAT_CONTAINER;
+            ServiceContainerType.SECURE_TOMCAT_6_CONTAINER : ServiceContainerType.TOMCAT_6_CONTAINER;
         container = ServiceContainerFactory.createContainer(containerType);
         File serviceDir = new File(testInfo.getDir());
         serviceDir.mkdirs();

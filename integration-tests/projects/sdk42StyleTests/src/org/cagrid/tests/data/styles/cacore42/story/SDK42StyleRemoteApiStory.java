@@ -56,9 +56,9 @@ public class SDK42StyleRemoteApiStory extends Story {
     public boolean storySetUp() throws Throwable {
         testInfo = SDK42ServiceStyleSystemTestConstants.getTestServiceInfo();
         ServiceContainerType containerType = useSecureContainer ? 
-            ServiceContainerType.SECURE_TOMCAT_CONTAINER : ServiceContainerType.TOMCAT_CONTAINER;
+            ServiceContainerType.SECURE_TOMCAT_6_CONTAINER : ServiceContainerType.TOMCAT_6_CONTAINER;
         dataServiceContainer = ServiceContainerFactory.createContainer(containerType);
-        sdkApplicationServiceContainer = ServiceContainerFactory.createContainer(ServiceContainerType.TOMCAT_CONTAINER);
+        sdkApplicationServiceContainer = ServiceContainerFactory.createContainer(ServiceContainerType.TOMCAT_6_CONTAINER);
         File serviceDir = new File(testInfo.getDir());
         serviceDir.mkdirs();
         
