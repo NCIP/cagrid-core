@@ -16,16 +16,15 @@ public class CopyCAStep extends Step {
     public CopyCAStep(SecureContainer container, TestCaseInfo tci) throws Exception {
         this.tci = tci;
         this.container = container;
-
     }
 
 
     public void runStep() throws Throwable {
         System.out.println("Copying user proxys to services dir");
 
-        File inFileClient = new File(container.getCertificatesDirectory().getAbsolutePath() + File.separator + "ca" + File.separator + "testing_ca_cert.0");
-        File outFileClient = new File(tci.getDir() + File.separator + "caCert.0");
+        File inFileClient = new File(container.getCertificatesDirectory(), 
+            "ca" + File.separator + "testing_ca_cert.0");
+        File outFileClient = new File(tci.getDir(), "caCert.0");
         Utils.copyFile(inFileClient, outFileClient);
     }
-
 }

@@ -15,7 +15,6 @@ public class AddCreateStreamingTransferMethodImplStep extends BaseStep {
     public AddCreateStreamingTransferMethodImplStep(TestCaseInfo tci, boolean build) throws Exception {
         super(tci.getDir(), build);
         this.tci = tci;
-
     }
 
 
@@ -40,5 +39,4 @@ public class AddCreateStreamingTransferMethodImplStep extends BaseStep {
 
         buildStep();
     }
-
 }

@@ -13,7 +13,6 @@ public class InvokeClientStep extends BaseStep {
     public static final String TEST_URL_SUFFIX = "/wsrf/services/cagrid/";
 
     private TestCaseInfo tci;
-    private String methodName;
     private ServiceContainer container;
 
 
@@ -28,20 +27,14 @@ public class InvokeClientStep extends BaseStep {
         System.out.println("Invoking a simple methods implementation.");
 
         List<String> cmd = AntTools.getAntCommand("runClient", tci.getDir());
-        String urlArg = "-Dservice.url=";
-        if (container.getProperties().isSecure()) {
-            urlArg += "https://";
-        } else {
-            urlArg += "http://";
-        }
-        urlArg += "localhost:" + container.getProperties().getPortPreference().getPort() + TEST_URL_SUFFIX + tci.getName();
-        cmd.add(urlArg);
+        String urlArg = "-Dservice.url=" + 
+            container.getServiceEPR("cagrid/" + tci.getName()).getAddress().toString();
+        cmd.add(urlArg);        
         
-        
-        Process p = CommonTools.createAndOutputProcess(cmd);
+        Process p = CommonTools.createAndOutputProcess(cmd, System.out, System.err);
         p.waitFor();
 
-        assertTrue(p.exitValue() == 0);
+        assertEquals("Unexpected exit of the runClient process", 0, p.exitValue());
 
         buildStep();
     }

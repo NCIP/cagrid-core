@@ -16,7 +16,6 @@ public class CopyProxyStep extends Step {
     public CopyProxyStep(SecureContainer container, TestCaseInfo tci) throws Exception {
         this.tci = tci;
         this.container = container;
-
     }
 
 
@@ -35,5 +34,4 @@ public class CopyProxyStep extends Step {
         outFileClient = new File(tci.getDir() + File.separator + "user3.proxy");
         Utils.copyFile(inFileClient, outFileClient);
     }
-
 }

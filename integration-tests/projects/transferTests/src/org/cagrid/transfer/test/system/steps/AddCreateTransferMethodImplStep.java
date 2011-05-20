@@ -15,7 +15,6 @@ public class AddCreateTransferMethodImplStep extends BaseStep {
     public AddCreateTransferMethodImplStep(TestCaseInfo tci, boolean build) throws Exception {
         super(tci.getDir(), build);
         this.tci = tci;
-
     }
 
 
@@ -40,5 +39,4 @@ public class AddCreateTransferMethodImplStep extends BaseStep {
 
         buildStep();
     }
-
 }

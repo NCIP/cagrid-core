@@ -6,7 +6,6 @@ import gov.nih.nci.cagrid.introduce.beans.ServiceDescription;
 import gov.nih.nci.cagrid.introduce.beans.method.MethodType;
 import gov.nih.nci.cagrid.introduce.beans.method.MethodTypeInputs;
 import gov.nih.nci.cagrid.introduce.beans.method.MethodTypeOutput;
-import gov.nih.nci.cagrid.introduce.beans.method.MethodsType;
 import gov.nih.nci.cagrid.introduce.beans.security.AnonymousCommunication;
 import gov.nih.nci.cagrid.introduce.beans.security.CommunicationMethod;
 import gov.nih.nci.cagrid.introduce.beans.security.MethodSecurity;
@@ -38,10 +37,9 @@ public class AddCreateTransferMethodStep extends BaseStep {
     public void runStep() throws Throwable {
         System.out.println("Adding a createTransferMethod method.");
 
-        ServiceDescription introService = (ServiceDescription) Utils.deserializeDocument(getBaseDir() + File.separator
+        ServiceDescription introService = Utils.deserializeDocument(getBaseDir() + File.separator
             + tci.getDir() + File.separator + "introduce.xml", ServiceDescription.class);
-        MethodsType methodsType = CommonTools.getService(introService.getServices(), tci.getName()).getMethods();
-
+        
         MethodType method = new MethodType();
         method.setName("createTransferMethodStep");
         MethodTypeOutput output = new MethodTypeOutput();
@@ -83,5 +81,4 @@ public class AddCreateTransferMethodStep extends BaseStep {
 
         buildStep();
     }
-
 }
