@@ -48,9 +48,10 @@ public class SDK43StyleRemoteApiStory extends Story {
     
     
     public boolean storySetUp() throws Throwable {
+        ServiceContainerFactory.setMaxContainerHeapSizeMB(256);
         testInfo = SDK43ServiceStyleSystemTestConstants.getTestServiceInfo();
-        dataServiceContainer = ServiceContainerFactory.createContainer(ServiceContainerType.TOMCAT_CONTAINER);
-        sdkApplicationServiceContainer = ServiceContainerFactory.createContainer(ServiceContainerType.TOMCAT_CONTAINER);
+        dataServiceContainer = ServiceContainerFactory.createContainer(ServiceContainerType.TOMCAT_6_CONTAINER);
+        sdkApplicationServiceContainer = ServiceContainerFactory.createContainer(ServiceContainerType.TOMCAT_6_CONTAINER);
         File serviceDir = new File(testInfo.getDir());
         serviceDir.mkdirs();
         

@@ -45,8 +45,9 @@ public class SDK43StyleLocalApiStory extends Story {
     
     
     public boolean storySetUp() throws Throwable {
+        ServiceContainerFactory.setMaxContainerHeapSizeMB(256);
         testInfo = SDK43ServiceStyleSystemTestConstants.getTestServiceInfo();
-        container = ServiceContainerFactory.createContainer(ServiceContainerType.TOMCAT_CONTAINER);
+        container = ServiceContainerFactory.createContainer(ServiceContainerType.TOMCAT_6_CONTAINER);
         File serviceDir = new File(testInfo.getDir());
         serviceDir.mkdirs();
         

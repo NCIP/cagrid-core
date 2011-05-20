@@ -56,7 +56,7 @@ public abstract class AbstractLocalCqlInvocationStep extends Step {
             System.out.println("Loading " + f.getName());
             CQLQuery query = null;
             try {
-                query = (CQLQuery) Utils.deserializeDocument(f.getAbsolutePath(), CQLQuery.class);
+                query = Utils.deserializeDocument(f.getAbsolutePath(), CQLQuery.class);
             } catch (Exception ex) {
                 ex.printStackTrace();
                 fail("Error loading query: " + ex.getMessage());
