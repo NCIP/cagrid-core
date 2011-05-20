@@ -72,7 +72,7 @@ public class TransferServlet extends HttpServlet {
         String userDN = (String) req.getAttribute(GSIConstants.GSI_USER_DN);
 
         // 2 get the requested ID
-        String requestedID = (String) req.getParameter("id");
+        String requestedID = req.getParameter("id");
         if (requestedID == null || requestedID.length() <= 0) {
             logger.info("Not ID");
             resp.sendError(400);
@@ -82,7 +82,7 @@ public class TransferServlet extends HttpServlet {
         // 3 authorize
         TransferServiceContextResourceProperties props = null;
         try {
-            props = (TransferServiceContextResourceProperties) Utils.deserializeObject(new FileReader(persistenceDir
+            props = Utils.deserializeObject(new FileReader(persistenceDir
                 + File.separator + requestedID + ".xml"), TransferServiceContextResourceProperties.class);
         } catch (Exception e) {
             logger.info("Cannot find or deserialize the resource properties describing this transfer object: "
@@ -119,7 +119,6 @@ public class TransferServlet extends HttpServlet {
             resp.sendError(403);
             return;
         }
-
     }
 
 
@@ -149,7 +148,6 @@ public class TransferServlet extends HttpServlet {
 
         String configBlockSizeS = props.getProperty("transfer.service.block.size");
         if (configBlockSizeS != null) {
-
             try {
                 int configBlockSize = Integer.parseInt(configBlockSizeS);
                 blockSize = configBlockSize;
@@ -164,7 +162,7 @@ public class TransferServlet extends HttpServlet {
         String userDN = (String) req.getAttribute(GSIConstants.GSI_USER_DN);
 
         // 2 get the requested ID
-        String requestedID = (String) req.getParameter("id");
+        String requestedID = req.getParameter("id");
         if (requestedID == null || requestedID.length() <= 0) {
             logger.info("Not ID");
             resp.sendError(400);
@@ -174,7 +172,7 @@ public class TransferServlet extends HttpServlet {
         // 3 authorize
         TransferServiceContextResourceProperties props = null;
         try {
-            props = (TransferServiceContextResourceProperties) Utils.deserializeObject(new FileReader(persistenceDir
+            props = Utils.deserializeObject(new FileReader(persistenceDir
                 + File.separator + requestedID + ".xml"), TransferServiceContextResourceProperties.class);
         } catch (Exception e) {
             logger.info("Cannot find or deserialize the resource properties describing this transfer object: "
@@ -195,7 +193,7 @@ public class TransferServlet extends HttpServlet {
                 ServletOutputStream os = resp.getOutputStream();
                 int l;
                 byte[] buffer = new byte[blockSize];
-                while (isStaging(desc, persistenceDir, requestedID)) {
+                while (isStaging(desc)) {
                     // while it's staging, just keep trying to read.
                     while ((l = fis.read(buffer)) != -1) {
                         if (l > 0) {
@@ -224,14 +222,12 @@ public class TransferServlet extends HttpServlet {
             resp.sendError(403);
             return;
         }
-
     }
 
 
-    private boolean isStaging(DataStorageDescriptor desc, String persistenceDir, String requestedID) {
-        // the staging flag is set when the service creates the resource. so
-        // there
-        // should not be timing problems.
+    private boolean isStaging(DataStorageDescriptor desc) {
+        // the staging flag is set when the service creates the resource. 
+        // so there should not be timing problems.
 
         // TCP: normally would need to reload the desc. here we cheat and use a
         // file system flag.
@@ -239,7 +235,5 @@ public class TransferServlet extends HttpServlet {
         // delete it explicitly.
         File flag = new File(desc.getLocation() + TransferServiceContextResource.STAGING_FLAG);
         return flag.exists();
-
     }
-
 }
