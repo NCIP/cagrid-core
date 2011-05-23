@@ -143,6 +143,10 @@ public class TransferSystemTestClient extends TransferSystemTestClientBase imple
                         System.out.println("dataOK");
                     } else {
                         System.out.println("data recieved does not match data sent");
+                        System.out.println("Sent:");
+                        System.out.println(testString);
+                        System.out.println("Recieved:");
+                        System.out.println(str.toString());
                         System.exit(1);
                     }
 
