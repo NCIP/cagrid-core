@@ -324,11 +324,11 @@ public class Tomcat6ServiceContainer extends ServiceContainer {
 		if (getProperties().getHeapSizeInMegabytes() != null) {
 			String currentCatalinaOpts = System.getenv(ENV_CATALINA_OPTS);
 			if (currentCatalinaOpts != null) {
-                additionalEnvironment.add(ENV_CATALINA_OPTS + "=\"" + currentCatalinaOpts
-						+ " -Xmx" + getProperties().getHeapSizeInMegabytes() + "m\"");
+                additionalEnvironment.add(ENV_CATALINA_OPTS + "=" + currentCatalinaOpts
+						+ " -Xmx" + getProperties().getHeapSizeInMegabytes() + "m");
 			} else {
-                additionalEnvironment.add(ENV_CATALINA_OPTS + "=\"-Xmx"
-						+ getProperties().getHeapSizeInMegabytes() + "m\"");
+                additionalEnvironment.add(ENV_CATALINA_OPTS + "=-Xmx"
+						+ getProperties().getHeapSizeInMegabytes() + "m");
 			}
 		}
 		String[] editedEnvironment = editEnvironment(additionalEnvironment);
