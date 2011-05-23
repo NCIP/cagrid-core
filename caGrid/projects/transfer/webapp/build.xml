@@ -1,15 +1,11 @@
 <?xml version="1.0"?>
-<project default="all" name="build transfer webapp" basedir=".">
-
-	<!-- ============================================================== -->
-	<!-- MASTER BUILD FILE DO NOT EDIT OR INTRODUCE MAY OVERWRITE       -->
-	<!-- In order to customize the build please edit the dev-build.xml  -->
-	<!-- ============================================================== -->
-
-	<!-- Define the environment variable -->
+<project default="all" name="caGrid-transfer-webapp" basedir=".">
+	
+	<!-- Define the environment variable properties -->
 	<property environment="env" />
+	
+	<dirname property="webapp.basedir" file="${ant.file.caGrid-transfer-webapp}"/>
 
-	<property file="introduce.properties" />
 	<property file="../project.properties" />
 	<property name="service.name" value="Transfer" />
 
@@ -17,14 +13,11 @@
 	<property name="src.dir" value="src" />
 	<property name="lib.dir" value="WEB-INF/lib" />
 
-
 	<!-- Jars -->
 	<property name="jar.prefix" value="caGrid-${service.name}" />
 	<property name="webapp.jar.name" value="${jar.prefix}-webapp-${project.version}.jar" />
 
-
 	<!-- Basic Build directories -->
-
 	<!-- Auxiliary directory where all the intermediate files will be placed -->
 	<property name="build.dir" location="build" />
 	<!-- Directory for compiled service classes -->
@@ -32,7 +25,6 @@
 	<!-- Directory for compiled JAR files (additional library files required by
 	     the service will also be placed here) -->
 	<property name="build.lib.dir" location="${build.dir}/lib" />
-
 
 	<!-- We want detailed error messages -->
 	<property name="java.debug" value="on" />
@@ -158,11 +150,10 @@
 
 	<target name="deployTomcat" depends="checkTomcat,checkGlobus" description="Deploys this webapp to tomcat">
 		<!-- please do not change the webapp dir or service mapping as this is in the code -->
-		<delete dir="${ext.tomcat.dir}/webapps/caGridTransfer">
-		</delete>
+		<delete dir="${ext.tomcat.dir}/webapps/caGridTransfer"/>
 		<mkdir dir="${ext.tomcat.dir}/webapps/caGridTransfer" />
 		<copy todir="${ext.tomcat.dir}/webapps/caGridTransfer">
-			<fileset dir=".">
+			<fileset dir="."> <!-- webapp.basedir? -->
 				<include name="**/*" />
 				<exclude name="build*" />
 				<exclude name="bin*" />
