@@ -128,7 +128,7 @@ public class TransferServlet extends HttpServlet {
         logger.info("Calling Transfer Servlet GET: " + getServletContext().getServerInfo() + getServletInfo());
         logger.info("Calling Transfer Servlet at: " + getServletContext().getRealPath("/"));
 
-        // reload everytime now so that it can be changed while container is
+        // reload every time now so that it can be changed while container is
         // running.....
         try {
             props.load(this.getClass().getClassLoader().getResourceAsStream("server.properties"));
@@ -136,7 +136,6 @@ public class TransferServlet extends HttpServlet {
             e.printStackTrace();
             resp.sendError(500);
             return;
-
         }
 
         String myLocation = getServletContext().getRealPath("/").replace("\\", "/");
