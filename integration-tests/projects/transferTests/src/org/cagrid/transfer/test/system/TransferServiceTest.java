@@ -78,7 +78,7 @@ public class TransferServiceTest extends ServiceStoryBase {
 
             // deploy the transfer service to the container
             List<String> deploymentArgs = 
-                Arrays.asList(new String[] {"-Dno.deployment.validation=true"});
+                Arrays.asList(new String[] {"-Dno.deployment.validation=true", "-Dperform.index.service.registration=false"});
             // turn off index service registration here
             steps.add(new CopyServiceStep(new File("../transfer"), transferServiceTemp));
             steps.add(new SetIndexRegistrationStep(transferServiceTemp.getAbsolutePath(), false));
