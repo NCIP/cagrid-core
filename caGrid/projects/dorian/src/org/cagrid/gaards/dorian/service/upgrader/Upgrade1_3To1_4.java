@@ -64,22 +64,14 @@ public class Upgrade1_3To1_4 extends Upgrade {
                     String uid = rs.getString("UID");
                     String password = rs.getString("PASSWORD");
                     password = password.replace("\n", "");
-                    PreparedStatement update = c.prepareStatement("update" + UserManager.IDP_USERS_TABLE + " SET PASSWORD= ? WHERE UID= ?");
+                    PreparedStatement update = c.prepareStatement("update " + UserManager.IDP_USERS_TABLE + " SET PASSWORD=? WHERE UID=?");
                     update.setString(1, password);
                     update.setString(2, uid);
-                    boolean success = update.execute();
-                    if (!success) {
-                        String message = "Error updating password for UID " + uid;
-                        System.err.println(message);
-                        throw new Exception(message);
-                    }
+                    update.execute();
                 }
                 rs.close();
                 s.close();
-
-            } catch (Exception e) {
-                throw e;
-            } finally {
+             } finally {
                 db.releaseConnection(c);
             }
         }
