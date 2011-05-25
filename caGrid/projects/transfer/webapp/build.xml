@@ -153,7 +153,7 @@
 		<delete dir="${ext.tomcat.dir}/webapps/caGridTransfer"/>
 		<mkdir dir="${ext.tomcat.dir}/webapps/caGridTransfer" />
 		<copy todir="${ext.tomcat.dir}/webapps/caGridTransfer">
-			<fileset dir="."> <!-- webapp.basedir? -->
+			<fileset dir="${webapp.basedir}">
 				<include name="**/*" />
 				<exclude name="build*" />
 				<exclude name="bin*" />

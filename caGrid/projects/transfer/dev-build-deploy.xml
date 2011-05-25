@@ -12,7 +12,9 @@
 	<!-- ============================================================== -->
 	<target name="preDeployTomcat">
 		<!-- deploy the webapp-->
-		<ant antfile="build.xml" dir="webapp" target="deployTomcat" inheritall="false" />
+		<ant antfile="build.xml" dir="webapp" target="deployTomcat" inheritall="false" >
+			<property name="ext.tomcat.dir" value="${tomcat.dir}"/>
+		</ant>
 
 		<!--move the ext lib to the lib so it will be deployed -->
 		<copy todir="${build.lib.dir}">
@@ -28,7 +30,10 @@
 	<!-- ============================================================== -->
 	<target name="preDeployJBoss">
 		<!-- deploy the webapp-->
-		<ant antfile="build.xml" dir="webapp" target="deployJBoss" inheritall="false" />
+		<ant antfile="build.xml" dir="webapp" target="deployJBoss" inheritall="false" >
+			<property name="ext.jboss.dir" dir="${jboss.dir}"/>
+		</ant>
+		
 
 		<copy todir="${build.lib.dir}">
 			<fileset dir="${ext.lib.dir}">
