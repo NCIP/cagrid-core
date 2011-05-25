@@ -32,9 +32,19 @@ public class InvokeClientStep extends BaseStep {
         cmd.add(urlArg);        
         
         Process p = CommonTools.createAndOutputProcess(cmd, System.out, System.err);
-        p.waitFor();
+        int exitValue = p.waitFor();
 
-        assertEquals("Unexpected exit of the runClient process", 0, p.exitValue());
+        if (exitValue != 0) {
+            System.out.println("Server OUT:\n");
+            System.out.println(container.getOutLogs());
+            System.out.println();
+            System.out.println();
+            System.out.flush();
+            System.err.println("Server ERR:\n");
+            System.err.println(container.getErrorLogs());
+        }
+        
+        assertEquals("Unexpected exit of the runClient process", 0, exitValue);
 
         buildStep();
     }
