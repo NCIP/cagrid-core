@@ -85,7 +85,7 @@
 	<classpathentry kind="lib" path="ext/dependencies/jars/jaxen-1.1.jar"/>
 	<classpathentry kind="lib" path="ext/dependencies/jars/jaxmejs-0.5.2.jar"/>
 	<classpathentry kind="lib" path="ext/dependencies/jars/jcalendar.jar"/>
-	<classpathentry kind="lib" path="ext/dependencies/jars/jdom-1.1.jar"/>
+	<classpathentry kind="lib" path="ext/dependencies/jars/jdom-1.1.jar" sourcepath="/home/caGrid/.m2/repository/org/jdom/jdom/1.1/jdom-1.1-sources.jar"/>
 	<classpathentry kind="lib" path="ext/dependencies/jars/jdtcore.jar"/>
 	<classpathentry kind="lib" path="ext/dependencies/jars/jetc-task.jar"/>
 	<classpathentry kind="lib" path="ext/dependencies/jars/jhall.jar"/>

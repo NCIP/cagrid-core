@@ -17,6 +17,11 @@ import javax.swing.table.DefaultTableModel;
  */
 public class ExtensionsTable extends PortalBaseTable {
 
+	/**
+	 * Hash code for serialization.
+	 */
+	private static final long serialVersionUID = -879186153935580694L;
+	
 	public static String NAME = "Extension Name";
 
 
@@ -152,7 +157,7 @@ public class ExtensionsTable extends PortalBaseTable {
 	
 	
 	public List<String> getExtensionNamesAsList(){
-		List<String> extensions = new ArrayList();
+		List<String> extensions = new ArrayList<String>();
         for (int i = 0; i < getRowCount(); i++) {
             ServiceExtensionDescriptionType edt = null;
             try {
@@ -169,13 +174,19 @@ public class ExtensionsTable extends PortalBaseTable {
 
 	public static class MyDefaultTableModel extends DefaultTableModel {
 
+		/**
+		 * 
+		 */
+		private static final long serialVersionUID = 5145262811982803379L;
+
+
 		public MyDefaultTableModel() {
 			super();
 			addColumn(NAME);
 		}
 
 
-		public Class getColumnClass(int c) {
+		public Class<?> getColumnClass(int c) {
 			return getValueAt(0, c).getClass();
 		}
 	}

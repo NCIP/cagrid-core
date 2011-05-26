@@ -100,7 +100,12 @@ import com.sun.xml.xsom.parser.XSOMParser;
  * @author <A HREF="MAILTO:langella@bmi.osu.edu">Stephen Langella </A>
  */
 public class MethodViewer extends javax.swing.JDialog {
-    private static final Logger logger = Logger.getLogger(MethodViewer.class);
+    /**
+	 * Hash code for serialization
+	 */
+	private static final long serialVersionUID = -7653211348651883519L;
+
+	private static final Logger logger = Logger.getLogger(MethodViewer.class);
 
 
     public class ElementHolder {
@@ -152,7 +157,7 @@ public class MethodViewer extends javax.swing.JDialog {
     }
 
 
-    public class ExceptionHolder implements Comparable {
+    public class ExceptionHolder implements Comparable<Object> {
         boolean isCreated;
 
         QName qname;
@@ -449,7 +454,7 @@ public class MethodViewer extends javax.swing.JDialog {
                 result.add(new SimpleValidationMessage(message, Severity.ERROR, METHOD_NAME));
             }
 
-            List usedNames = new ArrayList();
+            List<String> usedNames = new ArrayList<String>();
             MethodsType methodsType = info.getService().getMethods();
             if (methodsType != null) {
                 MethodType methods[] = methodsType.getMethod();
@@ -828,7 +833,7 @@ public class MethodViewer extends javax.swing.JDialog {
                             MethodTypeInputsInput[] inputsA = new MethodTypeInputsInput[getInputParamTable()
                                 .getRowCount()];
 
-                            List usedNames = new ArrayList();
+                            List<String> usedNames = new ArrayList<String>();
                             for (int i = 0; i < getInputParamTable().getRowCount(); i++) {
                                 MethodTypeInputsInput input = getInputParamTable().getRowData(i);
                                 // validate the input param
@@ -904,7 +909,7 @@ public class MethodViewer extends javax.swing.JDialog {
                                             "Cannot import an method which itself is an imported method");
                                         return;
                                     }
-                                    List requiredNamespaces = new ArrayList();
+                                    List<String> requiredNamespaces = new ArrayList<String>();
                                     if ((importMethod.getInputs() != null)
                                         && (importMethod.getInputs().getInput() != null)) {
                                         for (int inputI = 0; inputI < importMethod.getInputs().getInput().length; inputI++) {
@@ -938,7 +943,7 @@ public class MethodViewer extends javax.swing.JDialog {
                                     // don't already have i need to copy them
                                     // over
                                     for (int nsI = 0; nsI < requiredNamespaces.size(); nsI++) {
-                                        String uri = (String) requiredNamespaces.get(nsI);
+                                        String uri = requiredNamespaces.get(nsI);
                                         if (CommonTools.getNamespaceType(info.getNamespaces(), uri) == null) {
                                             JOptionPane
                                                 .showMessageDialog(MethodViewer.this,
@@ -965,7 +970,8 @@ public class MethodViewer extends javax.swing.JDialog {
                                         return;
                                     }
 
-                                    List portTypes = remoteWsdlDoc.getRootElement().getChildren("portType",
+                                    @SuppressWarnings("rawtypes")
+									List portTypes = remoteWsdlDoc.getRootElement().getChildren("portType",
                                         Namespace.getNamespace(IntroduceConstants.WSDLAMESPACE));
 
                                     boolean foundMethod = false;
@@ -974,7 +980,8 @@ public class MethodViewer extends javax.swing.JDialog {
                                         Element portTypeEl = (Element) portTypes.get(portTypeI);
                                         if (portTypeEl.getAttributeValue("name").equals(
                                             importService.getName() + "PortType")) {
-                                            List operationEls = portTypeEl.getChildren("operation", Namespace
+                                            @SuppressWarnings("rawtypes")
+											List operationEls = portTypeEl.getChildren("operation", Namespace
                                                 .getNamespace(IntroduceConstants.WSDLAMESPACE));
                                             for (int opI = 0; opI < operationEls.size(); opI++) {
                                                 Element opEl = (Element) operationEls.get(opI);
@@ -1541,7 +1548,7 @@ public class MethodViewer extends javax.swing.JDialog {
             exceptionJComboBox = new JComboBox();
             // populate with currently used exception names
             ServiceType[] services = info.getServices().getService();
-            SortedSet exceptionNameSet = new TreeSet();
+            SortedSet<ExceptionHolder> exceptionNameSet = new TreeSet<ExceptionHolder>();
             for (int i = 0; (services != null) && (i < services.length); i++) {
                 MethodsType methodsType = services[i].getMethods();
                 if (methodsType != null) {
@@ -1562,7 +1569,7 @@ public class MethodViewer extends javax.swing.JDialog {
                     }
                 }
             }
-            for (Iterator iter = exceptionNameSet.iterator(); iter.hasNext();) {
+            for (Iterator<ExceptionHolder> iter = exceptionNameSet.iterator(); iter.hasNext();) {
                 exceptionJComboBox.addItem(iter.next());
             }
         }
@@ -2697,7 +2704,7 @@ public class MethodViewer extends javax.swing.JDialog {
                         + IntroduceConstants.INTRODUCE_XML_FILE);
                     ServiceDescription desc = null;
                     try {
-                        desc = (ServiceDescription) Utils.deserializeDocument(introduceFile.getAbsolutePath(),
+                        desc = Utils.deserializeDocument(introduceFile.getAbsolutePath(),
                             ServiceDescription.class);
                     } catch (Exception e1) {
                         logger.error("Unable to deserialize introduce.xml file", e1);
@@ -2833,11 +2840,13 @@ public class MethodViewer extends javax.swing.JDialog {
 
                     getWsdlServiceServicesComboBox().removeAllItems();
 
-                    List portTypes = wsdlDoc.getRootElement().getChildren("portType",
+                    @SuppressWarnings("rawtypes")
+					List portTypes = wsdlDoc.getRootElement().getChildren("portType",
                         Namespace.getNamespace(IntroduceConstants.WSDLAMESPACE));
                     for (int portTypeI = 0; portTypeI < portTypes.size(); portTypeI++) {
                         Element portTypeEl = (Element) portTypes.get(portTypeI);
-                        List operationEls = portTypeEl.getChildren("operation", Namespace
+                        @SuppressWarnings("rawtypes")
+						List operationEls = portTypeEl.getChildren("operation", Namespace
                             .getNamespace(IntroduceConstants.WSDLAMESPACE));
                         boolean found = false;
                         Element methodEl = null;

@@ -1,3 +1,26 @@
+To do list for SHA-2 support (1.4.1 or 1.5)
+
+Make sure that build-deploy.xml is unedited and replace it with the new version of the file.
+
+Make sure the build.xml is unedited and replace it with the current version of the file.
+
+If the lib directory does not exist or does not contain files then stop the upgrade.
+
+If there are files in the lib directory that are newer by some fudge factory (2 hours?)
+than the introduce.xml file log a waring message suggesting that if the lib directory is
+managed by a dependency management tool such as Ivy or Maven, then the dependency 
+configuration information should be updated to match what introduce has put into the lib
+directory, otherwise the changes that Introduce makes to the lib directory may be wiped
+out the next time Ivy or Maven is run.
+
+If an ivy.xml file is found, create a file that describes the changes that the upgrader
+recommends for the ivy.xml file.
+
+If introduce.xml contains a non-blank description of the service and the description of 
+the service in introduce is blank then the introduce.xml description should not be
+overwritten.
+
+================================================================================================
 
 NOTES:
 
