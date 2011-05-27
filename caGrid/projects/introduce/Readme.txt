@@ -7,8 +7,8 @@ visit our website: http://cagrid.org
 -------------------------------------------
 S Y S T E M  R E Q U I R E M E N T S
 -------------------------------------------
-Java version 1.5 or newer.
-Apache Ant 1.6.5 or newer.
+Java version 1.6 or newer.
+Apache Ant 1.7.0 or newer.
 Globus Toolkit Core 1.4.X
 
 -------------------------------------------
