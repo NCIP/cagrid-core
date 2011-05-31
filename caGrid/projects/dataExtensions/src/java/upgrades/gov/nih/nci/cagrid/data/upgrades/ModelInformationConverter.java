@@ -174,7 +174,7 @@ public class ModelInformationConverter {
                 }
             }
         } catch (Exception ex) {
-            throw new UpgradeException("Error contacting caDSR for project information: " + ex.getMessage(), ex);
+            throw new UpgradeException("Error contacting caDSR (" + cadsrUrl + ") for project information: " + ex.getMessage(), ex);
         }
         if (cadsrProject == null) {
             throw new UpgradeException("No project (" + projectLongName 
