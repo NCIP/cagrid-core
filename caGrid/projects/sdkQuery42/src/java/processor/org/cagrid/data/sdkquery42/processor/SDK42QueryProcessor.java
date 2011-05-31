@@ -203,7 +203,7 @@ public class SDK42QueryProcessor extends CQLQueryProcessor {
         boolean useHttps = Boolean.parseBoolean(DEFAULT_HOST_HTTPS);
         String useHttpsValue = getConfiguredParameters().getProperty(PROPERTY_HOST_HTTPS);
         try {
-            useHttps = Boolean.parseBoolean(PROPERTY_HOST_HTTPS);
+            useHttps = Boolean.parseBoolean(useHttpsValue);
         } catch (Exception ex) {
             LOG.error("Error parsing property " + PROPERTY_HOST_HTTPS
                 + ".  Value was " + useHttpsValue, ex);
