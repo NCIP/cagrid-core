@@ -62,6 +62,11 @@ import javax.swing.tree.DefaultMutableTreeNode;
  */
 public class SchemaElementTypeTreeNode extends DefaultMutableTreeNode {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 8665236925770470506L;
+
 	public SchemaElementTypeTreeNode(SchemaElementType schemaElementType) {
 		super();
 		this.setUserObject(schemaElementType);

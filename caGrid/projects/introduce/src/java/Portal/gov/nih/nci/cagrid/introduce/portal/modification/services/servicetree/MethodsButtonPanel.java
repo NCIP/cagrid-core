@@ -9,11 +9,14 @@ import java.awt.event.ActionListener;
 
 import javax.swing.JButton;
 import javax.swing.tree.DefaultMutableTreeNode;
-import javax.swing.tree.DefaultTreeModel;
 
 
 public class MethodsButtonPanel extends ServiceContextsOptionsPanel {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -4365340988571925546L;
 	private JButton addServiceButton = null;
 
 

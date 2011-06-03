@@ -5,6 +5,7 @@ import gov.nih.nci.cagrid.introduce.beans.method.MethodType;
 import gov.nih.nci.cagrid.introduce.beans.method.MethodTypeExceptionsException;
 import gov.nih.nci.cagrid.introduce.beans.service.ServiceType;
 
+import java.io.Serializable;
 import java.util.Vector;
 
 import javax.swing.ListSelectionModel;
@@ -18,6 +19,11 @@ import javax.xml.namespace.QName;
  * @author <A HREF="MAILTO:langella@bmi.osu.edu">Stephen Langella </A>
  */
 public class ExceptionsTable extends PortalBaseTable {
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 7425110513973534814L;
 
 	public static String NAMESPACE = "Namespace";
 
@@ -52,7 +58,7 @@ public class ExceptionsTable extends PortalBaseTable {
 
 
 	public void addRow(final QName exception, boolean isCreated, String description) {
-		final Vector v = new Vector();
+		final Vector<Serializable> v = new Vector<Serializable>();
 		v.add(exception.getNamespaceURI());
 		v.add(exception.getLocalPart());
 		if (description == null) {

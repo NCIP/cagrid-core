@@ -14,6 +14,10 @@ import javax.swing.table.DefaultTableModel;
  * @version $Id: GridMapTable.java,v 1.1 2006-03-23 18:58:03 langella Exp $
  */
 public class GridMapTable extends PortalBaseTable {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -806832078744720027L;
 	public final static String GID = "Grid Identity";
 	public final static String LOCAL_USER = "Local User";
 
@@ -36,7 +40,7 @@ public class GridMapTable extends PortalBaseTable {
 
 
 	public synchronized void addUser(final GridMap map) {
-		Vector v = new Vector();
+		Vector<String> v = new Vector<String>();
 		v.add(map.getGridIdentity());
 		if (map.getLocalUser() != null) {
 			v.add(map.getLocalUser());

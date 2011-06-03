@@ -6,7 +6,6 @@ import gov.nih.nci.cagrid.introduce.portal.common.IntroduceLookAndFeel;
 
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
-import java.beans.PropertyVetoException;
 import java.io.File;
 
 import javax.swing.JButton;
@@ -17,7 +16,6 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 
 import org.cagrid.gaards.pki.KeyUtil;
-import org.cagrid.grape.ApplicationComponent;
 import org.cagrid.grape.utils.CompositeErrorDialog;
 import org.globus.gsi.CertUtil;
 
@@ -31,8 +29,13 @@ import org.globus.gsi.CertUtil;
  *          Exp $
  */
 
+@SuppressWarnings("deprecation")
 public class LoadCredentialsFromFileSystemWindow extends JDialog {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -9046693418815366502L;
 	private JPanel jContentPane = null;
 	private JPanel mainPanel = null;
 	private JLabel jLabel = null;

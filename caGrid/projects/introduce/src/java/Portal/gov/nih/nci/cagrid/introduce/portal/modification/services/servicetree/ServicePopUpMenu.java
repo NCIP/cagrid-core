@@ -13,7 +13,11 @@ import javax.swing.JPopupMenu;
 
 public class ServicePopUpMenu extends JPopupMenu {
 
-    ServiceTypeTreeNode node;
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = -2243800899739403620L;
+	ServiceTypeTreeNode node;
     private JMenuItem modificationMenuItem = null;
 
 

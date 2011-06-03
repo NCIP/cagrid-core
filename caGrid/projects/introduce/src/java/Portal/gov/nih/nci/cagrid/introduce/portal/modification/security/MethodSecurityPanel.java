@@ -25,7 +25,6 @@ import gov.nih.nci.cagrid.introduce.common.CommonTools;
 import gov.nih.nci.cagrid.introduce.common.ServiceInformation;
 import gov.nih.nci.cagrid.introduce.extension.ExtensionsLoader;
 import gov.nih.nci.cagrid.introduce.portal.extension.AbstractMethodAuthorizationPanel;
-import gov.nih.nci.cagrid.introduce.portal.extension.AbstractServiceAuthorizationPanel;
 import gov.nih.nci.cagrid.introduce.portal.extension.tools.ExtensionTools;
 
 import java.awt.BorderLayout;
@@ -57,7 +56,12 @@ import javax.swing.JTabbedPane;
  */
 public class MethodSecurityPanel extends JPanel implements PanelSynchronizer {
 
-    private final static String INHERIT_SERVICE_AUTHORIZATION = "Inherit Service Authorization";
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 8372669597103208627L;
+
+	private final static String INHERIT_SERVICE_AUTHORIZATION = "Inherit Service Authorization";
 
     private final static String NO_AUTHORIZATION = "No Authorization";
 
@@ -932,8 +936,8 @@ public class MethodSecurityPanel extends JPanel implements PanelSynchronizer {
             authorizationMechanism.addItem(NO_AUTHORIZATION);
             List<AuthorizationExtensionDescriptionType> authExtensions = ExtensionsLoader.getInstance()
                 .getAuthorizationExtensions();
-            for (Iterator iterator = authExtensions.iterator(); iterator.hasNext();) {
-                AuthorizationExtensionDescriptionType authorizationExtensionDescriptionType = (AuthorizationExtensionDescriptionType) iterator
+            for (Iterator<AuthorizationExtensionDescriptionType> iterator = authExtensions.iterator(); iterator.hasNext();) {
+                AuthorizationExtensionDescriptionType authorizationExtensionDescriptionType = iterator
                     .next();
                 authorizationMechanism.addItem(authorizationExtensionDescriptionType.getDisplayName());
             }
@@ -955,8 +959,8 @@ public class MethodSecurityPanel extends JPanel implements PanelSynchronizer {
             authPanel.add(getNoAuthorizationPanel(), NO_AUTHORIZATION);
             List<AuthorizationExtensionDescriptionType> authExtension = ExtensionsLoader.getInstance()
                 .getAuthorizationExtensions();
-            for (Iterator iterator = authExtension.iterator(); iterator.hasNext();) {
-                AuthorizationExtensionDescriptionType authorizationExtensionDescriptionType = (AuthorizationExtensionDescriptionType) iterator
+            for (Iterator<AuthorizationExtensionDescriptionType> iterator = authExtension.iterator(); iterator.hasNext();) {
+                AuthorizationExtensionDescriptionType authorizationExtensionDescriptionType = iterator
                     .next();
                 try {
                     AbstractMethodAuthorizationPanel newAuthPanel = ExtensionTools.getMethodAuthorizationPanel(

@@ -17,6 +17,10 @@ import org.cagrid.grape.utils.ErrorDialog;
 
 
 public class ResourcePropertyEditorDialog extends JDialog {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -7681773715854175513L;
 	private ResourcePropertyEditorPanel component;
 	private File resourcePropertyFile;
 	private JPanel mainPanel = null;

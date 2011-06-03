@@ -17,9 +17,7 @@ import gov.nih.nci.cagrid.introduce.beans.service.Singleton;
 import gov.nih.nci.cagrid.introduce.common.CommonTools;
 import gov.nih.nci.cagrid.introduce.common.ServiceInformation;
 import gov.nih.nci.cagrid.introduce.common.SpecificServiceInformation;
-import gov.nih.nci.cagrid.introduce.extension.ExtensionsLoader;
 import gov.nih.nci.cagrid.introduce.portal.common.IntroduceLookAndFeel;
-import gov.nih.nci.cagrid.introduce.portal.modification.ModificationViewer;
 import gov.nih.nci.cagrid.introduce.portal.modification.security.ServiceSecurityPanel;
 import gov.nih.nci.cagrid.introduce.portal.modification.services.resourceproperties.ResourceFrameworkOptionsManager;
 
@@ -35,16 +33,15 @@ import java.net.URI;
 
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
-import javax.swing.JCheckBox;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.JTabbedPane;
 import javax.swing.JTextField;
 import javax.swing.JTextPane;
-import javax.swing.SwingConstants;
 import javax.swing.border.TitledBorder;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
@@ -59,12 +56,16 @@ import com.jgoodies.validation.message.SimpleValidationMessage;
 import com.jgoodies.validation.util.DefaultValidationResultModel;
 import com.jgoodies.validation.util.ValidationUtils;
 import com.jgoodies.validation.view.ValidationComponentUtils;
-import javax.swing.JTabbedPane;
 
 
 public class ModifyService extends JDialog {
     
-    private static final Logger logger = Logger.getLogger(ModifyService.class);
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 6830542678634258478L;
+
+	private static final Logger logger = Logger.getLogger(ModifyService.class);
 
     private SpecificServiceInformation service;
 
@@ -217,7 +218,7 @@ public class ModifyService extends JDialog {
         } else {
             // make sure it is a valid namespace
             try {
-                URI namespaceURI = new URI(this.getNamespaceTextField().getText());
+                new URI(this.getNamespaceTextField().getText());
             } catch (Exception e) {
                 result.add(new SimpleValidationMessage("Invalid namespace format.", Severity.ERROR, SERVICE_NAMESPACE));
             }

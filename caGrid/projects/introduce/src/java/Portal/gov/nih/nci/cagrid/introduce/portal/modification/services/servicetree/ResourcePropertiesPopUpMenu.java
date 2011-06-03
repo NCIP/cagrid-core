@@ -6,7 +6,6 @@ import gov.nih.nci.cagrid.introduce.portal.modification.services.resourcepropert
 
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.io.File;
 
 import javax.swing.JMenuItem;
 import javax.swing.JPopupMenu;
@@ -16,7 +15,11 @@ import org.cagrid.grape.GridApplication;
 
 public class ResourcePropertiesPopUpMenu extends JPopupMenu {
 
-    private ResourcePropertiesTypeTreeNode node;
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = -835247067665845762L;
+	private ResourcePropertiesTypeTreeNode node;
     private JMenuItem modifyResourcePropetiesMenuItem = null;
 
 

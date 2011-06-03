@@ -22,6 +22,10 @@ import javax.swing.JPanel;
  */
 public class TransportLayerSecurityPanel extends JPanel {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -4822523905565352301L;
 	private boolean enabled = false;
 	private JLabel authMethodLabel = null;
 	private JComboBox communicationMethod = null;

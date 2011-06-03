@@ -27,8 +27,12 @@ import javax.swing.tree.TreeSelectionModel;
 
 
 public class ServicesJTree extends JTree {
-    private ServicesTypeTreeNode root;
-    private ServiceInformation info;
+    /**
+	 * Has code for serialization
+	 */
+	private static final long serialVersionUID = -5160033608431983895L;
+	private ServicesTypeTreeNode root;
+    //private ServiceInformation info;
     private JPanel optionsPanel;
     private DefaultMutableTreeNode currentNode = null;
     
@@ -44,8 +48,8 @@ public class ServicesJTree extends JTree {
     public ServicesJTree(ServiceInformation info, JPanel optionsPanel) {
         super(new SortableJTreeModel(null, new ServiceJTreeComparator()));
         this.optionsPanel = optionsPanel;
-        this.info = info;
-        this.tree = this;
+        //this.info = info;
+        tree = this;
 
         this.getSelectionModel().setSelectionMode(TreeSelectionModel.SINGLE_TREE_SELECTION);
         
@@ -146,7 +150,8 @@ public class ServicesJTree extends JTree {
             }
 
             if (node.getChildCount() >= 0) {
-                for (Enumeration e = node.children(); e.hasMoreElements();) {
+                for (@SuppressWarnings("rawtypes")
+				Enumeration e = node.children(); e.hasMoreElements();) {
                     TreeNode n = (TreeNode) e.nextElement();
                     removeAllNodes(n);
                 }
@@ -191,7 +196,8 @@ public class ServicesJTree extends JTree {
         // Traverse children
         TreeNode node = (TreeNode) parent.getLastPathComponent();
         if (node.getChildCount() >= 0) {
-            for (java.util.Enumeration e = node.children(); e.hasMoreElements();) {
+            for (@SuppressWarnings("rawtypes")
+			java.util.Enumeration e = node.children(); e.hasMoreElements();) {
                 TreeNode n = (TreeNode) e.nextElement();
                 TreePath path = parent.pathByAddingChild(n);
                 expandAll(path, expand);

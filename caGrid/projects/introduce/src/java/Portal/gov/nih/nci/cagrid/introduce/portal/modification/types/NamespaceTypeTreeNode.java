@@ -69,6 +69,11 @@ import javax.swing.tree.DefaultTreeModel;
  */
 public class NamespaceTypeTreeNode extends DefaultMutableTreeNode {
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -7971976144063336364L;
+
 	public class SchemaElementTypeSorter implements Comparator<SchemaElementType>{
 
 		public int compare(SchemaElementType o1, SchemaElementType o2) {

@@ -3,7 +3,7 @@ package gov.nih.nci.cagrid.introduce.portal.modification.services.methods;
 import gov.nih.nci.cagrid.introduce.beans.method.MethodType;
 import gov.nih.nci.cagrid.introduce.common.CommonTools;
 
-public class MethodTypeContainer implements Comparable {
+public class MethodTypeContainer implements Comparable<Object> {
 	private MethodType method;
 
 

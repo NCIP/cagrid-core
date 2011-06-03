@@ -63,6 +63,10 @@ import javax.swing.tree.DefaultTreeModel;
  * @version $Id: NamespacesTreeRenderer.java,v 1.5 2008-02-11 20:35:43 hastings Exp $ 
  */
 public class NamespacesTreeRenderer extends DefaultTreeCellRenderer {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 8798658973459646026L;
 	DefaultTreeModel model = null;
 	Font normal = null;
 	

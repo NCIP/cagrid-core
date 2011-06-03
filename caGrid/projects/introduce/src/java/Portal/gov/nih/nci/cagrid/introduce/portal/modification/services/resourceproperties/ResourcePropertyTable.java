@@ -4,6 +4,7 @@ import gov.nih.nci.cagrid.common.portal.PortalBaseTable;
 import gov.nih.nci.cagrid.introduce.beans.resource.ResourcePropertiesListType;
 import gov.nih.nci.cagrid.introduce.beans.resource.ResourcePropertyType;
 
+import java.io.Serializable;
 import java.util.Vector;
 
 import javax.swing.ListSelectionModel;
@@ -18,6 +19,10 @@ import javax.xml.namespace.QName;
  */
 public class ResourcePropertyTable extends PortalBaseTable {
 
+	/**
+	 * Hash code for serialization
+	 */
+	private static final long serialVersionUID = -7228389565400658055L;
 	public static String NAMESPACE = "Namespace";
 	public static String TYPE = "Type";
 	public static String POPULATE_FROM_FILE = "Populate From File";
@@ -75,7 +80,7 @@ public class ResourcePropertyTable extends PortalBaseTable {
 
 
 	public void addRow(ResourcePropertyType metadata) {
-		final Vector v = new Vector(5);
+		final Vector<Serializable> v = new Vector<Serializable>(5);
 		v.add(metadata.getQName().getNamespaceURI());
 		v.add(metadata.getQName().getLocalPart());
 		v.add(new Boolean(metadata.isPopulateFromFile()));
@@ -161,6 +166,12 @@ public class ResourcePropertyTable extends PortalBaseTable {
 
 	public static class MyDefaultTableModel extends DefaultTableModel {
 
+		/**
+		 * Hash code for serialization.
+		 */
+		private static final long serialVersionUID = 5544775617677181548L;
+
+
 		public MyDefaultTableModel() {
 			super();
 			addColumn(NAMESPACE);
@@ -172,7 +183,7 @@ public class ResourcePropertyTable extends PortalBaseTable {
 		}
 
 
-		public Class getColumnClass(int c) {
+		public Class<? extends Object> getColumnClass(int c) {
 			return getValueAt(0, c).getClass();
 		}
 	}

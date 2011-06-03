@@ -3,7 +3,6 @@ package gov.nih.nci.cagrid.introduce.portal.modification.services.resourceproper
 import gov.nih.nci.cagrid.common.XMLUtilities;
 import gov.nih.nci.cagrid.common.portal.PortalLookAndFeel;
 import gov.nih.nci.cagrid.introduce.beans.resource.ResourcePropertyType;
-import gov.nih.nci.cagrid.introduce.codegen.SyncTools;
 import gov.nih.nci.cagrid.introduce.portal.common.jedit.JEditTextArea;
 import gov.nih.nci.cagrid.introduce.portal.common.jedit.XMLTokenMarker;
 import gov.nih.nci.cagrid.introduce.portal.extension.ResourcePropertyEditorPanel;
@@ -16,7 +15,6 @@ import java.io.File;
 import javax.swing.JPanel;
 
 import org.apache.log4j.Logger;
-import org.cagrid.grape.utils.ErrorDialog;
 
 
 /**
@@ -31,7 +29,12 @@ import org.cagrid.grape.utils.ErrorDialog;
  */
 public class XMLEditorViewer extends ResourcePropertyEditorPanel {
     
-    private static final Logger logger = Logger.getLogger(XMLEditorViewer.class);
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = -8670549284745536617L;
+
+	private static final Logger logger = Logger.getLogger(XMLEditorViewer.class);
 
     private JPanel xmlViewer = null;
     private String xml = null;

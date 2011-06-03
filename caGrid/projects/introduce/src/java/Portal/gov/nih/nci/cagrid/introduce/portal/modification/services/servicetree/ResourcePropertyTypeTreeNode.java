@@ -63,6 +63,10 @@ import javax.swing.tree.DefaultMutableTreeNode;
  *          Exp $
  */
 public class ResourcePropertyTypeTreeNode extends DefaultMutableTreeNode implements PopupTreeNode {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 884577661260102585L;
 	private ResourcePropertyPopUpMenu menu;
 
 

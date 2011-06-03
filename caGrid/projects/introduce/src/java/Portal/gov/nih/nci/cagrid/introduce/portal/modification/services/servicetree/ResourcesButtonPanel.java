@@ -14,6 +14,10 @@ import javax.swing.tree.DefaultTreeModel;
 
 public class ResourcesButtonPanel extends ServiceContextsOptionsPanel {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -284045998724374849L;
 	private JButton addServiceButton = null;
 
 

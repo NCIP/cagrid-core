@@ -27,7 +27,12 @@ import org.globus.util.QuotedStringTokenizer;
 
 public class GridMapPanel extends JPanel {
 
-    private static final String COMMENT_CHARS = "#";
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 932698474057152508L;
+
+	private static final String COMMENT_CHARS = "#";
 
     private JPanel gridMapFilePanel = null;
 

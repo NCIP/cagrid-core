@@ -35,7 +35,6 @@ import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
-import java.beans.PropertyVetoException;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -67,7 +66,12 @@ import org.cagrid.grape.utils.CompositeErrorDialog;
  */
 public class ServiceSecurityPanel extends JPanel implements PanelSynchronizer {
 
-    private JPanel secureCommunicationPanel = null;
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = -494945211061774237L;
+
+	private JPanel secureCommunicationPanel = null;
 
     private ButtonGroup buttonGroup = new ButtonGroup();
 
@@ -1187,8 +1191,8 @@ public class ServiceSecurityPanel extends JPanel implements PanelSynchronizer {
 
             List<AuthorizationExtensionDescriptionType> authExtensions = ExtensionsLoader.getInstance()
                 .getAuthorizationExtensions();
-            for (Iterator iterator = authExtensions.iterator(); iterator.hasNext();) {
-                AuthorizationExtensionDescriptionType authorizationExtensionDescriptionType = (AuthorizationExtensionDescriptionType) iterator
+            for (Iterator<AuthorizationExtensionDescriptionType> iterator = authExtensions.iterator(); iterator.hasNext();) {
+                AuthorizationExtensionDescriptionType authorizationExtensionDescriptionType = iterator
                     .next();
                 authorizationMechanism.addItem(authorizationExtensionDescriptionType.getDisplayName());
             }
@@ -1212,8 +1216,8 @@ public class ServiceSecurityPanel extends JPanel implements PanelSynchronizer {
             authPanel.add(getPdpPanel(), getPdpPanel().getName());
             List<AuthorizationExtensionDescriptionType> authExtension = ExtensionsLoader.getInstance()
                 .getAuthorizationExtensions();
-            for (Iterator iterator = authExtension.iterator(); iterator.hasNext();) {
-                AuthorizationExtensionDescriptionType authorizationExtensionDescriptionType = (AuthorizationExtensionDescriptionType) iterator
+            for (Iterator<AuthorizationExtensionDescriptionType> iterator = authExtension.iterator(); iterator.hasNext();) {
+                AuthorizationExtensionDescriptionType authorizationExtensionDescriptionType = iterator
                     .next();
                 try {
                     AbstractServiceAuthorizationPanel newAuthPanel = ExtensionTools.getServiceAuthorizationPanel(

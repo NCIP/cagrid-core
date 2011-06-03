@@ -9,6 +9,10 @@ import javax.swing.JPanel;
 
 public class ServiceContextsOptionsPanel extends JPanel {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -2377885216463682761L;
 	public ServicesJTree tree;
 
 	public ServiceContextsOptionsPanel() {

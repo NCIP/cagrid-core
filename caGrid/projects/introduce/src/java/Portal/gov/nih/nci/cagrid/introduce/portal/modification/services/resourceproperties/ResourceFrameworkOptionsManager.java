@@ -1,21 +1,26 @@
 package gov.nih.nci.cagrid.introduce.portal.modification.services.resourceproperties;
 
-import javax.swing.JPanel;
-import java.awt.GridBagLayout;
-import javax.swing.JCheckBox;
-import javax.swing.SwingConstants;
 import gov.nih.nci.cagrid.introduce.IntroduceConstants;
-import java.awt.GridBagConstraints;
-import javax.swing.BorderFactory;
-import javax.swing.border.TitledBorder;
-
 import gov.nih.nci.cagrid.introduce.beans.service.ServiceType;
 import gov.nih.nci.cagrid.introduce.common.ServiceInformation;
 import gov.nih.nci.cagrid.introduce.portal.common.IntroduceLookAndFeel;
+
 import java.awt.Dimension;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
 import java.awt.Insets;
 
+import javax.swing.BorderFactory;
+import javax.swing.JCheckBox;
+import javax.swing.JPanel;
+import javax.swing.border.TitledBorder;
+
 public class ResourceFrameworkOptionsManager extends JPanel {
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 8105370133325158394L;
 
 	private JPanel resourceOptionsPanel = null;
 
@@ -33,7 +38,7 @@ public class ResourceFrameworkOptionsManager extends JPanel {
 
 	private JCheckBox resourceProperty = null;
 
-	private ServiceInformation info = null; // @jve:decl-index=0:
+	//private ServiceInformation info = null; // @jve:decl-index=0:
 
 	private ServiceType service = null;
 
@@ -42,14 +47,14 @@ public class ResourceFrameworkOptionsManager extends JPanel {
 	public ResourceFrameworkOptionsManager(ServiceType service,
 			ServiceInformation info, boolean newService) {
 		this.service = service;
-		this.info = info;
+		//this.info = info;
 		this.newService = newService;
 		initialize();
 	}
 
 	public void resetGUI(ServiceType service, ServiceInformation info) {
 		this.service = service;
-		this.info = info;
+		//this.info = info;
 		initSettings();
 	}
 

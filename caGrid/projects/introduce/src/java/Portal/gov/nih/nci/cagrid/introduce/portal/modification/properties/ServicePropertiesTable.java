@@ -10,10 +10,7 @@ import java.util.Comparator;
 import java.util.Vector;
 
 import javax.swing.DefaultCellEditor;
-import javax.swing.JCheckBox;
 import javax.swing.JTextField;
-import javax.swing.event.ChangeEvent;
-import javax.swing.event.ChangeListener;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import javax.swing.event.TableModelEvent;
@@ -31,6 +28,11 @@ import javax.swing.text.BadLocationException;
  */
 public class ServicePropertiesTable extends PortalBaseTable implements
 		TableModelListener {
+
+	/**
+	 * Hash code for serialization
+	 */
+	private static final long serialVersionUID = -6850665559636649612L;
 
 	public static String NAME = "Name";
 
@@ -72,7 +74,7 @@ public class ServicePropertiesTable extends PortalBaseTable implements
 					.getServiceProperties().getProperty();
 			if ((allProperties != null) && (allProperties.length > 0)) {
 				for (int i = 0; i < allProperties.length; i++) {
-					Vector v = new Vector(5);
+					Vector<Object> v = new Vector<Object>(5);
 					v.add(allProperties[i].getKey());
 					v.add(allProperties[i].getValue());
 					if (allProperties[i].getDescription() == null) {
@@ -124,7 +126,7 @@ public class ServicePropertiesTable extends PortalBaseTable implements
 	}
 
 	public void modifySelectedServicePropertyValue(String value) {
-		Vector v = getSelectedRowData();
+		Vector<Object> v = getSelectedRowData();
 		if (v != null) {
 			// add the property to the service model
 			CommonTools.setServiceProperty(info.getServiceDescriptor(),
@@ -134,7 +136,7 @@ public class ServicePropertiesTable extends PortalBaseTable implements
 	}
 
 	public void modifySelectedServicePropertyDescriptor(String desc) {
-		Vector v = getSelectedRowData();
+		Vector<Object> v = getSelectedRowData();
 		if (v != null) {
 			// add the property to the service model
 			CommonTools.setServiceProperty(info.getServiceDescriptor(),
@@ -144,7 +146,7 @@ public class ServicePropertiesTable extends PortalBaseTable implements
 	}
 
 	public void modifySelectedServicePropertyIsFromETC(Boolean etc) {
-		Vector v = getSelectedRowData();
+		Vector<Object> v = getSelectedRowData();
 		if (v != null) {
 			// add the property to the service model
 			CommonTools.setServiceProperty(info.getServiceDescriptor(),
@@ -153,12 +155,12 @@ public class ServicePropertiesTable extends PortalBaseTable implements
 		}
 	}
 
-	public Vector getSelectedRowData() {
+	public Vector<Object> getSelectedRowData() {
 		int row = getSelectedRow();
 		if ((row < 0) || (row >= getRowCount())) {
 			return null;
 		}
-		Vector v = new Vector();
+		Vector<Object> v = new Vector<Object>();
 		v.add(((DefaultTableModel) this.getModel()).getValueAt(row, 0));
 		v.add(((DefaultTableModel) this.getModel()).getValueAt(row, 1));
 		v.add(((DefaultTableModel) this.getModel()).getValueAt(row, 2));
@@ -260,12 +262,12 @@ public class ServicePropertiesTable extends PortalBaseTable implements
 
 	public void sort() {
 		DefaultTableModel model = (DefaultTableModel) getModel();
-		Vector data = model.getDataVector();
+		Vector<?> data = model.getDataVector();
 		Collections.sort(data, new ColumnSorter(0, true));
 		model.fireTableStructureChanged();
 	}
 
-	public class ColumnSorter implements Comparator {
+	public class ColumnSorter implements Comparator<Object> {
 		int colIndex;
 
 		boolean ascending;
@@ -276,8 +278,10 @@ public class ServicePropertiesTable extends PortalBaseTable implements
 		}
 
 		public int compare(Object a, Object b) {
-			Vector v1 = (Vector) a;
-			Vector v2 = (Vector) b;
+			@SuppressWarnings("unchecked")
+			Vector<String> v1 = (Vector<String>) a;
+			@SuppressWarnings("unchecked")
+			Vector<String> v2 = (Vector<String>) b;
 			String o1 = (String) v1.get(colIndex);
 			String o2 = (String) v2.get(colIndex);
 
@@ -289,9 +293,9 @@ public class ServicePropertiesTable extends PortalBaseTable implements
 				return -1;
 			} else if (o1 instanceof Comparable) {
 				if (ascending) {
-					return ((Comparable) o1).compareTo(o2);
+					return ((Comparable<String>) o1).compareTo(o2);
 				} else {
-					return ((Comparable) o2).compareTo(o1);
+					return ((Comparable<String>) o2).compareTo(o1);
 				}
 			} else {
 				if (ascending) {
@@ -313,6 +317,11 @@ public class ServicePropertiesTable extends PortalBaseTable implements
 
 	public static class MyDefaultTableModel extends DefaultTableModel {
 
+		/**
+		 * Hashcode for serialization
+		 */
+		private static final long serialVersionUID = -4397464896686876919L;
+
 		public MyDefaultTableModel() {
 			super();
 			addColumn(NAME);
@@ -321,7 +330,7 @@ public class ServicePropertiesTable extends PortalBaseTable implements
 			addColumn(ETC);
 		}
 
-		public Class getColumnClass(int c) {
+		public Class<? extends Object> getColumnClass(int c) {
 			return getValueAt(0, c).getClass();
 		}
 	}
