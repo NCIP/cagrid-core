@@ -9,7 +9,7 @@
 	<classpathentry kind="src" path="resources/portal/introduce"/>
 	<classpathentry kind="var" path="GT4_LOCATION/lib/addressing-1.0.jar"/>
 	<classpathentry kind="var" path="GT4_LOCATION/lib/axis-url.jar"/>
-	<classpathentry kind="var" path="GT4_LOCATION/lib/axis.jar" sourcepath="/GT4_LOCATION/java/lib-src/ws-axis/ws-axis/java/src"/>
+	<classpathentry kind="var" path="GT4_LOCATION/lib/axis.jar"/>
 	<classpathentry kind="var" path="GT4_LOCATION/lib/bootstrap.jar"/>
 	<classpathentry kind="var" path="GT4_LOCATION/lib/jsse-2.0-SNAPSHOT.jar"/>
 	<classpathentry kind="var" path="GT4_LOCATION/lib/gss-2.0-SNAPSHOT.jar"/>
