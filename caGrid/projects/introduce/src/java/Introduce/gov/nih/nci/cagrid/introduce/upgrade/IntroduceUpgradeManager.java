@@ -139,7 +139,7 @@ public class IntroduceUpgradeManager {
                         eUpgrader.upgrade(iStatus);
                     } catch (Exception e) {
                         e.printStackTrace();
-                        throw new Exception("Extensions Upgrader Failed: " + e.getMessage());
+                        throw new Exception("Extensions Upgrader Failed: ", e);
                     }
                 }
 

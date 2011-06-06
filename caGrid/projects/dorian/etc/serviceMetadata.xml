@@ -462,10 +462,10 @@
   </ns2:Service>
  </ns1:serviceDescription>
  <ns1:hostingResearchCenter>
-  <ns62:ResearchCenter displayName="" shortName="" xmlns:ns62="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common">
-   <ns62:Address country="" locality="" postalCode="" stateProvince="" street1="" street2=""/>
+  <ns62:ResearchCenter displayName="Center for Comprehensive INformatics" shortName="CCI" xmlns:ns62="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common">
+   <ns62:Address country="USA" locality="Atlanta" postalCode="30041" stateProvince="Georgia" street1="1784 North Decatur Road" street2=""/>
    <ns62:pointOfContactCollection>
-    <ns62:PointOfContact affiliation="" email="" firstName="" lastName="" phoneNumber="" role=""/>
+    <ns62:PointOfContact affiliation="Emory University" email="mgrand@emory.edu" firstName="Mark" lastName="Grand" phoneNumber="404-712-0181" role="Maintainer"/>
    </ns62:pointOfContactCollection>
   </ns62:ResearchCenter>
  </ns1:hostingResearchCenter>

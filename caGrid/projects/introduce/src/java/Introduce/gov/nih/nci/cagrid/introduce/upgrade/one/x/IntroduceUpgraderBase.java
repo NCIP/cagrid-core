@@ -114,14 +114,25 @@ public abstract class IntroduceUpgraderBase implements IntroduceUpgraderI {
 		File serviceLibDir = new File(getServicePath(), "lib");
 		return serviceLibDir;
 	}
-	
+
 	/**
 	 * 
 	 */
-	protected void removeOldCagridGlobusAndMobiusJars() {
+	protected void removeOldCagridGlobusAndMobiusJars() throws Exception {
 		OldCagridGlobusAndMobiusJarsFilter oldDskeletonLibFilter = new OldCagridGlobusAndMobiusJarsFilter();
-	
+
 		File[] serviceLibs = getServiceLibDir().listFiles(oldDskeletonLibFilter);
+		if (serviceLibs == null || serviceLibs.length == 0) {
+			String msg = getServiceLibDir().getAbsolutePath() + " does not exist or is empty.\n"
+					+ "This condition can be caused when the project's externally created .jar files\n"
+					+ "are managed by a dependency management tool such as Ivy or maven ant and the\n"
+					+ "has just been used to clean the project.\n"
+					+ "The upgrader cannot function properly unless all of the .jar files that are\n" 
+					+ "used to build the project with caGrid " + getFromVersion() + " are present in its lib directory.";
+			getStatus().addDescriptionLine(msg);
+			throw new Exception (msg);
+		}
+
 		// delete the old libraries
 		for (int i = 0; i < serviceLibs.length; i++) {
 			boolean deleted = serviceLibs[i].delete();
@@ -138,7 +149,7 @@ public abstract class IntroduceUpgraderBase implements IntroduceUpgraderI {
 	 */
 	protected void copySkeletonJarsToLib() throws Exception {
 		File skeletonLibDir = new File(SKELETON_DIR, "lib");
-	
+
 		// copy new libraries in (every thing in skeleton/lib)
 		File[] skeletonLibs = skeletonLibDir.listFiles(JAR_FILTER);
 		for (int i = 0; i < skeletonLibs.length; i++) {
@@ -153,8 +164,9 @@ public abstract class IntroduceUpgraderBase implements IntroduceUpgraderI {
 	}
 
 	protected final class OldCagridGlobusAndMobiusJarsFilter implements FileFilter {
-		public OldCagridGlobusAndMobiusJarsFilter() {}
-		
+		public OldCagridGlobusAndMobiusJarsFilter() {
+		}
+
 		public boolean accept(File name) {
 			String filename = name.getName();
 			boolean core = filename.startsWith("caGrid-core") && filename.endsWith(".jar");
