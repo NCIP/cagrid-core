@@ -102,6 +102,28 @@
 	<classpathentry kind="lib" path="ext/dependencies/test/jars/caGrid-testing-system-1.4.1.jar"/>
 	<classpathentry kind="lib" path="ext/dependencies/test/jars/jdepend-2.7.jar"/>
 	<classpathentry kind="lib" path="ext/dependencies/test/jars/junit-4.8.2.jar"/>
+	<classpathentry kind="lib" path="extensions/data/styles/cacore4/lib/caGrid-sdk4xCQL2-processor-1.4.1.jar"/>
+	<classpathentry kind="lib" path="extensions/data/styles/cacore4/lib/caGrid-sdkQuery4-beans-1.4.1.jar"/>
+	<classpathentry kind="lib" path="extensions/data/styles/cacore4/lib/caGrid-sdkQuery4-processor-1.4.1.jar"/>
+	<classpathentry kind="lib" path="extensions/data/styles/cacore4/lib/caGrid-sdkQuery4-style-1.4.1.jar"/>
+	<classpathentry kind="lib" path="extensions/data/styles/cacore4/lib/caGrid-sdkQuery4-tests-1.4.1.jar"/>
+	<classpathentry kind="lib" path="extensions/data/styles/cacore41/lib/caGrid-sdk4xCQL2-processor-1.4.1.jar"/>
+	<classpathentry kind="lib" path="extensions/data/styles/cacore41/lib/caGrid-sdkQuery41-beans-1.4.1.jar"/>
+	<classpathentry kind="lib" path="extensions/data/styles/cacore41/lib/caGrid-sdkQuery41-processor-1.4.1.jar"/>
+	<classpathentry kind="lib" path="extensions/data/styles/cacore41/lib/caGrid-sdkQuery41-style-1.4.1.jar"/>
+	<classpathentry kind="lib" path="extensions/data/styles/cacore41/lib/caGrid-sdkQuery41-tests-1.4.1.jar"/>
+	<classpathentry kind="lib" path="extensions/data/styles/cacore42/lib/caGrid-sdk4xCQL2-processor-1.4.1.jar"/>
+	<classpathentry kind="lib" path="extensions/data/styles/cacore42/lib/caGrid-sdkQuery42-processor-1.4.1.jar"/>
+	<classpathentry kind="lib" path="extensions/data/styles/cacore42/lib/caGrid-sdkQuery42-style-1.4.1.jar"/>
+	<classpathentry kind="lib" path="extensions/data/styles/cacore42/lib/caGrid-sdkQuery42-tests-1.4.1.jar"/>
+	<classpathentry kind="lib" path="extensions/data/styles/cacore43/lib/caGrid-dataExtensions-sdkstyle-1.4.1.jar"/>
+	<classpathentry kind="lib" path="extensions/data/styles/cacore43/lib/caGrid-iso21090-domain-model-tools-1.4.1.jar"/>
+	<classpathentry kind="lib" path="extensions/data/styles/cacore43/lib/caGrid-sdkQuery43-processor-1.4.1.jar"/>
+	<classpathentry kind="lib" path="extensions/data/styles/cacore43/lib/caGrid-sdkQuery43-style-1.4.1.jar"/>
+	<classpathentry kind="lib" path="extensions/data/styles/cacore43/lib/caGrid-sdkQuery43-test-1.4.1.jar"/>
+	<classpathentry kind="lib" path="extensions/data/styles/cacore43/lib/caGrid-sdkQuery43-translator-1.4.1.jar"/>
+	<classpathentry kind="lib" path="extensions/data/styles/cacore43/lib/iso-datatypes-2.1.jar"/>
+	<classpathentry kind="lib" path="extensions/data/styles/cacore43/lib/iso-datatypes-extensions-2.1.jar"/>
 	<classpathentry kind="var" path="ANT_HOME/lib/ant-launcher.jar"/>
 	<classpathentry kind="var" path="ANT_HOME/lib/ant.jar"/>
 	<classpathentry kind="lib" path="ext/dependencies/jars/caGrid-Introduce-buildTools-1.4.1.jar"/>
