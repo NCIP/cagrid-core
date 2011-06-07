@@ -85,5 +85,6 @@
     <dependency rev="3.0.1.RELEASE-A" org="springframework" name="spring" conf="skeleton->spring-web" />
     <dependency rev="1.6.2" org="ehcache" name="ehcache" conf="skeleton->*" />
 
+    <dependency rev="r09" org="google" name="guava" conf="default->default" />
   </dependencies>
 </ivy-module>
