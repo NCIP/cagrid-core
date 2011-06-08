@@ -29,11 +29,11 @@ import com.google.common.io.Files;
 
 /**
  * Replace superseded jar files and remove obsolete jar files from the project's
- * lib directory.
+ * lib directory.  Also does the same for some .xsd files.
  * 
  * @author Mark Grand
  */
-public class JarUpgrader {
+public class LibUpgrader {
 	private static final String NEW_CAGRID_VERSION = "1.4.1";
 
 	private static final File OBSOLETE = new File("");
@@ -242,28 +242,113 @@ public class JarUpgrader {
 
 		File core = new File(cagridIntegrationRepository, "core");
 		File coreLib = new File(core, NEW_CAGRID_VERSION);
+		mapBuilder.put("caGrid-core-1.2.jar", //
+				new File(coreLib, "caGrid-core-" + NEW_CAGRID_VERSION + ".jar"));
+		mapBuilder.put("caGrid-core-resources-1.2.jar", //
+				new File(coreLib, "caGrid-core-resources-" + NEW_CAGRID_VERSION + ".jar"));
+		mapBuilder.put("caGrid-core-tests-1.2.jar", //
+				new File(coreLib, "caGrid-core-tests-" + NEW_CAGRID_VERSION + ".jar"));
 		mapBuilder.put("caGrid-core-1.3.jar", //
 				new File(coreLib, "caGrid-core-" + NEW_CAGRID_VERSION + ".jar"));
 		mapBuilder.put("caGrid-core-resources-1.3.jar", //
 				new File(coreLib, "caGrid-core-resources-" + NEW_CAGRID_VERSION + ".jar"));
 		mapBuilder.put("caGrid-core-tests-1.3.jar", //
 				new File(coreLib, "caGrid-core-tests-" + NEW_CAGRID_VERSION + ".jar"));
+		mapBuilder.put("caGrid-core-1.4.jar", //
+				new File(coreLib, "caGrid-core-" + NEW_CAGRID_VERSION + ".jar"));
+		mapBuilder.put("caGrid-core-resources-1.4.jar", //
+				new File(coreLib, "caGrid-core-resources-" + NEW_CAGRID_VERSION + ".jar"));
+		mapBuilder.put("caGrid-core-tests-1.4.jar", //
+				new File(coreLib, "caGrid-core-tests-" + NEW_CAGRID_VERSION + ".jar"));
 
 		File cql = new File(cagridIntegrationRepository, "cql");
 		File cqlLib = new File(cql, NEW_CAGRID_VERSION);
+		mapBuilder.put("1_gov.nih.nci.cagrid.CQLQuery-1.2.xsd", //
+				new File(cqlLib, "1_gov.nih.nci.cagrid.CQLQuery-" + NEW_CAGRID_VERSION + ".xsd"));
+		mapBuilder.put("1_gov.nih.nci.cagrid.CQLResultSet-1.2.xsd", //
+				new File(cqlLib, "1_gov.nih.nci.cagrid.CQLResultSet-" + NEW_CAGRID_VERSION + ".xsd"));
+		mapBuilder.put("Aggregations-1.2.xsd", //
+				new File(cqlLib, "Aggregations-" + NEW_CAGRID_VERSION + ".xsd"));
+		mapBuilder.put("AssociationPopulationSpec-1.2.xsd", //
+				new File(cqlLib, "AssociationPopulationSpec-" + NEW_CAGRID_VERSION + ".xsd"));
+		mapBuilder.put("caGrid-CQL-cql.1.0-1.2.jar", //
+				new File(cqlLib, "caGrid-CQL-cql.1.0-" + NEW_CAGRID_VERSION + ".jar"));
+		mapBuilder.put("caGrid-CQL-cql.2.0-1.2.jar", //
+				new File(cqlLib, "caGrid-CQL-cql.2.0-" + NEW_CAGRID_VERSION + ".jar"));
+		mapBuilder.put("caGrid-CQL-tests-1.2.jar", //
+				new File(cqlLib, "caGrid-CQL-tests-" + NEW_CAGRID_VERSION + ".jar"));
+		mapBuilder.put("CQLAttribute-1.2.xsd", //
+				new File(cqlLib, "CQLAttribute-" + NEW_CAGRID_VERSION + ".xsd"));
+		mapBuilder.put("CQLQueryComponents-1.2.xsd", //
+				new File(cqlLib, "CQLQueryComponents-" + NEW_CAGRID_VERSION + ".xsd"));
+		mapBuilder.put("CQLQueryModifier-1.2.xsd", //
+				new File(cqlLib, "CQLQueryModifier-" + NEW_CAGRID_VERSION + ".xsd"));
+		mapBuilder.put("CQLQueryResults-1.2.xsd", //
+				new File(cqlLib, "CQLQueryResults-" + NEW_CAGRID_VERSION + ".xsd"));
+		mapBuilder.put("Predicates-1.2.xsd", //
+				new File(cqlLib, "Predicates-" + NEW_CAGRID_VERSION + ".xsd"));
+		mapBuilder.put("1_gov.nih.nci.cagrid.CQLQuery-1.3.xsd", //
+				new File(cqlLib, "1_gov.nih.nci.cagrid.CQLQuery-" + NEW_CAGRID_VERSION + ".xsd"));
+		mapBuilder.put("1_gov.nih.nci.cagrid.CQLResultSet-1.3.xsd", //
+				new File(cqlLib, "1_gov.nih.nci.cagrid.CQLResultSet-" + NEW_CAGRID_VERSION + ".xsd"));
+		mapBuilder.put("Aggregations-1.3.xsd", //
+				new File(cqlLib, "Aggregations-" + NEW_CAGRID_VERSION + ".xsd"));
+		mapBuilder.put("AssociationPopulationSpec-1.3.xsd", //
+				new File(cqlLib, "AssociationPopulationSpec-" + NEW_CAGRID_VERSION + ".xsd"));
 		mapBuilder.put("caGrid-CQL-cql.1.0-1.3.jar", //
 				new File(cqlLib, "caGrid-CQL-cql.1.0-" + NEW_CAGRID_VERSION + ".jar"));
-		mapBuilder.put("caGrid-CQL-cql.1.0-1.3.jar", //
-				new File(cqlLib, "caGrid-CQL-utils-" + NEW_CAGRID_VERSION + ".jar"));
-		mapBuilder.put("caGrid-CQL-cql.1.0-1.3.jar", //
-				new File(cqlLib, "caGrid-CQL-cql.2.0-" + NEW_CAGRID_VERSION + ".jar"));
 		mapBuilder.put("caGrid-CQL-cql.2.0-1.3.jar", //
 				new File(cqlLib, "caGrid-CQL-cql.2.0-" + NEW_CAGRID_VERSION + ".jar"));
-		mapBuilder.put("caGrid-CQL-cql.2.0-1.3.jar", //
-				new File(cqlLib, "caGrid-CQL-utils-" + NEW_CAGRID_VERSION + ".jar"));
 		mapBuilder.put("caGrid-CQL-tests-1.3.jar", //
 				new File(cqlLib, "caGrid-CQL-tests-" + NEW_CAGRID_VERSION + ".jar"));
-
+		mapBuilder.put("CQLAttribute-1.3.xsd", //
+				new File(cqlLib, "CQLAttribute-" + NEW_CAGRID_VERSION + ".xsd"));
+		mapBuilder.put("CQLQueryComponents-1.3.xsd", //
+				new File(cqlLib, "CQLQueryComponents-" + NEW_CAGRID_VERSION + ".xsd"));
+		mapBuilder.put("CQLQueryModifier-1.3.xsd", //
+				new File(cqlLib, "CQLQueryModifier-" + NEW_CAGRID_VERSION + ".xsd"));
+		mapBuilder.put("CQLQueryResults-1.3.xsd", //
+				new File(cqlLib, "CQLQueryResults-" + NEW_CAGRID_VERSION + ".xsd"));
+		mapBuilder.put("Predicates-1.3.xsd", //
+				new File(cqlLib, "Predicates-" + NEW_CAGRID_VERSION + ".xsd"));
+		mapBuilder.put("1_gov.nih.nci.cagrid.CQLQuery-1.4.xsd", //
+				new File(cqlLib, "1_gov.nih.nci.cagrid.CQLQuery-" + NEW_CAGRID_VERSION + ".xsd"));
+		mapBuilder.put("1_gov.nih.nci.cagrid.CQLResultSet-1.4.xsd", //
+				new File(cqlLib, "1_gov.nih.nci.cagrid.CQLResultSet-" + NEW_CAGRID_VERSION + ".xsd"));
+		mapBuilder.put("Aggregations-1.4.xsd", //
+				new File(cqlLib, "Aggregations-" + NEW_CAGRID_VERSION + ".xsd"));
+		mapBuilder.put("AssociationPopulationSpec-1.4.xsd", //
+				new File(cqlLib, "AssociationPopulationSpec-" + NEW_CAGRID_VERSION + ".xsd"));
+		mapBuilder.put("caGrid-CQL-cql.1.0-1.4.jar", //
+				new File(cqlLib, "caGrid-CQL-cql.1.0-" + NEW_CAGRID_VERSION + ".jar"));
+		mapBuilder.put("caGrid-CQL-cql.2.0-1.4.jar", //
+				new File(cqlLib, "caGrid-CQL-cql.2.0-" + NEW_CAGRID_VERSION + ".jar"));
+		mapBuilder.put("caGrid-CQL-dcql.2.0-1.4.jar", //
+				new File(cqlLib, "caGrid-CQL-dcql.2.0-" + NEW_CAGRID_VERSION + ".jar"));
+		mapBuilder.put("caGrid-CQL-mappings.2.0-1.4.jar", //
+				new File(cqlLib, "caGrid-CQL-mappings.2.0-" + NEW_CAGRID_VERSION + ".jar"));
+		mapBuilder.put("caGrid-CQL-tests-1.4.jar", //
+				new File(cqlLib, "caGrid-CQL-tests-" + NEW_CAGRID_VERSION + ".jar"));
+		mapBuilder.put("caGrid-CQL-utils-1.4.jar", //
+				new File(cqlLib, "caGrid-CQL-utils-" + NEW_CAGRID_VERSION + ".jar"));
+		mapBuilder.put("CQLAttribute-1.4.xsd", //
+				new File(cqlLib, "CQLAttribute-" + NEW_CAGRID_VERSION + ".xsd"));
+		mapBuilder.put("CQLExtension-1.4.xsd", //
+				new File(cqlLib, "CQLExtension-" + NEW_CAGRID_VERSION + ".xsd"));
+		mapBuilder.put("CQLQueryComponents-1.4.xsd", //
+				new File(cqlLib, "CQLQueryComponents-" + NEW_CAGRID_VERSION + ".xsd"));
+		mapBuilder.put("CQLQueryModifier-1.4.xsd", //
+				new File(cqlLib, "CQLQueryModifier-" + NEW_CAGRID_VERSION + ".xsd"));
+		mapBuilder.put("CQLQueryResults-1.4.xsd", //
+				new File(cqlLib, "CQLQueryResults-" + NEW_CAGRID_VERSION + ".xsd"));
+		mapBuilder.put("DCQL_2.0-1.4.xsd", //
+				new File(cqlLib, "DCQL_2.0-" + NEW_CAGRID_VERSION + ".xsd"));
+		mapBuilder.put("DCQLResults_2.0-1.4.xsd", //
+				new File(cqlLib, "DCQLResults_2.0-" + NEW_CAGRID_VERSION + ".xsd"));
+		mapBuilder.put("Predicates-1.4.xsd", //
+				new File(cqlLib, "Predicates-" + NEW_CAGRID_VERSION + ".xsd"));
+///////////////////////////==========================/////////////////////////////
+		
 		File csmAuthExtension = new File(cagridIntegrationRepository, "csm-auth-extension");
 		File csmAuthExtensionLib = new File(csmAuthExtension, NEW_CAGRID_VERSION);
 		mapBuilder.put("caGrid-csm-auth-extension-1.3.jar", //
@@ -812,7 +897,7 @@ public class JarUpgrader {
 	 * @param oldServiceDir
 	 * @param newTomcatDir
 	 */
-	public JarUpgrader(File oldServiceDir, File newTomcatDir) {
+	public LibUpgrader(File oldServiceDir, File newTomcatDir) {
 		super();
 		File oldEtcDir = oldServiceDir.getParentFile();
 		File oldWebinfDir = oldEtcDir.getParentFile();
@@ -846,7 +931,7 @@ public class JarUpgrader {
 			ensureIsDirectory(oldServiceDir);
 			File newTomcatDir = new File(args[2]);
 			ensureIsDirectory(newTomcatDir);
-			JarUpgrader instance = new JarUpgrader(oldServiceDir, newTomcatDir);
+			LibUpgrader instance = new LibUpgrader(oldServiceDir, newTomcatDir);
 			instance.copyIntroduceJarFile();
 		} catch (Exception e) {
 			e.printStackTrace();
