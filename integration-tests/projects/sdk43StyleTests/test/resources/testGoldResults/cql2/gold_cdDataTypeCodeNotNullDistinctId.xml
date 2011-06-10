@@ -1,0 +1,17 @@
+<res:CQLQueryResults targetClassname="gov.nih.nci.cacoresdk.domain.other.datatype.CdDataType" xmlns:res="http://CQL.caBIG/2/org.cagrid.cql2.results">
+ <res:AttributeResult>
+  <res:Attribute name="id" value="1"/>
+ </res:AttributeResult>
+ <res:AttributeResult>
+  <res:Attribute name="id" value="2"/>
+ </res:AttributeResult>
+ <res:AttributeResult>
+  <res:Attribute name="id" value="3"/>
+ </res:AttributeResult>
+  <res:AttributeResult>
+  <res:Attribute name="id" value="4"/>
+ </res:AttributeResult>
+ <res:AttributeResult>
+  <res:Attribute name="id" value="5"/>
+ </res:AttributeResult>
+</res:CQLQueryResults>
