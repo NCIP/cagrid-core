@@ -29,7 +29,8 @@ import com.google.common.io.Files;
 
 /**
  * Replace superseded jar files and remove obsolete jar files from the project's
- * lib directory.  Also does the same for some .xsd files.
+ * lib directory. Also does the same for some .xsd and .wsdl files or any other
+ * files that could appear in a lib directory.
  * 
  * @author Mark Grand
  */
@@ -39,11 +40,11 @@ public class LibUpgrader {
 	private static final File OBSOLETE = new File("");
 
 	/**
-	 * Jar file names that appear as keys in the multi-map are obsolete. If the
+	 * File names that appear as keys in the multi-map are obsolete. If the
 	 * collection of File objects associated consists of just the OBSOLETE
-	 * object, then the .jar file is to be simply removed; otherwise the File
-	 * objects identify one or more files under the repository or integration
-	 * repository directories that will replace the named file.
+	 * object, then the file is to be simply removed; otherwise the File objects
+	 * identify one or more files under the repository or integration repository
+	 * directories that will replace the named file.
 	 */
 	private static ListMultimap<String, File> jarFileMultimap;
 
@@ -57,11 +58,10 @@ public class LibUpgrader {
 		File integrationRepository = new File(cagridHome, "integration-repository");
 		File cagridIntegrationRepository = new File(integrationRepository, "caGrid");
 
-		File tavernaWorkflowService = new File(cagridIntegrationRepository, "TavernaWorkflowService");
-		File tavernaWorkflowServiceLib = new File(tavernaWorkflowService, NEW_CAGRID_VERSION);
-
 		ImmutableListMultimap.Builder<String, File> mapBuilder = ImmutableListMultimap.builder();
 
+		File tavernaWorkflowService = new File(cagridIntegrationRepository, "TavernaWorkflowService");
+		File tavernaWorkflowServiceLib = new File(tavernaWorkflowService, NEW_CAGRID_VERSION);
 		mapBuilder.put("caGrid-TavernaWorkflowService-client-1.3.jar", //
 				new File(tavernaWorkflowServiceLib, "caGrid-TavernaWorkflowService-client-" + NEW_CAGRID_VERSION + ".jar"));
 		mapBuilder.put("caGrid-TavernaWorkflowService-common-1.3.jar", //
@@ -347,15 +347,88 @@ public class LibUpgrader {
 				new File(cqlLib, "DCQLResults_2.0-" + NEW_CAGRID_VERSION + ".xsd"));
 		mapBuilder.put("Predicates-1.4.xsd", //
 				new File(cqlLib, "Predicates-" + NEW_CAGRID_VERSION + ".xsd"));
-///////////////////////////==========================/////////////////////////////
-		
+
 		File csmAuthExtension = new File(cagridIntegrationRepository, "csm-auth-extension");
 		File csmAuthExtensionLib = new File(csmAuthExtension, NEW_CAGRID_VERSION);
 		mapBuilder.put("caGrid-csm-auth-extension-1.3.jar", //
 				new File(csmAuthExtensionLib, "caGrid-csm-auth-extension-" + NEW_CAGRID_VERSION + ".jar"));
+		mapBuilder.put("caGrid-csm-auth-extension-1.4.jar", //
+				new File(csmAuthExtensionLib, "caGrid-csm-auth-extension-" + NEW_CAGRID_VERSION + ".jar"));
 
 		File data = new File(cagridIntegrationRepository, "data");
 		File dataLib = new File(data, NEW_CAGRID_VERSION);
+		mapBuilder.put("attributePredicates-1.2.xml", //
+				new File(dataLib, "attributePredicates-" + NEW_CAGRID_VERSION + ".xml"));
+		mapBuilder.put("BDTDataService-1.2.wsdl", OBSOLETE);
+		mapBuilder.put("BDTDataServiceBulkDataHandler-1.2.wsdl", OBSOLETE);
+		mapBuilder.put("BDTDataServiceBulkDataHandlerTypes-1.2.xsd", OBSOLETE);
+		mapBuilder.put("BDTDataServiceTypes-1.2.xsd", OBSOLETE);
+		mapBuilder.put("BulkDataHandler-1.2.wsdl", OBSOLETE);
+		mapBuilder.put("BulkDataHandlerReference-1.2.xsd", OBSOLETE);
+		mapBuilder.put("BulkDataTransferServiceMetadata-1.2.xsd", OBSOLETE);
+		mapBuilder.put("caGrid-data-common-1.2.jar", //
+				new File(dataLib, "caGrid-data-common-" + NEW_CAGRID_VERSION + ".jar"));
+		mapBuilder.put("caGrid-data-cql-1.2.jar", //
+				new File(dataLib, "caGrid-data-cql-" + NEW_CAGRID_VERSION + ".jar"));
+		mapBuilder.put("caGrid-data-service-1.2.jar", //
+				new File(dataLib, "caGrid-data-service-" + NEW_CAGRID_VERSION + ".jar"));
+		mapBuilder.put("caGrid-data-stubs-1.2.jar", //
+				new File(dataLib, "caGrid-data-stubs-" + NEW_CAGRID_VERSION + ".jar"));
+		mapBuilder.put("caGrid-data-tests-1.2.jar", //
+				new File(dataLib, "caGrid-data-tests-" + NEW_CAGRID_VERSION + ".jar"));
+		mapBuilder.put("caGrid-data-tools-1.2.jar", //
+				new File(dataLib, "caGrid-data-tools-" + NEW_CAGRID_VERSION + ".jar"));
+		mapBuilder.put("caGrid-data-utils-1.2.jar", //
+				new File(dataLib, "caGrid-data-utils-" + NEW_CAGRID_VERSION + ".jar"));
+		mapBuilder.put("caGrid-data-validation-1.2.jar", //
+				new File(dataLib, "caGrid-data-validation-" + NEW_CAGRID_VERSION + ".jar"));
+		mapBuilder.put("ClassToQname-1.2.xsd", //
+				new File(dataLib, "ClassToQname-" + NEW_CAGRID_VERSION + ".xsd"));
+		mapBuilder.put("countAllOfType-1.2.xml", //
+				new File(dataLib, "countAllOfType-" + NEW_CAGRID_VERSION + ".xml"));
+		mapBuilder.put("countDistinctAttributes-1.2.xml", //
+				new File(dataLib, "countDistinctAttributes-" + NEW_CAGRID_VERSION + ".xml"));
+		mapBuilder.put("DataService-1.2.wsdl", //
+				new File(dataLib, "DataService-" + NEW_CAGRID_VERSION + ".wsdl"));
+		mapBuilder.put("DataServiceAuditorConfiguration-1.2.xsd", //
+				new File(dataLib, "DataServiceAuditorConfiguration-" + NEW_CAGRID_VERSION + ".xsd"));
+		mapBuilder.put("DataServiceExceptions-1.2.xsd", //
+				new File(dataLib, "DataServiceExceptions-" + NEW_CAGRID_VERSION + ".xsd"));
+		mapBuilder.put("DataServiceExtensionData-1.2.xsd", //
+				new File(dataLib, "DataServiceExtensionData-" + NEW_CAGRID_VERSION + ".xsd"));
+		mapBuilder.put("DataServiceStyle-1.2.xsd", //
+				new File(dataLib, "DataServiceStyle-" + NEW_CAGRID_VERSION + ".xsd"));
+		mapBuilder.put("DataServiceTypes-1.2.xsd", //
+				new File(dataLib, "DataServiceTypes-" + NEW_CAGRID_VERSION + ".xsd"));
+		mapBuilder.put("EnumerationDataService-1.2.wsdl", //
+				new File(dataLib, "EnumerationDataService-" + NEW_CAGRID_VERSION + ".wsdl"));
+		mapBuilder.put("EnumerationDataServiceTypes-1.2.xsd", //
+				new File(dataLib, "EnumerationDataServiceTypes-" + NEW_CAGRID_VERSION + ".xsd"));
+		mapBuilder.put("objectWithAssociation-1.2.xml", //
+				new File(dataLib, "objectWithAssociation-" + NEW_CAGRID_VERSION + ".xml"));
+		mapBuilder.put("objectWithAssociationNoRoleName-1.2.xml", //
+				new File(dataLib, "objectWithAssociationNoRoleName-" + NEW_CAGRID_VERSION + ".xml"));
+		mapBuilder.put("objectWithAttribute-1.2.xml", //
+				new File(dataLib, "objectWithAttribute-" + NEW_CAGRID_VERSION + ".xml"));
+		mapBuilder.put("objectWithGroup-1.2.xml", //
+				new File(dataLib, "objectWithGroup-" + NEW_CAGRID_VERSION + ".xml"));
+		mapBuilder.put("objectWithNestedGroup-1.2.xml", //
+				new File(dataLib, "objectWithNestedGroup-" + NEW_CAGRID_VERSION + ".xml"));
+		mapBuilder.put("returnAllOfType-1.2.xml", //
+				new File(dataLib, "returnAllOfType-" + NEW_CAGRID_VERSION + ".xml"));
+		mapBuilder.put("returnNamedAttributes-1.2.xml", //
+				new File(dataLib, "returnNamedAttributes-" + NEW_CAGRID_VERSION + ".xml"));
+		mapBuilder.put("ServiceSecurity-1.2.wsdl", //
+				new File(dataLib, "ServiceSecurity-" + NEW_CAGRID_VERSION + ".wsdl"));
+		mapBuilder.put("attributePredicates-1.3.xml", //
+				new File(dataLib, "attributePredicates-" + NEW_CAGRID_VERSION + ".xml"));
+		mapBuilder.put("BDTDataService-1.3.wsdl", OBSOLETE);
+		mapBuilder.put("BDTDataServiceBulkDataHandler-1.3.wsdl", OBSOLETE);
+		mapBuilder.put("BDTDataServiceBulkDataHandlerTypes-1.3.xsd", OBSOLETE);
+		mapBuilder.put("BDTDataServiceTypes-1.3.xsd", OBSOLETE);
+		mapBuilder.put("BulkDataHandler-1.3.wsdl", OBSOLETE);
+		mapBuilder.put("BulkDataHandlerReference-1.3.xsd", OBSOLETE);
+		mapBuilder.put("BulkDataTransferServiceMetadata-1.3.xsd", OBSOLETE);
 		mapBuilder.put("caGrid-data-common-1.3.jar", //
 				new File(dataLib, "caGrid-data-common-" + NEW_CAGRID_VERSION + ".jar"));
 		mapBuilder.put("caGrid-data-cql-1.3.jar", //
@@ -366,13 +439,141 @@ public class LibUpgrader {
 				new File(dataLib, "caGrid-data-stubs-" + NEW_CAGRID_VERSION + ".jar"));
 		mapBuilder.put("caGrid-data-tests-1.3.jar", //
 				new File(dataLib, "caGrid-data-tests-" + NEW_CAGRID_VERSION + ".jar"));
+		mapBuilder.put("caGrid-data-tools-1.3.jar", //
+				new File(dataLib, "caGrid-data-tools-" + NEW_CAGRID_VERSION + ".jar"));
 		mapBuilder.put("caGrid-data-utils-1.3.jar", //
 				new File(dataLib, "caGrid-data-utils-" + NEW_CAGRID_VERSION + ".jar"));
 		mapBuilder.put("caGrid-data-validation-1.3.jar", //
 				new File(dataLib, "caGrid-data-validation-" + NEW_CAGRID_VERSION + ".jar"));
+		mapBuilder.put("ClassToQname-1.3.xsd", //
+				new File(dataLib, "ClassToQname-" + NEW_CAGRID_VERSION + ".xsd"));
+		mapBuilder.put("countAllOfType-1.3.xml", //
+				new File(dataLib, "countAllOfType-" + NEW_CAGRID_VERSION + ".xml"));
+		mapBuilder.put("countDistinctAttributes-1.3.xml", //
+				new File(dataLib, "countDistinctAttributes-" + NEW_CAGRID_VERSION + ".xml"));
+		mapBuilder.put("DataService-1.3.wsdl", //
+				new File(dataLib, "DataService-" + NEW_CAGRID_VERSION + ".wsdl"));
+		mapBuilder.put("DataServiceAuditorConfiguration-1.3.xsd", //
+				new File(dataLib, "DataServiceAuditorConfiguration-" + NEW_CAGRID_VERSION + ".xsd"));
+		mapBuilder.put("DataServiceExceptions-1.3.xsd", //
+				new File(dataLib, "DataServiceExceptions-" + NEW_CAGRID_VERSION + ".xsd"));
+		mapBuilder.put("DataServiceExtensionData-1.3.xsd", //
+				new File(dataLib, "DataServiceExtensionData-" + NEW_CAGRID_VERSION + ".xsd"));
+		mapBuilder.put("DataServiceStyle-1.3.xsd", //
+				new File(dataLib, "DataServiceStyle-" + NEW_CAGRID_VERSION + ".xsd"));
+		mapBuilder.put("DataServiceTypes-1.3.xsd", //
+				new File(dataLib, "DataServiceTypes-" + NEW_CAGRID_VERSION + ".xsd"));
+		mapBuilder.put("EnumerationDataService-1.3.wsdl", //
+				new File(dataLib, "EnumerationDataService-" + NEW_CAGRID_VERSION + ".wsdl"));
+		mapBuilder.put("EnumerationDataServiceTypes-1.3.xsd", //
+				new File(dataLib, "EnumerationDataServiceTypes-" + NEW_CAGRID_VERSION + ".xsd"));
+		mapBuilder.put("objectWithAssociation-1.3.xml", //
+				new File(dataLib, "objectWithAssociation-" + NEW_CAGRID_VERSION + ".xml"));
+		mapBuilder.put("objectWithAssociationNoRoleName-1.3.xml", //
+				new File(dataLib, "objectWithAssociationNoRoleName-" + NEW_CAGRID_VERSION + ".xml"));
+		mapBuilder.put("objectWithAttribute-1.3.xml", //
+				new File(dataLib, "objectWithAttribute-" + NEW_CAGRID_VERSION + ".xml"));
+		mapBuilder.put("objectWithGroup-1.3.xml", //
+				new File(dataLib, "objectWithGroup-" + NEW_CAGRID_VERSION + ".xml"));
+		mapBuilder.put("objectWithNestedGroup-1.3.xml", //
+				new File(dataLib, "objectWithNestedGroup-" + NEW_CAGRID_VERSION + ".xml"));
+		mapBuilder.put("returnAllOfType-1.3.xml", //
+				new File(dataLib, "returnAllOfType-" + NEW_CAGRID_VERSION + ".xml"));
+		mapBuilder.put("returnNamedAttributes-1.3.xml", //
+				new File(dataLib, "returnNamedAttributes-" + NEW_CAGRID_VERSION + ".xml"));
+		mapBuilder.put("ServiceSecurity-1.3.wsdl", //
+				new File(dataLib, "ServiceSecurity-" + NEW_CAGRID_VERSION + ".wsdl"));
+		mapBuilder.put("attributePredicates-1.4.xml", //
+				new File(dataLib, "attributePredicates-" + NEW_CAGRID_VERSION + ".xml"));
+		mapBuilder.put("caGrid-data-common-1.4.jar", //
+				new File(dataLib, "caGrid-data-common-" + NEW_CAGRID_VERSION + ".jar"));
+		mapBuilder.put("caGrid-data-cql-1.4.jar", //
+				new File(dataLib, "caGrid-data-cql-" + NEW_CAGRID_VERSION + ".jar"));
+		mapBuilder.put("caGrid-data-service-1.4.jar", //
+				new File(dataLib, "caGrid-data-service-" + NEW_CAGRID_VERSION + ".jar"));
+		mapBuilder.put("caGrid-data-stubs-1.4.jar", //
+				new File(dataLib, "caGrid-data-stubs-" + NEW_CAGRID_VERSION + ".jar"));
+		mapBuilder.put("caGrid-data-tests-1.4.jar", //
+				new File(dataLib, "caGrid-data-tests-" + NEW_CAGRID_VERSION + ".jar"));
+		mapBuilder.put("caGrid-data-tools-1.4.jar", //
+				new File(dataLib, "caGrid-data-tools-" + NEW_CAGRID_VERSION + ".jar"));
+		mapBuilder.put("caGrid-data-utils-1.4.jar", //
+				new File(dataLib, "caGrid-data-utils-" + NEW_CAGRID_VERSION + ".jar"));
+		mapBuilder.put("caGrid-data-validation-1.4.jar", //
+				new File(dataLib, "caGrid-data-validation-" + NEW_CAGRID_VERSION + ".jar"));
+		mapBuilder.put("ClassToQname-1.4.xsd", //
+				new File(dataLib, "ClassToQname-" + NEW_CAGRID_VERSION + ".xsd"));
+		mapBuilder.put("countAllOfType-1.4.xml", //
+				new File(dataLib, "countAllOfType-" + NEW_CAGRID_VERSION + ".xml"));
+		mapBuilder.put("countDistinctAttributes-1.4.xml", //
+				new File(dataLib, "countDistinctAttributes-" + NEW_CAGRID_VERSION + ".xml"));
+		mapBuilder.put("Cql2DataService-1.4.wsdl", //
+				new File(dataLib, "Cql2DataService-" + NEW_CAGRID_VERSION + ".wsdl"));
+		mapBuilder.put("Cql2DataServiceTypes-1.4.xsd", //
+				new File(dataLib, "Cql2DataServiceTypes-" + NEW_CAGRID_VERSION + ".xsd"));
+		mapBuilder.put("Cql2EnumerationDataService-1.4.wsdl", //
+				new File(dataLib, "Cql2EnumerationDataService-" + NEW_CAGRID_VERSION + ".wsdl"));
+		mapBuilder.put("Cql2EnumerationDataServiceTypes-1.4.xsd", //
+				new File(dataLib, "Cql2EnumerationDataServiceTypes-" + NEW_CAGRID_VERSION + ".xsd"));
+		mapBuilder.put("Cql2TransferDataService-1.4.wsdl", //
+				new File(dataLib, "Cql2TransferDataService-" + NEW_CAGRID_VERSION + ".wsdl"));
+		mapBuilder.put("Cql2TransferDataServiceTypes-1.4.xsd", //
+				new File(dataLib, "Cql2TransferDataServiceTypes-" + NEW_CAGRID_VERSION + ".xsd"));
+		mapBuilder.put("DataService-1.4.wsdl", //
+				new File(dataLib, "DataService-" + NEW_CAGRID_VERSION + ".wsdl"));
+		mapBuilder.put("DataServiceAuditorConfiguration-1.4.xsd", //
+				new File(dataLib, "DataServiceAuditorConfiguration-" + NEW_CAGRID_VERSION + ".xsd"));
+		mapBuilder.put("DataServiceExceptions-1.4.xsd", //
+				new File(dataLib, "DataServiceExceptions-" + NEW_CAGRID_VERSION + ".xsd"));
+		mapBuilder.put("DataServiceExtensionData-1.4.xsd", //
+				new File(dataLib, "DataServiceExtensionData-" + NEW_CAGRID_VERSION + ".xsd"));
+		mapBuilder.put("DataServiceStyle-1.4.xsd", //
+				new File(dataLib, "DataServiceStyle-" + NEW_CAGRID_VERSION + ".xsd"));
+		mapBuilder.put("DataServiceTypes-1.4.xsd", //
+				new File(dataLib, "DataServiceTypes-" + NEW_CAGRID_VERSION + ".xsd"));
+		mapBuilder.put("EnumerationDataService-1.4.wsdl", //
+				new File(dataLib, "EnumerationDataService-" + NEW_CAGRID_VERSION + ".wsdl"));
+		mapBuilder.put("EnumerationDataServiceTypes-1.4.xsd", //
+				new File(dataLib, "EnumerationDataServiceTypes-" + NEW_CAGRID_VERSION + ".xsd"));
+		mapBuilder.put("objectWithAssociation-1.4.xml", //
+				new File(dataLib, "objectWithAssociation-" + NEW_CAGRID_VERSION + ".xml"));
+		mapBuilder.put("objectWithAssociationNoRoleName-1.4.xml", //
+				new File(dataLib, "objectWithAssociationNoRoleName-" + NEW_CAGRID_VERSION + ".xml"));
+		mapBuilder.put("objectWithAttribute-1.4.xml", //
+				new File(dataLib, "objectWithAttribute-" + NEW_CAGRID_VERSION + ".xml"));
+		mapBuilder.put("objectWithGroup-1.4.xml", //
+				new File(dataLib, "objectWithGroup-" + NEW_CAGRID_VERSION + ".xml"));
+		mapBuilder.put("objectWithNestedGroup-1.4.xml", //
+				new File(dataLib, "objectWithNestedGroup-" + NEW_CAGRID_VERSION + ".xml"));
+		mapBuilder.put("QueryLanguageSupportMetadata-1.4.xsd", //
+				new File(dataLib, "QueryLanguageSupportMetadata-" + NEW_CAGRID_VERSION + ".xsd"));
+		mapBuilder.put("returnAllOfType-1.4.xml", //
+				new File(dataLib, "returnAllOfType-" + NEW_CAGRID_VERSION + ".xml"));
+		mapBuilder.put("returnNamedAttributes-1.4.xml", //
+				new File(dataLib, "returnNamedAttributes-" + NEW_CAGRID_VERSION + ".xml"));
+		mapBuilder.put("ServiceSecurity-1.4.wsdl", //
+				new File(dataLib, "ServiceSecurity-" + NEW_CAGRID_VERSION + ".wsdl"));
+		mapBuilder.put("TransferDataService-1.4.wsdl", //
+				new File(dataLib, "TransferDataService-" + NEW_CAGRID_VERSION + ".wsdl"));
+		mapBuilder.put("TransferDataServiceTypes-1.4.xsd", //
+				new File(dataLib, "TransferDataServiceTypes-" + NEW_CAGRID_VERSION + ".xsd"));
 
 		File dataExtensions = new File(cagridIntegrationRepository, "dataExtensions");
 		File dataExtensionsLib = new File(dataExtensions, NEW_CAGRID_VERSION);
+		mapBuilder.put("caGrid-dataExtensionsLib-core-1.2.jar", //
+				new File(dataExtensionsLib, "caGrid-dataExtensionsLib-core-" + NEW_CAGRID_VERSION + ".jar"));
+		mapBuilder.put("caGrid-dataExtensionsLib-sdkstyle-1.2.jar", //
+				new File(dataExtensionsLib, "caGrid-dataExtensionsLib-sdkstyle-" + NEW_CAGRID_VERSION + ".jar"));
+		mapBuilder.put("caGrid-dataExtensionsLib-style-cacore31-1.2.jar", OBSOLETE);
+		mapBuilder.put("caGrid-dataExtensionsLib-style-cacore32-1.2.jar", OBSOLETE);
+		mapBuilder.put("caGrid-dataExtensionsLib-style-tests-cacore31-1.2.jar", OBSOLETE);
+		mapBuilder.put("caGrid-dataExtensionsLib-style-tests-cacore31-1.2.jar", OBSOLETE);
+		mapBuilder.put("caGrid-dataExtensionsLib-tests-1.2.jar", //
+				new File(dataExtensionsLib, "caGrid-dataExtensionsLib-tests-" + NEW_CAGRID_VERSION + ".jar"));
+		mapBuilder.put("caGrid-dataExtensionsLib-ui-1.2.jar", //
+				new File(dataExtensionsLib, "caGrid-dataExtensionsLib-ui-" + NEW_CAGRID_VERSION + ".jar"));
+		mapBuilder.put("caGrid-dataExtensionsLib-upgrades-1.2.jar", //
+				new File(dataExtensionsLib, "caGrid-dataExtensionsLib-upgrades-" + NEW_CAGRID_VERSION + ".jar"));
 		mapBuilder.put("caGrid-dataExtensionsLib-core-1.3.jar", //
 				new File(dataExtensionsLib, "caGrid-dataExtensionsLib-core-" + NEW_CAGRID_VERSION + ".jar"));
 		mapBuilder.put("caGrid-dataExtensionsLib-sdkstyle-1.3.jar", //
@@ -383,16 +584,44 @@ public class LibUpgrader {
 				new File(dataExtensionsLib, "caGrid-dataExtensionsLib-ui-" + NEW_CAGRID_VERSION + ".jar"));
 		mapBuilder.put("caGrid-dataExtensionsLib-upgrades-1.3.jar", //
 				new File(dataExtensionsLib, "caGrid-dataExtensionsLib-upgrades-" + NEW_CAGRID_VERSION + ".jar"));
+		mapBuilder.put("caGrid-dataExtensionsLib-core-1.4.jar", //
+				new File(dataExtensionsLib, "caGrid-dataExtensionsLib-core-" + NEW_CAGRID_VERSION + ".jar"));
+		mapBuilder.put("caGrid-dataExtensionsLib-sdkstyle-1.4.jar", //
+				new File(dataExtensionsLib, "caGrid-dataExtensionsLib-sdkstyle-" + NEW_CAGRID_VERSION + ".jar"));
+		mapBuilder.put("caGrid-dataExtensionsLib-tests-1.4.jar", //
+				new File(dataExtensionsLib, "caGrid-dataExtensionsLib-tests-" + NEW_CAGRID_VERSION + ".jar"));
+		mapBuilder.put("caGrid-dataExtensionsLib-ui-1.4.jar", //
+				new File(dataExtensionsLib, "caGrid-dataExtensionsLib-ui-" + NEW_CAGRID_VERSION + ".jar"));
+		mapBuilder.put("caGrid-dataExtensionsLib-upgrades-1.4.jar", //
+				new File(dataExtensionsLib, "caGrid-dataExtensionsLib-upgrades-" + NEW_CAGRID_VERSION + ".jar"));
 
 		File discovery = new File(cagridIntegrationRepository, "discovery");
 		File discoveryLib = new File(discovery, NEW_CAGRID_VERSION);
+		mapBuilder.put("caGrid-discovery-1.2.jar", //
+				new File(discoveryLib, "caGrid-discovery-" + NEW_CAGRID_VERSION + ".jar"));
+		mapBuilder.put("caGrid-discovery-tests-1.2.jar", //
+				new File(discoveryLib, "caGrid-discovery-tests-" + NEW_CAGRID_VERSION + ".jar"));
 		mapBuilder.put("caGrid-discovery-1.3.jar", //
 				new File(discoveryLib, "caGrid-discovery-" + NEW_CAGRID_VERSION + ".jar"));
 		mapBuilder.put("caGrid-discovery-tests-1.3.jar", //
 				new File(discoveryLib, "caGrid-discovery-tests-" + NEW_CAGRID_VERSION + ".jar"));
+		mapBuilder.put("caGrid-discovery-1.4.jar", //
+				new File(discoveryLib, "caGrid-discovery-" + NEW_CAGRID_VERSION + ".jar"));
+		mapBuilder.put("caGrid-discovery-tests-1.4.jar", //
+				new File(discoveryLib, "caGrid-discovery-tests-" + NEW_CAGRID_VERSION + ".jar"));
 
 		File dorian = new File(cagridIntegrationRepository, "dorian");
 		File dorianLib = new File(dorian, NEW_CAGRID_VERSION);
+		mapBuilder.put("caGrid-dorian-client-1.2.jar", //
+				new File(dorianLib, "caGrid-dorian-client-" + NEW_CAGRID_VERSION + ".jar"));
+		mapBuilder.put("caGrid-dorian-common-1.2.jar", //
+				new File(dorianLib, "caGrid-dorian-common-" + NEW_CAGRID_VERSION + ".jar"));
+		mapBuilder.put("caGrid-dorian-service-1.2.jar", //
+				new File(dorianLib, "caGrid-dorian-service-" + NEW_CAGRID_VERSION + ".jar"));
+		mapBuilder.put("caGrid-dorian-stubs-1.2.jar", //
+				new File(dorianLib, "caGrid-dorian-stubs-" + NEW_CAGRID_VERSION + ".jar"));
+		mapBuilder.put("caGrid-dorian-tests-1.2.jar", //
+				new File(dorianLib, "caGrid-dorian-tests-" + NEW_CAGRID_VERSION + ".jar"));
 		mapBuilder.put("caGrid-dorian-client-1.3.jar", //
 				new File(dorianLib, "caGrid-dorian-client-" + NEW_CAGRID_VERSION + ".jar"));
 		mapBuilder.put("caGrid-dorian-common-1.3.jar", //
@@ -403,15 +632,43 @@ public class LibUpgrader {
 				new File(dorianLib, "caGrid-dorian-stubs-" + NEW_CAGRID_VERSION + ".jar"));
 		mapBuilder.put("caGrid-dorian-tests-1.3.jar", //
 				new File(dorianLib, "caGrid-dorian-tests-" + NEW_CAGRID_VERSION + ".jar"));
+		mapBuilder.put("caGrid-dorian-client-1.4.jar", //
+				new File(dorianLib, "caGrid-dorian-client-" + NEW_CAGRID_VERSION + ".jar"));
+		mapBuilder.put("caGrid-dorian-common-1.4.jar", //
+				new File(dorianLib, "caGrid-dorian-common-" + NEW_CAGRID_VERSION + ".jar"));
+		mapBuilder.put("caGrid-dorian-service-1.4.jar", //
+				new File(dorianLib, "caGrid-dorian-service-" + NEW_CAGRID_VERSION + ".jar"));
+		mapBuilder.put("caGrid-dorian-stubs-1.4.jar", //
+				new File(dorianLib, "caGrid-dorian-stubs-" + NEW_CAGRID_VERSION + ".jar"));
+		mapBuilder.put("caGrid-dorian-tests-1.4.jar", //
+				new File(dorianLib, "caGrid-dorian-tests-" + NEW_CAGRID_VERSION + ".jar"));
 
 		File enforceAuthExtension = new File(cagridIntegrationRepository, "enforce-auth-extension");
 		File enforceAuthExtensionLib = new File(enforceAuthExtension, NEW_CAGRID_VERSION);
 		mapBuilder.put("caGrid-enforce-auth-extension-1.3.jar", //
 				new File(enforceAuthExtensionLib, "caGrid-enforce-auth-extension-" + NEW_CAGRID_VERSION + ".jar"));
+		mapBuilder.put("caGrid-enforce-auth-extension-1.4.jar", //
+				new File(enforceAuthExtensionLib, "caGrid-enforce-auth-extension-" + NEW_CAGRID_VERSION + ".jar"));
+
+		mapBuilder.put("caGrid-evs-client-1.2.jar", OBSOLETE);
+		mapBuilder.put("caGrid-evs-common-1.2.jar", OBSOLETE);
+		mapBuilder.put("caGrid-evs-service-1.2.jar", OBSOLETE);
+		mapBuilder.put("caGrid-evs-stubs-1.2.jar", OBSOLETE);
+		mapBuilder.put("caGrid-evs-tests-1.2.jar", OBSOLETE);
 
 		File fqp = new File(cagridIntegrationRepository, "fqp");
 		File fqpLib = new File(fqp, NEW_CAGRID_VERSION);
-		mapBuilder.put("caGrid-fqp-client-1.3.jar", //
+		mapBuilder.put("caGrid-fqp-client-1.2.jar", //
+				new File(fqpLib, "caGrid-fqp-client-" + NEW_CAGRID_VERSION + ".jar"));
+		mapBuilder.put("caGrid-fqp-common-1.2.jar", //
+				new File(fqpLib, "caGrid-fqp-common-" + NEW_CAGRID_VERSION + ".jar"));
+		mapBuilder.put("caGrid-fqp-service-1.2.jar", //
+				new File(fqpLib, "caGrid-fqp-service-" + NEW_CAGRID_VERSION + ".jar"));
+		mapBuilder.put("caGrid-fqp-stubs-1.2.jar", //
+				new File(fqpLib, "caGrid-fqp-stubs-" + NEW_CAGRID_VERSION + ".jar"));
+		mapBuilder.put("caGrid-fqp-tests-1.2.jar", //
+				new File(fqpLib, "caGrid-fqp-tests-" + NEW_CAGRID_VERSION + ".jar"));
+		mapBuilder.put("caGrid-fqp-client-1.2.jar", //
 				new File(fqpLib, "caGrid-fqp-client-" + NEW_CAGRID_VERSION + ".jar"));
 		mapBuilder.put("caGrid-fqp-common-1.3.jar", //
 				new File(fqpLib, "caGrid-fqp-common-" + NEW_CAGRID_VERSION + ".jar"));
@@ -421,6 +678,20 @@ public class LibUpgrader {
 				new File(fqpLib, "caGrid-fqp-stubs-" + NEW_CAGRID_VERSION + ".jar"));
 		mapBuilder.put("caGrid-fqp-tests-1.3.jar", //
 				new File(fqpLib, "caGrid-fqp-tests-" + NEW_CAGRID_VERSION + ".jar"));
+		mapBuilder.put("caGrid-fqp-client-1.4.jar", //
+				new File(fqpLib, "caGrid-fqp-client-" + NEW_CAGRID_VERSION + ".jar"));
+		mapBuilder.put("caGrid-fqp-common-1.4.jar", //
+				new File(fqpLib, "caGrid-fqp-common-" + NEW_CAGRID_VERSION + ".jar"));
+		mapBuilder.put("caGrid-fqp-service-1.4.jar", //
+				new File(fqpLib, "caGrid-fqp-service-" + NEW_CAGRID_VERSION + ".jar"));
+		mapBuilder.put("caGrid-fqp-stubs-1.4.jar", //
+				new File(fqpLib, "caGrid-fqp-stubs-" + NEW_CAGRID_VERSION + ".jar"));
+		mapBuilder.put("caGrid-fqp-tests-1.4.jar", //
+				new File(fqpLib, "caGrid-fqp-tests-" + NEW_CAGRID_VERSION + ".jar"));
+		mapBuilder.put("Distributed_CQL_Results_schema_2.0-1.4.xsd", //
+				new File(fqpLib, "Distributed_CQL_Results_schema_2.0-" + NEW_CAGRID_VERSION + ".xsd"));
+		mapBuilder.put("Distributed_CQL_schema_2.0-1.4.xsd", //
+				new File(fqpLib, "Distributed_CQL_schema_2.0-" + NEW_CAGRID_VERSION + ".xsd"));
 
 		File gaardsCore = new File(cagridIntegrationRepository, "gaards-core");
 		File gaardsCoreLib = new File(gaardsCore, NEW_CAGRID_VERSION);
@@ -428,14 +699,24 @@ public class LibUpgrader {
 				new File(gaardsCoreLib, "caGrid-gaards-core-" + NEW_CAGRID_VERSION + ".jar"));
 		mapBuilder.put("caGrid-gaards-core-tests-1.3.jar", //
 				new File(gaardsCoreLib, "caGrid-gaards-core-tests-" + NEW_CAGRID_VERSION + ".jar"));
+		mapBuilder.put("caGrid-gaards-core-1.4.jar", //
+				new File(gaardsCoreLib, "caGrid-gaards-core-" + NEW_CAGRID_VERSION + ".jar"));
+		mapBuilder.put("caGrid-gaards-core-tests-1.4.jar", //
+				new File(gaardsCoreLib, "caGrid-gaards-core-tests-" + NEW_CAGRID_VERSION + ".jar"));
 
 		File gaardsUi = new File(cagridIntegrationRepository, "gaards-ui");
 		File gaardsUiLib = new File(gaardsUi, NEW_CAGRID_VERSION);
+		mapBuilder.put("caGrid-gaards-ui-1.2.jar", //
+				new File(gaardsUiLib, "caGrid-gaards-ui-" + NEW_CAGRID_VERSION + ".jar"));
 		mapBuilder.put("caGrid-gaards-ui-1.3.jar", //
+				new File(gaardsUiLib, "caGrid-gaards-ui-" + NEW_CAGRID_VERSION + ".jar"));
+		mapBuilder.put("caGrid-gaards-ui-1.4.jar", //
 				new File(gaardsUiLib, "caGrid-gaards-ui-" + NEW_CAGRID_VERSION + ".jar"));
 
 		File globalModelExchange = new File(cagridIntegrationRepository, "globalModelExchange");
 		File globalModelExchangeLib = new File(globalModelExchange, NEW_CAGRID_VERSION);
+		mapBuilder.put("caGrid-GlobalModelExchange-1.2.jar", OBSOLETE);
+		mapBuilder.put("caGrid-GlobalModelExchange-stubs-1.2.jar", OBSOLETE);
 		mapBuilder.put("caGrid-globalModelExchange-client-1.3.jar", //
 				new File(globalModelExchangeLib, "caGrid-globalModelExchange-client-" + NEW_CAGRID_VERSION + ".jar"));
 		mapBuilder.put("caGrid-globalModelExchange-common-1.3.jar", //
@@ -446,6 +727,16 @@ public class LibUpgrader {
 				new File(globalModelExchangeLib, "caGrid-globalModelExchange-stubs-" + NEW_CAGRID_VERSION + ".jar"));
 		mapBuilder.put("caGrid-globalModelExchange-tests-1.3.jar", //
 				new File(globalModelExchangeLib, "caGrid-globalModelExchange-tests-" + NEW_CAGRID_VERSION + ".jar"));
+		mapBuilder.put("caGrid-globalModelExchange-client-1.4.jar", //
+				new File(globalModelExchangeLib, "caGrid-globalModelExchange-client-" + NEW_CAGRID_VERSION + ".jar"));
+		mapBuilder.put("caGrid-globalModelExchange-common-1.4.jar", //
+				new File(globalModelExchangeLib, "caGrid-globalModelExchange-common-" + NEW_CAGRID_VERSION + ".jar"));
+		mapBuilder.put("caGrid-globalModelExchange-service-1.4.jar", //
+				new File(globalModelExchangeLib, "caGrid-globalModelExchange-service-" + NEW_CAGRID_VERSION + ".jar"));
+		mapBuilder.put("caGrid-globalModelExchange-stubs-1.4.jar", //
+				new File(globalModelExchangeLib, "caGrid-globalModelExchange-stubs-" + NEW_CAGRID_VERSION + ".jar"));
+		mapBuilder.put("caGrid-globalModelExchange-tests-1.4.jar", //
+				new File(globalModelExchangeLib, "caGrid-globalModelExchange-tests-" + NEW_CAGRID_VERSION + ".jar"));
 
 		File globalModelExchangeUi = new File(cagridIntegrationRepository, "globalModelExchange-ui");
 		File globalModelExchangeUiLib = new File(globalModelExchangeUi, NEW_CAGRID_VERSION);
@@ -453,23 +744,62 @@ public class LibUpgrader {
 				new File(globalModelExchangeUiLib, "caGrid-globalModelExchange-ui-" + NEW_CAGRID_VERSION + ".jar"));
 		mapBuilder.put("caGrid-globalModelExchange-ui-tests-1.3.jar", //
 				new File(globalModelExchangeUiLib, "caGrid-globalModelExchange-ui-tests-" + NEW_CAGRID_VERSION + ".jar"));
+		mapBuilder.put("caGrid-globalModelExchange-ui-1.4.jar", //
+				new File(globalModelExchangeUiLib, "caGrid-globalModelExchange-ui-" + NEW_CAGRID_VERSION + ".jar"));
+		mapBuilder.put("caGrid-globalModelExchange-ui-tests-1.4.jar", //
+				new File(globalModelExchangeUiLib, "caGrid-globalModelExchange-ui-tests-" + NEW_CAGRID_VERSION + ".jar"));
 
 		File grape = new File(cagridIntegrationRepository, "grape");
 		File grapeLib = new File(grape, NEW_CAGRID_VERSION);
+		mapBuilder.put("caGrid-grape-1.2.jar", //
+				new File(grapeLib, "caGrid-grape-" + NEW_CAGRID_VERSION + ".jar"));
+		mapBuilder.put("caGrid-grape-resources-1.2.jar", //
+				new File(grapeLib, "caGrid-grape-resources-" + NEW_CAGRID_VERSION + ".jar"));
 		mapBuilder.put("caGrid-grape-1.3.jar", //
 				new File(grapeLib, "caGrid-grape-" + NEW_CAGRID_VERSION + ".jar"));
 		mapBuilder.put("caGrid-grape-resources-1.3.jar", //
 				new File(grapeLib, "caGrid-grape-resources-" + NEW_CAGRID_VERSION + ".jar"));
+		mapBuilder.put("caGrid-grape-1.4.jar", //
+				new File(grapeLib, "caGrid-grape-" + NEW_CAGRID_VERSION + ".jar"));
+		mapBuilder.put("caGrid-grape-resources-1.4.jar", //
+				new File(grapeLib, "caGrid-grape-resources-" + NEW_CAGRID_VERSION + ".jar"));
+		mapBuilder.put("grape-1.4.xsd", //
+				new File(grapeLib, "grape-" + NEW_CAGRID_VERSION + ".xsd"));
 
 		File graph = new File(cagridIntegrationRepository, "graph");
 		File graphLib = new File(graph, NEW_CAGRID_VERSION);
+		mapBuilder.put("caGrid-graph-1.2.jar", //
+				new File(graphLib, "caGrid-graph-" + NEW_CAGRID_VERSION + ".jar"));
 		mapBuilder.put("caGrid-graph-1.3.jar", //
 				new File(graphLib, "caGrid-graph-" + NEW_CAGRID_VERSION + ".jar"));
+		mapBuilder.put("caGrid-graph-1.4.jar", //
+				new File(graphLib, "caGrid-graph-" + NEW_CAGRID_VERSION + ".jar"));
 
-		// gridftpauthz is dropped in 1.4+
+		mapBuilder.put("caGrid-gridca-1.2.jar", OBSOLETE);
+		mapBuilder.put("caGrid-gridca-tests-1.2.jar", OBSOLETE);
+		mapBuilder.put("caGrid-gridftpauthz-core-1.2.jar", OBSOLETE);
+		mapBuilder.put("caGrid-gridftpauthz-tests-1.2.jar", OBSOLETE);
+		mapBuilder.put("caGrid-gridftpauthz-core-1.3.jar", OBSOLETE);
+		mapBuilder.put("caGrid-gridftpauthz-tests-1.3.jar", OBSOLETE);
 
 		File gridgrouper = new File(cagridIntegrationRepository, "gridgrouper");
 		File gridgrouperLib = new File(gridgrouper, NEW_CAGRID_VERSION);
+		mapBuilder.put("caGrid-gridgrouper-client-1.2.jar", //
+				new File(gridgrouperLib, "caGrid-gridgrouper-client-" + NEW_CAGRID_VERSION + ".jar"));
+		mapBuilder.put("caGrid-gridgrouper-common-1.2.jar", //
+				new File(gridgrouperLib, "caGrid-gridgrouper-common-" + NEW_CAGRID_VERSION + ".jar"));
+		mapBuilder.put("caGrid-gridgrouper-resources-1.2.jar", //
+				new File(gridgrouperLib, "caGrid-gridgrouper-resources-" + NEW_CAGRID_VERSION + ".jar"));
+		mapBuilder.put("caGrid-gridgrouper-service-1.2.jar", //
+				new File(gridgrouperLib, "caGrid-gridgrouper-service-" + NEW_CAGRID_VERSION + ".jar"));
+		mapBuilder.put("caGrid-gridgrouper-stubs-1.2.jar", //
+				new File(gridgrouperLib, "caGrid-gridgrouper-stubs-" + NEW_CAGRID_VERSION + ".jar"));
+		mapBuilder.put("caGrid-gridgrouper-tests-1.2.jar", //
+				new File(gridgrouperLib, "caGrid-gridgrouper-tests-" + NEW_CAGRID_VERSION + ".jar"));
+		mapBuilder.put("gridgrouper-1.2.xsd", //
+				new File(gridgrouperLib, "gridgrouper-" + NEW_CAGRID_VERSION + ".xsd"));
+		mapBuilder.put("GridGrouperTypes-1.2.xsd", //
+				new File(gridgrouperLib, "GridGrouperTypes-" + NEW_CAGRID_VERSION + ".xsd"));
 		mapBuilder.put("caGrid-gridgrouper-client-1.3.jar", //
 				new File(gridgrouperLib, "caGrid-gridgrouper-client-" + NEW_CAGRID_VERSION + ".jar"));
 		mapBuilder.put("caGrid-gridgrouper-common-1.3.jar", //
@@ -482,14 +812,46 @@ public class LibUpgrader {
 				new File(gridgrouperLib, "caGrid-gridgrouper-stubs-" + NEW_CAGRID_VERSION + ".jar"));
 		mapBuilder.put("caGrid-gridgrouper-tests-1.3.jar", //
 				new File(gridgrouperLib, "caGrid-gridgrouper-tests-" + NEW_CAGRID_VERSION + ".jar"));
+		mapBuilder.put("gridgrouper-1.3.xsd", //
+				new File(gridgrouperLib, "gridgrouper-" + NEW_CAGRID_VERSION + ".xsd"));
+		mapBuilder.put("GridGrouperTypes-1.3.xsd", //
+				new File(gridgrouperLib, "GridGrouperTypes-" + NEW_CAGRID_VERSION + ".xsd"));
+		mapBuilder.put("caGrid-gridgrouper-client-1.4.jar", //
+				new File(gridgrouperLib, "caGrid-gridgrouper-client-" + NEW_CAGRID_VERSION + ".jar"));
+		mapBuilder.put("caGrid-gridgrouper-common-1.4.jar", //
+				new File(gridgrouperLib, "caGrid-gridgrouper-common-" + NEW_CAGRID_VERSION + ".jar"));
+		mapBuilder.put("caGrid-gridgrouper-resources-1.4.jar", //
+				new File(gridgrouperLib, "caGrid-gridgrouper-resources-" + NEW_CAGRID_VERSION + ".jar"));
+		mapBuilder.put("caGrid-gridgrouper-service-1.4.jar", //
+				new File(gridgrouperLib, "caGrid-gridgrouper-service-" + NEW_CAGRID_VERSION + ".jar"));
+		mapBuilder.put("caGrid-gridgrouper-stubs-1.4.jar", //
+				new File(gridgrouperLib, "caGrid-gridgrouper-stubs-" + NEW_CAGRID_VERSION + ".jar"));
+		mapBuilder.put("caGrid-gridgrouper-tests-1.4.jar", //
+				new File(gridgrouperLib, "caGrid-gridgrouper-tests-" + NEW_CAGRID_VERSION + ".jar"));
+		mapBuilder.put("gridgrouper-1.4.xsd", //
+				new File(gridgrouperLib, "gridgrouper-" + NEW_CAGRID_VERSION + ".xsd"));
+		mapBuilder.put("GridGrouperTypes-1.4.xsd", //
+				new File(gridgrouperLib, "GridGrouperTypes-" + NEW_CAGRID_VERSION + ".xsd"));
 
 		File gridgrouperAuthExtension = new File(cagridIntegrationRepository, "gridgrouper-auth-extension");
 		File gridgrouperAuthExtensionLib = new File(gridgrouperAuthExtension, NEW_CAGRID_VERSION);
 		mapBuilder.put("caGrid-gridgrouper-auth-extension-1.3.jar", //
 				new File(gridgrouperAuthExtensionLib, "caGrid-gridgrouper-auth-extension-" + NEW_CAGRID_VERSION + ".jar"));
+		mapBuilder.put("caGrid-gridgrouper-auth-extension-1.4.jar", //
+				new File(gridgrouperAuthExtensionLib, "caGrid-gridgrouper-auth-extension-" + NEW_CAGRID_VERSION + ".jar"));
 
 		File gts = new File(cagridIntegrationRepository, "gts");
 		File gtsLib = new File(gts, NEW_CAGRID_VERSION);
+		mapBuilder.put("caGrid-gts-client-1.2.jar", //
+				new File(gtsLib, "caGrid-gts-client-" + NEW_CAGRID_VERSION + ".jar"));
+		mapBuilder.put("caGrid-gts-common-1.2.jar", //
+				new File(gtsLib, "caGrid-gts-common-" + NEW_CAGRID_VERSION + ".jar"));
+		mapBuilder.put("caGrid-gts-service-1.2.jar", //
+				new File(gtsLib, "caGrid-gts-service-" + NEW_CAGRID_VERSION + ".jar"));
+		mapBuilder.put("caGrid-gts-stubs-1.2.jar", //
+				new File(gtsLib, "caGrid-gts-stubs-" + NEW_CAGRID_VERSION + ".jar"));
+		mapBuilder.put("caGrid-gts-tests-1.2.jar", //
+				new File(gtsLib, "caGrid-gts-tests-" + NEW_CAGRID_VERSION + ".jar"));
 		mapBuilder.put("caGrid-gts-client-1.3.jar", //
 				new File(gtsLib, "caGrid-gts-client-" + NEW_CAGRID_VERSION + ".jar"));
 		mapBuilder.put("caGrid-gts-common-1.3.jar", //
@@ -500,14 +862,71 @@ public class LibUpgrader {
 				new File(gtsLib, "caGrid-gts-stubs-" + NEW_CAGRID_VERSION + ".jar"));
 		mapBuilder.put("caGrid-gts-tests-1.3.jar", //
 				new File(gtsLib, "caGrid-gts-tests-" + NEW_CAGRID_VERSION + ".jar"));
+		mapBuilder.put("caGrid-gts-client-1.4.jar", //
+				new File(gtsLib, "caGrid-gts-client-" + NEW_CAGRID_VERSION + ".jar"));
+		mapBuilder.put("caGrid-gts-common-1.4.jar", //
+				new File(gtsLib, "caGrid-gts-common-" + NEW_CAGRID_VERSION + ".jar"));
+		mapBuilder.put("caGrid-gts-service-1.4.jar", //
+				new File(gtsLib, "caGrid-gts-service-" + NEW_CAGRID_VERSION + ".jar"));
+		mapBuilder.put("caGrid-gts-stubs-1.4.jar", //
+				new File(gtsLib, "caGrid-gts-stubs-" + NEW_CAGRID_VERSION + ".jar"));
+		mapBuilder.put("caGrid-gts-tests-1.4.jar", //
+				new File(gtsLib, "caGrid-gts-tests-" + NEW_CAGRID_VERSION + ".jar"));
+		mapBuilder.put("cgts-1.4.xsd", //
+				new File(gtsLib, "caGrid-gts-tests-" + NEW_CAGRID_VERSION + ".xsd"));
+
+		File identifiersClient = new File(cagridIntegrationRepository, "identifiers-client");
+		File identifiersClientLib = new File(identifiersClient, NEW_CAGRID_VERSION);
+		mapBuilder.put("caGrid-identifiers-client-1.4.jar", //
+				new File(identifiersClientLib, "caGrid-identifiers-client-" + NEW_CAGRID_VERSION + ".jar"));
+		mapBuilder.put("caGrid-identifiers-client-tests-1.4.jar", //
+				new File(identifiersClientLib, "caGrid-identifiers-client-tests-" + NEW_CAGRID_VERSION + ".jar"));
+
+		File identifiersNamingAuthority = new File(cagridIntegrationRepository, "identifiers-namingauthority");
+		File identifiersNamingAuthorityLib = new File(identifiersNamingAuthority, NEW_CAGRID_VERSION);
+		mapBuilder.put("caGrid-identifiers-namingauthority-1.4.jar", //
+				new File(identifiersNamingAuthorityLib, "caGrid-identifiers-namingauthority-" + NEW_CAGRID_VERSION + ".jar"));
+		mapBuilder.put("caGrid-identifiers-namingauthority-tests-1.4.jar", //
+				new File(identifiersNamingAuthorityLib, "caGrid-identifiers-namingauthority-tests-" + NEW_CAGRID_VERSION + ".jar"));
+
+		File identifiersNamingAuthorityGridsvc = new File(cagridIntegrationRepository, "identifiers-namingauthority-gridsvc");
+		File identifiersNamingAuthorityGridsvcLib = new File(identifiersNamingAuthorityGridsvc, NEW_CAGRID_VERSION);
+		mapBuilder.put("caGrid-IdentifiersNAService-client-1.4-dev.jar", //
+				new File(identifiersNamingAuthorityGridsvcLib, "caGrid-IdentifiersNAService-client-" + NEW_CAGRID_VERSION + ".jar"));
+		mapBuilder.put("caGrid-IdentifiersNAService-common-1.4-dev.jar", //
+				new File(identifiersNamingAuthorityGridsvcLib, "caGrid-IdentifiersNAService-common-" + NEW_CAGRID_VERSION + ".jar"));
+		mapBuilder.put("caGrid-IdentifiersNAService-service-1.4-dev.jar", //
+				new File(identifiersNamingAuthorityGridsvcLib, "caGrid-IdentifiersNAService-service-" + NEW_CAGRID_VERSION + ".jar"));
+		mapBuilder.put("caGrid-IdentifiersNAService-stubs-1.4-dev.jar", //
+				new File(identifiersNamingAuthorityGridsvcLib, "caGrid-IdentifiersNAService-stubs-" + NEW_CAGRID_VERSION + ".jar"));
+		mapBuilder.put("caGrid-IdentifiersNAService-tests-1.4-dev.jar", //
+				new File(identifiersNamingAuthorityGridsvcLib, "caGrid-IdentifiersNAService-tests-" + NEW_CAGRID_VERSION + ".jar"));
 
 		File installer = new File(cagridIntegrationRepository, "installer");
 		File installerLib = new File(installer, NEW_CAGRID_VERSION);
+		mapBuilder.put("caGrid-installer-1.2.jar", //
+				new File(installerLib, "caGrid-installer-" + NEW_CAGRID_VERSION + ".jar"));
 		mapBuilder.put("caGrid-installer-1.3.jar", //
+				new File(installerLib, "caGrid-installer-" + NEW_CAGRID_VERSION + ".jar"));
+		mapBuilder.put("caGrid-installer-1.4.jar", //
 				new File(installerLib, "caGrid-installer-" + NEW_CAGRID_VERSION + ".jar"));
 
 		File introduce = new File(cagridIntegrationRepository, "introduce");
 		File introduceLib = new File(introduce, NEW_CAGRID_VERSION);
+		mapBuilder.put("caGrid-introduce-core-1.2.jar", //
+				new File(introduceLib, "caGrid-introduce-core-" + NEW_CAGRID_VERSION + ".jar"));
+		mapBuilder.put("caGrid-introduce-core-tests-1.2.jar", //
+				new File(introduceLib, "caGrid-introduce-core-tests-" + NEW_CAGRID_VERSION + ".jar"));
+		mapBuilder.put("caGrid-introduce-portal-1.2.jar", //
+				new File(introduceLib, "caGrid-introduce-portal-" + NEW_CAGRID_VERSION + ".jar"));
+		mapBuilder.put("caGrid-introduce-portal-tests-1.2.jar", //
+				new File(introduceLib, "caGrid-introduce-portal-tests-" + NEW_CAGRID_VERSION + ".jar"));
+		mapBuilder.put("caGrid-Introduce-serviceTasks-1.2.jar", OBSOLETE);
+		mapBuilder.put("caGrid-Introduce-serviceTools-1.2.jar", OBSOLETE);
+		mapBuilder.put("caGrid-introduce-updater-1.2.jar", //
+				new File(introduceLib, "caGrid-introduce-updater-" + NEW_CAGRID_VERSION + ".jar"));
+		mapBuilder.put("caGrid-introduce-updater-tests-1.2.jar", //
+				new File(introduceLib, "caGrid-introduce-updater-tests-" + NEW_CAGRID_VERSION + ".jar"));
 		mapBuilder.put("caGrid-introduce-core-1.3.jar", //
 				new File(introduceLib, "caGrid-introduce-core-" + NEW_CAGRID_VERSION + ".jar"));
 		mapBuilder.put("caGrid-introduce-core-tests-1.3.jar", //
@@ -520,30 +939,89 @@ public class LibUpgrader {
 				new File(introduceLib, "caGrid-introduce-updater-" + NEW_CAGRID_VERSION + ".jar"));
 		mapBuilder.put("caGrid-introduce-updater-tests-1.3.jar", //
 				new File(introduceLib, "caGrid-introduce-updater-tests-" + NEW_CAGRID_VERSION + ".jar"));
+		mapBuilder.put("caGrid-introduce-core-1.4.jar", //
+				new File(introduceLib, "caGrid-introduce-core-" + NEW_CAGRID_VERSION + ".jar"));
+		mapBuilder.put("caGrid-introduce-core-tests-1.4.jar", //
+				new File(introduceLib, "caGrid-introduce-core-tests-" + NEW_CAGRID_VERSION + ".jar"));
+		mapBuilder.put("caGrid-introduce-portal-1.4.jar", //
+				new File(introduceLib, "caGrid-introduce-portal-" + NEW_CAGRID_VERSION + ".jar"));
+		mapBuilder.put("caGrid-introduce-portal-tests-1.4.jar", //
+				new File(introduceLib, "caGrid-introduce-portal-tests-" + NEW_CAGRID_VERSION + ".jar"));
+		mapBuilder.put("caGrid-introduce-updater-1.4.jar", //
+				new File(introduceLib, "caGrid-introduce-updater-" + NEW_CAGRID_VERSION + ".jar"));
+		mapBuilder.put("caGrid-introduce-updater-tests-1.4.jar", //
+				new File(introduceLib, "caGrid-introduce-updater-tests-" + NEW_CAGRID_VERSION + ".jar"));
 
 		File introduceBuildtools = new File(cagridIntegrationRepository, "introduce-buildtools");
 		File introduceBuildtoolsLib = new File(introduceBuildtools, NEW_CAGRID_VERSION);
 		mapBuilder.put("caGrid-introduce-buildTools-1.3.jar", //
+				new File(introduceBuildtoolsLib, "caGrid-introduce-buildTools-" + NEW_CAGRID_VERSION + ".jar"));
+		mapBuilder.put("caGrid-introduce-buildTools-1.4.jar", //
 				new File(introduceBuildtoolsLib, "caGrid-introduce-buildTools-" + NEW_CAGRID_VERSION + ".jar"));
 
 		File introduceClienttools = new File(cagridIntegrationRepository, "introduce-clienttools");
 		File introduceClienttoolsLib = new File(introduceClienttools, NEW_CAGRID_VERSION);
 		mapBuilder.put("caGrid-Introduce-ClientTools-Notification-1.3.jar", //
 				new File(introduceClienttoolsLib, "caGrid-Introduce-ClientTools-Notification-" + NEW_CAGRID_VERSION + ".jar"));
+		mapBuilder.put("caGrid-Introduce-ClientTools-Notification-1.4.jar", //
+				new File(introduceClienttoolsLib, "caGrid-Introduce-ClientTools-Notification-" + NEW_CAGRID_VERSION + ".jar"));
 
 		File introduceServicetools = new File(cagridIntegrationRepository, "introduce-servicetools");
 		File introduceServicetoolsLib = new File(introduceServicetools, NEW_CAGRID_VERSION);
 		mapBuilder.put("caGrid-Introduce-serviceTools-1.3.jar", //
 				new File(introduceServicetoolsLib, "caGrid-Introduce-serviceTools-" + NEW_CAGRID_VERSION + ".jar"));
+		mapBuilder.put("caGrid-Introduce-serviceTools-1.4.jar", //
+				new File(introduceServicetoolsLib, "caGrid-Introduce-serviceTools-" + NEW_CAGRID_VERSION + ".jar"));
+
+		File iso21090AnalyticalExtension = new File(cagridIntegrationRepository, "iso21090-analytical-extension");
+		File iso21090AnalyticalExtensionLib = new File(iso21090AnalyticalExtension, NEW_CAGRID_VERSION);
+		mapBuilder.put("caGrid-iso21090-analytical-extension-1.4.jar", //
+				new File(iso21090AnalyticalExtensionLib, "caGrid-iso21090-analytical-extension-" + NEW_CAGRID_VERSION + ".jar"));
+		mapBuilder.put("caGrid-iso21090-analytical-extension-tests-1.4.jar", //
+				new File(iso21090AnalyticalExtensionLib, "caGrid-iso21090-analytical-extension-tests-" + NEW_CAGRID_VERSION + ".jar"));
+
+		File iso21090DomainModelTools = new File(cagridIntegrationRepository, "iso21090-domain-model-tools");
+		File iso21090DomainModelToolsLib = new File(iso21090DomainModelTools, NEW_CAGRID_VERSION);
+		mapBuilder.put("caGrid-iso21090-domain-model-tools-1.4.jar", //
+				new File(iso21090DomainModelToolsLib, "caGrid-iso21090-domain-model-tools-" + NEW_CAGRID_VERSION + ".jar"));
+		mapBuilder.put("caGrid-iso21090-domain-model-tools-tests-1.4.jar", //
+				new File(iso21090DomainModelToolsLib, "caGrid-iso21090-domain-model-tools-tests-" + NEW_CAGRID_VERSION + ".jar"));
 
 		File metadata = new File(cagridIntegrationRepository, "metadata");
 		File metadataLib = new File(metadata, NEW_CAGRID_VERSION);
+		mapBuilder.put("caGrid-metadata-common-1.2.jar", //
+				new File(metadataLib, "caGrid-metadata-common-" + NEW_CAGRID_VERSION + ".jar"));
+		mapBuilder.put("caGrid-metadata-data-1.2.jar", //
+				new File(metadataLib, "caGrid-metadata-data-" + NEW_CAGRID_VERSION + ".jar"));
+		mapBuilder.put("caGrid-metadata-security-1.2.jar", //
+				new File(metadataLib, "caGrid-metadata-security-" + NEW_CAGRID_VERSION + ".jar"));
 		mapBuilder.put("caGrid-metadata-common-1.3.jar", //
 				new File(metadataLib, "caGrid-metadata-common-" + NEW_CAGRID_VERSION + ".jar"));
 		mapBuilder.put("caGrid-metadata-data-1.3.jar", //
 				new File(metadataLib, "caGrid-metadata-data-" + NEW_CAGRID_VERSION + ".jar"));
 		mapBuilder.put("caGrid-metadata-security-1.3.jar", //
 				new File(metadataLib, "caGrid-metadata-security-" + NEW_CAGRID_VERSION + ".jar"));
+		mapBuilder.put("caGrid-metadata-common-1.4.jar", //
+				new File(metadataLib, "caGrid-metadata-common-" + NEW_CAGRID_VERSION + ".jar"));
+		mapBuilder.put("caGrid-metadata-data-1.4.jar", //
+				new File(metadataLib, "caGrid-metadata-data-" + NEW_CAGRID_VERSION + ".jar"));
+		mapBuilder.put("caGrid-metadata-security-1.4.jar", //
+				new File(metadataLib, "caGrid-metadata-security-" + NEW_CAGRID_VERSION + ".jar"));
+
+		File metadatautils = new File(cagridIntegrationRepository, "metadatautils");
+		File metadatautilsLib = new File(metadatautils, NEW_CAGRID_VERSION);
+		mapBuilder.put("caGrid-metadatautils-1.2.jar", //
+				new File(metadatautilsLib, "caGrid-metadatautils-" + NEW_CAGRID_VERSION + ".jar"));
+		mapBuilder.put("caGrid-metadatautils-tests-1.2.jar", //
+				new File(metadatautilsLib, "caGrid-metadatautils-tests-" + NEW_CAGRID_VERSION + ".jar"));
+		mapBuilder.put("caGrid-metadatautils-1.3.jar", //
+				new File(metadatautilsLib, "caGrid-metadatautils-" + NEW_CAGRID_VERSION + ".jar"));
+		mapBuilder.put("caGrid-metadatautils-tests-1.3.jar", //
+				new File(metadatautilsLib, "caGrid-metadatautils-tests-" + NEW_CAGRID_VERSION + ".jar"));
+		mapBuilder.put("caGrid-metadatautils-1.4.jar", //
+				new File(metadatautilsLib, "caGrid-metadatautils-" + NEW_CAGRID_VERSION + ".jar"));
+		mapBuilder.put("caGrid-metadatautils-tests-1.4.jar", //
+				new File(metadatautilsLib, "caGrid-metadatautils-tests-" + NEW_CAGRID_VERSION + ".jar"));
 
 		File metadataValidator = new File(cagridIntegrationRepository, "metadata-validator");
 		File metadataValidatorLib = new File(metadataValidator, NEW_CAGRID_VERSION);
@@ -551,13 +1029,10 @@ public class LibUpgrader {
 				new File(metadataValidatorLib, "caGrid-metadata-validator-" + NEW_CAGRID_VERSION + ".jar"));
 		mapBuilder.put("caGrid-metadata-validator-tests-1.3.jar", //
 				new File(metadataValidatorLib, "caGrid-metadata-validator-tests-" + NEW_CAGRID_VERSION + ".jar"));
-
-		File metadatautils = new File(cagridIntegrationRepository, "metadatautils");
-		File metadatautilsLib = new File(metadatautils, NEW_CAGRID_VERSION);
-		mapBuilder.put("caGrid-metadatautils-1.3.jar", //
-				new File(metadatautilsLib, "caGrid-metadatautils-" + NEW_CAGRID_VERSION + ".jar"));
-		mapBuilder.put("caGrid-metadatautils-tests-1.3.jar", //
-				new File(metadatautilsLib, "caGrid-metadatautils-tests-" + NEW_CAGRID_VERSION + ".jar"));
+		mapBuilder.put("caGrid-metadata-validator-1.4.jar", //
+				new File(metadataValidatorLib, "caGrid-metadata-validator-" + NEW_CAGRID_VERSION + ".jar"));
+		mapBuilder.put("caGrid-metadata-validator-tests-1.4.jar", //
+				new File(metadataValidatorLib, "caGrid-metadata-validator-tests-" + NEW_CAGRID_VERSION + ".jar"));
 
 		File mms = new File(cagridIntegrationRepository, "mms");
 		File mmsLib = new File(mms, NEW_CAGRID_VERSION);
@@ -571,18 +1046,54 @@ public class LibUpgrader {
 				new File(mmsLib, "caGrid-mms-stubs-" + NEW_CAGRID_VERSION + ".jar"));
 		mapBuilder.put("caGrid-mms-tests-1.3.jar", //
 				new File(mmsLib, "caGrid-mms-tests-" + NEW_CAGRID_VERSION + ".jar"));
+		mapBuilder.put("org.cagrid.mms-1.3.xsd", //
+				new File(mmsLib, "org.cagrid.mms-" + NEW_CAGRID_VERSION + ".xsd"));
+		mapBuilder.put("caGrid-mms-client-1.4.jar", //
+				new File(mmsLib, "caGrid-mms-client-" + NEW_CAGRID_VERSION + ".jar"));
+		mapBuilder.put("caGrid-mms-common-1.4.jar", //
+				new File(mmsLib, "caGrid-mms-common-" + NEW_CAGRID_VERSION + ".jar"));
+		mapBuilder.put("caGrid-mms-service-1.4.jar", //
+				new File(mmsLib, "caGrid-mms-service-" + NEW_CAGRID_VERSION + ".jar"));
+		mapBuilder.put("caGrid-mms-stubs-1.4.jar", //
+				new File(mmsLib, "caGrid-mms-stubs-" + NEW_CAGRID_VERSION + ".jar"));
+		mapBuilder.put("caGrid-mms-tests-1.4.jar", //
+				new File(mmsLib, "caGrid-mms-tests-" + NEW_CAGRID_VERSION + ".jar"));
+		mapBuilder.put("org.cagrid.mms-1.4.xsd", //
+				new File(mmsLib, "org.cagrid.mms-" + NEW_CAGRID_VERSION + ".xsd"));
 
 		File opensaml = new File(cagridIntegrationRepository, "opensaml");
 		File opensamlLib = new File(opensaml, NEW_CAGRID_VERSION);
 		mapBuilder.put("caGrid-opensaml-1.3.jar", //
 				new File(opensamlLib, "caGrid-opensaml-" + NEW_CAGRID_VERSION + ".jar"));
+		mapBuilder.put("caGrid-opensaml-1.4.jar", //
+				new File(opensamlLib, "caGrid-opensaml-" + NEW_CAGRID_VERSION + ".jar"));
 
-		// sdkQuery is dropped in 1.4+
+		File sdk4xCQL2 = new File(cagridIntegrationRepository, "sdk4xCQL2");
+		File sdk4xCQL2Lib = new File(sdk4xCQL2, NEW_CAGRID_VERSION);
+		mapBuilder.put("caGrid-sdk4xCQL2-processor-1.4.jar", //
+				new File(sdk4xCQL2Lib, "caGrid-sdk4xCQL2-processor-" + NEW_CAGRID_VERSION + ".jar"));
 
-		// sdkQuery32 is dropped in 1.4+
+		mapBuilder.put("caGrid-sdkQuery-core-1.2.jar", OBSOLETE);
+		mapBuilder.put("caGrid-sdkQuery-tests-1.2.jar", OBSOLETE);
+		mapBuilder.put("caGrid-sdkQuery-core-1.3.jar", OBSOLETE);
+		mapBuilder.put("caGrid-sdkQuery-tests-1.3.jar", OBSOLETE);
+		mapBuilder.put("caGrid-sdkQuery32-core-1.2.jar", OBSOLETE);
+		mapBuilder.put("caGrid-sdkQuery32-tests-1.2.jar", OBSOLETE);
+		mapBuilder.put("caGrid-sdkQuery32-core-1.3.jar", OBSOLETE);
+		mapBuilder.put("caGrid-sdkQuery32-tests-1.3.jar", OBSOLETE);
 
 		File sdkQuery4 = new File(cagridIntegrationRepository, "sdkQuery4");
 		File sdkQuery4Lib = new File(sdkQuery4, NEW_CAGRID_VERSION);
+		mapBuilder.put("caGrid-sdkQuery4-beans-1.2.jar", //
+				new File(sdkQuery4Lib, "caGrid-sdkQuery4-beans-" + NEW_CAGRID_VERSION + ".jar"));
+		mapBuilder.put("caGrid-sdkQuery4-processor-1.2.jar", //
+				new File(sdkQuery4Lib, "caGrid-sdkQuery4-processor-" + NEW_CAGRID_VERSION + ".jar"));
+		mapBuilder.put("caGrid-sdkQuery4-style-1.2.jar", //
+				new File(sdkQuery4Lib, "caGrid-sdkQuery4-style-" + NEW_CAGRID_VERSION + ".jar"));
+		mapBuilder.put("caGrid-sdkQuery4-tests-1.2.jar", //
+				new File(sdkQuery4Lib, "caGrid-sdkQuery4-tests-" + NEW_CAGRID_VERSION + ".jar"));
+		mapBuilder.put("caGrid-sdkQuery4-tests-resources-1.2.jar", //
+				new File(sdkQuery4Lib, "caGrid-sdkQuery4-tests-" + NEW_CAGRID_VERSION + ".jar"));
 		mapBuilder.put("caGrid-sdkQuery4-beans-1.3.jar", //
 				new File(sdkQuery4Lib, "caGrid-sdkQuery4-beans-" + NEW_CAGRID_VERSION + ".jar"));
 		mapBuilder.put("caGrid-sdkQuery4-processor-1.3.jar", //
@@ -590,6 +1101,14 @@ public class LibUpgrader {
 		mapBuilder.put("caGrid-sdkQuery4-style-1.3.jar", //
 				new File(sdkQuery4Lib, "caGrid-sdkQuery4-style-" + NEW_CAGRID_VERSION + ".jar"));
 		mapBuilder.put("caGrid-sdkQuery4-tests-1.3.jar", //
+				new File(sdkQuery4Lib, "caGrid-sdkQuery4-tests-" + NEW_CAGRID_VERSION + ".jar"));
+		mapBuilder.put("caGrid-sdkQuery4-beans-1.4.jar", //
+				new File(sdkQuery4Lib, "caGrid-sdkQuery4-beans-" + NEW_CAGRID_VERSION + ".jar"));
+		mapBuilder.put("caGrid-sdkQuery4-processor-1.4.jar", //
+				new File(sdkQuery4Lib, "caGrid-sdkQuery4-processor-" + NEW_CAGRID_VERSION + ".jar"));
+		mapBuilder.put("caGrid-sdkQuery4-style-1.4.jar", //
+				new File(sdkQuery4Lib, "caGrid-sdkQuery4-style-" + NEW_CAGRID_VERSION + ".jar"));
+		mapBuilder.put("caGrid-sdkQuery4-tests-1.4.jar", //
 				new File(sdkQuery4Lib, "caGrid-sdkQuery4-tests-" + NEW_CAGRID_VERSION + ".jar"));
 
 		File sdkQuery41 = new File(cagridIntegrationRepository, "sdkQuery41");
@@ -602,9 +1121,47 @@ public class LibUpgrader {
 				new File(sdkQuery41Lib, "caGrid-sdkQuery41-style-" + NEW_CAGRID_VERSION + ".jar"));
 		mapBuilder.put("caGrid-sdkQuery41-tests-1.3.jar", //
 				new File(sdkQuery41Lib, "caGrid-sdkQuery41-tests-" + NEW_CAGRID_VERSION + ".jar"));
+		mapBuilder.put("caGrid-sdkQuery41-beans-1.4.jar", //
+				new File(sdkQuery41Lib, "caGrid-sdkQuery41-beans-" + NEW_CAGRID_VERSION + ".jar"));
+		mapBuilder.put("caGrid-sdkQuery41-processor-1.4.jar", //
+				new File(sdkQuery41Lib, "caGrid-sdkQuery41-processor-" + NEW_CAGRID_VERSION + ".jar"));
+		mapBuilder.put("caGrid-sdkQuery41-style-1.4.jar", //
+				new File(sdkQuery41Lib, "caGrid-sdkQuery41-style-" + NEW_CAGRID_VERSION + ".jar"));
+		mapBuilder.put("caGrid-sdkQuery41-tests-1.4.jar", //
+				new File(sdkQuery41Lib, "caGrid-sdkQuery41-tests-" + NEW_CAGRID_VERSION + ".jar"));
+
+		File sdkQuery42 = new File(cagridIntegrationRepository, "sdkQuery42");
+		File sdkQuery42Lib = new File(sdkQuery42, NEW_CAGRID_VERSION);
+		mapBuilder.put("caGrid-sdkQuery42-processor-1.4.jar", //
+				new File(sdkQuery42Lib, "caGrid-sdkQuery42-processor-" + NEW_CAGRID_VERSION + ".jar"));
+		mapBuilder.put("caGrid-sdkQuery42-style-1.4.jar", //
+				new File(sdkQuery42Lib, "caGrid-sdkQuery42-style-" + NEW_CAGRID_VERSION + ".jar"));
+		mapBuilder.put("caGrid-sdkQuery42-tests-1.4.jar", //
+				new File(sdkQuery42Lib, "caGrid-sdkQuery42-tests-" + NEW_CAGRID_VERSION + ".jar"));
+
+		File sdkQuery43 = new File(cagridIntegrationRepository, "sdkQuery43");
+		File sdkQuery43Lib = new File(sdkQuery43, NEW_CAGRID_VERSION);
+		mapBuilder.put("caGrid-sdkQuery43-processor-1.4.jar", //
+				new File(sdkQuery43Lib, "caGrid-sdkQuery43-processor-" + NEW_CAGRID_VERSION + ".jar"));
+		mapBuilder.put("caGrid-sdkQuery43-style-1.4.jar", //
+				new File(sdkQuery43Lib, "caGrid-sdkQuery43-style-" + NEW_CAGRID_VERSION + ".jar"));
+		mapBuilder.put("caGrid-sdkQuery43-tests-1.4.jar", //
+				new File(sdkQuery43Lib, "caGrid-sdkQuery43-tests-" + NEW_CAGRID_VERSION + ".jar"));
+		mapBuilder.put("caGrid-sdkQuery43-translator-1.4.jar", //
+				new File(sdkQuery43Lib, "caGrid-sdkQuery43-translator-" + NEW_CAGRID_VERSION + ".jar"));
 
 		File serviceSecurityProvider = new File(cagridIntegrationRepository, "service-security-provider");
 		File serviceSecurityProviderLib = new File(serviceSecurityProvider, NEW_CAGRID_VERSION);
+		mapBuilder.put("caGrid-ServiceSecurityProvider-client-1.2.jar", //
+				new File(serviceSecurityProviderLib, "caGrid-ServiceSecurityProvider-client-" + NEW_CAGRID_VERSION + ".jar"));
+		mapBuilder.put("caGrid-ServiceSecurityProvider-common-1.2.jar", //
+				new File(serviceSecurityProviderLib, "caGrid-ServiceSecurityProvider-common-" + NEW_CAGRID_VERSION + ".jar"));
+		mapBuilder.put("caGrid-ServiceSecurityProvider-service-1.2.jar", //
+				new File(serviceSecurityProviderLib, "caGrid-ServiceSecurityProvider-service-" + NEW_CAGRID_VERSION + ".jar"));
+		mapBuilder.put("caGrid-ServiceSecurityProvider-stubs-1.2.jar", //
+				new File(serviceSecurityProviderLib, "caGrid-ServiceSecurityProvider-stubs-" + NEW_CAGRID_VERSION + ".jar"));
+		mapBuilder.put("ServiceSecurity-1.2.wsdl", //
+				new File(serviceSecurityProviderLib, "ServiceSecurity-" + NEW_CAGRID_VERSION + ".wsdl"));
 		mapBuilder.put("caGrid-ServiceSecurityProvider-client-1.3.jar", //
 				new File(serviceSecurityProviderLib, "caGrid-ServiceSecurityProvider-client-" + NEW_CAGRID_VERSION + ".jar"));
 		mapBuilder.put("caGrid-ServiceSecurityProvider-common-1.3.jar", //
@@ -613,9 +1170,31 @@ public class LibUpgrader {
 				new File(serviceSecurityProviderLib, "caGrid-ServiceSecurityProvider-service-" + NEW_CAGRID_VERSION + ".jar"));
 		mapBuilder.put("caGrid-ServiceSecurityProvider-stubs-1.3.jar", //
 				new File(serviceSecurityProviderLib, "caGrid-ServiceSecurityProvider-stubs-" + NEW_CAGRID_VERSION + ".jar"));
+		mapBuilder.put("ServiceSecurity-1.3.wsdl", //
+				new File(serviceSecurityProviderLib, "ServiceSecurity-" + NEW_CAGRID_VERSION + ".wsdl"));
+		mapBuilder.put("caGrid-ServiceSecurityProvider-client-1.4.jar", //
+				new File(serviceSecurityProviderLib, "caGrid-ServiceSecurityProvider-client-" + NEW_CAGRID_VERSION + ".jar"));
+		mapBuilder.put("caGrid-ServiceSecurityProvider-common-1.4.jar", //
+				new File(serviceSecurityProviderLib, "caGrid-ServiceSecurityProvider-common-" + NEW_CAGRID_VERSION + ".jar"));
+		mapBuilder.put("caGrid-ServiceSecurityProvider-service-1.4.jar", //
+				new File(serviceSecurityProviderLib, "caGrid-ServiceSecurityProvider-service-" + NEW_CAGRID_VERSION + ".jar"));
+		mapBuilder.put("caGrid-ServiceSecurityProvider-stubs-1.4.jar", //
+				new File(serviceSecurityProviderLib, "caGrid-ServiceSecurityProvider-stubs-" + NEW_CAGRID_VERSION + ".jar"));
+		mapBuilder.put("ServiceSecurity-1.4.wsdl", //
+				new File(serviceSecurityProviderLib, "ServiceSecurity-" + NEW_CAGRID_VERSION + ".wsdl"));
 
 		File serviceTools = new File(cagridIntegrationRepository, "service-tools");
 		File serviceToolsLib = new File(serviceTools, NEW_CAGRID_VERSION);
+		mapBuilder.put("caGrid-service-tools-db-1.2.jar", //
+				new File(serviceToolsLib, "caGrid-service-tools-db-" + NEW_CAGRID_VERSION + ".jar"));
+		mapBuilder.put("caGrid-service-tools-events-1.2.jar", //
+				new File(serviceToolsLib, "caGrid-service-tools-events-" + NEW_CAGRID_VERSION + ".jar"));
+		mapBuilder.put("caGrid-service-tools-groups-1.2.jar", //
+				new File(serviceToolsLib, "caGrid-service-tools-groups-" + NEW_CAGRID_VERSION + ".jar"));
+		mapBuilder.put("caGrid-service-tools-tests-1.2.jar", //
+				new File(serviceToolsLib, "caGrid-service-tools-tests-" + NEW_CAGRID_VERSION + ".jar"));
+		mapBuilder.put("database-conf-1.2.xsd", //
+				new File(serviceToolsLib, "database-conf-" + NEW_CAGRID_VERSION + ".xsd"));
 		mapBuilder.put("caGrid-service-tools-db-1.3.jar", //
 				new File(serviceToolsLib, "caGrid-service-tools-db-" + NEW_CAGRID_VERSION + ".jar"));
 		mapBuilder.put("caGrid-service-tools-events-1.3.jar", //
@@ -624,14 +1203,38 @@ public class LibUpgrader {
 				new File(serviceToolsLib, "caGrid-service-tools-groups-" + NEW_CAGRID_VERSION + ".jar"));
 		mapBuilder.put("caGrid-service-tools-tests-1.3.jar", //
 				new File(serviceToolsLib, "caGrid-service-tools-tests-" + NEW_CAGRID_VERSION + ".jar"));
+		mapBuilder.put("database-conf-1.3.xsd", //
+				new File(serviceToolsLib, "database-conf-" + NEW_CAGRID_VERSION + ".xsd"));
+		mapBuilder.put("caGrid-service-tools-db-1.4.jar", //
+				new File(serviceToolsLib, "caGrid-service-tools-db-" + NEW_CAGRID_VERSION + ".jar"));
+		mapBuilder.put("caGrid-service-tools-events-1.4.jar", //
+				new File(serviceToolsLib, "caGrid-service-tools-events-" + NEW_CAGRID_VERSION + ".jar"));
+		mapBuilder.put("caGrid-service-tools-groups-1.4.jar", //
+				new File(serviceToolsLib, "caGrid-service-tools-groups-" + NEW_CAGRID_VERSION + ".jar"));
+		mapBuilder.put("caGrid-service-tools-tests-1.4.jar", //
+				new File(serviceToolsLib, "caGrid-service-tools-tests-" + NEW_CAGRID_VERSION + ".jar"));
+		mapBuilder.put("database-conf-1.4.xsd", //
+				new File(serviceToolsLib, "database-conf-" + NEW_CAGRID_VERSION + ".xsd"));
 
 		File serviceWebappExtension = new File(cagridIntegrationRepository, "service-webapp-extension");
 		File serviceWebappExtensionLib = new File(serviceWebappExtension, NEW_CAGRID_VERSION);
 		mapBuilder.put("caGrid-service-webapp-extension-1.3.jar", //
 				new File(serviceWebappExtensionLib, "caGrid-service-webapp-extension-" + NEW_CAGRID_VERSION + ".jar"));
+		mapBuilder.put("caGrid-service-webapp-extension-1.4.jar", //
+				new File(serviceWebappExtensionLib, "caGrid-service-webapp-extension-" + NEW_CAGRID_VERSION + ".jar"));
 
 		File syncgts = new File(cagridIntegrationRepository, "syncgts");
 		File syncgtsLib = new File(syncgts, NEW_CAGRID_VERSION);
+		mapBuilder.put("caGrid-syncgts-client-1.2.jar", //
+				new File(syncgtsLib, "caGrid-syncgts-client-" + NEW_CAGRID_VERSION + ".jar"));
+		mapBuilder.put("caGrid-syncgts-common-1.2.jar", //
+				new File(syncgtsLib, "caGrid-syncgts-common-" + NEW_CAGRID_VERSION + ".jar"));
+		mapBuilder.put("caGrid-syncgts-service-1.2.jar", //
+				new File(syncgtsLib, "caGrid-syncgts-service-" + NEW_CAGRID_VERSION + ".jar"));
+		mapBuilder.put("caGrid-syncgts-stubs-1.2.jar", //
+				new File(syncgtsLib, "caGrid-syncgts-stubs-" + NEW_CAGRID_VERSION + ".jar"));
+		mapBuilder.put("caGrid-syncgts-tests-1.2.jar", //
+				new File(syncgtsLib, "caGrid-syncgts-tests-" + NEW_CAGRID_VERSION + ".jar"));
 		mapBuilder.put("caGrid-syncgts-client-1.3.jar", //
 				new File(syncgtsLib, "caGrid-syncgts-client-" + NEW_CAGRID_VERSION + ".jar"));
 		mapBuilder.put("caGrid-syncgts-common-1.3.jar", //
@@ -642,25 +1245,71 @@ public class LibUpgrader {
 				new File(syncgtsLib, "caGrid-syncgts-stubs-" + NEW_CAGRID_VERSION + ".jar"));
 		mapBuilder.put("caGrid-syncgts-tests-1.3.jar", //
 				new File(syncgtsLib, "caGrid-syncgts-tests-" + NEW_CAGRID_VERSION + ".jar"));
+		mapBuilder.put("caGrid-syncgts-client-1.4.jar", //
+				new File(syncgtsLib, "caGrid-syncgts-client-" + NEW_CAGRID_VERSION + ".jar"));
+		mapBuilder.put("caGrid-syncgts-common-1.4.jar", //
+				new File(syncgtsLib, "caGrid-syncgts-common-" + NEW_CAGRID_VERSION + ".jar"));
+		mapBuilder.put("caGrid-syncgts-service-1.4.jar", //
+				new File(syncgtsLib, "caGrid-syncgts-service-" + NEW_CAGRID_VERSION + ".jar"));
+		mapBuilder.put("caGrid-syncgts-stubs-1.4.jar", //
+				new File(syncgtsLib, "caGrid-syncgts-stubs-" + NEW_CAGRID_VERSION + ".jar"));
+		mapBuilder.put("caGrid-syncgts-tests-1.4.jar", //
+				new File(syncgtsLib, "caGrid-syncgts-tests-" + NEW_CAGRID_VERSION + ".jar"));
 
 		File testing = new File(cagridIntegrationRepository, "testing");
 		File testingLib = new File(testing, NEW_CAGRID_VERSION);
+		mapBuilder.put("caGrid-testing-core-1.2.jar", //
+				new File(testingLib, "caGrid-testing-core-" + NEW_CAGRID_VERSION + ".jar"));
+		mapBuilder.put("caGrid-testing-system-1.2.jar", //
+				new File(testingLib, "caGrid-testing-system-" + NEW_CAGRID_VERSION + ".jar"));
+		mapBuilder.put("caGrid-testing-tests-1.2.jar", //
+				new File(testingLib, "caGrid-testing-tests-" + NEW_CAGRID_VERSION + ".jar"));
 		mapBuilder.put("caGrid-testing-core-1.3.jar", //
 				new File(testingLib, "caGrid-testing-core-" + NEW_CAGRID_VERSION + ".jar"));
 		mapBuilder.put("caGrid-testing-system-1.3.jar", //
 				new File(testingLib, "caGrid-testing-system-" + NEW_CAGRID_VERSION + ".jar"));
+		mapBuilder.put("caGrid-testing-core-1.4.jar", //
+				new File(testingLib, "caGrid-testing-core-" + NEW_CAGRID_VERSION + ".jar"));
+		mapBuilder.put("caGrid-testing-system-1.4.jar", //
+				new File(testingLib, "caGrid-testing-system-" + NEW_CAGRID_VERSION + ".jar"));
 
 		File tools = new File(cagridIntegrationRepository, "tools");
 		File toolsLib = new File(tools, NEW_CAGRID_VERSION);
+		mapBuilder.put("caGrid-tools-stubs-1.2.jar", //
+				new File(toolsLib, "caGrid-tools-stubs-" + NEW_CAGRID_VERSION + ".jar"));
+		mapBuilder.put("caGrid-tools-tests-1.2.jar", //
+				new File(toolsLib, "caGrid-tools-tests-" + NEW_CAGRID_VERSION + ".jar"));
+		mapBuilder.put("caGrid-tools-validator-1.2.jar", //
+				new File(toolsLib, "caGrid-tools-validator-" + NEW_CAGRID_VERSION + ".jar"));
 		mapBuilder.put("caGrid-tools-stubs-1.3.jar", //
 				new File(toolsLib, "caGrid-tools-stubs-" + NEW_CAGRID_VERSION + ".jar"));
 		mapBuilder.put("caGrid-tools-tests-1.3.jar", //
 				new File(toolsLib, "caGrid-tools-tests-" + NEW_CAGRID_VERSION + ".jar"));
 		mapBuilder.put("caGrid-tools-validator-1.3.jar", //
 				new File(toolsLib, "caGrid-tools-validator-" + NEW_CAGRID_VERSION + ".jar"));
+		mapBuilder.put("caGrid-tools-stubs-1.4.jar", //
+				new File(toolsLib, "caGrid-tools-stubs-" + NEW_CAGRID_VERSION + ".jar"));
+		mapBuilder.put("caGrid-tools-tests-1.4.jar", //
+				new File(toolsLib, "caGrid-tools-tests-" + NEW_CAGRID_VERSION + ".jar"));
+		mapBuilder.put("caGrid-tools-validator-1.4.jar", //
+				new File(toolsLib, "caGrid-tools-validator-" + NEW_CAGRID_VERSION + ".jar"));
 
 		File transfer = new File(cagridIntegrationRepository, "transfer");
 		File transferLib = new File(transfer, NEW_CAGRID_VERSION);
+		mapBuilder.put("caGrid-Transfer-client-1.2.jar", //
+				new File(transferLib, "caGrid-Transfer-client-" + NEW_CAGRID_VERSION + ".jar"));
+		mapBuilder.put("caGrid-Transfer-common-1.2.jar", //
+				new File(transferLib, "caGrid-Transfer-common-" + NEW_CAGRID_VERSION + ".jar"));
+		mapBuilder.put("caGrid-Transfer-service-1.2jar", //
+				new File(transferLib, "caGrid-Transfer-service-" + NEW_CAGRID_VERSION + ".jar"));
+		mapBuilder.put("caGrid-Transfer-stubs-1.2.jar", //
+				new File(transferLib, "caGrid-Transfer-stubs-" + NEW_CAGRID_VERSION + ".jar"));
+		mapBuilder.put("caGrid-Transfer-tests-1.2.jar", //
+				new File(transferLib, "caGrid-Transfer-tests-" + NEW_CAGRID_VERSION + ".jar"));
+		mapBuilder.put("caGrid-Transfer-webapp-1.2.jar", //
+				new File(transferLib, "caGrid-Transfer-webapp-" + NEW_CAGRID_VERSION + ".jar"));
+		mapBuilder.put("caGrid-TransferExtension-1.2.jar", //
+				new File(transferLib, "caGrid-TransferExtension-" + NEW_CAGRID_VERSION + ".jar"));
 		mapBuilder.put("caGrid-Transfer-client-1.3.jar", //
 				new File(transferLib, "caGrid-Transfer-client-" + NEW_CAGRID_VERSION + ".jar"));
 		mapBuilder.put("caGrid-Transfer-common-1.3.jar", //
@@ -675,49 +1324,117 @@ public class LibUpgrader {
 				new File(transferLib, "caGrid-Transfer-webapp-" + NEW_CAGRID_VERSION + ".jar"));
 		mapBuilder.put("caGrid-TransferExtension-1.3.jar", //
 				new File(transferLib, "caGrid-TransferExtension-" + NEW_CAGRID_VERSION + ".jar"));
+		mapBuilder.put("caGrid-Transfer-client-1.4.jar", //
+				new File(transferLib, "caGrid-Transfer-client-" + NEW_CAGRID_VERSION + ".jar"));
+		mapBuilder.put("caGrid-Transfer-common-1.4.jar", //
+				new File(transferLib, "caGrid-Transfer-common-" + NEW_CAGRID_VERSION + ".jar"));
+		mapBuilder.put("caGrid-Transfer-service-1.4.jar", //
+				new File(transferLib, "caGrid-Transfer-service-" + NEW_CAGRID_VERSION + ".jar"));
+		mapBuilder.put("caGrid-Transfer-stubs-1.4.jar", //
+				new File(transferLib, "caGrid-Transfer-stubs-" + NEW_CAGRID_VERSION + ".jar"));
+		mapBuilder.put("caGrid-Transfer-tests-1.4.jar", //
+				new File(transferLib, "caGrid-Transfer-tests-" + NEW_CAGRID_VERSION + ".jar"));
+		mapBuilder.put("caGrid-Transfer-webapp-1.4.jar", //
+				new File(transferLib, "caGrid-Transfer-webapp-" + NEW_CAGRID_VERSION + ".jar"));
+		mapBuilder.put("caGrid-TransferExtension-1.4.jar", //
+				new File(transferLib, "caGrid-TransferExtension-" + NEW_CAGRID_VERSION + ".jar"));
 
 		File websso = new File(cagridIntegrationRepository, "websso");
 		File webssoLib = new File(websso, NEW_CAGRID_VERSION);
+		mapBuilder.put("cas-1.2.war", OBSOLETE);
 		mapBuilder.put("caGrid-websso-core-1.3.jar", //
 				new File(webssoLib, "caGrid-websso-core-" + NEW_CAGRID_VERSION + ".jar"));
+		mapBuilder.put("webssoserver-1.3.war", //
+				new File(webssoLib, "caGrid-websso-core-" + NEW_CAGRID_VERSION + ".war"));
+		mapBuilder.put("caGrid-websso-core-1.4.jar", //
+				new File(webssoLib, "caGrid-websso-core-" + NEW_CAGRID_VERSION + ".jar"));
+		mapBuilder.put("webssoserver-1.4.war", //
+				new File(webssoLib, "caGrid-websso-core-" + NEW_CAGRID_VERSION + ".war"));
 
 		File webssoClient = new File(cagridIntegrationRepository, "websso-client");
 		File webssoClientLib = new File(webssoClient, NEW_CAGRID_VERSION);
+		mapBuilder.put("applicationContext-jasig-1.3.xml", //
+				new File(webssoClientLib, "applicationContext-jasig-" + NEW_CAGRID_VERSION + ".xml"));
 		mapBuilder.put("caGrid-testing-client-1.3.jar", //
 				new File(webssoClientLib, "caGrid-websso-client-" + NEW_CAGRID_VERSION + ".jar"));
+		mapBuilder.put("cas-client-template-jasig-1.3.properties", //
+				new File(webssoClientLib, "web-template-jasig-1.3.xml" + NEW_CAGRID_VERSION + ".properties"));
+		mapBuilder.put("web-template-jasig-1.3.xml", //
+				new File(webssoClientLib, "web-template-jasig-" + NEW_CAGRID_VERSION + ".xml"));
 
 		File webssoClientAcegi = new File(cagridIntegrationRepository, "websso-client-acegi");
 		File webssoClientAcegiLib = new File(webssoClientAcegi, NEW_CAGRID_VERSION);
+		mapBuilder.put("applicationContext-acegi-1.3.xml", //
+				new File(webssoClientAcegiLib, "applicationContext-acegi-" + NEW_CAGRID_VERSION + ".xml"));
 		mapBuilder.put("caGrid-testing-client-acegi-1.3.jar", //
 				new File(webssoClientAcegiLib, "caGrid-websso-client-acegi-" + NEW_CAGRID_VERSION + ".jar"));
+		mapBuilder.put("cas-client-template-acegi-1.3.properties", //
+				new File(webssoClientAcegiLib, "cas-client-template-acegi-" + NEW_CAGRID_VERSION + ".properties"));
+		mapBuilder.put("web-acegi-1.3.xml", //
+				new File(webssoClientAcegiLib, "web-acegi-" + NEW_CAGRID_VERSION + ".xml"));
 
 		File webssoClientCommon = new File(cagridIntegrationRepository, "websso-client-common");
 		File webssoClientCommonLib = new File(webssoClientCommon, NEW_CAGRID_VERSION);
+		mapBuilder.put("cacerts-1.3.cert", //
+				new File(webssoClientCommonLib, "cacerts-" + NEW_CAGRID_VERSION + ".cert"));
 		mapBuilder.put("caGrid-testing-client-common-1.3.jar", //
 				new File(webssoClientCommonLib, "caGrid-websso-client-common-" + NEW_CAGRID_VERSION + ".jar"));
-
-		// websso-client-common-conf.jar is dropped in caGrid 1.4+
+		mapBuilder.put("caGrid-testing-client-common-1.3.jar", OBSOLETE);
+		mapBuilder.put("cacerts-1.4.cert", //
+				new File(webssoClientCommonLib, "cacerts-" + NEW_CAGRID_VERSION + ".cert"));
+		mapBuilder.put("caGrid-testing-client-common-1.4.jar", //
+				new File(webssoClientCommonLib, "caGrid-websso-client-common-" + NEW_CAGRID_VERSION + ".jar"));
+		mapBuilder.put("sync-description-1.4.xml", //
+				new File(webssoClientCommonLib, "sync-description-" + NEW_CAGRID_VERSION + ".xml"));
 
 		File webssoClientLiferay = new File(cagridIntegrationRepository, "websso-client-liferay");
 		File webssoClientLiferayLib = new File(webssoClientLiferay, NEW_CAGRID_VERSION);
 		mapBuilder.put("caGrid-testing-client-liferay-1.3.jar", //
 				new File(webssoClientLiferayLib, "caGrid-websso-client-liferay-" + NEW_CAGRID_VERSION + ".jar"));
+		mapBuilder.put("cas-client-1.3.properties", //
+				new File(webssoClientLiferayLib, "cas-client-" + NEW_CAGRID_VERSION + ".properties"));
+		mapBuilder.put("web-1.3.xml", //
+				new File(webssoClientLiferayLib, "web-" + NEW_CAGRID_VERSION + ".xml"));
+		mapBuilder.put("caGrid-testing-client-liferay-1.4.jar", //
+				new File(webssoClientLiferayLib, "caGrid-websso-client-liferay-" + NEW_CAGRID_VERSION + ".jar"));
+		mapBuilder.put("cas-client-1.4.properties", //
+				new File(webssoClientLiferayLib, "cas-client-" + NEW_CAGRID_VERSION + ".properties"));
+		mapBuilder.put("web-1.4.xml", //
+				new File(webssoClientLiferayLib, "web-" + NEW_CAGRID_VERSION + ".xml"));
 
 		File wizard = new File(cagridIntegrationRepository, "wizard");
 		File wizardLib = new File(wizard, NEW_CAGRID_VERSION);
+		mapBuilder.put("caGrid-wizard-1.2.jar", //
+				new File(wizardLib, "caGrid-wizard-" + NEW_CAGRID_VERSION + ".jar"));
 		mapBuilder.put("caGrid-wizard-1.3.jar", //
+				new File(wizardLib, "caGrid-wizard-" + NEW_CAGRID_VERSION + ".jar"));
+		mapBuilder.put("caGrid-wizard-1.4.jar", //
 				new File(wizardLib, "caGrid-wizard-" + NEW_CAGRID_VERSION + ".jar"));
 
 		File wsEnum = new File(cagridIntegrationRepository, "wsEnum");
 		File wsEnumLib = new File(wsEnum, NEW_CAGRID_VERSION);
+		mapBuilder.put("addressing-1.3.xsd", //
+				new File(wsEnumLib, "addressing-" + NEW_CAGRID_VERSION + ".xsd"));
+		mapBuilder.put("CaGridEnumeration-1.2.wsdl", //
+				new File(wsEnumLib, "CaGridEnumeration-" + NEW_CAGRID_VERSION + ".wsdl"));
+		mapBuilder.put("CaGridEnumerationTypes-1.2.xsd", //
+				new File(wsEnumLib, "CaGridEnumerationTypes-" + NEW_CAGRID_VERSION + ".xsd"));
 		mapBuilder.put("caGrid-wsEnum-1.3.jar", //
 				new File(wsEnumLib, "caGrid-wsEnum-" + NEW_CAGRID_VERSION + ".jar"));
-		mapBuilder.put("caGrid-wsEnum-tests-1.3.jar", //
-				new File(wsEnumLib, "caGrid-wsEnum-tests-" + NEW_CAGRID_VERSION + ".jar"));
 		mapBuilder.put("caGrid-wsEnum-stubs-1.3.jar", //
 				new File(wsEnumLib, "caGrid-wsEnum-stubs-" + NEW_CAGRID_VERSION + ".jar"));
+		mapBuilder.put("caGrid-wsEnum-tests-1.3.jar", //
+				new File(wsEnumLib, "caGrid-wsEnum-tests-" + NEW_CAGRID_VERSION + ".jar"));
 		mapBuilder.put("caGrid-wsEnum-test-stubs-1.3.jar", //
 				new File(wsEnumLib, "caGrid-wsEnum-test-stubs-" + NEW_CAGRID_VERSION + ".jar"));
+		mapBuilder.put("enumeration-1.3.wsdl", //
+				new File(wsEnumLib, "enumeration-" + NEW_CAGRID_VERSION + ".wsdl"));
+		mapBuilder.put("enumeration-1.3.xsd", //
+				new File(wsEnumLib, "enumeration-" + NEW_CAGRID_VERSION + ".xsd"));
+		mapBuilder.put("EnumerationResponseContainer-1.3.xsd", //
+				new File(wsEnumLib, "EnumerationResponseContainer-" + NEW_CAGRID_VERSION + ".xsd"));
+		mapBuilder.put("ServiceSecurity-1.3.wsdl", //
+				new File(wsEnumLib, "ServiceSecurity-" + NEW_CAGRID_VERSION + ".wsdl"));
 
 		File repository = new File(cagridHome, "repository");
 
@@ -736,6 +1453,11 @@ public class LibUpgrader {
 				new File(antlr2_7_6, "antlr-2.7.6.jar"));
 
 		File apache = new File(repository, "apache");
+
+		File commonsBeanutils = new File(apache, "commons-beanutils");
+		File commonsBeanutilsLib = new File(commonsBeanutils, "1.7.0");
+		mapBuilder.put("commons-beanutils.jar", //
+				new File(commonsBeanutilsLib, "commons-beanutils-1.7.0.jar"));
 
 		File commonsCodec = new File(apache, "commons-codec");
 		File commonsCodec1_3 = new File(commonsCodec, "1.3");
@@ -776,9 +1498,32 @@ public class LibUpgrader {
 		mapBuilder.put("commons-httpclient-3.0.jar", //
 				new File(commonsHttpclient3_0_1, "commons-httpclient-3.0.1.jar"));
 
-		// Apache jcs is not present in 1.4+
+		mapBuilder.put("jcs-20030822.182132.jar", OBSOLETE);
 
-		// Apache torque is not present in 1.4+
+		File santuario = new File(apache, "santuario");
+		File santuario1_4_0 = new File(santuario, "1.4.0");
+		mapBuilder.put("xmlsec.jar", //
+				new File(santuario1_4_0, "xmlsec-1.4.0.jar"));
+
+		mapBuilder.put("torque-3.3-RC1.jar", OBSOLETE);
+
+		// Xerces2-j jar files have names that do not include their version
+		// number. For this reason, we will need to assume that the .jar files
+		// are not the latest and always need to be superseded.
+		File xerces2j = new File(apache, "xerces2-j");
+		File xerces2j2_7_1 = new File(xerces2j, "2.7.1");
+		mapBuilder.put("resolver.jar", //
+				new File(xerces2j2_7_1, "resolver.jar"));
+		mapBuilder.put("xercesImpl.jar", //
+				new File(xerces2j2_7_1, "xercesImpl.jar"));
+		mapBuilder.put("xml-apis.jar", //
+				new File(xerces2j2_7_1, "xml-apis.jar"));
+
+		File bouncycastle = new File(repository, "bouncycastle");
+		File jceJdk13 = new File(bouncycastle, "jce-jdk13");
+		File jceJdk13_145 = new File(jceJdk13, "145");
+		mapBuilder.put("jce-jdk13-125.jar", //
+				new File(jceJdk13_145, "jce-jdk13-145.jar"));
 
 		File c3p0Org = new File(repository, "c3p0");
 		File c3p0Module = new File(c3p0Org, "c3p0");
@@ -793,6 +1538,10 @@ public class LibUpgrader {
 		File clm4_1 = new File(clm, "4.1");
 		mapBuilder.put("clm.jar", //
 				new File(clm4_1, "clm-4.1.jar"));
+
+		// /////////////////////////=========================///////////////////////////////////////
+
+		mapBuilder.put("", OBSOLETE);
 
 		// CSM 3.2 is not supported for 1.3
 

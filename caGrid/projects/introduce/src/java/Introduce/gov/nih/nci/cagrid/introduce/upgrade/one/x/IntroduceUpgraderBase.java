@@ -125,12 +125,11 @@ public abstract class IntroduceUpgraderBase implements IntroduceUpgraderI {
 		if (serviceLibs == null || serviceLibs.length == 0) {
 			String msg = getServiceLibDir().getAbsolutePath() + " does not exist or is empty.\n"
 					+ "This condition can be caused when the project's externally created .jar files\n"
-					+ "are managed by a dependency management tool such as Ivy or maven ant and the\n"
-					+ "has just been used to clean the project.\n"
-					+ "The upgrader cannot function properly unless all of the .jar files that are\n" 
-					+ "used to build the project with caGrid " + getFromVersion() + " are present in its lib directory.";
+					+ "are managed by a dependency management tool such as Ivy or maven ant and the\n" + "has just been used to clean the project.\n"
+					+ "The upgrader cannot function properly unless all of the .jar files that are\n" + "used to build the project with caGrid "
+					+ getFromVersion() + " are present in its lib directory.";
 			getStatus().addDescriptionLine(msg);
-			throw new Exception (msg);
+			throw new Exception(msg);
 		}
 
 		// delete the old libraries
@@ -169,23 +168,15 @@ public abstract class IntroduceUpgraderBase implements IntroduceUpgraderI {
 
 		public boolean accept(File name) {
 			String filename = name.getName();
-			boolean core = filename.startsWith("caGrid-core") && filename.endsWith(".jar");
-			boolean advertisement = filename.startsWith("caGrid-advertisement") && filename.endsWith(".jar");
-			boolean metadata = filename.startsWith("caGrid-metadata-common") && filename.endsWith(".jar");
-			boolean introduce = filename.startsWith("caGrid-Introduce") && filename.endsWith(".jar");
-			boolean security = (filename.startsWith("caGrid-ServiceSecurityProvider") || filename.startsWith("caGrid-metadata-security"))
-					&& filename.endsWith(".jar");
-
-			boolean gridGrouper = (filename.startsWith("caGrid-gridgrouper")) && filename.endsWith(".jar");
-
-			boolean csm = (filename.startsWith("caGrid-authz-common")) && filename.endsWith(".jar");
-
-			boolean otherSecurityJarsNotNeeded = (filename.startsWith("caGrid-gridca")) && filename.endsWith(".jar");
-
-			boolean wsrf = (filename.startsWith("globus_wsrf_mds") || filename.startsWith("globus_wsrf_servicegroup")) && filename.endsWith(".jar");
-			boolean mobius = filename.startsWith("mobius") && filename.endsWith(".jar");
-
-			return core || advertisement || metadata || introduce || security || gridGrouper || csm || wsrf || mobius || otherSecurityJarsNotNeeded;
+			if (!filename.endsWith(".jar")) {
+				return false;
+			}
+			return (filename.startsWith("caGrid-") && !filename.equals("caGrid-dorian-stubs-1.2.jar")) //
+					|| filename.startsWith("globus_wsrf_mds") //
+					|| filename.startsWith("globus_wsrf_servicegroup") //
+					|| filename.startsWith("mobius") //
+					// Added for 1.4.1
+					;
 		}
 
 	}

@@ -382,29 +382,14 @@ public class ModificationViewer extends ApplicationComponent {
 											// need to remove this extension
 											// from
 											// the extensions list
-											ExtensionType[] modifiedExtensionsArray = new ExtensionType[info.getExtensions().getExtension().length - 1];
-											int kept = 0;
-											for (int i = 0; i < info.getExtensions().getExtension().length; i++) {
-												ExtensionType extType = info.getExtensions().getExtension(i);
-												if (!extType.getName().equals(extensionName)) {
-													modifiedExtensionsArray[kept++] = extType;
-												}
-											}
+											ignoreExtension(extensionName);
 										} // do nothing for remove -- the
 											// Extensions Upgrade Manager will
 											// find and remove it
 									} else {
 										JOptionPane.showMessageDialog(GridApplication.getContext().getApplication(), "WARNING: This service uses the "
 												+ extensionName + "  and this extension is no longer supported and will no longer be processed");
-
-										ExtensionType[] modifiedExtensionsArray = new ExtensionType[info.getExtensions().getExtension().length - 1];
-										int kept = 0;
-										for (int i = 0; i < info.getExtensions().getExtension().length; i++) {
-											ExtensionType extType = info.getExtensions().getExtension(i);
-											if (!extType.getName().equals(extensionName)) {
-												modifiedExtensionsArray[kept++] = extType;
-											}
-										}
+										ignoreExtension(extensionName);
 									}
 
 									if (newExtension.length() > 0) {
@@ -440,25 +425,7 @@ public class ModificationViewer extends ApplicationComponent {
 								this.beenDisposed = true;
 							}
 						} catch (Exception e) {
-							logger.fatal("fatal error during the upgrade process", e);
-							e.printStackTrace();
-							String dialogMsg = "The service had the following fatal error during the upgrade process:\n" + e.getMessage();
-							dialogMsg += "\nIf you select OK, Introduce will roll your service back to its previous state before the upgrade attempt\n";
-							dialogMsg += "For more information see " + new File("log", "introduce.log").getAbsolutePath();
-							int answer = JOptionPane.showConfirmDialog(GridApplication.getContext().getApplication(), dialogMsg, "Error upgrading service",
-									JOptionPane.OK_CANCEL_OPTION);
-							if (answer == JOptionPane.OK_OPTION) {
-								try {
-									if (dialog != null) {
-										dialog.setProgressText("Rolling back upgrade changes");
-									}
-									upgrader.recover();
-									System.out.println("RECOVERED YOUR SERVICE");
-								} catch (Exception ex) {
-									ex.printStackTrace();
-									ErrorDialog.showError(ex);
-								}
-							}
+							upgradeFailed(dialog, upgrader, e);
 							ModificationViewer.this.dispose();
 							this.beenDisposed = true;
 						}
@@ -479,6 +446,39 @@ public class ModificationViewer extends ApplicationComponent {
 
 					initServicePropertyValidation();
 				}
+			}
+		}
+	}
+
+	private void upgradeFailed(BusyDialogRunnable dialog, UpgradeManager upgrader, Exception e) {
+		logger.fatal("fatal error during the upgrade process", e);
+		e.printStackTrace();
+		String dialogMsg = "The service had the following fatal error during the upgrade process:\n" + e.getMessage();
+		dialogMsg += "\nIf you select OK, Introduce will roll your service back to its previous state before the upgrade attempt\n";
+		dialogMsg += "For more information see " + new File("log", "introduce.log").getAbsolutePath();
+		int answer = JOptionPane.showConfirmDialog(GridApplication.getContext().getApplication(), dialogMsg, "Error upgrading service",
+				JOptionPane.OK_CANCEL_OPTION);
+		if (answer == JOptionPane.OK_OPTION) {
+			try {
+				if (dialog != null) {
+					dialog.setProgressText("Rolling back upgrade changes");
+				}
+				upgrader.recover();
+				System.out.println("RECOVERED YOUR SERVICE");
+			} catch (Exception ex) {
+				ex.printStackTrace();
+				ErrorDialog.showError(ex);
+			}
+		}
+	}
+
+	private void ignoreExtension(String extensionName) {
+		ExtensionType[] modifiedExtensionsArray = new ExtensionType[info.getExtensions().getExtension().length - 1];
+		int kept = 0;
+		for (int i = 0; i < info.getExtensions().getExtension().length; i++) {
+			ExtensionType extType = info.getExtensions().getExtension(i);
+			if (!extType.getName().equals(extensionName)) {
+				modifiedExtensionsArray[kept++] = extType;
 			}
 		}
 	}
