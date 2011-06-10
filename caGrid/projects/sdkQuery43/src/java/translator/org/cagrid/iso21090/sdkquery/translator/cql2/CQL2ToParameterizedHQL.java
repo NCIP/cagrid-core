@@ -53,8 +53,8 @@ public class CQL2ToParameterizedHQL {
     public static final String TARGET_ALIAS = "__TargetAlias__";
     
     private static Log LOG = LogFactory.getLog(CQL2ToParameterizedHQL.class);
-	
-	// maps a CQL 2 predicate to its HQL string representation
+    
+    // maps a CQL 2 predicate to its HQL string representation
     private static Map<java.lang.Object, String> predicateValues = null;
     static {
         predicateValues = new HashMap<java.lang.Object, String>();
@@ -81,21 +81,21 @@ public class CQL2ToParameterizedHQL {
         this.caseInsensitive = caseInsensitive;
     }
     
-	
-	/**
-	 * Converts CQL to parameterized HQL suitable for use with 
+    
+    /**
+     * Converts CQL to parameterized HQL suitable for use with 
      * Hibernate v3.2.0ga and caCORE SDK 4.3 ISO data types
-	 * 
-	 * @param query
-	 * 		The query to convert
-	 * @return
-	 * 		A parameterized HQL Query representing the CQL query
-	 * @throws QueryTranslationException
-	 */
-	public ParameterizedHqlQuery convertToHql(CQLQuery query) throws QueryTranslationException {
-	    LOG.debug("Converting caGrid Query Language to Hibernate Query Language");
-		// create a string builder to build up the HQL
-		StringBuilder rawHql = new StringBuilder();
+     * 
+     * @param query
+     *      The query to convert
+     * @return
+     *      A parameterized HQL Query representing the CQL query
+     * @throws QueryTranslationException
+     */
+    public ParameterizedHqlQuery convertToHql(CQLQuery query) throws QueryTranslationException {
+        LOG.debug("Converting caGrid Query Language to Hibernate Query Language");
+        // create a string builder to build up the HQL
+        StringBuilder rawHql = new StringBuilder();
         
         // create the list in which parameters will be placed
         List<java.lang.Object> parameters = new LinkedList<java.lang.Object>();
@@ -111,259 +111,259 @@ public class CQL2ToParameterizedHQL {
             + (hasSubclasses ? " has subclasses" : " has no subclasse"));
         
         // begin processing at the target level
-		processTarget(query.getCQLTargetObject(), query.getAssociationPopulationSpecification(), 
-		    rawHql, parameters, hasSubclasses);
+        processTarget(query.getCQLTargetObject(), query.getAssociationPopulationSpecification(), 
+            rawHql, parameters, hasSubclasses);
         
         // apply query modifiers
-		if (query.getCQLQueryModifier() != null) {
-			handleQueryModifier(query.getCQLQueryModifier(), rawHql);
-		} else {
-		    // select only unique objects
+        if (query.getCQLQueryModifier() != null) {
+            handleQueryModifier(query.getCQLQueryModifier(), rawHql);
+        } else {
+            // select only unique objects
             rawHql.insert(0, "Select distinct (" + TARGET_ALIAS + ") ");      
         }
         
         // build the final query object
         ParameterizedHqlQuery hqlQuery = new ParameterizedHqlQuery(rawHql.toString(), parameters);
-		return hqlQuery;
-	}
-	
-	
-	/**
-	 * Applies query modifiers to the HQL query
-	 * 
-	 * @param mods
-	 * 		The modifiers to apply
-	 * @param hql
-	 * 		The HQL to apply the modifications to
-	 */
-	private void handleQueryModifier(CQLQueryModifier mods, StringBuilder hql) {
-		StringBuilder prepend = new StringBuilder();
-		if (mods.getCountOnly() != null && mods.getCountOnly().booleanValue()) {
-			prepend.append("select count(");
-			if (mods.getDistinctAttribute() != null) {
-				prepend.append("distinct ").append(mods.getDistinctAttribute());
-			} else {
-				prepend.append("distinct " + TARGET_ALIAS);
-			}
-			prepend.append(')');
-		} else {
-		    // select distinct tuples
-			prepend.append("select distinct ");
-			if (mods.getDistinctAttribute() != null) {
-				prepend.append(mods.getDistinctAttribute());
-			} else {
-				for (int i = 0; i < mods.getNamedAttribute().length; i++) {
-					prepend.append(mods.getNamedAttribute(i).getAttributeName());
-					if (i + 1 < mods.getNamedAttribute().length) {
-						prepend.append(", ");
-					}
-				}
-			}
-		}
-		
-		prepend.append(' ');
-		
-		hql.insert(0, prepend.toString());
-	}
-	
-	
-	/**
-	 * Processes the target object of a CQL query
-	 * 
-	 * @param target
-	 * 		The target of a CQL query
-	 * @param hql
-	 * 		The hql string builder to append to
+        return hqlQuery;
+    }
+    
+    
+    /**
+     * Applies query modifiers to the HQL query
+     * 
+     * @param mods
+     *      The modifiers to apply
+     * @param hql
+     *      The HQL to apply the modifications to
+     */
+    private void handleQueryModifier(CQLQueryModifier mods, StringBuilder hql) {
+        StringBuilder prepend = new StringBuilder();
+        if (mods.getCountOnly() != null && mods.getCountOnly().booleanValue()) {
+            prepend.append("select count(");
+            if (mods.getDistinctAttribute() != null) {
+                prepend.append("distinct ").append(mods.getDistinctAttribute().getAttributeName());
+            } else {
+                prepend.append("distinct " + TARGET_ALIAS);
+            }
+            prepend.append(')');
+        } else {
+            // select distinct tuples
+            prepend.append("select distinct ");
+            if (mods.getDistinctAttribute() != null) {
+                prepend.append(mods.getDistinctAttribute().getAttributeName());
+            } else {
+                for (int i = 0; i < mods.getNamedAttribute().length; i++) {
+                    prepend.append(mods.getNamedAttribute(i).getAttributeName());
+                    if (i + 1 < mods.getNamedAttribute().length) {
+                        prepend.append(", ");
+                    }
+                }
+            }
+        }
+        
+        prepend.append(' ');
+        
+        hql.insert(0, prepend.toString());
+    }
+    
+    
+    /**
+     * Processes the target object of a CQL query
+     * 
+     * @param target
+     *      The target of a CQL query
+     * @param hql
+     *      The hql string builder to append to
      * @param parameters
      *      The list of positional parameter values
-	 * @param avoidSubclasses
-	 * 		A flag to indicate the target has subclasses, which we should not return
-	 * @throws QueryTranslationException
-	 */
-	private void processTarget(CQLTargetObject target, AssociationPopulationSpecification associationPopulation,
-	    StringBuilder hql, List<java.lang.Object> parameters, boolean avoidSubclasses) throws QueryTranslationException {
-		LOG.debug("Processing target " + target.getClassName());
+     * @param avoidSubclasses
+     *      A flag to indicate the target has subclasses, which we should not return
+     * @throws QueryTranslationException
+     */
+    private void processTarget(CQLTargetObject target, AssociationPopulationSpecification associationPopulation,
+        StringBuilder hql, List<java.lang.Object> parameters, boolean avoidSubclasses) throws QueryTranslationException {
+        LOG.debug("Processing target " + target.getClassName());
         
         // the stack of associations processed at the current depth of the query
-		Stack<CQLAssociatedObject> associationStack = new Stack<CQLAssociatedObject>();
-		List<CqlDataBucket> typesProcessingList = new ArrayList<CqlDataBucket>();
+        Stack<CQLAssociatedObject> associationStack = new Stack<CQLAssociatedObject>();
+        List<CqlDataBucket> typesProcessingList = new ArrayList<CqlDataBucket>();
         
         // start the query
-		hql.append("From ").append(target.getClassName()).append(" as ").append(TARGET_ALIAS).append(' ');
-		// keep track of where we are in processing
-		addTypeProcessingInformation(typesProcessingList, target.getClassName(), TARGET_ALIAS);
-		
-		// deal with populating associations
-		if (associationPopulation != null) {
+        hql.append("From ").append(target.getClassName()).append(" as ").append(TARGET_ALIAS).append(' ');
+        // keep track of where we are in processing
+        addTypeProcessingInformation(typesProcessingList, target.getClassName(), TARGET_ALIAS);
+        
+        // deal with populating associations
+        if (associationPopulation != null) {
             processAssociationFetchClause(target.getClassName(), associationPopulation, hql, parameters);
         }
-		
-		if (target.getCQLAttribute() != null) {
+        
+        if (target.getCQLAttribute() != null) {
             hql.append("where ");
             processAttribute(target.getCQLAttribute(), hql, parameters, target, TARGET_ALIAS, associationStack, typesProcessingList);
         }
-		if (target.getCQLAssociatedObject() != null) {
-			hql.append("where ");
-			processAssociation(target.getCQLAssociatedObject(), hql, parameters, associationStack, 
-			    typesProcessingList, target, TARGET_ALIAS);
-		}
-		if (target.getCQLGroup() != null) {
-			hql.append("where ");
-			processGroup(target.getCQLGroup(), hql, parameters, associationStack, typesProcessingList, target, TARGET_ALIAS);
-		}
-		
-		if (avoidSubclasses) {
-		    LOG.debug("Target class has subclasses, appending .class in where clause");
-			boolean mustAddWhereClause = 
-				target.getCQLAssociatedObject() == null
-				&& target.getCQLAttribute() == null
-				&& target.getCQLGroup() == null;
-			if (mustAddWhereClause) {
-				hql.append(" where ");
-			} else {
-				hql.append(" and ");
-			}
-			hql.append(TARGET_ALIAS).append(".class = ?");
-			java.lang.Object classDiscriminatorInstance = null;
-			try {
-			    classDiscriminatorInstance = typesInformationResolver.getClassDiscriminatorValue(target.getClassName());
-			    LOG.debug("Class discriminator determined to be " + String.valueOf(classDiscriminatorInstance));
-			} catch (TypesInformationException ex) {
-			    String message = "Error determining class discriminator for " + target.getClassName() + ": " + ex.getMessage();
-			    LOG.error(message, ex);
-			    throw new QueryTranslationException(message, ex);
-			}
+        if (target.getCQLAssociatedObject() != null) {
+            hql.append("where ");
+            processAssociation(target.getCQLAssociatedObject(), hql, parameters, associationStack, 
+                typesProcessingList, target, TARGET_ALIAS);
+        }
+        if (target.getCQLGroup() != null) {
+            hql.append("where ");
+            processGroup(target.getCQLGroup(), hql, parameters, associationStack, typesProcessingList, target, TARGET_ALIAS);
+        }
+        
+        if (avoidSubclasses) {
+            LOG.debug("Target class has subclasses, appending .class in where clause");
+            boolean mustAddWhereClause = 
+                target.getCQLAssociatedObject() == null
+                && target.getCQLAttribute() == null
+                && target.getCQLGroup() == null;
+            if (mustAddWhereClause) {
+                hql.append(" where ");
+            } else {
+                hql.append(" and ");
+            }
+            hql.append(TARGET_ALIAS).append(".class = ?");
+            java.lang.Object classDiscriminatorInstance = null;
+            try {
+                classDiscriminatorInstance = typesInformationResolver.getClassDiscriminatorValue(target.getClassName());
+                LOG.debug("Class discriminator determined to be " + String.valueOf(classDiscriminatorInstance));
+            } catch (TypesInformationException ex) {
+                String message = "Error determining class discriminator for " + target.getClassName() + ": " + ex.getMessage();
+                LOG.error(message, ex);
+                throw new QueryTranslationException(message, ex);
+            }
             parameters.add(classDiscriminatorInstance);
-		}
-	}
-	
-	
-	/**
-	 * Processes a CQL query attribute into HQL
-	 * 
-	 * @param attribute
-	 * 		The CQL attribute
-	 * @param hql
-	 * 		The HQL statement fragment
+        }
+    }
+    
+    
+    /**
+     * Processes a CQL query attribute into HQL
+     * 
+     * @param attribute
+     *      The CQL attribute
+     * @param hql
+     *      The HQL statement fragment
      * @param parameters
      *      The positional parameters list
-	 * @param associationTrace
-	 * 		The trace of associations
-	 * @param objectClassName
-	 * 		The class name of the object to which this association belongs
-	 * @throws QueryTranslationException
-	 */
-	private void processAttribute(CQLAttribute attribute, StringBuilder hql, 
+     * @param associationTrace
+     *      The trace of associations
+     * @param objectClassName
+     *      The class name of the object to which this association belongs
+     * @throws QueryTranslationException
+     */
+    private void processAttribute(CQLAttribute attribute, StringBuilder hql, 
         List<java.lang.Object> parameters, CQLObject queryObject, String queryObjectAlias, 
         Stack<CQLAssociatedObject> associationStack, List<CqlDataBucket> typesProcessingList)
-	    throws QueryTranslationException {
+        throws QueryTranslationException {
         LOG.debug("Processing attribute " + queryObject.getClassName() + "." + attribute.getName());
         
         // determine what the flavor of this attribute is
-		DatatypeFlavor flavor = typesProcessingList.get(typesProcessingList.size() - 1).datatypeFlavor;
-		LOG.debug("Datatype flavor is " + flavor.name());
-		// DSET<Ii>, (and TEL and CD) ends up as "COMPLEX_WITH_SIMPLE_CONTENT" because it's modeled as an
-		// association to DSET, then to Ii, which is that type.  Appears to work OK.
-		// FIXME: DSET<Ad> doesn't work because I can't get the information about the part names inside the AD
-		// out of the Hibernate configuration object API.  Interestingly, AD by itself is fine.
-		switch (flavor) {
-		    case STANDARD:
-		    case ENUMERATION:
-		        processStandardAttribute(attribute, hql, parameters, queryObject, queryObjectAlias);
-		        break;
-		    case COMPLEX_WITH_SIMPLE_CONTENT:
-		        processComplexAttributeWithSimpleOrMixedContent(
-		            attribute, hql, parameters, associationStack, typesProcessingList);
-		        break;
-		    case COMPLEX_WITH_MIXED_CONTENT:
-		        processComplexAttributeWithSimpleOrMixedContent(
+        DatatypeFlavor flavor = typesProcessingList.get(typesProcessingList.size() - 1).datatypeFlavor;
+        LOG.debug("Datatype flavor is " + flavor.name());
+        // DSET<Ii>, (and TEL and CD) ends up as "COMPLEX_WITH_SIMPLE_CONTENT" because it's modeled as an
+        // association to DSET, then to Ii, which is that type.  Appears to work OK.
+        // FIXME: DSET<Ad> doesn't work because I can't get the information about the part names inside the AD
+        // out of the Hibernate configuration object API.  Interestingly, AD by itself is fine.
+        switch (flavor) {
+            case STANDARD:
+            case ENUMERATION:
+                processStandardAttribute(attribute, hql, parameters, queryObject, queryObjectAlias);
+                break;
+            case COMPLEX_WITH_SIMPLE_CONTENT:
+                processComplexAttributeWithSimpleOrMixedContent(
                     attribute, hql, parameters, associationStack, typesProcessingList);
-		        break;
-		    case COMPLEX_WITH_COLLECTION_OF_COMPLEX:
-		        if (currentlyWrappedByDset(typesProcessingList)) {
-		            processDsetOfComplexDatatypeWithCollectionOfComplexAttributesWithSimpleContent(
-		                attribute, hql, parameters, associationStack, typesProcessingList);
-		        } else {
-		            processComplexAttributeWithCollectionOfComplexAttributesWithSimpleContent(
-		                attribute, hql, parameters, associationStack, typesProcessingList);
-		        }
-		        break;
-		    case COLLECTION_OF_COMPLEX_WITH_SIMPLE_CONTENT:
-		        processComplexAttributeWithSimpleOrMixedContent(
+                break;
+            case COMPLEX_WITH_MIXED_CONTENT:
+                processComplexAttributeWithSimpleOrMixedContent(
                     attribute, hql, parameters, associationStack, typesProcessingList);
-		        break;
-		    case COLLECTION_OF_COMPLEX_WITH_COLLECTION_OF_COMPLEX_WITH_SIMPLE_CONTENT:
-		        // gah
-		        break;       
-		}
-	}
-	
-	
-	private boolean currentlyWrappedByDset(List<CqlDataBucket> typesProcessingList) {
-	    boolean wrappedByDset = false;
-	    for (int i = typesProcessingList.size() - 1; i >= 0 && !wrappedByDset; i--) {
-	        String name = typesProcessingList.get(i).clazz;
-	        wrappedByDset = DSet.class.getName().equals(name);
-	    }
-	    return wrappedByDset;
-	}
-	
-	
-	/**
-	 * Processes CQL associations into HQL
-	 * 
-	 * @param association
-	 * 		The CQL association
-	 * @param hql
-	 * 		The HQL fragment which will be edited
+                break;
+            case COMPLEX_WITH_COLLECTION_OF_COMPLEX:
+                if (currentlyWrappedByDset(typesProcessingList)) {
+                    processDsetOfComplexDatatypeWithCollectionOfComplexAttributesWithSimpleContent(
+                        attribute, hql, parameters, associationStack, typesProcessingList);
+                } else {
+                    processComplexAttributeWithCollectionOfComplexAttributesWithSimpleContent(
+                        attribute, hql, parameters, associationStack, typesProcessingList);
+                }
+                break;
+            case COLLECTION_OF_COMPLEX_WITH_SIMPLE_CONTENT:
+                processComplexAttributeWithSimpleOrMixedContent(
+                    attribute, hql, parameters, associationStack, typesProcessingList);
+                break;
+            case COLLECTION_OF_COMPLEX_WITH_COLLECTION_OF_COMPLEX_WITH_SIMPLE_CONTENT:
+                // gah
+                break;       
+        }
+    }
+    
+    
+    private boolean currentlyWrappedByDset(List<CqlDataBucket> typesProcessingList) {
+        boolean wrappedByDset = false;
+        for (int i = typesProcessingList.size() - 1; i >= 0 && !wrappedByDset; i--) {
+            String name = typesProcessingList.get(i).clazz;
+            wrappedByDset = DSet.class.getName().equals(name);
+        }
+        return wrappedByDset;
+    }
+    
+    
+    /**
+     * Processes CQL associations into HQL
+     * 
+     * @param association
+     *      The CQL association
+     * @param hql
+     *      The HQL fragment which will be edited
      * @param parameters
      *      The positional HQL query parameters
-	 * @param associationTrace
-	 * 		The trace of associations
-	 * @param sourceClassName
-	 * 		The class name of the type to which this association belongs
-	 * @throws QueryTranslationException
-	 */
-	private void processAssociation(CQLAssociatedObject association, StringBuilder hql, List<java.lang.Object> parameters, 
+     * @param associationTrace
+     *      The trace of associations
+     * @param sourceClassName
+     *      The class name of the type to which this association belongs
+     * @throws QueryTranslationException
+     */
+    private void processAssociation(CQLAssociatedObject association, StringBuilder hql, List<java.lang.Object> parameters, 
         Stack<CQLAssociatedObject> associationStack, List<CqlDataBucket> typesProcessingList,
         CQLObject sourceQueryObject, String sourceAlias) throws QueryTranslationException {
         LOG.debug("Processing association " + sourceQueryObject.getClassName() + " to " + association.getClassName());
         
         // get the association's role name
-		String roleName = association.getEndName();
-		if (roleName == null) {
-		    try {
-		        roleName = typesInformationResolver.getRoleName(sourceQueryObject.getClassName(), association.getClassName());
-		    } catch (TypesInformationException ex) {
-		        throw new QueryTranslationException(ex.getMessage(), ex);
-		    }
-		}
-		if (roleName == null) {
-			// still null?? no association to the object!
-		    throw new QueryTranslationException("No role name for an association between " + sourceQueryObject.getClassName() + 
-		        " and " + association.getClassName() + " cound be determined.  Maybe the association doesn't exist?");
-		}
+        String roleName = association.getEndName();
+        if (roleName == null) {
+            try {
+                roleName = typesInformationResolver.getRoleName(sourceQueryObject.getClassName(), association.getClassName());
+            } catch (TypesInformationException ex) {
+                throw new QueryTranslationException(ex.getMessage(), ex);
+            }
+        }
+        if (roleName == null) {
+            // still null?? no association to the object!
+            throw new QueryTranslationException("No role name for an association between " + sourceQueryObject.getClassName() + 
+                " and " + association.getClassName() + " cound be determined.  Maybe the association doesn't exist?");
+        }
         LOG.debug("Role name determined to be " + roleName);
         
         // determine the alias for this association
         String alias = getAssociationAlias(sourceQueryObject.getClassName(), association.getClassName(), roleName);
         LOG.debug("Association alias determined to be " + alias);
         
-		// add this association to the stack
-		associationStack.push(association);
-		DatatypeFlavor flavor = null;
+        // add this association to the stack
+        associationStack.push(association);
+        DatatypeFlavor flavor = null;
         try {
             flavor = DatatypeFlavor.getFlavorOfClass(Class.forName(stripGeneric(association.getClassName())));
         } catch (ClassNotFoundException ex) {
             throw new QueryTranslationException("Error determining datatype flavor of " 
                 + association.getClassName() + ": " + ex.getMessage(), ex);
         }
-		addTypeProcessingInformation(typesProcessingList, association.getClassName(), flavor == DatatypeFlavor.STANDARD ? alias : roleName);
+        addTypeProcessingInformation(typesProcessingList, association.getClassName(), flavor == DatatypeFlavor.STANDARD ? alias : roleName);
         
-		if (DatatypeFlavor.STANDARD.equals(flavor)) {
-		    // flag indicates the query is only verifying the association is populated
-		    boolean simpleNullCheck = true;
-		    if (association.getCQLAttribute() != null) {
+        if (DatatypeFlavor.STANDARD.equals(flavor)) {
+            // flag indicates the query is only verifying the association is populated
+            boolean simpleNullCheck = true;
+            if (association.getCQLAttribute() != null) {
                 simpleNullCheck = false;
                 hql.append(sourceAlias).append('.').append(roleName);
                 hql.append(".id in (select ").append(alias).append(".id from ");
@@ -371,27 +371,27 @@ public class CQL2ToParameterizedHQL {
                 processAttribute(association.getCQLAttribute(), hql, parameters, association, alias, associationStack, typesProcessingList);
                 hql.append(") ");
             }
-		    if (association.getCQLAssociatedObject() != null) {
-		        simpleNullCheck = false;
-		        // add clause to select things from this association
-		        hql.append(sourceAlias).append('.').append(roleName);            
-		        hql.append(".id in (select ").append(alias).append(".id from ");
-		        hql.append(association.getClassName()).append(" as ").append(alias).append(" where ");
-		        processAssociation(association.getCQLAssociatedObject(), hql, parameters, associationStack, typesProcessingList, association, alias);
-		        hql.append(") ");
-		    }
-		    if (association.getCQLGroup() != null) {
-		        simpleNullCheck = false;
-		        hql.append(sourceAlias).append('.').append(roleName);            
-		        hql.append(".id in (select ").append(alias).append(".id from ");
-		        hql.append(association.getClassName()).append(" as ").append(alias).append(" where ");
-		        processGroup(association.getCQLGroup(), hql, parameters, associationStack, typesProcessingList, association, alias);
-		        hql.append(") ");
-		    }
-		    if (simpleNullCheck) {
-		        // query is checking for the association to exist and be non-null
-		        hql.append(sourceAlias).append('.').append(roleName).append(".id is not null ");
-		    }
+            if (association.getCQLAssociatedObject() != null) {
+                simpleNullCheck = false;
+                // add clause to select things from this association
+                hql.append(sourceAlias).append('.').append(roleName);            
+                hql.append(".id in (select ").append(alias).append(".id from ");
+                hql.append(association.getClassName()).append(" as ").append(alias).append(" where ");
+                processAssociation(association.getCQLAssociatedObject(), hql, parameters, associationStack, typesProcessingList, association, alias);
+                hql.append(") ");
+            }
+            if (association.getCQLGroup() != null) {
+                simpleNullCheck = false;
+                hql.append(sourceAlias).append('.').append(roleName);            
+                hql.append(".id in (select ").append(alias).append(".id from ");
+                hql.append(association.getClassName()).append(" as ").append(alias).append(" where ");
+                processGroup(association.getCQLGroup(), hql, parameters, associationStack, typesProcessingList, association, alias);
+                hql.append(") ");
+            }
+            if (simpleNullCheck) {
+                // query is checking for the association to exist and be non-null
+                hql.append(sourceAlias).append('.').append(roleName).append(".id is not null ");
+            }
         } else {
             // complex datatype association (modeled as an attribute, so saying "Person.AD is not null" doesn't make sense...
             // "Person.AD.NullFlavor = NullFlavor.NI, however, is fine
@@ -430,40 +430,40 @@ public class CQL2ToParameterizedHQL {
             }
         }
         
-		// pop this association off the stack
+        // pop this association off the stack
         associationStack.pop();
         clipTypeProcessingInformation(typesProcessingList);
         LOG.debug(associationStack.size() + " associations remain on the stack");
-	}
-	
-	
-	/**
-	 * Processes a CQL group into HQL
-	 * 
-	 * @param group
-	 * 		The CQL Group
-	 * @param hql
-	 * 		The HQL fragment which will be edited
+    }
+    
+    
+    /**
+     * Processes a CQL group into HQL
+     * 
+     * @param group
+     *      The CQL Group
+     * @param hql
+     *      The HQL fragment which will be edited
      * @param parameters
      *      The positional HQL query parameters
-	 * @param associationTrace
-	 * 		The trace of associations
-	 * @param sourceClassName
-	 * 		The class to which this group belongs
-	 * @throws QueryTranslationException
-	 */
-	private void processGroup(CQLGroup group, StringBuilder hql, List<java.lang.Object> parameters,
+     * @param associationTrace
+     *      The trace of associations
+     * @param sourceClassName
+     *      The class to which this group belongs
+     * @throws QueryTranslationException
+     */
+    private void processGroup(CQLGroup group, StringBuilder hql, List<java.lang.Object> parameters,
         Stack<CQLAssociatedObject> associationStack, List<CqlDataBucket> typesProcessingList, 
         CQLObject sourceQueryObject, String sourceAlias) throws QueryTranslationException {
         LOG.debug("Processing group on " + sourceQueryObject.getClassName());
         
-		String logic = convertLogicalOperator(group.getLogicalOperation());
-		boolean mustAddLogic = false;
-		
-		// open the group
-		hql.append('(');
-		
-		if (group.getCQLAttribute() != null) {
+        String logic = convertLogicalOperator(group.getLogicalOperation());
+        boolean mustAddLogic = false;
+        
+        // open the group
+        hql.append('(');
+        
+        if (group.getCQLAttribute() != null) {
             for (int i = 0; i < group.getCQLAttribute().length; i++) {
                 mustAddLogic = true;
                 processAttribute(group.getCQLAttribute(i), hql, parameters, 
@@ -473,61 +473,61 @@ public class CQL2ToParameterizedHQL {
                 }
             }
         }
-		if (group.getCQLAssociatedObject() != null) {
-		    if (mustAddLogic) {
+        if (group.getCQLAssociatedObject() != null) {
+            if (mustAddLogic) {
                 hql.append(' ').append(logic).append(' ');
             }
-			for (int i = 0; i < group.getCQLAssociatedObject().length; i++) {
-				mustAddLogic = true;
-				processAssociation(group.getCQLAssociatedObject(i), hql, parameters, 
-				    associationStack, typesProcessingList, sourceQueryObject, sourceAlias);
-				if (i + 1 < group.getCQLAssociatedObject().length) {
-					hql.append(' ').append(logic).append(' ');
-				}
-			}
-		}
-		if (group.getCQLGroup() != null) {
-			if (mustAddLogic) {
-				hql.append(' ').append(logic).append(' ');
-			}
-			for (int i = 0; i < group.getCQLGroup().length; i++) {
-				processGroup(group.getCQLGroup(i), hql, parameters, associationStack, 
-				    typesProcessingList, sourceQueryObject, sourceAlias);
-				if (i + 1 < group.getCQLGroup().length) {
-					hql.append(' ').append(logic).append(' ');
-				}
-			}
-		}
-		
-		// close the group
-		hql.append(')');
-	}
-	
-	
-	/**
-	 * Converts a logical operator to its HQL string equivalent.
-	 * 
-	 * @param op
-	 * 		The logical operator to convert
-	 * @return
-	 * 		The CQL logical operator as HQL
-	 */
-	private String convertLogicalOperator(GroupLogicalOperator op) throws QueryTranslationException {
-	    if (GroupLogicalOperator.AND.equals(op)) {
-			return "AND";
-		} else if (GroupLogicalOperator.OR.equals(op)) {
-			return "OR";
-		}
-		throw new QueryTranslationException("Logical operator '" + op.getValue() + "' is not recognized.");
-	}
-	
-	
-	private Object getAttributeValueObject(Class<?> fieldType, AttributeValue value) throws QueryTranslationException {
-	    Object actualValue = null;
-	    // handle a couple special cases
-	    if (DatatypeFlavor.getFlavorOfClass(fieldType) == DatatypeFlavor.ENUMERATION) {
-	        // 1) ISO 21090enumerations (NullFlavor, AddressPartType, etc)
-	        String enumValue = value.getStringValue();
+            for (int i = 0; i < group.getCQLAssociatedObject().length; i++) {
+                mustAddLogic = true;
+                processAssociation(group.getCQLAssociatedObject(i), hql, parameters, 
+                    associationStack, typesProcessingList, sourceQueryObject, sourceAlias);
+                if (i + 1 < group.getCQLAssociatedObject().length) {
+                    hql.append(' ').append(logic).append(' ');
+                }
+            }
+        }
+        if (group.getCQLGroup() != null) {
+            if (mustAddLogic) {
+                hql.append(' ').append(logic).append(' ');
+            }
+            for (int i = 0; i < group.getCQLGroup().length; i++) {
+                processGroup(group.getCQLGroup(i), hql, parameters, associationStack, 
+                    typesProcessingList, sourceQueryObject, sourceAlias);
+                if (i + 1 < group.getCQLGroup().length) {
+                    hql.append(' ').append(logic).append(' ');
+                }
+            }
+        }
+        
+        // close the group
+        hql.append(')');
+    }
+    
+    
+    /**
+     * Converts a logical operator to its HQL string equivalent.
+     * 
+     * @param op
+     *      The logical operator to convert
+     * @return
+     *      The CQL logical operator as HQL
+     */
+    private String convertLogicalOperator(GroupLogicalOperator op) throws QueryTranslationException {
+        if (GroupLogicalOperator.AND.equals(op)) {
+            return "AND";
+        } else if (GroupLogicalOperator.OR.equals(op)) {
+            return "OR";
+        }
+        throw new QueryTranslationException("Logical operator '" + op.getValue() + "' is not recognized.");
+    }
+    
+    
+    private Object getAttributeValueObject(Class<?> fieldType, AttributeValue value) throws QueryTranslationException {
+        Object actualValue = null;
+        // handle a couple special cases
+        if (DatatypeFlavor.getFlavorOfClass(fieldType) == DatatypeFlavor.ENUMERATION) {
+            // 1) ISO 21090enumerations (NullFlavor, AddressPartType, etc)
+            String enumValue = value.getStringValue();
             LOG.debug("Field type is an Enumeration");
             try {
                 Method factoryMethod = fieldType.getMethod("valueOf", String.class);
@@ -536,35 +536,35 @@ public class CQL2ToParameterizedHQL {
                 throw new QueryTranslationException("Error converting " + enumValue 
                     + " to its enumeration value: " + ex.getMessage(), ex);
             }
-	    } else if (Character.class.equals(fieldType)) {
-	        // 2) Character
-	        String stringVal = value.getStringValue();
-	        if (stringVal.length() == 1) {
+        } else if (Character.class.equals(fieldType)) {
+            // 2) Character
+            String stringVal = value.getStringValue();
+            if (stringVal.length() == 1) {
                 actualValue = Character.valueOf(stringVal.charAt(0));
             } else {
                 throw new QueryTranslationException("The string value \"" + value + "\" of length " 
                     + stringVal.length() + " is not a valid character (should be length 1)");
             }
-	    } else if (URI.class.equals(fieldType)) {
-	        // 3) URI
+        } else if (URI.class.equals(fieldType)) {
+            // 3) URI
             actualValue = URI.create(value.getStringValue());
-	    } else {
-	        if (value.getStringValue() != null) {
-	            actualValue = value.getStringValue();
-	        } else if (value.getBooleanValue() != null) {
-	            actualValue = value.getBooleanValue();
-	        } else if (value.getDateValue() != null) {
-	            actualValue = value.getDateValue();
-	        } else if (value.getDoubleValue() != null) {
-	            actualValue = value.getDoubleValue();
-	        } else if (value.getIntegerValue() != null) {
-	            actualValue = value.getIntegerValue();
-	        } else if (value.getLongValue() != null) {
-	            actualValue = value.getLongValue();
-	        } else if (value.getTimeValue() != null) {
-	            actualValue = value.getTimeValue().toString();
-	        }
-	    }
+        } else {
+            if (value.getStringValue() != null) {
+                actualValue = value.getStringValue();
+            } else if (value.getBooleanValue() != null) {
+                actualValue = value.getBooleanValue();
+            } else if (value.getDateValue() != null) {
+                actualValue = value.getDateValue();
+            } else if (value.getDoubleValue() != null) {
+                actualValue = value.getDoubleValue();
+            } else if (value.getIntegerValue() != null) {
+                actualValue = value.getIntegerValue();
+            } else if (value.getLongValue() != null) {
+                actualValue = value.getLongValue();
+            } else if (value.getTimeValue() != null) {
+                actualValue = value.getTimeValue().toString();
+            }
+        }
         return actualValue;
     }
     
@@ -1023,7 +1023,7 @@ public class CQL2ToParameterizedHQL {
         // if the association is to an ISO type, we're done processing
         if (isAssociationToIsoType(associationIdent)) {
             LOG.debug("Discovered association population of an ISO type.  " +
-            		"These are already populated.  No further processing to perform.");
+                    "These are already populated.  No further processing to perform.");
         } else {
             aliasIndex++;
             buff.append("left join fetch ").append(parentAlias).append('.').append(na.getEndName())
