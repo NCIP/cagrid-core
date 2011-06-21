@@ -1,0 +1,20 @@
+<ivy-module version="2.0">
+	<info organisation="leet" module="QueryProcessor" revision="1.0" status="integration" publication="20110621131721">
+		<!-- when we have a license, it'll go here -->
+		<description>Leet query processor</description>
+	</info>
+	
+	<configurations>
+		<conf name="impl" visibility="private"/>
+		<conf name="default" visibility="public"/>
+	</configurations>
+	
+	<publications>
+		<artifact name="${ivy.organisation}-${ivy.module}" conf="default" type="jar"/>
+	</publications>
+	
+	<dependencies>
+		<!--  caGrid dependencies -->
+    	<dependency rev="1.4" org="caGrid" name="data" conf="impl->processors"/>
+	</dependencies>
+</ivy-module>

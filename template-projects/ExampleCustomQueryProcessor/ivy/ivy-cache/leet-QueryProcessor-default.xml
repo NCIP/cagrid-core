@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-stylesheet type="text/xsl" href="ivy-report.xsl"?>
+<ivy-report version="1.0">
+	<info
+		organisation="leet"
+		module="QueryProcessor"
+		revision="1.0"
+		conf="default"
+		confs="impl, default"
+		date="20110621135752"/>
+	<dependencies>
+	</dependencies>
+</ivy-report>

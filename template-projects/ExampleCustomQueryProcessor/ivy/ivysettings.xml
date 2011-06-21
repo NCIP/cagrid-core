@@ -1,0 +1,21 @@
+<ivysettings>
+	<!-- pull in the properties defined in the ivysettings.properties file -->
+	<properties file="${ivy.settings.dir}/ivysettings.properties"/>
+	<!-- this defines the general behavior of Ivy. Unless otherwise specified, artifacts
+		will be cached in the ivy-cache directory, and artifacts will be resolved by the
+		remote-cagrid-resolver -->
+	<settings defaultCache="${ivy.settings.dir}/ivy-cache"
+		defaultResolver="remote-cagrid-resolver" />
+		
+	<!-- Here we define the resolvers for this Ivy instance.  Only one is defined for
+		resolving from the cagrid remote repository -->
+	<resolvers>
+		<url name="remote-cagrid-resolver">
+			<ivy pattern="${cagrid.repo.url}/[organisation]/[module]/ivy-[revision].xml" />
+			<artifact
+				pattern="${cagrid.repo.url}/[organisation]/[module]/[revision]/[artifact]-[revision].[ext]" />
+			<artifact
+				pattern="${cagrid.repo.url}/[organisation]/[module]/[revision]/[artifact].[ext]" />
+		</url>
+	</resolvers>
+</ivysettings>

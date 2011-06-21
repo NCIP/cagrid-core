@@ -1,0 +1,66 @@
+<project name="ExampleCustomQueryProcessor" basedir="." default="all" xmlns:ivy="antlib:org.apache.ivy.ant">
+	
+	<!-- define file locations for the build -->
+	<property name="src.dir" location="${basedir}/src"/>
+	<property name="build.dir" location="${basedir}/build"/>
+	<property name="build.classes.dir" location="${build.dir}/classes"/>
+	<property name="build.report.dir" location="${build.dir}/report"/>
+	<property name="build.jars.dir" location="${build.dir}/jars"/>
+	<property name="jar.filename" value="${build.jars.dir}/ExampleCustomQueryProcessor.jar"/>
+	
+	<!-- define the Ivy tasks -->
+	<path id="ivy.path">
+		<fileset dir="${basedir}/ivy/lib">
+			<include name="*.jar"/>
+		</fileset>
+	</path>
+	<taskdef uri="antlib:org.apache.ivy.ant" classpathref="ivy.path"/>
+	<!-- initialize ivy with our ivysettings file -->
+	<ivy:settings file="${basedir}/ivy/ivysettings.xml"/>
+	
+	<!-- set up the project for the build process -->
+	<target name="prepare">
+		<delete dir="${build.dir}"/>
+		<mkdir dir="${build.dir}"/>
+		<mkdir dir="${build.classes.dir}"/>
+		<mkdir dir="${build.jars.dir}"/>
+	</target>
+	
+	<!-- invokes Ivy to reteive the dependencies -->
+	<target name="resolve" depends="prepare" description="Resolve and retrieve dependencies with Ivy">
+		<ivy:retrieve/>
+	</target>
+	
+	<!-- generates an HTML report of what was resolved and why.  Check build/report/*.html -->
+	<target name="report" depends="resolve" description="Generate report of dependencies">
+		<ivy:report todir="${build.report.dir}"/>
+	</target>
+	
+	<!-- build the custom query processor.  This obviously depends on the 
+		prepare and resolve targets so the directory structure and required
+		libraries are good to go -->
+	<target name="compile" depends="prepare, resolve" description="Compiles the query processor">
+		<!-- define the classpath for the build to include everything in the lib directory.
+			By default, this is where Ivy will drop off resolved dependencies -->
+		<path id="build.path">
+			<fileset dir="${basedir}/lib">
+				<include name="**/*.jar"/>
+			</fileset>
+		</path>
+		<javac srcdir="${src.dir}" destdir="${build.classes.dir}" classpathref="build.path"/>
+	</target>
+	
+	<!-- Package the resulting class files and source into a jar file -->
+	<target name="jar" depends="compile" description="Compiles and creates the jar">
+		<jar destfile="${jar.filename}">
+			<fileset dir="${build.classes.dir}">
+				<include name="**/*.class"/>
+			</fileset>
+			<fileset dir="${src.dir}">
+				<include name="**/*"/>
+			</fileset>
+		</jar>
+	</target>
+	
+	<target name="all" depends="jar, report" description="builds everything"/>
+</project>

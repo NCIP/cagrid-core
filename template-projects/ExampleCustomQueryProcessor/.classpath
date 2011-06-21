@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="src" path="src"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.6"/>
+	<classpathentry kind="lib" path="lib/ant-contrib-1.0b3.jar"/>
+	<classpathentry kind="lib" path="lib/caGrid-CQL-cql.1.0-1.4.jar"/>
+	<classpathentry kind="lib" path="lib/caGrid-CQL-cql.2.0-1.4.jar"/>
+	<classpathentry kind="lib" path="lib/caGrid-CQL-mappings-1.4.jar"/>
+	<classpathentry kind="lib" path="lib/caGrid-data-common-1.4.jar"/>
+	<classpathentry kind="lib" path="lib/caGrid-data-cql-1.4.jar"/>
+	<classpathentry kind="lib" path="lib/caGrid-data-stubs-1.4.jar"/>
+	<classpathentry kind="lib" path="lib/caGrid-mms-stubs-1.4.jar"/>
+	<classpathentry kind="lib" path="lib/castor-1.0.2.jar"/>
+	<classpathentry kind="output" path="bin"/>
+</classpath>
