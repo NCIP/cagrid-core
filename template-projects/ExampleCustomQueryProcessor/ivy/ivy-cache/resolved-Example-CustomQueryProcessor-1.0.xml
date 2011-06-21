@@ -3,7 +3,7 @@
 		module should be the sub-project or piece of functionality you've implemented.
 		For example, caGrid's data service project uses "caGrid" and "data" respectively.
 		Revision should reflect the version number of your custom query processor. -->
-	<info organisation="Example" module="CustomQueryProcessor" revision="1.0" status="integration" publication="20110621143038">
+	<info organisation="Example" module="CustomQueryProcessor" revision="1.0" status="integration" publication="20110621144636">
 		<!-- Other options here include licenses, or links to licenses -->
 		<description>Example custom query processor</description>
 	</info>
