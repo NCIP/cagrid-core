@@ -82,5 +82,6 @@
 	<classpathentry kind="lib" path="ext/dependencies/impl/jars/caGrid-metadatautils-1.4-dev.jar"/>
 	<classpathentry kind="lib" path="ext/dependencies/impl/jars/jdom-1.0.jar" sourcepath="C:/Users/David/Downloads/JDom/jdom-1.0/src/java"/>
 	<classpathentry kind="lib" path="ext/dependencies/utils/jars/castor-1.0.2.jar" sourcepath="C:/Users/David/Downloads/Castor/castor-1.0.2/src/main/java"/>
+	<classpathentry kind="lib" path="ext/dependencies/test/jars/jdepend-2.7.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

@@ -60,8 +60,9 @@
 	<!-- call the test target for each project and aggregates the log resutls  -->
     <target name="test" depends="instrument" description="Runs the tests.">
         <mkdir dir="${junit.results.dir}" />
-        <junit dir="${basedir}" printsummary="yes" errorproperty="test.failed" failureproperty="test.failed" showoutput="true" fork="yes" forkmode="once">        	
-            <sysproperty key="build.dir" value="${build.dir}" />
+        <junit dir="${basedir}" printsummary="yes" errorproperty="test.failed" failureproperty="test.failed" showoutput="true" fork="yes" forkmode="once">
+        	<!-- build.dir used for the cycle tests to know where to check for classes -->
+            <sysproperty key="build.dirs.list" value="${build.cql.1.0.stubs.dest}, ${build.cql.2.0.stubs.dest}, ${build.utils.dest}, ${build.cql2.beans.dest}, ${build.dcql2.beans.dest}" />
         	<sysproperty key="net.sourceforge.cobertura.datafile" file="${test.cobertura.datafile}" />
         	<classpath location="${instrumented.classes.dir}"/>
             <classpath refid="test.run.classpath" />
