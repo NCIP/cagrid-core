@@ -1,6 +1,7 @@
 package org.cagrid.cql.test;
 
 import gov.nih.nci.cagrid.common.Utils;
+import gov.nih.nci.cagrid.common.XMLUtilities;
 
 import java.io.InputStream;
 import java.io.StringReader;
@@ -11,10 +12,22 @@ import junit.framework.TestResult;
 import junit.framework.TestSuite;
 import junit.textui.TestRunner;
 
+import org.cagrid.cql.utilities.AnyNodeHelper;
+import org.cagrid.cql.utilities.AttributeFactory;
+import org.cagrid.cql.utilities.DCQL2SerializationUtil;
 import org.cagrid.cql.utilities.iterator.CQL2QueryResultsIterator;
+import org.cagrid.cql2.BinaryPredicate;
+import org.cagrid.cql2.CQLAttribute;
+import org.cagrid.cql2.GroupLogicalOperator;
 import org.cagrid.cql2.results.CQLAttributeResult;
+import org.cagrid.cql2.results.CQLObjectResult;
 import org.cagrid.cql2.results.CQLQueryResults;
 import org.cagrid.cql2.results.TargetAttribute;
+import org.cagrid.data.dcql.DCQLGroup;
+import org.cagrid.data.dcql.DCQLObject;
+import org.cagrid.data.dcql.DCQLQuery;
+import org.exolab.castor.types.AnyNode;
+import org.jdom.Element;
 
 
 public class CQL2QueryResultsIteratorTestCase extends TestCase {
@@ -110,6 +123,84 @@ public class CQL2QueryResultsIteratorTestCase extends TestCase {
     }
     
     
+    public void testIterateObjects() {
+        int resultsCount = 100;
+        int attributeCount = 3;
+        CQLQueryResults results = generateObjectResults(resultsCount, attributeCount);
+        InputStream wsdd = getClass().getResourceAsStream("/org/cagrid/data/dcql/mapping/client-config.wsdd");
+        CQL2QueryResultsIterator iter = new CQL2QueryResultsIterator(results, wsdd);
+        assertTrue("Iterator should have had results, but hasNext() was false", iter.hasNext());
+        int foundCount = 0;
+        while (iter.hasNext()) {
+            foundCount++;
+            Object item = iter.next();
+            assertNotNull("Item returne from iterator was null", item);
+            assertEquals("Object returned from the iterator should have been a DCQLQuery", 
+                DCQLQuery.class, item.getClass());
+        }
+        assertEquals("Unexpected number of results returned from the iterator", resultsCount, foundCount);
+    }
+    
+    
+    public void testIterateObjectsXml() {
+        int resultsCount = 100;
+        int attributeCount = 3;
+        CQLQueryResults results = generateObjectResults(resultsCount, attributeCount);
+        CQL2QueryResultsIterator iter = new CQL2QueryResultsIterator(results, true);
+        assertTrue("Iterator should have had results, but hasNext() was false", iter.hasNext());
+        int foundCount = 0;
+        while (iter.hasNext()) {
+            foundCount++;
+            Object item = iter.next();
+            assertNotNull("Item returne from iterator was null", item);
+            assertEquals("Object returned from the iterator should have been a String", 
+                String.class, item.getClass());
+            String xml = (String) item;
+            try {
+                Element element = XMLUtilities.stringToDocument(xml).getRootElement();
+                assertEquals("XML element name did not match expected", "DCQLQuery", element.getName());
+            } catch (Exception ex) {
+                ex.printStackTrace();
+                fail("Error converting the string to XML element (" + xml + ")");
+            }
+        }
+        assertEquals("Unexpected number of results returned from the iterator", resultsCount, foundCount);
+    }
+    
+    
+    private CQLQueryResults generateObjectResults(int resultsCount, int numAttributes) {
+        CQLQueryResults results = new CQLQueryResults();
+        results.setTargetClassname(DCQLQuery.class.getName());
+        results.setObjectResult(new CQLObjectResult[resultsCount]);
+        for (int i = 0; i < resultsCount; i++) {
+            CQLObjectResult o = new CQLObjectResult();
+            DCQLQuery q = new DCQLQuery();
+            DCQLObject target = new DCQLObject();
+            target.setName("FakeClass" + i);
+            DCQLGroup group = new DCQLGroup();
+            group.setLogicalOperation(GroupLogicalOperator.AND);
+            group.setAttribute(new CQLAttribute[numAttributes]);
+            for (int j = 0; j < numAttributes; j++) {
+                CQLAttribute a = AttributeFactory.createAttribute(
+                    "attribute_" + i + "_" + j, BinaryPredicate.EQUAL_TO, "value_" + i + "_" + j);
+                group.setAttribute(j, a);
+            }
+            target.setGroup(group);
+            q.setTargetObject(target);
+            try {
+                String xml = DCQL2SerializationUtil.serializeDcql2Query(q);
+                AnyNode node = AnyNodeHelper.convertStringToAnyNode(xml);
+                o.set_any(node);
+            } catch (Exception ex) {
+                ex.printStackTrace();
+                fail("Error serializing an object: " + ex.getMessage());
+            }
+            results.setObjectResult(i, o);
+        }
+        return results;
+    }
+    
+    
     private CQLQueryResults generateAttributeResults(int resultsCount, int numTargetAttributes) {
         CQLQueryResults results = new CQLQueryResults();
         results.setAttributeResult(new CQLAttributeResult[resultsCount]);
@@ -117,7 +208,7 @@ public class CQL2QueryResultsIteratorTestCase extends TestCase {
             CQLAttributeResult ar = new CQLAttributeResult();
             ar.setAttribute(new TargetAttribute[numTargetAttributes]);
             for (int j = 0; j < numTargetAttributes; j++) {
-                TargetAttribute ta = new TargetAttribute("attribute_" + j + "_" + i, "value_" + j + "_" + i);
+                TargetAttribute ta = new TargetAttribute("attribute_" + i + "_" + j, "value_" + i + "_" + j);
                 ar.setAttribute(j, ta);
             }
             results.setAttributeResult(i, ar);
