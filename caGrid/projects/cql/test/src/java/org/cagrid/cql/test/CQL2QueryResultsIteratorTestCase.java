@@ -82,6 +82,13 @@ public class CQL2QueryResultsIteratorTestCase extends TestCase {
             assertTrue("Unexpected exception type (" + ex.getClass().getName() + ") thrown",
                 ex instanceof UnsupportedOperationException);
         }
+        try {
+            iter.next();
+            fail("Iterator should not have been able to move next");
+        } catch (Exception ex) {
+            assertTrue("Unexpected exception type (" + ex.getClass().getName() + ") thrown",
+                ex instanceof NoSuchElementException);
+        }
     }
     
     
@@ -139,6 +146,13 @@ public class CQL2QueryResultsIteratorTestCase extends TestCase {
                 DCQLQuery.class, item.getClass());
         }
         assertEquals("Unexpected number of results returned from the iterator", resultsCount, foundCount);
+        try {
+            iter.next();
+            fail("Iterator should not have been able to move next");
+        } catch (Exception ex) {
+            assertTrue("Unexpected exception type (" + ex.getClass().getName() + ") thrown",
+                ex instanceof NoSuchElementException);
+        }
     }
     
     
