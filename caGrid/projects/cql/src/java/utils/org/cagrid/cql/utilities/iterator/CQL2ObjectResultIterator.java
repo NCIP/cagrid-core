@@ -1,6 +1,6 @@
 package org.cagrid.cql.utilities.iterator;
 
-import gov.nih.nci.cagrid.common.Utils;
+import gov.nih.nci.cagrid.common.ConfigurableObjectDeserializationContext;
 
 import java.io.BufferedInputStream;
 import java.io.ByteArrayInputStream;
@@ -11,9 +11,15 @@ import java.io.StringReader;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
+import org.apache.axis.AxisEngine;
+import org.apache.axis.EngineConfiguration;
+import org.apache.axis.MessageContext;
+import org.apache.axis.configuration.FileProvider;
+import org.apache.axis.server.AxisServer;
 import org.cagrid.cql.utilities.AnyNodeHelper;
 import org.cagrid.cql2.results.CQLObjectResult;
 import org.exolab.castor.types.AnyNode;
+import org.xml.sax.InputSource;
 
 
 /**
@@ -31,6 +37,7 @@ public class CQL2ObjectResultIterator implements Iterator<Object> {
     private String targetClassName;
     private Class<?> objectClass;
     private boolean xmlOnly;
+    private MessageContext xmlMessageContext = null;
     private InputStream wsddInputStream;
     private byte[] wsddBytes;
 
@@ -63,17 +70,10 @@ public class CQL2ObjectResultIterator implements Iterator<Object> {
         currentIndex++;
         AnyNode node = results[currentIndex].get_any();
         try {
-            String documentString = AnyNodeHelper.convertAnyNodeToString(node);
             if (xmlOnly) {
-                value = documentString;
+                value = AnyNodeHelper.convertAnyNodeToString(node);
             } else {
-                InputStream configStream = getConsumableInputStream();
-                if (configStream == null) {
-                    value = Utils.deserializeObject(new StringReader(documentString), getTargetClass());
-                } else {
-                    value = Utils.deserializeObject(
-                        new StringReader(documentString), getTargetClass(), configStream);
-                }
+                value = deserializeObject(node);
             }
         } catch (Exception ex) {
             ex.printStackTrace();
@@ -113,5 +113,43 @@ public class CQL2ObjectResultIterator implements Iterator<Object> {
             }
         }
         return objectClass;
+    }
+    
+    
+    private Object deserializeObject(AnyNode any) throws Exception {
+        // MessageElement element = AnyNodeHelper.convertAnyNodeToMessageElement(any);
+        String xml = AnyNodeHelper.convertAnyNodeToString(any);
+        InputSource source = new InputSource(new StringReader(xml));
+        
+        MessageContext context = getMessageContext();
+        
+        ConfigurableObjectDeserializationContext desContext = new ConfigurableObjectDeserializationContext(
+            context, source, getTargetClass());
+
+        return getTargetClass().cast(desContext.getValue());
+    }
+
+    
+    private MessageContext getMessageContext() throws IOException {
+        if (xmlMessageContext == null) {
+            AxisEngine axisEngine = null;
+            InputStream wsddStream = getConsumableInputStream();
+            if (wsddStream != null) {
+                // configure the axis engine to use the supplied wsdd file
+                EngineConfiguration engineConfig = new FileProvider(wsddStream);
+                axisEngine = new AxisServer(engineConfig);
+            } else {
+                // no wsdd, do the default
+                axisEngine = new AxisServer();
+            }
+            xmlMessageContext = new MessageContext(axisEngine);
+            xmlMessageContext.setEncodingStyle("");
+            xmlMessageContext.setProperty(AxisEngine.PROP_DOMULTIREFS, Boolean.FALSE);
+            // the following two properties prevent xsd types from appearing in
+            // every single element in the serialized XML
+            xmlMessageContext.setProperty(AxisEngine.PROP_EMIT_ALL_TYPES, Boolean.FALSE);
+            xmlMessageContext.setProperty(AxisEngine.PROP_SEND_XSI, Boolean.FALSE);
+        }
+        return xmlMessageContext;
     }
 }

@@ -82,7 +82,7 @@ public class CQL2QueryResultsIterator implements Iterator<Object> {
 	
 
 	public void remove() {
-		throw new UnsupportedOperationException("remove() is not supported by " + getClass().getName());
+		getIterator().remove();
 	}
 
 
