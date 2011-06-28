@@ -5,6 +5,8 @@ import gov.nih.nci.cagrid.common.XMLUtilities;
 
 import java.io.InputStream;
 import java.io.StringReader;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.NoSuchElementException;
 
 import junit.framework.TestCase;
@@ -12,21 +14,19 @@ import junit.framework.TestResult;
 import junit.framework.TestSuite;
 import junit.textui.TestRunner;
 
-import org.cagrid.cql.utilities.AnyNodeHelper;
 import org.cagrid.cql.utilities.AttributeFactory;
-import org.cagrid.cql.utilities.DCQL2SerializationUtil;
+import org.cagrid.cql.utilities.CQL2ResultsCreationUtil;
+import org.cagrid.cql.utilities.DCQL2Constants;
 import org.cagrid.cql.utilities.iterator.CQL2QueryResultsIterator;
 import org.cagrid.cql2.BinaryPredicate;
 import org.cagrid.cql2.CQLAttribute;
 import org.cagrid.cql2.GroupLogicalOperator;
 import org.cagrid.cql2.results.CQLAttributeResult;
-import org.cagrid.cql2.results.CQLObjectResult;
 import org.cagrid.cql2.results.CQLQueryResults;
 import org.cagrid.cql2.results.TargetAttribute;
 import org.cagrid.data.dcql.DCQLGroup;
 import org.cagrid.data.dcql.DCQLObject;
 import org.cagrid.data.dcql.DCQLQuery;
-import org.exolab.castor.types.AnyNode;
 import org.jdom.Element;
 
 
@@ -183,11 +183,8 @@ public class CQL2QueryResultsIteratorTestCase extends TestCase {
     
     
     private CQLQueryResults generateObjectResults(int resultsCount, int numAttributes) {
-        CQLQueryResults results = new CQLQueryResults();
-        results.setTargetClassname(DCQLQuery.class.getName());
-        results.setObjectResult(new CQLObjectResult[resultsCount]);
+        List<DCQLQuery> data = new ArrayList<DCQLQuery>();
         for (int i = 0; i < resultsCount; i++) {
-            CQLObjectResult o = new CQLObjectResult();
             DCQLQuery q = new DCQLQuery();
             DCQLObject target = new DCQLObject();
             target.setName("FakeClass" + i);
@@ -201,32 +198,36 @@ public class CQL2QueryResultsIteratorTestCase extends TestCase {
             }
             target.setGroup(group);
             q.setTargetObject(target);
-            try {
-                String xml = DCQL2SerializationUtil.serializeDcql2Query(q);
-                AnyNode node = AnyNodeHelper.convertStringToAnyNode(xml);
-                o.set_any(node);
-            } catch (Exception ex) {
-                ex.printStackTrace();
-                fail("Error serializing an object: " + ex.getMessage());
-            }
-            results.setObjectResult(i, o);
+            data.add(q);
+        }
+        InputStream wsdd = getClass().getResourceAsStream("/org/cagrid/data/dcql/mapping/client-config.wsdd");
+        CQLQueryResults results = null;
+        try {
+            results = CQL2ResultsCreationUtil.createObjectResults(
+                data, DCQLQuery.class.getName(), DCQL2Constants.DCQL2_QUERY_QNAME, wsdd);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            fail("Error creating object results: " + ex.getMessage());
         }
         return results;
     }
     
     
     private CQLQueryResults generateAttributeResults(int resultsCount, int numTargetAttributes) {
-        CQLQueryResults results = new CQLQueryResults();
-        results.setAttributeResult(new CQLAttributeResult[resultsCount]);
-        for (int i = 0; i < resultsCount; i++) {
-            CQLAttributeResult ar = new CQLAttributeResult();
-            ar.setAttribute(new TargetAttribute[numTargetAttributes]);
-            for (int j = 0; j < numTargetAttributes; j++) {
-                TargetAttribute ta = new TargetAttribute("attribute_" + i + "_" + j, "value_" + i + "_" + j);
-                ar.setAttribute(j, ta);
-            }
-            results.setAttributeResult(i, ar);
+        List<Object[]> values = new ArrayList<Object[]>();
+        String[] names = new String[numTargetAttributes];
+        for (int i = 0; i < numTargetAttributes; i++) {
+            names[i] = "attribute_" + i;
         }
+        for (int i = 0; i < resultsCount; i++) {
+            String[] val = new String[numTargetAttributes];
+            for (int j = 0; j < numTargetAttributes; j++) {
+                val[j] = "value_" + i + "_" + j;
+            }
+            values.add(val);
+        }
+        CQLQueryResults results = 
+            CQL2ResultsCreationUtil.createAttributeResults(values, "FakeClass", names);
         return results;
     }
     

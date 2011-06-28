@@ -1,8 +1,6 @@
 package org.cagrid.cql.utilities;
 
-import gov.nih.nci.cagrid.common.Utils;
-
-import java.io.ByteArrayInputStream;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.StringWriter;
 import java.text.DateFormat;
@@ -13,6 +11,13 @@ import java.util.List;
 
 import javax.xml.namespace.QName;
 
+import org.apache.axis.AxisEngine;
+import org.apache.axis.EngineConfiguration;
+import org.apache.axis.MessageContext;
+import org.apache.axis.configuration.FileProvider;
+import org.apache.axis.encoding.SerializationContext;
+import org.apache.axis.message.MessageElement;
+import org.apache.axis.server.AxisServer;
 import org.cagrid.cql2.Aggregation;
 import org.cagrid.cql2.results.CQLAggregateResult;
 import org.cagrid.cql2.results.CQLAttributeResult;
@@ -20,6 +25,8 @@ import org.cagrid.cql2.results.CQLObjectResult;
 import org.cagrid.cql2.results.CQLQueryResults;
 import org.cagrid.cql2.results.TargetAttribute;
 import org.exolab.castor.types.AnyNode;
+import org.globus.wsrf.encoding.ObjectSerializer;
+import org.xml.sax.Attributes;
 
 /**
  * CQL2ResultsCreationUtil
@@ -47,13 +54,27 @@ public class CQL2ResultsCreationUtil {
      *      <b>Optional</b> stream to the client or server config.wsdd for custom serialization
      * @return
      */
-    public static CQLQueryResults createObjectResults(Collection<?> data, String targetClassname, QName targetQName, 
-        InputStream wsddStream) throws Exception {
-        ByteArrayInputStream reusableWsdd = null;
+    public static CQLQueryResults createObjectResults(Collection<?> data, String targetClassname, 
+        QName targetQName, InputStream wsddStream) throws Exception {
+        // consolidate the axis config and message context
+        AxisEngine axisEngine = null;
         if (wsddStream != null) {
-            reusableWsdd = new ByteArrayInputStream(Utils.inputStreamToStringBuffer(
-                wsddStream).toString().getBytes());
+            // configure the axis engine to use the supplied wsdd file
+            EngineConfiguration engineConfig = new FileProvider(wsddStream);
+            axisEngine = new AxisServer(engineConfig);
+        } else {
+            // no wsdd, do the default
+            axisEngine = new AxisServer();
         }
+        MessageContext xmlMessageContext = new MessageContext(axisEngine);
+        xmlMessageContext.setEncodingStyle("");
+        xmlMessageContext.setProperty(AxisEngine.PROP_DOMULTIREFS, Boolean.FALSE);
+        // the following two properties prevent xsd types from appearing in
+        // every single element in the serialized XML
+        xmlMessageContext.setProperty(AxisEngine.PROP_EMIT_ALL_TYPES, Boolean.FALSE);
+        xmlMessageContext.setProperty(AxisEngine.PROP_SEND_XSI, Boolean.FALSE);
+        
+        // create the query results instance
         CQLQueryResults results = new CQLQueryResults();
         results.setTargetClassname(targetClassname);
         // pushing everything into a list instead of an array to avoid calling .size() on
@@ -62,14 +83,8 @@ public class CQL2ResultsCreationUtil {
         // on some of these implementations causes everything to be loaded at once.
         List<CQLObjectResult> objectResults = new LinkedList<CQLObjectResult>();
         for (Object o : data) {
-            StringWriter writer = new StringWriter();
-            if (reusableWsdd != null) {
-                reusableWsdd.reset();
-                Utils.serializeObject(o, targetQName, writer, reusableWsdd);
-            } else {
-                Utils.serializeObject(o, targetQName, writer);   
-            }
-            AnyNode node = AnyNodeHelper.convertStringToAnyNode(writer.getBuffer().toString());
+            String xml = serializeObject(o, xmlMessageContext, targetQName);
+            AnyNode node = AnyNodeHelper.convertStringToAnyNode(xml);
             CQLObjectResult object = new CQLObjectResult(node);
             objectResults.add(object);
         }
@@ -78,6 +93,29 @@ public class CQL2ResultsCreationUtil {
         objectResults.toArray(resultArray);
         results.setObjectResult(resultArray);
         return results;
+    }
+    
+    
+    private static String serializeObject(Object obj, MessageContext context, QName targetQName) throws Exception {
+        StringWriter writer = new StringWriter();
+
+        // derive a message element for the object
+        MessageElement element = (MessageElement) ObjectSerializer.toSOAPElement(obj, targetQName);
+
+        // create a serialization context to use the new message context
+        SerializationContext serializationContext = new SerializationContext(writer, context) {
+            public void serialize(QName elemQName, Attributes attributes, Object value)
+            throws IOException {
+                serialize(elemQName, attributes, value, null, Boolean.FALSE, null);
+            }
+        };
+        serializationContext.setPretty(true);
+
+        // output the message element through the serialization context
+        element.output(serializationContext);
+        writer.write("\n");
+        writer.flush();
+        return writer.getBuffer().toString();
     }
     
     
