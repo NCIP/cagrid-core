@@ -52,6 +52,7 @@
     
     <dependency rev="1.0b3" org="ant-contrib" name="ant-contrib" conf="base->*"/>
     <dependency rev="3.0.1.RELEASE-A" org="springframework" name="spring" conf="base->spring-core" />
+    <dependency rev="0.0.1-SNAPSHOT" org="globus" name="cog-jglobus-compat"  conf="base->*" />
 
   </dependencies>
 </ivy-module>
