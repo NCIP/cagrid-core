@@ -66,11 +66,8 @@
 			<include name="**/*.jar" />
 		</fileset>
 		<fileset dir="${globus.location}/lib">
-			<include name="commons-logging.jar" />
-			<include name="cryptix.jar" />
-			<include name="cryptix32.jar" />
-			<include name="cryptix-asn1.jar" />
-			<include name="jce-jdk13-145.jar" />
+			<include name="commons-logging-1.1.jar" />
+			<include name="bcprov-jdk15-145.jar" />
 			<include name="jgss.jar"/>
 			<include name="log4j-1.2.14.jar" />
 			<include name="servlet.jar" />
