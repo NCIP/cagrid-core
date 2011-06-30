@@ -9,16 +9,16 @@
 	<classpathentry kind="var" path="GT4_LOCATION/lib/axis.jar"/>
 	<classpathentry kind="var" path="GT4_LOCATION/lib/axis-url.jar"/>
 	<classpathentry kind="var" path="GT4_LOCATION/lib/bootstrap.jar"/>
-	<classpathentry kind="var" path="GT4_LOCATION/lib/jsse-2.0-SNAPSHOT.jar"/>
-	<classpathentry kind="var" path="GT4_LOCATION/lib/gss-2.0-SNAPSHOT.jar"/>
-	<classpathentry kind="var" path="GT4_LOCATION/lib/ssl-proxies-2.0-SNAPSHOT.jar"/>
+	
+	<classpathentry kind="var" path="GT4_LOCATION/lib/JGlobus-Core-2.0.3.jar"/>
+	
 	<classpathentry kind="var" path="GT4_LOCATION/lib/commonj.jar"/>
 	<classpathentry kind="var" path="GT4_LOCATION/lib/commons-beanutils.jar"/>
 	<classpathentry kind="var" path="GT4_LOCATION/lib/commons-cli-2.0.jar"/>
 	<classpathentry kind="var" path="GT4_LOCATION/lib/commons-collections-3.0.jar"/>
 	<classpathentry kind="var" path="GT4_LOCATION/lib/commons-digester.jar"/>
 	<classpathentry kind="var" path="GT4_LOCATION/lib/commons-discovery.jar"/>
-	<classpathentry kind="var" path="GT4_LOCATION/lib/commons-logging.jar"/>
+	<classpathentry kind="var" path="GT4_LOCATION/lib/commons-logging-1.1.jar"/>
 	<classpathentry kind="var" path="GT4_LOCATION/lib/concurrent.jar"/>
 	<classpathentry kind="var" path="GT4_LOCATION/lib/globus_resolution_service.jar"/>
 	<classpathentry kind="var" path="GT4_LOCATION/lib/globus_resolution_stubs_java.jar"/>
