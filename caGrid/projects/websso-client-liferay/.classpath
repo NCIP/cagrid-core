@@ -4,8 +4,8 @@
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="var" path="GT4_LOCATION/lib/addressing-1.0.jar"/>
 	<classpathentry kind="var" path="GT4_LOCATION/lib/axis.jar"/>
-	<classpathentry kind="var" path="GT4_LOCATION/lib/jsse-2.0-SNAPSHOT.jar"/>
-	<classpathentry kind="var" path="GT4_LOCATION/lib/gss-2.0-SNAPSHOT.jar"/>
+	
+	<classpathentry kind="var" path="GT4_LOCATION/lib/JGlobus-Core-2.0.3.jar"/>
 	<classpathentry kind="var" path="GT4_LOCATION/lib/commons-discovery.jar"/>
 	<classpathentry kind="var" path="GT4_LOCATION/lib/jaxrpc.jar"/>
 	<classpathentry kind="var" path="GT4_LOCATION/lib/bcprov-jdk15-145.jar"/>
@@ -45,7 +45,7 @@
 	<classpathentry kind="lib" path="ext/dependencies/default/jars/caGrid-websso-client-acegi-1.4.1.jar" sourcepath="/caGrid-websso-client-acegi"/>
 	<classpathentry kind="lib" path="ext/dependencies/default/jars/cas-server-core-3.2.2.jar"/>
 	<classpathentry kind="lib" path="ext/dependencies/default/jars/casclient-2.1.1.jar"/>
-	<classpathentry kind="lib" path="ext/dependencies/default/jars/gss-2.0-SNAPSHOT.jar"/>
+	<classpathentry kind="lib" path="ext/dependencies/default/jars/JGlobus-Core-2.0.3.jar"/>
 	<classpathentry kind="lib" path="ext/dependencies/default/jars/commons-codec-1.3.jar"/>
 	<classpathentry kind="lib" path="ext/dependencies/default/jars/commons-collections-3.2.jar"/>
 	<classpathentry kind="lib" path="ext/dependencies/default/jars/commons-httpclient-3.0.1.jar"/>
@@ -69,7 +69,7 @@
 	<classpathentry kind="lib" path="ext/dependencies/default/jars/xmldsig-1.0.jar"/>
 	<classpathentry kind="lib" path="ext/dependencies/default/jars/xmlsec-1.4.0.jar"/>
 	<classpathentry kind="lib" path="ext/dependencies/default/jars/caGrid-websso-client-common-1.4.1.jar"/>
-	<classpathentry kind="var" path="GT4_LOCATION/lib/commons-logging.jar"/>
+	<classpathentry kind="var" path="GT4_LOCATION/lib/commons-logging-1.1.jar"/>
 	<classpathentry kind="var" path="GT4_LOCATION/lib/log4j-1.2.14.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

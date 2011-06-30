@@ -64,7 +64,7 @@
 	<classpathentry kind="var" path="GT4_LOCATION/lib/commons-discovery.jar"/>
 	<classpathentry kind="var" path="GT4_LOCATION/lib/commons-el.jar"/>
 	<classpathentry kind="var" path="GT4_LOCATION/lib/commons-io-1.3.2.jar"/>
-	<classpathentry kind="var" path="GT4_LOCATION/lib/commons-logging.jar"/>
+	<classpathentry kind="var" path="GT4_LOCATION/lib/commons-logging-1.1.jar"/>
 	<classpathentry kind="var" path="GT4_LOCATION/lib/concurrent.jar"/>
 	<classpathentry kind="var" path="GT4_LOCATION/lib/globus_resolution_service.jar"/>
 	<classpathentry kind="var" path="GT4_LOCATION/lib/globus_resolution_stubs_java.jar"/>
@@ -79,7 +79,7 @@
 	<classpathentry kind="var" path="GT4_LOCATION/lib/globus_wsrf_servicegroup_stubs.jar"/>
 	<classpathentry kind="var" path="GT4_LOCATION/lib/globus_wsrf_servicegroup.jar"/>
 	<classpathentry kind="var" path="GT4_LOCATION/lib/globus_wsrf_tools_test.jar"/>
-	<classpathentry kind="var" path="GT4_LOCATION/lib/gss-2.0-SNAPSHOT.jar" sourcepath="/COG"/>
+	<classpathentry kind="var" path="GT4_LOCATION/lib/JGlobus-Core-2.0.3.jar" sourcepath="/COG"/>
 	<classpathentry kind="var" path="GT4_LOCATION/lib/jasper-compiler-jdt.jar"/>
 	<classpathentry kind="var" path="GT4_LOCATION/lib/jasper-compiler.jar"/>
 	<classpathentry kind="var" path="GT4_LOCATION/lib/jasper-runtime.jar"/>
@@ -88,7 +88,6 @@
 	<classpathentry kind="var" path="GT4_LOCATION/lib/jgss.jar"/>
 	<classpathentry kind="var" path="GT4_LOCATION/lib/jprov.jar"/>
 	<classpathentry kind="var" path="GT4_LOCATION/lib/jsp-api.jar"/>
-	<classpathentry kind="var" path="GT4_LOCATION/lib/jsse-2.0-SNAPSHOT.jar"/>
 	<classpathentry kind="var" path="GT4_LOCATION/lib/log4j-1.2.14.jar"/>
 	<classpathentry kind="var" path="GT4_LOCATION/lib/mobius_common_client-1.1.jar"/>
 	<classpathentry kind="var" path="GT4_LOCATION/lib/mobius_tools-1.1.jar"/>
@@ -104,7 +103,6 @@
 	<classpathentry kind="var" path="GT4_LOCATION/lib/saaj.jar"/>
 	<classpathentry kind="var" path="GT4_LOCATION/lib/servlet-api.jar"/>
 	<classpathentry kind="var" path="GT4_LOCATION/lib/servlet.jar"/>
-	<classpathentry kind="var" path="GT4_LOCATION/lib/ssl-proxies-2.0-SNAPSHOT.jar" sourcepath="/GLOBUS_SRC"/>
 	<classpathentry kind="var" path="GT4_LOCATION/lib/wsdl4j.jar"/>
 	<classpathentry kind="var" path="GT4_LOCATION/lib/wsrf_common.jar"/>
 	<classpathentry kind="var" path="GT4_LOCATION/lib/wsrf_core_registry_stubs.jar"/>

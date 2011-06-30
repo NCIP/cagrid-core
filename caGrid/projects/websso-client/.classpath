@@ -5,8 +5,8 @@
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="var" path="GT4_LOCATION/lib/addressing-1.0.jar"/>
 	<classpathentry kind="var" path="GT4_LOCATION/lib/axis.jar"/>
-	<classpathentry kind="var" path="GT4_LOCATION/lib/jsse-2.0-SNAPSHOT.jar"/>
-	<classpathentry kind="var" path="GT4_LOCATION/lib/gss-2.0-SNAPSHOT.jar"/>
+	
+	<classpathentry kind="var" path="GT4_LOCATION/lib/JGlobus-Core-2.0.3.jar"/>
 	<classpathentry kind="var" path="GT4_LOCATION/lib/commons-discovery.jar"/>
 	<classpathentry kind="var" path="GT4_LOCATION/lib/jaxrpc.jar"/>
 	<classpathentry kind="var" path="GT4_LOCATION/lib/bcprov-jdk15-145.jar"/>
@@ -84,6 +84,6 @@
 	<classpathentry kind="lib" path="ext/dependencies/default/jars/org.springframework.web.servlet-3.0.1.RELEASE-A.jar"/>
 	<classpathentry kind="lib" path="ext/dependencies/default/jars/org.springframework.web.struts-3.0.1.RELEASE-A.jar"/>
 	<classpathentry kind="var" path="GT4_LOCATION/lib/cog-jglobus-compat-0.0.1-SNAPSHOT.jar"/>
-	<classpathentry kind="var" path="GT4_LOCATION/lib/ssl-proxies-2.0-SNAPSHOT.jar"/>
+	
 	<classpathentry kind="output" path="bin"/>
 </classpath>

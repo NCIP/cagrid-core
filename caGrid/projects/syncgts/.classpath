@@ -8,19 +8,14 @@
 	<classpathentry kind="var" path="GT4_LOCATION/lib/axis.jar"/>
 	<classpathentry kind="var" path="GT4_LOCATION/lib/axis-url.jar"/>
 	<classpathentry kind="var" path="GT4_LOCATION/lib/bootstrap.jar"/>
-	<classpathentry kind="var" path="GT4_LOCATION/lib/jsse-2.0-SNAPSHOT.jar"/>
 	<classpathentry kind="var" path="GT4_LOCATION/lib/cog-jglobus-compat-0.0.1-SNAPSHOT.jar"/>
-	<classpathentry kind="var" path="GT4_LOCATION/lib/ssl-proxies-2.0-SNAPSHOT.jar"/>
 	<classpathentry kind="var" path="GT4_LOCATION/lib/commonj.jar"/>
 	<classpathentry kind="var" path="GT4_LOCATION/lib/commons-beanutils.jar"/>
 	<classpathentry kind="var" path="GT4_LOCATION/lib/commons-cli-2.0.jar"/>
 	<classpathentry kind="var" path="GT4_LOCATION/lib/commons-digester.jar"/>
 	<classpathentry kind="var" path="GT4_LOCATION/lib/commons-discovery.jar"/>
-	<classpathentry kind="var" path="GT4_LOCATION/lib/commons-logging.jar"/>
+	<classpathentry kind="var" path="GT4_LOCATION/lib/commons-logging-1.1.jar"/>
 	<classpathentry kind="var" path="GT4_LOCATION/lib/concurrent.jar"/>
-	
-	
-	
 	<classpathentry kind="var" path="GT4_LOCATION/lib/globus_usage_core.jar"/>
 	<classpathentry kind="var" path="GT4_LOCATION/lib/globus_usage_packets_common.jar"/>
 	<classpathentry kind="var" path="GT4_LOCATION/lib/jaxrpc.jar"/>
@@ -32,7 +27,6 @@
 	<classpathentry kind="var" path="GT4_LOCATION/lib/naming-java.jar"/>
 	<classpathentry kind="var" path="GT4_LOCATION/lib/naming-resources.jar"/>
 	<classpathentry kind="var" path="GT4_LOCATION/lib/opensaml.jar"/>
-	
 	<classpathentry kind="var" path="GT4_LOCATION/lib/resolver.jar"/>
 	<classpathentry kind="var" path="GT4_LOCATION/lib/saaj.jar"/>
 	<classpathentry kind="var" path="GT4_LOCATION/lib/wsdl4j.jar"/>
@@ -53,7 +47,7 @@
 	<classpathentry kind="lib" path="ext/dependencies/service/jars/caGrid-gts-client-1.4.1.jar"/>
 	<classpathentry kind="lib" path="ext/dependencies/service/jars/caGrid-gts-common-1.4.1.jar"/>
 	<classpathentry kind="lib" path="ext/dependencies/service/jars/caGrid-gts-service-1.4.1.jar"/>
-	<classpathentry kind="lib" path="ext/dependencies/service/jars/caGrid-gts-stubs-1.4.1.jar"/>
+	<classpathentry kind="lib" path="ext/dependencies/service/jars/caGrid-gts-stubs-1.4.1.jar" sourcepath="/caGrid-gts-1.4.1"/>
 	<classpathentry kind="lib" path="ext/dependencies/service/jars/caGrid-metadata-common-1.4.1.jar"/>
 	<classpathentry kind="lib" path="ext/dependencies/service/jars/caGrid-metadata-security-1.4.1.jar"/>
 	<classpathentry kind="lib" path="ext/dependencies/service/jars/caGrid-ServiceSecurityProvider-client-1.4.1.jar"/>
@@ -80,5 +74,6 @@
 	<classpathentry kind="lib" path="ext/dependencies/tools/jars/caGrid-metadata-validator-1.4.1.jar"/>
 	<classpathentry kind="lib" path="ext/dependencies/test/jars/jdepend-2.7.jar"/>
 	<classpathentry kind="lib" path="ext/dependencies/test/jars/junit-4.8.2.jar"/>
+	<classpathentry kind="lib" path="ext/dependencies/service/jars/JGlobus-Core-2.0.3.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

@@ -60,7 +60,7 @@
   <classpathentry kind="lib" path="WEB-INF/lib/caGrid-websso-core-1.4.jar" />
   <classpathentry kind="lib" path="WEB-INF/lib/castor-0.9.9.jar" />
   <classpathentry kind="lib" path="WEB-INF/lib/jsse-2.0-SNAPSHOT.jar" />
-  <classpathentry kind="lib" path="WEB-INF/lib/gss-2.0-SNAPSHOT.jar" />
+  <classpathentry kind="lib" path="WEB-INF/lib/JGlobus-Core-2.0.3.jar" />
   <classpathentry kind="lib" path="WEB-INF/lib/commons-discovery.jar" />
   <classpathentry kind="lib" path="WEB-INF/lib/concurrent-1.3.4.jar" />
   <classpathentry kind="lib" path="WEB-INF/lib/cryptix.jar" />
