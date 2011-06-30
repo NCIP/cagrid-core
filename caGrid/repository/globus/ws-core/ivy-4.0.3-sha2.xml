@@ -60,13 +60,10 @@
 		<dependency rev="patched-4.0.3" org="globus" name="addressing" />
 		<dependency rev="patched-4.0.3" org="globus" name="axis" />
 		<dependency rev="patched-4.0.3" org="globus" name="wss4j" />
-		<dependency rev="patched-4.0.3" org="globus" name="cryptix" />
-		<dependency rev="patched-4.0.3" org="globus" name="cryptix32" />
-		<dependency rev="patched-4.0.3" org="globus" name="cryptix-asn1" />    
 		<dependency rev="patched-4.0.3" org="globus" name="opensaml" />
-		<dependency rev="patched-4.0.3" org="globus" name="puretls" />
+
+		<dependency rev="2.0.3" org="globus" name="jglobus" />
     	
-		<dependency rev="4.0.3-sha2" org="globus" name="cog" />
 	</dependencies>
 	
 </ivy-module>
