@@ -35,7 +35,7 @@
     <!-- External Dependencies -->
     <dependency rev="3.1.3" org="jasig" name="cas-client-core" conf="default->default"/>
     <dependency rev="0.7.0" org="inspektr" name="inspektr" conf="default->default"/>
-    <dependency rev="4.0.3-sha2" org="globus" name="cog" conf="default->default"/>
+    <dependency rev="2.0.+" org="globus" name="jglobus" conf="default->default"/>
     <dependency rev="4.+" org="junit" name="junit" conf="impl-test->default"/>
 
   </dependencies>

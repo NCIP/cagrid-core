@@ -135,7 +135,7 @@
 	</target>
 
 	<target name="configure" description="Configures the project based on settings.">
-		<copyfile  src="${ext.targetgrid.dir}/sync-description.xml" dest="${src.resources.dir}/sync-description.xml" />
+		<copy file="${ext.targetgrid.dir}/sync-description.xml" tofile="${src.resources.dir}/sync-description.xml" />
 	</target>
 
 	<target name="clean">

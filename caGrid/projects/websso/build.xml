@@ -169,8 +169,8 @@
 
 	<!-- copy websso-properties.xml to ${src.resources} as websso-properties-template.xml -->
 	<target name="configure" description="Configures the project based on settings." depends="defineAntTask">
-		<copyfile  src="${ext.targetgrid.dir}/websso-properties.xml" dest="${src.resources.dir}/websso-properties-template.xml"/>
-		<copyfile  src="${ext.targetgrid.dir}/sync-description.xml" dest="${src.resources.dir}/sync-description.xml" />
+		<copy file="${ext.targetgrid.dir}/websso-properties.xml" tofile="${src.resources.dir}/websso-properties-template.xml"/>
+		<copy file="${ext.targetgrid.dir}/sync-description.xml" tofile="${src.resources.dir}/sync-description.xml" />
 	</target>
 
 	<target name="-resolve-template-tokens" depends="defineAntTask">
