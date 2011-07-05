@@ -171,7 +171,8 @@ public abstract class IntroduceUpgraderBase implements IntroduceUpgraderI {
 			if (!filename.endsWith(".jar")) {
 				return false;
 			}
-			return (filename.startsWith("caGrid-") && !filename.equals("caGrid-dorian-stubs-1.2.jar")) //
+			// Can't ignore caGrid-dorian-stubs-1.2.jar and caGrid-BulkDataHandler*
+			return (filename.startsWith("caGrid-") && !filename.equals("caGrid-dorian-stubs-1.2.jar") && !filename.startsWith("caGrid-BulkDataHandler")) //
 					|| filename.startsWith("globus_wsrf_mds") //
 					|| filename.startsWith("globus_wsrf_servicegroup") //
 					|| filename.startsWith("mobius") //
