@@ -29,7 +29,6 @@
 
   <publications>
     <artifact name="caGrid-${ivy.module}" conf="default" type="jar"/>
-    <artifact name="minimal-ws-core-enum-4.0.3" conf="globus.container" type="zip"/>
     <artifact name="minimal-tomcat-5.5.27-with-globus-4.0.3" conf="tomcat.container" type="zip"/>
     <artifact name="minimal-secure-tomcat-5.5.27-with-globus-4.0.3" conf="secure.tomcat.container" type="zip"/>
   </publications>
