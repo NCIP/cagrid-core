@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
 <xsd:schema xmlns:tns="gme://org.cagrid.dataservice.metadata/InstanceCount" xmlns:xsd="http://www.w3.org/2001/XMLSchema" targetNamespace="gme://org.cagrid.dataservice.metadata/InstanceCount">
 	<xsd:element name="InstanceCount" type="tns:InstanceCount"/>
 	<xsd:complexType name="InstanceCount">

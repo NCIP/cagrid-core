@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
 <xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" 
 	xmlns:exts="http://CQL.caBIG/2/org.cagrid.cql2.extensionsupport"
 	xmlns:tns="http://org.cagrid.dataservice.cql/QueryLanguageSupport"
