@@ -248,7 +248,9 @@ public class TomcatServiceContainer extends ServiceContainer {
             LOG.debug("WAITING " + wait + " seconds to shut down");
 			success = future.get(wait, TimeUnit.SECONDS).booleanValue();
 		} catch (Exception ex) {
-			throw new ContainerException("Error shutting down container: "
+//			throw new ContainerException("Error shutting down container: "
+//					+ ex.getMessage(), ex);
+			LOG.error("Error shutting down container: "
 					+ ex.getMessage(), ex);
 		} finally {
             LOG.debug("Shutdown task complete, destroying processes");
@@ -260,9 +262,12 @@ public class TomcatServiceContainer extends ServiceContainer {
 		}
 
 		if (!success) {
-			throw new ContainerException("Shutdown command failed: " +
-			    "(process exited with value of " + 
-                finalShutdownProcess.exitValue() + ")");
+//			throw new ContainerException("Shutdown command failed: " +
+//			    "(process exited with value of " + 
+//                finalShutdownProcess.exitValue() + ")");
+			LOG.error("Shutdown command failed: " +
+				    "(process exited with value of " + 
+	                finalShutdownProcess.exitValue() + ")");
 		}
 	}
     
