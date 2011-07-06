@@ -196,7 +196,7 @@ public class InvokeCsmDataServiceStep extends Step {
         boolean isDenied = false;
         while (cause != null && !seenCauses.contains(cause) && !isDenied) {
             String message = cause.getMessage();
-            if (message.contains(ACCESS_DENIED_MESSAGE)) {
+            if (message != null && message.contains(ACCESS_DENIED_MESSAGE)) {
                 isDenied = true;
             }
             seenCauses.add(cause);
