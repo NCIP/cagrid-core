@@ -1,5 +1,4 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<?xml version="1.0" encoding="UTF-8"?>
 <xs:schema xmlns="gme://gov.nih.nci.cagrid.introduce/1/Security"
 	xmlns:xs="http://www.w3.org/2001/XMLSchema"
 	xmlns:sec="gme://gov.nih.nci.cagrid.introduce/1/Security"
