@@ -1,5 +1,4 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<?xml version="1.0" encoding="UTF-8"?>
 <xsd:schema targetNamespace="http://caGrid.caBIG/1.0/gov.nih.nci.cagrid.dcql" xmlns:xsd="http://www.w3.org/2001/XMLSchema"
 	xmlns:dcql="http://caGrid.caBIG/1.0/gov.nih.nci.cagrid.dcql" xmlns:cql="http://CQL.caBIG/1/gov.nih.nci.cagrid.CQLQuery" elementFormDefault="qualified"
 	attributeFormDefault="unqualified">
