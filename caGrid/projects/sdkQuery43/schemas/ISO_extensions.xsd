@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="UTF-8"?>
 	<!--
 		excluding Pqv.java, as it does not exist in the ISO 21090 schema and is a java-only localization class
 	-->
