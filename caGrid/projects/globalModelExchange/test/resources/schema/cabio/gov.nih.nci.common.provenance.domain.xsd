@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns="gme://caCORE.cabig/3.0/gov.nih.nci.common.provenance.domain" xmlns:gov.nih.nci.common.domain="gme://caCORE.cabig/3.0/gov.nih.nci.common.domain" xmlns:gov.nih.nci.cadsr.domain="gme://caCORE.cabig/3.0/gov.nih.nci.cadsr.domain" xmlns:gov.nih.nci.cadsr.umlproject.domain="gme://caCORE.cabig/3.0/gov.nih.nci.cadsr.umlproject.domain" xmlns:gov.nih.nci.camod.domain="gme://caCORE.cabig/3.0/gov.nih.nci.camod.domain" xmlns:gov.nih.nci.cabio.domain="gme://caCORE.cabig/3.0/gov.nih.nci.cabio.domain" targetNamespace="gme://caCORE.cabig/3.0/gov.nih.nci.common.provenance.domain" elementFormDefault="qualified">
   <xs:import namespace="gme://caCORE.cabig/3.0/gov.nih.nci.cadsr.domain" schemaLocation="gov.nih.nci.cadsr.domain.xsd" />
   <xs:import namespace="gme://caCORE.cabig/3.0/gov.nih.nci.cabio.domain" schemaLocation="gov.nih.nci.cabio.domain.xsd" />
