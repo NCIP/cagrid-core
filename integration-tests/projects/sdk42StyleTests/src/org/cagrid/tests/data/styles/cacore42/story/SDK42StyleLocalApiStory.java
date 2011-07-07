@@ -80,7 +80,6 @@ public class SDK42StyleLocalApiStory extends Story {
         }
         List<String> deploymentArgs = 
             Arrays.asList(new String[] {"-Dno.deployment.validation=true", "-Dperform.index.service.registration=false"});
-        steps.add(new SetIndexRegistrationStep(testInfo.getDir(), false));
         steps.add(new DeployServiceStep(container, testInfo.getDir(), deploymentArgs));
         steps.add(new StartContainerStep(container));
         if (useCsmSecurity) {
