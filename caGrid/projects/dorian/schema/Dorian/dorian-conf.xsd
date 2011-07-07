@@ -1,5 +1,4 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<?xml version="1.0" encoding="UTF-8"?>
 <xs:schema targetNamespace="http://cagrid.nci.nih.gov/dorian/conf"
 	attributeFormDefault="qualified" elementFormDefault="qualified"
 	xmlns:xs="http://www.w3.org/2001/XMLSchema"
