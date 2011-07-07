@@ -1,4 +1,4 @@
-<?xml version="1.0"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <xs:schema targetNamespace="gme://include" xmlns:xs="http://www.w3.org/2001/XMLSchema"
     xmlns:a="gme://include" elementFormDefault="qualified">
     <xs:include schemaLocation="C.xsd"/>

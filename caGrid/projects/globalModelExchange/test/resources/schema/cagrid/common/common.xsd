@@ -1,4 +1,4 @@
-<?xml version="1.0"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <xs:schema targetNamespace="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:com="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common" elementFormDefault="qualified">
 	<xs:element name="Enumeration" type="com:Enumeration"/>
 	<xs:complexType name="Enumeration">
