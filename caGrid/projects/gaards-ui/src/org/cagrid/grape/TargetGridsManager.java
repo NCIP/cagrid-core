@@ -53,12 +53,10 @@ public class TargetGridsManager {
 				if ("local".equals(grid.getIvySettings())) {
 					continue;
 				}
-//				String repositoryName = "default";
 				URL settingsURL = null;
 				File settingsFile = new File(configurationDirectory, grid.getIvySettings());
 				if (settingsFile.exists()) {
 					settingsURL = settingsFile.toURI().toURL();
-//					repositoryName = settingsFile.getName().substring(13, settingsFile.getName().length()-4);
 				} else {
 					settingsURL = ivySettingsURL;
 				}
@@ -133,7 +131,7 @@ public class TargetGridsManager {
 
 		for (int counter = 0; counter < grids.length; counter++) {
 			URL settingsURL = null;
-//			String repositoryName = "default";
+			String repositoryName = "default";
 			if ("local".equals(grids[counter].getIvySettings())) {
 				// Grid added by interface
 				// Nothing to retrieve
@@ -142,7 +140,7 @@ public class TargetGridsManager {
 				File settingsFile = new File(configurationDirectory, grids[counter].getIvySettings());
 				if (settingsFile.exists()) {
 					settingsURL = settingsFile.toURI().toURL();
-//					repositoryName = settingsFile.getName().substring(13, settingsFile.getName().length()-4);
+					repositoryName = settingsFile.getName().substring(13, settingsFile.getName().length()-4);
 				} else {
 					settingsURL = ivySettingsURL;
 				}

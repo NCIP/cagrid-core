@@ -112,9 +112,6 @@ public class InvokeCsmDataServiceStep extends Step {
                     fail("CSM should have denied access to " + clazz + " but was allowed");
                 }
             } catch (Exception ex) {
-            	if ("gov.nih.nci.cacoresdk.domain.inheritance.abstrakt.PrivateTeacher".equals(clazz)) {
-            		LOG.debug("Access correctly denied to " + clazz);
-            	}
                 if (isAccessDenied(ex)) {
                     if (expectedDenied.contains(clazz)) {
                         LOG.debug("Access correctly denied to " + clazz);

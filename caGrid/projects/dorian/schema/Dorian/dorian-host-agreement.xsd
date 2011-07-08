@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
 <xsd:schema targetNamespace="http://www.cagrid.org/gaards/1/dorian-host-agreement"
 	attributeFormDefault="qualified" elementFormDefault="qualified"
 	xmlns:policy="http://www.cagrid.org/gaards/1/dorian-host-agreement" xmlns:xsd="http://www.w3.org/2001/XMLSchema"

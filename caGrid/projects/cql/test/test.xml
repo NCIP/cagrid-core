@@ -25,7 +25,7 @@
     <target name="test" description="Runs the tests.">
         <mkdir dir="${junit.results.dir}" />
         <junit dir="${basedir}" printsummary="yes" errorproperty="test.failed" failureproperty="test.failed" showoutput="true" fork="yes" forkmode="once">        	
-            <sysproperty key="build.dir" value="${build.dir}" />
+			<sysproperty key="build.dirs.list" value="${build.cql.1.0.stubs.dest}, ${build.cql.2.0.stubs.dest}, ${build.utils.dest}, ${build.cql2.beans.dest}, ${build.dcql2.beans.dest}" />
             <classpath refid="test.run.classpath" />
             <formatter type="xml" />
             <batchtest fork="yes" todir="${junit.results.dir}">

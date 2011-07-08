@@ -63,9 +63,9 @@ public class ServiceMetadataCreationPostProcessor implements CreationExtensionPo
         System.out.println("Copying schemas to " + schemaDir);
         File extensionSchemaDir = new File(ExtensionsLoader.EXTENSIONS_DIRECTORY + File.separator
             + MetadataConstants.EXTENSION_NAME + File.separator + "schema");
-        List schemaFiles = Utils.recursiveListFiles(extensionSchemaDir, new FileFilters.XSDFileFilter());
+        List<File> schemaFiles = Utils.recursiveListFiles(extensionSchemaDir, new FileFilters.XSDFileFilter());
         for (int i = 0; i < schemaFiles.size(); i++) {
-            File schemaFile = (File) schemaFiles.get(i);
+            File schemaFile = schemaFiles.get(i);
             String subname = schemaFile.getCanonicalPath().substring(
                 extensionSchemaDir.getCanonicalPath().length() + File.separator.length());
             copySchema(subname, schemaDir);
@@ -125,7 +125,6 @@ public class ServiceMetadataCreationPostProcessor implements CreationExtensionPo
         ResourcePropertyType[] metadataArray = propsList.getResourceProperty();
         if (metadataArray == null || metadataArray.length == 0) {
             metadataArray = new ResourcePropertyType[]{serviceMetadata};
-            
         } else {
             ResourcePropertyType[] tmpArray = new ResourcePropertyType[metadataArray.length + 1];
             System.arraycopy(metadataArray, 0, tmpArray, 0, metadataArray.length);
@@ -140,15 +139,18 @@ public class ServiceMetadataCreationPostProcessor implements CreationExtensionPo
         return props.getProperty(IntroduceConstants.INTRODUCE_SKELETON_DESTINATION_DIR) + File.separator + "schema"
             + File.separator + props.getProperty(IntroduceConstants.INTRODUCE_SKELETON_SERVICE_NAME);
     }
+    
 
     private String getServiceLibDir(Properties props) {
         return props.getProperty(IntroduceConstants.INTRODUCE_SKELETON_DESTINATION_DIR) + File.separator + "lib";
     }
+
     
     private String getServiceToolsLibDir(Properties props) {
         return props.getProperty(IntroduceConstants.INTRODUCE_SKELETON_DESTINATION_DIR) + File.separator + "tools" + File.separator + "lib";
     }
 
+    
     private void copySchema(String schemaName, String outputDir) throws Exception {
         File schemaFile = new File(ExtensionsLoader.EXTENSIONS_DIRECTORY + File.separator
             + MetadataConstants.EXTENSION_NAME + File.separator + "schema" + File.separator + schemaName);

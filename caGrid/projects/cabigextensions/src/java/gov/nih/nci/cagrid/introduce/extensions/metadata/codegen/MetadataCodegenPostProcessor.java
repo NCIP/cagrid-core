@@ -118,14 +118,11 @@ public class MetadataCodegenPostProcessor implements CodegenExtensionPostProcess
 
                                 try {
                                     // if we find one, load it
-                                    StringReader reader = new StringReader(ext.getExtensionData().get_any()[0]
-                                        .getAsString());
-                                    UMLProjectIdentifer projID = (UMLProjectIdentifer) Utils.deserializeObject(reader,
-                                        UMLProjectIdentifer.class);
+                                    StringReader reader = new StringReader(
+                                        ext.getExtensionData().get_any()[0].getAsString());
+                                    UMLProjectIdentifer projID = Utils.deserializeObject(reader, UMLProjectIdentifer.class);
 
-                                    // create a mapping from the current
-                                    // namespace
-                                    // to it
+                                    // create a mapping from the current namespace to it
                                     NamespaceToProjectMapping nsMap = new NamespaceToProjectMapping();
                                     nsMap.setNamespaceURI(new org.apache.axis.types.URI(ns.getNamespace()));
                                     nsMap.setUMLProjectIdentifer(projID);
@@ -156,7 +153,6 @@ public class MetadataCodegenPostProcessor implements CodegenExtensionPostProcess
         } catch (Exception e) {
             throw new CodegenExtensionException("Error serializing metadata document.", e);
         }
-
     }
 
 
@@ -243,8 +239,8 @@ public class MetadataCodegenPostProcessor implements CodegenExtensionPostProcess
      */
     private void editServiceSemanticMetadata(Service service, ServiceInformation info) {
         // determine if its a data service or analytical service
-        // TODO: how are we classifying data services that add other operations?
-        // (just data or data and analytical)
+        // Data Services are classified as such in the Index Service / caGrid portal
+        // by way of the presence of the query method
         boolean isDataService = isDataService(info);
         LOG.debug("Service " + (isDataService ? "is" : "is not") + " a data service.");
         // deserialize the codes based on the type
@@ -335,7 +331,6 @@ public class MetadataCodegenPostProcessor implements CodegenExtensionPostProcess
 
         // make operations
         editOperations(service.getMethods().getMethod(), serviceContext);
-
     }
 
 
@@ -376,7 +371,6 @@ public class MetadataCodegenPostProcessor implements CodegenExtensionPostProcess
 
         }
         serviceContext.getOperationCollection().setOperation(newOperations);
-
     }
 
 
@@ -420,7 +414,6 @@ public class MetadataCodegenPostProcessor implements CodegenExtensionPostProcess
         if (operation.getSemanticMetadata() == null) {
             operation.setSemanticMetadata(new SemanticMetadata[]{});
         }
-
     }
 
 

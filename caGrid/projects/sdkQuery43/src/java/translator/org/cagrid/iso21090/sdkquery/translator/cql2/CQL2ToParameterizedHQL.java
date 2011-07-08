@@ -141,7 +141,7 @@ public class CQL2ToParameterizedHQL {
 		if (mods.getCountOnly() != null && mods.getCountOnly().booleanValue()) {
 			prepend.append("select count(");
 			if (mods.getDistinctAttribute() != null) {
-				prepend.append("distinct ").append(mods.getDistinctAttribute());
+				prepend.append("distinct ").append(mods.getDistinctAttribute().getAttributeName());
 			} else {
 				prepend.append("distinct " + TARGET_ALIAS);
 			}
@@ -150,7 +150,7 @@ public class CQL2ToParameterizedHQL {
 		    // select distinct tuples
 			prepend.append("select distinct ");
 			if (mods.getDistinctAttribute() != null) {
-				prepend.append(mods.getDistinctAttribute());
+				prepend.append(mods.getDistinctAttribute().getAttributeName());
 			} else {
 				for (int i = 0; i < mods.getNamedAttribute().length; i++) {
 					prepend.append(mods.getNamedAttribute(i).getAttributeName());

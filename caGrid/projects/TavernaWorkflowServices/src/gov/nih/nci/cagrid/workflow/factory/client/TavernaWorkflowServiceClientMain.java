@@ -4,6 +4,7 @@ import gov.nih.nci.cagrid.common.Utils;
 import gov.nih.nci.cagrid.workflow.service.impl.client.TavernaWorkflowServiceImplClient;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Map;
@@ -26,35 +27,53 @@ public class TavernaWorkflowServiceClientMain {
 		System.out.println("OS: " + System.getProperty("os.name"));
 		System.out.println("CWD: " + System.getProperty("user.dir"));
 		
-
-		Map map = new HashMap();
-		for (int i = 0; i< args.length; i++)
-		{
-			if(args[i].startsWith("-"))
-			{
-				map.put(args[i], args[++i]);						
-			} else {
-				TavernaWorkflowServiceClient.usage();
-				System.exit(1);
-			}
-		}
-
 		try{
 			if(!(args.length < 4)){
 				if(args[0].equals("-url")){
-
 					
 					// 1. Create Workflow Operations invoked.
-
-					if(!map.containsKey("-scuflDoc"))
-					{
+					String url = null;
+					String scuflDoc = null;
+					ArrayList<WorkflowPortType> inputArgs = new ArrayList<WorkflowPortType>();
+					
+					for (int i = 0; i<args.length; i++) {
+						if(args[i].equals("-url")){
+							url = args[i+1];
+						}
+						if(args[i].startsWith("-scuflDoc")){
+							scuflDoc = args[i+1];
+						}
+						if(args[i].startsWith("-input"))
+						{
+							String[] key = args[i].split(":");
+							inputArgs.add(new WorkflowPortType(key[1],args[i+1]));
+						}
+					}
+					
+					if(url==null || scuflDoc==null){
 						TavernaWorkflowServiceClient.usage();
 					}
-					String url = (String) map.get("-url");
-					String scuflDoc = (String) map.get("-scuflDoc");
-
+					
 					String workflowName = "Test";
+					//String[] inputArgs = {"caCore", " and caBig4"}; 
+					//String[] inputArgs = {"Hello", "World"};
+									
+					WorkflowPortType [] inputArgs1 = {
+										new WorkflowPortType("fish", "Hello"),
+										new WorkflowPortType("soup", "World")
+										};
 
+					WorkflowPortType [] inputArgs2 = { new WorkflowPortType("EXPID", "95")};
+					
+					WorkflowPortType [] inputArgs0;
+					
+					if(inputArgs.isEmpty()){
+						inputArgs0 = inputArgs1;
+					}
+					else{
+						inputArgs0 = new WorkflowPortType[inputArgs.size()];
+						inputArgs.toArray(inputArgs0);
+					}
 
 					System.out.println("\n1. Running createWorkflow ..");
 
@@ -69,14 +88,6 @@ public class TavernaWorkflowServiceClientMain {
 
 					// 2. Start Workflow Operations Invoked.
 
-					//String[] inputArgs = {"caCore", " and caBig4"}; 
-					String[] inputArgs = {"Hello", "World"};
-					WorkflowPortType [] inputArgs1 = {
-										new WorkflowPortType("fish", "Hello"),
-										new WorkflowPortType("soup", "World")
-										};
-
-					
 					System.out.println("\n2. Now starting the workflow ..");
 					System.out.println("Reading EPR from file ..");
 					EndpointReferenceType readEPR = new EndpointReferenceType();
@@ -90,7 +101,7 @@ public class TavernaWorkflowServiceClientMain {
 
 					//This method runs the workflow with the resource represented by the EPR.
 					// If there is no inputFile for the workflow, give "null"
-					WorkflowStatusType workflowStatusElement =  TavernaWorkflowServiceClient.startWorkflow(inputArgs1, readEPR);
+					WorkflowStatusType workflowStatusElement =  TavernaWorkflowServiceClient.startWorkflow(inputArgs0, readEPR);
 					
 					if (workflowStatusElement.equals(WorkflowStatusType.Done))
 					{
@@ -124,9 +135,25 @@ public class TavernaWorkflowServiceClientMain {
 					}
 					
 					//Subscribe to the Resource property:
-					TavernaWorkflowServiceClient.subscribeRP(readEPR, 60);
+					//TavernaWorkflowServiceClient.subscribeRP(readEPR, 900);
+					int count=0;
+					while(TavernaWorkflowServiceClient.getStatus(readEPR).equals(WorkflowStatusType.Active)){
+						Thread.sleep(10000);
+						count++;
+						if(count % 2 == 0){
+							System.out.println("If you think the workflow is taking too long, cancel (Ctrl-C) the test and check the status on the server..");
+						}
+						if(count == 1){
+							System.out.println("" +
+									"\n== NOTE: If this is the first workflow being submitted to the Workflow Service,\n" +
+									"==       it will take longer for your workflow to complete, as it dowonloads\n" +
+									"==       (one time) all the required artifacts (approximately: 10-15mins depending\n" +
+									"==       on the network speed). Subsequent workflow submissions will take less time.\n"									
+									);
+						}
+					}
+					
 					workflowStatus = TavernaWorkflowServiceClient.getStatus(readEPR);
-
 
 					//4. Get output of workflow.
 					

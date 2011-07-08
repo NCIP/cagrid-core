@@ -11,7 +11,7 @@ import org.apache.commons.logging.LogFactory;
 
 
 /**
- * Just sets the metadata filelocation if its not set.
+ * Just sets the metadata file location if its not set.
  * 
  * @author oster
  */
@@ -31,5 +31,4 @@ public class MetadataCodegenPreProcessor implements CodegenExtensionPreProcessor
             LOG.debug("Set service metadata file location to:" + filename);
         }
     }
-
 }
