@@ -1,6 +1,5 @@
 package org.cagrid.identifiers.test.system;
 
-import gov.nih.nci.cagrid.testing.system.deployment.ServiceContainer;
 import gov.nih.nci.cagrid.testing.system.deployment.steps.CopyServiceStep;
 import gov.nih.nci.cagrid.testing.system.deployment.steps.DeployServiceStep;
 import gov.nih.nci.cagrid.testing.system.deployment.steps.DestroyContainerStep;
@@ -101,7 +100,7 @@ public class IdentifiersSecurityStory extends Story {
         /////////////////////////////////////////////////////
         // Create Databases
         /////////////////////////////////////////////////////
-        steps.add(new CreateDatabasesStep(testInfo));
+        steps.add(new CreateDatabasesStep());
         
         /////////////////////////////////////////////////////
         // Load proxies

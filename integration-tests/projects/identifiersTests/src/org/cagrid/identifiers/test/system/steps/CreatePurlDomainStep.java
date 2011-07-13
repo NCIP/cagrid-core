@@ -25,7 +25,6 @@ public class CreatePurlDomainStep extends Step {
 	
 	public CreatePurlDomainStep(IdentifiersTestInfo info) {
 		this.testInfo = info;
-		
 	}
 	
 	@Override

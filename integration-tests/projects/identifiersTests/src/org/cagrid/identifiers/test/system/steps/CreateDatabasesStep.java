@@ -17,11 +17,10 @@ import org.cagrid.identifiers.test.system.IdentifiersTestInfo;
 
 public class CreateDatabasesStep extends Step {
     
-	private IdentifiersTestInfo testInfo;
-
-    public CreateDatabasesStep(IdentifiersTestInfo info) {
-        this.testInfo = info;
+    public CreateDatabasesStep() {
+        
     }
+    
 
     @Override
     public void runStep() throws ClassNotFoundException, SQLException, FileNotFoundException, IOException {
@@ -29,8 +28,8 @@ public class CreateDatabasesStep extends Step {
         File dbPropertiesFile = new File(IdentifiersTestInfo.GRIDSVC_NA_PROPERTIES);
 
         assertNotNull(dbPropertiesFile);
-        assertTrue("Couldn't read the  properties file (" + dbPropertiesFile.getCanonicalPath() + ")", dbPropertiesFile
-            .canRead());
+        assertTrue("Couldn't read the  properties file (" + dbPropertiesFile.getCanonicalPath() + ")", 
+        		dbPropertiesFile.canRead());
 
         Properties props = new Properties();
         FileInputStream inStream = new FileInputStream(dbPropertiesFile);
@@ -49,8 +48,8 @@ public class CreateDatabasesStep extends Step {
         String password = props.getProperty("cagrid.na.db.password");
         assertNotNull("Couldn't find the jdbc connection password in the properties file", password);
 
+        
         Connection con = DriverManager.getConnection(url, user, password);
-
         try {
             Statement stmt = con.createStatement();
             
