@@ -15,7 +15,6 @@
 	<property name="jar.dir" value="${build.dir}/jars" />
 	<property name="project.jarfile" value="${jar.dir}/${project.name}-${project.version}.jar" />
 	<property name="ext.lib.dir" value="${basedir}/ext/dependencies/jars" />
-	<property name="ext.endorsed.dir" location="${basedir}/ext/dependencies/endorsed/jars" />
 	
 	<property name="junit.results.dir" value="log/junit" />
 
@@ -128,7 +127,6 @@
 		<mkdir dir="${junit.results.dir}" />
 		<junit dir="${basedir}" printsummary="yes" showoutput="true">
 			<sysproperty key="testing.containers.dir" value="${basedir}/ext/dependencies/resources/containers" />
-			<jvmarg value="-Djava.endorsed.dirs=${ext.endorsed.dir}" />
 			<classpath refid="build.classpath" />
 			<classpath>
 				<pathelement path="build/classes/" />
