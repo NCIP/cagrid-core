@@ -90,7 +90,6 @@
 				<then>
 					<echo message="Configured for Proxy"/>
 					<java classname="gov.nih.nci.cagrid.introduce.portal.IntroduceBootstrapper" fork="true">
-						<jvmarg value="-Djava.endorsed.dirs=extensions/endorsed" />
 						<sysproperty key="GLOBUS_LOCATION" value="${ext.globus.dir}"/>
 						<sysproperty key="ANT_OPTS" value="${ant.opts}"/>
 						<syspropertyset refId="system.properties" />
@@ -100,7 +99,6 @@
 				<else>
 					<echo message="Running portal"/>
 					<java classname="gov.nih.nci.cagrid.introduce.portal.IntroduceBootstrapper" fork="true">
-						<jvmarg value="-Djava.endorsed.dirs=extensions/endorsed" />
 						<sysproperty key="GLOBUS_LOCATION" value="${ext.globus.dir}"/>
 						<classpath refid="Bootstrap.run.classpath"/>
 					</java>
