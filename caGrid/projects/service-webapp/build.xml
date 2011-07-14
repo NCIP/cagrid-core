@@ -20,7 +20,6 @@ GSBT - Globus Service Build Tools
 
 	<property name="ext.dir" location="${basedir}/ext" />
 	<property name="ext.grid.dir" location="${ext.dir}/target_grid" />
-	<property name="endorsed.lib.dir" location="${ext.dir}/dependencies/endorsed/jars" />
 	<property name="ext.lib.dir" location="${ext.dir}/dependencies/impl/jars" />
 
 	<property name="etc.dir" value="etc" />
