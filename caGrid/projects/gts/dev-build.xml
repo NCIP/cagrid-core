@@ -268,7 +268,6 @@
 		<junit dir="${basedir}" printsummary="yes" errorproperty="test.failed" failureproperty="test.failed" showoutput="true" forkmode="once">
 			<sysproperty key="basedir" value="${basedir}" />
 			<jvmarg value="-Dbuild.dir=${build.dir}" />
-			<jvmarg value="-Djava.endorsed.dirs=${ext.endorsed.dir}" />
 			<classpath refid="test.run.classpath" />
 			<formatter type="xml" />
 			<batchtest fork="yes" todir="${junit.results.dir}">
