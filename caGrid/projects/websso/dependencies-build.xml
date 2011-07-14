@@ -14,7 +14,6 @@
 
 	<target name="do.resolve-dependencies" depends="pre.resolve-dependencies">
 		<ivy:retrieve conf="default" pattern="${ivy.resolved.artifacts.dir}/dependencies/default/[type]s/[originalname](.[ext])" sync="true" type="jar" />
-		<ivy:retrieve conf="endorsed" pattern="${ivy.resolved.artifacts.dir}/dependencies/endorsed/[type]s/[originalname](.[ext])" sync="true" type="jar" />
 		<ivy:retrieve conf="impl-test" pattern="${ivy.resolved.artifacts.dir}/dependencies/test/[type]s/[originalname](.[ext])" sync="true" type="*"/>
 	</target>
 

@@ -18,7 +18,6 @@
     <!-- Private Configurations-->
      <conf name="target_grid" visibility="private"/>
     <!-- Public Configurations-->
-    <conf name="endorsed" visibility="public"/>
     <conf name="default" visibility="public"/>
     <conf name="war" visibility="public" extends="default"/>
 	<conf name="core" visibility="public" extends="default"/>
@@ -30,7 +29,7 @@
   </publications>
 
   <dependencies>
-    <dependency rev="latest.integration" org="caGrid" name="dorian" conf="default->client;endorsed->endorsed"/>
+    <dependency rev="latest.integration" org="caGrid" name="dorian" conf="default->client"/>
     <dependency rev="latest.integration" org="caGrid" name="cds" conf="default->client"/>
     <dependency rev="latest.integration" org="caGrid" name="syncgts" conf="default->client"/>
     <dependency rev="latest.integration" org="caGrid" name="gaards-core" conf="default->default"/>

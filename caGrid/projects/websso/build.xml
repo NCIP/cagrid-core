@@ -122,7 +122,7 @@
 		</antcall>
 	</target>
 
-	<target name="deployTomcat" depends="configure-tomcat-endorsedjars,war" description="deploy websso server in %CATALINA_HOME%">
+	<target name="deployTomcat" depends="war" description="deploy websso server in %CATALINA_HOME%">
 		<property name="tomcat.local" value="${tomcat.home}" />
 		<copy todir="${tomcat.local}/webapps/">
 			<fileset file="${build.dir}/${webapp.name}.war" />
@@ -149,21 +149,6 @@
 				]]>
 			</insert>
 		</xmltask>
-	</target>
-
-	<target name="configure-tomcat-endorsedjars" description="Delete jars in tomcat endorsed directory,adds xercesimpl.jar">
-		<available property="is.tomcat.5" file="${tomcat.dir}/common/endorsed" />
-		<available property="is.tomcat.6" file="${tomcat.dir}/endorsed" />
-		<antcall target="deleteEndorsedForTomcat5"/>
-		<antcall target="deleteEndorsedForTomcat6"/>
-	</target>
-
-	<target name="deleteEndorsedForTomcat5" if="is.tomcat.5">
-		<delete dir="${tomcat.dir}/common/endorsed" includes="*.jar"/>
-	</target>
-
-	<target name="deleteEndorsedForTomcat6" if="is.tomcat.6">
-		<delete dir="${tomcat.dir}/endorsed" includes="*.jar"/>
 	</target>
 
 	<!-- copy websso-properties.xml to ${src.resources} as websso-properties-template.xml -->
