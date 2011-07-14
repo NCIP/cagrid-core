@@ -20,8 +20,6 @@
     <conf name="gts" visibility="public" extends="base"/>
     <conf name="cds" visibility="public" extends="base"/>
     
-    <conf name="endorsed" visibility="public"/>
-
     <conf name="full" visibility="public" extends="gridgrouper,dorian,gts,cds"/>
   </configurations>
 
@@ -39,7 +37,7 @@
     <dependency rev="latest.integration" org="caGrid" name="gridgrouper" conf="gridgrouper->client"/>
     <dependency rev="latest.integration" org="caGrid" name="gts" conf="gts->client"/>
     <dependency rev="latest.integration" org="caGrid" name="cds" conf="cds->client"/>
-    <dependency rev="latest.integration" org="caGrid" name="dorian" conf="dorian->client;endorsed->endorsed"/>
+    <dependency rev="latest.integration" org="caGrid" name="dorian" conf="dorian->client"/>
 
     <dependency rev="latest.integration" org="caGrid" name="syncgts" conf="gts->client"/>
  
