@@ -19,6 +19,7 @@ import org.apache.commons.logging.LogFactory;
 import org.cagrid.gaards.websso.authentication.helper.SAMLToAttributeMapper;
 import org.cagrid.gaards.websso.exception.AuthenticationConfigurationException;
 import org.cagrid.gaards.websso.utils.WebSSOConstants;
+import org.opensaml.XML.ParserPool;
 import org.w3c.dom.Document;
 import org.xml.sax.SAXException;
 
@@ -29,14 +30,16 @@ public class SAMLToAttributeMapperImpl implements SAMLToAttributeMapper {
 	private static final String FIRST_NAME_EXP = "/*[local-name()='Assertion']/*[local-name()='AttributeStatement']/*[local-name()='Attribute' and @AttributeName='urn:mace:dir:attribute-def:givenName']/*[local-name()='AttributeValue']/text()";
 	private static final String LAST_NAME_EXP = "/*[local-name()='Assertion']/*[local-name()='AttributeStatement']/*[local-name()='Attribute' and @AttributeName='urn:mace:dir:attribute-def:sn']/*[local-name()='AttributeValue']/text()";
 
+	public static final String DOCUMENT_BUILDER_FACTORY_IMPL = "com.sun.org.apache.xerces.internal.jaxp.DocumentBuilderFactoryImpl";
+	
 	public HashMap<String, String> convertSAMLtoHashMap(
 			SAMLAssertion samlAssertion)
 			throws AuthenticationConfigurationException {
 
 		HashMap<String, String> attributesMap = new HashMap<String, String>();
 		try {
-			DocumentBuilderFactory newInstance = DocumentBuilderFactory
-					.newInstance();
+			DocumentBuilderFactory newInstance = DocumentBuilderFactory.newInstance(
+			    DOCUMENT_BUILDER_FACTORY_IMPL, Thread.currentThread().getContextClassLoader());
 			DocumentBuilder documentBuilder = newInstance.newDocumentBuilder();
 			ByteArrayInputStream is = new ByteArrayInputStream(samlAssertion
 					.toString().getBytes());

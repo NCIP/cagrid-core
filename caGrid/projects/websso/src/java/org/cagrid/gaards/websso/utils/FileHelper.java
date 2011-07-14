@@ -9,12 +9,15 @@ import org.jdom.input.DOMBuilder;
 import org.springframework.core.io.Resource;
 
 public class FileHelper {
+    public static final String DOCUMENT_BUILDER_FACTORY_IMPL = "com.sun.org.apache.xerces.internal.jaxp.DocumentBuilderFactoryImpl";
+    
 	public FileHelper() {
 	}
 	public Document validateXMLwithSchema(Resource propertiesFileResource,
 			Resource schemaFileResource) throws AuthenticationConfigurationException {
 		org.w3c.dom.Document document = null;
-		DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
+		DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance(
+		    DOCUMENT_BUILDER_FACTORY_IMPL, Thread.currentThread().getContextClassLoader());
 		documentBuilderFactory.setNamespaceAware(true);
 		documentBuilderFactory.setValidating(true);
 		documentBuilderFactory.setAttribute(
