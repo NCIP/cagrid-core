@@ -385,7 +385,9 @@ public class XML
     public static class ParserPool implements ErrorHandler, EntityResolver
     {
     	
-    		/** OpenSAML configuration */
+    		public static final String DOCUMENT_BUILDER_FACTORY_IMPL = "com.sun.org.apache.xerces.internal.jaxp.DocumentBuilderFactoryImpl";
+
+            /** OpenSAML configuration */
         protected SAMLConfig config = SAMLConfig.instance();
         
         // Stacks of DocumentBuilder parsers keyed by the Schema they support
@@ -482,7 +484,7 @@ public class XML
         {
             // Build a parser factory and the default schema set.
 //            dbf = DocumentBuilderFactory.newInstance();
-            dbf = DocumentBuilderFactory.newInstance("com.sun.org.apache.xerces.internal.jaxp.DocumentBuilderFactoryImpl",
+            dbf = DocumentBuilderFactory.newInstance(DOCUMENT_BUILDER_FACTORY_IMPL,
                 Thread.currentThread().getContextClassLoader());
             dbf.setNamespaceAware(true);
             try {
