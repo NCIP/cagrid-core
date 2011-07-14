@@ -1,2 +1,3 @@
 @ECHO OFF
-java.exe -Xmx256M -XX:MaxPermSize=128m -Djava.endorsed.dirs=endorsed -jar caGrid-gaards-ui-@project.version@.jar
+set JAVA_OPTS=%JAVA_OPTS% -Xmx256M -XX:MaxPermSize=128m
+java.exe %JAVA_OPTS% -jar caGrid-gaards-ui-@project.version@.jar
