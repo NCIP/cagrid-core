@@ -36,7 +36,6 @@
 			<!--<sysproperty key="transfer.service.dir" value="${transfer.service.dir}"/>-->
 			<sysproperty key="cds.service.dir" value="${cds.service.dir}"/>
 			<sysproperty key="testing.container.debug.packages" value="${debug.packages}"/>
-			<jvmarg value="-Djava.endorsed.dirs=${ext.endorsed.dir}" />
 			<classpath refid="all.test.classpath" />
 			<formatter type="xml" />
 			<test if="testcase" name="${testcase}" fork="no" todir="${junit.results.dir}" />
