@@ -34,7 +34,6 @@
 	<property name="ext.targetgrid.dir" location="${ext.dir}/target_grid" />
 	<property name="ext.lib" location="${ext.dependencies.dir}/service/jars" />
 	<property name="ext.test.lib" value="${ext.dependencies.dir}/test/jars" />
-	<property name="ext.endorsed.dir" value="${ext.dependencies.dir}/endorsed/jars" />
 	<property name="ext.tools.lib.dir" location="${ext.dependencies.dir}/tools/jars" />
 
 	<!-- overide the introduce location of this which is suposed to be in tools/lib -->
@@ -291,7 +290,6 @@
 		<input message="Please enter your password:" addproperty="password.input" />
 		<input message="Please enter the number of hours the proxy should be valid for [12]:" addproperty="hours.input" defaultvalue="12" />
 		<java classname="org.cagrid.gaards.dorian.tools.GridProxyInit" fork="yes" newenvironment="true" failonerror="true">
-			<jvmarg value="-Djava.endorsed.dirs=ext/dependencies/endorsed/jars" />
 			<arg value="-a" />
 			<arg value="${auth.input}" />
 			<arg value="-d" />

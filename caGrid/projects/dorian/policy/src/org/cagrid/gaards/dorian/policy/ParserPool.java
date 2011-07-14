@@ -30,6 +30,8 @@ import org.xml.sax.SAXParseException;
 
 
 public class ParserPool implements ErrorHandler, EntityResolver {
+    
+    public static final String DOCUMENT_BUILDER_FACTORY_IMPL = "com.sun.org.apache.xerces.internal.jaxp.DocumentBuilderFactoryImpl";
 
     // Stacks of DocumentBuilder parsers keyed by the Schema they support
     private Map /* <Schema,Stack> */pools = new HashMap();
@@ -73,7 +75,8 @@ public class ParserPool implements ErrorHandler, EntityResolver {
     public ParserPool() {
         log = LogFactory.getLog(this.getClass().getName());
         // Build a parser factory and the default schema set.
-        dbf = DocumentBuilderFactory.newInstance();
+        // dbf = DocumentBuilderFactory.newInstance();
+        dbf = DocumentBuilderFactory.newInstance(DOCUMENT_BUILDER_FACTORY_IMPL, Thread.currentThread().getContextClassLoader());
         dbf.setNamespaceAware(true);
         try {
             dbf.setFeature("http://apache.org/xml/features/validation/schema/normalized-value", false);
