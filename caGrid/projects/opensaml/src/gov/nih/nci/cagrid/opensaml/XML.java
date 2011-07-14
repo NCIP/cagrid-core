@@ -481,7 +481,9 @@ public class XML
         public ParserPool()
         {
             // Build a parser factory and the default schema set.
-            dbf = DocumentBuilderFactory.newInstance();
+//            dbf = DocumentBuilderFactory.newInstance();
+            dbf = DocumentBuilderFactory.newInstance("com.sun.org.apache.xerces.internal.jaxp.DocumentBuilderFactoryImpl",
+                Thread.currentThread().getContextClassLoader());
             dbf.setNamespaceAware(true);
             try {
 				dbf.setFeature("http://apache.org/xml/features/validation/schema/normalized-value",false);

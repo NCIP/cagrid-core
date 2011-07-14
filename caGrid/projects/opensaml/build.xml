@@ -17,7 +17,6 @@
     <property name="data" value="data" />
 	<property name="build" value="build" />
 	<property name="libdir" value="ext/dependencies/compile/jars" />
-	<property name="endorsed" value="ext/dependencies/endorsed/jars" />
 	<property name="dist" value="dist" />
 	<property name="docs" value="doc" />
 	<property name="javadocs" value="${docs}/api" />
@@ -104,7 +103,6 @@
             </filterset>
         </copy>
 		<javac srcdir="${src}/${javaversion}" destdir="${build}" includes="**/*.java" fork="no" source="${javaversion}">
-			<compilerarg line="-endorseddirs ${endorsed}" />
 			<classpath refid="build.path" />
 		</javac>
 		<copy todir="${build}/schemas">
@@ -131,7 +129,6 @@
             </filterset>
         </copy>
     	<javac srcdir="${src}/${javaversion}" destdir="${build}" includes="**/*.java" fork="yes" debug="yes" source="${javaversion}">
-            <compilerarg line="-J-Djava.endorsed.dirs=${endorsed}" />
             <classpath refid="build.path" />
         </javac>
         <copy todir="${build}/schemas">
@@ -171,7 +168,6 @@
                     <include name="${data}/**"/>
                     <include name="${docs}/**"/>
                     <include name="${lib}/**"/>
-                    <include name="${endorsed}/**"/>
                     <include name="${src}/**"/>
                     <include name="build.xml"/>
                     <include name="${jarfile}"/>   
