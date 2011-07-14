@@ -13,7 +13,6 @@
 	<property name="jar.dir" value="${build.dir}/lib" />
 	<property name="project.jarfile" value="${jar.dir}/${project.name}-${project.version}.jar" />
 	<property name="ext.lib.dir" value="${basedir}/ext/dependencies/jars" />
-	<property name="ext.endorsed.dir" location="${basedir}/ext/dependencies/endorsed/jars" />
 	<property name="gridgrouper.dir" value="../../../caGrid/projects/gridgrouper" />
 
 
@@ -121,7 +120,6 @@
 			<sysproperty key="build.dir" value="${test.core.classes.dir}" />
 			<sysproperty key="testing.port.assignment.mode" value="${testing.port.assignment.mode}" />
 			<sysproperty key="testing.containers.dir" value="${testing.containers.dir}" />
-			<jvmarg value="-Djava.endorsed.dirs=${ext.endorsed.dir}" />
 			<classpath refid="test.run.classpath" />
 			<formatter type="xml" />
 			<test if="testcase" name="${testcase}" fork="no" todir="${junit.results.dir}" />
