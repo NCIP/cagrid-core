@@ -176,7 +176,7 @@ public abstract class IntroduceUpgraderBase implements IntroduceUpgraderI {
 					|| filename.startsWith("globus_wsrf_mds") //
 					|| filename.startsWith("globus_wsrf_servicegroup") //
 					|| filename.startsWith("mobius") //
-					// Added for 1.4.1
+					// Added for 1.5
 					;
 		}
 

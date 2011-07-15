@@ -35,7 +35,7 @@ import com.google.common.io.Files;
  * @author Mark Grand
  */
 public class LibUpgrader {
-	private static final String NEW_CAGRID_VERSION = "1.4.1";
+	private static final String NEW_CAGRID_VERSION = "1.5";
 
 	private static final File OBSOLETE = new File("");
 

@@ -9,7 +9,7 @@ import org.jdom.Element;
 public class ClasspathJarVersionEditor {
 
     public static final String OLD_ENDING = "-1.4.jar";
-    public static final String NEW_ENDING = "-1.4.1.jar";
+    public static final String NEW_ENDING = "-1.5.jar";
 
     /**
      * @param args
