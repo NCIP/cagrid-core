@@ -1,5 +1,7 @@
 package org.cagrid.gaards.dorian.policy;
 
+import gov.nih.nci.cagrid.common.XMLUtilities;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
@@ -75,8 +77,7 @@ public class ParserPool implements ErrorHandler, EntityResolver {
     public ParserPool() {
         log = LogFactory.getLog(this.getClass().getName());
         // Build a parser factory and the default schema set.
-        // dbf = DocumentBuilderFactory.newInstance();
-        dbf = DocumentBuilderFactory.newInstance(DOCUMENT_BUILDER_FACTORY_IMPL, Thread.currentThread().getContextClassLoader());
+        dbf = XMLUtilities.getDocumentBuilderFactory();
         dbf.setNamespaceAware(true);
         try {
             dbf.setFeature("http://apache.org/xml/features/validation/schema/normalized-value", false);
