@@ -65,16 +65,16 @@
 	<classpathentry kind="var" path="GT4_LOCATION/lib/xercesImpl.jar"/>
 	<classpathentry kind="var" path="GT4_LOCATION/lib/xml-apis.jar"/>
 	<classpathentry kind="var" path="GT4_LOCATION/lib/xmlsec.jar"/>
-	<classpathentry kind="lib" path="ext/dependencies/service/jars/caGrid-advertisement-1.4.1.jar"/>
-	<classpathentry kind="lib" path="ext/dependencies/service/jars/caGrid-core-1.4.1.jar"/>
-	<classpathentry kind="lib" path="ext/dependencies/service/jars/caGrid-gaards-core-1.4.1.jar"/>
-	<classpathentry kind="lib" path="ext/dependencies/service/jars/caGrid-metadata-common-1.4.1.jar"/>
-	<classpathentry kind="lib" path="ext/dependencies/service/jars/caGrid-metadata-security-1.4.1.jar"/>
-	<classpathentry kind="lib" path="ext/dependencies/service/jars/caGrid-opensaml-1.4.1.jar"/>
-	<classpathentry kind="lib" path="ext/dependencies/service/jars/caGrid-ServiceSecurityProvider-client-1.4.1.jar"/>
-	<classpathentry kind="lib" path="ext/dependencies/service/jars/caGrid-ServiceSecurityProvider-common-1.4.1.jar"/>
-	<classpathentry kind="lib" path="ext/dependencies/service/jars/caGrid-ServiceSecurityProvider-service-1.4.1.jar"/>
-	<classpathentry kind="lib" path="ext/dependencies/service/jars/caGrid-ServiceSecurityProvider-stubs-1.4.1.jar"/>
+	<classpathentry kind="lib" path="ext/dependencies/service/jars/caGrid-advertisement-1.5.jar"/>
+	<classpathentry kind="lib" path="ext/dependencies/service/jars/caGrid-core-1.5.jar"/>
+	<classpathentry kind="lib" path="ext/dependencies/service/jars/caGrid-gaards-core-1.5.jar"/>
+	<classpathentry kind="lib" path="ext/dependencies/service/jars/caGrid-metadata-common-1.5.jar"/>
+	<classpathentry kind="lib" path="ext/dependencies/service/jars/caGrid-metadata-security-1.5.jar"/>
+	<classpathentry kind="lib" path="ext/dependencies/service/jars/caGrid-opensaml-1.5.jar"/>
+	<classpathentry kind="lib" path="ext/dependencies/service/jars/caGrid-ServiceSecurityProvider-client-1.5.jar"/>
+	<classpathentry kind="lib" path="ext/dependencies/service/jars/caGrid-ServiceSecurityProvider-common-1.5.jar"/>
+	<classpathentry kind="lib" path="ext/dependencies/service/jars/caGrid-ServiceSecurityProvider-service-1.5.jar"/>
+	<classpathentry kind="lib" path="ext/dependencies/service/jars/caGrid-ServiceSecurityProvider-stubs-1.5.jar"/>
 	<classpathentry kind="lib" path="ext/dependencies/service/jars/commons-codec-1.3.jar"/>
 	<classpathentry kind="lib" path="ext/dependencies/service/jars/commons-httpclient-3.0.1.jar"/>
 	<classpathentry kind="lib" path="ext/dependencies/service/jars/globus_wsrf_mds_aggregator_stubs.jar"/>
@@ -85,19 +85,19 @@
 	<classpathentry kind="lib" path="ext/dependencies/service/jars/jprov.jar"/>
 	<classpathentry kind="lib" path="ext/dependencies/service/jars/mysql-connector-java-3.0.16-ga-bin.jar"/>
 	<classpathentry kind="lib" path="ext/dependencies/service/jars/servlet.jar"/>
-	<classpathentry kind="lib" path="ext/dependencies/test/jars/caGrid-core-tests-1.4.1.jar"/>
-	<classpathentry kind="lib" path="ext/dependencies/test/jars/caGrid-gaards-core-tests-1.4.1.jar"/>
-	<classpathentry kind="lib" path="ext/dependencies/service/jars/caGrid-metadatautils-1.4.1.jar"/>
+	<classpathentry kind="lib" path="ext/dependencies/test/jars/caGrid-core-tests-1.5.jar"/>
+	<classpathentry kind="lib" path="ext/dependencies/test/jars/caGrid-gaards-core-tests-1.5.jar"/>
+	<classpathentry kind="lib" path="ext/dependencies/service/jars/caGrid-metadatautils-1.5.jar"/>
 	<classpathentry kind="lib" path="ext/dependencies/service/jars/clm-4.1.jar"/>
 	<classpathentry kind="lib" path="ext/dependencies/service/jars/csmapi-4.2.jar"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.junit.JUNIT_CONTAINER/4"/>
-	<classpathentry kind="lib" path="ext/dependencies/service/jars/caGrid-Introduce-serviceTools-1.4.1.jar"/>
-	<classpathentry kind="lib" path="ext/dependencies/service/jars/caGrid-metadata-data-1.4.1.jar"/>
+	<classpathentry kind="lib" path="ext/dependencies/service/jars/caGrid-Introduce-serviceTools-1.5.jar"/>
+	<classpathentry kind="lib" path="ext/dependencies/service/jars/caGrid-metadata-data-1.5.jar"/>
 	<classpathentry kind="lib" path="ext/dependencies/service/jars/jasciidammit-1.1.jar"/>
 	<classpathentry kind="lib" path="ext/dependencies/tools/jars/ant-contrib-1.0b3.jar"/>
-	<classpathentry kind="lib" path="ext/dependencies/tools/jars/caGrid-core-1.4.1.jar"/>
-	<classpathentry kind="lib" path="ext/dependencies/tools/jars/caGrid-Introduce-buildTools-1.4.1.jar"/>
-	<classpathentry kind="lib" path="ext/dependencies/tools/jars/caGrid-metadata-validator-1.4.1.jar"/>
+	<classpathentry kind="lib" path="ext/dependencies/tools/jars/caGrid-core-1.5.jar"/>
+	<classpathentry kind="lib" path="ext/dependencies/tools/jars/caGrid-Introduce-buildTools-1.5.jar"/>
+	<classpathentry kind="lib" path="ext/dependencies/tools/jars/caGrid-metadata-validator-1.5.jar"/>
 	<classpathentry kind="lib" path="ext/dependencies/tools/jars/jdom-1.1.jar"/>
 	<classpathentry kind="lib" path="ext/dependencies/service/jars/org.springframework.beans-3.0.1.RELEASE-A.jar"/>
 	<classpathentry kind="lib" path="ext/dependencies/service/jars/org.springframework.core-3.0.1.RELEASE-A.jar"/>

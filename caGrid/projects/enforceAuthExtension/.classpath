@@ -2,10 +2,10 @@
 <classpath>
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
-	<classpathentry kind="lib" path="ext/dependencies/impl/jars/caGrid-core-1.4.1.jar"/>
-	<classpathentry kind="lib" path="ext/dependencies/impl/jars/caGrid-Introduce-core-1.4.1.jar"/>
-	<classpathentry kind="lib" path="ext/dependencies/impl/jars/caGrid-Introduce-portal-1.4.1.jar"/>
-	<classpathentry kind="lib" path="ext/dependencies/impl/jars/caGrid-Introduce-serviceTools-1.4.1.jar"/>
+	<classpathentry kind="lib" path="ext/dependencies/impl/jars/caGrid-core-1.5.jar"/>
+	<classpathentry kind="lib" path="ext/dependencies/impl/jars/caGrid-Introduce-core-1.5.jar"/>
+	<classpathentry kind="lib" path="ext/dependencies/impl/jars/caGrid-Introduce-portal-1.5.jar"/>
+	<classpathentry kind="lib" path="ext/dependencies/impl/jars/caGrid-Introduce-serviceTools-1.5.jar"/>
 	<classpathentry kind="lib" path="ext/dependencies/impl/jars/jaxen-1.1.jar"/>
 	<classpathentry kind="lib" path="ext/dependencies/impl/jars/jaxmejs-0.5.2.jar"/>
 	<classpathentry kind="lib" path="ext/dependencies/impl/jars/jdom-1.1.jar"/>
@@ -13,7 +13,7 @@
 	<classpathentry kind="lib" path="ext/dependencies/impl/jars/xsom14.jar"/>
 	<classpathentry kind="var" path="GT4_LOCATION/lib/addressing-1.0.jar"/>
 	<classpathentry kind="var" path="GT4_LOCATION/lib/axis-url.jar"/>
-	<classpathentry kind="var" path="GT4_LOCATION/lib/axis.jar" sourcepath="/GT4_LOCATION/ws-axis-src.zip"/>
+	<classpathentry kind="var" path="GT4_LOCATION/lib/axis.jar"/>
 	<classpathentry kind="var" path="GT4_LOCATION/lib/bootstrap.jar"/>
 	<classpathentry kind="var" path="GT4_LOCATION/lib/JGlobus-Core-2.0.3.jar"/>
 	<classpathentry kind="var" path="GT4_LOCATION/lib/cog-jglobus-compat-0.0.1-SNAPSHOT.jar"/>
@@ -57,7 +57,7 @@
 	<classpathentry kind="var" path="GT4_LOCATION/lib/wsrf_core_samples_mgmt_stubs.jar"/>
 	<classpathentry kind="var" path="GT4_LOCATION/lib/wsrf_core_samples_mgmt.jar"/>
 	<classpathentry kind="var" path="GT4_LOCATION/lib/wsrf_core_stubs.jar"/>
-	<classpathentry kind="var" path="GT4_LOCATION/lib/wsrf_core.jar" sourcepath="/gtsrc"/>
+	<classpathentry kind="var" path="GT4_LOCATION/lib/wsrf_core.jar"/>
 	<classpathentry kind="var" path="GT4_LOCATION/lib/wsrf_provider_jce.jar"/>
 	<classpathentry kind="var" path="GT4_LOCATION/lib/wsrf_test_interop_stubs.jar"/>
 	<classpathentry kind="var" path="GT4_LOCATION/lib/wsrf_test_interop.jar"/>
@@ -70,6 +70,6 @@
 	<classpathentry kind="var" path="GT4_LOCATION/lib/xercesImpl.jar"/>
 	<classpathentry kind="var" path="GT4_LOCATION/lib/xml-apis.jar"/>
 	<classpathentry kind="var" path="GT4_LOCATION/lib/xmlsec.jar"/>
-	<classpathentry kind="lib" path="ext/dependencies/impl/jars/caGrid-metadata-security-1.4.1.jar"/>
+	<classpathentry kind="lib" path="ext/dependencies/impl/jars/caGrid-metadata-security-1.5.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

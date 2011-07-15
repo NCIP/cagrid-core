@@ -61,8 +61,8 @@
 	<classpathentry kind="var" path="GT4_LOCATION/lib/xercesImpl.jar"/>
 	<classpathentry kind="var" path="GT4_LOCATION/lib/xml-apis.jar"/>
 	<classpathentry kind="var" path="GT4_LOCATION/lib/xmlsec.jar"/>
-	<classpathentry kind="lib" path="ext/dependencies/service/jars/caGrid-core-1.4.1.jar"/>
-	<classpathentry kind="lib" path="ext/dependencies/service/jars/caGrid-metadata-security-1.4.1.jar"/>
+	<classpathentry kind="lib" path="ext/dependencies/service/jars/caGrid-core-1.5.jar"/>
+	<classpathentry kind="lib" path="ext/dependencies/service/jars/caGrid-metadata-security-1.5.jar"/>
 	<classpathentry kind="var" path="GT4_LOCATION/lib/cog-axis-compat-0.0.1-SNAPSHOT.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
