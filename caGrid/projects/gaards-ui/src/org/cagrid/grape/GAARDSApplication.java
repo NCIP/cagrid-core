@@ -137,6 +137,11 @@ public class GAARDSApplication extends GridApplication{
 		startPreInitializer();
 			
 		setupTargetGridsConfigurationFile();
+		
+		org.globus.common.CoGProperties properties = org.globus.common.CoGProperties.getDefault();
+		File globusDir = new File(gaardsConfigurationDirectory, "globus");
+        properties.setCaCertLocations(globusDir.getCanonicalPath());            		
+        org.globus.common.CoGProperties.setDefault(properties);
         
 		List<Component> toolbarComponents = new ArrayList<Component>();
 		this.setJMenuBar(getJJMenuBar(toolbarComponents));
