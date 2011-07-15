@@ -16,6 +16,8 @@
 
 package gov.nih.nci.cagrid.opensaml;
 
+import gov.nih.nci.cagrid.common.XMLUtilities;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
@@ -385,9 +387,7 @@ public class XML
     public static class ParserPool implements ErrorHandler, EntityResolver
     {
     	
-    		public static final String DOCUMENT_BUILDER_FACTORY_IMPL = "com.sun.org.apache.xerces.internal.jaxp.DocumentBuilderFactoryImpl";
-
-            /** OpenSAML configuration */
+        /** OpenSAML configuration */
         protected SAMLConfig config = SAMLConfig.instance();
         
         // Stacks of DocumentBuilder parsers keyed by the Schema they support
@@ -483,9 +483,7 @@ public class XML
         public ParserPool()
         {
             // Build a parser factory and the default schema set.
-//            dbf = DocumentBuilderFactory.newInstance();
-            dbf = DocumentBuilderFactory.newInstance(DOCUMENT_BUILDER_FACTORY_IMPL,
-                Thread.currentThread().getContextClassLoader());
+            dbf = XMLUtilities.getDocumentBuilderFactory();
             dbf.setNamespaceAware(true);
             try {
 				dbf.setFeature("http://apache.org/xml/features/validation/schema/normalized-value",false);
