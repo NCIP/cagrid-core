@@ -28,11 +28,11 @@ public class IntroduceUpgradeManager {
 
     private static String getIntroduceUpgradeClass(String oldVersion) {
         if (oldVersion.equals("1.2")) {
-            return "gov.nih.nci.cagrid.introduce.upgrade.introduce.Introduce_1_2__1_4_1_Upgrader";
+            return "gov.nih.nci.cagrid.introduce.upgrade.introduce.Introduce_1_2__1_5_Upgrader";
         } else if (oldVersion.equals("1.3")) {
-            return "gov.nih.nci.cagrid.introduce.upgrade.introduce.Introduce_1_3__1_4_1_Upgrader";
+            return "gov.nih.nci.cagrid.introduce.upgrade.introduce.Introduce_1_3__1_5_Upgrader";
         } else if (oldVersion.equals("1.4")) {
-            return "gov.nih.nci.cagrid.introduce.upgrade.introduce.Introduce_1_4__1_4_1_Upgrader";
+            return "gov.nih.nci.cagrid.introduce.upgrade.introduce.Introduce_1_4__1_5_Upgrader";
         }
         return null;
     }
