@@ -131,7 +131,7 @@
 		</junit>
 
 		<delete dir="${basedir}/tmp" />
-		<fail if="${test.failed}" message="Tests failed!  Check logs for details." />
+		<fail if="test.failed" message="Tests failed!  Check logs for details." />
 
 	</target>
 	
