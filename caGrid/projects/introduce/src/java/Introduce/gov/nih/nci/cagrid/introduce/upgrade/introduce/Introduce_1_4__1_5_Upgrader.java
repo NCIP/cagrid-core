@@ -13,11 +13,11 @@ import java.io.File;
 import java.io.IOException;
 
 /**
- * Upgrade a service created by introduce 1.4 to introduce 1.4.1 standards.
+ * Upgrade a service created by introduce 1.4 to introduce 1.5 standards.
  * 
  * @author Mark Grand
  */
-public class Introduce_1_4__1_4_1_Upgrader extends IntroduceUpgraderBase {
+public class Introduce_1_4__1_5_Upgrader extends IntroduceUpgraderBase {
 
     /**
      * Constructor
@@ -27,8 +27,8 @@ public class Introduce_1_4__1_4_1_Upgrader extends IntroduceUpgraderBase {
      * @param servicePath
      * @throws Exception
      */
-    public Introduce_1_4__1_4_1_Upgrader(IntroduceUpgradeStatus status, ServiceInformation serviceInformation, String servicePath) throws Exception {
-        super(status, serviceInformation, servicePath, "1.4", "1.4.1");
+    public Introduce_1_4__1_5_Upgrader(IntroduceUpgradeStatus status, ServiceInformation serviceInformation, String servicePath) throws Exception {
+        super(status, serviceInformation, servicePath, "1.4", "1.5");
     }
 
     /* (non-Javadoc)

@@ -27,12 +27,12 @@ import org.jdom.Element;
 import org.jdom.Namespace;
 
 /**
- * Upgrade a service created by introduce 1.2 to introduce 1.4 standards.
+ * Upgrade a service created by introduce 1.2 to introduce 1.5 standards.
  */
-public class Introduce_1_2__1_4_1_Upgrader extends IntroduceUpgraderBase {
+public class Introduce_1_2__1_5_Upgrader extends IntroduceUpgraderBase {
 
-	public Introduce_1_2__1_4_1_Upgrader(IntroduceUpgradeStatus status, ServiceInformation serviceInformation, String servicePath) throws Exception {
-		super(status, serviceInformation, servicePath, "1.2", "1.4.1");
+	public Introduce_1_2__1_5_Upgrader(IntroduceUpgradeStatus status, ServiceInformation serviceInformation, String servicePath) throws Exception {
+		super(status, serviceInformation, servicePath, "1.2", "1.5");
 	}
 
 	protected void upgrade() throws Exception {

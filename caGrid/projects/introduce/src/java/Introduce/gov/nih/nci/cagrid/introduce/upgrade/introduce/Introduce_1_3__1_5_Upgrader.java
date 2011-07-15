@@ -13,12 +13,12 @@ import java.io.FileWriter;
 import java.io.IOException;
 
 /**
- * Upgrade a service created by introduce 1.3 to introduce 1.4.1 standards.
+ * Upgrade a service created by introduce 1.3 to introduce 1.5 standards.
  */
-public class Introduce_1_3__1_4_1_Upgrader extends IntroduceUpgraderBase {
+public class Introduce_1_3__1_5_Upgrader extends IntroduceUpgraderBase {
 
-	public Introduce_1_3__1_4_1_Upgrader(IntroduceUpgradeStatus status, ServiceInformation serviceInformation, String servicePath) throws Exception {
-		super(status, serviceInformation, servicePath, "1.3", "1.4.1");
+	public Introduce_1_3__1_5_Upgrader(IntroduceUpgradeStatus status, ServiceInformation serviceInformation, String servicePath) throws Exception {
+		super(status, serviceInformation, servicePath, "1.3", "1.5");
 	}
 
 	protected void upgrade() throws Exception {
