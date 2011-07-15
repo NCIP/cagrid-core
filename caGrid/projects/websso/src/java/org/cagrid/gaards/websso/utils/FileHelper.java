@@ -1,5 +1,7 @@
 package org.cagrid.gaards.websso.utils;
 
+import gov.nih.nci.cagrid.common.XMLUtilities;
+
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 
@@ -16,8 +18,7 @@ public class FileHelper {
 	public Document validateXMLwithSchema(Resource propertiesFileResource,
 			Resource schemaFileResource) throws AuthenticationConfigurationException {
 		org.w3c.dom.Document document = null;
-		DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance(
-		    DOCUMENT_BUILDER_FACTORY_IMPL, Thread.currentThread().getContextClassLoader());
+		DocumentBuilderFactory documentBuilderFactory = XMLUtilities.getDocumentBuilderFactory();
 		documentBuilderFactory.setNamespaceAware(true);
 		documentBuilderFactory.setValidating(true);
 		documentBuilderFactory.setAttribute(

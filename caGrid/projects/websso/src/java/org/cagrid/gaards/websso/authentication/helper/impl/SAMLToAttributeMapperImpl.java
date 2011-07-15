@@ -1,5 +1,6 @@
 package org.cagrid.gaards.websso.authentication.helper.impl;
 
+import gov.nih.nci.cagrid.common.XMLUtilities;
 import gov.nih.nci.cagrid.opensaml.SAMLAssertion;
 
 import java.io.ByteArrayInputStream;
@@ -38,8 +39,7 @@ public class SAMLToAttributeMapperImpl implements SAMLToAttributeMapper {
 
 		HashMap<String, String> attributesMap = new HashMap<String, String>();
 		try {
-			DocumentBuilderFactory newInstance = DocumentBuilderFactory.newInstance(
-			    DOCUMENT_BUILDER_FACTORY_IMPL, Thread.currentThread().getContextClassLoader());
+			DocumentBuilderFactory newInstance = XMLUtilities.getDocumentBuilderFactory();
 			DocumentBuilder documentBuilder = newInstance.newDocumentBuilder();
 			ByteArrayInputStream is = new ByteArrayInputStream(samlAssertion
 					.toString().getBytes());
