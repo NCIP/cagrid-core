@@ -39,4 +39,4 @@ else
     JAVA=java
 fi
 echo JAVA:$JAVA
-$JAVA $JAVA_OPTS -classpath caGrid-installer-@CAGRID_VERSION@.jar:lib/ant-contrib-1.0b3.jar:lib/caGrid-wizard-1.4.1.jar:lib/xmltask-v1.14.jar:lib/commons-logging.jar:lib/log4j-1.2.14.jar org.cagrid.installer.Installer
+$JAVA $JAVA_OPTS -classpath caGrid-installer-@CAGRID_VERSION@.jar:lib/ant-contrib-1.0b3.jar:lib/caGrid-wizard-1.5.jar:lib/xmltask-v1.14.jar:lib/commons-logging.jar:lib/log4j-1.2.14.jar org.cagrid.installer.Installer
