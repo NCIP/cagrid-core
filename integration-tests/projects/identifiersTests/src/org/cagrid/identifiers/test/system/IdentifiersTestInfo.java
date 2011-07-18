@@ -269,12 +269,12 @@ public class IdentifiersTestInfo {
     // Private Stuff
     //
     private ServiceContainer createContainer() throws IOException {
-        return ServiceContainerFactory.createContainer(ServiceContainerType.TOMCAT_CONTAINER);
+        return ServiceContainerFactory.createContainer(ServiceContainerType.TOMCAT_6_CONTAINER);
     }
 
 
     private ServiceContainer createSecureContainer() throws IOException {
-        return ServiceContainerFactory.createContainer(ServiceContainerType.SECURE_TOMCAT_CONTAINER);
+        return ServiceContainerFactory.createContainer(ServiceContainerType.SECURE_TOMCAT_6_CONTAINER);
     }
 
 
@@ -289,5 +289,4 @@ public class IdentifiersTestInfo {
         tempContainerDir.mkdirs();
         return tempContainerDir;
     }
-
 }
