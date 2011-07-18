@@ -58,9 +58,9 @@ public class ClasspathFixer {
                         String libPath = entryElem.getAttributeValue("path");
                         File libFile = new File(projectBase, libPath);
                         String libName = libFile.getName();
-                        if (libName.startsWith("caGrid-") && libName.endsWith("-1.4-dev.jar")) {
+                        if (libName.startsWith("caGrid-") && libName.endsWith("-1.6-dev.jar")) {
                             System.out.println("Found a library to fix up ("  + libPath + ")");
-                            int endIndex = libPath.lastIndexOf("-1.4-dev.jar");
+                            int endIndex = libPath.lastIndexOf("-1.6-dev.jar");
                             libPath = libPath.substring(0, endIndex);
                             libPath += "-1.4.jar";
                             System.out.println("\tFixed up to " + libPath);
