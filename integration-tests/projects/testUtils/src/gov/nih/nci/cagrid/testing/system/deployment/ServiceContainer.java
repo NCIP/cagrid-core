@@ -5,7 +5,6 @@ import gov.nih.nci.cagrid.common.ZipUtilities;
 
 import java.io.File;
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.util.List;
 
 import org.apache.axis.message.addressing.Address;
