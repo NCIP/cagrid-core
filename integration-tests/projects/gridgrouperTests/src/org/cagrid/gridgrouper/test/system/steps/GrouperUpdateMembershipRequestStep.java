@@ -42,5 +42,4 @@ public class GrouperUpdateMembershipRequestStep extends Step {
 			}
 		}
 	}
-
 }

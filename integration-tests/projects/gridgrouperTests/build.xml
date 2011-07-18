@@ -23,7 +23,7 @@
 	<!-- tells the service container factories to assign ports in testing mode -->
 	<property name="testing.port.assignment.mode" value="true" />
 	<!-- tells the test containers where to find their zip files -->
-	<property name="testing.containers.dir" value="${basedir}/../testUtils/containers" />
+	<property name="testing.containers.dir" value="${basedir}/containers" />
 
 	<!-- output directory for JUnit logs -->
 	<property name="junit.results.dir" value="log/junit" />

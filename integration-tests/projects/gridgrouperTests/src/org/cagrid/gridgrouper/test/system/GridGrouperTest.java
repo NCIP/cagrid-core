@@ -153,7 +153,6 @@ public class GridGrouperTest extends ServiceStoryBase {
 				steps.add(new RegisterUserWithDorianIdentityProviderStep(dorianServiceURL, a));
 
 				steps.add(new UpdateLocalUserStatusStep(dorianServiceURL, admin, users.get(i).getUserId(), LocalUserStatus.Active));
-
 			}
 
 			steps.add(new DorianAuthenticateStep(users.get(0).getUserId(), users.get(0).getPassword(), dorianServiceURL));
@@ -223,13 +222,11 @@ public class GridGrouperTest extends ServiceStoryBase {
 			steps.add(new GrouperAddMembershipRequestStep("test:stem1:group1", gridGrouperServiceURL));
 			steps.add(new DorianAuthenticateStep(users.get(0).getUserId(), users.get(0).getPassword(), dorianServiceURL));
 			steps.add(new GrouperUpdateMembershipRequestStep("test:stem1:group1", idp + users.get(3).getUserId(), gridGrouperServiceURL));
-
 		} catch (Exception e) {
 			e.printStackTrace();
 			fail("Failed to create the GridGrouper System Tests: " + e.getMessage());
 		}
 		return steps;
-
 	}
 
 	protected boolean storySetUp() throws Throwable {
@@ -284,7 +281,7 @@ public class GridGrouperTest extends ServiceStoryBase {
 		
 		GrouperDropDbStep dropDB = new GrouperDropDbStep(".");
 		try {
-			dropDB.runStep();
+			// dropDB.runStep();
 		} catch (Throwable e) {
 			e.printStackTrace();
 		}
