@@ -90,9 +90,6 @@ public class ServiceContainerFactory {
         
         ServiceContainer container = null;
         switch (type) {
-            case GLOBUS_CONTAINER:
-                container = new GlobusServiceContainer(props);
-                break;
             case TOMCAT_CONTAINER:
             case TOMCAT_5_CONTAINER:
                 container = new TomcatServiceContainer(props);

@@ -11,7 +11,6 @@ package gov.nih.nci.cagrid.testing.system.deployment;
  * @version $Id: ServiceContainerType.java,v 1.2 2008-10-13 20:42:35 oster Exp $ 
  */
 public enum ServiceContainerType {
-    /**@deprecated**/GLOBUS_CONTAINER, 
     TOMCAT_CONTAINER, TOMCAT_5_CONTAINER, TOMCAT_6_CONTAINER, 
     JBOSS_CONTAINER, SECURE_TOMCAT_CONTAINER, SECURE_TOMCAT_5_CONTAINER, SECURE_TOMCAT_6_CONTAINER;
     
@@ -27,8 +26,6 @@ public enum ServiceContainerType {
     public String getZip() {
         String base = getContainerBaseDir();
         switch (this) {
-            case GLOBUS_CONTAINER:
-                return base + "/minimal-ws-core-enum-4.0.3.zip";
             case TOMCAT_CONTAINER:
             case TOMCAT_5_CONTAINER:
                 return base + "/minimal-tomcat-5.0.28-with-globus-4.0.3.zip";
@@ -48,8 +45,6 @@ public enum ServiceContainerType {
     
     public String toString() {
         switch (this) {
-            case GLOBUS_CONTAINER:
-                return "Globus";
             case TOMCAT_CONTAINER:
             case TOMCAT_5_CONTAINER:
                 return "Tomcat5";
