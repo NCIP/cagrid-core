@@ -59,7 +59,7 @@
 	<classpathentry kind="lib" path="<%=globusLocation%>/lib/opensaml.jar"/>
 	<classpathentry kind="lib" path="<%=globusLocation%>/lib/resolver.jar"/>
 	<classpathentry kind="lib" path="<%=globusLocation%>/lib/saaj.jar"/>
-	<classpathentry kind="lib" path="<%=globusLocation%>/lib/ssl-proxies-2.0-SNAPSHOT.jar"/>
+	<classpathentry kind="lib" path="<%=globusLocation%>/lib/JGlobus-Core-2.0.3.jar"/>
 	<classpathentry kind="lib" path="<%=globusLocation%>/lib/wsdl4j.jar"/>
 	<classpathentry kind="lib" path="<%=globusLocation%>/lib/wsrf_common.jar"/>
 	<classpathentry kind="lib" path="<%=globusLocation%>/lib/wsrf_core_registry_stubs.jar"/>
