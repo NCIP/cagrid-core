@@ -189,8 +189,8 @@
 		<delete verbose="true" file="${webapp.deploy.lib.dir}/bcprov-jdk15-145.jar" />
 	</target>
 
-	<target name="_delete.jglobus2" if="gss-2.available">
-		<delete verbose="true" file="${webapp.deploy.lib.dir}/gss-2.0-SNAPSHOT.jar" />
+	<target name="_delete.jglobus2" if="jglobus2.available">
+		<delete verbose="true" file="${webapp.deploy.lib.dir}/JGlobus-Core-2.0.3.jar" />
 	</target>
 
 	<!-- make deployment configured gar -->
