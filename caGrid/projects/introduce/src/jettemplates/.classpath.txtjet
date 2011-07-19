@@ -43,7 +43,7 @@
 	<classpathentry kind="lib" path="<%=globusLocation%>/lib/commons-collections-3.0.jar"/>
 	<classpathentry kind="lib" path="<%=globusLocation%>/lib/commons-digester.jar"/>
 	<classpathentry kind="lib" path="<%=globusLocation%>/lib/commons-discovery.jar"/>
-	<classpathentry kind="lib" path="<%=globusLocation%>/lib/commons-logging.jar"/>
+	<classpathentry kind="lib" path="<%=globusLocation%>/lib/commons-logging-1.1.jar"/>
 	<classpathentry kind="lib" path="<%=globusLocation%>/lib/concurrent.jar"/>
 	<classpathentry kind="lib" path="<%=globusLocation%>/lib/globus_usage_core.jar"/>
 	<classpathentry kind="lib" path="<%=globusLocation%>/lib/globus_usage_packets_common.jar"/>
