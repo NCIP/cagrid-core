@@ -124,12 +124,9 @@ public abstract class IntroduceUpgraderBase implements IntroduceUpgraderI {
 		File[] serviceLibs = getServiceLibDir().listFiles(oldDskeletonLibFilter);
 		if (serviceLibs == null || serviceLibs.length == 0) {
 			String msg = getServiceLibDir().getAbsolutePath() + " does not exist or is empty.\n"
-					+ "This condition can be caused when the project's externally created .jar files\n"
-					+ "are managed by a dependency management tool such as Ivy or maven ant and the\n" + "has just been used to clean the project.\n"
-					+ "The upgrader cannot function properly unless all of the .jar files that are\n" + "used to build the project with caGrid "
-					+ getFromVersion() + " are present in its lib directory.";
+					+ "You will need to manually upgrade your services's dependencies.";
 			getStatus().addDescriptionLine(msg);
-			throw new Exception(msg);
+			return;
 		}
 
 		// delete the old libraries
