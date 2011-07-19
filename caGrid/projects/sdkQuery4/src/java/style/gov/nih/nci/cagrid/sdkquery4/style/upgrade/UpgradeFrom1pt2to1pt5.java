@@ -1,4 +1,4 @@
-package org.cagrid.data.sdkquery42.style.upgrade;
+package gov.nih.nci.cagrid.sdkquery4.style.upgrade;
 
 import gov.nih.nci.cagrid.common.Utils;
 import gov.nih.nci.cagrid.data.QueryProcessorConstants;
@@ -11,6 +11,8 @@ import gov.nih.nci.cagrid.introduce.common.CommonTools;
 import gov.nih.nci.cagrid.introduce.common.ServiceInformation;
 import gov.nih.nci.cagrid.introduce.extension.utils.AxisJdomUtils;
 import gov.nih.nci.cagrid.introduce.upgrade.common.ExtensionUpgradeStatus;
+import gov.nih.nci.cagrid.sdkquery4.processor.SDK4QueryProcessor;
+import gov.nih.nci.cagrid.sdkquery4.processor2.SDK4CQL2QueryProcessor;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -22,19 +24,17 @@ import java.util.Set;
 import org.apache.axis.message.MessageElement;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.cagrid.data.sdkquery42.processor.SDK42QueryProcessor;
-import org.cagrid.data.sdkquery42.processor2.SDK42CQL2QueryProcessor;
 import org.jdom.Element;
 import org.jdom.JDOMException;
 
-public class UpgradeFrom1pt3to1pt41 implements StyleVersionUpgrader {
-    
-    private static Log LOG = LogFactory.getLog(UpgradeFrom1pt3to1pt41.class);
+public class UpgradeFrom1pt2to1pt5 implements StyleVersionUpgrader {
+
+    private static Log LOG = LogFactory.getLog(UpgradeFrom1pt2to1pt5.class);
 
     public void upgradeStyle(ServiceInformation serviceInformation, ExtensionTypeExtensionData extensionData,
         ExtensionUpgradeStatus status, String serviceFromVersion, String serviceToVersion) throws Exception {
         // load the style
-        ServiceStyleContainer styleContainer = ServiceStyleLoader.getStyle("caCORE SDK v 4.2");
+        ServiceStyleContainer styleContainer = ServiceStyleLoader.getStyle("caCORE SDK v 4.0");
         
         // update style libraries
         File[] upgradeLibs = styleContainer.getStyleCopyLibs();
@@ -55,15 +55,6 @@ public class UpgradeFrom1pt3to1pt41 implements StyleVersionUpgrader {
             if (upgradeLib.getName().startsWith("caGrid-")) {
                 int versionIndex = upgradeLib.getName().indexOf(StyleUpgradeConstants.LATEST_JAR_SUFFIX);
                 File oldCagridMatch = new File(serviceLibDir, 
-                    upgradeLib.getName().substring(0, versionIndex) + "-1.3.jar");
-                LOG.debug("Looking for old caGrid 1.3 library " + oldCagridMatch.getName());
-                if (oldCagridMatch.exists()) {
-                    oldCagridMatch.delete();
-                    removedLibs.add(oldCagridMatch.getName());
-                    LOG.debug("Deleted old library: " + oldCagridMatch.getName());
-                }
-                // since this upgrader could be called for upgrading 1.2 as well, check those jars
-                oldCagridMatch = new File(serviceLibDir, 
                     upgradeLib.getName().substring(0, versionIndex) + "-1.2.jar");
                 LOG.debug("Looking for old caGrid 1.2 library " + oldCagridMatch.getName());
                 if (oldCagridMatch.exists()) {
@@ -85,12 +76,12 @@ public class UpgradeFrom1pt3to1pt41 implements StyleVersionUpgrader {
         // set CQL 2 query processor classname property
         CommonTools.setServiceProperty(serviceInformation.getServiceDescriptor(),
             QueryProcessorConstants.CQL2_QUERY_PROCESSOR_CLASS_PROPERTY, 
-            SDK42CQL2QueryProcessor.class.getName(), false);
+            SDK4CQL2QueryProcessor.class.getName(), false);
         status.addDescriptionLine("Set CQL 2 query processor class service property to " 
-            + SDK42CQL2QueryProcessor.class.getName());
+            + SDK4CQL2QueryProcessor.class.getName());
         
         // add CQL 2 query processor properties
-        SDK42CQL2QueryProcessor processor = new SDK42CQL2QueryProcessor();
+        SDK4CQL2QueryProcessor processor = new SDK4CQL2QueryProcessor();
         Properties processorProperties = processor.getRequiredParameters();
         Set<String> fromEtc = processor.getParametersFromEtc();
         for (Object key : processorProperties.keySet()) {
@@ -100,9 +91,9 @@ public class UpgradeFrom1pt3to1pt41 implements StyleVersionUpgrader {
                 QueryProcessorConstants.CQL2_QUERY_PROCESSOR_CONFIG_PREFIX + propName,
                 def, fromEtc.contains(propName));
         }
-        
+
         // copy values from CQL 1 query processor properties
-        SDK42QueryProcessor cql1processor = new SDK42QueryProcessor();
+        SDK4QueryProcessor cql1processor = new SDK4QueryProcessor();
         Properties oldProperties = cql1processor.getRequiredParameters();
         for (Object key : oldProperties.keySet()) {
             String propName = (String) key;
@@ -122,7 +113,7 @@ public class UpgradeFrom1pt3to1pt41 implements StyleVersionUpgrader {
         // check for the ORM jar in the service's lib dir
         String applicationName = CommonTools.getServicePropertyValue(
             serviceInformation.getServiceDescriptor(),
-            QueryProcessorConstants.QUERY_PROCESSOR_CONFIG_PREFIX + SDK42QueryProcessor.PROPERTY_APPLICATION_NAME);
+            QueryProcessorConstants.QUERY_PROCESSOR_CONFIG_PREFIX + SDK4QueryProcessor.PROPERTY_APPLICATION_NAME);
         File ormJar = new File(serviceInformation.getBaseDirectory(), "lib" + File.separator + applicationName + "-orm.jar");
         if (!ormJar.exists()) {
             // the ORM jar contains the required hibernate config files for the CQL 2 HQL translator

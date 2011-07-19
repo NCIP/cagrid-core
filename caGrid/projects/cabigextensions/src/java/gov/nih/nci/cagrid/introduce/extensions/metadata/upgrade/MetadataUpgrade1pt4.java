@@ -20,24 +20,16 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 
-/**
- * MetadataUpgrade1pt0to1pt1 copies metadata descriptions
- * 
- * @author oster
- * @created Apr 9, 2007 11:21:24 AM
- * @version $Id: multiscaleEclipseCodeTemplates.xml,v 1.1 2007/03/02 14:35:01
- *          dervin Exp $
- */
-public class MetadataUpgrade1pt3 extends ExtensionUpgraderBase {
+public class MetadataUpgrade1pt4 extends ExtensionUpgraderBase {
 
-    private static final String CAGRID_1_3_METADATA_JAR_PREFIX = "caGrid-metadata";
-    private static final String CAGRID_1_3_METADATA_JAR_SUFFIX = "-1.3.jar";
+    private static final String CAGRID_1_4_METADATA_JAR_PREFIX = "caGrid-metadata";
+    private static final String CAGRID_1_4_METADATA_JAR_SUFFIX = "-1.4.jar";
 
-    private static final String CAGRID_1_3_METADATA_VALIDATOR_JAR_PREFIX = "caGrid-metadata-validator";
-    private static final String CAGRID_1_3_METADATA_VALIDATOR_JAR_SUFFIX = "-1.3.jar";
+    private static final String CAGRID_1_4_METADATA_VALIDATOR_JAR_PREFIX = "caGrid-metadata-validator";
+    private static final String CAGRID_1_4_METADATA_VALIDATOR_JAR_SUFFIX = "-1.4.jar";
 
     protected MetadataExtensionHelper helper;
-    protected static Log LOG = LogFactory.getLog(MetadataUpgrade1pt3.class.getName());
+    protected static Log LOG = LogFactory.getLog(MetadataUpgrade1pt4.class.getName());
 
 
     /**
@@ -47,9 +39,9 @@ public class MetadataUpgrade1pt3 extends ExtensionUpgraderBase {
      * @param fromVersion
      * @param toVersion
      */
-    public MetadataUpgrade1pt3(ExtensionType extensionType, ServiceInformation serviceInfo, String servicePath,
+    public MetadataUpgrade1pt4(ExtensionType extensionType, ServiceInformation serviceInfo, String servicePath,
         String fromVersion, String toVersion) {
-        super("MetadataUpgrade1pt3", extensionType, serviceInfo, servicePath, fromVersion, toVersion);
+        super("MetadataUpgrade1pt4", extensionType, serviceInfo, servicePath, fromVersion, toVersion);
         this.helper = new MetadataExtensionHelper(serviceInfo);
     }
 
@@ -75,9 +67,9 @@ public class MetadataUpgrade1pt3 extends ExtensionUpgraderBase {
         FileFilter metadataLibFilter = new FileFilter() {
             public boolean accept(File pathname) {
                 String name = pathname.getName();
-                return name.endsWith(CAGRID_1_3_METADATA_JAR_SUFFIX) && name.startsWith(CAGRID_1_3_METADATA_JAR_PREFIX)
-                    && !name.startsWith(CAGRID_1_3_METADATA_JAR_PREFIX + "-data")
-                    && !name.startsWith(CAGRID_1_3_METADATA_JAR_PREFIX + "-security");
+                return name.endsWith(CAGRID_1_4_METADATA_JAR_SUFFIX) && name.startsWith(CAGRID_1_4_METADATA_JAR_PREFIX)
+                    && !name.startsWith(CAGRID_1_4_METADATA_JAR_PREFIX + "-data")
+                    && !name.startsWith(CAGRID_1_4_METADATA_JAR_PREFIX + "-security");
             }
         };
         FileFilter newMetadataLibFilter = new FileFilter() {
@@ -92,8 +84,8 @@ public class MetadataUpgrade1pt3 extends ExtensionUpgraderBase {
         FileFilter validatorLibFilter = new FileFilter() {
             public boolean accept(File pathname) {
                 String name = pathname.getName();
-                return name.endsWith(CAGRID_1_3_METADATA_VALIDATOR_JAR_SUFFIX)
-                    && name.startsWith(CAGRID_1_3_METADATA_VALIDATOR_JAR_PREFIX);
+                return name.endsWith(CAGRID_1_4_METADATA_VALIDATOR_JAR_SUFFIX)
+                    && name.startsWith(CAGRID_1_4_METADATA_VALIDATOR_JAR_PREFIX);
             }
         };
 
@@ -103,7 +95,7 @@ public class MetadataUpgrade1pt3 extends ExtensionUpgraderBase {
         // delete the old libraries
         for (File oldLib : serviceMetadataLibs) {
             oldLib.delete();
-            getStatus().addDescriptionLine("caGrid 1.3 library " + oldLib.getName() + " removed fron lib.");
+            getStatus().addDescriptionLine("caGrid 1.4 library " + oldLib.getName() + " removed fron lib.");
         }
         // copy new libraries in
         File extLibDir = new File(ExtensionsLoader.EXTENSIONS_DIRECTORY + File.separator + "lib");
@@ -127,7 +119,7 @@ public class MetadataUpgrade1pt3 extends ExtensionUpgraderBase {
         // delete the old libraries
         for (File oldLib : serviceToolsLibs) {
             oldLib.delete();
-            getStatus().addDescriptionLine("caGrid 1.3 library " + oldLib.getName() + " removed from tools lib.");
+            getStatus().addDescriptionLine("caGrid 1.4 library " + oldLib.getName() + " removed from tools lib.");
         }
 
         // copy in the deployment validator stuff

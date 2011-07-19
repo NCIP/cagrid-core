@@ -14,7 +14,7 @@
 	</CreationWizardPanels>
 	<CreationHelper postCreationClassname="org.cagrid.data.sdkquery41.style.helpers.SDK41PostCreationHelper"/>
 	<CodegenHelpers postCodegenClassname="org.cagrid.data.sdkquery41.style.helpers.SDK41PostCodegenHelper"/>
-	<VersionUpgrade fromVersion="1.4" toVersion="1.5" classname="org.cagrid.data.sdkquery41.style.upgrade.UpgradeFrom1pt3to1pt41"/>
-	<VersionUpgrade fromVersion="1.3" toVersion="1.5" classname="org.cagrid.data.sdkquery41.style.upgrade.UpgradeFrom1pt3to1pt41"/>
-	<VersionUpgrade fromVersion="1.2" toVersion="1.5" classname="org.cagrid.data.sdkquery41.style.upgrade.UpgradeFrom1pt2to1pt41"/>
+	<VersionUpgrade fromVersion="1.4" toVersion="1.5" classname="org.cagrid.data.sdkquery41.style.upgrade.UpgradeFrom1pt3to1pt5"/>
+	<VersionUpgrade fromVersion="1.3" toVersion="1.5" classname="org.cagrid.data.sdkquery41.style.upgrade.UpgradeFrom1pt3to1pt5"/>
+	<VersionUpgrade fromVersion="1.2" toVersion="1.5" classname="org.cagrid.data.sdkquery41.style.upgrade.UpgradeFrom1pt2to1pt5"/>
 </DataServiceStyle>

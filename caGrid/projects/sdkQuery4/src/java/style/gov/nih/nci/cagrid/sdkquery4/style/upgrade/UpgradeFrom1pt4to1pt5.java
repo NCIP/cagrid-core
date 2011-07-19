@@ -27,9 +27,9 @@ import org.apache.commons.logging.LogFactory;
 import org.jdom.Element;
 import org.jdom.JDOMException;
 
-public class UpgradeFrom1pt2to1pt41 implements StyleVersionUpgrader {
-
-    private static Log LOG = LogFactory.getLog(UpgradeFrom1pt2to1pt41.class);
+public class UpgradeFrom1pt4to1pt5 implements StyleVersionUpgrader {
+    
+    private static Log LOG = LogFactory.getLog(UpgradeFrom1pt4to1pt5.class);
 
     public void upgradeStyle(ServiceInformation serviceInformation, ExtensionTypeExtensionData extensionData,
         ExtensionUpgradeStatus status, String serviceFromVersion, String serviceToVersion) throws Exception {
@@ -55,6 +55,24 @@ public class UpgradeFrom1pt2to1pt41 implements StyleVersionUpgrader {
             if (upgradeLib.getName().startsWith("caGrid-")) {
                 int versionIndex = upgradeLib.getName().indexOf(StyleUpgradeConstants.LATEST_JAR_SUFFIX);
                 File oldCagridMatch = new File(serviceLibDir, 
+                    upgradeLib.getName().substring(0, versionIndex) + "-1.4.jar");
+                LOG.debug("Looking for old caGrid 1.4 library " + oldCagridMatch.getName());
+                if (oldCagridMatch.exists()) {
+                    oldCagridMatch.delete();
+                    removedLibs.add(oldCagridMatch.getName());
+                    LOG.debug("Deleted old library: " + oldCagridMatch.getName());
+                }
+                // upgrader might be called for upgrading 1.3 as well..
+                oldCagridMatch = new File(serviceLibDir, 
+                    upgradeLib.getName().substring(0, versionIndex) + "-1.3.jar");
+                LOG.debug("Looking for old caGrid 1.3 library " + oldCagridMatch.getName());
+                if (oldCagridMatch.exists()) {
+                    oldCagridMatch.delete();
+                    removedLibs.add(oldCagridMatch.getName());
+                    LOG.debug("Deleted old library: " + oldCagridMatch.getName());
+                }
+                // since this upgrader could be called for upgrading 1.2 as well, check those jars
+                oldCagridMatch = new File(serviceLibDir, 
                     upgradeLib.getName().substring(0, versionIndex) + "-1.2.jar");
                 LOG.debug("Looking for old caGrid 1.2 library " + oldCagridMatch.getName());
                 if (oldCagridMatch.exists()) {
@@ -72,8 +90,9 @@ public class UpgradeFrom1pt2to1pt41 implements StyleVersionUpgrader {
             LOG.debug(message);
             status.addDescriptionLine(message);
         }
-        
+                
         // set CQL 2 query processor classname property
+        if (!CommonTools.servicePropertyExists(serviceInformation.getServiceDescriptor(), QueryProcessorConstants.CQL2_QUERY_PROCESSOR_CLASS_PROPERTY)) {
         CommonTools.setServiceProperty(serviceInformation.getServiceDescriptor(),
             QueryProcessorConstants.CQL2_QUERY_PROCESSOR_CLASS_PROPERTY, 
             SDK4CQL2QueryProcessor.class.getName(), false);
@@ -91,7 +110,7 @@ public class UpgradeFrom1pt2to1pt41 implements StyleVersionUpgrader {
                 QueryProcessorConstants.CQL2_QUERY_PROCESSOR_CONFIG_PREFIX + propName,
                 def, fromEtc.contains(propName));
         }
-
+        
         // copy values from CQL 1 query processor properties
         SDK4QueryProcessor cql1processor = new SDK4QueryProcessor();
         Properties oldProperties = cql1processor.getRequiredParameters();
@@ -107,8 +126,11 @@ public class UpgradeFrom1pt2to1pt41 implements StyleVersionUpgrader {
                     newPrefixedName, copyValue, fromEtc.contains(propName));
             }            
         }
+            status.addIssue("A CQL 2 query processor has been added to this grid data service",
+            "You do not need to supply a custom CQL 2 query processor");
         status.addDescriptionLine("Copied configuration values for CQL 2 query processor " +
         		"from existing CQL 1 query processor configuration");
+        }
         
         // check for the ORM jar in the service's lib dir
         String applicationName = CommonTools.getServicePropertyValue(
@@ -145,8 +167,6 @@ public class UpgradeFrom1pt2to1pt41 implements StyleVersionUpgrader {
         }
         storeExtensionDataElement(extensionData, data);
         status.addDescriptionLine("Reconfigured searchable jars for query processor discovery panel");
-        status.addIssue("A CQL 2 query processor has been added to this grid data service",
-            "You do not need to supply a custom CQL 2 query processor");
     }
     
     

@@ -18,8 +18,8 @@ import java.util.List;
 
 
 /**
- * TransferUpgrade1pt3to1pt4
- * Updates transfer from 1.3 to 1.4
+ * TransferUpgrade1pt2to1pt4
+ * Updates transfer from 1.2 to 1.4
  * 
  * @author oster
  * @author dervin
@@ -27,16 +27,17 @@ import java.util.List;
  * @version $Id: multiscaleEclipseCodeTemplates.xml,v 1.1 2007/03/02 14:35:01
  *          dervin Exp $
  */
-public class TransferUpgrade1pt3to1pt4 extends ExtensionUpgraderBase {
+public class TransferUpgrade1pt2to1pt5 extends ExtensionUpgraderBase {
 
-    private static final String CAGRID_1_3_TRANSFER_JAR_PREFIX = "caGrid-Transfer";
-    private static final String CAGRID_1_3_TRANSFER_JAR_SUFFIX = "-1.3.jar";
+    private static final String CAGRID_1_2_TRANSFER_JAR_PREFIX = "caGrid-Transfer";
+    private static final String CAGRID_1_2_TRANSFER_JAR_SUFFIX = "-1.2.jar";
 
     private File extensionDir = null;
     private File extensionSchemaDir = null;
     private File extensionLibDir = null;
 
-    public TransferUpgrade1pt3to1pt4(ExtensionType extensionType, ServiceInformation serviceInfo, String servicePath,
+
+    public TransferUpgrade1pt2to1pt5(ExtensionType extensionType, ServiceInformation serviceInfo, String servicePath,
         String fromVersion, String toVersion) {
         super("TransferUpgrade1pt3to1pt4", extensionType, serviceInfo, servicePath, fromVersion, toVersion);
         extensionDir = new File(ExtensionsLoader.getInstance().getExtensionsDir(), "caGrid_Transfer");
@@ -139,7 +140,7 @@ public class TransferUpgrade1pt3to1pt4 extends ExtensionUpgraderBase {
         FileFilter transferLibFiler = new FileFilter() {
             public boolean accept(File pathname) {
                 String name = pathname.getName();
-                return name.endsWith(CAGRID_1_3_TRANSFER_JAR_SUFFIX) && name.startsWith(CAGRID_1_3_TRANSFER_JAR_PREFIX);
+                return name.endsWith(CAGRID_1_2_TRANSFER_JAR_SUFFIX) && name.startsWith(CAGRID_1_2_TRANSFER_JAR_PREFIX);
             }
         };
 
@@ -149,7 +150,7 @@ public class TransferUpgrade1pt3to1pt4 extends ExtensionUpgraderBase {
         // delete the old libraries
         for (File oldLib : serviceTransferLibs) {
             oldLib.delete();
-            getStatus().addDescriptionLine("caGrid 1.3 library " + oldLib.getName() + " removed");
+            getStatus().addDescriptionLine("caGrid 1.2 library " + oldLib.getName() + " removed");
         }
         // copy new libraries in
         File[] transferLibs = extensionLibDir.listFiles();
