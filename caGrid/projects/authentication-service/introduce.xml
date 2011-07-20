@@ -1,4 +1,4 @@
-<ns1:ServiceDescription introduceVersion="1.4" xmlns:ns1="gme://gov.nih.nci.cagrid/1/Introduce">
+<ns1:ServiceDescription introduceVersion="1.5" xmlns:ns1="gme://gov.nih.nci.cagrid/1/Introduce">
  <ns2:Namespaces xsi:type="ns2:NamespacesType" xmlns:ns2="gme://gov.nih.nci.cagrid.introduce/1/Namespace" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <ns2:Namespace location="./authentication-core-types.xsd" namespace="http://gaards.cagrid.org/authentication" packageName="org.cagrid.gaards.authentication" xsi:type="ns2:NamespaceType">
    <ns2:SchemaElement type="AuthenticationProfiles" xsi:type="ns2:SchemaElementType"/>
@@ -228,7 +228,7 @@
   </ns3:Service>
  </ns3:Services>
  <ns30:Extensions xsi:type="ns30:ExtensionsType" xmlns:ns30="gme://gov.nih.nci.cagrid.introduce/1/Extension" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
-  <ns30:Extension name="cagrid_metadata" version="1.4" xsi:type="ns30:ExtensionType"/>
+  <ns30:Extension name="cagrid_metadata" version="1.5" xsi:type="ns30:ExtensionType"/>
  </ns30:Extensions>
  <ns31:ServiceProperties xmlns:ns31="gme://gov.nih.nci.cagrid.introduce/1/Property">
   <ns31:Property description="The Authentication Provider to use." isFromETC="true" key="authenticationConfiguration" value="authentication-config.xml"/>
