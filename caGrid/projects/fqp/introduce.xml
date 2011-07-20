@@ -1,10 +1,10 @@
-<ns1:ServiceDescription introduceVersion="1.4" xmlns:ns1="gme://gov.nih.nci.cagrid/1/Introduce">
+<ns1:ServiceDescription introduceVersion="1.5" xmlns:ns1="gme://gov.nih.nci.cagrid/1/Introduce">
  <ns2:Namespaces xsi:type="ns2:NamespacesType" xmlns:ns2="gme://gov.nih.nci.cagrid.introduce/1/Namespace" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <ns2:Namespace generateStubs="false" location="../cql2.0/DCQLResults_2.0.xsd" namespace="http://DCQL.caBIG/2/org.cagrid.data.dcql.results" packageName="org.cagrid.data.dcql.results" xsi:type="ns2:NamespaceType">
-   <ns2:SchemaElement className="DCQLQueryResultsCollection" serializer="org.cagrid.dcql.utilities.encoding.Dcql2SerializerFactory" deserializer="org.cagrid.dcql.utilities.encoding.Dcql2DeserializerFactory" type="DCQLQueryResultsCollection" xsi:type="ns2:SchemaElementType"/>
+   <ns2:SchemaElement className="DCQLQueryResultsCollection" deserializer="org.cagrid.dcql.utilities.encoding.Dcql2DeserializerFactory" serializer="org.cagrid.dcql.utilities.encoding.Dcql2SerializerFactory" type="DCQLQueryResultsCollection" xsi:type="ns2:SchemaElementType"/>
   </ns2:Namespace>
   <ns2:Namespace generateStubs="false" location="../cql2.0/CQLQueryResults.xsd" namespace="http://CQL.caBIG/2/org.cagrid.cql2.results" packageName="org.cagrid.cql2.results" xsi:type="ns2:NamespaceType">
-   <ns2:SchemaElement className="CQLQueryResults" serializer="org.cagrid.cql.utilities.encoding.Cql2SerializerFactory" deserializer="org.cagrid.cql.utilities.encoding.Cql2DeserializerFactory" type="CQLQueryResults" xsi:type="ns2:SchemaElementType"/>
+   <ns2:SchemaElement className="CQLQueryResults" deserializer="org.cagrid.cql.utilities.encoding.Cql2DeserializerFactory" serializer="org.cagrid.cql.utilities.encoding.Cql2SerializerFactory" type="CQLQueryResults" xsi:type="ns2:SchemaElementType"/>
   </ns2:Namespace>
   <ns2:Namespace generateStubs="false" location="../cql2.0/CQLQueryComponents.xsd" namespace="http://CQL.caBIG/2/org.cagrid.cql2" packageName="org.cagrid.cql2" xsi:type="ns2:NamespaceType">
    <ns2:SchemaElement className="CQLQuery" deserializer="org.cagrid.cql.utilities.encoding.Cql2DeserializerFactory" serializer="org.cagrid.cql.utilities.encoding.Cql2SerializerFactory" type="CQLQuery" xsi:type="ns2:SchemaElementType"/>
@@ -12,7 +12,7 @@
   </ns2:Namespace>
   <ns2:Namespace generateStubs="false" location="../cql2.0/Aggregations.xsd" namespace="http://CQL.caBIG/2/org.cagrid.cql2" packageName="org.cagrid.cql2" xsi:type="ns2:NamespaceType"/>
   <ns2:Namespace generateStubs="false" location="../cql2.0/DCQL_2.0.xsd" namespace="http://DCQL.caBIG/2/org.cagrid.data.dcql" packageName="org.cagrid.data.dcql" xsi:type="ns2:NamespaceType">
-   <ns2:SchemaElement className="DCQLQuery" serializer="org.cagrid.dcql.utilities.encoding.Dcql2SerializerFactory" deserializer="org.cagrid.dcql.utilities.encoding.Dcql2DeserializerFactory" type="DCQLQuery" xsi:type="ns2:SchemaElementType"/>
+   <ns2:SchemaElement className="DCQLQuery" deserializer="org.cagrid.dcql.utilities.encoding.Dcql2DeserializerFactory" serializer="org.cagrid.dcql.utilities.encoding.Dcql2SerializerFactory" type="DCQLQuery" xsi:type="ns2:SchemaElementType"/>
   </ns2:Namespace>
   <ns2:Namespace location="./FQPResultsMetadata.xsd" namespace="http://fqp.cagrid.nci.nih.gov/FederatedQueryResultsMetadata" packageName="org.cagrid.fqp.results.metadata" xsi:type="ns2:NamespaceType">
    <ns2:SchemaElement type="FederatedQueryExecutionStatus" xsi:type="ns2:SchemaElementType"/>
@@ -105,10 +105,10 @@
    <ns2:SchemaElement type="TransferServiceContextReference" xsi:type="ns2:SchemaElementType"/>
   </ns2:Namespace>
   <ns2:Namespace generateStubs="false" location="./caGrid_Transfer.xsd" namespace="http://transfer.cagrid.org/Transfer" packageName="org.cagrid.transfer.descriptor" xsi:type="ns2:NamespaceType">
-   <ns2:SchemaElement type="DataDescriptor" xsi:type="ns2:SchemaElementType"/>
-   <ns2:SchemaElement type="DataStorageDescriptor" xsi:type="ns2:SchemaElementType"/>
    <ns2:SchemaElement type="DataTransferDescriptor" xsi:type="ns2:SchemaElementType"/>
+   <ns2:SchemaElement type="DataDescriptor" xsi:type="ns2:SchemaElementType"/>
    <ns2:SchemaElement type="Status" xsi:type="ns2:SchemaElementType"/>
+   <ns2:SchemaElement type="DataStorageDescriptor" xsi:type="ns2:SchemaElementType"/>
   </ns2:Namespace>
   <ns2:Namespace generateStubs="false" location="./enumeration.xsd" namespace="http://schemas.xmlsoap.org/ws/2004/09/enumeration" packageName="org.xmlsoap.schemas.ws._2004._09.enumeration" xsi:type="ns2:NamespaceType">
    <ns2:SchemaElement type="Enumerate" xsi:type="ns2:SchemaElementType"/>
@@ -553,9 +553,9 @@
   </ns3:Service>
  </ns3:Services>
  <ns123:Extensions xsi:type="ns123:ExtensionsType" xmlns:ns123="gme://gov.nih.nci.cagrid.introduce/1/Extension" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
-  <ns123:Extension name="cagrid_metadata" version="1.4" xsi:type="ns123:ExtensionType"/>
-  <ns123:Extension name="caGrid_Transfer" version="1.4" xsi:type="ns123:ExtensionType"/>
-  <ns123:Extension name="cagrid_wsEnum" version="1.4" xsi:type="ns123:ExtensionType"/>
+  <ns123:Extension name="cagrid_metadata" version="1.5" xsi:type="ns123:ExtensionType"/>
+  <ns123:Extension name="caGrid_Transfer" version="1.5" xsi:type="ns123:ExtensionType"/>
+  <ns123:Extension name="cagrid_wsEnum" version="1.5" xsi:type="ns123:ExtensionType"/>
  </ns123:Extensions>
  <ns124:ServiceProperties xmlns:ns124="gme://gov.nih.nci.cagrid.introduce/1/Property">
   <ns124:Property description="Length of time in minutes a Federated Query Results Resource will live" isFromETC="false" key="initialResultLeaseInMinutes" value="30"/>

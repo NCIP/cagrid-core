@@ -76,6 +76,7 @@
 	<import file="dev-build-deploy.xml" />
 
 
+
 	<target name="checkContribTasksDefined">
 		<condition property="contrib.tasks.defined">
 			<typefound name="for" />
@@ -149,8 +150,8 @@
 		<runtarget target="postInit" />
 	</target>
 
-	<target name="defineClasspaths" depends="checkGlobus, defineContribTasks">
-		<path id="tasks.run.extended.classpath"/>
+	<target name="defineClasspaths" depends="checkGlobus">
+		<path id="tasks.run.extended.classpath" />
 		<runtarget target="defineExtendedClasspaths" />
 		<path id="base.classpath">
 			<fileset dir="${lib.dir}">
@@ -203,15 +204,7 @@
 				<include name="*.jar" />
 			</fileset>
 			<fileset dir="${ext.globus.dir}/lib">
-				<include name="axis.jar" />
-				<include name="addressing-1.0.jar" />
-				<include name="xercesImpl.jar" />
-				<include name="jaxrpc.jar" />
-				<include name="wsrf_core.jar" />
-				<include name="log4j-1.2.14.jar" />
-				<include name="saaj.jar" />
-				<include name="commons-discovery.jar" />
-				<include name="wsrf_core_stubs.jar" />
+				<include name="*.jar" />
 			</fileset>
 		</path>
 	</target>
@@ -343,7 +336,7 @@
 
 
 	<!-- Clean up all the intermediate files -->
-		<target name="clean" description="Removes all generated build artifacts." depends="checkContribTasksDefined, defineContribTasks"> 
+	<target name="clean" description="Removes all generated build artifacts." depends="checkContribTasksDefined, defineContribTasks">
 		<runtarget target="preClean" />
 		<delete dir="tmp" />
 		<delete dir="${build.dir}" />
@@ -371,6 +364,7 @@
 
 		</javadoc>
 	</target>
+
 	<!-- Default target "all" builds and jars everything, including test....does not make a GAR-->
 	<target name="all" depends="jars" description="Builds the entire service." />
 

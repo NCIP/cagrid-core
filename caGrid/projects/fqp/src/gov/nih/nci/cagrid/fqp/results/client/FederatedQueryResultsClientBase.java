@@ -1,12 +1,15 @@
 package gov.nih.nci.cagrid.fqp.results.client;
 
+import gov.nih.nci.cagrid.fqp.results.stubs.FederatedQueryResultsPortType;
+import gov.nih.nci.cagrid.fqp.results.stubs.service.FederatedQueryResultsServiceAddressingLocator;
+import gov.nih.nci.cagrid.introduce.security.client.ServiceSecurityClient;
+
 import java.io.InputStream;
 import java.rmi.RemoteException;
-
-import javax.xml.namespace.QName;
-
 import java.util.Calendar;
 import java.util.List;
+
+import javax.xml.namespace.QName;
 
 import org.apache.axis.EngineConfiguration;
 import org.apache.axis.client.AxisClient;
@@ -14,20 +17,12 @@ import org.apache.axis.client.Stub;
 import org.apache.axis.configuration.FileProvider;
 import org.apache.axis.message.addressing.EndpointReferenceType;
 import org.apache.axis.types.URI.MalformedURIException;
-
 import org.globus.gsi.GlobusCredential;
-
-import org.globus.wsrf.NotifyCallback;
 import org.globus.wsrf.NotificationConsumerManager;
+import org.globus.wsrf.NotifyCallback;
 import org.globus.wsrf.container.ContainerException;
-
 import org.oasis.wsrf.lifetime.ImmediateResourceTermination;
 import org.oasis.wsrf.lifetime.WSResourceLifetimeServiceAddressingLocator;
-
-import gov.nih.nci.cagrid.fqp.results.stubs.FederatedQueryResultsPortType;
-import gov.nih.nci.cagrid.fqp.results.stubs.service.FederatedQueryResultsServiceAddressingLocator;
-import gov.nih.nci.cagrid.fqp.results.common.FederatedQueryResultsI;
-import gov.nih.nci.cagrid.introduce.security.client.ServiceSecurityClient;
 
 
 /**
@@ -39,7 +34,7 @@ import gov.nih.nci.cagrid.introduce.security.client.ServiceSecurityClient;
  * On construction the class instance will contact the remote service and retrieve it's security
  * metadata description which it will use to configure the Stub specifically for each method call.
  * 
- * @created by Introduce Toolkit version 1.4
+ * @created by Introduce Toolkit version 1.5
  */
 public abstract class FederatedQueryResultsClientBase extends ServiceSecurityClient implements NotifyCallback {	
 	protected FederatedQueryResultsPortType portType;

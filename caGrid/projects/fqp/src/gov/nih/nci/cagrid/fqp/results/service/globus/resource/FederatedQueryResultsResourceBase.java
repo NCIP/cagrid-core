@@ -1,13 +1,14 @@
 package gov.nih.nci.cagrid.fqp.results.service.globus.resource;
 
-import gov.nih.nci.cagrid.common.Utils;
-
 import gov.nih.nci.cagrid.advertisement.AdvertisementClient;
 import gov.nih.nci.cagrid.advertisement.exceptions.UnregistrationException;
-
 import gov.nih.nci.cagrid.fqp.results.common.FederatedQueryResultsConstants;
 import gov.nih.nci.cagrid.fqp.results.stubs.FederatedQueryResultsResourceProperties;
 import gov.nih.nci.cagrid.fqp.service.FederatedQueryProcessorConfiguration;
+import gov.nih.nci.cagrid.introduce.servicetools.FilePersistenceHelper;
+import gov.nih.nci.cagrid.introduce.servicetools.PersistenceHelper;
+import gov.nih.nci.cagrid.introduce.servicetools.ReflectionResource;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -15,18 +16,14 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.URL;
-import java.util.Calendar;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Iterator;
 import java.util.List;
 
 import javax.naming.Context;
 import javax.naming.InitialContext;
 import javax.xml.namespace.QName;
-
-import gov.nih.nci.cagrid.introduce.servicetools.FilePersistenceHelper;
-import gov.nih.nci.cagrid.introduce.servicetools.PersistenceHelper;
-import gov.nih.nci.cagrid.introduce.servicetools.ReflectionResource;
 
 import org.apache.axis.MessageContext;
 import org.apache.axis.message.MessageElement;
@@ -37,43 +34,31 @@ import org.globus.mds.aggregator.types.AggregatorConfig;
 import org.globus.mds.aggregator.types.AggregatorContent;
 import org.globus.mds.aggregator.types.GetMultipleResourcePropertiesPollType;
 import org.globus.mds.servicegroup.client.ServiceGroupRegistrationParameters;
+import org.globus.wsrf.Constants;
 import org.globus.wsrf.InvalidResourceKeyException;
 import org.globus.wsrf.NoSuchResourceException;
-import org.globus.wsrf.Constants;
-import org.globus.wsrf.Resource;
-import org.globus.wsrf.ResourceException;
-import org.globus.wsrf.RemoveCallback;
 import org.globus.wsrf.PersistenceCallback;
+import org.globus.wsrf.RemoveCallback;
+import org.globus.wsrf.Resource;
 import org.globus.wsrf.ResourceContext;
-import org.globus.wsrf.ResourceException;
 import org.globus.wsrf.ResourceContextException;
-import org.globus.wsrf.ResourceIdentifier;
+import org.globus.wsrf.ResourceException;
 import org.globus.wsrf.ResourceKey;
-import org.globus.wsrf.ResourceLifetime;
-import org.globus.wsrf.ResourceProperties;
 import org.globus.wsrf.ResourceProperty;
-import org.globus.wsrf.ResourcePropertySet;
+import org.globus.wsrf.Topic;
+import org.globus.wsrf.TopicList;
+import org.globus.wsrf.TopicListAccessor;
 import org.globus.wsrf.config.ContainerConfig;
 import org.globus.wsrf.container.ServiceHost;
 import org.globus.wsrf.encoding.DeserializationException;
 import org.globus.wsrf.encoding.ObjectDeserializer;
-import org.globus.wsrf.impl.ReflectionResourceProperty;
-import org.globus.wsrf.impl.SimpleResourceProperty;
-import org.globus.wsrf.impl.SimpleResourcePropertyMetaData;
-import org.globus.wsrf.impl.SimpleResourcePropertySet;
-import org.globus.wsrf.impl.security.descriptor.ResourceSecurityDescriptor;
-import org.globus.wsrf.impl.servicegroup.client.ServiceGroupRegistrationClient;
-import org.globus.wsrf.jndi.Initializable;
-import org.globus.wsrf.security.SecureResource;
-import org.globus.wsrf.utils.AddressingUtils;
-
-import org.globus.wsrf.Topic;
-import org.globus.wsrf.TopicList;
-import org.globus.wsrf.TopicListAccessor;
-import org.globus.wsrf.utils.SubscriptionPersistenceUtils;
-
 import org.globus.wsrf.impl.ResourcePropertyTopic;
 import org.globus.wsrf.impl.SimpleTopicList;
+import org.globus.wsrf.impl.security.descriptor.ResourceSecurityDescriptor;
+import org.globus.wsrf.impl.servicegroup.client.ServiceGroupRegistrationClient;
+import org.globus.wsrf.security.SecureResource;
+import org.globus.wsrf.utils.AddressingUtils;
+import org.globus.wsrf.utils.SubscriptionPersistenceUtils;
 import org.oasis.wsrf.lifetime.TerminationNotification;
 
 
@@ -85,7 +70,7 @@ import org.oasis.wsrf.lifetime.TerminationNotification;
  * of these resource as well as code for registering any properties selected
  * to the index service.
  * 
- * @created by Introduce Toolkit version 1.4
+ * @created by Introduce Toolkit version 1.5
  * 
  */
 public abstract class FederatedQueryResultsResourceBase extends ReflectionResource implements Resource
@@ -281,6 +266,13 @@ public abstract class FederatedQueryResultsResourceBase extends ReflectionResour
             EndpointReferenceType epr;
             try {
                String transportURL = (String) ctx.getProperty(org.apache.axis.MessageContext.TRANS_URL);
+               org.apache.axis.message.addressing.AttributedURI uri = new org.apache.axis.message.addressing.AttributedURI(transportURL);
+               java.net.URL baseURL = org.globus.wsrf.container.ServiceHost.getBaseURL();
+               String correctHost = baseURL.getHost();
+               uri.setHost(correctHost);
+               int correctPort = baseURL.getPort();
+               uri.setPort(correctPort);
+               transportURL = uri.toString();
 	           transportURL = transportURL.substring(0,transportURL.lastIndexOf('/') +1 );
 	           transportURL += "FederatedQueryResults";
 			   epr = AddressingUtils.createEndpointReference(transportURL, getResourceKey());

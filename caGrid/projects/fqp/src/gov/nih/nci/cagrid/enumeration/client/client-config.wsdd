@@ -103,4 +103,16 @@
   <ns3:typeMapping xmlns:ns3="http://xml.apache.org/axis/wsdd/" xmlns:ns1="http://xml.apache.org/axis/wsdd/providers/java" xmlns:ns2="http://CQL.caBIG/2/org.cagrid.cql2" encodingStyle="" serializer="org.cagrid.dcql.utilities.encoding.Dcql2SerializerFactory" deserializer="org.cagrid.dcql.utilities.encoding.Dcql2DeserializerFactory" type="ns1:org.cagrid.data.dcql.results.DCQLQueryResultsCollection" qname="ns2:DCQLQueryResultsCollection" />
   <ns3:typeMapping xmlns:ns3="http://xml.apache.org/axis/wsdd/" xmlns:ns1="http://xml.apache.org/axis/wsdd/providers/java" xmlns:ns2="http://CQL.caBIG/2/org.cagrid.cql2" encodingStyle="" serializer="org.cagrid.dcql.utilities.encoding.Dcql2SerializerFactory" deserializer="org.cagrid.dcql.utilities.encoding.Dcql2DeserializerFactory" type="ns1:org.cagrid.data.dcql.results.DCQLResult" qname="ns2:DCQLResult" />
   <!-- END CQL 2 TYPE MAPPINGS -->
-</deployment>
+<!-- START INTRODUCE TYPEMAPPINGS -->
+<ns3:typeMapping encodingStyle="" serializer="org.cagrid.dcql.utilities.encoding.Dcql2SerializerFactory" deserializer="org.cagrid.dcql.utilities.encoding.Dcql2DeserializerFactory" type="ns1:org.cagrid.data.dcql.results.DCQLQueryResultsCollection" qname="ns2:DCQLQueryResultsCollection" xmlns:ns1="http://xml.apache.org/axis/wsdd/providers/java" xmlns:ns2="http://DCQL.caBIG/2/org.cagrid.data.dcql.results" xmlns:ns3="http://xml.apache.org/axis/wsdd/"/>
+
+<ns3:typeMapping encodingStyle="" serializer="org.cagrid.cql.utilities.encoding.Cql2SerializerFactory" deserializer="org.cagrid.cql.utilities.encoding.Cql2DeserializerFactory" type="ns1:org.cagrid.cql2.results.CQLQueryResults" qname="ns2:CQLQueryResults" xmlns:ns1="http://xml.apache.org/axis/wsdd/providers/java" xmlns:ns2="http://CQL.caBIG/2/org.cagrid.cql2.results" xmlns:ns3="http://xml.apache.org/axis/wsdd/"/>
+
+<ns3:typeMapping encodingStyle="" serializer="org.cagrid.cql.utilities.encoding.Cql2SerializerFactory" deserializer="org.cagrid.cql.utilities.encoding.Cql2DeserializerFactory" type="ns1:org.cagrid.cql2.CQLQuery" qname="ns2:CQLQuery" xmlns:ns1="http://xml.apache.org/axis/wsdd/providers/java" xmlns:ns2="http://CQL.caBIG/2/org.cagrid.cql2" xmlns:ns3="http://xml.apache.org/axis/wsdd/"/>
+
+<ns3:typeMapping encodingStyle="" serializer="org.cagrid.cql.utilities.encoding.Cql2SerializerFactory" deserializer="org.cagrid.cql.utilities.encoding.Cql2DeserializerFactory" type="ns1:org.cagrid.cql2.AssociationPopulationSpecification" qname="ns2:AssociationPopulationSpecification" xmlns:ns1="http://xml.apache.org/axis/wsdd/providers/java" xmlns:ns2="http://CQL.caBIG/2/org.cagrid.cql2" xmlns:ns3="http://xml.apache.org/axis/wsdd/"/>
+
+<ns3:typeMapping encodingStyle="" serializer="org.cagrid.dcql.utilities.encoding.Dcql2SerializerFactory" deserializer="org.cagrid.dcql.utilities.encoding.Dcql2DeserializerFactory" type="ns1:org.cagrid.data.dcql.DCQLQuery" qname="ns2:DCQLQuery" xmlns:ns1="http://xml.apache.org/axis/wsdd/providers/java" xmlns:ns2="http://DCQL.caBIG/2/org.cagrid.data.dcql" xmlns:ns3="http://xml.apache.org/axis/wsdd/"/>
+
+
+<!-- END INTRODUCE TYPEMAPPINGS --></deployment>

@@ -26,12 +26,6 @@ public class FederatedQueryProcessorProviderImpl{
 	}
 	
 
-    public gov.nih.nci.cagrid.fqp.stubs.QueryAsynchronouslyResponse queryAsynchronously(gov.nih.nci.cagrid.fqp.stubs.QueryAsynchronouslyRequest params) throws RemoteException, gov.nih.nci.cagrid.fqp.results.stubs.types.InternalErrorFault, gov.nih.nci.cagrid.fqp.stubs.types.FederatedQueryProcessingFault {
-    gov.nih.nci.cagrid.fqp.stubs.QueryAsynchronouslyResponse boxedResult = new gov.nih.nci.cagrid.fqp.stubs.QueryAsynchronouslyResponse();
-    boxedResult.setFederatedQueryResultsRetrievalReference(impl.queryAsynchronously(params.getQuery().getDCQLQuery(),params.getDelegatedCredentialReference().getDelegatedCredentialReference(),params.getQueryExecutionParameters().getQueryExecutionParameters()));
-    return boxedResult;
-  }
-
     public gov.nih.nci.cagrid.fqp.stubs.ExecuteResponse execute(gov.nih.nci.cagrid.fqp.stubs.ExecuteRequest params) throws RemoteException, gov.nih.nci.cagrid.fqp.stubs.types.FederatedQueryProcessingFault {
     gov.nih.nci.cagrid.fqp.stubs.ExecuteResponse boxedResult = new gov.nih.nci.cagrid.fqp.stubs.ExecuteResponse();
     boxedResult.setDCQLQueryResultsCollection(impl.execute(params.getQuery().getDCQLQuery()));
@@ -65,6 +59,12 @@ public class FederatedQueryProcessorProviderImpl{
     public gov.nih.nci.cagrid.fqp.stubs.ExecuteQueryAndAggregateResponse executeQueryAndAggregate(gov.nih.nci.cagrid.fqp.stubs.ExecuteQueryAndAggregateRequest params) throws RemoteException, gov.nih.nci.cagrid.fqp.stubs.types.FederatedQueryProcessingFault, gov.nih.nci.cagrid.fqp.results.stubs.types.InternalErrorFault {
     gov.nih.nci.cagrid.fqp.stubs.ExecuteQueryAndAggregateResponse boxedResult = new gov.nih.nci.cagrid.fqp.stubs.ExecuteQueryAndAggregateResponse();
     boxedResult.setCQLQueryResults(impl.executeQueryAndAggregate(params.getQuery().getDCQLQuery()));
+    return boxedResult;
+  }
+
+    public gov.nih.nci.cagrid.fqp.stubs.QueryAsynchronouslyResponse queryAsynchronously(gov.nih.nci.cagrid.fqp.stubs.QueryAsynchronouslyRequest params) throws RemoteException, gov.nih.nci.cagrid.fqp.results.stubs.types.InternalErrorFault, gov.nih.nci.cagrid.fqp.stubs.types.FederatedQueryProcessingFault {
+    gov.nih.nci.cagrid.fqp.stubs.QueryAsynchronouslyResponse boxedResult = new gov.nih.nci.cagrid.fqp.stubs.QueryAsynchronouslyResponse();
+    boxedResult.setFederatedQueryResultsRetrievalReference(impl.queryAsynchronously(params.getQuery().getDCQLQuery(),params.getDelegatedCredentialReference().getDelegatedCredentialReference(),params.getQueryExecutionParameters().getQueryExecutionParameters()));
     return boxedResult;
   }
 
