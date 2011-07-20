@@ -28,15 +28,10 @@ import org.w3c.dom.Node;
  * authorization requirements placed on each method call.  Each method will either return
  * upon a successful authorization or will throw an exception upon a failed authorization.
  * 
- * @created by Introduce Toolkit version 1.4
+ * @created by Introduce Toolkit version 1.5
  * 
  */
 public class DorianAuthorization implements PDP {
-
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
 
 	public static final String SERVICE_NAMESPACE = "http://cagrid.nci.nih.gov/Dorian";
 	
