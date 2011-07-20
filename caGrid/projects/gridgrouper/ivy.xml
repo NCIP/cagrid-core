@@ -66,10 +66,10 @@
       transitive="false" />
 
     <!-- Specific caGrid Service Dependencies -->
-    <!-- Added this as there are CA-oritented ant targets which need it; the service doesn't seem to require it -->
+    <!-- Added this as there are CA-oriented ant targets which need it; the service doesn't seem to require it -->
     <dependency rev="latest.integration" org="caGrid" name="gaards-core" conf="service->default"/>
 
-    <!-- Extenernal Dependencies -->
+    <!-- External Dependencies -->
     <dependency rev="1.1" org="jdom" name="jdom" conf="service->*"/>
     <dependency rev="1.1" org="mobius" name="mobius" conf="service->common-client,tools"/>        
     <dependency rev="1.1.0.1" org="internet2" name="grouper" conf="service->default;client->minimal"/>

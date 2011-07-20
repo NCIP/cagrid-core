@@ -1,10 +1,10 @@
 #Introduce Properties
-#Mon Aug 09 10:15:41 EDT 2010
-introduce.skeleton.services.list=GridGrouper
+#Tue Jul 19 14:59:09 EDT 2011
 introduce.skeleton.extensions=cagrid_metadata
-introduce.skeleton.destination.dir=/Users/jgeorge/Documents/Workspaces/cagrid-trunk/core/caGrid/projects/gridgrouper
+introduce.skeleton.services.list=GridGrouper
+introduce.skeleton.destination.dir=/Users/jgeorge/Documents/Workspaces/cagrid-1.5/core/caGrid/projects/gridgrouper
 introduce.skeleton.namespace.domain=http\://cagrid.nci.nih.gov/GridGrouper
-introduce.skeleton.service.name=GridGrouper
 introduce.skeleton.timestamp=1267043569869
+introduce.skeleton.service.name=GridGrouper
 introduce.soap.binding.excludes=\ 
 introduce.ns.excludes=\ -x gme\://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.security -x gme\://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata
