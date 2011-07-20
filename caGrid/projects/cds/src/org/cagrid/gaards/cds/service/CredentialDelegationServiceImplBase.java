@@ -14,7 +14,7 @@ import org.globus.wsrf.ResourceHome;
  *
  * Provides some simple accessors for the Impl.
  * 
- * @created by Introduce Toolkit version 1.4
+ * @created by Introduce Toolkit version 1.5
  * 
  */
 public abstract class CredentialDelegationServiceImplBase {

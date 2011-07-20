@@ -11,10 +11,10 @@ http\://cds.gaards.cagrid.org/CredentialDelegationService/DelegatedCredential/se
 http\://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ResourceLifetime-1.2-draft-01.wsdl=org.oasis.wsrf.lifetime
 http\://security.introduce.cagrid.nci.nih.gov/ServiceSecurity=gov.nih.nci.cagrid.introduce.security.stubs
 
-http\://gaards.cagrid.org/cds=org.cagrid.gaards.cds.common
-gme\://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata=gov.nih.nci.cagrid.metadata
-http\://cds.gaards.cagrid.org/CredentialDelegationService/DelegatedCredential/types=org.cagrid.gaards.cds.delegated.stubs.types
-gme\://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.security=gov.nih.nci.cagrid.metadata.security
 http\://cds.gaards.cagrid.org/CredentialDelegationService/types=org.cagrid.gaards.cds.stubs.types
+http\://cds.gaards.cagrid.org/CredentialDelegationService/DelegatedCredential/types=org.cagrid.gaards.cds.delegated.stubs.types
+http\://gaards.cagrid.org/cds=org.cagrid.gaards.cds.common
+gme\://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.security=gov.nih.nci.cagrid.metadata.security
+gme\://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata=gov.nih.nci.cagrid.metadata
 gme\://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.service=gov.nih.nci.cagrid.metadata.service
 gme\://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common=gov.nih.nci.cagrid.metadata.common
