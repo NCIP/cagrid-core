@@ -197,7 +197,7 @@ public class DataServiceUpgradeFrom1pt4 extends ExtensionUpgraderBase {
         // delete the old libraries
         for (File oldLib : serviceDataLibs) {
             oldLib.delete();
-            getStatus().addDescriptionLine("caGrid 1.3 library " + oldLib.getName() + " removed");
+            getStatus().addDescriptionLine("caGrid 1.4 library " + oldLib.getName() + " removed");
         }
         // copy new libraries in
         File extLibDir = new File(ExtensionsLoader.EXTENSIONS_DIRECTORY + File.separator + "lib");
