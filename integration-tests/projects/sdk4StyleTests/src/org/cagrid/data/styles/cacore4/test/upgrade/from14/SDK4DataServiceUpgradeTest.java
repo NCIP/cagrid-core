@@ -29,12 +29,12 @@ public class SDK4DataServiceUpgradeTest extends UpgradeStory {
             
             
             public String getName() {
-                return "DataServiceWithSDK40";
+                return "DataServiceWithSdk40";
             }
             
             
             protected String getServiceDirName() {
-                return "DataServiceWithSDK40";
+                return "DataServiceWithSdk40";
             }
         };
         return info;
