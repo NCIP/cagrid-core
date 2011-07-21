@@ -15,6 +15,8 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Vector;
 
+import org.cagrid.data.styles.cacore4.test.steps.InvokeSDK4CQL2DataServiceStep;
+import org.cagrid.data.styles.cacore4.test.steps.InvokeSDK4DataServiceStep;
 import org.cagrid.data.test.creation.DataTestCaseInfo;
 import org.cagrid.data.test.creation.DeleteOldServiceStep;
 import org.cagrid.data.test.system.BaseSystemTest;
@@ -63,7 +65,8 @@ public abstract class UpgradeStory extends BaseSystemTest {
                 "-Dperform.index.service.registration=false"});
         steps.add(new DeployServiceStep(container, testServiceInfo.getDir(), args));
         steps.add(new StartContainerStep(container));
-        // TODO: invoke CQL 1 and CQL 2 queries
+        steps.add(new InvokeSDK4DataServiceStep(container, testServiceInfo));
+        steps.add(new InvokeSDK4CQL2DataServiceStep(container, testServiceInfo));
         return steps;
     }
     
