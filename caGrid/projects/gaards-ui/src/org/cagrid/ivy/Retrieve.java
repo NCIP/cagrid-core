@@ -82,7 +82,8 @@ public class Retrieve {
         ModuleRevisionId[] mrids = ivy.listModules(ModuleRevisionId.newInstance(organisation,
         		module, "*", targetGridName + ".*?"), ivy.getSettings().getMatcher(PatternMatcher.REGEXP));
         if (mrids == null || mrids.length < 1) {
-			throw new Exception("Unable to find revisions for target grid: " + targetGridName);
+			log.warn("Unable to find revisions for target grid: " + targetGridName);
+			return 0;
         }
         
         Arrays.sort(mrids, new Comparator<ModuleRevisionId>() {
