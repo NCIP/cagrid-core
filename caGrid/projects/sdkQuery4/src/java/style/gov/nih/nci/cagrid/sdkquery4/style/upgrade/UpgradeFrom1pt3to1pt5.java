@@ -62,17 +62,6 @@ public class UpgradeFrom1pt3to1pt5 implements StyleVersionUpgrader {
                     removedLibs.add(oldCagridMatch.getName());
                     LOG.debug("Deleted old library: " + oldCagridMatch.getName());
                 }
-                // since this upgrader could be called for upgrading 1.2 as well, check those jars
-                oldCagridMatch = new File(serviceLibDir, 
-                    upgradeLib.getName().substring(0, versionIndex) + "-1.2.jar");
-                LOG.debug("Looking for old caGrid 1.2 library " + oldCagridMatch.getName());
-                if (oldCagridMatch.exists()) {
-                    oldCagridMatch.delete();
-                    removedLibs.add(oldCagridMatch.getName());
-                    String message = "Deleted old library: " + oldCagridMatch.getName();
-                    LOG.debug(message);
-                    status.addDescriptionLine(message);
-                }
             }
             File copyLib = new File(serviceLibDir, upgradeLib.getName());
             Utils.copyFile(upgradeLib, copyLib);
