@@ -12,13 +12,13 @@ import gov.nih.nci.cagrid.testing.system.haste.Story;
 import java.io.File;
 import java.util.Vector;
 
-public class UpgradeMetadataFrom1pt3Story extends Story {
+public class UpgradeMetadataFrom1pt4Story extends Story {
 
     protected static final File PROJECT_DIR = new File(".." + File.separator + ".." + File.separator + ".."
         + File.separator + "integration-tests" + File.separator + "projects" + File.separator + "cabigextensionsTests");
     protected static final File TEST_DIR = new File(PROJECT_DIR, "test" + File.separator + "MetadataUpgradeService13");
     protected static final File TEST_SERVICE_ZIP = new File(PROJECT_DIR, "test" + File.separator + "resources"
-        + File.separator + "Introduce_1.3_ServiceWithMetadata.zip");
+        + File.separator + "Introduce_1.4_ServiceWithMetadata.zip");
 
 
     @Override
@@ -34,7 +34,7 @@ public class UpgradeMetadataFrom1pt3Story extends Story {
 
     @Override
     public String getName() {
-        return "Metadata Upgrade Story (1-3 to 1-5)";
+        return "Metadata Upgrade Story (1-4 to 1-5)";
     }
 
 
