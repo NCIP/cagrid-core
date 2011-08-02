@@ -146,7 +146,6 @@ public class MetadataUpgrade1pt4 extends ExtensionUpgraderBase {
                     Utils.copyFile(toolslibs[i], outFile);
                     getStatus().addDescriptionLine(
                         "caGrid 1.5 library " + outFile.getName() + " added, for deploytime validation.");
-
                 } catch (IOException e) {
                     // TODO: change this to use a better exception
                     throw new RuntimeException("Error adding deployment validator: " + e.getMessage(), e);
@@ -165,6 +164,5 @@ public class MetadataUpgrade1pt4 extends ExtensionUpgraderBase {
             // TODO: change this to use a better exception
             throw new RuntimeException("Error updating Eclipse .classpath file: " + ex.getMessage(), ex);
         }
-
     }
 }
