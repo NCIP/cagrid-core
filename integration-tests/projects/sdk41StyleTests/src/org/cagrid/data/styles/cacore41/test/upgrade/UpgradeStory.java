@@ -88,7 +88,7 @@ public abstract class UpgradeStory extends BaseSystemTest {
             th.printStackTrace();
         }
         try {
-            //new DeleteOldServiceStep(testServiceInfo).runStep();
+            new DeleteOldServiceStep(testServiceInfo).runStep();
         } catch (Throwable th) {
             th.printStackTrace();
         }
