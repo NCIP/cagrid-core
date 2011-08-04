@@ -8,7 +8,7 @@
             <name>Workflow Factory Service(s)</name>
             <description>The URL(s) of available Workflow Factory Service(s)</description>
             <values>
-                <value>https://workflow-bpel-dev.citih.osumc.edu:8443/wsrf/services/cagrid/WorkflowFactoryService</value>
+                <value>https://workflow-scufl-dev.bmi.osumc.edu:8443/wsrf/services/cagrid/WorkflowFactoryService</value>
             </values>
         </property>
     </properties>

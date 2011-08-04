@@ -5,13 +5,13 @@
     <Services>
         <ServiceDescriptor>
             <DisplayName>Development Master</DisplayName>
-            <ServiceURL>https://mastergts-dev.citih.osumc.edu:8443/wsrf/services/cagrid/GTS</ServiceURL>
-            <ServiceIdentity>/O=tOSU/OU=CITIH/OU=Development Trust Fabric/CN=host/mastergts-dev.citih.osumc.edu</ServiceIdentity>
+            <ServiceURL>https://mastergts-dev.bmi.osumc.edu:8443/wsrf/services/cagrid/GTS</ServiceURL>
+            <ServiceIdentity>/O=tOSU/OU=BMI/OU=Development Trust Fabric/CN=host/mastergts-dev.bmi.osumc.edu</ServiceIdentity>
         </ServiceDescriptor>
         <ServiceDescriptor>
             <DisplayName>Development Slave</DisplayName>
-            <ServiceURL>https://slavegts-dev.citih.osumc.edu:8443/wsrf/services/cagrid/GTS</ServiceURL>
-            <ServiceIdentity>/O=tOSU/OU=CITIH/OU=Development Trust Fabric/CN=host/slavegts-dev.citih.osumc.edu</ServiceIdentity>
+            <ServiceURL>https://slavegts-dev.bmi.osumc.edu:8443/wsrf/services/cagrid/GTS</ServiceURL>
+            <ServiceIdentity>/O=tOSU/OU=BMI/OU=Development Trust Fabric/CN=host/slavegts-dev.bmi.osumc.edu</ServiceIdentity>
         </ServiceDescriptor>
     </Services>
 </ServiceConfiguration>

@@ -5,8 +5,8 @@
     <Services>
         <ServiceDescriptor>
             <DisplayName>Development</DisplayName>
-            <ServiceURL>https://dorian-dev.citih.osumc.edu:8443/wsrf/services/cagrid/Dorian</ServiceURL>
-            <ServiceIdentity>/O=tOSU/OU=CITIH/OU=Development/OU=Services/CN=dorian-dev.citih.osumc.edu</ServiceIdentity>
+            <ServiceURL>https://dorian-dev.bmi.osumc.edu:8443/wsrf/services/cagrid/Dorian</ServiceURL>
+            <ServiceIdentity>/O=tOSU/OU=BMI/OU=Development/OU=Services/CN=dorian-dev.bmi.osumc.edu</ServiceIdentity>
         </ServiceDescriptor>
     </Services>
 </ServiceConfiguration>

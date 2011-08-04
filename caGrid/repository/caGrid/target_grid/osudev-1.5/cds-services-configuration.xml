@@ -5,8 +5,8 @@
     <Services>
         <ServiceDescriptor>
             <DisplayName>Development</DisplayName>
-            <ServiceURL>https://cds-dev.citih.osumc.edu:8443/wsrf/services/cagrid/CredentialDelegationService</ServiceURL>
-            <ServiceIdentity>/O=tOSU/OU=CITIH/OU=Development/OU=Services/CN=cds-dev.citih.osumc.edu</ServiceIdentity>
+            <ServiceURL>https://cds-dev.bmi.osumc.edu:8443/wsrf/services/cagrid/CredentialDelegationService</ServiceURL>
+            <ServiceIdentity>/O=tOSU/OU=BMI/OU=Development/OU=Services/CN=cds-dev.bmi.osumc.edu</ServiceIdentity>
         </ServiceDescriptor>
     </Services>
 </ServiceConfiguration>
