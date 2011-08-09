@@ -185,11 +185,11 @@
 		<antcall target="_delete.jglobus2" />
 	</target>
 	
-	<target name="_delete.bcprov" if="bcprov.available">
+	<target name="_delete.bcprov" unless="bcprov.available">
 		<delete verbose="true" file="${webapp.deploy.lib.dir}/bcprov-jdk15-145.jar" />
 	</target>
 
-	<target name="_delete.jglobus2" if="jglobus2.available">
+	<target name="_delete.jglobus2" unless="jglobus2.available">
 		<delete verbose="true" file="${webapp.deploy.lib.dir}/JGlobus-Core-2.0.3.jar" />
 	</target>
 
