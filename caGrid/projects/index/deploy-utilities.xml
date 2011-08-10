@@ -53,26 +53,6 @@
 		<property name="GT4.ns.excludes" value="-x http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-BaseFaults-1.2-draft-01.xsd -x http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-BaseFaults-1.2-draft-01.wsdl -x http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ResourceLifetime-1.2-draft-01.xsd -x http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ResourceLifetime-1.2-draft-01.wsdl -x http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ResourceProperties-1.2-draft-01.xsd -x http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ResourceProperties-1.2-draft-01.wsdl -x http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ServiceGroup-1.2-draft-01.xsd -x http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ServiceGroup-1.2-draft-01.wsdl -x http://docs.oasis-open.org/wsn/2004/06/wsn-WS-BaseNotification-1.2-draft-01.xsd -x http://docs.oasis-open.org/wsn/2004/06/wsn-WS-BaseNotification-1.2-draft-01.wsdl -x http://schemas.xmlsoap.org/ws/2004/04/trust -x http://schemas.xmlsoap.org/ws/2002/12/policy -x http://schemas.xmlsoap.org/ws/2002/07/utility -x http://schemas.xmlsoap.org/ws/2004/04/sc -x http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-secext-1.0.xsd -x http://www.w3.org/2000/09/xmldsig# -x http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd" />
 	</target>
 
-	<target name="deployGlobus" depends="checkGlobus" description="Deploys to GLOBUS_LOCATION">
-		<echo message="Deploying service under Globus at ${ext.globus.dir}" />
-		<java classname="org.globus.bootstrap.AntBootstrap" fork="yes" failonerror="true">
-			<jvmarg value="-DGLOBUS_LOCATION=${ext.globus.dir}" />
-			<jvmarg value="-Djava.endorsed.dirs=${ext.globus.dir}/endorsed" />
-			<sysproperty key="GLOBUS_LOCATION" value="${ext.globus.dir}" />
-			<sysproperty key="ANT_HOME" value="${ant.home}" />
-			<arg value="org.globus.tools.gar.DeployGar" />
-			<arg value="${gar.name}" />
-			<classpath>
-				<fileset dir="${ext.globus.dir}/lib">
-					<include name="*.jar" />
-				</fileset>
-				<fileset dir="${ant.library.dir}">
-					<include name="*.jar" />
-				</fileset>
-			</classpath>
-		</java>
-	</target>
-
 	<!-- deploy  a gar to tomcat -->
 	<target name="deployTomcat" description="Deploys to CATALINA_HOME">
 		<echo message="Deploying service under Tomcat at ${tomcat.dir}" />

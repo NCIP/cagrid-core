@@ -212,7 +212,6 @@ Build Instructions:
 				<exclude name="servlet.jar" />
 				<exclude name="xml-apis.jar" />
 				<exclude name="JGlobus-Core-2.0.*.jar" />
-				<exclude name="bcprov-jdk15-*.jar" />
 				<exclude name="log4j-*.jar" />
 				<exclude name="commons-logging-*.jar" />
 			</fileset>
