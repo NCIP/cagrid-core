@@ -97,6 +97,7 @@
 
 		<property name="webapp.deploy.dir" value="${tomcat.dir}/webapps/${globus.webapp}" />
 		<property name="webapp.deploy.lib.dir" value="${webapp.deploy.dir}/WEB-INF/lib" />
+		<property name="webapp.deploy.common.lib.dir" value="${tomcat.dir}/common/lib" />
 		<property name="webapp.deploy.schema.dir" value="${webapp.deploy.dir}/share/schema" />
 		<property name="webapp.deploy.etc.dir" value="${webapp.deploy.dir}/WEB-INF/etc/" />
 
@@ -118,6 +119,7 @@
 
 		<property name="webapp.deploy.dir" value="${jboss.dir}/server/default/deploy/${globus.webapp}.war" />
 		<property name="webapp.deploy.lib.dir" value="${webapp.deploy.dir}/WEB-INF/lib" />
+		<property name="webapp.deploy.common.lib.dir" value="${jboss.dir}/server/default/lib" />
 		<property name="webapp.deploy.schema.dir" value="${webapp.deploy.dir}/share/schema" />
         <property name="webapp.deploy.etc.dir" value="${webapp.deploy.dir}/WEB-INF/etc" />
 		
@@ -179,17 +181,18 @@
 			</fileset>
 		</copy>
 		<!-- Delete files that have already been installed to common/lib to prevent classloader conflicts -->
-		<available file="${common.lib.dir}/bcprov-jdk15-145.jar" property="bcprov.available" />
+		<available file="${webapp.deploy.common.lib.dir}/bcprov-jdk15-145.jar" type="file" property="bcprov.present" />
 		<antcall target="_delete.bcprov" />
-		<available file="${common.lib.dir}/JGlobus-Core-2.0.3.jar" property="jglobus2.available" />
+		<available file="${webapp.deploy.common.lib.dir}/JGlobus-Core-2.0.3.jar" type="file" property="jglobus2.present" />
+
 		<antcall target="_delete.jglobus2" />
 	</target>
 	
-	<target name="_delete.bcprov" unless="bcprov.available">
+	<target name="_delete.bcprov" unless="bcprov.present">
 		<delete verbose="true" file="${webapp.deploy.lib.dir}/bcprov-jdk15-145.jar" />
 	</target>
 
-	<target name="_delete.jglobus2" unless="jglobus2.available">
+	<target name="_delete.jglobus2" unless="jglobus2.present">
 		<delete verbose="true" file="${webapp.deploy.lib.dir}/JGlobus-Core-2.0.3.jar" />
 	</target>
 
