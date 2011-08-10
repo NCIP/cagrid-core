@@ -1,3 +1,0 @@
-What changes are needed if we support resource security in index service?
-  -currently should work with ability to set security descriptor
-    (supported by both registration and unregistration), but may want to default to service creds

@@ -1,1 +1,0 @@
-This project supports caGrid Data Services intrgration with a caCORE SDK 4.1 backene data store

@@ -1,8 +1,0 @@
-TODO:
-
-1 [ ]: Start using jgoodies validation on GUI
-
-I = In Progress
-D = Done
-W = Won't implement
-E = External to data core

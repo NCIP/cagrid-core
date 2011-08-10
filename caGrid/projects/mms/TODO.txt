@@ -1,8 +1,0 @@
-
-
-
-how to handle the packaging of the application-config-client.xml
---currently bundled in commmon jar... SDK doesnt give a way to put elsewhere, so atleast put it in a different jar
---probably want to refactor the packages for MMS and impls, and put each impl in its own jar (otherwise ppl using alternate impls will have the cadsr stuff in their mms service jar)
-§
-revisit exception propagation and service faults
