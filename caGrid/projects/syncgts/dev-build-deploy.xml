@@ -10,16 +10,12 @@
 	<target name="initDeployProperties">
 		<property name="tomcat.common.lib.dir" value="${tomcat.dir}/common/lib" />
 		<property name="jboss.common.lib.dir" value="${jboss.dir}/server/default/lib" />
-		<available file="${webapp.deploy.lib.dir}/cog-jglobus.jar" type="file" property="cog-jglobus.tomcat.deploy.present" />
-		<available file="${tomcat.common.lib.dir}/cog-jglobus.jar" type="file" property="cog-jglobus.tomcat.common.present" />
-		<available file="${webapp.deploy.lib.dir}/cog-jglobus.jar" type="file" property="cog-jglobus.jboss.deploy.present" />
-		<available file="${jboss.common.lib.dir}/cog-jglobus.jar" type="file" property="cog-jglobus.jboss.common.present" />
 	</target>
 
 	<!-- ============================================================== -->
 	<!-- Pre Deploy Tomcat                                              -->
 	<!-- ============================================================== -->
-	<target name="preDeployTomcat" depends="initDeployProperties,deployTrustedCerts,deployPatchedCogToTomcat">
+	<target name="preDeployTomcat" depends="initDeployProperties,deployTrustedCerts">
 		<copy todir="${build.lib.dir}">
 			<fileset dir="${ext.lib.dir}">
 				<include name="*.jar" />
@@ -30,31 +26,10 @@
 		</copy>
 	</target>
 
-
-	<!-- Conditionally copy the patched cog to tomcat, only replacing it where its present, as it exists in different places for secure and insecure deployments  -->
-	<target name="deployPatchedCogToTomcat" depends="deployPatchedCogToTomcatCommon,deployPatchedCogToTomcatLib" />
-	<target name="deployPatchedCogToTomcatLib" if="cog-jglobus.tomcat.deploy.present">
-		<echo message="Replacing cog-jglobus.jar in tomcat's service area: ${webapp.deploy.lib.dir}" />
-		<copy overwrite="true" toDir="${webapp.deploy.lib.dir}">
-			<fileset dir="${ext.patched.jars.dir}">
-				<include name="cog-jglobus.jar" />
-			</fileset>
-		</copy>
-	</target>
-	<target name="deployPatchedCogToTomcatCommon" if="cog-jglobus.tomcat.common.present">
-		<echo message="Replacing cog-jglobus.jar in tomcat's common area: ${tomcat.common.lib.dir}" />
-		<copy overwrite="true" todir="${tomcat.common.lib.dir}">
-			<fileset dir="${ext.patched.jars.dir}">
-				<include name="cog-jglobus.jar" />
-			</fileset>
-		</copy>
-	</target>
-
-
 	<!-- ============================================================== -->
 	<!-- Pre Deploy JBoss                                              -->
 	<!-- ============================================================== -->
-	<target name="preDeployJBoss" depends="initDeployProperties, deployTrustedCerts,deployPatchedCogToJBoss">
+	<target name="preDeployJBoss" depends="initDeployProperties, deployTrustedCerts">
 		<copy todir="${build.lib.dir}" overwrite="true">
 			<fileset dir="${ext.lib.dir}">
 				<include name="*.jar" />
@@ -64,27 +39,6 @@
 			<fileset file="${sync.description.file}" />
 		</copy>
 	</target>
-
-	<!-- Conditionally copy the patched cog to tomcat, only replacing it where its present, as it exists in different places for secure and insecure deployments  -->
-	<target name="deployPatchedCogToJBoss" depends="deployPatchedCogToJBossCommon,deployPatchedCogToJBossLib" />
-	<target name="deployPatchedCogToJBossLib" if="cog-jglobus.jboss.deploy.present">
-		<echo message="Replacing cog-jglobus.jar in JBoss's service area: ${webapp.deploy.lib.dir}" />
-		<copy overwrite="true" toDir="${webapp.deploy.lib.dir}">
-			<fileset dir="${ext.patched.jars.dir}">
-				<include name="cog-jglobus.jar" />
-			</fileset>
-		</copy>
-	</target>
-	<target name="deployPatchedCogToJBossCommon" if="cog-jglobus.jboss.common.present">
-		<echo message="Replacing cog-jglobus.jar in JBoss's common area: ${jboss.common.lib.dir}" />
-		<copy overwrite="true" todir="${jboss.common.lib.dir}">
-			<fileset dir="${ext.patched.jars.dir}">
-				<include name="cog-jglobus.jar" />
-			</fileset>
-		</copy>
-	</target>
-
-
 
 	<!-- ============================================================== -->
 	<!-- Pre Deploy Globus                                              -->
@@ -96,16 +50,12 @@
 			</fileset>
 		</copy>
 		<copy todir="${build.lib.dir}">
-			<fileset dir="${ext.patched.jars.dir}">
-				<include name="cog-jglobus.jar" />
-			</fileset>
+			<fileset dir="${ext.patched.jars.dir}" />
 		</copy>
 		<copy overwrite="true" toDir="tmp/etc">
 			<fileset file="${sync.description.file}" />
 		</copy>
 	</target>
-
-
 
 	<!-- ============================================================== -->
 	<!-- Post Undeploy Tomcat                                           -->

@@ -211,13 +211,8 @@ Build Instructions:
 				<include name="*.zip" />
 				<exclude name="servlet.jar" />
 				<exclude name="xml-apis.jar" />
-				<exclude name="cog-tomcat.jar" />
-				<exclude name="cog-jglobus.jar" />
-				<exclude name="cryptix.jar" />
-				<exclude name="cryptix-asn1.jar" />
-				<exclude name="cryptix32.jar" />
-				<exclude name="jce-jdk13-*.jar" />
-				<exclude name="puretls.jar" />
+				<exclude name="JGlobus-Core-2.0.*.jar" />
+				<exclude name="bcprov-jdk15-*.jar" />
 				<exclude name="log4j-*.jar" />
 				<exclude name="commons-logging-*.jar" />
 			</fileset>
@@ -232,14 +227,10 @@ Build Instructions:
 
 		<copy toDir="${common.lib.dir}" overwrite="true">
 			<fileset dir="${abs.deploy.dir}/lib" casesensitive="yes">
-				<include name="cog-jglobus.jar" />
+				<include name="JGlobus-Core-2.0.*.jar" />
 				<include name="xml-apis.jar" />
-				<include name="cryptix.jar" />
-				<include name="cryptix-asn1.jar" />
-				<include name="cryptix32.jar" />
-				<include name="jce-jdk13-*.jar" />
+				<include name="bcprov-jdk15-*.jar" />
 				<include name="log4j-*.jar" />
-				<include name="puretls.jar" />
 			</fileset>
 		</copy>
 
@@ -275,14 +266,10 @@ Build Instructions:
 		<delete dir="${webapp.dir}" />
 		<delete>
 			<fileset dir="${common.lib.dir}" casesensitive="yes">
-				<include name="cog-jglobus.jar" />
+				<include name="JGlobus-Core-2.0.*.jar" />
 				<include name="xml-apis.jar" />
-				<include name="cryptix.jar" />
-				<include name="cryptix-asn1.jar" />
-				<include name="cryptix32.jar" />
-				<include name="jce-jdk13-*.jar" />
+				<include name="bcprov-jdk15-145-*.jar" />
 				<include name="log4j-*.jar" />
-				<include name="puretls.jar" />
 			</fileset>
 		</delete>
 	</target>
