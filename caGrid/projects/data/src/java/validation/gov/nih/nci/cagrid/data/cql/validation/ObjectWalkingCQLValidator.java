@@ -174,6 +174,7 @@ public class ObjectWalkingCQLValidator implements CqlStructureValidator {
 				System.exit(1);
 			}
 			try {
+			    System.out.println("Validating " + args[i]);
 				validator.validateCqlStructure(query);
 			} catch (MalformedQueryException ex) {
 				System.err.println("Query " + args[i] + " is not valid CQL:");
