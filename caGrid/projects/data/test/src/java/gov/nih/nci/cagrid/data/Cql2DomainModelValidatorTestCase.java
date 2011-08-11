@@ -62,6 +62,7 @@ public class Cql2DomainModelValidatorTestCase extends TestCase {
         };
         Arrays.sort(queryDocs, fileSorter);
         for (File queryDocument : queryDocs) {
+            System.out.println("Testing " + queryDocument.getName());
             try {
                 String text = Utils.fileToStringBuffer(queryDocument).toString();
                 CQLQuery query = CQL2SerializationUtil.deserializeCql2Query(text);
@@ -79,5 +80,4 @@ public class Cql2DomainModelValidatorTestCase extends TestCase {
         TestResult result = runner.doRun(new TestSuite(Cql2DomainModelValidatorTestCase.class));
         System.exit(result.errorCount() + result.failureCount());
     }
-
 }
