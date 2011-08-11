@@ -141,7 +141,10 @@ public class DataServiceUpgradeFrom1pt4 extends ExtensionUpgraderBase {
 	private String getStyleName(Element extDataElement) {
 	    Element serviceFeaturesElement = extDataElement.getChild("ServiceFeatures", extDataElement.getNamespace());
 	    Element serviceStyleElement = serviceFeaturesElement.getChild("ServiceStyle", serviceFeaturesElement.getNamespace());
-	    String styleName = serviceStyleElement.getAttributeValue("name");
+	    String styleName = null;
+	    if (serviceStyleElement != null) {
+	        styleName = serviceStyleElement.getAttributeValue("name");
+	    }
 	    return styleName;
 	}
 	
@@ -149,7 +152,10 @@ public class DataServiceUpgradeFrom1pt4 extends ExtensionUpgraderBase {
 	private String getStyleVersion(Element extDataElement) {
 	    Element serviceFeaturesElement = extDataElement.getChild("ServiceFeatures", extDataElement.getNamespace());
         Element serviceStyleElement = serviceFeaturesElement.getChild("ServiceStyle", serviceFeaturesElement.getNamespace());
-        String styleVersion = serviceStyleElement.getAttributeValue("version");
+        String styleVersion = null;
+        if (serviceStyleElement != null) {
+            styleVersion = serviceStyleElement.getAttributeValue("version");
+        }
         return styleVersion;
 	}
 	
