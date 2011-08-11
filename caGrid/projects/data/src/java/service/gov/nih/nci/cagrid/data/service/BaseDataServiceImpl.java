@@ -235,11 +235,16 @@ public abstract class BaseDataServiceImpl {
         if (dataInstanceSetterMethod == null) {
             LOG.error("Count not locate '" + MetadataConstants.DATA_INSTANCE_RESOURCE_SETTER_METHOD_NAME + 
                 "()' method on service base resource.  " +
-                "Data instance count resource property WILL NOT BE SET OR UPDATED");
+                "Data instance count resource property WILL NOT BE SET OR UPDATED.");
         } else {
             try {
-                InstanceCountUpdater.startCountUpdateTask(getDomainModel(), getCql2QueryProcessor(), 
-                    serviceBaseResource, dataInstanceSetterMethod, getInstanceCountUpdateFrequency());
+                if (hasNativeCql2Processor()) {
+                    InstanceCountUpdater.startCountUpdateTask(getDomainModel(), getCql2QueryProcessor(), 
+                        serviceBaseResource, dataInstanceSetterMethod, getInstanceCountUpdateFrequency());
+                } else {
+                    LOG.warn("Data instance count requires a CQL 2 query processor.  No CQL 2 query processor was found,"
+                        + " so data instance count resource property WILL NOT BE SET OR UPDATED.");
+                }
             } catch (QueryProcessingException ex) {
                 LOG.error("Count not get query processor for instance count task: " + ex.getMessage(), ex);
             } catch (Exception ex) {
