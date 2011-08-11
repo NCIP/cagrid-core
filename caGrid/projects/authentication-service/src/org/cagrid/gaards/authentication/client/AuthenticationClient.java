@@ -129,8 +129,8 @@ public class AuthenticationClient {
                 }
             } else {
                 InvalidCredentialFault f = new InvalidCredentialFault();
-                f
-                    .setFaultString("The service you are authenticated to, is an older version of the authentication service and does not support the credential you provided.");
+                f.setFaultString("The service you are authenticated to is an older version of the " +
+                		"authentication service and does not support the credential you provided.");
                 throw f;
             }
         } else {
@@ -148,7 +148,6 @@ public class AuthenticationClient {
                 throw new RemoteException(Utils.getExceptionMessage(e), e);
             }
         }
-
     }
 
 
