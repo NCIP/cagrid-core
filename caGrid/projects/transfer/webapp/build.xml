@@ -263,11 +263,11 @@
 	</target>
 	
 	<target name="_delete.tomcat.bcprov" if="bcprov.present">
-		<delete verbose="true" file="${ext.tomcat.dir}/common/lib/bcprov-jdk15-145.jar" />
+		<delete verbose="true" file="${ext.tomcat.dir}/webapps/caGridTransfer/WEB-INF/lib/bcprov-jdk15-145.jar" />
 	</target>
 
 	<target name="_delete.tomcat.jglobus2" if="jglobus2.present">
-		<delete verbose="true" file="${ext.tomcat.dir}/common/lib/JGlobus-Core-2.0.3.jar" />
+		<delete verbose="true" file="${ext.tomcat.dir}/webapps/caGridTransfer/WEB-INF/lib/JGlobus-Core-2.0.3.jar" />
 	</target>
 
 	<target name="deployJBoss" depends="checkJBoss,checkGlobus" description="Deploys this webapp to tomcat">
@@ -376,11 +376,11 @@
 	</target>
 	
 	<target name="_delete.jboss.bcprov" if="bcprov.present">
-		<delete verbose="true" file="${ext.jboss.dir}/server/default/lib/bcprov-jdk15-145.jar" />
+		<delete verbose="true" file="${ext.jboss.dir}/server/default/deploy/caGridTransfer.war/WEB-INF/lib/bcprov-jdk15-145.jar" />
 	</target>
 
 	<target name="_delete.jboss.jglobus2" if="jglobus2.present">
-		<delete verbose="true" file="${ext.jboss.dir}/server/default/lib/JGlobus-Core-2.0.3.jar" />
+		<delete verbose="true" file="${ext.jboss.dir}/server/default/deploy/caGridTransfer.war/WEB-INF/lib/JGlobus-Core-2.0.3.jar" />
 	</target>
 
 </project>
