@@ -247,11 +247,27 @@
 				<include name="xercesImpl.jar" />
 				<include name="xml-apis.jar" />
 				<include name="xmlsec.jar" />
+				<include name="bcprov-jdk15-*.jar" />
+				<include name="JGlobus-Core-2.0.*.jar" />
 			</fileset>
 		</copy>
+		
+		<!-- Delete files that have already been installed to common/lib to prevent classloader conflicts -->
+		<available file="${ext.tomcat.dir}/common/lib/bcprov-jdk15-145.jar" type="file" property="bcprov.present" />
+		<antcall target="_delete.tomcat.bcprov" />
+		<available file="${ext.tomcat.dir}/common/lib/JGlobus-Core-2.0.3.jar" type="file" property="jglobus2.present" />
+		<antcall target="_delete.tomcat.jglobus2" />
 
 		<replace file="${ext.tomcat.dir}/webapps/caGridTransfer/WEB-INF/classes/server.properties" token="WEBAPP_CONTEXT" value="wsrf">
 		</replace>
+	</target>
+	
+	<target name="_delete.tomcat.bcprov" if="bcprov.present">
+		<delete verbose="true" file="${ext.tomcat.dir}/common/lib/bcprov-jdk15-145.jar" />
+	</target>
+
+	<target name="_delete.tomcat.jglobus2" if="jglobus2.present">
+		<delete verbose="true" file="${ext.tomcat.dir}/common/lib/JGlobus-Core-2.0.3.jar" />
 	</target>
 
 	<target name="deployJBoss" depends="checkJBoss,checkGlobus" description="Deploys this webapp to tomcat">
@@ -344,9 +360,27 @@
 				<include name="xercesImpl.jar" />
 				<include name="xml-apis.jar" />
 				<include name="xmlsec.jar" />
+				<include name="bcprov-jdk15-*.jar" />
+				<include name="JGlobus-Core-2.0.*.jar" />
 			</fileset>
 		</copy>
+		
+		<!-- Delete files that have already been installed to common/lib to prevent classloader conflicts -->
+		<available file="${ext.jboss.dir}/server/default/lib/bcprov-jdk15-145.jar" type="file" property="bcprov.present" />
+		<antcall target="_delete.jboss.bcprov" />
+		<available file="${ext.jboss.dir}/server/default/lib/JGlobus-Core-2.0.3.jar" type="file" property="jglobus2.present" />
+		<antcall target="_delete.jboss.jglobus2" />
+
 		<replace file="${ext.jboss.dir}/server/default/deploy/caGridTransfer.war/WEB-INF/classes/server.properties" token="WEBAPP_CONTEXT" value="wsrf.war">
 		</replace>
 	</target>
+	
+	<target name="_delete.jboss.bcprov" if="bcprov.present">
+		<delete verbose="true" file="${ext.jboss.dir}/server/default/lib/bcprov-jdk15-145.jar" />
+	</target>
+
+	<target name="_delete.jboss.jglobus2" if="jglobus2.present">
+		<delete verbose="true" file="${ext.jboss.dir}/server/default/lib/JGlobus-Core-2.0.3.jar" />
+	</target>
+
 </project>
