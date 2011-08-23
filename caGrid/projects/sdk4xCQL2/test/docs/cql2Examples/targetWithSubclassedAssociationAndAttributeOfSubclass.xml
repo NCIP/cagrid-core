@@ -5,7 +5,7 @@
 			<CQLAttribute name="expandable">
 				<BinaryPredicate>EQUAL_TO</BinaryPredicate>
 				<AttributeValue>
-					<BooleanValue>TRUE</BooleanValue>
+					<BooleanValue>true</BooleanValue>
 				</AttributeValue>
 			</CQLAttribute>
 		</CQLAssociatedObject>
