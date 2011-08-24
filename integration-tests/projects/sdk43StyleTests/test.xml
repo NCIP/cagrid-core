@@ -5,20 +5,24 @@
 	<property name="testing.containers.dir" value="${basedir}/../testUtils/containers"/>
 	<property name="sdk.checkout.dir" location="${basedir}/sdk/checkout"/>
 	<property name="sdk.temp.dir" location="${basedir}/sdk/temp"/>
+	<property name="sdk43.tests.base.dir" location="${basedir}"/>
 	<property file="${test.dir}/resources/sdk43.test.database.properties"/>
 
 	<!-- ============================================================== -->
 	<!-- Call any tests.                                                -->
 	<!-- ============================================================== -->
-	<target name="test" depends="integrationTests" description="Runs the unit and integration tests"/>
+	<target name="test" depends="testIntegration, testUpgrade" description="Runs the unit and integration tests">
+		<fail if="${integration.test.failed}" message="Integration tests failed!  Consult the test logs."/>
+		<fail if="${upgrade.test.failed}" message="Upgrade tests failed! Consult the test logs."/>
+	</target>
 
 
-	<target name="integrationTests" depends="prepare, createSdkIsoExampleApplication" description="Runs the SDK integration tests">
+	<target name="testIntegration" depends="prepare, createSdkIsoExampleApplication" description="Runs the SDK integration tests">
 		<echo message="Test results dir: ${junit.results.dir}"/>
 		<mkdir dir="${junit.results.dir}"/>
 		<property name="sdk43.tests.base.dir" location="${basedir}"/>
 		<property name="created.sdk.client.dir" value="${sdk.checkout.dir}/sdk-toolkit/iso-example-project/target/dist/exploded/output/isoExample/package/local-client"/>
-		<junit dir="${introduce.dir}" printsummary="yes" errorproperty="test.failed" failureproperty="test.failed" showoutput="true" forkmode="once">
+		<junit dir="${introduce.dir}" printsummary="yes" errorproperty="integration.test.failed" failureproperty="integration.test.failed" showoutput="true" forkmode="once">
 			<!-- is this needed any more? -->
 			<sysproperty key="introduce.base.dir" value="${introduce.dir}" />
 			<sysproperty key="sdk43.tests.base.dir" value="${sdk43.tests.base.dir}"/>
@@ -51,8 +55,32 @@
 		<delete dir="${sdk.checkout.dir}"/>
 		-->
 		<delete dir="${sdk.temp.dir}"/>
-		<!-- did the tests fail?? -->
-		<fail if="test.failed" message="Tests failed! Check the test reports."/>
+	</target>
+	
+	
+	<target name="testUpgrade" depends="prepare" description="Tests the ability to upgrade SDK 4.3 data services">
+		<mkdir dir="${junit.results.dir}"/>
+		<junit dir="${introduce.dir}" printsummary="yes" errorproperty="upgrade.test.failed" failureproperty="upgrade.test.failed" showoutput="true" fork="yes" forkmode="once">
+			<sysproperty key="build.dirs" value="${classes.dir}" />
+			<sysproperty key="introduce.base.dir" value="${introduce.dir}" />
+			<sysproperty key="sdk43.tests.base.dir" value="${sdk43.tests.base.dir}" />
+			<sysproperty key="testing.containers.dir" value="${testing.containers.dir}" />
+			<sysproperty key="upgrade.services.zip.dir" value="${basedir}/resources/services" />
+			<sysproperty key="temp.test.service.dir" value="${basedir}/temp" />
+			<classpath refid="integration.test.run.classpath" />
+			<!-- also needs the other extensions (such as metadata) to be upgraded, so need their upgraders on the classpath -->
+			<classpath>
+				<fileset dir="${introduce.dir}/extensions/lib">
+					<include name="*.jar" />
+				</fileset>
+			</classpath>
+			<formatter type="xml" />
+			<batchtest fork="yes" todir="${junit.results.dir}">
+				<fileset dir="${test.src.dir}">
+					<include name="**/*UpgradeTest.java" />
+				</fileset>
+			</batchtest>
+		</junit>
 	</target>
 
 
