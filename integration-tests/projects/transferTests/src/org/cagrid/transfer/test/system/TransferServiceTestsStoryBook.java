@@ -13,12 +13,12 @@ public class TransferServiceTestsStoryBook {
     @Test
     public void systemTestTransferService() throws Throwable {
     	Story s1 = new TransferServiceTest(ServiceContainerFactory
-            .createContainer(ServiceContainerType.TOMCAT_5_CONTAINER));
+            .createContainer(ServiceContainerType.TOMCAT_6_CONTAINER));
     	
     	s1.runBare();
 
     	Story s2 = new TransferServiceTest(ServiceContainerFactory
-            .createContainer(ServiceContainerType.SECURE_TOMCAT_5_CONTAINER));
+            .createContainer(ServiceContainerType.SECURE_TOMCAT_6_CONTAINER));
 
     	s2.runBare();
     }

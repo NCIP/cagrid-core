@@ -20,6 +20,7 @@ import org.oasis.wsrf.properties.GetResourcePropertyResponse;
 import org.globus.common.CoGProperties;
 import org.globus.gsi.GlobusCredential;
 
+import org.cagrid.transfer.descriptor.DataDescriptor;
 import org.cagrid.transfer.system.test.stubs.TransferSystemTestPortType;
 import org.cagrid.transfer.system.test.stubs.service.TransferSystemTestServiceAddressingLocator;
 import org.cagrid.transfer.system.test.common.TransferSystemTestI;
@@ -100,9 +101,15 @@ public class TransferSystemTestClient extends TransferSystemTestClientBase imple
 
                     System.out.println("writing data to service at: " + desc.getUrl());
                     String testString = "Testing the TrasferService";
-                    org.cagrid.transfer.context.client.helper.TransferClientHelper.putData(new ByteArrayInputStream(
-                        testString.getBytes()), testString.getBytes().length, desc, creds);
-
+                    InputStream is = new ByteArrayInputStream(testString.getBytes());
+                    if (creds == null) {
+                        org.cagrid.transfer.context.client.helper.TransferClientHelper.putData(
+                            is, testString.length(), desc);
+                    } else {
+                        org.cagrid.transfer.context.client.helper.TransferClientHelper.putData(
+                            is, testString.length(), desc, creds);
+                    }
+                    
                     System.out.println("setting status to Staged");
                     tclient.setStatus(org.cagrid.transfer.descriptor.Status.Staged);
 
@@ -127,8 +134,15 @@ public class TransferSystemTestClient extends TransferSystemTestClientBase imple
                     }
 
                     System.out.println("reading data from service");
-                    java.io.InputStream istream = org.cagrid.transfer.context.client.helper.TransferClientHelper
-                        .getData(tclient.getDataTransferDescriptor(), creds);
+                    java.io.InputStream istream = null;
+                    if (creds == null) {
+                        istream = org.cagrid.transfer.context.client.helper.TransferClientHelper
+                            .getData(tclient.getDataTransferDescriptor());
+                    } else {
+                        istream = org.cagrid.transfer.context.client.helper.TransferClientHelper
+                            .getData(tclient.getDataTransferDescriptor(), creds);
+                    }
+                        
                     java.io.InputStreamReader reader = new java.io.InputStreamReader(istream);
                     java.lang.StringBuffer str = new java.lang.StringBuffer();
                     char[] buff = new char[8192];
@@ -140,7 +154,7 @@ public class TransferSystemTestClient extends TransferSystemTestClientBase imple
 
                     System.out.println("comparing data sent to data recieved");
                     if (str.toString().equals(testString)) {
-                        System.out.println("dataOK");
+                        System.out.println("data OK");
                     } else {
                         System.out.println("data recieved does not match data sent");
                         System.out.println("Sent:");
@@ -155,7 +169,13 @@ public class TransferSystemTestClient extends TransferSystemTestClientBase imple
 
                     System.out.println("try to receive that data again after destroyed");
                     try {
-                        istream = org.cagrid.transfer.context.client.helper.TransferClientHelper.getData(desc, creds);
+                        if (creds == null) {
+                            istream = org.cagrid.transfer.context.client.helper.TransferClientHelper
+                                .getData(tclient.getDataTransferDescriptor());
+                        } else {
+                            istream = org.cagrid.transfer.context.client.helper.TransferClientHelper
+                                .getData(tclient.getDataTransferDescriptor(), creds);
+                        }
                         reader = new java.io.InputStreamReader(istream);
                         str = new java.lang.StringBuffer();
                         len = 0;
