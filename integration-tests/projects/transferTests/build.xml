@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 
 <!-- ================================================================= -->
-<!-- Generic build file                                                    -->
+<!-- Generic build file                                                -->
 <!-- ================================================================= -->
 
 <project name="TransferTests" default="compile" basedir=".">
@@ -151,7 +151,7 @@
 	<target name="test" depends="setGlobus,defineClasspaths" description="Runs the service's tests.">
 		<echo message="Test results dir: ${junit.results.dir}" />
 		<mkdir dir="${junit.results.dir}" />
-		<junit dir="${introduce.dir}" printsummary="yes" showoutput="true">
+		<junit dir="${introduce.dir}" printsummary="yes" showoutput="true" failureproperty="tests.failed" errorproperty="tests.failed">
 			<sysproperty key="testing.containers.dir" value="${basedir}/ext/dependencies/resources/containers" />
 			<sysproperty key="GLOBUS_LOCATION" value="${ext.globus.dir}" />
 			<sysproperty key="resources.dir" value="${introduce.dir}/resources" />
@@ -167,11 +167,11 @@
 			<formatter type="xml" />
 			<batchtest fork="yes" todir="${junit.results.dir}">
 				<fileset dir="${src.dir}">
-					<include name="**/*StoryBook.java" />
+					<include name="**/*SystemTest.java" />
 				</fileset>
 			</batchtest>
 		</junit>
+		<fail if="tests.failed" message="Tests failed! Consult the test logs."/>
 	</target>
-
 </project>
 

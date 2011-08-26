@@ -12,10 +12,11 @@ import gov.nih.nci.cagrid.testing.system.deployment.steps.DestroyContainerStep;
 import gov.nih.nci.cagrid.testing.system.deployment.steps.StartContainerStep;
 import gov.nih.nci.cagrid.testing.system.deployment.steps.StopContainerStep;
 import gov.nih.nci.cagrid.testing.system.deployment.steps.UnpackContainerStep;
-import gov.nih.nci.cagrid.testing.system.deployment.story.ServiceStoryBase;
 import gov.nih.nci.cagrid.testing.system.haste.Step;
+import gov.nih.nci.cagrid.testing.system.haste.Story;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Vector;
@@ -30,27 +31,14 @@ import org.cagrid.transfer.test.system.steps.CopyProxyStep;
 import org.cagrid.transfer.test.system.steps.InvokeClientStep;
 
 
-public class TransferServiceTest extends ServiceStoryBase {
+public abstract class TransferServiceTest extends Story {
 
     private TestCaseInfo tci = new TransferTestCaseInfo();
-
-
-    public TransferServiceTest(ServiceContainer container) {
-        super(container);
-        PropertyConfigurator.configure("." + File.separator + "conf" + File.separator + "log4j.properties");
-    }
-
+    private ServiceContainer container = null;
+    
 
     public TransferServiceTest() {
-        PropertyConfigurator.configure("." + File.separator + "conf" + File.separator + "introduce" + File.separator
-            + "log4j.properties");
-        // init the container
-        try {
-            this.setContainer(ServiceContainerFactory.createContainer(ServiceContainerType.TOMCAT_6_CONTAINER));
-        } catch (Exception ex) {
-            ex.printStackTrace();
-            fail("Failed to create container: " + ex.getMessage());
-        }
+        PropertyConfigurator.configure("." + File.separator + "conf" + File.separator + "log4j.properties");
     }
 
 
@@ -60,11 +48,34 @@ public class TransferServiceTest extends ServiceStoryBase {
 
 
     public String getDescription() {
-        if (getContainer().getProperties().isSecure()) {
-            return "Secure Transfer Service Test";
+        String description = "Transfer Service Test";
+        if (streamingTest()) {
+            description = "Streaming " + description;
         }
-        return "Transfer Service Test";
+        if (getContainer().getProperties().isSecure()) {
+            description = "Secure " + description; 
+        }
+        return description;
     }
+    
+    
+    private synchronized ServiceContainer getContainer() {
+        if (container == null) {
+            try {
+                container = ServiceContainerFactory.createContainer(secureTest() ? 
+                    ServiceContainerType.SECURE_TOMCAT_6_CONTAINER : ServiceContainerType.TOMCAT_6_CONTAINER);
+            } catch (IOException ex) {
+                ex.printStackTrace();
+                fail("Error creating service container: " + ex.getMessage());
+            }
+        }
+        return container;
+    }
+    
+    
+    protected abstract boolean streamingTest();
+    
+    protected abstract boolean secureTest();
 
 
     protected Vector<Step> steps() {
@@ -75,25 +86,26 @@ public class TransferServiceTest extends ServiceStoryBase {
             steps.add(new DeployServiceStep(getContainer(), "../transfer", deploymentArgs));
 
             steps.add(new CreateSkeletonStep(tci, false));
+            
             steps.add(new AddCreateTransferMethodStep(tci, getContainer(), false));
             steps.add(new AddCreateTransferMethodImplStep(tci, false));
-            if (getContainer() instanceof SecureContainer) {
+            
+            if (streamingTest()) {
+                steps.add(new AddCreateStreamingTransferMethodStep(tci, getContainer(), false));
+                steps.add(new AddCreateStreamingTransferMethodImplStep(tci, false));
+            }
+            
+            if (getContainer().getProperties().isSecure()) {
                 steps.add(new CopyProxyStep((SecureContainer) getContainer(), tci));
                 steps.add(new CopyCAStep((SecureContainer) getContainer(), tci));
             }
+            
             steps.add(new DeployServiceStep(getContainer(), tci.getDir()));
             steps.add(new StartContainerStep(getContainer()));
-
+            
             steps.add(new InvokeClientStep(getContainer(), tci));
 
             steps.add(new StopContainerStep(getContainer()));
-
-            steps.add(new AddCreateStreamingTransferMethodStep(tci, getContainer(), false));
-            steps.add(new AddCreateStreamingTransferMethodImplStep(tci, false));
-            steps.add(new DeployServiceStep(getContainer(), tci.getDir()));
-            steps.add(new StartContainerStep(getContainer()));
-
-            steps.add(new InvokeClientStep(getContainer(), tci));
         } catch (Exception e) {
             e.printStackTrace();
         }
