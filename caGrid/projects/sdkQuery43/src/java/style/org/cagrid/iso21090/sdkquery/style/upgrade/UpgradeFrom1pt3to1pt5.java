@@ -13,6 +13,7 @@ import gov.nih.nci.cagrid.introduce.extension.utils.AxisJdomUtils;
 import gov.nih.nci.cagrid.introduce.upgrade.common.ExtensionUpgradeStatus;
 
 import java.io.File;
+import java.io.FileFilter;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -67,6 +68,33 @@ public class UpgradeFrom1pt3to1pt5 implements StyleVersionUpgrader {
             Utils.copyFile(upgradeLib, copyLib);
             addedLibs.add(copyLib.getName());
             String message = "Copied new library: " + upgradeLib.getName();
+            LOG.debug(message);
+            status.addDescriptionLine(message);
+        }
+        // the names of the ISO 21090 analytical service extension jars changed from 1.3 to 1.5
+        File[] iso21090analyticalLibs = new File("extensions" + File.separator + "lib").listFiles(new FileFilter() {
+            public boolean accept(File pathname) {
+                String name = pathname.getName();
+                return name.startsWith("caGrid-iso21090-analytical") && name.endsWith(".jar");
+            }
+        });
+        for (File isoLib : iso21090analyticalLibs) {
+            File copyLib = new File(serviceLibDir, isoLib.getName());
+            Utils.copyFile(isoLib, copyLib);
+            String message = "Copied ISO 21090 support library " + isoLib.getName();
+            LOG.debug(message);
+            status.addDescriptionLine(message);
+        }
+        File[] neededIntroduceLibs = new File("build" + File.separator + "jars").listFiles(new FileFilter() {
+            public boolean accept(File pathname) {
+                String name = pathname.getName();
+                return name.startsWith("caGrid-Introduce-core") && name.endsWith(".jar");
+            }
+        });
+        for (File introduceLib : neededIntroduceLibs) {
+            File copyLib = new File(serviceLibDir, introduceLib.getName());
+            Utils.copyFile(introduceLib, copyLib);
+            String message = "Copied Introduce support library " + introduceLib.getName();
             LOG.debug(message);
             status.addDescriptionLine(message);
         }
