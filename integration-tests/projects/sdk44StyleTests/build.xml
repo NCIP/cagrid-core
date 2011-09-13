@@ -1,0 +1,180 @@
+<?xml version="1.0"?>
+<!-- ================================================================= -->
+<!-- caGrid sdkQuery44 build file                       			   -->
+<!-- ================================================================= -->
+
+<project name="caGrid-sdkQuery44StyleTests" default="all" basedir=".">
+	<!-- Environment -->
+	<property environment="env" />
+	<property file="${basedir}/project.properties" />
+	<property file="${basedir}/build.properties" />
+	<property name="globus.dir" location="${env.GLOBUS_LOCATION}" />
+
+	<!-- Information -->
+	<property name="project.name" value="${ant.project.name}" />
+	<property name="java.source" value="1.6" />
+
+	<property name="build.dir" value="${basedir}/build" />
+	<property name="javadoc.dir" value="${build.dir}/javadoc" />
+	<property name="jar.dir" value="${build.dir}/jars" />
+	<property name="ext.dir" value="${basedir}/ext" />
+	<property name="ext.test.lib.dir" location="${ext.dir}/dependencies/test/jars"/>
+	<property name="sdk.client.dir" location="${basedir}/sdk/local-client"/>
+	<property name="sdk.lib.dir" location="${sdk.client.dir}/lib"/>
+	<property name="sdk.conf.dir" location="${sdk.client.dir}/conf"/>
+	
+	<!-- location of the SDK 4.4 zip -->
+	<property name="sdk.zip.file" location="${ext.dir}/dependencies/cacore/SDK-bin-4.4.zip"/>
+
+	<!-- testing stuff -->
+	<property name="src.dir" location="${basedir}/src/java" />
+	<property name="classes.dir" location="${build.dir}/classes" />
+	<property name="test.logs.dir" location="${basedir}/logs" />
+	<property name="project.jar" location="${jar.dir}/${project.name}-${project.version}.jar" />
+	<property name="resources.jar" location="${jar.dir}/${project.name}-resources-${project.version}.jar"/>
+	
+	<!-- style related stuff -->
+	<property name="introduce.zip" location="${ext.dir}/dependencies/introduce-test/introduce-with-data-extension-1.4.zip"/>
+	<property name="introduce.dir" location="${ext.dir}/dependencies/introduce-test/introduce" />
+	
+	<import file="test.xml"/>
+	
+
+	<!-- =============================================================== -->
+	<!-- The Build Classpath                                             -->
+	<!-- =============================================================== -->
+	<path id="build.classpath">
+		<fileset dir="${sdk.lib.dir}">
+			<include name="**/*.jar"/>
+			<exclude name="castor*.jar"/>
+			<exclude name="**/caGrid-*.jar"/>
+		</fileset>
+		<fileset dir="${ext.test.lib.dir}">
+			<include name="**/*.jar" />
+		</fileset>
+		<fileset dir="${globus.dir}/lib">
+			<include name="**/*.jar" />
+			<exclude name="junit.jar" />
+		</fileset>
+	</path>
+	
+
+	<!-- =============================================================== -->
+	<!-- The Test Classpath                                              -->
+	<!-- =============================================================== -->
+	<path id="test.build.classpath">
+		<path refid="build.classpath"/>
+	</path>
+	
+	<path id="unit.test.run.classpath">
+		<fileset dir="${jar.dir}">
+			<include name="**/*.jar"/>
+		</fileset>
+		<fileset dir="${ext.test.lib.dir}">
+			<include name="**/*.jar"/>
+		</fileset>
+		<fileset dir="${sdk.lib.dir}">
+			<include name="**/*.jar"/>
+			<exclude name="castor*.jar"/>
+			<exclude name="**/caGrid-iso*.jar"/>
+		</fileset>
+		<fileset dir="${globus.dir}/lib">
+			<include name="**/*.jar" />
+			<exclude name="junit.jar" />
+		</fileset>
+		<pathelement path="${sdk.conf.dir}"/>
+		<pathelement path="${test.classes.dir}" />
+	</path>
+	
+	<path id="integration.test.run.classpath">
+		<fileset dir="${jar.dir}">
+			<include name="**/*.jar"/>
+		</fileset>
+		<fileset dir="${ext.test.lib.dir}">
+			<include name="*.jar" />
+		</fileset>
+		<fileset dir="${globus.dir}/lib">
+			<include name="*.jar" />
+			<exclude name="junit.jar" />
+		</fileset>
+		<!--
+		<fileset dir="${sdk.lib.dir}">
+			<include name="**/*-beans.jar"/>
+			<exclude name="**/caGrid-iso*.jar"/>
+		</fileset>
+		-->
+		<!-- TODO: this is probably OK, but generally we're getting
+			away from the use of the Introduce extensions lib
+			on the classpath -->
+		<fileset dir="${introduce.dir}/extensions/lib">
+			<include name="**/*iso*.jar"/>
+		</fileset>
+	</path>
+
+
+	<!-- =============================================================== -->
+	<!-- Prepares the build directory                                    -->
+	<!-- =============================================================== -->
+	<target name="prepare">
+		<tstamp />
+		<mkdir dir="${build.dir}" />
+	</target>
+	
+	
+	<target name="unpackIntroduce">
+		<dirname file="${introduce.zip}" property="introduce.unzip.location"/>
+		<unzip src="${introduce.zip}" dest="${introduce.unzip.location}"/>
+	</target>
+
+	
+	<!-- =============================================================== -->
+	<!-- Compiles the tests source code                                  -->
+	<!-- =============================================================== -->
+	<target name="compile" depends="prepare" description="compiles tests.">
+		<mkdir dir="${classes.dir}" />
+		<javac srcdir="${src.dir}" destdir="${classes.dir}" source="${java.source}" debug="on" deprecation="off" optimize="off">
+			<classpath refid="test.build.classpath" />
+		</javac>
+	</target>
+
+
+	<!-- ============================================================== -->
+	<!-- Cleans up generated stuff                                      -->
+	<!-- ============================================================== -->
+	<target name="clean" depends="" description="Removes generated files.">
+		<delete dir="${build.dir}" />
+	</target>
+
+
+	<!-- ============================================================== -->
+	<!-- Creates the test jar files                                     -->
+	<!-- ============================================================== -->
+	<target name="jar" depends="compile" description="Builds the test Jar Files">
+		<mkdir dir="${jar.dir}" />
+		<jar jarfile="${project.jar}">
+			<manifest>
+				<attribute name="Built-By" value="${user.name}" />
+				<attribute name="Specification-Version" value="${project.version}" />
+				<attribute name="Implementation-Version" value="${project.version}" />
+			</manifest>
+			<fileset dir="${src.dir}">
+				<include name="**/*"/>
+			</fileset>
+			<fileset dir="${classes.dir}">
+				<include name="**/*"/>
+			</fileset>
+		</jar>
+		<jar jarfile="${resources.jar}">
+			<fileset dir="${basedir}">
+				<include name="resources/**"/>
+			</fileset>
+		</jar>
+	</target>
+
+
+	<!-- ============================================================== -->
+	<!-- Builds from scratch                                            -->
+	<!-- ============================================================== -->
+	<target name="all" description="Builds the entire application" depends="jar" />
+</project>
+
