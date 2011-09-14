@@ -175,14 +175,14 @@
 	<!-- =================================================================== -->
 	<!-- Compiles the source code                                            -->
 	<!-- =================================================================== -->
-	<target name="compile" depends="prepare, generateJETClasses" description="Compiles all the
+	<target name="compile" depends="prepare, generateJETClasses, prepareIntroduce, preparePortal, prepareUpdateManager" description="Compiles all the
 		source files.">
 		<compileSubproject name="Bootstrap"/>
 		<compileSubproject name="Introduce" />
 		<compileSubproject name="Portal" />
 		<compileSubproject name="UpdateManager" />
 	</target>
-	<target name="compile-tests" depends="compile" description="Compiles all the test source files.">
+	<target name="compile-tests" depends="compile, prepareIntroduce, preparePortal, prepareUpdateManager" description="Compiles all the test source files.">
 		<compileSubprojectTests name="Introduce" />
 		<compileSubprojectTests name="Portal" />
 		<compileSubprojectTests name="UpdateManager" />

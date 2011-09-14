@@ -162,7 +162,7 @@
 	<!-- =============================================================== -->
 	<!-- Prepares the build directory                                    -->
 	<!-- =============================================================== -->
-	<target name="prepare" depends="checkContribTasksDefined, defineContribTasks, checkGlobus, configure">
+	<target name="prepare" depends="checkContribTasksDefined, defineContribTasks, checkGlobus, configure, defineClasspaths">
 		<tstamp />
 		<mkdir dir="${build.dir}" />
 	</target>
@@ -210,7 +210,7 @@
 	<!-- =============================================================== -->
 	<!-- Compiles the source code                                        -->
 	<!-- =============================================================== -->
-	<target name="compileStubs" depends="serviceStubs">
+	<target name="compileStubs" depends="serviceStubs, defineClasspaths">
 		<mkdir dir="${stubs.classes.dir}" />
 		<javac srcdir="${stubs.src}" destdir="${stubs.classes.dir}" source="1.5" debug="on">
 			<classpath refid="build.classpath" />
