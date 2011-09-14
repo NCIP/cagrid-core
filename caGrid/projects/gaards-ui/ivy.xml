@@ -45,7 +45,7 @@
     <dependency rev="syncgts-patched-4.0.3" org="globus" name="jcog" conf="gts->default"/>
    
     <dependency rev="4.0.3" org="globus" name="ws-core" conf="gts->default"/>
-    <dependency rev="2.1.0" org="org.apache.ivy" name="ivy" conf="gts->default"/>
+    <dependency rev="2.2.0" org="org.apache.ivy" name="ivy" conf="gts->default"/>
     
     <dependency rev="1.0b3" org="ant-contrib" name="ant-contrib" conf="base->*"/>
 
