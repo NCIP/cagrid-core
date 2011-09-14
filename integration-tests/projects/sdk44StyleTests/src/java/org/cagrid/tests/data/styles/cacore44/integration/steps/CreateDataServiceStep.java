@@ -20,12 +20,12 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.cagrid.data.test.creation.CreationStep;
 import org.cagrid.data.test.creation.DataTestCaseInfo;
-import org.cagrid.iso21090.sdkquery44.style.wizard.config.AbstractStyleConfigurationStep;
-import org.cagrid.iso21090.sdkquery44.style.wizard.config.DomainModelConfigurationStep;
-import org.cagrid.iso21090.sdkquery44.style.wizard.config.ProjectSelectionConfigurationStep;
-import org.cagrid.iso21090.sdkquery44.style.wizard.config.SchemaMappingConfigStep;
-import org.cagrid.iso21090.sdkquery44.style.wizard.config.SecurityConfigurationStep;
-import org.cagrid.iso21090.sdkquery44.style.wizard.config.DomainModelConfigurationStep.DomainModelConfigurationSource;
+import org.cagrid.data.sdkquery44.style.wizard.config.AbstractStyleConfigurationStep;
+import org.cagrid.data.sdkquery44.style.wizard.config.DomainModelConfigurationStep;
+import org.cagrid.data.sdkquery44.style.wizard.config.ProjectSelectionConfigurationStep;
+import org.cagrid.data.sdkquery44.style.wizard.config.SchemaMappingConfigStep;
+import org.cagrid.data.sdkquery44.style.wizard.config.SecurityConfigurationStep;
+import org.cagrid.data.sdkquery44.style.wizard.config.DomainModelConfigurationStep.DomainModelConfigurationSource;
 import org.cagrid.tests.data.styles.cacore44.integration.ExampleProjectInfo;
 import org.cagrid.tests.data.styles.cacore44.integration.SDK44ServiceStyleSystemTestConstants;
 

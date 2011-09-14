@@ -8,10 +8,10 @@ import java.io.File;
 import java.io.InputStream;
 import java.util.List;
 
-import org.cagrid.iso21090.sdkquery44.translator.CQL2ParameterizedHQL;
-import org.cagrid.iso21090.sdkquery44.translator.HibernateConfigTypesInformationResolver;
-import org.cagrid.iso21090.sdkquery44.translator.IsoDatatypesConstantValueResolver;
-import org.cagrid.iso21090.sdkquery44.translator.ParameterizedHqlQuery;
+import org.cagrid.data.sdkquery44.translator.CQL2ParameterizedHQL;
+import org.cagrid.data.sdkquery44.translator.HibernateConfigTypesInformationResolver;
+import org.cagrid.data.sdkquery44.translator.IsoDatatypesConstantValueResolver;
+import org.cagrid.data.sdkquery44.translator.ParameterizedHqlQuery;
 import org.hibernate.cfg.Configuration;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.FileSystemXmlApplicationContext;
