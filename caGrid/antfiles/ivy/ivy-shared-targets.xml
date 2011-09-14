@@ -92,7 +92,7 @@
 	<target name="do.resolve-configure-dependencies" depends="pre.resolve-configure-dependencies" if="configure.supported">
 		<echo message="Resolving configure dependencies for ${ivy.module}." />
 		<!-- Ask Ivy to copy our artifacts into the project -->
-		<ivy:retrieve conf="${ivy.resolve.configure.configurations}" pattern="${ivy.resolved.artifacts.dir}/target_grid/[artifact].[ext]" sync="true" />
+		<ivy:retrieve conf="${ivy.resolve.configure.configurations}" pattern="${ivy.resolved.artifacts.dir}/target_grid/[artifact].[ext]" sync="true" overwriteMode="different" />
 	</target>
 	<target name="post.resolve-configure-dependencies" depends="do.resolve-configure-dependencies" if="configure.supported">
 		<!-- Tell the project to configure itself -->
@@ -103,7 +103,7 @@
 	<!-- ================================================== -->
 	<!-- ===== RESOLVE-DEPENDENCIES ===== -->
 	<!-- ================================================== -->
-	<target name="resolve-dependencies" depends="pre.resolve-dependencies,do.resolve-dependencies,post.resolve-dependencies" description="This target is used to resolve the project's dependencies, and copy them locally" />
+	<target name="resolve-dependencies" depends="init-ivy,pre.resolve-dependencies,do.resolve-dependencies,post.resolve-dependencies" description="This target is used to resolve the project's dependencies, and copy them locally" />
 	<target name="pre.resolve-dependencies" depends="resolve-configure-dependencies">
 		<!-- Ask Ivy to figure out what we need and cache it -->
 		<ivy:resolve />
@@ -111,7 +111,7 @@
 	<target name="do.resolve-dependencies" depends="pre.resolve-dependencies">
 		<echo message="Resolving dependencies for ${ivy.module}." />
 		<!-- Ask Ivy to copy our artifacts into the project -->
-		<ivy:retrieve conf="${ivy.resolve.configurations}" pattern="${ivy.resolved.artifacts.pattern}" sync="true" />
+		<ivy:retrieve conf="${ivy.resolve.configurations}" pattern="${ivy.resolved.artifacts.pattern}" sync="true" overwriteMode="different"/>
 	</target>
 	<target name="post.resolve-dependencies" depends="do.resolve-dependencies">
 		<!-- Ask Ivy to generate us a dependency report -->

@@ -1,12 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ivysettings>
   <settings defaultResolver="caGrid-ivy-resolver" circularDependencyStrategy="error"/>
-  <!--
-    TODO: I had to set checkUpToDate="false" so target grids would resolve properly...
-    The cache was correct, but it was not copying artifacts to projects if the previous date was newer than the new date
-    It should retrieve the necessary version regardless of the date... not sure why it does that.   
-  -->
-  <caches checkUpToDate="false" defaultCacheDir="${user.dir}/.cache" useOrigin="true">
+  
+  <caches defaultCacheDir="${user.dir}/.cache" useOrigin="true">
    <cache name="remote" basedir="${user.dir}/.cache-remote" useOrigin="false" />
   </caches>
 
