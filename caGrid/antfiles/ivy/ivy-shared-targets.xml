@@ -83,7 +83,7 @@
 	<!-- ================================================== -->
 	<!-- ===== RESOLVE-CONFIGURE-DEPENDENCIES ===== -->
 	<!-- ================================================== -->
-	<target name="resolve-configure-dependencies" if="configure.supported" depends="pre.resolve-configure-dependencies,do.resolve-configure-dependencies,post.resolve-configure-dependencies" description="This target is used to resolve the project's configure-time dependencies, and copy them locally" />
+	<target name="resolve-configure-dependencies" if="configure.supported" depends="init-ivy,pre.resolve-configure-dependencies,do.resolve-configure-dependencies,post.resolve-configure-dependencies" description="This target is used to resolve the project's configure-time dependencies, and copy them locally" />
 
 	<target name="pre.resolve-configure-dependencies" if="configure.supported">
 		<!-- Ask Ivy to figure out what we need and cache it -->

@@ -20,7 +20,7 @@ public class Version {
      * @return
      */
     public static final int getMajorReleaseVersion() {
-        return 4;
+        return 6;
     }
     
     
@@ -31,7 +31,7 @@ public class Version {
      * @return
      */
     public static final int getMinorReleaseVersion() {
-        return 1;
+        return 0;
     }
     
     

@@ -73,7 +73,7 @@
 		</if>
 	</target>
 	
-	<target name="introduce" depends="checkGlobus, checkAntOpts" description="Execute the Introduce GDE">
+	<target name="introduce" depends="checkGlobus, checkAntOpts, preparePortal" description="Execute the Introduce GDE">
 		<runPortal/>
 		<runUpdater/>
 		<antcall target="reRunIntroduce" />
