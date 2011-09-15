@@ -2,6 +2,7 @@ package gov.nih.nci.cagrid.data.ui.auditors;
 
 import gov.nih.nci.cagrid.common.Utils;
 import gov.nih.nci.cagrid.common.portal.PortalLookAndFeel;
+import gov.nih.nci.cagrid.data.DataServiceConstants;
 import gov.nih.nci.cagrid.data.auditing.AuditorConfiguration;
 import gov.nih.nci.cagrid.data.auditing.AuditorConfigurationConfigurationProperties;
 import gov.nih.nci.cagrid.data.auditing.ConfigurationProperty;
@@ -10,6 +11,8 @@ import gov.nih.nci.cagrid.data.auditing.MonitoredEvents;
 import gov.nih.nci.cagrid.data.common.ExtensionDataManager;
 import gov.nih.nci.cagrid.data.service.auditing.DataServiceAuditor;
 import gov.nih.nci.cagrid.data.ui.DataServiceModificationSubPanel;
+import gov.nih.nci.cagrid.introduce.beans.property.ServicePropertiesProperty;
+import gov.nih.nci.cagrid.introduce.common.CommonTools;
 import gov.nih.nci.cagrid.introduce.common.ServiceInformation;
 
 import java.awt.GridBagConstraints;
@@ -165,6 +168,17 @@ public class AuditorsConfigurationPanel extends DataServiceModificationSubPanel 
     
     
     private void addAuditor(DataServiceAuditor auditor, String className, String instanceName) {
+        // check if the auditor config file property exists.  If not, create it.
+        if (!CommonTools.servicePropertyExists(
+            getServiceInfo().getServiceDescriptor(), 
+            DataServiceConstants.DATA_SERVICE_AUDITORS_CONFIG_FILE_PROPERTY)) {
+            // create the default service property
+            ServicePropertiesProperty property = new ServicePropertiesProperty(
+                "", Boolean.TRUE,
+                DataServiceConstants.DATA_SERVICE_AUDITORS_CONFIG_FILE_PROPERTY, 
+                DataServiceConstants.DATA_SERVICE_AUDITORS_CONFIG_FILE_NAME);
+            CommonTools.addServicePropety(getServiceInfo().getServiceDescriptor(), property);
+        }
         // add the auditor to the auditors description
         try {
             DataServiceAuditors auditorsDescription = getExtensionDataManager().getAuditorsConfiguration();
