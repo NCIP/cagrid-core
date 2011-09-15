@@ -32,7 +32,7 @@
 
 
 	<!-- calls every test -->
-	<target name="test" depends="testCreations, testUpgrades, systemTest" description="Runs all system and non-system tests">
+	<target name="test" depends="prepareClasspaths, testCreations, testUpgrades, systemTest" description="Runs all system and non-system tests">
 		<delete dir="${basedir}/test_services"/>
 		<delete dir="${basedir}/tmp"/>
 	</target>

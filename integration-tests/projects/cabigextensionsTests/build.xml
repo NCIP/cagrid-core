@@ -124,7 +124,7 @@
 	</target>
 
 
-	<target name="test" description="Runs tests">
+	<target name="test"  depends="defineClasspaths" description="Runs tests">
 		<mkdir dir="${junit.results.dir}" />
 		<junit dir="${introduce.dir}" printsummary="yes" haltonerror="${halt.on.error}" haltonfailure="${halt.on.error}" errorproperty="test.failed" failureproperty="test.failed" showoutput="true" fork="yes" forkmode="once">
 			<sysproperty key="basedir" value="${introduce.dir}" />
