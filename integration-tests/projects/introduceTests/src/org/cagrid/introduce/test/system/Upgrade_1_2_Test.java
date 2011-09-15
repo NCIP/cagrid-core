@@ -1,5 +1,6 @@
 package org.cagrid.introduce.test.system;
 
+import gov.nih.nci.cagrid.common.Utils;
 import gov.nih.nci.cagrid.introduce.test.TestCaseInfo;
 import gov.nih.nci.cagrid.introduce.test.TestCaseInfoMain;
 import gov.nih.nci.cagrid.introduce.test.steps.RemoveSkeletonStep;
@@ -55,8 +56,8 @@ public class Upgrade_1_2_Test extends Story {
 
         try {
             steps.add(new UnpackContainerStep(container));
-            steps.add(new UnzipOldServiceStep(this.getClass().getResource(
-                "/gold/serviceVersions/" + "IntroduceTestService-1_2.zip").getFile(), this.tci1));
+            steps.add(new UnzipOldServiceStep(Utils.decodeUrl(this.getClass().getResource(
+                "/gold/serviceVersions/" + "IntroduceTestService-1_2.zip")), this.tci1));
             steps.add(new UpgradesStep(this.tci1, true));
             steps.add(new ValidateWSDLStep(this.tci1, false));
             steps.add(new DeployServiceStep(container, this.tci1.getDir()));

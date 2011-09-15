@@ -1,5 +1,6 @@
 package org.cagrid.introduce.test.system.steps;
 
+import gov.nih.nci.cagrid.common.Utils;
 import gov.nih.nci.cagrid.introduce.test.TestCaseInfo;
 import gov.nih.nci.cagrid.introduce.test.steps.BaseStep;
 import gov.nih.nci.cagrid.introduce.test.util.SourceUtils;
@@ -19,12 +20,12 @@ public class AddSecurityMethodsImplStep extends BaseStep {
 	public void runStep() throws Throwable {
 		System.out.println("Adding methods implementation.");
 
-		File inFileClient = new File(this.getClass().getResource("/gold/security/" + "SecurityTestsClient.java").getFile());
+		File inFileClient = new File(Utils.decodeUrl(this.getClass().getResource("/gold/security/" + "SecurityTestsClient.java")));
 		File outFileClient = new File(tci.getDir() + File.separator + "src" + File.separator + tci.getPackageDir() + File.separator + "client" + File.separator  + tci.getName() + "Client.java");
 		
 		SourceUtils.modifyImpl(inFileClient, outFileClient, "main");
 		
-		File inFileImpl = new File(this.getClass().getResource("/gold/security/" + "SecurityTestsImpl.java").getFile());
+		File inFileImpl = new File(Utils.decodeUrl(this.getClass().getResource("/gold/security/" + "SecurityTestsImpl.java")));
 		File outFileImpl = new File(tci.getDir() + File.separator + "src" + File.separator + tci.getPackageDir() + File.separator + "service" + File.separator  + tci.getName() + "Impl.java");
 		
 		SourceUtils.modifyImpl(inFileImpl, outFileImpl, "anonPrefered");
