@@ -262,7 +262,7 @@
 	</target>
 
 	<!-- call the test target for each project and aggregates the log resutls  -->
-	<target name="test" depends="checkGlobus,create_config_files,nuke">
+	<target name="test" depends="checkGlobus,defineClasspaths, create_config_files,nuke">
 		<echo message="Test results dir: ${junit.results.dir}" />
 		<mkdir dir="${junit.results.dir}" />
 		<junit dir="${basedir}" printsummary="yes" errorproperty="test.failed" failureproperty="test.failed" showoutput="true" forkmode="once">

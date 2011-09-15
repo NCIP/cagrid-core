@@ -333,7 +333,7 @@
 	</target>
 
 	<!-- Post Introduce Edit-->
-	<target name="test" depends="checkGlobus,create_config_files,testGrouperInit" description="Runs the service's tests.">
+	<target name="test" depends="defineClasspaths,create_config_files,testGrouperInit" description="Runs the service's tests.">
 		<echo message="Test results dir: ${junit.results.dir}" />
 		<mkdir dir="${junit.results.dir}" />
 		<junit dir="${basedir}" printsummary="yes" haltonfailure="true" haltonerror="true" showoutput="true" forkmode="once">
