@@ -9,7 +9,7 @@
 
 
 	<!-- call the test target for each project and aggregates the log resutls  -->
-	<target name="test" depends="checkGlobus">
+	<target name="test" depends="checkGlobus,prepareIntroduce,prepareUpdateManager">
 		<echo message="Test results dir: ${junit.results.dir}" />
 		<mkdir dir="${junit.results.dir}" />
 		<junit dir="${basedir}" printsummary="yes" haltonerror="${haltonerror}" errorproperty="test.failed" failureproperty="test.failed" showoutput="true" fork="yes" forkmode="once">
