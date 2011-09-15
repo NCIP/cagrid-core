@@ -43,7 +43,7 @@
 
 
 	<!-- tests data service core components -->
-	<target name="testCore" depends="setGlobus" description="Runs the base set of tests for the data service core">
+	<target name="testCore" depends="setGlobus, prepareClasspaths" description="Runs the base set of tests for the data service core">
 		<!-- assumes all code has been compiled -->
 		<mkdir dir="${junit.results.dir}" />
 		<junit dir="${basedir}" printsummary="yes" haltonerror="${halt.on.error}" haltonfailure="${halt.on.error}" errorproperty="core.test.failed" failureproperty="core.test.failed" showoutput="true" fork="yes" forkmode="once">
