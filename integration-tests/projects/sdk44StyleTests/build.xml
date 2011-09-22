@@ -34,8 +34,7 @@
 	<property name="resources.jar" location="${jar.dir}/${project.name}-resources-${project.version}.jar"/>
 	
 	<!-- style related stuff -->
-	<property name="introduce.zip" location="${ext.dir}/dependencies/introduce-test/introduce-with-data-extension-1.4.zip"/>
-	<property name="introduce.dir" location="${ext.dir}/dependencies/introduce-test/introduce" />
+	<property name="introduce.dir" location="${basedir}/../../../caGrid/projects/introduce" />
 	
 	<import file="test.xml"/>
 	
@@ -118,12 +117,6 @@
 	<target name="prepare">
 		<tstamp />
 		<mkdir dir="${build.dir}" />
-	</target>
-	
-	
-	<target name="unpackIntroduce">
-		<dirname file="${introduce.zip}" property="introduce.unzip.location"/>
-		<unzip src="${introduce.zip}" dest="${introduce.unzip.location}"/>
 	</target>
 
 	

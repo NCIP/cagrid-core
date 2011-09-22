@@ -12,15 +12,7 @@
 	<!-- ============================================================== -->
 	<target name="test" depends="integrationTests" description="Runs the unit and integration tests"/>
 	
-	
-	<target name="installSdk44Style" depends="prepare, unpackIntroduce">
-		<ant antfile="build.xml" dir="${basedir}/../caGrid-1.4-sdkQuery44" target="installIntroduceExtensions" inheritall="false">
-			<property name="introduce.dir" value="${introduce.dir}"/>
-		</ant>
-	</target>
-
-
-	<target name="integrationTests" depends="prepare, unpackIntroduce, installSdk44Style, createSdkIsoExampleApplication" description="Runs the SDK integration tests">
+	<target name="integrationTests" depends="prepare, createSdkIsoExampleApplication" description="Runs the SDK integration tests">
 		<echo message="Test results dir: ${junit.results.dir}"/>
 		<mkdir dir="${junit.results.dir}"/>
 		<property name="sdk44.tests.base.dir" location="${basedir}"/>
