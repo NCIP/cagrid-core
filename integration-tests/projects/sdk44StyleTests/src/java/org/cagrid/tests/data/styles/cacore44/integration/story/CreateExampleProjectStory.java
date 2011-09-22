@@ -35,7 +35,7 @@ public class CreateExampleProjectStory extends Story {
 
     protected Vector<?> steps() {
         Vector<Step> steps = new Vector<Step>();
-        // steps.add(new NukeIvyCacheStep());
+        steps.add(new NukeIvyCacheStep());
         steps.add(new ConfigureExampleProjectStep());
         steps.add(new BuildExampleProjectStep());
         return steps;
