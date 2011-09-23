@@ -75,38 +75,6 @@ public class UpgradeFrom1pt4to1pt5 implements StyleVersionUpgrader {
             status.addDescriptionLine(message);
         }
         
-        // set CQL 2 query processor classname property
-        CommonTools.setServiceProperty(serviceInformation.getServiceDescriptor(),
-            QueryProcessorConstants.CQL2_QUERY_PROCESSOR_CLASS_PROPERTY, 
-            SDK44CQL2QueryProcessor.class.getName(), false);
-        status.addDescriptionLine("Set CQL 2 query processor class service property to " 
-            + SDK44CQL2QueryProcessor.class.getName());
-        
-        // add CQL 2 query processor properties
-        SDK44CQL2QueryProcessor processor = new SDK44CQL2QueryProcessor();
-        Properties processorProperties = processor.getRequiredParameters();
-        Set<String> fromEtc = processor.getParametersFromEtc();
-        for (Object key : processorProperties.keySet()) {
-            String propName = (String) key;
-            String def = processorProperties.getProperty(propName);
-            CommonTools.setServiceProperty(serviceInformation.getServiceDescriptor(),
-                QueryProcessorConstants.CQL2_QUERY_PROCESSOR_CONFIG_PREFIX + propName,
-                def, fromEtc.contains(propName));
-        }
-        
-        // check for the ORM jar in the service's lib dir
-        String applicationName = CommonTools.getServicePropertyValue(
-            serviceInformation.getServiceDescriptor(),
-            QueryProcessorConstants.QUERY_PROCESSOR_CONFIG_PREFIX + SDK44CQL2QueryProcessor.PROPERTY_APPLICATION_NAME);
-        File ormJar = new File(serviceInformation.getBaseDirectory(), "lib" + File.separator + applicationName + "-orm.jar");
-        if (!ormJar.exists()) {
-            // the ORM jar contains the required hibernate config files for the CQL 2 HQL translator
-            status.addIssue("The caCORE SDK Application ORM jar was not found at " + ormJar.getAbsolutePath() + ". " 
-                + "This jar contains the required Hibernate configuration information for the new CQL 2 query processor",
-                "Copy the file " + ormJar.getName() + " from your caCORE SDK local-client/lib directory into your " 
-                + "data service's lib directory (" + serviceInformation.getBaseDirectory().getAbsolutePath() + File.separator + "lib)");
-        }
-        
         // edit data service extension data's "additional jars" to point to the ones we added instead of the old ones
         Element data = getExtensionDataElement(extensionData);
         Element libsElement = data.getChild("AdditionalLibraries", data.getNamespace());
@@ -129,8 +97,6 @@ public class UpgradeFrom1pt4to1pt5 implements StyleVersionUpgrader {
         }
         storeExtensionDataElement(extensionData, data);
         status.addDescriptionLine("Reconfigured searchable jars for query processor discovery panel");
-        status.addIssue("A CQL 2 query processor has been added to this grid data service",
-            "You do not need to supply a custom CQL 2 query processor");
         
         // update the type mappings to use the renamed serializer / deserializer classes
         NamespacesType namespaces = serviceInformation.getNamespaces();
