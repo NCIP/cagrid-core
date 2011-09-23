@@ -16,11 +16,10 @@ import gov.nih.nci.cagrid.introduce.extension.utils.AxisJdomUtils;
 import gov.nih.nci.cagrid.introduce.upgrade.common.ExtensionUpgradeStatus;
 
 import java.io.File;
+import java.io.FileFilter;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Properties;
-import java.util.Set;
 
 import org.apache.axis.message.MessageElement;
 import org.apache.commons.logging.Log;
@@ -74,6 +73,40 @@ public class UpgradeFrom1pt4to1pt5 implements StyleVersionUpgrader {
             LOG.debug(message);
             status.addDescriptionLine(message);
         }
+        // the names of the ISO 21090 analytical service extension jars changed from 1.3 to 1.5
+        File[] iso21090analyticalLibs = new File("extensions" + File.separator + "lib").listFiles(new FileFilter() {
+            public boolean accept(File pathname) {
+                String name = pathname.getName();
+                return name.startsWith("caGrid-iso21090-analytical") && name.endsWith(".jar");
+            }
+        });
+        for (File isoLib : iso21090analyticalLibs) {
+            File copyLib = new File(serviceLibDir, isoLib.getName());
+            Utils.copyFile(isoLib, copyLib);
+            String message = "Copied ISO 21090 support library " + isoLib.getName();
+            LOG.debug(message);
+            status.addDescriptionLine(message);
+        }
+        File[] neededIntroduceLibs = new File("build" + File.separator + "jars").listFiles(new FileFilter() {
+            public boolean accept(File pathname) {
+                String name = pathname.getName();
+                return name.startsWith("caGrid-Introduce-core") && name.endsWith(".jar");
+            }
+        });
+        for (File introduceLib : neededIntroduceLibs) {
+            File copyLib = new File(serviceLibDir, introduceLib.getName());
+            Utils.copyFile(introduceLib, copyLib);
+            String message = "Copied Introduce support library " + introduceLib.getName();
+            LOG.debug(message);
+            status.addDescriptionLine(message);
+        }
+        
+        // set CQL 2 query processor classname property
+        CommonTools.setServiceProperty(serviceInformation.getServiceDescriptor(),
+            QueryProcessorConstants.CQL2_QUERY_PROCESSOR_CLASS_PROPERTY, 
+            SDK44CQL2QueryProcessor.class.getName(), false);
+        status.addDescriptionLine("Set CQL 2 query processor class service property to " 
+            + SDK44CQL2QueryProcessor.class.getName());
         
         // edit data service extension data's "additional jars" to point to the ones we added instead of the old ones
         Element data = getExtensionDataElement(extensionData);
@@ -102,22 +135,24 @@ public class UpgradeFrom1pt4to1pt5 implements StyleVersionUpgrader {
         NamespacesType namespaces = serviceInformation.getNamespaces();
         for (NamespaceType ns : namespaces.getNamespace()) {
             boolean serializerChanged = false;
-            for (SchemaElementType type : ns.getSchemaElement()) {
-                String deserializer = type.getDeserializer();
-                String serializer = type.getSerializer();
-                if (StyleUpgradeConstants.OLD_DESERIALIZER_FACTORY_NAME.equals(deserializer)) {
-                    type.setDeserializer(SDK44DeserializerFactory.class.getName());
-                    serializerChanged = true;
+            if (ns.getSchemaElement() != null) {
+                for (SchemaElementType type : ns.getSchemaElement()) {
+                    String deserializer = type.getDeserializer();
+                    String serializer = type.getSerializer();
+                    if (StyleUpgradeConstants.OLD_DESERIALIZER_FACTORY_NAME.equals(deserializer)) {
+                        type.setDeserializer(SDK44DeserializerFactory.class.getName());
+                        serializerChanged = true;
+                    }
+                    if (StyleUpgradeConstants.OLD_SERIALIZER_FACTORY_NAME.equals(serializer)) {
+                        type.setSerializer(SDK44SerializerFactory.class.getName());
+                        serializerChanged = true;
+                    }
                 }
-                if (StyleUpgradeConstants.OLD_SERIALIZER_FACTORY_NAME.equals(serializer)) {
-                    type.setSerializer(SDK44SerializerFactory.class.getName());
-                    serializerChanged = true;
+                if (serializerChanged) {
+                    String message = "Updated the serialization for namespace " + ns.getNamespace();
+                    LOG.debug(message);
+                    status.addDescriptionLine(message);
                 }
-            }
-            if (serializerChanged) {
-                String message = "Updated the serialization for namespace " + ns.getNamespace();
-                LOG.debug(message);
-                status.addDescriptionLine(message);
             }
         }
     }
