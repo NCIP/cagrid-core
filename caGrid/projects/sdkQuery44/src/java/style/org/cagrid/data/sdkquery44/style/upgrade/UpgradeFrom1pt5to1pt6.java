@@ -1,16 +1,11 @@
 package org.cagrid.data.sdkquery44.style.upgrade;
 
 import gov.nih.nci.cagrid.common.Utils;
-import gov.nih.nci.cagrid.data.QueryProcessorConstants;
 import gov.nih.nci.cagrid.data.extension.Data;
 import gov.nih.nci.cagrid.data.style.ServiceStyleContainer;
 import gov.nih.nci.cagrid.data.style.ServiceStyleLoader;
 import gov.nih.nci.cagrid.data.style.StyleVersionUpgrader;
 import gov.nih.nci.cagrid.introduce.beans.extension.ExtensionTypeExtensionData;
-import gov.nih.nci.cagrid.introduce.beans.namespace.NamespaceType;
-import gov.nih.nci.cagrid.introduce.beans.namespace.NamespacesType;
-import gov.nih.nci.cagrid.introduce.beans.namespace.SchemaElementType;
-import gov.nih.nci.cagrid.introduce.common.CommonTools;
 import gov.nih.nci.cagrid.introduce.common.ServiceInformation;
 import gov.nih.nci.cagrid.introduce.extension.utils.AxisJdomUtils;
 import gov.nih.nci.cagrid.introduce.upgrade.common.ExtensionUpgradeStatus;
@@ -24,9 +19,6 @@ import java.util.List;
 import org.apache.axis.message.MessageElement;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.cagrid.data.sdkquery44.encoding.SDK44DeserializerFactory;
-import org.cagrid.data.sdkquery44.encoding.SDK44SerializerFactory;
-import org.cagrid.data.sdkquery44.processor.cql2.SDK44CQL2QueryProcessor;
 import org.jdom.Element;
 import org.jdom.JDOMException;
 
@@ -58,8 +50,8 @@ public class UpgradeFrom1pt5to1pt6 implements StyleVersionUpgrader {
             if (upgradeLib.getName().startsWith("caGrid-")) {
                 int versionIndex = upgradeLib.getName().indexOf(StyleUpgradeConstants.LATEST_JAR_SUFFIX);
                 File oldCagridMatch = new File(serviceLibDir, 
-                    upgradeLib.getName().substring(0, versionIndex) + "-1.4.jar");
-                LOG.debug("Looking for old caGrid 1.4 library " + oldCagridMatch.getName());
+                    upgradeLib.getName().substring(0, versionIndex) + "-1.5.jar");
+                LOG.debug("Looking for old caGrid 1.5 library " + oldCagridMatch.getName());
                 if (oldCagridMatch.exists()) {
                     oldCagridMatch.delete();
                     removedLibs.add(oldCagridMatch.getName());
@@ -73,7 +65,7 @@ public class UpgradeFrom1pt5to1pt6 implements StyleVersionUpgrader {
             LOG.debug(message);
             status.addDescriptionLine(message);
         }
-        // the names of the ISO 21090 analytical service extension jars changed from 1.3 to 1.5
+        // the names of the ISO 21090 analytical service extension jars changed from 1.3 to 1.5 and 1.6
         File[] iso21090analyticalLibs = new File("extensions" + File.separator + "lib").listFiles(new FileFilter() {
             public boolean accept(File pathname) {
                 String name = pathname.getName();
@@ -100,14 +92,7 @@ public class UpgradeFrom1pt5to1pt6 implements StyleVersionUpgrader {
             LOG.debug(message);
             status.addDescriptionLine(message);
         }
-        
-        // set CQL 2 query processor classname property
-        CommonTools.setServiceProperty(serviceInformation.getServiceDescriptor(),
-            QueryProcessorConstants.CQL2_QUERY_PROCESSOR_CLASS_PROPERTY, 
-            SDK44CQL2QueryProcessor.class.getName(), false);
-        status.addDescriptionLine("Set CQL 2 query processor class service property to " 
-            + SDK44CQL2QueryProcessor.class.getName());
-        
+                
         // edit data service extension data's "additional jars" to point to the ones we added instead of the old ones
         Element data = getExtensionDataElement(extensionData);
         Element libsElement = data.getChild("AdditionalLibraries", data.getNamespace());
@@ -130,31 +115,6 @@ public class UpgradeFrom1pt5to1pt6 implements StyleVersionUpgrader {
         }
         storeExtensionDataElement(extensionData, data);
         status.addDescriptionLine("Reconfigured searchable jars for query processor discovery panel");
-        
-        // update the type mappings to use the renamed serializer / deserializer classes
-        NamespacesType namespaces = serviceInformation.getNamespaces();
-        for (NamespaceType ns : namespaces.getNamespace()) {
-            boolean serializerChanged = false;
-            if (ns.getSchemaElement() != null) {
-                for (SchemaElementType type : ns.getSchemaElement()) {
-                    String deserializer = type.getDeserializer();
-                    String serializer = type.getSerializer();
-                    if (StyleUpgradeConstants.OLD_DESERIALIZER_FACTORY_NAME.equals(deserializer)) {
-                        type.setDeserializer(SDK44DeserializerFactory.class.getName());
-                        serializerChanged = true;
-                    }
-                    if (StyleUpgradeConstants.OLD_SERIALIZER_FACTORY_NAME.equals(serializer)) {
-                        type.setSerializer(SDK44SerializerFactory.class.getName());
-                        serializerChanged = true;
-                    }
-                }
-                if (serializerChanged) {
-                    String message = "Updated the serialization for namespace " + ns.getNamespace();
-                    LOG.debug(message);
-                    status.addDescriptionLine(message);
-                }
-            }
-        }
     }
     
     

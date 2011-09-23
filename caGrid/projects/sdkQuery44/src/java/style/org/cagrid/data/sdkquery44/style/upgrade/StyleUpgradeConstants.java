@@ -2,9 +2,9 @@ package org.cagrid.data.sdkquery44.style.upgrade;
 
 public interface StyleUpgradeConstants {
 
-    public static final String LATEST_VERSION = "1.5";
+    public static final String LATEST_VERSION = "1.6-dev";
     
-    public static final String LATEST_JAR_SUFFIX = "-1.5.jar";
+    public static final String LATEST_JAR_SUFFIX = "-1.6-dev.jar";
     
     public static final String OLD_SERIALIZER_FACTORY_NAME = 
         "org.cagrid.iso21090.sdkquery44.encoding.SDK44SerializerFactory";
