@@ -1,0 +1,9 @@
+<ns1:CQLQueryResults targetClassname="gov.nih.nci.cacoresdk.domain.inheritance.onechild.Human" xmlns:ns1="http://CQL.caBIG/1/gov.nih.nci.cagrid.CQLResultSet">
+ <ns1:ObjectResult>
+  <ns2:Human xmlns:ns2="gme://caCORE.caCORE/3.2/gov.nih.nci.cacoresdk.domain.inheritance.onechild">
+   <ns2:hairColor xsi:type="ns3:ST" value="Hair_Color3" xmlns:ns3="uri:iso.org:21090" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"/>
+   <ns2:id xsi:type="ns4:II" reliability="ISS" scope="OBJ" displayable="true" extension="3" root="2.16.12.123.456.1" xmlns:ns4="uri:iso.org:21090" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"/>
+   <ns2:diet xsi:type="ns5:ST" value="DIET3" xmlns:ns5="uri:iso.org:21090" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"/>
+  </ns2:Human>
+ </ns1:ObjectResult>
+</ns1:CQLQueryResults>

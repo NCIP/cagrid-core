@@ -1,0 +1,63 @@
+<ivy-module version="2.0">
+	<info organisation="caGrid" module="sdkQuery44" revision="${project.version}">
+		<!-- when we have a license, it'll go here -->
+		<description>A data service style to support caCORE SDK 4.4</description>
+	</info>
+	
+	<!-- Specify configurations that break up functionality into
+       logical groupings.  Configurations may later publish zero
+       or more artifacts, and should generally correspond 1:1 with
+       the layout of the source tree -->
+	<configurations>
+		<conf name="impl" visibility="private" extends="translator,queryProcessor,style" />
+    	<conf name="impl-test" visibility="private"/>
+		
+		<!-- Public Configurations -->
+		<conf name="translator" visibility="public"/>
+    	<conf name="queryProcessor" visibility="public" extends="translator" />
+		<conf name="style" visibility="public" extends="queryProcessor, translator"/>
+		<conf name="test" visibility="public" extends="impl-test"/>
+	</configurations>
+	
+	<!-- If your module produces artifacts that need to be published,
+       specify that here.  Ivy will look in the configured output
+       location for these artifacts and match them up with the
+       configurations you've specified when others resolve them
+	-->
+	<publications>
+		<artifact name="caGrid-${ivy.module}-translator" conf="translator" type="jar" />
+    	<artifact name="caGrid-${ivy.module}-processor" conf="queryProcessor" type="jar" />
+    	<artifact name="caGrid-${ivy.module}-style" conf="style" type="jar" />
+    	<artifact name="caGrid-${ivy.module}-test" conf="test" type="jar" />
+	</publications>
+	
+	<!-- If your module needs artifacts from the outside to build or run,
+       say so here.  conf talks about what local configuration depends
+       which configuration from the other module.  For example:
+       conf="test (arrow) default" says "My test configuration needs your
+       default configuration." -->
+	<dependencies>
+		<!--  caGrid dependencies -->
+    	<dependency rev="latest.integration" org="caGrid" name="core"
+      	  conf="impl-test->test;translator->default" />
+    	<dependency rev="latest.integration" org="caGrid" name="cql" conf="translator->cql"/>
+    	<dependency rev="latest.integration" org="caGrid" name="data" conf="queryProcessor->processors,utils,tools,service"/>
+    	<dependency rev="latest.integration" org="caGrid" name="dataExtensions" conf="style->styleRequirements"/>
+    	<dependency rev="latest.integration" org="caGrid" name="testing" conf="impl-test->system"/>
+    
+    	<!-- depend on the iso21090 domain model tools project -->
+    	<dependency org="caGrid" name="iso21090-domain-model-tools" rev="latest.integration" conf="style->default"/>
+    
+    		<!-- Third party dependencies -->
+    		<!-- using the modified hibernate jar from the SDK
+    	<dependency rev="3.2.0.ga" org="hibernate" name="hibernate" conf="translator->*"/>
+     	-->
+    	<dependency rev="1.1" org="apache" name="commons-logging" conf="translator->*"/>
+    	<dependency org="javax.xml.bind" name="jaxb-api" rev="2.1" conf="translator->*"/>
+    	<dependency org="javax.xml.bind" name="jaxb-impl" rev="2.1.4" conf="translator->*"/>
+    	<dependency org="javax.xml.bind" name="jaxb-xjc" rev="2.1.4" conf="translator->*"/>
+    	<dependency rev="3.2" org="apache" name="commons-collections" conf="translator->default" />
+    	<dependency rev="2.0.0" org="jgoodies" name="validation" conf="style->default"/>
+    	<dependency rev="4.8" org="junit" name="junit" conf="impl-test->default" />
+	</dependencies>
+</ivy-module>
