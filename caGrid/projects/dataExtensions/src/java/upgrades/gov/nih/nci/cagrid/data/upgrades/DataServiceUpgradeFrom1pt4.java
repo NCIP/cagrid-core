@@ -166,14 +166,6 @@ public class DataServiceUpgradeFrom1pt4 extends ExtensionUpgraderBase {
 	        "ServiceFeatures", extensionDataElement.getNamespace());
 	    serviceFeaturesElement.setAttribute("useTransfer", "false");
 	    getStatus().addDescriptionLine("Data Service Extension Data Service Feature \"useTransfer\" added and set to \"false\"");
-	    String styleName = getStyleName(extensionDataElement);
-	    if (styleName != null) {
-	        serviceFeaturesElement.removeAttribute("serviceStyle");
-	        Element serviceStyleElement = new Element("ServiceStyle", serviceFeaturesElement.getNamespace());
-	        serviceStyleElement.setAttribute("name", styleName);
-	        serviceStyleElement.setAttribute("version", "1.4"); // set to 1.4 pending upgrade
-	        getStatus().addDescriptionLine("Created Service Style element in extension data; set style version to \"1.4\"");
-	    }
 	    storeExtensionDataElement(extensionDataElement);
 	}
 
@@ -336,6 +328,12 @@ public class DataServiceUpgradeFrom1pt4 extends ExtensionUpgraderBase {
                     try {
                         styleUpgrade.upgradeStyle(getServiceInformation(), getExtensionType().getExtensionData(),
                             getStatus(), getFromVersion(), getToVersion());
+                        // set the style version number in the style info element
+                        Element serviceFeaturesElem = extensionDataElement.getChild(
+                            "ServiceFeatures", extensionDataElement.getNamespace());
+                        Element styleElem = serviceFeaturesElem.getChild("ServiceStyle", serviceFeaturesElem.getNamespace());
+                        styleElem.setAttribute("version", validUpgrade.getToVersion());
+                        storeExtensionDataElement(extensionDataElement);
                     } catch (Exception ex) {
                         throw new UpgradeException("Error upgrading service style: " + ex.getMessage(), ex);
                     }

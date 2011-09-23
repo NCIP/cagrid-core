@@ -175,14 +175,6 @@ public class DataServiceUpgradeFrom1pt3 extends ExtensionUpgraderBase {
 	    getStatus().addDescriptionLine("Data Service Extension Data Service Feature \"useTransfer\" added and set to \"false\"");
 	    serviceFeaturesElement.removeAttribute("useBdt");
 	    getStatus().addDescriptionLine("Data Service Extension Data Service Feature \"useBdt\" removed");
-	    String styleName = getStyleName(extensionDataElement);
-	    if (styleName != null) {
-	        serviceFeaturesElement.removeAttribute("serviceStyle");
-	        Element serviceStyleElement = new Element("ServiceStyle", serviceFeaturesElement.getNamespace());
-	        serviceStyleElement.setAttribute("name", styleName);
-	        serviceStyleElement.setAttribute("version", "1.3"); // set to 1.3 pending upgrade
-	        getStatus().addDescriptionLine("Created Service Style element in extension data; set style version to \"1.3\"");
-	    }
 	    storeExtensionDataElement(extensionDataElement);
 	}
 
@@ -292,6 +284,7 @@ public class DataServiceUpgradeFrom1pt3 extends ExtensionUpgraderBase {
     }
     
     
+    @SuppressWarnings("deprecation")
     private void removeBdt() throws UpgradeException {
         Element extElement = getExtensionDataElement();
         if (serviceIsUsingBdt(extElement)) {
