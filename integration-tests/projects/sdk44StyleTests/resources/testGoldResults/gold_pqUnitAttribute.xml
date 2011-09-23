@@ -1,0 +1,37 @@
+<ns1:CQLQueryResults targetClassname="gov.nih.nci.cacoresdk.domain.other.datatype.PqDataType" xmlns:ns1="http://CQL.caBIG/1/gov.nih.nci.cagrid.CQLResultSet">
+ <ns1:ObjectResult>
+  <ns2:PqDataType id="7" xmlns:ns2="gme://caCORE.caCORE/3.2/gov.nih.nci.cacoresdk.domain.other.datatype">
+   <ns2:value1 xsi:type="ns3:PQ" unit="GALLON" precision="0" value="1.12" xmlns:ns3="uri:iso.org:21090" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"/>
+   <ns2:value2 xsi:type="ns4:PQ" precision="0" nullFlavor="NI" xmlns:ns4="uri:iso.org:21090" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"/>
+   <ns2:value3 xsi:type="ns5:PQ" precision="0" nullFlavor="NI" xmlns:ns5="uri:iso.org:21090" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"/>
+  </ns2:PqDataType>
+ </ns1:ObjectResult>
+ <ns1:ObjectResult>
+  <ns6:PqDataType id="8" xmlns:ns6="gme://caCORE.caCORE/3.2/gov.nih.nci.cacoresdk.domain.other.datatype">
+   <ns6:value1 xsi:type="ns7:PQ" unit="GALLON" precision="0" value="2.12" xmlns:ns7="uri:iso.org:21090" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"/>
+   <ns6:value2 xsi:type="ns8:PQ" precision="0" nullFlavor="NI" xmlns:ns8="uri:iso.org:21090" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"/>
+   <ns6:value3 xsi:type="ns9:PQ" precision="0" nullFlavor="NI" xmlns:ns9="uri:iso.org:21090" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"/>
+  </ns6:PqDataType>
+ </ns1:ObjectResult>
+ <ns1:ObjectResult>
+  <ns10:PqDataType id="9" xmlns:ns10="gme://caCORE.caCORE/3.2/gov.nih.nci.cacoresdk.domain.other.datatype">
+   <ns10:value1 xsi:type="ns11:PQ" unit="GALLON" precision="0" value="3.12" xmlns:ns11="uri:iso.org:21090" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"/>
+   <ns10:value2 xsi:type="ns12:PQ" precision="0" nullFlavor="NI" xmlns:ns12="uri:iso.org:21090" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"/>
+   <ns10:value3 xsi:type="ns13:PQ" precision="0" nullFlavor="NI" xmlns:ns13="uri:iso.org:21090" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"/>
+  </ns10:PqDataType>
+ </ns1:ObjectResult>
+ <ns1:ObjectResult>
+  <ns14:PqDataType id="10" xmlns:ns14="gme://caCORE.caCORE/3.2/gov.nih.nci.cacoresdk.domain.other.datatype">
+   <ns14:value1 xsi:type="ns15:PQ" unit="GALLON" precision="0" value="4.12" xmlns:ns15="uri:iso.org:21090" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"/>
+   <ns14:value2 xsi:type="ns16:PQ" precision="0" nullFlavor="NI" xmlns:ns16="uri:iso.org:21090" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"/>
+   <ns14:value3 xsi:type="ns17:PQ" precision="0" nullFlavor="NI" xmlns:ns17="uri:iso.org:21090" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"/>
+  </ns14:PqDataType>
+ </ns1:ObjectResult>
+ <ns1:ObjectResult>
+  <ns18:PqDataType id="11" xmlns:ns18="gme://caCORE.caCORE/3.2/gov.nih.nci.cacoresdk.domain.other.datatype">
+   <ns18:value1 xsi:type="ns19:PQ" unit="GALLON" precision="0" value="5.12" xmlns:ns19="uri:iso.org:21090" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"/>
+   <ns18:value2 xsi:type="ns20:PQ" precision="0" nullFlavor="NI" xmlns:ns20="uri:iso.org:21090" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"/>
+   <ns18:value3 xsi:type="ns21:PQ" precision="0" nullFlavor="NI" xmlns:ns21="uri:iso.org:21090" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"/>
+  </ns18:PqDataType>
+ </ns1:ObjectResult>
+</ns1:CQLQueryResults>

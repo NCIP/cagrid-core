@@ -1,0 +1,3 @@
+<res:CQLQueryResults targetClassname="gov.nih.nci.cacoresdk.domain.onetomany.bidirectional.Computer" xmlns:res="http://CQL.caBIG/2/org.cagrid.cql2.results">
+ <res:AggregationResult attributeName="id" value="2" aggregation="COUNT"/>
+</res:CQLQueryResults>
