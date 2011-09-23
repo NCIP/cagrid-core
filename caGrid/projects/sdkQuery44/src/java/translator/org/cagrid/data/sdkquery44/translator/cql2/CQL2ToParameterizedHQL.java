@@ -84,7 +84,7 @@ public class CQL2ToParameterizedHQL {
 	
 	/**
 	 * Converts CQL to parameterized HQL suitable for use with 
-     * Hibernate v3.2.0ga and caCORE SDK 4.3 ISO data types
+     * Hibernate v3.2.0ga and caCORE SDK 4.3/4.4 ISO data types
 	 * 
 	 * @param query
 	 * 		The query to convert
