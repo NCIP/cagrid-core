@@ -30,9 +30,9 @@ import org.cagrid.data.sdkquery44.processor.cql2.SDK44CQL2QueryProcessor;
 import org.jdom.Element;
 import org.jdom.JDOMException;
 
-public class UpgradeFrom1pt4to1pt5 implements StyleVersionUpgrader {
+public class UpgradeFrom1pt5to1pt6 implements StyleVersionUpgrader {
     
-    private static Log LOG = LogFactory.getLog(UpgradeFrom1pt4to1pt5.class);
+    private static Log LOG = LogFactory.getLog(UpgradeFrom1pt5to1pt6.class);
 
     public void upgradeStyle(ServiceInformation serviceInformation, ExtensionTypeExtensionData extensionData,
         ExtensionUpgradeStatus status, String serviceFromVersion, String serviceToVersion) throws Exception {
