@@ -11,5 +11,6 @@
 	</CreationWizardPanels>
 	<ModificationUiPanel classname="org.cagrid.data.sdkquery44.style.modification.InformationPanel"/>
 	<CreationHelper postCreationClassname="org.cagrid.data.sdkquery44.style.helpers.PostCreationHelper"/>
-	<VersionUpgrade fromVersion="1.4" toVersion="1.5" classname="org.cagrid.data.sdkquery44.style.upgrade.UpgradeFrom1pt4to1pt5"/>
+	<VersionUpgrade fromVersion="1.4" toVersion="1.6" classname="org.cagrid.data.sdkquery44.style.upgrade.UpgradeFrom1pt4to1pt6"/>
+	<VersionUpgrade fromVersion="1.5" toVersion="1.6" classname="org.cagrid.data.sdkquery44.style.upgrade.UpgradeFrom1pt5to1pt6"/>
 </DataServiceStyle>
