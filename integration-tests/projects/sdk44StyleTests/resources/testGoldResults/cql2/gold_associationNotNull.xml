@@ -1,0 +1,14 @@
+<res:CQLQueryResults targetClassname="gov.nih.nci.cacoresdk.domain.onetomany.bidirectional.Computer" xmlns:res="http://CQL.caBIG/2/org.cagrid.cql2.results">
+ <res:ObjectResult>
+  <ns1:Computer xmlns:ns1="gme://caCORE.caCORE/3.2/gov.nih.nci.cacoresdk.domain.onetomany.bidirectional">
+   <ns1:id displayable="true" extension="1" reliability="ISS" root="2.16.12.123.456.1" scope="OBJ" xsi:type="ns2:II" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ns2="uri:iso.org:21090"/>
+   <ns1:type value="Computer_Type1" xsi:type="ns3:ST" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ns3="uri:iso.org:21090"/>
+  </ns1:Computer>
+ </res:ObjectResult>
+ <res:ObjectResult>
+  <ns1:Computer xmlns:ns1="gme://caCORE.caCORE/3.2/gov.nih.nci.cacoresdk.domain.onetomany.bidirectional">
+   <ns1:id displayable="true" extension="2" reliability="ISS" root="2.16.12.123.456.1" scope="OBJ" xsi:type="ns2:II" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ns2="uri:iso.org:21090"/>
+   <ns1:type value="Computer_Type2" xsi:type="ns3:ST" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ns3="uri:iso.org:21090"/>
+  </ns1:Computer>
+ </res:ObjectResult>
+</res:CQLQueryResults>

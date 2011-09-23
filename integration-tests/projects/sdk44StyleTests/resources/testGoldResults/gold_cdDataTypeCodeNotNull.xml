@@ -1,0 +1,77 @@
+<ns1:CQLQueryResults targetClassname="gov.nih.nci.cacoresdk.domain.other.datatype.CdDataType" xmlns:ns1="http://CQL.caBIG/1/gov.nih.nci.cagrid.CQLResultSet">
+ <ns1:ObjectResult>
+  <ns2:CdDataType id="1" xmlns:ns2="gme://caCORE.caCORE/3.2/gov.nih.nci.cacoresdk.domain.other.datatype">
+   <ns2:value1 xsi:type="ns3:CD" codeSystemVersion="1.1 HF2" codeSystemName="CD Code System Name" codeSystem="CD Code System" code="CODE1" xmlns:ns3="uri:iso.org:21090" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+    <ns3:displayName nullFlavor="NI"/>
+    <ns3:originalText mediaType="text/plain" nullFlavor="NI"/>
+   </ns2:value1>
+   <ns2:value2 xsi:type="ns4:CD" nullFlavor="NI" xmlns:ns4="uri:iso.org:21090" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"/>
+   <ns2:value3 xsi:type="ns5:CD" nullFlavor="NI" xmlns:ns5="uri:iso.org:21090" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"/>
+   <ns2:value4 xsi:type="ns6:CD" nullFlavor="NI" xmlns:ns6="uri:iso.org:21090" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"/>
+   <ns2:value5 xsi:type="ns7:CD" nullFlavor="NI" xmlns:ns7="uri:iso.org:21090" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"/>
+   <ns2:value6 xsi:type="ns8:CD" nullFlavor="NI" xmlns:ns8="uri:iso.org:21090" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"/>
+   <ns2:value7 xsi:type="ns9:CD" nullFlavor="NI" xmlns:ns9="uri:iso.org:21090" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"/>
+   <ns2:value8 xsi:type="ns10:CD" nullFlavor="NI" xmlns:ns10="uri:iso.org:21090" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"/>
+  </ns2:CdDataType>
+ </ns1:ObjectResult>
+ <ns1:ObjectResult>
+  <ns11:CdDataType id="2" xmlns:ns11="gme://caCORE.caCORE/3.2/gov.nih.nci.cacoresdk.domain.other.datatype">
+   <ns11:value1 xsi:type="ns12:CD" codeSystemVersion="1.1 HF2" codeSystemName="CD Code System Name" codeSystem="CD Code System" code="CODE2" xmlns:ns12="uri:iso.org:21090" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+    <ns12:displayName nullFlavor="NI"/>
+    <ns12:originalText mediaType="text/plain" nullFlavor="NI"/>
+   </ns11:value1>
+   <ns11:value2 xsi:type="ns13:CD" nullFlavor="NI" xmlns:ns13="uri:iso.org:21090" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"/>
+   <ns11:value3 xsi:type="ns14:CD" nullFlavor="NI" xmlns:ns14="uri:iso.org:21090" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"/>
+   <ns11:value4 xsi:type="ns15:CD" nullFlavor="NI" xmlns:ns15="uri:iso.org:21090" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"/>
+   <ns11:value5 xsi:type="ns16:CD" nullFlavor="NI" xmlns:ns16="uri:iso.org:21090" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"/>
+   <ns11:value6 xsi:type="ns17:CD" nullFlavor="NI" xmlns:ns17="uri:iso.org:21090" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"/>
+   <ns11:value7 xsi:type="ns18:CD" nullFlavor="NI" xmlns:ns18="uri:iso.org:21090" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"/>
+   <ns11:value8 xsi:type="ns19:CD" nullFlavor="NI" xmlns:ns19="uri:iso.org:21090" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"/>
+  </ns11:CdDataType>
+ </ns1:ObjectResult>
+ <ns1:ObjectResult>
+  <ns20:CdDataType id="3" xmlns:ns20="gme://caCORE.caCORE/3.2/gov.nih.nci.cacoresdk.domain.other.datatype">
+   <ns20:value1 xsi:type="ns21:CD" codeSystemVersion="1.1 HF2" codeSystemName="CD Code System Name" codeSystem="CD Code System" code="CODE3" xmlns:ns21="uri:iso.org:21090" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+    <ns21:displayName nullFlavor="NI"/>
+    <ns21:originalText mediaType="text/plain" nullFlavor="NI"/>
+   </ns20:value1>
+   <ns20:value2 xsi:type="ns22:CD" nullFlavor="NI" xmlns:ns22="uri:iso.org:21090" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"/>
+   <ns20:value3 xsi:type="ns23:CD" nullFlavor="NI" xmlns:ns23="uri:iso.org:21090" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"/>
+   <ns20:value4 xsi:type="ns24:CD" nullFlavor="NI" xmlns:ns24="uri:iso.org:21090" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"/>
+   <ns20:value5 xsi:type="ns25:CD" nullFlavor="NI" xmlns:ns25="uri:iso.org:21090" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"/>
+   <ns20:value6 xsi:type="ns26:CD" nullFlavor="NI" xmlns:ns26="uri:iso.org:21090" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"/>
+   <ns20:value7 xsi:type="ns27:CD" nullFlavor="NI" xmlns:ns27="uri:iso.org:21090" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"/>
+   <ns20:value8 xsi:type="ns28:CD" nullFlavor="NI" xmlns:ns28="uri:iso.org:21090" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"/>
+  </ns20:CdDataType>
+ </ns1:ObjectResult>
+ <ns1:ObjectResult>
+  <ns29:CdDataType id="4" xmlns:ns29="gme://caCORE.caCORE/3.2/gov.nih.nci.cacoresdk.domain.other.datatype">
+   <ns29:value1 xsi:type="ns30:CD" codeSystemVersion="1.1 HF2" codeSystemName="CD Code System Name" codeSystem="CD Code System" code="CODE4" xmlns:ns30="uri:iso.org:21090" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+    <ns30:displayName nullFlavor="NI"/>
+    <ns30:originalText mediaType="text/plain" nullFlavor="NI"/>
+   </ns29:value1>
+   <ns29:value2 xsi:type="ns31:CD" nullFlavor="NI" xmlns:ns31="uri:iso.org:21090" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"/>
+   <ns29:value3 xsi:type="ns32:CD" nullFlavor="NI" xmlns:ns32="uri:iso.org:21090" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"/>
+   <ns29:value4 xsi:type="ns33:CD" nullFlavor="NI" xmlns:ns33="uri:iso.org:21090" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"/>
+   <ns29:value5 xsi:type="ns34:CD" nullFlavor="NI" xmlns:ns34="uri:iso.org:21090" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"/>
+   <ns29:value6 xsi:type="ns35:CD" nullFlavor="NI" xmlns:ns35="uri:iso.org:21090" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"/>
+   <ns29:value7 xsi:type="ns36:CD" nullFlavor="NI" xmlns:ns36="uri:iso.org:21090" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"/>
+   <ns29:value8 xsi:type="ns37:CD" nullFlavor="NI" xmlns:ns37="uri:iso.org:21090" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"/>
+  </ns29:CdDataType>
+ </ns1:ObjectResult>
+ <ns1:ObjectResult>
+  <ns38:CdDataType id="5" xmlns:ns38="gme://caCORE.caCORE/3.2/gov.nih.nci.cacoresdk.domain.other.datatype">
+   <ns38:value1 xsi:type="ns39:CD" codeSystemVersion="1.1 HF2" codeSystemName="CD Code System Name" codeSystem="CD Code System" code="CODE5" xmlns:ns39="uri:iso.org:21090" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+    <ns39:displayName nullFlavor="NI"/>
+    <ns39:originalText mediaType="text/plain" nullFlavor="NI"/>
+   </ns38:value1>
+   <ns38:value2 xsi:type="ns40:CD" nullFlavor="NI" xmlns:ns40="uri:iso.org:21090" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"/>
+   <ns38:value3 xsi:type="ns41:CD" nullFlavor="NI" xmlns:ns41="uri:iso.org:21090" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"/>
+   <ns38:value4 xsi:type="ns42:CD" nullFlavor="NI" xmlns:ns42="uri:iso.org:21090" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"/>
+   <ns38:value5 xsi:type="ns43:CD" nullFlavor="NI" xmlns:ns43="uri:iso.org:21090" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"/>
+   <ns38:value6 xsi:type="ns44:CD" nullFlavor="NI" xmlns:ns44="uri:iso.org:21090" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"/>
+   <ns38:value7 xsi:type="ns45:CD" nullFlavor="NI" xmlns:ns45="uri:iso.org:21090" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"/>
+   <ns38:value8 xsi:type="ns46:CD" nullFlavor="NI" xmlns:ns46="uri:iso.org:21090" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"/>
+  </ns38:CdDataType>
+ </ns1:ObjectResult>
+</ns1:CQLQueryResults>

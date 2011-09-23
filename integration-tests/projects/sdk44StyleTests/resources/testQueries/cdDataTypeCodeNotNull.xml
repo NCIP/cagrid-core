@@ -1,0 +1,7 @@
+<ns1:CQLQuery xmlns:ns1="http://CQL.caBIG/1/gov.nih.nci.cagrid.CQLQuery">
+ <ns1:Target name="gov.nih.nci.cacoresdk.domain.other.datatype.CdDataType">
+  <ns1:Association name="gov.nih.nci.iso21090.Cd" roleName="value1">
+   <ns1:Attribute name="code" predicate="IS_NOT_NULL" value="true"/>
+  </ns1:Association>
+ </ns1:Target>
+</ns1:CQLQuery>
