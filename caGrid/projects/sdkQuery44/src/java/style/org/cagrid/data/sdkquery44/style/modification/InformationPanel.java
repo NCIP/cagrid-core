@@ -200,7 +200,7 @@ public class InformationPanel extends DataServiceModificationSubPanel {
     private JLabel getVersionLabel() {
         if (versionLabel == null) {
             versionLabel = new JLabel();
-            versionLabel.setText("Version 4.3");
+            versionLabel.setText("Version 4.4");
         }
         return versionLabel;
     }
