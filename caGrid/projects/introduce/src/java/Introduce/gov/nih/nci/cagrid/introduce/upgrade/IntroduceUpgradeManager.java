@@ -30,22 +30,24 @@ public class IntroduceUpgradeManager {
 
 
     private static String getIntroduceUpgradeClass(String oldVersion) {
-        if (oldVersion.equals("1.2")) {
-            return "gov.nih.nci.cagrid.introduce.upgrade.introduce.Introduce_1_2__1_4_Upgrader";
-        } else if (oldVersion.equals("1.3")) {
-            return "gov.nih.nci.cagrid.introduce.upgrade.introduce.Introduce_1_3__1_4_Upgrader";
+        String className = null;
+        if (oldVersion.equals("1.4")) {
+            className = "gov.nih.nci.cagrid.introduce.upgrade.introduce.Introduce_1_4__1_6_Upgrader";
+        } else if (oldVersion.equals("1.5")) {
+            className = "gov.nih.nci.cagrid.introduce.upgrade.introduce.Introduce_1_5__1_6_Upgrader";
         }
-        return null;
+        return className;
     }
 
 
     private static String getModelUpgradeClass(String oldVersion) {
-        if (oldVersion.equals("1.2")) {
-            return "gov.nih.nci.cagrid.introduce.upgrade.model.Model_1_2__1_4_Upgrader";
-        } else if (oldVersion.equals("1.3")) {
-            return "gov.nih.nci.cagrid.introduce.upgrade.model.Model_1_3__1_4_Upgrader";
+        String className = null;
+        if (oldVersion.equals("1.4")) {
+            className = "gov.nih.nci.cagrid.introduce.upgrade.model.Model_1_4__1_6_Upgrader";
+        } else if (oldVersion.equals("1.5")) {
+            className = "gov.nih.nci.cagrid.introduce.upgrade.model.Model_1_5__1_6_Upgrader";
         }
-        return null;
+        return className;
     }
 
 
@@ -83,72 +85,68 @@ public class IntroduceUpgradeManager {
             // upgrade the introduce service
             String version = IntroducePropertiesManager.getIntroduceVersion();
             if (version != null) {
-
                 String vers = UpgradeUtilities.getCurrentServiceVersion(pathToService + File.separator
                     + IntroduceConstants.INTRODUCE_XML_FILE);
 
-                    String className = getModelUpgradeClass(vers);
-                    if (className == null) {
-                        logger.warn("The model" + " is upgradeable however no upgrade class from the version "
-                            + vers + " could be found.");
-                        return;
-                    }
+                String className = getModelUpgradeClass(vers);
+                if (className == null) {
+                    logger.warn("The model" + " is upgradeable however no upgrade class from the version "
+                        + vers + " could be found.");
+                    return;
+                }
 
-                    IntroduceUpgradeStatus iStatus = new IntroduceUpgradeStatus();
-                    status.addIntroduceUpgradeStatus(iStatus);
+                IntroduceUpgradeStatus iStatus = new IntroduceUpgradeStatus();
+                status.addIntroduceUpgradeStatus(iStatus);
 
-                    // upgrade the introduce service
-                    Class<?> clazz = Class.forName(className);
-                    Constructor<?> con = clazz.getConstructor(new Class[]{IntroduceUpgradeStatus.class, String.class});
-                    ModelUpgraderI modelupgrader = (ModelUpgraderI) con
-                        .newInstance(new Object[]{iStatus, pathToService});
-                    modelupgrader.execute();
+                // upgrade the introduce service
+                Class<?> clazz = Class.forName(className);
+                Constructor<?> con = clazz.getConstructor(new Class[]{IntroduceUpgradeStatus.class, String.class});
+                ModelUpgraderI modelupgrader = (ModelUpgraderI) con
+                    .newInstance(new Object[]{iStatus, pathToService});
+                modelupgrader.execute();
 
-                    ServiceInformation serviceInfo = new ServiceInformation(new File(pathToService));
+                ServiceInformation serviceInfo = new ServiceInformation(new File(pathToService));
 
-                    className = getIntroduceUpgradeClass(vers);
-                    if (className == null) {
-                        logger.warn("The service" + " is upgradeable however no upgrade class from the version "
-                            + vers + " could be found.");
-                        return;
-                    }
+                className = getIntroduceUpgradeClass(vers);
+                if (className == null) {
+                    logger.warn("The service" + " is upgradeable however no upgrade class from the version "
+                        + vers + " could be found.");
+                    return;
+                }
 
-                    // upgrade the introduce service
-                    clazz = Class.forName(className);
-                    con = clazz.getConstructor(new Class[]{IntroduceUpgradeStatus.class, ServiceInformation.class,
-                            String.class});
-                    IntroduceUpgraderI upgrader = (IntroduceUpgraderI) con.newInstance(new Object[]{iStatus,
-                            serviceInfo, pathToService});
-                    upgrader.execute();
+                // upgrade the introduce service
+                clazz = Class.forName(className);
+                con = clazz.getConstructor(new Class[]{IntroduceUpgradeStatus.class, ServiceInformation.class,
+                    String.class});
+                IntroduceUpgraderI upgrader = (IntroduceUpgraderI) con.newInstance(new Object[]{iStatus,
+                    serviceInfo, pathToService});
+                upgrader.execute();
 
-                    eUpgrader = new ExtensionsUpgradeManager(serviceInfo, pathToService);
+                eUpgrader = new ExtensionsUpgradeManager(serviceInfo, pathToService);
 
-                    if (eUpgrader.needsUpgrading()) {
-                        try {
-                            eUpgrader.upgrade(iStatus);
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                            throw new Exception(
-                                "Extensions Upgrader Failed: " + e.getMessage());
-                        }
-                    }
-
-                    serviceInfo.persistInformation();
-
-                    // resync the eclipse classpath doc with what is in the lib
-                    // directory
+                if (eUpgrader.needsUpgrading()) {
                     try {
-                        ExtensionUtilities.resyncWithLibDir(new File(pathToService + File.separator + ".classpath"));
+                        eUpgrader.upgrade(iStatus);
                     } catch (Exception e) {
-                        throw new Exception("Unable to resync the eclipse .classpath file:", e);
+                        e.printStackTrace();
+                        throw new Exception(
+                            "Extensions Upgrader Failed: " + e.getMessage());
                     }
+                }
 
+                serviceInfo.persistInformation();
 
+                // resync the eclipse classpath doc with what is in the lib
+                // directory
+                try {
+                    ExtensionUtilities.resyncWithLibDir(new File(pathToService + File.separator + ".classpath"));
+                } catch (Exception e) {
+                    throw new Exception("Unable to resync the eclipse .classpath file:", e);
+                }
             } else {
                 throw new Exception("ERROR: The service"
                     + " is not upgradable because it's version cannot be determined or is corrupt");
             }
-
         } else {
             throw new Exception("ERROR: The service" + " needs to be upgraded but no upgrader can be found");
         }
