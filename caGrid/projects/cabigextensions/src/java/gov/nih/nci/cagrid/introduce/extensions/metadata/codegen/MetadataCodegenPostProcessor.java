@@ -81,12 +81,12 @@ public class MetadataCodegenPostProcessor implements CodegenExtensionPostProcess
     
     
     public void postCodegen(ServiceExtensionDescriptionType desc, ServiceInformation info) throws CodegenExtensionException {
-        processServiceMetadata(desc, info);
-        processCaGridVersion(desc, info);
+        processServiceMetadata(info);
+        processCaGridVersion(info);
     }
     
     
-    private void processCaGridVersion(ServiceExtensionDescriptionType desc, ServiceInformation info) throws CodegenExtensionException {
+    private void processCaGridVersion(ServiceInformation info) throws CodegenExtensionException {
         MetadataExtensionHelper helper = new MetadataExtensionHelper(info);
         if (!helper.shouldCreateVersion()) {
             LOG.error("Unable to locate caGrid Version resource property, skipping instance creation.");
@@ -109,7 +109,7 @@ public class MetadataCodegenPostProcessor implements CodegenExtensionPostProcess
     }
 
 
-    private void processServiceMetadata(ServiceExtensionDescriptionType desc, ServiceInformation info)
+    private void processServiceMetadata(ServiceInformation info)
         throws CodegenExtensionException {
         MetadataExtensionHelper helper = new MetadataExtensionHelper(info);
         if (!helper.shouldCreateMetadata()) {
@@ -151,8 +151,8 @@ public class MetadataCodegenPostProcessor implements CodegenExtensionPostProcess
                                     // if we find one, load it
                                     StringReader reader = new StringReader(ext.getExtensionData().get_any()[0]
                                         .getAsString());
-                                    UMLProjectIdentifer projID = (UMLProjectIdentifer) Utils.deserializeObject(reader,
-                                        UMLProjectIdentifer.class);
+                                    UMLProjectIdentifer projID = Utils.deserializeObject(
+                                        reader, UMLProjectIdentifer.class);
 
                                     // create a mapping from the current
                                     // namespace
@@ -576,7 +576,7 @@ public class MetadataCodegenPostProcessor implements CodegenExtensionPostProcess
             }
         }
 
-        // for each RP, build/edit the contextprop
+        // for each RP, build/edit the context prop
 
         for (int i = 0; i < resourcePropertys.length; i++) {
             ResourcePropertyType rp = resourcePropertys[i];
