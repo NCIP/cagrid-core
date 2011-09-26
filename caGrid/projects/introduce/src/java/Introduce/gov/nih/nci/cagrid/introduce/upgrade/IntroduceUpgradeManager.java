@@ -76,12 +76,10 @@ public class IntroduceUpgradeManager {
 
 
     protected void upgrade(UpgradeStatus status) throws Exception {
-
         String serviceVersion = UpgradeUtilities.getCurrentServiceVersion(pathToService + File.separator
             + IntroduceConstants.INTRODUCE_XML_FILE);
 
         if (canBeUpgraded(serviceVersion)) {
-
             // upgrade the introduce service
             String version = IntroducePropertiesManager.getIntroduceVersion();
             if (version != null) {

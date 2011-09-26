@@ -46,13 +46,13 @@ public class ExtensionsUpgradeManager {
 									serviceExtensionVersion)) {
 						return true;
 					}
-
 				}
 			}
 			return false;
 		}
 		return false;
 	}
+	
 
 	private boolean needsRemoving() {
 		ExtensionType[] extensions = serviceInformation.getServiceDescriptor()
