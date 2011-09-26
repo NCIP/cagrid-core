@@ -16,23 +16,23 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 /**
- * WsEnumUpgradeFrom1pt3
- * Upgrades caGrid ws-enumeration support from 1.3 to current
+ * WsEnumUpgradeFrom1pt5
+ * Upgrades caGrid ws-enumeration support from 1.5 to current
  * 
  * @author ervin
  * @created Apr 9, 2007 11:21:24 AM
  * @version $Id: multiscaleEclipseCodeTemplates.xml,v 1.1 2007/03/02 14:35:01
  *          dervin Exp $
  */
-public class WsEnumUpgradeFrom1pt3 extends ExtensionUpgraderBase {
+public class WsEnumUpgradeFrom1pt5 extends ExtensionUpgraderBase {
     private static final String CAGRID_WS_ENUM_JAR_PREFIX = "caGrid-wsEnum-";
-    private static final String CAGRID_WS_ENUM_JAR_SUFFIX = "-1.3.jar";
+    private static final String CAGRID_WS_ENUM_JAR_SUFFIX = "-1.5.jar";
     
-    private static Log LOG = LogFactory.getLog(WsEnumUpgradeFrom1pt3.class);
+    private static Log LOG = LogFactory.getLog(WsEnumUpgradeFrom1pt5.class);
 
-    public WsEnumUpgradeFrom1pt3(ExtensionType extensionType, ServiceInformation serviceInfo, String servicePath,
+    public WsEnumUpgradeFrom1pt5(ExtensionType extensionType, ServiceInformation serviceInfo, String servicePath,
         String fromVersion, String toVersion) {
-        super(WsEnumUpgradeFrom1pt3.class.getSimpleName(),
+        super(WsEnumUpgradeFrom1pt5.class.getSimpleName(),
             extensionType, serviceInfo, servicePath, fromVersion, toVersion);
     }
 
@@ -67,7 +67,7 @@ public class WsEnumUpgradeFrom1pt3 extends ExtensionUpgraderBase {
         // delete the old libraries
         for (File oldLib : serviceEnumLibs) {
             oldLib.delete();
-            String description = "caGrid 1.3 library " + oldLib.getName() + " removed";
+            String description = "caGrid 1.5 library " + oldLib.getName() + " removed";
             getStatus().addDescriptionLine(description);
             LOG.debug(description);
         }
