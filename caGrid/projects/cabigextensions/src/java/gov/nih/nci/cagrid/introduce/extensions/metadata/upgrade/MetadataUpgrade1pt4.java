@@ -1,8 +1,10 @@
 package gov.nih.nci.cagrid.introduce.extensions.metadata.upgrade;
 
+import gov.nih.nci.cagrid.Version;
 import gov.nih.nci.cagrid.common.Utils;
 import gov.nih.nci.cagrid.introduce.beans.extension.ExtensionType;
 import gov.nih.nci.cagrid.introduce.common.ServiceInformation;
+import gov.nih.nci.cagrid.introduce.extension.CodegenExtensionException;
 import gov.nih.nci.cagrid.introduce.extension.ExtensionsLoader;
 import gov.nih.nci.cagrid.introduce.extension.utils.ExtensionUtilities;
 import gov.nih.nci.cagrid.introduce.extensions.metadata.common.MetadataExtensionHelper;
@@ -18,6 +20,7 @@ import java.util.List;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.cagrid.metadata.version.CaGridVersion;
 
 
 public class MetadataUpgrade1pt4 extends ExtensionUpgraderBase {
@@ -53,10 +56,36 @@ public class MetadataUpgrade1pt4 extends ExtensionUpgraderBase {
             getStatus().addDescriptionLine("Unable to locate service metdata; no metadata upgrade will be performed.");
             getStatus().setStatus(StatusBase.UPGRADE_OK);
             return;
+        } else {
+            if (!helper.shouldCreateVersion()) {
+                LOG.error("Unable to locate caGrid Version resource property, skipping instance creation.");
+                return;
+            }
+            
+            CaGridVersion version = helper.getExistingVersion();
+            // if there isn't a version already, create it
+            if (version == null) {
+                version = getDefaultCaGridVersion();
+                LOG.debug("No caGrid Version defined, using default");
+            }
+            
+            // serialize the version
+            try {
+                helper.writeCaGridVersion(version);
+            } catch (Exception e) {
+                throw new CodegenExtensionException("Error serializing version document.", e);
+            }
         }
 
         upgradeJars();
         getStatus().setStatus(StatusBase.UPGRADE_OK);
+    }
+
+
+    private CaGridVersion getDefaultCaGridVersion() {
+        CaGridVersion version = new CaGridVersion();
+        version.setVersion(Version.getVersionString());
+        return version;
     }
 
 
