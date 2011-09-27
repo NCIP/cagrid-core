@@ -1,21 +1,12 @@
 package gov.nih.nci.cagrid.data.upgrades;
 
 import gov.nih.nci.cagrid.common.Utils;
-import gov.nih.nci.cagrid.data.BdtMethodConstants;
-import gov.nih.nci.cagrid.data.InstanceCountConstants;
-import gov.nih.nci.cagrid.data.MetadataConstants;
 import gov.nih.nci.cagrid.data.extension.Data;
 import gov.nih.nci.cagrid.data.style.ServiceStyleContainer;
 import gov.nih.nci.cagrid.data.style.ServiceStyleLoader;
 import gov.nih.nci.cagrid.data.style.StyleVersionUpgrader;
 import gov.nih.nci.cagrid.data.style.VersionUpgrade;
-import gov.nih.nci.cagrid.introduce.beans.ServiceDescription;
 import gov.nih.nci.cagrid.introduce.beans.extension.ExtensionType;
-import gov.nih.nci.cagrid.introduce.beans.method.MethodType;
-import gov.nih.nci.cagrid.introduce.beans.namespace.NamespaceType;
-import gov.nih.nci.cagrid.introduce.beans.service.ServiceType;
-import gov.nih.nci.cagrid.introduce.common.CommonTools;
-import gov.nih.nci.cagrid.introduce.common.IntroducePropertiesManager;
 import gov.nih.nci.cagrid.introduce.common.ServiceInformation;
 import gov.nih.nci.cagrid.introduce.extension.ExtensionsLoader;
 import gov.nih.nci.cagrid.introduce.extension.utils.AxisJdomUtils;
@@ -27,8 +18,6 @@ import java.io.File;
 import java.io.FileFilter;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -39,27 +28,24 @@ import org.jdom.Element;
 import org.jdom.JDOMException;
 
 /**
- * DataServiceUpgradeFrom1pt3
- * Utility to upgrade a 1.3 data service to current
+ * DataServiceUpgradeFrom1pt5
+ * Utility to upgrade a 1.5 data service to current
  * 
- * @author <A HREF="MAILTO:ervin@bmi.osu.edu">David W. Ervin</A> *
- * @created Feb 19, 2007
- * @version $Id: DataServiceUpgradeFrom1pt3.java,v 1.1 2007/02/19 21:52:52
- *          dervin Exp $
+ * @author <A HREF="MAILTO:ervin@bmi.osu.edu">David W. Ervin</A> 
  */
-public class DataServiceUpgradeFrom1pt3 extends ExtensionUpgraderBase {
+public class DataServiceUpgradeFrom1pt5 extends ExtensionUpgraderBase {
 
-	public DataServiceUpgradeFrom1pt3(ExtensionType extensionType,
+	public DataServiceUpgradeFrom1pt5(ExtensionType extensionType,
 			ServiceInformation serviceInformation, String servicePath,
 			String fromVersion, String toVersion) {
-		super(DataServiceUpgradeFrom1pt3.class.getSimpleName(),
+		super(DataServiceUpgradeFrom1pt5.class.getSimpleName(),
 				extensionType, serviceInformation, servicePath, fromVersion,
 				toVersion);
 	}
 
 	
 	protected void upgrade() throws Exception {
-	    LogFactory.getLog(DataServiceUpgradeFrom1pt3.class).debug("UPGRADING DATA FROM 1.3");
+	    LogFactory.getLog(DataServiceUpgradeFrom1pt5.class).debug("UPGRADING DATA FROM 1.5");
 		try {
 			validateUpgrade();
 			
@@ -68,19 +54,6 @@ public class DataServiceUpgradeFrom1pt3 extends ExtensionUpgraderBase {
 			upgradeStyle();
 			
 			upgradeWsdls();
-			
-			addInstanceCountSchema();
-			
-			addInstanceCountFrequencyProperty();
-			
-			removeBdt();
-			
-			Cql2FeaturesInstaller cql2Installer = 
-			    new Cql2FeaturesInstaller(
-			        getServiceInformation(), getExtensionType(), getStatus());
-			cql2Installer.installCql2Features();
-			
-			upgradeExtensionData();
             
 			setCurrentExtensionVersion();
 			
@@ -94,20 +67,20 @@ public class DataServiceUpgradeFrom1pt3 extends ExtensionUpgraderBase {
 	
 
 	private void validateUpgrade() throws UpgradeException {
-		if (!"1.3".equals(getFromVersion())) {
+		if (!"1.5".equals(getFromVersion())) {
 			throw new UpgradeException(getClass().getName()
-				+ " upgrades FROM 1.3 TO " + UpgraderConstants.DATA_CURRENT_VERSION + 
+				+ " upgrades FROM 1.5 TO " + UpgraderConstants.DATA_CURRENT_VERSION + 
                 ", found FROM = " + getFromVersion());
 		}
 		if (!getToVersion().equals(UpgraderConstants.DATA_CURRENT_VERSION)) {
 			throw new UpgradeException(getClass().getName()
-				+ " upgrades FROM 1.3 TO " + UpgraderConstants.DATA_CURRENT_VERSION + 
+				+ " upgrades FROM 1.5 TO " + UpgraderConstants.DATA_CURRENT_VERSION + 
                 ", found TO = " + getToVersion());
 		}
 		String currentVersion = getExtensionType().getVersion();
-		if (!"1.3".equals(currentVersion)) {
+		if (!"1.5".equals(currentVersion)) {
 			throw new UpgradeException(getClass().getName()
-				+ " upgrades FROM 1.3 TO " + UpgraderConstants.DATA_CURRENT_VERSION + 
+				+ " upgrades FROM 1.5 TO " + UpgraderConstants.DATA_CURRENT_VERSION + 
                 ", current version found is " + currentVersion);
 		}
 	}
@@ -163,37 +136,25 @@ public class DataServiceUpgradeFrom1pt3 extends ExtensionUpgraderBase {
     }
 	
 	
-	private boolean serviceIsUsingBdt(Element extElement) {
-	    Element serviceFeaturesElement = extElement.getChild("ServiceFeatures", extElement.getNamespace());
-	    String useBdtValue = serviceFeaturesElement.getAttributeValue("useBdt");
-	    return Boolean.valueOf(useBdtValue).booleanValue();
-	}
-	
-	
 	private String getStyleName(Element extDataElement) {
 	    Element serviceFeaturesElement = extDataElement.getChild("ServiceFeatures", extDataElement.getNamespace());
-	    String styleName = serviceFeaturesElement.getAttributeValue("serviceStyle");
+	    Element serviceStyleElement = serviceFeaturesElement.getChild("ServiceStyle", serviceFeaturesElement.getNamespace());
+	    String styleName = null;
+	    if (serviceStyleElement != null) {
+	        styleName = serviceStyleElement.getAttributeValue("name");
+	    }
 	    return styleName;
 	}
 	
 	
-	private void upgradeExtensionData() throws UpgradeException {
-	    Element extensionDataElement = getExtensionDataElement();
-	    Element serviceFeaturesElement = extensionDataElement.getChild(
-	        "ServiceFeatures", extensionDataElement.getNamespace());
-	    serviceFeaturesElement.setAttribute("useTransfer", "false");
-	    getStatus().addDescriptionLine("Data Service Extension Data Service Feature \"useTransfer\" added and set to \"false\"");
-	    serviceFeaturesElement.removeAttribute("useBdt");
-	    getStatus().addDescriptionLine("Data Service Extension Data Service Feature \"useBdt\" removed");
-	    String styleName = getStyleName(extensionDataElement);
-	    if (styleName != null) {
-	        serviceFeaturesElement.removeAttribute("serviceStyle");
-	        Element serviceStyleElement = new Element("ServiceStyle", serviceFeaturesElement.getNamespace());
-	        serviceStyleElement.setAttribute("name", styleName);
-	        serviceStyleElement.setAttribute("version", "1.3"); // set to 1.3 pending upgrade
-	        getStatus().addDescriptionLine("Created Service Style element in extension data; set style version to \"1.3\"");
-	    }
-	    storeExtensionDataElement(extensionDataElement);
+	private String getStyleVersion(Element extDataElement) {
+	    Element serviceFeaturesElement = extDataElement.getChild("ServiceFeatures", extDataElement.getNamespace());
+        Element serviceStyleElement = serviceFeaturesElement.getChild("ServiceStyle", serviceFeaturesElement.getNamespace());
+        String styleVersion = null;
+        if (serviceStyleElement != null) {
+            styleVersion = serviceStyleElement.getAttributeValue("version");
+        }
+        return styleVersion;
 	}
 
 
@@ -228,7 +189,7 @@ public class DataServiceUpgradeFrom1pt3 extends ExtensionUpgraderBase {
         // delete the old libraries
         for (File oldLib : serviceDataLibs) {
             oldLib.delete();
-            getStatus().addDescriptionLine("caGrid 1.3 library " + oldLib.getName() + " removed");
+            getStatus().addDescriptionLine("caGrid 5 library " + oldLib.getName() + " removed");
         }
         // copy new libraries in
         File extLibDir = new File(ExtensionsLoader.EXTENSIONS_DIRECTORY + File.separator + "lib");
@@ -302,87 +263,6 @@ public class DataServiceUpgradeFrom1pt3 extends ExtensionUpgraderBase {
     }
     
     
-    private void addInstanceCountSchema() throws UpgradeException {
-        // get the service's schema dir where the xsd files live
-        String serviceName = getServiceInformation().getServiceDescriptor()
-            .getServices().getService(0).getName();
-        
-        File serviceSchemasDir = new File(getServicePath(), "schema" + File.separator + serviceName);
-        // get schemas for data services
-        File baseSchemaDir = new File(ExtensionsLoader.getInstance().getExtensionsDir(),
-            "data" + File.separator + "schema");
-        File dataSchemaDir = new File(baseSchemaDir, "Data");
-        File instanceCountXsd = new File(dataSchemaDir, MetadataConstants.DATA_INSTANCE_XSD);
-        try {
-            Utils.copyFile(instanceCountXsd, new File(serviceSchemasDir, MetadataConstants.DATA_INSTANCE_XSD));
-        } catch (Exception ex) {
-            throw new UpgradeException("Error copying instance count schema into the service: " + ex.getMessage(), ex);
-        }
-        
-        // Data instance count metadata namespace
-        NamespaceType countNamespace = null;
-        try {
-            countNamespace = CommonTools.createNamespaceType(serviceSchemasDir + File.separator
-                + MetadataConstants.DATA_INSTANCE_XSD, serviceSchemasDir);
-        } catch (Exception ex) {
-            throw new UpgradeException("Error creating namespace type: " + ex.getMessage(), ex);
-        }
-            
-        countNamespace.setPackageName(MetadataConstants.DATA_INSTANCE_PACKAGE);
-        countNamespace.setGenerateStubs(Boolean.FALSE);
-        CommonTools.addNamespace(getServiceInformation().getServiceDescriptor(), countNamespace);
-        
-        getStatus().addDescriptionLine("Added the data instance count schema and resource property to the data service");
-    }
-    
-    
-    private void addInstanceCountFrequencyProperty() {
-        ServiceDescription desc = getServiceInformation().getServiceDescriptor();
-        // instance count frequency property
-        if (!CommonTools.servicePropertyExists(desc, InstanceCountConstants.COUNT_UPDATE_FREQUENCY)) {
-            CommonTools.setServiceProperty(desc, InstanceCountConstants.COUNT_UPDATE_FREQUENCY, InstanceCountConstants.COUNT_UPDATE_FREQUENCY_DEFAULT,
-                true, InstanceCountConstants.COUNT_UPDATE_FREQUENCY_DESCRIPTION);
-        }
-        getStatus().addDescriptionLine("Added service property to set the instance count update frequency");
-    }
-
-    
-    
-    private void removeBdt() throws UpgradeException {
-        Element extElement = getExtensionDataElement();
-        if (serviceIsUsingBdt(extElement)) {
-            getStatus().addDescriptionLine("BDT has been removed from caGrid 1.4.  " +
-                "The BDT features of this data service will be removed.");
-            // use the service name to find the schema dir
-            ServiceType mainService = getServiceInformation().getServices().getService(0);
-            String serviceName = mainService.getName();
-            File schemaDir = new File(getServiceInformation().getBaseDirectory(), "schema" + File.separator + serviceName);
-            FileFilter bdtDataSchemaFilter = new FileFilter() {
-                public boolean accept(File pathname) {
-                    return (pathname.isFile() && pathname.getName().startsWith("BDTDataService"));
-                }
-            };
-            // remove BDTDataService* schemas / wsdls
-            File[] deleteSchemas = schemaDir.listFiles(bdtDataSchemaFilter);
-            for (File delme : deleteSchemas) {
-                delme.delete();
-                getStatus().addDescriptionLine("Deleted BDT Data Service schema " + delme.getName());
-            }
-            // find and remove the bdt query operation
-            MethodType bdtQueryMethod = CommonTools.getMethod(
-                mainService.getMethods(), BdtMethodConstants.BDT_QUERY_METHOD_NAME);
-            if (bdtQueryMethod != null) {
-                CommonTools.removeMethod(mainService.getMethods(), bdtQueryMethod);
-                getStatus().addDescriptionLine("Removed " + BdtMethodConstants.BDT_QUERY_METHOD_NAME + " operation from the service");
-            } else {
-                getStatus().addDescriptionLine(BdtMethodConstants.BDT_QUERY_METHOD_NAME + " not found; may have been removed earlier");
-            }
-        } else {
-            getStatus().addDescriptionLine("Service was not using BDT");
-        }
-    }
-    
-    
     private void upgradeStyle() throws UpgradeException {
         Element extensionDataElement = getExtensionDataElement();
         String styleName = getStyleName(extensionDataElement);
@@ -405,29 +285,22 @@ public class DataServiceUpgradeFrom1pt3 extends ExtensionUpgraderBase {
             } else {
                 VersionUpgrade[] availableUpgrades = styleContainer.getServiceStyle().getVersionUpgrade();
                 VersionUpgrade validUpgrade = null;
+                String currentStyleVersion = styleContainer.getServiceStyle().getVersion();
+                String oldStyleVersion = getStyleVersion(extensionDataElement);
                 if (availableUpgrades != null) {
-                    // sort upgrades
-                    Comparator<VersionUpgrade> upgradeSorter = new Comparator<VersionUpgrade>() {
-                        public int compare(VersionUpgrade a, VersionUpgrade b) {
-                            // sort by from version first, then by to version
-                            int val = a.getFromVersion().compareTo(b.getFromVersion());
-                            if (val == 0) {
-                                val = a.getToVersion().compareTo(b.getToVersion());
-                            }
-                            return val;
-                        }
-                    };
-                    Arrays.sort(availableUpgrades, upgradeSorter);
-                    // doing this will get the upgrade from whatever the oldest version 
-                    // of the style (with an available upgrader) is to the 1.4 version
+                    // find an upgrader FROM the style version listed in the extension data
+                    // TO the current version of the style
                     for (VersionUpgrade upgrade : availableUpgrades) {
-                        if (upgrade.getToVersion().equals(UpgraderConstants.DATA_CURRENT_VERSION)) {
+                        if (upgrade.getFromVersion().equals(oldStyleVersion) 
+                            && upgrade.getToVersion().equals(currentStyleVersion)) {
                             validUpgrade = upgrade;
+                            break;
                         }
                     }
                 }
                 if (validUpgrade == null) {
-                    getStatus().addIssue("No upgrade was found for the style " + styleName, 
+                    getStatus().addIssue("No upgrade was found for the style " + styleName + 
+                        " from " + oldStyleVersion + " to " + currentStyleVersion, 
                         "The style may not support the current version of caGrid.  " +
                         "Check with the developer of your style for an update");
                 } else {
@@ -443,41 +316,18 @@ public class DataServiceUpgradeFrom1pt3 extends ExtensionUpgraderBase {
                     try {
                         styleUpgrade.upgradeStyle(getServiceInformation(), getExtensionType().getExtensionData(),
                             getStatus(), getFromVersion(), getToVersion());
+                        // set the style version number in the style info element
+                        Element serviceFeaturesElem = extensionDataElement.getChild(
+                            "ServiceFeatures", extensionDataElement.getNamespace());
+                        Element styleElem = serviceFeaturesElem.getChild("ServiceStyle", serviceFeaturesElem.getNamespace());
+                        styleElem.setAttribute("version", validUpgrade.getToVersion());
+                        storeExtensionDataElement(extensionDataElement);
                     } catch (Exception ex) {
                         throw new UpgradeException("Error upgrading service style: " + ex.getMessage(), ex);
                     }
                     getStatus().addDescriptionLine("Style upgrade complete");
                 }
             }
-        }
-        upgradeServiceStyleElement();
-    }
-    
-    
-    private void upgradeServiceStyleElement() throws UpgradeException {
-        Element extensionDataElem = getExtensionDataElement();
-        Element serviceFeaturesElem = extensionDataElem.getChild("ServiceFeatures", extensionDataElem.getNamespace());
-        String oldStyle = serviceFeaturesElem.getAttributeValue("serviceStyle");
-        if (oldStyle != null) {
-            serviceFeaturesElem.removeAttribute("serviceStyle");
-            Element styleElem = new Element("ServiceStyle", extensionDataElem.getNamespace());
-            styleElem.setAttribute("name", oldStyle);
-            ServiceStyleContainer style;
-            try {
-                style = ServiceStyleLoader.getStyle(oldStyle);
-            } catch (Exception ex) {
-                throw new UpgradeException("Error loading service style " 
-                    + oldStyle + ": " + ex.getMessage(), ex);
-            }
-            if (style == null) {
-                getStatus().addIssue("Style " + oldStyle + " not found!", 
-                    "The current introduce version has been substituted for the style version");
-                styleElem.setAttribute("version", IntroducePropertiesManager.getIntroduceVersion());
-            } else {
-                String newVersion = style.getServiceStyle().getVersion();
-                styleElem.setAttribute("version", newVersion);
-            }
-            serviceFeaturesElem.addContent(styleElem);
         }
     }
 }
