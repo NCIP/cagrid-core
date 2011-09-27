@@ -1,5 +1,5 @@
 #General Introduce Properties
-introduce.version=1.6-dev
+introduce.version=1.6
 introduce.patch.version=0
 introduce.grape.configuration.file=conf/introduce-grape-conf.xml
 introduce.wsdl2java.timeout.ms=90000
