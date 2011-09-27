@@ -46,9 +46,9 @@
 	</target>
 	
 	
-	<target name="testUpgrades" depends="testUpgradeFrom1pt2, testUpgradeFrom1pt3" description="Runs upgrade tests">
-		<fail message="Data upgrade from 1.2 ${failed.message}" if="upgrade.1.2.test.failed" />
-		<fail message="Data upgrade from 1.3 ${failed.message}" if="upgrade.1.3.test.failed" />
+	<target name="testUpgrades" depends="testUpgradeFrom1pt4, testUpgradeFrom1pt5" description="Runs upgrade tests">
+		<fail message="Data upgrade from 1.4 ${failed.message}" if="upgrade.1.4.test.failed" />
+		<fail message="Data upgrade from 1.5 ${failed.message}" if="upgrade.1.5.test.failed" />
 	</target>
 	
 	
@@ -210,10 +210,13 @@
 	</target>
 
 	
-	<!-- tests upgrading 1.2 services to current -->
-	<target name="testUpgradeFrom1pt2" depends="setGlobus, prepareClasspaths" description="Tests the ability to upgrade a service from 1.2 to the current version" unless="upgrade.1pt2.completed">
+	<!-- tests upgrading 1.4 services to current -->
+	<target name="testUpgradeFrom1pt4" depends="setGlobus, prepareClasspaths" 
+		description="Tests the ability to upgrade a service from 1.4 to the current version" 
+		unless="upgrade.1pt4.completed">
 		<mkdir dir="${junit.results.dir}" />
-		<junit dir="${introduce.dir}" printsummary="yes" haltonerror="${halt.on.error}" haltonfailure="${halt.on.error}" errorproperty="upgrade.1.2.test.failed" failureproperty="upgrade.1.2.test.failed" showoutput="true" fork="yes">
+		<junit dir="${introduce.dir}" printsummary="yes" haltonerror="${halt.on.error}" haltonfailure="${halt.on.error}" 
+			errorproperty="upgrade.1.4.test.failed" failureproperty="upgrade.1.4.test.failed" showoutput="true" fork="yes">
 			<sysproperty key="introduce.base.dir" value="${introduce.dir}" />
 			<sysproperty key="build.dir" value="${classes.dir}" />
 			<sysproperty key="cql.docs.dir" value="${basedir}/docs/cqlExamples" />
@@ -234,18 +237,21 @@
 			<test if="testcase" name="${testcase}" fork="no" todir="${junit.results.dir}" />
 			<batchtest unless="testcase" fork="yes" todir="${junit.results.dir}">
 				<fileset dir="${src.dir}">
-					<include name="**/from1pt2/**/Upgrade*From1pt2Tests.java" />
+					<include name="**/from1pt4/**/Upgrade*From1pt4Tests.java" />
 				</fileset>
 			</batchtest>
 		</junit>
-		<property name="upgrade.1pt2.completed" value="true" />
+		<property name="upgrade.1pt4.completed" value="true" />
 	</target>
 	
 	
-	<!-- tests upgrading 1.3 services to current -->
-	<target name="testUpgradeFrom1pt3" depends="setGlobus, prepareClasspaths" description="Tests the ability to upgrade a service from 1.3 to the current version" unless="upgrade.1pt3.completed">
+	<!-- tests upgrading 1.5 services to current -->
+	<target name="testUpgradeFrom1pt5" depends="setGlobus, prepareClasspaths" 
+		description="Tests the ability to upgrade a service from 1.5 to the current version" 
+		unless="upgrade.1pt4.completed">
 		<mkdir dir="${junit.results.dir}" />
-		<junit dir="${introduce.dir}" printsummary="yes" haltonerror="${halt.on.error}" haltonfailure="${halt.on.error}" errorproperty="upgrade.1.3.test.failed" failureproperty="upgrade.1.3.test.failed" showoutput="true" fork="yes">
+		<junit dir="${introduce.dir}" printsummary="yes" haltonerror="${halt.on.error}" haltonfailure="${halt.on.error}" 
+			errorproperty="upgrade.1.5.test.failed" failureproperty="upgrade.1.5.test.failed" showoutput="true" fork="yes">
 			<sysproperty key="introduce.base.dir" value="${introduce.dir}" />
 			<sysproperty key="build.dir" value="${classes.dir}" />
 			<sysproperty key="cql.docs.dir" value="${basedir}/docs/cqlExamples" />
@@ -266,10 +272,10 @@
 			<test if="testcase" name="${testcase}" fork="no" todir="${junit.results.dir}" />
 			<batchtest unless="testcase" fork="yes" todir="${junit.results.dir}">
 				<fileset dir="${src.dir}">
-					<include name="**/from1pt3/**/Upgrade*From1pt3Tests.java" />
+					<include name="**/from1pt5/**/Upgrade*From1pt5Tests.java" />
 				</fileset>
 			</batchtest>
 		</junit>
-		<property name="upgrade.1pt3.completed" value="true" />
+		<property name="upgrade.1pt5.completed" value="true" />
 	</target>	
 </project>
