@@ -1,6 +1,7 @@
 package gov.nih.nci.cagrid.data.upgrades;
 
 import gov.nih.nci.cagrid.common.Utils;
+import gov.nih.nci.cagrid.data.InstanceCountConstants;
 import gov.nih.nci.cagrid.data.MetadataConstants;
 import gov.nih.nci.cagrid.data.extension.Data;
 import gov.nih.nci.cagrid.data.style.ServiceStyleContainer;
@@ -307,6 +308,14 @@ public class DataServiceUpgradeFrom1pt4 extends ExtensionUpgraderBase {
             countRp.setDescription(MetadataConstants.DATA_INSTANCE_DESCRIPTION);
             countRp.setQName(MetadataConstants.DATA_INSTANCE_QNAME);
             CommonTools.addResourcePropety(baseService, countRp);
+        }
+        
+        // instance count frequency property
+        if (!CommonTools.servicePropertyExists(
+            getServiceInformation().getServiceDescriptor(), InstanceCountConstants.COUNT_UPDATE_FREQUENCY)) {
+            CommonTools.setServiceProperty(getServiceInformation().getServiceDescriptor(),
+                InstanceCountConstants.COUNT_UPDATE_FREQUENCY, InstanceCountConstants.COUNT_UPDATE_FREQUENCY_DEFAULT,
+                false, InstanceCountConstants.COUNT_UPDATE_FREQUENCY_DESCRIPTION);
         }
     }
     
