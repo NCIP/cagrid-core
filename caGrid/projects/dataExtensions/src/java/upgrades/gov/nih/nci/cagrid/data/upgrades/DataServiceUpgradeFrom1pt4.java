@@ -1,12 +1,17 @@
 package gov.nih.nci.cagrid.data.upgrades;
 
 import gov.nih.nci.cagrid.common.Utils;
+import gov.nih.nci.cagrid.data.MetadataConstants;
 import gov.nih.nci.cagrid.data.extension.Data;
 import gov.nih.nci.cagrid.data.style.ServiceStyleContainer;
 import gov.nih.nci.cagrid.data.style.ServiceStyleLoader;
 import gov.nih.nci.cagrid.data.style.StyleVersionUpgrader;
 import gov.nih.nci.cagrid.data.style.VersionUpgrade;
 import gov.nih.nci.cagrid.introduce.beans.extension.ExtensionType;
+import gov.nih.nci.cagrid.introduce.beans.namespace.NamespaceType;
+import gov.nih.nci.cagrid.introduce.beans.resource.ResourcePropertyType;
+import gov.nih.nci.cagrid.introduce.beans.service.ServiceType;
+import gov.nih.nci.cagrid.introduce.common.CommonTools;
 import gov.nih.nci.cagrid.introduce.common.ServiceInformation;
 import gov.nih.nci.cagrid.introduce.extension.ExtensionsLoader;
 import gov.nih.nci.cagrid.introduce.extension.utils.AxisJdomUtils;
@@ -54,6 +59,8 @@ public class DataServiceUpgradeFrom1pt4 extends ExtensionUpgraderBase {
 			upgradeStyle();
 			
 			upgradeWsdls();
+			
+			addInstanceCountResourceProperty();
 			
 			setCurrentExtensionVersion();
 			
@@ -259,6 +266,47 @@ public class DataServiceUpgradeFrom1pt4 extends ExtensionUpgraderBase {
                     throw new UpgradeException("Error replacing wsdl: " + ex.getMessage(), ex);
                 }
             }
+        }
+    }
+    
+    
+    private void addInstanceCountResourceProperty() throws UpgradeException {
+        // get the schemas dir so we can copy in the new XSD
+        File dataSchemasDir = getDataSchemaDir();
+        File instanceCountXsd = new File(dataSchemasDir, MetadataConstants.DATA_INSTANCE_XSD);
+        
+        // get the service's schema dir where the wsdl files live
+        ServiceType baseService = getServiceInformation().getServices().getService(0);
+        String serviceName = baseService.getName();
+        File serviceSchemasDir = new File(getServicePath(), "schema" + File.separator + serviceName);
+        
+        // copy the schema
+        File instanceCountXsdOut = new File(serviceSchemasDir, instanceCountXsd.getName());
+        try {
+            Utils.copyFile(instanceCountXsd, instanceCountXsdOut);
+        } catch (Exception ex) {
+            throw new UpgradeException("Error copying data instance counts schema: " + ex.getMessage(), ex);
+        }
+        
+        // add the schema to the service descriptor
+        NamespaceType countNamespace = null;
+        try {
+            countNamespace = CommonTools.createNamespaceType(
+                instanceCountXsdOut.getAbsolutePath(), serviceSchemasDir);
+        } catch (Exception ex) {
+            throw new UpgradeException("Error creating data instance counts namespace: " + ex.getMessage(), ex);
+        }
+        countNamespace.setPackageName(MetadataConstants.DATA_INSTANCE_PACKAGE);
+        countNamespace.setGenerateStubs(Boolean.FALSE);
+        CommonTools.addNamespace(getServiceInformation().getServiceDescriptor(), countNamespace);
+        
+        if (CommonTools.getResourcePropertiesOfType(baseService, MetadataConstants.DATA_INSTANCE_QNAME).length == 0) {
+            // no resource property found, so we have to create and add it
+            ResourcePropertyType countRp = new ResourcePropertyType();
+            countRp.setRegister(true);
+            countRp.setDescription(MetadataConstants.DATA_INSTANCE_DESCRIPTION);
+            countRp.setQName(MetadataConstants.DATA_INSTANCE_QNAME);
+            CommonTools.addResourcePropety(baseService, countRp);
         }
     }
     
