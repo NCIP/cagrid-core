@@ -30,7 +30,7 @@ import org.jdom.Element;
 
 public class FixISO21090IntroduceStubs {
 
-    public static final String EXPECTED_INTRODUCE_VERSION = "1.4";
+    public static final String EXPECTED_INTRODUCE_VERSION = "1.6";
     public static final String SRC_DIR = "src";
 
 
