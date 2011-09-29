@@ -38,7 +38,7 @@ import org.cagrid.data.test.upgrades.UpgradeTestConstants;
 public class UpgradeEnumerationFrom1pt5Tests extends BaseSystemTest {
     public static final String SERVICE_ZIP_NAME = "DataServiceWithWsEnum_1-5.zip";
     public static final String SERVICE_DIR_NAME = "DataServiceWithWsEnum_1-5";
-    public static final String SERVICE_NAME = "DataServiceWithEnum";
+    public static final String SERVICE_NAME = "DataServiceWithWsEnum";
     public static final String SERVICE_PACKAGE = "org.cagrid.test.data.with.wsenum";
     public static final String SERVICE_NAMESPACE = "http://wsenum.with.data.test.cagrid.org/DataServiceWithEnum";
     
