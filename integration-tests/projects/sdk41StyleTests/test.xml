@@ -37,7 +37,7 @@
 	</target>
 	
 
-	<target name="test" depends="testCreation, testInvocation" description="Runs tests"/>
+	<target name="test" depends="testCreation, testInvocation, testUpgrade" description="Runs tests"/>
 	
 	
 	<target name="testCreation" depends="jar, prepareClasspaths" description="Runs the creation tests.">
@@ -78,5 +78,32 @@
 			</batchtest>
 		</junit>
 		<fail message="Tests failed! Check test reports." if="test.failed" />
+	</target>
+	
+	<target name="testUpgrade" depends="jar, prepareClasspaths" description="Runs the upgrade tests">
+		<mkdir dir="${junit.results.dir}"/>
+		<junit dir="${introduce.dir}" printsummary="yes" errorproperty="test.failed" failureproperty="test.failed" showoutput="true" fork="yes" forkmode="once">
+			<sysproperty key="build.dirs" value="${classes.dir}" />
+			<sysproperty key="introduce.base.dir" value="${introduce.dir}" />
+			<sysproperty key="remote.sdk.host.name" value="${remote.sdk.host.name}" />
+			<sysproperty key="remote.sdk.host.port" value="${remote.sdk.host.port}" />
+			<sysproperty key="sdk41.tests.base.dir" value="${sdk41.tests.base.dir}"/>
+			<sysproperty key="testing.containers.dir" value="${testing.containers.dir}"/>
+			<sysproperty key="upgrade.services.zip.dir" value="${basedir}/resources/services"/>
+			<sysproperty key="temp.test.service.dir" value="${basedir}/temp"/>
+			<classpath refid="all.test.classpath" />
+			<!-- also needs the other extensions (such as metadata) to be upgraded, so need their upgraders on the classpath -->
+			<classpath>
+				<fileset dir="${introduce.dir}/extensions/lib">
+					<include name="*.jar" />
+				</fileset>
+			</classpath>
+			<formatter type="xml" />
+			<batchtest fork="yes" todir="${junit.results.dir}">
+				<fileset dir="${src.dir}">
+					<include name="**/*UpgradeTest.java" />
+				</fileset>
+			</batchtest>			
+		</junit>
 	</target>
 </project>
