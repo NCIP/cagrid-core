@@ -39,7 +39,7 @@ import gov.nih.nci.cagrid.introduce.security.client.ServiceSecurityClient;
  * On construction the class instance will contact the remote service and retrieve it's security
  * metadata description which it will use to configure the Stub specifically for each method call.
  * 
- * @created by Introduce Toolkit version 1.4
+ * @created by Introduce Toolkit version 1.6
  */
 public abstract class AuthenticationServiceClientBase extends ServiceSecurityClient {	
 	protected AuthenticationServicePortType portType;
@@ -82,6 +82,14 @@ public abstract class AuthenticationServiceClientBase extends ServiceSecurityCli
 
 		return port;
 	}
+	
+	public void setConnectionTimeout(int timeout) {
+    	((Stub) this.portType).setTimeout(timeout);
+    }
+    
+    public int getConnectionTimeout() {
+    	return ((Stub) this.portType).getTimeout();
+    }
 	
     
 

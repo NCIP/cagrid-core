@@ -38,4 +38,10 @@ public class AuthenticationServiceProviderImpl{
     return boxedResult;
   }
 
+    public org.cagrid.gaards.authentication.stubs.GetLockedOutUsersResponse getLockedOutUsers(org.cagrid.gaards.authentication.stubs.GetLockedOutUsersRequest params) throws RemoteException {
+    org.cagrid.gaards.authentication.stubs.GetLockedOutUsersResponse boxedResult = new org.cagrid.gaards.authentication.stubs.GetLockedOutUsersResponse();
+    boxedResult.setLockedUserInfo(impl.getLockedOutUsers());
+    return boxedResult;
+  }
+
 }

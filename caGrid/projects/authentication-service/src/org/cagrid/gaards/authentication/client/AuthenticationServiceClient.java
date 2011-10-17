@@ -121,4 +121,13 @@ public class AuthenticationServiceClient extends AuthenticationServiceClientBase
     }
   }
 
+  public org.cagrid.gaards.authentication.lockout.LockedUserInfo[] getLockedOutUsers() throws RemoteException {
+    synchronized(portTypeMutex){
+      configureStubSecurity((Stub)portType,"getLockedOutUsers");
+    org.cagrid.gaards.authentication.stubs.GetLockedOutUsersRequest params = new org.cagrid.gaards.authentication.stubs.GetLockedOutUsersRequest();
+    org.cagrid.gaards.authentication.stubs.GetLockedOutUsersResponse boxedResult = portType.getLockedOutUsers(params);
+    return boxedResult.getLockedUserInfo();
+    }
+  }
+
 }

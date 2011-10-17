@@ -35,5 +35,11 @@ public interface AuthenticationServiceI {
 
   public org.oasis.wsrf.properties.QueryResourcePropertiesResponse queryResourceProperties(org.oasis.wsrf.properties.QueryResourceProperties_Element params) throws RemoteException ;
 
+  /**
+   * Gets the locked out users and the time at which each will be unlocked.
+   *
+   */
+  public org.cagrid.gaards.authentication.lockout.LockedUserInfo[] getLockedOutUsers() throws RemoteException ;
+
 }
 
