@@ -30,6 +30,7 @@ import org.cagrid.gaards.authentication.test.system.steps.AuthenticationStep;
 import org.cagrid.gaards.authentication.test.system.steps.CopyConfigurationStep;
 import org.cagrid.gaards.authentication.test.system.steps.DeprecatedAuthenticationStep;
 import org.cagrid.gaards.authentication.test.system.steps.InvalidAuthentication;
+import org.cagrid.gaards.authentication.test.system.steps.LockoutStep;
 import org.cagrid.gaards.authentication.test.system.steps.SuccessfullAuthentication;
 import org.cagrid.gaards.authentication.test.system.steps.ValidateSupportedAuthenticationProfilesStep;
 
@@ -85,7 +86,6 @@ public class AuthenticationServiceTest extends ServiceStoryBase {
 			steps.add(new AuthenticationStep(serviceURL, success, cred));
 
 			// Test successful deprecated authentication
-
 			Credential cred2 = new Credential();
 			BasicAuthenticationCredential bac = new BasicAuthenticationCredential();
 			bac.setUserId("jdoe");
@@ -103,7 +103,6 @@ public class AuthenticationServiceTest extends ServiceStoryBase {
 							InvalidCredentialFault.class), cred3));
 
 			// Test invalid deprecated authentication, bad password
-
 			Credential cred4 = new Credential();
 			BasicAuthenticationCredential bac2 = new BasicAuthenticationCredential();
 			bac2.setUserId("jdoe");
@@ -114,6 +113,9 @@ public class AuthenticationServiceTest extends ServiceStoryBase {
 					"Invalid password specified!!!",
 					gov.nih.nci.cagrid.authentication.stubs.types.InvalidCredentialFault.class),
 					cred4));
+			
+			// test locking out an account
+			steps.add(new LockoutStep(serviceURL, cred3, cred));
 
 			// Test invalid authentication, unsupported credential
 			OneTimePassword cred5 = new OneTimePassword();
