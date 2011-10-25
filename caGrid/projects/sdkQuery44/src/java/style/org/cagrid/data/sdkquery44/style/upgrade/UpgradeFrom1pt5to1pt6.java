@@ -65,20 +65,36 @@ public class UpgradeFrom1pt5to1pt6 implements StyleVersionUpgrader {
             LOG.debug(message);
             status.addDescriptionLine(message);
         }
+        // the ISO 21090 analytical service extension jars aren't usually part of the upgrade list,
+        // but need to be included.
         // the names of the ISO 21090 analytical service extension jars changed from 1.3 to 1.5 and 1.6
-        File[] iso21090analyticalLibs = new File("extensions" + File.separator + "lib").listFiles(new FileFilter() {
+        File[] newestIso21090AnalyticalLibs = new File("extensions" + File.separator + "lib").listFiles(new FileFilter() {
             public boolean accept(File pathname) {
                 String name = pathname.getName();
                 return name.startsWith("caGrid-iso21090-analytical") && name.endsWith(".jar");
             }
         });
-        for (File isoLib : iso21090analyticalLibs) {
+        for (File isoLib : newestIso21090AnalyticalLibs) {
             File copyLib = new File(serviceLibDir, isoLib.getName());
             Utils.copyFile(isoLib, copyLib);
-            String message = "Copied ISO 21090 support library " + isoLib.getName();
+            String message = "Copied new ISO 21090 support library " + isoLib.getName();
             LOG.debug(message);
             status.addDescriptionLine(message);
         }
+        // throw away the old ISO 21090 analytical libraries
+        File[] oldIso21090AnalyticalLibs = serviceLibDir.listFiles(new FileFilter() {
+            public boolean accept(File pathname) {
+                String name = pathname.getName();
+                return name.startsWith("caGrid-iso21090-analytical") && name.endsWith("1.5.jar");
+            }
+        });
+        for (File oldIsoLib : oldIso21090AnalyticalLibs) {
+            oldIsoLib.delete();
+            String message = "Rmoved old ISO 21090 support library " + oldIsoLib.getName();
+            LOG.debug(message);
+            status.addDescriptionLine(message);
+        }
+        // bring in required introduce libraries
         File[] neededIntroduceLibs = new File("build" + File.separator + "jars").listFiles(new FileFilter() {
             public boolean accept(File pathname) {
                 String name = pathname.getName();
