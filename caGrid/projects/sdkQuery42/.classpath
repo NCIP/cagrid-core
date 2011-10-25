@@ -149,5 +149,6 @@
 	<classpathentry kind="lib" path="ext/dependencies/jars/caGrid-sdk4xCQL2-processor-1.5.jar"/>
 	<classpathentry kind="lib" path="ext/dependencies/jars/caGrid-CQL-utils-1.5.jar"/>
 	<classpathentry kind="lib" path="ext/dependencies/jars/castor-1.0.2.jar"/>
+	<classpathentry kind="lib" path="ext/dependencies/jars/aopalliance-1.0.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
