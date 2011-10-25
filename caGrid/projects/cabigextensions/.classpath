@@ -4,6 +4,7 @@
 	<classpathentry kind="src" path="test/src/java"/>
 	<classpathentry kind="src" path="build/stubs/src"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.junit.JUNIT_CONTAINER/4"/>
 	<classpathentry kind="var" path="GT4_LOCATION/lib/addressing-1.0.jar"/>
 	<classpathentry kind="var" path="GT4_LOCATION/lib/axis.jar"/>
 	<classpathentry kind="var" path="GT4_LOCATION/lib/axis-url.jar"/>
@@ -68,7 +69,6 @@
 	<classpathentry kind="lib" path="ext/dependencies/jars/jdom-1.1.jar"/>
 	<classpathentry kind="lib" path="ext/dependencies/jars/validation-2.0.0.jar"/>
 	<classpathentry kind="lib" path="ext/dependencies/test/jars/caGrid-core-tests-1.5.jar"/>
-	<classpathentry kind="con" path="org.eclipse.jdt.junit.JUNIT_CONTAINER/3.8.1"/>
 	<classpathentry kind="lib" path="ext/dependencies/jars/jaxen-1.1.jar"/>
 	<classpathentry kind="lib" path="ext/dependencies/jars/relaxngDatatype.jar"/>
 	<classpathentry kind="lib" path="ext/dependencies/jars/xsom14.jar"/>

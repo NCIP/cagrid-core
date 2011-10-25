@@ -19,10 +19,6 @@ import org.apache.commons.logging.LogFactory;
  * WsEnumUpgradeFrom1pt3
  * Upgrades caGrid ws-enumeration support from 1.3 to current
  * 
- * @author ervin
- * @created Apr 9, 2007 11:21:24 AM
- * @version $Id: multiscaleEclipseCodeTemplates.xml,v 1.1 2007/03/02 14:35:01
- *          dervin Exp $
  */
 public class WsEnumUpgradeFrom1pt3 extends ExtensionUpgraderBase {
     private static final String CAGRID_WS_ENUM_JAR_PREFIX = "caGrid-wsEnum-";

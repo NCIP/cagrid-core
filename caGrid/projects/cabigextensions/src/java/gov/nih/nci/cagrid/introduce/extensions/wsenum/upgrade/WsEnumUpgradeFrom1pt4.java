@@ -64,7 +64,7 @@ public class WsEnumUpgradeFrom1pt4 extends ExtensionUpgraderBase {
         // delete the old libraries
         for (File oldLib : serviceEnumLibs) {
             oldLib.delete();
-            String description = "caGrid 1.3 library " + oldLib.getName() + " removed";
+            String description = "caGrid 1.4 library " + oldLib.getName() + " removed";
             getStatus().addDescriptionLine(description);
             LOG.debug(description);
         }
