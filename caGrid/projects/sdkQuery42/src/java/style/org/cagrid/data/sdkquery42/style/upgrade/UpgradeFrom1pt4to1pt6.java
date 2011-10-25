@@ -27,9 +27,9 @@ import org.cagrid.data.sdkquery42.processor2.SDK42CQL2QueryProcessor;
 import org.jdom.Element;
 import org.jdom.JDOMException;
 
-public class UpgradeFrom1pt3to1pt4 implements StyleVersionUpgrader {
+public class UpgradeFrom1pt4to1pt6 implements StyleVersionUpgrader {
     
-    private static Log LOG = LogFactory.getLog(UpgradeFrom1pt3to1pt4.class);
+    private static Log LOG = LogFactory.getLog(UpgradeFrom1pt4to1pt6.class);
 
     public void upgradeStyle(ServiceInformation serviceInformation, ExtensionTypeExtensionData extensionData,
         ExtensionUpgradeStatus status, String serviceFromVersion, String serviceToVersion) throws Exception {
@@ -55,23 +55,12 @@ public class UpgradeFrom1pt3to1pt4 implements StyleVersionUpgrader {
             if (upgradeLib.getName().startsWith("caGrid-")) {
                 int versionIndex = upgradeLib.getName().indexOf(StyleUpgradeConstants.LATEST_JAR_SUFFIX);
                 File oldCagridMatch = new File(serviceLibDir, 
-                    upgradeLib.getName().substring(0, versionIndex) + "-1.3.jar");
-                LOG.debug("Looking for old caGrid 1.3 library " + oldCagridMatch.getName());
+                    upgradeLib.getName().substring(0, versionIndex) + "-1.4.jar");
+                LOG.debug("Looking for old caGrid 1.4 library " + oldCagridMatch.getName());
                 if (oldCagridMatch.exists()) {
                     oldCagridMatch.delete();
                     removedLibs.add(oldCagridMatch.getName());
                     LOG.debug("Deleted old library: " + oldCagridMatch.getName());
-                }
-                // since this upgrader could be called for upgrading 1.2 as well, check those jars
-                oldCagridMatch = new File(serviceLibDir, 
-                    upgradeLib.getName().substring(0, versionIndex) + "-1.2.jar");
-                LOG.debug("Looking for old caGrid 1.2 library " + oldCagridMatch.getName());
-                if (oldCagridMatch.exists()) {
-                    oldCagridMatch.delete();
-                    removedLibs.add(oldCagridMatch.getName());
-                    String message = "Deleted old library: " + oldCagridMatch.getName();
-                    LOG.debug(message);
-                    status.addDescriptionLine(message);
                 }
             }
             File copyLib = new File(serviceLibDir, upgradeLib.getName());

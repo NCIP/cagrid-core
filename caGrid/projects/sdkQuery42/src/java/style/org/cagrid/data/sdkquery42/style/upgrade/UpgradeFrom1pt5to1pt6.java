@@ -27,9 +27,9 @@ import org.cagrid.data.sdkquery42.processor2.SDK42CQL2QueryProcessor;
 import org.jdom.Element;
 import org.jdom.JDOMException;
 
-public class UpgradeFrom1pt2to1pt4 implements StyleVersionUpgrader {
-
-    private static Log LOG = LogFactory.getLog(UpgradeFrom1pt2to1pt4.class);
+public class UpgradeFrom1pt5to1pt6 implements StyleVersionUpgrader {
+    
+    private static Log LOG = LogFactory.getLog(UpgradeFrom1pt5to1pt6.class);
 
     public void upgradeStyle(ServiceInformation serviceInformation, ExtensionTypeExtensionData extensionData,
         ExtensionUpgradeStatus status, String serviceFromVersion, String serviceToVersion) throws Exception {
@@ -55,14 +55,12 @@ public class UpgradeFrom1pt2to1pt4 implements StyleVersionUpgrader {
             if (upgradeLib.getName().startsWith("caGrid-")) {
                 int versionIndex = upgradeLib.getName().indexOf(StyleUpgradeConstants.LATEST_JAR_SUFFIX);
                 File oldCagridMatch = new File(serviceLibDir, 
-                    upgradeLib.getName().substring(0, versionIndex) + "-1.2.jar");
-                LOG.debug("Looking for old caGrid 1.2 library " + oldCagridMatch.getName());
+                    upgradeLib.getName().substring(0, versionIndex) + "-1.5.jar");
+                LOG.debug("Looking for old caGrid 1.5 library " + oldCagridMatch.getName());
                 if (oldCagridMatch.exists()) {
                     oldCagridMatch.delete();
                     removedLibs.add(oldCagridMatch.getName());
-                    String message = "Deleted old library: " + oldCagridMatch.getName();
-                    LOG.debug(message);
-                    status.addDescriptionLine(message);
+                    LOG.debug("Deleted old library: " + oldCagridMatch.getName());
                 }
             }
             File copyLib = new File(serviceLibDir, upgradeLib.getName());
@@ -91,7 +89,7 @@ public class UpgradeFrom1pt2to1pt4 implements StyleVersionUpgrader {
                 QueryProcessorConstants.CQL2_QUERY_PROCESSOR_CONFIG_PREFIX + propName,
                 def, fromEtc.contains(propName));
         }
-
+        
         // copy values from CQL 1 query processor properties
         SDK42QueryProcessor cql1processor = new SDK42QueryProcessor();
         Properties oldProperties = cql1processor.getRequiredParameters();
