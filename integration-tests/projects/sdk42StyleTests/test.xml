@@ -47,10 +47,16 @@
 		</sql>
 	</target>
 	
+	
+	<target name="test" depends="testIntegration, testUpgrade" description="Runs the tests">
+		<fail if="${integration.test.failed}" message="Integration tests failed!  Consult the test logs."/>
+		<fail if="${upgrade.test.failed}" message="Upgrade tests failed! Consult the test logs."/>
+	</target>
 
-	<target name="test" depends="sdkDbSetup" description="Runs tests">
+
+	<target name="testIntegration" depends="sdkDbSetup" description="Runs tests">
 		<mkdir dir="${junit.results.dir}" />
-		<junit dir="${introduce.dir}" printsummary="yes" errorproperty="test.failed" failureproperty="test.failed" showoutput="true" fork="yes" forkmode="once">
+		<junit dir="${introduce.dir}" printsummary="yes" errorproperty="integration.test.failed" failureproperty="integration.test.failed" showoutput="true" fork="yes" forkmode="once">
 			<!-- is this needed any more? -->
 			<sysproperty key="introduce.base.dir" value="${introduce.dir}" />
 			<sysproperty key="sdk42.tests.base.dir" value="${sdk42.tests.base.dir}"/>
@@ -65,6 +71,31 @@
 				</fileset>
 			</batchtest>
 		</junit>
-		<!-- <fail message="Tests failed! Check test reports." if="test.failed" /> -->
+	</target>
+
+
+	<target name="testUpgrade" depends="prepareClasspaths" description="Tests the ability to upgrade SDK 4.2 data services">
+		<mkdir dir="${junit.results.dir}"/>
+		<junit dir="${introduce.dir}" printsummary="yes" errorproperty="upgrade.test.failed" failureproperty="upgrade.test.failed" showoutput="true" fork="yes" forkmode="once">
+			<sysproperty key="build.dirs" value="${classes.dir}" />
+			<sysproperty key="introduce.base.dir" value="${introduce.dir}" />
+			<sysproperty key="sdk42.tests.base.dir" value="${sdk42.tests.base.dir}" />
+			<sysproperty key="testing.containers.dir" value="${testing.containers.dir}" />
+			<sysproperty key="upgrade.services.zip.dir" value="${basedir}/resources/services" />
+			<sysproperty key="temp.test.service.dir" value="${basedir}/temp" />
+			<classpath refid="all.test.classpath" />
+			<!-- also needs the other extensions (such as metadata) to be upgraded, so need their upgraders on the classpath -->
+			<classpath>
+				<fileset dir="${introduce.dir}/extensions/lib">
+					<include name="*.jar" />
+				</fileset>
+			</classpath>
+			<formatter type="xml" />
+			<batchtest fork="yes" todir="${junit.results.dir}">
+				<fileset dir="${src.dir}">
+					<include name="**/*UpgradeTest.java" />
+				</fileset>
+			</batchtest>
+		</junit>
 	</target>
 </project>
