@@ -47,7 +47,7 @@
 	<!-- overide the introduce location of this which is suposed to be in tools/lib -->
 	<property name="ant.contrib.location" value="${ext.tools.lib.dir}/ant-contrib-1.0b3.jar" />
 
-	<target name="defineClasspaths" depends="checkGlobus">
+	<target name="defineClasspaths" depends="checkGlobus, defineContribTasks">
 		<path id="tasks.run.extended.classpath" />
 		<runtarget target="defineExtendedClasspaths" />
 		<path id="base.classpath">
@@ -140,7 +140,6 @@
 			<fileset dir="${ext.tools.lib.dir}">
 				<include name="*.jar" />
 			</fileset>
-
 		</path>
 	</target>
 
@@ -254,8 +253,6 @@
 	</target>
 
 
-
-
 	<!-- ============================================================== -->
 	<!-- Post Jar Build Target                                          -->
 	<!-- ============================================================== -->
@@ -316,7 +313,6 @@
 			<mapper type="glob" from="*.template" to="*" />
 			<filterset filtersfile="${ext.targetgrid.dir}/service_urls.properties" />
 		</copy>
-
 	</target>
 
 
@@ -331,6 +327,7 @@
 			<mapper type="glob" from="*.example" to="*" />
 		</copy>
 	</target>
+	
 
 	<!-- Post Introduce Edit-->
 	<target name="test" depends="defineClasspaths,create_config_files,testGrouperInit" description="Runs the service's tests.">
@@ -348,6 +345,7 @@
 		</junit>
 	</target>
 
+	
 	<!-- Post Introduce Edit-->
 	<target name="createTestDatabase" description="" depends="jar">
 		<java classname="gov.nih.nci.cagrid.gridgrouper.testutils.MysqlDBUtil" fork="no" classpathref="test.run.classpath" />
@@ -364,6 +362,7 @@
 		</testschemadrop>
 	</target>
 
+	
 	<!-- Post Introduce Edit-->
 	<target name="createTestGrouperSchema" depends="dropTestGrouperSchema">
 		<taskdef name="testschemacreate" classname="net.sf.hibernate.tool.hbm2ddl.SchemaExportTask" classpathref="test.run.classpath" />
@@ -373,12 +372,14 @@
 			</fileset>
 		</testschemacreate>
 	</target>
+	
+	
 	<!-- Post Introduce Edit-->
 	<target name="testGrouperInit" depends="createTestGrouperSchema" description="initialize database">
-
 		<java fork="true" classpathref="test.run.classpath" classname="edu.internet2.middleware.grouper.RegistryInstall" failonerror="true" />
 	</target>
-
+	
+	
 	<!-- Post Introduce Edit-->
 	<target name="dropGrouperSchema" depends="jars">
 		<taskdef name="schemadrop" classname="net.sf.hibernate.tool.hbm2ddl.SchemaExportTask" classpathref="service.run.classpath" />
@@ -424,5 +425,4 @@
 			<classpath refid="run.classpath" />
 		</java>
 	</target>
-
 </project>
