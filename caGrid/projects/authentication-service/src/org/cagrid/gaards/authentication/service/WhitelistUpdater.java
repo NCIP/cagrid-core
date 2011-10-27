@@ -1,6 +1,5 @@
 package org.cagrid.gaards.authentication.service;
 
-import gov.nih.nci.cagrid.common.Utils;
 import gov.nih.nci.security.authentication.BetterLockoutManager;
 import gov.nih.nci.security.authentication.LockoutManager;
 
@@ -11,7 +10,6 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.HashSet;
 import java.util.Set;
-import java.util.StringTokenizer;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -42,6 +40,7 @@ public class WhitelistUpdater {
         WhitelistUpdater updater = new WhitelistUpdater(whitelistFile);
         updater.startMonitoring();
     }
+    
 
     private WhitelistUpdater(String whitelistFilename) {
         File file = new File(whitelistFilename);
@@ -66,6 +65,9 @@ public class WhitelistUpdater {
                     BetterLockoutManager lockoutManager = LockoutManager.getInstance().getDelegatedLockoutManager();
                     synchronized (previousWhitelist) {
                         // delist all previously known whitelisted users
+                        // doing this rather than a blanket removal of every ID in the whitelist
+                        // preserves any IDs that might have been added by other mechanisms
+                        // than the whitelist file.
                         for (String whitelistedUser : previousWhitelist) {
                             lockoutManager.unWhitelistUser(whitelistedUser);
                         }
