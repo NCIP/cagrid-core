@@ -29,7 +29,9 @@ public class TestWhitelistUpdater extends TestCase {
     
     public void setUp() {
         try {
-            this.whitelistFile = File.createTempFile("TempWhitelist", ".txt");
+            File tmpDir = new File("./tmp");
+            tmpDir.mkdir();
+            this.whitelistFile = File.createTempFile("TempWhitelist", ".txt", tmpDir);
             this.rand = new Random();
         } catch (IOException ex) {
             ex.printStackTrace();
