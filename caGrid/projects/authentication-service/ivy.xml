@@ -36,7 +36,6 @@
   </publications>
 
   <dependencies>
-
     <!-- Standard caGrid Service Dependencies -->
     <dependency rev="latest.integration" org="caGrid" name="core"
       conf="service->default;impl-test->test"/>
@@ -70,6 +69,6 @@
     <dependency rev="3.0" org="apache" name="jarkarta-commons-httpclient" conf="service->default"/>
     <dependency rev="3.2" org="cacore" name="csm" conf="service->auth"/>
     <dependency rev="4.8.2" org="junit" name="junit" conf="impl-test->default"/>
-
+	<dependency rev="2.0" org="apache" name="commons-vfs2" conf="service->default"/>
   </dependencies>
 </ivy-module>

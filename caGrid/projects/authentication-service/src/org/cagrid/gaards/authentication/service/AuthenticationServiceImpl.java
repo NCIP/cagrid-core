@@ -38,6 +38,8 @@ public class AuthenticationServiceImpl extends AuthenticationServiceImplBase {
             AuthenticationProfiles profiles = new AuthenticationProfiles();
             profiles.setProfile(list);
             getResourceHome().getAddressedResource().setAuthenticationProfiles(profiles);
+            String whitelistFile = AuthenticationServiceConfiguration.getConfiguration().getLockoutWhitelistFile();
+            WhitelistUpdater.monitorWhitelist(whitelistFile);
         } catch (Exception ex) {
             throw new RemoteException("Error instantiating AuthenticationProvider: " + ex.getMessage(), ex);
         }

@@ -242,5 +242,6 @@
  <ns33:ServiceProperties xmlns:ns33="gme://gov.nih.nci.cagrid.introduce/1/Property">
   <ns33:Property description="The Authentication Provider to use." isFromETC="true" key="authenticationConfiguration" value="authentication-config.xml"/>
   <ns33:Property description="The authentication properties file." isFromETC="true" key="authenticationProperties" value="authentication.properties"/>
+  <ns33:Property description="A text file with a newline delimited list of user IDs which are not subject to lockouts" isFromETC="true" key="lockoutWhitelistFile" value="lockout-whitelist.txt"/>
  </ns33:ServiceProperties>
 </ns1:ServiceDescription>
