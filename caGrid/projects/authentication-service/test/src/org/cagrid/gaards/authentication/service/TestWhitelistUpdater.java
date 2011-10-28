@@ -15,7 +15,7 @@ import junit.framework.TestCase;
 
 public class TestWhitelistUpdater extends TestCase {
     
-    public static long LOCKOUT_DURATION = 4000;
+    public static long LOCKOUT_DURATION = 10000;
     public static int MAX_ATTEMPTS = 4;
     public static long LOCKOUT_MEMORY = 500;
     
@@ -116,7 +116,7 @@ public class TestWhitelistUpdater extends TestCase {
     public void testAccountWhitelisted() {
         String userId = getFakeUserName();
         addIdToWhitelist(userId);
-        sleep(2000);
+        sleep(LOCKOUT_DURATION / 2);
         // give that a moment to be picked up
         for (int i = 0; i < MAX_ATTEMPTS * 2; i++) {
             LockoutManager.getInstance().setFailedAttempt(userId);
@@ -133,7 +133,7 @@ public class TestWhitelistUpdater extends TestCase {
         assertTrue("User was not locked out", LockoutManager.getInstance().isUserLockedOut(userId));
         addIdToWhitelist(userId);
         // give that a moment to be seen by the whitelist updater
-        sleep(2000);
+        sleep(LOCKOUT_DURATION / 2);
         for (int i = 0; i < MAX_ATTEMPTS * 2; i++) {
             LockoutManager.getInstance().setFailedAttempt(userId);
         }
@@ -144,13 +144,13 @@ public class TestWhitelistUpdater extends TestCase {
     public void testRemoveFromWhitelist() {
         String userId = getFakeUserName();
         addIdToWhitelist(userId);
-        sleep(2000);
+        sleep(LOCKOUT_DURATION / 2);
         for (int i = 0; i < MAX_ATTEMPTS * 2; i++) {
             LockoutManager.getInstance().setFailedAttempt(userId);
         }
         assertFalse("User was locked out, even though user was whitelisted", LockoutManager.getInstance().isUserLockedOut(userId));
         removeIdFromWhitelist(userId);
-        sleep(2000);
+        sleep(LOCKOUT_DURATION / 2);
         for (int i = 0; i < MAX_ATTEMPTS * 2; i++) {
             LockoutManager.getInstance().setFailedAttempt(userId);
         }
