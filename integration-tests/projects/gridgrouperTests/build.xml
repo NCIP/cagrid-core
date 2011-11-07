@@ -132,7 +132,6 @@
 
 		<delete dir="${basedir}/tmp" />
 		<fail if="test.failed" message="Tests failed!  Check logs for details." />
-
 	</target>
 	
 	
@@ -144,14 +143,13 @@
 		<property name="driver_class" value="${hibernate.connection.driver_class}" />
 		<sql driver="${driver_class}" url="jdbc:mysql://localhost:3306/" userid="${root.db.username}" password="${root.db.password}">
 			<classpath>
-				<fileset dir="${ext.lib.dir}" includes="**/mysql*.jar" />
-					
-			</classpath>
-			
+				<fileset dir="${ext.lib.dir}" includes="**/mysql*.jar" />					
+			</classpath>			
 			DROP DATABASE IF EXISTS grouper;
 			CREATE DATABASE grouper;
 		</sql>
 	</target>
+	
 
 	<target name="dropTestDatabase" description="Drops the testing database.">
 		<property file="${gridgrouper.dir}/resources/conf/grouper.hibernate.properties" />
@@ -161,8 +159,7 @@
 		<property name="driver_class" value="${hibernate.connection.driver_class}" />
 		<sql driver="${driver_class}" url="jdbc:mysql://localhost:3306/" userid="${root.db.username}" password="${root.db.password}">
 			<classpath>
-				<fileset dir="${ext.lib.dir}" includes="**/mysql*.jar" />
-					
+				<fileset dir="${ext.lib.dir}" includes="**/mysql*.jar" />					
 			</classpath>
 			DROP DATABASE IF EXISTS grouper;
 		</sql>
