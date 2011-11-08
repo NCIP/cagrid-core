@@ -10,16 +10,12 @@ import org.junit.Test;
 
 public class AuthenticationServiceTestsStoryBook {
 	
-	
-
     @Test
     public void authenticationServiceTests() throws Throwable {
     	Story s = new AuthenticationServiceTest(
-							ServiceContainerFactory
-									.createContainer(ServiceContainerType.SECURE_TOMCAT_CONTAINER),
+    	    ServiceContainerFactory.createContainer(ServiceContainerType.SECURE_TOMCAT_CONTAINER),
 			new File("resources/authentication-config.xml"));
 
     	s.runBare();
 	}
-
 }
