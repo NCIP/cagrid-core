@@ -1,5 +1,6 @@
 package org.cagrid.gaards.authentication.test;
 
+import gov.nih.nci.security.authentication.LockoutManager;
 import gov.nih.nci.security.authentication.principal.EmailIdPrincipal;
 import gov.nih.nci.security.authentication.principal.FirstNamePrincipal;
 import gov.nih.nci.security.authentication.principal.LastNamePrincipal;
@@ -29,9 +30,14 @@ public class ExampleSubjectProvider1 extends BasicAuthenticationSubjectProvider 
 		String userId = null;
 		if (credential instanceof BasicAuthentication) {
 			BasicAuthentication c = (BasicAuthentication) credential;
-			if (c.getPassword().equals("password")) {
+			userId = c.getUserId();
+			if (LockoutManager.getInstance().isUserLockedOut(userId)) {
+			    throw new InvalidCredentialException("User " + userId + " is locked out");
+			} else if (c.getPassword().equals("password")) {
 				userId = c.getUserId();
 			} else {
+			    System.out.println("Adding failed attempt to lockout manager for " + c.getUserId());
+			    LockoutManager.getInstance().setFailedAttempt(c.getUserId());
 				throw new InvalidCredentialException(
 						"Invalid password specified!!!");
 			}
