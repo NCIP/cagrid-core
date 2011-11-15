@@ -32,8 +32,9 @@ public class AuthenticationServiceImpl extends AuthenticationServiceImplBase {
 			list = set.toArray(list);
 			AuthenticationProfiles profiles = new AuthenticationProfiles();
 			profiles.setProfile(list);
-			getResourceHome().getAddressedResource().setAuthenticationProfiles(
-					profiles);
+            getResourceHome().getAddressedResource().setAuthenticationProfiles(profiles);
+            String whitelistFile = AuthenticationServiceConfiguration.getConfiguration().getLockoutWhitelistFile();
+            WhitelistUpdater.monitorWhitelist(whitelistFile);
 		} catch (Exception ex) {
 			throw new RemoteException(
 					"Error instantiating AuthenticationProvider: "
@@ -48,5 +49,4 @@ public class AuthenticationServiceImpl extends AuthenticationServiceImplBase {
   public gov.nih.nci.cagrid.opensaml.SAMLAssertion authenticateUser(org.cagrid.gaards.authentication.Credential credential) throws RemoteException, org.cagrid.gaards.authentication.faults.AuthenticationProviderFault, org.cagrid.gaards.authentication.faults.CredentialNotSupportedFault, org.cagrid.gaards.authentication.faults.InsufficientAttributeFault, org.cagrid.gaards.authentication.faults.InvalidCredentialFault {
 		return this.auth.authenticate(credential);
 	}
-
 }

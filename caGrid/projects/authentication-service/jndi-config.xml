@@ -42,6 +42,10 @@
           <name>authenticationProperties</name>
           <value>ETC-PATH/@authenticationProperties@</value>
         </parameter>
+        <parameter>
+          <name>lockoutWhitelistFile</name>
+          <value>ETC-PATH/@lockoutWhitelistFile@</value>
+        </parameter>
       </resourceParams>
     </resource>
     <resource name="home" type="org.cagrid.gaards.authentication.service.globus.resource.AuthenticationServiceResourceHome">

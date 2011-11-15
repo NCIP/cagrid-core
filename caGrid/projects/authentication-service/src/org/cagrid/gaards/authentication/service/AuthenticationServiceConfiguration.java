@@ -16,7 +16,7 @@ import org.globus.wsrf.Constants;
  * This class holds all service properties which were defined for the service to have
  * access to.
  * 
- * @created by Introduce Toolkit version 1.5
+ * @created by Introduce Toolkit version 1.6
  * 
  */
 public class AuthenticationServiceConfiguration implements ServiceConfiguration {
@@ -49,6 +49,8 @@ public class AuthenticationServiceConfiguration implements ServiceConfiguration 
 	
 	private String authenticationProperties;
 	
+	private String lockoutWhitelistFile;
+	
 	
     public String getEtcDirectoryPath() {
 		return ContainerConfig.getBaseDirectory() + File.separator + etcDirectoryPath;
@@ -77,6 +79,16 @@ public class AuthenticationServiceConfiguration implements ServiceConfiguration 
 	
 	public void setAuthenticationProperties(String authenticationProperties) {
 		this.authenticationProperties = authenticationProperties;
+	}
+
+	
+	public String getLockoutWhitelistFile() {
+		return ContainerConfig.getBaseDirectory() + File.separator + lockoutWhitelistFile;
+	}
+	
+	
+	public void setLockoutWhitelistFile(String lockoutWhitelistFile) {
+		this.lockoutWhitelistFile = lockoutWhitelistFile;
 	}
 
 	
