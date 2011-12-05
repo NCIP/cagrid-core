@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
   <classpathentry kind="src" path="src" />
+  <classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER" />
   <classpathentry kind="lib" path="ext/dependencies/jars/antlr-2.7.6.jar" />
   <classpathentry kind="lib" path="ext/dependencies/jars/cadsrapi40-beans.jar" />
   <classpathentry kind="lib" path="ext/dependencies/jars/caGrid-advertisement-1.4.1.jar" />
@@ -164,7 +165,6 @@
   <classpathentry kind="var" path="GT4_LOCATION/lib/xercesImpl.jar" />
   <classpathentry kind="var" path="GT4_LOCATION/lib/xml-apis.jar" />
   <classpathentry kind="var" path="GT4_LOCATION/lib/xmlsec.jar" />
-  <classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER" />
   <classpathentry kind="output" path="bin" />
 </classpath>
 
