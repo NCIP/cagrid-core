@@ -32,7 +32,7 @@ public class Introduce_1_2__1_4_Upgrader extends IntroduceUpgraderBase {
 
     public Introduce_1_2__1_4_Upgrader(IntroduceUpgradeStatus status, ServiceInformation serviceInformation,
         String servicePath) throws Exception {
-        super(status, serviceInformation, servicePath, "1.2", "1.4");
+        super(status, serviceInformation, servicePath, "1.2", "1.4.1");
     }
 
 

@@ -81,7 +81,7 @@ public class TransferUpgrade1pt2to1pt4 extends ExtensionUpgraderBase {
         try {
             Utils.copyFile(
                 transferSchema, new File(serviceSchemaDir, "TransferServiceContextTypes.xsd"));
-            getStatus().addDescriptionLine("Copied caGrid 1.4 transfer schema " + transferSchema.getName());
+            getStatus().addDescriptionLine("Copied caGrid 1.4.1 transfer schema " + transferSchema.getName());
         } catch (IOException e) {
             throw new RuntimeException(e.getMessage(), e);
         }
@@ -101,7 +101,7 @@ public class TransferUpgrade1pt2to1pt4 extends ExtensionUpgraderBase {
         try {
             Utils.copyFile(transferDescSchema, 
                 new File(serviceSchemaDir, "caGrid_Transfer.xsd"));
-            getStatus().addDescriptionLine("Copied caGrid 1.4 schema " + transferDescSchema.getName());
+            getStatus().addDescriptionLine("Copied caGrid 1.4.1 schema " + transferDescSchema.getName());
         } catch (IOException e) {
             throw new RuntimeException(e.getMessage(), e);
         }
@@ -159,7 +159,7 @@ public class TransferUpgrade1pt2to1pt4 extends ExtensionUpgraderBase {
             File out = new File(serviceLibDir, newLib.getName());
             try {
                 Utils.copyFile(newLib, out);
-                getStatus().addDescriptionLine("caGrid 1.4 library " + newLib.getName() + " added");
+                getStatus().addDescriptionLine("caGrid .1 library " + newLib.getName() + " added");
             } catch (IOException ex) {
                 // TODO: change this to use a better exception
                 throw new RuntimeException("Error copying new transfer library: " + ex.getMessage(), ex);
