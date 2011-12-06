@@ -12,26 +12,24 @@ import org.cagrid.gaards.ui.common.AxisTypeComboBox;
  *          Exp $
  */
 public class CountryListComboBox extends AxisTypeComboBox {
-	
-	private static final long serialVersionUID = 1L;
 
-	public CountryListComboBox() {
-		this(false);
-	}
+    private static final long serialVersionUID = 1L;
 
-	public CountryListComboBox(boolean anyCountry) {
-		super(CountryCode.class, anyCountry);
-		if (!anyCountry) {
-			this.setSelectedItem(CountryCode.US);
-		}
-	}
 
-	public CountryCode getSelectedCountry() {
-		return (CountryCode) getSelectedObject();
-	}
+    public CountryListComboBox() {
+        this(false);
+    }
 
-	public static void main(String[] args) {
-		new CountryListComboBox();
-	}
 
+    public CountryListComboBox(boolean anyCountry) {
+        super(CountryCode.class, anyCountry);
+        if (!anyCountry) {
+            this.setSelectedItem(CountryCode.US);
+        }
+    }
+
+
+    public CountryCode getSelectedCountry() {
+        return (CountryCode) getSelectedObject();
+    }
 }
