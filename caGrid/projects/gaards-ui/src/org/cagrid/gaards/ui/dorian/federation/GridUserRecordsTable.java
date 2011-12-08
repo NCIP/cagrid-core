@@ -52,7 +52,6 @@ public class GridUserRecordsTable extends GrapeBaseTable {
         c.setPreferredWidth(0);
 
         this.clearTable();
-
     }
 
 
@@ -64,12 +63,11 @@ public class GridUserRecordsTable extends GrapeBaseTable {
         model.addColumn(LAST_NAME);
         model.addColumn(EMAIL);
         return model;
-
     }
 
 
     public void addUser(final GridUserRecord u) {
-        Vector v = new Vector();
+        Vector<Object> v = new Vector<Object>();
         v.add(u);
         v.add(u.getIdentity());
         v.add(u.getFirstName());
@@ -106,7 +104,5 @@ public class GridUserRecordsTable extends GrapeBaseTable {
 
     public void singleClick() throws Exception {
         // TODO Auto-generated method stub
-
     }
-
 }

@@ -19,138 +19,140 @@ import org.cagrid.grape.GridApplication;
 import org.cagrid.grape.table.GrapeBaseTable;
 import org.cagrid.grape.utils.ErrorDialog;
 
+
 /**
  * @author <A HREF="MAILTO:langella@bmi.osu.edu">Stephen Langella </A>
  * @author <A HREF="MAILTO:oster@bmi.osu.edu">Scott Oster </A>
  * @author <A HREF="MAILTO:hastings@bmi.osu.edu">Shannon Hastings </A>
  */
 public class UsersTable extends GrapeBaseTable {
-	private static Log log = LogFactory.getLog(UsersTable.class);
-	
-	private static final long serialVersionUID = 1L;
-	
-	public final static String USER = "user";
+    private static Log log = LogFactory.getLog(UsersTable.class);
 
-	public final static String IDP = "IdP Id";
+    private static final long serialVersionUID = 1L;
 
-	public final static String UID = "User Id";
+    public final static String USER = "user";
 
-	public final static String GRID_IDENTITY = "Grid Identity";
+    public final static String IDP = "IdP Id";
 
-	public final static String EMAIL = "Email";
+    public final static String UID = "User Id";
 
-	public final static String FIRST_NAME = "First Name";
+    public final static String GRID_IDENTITY = "Grid Identity";
 
-	public final static String LAST_NAME = "Last Name";
+    public final static String EMAIL = "Email";
 
-	DorianSessionProvider session;
+    public final static String FIRST_NAME = "First Name";
 
-	public UsersTable() {
-		this(null);
-	}
+    public final static String LAST_NAME = "Last Name";
 
-	public UsersTable(DorianSessionProvider session) {
-		super(createTableModel());
-		this.session = session;
-		TableColumn c = this.getColumn(USER);
-		c.setMaxWidth(0);
-		c.setMinWidth(0);
-		c.setPreferredWidth(0);
-		c.setResizable(false);
+    DorianSessionProvider session;
 
-		c = this.getColumn(IDP);
-		c.setMaxWidth(35);
-		c.setMinWidth(35);
-		c.setPreferredWidth(0);
 
-		c = this.getColumn(GRID_IDENTITY);
-		c.setMinWidth(350);
-		c.setPreferredWidth(0);
+    public UsersTable() {
+        this(null);
+    }
 
-		this.clearTable();
 
-	}
+    public UsersTable(DorianSessionProvider session) {
+        super(createTableModel());
+        this.session = session;
+        TableColumn c = this.getColumn(USER);
+        c.setMaxWidth(0);
+        c.setMinWidth(0);
+        c.setPreferredWidth(0);
+        c.setResizable(false);
 
-	public static DefaultTableModel createTableModel() {
-		DefaultTableModel model = new DefaultTableModel();
-		model.addColumn(USER);
-		model.addColumn(IDP);
-		model.addColumn(UID);
-		model.addColumn(GRID_IDENTITY);
-		model.addColumn(FIRST_NAME);
-		model.addColumn(LAST_NAME);
-		model.addColumn(EMAIL);
-		return model;
+        c = this.getColumn(IDP);
+        c.setMaxWidth(35);
+        c.setMinWidth(35);
+        c.setPreferredWidth(0);
 
-	}
+        c = this.getColumn(GRID_IDENTITY);
+        c.setMinWidth(350);
+        c.setPreferredWidth(0);
 
-	public void addUser(final GridUser u) {
-		Vector v = new Vector();
-		v.add(u);
-		v.add(String.valueOf(u.getIdPId()));
-		v.add(String.valueOf(u.getUID()));
-		v.add(u.getGridId());
-		v.add(u.getFirstName());
-		v.add(u.getLastName());
-		v.add(u.getEmail());
-		addRow(v);
-	}
+        this.clearTable();
+    }
 
-	public synchronized GridUser getSelectedUser() throws Exception {
-		int row = getSelectedRow();
-		if ((row >= 0) && (row < getRowCount())) {
-			return (GridUser) getValueAt(row, 0);
-		} else {
-			throw new Exception("Please select a user!!!");
-		}
-	}
 
-	public synchronized void removeSelectedUser() throws Exception {
-		int row = getSelectedRow();
-		if ((row >= 0) && (row < getRowCount())) {
-			removeRow(row);
-		} else {
-			throw new Exception("Please select a user!!!");
-		}
-	}
+    public static DefaultTableModel createTableModel() {
+        DefaultTableModel model = new DefaultTableModel();
+        model.addColumn(USER);
+        model.addColumn(IDP);
+        model.addColumn(UID);
+        model.addColumn(GRID_IDENTITY);
+        model.addColumn(FIRST_NAME);
+        model.addColumn(LAST_NAME);
+        model.addColumn(EMAIL);
+        return model;
+    }
 
-	public void doubleClick() {
-		if (session != null) {
-			Runner runner = new Runner() {
-				public void execute() {
-					try {
-						GridUser user = getSelectedUser();
-						GridAdministrationClient client = session.getSession()
-								.getAdminClient();
-						List<TrustedIdP> idps = client.getTrustedIdPs();
-						TrustedIdP tidp = null;
-						for (int i = 0; i < idps.size(); i++) {
-							if (idps.get(i).getId() == user.getIdPId()) {
-								tidp = idps.get(i);
-								break;
-							}
-						}
-						GridApplication.getContext()
-								.addApplicationComponent(
-										new UserWindow(session.getSession(),
-												user, tidp), 700, 500);
-					} catch (Exception e) {
-						ErrorDialog.showError(e);
-						FaultUtil.logFault(log, e);
-					}
-				}
-			};
-			try {
-				GridApplication.getContext().executeInBackground(runner);
-			} catch (Exception t) {
-				t.getMessage();
-			}
-		}
-	}
 
-	public void singleClick() throws Exception {
-		// TODO Auto-generated method stub
+    public void addUser(final GridUser u) {
+        Vector<Object> v = new Vector<Object>();
+        v.add(u);
+        v.add(String.valueOf(u.getIdPId()));
+        v.add(String.valueOf(u.getUID()));
+        v.add(u.getGridId());
+        v.add(u.getFirstName());
+        v.add(u.getLastName());
+        v.add(u.getEmail());
+        addRow(v);
+    }
 
-	}
 
+    public synchronized GridUser getSelectedUser() throws Exception {
+        int row = getSelectedRow();
+        if ((row >= 0) && (row < getRowCount())) {
+            return (GridUser) getValueAt(row, 0);
+        } else {
+            throw new Exception("Please select a user!!!");
+        }
+    }
+
+
+    public synchronized void removeSelectedUser() throws Exception {
+        int row = getSelectedRow();
+        if ((row >= 0) && (row < getRowCount())) {
+            removeRow(row);
+        } else {
+            throw new Exception("Please select a user!!!");
+        }
+    }
+
+
+    public void doubleClick() {
+        if (session != null) {
+            Runner runner = new Runner() {
+                public void execute() {
+                    try {
+                        GridUser user = getSelectedUser();
+                        GridAdministrationClient client = session.getSession().getAdminClient();
+                        List<TrustedIdP> idps = client.getTrustedIdPs();
+                        TrustedIdP tidp = null;
+                        for (int i = 0; i < idps.size(); i++) {
+                            if (idps.get(i).getId() == user.getIdPId()) {
+                                tidp = idps.get(i);
+                                break;
+                            }
+                        }
+                        GridApplication.getContext().addApplicationComponent(
+                            new UserWindow(session.getSession(), user, tidp), 700, 500);
+                    } catch (Exception e) {
+                        ErrorDialog.showError(e);
+                        FaultUtil.logFault(log, e);
+                    }
+                }
+            };
+            try {
+                GridApplication.getContext().executeInBackground(runner);
+            } catch (Exception t) {
+                t.getMessage();
+            }
+        }
+    }
+
+
+    public void singleClick() throws Exception {
+        // nothing to do here
+    }
 }

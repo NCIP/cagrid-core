@@ -139,9 +139,6 @@ public class HostCertificateWindow extends ApplicationComponent implements Doria
     private X509Certificate cert;
 
 
-    /**
-     * This is the default constructor
-     */
     public HostCertificateWindow(DorianSession session, HostCertificateRecord record, boolean admin) throws Exception {
         super();
         this.session = session;
@@ -318,7 +315,6 @@ public class HostCertificateWindow extends ApplicationComponent implements Doria
             getProgressPanel().stopProgress("Error");
             FaultUtil.logFault(log, e);
         }
-
     }
 
 
@@ -336,7 +332,6 @@ public class HostCertificateWindow extends ApplicationComponent implements Doria
             getProgressPanel().stopProgress("Error");
             FaultUtil.logFault(log, e);
         }
-
     }
 
 
@@ -385,14 +380,12 @@ public class HostCertificateWindow extends ApplicationComponent implements Doria
             } else {
                 getProgressPanel().stopProgress("Certificate up to date.");
             }
-
         } catch (Exception e) {
             ErrorDialog.showError(e);
             getUpdate().setEnabled(true);
             getProgressPanel().stopProgress("Error");
             FaultUtil.logFault(log, e);
         }
-
     }
 
 
@@ -665,7 +658,6 @@ public class HostCertificateWindow extends ApplicationComponent implements Doria
             });
             if (!admin) {
                 owner.setEditable(false);
-
             }
         }
         return owner;
@@ -715,7 +707,6 @@ public class HostCertificateWindow extends ApplicationComponent implements Doria
             });
             if (!admin) {
                 status.setEnabled(false);
-
             }
         }
         return status;
@@ -819,14 +810,13 @@ public class HostCertificateWindow extends ApplicationComponent implements Doria
         int returnVal = fc.showSaveDialog(this);
         if (returnVal == JFileChooser.APPROVE_OPTION) {
             try {
-                X509Certificate cert = CertUtil.loadCertificate(record.getCertificate().getCertificateAsString());
-                CertUtil.writeCertificate(cert, new File(fc.getSelectedFile().getAbsolutePath()));
+                X509Certificate loadedCert = CertUtil.loadCertificate(record.getCertificate().getCertificateAsString());
+                CertUtil.writeCertificate(loadedCert, new File(fc.getSelectedFile().getAbsolutePath()));
             } catch (Exception ex) {
                 ErrorDialog.showError(ex);
                 log.error(ex, ex);
             }
         }
-
     }
 
 
@@ -848,16 +838,14 @@ public class HostCertificateWindow extends ApplicationComponent implements Doria
                     };
                     try {
                         GridApplication.getContext().executeInBackground(runner);
-                    } catch (Exception t) {
-                        t.getMessage();
+                    } catch (Exception ex) {
+                        log.error(ex);
                     }
-
                 }
             });
             if (!admin) {
                 update.setEnabled(false);
                 update.setVisible(false);
-
             }
         }
         return update;
@@ -934,8 +922,8 @@ public class HostCertificateWindow extends ApplicationComponent implements Doria
      */
     private FederationAuditPanel getAuditPanel() {
         if (auditPanel == null) {
-            auditPanel = new FederationAuditPanel(this, FederationAuditPanel.HOST_MODE, String.valueOf(this.record
-                .getId()));
+            auditPanel = new FederationAuditPanel(this, FederationAuditPanel.HOST_MODE, 
+                String.valueOf(this.record.getId()));
             auditPanel.setProgess(getProgressPanel());
         }
         return auditPanel;
@@ -996,7 +984,8 @@ public class HostCertificateWindow extends ApplicationComponent implements Doria
             view.addActionListener(new java.awt.event.ActionListener() {
                 public void actionPerformed(java.awt.event.ActionEvent e) {
                     if (cert != null) {
-                        GridApplication.getContext().addApplicationComponent(new CertificateInformationComponent(cert),
+                        GridApplication.getContext().addApplicationComponent(
+                            new CertificateInformationComponent(cert),
                             700, 550);
                     }
                 }
@@ -1017,5 +1006,4 @@ public class HostCertificateWindow extends ApplicationComponent implements Doria
         }
         return progressPanel;
     }
-
 }
