@@ -3,26 +3,23 @@ package org.cagrid.gaards.ui.dorian.federation;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.rmi.RemoteException;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Comparator;
 import java.util.Date;
 
-import javax.swing.JButton;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import javax.swing.JTextField;
 import javax.swing.ScrollPaneConstants;
 import javax.swing.border.BevelBorder;
 import javax.swing.table.DefaultTableModel;
 
-import org.apache.axis.types.URI.MalformedURIException;
 import org.cagrid.gaards.authentication.client.AuthenticationServiceClient;
 import org.cagrid.gaards.authentication.lockout.LockedUserInfo;
-import org.cagrid.grape.utils.ErrorDialog;
 
 
 /**
@@ -34,9 +31,8 @@ import org.cagrid.grape.utils.ErrorDialog;
 public class IdPLockoutsPanel extends JPanel {
     private JScrollPane scrollPane = null;
     private JTable lockedUsersTable = null;
-    private JButton reloadButton = null;
-    
-    private AuthenticationServiceClient authnServiceClient = null;
+    private JLabel lockoutsInServicelabel = null;
+    private JTextField serviceUrlTextField = null;
 
     public IdPLockoutsPanel() {
         super();
@@ -44,8 +40,11 @@ public class IdPLockoutsPanel extends JPanel {
     }
 
 
-    public void loadFromIdP(AuthenticationServiceClient client) throws RemoteException, MalformedURIException {
-        this.authnServiceClient = client;
+    public synchronized void loadFromIdP(AuthenticationServiceClient client) throws RemoteException {
+        // set the authn service URL in the UI
+        String serviceUrl = client.getEndpointReference().getAddress().toString();
+        getServiceUrlTextField().setText(serviceUrl);
+        
         DefaultTableModel tableModel = (DefaultTableModel) getLockedUsersTable().getModel();
         // clear out the rows in the table
         while (tableModel.getRowCount() > 0) {
@@ -82,23 +81,32 @@ public class IdPLockoutsPanel extends JPanel {
 
     private void initialize() {
         GridBagLayout gridBagLayout = new GridBagLayout();
-        gridBagLayout.columnWidths = new int[]{0, 0};
-        gridBagLayout.rowHeights = new int[]{0, 0, 0};
-        gridBagLayout.columnWeights = new double[]{1.0, Double.MIN_VALUE};
-        gridBagLayout.rowWeights = new double[]{1.0, 0.0, Double.MIN_VALUE};
         setLayout(gridBagLayout);
+        
+        GridBagConstraints gbc_lockoutsInServicelabel = new GridBagConstraints();
+        gbc_lockoutsInServicelabel.anchor = GridBagConstraints.WEST;
+        gbc_lockoutsInServicelabel.insets = new Insets(2, 2, 2, 2);
+        gbc_lockoutsInServicelabel.gridx = 0;
+        gbc_lockoutsInServicelabel.gridy = 0;
+        add(getLockoutsInServicelabel(), gbc_lockoutsInServicelabel);
+        
+        GridBagConstraints gbc_serviceUrlTextField = new GridBagConstraints();
+        gbc_serviceUrlTextField.weightx = 1.0;
+        gbc_serviceUrlTextField.insets = new Insets(2, 2, 2, 2);
+        gbc_serviceUrlTextField.fill = GridBagConstraints.HORIZONTAL;
+        gbc_serviceUrlTextField.gridx = 1;
+        gbc_serviceUrlTextField.gridy = 0;
+        add(getServiceUrlTextField(), gbc_serviceUrlTextField);
 
         GridBagConstraints gbc_scrollPane = new GridBagConstraints();
-        gbc_scrollPane.insets = new Insets(2, 2, 5, 2);
+        gbc_scrollPane.gridwidth = 2;
+        gbc_scrollPane.insets = new Insets(2, 2, 2, 2);
         gbc_scrollPane.fill = GridBagConstraints.BOTH;
         gbc_scrollPane.gridx = 0;
-        gbc_scrollPane.gridy = 0;
+        gbc_scrollPane.gridy = 1;
+        gbc_scrollPane.weightx = 1.0d;
+        gbc_scrollPane.weighty = 1.0d;
         add(getScrollPane(), gbc_scrollPane);
-        GridBagConstraints gbc_reloadButton = new GridBagConstraints();
-        gbc_reloadButton.insets = new Insets(2, 2, 2, 2);
-        gbc_reloadButton.gridx = 0;
-        gbc_reloadButton.gridy = 1;
-        add(getReloadButton(), gbc_reloadButton);
     }
 
 
@@ -116,7 +124,7 @@ public class IdPLockoutsPanel extends JPanel {
     private JTable getLockedUsersTable() {
         if (lockedUsersTable == null) {
             lockedUsersTable = new JTable();
-            lockedUsersTable.setModel(new DefaultTableModel(new Object[][]{}, 
+            lockedUsersTable.setModel(new DefaultTableModel(new Object[][]{},
                 new String[]{"User ID", "Lockout Exipration"}) {
                 Class<?>[] columnTypes = new Class[]{String.class, Date.class};
 
@@ -130,21 +138,20 @@ public class IdPLockoutsPanel extends JPanel {
     }
 
 
-    private JButton getReloadButton() {
-        if (reloadButton == null) {
-            reloadButton = new JButton("Reload");
-            reloadButton.addActionListener(new ActionListener() {
-                public void actionPerformed(ActionEvent e) {
-                    if (IdPLockoutsPanel.this.authnServiceClient != null) {
-                        try {
-                            loadFromIdP(IdPLockoutsPanel.this.authnServiceClient);
-                        } catch (Exception ex) {
-                            ErrorDialog.showError(ex);
-                        }
-                    }
-                }
-            });
+    private JLabel getLockoutsInServicelabel() {
+        if (lockoutsInServicelabel == null) {
+            lockoutsInServicelabel = new JLabel("Lockouts In Service:");
         }
-        return reloadButton;
+        return lockoutsInServicelabel;
+    }
+
+
+    private JTextField getServiceUrlTextField() {
+        if (serviceUrlTextField == null) {
+            serviceUrlTextField = new JTextField();
+            serviceUrlTextField.setEditable(false);
+            serviceUrlTextField.setColumns(10);
+        }
+        return serviceUrlTextField;
     }
 }

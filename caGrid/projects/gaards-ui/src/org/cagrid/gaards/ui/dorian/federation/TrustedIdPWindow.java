@@ -1,5 +1,6 @@
 package org.cagrid.gaards.ui.dorian.federation;
 
+import gov.nih.nci.cagrid.common.FaultHelper;
 import gov.nih.nci.cagrid.common.FaultUtil;
 import gov.nih.nci.cagrid.common.Runner;
 import gov.nih.nci.cagrid.common.Utils;
@@ -7,6 +8,9 @@ import gov.nih.nci.cagrid.common.Utils;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -22,6 +26,7 @@ import javax.swing.border.TitledBorder;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.cagrid.gaards.authentication.client.AuthenticationServiceClient;
 import org.cagrid.gaards.dorian.client.GridAdministrationClient;
 import org.cagrid.gaards.dorian.common.SAMLConstants;
 import org.cagrid.gaards.dorian.federation.GridUserPolicy;
@@ -40,6 +45,8 @@ import org.cagrid.grape.ApplicationComponent;
 import org.cagrid.grape.GridApplication;
 import org.cagrid.grape.LookAndFeel;
 import org.cagrid.grape.utils.ErrorDialog;
+import org.globus.gsi.GlobusCredential;
+import org.oasis.wsrf.faults.BaseFaultType;
 
 
 /**
@@ -71,6 +78,7 @@ public class TrustedIdPWindow extends ApplicationComponent implements DorianSess
     private final static String CERTIFICATE_PANEL = "Certificate";
     private final static String ATTRIBUTES_PANEL = "Attributes";
     private final static String AUDIT_PANEL = "Audit";
+    private final static String LOCKOUT_PANEL = "Lockouts";
 
     private JPanel mainPanel = null;
     private JPanel buttonPanel = null;
@@ -143,9 +151,12 @@ public class TrustedIdPWindow extends ApplicationComponent implements DorianSess
     private String titleStr = null;
     private String subtitleStr = null;
     private FederationAuditPanel auditPanel = null;
+    private JPanel lockoutsWrapperPanel = null;
+    private IdPLockoutsPanel lockoutsPanel = null;
     private ProgressPanel progressPanel = null;
     private JLabel publishLabel = null;
     private JComboBox publish = null;
+    private JButton loadLockoutsButton;
     
 
     /**
@@ -184,7 +195,7 @@ public class TrustedIdPWindow extends ApplicationComponent implements DorianSess
     }
 
 
-    public DorianSession getSession() throws Exception {
+    public DorianSession getSession() {
         return this.session;
     }
 
@@ -449,8 +460,7 @@ public class TrustedIdPWindow extends ApplicationComponent implements DorianSess
 					}
 				}
                 getProgressPanel().stopProgress("Successfully updated IdP.");
-            }
-            
+            }            
         } catch (PermissionDeniedFault pdf) {
             FaultUtil.logFault(log, pdf);
             getProgressPanel().stopProgress("Error");
@@ -479,8 +489,13 @@ public class TrustedIdPWindow extends ApplicationComponent implements DorianSess
             jTabbedPane.addTab(CERTIFICATE_PANEL, null, getCertificatePanel(), null);
             jTabbedPane.addTab(ATTRIBUTES_PANEL, null, getAttributesPanel(), null);
 
+            // can only audit an existing IdP
             if (!this.newTrustedIdP) {
                 jTabbedPane.addTab(AUDIT_PANEL, null, getAuditPanel(), null);
+            }
+            // can only see lockouts from an existing IdP
+            if (!this.newTrustedIdP) {
+                jTabbedPane.addTab(LOCKOUT_PANEL, null, getLockoutsWrapperPanel(), null);
             }
         }
         return jTabbedPane;
@@ -574,9 +589,6 @@ public class TrustedIdPWindow extends ApplicationComponent implements DorianSess
             gridBagConstraints5.gridx = 0;
             idLabel = new JLabel();
             idLabel.setText("IdP Id");
-            if (newTrustedIdP) {
-                // Y U NO HAVE CODE HERE?
-            }
             infoPanel.setLayout(new GridBagLayout());
             infoPanel.setName(INFO_PANEL);
             infoPanel.add(getStatus(), gridBagConstraints10);
@@ -1498,6 +1510,80 @@ public class TrustedIdPWindow extends ApplicationComponent implements DorianSess
             auditPanel.setProgess(getProgressPanel());
         }
         return auditPanel;
+    }
+    
+    
+    private JPanel getLockoutsWrapperPanel() {
+        if (lockoutsWrapperPanel == null) {
+            lockoutsWrapperPanel = new JPanel();
+            GridBagLayout gbl_lockoutsWrapperPanel = new GridBagLayout();
+            gbl_lockoutsWrapperPanel.columnWidths = new int[]{0, 0};
+            gbl_lockoutsWrapperPanel.rowHeights = new int[]{0, 0, 0};
+            gbl_lockoutsWrapperPanel.columnWeights = new double[]{0.0, Double.MIN_VALUE};
+            gbl_lockoutsWrapperPanel.rowWeights = new double[]{0.0, 0.0, Double.MIN_VALUE};
+            lockoutsWrapperPanel.setLayout(gbl_lockoutsWrapperPanel);
+            
+            GridBagConstraints gbc_loadLockoutsButton = new GridBagConstraints();
+            gbc_loadLockoutsButton.insets = new Insets(2, 2, 2, 2);
+            gbc_loadLockoutsButton.gridx = 0;
+            gbc_loadLockoutsButton.gridy = 1;
+            lockoutsWrapperPanel.add(getLoadLockoutsButton(), gbc_loadLockoutsButton);
+            
+            GridBagConstraints gbc_lockoutsPanel = new GridBagConstraints();
+            gbc_lockoutsPanel.insets = new Insets(2,2,2,2);
+            gbc_lockoutsPanel.gridx = 0;
+            gbc_lockoutsPanel.gridy = 0;
+            gbc_lockoutsPanel.fill = GridBagConstraints.BOTH;
+            gbc_lockoutsPanel.weightx = 1.0;
+            gbc_lockoutsPanel.weighty = 1.0;
+            lockoutsWrapperPanel.add(getLockoutsPanel(), gbc_lockoutsPanel);
+        }
+        return lockoutsWrapperPanel;
+    }
+    
+    
+    private JButton getLoadLockoutsButton() {
+        if (loadLockoutsButton == null) {
+            loadLockoutsButton = new JButton("Load Lockouts");
+            loadLockoutsButton.addActionListener(new ActionListener() {
+                public void actionPerformed(ActionEvent e) {
+                    // get a client to the authentication service
+                    GlobusCredential credential = getSession().getCredential();
+                    String url = idp.getAuthenticationServiceURL();
+                    AuthenticationServiceClient client = null;
+                    try {
+                        client = new AuthenticationServiceClient(url, credential);
+                    } catch (Exception ex) {
+                        ErrorDialog.showError("Error communicating with the service: " + ex.getMessage(), ex);
+                    }
+                    try {
+                        getLockoutsPanel().loadFromIdP(client);
+                    } catch (RemoteException ex) {
+                        boolean handled = false;
+                        if (ex instanceof BaseFaultType) {
+                            FaultHelper helper = new FaultHelper((BaseFaultType) ex, true);
+                            String message = helper.getMessage();
+                            if (message.contains("Operation name could not be determined")) {
+                                ErrorDialog.showError("This authentication service does not support listing lockout information", ex);
+                                handled = true;
+                            }
+                        }
+                        if (!handled) {
+                            ErrorDialog.showError("Error communicating with the service: " + ex.getMessage(), ex);
+                        }
+                    }
+                }
+            });
+        }
+        return loadLockoutsButton;
+    }
+    
+    
+    private IdPLockoutsPanel getLockoutsPanel() {
+        if (lockoutsPanel == null) {
+            lockoutsPanel = new IdPLockoutsPanel();
+        }
+        return lockoutsPanel;
     }
 
 
