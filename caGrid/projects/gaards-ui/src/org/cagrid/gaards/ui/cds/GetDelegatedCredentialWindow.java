@@ -39,7 +39,7 @@ import org.globus.gsi.GlobusCredential;
  * @author <A HREF="MAILTO:ervin@bmi.osu.edu">David W. Ervin</A>
  */
 public class GetDelegatedCredentialWindow extends ApplicationComponent {
-	private static Log log = LogFactory.getLog(GetDelegatedCredentialWindow.class);
+    private static Log log = LogFactory.getLog(GetDelegatedCredentialWindow.class);
 
     private static final long serialVersionUID = 1L;
 
@@ -89,7 +89,8 @@ public class GetDelegatedCredentialWindow extends ApplicationComponent {
                 ErrorDialog
                     .showError(
                         "A credential is required to determine who had delegated credentials to you.",
-                        "A credential is required to determine who had delegated credentials to you.  No grid credentials could be found, please logon and try again!!!");
+                        "A credential is required to determine who had delegated credentials to you.  " +
+                        "No grid credentials could be found; please logon and try again!!!");
                 getProgressPanel().stopProgress("Error");
                 return;
             }
@@ -99,7 +100,6 @@ public class GetDelegatedCredentialWindow extends ApplicationComponent {
                 getProgressPanel().stopProgress("Error");
                 return;
             }
-
             RunnerGroup grp = new RunnerGroup();
             List<CDSHandle> services = CDSUIUtils.getCDSServices();
             for (int i = 0; i < services.size(); i++) {
@@ -113,12 +113,11 @@ public class GetDelegatedCredentialWindow extends ApplicationComponent {
                 DelegatedCredentialFinder finder = (DelegatedCredentialFinder) grp.get(i);
                 if (!finder.isSuccessful()) {
                     ErrorDialog.showError(
-                        "Error finding delegated credentials from " + finder.getDelegationURI() + ".", finder
-                            .getError());
+                        "Error finding delegated credentials from " + finder.getDelegationURI() + ".",
+                        finder.getError());
                 }
             }
             getProgressPanel().stopProgress(getDelegatedCredentials().getRowCount() + " credential(s) found.");
-
         } catch (Exception ex) {
             log.error(ex, ex);
             getProgressPanel().stopProgress("Error");
@@ -356,13 +355,11 @@ public class GetDelegatedCredentialWindow extends ApplicationComponent {
             CredentialManager.getInstance().addCredential(entry);
             dispose();
             GridApplication.getContext().addApplicationComponent(new CredentialManagerComponent(entry), 800, 500);
-
         } catch (Exception e) {
             getGetButton().setEnabled(true);
             ErrorDialog.showError(e);
             FaultUtil.logFault(log, e);
         }
-
     }
 
 
@@ -405,5 +402,4 @@ public class GetDelegatedCredentialWindow extends ApplicationComponent {
         }
         return titlePanel;
     }
-
 }

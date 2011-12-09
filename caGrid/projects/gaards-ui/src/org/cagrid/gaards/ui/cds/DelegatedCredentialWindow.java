@@ -46,7 +46,7 @@ import org.cagrid.grape.utils.ErrorDialog;
  * @author <A HREF="MAILTO:hastings@bmi.osu.edu">Shannon Langella </A>
  */
 public class DelegatedCredentialWindow extends ApplicationComponent {
-	private static Log log = LogFactory.getLog(DelegatedCredentialWindow.class);
+    private static Log log = LogFactory.getLog(DelegatedCredentialWindow.class);
 
     private static final long serialVersionUID = 1L;
 
@@ -333,7 +333,6 @@ public class DelegatedCredentialWindow extends ApplicationComponent {
                     } catch (Exception t) {
                         t.getMessage();
                     }
-
                 }
             });
         }
@@ -590,8 +589,8 @@ public class DelegatedCredentialWindow extends ApplicationComponent {
             certificatePanel.setLayout(new GridBagLayout());
             certificatePanel.add(getJScrollPane(), gridBagConstraints20);
             certificatePanel.setBorder(BorderFactory.createTitledBorder(null, "Certificate Chain",
-                TitledBorder.DEFAULT_JUSTIFICATION, TitledBorder.DEFAULT_POSITION, null, LookAndFeel
-                    .getPanelLabelColor()));
+                TitledBorder.DEFAULT_JUSTIFICATION, TitledBorder.DEFAULT_POSITION, null,
+                LookAndFeel.getPanelLabelColor()));
             certificatePanel.add(getViewCertificate(), gridBagConstraints21);
         }
         return certificatePanel;
@@ -924,8 +923,8 @@ public class DelegatedCredentialWindow extends ApplicationComponent {
             searchPanel = new JPanel();
             searchPanel.setLayout(new GridBagLayout());
             searchPanel.setBorder(BorderFactory.createTitledBorder(null, "Audting Search Criteria",
-                TitledBorder.DEFAULT_JUSTIFICATION, TitledBorder.DEFAULT_POSITION, null, LookAndFeel
-                    .getPanelLabelColor()));
+                TitledBorder.DEFAULT_JUSTIFICATION, TitledBorder.DEFAULT_POSITION, null,
+                LookAndFeel.getPanelLabelColor()));
             searchPanel.add(getIdentityPanel(), gridBagConstraints34);
             searchPanel.add(getAuditTypePanel(), gridBagConstraints37);
             searchPanel.add(getDateRangePanel(), gridBagConstraints40);
@@ -1187,6 +1186,7 @@ public class DelegatedCredentialWindow extends ApplicationComponent {
 
 
     private String formatDate(Calendar c) {
+        // TODO: rewrite this to actually use DateFormat
         StringBuffer sb = new StringBuffer();
         int month = c.get(Calendar.MONTH) + 1;
         if (month < 10) {
@@ -1298,7 +1298,6 @@ public class DelegatedCredentialWindow extends ApplicationComponent {
             if (searchStartDate != null) {
                 f.setStartDate(new Long(searchStartDate.getTimeInMillis()));
             }
-
             if (searchEndDate != null) {
                 f.setEndDate(new Long(searchEndDate.getTimeInMillis()));
             }
@@ -1407,5 +1406,4 @@ public class DelegatedCredentialWindow extends ApplicationComponent {
         }
         return viewAudtingRecord;
     }
-
 }

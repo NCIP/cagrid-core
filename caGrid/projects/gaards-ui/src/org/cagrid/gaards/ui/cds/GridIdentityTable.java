@@ -6,6 +6,7 @@ import javax.swing.table.DefaultTableModel;
 
 import org.cagrid.grape.table.GrapeBaseTable;
 
+
 /**
  * @author <A HREF="MAILTO:langella@bmi.osu.edu">Stephen Langella </A>
  * @author <A HREF="MAILTO:oster@bmi.osu.edu">Scott Oster </A>
@@ -13,53 +14,58 @@ import org.cagrid.grape.table.GrapeBaseTable;
  * @version $Id: GridIdentityTable.java,v 1.2 2008-11-20 15:29:42 langella Exp $
  */
 public class GridIdentityTable extends GrapeBaseTable {
-	
-	private static final long serialVersionUID = 1L;
-	
-	public final static String GRID_IDENTITY = "Grid Identity";
 
-	public GridIdentityTable() {
-		super(createTableModel());
-		this.clearTable();
-	}
+    private static final long serialVersionUID = 1L;
 
-	public static DefaultTableModel createTableModel() {
-		DefaultTableModel model = new DefaultTableModel();
-		model.addColumn(GRID_IDENTITY);
-		return model;
+    public final static String GRID_IDENTITY = "Grid Identity";
 
-	}
 
-	public void addIdentity(final String id) {
-		Vector<String> v = new Vector<String>();
-		v.add(id);
-		addRow(v);
-	}
+    public GridIdentityTable() {
+        super(createTableModel());
+        this.clearTable();
+    }
 
-	public synchronized String getSelectedIdentity() throws Exception {
-		int row = getSelectedRow();
-		if ((row >= 0) && (row < getRowCount())) {
-			return (String) getValueAt(row, 0);
-		} else {
-			throw new Exception("Please select a user!!!");
-		}
-	}
 
-	public synchronized void removeSelectedIdentity() throws Exception {
-		int row = getSelectedRow();
-		if ((row >= 0) && (row < getRowCount())) {
-			removeRow(row);
-		} else {
-			throw new Exception("Please select a user!!!");
-		}
-	}
+    public static DefaultTableModel createTableModel() {
+        DefaultTableModel model = new DefaultTableModel();
+        model.addColumn(GRID_IDENTITY);
+        return model;
+    }
 
-	public void doubleClick() throws Exception {
-	}
 
-	public void singleClick() throws Exception {
-		// TODO Auto-generated method stub
+    public void addIdentity(final String id) {
+        Vector<String> v = new Vector<String>();
+        v.add(id);
+        addRow(v);
+    }
 
-	}
 
+    public synchronized String getSelectedIdentity() throws Exception {
+        int row = getSelectedRow();
+        if ((row >= 0) && (row < getRowCount())) {
+            return (String) getValueAt(row, 0);
+        } else {
+            throw new Exception("Please select a user!!!");
+        }
+    }
+
+
+    public synchronized void removeSelectedIdentity() throws Exception {
+        int row = getSelectedRow();
+        if ((row >= 0) && (row < getRowCount())) {
+            removeRow(row);
+        } else {
+            throw new Exception("Please select a user!!!");
+        }
+    }
+
+
+    public void doubleClick() throws Exception {
+        // nothing
+    }
+
+
+    public void singleClick() throws Exception {
+        // this is not the function you were looking for
+    }
 }

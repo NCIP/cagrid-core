@@ -3,6 +3,7 @@ package org.cagrid.gaards.ui.cds;
 import org.cagrid.gaards.cds.common.DelegationStatus;
 import org.cagrid.gaards.ui.common.AxisTypeComboBox;
 
+
 /**
  * @author <A href="mailto:langella@bmi.osu.edu">Stephen Langella </A>
  * @author <A href="mailto:oster@bmi.osu.edu">Scott Oster </A>
@@ -11,19 +12,21 @@ import org.cagrid.gaards.ui.common.AxisTypeComboBox;
  *          Exp $
  */
 public class DelegationStatusComboBox extends AxisTypeComboBox {
-	
-	private static final long serialVersionUID = 1L;
 
-	public DelegationStatusComboBox() {
-		this(false);
-	}
+    private static final long serialVersionUID = 1L;
 
-	public DelegationStatusComboBox(boolean anyState) {
-		super(DelegationStatus.class, anyState);
-	}
 
-	public DelegationStatus getDelegationStatus() {
-		return (DelegationStatus) getSelectedObject();
-	}
+    public DelegationStatusComboBox() {
+        this(false);
+    }
 
+
+    public DelegationStatusComboBox(boolean anyState) {
+        super(DelegationStatus.class, anyState);
+    }
+
+
+    public DelegationStatus getDelegationStatus() {
+        return (DelegationStatus) getSelectedObject();
+    }
 }

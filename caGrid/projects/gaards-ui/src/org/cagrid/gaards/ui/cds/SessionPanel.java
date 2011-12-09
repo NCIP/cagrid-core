@@ -129,5 +129,4 @@ public class SessionPanel extends JPanel {
     public GlobusCredential getCredential() throws Exception {
         return getCred().getSelectedCredential().getCredential();
     }
-
 }

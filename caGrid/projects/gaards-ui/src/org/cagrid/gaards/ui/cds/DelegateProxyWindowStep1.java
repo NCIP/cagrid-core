@@ -32,7 +32,7 @@ import org.globus.gsi.bc.BouncyCastleUtil;
  * @author <A href="mailto:hastings@bmi.osu.edu">Shannon Hastings </A>
  */
 public class DelegateProxyWindowStep1 extends ApplicationComponent implements ProxyLifetimeListener {
-	private static Log log = LogFactory.getLog(DelegateProxyWindowStep1.class);
+    private static Log log = LogFactory.getLog(DelegateProxyWindowStep1.class);
 
     private static final long serialVersionUID = 1L;
 
@@ -339,7 +339,6 @@ public class DelegateProxyWindowStep1 extends ApplicationComponent implements Pr
                         t.getMessage();
                     }
                 }
-
             });
         }
 
@@ -374,18 +373,17 @@ public class DelegateProxyWindowStep1 extends ApplicationComponent implements Pr
             cache.setDelegationLifetime(getDelegationLifetime().getProxyLifetime());
             cache.setDelegationPathLength(((Integer) getDelegatedCredentialPathLength().getSelectedItem()).intValue());
             cache.setIssuedCredentialLifetime(getIssuedCredentialLifetime().getProxyLifetime());
-            cache.setIssuedCredentialPathLength(((Integer) getIssuedCredentialPathLength().getSelectedItem())
-                .intValue());
+            cache.setIssuedCredentialPathLength(
+                ((Integer) getIssuedCredentialPathLength().getSelectedItem()).intValue());
 
-            DelegateProxyWindowStep2 window = new DelegateProxyWindowStep2((String) getDelegationPolicy()
-                .getSelectedItem(), cache);
+            DelegateProxyWindowStep2 window = new DelegateProxyWindowStep2(
+                (String) getDelegationPolicy().getSelectedItem(), cache);
             GridApplication.getContext().addApplicationComponent(window, 600, 400);
             dispose();
         } catch (Exception e) {
             ErrorDialog.showError(e);
             FaultUtil.logFault(log, e);
         }
-
     }
 
 
@@ -460,7 +458,7 @@ public class DelegateProxyWindowStep1 extends ApplicationComponent implements Pr
             delegatedCredentialPathLength.addItem(new Integer(i));
         }
         if (maxPathLength >= 1) {
-            delegatedCredentialPathLength.setSelectedIndex(new Integer(1));
+            delegatedCredentialPathLength.setSelectedIndex(1);
         }
 
         getDelegationLifetime().setLifetime(lifetimeSeconds);
@@ -556,5 +554,4 @@ public class DelegateProxyWindowStep1 extends ApplicationComponent implements Pr
         }
         return titlePanel;
     }
-
 }
