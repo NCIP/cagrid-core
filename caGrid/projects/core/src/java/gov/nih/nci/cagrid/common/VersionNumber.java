@@ -17,6 +17,7 @@ import java.util.StringTokenizer;
  */
 public class VersionNumber {
     
+    public static final String CAGRID_VERSION_STRING = "1.4.1";
     public static final String DEFAULT_SEPARATOR = ".";
     public static final String DEFAULT_SUFFIX_SEPARATOR = "-";
     
@@ -48,8 +49,9 @@ public class VersionNumber {
     
     
     public static VersionNumber getCaGridVersion() {
-        String version = VersionNumber.class.getPackage().getImplementationVersion();
-        return new VersionNumber(version, DEFAULT_SEPARATOR, DEFAULT_SUFFIX_SEPARATOR);
+        // this returns null b/c the jar manifest doesn't have a Name: attribute to point to this package
+        // String version = VersionNumber.class.getPackage().getImplementationVersion();
+        return new VersionNumber(CAGRID_VERSION_STRING, DEFAULT_SEPARATOR, DEFAULT_SUFFIX_SEPARATOR);
     }
     
     

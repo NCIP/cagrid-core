@@ -77,4 +77,13 @@ public class VersionNumberTestCase {
         assertEquals(null, maintenanceVersion.getSuffix());
         assertEquals("rc2", fullVersion.getSuffix());
     }
+    
+    
+    @Test
+    public void testGetCaGridVersion() {
+        VersionNumber caGridVersion = VersionNumber.getCaGridVersion();
+        String ver = caGridVersion.getOriginalVersionString();
+        assertNotNull(ver);
+        assertEquals("1.4.1", ver);
+    }
 }
