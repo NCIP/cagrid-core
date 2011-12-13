@@ -148,8 +148,7 @@
 							<namespace>gme://gov.nih.nci.cagrid.introduce/1/Configuration</namespace>
 							<name>IntroducePortalConfiguration</name>
 						</qname>
-						<ConfigurationPanel>gov.nih.nci.cagrid.introduce.portal.configuration.IntroducePortalConfigurationPanel
-						</ConfigurationPanel>
+                		<ConfigurationPanel>gov.nih.nci.cagrid.introduce.portal.configuration.IntroducePortalConfigurationPanel</ConfigurationPanel>
 						<DefaultFile>conf/introduce-portal-conf.xml</DefaultFile>
 					</ConfigurationDescriptor>
 					<ConfigurationDescriptor>
@@ -160,10 +159,8 @@
 							<namespace>gme://gov.nih.nci.cagrid.introduce/1/Configuration</namespace>
 							<name>IntroduceServiceDefaults</name>
 						</qname>
-						<ConfigurationPanel>gov.nih.nci.cagrid.introduce.portal.configuration.IntroduceServiceDefaultsConfigurationPanel
-						</ConfigurationPanel>
-						<DefaultFile>conf/introduce-service-defaults-conf.xml
-						</DefaultFile>
+                		<ConfigurationPanel>gov.nih.nci.cagrid.introduce.portal.configuration.IntroduceServiceDefaultsConfigurationPanel</ConfigurationPanel>
+                		<DefaultFile>conf/introduce-service-defaults-conf.xml</DefaultFile>
 					</ConfigurationDescriptor>
 					<ConfigurationDescriptor>
 						<DisplayName>Global Extension Properties</DisplayName>
@@ -173,10 +170,8 @@
 							<namespace>gme://gov.nih.nci.cagrid.introduce/1/Extension</namespace>
 							<name>Properties</name>
 						</qname>
-						<ConfigurationPanel>gov.nih.nci.cagrid.introduce.portal.configuration.IntroduceGlobalExtensionPropertiesConfigurationPanel
-						</ConfigurationPanel>
-						<DefaultFile>conf/introduce-global-extension-properties-conf.xml
-						</DefaultFile>
+               			<ConfigurationPanel>gov.nih.nci.cagrid.introduce.portal.configuration.IntroduceGlobalExtensionPropertiesConfigurationPanel</ConfigurationPanel>
+                		<DefaultFile>conf/introduce-global-extension-properties-conf.xml</DefaultFile>
 					</ConfigurationDescriptor>
 				</ConfigurationDescriptors>
 			</ConfigurationGroup>
