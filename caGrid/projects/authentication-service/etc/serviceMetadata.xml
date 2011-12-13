@@ -54,6 +54,11 @@
        <ns2:inputParameterCollection/>
        <ns2:faultCollection/>
       </ns2:Operation>
+      <ns2:Operation description="Gets the locked out users and the time at which each will be unlocked." name="getLockedOutUsers">
+       <ns2:inputParameterCollection/>
+       <ns2:Output qName="ns10:LockedUserInfo" dimensionality="1" isArray="true" xmlns:ns10="http://gaards.cagrid.org/authentication/lockout"/>
+       <ns2:faultCollection/>
+      </ns2:Operation>
      </ns2:operationCollection>
      <ns2:contextPropertyCollection>
       <ns2:ContextProperty description="" name="{gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata}ServiceMetadata"/>

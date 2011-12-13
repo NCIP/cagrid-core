@@ -1,12 +1,19 @@
 package org.cagrid.gaards.authentication.service;
 
+import gov.nih.nci.security.authentication.BetterLockoutManager;
+import gov.nih.nci.security.authentication.LockoutManager;
+
 import java.io.File;
 import java.rmi.RemoteException;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.Map;
 import java.util.Set;
 
 import javax.xml.namespace.QName;
 
 import org.cagrid.gaards.authentication.AuthenticationProfiles;
+import org.cagrid.gaards.authentication.lockout.LockedUserInfo;
 
 
 /**
@@ -57,4 +64,19 @@ public class AuthenticationServiceImpl extends AuthenticationServiceImplBase {
         return this.auth.authenticate(credential);
     }
 
+
+    public org.cagrid.gaards.authentication.lockout.LockedUserInfo[] getLockedOutUsers() throws RemoteException {
+        BetterLockoutManager manager = LockoutManager.getInstance().getDelegatedLockoutManager();
+        Map<String, Date> lockouts = manager.getLockedOutUsers();
+        LockedUserInfo[] info = new LockedUserInfo[lockouts.size()];
+        int index = 0;
+        for (String userId : lockouts.keySet()) {
+            Date unlockTime = lockouts.get(userId);
+            Calendar cal = Calendar.getInstance();
+            cal.setTime(unlockTime);
+            info[index] = new LockedUserInfo(cal, userId);
+            index++;
+        }
+        return info;
+    }
 }

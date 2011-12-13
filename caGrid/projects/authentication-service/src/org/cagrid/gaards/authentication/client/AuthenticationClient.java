@@ -99,8 +99,8 @@ public class AuthenticationClient {
                 gov.nih.nci.cagrid.authentication.bean.Credential c = new gov.nih.nci.cagrid.authentication.bean.Credential();
                 c.setBasicAuthenticationCredential(bac);
                 try {
-                    gov.nih.nci.cagrid.authentication.client.AuthenticationClient ac = new gov.nih.nci.cagrid.authentication.client.AuthenticationClient(
-                        this.serviceURI, c);
+                    gov.nih.nci.cagrid.authentication.client.AuthenticationClient ac = 
+                        new gov.nih.nci.cagrid.authentication.client.AuthenticationClient(this.serviceURI, c);
                     ac.setAuthorization(client.getAuthorization());
                     return ac.authenticate();
                 } catch (gov.nih.nci.cagrid.authentication.stubs.types.InvalidCredentialFault e) {
@@ -129,8 +129,8 @@ public class AuthenticationClient {
                 }
             } else {
                 InvalidCredentialFault f = new InvalidCredentialFault();
-                f
-                    .setFaultString("The service you are authenticated to, is an older version of the authentication service and does not support the credential you provided.");
+                f.setFaultString("The service you are authenticated to is an older version of the " +
+                		"authentication service and does not support the credential you provided.");
                 throw f;
             }
         } else {
@@ -148,7 +148,6 @@ public class AuthenticationClient {
                 throw new RemoteException(Utils.getExceptionMessage(e), e);
             }
         }
-
     }
 
 
@@ -176,8 +175,8 @@ public class AuthenticationClient {
             return null;
         }
         try {
-            AuthenticationProfiles result = (AuthenticationProfiles) Utils.deserializeObject(new StringReader(XmlUtils
-                .toString(resourceProperty)), AuthenticationProfiles.class);
+            AuthenticationProfiles result = Utils.deserializeObject(new StringReader(
+                XmlUtils.toString(resourceProperty)), AuthenticationProfiles.class);
             Set<QName> profiles = new HashSet<QName>();
             if (result != null) {
                 QName[] list = result.getProfile();
@@ -188,7 +187,6 @@ public class AuthenticationClient {
                 }
             }
             return profiles;
-
         } catch (Exception e) {
             throw new ResourcePropertyRetrievalException("Unable to deserailize: " + e.getMessage(), e);
         }
