@@ -1,12 +1,12 @@
 package gov.nih.nci.cagrid.introduce.upgrade.one.x;
 
-import org.apache.log4j.Logger;
-
 import gov.nih.nci.cagrid.introduce.beans.extension.ExtensionType;
-import gov.nih.nci.cagrid.introduce.codegen.SyncTools;
 import gov.nih.nci.cagrid.introduce.common.ServiceInformation;
 import gov.nih.nci.cagrid.introduce.upgrade.common.ExtensionUpgradeStatus;
 import gov.nih.nci.cagrid.introduce.upgrade.common.ExtensionUpgraderI;
+
+import org.apache.log4j.Logger;
+
 
 /**
  * Class must be extended to provide an extension upgrader. An extension
@@ -18,81 +18,93 @@ import gov.nih.nci.cagrid.introduce.upgrade.common.ExtensionUpgraderI;
  * updated.
  * 
  * @author hastings
- * 
  */
 public abstract class ExtensionUpgraderBase implements ExtensionUpgraderI {
-    
+
     private static final Logger logger = Logger.getLogger(ExtensionUpgraderBase.class);
 
-	ExtensionType extensionType;
-	   ServiceInformation serviceInformation;
-	    String fromVersion;
-	    String toVersion;
-	    String servicePath;
-	    ExtensionUpgradeStatus status;
+    ExtensionType extensionType;
+    ServiceInformation serviceInformation;
+    String fromVersion;
+    String toVersion;
+    String servicePath;
+    ExtensionUpgradeStatus status;
 
-	public ExtensionUpgraderBase(String upgraderName, ExtensionType extensionType,
-			ServiceInformation serviceInformation, String servicePath,
-			String fromVersion, String toVersion) {
-	    this.serviceInformation = serviceInformation;
+
+    public ExtensionUpgraderBase(String upgraderName, ExtensionType extensionType,
+        ServiceInformation serviceInformation, String servicePath, String fromVersion, String toVersion) {
+        this.serviceInformation = serviceInformation;
         this.fromVersion = fromVersion;
         this.toVersion = toVersion;
         this.servicePath = servicePath;
-		this.extensionType = extensionType;
-		this.status = new ExtensionUpgradeStatus(upgraderName,this.extensionType.getName(),this.fromVersion,this.toVersion);
-	}
+        this.extensionType = extensionType;
+        this.status = new ExtensionUpgradeStatus(upgraderName, this.extensionType.getName(), this.fromVersion,
+            this.toVersion);
+    }
 
-	public void execute() throws Exception {
-		logger.info("Upgrading services " + extensionType.getName()
-				+ " extension  from Version " + this.getFromVersion()
-				+ " to Version " + this.getToVersion());
-		upgrade();
-		extensionType.setVersion(getToVersion());
-	}
-	
-	public ExtensionUpgradeStatus getStatus(){
-	    return this.status;
-	}
 
-	public ExtensionType getExtensionType() {
-		return extensionType;
-	}
+    public void execute() throws Exception {
+        logger.info("Upgrading services " + extensionType.getName() + " extension  from Version "
+            + this.getFromVersion() + " to Version " + this.getToVersion());
+        upgrade();
+        extensionType.setVersion(getToVersion());
+    }
 
-	public void setExtensionType(ExtensionType extensionType) {
-		this.extensionType = extensionType;
-	}
-	
-	   public String getFromVersion() {
-	        return fromVersion;
-	    }
 
-	    public void setFromVersion(String fromVersion) {
-	        this.fromVersion = fromVersion;
-	    }
+    public ExtensionUpgradeStatus getStatus() {
+        return this.status;
+    }
 
-	    public String getToVersion() {
-	        return toVersion;
-	    }
 
-	    public void setToVersion(String toVersion) {
-	        this.toVersion = toVersion;
-	    }
+    public ExtensionType getExtensionType() {
+        return extensionType;
+    }
 
-	    protected abstract void upgrade() throws Exception;
 
-	    public ServiceInformation getServiceInformation() {
-	        return serviceInformation;
-	    }
+    public void setExtensionType(ExtensionType extensionType) {
+        this.extensionType = extensionType;
+    }
 
-	    public void setServiceInformation(ServiceInformation serviceInformation) {
-	        this.serviceInformation = serviceInformation;
-	    }
 
-	    public String getServicePath() {
-	        return servicePath;
-	    }
+    public String getFromVersion() {
+        return fromVersion;
+    }
 
-	    public void setServicePath(String servicePath) {
-	        this.servicePath = servicePath;
-	    }
+
+    public void setFromVersion(String fromVersion) {
+        this.fromVersion = fromVersion;
+    }
+
+
+    public String getToVersion() {
+        return toVersion;
+    }
+
+
+    public void setToVersion(String toVersion) {
+        this.toVersion = toVersion;
+    }
+
+
+    protected abstract void upgrade() throws Exception;
+
+
+    public ServiceInformation getServiceInformation() {
+        return serviceInformation;
+    }
+
+
+    public void setServiceInformation(ServiceInformation serviceInformation) {
+        this.serviceInformation = serviceInformation;
+    }
+
+
+    public String getServicePath() {
+        return servicePath;
+    }
+
+
+    public void setServicePath(String servicePath) {
+        this.servicePath = servicePath;
+    }
 }

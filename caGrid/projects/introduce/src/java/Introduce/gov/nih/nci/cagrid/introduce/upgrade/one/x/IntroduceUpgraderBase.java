@@ -19,8 +19,8 @@ public abstract class IntroduceUpgraderBase implements IntroduceUpgraderI {
     String servicePath;
 
 
-    public IntroduceUpgraderBase(IntroduceUpgradeStatus status, ServiceInformation serviceInformation, String servicePath, String fromVersion,
-        String toVersion)  throws Exception {
+    public IntroduceUpgraderBase(IntroduceUpgradeStatus status, ServiceInformation serviceInformation, 
+        String servicePath, String fromVersion, String toVersion)  throws Exception {
         this.status = status;
         this.serviceInformation = serviceInformation;
         this.fromVersion = fromVersion;
@@ -30,7 +30,6 @@ public abstract class IntroduceUpgraderBase implements IntroduceUpgraderI {
         status.setToVersion(toVersion);
         status.setType(StatusBase.UPGRADE_TYPE_INTRODUCE);
         status.setName("IntroduceUpgrader " + fromVersion + " - " + toVersion);
-        
     }
 
 
@@ -93,5 +92,4 @@ public abstract class IntroduceUpgraderBase implements IntroduceUpgraderI {
     public void setStatus(IntroduceUpgradeStatus status) {
         this.status = status;
     }
-
 }
