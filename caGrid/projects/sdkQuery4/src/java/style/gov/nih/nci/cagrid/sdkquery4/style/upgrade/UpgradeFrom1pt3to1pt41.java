@@ -27,9 +27,9 @@ import org.apache.commons.logging.LogFactory;
 import org.jdom.Element;
 import org.jdom.JDOMException;
 
-public class UpgradeFrom1pt3to1pt4 implements StyleVersionUpgrader {
+public class UpgradeFrom1pt3to1pt41 implements StyleVersionUpgrader {
     
-    private static Log LOG = LogFactory.getLog(UpgradeFrom1pt3to1pt4.class);
+    private static Log LOG = LogFactory.getLog(UpgradeFrom1pt3to1pt41.class);
 
     public void upgradeStyle(ServiceInformation serviceInformation, ExtensionTypeExtensionData extensionData,
         ExtensionUpgradeStatus status, String serviceFromVersion, String serviceToVersion) throws Exception {

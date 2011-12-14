@@ -525,6 +525,7 @@ public class SchemaMappingPanel extends AbstractWizardPanel {
     }
 
 
+    @SuppressWarnings("unused")
     private boolean packageResolvedByNamespace(ModelPackage pack, NamespaceType namespace) {
         Set<String> classNames = new HashSet<String>();
         for (ModelClass clazz : pack.getModelClass()) {
