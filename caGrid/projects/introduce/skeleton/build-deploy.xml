@@ -27,8 +27,9 @@
 	<property name="jboss.dir" value="${env.JBOSS_HOME}" />
 
 	<target name="deploymentValidator"  unless="no.deployment.validation" depends="defineClasspaths">
-		<taskdef name="deploymentValidatorTask" classname="gov.nih.nci.cagrid.introduce.servicetasks.deployment.validator.DeploymentValidatorTask" classpathref="tasks.run.classpath">
-		</taskdef>
+		<taskdef name="deploymentValidatorTask" 
+			classname="gov.nih.nci.cagrid.introduce.servicetasks.deployment.validator.DeploymentValidatorTask"
+			classpathref="tasks.run.classpath"/>
 		<deploymentValidatorTask />
 	</target>
 	
@@ -86,8 +87,9 @@
 			<replacefilter token="INDEX_REFRESH" value="${index.service.index.refresh_milliseconds}" />
 		</replace>
 		
-		<taskdef name="createDeploymentFile" classname="gov.nih.nci.cagrid.introduce.servicetasks.deployment.DeploymentFileGeneratorTask" classpathref="tasks.run.classpath" />
-		
+		<taskdef name="createDeploymentFile"
+			classname="gov.nih.nci.cagrid.introduce.servicetasks.deployment.DeploymentFileGeneratorTask"
+			classpathref="tasks.run.classpath"/>
 	</target>
 
 
