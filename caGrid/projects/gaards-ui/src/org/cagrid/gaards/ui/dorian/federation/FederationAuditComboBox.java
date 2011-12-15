@@ -12,62 +12,64 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.cagrid.gaards.dorian.federation.FederationAudit;
 
+
 /**
  * @author <A href="mailto:langella@bmi.osu.edu">Stephen Langella </A>
  * @author <A href="mailto:oster@bmi.osu.edu">Scott Oster </A>
  * @author <A href="mailto:hastings@bmi.osu.edu">Shannon Hastings </A>
  */
 public class FederationAuditComboBox extends JComboBox {
-	private static Log log = LogFactory.getLog(FederationAuditComboBox.class);
-	
-	private static final long serialVersionUID = 1L;
-	
-	public static String ANY = "Any";
+    private static Log log = LogFactory.getLog(FederationAuditComboBox.class);
 
-	private List<FederationAudit> list;
+    private static final long serialVersionUID = 1L;
 
-	public FederationAuditComboBox() {
-		list = new ArrayList<FederationAudit>();
-		Class c = FederationAudit.class;
+    public static String ANY = "Any";
 
-		Field[] fields = FederationAudit.class.getFields();
+    private List<FederationAudit> list;
 
-		for (int i = 0; i < fields.length; i++) {
-			if (FederationAudit.class.isAssignableFrom(fields[i].getType())) {
-				try {
-					FederationAudit o = (FederationAudit) fields[i]
-							.get(null);
-					list.add(o);
-				} catch (Exception e) {
-					FaultUtil.logFault(log, e);
-				}
-			}
-		}
-		this.addItem(ANY);
-		for (int i = 0; i < list.size(); i++) {
-			this.addItem(list.get(i));
-		}
-		this.setSelectedItem(ANY);
-	}
 
-	public FederationAuditComboBox(List<FederationAudit> list) {
-		this.addItem(ANY);
-		for (int i = 0; i < list.size(); i++) {
-			this.addItem(list.get(i));
-		}
-		this.setSelectedItem(ANY);
-	}
+    public FederationAuditComboBox() {
+        list = new ArrayList<FederationAudit>();
 
-	public void setToAny() {
-		setSelectedItem(ANY);
-	}
+        Field[] fields = FederationAudit.class.getFields();
 
-	public FederationAudit getSelectedAuditType() {
-		if (getSelectedItem().getClass().isAssignableFrom(
-				FederationAudit.class)) {
-			return (FederationAudit) getSelectedItem();
-		} else {
-			return null;
-		}
-	}
+        for (int i = 0; i < fields.length; i++) {
+            if (FederationAudit.class.isAssignableFrom(fields[i].getType())) {
+                try {
+                    FederationAudit o = (FederationAudit) fields[i].get(null);
+                    list.add(o);
+                } catch (Exception e) {
+                    FaultUtil.logFault(log, e);
+                }
+            }
+        }
+        this.addItem(ANY);
+        for (int i = 0; i < list.size(); i++) {
+            this.addItem(list.get(i));
+        }
+        this.setSelectedItem(ANY);
+    }
+
+
+    public FederationAuditComboBox(List<FederationAudit> list) {
+        this.addItem(ANY);
+        for (int i = 0; i < list.size(); i++) {
+            this.addItem(list.get(i));
+        }
+        this.setSelectedItem(ANY);
+    }
+
+
+    public void setToAny() {
+        setSelectedItem(ANY);
+    }
+
+
+    public FederationAudit getSelectedAuditType() {
+        if (getSelectedItem().getClass().isAssignableFrom(FederationAudit.class)) {
+            return (FederationAudit) getSelectedItem();
+        } else {
+            return null;
+        }
+    }
 }

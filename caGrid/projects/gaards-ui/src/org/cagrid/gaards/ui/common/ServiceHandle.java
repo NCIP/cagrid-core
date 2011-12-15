@@ -21,13 +21,14 @@ public class ServiceHandle {
     public ServiceDescriptor getServiceDescriptor() {
         return des;
     }
-    
-    public String getServiceURL(){
+
+
+    public String getServiceURL() {
         return getServiceDescriptor().getServiceURL();
     }
-    
-    public String getDisplayName(){
+
+
+    public String getDisplayName() {
         return des.getDisplayName();
     }
-
 }

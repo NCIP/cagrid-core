@@ -49,7 +49,6 @@ public class UsersTable extends GrapeBaseTable {
         c.setPreferredWidth(0);
         c.setResizable(false);
         this.clearTable();
-
     }
 
 
@@ -64,12 +63,11 @@ public class UsersTable extends GrapeBaseTable {
         model.addColumn(STATUS);
         model.addColumn(ROLE);
         return model;
-
     }
 
 
     public void addUser(final LocalUser u) {
-        Vector v = new Vector();
+        Vector<Object> v = new Vector<Object>();
         v.add(u);
         v.add(u.getUserId());
         v.add(u.getFirstName());
@@ -100,13 +98,10 @@ public class UsersTable extends GrapeBaseTable {
         } else {
             throw new Exception("No user selected, please select a user!!!");
         }
-
     }
 
 
     public void singleClick() throws Exception {
         // TODO Auto-generated method stub
-
     }
-
 }

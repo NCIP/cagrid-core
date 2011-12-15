@@ -29,7 +29,7 @@ import org.cagrid.grape.utils.ErrorDialog;
  * @author <A href="mailto:hastings@bmi.osu.edu">Shannon Hastings </A>
  */
 public class DelegateProxyWindowStep2 extends ApplicationComponent {
-	private static Log log = LogFactory.getLog(DelegateProxyWindowStep2.class);
+    private static Log log = LogFactory.getLog(DelegateProxyWindowStep2.class);
 
     private static final long serialVersionUID = 1L;
 
@@ -227,7 +227,6 @@ public class DelegateProxyWindowStep2 extends ApplicationComponent {
                         t.getMessage();
                     }
                 }
-
             });
         }
 
@@ -267,8 +266,8 @@ public class DelegateProxyWindowStep2 extends ApplicationComponent {
             getProgressPanel().showProgress("Delegating credential...");
             DelegationRequestCache c = getDelegationCache();
             DelegationUserClient client = c.getDelegationHandle().getUserClient(c.getCredential().getCredential());
-            client.delegateCredential(c.getDelegationLifetime(), c.getDelegationPathLength(), c.getPolicy(), c
-                .getIssuedCredentialLifetime(), c.getIssuedCredentialPathLength(), ClientConstants.DEFAULT_KEY_SIZE);
+            client.delegateCredential(c.getDelegationLifetime(), c.getDelegationPathLength(), c.getPolicy(),
+                c.getIssuedCredentialLifetime(), c.getIssuedCredentialPathLength(), ClientConstants.DEFAULT_KEY_SIZE);
             getProgressPanel().stopProgress("Credential successfully delegated.");
             getDelegateCredentialButton().setEnabled(true);
             getCancelButton().setEnabled(true);
@@ -351,5 +350,4 @@ public class DelegateProxyWindowStep2 extends ApplicationComponent {
         }
         return progressPanel;
     }
-
 }

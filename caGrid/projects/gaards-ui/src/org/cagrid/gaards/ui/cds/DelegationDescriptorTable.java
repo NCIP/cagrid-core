@@ -11,6 +11,7 @@ import javax.swing.table.TableColumn;
 import org.cagrid.gaards.cds.common.DelegationDescriptor;
 import org.cagrid.grape.table.GrapeBaseTable;
 
+
 /**
  * @author <A HREF="MAILTO:langella@bmi.osu.edu">Stephen Langella</A>
  * @author <A HREF="MAILTO:oster@bmi.osu.edu">Scott Oster</A>
@@ -20,88 +21,91 @@ import org.cagrid.grape.table.GrapeBaseTable;
  *          Exp $
  */
 public class DelegationDescriptorTable extends GrapeBaseTable {
-	
-	private static final long serialVersionUID = 1L;
-	
-	public final static String DESCRIPTOR = "Descriptor";
 
-	public final static String IDENTITY = "Identity";
+    private static final long serialVersionUID = 1L;
 
-	public final static String EXPIRATION = "Expiration";
+    public final static String DESCRIPTOR = "Descriptor";
 
-	public final static String LIFETIME = "Issued Credential Lifetime";
+    public final static String IDENTITY = "Identity";
 
-	public final static String PATH_LENGTH = "Path Length";
+    public final static String EXPIRATION = "Expiration";
 
-	public DelegationDescriptorTable() {
-		super(createTableModel());
-		TableColumn c = this.getColumn(DESCRIPTOR);
-		c.setMaxWidth(0);
-		c.setMinWidth(0);
-		c.setPreferredWidth(0);
-		c.setResizable(false);
-		
-		c = this.getColumn(IDENTITY);
-		c.setMinWidth(350);
-		c.setPreferredWidth(0);
-		
-		c = this.getColumn(PATH_LENGTH);
-		c.setMinWidth(75);
-		c.setMaxWidth(75);
-		c.setPreferredWidth(0);
+    public final static String LIFETIME = "Issued Credential Lifetime";
 
-		this.clearTable();
+    public final static String PATH_LENGTH = "Path Length";
 
-	}
 
-	public static DefaultTableModel createTableModel() {
-		DefaultTableModel model = new DefaultTableModel();
-		model.addColumn(DESCRIPTOR);
-		model.addColumn(IDENTITY);
-		model.addColumn(EXPIRATION);
-		model.addColumn(LIFETIME);
-		model.addColumn(PATH_LENGTH);
-		return model;
-	}
+    public DelegationDescriptorTable() {
+        super(createTableModel());
+        TableColumn c = this.getColumn(DESCRIPTOR);
+        c.setMaxWidth(0);
+        c.setMinWidth(0);
+        c.setPreferredWidth(0);
+        c.setResizable(false);
 
-	public synchronized void addDelegationDescriptor(DelegationDescriptor des) {
-		Vector v = new Vector();
-		v.add(des);
-		v.add(des.getGridIdentity());
-		Calendar d = new GregorianCalendar();
-		d.setTimeInMillis(des.getExpiration());
-		v.add(d.getTime().toString());
-		String str = des.getIssuedCredentialLifetime().getHours() + " hrs "
-				+ des.getIssuedCredentialLifetime().getMinutes() + " mins "
-				+ des.getIssuedCredentialLifetime().getSeconds() + " secs";
-		v.add(str);
-		v.add(String.valueOf(des.getIssuedCredentialPathLength()));
-		addRow(v);
-	}
+        c = this.getColumn(IDENTITY);
+        c.setMinWidth(350);
+        c.setPreferredWidth(0);
 
-	public synchronized void addDelegationDescriptors(
-			List<DelegationDescriptor> list) {
-		for (int i = 0; i < list.size(); i++) {
-			addDelegationDescriptor(list.get(i));
-		}
-	}
+        c = this.getColumn(PATH_LENGTH);
+        c.setMinWidth(75);
+        c.setMaxWidth(75);
+        c.setPreferredWidth(0);
 
-	public synchronized DelegationDescriptor getSelectedDelegationDescriptor()
-			throws Exception {
-		int row = getSelectedRow();
-		if ((row >= 0) && (row < getRowCount())) {
-			return (DelegationDescriptor) getValueAt(row, 0);
-		} else {
-			throw new Exception("Please select a Delegation Descriptor!!!");
-		}
-	}
+        this.clearTable();
+    }
 
-	public void doubleClick() {
 
-	}
+    public static DefaultTableModel createTableModel() {
+        DefaultTableModel model = new DefaultTableModel();
+        model.addColumn(DESCRIPTOR);
+        model.addColumn(IDENTITY);
+        model.addColumn(EXPIRATION);
+        model.addColumn(LIFETIME);
+        model.addColumn(PATH_LENGTH);
+        return model;
+    }
 
-	public void singleClick() {
 
-	}
+    public synchronized void addDelegationDescriptor(DelegationDescriptor des) {
+        Vector<Object> v = new Vector<Object>();
+        v.add(des);
+        v.add(des.getGridIdentity());
+        Calendar d = new GregorianCalendar();
+        d.setTimeInMillis(des.getExpiration());
+        v.add(d.getTime().toString());
+        String str = des.getIssuedCredentialLifetime().getHours() + " hrs "
+            + des.getIssuedCredentialLifetime().getMinutes() + " mins "
+            + des.getIssuedCredentialLifetime().getSeconds() + " secs";
+        v.add(str);
+        v.add(String.valueOf(des.getIssuedCredentialPathLength()));
+        addRow(v);
+    }
 
+
+    public synchronized void addDelegationDescriptors(List<DelegationDescriptor> list) {
+        for (int i = 0; i < list.size(); i++) {
+            addDelegationDescriptor(list.get(i));
+        }
+    }
+
+
+    public synchronized DelegationDescriptor getSelectedDelegationDescriptor() throws Exception {
+        int row = getSelectedRow();
+        if ((row >= 0) && (row < getRowCount())) {
+            return (DelegationDescriptor) getValueAt(row, 0);
+        } else {
+            throw new Exception("Please select a Delegation Descriptor!!!");
+        }
+    }
+
+
+    public void doubleClick() {
+        // nothing
+    }
+
+
+    public void singleClick() {
+        // nothing
+    }
 }
