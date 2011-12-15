@@ -42,7 +42,7 @@ import org.globus.gsi.GlobusCredential;
  * @author <A HREF="MAILTO:oster@bmi.osu.edu">Scott Oster </A>
  * @author <A HREF="MAILTO:hastings@bmi.osu.edu">Shannon Langella </A>
  */
-@SuppressWarnings("deprecation")
+ @SuppressWarnings("deprecation")
 public class UserManagerWindow extends ApplicationComponent {
 	private static Log log = LogFactory.getLog(UserManagerWindow.class);
 	

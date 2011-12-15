@@ -1,6 +1,5 @@
 package org.cagrid.gaards.ui.dorian.federation;
 
-import java.io.Serializable;
 import java.util.Vector;
 
 import javax.swing.table.DefaultTableModel;
@@ -53,7 +52,6 @@ public class GridUserRecordsTable extends GrapeBaseTable {
         c.setPreferredWidth(0);
 
         this.clearTable();
-
     }
 
 
@@ -65,12 +63,11 @@ public class GridUserRecordsTable extends GrapeBaseTable {
         model.addColumn(LAST_NAME);
         model.addColumn(EMAIL);
         return model;
-
     }
 
 
     public void addUser(final GridUserRecord u) {
-        Vector<Serializable> v = new Vector<Serializable>();
+        Vector<Object> v = new Vector<Object>();
         v.add(u);
         v.add(u.getIdentity());
         v.add(u.getFirstName());
@@ -107,7 +104,5 @@ public class GridUserRecordsTable extends GrapeBaseTable {
 
     public void singleClick() throws Exception {
         // TODO Auto-generated method stub
-
     }
-
 }

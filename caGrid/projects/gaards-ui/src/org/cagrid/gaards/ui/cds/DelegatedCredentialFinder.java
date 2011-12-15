@@ -6,6 +6,7 @@ import gov.nih.nci.cagrid.common.Utils;
 import org.cagrid.gaards.cds.client.DelegationUserClient;
 import org.globus.gsi.GlobusCredential;
 
+
 /**
  * @author <A HREF="MAILTO:langella@bmi.osu.edu">Stephen Langella</A>
  * @author <A HREF="MAILTO:oster@bmi.osu.edu">Scott Oster</A>
@@ -14,44 +15,46 @@ import org.globus.gsi.GlobusCredential;
  * @version $Id: GridGrouperBaseTreeNode.java,v 1.1 2006/08/04 03:49:26 langella
  *          Exp $
  */
-@SuppressWarnings("deprecation")
+ @SuppressWarnings("deprecation")
 public class DelegatedCredentialFinder extends Runner {
 
-	private CDSHandle cds;
-	private GlobusCredential proxy;
-	private DelegationDescriptorTable table;
-	private boolean isSuccessful = false;
-	private String error = null;
+    private CDSHandle cds;
+    private GlobusCredential proxy;
+    private DelegationDescriptorTable table;
+    private boolean isSuccessful = false;
+    private String error = null;
 
-	public DelegatedCredentialFinder(CDSHandle handle, GlobusCredential proxy,
-			DelegationDescriptorTable table) {
-		this.cds = handle;
-		this.proxy = proxy;
-		this.table = table;
 
-	}
+    public DelegatedCredentialFinder(CDSHandle handle, GlobusCredential proxy, DelegationDescriptorTable table) {
+        this.cds = handle;
+        this.proxy = proxy;
+        this.table = table;
 
-	public void execute() {
-		try {
-			DelegationUserClient client = cds.getUserClient(proxy);
-			table.addDelegationDescriptors(client
-					.findCredentialsDelegatedToClient());
-			isSuccessful = true;
-		} catch (Exception e) {
-			error = Utils.getExceptionMessage(e);
-		}
-	}
+    }
 
-	public String getDelegationURI() {
-		return cds.getServiceURL();
-	}
 
-	public boolean isSuccessful() {
-		return isSuccessful;
-	}
+    public void execute() {
+        try {
+            DelegationUserClient client = cds.getUserClient(proxy);
+            table.addDelegationDescriptors(client.findCredentialsDelegatedToClient());
+            isSuccessful = true;
+        } catch (Exception e) {
+            error = Utils.getExceptionMessage(e);
+        }
+    }
 
-	public String getError() {
-		return error;
-	}
 
+    public String getDelegationURI() {
+        return cds.getServiceURL();
+    }
+
+
+    public boolean isSuccessful() {
+        return isSuccessful;
+    }
+
+
+    public String getError() {
+        return error;
+    }
 }

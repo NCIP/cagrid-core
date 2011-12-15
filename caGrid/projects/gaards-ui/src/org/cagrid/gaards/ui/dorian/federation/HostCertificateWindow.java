@@ -939,8 +939,8 @@ public class HostCertificateWindow extends ApplicationComponent implements Doria
      */
     private FederationAuditPanel getAuditPanel() {
         if (auditPanel == null) {
-            auditPanel = new FederationAuditPanel(this, FederationAuditPanel.HOST_MODE, String.valueOf(this.record
-                .getId()));
+            auditPanel = new FederationAuditPanel(this, FederationAuditPanel.HOST_MODE, 
+                String.valueOf(this.record.getId()));
             auditPanel.setProgess(getProgressPanel());
         }
         return auditPanel;
@@ -1001,7 +1001,8 @@ public class HostCertificateWindow extends ApplicationComponent implements Doria
             view.addActionListener(new java.awt.event.ActionListener() {
                 public void actionPerformed(java.awt.event.ActionEvent e) {
                     if (cert != null) {
-                        GridApplication.getContext().addApplicationComponent(new CertificateInformationComponent(cert),
+                        GridApplication.getContext().addApplicationComponent(
+                            new CertificateInformationComponent(cert),
                             700, 550);
                     }
                 }

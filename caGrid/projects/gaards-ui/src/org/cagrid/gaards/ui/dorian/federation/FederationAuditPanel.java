@@ -220,7 +220,6 @@ public class FederationAuditPanel extends JPanel {
             this.auditTypes.add(FederationAudit.UserCertificateUpdated);
             this.auditTypes.add(FederationAudit.UserCertificateRemoved);
         } else {
-            //Class c = FederationAudit.class;
             Field[] fields = FederationAudit.class.getFields();
             for (int i = 0; i < fields.length; i++) {
                 if (FederationAudit.class.isAssignableFrom(fields[i].getType())) {
@@ -832,5 +831,4 @@ public class FederationAuditPanel extends JPanel {
     public void setProgess(ProgressPanel progess) {
         this.progess = progess;
     }
-
 }

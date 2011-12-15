@@ -103,7 +103,6 @@ public class CommunitySearchDialog extends JDialog {
         } else {
             setSize(800, 550);
         }
-
     }
 
 
@@ -419,10 +418,8 @@ public class CommunitySearchDialog extends JDialog {
                     } catch (Exception t) {
                         t.getMessage();
                     }
-
                 }
             });
-
         }
         return userSearchButton;
     }
@@ -433,7 +430,6 @@ public class CommunitySearchDialog extends JDialog {
         getProgress().showProgress("Searching...");
 
         try {
-
             GridUserClient client = this.sessionProvider.getSession().getUserClient();
             String version = client.getServiceVersion();
             if (version.equals(GridUserClient.VERSION_1_0) || version.equals(GridUserClient.VERSION_1_1)
@@ -463,13 +459,11 @@ public class CommunitySearchDialog extends JDialog {
                 search.setLastName(Utils.clean(getLastName().getText()));
                 search.setIdentity(Utils.clean(getUserIdentity().getText()));
                 List<GridUserRecord> users = client.userSearch(search);
-
                 for (int i = 0; i < users.size(); i++) {
                     this.getUsersTable().addUser(users.get(i));
                 }
                 getProgress().stopProgress(users.size() + " user(s) found.");
             }
-
         } catch (PermissionDeniedFault pdf) {
             ErrorDialog.showError(pdf);
             getProgress().stopProgress("Error");
@@ -481,7 +475,6 @@ public class CommunitySearchDialog extends JDialog {
         } finally {
             userSearchButton.setEnabled(true);
         }
-
     }
 
 
@@ -500,9 +493,9 @@ public class CommunitySearchDialog extends JDialog {
                 f.setSubject(CommonUtils.identityToSubject(Utils.clean(getHostIdentity().getText())));
                 f.setOwner(Utils.clean(getHostOwner().getText()));
                 f.setSubject(Utils.clean(getHostSubject().getText()));
-                List<HostCertificateRecord> hosts = admin.findHostCertificates(f);
-                for (int i = 0; i < hosts.size(); i++) {
-                    HostCertificateRecord r = hosts.get(i);
+                List<HostCertificateRecord> hostCerts = admin.findHostCertificates(f);
+                for (int i = 0; i < hostCerts.size(); i++) {
+                    HostCertificateRecord r = hostCerts.get(i);
                     HostRecord host = new HostRecord();
                     host.setIdentity(CommonUtils.subjectToIdentity(r.getSubject()));
                     host.setHostCertificateSubject(r.getSubject());
@@ -510,21 +503,19 @@ public class CommunitySearchDialog extends JDialog {
                     host.setOwner(r.getOwner());
                     this.getHosts().addHost(host);
                 }
-                getProgress().stopProgress(hosts.size() + " host(s) found.");
+                getProgress().stopProgress(hostCerts.size() + " host(s) found.");
             } else {
                 HostSearchCriteria search = new HostSearchCriteria();
                 search.setHostname(Utils.clean(getHostname().getText()));
                 search.setIdentity(Utils.clean(getHostIdentity().getText()));
                 search.setOwner(Utils.clean(getHostOwner().getText()));
                 search.setHostCertificateSubject(Utils.clean(getHostSubject().getText()));
-                List<HostRecord> hosts = client.hostSearch(search);
-
-                for (int i = 0; i < hosts.size(); i++) {
-                    this.getHosts().addHost(hosts.get(i));
+                List<HostRecord> hostRecords = client.hostSearch(search);
+                for (int i = 0; i < hostRecords.size(); i++) {
+                    this.getHosts().addHost(hostRecords.get(i));
                 }
-                getProgress().stopProgress(hosts.size() + " host(s) found.");
+                getProgress().stopProgress(hostRecords.size() + " host(s) found.");
             }
-
         } catch (PermissionDeniedFault pdf) {
             ErrorDialog.showError(pdf);
             getProgress().stopProgress("Error");
@@ -536,7 +527,6 @@ public class CommunitySearchDialog extends JDialog {
         } finally {
             hostSearchButton.setEnabled(true);
         }
-
     }
 
 
@@ -907,5 +897,4 @@ public class CommunitySearchDialog extends JDialog {
         }
         return hostSubject;
     }
-
 }

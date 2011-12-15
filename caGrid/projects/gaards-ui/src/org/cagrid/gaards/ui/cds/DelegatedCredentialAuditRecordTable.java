@@ -45,6 +45,7 @@ public class DelegatedCredentialAuditRecordTable extends GrapeBaseTable {
 		c.setResizable(false);
 		this.clearTable();
 	}
+	
 
 	public static DefaultTableModel createTableModel() {
 		DefaultTableModel model = new DefaultTableModel();	
@@ -54,8 +55,8 @@ public class DelegatedCredentialAuditRecordTable extends GrapeBaseTable {
 		model.addColumn(OCCURRED_AT);
 		model.addColumn(MESSAGE);
 		return model;
+    }
 
-	}
 
 	public void addRecords(final List<DelegatedCredentialAuditRecord> list) {
 		List<DelegatedCredentialAuditRecord> sorted = new ArrayList<DelegatedCredentialAuditRecord>();
@@ -84,8 +85,8 @@ public class DelegatedCredentialAuditRecordTable extends GrapeBaseTable {
 		}
 	}
 
-	public synchronized DelegatedCredentialAuditRecord getSelectedRecord()
-			throws Exception {
+
+    public synchronized DelegatedCredentialAuditRecord getSelectedRecord() throws Exception {
 		int row = getSelectedRow();
 		if ((row >= 0) && (row < getRowCount())) {
 			return (DelegatedCredentialAuditRecord) getValueAt(row, 0);
@@ -93,6 +94,7 @@ public class DelegatedCredentialAuditRecordTable extends GrapeBaseTable {
 			throw new Exception("Please select an audit record!!!");
 		}
 	}
+	
 
 	public synchronized void removeSelectedIdentity() throws Exception {
 		int row = getSelectedRow();
@@ -102,21 +104,20 @@ public class DelegatedCredentialAuditRecordTable extends GrapeBaseTable {
 			throw new Exception("Please select an audit record!!!");
 		}
 	}
+	
 
 	public void doubleClick() throws Exception {
 		try {
 			GridApplication.getContext().addApplicationComponent(
-					new DelegatedCredentialAuditRecordWindow(
-							getSelectedRecord()), 600, 350);
+                new DelegatedCredentialAuditRecordWindow(getSelectedRecord()), 600, 350);
 		} catch (Exception ex) {
 			ErrorDialog.showError(ex.getMessage(), ex);
 			log.error(ex, ex);
 		}
 	}
+	
 
 	public void singleClick() throws Exception {
-		// TODO Auto-generated method stub
-
+        // nothing to do here
 	}
-
 }

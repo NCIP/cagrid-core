@@ -3,6 +3,7 @@ package org.cagrid.gaards.ui.cds;
 import org.cagrid.gaards.cds.common.DelegatedCredentialEvent;
 import org.cagrid.gaards.ui.common.AxisTypeComboBox;
 
+
 /**
  * @author <A href="mailto:langella@bmi.osu.edu">Stephen Langella </A>
  * @author <A href="mailto:oster@bmi.osu.edu">Scott Oster </A>
@@ -11,15 +12,16 @@ import org.cagrid.gaards.ui.common.AxisTypeComboBox;
  *          Exp $
  */
 public class DelegatedCredentialEventComboBox extends AxisTypeComboBox {
-	
-	private static final long serialVersionUID = 1L;
 
-	public DelegatedCredentialEventComboBox() {
-		super(DelegatedCredentialEvent.class, true);
-	}
+    private static final long serialVersionUID = 1L;
 
-	public DelegatedCredentialEvent getEvent() {
-		return (DelegatedCredentialEvent) getSelectedObject();
-	}
 
+    public DelegatedCredentialEventComboBox() {
+        super(DelegatedCredentialEvent.class, true);
+    }
+
+
+    public DelegatedCredentialEvent getEvent() {
+        return (DelegatedCredentialEvent) getSelectedObject();
+    }
 }

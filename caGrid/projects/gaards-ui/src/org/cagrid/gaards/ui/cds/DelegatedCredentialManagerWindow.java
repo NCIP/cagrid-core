@@ -205,14 +205,9 @@ public class DelegatedCredentialManagerWindow extends ApplicationComponent {
 			GridBagConstraints gridBagConstraints4 = new GridBagConstraints();
 			contentPanel = new JPanel();
 			contentPanel.setLayout(new GridBagLayout());
-			contentPanel
-					.setBorder(javax.swing.BorderFactory
-							.createTitledBorder(
-									null,
-									"Delegated Credential(s)",
+            contentPanel.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Delegated Credential(s)",
 									javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION,
-									javax.swing.border.TitledBorder.DEFAULT_POSITION,
-									null, LookAndFeel.getPanelLabelColor()));
+                javax.swing.border.TitledBorder.DEFAULT_POSITION, null, LookAndFeel.getPanelLabelColor()));
 			gridBagConstraints4.weightx = 1.0;
 			gridBagConstraints4.weighty = 1.0;
 			gridBagConstraints4.fill = java.awt.GridBagConstraints.BOTH;
@@ -270,15 +265,13 @@ public class DelegatedCredentialManagerWindow extends ApplicationComponent {
 		if (manageDelegatedCredential == null) {
 			manageDelegatedCredential = new JButton();
 			manageDelegatedCredential.setText("View");
-			manageDelegatedCredential
-					.addActionListener(new java.awt.event.ActionListener() {
-						public void actionPerformed(java.awt.event.ActionEvent e) {
-							disableButtons();
-							getDelegatedCredentialsTable().doubleClick();
-							enableButtons();
-						}
-
-					});
+            manageDelegatedCredential.addActionListener(new java.awt.event.ActionListener() {
+				public void actionPerformed(java.awt.event.ActionEvent e) {
+					disableButtons();
+					getDelegatedCredentialsTable().doubleClick();
+					enableButtons();
+					}
+			});
 		}
 
 		return manageDelegatedCredential;
@@ -327,8 +320,7 @@ public class DelegatedCredentialManagerWindow extends ApplicationComponent {
 						}
 					};
 					try {
-						GridApplication.getContext()
-								.executeInBackground(runner);
+                        GridApplication.getContext().executeInBackground(runner);
 					} catch (Exception t) {
 						t.getMessage();
 					}
@@ -357,8 +349,7 @@ public class DelegatedCredentialManagerWindow extends ApplicationComponent {
 					f.setDelegationIdentifier(id);
 				} catch (Exception e) {
 					getProgressPanel().stopProgress("Error");
-					ErrorDialog
-							.showError("A Delegation Identifier must be an integer.");
+                    ErrorDialog.showError("A Delegation Identifier must be an integer.");
 					return;
 				}
 			}
@@ -376,15 +367,12 @@ public class DelegatedCredentialManagerWindow extends ApplicationComponent {
 			List<DelegationRecord> records;
 
 			if (adminMode) {
-				DelegationAdminClient client = new DelegationAdminClient(
-						getSession().getServiceURI(), getSession()
-								.getCredential());
-
+                DelegationAdminClient client = new DelegationAdminClient(getSession().getServiceURI(),
+                    getSession().getCredential());
 				records = client.findDelegatedCredentials(f);
 			} else {
-				DelegationUserClient client = new DelegationUserClient(
-						getSession().getServiceURI(), getSession()
-								.getCredential());
+                DelegationUserClient client = new DelegationUserClient(getSession().getServiceURI(),
+                    getSession().getCredential());
 				records = client.findMyDelegatedCredentials(f);
 			}
 
@@ -510,10 +498,9 @@ public class DelegatedCredentialManagerWindow extends ApplicationComponent {
 			}
 			filterPanel = new JPanel();
 			filterPanel.setLayout(new GridBagLayout());
-			filterPanel.setBorder(BorderFactory.createTitledBorder(null,
-					"Search Criteria", TitledBorder.DEFAULT_JUSTIFICATION,
-					TitledBorder.DEFAULT_POSITION, null, LookAndFeel
-							.getPanelLabelColor()));
+            filterPanel.setBorder(BorderFactory.createTitledBorder(null, "Search Criteria",
+                TitledBorder.DEFAULT_JUSTIFICATION, TitledBorder.DEFAULT_POSITION, null,
+                LookAndFeel.getPanelLabelColor()));
 			filterPanel.add(gridLabel, gridBagConstraints6);
 			filterPanel.add(jLabel, gridBagConstraints3);
 			filterPanel.add(getDelegationId(), gridBagConstraints5);
@@ -671,20 +658,14 @@ public class DelegatedCredentialManagerWindow extends ApplicationComponent {
 								DelegationAdminClient client = new DelegationAdminClient(
 										getSession().getServiceURI(),
 										getSession().getCredential());
-								DelegationRecord r = getDelegatedCredentialsTable()
-										.getSelectedRecord();
-								client.deleteDelegatedCredential(r
-										.getDelegationIdentifier());
-								getDelegatedCredentialsTable().removeRecord(
-										r.getDelegationIdentifier());
+                                DelegationRecord r = getDelegatedCredentialsTable().getSelectedRecord();
+                                client.deleteDelegatedCredential(r.getDelegationIdentifier());
+                                getDelegatedCredentialsTable().removeRecord(r.getDelegationIdentifier());
 								GridApplication.getContext().showMessage(
 										"Succesfully removed the delegation record with the id "
-												+ r.getDelegationIdentifier()
-														.getDelegationId()
-												+ ".");
+                                        + r.getDelegationIdentifier().getDelegationId() + ".");
 							} catch (Exception ex) {
-								ErrorDialog.showError(Utils
-										.getExceptionMessage(ex), ex);
+                                ErrorDialog.showError(Utils.getExceptionMessage(ex), ex);
 								log.error(ex, ex);
 							} finally {
 								enableButtons();
@@ -692,8 +673,7 @@ public class DelegatedCredentialManagerWindow extends ApplicationComponent {
 						}
 					};
 					try {
-						GridApplication.getContext()
-								.executeInBackground(runner);
+                        GridApplication.getContext().executeInBackground(runner);
 					} catch (Exception t) {
 						t.getMessage();
 					}
@@ -740,55 +720,41 @@ public class DelegatedCredentialManagerWindow extends ApplicationComponent {
 							List<DelegationRecord> removed = new ArrayList<DelegationRecord>();
 							try {
 								disableButtons();
-								int value = JOptionPane
-										.showConfirmDialog(
-												GridApplication.getContext()
-														.getApplication(),
+                                int value = JOptionPane.showConfirmDialog(
+                                    GridApplication.getContext().getApplication(),
 												"Are you sure you want to delete the "
-														+ getDelegatedCredentialsTable()
-																.getRowCount()
-														+ " delegated credential(s) listed.");
+                                        + getDelegatedCredentialsTable().getRowCount()
+                                        + " delegated credential(s) listed?");
 								if (value == JOptionPane.OK_OPTION) {
 									DelegationAdminClient client = new DelegationAdminClient(
 											getSession().getServiceURI(),
 											getSession().getCredential());
 
-									for (int i = 0; i < getDelegatedCredentialsTable()
-											.getRowCount(); i++) {
-										DelegationRecord r = getDelegatedCredentialsTable()
-												.getRecord(i);
-										client.deleteDelegatedCredential(r
-												.getDelegationIdentifier());
+                                    for (int i = 0; i < getDelegatedCredentialsTable().getRowCount(); i++) {
+                                        DelegationRecord r = getDelegatedCredentialsTable().getRecord(i);
+                                        client.deleteDelegatedCredential(r.getDelegationIdentifier());
 										removed.add(r);
 									}
 
 									GridApplication.getContext().showMessage(
-											"Succesfully removed  "
-													+ removed.size()
-													+ " delegation record(s).");
+                                        "Succesfully removed  " + removed.size() + " delegation record(s).");
 								} else {
 									return;
 								}
-
 							} catch (Exception ex) {
-								ErrorDialog.showError(Utils
-										.getExceptionMessage(ex), ex);
+                                ErrorDialog.showError(Utils.getExceptionMessage(ex), ex);
 								log.error(ex, ex);
 							} finally {
 								for (int i = 0; i < removed.size(); i++) {
-									getDelegatedCredentialsTable()
-											.removeRecord(
-													removed
-															.get(i)
-															.getDelegationIdentifier());
+                                    getDelegatedCredentialsTable().removeRecord(
+                                        removed.get(i).getDelegationIdentifier());
 								}
 								enableButtons();
 							}
 						}
 					};
 					try {
-						GridApplication.getContext()
-								.executeInBackground(runner);
+                        GridApplication.getContext().executeInBackground(runner);
 					} catch (Exception t) {
 						t.getMessage();
 						FaultUtil.logFault(log, t);
@@ -799,6 +765,7 @@ public class DelegatedCredentialManagerWindow extends ApplicationComponent {
 		}
 		return deleteAll;
 	}
+
 
     /**
      * This method initializes titlePanel	
@@ -811,5 +778,4 @@ public class DelegatedCredentialManagerWindow extends ApplicationComponent {
         }
         return titlePanel;
     }
-
 }

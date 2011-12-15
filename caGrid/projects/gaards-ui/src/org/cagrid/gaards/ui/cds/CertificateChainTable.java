@@ -82,8 +82,7 @@ public class CertificateChainTable extends GrapeBaseTable {
 			public void execute() {
 				try {
 					GridApplication.getContext().addApplicationComponent(
-							new CertificateInformationComponent(
-									getSelectedRecord()));
+                        new CertificateInformationComponent(getSelectedRecord()));
 				} catch (Exception e) {
 					ErrorDialog.showError(e);
 					FaultUtil.logFault(log, e);
@@ -95,12 +94,10 @@ public class CertificateChainTable extends GrapeBaseTable {
 		} catch (Exception t) {
 			t.getMessage();
 		}
+    }
 
-	}
 
 	public void singleClick() throws Exception {
-		// TODO Auto-generated method stub
-
+        // nothing to do here
 	}
-
 }

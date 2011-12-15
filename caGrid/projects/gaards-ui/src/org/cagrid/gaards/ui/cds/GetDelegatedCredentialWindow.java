@@ -90,7 +90,8 @@ public class GetDelegatedCredentialWindow extends ApplicationComponent {
                 ErrorDialog
                     .showError(
                         "A credential is required to determine who had delegated credentials to you.",
-                        "A credential is required to determine who had delegated credentials to you.  No grid credentials could be found, please logon and try again!!!");
+                        "A credential is required to determine who had delegated credentials to you.  " +
+                        "No grid credentials could be found; please logon and try again!!!");
                 getProgressPanel().stopProgress("Error");
                 return;
             }
@@ -114,8 +115,8 @@ public class GetDelegatedCredentialWindow extends ApplicationComponent {
                 DelegatedCredentialFinder finder = (DelegatedCredentialFinder) grp.get(i);
                 if (!finder.isSuccessful()) {
                     ErrorDialog.showError(
-                        "Error finding delegated credentials from " + finder.getDelegationURI() + ".", finder
-                            .getError());
+                        "Error finding delegated credentials from " + finder.getDelegationURI() + ".",
+                        finder.getError());
                 }
             }
             getProgressPanel().stopProgress(getDelegatedCredentials().getRowCount() + " credential(s) found.");

@@ -34,19 +34,15 @@ public class HostRecordsTable extends GrapeBaseTable {
 
     public final static String OWNER = "Owner";
 
-//    private HostCertificateLauncher launcher;
-
 
     public HostRecordsTable() {
         super(createTableModel());
-        //this.launcher = launcher;
         TableColumn c = this.getColumn(HOST_RECORD);
         c.setMaxWidth(0);
         c.setMinWidth(0);
         c.setPreferredWidth(0);
         c.setResizable(false);
         this.clearTable();
-
     }
 
 
@@ -60,7 +56,6 @@ public class HostRecordsTable extends GrapeBaseTable {
         model.addColumn(EMAIL);
         model.addColumn(OWNER);
         return model;
-
     }
 
 
@@ -98,12 +93,11 @@ public class HostRecordsTable extends GrapeBaseTable {
 
 
     public void doubleClick() throws Exception {
+        // nothing to do here
     }
 
 
     public void singleClick() throws Exception {
-        // TODO Auto-generated method stub
-
+        // nothing to do here
     }
-
 }

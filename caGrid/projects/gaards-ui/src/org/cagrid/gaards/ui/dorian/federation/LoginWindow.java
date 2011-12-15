@@ -393,12 +393,15 @@ public class LoginWindow extends ApplicationComponent {
         // prevent clicking this button while working
         getAuthenticateButton().setEnabled(false);
 
-        DorianHandle dorian = ((DorianServiceListComboBox) this.getDorianService()).getSelectedService();
+        DorianHandle dorian = this.getDorianService().getSelectedService();
         AuthenticationServiceHandle as = ((AuthenticationServiceHandle) getIdentityProvider().getSelectedItem());
 
         if (as == null) {
-            ErrorDialog
-                .showError("Login Error: You have not selected an Organization to authenticate with.  If the organization list is empty either the Credential Provider you selected may be down or the Credential Provider you selected does not support authentication profiles.   If the credential provider you selected does not support authentication profiles, you can manually add your organization's authentication service through the preferences menu.");
+            ErrorDialog.showError("Login Error: You have not selected an Organization to authenticate with.  " +
+            		"If the organization list is empty, either the Credential Provider you selected may be " +
+            		"down or the Credential Provider you selected does not support authentication profiles.   " +
+            		"If the credential provider you selected does not support authentication profiles, you can " +
+            		"manually add your organization's authentication service through the preferences menu.");
             return;
         }
 
@@ -415,11 +418,11 @@ public class LoginWindow extends ApplicationComponent {
             if (version.equals(GridUserClient.VERSION_1_0) || version.equals(GridUserClient.VERSION_1_1)
                 || version.equals(GridUserClient.VERSION_1_2) || version.equals(GridUserClient.VERSION_UNKNOWN)) {
                 IFSUserClient c2 = dorian.getOldUserClient();
-                int delegationPathLength = 0;
+                int delegationPathLengthValue = 0;
                 String str = Utils.clean(getDelegationPathLength().getText());
                 if (str != null) {
                     try {
-                        delegationPathLength = Integer.valueOf(str).intValue();
+                        delegationPathLengthValue = Integer.valueOf(str).intValue();
                     } catch (Exception e) {
                         throw new Exception(
                             "Invalid delegation path length specified, the delegation path length must be an integer.");
@@ -429,7 +432,7 @@ public class LoginWindow extends ApplicationComponent {
                 lifetime.setHours(Integer.valueOf((String) getHours().getSelectedItem()).intValue());
                 lifetime.setMinutes(Integer.valueOf((String) getMinutes().getSelectedItem()).intValue());
                 lifetime.setSeconds(Integer.valueOf((String) getSeconds().getSelectedItem()).intValue());
-                cred = c2.createProxy(saml, lifetime, delegationPathLength);
+                cred = c2.createProxy(saml, lifetime, delegationPathLengthValue);
             } else {
                 GridUserClient c2 = dorian.getUserClient();
                 CertificateLifetime lifetime = new CertificateLifetime();
@@ -438,15 +441,16 @@ public class LoginWindow extends ApplicationComponent {
                 lifetime.setSeconds(Integer.valueOf((String) getSeconds().getSelectedItem()).intValue());
                 cred = c2.requestUserCertificate(saml, lifetime);
             }
-            DorianUserCredentialDescriptor des = CredentialUtils.encode(dorian.getServiceURL(), as.getServiceURL(), as.getDisplayName(), saml, cred);
+            DorianUserCredentialDescriptor des = CredentialUtils.encode(
+                dorian.getServiceURL(), as.getServiceURL(), as.getDisplayName(), saml, cred);
             DorianUserCredentialEntry entry = new DorianUserCredentialEntry(des);
             CredentialManager.getInstance().addCredential(entry);
             if (getSetDefault().isSelected()) {
                 ProxyUtil.saveProxyAsDefault(cred);
             }
             getProgressPanel().stopProgress("Login Successful");
-            GridApplication.getContext().addApplicationComponent(new SuccessfulLoginWindow(cred.getIdentity()), 550,
-                200);
+            GridApplication.getContext().addApplicationComponent(
+                new SuccessfulLoginWindow(cred.getIdentity()), 550, 200);
 
             // enable the authenticate button
             getAuthenticateButton().setEnabled(true);
@@ -458,7 +462,6 @@ public class LoginWindow extends ApplicationComponent {
             getAuthenticateButton().setEnabled(true);
             FaultUtil.logFault(log, e);
         }
-
     }
 
 
@@ -466,7 +469,6 @@ public class LoginWindow extends ApplicationComponent {
         if (close == null) {
             close = new JButton();
             close.setText("Cancel");
-            // close.setIcon(LookAndFeel.getCloseIcon());
             close.addActionListener(new java.awt.event.ActionListener() {
                 public void actionPerformed(java.awt.event.ActionEvent e) {
                     dispose();
@@ -750,5 +752,4 @@ public class LoginWindow extends ApplicationComponent {
         }
         return delegationPathLength;
     }
-
 }
