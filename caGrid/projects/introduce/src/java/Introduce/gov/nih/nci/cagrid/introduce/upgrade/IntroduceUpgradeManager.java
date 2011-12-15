@@ -31,9 +31,11 @@ public class IntroduceUpgradeManager {
 
     private static String getIntroduceUpgradeClass(String oldVersion) {
         if (oldVersion.equals("1.2")) {
-            return "gov.nih.nci.cagrid.introduce.upgrade.introduce.Introduce_1_2__1_4_Upgrader";
+            return "gov.nih.nci.cagrid.introduce.upgrade.introduce.Introduce_1_2__1_4_1_Upgrader";
         } else if (oldVersion.equals("1.3")) {
-            return "gov.nih.nci.cagrid.introduce.upgrade.introduce.Introduce_1_3__1_4_Upgrader";
+            return "gov.nih.nci.cagrid.introduce.upgrade.introduce.Introduce_1_3__1_4_1_Upgrader";
+        } else if (oldVersion.equals("1.4")) {
+            return "gov.nih.nci.cagrid.introduce.upgrade.introduce.Introduce_1_4__1_4_1_Upgrader";
         }
         return null;
     }
@@ -44,6 +46,8 @@ public class IntroduceUpgradeManager {
             return "gov.nih.nci.cagrid.introduce.upgrade.model.Model_1_2__1_4_Upgrader";
         } else if (oldVersion.equals("1.3")) {
             return "gov.nih.nci.cagrid.introduce.upgrade.model.Model_1_3__1_4_Upgrader";
+        } else if (oldVersion.equals("1.4")) {
+            return "gov.nih.nci.cagrid.introduce.upgrade.model.Model_1_4__1_4_Upgrader";
         }
         return null;
     }
@@ -51,8 +55,8 @@ public class IntroduceUpgradeManager {
 
     protected boolean needsUpgrading() {
         try {
-            String serviceVersion = UpgradeUtilities.getCurrentServiceVersion(pathToService + File.separator
-                + IntroduceConstants.INTRODUCE_XML_FILE);
+            String serviceVersion = UpgradeUtilities.getCurrentServiceVersion(
+                pathToService + File.separator + IntroduceConstants.INTRODUCE_XML_FILE);
             if ((serviceVersion == null) || !serviceVersion.equals(IntroducePropertiesManager.getIntroduceVersion())) {
                 return true;
             }
@@ -74,16 +78,13 @@ public class IntroduceUpgradeManager {
 
 
     protected void upgrade(UpgradeStatus status) throws Exception {
-
-        String serviceVersion = UpgradeUtilities.getCurrentServiceVersion(pathToService + File.separator
-            + IntroduceConstants.INTRODUCE_XML_FILE);
+        String serviceVersion = UpgradeUtilities.getCurrentServiceVersion(
+            pathToService + File.separator + IntroduceConstants.INTRODUCE_XML_FILE);
 
         if (canBeUpgraded(serviceVersion)) {
-
             // upgrade the introduce service
             String version = IntroducePropertiesManager.getIntroduceVersion();
             if (version != null) {
-
                 String vers = UpgradeUtilities.getCurrentServiceVersion(pathToService + File.separator
                     + IntroduceConstants.INTRODUCE_XML_FILE);
 
@@ -98,10 +99,10 @@ public class IntroduceUpgradeManager {
                     status.addIntroduceUpgradeStatus(iStatus);
 
                     // upgrade the introduce service
-                    Class clazz = Class.forName(className);
-                    Constructor con = clazz.getConstructor(new Class[]{IntroduceUpgradeStatus.class, String.class});
-                    ModelUpgraderI modelupgrader = (ModelUpgraderI) con
-                        .newInstance(new Object[]{iStatus, pathToService});
+                    Class<?> clazz = Class.forName(className);
+                    Constructor<?> con = clazz.getConstructor(new Class[]{IntroduceUpgradeStatus.class, String.class});
+                    ModelUpgraderI modelupgrader = (ModelUpgraderI) con.newInstance(
+                        new Object[]{iStatus, pathToService});
                     modelupgrader.execute();
 
                     ServiceInformation serviceInfo = new ServiceInformation(new File(pathToService));
@@ -115,10 +116,10 @@ public class IntroduceUpgradeManager {
 
                     // upgrade the introduce service
                     clazz = Class.forName(className);
-                    con = clazz.getConstructor(new Class[]{IntroduceUpgradeStatus.class, ServiceInformation.class,
-                            String.class});
-                    IntroduceUpgraderI upgrader = (IntroduceUpgraderI) con.newInstance(new Object[]{iStatus,
-                            serviceInfo, pathToService});
+                    con = clazz.getConstructor(
+                        new Class[]{IntroduceUpgradeStatus.class, ServiceInformation.class, String.class});
+                    IntroduceUpgraderI upgrader = (IntroduceUpgraderI) con.newInstance(
+                        new Object[]{iStatus, serviceInfo, pathToService});
                     upgrader.execute();
 
                     eUpgrader = new ExtensionsUpgradeManager(serviceInfo, pathToService);
@@ -135,22 +136,18 @@ public class IntroduceUpgradeManager {
 
                     serviceInfo.persistInformation();
 
-                    // resync the eclipse classpath doc with what is in the lib
-                    // directory
+                    // resync the eclipse classpath doc with what is in the lib directory
                     try {
                         ExtensionUtilities.resyncWithLibDir(new File(pathToService + File.separator + ".classpath"));
                     } catch (Exception e) {
                         throw new Exception("Unable to resync the eclipse .classpath file:", e);
                     }
-
-
             } else {
                 throw new Exception("ERROR: The service"
                     + " is not upgradable because it's version cannot be determined or is corrupt");
             }
-
         } else {
-            throw new Exception("ERROR: The service" + " needs to be upgraded but no upgrader can be found");
+            throw new Exception("ERROR: The service needs to be upgraded, but no upgrader can be found");
         }
     }
 }

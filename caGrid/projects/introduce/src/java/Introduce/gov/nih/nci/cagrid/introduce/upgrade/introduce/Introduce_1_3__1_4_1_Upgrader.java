@@ -14,9 +14,9 @@ import java.io.FileWriter;
 import java.io.IOException;
 
 
-public class Introduce_1_3__1_4_Upgrader extends IntroduceUpgraderBase {
+public class Introduce_1_3__1_4_1_Upgrader extends IntroduceUpgraderBase {
 
-    public Introduce_1_3__1_4_Upgrader(IntroduceUpgradeStatus status, ServiceInformation serviceInformation,
+    public Introduce_1_3__1_4_1_Upgrader(IntroduceUpgradeStatus status, ServiceInformation serviceInformation,
         String servicePath) throws Exception {
         super(status, serviceInformation, servicePath, "1.3", "1.4.1");
     }
