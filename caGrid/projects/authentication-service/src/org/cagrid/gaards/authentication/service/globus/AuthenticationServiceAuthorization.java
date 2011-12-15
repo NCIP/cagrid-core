@@ -79,6 +79,10 @@ public class AuthenticationServiceAuthorization implements PDP {
 		
 	}
 	   
+	public void authorizeGetLockedOutUsers(Subject peerSubject, MessageContext context, QName operation) throws AuthorizationException {
+	
+	}
+	   
 	
 	public boolean isPermitted(Subject peerSubject, MessageContext context, QName operation)
 		throws AuthorizationException {
@@ -103,6 +107,9 @@ public class AuthenticationServiceAuthorization implements PDP {
 			return true;
 		} else if(operation.getLocalPart().equals("queryResourceProperties")){
 			authorizeQueryResourceProperties(peerSubject, context, operation);
+			return true;
+		} else if(operation.getLocalPart().equals("getLockedOutUsers")){
+			authorizeGetLockedOutUsers(peerSubject, context, operation);
 			return true;
 		} 		
 		return false;
