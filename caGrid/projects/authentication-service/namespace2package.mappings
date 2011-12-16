@@ -7,13 +7,14 @@ http\://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ResourceProperties-1.2-draft-01
 http\://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ResourceProperties-1.2-draft-01.wsdl=org.oasis.wsrf.properties
 http\://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ResourceProperties-1.2-draft-01.wsdl=org.oasis.wsrf.properties
 
-http\://gaards.cagrid.org/authentication-faults=org.cagrid.gaards.authentication.faults
 urn\:oasis\:names\:tc\:SAML\:1.0\:assertion=gov.nih.nci.cagrid.opensaml
-gme\://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata=gov.nih.nci.cagrid.metadata
-http\://cagrid.nci.nih.gov/1/authentication-service=gov.nih.nci.cagrid.authentication.bean
+http\://cagrid.nci.nih.gov/AuthenticationService/types=gov.nih.nci.cagrid.authentication.stubs.types
+http\://gaards.cagrid.org/authentication/lockout=org.cagrid.gaards.authentication.lockout
+http\://gaards.cagrid.org/authentication-faults=org.cagrid.gaards.authentication.faults
 http\://gaards.cagrid.org/authentication=org.cagrid.gaards.authentication
 gme\://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.security=gov.nih.nci.cagrid.metadata.security
 http\://authentication.gaards.cagrid.org/AuthenticationService/types=org.cagrid.gaards.authentication.stubs.types
-http\://cagrid.nci.nih.gov/AuthenticationService/types=gov.nih.nci.cagrid.authentication.stubs.types
+http\://cagrid.nci.nih.gov/1/authentication-service=gov.nih.nci.cagrid.authentication.bean
+gme\://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata=gov.nih.nci.cagrid.metadata
 gme\://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.service=gov.nih.nci.cagrid.metadata.service
 gme\://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common=gov.nih.nci.cagrid.metadata.common

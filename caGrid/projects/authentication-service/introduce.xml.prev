@@ -1,5 +1,8 @@
-<ns1:ServiceDescription introduceVersion="1.4" xmlns:ns1="gme://gov.nih.nci.cagrid/1/Introduce">
+<ns1:ServiceDescription introduceVersion="1.4.1" xmlns:ns1="gme://gov.nih.nci.cagrid/1/Introduce">
  <ns2:Namespaces xsi:type="ns2:NamespacesType" xmlns:ns2="gme://gov.nih.nci.cagrid.introduce/1/Namespace" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <ns2:Namespace location="./authentication-lockout-types.xsd" namespace="http://gaards.cagrid.org/authentication/lockout" packageName="org.cagrid.gaards.authentication.lockout" xsi:type="ns2:NamespaceType">
+   <ns2:SchemaElement type="LockedUserInfo" xsi:type="ns2:SchemaElementType"/>
+  </ns2:Namespace>
   <ns2:Namespace location="./authentication-core-types.xsd" namespace="http://gaards.cagrid.org/authentication" packageName="org.cagrid.gaards.authentication" xsi:type="ns2:NamespaceType">
    <ns2:SchemaElement type="AuthenticationProfiles" xsi:type="ns2:SchemaElementType"/>
    <ns2:SchemaElement type="BasicAuthentication" xsi:type="ns2:SchemaElementType"/>
@@ -202,22 +205,28 @@
      <ns4:ImportInformation fromIntroduce="false" inputMessage="ns25:QueryResourcePropertiesRequest" namespace="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ResourceProperties-1.2-draft-01.wsdl" outputMessage="ns25:QueryResourcePropertiesResponse" packageName="org.oasis.wsrf.properties" portTypeName="QueryResourceProperties" wsdlFile="../wsrf/properties/WS-ResourceProperties.wsdl" xmlns:ns25="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ResourceProperties-1.2-draft-01.wsdl"/>
      <ns4:ProviderInformation providerClass="QueryRPProvider"/>
     </ns4:Method>
+    <ns4:Method description="Gets the locked out users and the time at which each will be unlocked." isImported="false" isProvided="false" name="getLockedOutUsers" xsi:type="ns4:MethodType">
+     <ns4:Inputs/>
+     <ns4:Output qName="ns26:LockedUserInfo" description="" isArray="true" xmlns:ns26="http://gaards.cagrid.org/authentication/lockout"/>
+     <ns4:Exceptions/>
+     <ns27:Extensions xsi:type="ns27:ExtensionsType" xmlns:ns27="gme://gov.nih.nci.cagrid.introduce/1/Extension"/>
+    </ns4:Method>
    </ns4:Methods>
-   <ns26:ResourcePropertiesList xsi:type="ns26:ResourcePropertiesListType" xmlns:ns26="gme://gov.nih.nci.cagrid.introduce/1/Resources">
-    <ns26:ResourceProperty qName="ns27:ServiceMetadata" description="" fileLocation="serviceMetadata.xml" populateFromFile="true" register="true" xsi:type="ns26:ResourcePropertyType" xmlns:ns27="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata"/>
-    <ns26:ResourceProperty qName="ns28:AuthenticationProfiles" description="" fileLocation="AuthenticationService_authenticationProfiles.xml" populateFromFile="false" register="true" xsi:type="ns26:ResourcePropertyType" xmlns:ns28="http://gaards.cagrid.org/authentication"/>
-   </ns26:ResourcePropertiesList>
-   <ns29:ServiceSecurity xsi:type="ns29:ServiceSecurity" xmlns:ns29="gme://gov.nih.nci.cagrid.introduce/1/Security">
-    <ns29:SecuritySetting xsi:type="ns29:SecuritySetting">Custom</ns29:SecuritySetting>
-    <ns29:TransportLevelSecurity xsi:type="ns29:TransportLevelSecurity">
-     <ns29:CommunicationMethod xsi:type="ns29:CommunicationMethod">Privacy</ns29:CommunicationMethod>
-    </ns29:TransportLevelSecurity>
-    <ns29:RunAsMode xsi:type="ns29:RunAsMode">System</ns29:RunAsMode>
-    <ns29:AnonymousClients xsi:type="ns29:AnonymousCommunication">Yes</ns29:AnonymousClients>
-    <ns29:ServiceAuthorization xsi:type="ns29:ServiceAuthorization">
-     <ns29:NoAuthorization xsi:type="ns29:NoAuthorization"/>
-    </ns29:ServiceAuthorization>
-   </ns29:ServiceSecurity>
+   <ns28:ResourcePropertiesList xsi:type="ns28:ResourcePropertiesListType" xmlns:ns28="gme://gov.nih.nci.cagrid.introduce/1/Resources">
+    <ns28:ResourceProperty qName="ns29:ServiceMetadata" description="" fileLocation="serviceMetadata.xml" populateFromFile="true" register="true" xsi:type="ns28:ResourcePropertyType" xmlns:ns29="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata"/>
+    <ns28:ResourceProperty qName="ns30:AuthenticationProfiles" description="" fileLocation="AuthenticationService_authenticationProfiles.xml" populateFromFile="false" register="true" xsi:type="ns28:ResourcePropertyType" xmlns:ns30="http://gaards.cagrid.org/authentication"/>
+   </ns28:ResourcePropertiesList>
+   <ns31:ServiceSecurity xsi:type="ns31:ServiceSecurity" xmlns:ns31="gme://gov.nih.nci.cagrid.introduce/1/Security">
+    <ns31:SecuritySetting xsi:type="ns31:SecuritySetting">Custom</ns31:SecuritySetting>
+    <ns31:TransportLevelSecurity xsi:type="ns31:TransportLevelSecurity">
+     <ns31:CommunicationMethod xsi:type="ns31:CommunicationMethod">Privacy</ns31:CommunicationMethod>
+    </ns31:TransportLevelSecurity>
+    <ns31:RunAsMode xsi:type="ns31:RunAsMode">System</ns31:RunAsMode>
+    <ns31:AnonymousClients xsi:type="ns31:AnonymousCommunication">Yes</ns31:AnonymousClients>
+    <ns31:ServiceAuthorization xsi:type="ns31:ServiceAuthorization">
+     <ns31:NoAuthorization xsi:type="ns31:NoAuthorization"/>
+    </ns31:ServiceAuthorization>
+   </ns31:ServiceSecurity>
    <ns3:description xsi:type="xsd:string" xmlns:xsd="http://www.w3.org/2001/XMLSchema"></ns3:description>
    <ns3:ResourceFrameworkOptions xsi:type="ns3:ResourceFrameworkOptions">
     <ns3:Main xsi:type="ns3:Main"/>
@@ -227,11 +236,12 @@
    </ns3:ResourceFrameworkOptions>
   </ns3:Service>
  </ns3:Services>
- <ns30:Extensions xsi:type="ns30:ExtensionsType" xmlns:ns30="gme://gov.nih.nci.cagrid.introduce/1/Extension" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
-  <ns30:Extension name="cagrid_metadata" version="1.4" xsi:type="ns30:ExtensionType"/>
- </ns30:Extensions>
- <ns31:ServiceProperties xmlns:ns31="gme://gov.nih.nci.cagrid.introduce/1/Property">
-  <ns31:Property description="The Authentication Provider to use." isFromETC="true" key="authenticationConfiguration" value="authentication-config.xml"/>
-  <ns31:Property description="The authentication properties file." isFromETC="true" key="authenticationProperties" value="authentication.properties"/>
- </ns31:ServiceProperties>
+ <ns32:Extensions xsi:type="ns32:ExtensionsType" xmlns:ns32="gme://gov.nih.nci.cagrid.introduce/1/Extension" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <ns32:Extension name="cagrid_metadata" version="1.4.1" xsi:type="ns32:ExtensionType"/>
+ </ns32:Extensions>
+ <ns33:ServiceProperties xmlns:ns33="gme://gov.nih.nci.cagrid.introduce/1/Property">
+  <ns33:Property description="The Authentication Provider to use." isFromETC="true" key="authenticationConfiguration" value="authentication-config.xml"/>
+  <ns33:Property description="The authentication properties file." isFromETC="true" key="authenticationProperties" value="authentication.properties"/>
+  <ns33:Property description="A text file with a newline delimited list of user IDs which are not subject to lockouts" isFromETC="true" key="lockoutWhitelistFile" value="lockout-whitelist.txt"/>
+ </ns33:ServiceProperties>
 </ns1:ServiceDescription>
