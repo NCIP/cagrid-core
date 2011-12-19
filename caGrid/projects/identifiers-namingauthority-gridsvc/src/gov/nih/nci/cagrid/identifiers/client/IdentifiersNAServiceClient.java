@@ -57,7 +57,6 @@ public class IdentifiersNAServiceClient extends IdentifiersNAServiceClientBase i
 			  // place client calls here if you want to use this main as a
 			  // test....
 
-
 			  String[] keys = new String[] { "URLS" };
 			  String[][] values = new String[][]{
 					  {"http://www.google.com"},

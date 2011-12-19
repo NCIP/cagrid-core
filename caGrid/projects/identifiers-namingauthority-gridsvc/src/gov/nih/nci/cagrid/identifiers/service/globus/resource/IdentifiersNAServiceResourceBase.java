@@ -85,7 +85,7 @@ import org.oasis.wsrf.lifetime.TerminationNotification;
  * of these resource as well as code for registering any properties selected
  * to the index service.
  * 
- * @created by Introduce Toolkit version 1.4
+ * @created by Introduce Toolkit version 1.4.1
  * 
  */
 public abstract class IdentifiersNAServiceResourceBase extends ReflectionResource implements Resource
