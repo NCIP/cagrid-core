@@ -1,4 +1,3 @@
-<?xml version="1.0" encoding="UTF-8"?>
 <classpath>
   <classpathentry kind="src" path="src" />
   <classpathentry kind="src" path="domain/src" />
@@ -99,4 +98,3 @@
   <classpathentry kind="lib" path="ext/dependencies/service/jars/castor-1.0.2.jar" />
   <classpathentry kind="output" path="bin" />
 </classpath>
-
