@@ -1,11 +1,11 @@
 <ns1:ServiceMetadata xmlns:ns1="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata">
  <ns1:serviceDescription>
-  <ns2:Service description="" name="CredentialDelegationService" version="1.4" xmlns:ns2="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.service">
+  <ns2:Service description="" name="CredentialDelegationService" version="1.4.1" xmlns:ns2="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.service">
    <ns2:pointOfContactCollection>
     <ns3:PointOfContact affiliation="Ohio State University" email="Knowledge@osu-citih.org" firstName="Knowledge" lastName="Center" role="CaGrid Knowledge Center" xmlns:ns3="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common"/>
    </ns2:pointOfContactCollection>
    <ns2:serviceContextCollection>
-    <ns2:ServiceContext description="" name="CredentialDelegationService">
+    <ns2:ServiceContext description="The Credential Delegation Service (CDS) is a WSRF-compliant Grid service that enables users/services (delegator) to delegate their Grid credentials to other users/services (delegatee) such that the delegatee(s) may act on the delegator's behalf." name="CredentialDelegationService">
      <ns2:operationCollection>
       <ns2:Operation description="Allows a party to initate the delegation of their credential such that other parties may access their credential to act on their behalf." name="initiateDelegation">
        <ns2:inputParameterCollection>
@@ -110,7 +110,7 @@
       <ns2:Operation description="" name="getServiceSecurityMetadata">
        <ns2:inputParameterCollection/>
        <ns2:Output qName="ns17:ServiceSecurityMetadata" dimensionality="1" isArray="false" xmlns:ns17="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.security">
-        <ns18:UMLClass className="ServiceSecurityMetadata" description="An instance of the Security Service Metadata." id="7E0EEE61-999D-5527-E040-BB89AD4338D3" packageName="gov.nih.nci.cagrid.metadata.security" projectName="caGrid_Metadata_Models" projectVersion="1" xmlns:ns18="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common">
+        <ns18:UMLClass className="ServiceSecurityMetadata" description="An instance of the Security Service Metadata." id="B46F98B0-34C8-6FB4-E040-BB89AD432B56" packageName="gov.nih.nci.cagrid.metadata.security" projectName="caGrid_Metadata_Models" projectVersion="1" xmlns:ns18="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common">
          <ns18:umlAttributeCollection/>
          <ns18:SemanticMetadata conceptCode="C80736" conceptDefinition="A software system providing a public need." conceptName="Software Service" order="2"/>
          <ns18:SemanticMetadata conceptCode="C25669" conceptDefinition="Security; freedom from anxiety or fear." conceptName="Security" order="1"/>
@@ -136,7 +136,7 @@
       <ns2:ContextProperty description="" name="{gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata}ServiceMetadata"/>
      </ns2:contextPropertyCollection>
     </ns2:ServiceContext>
-    <ns2:ServiceContext description="" name="DelegatedCredential">
+    <ns2:ServiceContext description="Represents a Delegated Credential" name="DelegatedCredential">
      <ns2:operationCollection>
       <ns2:Operation description="This method allows an authorized user to get a delegated credential." name="getDelegatedCredential">
        <ns2:inputParameterCollection>
@@ -156,7 +156,7 @@
       <ns2:Operation description="" name="getServiceSecurityMetadata">
        <ns2:inputParameterCollection/>
        <ns2:Output qName="ns21:ServiceSecurityMetadata" dimensionality="1" isArray="false" xmlns:ns21="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.security">
-        <ns22:UMLClass className="ServiceSecurityMetadata" description="An instance of the Security Service Metadata." id="7E0EEE61-999D-5527-E040-BB89AD4338D3" packageName="gov.nih.nci.cagrid.metadata.security" projectName="caGrid_Metadata_Models" projectVersion="1" xmlns:ns22="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common">
+        <ns22:UMLClass className="ServiceSecurityMetadata" description="An instance of the Security Service Metadata." id="B46F98B0-34C8-6FB4-E040-BB89AD432B56" packageName="gov.nih.nci.cagrid.metadata.security" projectName="caGrid_Metadata_Models" projectVersion="1" xmlns:ns22="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common">
          <ns22:umlAttributeCollection/>
          <ns22:SemanticMetadata conceptCode="C80736" conceptDefinition="A software system providing a public need." conceptName="Software Service" order="2"/>
          <ns22:SemanticMetadata conceptCode="C25669" conceptDefinition="Security; freedom from anxiety or fear." conceptName="Security" order="1"/>

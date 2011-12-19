@@ -1,12 +1,21 @@
 package org.cagrid.gaards.cds.service;
 
+import org.cagrid.gaards.cds.service.globus.resource.CredentialDelegationServiceResource;
+import  org.cagrid.gaards.cds.service.CredentialDelegationServiceConfiguration;
+
 import java.rmi.RemoteException;
 
 import javax.naming.InitialContext;
+import javax.xml.namespace.QName;
 
 import org.apache.axis.MessageContext;
 import org.globus.wsrf.Constants;
+import org.globus.wsrf.ResourceContext;
+import org.globus.wsrf.ResourceContextException;
+import org.globus.wsrf.ResourceException;
 import org.globus.wsrf.ResourceHome;
+import org.globus.wsrf.ResourceProperty;
+import org.globus.wsrf.ResourcePropertySet;
 
 
 /** 
@@ -14,7 +23,7 @@ import org.globus.wsrf.ResourceHome;
  *
  * Provides some simple accessors for the Impl.
  * 
- * @created by Introduce Toolkit version 1.4
+ * @created by Introduce Toolkit version 1.4.1
  * 
  */
 public abstract class CredentialDelegationServiceImplBase {

@@ -2,13 +2,12 @@ package org.cagrid.gaards.cds.service;
 
 import gov.nih.nci.cagrid.introduce.servicetools.ServiceConfiguration;
 
+import org.globus.wsrf.config.ContainerConfig;
 import java.io.File;
-
 import javax.naming.InitialContext;
 
 import org.apache.axis.MessageContext;
 import org.globus.wsrf.Constants;
-import org.globus.wsrf.config.ContainerConfig;
 
 
 /** 
@@ -17,7 +16,7 @@ import org.globus.wsrf.config.ContainerConfig;
  * This class holds all service properties which were defined for the service to have
  * access to.
  * 
- * @created by Introduce Toolkit version 1.4
+ * @created by Introduce Toolkit version 1.4.1
  * 
  */
 public class CredentialDelegationServiceConfiguration implements ServiceConfiguration {

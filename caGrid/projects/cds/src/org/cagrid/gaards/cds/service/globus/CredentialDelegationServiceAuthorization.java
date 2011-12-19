@@ -1,21 +1,22 @@
 package org.cagrid.gaards.cds.service.globus;
 
 
-import java.io.File;
+import java.rmi.RemoteException;
 import java.util.HashMap;
 import java.util.Map;
-
+import java.io.File;
 import javax.security.auth.Subject;
 import javax.xml.namespace.QName;
 import javax.xml.rpc.handler.MessageContext;
 
-import org.globus.wsrf.config.ContainerConfig;
+import gov.nih.nci.cagrid.introduce.servicetools.security.AuthorizationExtension;
 import org.globus.wsrf.impl.security.authorization.exceptions.AuthorizationException;
 import org.globus.wsrf.impl.security.authorization.exceptions.CloseException;
 import org.globus.wsrf.impl.security.authorization.exceptions.InitializeException;
 import org.globus.wsrf.impl.security.authorization.exceptions.InvalidPolicyException;
 import org.globus.wsrf.security.authorization.PDP;
 import org.globus.wsrf.security.authorization.PDPConfig;
+import org.globus.wsrf.config.ContainerConfig;
 import org.w3c.dom.Node;
 
 
@@ -24,11 +25,11 @@ import org.w3c.dom.Node;
  *
  * This is a PDP for use with the globus authorization callout.
  * This class will have a authorize method for each method on this grid service.
- * The method is responsibe for making any authorization callouts required to satisfy the 
+ * The method is responsible for making any authorization callouts required to satisfy the 
  * authorization requirements placed on each method call.  Each method will either return
- * apon a successful authorization or will throw an exception apon a failed authorization.
+ * upon a successful authorization or will throw an exception upon a failed authorization.
  * 
- * @created by Introduce Toolkit version 1.4
+ * @created by Introduce Toolkit version 1.4.1
  * 
  */
 public class CredentialDelegationServiceAuthorization implements PDP {

@@ -1,6 +1,5 @@
 <?xml version="1.0"?>
 <project default="help" name="Introduce Master Build File" basedir=".">
-
 	<!-- ============================================================== -->
 	<!-- MASTER BUILD FILE DO NOT EDIT OR INTRODUCE MAY OVERWRITE       -->
 	<!-- In order to customize the build please edit the dev-build.xml  -->
@@ -41,7 +40,6 @@
 	<property name="test.log.dir" value="test/logs" />
 	<property name="junit.results.dir" value="${test.log.dir}/junit" />
 
-
 	<!-- Basic Build directories -->
 
 	<!-- Auxiliary directory where all the intermediate files will be placed -->
@@ -75,7 +73,7 @@
 	<!--import developers deploy targets and properties -->
 	<import file="dev-build-deploy.xml" />
 
-
+	
 	<target name="checkContribTasksDefined">
 		<condition property="contrib.tasks.defined">
 			<typefound name="for" />
@@ -109,6 +107,8 @@
 		<fail message="Globus installation is not set in either GLOBUS_LOCATION or ext.globus.dir" if="globus.not.found" />
 		<echo message="Globus: ${ext.globus.dir}" />
 	</target>
+	
+	
 	<target name="setGlobus" if="env.GLOBUS_LOCATION">
 		<!-- GT4 build files and directories-->
 		<property name="ext.globus.dir" value="${env.GLOBUS_LOCATION}" />
@@ -119,7 +119,7 @@
 		<property name="GT4.ns.excludes" value="-x http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-BaseFaults-1.2-draft-01.xsd -x http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-BaseFaults-1.2-draft-01.wsdl -x http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ResourceLifetime-1.2-draft-01.xsd -x http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ResourceLifetime-1.2-draft-01.wsdl -x http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ResourceProperties-1.2-draft-01.xsd -x http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ResourceProperties-1.2-draft-01.wsdl -x http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ServiceGroup-1.2-draft-01.xsd -x http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ServiceGroup-1.2-draft-01.wsdl -x http://docs.oasis-open.org/wsn/2004/06/wsn-WS-BaseNotification-1.2-draft-01.xsd -x http://docs.oasis-open.org/wsn/2004/06/wsn-WS-BaseNotification-1.2-draft-01.wsdl -x http://schemas.xmlsoap.org/ws/2004/04/trust -x http://schemas.xmlsoap.org/ws/2002/12/policy -x http://schemas.xmlsoap.org/ws/2002/07/utility -x http://schemas.xmlsoap.org/ws/2004/04/sc -x http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-secext-1.0.xsd -x http://www.w3.org/2000/09/xmldsig# -x http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd -x http://schemas.xmlsoap.org/ws/2004/09/enumeration" />
 	</target>
 
-
+	
 	<!-- Sets up the build directory structure -->
 	<target name="init" depends="checkContribTasksDefined, defineContribTasks, checkGlobus, defineClasspaths">
 		<runtarget target="preInit" />
@@ -149,7 +149,8 @@
 		<runtarget target="postInit" />
 	</target>
 
-	<target name="defineClasspaths" depends="checkGlobus">
+	
+	<target name="defineClasspaths" depends="defineContribTasks, checkGlobus">
 		<path id="tasks.run.extended.classpath" />
 		<runtarget target="defineExtendedClasspaths" />
 		<path id="base.classpath">
@@ -207,6 +208,7 @@
 			</fileset>
 		</path>
 	</target>
+	
 
 	<!-- Generate bindings for our WSDL file -->
 	<!-- This is done with a GT4 tool -->
@@ -219,6 +221,7 @@
 		</ant>
 	</target>
 
+	
 	<target name="merge" depends="init">
 		<!-- Merge our namespace mappings file with the GT4 mappins file -->
 		<ant antfile="${build.stubs}" target="mergePackageMapping" inheritall="false">
@@ -227,6 +230,7 @@
 		</ant>
 	</target>
 
+	
 	<!-- Generate the stub source files -->
 	<!-- This is done with a GT4 tool -->
 	<target name="serviceStubs" depends="serviceGenerateBindings,merge">
@@ -240,6 +244,7 @@
 		</ant>
 	</target>
 
+	
 	<!-- Generate the stub source files -->
 	<!-- This is done with a GT4 tool -->
 	<target name="stubs" depends="init">
@@ -255,13 +260,15 @@
 		<antcall target="stubGenerationPostProcessor" />
 		<runtarget target="postStubs" />
 	</target>
+	
 
-	<target name="stubGenerationPostProcessor">
-		<taskdef name="fixSoapBindingStubs" classname="gov.nih.nci.cagrid.introduce.servicetasks.axis.FixSoapBindingStub" classpathref="tasks.run.classpath">
-		</taskdef>
+	<target name="stubGenerationPostProcessor" depends="defineClasspaths">
+		<taskdef name="fixSoapBindingStubs" 
+			classname="gov.nih.nci.cagrid.introduce.servicetasks.axis.FixSoapBindingStub"
+			classpathref="tasks.run.classpath"/>
 		<fixSoapBindingStubs />
 	</target>
-
+	
 
 	<!-- Compile the stubs generated in the previous step -->
 	<target name="compileStubs" depends="stubs">
@@ -271,7 +278,7 @@
 		</javac>
 		<runtarget target="postCompileStubs" />
 	</target>
-
+	
 
 	<!-- Compile the implementation classes (service, resource, etc.) -->
 	<target name="compile" depends="compileStubs" description="Compiles the service.">
@@ -286,7 +293,7 @@
 		</copy>
 		<runtarget target="postCompile" />
 	</target>
-
+	
 
 	<!-- Compile the test implementation classes (service, resource, etc.) -->
 	<target name="compileTests" depends="compile">
@@ -294,7 +301,7 @@
 		<javac srcdir="${test.src.dir}" classpathref="test.build.classpath" destdir="${test.build.dest}" debug="${java.debug}" deprecation="${deprecation}" />
 		<runtarget target="postCompileTests" />
 	</target>
-
+	
 
 	<!-- Create a JAR file with the implementation classes -->
 	<target name="jar" depends="compile">
@@ -342,13 +349,13 @@
 		<delete file="${gar.name}" />
 		<runtarget target="postClean" />
 	</target>
+	
 
 	<!-- =================================================================== -->
 	<!-- Builds Code Docuementation                                          -->
 	<!-- =================================================================== -->
 	<target name="javadoc" depends="compile" description="Creates the API documentation.">
 		<javadoc packagenames="*" destdir="${javadoc.dir}" author="true" version="true" use="true" windowtitle="${service.name} API">
-
 			<sourcepath>
 				<pathelement path="${src.dir}" />
 				<pathelement path="${stubs.src}" />
@@ -363,10 +370,12 @@
 
 		</javadoc>
 	</target>
+	
 
-	<!-- Default target "all" builds and jars everything, including test....does not make a GAR-->
+	<!-- Default target "all" builds and jars everything, including test.... does not make a GAR -->
 	<target name="all" depends="jars" description="Builds the entire service." />
 
+	
 	<target name="help" description="Prints usage information.">
 		<echo message="================================================================================" />
 		<echo message="|    Introduce Created Grid Service                                            |" />
@@ -377,5 +386,4 @@
 		<echo message="|    Type 'ant -p' for a description of this service's build targets.          |" />
 		<echo message="================================================================================" />
 	</target>
-
 </project>
