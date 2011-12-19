@@ -106,4 +106,5 @@
   <ns3:typeMapping xmlns:ns3="http://xml.apache.org/axis/wsdd/" xmlns:ns1="http://xml.apache.org/axis/wsdd/providers/java" xmlns:ns2="http://DCQL.caBIG/2/org.cagrid.data.dcql.results" encodingStyle="" serializer="org.cagrid.dcql.utilities.encoding.Dcql2SerializerFactory" deserializer="org.cagrid.dcql.utilities.encoding.Dcql2DeserializerFactory" type="ns1:org.cagrid.data.dcql.results.DCQLQueryResultsCollection" qname="ns2:DCQLQueryResultsCollection" />
   <ns3:typeMapping xmlns:ns3="http://xml.apache.org/axis/wsdd/" xmlns:ns1="http://xml.apache.org/axis/wsdd/providers/java" xmlns:ns2="http://DCQL.caBIG/2/org.cagrid.data.dcql.results" encodingStyle="" serializer="org.cagrid.dcql.utilities.encoding.Dcql2SerializerFactory" deserializer="org.cagrid.dcql.utilities.encoding.Dcql2DeserializerFactory" type="ns1:org.cagrid.data.dcql.results.DCQLResult" qname="ns2:DCQLResult" />
   <!-- END CQL 2 TYPE MAPPINGS -->
-</deployment>
+<!-- START INTRODUCE TYPEMAPPINGS -->
+<!-- END INTRODUCE TYPEMAPPINGS --></deployment>

@@ -25,7 +25,6 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.cagrid.fqp.execution.QueryExecutionParameters;
 
-
 /**
  * FederatedQueryProcessorImpl 
  * Server side implementation of the 
@@ -43,7 +42,6 @@ public class FederatedQueryProcessorImpl extends FederatedQueryProcessorImplBase
     private ThreadPoolExecutor workManager = null;
     private QueryConstraintsValidator queryConstraintsValidator = null;
 
-
     public FederatedQueryProcessorImpl() throws RemoteException {
         super();
         FederatedQueryProcessorConfiguration fqpConfig = null;
@@ -56,9 +54,7 @@ public class FederatedQueryProcessorImpl extends FederatedQueryProcessorImplBase
         queryConstraintsValidator = new QueryConstraintsValidator(fqpConfig);
     }
 
-
-    public gov.nih.nci.cagrid.dcqlresult.DCQLQueryResultsCollection execute(gov.nih.nci.cagrid.dcql.DCQLQuery query)
-        throws RemoteException, gov.nih.nci.cagrid.fqp.stubs.types.FederatedQueryProcessingFault {
+  public gov.nih.nci.cagrid.dcqlresult.DCQLQueryResultsCollection execute(gov.nih.nci.cagrid.dcql.DCQLQuery query) throws RemoteException, gov.nih.nci.cagrid.fqp.stubs.types.FederatedQueryProcessingFault {
         validateQueryConstraints(query, null);
         
         FederatedQueryEngine engine = new FederatedQueryEngine(null, null, getWorkExecutorService());
@@ -76,10 +72,7 @@ public class FederatedQueryProcessorImpl extends FederatedQueryProcessorImplBase
         return results;
     }
 
-
-    public gov.nih.nci.cagrid.cqlresultset.CQLQueryResults executeAndAggregateResults(
-        gov.nih.nci.cagrid.dcql.DCQLQuery query) throws RemoteException,
-        gov.nih.nci.cagrid.fqp.stubs.types.FederatedQueryProcessingFault {
+  public gov.nih.nci.cagrid.cqlresultset.CQLQueryResults executeAndAggregateResults(gov.nih.nci.cagrid.dcql.DCQLQuery query) throws RemoteException, gov.nih.nci.cagrid.fqp.stubs.types.FederatedQueryProcessingFault {
         validateQueryConstraints(query, null);
         
         FederatedQueryEngine engine = new FederatedQueryEngine(null, null, getWorkExecutorService());
@@ -97,9 +90,7 @@ public class FederatedQueryProcessorImpl extends FederatedQueryProcessorImplBase
         return results;
     }
 
-
-    public gov.nih.nci.cagrid.fqp.results.stubs.types.FederatedQueryResultsReference executeAsynchronously(
-        gov.nih.nci.cagrid.dcql.DCQLQuery query) throws RemoteException {
+  public gov.nih.nci.cagrid.fqp.results.stubs.types.FederatedQueryResultsReference executeAsynchronously(gov.nih.nci.cagrid.dcql.DCQLQuery query) throws RemoteException {
         validateQueryConstraints(query, null);
         
         FederatedQueryResultsReference ref = null;
@@ -111,13 +102,7 @@ public class FederatedQueryProcessorImpl extends FederatedQueryProcessorImplBase
         return ref;
     }
 
-
-    public gov.nih.nci.cagrid.fqp.results.stubs.types.FederatedQueryResultsReference query(
-        gov.nih.nci.cagrid.dcql.DCQLQuery query,
-        org.cagrid.gaards.cds.delegated.stubs.types.DelegatedCredentialReference delegatedCredentialReference,
-        org.cagrid.fqp.execution.QueryExecutionParameters queryExecutionParameters) throws RemoteException,
-        gov.nih.nci.cagrid.fqp.stubs.types.FederatedQueryProcessingFault,
-        gov.nih.nci.cagrid.fqp.results.stubs.types.InternalErrorFault {
+  public gov.nih.nci.cagrid.fqp.results.stubs.types.FederatedQueryResultsReference query(gov.nih.nci.cagrid.dcql.DCQLQuery query,org.cagrid.gaards.cds.delegated.stubs.types.DelegatedCredentialReference delegatedCredentialReference,org.cagrid.fqp.execution.QueryExecutionParameters queryExecutionParameters) throws RemoteException, gov.nih.nci.cagrid.fqp.stubs.types.FederatedQueryProcessingFault, gov.nih.nci.cagrid.fqp.results.stubs.types.InternalErrorFault {
         validateQueryConstraints(query, queryExecutionParameters);
         
         // execute the query
@@ -131,10 +116,7 @@ public class FederatedQueryProcessorImpl extends FederatedQueryProcessorImplBase
         return ref;
     }
 
-
-    public org.cagrid.data.dcql.results.DCQLQueryResultsCollection executeQuery(org.cagrid.data.dcql.DCQLQuery query)
-        throws RemoteException, gov.nih.nci.cagrid.fqp.stubs.types.FederatedQueryProcessingFault,
-        gov.nih.nci.cagrid.fqp.results.stubs.types.InternalErrorFault {
+  public org.cagrid.data.dcql.results.DCQLQueryResultsCollection executeQuery(org.cagrid.data.dcql.DCQLQuery query) throws RemoteException, gov.nih.nci.cagrid.fqp.stubs.types.FederatedQueryProcessingFault, gov.nih.nci.cagrid.fqp.results.stubs.types.InternalErrorFault {
         validateQueryConstraints(query, null);
         
         FederatedQueryEngine engine = new FederatedQueryEngine(null, null, getWorkExecutorService());
@@ -152,10 +134,7 @@ public class FederatedQueryProcessorImpl extends FederatedQueryProcessorImplBase
         return results;
     }
 
-
-    public org.cagrid.cql2.results.CQLQueryResults executeQueryAndAggregate(org.cagrid.data.dcql.DCQLQuery query)
-        throws RemoteException, gov.nih.nci.cagrid.fqp.stubs.types.FederatedQueryProcessingFault,
-        gov.nih.nci.cagrid.fqp.results.stubs.types.InternalErrorFault {
+  public org.cagrid.cql2.results.CQLQueryResults executeQueryAndAggregate(org.cagrid.data.dcql.DCQLQuery query) throws RemoteException, gov.nih.nci.cagrid.fqp.stubs.types.FederatedQueryProcessingFault, gov.nih.nci.cagrid.fqp.results.stubs.types.InternalErrorFault {
         validateQueryConstraints(query, null);
         
         FederatedQueryEngine engine = new FederatedQueryEngine(null, null, getWorkExecutorService());
@@ -173,13 +152,7 @@ public class FederatedQueryProcessorImpl extends FederatedQueryProcessorImplBase
         return results;
     }
 
-
-    public gov.nih.nci.cagrid.fqp.resultsretrieval.stubs.types.FederatedQueryResultsRetrievalReference queryAsynchronously(
-        org.cagrid.data.dcql.DCQLQuery query,
-        org.cagrid.gaards.cds.delegated.stubs.types.DelegatedCredentialReference delegatedCredentialReference,
-        org.cagrid.fqp.execution.QueryExecutionParameters queryExecutionParameters) throws RemoteException,
-        gov.nih.nci.cagrid.fqp.results.stubs.types.InternalErrorFault,
-        gov.nih.nci.cagrid.fqp.stubs.types.FederatedQueryProcessingFault {
+  public gov.nih.nci.cagrid.fqp.resultsretrieval.stubs.types.FederatedQueryResultsRetrievalReference queryAsynchronously(org.cagrid.data.dcql.DCQLQuery query,org.cagrid.gaards.cds.delegated.stubs.types.DelegatedCredentialReference delegatedCredentialReference,org.cagrid.fqp.execution.QueryExecutionParameters queryExecutionParameters) throws RemoteException, gov.nih.nci.cagrid.fqp.results.stubs.types.InternalErrorFault, gov.nih.nci.cagrid.fqp.stubs.types.FederatedQueryProcessingFault {
         validateQueryConstraints(query, queryExecutionParameters);
         
         // execute the query
@@ -192,7 +165,6 @@ public class FederatedQueryProcessorImpl extends FederatedQueryProcessorImplBase
         }
         return ref;
     }
-
 
     public synchronized ExecutorService getWorkExecutorService() {
         if (this.workManager == null) {
@@ -209,7 +181,6 @@ public class FederatedQueryProcessorImpl extends FederatedQueryProcessorImplBase
             ThreadFactory threadFactory = new ThreadFactory() {
                 ThreadFactory base = Executors.defaultThreadFactory();
                 private int numThreads = 0;
-
 
                 public Thread newThread(Runnable runnable) {
                     LOG.debug("CREATING THREAD #" + numThreads + " FOR THE POOL");
@@ -252,7 +223,6 @@ public class FederatedQueryProcessorImpl extends FederatedQueryProcessorImplBase
 
         return this.workManager;
     }
-
 
     private synchronized FQPAsynchronousExecutionUtil getAsynchronousExecutor() throws InternalErrorFault {
         if (dcql1AsynchronousExecutor == null) {
