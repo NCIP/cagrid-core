@@ -17,7 +17,6 @@ import org.apache.axis.client.Stub;
 import org.apache.axis.configuration.FileProvider;
 import org.apache.axis.message.addressing.EndpointReferenceType;
 import org.apache.axis.types.URI.MalformedURIException;
-import org.apache.axis.utils.ClassUtils;
 import org.cagrid.dataservice.enumeration.stubs.Cql2EnumerationDataServicePortType;
 import org.cagrid.dataservice.enumeration.stubs.service.Cql2EnumerationDataServiceAddressingLocator;
 import org.globus.gsi.GlobusCredential;
@@ -74,7 +73,6 @@ public class EnumerationDataServiceClient extends ServiceSecurityClient implemen
 
 
     private EnumerationDataServicePortType createPortType() throws RemoteException {
-
         EnumerationDataServiceAddressingLocator locator = new EnumerationDataServiceAddressingLocator();
         // attempt to load our context sensitive wsdd file
         InputStream resourceAsStream = getClass().getResourceAsStream("client-config.wsdd");
@@ -126,6 +124,7 @@ public class EnumerationDataServiceClient extends ServiceSecurityClient implemen
     }
 
 
+    @SuppressWarnings("unused")
     public static void main(String[] args) {
         System.out.println("Running the Grid Service Client");
         try {
@@ -196,5 +195,4 @@ public class EnumerationDataServiceClient extends ServiceSecurityClient implemen
             return boxedResult.getServiceSecurityMetadata();
         }
     }
-
 }
