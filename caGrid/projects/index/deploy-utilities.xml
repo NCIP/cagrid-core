@@ -43,6 +43,7 @@
 		<fail message="Globus installation is not set in either GLOBUS_LOCATION or ext.globus.dir" if="globus.not.found" />
 		<echo message="Globus: ${ext.globus.dir}" />
 	</target>
+	
 	<target name="setGlobus" if="env.GLOBUS_LOCATION">
 		<!-- GT4 build files and directories-->
 		<property name="ext.globus.dir" value="${env.GLOBUS_LOCATION}" />
