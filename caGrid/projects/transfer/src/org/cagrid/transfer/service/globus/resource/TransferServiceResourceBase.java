@@ -85,7 +85,7 @@ import org.oasis.wsrf.lifetime.TerminationNotification;
  * of these resource as well as code for registering any properties selected
  * to the index service.
  * 
- * @created by Introduce Toolkit version 1.3
+ * @created by Introduce Toolkit version 1.4.1
  * 
  */
 public abstract class TransferServiceResourceBase extends ReflectionResource implements Resource
@@ -150,8 +150,9 @@ public abstract class TransferServiceResourceBase extends ReflectionResource imp
 		}
 		MessageContext ctx = MessageContext.getCurrentContext();
 
-		//TODO: hardcoded to enable use from other service contexts
-		String servicePath = "/cagrid/TransferService";
+		String servicePath = ctx.getTargetService();
+		servicePath = servicePath.substring(0,servicePath.lastIndexOf("/"));
+		servicePath+="/TransferService";
 
 		String jndiName = Constants.JNDI_SERVICES_BASE_NAME + servicePath + "/configuration";
 		logger.debug("Will read configuration from jndi name: " + jndiName);

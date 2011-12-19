@@ -85,7 +85,7 @@ import org.oasis.wsrf.lifetime.TerminationNotification;
  * of these resource as well as code for registering any properties selected
  * to the index service.
  * 
- * @created by Introduce Toolkit version 1.3
+ * @created by Introduce Toolkit version 1.4.1
  * 
  */
 public abstract class TransferServiceContextResourceBase extends ReflectionResource implements Resource
@@ -231,8 +231,9 @@ public abstract class TransferServiceContextResourceBase extends ReflectionResou
 		}
 		MessageContext ctx = MessageContext.getCurrentContext();
 
-		//TODO: hardcoded for now to enable no conflicts with using services from other contexts
-		String servicePath = "/cagrid/TransferServiceContext";
+		String servicePath = ctx.getTargetService();
+		servicePath = servicePath.substring(0,servicePath.lastIndexOf("/"));
+		servicePath+="/TransferServiceContext";
 
 		String jndiName = Constants.JNDI_SERVICES_BASE_NAME + servicePath + "/configuration";
 		logger.debug("Will read configuration from jndi name: " + jndiName);
@@ -280,6 +281,13 @@ public abstract class TransferServiceContextResourceBase extends ReflectionResou
             EndpointReferenceType epr;
             try {
                String transportURL = (String) ctx.getProperty(org.apache.axis.MessageContext.TRANS_URL);
+               org.apache.axis.message.addressing.AttributedURI uri = new org.apache.axis.message.addressing.AttributedURI(transportURL);
+               java.net.URL baseURL = org.globus.wsrf.container.ServiceHost.getBaseURL();
+               String correctHost = baseURL.getHost();
+               uri.setHost(correctHost);
+               int correctPort = baseURL.getPort();
+               uri.setPort(correctPort);
+               transportURL = uri.toString();
 	           transportURL = transportURL.substring(0,transportURL.lastIndexOf('/') +1 );
 	           transportURL += "TransferServiceContext";
 			   epr = AddressingUtils.createEndpointReference(transportURL, getResourceKey());
@@ -446,7 +454,6 @@ public abstract class TransferServiceContextResourceBase extends ReflectionResou
 
     public void load(ResourceKey resourceKey) throws ResourceException, NoSuchResourceException, InvalidResourceKeyException {
 	  beingLoaded = true;
-	   this.setResourceKey(resourceKey);
        //first we will recover the resource properties and initialize the resource
 	   TransferServiceContextResourceProperties props = (TransferServiceContextResourceProperties)resourcePropertyPersistenceHelper.load(TransferServiceContextResourceProperties.class, resourceKey.getValue());
        this.initialize(props, TransferServiceContextConstants.RESOURCE_PROPERTY_SET, resourceKey.getValue());
