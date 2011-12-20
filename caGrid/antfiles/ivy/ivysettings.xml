@@ -26,7 +26,10 @@
       <!-- Then, use the external repository -->
       <cagrid-fs-resolver repo.dir="${repository.dir}" name="caGrid-external"/>
 
-      <!-- And finally, the CBIIT BDA / commonlibrary repository -->
+      <!-- And finally, the CBIIT commonlibrary repository -->
+      <!-- Disabling this since the Ivy repository from the SVN repository is
+      	being removed on 12/31/2011.  I don't think anything depends on this repository directly -->
+      	<!-- 
       <url name="remote-cbiit-bda-commonlibrary-resolver" cache="remote">
 	<ivy pattern="http://gforge.nci.nih.gov/svnroot/commonlibrary/trunk/ivy-repo/[organisation]/[module]/[revision]/ivy.xml"/>
 	<artifact
@@ -34,6 +37,7 @@
 	<artifact
 	   pattern="http://gforge.nci.nih.gov/svnroot/commonlibrary/trunk/ivy-repo/[organisation]/[module]/[revision]/[artifact].[ext]"/>
       </url>
+       -->
     </chain>
   </resolvers>
 </ivysettings>
