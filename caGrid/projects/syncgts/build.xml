@@ -150,66 +150,6 @@
 	</target>
 
 	
-	<target name="defineClasspaths" depends="defineContribTasks, checkGlobus">
-		<path id="tasks.run.extended.classpath" />
-		<runtarget target="defineExtendedClasspaths" />
-		<path id="base.classpath">
-			<fileset dir="${lib.dir}">
-				<include name="*.jar" />
-			</fileset>
-			<fileset dir="${ext.globus.dir}/lib">
-				<include name="*.jar" />
-				<exclude name="${stubs.jar.name}" />
-				<exclude name="${common.jar.name}" />
-				<exclude name="${client.jar.name}" />
-				<exclude name="${service.jar.name}" />
-			</fileset>
-			<path refid="base.extended.classpath" />
-		</path>
-		<path id="service.build.classpath">
-			<pathelement location="${stubs.dest}" />
-			<path refid="service.build.extended.classpath" />
-			<path refid="base.classpath" />
-		</path>
-		<path id="service.run.classpath">
-			<pathelement location="${build.dest}" />
-			<path refid="service.run.extended.classpath" />
-			<path refid="service.build.classpath" />
-		</path>
-		<path id="test.build.classpath">
-			<fileset dir="${test.lib.dir}">
-				<include name="*.jar" />
-			</fileset>
-			<pathelement location="${build.dest}" />
-			<path refid="test.build.extended.classpath" />
-			<path refid="service.build.classpath" />
-		</path>
-		<path id="test.run.classpath">
-			<pathelement location="${test.build.dest}" />
-			<path refid="test.run.extended.classpath" />
-			<path refid="test.build.classpath" />
-		</path>
-		<path id="run.classpath">
-			<pathelement location="${build.dest}" />
-			<path refid="run.extended.classpath" />
-			<path refid="service.build.classpath" />
-			<pathelement location="${ext.globus.dir}" />
-		</path>
-		<path id="tasks.run.classpath">
-			<path refid="tasks.run.extended.classpath" />
-			<fileset dir="${tools.lib.dir}">
-				<include name="*.jar" />
-			</fileset>
-			<fileset dir="${lib.dir}">
-				<include name="*.jar" />
-			</fileset>
-			<fileset dir="${ext.globus.dir}/lib">
-				<include name="*.jar" />
-			</fileset>
-		</path>
-	</target>
-	
-
 	<!-- Generate bindings for our WSDL file -->
 	<!-- This is done with a GT4 tool -->
 	<target name="serviceGenerateBindings" depends="init">
