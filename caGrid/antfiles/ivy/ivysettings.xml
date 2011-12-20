@@ -22,7 +22,10 @@
       <!-- Then, use the external repository -->
       <cagrid-fs-resolver repo.dir="${repository.dir}" name="caGrid-external"/>
 
-      <!-- And finally, the CBIIT BDA / commonlibrary repository -->
+      <!-- And finally, the CBIIT commonlibrary repository
+	NOTE: this repository is deprecated in favor of their
+	new Nexus repository -->
+      <!--
       <url name="remote-cbiit-bda-commonlibrary-resolver" cache="remote">
 	<ivy pattern="http://gforge.nci.nih.gov/svnroot/commonlibrary/trunk/ivy-repo/[organisation]/[module]/[revision]/ivy.xml"/>
 	<artifact
@@ -30,6 +33,7 @@
 	<artifact
 	   pattern="http://gforge.nci.nih.gov/svnroot/commonlibrary/trunk/ivy-repo/[organisation]/[module]/[revision]/[artifact].[ext]"/>
       </url>
+      -->
     </chain>
   </resolvers>
 </ivysettings>
