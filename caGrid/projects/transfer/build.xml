@@ -341,16 +341,6 @@
 	<target name="jars" depends="jarStubs, jar, jarTests" />
 
 
-	<!-- Clean up all the intermediate files -->
-	<target name="clean" description="Removes all generated build artifacts." depends="checkContribTasksDefined, defineContribTasks">
-		<runtarget target="preClean" />
-		<delete dir="tmp" />
-		<delete dir="${build.dir}" />
-		<delete file="${gar.name}" />
-		<runtarget target="postClean" />
-	</target>
-	
-
 	<!-- =================================================================== -->
 	<!-- Builds Code Docuementation                                          -->
 	<!-- =================================================================== -->
@@ -370,11 +360,6 @@
 
 		</javadoc>
 	</target>
-	
-
-	<!-- Default target "all" builds and jars everything, including test.... does not make a GAR -->
-	<target name="all" depends="jars" description="Builds the entire service." />
-
 	
 	<target name="help" description="Prints usage information.">
 		<echo message="================================================================================" />
