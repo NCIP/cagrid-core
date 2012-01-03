@@ -105,7 +105,7 @@ public class DomainTypesInformationUtil {
      * @throws Exception
      */
     public static DomainTypesInformation deserializeDomainTypesInformation(Reader reader) throws Exception {
-        return (DomainTypesInformation) Utils.deserializeObject(reader, DomainTypesInformation.class);
+        return Utils.deserializeObject(reader, DomainTypesInformation.class);
     }
     
     
