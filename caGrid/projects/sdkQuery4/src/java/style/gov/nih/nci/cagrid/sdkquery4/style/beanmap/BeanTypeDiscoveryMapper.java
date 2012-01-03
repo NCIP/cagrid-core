@@ -104,7 +104,7 @@ public class BeanTypeDiscoveryMapper {
     public DomainTypesInformation discoverTypesInformation() throws IOException, 
         ClassNotFoundException, NoSuchFieldException {
         // create simple URL class loader for the beans jar
-        URLClassLoader loader = new URLClassLoader(new URL[] {beansJar.toURL()}, null);
+        URLClassLoader loader = new URLClassLoader(new URL[] {beansJar.toURI().toURL()}, null);
         // begin walking classes
         DomainTypesInformation info = new DomainTypesInformation();
         List<String> classNames = getClassesInModel();
@@ -116,7 +116,7 @@ public class BeanTypeDiscoveryMapper {
             // fire the begin class event
             fireBeanTypeDiscoveryBegins(classNames.size(), i, beanClassName);
             // load the class
-            Class beanClass = loader.loadClass(beanClassName);
+            Class<?> beanClass = loader.loadClass(beanClassName);
             // check the domain model for attribute names
             UMLClass umlClass = classesByFullName.get(beanClassName);
             if (umlClass.getUmlAttributeCollection() != null
@@ -126,7 +126,7 @@ public class BeanTypeDiscoveryMapper {
                 for (int attIndex = 0; attIndex < attribs.length; attIndex++) {
                     String attribName = attribs[attIndex].getName();
                     Field field = getFieldOfClass(attribName, beanClass);
-                    Class fieldType = field.getType();
+                    Class<?> fieldType = field.getType();
                     typeAttribs[attIndex] = new TypeAttribute(attribName, fieldType.getName());
                 }
                 domainType.setTypeAttribute(typeAttribs);
@@ -149,8 +149,8 @@ public class BeanTypeDiscoveryMapper {
     }
     
     
-    private Field getFieldOfClass(String fieldName, Class clazz) throws NoSuchFieldException {
-        Class c = clazz;
+    private Field getFieldOfClass(String fieldName, Class<?> clazz) throws NoSuchFieldException {
+        Class<?> c = clazz;
         Field field = null;
         while (c != null && field == null) {
             try {
