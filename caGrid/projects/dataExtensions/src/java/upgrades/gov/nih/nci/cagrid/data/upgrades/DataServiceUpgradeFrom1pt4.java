@@ -1,17 +1,12 @@
 package gov.nih.nci.cagrid.data.upgrades;
 
 import gov.nih.nci.cagrid.common.Utils;
-import gov.nih.nci.cagrid.data.BdtMethodConstants;
 import gov.nih.nci.cagrid.data.extension.Data;
 import gov.nih.nci.cagrid.data.style.ServiceStyleContainer;
 import gov.nih.nci.cagrid.data.style.ServiceStyleLoader;
 import gov.nih.nci.cagrid.data.style.StyleVersionUpgrader;
 import gov.nih.nci.cagrid.data.style.VersionUpgrade;
-import gov.nih.nci.cagrid.introduce.IntroduceConstants;
 import gov.nih.nci.cagrid.introduce.beans.extension.ExtensionType;
-import gov.nih.nci.cagrid.introduce.beans.method.MethodType;
-import gov.nih.nci.cagrid.introduce.beans.service.ServiceType;
-import gov.nih.nci.cagrid.introduce.common.CommonTools;
 import gov.nih.nci.cagrid.introduce.common.IntroducePropertiesManager;
 import gov.nih.nci.cagrid.introduce.common.ServiceInformation;
 import gov.nih.nci.cagrid.introduce.extension.ExtensionsLoader;
@@ -33,30 +28,29 @@ import java.util.Map;
 import org.apache.axis.message.MessageElement;
 import org.apache.commons.logging.LogFactory;
 import org.jdom.Element;
-import org.jdom.JDOMException;
 
 /**
- * DataServiceUpgradeFrom1pt3
- * Utility to upgrade a 1.3 data service to current
+ * DataServiceUpgradeFrom1pt4
+ * Utility to upgrade a 1.4 data service to current
  * 
  * @author <A HREF="MAILTO:ervin@bmi.osu.edu">David W. Ervin</A> *
  * @created Feb 19, 2007
  * @version $Id: DataServiceUpgradeFrom1pt3.java,v 1.1 2007/02/19 21:52:52
  *          dervin Exp $
  */
-public class DataServiceUpgradeFrom1pt3 extends ExtensionUpgraderBase {
+public class DataServiceUpgradeFrom1pt4 extends ExtensionUpgraderBase {
 
-	public DataServiceUpgradeFrom1pt3(ExtensionType extensionType,
+	public DataServiceUpgradeFrom1pt4(ExtensionType extensionType,
 			ServiceInformation serviceInformation, String servicePath,
 			String fromVersion, String toVersion) {
-		super(DataServiceUpgradeFrom1pt3.class.getSimpleName(),
+		super(DataServiceUpgradeFrom1pt4.class.getSimpleName(),
 				extensionType, serviceInformation, servicePath, fromVersion,
 				toVersion);
 	}
 
 	
 	protected void upgrade() throws Exception {
-	    LogFactory.getLog(DataServiceUpgradeFrom1pt3.class).debug("UPGRADING DATA FROM 1.3");
+	    LogFactory.getLog(DataServiceUpgradeFrom1pt4.class).debug("UPGRADING DATA FROM 1.4");
 		try {
 			validateUpgrade();
 			
@@ -65,15 +59,6 @@ public class DataServiceUpgradeFrom1pt3 extends ExtensionUpgraderBase {
 			upgradeStyle();
 			
 			upgradeWsdls();
-			
-			removeBdt();
-			
-			Cql2FeaturesInstaller cql2Installer = 
-			    new Cql2FeaturesInstaller(
-			        getServiceInformation(), getExtensionType(), getStatus());
-			cql2Installer.installCql2Features();
-			
-			upgradeExtensionData();
             
 			setCurrentExtensionVersion();
 			
@@ -87,20 +72,20 @@ public class DataServiceUpgradeFrom1pt3 extends ExtensionUpgraderBase {
 	
 
 	private void validateUpgrade() throws UpgradeException {
-		if (!"1.3".equals(getFromVersion())) {
+		if (!"1.4".equals(getFromVersion())) {
 			throw new UpgradeException(getClass().getName()
-				+ " upgrades FROM 1.3 TO " + UpgraderConstants.DATA_CURRENT_VERSION + 
+				+ " upgrades FROM 1.4 TO " + UpgraderConstants.DATA_CURRENT_VERSION + 
                 ", found FROM = " + getFromVersion());
 		}
 		if (!getToVersion().equals(UpgraderConstants.DATA_CURRENT_VERSION)) {
 			throw new UpgradeException(getClass().getName()
-				+ " upgrades FROM 1.3 TO " + UpgraderConstants.DATA_CURRENT_VERSION + 
+				+ " upgrades FROM 1.4 TO " + UpgraderConstants.DATA_CURRENT_VERSION + 
                 ", found TO = " + getToVersion());
 		}
 		String currentVersion = getExtensionType().getVersion();
-		if (!"1.3".equals(currentVersion)) {
+		if (!"1.4".equals(currentVersion)) {
 			throw new UpgradeException(getClass().getName()
-				+ " upgrades FROM 1.3 TO " + UpgraderConstants.DATA_CURRENT_VERSION + 
+				+ " upgrades FROM 1.4 TO " + UpgraderConstants.DATA_CURRENT_VERSION + 
                 ", current version found is " + currentVersion);
 		}
 	}
@@ -127,28 +112,6 @@ public class DataServiceUpgradeFrom1pt3 extends ExtensionUpgraderBase {
         Element extensionDataElement = AxisJdomUtils.fromMessageElement(rawDataElement);
         return extensionDataElement;
     }
-    
-    
-    private void storeExtensionDataElement(Element elem) throws UpgradeException {
-        MessageElement[] anys = getExtensionType().getExtensionData().get_any();
-        for (int i = 0; (anys != null) && (i < anys.length); i++) {
-            if (anys[i].getQName().equals(Data.getTypeDesc().getXmlType())) {
-                // remove the old extension data
-                anys = (MessageElement[]) Utils.removeFromArray(anys, anys[i]);
-                break;
-            }
-        }
-        // create a message element from the JDom element
-        MessageElement data = null;
-        try {
-            data = AxisJdomUtils.fromElement(elem);
-        } catch (JDOMException ex) {
-            throw new UpgradeException(
-                "Error converting extension data to Axis message element: " + ex.getMessage(), ex);
-        }
-        anys = (MessageElement[]) Utils.appendToArray(anys, data);
-        getExtensionType().getExtensionData().set_any(anys);
-    }
 	
 	
 	private void setCurrentExtensionVersion() {
@@ -156,37 +119,10 @@ public class DataServiceUpgradeFrom1pt3 extends ExtensionUpgraderBase {
     }
 	
 	
-	private boolean serviceIsUsingBdt(Element extElement) {
-	    Element serviceFeaturesElement = extElement.getChild("ServiceFeatures", extElement.getNamespace());
-	    String useBdtValue = serviceFeaturesElement.getAttributeValue("useBdt");
-	    return Boolean.valueOf(useBdtValue).booleanValue();
-	}
-	
-	
 	private String getStyleName(Element extDataElement) {
 	    Element serviceFeaturesElement = extDataElement.getChild("ServiceFeatures", extDataElement.getNamespace());
 	    String styleName = serviceFeaturesElement.getAttributeValue("serviceStyle");
 	    return styleName;
-	}
-	
-	
-	private void upgradeExtensionData() throws UpgradeException {
-	    Element extensionDataElement = getExtensionDataElement();
-	    Element serviceFeaturesElement = extensionDataElement.getChild(
-	        "ServiceFeatures", extensionDataElement.getNamespace());
-	    serviceFeaturesElement.setAttribute("useTransfer", "false");
-	    getStatus().addDescriptionLine("Data Service Extension Data Service Feature \"useTransfer\" added and set to \"false\"");
-	    serviceFeaturesElement.removeAttribute("useBdt");
-	    getStatus().addDescriptionLine("Data Service Extension Data Service Feature \"useBdt\" removed");
-	    String styleName = getStyleName(extensionDataElement);
-	    if (styleName != null) {
-	        serviceFeaturesElement.removeAttribute("serviceStyle");
-	        Element serviceStyleElement = new Element("ServiceStyle", serviceFeaturesElement.getNamespace());
-	        serviceStyleElement.setAttribute("name", styleName);
-	        serviceStyleElement.setAttribute("version", "1.3"); // set to 1.3 pending upgrade
-	        getStatus().addDescriptionLine("Created Service Style element in extension data; set style version to \"1.3\"");
-	    }
-	    storeExtensionDataElement(extensionDataElement);
 	}
 
 
@@ -221,7 +157,7 @@ public class DataServiceUpgradeFrom1pt3 extends ExtensionUpgraderBase {
         // delete the old libraries
         for (File oldLib : serviceDataLibs) {
             oldLib.delete();
-            getStatus().addDescriptionLine("caGrid 1.3 library " + oldLib.getName() + " removed");
+            getStatus().addDescriptionLine("caGrid 1.4 library " + oldLib.getName() + " removed");
         }
         // copy new libraries in
         File extLibDir = new File(ExtensionsLoader.EXTENSIONS_DIRECTORY + File.separator + "lib");
@@ -291,41 +227,6 @@ public class DataServiceUpgradeFrom1pt3 extends ExtensionUpgraderBase {
                     throw new UpgradeException("Error replacing wsdl: " + ex.getMessage(), ex);
                 }
             }
-        }
-    }
-    
-    
-    private void removeBdt() throws UpgradeException {
-        Element extElement = getExtensionDataElement();
-        if (serviceIsUsingBdt(extElement)) {
-            getStatus().addDescriptionLine("BDT has been removed from caGrid 1.4.  " +
-                "The BDT features of this data service will be removed.");
-            // use the service name to find the schema dir
-            ServiceType mainService = getServiceInformation().getServices().getService(0);
-            String serviceName = mainService.getName();
-            File schemaDir = new File(getServiceInformation().getBaseDirectory(), "schema" + File.separator + serviceName);
-            FileFilter bdtDataSchemaFilter = new FileFilter() {
-                public boolean accept(File pathname) {
-                    return (pathname.isFile() && pathname.getName().startsWith("BDTDataService"));
-                }
-            };
-            // remove BDTDataService* schemas / wsdls
-            File[] deleteSchemas = schemaDir.listFiles(bdtDataSchemaFilter);
-            for (File delme : deleteSchemas) {
-                delme.delete();
-                getStatus().addDescriptionLine("Deleted BDT Data Service schema " + delme.getName());
-            }
-            // find and remove the bdt query operation
-            MethodType bdtQueryMethod = CommonTools.getMethod(
-                mainService.getMethods(), BdtMethodConstants.BDT_QUERY_METHOD_NAME);
-            if (bdtQueryMethod != null) {
-                CommonTools.removeMethod(mainService.getMethods(), bdtQueryMethod);
-                getStatus().addDescriptionLine("Removed " + BdtMethodConstants.BDT_QUERY_METHOD_NAME + " operation from the service");
-            } else {
-                getStatus().addDescriptionLine(BdtMethodConstants.BDT_QUERY_METHOD_NAME + " not found; may have been removed earlier");
-            }
-        } else {
-            getStatus().addDescriptionLine("Service was not using BDT");
         }
     }
     
