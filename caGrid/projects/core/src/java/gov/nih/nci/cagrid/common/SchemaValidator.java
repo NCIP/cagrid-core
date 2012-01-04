@@ -107,7 +107,7 @@ public class SchemaValidator {
                         InputSource entity = null;
                         if (W3C_2001_XSD_ID.equals(systemId)) {
                             LOG.debug("Resolving entity from local copy of XML schema schema");
-                            InputStream xsdStream = getClass().getResourceAsStream("/schema/xml.xsd");
+                            InputStream xsdStream = getClass().getResourceAsStream("schema/xml.xsd");
                             if (xsdStream != null) {
                                 entity = new InputSource(xsdStream);
                             } else {
