@@ -2,6 +2,8 @@ package gov.nih.nci.cagrid.common;
 
 import java.io.BufferedReader;
 import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
 import java.io.StringReader;
 
 import javax.xml.XMLConstants;
@@ -11,6 +13,9 @@ import javax.xml.parsers.SAXParserFactory;
 import javax.xml.transform.stream.StreamSource;
 import javax.xml.validation.SchemaFactory;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.xml.sax.EntityResolver;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 import org.xml.sax.SAXParseException;
@@ -30,9 +35,13 @@ import org.xml.sax.helpers.DefaultHandler;
  * @version $Id$ 
  */
 public class SchemaValidator {
+    
+    private static Log LOG = LogFactory.getLog(SchemaValidator.class); 
+    
 	public static final String JAXP_SCHEMA_LANGUAGE = "http://java.sun.com/xml/jaxp/properties/schemaLanguage";
 	public static final String JAXP_SCHEMA_SOURCE = "http://java.sun.com/xml/jaxp/properties/schemaSource";
 	public static final String W3C_NAMESPACE = "http://www.w3.org/2001/XMLSchema";
+	public static final String W3C_2001_XSD_ID = "http://www.w3.org/2001/xml.xsd";
 	
 	private SAXParserFactory factory;
 	private SAXParser parser;
@@ -44,6 +53,7 @@ public class SchemaValidator {
 	 * @throws SchemaValidationException
 	 */
 	public SchemaValidator(String schemaFilename) throws SchemaValidationException {
+	    LOG.debug("Creating schema validator for " + schemaFilename);
 		try {
 			// initialize the sax parser factory
 			factory = SAXParserFactory.newInstance();
@@ -61,6 +71,7 @@ public class SchemaValidator {
 			
 			// configure the schema
 			parser.setProperty(JAXP_SCHEMA_SOURCE, schemaFilename);
+			LOG.debug("Parser created");
 		}  catch (ParserConfigurationException ex) {
 			throw new SchemaValidationException("Error configuring SAX parser: " + ex.getMessage(), ex);
 		} catch (SAXException ex) {
@@ -76,18 +87,43 @@ public class SchemaValidator {
 	 * @throws SchemaValidationException
 	 */
 	public void validate(String xml) throws SchemaValidationException {
+	    LOG.debug("Validating XML against the schema");
 		InputSource xmlInput = new InputSource(new BufferedReader(new StringReader(xml)));
 		// only one document can be handled by the xml parser at once
 		synchronized (parser) {
 			try {
 				// create an XML reader from the parser
+			    LOG.debug("Creating XML Reader");
 				XMLReader xmlReader = parser.getXMLReader();
 				
 				// set content and error handlers on the reader
 				xmlReader.setContentHandler(new SimpleErrorHandler());
 				xmlReader.setErrorHandler(new SimpleErrorHandler());
 				
+				// avoid calling out to the w3c web site for the XML schema schema
+				final EntityResolver defaultEntityResolver = xmlReader.getEntityResolver();				
+				EntityResolver localXsdEntityResolver = new EntityResolver() {
+                    public InputSource resolveEntity(String publicId, String systemId) throws SAXException, IOException {
+                        InputSource entity = null;
+                        if (W3C_2001_XSD_ID.equals(systemId)) {
+                            LOG.debug("Resolving entity from local copy of XML schema schema");
+                            InputStream xsdStream = getClass().getResourceAsStream("/schema/xml.xsd");
+                            if (xsdStream != null) {
+                                entity = new InputSource(xsdStream);
+                            } else {
+                                LOG.warn("No resource for the XML schema schema was found");
+                            }
+                        } else {
+                            entity = defaultEntityResolver != null ? defaultEntityResolver.resolveEntity(publicId, systemId) : null;
+                        }
+                        return entity;
+                    }
+                };
+                
+                xmlReader.setEntityResolver(localXsdEntityResolver);
+				
 				// parse the xml
+                LOG.debug("Parsing");
 				xmlReader.parse(xmlInput);
 			} catch (Exception ex) {
 				throw new SchemaValidationException("Invalid Document: " + ex.getMessage(), ex);
