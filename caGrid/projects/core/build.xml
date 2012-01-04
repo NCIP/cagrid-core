@@ -141,7 +141,13 @@
 	<!-- ============================================================== -->
 	<target name="jar-resources" depends="prepare" description="Builds the resources Jar Files">
 		<mkdir dir="${jar.dir}" />
-		<jar jarfile="${project.resources.jarfile}" basedir="${resources.dir}/portal/common">
+		<jar jarfile="${project.resources.jarfile}">
+			<fileset dir="${resources.dir}/portal/common">
+				<include name="**/*"/>
+			</fileset>
+			<fileset dir="${resources.dir}">
+				<include name="schema/**"/>
+			</fileset>
 			<manifest>
 				<attribute name="Built-By" value="${user.name}" />
 				<attribute name="Specification-Version" value="${project.version}" />
