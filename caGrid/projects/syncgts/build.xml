@@ -241,24 +241,6 @@
 		<javac srcdir="${test.src.dir}" classpathref="test.build.classpath" destdir="${test.build.dest}" debug="${java.debug}" deprecation="${deprecation}" />
 		<runtarget target="postCompileTests" />
 	</target>
-	
-
-	<!-- Create a JAR file with the implementation classes -->
-	<target name="jar" depends="compile">
-		<runtarget target="preJar" />
-		<jar jarfile="${build.lib.dir}/${client.jar.name}" basedir="${build.dest}">
-			<include name="**/client/**" />
-		</jar>
-		<jar jarfile="${build.lib.dir}/${service.jar.name}" basedir="${build.dest}">
-			<include name="**/service/**" />
-		</jar>
-		<jar jarfile="${build.lib.dir}/${common.jar.name}" basedir="${build.dest}">
-			<include name="**/*" />
-			<exclude name="**/client/**" />
-			<exclude name="**/service/**" />
-		</jar>
-		<runtarget target="postJar" />
-	</target>
 
 
 	<!-- Create a JAR file with the test implementation classes -->
