@@ -105,7 +105,7 @@ public class GeneralConfigurationStep extends AbstractStyleConfigurationStep {
         File[] remoteLibs = new File(remoteClientDir, "lib").listFiles(new FileFilters.JarFileFilter());
         for (File lib : remoteLibs) {
             String libName = lib.getName();
-            if (!globusJarNames.contains(libName)) {
+            if (!globusJarNames.contains(libName) && !libName.startsWith("caGrid-CQL-cql.1.0-")) {
                 File libOutput = new File(libOutDir, libName);
                 Utils.copyFile(lib, libOutput);
                 LOG.debug(libName + " copied to the service");
@@ -116,21 +116,19 @@ public class GeneralConfigurationStep extends AbstractStyleConfigurationStep {
         File[] localLibs = localLibDir.listFiles();
         for (File lib : localLibs) {
             String name = lib.getName();
-            // is the jar one of the orm, sdk-core, dom4j, or the sdkQuery4 jars that are required?
-            boolean ok = name.equals(applicationName + "-orm.jar") || name.equals("sdk-core.jar")
-                || name.startsWith("caGrid-sdkQuery4-") || name.equals("dom4j-1.4.jar");
+            boolean ok = true;
+            // is the jar one that is known to conflict with caGrid or Globus?
+            ok = !(name.equals("axis.jar") || name.startsWith("commons-collections") 
+                || name.startsWith("commons-logging") || name.startsWith("commons-discovery")
+                || name.startsWith("log4j"));
             // is the jar already copied into the service
             if (ok && serviceJarNames.contains(name)) {
                 ok = false;
             }
             // is the jar one of the caGrid 1.2 jars?
             if (ok && name.startsWith("caGrid-") && name.endsWith("-1.2.jar")) {
-                String trimmedName = name.substring(name.length() - 8);
-                for (String inService : serviceJarNames) {
-                    if (inService.startsWith(trimmedName)) {
-                        ok = false;
-                        break;
-                    }
+                if (!name.startsWith("caGrid-sdkQuery4-")) {
+                    ok = false;
                 }
             }
             // is the jar in the globus lib dir?
