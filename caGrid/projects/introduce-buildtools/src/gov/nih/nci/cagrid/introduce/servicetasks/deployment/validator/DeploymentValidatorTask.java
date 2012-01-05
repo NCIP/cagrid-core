@@ -61,18 +61,22 @@ public class DeploymentValidatorTask extends Task {
                 throw new Exception("Cannot deserialize deployment validator descriptor: " + deploymentDescriptor, e);
             }
             
+            // get the validator elements, regardless of their namespace
             List validatorDescriptorElements = deploymentValidatorDescriptorElem.getChildren(
-                "ValidatorDescriptor", deploymentValidatorDescriptorElem.getNamespace());
+                "ValidatorDescriptor", null);
             
             if (validatorDescriptorElements != null && validatorDescriptorElements.size() != 0) {
+                System.out.println("Found " + validatorDescriptorElements.size() + " validator descriptors");
                 Iterator<Element> validatorDescriptorElemIter = validatorDescriptorElements.iterator();
                 while (validatorDescriptorElemIter.hasNext()) {
                     Element validatorDescriptorElem = validatorDescriptorElemIter.next();
                     String validatorClass = validatorDescriptorElem.getAttributeValue("validationClass");
                     if (validatorClass != null) {
+                        System.out.println("Loading validator " + validatorClass);
                         Class clazz = Class.forName(validatorClass);
                         Constructor con = clazz.getConstructor(new Class[]{String.class});
                         DeploymentValidator validator = (DeploymentValidator) con.newInstance(new Object[]{baseDir});
+                        System.out.println("\tExecuing validator...");
                         validator.validate();
                     }
                 }
