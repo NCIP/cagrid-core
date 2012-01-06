@@ -1,9 +1,7 @@
 <?xml version="1.0"?>
-
 <!-- ================================================================= -->
-<!-- Generic build file                                                    -->
+<!-- Generic build file                                                -->
 <!-- ================================================================= -->
-
 <project name="WebSSOSystemTests" default="compile" basedir=".">
 	<property file="build.properties" />
 	<property file="project.properties" />
@@ -40,6 +38,8 @@
 		<fail message="Globus installation is not set in either GLOBUS_LOCATION or ext.globus.dir" if="globus.not.found" />
 		<echo message="Globus: ${ext.globus.dir}" />
 	</target>
+	
+	
 	<target name="setGlobus" if="env.GLOBUS_LOCATION">
 		<!-- GT4 build files and directories-->
 		<property name="ext.globus.dir" value="${env.GLOBUS_LOCATION}" />
@@ -51,7 +51,7 @@
 
 
 	<!-- =============================================================== -->
-	<!-- Prepares the classpaths                                     -->
+	<!-- Prepares the classpaths                                         -->
 	<!-- =============================================================== -->
 	<target name="defineClasspaths" depends="checkGlobus">
 		<path id="build.classpath">
@@ -110,7 +110,7 @@
 
 
 	<!-- ============================================================== -->
-	<!-- Builds from scratch                                                -->
+	<!-- Builds from scratch                                            -->
 	<!-- ============================================================== -->
 	<target name="all" description="Builds the entire application" depends="clean,compile,jar" />
 
@@ -131,7 +131,7 @@
 			<jvmarg value="-Djava.endorsed.dirs=${ext.endorsed.dir}" />
 			<classpath refid="build.classpath" />
 			<classpath>
-				<pathelement path="build/classes/" />
+				<pathelement path="${classes.dir}" />
 			</classpath>
 			<classpath>
 			    <pathelement location="${basedir}/resources" />
