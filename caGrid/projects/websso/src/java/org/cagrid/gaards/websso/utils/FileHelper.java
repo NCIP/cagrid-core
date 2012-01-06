@@ -33,7 +33,7 @@ public class FileHelper {
 			document = (org.w3c.dom.Document) documentBuilder.parse(propertiesFileResource.getInputStream());
 		} catch (Exception e) {
 			throw new AuthenticationConfigurationException(
-					"Error in reading the " + propertiesFileResource + " file",e);
+					"Error in reading the " + propertiesFileResource + " file: " + e.getMessage(), e);
 		}
 		DOMBuilder builder = new DOMBuilder();
 		org.jdom.Document jdomDocument = builder.build(document);

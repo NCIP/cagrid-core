@@ -138,7 +138,7 @@ public class AuthenticationProfileServiceManager extends Runner implements Initi
 					Set<QName> supportedAuthenticationProfiles = authenticationClient.getSupportedAuthenticationProfiles();
 					ashandle.getAuthenticationServiceInformation().setAuthenticationServiceProfiles(supportedAuthenticationProfiles);
 					authenticationServices.add(ashandle);
-				}catch (Exception e) {
+				} catch (Exception e) {
 					handleException(e);
 				}	            
             }
@@ -192,20 +192,20 @@ public class AuthenticationProfileServiceManager extends Runner implements Initi
 			log.info(e);
 		} else if (e instanceof MalformedURLException) {
 			log.error(e);
-			throw new InvalidResourceException("malformed URL has occurred "
-					+ e.getMessage());
+			throw new InvalidResourceException("malformed URL has occurred ("
+					+ e.getMessage() + ")", e);
 		} else if (e instanceof ResourcePropertyRetrievalException) {
 			log.error(e);
 			throw new InvalidResourceException(
 					"error occured retrieving resource property "
-							+ e.getMessage());
+							+ e.getMessage(), e);
 		} else if (e instanceof RemoteException) {
 			log.error(e);
 			throw new GenericException(
-					"communication-related exception occured " + e.getMessage());
+					"communication-related exception occured " + e.getMessage(), e);
 		} else {
 			log.error(e);
-			throw new GenericException("error occured " + e.getMessage());
+			throw new GenericException("error occured " + e.getMessage(), e);
 		}
 	}
 

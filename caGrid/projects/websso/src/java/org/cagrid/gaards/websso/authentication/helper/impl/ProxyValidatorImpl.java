@@ -61,7 +61,7 @@ public class ProxyValidatorImpl implements ProxyValidator {
 			log.error(FaultUtil.printFaultToString(e));
 			throw new AuthenticationConfigurationException(
 					"Error validating the Proxy Certificate : "
-							+ e.getMessage());
+							+ e.getMessage(), e);
 		}
 	}
 
@@ -103,7 +103,7 @@ public class ProxyValidatorImpl implements ProxyValidator {
 		} catch (GlobusCredentialException e) {
 			log.error(FaultUtil.printFaultToString(e));
 			throw new AuthenticationConfigurationException(
-					"Error verifying the proxy certificate : " + e.getMessage());
+					"Error verifying the proxy certificate: " + e.getMessage(), e);
 		}
 	}
 
