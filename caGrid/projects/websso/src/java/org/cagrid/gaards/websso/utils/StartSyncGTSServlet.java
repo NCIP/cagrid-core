@@ -30,13 +30,13 @@ public class StartSyncGTSServlet extends HttpServlet {
 				Resource syncdesc = (Resource)ctx.getBean(WebSSOConstants.SYNC_DESC_RESOURCE);
 				//Load Sync Description
 				final InputStreamReader inputStreamReader = new InputStreamReader(syncdesc.getInputStream());
-				SyncDescription description = (SyncDescription) Utils.deserializeObject(inputStreamReader,SyncDescription.class);
+				SyncDescription description = Utils.deserializeObject(inputStreamReader,SyncDescription.class);
 				inputStreamReader.close();
 				// Sync with the Trust Fabric Once
 				SyncGTS.getInstance().syncAndResyncInBackground(description, false);
 			}
 		} catch (Exception e) {
-			throw new ServletException("Unable to Start Sync GTS Service.",e);
+			throw new ServletException("Unable to Start Sync GTS Service: " + e.getMessage(), e);
 		}
 		super.init(config);
 	}

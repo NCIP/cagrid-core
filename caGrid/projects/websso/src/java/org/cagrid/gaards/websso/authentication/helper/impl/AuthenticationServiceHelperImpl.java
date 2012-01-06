@@ -52,25 +52,23 @@ public class AuthenticationServiceHelperImpl
 		if (e instanceof MalformedURIException) {
 			log.error(e);
 			throw new AuthenticationConfigurationException(
-					"Invalid Authentication Service URL");
+					"Invalid Authentication Service URL ( " + e.getMessage() + ")", e);
 		} else if (e instanceof InvalidCredentialFault) {
 			log.error(FaultUtil.printFaultToString(e));
 			String faultString = ((InvalidCredentialFault) e).getFaultString();
-			throw new AuthenticationErrorException(faultString);
+			throw new AuthenticationErrorException(faultString, e);
 		} else if (e instanceof InsufficientAttributeFault) {
 			log.error(FaultUtil.printFaultToString(e));
-			String faultString = ((InsufficientAttributeFault) e)
-					.getFaultString();
-			throw new AuthenticationConfigurationException(faultString);
+			String faultString = ((InsufficientAttributeFault) e).getFaultString();
+			throw new AuthenticationConfigurationException(faultString, e);
 		} else if (e instanceof AuthenticationProviderFault) {
 			log.error(FaultUtil.printFaultToString(e));
-			String faultString = ((AuthenticationProviderFault) e)
-					.getFaultString();
-			throw new AuthenticationConfigurationException(faultString);
+			String faultString = ((AuthenticationProviderFault) e).getFaultString();
+			throw new AuthenticationConfigurationException(faultString, e);
 		} else if (e instanceof RemoteException) {
 			log.error(e);
 			throw new AuthenticationConfigurationException(
-					"Error accessing the Authentication Service");
+					"Error accessing the Authentication Service (" + e.getMessage() + ")", e);
 		}
 	}
 }

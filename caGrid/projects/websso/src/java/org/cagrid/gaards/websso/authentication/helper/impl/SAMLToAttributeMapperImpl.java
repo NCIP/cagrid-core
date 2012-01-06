@@ -63,20 +63,20 @@ public class SAMLToAttributeMapperImpl implements SAMLToAttributeMapper {
 		log.error(e);
 		if (e instanceof ParserConfigurationException) {
 			throw new AuthenticationConfigurationException(
-					"Error processing the SAML Document : " + e.getMessage());
+					"Error processing the SAML Document: " + e.getMessage(), e);
 		}
 		if (e instanceof SAXException) {
 			throw new AuthenticationConfigurationException(
-					"Error processing the SAML Document : " + e.getMessage());
+					"Error processing the SAML Document: " + e.getMessage(), e);
 		}
 		if (e instanceof XPathExpressionException) {
 			throw new AuthenticationConfigurationException(
-					"Error retrieving user attributes from the SAML : "
-							+ e.getMessage());
+					"Error retrieving user attributes from the SAML: "
+							+ e.getMessage(), e);
 		}
 		if (e instanceof IOException) {
 			throw new AuthenticationConfigurationException(
-					"Error processing the SAML Document : " + e.getMessage());
+					"Error processing the SAML Document: " + e.getMessage(), e);
 		}
 	}
 }

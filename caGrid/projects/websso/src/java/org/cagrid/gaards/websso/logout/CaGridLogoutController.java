@@ -84,7 +84,7 @@ public class CaGridLogoutController extends AbstractController {
 					delegatedCredentialReference, webSSOServerHostCredential);
 		} catch (Exception e) {
 			throw new ServletException(
-					"Unable to Initialize the Delegation Lookup Client : ", e);
+					"Unable to Initialize the Delegation Lookup Client: " + e.getMessage(), e);
 		}
 		return delegatedCredentialUserClient;
 	}
@@ -103,16 +103,16 @@ public class CaGridLogoutController extends AbstractController {
 			delegatedCredentialUserClientForUser.suspend();
 		} catch (CDSInternalFault e) {
 			log.error(e);
-			String faultString = ((CDSInternalFault) e).getFaultString();
-			throw new Exception(faultString);
+			String faultString = e.getFaultString();
+			throw new Exception(faultString, e);
 		} catch (DelegationFault e) {
 			log.error(e);
-			String faultString = ((DelegationFault) e).getFaultString();
-			throw new Exception(faultString);
+			String faultString = e.getFaultString();
+			throw new Exception(faultString, e);
 		} catch (PermissionDeniedFault e) {
 			log.error(e);
-			String faultString = ((PermissionDeniedFault) e).getFaultString();
-			throw new Exception(faultString);
+			String faultString = e.getFaultString();
+			throw new Exception(faultString, e);
 		}
 	}
 
@@ -120,7 +120,7 @@ public class CaGridLogoutController extends AbstractController {
 			String delegationEPR) throws SAXException, ServletException {
 		DelegatedCredentialReference delegatedCredentialReference = null;
 		try {
-			delegatedCredentialReference = (DelegatedCredentialReference) Utils
+			delegatedCredentialReference = Utils
 					.deserializeObject(new StringReader(delegationEPR),
 							DelegatedCredentialReference.class,
 							DelegationUserClient.class
@@ -128,8 +128,8 @@ public class CaGridLogoutController extends AbstractController {
 		} catch (DeserializationException e) {
 			log.error(e);
 			throw new ServletException(
-					"Unable to deserialize the Delegation Reference : "
-							+ e.getMessage());
+					"Unable to deserialize the Delegation Reference: "
+							+ e.getMessage(), e);
 		}
 		return delegatedCredentialReference;
 	}
@@ -150,8 +150,8 @@ public class CaGridLogoutController extends AbstractController {
 		} catch (GlobusCredentialException e) {
 			log.error(e);
 			throw new Exception(
-					"Invalid Certificate and Key File in web-properties.xml. Error creating WebSSOServerHostCredential"
-							+ e.getMessage());
+					"Invalid Certificate and Key File in web-properties.xml. Error creating WebSSOServerHostCredential: "
+							+ e.getMessage(), e);
 		}
 		return webSSOServerHostCredential;
 	}

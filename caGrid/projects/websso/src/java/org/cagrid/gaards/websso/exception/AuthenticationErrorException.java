@@ -10,4 +10,9 @@ public class AuthenticationErrorException extends
 	public AuthenticationErrorException(String message) {
 		super(message);
 	}
+	
+	
+	public AuthenticationErrorException(String message, Throwable cause) {
+	    super(message, cause);
+	}
 }
