@@ -165,8 +165,8 @@ public class CaGridAuthenticationManager implements AuthenticationManager {
 		} catch (GlobusCredentialException e) {
 			log.error(e);
 			throw new AuthenticationConfigurationException(
-					"Unable to create the WebSSO Host Credentials using the configuration provided "
-							+ e.getMessage());
+					"Unable to create the WebSSO Host Credentials using the configuration provided: "
+							+ e.getMessage(), e);
 		}
 		return hostIdentities;
 	}

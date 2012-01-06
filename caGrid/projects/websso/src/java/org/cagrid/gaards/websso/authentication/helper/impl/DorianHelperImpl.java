@@ -52,31 +52,31 @@ public class DorianHelperImpl implements DorianHelper {
 		if (e instanceof MalformedURIException) {
 			log.error(e);
 			throw new AuthenticationConfigurationException(
-					"Invalid Dorian Service URL");
+					"Invalid Dorian Service URL (" + e.getMessage() + ")", e);
 		} else if (e instanceof DorianFault) {
 			log.error(FaultUtil.printFaultToString(e));
 			String faultString = ((DorianFault) e).getFaultString();
-			throw new AuthenticationConfigurationException(faultString);
+			throw new AuthenticationConfigurationException(faultString, e);
 		} else if (e instanceof DorianInternalFault) {
 			log.error(FaultUtil.printFaultToString(e));
 			String faultString = ((DorianInternalFault) e).getFaultString();
-			throw new AuthenticationConfigurationException(faultString);
+			throw new AuthenticationConfigurationException(faultString, e);
 		} else if (e instanceof InvalidAssertionFault) {
 			log.error(FaultUtil.printFaultToString(e));
 			String faultString = ((InvalidAssertionFault) e).getFaultString();
-			throw new AuthenticationConfigurationException(faultString);
+			throw new AuthenticationConfigurationException(faultString, e);
 		} else if (e instanceof UserPolicyFault) {
 			log.error(FaultUtil.printFaultToString(e));
 			String faultString = ((UserPolicyFault) e).getFaultString();
-			throw new AuthenticationConfigurationException(faultString);
+			throw new AuthenticationConfigurationException(faultString, e);
 		} else if (e instanceof PermissionDeniedFault) {
 			log.error(FaultUtil.printFaultToString(e));
 			String faultString = ((PermissionDeniedFault) e).getFaultString();
-			throw new AuthenticationErrorException(faultString);
+			throw new AuthenticationErrorException(faultString, e);
 		} else if (e instanceof RemoteException) {
 			log.error(e);
 			throw new AuthenticationConfigurationException(
-					"Error accessing the Dorian Service :  " + e.getMessage());
+					"Error accessing the Dorian Service :  " + e.getMessage(), e);
 		}
 	}
 }
