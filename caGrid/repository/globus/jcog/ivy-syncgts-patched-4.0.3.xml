@@ -7,8 +7,13 @@
 		<description>The Globus jcog project. This version was patched to support synchronized
 			access to the trusted certificates directory, necessary for syncgts to be able to modify
 			the directory without causing errors in Globus's code that reads the
-		directory.</description>
+		        directory.
+
+		        Additional Patches:
+		        https://tracker.nci.nih.gov/browse/CAGRID-824
+		</description>
 	</info>
+
 
 	<configurations>
 		<!-- Public Configurations-->
