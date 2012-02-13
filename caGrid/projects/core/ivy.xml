@@ -28,10 +28,9 @@
 
   <dependencies>
     <dependency rev="1.0.2" org="castor" name="castor" conf="serialization->default" />
-    <dependency rev="1.1" org="jdom" name="jdom" conf="default->*" />
+    <dependency rev="1.0" org="jdom" name="jdom" conf="default->*" />
     <dependency rev="2.7" org="clarkware" name="jdepend" conf="impl-test->*" />
     <dependency rev="2.0.0" org="jgoodies" name="validation" conf="ui->*" />
-    <dependency rev="4.+" org="junit" name="junit" conf="impl-test->default" />
-    <dependency rev="3.2" org="apache" name="commons-collections" />
+    <dependency rev="4.4" org="junit" name="junit" conf="impl-test->default" />
   </dependencies>
 </ivy-module>

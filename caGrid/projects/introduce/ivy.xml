@@ -64,7 +64,7 @@
     <dependency rev="latest.integration" org="caGrid" name="advertisement" conf="skeleton->default"/>
 
     <!-- External Dependencies -->
-    <dependency rev="1.1" org="jdom" name="jdom" conf="skeleton,extension->*"/>
+    <dependency rev="1.0" org="jdom" name="jdom" conf="skeleton,extension->*"/>
     <dependency rev="1.0b3" org="ant-contrib" name="ant-contrib" conf="skeletonTools->*"/>
     <dependency rev="1.0" org="wannheden" name="jetc-task" conf="impl->*"/>
 
@@ -74,17 +74,6 @@
     <dependency rev="0.1.12" org="wizard-framework" name="wizard-framework" conf="ui->*"/>
     <dependency rev="2.0.0" org="jgoodies" name="validation" conf="ui->*"/>
     <dependency rev="2.0_02" org="sun" name="jhall" conf="ui->*"/>
-    <dependency rev="4.+" org="junit" name="junit" conf="impl-test->default"/>
-
-    <dependency rev="1.0" org="aopalliance" name="aopalliance" conf="skeleton->*"/>
-    <dependency rev="3.0.1.RELEASE-A" org="springframework" name="spring" conf="skeleton->spring-tx" />
-    <dependency rev="3.0.1.RELEASE-A" org="springframework" name="spring" conf="skeleton->spring-context" />
-    <dependency rev="3.0.1.RELEASE-A" org="springframework" name="spring" conf="skeleton->spring-expression" />
-    <dependency rev="3.0.1.RELEASE-A" org="springframework" name="spring" conf="skeleton->spring-orm" />
-    <dependency rev="3.0.1.RELEASE-A" org="springframework" name="spring" conf="skeleton->spring-transaction" />
-    <dependency rev="3.0.1.RELEASE-A" org="springframework" name="spring" conf="skeleton->spring-web" />
-    <dependency rev="1.6.2" org="ehcache" name="ehcache" conf="skeleton->*" />
-
-    <dependency rev="r09" org="google" name="guava" conf="default->default" />
+    <dependency rev="4.4" org="junit" name="junit" conf="impl-test->default"/>
   </dependencies>
 </ivy-module>

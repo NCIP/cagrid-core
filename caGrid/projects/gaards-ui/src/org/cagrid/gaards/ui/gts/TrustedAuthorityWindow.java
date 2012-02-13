@@ -601,7 +601,7 @@ public class TrustedAuthorityWindow extends ApplicationComponent {
                 certificatePanel.clearCertificate();
                 crlPanel.clearCRL();
                 certificatePanel.setCertificate(certificate);
-                this.getTrustedAuthorityName().setText(certificate.getSubjectX500Principal().getName());
+                this.getTrustedAuthorityName().setText(certificate.getSubjectDN().getName());
             } catch (Exception ex) {
                 ErrorDialog.showError(ex);
                 log.error(ex, ex);

@@ -10,5 +10,4 @@
 			DataSources, including DataSources that implement Connection and Statement Pooling, as
 			described by the jdbc3 spec and jdbc2 std extension.</description>
 	</info>
-	
 </ivy-module>

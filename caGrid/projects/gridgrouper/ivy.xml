@@ -66,18 +66,18 @@
       transitive="false" />
 
     <!-- Specific caGrid Service Dependencies -->
-    <!-- Added this as there are CA-oriented ant targets which need it; the service doesn't seem to require it -->
+    <!-- Added this as there are CA-oritented ant targets which need it; the service doesn't seem to require it -->
     <dependency rev="latest.integration" org="caGrid" name="gaards-core" conf="service->default"/>
 
-    <!-- External Dependencies -->
-    <dependency rev="1.1" org="jdom" name="jdom" conf="service->*"/>
+    <!-- Extenernal Dependencies -->
+    <dependency rev="1.0" org="jdom" name="jdom" conf="service->*"/>
     <dependency rev="1.1" org="mobius" name="mobius" conf="service->common-client,tools"/>        
     <dependency rev="1.1.0.1" org="internet2" name="grouper" conf="service->default;client->minimal"/>
-    <dependency rev="4.+" org="junit" name="junit" conf="impl-test->default"/>
+    <dependency rev="4.4" org="junit" name="junit" conf="impl-test->default"/>
     <!-- OVERRIDE NOTE: these are overrides from grouper's dependencies, to newer backwards compatible
       versions, more similar to what other project's are using-->
-    <dependency rev="2.2" org="apache" name="commons-lang" conf="service->*"/>
-    <dependency rev="1.2.+" org="apache" name="commons-dbcp" conf="service->*"/>
+    <dependency rev="2.1" org="apache" name="commons-lang" conf="service->*"/>
+    <dependency rev="1.2.2" org="apache" name="commons-dbcp" conf="service->*"/>
     <!-- END OVERRIDE NOTE: -->
 
   </dependencies>

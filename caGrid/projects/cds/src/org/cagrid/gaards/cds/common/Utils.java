@@ -61,8 +61,8 @@ public class Utils {
 	public static X509Certificate[] toCertificateArray(CertificateChain chain)
 			throws Exception {
 		if (chain != null) {
-			org.cagrid.gaards.cds.common.X509Certificate[] certs = 
-			    chain.getX509Certificate();
+			org.cagrid.gaards.cds.common.X509Certificate[] certs = chain
+					.getX509Certificate();
 			if (certs != null) {
 				X509Certificate[] x509 = new X509Certificate[certs.length];
 				for (int i = 0; i < certs.length; i++) {

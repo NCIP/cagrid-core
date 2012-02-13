@@ -3,6 +3,7 @@ package gov.nih.nci.cagrid.introduce.portal.modification.types;
 import gov.nih.nci.cagrid.common.portal.PortalLookAndFeel;
 import gov.nih.nci.cagrid.common.portal.validation.IconFeedbackPanel;
 import gov.nih.nci.cagrid.introduce.beans.namespace.SchemaElementType;
+import gov.nih.nci.cagrid.introduce.common.CommonTools;
 
 import java.awt.Color;
 import java.awt.Font;
@@ -20,20 +21,18 @@ import javax.swing.border.TitledBorder;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 
+import com.jgoodies.validation.Severity;
 import com.jgoodies.validation.ValidationResult;
 import com.jgoodies.validation.ValidationResultModel;
+import com.jgoodies.validation.message.SimpleValidationMessage;
 import com.jgoodies.validation.util.DefaultValidationResultModel;
+import com.jgoodies.validation.util.ValidationUtils;
 import com.jgoodies.validation.view.ValidationComponentUtils;
 
 
 public class SchemaElementTypeConfigurePanel extends JPanel {
 
-    /**
-	 * 
-	 */
-	private static final long serialVersionUID = 4027659418224723983L;
-
-	private JTextField typeText = null;
+    private JTextField typeText = null;
 
     private JTextField classNameText = null;
 

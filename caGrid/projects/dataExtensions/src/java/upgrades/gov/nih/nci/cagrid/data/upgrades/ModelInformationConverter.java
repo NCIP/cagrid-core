@@ -58,7 +58,7 @@ public class ModelInformationConverter {
         // determine project identifier
         UMLProjectIdentifer projectIdentifier = null;
         if (ModelSourceType.mms.equals(modelInfo.getSource())) {
-            projectIdentifier = getCadsrProjectIdentifier(cadsrInformationElement, serviceInfo);
+            projectIdentifier = getCadsrProjectIdentifier(cadsrInformationElement);
             status.addDescriptionLine("UML Project Identifier derived from caDSR");
         } else if (ModelSourceType.preBuilt.equals(modelInfo.getSource())) {
             projectIdentifier = new UMLProjectIdentifer();
@@ -159,7 +159,7 @@ public class ModelInformationConverter {
     }
     
     
-    private static UMLProjectIdentifer getCadsrProjectIdentifier(Element cadsrInfo, ServiceInformation serviceInfo) throws UpgradeException {
+    private static UMLProjectIdentifer getCadsrProjectIdentifier(Element cadsrInfo) throws UpgradeException {
         String projectLongName = cadsrInfo.getAttributeValue("projectLongName");
         String projectVersion = cadsrInfo.getAttributeValue("projectVersion");
         String cadsrUrl = cadsrInfo.getAttributeValue("serviceUrl");
@@ -174,21 +174,11 @@ public class ModelInformationConverter {
                 }
             }
         } catch (Exception ex) {
-	    String msg = "Error contacting caDSR (" + cadsrUrl + ") for project information\n" ;
-	    msg += "If you think this problem may be temporary, then try again later.\n";
-	    msg += "If this problem persists or is permanent then try editing the CadsrInformation element of " + serviceInfo.getIntroduceXml() + "\n";
-	    msg += "Either edit the value of the serviceUrl attribute to the URL of a working service instance that contains the model for the project\n";
-	    msg += "or remove the serviceUrl attribute to force the upgrader to use the model stored in the project directory.";
-            throw new UpgradeException(msg, ex);
+            throw new UpgradeException("Error contacting caDSR for project information: " + ex.getMessage(), ex);
         }
         if (cadsrProject == null) {
-	    String msg = "No project (" + projectLongName + " (" + projectVersion + ") found in caDSR " + cadsrUrl + "\n";
-	    msg += "Possible fixes for this problem include:\n";
-	    msg += "* Add this project's model to " + cadsrUrl + "\n";
-	    msg += "* Edit the CadsrInformation element of " + serviceInfo.getIntroduceXml() + ", setting the value its serviceUrl attribute to the URL of a service that has the model\n";
-	    msg += "* Edit the CadsrInformation element of " + serviceInfo.getIntroduceXml() + ", removing its serviceUrl attribute to force the upgrader to use the model stored in the project directory.";
-
-            throw new UpgradeException(msg);
+            throw new UpgradeException("No project (" + projectLongName 
+                + " (" + projectVersion + ") found in caDSR " + cadsrUrl);
         }
         UMLProjectIdentifer identifier = new UMLProjectIdentifer();
         identifier.setIdentifier(cadsrProject.getShortName());

@@ -152,7 +152,7 @@ public class GroupBrowser extends BaseBrowserPanel {
 
     private JButton updateMembershipRequestButton = null;
 
-    //private JButton rejectMemberButton = null;
+    private JButton rejectMemberButton = null;
 
     private JButton addMemberButton = null;
 
@@ -939,19 +939,19 @@ public class GroupBrowser extends BaseBrowserPanel {
         try {
             getMembersTable().clearTable();
             String type = (String) getMemberFilter().getSelectedItem();
-            Set<Membership> s = null;
+            Set s = null;
             if (type.equals(EFFECTIVE_MEMBERS)) {
-                s = getEffectiveMemberships();
+                s = group.getEffectiveMemberships();
             } else if (type.equals(IMMEDIATE_MEMBERS)) {
-                s = getImmediateMemberships();
+                s = group.getImmediateMemberships();
             } else if (type.equals(COMPOSITE_MEMBERS)) {
-                s = getCompositeMemberships();
+                s = group.getCompositeMemberships();
             } else if (type.equals(ALL_MEMBERS)) {
-                s = getMemberships();
+                s = group.getMemberships();
             } else {
                 throw new Exception("The member type " + type + " is unknown!!");
             }
-            Iterator<Membership> itr = s.iterator();
+            Iterator itr = s.iterator();
             while (itr.hasNext()) {
                 Membership m = (Membership) itr.next();
                 getMembersTable().addMember(m);
@@ -968,42 +968,6 @@ public class GroupBrowser extends BaseBrowserPanel {
             getMemberFilter().setEnabled(true);
 
         }
-    }
-
-
-    /**
-     * @return
-     */
-    @SuppressWarnings("unchecked")
-    private Set<Membership> getMemberships() {
-        return group.getMemberships();
-    }
-
-
-    /**
-     * @return
-     */
-    @SuppressWarnings("unchecked")
-    private Set<Membership> getCompositeMemberships() {
-        return group.getCompositeMemberships();
-    }
-
-
-    /**
-     * @return
-     */
-    @SuppressWarnings("unchecked")
-    private Set<Membership> getImmediateMemberships() {
-        return group.getImmediateMemberships();
-    }
-
-
-    /**
-     * @return
-     */
-    @SuppressWarnings("unchecked")
-    private Set<Membership> getEffectiveMemberships() {
-        return group.getEffectiveMemberships();
     }
 
 
@@ -1219,9 +1183,9 @@ public class GroupBrowser extends BaseBrowserPanel {
                     try {
 
                         getPrivilegesTable().clearTable();
-                        Map<String, GroupPrivilegeCaddy> map = new HashMap<String, GroupPrivilegeCaddy>();
-                        Set<Subject> s1 = getAdmins();
-                        Iterator<Subject> itr1 = s1.iterator();
+                        Map map = new HashMap();
+                        Set s1 = group.getAdmins();
+                        Iterator itr1 = s1.iterator();
                         while (itr1.hasNext()) {
                             Subject sub = (Subject) itr1.next();
                             GroupPrivilegeCaddy caddy = new GroupPrivilegeCaddy(sub.getId());
@@ -1229,13 +1193,13 @@ public class GroupBrowser extends BaseBrowserPanel {
                             map.put(caddy.getIdentity(), caddy);
                         }
 
-                        Set<Subject> s2 = getUpdaters();
-                        Iterator<Subject> itr2 = s2.iterator();
+                        Set s2 = group.getUpdaters();
+                        Iterator itr2 = s2.iterator();
                         while (itr2.hasNext()) {
                             Subject sub = (Subject) itr2.next();
                             GroupPrivilegeCaddy caddy = null;
                             if (map.containsKey(sub.getId())) {
-                                caddy = map.get(sub.getId());
+                                caddy = (GroupPrivilegeCaddy) map.get(sub.getId());
                             } else {
                                 caddy = new GroupPrivilegeCaddy(sub.getId());
                                 map.put(caddy.getIdentity(), caddy);
@@ -1243,13 +1207,13 @@ public class GroupBrowser extends BaseBrowserPanel {
                             caddy.setUpdate(true);
                         }
 
-                        Set<Subject> s3 = getViewers();
-                        Iterator<Subject> itr3 = s3.iterator();
+                        Set s3 = group.getViewers();
+                        Iterator itr3 = s3.iterator();
                         while (itr3.hasNext()) {
                             Subject sub = (Subject) itr3.next();
                             GroupPrivilegeCaddy caddy = null;
                             if (map.containsKey(sub.getId())) {
-                                caddy = map.get(sub.getId());
+                                caddy = (GroupPrivilegeCaddy) map.get(sub.getId());
                             } else {
                                 caddy = new GroupPrivilegeCaddy(sub.getId());
                                 map.put(caddy.getIdentity(), caddy);
@@ -1257,13 +1221,13 @@ public class GroupBrowser extends BaseBrowserPanel {
                             caddy.setView(true);
                         }
 
-                        Set<Subject> s4 = getReaders();
-                        Iterator<Subject> itr4 = s4.iterator();
+                        Set s4 = group.getReaders();
+                        Iterator itr4 = s4.iterator();
                         while (itr4.hasNext()) {
                             Subject sub = (Subject) itr4.next();
                             GroupPrivilegeCaddy caddy = null;
                             if (map.containsKey(sub.getId())) {
-                                caddy = map.get(sub.getId());
+                                caddy = (GroupPrivilegeCaddy) map.get(sub.getId());
                             } else {
                                 caddy = new GroupPrivilegeCaddy(sub.getId());
                                 map.put(caddy.getIdentity(), caddy);
@@ -1271,13 +1235,13 @@ public class GroupBrowser extends BaseBrowserPanel {
                             caddy.setRead(true);
                         }
 
-                        Set<Subject> s5 = getOptins();
-                        Iterator<Subject> itr5 = s5.iterator();
+                        Set s5 = group.getOptins();
+                        Iterator itr5 = s5.iterator();
                         while (itr5.hasNext()) {
                             Subject sub = (Subject) itr5.next();
                             GroupPrivilegeCaddy caddy = null;
                             if (map.containsKey(sub.getId())) {
-                                caddy = map.get(sub.getId());
+                                caddy = (GroupPrivilegeCaddy) map.get(sub.getId());
                             } else {
                                 caddy = new GroupPrivilegeCaddy(sub.getId());
                                 map.put(caddy.getIdentity(), caddy);
@@ -1285,13 +1249,13 @@ public class GroupBrowser extends BaseBrowserPanel {
                             caddy.setOptin(true);
                         }
 
-                        Set<Subject> s6 = getOptouts();
-                        Iterator<Subject> itr6 = s6.iterator();
+                        Set s6 = group.getOptouts();
+                        Iterator itr6 = s6.iterator();
                         while (itr6.hasNext()) {
                             Subject sub = (Subject) itr6.next();
                             GroupPrivilegeCaddy caddy = null;
                             if (map.containsKey(sub.getId())) {
-                                caddy = map.get(sub.getId());
+                                caddy = (GroupPrivilegeCaddy) map.get(sub.getId());
                             } else {
                                 caddy = new GroupPrivilegeCaddy(sub.getId());
                                 map.put(caddy.getIdentity(), caddy);
@@ -1299,9 +1263,9 @@ public class GroupBrowser extends BaseBrowserPanel {
                             caddy.setOptout(true);
                         }
 
-                        Iterator<GroupPrivilegeCaddy> itr7 = map.values().iterator();
+                        Iterator itr7 = map.values().iterator();
                         while (itr7.hasNext()) {
-                            getPrivilegesTable().addPrivilege(itr7.next());
+                            getPrivilegesTable().addPrivilege((GroupPrivilegeCaddy) itr7.next());
                         }
                         stopEvent(eid, "Loaded the privileges for " + group.getDisplayExtension() + "!!!");
                     } catch (Exception e) {
@@ -1309,55 +1273,6 @@ public class GroupBrowser extends BaseBrowserPanel {
                         ErrorDialog.showError(e);
                     }
                 }
-            }
-
-            /**
-             * @return
-             */
-            @SuppressWarnings("unchecked")
-            private Set<Subject> getOptouts() {
-                return group.getOptouts();
-            }
-
-            /**
-             * @return
-             */
-            @SuppressWarnings("unchecked")
-            private Set<Subject> getOptins() {
-                return group.getOptins();
-            }
-
-            /**
-             * @return
-             */
-            @SuppressWarnings("unchecked")
-            private Set<Subject> getViewers() {
-                return group.getViewers();
-            }
-
-            /**
-             * @return
-             */
-            @SuppressWarnings("unchecked")
-            private Set<Subject> getReaders() {
-                return group.getReaders();
-            }
-
-            /**
-             * @return
-             */
-            @SuppressWarnings("unchecked")
-            private Set<Subject> getUpdaters() {
-                return group.getUpdaters();
-            }
-
-            /**
-             * @return
-             */
-            @SuppressWarnings("unchecked")
-            private Set<Subject> getAdmins() {
-                Set<Subject> s1 = group.getAdmins();
-                return s1;
             }
         };
         try {
@@ -1672,7 +1587,7 @@ public class GroupBrowser extends BaseBrowserPanel {
         	joinMemberButton = new JButton();
         	joinMemberButton.setText("Request Membership");
         	joinMemberButton.setEnabled(membershipRequestsEnabled);
-            //final GroupBrowser gp = this;
+            final GroupBrowser gp = this;
             joinMemberButton.addActionListener(new java.awt.event.ActionListener() {
                 public void actionPerformed(java.awt.event.ActionEvent e) {
                     Runner runner = new Runner() {

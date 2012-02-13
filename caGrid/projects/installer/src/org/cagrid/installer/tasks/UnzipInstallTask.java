@@ -70,9 +70,10 @@ public class UnzipInstallTask extends BasicTask {
 
         File installDir = new File(model.getProperty(this.installDirPathProp));
         File home = new File(installDir, model.getProperty(this.dirNameProp));
-        if(home.exists()) {
-        	deleteDir(home);
-        	home.mkdir();
+        if(home.exists()) 
+		{
+        		deleteDir(home);
+			home.mkdir();
 		}
         model.setProperty(this.homeProp, home.getAbsolutePath());
 

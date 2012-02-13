@@ -16,10 +16,6 @@ import javax.swing.event.DocumentListener;
 
 public class ServiceTypeConfigurePanel extends JPanel {
 
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 2860421733752906979L;
 	private JLabel namespaceLabel = null;
 	private JLabel packageNameLabel = null;
 	private JLabel locationLabel = null;

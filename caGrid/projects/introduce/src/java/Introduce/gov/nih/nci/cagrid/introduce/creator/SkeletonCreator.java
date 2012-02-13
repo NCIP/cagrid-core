@@ -54,7 +54,7 @@ public class SkeletonCreator extends Task {
         Thread.currentThread().setContextClassLoader(this.getClass().getClassLoader());
 
         Properties properties = new Properties();
-        putAllProjectProperties(properties);
+        properties.putAll(this.getProject().getProperties());
 
         File baseDirectory = new File(properties.getProperty(IntroduceConstants.INTRODUCE_SKELETON_DESTINATION_DIR));
 
@@ -220,13 +220,4 @@ public class SkeletonCreator extends Task {
 
         // process the extensions
     }
-
-
-	/**
-	 * @param properties
-	 */
-	@SuppressWarnings("unchecked")
-	private void putAllProjectProperties(Properties properties) {
-		properties.putAll(this.getProject().getProperties());
-	}
 }

@@ -72,7 +72,6 @@ public class DataServiceClient extends ServiceSecurityClient implements DataServ
 
 
     private DataServicePortType createPortType() throws RemoteException {
-
         DataServiceAddressingLocator locator = new DataServiceAddressingLocator();
         // attempt to load our context sensitive wsdd file
         InputStream resourceAsStream = getClass().getResourceAsStream("client-config.wsdd");
@@ -125,6 +124,7 @@ public class DataServiceClient extends ServiceSecurityClient implements DataServ
     }
 
 
+    @SuppressWarnings("unused")
     public static void main(String[] args) {
         System.out.println("Running the Grid Service Client");
         try {

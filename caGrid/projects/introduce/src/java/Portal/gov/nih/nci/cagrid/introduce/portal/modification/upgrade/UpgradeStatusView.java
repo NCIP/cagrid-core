@@ -21,11 +21,7 @@ import org.cagrid.grape.GridApplication;
 
 public class UpgradeStatusView extends JDialog {
 
-    /**
-	 * 
-	 */
-	private static final long serialVersionUID = 5361211594407524280L;
-	public static final int PROCEED = 1;
+    public static final int PROCEED = 1;
     public static final int ROLL_BACK = 2;
     public static final int CANCEL = 3;
 

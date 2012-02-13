@@ -38,9 +38,8 @@ import org.globus.gsi.GlobusCredential;
  * @author <A HREF="MAILTO:hastings@bmi.osu.edu">Shannon Hastings</A>
  * @author <A HREF="MAILTO:ervin@bmi.osu.edu">David W. Ervin</A>
  */
-@SuppressWarnings("deprecation")
 public class GetDelegatedCredentialWindow extends ApplicationComponent {
-	private static Log log = LogFactory.getLog(GetDelegatedCredentialWindow.class);
+    private static Log log = LogFactory.getLog(GetDelegatedCredentialWindow.class);
 
     private static final long serialVersionUID = 1L;
 
@@ -101,7 +100,6 @@ public class GetDelegatedCredentialWindow extends ApplicationComponent {
                 getProgressPanel().stopProgress("Error");
                 return;
             }
-
             RunnerGroup grp = new RunnerGroup();
             List<CDSHandle> services = CDSUIUtils.getCDSServices();
             for (int i = 0; i < services.size(); i++) {
@@ -120,7 +118,6 @@ public class GetDelegatedCredentialWindow extends ApplicationComponent {
                 }
             }
             getProgressPanel().stopProgress(getDelegatedCredentials().getRowCount() + " credential(s) found.");
-
         } catch (Exception ex) {
             log.error(ex, ex);
             getProgressPanel().stopProgress("Error");
@@ -358,13 +355,11 @@ public class GetDelegatedCredentialWindow extends ApplicationComponent {
             CredentialManager.getInstance().addCredential(entry);
             dispose();
             GridApplication.getContext().addApplicationComponent(new CredentialManagerComponent(entry), 800, 500);
-
         } catch (Exception e) {
             getGetButton().setEnabled(true);
             ErrorDialog.showError(e);
             FaultUtil.logFault(log, e);
         }
-
     }
 
 
@@ -407,5 +402,4 @@ public class GetDelegatedCredentialWindow extends ApplicationComponent {
         }
         return titlePanel;
     }
-
 }

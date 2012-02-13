@@ -45,6 +45,14 @@
 
 
 	<!-- ============================================================== -->
+	<!-- Pre Deploy Globus                                              -->
+	<!-- ============================================================== -->
+	<target name="preDeployGlobus">
+		<fail message="The Federated Query Processor service requires the caGrid Transfer service to be installed, and this cannot be deployed to Globus.  Please deploy to Tomcat or JBoss." />
+	</target>
+
+
+	<!-- ============================================================== -->
 	<!-- Pre Deploy JBOSS                                               -->
 	<!-- ============================================================== -->
 	<target name="preDeployJBoss" depends="checkTransferDeployed, copyExtLibs, copyDcqlSchemas">
@@ -56,6 +64,14 @@
 	<!-- Post UnDeploy Tomcat                                           -->
 	<!-- ============================================================== -->
 	<target name="postUndeployTomcat">
+
+	</target>
+
+
+	<!-- ============================================================== -->
+	<!-- Post UnDeploy Globus                                           -->
+	<!-- ============================================================== -->
+	<target name="postUndeployGlobus">
 
 	</target>
 

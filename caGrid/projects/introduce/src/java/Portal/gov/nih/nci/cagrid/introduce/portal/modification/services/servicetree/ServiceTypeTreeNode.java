@@ -66,11 +66,7 @@ import javax.swing.tree.DefaultTreeModel;
  *          Exp $
  */
 public class ServiceTypeTreeNode extends DefaultMutableTreeNode implements PopupTreeNode {
-    /**
-	 * 
-	 */
-	private static final long serialVersionUID = 2263236443949256872L;
-	private ServiceType serviceType;
+    private ServiceType serviceType;
     private ServiceInformation info;
     private ServicePopUpMenu popUpMenu;
     private DefaultTreeModel model;

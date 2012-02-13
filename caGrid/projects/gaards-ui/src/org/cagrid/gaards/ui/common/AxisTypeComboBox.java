@@ -25,16 +25,16 @@ public abstract class AxisTypeComboBox extends JComboBox {
 	
 	public static String ANY = "Any";
 
-	private List<Object> list;
-	private Class<?> c;
+	private List list;
+	private Class c;
 	private boolean any;
 
-	public AxisTypeComboBox(Class<?> c) {
+	public AxisTypeComboBox(Class c) {
 		this(c, false);
 	}
 
-	public AxisTypeComboBox(Class<?> c,boolean any) {
-		list = new ArrayList<Object>();
+	public AxisTypeComboBox(Class c,boolean any) {
+		list = new ArrayList();
 		this.c = c;
 		this.any = any;
 

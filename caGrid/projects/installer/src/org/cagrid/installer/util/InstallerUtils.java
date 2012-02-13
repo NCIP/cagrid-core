@@ -338,7 +338,7 @@ public class InstallerUtils {
 
 
     public static boolean checkGlobusVersion(String home) {
-        return home.indexOf("4.0.3-sha256") != -1;
+        return home.indexOf("4.0.3") != -1;
     }
 
 

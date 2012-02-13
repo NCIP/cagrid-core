@@ -5,9 +5,6 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 
-import javax.naming.InvalidNameException;
-import javax.naming.ldap.LdapName;
-
 import org.cagrid.gaards.authentication.BasicAuthentication;
 import org.cagrid.gaards.dorian.common.Lifetime;
 import org.cagrid.gaards.dorian.idp.BasicAuthCredential;
@@ -27,29 +24,16 @@ public class Utils {
     }
 
 
-    private static LdapName getHostCertificateSubjectPrefix(X509Certificate cacert) {
-        LdapName caPrefix = null;
-		try {
-			caPrefix = new LdapName(cacert.getSubjectX500Principal().getName());
-	        caPrefix.remove(caPrefix.size() - 1);
-	        caPrefix.add("OU=Services");
-		} catch (InvalidNameException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-        return caPrefix;
+    public static String getHostCertificateSubjectPrefix(X509Certificate cacert) {
+        String caSubject = cacert.getSubjectDN().getName();
+        int caindex = caSubject.lastIndexOf(",");
+        String caPreSub = caSubject.substring(0, caindex);
+        return caPreSub + ",OU=Services,CN=";
     }
 
 
     public static String getHostCertificateSubject(X509Certificate cacert, String host) {
-    	LdapName hostSubjectDN = getHostCertificateSubjectPrefix(cacert);
-    	try {
-			hostSubjectDN.add("CN=" + host);
-		} catch (InvalidNameException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-        return hostSubjectDN.toString();
+        return getHostCertificateSubjectPrefix(cacert) + host;
     }
 
 

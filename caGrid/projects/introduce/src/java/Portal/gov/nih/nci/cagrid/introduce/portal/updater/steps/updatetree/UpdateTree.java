@@ -21,12 +21,7 @@ import javax.swing.tree.TreePath;
 
 public class UpdateTree extends JTree {
 
-    /**
-	 * Hash code for serialization
-	 */
-	private static final long serialVersionUID = -5012430280698543691L;
-
-	DefaultTreeModel model = null;
+    DefaultTreeModel model = null;
 
     NamespacesType namespaces;
 
@@ -51,8 +46,8 @@ public class UpdateTree extends JTree {
 
     public SoftwareType getNonInstalledSelectedSoftware() {
         SoftwareType software = new SoftwareType();
-        List<IntroduceType> introduceInstalls = new ArrayList<IntroduceType>();
-        List<ExtensionType> extensionInstalls = new ArrayList<ExtensionType>();
+        List introduceInstalls = new ArrayList();
+        List extensionInstalls = new ArrayList();
 
         int introduceNodeCount = root.getChildCount();
         for (int i = 0; i < introduceNodeCount; i++) {
@@ -193,8 +188,8 @@ public class UpdateTree extends JTree {
     }
 
 
-    public List<DefaultMutableTreeNode> getSelectedNodes() {
-        List<DefaultMutableTreeNode> selected = new LinkedList<DefaultMutableTreeNode>();
+    public List getSelectedNodes() {
+        List selected = new LinkedList();
         TreePath[] currentSelection = this.getSelectionPaths();
         if (currentSelection != null) {
             for (int i = 0; i < currentSelection.length; i++) {
@@ -231,8 +226,7 @@ public class UpdateTree extends JTree {
         // Traverse children
         TreeNode node = (TreeNode) parent.getLastPathComponent();
         if (node.getChildCount() >= 0) {
-            for (@SuppressWarnings("rawtypes")
-			java.util.Enumeration e = node.children(); e.hasMoreElements();) {
+            for (java.util.Enumeration e = node.children(); e.hasMoreElements();) {
                 TreeNode n = (TreeNode) e.nextElement();
                 TreePath path = parent.pathByAddingChild(n);
                 expandAll(path, expand);

@@ -29,7 +29,7 @@ import org.w3c.dom.Node;
  * authorization requirements placed on each method call.  Each method will either return
  * upon a successful authorization or will throw an exception upon a failed authorization.
  * 
- * @created by Introduce Toolkit version 1.5
+ * @created by Introduce Toolkit version 1.4.1
  * 
  */
 public class AuthenticationServiceAuthorization implements PDP {
@@ -78,9 +78,9 @@ public class AuthenticationServiceAuthorization implements PDP {
 	public void authorizeQueryResourceProperties(Subject peerSubject, MessageContext context, QName operation) throws AuthorizationException {
 		
 	}
-	   
+	   				
 	public void authorizeGetLockedOutUsers(Subject peerSubject, MessageContext context, QName operation) throws AuthorizationException {
-	
+		
 	}
 	   
 	

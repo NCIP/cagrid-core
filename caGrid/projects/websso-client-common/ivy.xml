@@ -32,9 +32,8 @@
 	<dependency rev="${target.grid}" org="caGrid" name="target_grid" conf="target_grid->urls,trust,syncdesc" />
 
     <!-- External Dependencies -->
-    <dependency rev="3.0.1.RELEASE-A" org="springframework" name="spring" conf="default->full"/>
-	<dependency rev="3.0.1.RELEASE" org="springframework" name="security" conf="default->spring-security-config"/>
-    <dependency rev="2.0.+" org="globus" name="jglobus" conf="default->default"/>
-    <dependency rev="4.+" org="junit" name="junit" conf="impl-test->default"/>
+    <dependency rev="2.5.5" org="springframework" name="spring" conf="default->full"/>
+    <dependency rev="syncgts-patched-4.0.3" org="globus" name="jcog" conf="default->default"/>
+    <dependency rev="4.4" org="junit" name="junit" conf="impl-test->default"/>
   </dependencies>
 </ivy-module>

@@ -15,6 +15,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
+import org.cagrid.grape.ApplicationComponent;
 import org.cagrid.grape.utils.CompositeErrorDialog;
 
 
@@ -29,10 +30,6 @@ import org.cagrid.grape.utils.CompositeErrorDialog;
 
 public class LoadProxyFromFileSystemWindow extends JDialog {
 
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 1476027044422529594L;
 	private JPanel jContentPane = null;
 	private JPanel mainPanel = null;
 	private JLabel jLabel = null;

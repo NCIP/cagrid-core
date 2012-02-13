@@ -1,11 +1,11 @@
 #Introduce Properties
-#Tue Jul 19 15:00:10 EDT 2011
+#Mon Dec 19 13:01:58 EST 2011
 introduce.skeleton.services.list=TransferService,TransferServiceContext
 introduce.skeleton.extensions=cagrid_metadata
-introduce.skeleton.timestamp=1231793952902
+introduce.skeleton.timestamp=1324317030894
 introduce.skeleton.service.name=TransferService
 introduce.skeleton.resource.options=main,singleton,identifiable
-introduce.skeleton.destination.dir=/Users/jgeorge/Documents/Workspaces/cagrid-1.5/core/caGrid/projects/transfer
+introduce.skeleton.destination.dir=/Users/ervin/Projects/caGrid/caGrid-1_4_1_release/core/caGrid/projects/transfer
 introduce.skeleton.namespace.domain=http\://transfer.cagrid.org/TransferService
-introduce.soap.binding.excludes=\ 
 introduce.ns.excludes=\ -x gme\://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.service -x gme\://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.security -x gme\://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common -x gme\://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata
+introduce.soap.binding.excludes=\ 

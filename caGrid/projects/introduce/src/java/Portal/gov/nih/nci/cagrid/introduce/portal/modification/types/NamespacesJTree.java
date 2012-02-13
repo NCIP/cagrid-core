@@ -15,10 +15,6 @@ import javax.swing.tree.TreePath;
 
 
 public class NamespacesJTree extends JTree {
-	/**
-	 * Hash code for serialization
-	 */
-	private static final long serialVersionUID = -7683929715696031660L;
 	NamespacesTypeTreeNode root;
 	DefaultTreeModel model;
 	NamespacesType namespaces;
@@ -95,8 +91,8 @@ public class NamespacesJTree extends JTree {
 	}
 
 
-	public List<DefaultMutableTreeNode> getSelectedNodes() {
-		List<DefaultMutableTreeNode> selected = new LinkedList<DefaultMutableTreeNode>();
+	public List getSelectedNodes() {
+		List selected = new LinkedList();
 		TreePath[] currentSelection = this.getSelectionPaths();
 		if (currentSelection != null) {
 			for (int i = 0; i < currentSelection.length; i++) {
@@ -155,9 +151,8 @@ public class NamespacesJTree extends JTree {
 		// Traverse children
 		TreeNode node = (TreeNode) parent.getLastPathComponent();
 		if (node.getChildCount() >= 0) {
-			for (@SuppressWarnings("unchecked")
-			java.util.Enumeration<TreeNode> e = node.children(); e.hasMoreElements();) {
-				TreeNode n = e.nextElement();
+			for (java.util.Enumeration e = node.children(); e.hasMoreElements();) {
+				TreeNode n = (TreeNode) e.nextElement();
 				TreePath path = parent.pathByAddingChild(n);
 				expandAll(path, expand);
 			}
@@ -193,9 +188,8 @@ public class NamespacesJTree extends JTree {
 		// Traverse children
 		TreeNode node = (TreeNode) parent.getLastPathComponent();
 		if (node.getChildCount() >= 0) {
-			for (@SuppressWarnings("unchecked")
-			java.util.Enumeration<TreeNode> e = node.children(); e.hasMoreElements();) {
-				TreeNode n = e.nextElement();
+			for (java.util.Enumeration e = node.children(); e.hasMoreElements();) {
+				TreeNode n = (TreeNode) e.nextElement();
 				NamespaceTypeTreeNode nsNode = (NamespaceTypeTreeNode) n;
 				NamespaceType nsType = (NamespaceType) nsNode.getUserObject();
 				if (nsType.getNamespace().equals(type.getNamespace())) {

@@ -36,11 +36,11 @@ public class GridGroupersTreeNode extends GridGrouperBaseTreeNode {
 	
 	private static final long serialVersionUID = 1L;
 
-	private Map<String, StemTreeNode> groupers;
+	private Map groupers;
 
 	public GridGroupersTreeNode(GridGrouperTree tree) {
 		super(tree);
-		this.groupers = new HashMap<String, StemTreeNode>();
+		this.groupers = new HashMap();
 	}
 
 	public synchronized void addGridGrouper(GridGrouper grouper) {
@@ -84,7 +84,7 @@ public class GridGroupersTreeNode extends GridGrouperBaseTreeNode {
 	}
 	
 	public StemTreeNode getStemTreeNode(GridGrouper grouper) {
-		return groupers.get(grouper.getName());
+		return (StemTreeNode) groupers.get(grouper.getName());
 	}
 
 	public synchronized void removeAllGridGroupers() {
@@ -93,12 +93,12 @@ public class GridGroupersTreeNode extends GridGrouperBaseTreeNode {
 	}
 
 	public synchronized void refresh() {
-		Map<String, StemTreeNode> old = groupers;
-		groupers = new HashMap<String, StemTreeNode>();
+		Map old = groupers;
+		groupers = new HashMap();
 		this.removeAllChildren();
-		Iterator<StemTreeNode> itr = old.values().iterator();
+		Iterator itr = old.values().iterator();
 		while (itr.hasNext()) {
-			final StemTreeNode node = itr.next();
+			final StemTreeNode node = (StemTreeNode) itr.next();
 			Runner runner = new Runner() {
 				public void execute() {
 					addGridGrouper(node.getGridGrouper());

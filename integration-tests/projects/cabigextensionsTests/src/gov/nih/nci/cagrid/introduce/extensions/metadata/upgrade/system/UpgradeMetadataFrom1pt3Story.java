@@ -12,6 +12,15 @@ import gov.nih.nci.cagrid.testing.system.haste.Story;
 import java.io.File;
 import java.util.Vector;
 
+
+/**
+ * MetadataUpgradeTestCase NOTE:Need to be run from Introduce directory
+ * 
+ * @author oster
+ * @created Apr 9, 2007 3:19:51 PM
+ * @version $Id: multiscaleEclipseCodeTemplates.xml,v 1.1 2007/03/02 14:35:01
+ *          dervin Exp $
+ */
 public class UpgradeMetadataFrom1pt3Story extends Story {
 
     protected static final File PROJECT_DIR = new File(".." + File.separator + ".." + File.separator + ".."
@@ -34,7 +43,7 @@ public class UpgradeMetadataFrom1pt3Story extends Story {
 
     @Override
     public String getName() {
-        return "Metadata Upgrade Story (1-3 to 1-5)";
+        return "Metadata Upgrade Story (1-3 to 1-4)";
     }
 
 

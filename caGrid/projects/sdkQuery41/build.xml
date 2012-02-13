@@ -309,13 +309,35 @@
 			</fileset>
 			<fileset dir="${ext.local-client.lib.dir}" >
 				<include name="sdk-client-framework.jar"/>
-				<include name="dom4j-1.4.jar"/>
 			</fileset>
 			<!-- copy the dependencies -->
 			<fileset dir="${lib.dir}">
 				<include name="*.jar" />
 			</fileset>
 		</copy>
+		<!-- copy sdk jars the style uses -->
+		<!-- 
+		<for list="${style.sdk.remote.lib.names}" parallel="false" param="sdk.lib.name" trim="true">
+			<sequential>
+				<echo message="copying required jar from caCORE SDK 4.1: @{sdk.lib.name}" />
+				<copy todir="${style.dest.dir}/lib">
+					<fileset dir="${ext.remote-client.lib.dir}">
+						<include name="@{sdk.lib.name}" />
+					</fileset>
+				</copy>
+			</sequential>
+		</for>
+		<for list="${style.sdk.local.lib.names}" parallel="false" param="sdk.lib.name" trim="true">
+			<sequential>
+				<echo message="copying required jar from caCORE SDK 4.1: @{sdk.lib.name}" />
+				<copy todir="${style.dest.dir}/lib">
+					<fileset dir="${ext.local-client.lib.dir}">
+						<include name="@{sdk.lib.name}"/>
+					</fileset>
+				</copy>
+			</sequential>
+		</for>
+		-->
 	</target>
 
 

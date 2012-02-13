@@ -17,7 +17,7 @@
 
    <publications>
 		<artifact name="castor-1.3" conf="default,full" type="jar"/>
-      	<artifact name="castor-1.3-core" conf="core,full" type="jar"/>
+      <artifact name="castor-1.3-core" conf="core,full" type="jar"/>
 		<artifact name="castor-1.3-anttasks" conf="full" type="jar"/>
 		<artifact name="castor-1.3-ddlgen" conf="full" type="jar"/>
 		<artifact name="castor-1.3-xml" conf="full" type="jar"/>

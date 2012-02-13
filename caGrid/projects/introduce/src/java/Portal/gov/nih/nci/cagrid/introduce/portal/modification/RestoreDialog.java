@@ -26,12 +26,7 @@ import org.cagrid.grape.utils.ErrorDialog;
 
 public class RestoreDialog extends JDialog {
 
-    /**
-	 * Hash code for serialization
-	 */
-	private static final long serialVersionUID = -4278423934775129090L;
-
-	private JPanel jContentPane = null;
+    private JPanel jContentPane = null;
 
     private JComboBox backupsComboBox = null;
 

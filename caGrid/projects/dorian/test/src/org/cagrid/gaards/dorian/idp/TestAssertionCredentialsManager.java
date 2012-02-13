@@ -16,8 +16,6 @@ import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.Iterator;
 
-import javax.naming.ldap.LdapName;
-
 import junit.framework.TestCase;
 
 import org.cagrid.gaards.dorian.ca.CertificateAuthority;
@@ -30,6 +28,13 @@ import org.cagrid.gaards.pki.KeyUtil;
 import org.cagrid.gaards.saml.encoding.SAMLUtils;
 import org.cagrid.tools.database.Database;
 
+/**
+ * @author <A href="mailto:langella@bmi.osu.edu">Stephen Langella </A>
+ * @author <A href="mailto:oster@bmi.osu.edu">Scott Oster </A>
+ * @author <A href="mailto:hastings@bmi.osu.edu">Shannon Hastings </A>
+ * @version $Id: ArgumentManagerTable.java,v 1.2 2004/10/15 16:35:16 langella
+ *          Exp $
+ */
 public class TestAssertionCredentialsManager extends TestCase {
 
 	private Database db;
@@ -58,10 +63,9 @@ public class TestAssertionCredentialsManager extends TestCase {
 		} catch (InvalidCryptoException ex) {
 
 		}
-		assertEquals(CertUtil.getSubjectDN(cm.getIdPCertificate()),
-		    saml.getIssuer());
-		@SuppressWarnings("unchecked")
-		Iterator<SAMLStatement> itr = saml.getStatements();
+		assertEquals(cm.getIdPCertificate().getSubjectDN().toString(), saml
+				.getIssuer());
+		Iterator itr = saml.getStatements();
 		int count = 0;
 		boolean authFound = false;
 		while (itr.hasNext()) {
@@ -118,9 +122,9 @@ public class TestAssertionCredentialsManager extends TestCase {
 			X509Certificate cert = cm.getIdPCertificate();
 			assertNotNull(cert);
 			assertNotNull(cm.getIdPKey());
-			LdapName expectedSub = (LdapName) Utils.CA_SUBJECT_PREFIX.clone();
-			expectedSub.add("CN=" + AssertionCredentialsManager.CERT_DN);
-			assertEquals(expectedSub.toString(), CertUtil.getSubjectDN(cert));
+			String expectedSub = Utils.CA_SUBJECT_PREFIX + ",CN="
+					+ AssertionCredentialsManager.CERT_DN;
+			assertEquals(expectedSub, cert.getSubjectDN().toString());
 			SAMLAssertion saml = cm.getAuthenticationAssertion(TEST_UID,
 					TEST_FIRST_NAME, TEST_LAST_NAME, TEST_EMAIL);
 			verifySAMLAssertion(saml, cm);
@@ -129,7 +133,7 @@ public class TestAssertionCredentialsManager extends TestCase {
 			verifySAMLAssertion(saml2, cm);
 		} catch (Exception e) {
 			FaultUtil.printFault(e);
-			fail();
+			assertTrue(false);
 		} finally {
 			try {
 				cm.clearDatabase();
@@ -146,19 +150,19 @@ public class TestAssertionCredentialsManager extends TestCase {
 			X509Certificate cert = cm.getIdPCertificate();
 			assertNotNull(cert);
 			assertNotNull(cm.getIdPKey());
-			LdapName expectedSub = (LdapName) Utils.CA_SUBJECT_PREFIX.clone();
-			expectedSub.add("CN=" + AssertionCredentialsManager.CERT_DN);
-			assertEquals(expectedSub.toString(), CertUtil.getSubjectDN(cert));
+			String expectedSub = Utils.CA_SUBJECT_PREFIX + ",CN="
+					+ AssertionCredentialsManager.CERT_DN;
+			assertEquals(expectedSub, cert.getSubjectDN().toString());
 
-			String subject = CertUtil.getSubjectDN(cert);
+			String subject = cert.getSubjectDN().toString();
 			KeyPair pair = KeyUtil.generateRSAKeyPair1024();
 			GregorianCalendar cal = new GregorianCalendar();
 			Date start = cal.getTime();
 			cal.add(Calendar.SECOND, 6);
 			Date end = cal.getTime();
 			cm.deleteAssertingCredentials();
-			X509Certificate shortCert = ca.signCertificate(subject, 
-			    pair.getPublic(), start, end);
+			X509Certificate shortCert = ca.signCertificate(subject, pair
+							.getPublic(), start, end);
 
 			cm.storeCredentials(shortCert, pair.getPrivate());
 
@@ -196,7 +200,7 @@ public class TestAssertionCredentialsManager extends TestCase {
 
 		} catch (Exception e) {
 			FaultUtil.printFault(e);
-			fail();
+			assertTrue(false);
 		} finally {
 			try {
 				cm.clearDatabase();
@@ -217,19 +221,19 @@ public class TestAssertionCredentialsManager extends TestCase {
 			X509Certificate cert = cm.getIdPCertificate();
 			assertNotNull(cert);
 			assertNotNull(cm.getIdPKey());
-			LdapName expectedSub = (LdapName) Utils.CA_SUBJECT_PREFIX.clone();
-			expectedSub.add("CN=" + AssertionCredentialsManager.CERT_DN);
-			assertEquals(expectedSub.toString(), CertUtil.getSubjectDN(cert));
+			String expectedSub = Utils.CA_SUBJECT_PREFIX + ",CN="
+					+ AssertionCredentialsManager.CERT_DN;
+			assertEquals(expectedSub, cert.getSubjectDN().toString());
 
-			String subject = CertUtil.getSubjectDN(cert);
+			String subject = cert.getSubjectDN().toString();
 			KeyPair pair = KeyUtil.generateRSAKeyPair1024();
 			GregorianCalendar cal = new GregorianCalendar();
 			Date start = cal.getTime();
 			cal.add(Calendar.SECOND, 2);
 			Date end = cal.getTime();
 			cm.deleteAssertingCredentials();
-			X509Certificate shortCert = ca.signCertificate(subject, 
-			    pair.getPublic(), start, end);
+			X509Certificate shortCert = ca.signCertificate(subject, pair
+							.getPublic(), start, end);
 			cm.storeCredentials(shortCert, pair.getPrivate());
 			if (cert.equals(shortCert)) {
 				assertTrue(false);
@@ -240,14 +244,14 @@ public class TestAssertionCredentialsManager extends TestCase {
 
 			try {
 				cm.getIdPCertificate();
-				fail();
+				assertTrue(false);
 			} catch (DorianInternalFault fault) {
 
 			}
 
 		} catch (Exception e) {
 			FaultUtil.printFault(e);
-			fail();
+			assertTrue(false);
 		} finally {
 			try {
 				cm.clearDatabase();
@@ -266,7 +270,7 @@ public class TestAssertionCredentialsManager extends TestCase {
 
 		} catch (Exception e) {
 			FaultUtil.printFault(e);
-			fail();
+			assertTrue(false);
 		}
 	}
 
@@ -276,7 +280,7 @@ public class TestAssertionCredentialsManager extends TestCase {
 			assertEquals(0, db.getUsedConnectionCount());
 		} catch (Exception e) {
 			FaultUtil.printFault(e);
-			fail();
+			assertTrue(false);
 		}
 	}
 }

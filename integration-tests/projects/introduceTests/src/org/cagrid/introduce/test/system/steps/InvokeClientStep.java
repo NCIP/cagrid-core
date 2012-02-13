@@ -1,6 +1,5 @@
 package org.cagrid.introduce.test.system.steps;
 
-import java.io.File;
 import java.util.List;
 
 import gov.nih.nci.cagrid.introduce.common.AntTools;
@@ -28,22 +27,22 @@ public class InvokeClientStep extends BaseStep {
     public void runStep() throws Throwable {
         System.out.println("Invoking a simple methods implementation.");
 
-        List<String> cmd = AntTools.getAntCommand("runClient", tci.getDir());
+        List<String> command = AntTools.getAntCommand("runClient", tci.getDir());
         String urlArg = "-Dservice.url=";
         if (container.getProperties().isSecure()) {
             urlArg += "https://";
-            String certdir = "-DX509_CERT_DIR=" + container.getProperties().getContainerDirectory().getAbsolutePath() + File.separator + "certificates" + File.separator + "ca";
-            cmd.add(certdir);
         } else {
             urlArg += "http://";
         }
-        urlArg += "localhost:" + container.getProperties().getPortPreference().getPort() + TEST_URL_SUFFIX + tci.getName();
-        cmd.add(urlArg);
+        urlArg += "localhost:" + container.getProperties().getPortPreference().getPort() + TEST_URL_SUFFIX
+            + tci.getName();
 
-        Process p = CommonTools.createAndOutputProcess(cmd);
+        command.add(urlArg);
+
+        Process p = CommonTools.createAndOutputProcess(command);
         p.waitFor();
 
-        assertTrue("ant runClient did not successfully complete!", p.exitValue() == 0);
+        assertTrue(p.exitValue() == 0);
     }
 
 }

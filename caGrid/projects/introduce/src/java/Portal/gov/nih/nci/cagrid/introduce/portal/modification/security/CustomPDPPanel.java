@@ -28,10 +28,6 @@ import javax.swing.border.TitledBorder;
 public class CustomPDPPanel extends JPanel {
 
 
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = -3344322548671967451L;
 	private JTextField pdpAuthField = null;
 	private JLabel pdpChainLabel = null;
 

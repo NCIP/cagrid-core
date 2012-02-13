@@ -45,7 +45,9 @@ package gov.nih.nci.cagrid.introduce.portal.modification.services.servicetree;
 
 import gov.nih.nci.cagrid.introduce.IntroduceConstants;
 import gov.nih.nci.cagrid.introduce.beans.method.MethodType;
+import gov.nih.nci.cagrid.introduce.beans.method.MethodsType;
 import gov.nih.nci.cagrid.introduce.beans.service.ServiceType;
+import gov.nih.nci.cagrid.introduce.common.CommonTools;
 import gov.nih.nci.cagrid.introduce.common.SpecificServiceInformation;
 import gov.nih.nci.cagrid.introduce.portal.common.IntroduceLookAndFeel;
 import gov.nih.nci.cagrid.introduce.portal.common.PopupTreeNode;
@@ -67,10 +69,6 @@ import javax.swing.tree.DefaultTreeModel;
  *          Exp $
  */
 public class MethodsTypeTreeNode extends DefaultMutableTreeNode implements PopupTreeNode {
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 5249608597497161690L;
 	private MethodsPopUpMenu menu;
 	private DefaultTreeModel model;
 	private SpecificServiceInformation info;

@@ -22,10 +22,6 @@ import javax.swing.JPanel;
  */
 public class SecureConversationPanel extends JPanel {
 
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 6376846145150990156L;
 	private boolean enabled = false;
 	private JLabel authMethodLabel = null;
 	private JComboBox communicationMethod = null;

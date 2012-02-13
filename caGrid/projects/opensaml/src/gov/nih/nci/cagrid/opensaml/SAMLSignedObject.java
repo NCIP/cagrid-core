@@ -188,9 +188,9 @@ public abstract class SAMLSignedObject extends SAMLObject implements Cloneable
                     );
 
             if (config.getBooleanProperty("gov.nih.nci.cagrid.opensaml.compatibility-mode"))
-                sig.addDocument("",transforms,(digalg!=null) ? digalg : MessageDigestAlgorithm.ALGO_ID_DIGEST_SHA256);
+                sig.addDocument("",transforms,(digalg!=null) ? digalg : MessageDigestAlgorithm.ALGO_ID_DIGEST_SHA1);
             else
-                sig.addDocument("#" + getId(),transforms,(digalg!=null) ? digalg : MessageDigestAlgorithm.ALGO_ID_DIGEST_SHA256);
+                sig.addDocument("#" + getId(),transforms,(digalg!=null) ? digalg : MessageDigestAlgorithm.ALGO_ID_DIGEST_SHA1);
 
             // Add any X.509 certificates provided.
             X509Data x509 = new X509Data(root.getOwnerDocument());
@@ -204,7 +204,7 @@ public abstract class SAMLSignedObject extends SAMLObject implements Cloneable
                     if (cert instanceof X509Certificate) {
                         if (!i.hasNext() && count > 0) {
                         	// Last (but not only) cert in chain. Only add if it's not self-signed.
-                            if (((X509Certificate)cert).getSubjectX500Principal().equals(((X509Certificate)cert).getIssuerX500Principal()))
+                            if (((X509Certificate)cert).getSubjectDN().equals(((X509Certificate)cert).getIssuerDN()))
                                 break;
                         }
                         x509.addCertificate((X509Certificate)cert);

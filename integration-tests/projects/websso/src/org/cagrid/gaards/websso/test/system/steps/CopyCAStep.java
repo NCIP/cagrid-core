@@ -6,20 +6,29 @@ import gov.nih.nci.cagrid.testing.system.haste.Step;
 
 import java.io.File;
 
-public class CopyCAStep extends Step {
-	private File outPutDir;
-	private ServiceContainer certsContainer;
 
-	public CopyCAStep(ServiceContainer certsContainer, File outPutDir) {
+public class CopyCAStep extends Step {
+    private File outPutDir;
+    private ServiceContainer certsContainer;
+
+
+    public CopyCAStep(ServiceContainer certsContainer,
+			File outPutDir) {
 		this.certsContainer = certsContainer;
 		this.outPutDir = outPutDir;
 	}
 
-	public void runStep() throws Throwable {
-		System.out.println("Copying CA certificates to services dir");
 
-		File inPutDir = new File(certsContainer.getProperties().getContainerDirectory(), "certificates" + File.separator + "ca");
-		Utils.copyDirectory(inPutDir, outPutDir);
-	}
+    public void runStep() throws Throwable {
+        System.out.println("Copying user proxys to services dir");
+
+        File inPutDir = new File(certsContainer.getProperties()
+				.getContainerDirectory().getAbsolutePath()
+				+ File.separator
+				+ "certificates"
+				+ File.separator
+				+ "ca");
+         Utils.copyDirectory(inPutDir, outPutDir);
+    }
 
 }

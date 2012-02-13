@@ -2,7 +2,6 @@ package org.cagrid.gaards.ui.gts;
 
 import gov.nih.nci.cagrid.gts.bean.TrustedAuthority;
 
-import java.io.Serializable;
 import java.util.Vector;
 
 import javax.swing.table.DefaultTableModel;
@@ -60,7 +59,7 @@ public class TrustedAuthorityTable extends GrapeBaseTable {
 
 
 	public void addTrustedAuthority(final TrustedAuthority ta) {
-		Vector<Serializable> v = new Vector<Serializable>();
+		Vector v = new Vector();
 		v.add(ta);
 		v.add(ta.getName());
 		v.add(ta.getStatus().getValue());

@@ -26,17 +26,17 @@ public class ExpressionTreeEventListener extends MouseAdapter {
 
 	private GridGrouperExpressionEditor editor;
 
-	private HashMap<Class<?>, JPopupMenu> popupMappings;
+	private HashMap popupMappings;
 
 
 	public ExpressionTreeEventListener(ExpressionTree owningTree, GridGrouperExpressionEditor editor) {
 		this.tree = owningTree;
-		this.popupMappings = new HashMap<Class<?>, JPopupMenu>();
+		this.popupMappings = new HashMap();
 		this.editor = editor;
 	}
 
 
-	public void associatePopup(Class<?> nodeType, JPopupMenu popup) {
+	public void associatePopup(Class nodeType, JPopupMenu popup) {
 		this.popupMappings.put(nodeType, popup);
 	}
 

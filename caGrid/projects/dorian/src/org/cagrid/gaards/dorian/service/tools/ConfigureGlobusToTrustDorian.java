@@ -41,6 +41,7 @@ public class ConfigureGlobusToTrustDorian {
 
 
     public static void main(String[] args) {
+
         Options options = new Options();
         Option help = new Option(HELP_OPT, HELP_OPT_FULL, false, "Prints this message.");
         Option conf = new Option(CONFIG_FILE_OPT, CONFIG_FILE_FULL, true, "The config file for the Dorian CA.");
@@ -63,8 +64,8 @@ public class ConfigureGlobusToTrustDorian {
             } else {
                 String configFile = line.getOptionValue(CONFIG_FILE_OPT);
                 String propertiesFile = line.getOptionValue(PROPERTIES_FILE_OPT);
-                BeanUtils utils = new BeanUtils(new FileSystemResource(configFile), 
-                    new FileSystemResource(propertiesFile));
+                BeanUtils utils = new BeanUtils(new FileSystemResource(configFile), new FileSystemResource(
+                    propertiesFile));
                 utils.getDatabase().createDatabaseIfNeeded();
                 CertificateAuthority ca = utils.getCertificateAuthority();
                 X509Certificate cacert = ca.getCACertificate();
@@ -76,7 +77,7 @@ public class ConfigureGlobusToTrustDorian {
                 CertUtil.writeCertificate(cacert, caFile);
                 CertUtil.writeSigningPolicy(cacert, policyFile);
                 System.out.println("Succesfully configured Globus to trust the Dorian CA: "
-                    + cacert.getSubjectX500Principal().getName());
+                    + cacert.getSubjectDN().getName());
                 System.out.println("Succesfully wrote CA certificate to " + caFile.getAbsolutePath());
                 System.out.println("Succesfully wrote CA signing policy to " + policyFile.getAbsolutePath());
             }
@@ -88,5 +89,6 @@ public class ConfigureGlobusToTrustDorian {
             e.printStackTrace();
             System.exit(1);
         }
+
     }
 }

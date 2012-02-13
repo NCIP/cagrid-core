@@ -1,8 +1,0 @@
-<ns1:CQLQueryResults targetClassname="gov.nih.nci.cacoresdk.domain.manytomany.bidirectional.Project" xmlns:ns1="http://CQL.caBIG/1/gov.nih.nci.cagrid.CQLResultSet">
- <ns1:ObjectResult>
-  <ns2:Project xmlns:ns2="gme://caCORE.caCORE/3.2/gov.nih.nci.cacoresdk.domain.manytomany.bidirectional">
-   <ns2:id xsi:type="ns3:II" reliability="ISS" scope="OBJ" displayable="true" extension="1" root="2.16.12.123.456.1" xmlns:ns3="uri:iso.org:21090" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"/>
-   <ns2:name xsi:type="ns4:ST" value="Project_Name1" xmlns:ns4="uri:iso.org:21090" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"/>
-  </ns2:Project>
- </ns1:ObjectResult>
-</ns1:CQLQueryResults>

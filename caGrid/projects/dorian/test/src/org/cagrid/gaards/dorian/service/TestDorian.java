@@ -10,9 +10,7 @@ import gov.nih.nci.cagrid.opensaml.SAMLAuthenticationStatement;
 import gov.nih.nci.cagrid.opensaml.SAMLNameIdentifier;
 import gov.nih.nci.cagrid.opensaml.SAMLStatement;
 import gov.nih.nci.cagrid.opensaml.SAMLSubject;
-import gov.nih.nci.cagrid.opensaml.SAMLSubjectStatement;
 
-import java.io.File;
 import java.security.KeyPair;
 import java.security.PrivateKey;
 import java.security.PublicKey;
@@ -24,12 +22,10 @@ import java.util.GregorianCalendar;
 import java.util.Iterator;
 import java.util.List;
 
-import javax.naming.ldap.LdapName;
 import javax.xml.namespace.QName;
 
 import junit.framework.TestCase;
 
-import org.apache.commons.io.FileUtils;
 import org.apache.xml.security.signature.XMLSignature;
 import org.cagrid.gaards.authentication.BasicAuthentication;
 import org.cagrid.gaards.authentication.faults.InvalidCredentialFault;
@@ -63,12 +59,17 @@ import org.cagrid.gaards.pki.CertUtil;
 import org.cagrid.gaards.pki.Credential;
 import org.cagrid.gaards.pki.KeyUtil;
 import org.cagrid.gaards.saml.encoding.SAMLConstants;
-import org.cagrid.tools.database.Database;
-import org.globus.common.CoGProperties;
 import org.globus.gsi.GlobusCredential;
 
 
-@SuppressWarnings("deprecation")
+/**
+ * @author <A href="mailto:langella@bmi.osu.edu">Stephen Langella </A>
+ * @author <A href="mailto:oster@bmi.osu.edu">Scott Oster </A>
+ * @author <A href="mailto:hastings@bmi.osu.edu">Shannon Hastings </A>
+ * @version $Id: ArgumentManagerTable.java,v 1.2 2004/10/15 16:35:16 langella
+ *          Exp $
+ */
+
 public class TestDorian extends TestCase {
 
     private Dorian dorian;
@@ -77,11 +78,7 @@ public class TestDorian extends TestCase {
 
     private static final int SHORT_PROXY_VALID = 2;
 
-    private CertificateAuthority ca;
     private CA memoryCA;
-    private Database db;
-    
-    private File tempCertDir;
 
 
     /** *************** IdP TEST FUNCTIONS ********************** */
@@ -755,9 +752,8 @@ public class TestDorian extends TestCase {
 
         saml.verify(idpCert);
 
-        assertEquals(CertUtil.getSubjectDN(idpCert), saml.getIssuer());
-        @SuppressWarnings("unchecked")
-		Iterator<SAMLStatement> itr = saml.getStatements();
+        assertEquals(idpCert.getSubjectDN().toString(), saml.getIssuer());
+        Iterator itr = saml.getStatements();
         int statementCount = 0;
         boolean authFound = false;
         while (itr.hasNext()) {
@@ -820,8 +816,8 @@ public class TestDorian extends TestCase {
             String lastName = "first" + id;
             String email = id + "@test.com";
 
-            String issuer = CertUtil.getSubjectDN(cert);
-            String federation = CertUtil.getSubjectDN(cert);
+            String issuer = cert.getSubjectDN().toString();
+            String federation = cert.getSubjectDN().toString();
             String ipAddress = null;
             String subjectDNS = null;
             SAMLNameIdentifier ni = new SAMLNameIdentifier(id, federation,
@@ -834,43 +830,43 @@ public class TestDorian extends TestCase {
                 subjectDNS, null);
 
             QName quid = new QName(SAMLConstants.UID_ATTRIBUTE_NAMESPACE, SAMLConstants.UID_ATTRIBUTE);
-            List<String> vals1 = new ArrayList<String>();
+            List vals1 = new ArrayList();
             vals1.add(id);
             SAMLAttribute uidAtt = new SAMLAttribute(quid.getLocalPart(), quid.getNamespaceURI(), quid, 0, vals1);
 
             QName qfirst = new QName(SAMLConstants.FIRST_NAME_ATTRIBUTE_NAMESPACE, SAMLConstants.FIRST_NAME_ATTRIBUTE);
-            List<String> vals2 = new ArrayList<String>();
+            List vals2 = new ArrayList();
             vals2.add(firstName);
             SAMLAttribute firstNameAtt = new SAMLAttribute(qfirst.getLocalPart(), qfirst.getNamespaceURI(), qfirst, 0,
                 vals2);
 
             QName qLast = new QName(SAMLConstants.LAST_NAME_ATTRIBUTE_NAMESPACE, SAMLConstants.LAST_NAME_ATTRIBUTE);
-            List<String> vals3 = new ArrayList<String>();
+            List vals3 = new ArrayList();
             vals3.add(lastName);
             SAMLAttribute lastNameAtt = new SAMLAttribute(qLast.getLocalPart(), qLast.getNamespaceURI(), qLast, 0,
                 vals3);
 
             QName qemail = new QName(SAMLConstants.EMAIL_ATTRIBUTE_NAMESPACE, SAMLConstants.EMAIL_ATTRIBUTE);
-            List<String> vals4 = new ArrayList<String>();
+            List vals4 = new ArrayList();
             vals4.add(email);
             SAMLAttribute emailAtt = new SAMLAttribute(qemail.getLocalPart(), qemail.getNamespaceURI(), qemail, 0,
                 vals4);
 
-            List<SAMLAttribute> atts = new ArrayList<SAMLAttribute>();
+            List atts = new ArrayList();
             atts.add(uidAtt);
             atts.add(firstNameAtt);
             atts.add(lastNameAtt);
             atts.add(emailAtt);
             SAMLAttributeStatement attState = new SAMLAttributeStatement(sub2, atts);
 
-            List<SAMLSubjectStatement> l = new ArrayList<SAMLSubjectStatement>();
+            List l = new ArrayList();
             l.add(auth);
             l.add(attState);
 
             SAMLAssertion saml = new SAMLAssertion(issuer, start, end, null, null, l);
-            List<X509Certificate> a = new ArrayList<X509Certificate>();
+            List a = new ArrayList();
             a.add(cert);
-            saml.sign(XMLSignature.ALGO_ID_SIGNATURE_RSA_SHA256, key, a);
+            saml.sign(XMLSignature.ALGO_ID_SIGNATURE_RSA_SHA1, key, a);
 
             return saml;
         } catch (Exception e) {
@@ -915,12 +911,18 @@ public class TestDorian extends TestCase {
         long min = max - 3;
         long timeLeft = cred.getTimeLeft();
         if ((min > timeLeft) || (timeLeft > max)) {
-            fail("The credential has expired.");
+            assertTrue(false);
         }
-        assertEquals(CertUtil.getSubjectDN(cert), CommonUtils.identityToSubject(cred.getIdentity()));
+        assertEquals(cert.getSubjectDN().toString(), identityToSubject(cred.getIdentity()));
         assertEquals(expectedIdentity, cred.getIdentity());
-        assertEquals("The credential was not signed by the CA.", CertUtil.getSubjectDN(ca.getCACertificate()), cert.getIssuerX500Principal().getName());
+        assertEquals(getCA().getCACertificate().getSubjectDN(), cert.getIssuerDN());
         cred.verify();
+    }
+
+
+    private String identityToSubject(String identity) {
+        String s = identity.substring(1);
+        return s.replace('/', ',');
     }
 
 
@@ -982,12 +984,11 @@ public class TestDorian extends TestCase {
         methods[0] = SAMLAuthenticationMethod.fromString("urn:oasis:names:tc:SAML:1.0:am:password");
         idp.setAuthenticationMethod(methods);
 
-        LdapName subject = (LdapName) Utils.CA_SUBJECT_PREFIX.clone();
-        subject.add("CN=" + name);
+        String subject = Utils.CA_SUBJECT_PREFIX + ",CN=" + name;
         Credential cred = memoryCA.createIdentityCertificate(name);
         X509Certificate cert = cred.getCertificate();
         assertNotNull(cert);
-        assertEquals(CertUtil.getSubjectDN(cert), subject.toString());
+        assertEquals(cert.getSubjectDN().getName(), subject);
         idp.setIdPCertificate(CertUtil.writeCertificate(cert));
         return new IdPContainer(idp, cert, cred.getPrivateKey());
     }
@@ -1029,21 +1030,7 @@ public class TestDorian extends TestCase {
         super.setUp();
         try {
             count = 0;
-            db = Utils.getDB();
-            assertEquals(0, db.getUsedConnectionCount());
-            ca = Utils.getCA();
-            memoryCA = new CA(Utils.getCASubject().toString());
-            
-            tempCertDir = File.createTempFile("cagridunittest", "certs");
-            tempCertDir.delete();
-            tempCertDir.mkdir();
-            CoGProperties.getDefault().setCaCertLocations(tempCertDir.getAbsolutePath());
-            File caFile = new File(tempCertDir.getAbsolutePath() + File.separator + CertUtil.getHashCode(ca.getCACertificate()) + ".0");
-            File policyFile = new File(tempCertDir.getAbsolutePath() + File.separator + CertUtil.getHashCode(ca.getCACertificate())
-                + ".signing_policy");
-            CertUtil.writeCertificate(ca.getCACertificate(), caFile);
-            CertUtil.writeSigningPolicy(ca.getCACertificate(), policyFile);
-
+            memoryCA = new CA(Utils.getCASubject());
         } catch (Exception e) {
             FaultUtil.printFault(e);
             assertTrue(false);
@@ -1053,14 +1040,11 @@ public class TestDorian extends TestCase {
 
     protected void tearDown() throws Exception {
         super.tearDown();
-        FileUtils.deleteDirectory(tempCertDir);
-        assertEquals(0, db.getUsedConnectionCount());
-        assertEquals(0, db.getRootUsedConnectionCount());
     }
 
 
     private String getDorianIdPUserId(DorianProperties conf, Dorian d, String uid) throws Exception {
-        String caSubject = CertUtil.getSubjectDN(d.getCACertificate());
+        String caSubject = d.getCACertificate().getSubjectDN().getName();
         String policy = conf.getIdentityFederationProperties().getIdentityAssignmentPolicy();
         TrustedIdP idp = new TrustedIdP();
         idp.setId(1);
@@ -1070,8 +1054,13 @@ public class TestDorian extends TestCase {
 
 
     private String getGridIdentity(DorianProperties conf, Dorian d, TrustedIdP idp, String uid) throws Exception {
-        String caSubject = CertUtil.getSubjectDN(d.getCACertificate());
+        String caSubject = d.getCACertificate().getSubjectDN().getName();
         String policy = conf.getIdentityFederationProperties().getIdentityAssignmentPolicy();
         return UserManager.getUserSubject(policy, caSubject, idp, uid);
+    }
+
+
+    public CertificateAuthority getCA() throws Exception {
+        return Utils.getCA();
     }
 }

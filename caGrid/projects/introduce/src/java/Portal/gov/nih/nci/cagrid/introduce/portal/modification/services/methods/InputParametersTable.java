@@ -4,7 +4,6 @@ import gov.nih.nci.cagrid.common.portal.PortalBaseTable;
 import gov.nih.nci.cagrid.introduce.beans.method.MethodType;
 import gov.nih.nci.cagrid.introduce.beans.method.MethodTypeInputsInput;
 
-import java.io.Serializable;
 import java.util.Vector;
 
 import javax.swing.table.DefaultTableModel;
@@ -18,10 +17,6 @@ import javax.xml.namespace.QName;
  */
 public class InputParametersTable extends PortalBaseTable {
 
-	/**
-	 * Hash code for serialization
-	 */
-	private static final long serialVersionUID = -281189002585358905L;
 	public static String NAME = "Name";
 	public static String ISARRAY = "Is Array";
 	public static String NAMESPACE = "Namespace";
@@ -45,7 +40,7 @@ public class InputParametersTable extends PortalBaseTable {
 
 
 	public void addRow(final MethodTypeInputsInput input) {
-		final Vector<Serializable> v = new Vector<Serializable>();
+		final Vector v = new Vector();
 		v.add(input.getName());
 		v.add(new Boolean(input.isIsArray()));
 		v.add(input.getQName().getNamespaceURI());
@@ -67,8 +62,7 @@ public class InputParametersTable extends PortalBaseTable {
 		if ((row < 0) || (row >= getRowCount())) {
 			throw new Exception("invalid row");
 		}
-		@SuppressWarnings("unchecked")
-		Vector<Serializable> v = (Vector<Serializable>) getValueAt(row, 5);
+		Vector v = (Vector) getValueAt(row, 5);
 		v.set(0, input.getName());
 		v.set(1, new Boolean(input.isIsArray()));
 		v.set(2, input.getQName().getNamespaceURI());
@@ -83,8 +77,7 @@ public class InputParametersTable extends PortalBaseTable {
 		if ((row < 0) || (row >= getRowCount())) {
 			throw new Exception("invalid row");
 		}
-		@SuppressWarnings("unchecked")
-		Vector<Serializable> v = (Vector<Serializable>) getValueAt(getSelectedRow(), 5);
+		Vector v = (Vector) getValueAt(getSelectedRow(), 5);
 		v.set(0, input.getName());
 		v.set(1, new Boolean(input.isIsArray()));
 		v.set(2, input.getQName().getNamespaceURI());
@@ -200,12 +193,6 @@ public class InputParametersTable extends PortalBaseTable {
 
 	public static class MyDefaultTableModel extends DefaultTableModel {
 
-		/**
-		 * Hash code for serialization
-		 */
-		private static final long serialVersionUID = -2765245555094619786L;
-
-
 		public MyDefaultTableModel() {
 			super();
 			addColumn(NAME);
@@ -217,7 +204,7 @@ public class InputParametersTable extends PortalBaseTable {
 		}
 
 
-		public Class<? extends Object> getColumnClass(int c) {
+		public Class getColumnClass(int c) {
 			return getValueAt(0, c).getClass();
 		}
 	}

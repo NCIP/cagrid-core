@@ -16,7 +16,6 @@ import org.apache.axis.client.Stub;
 import org.apache.axis.configuration.FileProvider;
 import org.apache.axis.message.addressing.EndpointReferenceType;
 import org.apache.axis.types.URI.MalformedURIException;
-import org.apache.axis.utils.ClassUtils;
 import org.cagrid.dataservice.transfer.stubs.Cql2TransferDataServicePortType;
 import org.cagrid.transfer.context.stubs.types.TransferServiceContextReference;
 import org.globus.gsi.GlobusCredential;
@@ -72,7 +71,6 @@ public class TransferDataServiceClient extends ServiceSecurityClient implements 
 
 
     private TransferDataServicePortType createPortType() throws RemoteException {
-
         TransferDataServiceAddressingLocator locator = new TransferDataServiceAddressingLocator();
         // attempt to load our context sensitive wsdd file
         InputStream resourceAsStream = getClass().getResourceAsStream("client-config.wsdd");
@@ -125,6 +123,7 @@ public class TransferDataServiceClient extends ServiceSecurityClient implements 
     }
 
 
+    @SuppressWarnings("unused")
     public static void main(String[] args) {
         System.out.println("Running the Grid Service Client");
         try {
@@ -195,5 +194,4 @@ public class TransferDataServiceClient extends ServiceSecurityClient implements 
             return boxedResult.getServiceSecurityMetadata();
         }
     }
-
 }

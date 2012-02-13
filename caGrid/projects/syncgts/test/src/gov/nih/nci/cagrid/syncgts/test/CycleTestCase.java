@@ -56,21 +56,21 @@ public class CycleTestCase extends TestCase {
      */
     public void testAllPackagesCycle() {
         int numCycles = 0;
-        Collection<JavaPackage> packages = analyze();
+        Collection packages = jdepend.analyze();
         assertTrue("Expected to find more than zero packages to analyize", jdepend.countPackages() != 0);
         assertTrue("Expected to find more than zero classes to analyize", jdepend.countClasses() != 0);
         System.out.println("Analyzed " + jdepend.countPackages() + " packages and " + jdepend.countClasses() + " classes");
         if (jdepend.containsCycles()) {
-            Iterator<JavaPackage> iter = packages.iterator();
+            Iterator iter = packages.iterator();
             while (iter.hasNext()) {
-                JavaPackage p = iter.next();
+                JavaPackage p = (JavaPackage) iter.next();
                 if (p.containsCycle()) {
                     System.out.println("\nPackage: " + p.getName() + " contains a cycle with:");
                     numCycles++;
-                    List<JavaPackage> list = new ArrayList<JavaPackage>();
+                    List list = new ArrayList();
                     p.collectAllCycles(list);
-                    for (Iterator<JavaPackage> iterator = list.iterator(); iterator.hasNext();) {
-                        JavaPackage dependsP = iterator.next();
+                    for (Iterator iterator = list.iterator(); iterator.hasNext();) {
+                        JavaPackage dependsP = (JavaPackage) iterator.next();
                         System.out.println("->" + dependsP.getName());
                     }
                 }
@@ -80,12 +80,6 @@ public class CycleTestCase extends TestCase {
 
         assertFalse("Cycles exist", jdepend.containsCycles());
     }
-
-
-	@SuppressWarnings("unchecked")
-	private Collection<JavaPackage> analyze() {
-		return jdepend.analyze();
-	}
 
 
     public static void main(String args[]) {

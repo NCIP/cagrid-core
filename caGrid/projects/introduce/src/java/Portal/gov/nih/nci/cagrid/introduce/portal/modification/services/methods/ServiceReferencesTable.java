@@ -4,7 +4,6 @@ import gov.nih.nci.cagrid.common.portal.PortalBaseTable;
 import gov.nih.nci.cagrid.introduce.beans.service.ServiceType;
 import gov.nih.nci.cagrid.introduce.beans.service.ServicesType;
 
-import java.io.Serializable;
 import java.util.Vector;
 
 import javax.swing.ListSelectionModel;
@@ -18,11 +17,6 @@ import javax.swing.table.DefaultTableModel;
  * 
  */
 public class ServiceReferencesTable extends PortalBaseTable {
-
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = -9039521056496062855L;
 
 	public static String NAME = "Service Client Handles";
 
@@ -47,7 +41,7 @@ public class ServiceReferencesTable extends PortalBaseTable {
 
 
 	public void addRow(final ServiceType service) {
-		final Vector<Serializable> v = new Vector<Serializable>();
+		final Vector v = new Vector();
 		v.add(service.getName());
 		v.add(service);
 		v.add(v);
@@ -61,8 +55,7 @@ public class ServiceReferencesTable extends PortalBaseTable {
 		if ((row < 0) || (row >= getRowCount())) {
 			throw new Exception("invalid row");
 		}
-		@SuppressWarnings("unchecked")
-		Vector<Serializable> v = (Vector<Serializable>) getValueAt(getSelectedRow(), 1);
+		Vector v = (Vector) getValueAt(getSelectedRow(), 1);
 		v.set(0, exception.getName());
 		v.set(1, exception);
 	}

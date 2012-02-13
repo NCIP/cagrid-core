@@ -41,10 +41,10 @@ import org.cagrid.gaards.cds.testutils.Constants;
 import org.cagrid.gaards.cds.testutils.Utils;
 import org.cagrid.gaards.pki.CertUtil;
 import org.cagrid.gaards.pki.KeyUtil;
-import org.cagrid.proxy.BetterProxyPathValidator;
 import org.globus.gsi.CertificateRevocationLists;
 import org.globus.gsi.GlobusCredential;
 import org.globus.gsi.TrustedCertificates;
+import org.globus.gsi.proxy.ProxyPathValidator;
 
 public class DelegatedCredentialManagerTest extends TestCase {
 
@@ -53,7 +53,6 @@ public class DelegatedCredentialManagerTest extends TestCase {
 	private CA ca;
 
 	private File caCert;
-	private File caCertSigning;
 	
 	private String caDN;
 
@@ -64,6 +63,7 @@ public class DelegatedCredentialManagerTest extends TestCase {
 	private int PROXY_BUFFER_TIME_MULTIPLIER = 2;
 	
 	
+
 	public void testDelegatedCredentialCreateDestroy() {
 		try {
 			DelegatedCredentialManager dcm = Utils
@@ -268,11 +268,11 @@ public class DelegatedCredentialManagerTest extends TestCase {
 			dcm = Utils.getDelegatedCredentialManager();
 			String alias = "jdoe";
 			GlobusCredential cred = ca.createCredential(alias);
-			DelegatedCredential dc = delegateAndValidate(dcm, alias, 
-			    CertUtil.getIdentity(cred), null);
+			DelegatedCredential dc = delegateAndValidate(dcm, alias, cred
+					.getIdentity(), null);
 			try {
-				dcm.approveDelegation(CertUtil.getIdentity(cred), 
-				    dc.getSigningResponse());
+				dcm.approveDelegation(cred.getIdentity(), dc
+						.getSigningResponse());
 			} catch (DelegationFault e) {
 				if (!e.getFaultString().equals(
 						Errors.CANNOT_APPROVE_INVALID_STATUS)) {
@@ -299,7 +299,7 @@ public class DelegatedCredentialManagerTest extends TestCase {
 
 			String alias = "jdoe";
 			GlobusCredential cred = ca.createCredential(alias);
-			String gridIdentity = CertUtil.getIdentity(cred);
+			String gridIdentity = cred.getIdentity();
 			for (int i = 0; i < size; i++) {
 				IdentityDelegationPolicy policy = new IdentityDelegationPolicy();
 				String[] users = new String[i + 1];
@@ -338,13 +338,13 @@ public class DelegatedCredentialManagerTest extends TestCase {
 			dcm = Utils.getDelegatedCredentialManager();
 			String alias = "some user";
 			GlobusCredential cred = ca.createCredential(alias);
-			DelegationSigningRequest req = dcm.initiateDelegation(
-			    CertUtil.getIdentity(cred), getSimpleDelegationRequest());
+			DelegationSigningRequest req = dcm.initiateDelegation(cred
+					.getIdentity(), getSimpleDelegationRequest());
 			try {
 				DelegationSigningResponse res = new DelegationSigningResponse();
 				res.setDelegationIdentifier(req.getDelegationIdentifier());
 				res.setCertificateChain(null);
-				dcm.approveDelegation(CertUtil.getIdentity(cred), res);
+				dcm.approveDelegation(cred.getIdentity(), res);
 				fail("Should not be able to approve delegation.");
 			} catch (DelegationFault e) {
 				if (!e.getFaultString().equals(
@@ -352,6 +352,7 @@ public class DelegatedCredentialManagerTest extends TestCase {
 					fail("Should not be able to approve delegation.");
 				}
 			}
+
 		} catch (Exception e) {
 			FaultUtil.printFault(e);
 			fail(e.getMessage());
@@ -369,15 +370,15 @@ public class DelegatedCredentialManagerTest extends TestCase {
 			dcm = Utils.getDelegatedCredentialManager();
 			String alias = "some user";
 			GlobusCredential cred = ca.createCredential(alias);
-			DelegationSigningRequest req = dcm.initiateDelegation(
-			    CertUtil.getIdentity(cred), getSimpleDelegationRequest());
+			DelegationSigningRequest req = dcm.initiateDelegation(cred
+					.getIdentity(), getSimpleDelegationRequest());
 			try {
 
 				DelegationSigningResponse res = new DelegationSigningResponse();
 				res.setDelegationIdentifier(req.getDelegationIdentifier());
 				res.setCertificateChain(org.cagrid.gaards.cds.common.Utils
 						.toCertificateChain(cred.getCertificateChain()));
-				dcm.approveDelegation(CertUtil.getIdentity(cred), res);
+				dcm.approveDelegation(cred.getIdentity(), res);
 				fail("Should not be able to approve delegation.");
 			} catch (DelegationFault e) {
 				if (!e.getFaultString().equals(
@@ -403,15 +404,15 @@ public class DelegatedCredentialManagerTest extends TestCase {
 			dcm = Utils.getDelegatedCredentialManager();
 			String alias = "some user";
 			GlobusCredential cred = ca.createCredential(alias);
-			DelegationSigningRequest req = dcm.initiateDelegation(
-			    CertUtil.getIdentity(cred), getSimpleDelegationRequest());
+			DelegationSigningRequest req = dcm.initiateDelegation(cred
+					.getIdentity(), getSimpleDelegationRequest());
 			try {
 				GlobusCredential proxy = ca.createProxy(alias, 1);
 				DelegationSigningResponse res = new DelegationSigningResponse();
 				res.setDelegationIdentifier(req.getDelegationIdentifier());
 				res.setCertificateChain(org.cagrid.gaards.cds.common.Utils
 						.toCertificateChain(proxy.getCertificateChain()));
-				dcm.approveDelegation(CertUtil.getIdentity(cred), res);
+				dcm.approveDelegation(cred.getIdentity(), res);
 				fail("Should not be able to approve delegation.");
 			} catch (DelegationFault e) {
 				if (!e.getFaultString()
@@ -436,18 +437,18 @@ public class DelegatedCredentialManagerTest extends TestCase {
 			dcm = Utils.getDelegatedCredentialManager();
 			String alias = "some user";
 			GlobusCredential cred = ca.createCredential(alias);
-			DelegationSigningRequest req = dcm.initiateDelegation(
-			    CertUtil.getIdentity(cred), getSimpleDelegationRequest());
+			DelegationSigningRequest req = dcm.initiateDelegation(cred
+					.getIdentity(), getSimpleDelegationRequest());
 			try {
-				PublicKey publicKey = KeyUtil.loadPublicKey(
-				    req.getPublicKey().getKeyAsString());
+				PublicKey publicKey = KeyUtil.loadPublicKey(req.getPublicKey()
+						.getKeyAsString());
 				X509Certificate[] certs = ca.createProxyCertifcates(
 						alias + "2", publicKey, 1);
 				DelegationSigningResponse res = new DelegationSigningResponse();
 				res.setDelegationIdentifier(req.getDelegationIdentifier());
 				res.setCertificateChain(org.cagrid.gaards.cds.common.Utils
 						.toCertificateChain(certs));
-				dcm.approveDelegation(CertUtil.getIdentity(cred), res);
+				dcm.approveDelegation(cred.getIdentity(), res);
 				fail("Should not be able to approve delegation.");
 			} catch (DelegationFault e) {
 				if (!e.getFaultString().equals(
@@ -472,21 +473,21 @@ public class DelegatedCredentialManagerTest extends TestCase {
 			dcm = Utils.getDelegatedCredentialManager();
 			String alias = "some user";
 			GlobusCredential cred = ca.createCredential(alias);
-			DelegationSigningRequest req = dcm.initiateDelegation(
-			    CertUtil.getIdentity(cred), getSimpleDelegationRequest());
+			DelegationSigningRequest req = dcm.initiateDelegation(cred
+					.getIdentity(), getSimpleDelegationRequest());
 			try {
-				PublicKey publicKey = KeyUtil.loadPublicKey(
-				    req.getPublicKey().getKeyAsString());
-				X509Certificate[] certs = ca.createProxyCertifcates(
-				    alias, publicKey, 1);
-				X509Certificate[] certs2 = ca.createProxyCertifcates(
-				    alias + 2, publicKey, 1);
+				PublicKey publicKey = KeyUtil.loadPublicKey(req.getPublicKey()
+						.getKeyAsString());
+				X509Certificate[] certs = ca.createProxyCertifcates(alias,
+						publicKey, 1);
+				X509Certificate[] certs2 = ca.createProxyCertifcates(alias + 2,
+						publicKey, 1);
 				certs[1] = certs2[1];
 				DelegationSigningResponse res = new DelegationSigningResponse();
 				res.setDelegationIdentifier(req.getDelegationIdentifier());
 				res.setCertificateChain(org.cagrid.gaards.cds.common.Utils
 						.toCertificateChain(certs));
-				dcm.approveDelegation(CertUtil.getIdentity(cred), res);
+				dcm.approveDelegation(cred.getIdentity(), res);
 				fail("Should not be able to approve delegation.");
 			} catch (DelegationFault e) {
 				if (!e.getFaultString()
@@ -511,18 +512,18 @@ public class DelegatedCredentialManagerTest extends TestCase {
 			dcm = Utils.getDelegatedCredentialManager();
 			String alias = "some user";
 			GlobusCredential cred = ca.createCredential(alias);
-			DelegationSigningRequest req = dcm.initiateDelegation(
-			    CertUtil.getIdentity(cred), getSimpleDelegationRequest());
+			DelegationSigningRequest req = dcm.initiateDelegation(cred
+					.getIdentity(), getSimpleDelegationRequest());
 			try {
-				PublicKey publicKey = KeyUtil.loadPublicKey(
-				    req.getPublicKey().getKeyAsString());
-				X509Certificate[] certs = ca.createProxyCertifcates(
-				    alias, publicKey, 0);
+				PublicKey publicKey = KeyUtil.loadPublicKey(req.getPublicKey()
+						.getKeyAsString());
+				X509Certificate[] certs = ca.createProxyCertifcates(alias,
+						publicKey, 0);
 				DelegationSigningResponse res = new DelegationSigningResponse();
 				res.setDelegationIdentifier(req.getDelegationIdentifier());
 				res.setCertificateChain(org.cagrid.gaards.cds.common.Utils
 						.toCertificateChain(certs));
-				dcm.approveDelegation(CertUtil.getIdentity(cred), res);
+				dcm.approveDelegation(cred.getIdentity(), res);
 				fail("Should not be able to approve delegation.");
 			} catch (DelegationFault e) {
 				if (!e.getFaultString().equals(
@@ -548,19 +549,20 @@ public class DelegatedCredentialManagerTest extends TestCase {
 			DelegatedCredentialManager.DELEGATION_BUFFER_SECONDS = 1;
 			String alias = "some user";
 			GlobusCredential cred = ca.createCredential(alias);
-			DelegationSigningRequest req = dcm.initiateDelegation(
-			    CertUtil.getIdentity(cred), getSimpleDelegationRequest());
+			DelegationSigningRequest req = dcm.initiateDelegation(cred
+					.getIdentity(), getSimpleDelegationRequest());
 			try {
-				PublicKey publicKey = KeyUtil.loadPublicKey(
-				    req.getPublicKey().getKeyAsString());
-				X509Certificate[] certs = ca.createProxyCertifcates(
-				    alias, publicKey, 1);
+				PublicKey publicKey = KeyUtil.loadPublicKey(req.getPublicKey()
+						.getKeyAsString());
+				X509Certificate[] certs = ca.createProxyCertifcates(alias,
+						publicKey, 1);
 				DelegationSigningResponse res = new DelegationSigningResponse();
 				res.setDelegationIdentifier(req.getDelegationIdentifier());
 				res.setCertificateChain(org.cagrid.gaards.cds.common.Utils
-					.toCertificateChain(certs));
-				Thread.sleep(((DelegatedCredentialManager.DELEGATION_BUFFER_SECONDS * 1000) + 100));
-				dcm.approveDelegation(CertUtil.getIdentity(cred), res);
+						.toCertificateChain(certs));
+				Thread
+						.sleep(((DelegatedCredentialManager.DELEGATION_BUFFER_SECONDS * 1000) + 100));
+				dcm.approveDelegation(cred.getIdentity(), res);
 				fail("Should not be able to approve delegation.");
 			} catch (DelegationFault e) {
 				if (!e.getFaultString().equals(
@@ -619,7 +621,7 @@ public class DelegatedCredentialManagerTest extends TestCase {
 			dcm = Utils.getDelegatedCredentialManager();
 			String alias = "jdoe";
 			GlobusCredential cred = ca.createCredential(alias);
-			String gridIdentity = CertUtil.getIdentity(cred);
+			String gridIdentity = cred.getIdentity();
 			IdentityDelegationPolicy policy = getSimplePolicy();
 			DelegationIdentifier id = this.delegateAndValidate(dcm, alias,
 					gridIdentity, policy).getDelegationIdentifier();
@@ -664,7 +666,7 @@ public class DelegatedCredentialManagerTest extends TestCase {
 			dcm = Utils.getDelegatedCredentialManager();
 			String alias = "jdoe";
 			GlobusCredential cred = ca.createCredential(alias);
-			String gridIdentity = CertUtil.getIdentity(cred);
+			String gridIdentity = cred.getIdentity();
 
 			boolean ok = false;
 			int count = 1;
@@ -738,7 +740,7 @@ public class DelegatedCredentialManagerTest extends TestCase {
 			dcm = Utils.getDelegatedCredentialManager();
 			String alias = "jdoe";
 			GlobusCredential cred = ca.createCredential(alias);
-			String gridIdentity = CertUtil.getIdentity(cred);
+			String gridIdentity = cred.getIdentity();
 			DelegationRequest request = getSimpleDelegationRequest();
 			DelegationSigningRequest req = dcm.initiateDelegation(gridIdentity,
 					request);
@@ -846,7 +848,7 @@ public class DelegatedCredentialManagerTest extends TestCase {
 			dcm = Utils.getDelegatedCredentialManager();
 			String alias = "jdoe";
 			GlobusCredential cred = ca.createCredential(alias);
-			String gridIdentity = CertUtil.getIdentity(cred);
+			String gridIdentity = cred.getIdentity();
 
 			boolean ok = false;
 			int count = 1;
@@ -931,6 +933,9 @@ public class DelegatedCredentialManagerTest extends TestCase {
 
 	}
 
+	// ///////////////////////////////////////////////////////////////////////////////
+	/* LEFT OFF HERE */
+	// ///////////////////////////////////////////////////////////////////////////////
 	public void testGetDelegatedCredentialInvalidKeyLength() {
 
 		DelegatedCredentialManager dcm = null;
@@ -938,7 +943,7 @@ public class DelegatedCredentialManagerTest extends TestCase {
 			dcm = Utils.getDelegatedCredentialManager();
 			String alias = "jdoe";
 			GlobusCredential cred = ca.createCredential(alias);
-			String gridIdentity = CertUtil.getIdentity(cred);
+			String gridIdentity = cred.getIdentity();
 			DelegationRequest request = getSimpleDelegationRequest();
 			DelegationSigningRequest req = dcm.initiateDelegation(gridIdentity,
 					request);
@@ -1004,7 +1009,7 @@ public class DelegatedCredentialManagerTest extends TestCase {
 			dcm = Utils.getDelegatedCredentialManager();
 			String alias = "jdoe";
 			GlobusCredential cred = ca.createCredential(alias);
-			String gridIdentity = CertUtil.getIdentity(cred);
+			String gridIdentity = cred.getIdentity();
 			int hours = 0;
 			int minutes = 0;
 			int seconds = 120;
@@ -1024,7 +1029,6 @@ public class DelegatedCredentialManagerTest extends TestCase {
 			}
 		}
 	}
-	
 
 	public void testGetDelegatedCredential() {
 
@@ -1033,7 +1037,7 @@ public class DelegatedCredentialManagerTest extends TestCase {
 			dcm = Utils.getDelegatedCredentialManager();
 			String alias = "jdoe";
 			GlobusCredential cred = ca.createCredential(alias);
-			String gridIdentity = CertUtil.getIdentity(cred);
+			String gridIdentity = cred.getIdentity();
 			int hours = 12;
 			int minutes = 0;
 			int seconds = 0;
@@ -1063,16 +1067,16 @@ public class DelegatedCredentialManagerTest extends TestCase {
 			String alias = "jdoe";
 			GlobusCredential jdoe = ca.createCredential(alias);
 			GlobusCredential enemy = ca.createCredential("enemy");
-			DelegatedCredential dc = this.delegateAndValidate(dcm, alias, 
-			    CertUtil.getIdentity(jdoe), null, 12, 0, 0);
-			assertEquals(0, dcm.findCredentialsDelegatedToClient(
-			    CertUtil.getIdentity(enemy), new ClientDelegationFilter()).length);
+			DelegatedCredential dc = this.delegateAndValidate(dcm, alias, jdoe
+					.getIdentity(), null, 12, 0, 0);
+			assertEquals(0, dcm.findCredentialsDelegatedToClient(enemy
+					.getIdentity(), new ClientDelegationFilter()).length);
 			DelegationRecord[] records = dcm.findCredentialsDelegatedToClient(
 					GRID_IDENTITY, null);
 			assertEquals(1, records.length);
-			assertEquals(dc.getDelegationIdentifier(), 
-			    records[0].getDelegationIdentifier());
-			assertEquals(CertUtil.getIdentity(jdoe), records[0].getGridIdentity());
+			assertEquals(dc.getDelegationIdentifier(), records[0]
+					.getDelegationIdentifier());
+			assertEquals(jdoe.getIdentity(), records[0].getGridIdentity());
 		} catch (Exception e) {
 			FaultUtil.printFault(e);
 			fail(e.getMessage());
@@ -1094,17 +1098,19 @@ public class DelegatedCredentialManagerTest extends TestCase {
 		org.cagrid.gaards.cds.common.PublicKey pKey = new org.cagrid.gaards.cds.common.PublicKey();
 		pKey.setKeyAsString(KeyUtil.writePublicKey(pair.getPublic()));
 		X509Certificate[] delegatedProxy = org.cagrid.gaards.cds.common.Utils
-				.toCertificateArray(dcm.getDelegatedCredential(GRID_IDENTITY, id, pKey));
+				.toCertificateArray(dcm.getDelegatedCredential(GRID_IDENTITY,
+						id, pKey));
 		assertNotNull(delegatedProxy);
 		assertEquals(delegatedProxy.length, (signingChain.length + 1));
 		for (int i = 0; i < signingChain.length; i++) {
 			assertEquals(signingChain[i], delegatedProxy[i + 1]);
 		}
 
-		BetterProxyPathValidator validator = new BetterProxyPathValidator();
-		validator.validate(delegatedProxy, 
-		    TrustedCertificates.getDefaultTrustedCertificates().getCertificates(),
-			org.cagrid.proxy.CertificateRevocationLists.getFromGlobusCrls(CertificateRevocationLists.getDefaultCertificateRevocationLists()));
+		ProxyPathValidator validator = new ProxyPathValidator();
+		validator.validate(delegatedProxy, TrustedCertificates
+				.getDefaultTrustedCertificates().getCertificates(),
+				CertificateRevocationLists
+						.getDefaultCertificateRevocationLists());
 
 		DelegatedCredentialAuditRecord[] ar = dcm.searchAuditLog(Utils
 				.getIssuedAuditFilter(id));
@@ -1339,17 +1345,14 @@ public class DelegatedCredentialManagerTest extends TestCase {
 		Utils.getDatabase().createDatabaseIfNeeded();
 		try {
 			Date now = new Date();	
-			this.caDN = "CN=Certificate Authority,OU=" + now.getTime() + ",O=Delegation Credential Manager";
+			this.caDN = "O=Delegation Credential Manager,OU="+now.getTime()+",CN=Certificate Authority";
 			this.ca = new CA(this.caDN);
 			File f = gov.nih.nci.cagrid.common.Utils
 					.getTrustedCerificatesDirectory();
 			f.mkdirs();
 			caCert = new File(f.getAbsoluteFile() + File.separator
 					+ now.getTime()+".0");
-			caCertSigning = new File(f.getAbsoluteFile() + File.separator
-					+ now.getTime()+".signing_policy");
 			CertUtil.writeCertificate(this.ca.getCertificate(), caCert);
-			CertUtil.writeSigningPolicy(this.ca.getCertificate(), caCertSigning);
 		} catch (Exception e) {
 			e.printStackTrace();
 			fail(e.getMessage());
@@ -1359,7 +1362,6 @@ public class DelegatedCredentialManagerTest extends TestCase {
 	protected void tearDown() throws Exception {
 		super.setUp();
 		caCert.delete();
-		caCertSigning.delete();
 	}
 
 	public class InvalidKeyManager implements KeyManager {

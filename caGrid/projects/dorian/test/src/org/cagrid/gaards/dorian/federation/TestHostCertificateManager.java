@@ -8,8 +8,6 @@ import java.security.KeyPair;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.naming.ldap.LdapName;
-
 import junit.framework.TestCase;
 
 import org.cagrid.gaards.dorian.X509Certificate;
@@ -18,7 +16,6 @@ import org.cagrid.gaards.dorian.common.Lifetime;
 import org.cagrid.gaards.dorian.stubs.types.InvalidHostCertificateFault;
 import org.cagrid.gaards.dorian.stubs.types.InvalidHostCertificateRequestFault;
 import org.cagrid.gaards.dorian.test.Utils;
-import org.cagrid.gaards.pki.CertUtil;
 import org.cagrid.gaards.pki.KeyUtil;
 import org.cagrid.tools.database.Database;
 
@@ -418,9 +415,9 @@ public class TestHostCertificateManager extends TestCase implements Publisher {
                 HostCertificateFilter f = new HostCertificateFilter();
                 f.setSubject("foobar");
                 assertEquals(0, hcm.findHostCertificates(f).size());
-                LdapName caSubject = new LdapName(CertUtil.getSubjectDN(ca.getCACertificate()));
-                caSubject.remove(caSubject.size() - 1);
-                String caPreSub = caSubject.toString();
+                String caSubject = ca.getCACertificate().getSubjectDN().getName();
+                int caindex = caSubject.lastIndexOf(",");
+                String caPreSub = caSubject.substring(0, caindex);
                 f.setSubject(caPreSub);
                 assertEquals(5, hcm.findHostCertificates(f).size());
             } catch (Exception e) {
@@ -431,9 +428,9 @@ public class TestHostCertificateManager extends TestCase implements Publisher {
             // Test Find by Multiple
             try {
                 HostCertificateFilter f = new HostCertificateFilter();
-                LdapName caSubject = new LdapName(CertUtil.getSubjectDN(ca.getCACertificate()));
-                caSubject.remove(caSubject.size() - 1);
-                String caPreSub = caSubject.toString();
+                String caSubject = ca.getCACertificate().getSubjectDN().getName();
+                int caindex = caSubject.lastIndexOf(",");
+                String caPreSub = caSubject.substring(0, caindex);
                 f.setStatus(HostCertificateStatus.Active);
                 f.setHost(hostPrefix);
                 f.setOwner(OWNER);
@@ -475,7 +472,7 @@ public class TestHostCertificateManager extends TestCase implements Publisher {
             HostCertificateManager hcm = new HostCertificateManager(db, conf, ca, this, blackList);
             hcm.clearDatabase();
             Thread.currentThread().setPriority(Thread.MAX_PRIORITY);
-            Thread.yield();
+            Thread.currentThread().yield();
             long id1 = hcm.requestHostCertifcate(OWNER, getHostCertificateRequest("localhost1"));
             hcm.approveHostCertifcate(id1);
             long id2 = hcm.requestHostCertifcate(OWNER, getHostCertificateRequest("localhost2"));

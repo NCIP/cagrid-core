@@ -1,5 +1,6 @@
 package gov.nih.nci.cagrid.introduce.portal.modification.services.servicetree;
 
+import gov.nih.nci.cagrid.common.portal.PortalLookAndFeel;
 import gov.nih.nci.cagrid.introduce.beans.resource.ResourcePropertyType;
 import gov.nih.nci.cagrid.introduce.common.CommonTools;
 import gov.nih.nci.cagrid.introduce.common.SpecificServiceInformation;
@@ -16,10 +17,6 @@ import javax.swing.JPopupMenu;
 
 public class ResourcePropertyPopUpMenu extends JPopupMenu {
 
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 844080120136985283L;
 	private JMenuItem removeResourcePropertyMenuItem = null;
 	private ResourcePropertyTypeTreeNode node;
 	private JMenuItem editResourcePropertyMenuItem = null;

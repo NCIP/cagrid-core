@@ -27,11 +27,10 @@ public class ConfigurationUtil {
             configurationManager = GridApplication.getContext().getConfigurationManager();
         } else {
             Application app = null;
-            app = (Application) Utils.deserializeDocument(IntroducePropertiesManager.getIntroduceConfigurationFile(),
+            app = Utils.deserializeDocument(IntroducePropertiesManager.getIntroduceConfigurationFile(),
                 Application.class);
-            configurationManager = new ConfigurationManager(app.getConfiguration(),null);
+            configurationManager = new ConfigurationManager(app.getConfiguration(), null);
         }
-
     }
 
 
@@ -42,14 +41,16 @@ public class ConfigurationUtil {
     }
 
 
-    public static synchronized  ConfigurationUtil getInstance() throws Exception {
+    public static synchronized ConfigurationUtil getInstance() throws Exception {
         load();
         return util;
     }
 
-    public static synchronized  void saveConfiguration() throws Exception {
+
+    public static synchronized void saveConfiguration() throws Exception {
         getInstance().configurationManager.saveAll();
     }
+
 
     public static synchronized IntroducePortalConfiguration getIntroducePortalConfiguration() {
         try {
@@ -95,5 +96,4 @@ public class ConfigurationUtil {
         }
         return null;
     }
-
 }

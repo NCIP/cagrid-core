@@ -10,12 +10,9 @@ import java.security.cert.X509Certificate;
 import java.security.interfaces.RSAPublicKey;
 import java.util.Date;
 
-import javax.naming.ldap.LdapName;
-
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.bouncycastle.asn1.x509.X509Name;
 import org.cagrid.gaards.dorian.common.Lifetime;
+import org.cagrid.gaards.dorian.common.LoggingObject;
 import org.cagrid.gaards.dorian.service.util.Utils;
 import org.cagrid.gaards.pki.CRLEntry;
 import org.cagrid.gaards.pki.CertUtil;
@@ -23,51 +20,23 @@ import org.cagrid.gaards.pki.KeyUtil;
 
 
 /**
- * CertificateAuthority
- * The certificate authority base class.  Creates and signs
- * certificates and CRLs
- * 
  * @author <A href="mailto:langella@bmi.osu.edu">Stephen Langella </A>
  * @author <A href="mailto:oster@bmi.osu.edu">Scott Oster </A>
  * @author <A href="mailto:hastings@bmi.osu.edu">Shannon Hastings </A>
- * @author <A href="mailto:David.Ervin@osumc.edu">David Ervin</A>
+ * @version $Id: ArgumentManagerTable.java,v 1.2 2004/10/15 16:35:16 langella
+ *          Exp $
  */
-public abstract class CertificateAuthority {
-    
-    private static Log LOG = LogFactory.getLog(CertificateAuthority.class);
+public abstract class CertificateAuthority extends LoggingObject {
 
     private boolean initialized = false;
-    private CertificateAuthorityProperties properties = null;
+
+    private CertificateAuthorityProperties properties;
 
 
     public CertificateAuthority(CertificateAuthorityProperties properties) {
         this.properties = properties;
     }
-    
-    
-    private synchronized void init() throws CertificateAuthorityFault {
-        try {
-            if (!initialized) {
-                // if we don't already have CA credentials and the config says we should 
-                // auto-create them, do it now
-                if (!hasCACredentials() && properties.isAutoCreateCAEnabled()) {
-                    Lifetime lifetime = properties.getCreationPolicy().getLifetime();
-                    this.createCertifcateAuthorityCredentials(properties.getCreationPolicy().getSubject(), Utils
-                        .getExpiredDate(lifetime), properties.getCreationPolicy().getKeySize());
-                }
-                initialized = true;
-            }
-        } catch (Exception e) {
-            LOG.error(e.getMessage(), e);
-            CertificateAuthorityFault fault = new CertificateAuthorityFault();
-            fault.setFaultString("Unexpected Error, could not initialize the Dorian Certificate Authority.");
-            FaultHelper helper = new FaultHelper(fault);
-            helper.addFaultCause(e);
-            fault = (CertificateAuthorityFault) helper.getFault();
-            throw fault;
-        }
-    }
-    
+
 
     public abstract String getUserCredentialsProvider();
 
@@ -75,38 +44,23 @@ public abstract class CertificateAuthority {
     public abstract String getCACredentialsProvider();
 
 
+    public abstract String getSignatureAlgorithm();
+
+
     public abstract boolean hasCACredentials() throws CertificateAuthorityFault;
-    
-    
-    public abstract void deleteCACredentials() throws CertificateAuthorityFault;
 
 
     public abstract void setCACredentials(X509Certificate cert, PrivateKey key, String password)
         throws CertificateAuthorityFault;
-    
-    
-    public synchronized PrivateKey getPrivateKey(String password) throws CertificateAuthorityFault, NoCACredentialsFault {
-        init();
-        return internalGetPrivateKey(password);
-    }
-    
-    
-    protected abstract PrivateKey internalGetPrivateKey(String password) throws CertificateAuthorityFault, NoCACredentialsFault;
 
 
-    protected X509Certificate getCertificate() throws CertificateAuthorityFault {
-        init();
-        return internalGetCertificate();
-    }
-    
-    
-    protected abstract X509Certificate internalGetCertificate() throws CertificateAuthorityFault; 
-    
-    
-    
-    public String getSignatureAlgorithm() {
-        return properties.getSignatureAlgorithm();
-    }
+    public abstract void deleteCACredentials() throws CertificateAuthorityFault;
+
+
+    public abstract PrivateKey getPrivateKey(String password) throws CertificateAuthorityFault, NoCACredentialsFault;
+
+
+    protected abstract java.security.cert.X509Certificate getCertificate() throws CertificateAuthorityFault;
 
 
     public void clearCertificateAuthority() throws CertificateAuthorityFault {
@@ -115,8 +69,32 @@ public abstract class CertificateAuthority {
     }
 
 
+    private synchronized void init() throws CertificateAuthorityFault {
+        try {
+            if (!initialized) {
+                if (!hasCACredentials()) {
+                    if (properties.isAutoCreateCAEnabled()) {
+                        Lifetime lifetime = properties.getCreationPolicy().getLifetime();
+                        this.createCertifcateAuthorityCredentials(properties.getCreationPolicy().getSubject(), Utils
+                            .getExpiredDate(lifetime), properties.getCreationPolicy().getKeySize());
+                    }
+                }
+                initialized = true;
+            }
+        } catch (Exception e) {
+            logError(e.getMessage(), e);
+            CertificateAuthorityFault fault = new CertificateAuthorityFault();
+            fault.setFaultString("Unexpected Error, could not initialize the Dorian Certificate Authority.");
+            FaultHelper helper = new FaultHelper(fault);
+            helper.addFaultCause(e);
+            fault = (CertificateAuthorityFault) helper.getFault();
+            throw fault;
+        }
+    }
+
+
     private void createCertifcateAuthorityCredentials(String dn, Date expirationDate, int keySize)
-        throws CertificateAuthorityFault {
+        throws CertificateAuthorityFault, NoCACredentialsFault {
         try {
             KeyPair pair = KeyUtil.generateRSAKeyPair(getCACredentialsProvider(), keySize);
             X509Certificate cacert = CertUtil.generateCACertificate(getCACredentialsProvider(), new X509Name(dn),
@@ -124,7 +102,7 @@ public abstract class CertificateAuthority {
             deleteCACredentials();
             this.setCACredentials(cacert, pair.getPrivate(), properties.getCertificateAuthorityPassword());
         } catch (Exception e) {
-            LOG.error(e.getMessage(), e);
+            logError(e.getMessage(), e);
             CertificateAuthorityFault fault = new CertificateAuthorityFault();
             fault.setFaultString("Unexpected Error, could not create the CA credentials.");
             FaultHelper helper = new FaultHelper(fault);
@@ -142,8 +120,8 @@ public abstract class CertificateAuthority {
 
     private java.security.cert.X509Certificate getCACertificate(boolean errorOnExpiredCredentials)
         throws CertificateAuthorityFault, NoCACredentialsFault {
-        init();
         X509Certificate cert = null;
+        init();
         try {
             if (!hasCACredentials()) {
                 NoCACredentialsFault fault = new NoCACredentialsFault();
@@ -155,7 +133,7 @@ public abstract class CertificateAuthority {
         } catch (NoCACredentialsFault f) {
             throw f;
         } catch (Exception e) {
-            LOG.error(e.getMessage(), e);
+            logError(e.getMessage(), e);
             CertificateAuthorityFault fault = new CertificateAuthorityFault();
             fault.setFaultString("Unexpected Error, Error obtaining the CA private key.");
             FaultHelper helper = new FaultHelper(fault);
@@ -167,15 +145,11 @@ public abstract class CertificateAuthority {
         if (errorOnExpiredCredentials) {
             Date now = new Date();
             if (now.before(cert.getNotBefore()) || (now.after(cert.getNotAfter()))) {
-                LOG.debug("The CA credentials were not yet valid or expired");
-                // our current cert is either expired, or not yet valid
-                // are we supposed to auto-renew it?
                 if (properties.isAutoRenewCAEnabled()) {
-                    LOG.debug("Automatically renewing the CA cert");
                     Lifetime lifetime = properties.getRenewalLifetime();
-                    cert = renewCertifcateAuthorityCredentials(Utils.getExpiredDate(lifetime));
+                    return renewCertifcateAuthorityCredentials(Utils.getExpiredDate(lifetime));
+
                 } else {
-                    // no auto-renewal, throw an exception
                     NoCACredentialsFault fault = new NoCACredentialsFault();
                     fault.setFaultString("The CA certificate had expired or is not valid at this time.");
                     throw fault;
@@ -190,6 +164,7 @@ public abstract class CertificateAuthority {
         throws CertificateAuthorityFault, NoCACredentialsFault {
         init();
         X509Certificate cacert = getCACertificate();
+
         Date caDate = cacert.getNotAfter();
         if (start.after(caDate)) {
             CertificateAuthorityFault fault = new CertificateAuthorityFault();
@@ -204,13 +179,13 @@ public abstract class CertificateAuthority {
 
         try {
             // VALIDATE DN
-            LdapName caSubject = new LdapName(cacert.getSubjectX500Principal().getName());
-            caSubject.remove(caSubject.size() - 1);
-            LdapName ldapSubject = new LdapName(subject);
+            String caSubject = cacert.getSubjectDN().getName();
+            int caindex = caSubject.lastIndexOf(",");
+            String caPreSub = caSubject.substring(0, caindex);
 
-            if (!ldapSubject.startsWith(caSubject)) {
+            if (!subject.startsWith(caPreSub)) {
                 CertificateAuthorityFault fault = new CertificateAuthorityFault();
-                fault.setFaultString("Invalid certificate subject: " + ldapSubject.toString() + ", the subject must start with, " + caSubject.toString());
+                fault.setFaultString("Invalid certificate subject, the subject must start with, " + caPreSub);
                 throw fault;
             }
             X509Certificate cert = CertUtil.generateCertificate(getCACredentialsProvider(), new X509Name(subject),
@@ -220,7 +195,7 @@ public abstract class CertificateAuthority {
         } catch (CertificateAuthorityFault e) {
             throw e;
         } catch (Exception e) {
-            LOG.error(e.getMessage(), e);
+            logError(e.getMessage(), e);
             CertificateAuthorityFault fault = new CertificateAuthorityFault();
             fault.setFaultString("Unexpected Error, could not sign certificate.");
             FaultHelper helper = new FaultHelper(fault);
@@ -239,7 +214,7 @@ public abstract class CertificateAuthority {
             String subject = Utils.getHostCertificateSubject(cacert, host);
             return signCertificate(subject, publicKey, start, expiration);
         } catch (Exception e) {
-            LOG.error(e.getMessage(), e);
+            logError(e.getMessage(), e);
             CertificateAuthorityFault fault = new CertificateAuthorityFault();
             fault.setFaultString("Unexpected Error, could not sign host certificate.");
             FaultHelper helper = new FaultHelper(fault);
@@ -251,19 +226,19 @@ public abstract class CertificateAuthority {
 
 
     public synchronized X509Certificate renewCertifcateAuthorityCredentials(Date expirationDate)
-        throws CertificateAuthorityFault {
+        throws CertificateAuthorityFault, NoCACredentialsFault {
         init();
         try {
             X509Certificate oldcert = getCACertificate(false);
             int size = ((RSAPublicKey) oldcert.getPublicKey()).getModulus().bitLength();
             KeyPair pair = KeyUtil.generateRSAKeyPair(getCACredentialsProvider(), size);
-            X509Certificate cacert = CertUtil.generateCACertificate(getCACredentialsProvider(), 
-                new X509Name(oldcert.getSubjectX500Principal().getName()), new Date(), expirationDate, pair, getSignatureAlgorithm());
+            X509Certificate cacert = CertUtil.generateCACertificate(getCACredentialsProvider(), new X509Name(oldcert
+                .getSubjectDN().getName()), new Date(), expirationDate, pair, getSignatureAlgorithm());
             deleteCACredentials();
             this.setCACredentials(cacert, pair.getPrivate(), properties.getCertificateAuthorityPassword());
             return cacert;
         } catch (Exception e) {
-            LOG.error(e.getMessage(), e);
+            logError(e.getMessage(), e);
             CertificateAuthorityFault fault = new CertificateAuthorityFault();
             fault.setFaultString("Unexpected Error, could renew the CA credentials.");
             FaultHelper helper = new FaultHelper(fault);
@@ -274,13 +249,13 @@ public abstract class CertificateAuthority {
     }
 
 
-    public X509CRL getCRL(CRLEntry[] entries) throws CertificateAuthorityFault {
-        init();
+    public X509CRL getCRL(CRLEntry[] entries) throws CertificateAuthorityFault, NoCACredentialsFault {
         try {
+            init();
             return CertUtil.createCRL(getCACredentialsProvider(), getCACertificate(), getPrivateKey(), entries,
                 getCACertificate().getNotAfter(), getSignatureAlgorithm());
         } catch (Exception e) {
-            LOG.error(e.getMessage(), e);
+            logError(e.getMessage(), e);
             CertificateAuthorityFault fault = new CertificateAuthorityFault();
             fault.setFaultString("Unexpected Error, could not create the CRL.");
             FaultHelper helper = new FaultHelper(fault);
@@ -304,7 +279,7 @@ public abstract class CertificateAuthority {
         } catch (NoCACredentialsFault f) {
             throw f;
         } catch (Exception e) {
-            LOG.error(e.getMessage(), e);
+            logError(e.getMessage(), e);
             CertificateAuthorityFault fault = new CertificateAuthorityFault();
             fault.setFaultString("Unexpected Error, Error obtaining the CA private key.");
             FaultHelper helper = new FaultHelper(fault);

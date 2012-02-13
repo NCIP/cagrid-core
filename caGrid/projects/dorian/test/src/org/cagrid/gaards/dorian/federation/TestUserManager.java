@@ -6,12 +6,9 @@ import gov.nih.nci.cagrid.dorian.common.CommonUtils;
 import java.security.cert.X509Certificate;
 import java.util.List;
 
-import javax.naming.ldap.LdapName;
-
 import junit.framework.TestCase;
 
 import org.cagrid.gaards.dorian.ca.CertificateAuthority;
-import org.cagrid.gaards.dorian.idp.AssertionCredentialsManager;
 import org.cagrid.gaards.dorian.service.PropertyManager;
 import org.cagrid.gaards.dorian.stubs.types.InvalidUserFault;
 import org.cagrid.gaards.dorian.test.CA;
@@ -90,10 +87,10 @@ public class TestUserManager extends TestCase implements Publisher {
 			user.setEmail("user@user.com");
 			user = um.addUser(getIdp(user), user);
 			String expectedGridIdentity = CommonUtils
-					.subjectToIdentity(UserManager.getUserSubject(
-					    um.getIdentityAssignmentPolicy(), 
-					    CertUtil.getSubjectDN(ca.getCACertificate()),
-						getIdp(user), user.getUID()));
+					.subjectToIdentity(UserManager.getUserSubject(um
+							.getIdentityAssignmentPolicy(), ca
+							.getCACertificate().getSubjectDN().getName(),
+							getIdp(user), user.getUID()));
 			assertNotNull(user.getGridId());
 			assertNotNull(user.getUserStatus());
 			assertEquals(GridUserStatus.Pending, user.getUserStatus());
@@ -297,10 +294,10 @@ public class TestUserManager extends TestCase implements Publisher {
 				user = um.addUser(getIdp(user), user);
 
 				String expectedGridIdentity = CommonUtils
-						.subjectToIdentity(UserManager.getUserSubject(
-						    um.getIdentityAssignmentPolicy(), 
-						    CertUtil.getSubjectDN(ca.getCACertificate()),
-							getIdp(user), user.getUID()));
+						.subjectToIdentity(UserManager.getUserSubject(um
+								.getIdentityAssignmentPolicy(), ca
+								.getCACertificate().getSubjectDN().getName(),
+								getIdp(user), user.getUID()));
 				assertNotNull(user.getGridId());
 				assertNotNull(user.getUserStatus());
 				assertEquals(expectedGridIdentity, user.getGridId());
@@ -523,10 +520,10 @@ public class TestUserManager extends TestCase implements Publisher {
 			user.setEmail("user@user.com");
 			user = um.addUser(getIdp(user), user);
 			String expectedGridIdentity = CommonUtils
-					.subjectToIdentity(UserManager.getUserSubject(
-					    um.getIdentityAssignmentPolicy(), 
-					    CertUtil.getSubjectDN(ca.getCACertificate()), 
-					    getIdp(user), user.getUID()));
+					.subjectToIdentity(UserManager.getUserSubject(um
+							.getIdentityAssignmentPolicy(), ca
+							.getCACertificate().getSubjectDN().getName(),
+							getIdp(user), user.getUID()));
 			assertNotNull(user.getGridId());
 			assertNotNull(user.getUserStatus());
 			assertEquals(GridUserStatus.Pending, user.getUserStatus());
@@ -582,10 +579,10 @@ public class TestUserManager extends TestCase implements Publisher {
 			user.setEmail("user@user.com");
 			user = um.addUser(getIdp(user), user);
 			String expectedGridIdentity = CommonUtils
-					.subjectToIdentity(UserManager.getUserSubject(
-					    um.getIdentityAssignmentPolicy(), 
-					    CertUtil.getSubjectDN(ca.getCACertificate()),
-						getIdp(user), user.getUID()));
+					.subjectToIdentity(UserManager.getUserSubject(um
+							.getIdentityAssignmentPolicy(), ca
+							.getCACertificate().getSubjectDN().getName(),
+							getIdp(user), user.getUID()));
 			assertNotNull(user.getGridId());
 			assertNotNull(user.getUserStatus());
 			assertEquals(GridUserStatus.Pending, user.getUserStatus());
@@ -669,13 +666,11 @@ public class TestUserManager extends TestCase implements Publisher {
 		idp.setAuthenticationMethod(methods);
 		idp.setUserPolicyClass(AutoApprovalPolicy.class.getName());
 
-		LdapName subject = (LdapName) Utils.CA_SUBJECT_PREFIX.clone();
-		subject.add("CN=" + idp.getName());
-
+		String subject = Utils.CA_SUBJECT_PREFIX + ",CN=" + idp.getName();
 		Credential cred = memoryCA.createIdentityCertificate(idp.getName());
 		X509Certificate cert = cred.getCertificate();
 		assertNotNull(cert);
-		assertEquals(CertUtil.getSubjectDN(cert), subject.toString());
+		assertEquals(cert.getSubjectDN().getName(), subject);
 		idp.setIdPCertificate(CertUtil.writeCertificate(cert));
 		idp.setStatus(TrustedIdPStatus.Active);
 		GridUser usr = new GridUser();
@@ -693,7 +688,7 @@ public class TestUserManager extends TestCase implements Publisher {
 			db = Utils.getDB();
 			assertEquals(0, db.getUsedConnectionCount());
 			ca = Utils.getCA();
-			memoryCA = new CA(Utils.getCASubject().toString());
+			memoryCA = new CA(Utils.getCASubject());
 			props = new PropertyManager(db);
 		} catch (Exception e) {
 			FaultUtil.printFault(e);

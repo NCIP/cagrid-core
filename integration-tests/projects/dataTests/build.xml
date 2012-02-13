@@ -187,12 +187,6 @@
 			<fileset dir="${stubs.dest}">
 				<include name="**/*.class"/>
 			</fileset>
-			<fileset dir="${src.dir}">
-				<include name="**/*.java"/>
-			</fileset>
-			<fileset dir="${stubs.src}">
-				<include name="**/*.java"/>
-			</fileset>
 			<manifest>
 				<attribute name="Built-By" value="${user.name}" />
 			</manifest>

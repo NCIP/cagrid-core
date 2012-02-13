@@ -7,7 +7,6 @@ import gov.nih.nci.cagrid.testing.system.haste.Step;
 
 import java.io.File;
 
-import org.apache.commons.io.FilenameUtils;
 import org.cagrid.gaards.dorian.client.GridUserClient;
 import org.cagrid.gaards.pki.CertUtil;
 
@@ -33,7 +32,5 @@ public class DorianAddTrustedCAStep extends Step {
 	public void runStep() throws Throwable {
 		GridUserClient client = new GridUserClient(this.serviceURL);
 		CertUtil.writeCertificate(client.getCACertificate(), this.caFile);
-		String signingpolicy = FilenameUtils.removeExtension(this.caFile.getCanonicalPath()) + ".signing_policy";
-		CertUtil.writeSigningPolicy(client.getCACertificate(), new File(signingpolicy));
 	}
 }

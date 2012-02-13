@@ -22,10 +22,16 @@ import org.cagrid.gaards.dorian.service.Dorian;
 import org.cagrid.gaards.dorian.service.DorianProperties;
 import org.cagrid.gaards.pki.CertUtil;
 import org.cagrid.gaards.pki.KeyUtil;
-import org.globus.gsi.bc.BouncyCastleUtil;
 import org.springframework.core.io.FileSystemResource;
 
 
+/**
+ * @author <A href="mailto:langella@bmi.osu.edu">Stephen Langella </A>
+ * @author <A href="mailto:oster@bmi.osu.edu">Scott Oster </A>
+ * @author <A href="mailto:hastings@bmi.osu.edu">Shannon Hastings </A>
+ * @version $Id: ArgumentManagerTable.java,v 1.2 2004/10/15 16:35:16 langella
+ *          Exp $
+ */
 public class CreateHostCertificate {
 
     public static final String CONFIG_FILE_OPT = "c";
@@ -121,13 +127,16 @@ public class CreateHostCertificate {
 
                 KeyPair pair = KeyUtil.generateRSAKeyPair(caProperties.getIssuedCertificateKeySize());
                 X509Certificate cacert = dorian.getCACertificate();
-                String identityPrefix = BouncyCastleUtil.getIdentityPrefix(cacert);
+                String caSubject = cacert.getSubjectDN().getName();
+                int index = caSubject.lastIndexOf(",");
+                String subjectPrefix = caSubject.substring(0, index);
                 String gridId = null;
                 if (c.getIdentityFederationProperties().getIdentityAssignmentPolicy().equals(
                     org.cagrid.gaards.dorian.federation.IdentityAssignmentPolicy.NAME)) {
-                    gridId = identityPrefix + "/OU=" + c.getIdentityProviderProperties().getName() + "/CN=dorian";
+                    gridId = CertUtil.subjectToIdentity(subjectPrefix + ",OU="
+                        + c.getIdentityProviderProperties().getName() + "/CN=dorian");
                 } else {
-                    gridId = identityPrefix + "/OU=IdP [1]/CN=dorian";
+                    gridId = CertUtil.subjectToIdentity(subjectPrefix + ",OU=IdP [1]/CN=dorian");
                 }
                 System.out.println(gridId);
                 HostCertificateRequest req = new HostCertificateRequest();
@@ -138,7 +147,7 @@ public class CreateHostCertificate {
                 HostCertificateRecord record = dorian.requestHostCertificate(gridId, req);
                 X509Certificate cert = CertUtil.loadCertificate(record.getCertificate().getCertificateAsString());
                 System.out.println("Successfully created the host certificate:");
-                System.out.println("Subject: " + cert.getSubjectX500Principal().getName());
+                System.out.println("Subject: " + cert.getSubjectDN());
                 System.out.println("Created: " + cert.getNotBefore());
                 System.out.println("Expires: " + cert.getNotAfter());
                 File f = new File(dir);

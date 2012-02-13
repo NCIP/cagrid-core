@@ -12,12 +12,7 @@ import org.cagrid.grape.model.ConfigurationEditors;
 
 
 public class TargetGridDescriptorTreeNode extends ConfigurationDescriptorTreeNode {
-	/**
-     * 
-     */
-    private static final long serialVersionUID = 8991063730261665589L;
-
-    private static Log log = LogFactory.getLog(TargetGridDescriptorTreeNode.class);
+	private static Log log = LogFactory.getLog(TargetGridDescriptorTreeNode.class);
 	
 	private String configurationName = null;
 
@@ -29,10 +24,10 @@ public class TargetGridDescriptorTreeNode extends ConfigurationDescriptorTreeNod
 			this.setDisplayPanel(new ConfigurationDisplayPanel(des.getDisplayName()));
 		} else {
 			try {
-				Class<?>[] types = new Class[2];
+				Class[] types = new Class[2];
 				types[0] = ConfigurationDescriptorTreeNode.class;
 				types[1] = Object.class;
-				Constructor<?> c = Class.forName(des.getConfigurationPanel()).getConstructor(types);
+				Constructor c = Class.forName(des.getConfigurationPanel()).getConstructor(types);
 				Object[] args = new Object[2];
 				args[0] = this;
 				args[1] = GAARDSApplication.getContext().getConfigurationManager().getConfigurationObjectByConfiguration(des.getSystemName(), configurationName);

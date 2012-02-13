@@ -42,8 +42,8 @@ public class SyncUtils {
     private static final Logger logger = Logger.getLogger(SyncUtils.class);
 
 
-    public static Map<String, NamespaceInformation> buildMasterNamespaceInformationMap(ServiceDescription desc) {
-        Map<String, NamespaceInformation> map = new HashMap<String, NamespaceInformation>();
+    public static Map buildMasterNamespaceInformationMap(ServiceDescription desc) {
+        Map map = new HashMap();
         int namespaceCount = 0;
         if (desc.getNamespaces() != null && desc.getNamespaces().getNamespace() != null) {
             for (int i = 0; i < desc.getNamespaces().getNamespace().length; i++) {
@@ -136,8 +136,8 @@ public class SyncUtils {
             throw new SynchronizationException(message);
         }
         // fix up the namespaceing of the imported operation
-        List<?> copyElemChildren = copyOperation.getChildren();
-        Iterator<?> childIter = copyElemChildren.iterator();
+        List copyElemChildren = copyOperation.getChildren();
+        Iterator childIter = copyElemChildren.iterator();
         while (childIter.hasNext()) {
             Element copyChild = (Element) childIter.next();
             String messageString = copyChild.getAttributeValue("message");
@@ -153,7 +153,7 @@ public class SyncUtils {
                 message = messageString;
                 ns = fromWsdl.getRootElement().getNamespace();
             }
-            List<Namespace> toNamespaces = getAdditionalNamespaces(toWsdl);
+            List toNamespaces = toWsdl.getRootElement().getAdditionalNamespaces();
             for (int namespaceIndex = 0; namespaceIndex < toNamespaces.size(); namespaceIndex++) {
                 Namespace tempns = (Namespace) toNamespaces.get(namespaceIndex);
                 if (tempns.getURI().equals(ns.getURI())) {
@@ -178,22 +178,11 @@ public class SyncUtils {
             throw new SynchronizationException(message, ex);
         }
     }
-
-
-    /**
-     * @param toWsdl
-     * @return
-     */
-    @SuppressWarnings("unchecked")
-    private static List<Namespace> getAdditionalNamespaces(Document toWsdl) {
-        List<Namespace> toNamespaces = toWsdl.getRootElement().getAdditionalNamespaces();
-        return toNamespaces;
-    }
     
     
     private static Element getPortTypeElement(Element wsdlRoot, String portTypeName) {
-        List<?> portTypeElements = wsdlRoot.getChildren("portType", wsdlRoot.getNamespace());
-        Iterator<?> portTypeIter = portTypeElements.iterator();
+        List portTypeElements = wsdlRoot.getChildren("portType", wsdlRoot.getNamespace());
+        Iterator portTypeIter = portTypeElements.iterator();
         while (portTypeIter.hasNext()) {
             Element portType = (Element) portTypeIter.next();
             if (portTypeName.equals(portType.getAttributeValue("name"))) {
@@ -205,8 +194,8 @@ public class SyncUtils {
     
     
     private static Element getOperationElement(Element portType, String operationName) {
-        List<?> operationElements = portType.getChildren("operation", portType.getNamespace());
-        Iterator<?> operationIter = operationElements.iterator();
+        List operationElements = portType.getChildren("operation", portType.getNamespace());
+        Iterator operationIter = operationElements.iterator();
         while (operationIter.hasNext()) {
             Element operation = (Element) operationIter.next();
             if (operationName.equals(operation.getAttributeValue("name"))) {
@@ -217,8 +206,8 @@ public class SyncUtils {
     }
 
 
-    public static Map<String,ImportInformation> buildWSDLImportMap(ServiceType service) {
-        Map<String,ImportInformation> map = new HashMap<String,ImportInformation>();
+    public static Map buildWSDLImportMap(ServiceType service) {
+        Map map = new HashMap();
         int namespaceCount = 0;
         if (service.getMethods() != null && service.getMethods().getMethod() != null) {
             for (int i = 0; i < service.getMethods().getMethod().length; i++) {
@@ -249,8 +238,8 @@ public class SyncUtils {
      *            The set of schemas already visited by this method
      * @throws Exception
      */
-    public static void walkSchemasGetNamespaces(String schemaFile, Set<String> namespaces, Set<String> excludedNamespaces,
-        Set<String> visitedSchemas) throws Exception {
+    public static void walkSchemasGetNamespaces(String schemaFile, Set namespaces, Set excludedNamespaces,
+        Set visitedSchemas) throws Exception {
         internalWalkSchemasGetNamespaces(schemaFile, namespaces, excludedNamespaces, visitedSchemas,
             new HashSet<String>(), new HashSet<String>());
     }
@@ -263,7 +252,8 @@ public class SyncUtils {
         visitedSchemas.add(schemaFile);
         File currentPath = new File(schemaFile).getCanonicalFile().getParentFile();
         Document schema = XMLUtilities.fileNameToDocument(schemaFile);
-        List<Element> importEls = getImportChildren(schema);
+        List importEls = schema.getRootElement().getChildren("import",
+            schema.getRootElement().getNamespace(IntroduceConstants.W3CNAMESPACE));
         for (int i = 0; i < importEls.size(); i++) {
             // get the import element
             Element importEl = (Element) importEls.get(i);
@@ -300,17 +290,5 @@ public class SyncUtils {
                 }
             }
         }
-    }
-
-
-    /**
-     * @param schema
-     * @return
-     */
-    @SuppressWarnings("unchecked")
-    private static List<Element> getImportChildren(Document schema) {
-        List<Element> importEls = schema.getRootElement().getChildren("import",
-            schema.getRootElement().getNamespace(IntroduceConstants.W3CNAMESPACE));
-        return importEls;
     }
 }

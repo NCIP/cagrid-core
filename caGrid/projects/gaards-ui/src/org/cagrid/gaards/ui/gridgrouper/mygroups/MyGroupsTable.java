@@ -2,7 +2,6 @@ package org.cagrid.gaards.ui.gridgrouper.mygroups;
 
 import gov.nih.nci.cagrid.common.FaultUtil;
 import gov.nih.nci.cagrid.gridgrouper.client.Group;
-import gov.nih.nci.cagrid.gridgrouper.grouper.GroupI;
 
 import java.util.Iterator;
 import java.util.Set;
@@ -58,7 +57,7 @@ public class MyGroupsTable extends GrapeBaseTable {
 	}
 
 	public synchronized void addGroup(final Group group) {
-		Vector<Object> v = new Vector<Object>();
+		Vector v = new Vector();
 		v.add(group);
 		v.add(group.getGridGrouper().getName());
 		int index = group.getDisplayName().lastIndexOf(":");
@@ -67,10 +66,10 @@ public class MyGroupsTable extends GrapeBaseTable {
 		addRow(v);
 	}
 
-	public synchronized void addGroups(final Set<GroupI> set) {
-		Iterator<GroupI> itr = set.iterator();
+	public synchronized void addGroups(final Set set) {
+		Iterator<Group> itr = set.iterator();
 		while (itr.hasNext()) {
-			addGroup((Group)itr.next());
+			addGroup(itr.next());
 		}
 	}
 

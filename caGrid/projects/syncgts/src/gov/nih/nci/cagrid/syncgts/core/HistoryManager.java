@@ -71,19 +71,19 @@ public class HistoryManager {
 	}
 
 
-//	private File getEarliestDayDir() {
-//		return getEarliestDir(getEarliestMonthDir());
-//	}
+	private File getEarliestDayDir() {
+		return getEarliestDir(getEarliestMonthDir());
+	}
 
 
-//	private File getEarliestMonthDir() {
-//		return getEarliestDir(getEarliestYearDir());
-//	}
+	private File getEarliestMonthDir() {
+		return getEarliestDir(getEarliestYearDir());
+	}
 
 
-//	private File getEarliestYearDir() {
-//		return getEarliestDir(getHistoryDirectory());
-//	}
+	private File getEarliestYearDir() {
+		return getEarliestDir(getHistoryDirectory());
+	}
 
 
 	/**
@@ -92,21 +92,21 @@ public class HistoryManager {
 	 * @param dir
 	 * @return
 	 */
-//	private File getEarliestDir(File dir) {
-//	    File earliest = null;
-//	    if (dir != null && dir.exists()) {
-//	        File[] dirs = dir.listFiles(new FileFilter() {
-//	            public boolean accept(File pathname) {
-//	                return pathname.isDirectory();
-//	            }
-//	        });
-//	        if (dirs != null) {
-//	            sortByFilename(dirs);
-//	            earliest = dirs[0];
-//	        }
-//	    }
-//	    return earliest;
-//	}
+	private File getEarliestDir(File dir) {
+	    File earliest = null;
+	    if (dir != null && dir.exists()) {
+	        File[] dirs = dir.listFiles(new FileFilter() {
+	            public boolean accept(File pathname) {
+	                return pathname.isDirectory();
+	            }
+	        });
+	        if (dirs != null) {
+	            sortByFilename(dirs);
+	            earliest = dirs[0];
+	        }
+	    }
+	    return earliest;
+	}
 
 
 	private File getLastDayDir() {
@@ -141,21 +141,21 @@ public class HistoryManager {
 	}
 
 
-//	private DateFilter getEarliestDateFilter() throws Exception {
-//		File day = getEarliestDayDir();
-//		File month = day.getParentFile();
-//		File year = month.getParentFile();
-//
-//		if ((day == null) || (month == null) || (year == null)) {
-//			return null;
-//		} else {
-//			DateFilter d = new DateFilter();
-//			d.setDay(Integer.valueOf(day.getName()).intValue());
-//			d.setMonth(Integer.valueOf(month.getName()).intValue());
-//			d.setYear(Integer.valueOf(year.getName()).intValue());
-//			return d;
-//		}
-//	}
+	private DateFilter getEarliestDateFilter() throws Exception {
+		File day = getEarliestDayDir();
+		File month = day.getParentFile();
+		File year = month.getParentFile();
+
+		if ((day == null) || (month == null) || (year == null)) {
+			return null;
+		} else {
+			DateFilter d = new DateFilter();
+			d.setDay(Integer.valueOf(day.getName()).intValue());
+			d.setMonth(Integer.valueOf(month.getName()).intValue());
+			d.setYear(Integer.valueOf(year.getName()).intValue());
+			return d;
+		}
+	}
 
 	
 	private boolean isAfter(DateFilter start, DateFilter end){
@@ -421,35 +421,35 @@ public class HistoryManager {
 	}
 	
 	
-//	private int countXmlDocs(List<File> files) {
-//	    int count = 0;
-//	    for (File f : files) {
-//	        if (f.isFile() && f.getName().endsWith(".xml")) {
-//	            count++;
-//	        }
-//	    }
-//	    return count;
-//	}
-//
-//
-//    private void deleteIfEmpty(File dir) {
-//        if (dir.isDirectory()) {
-//            File files[] = dir.listFiles();
-//            if ((files == null) || (files.length == 0)) {
-//                dir.delete();
-//            }
-//        }
-//    }
-//	
-//	
-//	private static int getMaxReports() {
-//	    int max = DEFAULT_MAX_REPORTS;
-//	    String val = System.getProperty(MAX_REPORTS_PROPERTY);
-//	    try {
-//	        max = Integer.valueOf(val).intValue();
-//	    } catch (Exception ex) {
-//	        // whatever
-//	    }
-//	    return max;
-//	}
+	private int countXmlDocs(List<File> files) {
+	    int count = 0;
+	    for (File f : files) {
+	        if (f.isFile() && f.getName().endsWith(".xml")) {
+	            count++;
+	        }
+	    }
+	    return count;
+	}
+
+
+    private void deleteIfEmpty(File dir) {
+        if (dir.isDirectory()) {
+            File files[] = dir.listFiles();
+            if ((files == null) || (files.length == 0)) {
+                dir.delete();
+            }
+        }
+    }
+	
+	
+	private static int getMaxReports() {
+	    int max = DEFAULT_MAX_REPORTS;
+	    String val = System.getProperty(MAX_REPORTS_PROPERTY);
+	    try {
+	        max = Integer.valueOf(val).intValue();
+	    } catch (Exception ex) {
+	        // whatever
+	    }
+	    return max;
+	}
 }

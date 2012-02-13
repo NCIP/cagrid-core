@@ -5,11 +5,15 @@ import gov.nih.nci.cagrid.common.FaultUtil;
 import java.security.KeyPair;
 import java.security.PrivateKey;
 import java.security.PublicKey;
+import java.security.Security;
 import java.security.cert.X509Certificate;
 
 import junit.framework.TestCase;
 
-import org.bouncycastle.asn1.x509.X509Name;
+import org.bouncycastle.jce.provider.BouncyCastleProvider;
+import org.cagrid.gaards.pki.CertificateExtensionsUtil;
+import org.cagrid.gaards.pki.KeyUtil;
+import org.cagrid.gaards.pki.ProxyCreator;
 import org.globus.gsi.GlobusCredential;
 
 
@@ -24,9 +28,7 @@ public class TestProxyCreator extends TestCase {
 
 	private String identityToSubject(String identity) {
 		String s = identity.substring(1);
-		String subject = s.replace('/', ',');
-		X509Name name = new X509Name(true, subject);
-		return name.toString();
+		return s.replace('/', ',');
 	}
 
 
@@ -54,7 +56,7 @@ public class TestProxyCreator extends TestCase {
 			int seconds = 0;
 			PrivateKey key = gridCred.getPrivateKey();
 			assertNotNull(key);
-			KeyPair pair = KeyUtil.generateRSAKeyPair512();
+			KeyPair pair = KeyUtil.generateRSAKeyPair512("BC");
 			assertNotNull(pair);
 			PublicKey proxyPublicKey = pair.getPublic();
 			assertNotNull(proxyPublicKey);
@@ -67,8 +69,8 @@ public class TestProxyCreator extends TestCase {
 			GlobusCredential cred = new GlobusCredential(pair.getPrivate(), certs);
 			assertNotNull(cred);
 			long timeLeft = cred.getTimeLeft();
-			assertEquals(cert.getSubjectX500Principal().getName(), identityToSubject(cred.getIdentity()));
-//			assertEquals(cert.getIssuerX500Principal().getName(), identityToSubject(cred.getIdentity()));
+			assertEquals(cert.getSubjectDN().toString(), identityToSubject(cred.getIdentity()));
+			assertEquals(cred.getIssuer(), identityToSubject(cred.getIdentity()));
 			assertEquals(length, CertificateExtensionsUtil.getDelegationPathLength(certs[0]));
 
 			long okMax = hours * 60 * 60;
@@ -95,7 +97,7 @@ public class TestProxyCreator extends TestCase {
 			int seconds = 0;
 			PrivateKey key = gridCred.getPrivateKey();
 			assertNotNull(key);
-			KeyPair pair = KeyUtil.generateRSAKeyPair512();
+			KeyPair pair = KeyUtil.generateRSAKeyPair512("BC");
 			assertNotNull(pair);
 			PublicKey proxyPublicKey = pair.getPublic();
 			assertNotNull(proxyPublicKey);
@@ -108,4 +110,16 @@ public class TestProxyCreator extends TestCase {
 			assertEquals("Cannot create a proxy that expires after issuing certificate.", e.getMessage());
 		}
 	}
+
+
+	protected void setUp() throws Exception {
+		super.setUp();
+		try {
+			Security.addProvider(new BouncyCastleProvider());
+		} catch (Exception e) {
+			FaultUtil.printFault(e);
+			assertTrue(false);
+		}
+	}
+
 }

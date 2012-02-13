@@ -42,8 +42,6 @@ import org.apache.axis.message.addressing.EndpointReferenceType;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.cagrid.gaards.pki.CertUtil;
-import org.cagrid.proxy.BetterProxyPathValidator;
-import org.cagrid.proxy.CertificateRevocationLists;
 import org.globus.wsrf.impl.security.authorization.IdentityAuthorization;
 import org.projectmobius.common.MobiusRunnable;
 
@@ -135,6 +133,7 @@ public class GTS implements TrustedAuthorityLevelRemover, TrustLevelLookup {
 		CertificateValidationFault {
 		boolean isValidated = false;
 		TrustedAuthority[] list = trust.findTrustAuthorities(filter);
+		ProxyPathValidator validator = new ProxyPathValidator();
 		if ((list == null) || (list.length == 0)) {
 			CertificateValidationFault fault = new CertificateValidationFault();
 			fault.setFaultString("Could not validate chain, no trusted roots found!!!");
@@ -183,7 +182,6 @@ public class GTS implements TrustedAuthorityLevelRemover, TrustLevelLookup {
 				}
 			}
 			try {
-			    BetterProxyPathValidator validator = new BetterProxyPathValidator();
 				validator.validate(certChain, trustedCerts, CertificateRevocationLists
 					.getCertificateRevocationLists(crls));
 				isValidated = true;

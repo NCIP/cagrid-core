@@ -1,7 +1,5 @@
 package org.cagrid.gaards.pki;
 
-import gov.nih.nci.cagrid.common.security.SecurityConstants;
-
 import java.security.GeneralSecurityException;
 import java.security.PrivateKey;
 import java.security.PublicKey;
@@ -26,11 +24,15 @@ import org.globus.gsi.proxy.ext.ProxyPolicy;
  */
 public class ProxyCreator {
 
+	public static final String SIGNATURE_ALGORITHM = "MD5WithRSAEncryption";
+
+
 	public static X509Certificate[] createImpersonationProxyCertificate(X509Certificate cert, PrivateKey privateKey,
 		PublicKey proxyPublicKey, int lifetimeHours, int lifetimeMinutes, int lifetimeSeconds)
 		throws GeneralSecurityException {
-		return createImpersonationProxyCertificate(SecurityConstants.CRYPTO_PROVIDER, new X509Certificate[]{cert}, privateKey, proxyPublicKey,
-			lifetimeHours, lifetimeMinutes, lifetimeSeconds, SecurityConstants.DEFAULT_PROXY_SIGNING_ALGORITHM);
+		SecurityUtil.init();
+		return createImpersonationProxyCertificate("BC", new X509Certificate[]{cert}, privateKey, proxyPublicKey,
+			lifetimeHours, lifetimeMinutes, lifetimeSeconds, SIGNATURE_ALGORITHM);
 	}
 
 
@@ -45,8 +47,9 @@ public class ProxyCreator {
 	public static X509Certificate[] createImpersonationProxyCertificate(X509Certificate cert, PrivateKey privateKey,
 		PublicKey proxyPublicKey, int lifetimeHours, int lifetimeMinutes, int lifetimeSeconds, int delegationPathLength)
 		throws GeneralSecurityException {
-		return createImpersonationProxyCertificate(SecurityConstants.CRYPTO_PROVIDER, new X509Certificate[]{cert}, privateKey, proxyPublicKey,
-			lifetimeHours, lifetimeMinutes, lifetimeSeconds, delegationPathLength, SecurityConstants.DEFAULT_PROXY_SIGNING_ALGORITHM);
+		SecurityUtil.init();
+		return createImpersonationProxyCertificate("BC", new X509Certificate[]{cert}, privateKey, proxyPublicKey,
+			lifetimeHours, lifetimeMinutes, lifetimeSeconds, delegationPathLength, SIGNATURE_ALGORITHM);
 	}
 
 
@@ -61,8 +64,9 @@ public class ProxyCreator {
 	public static X509Certificate[] createImpersonationProxyCertificate(X509Certificate[] certs, PrivateKey privateKey,
 		PublicKey proxyPublicKey, int lifetimeHours, int lifetimeMinutes, int lifetimeSeconds)
 		throws GeneralSecurityException {
-		return createImpersonationProxyCertificate(SecurityConstants.CRYPTO_PROVIDER, certs, privateKey, proxyPublicKey, lifetimeHours,
-			lifetimeMinutes, lifetimeSeconds, Integer.MAX_VALUE, SecurityConstants.DEFAULT_PROXY_SIGNING_ALGORITHM);
+		SecurityUtil.init();
+		return createImpersonationProxyCertificate("BC", certs, privateKey, proxyPublicKey, lifetimeHours,
+			lifetimeMinutes, lifetimeSeconds, Integer.MAX_VALUE, SIGNATURE_ALGORITHM);
 	}
 
 
@@ -77,8 +81,9 @@ public class ProxyCreator {
 	public static X509Certificate[] createImpersonationProxyCertificate(X509Certificate[] certs, PrivateKey privateKey,
 		PublicKey proxyPublicKey, int lifetimeHours, int lifetimeMinutes, int lifetimeSeconds, int delegationPathLength)
 		throws GeneralSecurityException {
-		return createImpersonationProxyCertificate(SecurityConstants.CRYPTO_PROVIDER, certs, privateKey, proxyPublicKey, lifetimeHours,
-			lifetimeMinutes, lifetimeSeconds, delegationPathLength, SecurityConstants.DEFAULT_PROXY_SIGNING_ALGORITHM);
+		SecurityUtil.init();
+		return createImpersonationProxyCertificate("BC", certs, privateKey, proxyPublicKey, lifetimeHours,
+			lifetimeMinutes, lifetimeSeconds, delegationPathLength, SIGNATURE_ALGORITHM);
 	}
 
 
@@ -91,23 +96,25 @@ public class ProxyCreator {
 		X509ExtensionSet extSet = new X509ExtensionSet();
 		extSet.add(x509Ext);
 		return createProxyCertificate(provider, certs, privateKey, proxyPublicKey, lifetimeHours, lifetimeMinutes,
-			lifetimeSeconds, GSIConstants.CertificateType.GSI_4_IMPERSONATION_PROXY, extSet, signatureAlgorithm);
+			lifetimeSeconds, GSIConstants.GSI_4_IMPERSONATION_PROXY, extSet, signatureAlgorithm);
 	}
 
 
 	public static X509Certificate[] createProxyCertificate(X509Certificate[] certs, PrivateKey privateKey,
-		PublicKey proxyPublicKey, int lifetimeHours, int lifetimeMinutes, int lifetimeSeconds, GSIConstants.CertificateType proxyType,
+		PublicKey proxyPublicKey, int lifetimeHours, int lifetimeMinutes, int lifetimeSeconds, int proxyType,
 		X509ExtensionSet extSet) throws GeneralSecurityException {
-		return createProxyCertificate(SecurityConstants.CRYPTO_PROVIDER, certs, privateKey, proxyPublicKey, lifetimeHours, lifetimeMinutes,
-			lifetimeSeconds, proxyType, extSet, SecurityConstants.DEFAULT_PROXY_SIGNING_ALGORITHM);
+		SecurityUtil.init();
+		return createProxyCertificate("BC", certs, privateKey, proxyPublicKey, lifetimeHours, lifetimeMinutes,
+			lifetimeSeconds, proxyType, extSet, SIGNATURE_ALGORITHM);
 	}
 
 
 	public static X509Certificate[] createProxyCertificate(String provider, X509Certificate[] certs,
 		PrivateKey privateKey, PublicKey proxyPublicKey, int lifetimeHours, int lifetimeMinutes, int lifetimeSeconds,
-		GSIConstants.CertificateType proxyType, X509ExtensionSet extSet, String signatureAlgorithm) throws GeneralSecurityException {
+		int proxyType, X509ExtensionSet extSet, String signatureAlgorithm) throws GeneralSecurityException {
 		X509Certificate newCert = createProxyCertificate(provider, certs[0], privateKey, proxyPublicKey, lifetimeHours,
 			lifetimeMinutes, lifetimeSeconds, proxyType, extSet, signatureAlgorithm);
+
 		X509Certificate[] newCerts = new X509Certificate[certs.length + 1];
 		newCerts[0] = newCert;
 		System.arraycopy(certs, 0, newCerts, 1, certs.length);
@@ -117,7 +124,7 @@ public class ProxyCreator {
 
 	protected static X509Certificate createProxyCertificate(String provider, X509Certificate issuerCert,
 		PrivateKey issuerKey, PublicKey publicKey, int lifetimeHours, int lifetimeMinutes, int lifetimeSeconds,
-		GSIConstants.CertificateType proxyType, X509ExtensionSet extSet, String signatureAlgorithm) throws GeneralSecurityException {
+		int proxyType, X509ExtensionSet extSet, String signatureAlgorithm) throws GeneralSecurityException {
 		Date d = getProxyValid(lifetimeHours, lifetimeMinutes, lifetimeSeconds);
 		if (issuerCert.getNotAfter().before(d)) {
 			throw new GeneralSecurityException("Cannot create a proxy that expires after issuing certificate.");

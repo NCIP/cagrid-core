@@ -5,15 +5,11 @@ package org.cagrid.installer.model;
 
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
-import java.io.BufferedInputStream;
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.InputStream;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Locale;
 import java.util.Map;
-import java.util.Properties;
 import java.util.ResourceBundle;
 
 import javax.swing.ImageIcon;
@@ -122,24 +118,7 @@ CaGridInstallerModel, OverviewProvider {
 
         // Look for cagrid
         if (isCaGridInstalled()) {
-	    String cagridHomeDir = getHomeDir(Constants.CAGRID_HOME, "CAGRID_HOME");
-            setProperty(Constants.CAGRID_HOME, cagridHomeDir);
-	    String targetGridName = getProperty(Constants.TARGET_GRID);
-	    if (targetGridName == null) {
-		Properties gridProperties = new Properties();
-		File gridPropertiesFile = new File(cagridHomeDir, ".currentgrid.properties");
-		logger.info("Target grid not found in initial properties; checking " + gridPropertiesFile.getAbsolutePath());
-		try {
-		    InputStream in = new BufferedInputStream(new FileInputStream(gridPropertiesFile));
-		    gridProperties.load(in);
-		} catch (Exception e) {
-		    logger.info("No target grid configured");
-		}
-		targetGridName = (String)gridProperties.get(Constants.TARGET_GRID);
-		if (targetGridName != null) {
-		    setProperty(Constants.TARGET_GRID, targetGridName);
-		}
-	    }
+            setProperty(Constants.CAGRID_HOME, getHomeDir(Constants.CAGRID_HOME, "CAGRID_HOME"));
         }
 
     }

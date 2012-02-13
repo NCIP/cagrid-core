@@ -144,7 +144,7 @@ public class Installer
 	
 	private void splashScreenInit()
 	{
-		ImageIcon myImage = new ImageIcon(Thread.currentThread().getContextClassLoader().getResource("images/installer.1.5.gif"));
+		ImageIcon myImage = new ImageIcon(Thread.currentThread().getContextClassLoader().getResource("images/installer.1.4.1.gif"));
 		screen = new SplashScreen(myImage);
 		screen.setLocationRelativeTo(null);
 		screen.setProgressMax(TOTAL_INIT_STEPS);
@@ -515,17 +515,11 @@ public class Installer
 		DeployServiceTask deploySyncGTS = new DeployServiceTask("syncGTS", "Deploying syncGTS", "syncgts");
 		deployContainer.getTasks().add(new ConditionalTask(deploySyncGTS, new Condition()
 		{
-			public boolean evaluate(WizardModel model) {
+			
+			public boolean evaluate(WizardModel model)
+			{
 				CaGridInstallerModel cagridmodel = (CaGridInstallerModel) model;
-				if (!((CaGridInstallerModel) model).isConfigureContainerSelected()) {
-					return false; // We are not configuring a container
-				}
-				boolean targetGridSelected = (cagridmodel.getProperty(Constants.TARGET_GRID) != null)
-					&& !cagridmodel.getProperty(Constants.TARGET_GRID).equals(Constants.NO_TARGET_GRID);
-				if (!targetGridSelected) {
-					logger.info("Configuring a container with no target grid specified.");
-				}
-				return targetGridSelected;
+				return ((CaGridInstallerModel) model).isConfigureContainerSelected() && (cagridmodel.getProperty(Constants.TARGET_GRID) != null) && !cagridmodel.getProperty(Constants.TARGET_GRID).equals(Constants.NO_TARGET_GRID);
 			}
 		}));
 		

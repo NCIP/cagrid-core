@@ -6,22 +6,9 @@ import org.jdom.Attribute;
 import org.jdom.Document;
 import org.jdom.xpath.XPath;
 
-/**
- * Utility class for getting information from a service's introduce XML file.
- */
+
 public class UpgradeUtilities {
 
-    /**
-     * Read the XML document in the named introduce XML file and return the
-     * value of the ServiceDescription element's introduceVersion attribute.
-     * 
-     * @param introduceFile
-     *            The absolute file path of an introduce XML file.
-     * @return the value of the introduceVersion attribute ("1.3", "1.4", ...)
-     *         or null.
-     * @throws Exception
-     *             if there is a problem.
-     */
     public static String getCurrentServiceVersion(String introduceFile) throws Exception {
 
         Document doc = XMLUtilities.fileNameToDocument(introduceFile);
@@ -37,17 +24,7 @@ public class UpgradeUtilities {
 
     }
 
-    /**
-     * Read the XML document in the named introduce XML file and return the
-     * name of the first service described therein.
-     * 
-     * @param introduceFile
-     *            The absolute file path of an introduce XML file.
-     * @return the value of the introduceVersion attribute ("1.3", "1.4", ...)
-     *         or null.
-     * @throws Exception
-     *             if there is a problem.
-     */
+
     public static String getServiceName(String introduceFile) throws Exception {
 
         Document doc = XMLUtilities.fileNameToDocument(introduceFile);

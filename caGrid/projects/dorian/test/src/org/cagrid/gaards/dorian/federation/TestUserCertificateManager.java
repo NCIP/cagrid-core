@@ -14,9 +14,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.naming.InvalidNameException;
-import javax.naming.ldap.LdapName;
-
 import junit.framework.TestCase;
 
 import org.cagrid.gaards.dorian.ca.CertificateAuthority;
@@ -33,7 +30,7 @@ public class TestUserCertificateManager extends TestCase implements Publisher {
     private static final int DEFAULT_SECONDS_OFFSET = 300;
     private Database db;
     private CertificateAuthority ca;
-    private LdapName caSubject;
+    private String caSubject;
     private int crlPublishCount;
     private List<BigInteger> crl;
     private UserCertificateManager man;
@@ -45,7 +42,7 @@ public class TestUserCertificateManager extends TestCase implements Publisher {
 
             String uid = "jdoe";
             X509Certificate cert = getAndValidateCertificate(uid, DEFAULT_SECONDS);
-            man.addUserCertifcate(CommonUtils.subjectToIdentity(CertUtil.getSubjectDN(cert)), cert);
+            man.addUserCertifcate(CommonUtils.subjectToIdentity(cert.getSubjectDN().getName()), cert);
             UserCertificateRecord r = getAndValidateCertificateRecord(cert);
             checkCRL(man.getCompromisedCertificates(), 0);
             Map<Long, UserCertificateRecord> expected = new HashMap<Long, UserCertificateRecord>();
@@ -68,12 +65,12 @@ public class TestUserCertificateManager extends TestCase implements Publisher {
 
             // Test Grid Identity
             UserCertificateFilter gid = new UserCertificateFilter();
-            gid.setGridIdentity(CommonUtils.subjectToIdentity(CertUtil.getSubjectDN(cert)));
+            gid.setGridIdentity(CommonUtils.subjectToIdentity(cert.getSubjectDN().getName()));
             expected.clear();
             expected.put(new Long(r.getSerialNumber()), r);
             validateFind(gid, expected);
             expected.clear();
-            gid.setGridIdentity(CommonUtils.subjectToIdentity(CertUtil.getSubjectDN(cert) + "2"));
+            gid.setGridIdentity(CommonUtils.subjectToIdentity(cert.getSubjectDN().getName() + "2"));
             validateFind(gid, expected);
 
             // Test Status
@@ -225,7 +222,7 @@ public class TestUserCertificateManager extends TestCase implements Publisher {
             // Test All
             UserCertificateFilter all = new UserCertificateFilter();
             all.setSerialNumber(new Long(r.getSerialNumber()));
-            all.setGridIdentity(CommonUtils.subjectToIdentity(CertUtil.getSubjectDN(cert)));
+            all.setGridIdentity(CommonUtils.subjectToIdentity(cert.getSubjectDN().getName()));
             all.setStatus(UserCertificateStatus.Compromised);
             all.setNotes(msg);
             all.setDateRange(insideRange);
@@ -251,7 +248,7 @@ public class TestUserCertificateManager extends TestCase implements Publisher {
             for (int i = 0; i < count; i++) {
                 String uid = "jdoe" + i;
                 X509Certificate cert = getAndValidateCertificate(uid, DEFAULT_SECONDS);
-                man.addUserCertifcate(CommonUtils.subjectToIdentity(CertUtil.getSubjectDN(cert)), cert);
+                man.addUserCertifcate(CommonUtils.subjectToIdentity(cert.getSubjectDN().getName()), cert);
                 UserCertificateRecord r = getAndValidateCertificateRecord(cert);
                 records.add(r);
 
@@ -279,12 +276,12 @@ public class TestUserCertificateManager extends TestCase implements Publisher {
 
                 // Test Grid Identity
                 UserCertificateFilter gid = new UserCertificateFilter();
-                gid.setGridIdentity(CommonUtils.subjectToIdentity(CertUtil.getSubjectDN(cert)));
+                gid.setGridIdentity(CommonUtils.subjectToIdentity(cert.getSubjectDN().getName()));
                 expected.clear();
                 expected.put(new Long(r.getSerialNumber()), r);
                 validateFind(gid, expected);
                 expected.clear();
-                gid.setGridIdentity(CommonUtils.subjectToIdentity(CertUtil.getSubjectDN(cert) + "2"));
+                gid.setGridIdentity(CommonUtils.subjectToIdentity(cert.getSubjectDN().getName() + "2"));
                 validateFind(gid, expected);
 
                 // Test Status
@@ -451,7 +448,7 @@ public class TestUserCertificateManager extends TestCase implements Publisher {
                 // Test All
                 UserCertificateFilter all = new UserCertificateFilter();
                 all.setSerialNumber(new Long(r.getSerialNumber()));
-                all.setGridIdentity(CommonUtils.subjectToIdentity(CertUtil.getSubjectDN(cert)));
+                all.setGridIdentity(CommonUtils.subjectToIdentity(cert.getSubjectDN().getName()));
                 all.setStatus(UserCertificateStatus.Compromised);
                 all.setNotes(msg);
                 all.setDateRange(insideRange);
@@ -499,7 +496,7 @@ public class TestUserCertificateManager extends TestCase implements Publisher {
         try {
             String uid = "jdoe";
             X509Certificate cert = getAndValidateCertificate(uid, DEFAULT_SECONDS);
-            man.addUserCertifcate(CommonUtils.subjectToIdentity(CertUtil.getSubjectDN(cert)), cert);
+            man.addUserCertifcate(CommonUtils.subjectToIdentity(cert.getSubjectDN().getName()), cert);
             UserCertificateRecord r = getAndValidateCertificateRecord(cert);
             checkCRL(man.getCompromisedCertificates(), 0);
             Map<Long, UserCertificateRecord> expected = new HashMap<Long, UserCertificateRecord>();
@@ -572,7 +569,7 @@ public class TestUserCertificateManager extends TestCase implements Publisher {
             // Create expired certificate
 
             X509Certificate expiredCert = getAndValidateCertificate(uid, DEFAULT_SECONDS, (DEFAULT_SECONDS * -2));
-            man.addUserCertifcate(CommonUtils.subjectToIdentity(CertUtil.getSubjectDN(expiredCert)), expiredCert);
+            man.addUserCertifcate(CommonUtils.subjectToIdentity(expiredCert.getSubjectDN().getName()), expiredCert);
             UserCertificateRecord expired = getAndValidateCertificateRecord(expiredCert);
             UserCertificateFilter expiredFilter = new UserCertificateFilter();
             expiredFilter.setSerialNumber(expired.getSerialNumber());
@@ -590,7 +587,7 @@ public class TestUserCertificateManager extends TestCase implements Publisher {
 
             X509Certificate expiredCompromisedCert = getAndValidateCertificate(uid, DEFAULT_SECONDS,
                 (DEFAULT_SECONDS * -2));
-            man.addUserCertifcate(CommonUtils.subjectToIdentity(CertUtil.getSubjectDN(expiredCompromisedCert)),
+            man.addUserCertifcate(CommonUtils.subjectToIdentity(expiredCompromisedCert.getSubjectDN().getName()),
                 expiredCompromisedCert);
             UserCertificateRecord expiredCompromised = getAndValidateCertificateRecord(expiredCompromisedCert);
             UserCertificateFilter expiredCompromisedFilter = new UserCertificateFilter();
@@ -618,7 +615,7 @@ public class TestUserCertificateManager extends TestCase implements Publisher {
             // Create Active certificate
 
             X509Certificate activeCert = getAndValidateCertificate(uid, DEFAULT_SECONDS);
-            man.addUserCertifcate(CommonUtils.subjectToIdentity(CertUtil.getSubjectDN(activeCert)), activeCert);
+            man.addUserCertifcate(CommonUtils.subjectToIdentity(activeCert.getSubjectDN().getName()), activeCert);
             UserCertificateRecord active = getAndValidateCertificateRecord(activeCert);
             UserCertificateFilter activeFilter = new UserCertificateFilter();
             activeFilter.setSerialNumber(active.getSerialNumber());
@@ -636,7 +633,7 @@ public class TestUserCertificateManager extends TestCase implements Publisher {
             // Create Active certificate of a different user
             String uid2 = "jane";
             X509Certificate activeCert2 = getAndValidateCertificate(uid2, DEFAULT_SECONDS);
-            man.addUserCertifcate(CommonUtils.subjectToIdentity(CertUtil.getSubjectDN(activeCert2)), activeCert2);
+            man.addUserCertifcate(CommonUtils.subjectToIdentity(activeCert2.getSubjectDN().getName()), activeCert2);
             UserCertificateRecord active2 = getAndValidateCertificateRecord(activeCert2);
             UserCertificateFilter activeFilter2 = new UserCertificateFilter();
             activeFilter2.setSerialNumber(active2.getSerialNumber());
@@ -654,7 +651,7 @@ public class TestUserCertificateManager extends TestCase implements Publisher {
             // Create Active Compromised Certificate
 
             X509Certificate activeCompromisedCert = getAndValidateCertificate(uid, DEFAULT_SECONDS);
-            man.addUserCertifcate(CommonUtils.subjectToIdentity(CertUtil.getSubjectDN(activeCompromisedCert)),
+            man.addUserCertifcate(CommonUtils.subjectToIdentity(activeCompromisedCert.getSubjectDN().getName()),
                 activeCompromisedCert);
             UserCertificateRecord activeCompromised = getAndValidateCertificateRecord(activeCompromisedCert);
             UserCertificateFilter activeCompromisedFilter = new UserCertificateFilter();
@@ -680,7 +677,7 @@ public class TestUserCertificateManager extends TestCase implements Publisher {
             checkCRL(man.getCompromisedCertificates(), 2);
 
             List<BigInteger> activeResults = man.getActiveCertificates(CommonUtils
-                .subjectToIdentity(CertUtil.getSubjectDN(expiredCompromisedCert)));
+                .subjectToIdentity(expiredCompromisedCert.getSubjectDN().getName()));
             List<BigInteger> expectedResults = new ArrayList<BigInteger>();
             expectedResults.add(activeCert.getSerialNumber());
             validateExpectedSerialNumbers(expectedResults, activeResults);
@@ -709,7 +706,7 @@ public class TestUserCertificateManager extends TestCase implements Publisher {
             // Create expired certificate
 
             X509Certificate expiredCert = getAndValidateCertificate(uid, DEFAULT_SECONDS, (DEFAULT_SECONDS * -2));
-            man.addUserCertifcate(CommonUtils.subjectToIdentity(CertUtil.getSubjectDN(expiredCert)), expiredCert);
+            man.addUserCertifcate(CommonUtils.subjectToIdentity(expiredCert.getSubjectDN().getName()), expiredCert);
             UserCertificateRecord expired = getAndValidateCertificateRecord(expiredCert);
             UserCertificateFilter expiredFilter = new UserCertificateFilter();
             expiredFilter.setSerialNumber(expired.getSerialNumber());
@@ -727,7 +724,7 @@ public class TestUserCertificateManager extends TestCase implements Publisher {
 
             X509Certificate expiredCompromisedCert = getAndValidateCertificate(uid, DEFAULT_SECONDS,
                 (DEFAULT_SECONDS * -2));
-            man.addUserCertifcate(CommonUtils.subjectToIdentity(CertUtil.getSubjectDN(expiredCompromisedCert)),
+            man.addUserCertifcate(CommonUtils.subjectToIdentity(expiredCompromisedCert.getSubjectDN().getName()),
                 expiredCompromisedCert);
             UserCertificateRecord expiredCompromised = getAndValidateCertificateRecord(expiredCompromisedCert);
             UserCertificateFilter expiredCompromisedFilter = new UserCertificateFilter();
@@ -757,7 +754,7 @@ public class TestUserCertificateManager extends TestCase implements Publisher {
             // Create Active certificate
 
             X509Certificate activeCert = getAndValidateCertificate(uid2, DEFAULT_SECONDS);
-            man.addUserCertifcate(CommonUtils.subjectToIdentity(CertUtil.getSubjectDN(activeCert)), activeCert);
+            man.addUserCertifcate(CommonUtils.subjectToIdentity(activeCert.getSubjectDN().getName()), activeCert);
             UserCertificateRecord active = getAndValidateCertificateRecord(activeCert);
             UserCertificateFilter activeFilter = new UserCertificateFilter();
             activeFilter.setSerialNumber(active.getSerialNumber());
@@ -775,7 +772,7 @@ public class TestUserCertificateManager extends TestCase implements Publisher {
             // Create Active Compromised Certificate
 
             X509Certificate activeCompromisedCert = getAndValidateCertificate(uid2, DEFAULT_SECONDS);
-            man.addUserCertifcate(CommonUtils.subjectToIdentity(CertUtil.getSubjectDN(activeCompromisedCert)),
+            man.addUserCertifcate(CommonUtils.subjectToIdentity(activeCompromisedCert.getSubjectDN().getName()),
                 activeCompromisedCert);
             UserCertificateRecord activeCompromised = getAndValidateCertificateRecord(activeCompromisedCert);
             UserCertificateFilter activeCompromisedFilter = new UserCertificateFilter();
@@ -817,7 +814,7 @@ public class TestUserCertificateManager extends TestCase implements Publisher {
         try {
             String uid = "jdoe";
             X509Certificate cert = getAndValidateCertificate(uid, DEFAULT_SECONDS);
-            man.addUserCertifcate(CommonUtils.subjectToIdentity(CertUtil.getSubjectDN(cert)), cert);
+            man.addUserCertifcate(CommonUtils.subjectToIdentity(cert.getSubjectDN().getName()), cert);
             UserCertificateRecord r = getAndValidateCertificateRecord(cert);
             Map<Long, UserCertificateRecord> expected = new HashMap<Long, UserCertificateRecord>();
 
@@ -906,11 +903,11 @@ public class TestUserCertificateManager extends TestCase implements Publisher {
         try {
             String uid = "jdoe";
             X509Certificate cert = getAndValidateCertificate(uid, DEFAULT_SECONDS);
-            man.addUserCertifcate(CommonUtils.subjectToIdentity(CertUtil.getSubjectDN(cert)), cert);
+            man.addUserCertifcate(CommonUtils.subjectToIdentity(cert.getSubjectDN().getName()), cert);
             getAndValidateCertificateRecord(cert);
 
             try {
-                man.addUserCertifcate(CommonUtils.subjectToIdentity(CertUtil.getSubjectDN(cert)), cert);
+                man.addUserCertifcate(CommonUtils.subjectToIdentity(cert.getSubjectDN().getName()), cert);
                 fail("Should not be able to add existing user certificate!!!");
             } catch (InvalidUserCertificateFault e) {
                 if (!gov.nih.nci.cagrid.common.Utils.getExceptionMessage(e).equals(
@@ -961,7 +958,7 @@ public class TestUserCertificateManager extends TestCase implements Publisher {
         assertTrue(man.determineIfRecordExistBySerialNumber(cert.getSerialNumber().longValue()));
         UserCertificateRecord record = man.getUserCertificateRecord(cert.getSerialNumber().longValue());
         assertNotNull(record);
-        assertEquals(CommonUtils.subjectToIdentity(CertUtil.getSubjectDN(cert)), record.getGridIdentity());
+        assertEquals(CommonUtils.subjectToIdentity(cert.getSubjectDN().getName()), record.getGridIdentity());
         assertEquals("", record.getNotes());
         assertEquals(cert.getSerialNumber().longValue(), record.getSerialNumber());
         assertEquals(UserCertificateStatus.OK, record.getStatus());
@@ -984,21 +981,15 @@ public class TestUserCertificateManager extends TestCase implements Publisher {
         c.add(Calendar.SECOND, seconds);
         Date end = c.getTime();
         X509Certificate cert = getCertificate(subject, start, end);
-        assertEquals(subject, CertUtil.getSubjectDN(cert));
+        assertEquals(subject, cert.getSubjectDN().getName());
         return cert;
     }
 
 
     private String getUserSubject(String uid) {
-        LdapName userDN = (LdapName) caSubject.clone();
-        try {
-			userDN.add("OU=123");
-	        userDN.add("CN=" + uid);
-		} catch (InvalidNameException e) {
-			e.printStackTrace();
-			fail("Unable to generate user DN");
-		}
-        return userDN.toString();
+        int caindex = caSubject.lastIndexOf(",");
+        String caPreSub = caSubject.substring(0, caindex);
+        return caPreSub + ",OU=" + 123 + ",CN=" + uid;
     }
 
 
@@ -1030,7 +1021,7 @@ public class TestUserCertificateManager extends TestCase implements Publisher {
             db = Utils.getDB();
             assertEquals(0, db.getUsedConnectionCount());
             ca = Utils.getCA();
-            caSubject = new LdapName(CertUtil.getSubjectDN(ca.getCACertificate()));
+            caSubject = ca.getCACertificate().getSubjectDN().getName();
             blackList = new CertificateBlacklistManager(db);
             blackList.clearDatabase();
             man = new UserCertificateManager(db, this, blackList);

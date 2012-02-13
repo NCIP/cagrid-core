@@ -1,6 +1,7 @@
 package gov.nih.nci.cagrid.introduce.portal.undeployment;
 
 import gov.nih.nci.cagrid.introduce.IntroduceConstants;
+import gov.nih.nci.cagrid.introduce.codegen.SyncTools;
 import gov.nih.nci.cagrid.introduce.common.ResourceManager;
 import gov.nih.nci.cagrid.introduce.portal.common.IntroduceLookAndFeel;
 import gov.nih.nci.cagrid.introduce.portal.deployment.DeploymentViewer;
@@ -22,14 +23,16 @@ import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.JScrollPane;
 import javax.swing.border.TitledBorder;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
 import org.apache.log4j.Logger;
 import org.cagrid.grape.ApplicationComponent;
+import org.cagrid.grape.utils.CompositeErrorDialog;
 import org.cagrid.grape.utils.ErrorDialog;
+
+import javax.swing.JScrollPane;
 
 
 public class UndeployServiceViewer extends ApplicationComponent {
@@ -171,6 +174,9 @@ public class UndeployServiceViewer extends ApplicationComponent {
             if (System.getenv(IntroduceConstants.TOMCAT) != null) {
                 containerSelectorComboBox.addItem(DeploymentViewer.TOMCAT);
             }
+            if (System.getenv(IntroduceConstants.GLOBUS) != null) {
+                containerSelectorComboBox.addItem(DeploymentViewer.GLOBUS);
+            }
             if (System.getenv(IntroduceConstants.JBOSS) != null) {
                 containerSelectorComboBox.addItem(DeploymentViewer.JBOSS);
             }
@@ -215,7 +221,10 @@ public class UndeployServiceViewer extends ApplicationComponent {
         }
         String webAppDir = null;
         String webAppEtcDir = null;
-        if (containerType.equals(DeploymentViewer.TOMCAT)) {
+        if (containerType.equals(DeploymentViewer.GLOBUS)) {
+            webAppDir = System.getenv("GLOBUS_LOCATION");
+            webAppEtcDir = webAppDir + File.separator + "etc";
+        } else if (containerType.equals(DeploymentViewer.TOMCAT)) {
             webAppDir = System.getenv("CATALINA_HOME") + File.separator + "webapps" + File.separator + "wsrf";
             webAppEtcDir = webAppDir + File.separator + "WEB-INF" + File.separator + "etc";
         } else if (containerType.equals(DeploymentViewer.JBOSS)) {

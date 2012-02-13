@@ -12,15 +12,13 @@ import java.awt.event.ActionListener;
 
 import javax.swing.JButton;
 import javax.swing.tree.DefaultMutableTreeNode;
+import javax.swing.tree.DefaultTreeModel;
+import javax.swing.SwingConstants;
 
 
 public class ServiceButtonPanel extends ServiceContextsOptionsPanel {
 
-    /**
-	 * 
-	 */
-	private static final long serialVersionUID = -2520929584556933308L;
-	private JButton modifyServiceButton = null;
+    private JButton modifyServiceButton = null;
     private JButton addMethodButton = null;
     private JButton modifyResourcesButton = null;
 

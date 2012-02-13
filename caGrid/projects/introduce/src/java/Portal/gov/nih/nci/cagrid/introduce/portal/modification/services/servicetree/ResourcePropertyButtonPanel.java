@@ -18,11 +18,7 @@ import javax.swing.tree.DefaultMutableTreeNode;
 
 public class ResourcePropertyButtonPanel extends ServiceContextsOptionsPanel {
 
-    /**
-	 * 
-	 */
-	private static final long serialVersionUID = -125033358240711464L;
-	private JButton removeResourcePropertyButton = null;
+    private JButton removeResourcePropertyButton = null;
     private JButton editButton = null;
 
 

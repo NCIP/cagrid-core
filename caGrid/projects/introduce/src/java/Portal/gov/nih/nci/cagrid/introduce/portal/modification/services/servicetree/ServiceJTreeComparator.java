@@ -8,7 +8,7 @@ import java.util.Comparator;
 
 import javax.swing.tree.DefaultMutableTreeNode;
 
-public class ServiceJTreeComparator implements Comparator<Object> {
+public class ServiceJTreeComparator implements Comparator {
 	  public int compare(Object o1, Object o2) {
 	    if (!(o1 instanceof DefaultMutableTreeNode && o2 instanceof DefaultMutableTreeNode)) {
 	      throw new IllegalArgumentException(
@@ -22,7 +22,7 @@ public class ServiceJTreeComparator implements Comparator<Object> {
 	    
 	    if((o1 instanceof ServiceTypeTreeNode && o2 instanceof ServiceTypeTreeNode)){
 	    	ServiceType c1  = ((ServiceTypeTreeNode) o1).getServiceType();
-	    	//ServiceType c2  = ((ServiceTypeTreeNode) o2).getServiceType();
+	    	ServiceType c2  = ((ServiceTypeTreeNode) o2).getServiceType();
 	    	ServicesType service = ((ServiceTypeTreeNode) o2).getInfo().getServices();
 	    	for(int i = 0; i < service.getService().length; i++){
 	    		if(c1.getName().equals(service.getService(i).getName())){

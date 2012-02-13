@@ -43,12 +43,7 @@ import org.globus.wsrf.encoding.ObjectDeserializer;
 
 public class GAARDSApplication extends GridApplication{
 	
-	/**
-     * 
-     */
-    private static final long serialVersionUID = 3166508662104284545L;
-
-    private static File gaardsConfigurationDirectory = new File(Utils.getCaGridUserHome(), "gaards");
+	private static File gaardsConfigurationDirectory = new File(Utils.getCaGridUserHome(), "gaards");
 	
 	private static String targetGrid = null;
 	
@@ -143,14 +138,9 @@ public class GAARDSApplication extends GridApplication{
 		}
 		
 		startPreInitializer();
-					
+			
 		setupTargetGridsConfigurationFile();
         
-		org.globus.common.CoGProperties properties = org.globus.common.CoGProperties.getDefault();
-		File globusDir = new File(gaardsConfigurationDirectory, "globus");
-        properties.setCaCertLocations(globusDir.getCanonicalPath());            		
-        org.globus.common.CoGProperties.setDefault(properties);
-
 		List<Component> toolbarComponents = new ArrayList<Component>();
 		this.setJMenuBar(getJJMenuBar(toolbarComponents));
 		this.getContentPane().setLayout(new BorderLayout());

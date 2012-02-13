@@ -20,6 +20,11 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 
+/**
+ * MetadataUpgrade1pt4
+ * 
+ * Upgrade the metadata plugin from 1.4 to 1.4.1
+ */
 public class MetadataUpgrade1pt4 extends ExtensionUpgraderBase {
 
     private static final String CAGRID_1_4_METADATA_JAR_PREFIX = "caGrid-metadata";
@@ -105,7 +110,7 @@ public class MetadataUpgrade1pt4 extends ExtensionUpgraderBase {
             File out = new File(serviceLibDir.getAbsolutePath() + File.separator + newLib.getName());
             try {
                 Utils.copyFile(newLib, out);
-                getStatus().addDescriptionLine("caGrid 1.5 library " + newLib.getName() + " added");
+                getStatus().addDescriptionLine("caGrid 1.4.1 library " + newLib.getName() + " added");
             } catch (IOException ex) {
                 // TODO: change this to use a better exception
                 throw new RuntimeException("Error copying new metadata library: " + ex.getMessage(), ex);
@@ -145,7 +150,7 @@ public class MetadataUpgrade1pt4 extends ExtensionUpgraderBase {
                 try {
                     Utils.copyFile(toolslibs[i], outFile);
                     getStatus().addDescriptionLine(
-                        "caGrid 1.5 library " + outFile.getName() + " added, for deploytime validation.");
+                        "caGrid 1.4.1 library " + outFile.getName() + " added, for deploytime validation.");
                 } catch (IOException e) {
                     // TODO: change this to use a better exception
                     throw new RuntimeException("Error adding deployment validator: " + e.getMessage(), e);

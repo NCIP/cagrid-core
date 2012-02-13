@@ -2,7 +2,7 @@
 <!-- caGrid Data Services test build file                                    -->
 <!-- ======================================================================= -->
 <project name="caGrid-data_tests_harness" basedir=".">
-
+	
 	<!-- should all testing stop on the first error or failure encountered? -->
 	<property name="halt.on.error" value="false" />
 	<!-- message when tests fail -->
@@ -17,8 +17,8 @@
 	<property name="testing.upgrade.services.dir" value="${basedir}/resources/services/upgrade"/>
 	<!-- external services and projects we depend on -->
 	<property name="cagrid.projects.dir" value="${basedir}/../../../caGrid/projects"/>
-	<property name="transfer.service.dir" value="${cagrid.projects.dir}/transfer"/>
-
+	<property name="transfer.service.dir" value="${cagrid.projects.dir}/transfer"/>	
+	
 	<target name="prepareClasspaths">
 		<path id="all.test.classpath">
 			<path refid="test.run.classpath" />
@@ -36,22 +36,22 @@
 		<delete dir="${basedir}/test_services"/>
 		<delete dir="${basedir}/tmp"/>
 	</target>
-
-
+	
+	
 	<target name="testCreations" depends="testBasicCreation, testEnumerationCreation, testTransferCreation" description="Runs all creation tests.">
 		<fail message="Data core ${failed.message}" if="core.test.failed" />
 		<fail message="Data basic creation ${failed.message}" if="basic.creation.test.failed" />
 		<fail message="Data enumeration creation ${failed.message}" if="enumeration.creation.test.failed" />
 		<fail message="Data transfer creation ${failed.message}" if="transfer.creation.test.failed "/>
 	</target>
-
-
-	<target name="testUpgrades" depends="testUpgradeFrom1pt3, testUpgradeFrom1pt4" description="Runs upgrade tests">
+	
+	
+	<target name="testUpgrades" depends="testUpgradeFrom1pt2, testUpgradeFrom1pt3" description="Runs upgrade tests">
+		<fail message="Data upgrade from 1.2 ${failed.message}" if="upgrade.1.2.test.failed" />
 		<fail message="Data upgrade from 1.3 ${failed.message}" if="upgrade.1.3.test.failed" />
-		<fail message="Data upgrade from 1.4 ${failed.message}" if="upgrade.1.4.test.failed" />
 	</target>
-
-
+	
+	
 	<target name="systemTest" depends="setGlobus, prepareClasspaths, testBasicSystem, testEnumerationSystem, testTransferSystem" description="Runs system tests (deploy, invoke, etc)">
 		<fail message="Tests failed! Check test reports." if="basic.system.test.failed" />
 		<fail message="Tests failed! Check test reports." if="enumeration.system.test.failed" />
@@ -99,8 +99,8 @@
 		</junit>
 		<property name="enumeration.service.created" value="true" />
 	</target>
-
-
+	
+	
 	<!-- tests creation of a transfer supporting data service -->
 	<target name="testTransferCreation" depends="setGlobus, prepareClasspaths" description="Runs the service creation tests for a data service supporting caGrid Transfer" unless="transfer.service.created">
 		<mkdir dir="${junit.results.dir}" />
@@ -177,8 +177,8 @@
 			</batchtest>
 		</junit>
 	</target>
-
-
+	
+	
 	<!-- system tests against the transfer data service -->
 	<target name="testTransferSystem" depends="setGlobus, testTransferCreation" description="Tests the transfer data service system">
 		<junit dir="${introduce.dir}" printsummary="yes" haltonerror="${halt.on.error}" haltonfailure="${halt.on.error}" errorproperty="transfer.system.test.failed" failureproperty="transfer.system.test.failed" showoutput="true" fork="yes" forkmode="once">
@@ -206,7 +206,38 @@
 		</junit>
 	</target>
 
-
+	
+	<!-- tests upgrading 1.2 services to current -->
+	<target name="testUpgradeFrom1pt2" depends="setGlobus, prepareClasspaths" description="Tests the ability to upgrade a service from 1.2 to the current version" unless="upgrade.1pt2.completed">
+		<mkdir dir="${junit.results.dir}" />
+		<junit dir="${introduce.dir}" printsummary="yes" haltonerror="${halt.on.error}" haltonfailure="${halt.on.error}" errorproperty="upgrade.1.2.test.failed" failureproperty="upgrade.1.2.test.failed" showoutput="true" fork="yes">
+			<sysproperty key="introduce.base.dir" value="${introduce.dir}" />
+			<sysproperty key="build.dir" value="${classes.dir}" />
+			<sysproperty key="cql.docs.dir" value="${basedir}/docs/cqlExamples" />
+			<sysproperty key="temp.test.service.dir" value="${temp.test.service.dir}"/>
+			<sysproperty key="upgrade.services.zip.dir" value="${testing.upgrade.services.dir}"/>
+			<sysproperty key="temp.test.service.dir" value="${temp.test.service.dir}"/>
+			<sysproperty key="testing.containers.dir" value="${testing.containers.dir}"/>
+			<sysproperty key="use.testing.port.assignment" value="${testing.port.assignment.mode}" />
+			<classpath refid="all.test.classpath" />
+			<!-- also needs the other extensions (such as metadata) to be upgraded, so need their upgraders on the classpath -->
+			<classpath>
+				<fileset dir="${introduce.dir}/extensions/lib">
+					<include name="*.jar" />
+				</fileset>
+			</classpath>
+			<formatter type="xml" />
+			<test if="testcase" name="${testcase}" fork="no" todir="${junit.results.dir}" />
+			<batchtest unless="testcase" fork="yes" todir="${junit.results.dir}">
+				<fileset dir="${src.dir}">
+					<include name="**/from1pt2/**/Upgrade*From1pt2Tests.java" />
+				</fileset>
+			</batchtest>
+		</junit>
+		<property name="upgrade.1pt2.completed" value="true" />
+	</target>
+	
+	
 	<!-- tests upgrading 1.3 services to current -->
 	<target name="testUpgradeFrom1pt3" depends="setGlobus, prepareClasspaths" description="Tests the ability to upgrade a service from 1.3 to the current version" unless="upgrade.1pt3.completed">
 		<mkdir dir="${junit.results.dir}" />
@@ -235,36 +266,5 @@
 			</batchtest>
 		</junit>
 		<property name="upgrade.1pt3.completed" value="true" />
-	</target>
-
-
-	<!-- tests upgrading 1.4 services to current -->
-	<target name="testUpgradeFrom1pt4" depends="setGlobus, prepareClasspaths" description="Tests the ability to upgrade a service from 1.4 to the current version" unless="upgrade.1pt4.completed">
-		<mkdir dir="${junit.results.dir}" />
-		<junit dir="${introduce.dir}" printsummary="yes" haltonerror="${halt.on.error}" haltonfailure="${halt.on.error}" errorproperty="upgrade.1.4.test.failed" failureproperty="upgrade.1.4.test.failed" showoutput="true" fork="yes">
-			<sysproperty key="introduce.base.dir" value="${introduce.dir}" />
-			<sysproperty key="build.dir" value="${classes.dir}" />
-			<sysproperty key="cql.docs.dir" value="${basedir}/docs/cqlExamples" />
-			<sysproperty key="temp.test.service.dir" value="${temp.test.service.dir}"/>
-			<sysproperty key="upgrade.services.zip.dir" value="${testing.upgrade.services.dir}"/>
-			<sysproperty key="temp.test.service.dir" value="${temp.test.service.dir}"/>
-			<sysproperty key="testing.containers.dir" value="${testing.containers.dir}"/>
-			<sysproperty key="use.testing.port.assignment" value="${testing.port.assignment.mode}" />
-			<classpath refid="all.test.classpath" />
-			<!-- also needs the other extensions (such as metadata) to be upgraded, so need their upgraders on the classpath -->
-			<classpath>
-				<fileset dir="${introduce.dir}/extensions/lib">
-					<include name="*.jar" />
-				</fileset>
-			</classpath>
-			<formatter type="xml" />
-			<test if="testcase" name="${testcase}" fork="no" todir="${junit.results.dir}" />
-			<batchtest unless="testcase" fork="yes" todir="${junit.results.dir}">
-				<fileset dir="${src.dir}">
-					<include name="**/from1pt4/**/Upgrade*From1pt4Tests.java" />
-				</fileset>
-			</batchtest>
-		</junit>
-		<property name="upgrade.1pt4.completed" value="true" />
-	</target>
+	</target>	
 </project>

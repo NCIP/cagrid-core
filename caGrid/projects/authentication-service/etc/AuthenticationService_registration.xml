@@ -13,23 +13,24 @@
   <Content xsi:type="agg:AggregatorContent" xmlns:agg="http://mds.globus.org/aggregator/types">
     <agg:AggregatorConfig xsi:type="agg:AggregatorConfig">
       <agg:GetMultipleResourcePropertiesPollType
-			xmlns:ns5="urn:oasis:names:tc:SAML:1.0:assertion"
-			xmlns:ns2="http://cagrid.nci.nih.gov/AuthenticationService/types"
+			xmlns:ns6="urn:oasis:names:tc:SAML:1.0:assertion"
+			xmlns:ns3="http://cagrid.nci.nih.gov/AuthenticationService/types"
+			xmlns:ns0="http://gaards.cagrid.org/authentication/lockout"
 			xmlns:xs="http://www.w3.org/2001/XMLSchema"
-			xmlns:ns1="http://gaards.cagrid.org/authentication-faults"
-			xmlns:ns0="http://gaards.cagrid.org/authentication"
-			xmlns:ns7="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.security"
-			xmlns:ns6="http://authentication.gaards.cagrid.org/AuthenticationService/types"
-			xmlns:ns3="http://cagrid.nci.nih.gov/1/authentication-service"
-			xmlns:ns4="http://www.w3.org/2000/09/xmldsig#"
-			xmlns:ns8="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata">
+			xmlns:ns2="http://gaards.cagrid.org/authentication-faults"
+			xmlns:ns1="http://gaards.cagrid.org/authentication"
+			xmlns:ns8="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.security"
+			xmlns:ns7="http://authentication.gaards.cagrid.org/AuthenticationService/types"
+			xmlns:ns4="http://cagrid.nci.nih.gov/1/authentication-service"
+			xmlns:ns5="http://www.w3.org/2000/09/xmldsig#"
+			xmlns:ns9="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata">
         <!-- Specifies that the index should refresh information
             every 300000 milliseconds (once every 5 minutes) -->
         <agg:PollIntervalMillis>INDEX_REFRESH</agg:PollIntervalMillis>
         <!-- specifies all Resource Properties that should be retrieved from the service -->
-		<agg:ResourcePropertyNames>ns8:ServiceMetadata</agg:ResourcePropertyNames>
+		<agg:ResourcePropertyNames>ns9:ServiceMetadata</agg:ResourcePropertyNames>
 	
-		<agg:ResourcePropertyNames>ns0:AuthenticationProfiles</agg:ResourcePropertyNames>
+		<agg:ResourcePropertyNames>ns1:AuthenticationProfiles</agg:ResourcePropertyNames>
 	
       </agg:GetMultipleResourcePropertiesPollType>
     </agg:AggregatorConfig>

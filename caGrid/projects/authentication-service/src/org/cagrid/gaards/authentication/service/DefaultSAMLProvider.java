@@ -17,6 +17,8 @@ import gov.nih.nci.security.authentication.principal.LastNamePrincipal;
 import gov.nih.nci.security.authentication.principal.LoginIdPrincipal;
 
 import java.io.File;
+import java.io.FileReader;
+import java.io.Reader;
 import java.security.Principal;
 import java.security.PrivateKey;
 import java.security.cert.X509Certificate;
@@ -57,7 +59,8 @@ public class DefaultSAMLProvider implements
 	    if(!certFile.exists()){
 		throw new Exception("Certificate file not found at: " + certFile.getAbsolutePath());
 	    }
-	    X509Certificate cert = CertUtil.loadCertificate(certFile);
+	    Reader certReader = new FileReader(certFile);
+	    X509Certificate cert = CertUtil.loadCertificate(certReader);
 	    if(cert == null){
 		throw new Exception("Failed to load certificate.");
 	    }
@@ -143,8 +146,8 @@ public class DefaultSAMLProvider implements
 	    Date start = cal.getTime();
 	    cal.add(Calendar.MINUTE, 2);
 	    Date end = cal.getTime();
-	    String issuer = this.certificate.getSubjectX500Principal().getName();
-	    String federation = this.certificate.getSubjectX500Principal().getName();
+	    String issuer = this.certificate.getSubjectDN().toString();
+	    String federation = this.certificate.getSubjectDN().toString();
 	    String ipAddress = null;
 	    String subjectDNS = null;
 
@@ -207,7 +210,7 @@ public class DefaultSAMLProvider implements
 		    null, l);
 	    List a = new ArrayList();
 	    a.add(this.certificate);
-	    saml.sign(XMLSignature.ALGO_ID_SIGNATURE_RSA_SHA256,
+	    saml.sign(XMLSignature.ALGO_ID_SIGNATURE_RSA_SHA1,
 		    this.privateKey, a);
 
 	} catch (Exception e) {

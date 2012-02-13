@@ -96,7 +96,7 @@
 			</fileset>
 			<fileset dir="${ext.globus.dir}/lib">
 				<include name="*.jar" />
-				<exclude name="JGlobus-Core-2.0.*.jar" />
+				<exclude name="cog-jglobus.jar" />
 				<exclude name="${stubs.jar.name}" />
 				<exclude name="${common.jar.name}" />
 				<exclude name="${client.jar.name}" />

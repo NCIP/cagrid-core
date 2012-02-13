@@ -28,12 +28,7 @@ import org.cagrid.grape.GridApplication;
 
 public class ExtensionsManagerPanel extends JPanel {
 
-    /**
-	 * 
-	 */
-	private static final long serialVersionUID = -854094683139040237L;
-
-	private JPanel extSelectionPanel = null;
+    private JPanel extSelectionPanel = null;
 
     private JComboBox serviceStyleSeletor = null;
 
@@ -150,7 +145,7 @@ public class ExtensionsManagerPanel extends JPanel {
             serviceStyleSeletor = new JComboBox();
             serviceStyleSeletor.addItem("NONE");
 
-            List<ServiceExtensionDescriptionType> extensionDescriptors = ExtensionsLoader.getInstance().getServiceExtensions();
+            List extensionDescriptors = ExtensionsLoader.getInstance().getServiceExtensions();
             for (int i = 0; i < extensionDescriptors.size(); i++) {
                 ServiceExtensionDescriptionType ex = (ServiceExtensionDescriptionType) extensionDescriptors.get(i);
                 if (ex.getShouldBeRemoved()==null || !ex.getShouldBeRemoved()) {

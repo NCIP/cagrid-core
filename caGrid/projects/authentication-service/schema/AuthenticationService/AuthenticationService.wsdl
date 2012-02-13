@@ -1,25 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<definitions xmlns="http://schemas.xmlsoap.org/wsdl/" 
-	xmlns:tns="http://authentication.gaards.cagrid.org/AuthenticationService" 
-	xmlns:wsrp="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ResourceProperties-1.2-draft-01.xsd" 
-	xmlns:wsa="http://schemas.xmlsoap.org/ws/2004/03/addressing" 
-	xmlns:wsrbfw="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-BaseFaults-1.2-draft-01.wsdl" 
-	xmlns:wsrpw="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ResourceProperties-1.2-draft-01.wsdl" 
-	xmlns:wns1="http://cagrid.nci.nih.gov/AuthenticationService" 
-	xmlns:wns0="http://security.introduce.cagrid.nci.nih.gov/ServiceSecurity" 
-	xmlns:wns2="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ResourceProperties-1.2-draft-01.wsdl" 
-	xmlns:ns5="urn:oasis:names:tc:SAML:1.0:assertion" 
-	xmlns:ns2="http://cagrid.nci.nih.gov/AuthenticationService/types" 
-	xmlns:ns1="http://gaards.cagrid.org/authentication-faults" 
-	xmlns:ns0="http://gaards.cagrid.org/authentication" 
-	xmlns:ns7="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.security" 
-	xmlns:ns6="http://authentication.gaards.cagrid.org/AuthenticationService/types" 
-	xmlns:ns3="http://cagrid.nci.nih.gov/1/authentication-service" 
-	xmlns:ns4="http://www.w3.org/2000/09/xmldsig#" 
-	xmlns:ns8="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata" 
-	xmlns:ns9="http://gaards.cagrid.org/authentication/lockout"
-	name="AuthenticationService" 
-	targetNamespace="http://authentication.gaards.cagrid.org/AuthenticationService">
+<definitions xmlns="http://schemas.xmlsoap.org/wsdl/" xmlns:tns="http://authentication.gaards.cagrid.org/AuthenticationService" xmlns:wsrp="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ResourceProperties-1.2-draft-01.xsd" xmlns:wsa="http://schemas.xmlsoap.org/ws/2004/03/addressing" xmlns:wsrbfw="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-BaseFaults-1.2-draft-01.wsdl" xmlns:wsrpw="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ResourceProperties-1.2-draft-01.wsdl" xmlns:wns1="http://cagrid.nci.nih.gov/AuthenticationService" xmlns:wns0="http://security.introduce.cagrid.nci.nih.gov/ServiceSecurity" xmlns:wns2="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ResourceProperties-1.2-draft-01.wsdl" xmlns:ns6="urn:oasis:names:tc:SAML:1.0:assertion" xmlns:ns3="http://cagrid.nci.nih.gov/AuthenticationService/types" xmlns:ns0="http://gaards.cagrid.org/authentication/lockout" xmlns:ns2="http://gaards.cagrid.org/authentication-faults" xmlns:ns1="http://gaards.cagrid.org/authentication" xmlns:ns8="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.security" xmlns:ns7="http://authentication.gaards.cagrid.org/AuthenticationService/types" xmlns:ns4="http://cagrid.nci.nih.gov/1/authentication-service" xmlns:ns5="http://www.w3.org/2000/09/xmldsig#" xmlns:ns9="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata" name="AuthenticationService" targetNamespace="http://authentication.gaards.cagrid.org/AuthenticationService">
   <import namespace="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ResourceProperties-1.2-draft-01.wsdl" location="../wsrf/properties/WS-ResourceProperties.wsdl" />
   <import namespace="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-BaseFaults-1.2-draft-01.wsdl" location="../wsrf/faults/WS-BaseFaults.wsdl" />
   <import namespace="http://cagrid.nci.nih.gov/AuthenticationService" location="./AuthenticationServiceDeprecated.wsdl" />
@@ -34,6 +14,7 @@
       <import namespace="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-BaseFaults-1.2-draft-01.xsd" schemaLocation="../wsrf/faults/WS-BaseFaults.xsd" />
       <import namespace="urn:oasis:names:tc:SAML:1.0:assertion" schemaLocation="./cs-sstc-schema-assertion-1.1.xsd" />
       <import namespace="http://cagrid.nci.nih.gov/AuthenticationService/types" schemaLocation="./AuthenticationServiceTypesDeprecated.xsd" />
+      <import namespace="http://gaards.cagrid.org/authentication/lockout" schemaLocation="./authentication-lockout-types.xsd" />
       <import namespace="http://gaards.cagrid.org/authentication-faults" schemaLocation="./authentication-faults.xsd" />
       <import namespace="http://gaards.cagrid.org/authentication" schemaLocation="./authentication-core-types.xsd" />
       <import namespace="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.security" schemaLocation="./xsd/cagrid/types/security/security.xsd" />
@@ -41,14 +22,13 @@
       <import namespace="http://cagrid.nci.nih.gov/1/authentication-service" schemaLocation="./authentication-service.xsd" />
       <import namespace="http://www.w3.org/2000/09/xmldsig#" schemaLocation="./xmldsig-core-schema.xsd" />
       <import namespace="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata" schemaLocation="./xsd/cagrid/types/caGridMetadata.xsd" />
-      <import namespace="http://gaards.cagrid.org/authentication/lockout" schemaLocation="./authentication-lockout-types.xsd" />
       <element name="AuthenticateUserRequest">
         <complexType>
           <sequence>
             <element name="credential">
               <complexType>
                 <sequence>
-                  <element ref="ns0:Credential" minOccurs="1" maxOccurs="1" />
+                  <element ref="ns1:Credential" minOccurs="1" maxOccurs="1" />
                 </sequence>
               </complexType>
             </element>
@@ -58,7 +38,7 @@
       <element name="AuthenticateUserResponse">
         <complexType>
           <sequence>
-            <element ref="ns5:Assertion" minOccurs="1" maxOccurs="1" />
+            <element ref="ns6:Assertion" minOccurs="1" maxOccurs="1" />
           </sequence>
         </complexType>
       </element>
@@ -70,15 +50,15 @@
       <element name="GetLockedOutUsersResponse">
         <complexType>
           <sequence>
-            <element ref="ns9:LockedUserInfo" minOccurs="1" maxOccurs="unbounded" />
+            <element ref="ns0:LockedUserInfo" minOccurs="1" maxOccurs="unbounded" />
           </sequence>
         </complexType>
       </element>
       <element name="AuthenticationServiceResourceProperties">
         <complexType>
           <sequence>
-            <element ref="ns8:ServiceMetadata" />
-            <element ref="ns0:AuthenticationProfiles" />
+            <element ref="ns9:ServiceMetadata" />
+            <element ref="ns1:AuthenticationProfiles" />
           </sequence>
         </complexType>
       </element>
@@ -98,16 +78,16 @@
     <part name="parameters" element="tns:GetLockedOutUsersResponse" />
   </message>
   <message name="AuthenticationProviderFaultFaultMessage">
-    <part name="fault" element="ns1:AuthenticationProviderFault" />
+    <part name="fault" element="ns2:AuthenticationProviderFault" />
   </message>
   <message name="CredentialNotSupportedFaultFaultMessage">
-    <part name="fault" element="ns1:CredentialNotSupportedFault" />
+    <part name="fault" element="ns2:CredentialNotSupportedFault" />
   </message>
   <message name="InsufficientAttributeFaultFaultMessage">
-    <part name="fault" element="ns1:InsufficientAttributeFault" />
+    <part name="fault" element="ns2:InsufficientAttributeFault" />
   </message>
   <message name="InvalidCredentialFaultFaultMessage">
-    <part name="fault" element="ns1:InvalidCredentialFault" />
+    <part name="fault" element="ns2:InvalidCredentialFault" />
   </message>
   <!--============================================================
 

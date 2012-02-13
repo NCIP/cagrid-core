@@ -314,10 +314,6 @@ public class DeploymentViewer extends ApplicationComponent {
                         "Deployment") {
 
                         public void process() {
-                        	if (deploymentTypeSelector.getItemCount() < 1) {
-                                ErrorDialog.showError("Deployment Location needs to be set.  Please set CATALINA_HOME or JBOSS_HOME.");
-                                return;
-                           }
 
                             setProgressText("calling pre deployment callbacks...");
 
@@ -403,7 +399,9 @@ public class DeploymentViewer extends ApplicationComponent {
 
                             try {
                                 List<String> cmd;
-                                if (((String) getDeploymentTypeSelector().getSelectedItem()).equals(TOMCAT)) {
+                                if (((String) getDeploymentTypeSelector().getSelectedItem()).equals(GLOBUS)) {
+                                    cmd = AntTools.getAntDeployGlobusCommand(serviceDirectory.getAbsolutePath());
+                                } else if (((String) getDeploymentTypeSelector().getSelectedItem()).equals(TOMCAT)) {
                                     cmd = AntTools.getAntDeployTomcatCommand(serviceDirectory.getAbsolutePath());
                                 } else {
                                     cmd = AntTools.getAntDeployJBossCommand(serviceDirectory.getAbsolutePath());
@@ -483,6 +481,8 @@ public class DeploymentViewer extends ApplicationComponent {
                 public void actionPerformed(java.awt.event.ActionEvent e) {
                     if (((String) deploymentTypeSelector.getSelectedItem()).equals(TOMCAT)) {
                         getContainerLocationTextField().setText(System.getenv(IntroduceConstants.TOMCAT));
+                    } else if (((String) deploymentTypeSelector.getSelectedItem()).equals(GLOBUS)) {
+                        getContainerLocationTextField().setText(System.getenv(IntroduceConstants.GLOBUS));
                     } else if (((String) deploymentTypeSelector.getSelectedItem()).equals(JBOSS)) {
                         getContainerLocationTextField().setText(System.getenv(IntroduceConstants.JBOSS));
                     }
@@ -491,6 +491,9 @@ public class DeploymentViewer extends ApplicationComponent {
 
             if (System.getenv(IntroduceConstants.TOMCAT) != null) {
                 deploymentTypeSelector.addItem(TOMCAT);
+            }
+            if (System.getenv(IntroduceConstants.GLOBUS) != null) {
+                deploymentTypeSelector.addItem(GLOBUS);
             }
             if (System.getenv(IntroduceConstants.JBOSS) != null) {
                 deploymentTypeSelector.addItem(JBOSS);

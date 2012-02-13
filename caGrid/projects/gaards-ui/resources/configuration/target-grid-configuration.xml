@@ -4,14 +4,7 @@
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://www.cagrid.org/1/grape-target-grid-configuration">
 	<lastUpdated>2010-08-01</lastUpdated>
-	<activeGrid>osudev-1.5</activeGrid>
-	<grid>
-		<SystemName>osudev-1.5</SystemName>
-		<DisplayName>Development Grid for caGrid 1.5</DisplayName>
-		<IvySettings>ivy-default.xml</IvySettings>
-		<publicationDate>2011-03-31</publicationDate>
-		<version>osudev-1.5</version>
-	</grid>
+	<activeGrid>training-1.4</activeGrid>
 	<grid>
 		<SystemName>training-1.4</SystemName>
 		<DisplayName>Training Grid for caGrid 1.4</DisplayName>

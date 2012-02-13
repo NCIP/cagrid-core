@@ -20,11 +20,11 @@ public class GrouperAddAdminStep extends Step {
 
 	public void runStep() throws Throwable {
 		
-        List<String> cmd = AntTools.getAntCommand("addAdmin", grouperDir.getAbsolutePath());
-        cmd.add("-DgridId.input=\"" + userName + "\"");
+        List<String> cmd = AntTools.getAntCommand("-DgridId.input=" + userName + " addAdmin", grouperDir.getAbsolutePath());
+
         Process p = CommonTools.createAndOutputProcess(cmd);
         p.waitFor();
-        assertEquals("Build process exited abnormally: " + cmd.toString(), 0, p.exitValue());
+        assertEquals("Build process exited abnormally", 0, p.exitValue());
         p.destroy();
 
 	}

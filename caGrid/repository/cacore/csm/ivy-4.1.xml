@@ -25,7 +25,7 @@
 	<dependencies>
 		<dependency rev="4.1" org="cacore" name="clm" conf="auth->*" transitive="false"/>
 		<dependency rev="2.7.6" org="antlr" name="antlr" conf="default->*"/>
-		<dependency rev="0.9.+" org="c3p0" name="c3p0" conf="default->*"/>
+		<dependency rev="0.9.0" org="c3p0" name="c3p0" conf="default->*"/>
 		<dependency rev="1.5.3" org="objectweb" name="asm" conf="default->*"/>
 		<dependency rev="2.1_3" org="cglib" name="cglib" conf="default->default"/>
 		<!-- These are in the CSM release, but seems to work with what isdistributed with Globus
@@ -36,10 +36,10 @@
 			xercesimpl
 			xml-apis
 		-->
-		<dependency rev="1.2.+" org="apache" name="commons-dbcp" conf="default->*"/>
-		<dependency rev="2.+" org="apache" name="commons-lang" conf="default->*"/>
+		<dependency rev="1.2.1" org="apache" name="commons-dbcp" conf="default->*"/>
+		<dependency rev="1.0.1" org="apache" name="commons-lang" conf="default->*"/>
 		<dependency rev="1.6.1" org="dom4j" name="dom4j" conf="default->*"/>
-		<dependency rev="1.6.2" org="ehcache" name="ehcache" conf="default->*"/>
+		<dependency rev="1.2.4" org="ehcache" name="ehcache" conf="default->*"/>
 		<dependency rev="3.2.0.ga" org="hibernate" name="hibernate" conf="default->*"/>
 		<!-- Other caGrid components user jdom 1.0 -->
 		<dependency rev="1.0" org="jdom" name="jdom" conf="auth->*"/>

@@ -56,13 +56,13 @@ public class CertificateExtensionsTable extends GrapeBaseTable {
 
 
 	public void addCertificate(final X509Certificate cert) {
-		Set<String> set = cert.getCriticalExtensionOIDs();
-		Iterator<String> itr = set.iterator();
+		Set set = cert.getCriticalExtensionOIDs();
+		Iterator itr = set.iterator();
 
 		while (itr.hasNext()) {
 			try {
 				String oid = (String) itr.next();
-				Vector<String> v = new Vector<String>();
+				Vector v = new Vector();
 				v.add(oid);
 				v.add(CertificateExtensionsUtil.getExtentionName(oid));
 				v.add("true");
@@ -78,7 +78,7 @@ public class CertificateExtensionsTable extends GrapeBaseTable {
 		itr = set.iterator();
 		while (itr.hasNext()) {
 			String oid = (String) itr.next();
-			Vector<String> v = new Vector<String>();
+			Vector v = new Vector();
 			v.add(oid);
 			v.add(CertificateExtensionsUtil.getExtentionName(oid));
 			v.add("false");

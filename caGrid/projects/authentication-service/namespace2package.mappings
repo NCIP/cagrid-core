@@ -9,6 +9,7 @@ http\://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ResourceProperties-1.2-draft-01
 
 urn\:oasis\:names\:tc\:SAML\:1.0\:assertion=gov.nih.nci.cagrid.opensaml
 http\://cagrid.nci.nih.gov/AuthenticationService/types=gov.nih.nci.cagrid.authentication.stubs.types
+http\://gaards.cagrid.org/authentication/lockout=org.cagrid.gaards.authentication.lockout
 http\://gaards.cagrid.org/authentication-faults=org.cagrid.gaards.authentication.faults
 http\://gaards.cagrid.org/authentication=org.cagrid.gaards.authentication
 gme\://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.security=gov.nih.nci.cagrid.metadata.security

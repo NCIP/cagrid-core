@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<?xml-stylesheet type="text/xsl" href="http://ivyrep.jayasoft.org/ivy-doc.xsl"?>
+<ivy-module version="2.0">
+	<info organisation="apache" module="commons-beanutils" revision="1.6.1">
+
+		<description homepage="http://jakarta.apache.org/commons/beanutils/"> The BeanUtils
+			component provides easy-to-use wrappers around java bean getter / setter
+			capabilities.
+		</description>
+	</info>
+
+</ivy-module>

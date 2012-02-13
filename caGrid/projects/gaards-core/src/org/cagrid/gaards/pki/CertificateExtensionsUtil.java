@@ -10,7 +10,6 @@ import org.bouncycastle.asn1.DERObject;
 import org.bouncycastle.asn1.x509.BasicConstraints;
 import org.bouncycastle.asn1.x509.X509Extensions;
 import org.globus.gsi.CertUtil;
-import org.globus.gsi.GSIConstants;
 import org.globus.gsi.bc.BouncyCastleUtil;
 import org.globus.gsi.proxy.ext.ProxyCertInfo;
 
@@ -191,8 +190,8 @@ public class CertificateExtensionsUtil {
 				return "*** DISPLAY NOT SUPPORTED ***";
 			} else if (oid.equals(ProxyCertInfo.OID.getId())) {
 				StringBuffer sb = new StringBuffer();
-				GSIConstants.CertificateType type = BouncyCastleUtil.getCertificateType(cert);
-				String typeStr = null; //(type == -1) ? "Unknown Proxy Type" : CertUtil.getProxyTypeAsString(type);
+				int type = BouncyCastleUtil.getCertificateType(cert);
+				String typeStr = (type == -1) ? "Unknown Proxy Type" : CertUtil.getProxyTypeAsString(type);
 				sb.append(typeStr);
 				sb.append(", Delegation Path Length: ");
 				try {

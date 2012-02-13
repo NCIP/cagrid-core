@@ -9,13 +9,7 @@ package gov.nih.nci.cagrid.introduce.extension;
  */
 public class ExtensionRemovalException extends Exception {
 
-	/**
-     * Hash code for serialization
-     */
-    private static final long serialVersionUID = -3358222009988143217L;
-
-
-    public ExtensionRemovalException(String message) {
+	public ExtensionRemovalException(String message) {
 		super(message);
 	}
 	

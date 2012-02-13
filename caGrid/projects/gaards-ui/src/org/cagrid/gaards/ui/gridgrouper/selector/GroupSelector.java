@@ -18,6 +18,7 @@ import org.cagrid.gaards.ui.common.TitlePanel;
 import org.cagrid.gaards.ui.gridgrouper.GridGrouperHandle;
 import org.cagrid.gaards.ui.gridgrouper.GridGrouperServiceList;
 import org.cagrid.gaards.ui.gridgrouper.browser.GridGrouperTreeExpansionListener;
+import org.cagrid.gaards.ui.gridgrouper.expressioneditor.GrouperTreeExpressionEventListener;
 import org.cagrid.gaards.ui.gridgrouper.tree.GridGrouperTree;
 import org.cagrid.gaards.ui.gridgrouper.tree.GroupTreeNode;
 import org.cagrid.grape.GridApplication;

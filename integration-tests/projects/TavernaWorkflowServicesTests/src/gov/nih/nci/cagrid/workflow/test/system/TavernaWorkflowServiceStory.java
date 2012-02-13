@@ -49,7 +49,7 @@ public class TavernaWorkflowServiceStory extends ServiceStoryBase {
 
 		// init the container
 		try {
-			this.setContainer(ServiceContainerFactory.createContainer(ServiceContainerType.TOMCAT_CONTAINER));
+			this.setContainer(ServiceContainerFactory.createContainer(ServiceContainerType.GLOBUS_CONTAINER));
 		} catch (Exception ex) {
 			ex.printStackTrace();
 			fail("Failed to create container: " + ex.getMessage());

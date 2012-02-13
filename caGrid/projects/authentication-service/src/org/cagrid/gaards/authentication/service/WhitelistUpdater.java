@@ -56,7 +56,6 @@ public class WhitelistUpdater {
         FileObject listendir = fsManager.resolveFile(monitoredDirectory.getAbsolutePath());
         FileListener listener = new FileListener() {
             
-            @Override
             public void fileDeleted(FileChangeEvent event) throws Exception {
                 // verify the filename is the one we're interested in
                 String filename = event.getFile().getName().getBaseName();
@@ -79,7 +78,6 @@ public class WhitelistUpdater {
             }
             
             
-            @Override
             public void fileCreated(FileChangeEvent event) throws Exception {
                 // verify the filename is the one we're interested in
                 String filename = event.getFile().getName().getBaseName();
@@ -108,7 +106,6 @@ public class WhitelistUpdater {
             }
             
             
-            @Override
             public void fileChanged(FileChangeEvent event) throws Exception {
              // verify the filename is the one we're interested in
                 String filename = event.getFile().getName().getBaseName();

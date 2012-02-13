@@ -10,7 +10,6 @@ import java.util.Map;
 
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
-import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
@@ -20,24 +19,19 @@ import org.pietschy.wizard.PanelWizardStep;
 
 public abstract class BasePropretyConfigureStep extends PanelWizardStep {
 
-	/**
-	 * Hash code for serialization.
-	 */
-	private static final long serialVersionUID = -3070306764263850107L;
-
 	private JPanel optionsPanel = null;
 
-	private List<String> myOptionsKeys = new ArrayList<String>();  //  @jve:decl-index=0:
+	private List myOptionsKeys = new ArrayList();  //  @jve:decl-index=0:
 
-	private List<JComponent> myOptionsTextFieldValues = new ArrayList<JComponent>(); // @jve:decl-index=0:
+	private List myOptionsTextFieldValues = new ArrayList(); // @jve:decl-index=0:
 
-	private Map<String, String> globalOptionContainer = new HashMap<String, String>();  //  @jve:decl-index=0:
+	private Map globalOptionContainer = new HashMap();  //  @jve:decl-index=0:
 
 	/**
 	 * This method initializes
 	 * 
 	 */
-	public BasePropretyConfigureStep(Map<String, String> globalMap) {
+	public BasePropretyConfigureStep(Map globalMap) {
 		super();
 		this.globalOptionContainer = globalMap;
 		initialize();

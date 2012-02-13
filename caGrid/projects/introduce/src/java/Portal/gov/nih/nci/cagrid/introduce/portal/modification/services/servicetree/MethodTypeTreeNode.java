@@ -65,10 +65,6 @@ import javax.swing.tree.DefaultMutableTreeNode;
  *          Exp $
  */
 public class MethodTypeTreeNode extends DefaultMutableTreeNode implements PopupTreeNode {
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 5801672724423968511L;
 	private MethodPopUpMenu popUpMenu;
 	private SpecificServiceInformation info;
 	MethodType method;

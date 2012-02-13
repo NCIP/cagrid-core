@@ -14,11 +14,10 @@ import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.cagrid.gaards.dorian.X509Certificate;
 import org.cagrid.gaards.dorian.ca.CertificateAuthority;
 import org.cagrid.gaards.dorian.common.Lifetime;
+import org.cagrid.gaards.dorian.common.LoggingObject;
 import org.cagrid.gaards.dorian.service.util.PreparedStatementBuilder;
 import org.cagrid.gaards.dorian.stubs.types.DorianInternalFault;
 import org.cagrid.gaards.dorian.stubs.types.InvalidHostCertificateFault;
@@ -28,7 +27,7 @@ import org.cagrid.gaards.pki.KeyUtil;
 import org.cagrid.tools.database.Database;
 
 
-public class HostCertificateManager {
+public class HostCertificateManager extends LoggingObject {
 
     public static final String TABLE = "host_certificates";
     public static final String ID = "ID";
@@ -40,8 +39,6 @@ public class HostCertificateManager {
     public static final String CERTIFICATE = "CERTIFICATE";
     public static final String PUBLIC_KEY = "PUBLIC_KEY";
     public static final String EXPIRATION = "EXPIRATION";
-    
-    private static Log LOG = LogFactory.getLog(HostCertificateManager.class);
 
     private boolean dbBuilt = false;
     private Database db;
@@ -49,6 +46,7 @@ public class HostCertificateManager {
     private IdentityFederationProperties conf;
     private Publisher publisher;
     private CertificateBlacklistManager blackList;
+
 
     public HostCertificateManager(Database db, IdentityFederationProperties conf, CertificateAuthority ca,
         Publisher publisher, CertificateBlacklistManager blackList) {
@@ -95,7 +93,7 @@ public class HostCertificateManager {
             }
             java.security.cert.X509Certificate cert = ca.signHostCertificate(record.getHost(), key, start, end);
             record.setSerialNumber(cert.getSerialNumber().longValue());
-            record.setSubject(cert.getSubjectX500Principal().getName());
+            record.setSubject(cert.getSubjectDN().getName());
             X509Certificate x509 = new X509Certificate();
             x509.setCertificateAsString(CertUtil.writeCertificate(cert));
             record.setCertificate(x509);
@@ -111,7 +109,7 @@ public class HostCertificateManager {
             s.execute();
             return record;
         } catch (Exception e) {
-            LOG.error(e.getMessage(), e);
+            logError(e.getMessage(), e);
             DorianInternalFault fault = new DorianInternalFault();
             fault.setFaultString("An unexpected error occurred.");
             FaultHelper helper = new FaultHelper(fault);
@@ -149,7 +147,7 @@ public class HostCertificateManager {
             java.security.cert.X509Certificate cert = ca.signHostCertificate(host, key, start, end);
 
             record.setSerialNumber(cert.getSerialNumber().longValue());
-            record.setSubject(cert.getSubjectX500Principal().getName());
+            record.setSubject(cert.getSubjectDN().getName());
             record.setStatus(HostCertificateStatus.Active);
             X509Certificate x509 = new X509Certificate();
             x509.setCertificateAsString(CertUtil.writeCertificate(cert));
@@ -165,7 +163,7 @@ public class HostCertificateManager {
             s.setLong(6, record.getId());
             s.execute();
         } catch (Exception e) {
-            LOG.error(e.getMessage(), e);
+            logError(e.getMessage(), e);
             DorianInternalFault fault = new DorianInternalFault();
             fault.setFaultString("An unexpected error occurred.");
             FaultHelper helper = new FaultHelper(fault);
@@ -235,7 +233,7 @@ public class HostCertificateManager {
             try {
                 oldKey = KeyUtil.loadPublicKey(records.get(i).getPublicKey().getKeyAsString());
             } catch (Exception e) {
-                LOG.error(e.getMessage(), e);
+                logError(e.getMessage(), e);
                 DorianInternalFault fault = new DorianInternalFault();
                 fault.setFaultString("An unexpected error occurred validating the public key.");
                 throw fault;
@@ -272,7 +270,7 @@ public class HostCertificateManager {
             s.execute();
             id = db.getLastAutoId(c);
         } catch (Exception e) {
-            LOG.error(e.getMessage(), e);
+            logError(e.getMessage(), e);
             DorianInternalFault fault = new DorianInternalFault();
             fault.setFaultString("An unexpected error occurred.");
             FaultHelper helper = new FaultHelper(fault);
@@ -366,8 +364,9 @@ public class HostCertificateManager {
             }
             rs.close();
             s.close();
+
         } catch (Exception e) {
-            LOG.error(e.getMessage(), e);
+            logError(e.getMessage(), e);
             DorianInternalFault fault = new DorianInternalFault();
             fault.setFaultString("An unexpected error occurred.");
             FaultHelper helper = new FaultHelper(fault);
@@ -424,8 +423,9 @@ public class HostCertificateManager {
             }
             rs.close();
             s.close();
+
         } catch (Exception e) {
-            LOG.error(e.getMessage(), e);
+            logError(e.getMessage(), e);
             DorianInternalFault fault = new DorianInternalFault();
             fault.setFaultString("An unexpected error occurred.");
             FaultHelper helper = new FaultHelper(fault);
@@ -454,7 +454,7 @@ public class HostCertificateManager {
             rs.close();
             s.close();
         } catch (Exception e) {
-            LOG.error(e.getMessage(), e);
+            logError(e.getMessage(), e);
             DorianInternalFault fault = new DorianInternalFault();
             fault.setFaultString("An unexpected error occurred.");
             FaultHelper helper = new FaultHelper(fault);
@@ -486,7 +486,7 @@ public class HostCertificateManager {
             rs.close();
             s.close();
         } catch (Exception e) {
-            LOG.error(e.getMessage(), e);
+            logError(e.getMessage(), e);
             DorianInternalFault fault = new DorianInternalFault();
             fault.setFaultString("An unexpected error occurred.");
             FaultHelper helper = new FaultHelper(fault);
@@ -518,7 +518,7 @@ public class HostCertificateManager {
             rs.close();
             s.close();
         } catch (Exception e) {
-            LOG.error(e.getMessage(), e);
+            logError(e.getMessage(), e);
             DorianInternalFault fault = new DorianInternalFault();
             fault.setFaultString("An unexpected error occurred.");
             FaultHelper helper = new FaultHelper(fault);
@@ -670,7 +670,7 @@ public class HostCertificateManager {
                     publishCRLIfNeeded(record.getStatus(), update.getStatus());
                 }
             } catch (Exception e) {
-                LOG.error(e.getMessage(), e);
+                logError(e.getMessage(), e);
                 DorianInternalFault fault = new DorianInternalFault();
                 fault.setFaultString("An unexpected error occurred.");
                 FaultHelper helper = new FaultHelper(fault);
@@ -762,7 +762,7 @@ public class HostCertificateManager {
 
                 }
             } catch (Exception e) {
-                LOG.error(e.getMessage(), e);
+                logError(e.getMessage(), e);
                 DorianInternalFault fault = new DorianInternalFault();
                 fault.setFaultString("An unexpected database error occurred.");
                 FaultHelper helper = new FaultHelper(fault);
@@ -780,7 +780,7 @@ public class HostCertificateManager {
         try {
             db.update("delete from " + TABLE);
         } catch (Exception e) {
-            LOG.error(e.getMessage(), e);
+            logError(e.getMessage(), e);
             DorianInternalFault fault = new DorianInternalFault();
             fault.setFaultString("An unexpected database error occurred.");
             FaultHelper helper = new FaultHelper(fault);
@@ -789,4 +789,5 @@ public class HostCertificateManager {
             throw fault;
         }
     }
+
 }

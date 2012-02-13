@@ -364,7 +364,7 @@ public class SDK4QueryProcessor extends CQLQueryProcessor {
             // get the mapping file name
             String filename = ServiceConfigUtil.getClassToQnameMappingsFile();
             // String filename = "mapping.xml";
-            this.classToQnameMappings = (Mappings) Utils.deserializeDocument(filename, Mappings.class);
+            this.classToQnameMappings = Utils.deserializeDocument(filename, Mappings.class);
         } catch (Exception ex) {
             String message = "Error initializing class to QName mappings: " + ex.getMessage();
             LOG.error(message, ex);

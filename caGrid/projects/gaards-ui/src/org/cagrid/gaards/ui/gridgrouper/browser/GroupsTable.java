@@ -1,6 +1,5 @@
 package org.cagrid.gaards.ui.gridgrouper.browser;
 
-import java.io.Serializable;
 import java.util.Vector;
 
 import javax.swing.table.DefaultTableModel;
@@ -50,7 +49,7 @@ public class GroupsTable extends GrapeBaseTable {
 
 
 	public void addGroup(final GroupTreeNode node) {
-		Vector<Serializable> v = new Vector<Serializable>();
+		Vector v = new Vector();
 		v.add(node);
 		v.add(node.getGroup().getDisplayExtension());
 		addRow(v);

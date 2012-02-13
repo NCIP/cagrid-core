@@ -31,11 +31,7 @@ import javax.swing.JPanel;
  * @author hastings
  */
 public abstract class NamespaceTypeDiscoveryComponent extends JPanel {
-    /**
-	 * 
-	 */
-	private static final long serialVersionUID = -5406875711669280881L;
-	public static final String REPLACE_POLICY = "replace";
+    public static final String REPLACE_POLICY = "replace";
     public static final String IGNORE_POLICY = "ignore";
     public static final String ERROR_POLICY = "error";
 

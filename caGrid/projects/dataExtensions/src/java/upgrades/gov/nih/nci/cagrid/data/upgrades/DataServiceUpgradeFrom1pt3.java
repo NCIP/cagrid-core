@@ -7,6 +7,7 @@ import gov.nih.nci.cagrid.data.style.ServiceStyleContainer;
 import gov.nih.nci.cagrid.data.style.ServiceStyleLoader;
 import gov.nih.nci.cagrid.data.style.StyleVersionUpgrader;
 import gov.nih.nci.cagrid.data.style.VersionUpgrade;
+import gov.nih.nci.cagrid.introduce.IntroduceConstants;
 import gov.nih.nci.cagrid.introduce.beans.extension.ExtensionType;
 import gov.nih.nci.cagrid.introduce.beans.method.MethodType;
 import gov.nih.nci.cagrid.introduce.beans.service.ServiceType;
@@ -23,6 +24,8 @@ import java.io.File;
 import java.io.FileFilter;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -175,6 +178,14 @@ public class DataServiceUpgradeFrom1pt3 extends ExtensionUpgraderBase {
 	    getStatus().addDescriptionLine("Data Service Extension Data Service Feature \"useTransfer\" added and set to \"false\"");
 	    serviceFeaturesElement.removeAttribute("useBdt");
 	    getStatus().addDescriptionLine("Data Service Extension Data Service Feature \"useBdt\" removed");
+	    String styleName = getStyleName(extensionDataElement);
+	    if (styleName != null) {
+	        serviceFeaturesElement.removeAttribute("serviceStyle");
+	        Element serviceStyleElement = new Element("ServiceStyle", serviceFeaturesElement.getNamespace());
+	        serviceStyleElement.setAttribute("name", styleName);
+	        serviceStyleElement.setAttribute("version", "1.3"); // set to 1.3 pending upgrade
+	        getStatus().addDescriptionLine("Created Service Style element in extension data; set style version to \"1.3\"");
+	    }
 	    storeExtensionDataElement(extensionDataElement);
 	}
 
@@ -284,7 +295,6 @@ public class DataServiceUpgradeFrom1pt3 extends ExtensionUpgraderBase {
     }
     
     
-    @SuppressWarnings("deprecation")
     private void removeBdt() throws UpgradeException {
         Element extElement = getExtensionDataElement();
         if (serviceIsUsingBdt(extElement)) {
@@ -341,17 +351,25 @@ public class DataServiceUpgradeFrom1pt3 extends ExtensionUpgraderBase {
                     "Check with the developer of your style for an update");
             } else {
                 VersionUpgrade[] availableUpgrades = styleContainer.getServiceStyle().getVersionUpgrade();
-                String currentStyleVersion = styleContainer.getServiceStyle().getVersion();
                 VersionUpgrade validUpgrade = null;
                 if (availableUpgrades != null) {
-                    // since caGrid 1.3 and earlier didn't record the style version number
-                    // in introduce.xml, and most extensions versioned themselves by the caGrid version
-                    // number anyway, we'll check for a fromVersion equal to "1.3".
+                    // sort upgrades
+                    Comparator<VersionUpgrade> upgradeSorter = new Comparator<VersionUpgrade>() {
+                        public int compare(VersionUpgrade a, VersionUpgrade b) {
+                            // sort by from version first, then by to version
+                            int val = a.getFromVersion().compareTo(b.getFromVersion());
+                            if (val == 0) {
+                                val = a.getToVersion().compareTo(b.getToVersion());
+                            }
+                            return val;
+                        }
+                    };
+                    Arrays.sort(availableUpgrades, upgradeSorter);
+                    // doing this will get the upgrade from whatever the oldest version 
+                    // of the style (with an available upgrader) is to the 1.4 version
                     for (VersionUpgrade upgrade : availableUpgrades) {
-                        if (upgrade.getFromVersion().equals("1.3") 
-                            && upgrade.getToVersion().equals(currentStyleVersion)) {
+                        if (upgrade.getToVersion().equals(UpgraderConstants.DATA_CURRENT_VERSION)) {
                             validUpgrade = upgrade;
-                            break;
                         }
                     }
                 }
@@ -365,6 +383,7 @@ public class DataServiceUpgradeFrom1pt3 extends ExtensionUpgraderBase {
                     try {
                         styleUpgrade = styleContainer.loadVersionUpgrader(
                             validUpgrade.getFromVersion(), validUpgrade.getToVersion());
+                        getStatus().addDescriptionLine("Style upgrader class: " + styleUpgrade.getClass().getName());
                     } catch (Exception ex) {
                         throw new UpgradeException(
                             "Error loading style version upgrader: " + ex.getMessage(), ex);

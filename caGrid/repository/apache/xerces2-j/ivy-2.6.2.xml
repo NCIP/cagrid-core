@@ -1,0 +1,26 @@
+<?xml version="1.0"?>
+
+<ivy-module version="2.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:noNamespaceSchemaLocation="http://incubator.apache.org/ivy/schemas/ivy.xsd">
+
+	<info organisation="apache" module="xerces2-j" revision="2.6.2">
+		<license name="Apache" url="http://www.apache.org/licenses/LICENSE"/>
+		<description homepage="http://xerces.apache.org/xerces-j/">Apache Xerces2 is the next
+			generation of high performance, fully compliant XML parsers in the Apache Xerces
+		family.</description>
+	</info>
+
+	<configurations>
+		<!-- Public Configurations-->
+		<conf name="default" visibility="public"/>
+	</configurations>
+
+
+	<publications>
+		<artifact name="resolver" type="jar"/>
+		<artifact name="xercesImpl" type="jar"/>
+		<artifact name="xml-apis" type="jar"/>
+	</publications>
+
+	<dependencies/>
+</ivy-module>

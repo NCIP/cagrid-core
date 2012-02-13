@@ -30,12 +30,12 @@
 	NOTE: this repository is deprecated in favor of their
 	new Nexus repository -->
       <!--
-      <url name="remote-cbiit-bda-commonlibrary-resolver" cache="remote">
-	<ivy pattern="http://gforge.nci.nih.gov/svnroot/commonlibrary/trunk/ivy-repo/[organisation]/[module]/[revision]/ivy.xml"/>
+      <url name="remote-cbiit-commonlibrary-resolver" cache="remote">
+	<ivy pattern="https://ncisvn.nci.nih.gov/svn/cbiit-ivy-repo/trunk/[organisation]/[module]/[revision]/ivy.xml"/>
 	<artifact
-	   pattern="http://gforge.nci.nih.gov/svnroot/commonlibrary/trunk/ivy-repo/[organisation]/[module]/[revision]/[artifact]-[revision].[ext]"/>
+	   pattern="https://ncisvn.nci.nih.gov/svn/cbiit-ivy-repo/trunk/[organisation]/[module]/[revision]/[artifact]-[revision].[ext]"/>
 	<artifact
-	   pattern="http://gforge.nci.nih.gov/svnroot/commonlibrary/trunk/ivy-repo/[organisation]/[module]/[revision]/[artifact].[ext]"/>
+	   pattern="https://ncisvn.nci.nih.gov/svn/cbiit-ivy-repo/trunk/[organisation]/[module]/[revision]/[artifact].[ext]"/>
       </url>
       -->
     </chain>

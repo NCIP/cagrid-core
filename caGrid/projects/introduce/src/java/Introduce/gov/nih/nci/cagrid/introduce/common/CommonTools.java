@@ -64,7 +64,7 @@ public final class CommonTools {
 
     public static final String ALLOWED_EXISTING_JAVA_PACKAGE_REGEX = "[a-zA-Z\\_]++[A-Za-z0-9\\_\\$]*";
 
-    public static final List<String> JAVA_KEYWORDS = new ArrayList<String>(Arrays.asList(new String[]{"abstract", "continue", "for",
+    public static final List JAVA_KEYWORDS = new ArrayList(Arrays.asList(new String[]{"abstract", "continue", "for",
             "new", "switch", "assert", "default", "goto", "package", "synchronized", "boolean", "do", "if", "private",
             "this", "break", "double", "implements", "protected", "throw", "byte", "else", "import", "public",
             "throws", "case", "enum", "instanceof", "return", "transient", "catch", "extends", "int", "short", "try",
@@ -193,8 +193,8 @@ public final class CommonTools {
         return envp;
     }
     
-    public static List<String> getProvidedNamespaces(File startDir) {
-        List<String> globusNamespaces = new ArrayList<String>();
+    public static List getProvidedNamespaces(File startDir) {
+        List globusNamespaces = new ArrayList();
         File schemasDir = new File(startDir.getAbsolutePath() + File.separator + "share" + File.separator + "schema");
 
         CommonTools.getTargetNamespaces(globusNamespaces, schemasDir);
@@ -228,7 +228,7 @@ public final class CommonTools {
     }
 
 
-    public static void getTargetNamespaces(List<String> namespaces, File dir) {
+    public static void getTargetNamespaces(List namespaces, File dir) {
         File[] files = dir.listFiles();
         for (int i = 0; i < files.length; i++) {
             File curFile = files[i];
@@ -378,7 +378,7 @@ public final class CommonTools {
         try {
             // TODO: where should this mapperClassname preference be set
             String mapperClassname = "gov.nih.nci.cagrid.introduce.common.CaBIGNamespaceToPackageMapper";
-            Class<?> clazz = Class.forName(mapperClassname);
+            Class clazz = Class.forName(mapperClassname);
             NamespaceToPackageMapper mapper = (NamespaceToPackageMapper) clazz.newInstance();
             return mapper.getPackageName(fullNamespace);
         } catch (Exception e) {
@@ -473,7 +473,7 @@ public final class CommonTools {
 
 
     private static void processSchema(NamespaceType namespaceType, Document schemaDoc, File dir) throws Exception {
-        List<?> elementTypes = schemaDoc.getRootElement()
+        List elementTypes = schemaDoc.getRootElement()
             .getChildren("element", schemaDoc.getRootElement().getNamespace());
 
         SchemaElementType[] schemaTypes = new SchemaElementType[elementTypes.size()];
@@ -499,21 +499,20 @@ public final class CommonTools {
             namespaceType.setSchemaElement(schemaTypes);
         }
 
-        List<?> includeTypes = schemaDoc.getRootElement()
+        List includeTypes = schemaDoc.getRootElement()
             .getChildren("include", schemaDoc.getRootElement().getNamespace());
         for (int i = 0; i < includeTypes.size(); i++) {
             Element element = (Element) includeTypes.get(i);
             File xsdFile = new File(dir.getAbsolutePath() + File.separator
                 + element.getAttributeValue("schemaLocation"));
             Document includeSchemaDoc = XMLUtilities.fileNameToDocument(xsdFile.getAbsolutePath());
-            //String rawNamespace = 
-            schemaDoc.getRootElement().getAttributeValue("targetNamespace");
+            String rawNamespace = schemaDoc.getRootElement().getAttributeValue("targetNamespace");
 
             processSchema(namespaceType, includeSchemaDoc, xsdFile.getParentFile());
 
         }
 
-        List<?> redefineTypes = schemaDoc.getRootElement().getChildren("redefine",
+        List redefineTypes = schemaDoc.getRootElement().getChildren("redefine",
             schemaDoc.getRootElement().getNamespace());
         for (int i = 0; i < redefineTypes.size(); i++) {
             Element element = (Element) redefineTypes.get(i);
@@ -558,7 +557,7 @@ public final class CommonTools {
         namespaceType.setPackageName(oldType.getPackageName());
         namespaceType.setNamespace(rawNamespace);
 
-        List<?> elementTypes = schemaDoc.getRootElement()
+        List elementTypes = schemaDoc.getRootElement()
             .getChildren("element", schemaDoc.getRootElement().getNamespace());
         SchemaElementType[] schemaTypes = new SchemaElementType[elementTypes.size()];
         for (int i = 0; i < elementTypes.size(); i++) {
@@ -741,8 +740,8 @@ public final class CommonTools {
             toNamespacesLength = toNamespaces.getNamespace().length;
         }
 
-        List<NamespaceType> namespaces = new ArrayList<NamespaceType>();
-        List<String> usedNamespaces = new ArrayList<String>();
+        List namespaces = new ArrayList();
+        List usedNamespaces = new ArrayList();
         for (int i = 0; i < toNamespacesLength; i++) {
             if (!usedNamespaces.contains(toNamespaces.getNamespace(i).getNamespace())) {
                 usedNamespaces.add(toNamespaces.getNamespace(i).getNamespace());
@@ -949,7 +948,7 @@ public final class CommonTools {
      */
     public static ResourcePropertyType[] getResourcePropertiesOfType(ServiceType service, QName type) {
         ResourcePropertiesListType propsList = service.getResourcePropertiesList();
-        List<ResourcePropertyType> typedProperties = new ArrayList<ResourcePropertyType>();
+        List typedProperties = new ArrayList();
         if (propsList != null) {
             ResourcePropertyType[] allProperties = propsList.getResourceProperty();
             if (allProperties != null) {
@@ -1249,7 +1248,7 @@ public final class CommonTools {
      * @return True if the property existed and was removed, false otherwise
      */
     public static boolean removeServiceProperty(ServiceDescription desc, String key) {
-        List<ServicePropertiesProperty> keptProperties = new ArrayList<ServicePropertiesProperty>();
+        List<ServicePropertiesProperty> keptProperties = new ArrayList();
         boolean removed = false;
         for (int i = 0; i < desc.getServiceProperties().getProperty().length; i++) {
             ServicePropertiesProperty current = desc.getServiceProperties().getProperty(i);
@@ -1350,9 +1349,9 @@ public final class CommonTools {
      *            The service description
      * @return The set of unavailable types
      */
-    public static Set<QName> getUnavailableUsedTypes(ServiceDescription desc) {
+    public static Set getUnavailableUsedTypes(ServiceDescription desc) {
         // build up a set of used types
-        Set<QName> usedTypes = new HashSet<QName>();
+        Set usedTypes = new HashSet();
         ServiceType[] services = desc.getServices().getService();
         for (int s = 0; s < services.length; s++) {
             // resource properties

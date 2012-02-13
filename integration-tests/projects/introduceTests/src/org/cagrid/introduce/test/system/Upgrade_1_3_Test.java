@@ -73,7 +73,7 @@ public class Upgrade_1_3_Test extends Story {
         // init the container
         try {
             container = ServiceContainerFactory.createContainer(
-                ServiceContainerType.TOMCAT_CONTAINER);
+                ServiceContainerType.GLOBUS_CONTAINER);
         } catch (Exception ex) {
             ex.printStackTrace();
             fail("Failed to create container: " + ex.getMessage());

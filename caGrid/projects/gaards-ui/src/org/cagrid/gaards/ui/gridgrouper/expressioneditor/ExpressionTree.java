@@ -62,8 +62,8 @@ public class ExpressionTree extends JTree {
 	 * 
 	 * @return A List of GridServiceTreeNodes
 	 */
-	public List<DefaultMutableTreeNode> getSelectedNodes() {
-		List<DefaultMutableTreeNode> selected = new LinkedList<DefaultMutableTreeNode>();
+	public List getSelectedNodes() {
+		List selected = new LinkedList();
 		TreePath[] currentSelection = this.getSelectionPaths();
 		if (currentSelection != null) {
 			for (int i = 0; i < currentSelection.length; i++) {

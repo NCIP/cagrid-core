@@ -17,7 +17,6 @@ import org.globus.gsi.GlobusCredential;
 import org.globus.wsrf.impl.security.authorization.IdentityAuthorization;
 
 
-@SuppressWarnings("deprecation")
 public class DorianHandle extends ServiceHandle {
 
     private List<AuthenticationServiceHandle> authenticationServices;

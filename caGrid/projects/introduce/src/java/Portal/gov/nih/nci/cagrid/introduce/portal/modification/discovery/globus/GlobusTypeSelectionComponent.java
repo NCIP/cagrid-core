@@ -25,12 +25,7 @@ import java.io.File;
  *          Exp $
  */
 public class GlobusTypeSelectionComponent extends NamespaceTypeDiscoveryComponent {
-    /**
-	 * 
-	 */
-	private static final long serialVersionUID = -5410821744144188197L;
-
-	public static String TYPE = "GLOBUS";
+    public static String TYPE = "GLOBUS";
 
     private GlobusConfigurationPanel globusPanel = null;
 

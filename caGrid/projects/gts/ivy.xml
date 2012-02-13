@@ -66,10 +66,10 @@
     <dependency rev="latest.integration" org="caGrid" name="gaards-core" conf="client,service->default" />
 
     <!-- Extenernal Dependencies -->
-    <dependency rev="1.1" org="jdom" name="jdom" conf="service->*" />
+    <dependency rev="1.0" org="jdom" name="jdom" conf="service->*" />
     <dependency rev="3.0.+" org="mysql" name="connector-java" conf="service->*" />
     <dependency rev="1.1" org="mobius" name="mobius" conf="service->common-client,tools" />
-    <dependency rev="4.+" org="junit" name="junit" conf="impl-test->default" />
+    <dependency rev="4.4" org="junit" name="junit" conf="impl-test->default" />
 
   </dependencies>
 </ivy-module>

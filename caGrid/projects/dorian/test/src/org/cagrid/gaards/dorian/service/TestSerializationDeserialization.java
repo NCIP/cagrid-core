@@ -8,10 +8,10 @@ import gov.nih.nci.cagrid.opensaml.SAMLAttributeStatement;
 import gov.nih.nci.cagrid.opensaml.SAMLAuthenticationStatement;
 import gov.nih.nci.cagrid.opensaml.SAMLNameIdentifier;
 import gov.nih.nci.cagrid.opensaml.SAMLSubject;
-import gov.nih.nci.cagrid.opensaml.SAMLSubjectStatement;
 
 import java.security.KeyPair;
 import java.security.PrivateKey;
+import java.security.Security;
 import java.security.cert.X509Certificate;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -24,6 +24,7 @@ import javax.xml.namespace.QName;
 import junit.framework.TestCase;
 
 import org.apache.xml.security.signature.XMLSignature;
+import org.bouncycastle.jce.provider.BouncyCastleProvider;
 import org.cagrid.gaards.core.Utils;
 import org.cagrid.gaards.dorian.federation.CertificateLifetime;
 import org.cagrid.gaards.dorian.federation.PublicKey;
@@ -32,7 +33,6 @@ import org.cagrid.gaards.dorian.stubs.RequestUserCertificateRequestKey;
 import org.cagrid.gaards.dorian.stubs.RequestUserCertificateRequestLifetime;
 import org.cagrid.gaards.dorian.stubs.RequestUserCertificateRequestSaml;
 import org.cagrid.gaards.pki.CA;
-import org.cagrid.gaards.pki.CertUtil;
 import org.cagrid.gaards.pki.Credential;
 import org.cagrid.gaards.pki.KeyUtil;
 import org.cagrid.gaards.saml.encoding.SAMLConstants;
@@ -60,8 +60,8 @@ public class TestSerializationDeserialization extends TestCase {
             Date start = cal.getTime();
             cal.add(Calendar.MINUTE, 2);
             Date end = cal.getTime();
-            String issuer = CertUtil.getSubjectDN(cert);
-            String federation = CertUtil.getSubjectDN(cert);
+            String issuer = cert.getSubjectDN().toString();
+            String federation = cert.getSubjectDN().toString();
             String ipAddress = null;
             String subjectDNS = null;
 
@@ -105,14 +105,14 @@ public class TestSerializationDeserialization extends TestCase {
 
             SAMLAttributeStatement attState = new SAMLAttributeStatement(sub2, atts);
 
-            List<SAMLSubjectStatement> l = new ArrayList<SAMLSubjectStatement>();
+            List l = new ArrayList();
             l.add(auth);
             l.add(attState);
 
             saml = new SAMLAssertion(issuer, start, end, null, null, l);
             List<X509Certificate> a = new ArrayList<X509Certificate>();
             a.add(cert);
-            saml.sign(XMLSignature.ALGO_ID_SIGNATURE_RSA_SHA256, key, a);
+            saml.sign(XMLSignature.ALGO_ID_SIGNATURE_RSA_SHA1, key, a);
 
             saml.verify();
             saml.verify(cert);
@@ -152,6 +152,17 @@ public class TestSerializationDeserialization extends TestCase {
             }
             assertEquals(req2.getLifetime().getCertificateLifetime(), cl);
             assertEquals(req2.getKey().getPublicKey(), pkey);
+        } catch (Exception e) {
+            FaultUtil.printFault(e);
+            fail(e.getMessage());
+        }
+    }
+
+
+    protected void setUp() throws Exception {
+        super.setUp();
+        try {
+            Security.addProvider(new BouncyCastleProvider());
         } catch (Exception e) {
             FaultUtil.printFault(e);
             fail(e.getMessage());

@@ -23,14 +23,14 @@ public class TestCredentialEncoding extends TestCase {
             Credential c = ca.createIdentityCertificate("Test");
             GlobusCredential cred = getGlobusCredential(c);
             X509CredentialDescriptor des = new X509CredentialDescriptor();
-            des.setIdentity(CertUtil.getIdentity(cred));
+            des.setIdentity(cred.getIdentity());
             des.setEncodedCertificates(getCertificates(c));
             des.setEncodedKey(KeyUtil.writePrivateKey(c.getPrivateKey(), (String) null));
             String xml = EncodingUtil.serialize(des);
             X509CredentialDescriptor des2 = EncodingUtil.deserialize(xml);
             assertEquals(des, des2);
             GlobusCredential cred2 = getGlobusCredential(des2);
-            assertEquals(CertUtil.getIdentity(cred), CertUtil.getIdentity(cred2));
+            assertEquals(cred.getIdentity(), cred2.getIdentity());
             assertEquals(cred.getPrivateKey(), cred2.getPrivateKey());
             assertEquals(cred.getCertificateChain().length, cred2.getCertificateChain().length);
             assertEquals(cred.getCertificateChain()[0], cred2.getCertificateChain()[0]);
@@ -54,14 +54,14 @@ public class TestCredentialEncoding extends TestCase {
             des.setFirstName("Grid");
             des.setLastName("User");
             des.setOrganization("caGrid University");
-            des.setIdentity(CertUtil.getIdentity(cred));
+            des.setIdentity(cred.getIdentity());
             des.setEncodedCertificates(getCertificates(c));
             des.setEncodedKey(KeyUtil.writePrivateKey(c.getPrivateKey(), (String) null));
             String xml = EncodingUtil.serialize(des);
             DorianUserCredentialDescriptor des2 = (DorianUserCredentialDescriptor) EncodingUtil.deserialize(xml);
             assertEquals(des, des2);
             GlobusCredential cred2 = getGlobusCredential(des2);
-            assertEquals(CertUtil.getIdentity(cred), CertUtil.getIdentity(cred2));
+            assertEquals(cred.getIdentity(), cred2.getIdentity());
             assertEquals(cred.getPrivateKey(), cred2.getPrivateKey());
             assertEquals(cred.getCertificateChain().length, cred2.getCertificateChain().length);
             assertEquals(cred.getCertificateChain()[0], cred2.getCertificateChain()[0]);
@@ -69,7 +69,7 @@ public class TestCredentialEncoding extends TestCase {
             DorianUserCredentialDescriptor des3 = (DorianUserCredentialDescriptor) EncodingUtil.deserialize(f);
             assertEquals(des, des3);
             GlobusCredential cred3 = getGlobusCredential(des2);
-            assertEquals(CertUtil.getIdentity(cred), CertUtil.getIdentity(cred3));
+            assertEquals(cred.getIdentity(), cred3.getIdentity());
             assertEquals(cred.getPrivateKey(), cred3.getPrivateKey());
             assertEquals(cred.getCertificateChain().length, cred3.getCertificateChain().length);
             assertEquals(cred.getCertificateChain()[0], cred3.getCertificateChain()[0]);
@@ -115,4 +115,5 @@ public class TestCredentialEncoding extends TestCase {
         list.setEncodedCertificate(certs);
         return list;
     }
+
 }

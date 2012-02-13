@@ -1,8 +1,8 @@
 #Introduce Properties
-#Tue Jul 19 15:06:14 EDT 2011
+#Mon Dec 19 10:12:56 EST 2011
 introduce.skeleton.services.list=CredentialDelegationService,DelegatedCredential
 introduce.skeleton.extensions=cagrid_metadata
-introduce.skeleton.destination.dir=/Users/jgeorge/Documents/Workspaces/cagrid-1.5/core/caGrid/projects/cds
+introduce.skeleton.destination.dir=/Users/ervin/Projects/caGrid/caGrid-1_4_1_release/core/caGrid/projects/cds
 introduce.skeleton.namespace.domain=http\://cds.gaards.cagrid.org/CredentialDelegationService
 introduce.skeleton.service.name=CredentialDelegationService
 introduce.skeleton.timestamp=1231449346608

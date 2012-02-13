@@ -3,12 +3,14 @@ package org.cagrid.gaards.dorian.policy;
 import gov.nih.nci.cagrid.common.FaultUtil;
 
 import java.security.PrivateKey;
+import java.security.Security;
 import java.security.cert.X509Certificate;
 import java.util.ArrayList;
 import java.util.List;
 
 import junit.framework.TestCase;
 
+import org.bouncycastle.jce.provider.BouncyCastleProvider;
 import org.cagrid.gaards.core.Utils;
 import org.cagrid.gaards.pki.CA;
 import org.cagrid.gaards.pki.Credential;
@@ -80,13 +82,11 @@ public class TestHostAgreementEncoding extends TestCase {
 
     protected void setUp() throws Exception {
         super.setUp();
-        /*
         try {
             Security.addProvider(new BouncyCastleProvider());
         } catch (Exception e) {
             FaultUtil.printFault(e);
             fail(e.getMessage());
         }
-        */
     }
 }

@@ -1,7 +1,15 @@
 package org.cagrid.identifiers.test.system.steps;
 
 import gov.nih.nci.cagrid.identifiers.client.IdentifiersNAServiceClient;
+import gov.nih.nci.cagrid.identifiers.stubs.types.NamingAuthoritySecurityFault;
 import gov.nih.nci.cagrid.testing.system.haste.Step;
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+
+import namingauthority.KeyNameData;
 
 import org.apache.axis.message.addressing.EndpointReferenceType;
 import org.apache.axis.types.URI;
@@ -11,6 +19,10 @@ import org.cagrid.identifiers.namingauthority.util.Keys;
 import org.cagrid.identifiers.resolver.Resolver;
 import org.cagrid.identifiers.test.system.IdentifiersTestInfo;
 import org.cagrid.identifiers.test.system.IdentifiersTestUtil;
+import org.globus.axis.gsi.GSIConstants;
+import org.globus.gsi.gssapi.GlobusGSSCredentialImpl;
+import org.globus.net.GSIHttpURLConnection;
+import org.ietf.jgss.GSSCredential;
 
 
 public class HttpGSIResolutionStep extends Step {

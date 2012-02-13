@@ -12,7 +12,7 @@ import org.cagrid.gaards.cds.client.DelegationUserClient;
 import org.cagrid.gaards.ui.common.CredentialComboBox;
 import org.globus.gsi.GlobusCredential;
 
-@SuppressWarnings("deprecation")
+
 public class SessionPanel extends JPanel {
 
     private static final long serialVersionUID = 1L;

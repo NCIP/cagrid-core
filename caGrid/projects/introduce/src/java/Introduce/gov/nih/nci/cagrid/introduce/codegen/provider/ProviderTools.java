@@ -123,12 +123,12 @@ public final class ProviderTools {
         ServiceInformation info) throws Exception, IOException {
 
         Document doc = XMLUtilities.fileNameToDocument(info.getBaseDirectory() + File.separator + "server-config.wsdd");
-        List<?> servicesEls = doc.getRootElement().getChildren("service",
+        List servicesEls = doc.getRootElement().getChildren("service",
             Namespace.getNamespace("http://xml.apache.org/axis/wsdd/"));
         for (int serviceI = 0; serviceI < servicesEls.size(); serviceI++) {
             Element serviceEl = (Element) servicesEls.get(serviceI);
             if (serviceEl.getAttribute("name").getValue().equals("SERVICE-INSTANCE-PREFIX/" + service.getName())) {
-                List<?> paramsEls = serviceEl.getChildren("parameter", Namespace
+                List paramsEls = serviceEl.getChildren("parameter", Namespace
                     .getNamespace("http://xml.apache.org/axis/wsdd/"));
                 for (int paramsI = 0; paramsI < paramsEls.size(); paramsI++) {
                     Element paramEl = (Element) paramsEls.get(paramsI);

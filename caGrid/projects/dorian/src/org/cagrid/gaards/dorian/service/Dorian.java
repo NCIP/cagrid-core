@@ -8,8 +8,6 @@ import java.security.PublicKey;
 import java.security.cert.X509Certificate;
 import java.util.List;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.cagrid.gaards.authentication.BasicAuthentication;
 import org.cagrid.gaards.authentication.Credential;
 import org.cagrid.gaards.authentication.faults.AuthenticationProviderFault;
@@ -17,6 +15,7 @@ import org.cagrid.gaards.authentication.faults.CredentialNotSupportedFault;
 import org.cagrid.gaards.authentication.faults.InvalidCredentialFault;
 import org.cagrid.gaards.dorian.ca.CertificateAuthority;
 import org.cagrid.gaards.dorian.common.AuditConstants;
+import org.cagrid.gaards.dorian.common.LoggingObject;
 import org.cagrid.gaards.dorian.common.SAMLConstants;
 import org.cagrid.gaards.dorian.federation.AutoApprovalPolicy;
 import org.cagrid.gaards.dorian.federation.CertificateLifetime;
@@ -78,15 +77,13 @@ import org.cagrid.tools.events.EventManager;
  * @version $Id: ArgumentManagerTable.java,v 1.2 2004/10/15 16:35:16 langella
  *          Exp $
  */
-public class Dorian {
+public class Dorian extends LoggingObject {
+
+    private Database db;
 
     public static final String IDP_ADMIN_USER_ID = "dorian";
 
     public static final String IDP_ADMIN_PASSWORD = "DorianAdmin$1";
-    
-    private static Log LOG = LogFactory.getLog(Dorian.class); 
-    
-    private Database db;
 
     private CertificateAuthority ca;
 
@@ -188,7 +185,7 @@ public class Dorian {
                 throw fault;
             }
         } catch (Exception e) {
-            LOG.error(e.getMessage(), e);
+            logError(e.getMessage(), e);
             DorianInternalFault fault = new DorianInternalFault();
             fault.setFaultString("An unexpected error occurred in configuring the service.");
             FaultHelper helper = new FaultHelper(fault);
@@ -432,18 +429,19 @@ public class Dorian {
     public void clearDatabase() throws DorianInternalFault {
         try {
             this.identityProvider.clearDatabase();
+
         } catch (Exception e) {
-            LOG.error(e);
+            log.error(e);
         }
         try {
             this.ifm.clearDatabase();
         } catch (Exception e) {
-            LOG.error(e);
+            log.error(e);
         }
         try {
             this.properties.clearDatabase();
         } catch (Exception e) {
-            LOG.error(e);
+            log.error(e);
         }
     }
 

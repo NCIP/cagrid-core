@@ -48,8 +48,7 @@ public class StemsTable extends GrapeBaseTable {
 	}
 
 
-	@SuppressWarnings("unchecked")
-    public void addStem(final StemTreeNode node) {
+	public void addStem(final StemTreeNode node) {
 		Vector v = new Vector();
 		v.add(node);
 		v.add(node.getStem().getDisplayExtension());

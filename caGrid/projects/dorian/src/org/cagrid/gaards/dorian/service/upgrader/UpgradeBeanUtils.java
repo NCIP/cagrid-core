@@ -19,8 +19,7 @@ public class UpgradeBeanUtils {
     }
 
 
-    @SuppressWarnings("unchecked")
-	public ArrayList<Upgrade> getUpgradeList() throws Exception {
+    public ArrayList<Upgrade> getUpgradeList() throws Exception {
         return (ArrayList<Upgrade>) factory.getBean(UPGRADE_LIST_BEAN);
     }
 

@@ -55,6 +55,9 @@ public class ServiceContainerFactory {
         
         ServiceContainer container = null;
         switch (type) {
+            case GLOBUS_CONTAINER:
+                container = new GlobusServiceContainer(props);
+                break;
             case TOMCAT_CONTAINER:
                 container = new TomcatServiceContainer(props);
                 break;
@@ -93,6 +96,9 @@ public class ServiceContainerFactory {
             ContainerProperties props = new ContainerProperties(containerOutDir, containerZip, ports, false, null, null, null);
             ServiceContainer container = null;
             switch (type) {
+                case GLOBUS_CONTAINER:
+                    container = new GlobusServiceContainer(props);
+                    break;
                 case TOMCAT_CONTAINER:
                     container = new TomcatServiceContainer(props);
                     break;

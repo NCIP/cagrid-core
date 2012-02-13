@@ -16,9 +16,6 @@ public class UtilsTestCase extends TestCase {
 	String b = "b";
 	String aws = "a  ";
 	String ws = "  ";
-	
-	static String hex[]={"0","1","2","3","4","5","6","7","8","9",
-        "A","B","C","D","E","F"};
 
 
 	public void testClean() {
@@ -167,20 +164,6 @@ public class UtilsTestCase extends TestCase {
 			ex.printStackTrace();
 			fail(ex.getMessage());
 		}
-	}
-	
-	
-	public void testHexConversion() {
-	    String val = Utils.bytesToHex(new byte[] {1});
-	    assertEquals("01", val);
-	    val = Utils.bytesToHex(new byte[] {10});
-	    assertEquals("0A", val);
-	    val = Utils.bytesToHex(new byte[] {17});
-        assertEquals("11", val);
-        val = Utils.bytesToHex(new byte[] {1,1});
-        assertEquals("0101", val);
-        val = Utils.bytesToHex(new byte[] {32,1});
-        assertEquals("2001", val);
 	}
 
 	

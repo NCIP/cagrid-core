@@ -1,14 +1,21 @@
 package gov.nih.nci.cagrid.fqp.results.service;
 
-import gov.nih.nci.cagrid.fqp.service.FederatedQueryProcessorConfiguration;
+import gov.nih.nci.cagrid.fqp.results.service.globus.resource.FederatedQueryResultsResource;
+import  gov.nih.nci.cagrid.fqp.service.FederatedQueryProcessorConfiguration;
 
 import java.rmi.RemoteException;
 
 import javax.naming.InitialContext;
+import javax.xml.namespace.QName;
 
 import org.apache.axis.MessageContext;
 import org.globus.wsrf.Constants;
+import org.globus.wsrf.ResourceContext;
+import org.globus.wsrf.ResourceContextException;
+import org.globus.wsrf.ResourceException;
 import org.globus.wsrf.ResourceHome;
+import org.globus.wsrf.ResourceProperty;
+import org.globus.wsrf.ResourcePropertySet;
 
 
 /** 
@@ -16,7 +23,7 @@ import org.globus.wsrf.ResourceHome;
  *
  * Provides some simple accessors for the Impl.
  * 
- * @created by Introduce Toolkit version 1.5
+ * @created by Introduce Toolkit version 1.4.1
  * 
  */
 public abstract class FederatedQueryResultsImplBase {

@@ -18,9 +18,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Vector;
 
-import javax.naming.ldap.LdapName;
-
-import org.bouncycastle.asn1.x509.X509Name;
 import org.cagrid.gaards.authentication.BasicAuthentication;
 import org.cagrid.gaards.authentication.test.system.steps.AuthenticationStep;
 import org.cagrid.gaards.authentication.test.system.steps.SuccessfullAuthentication;
@@ -54,7 +51,6 @@ import org.cagrid.gridgrouper.test.system.steps.GrouperGrantPrivilegeStep;
 import org.cagrid.gridgrouper.test.system.steps.GrouperInitStep;
 import org.cagrid.gridgrouper.test.system.steps.GrouperRemoveMemberStep;
 import org.cagrid.gridgrouper.test.system.steps.GrouperUpdateMembershipRequestStep;
-import org.globus.gsi.bc.X509NameHelper;
 import org.springframework.core.io.FileSystemResource;
 
 public class GridGrouperTest extends ServiceStoryBase {
@@ -302,11 +298,9 @@ public class GridGrouperTest extends ServiceStoryBase {
 		BeanUtils utils = new BeanUtils(new FileSystemResource(conf), new FileSystemResource(props));
 		DorianProperties c = utils.getDorianProperties();
 		String subject = c.getCertificateAuthority().getProperties().getCreationPolicy().getSubject();
-		LdapName ldapname = new LdapName(subject);
-		ldapname.remove(ldapname.size() - 1);
-		ldapname.add("OU=Dorian");
-		X509Name name = new X509Name(true, ldapname.toString());
-		return X509NameHelper.toString(name) + "/CN=";
+		subject = subject.substring(0, subject.lastIndexOf("CN="))+"OU=Dorian,CN=";
+		subject = "/" + subject.replaceAll(",", "/");
+		return subject;
 	}
 
 }

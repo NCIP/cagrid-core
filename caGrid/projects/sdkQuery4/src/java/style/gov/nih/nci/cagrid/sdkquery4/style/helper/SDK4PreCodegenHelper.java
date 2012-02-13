@@ -68,7 +68,7 @@ public class SDK4PreCodegenHelper implements StyleCodegenPreProcessor {
             }
 
             FileReader reader = new FileReader(new File(info.getBaseDirectory(), "etc" + File.separator + domainModelFilename));
-            DomainModel domainModel = (DomainModel) Utils.deserializeObject(reader, DomainModel.class);
+            DomainModel domainModel = Utils.deserializeObject(reader, DomainModel.class);
 
             // create the mapper
             BeanTypeDiscoveryMapper mapper = new BeanTypeDiscoveryMapper(beansJar, domainModel);

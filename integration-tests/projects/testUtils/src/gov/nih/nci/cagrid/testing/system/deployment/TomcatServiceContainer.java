@@ -1,9 +1,9 @@
 package gov.nih.nci.cagrid.testing.system.deployment;
 
 import gov.nih.nci.cagrid.common.StreamGobbler;
-import gov.nih.nci.cagrid.common.StreamGobbler.LogPriority;
 import gov.nih.nci.cagrid.common.Utils;
 import gov.nih.nci.cagrid.common.XMLUtilities;
+import gov.nih.nci.cagrid.common.StreamGobbler.LogPriority;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -21,16 +21,29 @@ import java.util.concurrent.FutureTask;
 import java.util.concurrent.ThreadFactory;
 import java.util.concurrent.TimeUnit;
 
+import javax.xml.rpc.ServiceException;
+
+import org.apache.axis.EngineConfiguration;
+import org.apache.axis.client.AxisClient;
 import org.apache.axis.client.Stub;
-import org.apache.axis.utils.StringUtils;
+import org.apache.axis.configuration.FileProvider;
+import org.apache.axis.message.addressing.Address;
+import org.apache.axis.message.addressing.EndpointReferenceType;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.globus.axis.gsi.GSIConstants;
+import org.globus.common.CoGProperties;
 import org.globus.wsrf.impl.security.authorization.NoAuthorization;
 import org.jdom.Element;
+import org.oasis.wsrf.lifetime.Destroy;
 import org.xml.sax.EntityResolver;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
+
+import com.counter.CounterPortType;
+import com.counter.CreateCounter;
+import com.counter.CreateCounterResponse;
+import com.counter.service.CounterServiceAddressingLocator;
 
 /**
  * TomcatServiceContainer Service container implementation for tomcat
@@ -74,11 +87,15 @@ public class TomcatServiceContainer extends ServiceContainer {
 		    List<String> command = new ArrayList<String>();
 		    command.add("chmod");
 		    command.add("a+rwx");
+		    command.add("catalina.50.sh");
 		    command.add("digest.sh");
 		    command.add("catalina.sh");
 		    command.add("setclasspath.sh");
+		    command.add("shutdown-using-launcher.sh");
 		    command.add("shutdown.sh");
+		    command.add("startup-using-launcher.sh");
 		    command.add("startup.sh");
+		    command.add("tool-wrapper-using-launcher.sh");
 		    command.add("tool-wrapper.sh");
 		    command.add("version.sh");
 
@@ -248,9 +265,7 @@ public class TomcatServiceContainer extends ServiceContainer {
             LOG.debug("WAITING " + wait + " seconds to shut down");
 			success = future.get(wait, TimeUnit.SECONDS).booleanValue();
 		} catch (Exception ex) {
-//			throw new ContainerException("Error shutting down container: "
-//					+ ex.getMessage(), ex);
-			LOG.error("Error shutting down container: "
+			throw new ContainerException("Error shutting down container: "
 					+ ex.getMessage(), ex);
 		} finally {
             LOG.debug("Shutdown task complete, destroying processes");
@@ -262,12 +277,9 @@ public class TomcatServiceContainer extends ServiceContainer {
 		}
 
 		if (!success) {
-//			throw new ContainerException("Shutdown command failed: " +
-//			    "(process exited with value of " + 
-//                finalShutdownProcess.exitValue() + ")");
-			LOG.error("Shutdown command failed: " +
-				    "(process exited with value of " + 
-	                finalShutdownProcess.exitValue() + ")");
+			throw new ContainerException("Shutdown command failed: " +
+			    "(process exited with value of " + 
+                finalShutdownProcess.exitValue() + ")");
 		}
 	}
     
@@ -291,13 +303,9 @@ public class TomcatServiceContainer extends ServiceContainer {
 			command.add("cmd");
 			command.add("/c");
 			command.add(startup + ".bat");
-			if (this.debugContainer)
-				command.add("jpda");
 			command.add("run");
 		} else {
 			command.add(startup + ".sh");
-			if (this.debugContainer)
-				command.add("jpda");
 			command.add("run");
 		}
         
@@ -308,11 +316,7 @@ public class TomcatServiceContainer extends ServiceContainer {
                 File certsDir = ((SecureContainer) this).getCertificatesDirectory();
                 String caCertsDir = new File(certsDir, "ca").getCanonicalPath();
                 String x509CertsEnv = ENV_JAVA_OPTS + "=-D" + CACERTS_DIR_PROPERTY + "=" + caCertsDir;
-                if (!StringUtils.isEmpty(javaxNetDebugValue)) {
-                	x509CertsEnv += " -Djavax.net.debug=" + javaxNetDebugValue;
-                }
                 additionalEnvironment.add(x509CertsEnv);
-                additionalEnvironment.add(CACERTS_DIR_PROPERTY + "=" + caCertsDir);
             } catch (Exception ex) {
                 throw new ContainerException("Error setting ca certificates directory!");
             }
@@ -371,7 +375,7 @@ public class TomcatServiceContainer extends ServiceContainer {
             long start = System.currentTimeMillis();
 			LOG.debug("Connection attempt " + (attempt));
 			try {
-				running = true; //isGlobusRunningCounter();
+				running = isGlobusRunningCounter();
 			} catch (Exception ex) {
 				testException = ex;
 				//ex.printStackTrace();
@@ -425,6 +429,54 @@ public class TomcatServiceContainer extends ServiceContainer {
 		}
 	}
     
+
+	/**
+	 * Checks that Globus is running by hitting the counter service
+	 * 
+	 * @return true if the container service could be contacted
+	 */
+	protected synchronized boolean isGlobusRunningCounter() throws IOException,
+			ServiceException, ContainerException {
+		org.globus.axis.util.Util.registerTransport();
+		CounterServiceAddressingLocator locator = new CounterServiceAddressingLocator();
+		String globusLocation = System.getenv(ENV_GLOBUS_LOCATION);
+		EngineConfiguration engineConfig = new FileProvider(globusLocation
+				+ File.separator + "client-config.wsdd");
+		// TODO: do we even need this?
+		locator.setEngine(new AxisClient(engineConfig));
+
+		String url = getContainerBaseURI().toString() + "CounterService";
+		LOG.debug("Connecting to counter at " + url);
+
+		CounterPortType counter = locator
+				.getCounterPortTypePort(new EndpointReferenceType(new Address(
+						url)));
+		setAnonymous((Stub) counter);
+		
+        if (getProperties().isSecure()) {
+            File caCertsDir = null;
+            try {
+                caCertsDir = new File(((SecureContainer) this).getCertificatesDirectory(), "ca");
+            } catch (Exception ex) {
+                throw new ContainerException("Error obtaining ca certs directory: " + ex.getMessage(), ex);
+            }
+            CoGProperties cogProperties = CoGProperties.getDefault();
+            cogProperties.setCaCertLocations(caCertsDir.getAbsolutePath());
+            CoGProperties.setDefault(cogProperties);
+        }
+		
+
+		CreateCounterResponse response = counter
+				.createCounter(new CreateCounter());
+		EndpointReferenceType endpoint = response.getEndpointReference();
+		counter = locator.getCounterPortTypePort(endpoint);
+		setAnonymous((Stub) counter);
+		((Stub) counter).setTimeout(1000);
+		counter.add(0);
+		counter.destroy(new Destroy());
+		return true;
+	}
+
     
 	private static void setAnonymous(Stub stub) {
 		stub._setProperty(org.globus.wsrf.security.Constants.GSI_ANONYMOUS,
@@ -464,8 +516,9 @@ public class TomcatServiceContainer extends ServiceContainer {
 						if (connectorElement.getAttributeValue("port").equals(
 								"8443")
 								&& connectorElement
-										.getAttributeValue("socketFactory")
-										.equals("org.globus.tomcat.catalina.net.BaseHTTPSServerSocketFactory")) {
+										.getAttributeValue("className")
+										.equals(
+												"org.globus.tomcat.coyote.net.HTTPSConnector")) {
 							connectorFound = true;
 						}
 					} else {

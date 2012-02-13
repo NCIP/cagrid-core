@@ -9,8 +9,8 @@ Prerequisites:
 =======================================
 Java 1.6 and JAVA_HOME env defined
 Ant 1.7.0 and ANT_HOME env defined
-Globus 4.0.3 (pathced for SHA2) installed and GLOBUS_LOCATION env defined
-(optional) Tomcat 5.5.27 installed and "CATALINA_HOME" env defined with Globus deployed to it
+Globus 4.0.3 installed and GLOBUS_LOCATION env defined
+Tomcat 5.5.27 installed and "CATALINA_HOME" env defined with Globus deployed to it
 (optional) JBoss 4.0.5.GA installed and "JBOSS_HOME" env defined with Globus deployed to it
 
 

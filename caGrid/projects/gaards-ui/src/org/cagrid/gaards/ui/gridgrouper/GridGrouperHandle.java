@@ -9,7 +9,6 @@ import org.globus.gsi.GlobusCredential;
 import org.globus.wsrf.impl.security.authorization.IdentityAuthorization;
 
 
-@SuppressWarnings("deprecation")
 public class GridGrouperHandle extends ServiceHandle {
 
     public GridGrouperHandle(ServiceDescriptor des) {

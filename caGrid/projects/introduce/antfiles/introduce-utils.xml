@@ -2,9 +2,6 @@
 <!-- caGrid Analytical Utilities build file                                  -->
 <!-- ======================================================================= -->
 <project name="introduce_utilities" basedir="." default="usage">
-	<target name="usage">
-		<echo message="Not to be called directly."/>
-	</target>
 
 	<!-- ============================================================== -->
 	<!-- Globus properties                                              -->

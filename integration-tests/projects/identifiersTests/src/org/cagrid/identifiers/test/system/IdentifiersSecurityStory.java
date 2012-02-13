@@ -1,5 +1,6 @@
 package org.cagrid.identifiers.test.system;
 
+import gov.nih.nci.cagrid.testing.system.deployment.ServiceContainer;
 import gov.nih.nci.cagrid.testing.system.deployment.steps.CopyServiceStep;
 import gov.nih.nci.cagrid.testing.system.deployment.steps.DeployServiceStep;
 import gov.nih.nci.cagrid.testing.system.deployment.steps.DestroyContainerStep;
@@ -91,11 +92,11 @@ public class IdentifiersSecurityStory extends Story {
         /////////////////////////////////////////////////////
         steps.add(new DeployServiceStep(testInfo.getGridSvcContainer(), 
         		gridTmpDir.getAbsolutePath(), 
-        		Arrays.asList(new String[]{"-Dno.deployment.validation=true", "-Dperform.index.service.registration=false"})));
+        		Arrays.asList(new String[]{"-Dno.deployment.validation=true"})));
         
         steps.add(new DeployServiceStep(testInfo.getWebAppContainer(), 
         		webTmpDir.getAbsolutePath(), 
-        		Arrays.asList(new String[]{"-Dno.deployment.validation=true", "-Dperform.index.service.registration=false"})));
+        		Arrays.asList(new String[]{"-Dno.deployment.validation=true"})));
         
         /////////////////////////////////////////////////////
         // Create Databases

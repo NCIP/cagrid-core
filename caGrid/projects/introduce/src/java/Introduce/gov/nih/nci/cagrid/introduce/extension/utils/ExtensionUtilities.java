@@ -44,7 +44,7 @@ public class ExtensionUtilities {
 		Element classpathElement = XMLUtilities.fileNameToDocument(classpathFile.getAbsolutePath()).getRootElement();
 		
 		// get the list of additional libraries to add to the classpath
-		Set<String> libNames = new HashSet<String>();
+		Set libNames = new HashSet();
 		for (int i = 0; i < additionalLibs.length; i++) {
 			String relativeLibName = Utils.getRelativePath(classpathFile, additionalLibs[i]);
 			relativeLibName = convertToUnixStylePath(relativeLibName);
@@ -52,7 +52,7 @@ public class ExtensionUtilities {
 		}
 		
 		// find out which libs are NOT yet in the classpath
-		Iterator<?> classpathEntryIter = classpathElement.getChildren(
+		Iterator classpathEntryIter = classpathElement.getChildren(
 			CLASSPATHENTRY_ELEMENT, classpathElement.getNamespace()).iterator();
 		while (classpathEntryIter.hasNext()) {
 			Element entry = (Element) classpathEntryIter.next();
@@ -62,7 +62,7 @@ public class ExtensionUtilities {
 		}
 		
 		// anything left over now has to be added to the classpath
-		Iterator<String> additionalLibIter = libNames.iterator();
+		Iterator additionalLibIter = libNames.iterator();
 		while (additionalLibIter.hasNext()) {
 			String libName = (String) additionalLibIter.next();
 			Element entryElement = new Element(CLASSPATHENTRY_ELEMENT);
@@ -91,9 +91,9 @@ public class ExtensionUtilities {
     public static File[] getLibrariesFromEclipseClasspath(File classpathFile) throws Exception {
         Element classpathElement = XMLUtilities.fileNameToDocument(classpathFile.getAbsolutePath()).getRootElement();
         
-        List<File> libs = new ArrayList<File>();
+        List<File> libs = new ArrayList();
         // find out which libs are in the classpath
-        Iterator<?> classpathEntryIter = classpathElement.getChildren(
+        Iterator classpathEntryIter = classpathElement.getChildren(
             CLASSPATHENTRY_ELEMENT, classpathElement.getNamespace()).iterator();
         while (classpathEntryIter.hasNext()) {
             Element entry = (Element) classpathEntryIter.next();
@@ -123,7 +123,7 @@ public class ExtensionUtilities {
         Element classpathElement = XMLUtilities.fileNameToDocument(classpathFile.getAbsolutePath()).getRootElement();
         
         // get the list of libraries to be removed
-        Set<String> libNames = new HashSet<String>();
+        Set<String> libNames = new HashSet();
         for (File remove : removeLibs) {
             String relativeLibName = Utils.getRelativePath(classpathFile, remove);
             relativeLibName = convertToUnixStylePath(relativeLibName);
@@ -131,8 +131,8 @@ public class ExtensionUtilities {
         }
         
         // start removing entries
-        List<Element> keptEntries = new LinkedList<Element>();
-        Iterator<?> classpathEntryIter = classpathElement.getChildren(
+        List<Element> keptEntries = new LinkedList();
+        Iterator classpathEntryIter = classpathElement.getChildren(
             CLASSPATHENTRY_ELEMENT, classpathElement.getNamespace()).iterator();
         while (classpathEntryIter.hasNext()) {
             Element entry = (Element) classpathEntryIter.next();
@@ -176,8 +176,8 @@ public class ExtensionUtilities {
         Element classpathElement = XMLUtilities.fileNameToDocument(classpathFile.getAbsolutePath()).getRootElement();
         
         // start removing entries
-        List<Element> keptEntries = new LinkedList<Element>();
-        Iterator<?> classpathEntryIter = classpathElement.getChildren(
+        List<Element> keptEntries = new LinkedList();
+        Iterator classpathEntryIter = classpathElement.getChildren(
             CLASSPATHENTRY_ELEMENT, classpathElement.getNamespace()).iterator();
         while (classpathEntryIter.hasNext()) {
             Element entry = (Element) classpathEntryIter.next();

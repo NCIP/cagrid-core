@@ -26,6 +26,7 @@
 				<include name="commonj.jar" />
 				<include name="commons-*.jar" />
 				<include name="concurrent.jar" />
+				<include name="cryptix*.jar" />
 				<include name="globus_*.jar" />
 				<include name="jaxrpc.jar" />
 				<include name="jce-*.jar" />
@@ -37,6 +38,7 @@
 				<include name="naming-java.jar" />
 				<include name="naming-resources.jar" />
 				<include name="opensaml.jar" />
+				<include name="puretls.jar" />
 				<include name="resolver.jar" />
 				<include name="saaj.jar" />
 				<include name="servlet.jar" />

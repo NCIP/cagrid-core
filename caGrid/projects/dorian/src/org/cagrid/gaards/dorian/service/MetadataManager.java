@@ -6,9 +6,8 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.cagrid.gaards.dorian.Metadata;
+import org.cagrid.gaards.dorian.common.LoggingObject;
 import org.cagrid.gaards.dorian.stubs.types.DorianInternalFault;
 import org.cagrid.tools.database.Database;
 
@@ -20,10 +19,7 @@ import org.cagrid.tools.database.Database;
  * @version $Id: ArgumentManagerTable.java,v 1.2 2004/10/15 16:35:16 langella
  *          Exp $
  */
-public class MetadataManager {
-    
-    private static Log LOG = LogFactory.getLog(MetadataManager.class);
-    
+public class MetadataManager extends LoggingObject {
     private Database db;
 
     private boolean dbBuilt = false;
@@ -56,7 +52,7 @@ public class MetadataManager {
             s.close();
 
         } catch (Exception e) {
-            LOG.error(e.getMessage(), e);
+            logError(e.getMessage(), e);
             DorianInternalFault fault = new DorianInternalFault();
             fault.setFaultString("Unexpected Database Error, could not determine if the metadata " + name + " exists.");
             FaultHelper helper = new FaultHelper(fault);
@@ -89,7 +85,7 @@ public class MetadataManager {
                 throw fault;
             }
         } catch (Exception e) {
-            LOG.error(e.getMessage(), e);
+            logError(e.getMessage(), e);
             DorianInternalFault fault = new DorianInternalFault();
             fault.setFaultString("Unexpected Database Error, could insert  metadata!!!");
             FaultHelper helper = new FaultHelper(fault);
@@ -119,7 +115,7 @@ public class MetadataManager {
                 insert(metadata);
             }
         } catch (Exception e) {
-            LOG.error(e.getMessage(), e);
+            logError(e.getMessage(), e);
             DorianInternalFault fault = new DorianInternalFault();
             fault.setFaultString("Unexpected Database Error, could update metadata!!!");
             FaultHelper helper = new FaultHelper(fault);
@@ -142,7 +138,7 @@ public class MetadataManager {
             s.execute();
 
         } catch (Exception e) {
-            LOG.error(e.getMessage(), e);
+            logError(e.getMessage(), e);
             DorianInternalFault fault = new DorianInternalFault();
             fault.setFaultString("Unexpected Database Error, could remove metadata!!!");
             FaultHelper helper = new FaultHelper(fault);
@@ -174,7 +170,7 @@ public class MetadataManager {
             s.close();
 
         } catch (Exception e) {
-            LOG.error(e.getMessage(), e);
+            logError(e.getMessage(), e);
             DorianInternalFault fault = new DorianInternalFault();
             fault.setFaultString("Unexpected Database Error, obtain the metadata " + name + ".");
             FaultHelper helper = new FaultHelper(fault);
@@ -202,7 +198,7 @@ public class MetadataManager {
         try {
             db.update("DELETE FROM " + table);
         } catch (Exception e) {
-            LOG.error(e.getMessage(), e);
+            logError(e.getMessage(), e);
             DorianInternalFault fault = new DorianInternalFault();
             fault.setFaultString("Unexpected Database Error.");
             FaultHelper helper = new FaultHelper(fault);
@@ -224,7 +220,7 @@ public class MetadataManager {
                 this.dbBuilt = true;
             }
         } catch (Exception e) {
-            LOG.error(e.getMessage(), e);
+            logError(e.getMessage(), e);
             DorianInternalFault fault = new DorianInternalFault();
             fault.setFaultString("Unexpected Database Error.");
             FaultHelper helper = new FaultHelper(fault);

@@ -63,7 +63,7 @@ public class SecurityMetadataGenerator {
 		if (methods != null) {
 			MethodType[] method = methods.getMethod();
 			if (method != null) {
-				List<Operation> operations = new ArrayList<Operation>();
+				List operations = new ArrayList();
 				for (int i = 0; i < method.length; i++) {
 					Operation o = getOperation(info.getService().getServiceSecurity(), method[i]);
 					if (o != null) {
@@ -74,7 +74,7 @@ public class SecurityMetadataGenerator {
 				Operation[] ops = null;
 				if (operations.size() > 0) {
 					ops = new Operation[operations.size()];
-					ops = operations.toArray(ops);
+					ops = (Operation[]) operations.toArray(ops);
 
 				}
 

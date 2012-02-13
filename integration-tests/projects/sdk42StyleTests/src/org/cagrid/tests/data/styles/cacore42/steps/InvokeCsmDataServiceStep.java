@@ -203,10 +203,10 @@ public class InvokeCsmDataServiceStep extends Step {
         }
         return list;
     }
-        
+    
     
     private List<String> getImplicitInheritanceSuperclassList() {
-        FileInputStream in = null;
+    	FileInputStream in = null;
         try {
             String baseDir = System.getProperty(TESTS_BASE_DIR_PROPERTY);
             in = new FileInputStream(new File(baseDir, IMPLICIT_INHERITANCE_LIST_FILE));
@@ -250,13 +250,13 @@ public class InvokeCsmDataServiceStep extends Step {
     
     
     private boolean isBadCsmTableName(Exception ex) {
-        Throwable cause = ex;
-        Set<Throwable> seenCauses = new HashSet<Throwable>();
+    	Throwable cause = ex;
+    	Set<Throwable> seenCauses = new HashSet<Throwable>();
         boolean isBadTableName = false;
         while (cause != null && !seenCauses.contains(cause) && !isBadTableName) {
             String message = cause.getMessage();
             if (message != null && message.contains(BAD_CSM_TABLE_MESSAGE)) {
-                isBadTableName = true;
+            	isBadTableName = true;
             }
             seenCauses.add(cause);
             cause = cause.getCause();

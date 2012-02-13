@@ -18,12 +18,7 @@ import org.cagrid.grape.utils.ErrorDialog;
 
 public class GlobusConfigurationPanel extends JPanel {
 
-    /**
-	 * 
-	 */
-	private static final long serialVersionUID = 3876413042954984979L;
-
-	public String currentNamespace = null;
+    public String currentNamespace = null;
 
     public File currentSchemaFile = null;
 
@@ -71,7 +66,7 @@ public class GlobusConfigurationPanel extends JPanel {
 
 
     public void discoverFromGlobus() {
-        List<String> namespaces = IntroduceConstants.GLOBUS_NAMESPACES;
+        List namespaces = IntroduceConstants.GLOBUS_NAMESPACES;
 
         getNamespaceComboBox().removeAllItems();
         for (int i = 0; i < namespaces.size(); i++) {

@@ -1,5 +1,6 @@
 package gov.nih.nci.cagrid.introduce.portal.modification.services.servicetree;
 
+import gov.nih.nci.cagrid.common.portal.PortalLookAndFeel;
 import gov.nih.nci.cagrid.introduce.beans.method.MethodType;
 import gov.nih.nci.cagrid.introduce.common.CommonTools;
 import gov.nih.nci.cagrid.introduce.portal.common.IntroduceLookAndFeel;
@@ -14,11 +15,7 @@ import javax.swing.JPopupMenu;
 
 public class MethodPopUpMenu extends JPopupMenu {
 
-    /**
-	 * 
-	 */
-	private static final long serialVersionUID = 42263115810093052L;
-	private JMenuItem removeMethodMenuItem = null;
+    private JMenuItem removeMethodMenuItem = null;
     MethodTypeTreeNode node;
     private JMenuItem modifyMethodMenuItem = null;
 

@@ -18,12 +18,12 @@ import org.w3c.dom.Element;
 
 public class SDK40Deserializer extends DeserializerImpl implements Deserializer {
 	public QName xmlType;
-	public Class javaType;
+	public Class<?> javaType;
 
 	protected static Log LOG = LogFactory.getLog(SDK40Deserializer.class.getName());
 
 
-	public SDK40Deserializer(Class javaType, QName xmlType) {
+	public SDK40Deserializer(Class<?> javaType, QName xmlType) {
 		this.xmlType = xmlType;
 		this.javaType = javaType;
 	}

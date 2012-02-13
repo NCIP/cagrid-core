@@ -1,3 +1,0 @@
-access_id_CA X509 '/C=US/O=abc/OU=xyz/OU=caGrid/CN=caGrid Dorian CA'
-pos_rights globus CA:sign
-cond_subjects globus '"*"'

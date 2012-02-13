@@ -40,7 +40,7 @@
     <dependency rev="latest.integration" org="caGrid" name="sdk4xCQL2" conf="processor->processor"/>
 
 	<!-- external dependencies -->
-    <dependency rev="4.+" org="junit" name="junit" conf="impl-test->default"/>
+    <dependency rev="4.4" org="junit" name="junit" conf="impl-test->default"/>
     <dependency rev="2.0.0" org="jgoodies" name="validation" conf="style->default"/>
   </dependencies>
 </ivy-module>

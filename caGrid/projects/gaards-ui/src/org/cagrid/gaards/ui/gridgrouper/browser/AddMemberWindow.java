@@ -29,7 +29,6 @@ import org.apache.commons.logging.LogFactory;
 import org.cagrid.gaards.ui.common.TitlePanel;
 import org.cagrid.gaards.ui.dorian.federation.CommunitySearchDialog;
 import org.cagrid.gaards.ui.gridgrouper.GridGrouperLookAndFeel;
-import org.cagrid.gaards.ui.gridgrouper.tree.GridGrouperBaseTreeNode;
 import org.cagrid.gaards.ui.gridgrouper.tree.GroupTreeNode;
 import org.cagrid.grape.ApplicationComponent;
 import org.cagrid.grape.GridApplication;
@@ -560,7 +559,7 @@ public class AddMemberWindow extends ApplicationComponent {
 	private JComboBox getGroupToAdd() {
 		if (groupToAdd == null) {
 			groupToAdd = new JComboBox();
-			List<GridGrouperBaseTreeNode> nodes = node.getTree().getGroupNodes();
+			List nodes = node.getTree().getGroupNodes();
 			for (int i = 0; i < nodes.size(); i++) {
 				this.groupToAdd.addItem(new GroupNodeCaddy((GroupTreeNode) nodes.get(i)));
 			}
@@ -685,7 +684,7 @@ public class AddMemberWindow extends ApplicationComponent {
 	private JComboBox getLeftGroup() {
 		if (leftGroup == null) {
 			leftGroup = new JComboBox();
-			List<GridGrouperBaseTreeNode> nodes = node.getTree().getGroupNodes();
+			List nodes = node.getTree().getGroupNodes();
 			for (int i = 0; i < nodes.size(); i++) {
 				this.leftGroup.addItem(new GroupNodeCaddy((GroupTreeNode) nodes.get(i)));
 			}
@@ -702,7 +701,7 @@ public class AddMemberWindow extends ApplicationComponent {
 	private JComboBox getRightGroup() {
 		if (rightGroup == null) {
 			rightGroup = new JComboBox();
-			List<GridGrouperBaseTreeNode> nodes = node.getTree().getGroupNodes();
+			List nodes = node.getTree().getGroupNodes();
 			for (int i = 0; i < nodes.size(); i++) {
 				this.rightGroup.addItem(new GroupNodeCaddy((GroupTreeNode) nodes.get(i)));
 			}

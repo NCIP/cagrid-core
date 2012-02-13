@@ -25,6 +25,23 @@
 	</target>
 
 
+	<!-- ============================================================== -->
+	<!-- Pre Deploy Globus                                              -->
+	<!-- ============================================================== -->
+	<target name="preDeployGlobus">
+		<copy todir="${ext.globus.dir}/endorsed" overwrite="true">
+			<fileset dir="${ext.endorsed.dir}">
+				<include name="*.jar" />
+			</fileset>
+		</copy>
+		<copy todir="${build.lib.dir}" overwrite="true">
+			<fileset dir="${ext.lib}">
+				<include name="*.jar" />
+			</fileset>
+		</copy>
+	</target>
+	
+	
 	    <!-- ============================================================== -->
 		<!-- Pre Deploy JBoss                                              -->
 		<!-- ============================================================== -->
@@ -47,6 +64,12 @@
 	<!-- Post Undeploy Tomcat                                              -->
 	<!-- ============================================================== -->
 	<target name="postUndeployTomcat">
+	</target>
+
+	<!-- ============================================================== -->
+	<!-- Post Undeploy Globus                                              -->
+	<!-- ============================================================== -->
+	<target name="postUndeployGlobus">
 	</target>
 
 	<!-- ============================================================== -->

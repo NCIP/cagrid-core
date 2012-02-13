@@ -12,14 +12,13 @@ import java.sql.ResultSet;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.bouncycastle.util.encoders.Base64;
+import org.cagrid.gaards.dorian.common.LoggingObject;
 import org.cagrid.gaards.dorian.stubs.types.DorianInternalFault;
 import org.cagrid.tools.database.Database;
 
 
-public class PasswordSecurityManager {
+public class PasswordSecurityManager extends LoggingObject {
 
     public static final String CRYPT_DIGEST_ALGORITHM = "CRYPT";
     public static final String SHA_512_DIGEST_ALGORITHM = "SHA-512";
@@ -33,8 +32,6 @@ public class PasswordSecurityManager {
 
     public static final String DIGEST_SALT = "DIGEST_SALT";
     public static final String DIGEST_ALGORITHM = "DIGEST_ALGORITHM";
-    
-    private static Log LOG = LogFactory.getLog(PasswordSecurityManager.class);
 
     private Database db;
 
@@ -66,7 +63,7 @@ public class PasswordSecurityManager {
             rs.close();
             s.close();
         } catch (Exception e) {
-            LOG.error(e.getMessage(), e);
+            logError(e.getMessage(), e);
             DorianInternalFault fault = new DorianInternalFault();
             fault.setFaultString("An unexpected database error occurred.");
             FaultHelper helper = new FaultHelper(fault);
@@ -97,7 +94,7 @@ public class PasswordSecurityManager {
             ps.executeUpdate();
             ps.close();
         } catch (Exception e) {
-            LOG.error(e.getMessage(), e);
+            logError(e.getMessage(), e);
             DorianInternalFault fault = new DorianInternalFault();
             fault.setFaultString("An unexpected database error occurred.");
             FaultHelper helper = new FaultHelper(fault);
@@ -185,7 +182,7 @@ public class PasswordSecurityManager {
             rs.close();
             s.close();
         } catch (Exception e) {
-            LOG.error(e.getMessage(), e);
+            logError(e.getMessage(), e);
             DorianInternalFault fault = new DorianInternalFault();
             fault.setFaultString("An unexpected database error occurred.");
             FaultHelper helper = new FaultHelper(fault);
@@ -248,7 +245,7 @@ public class PasswordSecurityManager {
             ps.executeUpdate();
             ps.close();
         } catch (Exception e) {
-            LOG.error(e.getMessage(), e);
+            logError(e.getMessage(), e);
             DorianInternalFault fault = new DorianInternalFault();
             fault.setFaultString("An unexpected database error occurred.");
             FaultHelper helper = new FaultHelper(fault);
@@ -272,7 +269,7 @@ public class PasswordSecurityManager {
             ps.executeUpdate();
             ps.close();
         } catch (Exception e) {
-            LOG.error(e.getMessage(), e);
+            logError(e.getMessage(), e);
             DorianInternalFault fault = new DorianInternalFault();
             fault.setFaultString("An unexpected database error occurred.");
             FaultHelper helper = new FaultHelper(fault);
@@ -298,7 +295,7 @@ public class PasswordSecurityManager {
                 }
                 this.dbBuilt = true;
             } catch (Exception e) {
-                LOG.error(e.getMessage(), e);
+                logError(e.getMessage(), e);
                 DorianInternalFault fault = new DorianInternalFault();
                 fault.setFaultString("An unexpected database error occurred.");
                 FaultHelper helper = new FaultHelper(fault);
@@ -315,7 +312,7 @@ public class PasswordSecurityManager {
         try {
             db.update("drop TABLE " + TABLE);
         } catch (Exception e) {
-            LOG.error(e.getMessage(), e);
+            logError(e.getMessage(), e);
             DorianInternalFault fault = new DorianInternalFault();
             fault.setFaultString("An unexpected database error occurred.");
             FaultHelper helper = new FaultHelper(fault);
@@ -341,12 +338,14 @@ public class PasswordSecurityManager {
 
 
     public static byte[] base64ToByte(String data) throws IOException {
-        return Base64.decode(data.getBytes());
+        Base64 decoder = new Base64();
+        return decoder.decode(data.getBytes());
     }
 
 
     public static String byteToBase64(byte[] data) {
-        byte[] result = Base64.encode(data);
+        Base64 encoder = new Base64();
+        byte[] result = encoder.encode(data);
         return new String(result);
     }
 

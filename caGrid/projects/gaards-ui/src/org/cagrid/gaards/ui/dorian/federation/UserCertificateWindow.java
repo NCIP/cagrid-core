@@ -301,7 +301,7 @@ public class UserCertificateWindow extends ApplicationComponent implements
 		if (subject == null) {
 			subject = new JTextField();
 			subject.setEditable(false);
-			subject.setText(this.certificate.getSubjectX500Principal().getName());
+			subject.setText(this.certificate.getSubjectDN().getName());
 		}
 		return subject;
 	}

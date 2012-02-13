@@ -1,5 +1,6 @@
 package org.cagrid.gts.test.system;
 
+import gov.nih.nci.cagrid.testing.system.deployment.ServiceContainer;
 import gov.nih.nci.cagrid.testing.system.deployment.ServiceContainerFactory;
 import gov.nih.nci.cagrid.testing.system.deployment.ServiceContainerType;
 import gov.nih.nci.cagrid.testing.system.deployment.steps.CopyServiceStep;
@@ -29,7 +30,14 @@ public class GridTrustServiceStory extends ServiceStoryBase {
     public static final String GTS_DIR_PROPERTY = "gts.service.dir";
 
 
+    public GridTrustServiceStory(ServiceContainer container) {
+        super(container);
+    }
+
+
     public GridTrustServiceStory() {
+
+        // init the container
         try {
             this.setContainer(ServiceContainerFactory.createContainer(ServiceContainerType.SECURE_TOMCAT_CONTAINER));
         } catch (Exception ex) {

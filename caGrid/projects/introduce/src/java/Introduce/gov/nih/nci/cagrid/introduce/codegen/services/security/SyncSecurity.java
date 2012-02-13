@@ -109,7 +109,7 @@ public class SyncSecurity extends SyncTool {
             Map<String, String> authExtensionToAuthClasses = new HashMap<String, String>();
             // process all the required authorization extensions for this
             // service
-            for (Iterator<String> iterator = usedExtensions.iterator(); iterator.hasNext();) {
+            for (Iterator iterator = usedExtensions.iterator(); iterator.hasNext();) {
                 String extensionName = (String) iterator.next();
                 AuthorizationExtensionDescriptionType authorizationExtensionDescriptionType = ExtensionsLoader
                     .getInstance().getAuthorizationExtension(extensionName);

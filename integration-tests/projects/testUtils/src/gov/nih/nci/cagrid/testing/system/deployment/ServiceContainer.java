@@ -26,8 +26,7 @@ public abstract class ServiceContainer {
 
     protected boolean unpacked = false;
     protected boolean started = false;
-    protected boolean debugContainer = false;
-    protected String  javaxNetDebugValue = null;
+
 
     public ServiceContainer(ContainerProperties properties) {
         this.properties = properties;
@@ -125,21 +124,6 @@ public abstract class ServiceContainer {
         return epr;
     }
 
-    public void enableContainerDebugging() {
-    	debugContainer = true;
-    }
-
-    public void disableContainerDebugging() {
-    	debugContainer = false;
-    }
-    
-    public void setJavaxNetDebug(String value) {
-    	this.javaxNetDebugValue = value;
-    }
-
-    public void resetJavaxNetDebug() {
-    	setJavaxNetDebug(null);
-    }
 
     protected abstract void startup() throws ContainerException;
 

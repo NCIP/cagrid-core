@@ -32,6 +32,8 @@
 		<mkdir dir="${junit.results.dir}" />
 		<junit dir="${introduce.dir}" printsummary="yes" errorproperty="test.failed" failureproperty="test.failed" showoutput="true" fork="yes" forkmode="once">
 			<sysproperty key="basedir" value="${introduce.dir}"/>
+			<sysproperty key="build.dirs" value="${test.classes.dir}" />
+			<sysproperty key="build.dir" value="${test.classes.dir}" />
 			<sysproperty key="introduce.base.dir" value="${introduce.dir}" />
 			<sysproperty key="testing.port.assignment.mode" value="${testing.port.assignment.mode}"/>
 			<sysproperty key="testing.containers.dir" value="${testing.containers.dir}"/>
@@ -48,7 +50,7 @@
 				</fileset>
 			</batchtest>
 		</junit>
-		
+		<delete dir="${temp.test.service.dir}"/>
 		<fail message="Tests failed! Check test reports." if="test.failed" />
 	</target>
 </project>

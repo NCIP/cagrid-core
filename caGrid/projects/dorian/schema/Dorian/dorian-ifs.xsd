@@ -202,7 +202,7 @@
 			<xsd:element name="Subject" type="xsd:string" />
 			<xsd:element name="Owner" type="xsd:string" />
 			<xsd:element name="Status" type="federation:HostCertificateStatus" />
-			<xsd:element name="Certificate" type="dorian:X509Certificate" nillable="true" />
+			<xsd:element name="Certificate" type="dorian:X509Certificate" />
 			<xsd:element name="PublicKey" type="federation:PublicKey" />
 		</xsd:sequence>
 	</xsd:complexType>

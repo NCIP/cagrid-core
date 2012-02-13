@@ -28,11 +28,6 @@ import javax.swing.JCheckBox;
 
 public class NamespaceTypeConfigurePanel extends JPanel {
 
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = -1792678832366390392L;
-
 	private JLabel namespaceLabel = null;
 
 	private JLabel packageNameLabel = null;

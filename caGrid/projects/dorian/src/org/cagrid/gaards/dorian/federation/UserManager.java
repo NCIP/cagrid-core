@@ -13,12 +13,8 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import javax.naming.InvalidNameException;
-import javax.naming.ldap.LdapName;
-
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.cagrid.gaards.dorian.ca.CertificateAuthority;
+import org.cagrid.gaards.dorian.common.LoggingObject;
 import org.cagrid.gaards.dorian.service.PropertyManager;
 import org.cagrid.gaards.dorian.service.util.AddressValidator;
 import org.cagrid.gaards.dorian.stubs.types.DorianInternalFault;
@@ -34,7 +30,7 @@ import org.cagrid.tools.database.DatabaseException;
  * @version $Id: ArgumentManagerTable.java,v 1.2 2004/10/15 16:35:16 langella
  *          Exp $
  */
-public class UserManager {
+public class UserManager extends LoggingObject {
 
     public static final String CANNOT_UPDATE_GRID_IDENTITY_ERROR = "Cannot update/change a user's Grid Identity.";
 
@@ -53,8 +49,6 @@ public class UserManager {
     public static final String LAST_NAME_FIELD = "LAST_NAME";
 
     public static final String EMAIL_FIELD = "EMAIL";
-    
-    private static Log LOG = LogFactory.getLog(UserManager.class);
 
     private Database db;
 
@@ -136,41 +130,13 @@ public class UserManager {
 
 
     public static String getUserSubject(String policy, String caSubject, TrustedIdP idp, String uid) {
-    	LdapName name = null;
-    	try {
-			name = new LdapName(caSubject);
-		} catch (InvalidNameException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-        try {
-			name.remove(name.size() - 1);
-		} catch (InvalidNameException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		}
+        int caindex = caSubject.lastIndexOf(",");
+        String caPreSub = caSubject.substring(0, caindex);
         if (policy.equals(IdentityAssignmentPolicy.ID)) {
-        	try {
-        		name.add("OU=IdP [" + idp.getId() + "]");
-			} catch (InvalidNameException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
+            return caPreSub + ",OU=IdP [" + idp.getId() + "],CN=" + uid;
         } else {
-        	try {
-        		name.add("OU=" + idp.getName());
-			} catch (InvalidNameException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
+            return caPreSub + ",OU=" + idp.getName() + ",CN=" + uid;
         }
-        try {
-        	name.add("CN=" + uid);
-		} catch (InvalidNameException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-        return name.toString();
     }
 
 
@@ -214,7 +180,7 @@ public class UserManager {
         } catch (InvalidUserFault iuf) {
             throw iuf;
         } catch (Exception e) {
-            LOG.error(e.getMessage(), e);
+            logError(e.getMessage(), e);
             DorianInternalFault fault = new DorianInternalFault();
             fault.setFaultString("Unexpected Error, could not obtain the user "
                 + getCredentialsManagerUID(user.getIdPId(), user.getUID()));
@@ -267,7 +233,7 @@ public class UserManager {
         } catch (InvalidUserFault iuf) {
             throw iuf;
         } catch (Exception e) {
-            LOG.error(e.getMessage(), e);
+            logError(e.getMessage(), e);
             DorianInternalFault fault = new DorianInternalFault();
             fault.setFaultString("Unexpected Error, could not obtain the user " + gridId);
             FaultHelper helper = new FaultHelper(fault);
@@ -317,7 +283,7 @@ public class UserManager {
         } catch (InvalidUserFault iuf) {
             throw iuf;
         } catch (Exception e) {
-            LOG.error(e.getMessage(), e);
+            logError(e.getMessage(), e);
             DorianInternalFault fault = new DorianInternalFault();
             fault.setFaultString("Unexpected Error, could not obtain the user " + gridId);
             FaultHelper helper = new FaultHelper(fault);
@@ -424,7 +390,7 @@ public class UserManager {
             return list;
 
         } catch (Exception e) {
-            LOG.error(e.getMessage(), e);
+            logError(e.getMessage(), e);
             DorianInternalFault fault = new DorianInternalFault();
             fault.setFaultString("Unexpected Error, could not obtain a list of users");
             FaultHelper helper = new FaultHelper(fault);
@@ -501,7 +467,7 @@ public class UserManager {
             s.close();
             return users;
         } catch (Exception e) {
-            LOG.error(e.getMessage(), e);
+            logError(e.getMessage(), e);
             DorianInternalFault fault = new DorianInternalFault();
             fault.setFaultString("Unexpected Error, could not obtain a list of users");
             FaultHelper helper = new FaultHelper(fault);
@@ -521,7 +487,7 @@ public class UserManager {
             Connection c = null;
             try {
 
-                String caSubject = ca.getCACertificate().getSubjectX500Principal().getName();
+                String caSubject = ca.getCACertificate().getSubjectDN().getName();
                 user.setGridId(CommonUtils.subjectToIdentity(getUserSubject(caSubject, idp, user.getUID())));
                 user.setUserStatus(GridUserStatus.Pending);
                 try {
@@ -558,7 +524,7 @@ public class UserManager {
                 } catch (Exception ex) {
 
                 }
-                LOG.error(e.getMessage(), e);
+                logError(e.getMessage(), e);
                 DorianInternalFault fault = new DorianInternalFault();
                 fault.setFaultString("Error adding the user "
                     + getCredentialsManagerUID(user.getIdPId(), user.getUID())
@@ -660,7 +626,7 @@ public class UserManager {
             } catch (InvalidUserFault e) {
                 throw e;
             } catch (Exception e) {
-                LOG.error(e.getMessage(), e);
+                logError(e.getMessage(), e);
                 DorianInternalFault fault = new DorianInternalFault();
                 fault.setFaultString("Error updating the Grid user "
                     + getCredentialsManagerUID(u.getIdPId(), u.getUID()) + ", an unexpected database error occurred.");
@@ -750,7 +716,7 @@ public class UserManager {
         try {
             db.update("DROP TABLE IF EXISTS " + USERS_TABLE);
         } catch (Exception e) {
-            LOG.error(e.getMessage(), e);
+            logError(e.getMessage(), e);
             DorianInternalFault fault = new DorianInternalFault();
             fault.setFaultString("An unexpected database error occurred.");
             FaultHelper helper = new FaultHelper(fault);
@@ -813,7 +779,7 @@ public class UserManager {
 
                 }
             } catch (DatabaseException e) {
-                LOG.error(e.getMessage(), e);
+                logError(e.getMessage(), e);
                 DorianInternalFault fault = new DorianInternalFault();
                 fault.setFaultString("An unexpected database error occurred.");
                 FaultHelper helper = new FaultHelper(fault);
@@ -871,7 +837,7 @@ public class UserManager {
             return users;
 
         } catch (Exception e) {
-            LOG.error(e.getMessage(), e);
+            logError(e.getMessage(), e);
             DorianInternalFault fault = new DorianInternalFault();
             fault.setFaultString("Unexpected Error, could not obtain a list of users");
             FaultHelper helper = new FaultHelper(fault);

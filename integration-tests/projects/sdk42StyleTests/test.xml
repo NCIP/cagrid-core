@@ -2,7 +2,7 @@
 <!-- caGrid SDK 4.2 Data Services test build file                            -->
 <!-- ======================================================================= -->
 <project name="caGrid-sdk42_data_tests_harness" basedir=".">
-
+	
 	<!-- should all testing stop on the first error or failure encountered? -->
 	<property name="halt.on.error" value="false" />
 	<!-- message when tests fail -->
@@ -22,7 +22,7 @@
 	<!-- TODO: this could be configured by a properties file -->
 	<property name="remote.sdk.host.name" value="sdkexamples.bmi.ohio-state.edu" />
 	<property name="remote.sdk.host.port" value="8042" />
-
+	
 	<target name="prepareClasspaths">
 		<path id="all.test.classpath">
 			<path refid="test.run.classpath" />
@@ -31,8 +31,8 @@
 			</fileset>
 		</path>
 	</target>
-
-
+	
+	
 	<target name="sdkDbSetup" description="Sets up the caCORE SDK 4.2 test database">
 		<property name="db.script.dir" location="${sdk.unpack.dir}/sdk-toolkit/example-project/db/db-install/mysql"/>
 		<sql driver="${db.driver}" url="jdbc:mysql://${db.server}:${db.port}/" userid="${db.username}" password="${db.password}">
@@ -47,16 +47,10 @@
 		</sql>
 	</target>
 	
-	
-	<target name="test" depends="testIntegration, testUpgrade" description="Runs the tests">
-		<fail if="${integration.test.failed}" message="Integration tests failed!  Consult the test logs."/>
-		<fail if="${upgrade.test.failed}" message="Upgrade tests failed! Consult the test logs."/>
-	</target>
 
-
-	<target name="testIntegration" depends="sdkDbSetup" description="Runs tests">
+	<target name="test" depends="sdkDbSetup" description="Runs tests">
 		<mkdir dir="${junit.results.dir}" />
-		<junit dir="${introduce.dir}" printsummary="yes" errorproperty="integration.test.failed" failureproperty="integration.test.failed" showoutput="true" fork="yes" forkmode="once">
+		<junit dir="${introduce.dir}" printsummary="yes" errorproperty="test.failed" failureproperty="test.failed" showoutput="true" fork="yes" forkmode="once">
 			<!-- is this needed any more? -->
 			<sysproperty key="introduce.base.dir" value="${introduce.dir}" />
 			<sysproperty key="sdk42.tests.base.dir" value="${sdk42.tests.base.dir}"/>
@@ -71,31 +65,6 @@
 				</fileset>
 			</batchtest>
 		</junit>
-	</target>
-
-
-	<target name="testUpgrade" depends="prepareClasspaths" description="Tests the ability to upgrade SDK 4.2 data services">
-		<mkdir dir="${junit.results.dir}"/>
-		<junit dir="${introduce.dir}" printsummary="yes" errorproperty="upgrade.test.failed" failureproperty="upgrade.test.failed" showoutput="true" fork="yes" forkmode="once">
-			<sysproperty key="build.dirs" value="${classes.dir}" />
-			<sysproperty key="introduce.base.dir" value="${introduce.dir}" />
-			<sysproperty key="sdk42.tests.base.dir" value="${sdk42.tests.base.dir}" />
-			<sysproperty key="testing.containers.dir" value="${testing.containers.dir}" />
-			<sysproperty key="upgrade.services.zip.dir" value="${basedir}/resources/services" />
-			<sysproperty key="temp.test.service.dir" value="${basedir}/temp" />
-			<classpath refid="all.test.classpath" />
-			<!-- also needs the other extensions (such as metadata) to be upgraded, so need their upgraders on the classpath -->
-			<classpath>
-				<fileset dir="${introduce.dir}/extensions/lib">
-					<include name="*.jar" />
-				</fileset>
-			</classpath>
-			<formatter type="xml" />
-			<batchtest fork="yes" todir="${junit.results.dir}">
-				<fileset dir="${src.dir}">
-					<include name="**/*UpgradeTest.java" />
-				</fileset>
-			</batchtest>
-		</junit>
+		<!-- <fail message="Tests failed! Check test reports." if="test.failed" /> -->
 	</target>
 </project>

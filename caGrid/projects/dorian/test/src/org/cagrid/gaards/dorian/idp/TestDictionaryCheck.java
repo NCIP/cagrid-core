@@ -47,7 +47,7 @@ public class TestDictionaryCheck extends TestCase {
 
 
 	public void testSubStrings() {
-		java.util.List<String> subs = DictionaryCheck.buildSubStrings("testing", 1);
+		java.util.List subs = DictionaryCheck.buildSubStrings("testing", 1);
 		assertTrue(subs.size() == 7 + 6 + 5 + 4 + 3 + 2 + 1);
 		assertEquals(subs.get(3), "t");
 		assertEquals(subs.get(7), "te");

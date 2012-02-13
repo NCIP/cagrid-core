@@ -1,4 +1,4 @@
-<ns1:ServiceDescription introduceVersion="1.5" xmlns:ns1="gme://gov.nih.nci.cagrid/1/Introduce">
+<ns1:ServiceDescription introduceVersion="1.4" xmlns:ns1="gme://gov.nih.nci.cagrid/1/Introduce">
  <ns2:Namespaces xsi:type="ns2:NamespacesType" xmlns:ns2="gme://gov.nih.nci.cagrid.introduce/1/Namespace" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <ns2:Namespace generateStubs="false" location="./DelegatedCredentialTypes.xsd" namespace="http://cds.gaards.cagrid.org/CredentialDelegationService/DelegatedCredential/types" packageName="org.cagrid.gaards.cds.delegated.stubs.types" xsi:type="ns2:NamespaceType">
    <ns2:SchemaElement type="DelegatedCredentialReference" xsi:type="ns2:SchemaElementType"/>
@@ -131,10 +131,10 @@
    <ns2:SchemaElement type="TransferServiceContextReference" xsi:type="ns2:SchemaElementType"/>
   </ns2:Namespace>
   <ns2:Namespace generateStubs="false" location="./caGrid_Transfer.xsd" namespace="http://transfer.cagrid.org/Transfer" packageName="org.cagrid.transfer.descriptor" xsi:type="ns2:NamespaceType">
-   <ns2:SchemaElement type="DataTransferDescriptor" xsi:type="ns2:SchemaElementType"/>
    <ns2:SchemaElement type="DataDescriptor" xsi:type="ns2:SchemaElementType"/>
-   <ns2:SchemaElement type="Status" xsi:type="ns2:SchemaElementType"/>
    <ns2:SchemaElement type="DataStorageDescriptor" xsi:type="ns2:SchemaElementType"/>
+   <ns2:SchemaElement type="DataTransferDescriptor" xsi:type="ns2:SchemaElementType"/>
+   <ns2:SchemaElement type="Status" xsi:type="ns2:SchemaElementType"/>
   </ns2:Namespace>
  </ns2:Namespaces>
  <ns3:Services xsi:type="ns3:ServicesType" xmlns:ns3="gme://gov.nih.nci.cagrid.introduce/1/Services" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
@@ -361,8 +361,8 @@
   </ns3:Service>
  </ns3:Services>
  <ns59:Extensions xsi:type="ns59:ExtensionsType" xmlns:ns59="gme://gov.nih.nci.cagrid.introduce/1/Extension" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
-  <ns59:Extension name="cagrid_metadata" version="1.5" xsi:type="ns59:ExtensionType"/>
-  <ns59:Extension name="caGrid_Transfer" version="1.5" xsi:type="ns59:ExtensionType"/>
+  <ns59:Extension name="cagrid_metadata" version="1.4" xsi:type="ns59:ExtensionType"/>
+  <ns59:Extension name="caGrid_Transfer" version="1.4" xsi:type="ns59:ExtensionType"/>
  </ns59:Extensions>
  <ns60:ServiceProperties xmlns:ns60="gme://gov.nih.nci.cagrid.introduce/1/Property">
   <ns60:Property description="This points to the Taverna repository." isFromETC="false" key="baseRepositoryDir" value="$home/Library/Application Support/Taverna-1.7.1/repository/"/>

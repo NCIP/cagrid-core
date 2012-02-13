@@ -44,7 +44,7 @@
     <parameter name="castorMapping" value="/resources/wsdd/ExampleSdk4-edited-xml-mapping.xml" />
   </globalConfiguration>
   <transport name="java" pivot="java:org.apache.axis.transport.java.JavaSender" />
-  <transport name="https" pivot="java:org.cagrid.axis.transport.HTTPSSender">
+  <transport name="https" pivot="java:org.globus.axis.transport.HTTPSSender">
     <requestFlow>
       <handler type="java:org.globus.axis.handlers.HTTP11Handler" />
     </requestFlow>

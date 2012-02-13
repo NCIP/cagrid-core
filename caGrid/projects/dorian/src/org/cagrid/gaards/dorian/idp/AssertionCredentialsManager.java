@@ -22,15 +22,13 @@ import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
 
-import javax.naming.ldap.LdapName;
 import javax.xml.namespace.QName;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.apache.xml.security.signature.XMLSignature;
 import org.cagrid.gaards.dorian.ca.CertificateAuthority;
 import org.cagrid.gaards.dorian.ca.WrappedKey;
 import org.cagrid.gaards.dorian.ca.WrappingCertificateAuthority;
+import org.cagrid.gaards.dorian.common.LoggingObject;
 import org.cagrid.gaards.dorian.common.SAMLConstants;
 import org.cagrid.gaards.dorian.stubs.types.DorianInternalFault;
 import org.cagrid.gaards.pki.CertUtil;
@@ -45,13 +43,11 @@ import org.cagrid.tools.database.Database;
  * @version $Id: ArgumentManagerTable.java,v 1.2 2004/10/15 16:35:16 langella
  *          Exp $
  */
-public class AssertionCredentialsManager {
+public class AssertionCredentialsManager extends LoggingObject {
 
     public static String CREDENTIALS_TABLE = "idp_asserter";
 
     public final static String CERT_DN = "Dorian IdP Authentication Asserter";
-    
-    private static Log LOG = LogFactory.getLog(AssertionCredentialsManager.class);
 
     private CertificateAuthority ca;
 
@@ -73,7 +69,7 @@ public class AssertionCredentialsManager {
                 createNewCredentials();
             }
         } catch (Exception e) {
-            LOG.error(e.getMessage(), e);
+            logError(e.getMessage(), e);
             DorianInternalFault fault = new DorianInternalFault();
             fault.setFaultString("Error initializing the IDP Asserting Manager.");
             FaultHelper helper = new FaultHelper(fault);
@@ -102,7 +98,7 @@ public class AssertionCredentialsManager {
             rs.close();
             s.close();
         } catch (Exception e) {
-            LOG.error(e.getMessage(), e);
+            logError(e.getMessage(), e);
             DorianInternalFault fault = new DorianInternalFault();
             fault.setFaultString("Unexpected error determining if the Dorian IdP has asserting credentials");
             FaultHelper helper = new FaultHelper(fault);
@@ -149,7 +145,7 @@ public class AssertionCredentialsManager {
                 }
             }
         } catch (Exception e) {
-            LOG.error(e.getMessage(), e);
+            logError(e.getMessage(), e);
             DorianInternalFault fault = new DorianInternalFault();
             fault.setFaultString("Could not store IdP asserting credentials.");
             FaultHelper helper = new FaultHelper(fault);
@@ -165,13 +161,15 @@ public class AssertionCredentialsManager {
     private synchronized void createNewCredentials() throws Exception {
         // VALIDATE DN
         X509Certificate cacert = ca.getCACertificate();
-        LdapName caSubject = new LdapName(cacert.getSubjectX500Principal().getName());
-        caSubject.remove(caSubject.size() - 1);
-        caSubject.add("CN=" + CERT_DN);
+        String caSubject = cacert.getSubjectDN().getName();
+        int caindex = caSubject.lastIndexOf(",");
+        String caPreSub = caSubject.substring(0, caindex);
+
+        String subject = caPreSub + ",CN=" + CERT_DN;
         KeyPair pair = KeyUtil.generateRSAKeyPair1024();
         GregorianCalendar cal = new GregorianCalendar();
         Date start = cal.getTime();
-        X509Certificate cert = ca.signCertificate(caSubject.toString(), pair.getPublic(), start, cacert.getNotAfter());
+        X509Certificate cert = ca.signCertificate(subject, pair.getPublic(), start, cacert.getNotAfter());
         storeCredentials(cert, pair.getPrivate());
     }
 
@@ -203,7 +201,7 @@ public class AssertionCredentialsManager {
             rs.close();
             s.close();
         } catch (Exception e) {
-            LOG.error(e.getMessage(), e);
+            logError(e.getMessage(), e);
             DorianInternalFault fault = new DorianInternalFault();
             fault.setFaultString("Error obtaining the IDP Asserting Key.");
             FaultHelper helper = new FaultHelper(fault);
@@ -237,8 +235,8 @@ public class AssertionCredentialsManager {
             Date start = cal.getTime();
             cal.add(Calendar.MINUTE, 2);
             Date end = cal.getTime();
-            String issuer = cert.getSubjectX500Principal().getName();
-            String federation = cert.getSubjectX500Principal().getName();
+            String issuer = cert.getSubjectDN().toString();
+            String federation = cert.getSubjectDN().toString();
             String ipAddress = null;
             String subjectDNS = null;
 
@@ -289,11 +287,11 @@ public class AssertionCredentialsManager {
             SAMLAssertion saml = new SAMLAssertion(issuer, start, end, null, null, l);
             List<X509Certificate> a = new ArrayList<X509Certificate>();
             a.add(cert);
-            saml.sign(XMLSignature.ALGO_ID_SIGNATURE_RSA_SHA256, key, a);
+            saml.sign(XMLSignature.ALGO_ID_SIGNATURE_RSA_SHA1, key, a);
 
             return saml;
         } catch (Exception e) {
-            LOG.error(e.getMessage(), e);
+            logError(e.getMessage(), e);
             DorianInternalFault fault = new DorianInternalFault();
             fault.setFaultString("Error creating SAML Assertion.");
             FaultHelper helper = new FaultHelper(fault);
@@ -323,7 +321,7 @@ public class AssertionCredentialsManager {
             rs.close();
             s.close();
         } catch (Exception e) {
-            LOG.error(e.getMessage(), e);
+            logError(e.getMessage(), e);
             DorianInternalFault fault = new DorianInternalFault();
             fault.setFaultString("Unexpected error obtaining the Dorian IdP asserting credentials certificate.");
             FaultHelper helper = new FaultHelper(fault);
@@ -378,7 +376,7 @@ public class AssertionCredentialsManager {
             s.execute();
             s.close();
         } catch (Exception e) {
-            LOG.error(e.getMessage(), e);
+            logError(e.getMessage(), e);
             DorianInternalFault fault = new DorianInternalFault();
             fault.setFaultString("Unexpected error deleting the Dorian IdP asserting credentials.");
             FaultHelper helper = new FaultHelper(fault);
@@ -402,7 +400,7 @@ public class AssertionCredentialsManager {
                 }
                 this.dbBuilt = true;
             } catch (Exception e) {
-                LOG.error(e.getMessage(), e);
+                logError(e.getMessage(), e);
                 DorianInternalFault fault = new DorianInternalFault();
                 fault.setFaultString("Unexpected error creating the CA database");
                 FaultHelper helper = new FaultHelper(fault);
@@ -419,7 +417,7 @@ public class AssertionCredentialsManager {
         try {
             db.update("delete from " + CREDENTIALS_TABLE);
         } catch (Exception e) {
-            LOG.error(e.getMessage(), e);
+            logError(e.getMessage(), e);
             DorianInternalFault fault = new DorianInternalFault();
             fault.setFaultString("An unexpected database error occurred.");
             FaultHelper helper = new FaultHelper(fault);

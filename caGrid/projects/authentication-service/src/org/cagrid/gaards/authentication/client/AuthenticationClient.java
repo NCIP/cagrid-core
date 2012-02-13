@@ -148,7 +148,6 @@ public class AuthenticationClient {
                 throw new RemoteException(Utils.getExceptionMessage(e), e);
             }
         }
-
     }
 
 
@@ -188,7 +187,6 @@ public class AuthenticationClient {
                 }
             }
             return profiles;
-
         } catch (Exception e) {
             throw new ResourcePropertyRetrievalException("Unable to deserailize: " + e.getMessage(), e);
         }

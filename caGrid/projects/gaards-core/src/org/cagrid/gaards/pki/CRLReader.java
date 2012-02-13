@@ -1,7 +1,5 @@
 package org.cagrid.gaards.pki;
 
-import gov.nih.nci.cagrid.common.security.SecurityConstants;
-
 import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
@@ -24,7 +22,7 @@ public class CRLReader extends BufferedReader {
 
 
 	public CRLReader(Reader reader) {
-		this(reader, SecurityConstants.CERT_PROVIDER);
+		this(reader, "BC");
 	}
 
 

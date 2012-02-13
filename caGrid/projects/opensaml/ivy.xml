@@ -28,7 +28,7 @@
 
   <dependencies>
     <dependency rev="1.3" org="apache" name="commons-codec" conf="compile,default->*"/>
-    <dependency rev="3.0.+" org="apache" name="jarkarta-commons-httpclient" conf="compile,http->*"/>
+    <dependency rev="3.0" org="apache" name="jarkarta-commons-httpclient" conf="compile,http->*"/>
     <dependency rev="2.2" org="apache" name="tomcat-servlet" conf="compile,http->*"/>
 
     <dependency rev="2.7.1" org="apache" name="xerces2-j" conf="endorsed->*"/>

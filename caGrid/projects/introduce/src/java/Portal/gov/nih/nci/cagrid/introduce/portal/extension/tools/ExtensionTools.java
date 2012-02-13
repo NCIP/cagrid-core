@@ -47,8 +47,8 @@ public class ExtensionTools {
             extensionName);
         if ((extensionDesc != null) && (extensionDesc.getCreationUIDialog() != null)
             && !extensionDesc.getCreationUIDialog().equals("")) {
-            Class<?> c = Class.forName(extensionDesc.getCreationUIDialog());
-            Constructor<?> con = c.getConstructor(new Class[]{Frame.class, ServiceExtensionDescriptionType.class,
+            Class c = Class.forName(extensionDesc.getCreationUIDialog());
+            Constructor con = c.getConstructor(new Class[]{Frame.class, ServiceExtensionDescriptionType.class,
                     ServiceInformation.class});
             Object obj = con.newInstance(new Object[]{owner, extensionDesc, info});
             return (CreationExtensionUIDialog) obj;
@@ -63,8 +63,8 @@ public class ExtensionTools {
             extensionName);
         if ((extensionDesc != null) && (extensionDesc.getServiceModificationUIPanel() != null)
             && !extensionDesc.getServiceModificationUIPanel().equals("")) {
-            Class<?> c = Class.forName(extensionDesc.getServiceModificationUIPanel());
-            Constructor<?> con = c.getConstructor(new Class[]{ServiceExtensionDescriptionType.class,
+            Class c = Class.forName(extensionDesc.getServiceModificationUIPanel());
+            Constructor con = c.getConstructor(new Class[]{ServiceExtensionDescriptionType.class,
                     ServiceInformation.class});
             Object obj = con.newInstance(new Object[]{extensionDesc, info});
             return (ServiceModificationUIPanel) obj;
@@ -79,8 +79,8 @@ public class ExtensionTools {
             extensionName);
         if ((extensionDesc != null) && (extensionDesc.getServiceDeploymentUIPanel() != null)
             && !extensionDesc.getServiceDeploymentUIPanel().equals("")) {
-            Class<?> c = Class.forName(extensionDesc.getServiceDeploymentUIPanel());
-            Constructor<?> con = c.getConstructor(new Class[]{ServiceExtensionDescriptionType.class,
+            Class c = Class.forName(extensionDesc.getServiceDeploymentUIPanel());
+            Constructor con = c.getConstructor(new Class[]{ServiceExtensionDescriptionType.class,
                     ServiceInformation.class});
             Object obj = con.newInstance(new Object[]{extensionDesc, info});
             return (ServiceDeploymentUIPanel) obj;
@@ -95,8 +95,8 @@ public class ExtensionTools {
             extensionName);
         if ((extensionDesc != null) && (extensionDesc.getDeploymentUIPanel() != null)
             && !extensionDesc.getDeploymentUIPanel().equals("")) {
-            Class<?> c = Class.forName(extensionDesc.getDeploymentUIPanel());
-            Constructor<?> con = c.getConstructor(new Class[]{DeploymentExtensionDescriptionType.class,
+            Class c = Class.forName(extensionDesc.getDeploymentUIPanel());
+            Constructor con = c.getConstructor(new Class[]{DeploymentExtensionDescriptionType.class,
                     ServiceInformation.class});
             Object obj = con.newInstance(new Object[]{extensionDesc, info});
             return (DeploymentUIPanel) obj;
@@ -111,8 +111,8 @@ public class ExtensionTools {
             extensionName);
         if ((extensionDesc != null) && (extensionDesc.getServiceAuthorizationPanel() != null)
             && !extensionDesc.getServiceAuthorizationPanel().equals("")) {
-            Class<?> c = Class.forName(extensionDesc.getServiceAuthorizationPanel());
-            Constructor<?> con = c.getConstructor(new Class[]{AuthorizationExtensionDescriptionType.class,
+            Class c = Class.forName(extensionDesc.getServiceAuthorizationPanel());
+            Constructor con = c.getConstructor(new Class[]{AuthorizationExtensionDescriptionType.class,
                     ServiceInformation.class, ServiceType.class});
             Object obj = con.newInstance(new Object[]{extensionDesc, info, service});
             return (AbstractServiceAuthorizationPanel) obj;
@@ -127,8 +127,8 @@ public class ExtensionTools {
             extensionName);
         if ((extensionDesc != null) && (extensionDesc.getMethodAuthorizationPanel() != null)
             && !extensionDesc.getMethodAuthorizationPanel().equals("")) {
-            Class<?> c = Class.forName(extensionDesc.getMethodAuthorizationPanel());
-            Constructor<?> con = c.getConstructor(new Class[]{AuthorizationExtensionDescriptionType.class,
+            Class c = Class.forName(extensionDesc.getMethodAuthorizationPanel());
+            Constructor con = c.getConstructor(new Class[]{AuthorizationExtensionDescriptionType.class,
                     ServiceInformation.class, ServiceType.class, MethodType.class});
             Object obj = con.newInstance(new Object[]{extensionDesc, info, service, method});
             return (AbstractMethodAuthorizationPanel) obj;
@@ -143,8 +143,8 @@ public class ExtensionTools {
             .getResourcePropertyEditorExtension(extensionName);
         if ((extensionDesc != null) && (extensionDesc.getResourcePropertyEditorPanel() != null)
             && !extensionDesc.getResourcePropertyEditorPanel().equals("")) {
-            Class<?> c = Class.forName(extensionDesc.getResourcePropertyEditorPanel());
-            Constructor<?> con = c.getConstructor(new Class[]{ResourcePropertyType.class, String.class, File.class, File.class});
+            Class c = Class.forName(extensionDesc.getResourcePropertyEditorPanel());
+            Constructor con = c.getConstructor(new Class[]{ResourcePropertyType.class, String.class, File.class, File.class});
             Object obj = con.newInstance(new Object[]{prop, rpData, schemaFile, schemaDir});
 
             return (ResourcePropertyEditorPanel) obj;
@@ -158,8 +158,8 @@ public class ExtensionTools {
             extensionName);
         if ((extensionD != null) && (extensionD.getDiscoveryToolsPanelExtension() != null)
             && !extensionD.getDiscoveryToolsPanelExtension().equals("")) {
-            Class<?> c = Class.forName(extensionD.getDiscoveryToolsPanelExtension());
-            Constructor<?> con = c.getConstructor(new Class[]{DiscoveryExtensionDescriptionType.class});
+            Class c = Class.forName(extensionD.getDiscoveryToolsPanelExtension());
+            Constructor con = c.getConstructor(new Class[]{DiscoveryExtensionDescriptionType.class});
             Object obj = con.newInstance(new Object[]{extensionD});
             return (NamespaceTypeToolsComponent) obj;
         }
@@ -173,8 +173,8 @@ public class ExtensionTools {
             extensionName);
         if ((extensionD != null) && (extensionD.getDiscoveryPanelExtension() != null)
             && !extensionD.getDiscoveryPanelExtension().equals("")) {
-            Class<?> c = Class.forName(extensionD.getDiscoveryPanelExtension());
-            Constructor<?> con = c.getConstructor(new Class[]{DiscoveryExtensionDescriptionType.class,
+            Class c = Class.forName(extensionD.getDiscoveryPanelExtension());
+            Constructor con = c.getConstructor(new Class[]{DiscoveryExtensionDescriptionType.class,
                     NamespacesType.class});
             Object obj = con.newInstance(new Object[]{extensionD, currentNamespaces});
             return (NamespaceTypeDiscoveryComponent) obj;
@@ -217,10 +217,10 @@ public class ExtensionTools {
 
 
     public static ExtensionType removeAuthorizationServiceExtensios(ServiceInformation info) throws Exception {
-        List<ServiceExtensionDescriptionType> desc = ExtensionsLoader.getInstance().getServiceExtensions();
-        Map<String, ServiceExtensionDescriptionType> toBeRemoved = new HashMap<String, ServiceExtensionDescriptionType>();
+        List desc = ExtensionsLoader.getInstance().getServiceExtensions();
+        Map toBeRemoved = new HashMap();
         for (int i = 0; i < desc.size(); i++) {
-            ServiceExtensionDescriptionType sed = desc.get(i);
+            ServiceExtensionDescriptionType sed = (ServiceExtensionDescriptionType) desc.get(i);
             Properties props = sed.getProperties();
             if (props != null) {
                 PropertiesProperty[] pp = props.getProperty();
@@ -235,7 +235,7 @@ public class ExtensionTools {
                 }
             }
         }
-        List<ExtensionType> toBeSaved = new ArrayList<ExtensionType>();
+        List toBeSaved = new ArrayList();
         ExtensionsType list = info.getExtensions();
         if (list != null) {
             ExtensionType[] exts = list.getExtension();
@@ -249,7 +249,7 @@ public class ExtensionTools {
                 if (toBeSaved.size() > 0) {
                     ExtensionType[] newexts = new ExtensionType[toBeSaved.size()];
                     for (int i = 0; i < toBeSaved.size(); i++) {
-                        newexts[i] = toBeSaved.get(i);
+                        newexts[i] = (ExtensionType) toBeSaved.get(i);
                     }
                     list.setExtension(newexts);
                 } else {
@@ -326,8 +326,7 @@ public class ExtensionTools {
      * @throws Exception
      */
     public static void setSchemaElements(NamespaceType namespace, Document schemaContents) throws Exception {
-        @SuppressWarnings("rawtypes")
-		List elementTypes = schemaContents.getRootElement().getChildren("element",
+        List elementTypes = schemaContents.getRootElement().getChildren("element",
             schemaContents.getRootElement().getNamespace());
         SchemaElementType[] schemaTypes = new SchemaElementType[elementTypes.size()];
         for (int i = 0; i < elementTypes.size(); i++) {
@@ -343,7 +342,7 @@ public class ExtensionTools {
     public static ResourcePropertyEditorExtensionDescriptionType getResourcePropertyEditorExtensionDescriptor(
         javax.xml.namespace.QName qname) {
         ResourcePropertyEditorExtensionDescriptionType mde = null;
-        List<ResourcePropertyEditorExtensionDescriptionType> metadataExtensions = ExtensionsLoader.getInstance().getResourcePropertyEditorExtensions();
+        List metadataExtensions = ExtensionsLoader.getInstance().getResourcePropertyEditorExtensions();
         for (int i = 0; i < metadataExtensions.size(); i++) {
             ResourcePropertyEditorExtensionDescriptionType tmde = (ResourcePropertyEditorExtensionDescriptionType) metadataExtensions
                 .get(i);

@@ -6,8 +6,6 @@ import gov.nih.nci.cagrid.opensaml.SAMLAttributeStatement;
 
 import java.util.Iterator;
 
-import javax.naming.ldap.LdapName;
-
 import org.cagrid.gaards.dorian.ca.CertificateAuthority;
 import org.cagrid.gaards.dorian.ca.CertificateAuthorityProperties;
 import org.cagrid.gaards.dorian.federation.AutoApprovalPolicy;
@@ -29,11 +27,11 @@ import org.springframework.core.io.ClassPathResource;
 
 public class Utils {
 
-    public static LdapName CA_SUBJECT_PREFIX = null;
+    public static String CA_SUBJECT_PREFIX = null;
 
-//    public static String CA_SUBJECT_DN = null;
+    public static String CA_SUBJECT_DN = null;
 
-    public static LdapName CA_SUBJECT = null;
+    public static String CA_SUBJECT = null;
 
     private static Database db = null;
 
@@ -122,7 +120,7 @@ public class Utils {
     }
 
 
-    public static LdapName getCASubject() throws Exception {
+    public static String getCASubject() throws Exception {
         if (CA_SUBJECT == null) {
             return getCASubject(getCAProperties());
         }
@@ -130,10 +128,13 @@ public class Utils {
     }
 
 
-    public static LdapName getCASubject(CertificateAuthorityProperties conf) throws Exception {
+    public static String getCASubject(CertificateAuthorityProperties conf) throws Exception {
         if (CA_SUBJECT == null) {
-        	CA_SUBJECT = new LdapName(conf.getCreationPolicy().getSubject());
-            CA_SUBJECT_PREFIX = (LdapName) CA_SUBJECT.getPrefix(CA_SUBJECT.size() - 1);
+            CA_SUBJECT = conf.getCreationPolicy().getSubject();
+            int index = CA_SUBJECT.lastIndexOf(",");
+            CA_SUBJECT_PREFIX = CA_SUBJECT.substring(0, index);
+            index = CA_SUBJECT.indexOf("CN=");
+            CA_SUBJECT_DN = CA_SUBJECT.substring(index + 3);
         }
         return CA_SUBJECT;
     }
@@ -153,18 +154,16 @@ public class Utils {
 
 
     public static String getAttribute(SAMLAssertion saml, String namespace, String name) {
-        Iterator<?> itr = saml.getStatements();
+        Iterator itr = saml.getStatements();
         while (itr.hasNext()) {
             Object o = itr.next();
             if (o instanceof SAMLAttributeStatement) {
                 SAMLAttributeStatement att = (SAMLAttributeStatement) o;
-                @SuppressWarnings("unchecked")
-				Iterator<SAMLAttribute> attItr = att.getAttributes();
+                Iterator attItr = att.getAttributes();
                 while (attItr.hasNext()) {
-                    SAMLAttribute a = attItr.next();
+                    SAMLAttribute a = (SAMLAttribute) attItr.next();
                     if ((a.getNamespace().equals(namespace)) && (a.getName().equals(name))) {
-                        @SuppressWarnings("unchecked")
-						Iterator<String> vals = a.getValues();
+                        Iterator vals = a.getValues();
                         while (vals.hasNext()) {
                             String val = gov.nih.nci.cagrid.common.Utils.clean((String) vals.next());
                             if (val != null) {

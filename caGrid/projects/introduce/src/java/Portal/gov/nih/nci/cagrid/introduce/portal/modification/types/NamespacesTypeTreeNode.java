@@ -15,11 +15,6 @@ import javax.swing.tree.DefaultMutableTreeNode;
  */
 public class NamespacesTypeTreeNode extends DefaultMutableTreeNode {
 
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = -1816802376906503808L;
-
 	public NamespacesTypeTreeNode() {
 		super();
 		this.setUserObject("Data Types");

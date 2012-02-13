@@ -25,7 +25,7 @@
         <dependency rev="1.7.0" org="apache" name="commons-beanutils" conf="default->core"/>
         <!-- NOTE: could just use the beanutils with collections conf, but it is modeled for 3.1, and i2 needs 3.2 -->
         <dependency rev="3.2" org="apache" name="commons-collections" conf="default->*"/>
-        <dependency rev="1.2.+" org="apache" name="commons-dbcp" conf="default->*"/>
+        <dependency rev="1.2.1" org="apache" name="commons-dbcp" conf="default->*"/>
         <!-- NOTE: commented out because compatible versions come with globus (need to make a separate conf that includes these)
             <dependency rev="1.7" org="apache" name="commons-digester" conf="default->*"/>
             <dependency rev="1.1" org="apache" name="commons-logging" conf="default->*"/>

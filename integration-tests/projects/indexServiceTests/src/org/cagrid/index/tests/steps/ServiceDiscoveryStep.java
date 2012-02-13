@@ -52,8 +52,8 @@ public class ServiceDiscoveryStep extends Step {
         ServiceMetadata expectedMetadata = getExpectedServiceMetadata();
         
         DiscoveryClient client = new DiscoveryClient(this.indexServiceEndpoint);
-        assertEquals("Unable to locate the Test Service in the Index Service",this.shouldBeFound, foundService(client.getAllServices(false)));
-        assertEquals("Unable to locate the Test Service having the standard metadata in the Index Service", this.shouldBeFound, foundService(client.getAllServices(true)));
+        assertEquals(this.shouldBeFound, foundService(client.getAllServices(false)));
+        assertEquals(this.shouldBeFound, foundService(client.getAllServices(true)));
 
         // service
         assertEquals(this.shouldBeFound, foundService(client.discoverServicesByName(

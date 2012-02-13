@@ -60,7 +60,7 @@
 
 
     <!-- External Dependencies -->
-    <dependency rev="1.1" org="jdom" name="jdom" conf="common->*" />
+    <dependency rev="1.0" org="jdom" name="jdom" conf="common->*" />
     <dependency rev="1.3.2" org="apache" name="commons-io" conf="common->*" />
     <dependency rev="3.0.+" org="mysql" name="connector-java" conf="service->*" />
     <dependency rev="3.2.+" org="hibernate" name="hibernate" conf="service->default" />
@@ -68,15 +68,8 @@
     <dependency rev="3.3.1.GA" org="hibernate" name="hibernate-annotations"
       conf="service->default;annotations->minimal" />
     <!-- TODO: change to newer version? and don't use full -->
-    <dependency rev="3.0.+" org="springframework" name="spring" conf="service->spring-orm" />
-    <dependency rev="3.0.+" org="springframework" name="spring" conf="service->spring-aop" />
-    <dependency rev="3.0.+" org="springframework" name="spring" conf="service->spring-transaction" />
-    <dependency rev="3.0.+" org="springframework" name="spring" conf="impl-test->spring-test" />
-    <dependency rev="3.0.+" org="springframework" name="spring" conf="impl-test->spring-expression" />
-    <dependency rev="1.0" org="aopalliance" name="aopalliance" />
-    <dependency rev="1.2.+" org="apache" name="commons-dbcp" conf="service->default" />
-    <dependency rev="4.+" org="junit" name="junit" conf="impl-test->default" />
-    <dependency rev="145" org="bouncycastle" name="bcprov-jdk15" />
-    
+    <dependency rev="2.0.+" org="springframework" name="spring" conf="service->full;impl-test->mock" />
+    <dependency rev="1.2.2" org="apache" name="commons-dbcp" conf="service->default" />
+    <dependency rev="4.4" org="junit" name="junit" conf="impl-test->default" />
   </dependencies>
 </ivy-module>

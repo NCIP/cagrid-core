@@ -7,13 +7,7 @@ package org.cagrid.gaards.dorian.ca;
 
 public class InvalidPasswordFault extends org.oasis.wsrf.faults.BaseFaultType implements java.io.Serializable {
 
-    /**
-	 * 
-	 */
-	private static final long serialVersionUID = 1431540477537446463L;
-
-
-	public InvalidPasswordFault() {
+    public InvalidPasswordFault() {
     }
 
     private java.lang.Object __equalsCalc = null;
@@ -21,6 +15,9 @@ public class InvalidPasswordFault extends org.oasis.wsrf.faults.BaseFaultType im
 
     public synchronized boolean equals(java.lang.Object obj) {
         if (!(obj instanceof InvalidPasswordFault))
+            return false;
+        InvalidPasswordFault other = (InvalidPasswordFault) obj;
+        if (obj == null)
             return false;
         if (this == obj)
             return true;
@@ -69,7 +66,7 @@ public class InvalidPasswordFault extends org.oasis.wsrf.faults.BaseFaultType im
      * Get Custom Serializer
      */
     public static org.apache.axis.encoding.Serializer getSerializer(java.lang.String mechType,
-        java.lang.Class<?> _javaType, javax.xml.namespace.QName _xmlType) {
+        java.lang.Class _javaType, javax.xml.namespace.QName _xmlType) {
         return new org.apache.axis.encoding.ser.BeanSerializer(_javaType, _xmlType, typeDesc);
     }
 
@@ -78,7 +75,7 @@ public class InvalidPasswordFault extends org.oasis.wsrf.faults.BaseFaultType im
      * Get Custom Deserializer
      */
     public static org.apache.axis.encoding.Deserializer getDeserializer(java.lang.String mechType,
-        java.lang.Class<?> _javaType, javax.xml.namespace.QName _xmlType) {
+        java.lang.Class _javaType, javax.xml.namespace.QName _xmlType) {
         return new org.apache.axis.encoding.ser.BeanDeserializer(_javaType, _xmlType, typeDesc);
     }
 

@@ -51,7 +51,7 @@ public class EncodingUtil {
 
 
     public static X509CredentialDescriptor encode(GlobusCredential cred, X509CredentialDescriptor des) throws Exception {
-        des.setIdentity(CertUtil.getIdentity(cred));
+        des.setIdentity(cred.getIdentity());
         EncodedCertificates list = new EncodedCertificates();
         X509Certificate[] chain = cred.getCertificateChain();
         if (chain != null) {

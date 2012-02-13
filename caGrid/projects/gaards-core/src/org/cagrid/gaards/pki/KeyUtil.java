@@ -1,7 +1,5 @@
 package org.cagrid.gaards.pki;
 
-import gov.nih.nci.cagrid.common.security.SecurityConstants;
-
 import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
@@ -29,9 +27,9 @@ import org.globus.gsi.bc.BouncyCastleOpenSSLKey;
  */
 public class KeyUtil {
 
-    public static KeyPair generateRSAKeyPair2048() throws Exception {
+	public static KeyPair generateRSAKeyPair2048() throws Exception {
 		SecurityUtil.init();
-		return generateRSAKeyPair2048(SecurityConstants.CRYPTO_PROVIDER);
+		return generateRSAKeyPair2048("BC");
 	}
 
 	public static KeyPair generateRSAKeyPair2048(String provider)
@@ -41,7 +39,7 @@ public class KeyUtil {
 
 	public static KeyPair generateRSAKeyPair1024() throws Exception {
 		SecurityUtil.init();
-		return generateRSAKeyPair1024(SecurityConstants.CRYPTO_PROVIDER);
+		return generateRSAKeyPair1024("BC");
 	}
 
 	public static KeyPair generateRSAKeyPair1024(String provider)
@@ -51,7 +49,7 @@ public class KeyUtil {
 
 	public static KeyPair generateRSAKeyPair512() throws Exception {
 		SecurityUtil.init();
-		return generateRSAKeyPair512(SecurityConstants.CRYPTO_PROVIDER);
+		return generateRSAKeyPair512("BC");
 	}
 
 	public static KeyPair generateRSAKeyPair512(String provider)
@@ -61,7 +59,7 @@ public class KeyUtil {
 
 	public static KeyPair generateRSAKeyPair(int size) throws Exception {
 		SecurityUtil.init();
-		return generateRSAKeyPair(SecurityConstants.CRYPTO_PROVIDER, size);
+		return generateRSAKeyPair("BC", size);
 	}
 
 	public static KeyPair generateRSAKeyPair(String provider, int size)
@@ -122,8 +120,6 @@ public class KeyUtil {
 
 	public static PrivateKey loadPrivateKey(InputStream in, String password)
 			throws IOException, GeneralSecurityException {
-	    // FIXME: all this does is add the BC provider if it's not already there
-	    SecurityUtil.init();
 		OpenSSLKey key = new BouncyCastleOpenSSLKey(in);
 		if (key.isEncrypted()) {
 			key.decrypt(password);
@@ -134,7 +130,7 @@ public class KeyUtil {
 	public static PublicKey loadPublicKey(String key) throws IOException,
 			GeneralSecurityException {
 		SecurityUtil.init();
-		return loadPublicKey(SecurityConstants.CRYPTO_PROVIDER, key);
+		return loadPublicKey("BC", key);
 	}
 
 	public static PublicKey loadPublicKey(String provider, String key)
@@ -149,7 +145,7 @@ public class KeyUtil {
 	public static PublicKey loadPublicKey(File location) throws IOException,
 			GeneralSecurityException {
 		SecurityUtil.init();
-		return loadPublicKey(SecurityConstants.CRYPTO_PROVIDER, location);
+		return loadPublicKey("BC", location);
 	}
 
 	public static PublicKey loadPublicKey(String provider, File location)

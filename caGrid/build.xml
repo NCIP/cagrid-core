@@ -27,11 +27,14 @@
 
 	<property name="javadoc.out.dir" value="javadoc"/>
 
-	<condition property="isJDK1.6" value="true">
-		<equals arg1="${ant.java.version}" arg2="1.6" />
+	<condition property="isJDK1.5" value="true">
+		<or>
+			<equals arg1="${ant.java.version}" arg2="1.5" />
+			<equals arg1="${ant.java.version}" arg2="1.6" />
+		</or>
 	</condition>
-	<!-- Require Java 1.6-->
-	<fail message="JDK 1.6 is currently required to build this project!" unless="isJDK1.6" />
+	<!-- Require Java 1.5 or 1.6-->
+	<fail message="JDK 1.5 (or 1.6) is currently required to build this project!" unless="isJDK1.5" />
 
 	<!-- IMPORT THE UTILITIES TARGETS -->
 	<import file="${antfiles.dir}/target-grid.xml" />

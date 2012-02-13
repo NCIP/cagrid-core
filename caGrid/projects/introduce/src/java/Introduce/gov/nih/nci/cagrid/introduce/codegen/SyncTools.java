@@ -99,15 +99,15 @@ public class SyncTools {
 
         ServiceInformation info;
 
-        Set<String> excludedSet;
+        Set excludedSet;
 
-        List<SymbolTable> symbolTables;
+        List symbolTables;
 
 
-        public MultiServiceSymbolTable(ServiceInformation info, Set<String> excludedSet) throws Exception {
+        public MultiServiceSymbolTable(ServiceInformation info, Set excludedSet) throws Exception {
             this.info = info;
             this.excludedSet = excludedSet;
-            this.symbolTables = new ArrayList<SymbolTable>();
+            this.symbolTables = new ArrayList();
         }
 
 
@@ -171,7 +171,7 @@ public class SyncTools {
                     // parser.setAllWanted(true);
                     parser.setImports(true);
 
-                    List<String> excludeList = new ArrayList<String>();
+                    List excludeList = new ArrayList();
                     // one hammer(List), one solution
                     excludeList.addAll(this.excludedSet);
                     parser.setNamespaceExcludes(excludeList);
@@ -316,17 +316,17 @@ public class SyncTools {
         // STEP 3: generate a set of namespaces to not make classes/stubs for as
         // the user specified them explicitly, then save them to the build
         // properties
-        Set<String> excludeSet = generateNamespaceExcludesSet(info);
+        Set excludeSet = generateNamespaceExcludesSet(info);
         String excludeLine = "";
-        for (Iterator<String> iter = excludeSet.iterator(); iter.hasNext();) {
+        for (Iterator iter = excludeSet.iterator(); iter.hasNext();) {
             String namespace = (String) iter.next();
             excludeLine += " -x " + namespace;
         }
         info.getIntroduceServiceProperties().setProperty(IntroduceConstants.INTRODUCE_NS_EXCLUDES, excludeLine);
 
-        Set<String> excludeSOAPStubSet = generateSOAPStubExcludesSet(info);
+        Set excludeSOAPStubSet = generateSOAPStubExcludesSet(info);
         String soapBindingExcludeLine = " ";
-        for (Iterator<String> iter = excludeSOAPStubSet.iterator(); iter.hasNext();) {
+        for (Iterator iter = excludeSOAPStubSet.iterator(); iter.hasNext();) {
             String namespace = (String) iter.next();
             soapBindingExcludeLine += namespace;
             if (iter.hasNext()) {
@@ -439,7 +439,7 @@ public class SyncTools {
 
     private void generateDeploymentValidatorList(ServiceInformation info) throws Exception {
         DeploymentValidatorDescriptor desc = new DeploymentValidatorDescriptor();
-        List<ValidatorDescriptor> descs = new ArrayList<ValidatorDescriptor>();
+        List descs = new ArrayList();
         if (info.getExtensions() != null && info.getExtensions().getExtension() != null) {
             for (int i = 0; i < info.getExtensions().getExtension().length; i++) {
                 ExtensionType ext = info.getExtensions().getExtension(i);
@@ -819,7 +819,7 @@ public class SyncTools {
 
 
     private void createNewServices(ServiceInformation info) {
-        List<ServiceType> newServices = new ArrayList<ServiceType>();
+        List newServices = new ArrayList();
         if ((info.getServices() != null) && (info.getServices().getService() != null)) {
             for (int serviceI = 0; serviceI < info.getServices().getService().length; serviceI++) {
                 File serviceDir = new File(info.getBaseDirectory() + File.separator + "src" + File.separator
@@ -882,7 +882,7 @@ public class SyncTools {
                 resourceLinkEl.setAttribute("name", CommonTools.lowerCaseFirstCharacter(newService.getName()) + "Home");
                 resourceLinkEl.setAttribute("target", "java:comp/env/services/SERVICE-INSTANCE-PREFIX/"
                     + newService.getName() + "/home");
-                List<?> children = serverConfigJNDIDoc.getRootElement().getChildren();
+                List children = serverConfigJNDIDoc.getRootElement().getChildren();
                 for (int childI = 0; childI < children.size(); childI++) {
                     org.jdom.Element child = (org.jdom.Element) children.get(childI);
                     if (child.getName().equals("service")) {
@@ -941,10 +941,10 @@ public class SyncTools {
      * @param info
      * @throws MalformedNamespaceException
      */
-    private Set<String> generateNamespaceExcludesSet(ServiceInformation info) throws Exception {
-        Set<String> excludeSet = new HashSet<String>();
-//        File schemaDir = new File(this.baseDirectory.getAbsolutePath() + File.separator + "schema" + File.separator
-//            + info.getIntroduceServiceProperties().getProperty(IntroduceConstants.INTRODUCE_SKELETON_SERVICE_NAME));
+    private Set generateNamespaceExcludesSet(ServiceInformation info) throws Exception {
+        Set excludeSet = new HashSet();
+        File schemaDir = new File(this.baseDirectory.getAbsolutePath() + File.separator + "schema" + File.separator
+            + info.getIntroduceServiceProperties().getProperty(IntroduceConstants.INTRODUCE_SKELETON_SERVICE_NAME));
         // exclude namespaces that have FQN for metadata class
         // get the classnames from the axis symbol table
         if ((info.getNamespaces() != null) && (info.getNamespaces().getNamespace() != null)) {
@@ -980,8 +980,8 @@ public class SyncTools {
     }
 
 
-    private Set<String> generateSOAPStubExcludesSet(ServiceInformation info) throws Exception {
-        Set<String> excludeSet = new HashSet<String>();
+    private Set generateSOAPStubExcludesSet(ServiceInformation info) throws Exception {
+        Set excludeSet = new HashSet();
         File schemaDir = new File(this.baseDirectory.getAbsolutePath() + File.separator + "schema" + File.separator
             + info.getIntroduceServiceProperties().getProperty(IntroduceConstants.INTRODUCE_SKELETON_SERVICE_NAME));
         // exclude namespaces that have FQN for metadata class
@@ -1000,7 +1000,7 @@ public class SyncTools {
 
                                 excludeSet.add(ntype.getNamespace());
                                 SyncUtils.walkSchemasGetNamespaces(schemaDir + File.separator + ntype.getLocation(),
-                                    excludeSet, new HashSet<String>(), new HashSet<String>());
+                                    excludeSet, new HashSet(), new HashSet());
                                 // this schema is excluded.. no need to check
                                 // the rest of the schema elements
                                 break;
@@ -1159,7 +1159,7 @@ public class SyncTools {
         boolean exceptionExists = false;
         Document doc = XMLUtilities.fileNameToDocument(schemaFile.getAbsolutePath());
 
-        List<?> children = doc.getRootElement().getChildren();
+        List children = doc.getRootElement().getChildren();
         for (int i = 0; i < children.size(); i++) {
             org.jdom.Element el = (org.jdom.Element) children.get(i);
             if (el.getAttributeValue("name") != null && el.getAttributeValue("name").equals(exceptionName)) {

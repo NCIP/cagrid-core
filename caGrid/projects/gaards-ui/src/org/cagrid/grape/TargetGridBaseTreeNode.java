@@ -9,11 +9,7 @@ import org.cagrid.grape.model.ConfigurationGroup;
 
 class TargetGridBaseTreeNode extends ConfigurationBaseTreeNode {
 
-	/**
-     * 
-     */
-    private static final long serialVersionUID = 6873540682048124562L;
-    private Grid grid = null;
+	private Grid grid = null;
 
 	public TargetGridBaseTreeNode(ConfigurationWindow window,
 			ConfigurationTree tree, Grid grid) {

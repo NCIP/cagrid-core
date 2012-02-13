@@ -79,7 +79,7 @@ public class InstallCert {
         System.out.println();
         System.out.println("Server sent " + chain.length + " certificate(s):");
         System.out.println();
-        MessageDigest sha1 = MessageDigest.getInstance("SHA256");
+        MessageDigest sha1 = MessageDigest.getInstance("SHA1");
         MessageDigest md5 = MessageDigest.getInstance("MD5");
         for (int i = 0; i < chain.length; i++) {
             X509Certificate cert = chain[i];

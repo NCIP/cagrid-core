@@ -71,7 +71,7 @@ public final class Util {
   public static byte[] generateSourceId( String s ) 
                                   throws NoSuchAlgorithmException {
     if ( messageDigest == null ) { 
-      messageDigest = MessageDigest.getInstance( "SHA-256" ); 
+      messageDigest = MessageDigest.getInstance( "SHA-1" ); 
     }
     return generateSourceId( messageDigest, s );
   }

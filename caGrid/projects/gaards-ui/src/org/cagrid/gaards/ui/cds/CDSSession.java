@@ -5,7 +5,6 @@ import org.cagrid.gaards.cds.client.DelegationUserClient;
 import org.globus.gsi.GlobusCredential;
 
 
-@SuppressWarnings("deprecation")
 public class CDSSession {
 
     private CDSHandle cds;

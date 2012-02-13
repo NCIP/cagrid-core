@@ -2,12 +2,9 @@ package org.cagrid.transfer.system.test.client;
 
 import java.io.ByteArrayInputStream;
 import java.io.File;
-import java.io.FilenameFilter;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.rmi.RemoteException;
-import java.util.Arrays;
-import java.util.Comparator;
 
 import javax.xml.namespace.QName;
 
@@ -73,12 +70,9 @@ public class TransferSystemTestClient extends TransferSystemTestClientBase imple
         try {
             if (!(args.length < 2)) {
                 if (args[0].equals("-url")) {
-                    File x509Dir = getX509CertDir(new File("../tmp"));
-
-                    org.globus.common.CoGProperties properties = org.globus.common.CoGProperties.getDefault();
-                    System.out.println("X509: " + x509Dir.getCanonicalPath());
-                    properties.setCaCertLocations(x509Dir.getCanonicalPath());            		
-                    org.globus.common.CoGProperties.setDefault(properties);
+                	org.globus.common.CoGProperties properties = org.globus.common.CoGProperties.getDefault();
+            		properties.setCaCertLocations(".");
+            		org.globus.common.CoGProperties.setDefault(properties);
                 	
                     GlobusCredential creds = null;
                     GlobusCredential anothercreds = null;
@@ -195,24 +189,5 @@ public class TransferSystemTestClient extends TransferSystemTestClientBase imple
             return boxedResult.getTransferServiceContextReference();
         }
     }
-
-	private static File getX509CertDir(File baseDir) {
-		FilenameFilter filter = new FilenameFilter() {
-			public boolean accept(File dir, String name) {
-				return name.startsWith("SecureTomcat");
-			}
-		};
-
-		File[] secureTomcatDirs = baseDir.listFiles(filter);
-		if (secureTomcatDirs == null || secureTomcatDirs.length == 0) return baseDir;
-		Arrays.sort(secureTomcatDirs, new Comparator<File>() {
-			public int compare(File f1, File f2) {
-				return Long.valueOf(f2.lastModified()).compareTo(f1.lastModified());
-			}
-		});
-		
-		return new File(secureTomcatDirs[0], "certificates" + File.separator + "ca");
-		
-	}
 
 }

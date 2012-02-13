@@ -19,10 +19,8 @@ public class ConfigureExampleProjectStep extends Step {
     // csm codegen properties
     public static final String ENABLE_SECURITY = "ENABLE_SECURITY";
     public static final String ENABLE_SECURITY_VALUE = "true";
-    public static final String DISENABLE_SECURITY_VALUE = "false";
     public static final String ENABLE_INSTANCE_LEVEL_SECURITY = "ENABLE_INSTANCE_LEVEL_SECURITY";
     public static final String ENABLE_INSTANCE_LEVEL_SECURITY_VALUE = "true";
-    public static final String DISENABLE_INSTANCE_LEVEL_SECURITY_VALUE = "false";
     
     // install properties
     public static final String APPLICATION_BASE_PATH_LINUX = "application.base.path.linux";
@@ -67,9 +65,6 @@ public class ConfigureExampleProjectStep extends Step {
             if (enableCsm) {
                 codegenProps.setProperty(ENABLE_SECURITY, ENABLE_SECURITY_VALUE);
                 codegenProps.setProperty(ENABLE_INSTANCE_LEVEL_SECURITY, ENABLE_INSTANCE_LEVEL_SECURITY_VALUE);
-            } else {
-                codegenProps.setProperty(ENABLE_SECURITY, DISENABLE_SECURITY_VALUE);
-                codegenProps.setProperty(ENABLE_INSTANCE_LEVEL_SECURITY, DISENABLE_INSTANCE_LEVEL_SECURITY_VALUE);            	
             }
             FileOutputStream codegenOut = new FileOutputStream(ExampleProjectInfo.getCodegenPropertiesFile());
             codegenProps.store(codegenOut);

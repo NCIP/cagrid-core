@@ -1,6 +1,5 @@
 package org.cagrid.gaards.ui.common;
 
-import java.io.Serializable;
 import java.security.cert.X509Certificate;
 import java.util.Vector;
 
@@ -55,9 +54,9 @@ public class CertificateTable extends GrapeBaseTable {
 
 
 	public void addCertificate(final X509Certificate cert) {
-		Vector<Serializable> v = new Vector<Serializable>();
+		Vector v = new Vector();
 		v.add(cert);
-		v.add(cert.getSubjectX500Principal().getName());
+		v.add(cert.getSubjectDN().getName());
 		v.add(cert.getNotAfter());
 		addRow(v);
 	}

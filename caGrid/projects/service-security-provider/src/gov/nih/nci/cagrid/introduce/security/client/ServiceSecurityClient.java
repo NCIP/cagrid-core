@@ -23,7 +23,6 @@ import org.apache.axis.message.addressing.EndpointReferenceType;
 import org.apache.axis.types.URI.MalformedURIException;
 import org.apache.axis.utils.ClassUtils;
 import org.globus.gsi.GlobusCredential;
-import org.globus.gsi.X509Credential;
 import org.globus.wsrf.impl.security.authorization.Authorization;
 import org.globus.wsrf.impl.security.authorization.NoAuthorization;
 
@@ -304,7 +303,7 @@ public class ServiceSecurityClient implements ServiceSecurityI {
 			stub._setProperty(org.globus.wsrf.security.Constants.GSI_ANONYMOUS, Boolean.TRUE);
 		} else if ((credentialsAllowed) && (proxy != null)) {
 			try {
-				org.ietf.jgss.GSSCredential gss = new org.globus.gsi.gssapi.GlobusGSSCredentialImpl(new X509Credential(proxy.getPrivateKey(),proxy.getCertificateChain()),
+				org.ietf.jgss.GSSCredential gss = new org.globus.gsi.gssapi.GlobusGSSCredentialImpl(proxy,
 					org.ietf.jgss.GSSCredential.INITIATE_AND_ACCEPT);
 				stub._setProperty(org.globus.axis.gsi.GSIConstants.GSI_CREDENTIALS, gss);
 			} catch (org.ietf.jgss.GSSException ex) {

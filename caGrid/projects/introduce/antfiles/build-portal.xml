@@ -73,7 +73,10 @@
 				<include name="axis-url.jar" />
 				<include name="axis.jar" />
 				<include name="bootstrap.jar" />
-				<include name="cog-*.jar" />
+				<include name="cog-axis.jar" />
+				<include name="cog-jglobus.jar" />
+				<include name="cog-tomcat.jar" />
+				<include name="cog-url.jar" />
 				<include name="commonj.jar" />
 				<include name="commons-beanutils.jar" />
 				<include name="commons-cli-2.0.jar" />
@@ -82,6 +85,9 @@
 				<include name="commons-discovery.jar" />
 				<include name="commons-logging.jar" />
 				<include name="concurrent.jar" />
+				<include name="cryptix-asn1.jar" />
+				<include name="cryptix.jar" />
+				<include name="cryptix32.jar" />
 				<include name="globus_resolution_service.jar" />
 				<include name="globus_resolution_stubs_java.jar" />
 				<include name="globus_resolution_test.jar" />
@@ -92,7 +98,7 @@
 				<include name="globus_usage_packets_common.jar" />
 				<include name="globus_wsrf_tools_test.jar" />
 				<include name="jaxrpc.jar" />
-				<include name="jce-jdk13-145.jar" />
+				<include name="jce-jdk13-125.jar" />
 				<include name="jgss.jar" />
 				<include name="junit.jar" />
 				<include name="log4j-1.2.8.jar" />
@@ -101,6 +107,7 @@
 				<include name="naming-java.jar" />
 				<include name="naming-resources.jar" />
 				<include name="opensaml.jar" />
+				<include name="puretls.jar" />
 				<include name="resolver.jar" />
 				<include name="saaj.jar" />
 				<include name="servlet.jar" />
@@ -163,6 +170,7 @@
 				<include name="commonj.jar" />
 				<include name="commons-*.jar" />
 				<include name="concurrent.jar" />
+				<include name="cryptix*.jar" />
 				<include name="globus_*.jar" />
 				<include name="jaxrpc.jar" />
 				<include name="jce-*.jar" />
@@ -174,6 +182,7 @@
 				<include name="naming-java.jar" />
 				<include name="naming-resources.jar" />
 				<include name="opensaml.jar" />
+				<include name="puretls.jar" />
 				<include name="resolver.jar" />
 				<include name="saaj.jar" />
 				<include name="servlet.jar" />

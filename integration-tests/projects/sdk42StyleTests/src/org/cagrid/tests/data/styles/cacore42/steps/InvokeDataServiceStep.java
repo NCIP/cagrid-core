@@ -16,7 +16,6 @@ import java.io.File;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.lang.reflect.Method;
-import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -29,7 +28,6 @@ import org.apache.axis.types.URI.MalformedURIException;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.cagrid.data.test.creation.DataTestCaseInfo;
-import org.globus.common.CoGProperties;
 import org.globus.gsi.GlobusCredential;
 import org.oasis.wsrf.faults.BaseFaultType;
 
@@ -59,7 +57,7 @@ public class InvokeDataServiceStep extends Step {
     }
 
     
-    public void runStep() throws Throwable {
+    public void runStep() throws Throwable {        
         // valid queries
         testUndergraduateStudentWithName();
         testAllPayments();
@@ -335,7 +333,6 @@ public class InvokeDataServiceStep extends Step {
         DataServiceClient client = null;
         try {
             if (container instanceof SecureContainer) {
-            	configureCaDirectory();
                 client = new DataServiceClient(getServiceUrl(), loadGlobusCredential());
                 client.setAnonymousPrefered(false);
             } else {
@@ -550,7 +547,7 @@ public class InvokeDataServiceStep extends Step {
         return proxyCredential;
     }
     
-        
+    
     protected boolean isJava6() {
         boolean is6 = false;
         String val = System.getProperty("java.version");
@@ -579,21 +576,4 @@ public class InvokeDataServiceStep extends Step {
         }
         return false;
     }
-    
-    
-    private void configureCaDirectory() throws RemoteException {
-        File caCertsDir = null;
-        try {
-            File certsDir = ((SecureContainer) container).getCertificatesDirectory();
-            caCertsDir = new File(certsDir, "ca");
-        } catch (Exception ex) {
-            throw new RemoteException("Error obtaining CA certificates directory from service container: " + ex.getMessage(), ex);
-        }
-        org.globus.common.CoGProperties properties = org.globus.common.CoGProperties.getDefault();
-        System.out.println("CERTS DIRECTORY IS SET TO: " + properties.getCaCertLocations());
-        properties.setCaCertLocations(caCertsDir.getAbsolutePath());
-        org.globus.common.CoGProperties.setDefault(properties);
-        System.out.println("SET CERTS DIRECTORY TO " + caCertsDir.getAbsolutePath());
-    }
-
 }

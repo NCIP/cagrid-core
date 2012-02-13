@@ -19,108 +19,104 @@ import org.globus.gsi.GlobusCredential;
 import org.globus.wsrf.ResourceException;
 import org.oasis.wsrf.lifetime.Destroy;
 
-
-/**
- * DelegatedCredentialUserClient
- * A custom client implementation to automate some of the tasks
- * of dealing with a delegated credential reference
- */
 public class DelegatedCredentialUserClient {
 
-    private org.cagrid.gaards.cds.delegated.client.DelegatedCredentialClient client;
+	private org.cagrid.gaards.cds.delegated.client.DelegatedCredentialClient client;
 
+	public DelegatedCredentialUserClient(EndpointReferenceType ref)
+			throws Exception {
+		this(ref, null);
+	}
 
-    public DelegatedCredentialUserClient(EndpointReferenceType ref) throws Exception {
-        this(ref, null);
-    }
+	public DelegatedCredentialUserClient(DelegatedCredentialReference ref)
+			throws Exception {
+		this(ref.getEndpointReference(), null);
+	}
 
+	public DelegatedCredentialUserClient(DelegatedCredentialReference ref,
+			GlobusCredential cred) throws Exception {
+		this(ref.getEndpointReference(), cred);
+	}
 
-    public DelegatedCredentialUserClient(DelegatedCredentialReference ref) throws Exception {
-        this(ref.getEndpointReference(), null);
-    }
+	public DelegatedCredentialUserClient(EndpointReferenceType ref,
+			GlobusCredential cred) throws Exception {
+		client = new org.cagrid.gaards.cds.delegated.client.DelegatedCredentialClient(
+				ref, cred);
+	}
 
+	/**
+	 * This method suspends this credential, no further credentials will be
+	 * issued or delegated.
+	 * 
+	 * @throws RemoteException
+	 * @throws ResourceException
+	 */
+	public void suspend() throws RemoteException, ResourceException {
+		client.destroy(new Destroy());
+	}
 
-    public DelegatedCredentialUserClient(DelegatedCredentialReference ref, GlobusCredential cred) throws Exception {
-        this(ref.getEndpointReference(), cred);
-    }
+	/**
+	 * This method allow an authorized user to obtain a delegated credential
+	 * 
+	 * @return The delegated credential.
+	 * @throws RemoteException
+	 * @throws CDSInternalFault
+	 * @throws DelegationFault
+	 * @throws PermissionDeniedFault
+	 */
 
+	public GlobusCredential getDelegatedCredential() throws RemoteException,
+			CDSInternalFault, DelegationFault, PermissionDeniedFault {
+		return getDelegatedCredential(ClientConstants.DEFAULT_KEY_SIZE);
+	}
 
-    public DelegatedCredentialUserClient(EndpointReferenceType ref, GlobusCredential cred) throws Exception {
-        client = new org.cagrid.gaards.cds.delegated.client.DelegatedCredentialClient(ref, cred);
-    }
+	/**
+	 * This method allow an authorized user to obtain a delegated credential
+	 * 
+	 * @param keySize
+	 *            The size (bits) of the delegated credential's private key.
+	 * @return The delegated credential.
+	 * @throws RemoteException
+	 * @throws CDSInternalFault
+	 * @throws DelegationFault
+	 * @throws PermissionDeniedFault
+	 */
 
+	public GlobusCredential getDelegatedCredential(int keySize)
+			throws RemoteException, CDSInternalFault, DelegationFault,
+			PermissionDeniedFault {
+		KeyPair pair = null;
+		PublicKey publicKey = new PublicKey();
+		try {
+			pair = KeyUtil.generateRSAKeyPair(keySize);
+			publicKey.setKeyAsString(KeyUtil.writePublicKey(pair.getPublic()));
+		} catch (Exception e) {
+			DelegationFault f = new DelegationFault();
+			f
+					.setFaultString("An unexpected error occurred in generating the local key pair: "
+							+ e.getMessage() + ".");
+			FaultHelper helper = new FaultHelper(f);
+			helper.addFaultCause(e);
+			f = (DelegationFault) helper.getFault();
+			throw f;
+		}
+		CertificateChain chain = client.getDelegatedCredential(publicKey);
+		X509Certificate[] certs = null;
 
-    /**
-     * This method suspends this credential, no further credentials will be
-     * issued or delegated.
-     * 
-     * @throws RemoteException
-     * @throws ResourceException
-     */
-    public void suspend() throws RemoteException, ResourceException {
-        client.destroy(new Destroy());
-    }
+		try {
+			certs = Utils.toCertificateArray(chain);
+		} catch (Exception e) {
+			DelegationFault f = new DelegationFault();
+			f
+					.setFaultString("An unexpected error occurred in unmarshalling the signed certificate chain: "
+							+ e.getMessage() + ".");
+			FaultHelper helper = new FaultHelper(f);
+			helper.addFaultCause(e);
+			f = (DelegationFault) helper.getFault();
+			throw f;
 
-
-    /**
-     * This method allow an authorized user to obtain a delegated credential
-     * 
-     * @return The delegated credential.
-     * @throws RemoteException
-     * @throws CDSInternalFault
-     * @throws DelegationFault
-     * @throws PermissionDeniedFault
-     */
-
-    public GlobusCredential getDelegatedCredential() throws RemoteException, CDSInternalFault, DelegationFault,
-        PermissionDeniedFault {
-        return getDelegatedCredential(ClientConstants.DEFAULT_KEY_SIZE);
-    }
-
-
-    /**
-     * This method allow an authorized user to obtain a delegated credential
-     * 
-     * @param keySize
-     *            The size (bits) of the delegated credential's private key.
-     * @return The delegated credential.
-     * @throws RemoteException
-     * @throws CDSInternalFault
-     * @throws DelegationFault
-     * @throws PermissionDeniedFault
-     */
-
-    public GlobusCredential getDelegatedCredential(int keySize) throws RemoteException, CDSInternalFault,
-        DelegationFault, PermissionDeniedFault {
-        KeyPair pair = null;
-        PublicKey publicKey = new PublicKey();
-        try {
-            pair = KeyUtil.generateRSAKeyPair(keySize);
-            publicKey.setKeyAsString(KeyUtil.writePublicKey(pair.getPublic()));
-        } catch (Exception e) {
-            DelegationFault f = new DelegationFault();
-            f.setFaultString("An unexpected error occurred in generating the local key pair: " + e.getMessage() + ".");
-            FaultHelper helper = new FaultHelper(f);
-            helper.addFaultCause(e);
-            f = (DelegationFault) helper.getFault();
-            throw f;
-        }
-        CertificateChain chain = client.getDelegatedCredential(publicKey);
-        X509Certificate[] certs = null;
-
-        try {
-            certs = Utils.toCertificateArray(chain);
-        } catch (Exception e) {
-            DelegationFault f = new DelegationFault();
-            f.setFaultString("An unexpected error occurred in unmarshalling the signed certificate chain: "
-                + e.getMessage() + ".");
-            FaultHelper helper = new FaultHelper(f);
-            helper.addFaultCause(e);
-            f = (DelegationFault) helper.getFault();
-            throw f;
-
-        }
-        GlobusCredential proxy = new GlobusCredential(pair.getPrivate(), certs);
-        return proxy;
-    }
+		}
+		GlobusCredential proxy = new GlobusCredential(pair.getPrivate(), certs);
+		return proxy;
+	}
 }

@@ -29,6 +29,6 @@
 		<dependency rev="3.0" org="apache" name="jarkarta-commons-httpclient-contrib"/>
 		<dependency rev="1.1" org="apache" name="commons-logging"/>
 		
-		<dependency rev="3.0.1.RELEASE-A" org="springframework" name="spring" conf="default->default"/>
+		<dependency rev="2.5.5" org="springframework" name="spring" conf="default->full"/>
 	</dependencies>
 </ivy-module>

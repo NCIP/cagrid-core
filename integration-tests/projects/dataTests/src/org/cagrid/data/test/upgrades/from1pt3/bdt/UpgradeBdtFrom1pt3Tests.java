@@ -12,9 +12,7 @@ import gov.nih.nci.cagrid.testing.system.deployment.steps.UnpackContainerStep;
 import gov.nih.nci.cagrid.testing.system.haste.Step;
 
 import java.io.IOException;
-import java.util.Arrays;
 import java.util.Collections;
-import java.util.List;
 import java.util.Vector;
 
 import junit.framework.TestResult;
@@ -82,7 +80,7 @@ public class UpgradeBdtFrom1pt3Tests extends BaseSystemTest {
             }
         };
         try {
-            this.container = ServiceContainerFactory.createContainer(ServiceContainerType.TOMCAT_CONTAINER);
+            this.container = ServiceContainerFactory.createContainer(ServiceContainerType.GLOBUS_CONTAINER);
         } catch (IOException ex) {
             ex.printStackTrace();
             fail("Error creating service container: " + ex.getMessage());
@@ -102,9 +100,7 @@ public class UpgradeBdtFrom1pt3Tests extends BaseSystemTest {
 		steps.add(new SetIndexRegistrationStep(testServiceInfo.getDir(), false));
 		// deploy the service, check out the CQL 2 related operations and metadata
         steps.add(new UnpackContainerStep(container));
-		List<String> args = Arrays.asList(new String[] {
-	            "-Dno.deployment.validation=true", "-Dperform.index.service.registration=false"});
-        steps.add(new DeployServiceStep(container, testServiceInfo.getDir(), args));
+        steps.add(new DeployServiceStep(container, testServiceInfo.getDir(), Collections.singletonList("-Dno.deployment.validation=true")));
         steps.add(new StartContainerStep(container));
         steps.add(new VerifyOperationsStep(container, testServiceInfo.getName(),
             false, false, false));

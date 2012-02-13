@@ -29,7 +29,6 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 
-import javax.xml.bind.annotation.adapters.HexBinaryAdapter;
 import javax.xml.namespace.QName;
 
 import org.apache.axis.AxisEngine;
@@ -581,13 +580,6 @@ public class Utils {
             relPath.append(destination.getName());
         }
         return relPath.toString();
-    }
-    
-    
-    public static String bytesToHex(byte[] arr) {
-        HexBinaryAdapter adapter = new HexBinaryAdapter();
-        String hex = adapter.marshal(arr);
-        return hex;
     }
 
 

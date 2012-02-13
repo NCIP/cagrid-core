@@ -9,31 +9,23 @@ import gov.nih.nci.cagrid.opensaml.SAMLAttributeStatement;
 import gov.nih.nci.cagrid.opensaml.SAMLAuthenticationStatement;
 import gov.nih.nci.cagrid.opensaml.SAMLNameIdentifier;
 import gov.nih.nci.cagrid.opensaml.SAMLSubject;
-import gov.nih.nci.cagrid.opensaml.SAMLSubjectStatement;
 
-import java.io.File;
 import java.math.BigInteger;
 import java.security.KeyPair;
 import java.security.PrivateKey;
 import java.security.PublicKey;
 import java.security.cert.X509CRL;
-import java.security.cert.X509CRLEntry;
 import java.security.cert.X509Certificate;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
-import java.util.Set;
 
-import javax.naming.ldap.LdapName;
 import javax.xml.namespace.QName;
 
 import junit.framework.TestCase;
 
-import org.apache.commons.io.FileUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.apache.xml.security.signature.XMLSignature;
 import org.cagrid.gaards.dorian.ca.CertificateAuthority;
 import org.cagrid.gaards.dorian.common.AuditConstants;
@@ -55,12 +47,17 @@ import org.cagrid.gaards.pki.KeyUtil;
 import org.cagrid.gaards.saml.encoding.SAMLConstants;
 import org.cagrid.tools.database.Database;
 import org.cagrid.tools.events.EventManager;
-import org.globus.common.CoGProperties;
 import org.globus.gsi.GlobusCredential;
 
-@SuppressWarnings("deprecation")
+
+/**
+ * @author <A href="mailto:langella@bmi.osu.edu">Stephen Langella </A>
+ * @author <A href="mailto:oster@bmi.osu.edu">Scott Oster </A>
+ * @author <A href="mailto:hastings@bmi.osu.edu">Shannon Hastings </A>
+ * @version $Id: ArgumentManagerTable.java,v 1.2 2004/10/15 16:35:16 langella
+ *          Exp $
+ */
 public class TestIdentityFederationManager extends TestCase {
-	static final Log logger = LogFactory.getLog(TestIdentityFederationManager.class);
 
     private static final int MIN_NAME_LENGTH = 4;
 
@@ -81,8 +78,7 @@ public class TestIdentityFederationManager extends TestCase {
     private PropertyManager props;
 
     private EventManager eventManager;
-    
-    private File tempCertDir;
+
 
     public void testUserSearchAdmin() {
         IdentityFederationManager ifs = null;
@@ -93,18 +89,8 @@ public class TestIdentityFederationManager extends TestCase {
             FederationDefaults defaults = getDefaults();
             defaults.setDefaultIdP(idp.getIdp());
             ifs = new IdentityFederationManager(conf, db, props, ca, eventManager, defaults);
-
-            X509Certificate cacert = ca.getCACertificate();
-
-            File dir = new File(CoGProperties.getDefault().getCaCertLocations());
-            File caFile = new File(dir.getAbsolutePath() + File.separator + CertUtil.getHashCode(cacert) + ".0");
-            File policyFile = new File(dir.getAbsolutePath() + File.separator + CertUtil.getHashCode(cacert)
-                + ".signing_policy");
-            CertUtil.writeCertificate(cacert, caFile);
-            CertUtil.writeSigningPolicy(cacert, policyFile);
-
-            String adminSubject = UserManager.getUserSubject(conf.getIdentityAssignmentPolicy(), 
-                CertUtil.getSubjectDN(ca.getCACertificate()), idp.getIdp(), INITIAL_ADMIN);
+            String adminSubject = UserManager.getUserSubject(conf.getIdentityAssignmentPolicy(), ca.getCACertificate()
+                .getSubjectDN().getName(), idp.getIdp(), INITIAL_ADMIN);
             String adminGridId = CommonUtils.subjectToIdentity(adminSubject);
             GridUser usr = createUser(ifs, adminGridId, idp, "user");
             GridUserRecord userRecord = toUserRecord(usr);
@@ -136,9 +122,7 @@ public class TestIdentityFederationManager extends TestCase {
             fail("Exception occured:" + e.getMessage());
         } finally {
             try {
-                if (ifs != null) {
-                    ifs.clearDatabase();
-                }
+                ifs.clearDatabase();
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -156,11 +140,9 @@ public class TestIdentityFederationManager extends TestCase {
             FederationDefaults defaults = getDefaults();
             defaults.setDefaultIdP(idp.getIdp());
             ifs = new IdentityFederationManager(conf, db, props, ca, eventManager, defaults);
-            String adminSubject = UserManager.getUserSubject(conf.getIdentityAssignmentPolicy(), 
-                CertUtil.getSubjectDN(ca.getCACertificate()), idp.getIdp(), INITIAL_ADMIN);
-            logger.info("Administrator Subject: " + adminSubject);
+            String adminSubject = UserManager.getUserSubject(conf.getIdentityAssignmentPolicy(), ca.getCACertificate()
+                .getSubjectDN().getName(), idp.getIdp(), INITIAL_ADMIN);
             String adminGridId = CommonUtils.subjectToIdentity(adminSubject);
-            logger.info("Administrator Grid Id: " + adminGridId);
             GridUser usr = createUser(ifs, adminGridId, idp, "user");
             String host = "myhost.example.com";
             HostCertificateRequest req = getHostCertificateRequest(host);
@@ -217,8 +199,8 @@ public class TestIdentityFederationManager extends TestCase {
             FederationDefaults defaults = getDefaults();
             defaults.setDefaultIdP(idp.getIdp());
             ifs = new IdentityFederationManager(conf, db, props, ca, eventManager, defaults);
-            String adminSubject = UserManager.getUserSubject(conf.getIdentityAssignmentPolicy(), 
-                CertUtil.getSubjectDN(ca.getCACertificate()), idp.getIdp(), INITIAL_ADMIN);
+            String adminSubject = UserManager.getUserSubject(conf.getIdentityAssignmentPolicy(), ca.getCACertificate()
+                .getSubjectDN().getName(), idp.getIdp(), INITIAL_ADMIN);
             String adminGridId = CommonUtils.subjectToIdentity(adminSubject);
             GridUser usr = createUser(ifs, adminGridId, idp, "user");
             String host = "myhost.example.com";
@@ -276,8 +258,8 @@ public class TestIdentityFederationManager extends TestCase {
             FederationDefaults defaults = getDefaults();
             defaults.setDefaultIdP(idp.getIdp());
             ifs = new IdentityFederationManager(conf, db, props, ca, eventManager, defaults);
-            String adminSubject = UserManager.getUserSubject(conf.getIdentityAssignmentPolicy(), 
-                CertUtil.getSubjectDN(ca.getCACertificate()), idp.getIdp(), INITIAL_ADMIN);
+            String adminSubject = UserManager.getUserSubject(conf.getIdentityAssignmentPolicy(), ca.getCACertificate()
+                .getSubjectDN().getName(), idp.getIdp(), INITIAL_ADMIN);
             String adminGridId = CommonUtils.subjectToIdentity(adminSubject);
             GridUser usr = createUser(ifs, adminGridId, idp, "user");
             String host = "myhost.example.com";
@@ -337,8 +319,8 @@ public class TestIdentityFederationManager extends TestCase {
             FederationDefaults defaults = getDefaults();
             defaults.setDefaultIdP(idp.getIdp());
             ifs = new IdentityFederationManager(conf, db, props, ca, eventManager, defaults);
-            String adminSubject = UserManager.getUserSubject(conf.getIdentityAssignmentPolicy(), 
-                CertUtil.getSubjectDN(ca.getCACertificate()), idp.getIdp(), INITIAL_ADMIN);
+            String adminSubject = UserManager.getUserSubject(conf.getIdentityAssignmentPolicy(), ca.getCACertificate()
+                .getSubjectDN().getName(), idp.getIdp(), INITIAL_ADMIN);
             String adminGridId = CommonUtils.subjectToIdentity(adminSubject);
             GridUser usr = createUser(ifs, adminGridId, idp, "user");
             GridUserRecord userRecord = toUserRecord(usr);
@@ -382,8 +364,8 @@ public class TestIdentityFederationManager extends TestCase {
             FederationDefaults defaults = getDefaults();
             defaults.setDefaultIdP(idp.getIdp());
             ifs = new IdentityFederationManager(conf, db, props, ca, eventManager, defaults);
-            String adminSubject = UserManager.getUserSubject(conf.getIdentityAssignmentPolicy(), 
-                CertUtil.getSubjectDN(ca.getCACertificate()), idp.getIdp(), INITIAL_ADMIN);
+            String adminSubject = UserManager.getUserSubject(conf.getIdentityAssignmentPolicy(), ca.getCACertificate()
+                .getSubjectDN().getName(), idp.getIdp(), INITIAL_ADMIN);
             String adminGridId = CommonUtils.subjectToIdentity(adminSubject);
             GridUser usr = createUser(ifs, adminGridId, idp, "user");
             GridUserRecord userRecord = toUserRecord(usr);
@@ -432,8 +414,8 @@ public class TestIdentityFederationManager extends TestCase {
             FederationDefaults defaults = getDefaults();
             defaults.setDefaultIdP(idp.getIdp());
             ifs = new IdentityFederationManager(conf, db, props, ca, eventManager, defaults);
-            String adminSubject = UserManager.getUserSubject(conf.getIdentityAssignmentPolicy(), 
-                CertUtil.getSubjectDN(ca.getCACertificate()), idp.getIdp(), INITIAL_ADMIN);
+            String adminSubject = UserManager.getUserSubject(conf.getIdentityAssignmentPolicy(), ca.getCACertificate()
+                .getSubjectDN().getName(), idp.getIdp(), INITIAL_ADMIN);
             String adminGridId = CommonUtils.subjectToIdentity(adminSubject);
             GridUser usr = createUser(ifs, adminGridId, idp, "user");
             String host = "localhost";
@@ -450,8 +432,8 @@ public class TestIdentityFederationManager extends TestCase {
             record = ifs.approveHostCertificate(adminGridId, record.getId());
             assertEquals(HostCertificateStatus.Active, record.getStatus());;
             assertEquals(subject, record.getSubject());
-            assertEquals(subject, CertUtil.getSubjectDN(CertUtil.loadCertificate(
-                record.getCertificate().getCertificateAsString())));
+            assertEquals(subject, CertUtil.loadCertificate(record.getCertificate().getCertificateAsString())
+                .getSubjectDN().getName());
             performAndValidateSingleAudit(ifs, adminGridId, hostId, adminGridId,
                 FederationAudit.HostCertificateApproved);
         } catch (Exception e) {
@@ -475,8 +457,8 @@ public class TestIdentityFederationManager extends TestCase {
             FederationDefaults defaults = getDefaults();
             defaults.setDefaultIdP(idp.getIdp());
             ifs = new IdentityFederationManager(conf, db, props, ca, eventManager, defaults);
-            String adminSubject = UserManager.getUserSubject(conf.getIdentityAssignmentPolicy(), 
-                CertUtil.getSubjectDN(ca.getCACertificate()), idp.getIdp(), INITIAL_ADMIN);
+            String adminSubject = UserManager.getUserSubject(conf.getIdentityAssignmentPolicy(), ca.getCACertificate()
+                .getSubjectDN().getName(), idp.getIdp(), INITIAL_ADMIN);
             String adminGridId = CommonUtils.subjectToIdentity(adminSubject);
             GridUser usr = createUser(ifs, adminGridId, idp, "user");
             String host = "localhost";
@@ -486,8 +468,8 @@ public class TestIdentityFederationManager extends TestCase {
                 .getCACertificate(), host);
             assertEquals(HostCertificateStatus.Active, record.getStatus());;
             assertEquals(subject, record.getSubject());
-            assertEquals(subject, CertUtil.getSubjectDN(CertUtil.loadCertificate(
-                record.getCertificate().getCertificateAsString())));
+            assertEquals(subject, CertUtil.loadCertificate(record.getCertificate().getCertificateAsString())
+                .getSubjectDN().getName());
             String hostId = String.valueOf(record.getId());
             performAndValidateSingleAudit(ifs, adminGridId, hostId, usr.getGridId(),
                 FederationAudit.HostCertificateRequested);
@@ -514,8 +496,8 @@ public class TestIdentityFederationManager extends TestCase {
             FederationDefaults defaults = getDefaults();
             defaults.setDefaultIdP(idp.getIdp());
             ifs = new IdentityFederationManager(conf, db, props, ca, eventManager, defaults);
-            String adminSubject = UserManager.getUserSubject(conf.getIdentityAssignmentPolicy(), 
-                CertUtil.getSubjectDN(ca.getCACertificate()), idp.getIdp(), INITIAL_ADMIN);
+            String adminSubject = UserManager.getUserSubject(conf.getIdentityAssignmentPolicy(), ca.getCACertificate()
+                .getSubjectDN().getName(), idp.getIdp(), INITIAL_ADMIN);
             String adminGridId = CommonUtils.subjectToIdentity(adminSubject);
             createUser(ifs, adminGridId, idp, "user");
             String host = "localhost";
@@ -550,8 +532,8 @@ public class TestIdentityFederationManager extends TestCase {
             FederationDefaults defaults = getDefaults();
             defaults.setDefaultIdP(idp.getIdp());
             ifs = new IdentityFederationManager(conf, db, props, ca, eventManager, defaults);
-            String adminSubject = UserManager.getUserSubject(conf.getIdentityAssignmentPolicy(),
-                CertUtil.getSubjectDN(ca.getCACertificate()), idp.getIdp(), INITIAL_ADMIN);
+            String adminSubject = UserManager.getUserSubject(conf.getIdentityAssignmentPolicy(), ca.getCACertificate()
+                .getSubjectDN().getName(), idp.getIdp(), INITIAL_ADMIN);
             String adminGridId = CommonUtils.subjectToIdentity(adminSubject);
             GridUser usr = createUser(ifs, adminGridId, idp, "user");
             String host = "localhost";
@@ -595,11 +577,12 @@ public class TestIdentityFederationManager extends TestCase {
             FederationDefaults defaults = getDefaults();
             defaults.setDefaultIdP(idp.getIdp());
             ifs = new IdentityFederationManager(conf, db, props, ca, eventManager, defaults);
-            String adminSubject = UserManager.getUserSubject(conf.getIdentityAssignmentPolicy(), 
-                CertUtil.getSubjectDN(ca.getCACertificate()), idp.getIdp(), INITIAL_ADMIN);
+            String adminSubject = UserManager.getUserSubject(conf.getIdentityAssignmentPolicy(), ca.getCACertificate()
+                .getSubjectDN().getName(), idp.getIdp(), INITIAL_ADMIN);
             String adminGridId = CommonUtils.subjectToIdentity(adminSubject);
             GridUser usr = createUser(ifs, adminGridId, idp, "user");
-//            String subjectPrefix = org.cagrid.gaards.dorian.service.util.Utils.getHostCertificateSubjectPrefix(ca.getCACertificate());
+            String subjectPrefix = org.cagrid.gaards.dorian.service.util.Utils.getHostCertificateSubjectPrefix(ca
+                .getCACertificate());
             String hostPrefix = "localhost";
             int total = 3;
 
@@ -614,7 +597,7 @@ public class TestIdentityFederationManager extends TestCase {
 
             // Find by Subject;
             HostCertificateFilter f1 = new HostCertificateFilter();
-//            f1.setSubject(subjectPrefix);
+            f1.setSubject(subjectPrefix);
             assertEquals(total, ifs.findHostCertificates(adminGridId, f1).length);
             for (int i = 0; i < total; i++) {
                 String subject = org.cagrid.gaards.dorian.service.util.Utils.getHostCertificateSubject(ca
@@ -668,8 +651,8 @@ public class TestIdentityFederationManager extends TestCase {
             FederationDefaults defaults = getDefaults();
             defaults.setDefaultIdP(idp.getIdp());
             ifs = new IdentityFederationManager(conf, db, props, ca, eventManager, defaults);
-            String adminSubject = UserManager.getUserSubject(conf.getIdentityAssignmentPolicy(), 
-                CertUtil.getSubjectDN(ca.getCACertificate()), idp.getIdp(), INITIAL_ADMIN);
+            String adminSubject = UserManager.getUserSubject(conf.getIdentityAssignmentPolicy(), ca.getCACertificate()
+                .getSubjectDN().getName(), idp.getIdp(), INITIAL_ADMIN);
             String adminGridId = CommonUtils.subjectToIdentity(adminSubject);
             createUser(ifs, adminGridId, idp, "user");
             try {
@@ -703,8 +686,8 @@ public class TestIdentityFederationManager extends TestCase {
             FederationDefaults defaults = getDefaults();
             defaults.setDefaultIdP(idp.getIdp());
             ifs = new IdentityFederationManager(conf, db, props, ca, eventManager, defaults);
-            String adminSubject = UserManager.getUserSubject(conf.getIdentityAssignmentPolicy(), 
-                CertUtil.getSubjectDN(ca.getCACertificate()), idp.getIdp(), INITIAL_ADMIN);
+            String adminSubject = UserManager.getUserSubject(conf.getIdentityAssignmentPolicy(), ca.getCACertificate()
+                .getSubjectDN().getName(), idp.getIdp(), INITIAL_ADMIN);
             String adminGridId = CommonUtils.subjectToIdentity(adminSubject);
             GridUser usr = createUser(ifs, adminGridId, idp, "user");
             String host = "localhost";
@@ -714,8 +697,8 @@ public class TestIdentityFederationManager extends TestCase {
                 .getCACertificate(), host);
             assertEquals(HostCertificateStatus.Active, record.getStatus());;
             assertEquals(subject, record.getSubject());
-            assertEquals(subject, CertUtil.getSubjectDN(CertUtil.loadCertificate(
-                record.getCertificate().getCertificateAsString())));
+            assertEquals(subject, CertUtil.loadCertificate(record.getCertificate().getCertificateAsString())
+                .getSubjectDN().getName());
             String hostId = String.valueOf(record.getId());
             performAndValidateSingleAudit(ifs, adminGridId, hostId, usr.getGridId(),
                 FederationAudit.HostCertificateRequested);
@@ -753,8 +736,8 @@ public class TestIdentityFederationManager extends TestCase {
             FederationDefaults defaults = getDefaults();
             defaults.setDefaultIdP(idp.getIdp());
             ifs = new IdentityFederationManager(conf, db, props, ca, eventManager, defaults);
-            String adminSubject = UserManager.getUserSubject(conf.getIdentityAssignmentPolicy(), 
-                CertUtil.getSubjectDN(ca.getCACertificate()), idp.getIdp(), INITIAL_ADMIN);
+            String adminSubject = UserManager.getUserSubject(conf.getIdentityAssignmentPolicy(), ca.getCACertificate()
+                .getSubjectDN().getName(), idp.getIdp(), INITIAL_ADMIN);
             String adminGridId = CommonUtils.subjectToIdentity(adminSubject);
             createUser(ifs, adminGridId, idp, "user");
             try {
@@ -766,6 +749,7 @@ public class TestIdentityFederationManager extends TestCase {
 
             performAndValidateSingleAudit(ifs, adminGridId, "bad user", AuditConstants.SYSTEM_ID,
                 FederationAudit.AccessDenied);
+
         } catch (Exception e) {
             FaultUtil.printFault(e);
             fail("Exception occured:" + e.getMessage());
@@ -787,8 +771,8 @@ public class TestIdentityFederationManager extends TestCase {
             FederationDefaults defaults = getDefaults();
             defaults.setDefaultIdP(idp.getIdp());
             ifs = new IdentityFederationManager(conf, db, props, ca, eventManager, defaults);
-            String adminSubject = UserManager.getUserSubject(conf.getIdentityAssignmentPolicy(), 
-                CertUtil.getSubjectDN(ca.getCACertificate()), idp.getIdp(), INITIAL_ADMIN);
+            String adminSubject = UserManager.getUserSubject(conf.getIdentityAssignmentPolicy(), ca.getCACertificate()
+                .getSubjectDN().getName(), idp.getIdp(), INITIAL_ADMIN);
             String adminGridId = CommonUtils.subjectToIdentity(adminSubject);
             GridUser usr = createUser(ifs, adminGridId, idp, "user");
             String host = "localhost";
@@ -863,8 +847,8 @@ public class TestIdentityFederationManager extends TestCase {
             FederationDefaults defaults = getDefaults();
             defaults.setDefaultIdP(idp.getIdp());
             ifs = new IdentityFederationManager(conf, db, props, ca, eventManager, defaults);
-            String adminSubject = UserManager.getUserSubject(conf.getIdentityAssignmentPolicy(), 
-                CertUtil.getSubjectDN(ca.getCACertificate()), idp.getIdp(), INITIAL_ADMIN);
+            String adminSubject = UserManager.getUserSubject(conf.getIdentityAssignmentPolicy(), ca.getCACertificate()
+                .getSubjectDN().getName(), idp.getIdp(), INITIAL_ADMIN);
             String adminGridId = CommonUtils.subjectToIdentity(adminSubject);
             GridUser usr = createUser(ifs, adminGridId, idp, "user");
             String hostPrefix = "localhost";
@@ -917,8 +901,8 @@ public class TestIdentityFederationManager extends TestCase {
             FederationDefaults defaults = getDefaults();
             defaults.setDefaultIdP(idp.getIdp());
             ifs = new IdentityFederationManager(conf, db, props, ca, eventManager, defaults);
-            String adminSubject = UserManager.getUserSubject(conf.getIdentityAssignmentPolicy(), 
-                CertUtil.getSubjectDN(ca.getCACertificate()), idp.getIdp(), INITIAL_ADMIN);
+            String adminSubject = UserManager.getUserSubject(conf.getIdentityAssignmentPolicy(), ca.getCACertificate()
+                .getSubjectDN().getName(), idp.getIdp(), INITIAL_ADMIN);
             String adminGridId = CommonUtils.subjectToIdentity(adminSubject);
             createUser(ifs, adminGridId, idp, "user");
             try {
@@ -950,8 +934,8 @@ public class TestIdentityFederationManager extends TestCase {
             FederationDefaults defaults = getDefaults();
             defaults.setDefaultIdP(idp.getIdp());
             ifs = new IdentityFederationManager(conf, db, props, ca, eventManager, defaults);
-            String adminSubject = UserManager.getUserSubject(conf.getIdentityAssignmentPolicy(), 
-                CertUtil.getSubjectDN(ca.getCACertificate()), idp.getIdp(), INITIAL_ADMIN);
+            String adminSubject = UserManager.getUserSubject(conf.getIdentityAssignmentPolicy(), ca.getCACertificate()
+                .getSubjectDN().getName(), idp.getIdp(), INITIAL_ADMIN);
             String adminGridId = CommonUtils.subjectToIdentity(adminSubject);
             GridUser usr = createUser(ifs, adminGridId, idp, "user");
             String host = "localhost1";
@@ -970,8 +954,8 @@ public class TestIdentityFederationManager extends TestCase {
 
             assertEquals(HostCertificateStatus.Active, record.getStatus());
             assertEquals(subject, record.getSubject());
-            assertEquals(subject, CertUtil.getSubjectDN(CertUtil.loadCertificate(
-                record.getCertificate().getCertificateAsString())));
+            assertEquals(subject, CertUtil.loadCertificate(record.getCertificate().getCertificateAsString())
+                .getSubjectDN().getName());
 
             performAndValidateSingleAudit(ifs, adminGridId, hostId, adminGridId,
                 FederationAudit.HostCertificateApproved);
@@ -1029,8 +1013,8 @@ public class TestIdentityFederationManager extends TestCase {
             FederationDefaults defaults = getDefaults();
             defaults.setDefaultIdP(idp.getIdp());
             ifs = new IdentityFederationManager(conf, db, props, ca, eventManager, defaults);
-            String adminSubject = UserManager.getUserSubject(conf.getIdentityAssignmentPolicy(), 
-                CertUtil.getSubjectDN(ca.getCACertificate()), idp.getIdp(), INITIAL_ADMIN);
+            String adminSubject = UserManager.getUserSubject(conf.getIdentityAssignmentPolicy(), ca.getCACertificate()
+                .getSubjectDN().getName(), idp.getIdp(), INITIAL_ADMIN);
             String adminGridId = CommonUtils.subjectToIdentity(adminSubject);
             GridUser usr = createUser(ifs, adminGridId, idp, "user");
 
@@ -1045,6 +1029,7 @@ public class TestIdentityFederationManager extends TestCase {
 
             performAndValidateSingleAudit(ifs, adminGridId, usr.getGridId(), AuditConstants.SYSTEM_ID,
                 FederationAudit.AdminRemoved);
+
         } catch (Exception e) {
             FaultUtil.printFault(e);
             fail("Exception occured:" + e.getMessage());
@@ -1055,6 +1040,7 @@ public class TestIdentityFederationManager extends TestCase {
                 e.printStackTrace();
             }
         }
+
     }
 
 
@@ -1067,8 +1053,8 @@ public class TestIdentityFederationManager extends TestCase {
             defaults.setDefaultIdP(idp.getIdp());
             ifs = new IdentityFederationManager(conf, db, props, ca, eventManager, defaults);
 
-            String adminSubject = UserManager.getUserSubject(conf.getIdentityAssignmentPolicy(), 
-                CertUtil.getSubjectDN(ca.getCACertificate()), idp.getIdp(), INITIAL_ADMIN);
+            String adminSubject = UserManager.getUserSubject(conf.getIdentityAssignmentPolicy(), ca.getCACertificate()
+                .getSubjectDN().getName(), idp.getIdp(), INITIAL_ADMIN);
             String adminGridId = CommonUtils.subjectToIdentity(adminSubject);
             IdPContainer idp2 = this.getTrustedIdpAutoApprove("My IdP2");
             ifs.addTrustedIdP(adminGridId, idp2.getIdp());
@@ -1087,8 +1073,8 @@ public class TestIdentityFederationManager extends TestCase {
                 CertificateLifetime lifetime = getLifetime();
                 X509Certificate cert = ifs.requestUserCertificate(getSAMLAssertion(uid, idp2), publicKey, lifetime);
                 String expectedIdentity = CommonUtils
-                    .subjectToIdentity(UserManager.getUserSubject(ifs.getIdentityAssignmentPolicy(),
-                        CertUtil.getSubjectDN(ca.getCACertificate()), idp2.getIdp(), uid));
+                    .subjectToIdentity(UserManager.getUserSubject(ifs.getIdentityAssignmentPolicy(), ca
+                        .getCACertificate().getSubjectDN().getName(), idp2.getIdp(), uid));
 
                 checkCertificate(expectedIdentity, lifetime, pair.getPrivate(), cert);
                 GridUserFilter f1 = new GridUserFilter();
@@ -1106,8 +1092,7 @@ public class TestIdentityFederationManager extends TestCase {
             }
 
             X509CRL crl = ifs.getCRL();
-            Set<? extends X509CRLEntry> revokedCerts = crl.getRevokedCertificates();
-            assertTrue("Shouldn't have any revoked certs yet.", (revokedCerts == null || revokedCerts.isEmpty()));
+            assertEquals(null, crl.getRevokedCertificates());
 
             // Suspend IDP
             idp2.getIdp().setStatus(TrustedIdPStatus.Suspended);
@@ -1138,9 +1123,7 @@ public class TestIdentityFederationManager extends TestCase {
             ifs.updateTrustedIdP(adminGridId, idp2.getIdp());
 
             crl = ifs.getCRL();
-            revokedCerts = crl.getRevokedCertificates();
-            assertTrue("Shouldn't have any revoked certs yet.", (revokedCerts == null || revokedCerts.isEmpty()));
-            
+            assertEquals(null, crl.getRevokedCertificates());
             for (int i = 0; i < list.size(); i++) {
                 UserCertificateFilter f = new UserCertificateFilter();
                 f.setGridIdentity(list.get(i).getUser().getGridId());
@@ -1189,9 +1172,9 @@ public class TestIdentityFederationManager extends TestCase {
                 CertificateLifetime lifetime = getLifetime();
                 X509Certificate cert = ifs.requestUserCertificate(getSAMLAssertion(usr.getUser().getUID(), idp2),
                     publicKey, lifetime);
-                String expectedIdentity = CommonUtils.subjectToIdentity(UserManager.getUserSubject(
-                    ifs.getIdentityAssignmentPolicy(), CertUtil.getSubjectDN(ca.getCACertificate()), 
-                    idp2.getIdp(),usr.getUser().getUID()));
+                String expectedIdentity = CommonUtils.subjectToIdentity(UserManager.getUserSubject(ifs
+                    .getIdentityAssignmentPolicy(), ca.getCACertificate().getSubjectDN().getName(), idp2.getIdp(), usr
+                    .getUser().getUID()));
 
                 checkCertificate(expectedIdentity, lifetime, pair.getPrivate(), cert);
 
@@ -1270,8 +1253,8 @@ public class TestIdentityFederationManager extends TestCase {
             defaults.setDefaultIdP(idp.getIdp());
             ifs = new IdentityFederationManager(conf, db, props, ca, eventManager, defaults);
             String uidPrefix = "user";
-            String adminSubject = UserManager.getUserSubject(conf.getIdentityAssignmentPolicy(), 
-                CertUtil.getSubjectDN(ca.getCACertificate()), idp.getIdp(), INITIAL_ADMIN);
+            String adminSubject = UserManager.getUserSubject(conf.getIdentityAssignmentPolicy(), ca.getCACertificate()
+                .getSubjectDN().getName(), idp.getIdp(), INITIAL_ADMIN);
             String adminGridId = CommonUtils.subjectToIdentity(adminSubject);
             int ucount = 1;
             for (int i = 0; i < times; i++) {
@@ -1281,7 +1264,7 @@ public class TestIdentityFederationManager extends TestCase {
                 CertificateLifetime lifetime = getLifetime();
                 X509Certificate cert = ifs.requestUserCertificate(getSAMLAssertion(uid, idp), publicKey, lifetime);
                 String expectedIdentity = CommonUtils.subjectToIdentity(UserManager.getUserSubject(ifs
-                    .getIdentityAssignmentPolicy(), CertUtil.getSubjectDN(ca.getCACertificate()), idp.getIdp(), uid));
+                    .getIdentityAssignmentPolicy(), ca.getCACertificate().getSubjectDN().getName(), idp.getIdp(), uid));
 
                 checkCertificate(expectedIdentity, lifetime, pair.getPrivate(), cert);
                 performAndValidateSingleAudit(ifs, adminGridId, expectedIdentity, AuditConstants.SYSTEM_ID,
@@ -1360,21 +1343,23 @@ public class TestIdentityFederationManager extends TestCase {
     public void testRequestCertificate() {
         IdentityFederationManager ifs = null;
         try {
+
             IdPContainer idp = this.getTrustedIdpAutoApprove("My IdP");
             IdentityFederationProperties conf = getConf();
             FederationDefaults defaults = getDefaults();
             defaults.setDefaultIdP(idp.getIdp());
             ifs = new IdentityFederationManager(conf, db, props, ca, eventManager, defaults);
-            String adminSubject = UserManager.getUserSubject(conf.getIdentityAssignmentPolicy(), 
-                CertUtil.getSubjectDN(ca.getCACertificate()), idp.getIdp(), INITIAL_ADMIN);
+            String adminSubject = UserManager.getUserSubject(conf.getIdentityAssignmentPolicy(), ca.getCACertificate()
+                .getSubjectDN().getName(), idp.getIdp(), INITIAL_ADMIN);
             String adminGridId = CommonUtils.subjectToIdentity(adminSubject);
             KeyPair pair = KeyUtil.generateRSAKeyPair1024();
             PublicKey publicKey = pair.getPublic();
             CertificateLifetime lifetime = getLifetime();
             String uid = "user";
             X509Certificate cert = ifs.requestUserCertificate(getSAMLAssertion(uid, idp), publicKey, lifetime);
-            String expectedIdentity = CommonUtils.subjectToIdentity(UserManager.getUserSubject(
-                ifs.getIdentityAssignmentPolicy(), CertUtil.getSubjectDN(ca.getCACertificate()), idp.getIdp(), uid));
+            String expectedIdentity = CommonUtils.subjectToIdentity(UserManager.getUserSubject(ifs
+                .getIdentityAssignmentPolicy(), ca.getCACertificate().getSubjectDN().getName(), idp.getIdp(), uid));
+
             checkCertificate(expectedIdentity, lifetime, pair.getPrivate(), cert);
             performAndValidateSingleAudit(ifs, adminGridId, expectedIdentity, AuditConstants.SYSTEM_ID,
                 FederationAudit.AccountCreated);
@@ -1390,6 +1375,7 @@ public class TestIdentityFederationManager extends TestCase {
                 e.printStackTrace();
             }
         }
+
     }
 
 
@@ -1438,15 +1424,15 @@ public class TestIdentityFederationManager extends TestCase {
             defaults.setDefaultIdP(idp.getIdp());
             ifs = new IdentityFederationManager(conf, db, props, ca, eventManager, defaults);
             String gridId = CommonUtils.subjectToIdentity(UserManager.getUserSubject(
-                conf.getIdentityAssignmentPolicy(), CertUtil.getSubjectDN(ca.getCACertificate()), idp.getIdp(),
+                conf.getIdentityAssignmentPolicy(), ca.getCACertificate().getSubjectDN().getName(), idp.getIdp(),
                 INITIAL_ADMIN));
             // give a chance for others to run right before we enter timing
             // sensitive code
             X509Certificate cert = ifs.requestUserCertificate(getSAMLAssertion(username, idp), pair.getPublic(),
                 lifetime);
             String expectedIdentity = CommonUtils
-                .subjectToIdentity(UserManager.getUserSubject(ifs.getIdentityAssignmentPolicy(), 
-                    CertUtil.getSubjectDN(ca.getCACertificate()), idp.getIdp(), username));
+                .subjectToIdentity(UserManager.getUserSubject(ifs.getIdentityAssignmentPolicy(), ca.getCACertificate()
+                    .getSubjectDN().getName(), idp.getIdp(), username));
 
             checkCertificate(expectedIdentity, lifetime, pair.getPrivate(), cert);
             performAndValidateSingleAudit(ifs, gridId, expectedIdentity, AuditConstants.SYSTEM_ID,
@@ -1454,6 +1440,7 @@ public class TestIdentityFederationManager extends TestCase {
             performAndValidateSingleAudit(ifs, gridId, expectedIdentity, AuditConstants.SYSTEM_ID,
                 FederationAudit.SuccessfulUserCertificateRequest);
             assertEquals(ifs.getUser(gridId, idp.getIdp().getId(), username).getUserStatus(), GridUserStatus.Active);
+
         } catch (Exception e) {
             FaultUtil.printFault(e);
             fail("Exception occured:" + e.getMessage());
@@ -1479,7 +1466,7 @@ public class TestIdentityFederationManager extends TestCase {
             defaults.setDefaultIdP(idp.getIdp());
             ifs = new IdentityFederationManager(conf, db, props, ca, eventManager, defaults);
             String gridId = CommonUtils.subjectToIdentity(UserManager.getUserSubject(
-                conf.getIdentityAssignmentPolicy(), CertUtil.getSubjectDN(ca.getCACertificate()), idp.getIdp(),
+                conf.getIdentityAssignmentPolicy(), ca.getCACertificate().getSubjectDN().getName(), idp.getIdp(),
                 defaults.getDefaultUser().getUID()));
 
             try {
@@ -1490,14 +1477,15 @@ public class TestIdentityFederationManager extends TestCase {
             }
 
             String expectedIdentity = CommonUtils
-                .subjectToIdentity(UserManager.getUserSubject(ifs.getIdentityAssignmentPolicy(), 
-                    CertUtil.getSubjectDN(ca.getCACertificate()), idp.getIdp(), username));
+                .subjectToIdentity(UserManager.getUserSubject(ifs.getIdentityAssignmentPolicy(), ca.getCACertificate()
+                    .getSubjectDN().getName(), idp.getIdp(), username));
 
             performAndValidateSingleAudit(ifs, gridId, expectedIdentity, AuditConstants.SYSTEM_ID,
                 FederationAudit.AccountCreated);
             performAndValidateSingleAudit(ifs, gridId, expectedIdentity, AuditConstants.SYSTEM_ID,
                 FederationAudit.InvalidUserCertificateRequest);
             assertEquals(ifs.getUser(gridId, idp.getIdp().getId(), username).getUserStatus(), GridUserStatus.Pending);
+
         } catch (Exception e) {
             FaultUtil.printFault(e);
             fail("Exception occured:" + e.getMessage());
@@ -1521,8 +1509,8 @@ public class TestIdentityFederationManager extends TestCase {
             FederationDefaults defaults = getDefaults();
             defaults.setDefaultIdP(idp.getIdp());
             ifs = new IdentityFederationManager(conf, db, props, ca, eventManager, defaults);
-            String adminSubject = UserManager.getUserSubject(conf.getIdentityAssignmentPolicy(), 
-                CertUtil.getSubjectDN(ca.getCACertificate()), idp.getIdp(), INITIAL_ADMIN);
+            String adminSubject = UserManager.getUserSubject(conf.getIdentityAssignmentPolicy(), ca.getCACertificate()
+                .getSubjectDN().getName(), idp.getIdp(), INITIAL_ADMIN);
             String adminGridId = CommonUtils.subjectToIdentity(adminSubject);
             GridUser usr = createUser(ifs, adminGridId, idp, "user");
             GridUser usr2 = createUser(ifs, adminGridId, idp, "user2");
@@ -1570,8 +1558,8 @@ public class TestIdentityFederationManager extends TestCase {
             FederationDefaults defaults = getDefaults();
             defaults.setDefaultIdP(idp.getIdp());
             ifs = new IdentityFederationManager(conf, db, props, ca, eventManager, defaults);
-            String adminSubject = UserManager.getUserSubject(conf.getIdentityAssignmentPolicy(), 
-                CertUtil.getSubjectDN(ca.getCACertificate()), idp.getIdp(), INITIAL_ADMIN);
+            String adminSubject = UserManager.getUserSubject(conf.getIdentityAssignmentPolicy(), ca.getCACertificate()
+                .getSubjectDN().getName(), idp.getIdp(), INITIAL_ADMIN);
             String adminGridId = CommonUtils.subjectToIdentity(adminSubject);
             GridUser usr = createUser(ifs, adminGridId, idp, "user");
             GridUser usr2 = createUser(ifs, adminGridId, idp, "user2");
@@ -1627,18 +1615,19 @@ public class TestIdentityFederationManager extends TestCase {
             }
 
             String gridId = CommonUtils.subjectToIdentity(UserManager.getUserSubject(
-                conf.getIdentityAssignmentPolicy(), CertUtil.getSubjectDN(ca.getCACertificate()), idp.getIdp(),
+                conf.getIdentityAssignmentPolicy(), ca.getCACertificate().getSubjectDN().getName(), idp.getIdp(),
                 defaults.getDefaultUser().getUID()));
 
             String expectedIdentity = CommonUtils
-                .subjectToIdentity(UserManager.getUserSubject(ifs.getIdentityAssignmentPolicy(), 
-                    CertUtil.getSubjectDN(ca.getCACertificate()), idp.getIdp(), username));
+                .subjectToIdentity(UserManager.getUserSubject(ifs.getIdentityAssignmentPolicy(), ca.getCACertificate()
+                    .getSubjectDN().getName(), idp.getIdp(), username));
 
             performAndValidateSingleAudit(ifs, gridId, expectedIdentity, AuditConstants.SYSTEM_ID,
                 FederationAudit.AccountCreated);
             performAndValidateSingleAudit(ifs, gridId, expectedIdentity, AuditConstants.SYSTEM_ID,
                 FederationAudit.InvalidUserCertificateRequest);
             assertEquals(ifs.getUser(gridId, idp.getIdp().getId(), username).getUserStatus(), GridUserStatus.Pending);
+
         } catch (Exception e) {
             FaultUtil.printFault(e);
             fail("Exception occured:" + e.getMessage());
@@ -1670,12 +1659,12 @@ public class TestIdentityFederationManager extends TestCase {
 
             }
             String gridId = CommonUtils.subjectToIdentity(UserManager.getUserSubject(
-                conf.getIdentityAssignmentPolicy(), CertUtil.getSubjectDN(ca.getCACertificate()), idp.getIdp(),
+                conf.getIdentityAssignmentPolicy(), ca.getCACertificate().getSubjectDN().getName(), idp.getIdp(),
                 defaults.getDefaultUser().getUID()));
 
             String expectedIdentity = CommonUtils
-                .subjectToIdentity(UserManager.getUserSubject(ifs.getIdentityAssignmentPolicy(), 
-                    CertUtil.getSubjectDN(ca.getCACertificate()), idp.getIdp(), username));
+                .subjectToIdentity(UserManager.getUserSubject(ifs.getIdentityAssignmentPolicy(), ca.getCACertificate()
+                    .getSubjectDN().getName(), idp.getIdp(), username));
 
             performAndValidateSingleAudit(ifs, gridId, expectedIdentity, AuditConstants.SYSTEM_ID,
                 FederationAudit.InvalidUserCertificateRequest);
@@ -1713,7 +1702,7 @@ public class TestIdentityFederationManager extends TestCase {
 
             }
             String gridId = CommonUtils.subjectToIdentity(UserManager.getUserSubject(
-                conf.getIdentityAssignmentPolicy(), CertUtil.getSubjectDN(ca.getCACertificate()), idp.getIdp(),
+                conf.getIdentityAssignmentPolicy(), ca.getCACertificate().getSubjectDN().getName(), idp.getIdp(),
                 defaults.getDefaultUser().getUID()));
 
             performAndValidateSingleAudit(ifs, gridId, AuditConstants.SYSTEM_ID, AuditConstants.SYSTEM_ID,
@@ -1749,12 +1738,12 @@ public class TestIdentityFederationManager extends TestCase {
 
             }
             String gridId = CommonUtils.subjectToIdentity(UserManager.getUserSubject(
-                conf.getIdentityAssignmentPolicy(), CertUtil.getSubjectDN(ca.getCACertificate()), idp.getIdp(),
+                conf.getIdentityAssignmentPolicy(), ca.getCACertificate().getSubjectDN().getName(), idp.getIdp(),
                 defaults.getDefaultUser().getUID()));
 
             String expectedIdentity = CommonUtils
-                .subjectToIdentity(UserManager.getUserSubject(ifs.getIdentityAssignmentPolicy(), 
-                    CertUtil.getSubjectDN(ca.getCACertificate()), idp.getIdp(), username));
+                .subjectToIdentity(UserManager.getUserSubject(ifs.getIdentityAssignmentPolicy(), ca.getCACertificate()
+                    .getSubjectDN().getName(), idp.getIdp(), username));
 
             performAndValidateSingleAudit(ifs, gridId, expectedIdentity, AuditConstants.SYSTEM_ID,
                 FederationAudit.InvalidUserCertificateRequest);
@@ -1780,7 +1769,7 @@ public class TestIdentityFederationManager extends TestCase {
             defaults.setDefaultIdP(idp0.getIdp());
             ifs = new IdentityFederationManager(conf, db, props, ca, eventManager, defaults);
             String gridId = CommonUtils.subjectToIdentity(UserManager.getUserSubject(
-                conf.getIdentityAssignmentPolicy(), CertUtil.getSubjectDN(ca.getCACertificate()), idp0.getIdp(),
+                conf.getIdentityAssignmentPolicy(), ca.getCACertificate().getSubjectDN().getName(), idp0.getIdp(),
                 defaults.getDefaultUser().getUID()));
 
             int times = 3;
@@ -1847,7 +1836,7 @@ public class TestIdentityFederationManager extends TestCase {
             String uid = "user";
             X509Certificate cert = ifs.requestUserCertificate(getSAMLAssertion(uid, idp), publicKey, lifetime);
             String expectedIdentity = CommonUtils.subjectToIdentity(UserManager.getUserSubject(ifs
-                .getIdentityAssignmentPolicy(), CertUtil.getSubjectDN(ca.getCACertificate()), idp.getIdp(), uid));
+                .getIdentityAssignmentPolicy(), ca.getCACertificate().getSubjectDN().getName(), idp.getIdp(), uid));
 
             checkCertificate(expectedIdentity, lifetime, pair.getPrivate(), cert);
 
@@ -1858,7 +1847,7 @@ public class TestIdentityFederationManager extends TestCase {
             performAndValidateSingleAudit(ifs, adminGridId, expectedIdentity, AuditConstants.SYSTEM_ID,
                 FederationAudit.SuccessfulUserCertificateRequest);
 
-            String userId = CommonUtils.subjectToIdentity(CertUtil.getSubjectDN(cert));
+            String userId = CommonUtils.subjectToIdentity(cert.getSubjectDN().toString());
             // Check that the user cannot call any admin methods
             int count = validateAccessControl(ifs, adminGridId, userId, 0);
             ifs.addAdmin(defaults.getDefaultUser().getGridId(), userId);
@@ -2181,8 +2170,8 @@ public class TestIdentityFederationManager extends TestCase {
             String lastName = "first" + id;
             String email = id + "@test.com";
 
-            String issuer = CertUtil.getSubjectDN(cert);
-            String federation = CertUtil.getSubjectDN(cert);
+            String issuer = cert.getSubjectDN().toString();
+            String federation = cert.getSubjectDN().toString();
             String ipAddress = null;
             String subjectDNS = null;
             SAMLNameIdentifier ni = new SAMLNameIdentifier(id, federation,
@@ -2195,43 +2184,43 @@ public class TestIdentityFederationManager extends TestCase {
                 subjectDNS, null);
 
             QName quid = new QName(SAMLConstants.UID_ATTRIBUTE_NAMESPACE, SAMLConstants.UID_ATTRIBUTE);
-            List<String> vals1 = new ArrayList<String>();
+            List vals1 = new ArrayList();
             vals1.add(id);
             SAMLAttribute uidAtt = new SAMLAttribute(quid.getLocalPart(), quid.getNamespaceURI(), quid, 0, vals1);
 
             QName qfirst = new QName(SAMLConstants.FIRST_NAME_ATTRIBUTE_NAMESPACE, SAMLConstants.FIRST_NAME_ATTRIBUTE);
-            List<String> vals2 = new ArrayList<String>();
+            List vals2 = new ArrayList();
             vals2.add(firstName);
             SAMLAttribute firstNameAtt = new SAMLAttribute(qfirst.getLocalPart(), qfirst.getNamespaceURI(), qfirst, 0,
                 vals2);
 
             QName qLast = new QName(SAMLConstants.LAST_NAME_ATTRIBUTE_NAMESPACE, SAMLConstants.LAST_NAME_ATTRIBUTE);
-            List<String> vals3 = new ArrayList<String>();
+            List vals3 = new ArrayList();
             vals3.add(lastName);
             SAMLAttribute lastNameAtt = new SAMLAttribute(qLast.getLocalPart(), qLast.getNamespaceURI(), qLast, 0,
                 vals3);
 
             QName qemail = new QName(SAMLConstants.EMAIL_ATTRIBUTE_NAMESPACE, SAMLConstants.EMAIL_ATTRIBUTE);
-            List<String> vals4 = new ArrayList<String>();
+            List vals4 = new ArrayList();
             vals4.add(email);
             SAMLAttribute emailAtt = new SAMLAttribute(qemail.getLocalPart(), qemail.getNamespaceURI(), qemail, 0,
                 vals4);
 
-            List<SAMLAttribute> atts = new ArrayList<SAMLAttribute>();
+            List atts = new ArrayList();
             atts.add(uidAtt);
             atts.add(firstNameAtt);
             atts.add(lastNameAtt);
             atts.add(emailAtt);
             SAMLAttributeStatement attState = new SAMLAttributeStatement(sub2, atts);
 
-            List<SAMLSubjectStatement> l = new ArrayList<SAMLSubjectStatement>();
+            List l = new ArrayList();
             l.add(auth);
             l.add(attState);
 
             SAMLAssertion saml = new SAMLAssertion(issuer, start, end, null, null, l);
-            List<X509Certificate> a = new ArrayList<X509Certificate>();
+            List a = new ArrayList();
             a.add(cert);
-            saml.sign(XMLSignature.ALGO_ID_SIGNATURE_RSA_SHA256, key, a);
+            saml.sign(XMLSignature.ALGO_ID_SIGNATURE_RSA_SHA1, key, a);
 
             return saml;
         } catch (Exception e) {
@@ -2243,6 +2232,12 @@ public class TestIdentityFederationManager extends TestCase {
             throw fault;
 
         }
+    }
+
+
+    private String identityToSubject(String identity) {
+        String s = identity.substring(1);
+        return s.replace('/', ',');
     }
 
 
@@ -2313,8 +2308,7 @@ public class TestIdentityFederationManager extends TestCase {
             usr.setUserStatus(GridUserStatus.Active);
             ifs.updateUser(adminGridId, usr);
         }
-        Set<? extends X509CRLEntry> revokedCerts = ifs.getCRL().getRevokedCertificates();
-        assertTrue("Shouldn't have any revoked certs.", (revokedCerts == null || revokedCerts.isEmpty()));
+        assertEquals(null, ifs.getCRL().getRevokedCertificates());
     }
 
 
@@ -2371,7 +2365,7 @@ public class TestIdentityFederationManager extends TestCase {
             if (alreadyRevokedCerts > 0) {
                 assertEquals(alreadyRevokedCerts, ifs.getCRL().getRevokedCertificates().size());
             } else {
-                assertTrue(ifs.getCRL().getRevokedCertificates().isEmpty());
+                assertEquals(null, ifs.getCRL().getRevokedCertificates());
             }
             return alreadyRevokedCerts;
         } else {
@@ -2410,12 +2404,11 @@ public class TestIdentityFederationManager extends TestCase {
         methods[0] = SAMLAuthenticationMethod.fromString("urn:oasis:names:tc:SAML:1.0:am:password");
         idp.setAuthenticationMethod(methods);
 
-        LdapName subject = (LdapName) Utils.CA_SUBJECT_PREFIX.clone();
-        subject.add("CN=" + name);
+        String subject = Utils.CA_SUBJECT_PREFIX + ",CN=" + name;
         Credential cred = memoryCA.createIdentityCertificate(name);
         X509Certificate cert = cred.getCertificate();
         assertNotNull(cert);
-        assertEquals(CertUtil.getSubjectDN(cert), subject.toString());
+        assertEquals(cert.getSubjectDN().getName(), subject);
         idp.setIdPCertificate(CertUtil.writeCertificate(cert));
         return new IdPContainer(idp, cert, cred.getPrivateKey());
     }
@@ -2428,8 +2421,7 @@ public class TestIdentityFederationManager extends TestCase {
         CertificateLifetime lifetime = getLifetime();
         X509Certificate cert = ifs.requestUserCertificate(getSAMLAssertion(uid, idp), publicKey, lifetime);
         String expectedIdentity = CommonUtils.subjectToIdentity(UserManager.getUserSubject(ifs
-            .getIdentityAssignmentPolicy(), CertUtil.getSubjectDN(ca.getCACertificate()), idp.getIdp(), uid));
-        logger.info("Expecting Identity: " + expectedIdentity);
+            .getIdentityAssignmentPolicy(), ca.getCACertificate().getSubjectDN().getName(), idp.getIdp(), uid));
         checkCertificate(expectedIdentity, lifetime, pair.getPrivate(), cert);
         performAndValidateSingleAudit(ifs, adminGridId, expectedIdentity, AuditConstants.SYSTEM_ID,
             FederationAudit.AccountCreated);
@@ -2491,21 +2483,10 @@ public class TestIdentityFederationManager extends TestCase {
             db = Utils.getDB();
             assertEquals(0, db.getUsedConnectionCount());
             ca = Utils.getCA();
-            memoryCA = new CA(Utils.getCASubject().toString());
+            memoryCA = new CA(Utils.getCASubject());
             props = new PropertyManager(db);
             eventManager = Utils.getEventManager();
             eventManager.clearHandlers();
-            
-            tempCertDir = File.createTempFile("cagridunittest", "certs");
-            tempCertDir.delete();
-            tempCertDir.mkdir();
-            CoGProperties.getDefault().setCaCertLocations(tempCertDir.getAbsolutePath());
-            File caFile = new File(tempCertDir.getAbsolutePath() + File.separator + CertUtil.getHashCode(ca.getCACertificate()) + ".0");
-            File policyFile = new File(tempCertDir.getAbsolutePath() + File.separator + CertUtil.getHashCode(ca.getCACertificate())
-                + ".signing_policy");
-            CertUtil.writeCertificate(ca.getCACertificate(), caFile);
-            CertUtil.writeSigningPolicy(ca.getCACertificate(), policyFile);
-
         } catch (Exception e) {
             FaultUtil.printFault(e);
             fail("Exception occured:" + e.getMessage());
@@ -2519,7 +2500,6 @@ public class TestIdentityFederationManager extends TestCase {
             eventManager.clearHandlers();
             assertEquals(0, db.getUsedConnectionCount());
             assertEquals(0, db.getRootUsedConnectionCount());
-            FileUtils.deleteDirectory(tempCertDir);
         } catch (Exception e) {
             FaultUtil.printFault(e);
             fail("Exception occured:" + e.getMessage());
@@ -2585,8 +2565,8 @@ public class TestIdentityFederationManager extends TestCase {
         assertTrue(min <= timeLeft);
         assertTrue(timeLeft <= max);
         assertEquals(expectedIdentity, cred.getIdentity());
-        assertEquals(CertUtil.getSubjectDN(cert), CommonUtils.identityToSubject(cred.getIdentity()));
-//        assertEquals(CertUtil.globusFormatDN(cred.getIssuer()), CertUtil.getSubjectDN(ca.getCACertificate()));
+        assertEquals(cert.getSubjectDN().toString(), identityToSubject(cred.getIdentity()));
+        assertEquals(cred.getIssuer(), ca.getCACertificate().getSubjectDN().getName());
         cred.verify();
     }
 
@@ -2671,5 +2651,7 @@ public class TestIdentityFederationManager extends TestCase {
         public List<X509Certificate> getUserCerts() {
             return userCerts;
         }
+
     }
+
 }

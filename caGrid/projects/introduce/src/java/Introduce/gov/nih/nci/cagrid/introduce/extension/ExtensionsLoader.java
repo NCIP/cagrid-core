@@ -40,32 +40,32 @@ public class ExtensionsLoader {
 
     public static final String INTRODUCE_GDE_EXTENSION = "INTRODUCE_GDE";
 
-    private List<ServiceExtensionDescriptionType> serviceExtensionDescriptors;
+    private List serviceExtensionDescriptors;
 
-    private List<DiscoveryExtensionDescriptionType> discoveryExtensionDescriptors;
+    private List discoveryExtensionDescriptors;
 
-    private List<DeploymentExtensionDescriptionType> deploymentExtensionDescriptors;
+    private List deploymentExtensionDescriptors;
 
-    private List<ResourcePropertyEditorExtensionDescriptionType> resourcePropertyEditorExtensionDescriptors;
+    private List resourcePropertyEditorExtensionDescriptors;
 
-    private List<AuthorizationExtensionDescriptionType> authorizationExtensionDescriptors;
+    private List authorizationExtensionDescriptors;
 
-    private List<IntroduceGDEExtensionDescriptionType> introduceGDEExtensionDescriptors;
+    private List introduceGDEExtensionDescriptors;
 
-    private List<ExtensionDescription> extensions;
+    private List extensions;
 
     private File extensionsDir;
 
 
     private ExtensionsLoader() {
         this.extensionsDir = new File(EXTENSIONS_DIRECTORY);
-        serviceExtensionDescriptors = new ArrayList<ServiceExtensionDescriptionType>();
-        discoveryExtensionDescriptors = new ArrayList<DiscoveryExtensionDescriptionType>();
-        resourcePropertyEditorExtensionDescriptors = new ArrayList<ResourcePropertyEditorExtensionDescriptionType>();
-        authorizationExtensionDescriptors = new ArrayList<AuthorizationExtensionDescriptionType>();
-        deploymentExtensionDescriptors = new ArrayList<DeploymentExtensionDescriptionType>();
-        introduceGDEExtensionDescriptors = new ArrayList<IntroduceGDEExtensionDescriptionType>();
-        extensions = new ArrayList<ExtensionDescription>();
+        serviceExtensionDescriptors = new ArrayList();
+        discoveryExtensionDescriptors = new ArrayList();
+        resourcePropertyEditorExtensionDescriptors = new ArrayList();
+        authorizationExtensionDescriptors = new ArrayList();
+        deploymentExtensionDescriptors = new ArrayList();
+        introduceGDEExtensionDescriptors = new ArrayList();
+        extensions = new ArrayList();
         try {
             this.load();
         } catch (Exception e) {
@@ -201,22 +201,22 @@ public class ExtensionsLoader {
     }
 
 
-    public List<AuthorizationExtensionDescriptionType> getAuthorizationExtensions() {
+    public List getAuthorizationExtensions() {
         return this.authorizationExtensionDescriptors;
     }
 
 
-    public List<ServiceExtensionDescriptionType> getServiceExtensions() {
+    public List getServiceExtensions() {
         return this.serviceExtensionDescriptors;
     }
 
 
-    public List<IntroduceGDEExtensionDescriptionType> getIntroduceGDEExtensions() {
+    public List getIntroduceGDEExtensions() {
         return this.introduceGDEExtensionDescriptors;
     }
 
 
-    public List<ResourcePropertyEditorExtensionDescriptionType> getResourcePropertyEditorExtensions() {
+    public List getResourcePropertyEditorExtensions() {
         return this.resourcePropertyEditorExtensionDescriptors;
     }
 
@@ -354,12 +354,12 @@ public class ExtensionsLoader {
     }
 
 
-    public List<DiscoveryExtensionDescriptionType> getDiscoveryExtensions() {
+    public List getDiscoveryExtensions() {
         return this.discoveryExtensionDescriptors;
     }
 
 
-    public List<DeploymentExtensionDescriptionType> getDeploymentExtensions() {
+    public List getDeploymentExtensions() {
         return this.deploymentExtensionDescriptors;
     }
 

@@ -45,10 +45,11 @@
 
 		<dependency rev="1.3" org="apache" name="commons-codec"
 			conf="minimal->default" />
-		<dependency rev="3.0.+" org="springframework" name="spring" conf="minimal->full" />
+		<dependency rev="2.5.5" org="springframework" name="spring"
+			conf="minimal->full" />
       	<dependency rev="1.3" org="castor" name="castor" conf="minimal->default" />
 
-      	<dependency rev="4.+" org="junit" name="junit" conf="impl-test->default" />
+      	<dependency rev="4.4" org="junit" name="junit" conf="impl-test->default" />
       	<dependency rev="1.1" org="apache" name="commons-logging" conf="impl-test->default" />
 	</dependencies>
 

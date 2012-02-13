@@ -4,7 +4,6 @@ import gov.nih.nci.cagrid.common.portal.PortalBaseTable;
 import gov.nih.nci.cagrid.introduce.beans.method.MethodType;
 import gov.nih.nci.cagrid.introduce.beans.method.MethodTypeOutput;
 
-import java.io.Serializable;
 import java.util.Vector;
 
 import javax.swing.table.DefaultTableModel;
@@ -16,11 +15,6 @@ import javax.swing.table.DefaultTableModel;
  * @author <A HREF="MAILTO:langella@bmi.osu.edu">Stephen Langella </A>
  */
 public class OutputTypeTable extends PortalBaseTable {
-
-	/**
-	 * Hash code for serialization
-	 */
-	private static final long serialVersionUID = 2614081937483594650L;
 
 	public static String ISARRAY = "Is Array";
 
@@ -64,7 +58,7 @@ public class OutputTypeTable extends PortalBaseTable {
 		this.getColumn(DATA2).setPreferredWidth(0);
 		MethodTypeOutput output = method.getOutput();
 		if (output != null) {
-			final Vector<Serializable> v = new Vector<Serializable>();
+			final Vector v = new Vector();
 			v.add(new Boolean(output.isIsArray()));
 			v.add(output.getQName().getNamespaceURI());
 			v.add(output.getQName().getLocalPart());
@@ -85,8 +79,7 @@ public class OutputTypeTable extends PortalBaseTable {
 		if ((row < 0) || (row >= getRowCount())) {
 			throw new Exception("invalid row");
 		}
-		@SuppressWarnings("unchecked")
-		Vector<Serializable> v = (Vector<Serializable>) getValueAt(row, 5);
+		Vector v = (Vector) getValueAt(row, 5);
 		v.set(0, (new Boolean(output.isIsArray())));
 		v.set(1, output.getQName().getNamespaceURI());
 		v.set(2, output.getQName().getLocalPart());
@@ -160,12 +153,6 @@ public class OutputTypeTable extends PortalBaseTable {
 
 	public static class MyDefaultTableModel extends DefaultTableModel {
 
-		/**
-		 * Hash code for serialization
-		 */
-		private static final long serialVersionUID = -7384154179140327802L;
-
-
 		public MyDefaultTableModel() {
 			super();
 			addColumn(ISARRAY);
@@ -177,7 +164,7 @@ public class OutputTypeTable extends PortalBaseTable {
 		}
 
 
-		public Class<? extends Object> getColumnClass(int c) {
+		public Class getColumnClass(int c) {
 			return getValueAt(0, c).getClass();
 		}
 	}

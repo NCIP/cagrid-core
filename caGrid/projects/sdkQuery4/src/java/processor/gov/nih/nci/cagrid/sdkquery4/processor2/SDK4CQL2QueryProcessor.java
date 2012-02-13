@@ -70,7 +70,7 @@ public class SDK4CQL2QueryProcessor extends CQL2QueryProcessor {
     private QNameResolver qnameResolver = null;
     private CQL2ToParameterizedHQL cqlTranslator = null;
     private byte[] wsddBytes = null;
-    
+
 
     public SDK4CQL2QueryProcessor() {
         super();

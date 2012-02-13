@@ -68,7 +68,7 @@ public class StemPrivilegesTable extends GrapeBaseTable {
 
 
 	public void addPrivilege(final StemPrivilegeCaddy priv) {
-		Vector<Object> v = new Vector<Object>();
+		Vector v = new Vector();
 		v.add(priv);
 		v.add(priv.getIdentity());
 		v.add(Boolean.valueOf(priv.hasStem()));

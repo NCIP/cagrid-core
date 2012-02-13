@@ -1,13 +1,11 @@
 #!/bin/sh
 
 proxy=off
-debug=off
 while [ $# -gt 0 ]
 do
     case "$1" in
-        -debug)  debug=on;;
         -proxy)  proxy=on;;
-        *) echo "USAGE: ${0##*/} (-proxy) (-debug)"; exit 1;; ## Do nothing; continue with next command
+        *) echo "USAGE: ${0##*/} (-proxy)"; exit 1;; ## Do nothing; continue with next command
     esac
     shift
 done
@@ -32,11 +30,4 @@ then
     #JAVA_OPTS="-Dftp.proxyHost= -Dftp.proxyPort= -Dftp.nonProxyHosts=\"\" $JAVA_OPTS"
 fi
 
-if [ "$debug" == on ]
-then
-    JAVA=jdb
-else
-    JAVA=java
-fi
-echo JAVA:$JAVA
-$JAVA $JAVA_OPTS -classpath caGrid-installer-@CAGRID_VERSION@.jar:lib/ant-contrib-1.0b3.jar:lib/caGrid-wizard-1.5.jar:lib/xmltask-v1.14.jar:lib/commons-logging.jar:lib/log4j-1.2.14.jar org.cagrid.installer.Installer
+java $JAVA_OPTS -jar caGrid-installer-@CAGRID_VERSION@.jar

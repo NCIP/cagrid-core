@@ -1,5 +1,6 @@
 package org.cagrid.gme.test.system;
 
+import gov.nih.nci.cagrid.testing.system.deployment.ServiceContainer;
 import gov.nih.nci.cagrid.testing.system.deployment.ServiceContainerFactory;
 import gov.nih.nci.cagrid.testing.system.deployment.ServiceContainerType;
 import gov.nih.nci.cagrid.testing.system.deployment.steps.CopyServiceStep;
@@ -15,7 +16,6 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.List;
 import java.util.Vector;
 
 import org.apache.axis.message.addressing.EndpointReferenceType;
@@ -44,6 +44,12 @@ public class GlobalModelExchangeStory extends ServiceStoryBase {
     private static final File CAARRAY_TEST_CASE_DIR = new File("resources/schemas/caarray");
     private static final File CAARRAY_TEST_CASE_XML_DIR = new File("resources/xml/caarray");
     private static final File CAARRAY_TEST_CASE_INVALID_XML_DIR = new File("resources/xml/caarray/invalid");
+
+
+
+    public GlobalModelExchangeStory(ServiceContainer container) {
+        super(container);
+    }
 
 
     public GlobalModelExchangeStory() {
@@ -91,9 +97,8 @@ public class GlobalModelExchangeStory extends ServiceStoryBase {
         steps.add(new SetDatabasePropertiesStep(tempGMEServiceDir));
         steps.add(new CreateDatabaseStep(tempGMEServiceDir));
 
-		List<String> args = Arrays.asList(new String[] {
-	            "-Dno.deployment.validation=true", "-Dperform.index.service.registration=false"});
-        DeployServiceStep deployStep = new DeployServiceStep(getContainer(), tempGMEServiceDir.getAbsolutePath(), args);
+        DeployServiceStep deployStep = new DeployServiceStep(getContainer(), tempGMEServiceDir.getAbsolutePath(),
+            Arrays.asList(new String[]{"-Dno.deployment.validation=true"}));
         steps.add(deployStep);
         steps.add(new StartContainerStep(getContainer()));
 

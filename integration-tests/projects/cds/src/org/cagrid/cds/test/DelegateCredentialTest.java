@@ -19,6 +19,7 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
@@ -247,7 +248,7 @@ public class DelegateCredentialTest extends ServiceStoryBase {
         //Copy Dorian CA File into CDS 
         this.caFile = new File(cdsContainer.getProperties().getContainerDirectory()
 				+ File.separator + "certificates" + File.separator + "ca" + File.separator
-				+ "DorianTestCA.0");
+				+ "DorianTest_ca.1");
         steps.add(new DorianAddTrustedCAStep(this.caFile, dorianServiceURL));
         
         // Start CDS container

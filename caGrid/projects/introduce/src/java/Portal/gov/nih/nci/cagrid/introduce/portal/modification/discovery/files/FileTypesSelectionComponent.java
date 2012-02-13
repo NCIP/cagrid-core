@@ -35,12 +35,7 @@ import org.jdom.Document;
 
 public class FileTypesSelectionComponent extends NamespaceTypeDiscoveryComponent {
 
-    /**
-	 * Hash code for serialization
-	 */
-	private static final long serialVersionUID = -4223930188197425505L;
-
-	private static final Logger logger = Logger.getLogger(FileTypesSelectionComponent.class);
+    private static final Logger logger = Logger.getLogger(FileTypesSelectionComponent.class);
 
     public static String IMPORT_SCHEMA = "import";
     public static String INCLUDE_SCHEMA = "include";
@@ -70,8 +65,7 @@ public class FileTypesSelectionComponent extends NamespaceTypeDiscoveryComponent
         }
 
 
-        @SuppressWarnings("unused")
-		public void setSchemaType(String schemaType) {
+        public void setSchemaType(String schemaType) {
             this.schemaType = schemaType;
         }
 
@@ -102,8 +96,7 @@ public class FileTypesSelectionComponent extends NamespaceTypeDiscoveryComponent
         }
 
 
-        @SuppressWarnings("unused")
-		public void setNamespace(String namespace) {
+        public void setNamespace(String namespace) {
             this.namespace = namespace;
         }
 
@@ -224,12 +217,12 @@ public class FileTypesSelectionComponent extends NamespaceTypeDiscoveryComponent
                 return null;
             }
 
-            boolean result = checkAgainstPolicy(this.currentFile, new HashSet<String>(), replacementPolicy);
+            boolean result = checkAgainstPolicy(this.currentFile, new HashSet(), replacementPolicy);
             if (result == false) {
                 return null;
             }
 
-            List<NamespaceType> namespaces = new ArrayList<NamespaceType>();
+            List namespaces = new ArrayList();
 
             try {
                 SchemaValidator.verify(this.currentFile);
@@ -244,13 +237,13 @@ public class FileTypesSelectionComponent extends NamespaceTypeDiscoveryComponent
                 needToCopy = false;
             }
 
-            List<SchemaInfo> storedSchemas = new LinkedList<SchemaInfo>();
+            List storedSchemas = new LinkedList();
             processSchemas(new SchemaInfo(this.currentFile, this.currentNamespace), schemaDestinationDir,
-                new HashSet<String>(), storedSchemas, replacementPolicy, needToCopy);
+                new HashSet(), storedSchemas, replacementPolicy, needToCopy);
 
-            Iterator<SchemaInfo> schemaFileIter = storedSchemas.iterator();
+            Iterator schemaFileIter = storedSchemas.iterator();
             while (schemaFileIter.hasNext()) {
-                SchemaInfo info = schemaFileIter.next();
+                SchemaInfo info = ((SchemaInfo) schemaFileIter.next());
                 File storedSchemaFile = new File(info.getFilename());
 
                 if (info.getSchemaType() == null || !info.getSchemaType().equals(INCLUDE_SCHEMA)) {
@@ -280,7 +273,7 @@ public class FileTypesSelectionComponent extends NamespaceTypeDiscoveryComponent
     }
 
 
-    private boolean checkAgainstPolicy(String fileName, Set<String> visitedSchemas, NamespaceReplacementPolicy replacementPolicy) {
+    private boolean checkAgainstPolicy(String fileName, Set visitedSchemas, NamespaceReplacementPolicy replacementPolicy) {
         try {
             File schemaFile = new File(fileName);
 
@@ -288,8 +281,7 @@ public class FileTypesSelectionComponent extends NamespaceTypeDiscoveryComponent
             Document schema = XMLUtilities.fileNameToDocument(schemaFile.getCanonicalPath());
             visitedSchemas.add(schemaFile.getCanonicalPath());
 
-            @SuppressWarnings("rawtypes")
-			List importEls = schema.getRootElement().getChildren("import",
+            List importEls = schema.getRootElement().getChildren("import",
                 schema.getRootElement().getNamespace(IntroduceConstants.W3CNAMESPACE));
             if (importEls != null) {
                 for (int i = 0; i < importEls.size(); i++) {
@@ -339,7 +331,7 @@ public class FileTypesSelectionComponent extends NamespaceTypeDiscoveryComponent
     }
 
 
-    public void processSchemas(SchemaInfo currentSchema, File copyToDirectory, Set<String> visitedSchemas, List<SchemaInfo> storedSchemas,
+    public void processSchemas(SchemaInfo currentSchema, File copyToDirectory, Set visitedSchemas, List storedSchemas,
         NamespaceReplacementPolicy replacementPolicy, boolean copy) throws Exception {
         File schemaFile = new File(currentSchema.getFilename());
         Document schema = XMLUtilities.fileNameToDocument(schemaFile.getCanonicalPath());
@@ -360,8 +352,7 @@ public class FileTypesSelectionComponent extends NamespaceTypeDiscoveryComponent
         }
 
         // Look for redefines
-        @SuppressWarnings("rawtypes")
-		List redefineEls = schema.getRootElement().getChildren("redefine",
+        List redefineEls = schema.getRootElement().getChildren("redefine",
             schema.getRootElement().getNamespace(IntroduceConstants.W3CNAMESPACE));
         if (redefineEls != null) {
             for (int i = 0; i < redefineEls.size(); i++) {
@@ -394,8 +385,7 @@ public class FileTypesSelectionComponent extends NamespaceTypeDiscoveryComponent
         }
 
         // Look for includes
-        @SuppressWarnings("rawtypes")
-		List includeEls = schema.getRootElement().getChildren("include",
+        List includeEls = schema.getRootElement().getChildren("include",
             schema.getRootElement().getNamespace(IntroduceConstants.W3CNAMESPACE));
         if (includeEls != null) {
             for (int i = 0; i < includeEls.size(); i++) {
@@ -428,8 +418,7 @@ public class FileTypesSelectionComponent extends NamespaceTypeDiscoveryComponent
         }
 
         // look for imports
-        @SuppressWarnings("rawtypes")
-		List importEls = schema.getRootElement().getChildren("import",
+        List importEls = schema.getRootElement().getChildren("import",
             schema.getRootElement().getNamespace(IntroduceConstants.W3CNAMESPACE));
         if (importEls != null) {
             for (int i = 0; i < importEls.size(); i++) {

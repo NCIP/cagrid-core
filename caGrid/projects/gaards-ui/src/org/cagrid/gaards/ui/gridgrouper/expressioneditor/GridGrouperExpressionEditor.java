@@ -41,7 +41,6 @@ import org.globus.gsi.GlobusCredential;
  * @author Shannon Hastings</A>
  * @author David W. Ervin</A>
  */
-@SuppressWarnings("deprecation")
 public class GridGrouperExpressionEditor extends JPanel {
 
 	private static final String EXPRESSION_EDITOR = "ExpressionEditor"; // @jve:decl-index=0:
@@ -114,12 +113,12 @@ public class GridGrouperExpressionEditor extends JPanel {
 
 	private JButton loadGridGrouper = null;
 
-	private List<String> gridGrouperURIs;
+	private List gridGrouperURIs;
 
 	/**
 	 * This is the default constructor
 	 */
-	public GridGrouperExpressionEditor(List<String> gridGrouperURIs,
+	public GridGrouperExpressionEditor(List gridGrouperURIs,
 			boolean loadOnStartup) {
 		super();
 		this.gridGrouperURIs = gridGrouperURIs;
@@ -138,7 +137,7 @@ public class GridGrouperExpressionEditor extends JPanel {
 		}
 	}
 
-	public GridGrouperExpressionEditor(List<String> gridGrouperURIs,
+	public GridGrouperExpressionEditor(List gridGrouperURIs,
 			boolean loadOnStartup, MembershipExpression expression) {
 		super();
 		this.gridGrouperURIs = gridGrouperURIs;

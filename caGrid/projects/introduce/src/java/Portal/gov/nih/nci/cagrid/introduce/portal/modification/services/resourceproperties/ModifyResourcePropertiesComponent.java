@@ -1,5 +1,8 @@
 package gov.nih.nci.cagrid.introduce.portal.modification.services.resourceproperties;
 
+import gov.nih.nci.cagrid.introduce.beans.namespace.NamespacesType;
+import gov.nih.nci.cagrid.introduce.beans.service.ServiceType;
+import gov.nih.nci.cagrid.introduce.common.ServiceInformation;
 import gov.nih.nci.cagrid.introduce.common.SpecificServiceInformation;
 import gov.nih.nci.cagrid.introduce.portal.common.IntroduceLookAndFeel;
 
@@ -7,6 +10,7 @@ import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.io.File;
 
 import javax.swing.JButton;
 import javax.swing.JDialog;
@@ -16,18 +20,13 @@ import org.cagrid.grape.GridApplication;
 
 public class ModifyResourcePropertiesComponent extends JDialog {
 
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = -5647255948976683946L;
-
 	private JPanel mainPanel = null;
 
 	private JPanel resourcesPanel = null;
 
 	private JPanel buttonPanel = null;
 
-	//private NamespacesType namespaces;
+	private NamespacesType namespaces;
 
 	private JButton doneButton = null;
 

@@ -1,123 +1,126 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
-	<classpathentry kind="src" path="src/java/style"/>
-	<classpathentry kind="src" path="build/beans/src"/>
-	<classpathentry kind="src" path="src/java/processor"/>
-	<classpathentry kind="src" path="test/src/java"/>
-	<classpathentry kind="src" path="build/remote-client/conf"/>
-	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
-	<classpathentry kind="con" path="org.eclipse.jdt.junit.JUNIT_CONTAINER/4"/>
-	<classpathentry kind="var" path="GT4_LOCATION/lib/addressing-1.0.jar"/>
-	<classpathentry kind="var" path="GT4_LOCATION/lib/axis.jar"/>
-	<classpathentry kind="var" path="GT4_LOCATION/lib/axis-url.jar"/>
-	<classpathentry kind="var" path="GT4_LOCATION/lib/bootstrap.jar"/>
-	
-	<classpathentry kind="var" path="GT4_LOCATION/lib/JGlobus-Core-2.0.3.jar"/>
-	<classpathentry kind="var" path="GT4_LOCATION/lib/cog-jglobus-compat-0.0.1-SNAPSHOT.jar"/>
-	
-	<classpathentry kind="var" path="GT4_LOCATION/lib/commonj.jar"/>
-	<classpathentry kind="var" path="GT4_LOCATION/lib/commons-beanutils.jar"/>
-	<classpathentry kind="var" path="GT4_LOCATION/lib/commons-cli-2.0.jar"/>
-	<classpathentry kind="var" path="GT4_LOCATION/lib/commons-collections-3.0.jar"/>
-	<classpathentry kind="var" path="GT4_LOCATION/lib/commons-digester.jar"/>
-	<classpathentry kind="var" path="GT4_LOCATION/lib/commons-discovery.jar"/>
-	<classpathentry kind="var" path="GT4_LOCATION/lib/commons-logging-1.1.jar"/>
-	<classpathentry kind="var" path="GT4_LOCATION/lib/concurrent.jar"/>
-	
-	
-	
-	<classpathentry kind="var" path="GT4_LOCATION/lib/globus_resolution_service.jar"/>
-	<classpathentry kind="var" path="GT4_LOCATION/lib/globus_resolution_stubs_java.jar"/>
-	<classpathentry kind="var" path="GT4_LOCATION/lib/globus_resolution_test.jar"/>
-	<classpathentry kind="var" path="GT4_LOCATION/lib/globus_transfer_service.jar"/>
-	<classpathentry kind="var" path="GT4_LOCATION/lib/globus_transfer_stubs_java.jar"/>
-	<classpathentry kind="var" path="GT4_LOCATION/lib/globus_transfer_test.jar"/>
-	<classpathentry kind="var" path="GT4_LOCATION/lib/globus_usage_core.jar"/>
-	<classpathentry kind="var" path="GT4_LOCATION/lib/globus_usage_packets_common.jar"/>
-	<classpathentry kind="var" path="GT4_LOCATION/lib/globus_wsrf_tools_test.jar"/>
-	<classpathentry kind="var" path="GT4_LOCATION/lib/jaxrpc.jar"/>
-	<classpathentry kind="var" path="GT4_LOCATION/lib/bcprov-jdk15-145.jar"/>
-	<classpathentry kind="var" path="GT4_LOCATION/lib/jgss.jar"/>
-	<classpathentry kind="var" path="GT4_LOCATION/lib/log4j-1.2.14.jar"/>
-	<classpathentry kind="var" path="GT4_LOCATION/lib/naming-common.jar"/>
-	<classpathentry kind="var" path="GT4_LOCATION/lib/naming-factory.jar"/>
-	<classpathentry kind="var" path="GT4_LOCATION/lib/naming-java.jar"/>
-	<classpathentry kind="var" path="GT4_LOCATION/lib/naming-resources.jar"/>
-	<classpathentry kind="var" path="GT4_LOCATION/lib/opensaml.jar"/>
-	
-	<classpathentry kind="var" path="GT4_LOCATION/lib/resolver.jar"/>
-	<classpathentry kind="var" path="GT4_LOCATION/lib/saaj.jar"/>
-	<classpathentry kind="var" path="GT4_LOCATION/lib/servlet.jar"/>
-	<classpathentry kind="var" path="GT4_LOCATION/lib/wsdl4j.jar"/>
-	<classpathentry kind="var" path="GT4_LOCATION/lib/wsrf_common.jar"/>
-	<classpathentry kind="var" path="GT4_LOCATION/lib/wsrf_core_registry_stubs.jar"/>
-	<classpathentry kind="var" path="GT4_LOCATION/lib/wsrf_core_registry.jar"/>
-	<classpathentry kind="var" path="GT4_LOCATION/lib/wsrf_core_samples_authzService_stubs.jar"/>
-	<classpathentry kind="var" path="GT4_LOCATION/lib/wsrf_core_samples_authzService.jar"/>
-	<classpathentry kind="var" path="GT4_LOCATION/lib/wsrf_core_samples_counter_stubs.jar"/>
-	<classpathentry kind="var" path="GT4_LOCATION/lib/wsrf_core_samples_counter.jar"/>
-	<classpathentry kind="var" path="GT4_LOCATION/lib/wsrf_core_samples_mgmt_stubs.jar"/>
-	<classpathentry kind="var" path="GT4_LOCATION/lib/wsrf_core_samples_mgmt.jar"/>
-	<classpathentry kind="var" path="GT4_LOCATION/lib/wsrf_core_stubs.jar"/>
-	<classpathentry kind="var" path="GT4_LOCATION/lib/wsrf_core.jar"/>
-	<classpathentry kind="var" path="GT4_LOCATION/lib/wsrf_provider_jce.jar"/>
-	<classpathentry kind="var" path="GT4_LOCATION/lib/wsrf_test_interop_stubs.jar"/>
-	<classpathentry kind="var" path="GT4_LOCATION/lib/wsrf_test_interop.jar"/>
-	<classpathentry kind="var" path="GT4_LOCATION/lib/wsrf_test_unit_stubs.jar"/>
-	<classpathentry kind="var" path="GT4_LOCATION/lib/wsrf_test_unit.jar"/>
-	<classpathentry kind="var" path="GT4_LOCATION/lib/wsrf_test.jar"/>
-	<classpathentry kind="var" path="GT4_LOCATION/lib/wsrf_tools.jar"/>
-	<classpathentry kind="var" path="GT4_LOCATION/lib/wss4j.jar"/>
-	<classpathentry kind="var" path="GT4_LOCATION/lib/xercesImpl.jar"/>
-	<classpathentry kind="var" path="GT4_LOCATION/lib/xml-apis.jar"/>
-	<classpathentry kind="var" path="GT4_LOCATION/lib/xmlsec.jar"/>
-	<classpathentry kind="lib" path="build/remote-client/lib/antlr-2.7.6.jar"/>
-	<classpathentry kind="lib" path="build/remote-client/lib/example40-beans.jar"/>
-	<classpathentry kind="lib" path="build/remote-client/lib/hibernate3.jar"/>
-	<classpathentry kind="lib" path="build/remote-client/lib/sdk-client-framework.jar"/>
-	<classpathentry kind="lib" path="build/remote-client/lib/spring.jar"/>
-	<classpathentry kind="lib" path="ext/dependencies/jars/caGrid-core-1.5.jar"/>
-	<classpathentry kind="lib" path="ext/dependencies/jars/caGrid-CQL-cql.1.0-1.5.jar"/>
-	<classpathentry kind="lib" path="ext/dependencies/jars/caGrid-data-common-1.5.jar"/>
-	<classpathentry kind="lib" path="ext/dependencies/jars/caGrid-data-cql-1.5.jar"/>
-	<classpathentry kind="lib" path="ext/dependencies/jars/caGrid-dataExtensions-core-1.5.jar"/>
-	<classpathentry kind="lib" path="ext/dependencies/jars/caGrid-dataExtensions-sdkstyle-1.5.jar"/>
-	<classpathentry kind="lib" path="ext/dependencies/jars/caGrid-dataExtensions-ui-1.5.jar"/>
-	<classpathentry kind="lib" path="ext/dependencies/jars/caGrid-data-stubs-1.5.jar"/>
-	<classpathentry kind="lib" path="ext/dependencies/jars/caGrid-grape-1.5.jar"/>
-	<classpathentry kind="lib" path="ext/dependencies/jars/caGrid-grape-resources-1.5.jar"/>
-	<classpathentry kind="lib" path="ext/dependencies/jars/caGrid-Introduce-core-1.5.jar"/>
-	<classpathentry kind="lib" path="ext/dependencies/jars/caGrid-Introduce-portal-1.5.jar"/>
-	<classpathentry kind="lib" path="ext/dependencies/jars/caGrid-Introduce-updater-1.5.jar"/>
-	<classpathentry kind="lib" path="ext/dependencies/jars/caGrid-metadata-common-1.5.jar"/>
-	<classpathentry kind="lib" path="ext/dependencies/jars/caGrid-metadata-security-1.5.jar"/>
-	<classpathentry kind="lib" path="ext/dependencies/jars/caGrid-ServiceSecurityProvider-client-1.5.jar"/>
-	<classpathentry kind="lib" path="ext/dependencies/jars/caGrid-ServiceSecurityProvider-common-1.5.jar"/>
-	<classpathentry kind="lib" path="ext/dependencies/jars/caGrid-ServiceSecurityProvider-service-1.5.jar"/>
-	<classpathentry kind="lib" path="ext/dependencies/jars/caGrid-ServiceSecurityProvider-stubs-1.5.jar"/>
-	<classpathentry kind="lib" path="ext/dependencies/jars/validation-2.0.0.jar"/>
-	<classpathentry kind="lib" path="ext/dependencies/test/jars/caGrid-core-tests-1.5.jar"/>
-	<classpathentry kind="lib" path="ext/dependencies/test/jars/caGrid-data-tests-1.5.jar"/>
-	<classpathentry kind="lib" path="ext/dependencies/test/jars/caGrid-testing-core-1.5.jar"/>
-	<classpathentry kind="lib" path="ext/dependencies/test/jars/caGrid-testing-system-1.5.jar"/>
-	<classpathentry kind="lib" path="ext/dependencies/jars/caGrid-globalModelExchange-ui-1.5.jar"/>
-	<classpathentry kind="lib" path="ext/dependencies/jars/caGrid-globalModelExchange-client-1.5.jar"/>
-	<classpathentry kind="lib" path="ext/dependencies/jars/caGrid-globalModelExchange-common-1.5.jar"/>
-	<classpathentry kind="lib" path="ext/dependencies/jars/caGrid-globalModelExchange-stubs-1.5.jar"/>
-	<classpathentry kind="lib" path="ext/dependencies/jars/caGrid-CQL-cql.2.0-1.5.jar"/>
-	<classpathentry kind="lib" path="ext/dependencies/jars/caGrid-sdk4xCQL2-processor-1.5.jar"/>
-	<classpathentry kind="lib" path="ext/dependencies/jars/jdom-1.1.jar"/>
-	<classpathentry kind="lib" path="build/remote-client/lib/asm.jar"/>
-	<classpathentry kind="lib" path="build/remote-client/lib/cglib-2.1.3.jar"/>
-	<classpathentry kind="lib" path="build/remote-client/lib/commons-codec-1.3.jar"/>
-	<classpathentry kind="lib" path="build/remote-client/lib/commons-collections-3.2.jar"/>
-	<classpathentry kind="lib" path="build/remote-client/lib/commons-logging-1.1.jar"/>
-	<classpathentry kind="lib" path="build/remote-client/lib/xercesImpl.jar"/>
-	<classpathentry kind="lib" path="build/local-client/lib/example40-orm.jar"/>
-	<classpathentry kind="lib" path="ext/dependencies/jars/caGrid-data-utils-1.5.jar"/>
-	<classpathentry kind="lib" path="ext/dependencies/jars/caGrid-data-service-1.5.jar"/>
-	<classpathentry kind="lib" path="ext/dependencies/jars/caGrid-metadatautils-1.5.jar"/>
-	<classpathentry kind="lib" path="ext/dependencies/jars/caGrid-CQL-utils-1.5.jar"/>
-	<classpathentry kind="lib" path="ext/dependencies/jars/castor-1.0.2.jar"/>
-	<classpathentry kind="output" path="bin"/>
+  <classpathentry kind="src" path="src/java/style" />
+  <classpathentry kind="src" path="build/beans/src" />
+  <classpathentry kind="src" path="src/java/processor" />
+  <classpathentry kind="src" path="test/src/java" />
+  <classpathentry kind="src" path="build/remote-client/conf" />
+  <classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER" />
+  <classpathentry kind="var" path="GT4_LOCATION/lib/addressing-1.0.jar" />
+  <classpathentry kind="var" path="GT4_LOCATION/lib/axis.jar" />
+  <classpathentry kind="var" path="GT4_LOCATION/lib/axis-url.jar" />
+  <classpathentry kind="var" path="GT4_LOCATION/lib/bootstrap.jar" />
+  <classpathentry kind="var" path="GT4_LOCATION/lib/cog-axis.jar" />
+  <classpathentry kind="var" path="GT4_LOCATION/lib/cog-jglobus.jar" />
+  <classpathentry kind="var" path="GT4_LOCATION/lib/cog-tomcat.jar" />
+  <classpathentry kind="var" path="GT4_LOCATION/lib/cog-url.jar" />
+  <classpathentry kind="var" path="GT4_LOCATION/lib/commonj.jar" />
+  <classpathentry kind="var" path="GT4_LOCATION/lib/commons-beanutils.jar" />
+  <classpathentry kind="var" path="GT4_LOCATION/lib/commons-cli-2.0.jar" />
+  <classpathentry kind="var" path="GT4_LOCATION/lib/commons-collections-3.0.jar" />
+  <classpathentry kind="var" path="GT4_LOCATION/lib/commons-digester.jar" />
+  <classpathentry kind="var" path="GT4_LOCATION/lib/commons-discovery.jar" />
+  <classpathentry kind="var" path="GT4_LOCATION/lib/commons-logging.jar" />
+  <classpathentry kind="var" path="GT4_LOCATION/lib/concurrent.jar" />
+  <classpathentry kind="var" path="GT4_LOCATION/lib/cryptix.jar" />
+  <classpathentry kind="var" path="GT4_LOCATION/lib/cryptix32.jar" />
+  <classpathentry kind="var" path="GT4_LOCATION/lib/cryptix-asn1.jar" />
+  <classpathentry kind="var" path="GT4_LOCATION/lib/globus_resolution_service.jar" />
+  <classpathentry kind="var" path="GT4_LOCATION/lib/globus_resolution_stubs_java.jar" />
+  <classpathentry kind="var" path="GT4_LOCATION/lib/globus_resolution_test.jar" />
+  <classpathentry kind="var" path="GT4_LOCATION/lib/globus_transfer_service.jar" />
+  <classpathentry kind="var" path="GT4_LOCATION/lib/globus_transfer_stubs_java.jar" />
+  <classpathentry kind="var" path="GT4_LOCATION/lib/globus_transfer_test.jar" />
+  <classpathentry kind="var" path="GT4_LOCATION/lib/globus_usage_core.jar" />
+  <classpathentry kind="var" path="GT4_LOCATION/lib/globus_usage_packets_common.jar" />
+  <classpathentry kind="var" path="GT4_LOCATION/lib/globus_wsrf_tools_test.jar" />
+  <classpathentry kind="var" path="GT4_LOCATION/lib/jaxrpc.jar" />
+  <classpathentry kind="var" path="GT4_LOCATION/lib/jce-jdk13-125.jar" />
+  <classpathentry kind="var" path="GT4_LOCATION/lib/jgss.jar" />
+  <classpathentry kind="var" path="GT4_LOCATION/lib/junit.jar" />
+  <classpathentry kind="var" path="GT4_LOCATION/lib/log4j-1.2.8.jar" />
+  <classpathentry kind="var" path="GT4_LOCATION/lib/naming-common.jar" />
+  <classpathentry kind="var" path="GT4_LOCATION/lib/naming-factory.jar" />
+  <classpathentry kind="var" path="GT4_LOCATION/lib/naming-java.jar" />
+  <classpathentry kind="var" path="GT4_LOCATION/lib/naming-resources.jar" />
+  <classpathentry kind="var" path="GT4_LOCATION/lib/opensaml.jar" />
+  <classpathentry kind="var" path="GT4_LOCATION/lib/puretls.jar" />
+  <classpathentry kind="var" path="GT4_LOCATION/lib/resolver.jar" />
+  <classpathentry kind="var" path="GT4_LOCATION/lib/saaj.jar" />
+  <classpathentry kind="var" path="GT4_LOCATION/lib/servlet.jar" />
+  <classpathentry kind="var" path="GT4_LOCATION/lib/wsdl4j.jar" />
+  <classpathentry kind="var" path="GT4_LOCATION/lib/wsrf_common.jar" />
+  <classpathentry kind="var" path="GT4_LOCATION/lib/wsrf_core_registry_stubs.jar" />
+  <classpathentry kind="var" path="GT4_LOCATION/lib/wsrf_core_registry.jar" />
+  <classpathentry kind="var" path="GT4_LOCATION/lib/wsrf_core_samples_authzService_stubs.jar" />
+  <classpathentry kind="var" path="GT4_LOCATION/lib/wsrf_core_samples_authzService.jar" />
+  <classpathentry kind="var" path="GT4_LOCATION/lib/wsrf_core_samples_counter_stubs.jar" />
+  <classpathentry kind="var" path="GT4_LOCATION/lib/wsrf_core_samples_counter.jar" />
+  <classpathentry kind="var" path="GT4_LOCATION/lib/wsrf_core_samples_mgmt_stubs.jar" />
+  <classpathentry kind="var" path="GT4_LOCATION/lib/wsrf_core_samples_mgmt.jar" />
+  <classpathentry kind="var" path="GT4_LOCATION/lib/wsrf_core_stubs.jar" />
+  <classpathentry kind="var" path="GT4_LOCATION/lib/wsrf_core.jar" />
+  <classpathentry kind="var" path="GT4_LOCATION/lib/wsrf_provider_jce.jar" />
+  <classpathentry kind="var" path="GT4_LOCATION/lib/wsrf_test_interop_stubs.jar" />
+  <classpathentry kind="var" path="GT4_LOCATION/lib/wsrf_test_interop.jar" />
+  <classpathentry kind="var" path="GT4_LOCATION/lib/wsrf_test_unit_stubs.jar" />
+  <classpathentry kind="var" path="GT4_LOCATION/lib/wsrf_test_unit.jar" />
+  <classpathentry kind="var" path="GT4_LOCATION/lib/wsrf_test.jar" />
+  <classpathentry kind="var" path="GT4_LOCATION/lib/wsrf_tools.jar" />
+  <classpathentry kind="var" path="GT4_LOCATION/lib/wss4j.jar" />
+  <classpathentry kind="var" path="GT4_LOCATION/lib/xercesImpl.jar" />
+  <classpathentry kind="var" path="GT4_LOCATION/lib/xml-apis.jar" />
+  <classpathentry kind="var" path="GT4_LOCATION/lib/xmlsec.jar" />
+  <classpathentry kind="lib" path="build/remote-client/lib/antlr-2.7.6.jar" />
+  <classpathentry kind="lib" path="build/remote-client/lib/example40-beans.jar" />
+  <classpathentry kind="lib" path="build/remote-client/lib/hibernate3.jar" />
+  <classpathentry kind="lib" path="build/remote-client/lib/sdk-client-framework.jar" />
+  <classpathentry kind="lib" path="build/remote-client/lib/spring.jar" />
+  <classpathentry kind="lib" path="build/remote-client/lib/castor-1.0.2.jar" />
+  <classpathentry kind="lib" path="ext/dependencies/jars/caGrid-core-1.4.1.jar" />
+  <classpathentry kind="lib" path="ext/dependencies/jars/caGrid-CQL-cql.1.0-1.4.1.jar" />
+  <classpathentry kind="lib" path="ext/dependencies/jars/caGrid-data-common-1.4.1.jar" />
+  <classpathentry kind="lib" path="ext/dependencies/jars/caGrid-data-cql-1.4.1.jar" />
+  <classpathentry kind="lib" path="ext/dependencies/jars/caGrid-dataExtensions-core-1.4.1.jar" />
+  <classpathentry kind="lib" path="ext/dependencies/jars/caGrid-dataExtensions-sdkstyle-1.4.1.jar" />
+  <classpathentry kind="lib" path="ext/dependencies/jars/caGrid-dataExtensions-ui-1.4.1.jar" />
+  <classpathentry kind="lib" path="ext/dependencies/jars/caGrid-data-stubs-1.4.1.jar" />
+  <classpathentry kind="lib" path="ext/dependencies/jars/caGrid-grape-1.4.1.jar" />
+  <classpathentry kind="lib" path="ext/dependencies/jars/caGrid-grape-resources-1.4.1.jar" />
+  <classpathentry kind="lib" path="ext/dependencies/jars/caGrid-Introduce-core-1.4.1.jar" />
+  <classpathentry kind="lib" path="ext/dependencies/jars/caGrid-Introduce-portal-1.4.1.jar" />
+  <classpathentry kind="lib" path="ext/dependencies/jars/caGrid-Introduce-updater-1.4.1.jar" />
+  <classpathentry kind="lib" path="ext/dependencies/jars/caGrid-metadata-common-1.4.1.jar" />
+  <classpathentry kind="lib" path="ext/dependencies/jars/caGrid-metadata-security-1.4.1.jar" />
+  <classpathentry kind="lib" path="ext/dependencies/jars/caGrid-ServiceSecurityProvider-client-1.4.1.jar" />
+  <classpathentry kind="lib" path="ext/dependencies/jars/caGrid-ServiceSecurityProvider-common-1.4.1.jar" />
+  <classpathentry kind="lib" path="ext/dependencies/jars/caGrid-ServiceSecurityProvider-service-1.4.1.jar" />
+  <classpathentry kind="lib" path="ext/dependencies/jars/caGrid-ServiceSecurityProvider-stubs-1.4.1.jar" />
+  <classpathentry kind="lib" path="ext/dependencies/jars/validation-2.0.0.jar" />
+  <classpathentry kind="lib" path="ext/dependencies/test/jars/caGrid-core-tests-1.4.1.jar" />
+  <classpathentry kind="lib" path="ext/dependencies/test/jars/caGrid-data-tests-1.4.1.jar" />
+  <classpathentry kind="lib" path="ext/dependencies/test/jars/caGrid-testing-core-1.4.1.jar" />
+  <classpathentry kind="lib" path="ext/dependencies/test/jars/caGrid-testing-system-1.4.1.jar" />
+  <classpathentry kind="lib" path="ext/dependencies/jars/caGrid-globalModelExchange-ui-1.4.1.jar" />
+  <classpathentry kind="lib" path="ext/dependencies/jars/caGrid-globalModelExchange-client-1.4.1.jar" />
+  <classpathentry kind="lib" path="ext/dependencies/jars/caGrid-globalModelExchange-common-1.4.1.jar" />
+  <classpathentry kind="lib" path="ext/dependencies/jars/caGrid-globalModelExchange-stubs-1.4.1.jar" />
+  <classpathentry kind="lib" path="ext/dependencies/jars/caGrid-CQL-cql.2.0-1.4.1.jar" />
+  <classpathentry kind="lib" path="ext/dependencies/jars/caGrid-sdk4xCQL2-processor-1.4.1.jar" />
+  <classpathentry kind="lib" path="ext/dependencies/jars/jdom-1.0.jar" />
+  <classpathentry kind="lib" path="build/remote-client/lib/acegi-security-1.0.4.jar" />
+  <classpathentry kind="lib" path="build/remote-client/lib/asm.jar" />
+  <classpathentry kind="lib" path="build/remote-client/lib/cglib-2.1.3.jar" />
+  <classpathentry kind="lib" path="build/remote-client/lib/commons-codec-1.3.jar" />
+  <classpathentry kind="lib" path="build/remote-client/lib/commons-collections-3.2.jar" />
+  <classpathentry kind="lib" path="build/remote-client/lib/commons-logging-1.1.jar" />
+  <classpathentry kind="lib" path="build/remote-client/lib/log4j-1.2.14.jar" />
+  <classpathentry kind="lib" path="build/remote-client/lib/xercesImpl.jar" />
+  <classpathentry kind="lib" path="build/local-client/lib/example40-orm.jar" />
+  <classpathentry kind="lib" path="ext/dependencies/jars/caGrid-data-utils-1.4.1.jar" />
+  <classpathentry kind="lib" path="ext/dependencies/jars/caGrid-data-service-1.4.1.jar" />
+  <classpathentry kind="lib" path="ext/dependencies/jars/caGrid-metadatautils-1.4.1.jar" />
+  <classpathentry kind="lib" path="ext/dependencies/jars/caGrid-CQL-utils-1.4.1.jar" />
+  <classpathentry kind="output" path="bin" />
 </classpath>
+

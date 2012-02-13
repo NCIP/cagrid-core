@@ -50,8 +50,6 @@ public class TomcatSecureServiceContainer extends TomcatServiceContainer impleme
         File hostKey = new File(getCertificatesDirectory(), "localhost_key.pem");
         File hostCert = new File(getCertificatesDirectory(), "localhost_cert.pem");
         File caCertDir = new File(getCertificatesDirectory(), "ca");
-        System.setProperty("X509_CERT_DIR", caCertDir.getAbsolutePath());
-        
         // fix the security configuration
         Element securityConfigElement = descriptorDocument.getRootElement();
         Element credentialElement = securityConfigElement.getChild("credential", securityConfigElement.getNamespace());
@@ -100,8 +98,9 @@ public class TomcatSecureServiceContainer extends TomcatServiceContainer impleme
                 if (o instanceof Element) {
                     Element e = (Element) o;
                     if (e.getName().equals("Connector")) {
-                        String classNameValue = e.getAttributeValue("socketFactory");
-                        if ("org.globus.tomcat.catalina.net.BaseHTTPSServerSocketFactory".equals(classNameValue)) {
+                        // className="org.globus.tomcat.coyote.net.HTTPSConnector"
+                        String classNameValue = e.getAttributeValue("className");
+                        if ("org.globus.tomcat.coyote.net.HTTPSConnector".equals(classNameValue)) {
                             return true;
                         }
                     }
@@ -121,7 +120,7 @@ public class TomcatSecureServiceContainer extends TomcatServiceContainer impleme
         try {
             connector.setAttribute("cert", hostCert.getCanonicalPath().replace(File.separatorChar, '/'));
             connector.setAttribute("key", hostKey.getCanonicalPath().replace(File.separatorChar, '/'));
-            //connector.setAttribute("cacertdir", caCertDir.getCanonicalPath().replace(File.separatorChar, '/'));
+            connector.setAttribute("cacertdir", caCertDir.getCanonicalPath().replace(File.separatorChar, '/'));
         } catch (IOException ex) {
             throw new ContainerException("Error configuring HTTPS connector: " + ex.getMessage(), ex);
         }

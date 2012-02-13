@@ -43,7 +43,7 @@ public class StatusBase {
     private String status = "";
     private StringBuilder description = null;
     private String name = "";
-    private List<Issue> issues;
+    private List issues;
  
     
     public StatusBase(String name, String type, String fromVersion, String toVersion){
@@ -52,12 +52,12 @@ public class StatusBase {
         this.fromVersion = fromVersion;
         this.toVersion = toVersion;
         this.description = new StringBuilder();
-        this.issues = new ArrayList<Issue>();
+        this.issues = new ArrayList();
     }
     
     public StatusBase() {
         this.description = new StringBuilder();
-        this.issues = new ArrayList<Issue>();
+        this.issues = new ArrayList();
     }
     
     public String getStatus() {
@@ -80,7 +80,7 @@ public class StatusBase {
         this.issues.add(new Issue(issue,resolution));
     }
     
-    public List<Issue> getIssues(){
+    public List getIssues(){
         return this.issues;
     }
 

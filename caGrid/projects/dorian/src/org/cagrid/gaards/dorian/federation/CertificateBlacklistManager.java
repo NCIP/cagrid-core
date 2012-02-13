@@ -3,8 +3,7 @@ package org.cagrid.gaards.dorian.federation;
 import gov.nih.nci.cagrid.common.FaultHelper;
 
 import java.io.IOException;
-import java.security.NoSuchProviderException;
-import java.security.cert.CertificateException;
+import java.security.GeneralSecurityException;
 import java.security.cert.X509Certificate;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -45,6 +44,13 @@ public class CertificateBlacklistManager {
         throws DorianInternalFault {
         try {
             addCertificateToBlackList(CertUtil.loadCertificate(cert.getCertificateAsString()), reason);
+        } catch (GeneralSecurityException e) {
+            DorianInternalFault fault = new DorianInternalFault();
+            fault.setFaultString("Unexpected Error");
+            FaultHelper helper = new FaultHelper(fault);
+            helper.addFaultCause(e);
+            fault = (DorianInternalFault) helper.getFault();
+            throw fault;
         } catch (IOException e) {
             DorianInternalFault fault = new DorianInternalFault();
             fault.setFaultString("Unexpected Error");
@@ -52,21 +58,8 @@ public class CertificateBlacklistManager {
             helper.addFaultCause(e);
             fault = (DorianInternalFault) helper.getFault();
             throw fault;
-        } catch (CertificateException e) {
-            DorianInternalFault fault = new DorianInternalFault();
-            fault.setFaultString("Unexpected Error");
-            FaultHelper helper = new FaultHelper(fault);
-            helper.addFaultCause(e);
-            fault = (DorianInternalFault) helper.getFault();
-            throw fault;
-        } catch (NoSuchProviderException e) {
-            DorianInternalFault fault = new DorianInternalFault();
-            fault.setFaultString("Unexpected Error");
-            FaultHelper helper = new FaultHelper(fault);
-            helper.addFaultCause(e);
-            fault = (DorianInternalFault) helper.getFault();
-            throw fault;
         }
+
     }
 
 
@@ -79,7 +72,7 @@ public class CertificateBlacklistManager {
                 PreparedStatement s = c.prepareStatement("INSERT INTO " + TABLE + " SET " + SERIAL + "= ?," + SUBJECT
                     + "= ?," + REASON + "= ?," + CERTIFICATE + "= ?");
                 s.setLong(1, cert.getSerialNumber().longValue());
-                s.setString(2, cert.getSubjectX500Principal().getName());
+                s.setString(2, cert.getSubjectDN().getName());
                 s.setString(3, reason);
                 s.setString(4, CertUtil.writeCertificate(cert));
                 s.executeUpdate();

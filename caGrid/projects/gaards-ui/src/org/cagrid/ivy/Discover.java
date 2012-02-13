@@ -49,8 +49,8 @@ public class Discover {
         for (ModuleRevisionId moduleRevisionId : mrids) {
             ResolvedModuleRevision resolvedModuleRevision = ivy.findModule(moduleRevisionId);
             
-            Map<String,String> extraInfo = getExtraInfo(resolvedModuleRevision);
-            String systemName = extraInfo.get("grid:systemName");
+            Map extraInfo = resolvedModuleRevision.getDescriptor().getExtraInfo();
+            String systemName = (String) extraInfo.get("grid:systemName");
             if (StringUtils.isEmpty(systemName)) {
             	systemName = moduleRevisionId.getRevision();
             }
@@ -65,15 +65,6 @@ public class Discover {
 
 	}
 
-    /**
-     * @param resolvedModuleRevision
-     * @return
-     */
-    @SuppressWarnings("unchecked")
-    private Map<String,String> getExtraInfo(ResolvedModuleRevision resolvedModuleRevision) {
-        return resolvedModuleRevision.getDescriptor().getExtraInfo();
-    }
-
 	public String getDisplayName(String organization, String name, String revision) {
 		ModuleRevisionId moduleRevisionId = ModuleRevisionId.newInstance(organization, name, revision);
 		
@@ -82,18 +73,14 @@ public class Discover {
 	}
 	
 	public String getDisplayName(ModuleRevisionId moduleRevisionId) {		
-		String displayName = moduleRevisionId.getRevision();
         ResolvedModuleRevision resolvedModuleRevision = ivy.findModule(moduleRevisionId);
-		if (resolvedModuleRevision != null) {
-			if (resolvedModuleRevision.getDescriptor() != null) {
-				Map<String,String> extraInfo = getExtraInfo(resolvedModuleRevision);
-				displayName = (String) extraInfo.get("grid:displayName");
-				if (StringUtils.isEmpty(displayName)) {
-					displayName = moduleRevisionId.getRevision();
-				}
-			}   
-		}
-		return displayName;
+        Map extraInfo = resolvedModuleRevision.getDescriptor().getExtraInfo();
+        String displayName = (String) extraInfo.get("grid:displayName");
+        if (StringUtils.isEmpty(displayName)) {
+        	displayName = moduleRevisionId.getRevision();
+        }
+        return displayName;
+
 	}
 	
 }

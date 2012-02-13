@@ -21,10 +21,8 @@ import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
 import javax.swing.JTextField;
 
-import org.apache.axis.utils.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.bouncycastle.asn1.x509.X509Name;
 import org.cagrid.gaards.dorian.client.GridAdministrationClient;
 import org.cagrid.gaards.dorian.federation.HostCertificateRecord;
 import org.cagrid.gaards.dorian.federation.HostCertificateStatus;
@@ -42,8 +40,6 @@ import org.cagrid.gaards.ui.dorian.DorianSessionProvider;
 import org.cagrid.grape.ApplicationComponent;
 import org.cagrid.grape.GridApplication;
 import org.cagrid.grape.utils.ErrorDialog;
-import org.globus.gsi.bc.BouncyCastleUtil;
-import org.globus.gsi.bc.X509NameHelper;
 
 
 /**
@@ -143,9 +139,6 @@ public class HostCertificateWindow extends ApplicationComponent implements Doria
     private X509Certificate cert;
 
 
-    /**
-     * This is the default constructor
-     */
     public HostCertificateWindow(DorianSession session, HostCertificateRecord record, boolean admin) throws Exception {
         super();
         this.session = session;
@@ -179,9 +172,9 @@ public class HostCertificateWindow extends ApplicationComponent implements Doria
             if ((record.getCertificate() != null)
                 && (Utils.clean(record.getCertificate().getCertificateAsString()) != null)) {
                 cert = CertUtil.loadCertificate(record.getCertificate().getCertificateAsString());
-                hostGridIdentity.setText(BouncyCastleUtil.getIdentity(cert));
+                hostGridIdentity.setText(CertUtil.subjectToIdentity(cert.getSubjectDN().getName()));
                 hostIdentity.setText(hostGridIdentity.getText());
-                getSubject().setText(cert.getSubjectX500Principal().getName());
+                getSubject().setText(cert.getSubjectDN().getName());
                 notBefore.setText(cert.getNotBefore().toString());
                 notAfter.setText(cert.getNotAfter().toString());
                 getSave().setEnabled(true);
@@ -322,7 +315,6 @@ public class HostCertificateWindow extends ApplicationComponent implements Doria
             getProgressPanel().stopProgress("Error");
             FaultUtil.logFault(log, e);
         }
-
     }
 
 
@@ -340,7 +332,6 @@ public class HostCertificateWindow extends ApplicationComponent implements Doria
             getProgressPanel().stopProgress("Error");
             FaultUtil.logFault(log, e);
         }
-
     }
 
 
@@ -389,14 +380,12 @@ public class HostCertificateWindow extends ApplicationComponent implements Doria
             } else {
                 getProgressPanel().stopProgress("Certificate up to date.");
             }
-
         } catch (Exception e) {
             ErrorDialog.showError(e);
             getUpdate().setEnabled(true);
             getProgressPanel().stopProgress("Error");
             FaultUtil.logFault(log, e);
         }
-
     }
 
 
@@ -669,7 +658,6 @@ public class HostCertificateWindow extends ApplicationComponent implements Doria
             });
             if (!admin) {
                 owner.setEditable(false);
-
             }
         }
         return owner;
@@ -719,7 +707,6 @@ public class HostCertificateWindow extends ApplicationComponent implements Doria
             });
             if (!admin) {
                 status.setEnabled(false);
-
             }
         }
         return status;
@@ -823,14 +810,13 @@ public class HostCertificateWindow extends ApplicationComponent implements Doria
         int returnVal = fc.showSaveDialog(this);
         if (returnVal == JFileChooser.APPROVE_OPTION) {
             try {
-                X509Certificate cert = CertUtil.loadCertificate(record.getCertificate().getCertificateAsString());
-                CertUtil.writeCertificate(cert, new File(fc.getSelectedFile().getAbsolutePath()));
+                X509Certificate loadedCert = CertUtil.loadCertificate(record.getCertificate().getCertificateAsString());
+                CertUtil.writeCertificate(loadedCert, new File(fc.getSelectedFile().getAbsolutePath()));
             } catch (Exception ex) {
                 ErrorDialog.showError(ex);
                 log.error(ex, ex);
             }
         }
-
     }
 
 
@@ -852,16 +838,14 @@ public class HostCertificateWindow extends ApplicationComponent implements Doria
                     };
                     try {
                         GridApplication.getContext().executeInBackground(runner);
-                    } catch (Exception t) {
-                        t.getMessage();
+                    } catch (Exception ex) {
+                        log.error(ex);
                     }
-
                 }
             });
             if (!admin) {
                 update.setEnabled(false);
                 update.setVisible(false);
-
             }
         }
         return update;
@@ -897,9 +881,8 @@ public class HostCertificateWindow extends ApplicationComponent implements Doria
             gridBagConstraints19.weightx = 1.0D;
             gridBagConstraints19.gridy = 1;
             hostIdentity = new JLabel();
-            if (this.record != null && !StringUtils.isEmpty(this.record.getSubject())) {
-        		X509Name name = new X509Name(false, this.record.getSubject());
-                hostIdentity.setText(X509NameHelper.toString(name));
+            if (this.record != null) {
+                hostIdentity.setText(CertUtil.subjectToIdentity(this.record.getSubject()));
             } else {
                 hostIdentity.setText("");
             }
@@ -1023,5 +1006,4 @@ public class HostCertificateWindow extends ApplicationComponent implements Doria
         }
         return progressPanel;
     }
-
 }

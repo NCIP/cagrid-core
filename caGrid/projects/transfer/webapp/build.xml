@@ -194,6 +194,10 @@
 				<include name="axis-url.jar" />
 				<include name="axis.jar" />
 				<include name="bootstrap.jar" />
+				<include name="cog-axis.jar" />
+				<include name="cog-jglobus.jar" />
+				<include name="cog-tomcat.jar" />
+				<include name="cog-url.jar" />
 				<include name="commonj.jar" />
 				<include name="commons-beanutils.jar" />
 				<include name="commons-cli-2.0.jar" />
@@ -202,6 +206,9 @@
 				<include name="commons-discovery.jar" />
 				<include name="commons-logging.jar" />
 				<include name="concurrent.jar" />
+				<include name="cryptix-asn1.jar" />
+				<include name="cryptix.jar" />
+				<include name="cryptix32.jar" />
 				<include name="globus_resolution_service.jar" />
 				<include name="globus_resolution_stubs_java.jar" />
 				<include name="globus_resolution_test.jar" />
@@ -212,14 +219,16 @@
 				<include name="globus_usage_packets_common.jar" />
 				<include name="globus_wsrf_tools_test.jar" />
 				<include name="jaxrpc.jar" />
+				<include name="jce-jdk13-125.jar" />
 				<include name="jgss.jar" />
 				<include name="junit.jar" />
-				<include name="log4j-1.2.*.jar" />
+				<include name="log4j-1.2.8.jar" />
 				<include name="naming-common.jar" />
 				<include name="naming-factory.jar" />
 				<include name="naming-java.jar" />
 				<include name="naming-resources.jar" />
 				<include name="opensaml.jar" />
+				<include name="puretls.jar" />
 				<include name="resolver.jar" />
 				<include name="saaj.jar" />
 				<include name="servlet.jar" />
@@ -247,27 +256,11 @@
 				<include name="xercesImpl.jar" />
 				<include name="xml-apis.jar" />
 				<include name="xmlsec.jar" />
-				<include name="bcprov-jdk15-*.jar" />
-				<include name="JGlobus-Core-2.0.*.jar" />
 			</fileset>
 		</copy>
-		
-		<!-- Delete files that have already been installed to common/lib to prevent classloader conflicts -->
-		<available file="${ext.tomcat.dir}/common/lib/bcprov-jdk15-145.jar" type="file" property="bcprov.present" />
-		<antcall target="_delete.tomcat.bcprov" />
-		<available file="${ext.tomcat.dir}/common/lib/JGlobus-Core-2.0.3.jar" type="file" property="jglobus2.present" />
-		<antcall target="_delete.tomcat.jglobus2" />
 
 		<replace file="${ext.tomcat.dir}/webapps/caGridTransfer/WEB-INF/classes/server.properties" token="WEBAPP_CONTEXT" value="wsrf">
 		</replace>
-	</target>
-	
-	<target name="_delete.tomcat.bcprov" if="bcprov.present">
-		<delete verbose="true" file="${ext.tomcat.dir}/webapps/caGridTransfer/WEB-INF/lib/bcprov-jdk15-145.jar" />
-	</target>
-
-	<target name="_delete.tomcat.jglobus2" if="jglobus2.present">
-		<delete verbose="true" file="${ext.tomcat.dir}/webapps/caGridTransfer/WEB-INF/lib/JGlobus-Core-2.0.3.jar" />
 	</target>
 
 	<target name="deployJBoss" depends="checkJBoss,checkGlobus" description="Deploys this webapp to tomcat">
@@ -309,6 +302,10 @@
 				<include name="axis-url.jar" />
 				<include name="axis.jar" />
 				<include name="bootstrap.jar" />
+				<include name="cog-axis.jar" />
+				<include name="cog-jglobus.jar" />
+				<include name="cog-tomcat.jar" />
+				<include name="cog-url.jar" />
 				<include name="commonj.jar" />
 				<include name="commons-beanutils.jar" />
 				<include name="commons-cli-2.0.jar" />
@@ -317,6 +314,9 @@
 				<include name="commons-discovery.jar" />
 				<include name="commons-logging.jar" />
 				<include name="concurrent.jar" />
+				<include name="cryptix-asn1.jar" />
+				<include name="cryptix.jar" />
+				<include name="cryptix32.jar" />
 				<include name="globus_resolution_service.jar" />
 				<include name="globus_resolution_stubs_java.jar" />
 				<include name="globus_resolution_test.jar" />
@@ -327,15 +327,19 @@
 				<include name="globus_usage_packets_common.jar" />
 				<include name="globus_wsrf_tools_test.jar" />
 				<include name="jaxrpc.jar" />
+				<include name="jce-jdk13-125.jar" />
 				<include name="jgss.jar" />
 				<include name="junit.jar" />
+				<!--<include name="log4j-1.2.8.jar" />-->
 				<include name="naming-common.jar" />
 				<include name="naming-factory.jar" />
 				<include name="naming-java.jar" />
 				<include name="naming-resources.jar" />
 				<include name="opensaml.jar" />
+				<include name="puretls.jar" />
 				<include name="resolver.jar" />
 				<include name="saaj.jar" />
+				<!--<include name="servlet.jar" />-->
 				<include name="wsdl4j.jar" />
 				<include name="wsrf_common.jar" />
 				<include name="wsrf_core.jar" />
@@ -360,27 +364,9 @@
 				<include name="xercesImpl.jar" />
 				<include name="xml-apis.jar" />
 				<include name="xmlsec.jar" />
-				<include name="bcprov-jdk15-*.jar" />
-				<include name="JGlobus-Core-2.0.*.jar" />
 			</fileset>
 		</copy>
-		
-		<!-- Delete files that have already been installed to common/lib to prevent classloader conflicts -->
-		<available file="${ext.jboss.dir}/server/default/lib/bcprov-jdk15-145.jar" type="file" property="bcprov.present" />
-		<antcall target="_delete.jboss.bcprov" />
-		<available file="${ext.jboss.dir}/server/default/lib/JGlobus-Core-2.0.3.jar" type="file" property="jglobus2.present" />
-		<antcall target="_delete.jboss.jglobus2" />
-
 		<replace file="${ext.jboss.dir}/server/default/deploy/caGridTransfer.war/WEB-INF/classes/server.properties" token="WEBAPP_CONTEXT" value="wsrf.war">
 		</replace>
 	</target>
-	
-	<target name="_delete.jboss.bcprov" if="bcprov.present">
-		<delete verbose="true" file="${ext.jboss.dir}/server/default/deploy/caGridTransfer.war/WEB-INF/lib/bcprov-jdk15-145.jar" />
-	</target>
-
-	<target name="_delete.jboss.jglobus2" if="jglobus2.present">
-		<delete verbose="true" file="${ext.jboss.dir}/server/default/deploy/caGridTransfer.war/WEB-INF/lib/JGlobus-Core-2.0.3.jar" />
-	</target>
-
 </project>

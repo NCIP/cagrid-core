@@ -1,0 +1,72 @@
+<?xml version="1.0"?>
+
+<ivy-module version="2.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:noNamespaceSchemaLocation="http://incubator.apache.org/ivy/schemas/ivy.xsd">
+
+	<info organisation="globus" module="ws-core" revision="4.0.3">
+		<description>The Globus Toolkit</description>
+	</info>
+	
+	<publications>
+		<artifact name="globus_resolution_service" type="jar"/>   
+		<artifact name="globus_resolution_test" type="jar"/>      
+		<artifact name="globus_transfer_stubs_java" type="jar"/>  
+		<artifact name="globus_usage_core" type="jar"/>            
+		<artifact name="globus_wsrf_tools_test" type="jar"/>
+		<artifact name="globus_resolution_stubs_java" type="jar"/>
+		<artifact name="globus_transfer_service" type="jar"/>
+		<artifact name="globus_transfer_test" type="jar"/>
+		<artifact name="globus_usage_packets_common" type="jar"/>
+		<artifact name="wsrf_common" type="jar"/>
+		<artifact name="wsrf_core_samples_authzService_stubs" type="jar"/>
+		<artifact name="wsrf_core_stubs" type="jar"/>                      
+		<artifact name="wsrf_test_unit" type="jar"/>
+		<artifact name="wsrf_core" type="jar"/>                            
+		<artifact name="wsrf_core_samples_counter" type="jar"/>           
+		<artifact name="wsrf_provider_jce" type="jar"/>                   
+		<artifact name="wsrf_test_unit_stubs" type="jar"/>
+		<artifact name="wsrf_core_registry" type="jar"/>                  
+		<artifact name="wsrf_core_samples_counter_stubs" type="jar"/>      
+		<artifact name="wsrf_test" type="jar"/>                            
+		<artifact name="wsrf_tools" type="jar"/>
+		<artifact name="wsrf_core_registry_stubs" type="jar"/>             
+		<artifact name="wsrf_core_samples_mgmt" type="jar"/>              
+		<artifact name="wsrf_test_interop" type="jar"/>
+		<artifact name="wsrf_core_samples_authzService" type="jar"/>       
+		<artifact name="wsrf_core_samples_mgmt_stubs" type="jar"/>         
+		<artifact name="wsrf_test_interop_stubs" type="jar"/>
+	</publications>
+
+	<dependencies>	
+		<dependency rev="1.2.14" org="apache" name="log4j" />
+		<dependency rev="1.6.1" org="apache" name="commons-beanutils" />
+		<dependency rev="2.0" org="apache" name="commons-cli" />
+		<dependency rev="3.2" org="apache" name="commons-collections" />
+		<dependency rev="1.5" org="apache" name="commons-digester" />
+		<dependency rev="1.1" org="apache" name="commons-logging" />
+		<dependency rev="0.4" org="apache" name="commons-discovery" />
+		<dependency rev="0.8" org="apache" name="naming-common" />
+		<dependency rev="0.8" org="apache" name="naming-factory" />
+		<dependency rev="0.8" org="apache" name="naming-java" />
+		<dependency rev="0.8" org="apache" name="naming-resources" />
+		<dependency rev="1.2.1" org="apache" name="santuario" />
+		<dependency rev="2.6.0" org="apache" name="xalan" />
+		<dependency rev="2.6.2" org="apache" name="xerces2-j" />
+		<dependency rev="1.3.4" org="oswego" name="concurrent" />
+
+		<dependency rev="125" org="bouncycastle" name="jce-jdk13" />
+		<dependency rev="1.1" org="commonj" name="commonj" />
+ 
+		<dependency rev="patched-4.0.3" org="globus" name="addressing" />
+		<dependency rev="patched-4.0.3" org="globus" name="axis" />
+		<dependency rev="patched-4.0.3" org="globus" name="wss4j" />
+		<dependency rev="patched-4.0.3" org="globus" name="cryptix" />
+		<dependency rev="patched-4.0.3" org="globus" name="cryptix32" />
+		<dependency rev="patched-4.0.3" org="globus" name="cryptix-asn1" />    
+		<dependency rev="patched-4.0.3" org="globus" name="opensaml" />
+		<dependency rev="patched-4.0.3" org="globus" name="puretls" />
+    	
+		<dependency rev="4.0.3" org="globus" name="cog" />
+	</dependencies>
+	
+</ivy-module>

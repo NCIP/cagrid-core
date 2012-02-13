@@ -49,7 +49,6 @@ public class TestCertificateBlacklistManager extends TestCase {
                         }
                     }
                     if (!found) {
-                        // TODO: Should be using CertUtil.getSubjectDN here, but it only takes X509Credentials
                         fail("Certificate " + creds[j].getCertificate().getSubjectDN().getName()
                             + " is not in the black list but should be.");
                     }
@@ -71,7 +70,6 @@ public class TestCertificateBlacklistManager extends TestCase {
                         }
                     }
                     if (found) {
-                        // TODO: Should be using CertUtil.getSubjectDN here, but it only takes X509Credentials
                         fail("Certificate " + creds[j].getCertificate().getSubjectDN().getName()
                             + " is in the black list and should not be.");
                     }

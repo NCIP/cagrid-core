@@ -41,7 +41,6 @@ import org.globus.gsi.GlobusCredential;
  * @version $Id: ArgumentManagerTable.java,v 1.2 2004/10/15 16:35:16 langella
  *          Exp $
  */
-@SuppressWarnings("deprecation")
 public class GridAdministrationClient extends DorianBaseClient {
 
     public GridAdministrationClient(String serviceURI) throws MalformedURIException, RemoteException {

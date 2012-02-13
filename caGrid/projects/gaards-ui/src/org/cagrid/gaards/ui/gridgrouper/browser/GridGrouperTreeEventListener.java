@@ -29,12 +29,12 @@ public class GridGrouperTreeEventListener extends MouseAdapter {
 
 	private GroupManagementBrowser browser;
 
-	private HashMap<Class<?>, JPopupMenu> popupMappings;
+	private HashMap popupMappings;
 
 
 	public GridGrouperTreeEventListener(GridGrouperTree owningTree, GroupManagementBrowser browser) {
 		this.tree = owningTree;
-		this.popupMappings = new HashMap<Class<?>, JPopupMenu>();
+		this.popupMappings = new HashMap();
 		this.browser = browser;
 		this.associatePopup(StemTreeNode.class, new StemNodeMenu(browser, this.tree));
 		this.associatePopup(GroupTreeNode.class, new GroupNodeMenu(browser, this.tree));
@@ -49,7 +49,7 @@ public class GridGrouperTreeEventListener extends MouseAdapter {
 	 * @param nodeType
 	 * @param popup
 	 */
-	public void associatePopup(Class<?> nodeType, JPopupMenu popup) {
+	public void associatePopup(Class nodeType, JPopupMenu popup) {
 		this.popupMappings.put(nodeType, popup);
 	}
 

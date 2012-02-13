@@ -24,7 +24,7 @@ public class TransferTestCaseInfo extends TestCaseInfo {
 
 
     public String getPackageDir() {
-        return getPackageName().replace('.', File.separatorChar);
+        return getPackageName().replace('.',File.separatorChar);
     }
 
 
@@ -41,4 +41,7 @@ public class TransferTestCaseInfo extends TestCaseInfo {
     public String getExtensions() {
        return "caGrid_Transfer";
     }
+    
+   
+
 }

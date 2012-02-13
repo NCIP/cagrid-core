@@ -24,7 +24,6 @@ import org.cagrid.grape.GridApplication;
 import org.cagrid.grape.utils.ErrorDialog;
 import org.globus.gsi.GlobusCredential;
 import org.globus.gsi.bc.BouncyCastleUtil;
-import org.globus.gsi.util.ProxyCertificateUtil;
 
 
 /**
@@ -32,9 +31,8 @@ import org.globus.gsi.util.ProxyCertificateUtil;
  * @author <A href="mailto:oster@bmi.osu.edu">Scott Oster </A>
  * @author <A href="mailto:hastings@bmi.osu.edu">Shannon Hastings </A>
  */
-@SuppressWarnings("deprecation")
 public class DelegateProxyWindowStep1 extends ApplicationComponent implements ProxyLifetimeListener {
-	private static Log log = LogFactory.getLog(DelegateProxyWindowStep1.class);
+    private static Log log = LogFactory.getLog(DelegateProxyWindowStep1.class);
 
     private static final long serialVersionUID = 1L;
 
@@ -341,7 +339,6 @@ public class DelegateProxyWindowStep1 extends ApplicationComponent implements Pr
                         t.getMessage();
                     }
                 }
-
             });
         }
 
@@ -387,7 +384,6 @@ public class DelegateProxyWindowStep1 extends ApplicationComponent implements Pr
             ErrorDialog.showError(e);
             FaultUtil.logFault(log, e);
         }
-
     }
 
 
@@ -433,7 +429,7 @@ public class DelegateProxyWindowStep1 extends ApplicationComponent implements Pr
 
 
     public int getDelegationPathLength(X509Certificate cert) throws Exception {
-        if (ProxyCertificateUtil.isProxy(BouncyCastleUtil.getCertificateType(cert))) {
+        if (org.globus.gsi.CertUtil.isProxy(BouncyCastleUtil.getCertificateType(cert))) {
             int delegationPathLength = CertificateExtensionsUtil.getDelegationPathLength(cert);
             int maxLength = delegationPathLength - 1;
             return maxLength;
@@ -558,5 +554,4 @@ public class DelegateProxyWindowStep1 extends ApplicationComponent implements Pr
         }
         return titlePanel;
     }
-
 }

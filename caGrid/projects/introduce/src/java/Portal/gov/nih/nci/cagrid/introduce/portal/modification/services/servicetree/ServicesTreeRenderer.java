@@ -39,6 +39,7 @@ import gov.nih.nci.cagrid.introduce.portal.common.IntroduceLookAndFeel;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Font;
+import java.awt.event.MouseEvent;
 
 import javax.swing.JTree;
 import javax.swing.tree.DefaultTreeCellRenderer;
@@ -57,11 +58,7 @@ import javax.swing.tree.DefaultTreeCellRenderer;
  */
 public class ServicesTreeRenderer extends DefaultTreeCellRenderer {
 
-    /**
-	 * 
-	 */
-	private static final long serialVersionUID = 5699131229384663534L;
-	private Font normal = null;
+    private Font normal = null;
 
 
     public ServicesTreeRenderer() {

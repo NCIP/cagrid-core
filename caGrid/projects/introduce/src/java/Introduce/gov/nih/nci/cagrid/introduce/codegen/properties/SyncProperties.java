@@ -69,7 +69,7 @@ public class SyncProperties extends SyncTool {
 		File jndiConfigF = new File(getBaseDirectory().getAbsolutePath() + File.separator + "jndi-config.xml");
 		try {
 			Document doc = XMLUtilities.fileNameToDocument(jndiConfigF.getAbsolutePath());
-			List<?> serviceEls = doc.getRootElement().getChildren("service", doc.getRootElement().getNamespace());
+			List serviceEls = doc.getRootElement().getChildren("service", doc.getRootElement().getNamespace());
 			for (int serviceI = 0; serviceI < serviceEls.size(); serviceI++) {
 				Element serviceEl = (Element) serviceEls.get(serviceI);
 
@@ -87,7 +87,7 @@ public class SyncProperties extends SyncTool {
 					}
 				}
 
-				List<?> resourceEls = serviceEl.getChildren("resource", serviceEl.getNamespace());
+				List resourceEls = serviceEl.getChildren("resource", serviceEl.getNamespace());
 				for (int resourceI = 0; resourceI < resourceEls.size(); resourceI++) {
 					Element resourceEl = (Element) resourceEls.get(resourceI);
 					if (serviceI == serviceEls.size() - 1

@@ -49,7 +49,7 @@ public class MembersTable extends GrapeBaseTable {
 
 
 	public void addMember(final Membership m) throws Exception {
-		Vector<Object> v = new Vector<Object>();
+		Vector v = new Vector();
 		v.add(m);
 		v.add(m.getMember().getSubject().getName());
 		addRow(v);

@@ -74,7 +74,7 @@ public class SDK41CQL2QueryProcessor extends CQL2QueryProcessor {
     private QNameResolver qnameResolver = null;
     private CQL2ToParameterizedHQL cqlTranslator = null;
     private byte[] wsddBytes = null;
-    
+
 
     public SDK41CQL2QueryProcessor() {
         super();
@@ -251,7 +251,7 @@ public class SDK41CQL2QueryProcessor extends CQL2QueryProcessor {
                 StringWriter writer = new StringWriter();
                 AnyNode node = null;
                 try {
-                	InputStream wsdd = getDisposableWsdd();
+                    InputStream wsdd = getDisposableWsdd();
                     Utils.serializeObject(rawObject, targetQName, writer, wsdd);
                     node = AnyNodeHelper.convertStringToAnyNode(
                         writer.getBuffer().toString());

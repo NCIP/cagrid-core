@@ -56,6 +56,11 @@ public class AntTools {
     }
 
 
+    public static List<String> getAntDeployGlobusCommand(String buildFileDir) throws Exception {
+        return createDeploymentCommand(buildFileDir, "deployGlobus");
+    }
+
+
     public static List<String> getAntUndeployTomcatCommand(String buildFileDir) throws Exception {
         return createDeploymentCommand(buildFileDir, "undeployTomcat");
     }
@@ -63,6 +68,11 @@ public class AntTools {
 
     public static List<String> getAntUndeployJBossCommand(String buildFileDir) throws Exception {
         return createDeploymentCommand(buildFileDir, "undeployJBoss");
+    }
+
+
+    public static List<String> getAntUndeployGlobusCommand(String buildFileDir) throws Exception {
+        return createDeploymentCommand(buildFileDir, "undeployGlobus");
     }
 
 

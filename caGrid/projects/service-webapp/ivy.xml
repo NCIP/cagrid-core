@@ -27,7 +27,7 @@
 
     <dependency rev="latest.integration" org="caGrid" name="core" conf="base->default"/>
     <dependency rev="latest.integration" org="caGrid" name="introduce" conf="base->extension,serviceTools"/> 
-    <dependency rev="4.+" org="junit" name="junit" conf="impl-test->default"/>
+    <dependency rev="4.4" org="junit" name="junit" conf="impl-test->default"/>
 
   </dependencies>
 </ivy-module>

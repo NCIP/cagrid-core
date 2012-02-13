@@ -109,7 +109,6 @@ public class CreateCACertificate {
                 String sub = null;
                 int days = 0;
                 if (interactive) {
-                    // FIXME: move away from Bouncycastle to Java-provided libraries
                     Security.addProvider(new org.bouncycastle.jce.provider.BouncyCastleProvider());
                     StringBuffer sb = new StringBuffer();
                     String o = IOUtils.readLine("Enter Organization (O)", true);
@@ -160,7 +159,7 @@ public class CreateCACertificate {
                 X509Certificate cert = CertUtil.generateCACertificate(new X509Name(sub), start, end, root);
                 ca.setCACredentials(cert, root.getPrivate(), null);
                 System.out.println("Successfully created the CA cerrtificate:");
-                System.out.println("Subject: " + cert.getSubjectX500Principal().getName());
+                System.out.println("Subject: " + cert.getSubjectDN());
                 System.out.println("Created: " + cert.getNotBefore());
                 System.out.println("Expires: " + cert.getNotAfter());
             }

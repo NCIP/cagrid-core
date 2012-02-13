@@ -71,7 +71,7 @@ public class Upgrade1_3To1_4 extends Upgrade {
                 }
                 rs.close();
                 s.close();
-             } finally {
+            } finally {
                 db.releaseConnection(c);
             }
         }

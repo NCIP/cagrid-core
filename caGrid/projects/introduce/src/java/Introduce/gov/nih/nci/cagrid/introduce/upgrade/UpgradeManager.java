@@ -14,6 +14,7 @@ import java.io.FileWriter;
 
 import org.apache.log4j.Logger;
 
+
 public class UpgradeManager {
 
     private IntroduceUpgradeManager iUpgrader;
@@ -22,68 +23,46 @@ public class UpgradeManager {
     private String id;
     private static final Logger logger = Logger.getLogger(UpgradeManager.class);
 
-    /**
-     * Constructor
-     * 
-     * @param pathToService
-     *            Path to the root directory for the service.
-     */
+
     public UpgradeManager(String pathToService) {
         this.pathToService = pathToService;
         iUpgrader = new IntroduceUpgradeManager(pathToService);
     }
 
+
     public boolean canIntroduceBeUpgraded() {
+        boolean canUpgrade = false;
         try {
-            if (iUpgrader.needsUpgrading() && iUpgrader.canBeUpgraded(getServiceVersion())) {
-                return true;
-            } else {
-                return false;
-            }
+            canUpgrade = iUpgrader.needsUpgrading()
+                && iUpgrader.canBeUpgraded(UpgradeUtilities.getCurrentServiceVersion(
+                    pathToService + File.separator + IntroduceConstants.INTRODUCE_XML_FILE));
         } catch (Exception e) {
             logger.error(e);
-            return false;
         }
-
+        return canUpgrade;
     }
 
-    /**
-     * Return true if the if the service was created by a different or unknown
-     * version of introduce.
-     */
+
     public boolean introduceNeedsUpgraded() {
         return iUpgrader.needsUpgrading();
     }
 
-    /**
-     * Return the version of introduce that created the service or null if
-     * unknown.
-     * 
-     * @throws Exception
-     *             If there is a problem.
-     */
-    public String getServiceVersion() throws Exception {
-        return iUpgrader.getServiceVersion();
-    }
 
     public boolean extensionsNeedUpgraded() {
+        boolean needsUpgrade = false;
         if (!canIntroduceBeUpgraded()) {
             ServiceInformation info = null;
             try {
                 info = new ServiceInformation(new File(pathToService));
             } catch (Exception e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
+                logger.error(e);
             }
             ExtensionsUpgradeManager eUpgradeManager = new ExtensionsUpgradeManager(info, pathToService);
-            if (eUpgradeManager.needsUpgrading()) {
-                return true;
-            } else {
-                return false;
-            }
+            needsUpgrade = eUpgradeManager.needsUpgrading();
         }
-        return false;
+        return needsUpgrade;
     }
+
 
     private void backup() throws Exception {
         logger.info("Creating backup of service prior to upgrading.");
@@ -91,16 +70,20 @@ public class UpgradeManager {
         ResourceManager.createArchive(id, getUpgradeServiceName(), pathToService);
     }
 
+
     public void recover() throws Exception {
         logger.info("Recovering backup of service after failed upgrade.");
         ResourceManager.restoreSpecific(id, getUpgradeServiceName(), pathToService);
     }
 
+
     private String getUpgradeServiceName() throws Exception {
-        String upgradeServiceName = UpgradeUtilities.getServiceName(pathToService + File.separator + IntroduceConstants.INTRODUCE_XML_FILE)
-                + "UPGRADE";
+        String upgradeServiceName = UpgradeUtilities.getServiceName(
+            pathToService + File.separator + IntroduceConstants.INTRODUCE_XML_FILE)
+            + "UPGRADE";
         return upgradeServiceName;
     }
+
 
     public UpgradeStatus upgrade() throws Exception {
         UpgradeStatus status = new UpgradeStatus();
@@ -112,12 +95,17 @@ public class UpgradeManager {
                 SyncTools sync = new SyncTools(new File(this.pathToService));
                 sync.sync();
             } catch (Exception e) {
-                status.addIssue("Re-Sync Failed", e.getMessage() + "\n"
-                        + "This could be due to modifications you may have made to Introduce\n"
-                        + "managed files such as the build files, source files or wsdl files.\n"
-                        + "Once the build is fixed then a sync must be done to " + "complete the upgrade.  To complete the upgrade simply "
-                        + "open introduce and open this service for modification " + "and then click save.");
+                String message = 
+                    "Re-Sync Failed: " + e.getMessage() + "\n"
+                     + "This could be due to modifications you may have made to Introduce\n"
+                     + "managed files such as the build files, source files or wsdl files.\n"
+                     + "Once the build is fixed then a sync must be done to "
+                     + "complete the upgrade.  To complete the upgrade simply "
+                     + "open introduce and open this service for modification " 
+                     + "and then click save.";
+                status.addIssue("Re-Sync Failed", message);
                 e.printStackTrace();
+                logger.error(message);
             }
         } else if (extensionsNeedUpgraded()) {
             status.addIntroduceUpgradeStatus(upgradeExtensionsOnly());
@@ -125,19 +113,22 @@ public class UpgradeManager {
                 SyncTools sync = new SyncTools(new File(this.pathToService));
                 sync.sync();
             } catch (Exception e) {
-                status.addIssue("Re-Sync Failed", e.getMessage() + "\n"
-                        + "This could be due to modifications you may have made to Introduce\n"
-                        + "managed files such as the build files, source files or wsdl files.\n"
-                        + "Once the build is fixed then a sync must be done to "
-                        + "complete the upgrade. To complete the upgrade simply open introduce and open "
-                        + "this service for modification and then click save.");
+                String message = "Re-Sync Failed: " + e.getMessage() + "\n"
+                    + "This could be due to modifications you may have made to Introduce\n"
+                    + "managed files such as the build files, source files or wsdl files.\n"
+                    + "Once the build is fixed then a sync must be done to "
+                    + "complete the upgrade. To complete the upgrade simply open introduce and open "
+                    + "this service for modification and then click save.";
+                status.addIssue("Re-Sync Failed", message);
                 e.printStackTrace();
+                logger.error(message, e);
             }
         }
 
         // send the status to a log file
         try {
-            File upgradeLog = new File(pathToService, "introduce-upgrade-" + IntroducePropertiesManager.getIntroduceVersion() + ".log");
+            File upgradeLog = new File(pathToService, "introduce-upgrade-"
+                + IntroducePropertiesManager.getIntroduceVersion() + ".log");
             FileWriter writer = new FileWriter(upgradeLog);
             writer.write(status.toString());
             writer.close();
@@ -147,6 +138,7 @@ public class UpgradeManager {
 
         return status;
     }
+
 
     private void upgradeIntroduce(UpgradeStatus status) throws Exception {
         if (iUpgrader.needsUpgrading()) {
@@ -159,25 +151,26 @@ public class UpgradeManager {
         }
     }
 
+
     private IntroduceUpgradeStatus upgradeExtensionsOnly() throws Exception {
+        IntroduceUpgradeStatus status = null;
         if (!iUpgrader.needsUpgrading()) {
             try {
                 ServiceInformation info = null;
                 try {
                     info = new ServiceInformation(new File(pathToService));
                 } catch (Exception e) {
-                    // TODO Auto-generated catch block
                     e.printStackTrace();
+                    logger.error(e);
                 }
-                IntroduceUpgradeStatus status = new IntroduceUpgradeStatus();
+                status = new IntroduceUpgradeStatus();
                 ExtensionsUpgradeManager eUpgradeManager = new ExtensionsUpgradeManager(info, pathToService);
                 eUpgradeManager.upgrade(status);
-                return status;
             } catch (Exception e) {
                 e.printStackTrace();
                 throw new Exception("Extensions upgrader failed: " + e.getMessage(), e);
             }
         }
-        return null;
+        return status;
     }
 }

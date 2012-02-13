@@ -11,13 +11,7 @@ import org.cagrid.gaards.dorian.stubs.types.DorianInternalFault;
  *          Exp $
  */
 public class DorianFault extends org.oasis.wsrf.faults.BaseFaultType implements java.io.Serializable {
-    /**
-	 * 
-	 */
-	private static final long serialVersionUID = -4788079512794485953L;
-
-
-	public DorianFault() {
+    public DorianFault() {
     }
 
 
@@ -33,6 +27,8 @@ public class DorianFault extends org.oasis.wsrf.faults.BaseFaultType implements 
 
     public synchronized boolean equals(java.lang.Object obj) {
         if (!(obj instanceof DorianInternalFault))
+            return false;
+        if (obj == null)
             return false;
         if (this == obj)
             return true;
@@ -80,7 +76,7 @@ public class DorianFault extends org.oasis.wsrf.faults.BaseFaultType implements 
      * Get Custom Serializer
      */
     public static org.apache.axis.encoding.Serializer getSerializer(java.lang.String mechType,
-        java.lang.Class<?> _javaType, javax.xml.namespace.QName _xmlType) {
+        java.lang.Class _javaType, javax.xml.namespace.QName _xmlType) {
         return new org.apache.axis.encoding.ser.BeanSerializer(_javaType, _xmlType, typeDesc);
     }
 
@@ -89,7 +85,7 @@ public class DorianFault extends org.oasis.wsrf.faults.BaseFaultType implements 
      * Get Custom Deserializer
      */
     public static org.apache.axis.encoding.Deserializer getDeserializer(java.lang.String mechType,
-        java.lang.Class<?> _javaType, javax.xml.namespace.QName _xmlType) {
+        java.lang.Class _javaType, javax.xml.namespace.QName _xmlType) {
         return new org.apache.axis.encoding.ser.BeanDeserializer(_javaType, _xmlType, typeDesc);
     }
 

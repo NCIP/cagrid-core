@@ -72,7 +72,7 @@
 			</fileset>
 			<fileset dir="${ext.globus.dir}/lib">
 				<include name="*.jar" />
-				<exclude name="JGlobus-Core-2.0.*.jar" />
+				<exclude name="cog-jglobus.jar" />
 				<exclude name="${stubs.jar.name}" />
 				<exclude name="${common.jar.name}" />
 				<exclude name="${client.jar.name}" />
@@ -91,14 +91,19 @@
 				<include name="wsrf_core_stubs.jar" />
 				<include name="jaxrpc.jar" />
 				<include name="addressing-1.0.jar" />
+				<include name="cog-axis.jar" />
 				<include name="saaj.jar" />
 				<include name="commons-discovery.jar" />
 				<include name="wsdl4j.jar" />
 				<include name="wsrf_core.jar" />
+				<include name="puretls.jar" />
+				<include name="cryptix.jar" />
+				<include name="cryptix32.jar" />
+				<include name="cryptix-asn1.jar" />
 				<include name="wss4j.jar" />
 				<include name="xalan.jar" />
 				<include name="xmlsec.jar" />
-				<include name="bcprov-jdk15-*.jar" />
+				<include name="jce-jdk13-125.jar" />
 			</fileset>
 		</copy>
 	</target>
@@ -130,7 +135,7 @@
 	</target>
 
 	<target name="configure" description="Configures the project based on settings.">
-		<copy file="${ext.targetgrid.dir}/sync-description.xml" tofile="${src.resources.dir}/sync-description.xml" />
+		<copyfile  src="${ext.targetgrid.dir}/sync-description.xml" dest="${src.resources.dir}/sync-description.xml" />
 	</target>
 
 	<target name="clean">

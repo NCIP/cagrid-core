@@ -7,6 +7,7 @@ import gov.nih.nci.cagrid.data.style.ServiceStyleLoader;
 import gov.nih.nci.cagrid.data.style.StyleVersionUpgrader;
 import gov.nih.nci.cagrid.data.style.VersionUpgrade;
 import gov.nih.nci.cagrid.introduce.beans.extension.ExtensionType;
+import gov.nih.nci.cagrid.introduce.common.IntroducePropertiesManager;
 import gov.nih.nci.cagrid.introduce.common.ServiceInformation;
 import gov.nih.nci.cagrid.introduce.extension.ExtensionsLoader;
 import gov.nih.nci.cagrid.introduce.extension.utils.AxisJdomUtils;
@@ -18,6 +19,8 @@ import java.io.File;
 import java.io.FileFilter;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -25,13 +28,15 @@ import java.util.Map;
 import org.apache.axis.message.MessageElement;
 import org.apache.commons.logging.LogFactory;
 import org.jdom.Element;
-import org.jdom.JDOMException;
 
 /**
  * DataServiceUpgradeFrom1pt4
  * Utility to upgrade a 1.4 data service to current
  * 
- * @author <A HREF="MAILTO:ervin@bmi.osu.edu">David W. Ervin</A> 
+ * @author <A HREF="MAILTO:ervin@bmi.osu.edu">David W. Ervin</A> *
+ * @created Feb 19, 2007
+ * @version $Id: DataServiceUpgradeFrom1pt3.java,v 1.1 2007/02/19 21:52:52
+ *          dervin Exp $
  */
 public class DataServiceUpgradeFrom1pt4 extends ExtensionUpgraderBase {
 
@@ -54,8 +59,6 @@ public class DataServiceUpgradeFrom1pt4 extends ExtensionUpgraderBase {
 			upgradeStyle();
 			
 			upgradeWsdls();
-			
-			upgradeExtensionData();
             
 			setCurrentExtensionVersion();
 			
@@ -109,28 +112,6 @@ public class DataServiceUpgradeFrom1pt4 extends ExtensionUpgraderBase {
         Element extensionDataElement = AxisJdomUtils.fromMessageElement(rawDataElement);
         return extensionDataElement;
     }
-    
-    
-    private void storeExtensionDataElement(Element elem) throws UpgradeException {
-        MessageElement[] anys = getExtensionType().getExtensionData().get_any();
-        for (int i = 0; (anys != null) && (i < anys.length); i++) {
-            if (anys[i].getQName().equals(Data.getTypeDesc().getXmlType())) {
-                // remove the old extension data
-                anys = (MessageElement[]) Utils.removeFromArray(anys, anys[i]);
-                break;
-            }
-        }
-        // create a message element from the JDom element
-        MessageElement data = null;
-        try {
-            data = AxisJdomUtils.fromElement(elem);
-        } catch (JDOMException ex) {
-            throw new UpgradeException(
-                "Error converting extension data to Axis message element: " + ex.getMessage(), ex);
-        }
-        anys = (MessageElement[]) Utils.appendToArray(anys, data);
-        getExtensionType().getExtensionData().set_any(anys);
-    }
 	
 	
 	private void setCurrentExtensionVersion() {
@@ -140,33 +121,8 @@ public class DataServiceUpgradeFrom1pt4 extends ExtensionUpgraderBase {
 	
 	private String getStyleName(Element extDataElement) {
 	    Element serviceFeaturesElement = extDataElement.getChild("ServiceFeatures", extDataElement.getNamespace());
-	    Element serviceStyleElement = serviceFeaturesElement.getChild("ServiceStyle", serviceFeaturesElement.getNamespace());
-	    String styleName = null;
-	    if (serviceStyleElement != null) {
-	        styleName = serviceStyleElement.getAttributeValue("name");
-	    }
+	    String styleName = serviceFeaturesElement.getAttributeValue("serviceStyle");
 	    return styleName;
-	}
-	
-	
-	private String getStyleVersion(Element extDataElement) {
-	    Element serviceFeaturesElement = extDataElement.getChild("ServiceFeatures", extDataElement.getNamespace());
-        Element serviceStyleElement = serviceFeaturesElement.getChild("ServiceStyle", serviceFeaturesElement.getNamespace());
-        String styleVersion = null;
-        if (serviceStyleElement != null) {
-            styleVersion = serviceStyleElement.getAttributeValue("version");
-        }
-        return styleVersion;
-	}
-	
-	
-	private void upgradeExtensionData() throws UpgradeException {
-	    Element extensionDataElement = getExtensionDataElement();
-	    Element serviceFeaturesElement = extensionDataElement.getChild(
-	        "ServiceFeatures", extensionDataElement.getNamespace());
-	    serviceFeaturesElement.setAttribute("useTransfer", "false");
-	    getStatus().addDescriptionLine("Data Service Extension Data Service Feature \"useTransfer\" added and set to \"false\"");
-	    storeExtensionDataElement(extensionDataElement);
 	}
 
 
@@ -297,22 +253,29 @@ public class DataServiceUpgradeFrom1pt4 extends ExtensionUpgraderBase {
             } else {
                 VersionUpgrade[] availableUpgrades = styleContainer.getServiceStyle().getVersionUpgrade();
                 VersionUpgrade validUpgrade = null;
-                String currentStyleVersion = styleContainer.getServiceStyle().getVersion();
-                String oldStyleVersion = getStyleVersion(extensionDataElement);
                 if (availableUpgrades != null) {
-                    // find an upgrader FROM the style version listed in the extension data
-                    // TO the current version of the style
+                    // sort upgrades
+                    Comparator<VersionUpgrade> upgradeSorter = new Comparator<VersionUpgrade>() {
+                        public int compare(VersionUpgrade a, VersionUpgrade b) {
+                            // sort by from version first, then by to version
+                            int val = a.getFromVersion().compareTo(b.getFromVersion());
+                            if (val == 0) {
+                                val = a.getToVersion().compareTo(b.getToVersion());
+                            }
+                            return val;
+                        }
+                    };
+                    Arrays.sort(availableUpgrades, upgradeSorter);
+                    // doing this will get the upgrade from whatever the oldest version 
+                    // of the style (with an available upgrader) is to the 1.4 version
                     for (VersionUpgrade upgrade : availableUpgrades) {
-                        if (upgrade.getFromVersion().equals(oldStyleVersion) 
-                            && upgrade.getToVersion().equals(currentStyleVersion)) {
+                        if (upgrade.getToVersion().equals(UpgraderConstants.DATA_CURRENT_VERSION)) {
                             validUpgrade = upgrade;
-                            break;
                         }
                     }
                 }
                 if (validUpgrade == null) {
-                    getStatus().addIssue("No upgrade was found for the style " + styleName + 
-                        " from " + oldStyleVersion + " to " + currentStyleVersion, 
+                    getStatus().addIssue("No upgrade was found for the style " + styleName, 
                         "The style may not support the current version of caGrid.  " +
                         "Check with the developer of your style for an update");
                 } else {
@@ -321,6 +284,7 @@ public class DataServiceUpgradeFrom1pt4 extends ExtensionUpgraderBase {
                     try {
                         styleUpgrade = styleContainer.loadVersionUpgrader(
                             validUpgrade.getFromVersion(), validUpgrade.getToVersion());
+                        getStatus().addDescriptionLine("Style upgrader class: " + styleUpgrade.getClass().getName());
                     } catch (Exception ex) {
                         throw new UpgradeException(
                             "Error loading style version upgrader: " + ex.getMessage(), ex);
@@ -328,18 +292,41 @@ public class DataServiceUpgradeFrom1pt4 extends ExtensionUpgraderBase {
                     try {
                         styleUpgrade.upgradeStyle(getServiceInformation(), getExtensionType().getExtensionData(),
                             getStatus(), getFromVersion(), getToVersion());
-                        // set the style version number in the style info element
-                        Element serviceFeaturesElem = extensionDataElement.getChild(
-                            "ServiceFeatures", extensionDataElement.getNamespace());
-                        Element styleElem = serviceFeaturesElem.getChild("ServiceStyle", serviceFeaturesElem.getNamespace());
-                        styleElem.setAttribute("version", validUpgrade.getToVersion());
-                        storeExtensionDataElement(extensionDataElement);
                     } catch (Exception ex) {
                         throw new UpgradeException("Error upgrading service style: " + ex.getMessage(), ex);
                     }
                     getStatus().addDescriptionLine("Style upgrade complete");
                 }
             }
+        }
+        upgradeServiceStyleElement();
+    }
+    
+    
+    private void upgradeServiceStyleElement() throws UpgradeException {
+        Element extensionDataElem = getExtensionDataElement();
+        Element serviceFeaturesElem = extensionDataElem.getChild("ServiceFeatures", extensionDataElem.getNamespace());
+        String oldStyle = serviceFeaturesElem.getAttributeValue("serviceStyle");
+        if (oldStyle != null) {
+            serviceFeaturesElem.removeAttribute("serviceStyle");
+            Element styleElem = new Element("ServiceStyle", extensionDataElem.getNamespace());
+            styleElem.setAttribute("name", oldStyle);
+            ServiceStyleContainer style;
+            try {
+                style = ServiceStyleLoader.getStyle(oldStyle);
+            } catch (Exception ex) {
+                throw new UpgradeException("Error loading service style " 
+                    + oldStyle + ": " + ex.getMessage(), ex);
+            }
+            if (style == null) {
+                getStatus().addIssue("Style " + oldStyle + " not found!", 
+                    "The current introduce version has been substituted for the style version");
+                styleElem.setAttribute("version", IntroducePropertiesManager.getIntroduceVersion());
+            } else {
+                String newVersion = style.getServiceStyle().getVersion();
+                styleElem.setAttribute("version", newVersion);
+            }
+            serviceFeaturesElem.addContent(styleElem);
         }
     }
 }

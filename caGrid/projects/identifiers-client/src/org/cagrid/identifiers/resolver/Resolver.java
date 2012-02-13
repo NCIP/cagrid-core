@@ -46,7 +46,6 @@ import org.exolab.castor.xml.ValidationException;
 import org.exolab.castor.xml.XMLContext;
 import org.globus.axis.gsi.GSIConstants;
 import org.globus.gsi.GlobusCredential;
-import org.globus.gsi.X509Credential;
 import org.globus.gsi.gssapi.GlobusGSSCredentialImpl;
 import org.globus.net.GSIHttpURLConnection;
 import org.ietf.jgss.GSSCredential;
@@ -287,7 +286,7 @@ public class Resolver {
 			GlobusGSSCredentialImpl cred;
 
 			cred = new GlobusGSSCredentialImpl(
-					new X509Credential(user.getPrivateKey(), user.getCertificateChain()), GSSCredential.INITIATE_AND_ACCEPT);
+					user, GSSCredential.INITIATE_AND_ACCEPT);
 
 			GSIHttpURLConnection connection = new GSIHttpURLConnection(url);		
 			connection.setGSSMode(GSIConstants.MODE_SSL);

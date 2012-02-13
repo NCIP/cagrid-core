@@ -1,10 +1,10 @@
 package gov.nih.nci.cagrid.testing.system.haste;
 
-import java.util.Vector;
+import java.util.*;
 
 import org.junit.Test;
+import org.junit.internal.runners.JUnit38ClassRunner;
 import org.junit.runner.RunWith;
-import org.junit.runners.BlockJUnit4ClassRunner;
 
 /*
  * HASTE - High-level Automated System Test Environment Copyright (C) 2002
@@ -28,12 +28,12 @@ import org.junit.runners.BlockJUnit4ClassRunner;
  * 
  * @version $Revision: 1.3 $
  */
-@RunWith(BlockJUnit4ClassRunner.class)
+@RunWith(JUnit38ClassRunner.class)
 public abstract class Story extends junit.framework.TestCase {
 
 
     /** The sequence of executable test steps */
-    Vector<Step> mySteps;
+    Vector mySteps;
 
     /** The name of the current step */
     String stepName;

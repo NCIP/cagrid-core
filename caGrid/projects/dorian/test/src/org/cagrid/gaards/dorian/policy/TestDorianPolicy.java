@@ -4,9 +4,11 @@ import gov.nih.nci.cagrid.common.FaultUtil;
 
 import java.io.StringReader;
 import java.io.StringWriter;
+import java.security.Security;
 
 import junit.framework.TestCase;
 
+import org.bouncycastle.jce.provider.BouncyCastleProvider;
 import org.cagrid.gaards.dorian.client.DorianBaseClient;
 import org.cagrid.gaards.dorian.service.Dorian;
 import org.cagrid.gaards.dorian.service.DorianProperties;
@@ -34,7 +36,7 @@ public class TestDorianPolicy extends TestCase {
             gov.nih.nci.cagrid.common.Utils.serializeObject(policy, DorianBaseClient.POLICY, writer,
                 TestDorianPolicy.class.getResourceAsStream("/client-config.wsdd"));;
             String str = writer.toString();
-            DorianPolicy policy2 = gov.nih.nci.cagrid.common.Utils.deserializeObject(new StringReader(
+            DorianPolicy policy2 = (DorianPolicy) gov.nih.nci.cagrid.common.Utils.deserializeObject(new StringReader(
                 str), DorianPolicy.class, TestDorianPolicy.class.getResourceAsStream("/client-config.wsdd"));
             assertEquals(policy, policy2);
 
@@ -56,7 +58,6 @@ public class TestDorianPolicy extends TestCase {
 
     protected void setUp() throws Exception {
         super.setUp();
-        /*
         try {
             org.apache.xml.security.Init.init();
             Security.addProvider(new BouncyCastleProvider());
@@ -64,7 +65,6 @@ public class TestDorianPolicy extends TestCase {
             FaultUtil.printFault(e);
             fail(e.getMessage());
         }
-        */
     }
 
 }

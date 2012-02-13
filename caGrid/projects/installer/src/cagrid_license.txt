@@ -1,10 +1,10 @@
-caBIG(r) Open Source Software License caGrid 1.5
+caBIG(r) Open Source Software License caGrid 1.4.1
 
 Copyright Notice.
-Copyright 2011 The Ohio State University Research Foundation ("OSURF"),
+Copyright 2012 The Ohio State University Research Foundation ("OSURF"),
 Argonne National Laboratory ("ANL"), SemanticBits LLC ("SemanticBits"), and 
 Ekagra Software Technologies Ltd. ("Ekagra") ("caBIG(r) Participant").  The 
-caGrid 1.5 software was created with NCI funding and is part of the caBIG(r) 
+caGrid 1.4.1 software was created with NCI funding and is part of the caBIG(r) 
 initiative. The software subject to this notice and license includes both human 
 readable source code form and machine readable, binary, object code form (the 
 "caBIG(r) Software").

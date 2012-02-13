@@ -6,7 +6,6 @@ import gov.nih.nci.cagrid.common.FaultUtil;
 import gov.nih.nci.cagrid.common.Runner;
 import gov.nih.nci.cagrid.gridgrouper.client.MembershipRequest;
 import gov.nih.nci.cagrid.gridgrouper.client.MembershipRequestHistory;
-import gov.nih.nci.cagrid.gridgrouper.grouper.MembershipRequestHistoryI;
 
 import java.awt.BorderLayout;
 import java.awt.FlowLayout;
@@ -468,8 +467,8 @@ public class MembershipRequestWindow extends ApplicationComponent {
 		if (requestHistoryTable == null) {
 			requestHistoryTable = new MembershipRequestHistoryTable();
 			try {
-				Set<MembershipRequestHistoryI> i = membershipRequest.getHistory();
-				Iterator<MembershipRequestHistoryI> itr = i.iterator();
+				Set i = membershipRequest.getHistory();
+				Iterator itr = i.iterator();
 				while (itr.hasNext()) {
 					MembershipRequestHistory m = (MembershipRequestHistory) itr.next();
 					requestHistoryTable.addMembershipRequestHistory(m);
