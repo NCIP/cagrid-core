@@ -70,6 +70,7 @@
   <classpathentry kind="var" path="GT4_LOCATION/lib/xercesImpl.jar" />
   <classpathentry kind="var" path="GT4_LOCATION/lib/xml-apis.jar" />
   <classpathentry kind="var" path="GT4_LOCATION/lib/xmlsec.jar" />
+  <classpathentry kind="var" path="GT4_LOCATION" />
   <classpathentry kind="lib" path="ext/dependencies/service/jars/antlr-2.7.6rc1.jar" />
   <classpathentry kind="lib" path="ext/dependencies/service/jars/asm.jar" />
   <classpathentry kind="lib" path="ext/dependencies/service/jars/caGrid-advertisement-1.5.jar" />
@@ -108,6 +109,5 @@
   <classpathentry kind="lib" path="ext/dependencies/service/jars/ejb3-persistence.jar" />
   <classpathentry kind="lib" path="ext/dependencies/service/jars/hibernate-annotations.jar" />
   <classpathentry kind="lib" path="ext/dependencies/service/jars/hibernate-commons-annotations.jar" />
-  <classpathentry kind="var" path="GT4_LOCATION" />
   <classpathentry kind="output" path="bin" />
 </classpath>
