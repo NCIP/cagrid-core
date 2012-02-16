@@ -2,6 +2,8 @@
 <classpath>
   <classpathentry kind="src" path="src" />
   <classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER" />
+  <classpathentry kind="lib" path="ext/dependencies/impl/jars/caGrid-core-1.5.jar" />
+  <classpathentry kind="lib" path="ext/dependencies/impl/jars/jdom-1.0.jar" />
   <classpathentry kind="var" path="GT4_LOCATION/lib/addressing-1.0.jar" />
   <classpathentry kind="var" path="GT4_LOCATION/lib/axis-url.jar" />
   <classpathentry kind="var" path="GT4_LOCATION/lib/axis.jar" />
@@ -68,8 +70,6 @@
   <classpathentry kind="var" path="GT4_LOCATION/lib/xercesImpl.jar" />
   <classpathentry kind="var" path="GT4_LOCATION/lib/xml-apis.jar" />
   <classpathentry kind="var" path="GT4_LOCATION/lib/xmlsec.jar" />
-  <classpathentry kind="lib" path="ext/dependencies/impl/jars/caGrid-core-1.5.jar" />
-  <classpathentry kind="lib" path="ext/dependencies/impl/jars/jdom-1.0.jar" />
   <classpathentry kind="var" path="ANT_HOME/lib/ant.jar" />
   <classpathentry kind="output" path="bin" />
 </classpath>
