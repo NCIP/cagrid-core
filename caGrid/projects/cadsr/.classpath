@@ -98,7 +98,6 @@
   <classpathentry kind="lib" path="ext/dependencies/jars/wizard-0.1.12.jar" />
   <classpathentry kind="lib" path="ext/dependencies/jars/xsom14.jar" />
   <classpathentry kind="lib" path="ext/dependencies/test/jars/caGrid-core-tests-1.5.jar" />
-  <classpathentry kind="con" path="org.eclipse.jdt.junit.JUNIT_CONTAINER/4" />
   <classpathentry kind="lib" path="ext/dependencies/jars/caGrid-globalModelExchange-ui-1.5.jar" />
   <classpathentry kind="lib" path="ext/dependencies/jars/caGrid-globalModelExchange-client-1.5.jar" />
   <classpathentry kind="lib" path="ext/dependencies/jars/caGrid-globalModelExchange-common-1.5.jar" />
@@ -110,6 +109,7 @@
   <classpathentry kind="lib" path="ext/dependencies/jars/caGrid-mms-client-1.5.jar" />
   <classpathentry kind="lib" path="ext/dependencies/jars/caGrid-mms-common-1.5.jar" />
   <classpathentry kind="lib" path="ext/dependencies/jars/caGrid-mms-stubs-1.5.jar" />
+  <classpathentry kind="con" path="org.eclipse.jdt.junit.JUNIT_CONTAINER/4" />
   <classpathentry kind="output" path="bin" />
 </classpath>
 
