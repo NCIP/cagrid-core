@@ -90,7 +90,6 @@
   <classpathentry kind="lib" path="ext/dependencies/tools/jars/caGrid-core-1.5.jar" />
   <classpathentry kind="lib" path="ext/dependencies/tools/jars/caGrid-Introduce-buildTools-1.5.jar" />
   <classpathentry kind="lib" path="ext/dependencies/tools/jars/caGrid-metadata-validator-1.5.jar" />
-  <classpathentry kind="lib" path="ext/dependencies/tools/jars/jdom-1.0.jar" />
   <classpathentry kind="lib" path="ext/dependencies/test/jars/caGrid-core-tests-1.5.jar" />
   <classpathentry kind="output" path="bin" />
 </classpath>
