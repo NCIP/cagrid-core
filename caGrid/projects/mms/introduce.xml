@@ -1,4 +1,4 @@
-<ns1:ServiceDescription introduceVersion="1.4.1" xmlns:ns1="gme://gov.nih.nci.cagrid/1/Introduce">
+<ns1:ServiceDescription introduceVersion="1.5" xmlns:ns1="gme://gov.nih.nci.cagrid/1/Introduce">
  <ns2:Namespaces xsi:type="ns2:NamespacesType" xmlns:ns2="gme://gov.nih.nci.cagrid.introduce/1/Namespace" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <ns2:Namespace location="./org.cagrid.mms.xsd" namespace="gme://caGrid.caBIG/1.0/org.cagrid.mms.domain" packageName="org.cagrid.mms.domain" xsi:type="ns2:NamespaceType">
    <ns2:SchemaElement type="ModelSourceMetadata" xsi:type="ns2:SchemaElementType"/>
@@ -210,7 +210,7 @@
   </ns3:Service>
  </ns3:Services>
  <ns34:Extensions xsi:type="ns34:ExtensionsType" xmlns:ns34="gme://gov.nih.nci.cagrid.introduce/1/Extension" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
-  <ns34:Extension name="cagrid_metadata" version="1.4.1" xsi:type="ns34:ExtensionType"/>
+  <ns34:Extension name="cagrid_metadata" version="1.5" xsi:type="ns34:ExtensionType"/>
  </ns34:Extensions>
  <ns35:ServiceProperties xmlns:ns35="gme://gov.nih.nci.cagrid.introduce/1/Property">
   <ns35:Property description="The Spring-based MMS configuration file" isFromETC="true" key="mmsConfigurationFile" value="applicationContext-mms.xml"/>

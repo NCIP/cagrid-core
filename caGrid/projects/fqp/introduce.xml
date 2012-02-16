@@ -1,4 +1,4 @@
-<ns1:ServiceDescription introduceVersion="1.4.1" xmlns:ns1="gme://gov.nih.nci.cagrid/1/Introduce">
+<ns1:ServiceDescription introduceVersion="1.5" xmlns:ns1="gme://gov.nih.nci.cagrid/1/Introduce">
  <ns2:Namespaces xsi:type="ns2:NamespacesType" xmlns:ns2="gme://gov.nih.nci.cagrid.introduce/1/Namespace" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <ns2:Namespace generateStubs="false" location="../cql2.0/DCQLResults_2.0.xsd" namespace="http://DCQL.caBIG/2/org.cagrid.data.dcql.results" packageName="org.cagrid.data.dcql.results" xsi:type="ns2:NamespaceType">
    <ns2:SchemaElement className="DCQLQueryResultsCollection" deserializer="org.cagrid.dcql.utilities.encoding.Dcql2DeserializerFactory" serializer="org.cagrid.dcql.utilities.encoding.Dcql2SerializerFactory" type="DCQLQueryResultsCollection" xsi:type="ns2:SchemaElementType"/>
@@ -553,9 +553,9 @@
   </ns3:Service>
  </ns3:Services>
  <ns123:Extensions xsi:type="ns123:ExtensionsType" xmlns:ns123="gme://gov.nih.nci.cagrid.introduce/1/Extension" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
-  <ns123:Extension name="cagrid_metadata" version="1.4.1" xsi:type="ns123:ExtensionType"/>
-  <ns123:Extension name="caGrid_Transfer" version="1.4.1" xsi:type="ns123:ExtensionType"/>
-  <ns123:Extension name="cagrid_wsEnum" version="1.4.1" xsi:type="ns123:ExtensionType"/>
+  <ns123:Extension name="cagrid_metadata" version="1.5" xsi:type="ns123:ExtensionType"/>
+  <ns123:Extension name="caGrid_Transfer" version="1.5" xsi:type="ns123:ExtensionType"/>
+  <ns123:Extension name="cagrid_wsEnum" version="1.5" xsi:type="ns123:ExtensionType"/>
  </ns123:Extensions>
  <ns124:ServiceProperties xmlns:ns124="gme://gov.nih.nci.cagrid.introduce/1/Property">
   <ns124:Property description="Length of time in minutes a Federated Query Results Resource will live" isFromETC="false" key="initialResultLeaseInMinutes" value="30"/>
