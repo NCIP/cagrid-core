@@ -20,7 +20,7 @@ public class Version {
      * @return
      */
     public static final int getMajorReleaseVersion() {
-        return 6;
+        return 5;
     }
     
     
