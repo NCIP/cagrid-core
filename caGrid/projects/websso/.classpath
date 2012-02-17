@@ -122,7 +122,6 @@
   <classpathentry kind="lib" path="ext/dependencies/default/jars/caGrid-core-1.5.jar" />
   <classpathentry kind="lib" path="ext/dependencies/default/jars/caGrid-dorian-client-1.5.jar" />
   <classpathentry kind="lib" path="ext/dependencies/default/jars/caGrid-dorian-common-1.5.jar" />
-  <classpathentry kind="lib" path="ext/dependencies/default/jars/caGrid-dorian-stubs-1.2.jar" />
   <classpathentry kind="lib" path="ext/dependencies/default/jars/caGrid-dorian-stubs-1.5.jar" />
   <classpathentry kind="lib" path="ext/dependencies/default/jars/caGrid-gaards-core-1.5.jar" />
   <classpathentry kind="lib" path="ext/dependencies/default/jars/caGrid-gts-client-1.5.jar" />

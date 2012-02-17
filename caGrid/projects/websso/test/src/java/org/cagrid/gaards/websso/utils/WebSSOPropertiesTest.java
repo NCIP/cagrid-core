@@ -3,15 +3,15 @@ package org.cagrid.gaards.websso.utils;
 import gov.nih.nci.cagrid.authentication.bean.BasicAuthenticationCredential;
 import gov.nih.nci.cagrid.authentication.bean.Credential;
 import gov.nih.nci.cagrid.authentication.client.AuthenticationClient;
-import gov.nih.nci.cagrid.dorian.client.IFSUserClient;
-import gov.nih.nci.cagrid.dorian.ifs.bean.ProxyLifetime;
 import gov.nih.nci.cagrid.opensaml.SAMLAssertion;
 
+import org.cagrid.gaards.dorian.client.DorianClient;
+import org.cagrid.gaards.dorian.client.GridUserClient;
+import org.cagrid.gaards.dorian.federation.CertificateLifetime;
+import org.cagrid.gaards.dorian.federation.ProxyLifetime;
 import org.cagrid.gaards.websso.beans.CredentialDelegationServiceInformation;
 import org.cagrid.gaards.websso.beans.DorianInformation;
-import org.cagrid.gaards.websso.utils.WebSSOProperties;
 import org.globus.gsi.GlobusCredential;
-
 import org.springframework.test.AbstractDependencyInjectionSpringContextTests;
 
 public class WebSSOPropertiesTest extends
@@ -54,12 +54,10 @@ public class WebSSOPropertiesTest extends
 			AuthenticationClient authClient = new AuthenticationClient(
 					"https://localhost:8443/wsrf/services/cagrid/Dorian", cred);
 			SAMLAssertion saml = authClient.authenticate();
-			ProxyLifetime lifetime = new ProxyLifetime();
-			lifetime.setHours(12);
-			int delegationLifetime = 0;
+			CertificateLifetime lifetime = new CertificateLifetime(12, 0, 0);
 
-			IFSUserClient dorian = new IFSUserClient("https://localhost:8443/wsrf/services/cagrid/Dorian");
-			GlobusCredential proxy = dorian.createProxy(saml, lifetime,delegationLifetime);
+			GridUserClient dorianClient = new GridUserClient("https://localhost:8443/wsrf/services/cagrid/Dorian");
+			GlobusCredential proxy = dorianClient.requestUserCertificate(saml, lifetime);
 			return proxy;
 		} catch (Exception e) {
 			e.printStackTrace();

@@ -108,7 +108,6 @@
   <classpathentry kind="lib" path="ext/dependencies/jars/xsom14.jar" />
   <classpathentry kind="lib" path="ext/dependencies/test/jars/caGrid-core-tests-1.5.jar" />
   <classpathentry kind="lib" path="ext/dependencies/test/jars/junit-4.4.jar" />
-  <classpathentry kind="lib" path="ext/dependencies/jars/caGrid-dorian-stubs-1.2.jar" />
   <classpathentry kind="lib" path="ext/dependencies/jars/caGrid-gaards-core-1.5.jar" />
   <classpathentry kind="lib" path="ext/dependencies/jars/caGrid-Introduce-buildTools-1.5.jar" />
   <classpathentry kind="lib" path="ext/dependencies/jars/castor-1.0.2.jar" />
