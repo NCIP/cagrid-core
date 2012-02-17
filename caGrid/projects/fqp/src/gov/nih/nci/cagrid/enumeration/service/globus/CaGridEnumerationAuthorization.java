@@ -29,7 +29,7 @@ import org.w3c.dom.Node;
  * authorization requirements placed on each method call.  Each method will either return
  * upon a successful authorization or will throw an exception upon a failed authorization.
  * 
- * @created by Introduce Toolkit version 1.4.1
+ * @created by Introduce Toolkit version 1.5
  * 
  */
 public class CaGridEnumerationAuthorization implements PDP {
