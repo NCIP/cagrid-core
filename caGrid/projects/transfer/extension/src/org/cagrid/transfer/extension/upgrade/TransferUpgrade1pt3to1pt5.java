@@ -18,8 +18,8 @@ import java.util.List;
 
 
 /**
- * TransferUpgrade1pt3to1pt4
- * Updates transfer from 1.3 to 1.4
+ * TransferUpgrade1pt3to1pt5
+ * Updates transfer from 1.3 to 1.5
  * 
  * @author oster
  * @author dervin
@@ -27,7 +27,7 @@ import java.util.List;
  * @version $Id: multiscaleEclipseCodeTemplates.xml,v 1.1 2007/03/02 14:35:01
  *          dervin Exp $
  */
-public class TransferUpgrade1pt3to1pt41 extends ExtensionUpgraderBase {
+public class TransferUpgrade1pt3to1pt5 extends ExtensionUpgraderBase {
 
     private static final String CAGRID_1_3_TRANSFER_JAR_PREFIX = "caGrid-Transfer";
     private static final String CAGRID_1_3_TRANSFER_JAR_SUFFIX = "-1.3.jar";
@@ -36,9 +36,9 @@ public class TransferUpgrade1pt3to1pt41 extends ExtensionUpgraderBase {
     private File extensionSchemaDir = null;
     private File extensionLibDir = null;
 
-    public TransferUpgrade1pt3to1pt41(ExtensionType extensionType, ServiceInformation serviceInfo, String servicePath,
+    public TransferUpgrade1pt3to1pt5(ExtensionType extensionType, ServiceInformation serviceInfo, String servicePath,
         String fromVersion, String toVersion) {
-        super("TransferUpgrade1pt3to1pt41", extensionType, serviceInfo, servicePath, fromVersion, toVersion);
+        super("TransferUpgrade1pt3to1pt5", extensionType, serviceInfo, servicePath, fromVersion, toVersion);
         extensionDir = new File(ExtensionsLoader.getInstance().getExtensionsDir(), "caGrid_Transfer");
         extensionSchemaDir = new File(extensionDir, "schema");
         extensionLibDir = new File(extensionDir, "lib");
@@ -72,7 +72,7 @@ public class TransferUpgrade1pt3to1pt41 extends ExtensionUpgraderBase {
         File[] oldTransferSchemas = serviceSchemaDir.listFiles(transferSchemaFilter);
         for (File oldSchema : oldTransferSchemas) {
             oldSchema.delete();
-            getStatus().addDescriptionLine("Removed 1.2 schema file: " + oldSchema.getName());
+            getStatus().addDescriptionLine("Removed 1.3 schema file: " + oldSchema.getName());
         }
         
         // copy in the caGrid transfer schema and add the namespace types for it
@@ -80,7 +80,7 @@ public class TransferUpgrade1pt3to1pt41 extends ExtensionUpgraderBase {
         try {
             Utils.copyFile(
                 transferSchema, new File(serviceSchemaDir, "TransferServiceContextTypes.xsd"));
-            getStatus().addDescriptionLine("Copied caGrid 1.4.1 transfer schema " + transferSchema.getName());
+            getStatus().addDescriptionLine("Copied caGrid 1.5 transfer schema " + transferSchema.getName());
         } catch (IOException e) {
             throw new RuntimeException(e.getMessage(), e);
         }
@@ -100,7 +100,7 @@ public class TransferUpgrade1pt3to1pt41 extends ExtensionUpgraderBase {
         try {
             Utils.copyFile(transferDescSchema, 
                 new File(serviceSchemaDir, "caGrid_Transfer.xsd"));
-            getStatus().addDescriptionLine("Copied caGrid 1.4.1 schema " + transferDescSchema.getName());
+            getStatus().addDescriptionLine("Copied caGrid 1.5 schema " + transferDescSchema.getName());
         } catch (IOException e) {
             throw new RuntimeException(e.getMessage(), e);
         }
@@ -158,7 +158,7 @@ public class TransferUpgrade1pt3to1pt41 extends ExtensionUpgraderBase {
             File out = new File(serviceLibDir, newLib.getName());
             try {
                 Utils.copyFile(newLib, out);
-                getStatus().addDescriptionLine("caGrid 1.4.1 library " + newLib.getName() + " added");
+                getStatus().addDescriptionLine("caGrid 1.5 library " + newLib.getName() + " added");
             } catch (IOException ex) {
                 // TODO: change this to use a better exception
                 throw new RuntimeException("Error copying new transfer library: " + ex.getMessage(), ex);
