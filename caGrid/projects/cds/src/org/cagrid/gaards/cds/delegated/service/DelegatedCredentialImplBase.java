@@ -22,7 +22,7 @@ import org.globus.wsrf.ResourcePropertySet;
  *
  * Provides some simple accessors for the Impl.
  * 
- * @created by Introduce Toolkit version 1.4.1
+ * @created by Introduce Toolkit version 1.5
  * 
  */
 public abstract class DelegatedCredentialImplBase {
