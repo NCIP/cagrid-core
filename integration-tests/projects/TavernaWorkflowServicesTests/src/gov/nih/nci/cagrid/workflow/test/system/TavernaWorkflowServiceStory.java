@@ -49,7 +49,7 @@ public class TavernaWorkflowServiceStory extends ServiceStoryBase {
 
 		// init the container
 		try {
-			this.setContainer(ServiceContainerFactory.createContainer(ServiceContainerType.GLOBUS_CONTAINER));
+			this.setContainer(ServiceContainerFactory.createContainer(ServiceContainerType.TOMCAT_CONTAINER));
 		} catch (Exception ex) {
 			ex.printStackTrace();
 			fail("Failed to create container: " + ex.getMessage());
@@ -95,6 +95,7 @@ public class TavernaWorkflowServiceStory extends ServiceStoryBase {
 		}
 	}
 
+	
 	@Override
 	protected Vector steps() {
 		Vector<Step> steps = new Vector<Step>();
@@ -165,14 +166,14 @@ public class TavernaWorkflowServiceStory extends ServiceStoryBase {
 			} 
 
 		}
-
 	}
 
 
-	private class BuildTaverna2 extends Step
-	{
+	private class BuildTaverna2 extends Step {
 		public BuildTaverna2(){
 		}
+		
+		
 		@Override
 		public void runStep() throws Throwable {
 			String output="";
@@ -214,7 +215,6 @@ public class TavernaWorkflowServiceStory extends ServiceStoryBase {
 					output = output + line;
 				}
 				process.waitFor();
-
 			} catch (IOException e) {
 				System.err.println("\nErorr in running Ant Task");
 				System.out.println(output);
@@ -223,10 +223,6 @@ public class TavernaWorkflowServiceStory extends ServiceStoryBase {
 				System.err.println("Process Interrupted");
 				e.printStackTrace();
 			}
-
-
-
 		}
 	}
-
 }
