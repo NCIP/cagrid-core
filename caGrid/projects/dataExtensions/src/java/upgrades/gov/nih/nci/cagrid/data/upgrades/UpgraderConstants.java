@@ -10,11 +10,8 @@ package gov.nih.nci.cagrid.data.upgrades;
 public interface UpgraderConstants {
 
     /** Current data services version */
-    public static final String DATA_CURRENT_VERSION = "1.4.1";
+    public static final String DATA_CURRENT_VERSION = "1.5";
     
     /** Current WS-Enumeration support version */
-    public static final String ENUMERATION_CURRENT_VERSION = "1.4.1";
-    
-    /** Current SDK 3.1 / 3.2 support version */
-    public static final String SDK_3_CURRENT_VERSION = "1.4.1";
+    public static final String ENUMERATION_CURRENT_VERSION = "1.5";
 }
