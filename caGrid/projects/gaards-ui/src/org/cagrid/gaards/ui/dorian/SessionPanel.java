@@ -143,7 +143,7 @@ public class SessionPanel extends JPanel implements DorianSessionProvider {
 
 
     public String getServiceURI() {
-        DorianHandle handle = (DorianHandle) getService().getSelectedService();
+        DorianHandle handle = getService().getSelectedService();
         return handle.getServiceDescriptor().getServiceURL();
     }
 

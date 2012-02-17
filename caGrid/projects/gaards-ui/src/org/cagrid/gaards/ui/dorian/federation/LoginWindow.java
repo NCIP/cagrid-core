@@ -2,9 +2,7 @@ package org.cagrid.gaards.ui.dorian.federation;
 
 import gov.nih.nci.cagrid.common.FaultUtil;
 import gov.nih.nci.cagrid.common.Runner;
-import gov.nih.nci.cagrid.common.Utils;
 import gov.nih.nci.cagrid.common.security.ProxyUtil;
-import gov.nih.nci.cagrid.dorian.client.IFSUserClient;
 import gov.nih.nci.cagrid.opensaml.SAMLAssertion;
 
 import java.awt.CardLayout;
@@ -416,22 +414,7 @@ public class LoginWindow extends ApplicationComponent {
 
             if (version.equals(GridUserClient.VERSION_1_0) || version.equals(GridUserClient.VERSION_1_1)
                 || version.equals(GridUserClient.VERSION_1_2) || version.equals(GridUserClient.VERSION_UNKNOWN)) {
-                IFSUserClient c2 = dorian.getOldUserClient();
-                int delegationPathLengthValue = 0;
-                String str = Utils.clean(getDelegationPathLength().getText());
-                if (str != null) {
-                    try {
-                        delegationPathLengthValue = Integer.valueOf(str).intValue();
-                    } catch (Exception e) {
-                        throw new Exception(
-                            "Invalid delegation path length specified, the delegation path length must be an integer.");
-                    }
-                }
-                gov.nih.nci.cagrid.dorian.ifs.bean.ProxyLifetime lifetime = new gov.nih.nci.cagrid.dorian.ifs.bean.ProxyLifetime();
-                lifetime.setHours(Integer.valueOf((String) getHours().getSelectedItem()).intValue());
-                lifetime.setMinutes(Integer.valueOf((String) getMinutes().getSelectedItem()).intValue());
-                lifetime.setSeconds(Integer.valueOf((String) getSeconds().getSelectedItem()).intValue());
-                cred = c2.createProxy(saml, lifetime, delegationPathLengthValue);
+                throw new Exception("Unsupported version of Dorian detected: " + version);
             } else {
                 GridUserClient c2 = dorian.getUserClient();
                 CertificateLifetime lifetime = new CertificateLifetime();

@@ -1,7 +1,6 @@
 package org.cagrid.gaards.ui.dorian;
 
 import gov.nih.nci.cagrid.common.Utils;
-import gov.nih.nci.cagrid.dorian.client.IFSUserClient;
 
 import java.util.List;
 
@@ -82,17 +81,6 @@ public class DorianHandle extends ServiceHandle {
             client.setAuthorization(auth);
         }
         client.setPolicy(policy);
-        return client;
-    }
-
-
-    public IFSUserClient getOldUserClient() throws Exception {
-        IFSUserClient client = new IFSUserClient(getServiceDescriptor().getServiceURL());
-        if (Utils.clean(getServiceDescriptor().getServiceIdentity()) != null) {
-            IdentityAuthorization auth = new IdentityAuthorization(getServiceDescriptor().getServiceIdentity());
-            client.setAuthorization(auth);
-        }
-
         return client;
     }
 
