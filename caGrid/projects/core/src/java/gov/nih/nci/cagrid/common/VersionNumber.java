@@ -17,7 +17,7 @@ import java.util.StringTokenizer;
  */
 public class VersionNumber {
     
-    public static final String CAGRID_VERSION_STRING = "1.4.1";
+    public static final String CAGRID_VERSION_STRING = "1.5";
     public static final String DEFAULT_SEPARATOR = ".";
     public static final String DEFAULT_SUFFIX_SEPARATOR = "-";
     

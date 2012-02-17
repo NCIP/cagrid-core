@@ -84,6 +84,6 @@ public class VersionNumberTestCase {
         VersionNumber caGridVersion = VersionNumber.getCaGridVersion();
         String ver = caGridVersion.getOriginalVersionString();
         assertNotNull(ver);
-        assertEquals("1.4.1", ver);
+        assertEquals("1.5", ver);
     }
 }
