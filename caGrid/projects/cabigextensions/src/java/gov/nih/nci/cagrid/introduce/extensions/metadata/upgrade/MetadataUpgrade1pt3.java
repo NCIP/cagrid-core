@@ -21,12 +21,8 @@ import org.apache.commons.logging.LogFactory;
 
 
 /**
- * MetadataUpgrade1pt0to1pt1 copies metadata descriptions
- * 
- * @author oster
- * @created Apr 9, 2007 11:21:24 AM
- * @version $Id: multiscaleEclipseCodeTemplates.xml,v 1.1 2007/03/02 14:35:01
- *          dervin Exp $
+ * MetadataUpgrade1pt3
+ * Updates the service metadata extension from 1.3 to 1.5
  */
 public class MetadataUpgrade1pt3 extends ExtensionUpgraderBase {
 
@@ -103,7 +99,7 @@ public class MetadataUpgrade1pt3 extends ExtensionUpgraderBase {
         // delete the old libraries
         for (File oldLib : serviceMetadataLibs) {
             oldLib.delete();
-            getStatus().addDescriptionLine("caGrid 1.4.1 library " + oldLib.getName() + " removed fron lib.");
+            getStatus().addDescriptionLine("caGrid 1.3 library " + oldLib.getName() + " removed fron lib.");
         }
         // copy new libraries in
         File extLibDir = new File(ExtensionsLoader.EXTENSIONS_DIRECTORY + File.separator + "lib");
@@ -113,7 +109,7 @@ public class MetadataUpgrade1pt3 extends ExtensionUpgraderBase {
             File out = new File(serviceLibDir.getAbsolutePath() + File.separator + newLib.getName());
             try {
                 Utils.copyFile(newLib, out);
-                getStatus().addDescriptionLine("caGrid 1.4.1 library " + newLib.getName() + " added");
+                getStatus().addDescriptionLine("caGrid 1.5 library " + newLib.getName() + " added");
             } catch (IOException ex) {
                 // TODO: change this to use a better exception
                 throw new RuntimeException("Error copying new metadata library: " + ex.getMessage(), ex);
@@ -127,7 +123,7 @@ public class MetadataUpgrade1pt3 extends ExtensionUpgraderBase {
         // delete the old libraries
         for (File oldLib : serviceToolsLibs) {
             oldLib.delete();
-            getStatus().addDescriptionLine("caGrid 1.4.1 library " + oldLib.getName() + " removed from tools lib.");
+            getStatus().addDescriptionLine("caGrid 1.3 library " + oldLib.getName() + " removed from tools lib.");
         }
 
         // copy in the deployment validator stuff
@@ -153,7 +149,7 @@ public class MetadataUpgrade1pt3 extends ExtensionUpgraderBase {
                 try {
                     Utils.copyFile(toolslibs[i], outFile);
                     getStatus().addDescriptionLine(
-                        "caGrid 1.4.1 library " + outFile.getName() + " added, for deploytime validation.");
+                        "caGrid 1.5 library " + outFile.getName() + " added, for deploytime validation.");
                 } catch (IOException e) {
                     // TODO: change this to use a better exception
                     throw new RuntimeException("Error adding deployment validator: " + e.getMessage(), e);
@@ -172,6 +168,5 @@ public class MetadataUpgrade1pt3 extends ExtensionUpgraderBase {
             // TODO: change this to use a better exception
             throw new RuntimeException("Error updating Eclipse .classpath file: " + ex.getMessage(), ex);
         }
-
     }
 }
