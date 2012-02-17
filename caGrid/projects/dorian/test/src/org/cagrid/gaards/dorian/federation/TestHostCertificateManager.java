@@ -1,7 +1,6 @@
 package org.cagrid.gaards.dorian.federation;
 
 import gov.nih.nci.cagrid.common.FaultUtil;
-import gov.nih.nci.cagrid.dorian.common.CommonUtils;
 
 import java.math.BigInteger;
 import java.security.KeyPair;
@@ -12,6 +11,7 @@ import junit.framework.TestCase;
 
 import org.cagrid.gaards.dorian.X509Certificate;
 import org.cagrid.gaards.dorian.ca.CertificateAuthority;
+import org.cagrid.gaards.dorian.common.CommonUtils;
 import org.cagrid.gaards.dorian.common.Lifetime;
 import org.cagrid.gaards.dorian.stubs.types.InvalidHostCertificateFault;
 import org.cagrid.gaards.dorian.stubs.types.InvalidHostCertificateRequestFault;

@@ -2,7 +2,6 @@ package org.cagrid.gaards.dorian.federation;
 
 import gov.nih.nci.cagrid.common.FaultHelper;
 import gov.nih.nci.cagrid.common.Utils;
-import gov.nih.nci.cagrid.dorian.common.CommonUtils;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -14,6 +13,7 @@ import java.util.List;
 import java.util.Set;
 
 import org.cagrid.gaards.dorian.ca.CertificateAuthority;
+import org.cagrid.gaards.dorian.common.CommonUtils;
 import org.cagrid.gaards.dorian.common.LoggingObject;
 import org.cagrid.gaards.dorian.service.PropertyManager;
 import org.cagrid.gaards.dorian.service.util.AddressValidator;

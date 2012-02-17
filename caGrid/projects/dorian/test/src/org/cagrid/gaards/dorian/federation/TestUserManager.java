@@ -1,7 +1,6 @@
 package org.cagrid.gaards.dorian.federation;
 
 import gov.nih.nci.cagrid.common.FaultUtil;
-import gov.nih.nci.cagrid.dorian.common.CommonUtils;
 
 import java.security.cert.X509Certificate;
 import java.util.List;
@@ -9,6 +8,7 @@ import java.util.List;
 import junit.framework.TestCase;
 
 import org.cagrid.gaards.dorian.ca.CertificateAuthority;
+import org.cagrid.gaards.dorian.common.CommonUtils;
 import org.cagrid.gaards.dorian.service.PropertyManager;
 import org.cagrid.gaards.dorian.stubs.types.InvalidUserFault;
 import org.cagrid.gaards.dorian.test.CA;

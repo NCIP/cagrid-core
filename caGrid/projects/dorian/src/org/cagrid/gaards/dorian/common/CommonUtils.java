@@ -1,4 +1,4 @@
-package gov.nih.nci.cagrid.dorian.common;
+package org.cagrid.gaards.dorian.common;
 
 public class CommonUtils {
     public static String identityToSubject(String identity) {

@@ -55,7 +55,6 @@
     <dependency rev="latest.integration" org="caGrid" name="advertisement" conf="service->default" />
     <dependency rev="latest.integration" org="caGrid" name="introduce-servicetools" conf="service->default" />
 
-
     <dependency rev="${target.grid}" org="caGrid" name="target_grid" conf="target_grid->urls" />
 
     <!--  Build file dependencies -->
@@ -68,7 +67,6 @@
     <dependency rev="latest.integration" org="caGrid" name="metadata-validator" conf="serviceTools->default"
       transitive="false" />
 
-
     <!-- Specific caGrid Service Dependencies -->
     <dependency rev="latest.integration" org="caGrid" name="service-tools"
       conf="service->groups,database-schemas" />
@@ -78,8 +76,6 @@
       conf="client->default;service->http;endorsed->endorsed" />
     <dependency rev="latest.integration" org="caGrid" name="authentication-service" conf="client->client" />
     <dependency rev="latest.integration" org="caGrid" name="gts" conf="service->client" />
-    <dependency rev="1.2" org="caGrid" name="dorian-deprecated" conf="client->stubs" />
-
 
     <!-- Extenernal Dependencies -->
     <dependency rev="1.0" org="jdom" name="jdom" conf="service->*" />
@@ -87,6 +83,5 @@
     <dependency rev="jce-1.2" org="eracom" name="protecttoolkit-j" conf="service->ui" />
     <dependency rev="4.4" org="junit" name="junit" conf="impl-test->default" />
     <dependency rev="1.4" org="javax" name="mail" conf="service->*" />
-
   </dependencies>
 </ivy-module>

@@ -2,7 +2,6 @@ package org.cagrid.gaards.dorian.federation;
 
 import gov.nih.nci.cagrid.common.FaultHelper;
 import gov.nih.nci.cagrid.common.Utils;
-import gov.nih.nci.cagrid.dorian.common.CommonUtils;
 
 import java.security.interfaces.RSAPublicKey;
 import java.sql.Connection;
@@ -16,6 +15,7 @@ import java.util.List;
 
 import org.cagrid.gaards.dorian.X509Certificate;
 import org.cagrid.gaards.dorian.ca.CertificateAuthority;
+import org.cagrid.gaards.dorian.common.CommonUtils;
 import org.cagrid.gaards.dorian.common.Lifetime;
 import org.cagrid.gaards.dorian.common.LoggingObject;
 import org.cagrid.gaards.dorian.service.util.PreparedStatementBuilder;

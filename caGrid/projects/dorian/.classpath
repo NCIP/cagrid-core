@@ -91,8 +91,6 @@
   <classpathentry kind="lib" path="ext/dependencies/service/jars/servlet.jar" />
   <classpathentry kind="lib" path="ext/dependencies/service/jars/spring-beans.jar" />
   <classpathentry kind="lib" path="ext/dependencies/service/jars/spring-core.jar" />
-  <classpathentry kind="lib" path="tools/lib/mobius_common_client-1.1.jar" />
-  <classpathentry kind="lib" path="ext/dependencies/service/jars/caGrid-dorian-stubs-1.2.jar" />
   <classpathentry kind="lib" path="ext/dependencies/test/jars/caGrid-core-tests-1.5.jar" />
   <classpathentry kind="lib" path="ext/dependencies/test/jars/caGrid-gaards-core-tests-1.5.jar" sourcepath="/caGrid-gaards-core" />
   <classpathentry kind="lib" path="ext/dependencies/test/jars/junit-4.4.jar" />
@@ -100,5 +98,6 @@
   <classpathentry kind="lib" path="ext/dependencies/service/jars/castor-1.0.2.jar" />
   <classpathentry kind="lib" path="ext/dependencies/service/jars/activation-1.1.jar" />
   <classpathentry kind="lib" path="ext/dependencies/service/jars/mail-1.4.jar" />
+  <classpathentry kind="lib" path="tools/lib/mobius_common_client-1.1.jar" />
   <classpathentry kind="output" path="bin" />
 </classpath>

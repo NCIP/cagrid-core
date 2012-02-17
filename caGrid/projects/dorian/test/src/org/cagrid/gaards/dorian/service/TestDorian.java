@@ -2,7 +2,6 @@ package org.cagrid.gaards.dorian.service;
 
 import gov.nih.nci.cagrid.common.FaultHelper;
 import gov.nih.nci.cagrid.common.FaultUtil;
-import gov.nih.nci.cagrid.dorian.common.CommonUtils;
 import gov.nih.nci.cagrid.opensaml.SAMLAssertion;
 import gov.nih.nci.cagrid.opensaml.SAMLAttribute;
 import gov.nih.nci.cagrid.opensaml.SAMLAttributeStatement;
@@ -30,6 +29,7 @@ import org.apache.xml.security.signature.XMLSignature;
 import org.cagrid.gaards.authentication.BasicAuthentication;
 import org.cagrid.gaards.authentication.faults.InvalidCredentialFault;
 import org.cagrid.gaards.dorian.ca.CertificateAuthority;
+import org.cagrid.gaards.dorian.common.CommonUtils;
 import org.cagrid.gaards.dorian.federation.AutoApprovalPolicy;
 import org.cagrid.gaards.dorian.federation.CertificateLifetime;
 import org.cagrid.gaards.dorian.federation.FederationUtils;
