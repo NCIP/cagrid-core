@@ -71,7 +71,7 @@ public class NotificationTest extends Story {
         // init the container
         try {
             container = ServiceContainerFactory.createContainer(
-                ServiceContainerType.GLOBUS_CONTAINER);
+                ServiceContainerType.TOMCAT_CONTAINER);
         } catch (Exception ex) {
             ex.printStackTrace();
             fail("Failed to create container: " + ex.getMessage());
