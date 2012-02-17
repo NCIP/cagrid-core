@@ -85,7 +85,7 @@ import org.oasis.wsrf.lifetime.TerminationNotification;
  * of these resource as well as code for registering any properties selected
  * to the index service.
  * 
- * @created by Introduce Toolkit version 1.4.1
+ * @created by Introduce Toolkit version 1.5
  * 
  */
 public abstract class AuthenticationServiceResourceBase extends ReflectionResource implements Resource
