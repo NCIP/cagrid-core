@@ -1,0 +1,18 @@
+<res:CQLQueryResults targetClassname="gov.nih.nci.cacoresdk.domain.other.datatype.IiDataType" xmlns:res="http://CQL.caBIG/2/org.cagrid.cql2.results">
+ <res:ObjectResult>
+  <ns1:IiDataType id="5" xmlns:ns1="gme://caCORE.caCORE/3.2/gov.nih.nci.cacoresdk.domain.other.datatype">
+   <ns1:value1 nullFlavor="NI" xsi:type="ns2:II" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ns2="uri:iso.org:21090"/>
+   <ns1:value2 displayable="true" reliability="ISS" root="II_VALUE2_ROOT" scope="OBJ" xsi:type="ns3:II" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ns3="uri:iso.org:21090"/>
+   <ns1:value3 nullFlavor="NI" xsi:type="ns4:II" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ns4="uri:iso.org:21090"/>
+   <ns1:value4 nullFlavor="NI" xsi:type="ns5:II" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ns5="uri:iso.org:21090"/>
+  </ns1:IiDataType>
+ </res:ObjectResult>
+ <res:ObjectResult>
+  <ns1:IiDataType id="6" xmlns:ns1="gme://caCORE.caCORE/3.2/gov.nih.nci.cacoresdk.domain.other.datatype">
+   <ns1:value1 nullFlavor="NI" xsi:type="ns2:II" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ns2="uri:iso.org:21090"/>
+   <ns1:value2 displayable="true" extension="II_VALUE2_EXTENSION" reliability="ISS" root="II_VALUE2_ROOT" scope="OBJ" xsi:type="ns3:II" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ns3="uri:iso.org:21090"/>
+   <ns1:value3 nullFlavor="NI" xsi:type="ns4:II" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ns4="uri:iso.org:21090"/>
+   <ns1:value4 nullFlavor="NI" xsi:type="ns5:II" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ns5="uri:iso.org:21090"/>
+  </ns1:IiDataType>
+ </res:ObjectResult>
+</res:CQLQueryResults>

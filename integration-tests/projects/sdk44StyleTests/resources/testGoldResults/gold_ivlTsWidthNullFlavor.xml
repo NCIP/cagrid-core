@@ -1,0 +1,44 @@
+<ns1:CQLQueryResults targetClassname="gov.nih.nci.cacoresdk.domain.other.datatype.IvlTsDataType" xmlns:ns1="http://CQL.caBIG/1/gov.nih.nci.cagrid.CQLResultSet">
+ <ns1:ObjectResult>
+  <ns2:IvlTsDataType id="16" xmlns:ns2="gme://caCORE.caCORE/3.2/gov.nih.nci.cacoresdk.domain.other.datatype">
+   <ns2:value1 xsi:type="ns3:IVL_TS" nullFlavor="NI" xmlns:ns3="uri:iso.org:21090" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"/>
+   <ns2:value2 xsi:type="ns4:IVL_TS" nullFlavor="NI" xmlns:ns4="uri:iso.org:21090" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"/>
+   <ns2:value3 xsi:type="ns5:IVL_TS" xmlns:ns5="uri:iso.org:21090" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+    <ns5:low value="20100304000000.0000-0500"/>
+    <ns5:high value="20100314000000.0000-0500"/>
+    <ns5:width xsi:type="ns5:PQ" precision="0" nullFlavor="NI"/>
+   </ns2:value3>
+  </ns2:IvlTsDataType>
+ </ns1:ObjectResult>
+ <ns1:ObjectResult>
+  <ns6:IvlTsDataType id="17" xmlns:ns6="gme://caCORE.caCORE/3.2/gov.nih.nci.cacoresdk.domain.other.datatype">
+   <ns6:value1 xsi:type="ns7:IVL_TS" nullFlavor="NI" xmlns:ns7="uri:iso.org:21090" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"/>
+   <ns6:value2 xsi:type="ns8:IVL_TS" nullFlavor="NI" xmlns:ns8="uri:iso.org:21090" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"/>
+   <ns6:value3 xsi:type="ns9:IVL_TS" xmlns:ns9="uri:iso.org:21090" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+    <ns9:low value="20100305000000.0000-0500"/>
+    <ns9:high value="20100315000000.0000-0400"/>
+    <ns9:width xsi:type="ns9:PQ" precision="0" nullFlavor="NI"/>
+   </ns6:value3>
+  </ns6:IvlTsDataType>
+ </ns1:ObjectResult>
+ <ns1:ObjectResult>
+  <ns10:IvlTsDataType id="19" xmlns:ns10="gme://caCORE.caCORE/3.2/gov.nih.nci.cacoresdk.domain.other.datatype">
+   <ns10:value1 xsi:type="ns11:IVL_TS" nullFlavor="NI" xmlns:ns11="uri:iso.org:21090" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"/>
+   <ns10:value2 xsi:type="ns12:IVL_TS" nullFlavor="NI" xmlns:ns12="uri:iso.org:21090" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"/>
+   <ns10:value3 xsi:type="ns13:IVL_TS" xmlns:ns13="uri:iso.org:21090" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+    <ns13:low nullFlavor="NI"/>
+    <ns13:high value="20100322000000.0000-0400"/>
+    <ns13:width xsi:type="ns13:PQ" precision="0" nullFlavor="NI"/>
+   </ns10:value3>
+  </ns10:IvlTsDataType>
+ </ns1:ObjectResult>
+ <ns1:ObjectResult>
+  <ns14:IvlTsDataType id="20" xmlns:ns14="gme://caCORE.caCORE/3.2/gov.nih.nci.cacoresdk.domain.other.datatype">
+   <ns14:value1 xsi:type="ns15:IVL_TS" nullFlavor="NI" xmlns:ns15="uri:iso.org:21090" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"/>
+   <ns14:value2 xsi:type="ns16:IVL_TS" nullFlavor="NI" xmlns:ns16="uri:iso.org:21090" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"/>
+   <ns14:value3 xsi:type="ns17:IVL_TS" nullFlavor="NA" xmlns:ns17="uri:iso.org:21090" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+    <ns17:width xsi:type="ns17:PQ" precision="0" nullFlavor="NA"/>
+   </ns14:value3>
+  </ns14:IvlTsDataType>
+ </ns1:ObjectResult>
+</ns1:CQLQueryResults>
