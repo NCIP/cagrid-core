@@ -1,0 +1,25 @@
+<project name="dependencies" basedir="." xmlns:ivy="antlib:org.apache.ivy.ant">
+	<!-- This is a first-class ant build script that the master build invokes
+     to perform Ivy releated tasks and, by proxy, invoke the project's
+     build.xml "all" target -->
+
+	<!-- the properties file can override anything we set later in here -->
+	<property file="project.properties" />
+
+	<!-- specify the list of configurations you want Ivy to resolve
+       artifacts for.  You can have configurations that DON'T get
+       resolved if you need them -->
+	<property name="ivy.resolver.configurations" value="impl,test" />
+
+	<!-- the master shared targets file.  There's probably a better way
+       to specify this than using a relative path with ../ in it -->
+	<property name="ivy-shared-targets.file" location="${basedir}/../../antfiles/ivy/ivy-shared-targets.xml" />
+	<import file="${ivy-shared-targets.file}" />
+
+	<!-- this target is overriden from the shared targets script
+       to resolve dependencies into our custom directory structure -->
+	<target name="do.resolve-dependencies" depends="pre.resolve-dependencies">
+		<ivy:retrieve conf="impl" pattern="${ivy.resolved.artifacts.dir}/dependencies/impl/[type]s/[originalname](.[ext])" sync="true" type="jar" />
+		<ivy:retrieve conf="test" pattern="${ivy.resolved.artifacts.dir}/dependencies/test/[type]s/[originalname](.[ext])" sync="true" type="jar" />
+	</target>
+</project>

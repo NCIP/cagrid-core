@@ -1,0 +1,35 @@
+<ns1:CQLQueryResults targetClassname="gov.nih.nci.cacoresdk.domain.other.datatype.IvlIntDataType" xmlns:ns1="http://CQL.caBIG/1/gov.nih.nci.cagrid.CQLResultSet">
+ <ns1:ObjectResult>
+  <ns2:IvlIntDataType id="8" xmlns:ns2="gme://caCORE.caCORE/3.2/gov.nih.nci.cacoresdk.domain.other.datatype">
+   <ns2:value1 xsi:type="ns3:IVL_INT" nullFlavor="NI" xmlns:ns3="uri:iso.org:21090" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"/>
+   <ns2:value2 xsi:type="ns4:IVL_INT" lowClosed="true" xmlns:ns4="uri:iso.org:21090" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+    <ns4:low nullFlavor="NI"/>
+    <ns4:high nullFlavor="NI"/>
+    <ns4:width xsi:type="ns4:INT" nullFlavor="NI"/>
+   </ns2:value2>
+   <ns2:value3 xsi:type="ns5:IVL_INT" nullFlavor="NI" xmlns:ns5="uri:iso.org:21090" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"/>
+  </ns2:IvlIntDataType>
+ </ns1:ObjectResult>
+ <ns1:ObjectResult>
+  <ns6:IvlIntDataType id="9" xmlns:ns6="gme://caCORE.caCORE/3.2/gov.nih.nci.cacoresdk.domain.other.datatype">
+   <ns6:value1 xsi:type="ns7:IVL_INT" nullFlavor="NI" xmlns:ns7="uri:iso.org:21090" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"/>
+   <ns6:value2 xsi:type="ns8:IVL_INT" lowClosed="true" xmlns:ns8="uri:iso.org:21090" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+    <ns8:low nullFlavor="NI"/>
+    <ns8:high value="10"/>
+    <ns8:width xsi:type="ns8:INT" nullFlavor="NI"/>
+   </ns6:value2>
+   <ns6:value3 xsi:type="ns9:IVL_INT" nullFlavor="NI" xmlns:ns9="uri:iso.org:21090" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"/>
+  </ns6:IvlIntDataType>
+ </ns1:ObjectResult>
+ <ns1:ObjectResult>
+  <ns10:IvlIntDataType id="11" xmlns:ns10="gme://caCORE.caCORE/3.2/gov.nih.nci.cacoresdk.domain.other.datatype">
+   <ns10:value1 xsi:type="ns11:IVL_INT" nullFlavor="NI" xmlns:ns11="uri:iso.org:21090" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"/>
+   <ns10:value2 xsi:type="ns12:IVL_INT" lowClosed="true" xmlns:ns12="uri:iso.org:21090" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+    <ns12:low nullFlavor="NI"/>
+    <ns12:high value="1"/>
+    <ns12:width xsi:type="ns12:INT" nullFlavor="NI"/>
+   </ns10:value2>
+   <ns10:value3 xsi:type="ns13:IVL_INT" nullFlavor="NI" xmlns:ns13="uri:iso.org:21090" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"/>
+  </ns10:IvlIntDataType>
+ </ns1:ObjectResult>
+</ns1:CQLQueryResults>
