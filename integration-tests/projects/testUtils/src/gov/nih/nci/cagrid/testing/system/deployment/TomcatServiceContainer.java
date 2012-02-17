@@ -10,6 +10,8 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -330,12 +332,11 @@ public class TomcatServiceContainer extends ServiceContainer {
 		if (getProperties().getHeapSizeInMegabytes() != null) {
 			String currentCatalinaOpts = System.getenv(ENV_CATALINA_OPTS);
 			if (currentCatalinaOpts != null) {
-                additionalEnvironment.add(ENV_CATALINA_OPTS + "=\"" + currentCatalinaOpts
-						+ " -Xmx" + getProperties().getHeapSizeInMegabytes()
-						+ "m\"");
+                additionalEnvironment.add(ENV_CATALINA_OPTS + "=" + currentCatalinaOpts
+						+ " -Xmx" + getProperties().getHeapSizeInMegabytes() + "m");
 			} else {
-                additionalEnvironment.add(ENV_CATALINA_OPTS + "=\"-Xmx"
-						+ getProperties().getHeapSizeInMegabytes() + "m\"");
+                additionalEnvironment.add(ENV_CATALINA_OPTS + "=-Xmx"
+						+ getProperties().getHeapSizeInMegabytes() + "m");
 			}
 		}
 		String[] editedEnvironment = editEnvironment(additionalEnvironment);
@@ -591,4 +592,77 @@ public class TomcatServiceContainer extends ServiceContainer {
 		Utils.stringBufferToFile(new StringBuffer(webappxml), webappConfigFile
 				.getAbsolutePath());
 	}
+
+
+    public StringBuffer getErrorLogs() {
+        StringBuffer errors = null;
+        File logsDir = new File(getProperties().getContainerDirectory(), "logs");
+        if (!isWindows()) {
+            File catalinaErr = new File(logsDir, "catalina.err");
+            if (catalinaErr.exists()) {
+                try {
+                    FileInputStream in = new FileInputStream(catalinaErr);
+                    errors = Utils.inputStreamToStringBuffer(in);
+                    in.close();
+                } catch (Exception ex) {
+                    ex.printStackTrace();
+                    errors = new StringBuffer();
+                    errors.append("Could not load error log file: " + ex.getMessage());
+                }
+            }
+        } else {
+            errors = new StringBuffer();
+        }
+        return errors;
+    }
+
+
+    public StringBuffer getOutLogs() {
+        StringBuffer out = null;
+        File logsDir = new File(getProperties().getContainerDirectory(), "logs");
+        if (!isWindows()) {
+            File catalinaErr = new File(logsDir, "catalina.out");
+            if (catalinaErr.exists()) {
+                try {
+                    FileInputStream in = new FileInputStream(catalinaErr);
+                    out = Utils.inputStreamToStringBuffer(in);
+                    in.close();
+                } catch (Exception ex) {
+                    ex.printStackTrace();
+                    out = new StringBuffer();
+                    out.append("Could not load log file: " + ex.getMessage());
+                }
+            }
+        } else {
+            out = new StringBuffer();
+            File[] files = logsDir.listFiles();
+            Comparator<File> logSorter = new Comparator<File>() {
+                public int compare(File o1, File o2) {
+                    return o1.getName().compareTo(o2.getName());
+                }
+            };
+            Arrays.sort(files, logSorter);
+            for (File log : files) {
+                out.append("-------------------\n");
+                out.append(log.getName()).append("\n");
+                out.append("-------------------\n");
+                try {
+                    FileInputStream in = new FileInputStream(log);
+                    out.append(Utils.inputStreamToStringBuffer(in));
+                    in.close();
+                    out.append("\n");
+                } catch (Exception ex) {
+                    // just printing stack here, since we're only trying to 
+                    // get debug information
+                    ex.printStackTrace();
+                }
+            }
+        }
+        return out;
+    }
+    
+    
+    private boolean isWindows() {
+        return System.getProperty("os.name").toLowerCase().contains("win");
+    }
 }

@@ -15,6 +15,40 @@ import java.io.IOException;
  * @version $Id: ServiceContainerFactory.java,v 1.4 2008-11-07 19:13:02 dervin Exp $ 
  */
 public class ServiceContainerFactory {
+    
+    private static Integer maxContainerHeapSize = null;
+    
+    private ServiceContainerFactory() {
+        // prevent instantiation
+    }
+    
+    
+    /**
+     * Sets the max heap size for the created container 
+     * processes. This is equivalent to starting the 
+     * process with -Xmx#m set to some value
+     * 
+     * The provided value may be <code>null</code> to allow 
+     * the system default to take precedence.
+     * 
+     * @param heapMB
+     */
+    public static void setMaxContainerHeapSizeMB(Integer heapMB) {
+        maxContainerHeapSize = heapMB;
+    }
+    
+    
+    /**
+     * Gets the max heap size for the created container
+     * processes.  This may be <code>null</code> if
+     * no value has been set, which indicates the system
+     * default will take precedence.
+     * 
+     * @return
+     */
+    public static Integer getMaxContainerHeapSizeMB() {
+        return maxContainerHeapSize;
+    }
 
     /**
      * Creates a new service container of the specified type.
@@ -35,6 +69,7 @@ public class ServiceContainerFactory {
 
     /**
      * Creates a new service container, with all options configured by the caller.
+     * <note>For now, the TOMCAT_CONTAINER returns the same as TOMCAT_5_CONTAINER</note>
      * 
      * @param type
      *      The type of container
@@ -51,19 +86,25 @@ public class ServiceContainerFactory {
         File containerZip = new File(zipLocation);
         ContainerProperties props = new ContainerProperties(containerTempDir,
         	containerZip, ports, false,
-        	null, null, null);
+        	null, null, getMaxContainerHeapSizeMB());
         
         ServiceContainer container = null;
         switch (type) {
-            case GLOBUS_CONTAINER:
-                container = new GlobusServiceContainer(props);
-                break;
             case TOMCAT_CONTAINER:
+            case TOMCAT_5_CONTAINER:
                 container = new TomcatServiceContainer(props);
                 break;
+            case TOMCAT_6_CONTAINER:
+                container = new Tomcat6ServiceContainer(props);
+                break;
             case SECURE_TOMCAT_CONTAINER:
+            case SECURE_TOMCAT_5_CONTAINER:
                 props.setSecure(true);
                 container = new TomcatSecureServiceContainer(props);
+                break;
+            case SECURE_TOMCAT_6_CONTAINER:
+                props.setSecure(true);
+                container = new Tomcat6SecureServiceContainer(props);
                 break;
             case JBOSS_CONTAINER:
                 throw new UnsupportedOperationException(ServiceContainerType.JBOSS_CONTAINER + " is not yet supported");
@@ -90,27 +131,10 @@ public class ServiceContainerFactory {
     public static void main(String[] args) {
         ServiceContainerType type = ServiceContainerType.valueOf(args[0]);
         File containerOutDir = new File(args[1]);
-        File containerZip = new File(type.getZip());
         try {
             ContainerPorts ports = PortFactory.getContainerPorts();
-            ContainerProperties props = new ContainerProperties(containerOutDir, containerZip, ports, false, null, null, null);
-            ServiceContainer container = null;
-            switch (type) {
-                case GLOBUS_CONTAINER:
-                    container = new GlobusServiceContainer(props);
-                    break;
-                case TOMCAT_CONTAINER:
-                    container = new TomcatServiceContainer(props);
-                    break;
-                case SECURE_TOMCAT_CONTAINER:
-                    props.setSecure(true);
-                    container = new TomcatSecureServiceContainer(props);
-                    break;
-                case JBOSS_CONTAINER:
-                    throw new UnsupportedOperationException(ServiceContainerType.JBOSS_CONTAINER + " is not yet supported");
-                default:
-                    throw new AssertionError("Service container type: " + type + " is not valid");
-            }
+            ServiceContainer container = createContainer(type, ports);
+            container.getProperties().setContainerDirectory(containerOutDir);
             container.unpackContainer();
             System.out.println("Container listens on port " + ports.getPort() + "\t\tShutdown on port " + ports.getShutdownPort());
         } catch (Exception ex) {

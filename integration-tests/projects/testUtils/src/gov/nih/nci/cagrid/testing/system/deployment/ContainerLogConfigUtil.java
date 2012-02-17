@@ -103,13 +103,8 @@ public class ContainerLogConfigUtil {
     
     
     private File getLogConfigFile() {
-        File configFile = null;
-        if (container instanceof GlobusServiceContainer) {
-            configFile = new File(container.getProperties().getContainerDirectory(), LOG_FILE_NAME);
-        } else if (container instanceof TomcatServiceContainer) {
-            configFile = new File(container.getProperties().getContainerDirectory(), 
-                "webapps/wsrf/WEB-INF/classes/" + LOG_FILE_NAME);
-        }
+        File configFile = new File(container.getProperties().getContainerDirectory(), 
+            "webapps/wsrf/WEB-INF/classes/" + LOG_FILE_NAME);
         return configFile;
     }
 }

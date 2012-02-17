@@ -12,12 +12,8 @@ public class ContainerTestsStoryBook {
     @org.junit.Test
     public void testAllContainers() throws Throwable {
         try {
-        	
-        	Story s = new ContainerTest(ServiceContainerFactory
-                .createContainer(ServiceContainerType.GLOBUS_CONTAINER));
-        	
-        	s.runBare();
-        	
+            ServiceContainerFactory.setMaxContainerHeapSizeMB(Integer.valueOf(256));
+            
         	Story s2 = new ContainerTest(ServiceContainerFactory
                 .createContainer(ServiceContainerType.TOMCAT_CONTAINER));
         	
@@ -28,10 +24,18 @@ public class ContainerTestsStoryBook {
         	
         	s3.runBare();
         	
+        	Story s4 = new ContainerTest(ServiceContainerFactory
+        	    .createContainer(ServiceContainerType.TOMCAT_6_CONTAINER));
+        	
+        	s4.runBare();
+        	
+        	Story s5 = new ContainerTest(ServiceContainerFactory
+        	    .createContainer(ServiceContainerType.SECURE_TOMCAT_6_CONTAINER));
+        	
+        	s5.runBare();
+        	
         } catch (IOException e) {
             e.printStackTrace();
         }
-
     }
-
 }

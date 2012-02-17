@@ -123,7 +123,13 @@ public abstract class ServiceContainer {
 
         return epr;
     }
-
+    
+    
+    public abstract StringBuffer getOutLogs();
+    
+    
+    public abstract StringBuffer getErrorLogs();
+    
 
     protected abstract void startup() throws ContainerException;
 
