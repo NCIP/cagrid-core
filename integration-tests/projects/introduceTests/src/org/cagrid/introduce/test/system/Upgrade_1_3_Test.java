@@ -121,6 +121,7 @@ public class Upgrade_1_3_Test extends Story {
         }
     }
 
+    
     /**
      * Convenience method for running all the Steps in this Story.
      */
@@ -129,5 +130,4 @@ public class Upgrade_1_3_Test extends Story {
         TestResult result = runner.doRun(new TestSuite(Upgrade_1_3_Test.class));
         System.exit(result.errorCount() + result.failureCount());
     }
-
 }
