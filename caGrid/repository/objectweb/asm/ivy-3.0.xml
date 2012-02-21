@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<ivy-module version="2.0">
+    <info organisation="objectweb" module="asm" revision="3.0" status="release">
+        <license name="BSD" url="http://www.opensource.org/licenses/bsd-license.php"/>
+        <ivyauthor name="jayasoft" url="http://www.jayasoft.org/"/>
+        <description homepage="http://asm.objectweb.org/"> ASM is a Java bytecode manipulation framework</description>
+    </info>
+    <configurations>
+      <conf name="default" visibility="public"/>
+      <conf name="tree" visibility="public" extends="default"/>
+    </configurations>
+    <publications>
+      <artifact name="asm" type="jar" conf="default"/>
+      <artifact name="asm-tree" type="jar" conf="tree"/>
+    </publications>
+</ivy-module>
