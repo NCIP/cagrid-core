@@ -16,7 +16,6 @@
 
 	<property name="lib.dir" location="lib" />
 	<property name="ext.lib.dir" location="${ext.dir}/dependencies/default/jars" />
-	<property name="endorsed.lib.dir" location="${ext.dir}/dependencies/endorsed/jars" />
 	<property name="tools.lib.dir" location="tools/lib" />
 
 	<property name="webapp.name" value="webssoserver" />
@@ -83,9 +82,6 @@
 			<fileset dir="${ext.lib.dir}">
 				<include name="*.jar" />
 			</fileset>
-			<fileset dir="${endorsed.lib.dir}">
-				<include name="*.jar" />
-			</fileset>
 		</copy>
 	</target>
 
@@ -100,7 +96,7 @@
 	<target name="war" depends="compile,build-war">
 		<war destfile="${build.dir}/${webapp.name}.war" webxml="${webcontent.dir}/WEB-INF/web.xml">
 			<fileset dir="${webcontent.dir}">
-				<exclude name="**/*-template.*"/>
+				<exclude name="**/*-template.*" />
 			</fileset>
 			<lib dir="${build.war.dir}/WEB-INF/lib" />
 		</war>
@@ -117,16 +113,16 @@
 	</target>
 
 	<target name="configure-websso" description="replace tokens in websso-properties-template.xml and cas-template.properties">
-		<input message="Enter the location of the host certificate (PEM format):" addproperty="host.certificate"/>
+		<input message="Enter the location of the host certificate (PEM format):" addproperty="host.certificate" />
 		<input message="Enter the location of the host key (PEM format):" addproperty="host.key" />
 		<input message="Enter websso server host name:" addproperty="host.name" />
 		<input message="Enter websso server https port (int value):" addproperty="host.https.port" />
-		<input message="Enter start auto sync gts (yes or no) :" addproperty="start.auto.sync.gts" defaultvalue="no" description="state whether to start auto sync gts or not"/>
+		<input message="Enter start auto sync gts (yes or no) :" addproperty="start.auto.sync.gts" defaultvalue="no" description="state whether to start auto sync gts or not" />
 		<antcall target="-replace-token-contents">
 		</antcall>
 	</target>
 
-	<target name="deployTomcat" depends="configure-tomcat-endorsedjars,war" description="deploy websso server in %CATALINA_HOME%">
+	<target name="deployTomcat" depends="war" description="deploy websso server in %CATALINA_HOME%">
 		<property name="tomcat.local" value="${tomcat.home}" />
 		<copy todir="${tomcat.local}/webapps/">
 			<fileset file="${build.dir}/${webapp.name}.war" />
@@ -134,7 +130,7 @@
 	</target>
 
 	<target name="insert-tomcat-secure-connector" depends="defineAntTask" description="target to modify server.xml add https connector">
-		<input message="Enter the location of the keystore:" addproperty="service.keystore.file"/>
+		<input message="Enter the location of the keystore:" addproperty="service.keystore.file" />
 		<input message="Enter store password:" addproperty="service.key.pass" />
 		<input message="Enter tomcat https port number:" addproperty="tomcat.https.port" />
 		<echo message="modifying server.xml in tomcat home dir ${tomcat.home}">
@@ -155,22 +151,10 @@
 		</xmltask>
 	</target>
 
-	<target name="configure-tomcat-endorsedjars" description="Delete jars in tomcat endorsed directory,adds xercesimpl.jar">
-		<delete includeEmptyDirs="true">
-			<fileset dir="${tomcat.home}/common/endorsed" includes="**/*" />
-		</delete>
-
-		<copy todir="${tomcat.home}/common/endorsed" overwrite="true">
-			<fileset dir="${endorsed.lib.dir}">
-				<include name="xercesImpl.jar" />
-			</fileset>
-		</copy>
-	</target>
-
 	<!-- copy websso-properties.xml to ${src.resources} as websso-properties-template.xml -->
 	<target name="configure" description="Configures the project based on settings." depends="defineAntTask">
-		<copyfile  src="${ext.targetgrid.dir}/websso-properties.xml" dest="${src.resources.dir}/websso-properties-template.xml"/>
-		<copyfile  src="${ext.targetgrid.dir}/sync-description.xml" dest="${src.resources.dir}/sync-description.xml" />
+		<copyfile src="${ext.targetgrid.dir}/websso-properties.xml" dest="${src.resources.dir}/websso-properties-template.xml" />
+		<copyfile src="${ext.targetgrid.dir}/sync-description.xml" dest="${src.resources.dir}/sync-description.xml" />
 	</target>
 
 	<target name="-resolve-template-tokens" depends="defineAntTask">
@@ -229,14 +213,14 @@
 
 	<target name="tomcat-start">
 		<java jar="${tomcat.home}/bin/bootstrap.jar" fork="true">
-			<jvmarg value="-Dcatalina.home=${tomcat.home}"/>
+			<jvmarg value="-Dcatalina.home=${tomcat.home}" />
 		</java>
 	</target>
 
 	<target name="tomcat-stop">
 		<java jar="${tomcat.home}/bin/bootstrap.jar" fork="true">
-			<jvmarg value="-Dcatalina.home=${tomcat.home}"/>
-			<arg line="stop"/>
+			<jvmarg value="-Dcatalina.home=${tomcat.home}" />
+			<arg line="stop" />
 		</java>
 	</target>
 </project>

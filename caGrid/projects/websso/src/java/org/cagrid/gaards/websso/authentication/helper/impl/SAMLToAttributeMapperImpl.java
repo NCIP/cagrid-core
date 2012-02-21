@@ -1,5 +1,6 @@
 package org.cagrid.gaards.websso.authentication.helper.impl;
 
+import gov.nih.nci.cagrid.common.XMLUtilities;
 import gov.nih.nci.cagrid.opensaml.SAMLAssertion;
 
 import java.io.ByteArrayInputStream;
@@ -19,6 +20,7 @@ import org.apache.commons.logging.LogFactory;
 import org.cagrid.gaards.websso.authentication.helper.SAMLToAttributeMapper;
 import org.cagrid.gaards.websso.exception.AuthenticationConfigurationException;
 import org.cagrid.gaards.websso.utils.WebSSOConstants;
+import org.opensaml.XML.ParserPool;
 import org.w3c.dom.Document;
 import org.xml.sax.SAXException;
 
@@ -28,15 +30,14 @@ public class SAMLToAttributeMapperImpl implements SAMLToAttributeMapper {
 	private static final String EMAIL_EXP = "/*[local-name()='Assertion']/*[local-name()='AttributeStatement']/*[local-name()='Attribute' and @AttributeName='urn:mace:dir:attribute-def:mail']/*[local-name()='AttributeValue']/text()";
 	private static final String FIRST_NAME_EXP = "/*[local-name()='Assertion']/*[local-name()='AttributeStatement']/*[local-name()='Attribute' and @AttributeName='urn:mace:dir:attribute-def:givenName']/*[local-name()='AttributeValue']/text()";
 	private static final String LAST_NAME_EXP = "/*[local-name()='Assertion']/*[local-name()='AttributeStatement']/*[local-name()='Attribute' and @AttributeName='urn:mace:dir:attribute-def:sn']/*[local-name()='AttributeValue']/text()";
-
+	
 	public HashMap<String, String> convertSAMLtoHashMap(
 			SAMLAssertion samlAssertion)
 			throws AuthenticationConfigurationException {
 
 		HashMap<String, String> attributesMap = new HashMap<String, String>();
 		try {
-			DocumentBuilderFactory newInstance = DocumentBuilderFactory
-					.newInstance();
+			DocumentBuilderFactory newInstance = XMLUtilities.getDocumentBuilderFactory();
 			DocumentBuilder documentBuilder = newInstance.newDocumentBuilder();
 			ByteArrayInputStream is = new ByteArrayInputStream(samlAssertion
 					.toString().getBytes());
@@ -71,7 +72,7 @@ public class SAMLToAttributeMapperImpl implements SAMLToAttributeMapper {
 		}
 		if (e instanceof XPathExpressionException) {
 			throw new AuthenticationConfigurationException(
-					"Error retrieving user attributes from the SAML: "
+					"Error retrieving user attributes from the SAML : "
 							+ e.getMessage(), e);
 		}
 		if (e instanceof IOException) {

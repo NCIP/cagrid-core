@@ -7,6 +7,8 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.StringReader;
 
+import javax.xml.parsers.DocumentBuilderFactory;
+
 import org.jdom.Document;
 import org.jdom.Element;
 import org.jdom.input.SAXBuilder;
@@ -26,6 +28,10 @@ import org.xml.sax.EntityResolver;
  */
 
 public class XMLUtilities {
+
+    public static final String JAVA_INTERNAL_DBF_CLASS = "com.sun.org.apache.xerces.internal.jaxp.DocumentBuilderFactoryImpl";
+    public static final String DBF_SYSTEM_PROPERTY = "javax.xml.parsers.DocumentBuilderFactory";
+
 
     public static String documentToString(Document doc) {
         XMLOutputter outputter = new XMLOutputter(Format.getRawFormat());
@@ -108,6 +114,19 @@ public class XMLUtilities {
     public static String streamToString(InputStream stream) throws Exception {
         BufferedReader br = new BufferedReader(new InputStreamReader(stream));
         return bufferToString(br);
+    }
+    
+    
+    public static synchronized DocumentBuilderFactory getDocumentBuilderFactory() {
+        String oldDbfImpl = System.getProperty(DBF_SYSTEM_PROPERTY);
+        System.setProperty(DBF_SYSTEM_PROPERTY, JAVA_INTERNAL_DBF_CLASS);
+        DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
+        if (oldDbfImpl != null) {
+            System.setProperty(DBF_SYSTEM_PROPERTY, oldDbfImpl);
+        } else {
+            System.getProperties().remove(DBF_SYSTEM_PROPERTY);
+        }
+        return dbf;
     }
     
     

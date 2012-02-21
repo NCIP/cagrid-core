@@ -18,7 +18,6 @@
 	<property name="test.lib.dir" value="test/lib" />
 	<property name="test.log.dir" value="test/logs" />
 	<property name="ext.test.lib.dir" value="${basedir}/ext/dependencies/test/jars" />
-	<property name="ext.endorsed.dir" value="${basedir}/ext/dependencies/endorsed/jars" />
 	<property name="etc.dir" value="etc" />
 
 

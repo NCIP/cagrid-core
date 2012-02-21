@@ -8,7 +8,7 @@
 
 
 	<!-- Post Introduce Edit-->
-	<target name="nuke" description="Nukes the Dorian Test DB">
+	<target name="nuke" depends="defineClasspaths" description="Nukes the Dorian Test DB">
 		<java classname="org.cagrid.gaards.dorian.test.Nuker" fork="no">
 			<classpath>
 				<path refid="test.run.classpath" />
@@ -18,14 +18,13 @@
 	</target>
 
 	<!-- call the test target for each project and aggregates the log resutls  -->
-	<target name="test" depends="checkGlobus, create_config_files,nuke">
+	<target name="test" depends="defineClasspaths, create_config_files,nuke">
 		<echo message="Test results dir: ${junit.results.dir}" />
 		<mkdir dir="${junit.results.dir}" />
 		<junit dir="${basedir}" printsummary="yes" errorproperty="test.failed" failureproperty="test.failed" showoutput="true" forkmode="once">
 			<sysproperty key="basedir" value="${basedir}" />
 			<jvmarg value="-Xmx512M" />
 			<jvmarg value="-Dbuild.dir=${build.dir}" />
-			<jvmarg value="-Djava.endorsed.dirs=${ext.endorsed.dir}" />
 			<classpath>
 				<path refid="test.run.classpath" />
 				<pathelement location="${test.dir}/resources" />

@@ -18,12 +18,13 @@ public class PropertyManager {
     private static String VERSION_PROPERTY = "version";
     private static String CA_TYPE_PROPERTY = "certificate authority";
 
+    public static String DORIAN_VERSION_1_5 = "1.5";
     public static String DORIAN_VERSION_1_4 = "1.4";
     public static String DORIAN_VERSION_1_3 = "1.3";
     public static String DORIAN_VERSION_1_2 = "1.2";
     public static String DORIAN_VERSION_1_1 = "1.1";
     public static String DORIAN_VERSION_1_0 = "1.0";
-    public static String CURRENT_VERSION = DORIAN_VERSION_1_4;
+    public static String CURRENT_VERSION = DORIAN_VERSION_1_5;
     private MetadataManager manager;
     private Metadata version;
     private Metadata certificateAuthorityType;

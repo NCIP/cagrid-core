@@ -26,7 +26,6 @@
 	<property name="ext.dir" location="${basedir}/ext" />
 	<property name="ext.dependencies.dir" location="${ext.dir}/dependencies" />
 	<property name="ext.targetgrid.dir" location="${ext.dir}/target_grid" />
-	<property name="ext.endorsed.dir" location="${ext.dependencies.dir}/endorsed/jars" />
 	<property name="ext.lib.dir" location="${ext.dependencies.dir}/service/jars" />
 	<property name="ext.test.lib" value="${ext.dependencies.dir}/test/jars" />
 	<property name="ext.tools.lib.dir" location="${ext.dependencies.dir}/tools/jars" />
@@ -228,18 +227,16 @@
 			<mapper type="glob" from="*.template" to="*" />
 			<filterset filtersfile="${ext.targetgrid.dir}/service_urls.properties" />
 		</copy>
-
 	</target>
 
 
 	<!-- ============================================================== -->
 	<!-- Call any tests.                                                -->
 	<!-- ============================================================== -->
-	<target name="test" depends="checkGlobus" description="Runs the service's tests.">
+	<target name="test" depends="checkGlobus, defineClasspaths" description="Runs the service's tests.">
 		<echo message="Test results dir: ${junit.results.dir}" />
 		<mkdir dir="${junit.results.dir}" />
-		<junit dir="${basedir}" printsummary="yes" showoutput="true">
-			<jvmarg value="-Djava.endorsed.dirs=${ext.endorsed.dir}" />
+		<junit dir="${basedir}" printsummary="yes" showoutput="true" errorproperty="test.failed" failureproperty="test.failed">
 			<classpath refid="test.run.classpath" />
 			<formatter type="xml" />
 			<batchtest fork="yes" todir="${junit.results.dir}">
@@ -249,8 +246,10 @@
 				</fileset>
 			</batchtest>
 		</junit>
+		<fail message="Tests failed! Check the test reports" if="test.failed"/>
 	</target>
 
+	
 	<target name="generateTrustReport" description="Generates a Grid Trust Report." depends="init">
 		<input message="Please enter a file location to write the report to [grid-trust-report.txt]:" addproperty="out.input" defaultvalue="grid-trust-report.txt" />
 		<java classname="org.cagrid.gaards.pki.tools.GenerateTrustReport" fork="true" newenvironment="true" failonerror="true">
@@ -261,12 +260,9 @@
 	</target>
 
 
-
 	<target name="createTruststore" description="Create a truststore." depends="init">
 		<java classname="org.cagrid.gaards.pki.tools.TruststoreCreator" fork="false" newenvironment="true" failonerror="true">
 			<classpath refid="run.classpath" />
 		</java>
 	</target>
-
-
 </project>

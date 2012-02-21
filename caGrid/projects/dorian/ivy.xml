@@ -27,9 +27,6 @@
 
     <conf name="service" visibility="public" extends="client" />
     <conf name="test" visibility="public" extends="service,impl-test" />
-
-    <conf name="endorsed" visibility="public" />
-
   </configurations>
 
 
@@ -73,7 +70,7 @@
     <dependency rev="latest.integration" org="caGrid" name="gaards-core"
       conf="client,service->default;impl-test->test" />
     <dependency rev="latest.integration" org="caGrid" name="opensaml"
-      conf="client->default;service->http;endorsed->endorsed" />
+      conf="client->default;service->http" />
     <dependency rev="latest.integration" org="caGrid" name="authentication-service" conf="client->client" />
     <dependency rev="latest.integration" org="caGrid" name="gts" conf="service->client" />
 

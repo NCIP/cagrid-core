@@ -210,7 +210,6 @@
 
 		<java classname="org.globus.bootstrap.AntBootstrap" fork="yes" failonerror="true">
 			<jvmarg value="-DGLOBUS_LOCATION=${ext.globus.dir}" />
-			<jvmarg value="-Djava.endorsed.dirs=${ext.globus.dir}/endorsed" />
 			<sysproperty key="GLOBUS_LOCATION" value="${ext.globus.dir}" />
 			<sysproperty key="ANT_HOME" value="${ant.home}" />
 			<arg value="org.globus.tools.gar.DeployGar" />

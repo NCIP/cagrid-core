@@ -26,7 +26,7 @@
 	</target>
 	
 	
-	<target name="test" description="Runs style tests">
+	<target name="test" depends="prepareClasspaths" description="Runs style tests">
 		<mkdir dir="${junit.results.dir}"/>
 		<junit dir="${basedir}" printsummary="yes" haltonerror="${halt.on.error}" haltonfailure="${halt.on.error}" errorproperty="test.failed" failureproperty="test.failed" showoutput="true" fork="yes" forkmode="once">
 			<sysproperty key="build.dir" value="${test.core.classes.dir}" />
@@ -36,7 +36,6 @@
 			<!--<sysproperty key="transfer.service.dir" value="${transfer.service.dir}"/>-->
 			<sysproperty key="cds.service.dir" value="${cds.service.dir}"/>
 			<sysproperty key="testing.container.debug.packages" value="${debug.packages}"/>
-			<jvmarg value="-Djava.endorsed.dirs=${ext.endorsed.dir}" />
 			<classpath refid="all.test.classpath" />
 			<formatter type="xml" />
 			<test if="testcase" name="${testcase}" fork="no" todir="${junit.results.dir}" />

@@ -4,7 +4,7 @@
 	<property file="project.properties" />
 
 	<!-- OVERLOADED-->
-	<property name="ivy.resolve.configurations" value="compile,endorsed" />
+	<property name="ivy.resolve.configurations" value="compile,default" />
 	<property name="ivy.generated.artifacts.dir" location="${basedir}/dist" />
 
 	<property name="ivy-shared-targets.file" location="${basedir}/../../antfiles/ivy/ivy-shared-targets.xml" />

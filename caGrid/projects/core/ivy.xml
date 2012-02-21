@@ -11,6 +11,7 @@
   <configurations>
     <conf name="impl" visibility="private" extends="ui,serialization" />
     <conf name="impl-test" visibility="private" />
+    <conf name="coverage" visibility="private"/>
 
     <!-- Public Configurations-->
     <conf name="default" visibility="public" description="A minimal configuration" />
@@ -27,6 +28,7 @@
   </publications>
 
   <dependencies>
+  	<dependency org="cobertura" name="cobertura" rev="1.9.4.1" conf="coverage->*"/>
     <dependency rev="1.0.2" org="castor" name="castor" conf="serialization->default" />
     <dependency rev="1.0" org="jdom" name="jdom" conf="default->*" />
     <dependency rev="2.7" org="clarkware" name="jdepend" conf="impl-test->*" />

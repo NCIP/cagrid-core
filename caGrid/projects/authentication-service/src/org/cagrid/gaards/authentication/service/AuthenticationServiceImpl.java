@@ -15,6 +15,7 @@ import javax.xml.namespace.QName;
 import org.cagrid.gaards.authentication.AuthenticationProfiles;
 import org.cagrid.gaards.authentication.lockout.LockedUserInfo;
 
+
 /**
  * TODO:I am the service side implementation class. IMPLEMENT AND DOCUMENT ME
  * 
@@ -23,6 +24,7 @@ import org.cagrid.gaards.authentication.lockout.LockedUserInfo;
 public class AuthenticationServiceImpl extends AuthenticationServiceImplBase {
 
     private AuthenticationManager auth;
+
 
     public AuthenticationServiceImpl() throws RemoteException {
         super();
@@ -43,15 +45,27 @@ public class AuthenticationServiceImpl extends AuthenticationServiceImplBase {
         }
     }
 
-  public gov.nih.nci.cagrid.authentication.bean.SAMLAssertion authenticate(gov.nih.nci.cagrid.authentication.bean.Credential credential) throws RemoteException, gov.nih.nci.cagrid.authentication.stubs.types.InvalidCredentialFault, gov.nih.nci.cagrid.authentication.stubs.types.InsufficientAttributeFault, gov.nih.nci.cagrid.authentication.stubs.types.AuthenticationProviderFault {
+
+    public gov.nih.nci.cagrid.authentication.bean.SAMLAssertion authenticate(
+        gov.nih.nci.cagrid.authentication.bean.Credential credential) throws RemoteException,
+        gov.nih.nci.cagrid.authentication.stubs.types.InvalidCredentialFault,
+        gov.nih.nci.cagrid.authentication.stubs.types.InsufficientAttributeFault,
+        gov.nih.nci.cagrid.authentication.stubs.types.AuthenticationProviderFault {
         return this.auth.authenticate(credential);
     }
 
-  public gov.nih.nci.cagrid.opensaml.SAMLAssertion authenticateUser(org.cagrid.gaards.authentication.Credential credential) throws RemoteException, org.cagrid.gaards.authentication.faults.AuthenticationProviderFault, org.cagrid.gaards.authentication.faults.CredentialNotSupportedFault, org.cagrid.gaards.authentication.faults.InsufficientAttributeFault, org.cagrid.gaards.authentication.faults.InvalidCredentialFault {
+
+    public gov.nih.nci.cagrid.opensaml.SAMLAssertion authenticateUser(
+        org.cagrid.gaards.authentication.Credential credential) throws RemoteException,
+        org.cagrid.gaards.authentication.faults.AuthenticationProviderFault,
+        org.cagrid.gaards.authentication.faults.CredentialNotSupportedFault,
+        org.cagrid.gaards.authentication.faults.InsufficientAttributeFault,
+        org.cagrid.gaards.authentication.faults.InvalidCredentialFault {
         return this.auth.authenticate(credential);
     }
 
-  public org.cagrid.gaards.authentication.lockout.LockedUserInfo[] getLockedOutUsers() throws RemoteException {
+
+    public org.cagrid.gaards.authentication.lockout.LockedUserInfo[] getLockedOutUsers() throws RemoteException {
         BetterLockoutManager manager = LockoutManager.getInstance().getDelegatedLockoutManager();
         Map<String, Date> lockouts = manager.getLockedOutUsers();
         LockedUserInfo[] info = new LockedUserInfo[lockouts.size()];

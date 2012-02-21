@@ -13,7 +13,6 @@
 	<property name="jar.dir" value="${build.dir}/lib" />
 	<property name="project.jarfile" value="${jar.dir}/${project.name}-${project.version}.jar" />
 	<property name="ext.lib.dir" value="${basedir}/ext/dependencies/jars" />
-	<property name="ext.endorsed.dir" location="${basedir}/ext/dependencies/endorsed/jars" />
 	<property name="gridgrouper.dir" value="../../../caGrid/projects/gridgrouper" />
 
 
@@ -24,7 +23,7 @@
 	<!-- tells the service container factories to assign ports in testing mode -->
 	<property name="testing.port.assignment.mode" value="true" />
 	<!-- tells the test containers where to find their zip files -->
-	<property name="testing.containers.dir" value="${basedir}/../testUtils/containers" />
+	<property name="testing.containers.dir" value="${basedir}/containers" />
 
 	<!-- output directory for JUnit logs -->
 	<property name="junit.results.dir" value="log/junit" />
@@ -115,13 +114,12 @@
 	</target>
 
 
-	<target name="test" description="Runs tests">
+	<target name="test" depends="defineClasspaths" description="Runs tests">
 		<mkdir dir="${junit.results.dir}" />
 		<junit dir="${basedir}" printsummary="yes" haltonerror="${halt.on.error}" haltonfailure="${halt.on.error}" errorproperty="test.failed" failureproperty="test.failed" showoutput="true" fork="yes" forkmode="once">
 			<sysproperty key="build.dir" value="${test.core.classes.dir}" />
 			<sysproperty key="testing.port.assignment.mode" value="${testing.port.assignment.mode}" />
 			<sysproperty key="testing.containers.dir" value="${testing.containers.dir}" />
-			<jvmarg value="-Djava.endorsed.dirs=${ext.endorsed.dir}" />
 			<classpath refid="test.run.classpath" />
 			<formatter type="xml" />
 			<test if="testcase" name="${testcase}" fork="no" todir="${junit.results.dir}" />
@@ -134,7 +132,6 @@
 
 		<delete dir="${basedir}/tmp" />
 		<fail if="${test.failed}" message="Tests failed!  Check logs for details." />
-
 	</target>
 	
 	
@@ -146,14 +143,13 @@
 		<property name="driver_class" value="${hibernate.connection.driver_class}" />
 		<sql driver="${driver_class}" url="jdbc:mysql://localhost:3306/" userid="${root.db.username}" password="${root.db.password}">
 			<classpath>
-				<fileset dir="${ext.lib.dir}" includes="**/mysql*.jar" />
-					
-			</classpath>
-			
+				<fileset dir="${ext.lib.dir}" includes="**/mysql*.jar" />					
+			</classpath>			
 			DROP DATABASE IF EXISTS grouper;
 			CREATE DATABASE grouper;
 		</sql>
 	</target>
+	
 
 	<target name="dropTestDatabase" description="Drops the testing database.">
 		<property file="${gridgrouper.dir}/resources/conf/grouper.hibernate.properties" />
@@ -163,8 +159,7 @@
 		<property name="driver_class" value="${hibernate.connection.driver_class}" />
 		<sql driver="${driver_class}" url="jdbc:mysql://localhost:3306/" userid="${root.db.username}" password="${root.db.password}">
 			<classpath>
-				<fileset dir="${ext.lib.dir}" includes="**/mysql*.jar" />
-					
+				<fileset dir="${ext.lib.dir}" includes="**/mysql*.jar" />					
 			</classpath>
 			DROP DATABASE IF EXISTS grouper;
 		</sql>

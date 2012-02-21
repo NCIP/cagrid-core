@@ -1,7 +1,9 @@
 <?xml version="1.0"?>
+
 <!-- ================================================================= -->
-<!-- Generic build file                                                -->
+<!-- Generic build file                                                    -->
 <!-- ================================================================= -->
+
 <project name="WebSSOSystemTests" default="compile" basedir=".">
 	<property file="build.properties" />
 	<property file="project.properties" />
@@ -13,7 +15,6 @@
 	<property name="jar.dir" value="${build.dir}/jars" />
 	<property name="project.jarfile" value="${jar.dir}/${project.name}-${project.version}.jar" />
 	<property name="ext.lib.dir" value="${basedir}/ext/dependencies/jars" />
-	<property name="ext.endorsed.dir" location="${basedir}/ext/dependencies/endorsed/jars" />
 	
 	<property name="junit.results.dir" value="log/junit" />
 
@@ -38,8 +39,6 @@
 		<fail message="Globus installation is not set in either GLOBUS_LOCATION or ext.globus.dir" if="globus.not.found" />
 		<echo message="Globus: ${ext.globus.dir}" />
 	</target>
-	
-	
 	<target name="setGlobus" if="env.GLOBUS_LOCATION">
 		<!-- GT4 build files and directories-->
 		<property name="ext.globus.dir" value="${env.GLOBUS_LOCATION}" />
@@ -51,7 +50,7 @@
 
 
 	<!-- =============================================================== -->
-	<!-- Prepares the classpaths                                         -->
+	<!-- Prepares the classpaths                                     -->
 	<!-- =============================================================== -->
 	<target name="defineClasspaths" depends="checkGlobus">
 		<path id="build.classpath">
@@ -110,7 +109,7 @@
 
 
 	<!-- ============================================================== -->
-	<!-- Builds from scratch                                            -->
+	<!-- Builds from scratch                                                -->
 	<!-- ============================================================== -->
 	<target name="all" description="Builds the entire application" depends="clean,compile,jar" />
 
@@ -128,10 +127,9 @@
 		<mkdir dir="${junit.results.dir}" />
 		<junit dir="${basedir}" printsummary="yes" showoutput="true">
 			<sysproperty key="testing.containers.dir" value="${basedir}/ext/dependencies/resources/containers" />
-			<jvmarg value="-Djava.endorsed.dirs=${ext.endorsed.dir}" />
 			<classpath refid="build.classpath" />
 			<classpath>
-				<pathelement path="${classes.dir}" />
+				<pathelement path="build/classes/" />
 			</classpath>
 			<classpath>
 			    <pathelement location="${basedir}/resources" />

@@ -24,8 +24,6 @@
 
     <conf name="service" visibility="public" extends="client"/>
     <conf name="test" visibility="public" extends="service,impl-test"/>
-    
-    <conf name="endorsed" visibility="public" />
   </configurations>
 
 
@@ -63,7 +61,7 @@
 
     <!-- Specific caGrid Service Dependencies -->
     <dependency rev="latest.integration" org="caGrid" name="gaards-core" conf="service->default;impl-test->test"/>
-    <dependency rev="latest.integration" org="caGrid" name="opensaml" conf="service->http;endorsed->endorsed"/>
+    <dependency rev="latest.integration" org="caGrid" name="opensaml" conf="service->http"/>
     <dependency rev="latest.integration" org="caGrid" name="metadatautils" conf="client->default"/>
 
     <!-- Extenernal Dependencies -->

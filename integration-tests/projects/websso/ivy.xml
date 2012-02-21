@@ -9,14 +9,13 @@
 	<configurations>
    		<!-- Private Configurations-->
 		<conf name="default" visibility="public" />
-		<conf name="endorsed" visibility="public" />
 	</configurations>
 	<publications>
 	</publications>
 	<dependencies>
     	<!-- Standard caGrid Service Dependencies -->
 		<dependency rev="latest.integration" org="caGrid"
-			name="DorianSystemTests" conf="default->default;endorsed->endorsed" />
+			name="DorianSystemTests" conf="default->default" />
 			
 		<dependency rev="1.7" org="httpunit" name="httpunit" conf="default"/>
 		<dependency rev="0.9.5" org="nekohtml" name="nekohtml" conf="default"/>

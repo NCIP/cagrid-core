@@ -19,8 +19,6 @@
 
     <conf name="gridgrouperauth" visibility="public" extends="base"/>
     
-    <conf name="endorsed" visibility="public"/>
-
     <conf name="full" visibility="public" extends="gridgrouperauth"/>
   </configurations>
 

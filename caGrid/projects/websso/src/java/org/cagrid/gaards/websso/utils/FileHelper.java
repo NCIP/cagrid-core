@@ -1,5 +1,7 @@
 package org.cagrid.gaards.websso.utils;
 
+import gov.nih.nci.cagrid.common.XMLUtilities;
+
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 
@@ -14,7 +16,7 @@ public class FileHelper {
 	public Document validateXMLwithSchema(Resource propertiesFileResource,
 			Resource schemaFileResource) throws AuthenticationConfigurationException {
 		org.w3c.dom.Document document = null;
-		DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
+		DocumentBuilderFactory documentBuilderFactory = XMLUtilities.getDocumentBuilderFactory();
 		documentBuilderFactory.setNamespaceAware(true);
 		documentBuilderFactory.setValidating(true);
 		documentBuilderFactory.setAttribute(
@@ -26,7 +28,7 @@ public class FileHelper {
 					"http://java.sun.com/xml/jaxp/properties/schemaSource",
 					schemaFileResource.getInputStream());
 			documentBuilderFactory.newDocumentBuilder();
-			document = documentBuilder.parse(propertiesFileResource.getInputStream());
+			document = (org.w3c.dom.Document) documentBuilder.parse(propertiesFileResource.getInputStream());
 		} catch (Exception e) {
 			throw new AuthenticationConfigurationException(
 					"Error in reading the " + propertiesFileResource + " file: " + e.getMessage(), e);

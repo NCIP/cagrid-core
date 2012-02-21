@@ -14,7 +14,6 @@
 	<property name="project.jarfile" value="${jar.dir}/${project.name}-${project.version}.jar" />
 	<property name="resources.jarfile" value="${jar.dir}/${project.name}-resources-${project.version}.jar" />
 	<property name="ext.lib.dir" value="${basedir}/ext/dependencies/jars" />
-	<property name="ext.endorsed.dir" location="${basedir}/ext/dependencies/endorsed/jars" />
 
 	<!-- output directory for JUnit logs -->
 	<property name="junit.results.dir" value="log/junit" />

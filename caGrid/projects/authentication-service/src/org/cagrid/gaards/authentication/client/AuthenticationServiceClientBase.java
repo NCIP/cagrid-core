@@ -83,6 +83,14 @@ public abstract class AuthenticationServiceClientBase extends ServiceSecurityCli
 		return port;
 	}
 	
+	public void setConnectionTimeout(int timeout) {
+    	((Stub) this.portType).setTimeout(timeout);
+    }
+    
+    public int getConnectionTimeout() {
+    	return ((Stub) this.portType).getTimeout();
+    }
+	
     
 
 }

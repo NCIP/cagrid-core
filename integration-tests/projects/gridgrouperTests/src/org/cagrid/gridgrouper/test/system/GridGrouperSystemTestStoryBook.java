@@ -14,6 +14,7 @@ public class GridGrouperSystemTestStoryBook {
 	
     @Test
     public void gridgrouperTest() throws Throwable {
+        System.setProperty("javax.xml.parsers.DocumentBuilderFactory", "com.sun.org.apache.xerces.internal.jaxp.DocumentBuilderFactoryImpl");
     	Story test = new GridGrouperTest(ServiceContainerFactory
                 .createContainer(ServiceContainerType.SECURE_TOMCAT_CONTAINER), DORIAN_PROPERTIES_FILE);
     	test.runBare();
