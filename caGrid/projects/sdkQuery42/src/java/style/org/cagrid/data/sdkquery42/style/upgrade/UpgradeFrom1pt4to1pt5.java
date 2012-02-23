@@ -21,9 +21,9 @@ import org.apache.commons.logging.LogFactory;
 import org.jdom.Element;
 import org.jdom.JDOMException;
 
-public class UpgradeFrom1pt4to1pt41 implements StyleVersionUpgrader {
+public class UpgradeFrom1pt4to1pt5 implements StyleVersionUpgrader {
     
-    private static Log LOG = LogFactory.getLog(UpgradeFrom1pt4to1pt41.class);
+    private static Log LOG = LogFactory.getLog(UpgradeFrom1pt4to1pt5.class);
 
     public void upgradeStyle(ServiceInformation serviceInformation, ExtensionTypeExtensionData extensionData,
         ExtensionUpgradeStatus status, String serviceFromVersion, String serviceToVersion) throws Exception {
@@ -50,7 +50,7 @@ public class UpgradeFrom1pt4to1pt41 implements StyleVersionUpgrader {
                 int versionIndex = upgradeLib.getName().indexOf(StyleUpgradeConstants.LATEST_JAR_SUFFIX);
                 File oldCagridMatch = new File(serviceLibDir, 
                     upgradeLib.getName().substring(0, versionIndex) + "-1.4.jar");
-                LOG.debug("Looking for old caGrid 1.3 library " + oldCagridMatch.getName());
+                LOG.debug("Looking for old caGrid 1.4 library " + oldCagridMatch.getName());
                 if (oldCagridMatch.exists()) {
                     oldCagridMatch.delete();
                     removedLibs.add(oldCagridMatch.getName());
