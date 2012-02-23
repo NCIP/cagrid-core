@@ -10,6 +10,7 @@
 			<include name="xmltask-v1.14.jar" />
 		</fileset>
 	</path>
+	
 
 	<taskdef name="xmltask"
 		classname="com.oopsconsultancy.xmltask.ant.XmlTask"
@@ -23,6 +24,7 @@
 		</classpath>
 	</taskdef>
 	
+	
 	<xmlcatalog id="installer.catalog">
 		<dtd 
 			publicId="-//Sun Microsystems, Inc.//DTD Web Application 2.3//EN"
@@ -34,6 +36,7 @@
 			publicId="-//SPRING//DTD BEAN//EN"
 			location="../resources/spring-beans.dtd"/>
 	</xmlcatalog>
+	
 
 	<target name="fix-ant-permissions">
 		<chmod perm="u+x">
@@ -44,6 +47,7 @@
 		</chmod>
 	</target>
 
+	
 	<target name="fix-globus-permissions">
 		<chmod perm="u+x">
 			<fileset dir="${globus.home}/bin">
@@ -52,8 +56,8 @@
 		</chmod>
 	</target>
 
+	
 	<target name="copy-selected-services">
-
 		<mkdir dir="${service.dest.dir}" />
 
 		<for list="${selected.services}" param="serviceName"
@@ -66,8 +70,5 @@
 				</copy>
 			</sequential>
 		</for>
-
 	</target>
-
-
 </project>
