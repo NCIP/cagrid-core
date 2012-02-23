@@ -27,9 +27,9 @@ import org.apache.commons.logging.LogFactory;
 import org.jdom.Element;
 import org.jdom.JDOMException;
 
-public class UpgradeFrom1pt3to1pt41 implements StyleVersionUpgrader {
+public class UpgradeFrom1pt3to1pt5 implements StyleVersionUpgrader {
     
-    private static Log LOG = LogFactory.getLog(UpgradeFrom1pt3to1pt41.class);
+    private static Log LOG = LogFactory.getLog(UpgradeFrom1pt3to1pt5.class);
 
     public void upgradeStyle(ServiceInformation serviceInformation, ExtensionTypeExtensionData extensionData,
         ExtensionUpgradeStatus status, String serviceFromVersion, String serviceToVersion) throws Exception {
@@ -61,17 +61,6 @@ public class UpgradeFrom1pt3to1pt41 implements StyleVersionUpgrader {
                     oldCagridMatch.delete();
                     removedLibs.add(oldCagridMatch.getName());
                     LOG.debug("Deleted old library: " + oldCagridMatch.getName());
-                }
-                // since this upgrader could be called for upgrading 1.2 as well, check those jars
-                oldCagridMatch = new File(serviceLibDir, 
-                    upgradeLib.getName().substring(0, versionIndex) + "-1.2.jar");
-                LOG.debug("Looking for old caGrid 1.2 library " + oldCagridMatch.getName());
-                if (oldCagridMatch.exists()) {
-                    oldCagridMatch.delete();
-                    removedLibs.add(oldCagridMatch.getName());
-                    String message = "Deleted old library: " + oldCagridMatch.getName();
-                    LOG.debug(message);
-                    status.addDescriptionLine(message);
                 }
             }
             File copyLib = new File(serviceLibDir, upgradeLib.getName());
