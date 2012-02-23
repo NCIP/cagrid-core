@@ -31,7 +31,7 @@ Application 2.3//EN" "http://java.sun.com/dtd/web-app_2_3.dtd">
     <servlet-class>
         org.globus.wsrf.container.AxisServlet
     </servlet-class>
-    <load-on-startup>true</load-on-startup>
+    <load-on-startup>1</load-on-startup>
   </servlet>
 
   <servlet-mapping>

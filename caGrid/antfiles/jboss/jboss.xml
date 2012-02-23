@@ -65,12 +65,8 @@ Build Instructions:
 	<property name="xercesJar" value="xercesImpl-2.7.1.jar" />
 	<property name="xmlApiJar" value="xml-apis.jar" />
 	<property name="oldXmlApiJar" value="xmlParserAPIs.jar" />
-
-	<property name="endorsed.dir" value="${jboss.dir}/lib/endorsed" />
 	
 	<property name="log4j" value="${jboss.dir}/server/default/conf/log4j.xml" />
-
-
 
 
 	<!-- =================================================================== -->
@@ -111,8 +107,6 @@ Build Instructions:
 
 		<antcall target="_baseDeploy" />
 		<antcall target="_baseLibDeploy" />
-		<antcall target="_baseEndorsedLibDeploy">
-		</antcall>
 
 		<copy file="${abs.deploy.dir}/lib/cog-tomcat.jar" toDir="${jboss.dir}/server/default/lib" failonerror="false" />
 
@@ -161,7 +155,6 @@ Build Instructions:
 	<!-- =================================================================== -->
 	<!-- Base Deployment Scripts                                             -->
 	<!-- =================================================================== -->
-
 	<target name="_baseDeploy">
 		<mkdir dir="${webapp.dir}" />
 		<copy toDir="${webapp.dir}" overwrite="true">
@@ -201,7 +194,6 @@ Build Instructions:
 		<copy overwrite="true" file="${basedir}/web.xml" toDir="${webapp.webinf.dir}" />
 
 		<antcall target="_setDefaults" />
-
 	</target>
 
 	<target name="_baseLibDeploy">
@@ -220,6 +212,9 @@ Build Instructions:
 				<exclude name="puretls.jar" />
 				<exclude name="log4j-*.jar" />
 				<exclude name="commons-logging-*.jar" />
+				<exclude name="xercesImpl.jar"/>
+				<exclude name="xalan.jar"/>
+				<exclude name="jgss.jar"/>
 			</fileset>
 		</copy>
 
@@ -242,11 +237,6 @@ Build Instructions:
 				<include name="puretls.jar" />
 			</fileset>
 		</copy>
-
-	</target>
-
-	<target name="_baseEndorsedLibDeploy">
-		<!--<copy file="${abs.deploy.dir}/endorsed/${xalanJar}" toFile="${endorsed.dir}/xalan.jar" failonerror="false" />-->
 	</target>
 
 
@@ -270,7 +260,6 @@ Build Instructions:
 	<!-- =================================================================== -->
 	<!-- Base UnDeployment Script                                            -->
 	<!-- =================================================================== -->
-
 	<target name="_baseUndeploy">
 		<delete dir="${webapp.dir}" />
 		<delete>
