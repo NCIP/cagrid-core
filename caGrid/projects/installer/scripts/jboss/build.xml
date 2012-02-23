@@ -34,6 +34,7 @@
 			location="../resources/spring-beans.dtd"/>
 	</xmlcatalog>
 	
+	
 	<target name="fix-permissions">
 		<chmod perm="u+x">
 			  <fileset dir="${jboss.home}/bin">
@@ -41,6 +42,7 @@
 			  </fileset>
 		</chmod>
 	</target>
+	
 
 	<target name="fix-secure-web-xml">
 		<antcall target="fix-web-xml">
@@ -48,14 +50,14 @@
 			<param name="port" value="${https.port}" />
 		</antcall>
 	</target>
+	
 
 	<target name="fix-web-xml">
 		<property name="scheme" value="http" />
 		<property name="port" value="${http.port}" />
 		<property name="web.xml.file"
 			value="${jboss.home}/server/default/deploy/wsrf.war/WEB-INF/web.xml" />
-		<xmltask source="${web.xml.file}" dest="${web.xml.file}">
-			
+		<xmltask source="${web.xml.file}" dest="${web.xml.file}">			
 			<xmlcatalog refid="installer.catalog"/>
 			
 			<remove
@@ -66,45 +68,48 @@
 				path="/web-app/servlet[servlet-name='WSRFServlet']/servlet-class"
 				position="after">
 				<![CDATA[
-				         <init-param>
-				<param-name>defaultProtocol</param-name>
-				<param-value>${scheme}</param-value>
-			</init-param>
-			<init-param>
-				<param-name>defaultPort</param-name>
-				<param-value>${port}</param-value>
-			</init-param>
-				]]>
+				        <init-param>
+							<param-name>defaultProtocol</param-name>
+							<param-value>${scheme}</param-value>
+						</init-param>
+						<init-param>
+							<param-name>defaultPort</param-name>
+							<param-value>${port}</param-value>
+						</init-param>
+						]]>
 			</insert>
 		</xmltask>
 	</target>
 
+	
 	<target name="insert-secure-connector">
-		<xmltask source="${jboss.home}/server/default/deploy/jbossweb-tomcat55.sar/server.xml"
-			dest="${jboss.home}/server/default/deploy/jbossweb-tomcat55.sar/server.xml">
+		<xmltask source="${jboss.home}/server/default/deploy/jbossweb.sar/server.xml"
+			dest="${jboss.home}/server/default/deploy/jbossweb.sar/server.xml">
 			<remove
 				path="/Server/Service[@name='Catalina' or @name='jboss.web']/Connector[@scheme='https' or not(@protocol)]" />
 			<insert path="/Server/Service[@name='Catalina' or @name='jboss.web']">
 				<![CDATA[
-				<Connector
-				  className="org.globus.tomcat.coyote.net.HTTPSConnector"
-				  port="${https.port}" maxThreads="150" minSpareThreads="25" maxSpareThreads="75" 
-				  autoFlush="true"
-				  protocolHandlerClassName="org.apache.coyote.http11.Http11Protocol"
-				  socketFactory="org.globus.tomcat.catalina.net.BaseHTTPSServerSocketFactory"
-				  disableUploadTimeout="true" scheme="https"
-				  enableLookups="true" acceptCount="10" debug="0" 
-				   cert="${service.cert.path}"
-				   key="${service.key.path}"/>
-				]]>
+						<Connector
+							port="8443" maxThreads="150"
+							minSpareThreads="25" maxSpareThreads="75"
+							autoFlush="true" disableUploadTimeout="true"
+							scheme="https" enableLookups="true"
+							acceptCount="10" debug="0"
+							sslProtocol="TLS"
+							secure="true"
+							socketFactory="org.globus.tomcat.catalina.net.BaseHTTPSServerSocketFactory"
+							cert="${service.cert.path}"
+							key="${service.key.path}"
+							encryption="true"/>
+						]]>
 			</insert>
 		</xmltask>
 	</target>
 
+	
 	<target name="insert-valve">
-
-		<xmltask source="${jboss.home}/server/default/deploy/jbossweb-tomcat55.sar/server.xml"
-			dest="${jboss.home}/server/default/deploy/jbossweb-tomcat55.sar/server.xml">
+		<xmltask source="${jboss.home}/server/default/deploy/jbossweb.sar/server.xml"
+			dest="${jboss.home}/server/default/deploy/jbossweb.sar/server.xml">
 			<remove
 				path="/Server/Service[@name='Catalina' or @name='jboss.web']/Engine[@name='Catalina' or @name='jboss.web']/Valve[@className='org.globus.tomcat.coyote.valves.HTTPSValve55']" />
 			<insert
@@ -116,6 +121,7 @@
 		</xmltask>
 	</target>
 
+	
 	<target name="set-global-cert-and-key-paths">
 		<property name="secdesc.file"
 			value="${jboss.home}/server/default/deploy/wsrf.war/WEB-INF/etc/globus_wsrf_core/global_security_descriptor.xml" />
@@ -129,9 +135,9 @@
 				path="/*[local-name()='securityConfig']/*[local-name()='credential']/*[local-name()='cert-file']"
 				attr="value" value="${service.cert.path}" />
 		</xmltask>
-
 	</target>
 
+	
 	<target name="configure-server-config">
 		<property name="secdesc.file"
 			value="${jboss.home}/server/default/deploy/wsrf.war/WEB-INF/etc/globus_wsrf_core/server-config.wsdd" />
@@ -143,35 +149,32 @@
 			<insert
 				path="/*[local-name()='deployment']/*[local-name()='globalConfiguration']">
 				<![CDATA[
-<parameter xmlns="http://xml.apache.org/axis/wsdd/" name="logicalHost" value="${service.hostname}"/>
-<parameter xmlns="http://xml.apache.org/axis/wsdd/" name="publishHostName" value="true"/>
-			]]>
+						<parameter xmlns="http://xml.apache.org/axis/wsdd/" name="logicalHost" value="${service.hostname}"/>
+						<parameter xmlns="http://xml.apache.org/axis/wsdd/" name="publishHostName" value="true"/>
+						]]>
 			</insert>
 		</xmltask>
 		<if>
-			<equals arg1="${use.secure.container}" arg2="true"
-				trim="true" />
+			<equals arg1="${use.secure.container}" arg2="true" trim="true" />
 			<then>
-				<xmltask source="${secdesc.file}"
-					dest="${secdesc.file}">
+				<xmltask source="${secdesc.file}" dest="${secdesc.file}">
 					<remove
 						path="/*[local-name()='deployment']/*[local-name()='globalConfiguration']/*[local-name()='parameter' and @name='containerSecDesc']" />
 					<insert
 						path="/*[local-name()='deployment']/*[local-name()='globalConfiguration']">
 						<![CDATA[
-<parameter xmlns="http://xml.apache.org/axis/wsdd/" name="containerSecDesc" value="${jboss.home}/server/default/deploy/wsrf.war/WEB-INF/etc/globus_wsrf_core/global_security_descriptor.xml"/>
-			]]>
+								<parameter xmlns="http://xml.apache.org/axis/wsdd/" name="containerSecDesc" value="${jboss.home}/server/default/deploy/wsrf.war/WEB-INF/etc/globus_wsrf_core/global_security_descriptor.xml"/>
+								]]>
 					</insert>
 				</xmltask>
 			</then>
 		</if>
-
 	</target>
 
+	
 	<target name="configure-ports">
-
-		<xmltask source="${jboss.home}/server/default/deploy/jbossweb-tomcat55.sar/server.xml"
-			dest="${jboss.home}/server/default/deploy/jbossweb-tomcat55.sar/server.xml">
+		<xmltask source="${jboss.home}/server/default/deploy/jbossweb.sar/server.xml"
+			dest="${jboss.home}/server/default/deploy/jbossweb.sar/server.xml">
 
 			<attr
 				path="/Server/Service[@name='Catalina' or @name='jboss.web']/Connector[@port='${old.http.port}' and @redirectPort='${old.https.port}']"
@@ -184,18 +187,15 @@
 			<attr
 				path="/Server/Service[@name='Catalina' or @name='jboss.web']/Connector[@scheme='https']"
 				attr="port" value="${https.port}" />
-
 		</xmltask>
-
 	</target>
 	
+	
 	<target name="configure-secure-redirect-port">
-		<xmltask source="${jboss.home}/server/default/deploy/jbossweb-tomcat55.sar/server.xml"
-			dest="${jboss.home}/server/default/deploy/jbossweb-tomcat55.sar/server.xml">
+		<xmltask source="${jboss.home}/server/default/deploy/jbossweb.sar/server.xml"
+			dest="${jboss.home}/server/default/deploy/jbossweb.sar/server.xml">
 			<attr
 				path="/Server/Service[@name='jboss.web']/Connector[@protocol='AJP/1.3']" attr="redirectPort" value="${https.port}"/>
 		</xmltask>
 	</target>
-
-
 </project>
