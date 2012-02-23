@@ -14,7 +14,8 @@ import java.util.Vector;
 
 
 /**
- * MetadataUpgradeTestCase NOTE:Need to be run from Introduce directory
+ * MetadataUpgradeTestCase 
+ * NOTE:Need to be run from Introduce directory
  * 
  * @author oster
  * @created Apr 9, 2007 3:19:51 PM
@@ -43,7 +44,7 @@ public class UpgradeMetadataFrom1pt3Story extends Story {
 
     @Override
     public String getName() {
-        return "Metadata Upgrade Story (1-3 to 1-4)";
+        return "Metadata Upgrade Story (1-3 to 1-5)";
     }
 
 
@@ -85,12 +86,10 @@ public class UpgradeMetadataFrom1pt3Story extends Story {
             steps.add(new UpgradesStep(tci, true));
             // compare updated service to whats expected
             steps.add(new CompareServiceToServiceMetadataStep(TEST_DIR, newMDFile));
-
         } catch (Exception e) {
             e.printStackTrace();
             fail(e.getMessage());
         }
-
         return steps;
     }
 }
