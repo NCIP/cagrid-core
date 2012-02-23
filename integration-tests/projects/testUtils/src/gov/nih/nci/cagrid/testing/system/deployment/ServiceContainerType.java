@@ -26,16 +26,16 @@ public enum ServiceContainerType {
     public String getZip() {
         String base = getContainerBaseDir();
         switch (this) {
-            case TOMCAT_CONTAINER:
             case TOMCAT_5_CONTAINER:
                 return base + "/minimal-tomcat-5.0.28-with-globus-4.0.3.zip";
+            case TOMCAT_CONTAINER:
             case TOMCAT_6_CONTAINER:
                 return base + "/apache-tomcat-6.0.32-testing.zip";
             case JBOSS_CONTAINER:
                 throw new AssertionError("Container type " + this + " is not yet supported");
-            case SECURE_TOMCAT_CONTAINER:
             case SECURE_TOMCAT_5_CONTAINER:
                 return base + "/minimal-secure-tomcat-5.0.28-with-globus-4.0.3.zip";
+            case SECURE_TOMCAT_CONTAINER:
             case SECURE_TOMCAT_6_CONTAINER:
                 return base + "/apache-tomcat-6.0.32-secure-testing.zip";
         }
