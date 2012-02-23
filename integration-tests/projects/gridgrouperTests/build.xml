@@ -12,7 +12,9 @@
 	<property name="classes.dir" value="${build.dir}/classes" />
 	<property name="jar.dir" value="${build.dir}/lib" />
 	<property name="project.jarfile" value="${jar.dir}/${project.name}-${project.version}.jar" />
-	<property name="ext.lib.dir" value="${basedir}/ext/dependencies/jars" />
+	<property name="ext.dependencies.dir" value="${basedir}/ext/dependencies"/>
+	<property name="ext.lib.dir" value="${ext.dependencies.dir}/jars" />
+	<property name="ext.containers.dir" value="${ext.dependencies.dir}/resources/containers"/>
 	<property name="gridgrouper.dir" value="../../../caGrid/projects/gridgrouper" />
 
 
@@ -23,7 +25,7 @@
 	<!-- tells the service container factories to assign ports in testing mode -->
 	<property name="testing.port.assignment.mode" value="true" />
 	<!-- tells the test containers where to find their zip files -->
-	<property name="testing.containers.dir" value="${basedir}/containers" />
+	<property name="testing.containers.dir" value="${ext.containers.dir}" />
 
 	<!-- output directory for JUnit logs -->
 	<property name="junit.results.dir" value="log/junit" />
