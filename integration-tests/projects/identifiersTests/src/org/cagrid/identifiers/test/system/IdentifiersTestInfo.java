@@ -1,10 +1,10 @@
 package org.cagrid.identifiers.test.system;
 
 import gov.nih.nci.cagrid.testing.core.TestingConstants;
+import gov.nih.nci.cagrid.testing.system.deployment.SecureContainer;
 import gov.nih.nci.cagrid.testing.system.deployment.ServiceContainer;
 import gov.nih.nci.cagrid.testing.system.deployment.ServiceContainerFactory;
 import gov.nih.nci.cagrid.testing.system.deployment.ServiceContainerType;
-import gov.nih.nci.cagrid.testing.system.deployment.TomcatSecureServiceContainer;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -14,7 +14,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import namingauthority.IdentifierData;
-import namingauthority.IdentifierValues;
 
 import org.apache.axis.message.addressing.EndpointReferenceType;
 import org.apache.axis.types.URI;
@@ -146,7 +145,7 @@ public class IdentifiersTestInfo {
 		
 		URI baseURI = this.webAppContainer.getContainerBaseURI();
 		String scheme = null;
-		if (this.webAppContainer instanceof TomcatSecureServiceContainer) {
+		if (this.webAppContainer instanceof SecureContainer) {
 			scheme = "https://";
 		
 		} else {
@@ -203,9 +202,13 @@ public class IdentifiersTestInfo {
 	}
 	
 	public String getGridCertsPath() {
-		if (this.gridSvcContainer instanceof TomcatSecureServiceContainer) {
-			return ((TomcatSecureServiceContainer)this.gridSvcContainer)
-				.getCertificatesDirectory().getAbsolutePath();
+		if (this.gridSvcContainer instanceof SecureContainer) {
+			try {
+                return ((SecureContainer) this.gridSvcContainer).getCertificatesDirectory().getAbsolutePath();
+            } catch (Exception e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
 		}
 		
 		return null;
@@ -264,6 +267,4 @@ public class IdentifiersTestInfo {
         tempContainerDir.mkdirs();
         return tempContainerDir;
     }
-
-
 }
