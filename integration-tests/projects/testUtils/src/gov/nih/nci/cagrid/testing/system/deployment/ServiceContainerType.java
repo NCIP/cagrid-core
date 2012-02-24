@@ -12,7 +12,8 @@ package gov.nih.nci.cagrid.testing.system.deployment;
  */
 public enum ServiceContainerType {
     TOMCAT_CONTAINER, TOMCAT_5_CONTAINER, TOMCAT_6_CONTAINER, 
-    JBOSS_CONTAINER, SECURE_TOMCAT_CONTAINER, SECURE_TOMCAT_5_CONTAINER, SECURE_TOMCAT_6_CONTAINER;
+    SECURE_TOMCAT_CONTAINER, SECURE_TOMCAT_5_CONTAINER, SECURE_TOMCAT_6_CONTAINER,
+    JBOSS_51_CONTAINER;
     
     public static final String CONTAINER_DIR_PROPERTY = "testing.containers.dir";
     public static final String DEFAULT_CONTAINER_DIR = "../testUtils/containers";
@@ -31,13 +32,13 @@ public enum ServiceContainerType {
             case TOMCAT_CONTAINER:
             case TOMCAT_6_CONTAINER:
                 return base + "/apache-tomcat-6.0.32-testing.zip";
-            case JBOSS_CONTAINER:
-                throw new AssertionError("Container type " + this + " is not yet supported");
             case SECURE_TOMCAT_5_CONTAINER:
                 return base + "/minimal-secure-tomcat-5.0.28-with-globus-4.0.3.zip";
             case SECURE_TOMCAT_CONTAINER:
             case SECURE_TOMCAT_6_CONTAINER:
                 return base + "/apache-tomcat-6.0.32-secure-testing.zip";
+            case JBOSS_51_CONTAINER:
+                return base + "/jboss-5.1.0.GA-testing.zip";
         }
         throw new AssertionError("Unknown service container type: " + this);
     }
@@ -45,18 +46,18 @@ public enum ServiceContainerType {
     
     public String toString() {
         switch (this) {
-            case TOMCAT_CONTAINER:
             case TOMCAT_5_CONTAINER:
                 return "Tomcat5";
+            case TOMCAT_CONTAINER:
             case TOMCAT_6_CONTAINER:
                 return "Tomcat6";
-            case JBOSS_CONTAINER:
-                return "JBoss";
-            case SECURE_TOMCAT_CONTAINER:
             case SECURE_TOMCAT_5_CONTAINER:
                 return "SecureTomcat5";
+            case SECURE_TOMCAT_CONTAINER:
             case SECURE_TOMCAT_6_CONTAINER:
                 return "SecureTomcat6";
+            case JBOSS_51_CONTAINER:
+                return "JBoss51";
         }
         throw new AssertionError("Unknown service container type: " + this);
     }
