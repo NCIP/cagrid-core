@@ -106,8 +106,8 @@ public class ServiceContainerFactory {
                 props.setSecure(true);
                 container = new Tomcat6SecureServiceContainer(props);
                 break;
-            case JBOSS_CONTAINER:
-                throw new UnsupportedOperationException(ServiceContainerType.JBOSS_CONTAINER + " is not yet supported");
+            case JBOSS_51_CONTAINER:
+                container = new Jboss51ServiceContainer(props);
             default:
                 throw new AssertionError("Service container type: " + type + " is not valid");
         }
