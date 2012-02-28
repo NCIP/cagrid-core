@@ -23,44 +23,50 @@ public class ContainerLogConfigUtil {
     
     
     public void setSoapLoggingEnabled(boolean enable) throws IOException {
-        StringBuffer config = getConfiguration();
-        String soapLogging = CATEGORY_PREFIX + ".org.globus.wsrf.handlers.MessageLoggingHandler=DEBUG";
-        if (enable) {
-            uncommentLine(config, soapLogging);
-        } else {
-            commentOutLine(config, soapLogging);
+        if (!isJBoss()) {
+            StringBuffer config = getConfiguration();
+            String soapLogging = CATEGORY_PREFIX + ".org.globus.wsrf.handlers.MessageLoggingHandler=DEBUG";
+            if (enable) {
+                uncommentLine(config, soapLogging);
+            } else {
+                commentOutLine(config, soapLogging);
+            }
+            storeConfiguration(config);
         }
-        storeConfiguration(config);
     }
     
     
     public void setIndexDebugEnabled(boolean enable) throws IOException {
-        StringBuffer config = getConfiguration();
-        String indexLogging = CATEGORY_PREFIX + ".org.globus.mds=DEBUG";
-        if (enable) {
-            uncommentLine(config, indexLogging);
-        } else {
-            commentOutLine(config, indexLogging);
+        if (!isJBoss()) {
+            StringBuffer config = getConfiguration();
+            String indexLogging = CATEGORY_PREFIX + ".org.globus.mds=DEBUG";
+            if (enable) {
+                uncommentLine(config, indexLogging);
+            } else {
+                commentOutLine(config, indexLogging);
+            }
+            storeConfiguration(config);
         }
-        storeConfiguration(config);
     }
     
     
     public void setPackageDebug(String packageName, boolean enable) throws IOException {
-        StringBuffer config = getConfiguration();
-        String configLine = CATEGORY_PREFIX + "." + packageName + "=DEBUG";
-        // see if the package has been configured
-        if (!packageIsConfigured(config, packageName)) {
-            // add the line to the config
-            config.append("\n").append(configLine).append("\n");
+        if (!isJBoss()) {
+            StringBuffer config = getConfiguration();
+            String configLine = CATEGORY_PREFIX + "." + packageName + "=DEBUG";
+            // see if the package has been configured
+            if (!packageIsConfigured(config, packageName)) {
+                // add the line to the config
+                config.append("\n").append(configLine).append("\n");
+            }
+            // turn on / off debugging for this package
+            if (enable) {
+                uncommentLine(config, configLine);
+            } else {
+                commentOutLine(config, configLine);
+            }
+            storeConfiguration(config);
         }
-        // turn on / off debugging for this package
-        if (enable) {
-            uncommentLine(config, configLine);
-        } else {
-            commentOutLine(config, configLine);
-        }
-        storeConfiguration(config);
     }
     
     
@@ -104,7 +110,12 @@ public class ContainerLogConfigUtil {
     
     private File getLogConfigFile() {
         File configFile = new File(container.getProperties().getContainerDirectory(), 
-            "webapps/wsrf/WEB-INF/classes/" + LOG_FILE_NAME);
+                "webapps/wsrf/WEB-INF/classes/" + LOG_FILE_NAME);
         return configFile;
+    }
+    
+    
+    private boolean isJBoss() {
+        return container.getClass().getName().toLowerCase().contains("jboss");
     }
 }
