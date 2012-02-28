@@ -14,7 +14,7 @@ public class ContainerTestsStoryBook {
         try {
             ServiceContainerFactory.setMaxContainerHeapSizeMB(Integer.valueOf(256));
             
-        	Story s2 = new ContainerTest(ServiceContainerFactory
+            Story s2 = new ContainerTest(ServiceContainerFactory
                 .createContainer(ServiceContainerType.TOMCAT_CONTAINER));
         	
         	s2.runBare();
@@ -33,6 +33,11 @@ public class ContainerTestsStoryBook {
         	    .createContainer(ServiceContainerType.SECURE_TOMCAT_6_CONTAINER));
         	
         	s5.runBare();
+        	
+        	Story s6 = new ContainerTest(ServiceContainerFactory
+        	    .createContainer(ServiceContainerType.JBOSS_51_CONTAINER));
+        	
+        	s6.runBare();
         	
         } catch (IOException e) {
             e.printStackTrace();
