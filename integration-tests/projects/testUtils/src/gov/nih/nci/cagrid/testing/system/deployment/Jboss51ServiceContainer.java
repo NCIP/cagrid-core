@@ -1,10 +1,11 @@
 package gov.nih.nci.cagrid.testing.system.deployment;
 
 import gov.nih.nci.cagrid.common.StreamGobbler;
+import gov.nih.nci.cagrid.common.StreamGobbler.LogPriority;
 import gov.nih.nci.cagrid.common.Utils;
 import gov.nih.nci.cagrid.common.XMLUtilities;
-import gov.nih.nci.cagrid.common.StreamGobbler.LogPriority;
 
+import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -20,6 +21,7 @@ import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.FutureTask;
+import java.util.concurrent.Semaphore;
 import java.util.concurrent.ThreadFactory;
 import java.util.concurrent.TimeUnit;
 
@@ -49,7 +51,7 @@ import com.counter.service.CounterServiceAddressingLocator;
 
 /**
  * Jboss51ServiceContainer 
- * Service container implementation for Tomcat 6
+ * Service container implementation for JBoss 5.1
  * 
  * @author David Ervin
  */
@@ -88,6 +90,7 @@ public class Jboss51ServiceContainer extends ServiceContainer {
 		    command.add("chmod");
 		    command.add("a+rwx");
 		    command.add("run.sh");
+		    command.add("shutdown.sh");
 
 			String[] commandArray = command.toArray(new String[command.size()]);
 			Process chmodProcess = null;
@@ -176,21 +179,65 @@ public class Jboss51ServiceContainer extends ServiceContainer {
 			return;
 		}
 		
-		// the jboss run.sh / run.bat just waits to be killed, and when it is,
-		// kills jboss itself
-		jbossProcess.destroy();
-		FutureTask<Boolean> future = new FutureTask<Boolean>(
-		    new Callable<Boolean>() {
-		        public Boolean call() throws Exception {
-		            LOG.debug("Waiting for shutdown to complete");
-		            jbossProcess.waitFor();
-		            LOG.debug("Done waiting for JBoss process to terminate");
+		String shutdown = getProperties().getContainerDirectory().getAbsolutePath()
+            + File.separator + "bin" + File.separator + "shutdown";
 
-		            return Boolean.valueOf(jbossProcess.exitValue() == 0);
-		        }
-		    });
+		List<String> command = new ArrayList<String>();
 
-		ExecutorService executor = Executors.newSingleThreadExecutor(new ThreadFactory() {
+		// executable to call
+		if (isWindows()) {
+		    command.add("cmd");
+		    command.add("/c");
+		    command.add(shutdown + ".bat");
+		} else {
+		    command.add(shutdown + ".sh");
+		}
+		// make JBoss listen on any and every available interface
+		// https://community.jboss.org/wiki/ConfigureServerPorts
+		command.add("-s");
+		command.add("jnp://localhost:" + getProperties().getPortPreference().getShutdownPort().toString());
+    
+		// set JBoss home
+		List<String> additionalEnvironment = new ArrayList<String>();
+		additionalEnvironment.add(ENV_JBOSS_HOME + "="
+		    + getProperties().getContainerDirectory().getAbsolutePath());
+		final String[] editedEnvironment = editEnvironment(additionalEnvironment);
+
+		LOG.debug("Command environment:\n");
+		System.out.println("Command environment:\n");
+		for (String e : editedEnvironment) {
+		    LOG.debug(e);
+		    System.out.println(e);
+		}
+
+		Process shutdownProcess = null;
+		String[] commandArray = command.toArray(new String[command.size()]);
+		try {
+		    shutdownProcess = Runtime.getRuntime().exec(
+		        commandArray, editedEnvironment, getProperties().getContainerDirectory());
+		    new StreamGobbler(shutdownProcess.getInputStream(),
+                StreamGobbler.TYPE_OUT, LOG, LogPriority.DEBUG).start();
+		    new StreamGobbler(shutdownProcess.getErrorStream(),
+                StreamGobbler.TYPE_OUT, LOG, LogPriority.ERROR).start();
+		} catch (IOException ex) {
+		    throw new ContainerException("Error invoking shutdown process: " + ex.getMessage(), ex);
+		}
+		// wait for the shutdown process to complete
+        final Process finalShutdownProcess = shutdownProcess;
+        FutureTask<Boolean> future = new FutureTask<Boolean>(
+            new Callable<Boolean>() {
+                public Boolean call() throws Exception {
+                    LOG.debug("Waiting for shutdown process to complete");
+                    finalShutdownProcess.waitFor();
+                    LOG.debug("Waiting for JBoss process to terminate");
+                    jbossProcess.waitFor();
+                    LOG.debug("Done waiting for JBoss process to terminate");
+
+                    return Boolean.valueOf(finalShutdownProcess.exitValue() == 0);
+                }
+            });
+
+        ExecutorService executor = Executors.newSingleThreadExecutor(new ThreadFactory() {
             
             public Thread newThread(Runnable r) {
                 Thread th = Executors.defaultThreadFactory().newThread(r);
@@ -198,32 +245,33 @@ public class Jboss51ServiceContainer extends ServiceContainer {
                 return th;
             }
         });
-		executor.execute(future);
+        executor.execute(future);
 
-		boolean success = false;
-		try {
-			int wait = DEFAULT_SHUTDOWN_WAIT_TIME;
-			if (getProperties().getMaxShutdownWaitTime() != null) {
-				wait = getProperties().getMaxShutdownWaitTime().intValue();
-			}
+        boolean success = false;
+        try {
+            int wait = DEFAULT_SHUTDOWN_WAIT_TIME;
+            if (getProperties().getMaxShutdownWaitTime() != null) {
+                wait = getProperties().getMaxShutdownWaitTime().intValue();
+            }
             LOG.debug("WAITING " + wait + " seconds to shut down");
-			success = future.get(wait, TimeUnit.SECONDS).booleanValue();
-		} catch (Exception ex) {
-			throw new ContainerException("Error shutting down container: "
-					+ ex.getMessage(), ex);
-		} finally {
+            success = future.get(wait, TimeUnit.SECONDS).booleanValue();
+        } catch (Exception ex) {
+            throw new ContainerException("Error shutting down container: "
+                    + ex.getMessage(), ex);
+        } finally {
             LOG.debug("Shutdown task complete, destroying processes");
-			future.cancel(true);
-			executor.shutdownNow();
-			jbossProcess.destroy();
+            future.cancel(true);
+            executor.shutdownNow();
+            shutdownProcess.destroy();
+            jbossProcess.destroy();
             LOG.debug("Processes destroyed");
-		}
+        }
 
-		if (!success) {
-			throw new ContainerException("Shutdown command failed: " +
-			    "(process exited with value of " + 
-                jbossProcess.exitValue() + ")");
-		}
+        if (!success) {
+            throw new ContainerException("Shutdown command failed: " +
+                "(process exited with value of " + 
+                finalShutdownProcess.exitValue() + ")");
+        }
 	}
     
 
@@ -245,11 +293,13 @@ public class Jboss51ServiceContainer extends ServiceContainer {
 			command.add("cmd");
 			command.add("/c");
 			command.add(startup + ".bat");
-			command.add("run");
 		} else {
 			command.add(startup + ".sh");
-			command.add("run");
 		}
+		// make JBoss listen on any and every available interface
+		// https://community.jboss.org/wiki/ConfigureServerPorts
+		command.add("-b");
+		command.add("0.0.0.0");
         
         // if container is secure, set the system property X509_CERT_DIR to the certificates directory
         List<String> additionalEnvironment = new ArrayList<String>();
@@ -280,7 +330,7 @@ public class Jboss51ServiceContainer extends ServiceContainer {
 						+ getProperties().getHeapSizeInMegabytes() + "m");
 			}
 		}
-		String[] editedEnvironment = editEnvironment(additionalEnvironment);
+		final String[] editedEnvironment = editEnvironment(additionalEnvironment);
 
 		LOG.debug("Command environment:\n");
         System.out.println("Command environment:\n");
@@ -290,32 +340,61 @@ public class Jboss51ServiceContainer extends ServiceContainer {
 		}
         
 		String[] commandArray = command.toArray(new String[command.size()]);
+		// using a Semaphore to prevent "touching" the JBoss container before everything is started.
+		// for reasons unknown, invoking anything on the container prematurely causes it to fail
+		// in "interesting" ways later
+		final Semaphore jbossReady = new Semaphore(1, false);
 		try {
-			jbossProcess = Runtime.getRuntime().exec(commandArray,
-					editedEnvironment, getProperties().getContainerDirectory());
-			new StreamGobbler(jbossProcess.getInputStream(),
-					StreamGobbler.TYPE_OUT, System.out).start();
-			new StreamGobbler(jbossProcess.getErrorStream(),
-					StreamGobbler.TYPE_OUT, System.err).start();
-		} catch (Exception ex) {
-			throw new ContainerException("Error invoking startup process: "
-					+ ex.getMessage(), ex);
-		}
-
+		    jbossReady.acquire();
+            jbossProcess = Runtime.getRuntime().exec(
+                commandArray, editedEnvironment, getProperties().getContainerDirectory());
+        } catch (IOException ex) {
+            throw new ContainerException("Error starting JBoss process: " + ex.getMessage(), ex);
+        } catch (InterruptedException e) {
+            throw new ContainerException("Error locking JBoss startup resource: " + e.getMessage(), e);
+        }
+		// follow this log, watch for the "JBoss started in..." message, THEN hit it with isGlobusRunningCounter()
+		final String lookFor1 = "[ServerImpl] JBoss (Microcontainer) ";
+		final String lookFor2 = "Started in";
+		BufferedOutputStream searchingOutputStream = new BufferedOutputStream(System.out) {
+		    @Override
+		    public synchronized void write(byte[] b, int off, int len) throws IOException {
+		        super.write(b, off, len);
+		        String line = new String(b, off, len);
+		        if (line.contains(lookFor1) && line.contains(lookFor2)) {
+		            System.out.println("Found the line I needed for proper startup");
+		            jbossReady.release();
+		        }
+		    };
+		};
+		new StreamGobbler(jbossProcess.getInputStream(),
+		    StreamGobbler.TYPE_OUT, searchingOutputStream).start();
+		new StreamGobbler(jbossProcess.getErrorStream(),
+		    StreamGobbler.TYPE_OUT, System.err).start();
+		
 		// start checking for running
+		int wait = DEFAULT_STARTUP_WAIT_TIME;
+        if (getProperties().getMaxStartupWaitTime() != null) {
+            wait = getProperties().getMaxStartupWaitTime().intValue();
+        }
+        long waitMs = wait * 1000;
+        boolean jbossStarted = false;
+		try {
+            jbossStarted = jbossReady.tryAcquire(waitMs, TimeUnit.MILLISECONDS);
+        } catch (InterruptedException ex) {
+            ex.printStackTrace();
+        }
+		if (!jbossStarted) {
+		    throw new ContainerException("JBoss did not start in the allowed time");
+		}
 		Exception testException = null;
 		sleep(2000);
 		boolean running = false;
-		int wait = DEFAULT_STARTUP_WAIT_TIME;
-		if (getProperties().getMaxStartupWaitTime() != null) {
-			wait = getProperties().getMaxStartupWaitTime().intValue();
-		}
-        long waitMs = wait * 1000;
-        long totalTime = 0;
+		long totalTime = 0;
         int attempt = 1;
         while (!running && totalTime < waitMs) {
             long start = System.currentTimeMillis();
-			LOG.debug("Connection attempt " + (attempt));
+			System.out.println("Connection attempt " + (attempt));
 			try {
 				running = isGlobusRunningCounter();
 			} catch (Exception ex) {
@@ -388,7 +467,7 @@ public class Jboss51ServiceContainer extends ServiceContainer {
 		locator.setEngine(new AxisClient(engineConfig));
 
 		String url = getContainerBaseURI().toString() + "CounterService";
-		LOG.debug("Connecting to counter at " + url);
+		System.out.println("Connecting to counter at " + url);
 
 		CounterPortType counter = locator.getCounterPortTypePort(
 		    new EndpointReferenceType(new Address(url)));
@@ -404,16 +483,18 @@ public class Jboss51ServiceContainer extends ServiceContainer {
             CoGProperties cogProperties = CoGProperties.getDefault();
             cogProperties.setCaCertLocations(caCertsDir.getAbsolutePath());
             CoGProperties.setDefault(cogProperties);
-        }
-		
+        }		
 
 		CreateCounterResponse response = counter.createCounter(new CreateCounter());
 		EndpointReferenceType endpoint = response.getEndpointReference();
 		counter = locator.getCounterPortTypePort(endpoint);
 		setAnonymous((Stub) counter);
 		((Stub) counter).setTimeout(1000);
+		System.out.println("--->trying the counter");
 		counter.add(0);
+		System.out.println("--->destroying");
 		counter.destroy(new Destroy());
+		System.out.println("--->woo!");
 		return true;
 	}
 
@@ -438,9 +519,6 @@ public class Jboss51ServiceContainer extends ServiceContainer {
         // root config element
 		Element configRoot = XMLUtilities.fileNameToDocument(
 			serverConfigFile.getAbsolutePath()).getRootElement();
-        // set the shutdown port on the root element
-		configRoot.setAttribute("port", String.valueOf(getProperties()
-			.getPortPreference().getShutdownPort()));
         // locate connector and set the port
 		// find the "Service" element
 		Iterator serviceElementIterator = configRoot.getChildren("Service",
@@ -483,8 +561,8 @@ public class Jboss51ServiceContainer extends ServiceContainer {
 
 		// need to adjust the web.xml to also me consistent with this custom
 		// ports...
-		File webappConfigFile = new File(getProperties()
-				.getContainerDirectory(), "server/default/deploy/wsrf.war/WEB-INF/web.xml");
+		File webappConfigFile = new File(getProperties().getContainerDirectory(), 
+		    "server/default/deploy/wsrf.war/WEB-INF/web.xml");
 		FileInputStream configInput = new FileInputStream(webappConfigFile);
 		Element webappConfigRoot = XMLUtilities.streamToDocument(configInput, new EntityResolver() {
             public InputSource resolveEntity(String publicId, String systemId) throws SAXException, IOException {
@@ -503,33 +581,60 @@ public class Jboss51ServiceContainer extends ServiceContainer {
 		configInput.close();
 		// dig in to the servlet and set the init-param for the protocol
 		Element servletEl = webappConfigRoot.getChild("servlet");
-		Element initEl = new Element("init-param");
-		Element paramName = new Element("param-name");
-		paramName.setText("defaultProtocol");
-		Element paramValue = new Element("param-value");
-		if (getProperties().isSecure()) {
-			paramValue.setText("https");
-		} else {
-			paramValue.setText("http");
+		boolean needPortNumber = true;
+		boolean needProtocol = true;
+		Iterator initParamElementIter = servletEl.getChildren("init-param").iterator();
+		while (initParamElementIter.hasNext()) {
+		    Element initParamElement = (Element) initParamElementIter.next();
+		    Element paramNameElement = initParamElement.getChild("param-name");
+		    Element paramValueElement = initParamElement.getChild("param-value");
+		    if (paramNameElement.getValue().equals("defaultProtocol")) {
+		        needProtocol = false;
+		        // edit the protocol
+		        paramValueElement.setText(getProperties().isSecure() ? "https" : "http");
+		    } else if (paramNameElement.getValue().equals("defaultPort")) {
+		        needPortNumber = false;
+		        // edit the port number
+		        paramValueElement.setText(getProperties().getPortPreference().getPort().toString());
+		    }
 		}
-		initEl.addContent(paramName);
-		initEl.addContent(paramValue);
-		servletEl.addContent(servletEl.getChildren().size() - 1, initEl);
+		if (needProtocol) {
+		    Element initEl = new Element("init-param");
+		    Element paramName = new Element("param-name");
+		    paramName.setText("defaultProtocol");
+		    Element paramValue = new Element("param-value");
+		    if (getProperties().isSecure()) {
+		        paramValue.setText("https");
+		    } else {
+		        paramValue.setText("http");
+		    }
+		    initEl.addContent(paramName);
+		    initEl.addContent(paramValue);
+		    servletEl.addContent(servletEl.getChildren().size() - 1, initEl);
+		}
 
-		// now add an init-param for the port number
-		Element initEl2 = new Element("init-param");
-		Element paramName2 = new Element("param-name");
-		paramName2.setText("defaultPort");
-		Element paramValue2 = new Element("param-value");
-		paramValue2.setText(String.valueOf(getProperties().getPortPreference().getPort()));
-		initEl2.addContent(paramName2);
-		initEl2.addContent(paramValue2);
-		servletEl.addContent(servletEl.getChildren().size() - 1, initEl2);
+		if (needPortNumber) {
+		    // now add an init-param for the port number
+		    Element initEl2 = new Element("init-param");
+		    Element paramName2 = new Element("param-name");
+		    paramName2.setText("defaultPort");
+		    Element paramValue2 = new Element("param-value");
+		    paramValue2.setText(String.valueOf(getProperties().getPortPreference().getPort()));
+		    initEl2.addContent(paramName2);
+		    initEl2.addContent(paramValue2);
+		    servletEl.addContent(servletEl.getChildren().size() - 1, initEl2);
+		}
 
-		String webappxml = XMLUtilities.formatXML(XMLUtilities
-				.elementToString(webappConfigRoot));
-		Utils.stringBufferToFile(new StringBuffer(webappxml), webappConfigFile
-				.getAbsolutePath());
+		String webappxml = XMLUtilities.formatXML(XMLUtilities.elementToString(webappConfigRoot));
+		Utils.stringBufferToFile(new StringBuffer(webappxml), webappConfigFile.getAbsolutePath());
+		
+		// change the JNDI listening port to the shutdown port
+		File bindingsConfigFile = new File(getProperties().getContainerDirectory(), 
+		    "server/default/conf/bindingservice.beans/META-INF/bindings-jboss-beans.xml");
+		StringBuffer bindingsConfig = Utils.fileToStringBuffer(bindingsConfigFile);
+		String editedBindings = bindingsConfig.toString().replace(
+		    "1099", getProperties().getPortPreference().getShutdownPort().toString());
+		Utils.stringBufferToFile(new StringBuffer(editedBindings), bindingsConfigFile);
 	}
 
 
