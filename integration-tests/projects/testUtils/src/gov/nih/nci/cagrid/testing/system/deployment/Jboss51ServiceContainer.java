@@ -490,11 +490,11 @@ public class Jboss51ServiceContainer extends ServiceContainer {
 		counter = locator.getCounterPortTypePort(endpoint);
 		setAnonymous((Stub) counter);
 		((Stub) counter).setTimeout(1000);
-		System.out.println("--->trying the counter");
+		LOG.debug("--->trying the counter");
 		counter.add(0);
-		System.out.println("--->destroying");
+		LOG.debug("--->destroying");
 		counter.destroy(new Destroy());
-		System.out.println("--->woo!");
+		LOG.debug("--->woo!");
 		return true;
 	}
 
