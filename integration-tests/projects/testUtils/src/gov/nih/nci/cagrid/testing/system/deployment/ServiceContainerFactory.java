@@ -108,6 +108,7 @@ public class ServiceContainerFactory {
                 break;
             case JBOSS_51_CONTAINER:
                 container = new Jboss51ServiceContainer(props);
+                break;
             default:
                 throw new AssertionError("Service container type: " + type + " is not valid");
         }
