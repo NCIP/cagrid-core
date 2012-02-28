@@ -6,6 +6,9 @@
     <property name="junit.results.dir" value="${test.logs.dir}/junit" />
 	
 	<path id="test.classpath">
+		<fileset dir="${jar.dir}">
+			<include name="*.jar"/>
+		</fileset>
 		<fileset dir="${globus.dir}/lib">
 			<include name="*.jar"/>
 		</fileset>
@@ -14,9 +17,6 @@
 		</fileset>
 		<fileset dir="${ext.lib.dir}">
 			<include name="**/*.jar"/>
-		</fileset>		
-		<fileset dir="${jar.dir}">
-			<include name="*.jar"/>
 		</fileset>
 	</path>
 
@@ -30,7 +30,7 @@
 			<jvmarg value="-Dbuild.dir=${build.dir}" />
 			<classpath refid="test.classpath"/>
 			<classpath>
-				<pathelement location="${test.dir}/resources" />
+				<pathelement location="${basedir}/resources" />
 			</classpath>
 			<formatter type="xml" />
 			<!--
