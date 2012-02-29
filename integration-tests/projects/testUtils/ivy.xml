@@ -17,13 +17,15 @@
     
     <!-- Containers-->
     <conf name="containers" visibility="public" description="All containers"
-      extends="globus.container,tomcat.container,secure.tomcat.container"/>
-    <conf name="globus.container" visibility="public"
-      description="The globus container"/>
+      extends="tomcat.container,secure.tomcat.container,jboss.container,secure.jboss.container"/>
     <conf name="tomcat.container" visibility="public"
       description="The tomcat container"/>
     <conf name="secure.tomcat.container" visibility="public"
       description="The secure tomcat container"/>
+    <conf name="jboss.container" visibility="public"
+      description="The jboss container"/>
+    <conf name="secure.jboss.container" visibility="public"
+      description="The secure jboss container"/>
   </configurations>
 
 
@@ -33,6 +35,8 @@
     <artifact name="apache-tomcat-6.0.32-testing" conf="tomcat.container" type="zip"/>
     <artifact name="minimal-secure-tomcat-5.0.28-with-globus-4.0.3" conf="secure.tomcat.container" type="zip"/>
     <artifact name="apache-tomcat-6.0.32-secure-testing" conf="secure.tomcat.container" type="zip"/>
+    <artifact name="jboss-5.1.0.GA-testing" conf="jboss.container" type="zip"/>
+    <artifact name="jboss-5.1.0.GA-secure-testing" conf="secure.jboss.container" type="zip"/>
   </publications>
 
   <dependencies>
