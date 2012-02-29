@@ -39,6 +39,10 @@ public class ContainerTestsStoryBook {
         	
         	s6.runBare();
         	
+        	Story s7 = new ContainerTest(ServiceContainerFactory
+                .createContainer(ServiceContainerType.SECURE_JBOSS_51_CONTAINER));
+            
+            s7.runBare();        	
         } catch (IOException e) {
             e.printStackTrace();
         }

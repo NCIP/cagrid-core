@@ -109,6 +109,10 @@ public class ServiceContainerFactory {
             case JBOSS_51_CONTAINER:
                 container = new Jboss51ServiceContainer(props);
                 break;
+            case SECURE_JBOSS_51_CONTAINER:
+                props.setSecure(true);
+                container = new Jboss51SecureServiceContainer(props);
+                break;
             default:
                 throw new AssertionError("Service container type: " + type + " is not valid");
         }

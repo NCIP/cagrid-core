@@ -13,7 +13,7 @@ package gov.nih.nci.cagrid.testing.system.deployment;
 public enum ServiceContainerType {
     TOMCAT_CONTAINER, TOMCAT_5_CONTAINER, TOMCAT_6_CONTAINER, 
     SECURE_TOMCAT_CONTAINER, SECURE_TOMCAT_5_CONTAINER, SECURE_TOMCAT_6_CONTAINER,
-    JBOSS_51_CONTAINER;
+    JBOSS_51_CONTAINER, SECURE_JBOSS_51_CONTAINER;
     
     public static final String CONTAINER_DIR_PROPERTY = "testing.containers.dir";
     public static final String DEFAULT_CONTAINER_DIR = "../testUtils/containers";
@@ -39,6 +39,8 @@ public enum ServiceContainerType {
                 return base + "/apache-tomcat-6.0.32-secure-testing.zip";
             case JBOSS_51_CONTAINER:
                 return base + "/jboss-5.1.0.GA-testing.zip";
+            case SECURE_JBOSS_51_CONTAINER:
+                return base + "/jboss-5.1.0.GA-secure-testing.zip";
         }
         throw new AssertionError("Unknown service container type: " + this);
     }
@@ -58,6 +60,8 @@ public enum ServiceContainerType {
                 return "SecureTomcat6";
             case JBOSS_51_CONTAINER:
                 return "JBoss51";
+            case SECURE_JBOSS_51_CONTAINER:
+                return "SecureJBoss51";
         }
         throw new AssertionError("Unknown service container type: " + this);
     }

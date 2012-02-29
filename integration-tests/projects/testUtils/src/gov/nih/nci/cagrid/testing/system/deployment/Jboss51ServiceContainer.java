@@ -316,7 +316,7 @@ public class Jboss51ServiceContainer extends ServiceContainer {
 
 		// set JBoss home
         additionalEnvironment.add(ENV_JBOSS_HOME + "="
-				+ getProperties().getContainerDirectory().getAbsolutePath());
+			+ getProperties().getContainerDirectory().getAbsolutePath());
         
         // set heap size
 		if (getProperties().getHeapSizeInMegabytes() != null) {
@@ -329,6 +329,9 @@ public class Jboss51ServiceContainer extends ServiceContainer {
                 additionalEnvironment.add(ENV_CATALINA_OPTS + "=-Xmx"
 						+ getProperties().getHeapSizeInMegabytes() + "m");
 			}
+			String currentJavaOpts = System.getenv(ENV_JAVA_OPTS);
+			additionalEnvironment.add(ENV_JAVA_OPTS + "=" + (currentJavaOpts != null ? currentCatalinaOpts + " " : "")
+			    + "-Xmx" + getProperties().getHeapSizeInMegabytes() + "m");
 		}
 		final String[] editedEnvironment = editEnvironment(additionalEnvironment);
 
