@@ -330,8 +330,10 @@ public class Jboss51ServiceContainer extends ServiceContainer {
 						+ getProperties().getHeapSizeInMegabytes() + "m");
 			}
 			String currentJavaOpts = System.getenv(ENV_JAVA_OPTS);
-			additionalEnvironment.add(ENV_JAVA_OPTS + "=" + (currentJavaOpts != null ? currentCatalinaOpts + " " : "")
-			    + "-Xmx" + getProperties().getHeapSizeInMegabytes() + "m");
+			additionalEnvironment.add(ENV_JAVA_OPTS + "=" + (currentJavaOpts != null ? currentJavaOpts + " " : "")
+			    + "-Xmx" + getProperties().getHeapSizeInMegabytes() + "m" +
+		         // the secure version seems to require a LOT more perm gen space to load classes into on the fly
+			    (getProperties().isSecure() ? " -XX:MaxPermSize=256m" : ""));
 		}
 		final String[] editedEnvironment = editEnvironment(additionalEnvironment);
 
