@@ -59,7 +59,7 @@ public class Jboss51ServiceContainer extends ServiceContainer {
 
 	private static final Log LOG = LogFactory.getLog(ServiceContainer.class);
 
-	public static final int DEFAULT_STARTUP_WAIT_TIME = 60; // seconds
+	public static final int DEFAULT_STARTUP_WAIT_TIME = 60 * 5; // 5 minutes, expressed in seconds
 	public static final int DEFAULT_SHUTDOWN_WAIT_TIME = 60; // seconds
 
 	public static final String ENV_ANT_HOME = "ANT_HOME";
