@@ -116,7 +116,10 @@
 	
 	<!-- deploy service to jboss -->
 	<target name="deployJBoss" depends="all,deploymentValidator,setDeploymentProperties" description="Deploys to JBOSS_HOME (to set the services properties file set the ant command line variable -Dservice.properties.file)">
-		<property name="webapp.deploy.dir" value="${jboss.dir}/server/default/deploy/${globus.webapp}.war" />
+		<!-- this property can be overridden from a properties file or with a -D flag passed to ant -->
+		<property name="jboss.node.name" value="default"/>
+		
+		<property name="webapp.deploy.dir" value="${jboss.dir}/server/${jboss.node.name}/deploy/${globus.webapp}.war" />
 		<property name="webapp.deploy.lib.dir" value="${webapp.deploy.dir}/WEB-INF/lib" />
 		<property name="webapp.deploy.schema.dir" value="${webapp.deploy.dir}/share/schema" />
         <property name="webapp.deploy.etc.dir" value="${webapp.deploy.dir}/WEB-INF/etc" />
@@ -210,7 +213,6 @@
 
 		<java classname="org.globus.bootstrap.AntBootstrap" fork="yes" failonerror="true">
 			<jvmarg value="-DGLOBUS_LOCATION=${ext.globus.dir}" />
-			<jvmarg value="-Djava.endorsed.dirs=${ext.globus.dir}/endorsed" />
 			<sysproperty key="GLOBUS_LOCATION" value="${ext.globus.dir}" />
 			<sysproperty key="ANT_HOME" value="${ant.home}" />
 			<arg value="org.globus.tools.gar.DeployGar" />

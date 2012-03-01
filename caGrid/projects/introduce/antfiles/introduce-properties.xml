@@ -34,6 +34,7 @@
 	<property name="build.dir" location="${basedir}/build" />
 	<property name="build.lib.dir" location="${build.dir}/jars" />
 	<property name="classes.dir" location="${build.dir}/classes" />
+	<property name="bootstrap.classes.dir" location="${classes.dir}/Bootstrap"/>
 	<property name="introduce.classes.dir" location="${classes.dir}/Introduce" />
 	<property name="portal.classes.dir" location="${classes.dir}/Portal" />
 	<property name="updater.classes.dir" location="${classes.dir}/UpdateManager" />

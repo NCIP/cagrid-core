@@ -458,10 +458,10 @@ public class CreationViewer extends CreationViewerBaseComponent {
             serviceStyleSeletor = new JComboBox();
             serviceStyleSeletor.addItem("NONE");
 
-            List extensionDescriptors = ExtensionsLoader.getInstance().getServiceExtensions();
+            List<ServiceExtensionDescriptionType> extensionDescriptors = ExtensionsLoader.getInstance().getServiceExtensions();
             for (int i = 0; i < extensionDescriptors.size(); i++) {
-                ServiceExtensionDescriptionType ex = (ServiceExtensionDescriptionType) extensionDescriptors.get(i);
-                if (ex.getShouldBeRemoved()==null || !ex.getShouldBeRemoved().booleanValue()) {
+                ServiceExtensionDescriptionType ex = extensionDescriptors.get(i);
+                if (ex.getShouldBeRemoved() == null || !ex.getShouldBeRemoved().booleanValue()) {
                     serviceStyleSeletor.addItem(ex.getDisplayName());
                 }
             }

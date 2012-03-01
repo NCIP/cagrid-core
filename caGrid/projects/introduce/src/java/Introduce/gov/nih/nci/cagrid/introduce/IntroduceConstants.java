@@ -31,7 +31,7 @@ public abstract class IntroduceConstants {
 
 	public static final String INTRODUCE_PATCH_VERSION_PROPERTY = "introduce.patch.version";
 
-	public static final String INTRODUCE_PROPERTIES = "conf/introduce.properties";
+	public static final String INTRODUCE_PROPERTIES = "conf" + File.separator + "introduce.properties";
 
 	public static final String GLOBUS_LOCATION = "Globus Location";
 
@@ -129,24 +129,27 @@ public abstract class IntroduceConstants {
 			+ "ws" + File.separator + "addressing" + File.separator
 			+ "WS-Addressing.xsd";
 
-	public static final List<String> GLOBUS_NAMESPACES = new ArrayList<String>(
-	    Arrays.asList(new String[]{
-            WSADDRESING_NAMESPACE, "http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-BaseFaults-1.2-draft-01.xsd",
-            "http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-BaseFaults-1.2-draft-01.wsdl",
-            "http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ResourceLifetime-1.2-draft-01.xsd",
-            "http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ResourceLifetime-1.2-draft-01.wsdl",
-            "http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ResourceProperties-1.2-draft-01.xsd",
-            "http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ResourceProperties-1.2-draft-01.wsdl",
-            "http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ServiceGroup-1.2-draft-01.xsd",
-            "http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ServiceGroup-1.2-draft-01.wsdl",
-            "http://docs.oasis-open.org/wsn/2004/06/wsn-WS-BaseNotification-1.2-draft-01.xsd",
-            "http://docs.oasis-open.org/wsn/2004/06/wsn-WS-BaseNotification-1.2-draft-01.wsdl",
-            "http://schemas.xmlsoap.org/ws/2004/04/trust", "http://schemas.xmlsoap.org/ws/2002/12/policy",
-            "http://schemas.xmlsoap.org/ws/2002/07/utility", "http://schemas.xmlsoap.org/ws/2004/04/sc",
-            "http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-secext-1.0.xsd",
-            "http://www.w3.org/2000/09/xmldsig#",
-            "http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd"}));
-
+	public static final List GLOBUS_NAMESPACES = new ArrayList(
+			Arrays
+					.asList(new String[] {
+							WSADDRESING_NAMESPACE,
+							"http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-BaseFaults-1.2-draft-01.xsd",
+							"http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-BaseFaults-1.2-draft-01.wsdl",
+							"http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ResourceLifetime-1.2-draft-01.xsd",
+							"http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ResourceLifetime-1.2-draft-01.wsdl",
+							"http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ResourceProperties-1.2-draft-01.xsd",
+							"http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ResourceProperties-1.2-draft-01.wsdl",
+							"http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ServiceGroup-1.2-draft-01.xsd",
+							"http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ServiceGroup-1.2-draft-01.wsdl",
+							"http://docs.oasis-open.org/wsn/2004/06/wsn-WS-BaseNotification-1.2-draft-01.xsd",
+							"http://docs.oasis-open.org/wsn/2004/06/wsn-WS-BaseNotification-1.2-draft-01.wsdl",
+							"http://schemas.xmlsoap.org/ws/2004/04/trust",
+							"http://schemas.xmlsoap.org/ws/2002/12/policy",
+							"http://schemas.xmlsoap.org/ws/2002/07/utility",
+							"http://schemas.xmlsoap.org/ws/2004/04/sc",
+							"http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-secext-1.0.xsd",
+							"http://www.w3.org/2000/09/xmldsig#",
+							"http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd" }));
 
 	private IntroduceConstants() {
 		// prevents instantiation

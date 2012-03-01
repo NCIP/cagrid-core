@@ -3,6 +3,7 @@ package gov.nih.nci.cagrid.introduce.common;
 import gov.nih.nci.cagrid.common.StreamGobbler;
 import gov.nih.nci.cagrid.common.Utils;
 import gov.nih.nci.cagrid.common.XMLUtilities;
+import gov.nih.nci.cagrid.common.StreamGobbler.LogPriority;
 import gov.nih.nci.cagrid.introduce.IntroduceConstants;
 import gov.nih.nci.cagrid.introduce.beans.ServiceDescription;
 import gov.nih.nci.cagrid.introduce.beans.method.MethodType;
@@ -38,8 +39,8 @@ import java.util.StringTokenizer;
 
 import javax.xml.namespace.QName;
 
-import org.apache.log4j.Logger;
-import org.apache.log4j.Priority;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.jdom.Document;
 import org.jdom.Element;
 
@@ -48,9 +49,12 @@ import org.jdom.Element;
  * @author <A HREF="MAILTO:hastings@bmi.osu.edu">Shannon Hastings </A>
  * @author <A HREF="MAILTO:oster@bmi.osu.edu">Scott Oster </A>
  * @author <A HREF="MAILTO:langella@bmi.osu.edu">Stephen Langella </A>
+ * @author <A HREF="MAILTO:David.Ervin@osumc.edu">David Ervin </A>
  */
 public final class CommonTools {
-    private static final Logger logger = Logger.getLogger(CommonTools.class);
+    public static final String CABIG_NS2_PKG_MAPPER = "gov.nih.nci.cagrid.introduce.common.CaBIGNamespaceToPackageMapper";
+
+    private static final Log logger = LogFactory.getLog(CommonTools.class);
 
     public static final String ALLOWED_JAVA_CLASS_REGEX = "[A-Z]++[A-Za-z0-9\\_\\$]*";
 
@@ -64,7 +68,8 @@ public final class CommonTools {
 
     public static final String ALLOWED_EXISTING_JAVA_PACKAGE_REGEX = "[a-zA-Z\\_]++[A-Za-z0-9\\_\\$]*";
 
-    public static final List JAVA_KEYWORDS = new ArrayList(Arrays.asList(new String[]{"abstract", "continue", "for",
+    public static final List<String> JAVA_KEYWORDS = new ArrayList<String>(Arrays.asList(
+        new String[]{"abstract", "continue", "for",
             "new", "switch", "assert", "default", "goto", "package", "synchronized", "boolean", "do", "if", "private",
             "this", "break", "double", "implements", "protected", "throw", "byte", "else", "import", "public",
             "throws", "case", "enum", "instanceof", "return", "transient", "catch", "extends", "int", "short", "try",
@@ -158,8 +163,8 @@ public final class CommonTools {
     
     
     private static void gobbleProcess(Process p) {
-        StreamGobbler errGobbler = new StreamGobbler(p.getErrorStream(), "ERR", logger, Priority.ERROR);
-        StreamGobbler outGobbler = new StreamGobbler(p.getInputStream(), "OUT", logger, Priority.DEBUG);
+        StreamGobbler errGobbler = new StreamGobbler(p.getErrorStream(), "ERR", logger, LogPriority.ERROR);
+        StreamGobbler outGobbler = new StreamGobbler(p.getInputStream(), "OUT", logger, LogPriority.DEBUG);
         errGobbler.start();
         outGobbler.start();
     }
@@ -376,9 +381,10 @@ public final class CommonTools {
      */
     public static String getPackageName(String fullNamespace) {
         try {
-            // TODO: where should this mapperClassname preference be set
-            String mapperClassname = "gov.nih.nci.cagrid.introduce.common.CaBIGNamespaceToPackageMapper";
-            Class clazz = Class.forName(mapperClassname);
+            // TODO: where should this mapperClassname preference be set?
+            String mapperClassname = CABIG_NS2_PKG_MAPPER;
+            // TODO: where should this class be loaded from? ExtensionTools.loadExtensionClass()?
+            Class<?> clazz = Class.forName(mapperClassname);
             NamespaceToPackageMapper mapper = (NamespaceToPackageMapper) clazz.newInstance();
             return mapper.getPackageName(fullNamespace);
         } catch (Exception e) {

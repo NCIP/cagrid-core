@@ -18,8 +18,9 @@ import org.cagrid.grape.model.Application;
  */
 public class ConfigurationUtil {
 
-    private static ConfigurationUtil util = null;
-    private static ConfigurationManager configurationManager = null;
+    private static ConfigurationUtil instance = null;
+    
+    private ConfigurationManager configurationManager = null;
 
 
     private ConfigurationUtil() throws Exception {
@@ -34,16 +35,11 @@ public class ConfigurationUtil {
     }
 
 
-    private static synchronized void load() throws Exception {
-        if (util == null) {
-            util = new ConfigurationUtil();
-        }
-    }
-
-
     public static synchronized ConfigurationUtil getInstance() throws Exception {
-        load();
-        return util;
+        if (instance == null) {
+            instance = new ConfigurationUtil();
+        }
+        return instance;
     }
 
 
@@ -96,4 +92,5 @@ public class ConfigurationUtil {
         }
         return null;
     }
+
 }

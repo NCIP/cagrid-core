@@ -41,10 +41,12 @@
 			<fileset dir="${ext.lib.dir}">
 				<include name="*.jar"/>
 			</fileset>
+			<!--
 			<fileset dir="${extensions.lib.dir}">
 				<include name="*.jar"/>
 				<exclude name="${jars.prefixname}*.jar"/>
 			</fileset>
+			-->
 			<fileset dir="${ant.library.dir}">
 				<include name="*.jar"/>
 			</fileset>
@@ -68,10 +70,12 @@
 			<fileset dir="${ext.lib.dir}">
 				<include name="*.jar"/>
 			</fileset>
+			<!--
 			<fileset dir="${extensions.lib.dir}">
 				<include name="*.jar"/>
 				<exclude name="${jars.prefixname}*.jar"/>
 			</fileset>
+			-->
 			<fileset dir="${ant.library.dir}">
 				<include name="*.jar"/>
 			</fileset>

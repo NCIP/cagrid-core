@@ -4,6 +4,7 @@
 	</target>
 	<!-- put stuff in here needed for building introduce-->
 	<target name="prepareIntroduce">
+		<path id="Bootstrap.classpath"/>
 		<path id="Introduce.classpath">
 			<fileset dir="${lib.dir}">
 				<include name="*.jar"/>

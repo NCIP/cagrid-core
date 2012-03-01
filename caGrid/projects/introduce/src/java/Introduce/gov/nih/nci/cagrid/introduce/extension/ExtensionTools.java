@@ -11,9 +11,13 @@ import gov.nih.nci.cagrid.introduce.beans.extension.PropertiesProperty;
 import gov.nih.nci.cagrid.introduce.beans.extension.ServiceExtensionDescriptionType;
 import gov.nih.nci.cagrid.introduce.beans.method.MethodType;
 import gov.nih.nci.cagrid.introduce.beans.service.ServiceType;
+import gov.nih.nci.cagrid.introduce.common.FileFilters;
 import gov.nih.nci.cagrid.introduce.common.ServiceInformation;
 import gov.nih.nci.cagrid.introduce.extension.authorization.AuthorizationExtensionManager;
 
+import java.io.File;
+import java.net.URL;
+import java.net.URLClassLoader;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -22,7 +26,9 @@ import org.apache.log4j.Logger;
 
 
 /**
- * ExtensionTools Tools to handle extension management
+ * ExtensionTools 
+ * 
+ * Tools to handle extension management code loading
  * 
  * @author David Ervin
  * @created May 10, 2007 10:10:00 AM
@@ -31,6 +37,8 @@ import org.apache.log4j.Logger;
 public class ExtensionTools {
 
     private static final Logger logger = Logger.getLogger(ExtensionTools.class);
+    
+    private static URLClassLoader extensionClassLoader = null;
 
 
     /**
@@ -43,11 +51,11 @@ public class ExtensionTools {
      * @throws Exception
      */
     public static CreationExtensionPostProcessor getCreationPostProcessor(String extensionName) throws Exception {
-        ServiceExtensionDescriptionType extensionDesc = ExtensionsLoader.getInstance().getServiceExtension(
-            extensionName);
+        ServiceExtensionDescriptionType extensionDesc = 
+            ExtensionsLoader.getInstance().getServiceExtension(extensionName);
         if (extensionDesc != null && extensionDesc.getCreationPostProcessor() != null
             && !extensionDesc.getCreationPostProcessor().equals("")) {
-            Class c = Class.forName(extensionDesc.getCreationPostProcessor());
+            Class<?> c = loadExtensionClass(extensionDesc.getCreationPostProcessor());
             Object obj = c.newInstance();
             return (CreationExtensionPostProcessor) obj;
         }
@@ -65,11 +73,11 @@ public class ExtensionTools {
      * @throws Exception
      */
     public static CodegenExtensionPostProcessor getCodegenPostProcessor(String extensionName) throws Exception {
-        ServiceExtensionDescriptionType extensionDesc = ExtensionsLoader.getInstance().getServiceExtension(
-            extensionName);
+        ServiceExtensionDescriptionType extensionDesc = 
+            ExtensionsLoader.getInstance().getServiceExtension(extensionName);
         if (extensionDesc != null && extensionDesc.getCodegenPostProcessor() != null
             && !extensionDesc.getCodegenPostProcessor().equals("")) {
-            Class c = Class.forName(extensionDesc.getCodegenPostProcessor());
+            Class<?> c = loadExtensionClass(extensionDesc.getCodegenPostProcessor());
             Object obj = c.newInstance();
             return (CodegenExtensionPostProcessor) obj;
         }
@@ -88,11 +96,11 @@ public class ExtensionTools {
      */
     public static AuthorizationExtensionManager getAuthorizationExtensionCodegenPostProcessor(String extensionName)
         throws Exception {
-        AuthorizationExtensionDescriptionType extensionDesc = ExtensionsLoader.getInstance().getAuthorizationExtension(
-            extensionName);
+        AuthorizationExtensionDescriptionType extensionDesc = 
+            ExtensionsLoader.getInstance().getAuthorizationExtension(extensionName);
         if (extensionDesc != null && extensionDesc.getAuthorizationExtensionManager() != null
             && !extensionDesc.getAuthorizationExtensionManager().equals("")) {
-            Class c = Class.forName(extensionDesc.getAuthorizationExtensionManager());
+            Class<?> c = loadExtensionClass(extensionDesc.getAuthorizationExtensionManager());
             Object obj = c.newInstance();
             return (AuthorizationExtensionManager) obj;
         }
@@ -114,7 +122,7 @@ public class ExtensionTools {
             extensionName);
         if (extensionDesc != null && extensionDesc.getCodegenPreProcessor() != null
             && !extensionDesc.getCodegenPreProcessor().equals("")) {
-            Class c = Class.forName(extensionDesc.getCodegenPreProcessor());
+            Class<?> c = loadExtensionClass(extensionDesc.getCodegenPreProcessor());
             Object obj = c.newInstance();
             return (CodegenExtensionPreProcessor) obj;
         }
@@ -136,7 +144,7 @@ public class ExtensionTools {
             extensionName);
         if (extensionDesc != null && extensionDesc.getServiceExtensionRemover() != null
             && !extensionDesc.getServiceExtensionRemover().equals("")) {
-            Class c = Class.forName(extensionDesc.getServiceExtensionRemover());
+            Class<?> c = loadExtensionClass(extensionDesc.getServiceExtensionRemover());
             Object obj = c.newInstance();
             return (ServiceExtensionRemover) obj;
         }
@@ -320,7 +328,7 @@ public class ExtensionTools {
     public static void removeExtensionDataElement(ExtensionTypeExtensionData data, String dataElementName) {
         MessageElement[] dataEntries = data.get_any();
         if (dataEntries != null) {
-            List cleanedEntries = new ArrayList(dataEntries.length);
+            List<MessageElement> cleanedEntries = new ArrayList<MessageElement>(dataEntries.length);
             for (int i = 0; i < dataEntries.length; i++) {
                 if (!dataEntries[i].getName().equals(dataElementName)) {
                     cleanedEntries.add(dataEntries[i]);
@@ -383,5 +391,34 @@ public class ExtensionTools {
             logger.info("Invoking extension creation post processor");
             creationPostProcessor.postCreate(serviceExtensionDescription, service);
         }
+    }
+    
+    
+    private static ClassLoader getExtensionClassLoader() throws Exception {
+        if (extensionClassLoader == null) {
+            File extDir = ExtensionsLoader.getInstance().getExtensionsDir();
+            File libDir = new File(extDir, "lib");
+            File[] jars = libDir.listFiles(new FileFilters.JarFileFilter());
+            URL[] jarUrls = new URL[jars.length];
+            for (int i = 0; i < jars.length; i++) {
+                jarUrls[i] = jars[i].toURI().toURL();
+            }
+            extensionClassLoader = new URLClassLoader(jarUrls, ExtensionTools.class.getClassLoader());
+        }
+        return extensionClassLoader;
+    }
+    
+    
+    public static Class<?> loadExtensionClass(String className) throws Exception {
+        Class<?> c = null;
+        try {
+            c = ExtensionTools.class.getClassLoader().loadClass(className);
+        } catch (ClassNotFoundException ex) {
+            logger.info("Class " + className + " not found in current context class loader; trying the extended classloader");
+        }
+        if (c == null) {
+            c = getExtensionClassLoader().loadClass(className);
+        }
+        return c;
     }
 }

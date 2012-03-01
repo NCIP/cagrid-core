@@ -49,7 +49,7 @@ public class SkeletonPostCreator extends Task {
 
         ServiceDescription introService = null;
         try {
-            introService = (ServiceDescription) Utils.deserializeDocument(baseDirectory + File.separator
+            introService = Utils.deserializeDocument(baseDirectory + File.separator
                 + IntroduceConstants.INTRODUCE_XML_FILE, ServiceDescription.class);
         } catch (Exception e1) {
             BuildException be = new BuildException(e1.getMessage());

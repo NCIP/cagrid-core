@@ -47,7 +47,8 @@ public class NamespaceTypeToolDescriptor {
 	}
 	
 	public NamespaceTypeToolsComponent getNamespaceTypeToolComponent() throws Exception{
-		Class c = Class.forName(getClassname());
+        // TODO: Does this need to come out of the ExtensionTools.loadExtensionClass?
+        Class<?> c = Class.forName(getClassname());
 		Object obj = c.newInstance();
 		return (NamespaceTypeToolsComponent)obj;
 	}
