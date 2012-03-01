@@ -53,16 +53,13 @@ public class GAARDSApplication extends GridApplication{
 	private static Log log = LogFactory.getLog(GAARDSApplication.class);
 		
     public GAARDSApplication(Application app) throws Exception {
-        super();
-
-		ErrorDialog.setOwnerFrame(this);
-		YesNoDialog.setOwnerFrame(this);
-		
-		this.app = app;
-		LookAndFeel.setApplicationLogo(this.app.getApplicationLogo());
-		this.threadManager = new ThreadManager();
-		this.context = new ApplicationContext(this);
-		initialize();
+        this(app, null);
+    }
+    
+    
+    public GAARDSApplication(Application app, ClassLoader applicationClassLoader) throws Exception {
+        super(app, applicationClassLoader);
+        YesNoDialog.setOwnerFrame(this);
     }
 
     public static void main(String[] args) {
@@ -120,7 +117,7 @@ public class GAARDSApplication extends GridApplication{
 	
 	public static GridApplication getInstance(Application app) throws Exception {
 		if (application == null) {
-			application = new GAARDSApplication(app);
+			application = new GAARDSApplication(app, GAARDSApplication.class.getClassLoader());
 			application.startPostInitializer();
 			return application;
 		} else {
@@ -140,6 +137,11 @@ public class GAARDSApplication extends GridApplication{
 		startPreInitializer();
 			
 		setupTargetGridsConfigurationFile();
+		
+		org.globus.common.CoGProperties properties = org.globus.common.CoGProperties.getDefault();
+		File globusDir = new File(gaardsConfigurationDirectory, "globus");
+        properties.setCaCertLocations(globusDir.getCanonicalPath());            		
+        org.globus.common.CoGProperties.setDefault(properties);
         
 		List<Component> toolbarComponents = new ArrayList<Component>();
 		this.setJMenuBar(getJJMenuBar(toolbarComponents));

@@ -260,7 +260,6 @@ GSBT - Globus Service Build Tools
 				<include name="*.jar" />
 			</fileset>
 		</copy>
-		<!-- endorsed libraries -->
 		<!-- gui configuration -->
 		<copy overwrite="true" todir="${introduce.extensions.dir}/cagrid_gaards_ui">
 			<fileset dir="ext/target_grid">
