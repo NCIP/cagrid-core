@@ -48,8 +48,7 @@ public class ContainerTest extends ServiceStoryBase {
     }
 
 
-    protected void storyTearDown() throws Throwable {
-     
+    protected void storyTearDown() throws Throwable {     
         StopContainerStep step2 = new StopContainerStep(getContainer());
         try {
             step2.runStep();
@@ -63,5 +62,4 @@ public class ContainerTest extends ServiceStoryBase {
             e.printStackTrace();
         }
     }
-
 }
