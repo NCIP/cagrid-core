@@ -68,6 +68,9 @@ GSBT - Globus Service Build Tools
 			<fileset dir="${ext.lib.dir}">
 				<include name="*.jar" />
 			</fileset>
+			<fileset dir="${globus.location}/lib">
+				<include name="*.jar"/>
+			</fileset>
 		</path>
 		<path id="run.classpath">
 			<pathelement location="${build.dest}" />
@@ -227,7 +230,6 @@ GSBT - Globus Service Build Tools
 
 	<!-- Post Introduce Edit-->
 	<target name="ui" description="Run the Security UI" depends="init, defineClasspaths, checkAntOpts">
-
 		<if>
 			<equals arg1="${use.proxy}" arg2="true" />
 			<then>

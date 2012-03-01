@@ -41,7 +41,6 @@
     <dependency rev="latest.integration" org="caGrid" name="syncgts" conf="gts->client"/>
  
     <dependency rev="0.1" org="jcalendar" name="jcalendar" conf="base->*"/>
-    <dependency rev="syncgts-patched-4.0.3" org="globus" name="jcog" conf="gts->default"/>
    
     <dependency rev="4.0.3" org="globus" name="ws-core" conf="gts->default"/>
     <dependency rev="2.1.0" org="org.apache.ivy" name="ivy" conf="gts->default"/>
