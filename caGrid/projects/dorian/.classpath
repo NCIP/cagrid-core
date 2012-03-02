@@ -88,7 +88,6 @@
   <classpathentry kind="lib" path="ext/dependencies/service/jars/jprov.jar" />
   <classpathentry kind="lib" path="ext/dependencies/service/jars/kmu.jar" />
   <classpathentry kind="lib" path="ext/dependencies/service/jars/mysql-connector-java-3.0.16-ga-bin.jar" />
-  <classpathentry kind="lib" path="ext/dependencies/service/jars/servlet.jar" />
   <classpathentry kind="lib" path="ext/dependencies/service/jars/spring-beans.jar" />
   <classpathentry kind="lib" path="ext/dependencies/service/jars/spring-core.jar" />
   <classpathentry kind="lib" path="ext/dependencies/test/jars/caGrid-core-tests-1.5.jar" />
