@@ -139,11 +139,11 @@ public class Jboss51ServiceContainer extends ServiceContainer {
 		command.add(DEPLOY_ANT_TARGET);
 
         // environment variables
-        List<String> additionalEnvironment = new ArrayList<String>();
+        Map<String, String> additionalEnvironment = new HashMap<String, String>();
         
         // set jboss home
-        additionalEnvironment.add(ENV_JBOSS_HOME + "="
-            + getProperties().getContainerDirectory().getAbsolutePath());
+        additionalEnvironment.put(ENV_JBOSS_HOME,
+            getProperties().getContainerDirectory().getAbsolutePath());
 		String[] editedEnvironment = editEnvironment(additionalEnvironment);
         
 		LOG.debug("Command environment:\n");
@@ -198,9 +198,9 @@ public class Jboss51ServiceContainer extends ServiceContainer {
 		command.add("jnp://localhost:" + getProperties().getPortPreference().getShutdownPort().toString());
     
 		// set JBoss home
-		List<String> additionalEnvironment = new ArrayList<String>();
-		additionalEnvironment.add(ENV_JBOSS_HOME + "="
-		    + getProperties().getContainerDirectory().getAbsolutePath());
+		Map<String, String> additionalEnvironment = new HashMap<String, String>();
+		additionalEnvironment.put(ENV_JBOSS_HOME, 
+		    getProperties().getContainerDirectory().getAbsolutePath());
 		final String[] editedEnvironment = editEnvironment(additionalEnvironment);
 
 		LOG.debug("Command environment:\n");
@@ -301,40 +301,36 @@ public class Jboss51ServiceContainer extends ServiceContainer {
 		command.add("-b");
 		command.add("0.0.0.0");
         
-        // if container is secure, set the system property X509_CERT_DIR to the certificates directory
-        List<String> additionalEnvironment = new ArrayList<String>();
-        if (getProperties().isSecure()) {
-            try {
-                File certsDir = ((SecureContainer) this).getCertificatesDirectory();
-                String caCertsDir = new File(certsDir, "ca").getCanonicalPath();
-                String x509CertsEnv = ENV_JAVA_OPTS + "=-D" + CACERTS_DIR_PROPERTY + "=" + caCertsDir;
-                additionalEnvironment.add(x509CertsEnv);
-            } catch (Exception ex) {
-                throw new ContainerException("Error setting ca certificates directory!");
-            }
-        }
-
+        Map<String, String> additionalEnvironment = new HashMap<String, String>();
+        
 		// set JBoss home
-        additionalEnvironment.add(ENV_JBOSS_HOME + "="
-			+ getProperties().getContainerDirectory().getAbsolutePath());
+        additionalEnvironment.put(ENV_JBOSS_HOME,
+			getProperties().getContainerDirectory().getAbsolutePath());
         
         // set heap size
 		if (getProperties().getHeapSizeInMegabytes() != null) {
-		    // TODO: check this -- are catalina opts picked up by Tomcat inside JBoss?
-			String currentCatalinaOpts = System.getenv(ENV_CATALINA_OPTS);
-			if (currentCatalinaOpts != null) {
-                additionalEnvironment.add(ENV_CATALINA_OPTS + "=" + currentCatalinaOpts
-						+ " -Xmx" + getProperties().getHeapSizeInMegabytes() + "m");
-			} else {
-                additionalEnvironment.add(ENV_CATALINA_OPTS + "=-Xmx"
-						+ getProperties().getHeapSizeInMegabytes() + "m");
-			}
-			String currentJavaOpts = System.getenv(ENV_JAVA_OPTS);
-			additionalEnvironment.add(ENV_JAVA_OPTS + "=" + (currentJavaOpts != null ? currentJavaOpts + " " : "")
-			    + "-Xmx" + getProperties().getHeapSizeInMegabytes() + "m" +
-		         // the secure version seems to require a LOT more perm gen space to load classes into on the fly
-			    (getProperties().isSecure() ? " -XX:MaxPermSize=256m" : ""));
+		    String currentJavaOpts = System.getenv(ENV_JAVA_OPTS);
+			additionalEnvironment.put(ENV_JAVA_OPTS, (currentJavaOpts != null ? currentJavaOpts + " " : "")
+			    + "-Xmx" + getProperties().getHeapSizeInMegabytes() + "m");
 		}
+		
+		if (getProperties().isSecure()) {
+            // if container is secure, set the system property X509_CERT_DIR to the certificates directory
+		    String currentJavaOpts = additionalEnvironment.get(ENV_JAVA_OPTS) != null ?
+		        additionalEnvironment.get(ENV_JAVA_OPTS) : System.getenv(ENV_JAVA_OPTS);
+		    String additionalJavaOpts = "";
+            try {
+                File certsDir = ((SecureContainer) this).getCertificatesDirectory();
+                String caCertsDir = new File(certsDir, "ca").getCanonicalPath();
+                additionalJavaOpts +=  "-D" + CACERTS_DIR_PROPERTY + "=" + caCertsDir;
+            } catch (Exception ex) {
+                throw new ContainerException("Error setting ca certificates directory!");
+            }
+            additionalJavaOpts += " -XX:MaxPermSize=256m";
+            additionalEnvironment.put(ENV_JAVA_OPTS, (currentJavaOpts != null ? currentJavaOpts + " " : "")
+                + additionalJavaOpts);
+        }
+		
 		final String[] editedEnvironment = editEnvironment(additionalEnvironment);
 
 		LOG.debug("Command environment:\n");
@@ -427,15 +423,9 @@ public class Jboss51ServiceContainer extends ServiceContainer {
 	// ---------------
 
     
-	private String[] editEnvironment(List<String> edits) {
+	private String[] editEnvironment(Map<String, String> edits) {
 		Map<String, String> systemEnvironment = new HashMap<String, String>(System.getenv());
-		for (String element : edits) {
-            int splitIndex = element.indexOf('=');
-            String[] envVar = new String[2];
-            envVar[0] = element.substring(0, splitIndex);
-            envVar[1] = element.substring(splitIndex + 1);
-			systemEnvironment.put(envVar[0], envVar[1]);
-		}
+		systemEnvironment.putAll(edits);
 		String[] environment = new String[systemEnvironment.size()];
 		Iterator<String> keys = systemEnvironment.keySet().iterator();
 		int i = 0;
@@ -488,7 +478,7 @@ public class Jboss51ServiceContainer extends ServiceContainer {
             CoGProperties cogProperties = CoGProperties.getDefault();
             cogProperties.setCaCertLocations(caCertsDir.getAbsolutePath());
             CoGProperties.setDefault(cogProperties);
-        }		
+        }
 
 		CreateCounterResponse response = counter.createCounter(new CreateCounter());
 		EndpointReferenceType endpoint = response.getEndpointReference();
