@@ -466,24 +466,27 @@ public class Jboss51ServiceContainer extends ServiceContainer {
 
 		CounterPortType counter = locator.getCounterPortTypePort(
 		    new EndpointReferenceType(new Address(url)));
-		setAnonymous((Stub) counter);
+		//setAnonymous((Stub) counter);
 		
         if (getProperties().isSecure()) {
             File caCertsDir = null;
+            File certsDir = null;
             try {
-                caCertsDir = new File(((SecureContainer) this).getCertificatesDirectory(), "ca");
+                certsDir = ((SecureContainer) this).getCertificatesDirectory();
+                caCertsDir = new File(certsDir, "ca");
             } catch (Exception ex) {
                 throw new ContainerException("Error obtaining ca certs directory: " + ex.getMessage(), ex);
             }
             CoGProperties cogProperties = CoGProperties.getDefault();
             cogProperties.setCaCertLocations(caCertsDir.getAbsolutePath());
+            cogProperties.setProxyFile(new File(certsDir, "user.proxy").getAbsolutePath());
             CoGProperties.setDefault(cogProperties);
         }
 
 		CreateCounterResponse response = counter.createCounter(new CreateCounter());
 		EndpointReferenceType endpoint = response.getEndpointReference();
 		counter = locator.getCounterPortTypePort(endpoint);
-		setAnonymous((Stub) counter);
+		//setAnonymous((Stub) counter);
 		((Stub) counter).setTimeout(1000);
 		LOG.debug("--->trying the counter");
 		counter.add(0);

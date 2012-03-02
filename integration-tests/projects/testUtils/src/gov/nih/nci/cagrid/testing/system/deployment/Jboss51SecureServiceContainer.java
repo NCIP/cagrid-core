@@ -7,8 +7,6 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Iterator;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.jdom.Document;
 import org.jdom.Element;
 import org.jdom.filter.Filter;
@@ -20,8 +18,6 @@ import org.jdom.filter.Filter;
  * @author David Ervin
  */
 public class Jboss51SecureServiceContainer extends Jboss51ServiceContainer implements SecureContainer {
-    
-    private static final Log LOG = LogFactory.getLog(ServiceContainer.class);
     
     public static final String SECURITY_DESCRIPTOR_PLACEHOLDER = "<!-- @CONTAINER_SECURITY_DESCRIPTOR@ -->";
     public static final String DESCRIPTOR_FILE_PLACEHOLDER = "@@LOCATION@@";
@@ -37,8 +33,7 @@ public class Jboss51SecureServiceContainer extends Jboss51ServiceContainer imple
 	@Override
 	public void unpackContainer() throws ContainerException {
 	    super.unpackContainer();
-	    File wsrfCoreDir = new File(getProperties().getContainerDirectory(), 
-	        "server/default/deploy/wsrf.war/WEB-INF/etc/globus_wsrf_core");
+	    File wsrfCoreDir = new File(getWsrfDeploymentDirectory(),"WEB-INF/etc/globus_wsrf_core");
         // locate the security descriptor file
         File globalSecurityDescriptorFile = new File(wsrfCoreDir, "global_security_descriptor.xml");
         Document descriptorDocument = null;
