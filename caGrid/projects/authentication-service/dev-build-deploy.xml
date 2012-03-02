@@ -14,6 +14,7 @@
 		<copy todir="${build.lib.dir}">
 			<fileset dir="${ext.lib.dir}">
 				<include name="*.jar" />
+				<exclude name="servlet.jar"/>
 			</fileset>
 		</copy>
 	</target>
@@ -37,6 +38,7 @@
 		<copy todir="${build.lib.dir}" overwrite="true">
 			<fileset dir="${ext.lib.dir}">
 				<include name="*.jar" />
+				<exclude name="servlet.jar"/>
 			</fileset>
 		</copy>
 
@@ -63,7 +65,4 @@
 	<target name="postUndeployJBoss">
 
 	</target>
-
-
-
 </project>
