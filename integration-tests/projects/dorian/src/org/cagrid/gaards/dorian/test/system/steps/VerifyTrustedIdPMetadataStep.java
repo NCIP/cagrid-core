@@ -16,25 +16,19 @@ public class VerifyTrustedIdPMetadataStep extends Step {
     private String authenticationServiceURL;
     private String authenticationServiceIdentity;
     private boolean found;
-   
 
 
     public VerifyTrustedIdPMetadataStep(String serviceURL, String name) {
-       this(serviceURL,name,true);
+        this(serviceURL, name, true);
     }
-    
+
 
     public VerifyTrustedIdPMetadataStep(String serviceURL, String name, boolean found) {
         this.serviceURL = serviceURL;
         this.name = name;
         this.found = found;
     }
-    
-    
 
-
-
-   
 
     public void runStep() throws Throwable {
         GridUserClient client = new GridUserClient(serviceURL);
@@ -62,8 +56,7 @@ public class VerifyTrustedIdPMetadataStep extends Step {
             fail("The identity provider " + name
                 + " was not found as a trusted identity provider when it was expected to be.");
         } else if ((!found) && (isFound)) {
-            fail("The identity provider " + name
-                + " was found and it should not have been.");
+            fail("The identity provider " + name + " was found and it should not have been.");
         }
     }
 

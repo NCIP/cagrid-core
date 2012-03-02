@@ -23,6 +23,7 @@ public class ChangeLocalUserPasswordStep extends Step {
 		this.newPassword = newPassword;
 	}
 
+	
 	public void runStep() throws Throwable {
 		BasicAuthentication ba = new BasicAuthentication();
 		ba.setUserId(user.getUserId());
@@ -39,5 +40,4 @@ public class ChangeLocalUserPasswordStep extends Step {
 		assertNotNull(gridCredential);
 		gridCredential.verify();
 	}
-
 }

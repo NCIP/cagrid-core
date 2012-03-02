@@ -36,14 +36,13 @@ public class UpdateTrustedIdPStatusStep extends Step {
             TrustedIdP idp = idps.get(i);
             if (idp.getName().endsWith(this.name)) {
                 found = true;
-               idp.setStatus(status);
-               client.updateTrustedIdP(idp);
-               client.setPublish(idp, publish);
+                idp.setStatus(status);
+                client.updateTrustedIdP(idp);
+                client.setPublish(idp, publish);
             }
         }
         if (!found) {
-            fail("Could not update the identity provider " + name
-                + ", it was not found.");
+            fail("Could not update the identity provider " + name + ", it was not found.");
         }
     }
 }

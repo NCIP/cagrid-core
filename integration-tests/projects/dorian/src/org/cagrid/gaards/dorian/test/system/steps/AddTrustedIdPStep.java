@@ -31,5 +31,4 @@ public class AddTrustedIdPStep extends Step {
     public TrustedIdP getIdP() {
         return idp;
     }
-
 }

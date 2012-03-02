@@ -25,13 +25,12 @@ public class VerifyTrustedIdPStep extends Step {
     private boolean publish;
 
 
-  
-
     public VerifyTrustedIdPStep(String serviceURL, GridCredentialRequestStep admin, String name) {
         this.serviceURL = serviceURL;
         this.admin = admin;
         this.name = name;
     }
+
 
     public void setPublish(boolean publish) {
         this.publish = publish;
@@ -141,5 +140,4 @@ public class VerifyTrustedIdPStep extends Step {
     public void setUserPolicyClass(String userPolicyClass) {
         this.userPolicyClass = userPolicyClass;
     }
-
 }

@@ -19,45 +19,22 @@ public class GetAsserionSigningCertificateStep extends Step implements SigningCe
 	public GetAsserionSigningCertificateStep(ServiceContainer container) {
 		this.container = container;
 	}
+	
 
 	public void runStep() throws Throwable {
-		File conf = new File(this.container.getProperties()
-				.getContainerDirectory().getAbsolutePath()
-				+ File.separator
-				+ "webapps"
-				+ File.separator
-				+ "wsrf"
-				+ File.separator
-				+ "WEB-INF"
-				+ File.separator
-				+ "etc"
-				+ File.separator
-				+ "cagrid_Dorian"
-				+ File.separator
-				+ "dorian-configuration.xml");
-		File props = new File(this.container.getProperties()
-				.getContainerDirectory().getAbsolutePath()
-				+ File.separator
-				+ "webapps"
-				+ File.separator
-				+ "wsrf"
-				+ File.separator
-				+ "WEB-INF"
-				+ File.separator
-				+ "etc"
-				+ File.separator
-				+ "cagrid_Dorian"
-				+ File.separator
-				+ "dorian.properties");
+		File conf = new File(this.container.getWsrfDeploymentDirectory(),
+				"WEB-INF" + File.separator + "etc" + File.separator
+				+ "cagrid_Dorian" + File.separator + "dorian-configuration.xml");
+		File props = new File(this.container.getWsrfDeploymentDirectory(),
+		        "WEB-INF" + File.separator + "etc" + File.separator
+				+ "cagrid_Dorian" + File.separator + "dorian.properties");
 		BeanUtils utils = new BeanUtils(new FileSystemResource(conf), new FileSystemResource(props));
 		AssertionCredentialsManager acm = utils.getAssertionCredentialsManager();
 		this.signingCertificate = acm.getIdPCertificate();
 	}
+	
 
 	public X509Certificate getSigningCertificate() {
 		return signingCertificate;
 	}
-	
-	
-
 }
