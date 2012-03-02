@@ -67,6 +67,7 @@
     <!--  The classes linked by annotations only seem to be needed at compile time; not runtime -->
     <dependency rev="3.3.1.GA" org="hibernate" name="hibernate-annotations"
       conf="service->default;annotations->minimal" />
+    <dependency rev="3.0.0.GA" org="hibernate" name="hibernate-validator" conf="service->default"/>
     <!-- TODO: change to newer version? and don't use full -->
     <dependency rev="2.0.+" org="springframework" name="spring" conf="service->full;impl-test->mock" />
     <dependency rev="1.2.2" org="apache" name="commons-dbcp" conf="service->default" />
