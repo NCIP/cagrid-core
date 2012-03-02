@@ -2,6 +2,7 @@ package org.cagrid.gaards.authentication.test.system.steps;
 
 import gov.nih.nci.cagrid.common.FaultHelper;
 import gov.nih.nci.cagrid.common.Utils;
+import gov.nih.nci.cagrid.testing.system.deployment.ServiceContainer;
 import gov.nih.nci.cagrid.testing.system.haste.Step;
 import gov.nih.nci.security.constants.Constants;
 
@@ -18,14 +19,14 @@ import org.cagrid.gaards.authentication.client.AuthenticationClient;
 public class LockoutStep extends Step {
     
     private String serviceUrl = null;
-    private String serviceContainerDir = null;
+    private ServiceContainer serviceContainer = null;
     private BasicAuthentication badPasswdCred = null;
     private BasicAuthentication goodPasswdCred = null;
     
-    public LockoutStep(String serviceUrl, String serviceContainerDir,
+    public LockoutStep(String serviceUrl, ServiceContainer serviceContainer,
         BasicAuthentication badPasswdCred, BasicAuthentication goodPasswdCred) {
         this.serviceUrl = serviceUrl;
-        this.serviceContainerDir = serviceContainerDir;
+        this.serviceContainer = serviceContainer;
         this.badPasswdCred = badPasswdCred;
         this.goodPasswdCred = goodPasswdCred;
     }
@@ -135,7 +136,8 @@ public class LockoutStep extends Step {
     
     
     private File getWhitelistFile() {
-        File whitelist = new File(serviceContainerDir, "webapps/wsrf/WEB-INF/etc/cagrid_AuthenticationService/lockout-whitelist.txt");
+        File whitelist = new File(serviceContainer.getWsrfDeploymentDirectory(), 
+            "WEB-INF/etc/cagrid_AuthenticationService/lockout-whitelist.txt");
         return whitelist;
     }
 }
