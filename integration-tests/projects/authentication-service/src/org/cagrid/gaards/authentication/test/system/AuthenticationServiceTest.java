@@ -115,8 +115,7 @@ public class AuthenticationServiceTest extends ServiceStoryBase {
 					cred4));
 			
 			// test locking out an account
-			steps.add(new LockoutStep(serviceURL, getContainer().getProperties().getContainerDirectory().getAbsolutePath(),
-			    cred3, cred));
+			steps.add(new LockoutStep(serviceURL, getContainer(), cred3, cred));
 
 			// Test invalid authentication, unsupported credential
 			OneTimePassword cred5 = new OneTimePassword();
