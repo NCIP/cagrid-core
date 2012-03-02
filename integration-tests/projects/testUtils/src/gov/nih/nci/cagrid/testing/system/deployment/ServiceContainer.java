@@ -130,6 +130,9 @@ public abstract class ServiceContainer {
     
     public abstract StringBuffer getErrorLogs();
     
+    
+    public abstract File getWsrfDeploymentDirectory();
+    
 
     protected abstract void startup() throws ContainerException;
 

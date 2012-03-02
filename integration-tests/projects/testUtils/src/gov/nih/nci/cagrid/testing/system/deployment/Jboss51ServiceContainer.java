@@ -671,4 +671,10 @@ public class Jboss51ServiceContainer extends ServiceContainer {
     private boolean isWindows() {
         return System.getProperty("os.name").toLowerCase().contains("win");
     }
+
+
+    @Override
+    public File getWsrfDeploymentDirectory() {
+        return new File(getProperties().getContainerDirectory(), "server/default/deploy/wsrf.war");
+    }
 }
