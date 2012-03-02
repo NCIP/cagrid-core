@@ -14,6 +14,7 @@
 		<copy todir="${build.lib.dir}">
 			<fileset dir="${ext.lib}">
 				<include name="*.jar" />
+				<exclude name="servlet.jar"/>
 			</fileset>
 		</copy>
 
@@ -39,6 +40,7 @@
 		<copy todir="${build.lib.dir}">
 			<fileset dir="${ext.lib}">
 				<include name="*.jar" />
+				<exclude name="servlet.jar"/>
 			</fileset>
 		</copy>
 
