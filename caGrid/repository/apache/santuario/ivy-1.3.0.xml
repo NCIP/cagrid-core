@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<?xml-stylesheet type="text/xsl" href="http://ivyrep.jayasoft.org/ivy-doc.xsl"?>
+<ivy-module version="1.0">
+	<info organisation="apache" module="santuario" revision="1.3.0" >
+		<description homepage="http://santuario.apache.org/"> 
+		</description>
+	</info>
+
+	<publications>
+	  <artifact name="xmlsec" type="jar" conf="default"/>
+	</publications>
+</ivy-module>
