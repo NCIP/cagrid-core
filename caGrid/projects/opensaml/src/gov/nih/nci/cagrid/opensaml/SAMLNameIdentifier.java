@@ -207,9 +207,14 @@ public class SAMLNameIdentifier extends SAMLObject implements Cloneable
      *      from the supplied information
      */
     public SAMLNameIdentifier(String name, String nameQualifier, String format) throws SAMLException {
-        this.name = XML.assign(name);
-        this.nameQualifier = XML.assign(nameQualifier);
-        this.format = XML.assign(format);
+        try {
+            this.name = XML.assign(name);
+            this.nameQualifier = XML.assign(nameQualifier);
+            this.format = XML.assign(format);
+        } catch (Throwable ex) {
+            ex.printStackTrace();
+            throw new SAMLException("Error constructing SAML Name Identifier: " + ex.getMessage(), new Exception(ex));
+        }
     }
 
     /**
