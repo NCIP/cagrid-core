@@ -1,13 +1,12 @@
 <?xml version="1.0"?>
-
 <ivy-module version="2.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
   xsi:noNamespaceSchemaLocation="http://incubator.apache.org/ivy/schemas/ivy.xsd"
   xmlns:grid="http://ant.apache.org/ivy/extra" >
 
-  <info organisation="caGrid" module="target_grid" revision="nci_qa-1.4">
-    <description>NCI QA Grid for caGrid 1.4</description>
-    <grid:displayName>NCI QA Grid for caGrid 1.4</grid:displayName>
-    <grid:systemName>nci_qa-1.4</grid:systemName>
+  <info organisation="caGrid" module="target_grid" revision="nci_qa-1.5">
+    <description>NCI QA Grid for caGrid 1.5</description>
+    <grid:displayName>NCI QA Grid for caGrid 1.5</grid:displayName>
+    <grid:systemName>nci_qa-1.5</grid:systemName>
   </info>
 
   <configurations>
@@ -32,8 +31,8 @@
     <conf name="gts-services" visibility="public" extends="default"/>
     <conf name="workflow-ui" visibility="public" extends="default"/>
 	
-	<!--  websso configurations-->
-	<conf name="websso" visibility="public" extends="default"/>
+    <!--  websso configurations-->
+    <conf name="websso" visibility="public" extends="default"/>
   </configurations>
 
 
@@ -43,7 +42,7 @@
     <artifact name="certificates/0ad31d10" type="certificate" ext="signing_policy" conf="certs"/>
 
     <!--  grape UI configurations-->
-   <artifact name="authentication-services-configuration" type="xml" conf="authentication-services"/>
+    <artifact name="authentication-services-configuration" type="xml" conf="authentication-services"/>
     <artifact name="dorian-services-configuration" type="xml" conf="dorian-services"/>
     <artifact name="gridgrouper-services-configuration" type="xml" conf="gridgrouper-services"/>
     <artifact name="gts-services-configuration" type="xml" conf="gts-services"/>
@@ -57,8 +56,7 @@
     <!--  syncgts configurations-->
     <artifact name="sync-description" type="xml" conf="syncdesc"/>
 		
-	<!-- websso configurations -->
-	<artifact name="websso-properties" type="xml" conf="websso"/>
+    <!-- websso configurations -->
+    <artifact name="websso-properties" type="xml" conf="websso"/>
   </publications>
-
 </ivy-module>
