@@ -1,3 +1,0 @@
-access_id_CA X509 '/O=caBIG/OU=caGrid/OU=Training Trust Fabric/CN=caGrid Training Trust Fabric CA'
-pos_rights globus CA:sign
-cond_subjects globus '"*"'
