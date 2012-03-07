@@ -10,6 +10,7 @@
 	<!-- Note that the buildfile requires an environment variable GLOBUS_LOCATION
 	     pointing to that directory -->
 	<property name="globus.location" location="${env.GLOBUS_LOCATION}" />
+	
 	<!-- Set global properties for this build -->
 	<property name="distname" value="${ant.project.name}" />
 	<property name="root" value="." />
@@ -85,7 +86,7 @@
 		<mkdir dir="${dist}" />
 	</target>
 
-
+	
 	<!-- Compile classes and move them to ${build} -->
 	<target name="compile" depends="init">
         <copy todir="${src}/${javaversion}">
@@ -102,7 +103,7 @@
                 <filter token="end JDK5" value="${endjdk5.token}"/>
             </filterset>
         </copy>
-		<javac srcdir="${src}/${javaversion}" destdir="${build}" includes="**/*.java" fork="no" source="${javaversion}">
+		<javac srcdir="${src}/${javaversion}" destdir="${build}" includes="**/*.java" fork="no" source="${javaversion}" debug="true">
 			<classpath refid="build.path" />
 		</javac>
 		<copy todir="${build}/schemas">
@@ -113,6 +114,8 @@
 		</copy>
 		<delete dir="${src}/${javaversion}"/>
 	</target>
+	
+	
     <target name="compile-debug" depends="init">
         <copy todir="${src}/${javaversion}">
             <fileset dir="${src}">
@@ -128,7 +131,7 @@
                 <filter token="end JDK5" value="${endjdk5.token}"/>
             </filterset>
         </copy>
-    	<javac srcdir="${src}/${javaversion}" destdir="${build}" includes="**/*.java" fork="yes" debug="yes" source="${javaversion}">
+    	<javac srcdir="${src}/${javaversion}" destdir="${build}" includes="**/*.java" fork="yes" debug="true" source="${javaversion}">
             <classpath refid="build.path" />
         </javac>
         <copy todir="${build}/schemas">
@@ -140,6 +143,7 @@
 		<delete dir="${src}/${javaversion}"/>
     </target>
     
+	
 	<!-- Generate API docs -->
 	<target name="javadocs">
 		<mkdir dir="${docs}" />
@@ -155,11 +159,16 @@
         </javadoc>
 	</target>
 
+	
 	<!-- Create product distribution and move it to ${dist} -->	
     <target name="dist-debug" depends="clean-build, compile-debug, create-jar" />
+	
+	
 	<target name="create-jar">
         <jar jarfile="${jarfile}" basedir="${build}" />
 	</target>
+	
+	
     <target name="create-gzip" depends="all, javadocs"
         description="Create a gzip file">
         <tar destfile="${tarfile}">
@@ -178,6 +187,7 @@
         <delete file="${tarfile}"/>
     </target>
 
+	
 	<target name="create-zip" depends="all, javadocs"
         description="Create a zip file">
         <zip destfile="${zipfile}">
@@ -187,16 +197,21 @@
         </zip>
     </target>
    
+	
 	<!-- Cleanup after the build, test, and distribution processes -->
 	<target name="clean" depends="clean-build, clean-dist" />
+	
+	
 	<target name="clean-build">
 		<delete dir="${build}" />
 	</target>
+	
 	
 	<target name="clean-dist">
 		<delete dir="${dist}" />
 	</target>
 
+	
 	<target name="clean-javadocs">
 		<delete dir="${javadocs}" />
 	</target>
