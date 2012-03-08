@@ -15,7 +15,7 @@
   <dependencies>
     <!-- Basic Testing stuff and containers -->
     <dependency rev="latest.integration" org="caGrid" name="testing" conf="default->system" />
-    <dependency rev="latest.integration" org="caGrid" name="testUtils" conf="default->default,containers" />
+    <dependency rev="latest.integration" org="caGrid" name="testUtils" conf="default->default,secure.containers" />
 
     <dependency rev="latest.integration" org="caGrid" name="metadatautils" conf="default->default" />
     <dependency rev="latest.integration" org="caGrid" name="gts" conf="default->service" />

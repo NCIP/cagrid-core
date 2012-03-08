@@ -20,7 +20,7 @@
 
   <dependencies>
     <!-- Standard caGrid Service Dependencies -->
-    <dependency rev="latest.integration" org="caGrid" name="testUtils" conf="default->default,containers"/>
+    <dependency rev="latest.integration" org="caGrid" name="testUtils" conf="default->default,secure.containers"/>
     <dependency rev="latest.integration" org="caGrid" name="authentication-service" conf="default->test"/>
   </dependencies>
 </ivy-module>

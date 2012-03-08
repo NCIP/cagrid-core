@@ -23,7 +23,7 @@
     <!-- Basic Testing stuff and containers -->
     <dependency rev="latest.integration" org="caGrid" name="core" conf="default->default"/>
     <dependency rev="latest.integration" org="caGrid" name="testing" conf="default->system"/>
-    <dependency rev="latest.integration" org="caGrid" name="testUtils" conf="default->default,containers"/>
+    <dependency rev="latest.integration" org="caGrid" name="testUtils" conf="default->default,secure.containers"/>
     <dependency rev="latest.integration" org="caGrid" name="service-tools" conf="default->db"/>
     <dependency rev="latest.integration" org="caGrid" name="DorianSystemTests" conf="default->default" />
     <dependency rev="latest.integration" org="caGrid" name="AuthenticationServiceSystemTests"  conf="default->default" />

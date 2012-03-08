@@ -17,7 +17,11 @@
     
     <!-- Containers-->
     <conf name="containers" visibility="public" description="All containers"
-      extends="tomcat.container,secure.tomcat.container,jboss.container,secure.jboss.container"/>
+      extends="secure.containers,non.secure.containers"/>
+    <conf name="secure.containers" visibility="public" description="Secure containers"
+    	extends="secure.tomcat.container,secure.jboss.container"/>
+    <conf name="non.secure.containers" visibility="public" description="Non-secure containers"
+    	extends="tomcat.container,jboss.container"/>
     <conf name="tomcat.container" visibility="public"
       description="The tomcat container"/>
     <conf name="secure.tomcat.container" visibility="public"

@@ -17,7 +17,7 @@
     <!-- Basic Testing stuff and containers -->
     <dependency rev="latest.integration" org="caGrid" name="testing" conf="default->system" />
     <dependency rev="latest.integration" org="caGrid" name="testUtils"
-      conf="default->default,containers" />
+      conf="default->default,non.secure.containers" />
     <dependency rev="latest.integration" org="caGrid" name="globalModelExchange" conf="default->service" />
   </dependencies>
 </ivy-module>

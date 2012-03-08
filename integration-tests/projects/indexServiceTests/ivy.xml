@@ -22,7 +22,7 @@
   <dependencies>
     <!-- Basic Testing stuff and containers -->
     <dependency rev="latest.integration" org="caGrid" name="testing" conf="default->system"/>
-    <dependency rev="latest.integration" org="caGrid" name="testUtils" conf="default->default,containers"/>
+    <dependency rev="latest.integration" org="caGrid" name="testUtils" conf="default->default,non.secure.containers"/>
     
     <!-- Introduce testing -->
     <dependency rev="latest.integration" org="caGrid" name="introduce" conf="default->extension-test"/>
