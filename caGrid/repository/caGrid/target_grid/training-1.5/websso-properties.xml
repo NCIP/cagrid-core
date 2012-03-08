@@ -26,11 +26,11 @@
 		<group-name>String</group-name>
 		<delegated-application-list>
 			<delegated-application>
-				<application-name>webssoclientexample1-1.4</application-name>
+				<application-name>webssoclientexample1-1.5</application-name>
 				<host-identity>/O=caBIG/OU=caGrid/OU=Training/OU=Services/CN=WEBSSOCLIENT1</host-identity>
 			</delegated-application>
 			<delegated-application>
-				<application-name>webssoclientexample2-1.4</application-name>
+				<application-name>webssoclientexample2-1.5</application-name>
 				<host-identity>/O=caBIG/OU=caGrid/OU=Training/OU=Services/CN=WEBSSOCLIENT2</host-identity>
 			</delegated-application>
 		</delegated-application-list>

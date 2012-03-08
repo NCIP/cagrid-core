@@ -3,7 +3,7 @@
   xsi:noNamespaceSchemaLocation="http://incubator.apache.org/ivy/schemas/ivy.xsd"
   xmlns:grid="http://ant.apache.org/ivy/extra" >
 
-  <info organisation="caGrid" module="target_grid" revision="training-1.4">
+  <info organisation="caGrid" module="target_grid" revision="training-1.5">
     <description>Training Grid for caGrid 1.5</description>
     <grid:displayName>Training Grid for caGrid 1.5</grid:displayName>
     <grid:systemName>training-1.5</grid:systemName>
