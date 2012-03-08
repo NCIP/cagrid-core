@@ -7,7 +7,7 @@
 
 	<!-- The default target grid -->
 	<property file="${current.grid.property.file}" />
-	<property name="target.grid" value="training-1.4" />
+	<property name="target.grid" value="training-1.5" />
 
 	<target name="configure-clean">
 		<delete file="${current.grid.property.file}" />
