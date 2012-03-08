@@ -4,33 +4,33 @@
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://www.cagrid.org/1/grape-target-grid-configuration">
 	<lastUpdated>2010-08-01</lastUpdated>
-	<activeGrid>training-1.4</activeGrid>
+	<activeGrid>training-1.5</activeGrid>
 	<grid>
-		<SystemName>training-1.4</SystemName>
-		<DisplayName>Training Grid for caGrid 1.4</DisplayName>
+		<SystemName>training-1.5</SystemName>
+		<DisplayName>Training Grid for caGrid 1.5</DisplayName>
 		<IvySettings>ivy-default.xml</IvySettings>
 		<publicationDate>2010-08-01</publicationDate>
 		<version>training-1.4</version>
 	</grid>
 	<grid>
-		<SystemName>nci_prod-1.4</SystemName>
-		<DisplayName>NCI Production Grid for caGrid 1.4</DisplayName>
+		<SystemName>nci_prod-1.5</SystemName>
+		<DisplayName>NCI Production Grid for caGrid 1.5</DisplayName>
 		<IvySettings>ivy-default.xml</IvySettings>
 		<publicationDate>2010-08-01</publicationDate>
 		<version>nci_prod-1.4</version>
 	</grid>
 	<grid>
-		<DisplayName>NCI QA Grid for caGrid 1.4</DisplayName>
-		<SystemName>nci_qa-1.4</SystemName>
+		<DisplayName>NCI QA Grid for caGrid 1.5</DisplayName>
+		<SystemName>nci_qa-1.5</SystemName>
 		<IvySettings>ivy-default.xml</IvySettings>
 		<publicationDate>2010-08-01</publicationDate>
 		<version>nci_qa-1.4</version>
 	</grid>
 	<grid>
-		<DisplayName>NCI Staging Grid for caGrid 1.4</DisplayName>
-		<SystemName>nci_stage-1.4</SystemName>
+		<DisplayName>NCI Staging Grid for caGrid 1.5</DisplayName>
+		<SystemName>nci_stage-1.5</SystemName>
 		<IvySettings>ivy-default.xml</IvySettings>
 		<publicationDate>2010-08-01</publicationDate>
-		<version>nci_stage-1.4</version>
+		<version>nci_stage-1.5</version>
 	</grid>	
 </TargetGridsConfiguration>
