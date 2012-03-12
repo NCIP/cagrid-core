@@ -36,7 +36,7 @@ public enum ServiceContainerType {
                 return base + "/minimal-secure-tomcat-5.0.28-with-globus-4.0.3.zip";
             case SECURE_TOMCAT_CONTAINER:
             case SECURE_TOMCAT_6_CONTAINER:
-                return base + "/apache-tomcat-6.0.32-secure-testing.zip";
+                return base + "/apache-tomcat-6.0.35-secure-testing.zip";
             case JBOSS_51_CONTAINER:
                 return base + "/jboss-5.1.0.GA-testing.zip";
             case SECURE_JBOSS_51_CONTAINER:
