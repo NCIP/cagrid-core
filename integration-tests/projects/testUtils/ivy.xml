@@ -38,7 +38,7 @@
     <artifact name="minimal-tomcat-5.0.28-with-globus-4.0.3" conf="tomcat.container" type="zip"/>
     <artifact name="apache-tomcat-6.0.32-testing" conf="tomcat.container" type="zip"/>
     <artifact name="minimal-secure-tomcat-5.0.28-with-globus-4.0.3" conf="secure.tomcat.container" type="zip"/>
-    <artifact name="apache-tomcat-6.0.32-secure-testing" conf="secure.tomcat.container" type="zip"/>
+    <artifact name="apache-tomcat-6.0.35-secure-testing" conf="secure.tomcat.container" type="zip"/>
     <artifact name="jboss-5.1.0.GA-testing" conf="jboss.container" type="zip"/>
     <artifact name="jboss-5.1.0.GA-secure-testing" conf="secure.jboss.container" type="zip"/>
   </publications>
