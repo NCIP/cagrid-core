@@ -112,6 +112,16 @@
 				]]>
 			</insert>
 		</xmltask>
+		
+		<antcall target="remove-non-secure-connector"/>
+	</target>
+	
+	
+	<target name="remove-non-secure-connector">
+		<xmltask source="${tomcat.home}/conf/server.xml"
+			dest="${tomcat.home}/conf/server.xml">
+			<remove path="/Server/Service[@name='Catalina' or @name='jboss.web']/Connector[@port='8080']"/>
+		</xmltask>
 	</target>
 
 	
