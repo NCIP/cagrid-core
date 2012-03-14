@@ -64,7 +64,6 @@ public class Upgrader {
             u.setBeanUtils(this.beanUtils);
             upgradeSet.put(u.getStartingVersion(), u);
         }
-
     }
 
 
@@ -103,7 +102,6 @@ public class Upgrader {
         } catch (Exception e) {
             FaultUtil.printFault(e);
         }
-
     }
 
 
@@ -180,7 +178,5 @@ public class Upgrader {
             e.printStackTrace();
             System.exit(1);
         }
-
     }
-
 }
