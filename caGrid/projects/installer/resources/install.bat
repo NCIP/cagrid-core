@@ -32,6 +32,9 @@ REM The installer uses ftp for one file.
 REM set JAVA_OPTS=%JAVA_OPTS% -Dftp.proxyHost= -Dftp.proxyPort= -Dftp.nonProxyHosts=\"\"
 
 :Execute
+REM Create the .cagrid directory if it doesn't already exist
+IF NOT EXIST "%USERPROFILE%\.cagrid" mkdir "%USERPROFILE%\.cagrid"
+REM launch the installer
 java.exe %JAVA_OPTS% -jar caGrid-installer-1.5.jar
 GOTO End
 

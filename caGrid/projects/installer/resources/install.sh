@@ -30,4 +30,7 @@ then
     #JAVA_OPTS="-Dftp.proxyHost= -Dftp.proxyPort= -Dftp.nonProxyHosts=\"\" $JAVA_OPTS"
 fi
 
+# create the .cagrid directory in user's home if it doesn't already exist
+mkdir -p $HOME/.cagrid
+# launch installer
 java $JAVA_OPTS -jar caGrid-installer-@CAGRID_VERSION@.jar
