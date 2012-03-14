@@ -44,7 +44,6 @@
 	<classpathentry kind="lib" path="ext/dependencies/impl/jars/caGrid-syncgts-common-1.5.jar"/>
 	<classpathentry kind="lib" path="ext/dependencies/impl/jars/caGrid-syncgts-stubs-1.5.jar"/>
 	<classpathentry kind="lib" path="ext/dependencies/impl/jars/mobius_common_client-1.1.jar"/>
-	<classpathentry kind="lib" path="ext/dependencies/impl/jars/cog-jglobus.jar" sourcepath="/cog-jglobus"/>
 	<classpathentry kind="lib" path="ext/dependencies/impl/jars/ivy-2.1.0.jar"/>
 	<classpathentry kind="lib" path="ext/dependencies/impl/jars/addressing-1.0.jar"/>
 	<classpathentry kind="lib" path="ext/dependencies/impl/jars/axis.jar"/>
@@ -113,5 +112,6 @@
 	<classpathentry kind="lib" path="ext/dependencies/impl/jars/xmlsec.jar"/>
 	<classpathentry kind="lib" path="ext/dependencies/impl/jars/commons-io-1.3.2.jar"/>
 	<classpathentry kind="lib" path="ext/dependencies/impl/jars/caGrid-gaards-core-1.5.jar"/>
+	<classpathentry kind="var" path="GT4_LOCATION/lib/cog-jglobus.jar" sourcepath="/COG_SOURCE"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
