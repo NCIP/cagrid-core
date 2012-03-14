@@ -10,21 +10,21 @@
 		<DisplayName>Training Grid for caGrid 1.5</DisplayName>
 		<IvySettings>ivy-default.xml</IvySettings>
 		<publicationDate>2010-08-01</publicationDate>
-		<version>training-1.4</version>
+		<version>training-1.5</version>
 	</grid>
 	<grid>
 		<SystemName>nci_prod-1.5</SystemName>
 		<DisplayName>NCI Production Grid for caGrid 1.5</DisplayName>
 		<IvySettings>ivy-default.xml</IvySettings>
 		<publicationDate>2010-08-01</publicationDate>
-		<version>nci_prod-1.4</version>
+		<version>nci_prod-1.5</version>
 	</grid>
 	<grid>
 		<DisplayName>NCI QA Grid for caGrid 1.5</DisplayName>
 		<SystemName>nci_qa-1.5</SystemName>
 		<IvySettings>ivy-default.xml</IvySettings>
 		<publicationDate>2010-08-01</publicationDate>
-		<version>nci_qa-1.4</version>
+		<version>nci_qa-1.5</version>
 	</grid>
 	<grid>
 		<DisplayName>NCI Staging Grid for caGrid 1.5</DisplayName>
