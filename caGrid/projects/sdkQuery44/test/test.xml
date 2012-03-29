@@ -20,5 +20,6 @@
                 </fileset>
 			</batchtest>
 		</junit>
+		<fail message="Unit tests failed! Check the test logs" if="tests.failed"/>
 	</target>
 </project>
