@@ -9,6 +9,7 @@ import java.util.Map;
 import org.cagrid.iso21090.sdkquery.translator.HibernateConfigTypesInformationResolver;
 import org.cagrid.iso21090.sdkquery.translator.TypesInformationException;
 import org.hibernate.cfg.Configuration;
+import org.hibernate.mapping.Collection;
 import org.hibernate.mapping.OneToMany;
 import org.hibernate.mapping.PersistentClass;
 import org.hibernate.mapping.Property;
@@ -38,6 +39,10 @@ public class HibernateConfigCql2TypesInformationResolver extends HibernateConfig
                 Value value = property.getValue();
                 if (value instanceof ToOne || value instanceof OneToMany) {
                     ClassAssociation assoc = new ClassAssociation(property.getType().getName(), property.getName());
+                    associations.add(assoc);
+                } else if (value instanceof Collection) {
+                    Value element = ((Collection) value).getElement();
+                    ClassAssociation assoc = new ClassAssociation(element.getType().getName(), property.getName());
                     associations.add(assoc);
                 }
             }
