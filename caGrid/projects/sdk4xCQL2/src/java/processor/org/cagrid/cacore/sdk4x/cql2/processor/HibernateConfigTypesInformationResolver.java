@@ -166,6 +166,10 @@ public class HibernateConfigTypesInformationResolver implements TypesInformation
                 if (value instanceof ToOne || value instanceof OneToMany) {
                     ClassAssociation assoc = new ClassAssociation(property.getType().getName(), property.getName());
                     associations.add(assoc);
+                } else if (value instanceof Collection) {
+                    Value element = ((Collection) value).getElement();
+                    ClassAssociation assoc = new ClassAssociation(element.getType().getName(), property.getName());
+                    associations.add(assoc);
                 }
             }
             classAssociations.put(parentClassname, associations);
