@@ -209,6 +209,7 @@ Build Instructions:
 				<include name="*.zip" />
 				<exclude name="servlet.jar" />
 				<exclude name="xml-apis.jar" />
+				<exclude name="jaxrpc.jar"/>
 				<exclude name="cog-tomcat.jar" />
 				<exclude name="cog-jglobus.jar" />
 				<exclude name="cryptix.jar" />
@@ -243,6 +244,7 @@ Build Instructions:
 			<fileset dir="${abs.deploy.dir}/lib" casesensitive="yes">
 				<include name="cog-jglobus.jar" />
 				<include name="xml-apis.jar" />
+				<include name="jaxrpc.jar"/>
 				<include name="cryptix.jar" />
 				<include name="cryptix-asn1.jar" />
 				<include name="cryptix32.jar" />
