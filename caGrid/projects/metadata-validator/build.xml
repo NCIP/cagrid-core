@@ -100,7 +100,7 @@
 	<!-- =============================================================== -->
 	<!-- Prepares the build directory                                    -->
 	<!-- =============================================================== -->
-	<target name="prepare" depends="checkGlobus">
+	<target name="prepare" depends="defineClasspaths">
 		<tstamp />
 		<mkdir dir="${build.dir}" />
 	</target>
