@@ -16,10 +16,12 @@ import gov.nih.nci.cagrid.metadata.dataservice.UMLGeneralization;
 
 import java.text.DateFormat;
 import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -209,11 +211,28 @@ public class CQL1toCQL2Converter {
                 val.setBooleanValue(Boolean.valueOf(rawValue));
             } else if (Date.class.getName().equals(datatypeName)) {
                 Date date = null;
-                try {
-                    date = DateFormat.getDateInstance().parse(rawValue);
-                } catch (ParseException ex) {
+                // try time, then dateTime, then just date
+                List<SimpleDateFormat> formats = new ArrayList<SimpleDateFormat>(3);
+                formats.add(new SimpleDateFormat("HH:mm:ss"));
+                formats.add(new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss"));
+                formats.add(new SimpleDateFormat("yyyy-MM-dd"));
+                formats.add((SimpleDateFormat) DateFormat.getDateInstance());
+                formats.add((SimpleDateFormat) DateFormat.getInstance());
+                
+                Iterator<SimpleDateFormat> formatIter = formats.iterator();
+                StringBuffer triedFormats = new StringBuffer();
+                while (date == null && formatIter.hasNext()) {
+                    SimpleDateFormat formatter = formatIter.next();
+                    try {
+                        date = formatter.parse(rawValue);
+                    } catch (ParseException ex) {
+                        triedFormats.append(formatter.toPattern()).append(" ");
+                        // not always parsable, so try the next format
+                    }
+                }
+                if (date == null) {
                     throw new QueryConversionException(
-                        "Error converting value " + rawValue + " to date: " + ex.getMessage(), ex);
+                        "Error converting value " + rawValue + " to date; tried formats " + triedFormats.toString());
                 }
                 val.setDateValue(date);
             } else if (Integer.class.getName().equals(datatypeName)) {
