@@ -1,5 +1,7 @@
-<PROJECTNAME>
-Copyright <INITIALYEAR> <COPYRIGHTHOLDERS>
+cagrid-core
+Copyright 2005 The Ohio State University Research Foundation, The University of Chicago - Argonne 
+National Laboratory, Emory University, SemanticBits LLC, and Ekagra Software Technologies Ltd.
+All rights reserved.
 
 This project is distributed under the BSD 3-Clause License.
 Please see LICENSE file for details.
@@ -8,29 +10,55 @@ Please see LICENSE file for details.
 This project was developed as part of the NCI caBIG initiative.
 
 In 2013, as part of the National Cancer Informatics Program (NCIP) Open Development Initiative,
-the <PROJECT NAME> source code was migrated to GitHub to allow further development by the broader
+the cagrid-core source code was migrated to GitHub to allow further development by the broader
 community.
 
-[INSERT HERE Any historical notes about development teams, contributors and
-major changes to the project (no more than a few paragraphs).]
+Contributors:
 
+The Ohio State University
+* Scott Oster <scott.oster@inventrio.com>
+* Steve Langella <stephen.langella@inventrio.com>
+* Shannon Hastings <shannon.hastings@inventrio.com>
+* Calixto Melean <calixto.melean@inventrio.com>
+* Arka Pattanayak <Arka.Pattanayak@osumc.edu>
+* David Ervin <david.ervin@osumc.edu>
+* Mark Vance <Mark.Vance@osumc.edu>
+* Justin Permar <jp@alumni.brown.edu>
+* Joseph George <Joseph.George@osumc.edu>
+* William Stephens <william.stephens@osumc.edu>
 
---- [ OPTIONAL SECTION ] ----
+University of Chicago - Argonne National Laboratory
+* Dinanath Sulakhe <sulakhe@gmail.com>
+* Rachana Ananthakrishnan <ranantha@mcs.anl.gov>
+* Ravi Madduri <madduri@mcs.anl.gov>
+* Wei Tan <twtanwei@gmail.com>
 
-This project includes as sub-components other projects that are copyrighted by
-third parties and that distributed under various licenses. Please find a
-summary in the list below:
+Emory University
+* Mark Grand <mgrand@emory.edu>
+* Tahsin Kurc <tkurc@emory.edu>
 
-1) Component #1:
-   Copyright Holder
-   License
+Semantic Bits
+* David Coffey <david.coffey@semanticbits.com>
+* Jaime Barciela <jaime.barciela@semanticbits.com>
+* Joshua Phillips <joshua.phillips@semanticbits.com>
+* Harsh Agarwal <harsh.agarwal@semanticbits.com>
+* Manav Kher <mkher@fusionspan.com>
+* Murali Chadaram <murali.chadaram@semanticbits.com>
+* Patrick McConnell <patrick.mcconnell@semanticbits.com>
 
-2) Component #2:
-   Copyright Holder
-   License
+Ekagra
+* Kunal Modik <kmodi@ekagrasoft.com>
+* Prasad Konka <prasad.konka@gmail.com>
+* Santhosh Garmilla <santhoshkirang@gmail.com>
+* Vijay Parmar <vijay.parmar@gmail.com>
 
-3) Component #3:
-   Copyright Holder
-   License
+The National Cancer Institute
+* Avinash Shanbhag <avinashshanbhag@gmail.com>
+* Aynur Abdurazik <aynur.abdurazik@gmail.com>
+* Bronwyn Gagne <bronwyngagne@frontiernet.net>
+* Carolyn Klinger <klingerc@mail.nih.gov>
 
-...
+5AM Solutions
+* John Eisenschmidt <je@lanternthree.com>
+* Rashmi Srinivasa <rsrinivasa@5amsolutions.com>
+* Steve Matyas <smatyas@5amsolutions.com>
