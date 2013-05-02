@@ -1,3 +1,10 @@
+<!--
+  Copyright The Ohio State University Research Foundation, The University of Chicago - 
+Argonne National Laboratory, Emory University, SemanticBits LLC, and Ekagra Software Technologies Ltd.
+
+  Distributed under the OSI-approved BSD 3-Clause License.
+  See http://ncip.github.com/cagrid-core/LICENSE.txt for details.
+-->
 <?xml version="1.0" encoding="UTF-8"?>
 <xsd:schema xmlns:erc="http://gov.nih.nci.cagrid.enumeration/EnumerationResponseContainer" xmlns:wsa="http://schemas.xmlsoap.org/ws/2004/03/addressing" xmlns:wse="http://schemas.xmlsoap.org/ws/2004/09/enumeration" xmlns:xsd="http://www.w3.org/2001/XMLSchema" targetNamespace="http://gov.nih.nci.cagrid.enumeration/EnumerationResponseContainer" elementFormDefault="qualified" attributeFormDefault="unqualified">
 	<xsd:import namespace="http://schemas.xmlsoap.org/ws/2004/09/enumeration" schemaLocation="./enumeration.xsd"/>	

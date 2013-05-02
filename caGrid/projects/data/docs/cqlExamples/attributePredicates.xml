@@ -1,1 +1,8 @@
+<!--
+  Copyright The Ohio State University Research Foundation, The University of Chicago - 
+Argonne National Laboratory, Emory University, SemanticBits LLC, and Ekagra Software Technologies Ltd.
+
+  Distributed under the OSI-approved BSD 3-Clause License.
+  See http://ncip.github.com/cagrid-core/LICENSE.txt for details.
+-->
 <?xml version="1.0" encoding="UTF-8"?><CQLQuery xmlns="http://CQL.caBIG/1/gov.nih.nci.cagrid.CQLQuery" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://CQL.caBIG/1/gov.nih.nci.cagrid.CQLQuery..\..\schema\Data\1_gov.nih.nci.cagrid.CQLQuery.xsd">	<Target name="gov.nih.nci.cabio.domain.Gene">		<Group logicRelation="AND">			<Attribute name="symbol" value="BRCA%" predicate="EQUAL_TO"/>			<Attribute name="symbol" value="BRCA%" predicate="GREATER_THAN"/>			<Attribute name="symbol" value="BRCA%" predicate="GREATER_THAN_EQUAL_TO"/>			<Attribute name="symbol" value="BRCA%" predicate="IS_NOT_NULL"/>			<Attribute name="symbol" value="BRCA%" predicate="IS_NULL"/>			<Attribute name="symbol" value="BRCA%" predicate="LESS_THAN"/>			<Attribute name="symbol" value="BRCA%" predicate="LESS_THAN_EQUAL_TO"/>			<Attribute name="symbol" value="BRCA%" predicate="LIKE"/>			<Attribute name="symbol" value="BRCA%" predicate="NOT_EQUAL_TO"/>			<Attribute name="symbol" value="BRCA%"/>		</Group>	</Target></CQLQuery>

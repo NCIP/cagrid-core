@@ -1,4 +1,14 @@
 /**
+*============================================================================
+*  Copyright The Ohio State University Research Foundation, The University of Chicago - 
+*	Argonne National Laboratory, Emory University, SemanticBits LLC, and 
+*	Ekagra Software Technologies Ltd.
+*
+*  Distributed under the OSI-approved BSD 3-Clause License.
+*  See http://ncip.github.com/cagrid-core/LICENSE.txt for details.
+*============================================================================
+**/
+/**
  * $Id: DefaultAuthenticationProvider.java,v 1.2 2008-05-15 19:54:01 langella Exp $
  *
  */

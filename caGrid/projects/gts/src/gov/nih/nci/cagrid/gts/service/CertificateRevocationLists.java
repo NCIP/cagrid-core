@@ -1,3 +1,13 @@
+/**
+*============================================================================
+*  Copyright The Ohio State University Research Foundation, The University of Chicago - 
+*	Argonne National Laboratory, Emory University, SemanticBits LLC, and 
+*	Ekagra Software Technologies Ltd.
+*
+*  Distributed under the OSI-approved BSD 3-Clause License.
+*  See http://ncip.github.com/cagrid-core/LICENSE.txt for details.
+*============================================================================
+**/
 /*
  * Copyright 1999-2006 University of Chicago Licensed under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except in compliance

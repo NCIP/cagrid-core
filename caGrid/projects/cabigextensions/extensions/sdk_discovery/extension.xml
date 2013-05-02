@@ -1,3 +1,10 @@
+<!--
+  Copyright The Ohio State University Research Foundation, The University of Chicago - 
+Argonne National Laboratory, Emory University, SemanticBits LLC, and Ekagra Software Technologies Ltd.
+
+  Distributed under the OSI-approved BSD 3-Clause License.
+  See http://ncip.github.com/cagrid-core/LICENSE.txt for details.
+-->
 <ns1:ExtensionDescription xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.6" xmlns:ns1="gme://gov.nih.nci.cagrid.introduce/1/Extension"
  extensionType="DISCOVERY">
  <ns1:DiscoveryExtensionDescription displayName="Create from XMI" name="sdk_discovery">

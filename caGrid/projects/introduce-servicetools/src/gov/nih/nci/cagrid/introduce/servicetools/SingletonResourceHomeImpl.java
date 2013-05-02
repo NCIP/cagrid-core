@@ -1,13 +1,16 @@
+/**
+*============================================================================
+*  Copyright The Ohio State University Research Foundation, The University of Chicago - 
+*	Argonne National Laboratory, Emory University, SemanticBits LLC, and 
+*	Ekagra Software Technologies Ltd.
+*
+*  Distributed under the OSI-approved BSD 3-Clause License.
+*  See http://ncip.github.com/cagrid-core/LICENSE.txt for details.
+*============================================================================
+**/
 package gov.nih.nci.cagrid.introduce.servicetools;
 
 /*
- * Portions of this file Copyright 1999-2005 University of Chicago Portions of
- * this file Copyright 1999-2005 The University of Southern California. This
- * file or a portion of this file is licensed under the terms of the Globus
- * Toolkit Public License, found at
- * http://www.globus.org/toolkit/download/license.html. If you redistribute this
- * file, with or without modifications, you must include this notice in the
- * file.
  */
 
 import javax.xml.namespace.QName;

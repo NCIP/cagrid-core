@@ -1,3 +1,10 @@
+<!--
+  Copyright The Ohio State University Research Foundation, The University of Chicago - 
+Argonne National Laboratory, Emory University, SemanticBits LLC, and Ekagra Software Technologies Ltd.
+
+  Distributed under the OSI-approved BSD 3-Clause License.
+  See http://ncip.github.com/cagrid-core/LICENSE.txt for details.
+-->
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- edited with XMLSpy v2005 rel. 3 U (http://www.altova.com) by David W. Ervin (The Ohio State University / Department of Biomedical Informatics) -->
 <xsd:schema xmlns:ext="http://CQL.caBIG/1/gov.nih.nci.cagrid.data.extension" xmlns:aud="http://gov.nih.nci.cagrid.data/Auditing" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:mms="gme://caGrid.caBIG/1.0/org.cagrid.mms.domain" targetNamespace="http://CQL.caBIG/1/gov.nih.nci.cagrid.data.extension" elementFormDefault="qualified" attributeFormDefault="unqualified">

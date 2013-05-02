@@ -1,3 +1,13 @@
+/*
+============================================================================
+  Copyright The Ohio State University Research Foundation, The University of Chicago - 
+	Argonne National Laboratory, Emory University, SemanticBits LLC, and 
+	Ekagra Software Technologies Ltd.
+
+  Distributed under the OSI-approved BSD 3-Clause License.
+  See http://ncip.github.com/cagrid-core/LICENSE.txt for details.
+============================================================================
+*/
 ALTER TABLE gridgrouper_membershiprequest ENGINE = InnoDB;
 ALTER TABLE gridgrouper_membershiprequest_history ENGINE = InnoDB;
 ALTER TABLE grouper_attributes ENGINE = InnoDB;

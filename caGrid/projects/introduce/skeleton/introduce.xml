@@ -1,3 +1,10 @@
+<!--
+  Copyright The Ohio State University Research Foundation, The University of Chicago - 
+Argonne National Laboratory, Emory University, SemanticBits LLC, and Ekagra Software Technologies Ltd.
+
+  Distributed under the OSI-approved BSD 3-Clause License.
+  See http://ncip.github.com/cagrid-core/LICENSE.txt for details.
+-->
 <ns1:ServiceDescription introduceVersion="1.6" xmlns:ns1="gme://gov.nih.nci.cagrid/1/Introduce">
     <ns4:Namespaces xsi:type="ns4:NamespacesType" xmlns:ns4="gme://gov.nih.nci.cagrid.introduce/1/Namespace"
         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
