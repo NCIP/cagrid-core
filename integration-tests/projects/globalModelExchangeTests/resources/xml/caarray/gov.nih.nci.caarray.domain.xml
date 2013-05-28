@@ -1,3 +1,10 @@
+<!--
+  Copyright The Ohio State University Research Foundation, The University of Chicago - 
+Argonne National Laboratory, Emory University, SemanticBits LLC, and Ekagra Software Technologies Ltd.
+
+  Distributed under the OSI-approved BSD 3-Clause License.
+  See http://ncip.github.com/cagrid-core/LICENSE.txt for details.
+-->
 <?xml version="1.0" encoding="UTF-8"?>
 <p:AbstractCaArrayObject bigid="" id="0" xmlns:p="gme://caArray.caBIG/2.0/gov.nih.nci.caarray.domain" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="gme://caArray.caBIG/2.0/gov.nih.nci.caarray.domain ../../schemas/caarray/gov.nih.nci.caarray.domain.xsd " xsi:type="p:AbstractCaArrayObject"/>
 

@@ -1,3 +1,10 @@
+<!--
+  Copyright The Ohio State University Research Foundation, The University of Chicago - 
+Argonne National Laboratory, Emory University, SemanticBits LLC, and Ekagra Software Technologies Ltd.
+
+  Distributed under the OSI-approved BSD 3-Clause License.
+  See http://ncip.github.com/cagrid-core/LICENSE.txt for details.
+-->
 <ns1:XMLSchemaImportInformation xmlns:ns1="gme://gme.cagrid.org/2.0/GlobalModelExchange/domain">
   <ns1:XMLSchemaNamespace uri="gme://caArray.caBIG/2.0/gov.nih.nci.caarray.domain" />
   <ns1:imports />

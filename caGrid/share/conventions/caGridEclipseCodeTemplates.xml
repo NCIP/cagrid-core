@@ -1,2 +1,9 @@
+<!--
+  Copyright The Ohio State University Research Foundation, The University of Chicago - 
+Argonne National Laboratory, Emory University, SemanticBits LLC, and Ekagra Software Technologies Ltd.
+
+  Distributed under the OSI-approved BSD 3-Clause License.
+  See http://ncip.github.com/cagrid-core/LICENSE.txt for details.
+-->
 <?xml version="1.0" encoding="UTF-8"?><templates><template autoinsert="true" context="catchblock_context" deleted="false" description="Code in new catch blocks" enabled="true" id="org.eclipse.jdt.ui.text.codetemplates.catchblock" name="catchblock">// ${todo} Auto-generated catch block
 ${exception_var}.printStackTrace();</template></templates>
