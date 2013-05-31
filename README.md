@@ -1,4 +1,4 @@
-Welcome to the caGrid-core Project!
+Welcome to the caGrid Core Project!
 =====================================
 
 caGrid is the underlying service-oriented infrastructure that supports the National Cancer Informatics Program (NCIP). 
@@ -9,7 +9,7 @@ caGrid provides the technology that enables collaborating institutions to share 
 efficiently and securely, while also allowing investigators to easily contribute to and leverage the resources of a 
 national-scale, multi-institutional environment.
 
-caGrid-core is an Open Source project written in Java, and makes use of:
+caGrid Core is an Open Source project written in Java, and makes use of:
  * Central Authentication Service (CAS, from JA-SIG)
  * Cancer Data Standards Repository (caDSR)
  * Enterprise Vocabulary Services (EVS)
@@ -18,14 +18,14 @@ caGrid-core is an Open Source project written in Java, and makes use of:
  * Taverna
  * Persistent URLs (PURLs)
 
-caGrid-core is distributed under the BSD 3-Clause License.
+caGrid Core is distributed under the BSD 3-Clause License.
 Please see the NOTICE and LICENSE files for details.
 
-You will find more details about caGrid-core in the following links:
+You will find more details about caGrid Core in the following links:
 
  * [caGrid.org Wiki] (https://wiki.cagrid.org)
  * [Code Repository] (https://github.com/NCIP/cagrid-core)
  * [Issue Tracker] (https://tracker.nci.nih.gov/browse/CAGRID)
  * [Mailing List] (https://list.nih.gov/cgi-bin/wa.exe?A0=cagrid_users-l)
 
-Please join us in further developing and improving caGrid-core.
+Please join us in further developing and improving caGrid Core.
