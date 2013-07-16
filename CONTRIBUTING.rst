@@ -65,6 +65,6 @@ Submitting Changes
 Additional Resources
 --------------------
 
-For help learning Git and Github, see the `NCIP Learning Resources:`_.
+For help learning Git and Github, see the `NCIP Learning Resources`_.
 
 .. _`NCIP Learning Resources`: https://github.com/NCIP/ncip.github.com/wiki/Learning-Resources
