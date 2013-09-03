@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ServiceConfiguration xmlns="http://www.cagrid.org/1/grape-service-configuration"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+    <ServiceGroupDescription>Grid Trust Service(s)</ServiceGroupDescription>
+    <Services>
+        <ServiceDescriptor>
+            <DisplayName>caBIG Master</DisplayName>
+            <ServiceURL>https://cagrid-gts-master.nci.nih.gov:8443/wsrf/services/cagrid/GTS</ServiceURL>
+            <ServiceIdentity>/O=caBIG/OU=caGrid/OU=Trust Fabric/CN=host/cagrid-gts-master.nci.nih.gov</ServiceIdentity>
+        </ServiceDescriptor>
+        <ServiceDescriptor>
+            <DisplayName>caBIG Slave</DisplayName>
+            <ServiceURL>https://cagrid-gts-slave.nci.nih.gov:8443/wsrf/services/cagrid/GTS</ServiceURL>
+            <ServiceIdentity>/O=caBIG/OU=caGrid/OU=Trust Fabric/CN=host/cagrid-gts-slave.nci.nih.gov</ServiceIdentity>
+        </ServiceDescriptor>
+    </Services>
+</ServiceConfiguration>

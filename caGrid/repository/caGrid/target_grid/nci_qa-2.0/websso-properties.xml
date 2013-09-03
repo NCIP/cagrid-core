@@ -1,0 +1,38 @@
+<websso-properties xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="websso-properties.xsd">
+	<websso-server-information>
+		<start-auto-syncgts>@START.AUTO.SYNC.GTS@</start-auto-syncgts>
+		<host-credential-certificate-file-path>@WEBSSO.SERVER.HOST.CERTIFICATE@</host-credential-certificate-file-path>
+		<host-credential-key-file-path>@WEBSSO.SERVER.HOST.KEY@</host-credential-key-file-path>
+	</websso-server-information>
+	<credential-delegation-service-information>
+		<service-url>https://cagrid-cds-qa.nci.nih.gov:8443/wsrf/services/cagrid/CredentialDelegationService</service-url>
+        <service-identity>/O=caBIG/OU=caGrid/OU=QA LOA1/OU=Services/CN=cagrid-cds-qa.nci.nih.gov</service-identity>
+		<delegation-lifetime-hours>8</delegation-lifetime-hours>
+		<delegation-lifetime-minutes>0</delegation-lifetime-minutes>
+		<delegation-lifetime-seconds>0</delegation-lifetime-seconds>
+		<issued-credential-path-length>0</issued-credential-path-length>
+	</credential-delegation-service-information>
+	<dorian-services-information>
+		<dorian-service-descriptor>
+			<display-name>caBIG QA</display-name>
+			<service-url>https://cagrid-dorian-qa.nci.nih.gov:8443/wsrf/services/cagrid/Dorian</service-url>
+            <service-identity>/O=caBIG/OU=caGrid/OU=QA LOA1/OU=Services/CN=cagrid-dorian-qa.nci.nih.gov</service-identity>
+			<proxy-lifetime-hours>12</proxy-lifetime-hours>
+			<proxy-lifetime-minutes>0</proxy-lifetime-minutes>
+			<proxy-lifetime-seconds>0</proxy-lifetime-seconds>		
+		</dorian-service-descriptor>		
+	</dorian-services-information>
+	<delegated-applications-group>
+		<group-name>String</group-name>
+		<delegated-application-list>
+			<delegated-application>
+				<application-name>webssoclientexample1-1.3-dev</application-name>
+				<host-identity>/O=caBIG/OU=caGrid/OU=Training/OU=Services/CN=WEBSSOCLIENT1</host-identity>
+			</delegated-application>
+			<delegated-application>
+				<application-name>webssoclientexample2-1.3-dev</application-name>
+				<host-identity>/O=caBIG/OU=caGrid/OU=Training/OU=Services/CN=WEBSSOCLIENT2</host-identity>
+			</delegated-application>
+		</delegated-application-list>
+	</delegated-applications-group>
+</websso-properties>
