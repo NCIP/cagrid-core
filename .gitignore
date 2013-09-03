@@ -25,3 +25,9 @@ caGrid/projects/transfer/schema/TransferService/xsd
 sync-description.xml
 caGrid/projects/websso/src/resources
 caGrid/projects/websso/webcontent/WEB-INF/grid-resources
+caGrid/projects/opensaml/dist
+caGrid/projects/csm-auth-extension/src/org/cagrid/csm/authorization/extension/beans
+caGrid/projects/gridgrouper-auth-extension/src/org/cagrid/gridgrouper/authorization/extension/beans
+caGrid/projects/introduce/src/java/Introduce/gov/nih/nci/cagrid/introduce/beans
+caGrid/projects/introduce/src/java/Introduce/gov/nih/nci/cagrid/introduce/templates
+caGrid/projects/introduce/updates/lib
