@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <projectDescription>
-	<name>core</name>
-	<comment></comment>
+	<name>caGrid 1.4.1 - SHA2 target grid patch/name>
+	<comment>https://github.com/NCIP/cagrid-core/tree/caGrid-1_4_1_release_sha2</comment>
 	<projects>
 	</projects>
 	<buildSpec>
