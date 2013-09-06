@@ -1,10 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<ServiceConfiguration xmlns="http://www.cagrid.org/1/grape-service-configuration"
-    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+<ServiceConfiguration xmlns="http://www.cagrid.org/1/grape-service-configuration" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
     <ServiceGroupDescription>Credential Delegation Service(s)</ServiceGroupDescription>
     <Services>
         <ServiceDescriptor>
-            <DisplayName>caBIG</DisplayName>
+            <DisplayName>caBIG SHA2</DisplayName>
+            <ServiceURL>https://cagrid2-cds.nci.nih.gov:4443/cds</ServiceURL>
+            <ServiceIdentity>/O=caBIG/OU=caGrid/OU=LOA1/OU=Services/CN=cagrid2-cds.nci.nih.gov</ServiceIdentity>
+        </ServiceDescriptor>
+        <ServiceDescriptor>
+            <DisplayName>caBIG SHA1</DisplayName>
             <ServiceURL>https://cagrid-cds.nci.nih.gov:8443/wsrf/services/cagrid/CredentialDelegationService</ServiceURL>
             <ServiceIdentity>/O=caBIG/OU=caGrid/OU=LOA1/OU=Services/CN=cagrid-cds.nci.nih.gov</ServiceIdentity>
         </ServiceDescriptor>

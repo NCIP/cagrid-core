@@ -6,7 +6,7 @@
         <ServiceDescriptor>
             <DisplayName>Training SHA2</DisplayName>
             <ServiceURL>https://cds2.training.cagrid.org:4443/cds</ServiceURL>
-            <ServiceIdentity>/O=NCI/OU=CBIIT/OU=Training/OU=Services/CN=cds2.training.cagrid.org</ServiceIdentity>
+            <ServiceIdentity>/O=caBIG/OU=caGrid/OU=Training/OU=Services/CN=cds2.training.cagrid.org</ServiceIdentity>
         </ServiceDescriptor>
         <ServiceDescriptor>
             <DisplayName>Training SHA1</DisplayName>

@@ -1,15 +1,24 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<ServiceConfiguration xmlns="http://www.cagrid.org/1/grape-service-configuration"
-    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+<ServiceConfiguration xmlns="http://www.cagrid.org/1/grape-service-configuration" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
     <ServiceGroupDescription>Grid Trust Service(s)</ServiceGroupDescription>
     <Services>
         <ServiceDescriptor>
-            <DisplayName>caBIG QA Master</DisplayName>
+            <DisplayName>caBIG QA Master SHA2</DisplayName>
+            <ServiceURL>https://cagrid2-gts-master-qa.nci.nih.gov:8443/gts</ServiceURL>
+            <ServiceIdentity>/O=NCI/OU=CBIIT/OU=caGrid/OU=QA Trust Fabric/CN=host/cagrid2-gts-master-qa.nci.nih.gov</ServiceIdentity>
+        </ServiceDescriptor>
+        <ServiceDescriptor>
+            <DisplayName>caBIG QA Slave SHA2</DisplayName>
+            <ServiceURL>https://cagrid2-gts-slave-qa.nci.nih.gov:4443/gts</ServiceURL>
+            <ServiceIdentity>/O=NCI/OU=CBIIT/OU=caGrid/OU=QA Trust Fabric/CN=host/cagrid2-gts-slave-qa.nci.nih.gov</ServiceIdentity>
+        </ServiceDescriptor>
+        <ServiceDescriptor>
+            <DisplayName>caBIG QA Master SHA1</DisplayName>
             <ServiceURL>https://cagrid-gts-master-qa.nci.nih.gov:8443/wsrf/services/cagrid/GTS</ServiceURL>
             <ServiceIdentity>/O=caBIG/OU=caGrid/OU=QA Trust Fabric/CN=host/cagrid-gts-master-qa.nci.nih.gov</ServiceIdentity>
         </ServiceDescriptor>
         <ServiceDescriptor>
-            <DisplayName>caBIG QA Slave</DisplayName>
+            <DisplayName>caBIG QA Slave SHA1</DisplayName>
             <ServiceURL>https://cagrid-gts-slave-qa.nci.nih.gov:8443/wsrf/services/cagrid/GTS</ServiceURL>
             <ServiceIdentity>/O=caBIG/OU=caGrid/OU=QA Trust Fabric/CN=host/cagrid-gts-slave-qa.nci.nih.gov</ServiceIdentity>
         </ServiceDescriptor>

@@ -5,12 +5,12 @@
         <ServiceDescriptor>
             <DisplayName>Training Master SHA2</DisplayName>
             <ServiceURL>https://mastergts2.training.cagrid.org:4443/gts</ServiceURL>
-            <ServiceIdentity>/O=NCI/OU=CBIIT/OU=Training Trust Fabric/CN=host/mastergts2.training.cagrid.org</ServiceIdentity>
+            <ServiceIdentity>/O=NCI/OU=CBIIT/OU=caGrid/OU=Training Trust Fabric/CN=host/mastergts2.training.cagrid.org</ServiceIdentity>
         </ServiceDescriptor>
         <ServiceDescriptor>
             <DisplayName>Training Slave SHA2</DisplayName>
             <ServiceURL>https://slavegts2.training.cagrid.org:4443/gts</ServiceURL>
-            <ServiceIdentity>/O=NCI/OU=CBIIT/OU=Training Trust Fabric/CN=host/slavegts2.training.cagrid.org</ServiceIdentity>
+            <ServiceIdentity>/O=NCI/OU=CBIIT/OU=caGrid/OU=Training Trust Fabric/CN=host/slavegts2.training.cagrid.org</ServiceIdentity>
         </ServiceDescriptor>
         <ServiceDescriptor>
             <DisplayName>Training Master SHA1</DisplayName>

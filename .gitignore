@@ -1,14 +1,10 @@
 caGrid/projects/fqp/schema
-deploy.properties
 caGrid/projects/authentication-service/schema/AuthenticationService
 caGrid/projects/cds/schema/CredentialDelegationService/xsd
-extension.xml
 caGrid/projects/cabigextensions/extensions/sdk_discovery
 caGrid/projects/dataExtensions/src/java/core/gov/nih/nci/cagrid/data/codegen/templates
-discovery.properties
 caGrid/projects/dorian/schema/Dorian/xsd
 caGrid/projects/globalModelExchange/schema/GlobalModelExchange/xsd
-gme.test.properties
 caGrid/projects/gridgrouper/schema/GridGrouper/xsd
 caGrid/projects/gts/schema/GTS/xsd
 caGrid/projects/identifiers-namingauthority-gridsvc/schema/IdentifiersNAService/xsd
@@ -22,7 +18,6 @@ caGrid/projects/service-security-provider/schema/ServiceSecurity/xsd
 caGrid/projects/syncgts/schema/SyncGTS/xsd
 caGrid/projects/TavernaWorkflowServices/schema/TavernaWorkflowService/xsd
 caGrid/projects/transfer/schema/TransferService/xsd
-sync-description.xml
 caGrid/projects/websso/src/resources
 caGrid/projects/websso/webcontent/WEB-INF/grid-resources
 caGrid/projects/opensaml/dist
@@ -31,3 +26,14 @@ caGrid/projects/gridgrouper-auth-extension/src/org/cagrid/gridgrouper/authorizat
 caGrid/projects/introduce/src/java/Introduce/gov/nih/nci/cagrid/introduce/beans
 caGrid/projects/introduce/src/java/Introduce/gov/nih/nci/cagrid/introduce/templates
 caGrid/projects/introduce/updates/lib
+deploy.properties
+caGrid/projects/cabigextensions/extensions/cagrid_metadata/extension.xml
+caGrid/projects/cadsr/extension.xml
+caGrid/projects/csm-auth-extension/extension/extension.xml
+caGrid/projects/dataExtensions/extension/extension.xml
+caGrid/projects/discovery/src/java/gov/nih/nci/cagrid/discovery/client/discovery.properties
+caGrid/projects/gaards-ui/gaards.log
+caGrid/projects/globalModelExchange-ui/extension.xml
+caGrid/projects/globalModelExchange/test/resources/gme.test.properties
+caGrid/projects/gridgrouper-auth-extension/extension/extension.xml
+caGrid/projects/websso-client-common/src/resources/sync-description.xml

@@ -41,6 +41,8 @@
     <!--  certificates -->
     <artifact name="certificates/62f4fd66" type="certificate" ext="0" conf="certs"/>
     <artifact name="certificates/62f4fd66" type="certificate" ext="signing_policy" conf="certs"/>
+    <artifact name="certificates/e8779b6a" type="certificate" ext="0" conf="certs"/>
+    <artifact name="certificates/e8779b6a" type="certificate" ext="signing_policy" conf="certs"/>
 
     <!--  grape UI configurations-->
    <artifact name="authentication-services-configuration" type="xml" conf="authentication-services"/>
