@@ -5,12 +5,12 @@
         <ServiceDescriptor>
             <DisplayName>caBIG QA Master SHA2</DisplayName>
             <ServiceURL>https://cagrid2-gts-master-qa.nci.nih.gov:8443/gts</ServiceURL>
-            <ServiceIdentity>/O=NCI/OU=CBIIT/OU=caGrid/OU=QA Trust Fabric/CN=host/cagrid2-gts-master-qa.nci.nih.gov</ServiceIdentity>
+            <ServiceIdentity>/O=NCI/OU=CBIIT/OU=caGrid/OU=QA Trust Fabric/CN=cagrid2-gts-master-qa.nci.nih.gov</ServiceIdentity>
         </ServiceDescriptor>
         <ServiceDescriptor>
             <DisplayName>caBIG QA Slave SHA2</DisplayName>
             <ServiceURL>https://cagrid2-gts-slave-qa.nci.nih.gov:4443/gts</ServiceURL>
-            <ServiceIdentity>/O=NCI/OU=CBIIT/OU=caGrid/OU=QA Trust Fabric/CN=host/cagrid2-gts-slave-qa.nci.nih.gov</ServiceIdentity>
+            <ServiceIdentity>/O=NCI/OU=CBIIT/OU=caGrid/OU=QA Trust Fabric/CN=cagrid2-gts-slave-qa.nci.nih.gov</ServiceIdentity>
         </ServiceDescriptor>
         <ServiceDescriptor>
             <DisplayName>caBIG QA Master SHA1</DisplayName>

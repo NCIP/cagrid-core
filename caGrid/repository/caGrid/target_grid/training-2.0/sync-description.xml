@@ -7,7 +7,7 @@
   		  <ns2:Status xsi:type="ns2:Status">Trusted</ns2:Status> 	
       </ns1:TrustedAuthorityFilter>
 		<ns1:PerformAuthorization>true</ns1:PerformAuthorization>
-		<ns1:GTSIdentity>/O=NCI/OU=CBIIT/OU=caGrid/OU=Training Trust Fabric/CN=host/slavegts2.training.cagrid.org</ns1:GTSIdentity>	
+		<ns1:GTSIdentity>/O=NCI/OU=CBIIT/OU=caGrid/OU=Training Trust Fabric/CN=slavegts2.training.cagrid.org</ns1:GTSIdentity>	
 	</ns1:SyncDescriptor>
 	<ns1:ExcludedCAs>
 		<ns1:CASubject>O=caBIG,OU=caGrid,OU=Training Trust Fabric,CN=caGrid Training Trust Fabric CA</ns1:CASubject>
