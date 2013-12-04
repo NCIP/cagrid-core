@@ -1,6 +1,6 @@
 <ns1:SyncDescription xmlns:ns1="http://cagrid.nci.nih.gov/12/SyncGTS" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
 	<ns1:SyncDescriptor>
-		<ns1:gtsServiceURI>https://cagrid2-gts-slave.nci.nih.gov:4443/gts</ns1:gtsServiceURI>
+		<ns1:gtsServiceURI>https://cagrid2-gts-slave.nci.nih.gov:1521/gts</ns1:gtsServiceURI>
 		<ns1:Expiration hours="12" minutes="0" seconds="0"/>
 		<ns1:TrustedAuthorityFilter xsi:type="ns2:TrustedAuthorityFilter" xmlns:ns2="http://cagrid.nci.nih.gov/8/gts">
  		  <ns2:Lifetime xsi:type="ns2:Lifetime">Valid</ns2:Lifetime> 

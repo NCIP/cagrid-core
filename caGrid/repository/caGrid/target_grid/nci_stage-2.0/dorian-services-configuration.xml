@@ -4,7 +4,7 @@
     <Services>
         <ServiceDescriptor>
             <DisplayName>caBIG Staging SHA2</DisplayName>
-            <ServiceURL>https://cagrid2-dorian-stage.nci.nih.gov:4443/dorian</ServiceURL>
+            <ServiceURL>https://cagrid2-dorian-stage.nci.nih.gov:1521/dorian</ServiceURL>
             <ServiceIdentity>/O=caBIG/OU=caGrid/OU=Stage LOA1/OU=Services/CN=cagrid2-dorian-stage.nci.nih.gov</ServiceIdentity>
         </ServiceDescriptor>
         <ServiceDescriptor>

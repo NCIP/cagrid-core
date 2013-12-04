@@ -4,12 +4,12 @@
     <Services>
         <ServiceDescriptor>
             <DisplayName>caBIG Master SHA2</DisplayName>
-            <ServiceURL>https://cagrid2-gts-master.nci.nih.gov:4443/gts</ServiceURL>
+            <ServiceURL>https://cagrid2-gts-master.nci.nih.gov:1521/gts</ServiceURL>
             <ServiceIdentity>/O=caBIG/OU=caGrid/OU=Trust Fabric/CN=cagrid2-gts-master.nci.nih.gov</ServiceIdentity>
         </ServiceDescriptor>
         <ServiceDescriptor>
             <DisplayName>caBIG Slave SHA2</DisplayName>
-            <ServiceURL>https://cagrid2-gts-slave.nci.nih.gov:4443/gts</ServiceURL>
+            <ServiceURL>https://cagrid2-gts-slave.nci.nih.gov:1521/gts</ServiceURL>
             <ServiceIdentity>/O=caBIG/OU=caGrid/OU=Trust Fabric/CN=cagrid2-gts-slave.nci.nih.gov</ServiceIdentity>
         </ServiceDescriptor>
         <ServiceDescriptor>

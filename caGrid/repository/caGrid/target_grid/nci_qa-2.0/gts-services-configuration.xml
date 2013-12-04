@@ -9,7 +9,7 @@
         </ServiceDescriptor>
         <ServiceDescriptor>
             <DisplayName>caBIG QA Slave SHA2</DisplayName>
-            <ServiceURL>https://cagrid2-gts-slave-qa.nci.nih.gov:4443/gts</ServiceURL>
+            <ServiceURL>https://cagrid2-gts-slave-qa.nci.nih.gov:1521/gts</ServiceURL>
             <ServiceIdentity>/O=NCI/OU=CBIIT/OU=caGrid/OU=QA Trust Fabric/CN=cagrid2-gts-slave-qa.nci.nih.gov</ServiceIdentity>
         </ServiceDescriptor>
         <ServiceDescriptor>

@@ -4,7 +4,7 @@
     <Services>
         <ServiceDescriptor>
             <DisplayName>caBIG QA SHA2</DisplayName>
-            <ServiceURL>https://cagrid2-cds-qa.nci.nih.gov:4443/cds</ServiceURL>
+            <ServiceURL>https://cagrid2-cds-qa.nci.nih.gov:1521/cds</ServiceURL>
             <ServiceIdentity>/O=caBIG/OU=caGrid/OU=QA LOA1/OU=Services/CN=cagrid2-cds-qa.nci.nih.gov</ServiceIdentity>
         </ServiceDescriptor>
         <ServiceDescriptor>
