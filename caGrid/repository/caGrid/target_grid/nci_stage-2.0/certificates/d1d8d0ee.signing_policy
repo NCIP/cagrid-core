@@ -1,3 +1,3 @@
-access_id_CA X509 '/O=NCI/O=CBIIT/OU=caGrid/OU=Stage Trust Fabric/CN=caGrid Stage Trust Fabric CA'
+access_id_CA X509 '/O=NCI/OU=CBIIT/OU=caGrid/OU=Staging Trust Fabric/CN=caGrid Staging Trust Fabric CA'
 pos_rights globus CA:sign
 cond_subjects globus '"*"'

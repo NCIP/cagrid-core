@@ -37,3 +37,5 @@ caGrid/projects/globalModelExchange-ui/extension.xml
 caGrid/projects/globalModelExchange/test/resources/gme.test.properties
 caGrid/projects/gridgrouper-auth-extension/extension/extension.xml
 caGrid/projects/websso-client-common/src/resources/sync-description.xml
+caGrid/projects/dorian/bin
+caGrid/projects/gaards-core/bin
