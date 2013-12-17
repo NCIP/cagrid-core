@@ -4,7 +4,7 @@
     <Services>
         <ServiceDescriptor>
             <DisplayName>caBIG QA Master SHA2</DisplayName>
-            <ServiceURL>https://cagrid2-gts-master-qa.nci.nih.gov:8443/gts</ServiceURL>
+            <ServiceURL>https://cagrid2-gts-master-qa.nci.nih.gov:1521/gts</ServiceURL>
             <ServiceIdentity>/O=NCI/OU=CBIIT/OU=caGrid/OU=QA Trust Fabric/CN=cagrid2-gts-master-qa.nci.nih.gov</ServiceIdentity>
         </ServiceDescriptor>
         <ServiceDescriptor>
