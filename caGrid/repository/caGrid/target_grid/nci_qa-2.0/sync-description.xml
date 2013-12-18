@@ -10,8 +10,8 @@
         <ns1:GTSIdentity>/O=NCI/OU=CBIIT/OU=caGrid/OU=QA Trust Fabric/CN=cagrid2-gts-slave-qa.nci.nih.gov</ns1:GTSIdentity>
     </ns1:SyncDescriptor>
     <ns1:ExcludedCAs>
-        <ns1:CASubject>O=NCI,OU=CBIIT,OU=caGrid,OU=QA Trust Fabric,CN=caGrid Stage Trust Fabric CA</ns1:CASubject>
-        <ns1:CASubject>O=caBIG,OU=caGrid,OU=QA Trust Fabric,CN=caGrid Stage Trust Fabric Certificate Authority</ns1:CASubject>
+        <ns1:CASubject>O=NCI,OU=CBIIT,OU=caGrid,OU=QA Trust Fabric,CN=caGrid QA Trust Fabric CA</ns1:CASubject>
+        <ns1:CASubject>O=caBIG,OU=caGrid,OU=QA Trust Fabric,CN=caGrid QA Trust Fabric Certificate Authority</ns1:CASubject>
     </ns1:ExcludedCAs>
     <ns1:DeleteInvalidFiles>false</ns1:DeleteInvalidFiles>
     <ns1:CacheSize>
