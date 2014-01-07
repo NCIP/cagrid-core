@@ -4,7 +4,7 @@
     <Services>
         <ServiceDescriptor>
             <DisplayName>caBIG QA SHA2</DisplayName>
-            <ServiceURL>https://cagrid2-gridgrouper-qa.nci.nih.gov:8443/gridgrouper</ServiceURL>
+            <ServiceURL>https://cagrid2-gridgrouper-qa.nci.nih.gov:1521/gridgrouper</ServiceURL>
             <ServiceIdentity>/O=caBIG/OU=caGrid/OU=QA LOA1/OU=Services/CN=cagrid2-gridgrouper-qa.nci.nih.gov</ServiceIdentity>
         </ServiceDescriptor>
         <ServiceDescriptor>
